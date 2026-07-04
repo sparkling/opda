@@ -1,0 +1,11 @@
+{
+  "name": "opda-rml-mapping",
+  "private": true,
+  "description": "RML mapping repo scope for MetaHarness Darwin Mode — the 'test' script IS the sound+completeness gate (SHACL CONFORMS + zero invented terms + completeness against the schema-generated-term scope). Darwin evolves the operating policy of the subagent that authors/extends this mapping, scored against this command.",
+  "scripts": {
+    "test": "make rml-test"
+  },
+  "devDependencies": {
+    "@metaharness/darwin": "^0.8.0"
+  }
+}

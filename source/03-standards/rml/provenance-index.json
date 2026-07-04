@@ -1,0 +1,4948 @@
+{
+  "generated_from": {
+    "file": "public/ontology/artefacts/opda-merged.ttl",
+    "sha256": "7471c9c12b0a42efc7b1ec71684d077b947cdc3e1e21c07f3e881638bff639b4"
+  },
+  "counts": {
+    "total_leaves_indexed": 333,
+    "distinct_leaf_paths": 333,
+    "datatype": 301,
+    "object": 32,
+    "monetary": 31,
+    "shared_domainless": 11,
+    "object_node": 32,
+    "array_leaves": 200,
+    "classes": 40,
+    "dictionary_leaves_total": 8458,
+    "dictionary_leaves_matched": 646,
+    "dictionary_leaves_unmatched": 7812,
+    "provenance_orphans": 0
+  },
+  "classes": [
+    {
+      "iri": "https://opda.org.uk/pdtf/Address",
+      "compact": "opda:Address",
+      "label": "Address",
+      "properties": [
+        {
+          "predicate": "opda:addressVariant",
+          "kind": "Datatype",
+          "range": "http://www.w3.org/2001/XMLSchema#string"
+        }
+      ]
+    },
+    {
+      "iri": "https://opda.org.uk/pdtf/AssuranceLevel",
+      "compact": "opda:AssuranceLevel",
+      "label": "Assurance Level",
+      "properties": []
+    },
+    {
+      "iri": "https://opda.org.uk/pdtf/AttachedDocument",
+      "compact": "opda:AttachedDocument",
+      "label": "Attached Document",
+      "properties": [
+        {
+          "predicate": "opda:documentDate",
+          "kind": "Datatype",
+          "range": "http://www.w3.org/2001/XMLSchema#date"
+        },
+        {
+          "predicate": "opda:documentTypeCode",
+          "kind": "Datatype",
+          "range": "http://www.w3.org/2001/XMLSchema#string"
+        },
+        {
+          "predicate": "opda:filedUnder",
+          "kind": "Datatype",
+          "range": "http://www.w3.org/2001/XMLSchema#string"
+        },
+        {
+          "predicate": "opda:retrievedOn",
+          "kind": "Datatype",
+          "range": "http://www.w3.org/2001/XMLSchema#date"
+        }
+      ]
+    },
+    {
+      "iri": "https://opda.org.uk/pdtf/Buyer",
+      "compact": "opda:Buyer",
+      "label": "Buyer",
+      "properties": []
+    },
+    {
+      "iri": "https://opda.org.uk/pdtf/Claim",
+      "compact": "opda:Claim",
+      "label": "Claim",
+      "properties": [
+        {
+          "predicate": "opda:supportedBy",
+          "kind": "Object",
+          "range": "opda:Evidence"
+        }
+      ]
+    },
+    {
+      "iri": "https://opda.org.uk/pdtf/Comparable",
+      "compact": "opda:Comparable",
+      "label": "Comparable",
+      "properties": []
+    },
+    {
+      "iri": "https://opda.org.uk/pdtf/DPVMappingRecord",
+      "compact": "opda:DPVMappingRecord",
+      "label": "DPV Mapping Record",
+      "properties": [
+        {
+          "predicate": "opda:baselineCategory",
+          "kind": "Object",
+          "range": null
+        },
+        {
+          "predicate": "opda:targetsKind",
+          "kind": "Object",
+          "range": "http://www.w3.org/2002/07/owl#Class"
+        }
+      ]
+    },
+    {
+      "iri": "https://opda.org.uk/pdtf/DiagnosticExemplar",
+      "compact": "opda:DiagnosticExemplar",
+      "label": "Diagnostic Exemplar",
+      "properties": []
+    },
+    {
+      "iri": "https://opda.org.uk/pdtf/EPCCertificate",
+      "compact": "opda:EPCCertificate",
+      "label": "EPC Certificate",
+      "properties": []
+    },
+    {
+      "iri": "https://opda.org.uk/pdtf/Evidence",
+      "compact": "opda:Evidence",
+      "label": "Evidence",
+      "properties": [
+        {
+          "predicate": "opda:attestedBy",
+          "kind": "Object",
+          "range": "http://www.w3.org/ns/prov#Agent"
+        },
+        {
+          "predicate": "opda:evidenceType",
+          "kind": "Datatype",
+          "range": "http://www.w3.org/2001/XMLSchema#string"
+        }
+      ]
+    },
+    {
+      "iri": "https://opda.org.uk/pdtf/GeneratorRun",
+      "compact": "opda:GeneratorRun",
+      "label": "Generator Run",
+      "properties": []
+    },
+    {
+      "iri": "https://opda.org.uk/pdtf/LeaseExtensionEvent",
+      "compact": "opda:LeaseExtensionEvent",
+      "label": "Lease Extension Event",
+      "properties": []
+    },
+    {
+      "iri": "https://opda.org.uk/pdtf/LeaseTerm",
+      "compact": "opda:LeaseTerm",
+      "label": "Lease Term",
+      "properties": []
+    },
+    {
+      "iri": "https://opda.org.uk/pdtf/LegalEstate",
+      "compact": "opda:LegalEstate",
+      "label": "Legal Estate",
+      "properties": [
+        {
+          "predicate": "opda:adHocExpenses",
+          "kind": "Datatype",
+          "range": "http://www.w3.org/2001/XMLSchema#string"
+        },
+        {
+          "predicate": "opda:annualGroundRent",
+          "kind": "Object",
+          "range": "opda:MonetaryAmount"
+        },
+        {
+          "predicate": "opda:annualServiceCharge",
+          "kind": "Object",
+          "range": "opda:MonetaryAmount"
+        },
+        {
+          "predicate": "opda:buildingsReinstatementCostAssessment",
+          "kind": "Datatype",
+          "range": "http://www.w3.org/2001/XMLSchema#string"
+        },
+        {
+          "predicate": "opda:certificateOfComplianceFee",
+          "kind": "Object",
+          "range": "opda:MonetaryAmount"
+        },
+        {
+          "predicate": "opda:contributionIncludedInServiceCharge",
+          "kind": "Datatype",
+          "range": "http://www.w3.org/2001/XMLSchema#string"
+        },
+        {
+          "predicate": "opda:dangerousCladdingOrDefects",
+          "kind": "Datatype",
+          "range": "http://www.w3.org/2001/XMLSchema#string"
+        },
+        {
+          "predicate": "opda:dealsWithDayToDayMaintenanceOfManagedArea",
+          "kind": "Datatype",
+          "range": "http://www.w3.org/2001/XMLSchema#string"
+        },
+        {
+          "predicate": "opda:forTheManagedAreas",
+          "kind": "Datatype",
+          "range": "http://www.w3.org/2001/XMLSchema#decimal"
+        },
+        {
+          "predicate": "opda:freeholdOwner",
+          "kind": "Datatype",
+          "range": "http://www.w3.org/2001/XMLSchema#string"
+        },
+        {
+          "predicate": "opda:from",
+          "kind": "Datatype",
+          "range": "http://www.w3.org/2001/XMLSchema#date"
+        },
+        {
+          "predicate": "opda:fromTheOwners",
+          "kind": "Datatype",
+          "range": "http://www.w3.org/2001/XMLSchema#decimal"
+        },
+        {
+          "predicate": "opda:groundRentFrequency",
+          "kind": "Datatype",
+          "range": "http://www.w3.org/2001/XMLSchema#string"
+        },
+        {
+          "predicate": "opda:hasFixedRentcharge",
+          "kind": "Datatype",
+          "range": "http://www.w3.org/2001/XMLSchema#string"
+        },
+        {
+          "predicate": "opda:hasTenantCompanyDissolved",
+          "kind": "Datatype",
+          "range": "http://www.w3.org/2001/XMLSchema#string"
+        },
+        {
+          "predicate": "opda:headLeaseholderControlled",
+          "kind": "Datatype",
+          "range": "http://www.w3.org/2001/XMLSchema#string"
+        },
+        {
+          "predicate": "opda:isGroundRentPayable",
+          "kind": "Datatype",
+          "range": "http://www.w3.org/2001/XMLSchema#string"
+        },
+        {
+          "predicate": "opda:isLeaseQualifying",
+          "kind": "Datatype",
+          "range": "http://www.w3.org/2001/XMLSchema#string"
+        },
+        {
+          "predicate": "opda:isManagingAgentEmployed",
+          "kind": "Datatype",
+          "range": "http://www.w3.org/2001/XMLSchema#string"
+        },
+        {
+          "predicate": "opda:isSharedOwnership",
+          "kind": "Datatype",
+          "range": "http://www.w3.org/2001/XMLSchema#string"
+        },
+        {
+          "predicate": "opda:landlordNotifiedOfSale",
+          "kind": "Datatype",
+          "range": "http://www.w3.org/2001/XMLSchema#string"
+        },
+        {
+          "predicate": "opda:lengthOfLeaseInYears",
+          "kind": "Datatype",
+          "range": "http://www.w3.org/2001/XMLSchema#integer"
+        },
+        {
+          "predicate": "opda:organisesBuildingInsurance",
+          "kind": "Datatype",
+          "range": "http://www.w3.org/2001/XMLSchema#string"
+        },
+        {
+          "predicate": "opda:otherOwnershipDetails",
+          "kind": "Datatype",
+          "range": "http://www.w3.org/2001/XMLSchema#string"
+        },
+        {
+          "predicate": "opda:otherPropertiesInManagedArea",
+          "kind": "Datatype",
+          "range": "http://www.w3.org/2001/XMLSchema#decimal"
+        },
+        {
+          "predicate": "opda:outstandingEnforcementAction",
+          "kind": "Datatype",
+          "range": "http://www.w3.org/2001/XMLSchema#string"
+        },
+        {
+          "predicate": "opda:ownershipType",
+          "kind": "Datatype",
+          "range": "http://www.w3.org/2001/XMLSchema#string"
+        },
+        {
+          "predicate": "opda:personWhoDealsWithTheDeedOfCovenant",
+          "kind": "Datatype",
+          "range": "http://www.w3.org/2001/XMLSchema#string"
+        },
+        {
+          "predicate": "opda:procedureForObtainingCertificate",
+          "kind": "Datatype",
+          "range": "http://www.w3.org/2001/XMLSchema#string"
+        },
+        {
+          "predicate": "opda:propertiesContributingToMaintenanceOfManagedArea",
+          "kind": "Datatype",
+          "range": "http://www.w3.org/2001/XMLSchema#decimal"
+        },
+        {
+          "predicate": "opda:rentIncreaseCalculated",
+          "kind": "Datatype",
+          "range": "http://www.w3.org/2001/XMLSchema#string"
+        },
+        {
+          "predicate": "opda:rentReviewFrequency",
+          "kind": "Datatype",
+          "range": "http://www.w3.org/2001/XMLSchema#string"
+        },
+        {
+          "predicate": "opda:requirements",
+          "kind": "Datatype",
+          "range": "http://www.w3.org/2001/XMLSchema#string"
+        },
+        {
+          "predicate": "opda:sellerCompletedDeedOfCertificate",
+          "kind": "Datatype",
+          "range": "http://www.w3.org/2001/XMLSchema#string"
+        },
+        {
+          "predicate": "opda:sellerContributesToServiceCharge",
+          "kind": "Datatype",
+          "range": "http://www.w3.org/2001/XMLSchema#string"
+        },
+        {
+          "predicate": "opda:sellerOwnedProperty",
+          "kind": "Datatype",
+          "range": "http://www.w3.org/2001/XMLSchema#string"
+        },
+        {
+          "predicate": "opda:sharedOwnershipPercentage",
+          "kind": "Datatype",
+          "range": "http://www.w3.org/2001/XMLSchema#decimal"
+        },
+        {
+          "predicate": "opda:sharedOwnershipRent",
+          "kind": "Object",
+          "range": "opda:MonetaryAmount"
+        },
+        {
+          "predicate": "opda:startYearOfLease",
+          "kind": "Datatype",
+          "range": "http://www.w3.org/2001/XMLSchema#gYear"
+        },
+        {
+          "predicate": "opda:tenureKind",
+          "kind": "Datatype",
+          "range": "http://www.w3.org/2001/XMLSchema#string"
+        },
+        {
+          "predicate": "opda:titleExtents",
+          "kind": "Datatype",
+          "range": "http://www.w3.org/2001/XMLSchema#string"
+        },
+        {
+          "predicate": "opda:titlePropertyDescription",
+          "kind": "Datatype",
+          "range": "http://www.w3.org/2001/XMLSchema#string"
+        },
+        {
+          "predicate": "opda:to",
+          "kind": "Datatype",
+          "range": "http://www.w3.org/2001/XMLSchema#date"
+        },
+        {
+          "predicate": "opda:urgentWorksCarriedOut",
+          "kind": "Datatype",
+          "range": "http://www.w3.org/2001/XMLSchema#string"
+        },
+        {
+          "predicate": "opda:urgentWorksRecommended",
+          "kind": "Datatype",
+          "range": "http://www.w3.org/2001/XMLSchema#string"
+        },
+        {
+          "predicate": "opda:year",
+          "kind": "Datatype",
+          "range": "http://www.w3.org/2001/XMLSchema#gYear"
+        }
+      ]
+    },
+    {
+      "iri": "https://opda.org.uk/pdtf/Milestone",
+      "compact": "opda:Milestone",
+      "label": "Milestone",
+      "properties": []
+    },
+    {
+      "iri": "https://opda.org.uk/pdtf/MonetaryAmount",
+      "compact": "opda:MonetaryAmount",
+      "label": "Monetary Amount",
+      "properties": [
+        {
+          "predicate": "opda:amount",
+          "kind": "Datatype",
+          "range": "http://www.w3.org/2001/XMLSchema#decimal"
+        },
+        {
+          "predicate": "opda:currency",
+          "kind": "Object",
+          "range": "http://www.w3.org/2004/02/skos/core#Concept"
+        }
+      ]
+    },
+    {
+      "iri": "https://opda.org.uk/pdtf/NameChangeEvent",
+      "compact": "opda:NameChangeEvent",
+      "label": "Name Change Event",
+      "properties": []
+    },
+    {
+      "iri": "https://opda.org.uk/pdtf/NearbyFacility",
+      "compact": "opda:NearbyFacility",
+      "label": "Nearby Facility",
+      "properties": [
+        {
+          "predicate": "opda:ageRange",
+          "kind": "Datatype",
+          "range": "http://www.w3.org/2001/XMLSchema#string"
+        },
+        {
+          "predicate": "opda:distanceInMiles",
+          "kind": "Datatype",
+          "range": "http://www.w3.org/2001/XMLSchema#decimal"
+        },
+        {
+          "predicate": "opda:ofstedRating",
+          "kind": "Datatype",
+          "range": "http://www.w3.org/2001/XMLSchema#string"
+        },
+        {
+          "predicate": "opda:otherRating",
+          "kind": "Datatype",
+          "range": "http://www.w3.org/2001/XMLSchema#string"
+        },
+        {
+          "predicate": "opda:pupils",
+          "kind": "Datatype",
+          "range": "http://www.w3.org/2001/XMLSchema#integer"
+        },
+        {
+          "predicate": "opda:religiousCharacter",
+          "kind": "Datatype",
+          "range": "http://www.w3.org/2001/XMLSchema#string"
+        },
+        {
+          "predicate": "opda:schoolType",
+          "kind": "Datatype",
+          "range": "http://www.w3.org/2001/XMLSchema#string"
+        },
+        {
+          "predicate": "opda:specialties",
+          "kind": "Datatype",
+          "range": "http://www.w3.org/2001/XMLSchema#string"
+        },
+        {
+          "predicate": "opda:transportType",
+          "kind": "Datatype",
+          "range": "http://www.w3.org/2001/XMLSchema#string"
+        },
+        {
+          "predicate": "opda:typeOfHealthCare",
+          "kind": "Datatype",
+          "range": "http://www.w3.org/2001/XMLSchema#string"
+        }
+      ]
+    },
+    {
+      "iri": "https://opda.org.uk/pdtf/Organisation",
+      "compact": "opda:Organisation",
+      "label": "Organisation",
+      "properties": [
+        {
+          "predicate": "opda:accountName",
+          "kind": "Datatype",
+          "range": "http://www.w3.org/2001/XMLSchema#string"
+        },
+        {
+          "predicate": "opda:accountNumber",
+          "kind": "Datatype",
+          "range": "http://www.w3.org/2001/XMLSchema#string"
+        },
+        {
+          "predicate": "opda:organisation",
+          "kind": "Datatype",
+          "range": "http://www.w3.org/2001/XMLSchema#string"
+        },
+        {
+          "predicate": "opda:organisationName",
+          "kind": "Datatype",
+          "range": "http://www.w3.org/2001/XMLSchema#string"
+        },
+        {
+          "predicate": "opda:organisationReference",
+          "kind": "Datatype",
+          "range": "http://www.w3.org/2001/XMLSchema#string"
+        },
+        {
+          "predicate": "opda:reference",
+          "kind": "Datatype",
+          "range": "http://www.w3.org/2001/XMLSchema#string"
+        },
+        {
+          "predicate": "opda:sortCode",
+          "kind": "Datatype",
+          "range": "http://www.w3.org/2001/XMLSchema#string"
+        }
+      ]
+    },
+    {
+      "iri": "https://opda.org.uk/pdtf/Person",
+      "compact": "opda:Person",
+      "label": "Person",
+      "properties": [
+        {
+          "predicate": "opda:dateOfBirth",
+          "kind": "Datatype",
+          "range": "http://www.w3.org/2001/XMLSchema#date"
+        },
+        {
+          "predicate": "opda:middleNames",
+          "kind": "Datatype",
+          "range": "http://www.w3.org/2001/XMLSchema#string"
+        }
+      ]
+    },
+    {
+      "iri": "https://opda.org.uk/pdtf/Property",
+      "compact": "opda:Property",
+      "label": "Property",
+      "properties": [
+        {
+          "predicate": "opda:abilityToResideAtProperty",
+          "kind": "Datatype",
+          "range": "http://www.w3.org/2001/XMLSchema#string"
+        },
+        {
+          "predicate": "opda:accessibilityAndAdaptations",
+          "kind": "Datatype",
+          "range": "http://www.w3.org/2001/XMLSchema#string"
+        },
+        {
+          "predicate": "opda:annualCostOfPermit",
+          "kind": "Object",
+          "range": "opda:MonetaryAmount"
+        },
+        {
+          "predicate": "opda:areBoundariesUniform",
+          "kind": "Datatype",
+          "range": "http://www.w3.org/2001/XMLSchema#string"
+        },
+        {
+          "predicate": "opda:area",
+          "kind": "Datatype",
+          "range": "http://www.w3.org/2001/XMLSchema#decimal"
+        },
+        {
+          "predicate": "opda:bathrooms",
+          "kind": "Datatype",
+          "range": "http://www.w3.org/2001/XMLSchema#integer"
+        },
+        {
+          "predicate": "opda:bedrooms",
+          "kind": "Datatype",
+          "range": "http://www.w3.org/2001/XMLSchema#integer"
+        },
+        {
+          "predicate": "opda:builtForm",
+          "kind": "Datatype",
+          "range": "http://www.w3.org/2001/XMLSchema#string"
+        },
+        {
+          "predicate": "opda:centralHeatingFuelType",
+          "kind": "Datatype",
+          "range": "http://www.w3.org/2001/XMLSchema#string"
+        },
+        {
+          "predicate": "opda:centralHeatingInstalled",
+          "kind": "Datatype",
+          "range": "http://www.w3.org/2001/XMLSchema#string"
+        },
+        {
+          "predicate": "opda:consentsObtained",
+          "kind": "Datatype",
+          "range": "http://www.w3.org/2001/XMLSchema#string"
+        },
+        {
+          "predicate": "opda:consequentialChargingBasis",
+          "kind": "Datatype",
+          "range": "http://www.w3.org/2001/XMLSchema#string"
+        },
+        {
+          "predicate": "opda:constructionType",
+          "kind": "Datatype",
+          "range": "http://www.w3.org/2001/XMLSchema#string"
+        },
+        {
+          "predicate": "opda:councilTaxAnnualCharge",
+          "kind": "Object",
+          "range": "opda:MonetaryAmount"
+        },
+        {
+          "predicate": "opda:councilTaxBand",
+          "kind": "Datatype",
+          "range": "http://www.w3.org/2001/XMLSchema#string"
+        },
+        {
+          "predicate": "opda:currentChargingBasis",
+          "kind": "Datatype",
+          "range": "http://www.w3.org/2001/XMLSchema#string"
+        },
+        {
+          "predicate": "opda:currentEnergyRating",
+          "kind": "Datatype",
+          "range": "http://www.w3.org/2001/XMLSchema#string"
+        },
+        {
+          "predicate": "opda:dateInstalled",
+          "kind": "Datatype",
+          "range": "http://www.w3.org/2001/XMLSchema#date"
+        },
+        {
+          "predicate": "opda:dateLastEmptied",
+          "kind": "Datatype",
+          "range": "http://www.w3.org/2001/XMLSchema#date"
+        },
+        {
+          "predicate": "opda:dateLastServiced",
+          "kind": "Datatype",
+          "range": "http://www.w3.org/2001/XMLSchema#date"
+        },
+        {
+          "predicate": "opda:dateReplaced",
+          "kind": "Datatype",
+          "range": "http://www.w3.org/2001/XMLSchema#date"
+        },
+        {
+          "predicate": "opda:dateToBeConnected",
+          "kind": "Datatype",
+          "range": "http://www.w3.org/2001/XMLSchema#date"
+        },
+        {
+          "predicate": "opda:diningAreas",
+          "kind": "Datatype",
+          "range": "http://www.w3.org/2001/XMLSchema#integer"
+        },
+        {
+          "predicate": "opda:dischargeCompliesWithGBR",
+          "kind": "Datatype",
+          "range": "http://www.w3.org/2001/XMLSchema#string"
+        },
+        {
+          "predicate": "opda:distanceToNearestSewerageTreatment",
+          "kind": "Datatype",
+          "range": "http://www.w3.org/2001/XMLSchema#string"
+        },
+        {
+          "predicate": "opda:entranceFloor",
+          "kind": "Datatype",
+          "range": "http://www.w3.org/2001/XMLSchema#integer"
+        },
+        {
+          "predicate": "opda:handoverOnCompletion",
+          "kind": "Datatype",
+          "range": "http://www.w3.org/2001/XMLSchema#boolean"
+        },
+        {
+          "predicate": "opda:hasAddress",
+          "kind": "Object",
+          "range": "opda:Address"
+        },
+        {
+          "predicate": "opda:hasBeenFlooded",
+          "kind": "Datatype",
+          "range": "http://www.w3.org/2001/XMLSchema#string"
+        },
+        {
+          "predicate": "opda:hasEPCCertificate",
+          "kind": "Object",
+          "range": "opda:EPCCertificate"
+        },
+        {
+          "predicate": "opda:hasFloodDefences",
+          "kind": "Datatype",
+          "range": "http://www.w3.org/2001/XMLSchema#string"
+        },
+        {
+          "predicate": "opda:hasFloorplan",
+          "kind": "Datatype",
+          "range": "http://www.w3.org/2001/XMLSchema#string"
+        },
+        {
+          "predicate": "opda:hasHelpToBuyEquityLoan",
+          "kind": "Datatype",
+          "range": "http://www.w3.org/2001/XMLSchema#string"
+        },
+        {
+          "predicate": "opda:hasLift",
+          "kind": "Datatype",
+          "range": "http://www.w3.org/2001/XMLSchema#string"
+        },
+        {
+          "predicate": "opda:hasRoomDimension",
+          "kind": "Object",
+          "range": "opda:RoomDimension"
+        },
+        {
+          "predicate": "opda:hasSmartHomeSystems",
+          "kind": "Datatype",
+          "range": "http://www.w3.org/2001/XMLSchema#string"
+        },
+        {
+          "predicate": "opda:hasSprayFoamInstalled",
+          "kind": "Datatype",
+          "range": "http://www.w3.org/2001/XMLSchema#string"
+        },
+        {
+          "predicate": "opda:hasUPRN",
+          "kind": "Datatype",
+          "range": "http://www.w3.org/2001/XMLSchema#string"
+        },
+        {
+          "predicate": "opda:hasValidGuaranteesOrWarranties",
+          "kind": "Datatype",
+          "range": "http://www.w3.org/2001/XMLSchema#string"
+        },
+        {
+          "predicate": "opda:heading",
+          "kind": "Datatype",
+          "range": "http://www.w3.org/2001/XMLSchema#decimal"
+        },
+        {
+          "predicate": "opda:heatingLastServicedDate",
+          "kind": "Datatype",
+          "range": "http://www.w3.org/2001/XMLSchema#date"
+        },
+        {
+          "predicate": "opda:heatingType",
+          "kind": "Datatype",
+          "range": "http://www.w3.org/2001/XMLSchema#string"
+        },
+        {
+          "predicate": "opda:holdingDeposit",
+          "kind": "Object",
+          "range": "opda:MonetaryAmount"
+        },
+        {
+          "predicate": "opda:isConnectedToNationalGrid",
+          "kind": "Datatype",
+          "range": "http://www.w3.org/2001/XMLSchema#string"
+        },
+        {
+          "predicate": "opda:isFirstRegistration",
+          "kind": "Datatype",
+          "range": "http://www.w3.org/2001/XMLSchema#string"
+        },
+        {
+          "predicate": "opda:isHMO",
+          "kind": "Datatype",
+          "range": "http://www.w3.org/2001/XMLSchema#string"
+        },
+        {
+          "predicate": "opda:isInsured",
+          "kind": "Datatype",
+          "range": "http://www.w3.org/2001/XMLSchema#string"
+        },
+        {
+          "predicate": "opda:isLimitedCompanySale",
+          "kind": "Datatype",
+          "range": "http://www.w3.org/2001/XMLSchema#string"
+        },
+        {
+          "predicate": "opda:isLocatedOverCommercialPremises",
+          "kind": "Datatype",
+          "range": "http://www.w3.org/2001/XMLSchema#string"
+        },
+        {
+          "predicate": "opda:isStudentAccommodation",
+          "kind": "Datatype",
+          "range": "http://www.w3.org/2001/XMLSchema#string"
+        },
+        {
+          "predicate": "opda:isSupplyMetered",
+          "kind": "Datatype",
+          "range": "http://www.w3.org/2001/XMLSchema#string"
+        },
+        {
+          "predicate": "opda:kitchens",
+          "kind": "Datatype",
+          "range": "http://www.w3.org/2001/XMLSchema#integer"
+        },
+        {
+          "predicate": "opda:landlordInsuresIfFlat",
+          "kind": "Datatype",
+          "range": "http://www.w3.org/2001/XMLSchema#string"
+        },
+        {
+          "predicate": "opda:lastMaintained",
+          "kind": "Datatype",
+          "range": "http://www.w3.org/2001/XMLSchema#date"
+        },
+        {
+          "predicate": "opda:location",
+          "kind": "Datatype",
+          "range": "http://www.w3.org/2001/XMLSchema#string"
+        },
+        {
+          "predicate": "opda:loftBoarded",
+          "kind": "Datatype",
+          "range": "http://www.w3.org/2001/XMLSchema#string"
+        },
+        {
+          "predicate": "opda:loftInsulated",
+          "kind": "Datatype",
+          "range": "http://www.w3.org/2001/XMLSchema#string"
+        },
+        {
+          "predicate": "opda:logbookProvider",
+          "kind": "Datatype",
+          "range": "http://www.w3.org/2001/XMLSchema#string"
+        },
+        {
+          "predicate": "opda:managementPlanInPlace",
+          "kind": "Datatype",
+          "range": "http://www.w3.org/2001/XMLSchema#string"
+        },
+        {
+          "predicate": "opda:marketingTenure",
+          "kind": "Datatype",
+          "range": "http://www.w3.org/2001/XMLSchema#string"
+        },
+        {
+          "predicate": "opda:mpan",
+          "kind": "Datatype",
+          "range": "http://www.w3.org/2001/XMLSchema#string"
+        },
+        {
+          "predicate": "opda:mprn",
+          "kind": "Datatype",
+          "range": "http://www.w3.org/2001/XMLSchema#string"
+        },
+        {
+          "predicate": "opda:numberOfFloors",
+          "kind": "Datatype",
+          "range": "http://www.w3.org/2001/XMLSchema#integer"
+        },
+        {
+          "predicate": "opda:numberOfPropertiesSharing",
+          "kind": "Datatype",
+          "range": "http://www.w3.org/2001/XMLSchema#integer"
+        },
+        {
+          "predicate": "opda:offMainsDrainageSystemType",
+          "kind": "Datatype",
+          "range": "http://www.w3.org/2001/XMLSchema#string"
+        },
+        {
+          "predicate": "opda:otherCentralHeatingFuelType",
+          "kind": "Datatype",
+          "range": "http://www.w3.org/2001/XMLSchema#string"
+        },
+        {
+          "predicate": "opda:otherHeatingFeatures",
+          "kind": "Datatype",
+          "range": "http://www.w3.org/2001/XMLSchema#string"
+        },
+        {
+          "predicate": "opda:otherType",
+          "kind": "Datatype",
+          "range": "http://www.w3.org/2001/XMLSchema#string"
+        },
+        {
+          "predicate": "opda:outsideAreas",
+          "kind": "Datatype",
+          "range": "http://www.w3.org/2001/XMLSchema#string"
+        },
+        {
+          "predicate": "opda:parkingArrangements",
+          "kind": "Datatype",
+          "range": "http://www.w3.org/2001/XMLSchema#string"
+        },
+        {
+          "predicate": "opda:pitch",
+          "kind": "Datatype",
+          "range": "http://www.w3.org/2001/XMLSchema#decimal"
+        },
+        {
+          "predicate": "opda:potentialCost",
+          "kind": "Object",
+          "range": "opda:MonetaryAmount"
+        },
+        {
+          "predicate": "opda:priceQualifier",
+          "kind": "Datatype",
+          "range": "http://www.w3.org/2001/XMLSchema#string"
+        },
+        {
+          "predicate": "opda:propertyType",
+          "kind": "Datatype",
+          "range": "http://www.w3.org/2001/XMLSchema#string"
+        },
+        {
+          "predicate": "opda:publicSewerMapAttached",
+          "kind": "Datatype",
+          "range": "http://www.w3.org/2001/XMLSchema#string"
+        },
+        {
+          "predicate": "opda:receptions",
+          "kind": "Datatype",
+          "range": "http://www.w3.org/2001/XMLSchema#integer"
+        },
+        {
+          "predicate": "opda:rent",
+          "kind": "Object",
+          "range": "opda:MonetaryAmount"
+        },
+        {
+          "predicate": "opda:saleAtUndervalue",
+          "kind": "Datatype",
+          "range": "http://www.w3.org/2001/XMLSchema#string"
+        },
+        {
+          "predicate": "opda:securityDeposit",
+          "kind": "Object",
+          "range": "opda:MonetaryAmount"
+        },
+        {
+          "predicate": "opda:sewerageBills",
+          "kind": "Datatype",
+          "range": "http://www.w3.org/2001/XMLSchema#string"
+        },
+        {
+          "predicate": "opda:sewerageProvider",
+          "kind": "Datatype",
+          "range": "http://www.w3.org/2001/XMLSchema#string"
+        },
+        {
+          "predicate": "opda:soldWithVacantPossession",
+          "kind": "Datatype",
+          "range": "http://www.w3.org/2001/XMLSchema#string"
+        },
+        {
+          "predicate": "opda:supplier",
+          "kind": "Datatype",
+          "range": "http://www.w3.org/2001/XMLSchema#string"
+        },
+        {
+          "predicate": "opda:supplyClassification",
+          "kind": "Datatype",
+          "range": "http://www.w3.org/2001/XMLSchema#string"
+        },
+        {
+          "predicate": "opda:typeOfConnection",
+          "kind": "Datatype",
+          "range": "http://www.w3.org/2001/XMLSchema#string"
+        },
+        {
+          "predicate": "opda:typeOfFlooding",
+          "kind": "Datatype",
+          "range": "http://www.w3.org/2001/XMLSchema#string"
+        },
+        {
+          "predicate": "opda:waterBills",
+          "kind": "Datatype",
+          "range": "http://www.w3.org/2001/XMLSchema#string"
+        },
+        {
+          "predicate": "opda:waterProvider",
+          "kind": "Datatype",
+          "range": "http://www.w3.org/2001/XMLSchema#string"
+        },
+        {
+          "predicate": "opda:waterworksMapAttached",
+          "kind": "Datatype",
+          "range": "http://www.w3.org/2001/XMLSchema#string"
+        },
+        {
+          "predicate": "opda:willHandoverLogbook",
+          "kind": "Datatype",
+          "range": "http://www.w3.org/2001/XMLSchema#boolean"
+        },
+        {
+          "predicate": "opda:willingToInsure",
+          "kind": "Datatype",
+          "range": "http://www.w3.org/2001/XMLSchema#string"
+        },
+        {
+          "predicate": "opda:yearCompleted",
+          "kind": "Datatype",
+          "range": "http://www.w3.org/2001/XMLSchema#gYear"
+        },
+        {
+          "predicate": "opda:yearInstalled",
+          "kind": "Datatype",
+          "range": "http://www.w3.org/2001/XMLSchema#gYear"
+        },
+        {
+          "predicate": "opda:yearOfBuild",
+          "kind": "Datatype",
+          "range": "http://www.w3.org/2001/XMLSchema#gYear"
+        },
+        {
+          "predicate": "opda:yearTested",
+          "kind": "Datatype",
+          "range": "http://www.w3.org/2001/XMLSchema#gYear"
+        },
+        {
+          "predicate": "opda:yearWorkCarriedOut",
+          "kind": "Datatype",
+          "range": "http://www.w3.org/2001/XMLSchema#gYear"
+        },
+        {
+          "predicate": "opda:zoom",
+          "kind": "Datatype",
+          "range": "http://www.w3.org/2001/XMLSchema#decimal"
+        }
+      ]
+    },
+    {
+      "iri": "https://opda.org.uk/pdtf/Proprietor",
+      "compact": "opda:Proprietor",
+      "label": "Proprietor",
+      "properties": [
+        {
+          "predicate": "opda:ownerType",
+          "kind": "Datatype",
+          "range": "http://www.w3.org/2001/XMLSchema#string"
+        }
+      ]
+    },
+    {
+      "iri": "https://opda.org.uk/pdtf/Proprietorship",
+      "compact": "opda:Proprietorship",
+      "label": "Proprietorship",
+      "properties": [
+        {
+          "predicate": "opda:numberOfNonUkResidentSellers",
+          "kind": "Datatype",
+          "range": "http://www.w3.org/2001/XMLSchema#integer"
+        },
+        {
+          "predicate": "opda:numberOfSellers",
+          "kind": "Datatype",
+          "range": "http://www.w3.org/2001/XMLSchema#integer"
+        }
+      ]
+    },
+    {
+      "iri": "https://opda.org.uk/pdtf/RegisteredTitle",
+      "compact": "opda:RegisteredTitle",
+      "label": "Registered Title",
+      "properties": [
+        {
+          "predicate": "opda:recordsEstate",
+          "kind": "Object",
+          "range": "opda:LegalEstate"
+        },
+        {
+          "predicate": "opda:titleNumber",
+          "kind": "Datatype",
+          "range": "http://www.w3.org/2001/XMLSchema#string"
+        }
+      ]
+    },
+    {
+      "iri": "https://opda.org.uk/pdtf/Relator",
+      "compact": "opda:Relator",
+      "label": "Relator",
+      "properties": []
+    },
+    {
+      "iri": "https://opda.org.uk/pdtf/RiskAssessment",
+      "compact": "opda:RiskAssessment",
+      "label": "Risk Assessment",
+      "properties": [
+        {
+          "predicate": "opda:actionAlertRating",
+          "kind": "Datatype",
+          "range": "http://www.w3.org/2001/XMLSchema#integer"
+        },
+        {
+          "predicate": "opda:dateRemedialActionRequired",
+          "kind": "Datatype",
+          "range": "http://www.w3.org/2001/XMLSchema#date"
+        },
+        {
+          "predicate": "opda:hasSubAssessment",
+          "kind": "Object",
+          "range": "opda:RiskAssessment"
+        },
+        {
+          "predicate": "opda:peril",
+          "kind": "Object",
+          "range": "http://www.w3.org/2004/02/skos/core#Concept"
+        },
+        {
+          "predicate": "opda:riskIndicator",
+          "kind": "Datatype",
+          "range": "http://www.w3.org/2001/XMLSchema#string"
+        },
+        {
+          "predicate": "opda:subCategory",
+          "kind": "Datatype",
+          "range": "http://www.w3.org/2001/XMLSchema#string"
+        }
+      ]
+    },
+    {
+      "iri": "https://opda.org.uk/pdtf/Role",
+      "compact": "opda:Role",
+      "label": "Role",
+      "properties": []
+    },
+    {
+      "iri": "https://opda.org.uk/pdtf/RoleMixin",
+      "compact": "opda:RoleMixin",
+      "label": "Role Mixin",
+      "properties": [
+        {
+          "predicate": "opda:role",
+          "kind": "Datatype",
+          "range": "http://www.w3.org/2001/XMLSchema#string"
+        }
+      ]
+    },
+    {
+      "iri": "https://opda.org.uk/pdtf/RoomDimension",
+      "compact": "opda:RoomDimension",
+      "label": "Room Dimension",
+      "properties": [
+        {
+          "predicate": "opda:length",
+          "kind": "Datatype",
+          "range": "http://www.w3.org/2001/XMLSchema#decimal"
+        },
+        {
+          "predicate": "opda:roomName",
+          "kind": "Datatype",
+          "range": "http://www.w3.org/2001/XMLSchema#string"
+        },
+        {
+          "predicate": "opda:width",
+          "kind": "Datatype",
+          "range": "http://www.w3.org/2001/XMLSchema#decimal"
+        }
+      ]
+    },
+    {
+      "iri": "https://opda.org.uk/pdtf/Search",
+      "compact": "opda:Search",
+      "label": "Search",
+      "properties": [
+        {
+          "predicate": "opda:applicationDate",
+          "kind": "Datatype",
+          "range": "http://www.w3.org/2001/XMLSchema#date"
+        },
+        {
+          "predicate": "opda:applicationType",
+          "kind": "Datatype",
+          "range": "http://www.w3.org/2001/XMLSchema#string"
+        },
+        {
+          "predicate": "opda:buildingControlStartDate",
+          "kind": "Datatype",
+          "range": "http://www.w3.org/2001/XMLSchema#date"
+        },
+        {
+          "predicate": "opda:councilSearchTurnaroundTimeInWorkingDays",
+          "kind": "Datatype",
+          "range": "http://www.w3.org/2001/XMLSchema#integer"
+        },
+        {
+          "predicate": "opda:countyCouncil",
+          "kind": "Datatype",
+          "range": "http://www.w3.org/2001/XMLSchema#string"
+        },
+        {
+          "predicate": "opda:decision",
+          "kind": "Datatype",
+          "range": "http://www.w3.org/2001/XMLSchema#string"
+        },
+        {
+          "predicate": "opda:decisionDate",
+          "kind": "Datatype",
+          "range": "http://www.w3.org/2001/XMLSchema#date"
+        },
+        {
+          "predicate": "opda:designationType",
+          "kind": "Datatype",
+          "range": "http://www.w3.org/2001/XMLSchema#string"
+        },
+        {
+          "predicate": "opda:districtCouncil",
+          "kind": "Datatype",
+          "range": "http://www.w3.org/2001/XMLSchema#string"
+        },
+        {
+          "predicate": "opda:expectedDeliveryDate",
+          "kind": "Datatype",
+          "range": "http://www.w3.org/2001/XMLSchema#date"
+        },
+        {
+          "predicate": "opda:localAuthorityName",
+          "kind": "Datatype",
+          "range": "http://www.w3.org/2001/XMLSchema#string"
+        },
+        {
+          "predicate": "opda:localAuthorityReference",
+          "kind": "Datatype",
+          "range": "http://www.w3.org/2001/XMLSchema#string"
+        },
+        {
+          "predicate": "opda:orderDate",
+          "kind": "Datatype",
+          "range": "http://www.w3.org/2001/XMLSchema#date"
+        },
+        {
+          "predicate": "opda:planningStartDate",
+          "kind": "Datatype",
+          "range": "http://www.w3.org/2001/XMLSchema#date"
+        },
+        {
+          "predicate": "opda:productCode",
+          "kind": "Datatype",
+          "range": "http://www.w3.org/2001/XMLSchema#string"
+        },
+        {
+          "predicate": "opda:providerName",
+          "kind": "Datatype",
+          "range": "http://www.w3.org/2001/XMLSchema#string"
+        },
+        {
+          "predicate": "opda:providerReference",
+          "kind": "Datatype",
+          "range": "http://www.w3.org/2001/XMLSchema#string"
+        },
+        {
+          "predicate": "opda:refNumber",
+          "kind": "Datatype",
+          "range": "http://www.w3.org/2001/XMLSchema#string"
+        },
+        {
+          "predicate": "opda:regulatedSearchTurnaroundTimeInWorkingDays",
+          "kind": "Datatype",
+          "range": "http://www.w3.org/2001/XMLSchema#integer"
+        },
+        {
+          "predicate": "opda:reportDate",
+          "kind": "Datatype",
+          "range": "http://www.w3.org/2001/XMLSchema#date"
+        },
+        {
+          "predicate": "opda:status",
+          "kind": "Datatype",
+          "range": "http://www.w3.org/2001/XMLSchema#string"
+        },
+        {
+          "predicate": "opda:statusDate",
+          "kind": "Datatype",
+          "range": "http://www.w3.org/2001/XMLSchema#date"
+        },
+        {
+          "predicate": "opda:unitaryAuthority",
+          "kind": "Datatype",
+          "range": "http://www.w3.org/2001/XMLSchema#string"
+        }
+      ]
+    },
+    {
+      "iri": "https://opda.org.uk/pdtf/Seller",
+      "compact": "opda:Seller",
+      "label": "Seller",
+      "properties": [
+        {
+          "predicate": "opda:aged17OrOverNames",
+          "kind": "Datatype",
+          "range": "http://www.w3.org/2001/XMLSchema#string"
+        },
+        {
+          "predicate": "opda:hasAssertedCapacity",
+          "kind": "Datatype",
+          "range": "http://www.w3.org/2001/XMLSchema#string"
+        },
+        {
+          "predicate": "opda:hasEvidencedAuthority",
+          "kind": "Object",
+          "range": "opda:Claim"
+        },
+        {
+          "predicate": "opda:hasOthersAged17OrOver",
+          "kind": "Datatype",
+          "range": "http://www.w3.org/2001/XMLSchema#string"
+        },
+        {
+          "predicate": "opda:sellersCapacityDetails",
+          "kind": "Datatype",
+          "range": "http://www.w3.org/2001/XMLSchema#string"
+        }
+      ]
+    },
+    {
+      "iri": "https://opda.org.uk/pdtf/SpecialCategoryScheme",
+      "compact": "opda:SpecialCategoryScheme",
+      "label": "Article 10 Special Category Personal Data Scheme",
+      "properties": []
+    },
+    {
+      "iri": "https://opda.org.uk/pdtf/Survey",
+      "compact": "opda:Survey",
+      "label": "Survey",
+      "properties": []
+    },
+    {
+      "iri": "https://opda.org.uk/pdtf/Transaction",
+      "compact": "opda:Transaction",
+      "label": "Transaction",
+      "properties": [
+        {
+          "predicate": "opda:authorisationToShare",
+          "kind": "Datatype",
+          "range": "http://www.w3.org/2001/XMLSchema#boolean"
+        },
+        {
+          "predicate": "opda:authorisedToActOnBehalfOfAllSellers",
+          "kind": "Datatype",
+          "range": "http://www.w3.org/2001/XMLSchema#boolean"
+        },
+        {
+          "predicate": "opda:confirmInformationIsAccurate",
+          "kind": "Datatype",
+          "range": "http://www.w3.org/2001/XMLSchema#boolean"
+        },
+        {
+          "predicate": "opda:confirmWillProvideAdditionalDocumentation",
+          "kind": "Datatype",
+          "range": "http://www.w3.org/2001/XMLSchema#boolean"
+        },
+        {
+          "predicate": "opda:confirmation",
+          "kind": "Datatype",
+          "range": "http://www.w3.org/2001/XMLSchema#boolean"
+        },
+        {
+          "predicate": "opda:consumerProtectionRegulationsResponse",
+          "kind": "Datatype",
+          "range": "http://www.w3.org/2001/XMLSchema#boolean"
+        },
+        {
+          "predicate": "opda:costsApplicableToTheDeed",
+          "kind": "Object",
+          "range": "opda:MonetaryAmount"
+        },
+        {
+          "predicate": "opda:feeIncludingVAT",
+          "kind": "Object",
+          "range": "opda:MonetaryAmount"
+        },
+        {
+          "predicate": "opda:hasChainPosition",
+          "kind": "Object",
+          "range": "opda:TransactionChain"
+        },
+        {
+          "predicate": "opda:leaveKeys",
+          "kind": "Datatype",
+          "range": "http://www.w3.org/2001/XMLSchema#boolean"
+        },
+        {
+          "predicate": "opda:removeRubbish",
+          "kind": "Datatype",
+          "range": "http://www.w3.org/2001/XMLSchema#boolean"
+        },
+        {
+          "predicate": "opda:replaceLightFittings",
+          "kind": "Datatype",
+          "range": "http://www.w3.org/2001/XMLSchema#boolean"
+        },
+        {
+          "predicate": "opda:response",
+          "kind": "Datatype",
+          "range": "http://www.w3.org/2001/XMLSchema#boolean"
+        },
+        {
+          "predicate": "opda:sellingAgent",
+          "kind": "Datatype",
+          "range": "http://www.w3.org/2001/XMLSchema#string"
+        },
+        {
+          "predicate": "opda:signedOn",
+          "kind": "Datatype",
+          "range": "http://www.w3.org/2001/XMLSchema#date"
+        },
+        {
+          "predicate": "opda:takeReasonableCare",
+          "kind": "Datatype",
+          "range": "http://www.w3.org/2001/XMLSchema#boolean"
+        },
+        {
+          "predicate": "opda:transactionId",
+          "kind": "Datatype",
+          "range": "http://www.w3.org/2001/XMLSchema#string"
+        }
+      ]
+    },
+    {
+      "iri": "https://opda.org.uk/pdtf/TransactionChain",
+      "compact": "opda:TransactionChain",
+      "label": "Transaction Chain",
+      "properties": []
+    },
+    {
+      "iri": "https://opda.org.uk/pdtf/TrustFramework",
+      "compact": "opda:TrustFramework",
+      "label": "Trust Framework",
+      "properties": []
+    },
+    {
+      "iri": "https://opda.org.uk/pdtf/UPRNSuccessionEvent",
+      "compact": "opda:UPRNSuccessionEvent",
+      "label": "UPRN Succession Event",
+      "properties": []
+    },
+    {
+      "iri": "https://opda.org.uk/pdtf/ValidationContext",
+      "compact": "opda:ValidationContext",
+      "label": "Validation Context",
+      "properties": []
+    },
+    {
+      "iri": "https://opda.org.uk/pdtf/Valuation",
+      "compact": "opda:Valuation",
+      "label": "Valuation",
+      "properties": [
+        {
+          "predicate": "opda:credibilitySources",
+          "kind": "Datatype",
+          "range": "http://www.w3.org/2001/XMLSchema#string"
+        },
+        {
+          "predicate": "opda:estimatedAmount",
+          "kind": "Object",
+          "range": "opda:MonetaryAmount"
+        },
+        {
+          "predicate": "opda:estimatedPrice",
+          "kind": "Object",
+          "range": "opda:MonetaryAmount"
+        },
+        {
+          "predicate": "opda:listPrice",
+          "kind": "Object",
+          "range": "opda:MonetaryAmount"
+        },
+        {
+          "predicate": "opda:listedDate",
+          "kind": "Datatype",
+          "range": "http://www.w3.org/2001/XMLSchema#date"
+        },
+        {
+          "predicate": "opda:pricingMethodology",
+          "kind": "Datatype",
+          "range": "http://www.w3.org/2001/XMLSchema#string"
+        },
+        {
+          "predicate": "opda:soldDate",
+          "kind": "Datatype",
+          "range": "http://www.w3.org/2001/XMLSchema#date"
+        },
+        {
+          "predicate": "opda:soldPrice",
+          "kind": "Object",
+          "range": "opda:MonetaryAmount"
+        },
+        {
+          "predicate": "opda:yield",
+          "kind": "Datatype",
+          "range": "http://www.w3.org/2001/XMLSchema#decimal"
+        }
+      ]
+    },
+    {
+      "iri": "https://opda.org.uk/pdtf/VerificationActivity",
+      "compact": "opda:VerificationActivity",
+      "label": "Verification Activity",
+      "properties": []
+    }
+  ],
+  "leaves": [
+    {
+      "leaf_path": "chain.onwardPurchase[].sellingAgent",
+      "predicate": "opda:sellingAgent",
+      "predicate_iri": "https://opda.org.uk/pdtf/sellingAgent",
+      "kind": "Datatype",
+      "domain": "opda:Transaction",
+      "range": "http://www.w3.org/2001/XMLSchema#string",
+      "layer": 1,
+      "flags": []
+    },
+    {
+      "leaf_path": "chain.onwardPurchase[].transactionId",
+      "predicate": "opda:transactionId",
+      "predicate_iri": "https://opda.org.uk/pdtf/transactionId",
+      "kind": "Datatype",
+      "domain": "opda:Transaction",
+      "range": "http://www.w3.org/2001/XMLSchema#string",
+      "layer": 1,
+      "flags": []
+    },
+    {
+      "leaf_path": "contracts[].contract.template.name",
+      "predicate": "opda:name",
+      "predicate_iri": "https://opda.org.uk/pdtf/name",
+      "kind": "Datatype",
+      "domain": null,
+      "range": "http://www.w3.org/2001/XMLSchema#string",
+      "layer": 1,
+      "flags": [
+        "shared_domainless"
+      ]
+    },
+    {
+      "leaf_path": "contracts[].contract.template.url",
+      "predicate": "opda:url",
+      "predicate_iri": "https://opda.org.uk/pdtf/url",
+      "kind": "Datatype",
+      "domain": null,
+      "range": "http://www.w3.org/2001/XMLSchema#anyURI",
+      "layer": 1,
+      "flags": [
+        "shared_domainless"
+      ]
+    },
+    {
+      "leaf_path": "contracts[].signatures[].signedOn",
+      "predicate": "opda:signedOn",
+      "predicate_iri": "https://opda.org.uk/pdtf/signedOn",
+      "kind": "Datatype",
+      "domain": "opda:Transaction",
+      "range": "http://www.w3.org/2001/XMLSchema#date",
+      "layer": 1,
+      "flags": []
+    },
+    {
+      "leaf_path": "participants[].dateOfBirth",
+      "predicate": "opda:dateOfBirth",
+      "predicate_iri": "https://opda.org.uk/pdtf/dateOfBirth",
+      "kind": "Datatype",
+      "domain": "opda:Person",
+      "range": "http://www.w3.org/2001/XMLSchema#date",
+      "layer": 1,
+      "flags": []
+    },
+    {
+      "leaf_path": "participants[].name",
+      "predicate": "opda:name",
+      "predicate_iri": "https://opda.org.uk/pdtf/name",
+      "kind": "Datatype",
+      "domain": null,
+      "range": "http://www.w3.org/2001/XMLSchema#string",
+      "layer": 1,
+      "flags": [
+        "shared_domainless"
+      ]
+    },
+    {
+      "leaf_path": "participants[].organisation",
+      "predicate": "opda:organisation",
+      "predicate_iri": "https://opda.org.uk/pdtf/organisation",
+      "kind": "Datatype",
+      "domain": "opda:Organisation",
+      "range": "http://www.w3.org/2001/XMLSchema#string",
+      "layer": 1,
+      "flags": []
+    },
+    {
+      "leaf_path": "participants[].organisationReference",
+      "predicate": "opda:organisationReference",
+      "predicate_iri": "https://opda.org.uk/pdtf/organisationReference",
+      "kind": "Datatype",
+      "domain": "opda:Organisation",
+      "range": "http://www.w3.org/2001/XMLSchema#string",
+      "layer": 1,
+      "flags": []
+    },
+    {
+      "leaf_path": "participants[].sellersCapacity.sellersCapacityDetails",
+      "predicate": "opda:sellersCapacityDetails",
+      "predicate_iri": "https://opda.org.uk/pdtf/sellersCapacityDetails",
+      "kind": "Datatype",
+      "domain": "opda:Seller",
+      "range": "http://www.w3.org/2001/XMLSchema#string",
+      "layer": 1,
+      "flags": []
+    },
+    {
+      "leaf_path": "propertyPack.alterationsAndChanges.changeOfUse.yearCompleted",
+      "predicate": "opda:yearCompleted",
+      "predicate_iri": "https://opda.org.uk/pdtf/yearCompleted",
+      "kind": "Datatype",
+      "domain": "opda:Property",
+      "range": "http://www.w3.org/2001/XMLSchema#gYear",
+      "layer": 1,
+      "flags": []
+    },
+    {
+      "leaf_path": "propertyPack.alterationsAndChanges.hasAddedConservatory.yearCompleted",
+      "predicate": "opda:yearCompleted",
+      "predicate_iri": "https://opda.org.uk/pdtf/yearCompleted",
+      "kind": "Datatype",
+      "domain": "opda:Property",
+      "range": "http://www.w3.org/2001/XMLSchema#gYear",
+      "layer": 1,
+      "flags": []
+    },
+    {
+      "leaf_path": "propertyPack.alterationsAndChanges.unresolvedPlanningIssues.willingToInsure",
+      "predicate": "opda:willingToInsure",
+      "predicate_iri": "https://opda.org.uk/pdtf/willingToInsure",
+      "kind": "Datatype",
+      "domain": "opda:Property",
+      "range": "http://www.w3.org/2001/XMLSchema#string",
+      "layer": 1,
+      "flags": []
+    },
+    {
+      "leaf_path": "propertyPack.alterationsAndChanges.windowReplacementsSince2002.yearCompleted",
+      "predicate": "opda:yearCompleted",
+      "predicate_iri": "https://opda.org.uk/pdtf/yearCompleted",
+      "kind": "Datatype",
+      "domain": "opda:Property",
+      "range": "http://www.w3.org/2001/XMLSchema#gYear",
+      "layer": 1,
+      "flags": []
+    },
+    {
+      "leaf_path": "propertyPack.buildInformation.building.builtForm",
+      "predicate": "opda:builtForm",
+      "predicate_iri": "https://opda.org.uk/pdtf/builtForm",
+      "kind": "Datatype",
+      "domain": "opda:Property",
+      "range": "http://www.w3.org/2001/XMLSchema#string",
+      "layer": 1,
+      "flags": []
+    },
+    {
+      "leaf_path": "propertyPack.buildInformation.building.entranceFloor",
+      "predicate": "opda:entranceFloor",
+      "predicate_iri": "https://opda.org.uk/pdtf/entranceFloor",
+      "kind": "Datatype",
+      "domain": "opda:Property",
+      "range": "http://www.w3.org/2001/XMLSchema#integer",
+      "layer": 1,
+      "flags": []
+    },
+    {
+      "leaf_path": "propertyPack.buildInformation.building.hasLift",
+      "predicate": "opda:hasLift",
+      "predicate_iri": "https://opda.org.uk/pdtf/hasLift",
+      "kind": "Datatype",
+      "domain": "opda:Property",
+      "range": "http://www.w3.org/2001/XMLSchema#string",
+      "layer": 1,
+      "flags": []
+    },
+    {
+      "leaf_path": "propertyPack.buildInformation.building.numberOfFloors",
+      "predicate": "opda:numberOfFloors",
+      "predicate_iri": "https://opda.org.uk/pdtf/numberOfFloors",
+      "kind": "Datatype",
+      "domain": "opda:Property",
+      "range": "http://www.w3.org/2001/XMLSchema#integer",
+      "layer": 1,
+      "flags": []
+    },
+    {
+      "leaf_path": "propertyPack.buildInformation.building.otherType",
+      "predicate": "opda:otherType",
+      "predicate_iri": "https://opda.org.uk/pdtf/otherType",
+      "kind": "Datatype",
+      "domain": "opda:Property",
+      "range": "http://www.w3.org/2001/XMLSchema#string",
+      "layer": 1,
+      "flags": []
+    },
+    {
+      "leaf_path": "propertyPack.buildInformation.building.propertyType",
+      "predicate": "opda:propertyType",
+      "predicate_iri": "https://opda.org.uk/pdtf/propertyType",
+      "kind": "Datatype",
+      "domain": "opda:Property",
+      "range": "http://www.w3.org/2001/XMLSchema#string",
+      "layer": 1,
+      "flags": []
+    },
+    {
+      "leaf_path": "propertyPack.buildInformation.internalArea.area",
+      "predicate": "opda:area",
+      "predicate_iri": "https://opda.org.uk/pdtf/area",
+      "kind": "Datatype",
+      "domain": "opda:Property",
+      "range": "http://www.w3.org/2001/XMLSchema#decimal",
+      "layer": 1,
+      "flags": []
+    },
+    {
+      "leaf_path": "propertyPack.buildInformation.isHMO",
+      "predicate": "opda:isHMO",
+      "predicate_iri": "https://opda.org.uk/pdtf/isHMO",
+      "kind": "Datatype",
+      "domain": "opda:Property",
+      "range": "http://www.w3.org/2001/XMLSchema#string",
+      "layer": 1,
+      "flags": []
+    },
+    {
+      "leaf_path": "propertyPack.buildInformation.isStudentAccommodation",
+      "predicate": "opda:isStudentAccommodation",
+      "predicate_iri": "https://opda.org.uk/pdtf/isStudentAccommodation",
+      "kind": "Datatype",
+      "domain": "opda:Property",
+      "range": "http://www.w3.org/2001/XMLSchema#string",
+      "layer": 1,
+      "flags": []
+    },
+    {
+      "leaf_path": "propertyPack.buildInformation.roomDimensions.hasFloorplan",
+      "predicate": "opda:hasFloorplan",
+      "predicate_iri": "https://opda.org.uk/pdtf/hasFloorplan",
+      "kind": "Datatype",
+      "domain": "opda:Property",
+      "range": "http://www.w3.org/2001/XMLSchema#string",
+      "layer": 1,
+      "flags": []
+    },
+    {
+      "leaf_path": "propertyPack.buildInformation.roomDimensions.rooms[].length",
+      "predicate": "opda:length",
+      "predicate_iri": "https://opda.org.uk/pdtf/length",
+      "kind": "Datatype",
+      "domain": "opda:RoomDimension",
+      "range": "http://www.w3.org/2001/XMLSchema#decimal",
+      "layer": 1,
+      "flags": []
+    },
+    {
+      "leaf_path": "propertyPack.buildInformation.roomDimensions.rooms[].roomName",
+      "predicate": "opda:roomName",
+      "predicate_iri": "https://opda.org.uk/pdtf/roomName",
+      "kind": "Datatype",
+      "domain": "opda:RoomDimension",
+      "range": "http://www.w3.org/2001/XMLSchema#string",
+      "layer": 1,
+      "flags": []
+    },
+    {
+      "leaf_path": "propertyPack.buildInformation.roomDimensions.rooms[].width",
+      "predicate": "opda:width",
+      "predicate_iri": "https://opda.org.uk/pdtf/width",
+      "kind": "Datatype",
+      "domain": "opda:RoomDimension",
+      "range": "http://www.w3.org/2001/XMLSchema#decimal",
+      "layer": 1,
+      "flags": []
+    },
+    {
+      "leaf_path": "propertyPack.buildInformation.yearOfBuild",
+      "predicate": "opda:yearOfBuild",
+      "predicate_iri": "https://opda.org.uk/pdtf/yearOfBuild",
+      "kind": "Datatype",
+      "domain": "opda:Property",
+      "range": "http://www.w3.org/2001/XMLSchema#gYear",
+      "layer": 1,
+      "flags": []
+    },
+    {
+      "leaf_path": "propertyPack.completionAndMoving.digitalPropertyLogbook.logbookProvider",
+      "predicate": "opda:logbookProvider",
+      "predicate_iri": "https://opda.org.uk/pdtf/logbookProvider",
+      "kind": "Datatype",
+      "domain": "opda:Property",
+      "range": "http://www.w3.org/2001/XMLSchema#string",
+      "layer": 1,
+      "flags": []
+    },
+    {
+      "leaf_path": "propertyPack.completionAndMoving.digitalPropertyLogbook.willHandoverLogbook",
+      "predicate": "opda:willHandoverLogbook",
+      "predicate_iri": "https://opda.org.uk/pdtf/willHandoverLogbook",
+      "kind": "Datatype",
+      "domain": "opda:Property",
+      "range": "http://www.w3.org/2001/XMLSchema#boolean",
+      "layer": 1,
+      "flags": []
+    },
+    {
+      "leaf_path": "propertyPack.completionAndMoving.sellerWillEnsure.leaveKeys",
+      "predicate": "opda:leaveKeys",
+      "predicate_iri": "https://opda.org.uk/pdtf/leaveKeys",
+      "kind": "Datatype",
+      "domain": "opda:Transaction",
+      "range": "http://www.w3.org/2001/XMLSchema#boolean",
+      "layer": 1,
+      "flags": []
+    },
+    {
+      "leaf_path": "propertyPack.completionAndMoving.sellerWillEnsure.removeRubbish",
+      "predicate": "opda:removeRubbish",
+      "predicate_iri": "https://opda.org.uk/pdtf/removeRubbish",
+      "kind": "Datatype",
+      "domain": "opda:Transaction",
+      "range": "http://www.w3.org/2001/XMLSchema#boolean",
+      "layer": 1,
+      "flags": []
+    },
+    {
+      "leaf_path": "propertyPack.completionAndMoving.sellerWillEnsure.replaceLightFittings",
+      "predicate": "opda:replaceLightFittings",
+      "predicate_iri": "https://opda.org.uk/pdtf/replaceLightFittings",
+      "kind": "Datatype",
+      "domain": "opda:Transaction",
+      "range": "http://www.w3.org/2001/XMLSchema#boolean",
+      "layer": 1,
+      "flags": []
+    },
+    {
+      "leaf_path": "propertyPack.completionAndMoving.sellerWillEnsure.takeReasonableCare",
+      "predicate": "opda:takeReasonableCare",
+      "predicate_iri": "https://opda.org.uk/pdtf/takeReasonableCare",
+      "kind": "Datatype",
+      "domain": "opda:Transaction",
+      "range": "http://www.w3.org/2001/XMLSchema#boolean",
+      "layer": 1,
+      "flags": []
+    },
+    {
+      "leaf_path": "propertyPack.confirmationOfAccuracyByOwners.confirmInformationIsAccurate",
+      "predicate": "opda:confirmInformationIsAccurate",
+      "predicate_iri": "https://opda.org.uk/pdtf/confirmInformationIsAccurate",
+      "kind": "Datatype",
+      "domain": "opda:Transaction",
+      "range": "http://www.w3.org/2001/XMLSchema#boolean",
+      "layer": 1,
+      "flags": []
+    },
+    {
+      "leaf_path": "propertyPack.confirmationOfAccuracyByOwners.confirmWillProvideAdditionalDocumentation",
+      "predicate": "opda:confirmWillProvideAdditionalDocumentation",
+      "predicate_iri": "https://opda.org.uk/pdtf/confirmWillProvideAdditionalDocumentation",
+      "kind": "Datatype",
+      "domain": "opda:Transaction",
+      "range": "http://www.w3.org/2001/XMLSchema#boolean",
+      "layer": 1,
+      "flags": []
+    },
+    {
+      "leaf_path": "propertyPack.connectivity.broadband.typeOfConnection",
+      "predicate": "opda:typeOfConnection",
+      "predicate_iri": "https://opda.org.uk/pdtf/typeOfConnection",
+      "kind": "Datatype",
+      "domain": "opda:Property",
+      "range": "http://www.w3.org/2001/XMLSchema#string",
+      "layer": 1,
+      "flags": []
+    },
+    {
+      "leaf_path": "propertyPack.connectivity.cableSatelliteTV.dateToBeConnected",
+      "predicate": "opda:dateToBeConnected",
+      "predicate_iri": "https://opda.org.uk/pdtf/dateToBeConnected",
+      "kind": "Datatype",
+      "domain": "opda:Property",
+      "range": "http://www.w3.org/2001/XMLSchema#date",
+      "layer": 1,
+      "flags": []
+    },
+    {
+      "leaf_path": "propertyPack.connectivity.cableSatelliteTV.supplier",
+      "predicate": "opda:supplier",
+      "predicate_iri": "https://opda.org.uk/pdtf/supplier",
+      "kind": "Datatype",
+      "domain": "opda:Property",
+      "range": "http://www.w3.org/2001/XMLSchema#string",
+      "layer": 1,
+      "flags": []
+    },
+    {
+      "leaf_path": "propertyPack.connectivity.telephone.dateToBeConnected",
+      "predicate": "opda:dateToBeConnected",
+      "predicate_iri": "https://opda.org.uk/pdtf/dateToBeConnected",
+      "kind": "Datatype",
+      "domain": "opda:Property",
+      "range": "http://www.w3.org/2001/XMLSchema#date",
+      "layer": 1,
+      "flags": []
+    },
+    {
+      "leaf_path": "propertyPack.connectivity.telephone.supplier",
+      "predicate": "opda:supplier",
+      "predicate_iri": "https://opda.org.uk/pdtf/supplier",
+      "kind": "Datatype",
+      "domain": "opda:Property",
+      "range": "http://www.w3.org/2001/XMLSchema#string",
+      "layer": 1,
+      "flags": []
+    },
+    {
+      "leaf_path": "propertyPack.consumerProtectionRegulationsDeclaration.consumerProtectionRegulationsResponse",
+      "predicate": "opda:consumerProtectionRegulationsResponse",
+      "predicate_iri": "https://opda.org.uk/pdtf/consumerProtectionRegulationsResponse",
+      "kind": "Datatype",
+      "domain": "opda:Transaction",
+      "range": "http://www.w3.org/2001/XMLSchema#boolean",
+      "layer": 1,
+      "flags": []
+    },
+    {
+      "leaf_path": "propertyPack.councilTax.councilTaxAnnualCharge",
+      "predicate": "opda:councilTaxAnnualCharge",
+      "predicate_iri": "https://opda.org.uk/pdtf/councilTaxAnnualCharge",
+      "kind": "Object",
+      "domain": "opda:Property",
+      "range": "opda:MonetaryAmount",
+      "layer": 1,
+      "flags": [
+        "monetary",
+        "object_node"
+      ]
+    },
+    {
+      "leaf_path": "propertyPack.councilTax.councilTaxBand",
+      "predicate": "opda:councilTaxBand",
+      "predicate_iri": "https://opda.org.uk/pdtf/councilTaxBand",
+      "kind": "Datatype",
+      "domain": "opda:Property",
+      "range": "http://www.w3.org/2001/XMLSchema#string",
+      "layer": 1,
+      "flags": []
+    },
+    {
+      "leaf_path": "propertyPack.documents[].displayName",
+      "predicate": "opda:displayName",
+      "predicate_iri": "https://opda.org.uk/pdtf/displayName",
+      "kind": "Datatype",
+      "domain": null,
+      "range": "http://www.w3.org/2001/XMLSchema#string",
+      "layer": 1,
+      "flags": [
+        "shared_domainless"
+      ]
+    },
+    {
+      "leaf_path": "propertyPack.electricalWorks.electricalWorkSince2005.yearWorkCarriedOut",
+      "predicate": "opda:yearWorkCarriedOut",
+      "predicate_iri": "https://opda.org.uk/pdtf/yearWorkCarriedOut",
+      "kind": "Datatype",
+      "domain": "opda:Property",
+      "range": "http://www.w3.org/2001/XMLSchema#gYear",
+      "layer": 1,
+      "flags": []
+    },
+    {
+      "leaf_path": "propertyPack.electricalWorks.testedByQualifiedElectrician.yearTested",
+      "predicate": "opda:yearTested",
+      "predicate_iri": "https://opda.org.uk/pdtf/yearTested",
+      "kind": "Datatype",
+      "domain": "opda:Property",
+      "range": "http://www.w3.org/2001/XMLSchema#gYear",
+      "layer": 1,
+      "flags": []
+    },
+    {
+      "leaf_path": "propertyPack.electricity.heatPump.dateInstalled",
+      "predicate": "opda:dateInstalled",
+      "predicate_iri": "https://opda.org.uk/pdtf/dateInstalled",
+      "kind": "Datatype",
+      "domain": "opda:Property",
+      "range": "http://www.w3.org/2001/XMLSchema#date",
+      "layer": 1,
+      "flags": []
+    },
+    {
+      "leaf_path": "propertyPack.electricity.heatPump.dateToBeConnected",
+      "predicate": "opda:dateToBeConnected",
+      "predicate_iri": "https://opda.org.uk/pdtf/dateToBeConnected",
+      "kind": "Datatype",
+      "domain": "opda:Property",
+      "range": "http://www.w3.org/2001/XMLSchema#date",
+      "layer": 1,
+      "flags": []
+    },
+    {
+      "leaf_path": "propertyPack.electricity.heatPump.supplier",
+      "predicate": "opda:supplier",
+      "predicate_iri": "https://opda.org.uk/pdtf/supplier",
+      "kind": "Datatype",
+      "domain": "opda:Property",
+      "range": "http://www.w3.org/2001/XMLSchema#string",
+      "layer": 1,
+      "flags": []
+    },
+    {
+      "leaf_path": "propertyPack.electricity.mainsElectricity.dateToBeConnected",
+      "predicate": "opda:dateToBeConnected",
+      "predicate_iri": "https://opda.org.uk/pdtf/dateToBeConnected",
+      "kind": "Datatype",
+      "domain": "opda:Property",
+      "range": "http://www.w3.org/2001/XMLSchema#date",
+      "layer": 1,
+      "flags": []
+    },
+    {
+      "leaf_path": "propertyPack.electricity.mainsElectricity.electricityMeter.location",
+      "predicate": "opda:location",
+      "predicate_iri": "https://opda.org.uk/pdtf/location",
+      "kind": "Datatype",
+      "domain": "opda:Property",
+      "range": "http://www.w3.org/2001/XMLSchema#string",
+      "layer": 1,
+      "flags": []
+    },
+    {
+      "leaf_path": "propertyPack.electricity.mainsElectricity.electricityMeter.mpan",
+      "predicate": "opda:mpan",
+      "predicate_iri": "https://opda.org.uk/pdtf/mpan",
+      "kind": "Datatype",
+      "domain": "opda:Property",
+      "range": "http://www.w3.org/2001/XMLSchema#string",
+      "layer": 1,
+      "flags": []
+    },
+    {
+      "leaf_path": "propertyPack.electricity.mainsElectricity.supplier",
+      "predicate": "opda:supplier",
+      "predicate_iri": "https://opda.org.uk/pdtf/supplier",
+      "kind": "Datatype",
+      "domain": "opda:Property",
+      "range": "http://www.w3.org/2001/XMLSchema#string",
+      "layer": 1,
+      "flags": []
+    },
+    {
+      "leaf_path": "propertyPack.electricity.otherSources.dateToBeConnected",
+      "predicate": "opda:dateToBeConnected",
+      "predicate_iri": "https://opda.org.uk/pdtf/dateToBeConnected",
+      "kind": "Datatype",
+      "domain": "opda:Property",
+      "range": "http://www.w3.org/2001/XMLSchema#date",
+      "layer": 1,
+      "flags": []
+    },
+    {
+      "leaf_path": "propertyPack.electricity.otherSources.supplier",
+      "predicate": "opda:supplier",
+      "predicate_iri": "https://opda.org.uk/pdtf/supplier",
+      "kind": "Datatype",
+      "domain": "opda:Property",
+      "range": "http://www.w3.org/2001/XMLSchema#string",
+      "layer": 1,
+      "flags": []
+    },
+    {
+      "leaf_path": "propertyPack.electricity.solarPanels.dateToBeConnected",
+      "predicate": "opda:dateToBeConnected",
+      "predicate_iri": "https://opda.org.uk/pdtf/dateToBeConnected",
+      "kind": "Datatype",
+      "domain": "opda:Property",
+      "range": "http://www.w3.org/2001/XMLSchema#date",
+      "layer": 1,
+      "flags": []
+    },
+    {
+      "leaf_path": "propertyPack.electricity.solarPanels.isConnectedToNationalGrid",
+      "predicate": "opda:isConnectedToNationalGrid",
+      "predicate_iri": "https://opda.org.uk/pdtf/isConnectedToNationalGrid",
+      "kind": "Datatype",
+      "domain": "opda:Property",
+      "range": "http://www.w3.org/2001/XMLSchema#string",
+      "layer": 1,
+      "flags": []
+    },
+    {
+      "leaf_path": "propertyPack.electricity.solarPanels.lastMaintained",
+      "predicate": "opda:lastMaintained",
+      "predicate_iri": "https://opda.org.uk/pdtf/lastMaintained",
+      "kind": "Datatype",
+      "domain": "opda:Property",
+      "range": "http://www.w3.org/2001/XMLSchema#date",
+      "layer": 1,
+      "flags": []
+    },
+    {
+      "leaf_path": "propertyPack.electricity.solarPanels.supplier",
+      "predicate": "opda:supplier",
+      "predicate_iri": "https://opda.org.uk/pdtf/supplier",
+      "kind": "Datatype",
+      "domain": "opda:Property",
+      "range": "http://www.w3.org/2001/XMLSchema#string",
+      "layer": 1,
+      "flags": []
+    },
+    {
+      "leaf_path": "propertyPack.electricity.solarPanels.yearInstalled",
+      "predicate": "opda:yearInstalled",
+      "predicate_iri": "https://opda.org.uk/pdtf/yearInstalled",
+      "kind": "Datatype",
+      "domain": "opda:Property",
+      "range": "http://www.w3.org/2001/XMLSchema#gYear",
+      "layer": 1,
+      "flags": []
+    },
+    {
+      "leaf_path": "propertyPack.energyEfficiency.certificate",
+      "predicate": "opda:hasEPCCertificate",
+      "predicate_iri": "https://opda.org.uk/pdtf/hasEPCCertificate",
+      "kind": "Object",
+      "domain": "opda:Property",
+      "range": "opda:EPCCertificate",
+      "layer": 1,
+      "flags": [
+        "object_node"
+      ]
+    },
+    {
+      "leaf_path": "propertyPack.energyEfficiency.certificate.currentEnergyRating",
+      "predicate": "opda:currentEnergyRating",
+      "predicate_iri": "https://opda.org.uk/pdtf/currentEnergyRating",
+      "kind": "Datatype",
+      "domain": "opda:Property",
+      "range": "http://www.w3.org/2001/XMLSchema#string",
+      "layer": 1,
+      "flags": []
+    },
+    {
+      "leaf_path": "propertyPack.environmentalIssues.climate.climateRisk.riskSubcategories[].subCategory",
+      "predicate": "opda:subCategory",
+      "predicate_iri": "https://opda.org.uk/pdtf/subCategory",
+      "kind": "Datatype",
+      "domain": "opda:RiskAssessment",
+      "range": "http://www.w3.org/2001/XMLSchema#string",
+      "layer": 1,
+      "flags": []
+    },
+    {
+      "leaf_path": "propertyPack.environmentalIssues.flooding.floodDefences.hasFloodDefences",
+      "predicate": "opda:hasFloodDefences",
+      "predicate_iri": "https://opda.org.uk/pdtf/hasFloodDefences",
+      "kind": "Datatype",
+      "domain": "opda:Property",
+      "range": "http://www.w3.org/2001/XMLSchema#string",
+      "layer": 1,
+      "flags": []
+    },
+    {
+      "leaf_path": "propertyPack.environmentalIssues.flooding.floodRisk.riskSubcategories[].subCategory",
+      "predicate": "opda:subCategory",
+      "predicate_iri": "https://opda.org.uk/pdtf/subCategory",
+      "kind": "Datatype",
+      "domain": "opda:RiskAssessment",
+      "range": "http://www.w3.org/2001/XMLSchema#string",
+      "layer": 1,
+      "flags": []
+    },
+    {
+      "leaf_path": "propertyPack.environmentalIssues.flooding.historicalFlooding.typeOfFlooding",
+      "predicate": "opda:typeOfFlooding",
+      "predicate_iri": "https://opda.org.uk/pdtf/typeOfFlooding",
+      "kind": "Datatype",
+      "domain": "opda:Property",
+      "range": "http://www.w3.org/2001/XMLSchema#string",
+      "layer": 1,
+      "flags": []
+    },
+    {
+      "leaf_path": "propertyPack.fixturesAndFittings.confirmationOfAccuracy.confirmInformationIsAccurate",
+      "predicate": "opda:confirmInformationIsAccurate",
+      "predicate_iri": "https://opda.org.uk/pdtf/confirmInformationIsAccurate",
+      "kind": "Datatype",
+      "domain": "opda:Transaction",
+      "range": "http://www.w3.org/2001/XMLSchema#boolean",
+      "layer": 1,
+      "flags": []
+    },
+    {
+      "leaf_path": "propertyPack.heating.heatingSystem.centralHeatingDetails.centralHeatingFuel.centralHeatingFuelType",
+      "predicate": "opda:centralHeatingFuelType",
+      "predicate_iri": "https://opda.org.uk/pdtf/centralHeatingFuelType",
+      "kind": "Datatype",
+      "domain": "opda:Property",
+      "range": "http://www.w3.org/2001/XMLSchema#string",
+      "layer": 1,
+      "flags": []
+    },
+    {
+      "leaf_path": "propertyPack.heating.heatingSystem.centralHeatingDetails.centralHeatingFuel.gasMeter.location",
+      "predicate": "opda:location",
+      "predicate_iri": "https://opda.org.uk/pdtf/location",
+      "kind": "Datatype",
+      "domain": "opda:Property",
+      "range": "http://www.w3.org/2001/XMLSchema#string",
+      "layer": 1,
+      "flags": []
+    },
+    {
+      "leaf_path": "propertyPack.heating.heatingSystem.centralHeatingDetails.centralHeatingFuel.gasMeter.mprn",
+      "predicate": "opda:mprn",
+      "predicate_iri": "https://opda.org.uk/pdtf/mprn",
+      "kind": "Datatype",
+      "domain": "opda:Property",
+      "range": "http://www.w3.org/2001/XMLSchema#string",
+      "layer": 1,
+      "flags": []
+    },
+    {
+      "leaf_path": "propertyPack.heating.heatingSystem.centralHeatingDetails.centralHeatingFuel.otherCentralHeatingFuelType",
+      "predicate": "opda:otherCentralHeatingFuelType",
+      "predicate_iri": "https://opda.org.uk/pdtf/otherCentralHeatingFuelType",
+      "kind": "Datatype",
+      "domain": "opda:Property",
+      "range": "http://www.w3.org/2001/XMLSchema#string",
+      "layer": 1,
+      "flags": []
+    },
+    {
+      "leaf_path": "propertyPack.heating.heatingSystem.centralHeatingDetails.centralHeatingFuel.supplier",
+      "predicate": "opda:supplier",
+      "predicate_iri": "https://opda.org.uk/pdtf/supplier",
+      "kind": "Datatype",
+      "domain": "opda:Property",
+      "range": "http://www.w3.org/2001/XMLSchema#string",
+      "layer": 1,
+      "flags": []
+    },
+    {
+      "leaf_path": "propertyPack.heating.heatingSystem.centralHeatingDetails.centralHeatingInstalled",
+      "predicate": "opda:centralHeatingInstalled",
+      "predicate_iri": "https://opda.org.uk/pdtf/centralHeatingInstalled",
+      "kind": "Datatype",
+      "domain": "opda:Property",
+      "range": "http://www.w3.org/2001/XMLSchema#string",
+      "layer": 1,
+      "flags": []
+    },
+    {
+      "leaf_path": "propertyPack.heating.heatingSystem.centralHeatingDetails.heatingLastServicedDate",
+      "predicate": "opda:heatingLastServicedDate",
+      "predicate_iri": "https://opda.org.uk/pdtf/heatingLastServicedDate",
+      "kind": "Datatype",
+      "domain": "opda:Property",
+      "range": "http://www.w3.org/2001/XMLSchema#date",
+      "layer": 1,
+      "flags": []
+    },
+    {
+      "leaf_path": "propertyPack.heating.heatingSystem.heatingType",
+      "predicate": "opda:heatingType",
+      "predicate_iri": "https://opda.org.uk/pdtf/heatingType",
+      "kind": "Datatype",
+      "domain": "opda:Property",
+      "range": "http://www.w3.org/2001/XMLSchema#string",
+      "layer": 1,
+      "flags": []
+    },
+    {
+      "leaf_path": "propertyPack.heating.otherHeatingFeatures",
+      "predicate": "opda:otherHeatingFeatures",
+      "predicate_iri": "https://opda.org.uk/pdtf/otherHeatingFeatures",
+      "kind": "Datatype",
+      "domain": "opda:Property",
+      "range": "http://www.w3.org/2001/XMLSchema#string",
+      "layer": 1,
+      "flags": []
+    },
+    {
+      "leaf_path": "propertyPack.insurance.landlordInsuresIfFlat",
+      "predicate": "opda:landlordInsuresIfFlat",
+      "predicate_iri": "https://opda.org.uk/pdtf/landlordInsuresIfFlat",
+      "kind": "Datatype",
+      "domain": "opda:Property",
+      "range": "http://www.w3.org/2001/XMLSchema#string",
+      "layer": 1,
+      "flags": []
+    },
+    {
+      "leaf_path": "propertyPack.legalOwners.namesOfLegalOwners[].middleNames",
+      "predicate": "opda:middleNames",
+      "predicate_iri": "https://opda.org.uk/pdtf/middleNames",
+      "kind": "Datatype",
+      "domain": "opda:Person",
+      "range": "http://www.w3.org/2001/XMLSchema#string",
+      "layer": 1,
+      "flags": []
+    },
+    {
+      "leaf_path": "propertyPack.legalOwners.namesOfLegalOwners[].organisationName",
+      "predicate": "opda:organisationName",
+      "predicate_iri": "https://opda.org.uk/pdtf/organisationName",
+      "kind": "Datatype",
+      "domain": "opda:Organisation",
+      "range": "http://www.w3.org/2001/XMLSchema#string",
+      "layer": 1,
+      "flags": []
+    },
+    {
+      "leaf_path": "propertyPack.lettingInformation.holdingDeposit",
+      "predicate": "opda:holdingDeposit",
+      "predicate_iri": "https://opda.org.uk/pdtf/holdingDeposit",
+      "kind": "Object",
+      "domain": "opda:Property",
+      "range": "opda:MonetaryAmount",
+      "layer": 1,
+      "flags": [
+        "monetary",
+        "object_node"
+      ]
+    },
+    {
+      "leaf_path": "propertyPack.lettingInformation.rent",
+      "predicate": "opda:rent",
+      "predicate_iri": "https://opda.org.uk/pdtf/rent",
+      "kind": "Object",
+      "domain": "opda:Property",
+      "range": "opda:MonetaryAmount",
+      "layer": 1,
+      "flags": [
+        "monetary",
+        "object_node"
+      ]
+    },
+    {
+      "leaf_path": "propertyPack.lettingInformation.securityDeposit",
+      "predicate": "opda:securityDeposit",
+      "predicate_iri": "https://opda.org.uk/pdtf/securityDeposit",
+      "kind": "Object",
+      "domain": "opda:Property",
+      "range": "opda:MonetaryAmount",
+      "layer": 1,
+      "flags": [
+        "monetary",
+        "object_node"
+      ]
+    },
+    {
+      "leaf_path": "propertyPack.listingAndConservation.hasTreePreservationOrder.workCarriedOut.consentsObtained",
+      "predicate": "opda:consentsObtained",
+      "predicate_iri": "https://opda.org.uk/pdtf/consentsObtained",
+      "kind": "Datatype",
+      "domain": "opda:Property",
+      "range": "http://www.w3.org/2001/XMLSchema#string",
+      "layer": 1,
+      "flags": []
+    },
+    {
+      "leaf_path": "propertyPack.localAuthority.councilSearchTurnaroundTimeInWorkingDays",
+      "predicate": "opda:councilSearchTurnaroundTimeInWorkingDays",
+      "predicate_iri": "https://opda.org.uk/pdtf/councilSearchTurnaroundTimeInWorkingDays",
+      "kind": "Datatype",
+      "domain": "opda:Search",
+      "range": "http://www.w3.org/2001/XMLSchema#integer",
+      "layer": 1,
+      "flags": []
+    },
+    {
+      "leaf_path": "propertyPack.localAuthority.countyCouncil",
+      "predicate": "opda:countyCouncil",
+      "predicate_iri": "https://opda.org.uk/pdtf/countyCouncil",
+      "kind": "Datatype",
+      "domain": "opda:Search",
+      "range": "http://www.w3.org/2001/XMLSchema#string",
+      "layer": 1,
+      "flags": []
+    },
+    {
+      "leaf_path": "propertyPack.localAuthority.districtCouncil",
+      "predicate": "opda:districtCouncil",
+      "predicate_iri": "https://opda.org.uk/pdtf/districtCouncil",
+      "kind": "Datatype",
+      "domain": "opda:Search",
+      "range": "http://www.w3.org/2001/XMLSchema#string",
+      "layer": 1,
+      "flags": []
+    },
+    {
+      "leaf_path": "propertyPack.localAuthority.localAuthorityName",
+      "predicate": "opda:localAuthorityName",
+      "predicate_iri": "https://opda.org.uk/pdtf/localAuthorityName",
+      "kind": "Datatype",
+      "domain": "opda:Search",
+      "range": "http://www.w3.org/2001/XMLSchema#string",
+      "layer": 1,
+      "flags": []
+    },
+    {
+      "leaf_path": "propertyPack.localAuthority.localAuthorityReference",
+      "predicate": "opda:localAuthorityReference",
+      "predicate_iri": "https://opda.org.uk/pdtf/localAuthorityReference",
+      "kind": "Datatype",
+      "domain": "opda:Search",
+      "range": "http://www.w3.org/2001/XMLSchema#string",
+      "layer": 1,
+      "flags": []
+    },
+    {
+      "leaf_path": "propertyPack.localAuthority.regulatedSearchTurnaroundTimeInWorkingDays",
+      "predicate": "opda:regulatedSearchTurnaroundTimeInWorkingDays",
+      "predicate_iri": "https://opda.org.uk/pdtf/regulatedSearchTurnaroundTimeInWorkingDays",
+      "kind": "Datatype",
+      "domain": "opda:Search",
+      "range": "http://www.w3.org/2001/XMLSchema#integer",
+      "layer": 1,
+      "flags": []
+    },
+    {
+      "leaf_path": "propertyPack.localAuthority.unitaryAuthority",
+      "predicate": "opda:unitaryAuthority",
+      "predicate_iri": "https://opda.org.uk/pdtf/unitaryAuthority",
+      "kind": "Datatype",
+      "domain": "opda:Search",
+      "range": "http://www.w3.org/2001/XMLSchema#string",
+      "layer": 1,
+      "flags": []
+    },
+    {
+      "leaf_path": "propertyPack.localSearches.localAuthoritySearches.planningAndBuildingRegulations.decisionsAndPendingApplications.buildingControlStartDate",
+      "predicate": "opda:buildingControlStartDate",
+      "predicate_iri": "https://opda.org.uk/pdtf/buildingControlStartDate",
+      "kind": "Datatype",
+      "domain": "opda:Search",
+      "range": "http://www.w3.org/2001/XMLSchema#date",
+      "layer": 1,
+      "flags": []
+    },
+    {
+      "leaf_path": "propertyPack.localSearches.localAuthoritySearches.planningAndBuildingRegulations.decisionsAndPendingApplications.buildingRegulationsApproval[].applicationDate",
+      "predicate": "opda:applicationDate",
+      "predicate_iri": "https://opda.org.uk/pdtf/applicationDate",
+      "kind": "Datatype",
+      "domain": "opda:Search",
+      "range": "http://www.w3.org/2001/XMLSchema#date",
+      "layer": 1,
+      "flags": []
+    },
+    {
+      "leaf_path": "propertyPack.localSearches.localAuthoritySearches.planningAndBuildingRegulations.decisionsAndPendingApplications.buildingRegulationsApproval[].applicationType",
+      "predicate": "opda:applicationType",
+      "predicate_iri": "https://opda.org.uk/pdtf/applicationType",
+      "kind": "Datatype",
+      "domain": "opda:Search",
+      "range": "http://www.w3.org/2001/XMLSchema#string",
+      "layer": 1,
+      "flags": []
+    },
+    {
+      "leaf_path": "propertyPack.localSearches.localAuthoritySearches.planningAndBuildingRegulations.decisionsAndPendingApplications.buildingRegulationsApproval[].decision",
+      "predicate": "opda:decision",
+      "predicate_iri": "https://opda.org.uk/pdtf/decision",
+      "kind": "Datatype",
+      "domain": "opda:Search",
+      "range": "http://www.w3.org/2001/XMLSchema#string",
+      "layer": 1,
+      "flags": []
+    },
+    {
+      "leaf_path": "propertyPack.localSearches.localAuthoritySearches.planningAndBuildingRegulations.decisionsAndPendingApplications.buildingRegulationsApproval[].decisionDate",
+      "predicate": "opda:decisionDate",
+      "predicate_iri": "https://opda.org.uk/pdtf/decisionDate",
+      "kind": "Datatype",
+      "domain": "opda:Search",
+      "range": "http://www.w3.org/2001/XMLSchema#date",
+      "layer": 1,
+      "flags": []
+    },
+    {
+      "leaf_path": "propertyPack.localSearches.localAuthoritySearches.planningAndBuildingRegulations.decisionsAndPendingApplications.buildingRegulationsApproval[].refNumber",
+      "predicate": "opda:refNumber",
+      "predicate_iri": "https://opda.org.uk/pdtf/refNumber",
+      "kind": "Datatype",
+      "domain": "opda:Search",
+      "range": "http://www.w3.org/2001/XMLSchema#string",
+      "layer": 1,
+      "flags": []
+    },
+    {
+      "leaf_path": "propertyPack.localSearches.localAuthoritySearches.planningAndBuildingRegulations.decisionsAndPendingApplications.planningPermission[].applicationDate",
+      "predicate": "opda:applicationDate",
+      "predicate_iri": "https://opda.org.uk/pdtf/applicationDate",
+      "kind": "Datatype",
+      "domain": "opda:Search",
+      "range": "http://www.w3.org/2001/XMLSchema#date",
+      "layer": 1,
+      "flags": []
+    },
+    {
+      "leaf_path": "propertyPack.localSearches.localAuthoritySearches.planningAndBuildingRegulations.decisionsAndPendingApplications.planningPermission[].applicationType",
+      "predicate": "opda:applicationType",
+      "predicate_iri": "https://opda.org.uk/pdtf/applicationType",
+      "kind": "Datatype",
+      "domain": "opda:Search",
+      "range": "http://www.w3.org/2001/XMLSchema#string",
+      "layer": 1,
+      "flags": []
+    },
+    {
+      "leaf_path": "propertyPack.localSearches.localAuthoritySearches.planningAndBuildingRegulations.decisionsAndPendingApplications.planningPermission[].decision",
+      "predicate": "opda:decision",
+      "predicate_iri": "https://opda.org.uk/pdtf/decision",
+      "kind": "Datatype",
+      "domain": "opda:Search",
+      "range": "http://www.w3.org/2001/XMLSchema#string",
+      "layer": 1,
+      "flags": []
+    },
+    {
+      "leaf_path": "propertyPack.localSearches.localAuthoritySearches.planningAndBuildingRegulations.decisionsAndPendingApplications.planningPermission[].decisionDate",
+      "predicate": "opda:decisionDate",
+      "predicate_iri": "https://opda.org.uk/pdtf/decisionDate",
+      "kind": "Datatype",
+      "domain": "opda:Search",
+      "range": "http://www.w3.org/2001/XMLSchema#date",
+      "layer": 1,
+      "flags": []
+    },
+    {
+      "leaf_path": "propertyPack.localSearches.localAuthoritySearches.planningAndBuildingRegulations.decisionsAndPendingApplications.planningPermission[].refNumber",
+      "predicate": "opda:refNumber",
+      "predicate_iri": "https://opda.org.uk/pdtf/refNumber",
+      "kind": "Datatype",
+      "domain": "opda:Search",
+      "range": "http://www.w3.org/2001/XMLSchema#string",
+      "layer": 1,
+      "flags": []
+    },
+    {
+      "leaf_path": "propertyPack.localSearches.localAuthoritySearches.planningAndBuildingRegulations.decisionsAndPendingApplications.planningPermission[].status",
+      "predicate": "opda:status",
+      "predicate_iri": "https://opda.org.uk/pdtf/status",
+      "kind": "Datatype",
+      "domain": "opda:Search",
+      "range": "http://www.w3.org/2001/XMLSchema#string",
+      "layer": 1,
+      "flags": []
+    },
+    {
+      "leaf_path": "propertyPack.localSearches.localAuthoritySearches.planningAndBuildingRegulations.decisionsAndPendingApplications.planningPermission[].url",
+      "predicate": "opda:url",
+      "predicate_iri": "https://opda.org.uk/pdtf/url",
+      "kind": "Datatype",
+      "domain": null,
+      "range": "http://www.w3.org/2001/XMLSchema#anyURI",
+      "layer": 1,
+      "flags": [
+        "shared_domainless"
+      ]
+    },
+    {
+      "leaf_path": "propertyPack.localSearches.localAuthoritySearches.planningAndBuildingRegulations.decisionsAndPendingApplications.planningStartDate",
+      "predicate": "opda:planningStartDate",
+      "predicate_iri": "https://opda.org.uk/pdtf/planningStartDate",
+      "kind": "Datatype",
+      "domain": "opda:Search",
+      "range": "http://www.w3.org/2001/XMLSchema#date",
+      "layer": 1,
+      "flags": []
+    },
+    {
+      "leaf_path": "propertyPack.localSearches.localAuthoritySearches.planningAndBuildingRegulations.designationsAndProposals.plans[].designations[].designationType",
+      "predicate": "opda:designationType",
+      "predicate_iri": "https://opda.org.uk/pdtf/designationType",
+      "kind": "Datatype",
+      "domain": "opda:Search",
+      "range": "http://www.w3.org/2001/XMLSchema#string",
+      "layer": 1,
+      "flags": []
+    },
+    {
+      "leaf_path": "propertyPack.localSearches.localAuthoritySearches.planningAndBuildingRegulations.designationsAndProposals.plans[].statusDate",
+      "predicate": "opda:statusDate",
+      "predicate_iri": "https://opda.org.uk/pdtf/statusDate",
+      "kind": "Datatype",
+      "domain": "opda:Search",
+      "range": "http://www.w3.org/2001/XMLSchema#date",
+      "layer": 1,
+      "flags": []
+    },
+    {
+      "leaf_path": "propertyPack.localSearches.localAuthoritySearches.roadsAndPublicRightsOfWay.roadsFootwaysAndFootpaths.subjectToAdoption[].status",
+      "predicate": "opda:status",
+      "predicate_iri": "https://opda.org.uk/pdtf/status",
+      "kind": "Datatype",
+      "domain": "opda:Search",
+      "range": "http://www.w3.org/2001/XMLSchema#string",
+      "layer": 1,
+      "flags": []
+    },
+    {
+      "leaf_path": "propertyPack.localSearches.localLandCharges[].amount",
+      "predicate": "opda:amount",
+      "predicate_iri": "https://opda.org.uk/pdtf/amount",
+      "kind": "Datatype",
+      "domain": "opda:MonetaryAmount",
+      "range": "http://www.w3.org/2001/XMLSchema#decimal",
+      "layer": 1,
+      "flags": []
+    },
+    {
+      "leaf_path": "propertyPack.location.googleStreetViewPOV.heading",
+      "predicate": "opda:heading",
+      "predicate_iri": "https://opda.org.uk/pdtf/heading",
+      "kind": "Datatype",
+      "domain": "opda:Property",
+      "range": "http://www.w3.org/2001/XMLSchema#decimal",
+      "layer": 1,
+      "flags": []
+    },
+    {
+      "leaf_path": "propertyPack.location.googleStreetViewPOV.pitch",
+      "predicate": "opda:pitch",
+      "predicate_iri": "https://opda.org.uk/pdtf/pitch",
+      "kind": "Datatype",
+      "domain": "opda:Property",
+      "range": "http://www.w3.org/2001/XMLSchema#decimal",
+      "layer": 1,
+      "flags": []
+    },
+    {
+      "leaf_path": "propertyPack.location.googleStreetViewPOV.zoom",
+      "predicate": "opda:zoom",
+      "predicate_iri": "https://opda.org.uk/pdtf/zoom",
+      "kind": "Datatype",
+      "domain": "opda:Property",
+      "range": "http://www.w3.org/2001/XMLSchema#decimal",
+      "layer": 1,
+      "flags": []
+    },
+    {
+      "leaf_path": "propertyPack.marketingTenure",
+      "predicate": "opda:marketingTenure",
+      "predicate_iri": "https://opda.org.uk/pdtf/marketingTenure",
+      "kind": "Datatype",
+      "domain": "opda:Property",
+      "range": "http://www.w3.org/2001/XMLSchema#string",
+      "layer": 1,
+      "flags": []
+    },
+    {
+      "leaf_path": "propertyPack.media[].mediaUrl",
+      "predicate": "opda:mediaUrl",
+      "predicate_iri": "https://opda.org.uk/pdtf/mediaUrl",
+      "kind": "Datatype",
+      "domain": null,
+      "range": "http://www.w3.org/2001/XMLSchema#anyURI",
+      "layer": 1,
+      "flags": [
+        "shared_domainless"
+      ]
+    },
+    {
+      "leaf_path": "propertyPack.nearbyFacilities.healthCare[].distanceInMiles",
+      "predicate": "opda:distanceInMiles",
+      "predicate_iri": "https://opda.org.uk/pdtf/distanceInMiles",
+      "kind": "Datatype",
+      "domain": "opda:NearbyFacility",
+      "range": "http://www.w3.org/2001/XMLSchema#decimal",
+      "layer": 1,
+      "flags": []
+    },
+    {
+      "leaf_path": "propertyPack.nearbyFacilities.healthCare[].name",
+      "predicate": "opda:name",
+      "predicate_iri": "https://opda.org.uk/pdtf/name",
+      "kind": "Datatype",
+      "domain": null,
+      "range": "http://www.w3.org/2001/XMLSchema#string",
+      "layer": 1,
+      "flags": [
+        "shared_domainless"
+      ]
+    },
+    {
+      "leaf_path": "propertyPack.nearbyFacilities.healthCare[].specialties",
+      "predicate": "opda:specialties",
+      "predicate_iri": "https://opda.org.uk/pdtf/specialties",
+      "kind": "Datatype",
+      "domain": "opda:NearbyFacility",
+      "range": "http://www.w3.org/2001/XMLSchema#string",
+      "layer": 1,
+      "flags": []
+    },
+    {
+      "leaf_path": "propertyPack.nearbyFacilities.healthCare[].typeOfHealthCare",
+      "predicate": "opda:typeOfHealthCare",
+      "predicate_iri": "https://opda.org.uk/pdtf/typeOfHealthCare",
+      "kind": "Datatype",
+      "domain": "opda:NearbyFacility",
+      "range": "http://www.w3.org/2001/XMLSchema#string",
+      "layer": 1,
+      "flags": []
+    },
+    {
+      "leaf_path": "propertyPack.nearbyFacilities.schools[].ageRange",
+      "predicate": "opda:ageRange",
+      "predicate_iri": "https://opda.org.uk/pdtf/ageRange",
+      "kind": "Datatype",
+      "domain": "opda:NearbyFacility",
+      "range": "http://www.w3.org/2001/XMLSchema#string",
+      "layer": 1,
+      "flags": []
+    },
+    {
+      "leaf_path": "propertyPack.nearbyFacilities.schools[].distanceInMiles",
+      "predicate": "opda:distanceInMiles",
+      "predicate_iri": "https://opda.org.uk/pdtf/distanceInMiles",
+      "kind": "Datatype",
+      "domain": "opda:NearbyFacility",
+      "range": "http://www.w3.org/2001/XMLSchema#decimal",
+      "layer": 1,
+      "flags": []
+    },
+    {
+      "leaf_path": "propertyPack.nearbyFacilities.schools[].name",
+      "predicate": "opda:name",
+      "predicate_iri": "https://opda.org.uk/pdtf/name",
+      "kind": "Datatype",
+      "domain": null,
+      "range": "http://www.w3.org/2001/XMLSchema#string",
+      "layer": 1,
+      "flags": [
+        "shared_domainless"
+      ]
+    },
+    {
+      "leaf_path": "propertyPack.nearbyFacilities.schools[].ofstedRating",
+      "predicate": "opda:ofstedRating",
+      "predicate_iri": "https://opda.org.uk/pdtf/ofstedRating",
+      "kind": "Datatype",
+      "domain": "opda:NearbyFacility",
+      "range": "http://www.w3.org/2001/XMLSchema#string",
+      "layer": 1,
+      "flags": []
+    },
+    {
+      "leaf_path": "propertyPack.nearbyFacilities.schools[].otherRating",
+      "predicate": "opda:otherRating",
+      "predicate_iri": "https://opda.org.uk/pdtf/otherRating",
+      "kind": "Datatype",
+      "domain": "opda:NearbyFacility",
+      "range": "http://www.w3.org/2001/XMLSchema#string",
+      "layer": 1,
+      "flags": []
+    },
+    {
+      "leaf_path": "propertyPack.nearbyFacilities.schools[].pupils",
+      "predicate": "opda:pupils",
+      "predicate_iri": "https://opda.org.uk/pdtf/pupils",
+      "kind": "Datatype",
+      "domain": "opda:NearbyFacility",
+      "range": "http://www.w3.org/2001/XMLSchema#integer",
+      "layer": 1,
+      "flags": []
+    },
+    {
+      "leaf_path": "propertyPack.nearbyFacilities.schools[].religiousCharacter",
+      "predicate": "opda:religiousCharacter",
+      "predicate_iri": "https://opda.org.uk/pdtf/religiousCharacter",
+      "kind": "Datatype",
+      "domain": "opda:NearbyFacility",
+      "range": "http://www.w3.org/2001/XMLSchema#string",
+      "layer": 1,
+      "flags": []
+    },
+    {
+      "leaf_path": "propertyPack.nearbyFacilities.schools[].schoolType.college",
+      "predicate": "opda:schoolType",
+      "predicate_iri": "https://opda.org.uk/pdtf/schoolType",
+      "kind": "Datatype",
+      "domain": "opda:NearbyFacility",
+      "range": "http://www.w3.org/2001/XMLSchema#string",
+      "layer": 1,
+      "flags": []
+    },
+    {
+      "leaf_path": "propertyPack.nearbyFacilities.schools[].schoolType.nursery",
+      "predicate": "opda:schoolType",
+      "predicate_iri": "https://opda.org.uk/pdtf/schoolType",
+      "kind": "Datatype",
+      "domain": "opda:NearbyFacility",
+      "range": "http://www.w3.org/2001/XMLSchema#string",
+      "layer": 1,
+      "flags": []
+    },
+    {
+      "leaf_path": "propertyPack.nearbyFacilities.schools[].schoolType.primary",
+      "predicate": "opda:schoolType",
+      "predicate_iri": "https://opda.org.uk/pdtf/schoolType",
+      "kind": "Datatype",
+      "domain": "opda:NearbyFacility",
+      "range": "http://www.w3.org/2001/XMLSchema#string",
+      "layer": 1,
+      "flags": []
+    },
+    {
+      "leaf_path": "propertyPack.nearbyFacilities.schools[].schoolType.private",
+      "predicate": "opda:schoolType",
+      "predicate_iri": "https://opda.org.uk/pdtf/schoolType",
+      "kind": "Datatype",
+      "domain": "opda:NearbyFacility",
+      "range": "http://www.w3.org/2001/XMLSchema#string",
+      "layer": 1,
+      "flags": []
+    },
+    {
+      "leaf_path": "propertyPack.nearbyFacilities.schools[].schoolType.secondary",
+      "predicate": "opda:schoolType",
+      "predicate_iri": "https://opda.org.uk/pdtf/schoolType",
+      "kind": "Datatype",
+      "domain": "opda:NearbyFacility",
+      "range": "http://www.w3.org/2001/XMLSchema#string",
+      "layer": 1,
+      "flags": []
+    },
+    {
+      "leaf_path": "propertyPack.nearbyFacilities.transport[].distanceInMiles",
+      "predicate": "opda:distanceInMiles",
+      "predicate_iri": "https://opda.org.uk/pdtf/distanceInMiles",
+      "kind": "Datatype",
+      "domain": "opda:NearbyFacility",
+      "range": "http://www.w3.org/2001/XMLSchema#decimal",
+      "layer": 1,
+      "flags": []
+    },
+    {
+      "leaf_path": "propertyPack.nearbyFacilities.transport[].name",
+      "predicate": "opda:name",
+      "predicate_iri": "https://opda.org.uk/pdtf/name",
+      "kind": "Datatype",
+      "domain": null,
+      "range": "http://www.w3.org/2001/XMLSchema#string",
+      "layer": 1,
+      "flags": [
+        "shared_domainless"
+      ]
+    },
+    {
+      "leaf_path": "propertyPack.nearbyFacilities.transport[].transportType",
+      "predicate": "opda:transportType",
+      "predicate_iri": "https://opda.org.uk/pdtf/transportType",
+      "kind": "Datatype",
+      "domain": "opda:NearbyFacility",
+      "range": "http://www.w3.org/2001/XMLSchema#string",
+      "layer": 1,
+      "flags": []
+    },
+    {
+      "leaf_path": "propertyPack.occupiers.othersAged17OrOver.aged17OrOverNames",
+      "predicate": "opda:aged17OrOverNames",
+      "predicate_iri": "https://opda.org.uk/pdtf/aged17OrOverNames",
+      "kind": "Datatype",
+      "domain": "opda:Seller",
+      "range": "http://www.w3.org/2001/XMLSchema#string",
+      "layer": 1,
+      "flags": []
+    },
+    {
+      "leaf_path": "propertyPack.ownership.hasHelpToBuyEquityLoan",
+      "predicate": "opda:hasHelpToBuyEquityLoan",
+      "predicate_iri": "https://opda.org.uk/pdtf/hasHelpToBuyEquityLoan",
+      "kind": "Datatype",
+      "domain": "opda:Property",
+      "range": "http://www.w3.org/2001/XMLSchema#string",
+      "layer": 1,
+      "flags": []
+    },
+    {
+      "leaf_path": "propertyPack.ownership.isFirstRegistration",
+      "predicate": "opda:isFirstRegistration",
+      "predicate_iri": "https://opda.org.uk/pdtf/isFirstRegistration",
+      "kind": "Datatype",
+      "domain": "opda:Property",
+      "range": "http://www.w3.org/2001/XMLSchema#string",
+      "layer": 1,
+      "flags": []
+    },
+    {
+      "leaf_path": "propertyPack.ownership.isLimitedCompanySale",
+      "predicate": "opda:isLimitedCompanySale",
+      "predicate_iri": "https://opda.org.uk/pdtf/isLimitedCompanySale",
+      "kind": "Datatype",
+      "domain": "opda:Property",
+      "range": "http://www.w3.org/2001/XMLSchema#string",
+      "layer": 1,
+      "flags": []
+    },
+    {
+      "leaf_path": "propertyPack.ownership.numberOfNonUkResidentSellers",
+      "predicate": "opda:numberOfNonUkResidentSellers",
+      "predicate_iri": "https://opda.org.uk/pdtf/numberOfNonUkResidentSellers",
+      "kind": "Datatype",
+      "domain": "opda:Proprietorship",
+      "range": "http://www.w3.org/2001/XMLSchema#integer",
+      "layer": 1,
+      "flags": []
+    },
+    {
+      "leaf_path": "propertyPack.ownership.numberOfSellers",
+      "predicate": "opda:numberOfSellers",
+      "predicate_iri": "https://opda.org.uk/pdtf/numberOfSellers",
+      "kind": "Datatype",
+      "domain": "opda:Proprietorship",
+      "range": "http://www.w3.org/2001/XMLSchema#integer",
+      "layer": 1,
+      "flags": []
+    },
+    {
+      "leaf_path": "propertyPack.ownership.ownershipsToBeTransferred[].estateRentcharges.amount",
+      "predicate": "opda:amount",
+      "predicate_iri": "https://opda.org.uk/pdtf/amount",
+      "kind": "Datatype",
+      "domain": "opda:MonetaryAmount",
+      "range": "http://www.w3.org/2001/XMLSchema#decimal",
+      "layer": 1,
+      "flags": []
+    },
+    {
+      "leaf_path": "propertyPack.ownership.ownershipsToBeTransferred[].leaseholdInformation.buildingSafetyAct.deedOfCertificateServed.sellerCompletedDeedOfCertificate",
+      "predicate": "opda:sellerCompletedDeedOfCertificate",
+      "predicate_iri": "https://opda.org.uk/pdtf/sellerCompletedDeedOfCertificate",
+      "kind": "Datatype",
+      "domain": "opda:LegalEstate",
+      "range": "http://www.w3.org/2001/XMLSchema#string",
+      "layer": 1,
+      "flags": []
+    },
+    {
+      "leaf_path": "propertyPack.ownership.ownershipsToBeTransferred[].leaseholdInformation.buildingSafetyAct.isLeaseQualifying",
+      "predicate": "opda:isLeaseQualifying",
+      "predicate_iri": "https://opda.org.uk/pdtf/isLeaseQualifying",
+      "kind": "Datatype",
+      "domain": "opda:LegalEstate",
+      "range": "http://www.w3.org/2001/XMLSchema#string",
+      "layer": 1,
+      "flags": []
+    },
+    {
+      "leaf_path": "propertyPack.ownership.ownershipsToBeTransferred[].leaseholdInformation.buildingSafetyAct.landlordNotifiedOfSale",
+      "predicate": "opda:landlordNotifiedOfSale",
+      "predicate_iri": "https://opda.org.uk/pdtf/landlordNotifiedOfSale",
+      "kind": "Datatype",
+      "domain": "opda:LegalEstate",
+      "range": "http://www.w3.org/2001/XMLSchema#string",
+      "layer": 1,
+      "flags": []
+    },
+    {
+      "leaf_path": "propertyPack.ownership.ownershipsToBeTransferred[].leaseholdInformation.buildingsInsurance.buildingsReinstatementCostAssessment",
+      "predicate": "opda:buildingsReinstatementCostAssessment",
+      "predicate_iri": "https://opda.org.uk/pdtf/buildingsReinstatementCostAssessment",
+      "kind": "Datatype",
+      "domain": "opda:LegalEstate",
+      "range": "http://www.w3.org/2001/XMLSchema#string",
+      "layer": 1,
+      "flags": []
+    },
+    {
+      "leaf_path": "propertyPack.ownership.ownershipsToBeTransferred[].leaseholdInformation.buildingsInsurance.lastDemandPeriod.from",
+      "predicate": "opda:from",
+      "predicate_iri": "https://opda.org.uk/pdtf/from",
+      "kind": "Datatype",
+      "domain": "opda:LegalEstate",
+      "range": "http://www.w3.org/2001/XMLSchema#date",
+      "layer": 1,
+      "flags": []
+    },
+    {
+      "leaf_path": "propertyPack.ownership.ownershipsToBeTransferred[].leaseholdInformation.buildingsInsurance.lastDemandPeriod.to",
+      "predicate": "opda:to",
+      "predicate_iri": "https://opda.org.uk/pdtf/to",
+      "kind": "Datatype",
+      "domain": "opda:LegalEstate",
+      "range": "http://www.w3.org/2001/XMLSchema#date",
+      "layer": 1,
+      "flags": []
+    },
+    {
+      "leaf_path": "propertyPack.ownership.ownershipsToBeTransferred[].leaseholdInformation.buildingsInsurance.managedAreasCoveredByPolicy.riskAssessments.dateRemedialActionRequired",
+      "predicate": "opda:dateRemedialActionRequired",
+      "predicate_iri": "https://opda.org.uk/pdtf/dateRemedialActionRequired",
+      "kind": "Datatype",
+      "domain": "opda:RiskAssessment",
+      "range": "http://www.w3.org/2001/XMLSchema#date",
+      "layer": 1,
+      "flags": []
+    },
+    {
+      "leaf_path": "propertyPack.ownership.ownershipsToBeTransferred[].leaseholdInformation.buildingsInsurance.managedAreasCoveredByPolicy.riskAssessments.outstandingEnforcementAction",
+      "predicate": "opda:outstandingEnforcementAction",
+      "predicate_iri": "https://opda.org.uk/pdtf/outstandingEnforcementAction",
+      "kind": "Datatype",
+      "domain": "opda:LegalEstate",
+      "range": "http://www.w3.org/2001/XMLSchema#string",
+      "layer": 1,
+      "flags": []
+    },
+    {
+      "leaf_path": "propertyPack.ownership.ownershipsToBeTransferred[].leaseholdInformation.buildingsInsurance.managedAreasCoveredByPolicy.riskAssessments.urgentWorksCarriedOut",
+      "predicate": "opda:urgentWorksCarriedOut",
+      "predicate_iri": "https://opda.org.uk/pdtf/urgentWorksCarriedOut",
+      "kind": "Datatype",
+      "domain": "opda:LegalEstate",
+      "range": "http://www.w3.org/2001/XMLSchema#string",
+      "layer": 1,
+      "flags": []
+    },
+    {
+      "leaf_path": "propertyPack.ownership.ownershipsToBeTransferred[].leaseholdInformation.buildingsInsurance.managedAreasCoveredByPolicy.riskAssessments.urgentWorksRecommended",
+      "predicate": "opda:urgentWorksRecommended",
+      "predicate_iri": "https://opda.org.uk/pdtf/urgentWorksRecommended",
+      "kind": "Datatype",
+      "domain": "opda:LegalEstate",
+      "range": "http://www.w3.org/2001/XMLSchema#string",
+      "layer": 1,
+      "flags": []
+    },
+    {
+      "leaf_path": "propertyPack.ownership.ownershipsToBeTransferred[].leaseholdInformation.confirmationOfAccuracy.confirmation",
+      "predicate": "opda:confirmation",
+      "predicate_iri": "https://opda.org.uk/pdtf/confirmation",
+      "kind": "Datatype",
+      "domain": "opda:Transaction",
+      "range": "http://www.w3.org/2001/XMLSchema#boolean",
+      "layer": 1,
+      "flags": []
+    },
+    {
+      "leaf_path": "propertyPack.ownership.ownershipsToBeTransferred[].leaseholdInformation.contactDetails.contacts.landlord.bankDetails.accountName",
+      "predicate": "opda:accountName",
+      "predicate_iri": "https://opda.org.uk/pdtf/accountName",
+      "kind": "Datatype",
+      "domain": "opda:Organisation",
+      "range": "http://www.w3.org/2001/XMLSchema#string",
+      "layer": 1,
+      "flags": []
+    },
+    {
+      "leaf_path": "propertyPack.ownership.ownershipsToBeTransferred[].leaseholdInformation.contactDetails.contacts.landlord.bankDetails.accountNumber",
+      "predicate": "opda:accountNumber",
+      "predicate_iri": "https://opda.org.uk/pdtf/accountNumber",
+      "kind": "Datatype",
+      "domain": "opda:Organisation",
+      "range": "http://www.w3.org/2001/XMLSchema#string",
+      "layer": 1,
+      "flags": []
+    },
+    {
+      "leaf_path": "propertyPack.ownership.ownershipsToBeTransferred[].leaseholdInformation.contactDetails.contacts.landlord.bankDetails.reference",
+      "predicate": "opda:reference",
+      "predicate_iri": "https://opda.org.uk/pdtf/reference",
+      "kind": "Datatype",
+      "domain": "opda:Organisation",
+      "range": "http://www.w3.org/2001/XMLSchema#string",
+      "layer": 1,
+      "flags": []
+    },
+    {
+      "leaf_path": "propertyPack.ownership.ownershipsToBeTransferred[].leaseholdInformation.contactDetails.contacts.landlord.bankDetails.sortCode",
+      "predicate": "opda:sortCode",
+      "predicate_iri": "https://opda.org.uk/pdtf/sortCode",
+      "kind": "Datatype",
+      "domain": "opda:Organisation",
+      "range": "http://www.w3.org/2001/XMLSchema#string",
+      "layer": 1,
+      "flags": []
+    },
+    {
+      "leaf_path": "propertyPack.ownership.ownershipsToBeTransferred[].leaseholdInformation.contactDetails.contacts.managementCompany.bankDetails.accountName",
+      "predicate": "opda:accountName",
+      "predicate_iri": "https://opda.org.uk/pdtf/accountName",
+      "kind": "Datatype",
+      "domain": "opda:Organisation",
+      "range": "http://www.w3.org/2001/XMLSchema#string",
+      "layer": 1,
+      "flags": []
+    },
+    {
+      "leaf_path": "propertyPack.ownership.ownershipsToBeTransferred[].leaseholdInformation.contactDetails.contacts.managementCompany.bankDetails.accountNumber",
+      "predicate": "opda:accountNumber",
+      "predicate_iri": "https://opda.org.uk/pdtf/accountNumber",
+      "kind": "Datatype",
+      "domain": "opda:Organisation",
+      "range": "http://www.w3.org/2001/XMLSchema#string",
+      "layer": 1,
+      "flags": []
+    },
+    {
+      "leaf_path": "propertyPack.ownership.ownershipsToBeTransferred[].leaseholdInformation.contactDetails.contacts.managementCompany.bankDetails.reference",
+      "predicate": "opda:reference",
+      "predicate_iri": "https://opda.org.uk/pdtf/reference",
+      "kind": "Datatype",
+      "domain": "opda:Organisation",
+      "range": "http://www.w3.org/2001/XMLSchema#string",
+      "layer": 1,
+      "flags": []
+    },
+    {
+      "leaf_path": "propertyPack.ownership.ownershipsToBeTransferred[].leaseholdInformation.contactDetails.contacts.managementCompany.bankDetails.sortCode",
+      "predicate": "opda:sortCode",
+      "predicate_iri": "https://opda.org.uk/pdtf/sortCode",
+      "kind": "Datatype",
+      "domain": "opda:Organisation",
+      "range": "http://www.w3.org/2001/XMLSchema#string",
+      "layer": 1,
+      "flags": []
+    },
+    {
+      "leaf_path": "propertyPack.ownership.ownershipsToBeTransferred[].leaseholdInformation.contactDetails.contacts.managingAgent.bankDetails.accountName",
+      "predicate": "opda:accountName",
+      "predicate_iri": "https://opda.org.uk/pdtf/accountName",
+      "kind": "Datatype",
+      "domain": "opda:Organisation",
+      "range": "http://www.w3.org/2001/XMLSchema#string",
+      "layer": 1,
+      "flags": []
+    },
+    {
+      "leaf_path": "propertyPack.ownership.ownershipsToBeTransferred[].leaseholdInformation.contactDetails.contacts.managingAgent.bankDetails.accountNumber",
+      "predicate": "opda:accountNumber",
+      "predicate_iri": "https://opda.org.uk/pdtf/accountNumber",
+      "kind": "Datatype",
+      "domain": "opda:Organisation",
+      "range": "http://www.w3.org/2001/XMLSchema#string",
+      "layer": 1,
+      "flags": []
+    },
+    {
+      "leaf_path": "propertyPack.ownership.ownershipsToBeTransferred[].leaseholdInformation.contactDetails.contacts.managingAgent.bankDetails.reference",
+      "predicate": "opda:reference",
+      "predicate_iri": "https://opda.org.uk/pdtf/reference",
+      "kind": "Datatype",
+      "domain": "opda:Organisation",
+      "range": "http://www.w3.org/2001/XMLSchema#string",
+      "layer": 1,
+      "flags": []
+    },
+    {
+      "leaf_path": "propertyPack.ownership.ownershipsToBeTransferred[].leaseholdInformation.contactDetails.contacts.managingAgent.bankDetails.sortCode",
+      "predicate": "opda:sortCode",
+      "predicate_iri": "https://opda.org.uk/pdtf/sortCode",
+      "kind": "Datatype",
+      "domain": "opda:Organisation",
+      "range": "http://www.w3.org/2001/XMLSchema#string",
+      "layer": 1,
+      "flags": []
+    },
+    {
+      "leaf_path": "propertyPack.ownership.ownershipsToBeTransferred[].leaseholdInformation.contactDetails.contacts.rentchargeOwner.bankDetails.accountName",
+      "predicate": "opda:accountName",
+      "predicate_iri": "https://opda.org.uk/pdtf/accountName",
+      "kind": "Datatype",
+      "domain": "opda:Organisation",
+      "range": "http://www.w3.org/2001/XMLSchema#string",
+      "layer": 1,
+      "flags": []
+    },
+    {
+      "leaf_path": "propertyPack.ownership.ownershipsToBeTransferred[].leaseholdInformation.contactDetails.contacts.rentchargeOwner.bankDetails.accountNumber",
+      "predicate": "opda:accountNumber",
+      "predicate_iri": "https://opda.org.uk/pdtf/accountNumber",
+      "kind": "Datatype",
+      "domain": "opda:Organisation",
+      "range": "http://www.w3.org/2001/XMLSchema#string",
+      "layer": 1,
+      "flags": []
+    },
+    {
+      "leaf_path": "propertyPack.ownership.ownershipsToBeTransferred[].leaseholdInformation.contactDetails.contacts.rentchargeOwner.bankDetails.reference",
+      "predicate": "opda:reference",
+      "predicate_iri": "https://opda.org.uk/pdtf/reference",
+      "kind": "Datatype",
+      "domain": "opda:Organisation",
+      "range": "http://www.w3.org/2001/XMLSchema#string",
+      "layer": 1,
+      "flags": []
+    },
+    {
+      "leaf_path": "propertyPack.ownership.ownershipsToBeTransferred[].leaseholdInformation.contactDetails.contacts.rentchargeOwner.bankDetails.sortCode",
+      "predicate": "opda:sortCode",
+      "predicate_iri": "https://opda.org.uk/pdtf/sortCode",
+      "kind": "Datatype",
+      "domain": "opda:Organisation",
+      "range": "http://www.w3.org/2001/XMLSchema#string",
+      "layer": 1,
+      "flags": []
+    },
+    {
+      "leaf_path": "propertyPack.ownership.ownershipsToBeTransferred[].leaseholdInformation.contactDetails.contacts.residentTenantsAssociation.bankDetails.accountName",
+      "predicate": "opda:accountName",
+      "predicate_iri": "https://opda.org.uk/pdtf/accountName",
+      "kind": "Datatype",
+      "domain": "opda:Organisation",
+      "range": "http://www.w3.org/2001/XMLSchema#string",
+      "layer": 1,
+      "flags": []
+    },
+    {
+      "leaf_path": "propertyPack.ownership.ownershipsToBeTransferred[].leaseholdInformation.contactDetails.contacts.residentTenantsAssociation.bankDetails.accountNumber",
+      "predicate": "opda:accountNumber",
+      "predicate_iri": "https://opda.org.uk/pdtf/accountNumber",
+      "kind": "Datatype",
+      "domain": "opda:Organisation",
+      "range": "http://www.w3.org/2001/XMLSchema#string",
+      "layer": 1,
+      "flags": []
+    },
+    {
+      "leaf_path": "propertyPack.ownership.ownershipsToBeTransferred[].leaseholdInformation.contactDetails.contacts.residentTenantsAssociation.bankDetails.reference",
+      "predicate": "opda:reference",
+      "predicate_iri": "https://opda.org.uk/pdtf/reference",
+      "kind": "Datatype",
+      "domain": "opda:Organisation",
+      "range": "http://www.w3.org/2001/XMLSchema#string",
+      "layer": 1,
+      "flags": []
+    },
+    {
+      "leaf_path": "propertyPack.ownership.ownershipsToBeTransferred[].leaseholdInformation.contactDetails.contacts.residentTenantsAssociation.bankDetails.sortCode",
+      "predicate": "opda:sortCode",
+      "predicate_iri": "https://opda.org.uk/pdtf/sortCode",
+      "kind": "Datatype",
+      "domain": "opda:Organisation",
+      "range": "http://www.w3.org/2001/XMLSchema#string",
+      "layer": 1,
+      "flags": []
+    },
+    {
+      "leaf_path": "propertyPack.ownership.ownershipsToBeTransferred[].leaseholdInformation.contactDetails.serviceContactAssignments.noticeOfAssignmentAndCharge.landlord.feeIncludingVAT",
+      "predicate": "opda:feeIncludingVAT",
+      "predicate_iri": "https://opda.org.uk/pdtf/feeIncludingVAT",
+      "kind": "Object",
+      "domain": "opda:Transaction",
+      "range": "opda:MonetaryAmount",
+      "layer": 1,
+      "flags": [
+        "monetary",
+        "object_node"
+      ]
+    },
+    {
+      "leaf_path": "propertyPack.ownership.ownershipsToBeTransferred[].leaseholdInformation.contactDetails.serviceContactAssignments.noticeOfAssignmentAndCharge.managementCompany.feeIncludingVAT",
+      "predicate": "opda:feeIncludingVAT",
+      "predicate_iri": "https://opda.org.uk/pdtf/feeIncludingVAT",
+      "kind": "Object",
+      "domain": "opda:Transaction",
+      "range": "opda:MonetaryAmount",
+      "layer": 1,
+      "flags": [
+        "monetary",
+        "object_node"
+      ]
+    },
+    {
+      "leaf_path": "propertyPack.ownership.ownershipsToBeTransferred[].leaseholdInformation.contactDetails.serviceContactAssignments.noticeOfAssignmentAndCharge.managingAgent.feeIncludingVAT",
+      "predicate": "opda:feeIncludingVAT",
+      "predicate_iri": "https://opda.org.uk/pdtf/feeIncludingVAT",
+      "kind": "Object",
+      "domain": "opda:Transaction",
+      "range": "opda:MonetaryAmount",
+      "layer": 1,
+      "flags": [
+        "monetary",
+        "object_node"
+      ]
+    },
+    {
+      "leaf_path": "propertyPack.ownership.ownershipsToBeTransferred[].leaseholdInformation.contactDetails.serviceContactAssignments.noticeOfAssignmentAndCharge.other.feeIncludingVAT",
+      "predicate": "opda:feeIncludingVAT",
+      "predicate_iri": "https://opda.org.uk/pdtf/feeIncludingVAT",
+      "kind": "Object",
+      "domain": "opda:Transaction",
+      "range": "opda:MonetaryAmount",
+      "layer": 1,
+      "flags": [
+        "monetary",
+        "object_node"
+      ]
+    },
+    {
+      "leaf_path": "propertyPack.ownership.ownershipsToBeTransferred[].leaseholdInformation.contactDetails.serviceContactAssignments.noticeOfTransferAndCharge.legalRepresentative.feeIncludingVAT",
+      "predicate": "opda:feeIncludingVAT",
+      "predicate_iri": "https://opda.org.uk/pdtf/feeIncludingVAT",
+      "kind": "Object",
+      "domain": "opda:Transaction",
+      "range": "opda:MonetaryAmount",
+      "layer": 1,
+      "flags": [
+        "monetary",
+        "object_node"
+      ]
+    },
+    {
+      "leaf_path": "propertyPack.ownership.ownershipsToBeTransferred[].leaseholdInformation.contactDetails.serviceContactAssignments.noticeOfTransferAndCharge.managementCompany.feeIncludingVAT",
+      "predicate": "opda:feeIncludingVAT",
+      "predicate_iri": "https://opda.org.uk/pdtf/feeIncludingVAT",
+      "kind": "Object",
+      "domain": "opda:Transaction",
+      "range": "opda:MonetaryAmount",
+      "layer": 1,
+      "flags": [
+        "monetary",
+        "object_node"
+      ]
+    },
+    {
+      "leaf_path": "propertyPack.ownership.ownershipsToBeTransferred[].leaseholdInformation.contactDetails.serviceContactAssignments.noticeOfTransferAndCharge.managingAgent.feeIncludingVAT",
+      "predicate": "opda:feeIncludingVAT",
+      "predicate_iri": "https://opda.org.uk/pdtf/feeIncludingVAT",
+      "kind": "Object",
+      "domain": "opda:Transaction",
+      "range": "opda:MonetaryAmount",
+      "layer": 1,
+      "flags": [
+        "monetary",
+        "object_node"
+      ]
+    },
+    {
+      "leaf_path": "propertyPack.ownership.ownershipsToBeTransferred[].leaseholdInformation.contactDetails.serviceContactAssignments.noticeOfTransferAndCharge.other.feeIncludingVAT",
+      "predicate": "opda:feeIncludingVAT",
+      "predicate_iri": "https://opda.org.uk/pdtf/feeIncludingVAT",
+      "kind": "Object",
+      "domain": "opda:Transaction",
+      "range": "opda:MonetaryAmount",
+      "layer": 1,
+      "flags": [
+        "monetary",
+        "object_node"
+      ]
+    },
+    {
+      "leaf_path": "propertyPack.ownership.ownershipsToBeTransferred[].leaseholdInformation.contactDetails.serviceContactAssignments.noticeOfTransferAndCharge.rentchargeOwner.feeIncludingVAT",
+      "predicate": "opda:feeIncludingVAT",
+      "predicate_iri": "https://opda.org.uk/pdtf/feeIncludingVAT",
+      "kind": "Object",
+      "domain": "opda:Transaction",
+      "range": "opda:MonetaryAmount",
+      "layer": 1,
+      "flags": [
+        "monetary",
+        "object_node"
+      ]
+    },
+    {
+      "leaf_path": "propertyPack.ownership.ownershipsToBeTransferred[].leaseholdInformation.contactDetails.serviceContactAssignments.organisesBuildingInsurance",
+      "predicate": "opda:organisesBuildingInsurance",
+      "predicate_iri": "https://opda.org.uk/pdtf/organisesBuildingInsurance",
+      "kind": "Datatype",
+      "domain": "opda:LegalEstate",
+      "range": "http://www.w3.org/2001/XMLSchema#string",
+      "layer": 1,
+      "flags": []
+    },
+    {
+      "leaf_path": "propertyPack.ownership.ownershipsToBeTransferred[].leaseholdInformation.enfranchisement.sellerOwnedProperty",
+      "predicate": "opda:sellerOwnedProperty",
+      "predicate_iri": "https://opda.org.uk/pdtf/sellerOwnedProperty",
+      "kind": "Datatype",
+      "domain": "opda:LegalEstate",
+      "range": "http://www.w3.org/2001/XMLSchema#string",
+      "layer": 1,
+      "flags": []
+    },
+    {
+      "leaf_path": "propertyPack.ownership.ownershipsToBeTransferred[].leaseholdInformation.general.otherPropertiesInManagedArea",
+      "predicate": "opda:otherPropertiesInManagedArea",
+      "predicate_iri": "https://opda.org.uk/pdtf/otherPropertiesInManagedArea",
+      "kind": "Datatype",
+      "domain": "opda:LegalEstate",
+      "range": "http://www.w3.org/2001/XMLSchema#decimal",
+      "layer": 1,
+      "flags": []
+    },
+    {
+      "leaf_path": "propertyPack.ownership.ownershipsToBeTransferred[].leaseholdInformation.groundRent.annualGroundRent",
+      "predicate": "opda:annualGroundRent",
+      "predicate_iri": "https://opda.org.uk/pdtf/annualGroundRent",
+      "kind": "Object",
+      "domain": "opda:LegalEstate",
+      "range": "opda:MonetaryAmount",
+      "layer": 1,
+      "flags": [
+        "monetary",
+        "object_node"
+      ]
+    },
+    {
+      "leaf_path": "propertyPack.ownership.ownershipsToBeTransferred[].leaseholdInformation.groundRent.groundRentFrequency",
+      "predicate": "opda:groundRentFrequency",
+      "predicate_iri": "https://opda.org.uk/pdtf/groundRentFrequency",
+      "kind": "Datatype",
+      "domain": "opda:LegalEstate",
+      "range": "http://www.w3.org/2001/XMLSchema#string",
+      "layer": 1,
+      "flags": []
+    },
+    {
+      "leaf_path": "propertyPack.ownership.ownershipsToBeTransferred[].leaseholdInformation.groundRent.lastDemandPeriod.from",
+      "predicate": "opda:from",
+      "predicate_iri": "https://opda.org.uk/pdtf/from",
+      "kind": "Datatype",
+      "domain": "opda:LegalEstate",
+      "range": "http://www.w3.org/2001/XMLSchema#date",
+      "layer": 1,
+      "flags": []
+    },
+    {
+      "leaf_path": "propertyPack.ownership.ownershipsToBeTransferred[].leaseholdInformation.groundRent.lastDemandPeriod.to",
+      "predicate": "opda:to",
+      "predicate_iri": "https://opda.org.uk/pdtf/to",
+      "kind": "Datatype",
+      "domain": "opda:LegalEstate",
+      "range": "http://www.w3.org/2001/XMLSchema#date",
+      "layer": 1,
+      "flags": []
+    },
+    {
+      "leaf_path": "propertyPack.ownership.ownershipsToBeTransferred[].leaseholdInformation.groundRent.rentSubjectToIncrease.rentIncreaseCalculated",
+      "predicate": "opda:rentIncreaseCalculated",
+      "predicate_iri": "https://opda.org.uk/pdtf/rentIncreaseCalculated",
+      "kind": "Datatype",
+      "domain": "opda:LegalEstate",
+      "range": "http://www.w3.org/2001/XMLSchema#string",
+      "layer": 1,
+      "flags": []
+    },
+    {
+      "leaf_path": "propertyPack.ownership.ownershipsToBeTransferred[].leaseholdInformation.groundRent.rentSubjectToIncrease.rentReviewFrequency",
+      "predicate": "opda:rentReviewFrequency",
+      "predicate_iri": "https://opda.org.uk/pdtf/rentReviewFrequency",
+      "kind": "Datatype",
+      "domain": "opda:LegalEstate",
+      "range": "http://www.w3.org/2001/XMLSchema#string",
+      "layer": 1,
+      "flags": []
+    },
+    {
+      "leaf_path": "propertyPack.ownership.ownershipsToBeTransferred[].leaseholdInformation.leaseTerm.lengthOfLeaseInYears",
+      "predicate": "opda:lengthOfLeaseInYears",
+      "predicate_iri": "https://opda.org.uk/pdtf/lengthOfLeaseInYears",
+      "kind": "Datatype",
+      "domain": "opda:LegalEstate",
+      "range": "http://www.w3.org/2001/XMLSchema#integer",
+      "layer": 1,
+      "flags": []
+    },
+    {
+      "leaf_path": "propertyPack.ownership.ownershipsToBeTransferred[].leaseholdInformation.leaseTerm.startYearOfLease",
+      "predicate": "opda:startYearOfLease",
+      "predicate_iri": "https://opda.org.uk/pdtf/startYearOfLease",
+      "kind": "Datatype",
+      "domain": "opda:LegalEstate",
+      "range": "http://www.w3.org/2001/XMLSchema#gYear",
+      "layer": 1,
+      "flags": []
+    },
+    {
+      "leaf_path": "propertyPack.ownership.ownershipsToBeTransferred[].leaseholdInformation.ownershipAndManagement.freeholdOwner",
+      "predicate": "opda:freeholdOwner",
+      "predicate_iri": "https://opda.org.uk/pdtf/freeholdOwner",
+      "kind": "Datatype",
+      "domain": "opda:LegalEstate",
+      "range": "http://www.w3.org/2001/XMLSchema#string",
+      "layer": 1,
+      "flags": []
+    },
+    {
+      "leaf_path": "propertyPack.ownership.ownershipsToBeTransferred[].leaseholdInformation.ownershipAndManagement.hasHeadlease.headLeaseholderControlled",
+      "predicate": "opda:headLeaseholderControlled",
+      "predicate_iri": "https://opda.org.uk/pdtf/headLeaseholderControlled",
+      "kind": "Datatype",
+      "domain": "opda:LegalEstate",
+      "range": "http://www.w3.org/2001/XMLSchema#string",
+      "layer": 1,
+      "flags": []
+    },
+    {
+      "leaf_path": "propertyPack.ownership.ownershipsToBeTransferred[].leaseholdInformation.ownershipAndManagement.hasTenantCompanyDissolved",
+      "predicate": "opda:hasTenantCompanyDissolved",
+      "predicate_iri": "https://opda.org.uk/pdtf/hasTenantCompanyDissolved",
+      "kind": "Datatype",
+      "domain": "opda:LegalEstate",
+      "range": "http://www.w3.org/2001/XMLSchema#string",
+      "layer": 1,
+      "flags": []
+    },
+    {
+      "leaf_path": "propertyPack.ownership.ownershipsToBeTransferred[].leaseholdInformation.ownershipAndManagement.isManagingAgentEmployed",
+      "predicate": "opda:isManagingAgentEmployed",
+      "predicate_iri": "https://opda.org.uk/pdtf/isManagingAgentEmployed",
+      "kind": "Datatype",
+      "domain": "opda:LegalEstate",
+      "range": "http://www.w3.org/2001/XMLSchema#string",
+      "layer": 1,
+      "flags": []
+    },
+    {
+      "leaf_path": "propertyPack.ownership.ownershipsToBeTransferred[].leaseholdInformation.requiredDocuments.certificateOfComplianceFee",
+      "predicate": "opda:certificateOfComplianceFee",
+      "predicate_iri": "https://opda.org.uk/pdtf/certificateOfComplianceFee",
+      "kind": "Object",
+      "domain": "opda:LegalEstate",
+      "range": "opda:MonetaryAmount",
+      "layer": 1,
+      "flags": [
+        "monetary",
+        "object_node"
+      ]
+    },
+    {
+      "leaf_path": "propertyPack.ownership.ownershipsToBeTransferred[].leaseholdInformation.serviceCharge.adHocExpenses",
+      "predicate": "opda:adHocExpenses",
+      "predicate_iri": "https://opda.org.uk/pdtf/adHocExpenses",
+      "kind": "Datatype",
+      "domain": "opda:LegalEstate",
+      "range": "http://www.w3.org/2001/XMLSchema#string",
+      "layer": 1,
+      "flags": []
+    },
+    {
+      "leaf_path": "propertyPack.ownership.ownershipsToBeTransferred[].leaseholdInformation.serviceCharge.annualServiceCharge",
+      "predicate": "opda:annualServiceCharge",
+      "predicate_iri": "https://opda.org.uk/pdtf/annualServiceCharge",
+      "kind": "Object",
+      "domain": "opda:LegalEstate",
+      "range": "opda:MonetaryAmount",
+      "layer": 1,
+      "flags": [
+        "monetary",
+        "object_node"
+      ]
+    },
+    {
+      "leaf_path": "propertyPack.ownership.ownershipsToBeTransferred[].leaseholdInformation.serviceCharge.dangerousCladdingOrDefects",
+      "predicate": "opda:dangerousCladdingOrDefects",
+      "predicate_iri": "https://opda.org.uk/pdtf/dangerousCladdingOrDefects",
+      "kind": "Datatype",
+      "domain": "opda:LegalEstate",
+      "range": "http://www.w3.org/2001/XMLSchema#string",
+      "layer": 1,
+      "flags": []
+    },
+    {
+      "leaf_path": "propertyPack.ownership.ownershipsToBeTransferred[].leaseholdInformation.serviceCharge.lastDecoratedPeriod.externally.from",
+      "predicate": "opda:from",
+      "predicate_iri": "https://opda.org.uk/pdtf/from",
+      "kind": "Datatype",
+      "domain": "opda:LegalEstate",
+      "range": "http://www.w3.org/2001/XMLSchema#date",
+      "layer": 1,
+      "flags": []
+    },
+    {
+      "leaf_path": "propertyPack.ownership.ownershipsToBeTransferred[].leaseholdInformation.serviceCharge.lastDecoratedPeriod.externally.to",
+      "predicate": "opda:to",
+      "predicate_iri": "https://opda.org.uk/pdtf/to",
+      "kind": "Datatype",
+      "domain": "opda:LegalEstate",
+      "range": "http://www.w3.org/2001/XMLSchema#date",
+      "layer": 1,
+      "flags": []
+    },
+    {
+      "leaf_path": "propertyPack.ownership.ownershipsToBeTransferred[].leaseholdInformation.serviceCharge.lastDecoratedPeriod.externally.year",
+      "predicate": "opda:year",
+      "predicate_iri": "https://opda.org.uk/pdtf/year",
+      "kind": "Datatype",
+      "domain": "opda:LegalEstate",
+      "range": "http://www.w3.org/2001/XMLSchema#gYear",
+      "layer": 1,
+      "flags": []
+    },
+    {
+      "leaf_path": "propertyPack.ownership.ownershipsToBeTransferred[].leaseholdInformation.serviceCharge.lastDecoratedPeriod.internally.from",
+      "predicate": "opda:from",
+      "predicate_iri": "https://opda.org.uk/pdtf/from",
+      "kind": "Datatype",
+      "domain": "opda:LegalEstate",
+      "range": "http://www.w3.org/2001/XMLSchema#date",
+      "layer": 1,
+      "flags": []
+    },
+    {
+      "leaf_path": "propertyPack.ownership.ownershipsToBeTransferred[].leaseholdInformation.serviceCharge.lastDecoratedPeriod.internally.to",
+      "predicate": "opda:to",
+      "predicate_iri": "https://opda.org.uk/pdtf/to",
+      "kind": "Datatype",
+      "domain": "opda:LegalEstate",
+      "range": "http://www.w3.org/2001/XMLSchema#date",
+      "layer": 1,
+      "flags": []
+    },
+    {
+      "leaf_path": "propertyPack.ownership.ownershipsToBeTransferred[].leaseholdInformation.serviceCharge.lastDecoratedPeriod.internally.year",
+      "predicate": "opda:year",
+      "predicate_iri": "https://opda.org.uk/pdtf/year",
+      "kind": "Datatype",
+      "domain": "opda:LegalEstate",
+      "range": "http://www.w3.org/2001/XMLSchema#gYear",
+      "layer": 1,
+      "flags": []
+    },
+    {
+      "leaf_path": "propertyPack.ownership.ownershipsToBeTransferred[].leaseholdInformation.serviceCharge.lastDemandPeriod.from",
+      "predicate": "opda:from",
+      "predicate_iri": "https://opda.org.uk/pdtf/from",
+      "kind": "Datatype",
+      "domain": "opda:LegalEstate",
+      "range": "http://www.w3.org/2001/XMLSchema#date",
+      "layer": 1,
+      "flags": []
+    },
+    {
+      "leaf_path": "propertyPack.ownership.ownershipsToBeTransferred[].leaseholdInformation.serviceCharge.lastDemandPeriod.to",
+      "predicate": "opda:to",
+      "predicate_iri": "https://opda.org.uk/pdtf/to",
+      "kind": "Datatype",
+      "domain": "opda:LegalEstate",
+      "range": "http://www.w3.org/2001/XMLSchema#date",
+      "layer": 1,
+      "flags": []
+    },
+    {
+      "leaf_path": "propertyPack.ownership.ownershipsToBeTransferred[].leaseholdInformation.serviceCharge.propertiesContributingToMaintenanceOfManagedArea",
+      "predicate": "opda:propertiesContributingToMaintenanceOfManagedArea",
+      "predicate_iri": "https://opda.org.uk/pdtf/propertiesContributingToMaintenanceOfManagedArea",
+      "kind": "Datatype",
+      "domain": "opda:LegalEstate",
+      "range": "http://www.w3.org/2001/XMLSchema#decimal",
+      "layer": 1,
+      "flags": []
+    },
+    {
+      "leaf_path": "propertyPack.ownership.ownershipsToBeTransferred[].leaseholdInformation.serviceCharge.reserveFund.contributionIncludedInServiceCharge",
+      "predicate": "opda:contributionIncludedInServiceCharge",
+      "predicate_iri": "https://opda.org.uk/pdtf/contributionIncludedInServiceCharge",
+      "kind": "Datatype",
+      "domain": "opda:LegalEstate",
+      "range": "http://www.w3.org/2001/XMLSchema#string",
+      "layer": 1,
+      "flags": []
+    },
+    {
+      "leaf_path": "propertyPack.ownership.ownershipsToBeTransferred[].leaseholdInformation.sharedOwnership.sharedOwnershipPercentage",
+      "predicate": "opda:sharedOwnershipPercentage",
+      "predicate_iri": "https://opda.org.uk/pdtf/sharedOwnershipPercentage",
+      "kind": "Datatype",
+      "domain": "opda:LegalEstate",
+      "range": "http://www.w3.org/2001/XMLSchema#decimal",
+      "layer": 1,
+      "flags": []
+    },
+    {
+      "leaf_path": "propertyPack.ownership.ownershipsToBeTransferred[].leaseholdInformation.sharedOwnership.sharedOwnershipRent",
+      "predicate": "opda:sharedOwnershipRent",
+      "predicate_iri": "https://opda.org.uk/pdtf/sharedOwnershipRent",
+      "kind": "Object",
+      "domain": "opda:LegalEstate",
+      "range": "opda:MonetaryAmount",
+      "layer": 1,
+      "flags": [
+        "monetary",
+        "object_node"
+      ]
+    },
+    {
+      "leaf_path": "propertyPack.ownership.ownershipsToBeTransferred[].leaseholdInformation.transferAndRegistration.deedOfCovenantRequired.costsApplicableToTheDeed",
+      "predicate": "opda:costsApplicableToTheDeed",
+      "predicate_iri": "https://opda.org.uk/pdtf/costsApplicableToTheDeed",
+      "kind": "Object",
+      "domain": "opda:Transaction",
+      "range": "opda:MonetaryAmount",
+      "layer": 1,
+      "flags": [
+        "monetary",
+        "object_node"
+      ]
+    },
+    {
+      "leaf_path": "propertyPack.ownership.ownershipsToBeTransferred[].leaseholdInformation.transferAndRegistration.deedOfCovenantRequired.personWhoDealsWithTheDeedOfCovenant",
+      "predicate": "opda:personWhoDealsWithTheDeedOfCovenant",
+      "predicate_iri": "https://opda.org.uk/pdtf/personWhoDealsWithTheDeedOfCovenant",
+      "kind": "Datatype",
+      "domain": "opda:LegalEstate",
+      "range": "http://www.w3.org/2001/XMLSchema#string",
+      "layer": 1,
+      "flags": []
+    },
+    {
+      "leaf_path": "propertyPack.ownership.ownershipsToBeTransferred[].leaseholdInformation.transferAndRegistration.licenceToAssignRequired.requirements",
+      "predicate": "opda:requirements",
+      "predicate_iri": "https://opda.org.uk/pdtf/requirements",
+      "kind": "Datatype",
+      "domain": "opda:LegalEstate",
+      "range": "http://www.w3.org/2001/XMLSchema#string",
+      "layer": 1,
+      "flags": []
+    },
+    {
+      "leaf_path": "propertyPack.ownership.ownershipsToBeTransferred[].leaseholdInformation.transferAndRegistration.procedureForObtainingCertificate",
+      "predicate": "opda:procedureForObtainingCertificate",
+      "predicate_iri": "https://opda.org.uk/pdtf/procedureForObtainingCertificate",
+      "kind": "Datatype",
+      "domain": "opda:LegalEstate",
+      "range": "http://www.w3.org/2001/XMLSchema#string",
+      "layer": 1,
+      "flags": []
+    },
+    {
+      "leaf_path": "propertyPack.ownership.ownershipsToBeTransferred[].managedFreeholdOrCommonholdInformation.confirmation",
+      "predicate": "opda:confirmation",
+      "predicate_iri": "https://opda.org.uk/pdtf/confirmation",
+      "kind": "Datatype",
+      "domain": "opda:Transaction",
+      "range": "http://www.w3.org/2001/XMLSchema#boolean",
+      "layer": 1,
+      "flags": []
+    },
+    {
+      "leaf_path": "propertyPack.ownership.ownershipsToBeTransferred[].managedFreeholdOrCommonholdInformation.confirmation.response",
+      "predicate": "opda:response",
+      "predicate_iri": "https://opda.org.uk/pdtf/response",
+      "kind": "Datatype",
+      "domain": "opda:Transaction",
+      "range": "http://www.w3.org/2001/XMLSchema#boolean",
+      "layer": 1,
+      "flags": []
+    },
+    {
+      "leaf_path": "propertyPack.ownership.ownershipsToBeTransferred[].managedFreeholdOrCommonholdInformation.contactDetails.dealsWithDayToDayMaintenanceOfManagedArea",
+      "predicate": "opda:dealsWithDayToDayMaintenanceOfManagedArea",
+      "predicate_iri": "https://opda.org.uk/pdtf/dealsWithDayToDayMaintenanceOfManagedArea",
+      "kind": "Datatype",
+      "domain": "opda:LegalEstate",
+      "range": "http://www.w3.org/2001/XMLSchema#string",
+      "layer": 1,
+      "flags": []
+    },
+    {
+      "leaf_path": "propertyPack.ownership.ownershipsToBeTransferred[].managedFreeholdOrCommonholdInformation.contactDetails.managementCompany.bankDetails.accountName",
+      "predicate": "opda:accountName",
+      "predicate_iri": "https://opda.org.uk/pdtf/accountName",
+      "kind": "Datatype",
+      "domain": "opda:Organisation",
+      "range": "http://www.w3.org/2001/XMLSchema#string",
+      "layer": 1,
+      "flags": []
+    },
+    {
+      "leaf_path": "propertyPack.ownership.ownershipsToBeTransferred[].managedFreeholdOrCommonholdInformation.contactDetails.managementCompany.bankDetails.accountNumber",
+      "predicate": "opda:accountNumber",
+      "predicate_iri": "https://opda.org.uk/pdtf/accountNumber",
+      "kind": "Datatype",
+      "domain": "opda:Organisation",
+      "range": "http://www.w3.org/2001/XMLSchema#string",
+      "layer": 1,
+      "flags": []
+    },
+    {
+      "leaf_path": "propertyPack.ownership.ownershipsToBeTransferred[].managedFreeholdOrCommonholdInformation.contactDetails.managementCompany.bankDetails.reference",
+      "predicate": "opda:reference",
+      "predicate_iri": "https://opda.org.uk/pdtf/reference",
+      "kind": "Datatype",
+      "domain": "opda:Organisation",
+      "range": "http://www.w3.org/2001/XMLSchema#string",
+      "layer": 1,
+      "flags": []
+    },
+    {
+      "leaf_path": "propertyPack.ownership.ownershipsToBeTransferred[].managedFreeholdOrCommonholdInformation.contactDetails.managementCompany.bankDetails.sortCode",
+      "predicate": "opda:sortCode",
+      "predicate_iri": "https://opda.org.uk/pdtf/sortCode",
+      "kind": "Datatype",
+      "domain": "opda:Organisation",
+      "range": "http://www.w3.org/2001/XMLSchema#string",
+      "layer": 1,
+      "flags": []
+    },
+    {
+      "leaf_path": "propertyPack.ownership.ownershipsToBeTransferred[].managedFreeholdOrCommonholdInformation.contactDetails.managingAgent.bankDetails.accountName",
+      "predicate": "opda:accountName",
+      "predicate_iri": "https://opda.org.uk/pdtf/accountName",
+      "kind": "Datatype",
+      "domain": "opda:Organisation",
+      "range": "http://www.w3.org/2001/XMLSchema#string",
+      "layer": 1,
+      "flags": []
+    },
+    {
+      "leaf_path": "propertyPack.ownership.ownershipsToBeTransferred[].managedFreeholdOrCommonholdInformation.contactDetails.managingAgent.bankDetails.accountNumber",
+      "predicate": "opda:accountNumber",
+      "predicate_iri": "https://opda.org.uk/pdtf/accountNumber",
+      "kind": "Datatype",
+      "domain": "opda:Organisation",
+      "range": "http://www.w3.org/2001/XMLSchema#string",
+      "layer": 1,
+      "flags": []
+    },
+    {
+      "leaf_path": "propertyPack.ownership.ownershipsToBeTransferred[].managedFreeholdOrCommonholdInformation.contactDetails.managingAgent.bankDetails.reference",
+      "predicate": "opda:reference",
+      "predicate_iri": "https://opda.org.uk/pdtf/reference",
+      "kind": "Datatype",
+      "domain": "opda:Organisation",
+      "range": "http://www.w3.org/2001/XMLSchema#string",
+      "layer": 1,
+      "flags": []
+    },
+    {
+      "leaf_path": "propertyPack.ownership.ownershipsToBeTransferred[].managedFreeholdOrCommonholdInformation.contactDetails.managingAgent.bankDetails.sortCode",
+      "predicate": "opda:sortCode",
+      "predicate_iri": "https://opda.org.uk/pdtf/sortCode",
+      "kind": "Datatype",
+      "domain": "opda:Organisation",
+      "range": "http://www.w3.org/2001/XMLSchema#string",
+      "layer": 1,
+      "flags": []
+    },
+    {
+      "leaf_path": "propertyPack.ownership.ownershipsToBeTransferred[].managedFreeholdOrCommonholdInformation.contactDetails.noticeOfTransferAndCharge.legalRepresentative.feeIncludingVAT",
+      "predicate": "opda:feeIncludingVAT",
+      "predicate_iri": "https://opda.org.uk/pdtf/feeIncludingVAT",
+      "kind": "Object",
+      "domain": "opda:Transaction",
+      "range": "opda:MonetaryAmount",
+      "layer": 1,
+      "flags": [
+        "monetary",
+        "object_node"
+      ]
+    },
+    {
+      "leaf_path": "propertyPack.ownership.ownershipsToBeTransferred[].managedFreeholdOrCommonholdInformation.contactDetails.noticeOfTransferAndCharge.managementCompany.feeIncludingVAT",
+      "predicate": "opda:feeIncludingVAT",
+      "predicate_iri": "https://opda.org.uk/pdtf/feeIncludingVAT",
+      "kind": "Object",
+      "domain": "opda:Transaction",
+      "range": "opda:MonetaryAmount",
+      "layer": 1,
+      "flags": [
+        "monetary",
+        "object_node"
+      ]
+    },
+    {
+      "leaf_path": "propertyPack.ownership.ownershipsToBeTransferred[].managedFreeholdOrCommonholdInformation.contactDetails.noticeOfTransferAndCharge.managingAgent.feeIncludingVAT",
+      "predicate": "opda:feeIncludingVAT",
+      "predicate_iri": "https://opda.org.uk/pdtf/feeIncludingVAT",
+      "kind": "Object",
+      "domain": "opda:Transaction",
+      "range": "opda:MonetaryAmount",
+      "layer": 1,
+      "flags": [
+        "monetary",
+        "object_node"
+      ]
+    },
+    {
+      "leaf_path": "propertyPack.ownership.ownershipsToBeTransferred[].managedFreeholdOrCommonholdInformation.contactDetails.noticeOfTransferAndCharge.other.feeIncludingVAT",
+      "predicate": "opda:feeIncludingVAT",
+      "predicate_iri": "https://opda.org.uk/pdtf/feeIncludingVAT",
+      "kind": "Object",
+      "domain": "opda:Transaction",
+      "range": "opda:MonetaryAmount",
+      "layer": 1,
+      "flags": [
+        "monetary",
+        "object_node"
+      ]
+    },
+    {
+      "leaf_path": "propertyPack.ownership.ownershipsToBeTransferred[].managedFreeholdOrCommonholdInformation.contactDetails.noticeOfTransferAndCharge.rentchargeOwner.feeIncludingVAT",
+      "predicate": "opda:feeIncludingVAT",
+      "predicate_iri": "https://opda.org.uk/pdtf/feeIncludingVAT",
+      "kind": "Object",
+      "domain": "opda:Transaction",
+      "range": "opda:MonetaryAmount",
+      "layer": 1,
+      "flags": [
+        "monetary",
+        "object_node"
+      ]
+    },
+    {
+      "leaf_path": "propertyPack.ownership.ownershipsToBeTransferred[].managedFreeholdOrCommonholdInformation.contactDetails.rentchargeOwner.bankDetails.accountName",
+      "predicate": "opda:accountName",
+      "predicate_iri": "https://opda.org.uk/pdtf/accountName",
+      "kind": "Datatype",
+      "domain": "opda:Organisation",
+      "range": "http://www.w3.org/2001/XMLSchema#string",
+      "layer": 1,
+      "flags": []
+    },
+    {
+      "leaf_path": "propertyPack.ownership.ownershipsToBeTransferred[].managedFreeholdOrCommonholdInformation.contactDetails.rentchargeOwner.bankDetails.accountNumber",
+      "predicate": "opda:accountNumber",
+      "predicate_iri": "https://opda.org.uk/pdtf/accountNumber",
+      "kind": "Datatype",
+      "domain": "opda:Organisation",
+      "range": "http://www.w3.org/2001/XMLSchema#string",
+      "layer": 1,
+      "flags": []
+    },
+    {
+      "leaf_path": "propertyPack.ownership.ownershipsToBeTransferred[].managedFreeholdOrCommonholdInformation.contactDetails.rentchargeOwner.bankDetails.reference",
+      "predicate": "opda:reference",
+      "predicate_iri": "https://opda.org.uk/pdtf/reference",
+      "kind": "Datatype",
+      "domain": "opda:Organisation",
+      "range": "http://www.w3.org/2001/XMLSchema#string",
+      "layer": 1,
+      "flags": []
+    },
+    {
+      "leaf_path": "propertyPack.ownership.ownershipsToBeTransferred[].managedFreeholdOrCommonholdInformation.contactDetails.rentchargeOwner.bankDetails.sortCode",
+      "predicate": "opda:sortCode",
+      "predicate_iri": "https://opda.org.uk/pdtf/sortCode",
+      "kind": "Datatype",
+      "domain": "opda:Organisation",
+      "range": "http://www.w3.org/2001/XMLSchema#string",
+      "layer": 1,
+      "flags": []
+    },
+    {
+      "leaf_path": "propertyPack.ownership.ownershipsToBeTransferred[].managedFreeholdOrCommonholdInformation.insurance.managedAreaInsured.lastDemandPeriod.from",
+      "predicate": "opda:from",
+      "predicate_iri": "https://opda.org.uk/pdtf/from",
+      "kind": "Datatype",
+      "domain": "opda:LegalEstate",
+      "range": "http://www.w3.org/2001/XMLSchema#date",
+      "layer": 1,
+      "flags": []
+    },
+    {
+      "leaf_path": "propertyPack.ownership.ownershipsToBeTransferred[].managedFreeholdOrCommonholdInformation.insurance.managedAreaInsured.lastDemandPeriod.to",
+      "predicate": "opda:to",
+      "predicate_iri": "https://opda.org.uk/pdtf/to",
+      "kind": "Datatype",
+      "domain": "opda:LegalEstate",
+      "range": "http://www.w3.org/2001/XMLSchema#date",
+      "layer": 1,
+      "flags": []
+    },
+    {
+      "leaf_path": "propertyPack.ownership.ownershipsToBeTransferred[].managedFreeholdOrCommonholdInformation.serviceCharge.annualServiceCharge",
+      "predicate": "opda:annualServiceCharge",
+      "predicate_iri": "https://opda.org.uk/pdtf/annualServiceCharge",
+      "kind": "Object",
+      "domain": "opda:LegalEstate",
+      "range": "opda:MonetaryAmount",
+      "layer": 1,
+      "flags": [
+        "monetary",
+        "object_node"
+      ]
+    },
+    {
+      "leaf_path": "propertyPack.ownership.ownershipsToBeTransferred[].managedFreeholdOrCommonholdInformation.serviceCharge.hasFixedRentcharge",
+      "predicate": "opda:hasFixedRentcharge",
+      "predicate_iri": "https://opda.org.uk/pdtf/hasFixedRentcharge",
+      "kind": "Datatype",
+      "domain": "opda:LegalEstate",
+      "range": "http://www.w3.org/2001/XMLSchema#string",
+      "layer": 1,
+      "flags": []
+    },
+    {
+      "leaf_path": "propertyPack.ownership.ownershipsToBeTransferred[].managedFreeholdOrCommonholdInformation.serviceCharge.lastDecoratedPeriod.externally.from",
+      "predicate": "opda:from",
+      "predicate_iri": "https://opda.org.uk/pdtf/from",
+      "kind": "Datatype",
+      "domain": "opda:LegalEstate",
+      "range": "http://www.w3.org/2001/XMLSchema#date",
+      "layer": 1,
+      "flags": []
+    },
+    {
+      "leaf_path": "propertyPack.ownership.ownershipsToBeTransferred[].managedFreeholdOrCommonholdInformation.serviceCharge.lastDecoratedPeriod.externally.to",
+      "predicate": "opda:to",
+      "predicate_iri": "https://opda.org.uk/pdtf/to",
+      "kind": "Datatype",
+      "domain": "opda:LegalEstate",
+      "range": "http://www.w3.org/2001/XMLSchema#date",
+      "layer": 1,
+      "flags": []
+    },
+    {
+      "leaf_path": "propertyPack.ownership.ownershipsToBeTransferred[].managedFreeholdOrCommonholdInformation.serviceCharge.lastDecoratedPeriod.internally.from",
+      "predicate": "opda:from",
+      "predicate_iri": "https://opda.org.uk/pdtf/from",
+      "kind": "Datatype",
+      "domain": "opda:LegalEstate",
+      "range": "http://www.w3.org/2001/XMLSchema#date",
+      "layer": 1,
+      "flags": []
+    },
+    {
+      "leaf_path": "propertyPack.ownership.ownershipsToBeTransferred[].managedFreeholdOrCommonholdInformation.serviceCharge.lastDecoratedPeriod.internally.to",
+      "predicate": "opda:to",
+      "predicate_iri": "https://opda.org.uk/pdtf/to",
+      "kind": "Datatype",
+      "domain": "opda:LegalEstate",
+      "range": "http://www.w3.org/2001/XMLSchema#date",
+      "layer": 1,
+      "flags": []
+    },
+    {
+      "leaf_path": "propertyPack.ownership.ownershipsToBeTransferred[].managedFreeholdOrCommonholdInformation.serviceCharge.lastDemandPeriod.from",
+      "predicate": "opda:from",
+      "predicate_iri": "https://opda.org.uk/pdtf/from",
+      "kind": "Datatype",
+      "domain": "opda:LegalEstate",
+      "range": "http://www.w3.org/2001/XMLSchema#date",
+      "layer": 1,
+      "flags": []
+    },
+    {
+      "leaf_path": "propertyPack.ownership.ownershipsToBeTransferred[].managedFreeholdOrCommonholdInformation.serviceCharge.lastDemandPeriod.to",
+      "predicate": "opda:to",
+      "predicate_iri": "https://opda.org.uk/pdtf/to",
+      "kind": "Datatype",
+      "domain": "opda:LegalEstate",
+      "range": "http://www.w3.org/2001/XMLSchema#date",
+      "layer": 1,
+      "flags": []
+    },
+    {
+      "leaf_path": "propertyPack.ownership.ownershipsToBeTransferred[].managedFreeholdOrCommonholdInformation.serviceCharge.reserveFund.amount",
+      "predicate": "opda:amount",
+      "predicate_iri": "https://opda.org.uk/pdtf/amount",
+      "kind": "Datatype",
+      "domain": "opda:MonetaryAmount",
+      "range": "http://www.w3.org/2001/XMLSchema#decimal",
+      "layer": 1,
+      "flags": []
+    },
+    {
+      "leaf_path": "propertyPack.ownership.ownershipsToBeTransferred[].managedFreeholdOrCommonholdInformation.serviceCharge.reserveFund.amount.forTheManagedAreas",
+      "predicate": "opda:forTheManagedAreas",
+      "predicate_iri": "https://opda.org.uk/pdtf/forTheManagedAreas",
+      "kind": "Datatype",
+      "domain": "opda:LegalEstate",
+      "range": "http://www.w3.org/2001/XMLSchema#decimal",
+      "layer": 1,
+      "flags": []
+    },
+    {
+      "leaf_path": "propertyPack.ownership.ownershipsToBeTransferred[].managedFreeholdOrCommonholdInformation.serviceCharge.reserveFund.amount.fromTheOwners",
+      "predicate": "opda:fromTheOwners",
+      "predicate_iri": "https://opda.org.uk/pdtf/fromTheOwners",
+      "kind": "Datatype",
+      "domain": "opda:LegalEstate",
+      "range": "http://www.w3.org/2001/XMLSchema#decimal",
+      "layer": 1,
+      "flags": []
+    },
+    {
+      "leaf_path": "propertyPack.ownership.ownershipsToBeTransferred[].managedFreeholdOrCommonholdInformation.transferAndRegistration.deedOfCovenantRequired.costsApplicableToTheDeed",
+      "predicate": "opda:costsApplicableToTheDeed",
+      "predicate_iri": "https://opda.org.uk/pdtf/costsApplicableToTheDeed",
+      "kind": "Object",
+      "domain": "opda:Transaction",
+      "range": "opda:MonetaryAmount",
+      "layer": 1,
+      "flags": [
+        "monetary",
+        "object_node"
+      ]
+    },
+    {
+      "leaf_path": "propertyPack.ownership.ownershipsToBeTransferred[].managedFreeholdOrCommonholdInformation.transferAndRegistration.deedOfCovenantRequired.personWhoDealsWithTheDeedOfCovenant",
+      "predicate": "opda:personWhoDealsWithTheDeedOfCovenant",
+      "predicate_iri": "https://opda.org.uk/pdtf/personWhoDealsWithTheDeedOfCovenant",
+      "kind": "Datatype",
+      "domain": "opda:LegalEstate",
+      "range": "http://www.w3.org/2001/XMLSchema#string",
+      "layer": 1,
+      "flags": []
+    },
+    {
+      "leaf_path": "propertyPack.ownership.ownershipsToBeTransferred[].managedFreeholdOrCommonholdInformation.transferAndRegistration.procedureForObtainingCertificate",
+      "predicate": "opda:procedureForObtainingCertificate",
+      "predicate_iri": "https://opda.org.uk/pdtf/procedureForObtainingCertificate",
+      "kind": "Datatype",
+      "domain": "opda:LegalEstate",
+      "range": "http://www.w3.org/2001/XMLSchema#string",
+      "layer": 1,
+      "flags": []
+    },
+    {
+      "leaf_path": "propertyPack.ownership.ownershipsToBeTransferred[].otherOwnershipDetails",
+      "predicate": "opda:otherOwnershipDetails",
+      "predicate_iri": "https://opda.org.uk/pdtf/otherOwnershipDetails",
+      "kind": "Datatype",
+      "domain": "opda:LegalEstate",
+      "range": "http://www.w3.org/2001/XMLSchema#string",
+      "layer": 1,
+      "flags": []
+    },
+    {
+      "leaf_path": "propertyPack.ownership.ownershipsToBeTransferred[].ownershipType",
+      "predicate": "opda:ownershipType",
+      "predicate_iri": "https://opda.org.uk/pdtf/ownershipType",
+      "kind": "Datatype",
+      "domain": "opda:LegalEstate",
+      "range": "http://www.w3.org/2001/XMLSchema#string",
+      "layer": 1,
+      "flags": []
+    },
+    {
+      "leaf_path": "propertyPack.ownership.ownershipsToBeTransferred[].titleNumber",
+      "predicate": "opda:titleNumber",
+      "predicate_iri": "https://opda.org.uk/pdtf/titleNumber",
+      "kind": "Datatype",
+      "domain": "opda:RegisteredTitle",
+      "range": "http://www.w3.org/2001/XMLSchema#string",
+      "layer": 1,
+      "flags": []
+    },
+    {
+      "leaf_path": "propertyPack.ownership.ownershipsToBeTransferred[].titlePropertyDescription",
+      "predicate": "opda:titlePropertyDescription",
+      "predicate_iri": "https://opda.org.uk/pdtf/titlePropertyDescription",
+      "kind": "Datatype",
+      "domain": "opda:LegalEstate",
+      "range": "http://www.w3.org/2001/XMLSchema#string",
+      "layer": 1,
+      "flags": []
+    },
+    {
+      "leaf_path": "propertyPack.parking.controlledParking.annualCostOfPermit",
+      "predicate": "opda:annualCostOfPermit",
+      "predicate_iri": "https://opda.org.uk/pdtf/annualCostOfPermit",
+      "kind": "Object",
+      "domain": "opda:Property",
+      "range": "opda:MonetaryAmount",
+      "layer": 1,
+      "flags": [
+        "monetary",
+        "object_node"
+      ]
+    },
+    {
+      "leaf_path": "propertyPack.parking.parkingArrangements",
+      "predicate": "opda:parkingArrangements",
+      "predicate_iri": "https://opda.org.uk/pdtf/parkingArrangements",
+      "kind": "Datatype",
+      "domain": "opda:Property",
+      "range": "http://www.w3.org/2001/XMLSchema#string",
+      "layer": 1,
+      "flags": []
+    },
+    {
+      "leaf_path": "propertyPack.priceInformation.priceQualifier",
+      "predicate": "opda:priceQualifier",
+      "predicate_iri": "https://opda.org.uk/pdtf/priceQualifier",
+      "kind": "Datatype",
+      "domain": "opda:Property",
+      "range": "http://www.w3.org/2001/XMLSchema#string",
+      "layer": 1,
+      "flags": []
+    },
+    {
+      "leaf_path": "propertyPack.priceInformation.saleAtUndervalue",
+      "predicate": "opda:saleAtUndervalue",
+      "predicate_iri": "https://opda.org.uk/pdtf/saleAtUndervalue",
+      "kind": "Datatype",
+      "domain": "opda:Property",
+      "range": "http://www.w3.org/2001/XMLSchema#string",
+      "layer": 1,
+      "flags": []
+    },
+    {
+      "leaf_path": "propertyPack.residentialPropertyFeatures.bathrooms",
+      "predicate": "opda:bathrooms",
+      "predicate_iri": "https://opda.org.uk/pdtf/bathrooms",
+      "kind": "Datatype",
+      "domain": "opda:Property",
+      "range": "http://www.w3.org/2001/XMLSchema#integer",
+      "layer": 1,
+      "flags": []
+    },
+    {
+      "leaf_path": "propertyPack.residentialPropertyFeatures.bedrooms",
+      "predicate": "opda:bedrooms",
+      "predicate_iri": "https://opda.org.uk/pdtf/bedrooms",
+      "kind": "Datatype",
+      "domain": "opda:Property",
+      "range": "http://www.w3.org/2001/XMLSchema#integer",
+      "layer": 1,
+      "flags": []
+    },
+    {
+      "leaf_path": "propertyPack.residentialPropertyFeatures.diningAreas",
+      "predicate": "opda:diningAreas",
+      "predicate_iri": "https://opda.org.uk/pdtf/diningAreas",
+      "kind": "Datatype",
+      "domain": "opda:Property",
+      "range": "http://www.w3.org/2001/XMLSchema#integer",
+      "layer": 1,
+      "flags": []
+    },
+    {
+      "leaf_path": "propertyPack.residentialPropertyFeatures.kitchens",
+      "predicate": "opda:kitchens",
+      "predicate_iri": "https://opda.org.uk/pdtf/kitchens",
+      "kind": "Datatype",
+      "domain": "opda:Property",
+      "range": "http://www.w3.org/2001/XMLSchema#integer",
+      "layer": 1,
+      "flags": []
+    },
+    {
+      "leaf_path": "propertyPack.residentialPropertyFeatures.outsideAreas",
+      "predicate": "opda:outsideAreas",
+      "predicate_iri": "https://opda.org.uk/pdtf/outsideAreas",
+      "kind": "Datatype",
+      "domain": "opda:Property",
+      "range": "http://www.w3.org/2001/XMLSchema#string",
+      "layer": 1,
+      "flags": []
+    },
+    {
+      "leaf_path": "propertyPack.residentialPropertyFeatures.receptions",
+      "predicate": "opda:receptions",
+      "predicate_iri": "https://opda.org.uk/pdtf/receptions",
+      "kind": "Datatype",
+      "domain": "opda:Property",
+      "range": "http://www.w3.org/2001/XMLSchema#integer",
+      "layer": 1,
+      "flags": []
+    },
+    {
+      "leaf_path": "propertyPack.saleReadyDeclarations.authorisationToShare",
+      "predicate": "opda:authorisationToShare",
+      "predicate_iri": "https://opda.org.uk/pdtf/authorisationToShare",
+      "kind": "Datatype",
+      "domain": "opda:Transaction",
+      "range": "http://www.w3.org/2001/XMLSchema#boolean",
+      "layer": 1,
+      "flags": []
+    },
+    {
+      "leaf_path": "propertyPack.saleReadyDeclarations.authorisedToActOnBehalfOfAllSellers",
+      "predicate": "opda:authorisedToActOnBehalfOfAllSellers",
+      "predicate_iri": "https://opda.org.uk/pdtf/authorisedToActOnBehalfOfAllSellers",
+      "kind": "Datatype",
+      "domain": "opda:Transaction",
+      "range": "http://www.w3.org/2001/XMLSchema#boolean",
+      "layer": 1,
+      "flags": []
+    },
+    {
+      "leaf_path": "propertyPack.saleReadyDeclarations.sellerSignatures[].signedOn",
+      "predicate": "opda:signedOn",
+      "predicate_iri": "https://opda.org.uk/pdtf/signedOn",
+      "kind": "Datatype",
+      "domain": "opda:Transaction",
+      "range": "http://www.w3.org/2001/XMLSchema#date",
+      "layer": 1,
+      "flags": []
+    },
+    {
+      "leaf_path": "propertyPack.searches[].displayName",
+      "predicate": "opda:displayName",
+      "predicate_iri": "https://opda.org.uk/pdtf/displayName",
+      "kind": "Datatype",
+      "domain": null,
+      "range": "http://www.w3.org/2001/XMLSchema#string",
+      "layer": 1,
+      "flags": [
+        "shared_domainless"
+      ]
+    },
+    {
+      "leaf_path": "propertyPack.searches[].expectedDeliveryDate",
+      "predicate": "opda:expectedDeliveryDate",
+      "predicate_iri": "https://opda.org.uk/pdtf/expectedDeliveryDate",
+      "kind": "Datatype",
+      "domain": "opda:Search",
+      "range": "http://www.w3.org/2001/XMLSchema#date",
+      "layer": 1,
+      "flags": []
+    },
+    {
+      "leaf_path": "propertyPack.searches[].orderDate",
+      "predicate": "opda:orderDate",
+      "predicate_iri": "https://opda.org.uk/pdtf/orderDate",
+      "kind": "Datatype",
+      "domain": "opda:Search",
+      "range": "http://www.w3.org/2001/XMLSchema#date",
+      "layer": 1,
+      "flags": []
+    },
+    {
+      "leaf_path": "propertyPack.searches[].productCode",
+      "predicate": "opda:productCode",
+      "predicate_iri": "https://opda.org.uk/pdtf/productCode",
+      "kind": "Datatype",
+      "domain": "opda:Search",
+      "range": "http://www.w3.org/2001/XMLSchema#string",
+      "layer": 1,
+      "flags": []
+    },
+    {
+      "leaf_path": "propertyPack.searches[].providerName",
+      "predicate": "opda:providerName",
+      "predicate_iri": "https://opda.org.uk/pdtf/providerName",
+      "kind": "Datatype",
+      "domain": "opda:Search",
+      "range": "http://www.w3.org/2001/XMLSchema#string",
+      "layer": 1,
+      "flags": []
+    },
+    {
+      "leaf_path": "propertyPack.searches[].providerReference",
+      "predicate": "opda:providerReference",
+      "predicate_iri": "https://opda.org.uk/pdtf/providerReference",
+      "kind": "Datatype",
+      "domain": "opda:Search",
+      "range": "http://www.w3.org/2001/XMLSchema#string",
+      "layer": 1,
+      "flags": []
+    },
+    {
+      "leaf_path": "propertyPack.searches[].reportDate",
+      "predicate": "opda:reportDate",
+      "predicate_iri": "https://opda.org.uk/pdtf/reportDate",
+      "kind": "Datatype",
+      "domain": "opda:Search",
+      "range": "http://www.w3.org/2001/XMLSchema#date",
+      "layer": 1,
+      "flags": []
+    },
+    {
+      "leaf_path": "propertyPack.searches[].status",
+      "predicate": "opda:status",
+      "predicate_iri": "https://opda.org.uk/pdtf/status",
+      "kind": "Datatype",
+      "domain": "opda:Search",
+      "range": "http://www.w3.org/2001/XMLSchema#string",
+      "layer": 1,
+      "flags": []
+    },
+    {
+      "leaf_path": "propertyPack.smartHomeSystems.handoverOnCompletion",
+      "predicate": "opda:handoverOnCompletion",
+      "predicate_iri": "https://opda.org.uk/pdtf/handoverOnCompletion",
+      "kind": "Datatype",
+      "domain": "opda:Property",
+      "range": "http://www.w3.org/2001/XMLSchema#boolean",
+      "layer": 1,
+      "flags": []
+    },
+    {
+      "leaf_path": "propertyPack.specialistIssues.japaneseKnotweed.managementPlanInPlace",
+      "predicate": "opda:managementPlanInPlace",
+      "predicate_iri": "https://opda.org.uk/pdtf/managementPlanInPlace",
+      "kind": "Datatype",
+      "domain": "opda:Property",
+      "range": "http://www.w3.org/2001/XMLSchema#string",
+      "layer": 1,
+      "flags": []
+    },
+    {
+      "leaf_path": "propertyPack.surveys[].misc.constructionType",
+      "predicate": "opda:constructionType",
+      "predicate_iri": "https://opda.org.uk/pdtf/constructionType",
+      "kind": "Datatype",
+      "domain": "opda:Property",
+      "range": "http://www.w3.org/2001/XMLSchema#string",
+      "layer": 1,
+      "flags": []
+    },
+    {
+      "leaf_path": "propertyPack.surveys[].misc.reportDate",
+      "predicate": "opda:reportDate",
+      "predicate_iri": "https://opda.org.uk/pdtf/reportDate",
+      "kind": "Datatype",
+      "domain": "opda:Search",
+      "range": "http://www.w3.org/2001/XMLSchema#date",
+      "layer": 1,
+      "flags": []
+    },
+    {
+      "leaf_path": "propertyPack.titlesToBeSold[].additionalDocuments[].documentDate",
+      "predicate": "opda:documentDate",
+      "predicate_iri": "https://opda.org.uk/pdtf/documentDate",
+      "kind": "Datatype",
+      "domain": "opda:AttachedDocument",
+      "range": "http://www.w3.org/2001/XMLSchema#date",
+      "layer": 1,
+      "flags": []
+    },
+    {
+      "leaf_path": "propertyPack.titlesToBeSold[].additionalDocuments[].documentTypeCode",
+      "predicate": "opda:documentTypeCode",
+      "predicate_iri": "https://opda.org.uk/pdtf/documentTypeCode",
+      "kind": "Datatype",
+      "domain": "opda:AttachedDocument",
+      "range": "http://www.w3.org/2001/XMLSchema#string",
+      "layer": 1,
+      "flags": []
+    },
+    {
+      "leaf_path": "propertyPack.titlesToBeSold[].additionalDocuments[].filedUnder",
+      "predicate": "opda:filedUnder",
+      "predicate_iri": "https://opda.org.uk/pdtf/filedUnder",
+      "kind": "Datatype",
+      "domain": "opda:AttachedDocument",
+      "range": "http://www.w3.org/2001/XMLSchema#string",
+      "layer": 1,
+      "flags": []
+    },
+    {
+      "leaf_path": "propertyPack.titlesToBeSold[].additionalDocuments[].retrievedOn",
+      "predicate": "opda:retrievedOn",
+      "predicate_iri": "https://opda.org.uk/pdtf/retrievedOn",
+      "kind": "Datatype",
+      "domain": "opda:AttachedDocument",
+      "range": "http://www.w3.org/2001/XMLSchema#date",
+      "layer": 1,
+      "flags": []
+    },
+    {
+      "leaf_path": "propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.documentDetails.document.documentDate",
+      "predicate": "opda:documentDate",
+      "predicate_iri": "https://opda.org.uk/pdtf/documentDate",
+      "kind": "Datatype",
+      "domain": "opda:AttachedDocument",
+      "range": "http://www.w3.org/2001/XMLSchema#date",
+      "layer": 1,
+      "flags": []
+    },
+    {
+      "leaf_path": "propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.documentDetails.document.filedUnder",
+      "predicate": "opda:filedUnder",
+      "predicate_iri": "https://opda.org.uk/pdtf/filedUnder",
+      "kind": "Datatype",
+      "domain": "opda:AttachedDocument",
+      "range": "http://www.w3.org/2001/XMLSchema#string",
+      "layer": 1,
+      "flags": []
+    },
+    {
+      "leaf_path": "propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.title.titleNumber",
+      "predicate": "opda:titleNumber",
+      "predicate_iri": "https://opda.org.uk/pdtf/titleNumber",
+      "kind": "Datatype",
+      "domain": "opda:RegisteredTitle",
+      "range": "http://www.w3.org/2001/XMLSchema#string",
+      "layer": 1,
+      "flags": []
+    },
+    {
+      "leaf_path": "propertyPack.titlesToBeSold[].titleExtents",
+      "predicate": "opda:titleExtents",
+      "predicate_iri": "https://opda.org.uk/pdtf/titleExtents",
+      "kind": "Datatype",
+      "domain": "opda:LegalEstate",
+      "range": "http://www.w3.org/2001/XMLSchema#string",
+      "layer": 1,
+      "flags": []
+    },
+    {
+      "leaf_path": "propertyPack.titlesToBeSold[].titleNumber",
+      "predicate": "opda:titleNumber",
+      "predicate_iri": "https://opda.org.uk/pdtf/titleNumber",
+      "kind": "Datatype",
+      "domain": "opda:RegisteredTitle",
+      "range": "http://www.w3.org/2001/XMLSchema#string",
+      "layer": 1,
+      "flags": []
+    },
+    {
+      "leaf_path": "propertyPack.typeOfConstruction.accessibilityAndAdaptations",
+      "predicate": "opda:accessibilityAndAdaptations",
+      "predicate_iri": "https://opda.org.uk/pdtf/accessibilityAndAdaptations",
+      "kind": "Datatype",
+      "domain": "opda:Property",
+      "range": "http://www.w3.org/2001/XMLSchema#string",
+      "layer": 1,
+      "flags": []
+    },
+    {
+      "leaf_path": "propertyPack.typeOfConstruction.buildingSafety.abilityToResideAtProperty",
+      "predicate": "opda:abilityToResideAtProperty",
+      "predicate_iri": "https://opda.org.uk/pdtf/abilityToResideAtProperty",
+      "kind": "Datatype",
+      "domain": "opda:Property",
+      "range": "http://www.w3.org/2001/XMLSchema#string",
+      "layer": 1,
+      "flags": []
+    },
+    {
+      "leaf_path": "propertyPack.typeOfConstruction.buildingSafety.potentialCost",
+      "predicate": "opda:potentialCost",
+      "predicate_iri": "https://opda.org.uk/pdtf/potentialCost",
+      "kind": "Object",
+      "domain": "opda:Property",
+      "range": "opda:MonetaryAmount",
+      "layer": 1,
+      "flags": [
+        "monetary",
+        "object_node"
+      ]
+    },
+    {
+      "leaf_path": "propertyPack.typeOfConstruction.loft.loftBoarded",
+      "predicate": "opda:loftBoarded",
+      "predicate_iri": "https://opda.org.uk/pdtf/loftBoarded",
+      "kind": "Datatype",
+      "domain": "opda:Property",
+      "range": "http://www.w3.org/2001/XMLSchema#string",
+      "layer": 1,
+      "flags": []
+    },
+    {
+      "leaf_path": "propertyPack.typeOfConstruction.loft.loftInsulated",
+      "predicate": "opda:loftInsulated",
+      "predicate_iri": "https://opda.org.uk/pdtf/loftInsulated",
+      "kind": "Datatype",
+      "domain": "opda:Property",
+      "range": "http://www.w3.org/2001/XMLSchema#string",
+      "layer": 1,
+      "flags": []
+    },
+    {
+      "leaf_path": "propertyPack.waterAndDrainage.charging.consequentialChargingBasis",
+      "predicate": "opda:consequentialChargingBasis",
+      "predicate_iri": "https://opda.org.uk/pdtf/consequentialChargingBasis",
+      "kind": "Datatype",
+      "domain": "opda:Property",
+      "range": "http://www.w3.org/2001/XMLSchema#string",
+      "layer": 1,
+      "flags": []
+    },
+    {
+      "leaf_path": "propertyPack.waterAndDrainage.charging.currentChargingBasis",
+      "predicate": "opda:currentChargingBasis",
+      "predicate_iri": "https://opda.org.uk/pdtf/currentChargingBasis",
+      "kind": "Datatype",
+      "domain": "opda:Property",
+      "range": "http://www.w3.org/2001/XMLSchema#string",
+      "layer": 1,
+      "flags": []
+    },
+    {
+      "leaf_path": "propertyPack.waterAndDrainage.charging.sewerageBills",
+      "predicate": "opda:sewerageBills",
+      "predicate_iri": "https://opda.org.uk/pdtf/sewerageBills",
+      "kind": "Datatype",
+      "domain": "opda:Property",
+      "range": "http://www.w3.org/2001/XMLSchema#string",
+      "layer": 1,
+      "flags": []
+    },
+    {
+      "leaf_path": "propertyPack.waterAndDrainage.charging.sewerageProvider",
+      "predicate": "opda:sewerageProvider",
+      "predicate_iri": "https://opda.org.uk/pdtf/sewerageProvider",
+      "kind": "Datatype",
+      "domain": "opda:Property",
+      "range": "http://www.w3.org/2001/XMLSchema#string",
+      "layer": 1,
+      "flags": []
+    },
+    {
+      "leaf_path": "propertyPack.waterAndDrainage.charging.waterBills",
+      "predicate": "opda:waterBills",
+      "predicate_iri": "https://opda.org.uk/pdtf/waterBills",
+      "kind": "Datatype",
+      "domain": "opda:Property",
+      "range": "http://www.w3.org/2001/XMLSchema#string",
+      "layer": 1,
+      "flags": []
+    },
+    {
+      "leaf_path": "propertyPack.waterAndDrainage.charging.waterProvider",
+      "predicate": "opda:waterProvider",
+      "predicate_iri": "https://opda.org.uk/pdtf/waterProvider",
+      "kind": "Datatype",
+      "domain": "opda:Property",
+      "range": "http://www.w3.org/2001/XMLSchema#string",
+      "layer": 1,
+      "flags": []
+    },
+    {
+      "leaf_path": "propertyPack.waterAndDrainage.drainage.distanceToNearestSewerageTreatment",
+      "predicate": "opda:distanceToNearestSewerageTreatment",
+      "predicate_iri": "https://opda.org.uk/pdtf/distanceToNearestSewerageTreatment",
+      "kind": "Datatype",
+      "domain": "opda:Property",
+      "range": "http://www.w3.org/2001/XMLSchema#string",
+      "layer": 1,
+      "flags": []
+    },
+    {
+      "leaf_path": "propertyPack.waterAndDrainage.drainage.mainsFoulDrainage.dateToBeConnected",
+      "predicate": "opda:dateToBeConnected",
+      "predicate_iri": "https://opda.org.uk/pdtf/dateToBeConnected",
+      "kind": "Datatype",
+      "domain": "opda:Property",
+      "range": "http://www.w3.org/2001/XMLSchema#date",
+      "layer": 1,
+      "flags": []
+    },
+    {
+      "leaf_path": "propertyPack.waterAndDrainage.drainage.mainsFoulDrainage.offMainsDrainageSystem.dateInstalled",
+      "predicate": "opda:dateInstalled",
+      "predicate_iri": "https://opda.org.uk/pdtf/dateInstalled",
+      "kind": "Datatype",
+      "domain": "opda:Property",
+      "range": "http://www.w3.org/2001/XMLSchema#date",
+      "layer": 1,
+      "flags": []
+    },
+    {
+      "leaf_path": "propertyPack.waterAndDrainage.drainage.mainsFoulDrainage.offMainsDrainageSystem.dateLastEmptied",
+      "predicate": "opda:dateLastEmptied",
+      "predicate_iri": "https://opda.org.uk/pdtf/dateLastEmptied",
+      "kind": "Datatype",
+      "domain": "opda:Property",
+      "range": "http://www.w3.org/2001/XMLSchema#date",
+      "layer": 1,
+      "flags": []
+    },
+    {
+      "leaf_path": "propertyPack.waterAndDrainage.drainage.mainsFoulDrainage.offMainsDrainageSystem.dateLastServiced",
+      "predicate": "opda:dateLastServiced",
+      "predicate_iri": "https://opda.org.uk/pdtf/dateLastServiced",
+      "kind": "Datatype",
+      "domain": "opda:Property",
+      "range": "http://www.w3.org/2001/XMLSchema#date",
+      "layer": 1,
+      "flags": []
+    },
+    {
+      "leaf_path": "propertyPack.waterAndDrainage.drainage.mainsFoulDrainage.offMainsDrainageSystem.dateReplaced",
+      "predicate": "opda:dateReplaced",
+      "predicate_iri": "https://opda.org.uk/pdtf/dateReplaced",
+      "kind": "Datatype",
+      "domain": "opda:Property",
+      "range": "http://www.w3.org/2001/XMLSchema#date",
+      "layer": 1,
+      "flags": []
+    },
+    {
+      "leaf_path": "propertyPack.waterAndDrainage.drainage.mainsFoulDrainage.offMainsDrainageSystem.otherConnectedProperties.numberOfPropertiesSharing",
+      "predicate": "opda:numberOfPropertiesSharing",
+      "predicate_iri": "https://opda.org.uk/pdtf/numberOfPropertiesSharing",
+      "kind": "Datatype",
+      "domain": "opda:Property",
+      "range": "http://www.w3.org/2001/XMLSchema#integer",
+      "layer": 1,
+      "flags": []
+    },
+    {
+      "leaf_path": "propertyPack.waterAndDrainage.drainage.mainsFoulDrainage.offMainsDrainageSystem.plantDrainsIntoWaterway.dischargeCompliesWithGBR",
+      "predicate": "opda:dischargeCompliesWithGBR",
+      "predicate_iri": "https://opda.org.uk/pdtf/dischargeCompliesWithGBR",
+      "kind": "Datatype",
+      "domain": "opda:Property",
+      "range": "http://www.w3.org/2001/XMLSchema#string",
+      "layer": 1,
+      "flags": []
+    },
+    {
+      "leaf_path": "propertyPack.waterAndDrainage.drainage.mainsFoulDrainage.supplier",
+      "predicate": "opda:supplier",
+      "predicate_iri": "https://opda.org.uk/pdtf/supplier",
+      "kind": "Datatype",
+      "domain": "opda:Property",
+      "range": "http://www.w3.org/2001/XMLSchema#string",
+      "layer": 1,
+      "flags": []
+    },
+    {
+      "leaf_path": "propertyPack.waterAndDrainage.drainage.mainsSurfaceWaterDrainage.dateToBeConnected",
+      "predicate": "opda:dateToBeConnected",
+      "predicate_iri": "https://opda.org.uk/pdtf/dateToBeConnected",
+      "kind": "Datatype",
+      "domain": "opda:Property",
+      "range": "http://www.w3.org/2001/XMLSchema#date",
+      "layer": 1,
+      "flags": []
+    },
+    {
+      "leaf_path": "propertyPack.waterAndDrainage.maps.publicSewerMapAttached",
+      "predicate": "opda:publicSewerMapAttached",
+      "predicate_iri": "https://opda.org.uk/pdtf/publicSewerMapAttached",
+      "kind": "Datatype",
+      "domain": "opda:Property",
+      "range": "http://www.w3.org/2001/XMLSchema#string",
+      "layer": 1,
+      "flags": []
+    },
+    {
+      "leaf_path": "propertyPack.waterAndDrainage.maps.waterworksMapAttached",
+      "predicate": "opda:waterworksMapAttached",
+      "predicate_iri": "https://opda.org.uk/pdtf/waterworksMapAttached",
+      "kind": "Datatype",
+      "domain": "opda:Property",
+      "range": "http://www.w3.org/2001/XMLSchema#string",
+      "layer": 1,
+      "flags": []
+    },
+    {
+      "leaf_path": "propertyPack.waterAndDrainage.water.mainsWater.dateToBeConnected",
+      "predicate": "opda:dateToBeConnected",
+      "predicate_iri": "https://opda.org.uk/pdtf/dateToBeConnected",
+      "kind": "Datatype",
+      "domain": "opda:Property",
+      "range": "http://www.w3.org/2001/XMLSchema#date",
+      "layer": 1,
+      "flags": []
+    },
+    {
+      "leaf_path": "propertyPack.waterAndDrainage.water.mainsWater.stopcock.location",
+      "predicate": "opda:location",
+      "predicate_iri": "https://opda.org.uk/pdtf/location",
+      "kind": "Datatype",
+      "domain": "opda:Property",
+      "range": "http://www.w3.org/2001/XMLSchema#string",
+      "layer": 1,
+      "flags": []
+    },
+    {
+      "leaf_path": "propertyPack.waterAndDrainage.water.mainsWater.supplier",
+      "predicate": "opda:supplier",
+      "predicate_iri": "https://opda.org.uk/pdtf/supplier",
+      "kind": "Datatype",
+      "domain": "opda:Property",
+      "range": "http://www.w3.org/2001/XMLSchema#string",
+      "layer": 1,
+      "flags": []
+    },
+    {
+      "leaf_path": "propertyPack.waterAndDrainage.water.mainsWater.waterMeter.location",
+      "predicate": "opda:location",
+      "predicate_iri": "https://opda.org.uk/pdtf/location",
+      "kind": "Datatype",
+      "domain": "opda:Property",
+      "range": "http://www.w3.org/2001/XMLSchema#string",
+      "layer": 1,
+      "flags": []
+    },
+    {
+      "leaf_path": "propertyPack.waterAndDrainage.water.supplyClassification",
+      "predicate": "opda:supplyClassification",
+      "predicate_iri": "https://opda.org.uk/pdtf/supplyClassification",
+      "kind": "Datatype",
+      "domain": "opda:Property",
+      "range": "http://www.w3.org/2001/XMLSchema#string",
+      "layer": 1,
+      "flags": []
+    },
+    {
+      "leaf_path": "transactionId",
+      "predicate": "opda:transactionId",
+      "predicate_iri": "https://opda.org.uk/pdtf/transactionId",
+      "kind": "Datatype",
+      "domain": "opda:Transaction",
+      "range": "http://www.w3.org/2001/XMLSchema#string",
+      "layer": 1,
+      "flags": []
+    },
+    {
+      "leaf_path": "valuationComparisonData.propertyDetails[].basicDetails.bathrooms",
+      "predicate": "opda:bathrooms",
+      "predicate_iri": "https://opda.org.uk/pdtf/bathrooms",
+      "kind": "Datatype",
+      "domain": "opda:Property",
+      "range": "http://www.w3.org/2001/XMLSchema#integer",
+      "layer": 1,
+      "flags": []
+    },
+    {
+      "leaf_path": "valuationComparisonData.propertyDetails[].basicDetails.bedrooms",
+      "predicate": "opda:bedrooms",
+      "predicate_iri": "https://opda.org.uk/pdtf/bedrooms",
+      "kind": "Datatype",
+      "domain": "opda:Property",
+      "range": "http://www.w3.org/2001/XMLSchema#integer",
+      "layer": 1,
+      "flags": []
+    },
+    {
+      "leaf_path": "valuationComparisonData.propertyDetails[].basicDetails.buildInformation.internalArea.area",
+      "predicate": "opda:area",
+      "predicate_iri": "https://opda.org.uk/pdtf/area",
+      "kind": "Datatype",
+      "domain": "opda:Property",
+      "range": "http://www.w3.org/2001/XMLSchema#decimal",
+      "layer": 1,
+      "flags": []
+    },
+    {
+      "leaf_path": "valuationComparisonData.propertyDetails[].basicDetails.buildInformation.yearOfBuild",
+      "predicate": "opda:yearOfBuild",
+      "predicate_iri": "https://opda.org.uk/pdtf/yearOfBuild",
+      "kind": "Datatype",
+      "domain": "opda:Property",
+      "range": "http://www.w3.org/2001/XMLSchema#gYear",
+      "layer": 1,
+      "flags": []
+    },
+    {
+      "leaf_path": "valuationComparisonData.propertyDetails[].media[].mediaUrl",
+      "predicate": "opda:mediaUrl",
+      "predicate_iri": "https://opda.org.uk/pdtf/mediaUrl",
+      "kind": "Datatype",
+      "domain": null,
+      "range": "http://www.w3.org/2001/XMLSchema#anyURI",
+      "layer": 1,
+      "flags": [
+        "shared_domainless"
+      ]
+    },
+    {
+      "leaf_path": "valuationComparisonData.propertyDetails[].propertyListingInfo.listPrice",
+      "predicate": "opda:listPrice",
+      "predicate_iri": "https://opda.org.uk/pdtf/listPrice",
+      "kind": "Object",
+      "domain": "opda:Valuation",
+      "range": "opda:MonetaryAmount",
+      "layer": 1,
+      "flags": [
+        "monetary",
+        "object_node"
+      ]
+    },
+    {
+      "leaf_path": "valuationComparisonData.propertyDetails[].propertyListingInfo.listedDate",
+      "predicate": "opda:listedDate",
+      "predicate_iri": "https://opda.org.uk/pdtf/listedDate",
+      "kind": "Datatype",
+      "domain": "opda:Valuation",
+      "range": "http://www.w3.org/2001/XMLSchema#date",
+      "layer": 1,
+      "flags": []
+    },
+    {
+      "leaf_path": "valuationComparisonData.propertyDetails[].propertyListingInfo.soldDate",
+      "predicate": "opda:soldDate",
+      "predicate_iri": "https://opda.org.uk/pdtf/soldDate",
+      "kind": "Datatype",
+      "domain": "opda:Valuation",
+      "range": "http://www.w3.org/2001/XMLSchema#date",
+      "layer": 1,
+      "flags": []
+    },
+    {
+      "leaf_path": "valuationComparisonData.propertyDetails[].propertyListingInfo.soldPrice",
+      "predicate": "opda:soldPrice",
+      "predicate_iri": "https://opda.org.uk/pdtf/soldPrice",
+      "kind": "Object",
+      "domain": "opda:Valuation",
+      "range": "opda:MonetaryAmount",
+      "layer": 1,
+      "flags": [
+        "monetary",
+        "object_node"
+      ]
+    },
+    {
+      "leaf_path": "valuationComparisonData.propertyDetails[].propertyType",
+      "predicate": "opda:propertyType",
+      "predicate_iri": "https://opda.org.uk/pdtf/propertyType",
+      "kind": "Datatype",
+      "domain": "opda:Property",
+      "range": "http://www.w3.org/2001/XMLSchema#string",
+      "layer": 1,
+      "flags": []
+    },
+    {
+      "leaf_path": "valuationComparisonData.propertyPricing.estimatedPrice",
+      "predicate": "opda:estimatedPrice",
+      "predicate_iri": "https://opda.org.uk/pdtf/estimatedPrice",
+      "kind": "Object",
+      "domain": "opda:Valuation",
+      "range": "opda:MonetaryAmount",
+      "layer": 1,
+      "flags": [
+        "monetary",
+        "object_node"
+      ]
+    },
+    {
+      "leaf_path": "valuationComparisonData.propertyPricing.priceEstimationDetails.credibilitySources",
+      "predicate": "opda:credibilitySources",
+      "predicate_iri": "https://opda.org.uk/pdtf/credibilitySources",
+      "kind": "Datatype",
+      "domain": "opda:Valuation",
+      "range": "http://www.w3.org/2001/XMLSchema#string",
+      "layer": 1,
+      "flags": []
+    },
+    {
+      "leaf_path": "valuationComparisonData.propertyPricing.priceEstimationDetails.pricingMethodology",
+      "predicate": "opda:pricingMethodology",
+      "predicate_iri": "https://opda.org.uk/pdtf/pricingMethodology",
+      "kind": "Datatype",
+      "domain": "opda:Valuation",
+      "range": "http://www.w3.org/2001/XMLSchema#string",
+      "layer": 1,
+      "flags": []
+    },
+    {
+      "leaf_path": "valuationComparisonData.propertyPricing.rentalEstimate.estimatedAmount",
+      "predicate": "opda:estimatedAmount",
+      "predicate_iri": "https://opda.org.uk/pdtf/estimatedAmount",
+      "kind": "Object",
+      "domain": "opda:Valuation",
+      "range": "opda:MonetaryAmount",
+      "layer": 1,
+      "flags": [
+        "monetary",
+        "object_node"
+      ]
+    },
+    {
+      "leaf_path": "valuationComparisonData.propertyPricing.yield",
+      "predicate": "opda:yield",
+      "predicate_iri": "https://opda.org.uk/pdtf/yield",
+      "kind": "Datatype",
+      "domain": "opda:Valuation",
+      "range": "http://www.w3.org/2001/XMLSchema#decimal",
+      "layer": 1,
+      "flags": []
+    }
+  ]
+}

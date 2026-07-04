@@ -29,6 +29,10 @@ dist/
 /source/03-standards/*
 !/source/03-standards/ontology/
 !/source/03-standards/ontology/**
+# RML provenance-mapping standard (ODR-0035/ADR-0057) — hand-authored, peer to ontology/.
+# (source/03-standards/rml/.gitignore handles build/__pycache__/.metaharness locally.)
+!/source/03-standards/rml/
+!/source/03-standards/rml/**
 
 # Build intermediates (regenerated; not tracked)
 /_build/
@@ -45,6 +49,10 @@ dist/
 /.fuseki/
 /.jena/
 /run/
+
+# Local ruflo/AgentDB runtime state (RVF container + lock) — machine-local, never tracked.
+/agentdb.rvf
+/agentdb.rvf.lock
 
 # TailwindPlus downloader workspace (credentials, session, component dump)
 # — see tailwindplus plugin in legacybridge-tech/claude-plugins

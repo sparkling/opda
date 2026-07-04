@@ -1,0 +1,133 @@
+{
+  "$schema": "https://trust.propdata.org.uk/schemas/v3/pdtf-transaction.json",
+  "transactionId": "MULTI00000000000000001",
+  "status": "Under offer",
+  "participants": [
+    {
+      "name": {
+        "title": "Ms",
+        "firstName": "Sandra",
+        "lastName": "Vendor"
+      },
+      "email": "sandra@example.com",
+      "phone": "07700 900001",
+      "address": {
+        "line1": "12 Orchard Lane",
+        "town": "Bristol",
+        "postcode": "BS1 4ND",
+        "countryCode": "GBR"
+      },
+      "role": "Seller",
+      "sellersCapacity": { "capacity": "Legal Owner" }
+    },
+    {
+      "name": {
+        "firstName": "Barry",
+        "lastName": "Byer"
+      },
+      "email": "barry@example.com",
+      "role": "Buyer"
+    },
+    {
+      "name": {
+        "firstName": "Colin",
+        "lastName": "Conveyance"
+      },
+      "email": "colin@suemme.co.uk",
+      "organisation": "Suemme and Profitt",
+      "organisationReference": "REF-778899",
+      "role": "Seller's Conveyancer"
+    }
+  ],
+  "propertyPack": {
+    "uprn": 100090909090,
+    "address": {
+      "line1": "12 Orchard Lane",
+      "town": "Bristol",
+      "postcode": "BS1 4ND",
+      "homeNation": "England"
+    },
+    "priceInformation": {
+      "price": 450000,
+      "priceQualifier": "Guide price"
+    },
+    "buildInformation": {
+      "building": {
+        "propertyType": "House",
+        "builtForm": "Semi-detached"
+      },
+      "yearOfBuild": 1998,
+      "isHMO": "No",
+      "isStudentAccommodation": "No"
+    },
+    "residentialPropertyFeatures": {
+      "bedrooms": 3,
+      "bathrooms": 1,
+      "receptions": 2,
+      "kitchens": 1,
+      "diningAreas": 1,
+      "outsideAreas": ["Garden", "Patio"]
+    },
+    "localAuthority": {
+      "localAuthorityName": "Bristol City Council",
+      "districtCouncil": "Bristol City Council",
+      "countyCouncil": "Bristol City Council",
+      "unitaryAuthority": "Bristol",
+      "localAuthorityReference": "BCC-REF-4471",
+      "councilSearchTurnaroundTimeInWorkingDays": 10,
+      "regulatedSearchTurnaroundTimeInWorkingDays": 15
+    },
+    "councilTax": {
+      "councilTaxBand": "D",
+      "councilTaxAnnualCharge": 2100
+    },
+    "media": [
+      { "mediaType": "Image", "mediaUrl": "https://media.example.com/12-orchard-lane/front.jpg" },
+      { "mediaType": "Floorplan", "mediaUrl": "https://media.example.com/12-orchard-lane/floorplan.pdf" }
+    ],
+    "saleReadyDeclarations": {
+      "authorisedToActOnBehalfOfAllSellers": true,
+      "authorisationToShare": true
+    },
+    "location": {
+      "googleStreetViewPOV": {
+        "heading": 210.5,
+        "pitch": -5,
+        "zoom": 1
+      }
+    },
+    "marketingTenure": "Freehold",
+    "legalOwners": {
+      "namesOfLegalOwners": [
+        { "ownerType": "Organisation", "organisationName": "Orchard Lane Holdings Ltd" }
+      ]
+    },
+    "nearbyFacilities": {
+      "schools": [
+        {
+          "name": "Orchard Lane Primary School",
+          "ofstedRating": "Good",
+          "pupils": 320,
+          "distanceInMiles": 0.4,
+          "ageRange": "4-11",
+          "religiousCharacter": "None"
+        }
+      ],
+      "transport": [
+        {
+          "name": "Bristol Temple Meads",
+          "transportType": "National rail station",
+          "distanceInMiles": 1.2
+        }
+      ],
+      "healthCare": [
+        {
+          "name": "Orchard Lane Surgery",
+          "typeOfHealthCare": "GP",
+          "distanceInMiles": 0.3,
+          "specialties": "General practice"
+        }
+      ]
+    }
+  }
+}

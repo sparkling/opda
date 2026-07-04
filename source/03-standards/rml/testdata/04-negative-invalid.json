@@ -1,0 +1,41 @@
+{
+  "$schema": "https://trust.propdata.org.uk/schemas/v3/pdtf-transaction.json",
+  "transactionId": "NEG0000000000000000001",
+  "status": "For sale",
+  "participants": [
+    {
+      "name": {
+        "firstName": "Pat",
+        "lastName": "Attorney"
+      },
+      "email": "pat.attorney@example.org",
+      "role": "Seller",
+      "sellersCapacity": {
+        "capacity": "Under Power of Attorney"
+      }
+    },
+    {
+      "name": {
+        "firstName": "Sam",
+        "lastName": "Purchaser"
+      },
+      "email": "sam.purchaser@example.org",
+      "role": "Buyer"
+    }
+  ],
+  "propertyPack": {
+    "uprn": 100023336957,
+    "address": {
+      "line1": "2 Nonconformant Way",
+      "town": "Testville",
+      "postcode": "TE2 2ST",
+      "homeNation": "England"
+    },
+    "buildInformation": {
+      "building": {
+        "propertyType": "House",
+        "builtForm": "Detached"
+      }
+    }
+  }
+}

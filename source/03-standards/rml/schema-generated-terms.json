@@ -1,0 +1,2073 @@
+{
+  "definition": "Generated from the JSON schemas = property carries dct:source under .../harness/data-dictionary/; class = bearer/value-type/role-enum-target of such a property. foundation.ttl / opda-classes.ttl / opda-vocabularies.ttl (upper substrate + SKOS) excluded.",
+  "counts": {
+    "classes": 17,
+    "datatype_props": 195,
+    "object_props": 17,
+    "total": 229,
+    "classes_mapped": 11,
+    "props_mapped": 64
+  },
+  "classes": [
+    {
+      "term": "AttachedDocument",
+      "module": "opda-claim.ttl",
+      "why": [
+        "bears documentDate",
+        "bears documentTypeCode"
+      ],
+      "rml_mapped": true
+    },
+    {
+      "term": "Buyer",
+      "module": "opda-agent.ttl",
+      "why": [
+        "typed from participants[].role enum"
+      ],
+      "rml_mapped": true
+    },
+    {
+      "term": "EPCCertificate",
+      "module": "opda-descriptive.ttl",
+      "why": [
+        "value of hasEPCCertificate"
+      ],
+      "rml_mapped": false
+    },
+    {
+      "term": "LegalEstate",
+      "module": "opda-property.ttl",
+      "why": [
+        "bears adHocExpenses",
+        "bears annualGroundRent"
+      ],
+      "rml_mapped": true
+    },
+    {
+      "term": "MonetaryAmount",
+      "module": "opda-descriptive.ttl",
+      "why": [
+        "bears amount",
+        "value of annualCostOfPermit"
+      ],
+      "rml_mapped": true
+    },
+    {
+      "term": "NearbyFacility",
+      "module": "opda-descriptive.ttl",
+      "why": [
+        "bears ageRange",
+        "bears distanceInMiles"
+      ],
+      "rml_mapped": false
+    },
+    {
+      "term": "Organisation",
+      "module": "opda-agent.ttl",
+      "why": [
+        "bears accountName",
+        "bears accountNumber"
+      ],
+      "rml_mapped": true
+    },
+    {
+      "term": "Person",
+      "module": "opda-agent.ttl",
+      "why": [
+        "bears dateOfBirth",
+        "bears middleNames"
+      ],
+      "rml_mapped": true
+    },
+    {
+      "term": "Property",
+      "module": "opda-property.ttl",
+      "why": [
+        "bears abilityToResideAtProperty",
+        "bears accessibilityAndAdaptations"
+      ],
+      "rml_mapped": true
+    },
+    {
+      "term": "Proprietorship",
+      "module": "opda-agent.ttl",
+      "why": [
+        "bears numberOfNonUkResidentSellers",
+        "bears numberOfSellers"
+      ],
+      "rml_mapped": false
+    },
+    {
+      "term": "RegisteredTitle",
+      "module": "opda-property.ttl",
+      "why": [
+        "bears titleNumber"
+      ],
+      "rml_mapped": true
+    },
+    {
+      "term": "RiskAssessment",
+      "module": "opda-descriptive.ttl",
+      "why": [
+        "bears dateRemedialActionRequired",
+        "bears subCategory"
+      ],
+      "rml_mapped": false
+    },
+    {
+      "term": "RoomDimension",
+      "module": "opda-descriptive.ttl",
+      "why": [
+        "bears length",
+        "bears roomName"
+      ],
+      "rml_mapped": false
+    },
+    {
+      "term": "Search",
+      "module": "opda-descriptive.ttl",
+      "why": [
+        "bears applicationDate",
+        "bears applicationType"
+      ],
+      "rml_mapped": true
+    },
+    {
+      "term": "Seller",
+      "module": "opda-agent.ttl",
+      "why": [
+        "bears aged17OrOverNames",
+        "bears sellersCapacityDetails"
+      ],
+      "rml_mapped": true
+    },
+    {
+      "term": "Transaction",
+      "module": "opda-transaction.ttl",
+      "why": [
+        "bears authorisationToShare",
+        "bears authorisedToActOnBehalfOfAllSellers"
+      ],
+      "rml_mapped": true
+    },
+    {
+      "term": "Valuation",
+      "module": "opda-descriptive.ttl",
+      "why": [
+        "bears credibilitySources",
+        "bears estimatedAmount"
+      ],
+      "rml_mapped": false
+    }
+  ],
+  "properties": [
+    {
+      "term": "organisation",
+      "kind": "Datatype",
+      "module": "(merged-only)",
+      "domain": "Organisation",
+      "range": "http://www.w3.org/2001/XMLSchema#string",
+      "leaf": "participants[].organisation",
+      "rml_mapped": true
+    },
+    {
+      "term": "accountName",
+      "kind": "Datatype",
+      "module": "opda-agent.ttl",
+      "domain": "Organisation",
+      "range": "http://www.w3.org/2001/XMLSchema#string",
+      "leaf": "propertyPack.ownership.ownershipsToBeTransferred[].leaseholdInformation.contactDetails.contacts.landlord.bankDetails.accountName (+7)",
+      "rml_mapped": false
+    },
+    {
+      "term": "accountNumber",
+      "kind": "Datatype",
+      "module": "opda-agent.ttl",
+      "domain": "Organisation",
+      "range": "http://www.w3.org/2001/XMLSchema#string",
+      "leaf": "propertyPack.ownership.ownershipsToBeTransferred[].leaseholdInformation.contactDetails.contacts.landlord.bankDetails.accountNumber (+7)",
+      "rml_mapped": false
+    },
+    {
+      "term": "aged17OrOverNames",
+      "kind": "Datatype",
+      "module": "opda-agent.ttl",
+      "domain": "Seller",
+      "range": "http://www.w3.org/2001/XMLSchema#string",
+      "leaf": "propertyPack.occupiers.othersAged17OrOver.aged17OrOverNames",
+      "rml_mapped": true
+    },
+    {
+      "term": "dateOfBirth",
+      "kind": "Datatype",
+      "module": "opda-agent.ttl",
+      "domain": "Person",
+      "range": "http://www.w3.org/2001/XMLSchema#date",
+      "leaf": "participants[].dateOfBirth",
+      "rml_mapped": true
+    },
+    {
+      "term": "middleNames",
+      "kind": "Datatype",
+      "module": "opda-agent.ttl",
+      "domain": "Person",
+      "range": "http://www.w3.org/2001/XMLSchema#string",
+      "leaf": "propertyPack.legalOwners.namesOfLegalOwners[].middleNames",
+      "rml_mapped": true
+    },
+    {
+      "term": "name",
+      "kind": "Datatype",
+      "module": "opda-agent.ttl",
+      "domain": null,
+      "range": "http://www.w3.org/2001/XMLSchema#string",
+      "leaf": "contracts[].contract.template.name (+4)",
+      "rml_mapped": true
+    },
+    {
+      "term": "numberOfNonUkResidentSellers",
+      "kind": "Datatype",
+      "module": "opda-agent.ttl",
+      "domain": "Proprietorship",
+      "range": "http://www.w3.org/2001/XMLSchema#integer",
+      "leaf": "propertyPack.ownership.numberOfNonUkResidentSellers",
+      "rml_mapped": false
+    },
+    {
+      "term": "numberOfSellers",
+      "kind": "Datatype",
+      "module": "opda-agent.ttl",
+      "domain": "Proprietorship",
+      "range": "http://www.w3.org/2001/XMLSchema#integer",
+      "leaf": "propertyPack.ownership.numberOfSellers",
+      "rml_mapped": false
+    },
+    {
+      "term": "organisationName",
+      "kind": "Datatype",
+      "module": "opda-agent.ttl",
+      "domain": "Organisation",
+      "range": "http://www.w3.org/2001/XMLSchema#string",
+      "leaf": "propertyPack.legalOwners.namesOfLegalOwners[].organisationName",
+      "rml_mapped": false
+    },
+    {
+      "term": "organisationReference",
+      "kind": "Datatype",
+      "module": "opda-agent.ttl",
+      "domain": "Organisation",
+      "range": "http://www.w3.org/2001/XMLSchema#string",
+      "leaf": "participants[].organisationReference",
+      "rml_mapped": true
+    },
+    {
+      "term": "reference",
+      "kind": "Datatype",
+      "module": "opda-agent.ttl",
+      "domain": "Organisation",
+      "range": "http://www.w3.org/2001/XMLSchema#string",
+      "leaf": "propertyPack.ownership.ownershipsToBeTransferred[].leaseholdInformation.contactDetails.contacts.landlord.bankDetails.reference (+7)",
+      "rml_mapped": false
+    },
+    {
+      "term": "sellersCapacityDetails",
+      "kind": "Datatype",
+      "module": "opda-agent.ttl",
+      "domain": "Seller",
+      "range": "http://www.w3.org/2001/XMLSchema#string",
+      "leaf": "participants[].sellersCapacity.sellersCapacityDetails",
+      "rml_mapped": true
+    },
+    {
+      "term": "sortCode",
+      "kind": "Datatype",
+      "module": "opda-agent.ttl",
+      "domain": "Organisation",
+      "range": "http://www.w3.org/2001/XMLSchema#string",
+      "leaf": "propertyPack.ownership.ownershipsToBeTransferred[].leaseholdInformation.contactDetails.contacts.landlord.bankDetails.sortCode (+7)",
+      "rml_mapped": false
+    },
+    {
+      "term": "ageRange",
+      "kind": "Datatype",
+      "module": "opda-descriptive.ttl",
+      "domain": "NearbyFacility",
+      "range": "http://www.w3.org/2001/XMLSchema#string",
+      "leaf": "propertyPack.nearbyFacilities.schools[].ageRange",
+      "rml_mapped": false
+    },
+    {
+      "term": "amount",
+      "kind": "Datatype",
+      "module": "opda-descriptive.ttl",
+      "domain": "MonetaryAmount",
+      "range": "http://www.w3.org/2001/XMLSchema#decimal",
+      "leaf": "propertyPack.localSearches.localLandCharges[].amount (+2)",
+      "rml_mapped": true
+    },
+    {
+      "term": "applicationDate",
+      "kind": "Datatype",
+      "module": "opda-descriptive.ttl",
+      "domain": "Search",
+      "range": "http://www.w3.org/2001/XMLSchema#date",
+      "leaf": "propertyPack.localSearches.localAuthoritySearches.planningAndBuildingRegulations.decisionsAndPendingApplications.buildingRegulationsApproval[].applicationDate (+1)",
+      "rml_mapped": false
+    },
+    {
+      "term": "applicationType",
+      "kind": "Datatype",
+      "module": "opda-descriptive.ttl",
+      "domain": "Search",
+      "range": "http://www.w3.org/2001/XMLSchema#string",
+      "leaf": "propertyPack.localSearches.localAuthoritySearches.planningAndBuildingRegulations.decisionsAndPendingApplications.buildingRegulationsApproval[].applicationType (+1)",
+      "rml_mapped": false
+    },
+    {
+      "term": "buildingControlStartDate",
+      "kind": "Datatype",
+      "module": "opda-descriptive.ttl",
+      "domain": "Search",
+      "range": "http://www.w3.org/2001/XMLSchema#date",
+      "leaf": "propertyPack.localSearches.localAuthoritySearches.planningAndBuildingRegulations.decisionsAndPendingApplications.buildingControlStartDate",
+      "rml_mapped": false
+    },
+    {
+      "term": "consentsObtained",
+      "kind": "Datatype",
+      "module": "opda-descriptive.ttl",
+      "domain": "Property",
+      "range": "http://www.w3.org/2001/XMLSchema#string",
+      "leaf": "propertyPack.listingAndConservation.hasTreePreservationOrder.workCarriedOut.consentsObtained",
+      "rml_mapped": true
+    },
+    {
+      "term": "constructionType",
+      "kind": "Datatype",
+      "module": "opda-descriptive.ttl",
+      "domain": "Property",
+      "range": "http://www.w3.org/2001/XMLSchema#string",
+      "leaf": "propertyPack.surveys[].misc.constructionType",
+      "rml_mapped": false
+    },
+    {
+      "term": "contributionIncludedInServiceCharge",
+      "kind": "Datatype",
+      "module": "opda-descriptive.ttl",
+      "domain": "LegalEstate",
+      "range": "http://www.w3.org/2001/XMLSchema#string",
+      "leaf": "propertyPack.ownership.ownershipsToBeTransferred[].leaseholdInformation.serviceCharge.reserveFund.contributionIncludedInServiceCharge",
+      "rml_mapped": false
+    },
+    {
+      "term": "councilSearchTurnaroundTimeInWorkingDays",
+      "kind": "Datatype",
+      "module": "opda-descriptive.ttl",
+      "domain": "Search",
+      "range": "http://www.w3.org/2001/XMLSchema#integer",
+      "leaf": "propertyPack.localAuthority.councilSearchTurnaroundTimeInWorkingDays",
+      "rml_mapped": false
+    },
+    {
+      "term": "countyCouncil",
+      "kind": "Datatype",
+      "module": "opda-descriptive.ttl",
+      "domain": "Search",
+      "range": "http://www.w3.org/2001/XMLSchema#string",
+      "leaf": "propertyPack.localAuthority.countyCouncil",
+      "rml_mapped": true
+    },
+    {
+      "term": "credibilitySources",
+      "kind": "Datatype",
+      "module": "opda-descriptive.ttl",
+      "domain": "Valuation",
+      "range": "http://www.w3.org/2001/XMLSchema#string",
+      "leaf": "valuationComparisonData.propertyPricing.priceEstimationDetails.credibilitySources",
+      "rml_mapped": false
+    },
+    {
+      "term": "dangerousCladdingOrDefects",
+      "kind": "Datatype",
+      "module": "opda-descriptive.ttl",
+      "domain": "LegalEstate",
+      "range": "http://www.w3.org/2001/XMLSchema#string",
+      "leaf": "propertyPack.ownership.ownershipsToBeTransferred[].leaseholdInformation.serviceCharge.dangerousCladdingOrDefects",
+      "rml_mapped": false
+    },
+    {
+      "term": "dateRemedialActionRequired",
+      "kind": "Datatype",
+      "module": "opda-descriptive.ttl",
+      "domain": "RiskAssessment",
+      "range": "http://www.w3.org/2001/XMLSchema#date",
+      "leaf": "propertyPack.ownership.ownershipsToBeTransferred[].leaseholdInformation.buildingsInsurance.managedAreasCoveredByPolicy.riskAssessments.dateRemedialActionRequired",
+      "rml_mapped": false
+    },
+    {
+      "term": "dealsWithDayToDayMaintenanceOfManagedArea",
+      "kind": "Datatype",
+      "module": "opda-descriptive.ttl",
+      "domain": "LegalEstate",
+      "range": "http://www.w3.org/2001/XMLSchema#string",
+      "leaf": "propertyPack.ownership.ownershipsToBeTransferred[].managedFreeholdOrCommonholdInformation.contactDetails.dealsWithDayToDayMaintenanceOfManagedArea",
+      "rml_mapped": false
+    },
+    {
+      "term": "decision",
+      "kind": "Datatype",
+      "module": "opda-descriptive.ttl",
+      "domain": "Search",
+      "range": "http://www.w3.org/2001/XMLSchema#string",
+      "leaf": "propertyPack.localSearches.localAuthoritySearches.planningAndBuildingRegulations.decisionsAndPendingApplications.buildingRegulationsApproval[].decision (+1)",
+      "rml_mapped": false
+    },
+    {
+      "term": "decisionDate",
+      "kind": "Datatype",
+      "module": "opda-descriptive.ttl",
+      "domain": "Search",
+      "range": "http://www.w3.org/2001/XMLSchema#date",
+      "leaf": "propertyPack.localSearches.localAuthoritySearches.planningAndBuildingRegulations.decisionsAndPendingApplications.buildingRegulationsApproval[].decisionDate (+1)",
+      "rml_mapped": false
+    },
+    {
+      "term": "designationType",
+      "kind": "Datatype",
+      "module": "opda-descriptive.ttl",
+      "domain": "Search",
+      "range": "http://www.w3.org/2001/XMLSchema#string",
+      "leaf": "propertyPack.localSearches.localAuthoritySearches.planningAndBuildingRegulations.designationsAndProposals.plans[].designations[].designationType",
+      "rml_mapped": false
+    },
+    {
+      "term": "dischargeCompliesWithGBR",
+      "kind": "Datatype",
+      "module": "opda-descriptive.ttl",
+      "domain": "Property",
+      "range": "http://www.w3.org/2001/XMLSchema#string",
+      "leaf": "propertyPack.waterAndDrainage.drainage.mainsFoulDrainage.offMainsDrainageSystem.plantDrainsIntoWaterway.dischargeCompliesWithGBR",
+      "rml_mapped": true
+    },
+    {
+      "term": "displayName",
+      "kind": "Datatype",
+      "module": "opda-descriptive.ttl",
+      "domain": null,
+      "range": "http://www.w3.org/2001/XMLSchema#string",
+      "leaf": "propertyPack.documents[].displayName (+1)",
+      "rml_mapped": true
+    },
+    {
+      "term": "distanceInMiles",
+      "kind": "Datatype",
+      "module": "opda-descriptive.ttl",
+      "domain": "NearbyFacility",
+      "range": "http://www.w3.org/2001/XMLSchema#decimal",
+      "leaf": "propertyPack.nearbyFacilities.healthCare[].distanceInMiles (+2)",
+      "rml_mapped": false
+    },
+    {
+      "term": "districtCouncil",
+      "kind": "Datatype",
+      "module": "opda-descriptive.ttl",
+      "domain": "Search",
+      "range": "http://www.w3.org/2001/XMLSchema#string",
+      "leaf": "propertyPack.localAuthority.districtCouncil",
+      "rml_mapped": true
+    },
+    {
+      "term": "documentDate",
+      "kind": "Datatype",
+      "module": "opda-descriptive.ttl",
+      "domain": "AttachedDocument",
+      "range": "http://www.w3.org/2001/XMLSchema#date",
+      "leaf": "propertyPack.titlesToBeSold[].additionalDocuments[].documentDate (+1)",
+      "rml_mapped": true
+    },
+    {
+      "term": "documentTypeCode",
+      "kind": "Datatype",
+      "module": "opda-descriptive.ttl",
+      "domain": "AttachedDocument",
+      "range": "http://www.w3.org/2001/XMLSchema#string",
+      "leaf": "propertyPack.titlesToBeSold[].additionalDocuments[].documentTypeCode",
+      "rml_mapped": false
+    },
+    {
+      "term": "expectedDeliveryDate",
+      "kind": "Datatype",
+      "module": "opda-descriptive.ttl",
+      "domain": "Search",
+      "range": "http://www.w3.org/2001/XMLSchema#date",
+      "leaf": "propertyPack.searches[].expectedDeliveryDate",
+      "rml_mapped": true
+    },
+    {
+      "term": "filedUnder",
+      "kind": "Datatype",
+      "module": "opda-descriptive.ttl",
+      "domain": "AttachedDocument",
+      "range": "http://www.w3.org/2001/XMLSchema#string",
+      "leaf": "propertyPack.titlesToBeSold[].additionalDocuments[].filedUnder (+1)",
+      "rml_mapped": false
+    },
+    {
+      "term": "forTheManagedAreas",
+      "kind": "Datatype",
+      "module": "opda-descriptive.ttl",
+      "domain": "LegalEstate",
+      "range": "http://www.w3.org/2001/XMLSchema#decimal",
+      "leaf": "propertyPack.ownership.ownershipsToBeTransferred[].managedFreeholdOrCommonholdInformation.serviceCharge.reserveFund.amount.forTheManagedAreas",
+      "rml_mapped": false
+    },
+    {
+      "term": "freeholdOwner",
+      "kind": "Datatype",
+      "module": "opda-descriptive.ttl",
+      "domain": "LegalEstate",
+      "range": "http://www.w3.org/2001/XMLSchema#string",
+      "leaf": "propertyPack.ownership.ownershipsToBeTransferred[].leaseholdInformation.ownershipAndManagement.freeholdOwner",
+      "rml_mapped": false
+    },
+    {
+      "term": "fromTheOwners",
+      "kind": "Datatype",
+      "module": "opda-descriptive.ttl",
+      "domain": "LegalEstate",
+      "range": "http://www.w3.org/2001/XMLSchema#decimal",
+      "leaf": "propertyPack.ownership.ownershipsToBeTransferred[].managedFreeholdOrCommonholdInformation.serviceCharge.reserveFund.amount.fromTheOwners",
+      "rml_mapped": false
+    },
+    {
+      "term": "hasFloodDefences",
+      "kind": "Datatype",
+      "module": "opda-descriptive.ttl",
+      "domain": "Property",
+      "range": "http://www.w3.org/2001/XMLSchema#string",
+      "leaf": "propertyPack.environmentalIssues.flooding.floodDefences.hasFloodDefences",
+      "rml_mapped": false
+    },
+    {
+      "term": "hasFloorplan",
+      "kind": "Datatype",
+      "module": "opda-descriptive.ttl",
+      "domain": "Property",
+      "range": "http://www.w3.org/2001/XMLSchema#string",
+      "leaf": "propertyPack.buildInformation.roomDimensions.hasFloorplan",
+      "rml_mapped": true
+    },
+    {
+      "term": "hasHelpToBuyEquityLoan",
+      "kind": "Datatype",
+      "module": "opda-descriptive.ttl",
+      "domain": "Property",
+      "range": "http://www.w3.org/2001/XMLSchema#string",
+      "leaf": "propertyPack.ownership.hasHelpToBuyEquityLoan",
+      "rml_mapped": false
+    },
+    {
+      "term": "hasLift",
+      "kind": "Datatype",
+      "module": "opda-descriptive.ttl",
+      "domain": "Property",
+      "range": "http://www.w3.org/2001/XMLSchema#string",
+      "leaf": "propertyPack.buildInformation.building.hasLift",
+      "rml_mapped": false
+    },
+    {
+      "term": "hasTenantCompanyDissolved",
+      "kind": "Datatype",
+      "module": "opda-descriptive.ttl",
+      "domain": "LegalEstate",
+      "range": "http://www.w3.org/2001/XMLSchema#string",
+      "leaf": "propertyPack.ownership.ownershipsToBeTransferred[].leaseholdInformation.ownershipAndManagement.hasTenantCompanyDissolved",
+      "rml_mapped": false
+    },
+    {
+      "term": "headLeaseholderControlled",
+      "kind": "Datatype",
+      "module": "opda-descriptive.ttl",
+      "domain": "LegalEstate",
+      "range": "http://www.w3.org/2001/XMLSchema#string",
+      "leaf": "propertyPack.ownership.ownershipsToBeTransferred[].leaseholdInformation.ownershipAndManagement.hasHeadlease.headLeaseholderControlled",
+      "rml_mapped": false
+    },
+    {
+      "term": "isConnectedToNationalGrid",
+      "kind": "Datatype",
+      "module": "opda-descriptive.ttl",
+      "domain": "Property",
+      "range": "http://www.w3.org/2001/XMLSchema#string",
+      "leaf": "propertyPack.electricity.solarPanels.isConnectedToNationalGrid",
+      "rml_mapped": false
+    },
+    {
+      "term": "isFirstRegistration",
+      "kind": "Datatype",
+      "module": "opda-descriptive.ttl",
+      "domain": "Property",
+      "range": "http://www.w3.org/2001/XMLSchema#string",
+      "leaf": "propertyPack.ownership.isFirstRegistration",
+      "rml_mapped": false
+    },
+    {
+      "term": "isHMO",
+      "kind": "Datatype",
+      "module": "opda-descriptive.ttl",
+      "domain": "Property",
+      "range": "http://www.w3.org/2001/XMLSchema#string",
+      "leaf": "propertyPack.buildInformation.isHMO",
+      "rml_mapped": false
+    },
+    {
+      "term": "isLeaseQualifying",
+      "kind": "Datatype",
+      "module": "opda-descriptive.ttl",
+      "domain": "LegalEstate",
+      "range": "http://www.w3.org/2001/XMLSchema#string",
+      "leaf": "propertyPack.ownership.ownershipsToBeTransferred[].leaseholdInformation.buildingSafetyAct.isLeaseQualifying",
+      "rml_mapped": false
+    },
+    {
+      "term": "isLimitedCompanySale",
+      "kind": "Datatype",
+      "module": "opda-descriptive.ttl",
+      "domain": "Property",
+      "range": "http://www.w3.org/2001/XMLSchema#string",
+      "leaf": "propertyPack.ownership.isLimitedCompanySale",
+      "rml_mapped": false
+    },
+    {
+      "term": "isManagingAgentEmployed",
+      "kind": "Datatype",
+      "module": "opda-descriptive.ttl",
+      "domain": "LegalEstate",
+      "range": "http://www.w3.org/2001/XMLSchema#string",
+      "leaf": "propertyPack.ownership.ownershipsToBeTransferred[].leaseholdInformation.ownershipAndManagement.isManagingAgentEmployed",
+      "rml_mapped": false
+    },
+    {
+      "term": "isStudentAccommodation",
+      "kind": "Datatype",
+      "module": "opda-descriptive.ttl",
+      "domain": "Property",
+      "range": "http://www.w3.org/2001/XMLSchema#string",
+      "leaf": "propertyPack.buildInformation.isStudentAccommodation",
+      "rml_mapped": false
+    },
+    {
+      "term": "landlordInsuresIfFlat",
+      "kind": "Datatype",
+      "module": "opda-descriptive.ttl",
+      "domain": "Property",
+      "range": "http://www.w3.org/2001/XMLSchema#string",
+      "leaf": "propertyPack.insurance.landlordInsuresIfFlat",
+      "rml_mapped": false
+    },
+    {
+      "term": "landlordNotifiedOfSale",
+      "kind": "Datatype",
+      "module": "opda-descriptive.ttl",
+      "domain": "LegalEstate",
+      "range": "http://www.w3.org/2001/XMLSchema#string",
+      "leaf": "propertyPack.ownership.ownershipsToBeTransferred[].leaseholdInformation.buildingSafetyAct.landlordNotifiedOfSale",
+      "rml_mapped": false
+    },
+    {
+      "term": "length",
+      "kind": "Datatype",
+      "module": "opda-descriptive.ttl",
+      "domain": "RoomDimension",
+      "range": "http://www.w3.org/2001/XMLSchema#decimal",
+      "leaf": "propertyPack.buildInformation.roomDimensions.rooms[].length",
+      "rml_mapped": false
+    },
+    {
+      "term": "listedDate",
+      "kind": "Datatype",
+      "module": "opda-descriptive.ttl",
+      "domain": "Valuation",
+      "range": "http://www.w3.org/2001/XMLSchema#date",
+      "leaf": "valuationComparisonData.propertyDetails[].propertyListingInfo.listedDate",
+      "rml_mapped": false
+    },
+    {
+      "term": "localAuthorityName",
+      "kind": "Datatype",
+      "module": "opda-descriptive.ttl",
+      "domain": "Search",
+      "range": "http://www.w3.org/2001/XMLSchema#string",
+      "leaf": "propertyPack.localAuthority.localAuthorityName",
+      "rml_mapped": true
+    },
+    {
+      "term": "localAuthorityReference",
+      "kind": "Datatype",
+      "module": "opda-descriptive.ttl",
+      "domain": "Search",
+      "range": "http://www.w3.org/2001/XMLSchema#string",
+      "leaf": "propertyPack.localAuthority.localAuthorityReference",
+      "rml_mapped": false
+    },
+    {
+      "term": "loftBoarded",
+      "kind": "Datatype",
+      "module": "opda-descriptive.ttl",
+      "domain": "Property",
+      "range": "http://www.w3.org/2001/XMLSchema#string",
+      "leaf": "propertyPack.typeOfConstruction.loft.loftBoarded",
+      "rml_mapped": true
+    },
+    {
+      "term": "loftInsulated",
+      "kind": "Datatype",
+      "module": "opda-descriptive.ttl",
+      "domain": "Property",
+      "range": "http://www.w3.org/2001/XMLSchema#string",
+      "leaf": "propertyPack.typeOfConstruction.loft.loftInsulated",
+      "rml_mapped": true
+    },
+    {
+      "term": "managementPlanInPlace",
+      "kind": "Datatype",
+      "module": "opda-descriptive.ttl",
+      "domain": "Property",
+      "range": "http://www.w3.org/2001/XMLSchema#string",
+      "leaf": "propertyPack.specialistIssues.japaneseKnotweed.managementPlanInPlace",
+      "rml_mapped": false
+    },
+    {
+      "term": "marketingTenure",
+      "kind": "Datatype",
+      "module": "opda-descriptive.ttl",
+      "domain": "Property",
+      "range": "http://www.w3.org/2001/XMLSchema#string",
+      "leaf": "propertyPack.marketingTenure",
+      "rml_mapped": false
+    },
+    {
+      "term": "mediaUrl",
+      "kind": "Datatype",
+      "module": "opda-descriptive.ttl",
+      "domain": null,
+      "range": "http://www.w3.org/2001/XMLSchema#anyURI",
+      "leaf": "propertyPack.media[].mediaUrl (+1)",
+      "rml_mapped": false
+    },
+    {
+      "term": "ofstedRating",
+      "kind": "Datatype",
+      "module": "opda-descriptive.ttl",
+      "domain": "NearbyFacility",
+      "range": "http://www.w3.org/2001/XMLSchema#string",
+      "leaf": "propertyPack.nearbyFacilities.schools[].ofstedRating",
+      "rml_mapped": false
+    },
+    {
+      "term": "orderDate",
+      "kind": "Datatype",
+      "module": "opda-descriptive.ttl",
+      "domain": "Search",
+      "range": "http://www.w3.org/2001/XMLSchema#date",
+      "leaf": "propertyPack.searches[].orderDate",
+      "rml_mapped": true
+    },
+    {
+      "term": "organisesBuildingInsurance",
+      "kind": "Datatype",
+      "module": "opda-descriptive.ttl",
+      "domain": "LegalEstate",
+      "range": "http://www.w3.org/2001/XMLSchema#string",
+      "leaf": "propertyPack.ownership.ownershipsToBeTransferred[].leaseholdInformation.contactDetails.serviceContactAssignments.organisesBuildingInsurance",
+      "rml_mapped": false
+    },
+    {
+      "term": "otherRating",
+      "kind": "Datatype",
+      "module": "opda-descriptive.ttl",
+      "domain": "NearbyFacility",
+      "range": "http://www.w3.org/2001/XMLSchema#string",
+      "leaf": "propertyPack.nearbyFacilities.schools[].otherRating",
+      "rml_mapped": false
+    },
+    {
+      "term": "outstandingEnforcementAction",
+      "kind": "Datatype",
+      "module": "opda-descriptive.ttl",
+      "domain": "LegalEstate",
+      "range": "http://www.w3.org/2001/XMLSchema#string",
+      "leaf": "propertyPack.ownership.ownershipsToBeTransferred[].leaseholdInformation.buildingsInsurance.managedAreasCoveredByPolicy.riskAssessments.outstandingEnforcementAction",
+      "rml_mapped": false
+    },
+    {
+      "term": "planningStartDate",
+      "kind": "Datatype",
+      "module": "opda-descriptive.ttl",
+      "domain": "Search",
+      "range": "http://www.w3.org/2001/XMLSchema#date",
+      "leaf": "propertyPack.localSearches.localAuthoritySearches.planningAndBuildingRegulations.decisionsAndPendingApplications.planningStartDate",
+      "rml_mapped": false
+    },
+    {
+      "term": "priceQualifier",
+      "kind": "Datatype",
+      "module": "opda-descriptive.ttl",
+      "domain": "Property",
+      "range": "http://www.w3.org/2001/XMLSchema#string",
+      "leaf": "propertyPack.priceInformation.priceQualifier",
+      "rml_mapped": true
+    },
+    {
+      "term": "pricingMethodology",
+      "kind": "Datatype",
+      "module": "opda-descriptive.ttl",
+      "domain": "Valuation",
+      "range": "http://www.w3.org/2001/XMLSchema#string",
+      "leaf": "valuationComparisonData.propertyPricing.priceEstimationDetails.pricingMethodology",
+      "rml_mapped": false
+    },
+    {
+      "term": "productCode",
+      "kind": "Datatype",
+      "module": "opda-descriptive.ttl",
+      "domain": "Search",
+      "range": "http://www.w3.org/2001/XMLSchema#string",
+      "leaf": "propertyPack.searches[].productCode",
+      "rml_mapped": true
+    },
+    {
+      "term": "providerName",
+      "kind": "Datatype",
+      "module": "opda-descriptive.ttl",
+      "domain": "Search",
+      "range": "http://www.w3.org/2001/XMLSchema#string",
+      "leaf": "propertyPack.searches[].providerName",
+      "rml_mapped": true
+    },
+    {
+      "term": "providerReference",
+      "kind": "Datatype",
+      "module": "opda-descriptive.ttl",
+      "domain": "Search",
+      "range": "http://www.w3.org/2001/XMLSchema#string",
+      "leaf": "propertyPack.searches[].providerReference",
+      "rml_mapped": false
+    },
+    {
+      "term": "pupils",
+      "kind": "Datatype",
+      "module": "opda-descriptive.ttl",
+      "domain": "NearbyFacility",
+      "range": "http://www.w3.org/2001/XMLSchema#integer",
+      "leaf": "propertyPack.nearbyFacilities.schools[].pupils",
+      "rml_mapped": false
+    },
+    {
+      "term": "refNumber",
+      "kind": "Datatype",
+      "module": "opda-descriptive.ttl",
+      "domain": "Search",
+      "range": "http://www.w3.org/2001/XMLSchema#string",
+      "leaf": "propertyPack.localSearches.localAuthoritySearches.planningAndBuildingRegulations.decisionsAndPendingApplications.buildingRegulationsApproval[].refNumber (+1)",
+      "rml_mapped": false
+    },
+    {
+      "term": "regulatedSearchTurnaroundTimeInWorkingDays",
+      "kind": "Datatype",
+      "module": "opda-descriptive.ttl",
+      "domain": "Search",
+      "range": "http://www.w3.org/2001/XMLSchema#integer",
+      "leaf": "propertyPack.localAuthority.regulatedSearchTurnaroundTimeInWorkingDays",
+      "rml_mapped": false
+    },
+    {
+      "term": "religiousCharacter",
+      "kind": "Datatype",
+      "module": "opda-descriptive.ttl",
+      "domain": "NearbyFacility",
+      "range": "http://www.w3.org/2001/XMLSchema#string",
+      "leaf": "propertyPack.nearbyFacilities.schools[].religiousCharacter",
+      "rml_mapped": false
+    },
+    {
+      "term": "reportDate",
+      "kind": "Datatype",
+      "module": "opda-descriptive.ttl",
+      "domain": "Search",
+      "range": "http://www.w3.org/2001/XMLSchema#date",
+      "leaf": "propertyPack.searches[].reportDate (+1)",
+      "rml_mapped": true
+    },
+    {
+      "term": "retrievedOn",
+      "kind": "Datatype",
+      "module": "opda-descriptive.ttl",
+      "domain": "AttachedDocument",
+      "range": "http://www.w3.org/2001/XMLSchema#date",
+      "leaf": "propertyPack.titlesToBeSold[].additionalDocuments[].retrievedOn",
+      "rml_mapped": false
+    },
+    {
+      "term": "roomName",
+      "kind": "Datatype",
+      "module": "opda-descriptive.ttl",
+      "domain": "RoomDimension",
+      "range": "http://www.w3.org/2001/XMLSchema#string",
+      "leaf": "propertyPack.buildInformation.roomDimensions.rooms[].roomName",
+      "rml_mapped": false
+    },
+    {
+      "term": "saleAtUndervalue",
+      "kind": "Datatype",
+      "module": "opda-descriptive.ttl",
+      "domain": "Property",
+      "range": "http://www.w3.org/2001/XMLSchema#string",
+      "leaf": "propertyPack.priceInformation.saleAtUndervalue",
+      "rml_mapped": false
+    },
+    {
+      "term": "schoolType",
+      "kind": "Datatype",
+      "module": "opda-descriptive.ttl",
+      "domain": "NearbyFacility",
+      "range": "http://www.w3.org/2001/XMLSchema#string",
+      "leaf": "propertyPack.nearbyFacilities.schools[].schoolType.college (+4)",
+      "rml_mapped": false
+    },
+    {
+      "term": "sellerCompletedDeedOfCertificate",
+      "kind": "Datatype",
+      "module": "opda-descriptive.ttl",
+      "domain": "LegalEstate",
+      "range": "http://www.w3.org/2001/XMLSchema#string",
+      "leaf": "propertyPack.ownership.ownershipsToBeTransferred[].leaseholdInformation.buildingSafetyAct.deedOfCertificateServed.sellerCompletedDeedOfCertificate",
+      "rml_mapped": false
+    },
+    {
+      "term": "sellerOwnedProperty",
+      "kind": "Datatype",
+      "module": "opda-descriptive.ttl",
+      "domain": "LegalEstate",
+      "range": "http://www.w3.org/2001/XMLSchema#string",
+      "leaf": "propertyPack.ownership.ownershipsToBeTransferred[].leaseholdInformation.enfranchisement.sellerOwnedProperty",
+      "rml_mapped": false
+    },
+    {
+      "term": "soldDate",
+      "kind": "Datatype",
+      "module": "opda-descriptive.ttl",
+      "domain": "Valuation",
+      "range": "http://www.w3.org/2001/XMLSchema#date",
+      "leaf": "valuationComparisonData.propertyDetails[].propertyListingInfo.soldDate",
+      "rml_mapped": false
+    },
+    {
+      "term": "specialties",
+      "kind": "Datatype",
+      "module": "opda-descriptive.ttl",
+      "domain": "NearbyFacility",
+      "range": "http://www.w3.org/2001/XMLSchema#string",
+      "leaf": "propertyPack.nearbyFacilities.healthCare[].specialties",
+      "rml_mapped": false
+    },
+    {
+      "term": "status",
+      "kind": "Datatype",
+      "module": "opda-descriptive.ttl",
+      "domain": "Search",
+      "range": "http://www.w3.org/2001/XMLSchema#string",
+      "leaf": "propertyPack.localSearches.localAuthoritySearches.planningAndBuildingRegulations.decisionsAndPendingApplications.planningPermission[].status (+2)",
+      "rml_mapped": true
+    },
+    {
+      "term": "statusDate",
+      "kind": "Datatype",
+      "module": "opda-descriptive.ttl",
+      "domain": "Search",
+      "range": "http://www.w3.org/2001/XMLSchema#date",
+      "leaf": "propertyPack.localSearches.localAuthoritySearches.planningAndBuildingRegulations.designationsAndProposals.plans[].statusDate",
+      "rml_mapped": false
+    },
+    {
+      "term": "subCategory",
+      "kind": "Datatype",
+      "module": "opda-descriptive.ttl",
+      "domain": "RiskAssessment",
+      "range": "http://www.w3.org/2001/XMLSchema#string",
+      "leaf": "propertyPack.environmentalIssues.climate.climateRisk.riskSubcategories[].subCategory (+1)",
+      "rml_mapped": false
+    },
+    {
+      "term": "transportType",
+      "kind": "Datatype",
+      "module": "opda-descriptive.ttl",
+      "domain": "NearbyFacility",
+      "range": "http://www.w3.org/2001/XMLSchema#string",
+      "leaf": "propertyPack.nearbyFacilities.transport[].transportType",
+      "rml_mapped": false
+    },
+    {
+      "term": "typeOfConnection",
+      "kind": "Datatype",
+      "module": "opda-descriptive.ttl",
+      "domain": "Property",
+      "range": "http://www.w3.org/2001/XMLSchema#string",
+      "leaf": "propertyPack.connectivity.broadband.typeOfConnection",
+      "rml_mapped": true
+    },
+    {
+      "term": "typeOfHealthCare",
+      "kind": "Datatype",
+      "module": "opda-descriptive.ttl",
+      "domain": "NearbyFacility",
+      "range": "http://www.w3.org/2001/XMLSchema#string",
+      "leaf": "propertyPack.nearbyFacilities.healthCare[].typeOfHealthCare",
+      "rml_mapped": false
+    },
+    {
+      "term": "unitaryAuthority",
+      "kind": "Datatype",
+      "module": "opda-descriptive.ttl",
+      "domain": "Search",
+      "range": "http://www.w3.org/2001/XMLSchema#string",
+      "leaf": "propertyPack.localAuthority.unitaryAuthority",
+      "rml_mapped": false
+    },
+    {
+      "term": "urgentWorksCarriedOut",
+      "kind": "Datatype",
+      "module": "opda-descriptive.ttl",
+      "domain": "LegalEstate",
+      "range": "http://www.w3.org/2001/XMLSchema#string",
+      "leaf": "propertyPack.ownership.ownershipsToBeTransferred[].leaseholdInformation.buildingsInsurance.managedAreasCoveredByPolicy.riskAssessments.urgentWorksCarriedOut",
+      "rml_mapped": false
+    },
+    {
+      "term": "urgentWorksRecommended",
+      "kind": "Datatype",
+      "module": "opda-descriptive.ttl",
+      "domain": "LegalEstate",
+      "range": "http://www.w3.org/2001/XMLSchema#string",
+      "leaf": "propertyPack.ownership.ownershipsToBeTransferred[].leaseholdInformation.buildingsInsurance.managedAreasCoveredByPolicy.riskAssessments.urgentWorksRecommended",
+      "rml_mapped": false
+    },
+    {
+      "term": "url",
+      "kind": "Datatype",
+      "module": "opda-descriptive.ttl",
+      "domain": null,
+      "range": "http://www.w3.org/2001/XMLSchema#anyURI",
+      "leaf": "contracts[].contract.template.url (+1)",
+      "rml_mapped": true
+    },
+    {
+      "term": "width",
+      "kind": "Datatype",
+      "module": "opda-descriptive.ttl",
+      "domain": "RoomDimension",
+      "range": "http://www.w3.org/2001/XMLSchema#decimal",
+      "leaf": "propertyPack.buildInformation.roomDimensions.rooms[].width",
+      "rml_mapped": false
+    },
+    {
+      "term": "willingToInsure",
+      "kind": "Datatype",
+      "module": "opda-descriptive.ttl",
+      "domain": "Property",
+      "range": "http://www.w3.org/2001/XMLSchema#string",
+      "leaf": "propertyPack.alterationsAndChanges.unresolvedPlanningIssues.willingToInsure",
+      "rml_mapped": false
+    },
+    {
+      "term": "yield",
+      "kind": "Datatype",
+      "module": "opda-descriptive.ttl",
+      "domain": "Valuation",
+      "range": "http://www.w3.org/2001/XMLSchema#decimal",
+      "leaf": "valuationComparisonData.propertyPricing.yield",
+      "rml_mapped": false
+    },
+    {
+      "term": "annualCostOfPermit",
+      "kind": "Object",
+      "module": "opda-descriptive.ttl",
+      "domain": "Property",
+      "range": "MonetaryAmount",
+      "leaf": "propertyPack.parking.controlledParking.annualCostOfPermit",
+      "rml_mapped": false
+    },
+    {
+      "term": "annualGroundRent",
+      "kind": "Object",
+      "module": "opda-descriptive.ttl",
+      "domain": "LegalEstate",
+      "range": "MonetaryAmount",
+      "leaf": "propertyPack.ownership.ownershipsToBeTransferred[].leaseholdInformation.groundRent.annualGroundRent",
+      "rml_mapped": true
+    },
+    {
+      "term": "annualServiceCharge",
+      "kind": "Object",
+      "module": "opda-descriptive.ttl",
+      "domain": "LegalEstate",
+      "range": "MonetaryAmount",
+      "leaf": "propertyPack.ownership.ownershipsToBeTransferred[].leaseholdInformation.serviceCharge.annualServiceCharge (+1)",
+      "rml_mapped": true
+    },
+    {
+      "term": "certificateOfComplianceFee",
+      "kind": "Object",
+      "module": "opda-descriptive.ttl",
+      "domain": "LegalEstate",
+      "range": "MonetaryAmount",
+      "leaf": "propertyPack.ownership.ownershipsToBeTransferred[].leaseholdInformation.requiredDocuments.certificateOfComplianceFee",
+      "rml_mapped": false
+    },
+    {
+      "term": "costsApplicableToTheDeed",
+      "kind": "Object",
+      "module": "opda-descriptive.ttl",
+      "domain": "Transaction",
+      "range": "MonetaryAmount",
+      "leaf": "propertyPack.ownership.ownershipsToBeTransferred[].leaseholdInformation.transferAndRegistration.deedOfCovenantRequired.costsApplicableToTheDeed (+1)",
+      "rml_mapped": false
+    },
+    {
+      "term": "councilTaxAnnualCharge",
+      "kind": "Object",
+      "module": "opda-descriptive.ttl",
+      "domain": "Property",
+      "range": "MonetaryAmount",
+      "leaf": "propertyPack.councilTax.councilTaxAnnualCharge",
+      "rml_mapped": false
+    },
+    {
+      "term": "estimatedAmount",
+      "kind": "Object",
+      "module": "opda-descriptive.ttl",
+      "domain": "Valuation",
+      "range": "MonetaryAmount",
+      "leaf": "valuationComparisonData.propertyPricing.rentalEstimate.estimatedAmount",
+      "rml_mapped": false
+    },
+    {
+      "term": "estimatedPrice",
+      "kind": "Object",
+      "module": "opda-descriptive.ttl",
+      "domain": "Valuation",
+      "range": "MonetaryAmount",
+      "leaf": "valuationComparisonData.propertyPricing.estimatedPrice",
+      "rml_mapped": false
+    },
+    {
+      "term": "feeIncludingVAT",
+      "kind": "Object",
+      "module": "opda-descriptive.ttl",
+      "domain": "Transaction",
+      "range": "MonetaryAmount",
+      "leaf": "propertyPack.ownership.ownershipsToBeTransferred[].leaseholdInformation.contactDetails.serviceContactAssignments.noticeOfAssignmentAndCharge.landlord.feeIncludingVAT (+13)",
+      "rml_mapped": false
+    },
+    {
+      "term": "holdingDeposit",
+      "kind": "Object",
+      "module": "opda-descriptive.ttl",
+      "domain": "Property",
+      "range": "MonetaryAmount",
+      "leaf": "propertyPack.lettingInformation.holdingDeposit",
+      "rml_mapped": false
+    },
+    {
+      "term": "listPrice",
+      "kind": "Object",
+      "module": "opda-descriptive.ttl",
+      "domain": "Valuation",
+      "range": "MonetaryAmount",
+      "leaf": "valuationComparisonData.propertyDetails[].propertyListingInfo.listPrice",
+      "rml_mapped": false
+    },
+    {
+      "term": "potentialCost",
+      "kind": "Object",
+      "module": "opda-descriptive.ttl",
+      "domain": "Property",
+      "range": "MonetaryAmount",
+      "leaf": "propertyPack.typeOfConstruction.buildingSafety.potentialCost",
+      "rml_mapped": false
+    },
+    {
+      "term": "rent",
+      "kind": "Object",
+      "module": "opda-descriptive.ttl",
+      "domain": "Property",
+      "range": "MonetaryAmount",
+      "leaf": "propertyPack.lettingInformation.rent",
+      "rml_mapped": false
+    },
+    {
+      "term": "securityDeposit",
+      "kind": "Object",
+      "module": "opda-descriptive.ttl",
+      "domain": "Property",
+      "range": "MonetaryAmount",
+      "leaf": "propertyPack.lettingInformation.securityDeposit",
+      "rml_mapped": false
+    },
+    {
+      "term": "sharedOwnershipRent",
+      "kind": "Object",
+      "module": "opda-descriptive.ttl",
+      "domain": "LegalEstate",
+      "range": "MonetaryAmount",
+      "leaf": "propertyPack.ownership.ownershipsToBeTransferred[].leaseholdInformation.sharedOwnership.sharedOwnershipRent",
+      "rml_mapped": true
+    },
+    {
+      "term": "soldPrice",
+      "kind": "Object",
+      "module": "opda-descriptive.ttl",
+      "domain": "Valuation",
+      "range": "MonetaryAmount",
+      "leaf": "valuationComparisonData.propertyDetails[].propertyListingInfo.soldPrice",
+      "rml_mapped": false
+    },
+    {
+      "term": "abilityToResideAtProperty",
+      "kind": "Datatype",
+      "module": "opda-property.ttl",
+      "domain": "Property",
+      "range": "http://www.w3.org/2001/XMLSchema#string",
+      "leaf": "propertyPack.typeOfConstruction.buildingSafety.abilityToResideAtProperty",
+      "rml_mapped": false
+    },
+    {
+      "term": "accessibilityAndAdaptations",
+      "kind": "Datatype",
+      "module": "opda-property.ttl",
+      "domain": "Property",
+      "range": "http://www.w3.org/2001/XMLSchema#string",
+      "leaf": "propertyPack.typeOfConstruction.accessibilityAndAdaptations",
+      "rml_mapped": false
+    },
+    {
+      "term": "adHocExpenses",
+      "kind": "Datatype",
+      "module": "opda-property.ttl",
+      "domain": "LegalEstate",
+      "range": "http://www.w3.org/2001/XMLSchema#string",
+      "leaf": "propertyPack.ownership.ownershipsToBeTransferred[].leaseholdInformation.serviceCharge.adHocExpenses",
+      "rml_mapped": false
+    },
+    {
+      "term": "area",
+      "kind": "Datatype",
+      "module": "opda-property.ttl",
+      "domain": "Property",
+      "range": "http://www.w3.org/2001/XMLSchema#decimal",
+      "leaf": "propertyPack.buildInformation.internalArea.area (+1)",
+      "rml_mapped": false
+    },
+    {
+      "term": "bathrooms",
+      "kind": "Datatype",
+      "module": "opda-property.ttl",
+      "domain": "Property",
+      "range": "http://www.w3.org/2001/XMLSchema#integer",
+      "leaf": "propertyPack.residentialPropertyFeatures.bathrooms (+1)",
+      "rml_mapped": false
+    },
+    {
+      "term": "bedrooms",
+      "kind": "Datatype",
+      "module": "opda-property.ttl",
+      "domain": "Property",
+      "range": "http://www.w3.org/2001/XMLSchema#integer",
+      "leaf": "propertyPack.residentialPropertyFeatures.bedrooms (+1)",
+      "rml_mapped": false
+    },
+    {
+      "term": "buildingsReinstatementCostAssessment",
+      "kind": "Datatype",
+      "module": "opda-property.ttl",
+      "domain": "LegalEstate",
+      "range": "http://www.w3.org/2001/XMLSchema#string",
+      "leaf": "propertyPack.ownership.ownershipsToBeTransferred[].leaseholdInformation.buildingsInsurance.buildingsReinstatementCostAssessment",
+      "rml_mapped": false
+    },
+    {
+      "term": "builtForm",
+      "kind": "Datatype",
+      "module": "opda-property.ttl",
+      "domain": "Property",
+      "range": "http://www.w3.org/2001/XMLSchema#string",
+      "leaf": "propertyPack.buildInformation.building.builtForm",
+      "rml_mapped": true
+    },
+    {
+      "term": "centralHeatingFuelType",
+      "kind": "Datatype",
+      "module": "opda-property.ttl",
+      "domain": "Property",
+      "range": "http://www.w3.org/2001/XMLSchema#string",
+      "leaf": "propertyPack.heating.heatingSystem.centralHeatingDetails.centralHeatingFuel.centralHeatingFuelType",
+      "rml_mapped": true
+    },
+    {
+      "term": "centralHeatingInstalled",
+      "kind": "Datatype",
+      "module": "opda-property.ttl",
+      "domain": "Property",
+      "range": "http://www.w3.org/2001/XMLSchema#string",
+      "leaf": "propertyPack.heating.heatingSystem.centralHeatingDetails.centralHeatingInstalled",
+      "rml_mapped": true
+    },
+    {
+      "term": "consequentialChargingBasis",
+      "kind": "Datatype",
+      "module": "opda-property.ttl",
+      "domain": "Property",
+      "range": "http://www.w3.org/2001/XMLSchema#string",
+      "leaf": "propertyPack.waterAndDrainage.charging.consequentialChargingBasis",
+      "rml_mapped": false
+    },
+    {
+      "term": "councilTaxBand",
+      "kind": "Datatype",
+      "module": "opda-property.ttl",
+      "domain": "Property",
+      "range": "http://www.w3.org/2001/XMLSchema#string",
+      "leaf": "propertyPack.councilTax.councilTaxBand",
+      "rml_mapped": true
+    },
+    {
+      "term": "currentChargingBasis",
+      "kind": "Datatype",
+      "module": "opda-property.ttl",
+      "domain": "Property",
+      "range": "http://www.w3.org/2001/XMLSchema#string",
+      "leaf": "propertyPack.waterAndDrainage.charging.currentChargingBasis",
+      "rml_mapped": false
+    },
+    {
+      "term": "currentEnergyRating",
+      "kind": "Datatype",
+      "module": "opda-property.ttl",
+      "domain": "Property",
+      "range": "http://www.w3.org/2001/XMLSchema#string",
+      "leaf": "propertyPack.energyEfficiency.certificate.currentEnergyRating",
+      "rml_mapped": true
+    },
+    {
+      "term": "dateInstalled",
+      "kind": "Datatype",
+      "module": "opda-property.ttl",
+      "domain": "Property",
+      "range": "http://www.w3.org/2001/XMLSchema#date",
+      "leaf": "propertyPack.electricity.heatPump.dateInstalled (+1)",
+      "rml_mapped": false
+    },
+    {
+      "term": "dateLastEmptied",
+      "kind": "Datatype",
+      "module": "opda-property.ttl",
+      "domain": "Property",
+      "range": "http://www.w3.org/2001/XMLSchema#date",
+      "leaf": "propertyPack.waterAndDrainage.drainage.mainsFoulDrainage.offMainsDrainageSystem.dateLastEmptied",
+      "rml_mapped": true
+    },
+    {
+      "term": "dateLastServiced",
+      "kind": "Datatype",
+      "module": "opda-property.ttl",
+      "domain": "Property",
+      "range": "http://www.w3.org/2001/XMLSchema#date",
+      "leaf": "propertyPack.waterAndDrainage.drainage.mainsFoulDrainage.offMainsDrainageSystem.dateLastServiced",
+      "rml_mapped": false
+    },
+    {
+      "term": "dateReplaced",
+      "kind": "Datatype",
+      "module": "opda-property.ttl",
+      "domain": "Property",
+      "range": "http://www.w3.org/2001/XMLSchema#date",
+      "leaf": "propertyPack.waterAndDrainage.drainage.mainsFoulDrainage.offMainsDrainageSystem.dateReplaced",
+      "rml_mapped": true
+    },
+    {
+      "term": "dateToBeConnected",
+      "kind": "Datatype",
+      "module": "opda-property.ttl",
+      "domain": "Property",
+      "range": "http://www.w3.org/2001/XMLSchema#date",
+      "leaf": "propertyPack.connectivity.cableSatelliteTV.dateToBeConnected (+8)",
+      "rml_mapped": false
+    },
+    {
+      "term": "diningAreas",
+      "kind": "Datatype",
+      "module": "opda-property.ttl",
+      "domain": "Property",
+      "range": "http://www.w3.org/2001/XMLSchema#integer",
+      "leaf": "propertyPack.residentialPropertyFeatures.diningAreas",
+      "rml_mapped": false
+    },
+    {
+      "term": "distanceToNearestSewerageTreatment",
+      "kind": "Datatype",
+      "module": "opda-property.ttl",
+      "domain": "Property",
+      "range": "http://www.w3.org/2001/XMLSchema#string",
+      "leaf": "propertyPack.waterAndDrainage.drainage.distanceToNearestSewerageTreatment",
+      "rml_mapped": false
+    },
+    {
+      "term": "entranceFloor",
+      "kind": "Datatype",
+      "module": "opda-property.ttl",
+      "domain": "Property",
+      "range": "http://www.w3.org/2001/XMLSchema#integer",
+      "leaf": "propertyPack.buildInformation.building.entranceFloor",
+      "rml_mapped": false
+    },
+    {
+      "term": "from",
+      "kind": "Datatype",
+      "module": "opda-property.ttl",
+      "domain": "LegalEstate",
+      "range": "http://www.w3.org/2001/XMLSchema#date",
+      "leaf": "propertyPack.ownership.ownershipsToBeTransferred[].leaseholdInformation.buildingsInsurance.lastDemandPeriod.from (+8)",
+      "rml_mapped": false
+    },
+    {
+      "term": "groundRentFrequency",
+      "kind": "Datatype",
+      "module": "opda-property.ttl",
+      "domain": "LegalEstate",
+      "range": "http://www.w3.org/2001/XMLSchema#string",
+      "leaf": "propertyPack.ownership.ownershipsToBeTransferred[].leaseholdInformation.groundRent.groundRentFrequency",
+      "rml_mapped": false
+    },
+    {
+      "term": "handoverOnCompletion",
+      "kind": "Datatype",
+      "module": "opda-property.ttl",
+      "domain": "Property",
+      "range": "http://www.w3.org/2001/XMLSchema#boolean",
+      "leaf": "propertyPack.smartHomeSystems.handoverOnCompletion",
+      "rml_mapped": false
+    },
+    {
+      "term": "hasFixedRentcharge",
+      "kind": "Datatype",
+      "module": "opda-property.ttl",
+      "domain": "LegalEstate",
+      "range": "http://www.w3.org/2001/XMLSchema#string",
+      "leaf": "propertyPack.ownership.ownershipsToBeTransferred[].managedFreeholdOrCommonholdInformation.serviceCharge.hasFixedRentcharge",
+      "rml_mapped": false
+    },
+    {
+      "term": "heading",
+      "kind": "Datatype",
+      "module": "opda-property.ttl",
+      "domain": "Property",
+      "range": "http://www.w3.org/2001/XMLSchema#decimal",
+      "leaf": "propertyPack.location.googleStreetViewPOV.heading",
+      "rml_mapped": false
+    },
+    {
+      "term": "heatingLastServicedDate",
+      "kind": "Datatype",
+      "module": "opda-property.ttl",
+      "domain": "Property",
+      "range": "http://www.w3.org/2001/XMLSchema#date",
+      "leaf": "propertyPack.heating.heatingSystem.centralHeatingDetails.heatingLastServicedDate",
+      "rml_mapped": true
+    },
+    {
+      "term": "heatingType",
+      "kind": "Datatype",
+      "module": "opda-property.ttl",
+      "domain": "Property",
+      "range": "http://www.w3.org/2001/XMLSchema#string",
+      "leaf": "propertyPack.heating.heatingSystem.heatingType",
+      "rml_mapped": true
+    },
+    {
+      "term": "kitchens",
+      "kind": "Datatype",
+      "module": "opda-property.ttl",
+      "domain": "Property",
+      "range": "http://www.w3.org/2001/XMLSchema#integer",
+      "leaf": "propertyPack.residentialPropertyFeatures.kitchens",
+      "rml_mapped": false
+    },
+    {
+      "term": "lastMaintained",
+      "kind": "Datatype",
+      "module": "opda-property.ttl",
+      "domain": "Property",
+      "range": "http://www.w3.org/2001/XMLSchema#date",
+      "leaf": "propertyPack.electricity.solarPanels.lastMaintained",
+      "rml_mapped": false
+    },
+    {
+      "term": "lengthOfLeaseInYears",
+      "kind": "Datatype",
+      "module": "opda-property.ttl",
+      "domain": "LegalEstate",
+      "range": "http://www.w3.org/2001/XMLSchema#integer",
+      "leaf": "propertyPack.ownership.ownershipsToBeTransferred[].leaseholdInformation.leaseTerm.lengthOfLeaseInYears",
+      "rml_mapped": true
+    },
+    {
+      "term": "location",
+      "kind": "Datatype",
+      "module": "opda-property.ttl",
+      "domain": "Property",
+      "range": "http://www.w3.org/2001/XMLSchema#string",
+      "leaf": "propertyPack.electricity.mainsElectricity.electricityMeter.location (+3)",
+      "rml_mapped": true
+    },
+    {
+      "term": "logbookProvider",
+      "kind": "Datatype",
+      "module": "opda-property.ttl",
+      "domain": "Property",
+      "range": "http://www.w3.org/2001/XMLSchema#string",
+      "leaf": "propertyPack.completionAndMoving.digitalPropertyLogbook.logbookProvider",
+      "rml_mapped": false
+    },
+    {
+      "term": "mpan",
+      "kind": "Datatype",
+      "module": "opda-property.ttl",
+      "domain": "Property",
+      "range": "http://www.w3.org/2001/XMLSchema#string",
+      "leaf": "propertyPack.electricity.mainsElectricity.electricityMeter.mpan",
+      "rml_mapped": false
+    },
+    {
+      "term": "mprn",
+      "kind": "Datatype",
+      "module": "opda-property.ttl",
+      "domain": "Property",
+      "range": "http://www.w3.org/2001/XMLSchema#string",
+      "leaf": "propertyPack.heating.heatingSystem.centralHeatingDetails.centralHeatingFuel.gasMeter.mprn",
+      "rml_mapped": false
+    },
+    {
+      "term": "numberOfFloors",
+      "kind": "Datatype",
+      "module": "opda-property.ttl",
+      "domain": "Property",
+      "range": "http://www.w3.org/2001/XMLSchema#integer",
+      "leaf": "propertyPack.buildInformation.building.numberOfFloors",
+      "rml_mapped": false
+    },
+    {
+      "term": "numberOfPropertiesSharing",
+      "kind": "Datatype",
+      "module": "opda-property.ttl",
+      "domain": "Property",
+      "range": "http://www.w3.org/2001/XMLSchema#integer",
+      "leaf": "propertyPack.waterAndDrainage.drainage.mainsFoulDrainage.offMainsDrainageSystem.otherConnectedProperties.numberOfPropertiesSharing",
+      "rml_mapped": false
+    },
+    {
+      "term": "otherCentralHeatingFuelType",
+      "kind": "Datatype",
+      "module": "opda-property.ttl",
+      "domain": "Property",
+      "range": "http://www.w3.org/2001/XMLSchema#string",
+      "leaf": "propertyPack.heating.heatingSystem.centralHeatingDetails.centralHeatingFuel.otherCentralHeatingFuelType",
+      "rml_mapped": true
+    },
+    {
+      "term": "otherHeatingFeatures",
+      "kind": "Datatype",
+      "module": "opda-property.ttl",
+      "domain": "Property",
+      "range": "http://www.w3.org/2001/XMLSchema#string",
+      "leaf": "propertyPack.heating.otherHeatingFeatures",
+      "rml_mapped": false
+    },
+    {
+      "term": "otherOwnershipDetails",
+      "kind": "Datatype",
+      "module": "opda-property.ttl",
+      "domain": "LegalEstate",
+      "range": "http://www.w3.org/2001/XMLSchema#string",
+      "leaf": "propertyPack.ownership.ownershipsToBeTransferred[].otherOwnershipDetails",
+      "rml_mapped": false
+    },
+    {
+      "term": "otherPropertiesInManagedArea",
+      "kind": "Datatype",
+      "module": "opda-property.ttl",
+      "domain": "LegalEstate",
+      "range": "http://www.w3.org/2001/XMLSchema#decimal",
+      "leaf": "propertyPack.ownership.ownershipsToBeTransferred[].leaseholdInformation.general.otherPropertiesInManagedArea",
+      "rml_mapped": false
+    },
+    {
+      "term": "otherType",
+      "kind": "Datatype",
+      "module": "opda-property.ttl",
+      "domain": "Property",
+      "range": "http://www.w3.org/2001/XMLSchema#string",
+      "leaf": "propertyPack.buildInformation.building.otherType",
+      "rml_mapped": false
+    },
+    {
+      "term": "outsideAreas",
+      "kind": "Datatype",
+      "module": "opda-property.ttl",
+      "domain": "Property",
+      "range": "http://www.w3.org/2001/XMLSchema#string",
+      "leaf": "propertyPack.residentialPropertyFeatures.outsideAreas",
+      "rml_mapped": false
+    },
+    {
+      "term": "ownershipType",
+      "kind": "Datatype",
+      "module": "opda-property.ttl",
+      "domain": "LegalEstate",
+      "range": "http://www.w3.org/2001/XMLSchema#string",
+      "leaf": "propertyPack.ownership.ownershipsToBeTransferred[].ownershipType",
+      "rml_mapped": true
+    },
+    {
+      "term": "parkingArrangements",
+      "kind": "Datatype",
+      "module": "opda-property.ttl",
+      "domain": "Property",
+      "range": "http://www.w3.org/2001/XMLSchema#string",
+      "leaf": "propertyPack.parking.parkingArrangements",
+      "rml_mapped": false
+    },
+    {
+      "term": "personWhoDealsWithTheDeedOfCovenant",
+      "kind": "Datatype",
+      "module": "opda-property.ttl",
+      "domain": "LegalEstate",
+      "range": "http://www.w3.org/2001/XMLSchema#string",
+      "leaf": "propertyPack.ownership.ownershipsToBeTransferred[].leaseholdInformation.transferAndRegistration.deedOfCovenantRequired.personWhoDealsWithTheDeedOfCovenant (+1)",
+      "rml_mapped": false
+    },
+    {
+      "term": "pitch",
+      "kind": "Datatype",
+      "module": "opda-property.ttl",
+      "domain": "Property",
+      "range": "http://www.w3.org/2001/XMLSchema#decimal",
+      "leaf": "propertyPack.location.googleStreetViewPOV.pitch",
+      "rml_mapped": false
+    },
+    {
+      "term": "procedureForObtainingCertificate",
+      "kind": "Datatype",
+      "module": "opda-property.ttl",
+      "domain": "LegalEstate",
+      "range": "http://www.w3.org/2001/XMLSchema#string",
+      "leaf": "propertyPack.ownership.ownershipsToBeTransferred[].leaseholdInformation.transferAndRegistration.procedureForObtainingCertificate (+1)",
+      "rml_mapped": false
+    },
+    {
+      "term": "propertiesContributingToMaintenanceOfManagedArea",
+      "kind": "Datatype",
+      "module": "opda-property.ttl",
+      "domain": "LegalEstate",
+      "range": "http://www.w3.org/2001/XMLSchema#decimal",
+      "leaf": "propertyPack.ownership.ownershipsToBeTransferred[].leaseholdInformation.serviceCharge.propertiesContributingToMaintenanceOfManagedArea",
+      "rml_mapped": false
+    },
+    {
+      "term": "propertyType",
+      "kind": "Datatype",
+      "module": "opda-property.ttl",
+      "domain": "Property",
+      "range": "http://www.w3.org/2001/XMLSchema#string",
+      "leaf": "propertyPack.buildInformation.building.propertyType (+1)",
+      "rml_mapped": true
+    },
+    {
+      "term": "publicSewerMapAttached",
+      "kind": "Datatype",
+      "module": "opda-property.ttl",
+      "domain": "Property",
+      "range": "http://www.w3.org/2001/XMLSchema#string",
+      "leaf": "propertyPack.waterAndDrainage.maps.publicSewerMapAttached",
+      "rml_mapped": false
+    },
+    {
+      "term": "receptions",
+      "kind": "Datatype",
+      "module": "opda-property.ttl",
+      "domain": "Property",
+      "range": "http://www.w3.org/2001/XMLSchema#integer",
+      "leaf": "propertyPack.residentialPropertyFeatures.receptions",
+      "rml_mapped": false
+    },
+    {
+      "term": "rentIncreaseCalculated",
+      "kind": "Datatype",
+      "module": "opda-property.ttl",
+      "domain": "LegalEstate",
+      "range": "http://www.w3.org/2001/XMLSchema#string",
+      "leaf": "propertyPack.ownership.ownershipsToBeTransferred[].leaseholdInformation.groundRent.rentSubjectToIncrease.rentIncreaseCalculated",
+      "rml_mapped": true
+    },
+    {
+      "term": "rentReviewFrequency",
+      "kind": "Datatype",
+      "module": "opda-property.ttl",
+      "domain": "LegalEstate",
+      "range": "http://www.w3.org/2001/XMLSchema#string",
+      "leaf": "propertyPack.ownership.ownershipsToBeTransferred[].leaseholdInformation.groundRent.rentSubjectToIncrease.rentReviewFrequency",
+      "rml_mapped": true
+    },
+    {
+      "term": "requirements",
+      "kind": "Datatype",
+      "module": "opda-property.ttl",
+      "domain": "LegalEstate",
+      "range": "http://www.w3.org/2001/XMLSchema#string",
+      "leaf": "propertyPack.ownership.ownershipsToBeTransferred[].leaseholdInformation.transferAndRegistration.licenceToAssignRequired.requirements",
+      "rml_mapped": false
+    },
+    {
+      "term": "sewerageBills",
+      "kind": "Datatype",
+      "module": "opda-property.ttl",
+      "domain": "Property",
+      "range": "http://www.w3.org/2001/XMLSchema#string",
+      "leaf": "propertyPack.waterAndDrainage.charging.sewerageBills",
+      "rml_mapped": false
+    },
+    {
+      "term": "sewerageProvider",
+      "kind": "Datatype",
+      "module": "opda-property.ttl",
+      "domain": "Property",
+      "range": "http://www.w3.org/2001/XMLSchema#string",
+      "leaf": "propertyPack.waterAndDrainage.charging.sewerageProvider",
+      "rml_mapped": false
+    },
+    {
+      "term": "sharedOwnershipPercentage",
+      "kind": "Datatype",
+      "module": "opda-property.ttl",
+      "domain": "LegalEstate",
+      "range": "http://www.w3.org/2001/XMLSchema#decimal",
+      "leaf": "propertyPack.ownership.ownershipsToBeTransferred[].leaseholdInformation.sharedOwnership.sharedOwnershipPercentage",
+      "rml_mapped": true
+    },
+    {
+      "term": "startYearOfLease",
+      "kind": "Datatype",
+      "module": "opda-property.ttl",
+      "domain": "LegalEstate",
+      "range": "http://www.w3.org/2001/XMLSchema#gYear",
+      "leaf": "propertyPack.ownership.ownershipsToBeTransferred[].leaseholdInformation.leaseTerm.startYearOfLease",
+      "rml_mapped": true
+    },
+    {
+      "term": "supplier",
+      "kind": "Datatype",
+      "module": "opda-property.ttl",
+      "domain": "Property",
+      "range": "http://www.w3.org/2001/XMLSchema#string",
+      "leaf": "propertyPack.connectivity.cableSatelliteTV.supplier (+8)",
+      "rml_mapped": true
+    },
+    {
+      "term": "supplyClassification",
+      "kind": "Datatype",
+      "module": "opda-property.ttl",
+      "domain": "Property",
+      "range": "http://www.w3.org/2001/XMLSchema#string",
+      "leaf": "propertyPack.waterAndDrainage.water.supplyClassification",
+      "rml_mapped": false
+    },
+    {
+      "term": "titleExtents",
+      "kind": "Datatype",
+      "module": "opda-property.ttl",
+      "domain": "LegalEstate",
+      "range": "http://www.w3.org/2001/XMLSchema#string",
+      "leaf": "propertyPack.titlesToBeSold[].titleExtents",
+      "rml_mapped": true
+    },
+    {
+      "term": "titleNumber",
+      "kind": "Datatype",
+      "module": "opda-property.ttl",
+      "domain": "RegisteredTitle",
+      "range": "http://www.w3.org/2001/XMLSchema#string",
+      "leaf": "propertyPack.ownership.ownershipsToBeTransferred[].titleNumber (+2)",
+      "rml_mapped": true
+    },
+    {
+      "term": "titlePropertyDescription",
+      "kind": "Datatype",
+      "module": "opda-property.ttl",
+      "domain": "LegalEstate",
+      "range": "http://www.w3.org/2001/XMLSchema#string",
+      "leaf": "propertyPack.ownership.ownershipsToBeTransferred[].titlePropertyDescription",
+      "rml_mapped": false
+    },
+    {
+      "term": "to",
+      "kind": "Datatype",
+      "module": "opda-property.ttl",
+      "domain": "LegalEstate",
+      "range": "http://www.w3.org/2001/XMLSchema#date",
+      "leaf": "propertyPack.ownership.ownershipsToBeTransferred[].leaseholdInformation.buildingsInsurance.lastDemandPeriod.to (+8)",
+      "rml_mapped": false
+    },
+    {
+      "term": "typeOfFlooding",
+      "kind": "Datatype",
+      "module": "opda-property.ttl",
+      "domain": "Property",
+      "range": "http://www.w3.org/2001/XMLSchema#string",
+      "leaf": "propertyPack.environmentalIssues.flooding.historicalFlooding.typeOfFlooding",
+      "rml_mapped": false
+    },
+    {
+      "term": "waterBills",
+      "kind": "Datatype",
+      "module": "opda-property.ttl",
+      "domain": "Property",
+      "range": "http://www.w3.org/2001/XMLSchema#string",
+      "leaf": "propertyPack.waterAndDrainage.charging.waterBills",
+      "rml_mapped": false
+    },
+    {
+      "term": "waterProvider",
+      "kind": "Datatype",
+      "module": "opda-property.ttl",
+      "domain": "Property",
+      "range": "http://www.w3.org/2001/XMLSchema#string",
+      "leaf": "propertyPack.waterAndDrainage.charging.waterProvider",
+      "rml_mapped": false
+    },
+    {
+      "term": "waterworksMapAttached",
+      "kind": "Datatype",
+      "module": "opda-property.ttl",
+      "domain": "Property",
+      "range": "http://www.w3.org/2001/XMLSchema#string",
+      "leaf": "propertyPack.waterAndDrainage.maps.waterworksMapAttached",
+      "rml_mapped": false
+    },
+    {
+      "term": "willHandoverLogbook",
+      "kind": "Datatype",
+      "module": "opda-property.ttl",
+      "domain": "Property",
+      "range": "http://www.w3.org/2001/XMLSchema#boolean",
+      "leaf": "propertyPack.completionAndMoving.digitalPropertyLogbook.willHandoverLogbook",
+      "rml_mapped": false
+    },
+    {
+      "term": "year",
+      "kind": "Datatype",
+      "module": "opda-property.ttl",
+      "domain": "LegalEstate",
+      "range": "http://www.w3.org/2001/XMLSchema#gYear",
+      "leaf": "propertyPack.ownership.ownershipsToBeTransferred[].leaseholdInformation.serviceCharge.lastDecoratedPeriod.externally.year (+1)",
+      "rml_mapped": false
+    },
+    {
+      "term": "yearCompleted",
+      "kind": "Datatype",
+      "module": "opda-property.ttl",
+      "domain": "Property",
+      "range": "http://www.w3.org/2001/XMLSchema#gYear",
+      "leaf": "propertyPack.alterationsAndChanges.changeOfUse.yearCompleted (+2)",
+      "rml_mapped": true
+    },
+    {
+      "term": "yearInstalled",
+      "kind": "Datatype",
+      "module": "opda-property.ttl",
+      "domain": "Property",
+      "range": "http://www.w3.org/2001/XMLSchema#gYear",
+      "leaf": "propertyPack.electricity.solarPanels.yearInstalled",
+      "rml_mapped": false
+    },
+    {
+      "term": "yearOfBuild",
+      "kind": "Datatype",
+      "module": "opda-property.ttl",
+      "domain": "Property",
+      "range": "http://www.w3.org/2001/XMLSchema#gYear",
+      "leaf": "propertyPack.buildInformation.yearOfBuild (+1)",
+      "rml_mapped": true
+    },
+    {
+      "term": "yearTested",
+      "kind": "Datatype",
+      "module": "opda-property.ttl",
+      "domain": "Property",
+      "range": "http://www.w3.org/2001/XMLSchema#gYear",
+      "leaf": "propertyPack.electricalWorks.testedByQualifiedElectrician.yearTested",
+      "rml_mapped": true
+    },
+    {
+      "term": "yearWorkCarriedOut",
+      "kind": "Datatype",
+      "module": "opda-property.ttl",
+      "domain": "Property",
+      "range": "http://www.w3.org/2001/XMLSchema#gYear",
+      "leaf": "propertyPack.electricalWorks.electricalWorkSince2005.yearWorkCarriedOut",
+      "rml_mapped": true
+    },
+    {
+      "term": "zoom",
+      "kind": "Datatype",
+      "module": "opda-property.ttl",
+      "domain": "Property",
+      "range": "http://www.w3.org/2001/XMLSchema#decimal",
+      "leaf": "propertyPack.location.googleStreetViewPOV.zoom",
+      "rml_mapped": false
+    },
+    {
+      "term": "hasEPCCertificate",
+      "kind": "Object",
+      "module": "opda-property.ttl",
+      "domain": "Property",
+      "range": "EPCCertificate",
+      "leaf": "propertyPack.energyEfficiency.certificate",
+      "rml_mapped": false
+    },
+    {
+      "term": "authorisationToShare",
+      "kind": "Datatype",
+      "module": "opda-transaction.ttl",
+      "domain": "Transaction",
+      "range": "http://www.w3.org/2001/XMLSchema#boolean",
+      "leaf": "propertyPack.saleReadyDeclarations.authorisationToShare",
+      "rml_mapped": false
+    },
+    {
+      "term": "authorisedToActOnBehalfOfAllSellers",
+      "kind": "Datatype",
+      "module": "opda-transaction.ttl",
+      "domain": "Transaction",
+      "range": "http://www.w3.org/2001/XMLSchema#boolean",
+      "leaf": "propertyPack.saleReadyDeclarations.authorisedToActOnBehalfOfAllSellers",
+      "rml_mapped": false
+    },
+    {
+      "term": "confirmInformationIsAccurate",
+      "kind": "Datatype",
+      "module": "opda-transaction.ttl",
+      "domain": "Transaction",
+      "range": "http://www.w3.org/2001/XMLSchema#boolean",
+      "leaf": "propertyPack.confirmationOfAccuracyByOwners.confirmInformationIsAccurate (+1)",
+      "rml_mapped": true
+    },
+    {
+      "term": "confirmWillProvideAdditionalDocumentation",
+      "kind": "Datatype",
+      "module": "opda-transaction.ttl",
+      "domain": "Transaction",
+      "range": "http://www.w3.org/2001/XMLSchema#boolean",
+      "leaf": "propertyPack.confirmationOfAccuracyByOwners.confirmWillProvideAdditionalDocumentation",
+      "rml_mapped": true
+    },
+    {
+      "term": "confirmation",
+      "kind": "Datatype",
+      "module": "opda-transaction.ttl",
+      "domain": "Transaction",
+      "range": "http://www.w3.org/2001/XMLSchema#boolean",
+      "leaf": "propertyPack.ownership.ownershipsToBeTransferred[].leaseholdInformation.confirmationOfAccuracy.confirmation (+1)",
+      "rml_mapped": false
+    },
+    {
+      "term": "consumerProtectionRegulationsResponse",
+      "kind": "Datatype",
+      "module": "opda-transaction.ttl",
+      "domain": "Transaction",
+      "range": "http://www.w3.org/2001/XMLSchema#boolean",
+      "leaf": "propertyPack.consumerProtectionRegulationsDeclaration.consumerProtectionRegulationsResponse",
+      "rml_mapped": true
+    },
+    {
+      "term": "leaveKeys",
+      "kind": "Datatype",
+      "module": "opda-transaction.ttl",
+      "domain": "Transaction",
+      "range": "http://www.w3.org/2001/XMLSchema#boolean",
+      "leaf": "propertyPack.completionAndMoving.sellerWillEnsure.leaveKeys",
+      "rml_mapped": true
+    },
+    {
+      "term": "removeRubbish",
+      "kind": "Datatype",
+      "module": "opda-transaction.ttl",
+      "domain": "Transaction",
+      "range": "http://www.w3.org/2001/XMLSchema#boolean",
+      "leaf": "propertyPack.completionAndMoving.sellerWillEnsure.removeRubbish",
+      "rml_mapped": true
+    },
+    {
+      "term": "replaceLightFittings",
+      "kind": "Datatype",
+      "module": "opda-transaction.ttl",
+      "domain": "Transaction",
+      "range": "http://www.w3.org/2001/XMLSchema#boolean",
+      "leaf": "propertyPack.completionAndMoving.sellerWillEnsure.replaceLightFittings",
+      "rml_mapped": true
+    },
+    {
+      "term": "response",
+      "kind": "Datatype",
+      "module": "opda-transaction.ttl",
+      "domain": "Transaction",
+      "range": "http://www.w3.org/2001/XMLSchema#boolean",
+      "leaf": "propertyPack.ownership.ownershipsToBeTransferred[].managedFreeholdOrCommonholdInformation.confirmation.response",
+      "rml_mapped": false
+    },
+    {
+      "term": "sellingAgent",
+      "kind": "Datatype",
+      "module": "opda-transaction.ttl",
+      "domain": "Transaction",
+      "range": "http://www.w3.org/2001/XMLSchema#string",
+      "leaf": "chain.onwardPurchase[].sellingAgent",
+      "rml_mapped": false
+    },
+    {
+      "term": "signedOn",
+      "kind": "Datatype",
+      "module": "opda-transaction.ttl",
+      "domain": "Transaction",
+      "range": "http://www.w3.org/2001/XMLSchema#date",
+      "leaf": "contracts[].signatures[].signedOn (+1)",
+      "rml_mapped": true
+    },
+    {
+      "term": "takeReasonableCare",
+      "kind": "Datatype",
+      "module": "opda-transaction.ttl",
+      "domain": "Transaction",
+      "range": "http://www.w3.org/2001/XMLSchema#boolean",
+      "leaf": "propertyPack.completionAndMoving.sellerWillEnsure.takeReasonableCare",
+      "rml_mapped": true
+    },
+    {
+      "term": "transactionId",
+      "kind": "Datatype",
+      "module": "opda-transaction.ttl",
+      "domain": "Transaction",
+      "range": "http://www.w3.org/2001/XMLSchema#string",
+      "leaf": "chain.onwardPurchase[].transactionId (+1)",
+      "rml_mapped": true
+    }
+  ]
+}

@@ -1,0 +1,14 @@
+{
+  "$schema": "https://trust.propdata.org.uk/schemas/v3/pdtf-transaction.json",
+  "transactionId": "MIN0000000000000000001",
+  "status": "For sale",
+  "participants": [
+    {
+      "name": {
+        "firstName": "Ada",
+        "lastName": "Minimal"
+      },
+      "role": "Seller"
+    }
+  ]
+}
