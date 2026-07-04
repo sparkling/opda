@@ -99,27 +99,32 @@ REPORT="$("$SHACL" validate --shapes "$SHAPES_GRAPH" --data "$DATA_GRAPH")"
 # not a general exception mechanism. Any NEW, unexpected violation (any
 # resultMessage not matching one of these exact strings) still fails loudly.
 #
-# Group 1 — M12/M1c/M27c's deliberately-UNTYPED occupier/signature/
-# ownership-record records (opda-pdtf.rml.ttl). UPDATED (ADR-0057 Amendments,
-# morph-kgc -> RMLMapper migration): M1b's 9 declaration-boolean predicates
-# used to be listed here for the same reason as M12/M1c below (typing them
-# properly required binding onto the root iterator, which cost ~15-20s per
-# rule under morph-kgc's JSONPath multi-select — a ~50-80x slowdown, declined
-# at the time). RMLMapper has no equivalent cost (merging measured within
-# noise of baseline), so M1b's properties now bind directly onto the typed
-# opda:Transaction node (M1) and are REMOVED from this allowlist. M12 stays
-# untyped for a genuinely different, independent reason (domain mismatch —
-# see M12's own comment); M1c stays untyped because its array-projected
-# reference did not resolve inside RMLMapper's FNML input value map (a
-# distinct, unpursued opportunity, not the morph-kgc performance concern).
+# Group 1 — M12/M1c's deliberately-UNTYPED occupier/signature records
+# (opda-pdtf.rml.ttl). UPDATED (ADR-0057 Amendments, morph-kgc -> RMLMapper
+# migration): M1b's 9 declaration-boolean predicates used to be listed here
+# for the same reason as M12/M1c below (typing them properly required
+# binding onto the root iterator, which cost ~15-20s per rule under
+# morph-kgc's JSONPath multi-select — a ~50-80x slowdown, declined at the
+# time). RMLMapper has no equivalent cost (merging measured within noise of
+# baseline), so M1b's properties now bind directly onto the typed
+# opda:Transaction node (M1) and are REMOVED from this allowlist. M27c's
+# opda:confirmation/opda:costsApplicableToTheDeed/opda:feeIncludingVAT/
+# opda:response were RETIRED the same way in a later stale-claim audit — the
+# "expensive in practice" framing for those was never actually re-measured
+# under RMLMapper either; empirically verified to resolve directly onto M1's
+# opda:Transaction node, so they too are REMOVED from this allowlist (M27c's
+# formerly-untyped <#OwnershipTransactionRecord> TriplesMap is deleted).
+# M12 stays untyped for a genuinely different, independent reason (domain
+# mismatch — see M12's own comment); M1c stays untyped because embedding its
+# array-projected reference inside RMLMapper's FNML input value map silently
+# drops every signature but the first when a transaction has more than one
+# (confirmed empirically — a genuine, still-current multi-value limitation
+# of RMLMapper's FNML mechanism, not the retired morph-kgc performance
+# concern; see M1c's own comment).
 ALLOWLISTED_VIOLATION_SUBSTRINGS=(
   "opda:aged17OrOverNames is used off its declared rdfs:domain"
   "opda:hasOthersAged17OrOver is used off its declared rdfs:domain"
   "opda:signedOn is used off its declared rdfs:domain"
-  "opda:confirmation is used off its declared rdfs:domain"
-  "opda:costsApplicableToTheDeed is used off its declared rdfs:domain"
-  "opda:feeIncludingVAT is used off its declared rdfs:domain"
-  "opda:response is used off its declared rdfs:domain"
 )
 
 # NB: the filter script is written to a real temp file, not a heredoc, because

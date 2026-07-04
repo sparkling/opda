@@ -97,16 +97,28 @@
 #   pulled the ENTIRE propertyPack subtree per reference) — a 50-80x
 #   slowdown, declined. RMLMapper has no equivalent cost: merging all 9
 #   properties measured within noise of the unmerged baseline (~1.1s either
-#   way for the full mapping against one instance). M12 (occupiers/aged-17+)
-#   deliberately stays separate and untyped — NOT a performance question:
-#   A1's index gives those 2 properties domain opda:Seller, not
-#   opda:Transaction, so merging them here would be a domain-type error
-#   regardless of engine. M1c (signedOn) also stays separate: its array-
-#   projected reference (`contracts[*].signatures[*].signedOn`) did not
-#   resolve when embedded inside the FNML function's input value map (a
-#   distinct, untested-until-now RMLMapper interaction, not the morph-kgc
-#   performance concern) — left as a deferred opportunity, not pursued
-#   further since it was outside this migration's explicit scope.
+#   way for the full mapping against one instance). M27c's opda:confirmation/
+#   opda:costsApplicableToTheDeed/opda:feeIncludingVAT/opda:response (formerly
+#   on a separate untyped <#OwnershipTransactionRecord>) were RETIRED the same
+#   way in a later stale-claim audit (2026-07-04): their "expensive in
+#   practice" framing was likewise never re-measured under RMLMapper: the
+#   array-projected references/templates below resolve directly onto this
+#   TriplesMap with no measurable cost. M12 (occupiers/aged-17+) deliberately
+#   stays separate and untyped — NOT a performance question: A1's index gives
+#   those 2 properties domain opda:Seller, not opda:Transaction, so merging
+#   them here would be a domain-type error regardless of engine. M1c
+#   (signedOn) also stays separate: CONFIRMED (re-tested 2026-07-04, same
+#   stale-claim audit) — its array-projected reference
+#   (`contracts[*].signatures[*].signedOn`) DOES resolve when embedded inside
+#   the FNML function's input value map, but only takes the FIRST of multiple
+#   matched values, silently dropping any additional signature (verified:
+#   an unwrapped, non-FNML multi-valued array-projected reference correctly
+#   emits one triple per value; the same reference wrapped in
+#   fnml:functionValue emits only one). Since opda:signedOn's domain is
+#   opda:Transaction and a real transaction can have multiple signatures
+#   (e.g. multiple sellers signing separately), merging onto M1 via FNML
+#   would silently lose data — a genuine, still-current limitation, just a
+#   more precise one than "did not resolve" — left as a deferred opportunity.
 # ---------------------------------------------------------------------------
 <#Transaction> a rr:TriplesMap ;
   rml:logicalSource [ rml:source "INSTANCE.json" ;
@@ -141,11 +153,22 @@
   rr:predicateObjectMap [ rr:predicate opda:authorisedToActOnBehalfOfAllSellers ;
       rr:objectMap [ rml:reference "propertyPack.saleReadyDeclarations.authorisedToActOnBehalfOfAllSellers" ; rr:datatype xsd:boolean ] ] ;  # <- propertyPack.saleReadyDeclarations.authorisedToActOnBehalfOfAllSellers
   rr:predicateObjectMap [ rr:predicate opda:authorisationToShare ;
-      rr:objectMap [ rml:reference "propertyPack.saleReadyDeclarations.authorisationToShare" ; rr:datatype xsd:boolean ] ] .  # <- propertyPack.saleReadyDeclarations.authorisationToShare
+      rr:objectMap [ rml:reference "propertyPack.saleReadyDeclarations.authorisationToShare" ; rr:datatype xsd:boolean ] ] ;  # <- propertyPack.saleReadyDeclarations.authorisationToShare
+  rr:predicateObjectMap [ rr:predicate opda:confirmation ;
+      rr:objectMap [ rml:reference "propertyPack.ownership.ownershipsToBeTransferred[*].leaseholdInformation.confirmationOfAccuracy.confirmation" ; rr:datatype xsd:boolean ] ] ;  # <- propertyPack.ownership.ownershipsToBeTransferred[].leaseholdInformation.confirmationOfAccuracy.confirmation (array-projected join, ADR-0057 Amendments; formerly on the untyped M27c record — RMLMapper resolves this directly onto the real opda:Transaction node)
+  rr:predicateObjectMap [ rr:predicate opda:response ;
+      rr:objectMap [ rml:reference "propertyPack.ownership.ownershipsToBeTransferred[*].managedFreeholdOrCommonholdInformation.confirmation.response" ; rr:datatype xsd:boolean ] ] ;  # <- propertyPack.ownership.ownershipsToBeTransferred[].managedFreeholdOrCommonholdInformation.confirmation.response (array-projected join, same technique as opda:confirmation above; not exercised by testdata/01-04, path verified via a scratch instance)
+  rr:predicateObjectMap [ rr:predicate opda:costsApplicableToTheDeed ;
+      rr:objectMap [ rr:template "https://opda.org.uk/pdtf/harness/data/ownershiprecord/{propertyPack.ownership.ownershipsToBeTransferred[*].titleNumber}/amount/costsApplicableToTheDeed-{propertyPack.ownership.ownershipsToBeTransferred[*].leaseholdInformation.transferAndRegistration.deedOfCovenantRequired.costsApplicableToTheDeed}" ] ] ;  # <- propertyPack.ownership.ownershipsToBeTransferred[].leaseholdInformation.transferAndRegistration.deedOfCovenantRequired.costsApplicableToTheDeed (MonetaryAmount join, array-projected; see <#CostsApplicableToTheDeedAmount>)
+  rr:predicateObjectMap [ rr:predicate opda:feeIncludingVAT ;
+      rr:objectMap [ rr:template "https://opda.org.uk/pdtf/harness/data/ownershiprecord/{propertyPack.ownership.ownershipsToBeTransferred[*].titleNumber}/amount/feeIncludingVAT-{propertyPack.ownership.ownershipsToBeTransferred[*].leaseholdInformation.contactDetails.serviceContactAssignments.noticeOfAssignmentAndCharge.landlord.feeIncludingVAT}" ] ] .  # <- propertyPack.ownership.ownershipsToBeTransferred[].leaseholdInformation.contactDetails.serviceContactAssignments.noticeOfAssignmentAndCharge.landlord.feeIncludingVAT (MonetaryAmount join, array-projected; see <#FeeIncludingVATAmount>)
 
 # M1c — Signature record (UNTYPED)  iterator: signatures[*]
-#   Bearer of opda:signedOn. Untyped for the same reason as M1b (no
-#   transactionId reachable => must not be minted as another opda:Transaction).
+#   Bearer of opda:signedOn (domain opda:Transaction). Kept as its own
+#   TriplesMap, not merged onto M1 — see M1's own comment, above, for why:
+#   RMLMapper's FNML input value map silently drops all but the first of
+#   multiple array-projected values, so merging here would lose signatures on
+#   any transaction with more than one signer.
 <#TransactionSignature> a rr:TriplesMap ;
   rml:logicalSource [ rml:source "INSTANCE.json" ;
                       rml:referenceFormulation ql:JSONPath ;
@@ -1675,45 +1698,45 @@
 #       SINGLETON risk-assessment block nested in managedAreasCoveredByPolicy
 #       (not an array), keyed on the SAME titleNumber (M27b)
 #     - opda:confirmation / opda:costsApplicableToTheDeed / opda:feeIncludingVAT
-#       / opda:response (domain opda:Transaction) — properly typing these onto
-#       the real opda:Transaction node would need the root iterator (for
-#       transactionId) combined with this nested array's own leaves, the same
-#       "cheap technique, expensive in practice" tradeoff documented at M1's
-#       own comment (not a hard reachability wall — that framing was a
-#       misdiagnosis of the since-fixed dropna bug). Not attempted here for
-#       the same cost/benefit reason M1b/M12 stay untyped. Emitted instead on
-#       an UNTYPED record keyed on titleNumber, exactly the M1b/M12 pattern
-#       (untyped => no false Transaction identity asserted, no SHACL target,
-#       but a closed-world domain violation under ODR-0029 R3 — named and
-#       allowlisted in validate_shacl.sh, same as M1b/M12) (M27c)
+#       / opda:response (domain opda:Transaction) — CORRECTED (2026-07-04,
+#       post-RMLMapper-migration stale-claim audit): now bound directly on
+#       M1's <#Transaction> TriplesMap via array-projected references/
+#       templates into this array (the same technique already proven for
+#       opda:concerns/opda:hasParticipant/opda:hasRoomDimension), verified
+#       empirically to resolve onto the real opda:Transaction node with the
+#       correct MonetaryAmount join IRIs. The old "expensive in practice"
+#       framing (M1's own comment) was a morph-kgc-era cost citation never
+#       re-verified after the engine migration — RMLMapper has no such cost
+#       (measured within noise, matching M1b's own already-corrected finding).
+#       The formerly-untyped <#OwnershipTransactionRecord> TriplesMap and its
+#       validate_shacl.sh allowlist entries are removed (M27c retired).
 #     - opda:accountName/accountNumber/sortCode/reference (domain
 #       opda:Organisation) — the landlord contact IS a real Organisation,
 #       keyed on its own genuine name (contact.nameOrOrganisation) (M27d)
-#     - opda:numberOfSellers/numberOfNonUkResidentSellers (domain
-#       opda:Proprietorship) — flat under propertyPack.ownership itself (a
-#       singleton, like propertyPricing in M23), keyed on the subject
-#       property's own uprn (reachable: same iterator as M4) (M27e)
 #     - opda:hasFixedRentcharge/dealsWithDayToDayMaintenanceOfManagedArea/
 #       fromTheOwners/forTheManagedAreas — the managedFreeholdOrCommonhold
 #       oneOf branch's own exclusive leaves (domain opda:LegalEstate, plain
 #       xsd:string/xsd:decimal, no Concept-range issue). The SAME M7
 #       <#LegalEstate> TriplesMap (above) already picks these up (no separate
-#       TriplesMap needed) — verified correct via a standalone scratch
-#       instance (single-item ownershipsToBeTransferred[], managedFreehold
-#       branch only), NOT added as a second item alongside the leasehold one
-#       in testdata/03-multi-participant.json: a real morph-kgc engine
-#       defect (see ADR-0057 Amendments, 2026-07-04 entry 2) makes a 2-item
-#       ownershipsToBeTransferred[] array with heterogeneous top-level keys
-#       across items silently break an UNRELATED sibling reference
-#       (M4's "ownership.isFirstRegistration" etc.) — confirmed empirically,
-#       traced to morph_kgc.utils.normalize_hierarchical_data's cartesian-
-#       product flattening of nested arrays interacting badly with
-#       heterogeneous item shapes. Leasehold remains the sole array item in
-#       the tracked test fixture; this branch's correctness is proven, just
-#       not exercised by the standard 01/02/03/04 regression suite.
-#   NOT mapped in this batch: opda:numberOfSellers/numberOfNonUkResidentSellers
-#   remain a genuine gap pending the Proprietor/Proprietorship Relator design
-#   (see the removed M27f note in git history) — unrelated to this branch.
+#       TriplesMap needed). STALE CLAIM RETRACTED (2026-07-04, post-RMLMapper-
+#       migration audit): a 2-item ownershipsToBeTransferred[] array with
+#       heterogeneous top-level keys (one leasehold-shaped, one
+#       managedFreeholdOrCommonhold-shaped) was previously avoided in the
+#       tracked test fixture on the strength of a real morph-kgc defect (its
+#       pandas-based normalize_hierarchical_data cartesian-product flattening,
+#       ADR-0057 Amendments 2026-07-04 entry 2) — that defect was specific to
+#       morph-kgc's implementation and does not exist in RMLMapper's Jayway-
+#       JsonPath-based engine. Re-verified empirically this session with a
+#       genuinely heterogeneous 2-item scratch instance: M4's sibling
+#       "ownership.isFirstRegistration" reference resolves correctly and both
+#       array items emit only their own item-specific properties, no cross-
+#       contamination. Leasehold remains the sole array item in the tracked
+#       test fixture (not required by any remaining limitation — a fixture-
+#       coverage choice now, not an engine constraint) — this branch's
+#       correctness is proven both via scratch instance and this re-test.
+#   NOT mapped in this batch: opda:numberOfSellers/opda:numberOfNonUkResidentSellers
+#   (domain opda:Proprietorship) remain a genuine gap pending the Proprietor/
+#   Proprietorship Relator design — see M27f, below.
 # ---------------------------------------------------------------------------
 <#CertificateOfComplianceFeeAmount> a rr:TriplesMap ;
   rml:logicalSource [ rml:source "INSTANCE.json" ;
@@ -1743,20 +1766,6 @@
                       rml:iterator "$.propertyPack.ownership.ownershipsToBeTransferred[*]" ] ;
   rr:subjectMap [ rr:template "https://opda.org.uk/pdtf/harness/data/riskassessment/estate-{titleNumber}/run" ;
                   rr:class prov:Activity ] .
-
-<#OwnershipTransactionRecord> a rr:TriplesMap ;
-  rml:logicalSource [ rml:source "INSTANCE.json" ;
-                      rml:referenceFormulation ql:JSONPath ;
-                      rml:iterator "$.propertyPack.ownership.ownershipsToBeTransferred[*]" ] ;
-  rr:subjectMap [ rr:template "https://opda.org.uk/pdtf/harness/data/ownershiprecord/{titleNumber}" ] ;
-  rr:predicateObjectMap [ rr:predicate opda:confirmation ;
-      rr:objectMap [ rml:reference "leaseholdInformation.confirmationOfAccuracy.confirmation" ; rr:datatype xsd:boolean ] ] ;  # <- …leaseholdInformation.confirmationOfAccuracy.confirmation
-  rr:predicateObjectMap [ rr:predicate opda:costsApplicableToTheDeed ;
-      rr:objectMap [ rr:template "https://opda.org.uk/pdtf/harness/data/ownershiprecord/{titleNumber}/amount/costsApplicableToTheDeed-{leaseholdInformation.transferAndRegistration.deedOfCovenantRequired.costsApplicableToTheDeed}" ] ] ;  # <- …leaseholdInformation.transferAndRegistration.deedOfCovenantRequired.costsApplicableToTheDeed (MonetaryAmount join, see below)
-  rr:predicateObjectMap [ rr:predicate opda:feeIncludingVAT ;
-      rr:objectMap [ rr:template "https://opda.org.uk/pdtf/harness/data/ownershiprecord/{titleNumber}/amount/feeIncludingVAT-{leaseholdInformation.contactDetails.serviceContactAssignments.noticeOfAssignmentAndCharge.landlord.feeIncludingVAT}" ] ] ;  # <- …leaseholdInformation.contactDetails.serviceContactAssignments.noticeOfAssignmentAndCharge.landlord.feeIncludingVAT (MonetaryAmount join, see below)
-  rr:predicateObjectMap [ rr:predicate opda:response ;
-      rr:objectMap [ rml:reference "managedFreeholdOrCommonholdInformation.confirmation.response" ; rr:datatype xsd:boolean ] ] .  # <- propertyPack.ownership.ownershipsToBeTransferred[].managedFreeholdOrCommonholdInformation.confirmation.response
 
 <#CostsApplicableToTheDeedAmount> a rr:TriplesMap ;
   rml:logicalSource [ rml:source "INSTANCE.json" ;
