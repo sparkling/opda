@@ -2183,3 +2183,218 @@
         rr:predicateObjectMap [ rr:predicate <urn:opda:param:value> ; rr:objectMap [ rml:reference "isIncludedExcludedOrNone" ] ] ;
         rr:predicateObjectMap [ rr:predicate <urn:opda:param:scheme> ; rr:objectMap [ rr:constant "inclusionStatus" ] ] ] ] ] .  # <- propertyPack.fixturesAndFittings.basicFittings.boilerImmersionHeater.isIncludedExcludedOrNone
 
+
+# ---------------------------------------------------------------------------
+# M32 — Milestone (opda:Milestone)  iterator: root ($, same as M1)
+#   Real JSON: milestones.{listed,legalForms,soldSubjectToContract,searches,
+#   enquiries,exchangeOfContracts,completion} — the complete key set in the
+#   real v3 schema (enumerated via opda-gen's own venv, not guessed from a
+#   partial read). Each sub-object carries SOME of {expected,started,
+#   completed} (all xsd:dateTime-format strings).
+#
+#   Classification is per opda:Milestone's own rdfs:comment (S007 Q2 hybrid
+#   PROV-O typing), determined from the SCHEMA's own shape (which of
+#   started/completed the milestone HAS at all, not which are populated in
+#   any one instance):
+#     INSTANT  (no "started" in the schema): listed, soldSubjectToContract,
+#       exchangeOfContracts -> prov:atTime (+ opda:occurredAtTime, the
+#       declared "informational alias") from .completed.
+#     INTERVAL (schema has "started"): legalForms, searches, enquiries,
+#       completion -> prov:startedAtTime from .started, prov:endedAtTime
+#       from .completed (independent optional field, present once the
+#       interval has actually closed — ordinary property-level skip, no
+#       special technique needed since the Activity node already exists).
+#   Each Milestone's OWN existence is gated on its defining occurrence field
+#   (completed for instant; started for interval — an interval milestone
+#   that has started but not yet completed is still a real, ongoing PROV-O
+#   Activity) via the standard subject-template null-skip technique.
+#
+#   opda:plannedAtTime (domain prov:Plan — plannedAtTimeDomainShape is
+#   sh:Violation-severity closed-world: the subject of opda:plannedAtTime
+#   MUST be typed prov:Plan, verified against opda-shapes-merged.ttl before
+#   choosing this design) is carried on a SEPARATE prov:Plan node, linked
+#   from the Activity via prov:qualifiedAssociation -> prov:Association ->
+#   prov:hadPlan, exactly as opda:Milestone's own rdfs:comment specifies —
+#   for the 4 milestones whose schema shape has "expected" (listed, searches,
+#   exchangeOfContracts, completion), gated independently on that field.
+#
+#   NOTE — a genuine, pre-existing ontology-internal inconsistency found
+#   while designing this (not fixed here, flagged for the team): the SHACL-AF
+#   MilestoneVarianceRule (opda-shapes-merged.ttl) computes its variance
+#   CONSTRUCT directly off "?milestone a opda:Milestone ; opda:occurredAtTime
+#   ?actual ; opda:plannedAtTime ?planned" — i.e. it expects BOTH properties
+#   on the SAME node typed opda:Milestone. That directly conflicts with
+#   plannedAtTimeDomainShape's Violation-severity requirement that every
+#   subject of opda:plannedAtTime be typed prov:Plan (not Milestone). Given
+#   the two cannot both be satisfied by one node, this mapping follows the
+#   VALIDATED, Violation-severity constraint (separate Plan node); the
+#   MilestoneVarianceRule will simply stay dormant (never fires) under this
+#   data shape — an inert SHACL-AF rule, not a validation failure. Resolving
+#   which of the two is the intended design is an ontology decision, out of
+#   this task's scope.
+#
+#   None of testdata/01-04 carry any "milestones" data (verified via direct
+#   JSON inspection); path-verified via a scratch instance instead, matching
+#   the established, accepted precedent elsewhere in this mapping (M1's own
+#   opda:response comment) for leaves the shipped fixtures don't exercise.
+# ---------------------------------------------------------------------------
+
+# --- INSTANT milestones: listed, soldSubjectToContract, exchangeOfContracts
+
+<#MilestoneListed> a rr:TriplesMap ;
+  rml:logicalSource [ rml:source "INSTANCE.json" ;
+                      rml:referenceFormulation ql:JSONPath ;
+                      rml:iterator "$" ] ;
+  rr:subjectMap [ rr:template "https://opda.org.uk/pdtf/harness/data/txn/{transactionId}/milestone/listed-{milestones.listed.completed}" ;
+                  rr:class opda:Milestone ] ;
+  rr:predicateObjectMap [ rr:predicate opda:partOfTransaction ;
+      rr:objectMap [ rr:template "https://opda.org.uk/pdtf/harness/data/txn/{transactionId}" ] ] ;  # <- transactionId (join back to M1's opda:Transaction node)
+  rr:predicateObjectMap [ rr:predicate prov:atTime ;
+      rr:objectMap [ rml:reference "milestones.listed.completed" ; rr:datatype xsd:dateTime ] ] ;  # <- milestones.listed.completed
+  rr:predicateObjectMap [ rr:predicate opda:occurredAtTime ;
+      rr:objectMap [ rml:reference "milestones.listed.completed" ; rr:datatype xsd:dateTime ] ] ;  # <- milestones.listed.completed (opda-namespaced alias per its own rdfs:comment)
+  rr:predicateObjectMap [ rr:predicate prov:qualifiedAssociation ;
+      rr:objectMap [ rr:template "https://opda.org.uk/pdtf/harness/data/txn/{transactionId}/milestone/listed/association-{milestones.listed.expected}" ] ] .  # <- milestones.listed.expected (independent gate; join to <#MilestoneListedAssociation>)
+
+<#MilestoneListedAssociation> a rr:TriplesMap ;
+  rml:logicalSource [ rml:source "INSTANCE.json" ; rml:referenceFormulation ql:JSONPath ; rml:iterator "$" ] ;
+  rr:subjectMap [ rr:template "https://opda.org.uk/pdtf/harness/data/txn/{transactionId}/milestone/listed/association-{milestones.listed.expected}" ;
+                  rr:class prov:Association ] ;
+  rr:predicateObjectMap [ rr:predicate prov:hadPlan ;
+      rr:objectMap [ rr:template "https://opda.org.uk/pdtf/harness/data/txn/{transactionId}/milestone/listed/plan-{milestones.listed.expected}" ] ] .
+
+<#MilestoneListedPlan> a rr:TriplesMap ;
+  rml:logicalSource [ rml:source "INSTANCE.json" ; rml:referenceFormulation ql:JSONPath ; rml:iterator "$" ] ;
+  rr:subjectMap [ rr:template "https://opda.org.uk/pdtf/harness/data/txn/{transactionId}/milestone/listed/plan-{milestones.listed.expected}" ;
+                  rr:class prov:Plan ] ;
+  rr:predicateObjectMap [ rr:predicate opda:plannedAtTime ;
+      rr:objectMap [ rml:reference "milestones.listed.expected" ; rr:datatype xsd:dateTime ] ] .  # <- milestones.listed.expected
+
+<#MilestoneSoldSubjectToContract> a rr:TriplesMap ;
+  rml:logicalSource [ rml:source "INSTANCE.json" ;
+                      rml:referenceFormulation ql:JSONPath ;
+                      rml:iterator "$" ] ;
+  rr:subjectMap [ rr:template "https://opda.org.uk/pdtf/harness/data/txn/{transactionId}/milestone/soldSubjectToContract-{milestones.soldSubjectToContract.completed}" ;
+                  rr:class opda:Milestone ] ;
+  rr:predicateObjectMap [ rr:predicate opda:partOfTransaction ;
+      rr:objectMap [ rr:template "https://opda.org.uk/pdtf/harness/data/txn/{transactionId}" ] ] ;  # <- transactionId
+  rr:predicateObjectMap [ rr:predicate prov:atTime ;
+      rr:objectMap [ rml:reference "milestones.soldSubjectToContract.completed" ; rr:datatype xsd:dateTime ] ] ;  # <- milestones.soldSubjectToContract.completed
+  rr:predicateObjectMap [ rr:predicate opda:occurredAtTime ;
+      rr:objectMap [ rml:reference "milestones.soldSubjectToContract.completed" ; rr:datatype xsd:dateTime ] ] .  # <- milestones.soldSubjectToContract.completed (no "expected" in this milestone's schema shape — no Plan chain)
+
+<#MilestoneExchangeOfContracts> a rr:TriplesMap ;
+  rml:logicalSource [ rml:source "INSTANCE.json" ;
+                      rml:referenceFormulation ql:JSONPath ;
+                      rml:iterator "$" ] ;
+  rr:subjectMap [ rr:template "https://opda.org.uk/pdtf/harness/data/txn/{transactionId}/milestone/exchangeOfContracts-{milestones.exchangeOfContracts.completed}" ;
+                  rr:class opda:Milestone ] ;
+  rr:predicateObjectMap [ rr:predicate opda:partOfTransaction ;
+      rr:objectMap [ rr:template "https://opda.org.uk/pdtf/harness/data/txn/{transactionId}" ] ] ;  # <- transactionId
+  rr:predicateObjectMap [ rr:predicate prov:atTime ;
+      rr:objectMap [ rml:reference "milestones.exchangeOfContracts.completed" ; rr:datatype xsd:dateTime ] ] ;  # <- milestones.exchangeOfContracts.completed
+  rr:predicateObjectMap [ rr:predicate opda:occurredAtTime ;
+      rr:objectMap [ rml:reference "milestones.exchangeOfContracts.completed" ; rr:datatype xsd:dateTime ] ] ;  # <- milestones.exchangeOfContracts.completed
+  rr:predicateObjectMap [ rr:predicate prov:qualifiedAssociation ;
+      rr:objectMap [ rr:template "https://opda.org.uk/pdtf/harness/data/txn/{transactionId}/milestone/exchangeOfContracts/association-{milestones.exchangeOfContracts.expected}" ] ] .  # <- milestones.exchangeOfContracts.expected
+
+<#MilestoneExchangeOfContractsAssociation> a rr:TriplesMap ;
+  rml:logicalSource [ rml:source "INSTANCE.json" ; rml:referenceFormulation ql:JSONPath ; rml:iterator "$" ] ;
+  rr:subjectMap [ rr:template "https://opda.org.uk/pdtf/harness/data/txn/{transactionId}/milestone/exchangeOfContracts/association-{milestones.exchangeOfContracts.expected}" ;
+                  rr:class prov:Association ] ;
+  rr:predicateObjectMap [ rr:predicate prov:hadPlan ;
+      rr:objectMap [ rr:template "https://opda.org.uk/pdtf/harness/data/txn/{transactionId}/milestone/exchangeOfContracts/plan-{milestones.exchangeOfContracts.expected}" ] ] .
+
+<#MilestoneExchangeOfContractsPlan> a rr:TriplesMap ;
+  rml:logicalSource [ rml:source "INSTANCE.json" ; rml:referenceFormulation ql:JSONPath ; rml:iterator "$" ] ;
+  rr:subjectMap [ rr:template "https://opda.org.uk/pdtf/harness/data/txn/{transactionId}/milestone/exchangeOfContracts/plan-{milestones.exchangeOfContracts.expected}" ;
+                  rr:class prov:Plan ] ;
+  rr:predicateObjectMap [ rr:predicate opda:plannedAtTime ;
+      rr:objectMap [ rml:reference "milestones.exchangeOfContracts.expected" ; rr:datatype xsd:dateTime ] ] .  # <- milestones.exchangeOfContracts.expected
+
+# --- INTERVAL milestones: legalForms, searches, enquiries, completion
+
+<#MilestoneLegalForms> a rr:TriplesMap ;
+  rml:logicalSource [ rml:source "INSTANCE.json" ;
+                      rml:referenceFormulation ql:JSONPath ;
+                      rml:iterator "$" ] ;
+  rr:subjectMap [ rr:template "https://opda.org.uk/pdtf/harness/data/txn/{transactionId}/milestone/legalForms-{milestones.legalForms.started}" ;
+                  rr:class opda:Milestone ] ;
+  rr:predicateObjectMap [ rr:predicate opda:partOfTransaction ;
+      rr:objectMap [ rr:template "https://opda.org.uk/pdtf/harness/data/txn/{transactionId}" ] ] ;  # <- transactionId
+  rr:predicateObjectMap [ rr:predicate prov:startedAtTime ;
+      rr:objectMap [ rml:reference "milestones.legalForms.started" ; rr:datatype xsd:dateTime ] ] ;  # <- milestones.legalForms.started
+  rr:predicateObjectMap [ rr:predicate prov:endedAtTime ;
+      rr:objectMap [ rml:reference "milestones.legalForms.completed" ; rr:datatype xsd:dateTime ] ] .  # <- milestones.legalForms.completed (independent optional field; no "expected" in this milestone's schema shape)
+
+<#MilestoneSearches> a rr:TriplesMap ;
+  rml:logicalSource [ rml:source "INSTANCE.json" ;
+                      rml:referenceFormulation ql:JSONPath ;
+                      rml:iterator "$" ] ;
+  rr:subjectMap [ rr:template "https://opda.org.uk/pdtf/harness/data/txn/{transactionId}/milestone/searches-{milestones.searches.started}" ;
+                  rr:class opda:Milestone ] ;
+  rr:predicateObjectMap [ rr:predicate opda:partOfTransaction ;
+      rr:objectMap [ rr:template "https://opda.org.uk/pdtf/harness/data/txn/{transactionId}" ] ] ;  # <- transactionId
+  rr:predicateObjectMap [ rr:predicate prov:startedAtTime ;
+      rr:objectMap [ rml:reference "milestones.searches.started" ; rr:datatype xsd:dateTime ] ] ;  # <- milestones.searches.started
+  rr:predicateObjectMap [ rr:predicate prov:endedAtTime ;
+      rr:objectMap [ rml:reference "milestones.searches.completed" ; rr:datatype xsd:dateTime ] ] ;  # <- milestones.searches.completed
+  rr:predicateObjectMap [ rr:predicate prov:qualifiedAssociation ;
+      rr:objectMap [ rr:template "https://opda.org.uk/pdtf/harness/data/txn/{transactionId}/milestone/searches/association-{milestones.searches.expected}" ] ] .  # <- milestones.searches.expected
+
+<#MilestoneSearchesAssociation> a rr:TriplesMap ;
+  rml:logicalSource [ rml:source "INSTANCE.json" ; rml:referenceFormulation ql:JSONPath ; rml:iterator "$" ] ;
+  rr:subjectMap [ rr:template "https://opda.org.uk/pdtf/harness/data/txn/{transactionId}/milestone/searches/association-{milestones.searches.expected}" ;
+                  rr:class prov:Association ] ;
+  rr:predicateObjectMap [ rr:predicate prov:hadPlan ;
+      rr:objectMap [ rr:template "https://opda.org.uk/pdtf/harness/data/txn/{transactionId}/milestone/searches/plan-{milestones.searches.expected}" ] ] .
+
+<#MilestoneSearchesPlan> a rr:TriplesMap ;
+  rml:logicalSource [ rml:source "INSTANCE.json" ; rml:referenceFormulation ql:JSONPath ; rml:iterator "$" ] ;
+  rr:subjectMap [ rr:template "https://opda.org.uk/pdtf/harness/data/txn/{transactionId}/milestone/searches/plan-{milestones.searches.expected}" ;
+                  rr:class prov:Plan ] ;
+  rr:predicateObjectMap [ rr:predicate opda:plannedAtTime ;
+      rr:objectMap [ rml:reference "milestones.searches.expected" ; rr:datatype xsd:dateTime ] ] .  # <- milestones.searches.expected
+
+<#MilestoneEnquiries> a rr:TriplesMap ;
+  rml:logicalSource [ rml:source "INSTANCE.json" ;
+                      rml:referenceFormulation ql:JSONPath ;
+                      rml:iterator "$" ] ;
+  rr:subjectMap [ rr:template "https://opda.org.uk/pdtf/harness/data/txn/{transactionId}/milestone/enquiries-{milestones.enquiries.started}" ;
+                  rr:class opda:Milestone ] ;
+  rr:predicateObjectMap [ rr:predicate opda:partOfTransaction ;
+      rr:objectMap [ rr:template "https://opda.org.uk/pdtf/harness/data/txn/{transactionId}" ] ] ;  # <- transactionId
+  rr:predicateObjectMap [ rr:predicate prov:startedAtTime ;
+      rr:objectMap [ rml:reference "milestones.enquiries.started" ; rr:datatype xsd:dateTime ] ] ;  # <- milestones.enquiries.started
+  rr:predicateObjectMap [ rr:predicate prov:endedAtTime ;
+      rr:objectMap [ rml:reference "milestones.enquiries.completed" ; rr:datatype xsd:dateTime ] ] .  # <- milestones.enquiries.completed (no "expected" in this milestone's schema shape)
+
+<#MilestoneCompletion> a rr:TriplesMap ;
+  rml:logicalSource [ rml:source "INSTANCE.json" ;
+                      rml:referenceFormulation ql:JSONPath ;
+                      rml:iterator "$" ] ;
+  rr:subjectMap [ rr:template "https://opda.org.uk/pdtf/harness/data/txn/{transactionId}/milestone/completion-{milestones.completion.started}" ;
+                  rr:class opda:Milestone ] ;
+  rr:predicateObjectMap [ rr:predicate opda:partOfTransaction ;
+      rr:objectMap [ rr:template "https://opda.org.uk/pdtf/harness/data/txn/{transactionId}" ] ] ;  # <- transactionId
+  rr:predicateObjectMap [ rr:predicate prov:startedAtTime ;
+      rr:objectMap [ rml:reference "milestones.completion.started" ; rr:datatype xsd:dateTime ] ] ;  # <- milestones.completion.started
+  rr:predicateObjectMap [ rr:predicate prov:endedAtTime ;
+      rr:objectMap [ rml:reference "milestones.completion.completed" ; rr:datatype xsd:dateTime ] ] ;  # <- milestones.completion.completed
+  rr:predicateObjectMap [ rr:predicate prov:qualifiedAssociation ;
+      rr:objectMap [ rr:template "https://opda.org.uk/pdtf/harness/data/txn/{transactionId}/milestone/completion/association-{milestones.completion.expected}" ] ] .  # <- milestones.completion.expected
+
+<#MilestoneCompletionAssociation> a rr:TriplesMap ;
+  rml:logicalSource [ rml:source "INSTANCE.json" ; rml:referenceFormulation ql:JSONPath ; rml:iterator "$" ] ;
+  rr:subjectMap [ rr:template "https://opda.org.uk/pdtf/harness/data/txn/{transactionId}/milestone/completion/association-{milestones.completion.expected}" ;
+                  rr:class prov:Association ] ;
+  rr:predicateObjectMap [ rr:predicate prov:hadPlan ;
+      rr:objectMap [ rr:template "https://opda.org.uk/pdtf/harness/data/txn/{transactionId}/milestone/completion/plan-{milestones.completion.expected}" ] ] .
+
+<#MilestoneCompletionPlan> a rr:TriplesMap ;
+  rml:logicalSource [ rml:source "INSTANCE.json" ; rml:referenceFormulation ql:JSONPath ; rml:iterator "$" ] ;
+  rr:subjectMap [ rr:template "https://opda.org.uk/pdtf/harness/data/txn/{transactionId}/milestone/completion/plan-{milestones.completion.expected}" ;
+                  rr:class prov:Plan ] ;
+  rr:predicateObjectMap [ rr:predicate opda:plannedAtTime ;
+      rr:objectMap [ rml:reference "milestones.completion.expected" ; rr:datatype xsd:dateTime ] ] .  # <- milestones.completion.expected
+
