@@ -1,0 +1,19 @@
+# Hand-authored RDF (not RML-mapped) exercising ODR-0024 R11's acyclicity
+# guard on opda:RiskAssessment. See ../../harness/validate_shacl.sh usage in
+# ../../Makefile target rml-acyclicity-test.
+#
+# ex:riskA -> hasSubAssessment -> ex:riskB -> hasSubAssessment -> ex:riskA
+# is a 2-cycle. RiskAssessmentShape's sh:node recursion (opda-descriptive-
+# shapes.ttl) only re-validates each sub-assessment's own local shape and
+# cannot detect this — the cycle is caught ONLY by the separate SPARQL
+# property-path shape opda:shape:RiskAssessmentAcyclicityConstraint
+# ($this opda:hasSubAssessment+ $this). Both riskA and riskB reach
+# themselves transitively, so both are expected to be flagged.
+@prefix opda: <https://opda.org.uk/pdtf/> .
+@prefix ex: <https://opda.org.uk/pdtf/harness/rml/risk-acyclicity-test#> .
+
+ex:riskA a opda:RiskAssessment ;
+    opda:hasSubAssessment ex:riskB .
+
+ex:riskB a opda:RiskAssessment ;
+    opda:hasSubAssessment ex:riskA .

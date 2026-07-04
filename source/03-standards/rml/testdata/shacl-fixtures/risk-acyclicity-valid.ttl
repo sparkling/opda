@@ -1,0 +1,11 @@
+# Companion fixture to risk-acyclicity-cyclic.ttl: a genuinely ACYCLIC
+# opda:hasSubAssessment chain (riskA -> riskB, riskB is a leaf), to confirm
+# opda:shape:RiskAssessmentAcyclicityConstraint does not false-positive on
+# legitimate nesting. See ../../Makefile target rml-acyclicity-test.
+@prefix opda: <https://opda.org.uk/pdtf/> .
+@prefix ex: <https://opda.org.uk/pdtf/harness/rml/risk-acyclicity-test#> .
+
+ex:riskA a opda:RiskAssessment ;
+    opda:hasSubAssessment ex:riskB .
+
+ex:riskB a opda:RiskAssessment .

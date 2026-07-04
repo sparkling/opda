@@ -19,8 +19,8 @@ NEGATIVE  := 04-negative-invalid
 INSTANCE  := $(TESTDATA)/01-conformant-full.json
 OUT       := $(BUILD)/out.nt
 
-.PHONY: rml-test rml-map rml-shacl rml-complete rml-negative rml-pytest rml-clean help \
-        provenance-test dct-audit
+.PHONY: rml-test rml-map rml-shacl rml-complete rml-negative rml-acyclicity-test rml-pytest \
+        rml-clean help provenance-test dct-audit
 
 help:
 	@echo "--- primary gate: RML as declarative provenance (no instance data) ---"
@@ -33,6 +33,7 @@ help:
 	@echo "rml-shacl    validate $(OUT) against opda-shapes-merged.ttl"
 	@echo "rml-complete layer-1 completeness gate over $(OUT)"
 	@echo "rml-negative materialise 04 and require a SHACL violation (merged + BASPI5)"
+	@echo "rml-acyclicity-test  ODR-0024 R11 hand-authored RiskAssessment cycle must violate, valid chain must conform"
 	@echo "rml-pytest   run tests/test_rml_mapping.py"
 	@echo "rml-clean    remove build artefacts"
 
@@ -77,8 +78,27 @@ rml-negative:
 	  echo "rml-negative: PASS — 04 produced the expected SHACL violation"; \
 	fi
 
-rml-test: rml-conformant rml-negative
-	@echo "rml-test: PASS (01/02/03 sound + layer-1 complete; 04 violates)"
+# ODR-0024 R11 acyclicity guard regression test. Hand-authored RDF (not
+# RML-mapped — no PDTF JSON leaf drives opda:hasSubAssessment cycles), so this
+# validates directly against opda-shapes-merged.ttl rather than going through
+# run_mapping.py. A genuine 2-cycle (riskA <-> riskB) MUST violate via
+# opda:shape:RiskAssessmentAcyclicityConstraint (the SPARQL property-path
+# shape — plain sh:node recursion cannot detect a cycle); a non-cyclic chain
+# MUST conform (no false positive on legitimate nesting).
+rml-acyclicity-test:
+	@if bash $(HARNESS)/validate_shacl.sh $(TESTDATA)/shacl-fixtures/risk-acyclicity-cyclic.ttl; then \
+	  echo "rml-acyclicity-test: FAIL — cyclic RiskAssessment conformed but must violate" >&2; exit 1; \
+	else \
+	  echo "rml-acyclicity-test: PASS — cyclic RiskAssessment produced the expected acyclicity violation"; \
+	fi
+	@if bash $(HARNESS)/validate_shacl.sh $(TESTDATA)/shacl-fixtures/risk-acyclicity-valid.ttl; then \
+	  echo "rml-acyclicity-test: PASS — acyclic RiskAssessment chain conforms"; \
+	else \
+	  echo "rml-acyclicity-test: FAIL — acyclic RiskAssessment chain must not violate" >&2; exit 1; \
+	fi
+
+rml-test: rml-conformant rml-negative rml-acyclicity-test
+	@echo "rml-test: PASS (01/02/03 sound + layer-1 complete; 04 violates; acyclicity guard regression-tested)"
 
 rml-pytest:
 	cd $(ROOT) && $(PY) -m pytest source/03-standards/rml/tests/test_rml_mapping.py -v
