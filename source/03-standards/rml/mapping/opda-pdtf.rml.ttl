@@ -77,16 +77,29 @@
 # M1 — Transaction  (opda:Transaction)   iterator: root
 #   The SINGLE opda:Transaction individual, keyed on transactionId.
 #
-#   NB morph-kgc's $ (root) iterator only exposes TOP-LEVEL keys as columns
-#   (nested dicts are NOT deep-flattened when the root doc contains arrays —
-#   verified: a reference like "propertyPack.uprn" resolves to nothing from $).
-#   So Transaction-domain leaves that live deeper in propertyPack cannot be
-#   attached to THIS subject (the root transactionId is unreachable from a
-#   nested iterator, and the deep leaves are unreachable from the root
-#   iterator). Rather than mint extra opda:Transaction individuals that would
-#   carry no transactionId (asserting N transactions for 1 — false identity),
-#   M1b/M1c below emit those leaves on UNTYPED declaration/signature records.
-#   See README "Known deviations".
+#   CORRECTED (2026-07-04, post morph-kgc dropna-bug fix, ADR-0057 Amendments):
+#   an earlier version of this comment claimed a reference like
+#   "propertyPack.uprn" resolves to nothing from the root "$" iterator — that
+#   was a MISDIAGNOSIS, an artefact of the since-fixed dropna bug, not a real
+#   JSONPath/reachability limit. It DOES resolve: all of M1b/M1c/M12's
+#   properties were verified to bind correctly onto THIS subject (opda:
+#   Transaction, keyed {transactionId}) when tried directly. The real reason
+#   M1b/M1c/M12 stay separate, UNTYPED records is PERFORMANCE, not
+#   reachability: `_read_json`'s JSONPath multi-select only uses each
+#   reference's FIRST dot-segment, so any reference into propertyPack.* pulls
+#   the ENTIRE propertyPack subtree (every nested array — media, schools,
+#   transport, searches, environmentalIssues, ownership, etc.) for
+#   cartesian-producting, even though only one narrow leaf is needed —
+#   confirmed empirically at ~15-20s per such rule per instance file. Merging
+#   M1b(8)+M12(2)'s properties onto this TriplesMap would add ~10-14 minutes
+#   to `make rml-test` (from ~11s, a 50-80x slowdown) for a completeness/
+#   cleanliness gain only — nothing FALSE is asserted today, just incomplete
+#   typing — not a good trade for a harness whose purpose is fast, frequent
+#   iteration (documentation/verification tooling per ODR-0035, not
+#   production ETL). Deliberately left as-is; M1b/M12's own untyped-record
+#   rationale (no transactionId => no false Transaction identity) still
+#   holds independently of this performance finding. See README "Known
+#   deviations".
 # ---------------------------------------------------------------------------
 <#Transaction> a rr:TriplesMap ;
   rml:logicalSource [ rml:source "INSTANCE.json" ;
@@ -95,7 +108,11 @@
   rr:subjectMap [ rr:template "https://opda.org.uk/pdtf/harness/data/txn/{transactionId}" ;
                   rr:class opda:Transaction ] ;
   rr:predicateObjectMap [ rr:predicate opda:transactionId ;
-      rr:objectMap [ rml:reference "transactionId" ; rr:datatype xsd:string ] ] .  # <- transactionId
+      rr:objectMap [ rml:reference "transactionId" ; rr:datatype xsd:string ] ] ;  # <- transactionId
+  rr:predicateObjectMap [ rr:predicate opda:concernsProperty ;
+      rr:objectMap [ rr:template "https://opda.org.uk/pdtf/harness/data/property/{propertyPack.uprn}" ] ] ;  # <- propertyPack.uprn (join to M4's opda:Property node; single rule, not multiplied by M1b/M12's cost concern)
+  rr:predicateObjectMap [ rr:predicate opda:concerns ;
+      rr:objectMap [ rr:template "https://opda.org.uk/pdtf/harness/data/estate/{propertyPack.ownership.ownershipsToBeTransferred.titleNumber}" ] ] .  # <- propertyPack.ownership.ownershipsToBeTransferred[].titleNumber (array-projected join to M7's opda:LegalEstate node)
 
 # M1b — Declaration record (UNTYPED)  iterator: propertyPack (deep-flattens)
 #   Bearer of the Transaction-domain declaration booleans. Deliberately NOT
@@ -1630,9 +1647,13 @@
 #       SINGLETON risk-assessment block nested in managedAreasCoveredByPolicy
 #       (not an array), keyed on the SAME titleNumber (M27b)
 #     - opda:confirmation / opda:costsApplicableToTheDeed / opda:feeIncludingVAT
-#       / opda:response (domain opda:Transaction) — the real opda:Transaction
-#       node's own transactionId is unreachable from this nested iterator
-#       (same root-flattening limitation as M1b/M1c), so these are emitted on
+#       / opda:response (domain opda:Transaction) — properly typing these onto
+#       the real opda:Transaction node would need the root iterator (for
+#       transactionId) combined with this nested array's own leaves, the same
+#       "cheap technique, expensive in practice" tradeoff documented at M1's
+#       own comment (not a hard reachability wall — that framing was a
+#       misdiagnosis of the since-fixed dropna bug). Not attempted here for
+#       the same cost/benefit reason M1b/M12 stay untyped. Emitted instead on
 #       an UNTYPED record keyed on titleNumber, exactly the M1b/M12 pattern
 #       (untyped => no false Transaction identity asserted, no SHACL target,
 #       but a closed-world domain violation under ODR-0029 R3 — named and

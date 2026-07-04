@@ -100,12 +100,20 @@ REPORT="$("$SHACL" validate --shapes "$SHAPES_GRAPH" --data "$DATA_GRAPH")"
 # resultMessage not matching one of these exact strings) still fails loudly.
 #
 # Group 1 — M1b/M12/M27c's deliberately-UNTYPED declaration/signature/
-# occupier/ownership-record records (opda-pdtf.rml.ttl): typing them
-# opda:Transaction/opda:Seller would assert a false second identity (no
-# transactionId/capacity is reachable from their JSON context) — a real,
-# correct modelling choice that predates ODR-0029 R3's closed-world domain
-# check and is not something to "fix" by fabricating a type assertion (see
-# M1b's and M27c's own comments in the mapping file).
+# occupier/ownership-record records (opda-pdtf.rml.ttl): CORRECTED
+# 2026-07-04 — an earlier version of this comment claimed transactionId/
+# capacity is unreachable from their JSON context; that's now confirmed
+# false (a misdiagnosis of the since-fixed morph-kgc dropna bug — see M1's
+# own comment in the mapping file). The real, still-current reason these
+# stay untyped is PERFORMANCE: typing them properly requires binding onto
+# the root iterator, which costs ~15-20s per rule per instance file
+# (confirmed empirically) because of how morph-kgc's JSONPath multi-select
+# pulls the whole propertyPack subtree for any deep reference — a ~50-80x
+# slowdown to make rml-test for a completeness/cleanliness gain only,
+# assessed and declined (nothing FALSE is asserted by leaving these
+# untyped, just incomplete typing). Not something to "fix" by fabricating
+# a type assertion at the current cost/benefit; see M1b's own comment in
+# the mapping file for the full reasoning.
 ALLOWLISTED_VIOLATION_SUBSTRINGS=(
   "opda:aged17OrOverNames is used off its declared rdfs:domain"
   "opda:hasOthersAged17OrOver is used off its declared rdfs:domain"
