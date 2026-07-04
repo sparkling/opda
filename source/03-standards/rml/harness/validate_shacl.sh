@@ -106,13 +106,6 @@ REPORT="$("$SHACL" validate --shapes "$SHAPES_GRAPH" --data "$DATA_GRAPH")"
 # correct modelling choice that predates ODR-0029 R3's closed-world domain
 # check and is not something to "fix" by fabricating a type assertion (see
 # M1b's and M27c's own comments in the mapping file).
-# Group 2 — opda:targetsKind (opda:AddressVariant*Refinement etc.): these
-# individuals are STATIC content baked into the ontology itself
-# (opda-merged.ttl, loaded above as SHACL validation context), not emitted
-# by this RML mapping at all (verified: zero references to targetsKind or
-# DPVMappingRecord anywhere in opda-pdtf.rml.ttl) — a pure ontology-authoring
-# matter (DPVMappingRefinement vs. targetsKind's declared domain
-# DPVMappingRecord), unrelated to and unfixable from the RML mapping side.
 ALLOWLISTED_VIOLATION_SUBSTRINGS=(
   "opda:aged17OrOverNames is used off its declared rdfs:domain"
   "opda:confirmInformationIsAccurate is used off its declared rdfs:domain"
@@ -128,7 +121,6 @@ ALLOWLISTED_VIOLATION_SUBSTRINGS=(
   "opda:confirmation is used off its declared rdfs:domain"
   "opda:costsApplicableToTheDeed is used off its declared rdfs:domain"
   "opda:feeIncludingVAT is used off its declared rdfs:domain"
-  "opda:targetsKind is used off its declared rdfs:domain"
 )
 
 # NB: the filter script is written to a real temp file, not a heredoc, because
