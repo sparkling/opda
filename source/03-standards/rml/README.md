@@ -12,8 +12,8 @@ provenance** that `opda-gen` minted (see "Provenance mirror" below).
 
 | File | Role |
 |---|---|
-| `mapping/opda-pdtf.rml.ttl` | The mapping (morph-kgc dialect: `rml:` + `rr:` + `ql:JSONPath`). **Canonical deliverable.** |
-| `mapping/morph-config.ini` | morph-kgc config to run the mapping stand-alone. |
+| `mapping/opda-pdtf.rml.ttl` | The mapping (`rml:` + `rr:` + `ql:JSONPath`, classic `fnml:functionValue` for enum/date functions). **Canonical deliverable.** |
+| `mapping/functions/` | FnO `functions.ttl` + Java UDF sources (`OpdaFunctions.java`) RMLMapper loads via `-f`. |
 | `README.md` | This file. |
 
 Ground-truth inputs owned by other agents: `provenance-index.json` (A1, leaf→predicate
@@ -21,8 +21,10 @@ map), `testdata/*.json` (A2, instances), `harness/*` + `Makefile` + `tests/` (A3
 
 ## How to run
 
-Engine: **morph-kgc 2.10** (in `tools/opda-gen/.venv`) with `jsonpath-python`. Jena
-`shacl` for validation.
+Engine: **RMLMapper** (Java reference implementation; ADR-0057 Amendments — migrated
+from morph-kgc). Self-provisioned by `harness/run_mapping.py` (downloaded +
+sha256-verified into the repo-root `.rmlmapper/` cache on first use — needs a JDK, no
+other setup). Jena `shacl` for validation.
 
 ```bash
 cd source/03-standards/rml
@@ -78,8 +80,8 @@ actually occur in the conformant instance** (CONTRACT §"Definitions of done").
 
 Role-specific SHACL shapes only fire if a participant node carries the role class
 as `rdf:type`. The mapping types participants by their JSON `role` via a
-JSONPath role-filter on the iterator (jsonpath-python form `[?(@.role=="Seller")]`
-— double-quoted, no spaces):
+JSONPath role-filter on the iterator (`[?(@.role=="Seller")]` — double-quoted,
+no spaces):
 
 - `role == "Seller"` → `a opda:Seller`
 - `role == "Buyer"`  → `a opda:Buyer`
@@ -149,24 +151,30 @@ Two high-value leaves are worth calling out because they surprise reviewers:
 
 ## Known deviations (candid)
 
-1. **One `opda:Transaction`, plus untyped declaration/signature records.** Output
-   contains **exactly one `opda:Transaction`** (`txn/{transactionId}`). The deep
-   Transaction-domain leaves (`sellerWillEnsure` / `confirmationOfAccuracyByOwners` / CPR
-   booleans; `signedOn`) cannot be attached to that subject because of a specific
-   morph-kgc limitation: for a root-`$` iterator, morph-kgc selects `reference.split('.')[0]`
-   as the subtree (so a reference `propertyPack.X` pulls the *entire* propertyPack) and
-   then **drops the whole record if any selected value is `null`**
-   (`data_file.py`: `pd.json_normalize([… if None not in json_object.values()])`).
-   Real PDTF propertyPacks always contain nulls, so root-`$` nested references yield **0
-   triples** (reproduced: a single `null` sibling in propertyPack drops the record). The
-   root `transactionId` is likewise unreachable from a nested iterator. Rather than mint
-   extra identity-less `opda:Transaction` individuals (asserting N transactions for 1),
-   those leaves are emitted on **untyped** records — `declaration/{uprn}` (read under the
-   `$.propertyPack` iterator, whose *narrow* subtree selection is null-free and does
-   resolve) and `signature/{contractHash}`. Untyped ⇒ no SHACL target; completeness is
-   predicate-level, so nothing is dropped. A production engine (or a morph-kgc without the
-   null-record filter) would fold these onto the single transaction.
+1. **One `opda:Transaction`, carrying its declaration booleans + `hasParticipant`
+   directly; one remaining untyped signature record.** Output contains **exactly one
+   `opda:Transaction`** (`txn/{transactionId}`). Under morph-kgc, the deep
+   Transaction-domain declaration leaves (`sellerWillEnsure` /
+   `confirmationOfAccuracyByOwners` / CPR booleans) and `opda:hasParticipant`
+   (Transaction → each Seller/Buyer) could not bind onto that subject: morph-kgc's
+   JSONPath multi-select pulled the *entire* `propertyPack` subtree per reference
+   (~15-20s/rule), and a role-filter (`[?(@.role==...)]`) embedded mid-path (rather
+   than as the whole iterator) resolved to nothing. Since migrating to **RMLMapper**
+   (ADR-0057 Amendments): neither limitation applies — merging the declaration
+   booleans onto M1 cost no measurable time, and RMLMapper's JSONPath engine (Jayway
+   JsonPath) supports a role-filter embedded in a template placeholder. Both are now
+   mapped directly onto the single `opda:Transaction` node. One record remains
+   **untyped**: `signature/{contractHash}` (`opda:signedOn`) — its iterator
+   (`contracts[*].signatures[*]`) didn't resolve when embedded inside RMLMapper's FNML
+   input value map (needed for the date-truncation function); a real, but unpursued,
+   remaining opportunity, not a hard limitation.
 2. **Nested-node IRIs are keyed on locally-stable natural keys** (`titleNumber`,
    `productCode`, `uprn`, `firstName-lastName`, `email`, `contractHash`), not on
-   `transactionId + JSONPath` — same root cause as (1). These keys are unique within one
-   transaction file.
+   `transactionId + JSONPath`. These keys are unique within one transaction file.
+3. **`opda:signedOn`'s record (M1c) and the occupiers/aged-17+ record (M12) stay
+   untyped.** M1c per (1) above. M12 is untyped for an *independent* reason, not
+   performance: A1's index gives its two properties (`aged17OrOverNames`,
+   `hasOthersAged17OrOver`) domain `opda:Seller`, but the occupiers/aged-17+ JSON
+   block is not itself a Seller party — typing it `opda:Seller` would mint a spurious
+   individual. OPDA domains are documentary, never entailed (ODR-0025/0026), so an
+   untyped bearer is fully consistent.

@@ -50,6 +50,17 @@ dist/
 /.jena/
 /run/
 
+# RMLMapper (ADR-0057 Amendments — the RML mapping's execution engine,
+# replacing morph-kgc): self-provisioned official release JAR, never tracked
+# or shipped.
+/.rmlmapper/
+
+# RMLMapper FnO function build artifacts (compiled from
+# source/03-standards/rml/mapping/functions/OpdaFunctions.java by
+# harness/run_mapping.py) — never tracked, rebuilt on demand.
+source/03-standards/rml/mapping/functions/*.class
+source/03-standards/rml/mapping/functions/*.jar
+
 # Local ruflo/AgentDB runtime state (RVF container + lock) — machine-local, never tracked.
 /agentdb.rvf
 /agentdb.rvf.lock

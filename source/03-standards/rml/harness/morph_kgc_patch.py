@@ -1,4 +1,10 @@
-"""Runtime patch for a confirmed morph-kgc 2.10.0 bug (not an OPDA data or
+"""SUPERSEDED (ADR-0057 Amendments): the harness migrated from morph-kgc to
+RMLMapper (Java) as its execution engine — `harness/run_mapping.py` no longer
+imports this module. Kept, unimported, for the bug-investigation history
+below (RMLMapper does not exhibit this bug; it has its own dependency-free
+JSON reader). Safe to delete once that history is no longer needed.
+
+Runtime patch for a confirmed morph-kgc 2.10.0 bug (not an OPDA data or
 mapping issue) in `morph_kgc.data_source.data_file._read_json`.
 
 THE BUG (verified empirically — see docs/adr/ADR-0057's Amendments for the

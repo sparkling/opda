@@ -1,7 +1,9 @@
 ########################################################################
 # OPDA RML mapping — PDTF v3 JSON  ->  OPDA ontology RDF
 #
-# Engine     : morph-kgc (rml: + rr: + ql:JSONPath dialect)
+# Engine     : RMLMapper (Java reference implementation; rml: + rr: +
+#              ql:JSONPath dialect; ADR-0057 Amendments — migrated from
+#              morph-kgc)
 # Source     : a PDTF v3 transaction instance (rml:source is rewritten to the
 #              chosen instance by harness/run_mapping.py; the placeholder below
 #              is the byte the rewriter looks for).
@@ -65,13 +67,18 @@
 @prefix opda: <https://opda.org.uk/pdtf/> .
 @prefix prov: <http://www.w3.org/ns/prov#> .
 @prefix xsd:  <http://www.w3.org/2001/XMLSchema#> .
-# RML-FNML (morph-kgc's function-execution vocabulary) uses a DIFFERENT rml:
-# namespace (RML-core 2.0, http://w3id.org/rml/) than the rml: prefix above
-# (the classic semweb.mmlab.be namespace used throughout this file for
-# logicalSource/referenceFormulation/iterator/reference) — bound separately as
-# rmlf: to avoid colliding with ~100 existing rml: references. See M28/M30's
-# use of rmlf:functionExecution + mapping/opda-udfs.py.
-@prefix rmlf: <http://w3id.org/rml/> .
+# RML-FNML: RMLMapper (the engine, since ADR-0057's Amendments) only
+# recognises the classic FNML vocabulary (fnml:functionValue, the
+# semweb.mmlab.be/ns/fnml# namespace + fno:executes) for function execution —
+# NOT the newer RML-core 2.0 rmlf:functionExecution structure morph-kgc used.
+# See M28/M30's use of fnml:functionValue + mapping/functions/functions.ttl
+# (FnO description) + mapping/functions/OpdaFunctions.java (the Java port of
+# mapping/opda-udfs.py's scheme_member_iri, kept for its slugify-rule history).
+@prefix fnml: <http://semweb.mmlab.be/ns/fnml#> .
+@prefix fno:  <https://w3id.org/function/ontology#> .
+# RMLMapper's RDF4J-based Turtle parser (unlike morph-kgc's) requires an
+# explicit @base to resolve the file's many relative <#TriplesMap> IRIs.
+@base <https://opda.org.uk/pdtf/harness/rml/> .
 
 # ---------------------------------------------------------------------------
 # M1 — Transaction  (opda:Transaction)   iterator: root
@@ -81,25 +88,25 @@
 #   an earlier version of this comment claimed a reference like
 #   "propertyPack.uprn" resolves to nothing from the root "$" iterator — that
 #   was a MISDIAGNOSIS, an artefact of the since-fixed dropna bug, not a real
-#   JSONPath/reachability limit. It DOES resolve: all of M1b/M1c/M12's
-#   properties were verified to bind correctly onto THIS subject (opda:
-#   Transaction, keyed {transactionId}) when tried directly. The real reason
-#   M1b/M1c/M12 stay separate, UNTYPED records is PERFORMANCE, not
-#   reachability: `_read_json`'s JSONPath multi-select only uses each
-#   reference's FIRST dot-segment, so any reference into propertyPack.* pulls
-#   the ENTIRE propertyPack subtree (every nested array — media, schools,
-#   transport, searches, environmentalIssues, ownership, etc.) for
-#   cartesian-producting, even though only one narrow leaf is needed —
-#   confirmed empirically at ~15-20s per such rule per instance file. Merging
-#   M1b(8)+M12(2)'s properties onto this TriplesMap would add ~10-14 minutes
-#   to `make rml-test` (from ~11s, a 50-80x slowdown) for a completeness/
-#   cleanliness gain only — nothing FALSE is asserted today, just incomplete
-#   typing — not a good trade for a harness whose purpose is fast, frequent
-#   iteration (documentation/verification tooling per ODR-0035, not
-#   production ETL). Deliberately left as-is; M1b/M12's own untyped-record
-#   rationale (no transactionId => no false Transaction identity) still
-#   holds independently of this performance finding. See README "Known
-#   deviations".
+#   JSONPath/reachability limit. It DOES resolve.
+#
+#   MIGRATED (RMLMapper, ADR-0057 Amendments): M1b's 9 declaration booleans
+#   (formerly the separate untyped <#TransactionDeclarations> record) now
+#   bind directly onto this TriplesMap. Under morph-kgc, doing so cost
+#   ~15-20s per rule per instance file (`_read_json`'s JSONPath multi-select
+#   pulled the ENTIRE propertyPack subtree per reference) — a 50-80x
+#   slowdown, declined. RMLMapper has no equivalent cost: merging all 9
+#   properties measured within noise of the unmerged baseline (~1.1s either
+#   way for the full mapping against one instance). M12 (occupiers/aged-17+)
+#   deliberately stays separate and untyped — NOT a performance question:
+#   A1's index gives those 2 properties domain opda:Seller, not
+#   opda:Transaction, so merging them here would be a domain-type error
+#   regardless of engine. M1c (signedOn) also stays separate: its array-
+#   projected reference (`contracts[*].signatures[*].signedOn`) did not
+#   resolve when embedded inside the FNML function's input value map (a
+#   distinct, untested-until-now RMLMapper interaction, not the morph-kgc
+#   performance concern) — left as a deferred opportunity, not pursued
+#   further since it was outside this migration's explicit scope.
 # ---------------------------------------------------------------------------
 <#Transaction> a rr:TriplesMap ;
   rml:logicalSource [ rml:source "INSTANCE.json" ;
@@ -110,38 +117,31 @@
   rr:predicateObjectMap [ rr:predicate opda:transactionId ;
       rr:objectMap [ rml:reference "transactionId" ; rr:datatype xsd:string ] ] ;  # <- transactionId
   rr:predicateObjectMap [ rr:predicate opda:concernsProperty ;
-      rr:objectMap [ rr:template "https://opda.org.uk/pdtf/harness/data/property/{propertyPack.uprn}" ] ] ;  # <- propertyPack.uprn (join to M4's opda:Property node; single rule, not multiplied by M1b/M12's cost concern)
+      rr:objectMap [ rr:template "https://opda.org.uk/pdtf/harness/data/property/{propertyPack.uprn}" ] ] ;  # <- propertyPack.uprn (join to M4's opda:Property node)
   rr:predicateObjectMap [ rr:predicate opda:concerns ;
-      rr:objectMap [ rr:template "https://opda.org.uk/pdtf/harness/data/estate/{propertyPack.ownership.ownershipsToBeTransferred.titleNumber}" ] ] .  # <- propertyPack.ownership.ownershipsToBeTransferred[].titleNumber (array-projected join to M7's opda:LegalEstate node)
-
-# M1b — Declaration record (UNTYPED)  iterator: propertyPack (deep-flattens)
-#   Bearer of the Transaction-domain declaration booleans. Deliberately NOT
-#   typed opda:Transaction — it has no transactionId, so typing it Transaction
-#   would assert a second, identity-less transaction. Untyped => no SHACL target
-#   (all these predicates are shape-free) and completeness is predicate-level.
-<#TransactionDeclarations> a rr:TriplesMap ;
-  rml:logicalSource [ rml:source "INSTANCE.json" ;
-                      rml:referenceFormulation ql:JSONPath ;
-                      rml:iterator "$.propertyPack" ] ;
-  rr:subjectMap [ rr:template "https://opda.org.uk/pdtf/harness/data/declaration/{uprn}" ] ;
+      rr:objectMap [ rr:template "https://opda.org.uk/pdtf/harness/data/estate/{propertyPack.ownership.ownershipsToBeTransferred[*].titleNumber}" ] ] ;  # <- propertyPack.ownership.ownershipsToBeTransferred[].titleNumber (array-projected join to M7's opda:LegalEstate node)
+  rr:predicateObjectMap [ rr:predicate opda:hasParticipant ;
+      rr:objectMap [ rr:template "https://opda.org.uk/pdtf/harness/data/seller/{participants[?(@.role==\"Seller\")].email}" ] ] ;  # <- participants[].email, role-filtered (RMLMapper/Jayway JsonPath supports a filter embedded mid-path, unlike morph-kgc's jsonpath-python — see ADR-0057 Amendments); joins to <#SellerParticipant>'s node
+  rr:predicateObjectMap [ rr:predicate opda:hasParticipant ;
+      rr:objectMap [ rr:template "https://opda.org.uk/pdtf/harness/data/buyer/{participants[?(@.role==\"Buyer\")].email}" ] ] ;  # <- participants[].email, role-filtered; joins to <#BuyerParticipant>'s node
   rr:predicateObjectMap [ rr:predicate opda:consumerProtectionRegulationsResponse ;
-      rr:objectMap [ rml:reference "consumerProtectionRegulationsDeclaration.consumerProtectionRegulationsResponse" ; rr:datatype xsd:boolean ] ] ;  # <- propertyPack.consumerProtectionRegulationsDeclaration.consumerProtectionRegulationsResponse
+      rr:objectMap [ rml:reference "propertyPack.consumerProtectionRegulationsDeclaration.consumerProtectionRegulationsResponse" ; rr:datatype xsd:boolean ] ] ;  # <- propertyPack.consumerProtectionRegulationsDeclaration.consumerProtectionRegulationsResponse
   rr:predicateObjectMap [ rr:predicate opda:confirmInformationIsAccurate ;
-      rr:objectMap [ rml:reference "confirmationOfAccuracyByOwners.confirmInformationIsAccurate" ; rr:datatype xsd:boolean ] ] ;  # <- propertyPack.confirmationOfAccuracyByOwners.confirmInformationIsAccurate
+      rr:objectMap [ rml:reference "propertyPack.confirmationOfAccuracyByOwners.confirmInformationIsAccurate" ; rr:datatype xsd:boolean ] ] ;  # <- propertyPack.confirmationOfAccuracyByOwners.confirmInformationIsAccurate
   rr:predicateObjectMap [ rr:predicate opda:confirmWillProvideAdditionalDocumentation ;
-      rr:objectMap [ rml:reference "confirmationOfAccuracyByOwners.confirmWillProvideAdditionalDocumentation" ; rr:datatype xsd:boolean ] ] ;  # <- propertyPack.confirmationOfAccuracyByOwners.confirmWillProvideAdditionalDocumentation
+      rr:objectMap [ rml:reference "propertyPack.confirmationOfAccuracyByOwners.confirmWillProvideAdditionalDocumentation" ; rr:datatype xsd:boolean ] ] ;  # <- propertyPack.confirmationOfAccuracyByOwners.confirmWillProvideAdditionalDocumentation
   rr:predicateObjectMap [ rr:predicate opda:leaveKeys ;
-      rr:objectMap [ rml:reference "completionAndMoving.sellerWillEnsure.leaveKeys" ; rr:datatype xsd:boolean ] ] ;  # <- propertyPack.completionAndMoving.sellerWillEnsure.leaveKeys
+      rr:objectMap [ rml:reference "propertyPack.completionAndMoving.sellerWillEnsure.leaveKeys" ; rr:datatype xsd:boolean ] ] ;  # <- propertyPack.completionAndMoving.sellerWillEnsure.leaveKeys
   rr:predicateObjectMap [ rr:predicate opda:removeRubbish ;
-      rr:objectMap [ rml:reference "completionAndMoving.sellerWillEnsure.removeRubbish" ; rr:datatype xsd:boolean ] ] ;  # <- propertyPack.completionAndMoving.sellerWillEnsure.removeRubbish
+      rr:objectMap [ rml:reference "propertyPack.completionAndMoving.sellerWillEnsure.removeRubbish" ; rr:datatype xsd:boolean ] ] ;  # <- propertyPack.completionAndMoving.sellerWillEnsure.removeRubbish
   rr:predicateObjectMap [ rr:predicate opda:replaceLightFittings ;
-      rr:objectMap [ rml:reference "completionAndMoving.sellerWillEnsure.replaceLightFittings" ; rr:datatype xsd:boolean ] ] ;  # <- propertyPack.completionAndMoving.sellerWillEnsure.replaceLightFittings
+      rr:objectMap [ rml:reference "propertyPack.completionAndMoving.sellerWillEnsure.replaceLightFittings" ; rr:datatype xsd:boolean ] ] ;  # <- propertyPack.completionAndMoving.sellerWillEnsure.replaceLightFittings
   rr:predicateObjectMap [ rr:predicate opda:takeReasonableCare ;
-      rr:objectMap [ rml:reference "completionAndMoving.sellerWillEnsure.takeReasonableCare" ; rr:datatype xsd:boolean ] ] ;  # <- propertyPack.completionAndMoving.sellerWillEnsure.takeReasonableCare
+      rr:objectMap [ rml:reference "propertyPack.completionAndMoving.sellerWillEnsure.takeReasonableCare" ; rr:datatype xsd:boolean ] ] ;  # <- propertyPack.completionAndMoving.sellerWillEnsure.takeReasonableCare
   rr:predicateObjectMap [ rr:predicate opda:authorisedToActOnBehalfOfAllSellers ;
-      rr:objectMap [ rml:reference "saleReadyDeclarations.authorisedToActOnBehalfOfAllSellers" ; rr:datatype xsd:boolean ] ] ;  # <- propertyPack.saleReadyDeclarations.authorisedToActOnBehalfOfAllSellers
+      rr:objectMap [ rml:reference "propertyPack.saleReadyDeclarations.authorisedToActOnBehalfOfAllSellers" ; rr:datatype xsd:boolean ] ] ;  # <- propertyPack.saleReadyDeclarations.authorisedToActOnBehalfOfAllSellers
   rr:predicateObjectMap [ rr:predicate opda:authorisationToShare ;
-      rr:objectMap [ rml:reference "saleReadyDeclarations.authorisationToShare" ; rr:datatype xsd:boolean ] ] .  # <- propertyPack.saleReadyDeclarations.authorisationToShare
+      rr:objectMap [ rml:reference "propertyPack.saleReadyDeclarations.authorisationToShare" ; rr:datatype xsd:boolean ] ] .  # <- propertyPack.saleReadyDeclarations.authorisationToShare
 
 # M1c — Signature record (UNTYPED)  iterator: signatures[*]
 #   Bearer of opda:signedOn. Untyped for the same reason as M1b (no
@@ -152,7 +152,10 @@
                       rml:iterator "$.contracts[*].signatures[*]" ] ;
   rr:subjectMap [ rr:template "https://opda.org.uk/pdtf/harness/data/signature/{contractHash}" ] ;
   rr:predicateObjectMap [ rr:predicate opda:signedOn ;
-      rr:objectMap [ rml:reference "signedOn" ; rr:datatype xsd:date ] ] .  # <- contracts[].signatures[].signedOn (morph-kgc truncates the dateTime to a valid xsd:date)
+      rr:objectMap [ rr:datatype xsd:date ;
+        fnml:functionValue [
+          rr:predicateObjectMap [ rr:predicate fno:executes ; rr:objectMap [ rr:constant <urn:opda:truncate_to_date> ] ] ;
+          rr:predicateObjectMap [ rr:predicate <urn:opda:param:datetime> ; rr:objectMap [ rml:reference "signedOn" ] ] ] ] ] .  # <- contracts[].signatures[].signedOn (morph-kgc truncates the dateTime to a valid xsd:date)
 
 # ---------------------------------------------------------------------------
 # M2 — Person (participant)  (opda:Person)   iterator: participants[*]
@@ -217,30 +220,14 @@
                   rr:class opda:Buyer ] .
 
 # opda:hasParticipant (domain opda:Transaction, range opda:Seller/opda:Buyer
-#   disjunctively): NOT mapped — a genuine, confirmed gap, not a guess. The
-#   Transaction node (M1, root iterator, keyed {transactionId}) needs to link
-#   to EACH already-typed Seller/Buyer node above, but every technique tried
-#   fails for a specific, confirmed reason:
-#     - A role-filtered JSONPath bracket embedded INSIDE a template placeholder
-#       or a plain rml:reference (`participants[?(@.role=="Seller")].email`,
-#       tried both ways from M1's root iterator) resolves to nothing —
-#       `[?(...)]` filter brackets only work as the WHOLE iterator (the same
-#       constraint documented in ADR-0057's Amendments for conditional
-#       inclusion), never embedded mid-path in a reference or template.
-#     - rr:parentTriplesMap + rr:joinCondition between M1 and SellerParticipant
-#       needs a real shared column between the two logical sources; none
-#       exists (participants don't carry transactionId). A join condition on
-#       a nonexistent field silently matches zero rows; omitting the join
-#       condition entirely crashes morph-kgc's pandas merge (IndexError).
-#     - The one technique that DOES execute — the unfiltered array-projected
-#       template `participants.email` (proven for opda:concernsProperty/
-#       opda:concerns above) — would bind hasParticipant to EVERY participant
-#       regardless of role (conveyancers, agents, etc.), which is actively
-#       WRONG: it would violate the ontology's own disjoint Seller/Buyer
-#       sh:or range (Baspi5_SellersCapacityShape and friends target Seller/
-#       Buyer specifically) — shipping it would assert something false, worse
-#       than leaving the gap open. Not applied.
-#   Left as a genuine, documented gap; no further workaround attempted.
+#   disjunctively): mapped on M1 above, migrated from a confirmed morph-kgc
+#   dead end to RMLMapper. Under morph-kgc, a role-filtered JSONPath bracket
+#   embedded INSIDE a template placeholder or reference resolved to nothing —
+#   `[?(...)]` filter brackets only worked as the WHOLE iterator (ADR-0057
+#   Amendments). RMLMapper's JSONPath engine (Jayway JsonPath, a standards-
+#   compliant implementation, vs. morph-kgc's jsonpath-python) supports a
+#   filter embedded mid-path — verified empirically to select exactly the
+#   Seller/Buyer (not the Seller's Conveyancer or other unfiltered roles).
 
 # M3c — sellersCapacity.capacity -> opda:hasAssertedCapacity as a CONTROLLED
 #   SCHEME IRI. The BASPI5 Baspi5_SellersCapacityShape sh:xone requires
@@ -366,7 +353,7 @@
   rr:predicateObjectMap [ rr:predicate opda:diningAreas ;
       rr:objectMap [ rml:reference "residentialPropertyFeatures.diningAreas" ; rr:datatype xsd:integer ] ] ;  # <- propertyPack.residentialPropertyFeatures.diningAreas
   rr:predicateObjectMap [ rr:predicate opda:outsideAreas ;
-      rr:objectMap [ rml:reference "residentialPropertyFeatures.outsideAreas[]" ; rr:datatype xsd:string ] ] ;  # <- propertyPack.residentialPropertyFeatures.outsideAreas (array of strings)
+      rr:objectMap [ rml:reference "residentialPropertyFeatures.outsideAreas" ; rr:datatype xsd:string ] ] ;  # <- propertyPack.residentialPropertyFeatures.outsideAreas (array of strings)
   rr:predicateObjectMap [ rr:predicate opda:heading ;
       rr:objectMap [ rml:reference "location.googleStreetViewPOV.heading" ; rr:datatype xsd:decimal ] ] ;  # <- propertyPack.location.googleStreetViewPOV.heading
   rr:predicateObjectMap [ rr:predicate opda:pitch ;
@@ -382,7 +369,7 @@
   rr:predicateObjectMap [ rr:predicate opda:councilTaxAnnualCharge ;
       rr:objectMap [ rr:template "https://opda.org.uk/pdtf/harness/data/property/{uprn}/amount/councilTax-{councilTax.councilTaxAnnualCharge}" ] ] ;  # <- propertyPack.councilTax.councilTaxAnnualCharge (MonetaryAmount join, see M4b)
   rr:predicateObjectMap [ rr:predicate opda:accessibilityAndAdaptations ;
-      rr:objectMap [ rml:reference "typeOfConstruction.accessibilityAndAdaptations[]" ; rr:datatype xsd:string ] ] ;  # <- propertyPack.typeOfConstruction.accessibilityAndAdaptations
+      rr:objectMap [ rml:reference "typeOfConstruction.accessibilityAndAdaptations" ; rr:datatype xsd:string ] ] ;  # <- propertyPack.typeOfConstruction.accessibilityAndAdaptations
   rr:predicateObjectMap [ rr:predicate opda:abilityToResideAtProperty ;
       rr:objectMap [ rml:reference "typeOfConstruction.buildingSafety.abilityToResideAtProperty" ; rr:datatype xsd:string ] ] ;  # <- propertyPack.typeOfConstruction.buildingSafety.abilityToResideAtProperty
   rr:predicateObjectMap [ rr:predicate opda:mprn ;
@@ -390,13 +377,13 @@
   rr:predicateObjectMap [ rr:predicate opda:location ;
       rr:objectMap [ rml:reference "heating.heatingSystem.centralHeatingDetails.centralHeatingFuel.gasMeter.location" ; rr:datatype xsd:string ] ] ;  # <- propertyPack.heating.heatingSystem.centralHeatingDetails.centralHeatingFuel.gasMeter.location
   rr:predicateObjectMap [ rr:predicate opda:otherHeatingFeatures ;
-      rr:objectMap [ rml:reference "heating.otherHeatingFeatures[]" ; rr:datatype xsd:string ] ] ;  # <- propertyPack.heating.otherHeatingFeatures
+      rr:objectMap [ rml:reference "heating.otherHeatingFeatures" ; rr:datatype xsd:string ] ] ;  # <- propertyPack.heating.otherHeatingFeatures
   rr:predicateObjectMap [ rr:predicate opda:parkingArrangements ;
-      rr:objectMap [ rml:reference "parking.parkingArrangements[]" ; rr:datatype xsd:string ] ] ;  # <- propertyPack.parking.parkingArrangements
+      rr:objectMap [ rml:reference "parking.parkingArrangements" ; rr:datatype xsd:string ] ] ;  # <- propertyPack.parking.parkingArrangements
   rr:predicateObjectMap [ rr:predicate opda:hasFloodDefences ;
       rr:objectMap [ rml:reference "environmentalIssues.flooding.floodDefences.hasFloodDefences" ; rr:datatype xsd:string ] ] ;  # <- propertyPack.environmentalIssues.flooding.floodDefences.hasFloodDefences
   rr:predicateObjectMap [ rr:predicate opda:typeOfFlooding ;
-      rr:objectMap [ rml:reference "environmentalIssues.flooding.historicalFlooding.typeOfFlooding[]" ; rr:datatype xsd:string ] ] ;  # <- propertyPack.environmentalIssues.flooding.historicalFlooding.typeOfFlooding
+      rr:objectMap [ rml:reference "environmentalIssues.flooding.historicalFlooding.typeOfFlooding" ; rr:datatype xsd:string ] ] ;  # <- propertyPack.environmentalIssues.flooding.historicalFlooding.typeOfFlooding
   rr:predicateObjectMap [ rr:predicate opda:willingToInsure ;
       rr:objectMap [ rml:reference "alterationsAndChanges.planningPermissionBreaches.willingToInsure" ; rr:datatype xsd:string ] ] ;  # <- propertyPack.alterationsAndChanges.planningPermissionBreaches.willingToInsure
   rr:predicateObjectMap [ rr:predicate opda:landlordInsuresIfFlat ;
@@ -466,12 +453,12 @@
   rr:predicateObjectMap [ rr:predicate opda:securityDeposit ;
       rr:objectMap [ rr:template "https://opda.org.uk/pdtf/harness/data/property/{uprn}/amount/securityDeposit-{lettingInformation.securityDeposit}" ] ] ;  # <- propertyPack.lettingInformation.securityDeposit (MonetaryAmount join, see M4e)
   rr:predicateObjectMap [ rr:predicate opda:hasRoomDimension ;
-      rr:objectMap [ rr:template "https://opda.org.uk/pdtf/harness/data/room/{buildInformation.roomDimensions.rooms.roomName}" ] ] ;  # <- propertyPack.buildInformation.roomDimensions.rooms[] (array-projected rr:template join to M15's RoomDimension node, the same technique proven for opda:hasParticipant/opda:concerns — supersedes M15's old "no shared key" note, which predates the dropna-bug fix and only tried a bracket-indexed rooms[0] reference)
+      rr:objectMap [ rr:template "https://opda.org.uk/pdtf/harness/data/room/{buildInformation.roomDimensions.rooms[*].roomName}" ] ] ;  # <- propertyPack.buildInformation.roomDimensions.rooms[] (array-projected rr:template join to M15's RoomDimension node, the same technique proven for opda:hasParticipant/opda:concerns — supersedes M15's old "no shared key" note, which predates the dropna-bug fix and only tried a bracket-indexed rooms[0] reference)
   rr:predicateObjectMap [ rr:predicate opda:constructionType ;
-      rr:objectMap [ rr:termType rr:IRI ; rmlf:functionExecution [
-        rmlf:functionMap [ rmlf:constant <urn:opda:scheme_member_iri> ] ;
-        rmlf:input [ rmlf:parameterMap [ rmlf:constant <urn:opda:param:value> ] ; rmlf:inputValueMap [ rml:reference "surveys.misc.constructionType" ] ] ;
-        rmlf:input [ rmlf:parameterMap [ rmlf:constant <urn:opda:param:scheme> ] ; rmlf:inputValueMap [ rmlf:constant "constructionType" ] ] ] ] ] .  # <- propertyPack.surveys[].misc.constructionType (M18: array-projected reference + M30's FNML mechanism; see M18's comment for the "not exercised by 01-04" caveat)
+      rr:objectMap [ rr:termType rr:IRI ; fnml:functionValue [
+        rr:predicateObjectMap [ rr:predicate fno:executes ; rr:objectMap [ rr:constant <urn:opda:scheme_member_iri> ] ] ;
+        rr:predicateObjectMap [ rr:predicate <urn:opda:param:value> ; rr:objectMap [ rml:reference "surveys.misc.constructionType" ] ] ;
+        rr:predicateObjectMap [ rr:predicate <urn:opda:param:scheme> ; rr:objectMap [ rr:constant "constructionType" ] ] ] ] ] .  # <- propertyPack.surveys[].misc.constructionType (M18: array-projected reference + M30's FNML mechanism; see M18's comment for the "not exercised by 01-04" caveat)
 
 # ---------------------------------------------------------------------------
 # M4e — lettingInformation MonetaryAmount value nodes (holdingDeposit, rent,
@@ -635,11 +622,20 @@
   rr:predicateObjectMap [ rr:predicate opda:status ;
       rr:objectMap [ rml:reference "status" ; rr:datatype xsd:string ] ] ;  # <- propertyPack.searches[].status
   rr:predicateObjectMap [ rr:predicate opda:orderDate ;
-      rr:objectMap [ rml:reference "orderDate" ; rr:datatype xsd:date ] ] ;  # <- propertyPack.searches[].orderDate (dateTime lexical; see README)
+      rr:objectMap [ rr:datatype xsd:date ;
+        fnml:functionValue [
+          rr:predicateObjectMap [ rr:predicate fno:executes ; rr:objectMap [ rr:constant <urn:opda:truncate_to_date> ] ] ;
+          rr:predicateObjectMap [ rr:predicate <urn:opda:param:datetime> ; rr:objectMap [ rml:reference "orderDate" ] ] ] ] ] ;  # <- propertyPack.searches[].orderDate (dateTime lexical; see README)
   rr:predicateObjectMap [ rr:predicate opda:expectedDeliveryDate ;
-      rr:objectMap [ rml:reference "expectedDeliveryDate" ; rr:datatype xsd:date ] ] ;  # <- propertyPack.searches[].expectedDeliveryDate (dateTime lexical; see README)
+      rr:objectMap [ rr:datatype xsd:date ;
+        fnml:functionValue [
+          rr:predicateObjectMap [ rr:predicate fno:executes ; rr:objectMap [ rr:constant <urn:opda:truncate_to_date> ] ] ;
+          rr:predicateObjectMap [ rr:predicate <urn:opda:param:datetime> ; rr:objectMap [ rml:reference "expectedDeliveryDate" ] ] ] ] ] ;  # <- propertyPack.searches[].expectedDeliveryDate (dateTime lexical; see README)
   rr:predicateObjectMap [ rr:predicate opda:reportDate ;
-      rr:objectMap [ rml:reference "reportDate" ; rr:datatype xsd:date ] ] ;  # <- propertyPack.searches[].reportDate (dateTime lexical; see README)
+      rr:objectMap [ rr:datatype xsd:date ;
+        fnml:functionValue [
+          rr:predicateObjectMap [ rr:predicate fno:executes ; rr:objectMap [ rr:constant <urn:opda:truncate_to_date> ] ] ;
+          rr:predicateObjectMap [ rr:predicate <urn:opda:param:datetime> ; rr:objectMap [ rml:reference "reportDate" ] ] ] ] ] ;  # <- propertyPack.searches[].reportDate (dateTime lexical; see README)
   rr:predicateObjectMap [ rr:predicate opda:providerReference ;
       rr:objectMap [ rml:reference "providerReference" ; rr:datatype xsd:string ] ] .  # <- propertyPack.searches[].providerReference
 
@@ -893,10 +889,10 @@
   rr:predicateObjectMap [ rr:predicate opda:middleNames ;
       rr:objectMap [ rml:reference "middleNames" ; rr:datatype xsd:string ] ] ;  # <- propertyPack.legalOwners.namesOfLegalOwners[].middleNames
   rr:predicateObjectMap [ rr:predicate opda:ownerType ;
-      rr:objectMap [ rr:termType rr:IRI ; rmlf:functionExecution [
-        rmlf:functionMap [ rmlf:constant <urn:opda:scheme_member_iri> ] ;
-        rmlf:input [ rmlf:parameterMap [ rmlf:constant <urn:opda:param:value> ] ; rmlf:inputValueMap [ rml:reference "ownerType" ] ] ;
-        rmlf:input [ rmlf:parameterMap [ rmlf:constant <urn:opda:param:scheme> ] ; rmlf:inputValueMap [ rmlf:constant "ownerType" ] ] ] ] ] .  # <- propertyPack.legalOwners.namesOfLegalOwners[].ownerType
+      rr:objectMap [ rr:termType rr:IRI ; fnml:functionValue [
+        rr:predicateObjectMap [ rr:predicate fno:executes ; rr:objectMap [ rr:constant <urn:opda:scheme_member_iri> ] ] ;
+        rr:predicateObjectMap [ rr:predicate <urn:opda:param:value> ; rr:objectMap [ rml:reference "ownerType" ] ] ;
+        rr:predicateObjectMap [ rr:predicate <urn:opda:param:scheme> ; rr:objectMap [ rr:constant "ownerType" ] ] ] ] ] .  # <- propertyPack.legalOwners.namesOfLegalOwners[].ownerType
 
 # M11a — Organisation (legalOwners, ownerType=="Organisation" oneOf branch)
 #   Same iterator as M11; a distinct opda:Organisation-typed node keyed on
@@ -912,10 +908,10 @@
   rr:predicateObjectMap [ rr:predicate opda:organisationName ;
       rr:objectMap [ rml:reference "organisationName" ; rr:datatype xsd:string ] ] ;  # <- propertyPack.legalOwners.namesOfLegalOwners[].organisationName
   rr:predicateObjectMap [ rr:predicate opda:ownerType ;
-      rr:objectMap [ rr:termType rr:IRI ; rmlf:functionExecution [
-        rmlf:functionMap [ rmlf:constant <urn:opda:scheme_member_iri> ] ;
-        rmlf:input [ rmlf:parameterMap [ rmlf:constant <urn:opda:param:value> ] ; rmlf:inputValueMap [ rml:reference "ownerType" ] ] ;
-        rmlf:input [ rmlf:parameterMap [ rmlf:constant <urn:opda:param:scheme> ] ; rmlf:inputValueMap [ rmlf:constant "ownerType" ] ] ] ] ] .  # <- propertyPack.legalOwners.namesOfLegalOwners[].ownerType
+      rr:objectMap [ rr:termType rr:IRI ; fnml:functionValue [
+        rr:predicateObjectMap [ rr:predicate fno:executes ; rr:objectMap [ rr:constant <urn:opda:scheme_member_iri> ] ] ;
+        rr:predicateObjectMap [ rr:predicate <urn:opda:param:value> ; rr:objectMap [ rml:reference "ownerType" ] ] ;
+        rr:predicateObjectMap [ rr:predicate <urn:opda:param:scheme> ; rr:objectMap [ rr:constant "ownerType" ] ] ] ] ] .  # <- propertyPack.legalOwners.namesOfLegalOwners[].ownerType
 
 # M11b — opda:Proprietorship + opda:mediates: NOT mapped. Team decision:
 #   Proprietorship (a UFO Relator) should ONLY be emitted when
@@ -945,9 +941,12 @@
 #   under the profile. OPDA domains are DOCUMENTARY, never entailed
 #   (ODR-0025/0026), so leaving the bearer untyped is fully consistent — the
 #   predicate is emitted, no false Seller is asserted. Same untyped-record
-#   pattern as the declaration/signature records (M1b/M1c) — both
-#   predicates are named in validate_shacl.sh's allowlist for the resulting
-#   closed-world domain violation (ODR-0029 R3), same as M1b's leaves.
+#   pattern as the signature record (M1c) — both predicates are named in
+#   validate_shacl.sh's allowlist for the resulting closed-world domain
+#   violation (ODR-0029 R3). Unlike M1b (now merged onto M1, ADR-0057
+#   Amendments), this is a genuine, independent domain mismatch, not a
+#   performance workaround — merging it onto M1 would be wrong regardless
+#   of engine speed.
 # ---------------------------------------------------------------------------
 <#OccupierRecord> a rr:TriplesMap ;
   rml:logicalSource [ rml:source "INSTANCE.json" ;
@@ -1408,7 +1407,10 @@
   rr:predicateObjectMap [ rr:predicate prov:wasGeneratedBy ;
       rr:objectMap [ rr:template "https://opda.org.uk/pdtf/harness/data/valuation/comparable-{uprn}/run" ] ] ;  # SHACL: class-promoted opda:Valuation requires prov:wasGeneratedBy
   rr:predicateObjectMap [ rr:predicate opda:soldDate ;
-      rr:objectMap [ rml:reference "propertyListingInfo.soldDate" ; rr:datatype xsd:date ] ] ;  # <- valuationComparisonData.propertyDetails[].propertyListingInfo.soldDate (oneOf branch: Recently Sold; dateTime lexical truncated to xsd:date)
+      rr:objectMap [ rr:datatype xsd:date ;
+        fnml:functionValue [
+          rr:predicateObjectMap [ rr:predicate fno:executes ; rr:objectMap [ rr:constant <urn:opda:truncate_to_date> ] ] ;
+          rr:predicateObjectMap [ rr:predicate <urn:opda:param:datetime> ; rr:objectMap [ rml:reference "propertyListingInfo.soldDate" ] ] ] ] ] ;  # <- valuationComparisonData.propertyDetails[].propertyListingInfo.soldDate (oneOf branch: Recently Sold; dateTime lexical truncated to xsd:date)
   rr:predicateObjectMap [ rr:predicate opda:listedDate ;
       rr:objectMap [ rml:reference "propertyListingInfo.listedDate" ; rr:datatype xsd:date ] ] ;  # <- valuationComparisonData.propertyDetails[].propertyListingInfo.listedDate (oneOf branch: Currently On Sale; not instance-exercised, path verified)
   rr:predicateObjectMap [ rr:predicate opda:soldPrice ;
@@ -1462,7 +1464,7 @@
   rr:predicateObjectMap [ rr:predicate opda:pricingMethodology ;
       rr:objectMap [ rml:reference "priceEstimationDetails.pricingMethodology" ; rr:datatype xsd:string ] ] ;  # <- valuationComparisonData.propertyPricing.priceEstimationDetails.pricingMethodology
   rr:predicateObjectMap [ rr:predicate opda:credibilitySources ;
-      rr:objectMap [ rml:reference "priceEstimationDetails.credibilitySources[]" ; rr:datatype xsd:string ] ] .  # <- valuationComparisonData.propertyPricing.priceEstimationDetails.credibilitySources (array of strings)
+      rr:objectMap [ rml:reference "priceEstimationDetails.credibilitySources" ; rr:datatype xsd:string ] ] .  # <- valuationComparisonData.propertyPricing.priceEstimationDetails.credibilitySources (array of strings)
 
 <#ValuationRunActivity> a rr:TriplesMap ;
   rml:logicalSource [ rml:source "INSTANCE.json" ;
@@ -1620,7 +1622,7 @@
   rr:predicateObjectMap [ rr:predicate opda:peril ;
       rr:object <https://opda.org.uk/pdtf/scheme/peril/Flooding> ] ;
   rr:predicateObjectMap [ rr:predicate opda:hasSubAssessment ;
-      rr:objectMap [ rr:template "https://opda.org.uk/pdtf/harness/data/riskassessment/subcategory/{environmentalIssues.flooding.floodRisk.riskSubcategories.subCategory}" ] ] .  # <- propertyPack.environmentalIssues.flooding.floodRisk.riskSubcategories[] (result-recursion parent->child, ODR-0008d Rule 4)
+      rr:objectMap [ rr:template "https://opda.org.uk/pdtf/harness/data/riskassessment/subcategory/{environmentalIssues.flooding.floodRisk.riskSubcategories[*].subCategory}" ] ] .  # <- propertyPack.environmentalIssues.flooding.floodRisk.riskSubcategories[] (result-recursion parent->child, ODR-0008d Rule 4)
 
 <#FloodRiskParentRunActivity> a rr:TriplesMap ;
   rml:logicalSource [ rml:source "INSTANCE.json" ;
@@ -1640,7 +1642,7 @@
   rr:predicateObjectMap [ rr:predicate opda:peril ;
       rr:object <https://opda.org.uk/pdtf/scheme/peril/Climate> ] ;
   rr:predicateObjectMap [ rr:predicate opda:hasSubAssessment ;
-      rr:objectMap [ rr:template "https://opda.org.uk/pdtf/harness/data/riskassessment/subcategory/{environmentalIssues.climate.climateRisk.riskSubcategories.subCategory}" ] ] .  # <- propertyPack.environmentalIssues.climate.climateRisk.riskSubcategories[] (result-recursion parent->child, ODR-0008d Rule 4)
+      rr:objectMap [ rr:template "https://opda.org.uk/pdtf/harness/data/riskassessment/subcategory/{environmentalIssues.climate.climateRisk.riskSubcategories[*].subCategory}" ] ] .  # <- propertyPack.environmentalIssues.climate.climateRisk.riskSubcategories[] (result-recursion parent->child, ODR-0008d Rule 4)
 
 <#ClimateRiskParentRunActivity> a rr:TriplesMap ;
   rml:logicalSource [ rml:source "INSTANCE.json" ;
@@ -1834,95 +1836,95 @@
                       rml:iterator "$.propertyPack" ] ;
   rr:subjectMap [ rr:template "https://opda.org.uk/pdtf/harness/data/property/{uprn}" ] ;
   rr:predicateObjectMap [ rr:predicate opda:isInsured ;
-      rr:objectMap [ rr:termType rr:IRI ; rmlf:functionExecution [
-        rmlf:functionMap [ rmlf:constant <urn:opda:scheme_member_iri> ] ;
-        rmlf:input [ rmlf:parameterMap [ rmlf:constant <urn:opda:param:value> ] ; rmlf:inputValueMap [ rml:reference "insurance.isInsured" ] ] ;
-        rmlf:input [ rmlf:parameterMap [ rmlf:constant <urn:opda:param:scheme> ] ; rmlf:inputValueMap [ rmlf:constant "yesNo" ] ] ] ] ] ;  # <- propertyPack.insurance.isInsured
+      rr:objectMap [ rr:termType rr:IRI ; fnml:functionValue [
+        rr:predicateObjectMap [ rr:predicate fno:executes ; rr:objectMap [ rr:constant <urn:opda:scheme_member_iri> ] ] ;
+        rr:predicateObjectMap [ rr:predicate <urn:opda:param:value> ; rr:objectMap [ rml:reference "insurance.isInsured" ] ] ;
+        rr:predicateObjectMap [ rr:predicate <urn:opda:param:scheme> ; rr:objectMap [ rr:constant "yesNo" ] ] ] ] ] ;  # <- propertyPack.insurance.isInsured
   rr:predicateObjectMap [ rr:predicate opda:hasBeenFlooded ;
-      rr:objectMap [ rr:termType rr:IRI ; rmlf:functionExecution [
-        rmlf:functionMap [ rmlf:constant <urn:opda:scheme_member_iri> ] ;
-        rmlf:input [ rmlf:parameterMap [ rmlf:constant <urn:opda:param:value> ] ; rmlf:inputValueMap [ rml:reference "environmentalIssues.flooding.historicalFlooding.hasBeenFlooded" ] ] ;
-        rmlf:input [ rmlf:parameterMap [ rmlf:constant <urn:opda:param:scheme> ] ; rmlf:inputValueMap [ rmlf:constant "yesNo" ] ] ] ] ] ;  # <- propertyPack.environmentalIssues.flooding.historicalFlooding.hasBeenFlooded
+      rr:objectMap [ rr:termType rr:IRI ; fnml:functionValue [
+        rr:predicateObjectMap [ rr:predicate fno:executes ; rr:objectMap [ rr:constant <urn:opda:scheme_member_iri> ] ] ;
+        rr:predicateObjectMap [ rr:predicate <urn:opda:param:value> ; rr:objectMap [ rml:reference "environmentalIssues.flooding.historicalFlooding.hasBeenFlooded" ] ] ;
+        rr:predicateObjectMap [ rr:predicate <urn:opda:param:scheme> ; rr:objectMap [ rr:constant "yesNo" ] ] ] ] ] ;  # <- propertyPack.environmentalIssues.flooding.historicalFlooding.hasBeenFlooded
   rr:predicateObjectMap [ rr:predicate opda:hasSmartHomeSystems ;
-      rr:objectMap [ rr:termType rr:IRI ; rmlf:functionExecution [
-        rmlf:functionMap [ rmlf:constant <urn:opda:scheme_member_iri> ] ;
-        rmlf:input [ rmlf:parameterMap [ rmlf:constant <urn:opda:param:value> ] ; rmlf:inputValueMap [ rml:reference "smartHomeSystems.hasSmartHomeSystems" ] ] ;
-        rmlf:input [ rmlf:parameterMap [ rmlf:constant <urn:opda:param:scheme> ] ; rmlf:inputValueMap [ rmlf:constant "yesNo" ] ] ] ] ] ;  # <- propertyPack.smartHomeSystems.hasSmartHomeSystems
+      rr:objectMap [ rr:termType rr:IRI ; fnml:functionValue [
+        rr:predicateObjectMap [ rr:predicate fno:executes ; rr:objectMap [ rr:constant <urn:opda:scheme_member_iri> ] ] ;
+        rr:predicateObjectMap [ rr:predicate <urn:opda:param:value> ; rr:objectMap [ rml:reference "smartHomeSystems.hasSmartHomeSystems" ] ] ;
+        rr:predicateObjectMap [ rr:predicate <urn:opda:param:scheme> ; rr:objectMap [ rr:constant "yesNo" ] ] ] ] ] ;  # <- propertyPack.smartHomeSystems.hasSmartHomeSystems
   rr:predicateObjectMap [ rr:predicate opda:hasSprayFoamInstalled ;
-      rr:objectMap [ rr:termType rr:IRI ; rmlf:functionExecution [
-        rmlf:functionMap [ rmlf:constant <urn:opda:scheme_member_iri> ] ;
-        rmlf:input [ rmlf:parameterMap [ rmlf:constant <urn:opda:param:value> ] ; rmlf:inputValueMap [ rml:reference "typeOfConstruction.sprayFoamInsulation.hasSprayFoamInstalled" ] ] ;
-        rmlf:input [ rmlf:parameterMap [ rmlf:constant <urn:opda:param:scheme> ] ; rmlf:inputValueMap [ rmlf:constant "yesNo" ] ] ] ] ] ;  # <- propertyPack.typeOfConstruction.sprayFoamInsulation.hasSprayFoamInstalled
+      rr:objectMap [ rr:termType rr:IRI ; fnml:functionValue [
+        rr:predicateObjectMap [ rr:predicate fno:executes ; rr:objectMap [ rr:constant <urn:opda:scheme_member_iri> ] ] ;
+        rr:predicateObjectMap [ rr:predicate <urn:opda:param:value> ; rr:objectMap [ rml:reference "typeOfConstruction.sprayFoamInsulation.hasSprayFoamInstalled" ] ] ;
+        rr:predicateObjectMap [ rr:predicate <urn:opda:param:scheme> ; rr:objectMap [ rr:constant "yesNo" ] ] ] ] ] ;  # <- propertyPack.typeOfConstruction.sprayFoamInsulation.hasSprayFoamInstalled
   rr:predicateObjectMap [ rr:predicate opda:hasValidGuaranteesOrWarranties ;
-      rr:objectMap [ rr:termType rr:IRI ; rmlf:functionExecution [
-        rmlf:functionMap [ rmlf:constant <urn:opda:scheme_member_iri> ] ;
-        rmlf:input [ rmlf:parameterMap [ rmlf:constant <urn:opda:param:value> ] ; rmlf:inputValueMap [ rml:reference "guaranteesWarrantiesAndIndemnityInsurances.hasValidGuaranteesOrWarranties" ] ] ;
-        rmlf:input [ rmlf:parameterMap [ rmlf:constant <urn:opda:param:scheme> ] ; rmlf:inputValueMap [ rmlf:constant "yesNo" ] ] ] ] ] ;  # <- propertyPack.guaranteesWarrantiesAndIndemnityInsurances.hasValidGuaranteesOrWarranties
+      rr:objectMap [ rr:termType rr:IRI ; fnml:functionValue [
+        rr:predicateObjectMap [ rr:predicate fno:executes ; rr:objectMap [ rr:constant <urn:opda:scheme_member_iri> ] ] ;
+        rr:predicateObjectMap [ rr:predicate <urn:opda:param:value> ; rr:objectMap [ rml:reference "guaranteesWarrantiesAndIndemnityInsurances.hasValidGuaranteesOrWarranties" ] ] ;
+        rr:predicateObjectMap [ rr:predicate <urn:opda:param:scheme> ; rr:objectMap [ rr:constant "yesNo" ] ] ] ] ] ;  # <- propertyPack.guaranteesWarrantiesAndIndemnityInsurances.hasValidGuaranteesOrWarranties
   rr:predicateObjectMap [ rr:predicate opda:isLocatedOverCommercialPremises ;
-      rr:objectMap [ rr:termType rr:IRI ; rmlf:functionExecution [
-        rmlf:functionMap [ rmlf:constant <urn:opda:scheme_member_iri> ] ;
-        rmlf:input [ rmlf:parameterMap [ rmlf:constant <urn:opda:param:value> ] ; rmlf:inputValueMap [ rml:reference "buildInformation.building.overCommercialPremises.isLocatedOverCommercialPremises" ] ] ;
-        rmlf:input [ rmlf:parameterMap [ rmlf:constant <urn:opda:param:scheme> ] ; rmlf:inputValueMap [ rmlf:constant "yesNo" ] ] ] ] ] ;  # <- propertyPack.buildInformation.building.overCommercialPremises.isLocatedOverCommercialPremises
+      rr:objectMap [ rr:termType rr:IRI ; fnml:functionValue [
+        rr:predicateObjectMap [ rr:predicate fno:executes ; rr:objectMap [ rr:constant <urn:opda:scheme_member_iri> ] ] ;
+        rr:predicateObjectMap [ rr:predicate <urn:opda:param:value> ; rr:objectMap [ rml:reference "buildInformation.building.overCommercialPremises.isLocatedOverCommercialPremises" ] ] ;
+        rr:predicateObjectMap [ rr:predicate <urn:opda:param:scheme> ; rr:objectMap [ rr:constant "yesNo" ] ] ] ] ] ;  # <- propertyPack.buildInformation.building.overCommercialPremises.isLocatedOverCommercialPremises
   rr:predicateObjectMap [ rr:predicate opda:isSupplyMetered ;
-      rr:objectMap [ rr:termType rr:IRI ; rmlf:functionExecution [
-        rmlf:functionMap [ rmlf:constant <urn:opda:scheme_member_iri> ] ;
-        rmlf:input [ rmlf:parameterMap [ rmlf:constant <urn:opda:param:value> ] ; rmlf:inputValueMap [ rml:reference "waterAndDrainage.water.mainsWater.waterMeter.isSupplyMetered" ] ] ;
-        rmlf:input [ rmlf:parameterMap [ rmlf:constant <urn:opda:param:scheme> ] ; rmlf:inputValueMap [ rmlf:constant "yesNo" ] ] ] ] ] ;  # <- propertyPack.waterAndDrainage.water.mainsWater.waterMeter.isSupplyMetered
+      rr:objectMap [ rr:termType rr:IRI ; fnml:functionValue [
+        rr:predicateObjectMap [ rr:predicate fno:executes ; rr:objectMap [ rr:constant <urn:opda:scheme_member_iri> ] ] ;
+        rr:predicateObjectMap [ rr:predicate <urn:opda:param:value> ; rr:objectMap [ rml:reference "waterAndDrainage.water.mainsWater.waterMeter.isSupplyMetered" ] ] ;
+        rr:predicateObjectMap [ rr:predicate <urn:opda:param:scheme> ; rr:objectMap [ rr:constant "yesNo" ] ] ] ] ] ;  # <- propertyPack.waterAndDrainage.water.mainsWater.waterMeter.isSupplyMetered
   rr:predicateObjectMap [ rr:predicate opda:areBoundariesUniform ;
-      rr:objectMap [ rr:termType rr:IRI ; rmlf:functionExecution [
-        rmlf:functionMap [ rmlf:constant <urn:opda:scheme_member_iri> ] ;
-        rmlf:input [ rmlf:parameterMap [ rmlf:constant <urn:opda:param:value> ] ; rmlf:inputValueMap [ rml:reference "legalBoundaries.ownership.areBoundariesUniform" ] ] ;
-        rmlf:input [ rmlf:parameterMap [ rmlf:constant <urn:opda:param:scheme> ] ; rmlf:inputValueMap [ rmlf:constant "yesNo" ] ] ] ] ] ;  # <- propertyPack.legalBoundaries.ownership.areBoundariesUniform
+      rr:objectMap [ rr:termType rr:IRI ; fnml:functionValue [
+        rr:predicateObjectMap [ rr:predicate fno:executes ; rr:objectMap [ rr:constant <urn:opda:scheme_member_iri> ] ] ;
+        rr:predicateObjectMap [ rr:predicate <urn:opda:param:value> ; rr:objectMap [ rml:reference "legalBoundaries.ownership.areBoundariesUniform" ] ] ;
+        rr:predicateObjectMap [ rr:predicate <urn:opda:param:scheme> ; rr:objectMap [ rr:constant "yesNo" ] ] ] ] ] ;  # <- propertyPack.legalBoundaries.ownership.areBoundariesUniform
   rr:predicateObjectMap [ rr:predicate opda:soldWithVacantPossession ;
-      rr:objectMap [ rr:termType rr:IRI ; rmlf:functionExecution [
-        rmlf:functionMap [ rmlf:constant <urn:opda:scheme_member_iri> ] ;
-        rmlf:input [ rmlf:parameterMap [ rmlf:constant <urn:opda:param:value> ] ; rmlf:inputValueMap [ rml:reference "occupiers.othersAged17OrOver.vacantPossession.soldWithVacantPossession" ] ] ;
-        rmlf:input [ rmlf:parameterMap [ rmlf:constant <urn:opda:param:scheme> ] ; rmlf:inputValueMap [ rmlf:constant "yesNo" ] ] ] ] ] ;  # <- propertyPack.occupiers.othersAged17OrOver.vacantPossession.soldWithVacantPossession
+      rr:objectMap [ rr:termType rr:IRI ; fnml:functionValue [
+        rr:predicateObjectMap [ rr:predicate fno:executes ; rr:objectMap [ rr:constant <urn:opda:scheme_member_iri> ] ] ;
+        rr:predicateObjectMap [ rr:predicate <urn:opda:param:value> ; rr:objectMap [ rml:reference "occupiers.othersAged17OrOver.vacantPossession.soldWithVacantPossession" ] ] ;
+        rr:predicateObjectMap [ rr:predicate <urn:opda:param:scheme> ; rr:objectMap [ rr:constant "yesNo" ] ] ] ] ] ;  # <- propertyPack.occupiers.othersAged17OrOver.vacantPossession.soldWithVacantPossession
   rr:predicateObjectMap [ rr:predicate opda:offMainsDrainageSystemType ;
-      rr:objectMap [ rr:termType rr:IRI ; rmlf:functionExecution [
-        rmlf:functionMap [ rmlf:constant <urn:opda:scheme_member_iri> ] ;
-        rmlf:input [ rmlf:parameterMap [ rmlf:constant <urn:opda:param:value> ] ; rmlf:inputValueMap [ rml:reference "waterAndDrainage.drainage.mainsFoulDrainage.offMainsDrainageSystem.offMainsDrainageSystemType" ] ] ;
-        rmlf:input [ rmlf:parameterMap [ rmlf:constant <urn:opda:param:scheme> ] ; rmlf:inputValueMap [ rmlf:constant "offMainsDrainageSystemType" ] ] ] ] ] ;  # <- propertyPack.waterAndDrainage.drainage.mainsFoulDrainage.offMainsDrainageSystem.offMainsDrainageSystemType
+      rr:objectMap [ rr:termType rr:IRI ; fnml:functionValue [
+        rr:predicateObjectMap [ rr:predicate fno:executes ; rr:objectMap [ rr:constant <urn:opda:scheme_member_iri> ] ] ;
+        rr:predicateObjectMap [ rr:predicate <urn:opda:param:value> ; rr:objectMap [ rml:reference "waterAndDrainage.drainage.mainsFoulDrainage.offMainsDrainageSystem.offMainsDrainageSystemType" ] ] ;
+        rr:predicateObjectMap [ rr:predicate <urn:opda:param:scheme> ; rr:objectMap [ rr:constant "offMainsDrainageSystemType" ] ] ] ] ] ;  # <- propertyPack.waterAndDrainage.drainage.mainsFoulDrainage.offMainsDrainageSystem.offMainsDrainageSystemType
   rr:predicateObjectMap [ rr:predicate opda:propertyType ;
-      rr:objectMap [ rr:termType rr:IRI ; rmlf:functionExecution [
-        rmlf:functionMap [ rmlf:constant <urn:opda:scheme_member_iri> ] ;
-        rmlf:input [ rmlf:parameterMap [ rmlf:constant <urn:opda:param:value> ] ; rmlf:inputValueMap [ rml:reference "buildInformation.building.propertyType" ] ] ;
-        rmlf:input [ rmlf:parameterMap [ rmlf:constant <urn:opda:param:scheme> ] ; rmlf:inputValueMap [ rmlf:constant "propertyType" ] ] ] ] ] ;  # <- propertyPack.buildInformation.building.propertyType
+      rr:objectMap [ rr:termType rr:IRI ; fnml:functionValue [
+        rr:predicateObjectMap [ rr:predicate fno:executes ; rr:objectMap [ rr:constant <urn:opda:scheme_member_iri> ] ] ;
+        rr:predicateObjectMap [ rr:predicate <urn:opda:param:value> ; rr:objectMap [ rml:reference "buildInformation.building.propertyType" ] ] ;
+        rr:predicateObjectMap [ rr:predicate <urn:opda:param:scheme> ; rr:objectMap [ rr:constant "propertyType" ] ] ] ] ] ;  # <- propertyPack.buildInformation.building.propertyType
   rr:predicateObjectMap [ rr:predicate opda:builtForm ;
-      rr:objectMap [ rr:termType rr:IRI ; rmlf:functionExecution [
-        rmlf:functionMap [ rmlf:constant <urn:opda:scheme_member_iri> ] ;
-        rmlf:input [ rmlf:parameterMap [ rmlf:constant <urn:opda:param:value> ] ; rmlf:inputValueMap [ rml:reference "buildInformation.building.builtForm" ] ] ;
-        rmlf:input [ rmlf:parameterMap [ rmlf:constant <urn:opda:param:scheme> ] ; rmlf:inputValueMap [ rmlf:constant "builtForm" ] ] ] ] ] ;  # <- propertyPack.buildInformation.building.builtForm
+      rr:objectMap [ rr:termType rr:IRI ; fnml:functionValue [
+        rr:predicateObjectMap [ rr:predicate fno:executes ; rr:objectMap [ rr:constant <urn:opda:scheme_member_iri> ] ] ;
+        rr:predicateObjectMap [ rr:predicate <urn:opda:param:value> ; rr:objectMap [ rml:reference "buildInformation.building.builtForm" ] ] ;
+        rr:predicateObjectMap [ rr:predicate <urn:opda:param:scheme> ; rr:objectMap [ rr:constant "builtForm" ] ] ] ] ] ;  # <- propertyPack.buildInformation.building.builtForm
   rr:predicateObjectMap [ rr:predicate opda:priceQualifier ;
-      rr:objectMap [ rr:termType rr:IRI ; rmlf:functionExecution [
-        rmlf:functionMap [ rmlf:constant <urn:opda:scheme_member_iri> ] ;
-        rmlf:input [ rmlf:parameterMap [ rmlf:constant <urn:opda:param:value> ] ; rmlf:inputValueMap [ rml:reference "priceInformation.priceQualifier" ] ] ;
-        rmlf:input [ rmlf:parameterMap [ rmlf:constant <urn:opda:param:scheme> ] ; rmlf:inputValueMap [ rmlf:constant "priceQualifier" ] ] ] ] ] ;  # <- propertyPack.priceInformation.priceQualifier
+      rr:objectMap [ rr:termType rr:IRI ; fnml:functionValue [
+        rr:predicateObjectMap [ rr:predicate fno:executes ; rr:objectMap [ rr:constant <urn:opda:scheme_member_iri> ] ] ;
+        rr:predicateObjectMap [ rr:predicate <urn:opda:param:value> ; rr:objectMap [ rml:reference "priceInformation.priceQualifier" ] ] ;
+        rr:predicateObjectMap [ rr:predicate <urn:opda:param:scheme> ; rr:objectMap [ rr:constant "priceQualifier" ] ] ] ] ] ;  # <- propertyPack.priceInformation.priceQualifier
   rr:predicateObjectMap [ rr:predicate opda:currentEnergyRating ;
-      rr:objectMap [ rr:termType rr:IRI ; rmlf:functionExecution [
-        rmlf:functionMap [ rmlf:constant <urn:opda:scheme_member_iri> ] ;
-        rmlf:input [ rmlf:parameterMap [ rmlf:constant <urn:opda:param:value> ] ; rmlf:inputValueMap [ rml:reference "energyEfficiency.certificate.currentEnergyRating" ] ] ;
-        rmlf:input [ rmlf:parameterMap [ rmlf:constant <urn:opda:param:scheme> ] ; rmlf:inputValueMap [ rmlf:constant "currentEnergyRating" ] ] ] ] ] ;  # <- propertyPack.energyEfficiency.certificate.currentEnergyRating
+      rr:objectMap [ rr:termType rr:IRI ; fnml:functionValue [
+        rr:predicateObjectMap [ rr:predicate fno:executes ; rr:objectMap [ rr:constant <urn:opda:scheme_member_iri> ] ] ;
+        rr:predicateObjectMap [ rr:predicate <urn:opda:param:value> ; rr:objectMap [ rml:reference "energyEfficiency.certificate.currentEnergyRating" ] ] ;
+        rr:predicateObjectMap [ rr:predicate <urn:opda:param:scheme> ; rr:objectMap [ rr:constant "currentEnergyRating" ] ] ] ] ] ;  # <- propertyPack.energyEfficiency.certificate.currentEnergyRating
   rr:predicateObjectMap [ rr:predicate opda:typeOfConnection ;
-      rr:objectMap [ rr:termType rr:IRI ; rmlf:functionExecution [
-        rmlf:functionMap [ rmlf:constant <urn:opda:scheme_member_iri> ] ;
-        rmlf:input [ rmlf:parameterMap [ rmlf:constant <urn:opda:param:value> ] ; rmlf:inputValueMap [ rml:reference "connectivity.broadband.typeOfConnection" ] ] ;
-        rmlf:input [ rmlf:parameterMap [ rmlf:constant <urn:opda:param:scheme> ] ; rmlf:inputValueMap [ rmlf:constant "broadbandConnectionType" ] ] ] ] ] ;  # <- propertyPack.connectivity.broadband.typeOfConnection
+      rr:objectMap [ rr:termType rr:IRI ; fnml:functionValue [
+        rr:predicateObjectMap [ rr:predicate fno:executes ; rr:objectMap [ rr:constant <urn:opda:scheme_member_iri> ] ] ;
+        rr:predicateObjectMap [ rr:predicate <urn:opda:param:value> ; rr:objectMap [ rml:reference "connectivity.broadband.typeOfConnection" ] ] ;
+        rr:predicateObjectMap [ rr:predicate <urn:opda:param:scheme> ; rr:objectMap [ rr:constant "broadbandConnectionType" ] ] ] ] ] ;  # <- propertyPack.connectivity.broadband.typeOfConnection
   rr:predicateObjectMap [ rr:predicate opda:centralHeatingFuelType ;
-      rr:objectMap [ rr:termType rr:IRI ; rmlf:functionExecution [
-        rmlf:functionMap [ rmlf:constant <urn:opda:scheme_member_iri> ] ;
-        rmlf:input [ rmlf:parameterMap [ rmlf:constant <urn:opda:param:value> ] ; rmlf:inputValueMap [ rml:reference "heating.heatingSystem.centralHeatingDetails.centralHeatingFuel.centralHeatingFuelType" ] ] ;
-        rmlf:input [ rmlf:parameterMap [ rmlf:constant <urn:opda:param:scheme> ] ; rmlf:inputValueMap [ rmlf:constant "centralHeatingFuelType" ] ] ] ] ] ;  # <- propertyPack.heating.heatingSystem.centralHeatingDetails.centralHeatingFuel.centralHeatingFuelType
+      rr:objectMap [ rr:termType rr:IRI ; fnml:functionValue [
+        rr:predicateObjectMap [ rr:predicate fno:executes ; rr:objectMap [ rr:constant <urn:opda:scheme_member_iri> ] ] ;
+        rr:predicateObjectMap [ rr:predicate <urn:opda:param:value> ; rr:objectMap [ rml:reference "heating.heatingSystem.centralHeatingDetails.centralHeatingFuel.centralHeatingFuelType" ] ] ;
+        rr:predicateObjectMap [ rr:predicate <urn:opda:param:scheme> ; rr:objectMap [ rr:constant "centralHeatingFuelType" ] ] ] ] ] ;  # <- propertyPack.heating.heatingSystem.centralHeatingDetails.centralHeatingFuel.centralHeatingFuelType
   rr:predicateObjectMap [ rr:predicate opda:heatingType ;
-      rr:objectMap [ rr:termType rr:IRI ; rmlf:functionExecution [
-        rmlf:functionMap [ rmlf:constant <urn:opda:scheme_member_iri> ] ;
-        rmlf:input [ rmlf:parameterMap [ rmlf:constant <urn:opda:param:value> ] ; rmlf:inputValueMap [ rml:reference "heating.heatingSystem.heatingType" ] ] ;
-        rmlf:input [ rmlf:parameterMap [ rmlf:constant <urn:opda:param:scheme> ] ; rmlf:inputValueMap [ rmlf:constant "heatingType" ] ] ] ] ] ;  # <- propertyPack.heating.heatingSystem.heatingType
+      rr:objectMap [ rr:termType rr:IRI ; fnml:functionValue [
+        rr:predicateObjectMap [ rr:predicate fno:executes ; rr:objectMap [ rr:constant <urn:opda:scheme_member_iri> ] ] ;
+        rr:predicateObjectMap [ rr:predicate <urn:opda:param:value> ; rr:objectMap [ rml:reference "heating.heatingSystem.heatingType" ] ] ;
+        rr:predicateObjectMap [ rr:predicate <urn:opda:param:scheme> ; rr:objectMap [ rr:constant "heatingType" ] ] ] ] ] ;  # <- propertyPack.heating.heatingSystem.heatingType
   rr:predicateObjectMap [ rr:predicate opda:marketingTenure ;
-      rr:objectMap [ rr:termType rr:IRI ; rmlf:functionExecution [
-        rmlf:functionMap [ rmlf:constant <urn:opda:scheme_member_iri> ] ;
-        rmlf:input [ rmlf:parameterMap [ rmlf:constant <urn:opda:param:value> ] ; rmlf:inputValueMap [ rml:reference "marketingTenure" ] ] ;
-        rmlf:input [ rmlf:parameterMap [ rmlf:constant <urn:opda:param:scheme> ] ; rmlf:inputValueMap [ rmlf:constant "tenureKind" ] ] ] ] ] .  # <- propertyPack.marketingTenure (reuses TenureKindScheme, ODR-0024 R6)
+      rr:objectMap [ rr:termType rr:IRI ; fnml:functionValue [
+        rr:predicateObjectMap [ rr:predicate fno:executes ; rr:objectMap [ rr:constant <urn:opda:scheme_member_iri> ] ] ;
+        rr:predicateObjectMap [ rr:predicate <urn:opda:param:value> ; rr:objectMap [ rml:reference "marketingTenure" ] ] ;
+        rr:predicateObjectMap [ rr:predicate <urn:opda:param:scheme> ; rr:objectMap [ rr:constant "tenureKind" ] ] ] ] ] .  # <- propertyPack.marketingTenure (reuses TenureKindScheme, ODR-0024 R6)
 
 # M30a — LegalEstate-domain FNML enums (ownershipsToBeTransferred[*], same
 #   iterator/subject as M7's <#LegalEstate>).
@@ -1932,25 +1934,25 @@
                       rml:iterator "$.propertyPack.ownership.ownershipsToBeTransferred[*]" ] ;
   rr:subjectMap [ rr:template "https://opda.org.uk/pdtf/harness/data/estate/{titleNumber}" ] ;
   rr:predicateObjectMap [ rr:predicate opda:isSharedOwnership ;
-      rr:objectMap [ rr:termType rr:IRI ; rmlf:functionExecution [
-        rmlf:functionMap [ rmlf:constant <urn:opda:scheme_member_iri> ] ;
-        rmlf:input [ rmlf:parameterMap [ rmlf:constant <urn:opda:param:value> ] ; rmlf:inputValueMap [ rml:reference "leaseholdInformation.sharedOwnership.isSharedOwnership" ] ] ;
-        rmlf:input [ rmlf:parameterMap [ rmlf:constant <urn:opda:param:scheme> ] ; rmlf:inputValueMap [ rmlf:constant "yesNo" ] ] ] ] ] ;  # <- …leaseholdInformation.sharedOwnership.isSharedOwnership
+      rr:objectMap [ rr:termType rr:IRI ; fnml:functionValue [
+        rr:predicateObjectMap [ rr:predicate fno:executes ; rr:objectMap [ rr:constant <urn:opda:scheme_member_iri> ] ] ;
+        rr:predicateObjectMap [ rr:predicate <urn:opda:param:value> ; rr:objectMap [ rml:reference "leaseholdInformation.sharedOwnership.isSharedOwnership" ] ] ;
+        rr:predicateObjectMap [ rr:predicate <urn:opda:param:scheme> ; rr:objectMap [ rr:constant "yesNo" ] ] ] ] ] ;  # <- …leaseholdInformation.sharedOwnership.isSharedOwnership
   rr:predicateObjectMap [ rr:predicate opda:isGroundRentPayable ;
-      rr:objectMap [ rr:termType rr:IRI ; rmlf:functionExecution [
-        rmlf:functionMap [ rmlf:constant <urn:opda:scheme_member_iri> ] ;
-        rmlf:input [ rmlf:parameterMap [ rmlf:constant <urn:opda:param:value> ] ; rmlf:inputValueMap [ rml:reference "leaseholdInformation.groundRent.isGroundRentPayable" ] ] ;
-        rmlf:input [ rmlf:parameterMap [ rmlf:constant <urn:opda:param:scheme> ] ; rmlf:inputValueMap [ rmlf:constant "yesNo" ] ] ] ] ] ;  # <- …leaseholdInformation.groundRent.isGroundRentPayable
+      rr:objectMap [ rr:termType rr:IRI ; fnml:functionValue [
+        rr:predicateObjectMap [ rr:predicate fno:executes ; rr:objectMap [ rr:constant <urn:opda:scheme_member_iri> ] ] ;
+        rr:predicateObjectMap [ rr:predicate <urn:opda:param:value> ; rr:objectMap [ rml:reference "leaseholdInformation.groundRent.isGroundRentPayable" ] ] ;
+        rr:predicateObjectMap [ rr:predicate <urn:opda:param:scheme> ; rr:objectMap [ rr:constant "yesNo" ] ] ] ] ] ;  # <- …leaseholdInformation.groundRent.isGroundRentPayable
   rr:predicateObjectMap [ rr:predicate opda:sellerContributesToServiceCharge ;
-      rr:objectMap [ rr:termType rr:IRI ; rmlf:functionExecution [
-        rmlf:functionMap [ rmlf:constant <urn:opda:scheme_member_iri> ] ;
-        rmlf:input [ rmlf:parameterMap [ rmlf:constant <urn:opda:param:value> ] ; rmlf:inputValueMap [ rml:reference "leaseholdInformation.serviceCharge.sellerContributesToServiceCharge" ] ] ;
-        rmlf:input [ rmlf:parameterMap [ rmlf:constant <urn:opda:param:scheme> ] ; rmlf:inputValueMap [ rmlf:constant "yesNo" ] ] ] ] ] ;  # <- …leaseholdInformation.serviceCharge.sellerContributesToServiceCharge
+      rr:objectMap [ rr:termType rr:IRI ; fnml:functionValue [
+        rr:predicateObjectMap [ rr:predicate fno:executes ; rr:objectMap [ rr:constant <urn:opda:scheme_member_iri> ] ] ;
+        rr:predicateObjectMap [ rr:predicate <urn:opda:param:value> ; rr:objectMap [ rml:reference "leaseholdInformation.serviceCharge.sellerContributesToServiceCharge" ] ] ;
+        rr:predicateObjectMap [ rr:predicate <urn:opda:param:scheme> ; rr:objectMap [ rr:constant "yesNo" ] ] ] ] ] ;  # <- …leaseholdInformation.serviceCharge.sellerContributesToServiceCharge
   rr:predicateObjectMap [ rr:predicate opda:ownershipType ;
-      rr:objectMap [ rr:termType rr:IRI ; rmlf:functionExecution [
-        rmlf:functionMap [ rmlf:constant <urn:opda:scheme_member_iri> ] ;
-        rmlf:input [ rmlf:parameterMap [ rmlf:constant <urn:opda:param:value> ] ; rmlf:inputValueMap [ rml:reference "ownershipType" ] ] ;
-        rmlf:input [ rmlf:parameterMap [ rmlf:constant <urn:opda:param:scheme> ] ; rmlf:inputValueMap [ rmlf:constant "ownershipType" ] ] ] ] ] .  # <- propertyPack.ownership.ownershipsToBeTransferred[].ownershipType
+      rr:objectMap [ rr:termType rr:IRI ; fnml:functionValue [
+        rr:predicateObjectMap [ rr:predicate fno:executes ; rr:objectMap [ rr:constant <urn:opda:scheme_member_iri> ] ] ;
+        rr:predicateObjectMap [ rr:predicate <urn:opda:param:value> ; rr:objectMap [ rml:reference "ownershipType" ] ] ;
+        rr:predicateObjectMap [ rr:predicate <urn:opda:param:scheme> ; rr:objectMap [ rr:constant "ownershipType" ] ] ] ] ] .  # <- propertyPack.ownership.ownershipsToBeTransferred[].ownershipType
 
 # ---------------------------------------------------------------------------
 # M31 — Fixtures-and-fittings item (propertyPack.fixturesAndFittings.
@@ -1981,8 +1983,8 @@
   rr:predicateObjectMap [ rr:predicate opda:price ;
       rr:objectMap [ rml:reference "price" ; rr:datatype xsd:decimal ] ] ;  # <- propertyPack.fixturesAndFittings.basicFittings.boilerImmersionHeater.price
   rr:predicateObjectMap [ rr:predicate opda:inclusionStatus ;
-      rr:objectMap [ rr:termType rr:IRI ; rmlf:functionExecution [
-        rmlf:functionMap [ rmlf:constant <urn:opda:scheme_member_iri> ] ;
-        rmlf:input [ rmlf:parameterMap [ rmlf:constant <urn:opda:param:value> ] ; rmlf:inputValueMap [ rml:reference "isIncludedExcludedOrNone" ] ] ;
-        rmlf:input [ rmlf:parameterMap [ rmlf:constant <urn:opda:param:scheme> ] ; rmlf:inputValueMap [ rmlf:constant "inclusionStatus" ] ] ] ] ] .  # <- propertyPack.fixturesAndFittings.basicFittings.boilerImmersionHeater.isIncludedExcludedOrNone
+      rr:objectMap [ rr:termType rr:IRI ; fnml:functionValue [
+        rr:predicateObjectMap [ rr:predicate fno:executes ; rr:objectMap [ rr:constant <urn:opda:scheme_member_iri> ] ] ;
+        rr:predicateObjectMap [ rr:predicate <urn:opda:param:value> ; rr:objectMap [ rml:reference "isIncludedExcludedOrNone" ] ] ;
+        rr:predicateObjectMap [ rr:predicate <urn:opda:param:scheme> ; rr:objectMap [ rr:constant "inclusionStatus" ] ] ] ] ] .  # <- propertyPack.fixturesAndFittings.basicFittings.boilerImmersionHeater.isIncludedExcludedOrNone
 

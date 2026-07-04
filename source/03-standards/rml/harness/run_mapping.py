@@ -1,19 +1,22 @@
 #!/usr/bin/env python3
-"""Materialise PDTF JSON -> OPDA RDF via an RML mapping (morph-kgc engine).
+"""Materialise PDTF JSON -> OPDA RDF via an RML mapping (RMLMapper engine).
 
 CLI:
-    run_mapping.py --mapping <rml.ttl | morph-config.ini> \
-                   --data <instance.json> \
-                   --out build/out.nt
+    run_mapping.py --mapping <rml.ttl> --data <instance.json> --out build/out.nt
 
-morph-kgc is config-driven: an INI names the RML mapping file(s); each mapping's
-``rml:source`` names the data file. Two entry modes:
+RMLMapper (the Java reference implementation) is self-provisioned on first
+use: downloaded + sha256-verified into the repo-root-level, gitignored
+``.rmlmapper/`` cache (mirrors how Fuseki self-provisions into ``.fuseki/`` in
+``scripts/build-with-data.mjs``). The mapping's own ``rml:source`` literal is
+rewritten to ``--data`` in a temp copy (the same file can then run against any
+conformant instance) before invoking RMLMapper as a subprocess.
 
-* ``--mapping foo.ini``  -> used as-is (the data source is whatever the referenced
-  mapping declares). ``--data`` is ignored in this mode.
-* ``--mapping foo.ttl`` -> a temp INI + temp mapping are generated; every
-  ``rml:source "..."`` in the mapping is rewritten to point at ``--data`` so the
-  same mapping can run against any conformant instance. ``--data`` is required.
+If ``mapping/functions/functions.ttl`` exists alongside the mapping, it is
+passed via RMLMapper's ``-f`` (dynamic function loading) — this is how the
+mapping's FNML (``fnml:functionValue``) call sites resolve their Java
+implementations (see ``mapping/functions/OpdaFunctions.java``). RMLMapper
+resolves a function jar's ``doap:download-page`` relative to the process cwd,
+so the subprocess is run with cwd set to that functions directory.
 
 Output is N-Triples. Importable via ``main(argv) -> int``.
 """
@@ -21,7 +24,9 @@ Output is N-Triples. Importable via ``main(argv) -> int``.
 from __future__ import annotations
 
 import argparse
+import hashlib
 import re
+import subprocess
 import sys
 import tempfile
 from pathlib import Path
@@ -29,39 +34,81 @@ from pathlib import Path
 # rml:source "<literal>"  (single- or double-quoted); we swap the literal.
 _RML_SOURCE_RE = re.compile(r'(rml:source\s+)(["\'])(?:\\.|(?!\2).)*\2')
 
+REPO_ROOT = Path(__file__).resolve().parents[4]
 
-def _build_ini_for_ttl(mapping_ttl: Path, data: Path, workdir: Path) -> Path:
-    """Rewrite the mapping's rml:source to `data` and emit a morph-kgc INI."""
+# RMLMapper release pin. r380 is the build-number suffix Maven's
+# buildNumber.properties baked into this specific v8.1.0 release's filename —
+# tied to this release, not expected to change on re-download.
+RMLMAPPER_TAG = "v8.1.0"
+RMLMAPPER_JAR_NAME = "rmlmapper-8.1.0-r380-all.jar"
+RMLMAPPER_SHA256 = "819371d49ca47d8ffddae0f34e95f38e8eaaf588ee023e3c2c7527a14d302f58"
+RMLMAPPER_DOWNLOAD_URL = (
+    f"https://github.com/RMLio/rmlmapper-java/releases/download/"
+    f"{RMLMAPPER_TAG}/{RMLMAPPER_JAR_NAME}"
+)
+RMLMAPPER_CACHE_DIR = REPO_ROOT / ".rmlmapper"
+
+
+def _sha256(path: Path) -> str:
+    digest = hashlib.sha256()
+    with open(path, "rb") as f:
+        for chunk in iter(lambda: f.read(1 << 20), b""):
+            digest.update(chunk)
+    return digest.hexdigest()
+
+
+def ensure_rmlmapper() -> Path:
+    """Return a verified RMLMapper jar path, downloading it if absent."""
+    jar = RMLMAPPER_CACHE_DIR / RMLMAPPER_JAR_NAME
+    if jar.exists() and _sha256(jar) == RMLMAPPER_SHA256:
+        return jar
+
+    RMLMAPPER_CACHE_DIR.mkdir(parents=True, exist_ok=True)
+    print(f"provisioning RMLMapper {RMLMAPPER_TAG} -> {jar}", file=sys.stderr)
+    # curl (not urllib): relies on the system CA store, sidestepping Python's
+    # own (sometimes absent, e.g. python.org macOS installs) cert bundle.
+    tmp_jar = jar.with_suffix(".jar.tmp")
+    subprocess.run(
+        ["curl", "-sL", "--fail", "-o", str(tmp_jar), RMLMAPPER_DOWNLOAD_URL],
+        check=True,
+    )
+    digest = _sha256(tmp_jar)
+    if digest != RMLMAPPER_SHA256:
+        tmp_jar.unlink(missing_ok=True)
+        raise RuntimeError(
+            f"RMLMapper download sha256 mismatch: expected {RMLMAPPER_SHA256}, got {digest}"
+        )
+    tmp_jar.rename(jar)
+    return jar
+
+
+def ensure_function_jar(functions_dir: Path) -> None:
+    """Compile OpdaFunctions.java if its .jar is missing or stale."""
+    java_src = functions_dir / "OpdaFunctions.java"
+    class_file = functions_dir / "OpdaFunctions.class"
+    jar_file = functions_dir / "OpdaFunctions.jar"
+    if not java_src.exists():
+        return
+    if jar_file.exists() and jar_file.stat().st_mtime >= java_src.stat().st_mtime:
+        return
+    subprocess.run(["javac", java_src.name], cwd=functions_dir, check=True)
+    subprocess.run(["jar", "cf", jar_file.name, class_file.name], cwd=functions_dir, check=True)
+
+
+def _rewrite_source(mapping_ttl: Path, data: Path, workdir: Path) -> Path:
+    """Rewrite the mapping's rml:source to `data` in a temp copy."""
     text = mapping_ttl.read_text(encoding="utf-8")
     data_abs = str(data.resolve())
-    new_text, n = _RML_SOURCE_RE.subn(
-        lambda m: f'{m.group(1)}"{data_abs}"', text
-    )
+    new_text, n = _RML_SOURCE_RE.subn(lambda m: f'{m.group(1)}"{data_abs}"', text)
     if n == 0:
-        # No literal source to rewrite: the mapping references its own data.
         print(
             f"warning: no rml:source string literal found in {mapping_ttl}; "
             f"--data {data} not injected (mapping supplies its own source)",
             file=sys.stderr,
         )
-        new_text = text
     temp_ttl = workdir / "mapping.rewritten.ttl"
     temp_ttl.write_text(new_text, encoding="utf-8")
-
-    udfs_path = mapping_ttl.parent / "opda-udfs.py"
-    udfs_line = f"udfs={udfs_path.resolve()}\n" if udfs_path.exists() else ""
-
-    ini = workdir / "morph-config.ini"
-    ini.write_text(
-        "[CONFIGURATION]\n"
-        "# generated by run_mapping.py\n"
-        f"{udfs_line}"
-        "\n"
-        "[DataSource1]\n"
-        f"mappings={temp_ttl}\n",
-        encoding="utf-8",
-    )
-    return ini
+    return temp_ttl
 
 
 def run(mapping: Path, data: Path | None, out: Path) -> int:
@@ -69,32 +116,44 @@ def run(mapping: Path, data: Path | None, out: Path) -> int:
     if not mapping.exists():
         print(f"error: mapping not found: {mapping}", file=sys.stderr)
         return 2
-
-    # Imported lazily so `--help` and arg errors don't pay the import cost.
-    import morph_kgc
-    import morph_kgc_patch  # noqa: F401 — applies the _read_json dropna fix on import; see its module docstring
+    if data is None:
+        print("error: --data is required", file=sys.stderr)
+        return 2
+    if not data.exists():
+        print(f"error: data not found: {data}", file=sys.stderr)
+        return 2
 
     out.parent.mkdir(parents=True, exist_ok=True)
+    jar = ensure_rmlmapper()
 
-    if mapping.suffix == ".ini":
-        config = str(mapping.resolve())
-        graph = morph_kgc.materialize(config)
-    else:
-        if data is None:
-            print(
-                "error: --data is required when --mapping is an RML .ttl",
-                file=sys.stderr,
-            )
-            return 2
-        if not data.exists():
-            print(f"error: data not found: {data}", file=sys.stderr)
-            return 2
-        with tempfile.TemporaryDirectory(prefix="morph-kgc-") as tmp:
-            ini = _build_ini_for_ttl(mapping, data, Path(tmp))
-            graph = morph_kgc.materialize(str(ini))
+    functions_dir = mapping.parent / "functions"
+    functions_ttl = functions_dir / "functions.ttl"
+    run_cwd = REPO_ROOT
+    extra_args: list[str] = []
+    if functions_ttl.exists():
+        ensure_function_jar(functions_dir)
+        extra_args = ["-f", "functions.ttl"]
+        run_cwd = functions_dir
 
-    graph.serialize(destination=str(out), format="nt", encoding="utf-8")
-    print(f"materialised {len(graph)} triples -> {out}")
+    with tempfile.TemporaryDirectory(prefix="rmlmapper-") as tmp:
+        temp_ttl = _rewrite_source(mapping, data, Path(tmp))
+        cmd = [
+            "java", "-jar", str(jar.resolve()),
+            "-m", str(temp_ttl.resolve()),
+            "-s", "ntriples",
+            "-o", str(out.resolve()),
+            *extra_args,
+        ]
+        result = subprocess.run(cmd, cwd=run_cwd, capture_output=True, text=True)
+
+    if result.returncode != 0 or not out.exists():
+        sys.stderr.write(result.stdout)
+        sys.stderr.write(result.stderr)
+        print(f"error: RMLMapper failed (exit {result.returncode})", file=sys.stderr)
+        return result.returncode or 1
+
+    n_triples = sum(1 for _ in out.open(encoding="utf-8") if _.strip())
+    print(f"materialised {n_triples} triples -> {out}")
     return 0
 
 
@@ -104,13 +163,13 @@ def main(argv: list[str] | None = None) -> int:
         "--mapping",
         required=True,
         type=Path,
-        help="RML mapping (.ttl) or prepared morph-kgc config (.ini)",
+        help="RML mapping (.ttl)",
     )
     parser.add_argument(
         "--data",
         type=Path,
         default=None,
-        help="PDTF JSON instance (required when --mapping is a .ttl)",
+        help="PDTF JSON instance",
     )
     parser.add_argument(
         "--out",

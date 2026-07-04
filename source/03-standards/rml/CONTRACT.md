@@ -48,9 +48,8 @@ source/03-standards/rml/
   testdata/*.json                 A2  instances (conformant + edge + negative)
   testdata/MANIFEST.md            A2  what each file exercises + expected SHACL outcome
   mapping/opda-pdtf.rml.ttl       B1  canonical RML (Turtle, rml: vocabulary)
-  mapping/opda-pdtf.yarrrml.yaml  B1  YARRRML convenience form (optional)
-  mapping/morph-config.ini        B1  morph-kgc config
-  harness/run_mapping.py          A3  morph-kgc RML -> build/out.nt
+  mapping/functions/              B1  RMLMapper FnO functions.ttl + Java UDF sources
+  harness/run_mapping.py          A3  RMLMapper RML -> build/out.nt
   harness/validate_shacl.sh       A3  Jena shacl validate (data vs shapes) -> report
   harness/check_completeness.py   A3  scalar leaves in instance vs mapped predicates; emits gap register
   tests/test_rml_mapping.py       A3  pytest: run mapping, assert sound + completeness contract
@@ -60,7 +59,8 @@ source/03-standards/rml/
 ```
 
 ## Engine
-`morph-kgc` (pip, into `tools/opda-gen/.venv`). JSON via `rml:referenceFormulation ql:JSONPath`.
+`RMLMapper` (Java reference implementation; ADR-0057 Amendments — migrated from morph-kgc),
+self-provisioned into `.rmlmapper/` by `harness/run_mapping.py`. JSON via `rml:referenceFormulation ql:JSONPath`.
 SHACL via `.jena/apache-jena-6.1.0/bin/shacl validate --shapes <shapes> --data <data>`.
 
 ## Definitions of done

@@ -1,0 +1,82 @@
+# FnO (Function Ontology) description registering Java implementations for
+# the functions the mapping's classic fnml:functionValue triples call (see
+# M18/M28/M30 and the opda:orderDate/expectedDeliveryDate/reportDate/
+# signedOn/soldDate sites in ../opda-pdtf.rml.ttl).
+#
+# RMLMapper 8.1.0 does NOT recognise the RML-core 2.0 rmlf:functionExecution
+# vocabulary morph-kgc used (confirmed empirically: it parses without error
+# but never builds a function executor, "functionExecutor is null" NPE) — only
+# the classic FNML vocabulary (fnml:functionValue + fno:executes, the
+# semweb.mmlab.be/ns/fnml# namespace). The mapping's FNML call sites were
+# rewritten to that classic form as part of the morph-kgc -> RMLMapper
+# migration; this file registers the Java implementations those calls invoke.
+# Loaded via `-f` (see harness/run_mapping.py); RMLMapper's docs call this
+# "dynamic loading" (README.md "Including functions").
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix doap:    <http://usefulinc.com/ns/doap#> .
+@prefix fno:     <https://w3id.org/function/ontology#> .
+@prefix fnoi:    <https://w3id.org/function/vocabulary/implementation#> .
+@prefix fnom:    <https://w3id.org/function/vocabulary/mapping#> .
+@prefix rdfs:    <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd:     <http://www.w3.org/2001/XMLSchema#> .
+
+<urn:opda:scheme_member_iri> a fno:Function ;
+  fno:name "scheme_member_iri" ;
+  rdfs:label "scheme_member_iri" ;
+  dcterms:description "Slugify a PDTF enum value into an OPDA SKOS scheme-member IRI (see mapping/opda-udfs.py for the Python original)." ;
+  fno:expects ( <urn:opda:param:value> <urn:opda:param:scheme> ) ;
+  fno:returns ( <urn:opda:output:iri> ) .
+
+<urn:opda:param:value> a fno:Parameter ;
+  fno:name "value" ;
+  rdfs:label "value" ;
+  fno:predicate <urn:opda:param:value> ;
+  fno:type xsd:string ;
+  fno:required "true"^^xsd:boolean .
+
+<urn:opda:param:scheme> a fno:Parameter ;
+  fno:name "scheme" ;
+  rdfs:label "scheme" ;
+  fno:predicate <urn:opda:param:scheme> ;
+  fno:type xsd:string ;
+  fno:required "true"^^xsd:boolean .
+
+<urn:opda:output:iri> a fno:Output ;
+  fno:name "iri" ;
+  rdfs:label "iri" ;
+  fno:predicate <urn:opda:output:iri> ;
+  fno:type xsd:string .
+
+<urn:opda:scheme_member_iri:mapping> a fno:Mapping ;
+  fno:function <urn:opda:scheme_member_iri> ;
+  fno:implementation <urn:opda:scheme_member_iri:impl> ;
+  fno:methodMapping [ a fnom:StringMethodMapping ; fnom:method-name "schemeMemberIri" ] .
+
+<urn:opda:scheme_member_iri:impl> a fnoi:JavaClass ;
+  fnoi:class-name "OpdaFunctions" ;
+  doap:download-page "OpdaFunctions.jar" .
+
+<urn:opda:truncate_to_date> a fno:Function ;
+  fno:name "truncate_to_date" ;
+  rdfs:label "truncate_to_date" ;
+  dcterms:description "Truncate an ISO-8601 dateTime string to its date portion (opda:orderDate & co. declare rdfs:range xsd:date; PDTF sources carry dateTime precision)." ;
+  fno:expects ( <urn:opda:param:datetime> ) ;
+  fno:returns ( <urn:opda:output:date> ) .
+
+<urn:opda:param:datetime> a fno:Parameter ;
+  fno:name "datetime" ;
+  rdfs:label "datetime" ;
+  fno:predicate <urn:opda:param:datetime> ;
+  fno:type xsd:string ;
+  fno:required "true"^^xsd:boolean .
+
+<urn:opda:output:date> a fno:Output ;
+  fno:name "date" ;
+  rdfs:label "date" ;
+  fno:predicate <urn:opda:output:date> ;
+  fno:type xsd:string .
+
+<urn:opda:truncate_to_date:mapping> a fno:Mapping ;
+  fno:function <urn:opda:truncate_to_date> ;
+  fno:implementation <urn:opda:scheme_member_iri:impl> ;
+  fno:methodMapping [ a fnom:StringMethodMapping ; fnom:method-name "truncateToDate" ] .

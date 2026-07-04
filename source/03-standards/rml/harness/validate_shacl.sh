@@ -99,34 +99,23 @@ REPORT="$("$SHACL" validate --shapes "$SHAPES_GRAPH" --data "$DATA_GRAPH")"
 # not a general exception mechanism. Any NEW, unexpected violation (any
 # resultMessage not matching one of these exact strings) still fails loudly.
 #
-# Group 1 — M1b/M12/M27c's deliberately-UNTYPED declaration/signature/
-# occupier/ownership-record records (opda-pdtf.rml.ttl): CORRECTED
-# 2026-07-04 — an earlier version of this comment claimed transactionId/
-# capacity is unreachable from their JSON context; that's now confirmed
-# false (a misdiagnosis of the since-fixed morph-kgc dropna bug — see M1's
-# own comment in the mapping file). The real, still-current reason these
-# stay untyped is PERFORMANCE: typing them properly requires binding onto
-# the root iterator, which costs ~15-20s per rule per instance file
-# (confirmed empirically) because of how morph-kgc's JSONPath multi-select
-# pulls the whole propertyPack subtree for any deep reference — a ~50-80x
-# slowdown to make rml-test for a completeness/cleanliness gain only,
-# assessed and declined (nothing FALSE is asserted by leaving these
-# untyped, just incomplete typing). Not something to "fix" by fabricating
-# a type assertion at the current cost/benefit; see M1b's own comment in
-# the mapping file for the full reasoning.
+# Group 1 — M12/M1c/M27c's deliberately-UNTYPED occupier/signature/
+# ownership-record records (opda-pdtf.rml.ttl). UPDATED (ADR-0057 Amendments,
+# morph-kgc -> RMLMapper migration): M1b's 9 declaration-boolean predicates
+# used to be listed here for the same reason as M12/M1c below (typing them
+# properly required binding onto the root iterator, which cost ~15-20s per
+# rule under morph-kgc's JSONPath multi-select — a ~50-80x slowdown, declined
+# at the time). RMLMapper has no equivalent cost (merging measured within
+# noise of baseline), so M1b's properties now bind directly onto the typed
+# opda:Transaction node (M1) and are REMOVED from this allowlist. M12 stays
+# untyped for a genuinely different, independent reason (domain mismatch —
+# see M12's own comment); M1c stays untyped because its array-projected
+# reference did not resolve inside RMLMapper's FNML input value map (a
+# distinct, unpursued opportunity, not the morph-kgc performance concern).
 ALLOWLISTED_VIOLATION_SUBSTRINGS=(
   "opda:aged17OrOverNames is used off its declared rdfs:domain"
   "opda:hasOthersAged17OrOver is used off its declared rdfs:domain"
-  "opda:confirmInformationIsAccurate is used off its declared rdfs:domain"
-  "opda:confirmWillProvideAdditionalDocumentation is used off its declared rdfs:domain"
-  "opda:consumerProtectionRegulationsResponse is used off its declared rdfs:domain"
-  "opda:leaveKeys is used off its declared rdfs:domain"
-  "opda:removeRubbish is used off its declared rdfs:domain"
-  "opda:replaceLightFittings is used off its declared rdfs:domain"
   "opda:signedOn is used off its declared rdfs:domain"
-  "opda:takeReasonableCare is used off its declared rdfs:domain"
-  "opda:authorisationToShare is used off its declared rdfs:domain"
-  "opda:authorisedToActOnBehalfOfAllSellers is used off its declared rdfs:domain"
   "opda:confirmation is used off its declared rdfs:domain"
   "opda:costsApplicableToTheDeed is used off its declared rdfs:domain"
   "opda:feeIncludingVAT is used off its declared rdfs:domain"
