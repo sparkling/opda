@@ -37,7 +37,7 @@ Adopt the per-family disposition rules in §Rules for the descriptive Category-G
 ### Consequences
 
 * Remediation before this leaves `proposed` — **blocking** (DA blockers): re-warrant `opda:NearbyFacility` + collapse subkinds + `schoolType`→SKOS (R4); withdraw the 18 monetary collapses → defer + fix the `opda:price` comment (R3), honest coverage 185 → 179/239 (R5 grows the denominator 188→239).
-* **Should-fix follow-ups**: `titleNumber`→`RegisteredTitle` (R8); mint `opda:AttachedDocument` + break the `Document`≡`DocumentEvidence` conflation (R7); structural C-vs-G rule + re-run + regression test (R5); mint ~5 SKOS schemes + re-range (R6); SHACL `mediaUrl`/`url` + `hasSubAssessment` acyclicity (R11).
+* **Should-fix follow-ups**: `titleNumber`→`RegisteredTitle` (R8); mint `opda:AttachedDocument` + break the `Document`≡`DocumentEvidence` conflation (R7); structural C-vs-G rule + re-run + regression test (R5); mint ~5 SKOS schemes + re-range (R6); SHACL `mediaUrl`/`url` (R11, done) + `hasSubAssessment` acyclicity (R11, **DONE 2026-07-04** — `opda:shape:RiskAssessmentAcyclicityConstraint`, a `sh:sparql`/`sh:select` SPARQLConstraint walking `opda:hasSubAssessment+` as a property path, since the pre-existing `sh:node` recursion can validate each sub-assessment's own shape but cannot itself detect a genuine cycle).
 * The Category-G **monetary walk** (with `opda:MonetaryAmount`) is the next deferred chunk and owns the ODR-0008d item-3 deferral.
 * All emitter changes regenerate through ADR-0030; `ci-byte-identity`, `ci-dup-declaration`, and `ci-category-g-coverage` continue to gate.
 * No byte-identity re-pin is forced by R5.
