@@ -822,28 +822,70 @@
 # ---------------------------------------------------------------------------
 # M11 — Person (legalOwners)  (opda:Person)   iterator: namesOfLegalOwners[*]
 #   Keyed on firstName-lastName (no email on these records).
+#   Co-typed opda:Proprietor (a Role that borrows identity from its bearer,
+#   per opda:Proprietor's own definition — "carries no identity of its own...
+#   never independently keyed" — so this is additional rr:class on the SAME
+#   subject, NOT a new node, matching R2RML's support for multiple rr:class
+#   values per subjectMap). opda:ownerType (domain opda:Proprietor, range
+#   skos:Concept, opda:OwnerTypeScheme) uses the M30 FNML mechanism — a
+#   real sibling field on the SAME namesOfLegalOwners[] item, single-object
+#   context per item (this array item isn't itself heterogeneous the way
+#   ownershipsToBeTransferred[] was). Design per team decision: Proprietor
+#   is the legal-owner role (matches legalOwners, NOT participants/sellers).
 # ---------------------------------------------------------------------------
 <#LegalOwnerPerson> a rr:TriplesMap ;
   rml:logicalSource [ rml:source "INSTANCE.json" ;
                       rml:referenceFormulation ql:JSONPath ;
                       rml:iterator "$.propertyPack.legalOwners.namesOfLegalOwners[*]" ] ;
   rr:subjectMap [ rr:template "https://opda.org.uk/pdtf/harness/data/person/{firstName}-{lastName}" ;
-                  rr:class opda:Person ] ;
+                  rr:class opda:Person ;
+                  rr:class opda:Proprietor ] ;
   rr:predicateObjectMap [ rr:predicate opda:middleNames ;
-      rr:objectMap [ rml:reference "middleNames" ; rr:datatype xsd:string ] ] .  # <- propertyPack.legalOwners.namesOfLegalOwners[].middleNames
+      rr:objectMap [ rml:reference "middleNames" ; rr:datatype xsd:string ] ] ;  # <- propertyPack.legalOwners.namesOfLegalOwners[].middleNames
+  rr:predicateObjectMap [ rr:predicate opda:ownerType ;
+      rr:objectMap [ rr:termType rr:IRI ; rmlf:functionExecution [
+        rmlf:functionMap [ rmlf:constant <urn:opda:scheme_member_iri> ] ;
+        rmlf:input [ rmlf:parameterMap [ rmlf:constant <urn:opda:param:value> ] ; rmlf:inputValueMap [ rml:reference "ownerType" ] ] ;
+        rmlf:input [ rmlf:parameterMap [ rmlf:constant <urn:opda:param:scheme> ] ; rmlf:inputValueMap [ rmlf:constant "ownerType" ] ] ] ] ] .  # <- propertyPack.legalOwners.namesOfLegalOwners[].ownerType
 
 # M11a — Organisation (legalOwners, ownerType=="Organisation" oneOf branch)
 #   Same iterator as M11; a distinct opda:Organisation-typed node keyed on
 #   organisationName (the oneOf branch has no first/last name to key on).
+#   Co-typed opda:Proprietor and carries opda:ownerType, same reasoning as M11.
 <#LegalOwnerOrganisation> a rr:TriplesMap ;
   rml:logicalSource [ rml:source "INSTANCE.json" ;
                       rml:referenceFormulation ql:JSONPath ;
                       rml:iterator "$.propertyPack.legalOwners.namesOfLegalOwners[*]" ] ;
   rr:subjectMap [ rr:template "https://opda.org.uk/pdtf/harness/data/org/{organisationName}" ;
-                  rr:class opda:Organisation ] ;
+                  rr:class opda:Organisation ;
+                  rr:class opda:Proprietor ] ;
   rr:predicateObjectMap [ rr:predicate opda:organisationName ;
-      rr:objectMap [ rml:reference "organisationName" ; rr:datatype xsd:string ] ] .  # <- propertyPack.legalOwners.namesOfLegalOwners[].organisationName
+      rr:objectMap [ rml:reference "organisationName" ; rr:datatype xsd:string ] ] ;  # <- propertyPack.legalOwners.namesOfLegalOwners[].organisationName
+  rr:predicateObjectMap [ rr:predicate opda:ownerType ;
+      rr:objectMap [ rr:termType rr:IRI ; rmlf:functionExecution [
+        rmlf:functionMap [ rmlf:constant <urn:opda:scheme_member_iri> ] ;
+        rmlf:input [ rmlf:parameterMap [ rmlf:constant <urn:opda:param:value> ] ; rmlf:inputValueMap [ rml:reference "ownerType" ] ] ;
+        rmlf:input [ rmlf:parameterMap [ rmlf:constant <urn:opda:param:scheme> ] ; rmlf:inputValueMap [ rmlf:constant "ownerType" ] ] ] ] ] .  # <- propertyPack.legalOwners.namesOfLegalOwners[].ownerType
 
+# M11b — opda:Proprietorship + opda:mediates: NOT mapped. Team decision:
+#   Proprietorship (a UFO Relator) should ONLY be emitted when
+#   namesOfLegalOwners[] genuinely has 2+ entries — ProprietorshipMediationShape
+#   hard-requires opda:mediates sh:minCount 2 ("a relator that binds fewer
+#   than two bearers is not a relator"), so unconditionally minting it from
+#   every legal-owner array (most of which are sole-ownership, 1 entry)
+#   would ship a node that mechanically fails this shape — same risk
+#   avoided earlier this session for numberOfSellers's Proprietorship.
+#   Checked empirically whether "only emit if array length >= 2" is
+#   expressible: morph-kgc's nested-array flattening (normalize_hierarchical_data,
+#   see ADR-0057 Amendments) cartesian-products each array item into its own
+#   row BEFORE any TriplesMap/UDF sees it — there is no row-level view of
+#   "how many sibling items exist" to gate a conditional template or FNML
+#   parameter on (a JSONPath filter `[?(...)]` tests one item's own fields,
+#   not the enclosing array's length). No RML/morph-kgc technique was found
+#   to express this conditional. Left as a genuine, documented gap — same
+#   reasoning as the constructionType/hasRoomDimension keyless-array class,
+#   a different flavour of "the JSON shape doesn't give this TriplesMap
+#   enough to work with," not a mechanical oversight.
 # ---------------------------------------------------------------------------
 # M12 — Occupiers record (UNTYPED)  iterator: occupiers.othersAged17OrOver
 #   Carries opda:aged17OrOverNames and opda:hasOthersAged17OrOver. A1's index
