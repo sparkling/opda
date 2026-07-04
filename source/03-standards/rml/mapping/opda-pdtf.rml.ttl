@@ -1055,6 +1055,14 @@
 
 # ---------------------------------------------------------------------------
 # M15 — RoomDimension (propertyPack.buildInformation.roomDimensions.rooms[*])
+#   opda:hasRoomDimension (domain opda:Property, range opda:RoomDimension) is
+#   NOT mapped: same "keyless array item, no shared key back to Property"
+#   wall as M18's constructionType gap — rooms[*] items carry no uprn or
+#   equivalent, an indexed reference from M4's own iterator
+#   (buildInformation.roomDimensions.rooms[0].roomName) was tried and
+#   confirmed empirically to produce zero triples (same failure mode
+#   documented at M18), and a real R2RML join needs an actual shared column,
+#   which doesn't exist here. Left as a genuine, documented gap.
 # ---------------------------------------------------------------------------
 <#RoomDimension> a rr:TriplesMap ;
   rml:logicalSource [ rml:source "INSTANCE.json" ;
