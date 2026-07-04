@@ -421,7 +421,9 @@
   rr:predicateObjectMap [ rr:predicate opda:rent ;
       rr:objectMap [ rr:template "https://opda.org.uk/pdtf/harness/data/property/{uprn}/amount/rent-{lettingInformation.rent}" ] ] ;  # <- propertyPack.lettingInformation.rent (MonetaryAmount join, see M4e)
   rr:predicateObjectMap [ rr:predicate opda:securityDeposit ;
-      rr:objectMap [ rr:template "https://opda.org.uk/pdtf/harness/data/property/{uprn}/amount/securityDeposit-{lettingInformation.securityDeposit}" ] ] .  # <- propertyPack.lettingInformation.securityDeposit (MonetaryAmount join, see M4e)
+      rr:objectMap [ rr:template "https://opda.org.uk/pdtf/harness/data/property/{uprn}/amount/securityDeposit-{lettingInformation.securityDeposit}" ] ] ;  # <- propertyPack.lettingInformation.securityDeposit (MonetaryAmount join, see M4e)
+  rr:predicateObjectMap [ rr:predicate opda:hasRoomDimension ;
+      rr:objectMap [ rr:template "https://opda.org.uk/pdtf/harness/data/room/{buildInformation.roomDimensions.rooms.roomName}" ] ] .  # <- propertyPack.buildInformation.roomDimensions.rooms[] (array-projected rr:template join to M15's RoomDimension node, the same technique proven for opda:hasParticipant/opda:concerns — supersedes M15's old "no shared key" note, which predates the dropna-bug fix and only tried a bracket-indexed rooms[0] reference)
 
 # ---------------------------------------------------------------------------
 # M4e — lettingInformation MonetaryAmount value nodes (holdingDeposit, rent,
@@ -1103,13 +1105,14 @@
 # ---------------------------------------------------------------------------
 # M15 — RoomDimension (propertyPack.buildInformation.roomDimensions.rooms[*])
 #   opda:hasRoomDimension (domain opda:Property, range opda:RoomDimension) is
-#   NOT mapped: same "keyless array item, no shared key back to Property"
-#   wall as M18's constructionType gap — rooms[*] items carry no uprn or
-#   equivalent, an indexed reference from M4's own iterator
-#   (buildInformation.roomDimensions.rooms[0].roomName) was tried and
-#   confirmed empirically to produce zero triples (same failure mode
-#   documented at M18), and a real R2RML join needs an actual shared column,
-#   which doesn't exist here. Left as a genuine, documented gap.
+#   now mapped on M4's own Property TriplesMap: an array-projected rr:template
+#   placeholder (buildInformation.roomDimensions.rooms.roomName, plain dot
+#   notation, no brackets) reaches into rooms[*] from M4's $.propertyPack
+#   iterator — the same technique proven for opda:hasParticipant/opda:concerns.
+#   This supersedes an earlier "no shared key" conclusion that only tried a
+#   bracket-INDEXED reference (rooms[0].roomName, a fixed position, not a
+#   projection over the whole array) — a different, narrower technique that
+#   does still fail; the unindexed array-projection is what works.
 # ---------------------------------------------------------------------------
 <#RoomDimension> a rr:TriplesMap ;
   rml:logicalSource [ rml:source "INSTANCE.json" ;
