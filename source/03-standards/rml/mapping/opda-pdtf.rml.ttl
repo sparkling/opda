@@ -423,7 +423,12 @@
   rr:predicateObjectMap [ rr:predicate opda:securityDeposit ;
       rr:objectMap [ rr:template "https://opda.org.uk/pdtf/harness/data/property/{uprn}/amount/securityDeposit-{lettingInformation.securityDeposit}" ] ] ;  # <- propertyPack.lettingInformation.securityDeposit (MonetaryAmount join, see M4e)
   rr:predicateObjectMap [ rr:predicate opda:hasRoomDimension ;
-      rr:objectMap [ rr:template "https://opda.org.uk/pdtf/harness/data/room/{buildInformation.roomDimensions.rooms.roomName}" ] ] .  # <- propertyPack.buildInformation.roomDimensions.rooms[] (array-projected rr:template join to M15's RoomDimension node, the same technique proven for opda:hasParticipant/opda:concerns — supersedes M15's old "no shared key" note, which predates the dropna-bug fix and only tried a bracket-indexed rooms[0] reference)
+      rr:objectMap [ rr:template "https://opda.org.uk/pdtf/harness/data/room/{buildInformation.roomDimensions.rooms.roomName}" ] ] ;  # <- propertyPack.buildInformation.roomDimensions.rooms[] (array-projected rr:template join to M15's RoomDimension node, the same technique proven for opda:hasParticipant/opda:concerns — supersedes M15's old "no shared key" note, which predates the dropna-bug fix and only tried a bracket-indexed rooms[0] reference)
+  rr:predicateObjectMap [ rr:predicate opda:constructionType ;
+      rr:objectMap [ rr:termType rr:IRI ; rmlf:functionExecution [
+        rmlf:functionMap [ rmlf:constant <urn:opda:scheme_member_iri> ] ;
+        rmlf:input [ rmlf:parameterMap [ rmlf:constant <urn:opda:param:value> ] ; rmlf:inputValueMap [ rml:reference "surveys.misc.constructionType" ] ] ;
+        rmlf:input [ rmlf:parameterMap [ rmlf:constant <urn:opda:param:scheme> ] ; rmlf:inputValueMap [ rmlf:constant "constructionType" ] ] ] ] ] .  # <- propertyPack.surveys[].misc.constructionType (M18: array-projected reference + M30's FNML mechanism; see M18's comment for the "not exercised by 01-04" caveat)
 
 # ---------------------------------------------------------------------------
 # M4e — lettingInformation MonetaryAmount value nodes (holdingDeposit, rent,
@@ -1149,17 +1154,22 @@
 # M17 — Search provider reference: merged into M5's existing <#Search>
 # TriplesMap above (same subject, same iterator) rather than duplicated here.
 
-# M18 — Survey construction type: NOT mapped. dct:source cites
-#   propertyPack.surveys[].misc.constructionType (domain opda:Property), but
-#   surveys[] array items carry no key back to the property (no uprn or
-#   equivalent inside each item) — an R2RML rr:parentTriplesMap/joinCondition
-#   needs a real shared column, which doesn't exist here, and a plain
-#   independent-node TriplesMap would assert the predicate on the wrong
-#   subject (a synthetic survey node, not the actual opda:Property this
-#   term's domain declares). Tried and confirmed empirically (both a
-#   same-iterator indexed reference `surveys[0].misc...` from the Property
-#   TriplesMap, and a real R2RML join) before concluding this is a genuine,
-#   documented gap — same shape as M14's schoolType gap above.
+# M18 — Survey construction type: now mapped on M4's own Property TriplesMap
+#   (opda:constructionType, below), via the array-projected reference
+#   `surveys.misc.constructionType` (plain dot notation, no brackets) COMBINED
+#   with the M30 FNML mechanism (opda:scheme_member_iri) — constructionType is
+#   rdfs:range skos:Concept, and surveys[] is a real array, so the enum value
+#   needs the same slugify-to-scheme-IRI treatment as M30's single-object
+#   enums, just reached through an array projection instead. This supersedes
+#   the earlier "no shared key back to the property" conclusion, which only
+#   tried a bracket-INDEXED reference (surveys[0].misc...) and a real R2RML
+#   join — the unindexed array-projection needs neither. Proven correct via a
+#   standalone scratch instance (surveys[0].misc.constructionType =
+#   "Timber frame" -> .../scheme/constructionType/Timber-frame, an exact
+#   match against the real ontology member) — testdata/01-04 don't exercise
+#   propertyPack.surveys[] at all, so this is not exercised by the standard
+#   regression suite, same caveat as the managedFreeholdOrCommonhold branch
+#   documented near M27.
 
 # ---------------------------------------------------------------------------
 # M19 — Chain selling agent (chain.onwardPurchase[*])  domain=Transaction
