@@ -80,6 +80,16 @@ opda:VerificationActivity
     rdfs:subClassOf prov:Activity ;
     skos:scopeNote "PROV-O: Activity (W3C PROV-O REC §3.2). UFO: Event particular (Guizzardi 2005 Ch. 4 §4.7)."@en .
 
+opda:Verifier
+    rdf:type owl:Class ;
+    rdfs:label "Verifier"@en ;
+    rdfs:comment "The agent (organisation or person) that performs a verification, attributed via the qualified form prov:qualifiedAttribution -> prov:Attribution with prov:hadRole (ODR-0009 §Q1) — not the binary prov:wasAttributedTo/wasAssociatedWith shortcuts, so validation_method/verification_method are not discarded. A verifier organisation is a prov:Organization; a human voucher a prov:Person."@en ;
+    skos:definition "The agent that performs a verification activity, attributed to it via a qualified PROV-O attribution carrying its role."@en ;
+    dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0009/section-Q1> ;
+    rdfs:isDefinedBy <https://opda.org.uk/pdtf/graph/claim> ;
+    rdfs:subClassOf prov:Agent ;
+    skos:scopeNote "PROV-O: Agent (W3C PROV-O REC §3.4). Aligns to the ToIP business-glossary Verifier term."@en .
+
 opda:digest
     rdf:type owl:DatatypeProperty ;
     rdfs:label "digest"@en ;
@@ -99,16 +109,6 @@ opda:attestedBy
     rdfs:isDefinedBy <https://opda.org.uk/pdtf/graph/claim> ;
     rdfs:range prov:Agent .
 
-opda:evidenceType
-    rdf:type owl:ObjectProperty ;
-    rdfs:label "evidence type"@en ;
-    rdfs:comment "The OIDC4IDA acquisition kind of a piece of evidence — the opda:EvidenceMethodScheme member notation (Document / Electronic-Record / Vouch). The governed isMemberOf classifier (ODR-0027 §R6) that states the evidence kind WITHOUT a subclass tree (a Role is never rdfs:subClassOf a Kind); it replaced the retired short-name aliases and the retired …Evidence subclasses. Validated by opda:EvidenceTypeValueShape (sh:in the scheme, via sh:targetSubjectsOf — the opda:ownerType value-space idiom). rdfs:domain/range are documentary (ODR-0026 §R2); the real constraint is SHACL."@en ;
-    skos:definition "Relates a piece of evidence to the evidence-method scheme concept naming its OIDC4IDA acquisition kind (Document, Electronic-Record or Vouch), serving as the governed classifier in place of an evidence subclass tree."@en ;
-    dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0009/section-Q1> ;
-    rdfs:domain opda:Evidence ;
-    rdfs:isDefinedBy <https://opda.org.uk/pdtf/graph/claim> ;
-    rdfs:range skos:Concept .
-
 opda:supportedBy
     rdf:type owl:ObjectProperty ;
     rdfs:label "supported by"@en ;
@@ -118,3 +118,13 @@ opda:supportedBy
     rdfs:domain opda:Claim ;
     rdfs:isDefinedBy <https://opda.org.uk/pdtf/graph/claim> ;
     rdfs:range opda:Evidence .
+
+opda:evidenceType
+    rdf:type rdf:Property, owl:ObjectProperty ;
+    rdfs:label "evidence type"@en ;
+    rdfs:comment "The OIDC4IDA acquisition kind of a piece of evidence — the opda:EvidenceMethodScheme member notation (Document / Electronic-Record / Vouch). The governed isMemberOf classifier (ODR-0027 §R6) that states the evidence kind WITHOUT a subclass tree (a Role is never rdfs:subClassOf a Kind); it replaced the retired short-name aliases and the retired …Evidence subclasses. Validated by opda:EvidenceTypeValueShape (sh:in the scheme, via sh:targetSubjectsOf — the opda:ownerType value-space idiom). rdfs:domain/range are documentary (ODR-0026 §R2); the real constraint is SHACL."@en ;
+    skos:definition "Relates a piece of evidence to the evidence-method scheme concept naming its OIDC4IDA acquisition kind (Document, Electronic-Record or Vouch), serving as the governed classifier in place of an evidence subclass tree."@en ;
+    dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0009/section-Q1> ;
+    rdfs:domain opda:Evidence ;
+    rdfs:isDefinedBy <https://opda.org.uk/pdtf/graph/claim> ;
+    rdfs:range skos:Concept .

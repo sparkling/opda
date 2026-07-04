@@ -2588,6 +2588,30 @@
     sh:severity sh:Violation ;
     sh:targetSubjectsOf opda:urgentWorksRecommended .
 
+<https://opda.org.uk/pdtf/shape/variantPredicateDomainShape>
+    rdf:type sh:NodeShape ;
+    dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0029/section-Rules-R3> ;
+    sh:class opda:DPVMappingRefinement ;
+    sh:message "opda:variantPredicate is used off its declared rdfs:domain: every subject of opda:variantPredicate MUST be an instance of DPVMappingRefinement (ODR-0029 R3 — rdfs:domain validated closed-world, not inferred)."@en ;
+    sh:severity sh:Violation ;
+    sh:targetSubjectsOf opda:variantPredicate .
+
+<https://opda.org.uk/pdtf/shape/variantPredicateRangeShape>
+    rdf:type sh:NodeShape ;
+    dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0029/section-Rules-R3> ;
+    sh:class rdf:Property ;
+    sh:message "opda:variantPredicate has an object outside its declared rdfs:range: every object of opda:variantPredicate MUST be an instance of Property (ODR-0029 R3 — rdfs:range validated closed-world, not inferred)."@en ;
+    sh:severity sh:Violation ;
+    sh:targetObjectsOf opda:variantPredicate .
+
+<https://opda.org.uk/pdtf/shape/variantValueDomainShape>
+    rdf:type sh:NodeShape ;
+    dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0029/section-Rules-R3> ;
+    sh:class opda:DPVMappingRefinement ;
+    sh:message "opda:variantValue is used off its declared rdfs:domain: every subject of opda:variantValue MUST be an instance of DPVMappingRefinement (ODR-0029 R3 — rdfs:domain validated closed-world, not inferred)."@en ;
+    sh:severity sh:Violation ;
+    sh:targetSubjectsOf opda:variantValue .
+
 <https://opda.org.uk/pdtf/shape/waterBillsDomainShape>
     rdf:type sh:NodeShape ;
     dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0029/section-Rules-R3> ;

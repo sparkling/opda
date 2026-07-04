@@ -14,6 +14,7 @@
 @prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
 @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
 @prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
 
 <https://opda.org.uk/pdtf/graph/governance>
     rdf:type owl:Ontology ;
@@ -51,6 +52,16 @@ opda:SpecialCategoryScheme
     rdfs:subClassOf skos:ConceptScheme ;
     skos:scopeNote "Subclass of skos:ConceptScheme (W3C SKOS REC §3.1). Members enumerated per GDPR Article 10 special-category list when ADR-0010 scope-expansion activates the scheme."@en .
 
+opda:variantValue
+    rdf:type owl:DatatypeProperty ;
+    rdfs:label "variant value"@en ;
+    rdfs:comment "The specific value of opda:variantPredicate this refinement applies to (e.g. \"title\"/\"marketing\"/\"inspire\" for opda:addressVariant) — ODR-0018 §3a."@en ;
+    skos:definition "The specific value of the variant predicate that this mapping refinement applies to."@en ;
+    dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0018/section-Rule4> ;
+    rdfs:domain opda:DPVMappingRefinement ;
+    rdfs:isDefinedBy <https://opda.org.uk/pdtf/graph/governance> ;
+    rdfs:range xsd:string .
+
 opda:baselineCategory
     rdf:type owl:ObjectProperty ;
     rdfs:label "baseline category"@en ;
@@ -69,6 +80,16 @@ opda:targetsKind
     rdfs:domain opda:DPVMappingRecord ;
     rdfs:isDefinedBy <https://opda.org.uk/pdtf/graph/governance> ;
     rdfs:range owl:Class .
+
+opda:variantPredicate
+    rdf:type owl:ObjectProperty ;
+    rdfs:label "variant predicate"@en ;
+    rdfs:comment "The predicate (e.g. opda:addressVariant) whose value on a Kind instance selects which refinement of this mapping record applies (ODR-0018 §3a)."@en ;
+    skos:definition "Relates a DPV mapping refinement to the predicate whose value on a Kind instance selects the refinement."@en ;
+    dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0018/section-Rule4> ;
+    rdfs:domain opda:DPVMappingRefinement ;
+    rdfs:isDefinedBy <https://opda.org.uk/pdtf/graph/governance> ;
+    rdfs:range rdf:Property .
 
 opda:ClaimDPVMapping
     rdf:type opda:DPVMappingRecord ;

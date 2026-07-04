@@ -85,3 +85,11 @@ opda:consumesFrom
     rdfs:isDefinedBy <https://opda.org.uk/pdtf/> ;
     rdfs:subPropertyOf prov:wasInfluencedBy ;
     skos:scopeNote "Annotation property (membership/provenance, not logical typing). rdfs:subPropertyOf prov:wasInfluencedBy so consumers can traverse it as PROV influence. ODR-0020 Rule on upstream authorities."@en .
+
+opda:hasSteward
+    rdf:type owl:AnnotationProperty ;
+    rdfs:label "has steward"@en ;
+    rdfs:comment "The organisation(s) or body(ies) responsible for authoring or maintaining the resource — a bounded context, or a SKOS enumeration scheme's value space (ODR-0019 Rule 2 / ODR-0020). Literal-valued (per value-scheme house style, not an IRI-valued link to a minted opda:Organisation) to carry steward plurality without namespace plurality."@en ;
+    skos:definition "Names the organisation or body responsible for authoring or maintaining this resource."@en ;
+    dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0020/section-decision> ;
+    rdfs:isDefinedBy <https://opda.org.uk/pdtf/> .

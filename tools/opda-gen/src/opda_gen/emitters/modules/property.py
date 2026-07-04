@@ -528,6 +528,13 @@ def build_graph() -> Graph:
 
     # --- DatatypeProperty: opda:addressVariant (ODR-0015 §Rule 6) -------
     g.add((OPDA.addressVariant, RDF.type, OWL.DatatypeProperty))
+    # Also explicitly typed rdf:Property (standard OWL/RDFS: every
+    # DatatypeProperty IS one — a true, uncontroversial fact, asserted
+    # explicitly per this ontology's documentary-not-entailed doctrine,
+    # ADR-0049) so opda:variantPredicate's closed-world rdfs:range check
+    # (ODR-0029 R3) sees this as a valid value where it's used as one
+    # (ODR-0018 §3a's DPVMappingRefinement).
+    g.add((OPDA.addressVariant, RDF.type, RDF.Property))
     g.add((OPDA.addressVariant, RDFS.domain, OPDA.Address))
     g.add((OPDA.addressVariant, RDFS.range, XSD.string))
     g.add((OPDA.addressVariant, RDFS.label, Literal("address variant", lang="en")))

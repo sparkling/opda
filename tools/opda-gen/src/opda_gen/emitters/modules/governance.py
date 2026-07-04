@@ -64,9 +64,12 @@ CLASSES = (
 OBJECT_PROPERTIES = (
     OPDA.baselineCategory,
     OPDA.targetsKind,
+    OPDA.variantPredicate,
 )
 
-DATATYPE_PROPERTIES = ()
+DATATYPE_PROPERTIES = (
+    OPDA.variantValue,
+)
 
 # Per-Kind DPV mapping records emitted as named individuals.
 MAPPING_RECORDS = (
@@ -216,6 +219,54 @@ def build_graph() -> Graph:
         lang="en",
     )))
     g.add((OPDA.targetsKind, RDFS.isDefinedBy, _MODULE_IRI))
+
+    # --- ObjectProperty: opda:variantPredicate --------------------------
+    # Sibling of opda:targetsKind on the SAME opda:DPVMappingRefinement
+    # subject (annotations.py's _add_dpv_variant_refinement) — real, live
+    # data (7 uses) since DPVMappingRefinement was declared, but never
+    # itself declared. ODR-0018 §3a's own worked example names this
+    # opda:mapsVariantPredicate; the shipped implementation instead uses
+    # opda:variantPredicate consistently (established real-usage naming
+    # takes precedence, matching this session's opda:Verification ->
+    # opda:VerificationActivity precedent).
+    g.add((OPDA.variantPredicate, RDF.type, OWL.ObjectProperty))
+    g.add((OPDA.variantPredicate, RDFS.domain, OPDA.DPVMappingRefinement))
+    g.add((OPDA.variantPredicate, RDFS.range, RDF.Property))
+    g.add((OPDA.variantPredicate, RDFS.label,
+           Literal("variant predicate", lang="en")))
+    g.add((OPDA.variantPredicate, RDFS.comment, Literal(
+        "The predicate (e.g. opda:addressVariant) whose value on a Kind "
+        "instance selects which refinement of this mapping record applies "
+        "(ODR-0018 §3a).",
+        lang="en",
+    )))
+    g.add((OPDA.variantPredicate, DCTERMS.source, _ODR_0018_RULE4))
+    g.add((OPDA.variantPredicate, SKOS.definition, Literal(
+        "Relates a DPV mapping refinement to the predicate whose value on "
+        "a Kind instance selects the refinement.",
+        lang="en",
+    )))
+    g.add((OPDA.variantPredicate, RDFS.isDefinedBy, _MODULE_IRI))
+
+    # --- DatatypeProperty: opda:variantValue -----------------------------
+    g.add((OPDA.variantValue, RDF.type, OWL.DatatypeProperty))
+    g.add((OPDA.variantValue, RDFS.domain, OPDA.DPVMappingRefinement))
+    g.add((OPDA.variantValue, RDFS.range, XSD.string))
+    g.add((OPDA.variantValue, RDFS.label,
+           Literal("variant value", lang="en")))
+    g.add((OPDA.variantValue, RDFS.comment, Literal(
+        "The specific value of opda:variantPredicate this refinement "
+        "applies to (e.g. \"title\"/\"marketing\"/\"inspire\" for "
+        "opda:addressVariant) — ODR-0018 §3a.",
+        lang="en",
+    )))
+    g.add((OPDA.variantValue, DCTERMS.source, _ODR_0018_RULE4))
+    g.add((OPDA.variantValue, SKOS.definition, Literal(
+        "The specific value of the variant predicate that this mapping "
+        "refinement applies to.",
+        lang="en",
+    )))
+    g.add((OPDA.variantValue, RDFS.isDefinedBy, _MODULE_IRI))
 
     # --- ObjectProperty: opda:baselineCategory --------------------------
     g.add((OPDA.baselineCategory, RDF.type, OWL.ObjectProperty))

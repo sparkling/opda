@@ -66,6 +66,7 @@ CLASSES = (
     OPDA.Evidence,
     OPDA.TrustFramework,
     OPDA.VerificationActivity,
+    OPDA.Verifier,
 )
 
 OBJECT_PROPERTIES = (
@@ -275,6 +276,38 @@ def build_graph() -> Graph:
     )))
     g.add((OPDA.VerificationActivity, RDFS.isDefinedBy, _MODULE_IRI))
 
+    # --- opda:Verifier — subclass of prov:Agent (ODR-0009 §Q1) ----------
+    # Named in ODR-0009's Decision Outcome and class diagram
+    # ("opda:Verifier rdfs:subClassOf prov:Agent") but never declared — the
+    # qualified-attribution mechanism (prov:qualifiedAttribution ->
+    # prov:Attribution, with prov:hadRole) the same ODR specifies can't
+    # function without this class existing as the attribution's bearer.
+    g.add((OPDA.Verifier, RDF.type, OWL.Class))
+    g.add((OPDA.Verifier, RDFS.subClassOf, PROV.Agent))
+    g.add((OPDA.Verifier, RDFS.label, Literal("Verifier", lang="en")))
+    g.add((OPDA.Verifier, RDFS.comment, Literal(
+        "The agent (organisation or person) that performs a verification, "
+        "attributed via the qualified form prov:qualifiedAttribution -> "
+        "prov:Attribution with prov:hadRole (ODR-0009 §Q1) — not the "
+        "binary prov:wasAttributedTo/wasAssociatedWith shortcuts, so "
+        "validation_method/verification_method are not discarded. A "
+        "verifier organisation is a prov:Organization; a human voucher a "
+        "prov:Person.",
+        lang="en",
+    )))
+    g.add((OPDA.Verifier, SKOS.scopeNote, Literal(
+        "PROV-O: Agent (W3C PROV-O REC §3.4). Aligns to the ToIP business-"
+        "glossary Verifier term.",
+        lang="en",
+    )))
+    g.add((OPDA.Verifier, DCTERMS.source, _ODR_0009_Q1))
+    g.add((OPDA.Verifier, SKOS.definition, Literal(
+        "The agent that performs a verification activity, attributed to "
+        "it via a qualified PROV-O attribution carrying its role.",
+        lang="en",
+    )))
+    g.add((OPDA.Verifier, RDFS.isDefinedBy, _MODULE_IRI))
+
     # --- opda:AssuranceLevel — backed by SKOS scheme --------------------
     g.add((OPDA.AssuranceLevel, RDF.type, OWL.Class))
     g.add((OPDA.AssuranceLevel, RDFS.label,
@@ -410,6 +443,11 @@ def build_graph() -> Graph:
     # idiom) + opda:EvidenceFacetShape (the value-keyed per-kind obligations).
     # rdfs:range is documentary (ODR-0026 §R2); the real constraint is SHACL.
     g.add((OPDA.evidenceType, RDF.type, OWL.ObjectProperty))
+    # Also explicitly typed rdf:Property — see opda:addressVariant's own
+    # comment (property.py) for why: a true, uncontroversial OWL/RDFS fact
+    # asserted explicitly (ADR-0049 doctrine) so opda:variantPredicate's
+    # closed-world range check accepts this as a valid value.
+    g.add((OPDA.evidenceType, RDF.type, RDF.Property))
     g.add((OPDA.evidenceType, RDFS.domain, OPDA.Evidence))
     g.add((OPDA.evidenceType, RDFS.range, SKOS.Concept))
     g.add((OPDA.evidenceType, RDFS.label, Literal("evidence type", lang="en")))

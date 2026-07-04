@@ -238,6 +238,31 @@ def build_contexts_graph() -> Graph:
     g.add((scheme, SKOS.definition, Literal(SCHEME_DEFINITION, lang="en")))
     g.add((scheme, DCTERMS.source, _ODR_0020))
 
+    # --- opda:hasSteward (ODR-0019 Rule 2 / ODR-0020) -------------------
+    # Both ODRs name this as "the existing opda:hasSteward annotation
+    # property" — it was never actually declared despite 53 live uses
+    # across this file and emitters/vocabularies.py (bounded-context
+    # concepts and SKOS enumeration schemes alike).
+    g.add((OPDA.hasSteward, RDF.type, OWL.AnnotationProperty))
+    g.add((OPDA.hasSteward, RDFS.label, Literal("has steward", lang="en")))
+    g.add((OPDA.hasSteward, RDFS.comment, Literal(
+        "The organisation(s) or body(ies) responsible for authoring or "
+        "maintaining the resource — a bounded context, or a SKOS "
+        "enumeration scheme's value space (ODR-0019 Rule 2 / ODR-0020). "
+        "Literal-valued (per value-scheme house style, not an IRI-valued "
+        "link to a minted opda:Organisation) to carry steward plurality "
+        "without namespace plurality.",
+        lang="en",
+    )))
+    g.add((OPDA.hasSteward, DCTERMS.source, _ODR_0020))
+    g.add((OPDA.hasSteward, SKOS.definition, Literal(
+        "Names the organisation or body responsible for authoring or "
+        "maintaining this resource.",
+        lang="en",
+    )))
+    g.add((OPDA.hasSteward, RDFS.isDefinedBy,
+           URIRef("https://opda.org.uk/pdtf/")))
+
     # --- The six industry contexts -------------------------------------
     for ctx in _all_contexts():
         uri = ctx.uri()

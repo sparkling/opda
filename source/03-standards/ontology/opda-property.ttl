@@ -122,16 +122,6 @@ opda:adHocExpenses
     rdfs:isDefinedBy <https://opda.org.uk/pdtf/graph/property> ;
     rdfs:range xsd:string .
 
-opda:addressVariant
-    rdf:type owl:DatatypeProperty ;
-    rdfs:label "address variant"@en ;
-    rdfs:comment "Required tag identifying the authority and lifecycle for this Address instance (one of 'title' | 'marketing' | 'inspire'). UFO Quality particularising the Address Substance Kind within Guarino's S001 Q4 'mode of presentation' framing."@en ;
-    skos:definition "The authority-and-lifecycle tag of an Address (one of 'title', 'marketing', or 'inspire') identifying which addressing authority stewards the locator and the lifecycle it follows."@en ;
-    dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0015/section-Rule-6> ;
-    rdfs:domain opda:Address ;
-    rdfs:isDefinedBy <https://opda.org.uk/pdtf/graph/property> ;
-    rdfs:range xsd:string .
-
 opda:area
     rdf:type owl:DatatypeProperty ;
     rdfs:label "area"@en ;
@@ -1140,3 +1130,13 @@ opda:tenureKind
     rdfs:domain opda:LegalEstate ;
     rdfs:isDefinedBy <https://opda.org.uk/pdtf/graph/property> ;
     rdfs:range skos:Concept .
+
+opda:addressVariant
+    rdf:type rdf:Property, owl:DatatypeProperty ;
+    rdfs:label "address variant"@en ;
+    rdfs:comment "Required tag identifying the authority and lifecycle for this Address instance (one of 'title' | 'marketing' | 'inspire'). UFO Quality particularising the Address Substance Kind within Guarino's S001 Q4 'mode of presentation' framing."@en ;
+    skos:definition "The authority-and-lifecycle tag of an Address (one of 'title', 'marketing', or 'inspire') identifying which addressing authority stewards the locator and the lifecycle it follows."@en ;
+    dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0015/section-Rule-6> ;
+    rdfs:domain opda:Address ;
+    rdfs:isDefinedBy <https://opda.org.uk/pdtf/graph/property> ;
+    rdfs:range xsd:string .
