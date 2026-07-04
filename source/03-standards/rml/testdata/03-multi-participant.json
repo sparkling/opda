@@ -310,6 +310,96 @@
       }
     },
     "marketingTenure": "Freehold",
+    "ownership": {
+      "isFirstRegistration": "No",
+      "isLimitedCompanySale": "No",
+      "hasHelpToBuyEquityLoan": "No",
+      "numberOfSellers": 1,
+      "numberOfNonUkResidentSellers": 0,
+      "ownershipsToBeTransferred": [
+        {
+          "titleNumber": "BS123456",
+          "titlePropertyDescription": "Flat 2, 12 Orchard Lane",
+          "otherOwnershipDetails": "None",
+          "ownershipType": "Leasehold",
+          "leaseholdInformation": {
+            "groundRent": {
+              "groundRentFrequency": "Annually"
+            },
+            "serviceCharge": {
+              "adHocExpenses": "None in the last 3 years",
+              "dangerousCladdingOrDefects": "No",
+              "propertiesContributingToMaintenanceOfManagedArea": 24,
+              "reserveFund": {
+                "yesNo": "Yes",
+                "contributionIncludedInServiceCharge": "Yes"
+              },
+              "lastDemandPeriod": { "from": "2025-01-01", "to": "2025-12-31" },
+              "lastDecoratedPeriod": {
+                "externally": { "year": 2022, "from": "2022-03-01", "to": "2022-04-01" }
+              }
+            },
+            "buildingsInsurance": {
+              "buildingsReinstatementCostAssessment": "Reassessed 2024, no material change",
+              "lastDemandPeriod": { "from": "2025-01-01", "to": "2025-12-31" },
+              "managedAreasCoveredByPolicy": {
+                "yesNo": "Yes",
+                "riskAssessments": {
+                  "assessmentsCarriedOut": "Fire risk assessment",
+                  "urgentWorksRecommended": "Yes",
+                  "urgentWorksCarriedOut": "No",
+                  "outstandingEnforcementAction": "Yes",
+                  "dateRemedialActionRequired": "2026-12-31"
+                }
+              }
+            },
+            "ownershipAndManagement": {
+              "freeholdOwner": "Yes",
+              "hasTenantCompanyDissolved": "No",
+              "isManagingAgentEmployed": "Yes",
+              "hasHeadlease": { "yesNo": "Yes", "headLeaseholderControlled": "No" }
+            },
+            "buildingSafetyAct": {
+              "isLeaseQualifying": "Yes",
+              "landlordNotifiedOfSale": "Yes",
+              "deedOfCertificateServed": { "yesNoNotApplicable": "Yes", "sellerCompletedDeedOfCertificate": "Yes" }
+            },
+            "enfranchisement": { "sellerOwnedProperty": "No" },
+            "general": { "otherPropertiesInManagedArea": 12 },
+            "transferAndRegistration": {
+              "deedOfCovenantRequired": {
+                "yesNoNotKnown": "Yes",
+                "costsApplicableToTheDeed": 150,
+                "personWhoDealsWithTheDeedOfCovenant": "Managing agent"
+              },
+              "procedureForObtainingCertificate": "Apply via managing agent portal",
+              "licenceToAssignRequired": { "yesNo": "Yes", "requirements": "Solicitor to submit licence application" }
+            },
+            "requiredDocuments": { "certificateOfComplianceFee": 120 },
+            "confirmationOfAccuracy": { "confirmation": true },
+            "contactDetails": {
+              "contacts": {
+                "landlord": {
+                  "contact": { "nameOrOrganisation": "Orchard Lane Freeholders Ltd" },
+                  "bankDetails": {
+                    "accountName": "Orchard Lane Freeholders Ltd",
+                    "sortCode": "12-34-56",
+                    "accountNumber": 12345678,
+                    "reference": "OLL-001"
+                  }
+                }
+              },
+              "serviceContactAssignments": {
+                "organisesBuildingInsurance": "Managing agent",
+                "noticeOfAssignmentAndCharge": {
+                  "landlord": { "isApplicableParty": "true", "feeIncludingVAT": 90 }
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
     "legalOwners": {
       "namesOfLegalOwners": [
         { "ownerType": "Organisation", "organisationName": "Orchard Lane Holdings Ltd" }

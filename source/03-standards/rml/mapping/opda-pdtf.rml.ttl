@@ -253,6 +253,8 @@
                       rml:iterator "$.propertyPack" ] ;
   rr:subjectMap [ rr:template "https://opda.org.uk/pdtf/harness/data/property/{uprn}" ;
                   rr:class opda:Property ] ;
+  rr:predicateObjectMap [ rr:predicate opda:hasUPRN ;
+      rr:objectMap [ rml:reference "uprn" ; rr:datatype xsd:string ] ] ;  # <- propertyPack.uprn (BASPI5 identity-key assertion; distinct from the {uprn} template key itself)
   rr:predicateObjectMap [ rr:predicate opda:propertyType ;
       rr:objectMap [ rml:reference "buildInformation.building.propertyType" ; rr:datatype xsd:string ] ] ;  # <- propertyPack.buildInformation.building.propertyType
   rr:predicateObjectMap [ rr:predicate opda:builtForm ;
@@ -345,6 +347,12 @@
       rr:objectMap [ rml:reference "location.googleStreetViewPOV.zoom" ; rr:datatype xsd:decimal ] ] ;  # <- propertyPack.location.googleStreetViewPOV.zoom
   rr:predicateObjectMap [ rr:predicate opda:marketingTenure ;
       rr:objectMap [ rml:reference "marketingTenure" ; rr:datatype xsd:string ] ] ;  # <- propertyPack.marketingTenure
+  rr:predicateObjectMap [ rr:predicate opda:isFirstRegistration ;
+      rr:objectMap [ rml:reference "ownership.isFirstRegistration" ; rr:datatype xsd:string ] ] ;  # <- propertyPack.ownership.isFirstRegistration
+  rr:predicateObjectMap [ rr:predicate opda:isLimitedCompanySale ;
+      rr:objectMap [ rml:reference "ownership.isLimitedCompanySale" ; rr:datatype xsd:string ] ] ;  # <- propertyPack.ownership.isLimitedCompanySale
+  rr:predicateObjectMap [ rr:predicate opda:hasHelpToBuyEquityLoan ;
+      rr:objectMap [ rml:reference "ownership.hasHelpToBuyEquityLoan" ; rr:datatype xsd:string ] ] ;  # <- propertyPack.ownership.hasHelpToBuyEquityLoan
   rr:predicateObjectMap [ rr:predicate opda:councilTaxAnnualCharge ;
       rr:objectMap [ rr:template "https://opda.org.uk/pdtf/harness/data/property/{uprn}/amount/councilTax-{councilTax.councilTaxAnnualCharge}" ] ] ;  # <- propertyPack.councilTax.councilTaxAnnualCharge (MonetaryAmount join, see M4b)
   rr:predicateObjectMap [ rr:predicate opda:accessibilityAndAdaptations ;
@@ -669,7 +677,63 @@
   rr:predicateObjectMap [ rr:predicate opda:annualServiceCharge ;
       rr:objectMap [ rr:template "https://opda.org.uk/pdtf/harness/data/estate/{titleNumber}/amount/serviceCharge" ] ] ;  # <- …leaseholdInformation.serviceCharge.annualServiceCharge
   rr:predicateObjectMap [ rr:predicate opda:sharedOwnershipRent ;
-      rr:objectMap [ rr:template "https://opda.org.uk/pdtf/harness/data/estate/{titleNumber}/amount/sharedOwnershipRent" ] ] .  # <- …leaseholdInformation.sharedOwnership.sharedOwnershipRent
+      rr:objectMap [ rr:template "https://opda.org.uk/pdtf/harness/data/estate/{titleNumber}/amount/sharedOwnershipRent" ] ] ;  # <- …leaseholdInformation.sharedOwnership.sharedOwnershipRent
+  rr:predicateObjectMap [ rr:predicate opda:titlePropertyDescription ;
+      rr:objectMap [ rml:reference "titlePropertyDescription" ; rr:datatype xsd:string ] ] ;  # <- propertyPack.ownership.ownershipsToBeTransferred[].titlePropertyDescription
+  rr:predicateObjectMap [ rr:predicate opda:otherOwnershipDetails ;
+      rr:objectMap [ rml:reference "otherOwnershipDetails" ; rr:datatype xsd:string ] ] ;  # <- propertyPack.ownership.ownershipsToBeTransferred[].otherOwnershipDetails
+  rr:predicateObjectMap [ rr:predicate opda:groundRentFrequency ;
+      rr:objectMap [ rml:reference "leaseholdInformation.groundRent.groundRentFrequency" ; rr:datatype xsd:string ] ] ;  # <- …leaseholdInformation.groundRent.groundRentFrequency
+  rr:predicateObjectMap [ rr:predicate opda:adHocExpenses ;
+      rr:objectMap [ rml:reference "leaseholdInformation.serviceCharge.adHocExpenses" ; rr:datatype xsd:string ] ] ;  # <- …leaseholdInformation.serviceCharge.adHocExpenses
+  rr:predicateObjectMap [ rr:predicate opda:dangerousCladdingOrDefects ;
+      rr:objectMap [ rml:reference "leaseholdInformation.serviceCharge.dangerousCladdingOrDefects" ; rr:datatype xsd:string ] ] ;  # <- …leaseholdInformation.serviceCharge.dangerousCladdingOrDefects
+  rr:predicateObjectMap [ rr:predicate opda:propertiesContributingToMaintenanceOfManagedArea ;
+      rr:objectMap [ rml:reference "leaseholdInformation.serviceCharge.propertiesContributingToMaintenanceOfManagedArea" ; rr:datatype xsd:decimal ] ] ;  # <- …leaseholdInformation.serviceCharge.propertiesContributingToMaintenanceOfManagedArea
+  rr:predicateObjectMap [ rr:predicate opda:contributionIncludedInServiceCharge ;
+      rr:objectMap [ rml:reference "leaseholdInformation.serviceCharge.reserveFund.contributionIncludedInServiceCharge" ; rr:datatype xsd:string ] ] ;  # <- …leaseholdInformation.serviceCharge.reserveFund.contributionIncludedInServiceCharge
+  rr:predicateObjectMap [ rr:predicate opda:from ;
+      rr:objectMap [ rml:reference "leaseholdInformation.buildingsInsurance.lastDemandPeriod.from" ; rr:datatype xsd:date ] ] ;  # <- …leaseholdInformation.buildingsInsurance.lastDemandPeriod.from
+  rr:predicateObjectMap [ rr:predicate opda:to ;
+      rr:objectMap [ rml:reference "leaseholdInformation.buildingsInsurance.lastDemandPeriod.to" ; rr:datatype xsd:date ] ] ;  # <- …leaseholdInformation.buildingsInsurance.lastDemandPeriod.to
+  rr:predicateObjectMap [ rr:predicate opda:year ;
+      rr:objectMap [ rml:reference "leaseholdInformation.serviceCharge.lastDecoratedPeriod.externally.year" ; rr:datatype xsd:gYear ] ] ;  # <- …leaseholdInformation.serviceCharge.lastDecoratedPeriod.externally.year
+  rr:predicateObjectMap [ rr:predicate opda:buildingsReinstatementCostAssessment ;
+      rr:objectMap [ rml:reference "leaseholdInformation.buildingsInsurance.buildingsReinstatementCostAssessment" ; rr:datatype xsd:string ] ] ;  # <- …leaseholdInformation.buildingsInsurance.buildingsReinstatementCostAssessment
+  rr:predicateObjectMap [ rr:predicate opda:freeholdOwner ;
+      rr:objectMap [ rml:reference "leaseholdInformation.ownershipAndManagement.freeholdOwner" ; rr:datatype xsd:string ] ] ;  # <- …leaseholdInformation.ownershipAndManagement.freeholdOwner
+  rr:predicateObjectMap [ rr:predicate opda:hasTenantCompanyDissolved ;
+      rr:objectMap [ rml:reference "leaseholdInformation.ownershipAndManagement.hasTenantCompanyDissolved" ; rr:datatype xsd:string ] ] ;  # <- …leaseholdInformation.ownershipAndManagement.hasTenantCompanyDissolved
+  rr:predicateObjectMap [ rr:predicate opda:isManagingAgentEmployed ;
+      rr:objectMap [ rml:reference "leaseholdInformation.ownershipAndManagement.isManagingAgentEmployed" ; rr:datatype xsd:string ] ] ;  # <- …leaseholdInformation.ownershipAndManagement.isManagingAgentEmployed
+  rr:predicateObjectMap [ rr:predicate opda:headLeaseholderControlled ;
+      rr:objectMap [ rml:reference "leaseholdInformation.ownershipAndManagement.hasHeadlease.headLeaseholderControlled" ; rr:datatype xsd:string ] ] ;  # <- …leaseholdInformation.ownershipAndManagement.hasHeadlease.headLeaseholderControlled
+  rr:predicateObjectMap [ rr:predicate opda:isLeaseQualifying ;
+      rr:objectMap [ rml:reference "leaseholdInformation.buildingSafetyAct.isLeaseQualifying" ; rr:datatype xsd:string ] ] ;  # <- …leaseholdInformation.buildingSafetyAct.isLeaseQualifying
+  rr:predicateObjectMap [ rr:predicate opda:landlordNotifiedOfSale ;
+      rr:objectMap [ rml:reference "leaseholdInformation.buildingSafetyAct.landlordNotifiedOfSale" ; rr:datatype xsd:string ] ] ;  # <- …leaseholdInformation.buildingSafetyAct.landlordNotifiedOfSale
+  rr:predicateObjectMap [ rr:predicate opda:sellerCompletedDeedOfCertificate ;
+      rr:objectMap [ rml:reference "leaseholdInformation.buildingSafetyAct.deedOfCertificateServed.sellerCompletedDeedOfCertificate" ; rr:datatype xsd:string ] ] ;  # <- …leaseholdInformation.buildingSafetyAct.deedOfCertificateServed.sellerCompletedDeedOfCertificate
+  rr:predicateObjectMap [ rr:predicate opda:sellerOwnedProperty ;
+      rr:objectMap [ rml:reference "leaseholdInformation.enfranchisement.sellerOwnedProperty" ; rr:datatype xsd:string ] ] ;  # <- …leaseholdInformation.enfranchisement.sellerOwnedProperty
+  rr:predicateObjectMap [ rr:predicate opda:otherPropertiesInManagedArea ;
+      rr:objectMap [ rml:reference "leaseholdInformation.general.otherPropertiesInManagedArea" ; rr:datatype xsd:decimal ] ] ;  # <- …leaseholdInformation.general.otherPropertiesInManagedArea
+  rr:predicateObjectMap [ rr:predicate opda:personWhoDealsWithTheDeedOfCovenant ;
+      rr:objectMap [ rml:reference "leaseholdInformation.transferAndRegistration.deedOfCovenantRequired.personWhoDealsWithTheDeedOfCovenant" ; rr:datatype xsd:string ] ] ;  # <- …leaseholdInformation.transferAndRegistration.deedOfCovenantRequired.personWhoDealsWithTheDeedOfCovenant
+  rr:predicateObjectMap [ rr:predicate opda:procedureForObtainingCertificate ;
+      rr:objectMap [ rml:reference "leaseholdInformation.transferAndRegistration.procedureForObtainingCertificate" ; rr:datatype xsd:string ] ] ;  # <- …leaseholdInformation.transferAndRegistration.procedureForObtainingCertificate
+  rr:predicateObjectMap [ rr:predicate opda:requirements ;
+      rr:objectMap [ rml:reference "leaseholdInformation.transferAndRegistration.licenceToAssignRequired.requirements" ; rr:datatype xsd:string ] ] ;  # <- …leaseholdInformation.transferAndRegistration.licenceToAssignRequired.requirements
+  rr:predicateObjectMap [ rr:predicate opda:organisesBuildingInsurance ;
+      rr:objectMap [ rml:reference "leaseholdInformation.contactDetails.serviceContactAssignments.organisesBuildingInsurance" ; rr:datatype xsd:string ] ] ;  # <- …leaseholdInformation.contactDetails.serviceContactAssignments.organisesBuildingInsurance
+  rr:predicateObjectMap [ rr:predicate opda:outstandingEnforcementAction ;
+      rr:objectMap [ rml:reference "leaseholdInformation.buildingsInsurance.managedAreasCoveredByPolicy.riskAssessments.outstandingEnforcementAction" ; rr:datatype xsd:string ] ] ;  # <- …leaseholdInformation.buildingsInsurance.managedAreasCoveredByPolicy.riskAssessments.outstandingEnforcementAction
+  rr:predicateObjectMap [ rr:predicate opda:urgentWorksCarriedOut ;
+      rr:objectMap [ rml:reference "leaseholdInformation.buildingsInsurance.managedAreasCoveredByPolicy.riskAssessments.urgentWorksCarriedOut" ; rr:datatype xsd:string ] ] ;  # <- …leaseholdInformation.buildingsInsurance.managedAreasCoveredByPolicy.riskAssessments.urgentWorksCarriedOut
+  rr:predicateObjectMap [ rr:predicate opda:urgentWorksRecommended ;
+      rr:objectMap [ rml:reference "leaseholdInformation.buildingsInsurance.managedAreasCoveredByPolicy.riskAssessments.urgentWorksRecommended" ; rr:datatype xsd:string ] ] ;  # <- …leaseholdInformation.buildingsInsurance.managedAreasCoveredByPolicy.riskAssessments.urgentWorksRecommended
+  rr:predicateObjectMap [ rr:predicate opda:certificateOfComplianceFee ;
+      rr:objectMap [ rr:template "https://opda.org.uk/pdtf/harness/data/estate/{titleNumber}/amount/certificateOfComplianceFee-{leaseholdInformation.requiredDocuments.certificateOfComplianceFee}" ] ] .  # <- …leaseholdInformation.requiredDocuments.certificateOfComplianceFee (MonetaryAmount join, see M27a)
 
 # M7a — MonetaryAmount value nodes (opda:MonetaryAmount)
 #   Each MUST carry opda:amount (xsd:decimal) + opda:currency (scheme IRI).
@@ -1232,3 +1296,144 @@
 #   localSearches buildingControlStartDate/planningStartDate: already
 #   documented as genuine gaps at M14, M18, M20 respectively (re-verified
 #   this session — still true, no new technique found for any of them).
+
+# ---------------------------------------------------------------------------
+# M27 — propertyPack.ownership (leasehold branch): remaining LegalEstate-
+#   domain leaves already added directly to M7's <#LegalEstate> TriplesMap,
+#   above (same subject, same iterator — matching the M4/M7a established
+#   style of one TriplesMap per node, many predicateObjectMaps). This block
+#   covers the leaves whose rdfs:domain is NOT opda:LegalEstate:
+#     - opda:certificateOfComplianceFee's MonetaryAmount value node (M27a)
+#     - opda:dateRemedialActionRequired (domain opda:RiskAssessment) — a
+#       SINGLETON risk-assessment block nested in managedAreasCoveredByPolicy
+#       (not an array), keyed on the SAME titleNumber (M27b)
+#     - opda:confirmation / opda:costsApplicableToTheDeed / opda:feeIncludingVAT
+#       (domain opda:Transaction) — the real opda:Transaction node's own
+#       transactionId is unreachable from this nested iterator (same root-
+#       flattening limitation as M1b/M1c), so these are emitted on an UNTYPED
+#       record keyed on titleNumber, exactly the M1b/M12 pattern (untyped =>
+#       no false Transaction identity asserted, no SHACL target) (M27c)
+#     - opda:accountName/accountNumber/sortCode/reference (domain
+#       opda:Organisation) — the landlord contact IS a real Organisation,
+#       keyed on its own genuine name (contact.nameOrOrganisation) (M27d)
+#     - opda:numberOfSellers/numberOfNonUkResidentSellers (domain
+#       opda:Proprietorship) — flat under propertyPack.ownership itself (a
+#       singleton, like propertyPricing in M23), keyed on the subject
+#       property's own uprn (reachable: same iterator as M4) (M27e)
+#   NOT mapped in this batch (deliberately deferred, not a documented
+#   permanent gap): the managedFreeholdOrCommonhold oneOf branch's own
+#   exclusive leaves (hasFixedRentcharge, dealsWithDayToDayMaintenanceOfManagedArea,
+#   forTheManagedAreas, fromTheOwners) — leasehold was chosen as the richer,
+#   representative branch per the handover; closing managedFreeholdOrCommonhold
+#   is future work, not a structural gap.
+# ---------------------------------------------------------------------------
+<#CertificateOfComplianceFeeAmount> a rr:TriplesMap ;
+  rml:logicalSource [ rml:source "INSTANCE.json" ;
+                      rml:referenceFormulation ql:JSONPath ;
+                      rml:iterator "$.propertyPack.ownership.ownershipsToBeTransferred[*]" ] ;
+  rr:subjectMap [ rr:template "https://opda.org.uk/pdtf/harness/data/estate/{titleNumber}/amount/certificateOfComplianceFee-{leaseholdInformation.requiredDocuments.certificateOfComplianceFee}" ;
+                  rr:class opda:MonetaryAmount ] ;
+  rr:predicateObjectMap [ rr:predicate opda:amount ;
+      rr:objectMap [ rml:reference "leaseholdInformation.requiredDocuments.certificateOfComplianceFee" ; rr:datatype xsd:decimal ] ] ;  # <- propertyPack.ownership.ownershipsToBeTransferred[].leaseholdInformation.requiredDocuments.certificateOfComplianceFee
+  rr:predicateObjectMap [ rr:predicate opda:currency ;
+      rr:object <https://opda.org.uk/pdtf/scheme/currency/GBP> ] .
+
+<#OwnershipRiskAssessment> a rr:TriplesMap ;
+  rml:logicalSource [ rml:source "INSTANCE.json" ;
+                      rml:referenceFormulation ql:JSONPath ;
+                      rml:iterator "$.propertyPack.ownership.ownershipsToBeTransferred[*]" ] ;
+  rr:subjectMap [ rr:template "https://opda.org.uk/pdtf/harness/data/riskassessment/estate-{titleNumber}" ;
+                  rr:class opda:RiskAssessment ] ;
+  rr:predicateObjectMap [ rr:predicate prov:wasGeneratedBy ;
+      rr:objectMap [ rr:template "https://opda.org.uk/pdtf/harness/data/riskassessment/estate-{titleNumber}/run" ] ] ;  # SHACL: class-promoted opda:RiskAssessment requires prov:wasGeneratedBy
+  rr:predicateObjectMap [ rr:predicate opda:dateRemedialActionRequired ;
+      rr:objectMap [ rml:reference "leaseholdInformation.buildingsInsurance.managedAreasCoveredByPolicy.riskAssessments.dateRemedialActionRequired" ; rr:datatype xsd:date ] ] .  # <- …leaseholdInformation.buildingsInsurance.managedAreasCoveredByPolicy.riskAssessments.dateRemedialActionRequired
+
+<#OwnershipRiskAssessmentRunActivity> a rr:TriplesMap ;
+  rml:logicalSource [ rml:source "INSTANCE.json" ;
+                      rml:referenceFormulation ql:JSONPath ;
+                      rml:iterator "$.propertyPack.ownership.ownershipsToBeTransferred[*]" ] ;
+  rr:subjectMap [ rr:template "https://opda.org.uk/pdtf/harness/data/riskassessment/estate-{titleNumber}/run" ;
+                  rr:class prov:Activity ] .
+
+<#OwnershipTransactionRecord> a rr:TriplesMap ;
+  rml:logicalSource [ rml:source "INSTANCE.json" ;
+                      rml:referenceFormulation ql:JSONPath ;
+                      rml:iterator "$.propertyPack.ownership.ownershipsToBeTransferred[*]" ] ;
+  rr:subjectMap [ rr:template "https://opda.org.uk/pdtf/harness/data/ownershiprecord/{titleNumber}" ] ;
+  rr:predicateObjectMap [ rr:predicate opda:confirmation ;
+      rr:objectMap [ rml:reference "leaseholdInformation.confirmationOfAccuracy.confirmation" ; rr:datatype xsd:boolean ] ] ;  # <- …leaseholdInformation.confirmationOfAccuracy.confirmation
+  rr:predicateObjectMap [ rr:predicate opda:costsApplicableToTheDeed ;
+      rr:objectMap [ rr:template "https://opda.org.uk/pdtf/harness/data/ownershiprecord/{titleNumber}/amount/costsApplicableToTheDeed-{leaseholdInformation.transferAndRegistration.deedOfCovenantRequired.costsApplicableToTheDeed}" ] ] ;  # <- …leaseholdInformation.transferAndRegistration.deedOfCovenantRequired.costsApplicableToTheDeed (MonetaryAmount join, see below)
+  rr:predicateObjectMap [ rr:predicate opda:feeIncludingVAT ;
+      rr:objectMap [ rr:template "https://opda.org.uk/pdtf/harness/data/ownershiprecord/{titleNumber}/amount/feeIncludingVAT-{leaseholdInformation.contactDetails.serviceContactAssignments.noticeOfAssignmentAndCharge.landlord.feeIncludingVAT}" ] ] .  # <- …leaseholdInformation.contactDetails.serviceContactAssignments.noticeOfAssignmentAndCharge.landlord.feeIncludingVAT (MonetaryAmount join, see below)
+
+<#CostsApplicableToTheDeedAmount> a rr:TriplesMap ;
+  rml:logicalSource [ rml:source "INSTANCE.json" ;
+                      rml:referenceFormulation ql:JSONPath ;
+                      rml:iterator "$.propertyPack.ownership.ownershipsToBeTransferred[*]" ] ;
+  rr:subjectMap [ rr:template "https://opda.org.uk/pdtf/harness/data/ownershiprecord/{titleNumber}/amount/costsApplicableToTheDeed-{leaseholdInformation.transferAndRegistration.deedOfCovenantRequired.costsApplicableToTheDeed}" ;
+                  rr:class opda:MonetaryAmount ] ;
+  rr:predicateObjectMap [ rr:predicate opda:amount ;
+      rr:objectMap [ rml:reference "leaseholdInformation.transferAndRegistration.deedOfCovenantRequired.costsApplicableToTheDeed" ; rr:datatype xsd:decimal ] ] ;  # <- propertyPack.ownership.ownershipsToBeTransferred[].leaseholdInformation.transferAndRegistration.deedOfCovenantRequired.costsApplicableToTheDeed
+  rr:predicateObjectMap [ rr:predicate opda:currency ;
+      rr:object <https://opda.org.uk/pdtf/scheme/currency/GBP> ] .
+
+<#FeeIncludingVATAmount> a rr:TriplesMap ;
+  rml:logicalSource [ rml:source "INSTANCE.json" ;
+                      rml:referenceFormulation ql:JSONPath ;
+                      rml:iterator "$.propertyPack.ownership.ownershipsToBeTransferred[*]" ] ;
+  rr:subjectMap [ rr:template "https://opda.org.uk/pdtf/harness/data/ownershiprecord/{titleNumber}/amount/feeIncludingVAT-{leaseholdInformation.contactDetails.serviceContactAssignments.noticeOfAssignmentAndCharge.landlord.feeIncludingVAT}" ;
+                  rr:class opda:MonetaryAmount ] ;
+  rr:predicateObjectMap [ rr:predicate opda:amount ;
+      rr:objectMap [ rml:reference "leaseholdInformation.contactDetails.serviceContactAssignments.noticeOfAssignmentAndCharge.landlord.feeIncludingVAT" ; rr:datatype xsd:decimal ] ] ;  # <- propertyPack.ownership.ownershipsToBeTransferred[].leaseholdInformation.contactDetails.serviceContactAssignments.noticeOfAssignmentAndCharge.landlord.feeIncludingVAT
+  rr:predicateObjectMap [ rr:predicate opda:currency ;
+      rr:object <https://opda.org.uk/pdtf/scheme/currency/GBP> ] .
+
+<#LandlordOrganisation> a rr:TriplesMap ;
+  rml:logicalSource [ rml:source "INSTANCE.json" ;
+                      rml:referenceFormulation ql:JSONPath ;
+                      rml:iterator "$.propertyPack.ownership.ownershipsToBeTransferred[*]" ] ;
+  rr:subjectMap [ rr:template "https://opda.org.uk/pdtf/harness/data/org/{leaseholdInformation.contactDetails.contacts.landlord.contact.nameOrOrganisation}" ;
+                  rr:class opda:Organisation ] ;
+  rr:predicateObjectMap [ rr:predicate opda:accountName ;
+      rr:objectMap [ rml:reference "leaseholdInformation.contactDetails.contacts.landlord.bankDetails.accountName" ; rr:datatype xsd:string ] ] ;  # <- …leaseholdInformation.contactDetails.contacts.landlord.bankDetails.accountName
+  rr:predicateObjectMap [ rr:predicate opda:accountNumber ;
+      rr:objectMap [ rml:reference "leaseholdInformation.contactDetails.contacts.landlord.bankDetails.accountNumber" ; rr:datatype xsd:string ] ] ;  # <- …leaseholdInformation.contactDetails.contacts.landlord.bankDetails.accountNumber
+  rr:predicateObjectMap [ rr:predicate opda:sortCode ;
+      rr:objectMap [ rml:reference "leaseholdInformation.contactDetails.contacts.landlord.bankDetails.sortCode" ; rr:datatype xsd:string ] ] ;  # <- …leaseholdInformation.contactDetails.contacts.landlord.bankDetails.sortCode
+  rr:predicateObjectMap [ rr:predicate opda:reference ;
+      rr:objectMap [ rml:reference "leaseholdInformation.contactDetails.contacts.landlord.bankDetails.reference" ; rr:datatype xsd:string ] ] .  # <- …leaseholdInformation.contactDetails.contacts.landlord.bankDetails.reference
+
+<#OwnershipProprietorship> a rr:TriplesMap ;
+  rml:logicalSource [ rml:source "INSTANCE.json" ;
+                      rml:referenceFormulation ql:JSONPath ;
+                      rml:iterator "$.propertyPack" ] ;
+  rr:subjectMap [ rr:template "https://opda.org.uk/pdtf/harness/data/proprietorship/{uprn}" ;
+                  rr:class opda:Proprietorship ] ;
+  rr:predicateObjectMap [ rr:predicate opda:numberOfSellers ;
+      rr:objectMap [ rml:reference "ownership.numberOfSellers" ; rr:datatype xsd:integer ] ] ;  # <- propertyPack.ownership.numberOfSellers
+  rr:predicateObjectMap [ rr:predicate opda:numberOfNonUkResidentSellers ;
+      rr:objectMap [ rml:reference "ownership.numberOfNonUkResidentSellers" ; rr:datatype xsd:integer ] ] .  # <- propertyPack.ownership.numberOfNonUkResidentSellers
+
+# M28 — a cluster of gap properties (isInsured, hasBeenFlooded,
+#   hasSmartHomeSystems, isSharedOwnership, isGroundRentPayable,
+#   sellerContributesToServiceCharge, ownerType (Proprietor),
+#   hasSprayFoamInstalled, hasValidGuaranteesOrWarranties,
+#   isLocatedOverCommercialPremises, isSupplyMetered, areBoundariesUniform,
+#   soldWithVacantPossession, offMainsDrainageSystemType) all have REAL,
+#   locatable JSON Schema occurrences (verified — e.g. isInsured is
+#   propertyPack.insurance.isInsured, already present in testdata/03), so
+#   these are NOT the same "no clean node to bind onto" shape as M14/M18/M20.
+#   NOT mapped here because every one of them has rdfs:range skos:Concept —
+#   they need the same per-value-filter + constant-scheme-IRI pattern as M3c
+#   (opda:hasAssertedCapacity), not a plain rml:reference. That is a
+#   distinct, separate unit of work (confirm each scheme's members exist,
+#   then N TriplesMaps per enum value) — the same broader ODR-0029 R3
+#   Concept-typing effort flagged separately (see the RML session's team
+#   report), not a mechanical "add a predicateObjectMap" gap. Deliberately
+#   left open rather than force a plain-literal binding that would violate
+#   the term's own declared range.
+#   opda:tenureKind (also in this dct:source family, ODR-0008 §Q5a) has NO
+#   real JSON occurrence at all (verified: zero matches anywhere in the v3
+#   schema) — a genuinely conceptual, ODR-only term, not a gap of this kind.
