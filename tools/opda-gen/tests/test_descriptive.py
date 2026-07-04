@@ -462,6 +462,25 @@ def test_risk_assessment_node_shape_present() -> None:
     assert sub and (sub[0], SH.node, OPDA_SHAPE.RiskAssessmentShape) in g
 
 
+def test_risk_assessment_acyclicity_constraint_present() -> None:
+    """ODR-0024 R11: a separate sh:sparql NodeShape enforces that a
+    RiskAssessment is never its own transitive opda:hasSubAssessment — the
+    sh:node recursion in RiskAssessmentShape (above) validates each
+    sub-assessment's own shape but cannot itself detect a cycle, since core
+    SHACL has no transitive-closure test; this constraint walks
+    opda:hasSubAssessment+ as a SPARQL property path instead."""
+    g = _descriptive_shapes_graph()
+    shape_iri = OPDA_SHAPE.RiskAssessmentAcyclicityConstraint
+    assert (shape_iri, RDF.type, SH.NodeShape) in g
+    assert (shape_iri, SH.targetClass, OPDA.RiskAssessment) in g
+    assert (shape_iri, SH.severity, SH.Violation) in g
+    sparql_nodes = list(g.objects(shape_iri, SH.sparql))
+    assert len(sparql_nodes) == 1
+    select_query = str(next(g.objects(sparql_nodes[0], SH.select)))
+    assert "hasSubAssessment+" in select_query
+    assert "$this" in select_query
+
+
 def test_peril_property_shape_pins_the_12_concepts() -> None:
     """The opda:peril property shape's sh:in lists exactly the 12 PerilScheme
     concept IRIs (a dereferenceable peril, never an opaque string)."""

@@ -2145,24 +2145,53 @@ def build_descriptive_shapes() -> Graph:
     g.add((p_sub, SH.path, OPDA.hasSubAssessment))
     g.add((p_sub, SH.node, OPDA_SHAPE.RiskAssessmentShape))
     g.add((p_sub, SH.severity, SH.Violation))
-    # ODR-0024 R11: acyclicity guard. Core SHACL cannot express "the
-    # opda:hasSubAssessment graph is a tree" (no transitive-closure test in a
-    # core property shape), so the guard is (a) sh:maxCount on each step is left
-    # OPEN (a result legitimately carries many sub-results) but (b) the
-    # self-reference is bounded by this documented acyclicity requirement: a
-    # RiskAssessment MUST NOT be its own (transitive) sub-assessment. A
-    # validator enforcing it needs a SHACL-AF closure rule (deferred — flagged
-    # here, not minted, to avoid a speculative AF rule); the note records the
-    # constraint so the recursion is not read as permitting cycles.
+    # ODR-0024 R11: acyclicity guard. sh:node recursion alone only re-checks
+    # each sub-assessment's local shape — it cannot itself detect a cycle
+    # (core SHACL property shapes have no transitive-closure test), so
+    # sh:maxCount on this step is left OPEN (a result legitimately carries
+    # many sub-results) and the actual acyclicity enforcement lives in the
+    # separate RiskAssessmentAcyclicityConstraint sh:sparql shape below,
+    # which walks opda:hasSubAssessment+ as a SPARQL property path.
     g.add((p_sub, SH.message, Literal(
         "Each opda:hasSubAssessment (a riskSubcategories[] entry) MUST "
         "itself satisfy the RiskAssessment shape — the self-referential "
         "result recursion via sh:node (ODR-0008d Rule 1c / Rule 4). "
-        "ACYCLICITY (ODR-0024 R11): the sub-assessment graph MUST be acyclic "
-        "— a RiskAssessment MUST NOT be its own transitive sub-assessment "
-        "(core SHACL cannot test transitive closure; a SHACL-AF closure rule "
-        "is the enforcement vehicle, deferred).",
+        "ACYCLICITY (ODR-0024 R11) is enforced separately by "
+        "opda:shape:RiskAssessmentAcyclicityConstraint, a SPARQL property-path "
+        "constraint (core SHACL sh:node recursion cannot itself test "
+        "transitive closure).",
         lang="en",
+    )))
+
+    # ODR-0024 R11 acyclicity constraint. A separate top-level shape (not a
+    # further sh:property on RiskAssessmentShape) because a genuine cycle
+    # test needs a SPARQL property path (`+`), which sh:node/sh:path alone
+    # cannot express — each sh:node recursion step only re-validates the
+    # local shape, never the path taken to reach it, so a true cycle (A's
+    # sub-assessment is B, B's is A) would pass every individual sh:node
+    # check while still being cyclic. This was flagged as deferred when
+    # RiskAssessmentShape was first authored; now implemented.
+    acyclic_iri = OPDA_SHAPE.RiskAssessmentAcyclicityConstraint
+    acyclic_sparql = BNode()
+    g.add((acyclic_iri, RDF.type, SH.NodeShape))
+    g.add((acyclic_iri, SH.targetClass, OPDA.RiskAssessment))
+    g.add((acyclic_iri, SH.sparql, acyclic_sparql))
+    g.add((acyclic_iri, SH.severity, SH.Violation))
+    g.add((acyclic_iri, SH.message, Literal(
+        "ODR-0024 R11 acyclicity guard: a RiskAssessment MUST NOT be its own "
+        "transitive opda:hasSubAssessment (a cyclic riskSubcategories[] "
+        "chain). RiskAssessmentShape's sh:node recursion validates each "
+        "sub-assessment's own shape (ODR-0008d Rule 1c / Rule 4) but cannot "
+        "itself detect a cycle; this SPARQL property-path constraint is the "
+        "enforcement vehicle.",
+        lang="en",
+    )))
+    g.add((acyclic_iri, DCTERMS.source, _ODR_0024_R11))
+    g.add((acyclic_sparql, SH.select, Literal(
+        "PREFIX opda: <https://opda.org.uk/pdtf/>\n"
+        "SELECT $this WHERE {\n"
+        "  $this opda:hasSubAssessment+ $this .\n"
+        "}"
     )))
 
     # --- ODR-0022 §4 / S027 R4: transaction-scoped fixtures-list shape ---
