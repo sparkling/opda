@@ -72,6 +72,7 @@ def run(mapping: Path, data: Path | None, out: Path) -> int:
 
     # Imported lazily so `--help` and arg errors don't pay the import cost.
     import morph_kgc
+    import morph_kgc_patch  # noqa: F401 — applies the _read_json dropna fix on import; see its module docstring
 
     out.parent.mkdir(parents=True, exist_ok=True)
 
