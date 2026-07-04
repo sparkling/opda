@@ -119,7 +119,7 @@
         "floodRisk": {
           "riskIndicator": "Yes",
           "riskSubcategories": [
-            { "subCategory": "Surface Water", "riskIndicator": "Yes" }
+            { "subCategory": "Surface Water", "riskIndicator": "Yes", "actionAlertRating": 3 }
           ]
         }
       },
@@ -127,7 +127,7 @@
         "climateRisk": {
           "riskIndicator": "Yes",
           "riskSubcategories": [
-            { "subCategory": "Subsidence", "riskIndicator": "No" }
+            { "subCategory": "Subsidence", "riskIndicator": "No", "actionAlertRating": 1 }
           ]
         }
       }
