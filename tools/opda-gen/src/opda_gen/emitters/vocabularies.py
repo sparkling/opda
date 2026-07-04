@@ -607,14 +607,20 @@ def _ownership_type_scheme() -> Scheme:
     members_data = [
         ("Freehold", "Outright ownership of the property and the land it sits on."),
         (
-            "Leasehold",
-            "Ownership of the property for a fixed period under a lease from "
-            "the freeholder.",
+            "Managed Freehold",
+            "A freehold where there are shared amenities, the maintenance of "
+            "which is paid for through an estate rentcharge, service charge, "
+            "or an informal or formal contribution.",
         ),
         (
             "Commonhold",
             "Freehold ownership of a unit within a commonhold development, "
             "with shared ownership of common parts.",
+        ),
+        (
+            "Leasehold",
+            "Ownership of the property for a fixed period under a lease from "
+            "the freeholder.",
         ),
         ("Other", "Ownership type falling outside the standard categories."),
     ]
@@ -625,13 +631,18 @@ def _ownership_type_scheme() -> Scheme:
         title="Legal-estate ownership type",
         definition=(
             "Classification of a legal estate's ownership structure "
-            "(Freehold, Leasehold, Commonhold, Other)."
+            "(Freehold, Managed Freehold, Commonhold, Leasehold, Other)."
         ),
         ufo_category="Quale-in-Region",
         scope_note=(
             "UFO: Quale-in-Region (Guizzardi 2005 Ch. 4). DOLCE: "
-            "Quality-Region (Masolo D18 §4.3). NTS2 four-value canonical "
-            "set used as authority (per data dictionary)."
+            "Quality-Region (Masolo D18 §4.3). Originally minted as an "
+            "NTS2 four-value canonical set (per data dictionary); "
+            "'Managed Freehold' added as the schema's real 5th enum value "
+            "(confirmed against the PDTF v3 schema's own description text) "
+            "— the NTS2 scoping predates the managedFreeholdOrCommonhold "
+            "ownership branch being modelled at all, not a deliberate "
+            "exclusion of it."
         ),
         steward="Kendall (LegalEstate steward per S008 Q2)",
         scheme_source=_ODR_0011_SECTION_8A,
