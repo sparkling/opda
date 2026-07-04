@@ -255,22 +255,12 @@
                   rr:class opda:Property ] ;
   rr:predicateObjectMap [ rr:predicate opda:hasUPRN ;
       rr:objectMap [ rml:reference "uprn" ; rr:datatype xsd:string ] ] ;  # <- propertyPack.uprn (BASPI5 identity-key assertion; distinct from the {uprn} template key itself)
-  rr:predicateObjectMap [ rr:predicate opda:propertyType ;
-      rr:objectMap [ rml:reference "buildInformation.building.propertyType" ; rr:datatype xsd:string ] ] ;  # <- propertyPack.buildInformation.building.propertyType
-  rr:predicateObjectMap [ rr:predicate opda:builtForm ;
-      rr:objectMap [ rml:reference "buildInformation.building.builtForm" ; rr:datatype xsd:string ] ] ;  # <- propertyPack.buildInformation.building.builtForm
   rr:predicateObjectMap [ rr:predicate opda:yearOfBuild ;
       rr:objectMap [ rml:reference "buildInformation.yearOfBuild" ; rr:datatype xsd:gYear ] ] ;  # <- propertyPack.buildInformation.yearOfBuild (present in testdata/03)
   rr:predicateObjectMap [ rr:predicate opda:hasFloorplan ;
       rr:objectMap [ rml:reference "buildInformation.roomDimensions.hasFloorplan" ; rr:datatype xsd:string ] ] ;  # <- propertyPack.buildInformation.roomDimensions.hasFloorplan
-  rr:predicateObjectMap [ rr:predicate opda:priceQualifier ;
-      rr:objectMap [ rml:reference "priceInformation.priceQualifier" ; rr:datatype xsd:string ] ] ;  # <- propertyPack.priceInformation.priceQualifier  (sh:in — value "Offers over" ∈ scheme)
   rr:predicateObjectMap [ rr:predicate opda:councilTaxBand ;
       rr:objectMap [ rml:reference "councilTax.councilTaxBand" ; rr:datatype xsd:string ] ] ;  # <- propertyPack.councilTax.councilTaxBand
-  rr:predicateObjectMap [ rr:predicate opda:currentEnergyRating ;
-      rr:objectMap [ rml:reference "energyEfficiency.certificate.currentEnergyRating" ; rr:datatype xsd:string ] ] ;  # <- propertyPack.energyEfficiency.certificate.currentEnergyRating
-  rr:predicateObjectMap [ rr:predicate opda:typeOfConnection ;
-      rr:objectMap [ rml:reference "connectivity.broadband.typeOfConnection" ; rr:datatype xsd:string ] ] ;  # <- propertyPack.connectivity.broadband.typeOfConnection  (sh:in — "FTTC (Fibre to the Cabinet)" ∈ scheme)
   rr:predicateObjectMap [ rr:predicate opda:supplier ;
       rr:objectMap [ rml:reference "electricity.mainsElectricity.supplier" ; rr:datatype xsd:string ] ] ;  # <- propertyPack.electricity.mainsElectricity.supplier
   rr:predicateObjectMap [ rr:predicate opda:supplier ;
@@ -285,16 +275,12 @@
       rr:objectMap [ rml:reference "waterAndDrainage.water.mainsWater.stopcock.location" ; rr:datatype xsd:string ] ] ;  # <- propertyPack.waterAndDrainage.water.mainsWater.stopcock.location
   rr:predicateObjectMap [ rr:predicate opda:location ;
       rr:objectMap [ rml:reference "waterAndDrainage.water.mainsWater.waterMeter.location" ; rr:datatype xsd:string ] ] ;  # <- propertyPack.waterAndDrainage.water.mainsWater.waterMeter.location
-  rr:predicateObjectMap [ rr:predicate opda:centralHeatingFuelType ;
-      rr:objectMap [ rml:reference "heating.heatingSystem.centralHeatingDetails.centralHeatingFuel.centralHeatingFuelType" ; rr:datatype xsd:string ] ] ;  # <- propertyPack.heating.heatingSystem.centralHeatingDetails.centralHeatingFuel.centralHeatingFuelType
   rr:predicateObjectMap [ rr:predicate opda:otherCentralHeatingFuelType ;
       rr:objectMap [ rml:reference "heating.heatingSystem.centralHeatingDetails.centralHeatingFuel.otherCentralHeatingFuelType" ; rr:datatype xsd:string ] ] ;  # <- propertyPack.heating.heatingSystem.centralHeatingDetails.centralHeatingFuel.otherCentralHeatingFuelType
   rr:predicateObjectMap [ rr:predicate opda:centralHeatingInstalled ;
       rr:objectMap [ rml:reference "heating.heatingSystem.centralHeatingDetails.centralHeatingInstalled" ; rr:datatype xsd:string ] ] ;  # <- propertyPack.heating.heatingSystem.centralHeatingDetails.centralHeatingInstalled
   rr:predicateObjectMap [ rr:predicate opda:heatingLastServicedDate ;
       rr:objectMap [ rml:reference "heating.heatingSystem.centralHeatingDetails.heatingLastServicedDate" ; rr:datatype xsd:date ] ] ;  # <- propertyPack.heating.heatingSystem.centralHeatingDetails.heatingLastServicedDate
-  rr:predicateObjectMap [ rr:predicate opda:heatingType ;
-      rr:objectMap [ rml:reference "heating.heatingSystem.heatingType" ; rr:datatype xsd:string ] ] ;  # <- propertyPack.heating.heatingSystem.heatingType
   rr:predicateObjectMap [ rr:predicate opda:consentsObtained ;
       rr:objectMap [ rml:reference "listingAndConservation.hasTreePreservationOrder.workCarriedOut.consentsObtained" ; rr:datatype xsd:string ] ] ;  # <- propertyPack.listingAndConservation.hasTreePreservationOrder.workCarriedOut.consentsObtained
   rr:predicateObjectMap [ rr:predicate opda:loftBoarded ;
@@ -331,22 +317,12 @@
       rr:objectMap [ rml:reference "residentialPropertyFeatures.diningAreas" ; rr:datatype xsd:integer ] ] ;  # <- propertyPack.residentialPropertyFeatures.diningAreas
   rr:predicateObjectMap [ rr:predicate opda:outsideAreas ;
       rr:objectMap [ rml:reference "residentialPropertyFeatures.outsideAreas[]" ; rr:datatype xsd:string ] ] ;  # <- propertyPack.residentialPropertyFeatures.outsideAreas (array of strings)
-  rr:predicateObjectMap [ rr:predicate opda:unitaryAuthority ;
-      rr:objectMap [ rml:reference "localAuthority.unitaryAuthority" ; rr:datatype xsd:string ] ] ;  # <- propertyPack.localAuthority.unitaryAuthority
-  rr:predicateObjectMap [ rr:predicate opda:localAuthorityReference ;
-      rr:objectMap [ rml:reference "localAuthority.localAuthorityReference" ; rr:datatype xsd:string ] ] ;  # <- propertyPack.localAuthority.localAuthorityReference
-  rr:predicateObjectMap [ rr:predicate opda:councilSearchTurnaroundTimeInWorkingDays ;
-      rr:objectMap [ rml:reference "localAuthority.councilSearchTurnaroundTimeInWorkingDays" ; rr:datatype xsd:integer ] ] ;  # <- propertyPack.localAuthority.councilSearchTurnaroundTimeInWorkingDays
-  rr:predicateObjectMap [ rr:predicate opda:regulatedSearchTurnaroundTimeInWorkingDays ;
-      rr:objectMap [ rml:reference "localAuthority.regulatedSearchTurnaroundTimeInWorkingDays" ; rr:datatype xsd:integer ] ] ;  # <- propertyPack.localAuthority.regulatedSearchTurnaroundTimeInWorkingDays
   rr:predicateObjectMap [ rr:predicate opda:heading ;
       rr:objectMap [ rml:reference "location.googleStreetViewPOV.heading" ; rr:datatype xsd:decimal ] ] ;  # <- propertyPack.location.googleStreetViewPOV.heading
   rr:predicateObjectMap [ rr:predicate opda:pitch ;
       rr:objectMap [ rml:reference "location.googleStreetViewPOV.pitch" ; rr:datatype xsd:decimal ] ] ;  # <- propertyPack.location.googleStreetViewPOV.pitch
   rr:predicateObjectMap [ rr:predicate opda:zoom ;
       rr:objectMap [ rml:reference "location.googleStreetViewPOV.zoom" ; rr:datatype xsd:decimal ] ] ;  # <- propertyPack.location.googleStreetViewPOV.zoom
-  rr:predicateObjectMap [ rr:predicate opda:marketingTenure ;
-      rr:objectMap [ rml:reference "marketingTenure" ; rr:datatype xsd:string ] ] ;  # <- propertyPack.marketingTenure
   rr:predicateObjectMap [ rr:predicate opda:isFirstRegistration ;
       rr:objectMap [ rml:reference "ownership.isFirstRegistration" ; rr:datatype xsd:string ] ] ;  # <- propertyPack.ownership.isFirstRegistration
   rr:predicateObjectMap [ rr:predicate opda:isLimitedCompanySale ;
@@ -637,7 +613,15 @@
   rr:predicateObjectMap [ rr:predicate opda:countyCouncil ;
       rr:objectMap [ rml:reference "countyCouncil" ; rr:datatype xsd:string ] ] ;  # <- propertyPack.localAuthority.countyCouncil
   rr:predicateObjectMap [ rr:predicate opda:districtCouncil ;
-      rr:objectMap [ rml:reference "districtCouncil" ; rr:datatype xsd:string ] ] .  # <- propertyPack.localAuthority.districtCouncil
+      rr:objectMap [ rml:reference "districtCouncil" ; rr:datatype xsd:string ] ] ;  # <- propertyPack.localAuthority.districtCouncil
+  rr:predicateObjectMap [ rr:predicate opda:unitaryAuthority ;
+      rr:objectMap [ rml:reference "unitaryAuthority" ; rr:datatype xsd:string ] ] ;  # <- propertyPack.localAuthority.unitaryAuthority (moved from M4 — domain is opda:Search, not opda:Property)
+  rr:predicateObjectMap [ rr:predicate opda:localAuthorityReference ;
+      rr:objectMap [ rml:reference "localAuthorityReference" ; rr:datatype xsd:string ] ] ;  # <- propertyPack.localAuthority.localAuthorityReference (moved from M4 — domain is opda:Search, not opda:Property)
+  rr:predicateObjectMap [ rr:predicate opda:councilSearchTurnaroundTimeInWorkingDays ;
+      rr:objectMap [ rml:reference "councilSearchTurnaroundTimeInWorkingDays" ; rr:datatype xsd:integer ] ] ;  # <- propertyPack.localAuthority.councilSearchTurnaroundTimeInWorkingDays (moved from M4 — domain is opda:Search, not opda:Property)
+  rr:predicateObjectMap [ rr:predicate opda:regulatedSearchTurnaroundTimeInWorkingDays ;
+      rr:objectMap [ rml:reference "regulatedSearchTurnaroundTimeInWorkingDays" ; rr:datatype xsd:integer ] ] .  # <- propertyPack.localAuthority.regulatedSearchTurnaroundTimeInWorkingDays (moved from M4 — domain is opda:Search, not opda:Property)
 
 # prov:wasGeneratedBy's range is prov:Activity — type the referenced node
 # (same gap as EPCCertificate's and Search's run nodes, above).
@@ -659,8 +643,6 @@
                       rml:iterator "$.propertyPack.ownership.ownershipsToBeTransferred[*]" ] ;
   rr:subjectMap [ rr:template "https://opda.org.uk/pdtf/harness/data/estate/{titleNumber}" ;
                   rr:class opda:LegalEstate ] ;
-  rr:predicateObjectMap [ rr:predicate opda:ownershipType ;
-      rr:objectMap [ rml:reference "ownershipType" ; rr:datatype xsd:string ] ] ;  # <- propertyPack.ownership.ownershipsToBeTransferred[].ownershipType
   rr:predicateObjectMap [ rr:predicate opda:startYearOfLease ;
       rr:objectMap [ rml:reference "leaseholdInformation.leaseTerm.startYearOfLease" ; rr:datatype xsd:gYear ] ] ;  # <- …leaseholdInformation.leaseTerm.startYearOfLease
   rr:predicateObjectMap [ rr:predicate opda:lengthOfLeaseInYears ;
@@ -889,9 +871,14 @@
 #   Selected via a Darwin-Mode genome/paretoFront proof-of-concept: this
 #   full-coverage genome strictly dominated two narrower candidates (more
 #   nodes + more fields, same 0-violation soundness).
-#   NB opda:transportType is sh:in-restricted to opda:TransportTypeScheme —
-#   the Darwin harness caught an invented test value ("Rail") that isn't a
-#   scheme member; corrected to the schema's own enum ("National rail station").
+#   opda:ofstedRating and opda:transportType are sh:in-restricted to SKOS
+#   schemes (real array context — schools[*]/transport[*] — so the per-value
+#   JSONPath-filter + constant-scheme-IRI pattern from M3c applies cleanly,
+#   unlike the single-object enum properties on Property/LegalEstate).
+#   Every scheme member is mapped below (M14a/M14b), matching M3c's
+#   exhaustive style. (Earlier in this session, the Darwin harness caught an
+#   invented test value — "Rail" — that wasn't a real scheme member;
+#   corrected to the schema's own enum, "National rail station".)
 #   opda:schoolType is NOT mapped here: the JSON field is a nested per-phase
 #   yes/no OBJECT (nursery/primary/secondary/…), not a scalar, while the
 #   ontology declares it xsd:string — needs a derivation opda-gen didn't
@@ -909,14 +896,49 @@
       rr:objectMap [ rml:reference "distanceInMiles" ; rr:datatype xsd:decimal ] ] ;  # <- propertyPack.nearbyFacilities.schools[].distanceInMiles
   rr:predicateObjectMap [ rr:predicate opda:ageRange ;
       rr:objectMap [ rml:reference "ageRange" ; rr:datatype xsd:string ] ] ;  # <- propertyPack.nearbyFacilities.schools[].ageRange
-  rr:predicateObjectMap [ rr:predicate opda:ofstedRating ;
-      rr:objectMap [ rml:reference "ofstedRating" ; rr:datatype xsd:string ] ] ;  # <- propertyPack.nearbyFacilities.schools[].ofstedRating
   rr:predicateObjectMap [ rr:predicate opda:pupils ;
       rr:objectMap [ rml:reference "pupils" ; rr:datatype xsd:integer ] ] ;  # <- propertyPack.nearbyFacilities.schools[].pupils
   rr:predicateObjectMap [ rr:predicate opda:religiousCharacter ;
       rr:objectMap [ rml:reference "religiousCharacter" ; rr:datatype xsd:string ] ] ;  # <- propertyPack.nearbyFacilities.schools[].religiousCharacter
   rr:predicateObjectMap [ rr:predicate opda:otherRating ;
       rr:objectMap [ rml:reference "otherRating" ; rr:datatype xsd:string ] ] .  # <- propertyPack.nearbyFacilities.schools[].otherRating
+
+# M14a — opda:ofstedRating -> opda:OfstedRatingScheme member IRI (all 5
+#   real schema enum values; same subject reuse as M3c).
+<#OfstedRatingOutstanding> a rr:TriplesMap ;
+  rml:logicalSource [ rml:source "INSTANCE.json" ; rml:referenceFormulation ql:JSONPath ;
+                      rml:iterator "$.propertyPack.nearbyFacilities.schools[?(@.ofstedRating==\"Outstanding\")]" ] ;
+  rr:subjectMap [ rr:template "https://opda.org.uk/pdtf/harness/data/facility/school/{name}" ] ;
+  rr:predicateObjectMap [ rr:predicate opda:ofstedRating ;
+      rr:objectMap [ rr:constant <https://opda.org.uk/pdtf/scheme/ofstedRating/Outstanding> ] ] .
+
+<#OfstedRatingGood> a rr:TriplesMap ;
+  rml:logicalSource [ rml:source "INSTANCE.json" ; rml:referenceFormulation ql:JSONPath ;
+                      rml:iterator "$.propertyPack.nearbyFacilities.schools[?(@.ofstedRating==\"Good\")]" ] ;
+  rr:subjectMap [ rr:template "https://opda.org.uk/pdtf/harness/data/facility/school/{name}" ] ;
+  rr:predicateObjectMap [ rr:predicate opda:ofstedRating ;
+      rr:objectMap [ rr:constant <https://opda.org.uk/pdtf/scheme/ofstedRating/Good> ] ] .
+
+<#OfstedRatingRequiresImprovement> a rr:TriplesMap ;
+  rml:logicalSource [ rml:source "INSTANCE.json" ; rml:referenceFormulation ql:JSONPath ;
+                      rml:iterator "$.propertyPack.nearbyFacilities.schools[?(@.ofstedRating==\"Requires Improvement\")]" ] ;
+  rr:subjectMap [ rr:template "https://opda.org.uk/pdtf/harness/data/facility/school/{name}" ] ;
+  rr:predicateObjectMap [ rr:predicate opda:ofstedRating ;
+      rr:objectMap [ rr:constant <https://opda.org.uk/pdtf/scheme/ofstedRating/Requires-Improvement> ] ] .
+
+<#OfstedRatingInadequate> a rr:TriplesMap ;
+  rml:logicalSource [ rml:source "INSTANCE.json" ; rml:referenceFormulation ql:JSONPath ;
+                      rml:iterator "$.propertyPack.nearbyFacilities.schools[?(@.ofstedRating==\"Inadequate\")]" ] ;
+  rr:subjectMap [ rr:template "https://opda.org.uk/pdtf/harness/data/facility/school/{name}" ] ;
+  rr:predicateObjectMap [ rr:predicate opda:ofstedRating ;
+      rr:objectMap [ rr:constant <https://opda.org.uk/pdtf/scheme/ofstedRating/Inadequate> ] ] .
+
+<#OfstedRatingOther> a rr:TriplesMap ;
+  rml:logicalSource [ rml:source "INSTANCE.json" ; rml:referenceFormulation ql:JSONPath ;
+                      rml:iterator "$.propertyPack.nearbyFacilities.schools[?(@.ofstedRating==\"Other\")]" ] ;
+  rr:subjectMap [ rr:template "https://opda.org.uk/pdtf/harness/data/facility/school/{name}" ] ;
+  rr:predicateObjectMap [ rr:predicate opda:ofstedRating ;
+      rr:objectMap [ rr:constant <https://opda.org.uk/pdtf/scheme/ofstedRating/Other> ] ] .
 
 <#NearbyFacility_Transport> a rr:TriplesMap ;
   rml:logicalSource [ rml:source "INSTANCE.json" ;
@@ -927,9 +949,79 @@
   rr:predicateObjectMap [ rr:predicate opda:name ;
       rr:objectMap [ rml:reference "name" ; rr:datatype xsd:string ] ] ;  # <- propertyPack.nearbyFacilities.transport[].name
   rr:predicateObjectMap [ rr:predicate opda:distanceInMiles ;
-      rr:objectMap [ rml:reference "distanceInMiles" ; rr:datatype xsd:decimal ] ] ;  # <- propertyPack.nearbyFacilities.transport[].distanceInMiles
+      rr:objectMap [ rml:reference "distanceInMiles" ; rr:datatype xsd:decimal ] ] .  # <- propertyPack.nearbyFacilities.transport[].distanceInMiles
+
+# M14b — opda:transportType -> opda:TransportTypeScheme member IRI (all 10
+#   real schema enum values; same subject reuse as M3c).
+<#TransportTypeLocalConnection> a rr:TriplesMap ;
+  rml:logicalSource [ rml:source "INSTANCE.json" ; rml:referenceFormulation ql:JSONPath ;
+                      rml:iterator "$.propertyPack.nearbyFacilities.transport[?(@.transportType==\"Local connection\")]" ] ;
+  rr:subjectMap [ rr:template "https://opda.org.uk/pdtf/harness/data/facility/transport/{name}" ] ;
   rr:predicateObjectMap [ rr:predicate opda:transportType ;
-      rr:objectMap [ rml:reference "transportType" ; rr:datatype xsd:string ] ] .  # <- propertyPack.nearbyFacilities.transport[].transportType (sh:in TransportTypeScheme)
+      rr:objectMap [ rr:constant <https://opda.org.uk/pdtf/scheme/transportType/Local-connection> ] ] .
+
+<#TransportTypeFerryTerminal> a rr:TriplesMap ;
+  rml:logicalSource [ rml:source "INSTANCE.json" ; rml:referenceFormulation ql:JSONPath ;
+                      rml:iterator "$.propertyPack.nearbyFacilities.transport[?(@.transportType==\"Ferry terminal\")]" ] ;
+  rr:subjectMap [ rr:template "https://opda.org.uk/pdtf/harness/data/facility/transport/{name}" ] ;
+  rr:predicateObjectMap [ rr:predicate opda:transportType ;
+      rr:objectMap [ rr:constant <https://opda.org.uk/pdtf/scheme/transportType/Ferry-terminal> ] ] .
+
+<#TransportTypeBusStopStation> a rr:TriplesMap ;
+  rml:logicalSource [ rml:source "INSTANCE.json" ; rml:referenceFormulation ql:JSONPath ;
+                      rml:iterator "$.propertyPack.nearbyFacilities.transport[?(@.transportType==\"Bus stop/station\")]" ] ;
+  rr:subjectMap [ rr:template "https://opda.org.uk/pdtf/harness/data/facility/transport/{name}" ] ;
+  rr:predicateObjectMap [ rr:predicate opda:transportType ;
+      rr:objectMap [ rr:constant <https://opda.org.uk/pdtf/scheme/transportType/Bus-stop-station> ] ] .
+
+<#TransportTypeNationalRailStation> a rr:TriplesMap ;
+  rml:logicalSource [ rml:source "INSTANCE.json" ; rml:referenceFormulation ql:JSONPath ;
+                      rml:iterator "$.propertyPack.nearbyFacilities.transport[?(@.transportType==\"National rail station\")]" ] ;
+  rr:subjectMap [ rr:template "https://opda.org.uk/pdtf/harness/data/facility/transport/{name}" ] ;
+  rr:predicateObjectMap [ rr:predicate opda:transportType ;
+      rr:objectMap [ rr:constant <https://opda.org.uk/pdtf/scheme/transportType/National-rail-station> ] ] .
+
+<#TransportTypeTrunkRoadMotorway> a rr:TriplesMap ;
+  rml:logicalSource [ rml:source "INSTANCE.json" ; rml:referenceFormulation ql:JSONPath ;
+                      rml:iterator "$.propertyPack.nearbyFacilities.transport[?(@.transportType==\"Trunk road/motorway\")]" ] ;
+  rr:subjectMap [ rr:template "https://opda.org.uk/pdtf/harness/data/facility/transport/{name}" ] ;
+  rr:predicateObjectMap [ rr:predicate opda:transportType ;
+      rr:objectMap [ rr:constant <https://opda.org.uk/pdtf/scheme/transportType/Trunk-road-motorway> ] ] .
+
+<#TransportTypeAirport> a rr:TriplesMap ;
+  rml:logicalSource [ rml:source "INSTANCE.json" ; rml:referenceFormulation ql:JSONPath ;
+                      rml:iterator "$.propertyPack.nearbyFacilities.transport[?(@.transportType==\"Airport\")]" ] ;
+  rr:subjectMap [ rr:template "https://opda.org.uk/pdtf/harness/data/facility/transport/{name}" ] ;
+  rr:predicateObjectMap [ rr:predicate opda:transportType ;
+      rr:objectMap [ rr:constant <https://opda.org.uk/pdtf/scheme/transportType/Airport> ] ] .
+
+<#TransportTypeHelipad> a rr:TriplesMap ;
+  rml:logicalSource [ rml:source "INSTANCE.json" ; rml:referenceFormulation ql:JSONPath ;
+                      rml:iterator "$.propertyPack.nearbyFacilities.transport[?(@.transportType==\"Helipad\")]" ] ;
+  rr:subjectMap [ rr:template "https://opda.org.uk/pdtf/harness/data/facility/transport/{name}" ] ;
+  rr:predicateObjectMap [ rr:predicate opda:transportType ;
+      rr:objectMap [ rr:constant <https://opda.org.uk/pdtf/scheme/transportType/Helipad> ] ] .
+
+<#TransportTypeOther> a rr:TriplesMap ;
+  rml:logicalSource [ rml:source "INSTANCE.json" ; rml:referenceFormulation ql:JSONPath ;
+                      rml:iterator "$.propertyPack.nearbyFacilities.transport[?(@.transportType==\"Other\")]" ] ;
+  rr:subjectMap [ rr:template "https://opda.org.uk/pdtf/harness/data/facility/transport/{name}" ] ;
+  rr:predicateObjectMap [ rr:predicate opda:transportType ;
+      rr:objectMap [ rr:constant <https://opda.org.uk/pdtf/scheme/transportType/Other> ] ] .
+
+<#TransportTypeTramway> a rr:TriplesMap ;
+  rml:logicalSource [ rml:source "INSTANCE.json" ; rml:referenceFormulation ql:JSONPath ;
+                      rml:iterator "$.propertyPack.nearbyFacilities.transport[?(@.transportType==\"Tramway\")]" ] ;
+  rr:subjectMap [ rr:template "https://opda.org.uk/pdtf/harness/data/facility/transport/{name}" ] ;
+  rr:predicateObjectMap [ rr:predicate opda:transportType ;
+      rr:objectMap [ rr:constant <https://opda.org.uk/pdtf/scheme/transportType/Tramway> ] ] .
+
+<#TransportTypeUndergroundSubway> a rr:TriplesMap ;
+  rml:logicalSource [ rml:source "INSTANCE.json" ; rml:referenceFormulation ql:JSONPath ;
+                      rml:iterator "$.propertyPack.nearbyFacilities.transport[?(@.transportType==\"Underground/Subway\")]" ] ;
+  rr:subjectMap [ rr:template "https://opda.org.uk/pdtf/harness/data/facility/transport/{name}" ] ;
+  rr:predicateObjectMap [ rr:predicate opda:transportType ;
+      rr:objectMap [ rr:constant <https://opda.org.uk/pdtf/scheme/transportType/Underground-Subway> ] ] .
 
 <#NearbyFacility_HealthCare> a rr:TriplesMap ;
   rml:logicalSource [ rml:source "INSTANCE.json" ;
@@ -1003,7 +1095,8 @@
   rml:logicalSource [ rml:source "INSTANCE.json" ;
                       rml:referenceFormulation ql:JSONPath ;
                       rml:iterator "$.chain.onwardPurchase[*]" ] ;
-  rr:subjectMap [ rr:template "https://opda.org.uk/pdtf/harness/data/txn/{transactionId}" ] ;
+  rr:subjectMap [ rr:template "https://opda.org.uk/pdtf/harness/data/txn/{transactionId}" ;
+                  rr:class opda:Transaction ] ;
   rr:predicateObjectMap [ rr:predicate opda:sellingAgent ;
       rr:objectMap [ rml:reference "sellingAgent" ; rr:datatype xsd:string ] ] .  # <- chain.onwardPurchase[].sellingAgent
 
@@ -1444,3 +1537,29 @@
 #   opda:tenureKind (also in this dct:source family, ODR-0008 §Q5a) has NO
 #   real JSON occurrence at all (verified: zero matches anywhere in the v3
 #   schema) — a genuinely conceptual, ODR-only term, not a gap of this kind.
+
+# M29 — a further 9 properties (propertyType, builtForm, priceQualifier,
+#   currentEnergyRating, typeOfConnection, centralHeatingFuelType,
+#   heatingType, marketingTenure, ownershipType) were bound EARLIER this
+#   session as plain xsd:string references on M4 (Property) / M7
+#   (LegalEstate) — genuinely wrong, now REMOVED. Each has rdfs:range
+#   skos:Concept, same as M28's cluster, but these all sit in a single,
+#   always-present JSON OBJECT ($.propertyPack or one ownershipsToBeTransferred[]
+#   item), not a real array — so the per-value-filter technique that fixed
+#   M14's ofstedRating/transportType (M14a/M14b, above) cannot apply here
+#   (JSONPath `[?(...)]` filter brackets only work on arrays; the councilTax/
+#   CouncilTaxAmount amendment in ADR-0057 already documents this same
+#   limitation for a different reason). A correct fix needs either an
+#   RML-FNML Python lookup/slugify UDF (untested in this mapping; a genuinely
+#   new technique) or restructuring/pre-processing the source data — both
+#   out of scope for this pass (team decision, not attempted here). Left as
+#   a documented gap, same shape as M28's cluster, rather than ship a
+#   binding that actively violates the term's own declared range.
+#   Separately, static ontology-internal individuals (opda:AddressVariant*
+#   Refinement, opda:*EvidenceRefinement, typed opda:DPVMappingRefinement)
+#   also fail an opda:targetsKind domain-shape check once the ontology
+#   itself is loaded as SHACL validation context — confirmed these are NOT
+#   emitted by this RML mapping at all (zero references to targetsKind or
+#   DPVMappingRecord anywhere in this file); a pure ontology-authoring
+#   matter (DPVMappingRefinement vs. targetsKind's declared domain
+#   DPVMappingRecord), out of this mapping's scope to fix.

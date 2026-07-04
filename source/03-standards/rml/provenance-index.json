@@ -1575,8 +1575,8 @@
     },
     {
       "leaf_path": "participants[].organisation",
-      "predicate": "opda:organisation",
-      "predicate_iri": "https://opda.org.uk/pdtf/organisation",
+      "predicate": "opda:organisationName",
+      "predicate_iri": "https://opda.org.uk/pdtf/organisationName",
       "kind": "Datatype",
       "domain": "opda:Organisation",
       "range": "http://www.w3.org/2001/XMLSchema#string",
@@ -1645,13 +1645,15 @@
     },
     {
       "leaf_path": "propertyPack.buildInformation.building.builtForm",
-      "predicate": "opda:builtForm",
-      "predicate_iri": "https://opda.org.uk/pdtf/builtForm",
+      "predicate": "GAP",
+      "predicate_iri": null,
       "kind": "Datatype",
       "domain": "opda:Property",
       "range": "http://www.w3.org/2001/XMLSchema#string",
       "layer": 1,
-      "flags": []
+      "flags": [
+        "concept_range_unmapped"
+      ]
     },
     {
       "leaf_path": "propertyPack.buildInformation.building.entranceFloor",
@@ -1695,13 +1697,15 @@
     },
     {
       "leaf_path": "propertyPack.buildInformation.building.propertyType",
-      "predicate": "opda:propertyType",
-      "predicate_iri": "https://opda.org.uk/pdtf/propertyType",
+      "predicate": "GAP",
+      "predicate_iri": null,
       "kind": "Datatype",
       "domain": "opda:Property",
       "range": "http://www.w3.org/2001/XMLSchema#string",
       "layer": 1,
-      "flags": []
+      "flags": [
+        "concept_range_unmapped"
+      ]
     },
     {
       "leaf_path": "propertyPack.buildInformation.internalArea.area",
@@ -1865,13 +1869,15 @@
     },
     {
       "leaf_path": "propertyPack.connectivity.broadband.typeOfConnection",
-      "predicate": "opda:typeOfConnection",
-      "predicate_iri": "https://opda.org.uk/pdtf/typeOfConnection",
+      "predicate": "GAP",
+      "predicate_iri": null,
       "kind": "Datatype",
       "domain": "opda:Property",
       "range": "http://www.w3.org/2001/XMLSchema#string",
       "layer": 1,
-      "flags": []
+      "flags": [
+        "concept_range_unmapped"
+      ]
     },
     {
       "leaf_path": "propertyPack.connectivity.cableSatelliteTV.dateToBeConnected",
@@ -2132,13 +2138,15 @@
     },
     {
       "leaf_path": "propertyPack.energyEfficiency.certificate.currentEnergyRating",
-      "predicate": "opda:currentEnergyRating",
-      "predicate_iri": "https://opda.org.uk/pdtf/currentEnergyRating",
+      "predicate": "GAP",
+      "predicate_iri": null,
       "kind": "Datatype",
       "domain": "opda:Property",
       "range": "http://www.w3.org/2001/XMLSchema#string",
       "layer": 1,
-      "flags": []
+      "flags": [
+        "concept_range_unmapped"
+      ]
     },
     {
       "leaf_path": "propertyPack.environmentalIssues.climate.climateRisk.riskSubcategories[].subCategory",
@@ -2192,13 +2200,15 @@
     },
     {
       "leaf_path": "propertyPack.heating.heatingSystem.centralHeatingDetails.centralHeatingFuel.centralHeatingFuelType",
-      "predicate": "opda:centralHeatingFuelType",
-      "predicate_iri": "https://opda.org.uk/pdtf/centralHeatingFuelType",
+      "predicate": "GAP",
+      "predicate_iri": null,
       "kind": "Datatype",
       "domain": "opda:Property",
       "range": "http://www.w3.org/2001/XMLSchema#string",
       "layer": 1,
-      "flags": []
+      "flags": [
+        "concept_range_unmapped"
+      ]
     },
     {
       "leaf_path": "propertyPack.heating.heatingSystem.centralHeatingDetails.centralHeatingFuel.gasMeter.location",
@@ -2262,13 +2272,15 @@
     },
     {
       "leaf_path": "propertyPack.heating.heatingSystem.heatingType",
-      "predicate": "opda:heatingType",
-      "predicate_iri": "https://opda.org.uk/pdtf/heatingType",
+      "predicate": "GAP",
+      "predicate_iri": null,
       "kind": "Datatype",
       "domain": "opda:Property",
       "range": "http://www.w3.org/2001/XMLSchema#string",
       "layer": 1,
-      "flags": []
+      "flags": [
+        "concept_range_unmapped"
+      ]
     },
     {
       "leaf_path": "propertyPack.heating.otherHeatingFeatures",
@@ -2643,13 +2655,15 @@
     },
     {
       "leaf_path": "propertyPack.marketingTenure",
-      "predicate": "opda:marketingTenure",
-      "predicate_iri": "https://opda.org.uk/pdtf/marketingTenure",
+      "predicate": "GAP",
+      "predicate_iri": null,
       "kind": "Datatype",
       "domain": "opda:Property",
       "range": "http://www.w3.org/2001/XMLSchema#string",
       "layer": 1,
-      "flags": []
+      "flags": [
+        "concept_range_unmapped"
+      ]
     },
     {
       "leaf_path": "propertyPack.media[].mediaUrl",
@@ -4114,13 +4128,15 @@
     },
     {
       "leaf_path": "propertyPack.ownership.ownershipsToBeTransferred[].ownershipType",
-      "predicate": "opda:ownershipType",
-      "predicate_iri": "https://opda.org.uk/pdtf/ownershipType",
+      "predicate": "GAP",
+      "predicate_iri": null,
       "kind": "Datatype",
       "domain": "opda:LegalEstate",
       "range": "http://www.w3.org/2001/XMLSchema#string",
       "layer": 1,
-      "flags": []
+      "flags": [
+        "concept_range_unmapped"
+      ]
     },
     {
       "leaf_path": "propertyPack.ownership.ownershipsToBeTransferred[].titleNumber",
@@ -4167,13 +4183,15 @@
     },
     {
       "leaf_path": "propertyPack.priceInformation.priceQualifier",
-      "predicate": "opda:priceQualifier",
-      "predicate_iri": "https://opda.org.uk/pdtf/priceQualifier",
+      "predicate": "GAP",
+      "predicate_iri": null,
       "kind": "Datatype",
       "domain": "opda:Property",
       "range": "http://www.w3.org/2001/XMLSchema#string",
       "layer": 1,
-      "flags": []
+      "flags": [
+        "concept_range_unmapped"
+      ]
     },
     {
       "leaf_path": "propertyPack.priceInformation.saleAtUndervalue",
