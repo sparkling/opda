@@ -148,23 +148,52 @@ Two high-value leaves are worth calling out because they surprise reviewers:
   `dct:source` of `opda:supplier` in A1's index, but it IS semantically the shared
   supplier property, so it is mapped **best-effort as layer-2** onto `opda:supplier`
   (CONTRACT §Layer-2) rather than left in the gap register.
-- **`opda:Address` — RESOLVED at the ontology level (2026-07-05); RML mapping work
-  pending as separate, subsequent work.** ODR-0015 (accepted) ratifies `opda:Address`
-  with structural fields `opda:line1` / `opda:line2` / `opda:postTown` / `opda:postcode`
-  / `opda:country` / `opda:inspireFeatureId`, but `opda-gen` had only ever emitted
-  `opda:addressVariant` of those seven — a real, confirmed ontology-generation gap. When
-  first flagged, this was characterised as blocked pending "an ontology-owner decision"
-  citing ODR-0015's Q3 "held-as-live dissent" — but per the user's instruction to
-  critique any intractability finding before accepting it: the ODR's own Consequences
-  section states the dissent *"does not block the verdict... it preserves a falsifiable
+- **`opda:Address` — RESOLVED at both the ontology level and the RML-mapping level
+  (2026-07-05).** ODR-0015 (accepted) ratifies `opda:Address` with structural fields
+  `opda:line1` / `opda:line2` / `opda:postTown` / `opda:postcode` / `opda:country` /
+  `opda:inspireFeatureId`, but `opda-gen` had only ever emitted `opda:addressVariant`
+  of those seven — a real, confirmed ontology-generation gap. When first flagged, this
+  was characterised as blocked pending "an ontology-owner decision" citing ODR-0015's
+  Q3 "held-as-live dissent" — but per the user's instruction to critique any
+  intractability finding before accepting it: the ODR's own Consequences section
+  states the dissent *"does not block the verdict... it preserves a falsifiable
   re-open path"* (a future, conditional trigger, not a current blocker). The 6 missing
   properties plus a matching SHACL shape were declared directly (`tools/opda-gen`,
   regenerated corpus, all `ci-ontology` gates pass) — the same "ratified but never
   implemented" pattern as this session's `opda:leaseTerm`/`opda:dependsOnTransaction`
-  fixes. Binding the ~15 real PDTF address occurrences (`propertyPack.address`,
-  `participants[].address`, nearby-facility/ownership contact addresses, the HMLR
-  register-extract `propertyAddress`, etc.) onto these now-real properties is real RML
-  work still to be done — not attempted in this entry.
+  fixes.
+
+  **RML binding (M34, `mapping/opda-pdtf.rml.ttl`)**: of the ~9 real PDTF address
+  occurrences, exactly 2 honestly fit one of the 3 closed `addressVariant` values —
+  `propertyPack.address` (`"marketing"`, by elimination against the other two variants
+  and real-world PDTF convention — no literal `titleAddress`/`marketingAddress` field
+  exists in the current v3 schema, ODR-0015's naming predates this schema revision) and
+  `propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.propertyAddress`
+  (`"title"` — confirmed via schema traversal: "HMLR Official Copy Register Extract").
+  `"inspire"` has zero real source data anywhere in `pdtf-transaction.json` (confirmed
+  by direct grep — no `inspireId`/`inspireFeatureId` leaf exists in v3) and is not
+  attempted. Both mint via M4's own `$.propertyPack` iterator (avoiding the ancestor-
+  context-jump limitation M33 already documents) and join `opda:Property opda:hasAddress`
+  the new node, same idiom as `<#PropertyEPCJoin>`. The register-extract's own
+  `propertyAddress` is schema `oneOf(object|array)` and the one fixture exercising it
+  (`01-conformant-full`) has a genuinely heterogeneous 2-item array (postcode facet and
+  address-line facet on separate items) — handled with the ADR-0057 Amendment 1
+  existence-filter technique rather than a fragile fixed-index assumption. Verified
+  materialising correctly in `01-conformant-full` and `03-multi-participant`;
+  `make rml-test` / `make rml-pytest` / `make provenance-test` / `make dct-audit` all
+  green.
+
+  **Left unmapped, checked against real schema text (not assumed from field names)**:
+  `participants[].address`, `nearbyFacilities.{schools,healthCare}[*].contact.address`
+  — schema title is the generic "Address" with no HMLR/listing-agent/INSPIRE framing,
+  so none honestly fit the 3 closed variant values; and
+  `localLandCharges[*].applicantAddress` / `leaseParty[*].address` /
+  `charityDetails.charityAddress` / `surveys[*].declaration.companyAddress` — party-
+  contact addresses embedded inside the HMLR register extract's own substructure
+  (not the Property's address), which would additionally need Person/Organisation
+  nodes minted for each party — a separate, deeper gap, out of this batch's scope.
+  None of these force a plausible-sounding tag to satisfy `addressVariant`'s required-
+  field constraint; see M34's own comment in the mapping file for the full reasoning.
 - **`opda:Survey` has zero domain/range connections anywhere in `opda-merged.ttl`** —
   confirmed by direct search (no property has `rdfs:domain opda:Survey` or
   `rdfs:range opda:Survey`). The two real `propertyPack.surveys[]` leaves that DO have
