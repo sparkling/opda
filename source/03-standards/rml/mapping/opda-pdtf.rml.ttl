@@ -346,7 +346,54 @@
   rr:predicateObjectMap [ rr:predicate opda:marketingTenure ;
       rr:objectMap [ rml:reference "marketingTenure" ; rr:datatype xsd:string ] ] ;  # <- propertyPack.marketingTenure
   rr:predicateObjectMap [ rr:predicate opda:councilTaxAnnualCharge ;
-      rr:objectMap [ rr:template "https://opda.org.uk/pdtf/harness/data/property/{uprn}/amount/councilTax-{councilTax.councilTaxAnnualCharge}" ] ] .  # <- propertyPack.councilTax.councilTaxAnnualCharge (MonetaryAmount join, see M4b)
+      rr:objectMap [ rr:template "https://opda.org.uk/pdtf/harness/data/property/{uprn}/amount/councilTax-{councilTax.councilTaxAnnualCharge}" ] ] ;  # <- propertyPack.councilTax.councilTaxAnnualCharge (MonetaryAmount join, see M4b)
+  rr:predicateObjectMap [ rr:predicate opda:accessibilityAndAdaptations ;
+      rr:objectMap [ rml:reference "typeOfConstruction.accessibilityAndAdaptations[]" ; rr:datatype xsd:string ] ] ;  # <- propertyPack.typeOfConstruction.accessibilityAndAdaptations
+  rr:predicateObjectMap [ rr:predicate opda:abilityToResideAtProperty ;
+      rr:objectMap [ rml:reference "typeOfConstruction.buildingSafety.abilityToResideAtProperty" ; rr:datatype xsd:string ] ] ;  # <- propertyPack.typeOfConstruction.buildingSafety.abilityToResideAtProperty
+  rr:predicateObjectMap [ rr:predicate opda:mprn ;
+      rr:objectMap [ rml:reference "heating.heatingSystem.centralHeatingDetails.centralHeatingFuel.gasMeter.mprn" ; rr:datatype xsd:string ] ] ;  # <- propertyPack.heating.heatingSystem.centralHeatingDetails.centralHeatingFuel.gasMeter.mprn
+  rr:predicateObjectMap [ rr:predicate opda:location ;
+      rr:objectMap [ rml:reference "heating.heatingSystem.centralHeatingDetails.centralHeatingFuel.gasMeter.location" ; rr:datatype xsd:string ] ] ;  # <- propertyPack.heating.heatingSystem.centralHeatingDetails.centralHeatingFuel.gasMeter.location
+  rr:predicateObjectMap [ rr:predicate opda:otherHeatingFeatures ;
+      rr:objectMap [ rml:reference "heating.otherHeatingFeatures[]" ; rr:datatype xsd:string ] ] ;  # <- propertyPack.heating.otherHeatingFeatures
+  rr:predicateObjectMap [ rr:predicate opda:parkingArrangements ;
+      rr:objectMap [ rml:reference "parking.parkingArrangements[]" ; rr:datatype xsd:string ] ] ;  # <- propertyPack.parking.parkingArrangements
+  rr:predicateObjectMap [ rr:predicate opda:hasFloodDefences ;
+      rr:objectMap [ rml:reference "environmentalIssues.flooding.floodDefences.hasFloodDefences" ; rr:datatype xsd:string ] ] ;  # <- propertyPack.environmentalIssues.flooding.floodDefences.hasFloodDefences
+  rr:predicateObjectMap [ rr:predicate opda:typeOfFlooding ;
+      rr:objectMap [ rml:reference "environmentalIssues.flooding.historicalFlooding.typeOfFlooding[]" ; rr:datatype xsd:string ] ] ;  # <- propertyPack.environmentalIssues.flooding.historicalFlooding.typeOfFlooding
+  rr:predicateObjectMap [ rr:predicate opda:willingToInsure ;
+      rr:objectMap [ rml:reference "alterationsAndChanges.planningPermissionBreaches.willingToInsure" ; rr:datatype xsd:string ] ] ;  # <- propertyPack.alterationsAndChanges.planningPermissionBreaches.willingToInsure
+  rr:predicateObjectMap [ rr:predicate opda:landlordInsuresIfFlat ;
+      rr:objectMap [ rml:reference "insurance.landlordInsuresIfFlat" ; rr:datatype xsd:string ] ] ;  # <- propertyPack.insurance.landlordInsuresIfFlat
+  rr:predicateObjectMap [ rr:predicate opda:managementPlanInPlace ;
+      rr:objectMap [ rml:reference "specialistIssues.japaneseKnotweed.managementPlanInPlace" ; rr:datatype xsd:string ] ] ;  # <- propertyPack.specialistIssues.japaneseKnotweed.managementPlanInPlace
+  rr:predicateObjectMap [ rr:predicate opda:handoverOnCompletion ;
+      rr:objectMap [ rml:reference "smartHomeSystems.handoverOnCompletion" ; rr:datatype xsd:boolean ] ] ;  # <- propertyPack.smartHomeSystems.handoverOnCompletion
+  rr:predicateObjectMap [ rr:predicate opda:logbookProvider ;
+      rr:objectMap [ rml:reference "completionAndMoving.digitalPropertyLogbook.logbookProvider" ; rr:datatype xsd:string ] ] ;  # <- propertyPack.completionAndMoving.digitalPropertyLogbook.logbookProvider
+  rr:predicateObjectMap [ rr:predicate opda:willHandoverLogbook ;
+      rr:objectMap [ rml:reference "completionAndMoving.digitalPropertyLogbook.willHandoverLogbook" ; rr:datatype xsd:boolean ] ] ;  # <- propertyPack.completionAndMoving.digitalPropertyLogbook.willHandoverLogbook
+  rr:predicateObjectMap [ rr:predicate opda:dateToBeConnected ;
+      rr:objectMap [ rml:reference "connectivity.telephone.dateToBeConnected" ; rr:datatype xsd:date ] ] ;  # <- propertyPack.connectivity.telephone.dateToBeConnected
+  rr:predicateObjectMap [ rr:predicate opda:annualCostOfPermit ;
+      rr:objectMap [ rr:template "https://opda.org.uk/pdtf/harness/data/property/{uprn}/amount/parkingPermit-{parking.controlledParking.annualCostOfPermit}" ] ] .  # <- propertyPack.parking.controlledParking.annualCostOfPermit (MonetaryAmount join, see M4d)
+
+# ---------------------------------------------------------------------------
+# M4d — annualCostOfPermit MonetaryAmount value node. Same optional-field-in-
+#   template technique as M4b (councilTaxAnnualCharge) — see that comment.
+# ---------------------------------------------------------------------------
+<#ParkingPermitAmount> a rr:TriplesMap ;
+  rml:logicalSource [ rml:source "INSTANCE.json" ;
+                      rml:referenceFormulation ql:JSONPath ;
+                      rml:iterator "$.propertyPack" ] ;
+  rr:subjectMap [ rr:template "https://opda.org.uk/pdtf/harness/data/property/{uprn}/amount/parkingPermit-{parking.controlledParking.annualCostOfPermit}" ;
+                  rr:class opda:MonetaryAmount ] ;
+  rr:predicateObjectMap [ rr:predicate opda:amount ;
+      rr:objectMap [ rml:reference "parking.controlledParking.annualCostOfPermit" ; rr:datatype xsd:decimal ] ] ;  # <- propertyPack.parking.controlledParking.annualCostOfPermit
+  rr:predicateObjectMap [ rr:predicate opda:currency ;
+      rr:object <https://opda.org.uk/pdtf/scheme/currency/GBP> ] .
 
 # ---------------------------------------------------------------------------
 # M4b — councilTaxAnnualCharge MonetaryAmount value node.

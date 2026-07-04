@@ -60,6 +60,86 @@
       "isHMO": "No",
       "isStudentAccommodation": "No"
     },
+    "typeOfConstruction": {
+      "accessibilityAndAdaptations": ["Ramp"],
+      "buildingSafety": {
+        "yesNo": "Yes",
+        "details": "External wall cladding survey required",
+        "abilityToResideAtProperty": "Yes, no impact"
+      }
+    },
+    "heating": {
+      "heatingSystem": {
+        "heatingType": "Central heating",
+        "centralHeatingDetails": {
+          "centralHeatingFuel": {
+            "centralHeatingFuelType": "Mains gas",
+            "supplier": "British Gas",
+            "gasMeter": {
+              "location": "Under the stairs",
+              "mprn": 1234567890
+            }
+          }
+        }
+      },
+      "otherHeatingFeatures": ["Log burner"]
+    },
+    "parking": {
+      "parkingArrangements": ["Off street", "Garage"],
+      "controlledParking": {
+        "yesNo": "Yes",
+        "annualCostOfPermit": 150
+      }
+    },
+    "environmentalIssues": {
+      "flooding": {
+        "floodDefences": {
+          "hasFloodDefences": "Yes",
+          "details": "Flood barrier at rear of property"
+        },
+        "historicalFlooding": {
+          "hasBeenFlooded": "Yes",
+          "typeOfFlooding": ["Surface water"],
+          "details": "Minor surface water flooding in 2014"
+        }
+      }
+    },
+    "alterationsAndChanges": {
+      "planningPermissionBreaches": {
+        "yesNo": "Yes",
+        "details": "Extension built without full sign-off",
+        "willingToInsure": "Yes"
+      }
+    },
+    "insurance": {
+      "isInsured": "Yes",
+      "details": "Standard buildings and contents policy",
+      "landlordInsuresIfFlat": "Not applicable"
+    },
+    "specialistIssues": {
+      "japaneseKnotweed": {
+        "yesNo": "Yes",
+        "managementPlanInPlace": "Yes"
+      }
+    },
+    "smartHomeSystems": {
+      "hasSmartHomeSystems": "Yes",
+      "handoverOnCompletion": true
+    },
+    "completionAndMoving": {
+      "digitalPropertyLogbook": {
+        "yesNo": "Yes",
+        "logbookProvider": "Coadjute",
+        "willHandoverLogbook": true
+      }
+    },
+    "connectivity": {
+      "telephone": {
+        "yesNo": "Yes",
+        "dateToBeConnected": "2026-08-01",
+        "supplier": "BT"
+      }
+    },
     "residentialPropertyFeatures": {
       "bedrooms": 3,
       "bathrooms": 1,
