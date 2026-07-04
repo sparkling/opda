@@ -41,7 +41,7 @@
 <https://opda.org.uk/pdtf/shape/Baspi5_LegalEstateShape>
     rdf:type sh:NodeShape ;
     dct:source <https://www.basp.uk/forms/baspi5#A1.3> ;
-    sh:property _:b3ded49cd2172, _:b42e32f6dc153, _:b431700016e65, _:ba98a4bba13cf, _:bffb0117ea640 ;
+    sh:property _:b3ded49cd2172, _:b42e32f6dc153, _:b431700016e65, _:b8a94f89d7d1b, _:ba98a4bba13cf ;
     sh:targetClass opda:LegalEstate .
 
 <https://opda.org.uk/pdtf/shape/Baspi5_PropertyShape>
@@ -238,6 +238,10 @@ _:b244c074fc553
     rdf:first <https://opda.org.uk/pdtf/scheme/tenureKind/Commonhold> ;
     rdf:rest rdf:nil .
 
+_:b2505fb69ea8a
+    rdf:first <https://opda.org.uk/pdtf/scheme/ownershipType/Leasehold> ;
+    rdf:rest _:b7a9eb0fa50b0 .
+
 _:b25e1a9c7f8a8
     rdf:first <https://opda.org.uk/pdtf/scheme/builtForm/Mid-terrace> ;
     rdf:rest _:b3df45f2c40e3 .
@@ -324,10 +328,6 @@ _:b3863c0205f2c
     sh:path <http://www.w3.org/2006/vcard/ns#postal-code> ;
     sh:severity sh:Violation .
 
-_:b394286d48322
-    rdf:first <https://opda.org.uk/pdtf/scheme/ownershipType/Freehold> ;
-    rdf:rest _:b497f3d458645 .
-
 _:b3ded49cd2172
     dct:source <https://www.basp.uk/forms/baspi5#A1.5.1> ;
     dash:editor dash:EnumSelectEditor ;
@@ -403,10 +403,6 @@ _:b479caefed83e
     sh:order "3"^^xsd:integer ;
     sh:path opda:propertyType ;
     sh:severity sh:Violation .
-
-_:b497f3d458645
-    rdf:first <https://opda.org.uk/pdtf/scheme/ownershipType/Leasehold> ;
-    rdf:rest _:baff7fb0800c4 .
 
 _:b4bde751a318d
     rdf:first <https://opda.org.uk/pdtf/scheme/role/Prospective-Buyer> ;
@@ -507,6 +503,10 @@ _:b5d285156c5a3
 _:b5d285156c5a3
     rdf:first <https://opda.org.uk/pdtf/scheme/yesNo/No> ;
     rdf:rest rdf:nil .
+
+_:b5e5bbb4f50f4
+    rdf:first <https://opda.org.uk/pdtf/scheme/ownershipType/Managed-Freehold> ;
+    rdf:rest _:bc55e2deb3cf7 .
 
 _:b604cac89cd68
     rdf:first <https://opda.org.uk/pdtf/scheme/propertyType/Maisonette> ;
@@ -609,6 +609,20 @@ _:b885e32d50ff3
     rdf:first <https://opda.org.uk/pdtf/scheme/currentEnergyRating/B> ;
     rdf:rest _:bf45ac119f302 .
 
+_:b8a94f89d7d1b
+    dct:source <https://www.basp.uk/forms/baspi5#A1.3.0.2> ;
+    dash:editor dash:EnumSelectEditor ;
+    dash:viewer dash:LabelViewer ;
+    sh:group opda:Baspi5_Ownership_Group ;
+    sh:in _:bee97f2883daf ;
+    sh:maxCount "1"^^xsd:integer ;
+    sh:message "BASPI5 question A1.3.0.2: ownership type is required."@en ;
+    sh:minCount "1"^^xsd:integer ;
+    sh:nodeKind sh:IRI ;
+    sh:order "1"^^xsd:integer ;
+    sh:path opda:ownershipType ;
+    sh:severity sh:Violation .
+
 _:b8bd17941e155
     rdf:first <https://opda.org.uk/pdtf/scheme/currentEnergyRating/A> ;
     rdf:rest _:b885e32d50ff3 .
@@ -694,10 +708,6 @@ _:bac62dca14b22
     sh:path opda:soldWithVacantPossession ;
     sh:severity sh:Violation .
 
-_:baff7fb0800c4
-    rdf:first <https://opda.org.uk/pdtf/scheme/ownershipType/Commonhold> ;
-    rdf:rest _:b7a9eb0fa50b0 .
-
 _:bb4bf3a231542
     rdf:first <https://opda.org.uk/pdtf/scheme/sellersCapacity/Other> ;
     rdf:rest rdf:nil .
@@ -743,6 +753,10 @@ _:bc36b424d0e28
 _:bc473980b4756
     rdf:first <https://opda.org.uk/pdtf/scheme/sellersCapacity/Under-Power-of-Attorney> ;
     rdf:rest _:b0c190ebf868c .
+
+_:bc55e2deb3cf7
+    rdf:first <https://opda.org.uk/pdtf/scheme/ownershipType/Commonhold> ;
+    rdf:rest _:b2505fb69ea8a .
 
 _:bcbf10646f453
     rdf:first <https://opda.org.uk/pdtf/scheme/offMainsDrainageSystemType/Other> ;
@@ -795,6 +809,10 @@ _:bee4c8942a097
     rdf:first <https://opda.org.uk/pdtf/scheme/offMainsDrainageSystemType/Sustainable-Drainage-System> ;
     rdf:rest _:b1bf6006aff1a .
 
+_:bee97f2883daf
+    rdf:first <https://opda.org.uk/pdtf/scheme/ownershipType/Freehold> ;
+    rdf:rest _:b5e5bbb4f50f4 .
+
 _:bf45ac119f302
     rdf:first <https://opda.org.uk/pdtf/scheme/currentEnergyRating/C> ;
     rdf:rest _:b980d837479b7 .
@@ -802,17 +820,3 @@ _:bf45ac119f302
 _:bfb92942381fb
     rdf:first <https://opda.org.uk/pdtf/scheme/builtForm/Other> ;
     rdf:rest rdf:nil .
-
-_:bffb0117ea640
-    dct:source <https://www.basp.uk/forms/baspi5#A1.3.0.2> ;
-    dash:editor dash:EnumSelectEditor ;
-    dash:viewer dash:LabelViewer ;
-    sh:group opda:Baspi5_Ownership_Group ;
-    sh:in _:b394286d48322 ;
-    sh:maxCount "1"^^xsd:integer ;
-    sh:message "BASPI5 question A1.3.0.2: ownership type is required."@en ;
-    sh:minCount "1"^^xsd:integer ;
-    sh:nodeKind sh:IRI ;
-    sh:order "1"^^xsd:integer ;
-    sh:path opda:ownershipType ;
-    sh:severity sh:Violation .
