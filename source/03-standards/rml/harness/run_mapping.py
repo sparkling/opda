@@ -7,9 +7,15 @@ CLI:
 RMLMapper (the Java reference implementation) is self-provisioned on first
 use: downloaded + sha256-verified into the repo-root-level, gitignored
 ``.rmlmapper/`` cache (mirrors how Fuseki self-provisions into ``.fuseki/`` in
-``scripts/build-with-data.mjs``). The mapping's own ``rml:source`` literal is
-rewritten to ``--data`` in a temp copy (the same file can then run against any
-conformant instance) before invoking RMLMapper as a subprocess.
+``scripts/build-with-data.mjs``). Every ``rml:source`` in the mapping is the
+literal placeholder ``"INSTANCE.json"``; RMLMapper resolves a relative
+``rml:source`` against the *mapping file's own directory* (verified
+empirically), not the process cwd. So to point the same committed mapping
+file at an arbitrary ``--data`` instance without touching its Turtle text,
+the (unmodified) mapping is copied into a fresh temp directory alongside a
+symlink literally named ``INSTANCE.json`` resolving to the chosen instance,
+and RMLMapper is invoked on that copy. No text-rewriting of the mapping's
+RDF is involved.
 
 If ``mapping/functions/functions.ttl`` exists alongside the mapping, it is
 passed via RMLMapper's ``-f`` (dynamic function loading) — this is how the
@@ -25,14 +31,11 @@ from __future__ import annotations
 
 import argparse
 import hashlib
-import re
+import shutil
 import subprocess
 import sys
 import tempfile
 from pathlib import Path
-
-# rml:source "<literal>"  (single- or double-quoted); we swap the literal.
-_RML_SOURCE_RE = re.compile(r'(rml:source\s+)(["\'])(?:\\.|(?!\2).)*\2')
 
 REPO_ROOT = Path(__file__).resolve().parents[4]
 
@@ -95,19 +98,12 @@ def ensure_function_jar(functions_dir: Path) -> None:
     subprocess.run(["jar", "cf", jar_file.name, class_file.name], cwd=functions_dir, check=True)
 
 
-def _rewrite_source(mapping_ttl: Path, data: Path, workdir: Path) -> Path:
-    """Rewrite the mapping's rml:source to `data` in a temp copy."""
-    text = mapping_ttl.read_text(encoding="utf-8")
-    data_abs = str(data.resolve())
-    new_text, n = _RML_SOURCE_RE.subn(lambda m: f'{m.group(1)}"{data_abs}"', text)
-    if n == 0:
-        print(
-            f"warning: no rml:source string literal found in {mapping_ttl}; "
-            f"--data {data} not injected (mapping supplies its own source)",
-            file=sys.stderr,
-        )
-    temp_ttl = workdir / "mapping.rewritten.ttl"
-    temp_ttl.write_text(new_text, encoding="utf-8")
+def _stage_mapping(mapping_ttl: Path, data: Path, workdir: Path) -> Path:
+    """Copy `mapping_ttl` unmodified into `workdir`, alongside an INSTANCE.json
+    symlink resolving to `data` (see module docstring for why this works)."""
+    temp_ttl = workdir / mapping_ttl.name
+    shutil.copy(mapping_ttl, temp_ttl)
+    (workdir / "INSTANCE.json").symlink_to(data.resolve())
     return temp_ttl
 
 
@@ -136,7 +132,7 @@ def run(mapping: Path, data: Path | None, out: Path) -> int:
         run_cwd = functions_dir
 
     with tempfile.TemporaryDirectory(prefix="rmlmapper-") as tmp:
-        temp_ttl = _rewrite_source(mapping, data, Path(tmp))
+        temp_ttl = _stage_mapping(mapping, data, Path(tmp))
         cmd = [
             "java", "-jar", str(jar.resolve()),
             "-m", str(temp_ttl.resolve()),
