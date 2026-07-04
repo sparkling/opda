@@ -119,6 +119,14 @@ clusters:
 - **Address components** — `line1`, `town`, `postcode`, `countryCode`,
   `administrativeArea`, `districtName` (no flat address predicates minted;
   address is modelled as a node the mapping does not build).
+  **UPDATE 2026-07-05**: this finding is superseded for `line1`/`town`/`postcode` —
+  `opda:Address`'s structural properties are now real (ODR-0015, declared in
+  `opda-gen`) and M34 (`mapping/opda-pdtf.rml.ttl`) binds `propertyPack.address` and
+  the HMLR register-extract `propertyAddress` onto them. `countryCode` maps to
+  `opda:country`; `administrativeArea`/`districtName` remain unmapped (no OPDA
+  structural-field target beyond line1/line2/postTown/postcode/country/
+  inspireFeatureId — a genuine, smaller, still-current sub-gap). See README.md's
+  `opda:Address` entry for the full account.
 - **Seller-capacity evidence surface** — `capacity`, `attachments`, `details`
   (these are exactly what F1 needs but are currently gaps because the Seller
   node is never minted).

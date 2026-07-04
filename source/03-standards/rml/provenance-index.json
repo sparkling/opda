@@ -1,18 +1,18 @@
 {
   "generated_from": {
     "file": "public/ontology/artefacts/opda-merged.ttl",
-    "sha256": "7471c9c12b0a42efc7b1ec71684d077b947cdc3e1e21c07f3e881638bff639b4"
+    "sha256": "ebd40f76578f1c891f6d38169bfca98031de4d01dcb581ab7d64173fcbfdea38"
   },
   "counts": {
     "total_leaves_indexed": 333,
     "distinct_leaf_paths": 333,
-    "datatype": 301,
-    "object": 32,
+    "datatype": 288,
+    "object": 45,
     "monetary": 31,
     "shared_domainless": 11,
     "object_node": 32,
     "array_leaves": 200,
-    "classes": 40,
+    "classes": 41,
     "dictionary_leaves_total": 8458,
     "dictionary_leaves_matched": 646,
     "dictionary_leaves_unmatched": 7812,
@@ -26,6 +26,36 @@
       "properties": [
         {
           "predicate": "opda:addressVariant",
+          "kind": "Datatype",
+          "range": "http://www.w3.org/2001/XMLSchema#string"
+        },
+        {
+          "predicate": "opda:country",
+          "kind": "Datatype",
+          "range": "http://www.w3.org/2001/XMLSchema#string"
+        },
+        {
+          "predicate": "opda:inspireFeatureId",
+          "kind": "Datatype",
+          "range": "http://www.w3.org/2001/XMLSchema#string"
+        },
+        {
+          "predicate": "opda:line1",
+          "kind": "Datatype",
+          "range": "http://www.w3.org/2001/XMLSchema#string"
+        },
+        {
+          "predicate": "opda:line2",
+          "kind": "Datatype",
+          "range": "http://www.w3.org/2001/XMLSchema#string"
+        },
+        {
+          "predicate": "opda:postTown",
+          "kind": "Datatype",
+          "range": "http://www.w3.org/2001/XMLSchema#string"
+        },
+        {
+          "predicate": "opda:postcode",
           "kind": "Datatype",
           "range": "http://www.w3.org/2001/XMLSchema#string"
         }
@@ -106,6 +136,12 @@
       ]
     },
     {
+      "iri": "https://opda.org.uk/pdtf/DPVMappingRefinement",
+      "compact": "opda:DPVMappingRefinement",
+      "label": "DPV Mapping Refinement",
+      "properties": []
+    },
+    {
       "iri": "https://opda.org.uk/pdtf/DiagnosticExemplar",
       "compact": "opda:DiagnosticExemplar",
       "label": "Diagnostic Exemplar",
@@ -129,8 +165,8 @@
         },
         {
           "predicate": "opda:evidenceType",
-          "kind": "Datatype",
-          "range": "http://www.w3.org/2001/XMLSchema#string"
+          "kind": "Object",
+          "range": "http://www.w3.org/2004/02/skos/core#Concept"
         }
       ]
     },
@@ -239,8 +275,8 @@
         },
         {
           "predicate": "opda:isGroundRentPayable",
-          "kind": "Datatype",
-          "range": "http://www.w3.org/2001/XMLSchema#string"
+          "kind": "Object",
+          "range": "http://www.w3.org/2004/02/skos/core#Concept"
         },
         {
           "predicate": "opda:isLeaseQualifying",
@@ -254,13 +290,18 @@
         },
         {
           "predicate": "opda:isSharedOwnership",
-          "kind": "Datatype",
-          "range": "http://www.w3.org/2001/XMLSchema#string"
+          "kind": "Object",
+          "range": "http://www.w3.org/2004/02/skos/core#Concept"
         },
         {
           "predicate": "opda:landlordNotifiedOfSale",
           "kind": "Datatype",
           "range": "http://www.w3.org/2001/XMLSchema#string"
+        },
+        {
+          "predicate": "opda:leaseTerm",
+          "kind": "Object",
+          "range": "opda:LeaseTerm"
         },
         {
           "predicate": "opda:lengthOfLeaseInYears",
@@ -289,8 +330,8 @@
         },
         {
           "predicate": "opda:ownershipType",
-          "kind": "Datatype",
-          "range": "http://www.w3.org/2001/XMLSchema#string"
+          "kind": "Object",
+          "range": "http://www.w3.org/2004/02/skos/core#Concept"
         },
         {
           "predicate": "opda:personWhoDealsWithTheDeedOfCovenant",
@@ -329,8 +370,8 @@
         },
         {
           "predicate": "opda:sellerContributesToServiceCharge",
-          "kind": "Datatype",
-          "range": "http://www.w3.org/2001/XMLSchema#string"
+          "kind": "Object",
+          "range": "http://www.w3.org/2004/02/skos/core#Concept"
         },
         {
           "predicate": "opda:sellerOwnedProperty",
@@ -354,8 +395,8 @@
         },
         {
           "predicate": "opda:tenureKind",
-          "kind": "Datatype",
-          "range": "http://www.w3.org/2001/XMLSchema#string"
+          "kind": "Object",
+          "range": "http://www.w3.org/2004/02/skos/core#Concept"
         },
         {
           "predicate": "opda:titleExtents",
@@ -393,7 +434,13 @@
       "iri": "https://opda.org.uk/pdtf/Milestone",
       "compact": "opda:Milestone",
       "label": "Milestone",
-      "properties": []
+      "properties": [
+        {
+          "predicate": "opda:partOfTransaction",
+          "kind": "Object",
+          "range": "opda:Transaction"
+        }
+      ]
     },
     {
       "iri": "https://opda.org.uk/pdtf/MonetaryAmount",
@@ -435,8 +482,8 @@
         },
         {
           "predicate": "opda:ofstedRating",
-          "kind": "Datatype",
-          "range": "http://www.w3.org/2001/XMLSchema#string"
+          "kind": "Object",
+          "range": "http://www.w3.org/2004/02/skos/core#Concept"
         },
         {
           "predicate": "opda:otherRating",
@@ -465,8 +512,8 @@
         },
         {
           "predicate": "opda:transportType",
-          "kind": "Datatype",
-          "range": "http://www.w3.org/2001/XMLSchema#string"
+          "kind": "Object",
+          "range": "http://www.w3.org/2004/02/skos/core#Concept"
         },
         {
           "predicate": "opda:typeOfHealthCare",
@@ -491,9 +538,9 @@
           "range": "http://www.w3.org/2001/XMLSchema#string"
         },
         {
-          "predicate": "opda:organisation",
-          "kind": "Datatype",
-          "range": "http://www.w3.org/2001/XMLSchema#string"
+          "predicate": "opda:hasAddress",
+          "kind": "Object",
+          "range": "opda:Address"
         },
         {
           "predicate": "opda:organisationName",
@@ -504,6 +551,11 @@
           "predicate": "opda:organisationReference",
           "kind": "Datatype",
           "range": "http://www.w3.org/2001/XMLSchema#string"
+        },
+        {
+          "predicate": "opda:plays",
+          "kind": "Object",
+          "range": "opda:Role"
         },
         {
           "predicate": "opda:reference",
@@ -556,8 +608,8 @@
         },
         {
           "predicate": "opda:areBoundariesUniform",
-          "kind": "Datatype",
-          "range": "http://www.w3.org/2001/XMLSchema#string"
+          "kind": "Object",
+          "range": "http://www.w3.org/2004/02/skos/core#Concept"
         },
         {
           "predicate": "opda:area",
@@ -576,13 +628,13 @@
         },
         {
           "predicate": "opda:builtForm",
-          "kind": "Datatype",
-          "range": "http://www.w3.org/2001/XMLSchema#string"
+          "kind": "Object",
+          "range": "http://www.w3.org/2004/02/skos/core#Concept"
         },
         {
           "predicate": "opda:centralHeatingFuelType",
-          "kind": "Datatype",
-          "range": "http://www.w3.org/2001/XMLSchema#string"
+          "kind": "Object",
+          "range": "http://www.w3.org/2004/02/skos/core#Concept"
         },
         {
           "predicate": "opda:centralHeatingInstalled",
@@ -601,8 +653,8 @@
         },
         {
           "predicate": "opda:constructionType",
-          "kind": "Datatype",
-          "range": "http://www.w3.org/2001/XMLSchema#string"
+          "kind": "Object",
+          "range": "http://www.w3.org/2004/02/skos/core#Concept"
         },
         {
           "predicate": "opda:councilTaxAnnualCharge",
@@ -621,8 +673,8 @@
         },
         {
           "predicate": "opda:currentEnergyRating",
-          "kind": "Datatype",
-          "range": "http://www.w3.org/2001/XMLSchema#string"
+          "kind": "Object",
+          "range": "http://www.w3.org/2004/02/skos/core#Concept"
         },
         {
           "predicate": "opda:dateInstalled",
@@ -675,14 +727,9 @@
           "range": "http://www.w3.org/2001/XMLSchema#boolean"
         },
         {
-          "predicate": "opda:hasAddress",
-          "kind": "Object",
-          "range": "opda:Address"
-        },
-        {
           "predicate": "opda:hasBeenFlooded",
-          "kind": "Datatype",
-          "range": "http://www.w3.org/2001/XMLSchema#string"
+          "kind": "Object",
+          "range": "http://www.w3.org/2004/02/skos/core#Concept"
         },
         {
           "predicate": "opda:hasEPCCertificate",
@@ -716,13 +763,13 @@
         },
         {
           "predicate": "opda:hasSmartHomeSystems",
-          "kind": "Datatype",
-          "range": "http://www.w3.org/2001/XMLSchema#string"
+          "kind": "Object",
+          "range": "http://www.w3.org/2004/02/skos/core#Concept"
         },
         {
           "predicate": "opda:hasSprayFoamInstalled",
-          "kind": "Datatype",
-          "range": "http://www.w3.org/2001/XMLSchema#string"
+          "kind": "Object",
+          "range": "http://www.w3.org/2004/02/skos/core#Concept"
         },
         {
           "predicate": "opda:hasUPRN",
@@ -731,8 +778,8 @@
         },
         {
           "predicate": "opda:hasValidGuaranteesOrWarranties",
-          "kind": "Datatype",
-          "range": "http://www.w3.org/2001/XMLSchema#string"
+          "kind": "Object",
+          "range": "http://www.w3.org/2004/02/skos/core#Concept"
         },
         {
           "predicate": "opda:heading",
@@ -746,8 +793,8 @@
         },
         {
           "predicate": "opda:heatingType",
-          "kind": "Datatype",
-          "range": "http://www.w3.org/2001/XMLSchema#string"
+          "kind": "Object",
+          "range": "http://www.w3.org/2004/02/skos/core#Concept"
         },
         {
           "predicate": "opda:holdingDeposit",
@@ -771,8 +818,8 @@
         },
         {
           "predicate": "opda:isInsured",
-          "kind": "Datatype",
-          "range": "http://www.w3.org/2001/XMLSchema#string"
+          "kind": "Object",
+          "range": "http://www.w3.org/2004/02/skos/core#Concept"
         },
         {
           "predicate": "opda:isLimitedCompanySale",
@@ -781,8 +828,8 @@
         },
         {
           "predicate": "opda:isLocatedOverCommercialPremises",
-          "kind": "Datatype",
-          "range": "http://www.w3.org/2001/XMLSchema#string"
+          "kind": "Object",
+          "range": "http://www.w3.org/2004/02/skos/core#Concept"
         },
         {
           "predicate": "opda:isStudentAccommodation",
@@ -791,8 +838,8 @@
         },
         {
           "predicate": "opda:isSupplyMetered",
-          "kind": "Datatype",
-          "range": "http://www.w3.org/2001/XMLSchema#string"
+          "kind": "Object",
+          "range": "http://www.w3.org/2004/02/skos/core#Concept"
         },
         {
           "predicate": "opda:kitchens",
@@ -836,8 +883,8 @@
         },
         {
           "predicate": "opda:marketingTenure",
-          "kind": "Datatype",
-          "range": "http://www.w3.org/2001/XMLSchema#string"
+          "kind": "Object",
+          "range": "http://www.w3.org/2004/02/skos/core#Concept"
         },
         {
           "predicate": "opda:mpan",
@@ -861,8 +908,8 @@
         },
         {
           "predicate": "opda:offMainsDrainageSystemType",
-          "kind": "Datatype",
-          "range": "http://www.w3.org/2001/XMLSchema#string"
+          "kind": "Object",
+          "range": "http://www.w3.org/2004/02/skos/core#Concept"
         },
         {
           "predicate": "opda:otherCentralHeatingFuelType",
@@ -901,13 +948,13 @@
         },
         {
           "predicate": "opda:priceQualifier",
-          "kind": "Datatype",
-          "range": "http://www.w3.org/2001/XMLSchema#string"
+          "kind": "Object",
+          "range": "http://www.w3.org/2004/02/skos/core#Concept"
         },
         {
           "predicate": "opda:propertyType",
-          "kind": "Datatype",
-          "range": "http://www.w3.org/2001/XMLSchema#string"
+          "kind": "Object",
+          "range": "http://www.w3.org/2004/02/skos/core#Concept"
         },
         {
           "predicate": "opda:publicSewerMapAttached",
@@ -946,8 +993,8 @@
         },
         {
           "predicate": "opda:soldWithVacantPossession",
-          "kind": "Datatype",
-          "range": "http://www.w3.org/2001/XMLSchema#string"
+          "kind": "Object",
+          "range": "http://www.w3.org/2004/02/skos/core#Concept"
         },
         {
           "predicate": "opda:supplier",
@@ -961,8 +1008,8 @@
         },
         {
           "predicate": "opda:typeOfConnection",
-          "kind": "Datatype",
-          "range": "http://www.w3.org/2001/XMLSchema#string"
+          "kind": "Object",
+          "range": "http://www.w3.org/2004/02/skos/core#Concept"
         },
         {
           "predicate": "opda:typeOfFlooding",
@@ -1033,8 +1080,8 @@
       "properties": [
         {
           "predicate": "opda:ownerType",
-          "kind": "Datatype",
-          "range": "http://www.w3.org/2001/XMLSchema#string"
+          "kind": "Object",
+          "range": "http://www.w3.org/2004/02/skos/core#Concept"
         }
       ]
     },
@@ -1043,6 +1090,16 @@
       "compact": "opda:Proprietorship",
       "label": "Proprietorship",
       "properties": [
+        {
+          "predicate": "opda:hasRegisteredTitle",
+          "kind": "Object",
+          "range": "opda:RegisteredTitle"
+        },
+        {
+          "predicate": "opda:mediates",
+          "kind": "Object",
+          "range": "opda:Proprietor"
+        },
         {
           "predicate": "opda:numberOfNonUkResidentSellers",
           "kind": "Datatype",
@@ -1076,7 +1133,13 @@
       "iri": "https://opda.org.uk/pdtf/Relator",
       "compact": "opda:Relator",
       "label": "Relator",
-      "properties": []
+      "properties": [
+        {
+          "predicate": "opda:founds",
+          "kind": "Object",
+          "range": "opda:Role"
+        }
+      ]
     },
     {
       "iri": "https://opda.org.uk/pdtf/RiskAssessment",
@@ -1105,8 +1168,8 @@
         },
         {
           "predicate": "opda:riskIndicator",
-          "kind": "Datatype",
-          "range": "http://www.w3.org/2001/XMLSchema#string"
+          "kind": "Object",
+          "range": "http://www.w3.org/2004/02/skos/core#Concept"
         },
         {
           "predicate": "opda:subCategory",
@@ -1119,7 +1182,13 @@
       "iri": "https://opda.org.uk/pdtf/Role",
       "compact": "opda:Role",
       "label": "Role",
-      "properties": []
+      "properties": [
+        {
+          "predicate": "opda:playedBy",
+          "kind": "Object",
+          "range": "opda:Organisation"
+        }
+      ]
     },
     {
       "iri": "https://opda.org.uk/pdtf/RoleMixin",
@@ -1127,9 +1196,9 @@
       "label": "Role Mixin",
       "properties": [
         {
-          "predicate": "opda:role",
-          "kind": "Datatype",
-          "range": "http://www.w3.org/2001/XMLSchema#string"
+          "predicate": "opda:roleNotation",
+          "kind": "Object",
+          "range": "http://www.w3.org/2004/02/skos/core#Concept"
         }
       ]
     },
@@ -1289,8 +1358,8 @@
         },
         {
           "predicate": "opda:hasAssertedCapacity",
-          "kind": "Datatype",
-          "range": "http://www.w3.org/2001/XMLSchema#string"
+          "kind": "Object",
+          "range": "http://www.w3.org/2004/02/skos/core#Concept"
         },
         {
           "predicate": "opda:hasEvidencedAuthority",
@@ -1337,6 +1406,16 @@
           "range": "http://www.w3.org/2001/XMLSchema#boolean"
         },
         {
+          "predicate": "opda:concerns",
+          "kind": "Object",
+          "range": "opda:LegalEstate"
+        },
+        {
+          "predicate": "opda:concernsProperty",
+          "kind": "Object",
+          "range": "opda:Property"
+        },
+        {
           "predicate": "opda:confirmInformationIsAccurate",
           "kind": "Datatype",
           "range": "http://www.w3.org/2001/XMLSchema#boolean"
@@ -1362,6 +1441,11 @@
           "range": "opda:MonetaryAmount"
         },
         {
+          "predicate": "opda:dependsOnTransaction",
+          "kind": "Object",
+          "range": "opda:Transaction"
+        },
+        {
           "predicate": "opda:feeIncludingVAT",
           "kind": "Object",
           "range": "opda:MonetaryAmount"
@@ -1370,6 +1454,11 @@
           "predicate": "opda:hasChainPosition",
           "kind": "Object",
           "range": "opda:TransactionChain"
+        },
+        {
+          "predicate": "opda:hasParticipant",
+          "kind": "Object",
+          "range": "opda:Buyer"
         },
         {
           "predicate": "opda:leaveKeys",
@@ -1645,15 +1734,13 @@
     },
     {
       "leaf_path": "propertyPack.buildInformation.building.builtForm",
-      "predicate": "GAP",
-      "predicate_iri": null,
-      "kind": "Datatype",
+      "predicate": "opda:builtForm",
+      "predicate_iri": "https://opda.org.uk/pdtf/builtForm",
+      "kind": "Object",
       "domain": "opda:Property",
-      "range": "http://www.w3.org/2001/XMLSchema#string",
+      "range": "http://www.w3.org/2004/02/skos/core#Concept",
       "layer": 1,
-      "flags": [
-        "concept_range_unmapped"
-      ]
+      "flags": []
     },
     {
       "leaf_path": "propertyPack.buildInformation.building.entranceFloor",
@@ -1697,15 +1784,13 @@
     },
     {
       "leaf_path": "propertyPack.buildInformation.building.propertyType",
-      "predicate": "GAP",
-      "predicate_iri": null,
-      "kind": "Datatype",
+      "predicate": "opda:propertyType",
+      "predicate_iri": "https://opda.org.uk/pdtf/propertyType",
+      "kind": "Object",
       "domain": "opda:Property",
-      "range": "http://www.w3.org/2001/XMLSchema#string",
+      "range": "http://www.w3.org/2004/02/skos/core#Concept",
       "layer": 1,
-      "flags": [
-        "concept_range_unmapped"
-      ]
+      "flags": []
     },
     {
       "leaf_path": "propertyPack.buildInformation.internalArea.area",
@@ -1869,15 +1954,13 @@
     },
     {
       "leaf_path": "propertyPack.connectivity.broadband.typeOfConnection",
-      "predicate": "GAP",
-      "predicate_iri": null,
-      "kind": "Datatype",
+      "predicate": "opda:typeOfConnection",
+      "predicate_iri": "https://opda.org.uk/pdtf/typeOfConnection",
+      "kind": "Object",
       "domain": "opda:Property",
-      "range": "http://www.w3.org/2001/XMLSchema#string",
+      "range": "http://www.w3.org/2004/02/skos/core#Concept",
       "layer": 1,
-      "flags": [
-        "concept_range_unmapped"
-      ]
+      "flags": []
     },
     {
       "leaf_path": "propertyPack.connectivity.cableSatelliteTV.dateToBeConnected",
@@ -2138,15 +2221,13 @@
     },
     {
       "leaf_path": "propertyPack.energyEfficiency.certificate.currentEnergyRating",
-      "predicate": "GAP",
-      "predicate_iri": null,
-      "kind": "Datatype",
+      "predicate": "opda:currentEnergyRating",
+      "predicate_iri": "https://opda.org.uk/pdtf/currentEnergyRating",
+      "kind": "Object",
       "domain": "opda:Property",
-      "range": "http://www.w3.org/2001/XMLSchema#string",
+      "range": "http://www.w3.org/2004/02/skos/core#Concept",
       "layer": 1,
-      "flags": [
-        "concept_range_unmapped"
-      ]
+      "flags": []
     },
     {
       "leaf_path": "propertyPack.environmentalIssues.climate.climateRisk.riskSubcategories[].subCategory",
@@ -2200,15 +2281,13 @@
     },
     {
       "leaf_path": "propertyPack.heating.heatingSystem.centralHeatingDetails.centralHeatingFuel.centralHeatingFuelType",
-      "predicate": "GAP",
-      "predicate_iri": null,
-      "kind": "Datatype",
+      "predicate": "opda:centralHeatingFuelType",
+      "predicate_iri": "https://opda.org.uk/pdtf/centralHeatingFuelType",
+      "kind": "Object",
       "domain": "opda:Property",
-      "range": "http://www.w3.org/2001/XMLSchema#string",
+      "range": "http://www.w3.org/2004/02/skos/core#Concept",
       "layer": 1,
-      "flags": [
-        "concept_range_unmapped"
-      ]
+      "flags": []
     },
     {
       "leaf_path": "propertyPack.heating.heatingSystem.centralHeatingDetails.centralHeatingFuel.gasMeter.location",
@@ -2272,15 +2351,13 @@
     },
     {
       "leaf_path": "propertyPack.heating.heatingSystem.heatingType",
-      "predicate": "GAP",
-      "predicate_iri": null,
-      "kind": "Datatype",
+      "predicate": "opda:heatingType",
+      "predicate_iri": "https://opda.org.uk/pdtf/heatingType",
+      "kind": "Object",
       "domain": "opda:Property",
-      "range": "http://www.w3.org/2001/XMLSchema#string",
+      "range": "http://www.w3.org/2004/02/skos/core#Concept",
       "layer": 1,
-      "flags": [
-        "concept_range_unmapped"
-      ]
+      "flags": []
     },
     {
       "leaf_path": "propertyPack.heating.otherHeatingFeatures",
@@ -2655,15 +2732,13 @@
     },
     {
       "leaf_path": "propertyPack.marketingTenure",
-      "predicate": "GAP",
-      "predicate_iri": null,
-      "kind": "Datatype",
+      "predicate": "opda:marketingTenure",
+      "predicate_iri": "https://opda.org.uk/pdtf/marketingTenure",
+      "kind": "Object",
       "domain": "opda:Property",
-      "range": "http://www.w3.org/2001/XMLSchema#string",
+      "range": "http://www.w3.org/2004/02/skos/core#Concept",
       "layer": 1,
-      "flags": [
-        "concept_range_unmapped"
-      ]
+      "flags": []
     },
     {
       "leaf_path": "propertyPack.media[].mediaUrl",
@@ -2755,9 +2830,9 @@
       "leaf_path": "propertyPack.nearbyFacilities.schools[].ofstedRating",
       "predicate": "opda:ofstedRating",
       "predicate_iri": "https://opda.org.uk/pdtf/ofstedRating",
-      "kind": "Datatype",
+      "kind": "Object",
       "domain": "opda:NearbyFacility",
-      "range": "http://www.w3.org/2001/XMLSchema#string",
+      "range": "http://www.w3.org/2004/02/skos/core#Concept",
       "layer": 1,
       "flags": []
     },
@@ -2867,9 +2942,9 @@
       "leaf_path": "propertyPack.nearbyFacilities.transport[].transportType",
       "predicate": "opda:transportType",
       "predicate_iri": "https://opda.org.uk/pdtf/transportType",
-      "kind": "Datatype",
+      "kind": "Object",
       "domain": "opda:NearbyFacility",
-      "range": "http://www.w3.org/2001/XMLSchema#string",
+      "range": "http://www.w3.org/2004/02/skos/core#Concept",
       "layer": 1,
       "flags": []
     },
@@ -4128,15 +4203,13 @@
     },
     {
       "leaf_path": "propertyPack.ownership.ownershipsToBeTransferred[].ownershipType",
-      "predicate": "GAP",
-      "predicate_iri": null,
-      "kind": "Datatype",
+      "predicate": "opda:ownershipType",
+      "predicate_iri": "https://opda.org.uk/pdtf/ownershipType",
+      "kind": "Object",
       "domain": "opda:LegalEstate",
-      "range": "http://www.w3.org/2001/XMLSchema#string",
+      "range": "http://www.w3.org/2004/02/skos/core#Concept",
       "layer": 1,
-      "flags": [
-        "concept_range_unmapped"
-      ]
+      "flags": []
     },
     {
       "leaf_path": "propertyPack.ownership.ownershipsToBeTransferred[].titleNumber",
@@ -4183,15 +4256,13 @@
     },
     {
       "leaf_path": "propertyPack.priceInformation.priceQualifier",
-      "predicate": "GAP",
-      "predicate_iri": null,
-      "kind": "Datatype",
+      "predicate": "opda:priceQualifier",
+      "predicate_iri": "https://opda.org.uk/pdtf/priceQualifier",
+      "kind": "Object",
       "domain": "opda:Property",
-      "range": "http://www.w3.org/2001/XMLSchema#string",
+      "range": "http://www.w3.org/2004/02/skos/core#Concept",
       "layer": 1,
-      "flags": [
-        "concept_range_unmapped"
-      ]
+      "flags": []
     },
     {
       "leaf_path": "propertyPack.priceInformation.saleAtUndervalue",
@@ -4399,9 +4470,9 @@
       "leaf_path": "propertyPack.surveys[].misc.constructionType",
       "predicate": "opda:constructionType",
       "predicate_iri": "https://opda.org.uk/pdtf/constructionType",
-      "kind": "Datatype",
+      "kind": "Object",
       "domain": "opda:Property",
-      "range": "http://www.w3.org/2001/XMLSchema#string",
+      "range": "http://www.w3.org/2004/02/skos/core#Concept",
       "layer": 1,
       "flags": []
     },
@@ -4900,9 +4971,9 @@
       "leaf_path": "valuationComparisonData.propertyDetails[].propertyType",
       "predicate": "opda:propertyType",
       "predicate_iri": "https://opda.org.uk/pdtf/propertyType",
-      "kind": "Datatype",
+      "kind": "Object",
       "domain": "opda:Property",
-      "range": "http://www.w3.org/2001/XMLSchema#string",
+      "range": "http://www.w3.org/2004/02/skos/core#Concept",
       "layer": 1,
       "flags": []
     },

@@ -2581,3 +2581,142 @@
   rr:subjectMap [ rr:constant opda:UKPropertyDataTrustFramework ;
                   rr:class opda:TrustFramework ] .  # closes the opda:TrustFramework CLASS gap — a fixed, always-true institutional fact (every VerificationActivity in this dataset is governed by the OPDA/UK PDTF), not data extraction; the same IRI already used via dct:conformsTo in 3 ratified exemplars (claim-with-{document,electronic-record,vouch}-evidence.ttl)
 
+# ---------------------------------------------------------------------------
+# M34 — opda:Address (ODR-0015, unblocked 2026-07-05 once opda-gen declared
+#   line1/line2/postTown/postcode/country/inspireFeatureId as real properties
+#   — see ADR-0057 Amendments, 2026-07-05 entry). Two of the ~9 real PDTF
+#   address occurrences honestly fit one of the 3 closed addressVariant
+#   values ("title"|"marketing"|"inspire"); the rest do not and are left
+#   unmapped (see the "NOT mapped" note below, not a gap register entry —
+#   these are checked-and-rejected, not overlooked).
+#
+#   "marketing" — propertyPack.address. ODR-0015's own Decision Outcome
+#   (§More Information) names propertyPack.address / titleAddress /
+#   marketingAddress as the three addresses it settles; the real v3 schema
+#   has no literal titleAddress/marketingAddress leaves (the ODR's naming
+#   predates the current schema revision), so by elimination against the
+#   other two variants: titlesToBeSold[].registerExtract...propertyAddress
+#   is unambiguously the HMLR register extract ("title"), and inspire has NO
+#   real source field anywhere in pdtf-transaction.json (confirmed by direct
+#   grep — no "inspireId"/"inspireFeatureId" leaf exists in v3). That leaves
+#   propertyPack.address — schema title "Property Address", no HMLR/INSPIRE
+#   framing in its own text — as the property's general/display address,
+#   which is the "marketing" slot by elimination and by real-world PDTF
+#   convention (the property-portal/listing-agent-populated address used
+#   across the transaction, distinct from the register-held one).
+#
+#   "title" — propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.
+#   propertyAddress. Confirmed via schema traversal: titlesToBeSold's own
+#   title is "Title(s) as registered with HMLR" and registerExtract's is
+#   "HMLR Official Copy Register Extract" — this is unambiguously the
+#   register-held address, honestly "title".
+#
+#   Both keyed from M4's own $.propertyPack iterator (NOT a nested
+#   titlesToBeSold[*]/participants[*] iterator) so the join back to
+#   <#Property> (keyed on {uprn}) needs no ancestor-context jump — the same
+#   constraint M33's own comment documents as a genuine RMLMapper limitation
+#   (no relative OR absolute reference reaches an ancestor field from within
+#   a nested iterator). <#PropertyTitleAddress> reaches into
+#   titlesToBeSold[0] by a fixed array index from that shared root, matching
+#   M9's own titleNumber-keying precedent; this only binds the FIRST title's
+#   address on a multi-title property (a documented simplification, not a
+#   correctness bug — multi-title properties are rare and no test fixture
+#   exercises one).
+#
+#   registerExtract.ocSummaryData.propertyAddress is schema oneOf(single
+#   object | array of objects); testdata/01-conformant-full exercises the
+#   array form with a genuinely heterogeneous split — one item carries only
+#   postcodeZone, the other only addressLine (verified via direct JSON
+#   inspection, not assumed) — so a fixed-index reference into the array
+#   would silently miss whichever facet isn't at that index. Handled with
+#   the ADR-0057 Amendment 1 filter technique (bare existence-test filters
+#   ARE proven safe on arrays under RMLMapper/Jayway, per M1's own
+#   opda:concerns precedent): one predicateObjectMap per predicate keyed on
+#   `[?(@.postcodeZone)]`/`[?(@.addressLine)]` for the array shape, plus a
+#   second, dot-path predicateObjectMap for the plain-object oneOf branch
+#   (a dotted reference through what's actually an array throws
+#   PathNotFoundException under Jayway JsonPath, per ADR-0057 Amendment 4 —
+#   caught per-reference the same way every other optional-field reference
+#   in this mapping degrades to "no triple", not a crash; only one of the
+#   two shapes can ever match a given real instance, so no double-binding
+#   risk). opda:postTown/opda:country have no source data in this register-
+#   extract region (no town/country leaf anywhere under ocSummaryData) and
+#   are correctly left unbound for the "title" variant.
+#
+#   NOT mapped (checked against real schema title/description text, not
+#   assumed from field names — this session's established discipline):
+#     - participants[].address — schema title "Address", no authority
+#       framing; this is a participant's own home/contact address, not an
+#       HMLR/listing-agent/INSPIRE artefact. Does not honestly fit any of
+#       the 3 closed addressVariant values.
+#     - propertyPack.nearbyFacilities.{schools,healthCare}[*].contact.address
+#       — schema title "Address", same reasoning: a facility's own contact
+#       address, not one of the 3 authority variants.
+#     - propertyPack.localSearches.localLandCharges[*].applicantAddress,
+#       titlesToBeSold[*].registerExtract...leaseParty[*].address,
+#       ...charityDetails.charityAddress, surveys[*].declaration.
+#       companyAddress — all party-contact addresses (LLC applicant, lease
+#       party, charity, surveying company) embedded inside the HMLR register
+#       extract's OWN substructure, not the Property's address; binding them
+#       would additionally require minting Person/Organisation nodes for
+#       each party, a separate, deeper gap outside this batch's scope.
+#   None of the above invent a plausible-sounding tag to force required-
+#   field satisfaction (CONTRACT's bind-only-what-exists discipline); they
+#   are genuinely not addressVariant-shaped data.
+# ---------------------------------------------------------------------------
+<#PropertyMarketingAddress> a rr:TriplesMap ;
+  rml:logicalSource [ rml:source "INSTANCE.json" ;
+                      rml:referenceFormulation ql:JSONPath ;
+                      rml:iterator "$.propertyPack" ] ;
+  rr:subjectMap [ rr:template "https://opda.org.uk/pdtf/harness/data/address/marketing-{uprn}-{address.line1}" ;
+                  rr:class opda:Address ] ;
+  rr:predicateObjectMap [ rr:predicate opda:addressVariant ;
+      rr:objectMap [ rr:constant "marketing" ] ] ;
+  rr:predicateObjectMap [ rr:predicate opda:line1 ;
+      rr:objectMap [ rml:reference "address.line1" ; rr:datatype xsd:string ] ] ;  # <- propertyPack.address.line1
+  rr:predicateObjectMap [ rr:predicate opda:line2 ;
+      rr:objectMap [ rml:reference "address.line2" ; rr:datatype xsd:string ] ] ;  # <- propertyPack.address.line2
+  rr:predicateObjectMap [ rr:predicate opda:postTown ;
+      rr:objectMap [ rml:reference "address.town" ; rr:datatype xsd:string ] ] ;  # <- propertyPack.address.town
+  rr:predicateObjectMap [ rr:predicate opda:postcode ;
+      rr:objectMap [ rml:reference "address.postcode" ; rr:datatype xsd:string ] ] ;  # <- propertyPack.address.postcode
+  rr:predicateObjectMap [ rr:predicate opda:country ;
+      rr:objectMap [ rml:reference "address.countryCode" ; rr:datatype xsd:string ] ] .  # <- propertyPack.address.countryCode (ISO 3166-1 alpha-3; buildingNumber/buildingName/subBuilding/street/line3/homeNation have no opda:Address structural-field target — genuine layer-2 sub-gap, CONTRACT's "address parts" callout)
+
+<#PropertyMarketingAddressJoin> a rr:TriplesMap ;
+  rml:logicalSource [ rml:source "INSTANCE.json" ;
+                      rml:referenceFormulation ql:JSONPath ;
+                      rml:iterator "$.propertyPack" ] ;
+  rr:subjectMap [ rr:template "https://opda.org.uk/pdtf/harness/data/property/{uprn}" ] ;
+  rr:predicateObjectMap [ rr:predicate opda:hasAddress ;
+      rr:objectMap [ rr:template "https://opda.org.uk/pdtf/harness/data/address/marketing-{uprn}-{address.line1}" ] ] .  # <- propertyPack.address (container; class-instantiating join, same PropertyEPCJoin idiom as M4a)
+
+<#PropertyTitleAddress> a rr:TriplesMap ;
+  rml:logicalSource [ rml:source "INSTANCE.json" ;
+                      rml:referenceFormulation ql:JSONPath ;
+                      rml:iterator "$.propertyPack" ] ;
+  rr:subjectMap [ rr:template "https://opda.org.uk/pdtf/harness/data/address/title-{titlesToBeSold[0].titleNumber}" ;
+                  rr:class opda:Address ] ;
+  rr:predicateObjectMap [ rr:predicate opda:addressVariant ;
+      rr:objectMap [ rr:constant "title" ] ] ;
+  rr:predicateObjectMap [ rr:predicate opda:postcode ;
+      rr:objectMap [ rml:reference "titlesToBeSold[0].registerExtract.ocSummaryData.propertyAddress[?(@.postcodeZone)].postcodeZone.postcode" ; rr:datatype xsd:string ] ] ;  # <- propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.propertyAddress[].postcodeZone.postcode (array oneOf branch; ADR-0057 Amendment 1 filter technique)
+  rr:predicateObjectMap [ rr:predicate opda:postcode ;
+      rr:objectMap [ rml:reference "titlesToBeSold[0].registerExtract.ocSummaryData.propertyAddress.postcodeZone.postcode" ; rr:datatype xsd:string ] ] ;  # <- propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.propertyAddress.postcodeZone.postcode (plain-object oneOf branch)
+  rr:predicateObjectMap [ rr:predicate opda:line1 ;
+      rr:objectMap [ rml:reference "titlesToBeSold[0].registerExtract.ocSummaryData.propertyAddress[?(@.addressLine)].addressLine.line[0]" ; rr:datatype xsd:string ] ] ;  # <- propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.propertyAddress[].addressLine.line (array oneOf branch, first line)
+  rr:predicateObjectMap [ rr:predicate opda:line1 ;
+      rr:objectMap [ rml:reference "titlesToBeSold[0].registerExtract.ocSummaryData.propertyAddress.addressLine.line[0]" ; rr:datatype xsd:string ] ] ;  # <- propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.propertyAddress.addressLine.line (plain-object oneOf branch, first line)
+  rr:predicateObjectMap [ rr:predicate opda:line2 ;
+      rr:objectMap [ rml:reference "titlesToBeSold[0].registerExtract.ocSummaryData.propertyAddress[?(@.addressLine)].addressLine.line[1]" ; rr:datatype xsd:string ] ] ;  # <- propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.propertyAddress[].addressLine.line (array oneOf branch, second line)
+  rr:predicateObjectMap [ rr:predicate opda:line2 ;
+      rr:objectMap [ rml:reference "titlesToBeSold[0].registerExtract.ocSummaryData.propertyAddress.addressLine.line[1]" ; rr:datatype xsd:string ] ] .  # <- propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.propertyAddress.addressLine.line (plain-object oneOf branch, second line)
+
+<#PropertyTitleAddressJoin> a rr:TriplesMap ;
+  rml:logicalSource [ rml:source "INSTANCE.json" ;
+                      rml:referenceFormulation ql:JSONPath ;
+                      rml:iterator "$.propertyPack" ] ;
+  rr:subjectMap [ rr:template "https://opda.org.uk/pdtf/harness/data/property/{uprn}" ] ;
+  rr:predicateObjectMap [ rr:predicate opda:hasAddress ;
+      rr:objectMap [ rr:template "https://opda.org.uk/pdtf/harness/data/address/title-{titlesToBeSold[0].titleNumber}" ] ] .  # <- propertyPack.titlesToBeSold[0].titleNumber (container; class-instantiating join, same PropertyEPCJoin idiom as M4a)
+
