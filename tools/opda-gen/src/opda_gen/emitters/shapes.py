@@ -1521,12 +1521,28 @@ def build_transaction_shapes() -> Graph:
     )
 
     # --- SHACL-AF rule #8: MilestoneVarianceRule (ODR-0007 Q6) ----------
+    # FIXED (2026-07-04): this rule's WHERE clause previously required
+    # opda:plannedAtTime directly on the ?milestone node — but Council
+    # session-007 Q6 (10-0 FOR) ratified PROV-O Plan-vs-Activity
+    # reification: planned time lives on a SEPARATE prov:Plan resource,
+    # reached from the Activity via prov:qualifiedAssociation ->
+    # prov:Association -> prov:hadPlan (exactly as opda:plannedAtTime's own
+    # rdfs:comment states, and as plannedAtTimeDomainShape's Violation-
+    # severity sh:class prov:Plan constraint already enforces). The old
+    # WHERE clause was never refactored after that ratified decision — it
+    # queried the REJECTED same-node design, so the rule was permanently
+    # dormant (never fired) against any data conforming to the actual
+    # ratified shape. Found while closing the RML mapping's own Milestone
+    # TriplesMaps (source/03-standards/rml/mapping/opda-pdtf.rml.ttl),
+    # which correctly implements the ratified Plan-vs-Activity design and
+    # flagged this rule as the stale artifact needing the fix.
     _add_sparql_rule_shape(
         g,
         shape_iri=OPDA_SHAPE.MilestoneVarianceRule,
         target_class=OPDA.Milestone,
         sparql_construct=(
             "PREFIX opda: <https://opda.org.uk/pdtf/>\n"
+            "PREFIX prov: <http://www.w3.org/ns/prov#>\n"
             "PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>\n"
             "CONSTRUCT {\n"
             "  ?milestone opda:hasVarianceStatus ?varianceCategory .\n"
@@ -1535,7 +1551,9 @@ def build_transaction_shapes() -> Graph:
             "WHERE {\n"
             "  ?milestone a opda:Milestone ;\n"
             "             opda:occurredAtTime ?actual ;\n"
-            "             opda:plannedAtTime ?planned .\n"
+            "             prov:qualifiedAssociation ?assoc .\n"
+            "  ?assoc prov:hadPlan ?plan .\n"
+            "  ?plan opda:plannedAtTime ?planned .\n"
             "  BIND (xsd:integer((?actual - ?planned) / xsd:dayTimeDuration(\"P1D\")) AS ?days)\n"
             "  BIND (IF(?days < 14, \"info-flagged\", \"warning-flagged\") AS ?varianceCategory)\n"
             "}"
@@ -1549,7 +1567,10 @@ def build_transaction_shapes() -> Graph:
             "The materialised opda:hasVarianceStatus value is the "
             "consumer's escalation hook; the shape itself stays sh:Info "
             "per ODR-0017 §1a (the rule is informative; consumer tooling "
-            "interprets the variance category)."
+            "interprets the variance category). Traverses the ratified "
+            "Plan-vs-Activity reification (prov:qualifiedAssociation -> "
+            "prov:Association -> prov:hadPlan -> opda:plannedAtTime), not "
+            "same-node co-location — see plannedAtTimeDomainShape."
         ),
     )
 

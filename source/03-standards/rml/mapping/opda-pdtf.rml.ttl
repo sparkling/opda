@@ -2214,20 +2214,19 @@
 #   for the 4 milestones whose schema shape has "expected" (listed, searches,
 #   exchangeOfContracts, completion), gated independently on that field.
 #
-#   NOTE — a genuine, pre-existing ontology-internal inconsistency found
-#   while designing this (not fixed here, flagged for the team): the SHACL-AF
-#   MilestoneVarianceRule (opda-shapes-merged.ttl) computes its variance
-#   CONSTRUCT directly off "?milestone a opda:Milestone ; opda:occurredAtTime
-#   ?actual ; opda:plannedAtTime ?planned" — i.e. it expects BOTH properties
-#   on the SAME node typed opda:Milestone. That directly conflicts with
-#   plannedAtTimeDomainShape's Violation-severity requirement that every
-#   subject of opda:plannedAtTime be typed prov:Plan (not Milestone). Given
-#   the two cannot both be satisfied by one node, this mapping follows the
-#   VALIDATED, Violation-severity constraint (separate Plan node); the
-#   MilestoneVarianceRule will simply stay dormant (never fires) under this
-#   data shape — an inert SHACL-AF rule, not a validation failure. Resolving
-#   which of the two is the intended design is an ontology decision, out of
-#   this task's scope.
+#   RESOLVED (2026-07-04): the ontology-internal inconsistency flagged here
+#   (MilestoneVarianceRule's CONSTRUCT querying opda:plannedAtTime directly
+#   on the Milestone, conflicting with plannedAtTimeDomainShape's
+#   Violation-severity requirement that its subject be typed prov:Plan) has
+#   been fixed at the source — Council session-007 Q6 (10-0 FOR) already
+#   ratified the Plan-vs-Activity design this mapping implements; the rule's
+#   own WHERE clause was simply never refactored after that decision.
+#   Corrected in tools/opda-gen (shapes.py) to traverse
+#   prov:qualifiedAssociation -> prov:Association -> prov:hadPlan ->
+#   opda:plannedAtTime, matching this mapping's own triple shape exactly.
+#   Verified: the rule's corrected WHERE clause returns the right variance
+#   (24 days) when run directly against a scratch instance's materialised
+#   triples.
 #
 #   None of testdata/01-04 carry any "milestones" data (verified via direct
 #   JSON inspection); path-verified via a scratch instance instead, matching
