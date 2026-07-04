@@ -314,8 +314,6 @@
       "isFirstRegistration": "No",
       "isLimitedCompanySale": "No",
       "hasHelpToBuyEquityLoan": "No",
-      "numberOfSellers": 1,
-      "numberOfNonUkResidentSellers": 0,
       "ownershipsToBeTransferred": [
         {
           "titleNumber": "BS123456",

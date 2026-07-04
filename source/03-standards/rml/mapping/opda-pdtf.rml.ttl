@@ -671,13 +671,18 @@
       rr:objectMap [ rml:reference "leaseholdInformation.groundRent.rentSubjectToIncrease.rentReviewFrequency" ; rr:datatype xsd:string ] ] ;  # <- …leaseholdInformation.groundRent.rentSubjectToIncrease.rentReviewFrequency
   rr:predicateObjectMap [ rr:predicate opda:rentIncreaseCalculated ;
       rr:objectMap [ rml:reference "leaseholdInformation.groundRent.rentSubjectToIncrease.rentIncreaseCalculated" ; rr:datatype xsd:string ] ] ;  # <- …leaseholdInformation.groundRent.rentSubjectToIncrease.rentIncreaseCalculated
-  # Monetary object-properties -> minted MonetaryAmount IRIs (see M7a)
+  # Monetary object-properties -> minted MonetaryAmount IRIs (see M7a). Keys
+  # embed the optional value itself (not a fixed suffix) — the same
+  # skip-together technique as M4b/M23/M27a; a fixed suffix here was a
+  # pre-existing defect (predates this session) that minted an empty
+  # opda:MonetaryAmount whenever the field was absent, caught this session
+  # by a leasehold test item that doesn't set these three fields.
   rr:predicateObjectMap [ rr:predicate opda:annualGroundRent ;
-      rr:objectMap [ rr:template "https://opda.org.uk/pdtf/harness/data/estate/{titleNumber}/amount/groundRent" ] ] ;  # <- …leaseholdInformation.groundRent.annualGroundRent
+      rr:objectMap [ rr:template "https://opda.org.uk/pdtf/harness/data/estate/{titleNumber}/amount/groundRent-{leaseholdInformation.groundRent.annualGroundRent}" ] ] ;  # <- …leaseholdInformation.groundRent.annualGroundRent
   rr:predicateObjectMap [ rr:predicate opda:annualServiceCharge ;
-      rr:objectMap [ rr:template "https://opda.org.uk/pdtf/harness/data/estate/{titleNumber}/amount/serviceCharge" ] ] ;  # <- …leaseholdInformation.serviceCharge.annualServiceCharge
+      rr:objectMap [ rr:template "https://opda.org.uk/pdtf/harness/data/estate/{titleNumber}/amount/serviceCharge-{leaseholdInformation.serviceCharge.annualServiceCharge}" ] ] ;  # <- …leaseholdInformation.serviceCharge.annualServiceCharge
   rr:predicateObjectMap [ rr:predicate opda:sharedOwnershipRent ;
-      rr:objectMap [ rr:template "https://opda.org.uk/pdtf/harness/data/estate/{titleNumber}/amount/sharedOwnershipRent" ] ] ;  # <- …leaseholdInformation.sharedOwnership.sharedOwnershipRent
+      rr:objectMap [ rr:template "https://opda.org.uk/pdtf/harness/data/estate/{titleNumber}/amount/sharedOwnershipRent-{leaseholdInformation.sharedOwnership.sharedOwnershipRent}" ] ] ;  # <- …leaseholdInformation.sharedOwnership.sharedOwnershipRent
   rr:predicateObjectMap [ rr:predicate opda:titlePropertyDescription ;
       rr:objectMap [ rml:reference "titlePropertyDescription" ; rr:datatype xsd:string ] ] ;  # <- propertyPack.ownership.ownershipsToBeTransferred[].titlePropertyDescription
   rr:predicateObjectMap [ rr:predicate opda:otherOwnershipDetails ;
@@ -741,7 +746,7 @@
   rml:logicalSource [ rml:source "INSTANCE.json" ;
                       rml:referenceFormulation ql:JSONPath ;
                       rml:iterator "$.propertyPack.ownership.ownershipsToBeTransferred[*]" ] ;
-  rr:subjectMap [ rr:template "https://opda.org.uk/pdtf/harness/data/estate/{titleNumber}/amount/groundRent" ;
+  rr:subjectMap [ rr:template "https://opda.org.uk/pdtf/harness/data/estate/{titleNumber}/amount/groundRent-{leaseholdInformation.groundRent.annualGroundRent}" ;
                   rr:class opda:MonetaryAmount ] ;
   rr:predicateObjectMap [ rr:predicate opda:amount ;
       rr:objectMap [ rml:reference "leaseholdInformation.groundRent.annualGroundRent" ; rr:datatype xsd:decimal ] ] ;
@@ -752,7 +757,7 @@
   rml:logicalSource [ rml:source "INSTANCE.json" ;
                       rml:referenceFormulation ql:JSONPath ;
                       rml:iterator "$.propertyPack.ownership.ownershipsToBeTransferred[*]" ] ;
-  rr:subjectMap [ rr:template "https://opda.org.uk/pdtf/harness/data/estate/{titleNumber}/amount/serviceCharge" ;
+  rr:subjectMap [ rr:template "https://opda.org.uk/pdtf/harness/data/estate/{titleNumber}/amount/serviceCharge-{leaseholdInformation.serviceCharge.annualServiceCharge}" ;
                   rr:class opda:MonetaryAmount ] ;
   rr:predicateObjectMap [ rr:predicate opda:amount ;
       rr:objectMap [ rml:reference "leaseholdInformation.serviceCharge.annualServiceCharge" ; rr:datatype xsd:decimal ] ] ;
@@ -763,7 +768,7 @@
   rml:logicalSource [ rml:source "INSTANCE.json" ;
                       rml:referenceFormulation ql:JSONPath ;
                       rml:iterator "$.propertyPack.ownership.ownershipsToBeTransferred[*]" ] ;
-  rr:subjectMap [ rr:template "https://opda.org.uk/pdtf/harness/data/estate/{titleNumber}/amount/sharedOwnershipRent" ;
+  rr:subjectMap [ rr:template "https://opda.org.uk/pdtf/harness/data/estate/{titleNumber}/amount/sharedOwnershipRent-{leaseholdInformation.sharedOwnership.sharedOwnershipRent}" ;
                   rr:class opda:MonetaryAmount ] ;
   rr:predicateObjectMap [ rr:predicate opda:amount ;
       rr:objectMap [ rml:reference "leaseholdInformation.sharedOwnership.sharedOwnershipRent" ; rr:datatype xsd:decimal ] ] ;
@@ -1405,16 +1410,18 @@
   rr:predicateObjectMap [ rr:predicate opda:reference ;
       rr:objectMap [ rml:reference "leaseholdInformation.contactDetails.contacts.landlord.bankDetails.reference" ; rr:datatype xsd:string ] ] .  # <- …leaseholdInformation.contactDetails.contacts.landlord.bankDetails.reference
 
-<#OwnershipProprietorship> a rr:TriplesMap ;
-  rml:logicalSource [ rml:source "INSTANCE.json" ;
-                      rml:referenceFormulation ql:JSONPath ;
-                      rml:iterator "$.propertyPack" ] ;
-  rr:subjectMap [ rr:template "https://opda.org.uk/pdtf/harness/data/proprietorship/{uprn}" ;
-                  rr:class opda:Proprietorship ] ;
-  rr:predicateObjectMap [ rr:predicate opda:numberOfSellers ;
-      rr:objectMap [ rml:reference "ownership.numberOfSellers" ; rr:datatype xsd:integer ] ] ;  # <- propertyPack.ownership.numberOfSellers
-  rr:predicateObjectMap [ rr:predicate opda:numberOfNonUkResidentSellers ;
-      rr:objectMap [ rml:reference "ownership.numberOfNonUkResidentSellers" ; rr:datatype xsd:integer ] ] .  # <- propertyPack.ownership.numberOfNonUkResidentSellers
+# M27f — opda:numberOfSellers / opda:numberOfNonUkResidentSellers (domain
+#   opda:Proprietorship): NOT mapped. Tried minting a Proprietorship node
+#   keyed on uprn with just these two counts — caught by the (post-harness-
+#   fix) SHACL run: ProprietorshipMediationShape requires ANY opda:Proprietorship
+#   individual to carry opda:mediates -> >=2 opda:Proprietor individuals (a
+#   UFO Relator, ODR-0006 §Q3 — "a relator that binds fewer than two bearers
+#   is not a relator"). Properly satisfying this means identifying which
+#   participants/legalOwners play the Proprietor role and linking them via
+#   opda:mediates — a real Relator-modelling decision, not a mechanical
+#   "add a predicateObjectMap" gap like the rest of this region. Left as a
+#   genuine, documented gap pending that design (not attempted here to avoid
+#   shipping a node that mechanically fails a hard SHACL constraint).
 
 # M28 — a cluster of gap properties (isInsured, hasBeenFlooded,
 #   hasSmartHomeSystems, isSharedOwnership, isGroundRentPayable,
