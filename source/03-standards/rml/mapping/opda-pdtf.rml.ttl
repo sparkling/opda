@@ -1024,3 +1024,149 @@
                       rml:iterator "$.propertyPack.localSearches.localAuthoritySearches.planningAndBuildingRegulations.designationsAndProposals.plans[*].designations[*]" ] ;
   rr:subjectMap [ rr:template "https://opda.org.uk/pdtf/harness/data/search/designation/{designationType}/run" ;
                   rr:class prov:Activity ] .
+
+# ---------------------------------------------------------------------------
+# M23 — valuationComparisonData (a top-level structure, PEER to propertyPack,
+#   not nested under it). Two independent subtrees, each needing its own
+#   TriplesMap iterator (morph-kgc: one iterator per TriplesMap), and — per
+#   rdfs:domain, below — BOTH subtrees bear on opda:Valuation, not
+#   opda:Comparable:
+#
+#     valuationComparisonData.propertyDetails[*]   — an array of comparable
+#       properties, each with a real natural key (uprn). Instantiates
+#       opda:Comparable (class-promoted; ODR-0008 Q4a) for the comparable
+#       record itself, AND opda:soldPrice/opda:soldDate/opda:listPrice/
+#       opda:listedDate — which the ontology's own rdfs:domain assigns to
+#       opda:Valuation, not opda:Comparable ("Bearer opda:Valuation...flat
+#       per §Q6a" — a deliberate ODR-0008 Q6a flattening decision, not
+#       something this mapping invents). Comparable itself carries NO
+#       rdfs:domain-bound datatype/object property in the current ontology
+#       (verified: zero grep hits) — it is typed + given prov:wasGeneratedBy
+#       only.
+#
+#     valuationComparisonData.propertyPricing      — a SINGLETON object (not
+#       an array) with the subject property's own market-estimate figures
+#       (estimatedPrice, rentalEstimate.estimatedAmount, yield,
+#       priceEstimationDetails.*). Also opda:Valuation. Has no natural key of
+#       its own; keyed on {estimatedPrice} itself (same optional-field-in-
+#       template technique as M4b/M4d/M4e — this doubles as the "skip
+#       together" guard AND the entity's own identity key, since no other
+#       stable field exists here).
+#
+#   Because propertyDetails[*] and propertyPricing are different subtrees
+#   with no shared key in the JSON, and rdfs:domain assigns fields from BOTH
+#   onto opda:Valuation, this mapping mints TWO independent opda:Valuation-
+#   typed nodes per transaction (valuation/estimate-{estimatedPrice} and
+#   valuation/comparable-{uprn}) rather than fabricate a shared key that
+#   doesn't exist in the data — each independently satisfies the
+#   ValuationIdentityKeyShape (prov:wasGeneratedBy minCount 1).
+# ---------------------------------------------------------------------------
+<#Comparable> a rr:TriplesMap ;
+  rml:logicalSource [ rml:source "INSTANCE.json" ;
+                      rml:referenceFormulation ql:JSONPath ;
+                      rml:iterator "$.valuationComparisonData.propertyDetails[*]" ] ;
+  rr:subjectMap [ rr:template "https://opda.org.uk/pdtf/harness/data/comparable/{uprn}" ;
+                  rr:class opda:Comparable ] ;
+  rr:predicateObjectMap [ rr:predicate prov:wasGeneratedBy ;
+      rr:objectMap [ rr:template "https://opda.org.uk/pdtf/harness/data/comparable/{uprn}/run" ] ] .  # SHACL: class-promoted opda:Comparable requires prov:wasGeneratedBy
+
+<#ComparableRunActivity> a rr:TriplesMap ;
+  rml:logicalSource [ rml:source "INSTANCE.json" ;
+                      rml:referenceFormulation ql:JSONPath ;
+                      rml:iterator "$.valuationComparisonData.propertyDetails[*]" ] ;
+  rr:subjectMap [ rr:template "https://opda.org.uk/pdtf/harness/data/comparable/{uprn}/run" ;
+                  rr:class prov:Activity ] .
+
+<#ValuationComparableListing> a rr:TriplesMap ;
+  rml:logicalSource [ rml:source "INSTANCE.json" ;
+                      rml:referenceFormulation ql:JSONPath ;
+                      rml:iterator "$.valuationComparisonData.propertyDetails[*]" ] ;
+  rr:subjectMap [ rr:template "https://opda.org.uk/pdtf/harness/data/valuation/comparable-{uprn}" ;
+                  rr:class opda:Valuation ] ;
+  rr:predicateObjectMap [ rr:predicate prov:wasGeneratedBy ;
+      rr:objectMap [ rr:template "https://opda.org.uk/pdtf/harness/data/valuation/comparable-{uprn}/run" ] ] ;  # SHACL: class-promoted opda:Valuation requires prov:wasGeneratedBy
+  rr:predicateObjectMap [ rr:predicate opda:soldDate ;
+      rr:objectMap [ rml:reference "propertyListingInfo.soldDate" ; rr:datatype xsd:date ] ] ;  # <- valuationComparisonData.propertyDetails[].propertyListingInfo.soldDate (oneOf branch: Recently Sold; dateTime lexical truncated to xsd:date)
+  rr:predicateObjectMap [ rr:predicate opda:listedDate ;
+      rr:objectMap [ rml:reference "propertyListingInfo.listedDate" ; rr:datatype xsd:date ] ] ;  # <- valuationComparisonData.propertyDetails[].propertyListingInfo.listedDate (oneOf branch: Currently On Sale; not instance-exercised, path verified)
+  rr:predicateObjectMap [ rr:predicate opda:soldPrice ;
+      rr:objectMap [ rr:template "https://opda.org.uk/pdtf/harness/data/valuation/comparable-{uprn}/amount/soldPrice-{propertyListingInfo.soldPrice}" ] ] ;  # <- valuationComparisonData.propertyDetails[].propertyListingInfo.soldPrice (MonetaryAmount join, see below)
+  rr:predicateObjectMap [ rr:predicate opda:listPrice ;
+      rr:objectMap [ rr:template "https://opda.org.uk/pdtf/harness/data/valuation/comparable-{uprn}/amount/listPrice-{propertyListingInfo.listPrice}" ] ] .  # <- valuationComparisonData.propertyDetails[].propertyListingInfo.listPrice (MonetaryAmount join, see below; not instance-exercised)
+
+<#ValuationComparableListingRunActivity> a rr:TriplesMap ;
+  rml:logicalSource [ rml:source "INSTANCE.json" ;
+                      rml:referenceFormulation ql:JSONPath ;
+                      rml:iterator "$.valuationComparisonData.propertyDetails[*]" ] ;
+  rr:subjectMap [ rr:template "https://opda.org.uk/pdtf/harness/data/valuation/comparable-{uprn}/run" ;
+                  rr:class prov:Activity ] .
+
+<#SoldPriceAmount> a rr:TriplesMap ;
+  rml:logicalSource [ rml:source "INSTANCE.json" ;
+                      rml:referenceFormulation ql:JSONPath ;
+                      rml:iterator "$.valuationComparisonData.propertyDetails[*]" ] ;
+  rr:subjectMap [ rr:template "https://opda.org.uk/pdtf/harness/data/valuation/comparable-{uprn}/amount/soldPrice-{propertyListingInfo.soldPrice}" ;
+                  rr:class opda:MonetaryAmount ] ;
+  rr:predicateObjectMap [ rr:predicate opda:amount ;
+      rr:objectMap [ rml:reference "propertyListingInfo.soldPrice" ; rr:datatype xsd:decimal ] ] ;  # <- valuationComparisonData.propertyDetails[].propertyListingInfo.soldPrice
+  rr:predicateObjectMap [ rr:predicate opda:currency ;
+      rr:object <https://opda.org.uk/pdtf/scheme/currency/GBP> ] .
+
+<#ListPriceAmount> a rr:TriplesMap ;
+  rml:logicalSource [ rml:source "INSTANCE.json" ;
+                      rml:referenceFormulation ql:JSONPath ;
+                      rml:iterator "$.valuationComparisonData.propertyDetails[*]" ] ;
+  rr:subjectMap [ rr:template "https://opda.org.uk/pdtf/harness/data/valuation/comparable-{uprn}/amount/listPrice-{propertyListingInfo.listPrice}" ;
+                  rr:class opda:MonetaryAmount ] ;
+  rr:predicateObjectMap [ rr:predicate opda:amount ;
+      rr:objectMap [ rml:reference "propertyListingInfo.listPrice" ; rr:datatype xsd:decimal ] ] ;  # <- valuationComparisonData.propertyDetails[].propertyListingInfo.listPrice
+  rr:predicateObjectMap [ rr:predicate opda:currency ;
+      rr:object <https://opda.org.uk/pdtf/scheme/currency/GBP> ] .
+
+<#Valuation> a rr:TriplesMap ;
+  rml:logicalSource [ rml:source "INSTANCE.json" ;
+                      rml:referenceFormulation ql:JSONPath ;
+                      rml:iterator "$.valuationComparisonData.propertyPricing" ] ;
+  rr:subjectMap [ rr:template "https://opda.org.uk/pdtf/harness/data/valuation/estimate-{estimatedPrice}" ;
+                  rr:class opda:Valuation ] ;
+  rr:predicateObjectMap [ rr:predicate prov:wasGeneratedBy ;
+      rr:objectMap [ rr:template "https://opda.org.uk/pdtf/harness/data/valuation/estimate-{estimatedPrice}/run" ] ] ;  # SHACL: class-promoted opda:Valuation requires prov:wasGeneratedBy
+  rr:predicateObjectMap [ rr:predicate opda:estimatedPrice ;
+      rr:objectMap [ rr:template "https://opda.org.uk/pdtf/harness/data/valuation/estimate-{estimatedPrice}/amount/estimatedPrice-{estimatedPrice}" ] ] ;  # <- valuationComparisonData.propertyPricing.estimatedPrice (MonetaryAmount join, see below)
+  rr:predicateObjectMap [ rr:predicate opda:estimatedAmount ;
+      rr:objectMap [ rr:template "https://opda.org.uk/pdtf/harness/data/valuation/estimate-{estimatedPrice}/amount/rentalEstimate-{rentalEstimate.estimatedAmount}" ] ] ;  # <- valuationComparisonData.propertyPricing.rentalEstimate.estimatedAmount (MonetaryAmount join, see below)
+  rr:predicateObjectMap [ rr:predicate opda:yield ;
+      rr:objectMap [ rml:reference "yield" ; rr:datatype xsd:decimal ] ] ;  # <- valuationComparisonData.propertyPricing.yield
+  rr:predicateObjectMap [ rr:predicate opda:pricingMethodology ;
+      rr:objectMap [ rml:reference "priceEstimationDetails.pricingMethodology" ; rr:datatype xsd:string ] ] ;  # <- valuationComparisonData.propertyPricing.priceEstimationDetails.pricingMethodology
+  rr:predicateObjectMap [ rr:predicate opda:credibilitySources ;
+      rr:objectMap [ rml:reference "priceEstimationDetails.credibilitySources[]" ; rr:datatype xsd:string ] ] .  # <- valuationComparisonData.propertyPricing.priceEstimationDetails.credibilitySources (array of strings)
+
+<#ValuationRunActivity> a rr:TriplesMap ;
+  rml:logicalSource [ rml:source "INSTANCE.json" ;
+                      rml:referenceFormulation ql:JSONPath ;
+                      rml:iterator "$.valuationComparisonData.propertyPricing" ] ;
+  rr:subjectMap [ rr:template "https://opda.org.uk/pdtf/harness/data/valuation/estimate-{estimatedPrice}/run" ;
+                  rr:class prov:Activity ] .
+
+<#EstimatedPriceAmount> a rr:TriplesMap ;
+  rml:logicalSource [ rml:source "INSTANCE.json" ;
+                      rml:referenceFormulation ql:JSONPath ;
+                      rml:iterator "$.valuationComparisonData.propertyPricing" ] ;
+  rr:subjectMap [ rr:template "https://opda.org.uk/pdtf/harness/data/valuation/estimate-{estimatedPrice}/amount/estimatedPrice-{estimatedPrice}" ;
+                  rr:class opda:MonetaryAmount ] ;
+  rr:predicateObjectMap [ rr:predicate opda:amount ;
+      rr:objectMap [ rml:reference "estimatedPrice" ; rr:datatype xsd:decimal ] ] ;  # <- valuationComparisonData.propertyPricing.estimatedPrice
+  rr:predicateObjectMap [ rr:predicate opda:currency ;
+      rr:object <https://opda.org.uk/pdtf/scheme/currency/GBP> ] .
+
+<#RentalEstimateAmount> a rr:TriplesMap ;
+  rml:logicalSource [ rml:source "INSTANCE.json" ;
+                      rml:referenceFormulation ql:JSONPath ;
+                      rml:iterator "$.valuationComparisonData.propertyPricing" ] ;
+  rr:subjectMap [ rr:template "https://opda.org.uk/pdtf/harness/data/valuation/estimate-{estimatedPrice}/amount/rentalEstimate-{rentalEstimate.estimatedAmount}" ;
+                  rr:class opda:MonetaryAmount ] ;
+  rr:predicateObjectMap [ rr:predicate opda:amount ;
+      rr:objectMap [ rml:reference "rentalEstimate.estimatedAmount" ; rr:datatype xsd:decimal ] ] ;  # <- valuationComparisonData.propertyPricing.rentalEstimate.estimatedAmount
+  rr:predicateObjectMap [ rr:predicate opda:currency ;
+      rr:object <https://opda.org.uk/pdtf/scheme/currency/GBP> ] .

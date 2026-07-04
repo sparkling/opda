@@ -338,6 +338,30 @@
       ]
     }
   },
+  "valuationComparisonData": {
+    "propertyDetails": [
+      {
+        "uprn": "100090909091",
+        "propertyListingInfo": {
+          "listingType": "Recently Sold",
+          "soldDate": "2026-03-01T00:00:00Z",
+          "soldPrice": 435000
+        }
+      }
+    ],
+    "propertyPricing": {
+      "rentalEstimate": {
+        "estimatedAmount": 1450,
+        "paymentFrequency": "Per Calendar Month"
+      },
+      "estimatedPrice": 452000,
+      "yield": 3.85,
+      "priceEstimationDetails": {
+        "credibilitySources": ["Land Registry", "Rightmove"],
+        "pricingMethodology": "Automated valuation model calibrated against comparable sales."
+      }
+    }
+  },
   "chain": {
     "onwardPurchase": [
       {
