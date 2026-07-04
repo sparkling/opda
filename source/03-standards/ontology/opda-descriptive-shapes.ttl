@@ -97,10 +97,18 @@
     sh:property _:b48ee7caadb48 ;
     sh:targetSubjectsOf opda:priceQualifier .
 
+<https://opda.org.uk/pdtf/shape/RiskAssessmentAcyclicityConstraint>
+    rdf:type sh:NodeShape ;
+    dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0024/section-Rules-R11> ;
+    sh:message "ODR-0024 R11 acyclicity guard: a RiskAssessment MUST NOT be its own transitive opda:hasSubAssessment (a cyclic riskSubcategories[] chain). RiskAssessmentShape's sh:node recursion validates each sub-assessment's own shape (ODR-0008d Rule 1c / Rule 4) but cannot itself detect a cycle; this SPARQL property-path constraint is the enforcement vehicle."@en ;
+    sh:severity sh:Violation ;
+    sh:sparql _:b882f5b17eff0 ;
+    sh:targetClass opda:RiskAssessment .
+
 <https://opda.org.uk/pdtf/shape/RiskAssessmentShape>
     rdf:type sh:NodeShape ;
     dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0008d/section-Rule-1> ;
-    sh:property _:b07d093644e08, _:b25134ffb69ad, _:b46f718d523db, _:bdefa496e9ecf, _:be085fc119619, _:bf4139abe7c02 ;
+    sh:property _:b039592a64b80, _:b07d093644e08, _:b46f718d523db, _:bdefa496e9ecf, _:be085fc119619, _:bf4139abe7c02 ;
     sh:targetClass opda:RiskAssessment .
 
 <https://opda.org.uk/pdtf/shape/RoomDimensionShape>
@@ -156,6 +164,12 @@
     dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0008d/section-Rule-3> ;
     sh:property _:b2b707597656f, _:bbf9d5f342465, _:be891816b79e6 ;
     sh:targetClass opda:Valuation .
+
+_:b039592a64b80
+    sh:message "Each opda:hasSubAssessment (a riskSubcategories[] entry) MUST itself satisfy the RiskAssessment shape — the self-referential result recursion via sh:node (ODR-0008d Rule 1c / Rule 4). ACYCLICITY (ODR-0024 R11) is enforced separately by opda:shape:RiskAssessmentAcyclicityConstraint, a SPARQL property-path constraint (core SHACL sh:node recursion cannot itself test transitive closure)."@en ;
+    sh:node <https://opda.org.uk/pdtf/shape/RiskAssessmentShape> ;
+    sh:path opda:hasSubAssessment ;
+    sh:severity sh:Violation .
 
 _:b057a296958ac
     rdf:first <https://opda.org.uk/pdtf/scheme/transportType/Tramway> ;
@@ -224,12 +238,6 @@ _:b215fdc423dfe
 _:b244c074fc553
     rdf:first <https://opda.org.uk/pdtf/scheme/tenureKind/Commonhold> ;
     rdf:rest rdf:nil .
-
-_:b25134ffb69ad
-    sh:message "Each opda:hasSubAssessment (a riskSubcategories[] entry) MUST itself satisfy the RiskAssessment shape — the self-referential result recursion via sh:node (ODR-0008d Rule 1c / Rule 4). ACYCLICITY (ODR-0024 R11): the sub-assessment graph MUST be acyclic — a RiskAssessment MUST NOT be its own transitive sub-assessment (core SHACL cannot test transitive closure; a SHACL-AF closure rule is the enforcement vehicle, deferred)."@en ;
-    sh:node <https://opda.org.uk/pdtf/shape/RiskAssessmentShape> ;
-    sh:path opda:hasSubAssessment ;
-    sh:severity sh:Violation .
 
 _:b263fa421e570
     rdf:first <https://opda.org.uk/pdtf/scheme/priceQualifier/From> ;
@@ -460,6 +468,9 @@ _:b8817da75fb7c
     sh:message "opda:RoomDimension width (metres) is a single-valued by-value field (ODR-0024 R10 / session-030); the structure carries NO identity key (it is individuated by value, the opda:MonetaryAmount pattern) and opda:roomName is non-rigid — never a key."@en ;
     sh:path opda:width ;
     sh:severity sh:Violation .
+
+_:b882f5b17eff0
+    sh:select "PREFIX opda: <https://opda.org.uk/pdtf/>\nSELECT $this WHERE {\n  $this opda:hasSubAssessment+ $this .\n}" .
 
 _:b89e5b7b181ff
     rdf:first <https://opda.org.uk/pdtf/scheme/ofstedRating/Good> ;
