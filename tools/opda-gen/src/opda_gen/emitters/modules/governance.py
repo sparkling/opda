@@ -57,6 +57,7 @@ _GDPR_ART_10 = URIRef("https://gdpr-info.eu/art-10-gdpr/")
 
 CLASSES = (
     OPDA.DPVMappingRecord,
+    OPDA.DPVMappingRefinement,
     OPDA.SpecialCategoryScheme,
 )
 
@@ -127,6 +128,43 @@ def build_graph() -> Graph:
         lang="en",
     )))
     g.add((OPDA.DPVMappingRecord, RDFS.isDefinedBy, _MODULE_IRI))
+
+    # --- opda:DPVMappingRefinement — variant-conditional specialisation -
+    # Used (annotations.py's _add_dpv_variant_refinement) since ODR-0018 §3a
+    # to type refinement instances asserting opda:targetsKind, but never
+    # formally declared as a class or related to DPVMappingRecord — a real
+    # authoring gap (ODR-0029 R3's closed-world domain check on targetsKind,
+    # rdfs:domain opda:DPVMappingRecord, only surfaced it once the RML
+    # validation harness started loading ontology-level context). The
+    # DPVMappingRecord comment above already describes refinements as part
+    # of the same concept ("...and optional variant-conditional
+    # refinements"); rdfs:subClassOf makes that relationship real.
+    g.add((OPDA.DPVMappingRefinement, RDF.type, OWL.Class))
+    g.add((OPDA.DPVMappingRefinement, RDFS.subClassOf, OPDA.DPVMappingRecord))
+    g.add((OPDA.DPVMappingRefinement, RDFS.label,
+           Literal("DPV Mapping Refinement", lang="en")))
+    g.add((OPDA.DPVMappingRefinement, RDFS.comment, Literal(
+        "A variant-conditional specialisation of a DPVMappingRecord: "
+        "applies when a Kind's variant predicate takes a specific value "
+        "(opda:variantPredicate/opda:variantValue), overriding the "
+        "baseline lawful basis with its own (opda:lawfulBasis). Per "
+        "ODR-0018 §3a's mapping-table pattern.",
+        lang="en",
+    )))
+    g.add((OPDA.DPVMappingRefinement, SKOS.scopeNote, Literal(
+        "UFO: Information Particular, specialising DPVMappingRecord "
+        "(Guizzardi 2005 Ch. 4 §4.7). Variant-conditional refinement "
+        "pattern per ODR-0018 §3a.",
+        lang="en",
+    )))
+    g.add((OPDA.DPVMappingRefinement, SKOS.definition, Literal(
+        "A variant-conditional specialisation of a DPV mapping record: "
+        "overrides the baseline lawful basis for a Kind when its variant "
+        "predicate takes a specific value.",
+        lang="en",
+    )))
+    g.add((OPDA.DPVMappingRefinement, DCTERMS.source, _ODR_0018_RULE4))
+    g.add((OPDA.DPVMappingRefinement, RDFS.isDefinedBy, _MODULE_IRI))
 
     # --- opda:SpecialCategoryScheme — SKOS scheme stub (Baker S012 Q3) --
     g.add((OPDA.SpecialCategoryScheme, RDF.type, OWL.Class))

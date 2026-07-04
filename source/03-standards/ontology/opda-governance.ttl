@@ -31,6 +31,16 @@ opda:DPVMappingRecord
     rdfs:isDefinedBy <https://opda.org.uk/pdtf/graph/governance> ;
     skos:scopeNote "UFO: Information Particular (Guizzardi 2005 Ch. 4 §4.7). Mapping-record-as-resource pattern per ODR-0018 §3a."@en .
 
+opda:DPVMappingRefinement
+    rdf:type owl:Class ;
+    rdfs:label "DPV Mapping Refinement"@en ;
+    rdfs:comment "A variant-conditional specialisation of a DPVMappingRecord: applies when a Kind's variant predicate takes a specific value (opda:variantPredicate/opda:variantValue), overriding the baseline lawful basis with its own (opda:lawfulBasis). Per ODR-0018 §3a's mapping-table pattern."@en ;
+    skos:definition "A variant-conditional specialisation of a DPV mapping record: overrides the baseline lawful basis for a Kind when its variant predicate takes a specific value."@en ;
+    dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0018/section-Rule4> ;
+    rdfs:isDefinedBy <https://opda.org.uk/pdtf/graph/governance> ;
+    rdfs:subClassOf opda:DPVMappingRecord ;
+    skos:scopeNote "UFO: Information Particular, specialising DPVMappingRecord (Guizzardi 2005 Ch. 4 §4.7). Variant-conditional refinement pattern per ODR-0018 §3a."@en .
+
 opda:SpecialCategoryScheme
     rdf:type owl:Class ;
     rdfs:label "Article 10 Special Category Personal Data Scheme"@en ;
