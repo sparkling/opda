@@ -1411,8 +1411,8 @@
 #   not just one dct:source citation). Each riskSubcategories[] item carries
 #   its own genuine key (subCategory itself — a per-item distinguishing
 #   name), unlike the parent floodRisk/climateRisk block (which has no key of
-#   its own and is NOT mapped here — same "no clean node to bind onto"
-#   reasoning as M18/M20's documented gaps). Class-promoted (shares
+#   its own — closed below at M24a, once thought permanently blocked by the
+#   since-fixed morph-kgc dropna bug; see M24a's own comment). Class-promoted (shares
 #   RiskAssessment's identity shape with Comparable/Survey/Valuation, above)
 #   so each sub-assessment node gets its own prov:wasGeneratedBy + RunActivity.
 #   opda:actionAlertRating (plain xsd:integer) and opda:riskIndicator
@@ -1436,7 +1436,9 @@
   rr:predicateObjectMap [ rr:predicate opda:subCategory ;
       rr:objectMap [ rml:reference "subCategory" ; rr:datatype xsd:string ] ] ;  # <- propertyPack.environmentalIssues.flooding.floodRisk.riskSubcategories[].subCategory
   rr:predicateObjectMap [ rr:predicate opda:actionAlertRating ;
-      rr:objectMap [ rml:reference "actionAlertRating" ; rr:datatype xsd:integer ] ] .  # <- propertyPack.environmentalIssues.flooding.floodRisk.riskSubcategories[].actionAlertRating
+      rr:objectMap [ rml:reference "actionAlertRating" ; rr:datatype xsd:integer ] ] ;  # <- propertyPack.environmentalIssues.flooding.floodRisk.riskSubcategories[].actionAlertRating
+  rr:predicateObjectMap [ rr:predicate opda:peril ;
+      rr:object <https://opda.org.uk/pdtf/scheme/peril/Flooding> ] .  # constant: this TriplesMap only ever iterates the flooding container
 
 <#FloodRiskSubcategoryRunActivity> a rr:TriplesMap ;
   rml:logicalSource [ rml:source "INSTANCE.json" ;
@@ -1470,7 +1472,9 @@
   rr:predicateObjectMap [ rr:predicate opda:subCategory ;
       rr:objectMap [ rml:reference "subCategory" ; rr:datatype xsd:string ] ] ;  # <- propertyPack.environmentalIssues.climate.climateRisk.riskSubcategories[].subCategory
   rr:predicateObjectMap [ rr:predicate opda:actionAlertRating ;
-      rr:objectMap [ rml:reference "actionAlertRating" ; rr:datatype xsd:integer ] ] .  # <- propertyPack.environmentalIssues.climate.climateRisk.riskSubcategories[].actionAlertRating
+      rr:objectMap [ rml:reference "actionAlertRating" ; rr:datatype xsd:integer ] ] ;  # <- propertyPack.environmentalIssues.climate.climateRisk.riskSubcategories[].actionAlertRating
+  rr:predicateObjectMap [ rr:predicate opda:peril ;
+      rr:object <https://opda.org.uk/pdtf/scheme/peril/Climate> ] .  # constant: this TriplesMap only ever iterates the climate container
 
 <#ClimateRiskSubcategoryRunActivity> a rr:TriplesMap ;
   rml:logicalSource [ rml:source "INSTANCE.json" ;
@@ -1492,6 +1496,68 @@
   rr:subjectMap [ rr:template "https://opda.org.uk/pdtf/harness/data/riskassessment/subcategory/{subCategory}" ] ;
   rr:predicateObjectMap [ rr:predicate opda:riskIndicator ;
       rr:objectMap [ rr:constant <https://opda.org.uk/pdtf/scheme/yesNoNotKnown/No> ] ] .
+
+# M24a — RiskAssessment PARENT nodes (the floodRisk/climateRisk container
+#   itself, one level up from M24's riskSubcategories[] children) — closes
+#   opda:hasSubAssessment (ODR-0008d Rule 4's result-recursion axis: a parent
+#   RiskAssessment -> each riskSubcategories[] child, itself a leaf
+#   RiskAssessment per M24). Previously undiscussed as mappable at all: the
+#   container has no own JSON key, but IS mintable on a stable ambient key
+#   ({uprn}, already M4's Property identity key) plus a CONSTANT peril-name
+#   segment (fixed per TriplesMap, not a JSON value) — same idiom as M7a/M23's
+#   {titleNumber}-adjacent keying. Node existence is made conditional on the
+#   container actually being present by embedding its own riskIndicator VALUE
+#   in the subject template (the established skip-together technique, ADR-0057
+#   Amendment 1): if floodRisk/climateRisk is entirely absent (e.g. testdata/02
+#   minimal), the whole subject template placeholder fails to resolve and the
+#   row is dropped — no spurious RiskAssessment minted for a peril that was
+#   never assessed. hasSubAssessment then reaches the child's {subCategory} key
+#   via the array-projected rr:template placeholder technique (proven for
+#   opda:hasParticipant/opda:concerns) — cheap here because the iterator is
+#   $.propertyPack (shared with M4/M7/etc), so the first path segment pulled is
+#   "environmentalIssues", not the whole propertyPack subtree; when
+#   riskSubcategories[] itself is absent (e.g. testdata/01, which has
+#   floodRisk.riskIndicator but no riskSubcategories), only the
+#   hasSubAssessment triple is dropped — the parent node itself still mints.
+<#FloodRiskParent> a rr:TriplesMap ;
+  rml:logicalSource [ rml:source "INSTANCE.json" ;
+                      rml:referenceFormulation ql:JSONPath ;
+                      rml:iterator "$.propertyPack" ] ;
+  rr:subjectMap [ rr:template "https://opda.org.uk/pdtf/harness/data/riskassessment/property-{uprn}/peril/Flooding-{environmentalIssues.flooding.floodRisk.riskIndicator}" ;
+                  rr:class opda:RiskAssessment ] ;
+  rr:predicateObjectMap [ rr:predicate prov:wasGeneratedBy ;
+      rr:objectMap [ rr:template "https://opda.org.uk/pdtf/harness/data/riskassessment/property-{uprn}/peril/Flooding-{environmentalIssues.flooding.floodRisk.riskIndicator}/run" ] ] ;  # SHACL: class-promoted opda:RiskAssessment requires prov:wasGeneratedBy
+  rr:predicateObjectMap [ rr:predicate opda:peril ;
+      rr:object <https://opda.org.uk/pdtf/scheme/peril/Flooding> ] ;
+  rr:predicateObjectMap [ rr:predicate opda:hasSubAssessment ;
+      rr:objectMap [ rr:template "https://opda.org.uk/pdtf/harness/data/riskassessment/subcategory/{environmentalIssues.flooding.floodRisk.riskSubcategories.subCategory}" ] ] .  # <- propertyPack.environmentalIssues.flooding.floodRisk.riskSubcategories[] (result-recursion parent->child, ODR-0008d Rule 4)
+
+<#FloodRiskParentRunActivity> a rr:TriplesMap ;
+  rml:logicalSource [ rml:source "INSTANCE.json" ;
+                      rml:referenceFormulation ql:JSONPath ;
+                      rml:iterator "$.propertyPack" ] ;
+  rr:subjectMap [ rr:template "https://opda.org.uk/pdtf/harness/data/riskassessment/property-{uprn}/peril/Flooding-{environmentalIssues.flooding.floodRisk.riskIndicator}/run" ;
+                  rr:class prov:Activity ] .
+
+<#ClimateRiskParent> a rr:TriplesMap ;
+  rml:logicalSource [ rml:source "INSTANCE.json" ;
+                      rml:referenceFormulation ql:JSONPath ;
+                      rml:iterator "$.propertyPack" ] ;
+  rr:subjectMap [ rr:template "https://opda.org.uk/pdtf/harness/data/riskassessment/property-{uprn}/peril/Climate-{environmentalIssues.climate.climateRisk.riskIndicator}" ;
+                  rr:class opda:RiskAssessment ] ;
+  rr:predicateObjectMap [ rr:predicate prov:wasGeneratedBy ;
+      rr:objectMap [ rr:template "https://opda.org.uk/pdtf/harness/data/riskassessment/property-{uprn}/peril/Climate-{environmentalIssues.climate.climateRisk.riskIndicator}/run" ] ] ;  # SHACL: class-promoted opda:RiskAssessment requires prov:wasGeneratedBy
+  rr:predicateObjectMap [ rr:predicate opda:peril ;
+      rr:object <https://opda.org.uk/pdtf/scheme/peril/Climate> ] ;
+  rr:predicateObjectMap [ rr:predicate opda:hasSubAssessment ;
+      rr:objectMap [ rr:template "https://opda.org.uk/pdtf/harness/data/riskassessment/subcategory/{environmentalIssues.climate.climateRisk.riskSubcategories.subCategory}" ] ] .  # <- propertyPack.environmentalIssues.climate.climateRisk.riskSubcategories[] (result-recursion parent->child, ODR-0008d Rule 4)
+
+<#ClimateRiskParentRunActivity> a rr:TriplesMap ;
+  rml:logicalSource [ rml:source "INSTANCE.json" ;
+                      rml:referenceFormulation ql:JSONPath ;
+                      rml:iterator "$.propertyPack" ] ;
+  rr:subjectMap [ rr:template "https://opda.org.uk/pdtf/harness/data/riskassessment/property-{uprn}/peril/Climate-{environmentalIssues.climate.climateRisk.riskIndicator}/run" ;
+                  rr:class prov:Activity ] .
 
 # M25 — typeOfConstruction.buildingSafety.potentialCost: NOT mapped. rdfs:range
 #   is opda:MonetaryAmount, but the real JSON field is free text (type:
