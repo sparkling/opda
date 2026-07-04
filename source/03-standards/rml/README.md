@@ -148,6 +148,47 @@ Two high-value leaves are worth calling out because they surprise reviewers:
   `dct:source` of `opda:supplier` in A1's index, but it IS semantically the shared
   supplier property, so it is mapped **best-effort as layer-2** onto `opda:supplier`
   (CONTRACT §Layer-2) rather than left in the gap register.
+- **`opda:Address` / `opda:hasAddress` / `opda:addressVariant` are deliberately NOT
+  mapped, despite ~15 real PDTF address occurrences** (`propertyPack.address`,
+  `participants[].address`, nearby-facility/ownership contact addresses, the HMLR
+  register-extract `propertyAddress`, etc.). ODR-0015 (accepted, Council session-015)
+  ratifies `opda:Address` with structural fields `opda:line1` / `opda:line2` /
+  `opda:postTown` / `opda:postcode` / `opda:country` / `opda:inspireFeatureId` plus a
+  MUST-have `opda:identifiesSameProperty` back-link — but `opda-gen` only ever emitted
+  **one** of those seven ratified predicates into `opda-merged.ttl`:
+  `opda:addressVariant` (confirmed via direct domain/range search of the merged TBox
+  and cross-checked against `provenance-index.json`'s own per-class property list,
+  which shows `opda:Address` with exactly one property). Minting an `opda:Address`
+  node today, for any occurrence, would therefore carry **zero location content** — no
+  predicate exists anywhere to hold `line1`/`postcode`/etc. Worse, `addressVariant`'s
+  closed 3-value enum (`"title" | "marketing" | "inspire"`) is a UK land/property
+  *authority* classification (HMLR / listing agent / OS AddressBase) per ODR-0015 §3a —
+  it does not honestly apply to a participant's home address or a school's contact
+  address, so assigning it for 14 of the ~15 occurrences would be a guess, not a
+  derivation. The one occurrence that could be honestly tagged (`"title"`, from
+  `propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.propertyAddress`, a
+  genuine HMLR register extract) was deliberately left unmapped too, since even that
+  node would carry only `rdf:type` + `addressVariant` + `identifiesSameProperty`
+  (the last of which already exists, domain-unconstrained, per ODR-0005 §3c) and no
+  actual address text — judged not worth the TriplesMap complexity for content-free
+  nodes. **This is squarely an ontology-generation gap, not a mapping gap**: ODR-0015's
+  own Q3 is recorded as "held-as-live dissent" (Allemang DA: "Address-as-class is
+  unsupported by the source schema... the over-modelling move is to invent an
+  `opda:Address` class"), so implementing the missing structural predicates is itself
+  a live ontology-design question, not a mechanical opda-gen omission to patch from
+  the RML side. Left as a flagged gap for an ontology-owner decision.
+- **`opda:Survey` has zero domain/range connections anywhere in `opda-merged.ttl`** —
+  confirmed by direct search (no property has `rdfs:domain opda:Survey` or
+  `rdfs:range opda:Survey`). The two real `propertyPack.surveys[]` leaves that DO have
+  predicates (`constructionType`, `reportDate`) are deliberately bound flat onto
+  `opda:Property` and `opda:Search` respectively ("flat per §Q6a" — confirmed in each
+  predicate's own `rdfs:comment`), not onto a `Survey` node. Minting `rr:class
+  opda:Survey` on the `$.propertyPack.surveys[*]` iterator would therefore produce an
+  isolated `rdf:type` triple with no other properties and no predicate anywhere to
+  join it to the `Property` it describes — not meaningful mapping output. Left
+  unmapped; matches the (separately-run, now re-confirmed) ontology-coverage audit's
+  category-C classification of `Survey` as architecturally out of RML's reach until
+  the ontology gains a real Survey-domain property or join predicate.
 
 ## Known deviations (candid)
 
