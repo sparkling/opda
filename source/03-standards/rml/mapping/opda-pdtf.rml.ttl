@@ -71,7 +71,8 @@
 # RML-FNML: RMLMapper (the engine, since ADR-0057's Amendments) only
 # recognises the classic FNML vocabulary (fnml:functionValue, the
 # semweb.mmlab.be/ns/fnml# namespace + fno:executes) for function execution —
-# NOT the newer RML-core 2.0 rmlf:functionExecution structure morph-kgc used.
+# NOT the newer RML-FNML module's rmlf:functionExecution structure (a
+# separate module from RML-Core in the modular RML redesign) morph-kgc used.
 # See M28/M30's use of fnml:functionValue + mapping/functions/functions.ttl
 # (FnO description) + mapping/functions/OpdaFunctions.java (the Java port of
 # mapping/opda-udfs.py's scheme_member_iri, kept for its slugify-rule history).

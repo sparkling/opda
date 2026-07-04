@@ -3,13 +3,15 @@
 # M18/M28/M30 and the opda:orderDate/expectedDeliveryDate/reportDate/
 # signedOn/soldDate sites in ../opda-pdtf.rml.ttl).
 #
-# RMLMapper 8.1.0 does NOT recognise the RML-core 2.0 rmlf:functionExecution
-# vocabulary morph-kgc used (confirmed empirically: it parses without error
-# but never builds a function executor, "functionExecutor is null" NPE) — only
-# the classic FNML vocabulary (fnml:functionValue + fno:executes, the
-# semweb.mmlab.be/ns/fnml# namespace). The mapping's FNML call sites were
-# rewritten to that classic form as part of the morph-kgc -> RMLMapper
-# migration; this file registers the Java implementations those calls invoke.
+# RMLMapper 8.1.0 does NOT implement the RML-FNML module's rmlf:functionExecution
+# vocabulary morph-kgc used (RML-FNML is a separate module from RML-Core in the
+# modular RML redesign — RMLMapper supports RML-Core + RML-IO, not RML-FNML;
+# confirmed empirically: it parses without error but never builds a function
+# executor, "functionExecutor is null" NPE) — only the classic FNML vocabulary
+# (fnml:functionValue + fno:executes, the semweb.mmlab.be/ns/fnml# namespace).
+# The mapping's FNML call sites were rewritten to that classic form as part of
+# the morph-kgc -> RMLMapper migration; this file registers the Java
+# implementations those calls invoke.
 # Loaded via `-f` (see harness/run_mapping.py); RMLMapper's docs call this
 # "dynamic loading" (README.md "Including functions").
 @prefix dcterms: <http://purl.org/dc/terms/> .
