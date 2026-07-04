@@ -1189,11 +1189,14 @@
 #     .planningAndBuildingRegulations.decisionsAndPendingApplications
 #     .planningPermission[*]
 #   buildingControlStartDate/planningStartDate (also domain=Search, one level
-#   up in decisionsAndPendingApplications) are NOT mapped: no natural key
-#   exists at that container level, and the only other opda:Search node
-#   (M6, localAuthority.*) is keyed from a different, cross-container field
-#   not accessible from this iterator — same "no clean node to bind onto"
-#   reasoning as the surveys[].constructionType gap above.
+#   up in decisionsAndPendingApplications) are now mapped at M20a below, via a
+#   NEW Search node minted at $.propertyPack (where {uprn} lives) rather than
+#   from within planningPermission[*]'s own iterator — the same "mint a
+#   synthetic parent node on a stable ambient key" idiom used for M24a's
+#   RiskAssessment parents. Supersedes the earlier "no natural key at that
+#   container level" conclusion, which is true of the container itself but
+#   doesn't rule out keying the node on {uprn} + the field's own value (the
+#   skip-together technique, ADR-0057 Amendment 1).
 # ---------------------------------------------------------------------------
 <#PlanningPermission> a rr:TriplesMap ;
   rml:logicalSource [ rml:source "INSTANCE.json" ;
@@ -1219,6 +1222,37 @@
                       rml:referenceFormulation ql:JSONPath ;
                       rml:iterator "$.propertyPack.localSearches.localAuthoritySearches.planningAndBuildingRegulations.decisionsAndPendingApplications.planningPermission[*]" ] ;
   rr:subjectMap [ rr:template "https://opda.org.uk/pdtf/harness/data/search/planning/{refNumber}/run" ;
+                  rr:class prov:Activity ] .
+
+# M20a — decisionsAndPendingApplications' OWN scalar fields (planningStartDate/
+#   buildingControlStartDate), one level up from M20's planningPermission[*]
+#   array. Keyed on {uprn} (from M4's own iterator, $.propertyPack) + the
+#   planningStartDate value itself (skip-together: the node only mints when
+#   planningStartDate is present). Honest asymmetry: if buildingControlStartDate
+#   is present but planningStartDate is absent, this node does not mint at all
+#   (the subject template's placeholder fails) and buildingControlStartDate is
+#   lost too — no PDTF v3 schema constraint ties the two together, so a
+#   real-world instance could hit this; not exercised by testdata/01-04
+#   (neither field occurs in any tracked fixture), proven via a standalone
+#   scratch instance instead (same caveat as M18/constructionType above).
+<#PlanningBuildingRegsRecord> a rr:TriplesMap ;
+  rml:logicalSource [ rml:source "INSTANCE.json" ;
+                      rml:referenceFormulation ql:JSONPath ;
+                      rml:iterator "$.propertyPack" ] ;
+  rr:subjectMap [ rr:template "https://opda.org.uk/pdtf/harness/data/search/planningbuildingregs-{uprn}-{localSearches.localAuthoritySearches.planningAndBuildingRegulations.decisionsAndPendingApplications.planningStartDate}" ;
+                  rr:class opda:Search ] ;
+  rr:predicateObjectMap [ rr:predicate prov:wasGeneratedBy ;
+      rr:objectMap [ rr:template "https://opda.org.uk/pdtf/harness/data/search/planningbuildingregs-{uprn}-{localSearches.localAuthoritySearches.planningAndBuildingRegulations.decisionsAndPendingApplications.planningStartDate}/run" ] ] ;  # SHACL: class-promoted opda:Search requires prov:wasGeneratedBy
+  rr:predicateObjectMap [ rr:predicate opda:planningStartDate ;
+      rr:objectMap [ rml:reference "localSearches.localAuthoritySearches.planningAndBuildingRegulations.decisionsAndPendingApplications.planningStartDate" ; rr:datatype xsd:date ] ] ;  # <- propertyPack.localSearches.localAuthoritySearches.planningAndBuildingRegulations.decisionsAndPendingApplications.planningStartDate
+  rr:predicateObjectMap [ rr:predicate opda:buildingControlStartDate ;
+      rr:objectMap [ rml:reference "localSearches.localAuthoritySearches.planningAndBuildingRegulations.decisionsAndPendingApplications.buildingControlStartDate" ; rr:datatype xsd:date ] ] .  # <- propertyPack.localSearches.localAuthoritySearches.planningAndBuildingRegulations.decisionsAndPendingApplications.buildingControlStartDate
+
+<#PlanningBuildingRegsRecordRunActivity> a rr:TriplesMap ;
+  rml:logicalSource [ rml:source "INSTANCE.json" ;
+                      rml:referenceFormulation ql:JSONPath ;
+                      rml:iterator "$.propertyPack" ] ;
+  rr:subjectMap [ rr:template "https://opda.org.uk/pdtf/harness/data/search/planningbuildingregs-{uprn}-{localSearches.localAuthoritySearches.planningAndBuildingRegulations.decisionsAndPendingApplications.planningStartDate}/run" ;
                   rr:class prov:Activity ] .
 
 # ---------------------------------------------------------------------------
