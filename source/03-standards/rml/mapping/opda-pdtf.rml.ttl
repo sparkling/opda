@@ -377,8 +377,97 @@
       rr:objectMap [ rml:reference "completionAndMoving.digitalPropertyLogbook.willHandoverLogbook" ; rr:datatype xsd:boolean ] ] ;  # <- propertyPack.completionAndMoving.digitalPropertyLogbook.willHandoverLogbook
   rr:predicateObjectMap [ rr:predicate opda:dateToBeConnected ;
       rr:objectMap [ rml:reference "connectivity.telephone.dateToBeConnected" ; rr:datatype xsd:date ] ] ;  # <- propertyPack.connectivity.telephone.dateToBeConnected
+  rr:predicateObjectMap [ rr:predicate opda:consequentialChargingBasis ;
+      rr:objectMap [ rml:reference "waterAndDrainage.charging.consequentialChargingBasis" ; rr:datatype xsd:string ] ] ;  # <- propertyPack.waterAndDrainage.charging.consequentialChargingBasis
+  rr:predicateObjectMap [ rr:predicate opda:currentChargingBasis ;
+      rr:objectMap [ rml:reference "waterAndDrainage.charging.currentChargingBasis" ; rr:datatype xsd:string ] ] ;  # <- propertyPack.waterAndDrainage.charging.currentChargingBasis
+  rr:predicateObjectMap [ rr:predicate opda:distanceToNearestSewerageTreatment ;
+      rr:objectMap [ rml:reference "waterAndDrainage.drainage.distanceToNearestSewerageTreatment" ; rr:datatype xsd:string ] ] ;  # <- propertyPack.waterAndDrainage.drainage.distanceToNearestSewerageTreatment
+  rr:predicateObjectMap [ rr:predicate opda:publicSewerMapAttached ;
+      rr:objectMap [ rml:reference "waterAndDrainage.maps.publicSewerMapAttached" ; rr:datatype xsd:string ] ] ;  # <- propertyPack.waterAndDrainage.maps.publicSewerMapAttached
+  rr:predicateObjectMap [ rr:predicate opda:waterworksMapAttached ;
+      rr:objectMap [ rml:reference "waterAndDrainage.maps.waterworksMapAttached" ; rr:datatype xsd:string ] ] ;  # <- propertyPack.waterAndDrainage.maps.waterworksMapAttached
+  rr:predicateObjectMap [ rr:predicate opda:sewerageBills ;
+      rr:objectMap [ rml:reference "waterAndDrainage.charging.sewerageBills" ; rr:datatype xsd:string ] ] ;  # <- propertyPack.waterAndDrainage.charging.sewerageBills
+  rr:predicateObjectMap [ rr:predicate opda:sewerageProvider ;
+      rr:objectMap [ rml:reference "waterAndDrainage.charging.sewerageProvider" ; rr:datatype xsd:string ] ] ;  # <- propertyPack.waterAndDrainage.charging.sewerageProvider
+  rr:predicateObjectMap [ rr:predicate opda:supplyClassification ;
+      rr:objectMap [ rml:reference "waterAndDrainage.water.supplyClassification" ; rr:datatype xsd:string ] ] ;  # <- propertyPack.waterAndDrainage.water.supplyClassification
+  rr:predicateObjectMap [ rr:predicate opda:waterBills ;
+      rr:objectMap [ rml:reference "waterAndDrainage.charging.waterBills" ; rr:datatype xsd:string ] ] ;  # <- propertyPack.waterAndDrainage.charging.waterBills
+  rr:predicateObjectMap [ rr:predicate opda:waterProvider ;
+      rr:objectMap [ rml:reference "waterAndDrainage.charging.waterProvider" ; rr:datatype xsd:string ] ] ;  # <- propertyPack.waterAndDrainage.charging.waterProvider
+  rr:predicateObjectMap [ rr:predicate opda:dateLastServiced ;
+      rr:objectMap [ rml:reference "waterAndDrainage.drainage.mainsFoulDrainage.offMainsDrainageSystem.dateLastServiced" ; rr:datatype xsd:date ] ] ;  # <- propertyPack.waterAndDrainage.drainage.mainsFoulDrainage.offMainsDrainageSystem.dateLastServiced
+  rr:predicateObjectMap [ rr:predicate opda:numberOfPropertiesSharing ;
+      rr:objectMap [ rml:reference "waterAndDrainage.drainage.mainsFoulDrainage.offMainsDrainageSystem.otherConnectedProperties.numberOfPropertiesSharing" ; rr:datatype xsd:integer ] ] ;  # <- propertyPack.waterAndDrainage.drainage.mainsFoulDrainage.offMainsDrainageSystem.otherConnectedProperties.numberOfPropertiesSharing
+  rr:predicateObjectMap [ rr:predicate opda:saleAtUndervalue ;
+      rr:objectMap [ rml:reference "priceInformation.saleAtUndervalue" ; rr:datatype xsd:string ] ] ;  # <- propertyPack.priceInformation.saleAtUndervalue
+  rr:predicateObjectMap [ rr:predicate opda:area ;
+      rr:objectMap [ rml:reference "buildInformation.internalArea.area" ; rr:datatype xsd:decimal ] ] ;  # <- propertyPack.buildInformation.internalArea.area
+  rr:predicateObjectMap [ rr:predicate opda:entranceFloor ;
+      rr:objectMap [ rml:reference "buildInformation.building.entranceFloor" ; rr:datatype xsd:integer ] ] ;  # <- propertyPack.buildInformation.building.entranceFloor
+  rr:predicateObjectMap [ rr:predicate opda:hasLift ;
+      rr:objectMap [ rml:reference "buildInformation.building.hasLift" ; rr:datatype xsd:string ] ] ;  # <- propertyPack.buildInformation.building.hasLift
+  rr:predicateObjectMap [ rr:predicate opda:numberOfFloors ;
+      rr:objectMap [ rml:reference "buildInformation.building.numberOfFloors" ; rr:datatype xsd:integer ] ] ;  # <- propertyPack.buildInformation.building.numberOfFloors
+  rr:predicateObjectMap [ rr:predicate opda:otherType ;
+      rr:objectMap [ rml:reference "buildInformation.building.otherType" ; rr:datatype xsd:string ] ] ;  # <- propertyPack.buildInformation.building.otherType (oneOf branch mutually exclusive with the Flat branch this fixture uses; path verified, not instance-exercised)
+  rr:predicateObjectMap [ rr:predicate opda:dateInstalled ;
+      rr:objectMap [ rml:reference "electricity.heatPump.dateInstalled" ; rr:datatype xsd:date ] ] ;  # <- propertyPack.electricity.heatPump.dateInstalled
+  rr:predicateObjectMap [ rr:predicate opda:isConnectedToNationalGrid ;
+      rr:objectMap [ rml:reference "electricity.solarPanels.isConnectedToNationalGrid" ; rr:datatype xsd:string ] ] ;  # <- propertyPack.electricity.solarPanels.isConnectedToNationalGrid
+  rr:predicateObjectMap [ rr:predicate opda:lastMaintained ;
+      rr:objectMap [ rml:reference "electricity.solarPanels.lastMaintained" ; rr:datatype xsd:date ] ] ;  # <- propertyPack.electricity.solarPanels.lastMaintained
+  rr:predicateObjectMap [ rr:predicate opda:mpan ;
+      rr:objectMap [ rml:reference "electricity.mainsElectricity.electricityMeter.mpan" ; rr:datatype xsd:string ] ] ;  # <- propertyPack.electricity.mainsElectricity.electricityMeter.mpan
+  rr:predicateObjectMap [ rr:predicate opda:yearInstalled ;
+      rr:objectMap [ rml:reference "electricity.solarPanels.yearInstalled" ; rr:datatype xsd:gYear ] ] ;  # <- propertyPack.electricity.solarPanels.yearInstalled
   rr:predicateObjectMap [ rr:predicate opda:annualCostOfPermit ;
-      rr:objectMap [ rr:template "https://opda.org.uk/pdtf/harness/data/property/{uprn}/amount/parkingPermit-{parking.controlledParking.annualCostOfPermit}" ] ] .  # <- propertyPack.parking.controlledParking.annualCostOfPermit (MonetaryAmount join, see M4d)
+      rr:objectMap [ rr:template "https://opda.org.uk/pdtf/harness/data/property/{uprn}/amount/parkingPermit-{parking.controlledParking.annualCostOfPermit}" ] ] ;  # <- propertyPack.parking.controlledParking.annualCostOfPermit (MonetaryAmount join, see M4d)
+  rr:predicateObjectMap [ rr:predicate opda:holdingDeposit ;
+      rr:objectMap [ rr:template "https://opda.org.uk/pdtf/harness/data/property/{uprn}/amount/holdingDeposit-{lettingInformation.holdingDeposit}" ] ] ;  # <- propertyPack.lettingInformation.holdingDeposit (MonetaryAmount join, see M4e)
+  rr:predicateObjectMap [ rr:predicate opda:rent ;
+      rr:objectMap [ rr:template "https://opda.org.uk/pdtf/harness/data/property/{uprn}/amount/rent-{lettingInformation.rent}" ] ] ;  # <- propertyPack.lettingInformation.rent (MonetaryAmount join, see M4e)
+  rr:predicateObjectMap [ rr:predicate opda:securityDeposit ;
+      rr:objectMap [ rr:template "https://opda.org.uk/pdtf/harness/data/property/{uprn}/amount/securityDeposit-{lettingInformation.securityDeposit}" ] ] .  # <- propertyPack.lettingInformation.securityDeposit (MonetaryAmount join, see M4e)
+
+# ---------------------------------------------------------------------------
+# M4e — lettingInformation MonetaryAmount value nodes (holdingDeposit, rent,
+#   securityDeposit). Same optional-field-in-template technique as M4b/M4d.
+# ---------------------------------------------------------------------------
+<#HoldingDepositAmount> a rr:TriplesMap ;
+  rml:logicalSource [ rml:source "INSTANCE.json" ;
+                      rml:referenceFormulation ql:JSONPath ;
+                      rml:iterator "$.propertyPack" ] ;
+  rr:subjectMap [ rr:template "https://opda.org.uk/pdtf/harness/data/property/{uprn}/amount/holdingDeposit-{lettingInformation.holdingDeposit}" ;
+                  rr:class opda:MonetaryAmount ] ;
+  rr:predicateObjectMap [ rr:predicate opda:amount ;
+      rr:objectMap [ rml:reference "lettingInformation.holdingDeposit" ; rr:datatype xsd:decimal ] ] ;  # <- propertyPack.lettingInformation.holdingDeposit
+  rr:predicateObjectMap [ rr:predicate opda:currency ;
+      rr:object <https://opda.org.uk/pdtf/scheme/currency/GBP> ] .
+
+<#RentAmount> a rr:TriplesMap ;
+  rml:logicalSource [ rml:source "INSTANCE.json" ;
+                      rml:referenceFormulation ql:JSONPath ;
+                      rml:iterator "$.propertyPack" ] ;
+  rr:subjectMap [ rr:template "https://opda.org.uk/pdtf/harness/data/property/{uprn}/amount/rent-{lettingInformation.rent}" ;
+                  rr:class opda:MonetaryAmount ] ;
+  rr:predicateObjectMap [ rr:predicate opda:amount ;
+      rr:objectMap [ rml:reference "lettingInformation.rent" ; rr:datatype xsd:decimal ] ] ;  # <- propertyPack.lettingInformation.rent
+  rr:predicateObjectMap [ rr:predicate opda:currency ;
+      rr:object <https://opda.org.uk/pdtf/scheme/currency/GBP> ] .
+
+<#SecurityDepositAmount> a rr:TriplesMap ;
+  rml:logicalSource [ rml:source "INSTANCE.json" ;
+                      rml:referenceFormulation ql:JSONPath ;
+                      rml:iterator "$.propertyPack" ] ;
+  rr:subjectMap [ rr:template "https://opda.org.uk/pdtf/harness/data/property/{uprn}/amount/securityDeposit-{lettingInformation.securityDeposit}" ;
+                  rr:class opda:MonetaryAmount ] ;
+  rr:predicateObjectMap [ rr:predicate opda:amount ;
+      rr:objectMap [ rml:reference "lettingInformation.securityDeposit" ; rr:datatype xsd:decimal ] ] ;  # <- propertyPack.lettingInformation.securityDeposit
+  rr:predicateObjectMap [ rr:predicate opda:currency ;
+      rr:object <https://opda.org.uk/pdtf/scheme/currency/GBP> ] .
 
 # ---------------------------------------------------------------------------
 # M4d — annualCostOfPermit MonetaryAmount value node. Same optional-field-in-
@@ -509,7 +598,9 @@
   rr:predicateObjectMap [ rr:predicate opda:expectedDeliveryDate ;
       rr:objectMap [ rml:reference "expectedDeliveryDate" ; rr:datatype xsd:date ] ] ;  # <- propertyPack.searches[].expectedDeliveryDate (dateTime lexical; see README)
   rr:predicateObjectMap [ rr:predicate opda:reportDate ;
-      rr:objectMap [ rml:reference "reportDate" ; rr:datatype xsd:date ] ] .  # <- propertyPack.searches[].reportDate (dateTime lexical; see README)
+      rr:objectMap [ rml:reference "reportDate" ; rr:datatype xsd:date ] ] ;  # <- propertyPack.searches[].reportDate (dateTime lexical; see README)
+  rr:predicateObjectMap [ rr:predicate opda:providerReference ;
+      rr:objectMap [ rml:reference "providerReference" ; rr:datatype xsd:string ] ] .  # <- propertyPack.searches[].providerReference
 
 # prov:wasGeneratedBy's range is prov:Activity — type the referenced node
 # (was a bare untyped IRI; same gap as EPCCertificate's run node, above).
@@ -754,7 +845,9 @@
   rr:predicateObjectMap [ rr:predicate opda:pupils ;
       rr:objectMap [ rml:reference "pupils" ; rr:datatype xsd:integer ] ] ;  # <- propertyPack.nearbyFacilities.schools[].pupils
   rr:predicateObjectMap [ rr:predicate opda:religiousCharacter ;
-      rr:objectMap [ rml:reference "religiousCharacter" ; rr:datatype xsd:string ] ] .  # <- propertyPack.nearbyFacilities.schools[].religiousCharacter
+      rr:objectMap [ rml:reference "religiousCharacter" ; rr:datatype xsd:string ] ] ;  # <- propertyPack.nearbyFacilities.schools[].religiousCharacter
+  rr:predicateObjectMap [ rr:predicate opda:otherRating ;
+      rr:objectMap [ rml:reference "otherRating" ; rr:datatype xsd:string ] ] .  # <- propertyPack.nearbyFacilities.schools[].otherRating
 
 <#NearbyFacility_Transport> a rr:TriplesMap ;
   rml:logicalSource [ rml:source "INSTANCE.json" ;
@@ -783,3 +876,64 @@
       rr:objectMap [ rml:reference "typeOfHealthCare" ; rr:datatype xsd:string ] ] ;  # <- propertyPack.nearbyFacilities.healthCare[].typeOfHealthCare
   rr:predicateObjectMap [ rr:predicate opda:specialties ;
       rr:objectMap [ rml:reference "specialties" ; rr:datatype xsd:string ] ] .  # <- propertyPack.nearbyFacilities.healthCare[].specialties
+
+# ---------------------------------------------------------------------------
+# M15 — RoomDimension (propertyPack.buildInformation.roomDimensions.rooms[*])
+# ---------------------------------------------------------------------------
+<#RoomDimension> a rr:TriplesMap ;
+  rml:logicalSource [ rml:source "INSTANCE.json" ;
+                      rml:referenceFormulation ql:JSONPath ;
+                      rml:iterator "$.propertyPack.buildInformation.roomDimensions.rooms[*]" ] ;
+  rr:subjectMap [ rr:template "https://opda.org.uk/pdtf/harness/data/room/{roomName}" ;
+                  rr:class opda:RoomDimension ] ;
+  rr:predicateObjectMap [ rr:predicate opda:roomName ;
+      rr:objectMap [ rml:reference "roomName" ; rr:datatype xsd:string ] ] ;  # <- propertyPack.buildInformation.roomDimensions.rooms[].roomName
+  rr:predicateObjectMap [ rr:predicate opda:length ;
+      rr:objectMap [ rml:reference "length" ; rr:datatype xsd:decimal ] ] ;  # <- propertyPack.buildInformation.roomDimensions.rooms[].length
+  rr:predicateObjectMap [ rr:predicate opda:width ;
+      rr:objectMap [ rml:reference "width" ; rr:datatype xsd:decimal ] ] .  # <- propertyPack.buildInformation.roomDimensions.rooms[].width
+
+# ---------------------------------------------------------------------------
+# M16 — AttachedDocument (propertyPack.titlesToBeSold[*].additionalDocuments[*])
+#   Two-level array nesting: morph-kgc's JSONPath iterator handles the nested
+#   path directly (no separate parent TriplesMap/join needed for this case,
+#   since nothing here needs to reference the enclosing titlesToBeSold item).
+# ---------------------------------------------------------------------------
+<#TitleAdditionalDocument> a rr:TriplesMap ;
+  rml:logicalSource [ rml:source "INSTANCE.json" ;
+                      rml:referenceFormulation ql:JSONPath ;
+                      rml:iterator "$.propertyPack.titlesToBeSold[*].additionalDocuments[*]" ] ;
+  rr:subjectMap [ rr:template "https://opda.org.uk/pdtf/harness/data/document/{documentTypeCode}-{retrievedOn}" ;
+                  rr:class opda:AttachedDocument ] ;
+  rr:predicateObjectMap [ rr:predicate opda:documentTypeCode ;
+      rr:objectMap [ rml:reference "documentTypeCode" ; rr:datatype xsd:string ] ] ;  # <- propertyPack.titlesToBeSold[].additionalDocuments[].documentTypeCode
+  rr:predicateObjectMap [ rr:predicate opda:filedUnder ;
+      rr:objectMap [ rml:reference "filedUnder" ; rr:datatype xsd:string ] ] ;  # <- propertyPack.titlesToBeSold[].additionalDocuments[].filedUnder
+  rr:predicateObjectMap [ rr:predicate opda:retrievedOn ;
+      rr:objectMap [ rml:reference "retrievedOn" ; rr:datatype xsd:date ] ] .  # <- propertyPack.titlesToBeSold[].additionalDocuments[].retrievedOn
+
+# M17 — Search provider reference: merged into M5's existing <#Search>
+# TriplesMap above (same subject, same iterator) rather than duplicated here.
+
+# M18 — Survey construction type: NOT mapped. dct:source cites
+#   propertyPack.surveys[].misc.constructionType (domain opda:Property), but
+#   surveys[] array items carry no key back to the property (no uprn or
+#   equivalent inside each item) — an R2RML rr:parentTriplesMap/joinCondition
+#   needs a real shared column, which doesn't exist here, and a plain
+#   independent-node TriplesMap would assert the predicate on the wrong
+#   subject (a synthetic survey node, not the actual opda:Property this
+#   term's domain declares). Tried and confirmed empirically (both a
+#   same-iterator indexed reference `surveys[0].misc...` from the Property
+#   TriplesMap, and a real R2RML join) before concluding this is a genuine,
+#   documented gap — same shape as M14's schoolType gap above.
+
+# ---------------------------------------------------------------------------
+# M19 — Chain selling agent (chain.onwardPurchase[*])  domain=Transaction
+# ---------------------------------------------------------------------------
+<#ChainSellingAgent> a rr:TriplesMap ;
+  rml:logicalSource [ rml:source "INSTANCE.json" ;
+                      rml:referenceFormulation ql:JSONPath ;
+                      rml:iterator "$.chain.onwardPurchase[*]" ] ;
+  rr:subjectMap [ rr:template "https://opda.org.uk/pdtf/harness/data/txn/{transactionId}" ] ;
+  rr:predicateObjectMap [ rr:predicate opda:sellingAgent ;
+      rr:objectMap [ rml:reference "sellingAgent" ; rr:datatype xsd:string ] ] .  # <- chain.onwardPurchase[].sellingAgent

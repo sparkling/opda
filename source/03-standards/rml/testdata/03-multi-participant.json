@@ -49,12 +49,26 @@
     },
     "priceInformation": {
       "price": 450000,
-      "priceQualifier": "Guide price"
+      "priceQualifier": "Guide price",
+      "saleAtUndervalue": "No"
     },
     "buildInformation": {
       "building": {
-        "propertyType": "House",
-        "builtForm": "Semi-detached"
+        "propertyType": "Flat",
+        "builtForm": "Semi-detached",
+        "numberOfFloors": 4,
+        "entranceFloor": 2,
+        "hasLift": "Yes"
+      },
+      "internalArea": {
+        "area": 78.5,
+        "units": "square metres"
+      },
+      "roomDimensions": {
+        "hasFloorplan": "No",
+        "rooms": [
+          { "roomName": "Living room", "length": 5.2, "width": 4.1 }
+        ]
       },
       "yearOfBuild": 1998,
       "isHMO": "No",
@@ -140,6 +154,82 @@
         "supplier": "BT"
       }
     },
+    "electricity": {
+      "mainsElectricity": {
+        "yesNo": "Yes",
+        "supplier": "Octopus Energy",
+        "electricityMeter": { "mpan": 1200034567890 }
+      },
+      "solarPanels": {
+        "yesNo": "Yes",
+        "supplier": "SolarCo",
+        "yearInstalled": 2021,
+        "lastMaintained": "2025-03-01",
+        "isConnectedToNationalGrid": "Yes (SEG)"
+      },
+      "heatPump": {
+        "yesNo": "Yes",
+        "dateInstalled": "2021-06-01"
+      }
+    },
+    "waterAndDrainage": {
+      "water": {
+        "supplyClassification": "Metered"
+      },
+      "drainage": {
+        "distanceToNearestSewerageTreatment": "Less than 50 metres",
+        "mainsFoulDrainage": {
+          "yesNo": "No",
+          "offMainsDrainageSystem": {
+            "offMainsDrainageSystemType": "Sewerage treatment plant",
+            "dateInstalled": "2015-06-01",
+            "dateLastServiced": "2025-01-15",
+            "otherConnectedProperties": {
+              "yesNo": "Yes",
+              "numberOfPropertiesSharing": 3
+            }
+          }
+        }
+      },
+      "charging": {
+        "currentChargingBasis": "Metered",
+        "consequentialChargingBasis": "Metered",
+        "waterProvider": "Northumbria Water",
+        "sewerageProvider": "Northumbria Water",
+        "waterBills": "Yes",
+        "sewerageBills": "Yes"
+      },
+      "maps": {
+        "publicSewerMapAttached": "Yes",
+        "waterworksMapAttached": "No"
+      }
+    },
+    "lettingInformation": {
+      "rent": 1200,
+      "rentFrequency": "Monthly",
+      "securityDeposit": 1380,
+      "holdingDeposit": 276
+    },
+    "titlesToBeSold": [
+      {
+        "additionalDocuments": [
+          {
+            "documentType": "Lease",
+            "documentTypeCode": "LEASE",
+            "filedUnder": "OC1",
+            "retrievedOn": "2026-05-01"
+          }
+        ]
+      }
+    ],
+    "searches": [
+      {
+        "displayName": "Local Authority Search",
+        "productCode": "LLC1-CON29",
+        "providerName": "SearchFlow",
+        "providerReference": "SF-2026-004471"
+      }
+    ],
     "residentialPropertyFeatures": {
       "bedrooms": 3,
       "bathrooms": 1,
@@ -191,6 +281,15 @@
           "distanceInMiles": 0.4,
           "ageRange": "4-11",
           "religiousCharacter": "None"
+        },
+        {
+          "name": "Bristol Grammar School",
+          "ofstedRating": "Other",
+          "otherRating": "Independent Schools Inspectorate: Excellent",
+          "pupils": 950,
+          "distanceInMiles": 1.8,
+          "ageRange": "11-18",
+          "religiousCharacter": "None"
         }
       ],
       "transport": [
@@ -209,5 +308,13 @@
         }
       ]
     }
+  },
+  "chain": {
+    "onwardPurchase": [
+      {
+        "transactionId": "ONWARD00000000000000001",
+        "sellingAgent": "Orchard Lane Estates"
+      }
+    ]
   }
 }
