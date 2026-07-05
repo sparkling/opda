@@ -4,24 +4,13 @@ import PageMeta from '@/components/PageMeta.astro';
 import fs from 'node:fs';
 import path from 'node:path';
 
-// Live counts from the *tracked* mapping file only (source/03-standards/rml/build/
+// Live counts from the committed triplesmap-index.json (source/03-standards/rml/,
+// generated via `make triplesmap-index` — ADR-0060). build/ under that directory
 // is gitignored harness output and cannot safely be read at site-build time — see
-// ADR-0059 §Decision Outcome).
+// ADR-0059 §Decision Outcome.
 const RML = path.resolve(process.cwd(), 'source/03-standards/rml');
-
-function read(name: string): string {
-  try { return fs.readFileSync(path.join(RML, name), 'utf8'); } catch { return ''; }
-}
-function countMatches(text: string, re: RegExp): number {
-  const m = text.match(re);
-  return m ? m.length : 0;
-}
-
-const mappingTtl = read('mapping/opda-pdtf.rml.ttl');
-const counts = {
-  triplesMaps: countMatches(mappingTtl, /a rr:TriplesMap/g),
-  predicateObjectMaps: countMatches(mappingTtl, /rr:predicateObjectMap/g),
-};
+const triplesmapIndex = JSON.parse(fs.readFileSync(path.join(RML, 'triplesmap-index.json'), 'utf8'));
+const counts = triplesmapIndex.counts;
 ---
 <Layout
   title="Mapping"
@@ -85,17 +74,23 @@ const counts = {
   <table>
     <thead><tr><th>Metric</th><th>Count</th><th>Source</th></tr></thead>
     <tbody>
-      <tr><td><code>rr:TriplesMap</code> rules</td><td>{counts.triplesMaps}</td><td><code>mapping/opda-pdtf.rml.ttl</code> — live</td></tr>
-      <tr><td><code>rr:predicateObjectMap</code> entries</td><td>{counts.predicateObjectMaps}</td><td><code>mapping/opda-pdtf.rml.ttl</code> — live</td></tr>
+      <tr><td><code>rr:TriplesMap</code> rules</td><td>{counts.triplesmaps}</td><td><a href="/mapping/triplesmaps">triplesmap-index.json</a> — live</td></tr>
+      <tr><td>Real predicateObjectMaps (owned by a TriplesMap)</td><td>{counts.predicate_object_maps}</td><td><a href="/mapping/triplesmaps">triplesmap-index.json</a> — live</td></tr>
       <tr><td>Domain-module resources mapped</td><td>466 / 469 (99.4%)</td><td><code>build/final-gap.json</code>, as of 2026-07-05 — see <a href="/mapping/coverage">Coverage &amp; gaps</a></td></tr>
     </tbody>
   </table>
   <p class="muted tiny">
-    The first two rows are counted live from the committed mapping file at build time. The
-    coverage row is <strong>not</strong> live — it's the output of a separate harness whose
-    build artefacts are gitignored, cited here with its regeneration command on
-    <a href="/mapping/validate">Running &amp; validating</a>. And 469 is the curated
-    domain-module resource count, not the raw 8,458-leaf schema dictionary — see
+    The first two rows are counted live from the committed
+    <a href="/mapping/triplesmaps"><code>triplesmap-index.json</code></a> at build time — that
+    file is generated from the mapping via Jena <code>arq</code>
+    (<code>make triplesmap-index</code>), which is also how it distinguishes real
+    predicateObjectMaps from the <a href="/mapping/triplesmaps#counts">FNML-nested ones</a> (the
+    mapping file has {counts.predicate_object_map_triples_total} total predicateObjectMap
+    triples; {counts.fnml_nested_predicate_object_maps} of those bind FNML function calls, not a
+    schema↔ontology correspondence). The coverage row is <strong>not</strong> live — it's the
+    output of a separate harness whose build artefacts are gitignored, cited here with its
+    regeneration command on <a href="/mapping/validate">Running &amp; validating</a>. And 469 is
+    the curated domain-module resource count, not the raw 8,458-leaf schema dictionary — see
     <a href="/mapping/coverage#scope">why that's the right denominator</a>.
   </p>
 
@@ -116,6 +111,11 @@ const counts = {
       <div class="pill pill--info">Engineering</div>
       <h3>How it works</h3>
       <p>RMLMapper + Jena validation, the two checking gates, and the enum→SKOS-concept-IRI technique.</p>
+    </a>
+    <a class="card" href="/mapping/triplesmaps">
+      <div class="pill pill--info">{counts.triplesmaps} rules</div>
+      <h3>TriplesMaps reference</h3>
+      <p>Every rule, documented — plus two bidirectional indices: browse by ontology resource, or by JSON Schema path.</p>
     </a>
     <a class="card" href="/mapping/coverage">
       <div class="pill pill--info">99.4%</div>

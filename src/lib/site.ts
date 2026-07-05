@@ -319,6 +319,7 @@ export const SECTIONS: Record<string, Section> = {
       ]},
       { heading: 'The RML mapping', items: [
         { url: '/mapping/how-it-works', title: 'How it works' },
+        { url: '/mapping/triplesmaps',  title: 'TriplesMaps reference' },
         { url: '/mapping/coverage',     title: 'Coverage & gaps' },
         { url: '/mapping/validate',     title: 'Running & validating' },
       ]},

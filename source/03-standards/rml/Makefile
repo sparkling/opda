@@ -20,12 +20,13 @@ INSTANCE  := $(TESTDATA)/01-conformant-full.json
 OUT       := $(BUILD)/out.nt
 
 .PHONY: rml-test rml-map rml-shacl rml-complete rml-negative rml-acyclicity-test rml-pytest \
-        rml-clean help provenance-test dct-audit
+        rml-clean help provenance-test dct-audit triplesmap-index
 
 help:
 	@echo "--- primary gate: RML as declarative provenance (no instance data) ---"
 	@echo "provenance-test  RML<->OWL consistency + resource<->schema-location tracing (Jena arq, no morph-kgc)"
 	@echo "dct-audit        audit every ontology dct:source citation against the canonical schema dictionary"
+	@echo "triplesmap-index regenerate triplesmap-index.json (ADR-0060; the /mapping/triplesmaps page's data source)"
 	@echo ""
 	@echo "--- secondary: instance-materialisation harness (kept for the RML file's own executability) ---"
 	@echo "rml-test     full pipeline over all conformant instances (01/02/03) + negative (04)"
@@ -50,6 +51,12 @@ provenance-test:
 # mapping's references). See harness/audit_dct_source.py module docstring.
 dct-audit:
 	$(PY) $(HARNESS)/audit_dct_source.py
+
+# Regenerates the committed triplesmap-index.json (ADR-0060) — the /mapping/
+# triplesmaps page's data source. Jena arq only, no rdflib. Run after any edit
+# to mapping/opda-pdtf.rml.ttl.
+triplesmap-index:
+	$(PY) $(HARNESS)/build_triplesmap_index.py
 
 rml-map:
 	$(PY) $(HARNESS)/run_mapping.py --mapping $(MAPPING) --data $(INSTANCE) --out $(OUT)
