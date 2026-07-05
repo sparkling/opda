@@ -2516,6 +2516,34 @@
 #   constant above, which asserts an always-true institutional fact, not a
 #   per-instance judgement). Left unmapped per this session's discipline
 #   (flag, don't fabricate).
+#
+#   opda:Verifier — NOT instantiated here, a confirmed gap, checked directly
+#   against both schemas rather than assumed: ODR-0009's qualified-attribution
+#   rule ("Qualified attribution (verifier-as-prov:Agent)") names the real
+#   field it expects — `verifier.organization` (prov:Organization) / a human
+#   voucher (prov:Person), attributed via prov:qualifiedAttribution ->
+#   prov:Attribution + prov:hadRole. That `verifier`/`verifier.organization`/
+#   `verifier.txn` field IS real (confirmed by direct grep — it appears 4x in
+#   src/schemas/verifiedClaims/pdtf-verified-claims.json, once per evidence-
+#   type sub-schema and its EvidenceOf variant, always paired with
+#   organization/txn) — but it lives in the OTHER envelope, the one M33's own
+#   comment above already established is NOT $ref'd from pdtf-
+#   transaction.json anywhere (same check that ruled out evidenceType) and is
+#   therefore out of ODR-0035's single-PDTF-instance mapping scope. Within
+#   pdtf-transaction.json itself, participants[].verification.
+#   {identity,antiMoneyLaundering} and its reports[] carry only result
+#   (pass/fail/consider, category- and per-report-level), reportName
+#   (free-text service name) and details — verified directly against the
+#   schema (lines ~195-269), not assumed from field names: no organisation,
+#   person, vendor or service-provider leaf exists anywhere in that subtree
+#   that could honestly be read as "the agent that performed this
+#   verification". participants[].organisation (the one organisation-shaped
+#   field participants[*] does carry) is the PARTICIPANT's own affiliation
+#   (Seller/Buyer/Conveyancer etc., already bound above to opda:Organisation
+#   for that purpose) — not the verifying agent, and reusing it as one would
+#   assert a role it does not hold. No opda:Verifier node is minted by this
+#   mapping; the class stands in opda-claim.ttl with no instance data
+#   reachable from a single pdtf-transaction.json instance to populate it.
 # ---------------------------------------------------------------------------
 
 <#IdentityClaim> a rr:TriplesMap ;
