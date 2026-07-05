@@ -278,7 +278,8 @@ def test_byte_identity_modules() -> None:
 def test_foundation_includes_ufo_meta_classes() -> None:
     """Per ADR-0011 + ODR-0006 §Q2/§Q3: foundation declares
     opda:RoleMixin + opda:Role + opda:Relator (5 classes initially).
-    ADR-0013 adds opda:ValidationContext (per ODR-0010 §Q1) — 6 total."""
+    ADR-0013 adds opda:ValidationContext (per ODR-0010 §Q1) — 6 total.
+    ODR-0008 §Q7a adds opda:DescriptiveProperty — 7 total."""
     with tempfile.TemporaryDirectory() as tmp:
         out = Path(tmp)
         from opda_gen.emitters.foundation import emit_foundation
@@ -293,11 +294,12 @@ def test_foundation_includes_ufo_meta_classes() -> None:
             OPDA.Role,
             OPDA.Relator,
             OPDA.ValidationContext,
+            OPDA.DescriptiveProperty,
         ):
             assert cls in classes, f"foundation missing class {cls}"
-        # Exactly six foundation classes after ADR-0013 expansion.
-        assert len(classes) == 6, (
-            f"expected 6 foundation classes, got {len(classes)}: {classes}"
+        # Exactly seven foundation classes after ODR-0008 §Q7a expansion.
+        assert len(classes) == 7, (
+            f"expected 7 foundation classes, got {len(classes)}: {classes}"
         )
 
 

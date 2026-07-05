@@ -23,6 +23,15 @@
 @prefix skos: <http://www.w3.org/2004/02/skos/core#> .
 @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
 
+opda:DescriptiveProperty
+    rdf:type owl:Class ;
+    rdfs:label "Descriptive Property"@en ;
+    rdfs:comment "Meta-class marking an owl:DatatypeProperty as an ODR-0008 'Property descriptive attribute' — a flat, declare-once fact attaching to opda:Property / opda:LegalEstate or to one of ODR-0008's own Q4a class promotions (Search, Valuation, RiskAssessment, and their supporting structures). Per ODR-0008 §Q7a Test 1, the base TBox/shapes graph MUST NOT carry a sh:minCount on any opda:DescriptiveProperty-typed predicate: cardinality is 0..* in the base, with per-form sh:minCount variation expressed only in the ODR-0010 overlay profile shapes. Not applied to SKOS-Concept-valued or MonetaryAmount-valued descriptive facts (those are owl:ObjectProperty, outside Q6a's 'datatype property' floor) nor to ODR-0015 address/identity properties, ODR-0022 Category A/D cross-cutting reusable properties (disclosureDetail, price), or structural join predicates."@en ;
+    skos:definition "The class of owl:DatatypeProperty declarations that are genuine ODR-0008 Property/LegalEstate descriptive attributes, used to enforce that the base ontology carries no per-property minimum cardinality — that variation is reserved for the ODR-0010 overlay profiles."@en ;
+    dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0008/section-Q7a> ;
+    rdfs:isDefinedBy <https://opda.org.uk/pdtf/> ;
+    skos:scopeNote "CI-enforcement marker for the ODR-0008 §Q7a base-cardinality clause — not itself a descriptive fact, but a classification of the datatype properties that ARE."@en .
+
 opda:DiagnosticExemplar
     rdf:type owl:Class ;
     rdfs:label "Diagnostic Exemplar"@en ;

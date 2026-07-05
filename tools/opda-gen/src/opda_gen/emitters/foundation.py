@@ -176,6 +176,12 @@ _ODR_0012_SECTION_Q5 = URIRef(
 _ODR_0018_SECTION_RULE1 = URIRef(
     "https://opda.org.uk/pdtf/harness/odr/ODR-0018/section-Rule1"
 )
+# ODR-0008 §Q7a — opda:DescriptiveProperty meta-class, the Q7a Test 1 target
+# ("`?p a opda:DescriptiveProperty . ?p sh:minCount ?n . FILTER (?n > 0)`
+# returns FALSE in base opda-shapes.ttl").
+_ODR_0008_SECTION_Q7A = URIRef(
+    "https://opda.org.uk/pdtf/harness/odr/ODR-0008/section-Q7a"
+)
 
 # Output file names.
 FOUNDATION_FILENAME = "foundation.ttl"
@@ -279,8 +285,9 @@ def build_foundation_graph(emission_date: str) -> Graph:
 def build_classes_graph() -> Graph:
     """Build the OWL class graph per ADR-0009/0011/0013/0014.
 
-    Six classes after ADR-0013 (ValidationContext); two DatatypeProperties
-    after ADR-0014 (hasSpecialCategoryData) + ADR-0005 §G D3 (isPIIBearing):
+    Seven classes after ODR-0008 §Q7a (DescriptiveProperty); two
+    DatatypeProperties after ADR-0014 (hasSpecialCategoryData) + ADR-0005
+    §G D3 (isPIIBearing):
 
     - `opda:DiagnosticExemplar`, `opda:GeneratorRun` — foundation (ADR-0009).
     - `opda:RoleMixin`, `opda:Role`, `opda:Relator` — UFO meta-classes
@@ -291,6 +298,8 @@ def build_classes_graph() -> Graph:
       (ADR-0014 G14; Council S012 Q3 routing preserved).
     - `opda:isPIIBearing` — Phase-1 PII-floor target predicate
       (ADR-0005 §G D3; PIIWithoutDPVCoAnnotationRule target).
+    - `opda:DescriptiveProperty` — meta-class marking ODR-0008 descriptive
+      datatype properties, enforcing the §Q7a base-cardinality clause.
 
     Each emitted with the ADR-0007 §"A9 per-kind discipline output"
     triple set: `rdf:type owl:{Class|DatatypeProperty}` + `rdfs:label`
@@ -570,6 +579,53 @@ def build_classes_graph() -> Graph:
         lang="en",
     )))
     g.add((OPDA.isPIIBearing, RDFS.isDefinedBy, _ONTOLOGY_IRI))
+
+    # --- ODR-0008 §Q7a — opda:DescriptiveProperty (meta-class) -----------
+    # Marks every genuine ODR-0008 "Property descriptive attribute" datatype
+    # property (opda-property.ttl + opda-descriptive.ttl) so the Q7a Test 1
+    # CI regression check has a real, non-vacuous target set: `?p a
+    # opda:DescriptiveProperty . ?p sh:minCount ?n . FILTER (?n > 0)` MUST
+    # return FALSE against the base opda-shapes.ttl — base-cardinality
+    # (0..*) for every descriptive property; per-form sh:minCount lives only
+    # in the ODR-0010 overlay profile shapes.
+    g.add((OPDA.DescriptiveProperty, RDF.type, OWL.Class))
+    g.add((OPDA.DescriptiveProperty, RDFS.label, Literal(
+        "Descriptive Property", lang="en"
+    )))
+    g.add((OPDA.DescriptiveProperty, RDFS.comment, Literal(
+        "Meta-class marking an owl:DatatypeProperty as an ODR-0008 "
+        "'Property descriptive attribute' — a flat, declare-once fact "
+        "attaching to opda:Property / opda:LegalEstate or to one of "
+        "ODR-0008's own Q4a class promotions (Search, Valuation, "
+        "RiskAssessment, and their supporting structures). Per ODR-0008 "
+        "§Q7a Test 1, the base TBox/shapes graph MUST NOT carry a "
+        "sh:minCount on any opda:DescriptiveProperty-typed predicate: "
+        "cardinality is 0..* in the base, with per-form sh:minCount "
+        "variation expressed only in the ODR-0010 overlay profile shapes. "
+        "Not applied to SKOS-Concept-valued or MonetaryAmount-valued "
+        "descriptive facts (those are owl:ObjectProperty, outside Q6a's "
+        "'datatype property' floor) nor to ODR-0015 address/identity "
+        "properties, ODR-0022 Category A/D cross-cutting reusable "
+        "properties (disclosureDetail, price), or structural join "
+        "predicates.",
+        lang="en",
+    )))
+    g.add((OPDA.DescriptiveProperty, SKOS.scopeNote, Literal(
+        "CI-enforcement marker for the ODR-0008 §Q7a base-cardinality "
+        "clause — not itself a descriptive fact, but a classification of "
+        "the datatype properties that ARE.",
+        lang="en",
+    )))
+    g.add((OPDA.DescriptiveProperty, DCTERMS.source, _ODR_0008_SECTION_Q7A))
+    g.add((OPDA.DescriptiveProperty, SKOS.definition, Literal(
+        "The class of owl:DatatypeProperty declarations that are genuine "
+        "ODR-0008 Property/LegalEstate descriptive attributes, used to "
+        "enforce that the base ontology carries no per-property minimum "
+        "cardinality — that variation is reserved for the ODR-0010 overlay "
+        "profiles.",
+        lang="en",
+    )))
+    g.add((OPDA.DescriptiveProperty, RDFS.isDefinedBy, _ONTOLOGY_IRI))
 
     # opda:ufoCategory is an inert, annotation-graph-only documentary annotation
     # (ODR-0030 Rule 1; restored by ADR-0045 / ODR-0031 after the ADR-0044
