@@ -1344,25 +1344,35 @@ def build_agent_shapes() -> Graph:
     # --- opda:appliesTo co-domain shape (2026-07-05, RML gap-closing) ---
     # Same "any-of" pattern as FoundsRangeShape, above: opda:appliesTo
     # (minted this session in property.py) carries documentary multi-range
-    # rdfs:range opda:Person , opda:LegalEstate; the object-property-coverage
-    # CI gate requires a matching SHACL sh:or authoritative dual (ODR-0032
-    # §Confirmation limb (b) inverted; ADR-0049 Q1). Person and LegalEstate
-    # are siblings, neither a subclass of the other, so sh:or is required
-    # (not a single sh:class).
+    # rdfs:range opda:Person , opda:LegalEstate , opda:Property; the
+    # object-property-coverage CI gate requires a matching SHACL sh:or
+    # authoritative dual (ODR-0032 §Confirmation limb (b) inverted; ADR-0049
+    # Q1). CORRECTED same-day: the first pass only checked the two exemplars
+    # (person-with-name-change.ttl, lease-extension-transaction.ttl) that
+    # motivated minting this predicate, missing a THIRD, pre-existing,
+    # already-ratified usage in flat-with-split-uprn.ttl
+    # (opda:UPRNSuccessionEvent -> opda:Property) that predates this session
+    # entirely — a real regression this shape's first version caused (the
+    # predicate was undeclared before, so no shape ever checked that
+    # exemplar's own triple; declaring the predicate without checking EVERY
+    # existing exemplar usage first broke a previously-passing, ratified
+    # exemplar). Person, LegalEstate, and Property are three siblings, none
+    # a subclass of another, so sh:or is required (not a single sh:class).
     g.add((OPDA_SHAPE.AppliesToRangeShape, RDF.type, SH.NodeShape))
     g.add((OPDA_SHAPE.AppliesToRangeShape, SH.targetObjectsOf, OPDA.appliesTo))
     g.add((OPDA_SHAPE.AppliesToRangeShape, SH["or"],
-           _sh_class_or(g, [OPDA.Person, OPDA.LegalEstate])))
+           _sh_class_or(g, [OPDA.Person, OPDA.LegalEstate, OPDA.Property])))
     g.add((OPDA_SHAPE.AppliesToRangeShape, SH.severity, SH.Violation))
     g.add((OPDA_SHAPE.AppliesToRangeShape, DCTERMS.source, _ODR_0005_S3B))
     g.add((OPDA_SHAPE.AppliesToRangeShape, SH.message, Literal(
         "opda:appliesTo is the provenance-activity-to-subject-entity join: "
         "every object of opda:appliesTo MUST be an opda:Person (a "
-        "NameChangeEvent's subject) OR an opda:LegalEstate (a "
-        "LeaseExtensionEvent's subject). This sh:or is the AUTHORITATIVE "
+        "NameChangeEvent's subject), an opda:LegalEstate (a "
+        "LeaseExtensionEvent's subject), or an opda:Property (a "
+        "UPRNSuccessionEvent's subject). This sh:or is the AUTHORITATIVE "
         "co-domain disjunction; opda:appliesTo also carries documentary "
-        "\"any-of\" rdfs:range opda:Person , opda:LegalEstate (read "
-        "disjunctively, never entailed — ADR-0035).",
+        "\"any-of\" rdfs:range opda:Person , opda:LegalEstate , "
+        "opda:Property (read disjunctively, never entailed — ADR-0035).",
         lang="en",
     )))
 

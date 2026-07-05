@@ -25,8 +25,8 @@
 <https://opda.org.uk/pdtf/shape/AppliesToRangeShape>
     rdf:type sh:NodeShape ;
     dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0005/section-3b> ;
-    sh:message "opda:appliesTo is the provenance-activity-to-subject-entity join: every object of opda:appliesTo MUST be an opda:Person (a NameChangeEvent's subject) OR an opda:LegalEstate (a LeaseExtensionEvent's subject). This sh:or is the AUTHORITATIVE co-domain disjunction; opda:appliesTo also carries documentary \"any-of\" rdfs:range opda:Person , opda:LegalEstate (read disjunctively, never entailed — ADR-0035)."@en ;
-    sh:or _:b4c97e0d673c5 ;
+    sh:message "opda:appliesTo is the provenance-activity-to-subject-entity join: every object of opda:appliesTo MUST be an opda:Person (a NameChangeEvent's subject), an opda:LegalEstate (a LeaseExtensionEvent's subject), or an opda:Property (a UPRNSuccessionEvent's subject). This sh:or is the AUTHORITATIVE co-domain disjunction; opda:appliesTo also carries documentary \"any-of\" rdfs:range opda:Person , opda:LegalEstate , opda:Property (read disjunctively, never entailed — ADR-0035)."@en ;
+    sh:or _:b06d65c45e2c0 ;
     sh:severity sh:Violation ;
     sh:targetObjectsOf opda:appliesTo .
 
@@ -152,16 +152,20 @@ _:b4fa3b5596392
     rdf:type sh:SPARQLRule ;
     sh:construct "PREFIX opda: <https://opda.org.uk/pdtf/>\nCONSTRUCT {\n  ?agent opda:hasCapacityAuthorityMatchStatus ?status .\n}\nWHERE {\n  ?agent opda:hasAssertedCapacity ?cap .\n  OPTIONAL { ?agent opda:hasEvidencedAuthority ?auth }\n  BIND (IF(BOUND(?auth), \"matched\", \"unevidenced-capacity\") AS ?status)\n}" .
 
+_:b06d65c45e2c0
+    rdf:first _:b88b6d7d49ea1 ;
+    rdf:rest _:b22bc73f352ee .
+
+_:b22bc73f352ee
+    rdf:first _:b34c8fed2b830 ;
+    rdf:rest _:b5702a4351874 .
+
 _:b30dd845c8998
     rdf:first <https://opda.org.uk/pdtf/scheme/ownerType/Organisation> ;
     rdf:rest rdf:nil .
 
 _:b34c8fed2b830
     sh:class opda:LegalEstate .
-
-_:b3ea5f7f7671a
-    rdf:first _:b34c8fed2b830 ;
-    rdf:rest rdf:nil .
 
 _:b3f87a6c1bfe1
     sh:message "An opda:Seller role, where it names a distinct bearer node via opda:playedBy, MUST be played by an opda:Person OR an opda:Organisation (ODR-0006 §SHACL role-play shape; Council session-047 Q4). OPTIONAL — co-typed roles with no distinct bearer node are conformant (no sh:minCount, never a self-edge)."@en ;
@@ -188,9 +192,9 @@ _:b463e7f730616
     rdf:first _:bba26fa44d6eb ;
     rdf:rest _:b70daa9eefa35 .
 
-_:b4c97e0d673c5
-    rdf:first _:b88b6d7d49ea1 ;
-    rdf:rest _:b3ea5f7f7671a .
+_:b5702a4351874
+    rdf:first _:bf81a81adb71a ;
+    rdf:rest rdf:nil .
 
 _:b5c0a0eae2812
     sh:maxCount "1"^^xsd:integer ;
@@ -313,3 +317,6 @@ _:bd7f8b0d0dfe9
     sh:or _:b75bdcb9bc24d ;
     sh:path opda:playedBy ;
     sh:severity sh:Violation .
+
+_:bf81a81adb71a
+    sh:class opda:Property .

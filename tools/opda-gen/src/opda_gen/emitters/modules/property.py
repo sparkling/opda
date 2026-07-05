@@ -966,31 +966,38 @@ def build_graph() -> Graph:
     g.add((OPDA.recordsEstate, DCTERMS.source, _ODR_0005_S3C))
 
     # --- ObjectProperty: opda:appliesTo (2026-07-05, RML gap-closing) ---
-    # MINTED to close a real "ratified but never implemented" gap: the
-    # ratified diagnostic exemplars person-with-name-change.ttl and
-    # lease-extension-transaction.ttl both already USE opda:appliesTo
-    # (NameChangeEvent -> Person; LeaseExtensionEvent -> LegalEstate) but
-    # the predicate was never actually declared anywhere in the emitted
-    # ontology — confirmed by direct grep across the whole corpus. Shared,
-    # domain-less object property (same "any-of" documentary convention as
-    # opda:founds / opda:playedBy, ODR-0026 §R2 module-header idiom): one
-    # Activity-targets-its-subject-Entity edge reused by two distinct
+    # MINTED to close a real "ratified but never implemented" gap: THREE
+    # ratified diagnostic exemplars already USE opda:appliesTo —
+    # person-with-name-change.ttl (NameChangeEvent -> Person),
+    # lease-extension-transaction.ttl (LeaseExtensionEvent -> LegalEstate),
+    # and flat-with-split-uprn.ttl (UPRNSuccessionEvent -> Property, found
+    # only after the first pass at this declaration caused a real CI
+    # regression by checking only the first two) — but the predicate was
+    # never actually declared anywhere in the emitted ontology, confirmed by
+    # direct grep across the whole corpus. Shared, domain-less object
+    # property (same "any-of" documentary convention as opda:founds /
+    # opda:playedBy, ODR-0026 §R2 module-header idiom): one
+    # Activity-targets-its-subject-Entity edge reused by three distinct
     # provenance-event Kinds, each aiming at a different Entity Kind.
     g.add((OPDA.appliesTo, RDF.type, OWL.ObjectProperty))
     g.add((OPDA.appliesTo, RDF.type, RDF.Property))
     g.add((OPDA.appliesTo, RDFS.range, OPDA.Person))
     g.add((OPDA.appliesTo, RDFS.range, OPDA.LegalEstate))
+    g.add((OPDA.appliesTo, RDFS.range, OPDA.Property))
     g.add((OPDA.appliesTo, RDFS.label, Literal("applies to", lang="en")))
     g.add((OPDA.appliesTo, RDFS.comment, Literal(
         "Provenance-activity-to-subject-entity join: relates a reified "
         "PROV-O Activity to the Entity it acted upon — opda:NameChangeEvent "
-        "to the opda:Person whose name changed (ODR-0006 §Q1), or "
+        "to the opda:Person whose name changed (ODR-0006 §Q1), "
         "opda:LeaseExtensionEvent to the opda:LegalEstate whose term was "
-        "extended (ODR-0005 §3b). Domain intentionally unconstrained (same "
-        "convention as opda:identifiesSameProperty, above) — any reified "
-        "provenance-activity Kind may emit this predicate. Documentary "
-        "\"any-of\" rdfs:range opda:Person, opda:LegalEstate (module-header "
-        "disjunctive-not-conjunctive convention, ADR-0035 — never entailed).",
+        "extended (ODR-0005 §3b), or opda:UPRNSuccessionEvent to the "
+        "opda:Property whose UPRN was re-issued (ODR-0005 Rule 6). Domain "
+        "intentionally unconstrained (same convention as "
+        "opda:identifiesSameProperty, above) — any reified provenance-"
+        "activity Kind may emit this predicate. Documentary \"any-of\" "
+        "rdfs:range opda:Person, opda:LegalEstate, opda:Property "
+        "(module-header disjunctive-not-conjunctive convention, ADR-0035 — "
+        "never entailed).",
         lang="en",
     )))
     g.add((OPDA.appliesTo, SKOS.definition, Literal(
