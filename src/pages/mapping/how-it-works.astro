@@ -1,0 +1,157 @@
+---
+import Layout from '@/layouts/Layout.astro';
+import PageMeta from '@/components/PageMeta.astro';
+import fs from 'node:fs';
+import path from 'node:path';
+
+const RML = path.resolve(process.cwd(), 'source/03-standards/rml');
+function readJson(name: string): any {
+  try { return JSON.parse(fs.readFileSync(path.join(RML, name), 'utf8')); } catch { return null; }
+}
+// provenance-index.json IS tracked (unlike build/) — safe to read live. Pure
+// descriptive sizing of the leaf->predicate index, not a coverage claim.
+const idx = readJson('provenance-index.json');
+const idxCounts = idx?.counts ?? null;
+---
+<Layout
+  title="Mapping — How it works"
+  description="The RML mapping's engineering: RMLMapper + Jena validation, the two checking gates, and the enum-to-SKOS-concept-IRI technique."
+>
+<PageMeta category="Engineering" variant="info" updated="Updated 2026-07-05" damaKa={["Metadata Management", "Data Integration & Interoperability"]} />
+
+  <h1>How it works</h1>
+  <p class="lead">
+    The mapping is one Turtle file, one validation harness, and a handful of deliberate
+    engineering choices forced by RML/R2RML's own constraints. This page summarises them for
+    a reader; the full engineering log — including the dead ends — is
+    <a href="/modelling/adr/adr-0057">ADR-0057</a>.
+  </p>
+
+  <nav class="callout callout--note" aria-label="On this page">
+    <div class="callout__label">On this page</div>
+    <ul style="margin: 0;">
+      <li><a href="#engine">Engine &amp; toolchain</a></li>
+      <li><a href="#gates">The two validation gates</a></li>
+      <li><a href="#enums">Enum values → SKOS concept IRIs</a></li>
+      <li><a href="#notes">Field notes</a></li>
+    </ul>
+  </nav>
+
+  <h2 id="engine">Engine &amp; toolchain</h2>
+  <p>
+    <strong>RMLMapper</strong> (the Java reference implementation) materialises the mapping
+    against a PDTF instance. It replaced an earlier engine, morph-kgc (Python) — the switch
+    is documented in ADR-0057's amendments, prompted by two morph-kgc limitations that turned
+    out to be genuinely blocking (a role-filtered JSONPath embedded mid-path, and a ~50–80×
+    slowdown binding onto a root iterator), not merely inconvenient.
+  </p>
+  <p>
+    Validation runs entirely on <strong>Apache Jena</strong> — <code>arq</code> for SPARQL
+    querying, <code>shacl</code> for conformance — never <code>rdflib</code> or
+    <code>pyshacl</code>, per the toolchain-purity rule in
+    <a href="/modelling/adr/adr-0037">ADR-0037</a>. An early prototype used
+    <code>rdflib</code> for graph-walking; it was replaced once that violated the rule, even
+    though it had already been verified to produce byte-identical results.
+  </p>
+
+  <h2 id="gates">The two validation gates</h2>
+  <p>
+    <code>source/03-standards/rml/</code> ships two independent checks, run via
+    <code>make</code> from that directory:
+  </p>
+  <table>
+    <thead><tr><th>Gate</th><th>Checks</th><th>Needs instance data?</th></tr></thead>
+    <tbody>
+      <tr>
+        <td><code>make provenance-test</code><br /><span class="muted tiny">primary</span></td>
+        <td>
+          Three checks, no instance data: (1) every <code>rr:class</code>/<code>rr:predicate</code>
+          the mapping uses is a real declared term in the merged ontology; (2) every OWL
+          resource the mapping addresses cites a schema location that resolves in the
+          canonical data dictionary; (3) every dictionary location the mapping has referenced
+          is recorded, against the honest denominator of paths some term actually cites.
+        </td>
+        <td>No</td>
+      </tr>
+      <tr>
+        <td><code>make dct-audit</code></td>
+        <td>
+          Independently audits the ontology's own <code>dct:source</code> citations against
+          the canonical schema dictionary — a different direction of check than
+          <code>provenance-test</code>, which checks the mapping's own references.
+        </td>
+        <td>No</td>
+      </tr>
+    </tbody>
+  </table>
+  <p>
+    A secondary harness (<code>make rml-test</code> / <code>rml-map</code> /
+    <code>rml-shacl</code> / <code>rml-complete</code> / <code>rml-pytest</code>) materialises
+    the mapping against four small fixtures (three conformant, one deliberately negative) and
+    checks the output is SHACL-sound and layer-1-complete. It exists to keep the mapping file
+    itself executable and regression-tested — see
+    <a href="/mapping/validate">Running &amp; validating</a> for the full list.
+  </p>
+  {idxCounts && (
+    <p class="muted tiny">
+      The leaf→predicate index the mapping's own <code>dct:source</code> inversion is checked
+      against (<code>provenance-index.json</code>) currently indexes {idxCounts.classes} classes
+      and {idxCounts.total_leaves_indexed} schema leaves ({idxCounts.datatype} datatype /
+      {idxCounts.object} object) — read live from that committed file.
+    </p>
+  )}
+
+  <h2 id="enums">Enum values → SKOS concept IRIs</h2>
+  <p>
+    A JSON enum value like <code>"Legal Owner"</code> needs to become a SKOS concept IRI —
+    <code>.../scheme/sellersCapacity/Legal-Owner</code> — not a literal. The obvious approach,
+    <code>rr:template</code> on the raw field, is disqualified outright: R2RML mandates
+    percent-encoding of template-substituted characters, so a raw value with a space produces
+    <code>.../Legal%20Owner</code>, never the hyphenated slug the ontology actually mints.
+  </p>
+  <p>
+    The mapping uses two techniques, chosen for auditability over compactness:
+  </p>
+  <ul>
+    <li>
+      <strong>Per-value <code>TriplesMap</code> + JSONPath filter (the default, for values
+      inside an array)</strong> — one <code>rr:TriplesMap</code> per enum value, using a
+      JSONPath filter to select matching rows and a <code>rr:constant</code> IRI as the
+      object. Verbose (N maps for an N-value enum) but every raw-value → concept-IRI
+      correspondence is spelled out explicitly in the mapping file itself — no external
+      lookup table or function to also audit.
+    </li>
+    <li>
+      <strong>An FnO function (for enums sitting in a single, always-present JSON object,
+      where filter brackets don't apply)</strong> — a JSONPath filter only works against an
+      array; roughly two dozen properties needed a generic
+      <code>scheme_member_iri(value, scheme)</code> function instead, ported byte-for-byte
+      from the ontology generator's own slugification rule so the two never diverge.
+    </li>
+  </ul>
+  <p>A real example of the first pattern — one of five <code>TriplesMap</code>s for the Ofsted rating enum:</p>
+  <pre><code>{`<#OfstedRatingOutstanding> a rr:TriplesMap ;
+  rml:logicalSource [ rml:source "INSTANCE.json" ; rml:referenceFormulation ql:JSONPath ;
+                      rml:iterator "$.propertyPack.nearbyFacilities.schools[?(@.ofstedRating==\\"Outstanding\\")]" ] ;
+  rr:subjectMap [ rr:template "https://opda.org.uk/pdtf/harness/data/facility/school/{name}" ] ;
+  rr:predicateObjectMap [ rr:predicate opda:ofstedRating ;
+      rr:objectMap [ rr:constant <https://opda.org.uk/pdtf/scheme/ofstedRating/Outstanding> ] ] .`}</code></pre>
+
+  <h2 id="notes">Field notes</h2>
+  <p>Two sharp, non-obvious findings worth knowing before touching the mapping file — both fully written up in ADR-0057's amendments:</p>
+  <ul>
+    <li>
+      <strong>RMLMapper cross-products independently-varying array placeholders, silently.</strong>
+      If a single <code>TriplesMap</code> has more than one place where a multi-valued array
+      is projected, RMLMapper does not zip them by position — it takes the Cartesian product,
+      producing wrong (not merely missing) data. The mitigation is structural: never use more
+      than one independently-varying array-projected placeholder in one <code>TriplesMap</code>.
+    </li>
+    <li>
+      <strong>JSONPath array traversal needs an explicit <code>[*]</code>.</strong> RMLMapper's
+      JSONPath engine (Jayway, standards-compliant) throws on a dotted reference through an
+      array segment without it — morph-kgc silently auto-broadcast through arrays as a
+      non-standard convenience, so this surfaced only during the engine migration.
+    </li>
+  </ul>
+</Layout>

@@ -1,0 +1,118 @@
+---
+import Layout from '@/layouts/Layout.astro';
+import PageMeta from '@/components/PageMeta.astro';
+---
+<Layout
+  title="Mapping — Coverage & gaps"
+  description="What the RML mapping covers, what it honestly doesn't, and why 469 — not the raw 8,458-leaf schema dictionary — is the right denominator."
+>
+<PageMeta category="Coverage register" variant="warn" updated="Updated 2026-07-05" damaKa={["Metadata Management", "Data Integration & Interoperability"]} />
+
+  <h1>Coverage &amp; gaps</h1>
+  <p class="lead">
+    The mapping's own discipline is "bind only what exists" — a schema location with no sound
+    ontology predicate is left in a gap register, never force-bound to a plausible-looking
+    term. This page is that register, plus the vocabulary needed to read it correctly.
+  </p>
+
+  <nav class="callout callout--note" aria-label="On this page">
+    <div class="callout__label">On this page</div>
+    <ul style="margin: 0;">
+      <li><a href="#vocab">Layer 1, layer 2, and GAP</a></li>
+      <li><a href="#current">The current figure</a></li>
+      <li><a href="#scope">Why 469, not 8,458</a></li>
+      <li><a href="#honest">Honest non-mapping, worked</a></li>
+    </ul>
+  </nav>
+
+  <h2 id="vocab">Layer 1, layer 2, and GAP</h2>
+  <p>The mapping's build contract (<code>CONTRACT.md</code>) defines three tiers:</p>
+  <ul>
+    <li>
+      <strong>Layer 1 — provenance-anchored.</strong> Every schema leaf that some
+      <code>opda:</code> predicate's own <code>dct:source</code> citation names, inverted back
+      into a mapping rule. Authoritative and unambiguous — the mapping's "sound AND complete"
+      claim applies to layer 1 only.
+    </li>
+    <li>
+      <strong>Layer 2 — shared/collapsed leaves.</strong> Semantically the same shared property
+      (e.g. a supplier name, an address part) but not itself a <code>dct:source</code> target.
+      Mapped best-effort, with an explicit coverage report — never silently claimed complete.
+    </li>
+    <li>
+      <strong>GAP.</strong> A schema location, or an ontology resource, with no sound
+      counterpart on the other side. Expected and logged, not a completeness failure — the
+      alternative (force-binding a plausible-but-wrong predicate) is the one thing this
+      mapping is designed never to do.
+    </li>
+  </ul>
+
+  <div class="callout callout--note">
+    <div class="callout__label">"Gap register" means two different things on this site</div>
+    <p>
+      This mapping's own gap register (<code>gap-register.json</code> /
+      <code>build/final-gap.json</code>) tracks schema↔ontology mapping gaps. The GAP register
+      on <a href="/ontology/known-issues#thin">Ontology → Known issues</a> tracks a completely
+      different thing — which overlay <em>profiles</em> bind which Category-G leaves. Same
+      name, two unrelated pipelines; don't conflate a figure from one with the other.
+    </p>
+  </div>
+
+  <h2 id="current">The current figure</h2>
+  <p>
+    As of 2026-07-05, <strong>466 of 469 domain-module ontology resources are mapped or
+    removed for cause — 99.4%</strong> (<code>source/03-standards/rml/build/final-gap.json</code>,
+    regenerate with <code>python3 build/final_scope2.py</code> — see
+    <a href="/mapping/validate">Running &amp; validating</a>). The 3 remaining are:
+  </p>
+  <table>
+    <thead><tr><th>Term</th><th>Kind</th><th>Domain → Range</th><th>Why it stays unmapped</th></tr></thead>
+    <tbody>
+      <tr><td><code>opda:founds</code></td><td>ObjectProperty</td><td>Relator → Role</td><td rowspan="3">UFO Role/Relator connectives asserting an <em>alternate encoding</em> of a fact the mapping already captures via co-typing (e.g. <code>?s a opda:Seller</code> directly) + <code>opda:roleNotation</code>. There is structurally no distinct Role node for these edges to target under this ontology's chosen encoding — not an oversight, a standing exclusion rule for upper-ontology/structural-pattern terms.</td></tr>
+      <tr><td><code>opda:playedBy</code></td><td>ObjectProperty</td><td>Role → Organisation</td></tr>
+      <tr><td><code>opda:plays</code></td><td>ObjectProperty</td><td>Organisation → Role</td></tr>
+    </tbody>
+  </table>
+  <p class="muted tiny">
+    This is the outcome of a long gap-closing effort, not a static number: earlier points in
+    the same effort recorded 465/472 (98.5%) and 459/472 (97.2%). Three resources
+    (<code>UPRNSuccessionEvent</code>, <code>AssuranceLevel</code>, <code>inspireFeatureId</code>)
+    were removed outright late in that effort, confirmed to have zero basis anywhere in the
+    schema corpus — not merely unpopulated in the tracked fixtures — which is why the
+    denominator moved from 472 to 469. Full session-by-session detail:
+    <a href="/modelling/adr/adr-0057">ADR-0057</a>'s Amendments.
+  </p>
+
+  <h2 id="scope">Why 469, not 8,458</h2>
+  <p>
+    The canonical PDTF data dictionary has 8,458 leaf records. It is tempting to divide the
+    mapping's coverage by that number instead — this project tried exactly that, twice, in the
+    same session that closed the last few gaps, and both attempts were wrong for the same
+    reason: <strong>the raw dictionary was never the ontology's target coverage scope.</strong>
+    It is the mechanical supply an upstream curation pass (Category A–G, ODR-0022) consumes,
+    not a checklist the ontology must equal. That curation's completed output — 469
+    domain-module resources — is the correct, complete denominator; 8,458 (or the ~7,810 /
+    ~2,164 "still to map" figures briefly proposed before the error was caught) measures the
+    wrong thing entirely.
+  </p>
+
+  <h2 id="honest">Honest non-mapping, worked</h2>
+  <p>Two real leaves illustrate the discipline of leaving a gap rather than force-binding it:</p>
+  <ul>
+    <li>
+      <strong><code>propertyPack.priceInformation.price</code></strong> (the headline asking
+      price) has no sound predicate to bind to. <code>opda:soldPrice</code> /
+      <code>opda:listPrice</code> / <code>opda:estimatedPrice</code> are all
+      <code>opda:Valuation</code>-domain <em>comparable</em> prices, and <code>opda:price</code>
+      is a separate, Category-D fixtures amount — none mean "this property's current asking
+      price." It stays a gap; closing it needs a genuine ontology addition
+      (e.g. a new <code>opda:askingPrice</code>), not a mapping change.
+    </li>
+    <li>
+      <strong><code>propertyPack.connectivity.broadband.supplier</code></strong> is not the
+      <code>dct:source</code> of any predicate either, but it <em>is</em> semantically the
+      shared <code>opda:supplier</code> property used elsewhere — so it's mapped as layer 2,
+      best-effort, rather than left in the gap register.
+    </li>
+  </ul>
+</Layout>

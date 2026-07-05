@@ -63,4 +63,5 @@ export const ODR_REGISTRY = [
   { id: 'odr-0032', number: '0032', title: 'Relationship Layer — Reify Inter-Entity Associations as OWL Object Properties', kind: 'pattern', status: 'proposed', enriched: false },
   { id: 'odr-0033', number: '0033', title: 'OWL/RDFS Axioms as Documentary AI-Signal — the Consolidated Doctrine', kind: 'architecture', status: 'proposed', enriched: false },
   { id: 'odr-0034', number: '0034', title: 'Relationship-Residue Completion — Events, Information Objects, and the Aboutness/Provenance Boundary', kind: 'pattern', status: 'proposed', enriched: false },
+  { id: 'odr-0035', number: '0035', title: "RML as OPDA's Bidirectional Schema-Provenance Verification Mechanism", kind: 'architecture', status: 'accepted', enriched: false },
 ];

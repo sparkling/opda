@@ -50,6 +50,7 @@ export const HEADER_ORDER = [
   'modelling',
   'model',
   'ontology',
+  'mapping',
   'schema',
   'implementation',
   'adoption',
@@ -303,6 +304,23 @@ export const SECTIONS: Record<string, Section> = {
       { heading: 'Use & compare', items: [
         { url: '/ontology/usage',    title: 'Consume the ontology' },
         { url: '/ontology/bake-off', title: 'Tool bake-off & scorecard' },
+      ]},
+    ],
+  },
+
+  mapping: {
+    key: 'mapping',
+    title: 'Mapping',
+    summary:
+      'The machine-verified correspondence between the ontology and the schema — the RML mapping that traces every ontology term back to its PDTF JSON Schema origin (and every schema location forward to its ontology term), independently of dct:source and without needing real transaction data.',
+    groups: [
+      { heading: 'Overview', items: [
+        { url: '/mapping', title: 'Section overview' },
+      ]},
+      { heading: 'The RML mapping', items: [
+        { url: '/mapping/how-it-works', title: 'How it works' },
+        { url: '/mapping/coverage',     title: 'Coverage & gaps' },
+        { url: '/mapping/validate',     title: 'Running & validating' },
       ]},
     ],
   },

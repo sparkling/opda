@@ -21,7 +21,7 @@
  * @property {string} date    - ISO date string from frontmatter, or ''
  */
 
-/** All 56 ADRs in the corpus. Every ADR gets a live page. */
+/** All 59 ADRs in the corpus. Every ADR gets a live page. */
 export const ADR_REGISTRY = [
   { id: "adr-0001", number: "0001", title: "Selective adoption of DCAM v3 and DAMA-DMBOK2 elements", status: "accepted", date: "2026-05-18" },
   { id: "adr-0002", number: "0002", title: "Folder hierarchy and slug taxonomy", status: "accepted", date: "2026-05-18" },
@@ -79,4 +79,7 @@ export const ADR_REGISTRY = [
   { id: "adr-0054", number: "0054", title: "Publish the source/ archive to a public S3 bucket served via CloudFront", status: "proposed", date: "2026-06-25" },
   { id: "adr-0055", number: "0055", title: "Cross-section class-diagram links + the `rdfs:subClassOf` render layer", status: "proposed", date: "2026-06-30" },
   { id: "adr-0056", number: "0056", title: "Relationship-residue emission — declare `partOfTransaction`/`concerns`, register aboutness/chain, extend the coverage gate", status: "proposed", date: "2026-06-30" },
+  { id: "adr-0057", number: "0057", title: "RML Mapping Implementation", status: "accepted", date: "2026-07-04" },
+  { id: "adr-0058", number: "0058", title: "MetaHarness Darwin Mode for Ontology Authoring and RML Gap-Closing", status: "accepted", date: "2026-07-04" },
+  { id: "adr-0059", number: "0059", title: "RML Mapping Section — Positioned Between Ontology and Schema", status: "accepted", date: "2026-07-05" },
 ];

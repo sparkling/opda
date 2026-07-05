@@ -1,0 +1,77 @@
+---
+import Layout from '@/layouts/Layout.astro';
+import PageMeta from '@/components/PageMeta.astro';
+---
+<Layout
+  title="Mapping — Running & validating"
+  description="How to reproduce the RML mapping's validation locally: the make targets, the file layout, and links into the real harness files."
+>
+<PageMeta category="Reproduce" variant="accent" updated="Updated 2026-07-05" damaKa={["Metadata Management", "Data Integration & Interoperability"]} />
+
+  <h1>Running &amp; validating</h1>
+  <p class="lead">
+    Everything on this page runs from <code>source/03-standards/rml/</code>. It needs a JDK
+    (RMLMapper self-provisions into a repo-root <code>.rmlmapper/</code> cache on first use)
+    and the <code>tools/opda-gen</code> Python virtualenv, which the harness scripts already
+    invoke directly (<code>../opda-gen/.venv/bin/python</code>) — no separate setup.
+  </p>
+
+  <nav class="callout callout--note" aria-label="On this page">
+    <div class="callout__label">On this page</div>
+    <ul style="margin: 0;">
+      <li><a href="#targets">Make targets</a></li>
+      <li><a href="#layout">File layout</a></li>
+    </ul>
+  </nav>
+
+  <h2 id="targets">Make targets</h2>
+  <pre><code>cd source/03-standards/rml</code></pre>
+  <table>
+    <thead><tr><th>Target</th><th>What it does</th></tr></thead>
+    <tbody>
+      <tr><td><code>make provenance-test</code></td><td>Primary gate. RML↔OWL consistency + resource↔schema-location tracing (Jena <code>arq</code>). No instance data.</td></tr>
+      <tr><td><code>make dct-audit</code></td><td>Audits every ontology <code>dct:source</code> citation against the canonical schema dictionary.</td></tr>
+      <tr><td><code>make rml-test</code></td><td>Full instance-materialisation pipeline: 3 conformant fixtures (sound + layer-1-complete) + 1 negative (must SHACL-violate) + the acyclicity regression guard.</td></tr>
+      <tr><td><code>make rml-map</code></td><td>Materialise the default fixture → <code>build/out.nt</code>.</td></tr>
+      <tr><td><code>make rml-shacl</code></td><td>Validate <code>build/out.nt</code> against <code>opda-shapes-merged.ttl</code>.</td></tr>
+      <tr><td><code>make rml-complete</code></td><td>Layer-1 completeness gate over the materialised output.</td></tr>
+      <tr><td><code>make rml-pytest</code></td><td>Runs <code>tests/test_rml_mapping.py</code> (sound / complete / negative assertions).</td></tr>
+      <tr><td><code>python3 build/final_scope2.py</code></td><td>Regenerates <code>build/final-gap.json</code> — the domain-module resource coverage figure cited on <a href="/mapping">the section overview</a> and <a href="/mapping/coverage">Coverage &amp; gaps</a>.</td></tr>
+    </tbody>
+  </table>
+  <p>
+    Run against any conformant PDTF instance directly:
+  </p>
+  <pre><code>{`../opda-gen/.venv/bin/python harness/run_mapping.py \\
+  --mapping mapping/opda-pdtf.rml.ttl \\
+  --data ../../source/03-standards/schemas/src/examples/v3/exampleTransaction.json \\
+  --out build/out.nt
+bash harness/validate_shacl.sh build/out.nt`}</code></pre>
+
+  <h2 id="layout">File layout</h2>
+  <table>
+    <thead><tr><th>Path</th><th>Role</th></tr></thead>
+    <tbody>
+      <tr><td><a class="resource-link" href="/resource?path=source/03-standards/rml/mapping/opda-pdtf.rml.ttl"><code>mapping/opda-pdtf.rml.ttl</code></a></td><td>The mapping itself — the canonical deliverable.</td></tr>
+      <tr><td><code>mapping/functions/</code></td><td>FnO <code>functions.ttl</code> + the Java UDF (<code>OpdaFunctions.java</code>) RMLMapper loads for the enum → SKOS-concept-IRI function and date truncation.</td></tr>
+      <tr><td><a class="resource-link" href="/resource?path=source/03-standards/rml/CONTRACT.md"><code>CONTRACT.md</code></a></td><td>The build contract — ground-truth inputs, namespace law, layer-1/layer-2 definitions, "definitions of done."</td></tr>
+      <tr><td><a class="resource-link" href="/resource?path=source/03-standards/rml/README.md"><code>README.md</code></a></td><td>Usage, the scope/coverage ledger, SHACL traps handled.</td></tr>
+      <tr><td><code>provenance-index.json</code> / <code>.md</code></td><td>The leaf→predicate inversion — machine and human form.</td></tr>
+      <tr><td><code>harness/</code></td><td><code>run_mapping.py</code>, <code>validate_shacl.sh</code>, <code>check_completeness.py</code>, <code>audit_dct_source.py</code>, <code>validate_provenance.py</code>.</td></tr>
+      <tr><td><code>testdata/</code></td><td>4 fixtures (3 conformant + 1 negative) + <code>MANIFEST.md</code> describing what each exercises.</td></tr>
+      <tr><td><code>tests/test_rml_mapping.py</code></td><td>The pytest suite — sound / complete / negative assertions.</td></tr>
+      <tr><td><code>build/</code></td><td>Generated output — N-Triples + JSON reports, including <code>final-gap.json</code>. Gitignored; regenerate locally, don't expect it fresh on a clone.</td></tr>
+    </tbody>
+  </table>
+  <p class="muted tiny">
+    Two documents in this directory, <code>gap-register.md</code> and
+    <code>ONTOLOGY-COVERAGE.md</code>, are point-in-time audits from earlier in the
+    gap-closing effort and now carry their own superseded-notices pointing at
+    <code>build/final-gap.json</code> as current truth — the same reason
+    <a href="/mapping/coverage">Coverage &amp; gaps</a> on this site cites that file and not them.
+  </p>
+
+  <p>
+    <a href="/ontology">← Back to Ontology</a> · <a href="/schema">Back to Schema →</a>
+  </p>
+</Layout>

@@ -1,0 +1,131 @@
+---
+import Layout from '@/layouts/Layout.astro';
+import PageMeta from '@/components/PageMeta.astro';
+import fs from 'node:fs';
+import path from 'node:path';
+
+// Live counts from the *tracked* mapping file only (source/03-standards/rml/build/
+// is gitignored harness output and cannot safely be read at site-build time — see
+// ADR-0059 §Decision Outcome).
+const RML = path.resolve(process.cwd(), 'source/03-standards/rml');
+
+function read(name: string): string {
+  try { return fs.readFileSync(path.join(RML, name), 'utf8'); } catch { return ''; }
+}
+function countMatches(text: string, re: RegExp): number {
+  const m = text.match(re);
+  return m ? m.length : 0;
+}
+
+const mappingTtl = read('mapping/opda-pdtf.rml.ttl');
+const counts = {
+  triplesMaps: countMatches(mappingTtl, /a rr:TriplesMap/g),
+  predicateObjectMaps: countMatches(mappingTtl, /rr:predicateObjectMap/g),
+};
+---
+<Layout
+  title="Mapping"
+  description="The RML mapping that traces the OPDA ontology to its PDTF JSON Schema origin and back — an independent, machine-checked bridge between /ontology and /schema."
+>
+<PageMeta category="Section overview" variant="brand" updated="Updated 2026-07-05" damaKa={["Metadata Management", "Data Integration & Interoperability"]} />
+
+  <h1>Mapping</h1>
+
+  <p class="lead">
+    <a href="/ontology">Ontology</a> and <a href="/schema">Schema</a> are two independent
+    accounts of the same PDTF data — one in OWL/RDF, one in JSON Schema. This section
+    documents the <strong>RML mapping</strong>: a machine-checked bridge between them,
+    tracing every ontology term back to the exact schema location it was minted from, and
+    every schema location forward to the ontology term (if any) that represents it.
+  </p>
+
+  <nav class="callout callout--note" aria-label="On this page">
+    <div class="callout__label">On this page</div>
+    <ul style="margin: 0;">
+      <li><a href="#why">Why a second provenance mechanism</a></li>
+      <li><a href="#stats">The mapping, by the numbers</a></li>
+      <li><a href="#explore">Explore this section</a></li>
+    </ul>
+  </nav>
+
+  <h2 id="why">Why a second provenance mechanism</h2>
+  <p>
+    Every <code>opda:</code> term already carries a <code>dct:source</code> citation to its
+    authoritative origin (see <a href="/ontology/provenance">Decision provenance</a>). But
+    <code>dct:source</code> is single-valued — it can answer <em>which one source defines
+    this term's meaning</em>, but not <em>everywhere this term's data actually occurs</em>,
+    and nothing about that convention alone independently checks that a citation resolves to
+    something real.
+  </p>
+  <p>
+    <a class="resource-link" href="/modelling/odr/odr-0035">ODR-0035</a> adopted
+    <a href="https://rml.io" target="_blank" rel="noopener">RML</a> (RDF Mapping Language) to
+    close that gap: a second, independent, bidirectional trace, checked two ways — every
+    schema location the mapping cites resolves in the real PDTF v3 schema, and every ontology
+    term it addresses is a real, declared <code>opda:</code> term. The two mechanisms are
+    expected to <em>usually</em> agree (68 of 73 directly comparable predicates did, when
+    checked) but are verified independently and are not required to. The audit that motivated
+    this caught real, pre-existing defects — 8 stale-path and 16 unresolved
+    <code>dct:source</code> citations — that the ontology generator's own emission process had
+    never verified.
+  </p>
+
+  <div class="callout callout--key">
+    <div class="callout__label">Documentation, not ETL</div>
+    <p>
+      The mapping consumes a PDTF v3 transaction instance and emits RDF purely to
+      <strong>verify</strong> the schema↔ontology correspondence — it is not, and must not
+      become, an executable pipeline against real transaction data
+      (<a href="/modelling/odr/odr-0035">ODR-0035</a> §Rules). No instance data is required
+      for, or produced by, the primary validation gate.
+    </p>
+  </div>
+
+  <h2 id="stats">The mapping, by the numbers</h2>
+  <table>
+    <thead><tr><th>Metric</th><th>Count</th><th>Source</th></tr></thead>
+    <tbody>
+      <tr><td><code>rr:TriplesMap</code> rules</td><td>{counts.triplesMaps}</td><td><code>mapping/opda-pdtf.rml.ttl</code> — live</td></tr>
+      <tr><td><code>rr:predicateObjectMap</code> entries</td><td>{counts.predicateObjectMaps}</td><td><code>mapping/opda-pdtf.rml.ttl</code> — live</td></tr>
+      <tr><td>Domain-module resources mapped</td><td>466 / 469 (99.4%)</td><td><code>build/final-gap.json</code>, as of 2026-07-05 — see <a href="/mapping/coverage">Coverage &amp; gaps</a></td></tr>
+    </tbody>
+  </table>
+  <p class="muted tiny">
+    The first two rows are counted live from the committed mapping file at build time. The
+    coverage row is <strong>not</strong> live — it's the output of a separate harness whose
+    build artefacts are gitignored, cited here with its regeneration command on
+    <a href="/mapping/validate">Running &amp; validating</a>. And 469 is the curated
+    domain-module resource count, not the raw 8,458-leaf schema dictionary — see
+    <a href="/mapping/coverage#scope">why that's the right denominator</a>.
+  </p>
+
+  <div class="callout callout--note">
+    <div class="callout__label">See also — a different "mapping"</div>
+    <p>
+      <a href="/modelling/jsonld-mappings">JSON-LD mappings</a> is a separate, still-unbuilt
+      workstream: per-overlay <code>@context</code> files for production JSON-LD
+      round-tripping (BASPI v5 first). It solves a different problem for a different
+      audience — this section is the internal, already-largely-complete verification trace;
+      that one is external data-interop tooling yet to be built.
+    </p>
+  </div>
+
+  <h2 id="explore">Explore this section</h2>
+  <div class="card-grid">
+    <a class="card" href="/mapping/how-it-works">
+      <div class="pill pill--info">Engineering</div>
+      <h3>How it works</h3>
+      <p>RMLMapper + Jena validation, the two checking gates, and the enum→SKOS-concept-IRI technique.</p>
+    </a>
+    <a class="card" href="/mapping/coverage">
+      <div class="pill pill--info">99.4%</div>
+      <h3>Coverage &amp; gaps</h3>
+      <p>What's mapped, what's genuinely out of scope, and the honest-non-mapping discipline.</p>
+    </a>
+    <a class="card" href="/mapping/validate">
+      <div class="pill pill--info">Reproduce</div>
+      <h3>Running &amp; validating</h3>
+      <p>The make targets, the file layout, and links into the real harness files.</p>
+    </a>
+  </div>
+</Layout>
