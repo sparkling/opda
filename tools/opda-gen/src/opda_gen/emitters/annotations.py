@@ -46,6 +46,35 @@ Co-annotation placement per ADR-0012 §"DPV co-annotation emission":
   documenting no baseline DPV co-annotation (transactions are events
   not PII bearers per ODR-0007; governance classes are themselves
   meta-DPV records, not PII bearers).
+
+IAO information-artefact crosswalk (ODR-0030 Rule 4, ADOPT-NOW):
+a thin, external, referenced-not-imported `skos:closeMatch` from OPDA's
+document/record family to `obo:IAO` — never `owl:imports`, never reasoned
+over. `skos:closeMatch` (not `rdfs:subClassOf`) is the deliberate predicate
+choice: the production loader's OWL-RL-safe closure (`scripts/fuseki-load.mjs`)
+runs its `rdfs:subClassOf` type-propagation rule over `urn:x-arq:UnionGraph`
+— the union of *every* named graph in the dataset, so an `rdfs:subClassOf`
+triple placed in the annotation graph would still be reasoned over. SKOS
+mapping properties are not touched by any of the seven safe RDFS-Plus rules
+(ODR-0029), so `closeMatch` stays inert regardless of graph placement — the
+same reasoning ODR-0031 R2 applies to the gUFO alignment edges.
+- `opda:EPCCertificate` / `opda:Search` → `obo:IAO_0000310` (document).
+- `opda:AttachedDocument` → `obo:IAO_0000310` (document) — its own class
+  comment already calls it "A NEUTRAL document Kind".
+- `opda:RegisteredTitle` → `obo:IAO_0000030` (information content entity) —
+  an HMLR title-register RECORD (open-ended registry-event history), not a
+  single fixed "document" in IAO's collection-of-ICEs sense.
+- "Requisitions" (ODR-0030 Rule 4's fifth named family member) has no
+  corresponding OPDA class — grep of the corpus found none — and Rule 7 of
+  the same ODR keeps the Hohfeldian deontic core (charges, covenants,
+  easements, requisitions) UFO-L-shaped, explicitly stating "the bridge
+  never touches it". No crosswalk edge is emitted for it; this is a
+  deliberate scope gap, not an oversight.
+- `obo:IAO_0000033` (directive information entity) is verified (OBO
+  Foundry / OLS4, cross-checked against the Ontobee PURL redirect) but
+  UNUSED: no current OPDA class is a directive information entity, and
+  Rule 7 keeps the deontic instruments that might have wanted it out of
+  the bridge's scope.
 """
 
 from __future__ import annotations
@@ -53,7 +82,7 @@ from __future__ import annotations
 from pathlib import Path
 
 from rdflib import BNode, Graph, Literal, Namespace, URIRef
-from rdflib.namespace import DCTERMS, OWL, RDF, RDFS, XSD
+from rdflib.namespace import DCTERMS, OWL, RDF, RDFS, SKOS, XSD
 
 from opda_gen import __version__
 from opda_gen.serialiser.canonical import to_canonical_turtle
@@ -66,6 +95,11 @@ DPV_PD_NS = Namespace("https://w3id.org/dpv/pd#")
 # gUFO (Almeida, Guizzardi et al. 2019) — referenced (reference-not-import)
 # by the ADR-0034 gated typing pass; bound ONLY in the descriptive graph.
 GUFO = Namespace("http://purl.org/nemo/gufo#")
+# OBO / IAO (Information Artifact Ontology) — referenced (reference-not-
+# import) per ODR-0030 Rule 4. IRIs verified 2026-07-05 against OLS4
+# (https://www.ebi.ac.uk/ols4) and cross-checked via the Ontobee PURL
+# redirect (purl.obolibrary.org/obo/IAO_XXXXXXX → ontobee.org/browser).
+OBO = Namespace("http://purl.obolibrary.org/obo/")
 
 
 # --- Sentinel-pinned constants per the G6 convention ---------------------
@@ -120,6 +154,13 @@ _ODR_0018_RULE1 = URIRef("https://opda.org.uk/pdtf/harness/odr/ODR-0018/section-
 _ODR_0018_RULE3 = URIRef("https://opda.org.uk/pdtf/harness/odr/ODR-0018/section-Rule3")
 _ODR_0018_3A = URIRef("https://opda.org.uk/pdtf/harness/odr/ODR-0018/section-3a")
 _ODR_0008_Q5A = URIRef("https://opda.org.uk/pdtf/harness/odr/ODR-0008/section-Q5a")
+_ODR_0030_RULE_4 = URIRef("https://opda.org.uk/pdtf/harness/odr/ODR-0030/section-Rule-4")
+
+# IAO term URIs (reference-not-import: verified against OLS4 + the Ontobee
+# PURL redirect, 2026-07-05 — see module docstring). ODR-0030 Rule 4.
+IAO_DOCUMENT = OBO["IAO_0000310"]
+IAO_INFORMATION_CONTENT_ENTITY = OBO["IAO_0000030"]
+IAO_DIRECTIVE_INFORMATION_ENTITY = OBO["IAO_0000033"]  # verified, unused — see docstring
 
 # DPV term URIs (reference-not-import: we cite via URIRef, never imports).
 DPV_PD_NAME = URIRef("https://w3id.org/dpv/pd#Name")
@@ -144,6 +185,8 @@ def _bind_common(graph: Graph) -> None:
     graph.bind("xsd", XSD)
     graph.bind("dpv", DPV)
     graph.bind("dpv-pd", DPV_PD_NS)
+    graph.bind("skos", SKOS)
+    graph.bind("obo", OBO)
 
 
 def _module_annotations_header(
@@ -227,6 +270,26 @@ def _add_dpv_property_category(
     g.add((predicate, DCTERMS.source, source_iri))
 
 
+def _add_iao_crosswalk(
+    g: Graph,
+    *,
+    kind: URIRef,
+    iao_term: URIRef,
+    source_iri: URIRef = _ODR_0030_RULE_4,
+) -> None:
+    """Emit a `skos:closeMatch` IAO crosswalk edge per ODR-0030 Rule 4.
+
+    `skos:closeMatch`, never `rdfs:subClassOf`: the production closure's
+    subClassOf type-propagation rule reads `urn:x-arq:UnionGraph` — every
+    named graph in the dataset — so `rdfs:subClassOf` is NOT inert merely
+    by living in the annotation graph. SKOS mapping properties are outside
+    all seven safe RDFS-Plus rules (ODR-0029), which is what makes this
+    edge referenced-not-imported and genuinely never-reasoned-over.
+    """
+    g.add((kind, SKOS.closeMatch, iao_term))
+    g.add((kind, DCTERMS.source, source_iri))
+
+
 def _add_dpv_variant_refinement(
     g: Graph,
     *,
@@ -281,6 +344,15 @@ def build_property_annotations() -> Graph:
     _add_dpv_baseline(
         g, kind=OPDA.RegisteredTitle, category=DPV_PD_PUBLICDATA,
         source_iri=_ODR_0005_S3C,
+    )
+
+    # --- IAO information-artefact crosswalk (ODR-0030 Rule 4) -----------
+    # RegisteredTitle is an open-ended HMLR registry RECORD (title-number
+    # lineage + registry-event history), not a single fixed "document" in
+    # IAO's collection-of-ICEs sense — closeMatch to the broader
+    # information content entity, not obo:IAO_0000310 document.
+    _add_iao_crosswalk(
+        g, kind=OPDA.RegisteredTitle, iao_term=IAO_INFORMATION_CONTENT_ENTITY,
     )
 
     # --- Address variant refinements (ODR-0015 §7a + ODR-0018 §3a) -----
@@ -434,6 +506,11 @@ def build_claim_annotations() -> Graph:
         source_iri=_ODR_0009_Q6,
     )
 
+    # --- IAO information-artefact crosswalk (ODR-0030 Rule 4) -----------
+    # AttachedDocument's own class comment already calls it "A NEUTRAL
+    # document Kind" — closeMatch to obo:IAO_0000310 document.
+    _add_iao_crosswalk(g, kind=OPDA.AttachedDocument, iao_term=IAO_DOCUMENT)
+
     # --- Evidence-KIND refinements per ODR-0009 §Q6 (value-keyed) ------
     # ODR-0027 §R6: the …Evidence subclasses are retired; evidence-kind is the
     # coded opda:evidenceType classification. Each refinement keys on
@@ -531,6 +608,14 @@ def build_descriptive_annotations() -> Graph:
         g, kind=OPDA.EPCCertificate, category=DPV_PD_POSTALADDRESS,
         source_iri=_ODR_0018_RULE1,
     )
+
+    # --- IAO information-artefact crosswalk (ODR-0030 Rule 4) -----------
+    # EPCCertificate and Search are both single, formally-issued documents
+    # (a certificate; a search report) — closeMatch to obo:IAO_0000310
+    # document.
+    _add_iao_crosswalk(g, kind=OPDA.EPCCertificate, iao_term=IAO_DOCUMENT)
+    _add_iao_crosswalk(g, kind=OPDA.Search, iao_term=IAO_DOCUMENT)
+
     # Survey / Search / Valuation / Comparable: not PII-bearing in their
     # own right (the address attached to each gets PII coverage via the
     # opda:Property baseline). Document with rdfs:comment to make the

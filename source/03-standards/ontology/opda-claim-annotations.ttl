@@ -14,9 +14,11 @@
 @prefix dct: <http://purl.org/dc/terms/> .
 @prefix dpv: <https://w3id.org/dpv#> .
 @prefix dpv-pd: <https://w3id.org/dpv/pd#> .
+@prefix obo: <http://purl.obolibrary.org/obo/> .
 @prefix opda: <https://opda.org.uk/pdtf/> .
 @prefix owl: <http://www.w3.org/2002/07/owl#> .
 @prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
 @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
 
 <https://opda.org.uk/pdtf/graph/claim-annotations>
@@ -51,6 +53,10 @@ opda:VouchEvidenceRefinement
     opda:targetsKind opda:Evidence ;
     opda:variantPredicate opda:evidenceType ;
     opda:variantValue "Vouch" .
+
+opda:AttachedDocument
+    dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0030/section-Rule-4> ;
+    skos:closeMatch obo:IAO_0000310 .
 
 opda:Claim
     dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0009/section-Q6> ;
