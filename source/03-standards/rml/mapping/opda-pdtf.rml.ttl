@@ -1129,10 +1129,15 @@
 #   exhaustive style. (Earlier in this session, the Darwin harness caught an
 #   invented test value — "Rail" — that wasn't a real scheme member;
 #   corrected to the schema's own enum, "National rail station".)
-#   opda:schoolType is NOT mapped here: the JSON field is a nested per-phase
-#   yes/no OBJECT (nursery/primary/secondary/…), not a scalar, while the
-#   ontology declares it xsd:string — needs a derivation opda-gen didn't
-#   specify and RML alone can't express; left as a genuine, documented gap.
+#   opda:schoolType's JSON source is a nested per-phase yes/no OBJECT
+#   (schoolType.{nursery,primary,secondary,college,private}.yesNoNotKnown),
+#   not a scalar — but the ontology's own SchoolTypeScheme design (ODR-0024
+#   R4, session-028 Q1) already reduces this to "which band(s) say Yes",
+#   the same shape as ofstedRating/transportType's single-object enums. The
+#   same per-value JSONPath-filter + constant-scheme-IRI idiom (M14a/M14b)
+#   applies with a nested filter path instead of a top-level one — verified
+#   empirically against RMLMapper 8.1.0 (multi-phase schools correctly emit
+#   multiple opda:schoolType triples). Mapped below as M14c.
 # ---------------------------------------------------------------------------
 <#NearbyFacility_Schools> a rr:TriplesMap ;
   rml:logicalSource [ rml:source "INSTANCE.json" ;
@@ -1272,6 +1277,46 @@
   rr:subjectMap [ rr:template "https://opda.org.uk/pdtf/harness/data/facility/transport/{name}" ] ;
   rr:predicateObjectMap [ rr:predicate opda:transportType ;
       rr:objectMap [ rr:constant <https://opda.org.uk/pdtf/scheme/transportType/Underground-Subway> ] ] .
+
+# M14c — opda:schoolType -> opda:SchoolTypeScheme member IRI. Nested filter
+#   on schoolType.{phase}.yesNoNotKnown == "Yes" (all 5 real schema phases);
+#   same subject reuse as M14a/M14b. A school with multiple Yes phases emits
+#   one opda:schoolType triple per phase (not single-valued — the ontology's
+#   comment says "ONE shared datatype property", not "one value per node").
+<#SchoolTypeNursery> a rr:TriplesMap ;
+  rml:logicalSource [ rml:source "INSTANCE.json" ; rml:referenceFormulation ql:JSONPath ;
+                      rml:iterator "$.propertyPack.nearbyFacilities.schools[?(@.schoolType.nursery.yesNoNotKnown==\"Yes\")]" ] ;
+  rr:subjectMap [ rr:template "https://opda.org.uk/pdtf/harness/data/facility/school/{name}" ] ;
+  rr:predicateObjectMap [ rr:predicate opda:schoolType ;
+      rr:objectMap [ rr:constant <https://opda.org.uk/pdtf/scheme/schoolType/Nursery> ] ] .  # <- propertyPack.nearbyFacilities.schools[].schoolType.nursery
+
+<#SchoolTypePrimary> a rr:TriplesMap ;
+  rml:logicalSource [ rml:source "INSTANCE.json" ; rml:referenceFormulation ql:JSONPath ;
+                      rml:iterator "$.propertyPack.nearbyFacilities.schools[?(@.schoolType.primary.yesNoNotKnown==\"Yes\")]" ] ;
+  rr:subjectMap [ rr:template "https://opda.org.uk/pdtf/harness/data/facility/school/{name}" ] ;
+  rr:predicateObjectMap [ rr:predicate opda:schoolType ;
+      rr:objectMap [ rr:constant <https://opda.org.uk/pdtf/scheme/schoolType/Primary> ] ] .  # <- propertyPack.nearbyFacilities.schools[].schoolType.primary
+
+<#SchoolTypeSecondary> a rr:TriplesMap ;
+  rml:logicalSource [ rml:source "INSTANCE.json" ; rml:referenceFormulation ql:JSONPath ;
+                      rml:iterator "$.propertyPack.nearbyFacilities.schools[?(@.schoolType.secondary.yesNoNotKnown==\"Yes\")]" ] ;
+  rr:subjectMap [ rr:template "https://opda.org.uk/pdtf/harness/data/facility/school/{name}" ] ;
+  rr:predicateObjectMap [ rr:predicate opda:schoolType ;
+      rr:objectMap [ rr:constant <https://opda.org.uk/pdtf/scheme/schoolType/Secondary> ] ] .  # <- propertyPack.nearbyFacilities.schools[].schoolType.secondary
+
+<#SchoolTypeCollege> a rr:TriplesMap ;
+  rml:logicalSource [ rml:source "INSTANCE.json" ; rml:referenceFormulation ql:JSONPath ;
+                      rml:iterator "$.propertyPack.nearbyFacilities.schools[?(@.schoolType.college.yesNoNotKnown==\"Yes\")]" ] ;
+  rr:subjectMap [ rr:template "https://opda.org.uk/pdtf/harness/data/facility/school/{name}" ] ;
+  rr:predicateObjectMap [ rr:predicate opda:schoolType ;
+      rr:objectMap [ rr:constant <https://opda.org.uk/pdtf/scheme/schoolType/College> ] ] .  # <- propertyPack.nearbyFacilities.schools[].schoolType.college
+
+<#SchoolTypePrivate> a rr:TriplesMap ;
+  rml:logicalSource [ rml:source "INSTANCE.json" ; rml:referenceFormulation ql:JSONPath ;
+                      rml:iterator "$.propertyPack.nearbyFacilities.schools[?(@.schoolType.private.yesNoNotKnown==\"Yes\")]" ] ;
+  rr:subjectMap [ rr:template "https://opda.org.uk/pdtf/harness/data/facility/school/{name}" ] ;
+  rr:predicateObjectMap [ rr:predicate opda:schoolType ;
+      rr:objectMap [ rr:constant <https://opda.org.uk/pdtf/scheme/schoolType/Private> ] ] .  # <- propertyPack.nearbyFacilities.schools[].schoolType.private
 
 <#NearbyFacility_HealthCare> a rr:TriplesMap ;
   rml:logicalSource [ rml:source "INSTANCE.json" ;
@@ -1877,10 +1922,12 @@
 #   fabricating a numeric parse of free text. Left as a genuine, documented
 #   gap — same shape as M14/M18/M20's gaps above.
 #
-# M26 — nearbyFacilities.schools[].schoolType, surveys[].misc.constructionType,
-#   localSearches buildingControlStartDate/planningStartDate: already
-#   documented as genuine gaps at M14, M18, M20 respectively (re-verified
-#   this session — still true, no new technique found for any of them).
+# M26 — surveys[].misc.constructionType, localSearches
+#   buildingControlStartDate/planningStartDate: already documented as genuine
+#   gaps at M18, M20 respectively (re-verified this session — still true, no
+#   new technique found for either). nearbyFacilities.schools[].schoolType
+#   is NO LONGER in this list — re-verified this session and fixed at M14c
+#   above (the per-value nested-filter idiom applies; not a genuine gap).
 
 # ---------------------------------------------------------------------------
 # M27 — propertyPack.ownership (leasehold branch): remaining LegalEstate-
