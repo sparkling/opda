@@ -2863,3 +2863,66 @@
   rr:predicateObjectMap [ rr:predicate opda:hasAddress ;
       rr:objectMap [ rr:template "https://opda.org.uk/pdtf/harness/data/address/title-{titlesToBeSold[0].titleNumber}" ] ] .  # <- propertyPack.titlesToBeSold[0].titleNumber (container; class-instantiating join, same PropertyEPCJoin idiom as M4a)
 
+# ---------------------------------------------------------------------------
+# M35 — Survey (propertyPack.surveys[])  (opda:Survey)  iterator: surveys[*]
+#   SurveyIdentityKeyShape REQUIRES prov:wasGeneratedBy (minCount 1,
+#   Violation) — same class-promoted-IO pattern as M4a/M5/M6. Keyed on the
+#   item's own {misc.reportDate} (a genuine per-item field reachable inside
+#   the surveys[*] iterator itself — like Search's productCode, M15's
+#   roomName, M20's refNumber), NOT the ambient-{uprn}+skip-together idiom
+#   (that idiom is reserved for containers with no per-item field of their
+#   own, e.g. M20a/M24a's floodRisk/climateRisk parents).
+#   opda:constructionType stays flat on Property (its own rdfs:domain, M18)
+#   — NOT re-homed onto Survey.
+#
+#   Selected via a Darwin-Mode genome/paretoFront comparison (ADR-0058;
+#   harness/darwin-poc/darwin-genome-survey.mjs): 2 candidates scored by this
+#   harness against a scratch instance exercising propertyPack.surveys[]
+#   (2 items; not exercised by testdata/01-04, same caveat as M18).
+#   - g0 (chosen) — prov:wasGeneratedBy + prov:generatedAtTime (misc.reportDate)
+#     only: 0 SHACL violations, both Survey nodes minted + joined.
+#   - g1 (rejected) — g0 PLUS opda:reportDate as a literal (the one property
+#     genuinely documented as shared across Search/Survey — its own comment
+#     says "ONE shared property reused across search and survey reports",
+#     dct:source cites propertyPack.surveys[].misc.reportDate directly).
+#     REAL, MEASURED result: 2 SHACL violations —
+#     "opda:reportDate is used off its declared rdfs:domain: every subject
+#     of opda:reportDate MUST be an instance of Search" against
+#     `reportDateDomainShape` (ODR-0029 R3 — a closed-world, enforced
+#     per-property domain shape, NOT the general documentary-only
+#     rdfs:domain/range regime most properties get). The property's own
+#     comment anticipates Survey reuse but the shape was never widened to
+#     match — a real, pre-existing latent inconsistency (left unfixed here;
+#     out of scope for this join-predicate task and not this mapping's to
+#     resolve unilaterally — flag for a future ODR-0029 amendment). g0 is
+#     therefore the sole Pareto-optimal candidate on hard SHACL grounds,
+#     the same shape of result as the EPCCertificate trial (3 of 4
+#     candidates violated its shape), not the coverage-only discriminator
+#     the NearbyFacility trial needed (Survey DOES carry a hard shape).
+# ---------------------------------------------------------------------------
+<#Survey> a rr:TriplesMap ;
+  rml:logicalSource [ rml:source "INSTANCE.json" ;
+                      rml:referenceFormulation ql:JSONPath ;
+                      rml:iterator "$.propertyPack.surveys[*]" ] ;
+  rr:subjectMap [ rr:template "https://opda.org.uk/pdtf/harness/data/survey/{misc.reportDate}" ;
+                  rr:class opda:Survey ] ;
+  rr:predicateObjectMap [ rr:predicate prov:wasGeneratedBy ;
+      rr:objectMap [ rr:template "https://opda.org.uk/pdtf/harness/data/survey/{misc.reportDate}/run" ] ] ;  # SHACL: class-promoted IO MUST carry prov:wasGeneratedBy (ODR-0008 §Q4a)
+  rr:predicateObjectMap [ rr:predicate prov:generatedAtTime ;
+      rr:objectMap [ rml:reference "misc.reportDate" ; rr:datatype xsd:dateTime ] ] .  # <- propertyPack.surveys[].misc.reportDate (IC component 3/3 — issue date, SurveyInternalStructureShape sh:Info)
+
+<#SurveyRunActivity> a rr:TriplesMap ;
+  rml:logicalSource [ rml:source "INSTANCE.json" ;
+                      rml:referenceFormulation ql:JSONPath ;
+                      rml:iterator "$.propertyPack.surveys[*]" ] ;
+  rr:subjectMap [ rr:template "https://opda.org.uk/pdtf/harness/data/survey/{misc.reportDate}/run" ;
+                  rr:class prov:Activity ] .
+
+<#PropertySurveyJoin> a rr:TriplesMap ;
+  rml:logicalSource [ rml:source "INSTANCE.json" ;
+                      rml:referenceFormulation ql:JSONPath ;
+                      rml:iterator "$.propertyPack" ] ;
+  rr:subjectMap [ rr:template "https://opda.org.uk/pdtf/harness/data/property/{uprn}" ] ;
+  rr:predicateObjectMap [ rr:predicate opda:hasSurvey ;
+      rr:objectMap [ rr:template "https://opda.org.uk/pdtf/harness/data/survey/{surveys[*].misc.reportDate}" ] ] .  # <- propertyPack.surveys[] (array-projected reference join, same M15/hasRoomDimension idiom); not exercised by testdata/01-04 (same caveat as M18)
+
