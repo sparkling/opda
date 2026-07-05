@@ -2,15 +2,15 @@
   "generatedFrom": "src/data/ontology-model.json",
   "counts": {
     "nodes": {
-      "class": 40,
-      "external": 3,
+      "class": 43,
+      "external": 4,
       "scheme": 49,
-      "concept": 323
+      "concept": 324
     },
     "edges": {
       "constrainedByScheme": 12,
-      "inScheme": 323,
-      "objectProperty": 88
+      "inScheme": 324,
+      "objectProperty": 91
     }
   },
   "modules": [
@@ -111,6 +111,18 @@
     },
     {
       "data": {
+        "id": "class:DescriptiveProperty",
+        "ref": "DescriptiveProperty",
+        "label": "DescriptiveProperty",
+        "type": "class",
+        "ufoCategory": "",
+        "module": "foundation",
+        "hasShape": false,
+        "layer": "owl"
+      }
+    },
+    {
+      "data": {
         "id": "class:DiagnosticExemplar",
         "ref": "DiagnosticExemplar",
         "label": "DiagnosticExemplar",
@@ -130,6 +142,18 @@
         "ufoCategory": "Information Object",
         "module": "governance",
         "hasShape": true,
+        "layer": "owl"
+      }
+    },
+    {
+      "data": {
+        "id": "class:DPVMappingRefinement",
+        "ref": "DPVMappingRefinement",
+        "label": "DPVMappingRefinement",
+        "type": "class",
+        "ufoCategory": "",
+        "module": "governance",
+        "hasShape": false,
         "layer": "owl"
       }
     },
@@ -515,6 +539,27 @@
         "module": "claim",
         "hasShape": true,
         "layer": "owl"
+      }
+    },
+    {
+      "data": {
+        "id": "class:Verifier",
+        "ref": "Verifier",
+        "label": "Verifier",
+        "type": "class",
+        "ufoCategory": "",
+        "module": "claim",
+        "hasShape": false,
+        "layer": "owl"
+      }
+    },
+    {
+      "data": {
+        "id": "external:http://www.w3.org/1999/02/22-rdf-syntax-ns#Property",
+        "ref": "http://www.w3.org/1999/02/22-rdf-syntax-ns#Property",
+        "label": "Property",
+        "type": "external",
+        "layer": "external"
       }
     },
     {
@@ -3249,6 +3294,16 @@
         "id": "concept:scheme/ownershipType/Leasehold",
         "ref": "scheme/ownershipType/Leasehold",
         "label": "Leasehold",
+        "type": "concept",
+        "module": "vocabularies",
+        "layer": "skos"
+      }
+    },
+    {
+      "data": {
+        "id": "concept:scheme/ownershipType/Managed-Freehold",
+        "ref": "scheme/ownershipType/Managed-Freehold",
+        "label": "Managed-Freehold",
         "type": "concept",
         "module": "vocabularies",
         "layer": "skos"
@@ -6386,6 +6441,15 @@
     },
     {
       "data": {
+        "id": "inScheme:scheme/ownershipType/Managed-Freehold->scheme/OwnershipTypeScheme",
+        "source": "concept:scheme/ownershipType/Managed-Freehold",
+        "target": "scheme:scheme/OwnershipTypeScheme",
+        "label": "inScheme",
+        "kind": "inScheme"
+      }
+    },
+    {
+      "data": {
         "id": "inScheme:scheme/ownershipType/Other->scheme/OwnershipTypeScheme",
         "source": "concept:scheme/ownershipType/Other",
         "target": "scheme:scheme/OwnershipTypeScheme",
@@ -7331,6 +7395,15 @@
     },
     {
       "data": {
+        "id": "op:variantPredicate:DPVMappingRefinement->http://www.w3.org/1999/02/22-rdf-syntax-ns#Property",
+        "source": "class:DPVMappingRefinement",
+        "target": "external:http://www.w3.org/1999/02/22-rdf-syntax-ns#Property",
+        "label": "variantPredicate",
+        "kind": "objectProperty"
+      }
+    },
+    {
+      "data": {
         "id": "op:evidenceType:Evidence->http://www.w3.org/2004/02/skos/core#Concept",
         "source": "class:Evidence",
         "target": "external:http://www.w3.org/2004/02/skos/core#Concept",
@@ -7344,6 +7417,15 @@
         "source": "class:Evidence",
         "target": "external:http://www.w3.org/ns/prov#Agent",
         "label": "attestedBy",
+        "kind": "objectProperty"
+      }
+    },
+    {
+      "data": {
+        "id": "op:leaseTerm:LegalEstate->LeaseTerm",
+        "source": "class:LegalEstate",
+        "target": "class:LeaseTerm",
+        "label": "leaseTerm",
         "kind": "objectProperty"
       }
     },
@@ -7583,15 +7665,6 @@
     },
     {
       "data": {
-        "id": "op:potentialCost:Property->MonetaryAmount",
-        "source": "class:Property",
-        "target": "class:MonetaryAmount",
-        "label": "potentialCost",
-        "kind": "objectProperty"
-      }
-    },
-    {
-      "data": {
         "id": "op:rent:Property->MonetaryAmount",
         "source": "class:Property",
         "target": "class:MonetaryAmount",
@@ -7623,6 +7696,15 @@
         "source": "class:Property",
         "target": "class:RoomDimension",
         "label": "hasRoomDimension",
+        "kind": "objectProperty"
+      }
+    },
+    {
+      "data": {
+        "id": "op:hasSurvey:Property->Survey",
+        "source": "class:Property",
+        "target": "class:Survey",
+        "label": "hasSurvey",
         "kind": "objectProperty"
       }
     },
@@ -8028,6 +8110,15 @@
         "source": "class:Transaction",
         "target": "class:Seller",
         "label": "hasParticipant",
+        "kind": "objectProperty"
+      }
+    },
+    {
+      "data": {
+        "id": "op:dependsOnTransaction:Transaction->Transaction",
+        "source": "class:Transaction",
+        "target": "class:Transaction",
+        "label": "dependsOnTransaction",
         "kind": "objectProperty"
       }
     },

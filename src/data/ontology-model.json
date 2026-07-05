@@ -1,11 +1,11 @@
 {
   "namespace": "https://opda.org.uk/pdtf/",
   "counts": {
-    "classes": 40,
-    "objectProperties": 71,
-    "datatypeProperties": 193,
-    "shapes": 382,
-    "concepts": 323,
+    "classes": 43,
+    "objectProperties": 75,
+    "datatypeProperties": 206,
+    "shapes": 404,
+    "concepts": 324,
     "schemes": 49,
     "contexts": 8
   },
@@ -35,6 +35,48 @@
           "label": "address variant",
           "type": "string",
           "description": "Required tag identifying the authority and lifecycle for this Address instance (one of 'title' | 'marketing' | 'inspire'). UFO Quality particularising the Address Substance Kind within Guarino's S001 Q4 'mode of presentation' framing."
+        },
+        {
+          "localName": "country",
+          "id": "country",
+          "label": "country",
+          "type": "string",
+          "description": "Structural field of an opda:Address (ODR-0015 §3b, S015 Q3) — country. sh:minCount 0: absent when the addressing authority has not populated it (e.g. an INSPIRE-only locator's sparse structural fields, ODR-0015 §3a Rule 5)."
+        },
+        {
+          "localName": "inspireFeatureId",
+          "id": "inspireFeatureId",
+          "label": "INSPIRE feature ID",
+          "type": "string",
+          "description": "INSPIRE Identifier for an opda:Address of variant 'inspire' — a contingent identifier (re-instantiating ODR-0005 §6a's UPRN-as-Quality pattern), unique per addressVariant 'inspire' individual (dash:uniqueValueForClass). Populated for INSPIRE-only locatedness (ODR-0015 §3a Rule 5) and generally wherever a cadastral INSPIRE polygon feature exists for the Address."
+        },
+        {
+          "localName": "line1",
+          "id": "line1",
+          "label": "line 1",
+          "type": "string",
+          "description": "Structural field of an opda:Address (ODR-0015 §3b, S015 Q3) — line 1. sh:minCount 0: absent when the addressing authority has not populated it (e.g. an INSPIRE-only locator's sparse structural fields, ODR-0015 §3a Rule 5)."
+        },
+        {
+          "localName": "line2",
+          "id": "line2",
+          "label": "line 2",
+          "type": "string",
+          "description": "Structural field of an opda:Address (ODR-0015 §3b, S015 Q3) — line 2. sh:minCount 0: absent when the addressing authority has not populated it (e.g. an INSPIRE-only locator's sparse structural fields, ODR-0015 §3a Rule 5)."
+        },
+        {
+          "localName": "postcode",
+          "id": "postcode",
+          "label": "postcode",
+          "type": "string",
+          "description": "Structural field of an opda:Address (ODR-0015 §3b, S015 Q3) — postcode. sh:minCount 0: absent when the addressing authority has not populated it (e.g. an INSPIRE-only locator's sparse structural fields, ODR-0015 §3a Rule 5)."
+        },
+        {
+          "localName": "postTown",
+          "id": "postTown",
+          "label": "post town",
+          "type": "string",
+          "description": "Structural field of an opda:Address (ODR-0015 §3b, S015 Q3) — post town. sh:minCount 0: absent when the addressing authority has not populated it (e.g. an INSPIRE-only locator's sparse structural fields, ODR-0015 §3a Rule 5)."
         }
       ],
       "outgoing": [],
@@ -65,6 +107,10 @@
         {
           "id": "shape/AddressIdentityKeyShape",
           "localName": "AddressIdentityKeyShape"
+        },
+        {
+          "id": "shape/AddressStructuralShape",
+          "localName": "AddressStructuralShape"
         },
         {
           "id": "shape/INSPIRESuccessionRule",
@@ -151,7 +197,8 @@
       "shapes": [],
       "usesSchemes": [],
       "dctSource": [
-        "harness/odr/ODR-0024/section-Rules-R7"
+        "harness/odr/ODR-0024/section-Rules-R7",
+        "harness/odr/ODR-0030/section-Rule-4"
       ]
     },
     "Buyer": {
@@ -327,6 +374,27 @@
         "harness/odr/ODR-0018/section-Rule1"
       ]
     },
+    "DescriptiveProperty": {
+      "uri": "https://opda.org.uk/pdtf/DescriptiveProperty",
+      "id": "DescriptiveProperty",
+      "localName": "DescriptiveProperty",
+      "label": "Descriptive Property",
+      "comment": "Meta-class marking an owl:DatatypeProperty as an ODR-0008 'Property descriptive attribute' — a flat, declare-once fact attaching to opda:Property / opda:LegalEstate or to one of ODR-0008's own Q4a class promotions (Search, Valuation, RiskAssessment, and their supporting structures). Per ODR-0008 §Q7a Test 1, the base TBox/shapes graph MUST NOT carry a sh:minCount on any opda:DescriptiveProperty-typed predicate: cardinality is 0..* in the base, with per-form sh:minCount variation expressed only in the ODR-0010 overlay profile shapes. Not applied to SKOS-Concept-valued or MonetaryAmount-valued descriptive facts (those are owl:ObjectProperty, outside Q6a's 'datatype property' floor) nor to ODR-0015 address/identity properties, ODR-0022 Category A/D cross-cutting reusable properties (disclosureDetail, price), or structural join predicates.",
+      "definition": "The class of owl:DatatypeProperty declarations that are genuine ODR-0008 Property/LegalEstate descriptive attributes, used to enforce that the base ontology carries no per-property minimum cardinality — that variation is reserved for the ODR-0010 overlay profiles.",
+      "scopeNote": "CI-enforcement marker for the ODR-0008 §Q7a base-cardinality clause — not itself a descriptive fact, but a classification of the datatype properties that ARE.",
+      "ufoCategory": "",
+      "superClasses": [],
+      "module": "foundation",
+      "context": "foundation",
+      "attributes": [],
+      "outgoing": [],
+      "incoming": [],
+      "shapes": [],
+      "usesSchemes": [],
+      "dctSource": [
+        "harness/odr/ODR-0008/section-Q7a"
+      ]
+    },
     "DiagnosticExemplar": {
       "uri": "https://opda.org.uk/pdtf/DiagnosticExemplar",
       "id": "DiagnosticExemplar",
@@ -397,6 +465,56 @@
         "harness/odr/ODR-0018/section-Rule4"
       ]
     },
+    "DPVMappingRefinement": {
+      "uri": "https://opda.org.uk/pdtf/DPVMappingRefinement",
+      "id": "DPVMappingRefinement",
+      "localName": "DPVMappingRefinement",
+      "label": "DPV Mapping Refinement",
+      "comment": "A variant-conditional specialisation of a DPVMappingRecord: applies when a Kind's variant predicate takes a specific value (opda:variantPredicate/opda:variantValue), overriding the baseline lawful basis with its own (opda:lawfulBasis). Per ODR-0018 §3a's mapping-table pattern.",
+      "definition": "A variant-conditional specialisation of a DPV mapping record: overrides the baseline lawful basis for a Kind when its variant predicate takes a specific value.",
+      "scopeNote": "UFO: Information Particular, specialising DPVMappingRecord (Guizzardi 2005 Ch. 4 §4.7). Variant-conditional refinement pattern per ODR-0018 §3a.",
+      "ufoCategory": "",
+      "superClasses": [
+        {
+          "id": "DPVMappingRecord",
+          "localName": "DPVMappingRecord",
+          "external": false
+        }
+      ],
+      "module": "governance",
+      "context": "governance",
+      "attributes": [
+        {
+          "localName": "variantValue",
+          "id": "variantValue",
+          "label": "variant value",
+          "type": "string",
+          "description": "The specific value of opda:variantPredicate this refinement applies to (e.g. \"title\"/\"marketing\"/\"inspire\" for opda:addressVariant) — ODR-0018 §3a."
+        }
+      ],
+      "outgoing": [
+        {
+          "predicate": "variantPredicate",
+          "predicateLabel": "variant predicate",
+          "predicateLocal": "variantPredicate",
+          "targets": [
+            {
+              "id": "http://www.w3.org/1999/02/22-rdf-syntax-ns#Property",
+              "localName": "Property",
+              "kind": "external"
+            }
+          ],
+          "inverse": null,
+          "description": "The predicate (e.g. opda:addressVariant) whose value on a Kind instance selects which refinement of this mapping record applies (ODR-0018 §3a)."
+        }
+      ],
+      "incoming": [],
+      "shapes": [],
+      "usesSchemes": [],
+      "dctSource": [
+        "harness/odr/ODR-0018/section-Rule4"
+      ]
+    },
     "EPCCertificate": {
       "uri": "https://opda.org.uk/pdtf/EPCCertificate",
       "id": "EPCCertificate",
@@ -445,7 +563,8 @@
       "usesSchemes": [],
       "dctSource": [
         "harness/odr/ODR-0008/section-Q4a",
-        "harness/odr/ODR-0018/section-Rule1"
+        "harness/odr/ODR-0018/section-Rule1",
+        "harness/odr/ODR-0030/section-Rule-4"
       ]
     },
     "Evidence": {
@@ -567,7 +686,15 @@
       ],
       "module": "property",
       "context": "property",
-      "attributes": [],
+      "attributes": [
+        {
+          "localName": "leaseExtensionDetails",
+          "id": "leaseExtensionDetails",
+          "label": "lease extension details",
+          "type": "string",
+          "description": "Free-text detail elaborating the steps taken to extend a leasehold's term (TA7/LPE1 enfranchisement §6.3/§10), supplied when the seller discloses such steps were taken. Plain string datatype per ODR-0008 §Q5a; flat per §Q6a."
+        }
+      ],
       "outgoing": [],
       "incoming": [],
       "shapes": [],
@@ -596,7 +723,21 @@
       "context": "property",
       "attributes": [],
       "outgoing": [],
-      "incoming": [],
+      "incoming": [
+        {
+          "predicate": "leaseTerm",
+          "predicateLabel": "lease term",
+          "predicateLocal": "leaseTerm",
+          "sources": [
+            {
+              "id": "LegalEstate",
+              "localName": "LegalEstate"
+            }
+          ],
+          "inverse": null,
+          "description": "Join from a leasehold opda:LegalEstate to the opda:LeaseTerm OWL-Time interval bounding its duration (S007 Q5)."
+        }
+      ],
       "shapes": [
         {
           "id": "shape/LeaseTermSuccessionRule",
@@ -953,6 +1094,20 @@
           "description": "Yes/No discriminator: is the LegalEstate a shared-ownership lease? Applies to Leasehold ownership per BASPI5 question A1.3.1. Bound to opda:YesNoScheme."
         },
         {
+          "predicate": "leaseTerm",
+          "predicateLabel": "lease term",
+          "predicateLocal": "leaseTerm",
+          "targets": [
+            {
+              "id": "LeaseTerm",
+              "localName": "LeaseTerm",
+              "kind": "class"
+            }
+          ],
+          "inverse": null,
+          "description": "Join from a leasehold opda:LegalEstate to the opda:LeaseTerm OWL-Time interval bounding its duration (S007 Q5)."
+        },
+        {
           "predicate": "ownershipType",
           "predicateLabel": "ownership type",
           "predicateLocal": "ownershipType",
@@ -1010,6 +1165,14 @@
         }
       ],
       "incoming": [
+        {
+          "predicate": "appliesTo",
+          "predicateLabel": "applies to",
+          "predicateLocal": "appliesTo",
+          "sources": [],
+          "inverse": null,
+          "description": "Provenance-activity-to-subject-entity join: relates a reified PROV-O Activity to the Entity it acted upon — opda:NameChangeEvent to the opda:Person whose name changed (ODR-0006 §Q1), or opda:LeaseExtensionEvent to the opda:LegalEstate whose term was extended (ODR-0005 §3b). Domain intentionally unconstrained (same convention as opda:identifiesSameProperty, above) — any reified provenance-activity Kind may emit this predicate. Documentary \"any-of\" rdfs:range opda:Person, opda:LegalEstate (module-header disjunctive-not-conjunctive convention, ADR-0035 — never entailed)."
+        },
         {
           "predicate": "concerns",
           "predicateLabel": "concerns",
@@ -1281,19 +1444,6 @@
           "description": "List price of a comparable property (valuation comparable listing info). Bearer opda:Valuation. → opda:MonetaryAmount (ODR-0024 R3); flat per §Q6a."
         },
         {
-          "predicate": "potentialCost",
-          "predicateLabel": "potential cost",
-          "predicateLocal": "potentialCost",
-          "sources": [
-            {
-              "id": "Property",
-              "localName": "Property"
-            }
-          ],
-          "inverse": null,
-          "description": "Potential remediation cost in the Property's building-safety disclosure (council session-028 Q3 re-filed this monetary leaf from free-text to the monetary walk; the data-dictionary source is free text, so the magnitude is best-effort). Bearer opda:Property. → opda:MonetaryAmount (ODR-0024 R3); flat per §Q6a."
-        },
-        {
           "predicate": "rent",
           "predicateLabel": "rent",
           "predicateLocal": "rent",
@@ -1380,7 +1530,22 @@
       ],
       "module": "agent",
       "context": "agent",
-      "attributes": [],
+      "attributes": [
+        {
+          "localName": "newName",
+          "id": "newName",
+          "label": "new name",
+          "type": "string",
+          "description": "The surname the opda:NameChangeEvent activity changed TO — the activity's own record of the resulting state, distinct from opda:currentName's Person-level assertion (ODR-0006 §Q1). Plain string datatype per ODR-0008 §Q5a; flat per §Q6a."
+        },
+        {
+          "localName": "previousName",
+          "id": "previousName",
+          "label": "previous name",
+          "type": "string",
+          "description": "The surname the opda:NameChangeEvent activity changed FROM — the activity's own record of the prior state, distinct from opda:formerName's Person-level assertion (ODR-0006 §Q1). Plain string datatype per ODR-0008 §Q5a; flat per §Q6a."
+        }
+      ],
       "outgoing": [],
       "incoming": [],
       "shapes": [],
@@ -1672,11 +1837,25 @@
       "context": "agent",
       "attributes": [
         {
+          "localName": "currentName",
+          "id": "currentName",
+          "label": "current name",
+          "type": "string",
+          "description": "A Person's current surname, asserted alongside opda:formerName when a marriage-style name change is on record (ODR-0006 §Q1). Plain string datatype per ODR-0008 §Q5a; flat per §Q6a."
+        },
+        {
           "localName": "dateOfBirth",
           "id": "dateOfBirth",
           "label": "date of birth",
           "type": "date",
           "description": "Date of birth of a Person participant. xsd:date. Flat per §Q6a. Part of the Person multi-identifier IC (ODR-0006 §Q1); PII under ODR-0018 (DPV co-annotation in opda-annotations.ttl)."
+        },
+        {
+          "localName": "formerName",
+          "id": "formerName",
+          "label": "former name",
+          "type": "string",
+          "description": "A Person's surname before a marriage-style name change (ODR-0006 §Q1 name-change hard case). Plain string datatype per ODR-0008 §Q5a; flat per §Q6a. Scoped to surname, not a constructed full name (see the ambiguous-domains note above this list)."
         },
         {
           "localName": "middleNames",
@@ -1736,6 +1915,14 @@
         }
       ],
       "incoming": [
+        {
+          "predicate": "appliesTo",
+          "predicateLabel": "applies to",
+          "predicateLocal": "appliesTo",
+          "sources": [],
+          "inverse": null,
+          "description": "Provenance-activity-to-subject-entity join: relates a reified PROV-O Activity to the Entity it acted upon — opda:NameChangeEvent to the opda:Person whose name changed (ODR-0006 §Q1), or opda:LeaseExtensionEvent to the opda:LegalEstate whose term was extended (ODR-0005 §3b). Domain intentionally unconstrained (same convention as opda:identifiesSameProperty, above) — any reified provenance-activity Kind may emit this predicate. Documentary \"any-of\" rdfs:range opda:Person, opda:LegalEstate (module-header disjunctive-not-conjunctive convention, ADR-0035 — never entailed)."
+        },
         {
           "predicate": "playedBy",
           "predicateLabel": "played by",
@@ -2153,6 +2340,13 @@
           "description": "Google Street View point-of-view pitch (degrees) for the Property's map locator. xsd:decimal numeric camera parameter. Flat per §Q6a."
         },
         {
+          "localName": "potentialCost",
+          "id": "potentialCost",
+          "label": "potential cost",
+          "type": "string",
+          "description": "Free-text estimate of the potential remediation cost in the Property's building-safety disclosure ('What will the potential cost be?', BASPI/TA7). RANGE CORRECTED 2026-07-05 (RML gap-closing session): council session-028 Q3 (ODR-0024 R3) had swept this into the monetary walk as opda:MonetaryAmount alongside ~17 genuinely numeric sibling leaves (annualGroundRent, rent, securityDeposit, etc. — all schema `type: number`), without re-checking this ONE field's own schema type individually; it is `type: string` in the v3 schema (confirmed by direct inspection), a genuinely different shape from its monetary-walk siblings, not a best-effort magnitude extractable from free text. Flat per §Q6a."
+        },
+        {
           "localName": "publicSewerMapAttached",
           "id": "publicSewerMapAttached",
           "label": "public sewer map attached",
@@ -2470,6 +2664,20 @@
           "description": "Yes/No discriminator: has spray-foam insulation been installed in the Property? Relevant for mortgage-eligibility per BASPI5. Bound to opda:YesNoScheme."
         },
         {
+          "predicate": "hasSurvey",
+          "predicateLabel": "has survey",
+          "predicateLocal": "hasSurvey",
+          "targets": [
+            {
+              "id": "Survey",
+              "localName": "Survey",
+              "kind": "class"
+            }
+          ],
+          "inverse": null,
+          "description": "Property → opda:Survey join predicate. The survey's construction-type observation stays on the Property as opda:constructionType (its rdfs:domain); this join reaches the survey report itself as a distinct PROV-O artefact (RICS Level 2 professional survey, issued/superseded/re-issued/withdrawn lifecycle, ODR-0008d Rule 3)."
+        },
+        {
           "predicate": "hasValidGuaranteesOrWarranties",
           "predicateLabel": "has valid guarantees or warranties",
           "predicateLocal": "hasValidGuaranteesOrWarranties",
@@ -2594,20 +2802,6 @@
           ],
           "inverse": null,
           "description": "Off-mains drainage classification per opda:OffMainsDrainageSystemTypeScheme (SuDS / Septic tank / Cesspit / Sewerage treatment plant / Other / Not known). Applies when not connected to mains sewerage."
-        },
-        {
-          "predicate": "potentialCost",
-          "predicateLabel": "potential cost",
-          "predicateLocal": "potentialCost",
-          "targets": [
-            {
-              "id": "MonetaryAmount",
-              "localName": "MonetaryAmount",
-              "kind": "class"
-            }
-          ],
-          "inverse": null,
-          "description": "Potential remediation cost in the Property's building-safety disclosure (council session-028 Q3 re-filed this monetary leaf from free-text to the monetary walk; the data-dictionary source is free text, so the magnitude is best-effort). Bearer opda:Property. → opda:MonetaryAmount (ODR-0024 R3); flat per §Q6a."
         },
         {
           "predicate": "priceQualifier",
@@ -2842,22 +3036,7 @@
       ],
       "module": "agent",
       "context": "agent",
-      "attributes": [
-        {
-          "localName": "numberOfNonUkResidentSellers",
-          "id": "numberOfNonUkResidentSellers",
-          "label": "number of non-UK-resident sellers",
-          "type": "integer",
-          "description": "Count of selling parties who are non-UK-resident (relevant to SDLT / withholding). Plain integer datatype per ODR-0008 §Q5a; flat per §Q6a. (FLAG: ownership-aggregate count; placed on opda:Proprietorship.)"
-        },
-        {
-          "localName": "numberOfSellers",
-          "id": "numberOfSellers",
-          "label": "number of sellers",
-          "type": "integer",
-          "description": "Count of the selling parties in the ownership (the cardinality of the owner-set the Proprietorship Relator mediates). Plain integer datatype per ODR-0008 §Q5a; flat per §Q6a. (FLAG: ownership-aggregate count; placed on opda:Proprietorship.)"
-        }
-      ],
+      "attributes": [],
       "outgoing": [
         {
           "predicate": "hasRegisteredTitle",
@@ -2968,7 +3147,8 @@
       "shapes": [],
       "usesSchemes": [],
       "dctSource": [
-        "harness/odr/ODR-0005/section-3c"
+        "harness/odr/ODR-0005/section-3c",
+        "harness/odr/ODR-0030/section-Rule-4"
       ]
     },
     "Relator": {
@@ -3127,6 +3307,10 @@
         }
       ],
       "shapes": [
+        {
+          "id": "shape/RiskAssessmentAcyclicityConstraint",
+          "localName": "RiskAssessmentAcyclicityConstraint"
+        },
         {
           "id": "shape/RiskAssessmentShape",
           "localName": "RiskAssessmentShape"
@@ -3562,7 +3746,8 @@
       "usesSchemes": [],
       "dctSource": [
         "harness/odr/ODR-0008/section-Q4a",
-        "harness/odr/ODR-0018/section-Rule1"
+        "harness/odr/ODR-0018/section-Rule1",
+        "harness/odr/ODR-0030/section-Rule-4"
       ]
     },
     "Seller": {
@@ -3728,7 +3913,21 @@
       "context": "descriptive",
       "attributes": [],
       "outgoing": [],
-      "incoming": [],
+      "incoming": [
+        {
+          "predicate": "hasSurvey",
+          "predicateLabel": "has survey",
+          "predicateLocal": "hasSurvey",
+          "sources": [
+            {
+              "id": "Property",
+              "localName": "Property"
+            }
+          ],
+          "inverse": null,
+          "description": "Property → opda:Survey join predicate. The survey's construction-type observation stays on the Property as opda:constructionType (its rdfs:domain); this join reaches the survey report itself as a distinct PROV-O artefact (RICS Level 2 professional survey, issued/superseded/re-issued/withdrawn lifecycle, ODR-0008d Rule 3)."
+        }
+      ],
       "shapes": [
         {
           "id": "shape/SurveyIdentityKeyShape",
@@ -3812,6 +4011,20 @@
           "label": "leave keys",
           "type": "boolean",
           "description": "Completion undertaking: will the seller leave the keys? xsd:boolean. Flat per §Q6a. A sale-Transaction completion attribute (ODR-0007)."
+        },
+        {
+          "localName": "numberOfNonUkResidentSellers",
+          "id": "numberOfNonUkResidentSellers",
+          "label": "number of non-UK-resident sellers",
+          "type": "integer",
+          "description": "Count of selling parties who are non-UK-resident (relevant to SDLT / withholding). Plain integer datatype per ODR-0008 §Q5a; flat per §Q6a. Domain retargeted from opda:Proprietorship to opda:Transaction (2026-07-05, RML gap-closing session) — same sales-context-vs-legal-ownership reasoning as opda:numberOfSellers, above."
+        },
+        {
+          "localName": "numberOfSellers",
+          "id": "numberOfSellers",
+          "label": "number of sellers",
+          "type": "integer",
+          "description": "Count of the selling parties in the transaction. Plain integer datatype per ODR-0008 §Q5a; flat per §Q6a. Domain retargeted from opda:Proprietorship to opda:Transaction (2026-07-05, RML gap-closing session) — the field's own schema description ('may differ from the number of legal owners, for example if the property is being sold by executors of a deceased owner') makes this a sales-context count, distinct from the Proprietorship Relator's legal-ownership mediation; opda:Transaction already founds the Seller role-group."
         },
         {
           "localName": "removeRubbish",
@@ -3912,6 +4125,20 @@
           "description": "Costs applicable to a deed of covenant required on transfer. Bearer opda:Transaction (a completion/transfer cost, not a standing estate charge). → opda:MonetaryAmount (ODR-0024 R3); flat per §Q6a."
         },
         {
+          "predicate": "dependsOnTransaction",
+          "predicateLabel": "depends on transaction",
+          "predicateLocal": "dependsOnTransaction",
+          "targets": [
+            {
+              "id": "Transaction",
+              "localName": "Transaction",
+              "kind": "class"
+            }
+          ],
+          "inverse": null,
+          "description": "Recursive Transaction → Transaction join (S007 Q4 recursive side, the other half of opda:TransactionChain's stated dual-mechanism, alongside opda:chainMembers). Relates a transaction to another transaction in the same chain whose completion it is directly contingent on — the PDTF chain.onwardPurchase/chain.buyersSale shape (each instance stating only its own immediate chain neighbour(s), not the full chain membership)."
+        },
+        {
           "predicate": "feeIncludingVAT",
           "predicateLabel": "fee including VAT",
           "predicateLocal": "feeIncludingVAT",
@@ -3974,6 +4201,19 @@
         }
       ],
       "incoming": [
+        {
+          "predicate": "dependsOnTransaction",
+          "predicateLabel": "depends on transaction",
+          "predicateLocal": "dependsOnTransaction",
+          "sources": [
+            {
+              "id": "Transaction",
+              "localName": "Transaction"
+            }
+          ],
+          "inverse": null,
+          "description": "Recursive Transaction → Transaction join (S007 Q4 recursive side, the other half of opda:TransactionChain's stated dual-mechanism, alongside opda:chainMembers). Relates a transaction to another transaction in the same chain whose completion it is directly contingent on — the PDTF chain.onwardPurchase/chain.buyersSale shape (each instance stating only its own immediate chain neighbour(s), not the full chain membership)."
+        },
         {
           "predicate": "partOfTransaction",
           "predicateLabel": "part of transaction",
@@ -4273,6 +4513,33 @@
       "dctSource": [
         "harness/odr/ODR-0009/section-Q1"
       ]
+    },
+    "Verifier": {
+      "uri": "https://opda.org.uk/pdtf/Verifier",
+      "id": "Verifier",
+      "localName": "Verifier",
+      "label": "Verifier",
+      "comment": "The agent (organisation or person) that performs a verification, attributed via the qualified form prov:qualifiedAttribution -> prov:Attribution with prov:hadRole (ODR-0009 §Q1) — not the binary prov:wasAttributedTo/wasAssociatedWith shortcuts, so validation_method/verification_method are not discarded. A verifier organisation is a prov:Organization; a human voucher a prov:Person.",
+      "definition": "The agent that performs a verification activity, attributed to it via a qualified PROV-O attribution carrying its role.",
+      "scopeNote": "PROV-O: Agent (W3C PROV-O REC §3.4). Aligns to the ToIP business-glossary Verifier term.",
+      "ufoCategory": "",
+      "superClasses": [
+        {
+          "id": "http://www.w3.org/ns/prov#Agent",
+          "localName": "Agent",
+          "external": true
+        }
+      ],
+      "module": "claim",
+      "context": "claim",
+      "attributes": [],
+      "outgoing": [],
+      "incoming": [],
+      "shapes": [],
+      "usesSchemes": [],
+      "dctSource": [
+        "harness/odr/ODR-0009/section-Q1"
+      ]
     }
   },
   "objectProperties": {
@@ -4362,6 +4629,34 @@
       "dctSource": [
         "harness/data-dictionary/propertyPack.ownership.ownershipsToBeTransferred[].leaseholdInformation.serviceCharge.annualServiceCharge",
         "harness/data-dictionary/propertyPack.ownership.ownershipsToBeTransferred[].managedFreeholdOrCommonholdInformation.serviceCharge.annualServiceCharge"
+      ]
+    },
+    "appliesTo": {
+      "uri": "https://opda.org.uk/pdtf/appliesTo",
+      "id": "appliesTo",
+      "localName": "appliesTo",
+      "label": "applies to",
+      "comment": "Provenance-activity-to-subject-entity join: relates a reified PROV-O Activity to the Entity it acted upon — opda:NameChangeEvent to the opda:Person whose name changed (ODR-0006 §Q1), or opda:LeaseExtensionEvent to the opda:LegalEstate whose term was extended (ODR-0005 §3b). Domain intentionally unconstrained (same convention as opda:identifiesSameProperty, above) — any reified provenance-activity Kind may emit this predicate. Documentary \"any-of\" rdfs:range opda:Person, opda:LegalEstate (module-header disjunctive-not-conjunctive convention, ADR-0035 — never entailed).",
+      "definition": "Relates a reified provenance activity to the entity it acted upon — a name-change event to the person renamed, or a lease-extension event to the legal estate extended.",
+      "kind": "object",
+      "module": "property",
+      "subjects": [],
+      "objects": [
+        {
+          "id": "LegalEstate",
+          "localName": "LegalEstate",
+          "kind": "class"
+        },
+        {
+          "id": "Person",
+          "localName": "Person",
+          "kind": "class"
+        }
+      ],
+      "inverse": null,
+      "constraints": [],
+      "dctSource": [
+        "harness/odr/ODR-0005/section-3b"
       ]
     },
     "areBoundariesUniform": {
@@ -4766,6 +5061,35 @@
       "dctSource": [
         "harness/data-dictionary/propertyPack.energyEfficiency.certificate.currentEnergyRating",
         "harness/odr/ODR-0008/section-Q5a"
+      ]
+    },
+    "dependsOnTransaction": {
+      "uri": "https://opda.org.uk/pdtf/dependsOnTransaction",
+      "id": "dependsOnTransaction",
+      "localName": "dependsOnTransaction",
+      "label": "depends on transaction",
+      "comment": "Recursive Transaction → Transaction join (S007 Q4 recursive side, the other half of opda:TransactionChain's stated dual-mechanism, alongside opda:chainMembers). Relates a transaction to another transaction in the same chain whose completion it is directly contingent on — the PDTF chain.onwardPurchase/chain.buyersSale shape (each instance stating only its own immediate chain neighbour(s), not the full chain membership).",
+      "definition": "Relates a property transaction to another transaction in the same chain whose completion this transaction is directly contingent on.",
+      "kind": "object",
+      "module": "transaction",
+      "subjects": [
+        {
+          "id": "Transaction",
+          "localName": "Transaction",
+          "kind": "class"
+        }
+      ],
+      "objects": [
+        {
+          "id": "Transaction",
+          "localName": "Transaction",
+          "kind": "class"
+        }
+      ],
+      "inverse": null,
+      "constraints": [],
+      "dctSource": [
+        "harness/odr/ODR-0007/section-Q4"
       ]
     },
     "estimatedAmount": {
@@ -5344,11 +5668,40 @@
           "minCount": null,
           "maxCount": null,
           "severity": "Violation",
-          "message": "Each opda:hasSubAssessment (a riskSubcategories[] entry) MUST itself satisfy the RiskAssessment shape — the self-referential result recursion via sh:node (ODR-0008d Rule 1c / Rule 4). ACYCLICITY (ODR-0024 R11): the sub-assessment graph MUST be acyclic — a RiskAssessment MUST NOT be its own transitive sub-assessment (core SHACL cannot test transitive closure; a SHACL-AF closure rule is the enforcement vehicle, deferred)."
+          "message": "Each opda:hasSubAssessment (a riskSubcategories[] entry) MUST itself satisfy the RiskAssessment shape — the self-referential result recursion via sh:node (ODR-0008d Rule 1c / Rule 4). ACYCLICITY (ODR-0024 R11) is enforced separately by opda:shape:RiskAssessmentAcyclicityConstraint, a SPARQL property-path constraint (core SHACL sh:node recursion cannot itself test transitive closure)."
         }
       ],
       "dctSource": [
         "harness/odr/ODR-0008d/section-Rule-4"
+      ]
+    },
+    "hasSurvey": {
+      "uri": "https://opda.org.uk/pdtf/hasSurvey",
+      "id": "hasSurvey",
+      "localName": "hasSurvey",
+      "label": "has survey",
+      "comment": "Property → opda:Survey join predicate. The survey's construction-type observation stays on the Property as opda:constructionType (its rdfs:domain); this join reaches the survey report itself as a distinct PROV-O artefact (RICS Level 2 professional survey, issued/superseded/re-issued/withdrawn lifecycle, ODR-0008d Rule 3).",
+      "definition": "Relates a Property to a professional survey report retrieved for it: a distinct survey entity with its own provenance chain and issue/supersession lifecycle, reached separately from the property's own construction-type observation.",
+      "kind": "object",
+      "module": "property",
+      "subjects": [
+        {
+          "id": "Property",
+          "localName": "Property",
+          "kind": "class"
+        }
+      ],
+      "objects": [
+        {
+          "id": "Survey",
+          "localName": "Survey",
+          "kind": "class"
+        }
+      ],
+      "inverse": null,
+      "constraints": [],
+      "dctSource": [
+        "harness/data-dictionary/propertyPack.surveys[]"
       ]
     },
     "hasValidGuaranteesOrWarranties": {
@@ -5664,6 +6017,35 @@
       "constraints": [],
       "dctSource": [
         "harness/odr/ODR-0008/section-Q5a"
+      ]
+    },
+    "leaseTerm": {
+      "uri": "https://opda.org.uk/pdtf/leaseTerm",
+      "id": "leaseTerm",
+      "localName": "leaseTerm",
+      "label": "lease term",
+      "comment": "Join from a leasehold opda:LegalEstate to the opda:LeaseTerm OWL-Time interval bounding its duration (S007 Q5).",
+      "definition": "Relates a leasehold legal estate to the bounded time interval defining the duration of its lease.",
+      "kind": "object",
+      "module": "property",
+      "subjects": [
+        {
+          "id": "LegalEstate",
+          "localName": "LegalEstate",
+          "kind": "class"
+        }
+      ],
+      "objects": [
+        {
+          "id": "LeaseTerm",
+          "localName": "LeaseTerm",
+          "kind": "class"
+        }
+      ],
+      "inverse": null,
+      "constraints": [],
+      "dctSource": [
+        "harness/odr/ODR-0007/section-Q5-lease-term"
       ]
     },
     "listPrice": {
@@ -6118,35 +6500,6 @@
       "constraints": [],
       "dctSource": [
         "harness/odr/ODR-0006/section-Q2"
-      ]
-    },
-    "potentialCost": {
-      "uri": "https://opda.org.uk/pdtf/potentialCost",
-      "id": "potentialCost",
-      "localName": "potentialCost",
-      "label": "potential cost",
-      "comment": "Potential remediation cost in the Property's building-safety disclosure (council session-028 Q3 re-filed this monetary leaf from free-text to the monetary walk; the data-dictionary source is free text, so the magnitude is best-effort). Bearer opda:Property. → opda:MonetaryAmount (ODR-0024 R3); flat per §Q6a.",
-      "definition": "The estimated cost of potential remediation disclosed in a property's building-safety information.",
-      "kind": "object",
-      "module": "descriptive",
-      "subjects": [
-        {
-          "id": "Property",
-          "localName": "Property",
-          "kind": "class"
-        }
-      ],
-      "objects": [
-        {
-          "id": "MonetaryAmount",
-          "localName": "MonetaryAmount",
-          "kind": "class"
-        }
-      ],
-      "inverse": null,
-      "constraints": [],
-      "dctSource": [
-        "harness/data-dictionary/propertyPack.typeOfConstruction.buildingSafety.potentialCost"
       ]
     },
     "priceQualifier": {
@@ -6684,6 +7037,35 @@
       ],
       "dctSource": [
         "harness/data-dictionary/propertyPack.connectivity.broadband.typeOfConnection"
+      ]
+    },
+    "variantPredicate": {
+      "uri": "https://opda.org.uk/pdtf/variantPredicate",
+      "id": "variantPredicate",
+      "localName": "variantPredicate",
+      "label": "variant predicate",
+      "comment": "The predicate (e.g. opda:addressVariant) whose value on a Kind instance selects which refinement of this mapping record applies (ODR-0018 §3a).",
+      "definition": "Relates a DPV mapping refinement to the predicate whose value on a Kind instance selects the refinement.",
+      "kind": "object",
+      "module": "governance",
+      "subjects": [
+        {
+          "id": "DPVMappingRefinement",
+          "localName": "DPVMappingRefinement",
+          "kind": "class"
+        }
+      ],
+      "objects": [
+        {
+          "id": "http://www.w3.org/1999/02/22-rdf-syntax-ns#Property",
+          "localName": "Property",
+          "kind": "external"
+        }
+      ],
+      "inverse": null,
+      "constraints": [],
+      "dctSource": [
+        "harness/odr/ODR-0018/section-Rule4"
       ]
     }
   },
@@ -7589,6 +7971,47 @@
         "harness/odr/ODR-0008/section-Q5a"
       ]
     },
+    "country": {
+      "uri": "https://opda.org.uk/pdtf/country",
+      "id": "country",
+      "localName": "country",
+      "label": "country",
+      "comment": "Structural field of an opda:Address (ODR-0015 §3b, S015 Q3) — country. sh:minCount 0: absent when the addressing authority has not populated it (e.g. an INSPIRE-only locator's sparse structural fields, ODR-0015 §3a Rule 5).",
+      "definition": "The country component of a structured postal address.",
+      "kind": "datatype",
+      "module": "property",
+      "subjects": [
+        {
+          "id": "Address",
+          "localName": "Address",
+          "kind": "class"
+        }
+      ],
+      "objects": [
+        {
+          "id": "http://www.w3.org/2001/XMLSchema#string",
+          "localName": "string",
+          "kind": "datatype"
+        }
+      ],
+      "inverse": null,
+      "constraints": [
+        {
+          "shape": "shape/AddressStructuralShape",
+          "path": "https://opda.org.uk/pdtf/country",
+          "pathLocal": "country",
+          "datatype": "string",
+          "class": null,
+          "minCount": "0",
+          "maxCount": "1",
+          "severity": "Violation",
+          "message": "Address country MUST be at most one xsd:string value when present (ODR-0015 §3b, S015 Q3 — sh:minCount 0 for graceful degradation, e.g. the INSPIRE-only case's sparse structural fields)."
+        }
+      ],
+      "dctSource": [
+        "harness/odr/ODR-0015/section-3b"
+      ]
+    },
     "countyCouncil": {
       "uri": "https://opda.org.uk/pdtf/countyCouncil",
       "id": "countyCouncil",
@@ -7674,6 +8097,35 @@
       "constraints": [],
       "dctSource": [
         "harness/data-dictionary/propertyPack.waterAndDrainage.charging.currentChargingBasis"
+      ]
+    },
+    "currentName": {
+      "uri": "https://opda.org.uk/pdtf/currentName",
+      "id": "currentName",
+      "localName": "currentName",
+      "label": "current name",
+      "comment": "A Person's current surname, asserted alongside opda:formerName when a marriage-style name change is on record (ODR-0006 §Q1). Plain string datatype per ODR-0008 §Q5a; flat per §Q6a.",
+      "definition": "The surname a Person currently holds, asserted alongside their former surname when a name change is on record.",
+      "kind": "datatype",
+      "module": "agent",
+      "subjects": [
+        {
+          "id": "Person",
+          "localName": "Person",
+          "kind": "class"
+        }
+      ],
+      "objects": [
+        {
+          "id": "http://www.w3.org/2001/XMLSchema#string",
+          "localName": "string",
+          "kind": "datatype"
+        }
+      ],
+      "inverse": null,
+      "constraints": [],
+      "dctSource": [
+        "harness/data-dictionary/participants[].name.lastName"
       ]
     },
     "dangerousCladdingOrDefects": {
@@ -8501,6 +8953,35 @@
         "harness/data-dictionary/propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.documentDetails.document.filedUnder"
       ]
     },
+    "formerName": {
+      "uri": "https://opda.org.uk/pdtf/formerName",
+      "id": "formerName",
+      "localName": "formerName",
+      "label": "former name",
+      "comment": "A Person's surname before a marriage-style name change (ODR-0006 §Q1 name-change hard case). Plain string datatype per ODR-0008 §Q5a; flat per §Q6a. Scoped to surname, not a constructed full name (see the ambiguous-domains note above this list).",
+      "definition": "The surname a Person held before a marriage-style name change, preserved alongside their current surname per the name-change identity-persistence rule.",
+      "kind": "datatype",
+      "module": "agent",
+      "subjects": [
+        {
+          "id": "Person",
+          "localName": "Person",
+          "kind": "class"
+        }
+      ],
+      "objects": [
+        {
+          "id": "http://www.w3.org/2001/XMLSchema#string",
+          "localName": "string",
+          "kind": "datatype"
+        }
+      ],
+      "inverse": null,
+      "constraints": [],
+      "dctSource": [
+        "harness/data-dictionary/participants[].name.maidenName"
+      ]
+    },
     "forTheManagedAreas": {
       "uri": "https://opda.org.uk/pdtf/forTheManagedAreas",
       "id": "forTheManagedAreas",
@@ -9037,6 +9518,35 @@
         "harness/data-dictionary/propertyPack.heating.heatingSystem.centralHeatingDetails.heatingLastServicedDate"
       ]
     },
+    "inspireFeatureId": {
+      "uri": "https://opda.org.uk/pdtf/inspireFeatureId",
+      "id": "inspireFeatureId",
+      "localName": "inspireFeatureId",
+      "label": "INSPIRE feature ID",
+      "comment": "INSPIRE Identifier for an opda:Address of variant 'inspire' — a contingent identifier (re-instantiating ODR-0005 §6a's UPRN-as-Quality pattern), unique per addressVariant 'inspire' individual (dash:uniqueValueForClass). Populated for INSPIRE-only locatedness (ODR-0015 §3a Rule 5) and generally wherever a cadastral INSPIRE polygon feature exists for the Address.",
+      "definition": "The INSPIRE Identifier of the cadastral feature corresponding to this address, where one exists.",
+      "kind": "datatype",
+      "module": "property",
+      "subjects": [
+        {
+          "id": "Address",
+          "localName": "Address",
+          "kind": "class"
+        }
+      ],
+      "objects": [
+        {
+          "id": "http://www.w3.org/2001/XMLSchema#string",
+          "localName": "string",
+          "kind": "datatype"
+        }
+      ],
+      "inverse": null,
+      "constraints": [],
+      "dctSource": [
+        "harness/odr/ODR-0015/section-4a"
+      ]
+    },
     "isConnectedToNationalGrid": {
       "uri": "https://opda.org.uk/pdtf/isConnectedToNationalGrid",
       "id": "isConnectedToNationalGrid",
@@ -9379,6 +9889,35 @@
         "harness/data-dictionary/propertyPack.electricity.solarPanels.lastMaintained"
       ]
     },
+    "leaseExtensionDetails": {
+      "uri": "https://opda.org.uk/pdtf/leaseExtensionDetails",
+      "id": "leaseExtensionDetails",
+      "localName": "leaseExtensionDetails",
+      "label": "lease extension details",
+      "comment": "Free-text detail elaborating the steps taken to extend a leasehold's term (TA7/LPE1 enfranchisement §6.3/§10), supplied when the seller discloses such steps were taken. Plain string datatype per ODR-0008 §Q5a; flat per §Q6a.",
+      "definition": "Free-text narrative elaborating the steps taken to extend a leasehold's term, as disclosed by the seller.",
+      "kind": "datatype",
+      "module": "property",
+      "subjects": [
+        {
+          "id": "LeaseExtensionEvent",
+          "localName": "LeaseExtensionEvent",
+          "kind": "class"
+        }
+      ],
+      "objects": [
+        {
+          "id": "http://www.w3.org/2001/XMLSchema#string",
+          "localName": "string",
+          "kind": "datatype"
+        }
+      ],
+      "inverse": null,
+      "constraints": [],
+      "dctSource": [
+        "harness/odr/ODR-0005/section-3b"
+      ]
+    },
     "leaveKeys": {
       "uri": "https://opda.org.uk/pdtf/leaveKeys",
       "id": "leaveKeys",
@@ -9476,6 +10015,88 @@
       "constraints": [],
       "dctSource": [
         "harness/data-dictionary/propertyPack.ownership.ownershipsToBeTransferred[].leaseholdInformation.leaseTerm.lengthOfLeaseInYears"
+      ]
+    },
+    "line1": {
+      "uri": "https://opda.org.uk/pdtf/line1",
+      "id": "line1",
+      "localName": "line1",
+      "label": "line 1",
+      "comment": "Structural field of an opda:Address (ODR-0015 §3b, S015 Q3) — line 1. sh:minCount 0: absent when the addressing authority has not populated it (e.g. an INSPIRE-only locator's sparse structural fields, ODR-0015 §3a Rule 5).",
+      "definition": "The line 1 component of a structured postal address.",
+      "kind": "datatype",
+      "module": "property",
+      "subjects": [
+        {
+          "id": "Address",
+          "localName": "Address",
+          "kind": "class"
+        }
+      ],
+      "objects": [
+        {
+          "id": "http://www.w3.org/2001/XMLSchema#string",
+          "localName": "string",
+          "kind": "datatype"
+        }
+      ],
+      "inverse": null,
+      "constraints": [
+        {
+          "shape": "shape/AddressStructuralShape",
+          "path": "https://opda.org.uk/pdtf/line1",
+          "pathLocal": "line1",
+          "datatype": "string",
+          "class": null,
+          "minCount": "0",
+          "maxCount": "1",
+          "severity": "Violation",
+          "message": "Address line1 MUST be at most one xsd:string value when present (ODR-0015 §3b, S015 Q3 — sh:minCount 0 for graceful degradation, e.g. the INSPIRE-only case's sparse structural fields)."
+        }
+      ],
+      "dctSource": [
+        "harness/odr/ODR-0015/section-3b"
+      ]
+    },
+    "line2": {
+      "uri": "https://opda.org.uk/pdtf/line2",
+      "id": "line2",
+      "localName": "line2",
+      "label": "line 2",
+      "comment": "Structural field of an opda:Address (ODR-0015 §3b, S015 Q3) — line 2. sh:minCount 0: absent when the addressing authority has not populated it (e.g. an INSPIRE-only locator's sparse structural fields, ODR-0015 §3a Rule 5).",
+      "definition": "The line 2 component of a structured postal address.",
+      "kind": "datatype",
+      "module": "property",
+      "subjects": [
+        {
+          "id": "Address",
+          "localName": "Address",
+          "kind": "class"
+        }
+      ],
+      "objects": [
+        {
+          "id": "http://www.w3.org/2001/XMLSchema#string",
+          "localName": "string",
+          "kind": "datatype"
+        }
+      ],
+      "inverse": null,
+      "constraints": [
+        {
+          "shape": "shape/AddressStructuralShape",
+          "path": "https://opda.org.uk/pdtf/line2",
+          "pathLocal": "line2",
+          "datatype": "string",
+          "class": null,
+          "minCount": "0",
+          "maxCount": "1",
+          "severity": "Violation",
+          "message": "Address line2 MUST be at most one xsd:string value when present (ODR-0015 §3b, S015 Q3 — sh:minCount 0 for graceful degradation, e.g. the INSPIRE-only case's sparse structural fields)."
+        }
+      ],
+      "dctSource": [
+        "harness/odr/ODR-0015/section-3b"
       ]
     },
     "listedDate": {
@@ -9863,6 +10484,35 @@
         "harness/data-dictionary/propertyPack.nearbyFacilities.transport[].name"
       ]
     },
+    "newName": {
+      "uri": "https://opda.org.uk/pdtf/newName",
+      "id": "newName",
+      "localName": "newName",
+      "label": "new name",
+      "comment": "The surname the opda:NameChangeEvent activity changed TO — the activity's own record of the resulting state, distinct from opda:currentName's Person-level assertion (ODR-0006 §Q1). Plain string datatype per ODR-0008 §Q5a; flat per §Q6a.",
+      "definition": "The surname that a name-change event changed to, as the activity's own record of the resulting state.",
+      "kind": "datatype",
+      "module": "agent",
+      "subjects": [
+        {
+          "id": "NameChangeEvent",
+          "localName": "NameChangeEvent",
+          "kind": "class"
+        }
+      ],
+      "objects": [
+        {
+          "id": "http://www.w3.org/2001/XMLSchema#string",
+          "localName": "string",
+          "kind": "datatype"
+        }
+      ],
+      "inverse": null,
+      "constraints": [],
+      "dctSource": [
+        "harness/data-dictionary/participants[].name.lastName"
+      ]
+    },
     "numberOfFloors": {
       "uri": "https://opda.org.uk/pdtf/numberOfFloors",
       "id": "numberOfFloors",
@@ -9897,14 +10547,14 @@
       "id": "numberOfNonUkResidentSellers",
       "localName": "numberOfNonUkResidentSellers",
       "label": "number of non-UK-resident sellers",
-      "comment": "Count of selling parties who are non-UK-resident (relevant to SDLT / withholding). Plain integer datatype per ODR-0008 §Q5a; flat per §Q6a. (FLAG: ownership-aggregate count; placed on opda:Proprietorship.)",
-      "definition": "The number of selling parties in the ownership who are not resident in the UK — a subset of the owner-set bearing on tax and withholding obligations.",
+      "comment": "Count of selling parties who are non-UK-resident (relevant to SDLT / withholding). Plain integer datatype per ODR-0008 §Q5a; flat per §Q6a. Domain retargeted from opda:Proprietorship to opda:Transaction (2026-07-05, RML gap-closing session) — same sales-context-vs-legal-ownership reasoning as opda:numberOfSellers, above.",
+      "definition": "The number of selling parties in the transaction who are not resident in the UK — a subset of the sales-context seller count bearing on tax and withholding obligations.",
       "kind": "datatype",
       "module": "agent",
       "subjects": [
         {
-          "id": "Proprietorship",
-          "localName": "Proprietorship",
+          "id": "Transaction",
+          "localName": "Transaction",
           "kind": "class"
         }
       ],
@@ -9955,14 +10605,14 @@
       "id": "numberOfSellers",
       "localName": "numberOfSellers",
       "label": "number of sellers",
-      "comment": "Count of the selling parties in the ownership (the cardinality of the owner-set the Proprietorship Relator mediates). Plain integer datatype per ODR-0008 §Q5a; flat per §Q6a. (FLAG: ownership-aggregate count; placed on opda:Proprietorship.)",
-      "definition": "The number of selling parties in the ownership — the cardinality of the owner-set the Proprietorship mediates.",
+      "comment": "Count of the selling parties in the transaction. Plain integer datatype per ODR-0008 §Q5a; flat per §Q6a. Domain retargeted from opda:Proprietorship to opda:Transaction (2026-07-05, RML gap-closing session) — the field's own schema description ('may differ from the number of legal owners, for example if the property is being sold by executors of a deceased owner') makes this a sales-context count, distinct from the Proprietorship Relator's legal-ownership mediation; opda:Transaction already founds the Seller role-group.",
+      "definition": "The number of selling parties in the transaction — a sales-context count that may differ from the cardinality of the registered legal-owner set.",
       "kind": "datatype",
       "module": "agent",
       "subjects": [
         {
-          "id": "Proprietorship",
-          "localName": "Proprietorship",
+          "id": "Transaction",
+          "localName": "Transaction",
           "kind": "class"
         }
       ],
@@ -10519,6 +11169,146 @@
       "constraints": [],
       "dctSource": [
         "harness/data-dictionary/propertyPack.localSearches.localAuthoritySearches.planningAndBuildingRegulations.decisionsAndPendingApplications.planningStartDate"
+      ]
+    },
+    "postcode": {
+      "uri": "https://opda.org.uk/pdtf/postcode",
+      "id": "postcode",
+      "localName": "postcode",
+      "label": "postcode",
+      "comment": "Structural field of an opda:Address (ODR-0015 §3b, S015 Q3) — postcode. sh:minCount 0: absent when the addressing authority has not populated it (e.g. an INSPIRE-only locator's sparse structural fields, ODR-0015 §3a Rule 5).",
+      "definition": "The postcode component of a structured postal address.",
+      "kind": "datatype",
+      "module": "property",
+      "subjects": [
+        {
+          "id": "Address",
+          "localName": "Address",
+          "kind": "class"
+        }
+      ],
+      "objects": [
+        {
+          "id": "http://www.w3.org/2001/XMLSchema#string",
+          "localName": "string",
+          "kind": "datatype"
+        }
+      ],
+      "inverse": null,
+      "constraints": [
+        {
+          "shape": "shape/AddressStructuralShape",
+          "path": "https://opda.org.uk/pdtf/postcode",
+          "pathLocal": "postcode",
+          "datatype": "string",
+          "class": null,
+          "minCount": "0",
+          "maxCount": "1",
+          "severity": "Violation",
+          "message": "Address postcode MUST be at most one xsd:string value when present (ODR-0015 §3b, S015 Q3 — sh:minCount 0 for graceful degradation, e.g. the INSPIRE-only case's sparse structural fields)."
+        }
+      ],
+      "dctSource": [
+        "harness/odr/ODR-0015/section-3b"
+      ]
+    },
+    "postTown": {
+      "uri": "https://opda.org.uk/pdtf/postTown",
+      "id": "postTown",
+      "localName": "postTown",
+      "label": "post town",
+      "comment": "Structural field of an opda:Address (ODR-0015 §3b, S015 Q3) — post town. sh:minCount 0: absent when the addressing authority has not populated it (e.g. an INSPIRE-only locator's sparse structural fields, ODR-0015 §3a Rule 5).",
+      "definition": "The post town component of a structured postal address.",
+      "kind": "datatype",
+      "module": "property",
+      "subjects": [
+        {
+          "id": "Address",
+          "localName": "Address",
+          "kind": "class"
+        }
+      ],
+      "objects": [
+        {
+          "id": "http://www.w3.org/2001/XMLSchema#string",
+          "localName": "string",
+          "kind": "datatype"
+        }
+      ],
+      "inverse": null,
+      "constraints": [
+        {
+          "shape": "shape/AddressStructuralShape",
+          "path": "https://opda.org.uk/pdtf/postTown",
+          "pathLocal": "postTown",
+          "datatype": "string",
+          "class": null,
+          "minCount": "0",
+          "maxCount": "1",
+          "severity": "Violation",
+          "message": "Address postTown MUST be at most one xsd:string value when present (ODR-0015 §3b, S015 Q3 — sh:minCount 0 for graceful degradation, e.g. the INSPIRE-only case's sparse structural fields)."
+        }
+      ],
+      "dctSource": [
+        "harness/odr/ODR-0015/section-3b"
+      ]
+    },
+    "potentialCost": {
+      "uri": "https://opda.org.uk/pdtf/potentialCost",
+      "id": "potentialCost",
+      "localName": "potentialCost",
+      "label": "potential cost",
+      "comment": "Free-text estimate of the potential remediation cost in the Property's building-safety disclosure ('What will the potential cost be?', BASPI/TA7). RANGE CORRECTED 2026-07-05 (RML gap-closing session): council session-028 Q3 (ODR-0024 R3) had swept this into the monetary walk as opda:MonetaryAmount alongside ~17 genuinely numeric sibling leaves (annualGroundRent, rent, securityDeposit, etc. — all schema `type: number`), without re-checking this ONE field's own schema type individually; it is `type: string` in the v3 schema (confirmed by direct inspection), a genuinely different shape from its monetary-walk siblings, not a best-effort magnitude extractable from free text. Flat per §Q6a.",
+      "definition": "The estimated cost of potential remediation disclosed in a property's building-safety information.",
+      "kind": "datatype",
+      "module": "descriptive",
+      "subjects": [
+        {
+          "id": "Property",
+          "localName": "Property",
+          "kind": "class"
+        }
+      ],
+      "objects": [
+        {
+          "id": "http://www.w3.org/2001/XMLSchema#string",
+          "localName": "string",
+          "kind": "datatype"
+        }
+      ],
+      "inverse": null,
+      "constraints": [],
+      "dctSource": [
+        "harness/data-dictionary/propertyPack.typeOfConstruction.buildingSafety.potentialCost"
+      ]
+    },
+    "previousName": {
+      "uri": "https://opda.org.uk/pdtf/previousName",
+      "id": "previousName",
+      "localName": "previousName",
+      "label": "previous name",
+      "comment": "The surname the opda:NameChangeEvent activity changed FROM — the activity's own record of the prior state, distinct from opda:formerName's Person-level assertion (ODR-0006 §Q1). Plain string datatype per ODR-0008 §Q5a; flat per §Q6a.",
+      "definition": "The surname that a name-change event changed from, as the activity's own record of the prior state.",
+      "kind": "datatype",
+      "module": "agent",
+      "subjects": [
+        {
+          "id": "NameChangeEvent",
+          "localName": "NameChangeEvent",
+          "kind": "class"
+        }
+      ],
+      "objects": [
+        {
+          "id": "http://www.w3.org/2001/XMLSchema#string",
+          "localName": "string",
+          "kind": "datatype"
+        }
+      ],
+      "inverse": null,
+      "constraints": [],
+      "dctSource": [
+        "harness/data-dictionary/participants[].name.maidenName"
       ]
     },
     "price": {
@@ -12156,6 +12946,35 @@
         "harness/data-dictionary/propertyPack.localSearches.localAuthoritySearches.planningAndBuildingRegulations.decisionsAndPendingApplications.planningPermission[].url"
       ]
     },
+    "variantValue": {
+      "uri": "https://opda.org.uk/pdtf/variantValue",
+      "id": "variantValue",
+      "localName": "variantValue",
+      "label": "variant value",
+      "comment": "The specific value of opda:variantPredicate this refinement applies to (e.g. \"title\"/\"marketing\"/\"inspire\" for opda:addressVariant) — ODR-0018 §3a.",
+      "definition": "The specific value of the variant predicate that this mapping refinement applies to.",
+      "kind": "datatype",
+      "module": "governance",
+      "subjects": [
+        {
+          "id": "DPVMappingRefinement",
+          "localName": "DPVMappingRefinement",
+          "kind": "class"
+        }
+      ],
+      "objects": [
+        {
+          "id": "http://www.w3.org/2001/XMLSchema#string",
+          "localName": "string",
+          "kind": "datatype"
+        }
+      ],
+      "inverse": null,
+      "constraints": [],
+      "dctSource": [
+        "harness/odr/ODR-0018/section-Rule4"
+      ]
+    },
     "waterBills": {
       "uri": "https://opda.org.uk/pdtf/waterBills",
       "id": "waterBills",
@@ -12648,6 +13467,69 @@
         }
       ]
     },
+    "shape/AddressStructuralShape": {
+      "uri": "https://opda.org.uk/pdtf/shape/AddressStructuralShape",
+      "id": "shape/AddressStructuralShape",
+      "localName": "AddressStructuralShape",
+      "module": "property",
+      "target": {
+        "id": "Address",
+        "localName": "Address"
+      },
+      "targetSubjectsOf": null,
+      "constraints": [
+        {
+          "path": "https://opda.org.uk/pdtf/country",
+          "pathLocal": "country",
+          "datatype": "string",
+          "class": null,
+          "minCount": "0",
+          "maxCount": "1",
+          "severity": "Violation",
+          "message": "Address country MUST be at most one xsd:string value when present (ODR-0015 §3b, S015 Q3 — sh:minCount 0 for graceful degradation, e.g. the INSPIRE-only case's sparse structural fields)."
+        },
+        {
+          "path": "https://opda.org.uk/pdtf/line1",
+          "pathLocal": "line1",
+          "datatype": "string",
+          "class": null,
+          "minCount": "0",
+          "maxCount": "1",
+          "severity": "Violation",
+          "message": "Address line1 MUST be at most one xsd:string value when present (ODR-0015 §3b, S015 Q3 — sh:minCount 0 for graceful degradation, e.g. the INSPIRE-only case's sparse structural fields)."
+        },
+        {
+          "path": "https://opda.org.uk/pdtf/line2",
+          "pathLocal": "line2",
+          "datatype": "string",
+          "class": null,
+          "minCount": "0",
+          "maxCount": "1",
+          "severity": "Violation",
+          "message": "Address line2 MUST be at most one xsd:string value when present (ODR-0015 §3b, S015 Q3 — sh:minCount 0 for graceful degradation, e.g. the INSPIRE-only case's sparse structural fields)."
+        },
+        {
+          "path": "https://opda.org.uk/pdtf/postcode",
+          "pathLocal": "postcode",
+          "datatype": "string",
+          "class": null,
+          "minCount": "0",
+          "maxCount": "1",
+          "severity": "Violation",
+          "message": "Address postcode MUST be at most one xsd:string value when present (ODR-0015 §3b, S015 Q3 — sh:minCount 0 for graceful degradation, e.g. the INSPIRE-only case's sparse structural fields)."
+        },
+        {
+          "path": "https://opda.org.uk/pdtf/postTown",
+          "pathLocal": "postTown",
+          "datatype": "string",
+          "class": null,
+          "minCount": "0",
+          "maxCount": "1",
+          "severity": "Violation",
+          "message": "Address postTown MUST be at most one xsd:string value when present (ODR-0015 §3b, S015 Q3 — sh:minCount 0 for graceful degradation, e.g. the INSPIRE-only case's sparse structural fields)."
+        }
+      ]
+    },
     "shape/addressVariantDomainShape": {
       "uri": "https://opda.org.uk/pdtf/shape/addressVariantDomainShape",
       "id": "shape/addressVariantDomainShape",
@@ -12763,6 +13645,15 @@
       "module": "shapes",
       "target": null,
       "targetSubjectsOf": "https://opda.org.uk/pdtf/applicationType",
+      "constraints": []
+    },
+    "shape/AppliesToRangeShape": {
+      "uri": "https://opda.org.uk/pdtf/shape/AppliesToRangeShape",
+      "id": "shape/AppliesToRangeShape",
+      "localName": "AppliesToRangeShape",
+      "module": "agent",
+      "target": null,
+      "targetSubjectsOf": null,
       "constraints": []
     },
     "shape/areaDomainShape": {
@@ -13271,6 +14162,15 @@
       "targetSubjectsOf": "https://opda.org.uk/pdtf/councilTaxBand",
       "constraints": []
     },
+    "shape/countryDomainShape": {
+      "uri": "https://opda.org.uk/pdtf/shape/countryDomainShape",
+      "id": "shape/countryDomainShape",
+      "localName": "countryDomainShape",
+      "module": "shapes",
+      "target": null,
+      "targetSubjectsOf": "https://opda.org.uk/pdtf/country",
+      "constraints": []
+    },
     "shape/countyCouncilDomainShape": {
       "uri": "https://opda.org.uk/pdtf/shape/countyCouncilDomainShape",
       "id": "shape/countyCouncilDomainShape",
@@ -13332,6 +14232,15 @@
       "module": "shapes",
       "target": null,
       "targetSubjectsOf": null,
+      "constraints": []
+    },
+    "shape/currentNameDomainShape": {
+      "uri": "https://opda.org.uk/pdtf/shape/currentNameDomainShape",
+      "id": "shape/currentNameDomainShape",
+      "localName": "currentNameDomainShape",
+      "module": "shapes",
+      "target": null,
+      "targetSubjectsOf": "https://opda.org.uk/pdtf/currentName",
       "constraints": []
     },
     "shape/dangerousCladdingOrDefectsDomainShape": {
@@ -13431,6 +14340,24 @@
       "module": "shapes",
       "target": null,
       "targetSubjectsOf": "https://opda.org.uk/pdtf/decision",
+      "constraints": []
+    },
+    "shape/dependsOnTransactionDomainShape": {
+      "uri": "https://opda.org.uk/pdtf/shape/dependsOnTransactionDomainShape",
+      "id": "shape/dependsOnTransactionDomainShape",
+      "localName": "dependsOnTransactionDomainShape",
+      "module": "shapes",
+      "target": null,
+      "targetSubjectsOf": "https://opda.org.uk/pdtf/dependsOnTransaction",
+      "constraints": []
+    },
+    "shape/dependsOnTransactionRangeShape": {
+      "uri": "https://opda.org.uk/pdtf/shape/dependsOnTransactionRangeShape",
+      "id": "shape/dependsOnTransactionRangeShape",
+      "localName": "dependsOnTransactionRangeShape",
+      "module": "shapes",
+      "target": null,
+      "targetSubjectsOf": null,
       "constraints": []
     },
     "shape/DeprecationChainRule": {
@@ -13800,6 +14727,15 @@
         }
       ]
     },
+    "shape/formerNameDomainShape": {
+      "uri": "https://opda.org.uk/pdtf/shape/formerNameDomainShape",
+      "id": "shape/formerNameDomainShape",
+      "localName": "formerNameDomainShape",
+      "module": "shapes",
+      "target": null,
+      "targetSubjectsOf": "https://opda.org.uk/pdtf/formerName",
+      "constraints": []
+    },
     "shape/forTheManagedAreasDomainShape": {
       "uri": "https://opda.org.uk/pdtf/shape/forTheManagedAreasDomainShape",
       "id": "shape/forTheManagedAreasDomainShape",
@@ -14142,6 +15078,24 @@
       "targetSubjectsOf": null,
       "constraints": []
     },
+    "shape/hasSurveyDomainShape": {
+      "uri": "https://opda.org.uk/pdtf/shape/hasSurveyDomainShape",
+      "id": "shape/hasSurveyDomainShape",
+      "localName": "hasSurveyDomainShape",
+      "module": "shapes",
+      "target": null,
+      "targetSubjectsOf": "https://opda.org.uk/pdtf/hasSurvey",
+      "constraints": []
+    },
+    "shape/hasSurveyRangeShape": {
+      "uri": "https://opda.org.uk/pdtf/shape/hasSurveyRangeShape",
+      "id": "shape/hasSurveyRangeShape",
+      "localName": "hasSurveyRangeShape",
+      "module": "shapes",
+      "target": null,
+      "targetSubjectsOf": null,
+      "constraints": []
+    },
     "shape/hasTenantCompanyDissolvedDomainShape": {
       "uri": "https://opda.org.uk/pdtf/shape/hasTenantCompanyDissolvedDomainShape",
       "id": "shape/hasTenantCompanyDissolvedDomainShape",
@@ -14269,6 +15223,15 @@
       "module": "shapes",
       "target": null,
       "targetSubjectsOf": null,
+      "constraints": []
+    },
+    "shape/inspireFeatureIdDomainShape": {
+      "uri": "https://opda.org.uk/pdtf/shape/inspireFeatureIdDomainShape",
+      "id": "shape/inspireFeatureIdDomainShape",
+      "localName": "inspireFeatureIdDomainShape",
+      "module": "shapes",
+      "target": null,
+      "targetSubjectsOf": "https://opda.org.uk/pdtf/inspireFeatureId",
       "constraints": []
     },
     "shape/INSPIRESuccessionRule": {
@@ -14472,6 +15435,33 @@
       "targetSubjectsOf": "https://opda.org.uk/pdtf/lastMaintained",
       "constraints": []
     },
+    "shape/leaseExtensionDetailsDomainShape": {
+      "uri": "https://opda.org.uk/pdtf/shape/leaseExtensionDetailsDomainShape",
+      "id": "shape/leaseExtensionDetailsDomainShape",
+      "localName": "leaseExtensionDetailsDomainShape",
+      "module": "shapes",
+      "target": null,
+      "targetSubjectsOf": "https://opda.org.uk/pdtf/leaseExtensionDetails",
+      "constraints": []
+    },
+    "shape/leaseTermDomainShape": {
+      "uri": "https://opda.org.uk/pdtf/shape/leaseTermDomainShape",
+      "id": "shape/leaseTermDomainShape",
+      "localName": "leaseTermDomainShape",
+      "module": "shapes",
+      "target": null,
+      "targetSubjectsOf": "https://opda.org.uk/pdtf/leaseTerm",
+      "constraints": []
+    },
+    "shape/leaseTermRangeShape": {
+      "uri": "https://opda.org.uk/pdtf/shape/leaseTermRangeShape",
+      "id": "shape/leaseTermRangeShape",
+      "localName": "leaseTermRangeShape",
+      "module": "shapes",
+      "target": null,
+      "targetSubjectsOf": null,
+      "constraints": []
+    },
     "shape/LeaseTermSuccessionRule": {
       "uri": "https://opda.org.uk/pdtf/shape/LeaseTermSuccessionRule",
       "id": "shape/LeaseTermSuccessionRule",
@@ -14532,6 +15522,24 @@
       "module": "shapes",
       "target": null,
       "targetSubjectsOf": "https://opda.org.uk/pdtf/lengthOfLeaseInYears",
+      "constraints": []
+    },
+    "shape/line1DomainShape": {
+      "uri": "https://opda.org.uk/pdtf/shape/line1DomainShape",
+      "id": "shape/line1DomainShape",
+      "localName": "line1DomainShape",
+      "module": "shapes",
+      "target": null,
+      "targetSubjectsOf": "https://opda.org.uk/pdtf/line1",
+      "constraints": []
+    },
+    "shape/line2DomainShape": {
+      "uri": "https://opda.org.uk/pdtf/shape/line2DomainShape",
+      "id": "shape/line2DomainShape",
+      "localName": "line2DomainShape",
+      "module": "shapes",
+      "target": null,
+      "targetSubjectsOf": "https://opda.org.uk/pdtf/line2",
       "constraints": []
     },
     "shape/listedDateDomainShape": {
@@ -14805,6 +15813,15 @@
       "module": "shapes",
       "target": null,
       "targetSubjectsOf": "https://opda.org.uk/pdtf/mprn",
+      "constraints": []
+    },
+    "shape/newNameDomainShape": {
+      "uri": "https://opda.org.uk/pdtf/shape/newNameDomainShape",
+      "id": "shape/newNameDomainShape",
+      "localName": "newNameDomainShape",
+      "module": "shapes",
+      "target": null,
+      "targetSubjectsOf": "https://opda.org.uk/pdtf/newName",
       "constraints": []
     },
     "shape/NoIdentityOverride_MetaShape": {
@@ -15265,6 +16282,24 @@
       "targetSubjectsOf": null,
       "constraints": []
     },
+    "shape/postcodeDomainShape": {
+      "uri": "https://opda.org.uk/pdtf/shape/postcodeDomainShape",
+      "id": "shape/postcodeDomainShape",
+      "localName": "postcodeDomainShape",
+      "module": "shapes",
+      "target": null,
+      "targetSubjectsOf": "https://opda.org.uk/pdtf/postcode",
+      "constraints": []
+    },
+    "shape/postTownDomainShape": {
+      "uri": "https://opda.org.uk/pdtf/shape/postTownDomainShape",
+      "id": "shape/postTownDomainShape",
+      "localName": "postTownDomainShape",
+      "module": "shapes",
+      "target": null,
+      "targetSubjectsOf": "https://opda.org.uk/pdtf/postTown",
+      "constraints": []
+    },
     "shape/potentialCostDomainShape": {
       "uri": "https://opda.org.uk/pdtf/shape/potentialCostDomainShape",
       "id": "shape/potentialCostDomainShape",
@@ -15274,13 +16309,13 @@
       "targetSubjectsOf": "https://opda.org.uk/pdtf/potentialCost",
       "constraints": []
     },
-    "shape/potentialCostRangeShape": {
-      "uri": "https://opda.org.uk/pdtf/shape/potentialCostRangeShape",
-      "id": "shape/potentialCostRangeShape",
-      "localName": "potentialCostRangeShape",
+    "shape/previousNameDomainShape": {
+      "uri": "https://opda.org.uk/pdtf/shape/previousNameDomainShape",
+      "id": "shape/previousNameDomainShape",
+      "localName": "previousNameDomainShape",
       "module": "shapes",
       "target": null,
-      "targetSubjectsOf": null,
+      "targetSubjectsOf": "https://opda.org.uk/pdtf/previousName",
       "constraints": []
     },
     "shape/priceQualifierDomainShape": {
@@ -15654,6 +16689,18 @@
       "targetSubjectsOf": "https://opda.org.uk/pdtf/retrievedOn",
       "constraints": []
     },
+    "shape/RiskAssessmentAcyclicityConstraint": {
+      "uri": "https://opda.org.uk/pdtf/shape/RiskAssessmentAcyclicityConstraint",
+      "id": "shape/RiskAssessmentAcyclicityConstraint",
+      "localName": "RiskAssessmentAcyclicityConstraint",
+      "module": "descriptive",
+      "target": {
+        "id": "RiskAssessment",
+        "localName": "RiskAssessment"
+      },
+      "targetSubjectsOf": null,
+      "constraints": []
+    },
     "shape/RiskAssessmentShape": {
       "uri": "https://opda.org.uk/pdtf/shape/RiskAssessmentShape",
       "id": "shape/RiskAssessmentShape",
@@ -15693,7 +16740,7 @@
           "minCount": null,
           "maxCount": null,
           "severity": "Violation",
-          "message": "Each opda:hasSubAssessment (a riskSubcategories[] entry) MUST itself satisfy the RiskAssessment shape — the self-referential result recursion via sh:node (ODR-0008d Rule 1c / Rule 4). ACYCLICITY (ODR-0024 R11): the sub-assessment graph MUST be acyclic — a RiskAssessment MUST NOT be its own transitive sub-assessment (core SHACL cannot test transitive closure; a SHACL-AF closure rule is the enforcement vehicle, deferred)."
+          "message": "Each opda:hasSubAssessment (a riskSubcategories[] entry) MUST itself satisfy the RiskAssessment shape — the self-referential result recursion via sh:node (ODR-0008d Rule 1c / Rule 4). ACYCLICITY (ODR-0024 R11) is enforced separately by opda:shape:RiskAssessmentAcyclicityConstraint, a SPARQL property-path constraint (core SHACL sh:node recursion cannot itself test transitive closure)."
         },
         {
           "path": "https://opda.org.uk/pdtf/peril",
@@ -16668,6 +17715,33 @@
           "message": "The valuation's issuing authority SHOULD be named via prov:wasAttributedTo (IC component 1 of 3 — issuing authority; ODR-0008d Rule 3)."
         }
       ]
+    },
+    "shape/variantPredicateDomainShape": {
+      "uri": "https://opda.org.uk/pdtf/shape/variantPredicateDomainShape",
+      "id": "shape/variantPredicateDomainShape",
+      "localName": "variantPredicateDomainShape",
+      "module": "shapes",
+      "target": null,
+      "targetSubjectsOf": "https://opda.org.uk/pdtf/variantPredicate",
+      "constraints": []
+    },
+    "shape/variantPredicateRangeShape": {
+      "uri": "https://opda.org.uk/pdtf/shape/variantPredicateRangeShape",
+      "id": "shape/variantPredicateRangeShape",
+      "localName": "variantPredicateRangeShape",
+      "module": "shapes",
+      "target": null,
+      "targetSubjectsOf": null,
+      "constraints": []
+    },
+    "shape/variantValueDomainShape": {
+      "uri": "https://opda.org.uk/pdtf/shape/variantValueDomainShape",
+      "id": "shape/variantValueDomainShape",
+      "localName": "variantValueDomainShape",
+      "module": "shapes",
+      "target": null,
+      "targetSubjectsOf": "https://opda.org.uk/pdtf/variantValue",
+      "constraints": []
     },
     "shape/VerificationActivitySuccessionRule": {
       "uri": "https://opda.org.uk/pdtf/shape/VerificationActivitySuccessionRule",
@@ -21027,6 +22101,25 @@
         "harness/data-dictionary/propertyPack.ownership.ownershipsToBeTransferred[].ownershipType.Leasehold"
       ]
     },
+    "scheme/ownershipType/Managed-Freehold": {
+      "uri": "https://opda.org.uk/pdtf/scheme/ownershipType/Managed-Freehold",
+      "id": "scheme/ownershipType/Managed-Freehold",
+      "localName": "Managed-Freehold",
+      "prefLabel": "Managed Freehold",
+      "definition": "A freehold where there are shared amenities, the maintenance of which is paid for through an estate rentcharge, service charge, or an informal or formal contribution.",
+      "module": "vocabularies",
+      "schemes": [
+        {
+          "id": "scheme/OwnershipTypeScheme",
+          "localName": "OwnershipTypeScheme"
+        }
+      ],
+      "broader": [],
+      "narrower": [],
+      "dctSource": [
+        "harness/data-dictionary/propertyPack.ownership.ownershipsToBeTransferred[].ownershipType.Managed%20Freehold"
+      ]
+    },
     "scheme/ownershipType/Other": {
       "uri": "https://opda.org.uk/pdtf/scheme/ownershipType/Other",
       "id": "scheme/ownershipType/Other",
@@ -24175,7 +25268,7 @@
       "id": "scheme/OwnershipTypeScheme",
       "localName": "OwnershipTypeScheme",
       "prefLabel": "Ownership Type",
-      "definition": "Classification of a legal estate's ownership structure (Freehold, Leasehold, Commonhold, Other).",
+      "definition": "Classification of a legal estate's ownership structure (Freehold, Managed Freehold, Commonhold, Leasehold, Other).",
       "ufoCategory": "",
       "module": "vocabularies",
       "topConcepts": [],
@@ -24191,6 +25284,10 @@
         {
           "id": "scheme/ownershipType/Leasehold",
           "localName": "Leasehold"
+        },
+        {
+          "id": "scheme/ownershipType/Managed-Freehold",
+          "localName": "Managed-Freehold"
         },
         {
           "id": "scheme/ownershipType/Other",
@@ -25002,8 +26099,16 @@
           "localName": "aged17OrOverNames"
         },
         {
+          "id": "currentName",
+          "localName": "currentName"
+        },
+        {
           "id": "dateOfBirth",
           "localName": "dateOfBirth"
+        },
+        {
+          "id": "formerName",
+          "localName": "formerName"
         },
         {
           "id": "hasOthersAged17OrOver",
@@ -25016,6 +26121,10 @@
         {
           "id": "name",
           "localName": "name"
+        },
+        {
+          "id": "newName",
+          "localName": "newName"
         },
         {
           "id": "numberOfNonUkResidentSellers",
@@ -25034,6 +26143,10 @@
           "localName": "organisationReference"
         },
         {
+          "id": "previousName",
+          "localName": "previousName"
+        },
+        {
           "id": "reference",
           "localName": "reference"
         },
@@ -25047,6 +26160,10 @@
         }
       ],
       "shapes": [
+        {
+          "id": "shape/AppliesToRangeShape",
+          "localName": "AppliesToRangeShape"
+        },
         {
           "id": "shape/BuyerShape",
           "localName": "BuyerShape"
@@ -25155,6 +26272,10 @@
         {
           "id": "VerificationActivity",
           "localName": "VerificationActivity"
+        },
+        {
+          "id": "Verifier",
+          "localName": "Verifier"
         }
       ],
       "objectProperties": [
@@ -25326,10 +26447,6 @@
         {
           "id": "peril",
           "localName": "peril"
-        },
-        {
-          "id": "potentialCost",
-          "localName": "potentialCost"
         },
         {
           "id": "priceQualifier",
@@ -25594,6 +26711,10 @@
           "localName": "planningStartDate"
         },
         {
+          "id": "potentialCost",
+          "localName": "potentialCost"
+        },
+        {
           "id": "price",
           "localName": "price"
         },
@@ -25760,6 +26881,10 @@
           "localName": "PriceQualifierValueShape"
         },
         {
+          "id": "shape/RiskAssessmentAcyclicityConstraint",
+          "localName": "RiskAssessmentAcyclicityConstraint"
+        },
+        {
           "id": "shape/RiskAssessmentShape",
           "localName": "RiskAssessmentShape"
         },
@@ -25806,6 +26931,10 @@
       "id": "foundation",
       "localName": "foundation",
       "classes": [
+        {
+          "id": "DescriptiveProperty",
+          "localName": "DescriptiveProperty"
+        },
         {
           "id": "DiagnosticExemplar",
           "localName": "DiagnosticExemplar"
@@ -25854,6 +26983,10 @@
           "localName": "DPVMappingRecord"
         },
         {
+          "id": "DPVMappingRefinement",
+          "localName": "DPVMappingRefinement"
+        },
+        {
           "id": "SpecialCategoryScheme",
           "localName": "SpecialCategoryScheme"
         }
@@ -25866,9 +26999,18 @@
         {
           "id": "targetsKind",
           "localName": "targetsKind"
+        },
+        {
+          "id": "variantPredicate",
+          "localName": "variantPredicate"
         }
       ],
-      "datatypeProperties": [],
+      "datatypeProperties": [
+        {
+          "id": "variantValue",
+          "localName": "variantValue"
+        }
+      ],
       "shapes": [
         {
           "id": "shape/DPVMappingRecordIdentityKeyShape",
@@ -25912,6 +27054,10 @@
       ],
       "objectProperties": [
         {
+          "id": "appliesTo",
+          "localName": "appliesTo"
+        },
+        {
           "id": "areBoundariesUniform",
           "localName": "areBoundariesUniform"
         },
@@ -25948,6 +27094,10 @@
           "localName": "hasSprayFoamInstalled"
         },
         {
+          "id": "hasSurvey",
+          "localName": "hasSurvey"
+        },
+        {
           "id": "hasValidGuaranteesOrWarranties",
           "localName": "hasValidGuaranteesOrWarranties"
         },
@@ -25978,6 +27128,10 @@
         {
           "id": "isSupplyMetered",
           "localName": "isSupplyMetered"
+        },
+        {
+          "id": "leaseTerm",
+          "localName": "leaseTerm"
         },
         {
           "id": "offMainsDrainageSystemType",
@@ -26054,6 +27208,10 @@
           "localName": "councilTaxBand"
         },
         {
+          "id": "country",
+          "localName": "country"
+        },
+        {
           "id": "currentChargingBasis",
           "localName": "currentChargingBasis"
         },
@@ -26118,6 +27276,10 @@
           "localName": "heatingLastServicedDate"
         },
         {
+          "id": "inspireFeatureId",
+          "localName": "inspireFeatureId"
+        },
+        {
           "id": "kitchens",
           "localName": "kitchens"
         },
@@ -26126,8 +27288,20 @@
           "localName": "lastMaintained"
         },
         {
+          "id": "leaseExtensionDetails",
+          "localName": "leaseExtensionDetails"
+        },
+        {
           "id": "lengthOfLeaseInYears",
           "localName": "lengthOfLeaseInYears"
+        },
+        {
+          "id": "line1",
+          "localName": "line1"
+        },
+        {
+          "id": "line2",
+          "localName": "line2"
         },
         {
           "id": "location",
@@ -26188,6 +27362,14 @@
         {
           "id": "pitch",
           "localName": "pitch"
+        },
+        {
+          "id": "postcode",
+          "localName": "postcode"
+        },
+        {
+          "id": "postTown",
+          "localName": "postTown"
         },
         {
           "id": "procedureForObtainingCertificate",
@@ -26312,6 +27494,10 @@
           "localName": "AddressIdentityKeyShape"
         },
         {
+          "id": "shape/AddressStructuralShape",
+          "localName": "AddressStructuralShape"
+        },
+        {
           "id": "shape/HasAddressBearerShape",
           "localName": "HasAddressBearerShape"
         },
@@ -26363,6 +27549,10 @@
         {
           "id": "concernsProperty",
           "localName": "concernsProperty"
+        },
+        {
+          "id": "dependsOnTransaction",
+          "localName": "dependsOnTransaction"
         },
         {
           "id": "hasChainPosition",
