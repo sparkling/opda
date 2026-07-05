@@ -1052,25 +1052,88 @@
         rr:predicateObjectMap [ rr:predicate <urn:opda:param:value> ; rr:objectMap [ rml:reference "ownerType" ] ] ;
         rr:predicateObjectMap [ rr:predicate <urn:opda:param:scheme> ; rr:objectMap [ rr:constant "ownerType" ] ] ] ] ] .  # <- propertyPack.legalOwners.namesOfLegalOwners[].ownerType
 
-# M11b — opda:Proprietorship + opda:mediates: NOT mapped. Team decision:
-#   Proprietorship (a UFO Relator) should ONLY be emitted when
-#   namesOfLegalOwners[] genuinely has 2+ entries — ProprietorshipMediationShape
-#   hard-requires opda:mediates sh:minCount 2 ("a relator that binds fewer
-#   than two bearers is not a relator"), so unconditionally minting it from
-#   every legal-owner array (most of which are sole-ownership, 1 entry)
-#   would ship a node that mechanically fails this shape — same risk
-#   avoided earlier this session for numberOfSellers's Proprietorship.
-#   Checked empirically whether "only emit if array length >= 2" is
-#   expressible: morph-kgc's nested-array flattening (normalize_hierarchical_data,
-#   see ADR-0057 Amendments) cartesian-products each array item into its own
-#   row BEFORE any TriplesMap/UDF sees it — there is no row-level view of
-#   "how many sibling items exist" to gate a conditional template or FNML
-#   parameter on (a JSONPath filter `[?(...)]` tests one item's own fields,
-#   not the enclosing array's length). No RML/morph-kgc technique was found
-#   to express this conditional. Left as a genuine, documented gap — same
-#   reasoning as the constructionType/hasRoomDimension keyless-array class,
-#   a different flavour of "the JSON shape doesn't give this TriplesMap
-#   enough to work with," not a mechanical oversight.
+# M11b — opda:Proprietorship + opda:mediates: RESOLVED 2026-07-05 (Darwin-mode
+#   candidate comparison, ADR-0058) — a genuinely new angle, not a re-attempt
+#   of the original finding. The original gap analysis (morph-kgc era) held
+#   that "only emit if array length >= 2" was inexpressible: morph-kgc's
+#   nested-array flattening (normalize_hierarchical_data) cartesian-products
+#   each namesOfLegalOwners[] item into its own row before any TriplesMap
+#   sees it, with no row-level view of sibling-array length. ADR-0057
+#   Amendments migrated the engine morph-kgc -> RMLMapper (2026-07-04) —
+#   confirmed EMPIRICALLY that this changes the answer:
+#   - Candidate 1 (chosen) — explicit array-index JSONPath null-skip.
+#     RMLMapper's JSONPath engine supports bracket index access
+#     (`namesOfLegalOwners[1].ownerType`) even outside an iterator, and
+#     correctly propagates a PathNotFound/missing index as a null reference,
+#     which (per R2RML template-term-map semantics, the same null-skip rule
+#     M11/M11a already rely on for their own oneOf-branch split) suppresses
+#     the ENTIRE row's triples when embedded in the subject template.
+#     Embedding a reference to namesOfLegalOwners[1] (the 2nd owner) in the
+#     Proprietorship subject template means the node is materialised only
+#     when a 2nd owner genuinely exists — mechanically guaranteeing
+#     ProprietorshipMediationShape's sh:minCount 2 is satisfiable whenever
+#     the node exists at all. Verified against real fixtures: 01 (2 owners)
+#     mints Proprietorship + 2 mediates triples and CONFORMS; 02 (0 owners)
+#     and 03 (1 owner) emit nothing (no spurious/incomplete node); a
+#     synthetic 3-owner instance mints 3 mediates triples and CONFORMS.
+#     Bounded to 4 legal owners (indices 0-3, each split Person/Org via the
+#     same null-skip); a real, accepted limit for a UK joint-ownership field,
+#     not a silent truncation — a 5th+ owner simply isn't linked via
+#     opda:mediates (the Proprietor node itself is still minted by M11/M11a,
+#     which iterate the full array unconditionally).
+#   - Candidate 2 (tried, failed) — gate the TRIPLES MAP's own iterator on
+#     array length directly, e.g.
+#     `$.propertyPack[?(@.legalOwners.namesOfLegalOwners.length() >= 2)]`
+#     (or `.size()`). RMLMapper's JSONPath grammar (org.jsfr.json, ANTLR)
+#     rejects both `.length()` and `.size()` inside a filter predicate
+#     (`ParseCancellationException` in `JsonPathParser.filter`) — confirmed
+#     by direct probe against both fixtures, not inferred. RMLMapper/Jayway's
+#     documented filter support (already used elsewhere in this mapping —
+#     `participants[?(@.role=="Seller")]`) covers per-item field
+#     equality/existence tests, not aggregate functions over the enclosing
+#     array. Ruled out on fresh empirical evidence, same conclusion as the
+#     original morph-kgc finding but for a different, engine-specific reason.
+#   - Candidate 3 (considered, not attempted) — mint Proprietorship
+#     unconditionally and accept a genuine SHACL violation for the 1-owner
+#     case, matching this class's own UFO IC ("a relator that binds fewer
+#     than two bearers is not a relator"). Rejected without a code trial:
+#     `make rml-test`'s `rml-conformant` target requires fixtures 01/02/03 to
+#     ALL be SHACL-sound (`validate_shacl.sh ... || exit 1`) — this candidate
+#     would mechanically break that gate for fixture 03, a real, checkable
+#     disqualifier, not a style preference.
+#   - SHACL-AF conditional class-promotion (the task's suggested "ontology-
+#     side" alternative) was also considered and rejected: this shapes graph
+#     DOES use `sh:rule`/`sh:SPARQLRule` in several places (e.g.
+#     `CapacityAuthorityMatchRule`), but exclusively to derive a
+#     documentary status literal on an ALREADY-asserted node/type — never to
+#     conditionally mint a class assertion or a Relator's own binding edges.
+#     Doing so here would contradict this exact shape region's own repeated
+#     "Design-time + SHACL-validated, never reasoned" doctrine
+#     (RelatorSpineSubjectShape, RolePlaySubjectShape) — a real, no-code-
+#     needed reason to prefer the RML-level fix.
+# ---------------------------------------------------------------------------
+<#Proprietorship> a rr:TriplesMap ;
+  rml:logicalSource [ rml:source "INSTANCE.json" ;
+                      rml:referenceFormulation ql:JSONPath ;
+                      rml:iterator "$.propertyPack" ] ;
+  rr:subjectMap [ rr:template "https://opda.org.uk/pdtf/harness/data/proprietorship/{uprn}-{legalOwners.namesOfLegalOwners[1].ownerType}" ;
+                  rr:class opda:Proprietorship ] ;
+  rr:predicateObjectMap [ rr:predicate opda:mediates ;
+      rr:objectMap [ rr:template "https://opda.org.uk/pdtf/harness/data/org/{legalOwners.namesOfLegalOwners[0].organisationName}" ] ] ;
+  rr:predicateObjectMap [ rr:predicate opda:mediates ;
+      rr:objectMap [ rr:template "https://opda.org.uk/pdtf/harness/data/person/{legalOwners.namesOfLegalOwners[0].firstName}-{legalOwners.namesOfLegalOwners[0].lastName}" ] ] ;
+  rr:predicateObjectMap [ rr:predicate opda:mediates ;
+      rr:objectMap [ rr:template "https://opda.org.uk/pdtf/harness/data/org/{legalOwners.namesOfLegalOwners[1].organisationName}" ] ] ;
+  rr:predicateObjectMap [ rr:predicate opda:mediates ;
+      rr:objectMap [ rr:template "https://opda.org.uk/pdtf/harness/data/person/{legalOwners.namesOfLegalOwners[1].firstName}-{legalOwners.namesOfLegalOwners[1].lastName}" ] ] ;
+  rr:predicateObjectMap [ rr:predicate opda:mediates ;
+      rr:objectMap [ rr:template "https://opda.org.uk/pdtf/harness/data/org/{legalOwners.namesOfLegalOwners[2].organisationName}" ] ] ;
+  rr:predicateObjectMap [ rr:predicate opda:mediates ;
+      rr:objectMap [ rr:template "https://opda.org.uk/pdtf/harness/data/person/{legalOwners.namesOfLegalOwners[2].firstName}-{legalOwners.namesOfLegalOwners[2].lastName}" ] ] ;
+  rr:predicateObjectMap [ rr:predicate opda:mediates ;
+      rr:objectMap [ rr:template "https://opda.org.uk/pdtf/harness/data/org/{legalOwners.namesOfLegalOwners[3].organisationName}" ] ] ;
+  rr:predicateObjectMap [ rr:predicate opda:mediates ;
+      rr:objectMap [ rr:template "https://opda.org.uk/pdtf/harness/data/person/{legalOwners.namesOfLegalOwners[3].firstName}-{legalOwners.namesOfLegalOwners[3].lastName}" ] ] .
 # ---------------------------------------------------------------------------
 # M12 — Occupiers record (UNTYPED)  iterator: occupiers.othersAged17OrOver
 #   Carries opda:aged17OrOverNames and opda:hasOthersAged17OrOver. A1's index
@@ -1977,8 +2040,8 @@
 #       coverage choice now, not an engine constraint) — this branch's
 #       correctness is proven both via scratch instance and this re-test.
 #   NOT mapped in this batch: opda:numberOfSellers/opda:numberOfNonUkResidentSellers
-#   (domain opda:Proprietorship) remain a genuine gap pending the Proprietor/
-#   Proprietorship Relator design — see M27f, below.
+#   (domain opda:Proprietorship) remain a genuine, SEPARATE gap even now that
+#   M11b mints a real Proprietorship node — see M27f, below.
 # ---------------------------------------------------------------------------
 <#CertificateOfComplianceFeeAmount> a rr:TriplesMap ;
   rml:logicalSource [ rml:source "INSTANCE.json" ;
@@ -2047,17 +2110,22 @@
       rr:objectMap [ rml:reference "leaseholdInformation.contactDetails.contacts.landlord.bankDetails.reference" ; rr:datatype xsd:string ] ] .  # <- …leaseholdInformation.contactDetails.contacts.landlord.bankDetails.reference
 
 # M27f — opda:numberOfSellers / opda:numberOfNonUkResidentSellers (domain
-#   opda:Proprietorship): NOT mapped. Tried minting a Proprietorship node
-#   keyed on uprn with just these two counts — caught by the (post-harness-
-#   fix) SHACL run: ProprietorshipMediationShape requires ANY opda:Proprietorship
-#   individual to carry opda:mediates -> >=2 opda:Proprietor individuals (a
-#   UFO Relator, ODR-0006 §Q3 — "a relator that binds fewer than two bearers
-#   is not a relator"). Properly satisfying this means identifying which
-#   participants/legalOwners play the Proprietor role and linking them via
-#   opda:mediates — a real Relator-modelling decision, not a mechanical
-#   "add a predicateObjectMap" gap like the rest of this region. Left as a
-#   genuine, documented gap pending that design (not attempted here to avoid
-#   shipping a node that mechanically fails a hard SHACL constraint).
+#   opda:Proprietorship): STILL NOT mapped, even after M11b resolved the
+#   Proprietorship/opda:mediates conditional-minting gap (2026-07-05). Original
+#   concern (mint a Proprietorship keyed on uprn with just these two counts,
+#   caught by ProprietorshipMediationShape's opda:mediates sh:minCount 2) no
+#   longer applies mechanically — M11b's <#Proprietorship> node is keyed on
+#   the SAME uprn and could in principle carry these two predicateObjectMaps
+#   directly. NOT added here anyway because the schema's own field
+#   description makes these a genuinely DIFFERENT concept from legal
+#   ownership: "This may differ from the number of legal owners, for example
+#   if the property is being sold by executors of a deceased owner"
+#   ($.propertyPack.ownership.numberOfSellers). Binding a sellers-count onto
+#   a Relator whose opda:mediates edges are legal-OWNERSHIP bearers would be
+#   a real, silent domain conflation, not the same class of gap M11b closed.
+#   Left as a genuine, documented gap pending a design that distinguishes
+#   "seller" from "legal owner" (a different Role, per opda:Seller vs
+#   opda:Proprietor already existing as distinct classes in this mapping).
 
 # M30 — the M28/M29 cluster, closed via RML-FNML (mapping/opda-udfs.py).
 #   Every property below has rdfs:range skos:Concept but sits in a single,
