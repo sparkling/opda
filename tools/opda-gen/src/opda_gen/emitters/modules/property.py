@@ -965,6 +965,75 @@ def build_graph() -> Graph:
     g.add((OPDA.recordsEstate, RDFS.isDefinedBy, module_iri))
     g.add((OPDA.recordsEstate, DCTERMS.source, _ODR_0005_S3C))
 
+    # --- ObjectProperty: opda:appliesTo (2026-07-05, RML gap-closing) ---
+    # MINTED to close a real "ratified but never implemented" gap: the
+    # ratified diagnostic exemplars person-with-name-change.ttl and
+    # lease-extension-transaction.ttl both already USE opda:appliesTo
+    # (NameChangeEvent -> Person; LeaseExtensionEvent -> LegalEstate) but
+    # the predicate was never actually declared anywhere in the emitted
+    # ontology — confirmed by direct grep across the whole corpus. Shared,
+    # domain-less object property (same "any-of" documentary convention as
+    # opda:founds / opda:playedBy, ODR-0026 §R2 module-header idiom): one
+    # Activity-targets-its-subject-Entity edge reused by two distinct
+    # provenance-event Kinds, each aiming at a different Entity Kind.
+    g.add((OPDA.appliesTo, RDF.type, OWL.ObjectProperty))
+    g.add((OPDA.appliesTo, RDF.type, RDF.Property))
+    g.add((OPDA.appliesTo, RDFS.range, OPDA.Person))
+    g.add((OPDA.appliesTo, RDFS.range, OPDA.LegalEstate))
+    g.add((OPDA.appliesTo, RDFS.label, Literal("applies to", lang="en")))
+    g.add((OPDA.appliesTo, RDFS.comment, Literal(
+        "Provenance-activity-to-subject-entity join: relates a reified "
+        "PROV-O Activity to the Entity it acted upon — opda:NameChangeEvent "
+        "to the opda:Person whose name changed (ODR-0006 §Q1), or "
+        "opda:LeaseExtensionEvent to the opda:LegalEstate whose term was "
+        "extended (ODR-0005 §3b). Domain intentionally unconstrained (same "
+        "convention as opda:identifiesSameProperty, above) — any reified "
+        "provenance-activity Kind may emit this predicate. Documentary "
+        "\"any-of\" rdfs:range opda:Person, opda:LegalEstate (module-header "
+        "disjunctive-not-conjunctive convention, ADR-0035 — never entailed).",
+        lang="en",
+    )))
+    g.add((OPDA.appliesTo, SKOS.definition, Literal(
+        "Relates a reified provenance activity to the entity it acted "
+        "upon — a name-change event to the person renamed, or a lease-"
+        "extension event to the legal estate extended.",
+        lang="en",
+    )))
+    g.add((OPDA.appliesTo, RDFS.isDefinedBy, module_iri))
+    g.add((OPDA.appliesTo, DCTERMS.source, _ODR_0005_S3B))
+
+    # --- DatatypeProperty: opda:leaseExtensionDetails (2026-07-05) ------
+    # CLOSED alongside opda:appliesTo, above, same "ratified but never
+    # implemented" gap class. Real JSON hook confirmed:
+    # propertyPack.ownership.ownershipsToBeTransferred[].leaseholdInformation
+    # .enfranchisement.enfranchisementSteps.details (free text, present only
+    # when enfranchisementSteps.yesNo == "Yes" — TA7/LPE1 §6.3/10 "steps
+    # taken... to extend the term of the lease... or anything similar").
+    # opda:legalBasis / opda:premiumPaid / opda:premiumCurrency /
+    # opda:updatesRegistryRecord from the exemplar are DELIBERATELY NOT
+    # minted — no source data honestly populates them (flag, don't
+    # fabricate, this mapping's established discipline).
+    g.add((OPDA.leaseExtensionDetails, RDF.type, OWL.DatatypeProperty))
+    g.add((OPDA.leaseExtensionDetails, RDF.type, RDF.Property))
+    g.add((OPDA.leaseExtensionDetails, RDFS.domain, OPDA.LeaseExtensionEvent))
+    g.add((OPDA.leaseExtensionDetails, RDFS.range, XSD.string))
+    g.add((OPDA.leaseExtensionDetails, RDFS.label,
+           Literal("lease extension details", lang="en")))
+    g.add((OPDA.leaseExtensionDetails, RDFS.comment, Literal(
+        "Free-text detail elaborating the steps taken to extend a "
+        "leasehold's term (TA7/LPE1 enfranchisement §6.3/§10), supplied "
+        "when the seller discloses such steps were taken. Plain string "
+        "datatype per ODR-0008 §Q5a; flat per §Q6a.",
+        lang="en",
+    )))
+    g.add((OPDA.leaseExtensionDetails, SKOS.definition, Literal(
+        "Free-text narrative elaborating the steps taken to extend a "
+        "leasehold's term, as disclosed by the seller.",
+        lang="en",
+    )))
+    g.add((OPDA.leaseExtensionDetails, RDFS.isDefinedBy, module_iri))
+    g.add((OPDA.leaseExtensionDetails, DCTERMS.source, _ODR_0005_S3B))
+
     # ==== G11 expansion (ADR-0013) ======================================
     # Additional Property/LegalEstate DatatypeProperties required by the
     # BASPI5 overlay. Each property carries rdfs:domain + rdfs:range +

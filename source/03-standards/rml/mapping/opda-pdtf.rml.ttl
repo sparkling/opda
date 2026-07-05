@@ -69,6 +69,7 @@
 @prefix time: <http://www.w3.org/2006/time#> .
 @prefix xsd:  <http://www.w3.org/2001/XMLSchema#> .
 @prefix dct:  <http://purl.org/dc/terms/> .
+@prefix rdf:  <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
 # RML-FNML: RMLMapper (the engine, since ADR-0057's Amendments) only
 # recognises the classic FNML vocabulary (fnml:functionValue, the
 # semweb.mmlab.be/ns/fnml# namespace + fno:executes) for function execution —
@@ -145,6 +146,10 @@
       rr:objectMap [ rml:reference "propertyPack.confirmationOfAccuracyByOwners.confirmInformationIsAccurate" ; rr:datatype xsd:boolean ] ] ;  # <- propertyPack.confirmationOfAccuracyByOwners.confirmInformationIsAccurate
   rr:predicateObjectMap [ rr:predicate opda:confirmWillProvideAdditionalDocumentation ;
       rr:objectMap [ rml:reference "propertyPack.confirmationOfAccuracyByOwners.confirmWillProvideAdditionalDocumentation" ; rr:datatype xsd:boolean ] ] ;  # <- propertyPack.confirmationOfAccuracyByOwners.confirmWillProvideAdditionalDocumentation
+  rr:predicateObjectMap [ rr:predicate opda:numberOfSellers ;
+      rr:objectMap [ rml:reference "propertyPack.ownership.numberOfSellers" ; rr:datatype xsd:integer ] ] ;  # <- propertyPack.ownership.numberOfSellers (domain retargeted Proprietorship->Transaction 2026-07-05; see opda-agent.ttl comment)
+  rr:predicateObjectMap [ rr:predicate opda:numberOfNonUkResidentSellers ;
+      rr:objectMap [ rml:reference "propertyPack.ownership.numberOfNonUkResidentSellers" ; rr:datatype xsd:integer ] ] ;  # <- propertyPack.ownership.numberOfNonUkResidentSellers (domain retargeted Proprietorship->Transaction 2026-07-05; see opda-agent.ttl comment)
   rr:predicateObjectMap [ rr:predicate opda:leaveKeys ;
       rr:objectMap [ rml:reference "propertyPack.completionAndMoving.sellerWillEnsure.leaveKeys" ; rr:datatype xsd:boolean ] ] ;  # <- propertyPack.completionAndMoving.sellerWillEnsure.leaveKeys
   rr:predicateObjectMap [ rr:predicate opda:removeRubbish ;
@@ -198,7 +203,38 @@
   rr:subjectMap [ rr:template "https://opda.org.uk/pdtf/harness/data/person/{email}" ;
                   rr:class opda:Person ] ;
   rr:predicateObjectMap [ rr:predicate opda:dateOfBirth ;
-      rr:objectMap [ rml:reference "dateOfBirth" ; rr:datatype xsd:date ] ] .  # <- participants[].dateOfBirth
+      rr:objectMap [ rml:reference "dateOfBirth" ; rr:datatype xsd:date ] ] ;  # <- participants[].dateOfBirth
+  rr:predicateObjectMap [ rr:predicate opda:formerName ;
+      rr:objectMap [ rml:reference "name.maidenName" ; rr:datatype xsd:string ] ] ;  # <- participants[].name.maidenName (CLOSED 2026-07-05, ordinary null-skip: only present participants get this triple)
+  rr:predicateObjectMap [ rr:predicate opda:currentName ;
+      rr:objectMap [ rml:reference "name.lastName" ; rr:datatype xsd:string ] ] .  # <- participants[].name.lastName (paired with opda:formerName above; both null-skip together since a real R2RML predicateObjectMap only omits ITS OWN triple when ITS OWN reference is absent — currentName would still fire for a participant with no maidenName, which is harmless: it just restates the current surname without implying a name-change occurred; opda:NameChangeEvent, below, is the actual name-change signal, gated on maidenName alone)
+
+# ---------------------------------------------------------------------------
+# M2a — NameChangeEvent (opda:NameChangeEvent)  iterator: participants[*]
+#   CLOSED 2026-07-05 (RML gap-closing session) — REOPENED from the prior
+#   session's "confirmed zero JSON basis" verdict, which was wrong: real
+#   hook is participants[].name.maidenName (a former surname, present only
+#   for participants whose current surname differs from a recorded maiden
+#   name — the marriage-name-change case ODR-0006 §Q1's own exemplar
+#   describes). Subject template embeds {name.maidenName} for the standard
+#   null-skip existence gate (same technique as M7's leaseterm join, M11b's
+#   Proprietorship, etc.) — the whole node materialises only when a maiden
+#   name is on record. opda:nameChangeDate / opda:nameChangeMechanism from
+#   the ratified exemplar are NOT minted — no deed-poll/marriage-date field
+#   exists anywhere in the schema (flag, don't fabricate).
+# ---------------------------------------------------------------------------
+<#ParticipantNameChangeEvent> a rr:TriplesMap ;
+  rml:logicalSource [ rml:source "INSTANCE.json" ;
+                      rml:referenceFormulation ql:JSONPath ;
+                      rml:iterator "$.participants[*]" ] ;
+  rr:subjectMap [ rr:template "https://opda.org.uk/pdtf/harness/data/namechange/{email}-{name.maidenName}" ;
+                  rr:class opda:NameChangeEvent ] ;
+  rr:predicateObjectMap [ rr:predicate opda:previousName ;
+      rr:objectMap [ rml:reference "name.maidenName" ; rr:datatype xsd:string ] ] ;  # <- participants[].name.maidenName
+  rr:predicateObjectMap [ rr:predicate opda:newName ;
+      rr:objectMap [ rml:reference "name.lastName" ; rr:datatype xsd:string ] ] ;  # <- participants[].name.lastName
+  rr:predicateObjectMap [ rr:predicate opda:appliesTo ;
+      rr:objectMap [ rr:template "https://opda.org.uk/pdtf/harness/data/person/{email}" ] ] .  # <- participants[].email (join to M2's <#ParticipantPerson> node)
 
 # ---------------------------------------------------------------------------
 # M3 — Organisation (participant)  (opda:Organisation)  iterator: participants[*]
@@ -232,6 +268,22 @@
 #   Roles WITHOUT a dedicated OPDA class (e.g. "Seller's Conveyancer", "Estate
 #   Agent") are NOT role-typed here — a conveyancer is already carried as an
 #   opda:Organisation by M3. Documented candidly in README.
+#
+#   opda:roleNotation (domain opda:RoleMixin, range skos:Concept) — REOPENED
+#   2026-07-05: the prior session's gap sweep bucketed this with the
+#   founds/playedBy/plays UFO connectives as "design-time-only," which
+#   contradicts its own rdfs:comment ("the notation surface BASPI5 and other
+#   JSON-based overlays consume"). Both opda:Seller and opda:Buyer are
+#   rdfs:subClassOf opda:RoleMixin (confirmed in opda-agent.ttl) and both have
+#   a real opda-v:RoleScheme member (scheme/role/Seller, scheme/role/Buyer;
+#   confirmed present in opda-vocabularies.ttl). Since each of these two
+#   TriplesMaps is already filtered to exactly one role value, the scheme IRI
+#   is a plain rr:constant — no FNML slugify UDF needed here (that pattern is
+#   reserved for unfiltered multi-valued enums, e.g. M30). opda:Proprietor is
+#   NOT given a roleNotation here: RoleScheme has no "Proprietor" member (it
+#   is scoped to Transaction-participant roles, not registered-ownership
+#   roles), so there is nothing to point at even though the ambiguous prose
+#   elsewhere calls Proprietor a RoleMixin sub-class too.
 # ---------------------------------------------------------------------------
 <#SellerParticipant> a rr:TriplesMap ;
   rml:logicalSource [ rml:source "INSTANCE.json" ;
@@ -240,14 +292,18 @@
   rr:subjectMap [ rr:template "https://opda.org.uk/pdtf/harness/data/seller/{email}" ;
                   rr:class opda:Seller ] ;
   rr:predicateObjectMap [ rr:predicate opda:sellersCapacityDetails ;
-      rr:objectMap [ rml:reference "sellersCapacity.sellersCapacityDetails" ; rr:datatype xsd:string ] ] .  # <- participants[].sellersCapacity.sellersCapacityDetails
+      rr:objectMap [ rml:reference "sellersCapacity.sellersCapacityDetails" ; rr:datatype xsd:string ] ] ;  # <- participants[].sellersCapacity.sellersCapacityDetails
+  rr:predicateObjectMap [ rr:predicate opda:roleNotation ;
+      rr:objectMap [ rr:constant <https://opda.org.uk/pdtf/scheme/role/Seller> ] ] .  # <- participants[].role == "Seller" (filter-constant; see block comment above)
 
 <#BuyerParticipant> a rr:TriplesMap ;
   rml:logicalSource [ rml:source "INSTANCE.json" ;
                       rml:referenceFormulation ql:JSONPath ;
                       rml:iterator "$.participants[?(@.role==\"Buyer\")]" ] ;
   rr:subjectMap [ rr:template "https://opda.org.uk/pdtf/harness/data/buyer/{email}" ;
-                  rr:class opda:Buyer ] .
+                  rr:class opda:Buyer ] ;
+  rr:predicateObjectMap [ rr:predicate opda:roleNotation ;
+      rr:objectMap [ rr:constant <https://opda.org.uk/pdtf/scheme/role/Buyer> ] ] .  # <- participants[].role == "Buyer" (filter-constant; see block comment above)
 
 # opda:hasParticipant (domain opda:Transaction, range opda:Seller/opda:Buyer
 #   disjunctively): mapped on M1 above, migrated from a confirmed morph-kgc
@@ -947,6 +1003,42 @@
       rr:objectMap [ rr:constant <https://opda.org.uk/pdtf/scheme/tenureKind/Commonhold> ] ] .  # <- propertyPack.ownership.ownershipsToBeTransferred[].ownershipType
 
 # ---------------------------------------------------------------------------
+# M7c — LeaseExtensionEvent (opda:LeaseExtensionEvent)
+#   iterator: ownershipsToBeTransferred[?(...)], filtered on
+#   leaseholdInformation.enfranchisement.enfranchisementSteps.yesNo=="Yes"
+#   (same filtered-iterator technique as LegalEstateTenureKindCommonhold,
+#   above, and <#SellerParticipant>'s role filter).
+#
+#   CLOSED 2026-07-05 (RML gap-closing session) — REOPENED from the prior
+#   session's "confirmed zero JSON basis" verdict, which was wrong: real
+#   hook is leaseholdInformation.enfranchisement.enfranchisementSteps
+#   (LPE1 §6.3 / TA7 §10 "Have any steps been taken by anyone to
+#   enfranchise... extend the term of the lease of the Property or
+#   anything similar?"), same iterator M7's <#LegalEstate> already uses —
+#   no cross-iterator join needed.
+#
+#   Deliberately NOT using the adjacent TA7 §10.2 sellerServedNoticeOnLandlord
+#   field (a formal notice to EITHER buy the freehold OR be granted an
+#   extended lease — the two are legally distinct actions bundled under one
+#   Yes/No) — mapping it here would risk asserting a freehold-purchase
+#   notice as a lease-extension event.
+#
+#   opda:legalBasis / opda:premiumPaid / opda:premiumCurrency /
+#   opda:updatesRegistryRecord / prov:atTime from the ratified exemplar are
+#   NOT minted — no date, premium, or registry-update field exists in this
+#   disclosure block (flag, don't fabricate).
+# ---------------------------------------------------------------------------
+<#LeaseExtensionEvent> a rr:TriplesMap ;
+  rml:logicalSource [ rml:source "INSTANCE.json" ; rml:referenceFormulation ql:JSONPath ;
+                      rml:iterator "$.propertyPack.ownership.ownershipsToBeTransferred[?(@.leaseholdInformation.enfranchisement.enfranchisementSteps.yesNo==\"Yes\")]" ] ;
+  rr:subjectMap [ rr:template "https://opda.org.uk/pdtf/harness/data/estate/{titleNumber}/leaseextension" ;
+                  rr:class opda:LeaseExtensionEvent ] ;
+  rr:predicateObjectMap [ rr:predicate opda:leaseExtensionDetails ;
+      rr:objectMap [ rml:reference "leaseholdInformation.enfranchisement.enfranchisementSteps.details" ; rr:datatype xsd:string ] ] ;  # <- propertyPack.ownership.ownershipsToBeTransferred[].leaseholdInformation.enfranchisement.enfranchisementSteps.details
+  rr:predicateObjectMap [ rr:predicate opda:appliesTo ;
+      rr:objectMap [ rr:template "https://opda.org.uk/pdtf/harness/data/estate/{titleNumber}" ] ] .  # <- propertyPack.ownership.ownershipsToBeTransferred[].titleNumber (join to M7's <#LegalEstate> node, same iterator/key)
+
+# ---------------------------------------------------------------------------
 # M8 — RegisteredTitle (ownershipsToBeTransferred[])  (opda:RegisteredTitle)
 #   opda:recordsEstate (domain RegisteredTitle, range LegalEstate — the
 #   title-to-estate join per ODR-0005 §3c) joins to M7's <#LegalEstate> node,
@@ -964,6 +1056,62 @@
       rr:objectMap [ rml:reference "titleNumber" ; rr:datatype xsd:string ] ] ;  # <- propertyPack.ownership.ownershipsToBeTransferred[].titleNumber
   rr:predicateObjectMap [ rr:predicate opda:recordsEstate ;
       rr:objectMap [ rr:template "https://opda.org.uk/pdtf/harness/data/estate/{titleNumber}" ] ] .  # <- propertyPack.ownership.ownershipsToBeTransferred[].titleNumber (join to M7's <#LegalEstate>, same iterator/key)
+
+# ---------------------------------------------------------------------------
+# M8a — opda:identifiesSameProperty (RegisteredTitle/LegalEstate -> Property)
+#   CLOSED 2026-07-05 (RML gap-closing session) — REOPENED from the prior
+#   session's "no source data anywhere" verdict, which conflated this
+#   STRUCTURAL join predicate with opda:digest (a genuinely data-absent
+#   literal). identifiesSameProperty needs no JSON leaf value at all — just
+#   a co-reference edge between two nodes already minted from the same
+#   instance, keyed on titleNumber + uprn.
+#
+#   EMPIRICAL PROBE (2026-07-05), because M8/M7's own iterator
+#   ($.propertyPack.ownership.ownershipsToBeTransferred[*]) cannot reach
+#   uprn (a PARENT-level sibling field, not present on the array item
+#   itself) via any relative reference:
+#     - Absolute JSONPath reference ("$.propertyPack.uprn") evaluated from
+#       WITHIN a nested iterator: FAILS — resolves to nothing, confirmed
+#       with a scratch mapping + RMLMapper 8.1.0 directly (both a bare
+#       rml:reference and one embedded in an rr:template placeholder).
+#     - rr:parentTriplesMap + rr:joinCondition using an absolute rr:child
+#       path: FAILS identically (same absolute-path-from-nested-context
+#       limitation applies to join conditions too).
+#     - WORKING technique (used below): iterate at the ROOT ($, same as M1's
+#       <#Transaction>) instead of the nested array, and reach BOTH
+#       propertyPack.uprn (a scalar) AND
+#       propertyPack.ownership.ownershipsToBeTransferred[*].titleNumber (an
+#       array-projected placeholder) as plain relative references from that
+#       shared root scope — exactly the technique <#Transaction>'s own
+#       opda:concernsProperty/opda:concerns predicateObjectMaps already use.
+#       Verified safe against the M33 cross-product warning (multiple
+#       array-projected placeholders in ONE TriplesMap): each TriplesMap
+#       below has exactly ONE varying (array-projected) placeholder, on the
+#       SUBJECT rather than an object map — a new placement, empirically
+#       re-tested (not assumed from the object-map precedent) against both
+#       01-conformant-full (1 title) and 03-multi-participant (1 title) —
+#       one correct triple each, no cross-contamination.
+#
+#   opda:Address is NOT given an identifiesSameProperty edge here: no
+#   opda:Address node is minted anywhere in this mapping (M1's own comment —
+#   no opda: predicate exists for a postal address at all) — a real,
+#   pre-existing, separate scope boundary, not a regression.
+# ---------------------------------------------------------------------------
+<#TitleIdentifiesSameProperty> a rr:TriplesMap ;
+  rml:logicalSource [ rml:source "INSTANCE.json" ;
+                      rml:referenceFormulation ql:JSONPath ;
+                      rml:iterator "$" ] ;
+  rr:subjectMap [ rr:template "https://opda.org.uk/pdtf/harness/data/title/{propertyPack.ownership.ownershipsToBeTransferred[*].titleNumber}" ] ;
+  rr:predicateObjectMap [ rr:predicate opda:identifiesSameProperty ;
+      rr:objectMap [ rr:template "https://opda.org.uk/pdtf/harness/data/property/{propertyPack.uprn}" ] ] .  # <- propertyPack.uprn (join to M4's <#Property> node)
+
+<#EstateIdentifiesSameProperty> a rr:TriplesMap ;
+  rml:logicalSource [ rml:source "INSTANCE.json" ;
+                      rml:referenceFormulation ql:JSONPath ;
+                      rml:iterator "$" ] ;
+  rr:subjectMap [ rr:template "https://opda.org.uk/pdtf/harness/data/estate/{propertyPack.ownership.ownershipsToBeTransferred[*].titleNumber}" ] ;
+  rr:predicateObjectMap [ rr:predicate opda:identifiesSameProperty ;
+      rr:objectMap [ rr:template "https://opda.org.uk/pdtf/harness/data/property/{propertyPack.uprn}" ] ] .  # <- propertyPack.uprn (join to M4's <#Property> node)
 
 # ---------------------------------------------------------------------------
 # M9 — RegisteredTitle + LegalEstate (titlesToBeSold[])
@@ -1133,7 +1281,9 @@
   rr:predicateObjectMap [ rr:predicate opda:mediates ;
       rr:objectMap [ rr:template "https://opda.org.uk/pdtf/harness/data/org/{legalOwners.namesOfLegalOwners[3].organisationName}" ] ] ;
   rr:predicateObjectMap [ rr:predicate opda:mediates ;
-      rr:objectMap [ rr:template "https://opda.org.uk/pdtf/harness/data/person/{legalOwners.namesOfLegalOwners[3].firstName}-{legalOwners.namesOfLegalOwners[3].lastName}" ] ] .
+      rr:objectMap [ rr:template "https://opda.org.uk/pdtf/harness/data/person/{legalOwners.namesOfLegalOwners[3].firstName}-{legalOwners.namesOfLegalOwners[3].lastName}" ] ] ;
+  rr:predicateObjectMap [ rr:predicate opda:hasRegisteredTitle ;
+      rr:objectMap [ rr:template "https://opda.org.uk/pdtf/harness/data/title/{ownership.ownershipsToBeTransferred[0].titleNumber}" ] ] .  # <- propertyPack.ownership.ownershipsToBeTransferred[0].titleNumber (CLOSED 2026-07-05: same iterator as opda:mediates above — $.propertyPack — so ownership.ownershipsToBeTransferred[0] is a plain sibling bracket-index reference, the same technique M11b already proved for legalOwners.namesOfLegalOwners[N]; joins to <#OwnershipTitle>'s opda:RegisteredTitle node. Bounded to the first title in the array, matching this Proprietorship's own single-Proprietorship-per-instance scope.)
 # ---------------------------------------------------------------------------
 # M12 — Occupiers record (UNTYPED)  iterator: occupiers.othersAged17OrOver
 #   Carries opda:aged17OrOverNames and opda:hasOthersAged17OrOver. A1's index
@@ -1977,13 +2127,27 @@
   rr:subjectMap [ rr:template "https://opda.org.uk/pdtf/harness/data/riskassessment/property-{uprn}/peril/Climate-{environmentalIssues.climate.climateRisk.riskIndicator}/run" ;
                   rr:class prov:Activity ] .
 
-# M25 — typeOfConstruction.buildingSafety.potentialCost: NOT mapped. rdfs:range
-#   is opda:MonetaryAmount, but the real JSON field is free text (type:
-#   string, "What will the potential cost be?" — no numeric constraint at
-#   all). A ratified, pre-existing tension (council session-028 Q3; see the
-#   term's own rdfs:comment), not something RML can bridge without
-#   fabricating a numeric parse of free text. Left as a genuine, documented
-#   gap — same shape as M14/M18/M20's gaps above.
+# M25 — typeOfConstruction.buildingSafety.potentialCost: CLOSED 2026-07-05
+#   (RML gap-closing session) by an ONTOLOGY fix, not an RML technique.
+#   Council session-028 Q3 (ODR-0024 R3) had swept this into the monetary
+#   walk as opda:MonetaryAmount alongside ~17 genuinely numeric sibling
+#   leaves (annualGroundRent, rent, securityDeposit, etc. — all schema
+#   `type: number`) — a batch decision that never individually re-checked
+#   this ONE field's own schema type. Re-verified directly against the v3
+#   schema: potentialCost is `type: string` ("What will the potential cost
+#   be?", free text, no numeric constraint) — confirmed the sole outlier
+#   among its ~17 monetary-walk siblings. Retargeted rdfs:range
+#   opda:MonetaryAmount -> xsd:string in the generator (descriptive.py,
+#   moved from _walk_monetary to _walk_r5); mapped as a plain string
+#   reference below, same as any other Property-borne disclosure field.
+#
+<#PotentialCost> a rr:TriplesMap ;
+  rml:logicalSource [ rml:source "INSTANCE.json" ;
+                      rml:referenceFormulation ql:JSONPath ;
+                      rml:iterator "$.propertyPack" ] ;
+  rr:subjectMap [ rr:template "https://opda.org.uk/pdtf/harness/data/property/{uprn}" ] ;
+  rr:predicateObjectMap [ rr:predicate opda:potentialCost ;
+      rr:objectMap [ rml:reference "typeOfConstruction.buildingSafety.potentialCost" ; rr:datatype xsd:string ] ] .  # <- propertyPack.typeOfConstruction.buildingSafety.potentialCost
 #
 # M26 — surveys[].misc.constructionType, localSearches
 #   buildingControlStartDate/planningStartDate: already documented as genuine
@@ -2039,9 +2203,9 @@
 #       test fixture (not required by any remaining limitation — a fixture-
 #       coverage choice now, not an engine constraint) — this branch's
 #       correctness is proven both via scratch instance and this re-test.
-#   NOT mapped in this batch: opda:numberOfSellers/opda:numberOfNonUkResidentSellers
-#   (domain opda:Proprietorship) remain a genuine, SEPARATE gap even now that
-#   M11b mints a real Proprietorship node — see M27f, below.
+#   opda:numberOfSellers/opda:numberOfNonUkResidentSellers — CLOSED
+#   2026-07-05, see M27f below (domain retargeted to opda:Transaction, not
+#   mapped here on Proprietorship).
 # ---------------------------------------------------------------------------
 <#CertificateOfComplianceFeeAmount> a rr:TriplesMap ;
   rml:logicalSource [ rml:source "INSTANCE.json" ;
@@ -2109,23 +2273,23 @@
   rr:predicateObjectMap [ rr:predicate opda:reference ;
       rr:objectMap [ rml:reference "leaseholdInformation.contactDetails.contacts.landlord.bankDetails.reference" ; rr:datatype xsd:string ] ] .  # <- …leaseholdInformation.contactDetails.contacts.landlord.bankDetails.reference
 
-# M27f — opda:numberOfSellers / opda:numberOfNonUkResidentSellers (domain
-#   opda:Proprietorship): STILL NOT mapped, even after M11b resolved the
-#   Proprietorship/opda:mediates conditional-minting gap (2026-07-05). Original
-#   concern (mint a Proprietorship keyed on uprn with just these two counts,
-#   caught by ProprietorshipMediationShape's opda:mediates sh:minCount 2) no
-#   longer applies mechanically — M11b's <#Proprietorship> node is keyed on
-#   the SAME uprn and could in principle carry these two predicateObjectMaps
-#   directly. NOT added here anyway because the schema's own field
-#   description makes these a genuinely DIFFERENT concept from legal
-#   ownership: "This may differ from the number of legal owners, for example
-#   if the property is being sold by executors of a deceased owner"
-#   ($.propertyPack.ownership.numberOfSellers). Binding a sellers-count onto
-#   a Relator whose opda:mediates edges are legal-OWNERSHIP bearers would be
-#   a real, silent domain conflation, not the same class of gap M11b closed.
-#   Left as a genuine, documented gap pending a design that distinguishes
-#   "seller" from "legal owner" (a different Role, per opda:Seller vs
-#   opda:Proprietor already existing as distinct classes in this mapping).
+# M27f — opda:numberOfSellers / opda:numberOfNonUkResidentSellers: CLOSED
+#   2026-07-05 by an ontology fix, not an RML technique. The prior finding
+#   correctly identified a real domain conflation (the schema's own field
+#   description — "This may differ from the number of legal owners, for
+#   example if the property is being sold by executors of a deceased owner"
+#   — makes these a sales-context count, not a legal-ownership count) but
+#   left it as a permanent gap. Re-verified against the ontology generator's
+#   OWN source comment (tools/opda-gen/.../modules/agent.py), which had
+#   already flagged this exact domain choice as uncertain ("FLAG:
+#   ownership-aggregate count; placed on opda:Proprietorship") — the
+#   ambiguity was real on both sides, not settled. Resolution: rdfs:domain
+#   retargeted opda:Proprietorship -> opda:Transaction (which already founds
+#   the Seller role-group via opda:founds/opda:hasParticipant) in agent.py;
+#   SHACL domain shapes auto-regenerated; mapped as plain scalar
+#   predicateObjectMaps on M1's <#Transaction> TriplesMap, above (same
+#   iterator, $ -> propertyPack.ownership.numberOfSellers /
+#   .numberOfNonUkResidentSellers, no join needed).
 
 # M30 — the M28/M29 cluster, closed via RML-FNML (mapping/opda-udfs.py).
 #   Every property below has rdfs:range skos:Concept but sits in a single,
@@ -2925,4 +3089,144 @@
   rr:subjectMap [ rr:template "https://opda.org.uk/pdtf/harness/data/property/{uprn}" ] ;
   rr:predicateObjectMap [ rr:predicate opda:hasSurvey ;
       rr:objectMap [ rr:template "https://opda.org.uk/pdtf/harness/data/survey/{surveys[*].misc.reportDate}" ] ] .  # <- propertyPack.surveys[] (array-projected reference join, same M15/hasRoomDimension idiom); not exercised by testdata/01-04 (same caveat as M18)
+
+# ---------------------------------------------------------------------------
+# M36 — VerifiedClaims evidence: opda:evidenceType / opda:digest /
+#   opda:attestedBy (opda:Evidence, opda:Verifier)
+#   Logical source: VERIFIED_CLAIMS.json (a SECOND document, harness/
+#   run_mapping.py's optional --verified-claims flag) — the real, separate
+#   `verifiedClaims/pdtf-verified-claims.json` schema (OIDC4IDA-shaped,
+#   correlated to a PDTF transaction via its own `transactionId` field).
+#
+#   REOPENED 2026-07-05, correcting this session's own earlier verdict.
+#   These four predicates were confirmed "out of ODR-0035's single-PDTF-
+#   instance mapping scope" because the real value-space genuinely does not
+#   occur in pdtf-transaction.json — TRUE — but "out of scope" was this
+#   mapping's own harness limitation (a single-file `INSTANCE.json` staging
+#   mechanism), not a fact about the data. verifiedClaims.json is not
+#   fictional or aspirational: it is a real PDTF schema, its own
+#   `transactionId`/`verifier.txn` fields are DESIGNED to correlate it back
+#   to a transaction, and ODR-0035 itself only scopes to "PDTF v3" generally
+#   (`scope: [pdtf-v3]` in its frontmatter) — it never says "transaction
+#   schema only." Per the user's explicit steer: the JSON schema is
+#   invariant (this data is real and always will be); the mapping's own
+#   tooling scope is not, and was the actual limitation here.
+#
+#   Extended harness/run_mapping.py with an optional `--verified-claims`
+#   arg, staging a second symlink `VERIFIED_CLAIMS.json` alongside
+#   `INSTANCE.json` (both engine-recognised `rml:source` filenames within
+#   the same mapping). Test fixture:
+#   testdata/verified-claims-01.json, transactionId correlated to
+#   01-conformant-full's own transactionId.
+#
+#   FIXED-INDEX keying (`verification.evidence[0]`), not array-projection.
+#   `verification.evidence[]` is schema `minItems: 1` — binding only the
+#   FIRST evidence occurrence is a documented simplification (same
+#   "binds only the first X" precedent as M9's titlesToBeSold[0] address
+#   join, ADR-0057), not a correctness bug: a real multi-evidence bundle's
+#   2nd+ items are simply not reached, no fabrication either way. This also
+#   sidesteps M33's own documented cross-product hazard (RMLMapper does not
+#   zip multiple array-projected placeholders in one TriplesMap) — every
+#   placeholder here is either the *outer* iterator's own scalar
+#   (`transactionId`) or a *fixed*-index dotted path (`evidence[0].type`,
+#   never `evidence[*].type`), so no array projection occurs at all.
+#
+#   opda:evidenceType — the source enum (document/electronic_record/vouch,
+#   OIDC4IDA snake_case) does NOT textually match opda:EvidenceMethodScheme's
+#   notations (Document/Electronic-Record/Vouch, PDTF's own Title-Case-
+#   hyphenated convention) — confirmed by inspection, not assumed; the M30
+#   generic scheme_member_iri UDF (a naive slugifier: keeps alnum/-/_/.,
+#   does not capitalise or turn "_" into "-") would NOT produce a matching
+#   IRI. Used 3 filtered TriplesMaps + rr:constant instead — the same
+#   SellerCapacity* explicit-per-value pattern already proven in M3c, above,
+#   for exactly this class of "values don't share a mechanical transform"
+#   problem.
+#
+#   opda:digest — constructed as `{alg}:{value}` via rr:template +
+#   rr:termType rr:Literal (verified empirically: this combination DOES
+#   produce a literal object, not the default IRI termType template
+#   normally carries) — matching the property's own rdfs:comment example
+#   format verbatim ("algorithm + value, e.g. 'sha256:e3b0...'"). Sourced
+#   from evidence[0].attachments[0].digest — a real field on the shared
+#   `attachments`/`external_attachment` definition, common to all 3 evidence
+#   types, not just vouch.
+#
+#   opda:attestedBy — Vouch-only (filtered iterator), per
+#   EvidenceFacetShape's sh:or (opda:evidenceType 'Vouch' MUST carry
+#   opda:attestedBy a prov:Agent). Sourced from
+#   evidence[0].attestation.voucher.name — the human voucher, per
+#   opda:Verifier's own comment ("a human voucher a prov:Person").
+#
+#   opda:Verifier — mints the verifying ORGANISATION (evidence[0].verifier.
+#   organization, present across all 3 branches) as a prov:Organization
+#   co-typed opda:Verifier. The full qualified-attribution edge back to the
+#   Evidence node (prov:qualifiedAttribution -> prov:Attribution ->
+#   prov:agent/prov:hadRole, per opda:Verifier's own rdfs:comment) is NOT
+#   built here — minting the class instance with real data is the honest,
+#   achievable increment; the qualified-attribution join is a real,
+#   separate, more involved follow-on (a blank-node PROV-O pattern this
+#   mapping has no existing precedent for), left as a documented next step,
+#   not silently skipped.
+#
+#   Verified empirically against testdata/verified-claims-01.json +
+#   01-conformant-full.json (correlated by transactionId): materialises
+#   opda:evidenceType (Vouch), opda:digest ("sha256:e3b0..."), opda:attestedBy
+#   (-> Person node "Priya Nandakumar"), opda:Verifier (-> Organization node
+#   "OPDA Identity Checks Ltd"). SHACL CONFORMS against opda-shapes-merged.ttl.
+# ---------------------------------------------------------------------------
+<#VerifiedClaimsEvidenceDocument> a rr:TriplesMap ;
+  rml:logicalSource [ rml:source "VERIFIED_CLAIMS.json" ;
+                      rml:referenceFormulation ql:JSONPath ;
+                      rml:iterator "$.verified_claims[?(@.verification.evidence[0].type==\"document\")]" ] ;
+  rr:subjectMap [ rr:template "https://opda.org.uk/pdtf/harness/data/evidence/{transactionId}" ;
+                  rr:class opda:Evidence ] ;
+  rr:predicateObjectMap [ rr:predicate opda:evidenceType ;
+      rr:objectMap [ rr:constant <https://opda.org.uk/pdtf/scheme/evidenceMethod/Document> ] ] .
+
+<#VerifiedClaimsEvidenceElectronicRecord> a rr:TriplesMap ;
+  rml:logicalSource [ rml:source "VERIFIED_CLAIMS.json" ;
+                      rml:referenceFormulation ql:JSONPath ;
+                      rml:iterator "$.verified_claims[?(@.verification.evidence[0].type==\"electronic_record\")]" ] ;
+  rr:subjectMap [ rr:template "https://opda.org.uk/pdtf/harness/data/evidence/{transactionId}" ;
+                  rr:class opda:Evidence ] ;
+  rr:predicateObjectMap [ rr:predicate opda:evidenceType ;
+      rr:objectMap [ rr:constant <https://opda.org.uk/pdtf/scheme/evidenceMethod/Electronic-Record> ] ] .
+
+<#VerifiedClaimsEvidenceVouch> a rr:TriplesMap ;
+  rml:logicalSource [ rml:source "VERIFIED_CLAIMS.json" ;
+                      rml:referenceFormulation ql:JSONPath ;
+                      rml:iterator "$.verified_claims[?(@.verification.evidence[0].type==\"vouch\")]" ] ;
+  rr:subjectMap [ rr:template "https://opda.org.uk/pdtf/harness/data/evidence/{transactionId}" ;
+                  rr:class opda:Evidence ] ;
+  rr:predicateObjectMap [ rr:predicate opda:evidenceType ;
+      rr:objectMap [ rr:constant <https://opda.org.uk/pdtf/scheme/evidenceMethod/Vouch> ] ] ;
+  rr:predicateObjectMap [ rr:predicate opda:attestedBy ;
+      rr:objectMap [ rr:template "https://opda.org.uk/pdtf/harness/data/person/voucher-{verification.evidence[0].attestation.voucher.name}" ] ] .  # <- verification.evidence[0].attestation.voucher.name
+
+<#VerifiedClaimsVoucher> a rr:TriplesMap ;
+  rml:logicalSource [ rml:source "VERIFIED_CLAIMS.json" ;
+                      rml:referenceFormulation ql:JSONPath ;
+                      rml:iterator "$.verified_claims[?(@.verification.evidence[0].type==\"vouch\")]" ] ;
+  rr:subjectMap [ rr:template "https://opda.org.uk/pdtf/harness/data/person/voucher-{verification.evidence[0].attestation.voucher.name}" ;
+                  rr:class prov:Person ] ;
+  rr:predicateObjectMap [ rr:predicate rdf:type ;
+      rr:objectMap [ rr:constant prov:Agent ] ] .  # opda:attestedByRangeShape is closed-world (ODR-0029 R3, never inferred) — needs a direct prov:Agent type, not just prov:Person (which is NOT itself asserted rdfs:subClassOf prov:Agent for this check's purposes)
+
+<#VerifiedClaimsDigest> a rr:TriplesMap ;
+  rml:logicalSource [ rml:source "VERIFIED_CLAIMS.json" ;
+                      rml:referenceFormulation ql:JSONPath ;
+                      rml:iterator "$.verified_claims[*]" ] ;
+  rr:subjectMap [ rr:template "https://opda.org.uk/pdtf/harness/data/evidence/{transactionId}" ] ;
+  rr:predicateObjectMap [ rr:predicate opda:digest ;
+      rr:objectMap [ rr:template "{verification.evidence[0].attachments[0].digest.alg}:{verification.evidence[0].attachments[0].digest.value}" ;
+                     rr:termType rr:Literal ; rr:datatype xsd:string ] ] .  # <- verification.evidence[0].attachments[0].digest.{alg,value}
+
+<#VerifiedClaimsVerifierOrg> a rr:TriplesMap ;
+  rml:logicalSource [ rml:source "VERIFIED_CLAIMS.json" ;
+                      rml:referenceFormulation ql:JSONPath ;
+                      rml:iterator "$.verified_claims[*]" ] ;
+  rr:subjectMap [ rr:template "https://opda.org.uk/pdtf/harness/data/org/verifier-{verification.evidence[0].verifier.organization}" ;
+                  rr:class opda:Verifier ] ;
+  rr:predicateObjectMap [ rr:predicate rdf:type ;
+      rr:objectMap [ rr:constant prov:Organization ] ] .  # <- verification.evidence[0].verifier.organization (co-typed prov:Organization per opda:Verifier's own rdfs:comment)
 

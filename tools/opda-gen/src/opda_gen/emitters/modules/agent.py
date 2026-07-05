@@ -781,12 +781,39 @@ def build_graph() -> Graph:
     #     No opda:BankAccount Substance Kind is minted — these are flat
     #     attributes of the contact organisation; a dedicated account object
     #     would be speculative for a 4-leaf cluster.
-    #   - numberOfSellers / numberOfNonUkResidentSellers: placed on
-    #     opda:Proprietorship (the Relator mediating the owner-set whose
-    #     cardinality they report); they sit under propertyPack.ownership.
+    #   - numberOfSellers / numberOfNonUkResidentSellers: RETARGETED to
+    #     opda:Transaction (2026-07-05, resolving this flag). Re-verified
+    #     against the RML gap-closing sweep: the field's own schema
+    #     description ("This may differ from the number of legal owners, for
+    #     example if the property is being sold by executors of a deceased
+    #     owner") confirms these are a SALES-context aggregate, not a
+    #     legal-ownership aggregate — binding them onto opda:Proprietorship
+    #     (whose opda:mediates edges name the registered legal owners) would
+    #     silently conflate the two. opda:Transaction already founds the
+    #     Seller role-group (opda:founds / opda:hasParticipant) and is the
+    #     natural bearer of a seller-count aggregate; they still sit under
+    #     propertyPack.ownership.
     #   - name: domain-less — 46 polysemous occurrences (participant / school /
     #     road / contract-template / health-care / plan name); a single shared
     #     naming property, no rigid bearer Kind.
+    #   - formerName / currentName / previousName / newName (2026-07-05,
+    #     RML gap-closing session): CLOSE a "ratified but never implemented"
+    #     gap — the ratified exemplar person-with-name-change.ttl already
+    #     uses all four, but none were ever declared. Real JSON hook:
+    #     participants[].name.maidenName (former surname) / .lastName
+    #     (current surname). Scoped to SURNAME ONLY, not a constructed full
+    #     name — the source data only ever tells us a marriage-style surname
+    #     change happened, never that the first name also changed, so
+    #     asserting formerName/currentName as {firstName} {lastName}
+    #     concatenations would fabricate a first-name-inclusive claim the
+    #     data doesn't support. formerName/currentName sit on the persistent
+    #     opda:Person (its current descriptive state); previousName/newName
+    #     sit on the opda:NameChangeEvent (the activity's own record of what
+    #     changed) — non-redundant per the exemplar's own PROV-O framing,
+    #     both honestly populable from the same two source fields.
+    #     opda:nameChangeDate / opda:nameChangeMechanism from the exemplar
+    #     are DELIBERATELY NOT minted — no deed-poll/marriage-date field
+    #     exists anywhere in the schema (flag, don't fabricate).
     _walk_c_agent: list[
         tuple[URIRef, URIRef | None, URIRef, str, str, str, tuple[str, ...]]
     ] = [
@@ -860,27 +887,76 @@ def build_graph() -> Graph:
             ("participants[].sellersCapacity.sellersCapacityDetails",),
         ),
         (
-            OPDA.numberOfSellers, OPDA.Proprietorship, XSD.integer,
+            OPDA.numberOfSellers, OPDA.Transaction, XSD.integer,
             "number of sellers",
-            "Count of the selling parties in the ownership (the cardinality "
-            "of the owner-set the Proprietorship Relator mediates). Plain "
-            "integer datatype per ODR-0008 §Q5a; flat per §Q6a. (FLAG: "
-            "ownership-aggregate count; placed on opda:Proprietorship.)",
-            "The number of selling parties in the ownership — the cardinality "
-            "of the owner-set the Proprietorship mediates.",
+            "Count of the selling parties in the transaction. Plain integer "
+            "datatype per ODR-0008 §Q5a; flat per §Q6a. Domain retargeted "
+            "from opda:Proprietorship to opda:Transaction (2026-07-05, RML "
+            "gap-closing session) — the field's own schema description "
+            "('may differ from the number of legal owners, for example if "
+            "the property is being sold by executors of a deceased owner') "
+            "makes this a sales-context count, distinct from the "
+            "Proprietorship Relator's legal-ownership mediation; "
+            "opda:Transaction already founds the Seller role-group.",
+            "The number of selling parties in the transaction — a "
+            "sales-context count that may differ from the cardinality of "
+            "the registered legal-owner set.",
             ("propertyPack.ownership.numberOfSellers",),
         ),
         (
-            OPDA.numberOfNonUkResidentSellers, OPDA.Proprietorship, XSD.integer,
+            OPDA.numberOfNonUkResidentSellers, OPDA.Transaction, XSD.integer,
             "number of non-UK-resident sellers",
             "Count of selling parties who are non-UK-resident (relevant to "
             "SDLT / withholding). Plain integer datatype per ODR-0008 §Q5a; "
-            "flat per §Q6a. (FLAG: ownership-aggregate count; placed on "
-            "opda:Proprietorship.)",
-            "The number of selling parties in the ownership who are not "
-            "resident in the UK — a subset of the owner-set bearing on tax "
-            "and withholding obligations.",
+            "flat per §Q6a. Domain retargeted from opda:Proprietorship to "
+            "opda:Transaction (2026-07-05, RML gap-closing session) — same "
+            "sales-context-vs-legal-ownership reasoning as "
+            "opda:numberOfSellers, above.",
+            "The number of selling parties in the transaction who are not "
+            "resident in the UK — a subset of the sales-context seller count "
+            "bearing on tax and withholding obligations.",
             ("propertyPack.ownership.numberOfNonUkResidentSellers",),
+        ),
+        (
+            OPDA.formerName, OPDA.Person, XSD.string, "former name",
+            "A Person's surname before a marriage-style name change (ODR-0006 "
+            "§Q1 name-change hard case). Plain string datatype per ODR-0008 "
+            "§Q5a; flat per §Q6a. Scoped to surname, not a constructed full "
+            "name (see the ambiguous-domains note above this list).",
+            "The surname a Person held before a marriage-style name change, "
+            "preserved alongside their current surname per the name-change "
+            "identity-persistence rule.",
+            ("participants[].name.maidenName",),
+        ),
+        (
+            OPDA.currentName, OPDA.Person, XSD.string, "current name",
+            "A Person's current surname, asserted alongside opda:formerName "
+            "when a marriage-style name change is on record (ODR-0006 §Q1). "
+            "Plain string datatype per ODR-0008 §Q5a; flat per §Q6a.",
+            "The surname a Person currently holds, asserted alongside their "
+            "former surname when a name change is on record.",
+            ("participants[].name.lastName",),
+        ),
+        (
+            OPDA.previousName, OPDA.NameChangeEvent, XSD.string,
+            "previous name",
+            "The surname the opda:NameChangeEvent activity changed FROM — "
+            "the activity's own record of the prior state, distinct from "
+            "opda:formerName's Person-level assertion (ODR-0006 §Q1). Plain "
+            "string datatype per ODR-0008 §Q5a; flat per §Q6a.",
+            "The surname that a name-change event changed from, as the "
+            "activity's own record of the prior state.",
+            ("participants[].name.maidenName",),
+        ),
+        (
+            OPDA.newName, OPDA.NameChangeEvent, XSD.string, "new name",
+            "The surname the opda:NameChangeEvent activity changed TO — the "
+            "activity's own record of the resulting state, distinct from "
+            "opda:currentName's Person-level assertion (ODR-0006 §Q1). Plain "
+            "string datatype per ODR-0008 §Q5a; flat per §Q6a.",
+            "The surname that a name-change event changed to, as the "
+            "activity's own record of the resulting state.",
+            ("participants[].name.lastName",),
         ),
         (
             OPDA.accountName, OPDA.Organisation, XSD.string, "account name",

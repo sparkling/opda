@@ -1,0 +1,45 @@
+{
+  "verified_claims": [
+    {
+      "id": "vc-001",
+      "transactionId": "LnRdGiBUkLbnuNJ89p4CEj",
+      "schemaVersion": "3.0.0",
+      "timestamp": 1719849600000,
+      "verification": {
+        "trust_framework": "uk_pdtf",
+        "time": "2024-07-01T12:00:00Z",
+        "evidence": [
+          {
+            "type": "vouch",
+            "verifier": {
+              "organization": "OPDA Identity Checks Ltd",
+              "txn": "vouch-check-001"
+            },
+            "time": "2024-07-01T12:00:00Z",
+            "attestation": {
+              "type": "digital_attestation",
+              "reference_number": "ATT-2024-0071",
+              "voucher": {
+                "name": "Priya Nandakumar",
+                "organization": "OPDA Identity Checks Ltd"
+              }
+            },
+            "attachments": [
+              {
+                "desc": "Signed attestation record",
+                "digest": {
+                  "alg": "sha256",
+                  "value": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+                },
+                "url": "https://verify.example/attestation/ATT-2024-0071"
+              }
+            ]
+          }
+        ]
+      },
+      "claims": {
+        "name": "Peter Hetherington-Smythe"
+      }
+    }
+  ]
+}

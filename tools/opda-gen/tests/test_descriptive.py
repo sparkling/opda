@@ -237,9 +237,13 @@ def test_room_dimension_emitted() -> None:
 def test_monetary_walk_emitted() -> None:
     """ODR-0024 R3 / ADR-0005 §G22 — the monetary walk. opda:MonetaryAmount is
     a by-value structure (opda:amount magnitude + opda:currency → CurrencyScheme
-    concept) reused as the rdfs:range across 16 per-economic-kind monetary
+    concept) reused as the rdfs:range across 15 per-economic-kind monetary
     properties, each on its OWN bearer (reuse the value type, never the bearer;
-    never collapsed onto the Category-D fixtures opda:price)."""
+    never collapsed onto the Category-D fixtures opda:price). opda:potentialCost
+    was REMOVED from this walk 2026-07-05 (RML gap-closing session) — it is
+    `type: string` in the v3 schema, unlike its 15 genuinely-numeric siblings
+    here, a batch-processing oversight from the original ODR-0024 R3 pass;
+    see test_r5_followon_walk_emitted for its corrected xsd:string home."""
     g = descriptive.build_graph()
     assert (OPDA.MonetaryAmount, RDF.type, OWL.Class) in g
     assert (OPDA.amount, RDF.type, OWL.DatatypeProperty) in g
@@ -260,7 +264,6 @@ def test_monetary_walk_emitted() -> None:
         OPDA.rent: OPDA.Property,
         OPDA.holdingDeposit: OPDA.Property,
         OPDA.securityDeposit: OPDA.Property,
-        OPDA.potentialCost: OPDA.Property,
         OPDA.estimatedPrice: OPDA.Valuation,
         OPDA.estimatedAmount: OPDA.Valuation,
         OPDA.listPrice: OPDA.Valuation,

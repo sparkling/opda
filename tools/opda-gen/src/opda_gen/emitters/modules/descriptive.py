@@ -443,7 +443,6 @@ OBJECT_PROPERTIES = (
     OPDA.holdingDeposit,
     OPDA.listPrice,
     OPDA.peril,
-    OPDA.potentialCost,
     OPDA.rent,
     OPDA.securityDeposit,
     OPDA.sharedOwnershipRent,
@@ -500,6 +499,7 @@ DATATYPE_PROPERTIES = (
     OPDA.orderDate,
     OPDA.otherRating,
     OPDA.planningStartDate,
+    OPDA.potentialCost,
     OPDA.price,
     OPDA.pricingMethodology,
     OPDA.productCode,
@@ -1926,15 +1926,6 @@ def build_graph() -> Graph:
             "(ODR-0024 R3); flat per §Q6a.",
             ("propertyPack.lettingInformation.securityDeposit",),
         ),
-        (
-            OPDA.potentialCost, OPDA.Property, "potential cost",
-            "Potential remediation cost in the Property's building-safety "
-            "disclosure (council session-028 Q3 re-filed this monetary leaf "
-            "from free-text to the monetary walk; the data-dictionary source "
-            "is free text, so the magnitude is best-effort). Bearer "
-            "opda:Property. → opda:MonetaryAmount (ODR-0024 R3); flat per §Q6a.",
-            ("propertyPack.typeOfConstruction.buildingSafety.potentialCost",),
-        ),
         # --- Valuation-borne (comparable + estimate pricing) --------------
         (
             OPDA.estimatedPrice, OPDA.Valuation, "estimated price",
@@ -2075,6 +2066,22 @@ def build_graph() -> Graph:
             ("propertyPack.nearbyFacilities.schools[].ofstedRating",),
         ),
         # --- Property-borne Yes/No / disclosure flags (xsd:string) --------
+        (
+            OPDA.potentialCost, OPDA.Property, XSD.string, "potential cost",
+            "Free-text estimate of the potential remediation cost in the "
+            "Property's building-safety disclosure ('What will the potential "
+            "cost be?', BASPI/TA7). RANGE CORRECTED 2026-07-05 (RML "
+            "gap-closing session): council session-028 Q3 (ODR-0024 R3) had "
+            "swept this into the monetary walk as opda:MonetaryAmount "
+            "alongside ~17 genuinely numeric sibling leaves "
+            "(annualGroundRent, rent, securityDeposit, etc. — all schema "
+            "`type: number`), without re-checking this ONE field's own "
+            "schema type individually; it is `type: string` in the v3 "
+            "schema (confirmed by direct inspection), a genuinely different "
+            "shape from its monetary-walk siblings, not a best-effort "
+            "magnitude extractable from free text. Flat per §Q6a.",
+            ("propertyPack.typeOfConstruction.buildingSafety.potentialCost",),
+        ),
         (
             OPDA.hasLift, OPDA.Property, XSD.string, "has lift",
             "Whether the Property (building) has a lift. Yes/No disclosure; "

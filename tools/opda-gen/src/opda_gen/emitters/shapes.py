@@ -1341,6 +1341,31 @@ def build_agent_shapes() -> Graph:
         lang="en",
     )))
 
+    # --- opda:appliesTo co-domain shape (2026-07-05, RML gap-closing) ---
+    # Same "any-of" pattern as FoundsRangeShape, above: opda:appliesTo
+    # (minted this session in property.py) carries documentary multi-range
+    # rdfs:range opda:Person , opda:LegalEstate; the object-property-coverage
+    # CI gate requires a matching SHACL sh:or authoritative dual (ODR-0032
+    # §Confirmation limb (b) inverted; ADR-0049 Q1). Person and LegalEstate
+    # are siblings, neither a subclass of the other, so sh:or is required
+    # (not a single sh:class).
+    g.add((OPDA_SHAPE.AppliesToRangeShape, RDF.type, SH.NodeShape))
+    g.add((OPDA_SHAPE.AppliesToRangeShape, SH.targetObjectsOf, OPDA.appliesTo))
+    g.add((OPDA_SHAPE.AppliesToRangeShape, SH["or"],
+           _sh_class_or(g, [OPDA.Person, OPDA.LegalEstate])))
+    g.add((OPDA_SHAPE.AppliesToRangeShape, SH.severity, SH.Violation))
+    g.add((OPDA_SHAPE.AppliesToRangeShape, DCTERMS.source, _ODR_0005_S3B))
+    g.add((OPDA_SHAPE.AppliesToRangeShape, SH.message, Literal(
+        "opda:appliesTo is the provenance-activity-to-subject-entity join: "
+        "every object of opda:appliesTo MUST be an opda:Person (a "
+        "NameChangeEvent's subject) OR an opda:LegalEstate (a "
+        "LeaseExtensionEvent's subject). This sh:or is the AUTHORITATIVE "
+        "co-domain disjunction; opda:appliesTo also carries documentary "
+        "\"any-of\" rdfs:range opda:Person , opda:LegalEstate (read "
+        "disjunctively, never entailed — ADR-0035).",
+        lang="en",
+    )))
+
     # Subject-guard for the relator spine — founds + mediates subjects MUST be
     # opda:Relator (one shape carrying both sh:targetSubjectsOf declarations).
     _spine_subj = BNode()

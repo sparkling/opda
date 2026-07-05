@@ -124,6 +124,16 @@ opda:aged17OrOverNames
     rdfs:isDefinedBy <https://opda.org.uk/pdtf/graph/agent> ;
     rdfs:range xsd:string .
 
+opda:currentName
+    rdf:type owl:DatatypeProperty ;
+    rdfs:label "current name"@en ;
+    rdfs:comment "A Person's current surname, asserted alongside opda:formerName when a marriage-style name change is on record (ODR-0006 §Q1). Plain string datatype per ODR-0008 §Q5a; flat per §Q6a."@en ;
+    skos:definition "The surname a Person currently holds, asserted alongside their former surname when a name change is on record."@en ;
+    dct:source <https://opda.org.uk/pdtf/harness/data-dictionary/participants[].name.lastName> ;
+    rdfs:domain opda:Person ;
+    rdfs:isDefinedBy <https://opda.org.uk/pdtf/graph/agent> ;
+    rdfs:range xsd:string .
+
 opda:dateOfBirth
     rdf:type owl:DatatypeProperty ;
     rdfs:label "date of birth"@en ;
@@ -133,6 +143,16 @@ opda:dateOfBirth
     rdfs:domain opda:Person ;
     rdfs:isDefinedBy <https://opda.org.uk/pdtf/graph/agent> ;
     rdfs:range xsd:date .
+
+opda:formerName
+    rdf:type owl:DatatypeProperty ;
+    rdfs:label "former name"@en ;
+    rdfs:comment "A Person's surname before a marriage-style name change (ODR-0006 §Q1 name-change hard case). Plain string datatype per ODR-0008 §Q5a; flat per §Q6a. Scoped to surname, not a constructed full name (see the ambiguous-domains note above this list)."@en ;
+    skos:definition "The surname a Person held before a marriage-style name change, preserved alongside their current surname per the name-change identity-persistence rule."@en ;
+    dct:source <https://opda.org.uk/pdtf/harness/data-dictionary/participants[].name.maidenName> ;
+    rdfs:domain opda:Person ;
+    rdfs:isDefinedBy <https://opda.org.uk/pdtf/graph/agent> ;
+    rdfs:range xsd:string .
 
 opda:hasOthersAged17OrOver
     rdf:type owl:DatatypeProperty ;
@@ -163,23 +183,33 @@ opda:name
     rdfs:isDefinedBy <https://opda.org.uk/pdtf/graph/agent> ;
     rdfs:range xsd:string .
 
+opda:newName
+    rdf:type owl:DatatypeProperty ;
+    rdfs:label "new name"@en ;
+    rdfs:comment "The surname the opda:NameChangeEvent activity changed TO — the activity's own record of the resulting state, distinct from opda:currentName's Person-level assertion (ODR-0006 §Q1). Plain string datatype per ODR-0008 §Q5a; flat per §Q6a."@en ;
+    skos:definition "The surname that a name-change event changed to, as the activity's own record of the resulting state."@en ;
+    dct:source <https://opda.org.uk/pdtf/harness/data-dictionary/participants[].name.lastName> ;
+    rdfs:domain opda:NameChangeEvent ;
+    rdfs:isDefinedBy <https://opda.org.uk/pdtf/graph/agent> ;
+    rdfs:range xsd:string .
+
 opda:numberOfNonUkResidentSellers
     rdf:type owl:DatatypeProperty ;
     rdfs:label "number of non-UK-resident sellers"@en ;
-    rdfs:comment "Count of selling parties who are non-UK-resident (relevant to SDLT / withholding). Plain integer datatype per ODR-0008 §Q5a; flat per §Q6a. (FLAG: ownership-aggregate count; placed on opda:Proprietorship.)"@en ;
-    skos:definition "The number of selling parties in the ownership who are not resident in the UK — a subset of the owner-set bearing on tax and withholding obligations."@en ;
+    rdfs:comment "Count of selling parties who are non-UK-resident (relevant to SDLT / withholding). Plain integer datatype per ODR-0008 §Q5a; flat per §Q6a. Domain retargeted from opda:Proprietorship to opda:Transaction (2026-07-05, RML gap-closing session) — same sales-context-vs-legal-ownership reasoning as opda:numberOfSellers, above."@en ;
+    skos:definition "The number of selling parties in the transaction who are not resident in the UK — a subset of the sales-context seller count bearing on tax and withholding obligations."@en ;
     dct:source <https://opda.org.uk/pdtf/harness/data-dictionary/propertyPack.ownership.numberOfNonUkResidentSellers> ;
-    rdfs:domain opda:Proprietorship ;
+    rdfs:domain opda:Transaction ;
     rdfs:isDefinedBy <https://opda.org.uk/pdtf/graph/agent> ;
     rdfs:range xsd:integer .
 
 opda:numberOfSellers
     rdf:type owl:DatatypeProperty ;
     rdfs:label "number of sellers"@en ;
-    rdfs:comment "Count of the selling parties in the ownership (the cardinality of the owner-set the Proprietorship Relator mediates). Plain integer datatype per ODR-0008 §Q5a; flat per §Q6a. (FLAG: ownership-aggregate count; placed on opda:Proprietorship.)"@en ;
-    skos:definition "The number of selling parties in the ownership — the cardinality of the owner-set the Proprietorship mediates."@en ;
+    rdfs:comment "Count of the selling parties in the transaction. Plain integer datatype per ODR-0008 §Q5a; flat per §Q6a. Domain retargeted from opda:Proprietorship to opda:Transaction (2026-07-05, RML gap-closing session) — the field's own schema description ('may differ from the number of legal owners, for example if the property is being sold by executors of a deceased owner') makes this a sales-context count, distinct from the Proprietorship Relator's legal-ownership mediation; opda:Transaction already founds the Seller role-group."@en ;
+    skos:definition "The number of selling parties in the transaction — a sales-context count that may differ from the cardinality of the registered legal-owner set."@en ;
     dct:source <https://opda.org.uk/pdtf/harness/data-dictionary/propertyPack.ownership.numberOfSellers> ;
-    rdfs:domain opda:Proprietorship ;
+    rdfs:domain opda:Transaction ;
     rdfs:isDefinedBy <https://opda.org.uk/pdtf/graph/agent> ;
     rdfs:range xsd:integer .
 
@@ -200,6 +230,16 @@ opda:organisationReference
     skos:definition "An identifier by which an Organisation participant is referenced within an external system."@en ;
     dct:source <https://opda.org.uk/pdtf/harness/data-dictionary/participants[].organisationReference> ;
     rdfs:domain opda:Organisation ;
+    rdfs:isDefinedBy <https://opda.org.uk/pdtf/graph/agent> ;
+    rdfs:range xsd:string .
+
+opda:previousName
+    rdf:type owl:DatatypeProperty ;
+    rdfs:label "previous name"@en ;
+    rdfs:comment "The surname the opda:NameChangeEvent activity changed FROM — the activity's own record of the prior state, distinct from opda:formerName's Person-level assertion (ODR-0006 §Q1). Plain string datatype per ODR-0008 §Q5a; flat per §Q6a."@en ;
+    skos:definition "The surname that a name-change event changed from, as the activity's own record of the prior state."@en ;
+    dct:source <https://opda.org.uk/pdtf/harness/data-dictionary/participants[].name.maidenName> ;
+    rdfs:domain opda:NameChangeEvent ;
     rdfs:isDefinedBy <https://opda.org.uk/pdtf/graph/agent> ;
     rdfs:range xsd:string .
 

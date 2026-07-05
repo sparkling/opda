@@ -676,6 +676,16 @@ opda:planningStartDate
     rdfs:isDefinedBy <https://opda.org.uk/pdtf/graph/descriptive> ;
     rdfs:range xsd:date .
 
+opda:potentialCost
+    rdf:type owl:DatatypeProperty ;
+    rdfs:label "potential cost"@en ;
+    rdfs:comment "Free-text estimate of the potential remediation cost in the Property's building-safety disclosure ('What will the potential cost be?', BASPI/TA7). RANGE CORRECTED 2026-07-05 (RML gap-closing session): council session-028 Q3 (ODR-0024 R3) had swept this into the monetary walk as opda:MonetaryAmount alongside ~17 genuinely numeric sibling leaves (annualGroundRent, rent, securityDeposit, etc. — all schema `type: number`), without re-checking this ONE field's own schema type individually; it is `type: string` in the v3 schema (confirmed by direct inspection), a genuinely different shape from its monetary-walk siblings, not a best-effort magnitude extractable from free text. Flat per §Q6a."@en ;
+    skos:definition "The estimated cost of potential remediation disclosed in a property's building-safety information."@en ;
+    dct:source <https://opda.org.uk/pdtf/harness/data-dictionary/propertyPack.typeOfConstruction.buildingSafety.potentialCost> ;
+    rdfs:domain opda:Property ;
+    rdfs:isDefinedBy <https://opda.org.uk/pdtf/graph/descriptive> ;
+    rdfs:range xsd:string .
+
 opda:price
     rdf:type owl:DatatypeProperty ;
     rdfs:label "price"@en ;
@@ -1152,16 +1162,6 @@ opda:peril
     rdfs:domain opda:RiskAssessment ;
     rdfs:isDefinedBy <https://opda.org.uk/pdtf/graph/descriptive> ;
     rdfs:range skos:Concept .
-
-opda:potentialCost
-    rdf:type owl:ObjectProperty ;
-    rdfs:label "potential cost"@en ;
-    rdfs:comment "Potential remediation cost in the Property's building-safety disclosure (council session-028 Q3 re-filed this monetary leaf from free-text to the monetary walk; the data-dictionary source is free text, so the magnitude is best-effort). Bearer opda:Property. → opda:MonetaryAmount (ODR-0024 R3); flat per §Q6a."@en ;
-    skos:definition "The estimated cost of potential remediation disclosed in a property's building-safety information."@en ;
-    dct:source <https://opda.org.uk/pdtf/harness/data-dictionary/propertyPack.typeOfConstruction.buildingSafety.potentialCost> ;
-    rdfs:domain opda:Property ;
-    rdfs:isDefinedBy <https://opda.org.uk/pdtf/graph/descriptive> ;
-    rdfs:range opda:MonetaryAmount .
 
 opda:priceQualifier
     rdf:type owl:ObjectProperty ;

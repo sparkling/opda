@@ -1,22 +1,22 @@
 {
   "generated_from": {
     "file": "public/ontology/artefacts/opda-merged.ttl",
-    "sha256": "ebd40f76578f1c891f6d38169bfca98031de4d01dcb581ab7d64173fcbfdea38"
+    "sha256": "81b19d7037b8dc53b58b2b2cc956480097966b091c4dbcc6e54f4354dbcca80f"
   },
   "counts": {
-    "total_leaves_indexed": 333,
-    "distinct_leaf_paths": 333,
-    "datatype": 288,
+    "total_leaves_indexed": 338,
+    "distinct_leaf_paths": 336,
+    "datatype": 293,
     "object": 45,
-    "monetary": 31,
+    "monetary": 30,
     "shared_domainless": 11,
     "object_node": 32,
-    "array_leaves": 200,
-    "classes": 41,
+    "array_leaves": 205,
+    "classes": 43,
     "dictionary_leaves_total": 8458,
-    "dictionary_leaves_matched": 646,
-    "dictionary_leaves_unmatched": 7812,
-    "provenance_orphans": 0
+    "dictionary_leaves_matched": 648,
+    "dictionary_leaves_unmatched": 7810,
+    "provenance_orphans": 1
   },
   "classes": [
     {
@@ -139,6 +139,23 @@
       "iri": "https://opda.org.uk/pdtf/DPVMappingRefinement",
       "compact": "opda:DPVMappingRefinement",
       "label": "DPV Mapping Refinement",
+      "properties": [
+        {
+          "predicate": "opda:variantPredicate",
+          "kind": "Object",
+          "range": "http://www.w3.org/1999/02/22-rdf-syntax-ns#Property"
+        },
+        {
+          "predicate": "opda:variantValue",
+          "kind": "Datatype",
+          "range": "http://www.w3.org/2001/XMLSchema#string"
+        }
+      ]
+    },
+    {
+      "iri": "https://opda.org.uk/pdtf/DescriptiveProperty",
+      "compact": "opda:DescriptiveProperty",
+      "label": "Descriptive Property",
       "properties": []
     },
     {
@@ -180,7 +197,13 @@
       "iri": "https://opda.org.uk/pdtf/LeaseExtensionEvent",
       "compact": "opda:LeaseExtensionEvent",
       "label": "Lease Extension Event",
-      "properties": []
+      "properties": [
+        {
+          "predicate": "opda:leaseExtensionDetails",
+          "kind": "Datatype",
+          "range": "http://www.w3.org/2001/XMLSchema#string"
+        }
+      ]
     },
     {
       "iri": "https://opda.org.uk/pdtf/LeaseTerm",
@@ -463,7 +486,18 @@
       "iri": "https://opda.org.uk/pdtf/NameChangeEvent",
       "compact": "opda:NameChangeEvent",
       "label": "Name Change Event",
-      "properties": []
+      "properties": [
+        {
+          "predicate": "opda:newName",
+          "kind": "Datatype",
+          "range": "http://www.w3.org/2001/XMLSchema#string"
+        },
+        {
+          "predicate": "opda:previousName",
+          "kind": "Datatype",
+          "range": "http://www.w3.org/2001/XMLSchema#string"
+        }
+      ]
     },
     {
       "iri": "https://opda.org.uk/pdtf/NearbyFacility",
@@ -575,9 +609,19 @@
       "label": "Person",
       "properties": [
         {
+          "predicate": "opda:currentName",
+          "kind": "Datatype",
+          "range": "http://www.w3.org/2001/XMLSchema#string"
+        },
+        {
           "predicate": "opda:dateOfBirth",
           "kind": "Datatype",
           "range": "http://www.w3.org/2001/XMLSchema#date"
+        },
+        {
+          "predicate": "opda:formerName",
+          "kind": "Datatype",
+          "range": "http://www.w3.org/2001/XMLSchema#string"
         },
         {
           "predicate": "opda:middleNames",
@@ -772,6 +816,11 @@
           "range": "http://www.w3.org/2004/02/skos/core#Concept"
         },
         {
+          "predicate": "opda:hasSurvey",
+          "kind": "Object",
+          "range": "opda:Survey"
+        },
+        {
           "predicate": "opda:hasUPRN",
           "kind": "Datatype",
           "range": "http://www.w3.org/2001/XMLSchema#string"
@@ -943,8 +992,8 @@
         },
         {
           "predicate": "opda:potentialCost",
-          "kind": "Object",
-          "range": "opda:MonetaryAmount"
+          "kind": "Datatype",
+          "range": "http://www.w3.org/2001/XMLSchema#string"
         },
         {
           "predicate": "opda:priceQualifier",
@@ -1099,16 +1148,6 @@
           "predicate": "opda:mediates",
           "kind": "Object",
           "range": "opda:Proprietor"
-        },
-        {
-          "predicate": "opda:numberOfNonUkResidentSellers",
-          "kind": "Datatype",
-          "range": "http://www.w3.org/2001/XMLSchema#integer"
-        },
-        {
-          "predicate": "opda:numberOfSellers",
-          "kind": "Datatype",
-          "range": "http://www.w3.org/2001/XMLSchema#integer"
         }
       ]
     },
@@ -1466,6 +1505,16 @@
           "range": "http://www.w3.org/2001/XMLSchema#boolean"
         },
         {
+          "predicate": "opda:numberOfNonUkResidentSellers",
+          "kind": "Datatype",
+          "range": "http://www.w3.org/2001/XMLSchema#integer"
+        },
+        {
+          "predicate": "opda:numberOfSellers",
+          "kind": "Datatype",
+          "range": "http://www.w3.org/2001/XMLSchema#integer"
+        },
+        {
           "predicate": "opda:removeRubbish",
           "kind": "Datatype",
           "range": "http://www.w3.org/2001/XMLSchema#boolean"
@@ -1583,6 +1632,12 @@
       "compact": "opda:VerificationActivity",
       "label": "Verification Activity",
       "properties": []
+    },
+    {
+      "iri": "https://opda.org.uk/pdtf/Verifier",
+      "compact": "opda:Verifier",
+      "label": "Verifier",
+      "properties": []
     }
   ],
   "leaves": [
@@ -1661,6 +1716,46 @@
       "flags": [
         "shared_domainless"
       ]
+    },
+    {
+      "leaf_path": "participants[].name.lastName",
+      "predicate": "opda:currentName",
+      "predicate_iri": "https://opda.org.uk/pdtf/currentName",
+      "kind": "Datatype",
+      "domain": "opda:Person",
+      "range": "http://www.w3.org/2001/XMLSchema#string",
+      "layer": 1,
+      "flags": []
+    },
+    {
+      "leaf_path": "participants[].name.lastName",
+      "predicate": "opda:newName",
+      "predicate_iri": "https://opda.org.uk/pdtf/newName",
+      "kind": "Datatype",
+      "domain": "opda:NameChangeEvent",
+      "range": "http://www.w3.org/2001/XMLSchema#string",
+      "layer": 1,
+      "flags": []
+    },
+    {
+      "leaf_path": "participants[].name.maidenName",
+      "predicate": "opda:formerName",
+      "predicate_iri": "https://opda.org.uk/pdtf/formerName",
+      "kind": "Datatype",
+      "domain": "opda:Person",
+      "range": "http://www.w3.org/2001/XMLSchema#string",
+      "layer": 1,
+      "flags": []
+    },
+    {
+      "leaf_path": "participants[].name.maidenName",
+      "predicate": "opda:previousName",
+      "predicate_iri": "https://opda.org.uk/pdtf/previousName",
+      "kind": "Datatype",
+      "domain": "opda:NameChangeEvent",
+      "range": "http://www.w3.org/2001/XMLSchema#string",
+      "layer": 1,
+      "flags": []
     },
     {
       "leaf_path": "participants[].organisation",
@@ -2993,7 +3088,7 @@
       "predicate": "opda:numberOfNonUkResidentSellers",
       "predicate_iri": "https://opda.org.uk/pdtf/numberOfNonUkResidentSellers",
       "kind": "Datatype",
-      "domain": "opda:Proprietorship",
+      "domain": "opda:Transaction",
       "range": "http://www.w3.org/2001/XMLSchema#integer",
       "layer": 1,
       "flags": []
@@ -3003,7 +3098,7 @@
       "predicate": "opda:numberOfSellers",
       "predicate_iri": "https://opda.org.uk/pdtf/numberOfSellers",
       "kind": "Datatype",
-      "domain": "opda:Proprietorship",
+      "domain": "opda:Transaction",
       "range": "http://www.w3.org/2001/XMLSchema#integer",
       "layer": 1,
       "flags": []
@@ -4467,6 +4562,18 @@
       "flags": []
     },
     {
+      "leaf_path": "propertyPack.surveys[]",
+      "predicate": "opda:hasSurvey",
+      "predicate_iri": "https://opda.org.uk/pdtf/hasSurvey",
+      "kind": "Object",
+      "domain": "opda:Property",
+      "range": "opda:Survey",
+      "layer": 1,
+      "flags": [
+        "object_node"
+      ]
+    },
+    {
       "leaf_path": "propertyPack.surveys[].misc.constructionType",
       "predicate": "opda:constructionType",
       "predicate_iri": "https://opda.org.uk/pdtf/constructionType",
@@ -4600,14 +4707,11 @@
       "leaf_path": "propertyPack.typeOfConstruction.buildingSafety.potentialCost",
       "predicate": "opda:potentialCost",
       "predicate_iri": "https://opda.org.uk/pdtf/potentialCost",
-      "kind": "Object",
+      "kind": "Datatype",
       "domain": "opda:Property",
-      "range": "opda:MonetaryAmount",
+      "range": "http://www.w3.org/2001/XMLSchema#string",
       "layer": 1,
-      "flags": [
-        "monetary",
-        "object_node"
-      ]
+      "flags": []
     },
     {
       "leaf_path": "propertyPack.typeOfConstruction.loft.loftBoarded",

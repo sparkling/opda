@@ -39,6 +39,7 @@ CONFORMANT = TESTDATA / "01-conformant-full.json"
 MINIMAL = TESTDATA / "02-minimal.json"
 MULTI = TESTDATA / "03-multi-participant.json"
 NEGATIVE = TESTDATA / "04-negative-invalid.json"
+VERIFIED_CLAIMS = TESTDATA / "verified-claims-01.json"
 VALIDATE_SH = HARNESS / "validate_shacl.sh"
 SHAPES = ROOT / "public" / "ontology" / "artefacts" / "opda-shapes-merged.ttl"
 # The negative fixture (PoA seller, no evidenced authority) only trips the
@@ -218,3 +219,57 @@ def test_negative_reports_sellers_capacity_violation(run_mapping, tmp_path):
         f"violation sourceShapes were: {violation_shapes}. If the shape is "
         "absent, the mapping likely did not emit the Seller/capacity surface."
     )
+
+
+@pytest.mark.skipif(
+    not VERIFIED_CLAIMS.exists(),
+    reason="verified-claims-01.json fixture not yet emitted",
+)
+def test_verified_claims_evidence_second_source(run_mapping, tmp_path):
+    """M36: a second logical source (VERIFIED_CLAIMS.json) traces the real,
+    separate OIDC4IDA-shaped verifiedClaims schema (correlated to a
+    transaction via transactionId), closing opda:evidenceType / opda:digest /
+    opda:attestedBy / opda:Verifier — confirmed 2026-07-05 as real, structured
+    PDTF data, not out of scope as an earlier pass concluded."""
+    import rdflib
+
+    out = tmp_path / "verified-claims.nt"
+    assert run_mapping.run(MAPPING, CONFORMANT, out, VERIFIED_CLAIMS) == 0
+    assert out.exists() and out.stat().st_size > 0
+
+    result = _validate(out)
+    assert result.returncode == 0, (
+        f"must CONFORM with verifiedClaims evidence present; report:\n"
+        f"{result.stdout}\n{result.stderr}"
+    )
+
+    g = rdflib.Graph()
+    g.parse(str(out), format="nt")
+    OPDA = rdflib.Namespace("https://opda.org.uk/pdtf/")
+    evidence = rdflib.URIRef(
+        "https://opda.org.uk/pdtf/harness/data/evidence/LnRdGiBUkLbnuNJ89p4CEj"
+    )
+    assert (
+        evidence,
+        OPDA.evidenceType,
+        rdflib.URIRef("https://opda.org.uk/pdtf/scheme/evidenceMethod/Vouch"),
+    ) in g
+    assert (
+        evidence,
+        OPDA.digest,
+        rdflib.Literal(
+            "sha256:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        ),
+    ) in g
+    voucher = rdflib.URIRef(
+        "https://opda.org.uk/pdtf/harness/data/person/voucher-Priya%20Nandakumar"
+    )
+    assert (evidence, OPDA.attestedBy, voucher) in g
+    verifier_org = rdflib.URIRef(
+        "https://opda.org.uk/pdtf/harness/data/org/verifier-"
+        "OPDA%20Identity%20Checks%20Ltd"
+    )
+    from rdflib.namespace import RDF, PROV
+
+    assert (verifier_org, RDF.type, OPDA.Verifier) in g
+    assert (verifier_org, RDF.type, PROV.Organization) in g

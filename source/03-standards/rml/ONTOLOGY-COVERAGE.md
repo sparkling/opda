@@ -1,5 +1,27 @@
 # RML ↔ ontology coverage audit
 
+> **SUPERSEDED — 2026-07-05.** The classification below (categories A/B/C,
+> 296-resource / 66-predicate baseline) is a point-in-time snapshot from
+> early in the gap-closing effort. The current, authoritative,
+> mechanically-regenerable state is `build/final-gap.json` (regenerate with
+> `python3 build/final_scope2.py` from this directory): **465/472
+> schema-generated resources mapped (98.5%)**, all of category A's "real
+> gaps" and all of category B's "ambiguous" classes have since been closed.
+> The 7 remaining gaps (2 classes, 5 distinct properties) map onto what was
+> category C here, re-verified against the FULL invariant JSON schema corpus
+> (not just `pdtf-transaction.json`) and confirmed permanently out of RML's
+> reach — see `gap-register.md`'s superseded-notice for the full current
+> list and reasoning, and
+> `HANDOVER-2026-07-05-rml-mapping-and-ontology-gap-closing.md` /
+> `docs/adr/ADR-0057-rml-mapping-implementation.md`'s Amendments for the
+> per-item detail, including several items this category C originally
+> miscategorised as having no real JSON basis — `opda:NameChangeEvent`,
+> `opda:LeaseExtensionEvent`, and the `verifiedClaims`-sourced cluster
+> (`opda:evidenceType`/`opda:digest`/`opda:attestedBy`/`opda:Verifier`) all
+> had real, structured JSON behind them and are now closed — plus one case
+> (`opda:potentialCost`) where the ontology's own declared range, not the
+> JSON, was the actual defect (a batch-decision oversight, now fixed).
+
 Cross-references every resource (`owl:Class`, `owl:DatatypeProperty`,
 `owl:ObjectProperty`) declared in `public/ontology/artefacts/opda-merged.ttl`
 against what `mapping/opda-pdtf.rml.ttl` actually uses (`rr:class`,

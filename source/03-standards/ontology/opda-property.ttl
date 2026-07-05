@@ -1150,3 +1150,22 @@ opda:addressVariant
     rdfs:domain opda:Address ;
     rdfs:isDefinedBy <https://opda.org.uk/pdtf/graph/property> ;
     rdfs:range xsd:string .
+
+opda:appliesTo
+    rdf:type rdf:Property, owl:ObjectProperty ;
+    rdfs:label "applies to"@en ;
+    rdfs:comment "Provenance-activity-to-subject-entity join: relates a reified PROV-O Activity to the Entity it acted upon — opda:NameChangeEvent to the opda:Person whose name changed (ODR-0006 §Q1), or opda:LeaseExtensionEvent to the opda:LegalEstate whose term was extended (ODR-0005 §3b). Domain intentionally unconstrained (same convention as opda:identifiesSameProperty, above) — any reified provenance-activity Kind may emit this predicate. Documentary \"any-of\" rdfs:range opda:Person, opda:LegalEstate (module-header disjunctive-not-conjunctive convention, ADR-0035 — never entailed)."@en ;
+    skos:definition "Relates a reified provenance activity to the entity it acted upon — a name-change event to the person renamed, or a lease-extension event to the legal estate extended."@en ;
+    dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0005/section-3b> ;
+    rdfs:isDefinedBy <https://opda.org.uk/pdtf/graph/property> ;
+    rdfs:range opda:LegalEstate, opda:Person .
+
+opda:leaseExtensionDetails
+    rdf:type rdf:Property, owl:DatatypeProperty ;
+    rdfs:label "lease extension details"@en ;
+    rdfs:comment "Free-text detail elaborating the steps taken to extend a leasehold's term (TA7/LPE1 enfranchisement §6.3/§10), supplied when the seller discloses such steps were taken. Plain string datatype per ODR-0008 §Q5a; flat per §Q6a."@en ;
+    skos:definition "Free-text narrative elaborating the steps taken to extend a leasehold's term, as disclosed by the seller."@en ;
+    dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0005/section-3b> ;
+    rdfs:domain opda:LeaseExtensionEvent ;
+    rdfs:isDefinedBy <https://opda.org.uk/pdtf/graph/property> ;
+    rdfs:range xsd:string .

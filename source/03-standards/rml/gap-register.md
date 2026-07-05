@@ -1,5 +1,51 @@
 # Gap register & adversarial audit — `opda-pdtf` RML mapping (C1, devil's advocate)
 
+> **SUPERSEDED — 2026-07-05.** The body below is a point-in-time audit from
+> when the mapping covered ~15% of the ontology surface; it predates many
+> sessions of gap-closing work and its numbers are stale. The current,
+> authoritative, mechanically-regenerable coverage state is
+> `source/03-standards/rml/build/final-gap.json` (regenerate with
+> `python3 build/final_scope2.py` from this directory): **465/472
+> schema-generated resources mapped (98.5%)**.
+>
+> This session's closures, in two rounds. Round 1 reopened items an earlier
+> pass had wrongly written off as "zero JSON basis": `opda:NameChangeEvent`
+> and `opda:LeaseExtensionEvent` (real hooks:
+> `participants[].name.maidenName`/`.lastName`;
+> `ownershipsToBeTransferred[].leaseholdInformation.enfranchisement.
+> enfranchisementSteps`), plus `opda:roleNotation`,
+> `opda:numberOfSellers`/`numberOfNonUkResidentSellers` (domain retargeted
+> `Proprietorship`→`Transaction`), `opda:hasRegisteredTitle`, and
+> `opda:identifiesSameProperty`. Round 2, prompted by a direct challenge not
+> to trust prior ADR/ODR reasoning or the "leaves" framing at face value,
+> found that `opda:evidenceType`/`opda:digest`/`opda:attestedBy`/
+> `opda:Verifier` were marked "out of ODR-0035's mapping scope" for a real
+> but WRONG reason: the data lives in a genuinely separate, real PDTF schema
+> (`verifiedClaims/pdtf-verified-claims.json`, OIDC4IDA-shaped, correlated to
+> a transaction via its own `transactionId`) that this mapping's own harness
+> had never been extended to trace — not a fact about the data. Extended
+> `harness/run_mapping.py` with an optional second logical source and closed
+> all four. The same pass also found `opda:potentialCost`'s `MonetaryAmount`
+> range was a genuine ontology-generator bug — a batch decision (ODR-0024 R3)
+> that swept ~18 monetary leaves into one range convention without
+> re-checking that this ONE field is `type: string` in the schema, unlike
+> its ~17 numeric siblings — fixed by retargeting the range to `xsd:string`
+> in the generator and mapping it directly.
+>
+> The remaining 7 (2 classes: `AssuranceLevel`, `UPRNSuccessionEvent`; 5
+> properties: `inspireFeatureId`, `founds`, `playedBy`, `plays`,
+> `hasEvidencedAuthority`) were re-verified against the FULL invariant JSON
+> schema corpus (not just `pdtf-transaction.json` — also `verifiedClaims/`,
+> `trust-framework/`, and the v1/v2 schema trees) — confirmed genuine,
+> permanent exclusions: zero data anywhere for the first three; a real
+> structural mismatch (a distinct qua-individual Role node the ontology's
+> actual co-typing convention never mints) for `founds`/`playedBy`/`plays`;
+> and a schema-less, free-form `claims` bag with no field name concretely
+> specified for capacity/authority for `hasEvidencedAuthority`. See
+> `HANDOVER-2026-07-05-rml-mapping-and-ontology-gap-closing.md` and
+> `docs/adr/ADR-0057-rml-mapping-implementation.md`'s Amendments for full
+> per-item reasoning.
+
 Audit of the claim that the PDTF v3 JSON → OPDA RDF mapping at
 `source/03-standards/rml/` is **"sound AND complete"**. Every finding below is backed
 by materialised triples and command output. I own only this file; I changed no

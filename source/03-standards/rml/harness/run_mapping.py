@@ -98,17 +98,43 @@ def ensure_function_jar(functions_dir: Path) -> None:
     subprocess.run(["jar", "cf", jar_file.name, class_file.name], cwd=functions_dir, check=True)
 
 
-def _stage_mapping(mapping_ttl: Path, data: Path, workdir: Path) -> Path:
+def _stage_mapping(
+    mapping_ttl: Path, data: Path, workdir: Path,
+    verified_claims: Path | None = None,
+) -> Path:
     """Copy `mapping_ttl` unmodified into `workdir`, alongside an INSTANCE.json
-    symlink resolving to `data` (see module docstring for why this works)."""
+    symlink resolving to `data` (see module docstring for why this works).
+
+    2026-07-05: optionally also stages a second logical source,
+    VERIFIED_CLAIMS.json, resolving to `verified_claims` — the OIDC4IDA-based
+    `verifiedClaims/pdtf-verified-claims.json` schema, a genuinely separate
+    PDTF document type (correlated to a transaction via its own
+    `transactionId`/`verifier.txn` fields, never `$ref`'d into
+    `pdtf-transaction.json`) that some TriplesMaps below trace against."""
     temp_ttl = workdir / mapping_ttl.name
     shutil.copy(mapping_ttl, temp_ttl)
     (workdir / "INSTANCE.json").symlink_to(data.resolve())
+    if verified_claims is not None:
+        (workdir / "VERIFIED_CLAIMS.json").symlink_to(verified_claims.resolve())
+    else:
+        # M36's TriplesMaps unconditionally declare VERIFIED_CLAIMS.json as a
+        # source; RMLMapper errors at startup if a declared source file is
+        # missing entirely (verifySources), even for rules that end up
+        # matching zero rows. Stage a real, empty placeholder — an empty
+        # `verified_claims` array — so those TriplesMaps cleanly produce zero
+        # triples instead of failing the whole run for callers (e.g. every
+        # pdtf-transaction-only fixture) that have no companion
+        # verifiedClaims document.
+        (workdir / "VERIFIED_CLAIMS.json").write_text('{"verified_claims": []}')
     return temp_ttl
 
 
-def run(mapping: Path, data: Path | None, out: Path) -> int:
-    """Materialise `mapping` (+ `data`) to N-Triples at `out`. Returns 0 on success."""
+def run(
+    mapping: Path, data: Path | None, out: Path,
+    verified_claims: Path | None = None,
+) -> int:
+    """Materialise `mapping` (+ `data`, + optional `verified_claims`) to
+    N-Triples at `out`. Returns 0 on success."""
     if not mapping.exists():
         print(f"error: mapping not found: {mapping}", file=sys.stderr)
         return 2
@@ -117,6 +143,9 @@ def run(mapping: Path, data: Path | None, out: Path) -> int:
         return 2
     if not data.exists():
         print(f"error: data not found: {data}", file=sys.stderr)
+        return 2
+    if verified_claims is not None and not verified_claims.exists():
+        print(f"error: verified-claims data not found: {verified_claims}", file=sys.stderr)
         return 2
 
     out.parent.mkdir(parents=True, exist_ok=True)
@@ -132,7 +161,7 @@ def run(mapping: Path, data: Path | None, out: Path) -> int:
         run_cwd = functions_dir
 
     with tempfile.TemporaryDirectory(prefix="rmlmapper-") as tmp:
-        temp_ttl = _stage_mapping(mapping, data, Path(tmp))
+        temp_ttl = _stage_mapping(mapping, data, Path(tmp), verified_claims)
         cmd = [
             "java", "-jar", str(jar.resolve()),
             "-m", str(temp_ttl.resolve()),
@@ -173,8 +202,14 @@ def main(argv: list[str] | None = None) -> int:
         default=Path("build/out.nt"),
         help="output N-Triples file (default: build/out.nt)",
     )
+    parser.add_argument(
+        "--verified-claims",
+        type=Path,
+        default=None,
+        help="optional pdtf-verified-claims.json instance (second logical source)",
+    )
     args = parser.parse_args(argv)
-    return run(args.mapping, args.data, args.out)
+    return run(args.mapping, args.data, args.out, args.verified_claims)
 
 
 if __name__ == "__main__":
