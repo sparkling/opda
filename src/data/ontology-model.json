@@ -1171,7 +1171,7 @@
           "predicateLocal": "appliesTo",
           "sources": [],
           "inverse": null,
-          "description": "Provenance-activity-to-subject-entity join: relates a reified PROV-O Activity to the Entity it acted upon — opda:NameChangeEvent to the opda:Person whose name changed (ODR-0006 §Q1), or opda:LeaseExtensionEvent to the opda:LegalEstate whose term was extended (ODR-0005 §3b). Domain intentionally unconstrained (same convention as opda:identifiesSameProperty, above) — any reified provenance-activity Kind may emit this predicate. Documentary \"any-of\" rdfs:range opda:Person, opda:LegalEstate (module-header disjunctive-not-conjunctive convention, ADR-0035 — never entailed)."
+          "description": "Provenance-activity-to-subject-entity join: relates a reified PROV-O Activity to the Entity it acted upon — opda:NameChangeEvent to the opda:Person whose name changed (ODR-0006 §Q1), opda:LeaseExtensionEvent to the opda:LegalEstate whose term was extended (ODR-0005 §3b), or opda:UPRNSuccessionEvent to the opda:Property whose UPRN was re-issued (ODR-0005 Rule 6). Domain intentionally unconstrained (same convention as opda:identifiesSameProperty, above) — any reified provenance-activity Kind may emit this predicate. Documentary \"any-of\" rdfs:range opda:Person, opda:LegalEstate, opda:Property (module-header disjunctive-not-conjunctive convention, ADR-0035 — never entailed)."
         },
         {
           "predicate": "concerns",
@@ -1921,7 +1921,7 @@
           "predicateLocal": "appliesTo",
           "sources": [],
           "inverse": null,
-          "description": "Provenance-activity-to-subject-entity join: relates a reified PROV-O Activity to the Entity it acted upon — opda:NameChangeEvent to the opda:Person whose name changed (ODR-0006 §Q1), or opda:LeaseExtensionEvent to the opda:LegalEstate whose term was extended (ODR-0005 §3b). Domain intentionally unconstrained (same convention as opda:identifiesSameProperty, above) — any reified provenance-activity Kind may emit this predicate. Documentary \"any-of\" rdfs:range opda:Person, opda:LegalEstate (module-header disjunctive-not-conjunctive convention, ADR-0035 — never entailed)."
+          "description": "Provenance-activity-to-subject-entity join: relates a reified PROV-O Activity to the Entity it acted upon — opda:NameChangeEvent to the opda:Person whose name changed (ODR-0006 §Q1), opda:LeaseExtensionEvent to the opda:LegalEstate whose term was extended (ODR-0005 §3b), or opda:UPRNSuccessionEvent to the opda:Property whose UPRN was re-issued (ODR-0005 Rule 6). Domain intentionally unconstrained (same convention as opda:identifiesSameProperty, above) — any reified provenance-activity Kind may emit this predicate. Documentary \"any-of\" rdfs:range opda:Person, opda:LegalEstate, opda:Property (module-header disjunctive-not-conjunctive convention, ADR-0035 — never entailed)."
         },
         {
           "predicate": "playedBy",
@@ -2889,6 +2889,14 @@
         }
       ],
       "incoming": [
+        {
+          "predicate": "appliesTo",
+          "predicateLabel": "applies to",
+          "predicateLocal": "appliesTo",
+          "sources": [],
+          "inverse": null,
+          "description": "Provenance-activity-to-subject-entity join: relates a reified PROV-O Activity to the Entity it acted upon — opda:NameChangeEvent to the opda:Person whose name changed (ODR-0006 §Q1), opda:LeaseExtensionEvent to the opda:LegalEstate whose term was extended (ODR-0005 §3b), or opda:UPRNSuccessionEvent to the opda:Property whose UPRN was re-issued (ODR-0005 Rule 6). Domain intentionally unconstrained (same convention as opda:identifiesSameProperty, above) — any reified provenance-activity Kind may emit this predicate. Documentary \"any-of\" rdfs:range opda:Person, opda:LegalEstate, opda:Property (module-header disjunctive-not-conjunctive convention, ADR-0035 — never entailed)."
+        },
         {
           "predicate": "concernsProperty",
           "predicateLabel": "concerns property",
@@ -4636,7 +4644,7 @@
       "id": "appliesTo",
       "localName": "appliesTo",
       "label": "applies to",
-      "comment": "Provenance-activity-to-subject-entity join: relates a reified PROV-O Activity to the Entity it acted upon — opda:NameChangeEvent to the opda:Person whose name changed (ODR-0006 §Q1), or opda:LeaseExtensionEvent to the opda:LegalEstate whose term was extended (ODR-0005 §3b). Domain intentionally unconstrained (same convention as opda:identifiesSameProperty, above) — any reified provenance-activity Kind may emit this predicate. Documentary \"any-of\" rdfs:range opda:Person, opda:LegalEstate (module-header disjunctive-not-conjunctive convention, ADR-0035 — never entailed).",
+      "comment": "Provenance-activity-to-subject-entity join: relates a reified PROV-O Activity to the Entity it acted upon — opda:NameChangeEvent to the opda:Person whose name changed (ODR-0006 §Q1), opda:LeaseExtensionEvent to the opda:LegalEstate whose term was extended (ODR-0005 §3b), or opda:UPRNSuccessionEvent to the opda:Property whose UPRN was re-issued (ODR-0005 Rule 6). Domain intentionally unconstrained (same convention as opda:identifiesSameProperty, above) — any reified provenance-activity Kind may emit this predicate. Documentary \"any-of\" rdfs:range opda:Person, opda:LegalEstate, opda:Property (module-header disjunctive-not-conjunctive convention, ADR-0035 — never entailed).",
       "definition": "Relates a reified provenance activity to the entity it acted upon — a name-change event to the person renamed, or a lease-extension event to the legal estate extended.",
       "kind": "object",
       "module": "property",
@@ -4650,6 +4658,11 @@
         {
           "id": "Person",
           "localName": "Person",
+          "kind": "class"
+        },
+        {
+          "id": "Property",
+          "localName": "Property",
           "kind": "class"
         }
       ],
