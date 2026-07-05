@@ -563,6 +563,115 @@ DATATYPE_PROPERTIES = (
     OPDA.roomName,
 )
 
+# opda:DescriptiveProperty membership (ODR-0008 §Q7a) — every genuine
+# ODR-0008/Q4a-promoted-class descriptive datatype property this module
+# mints (Search, Valuation, RiskAssessment, NearbyFacility, AttachedDocument,
+# RoomDimension, MonetaryAmount, and the ODR-0024 Yes/No Property/LegalEstate
+# walk), so the Q7a CI test can assert the base-cardinality clause (NO
+# sh:minCount on a descriptive property in opda-shapes.ttl). Excludes, from
+# DATATYPE_PROPERTIES above: `opda:disclosureDetail` (ODR-0022 Category A —
+# a reusable rdfs:comment-grade annotation slot, "NOT a domain entity",
+# standing in for ~407 different disclosure questions — categorically
+# distinct from a Category-G/E genuine per-concept descriptive fact) and
+# `opda:price` (ODR-0022 Category D — the sale-transaction fixtures-list
+# shared monetary amount, ODR-0022 §4/ODR-0007 territory, "NOT a Quality of
+# the Property", the same Mode/Relator-of-the-transaction treatment as the
+# excluded `opda:inclusionStatus`) and `opda:amount` (a structural field of
+# the shared `opda:MonetaryAmount` value-object pattern, not a per-form-
+# variable leaf fact — opda-descriptive-shapes.ttl already carries a base
+# `sh:minCount 1` on it, ODR-0024 R3's value-type completeness invariant,
+# which is a different discipline from Q7a's per-form leaf-cardinality
+# clause; the same reasoning excludes Address's line1/postcode in
+# opda-property.ttl). Also excludes every ObjectProperty above
+# (riskIndicator, peril, hasSubAssessment, inclusionStatus, the monetary-
+# amount join properties, the Council-046 Q3b SKOS-Concept-valued enums) —
+# Q6a's floor is explicitly "datatype property", not object property.
+DESCRIPTIVE_PROPERTIES = (
+    OPDA.actionAlertRating,
+    OPDA.ageRange,
+    OPDA.applicationDate,
+    OPDA.applicationType,
+    OPDA.buildingControlStartDate,
+    OPDA.consentsObtained,
+    OPDA.contributionIncludedInServiceCharge,
+    OPDA.councilSearchTurnaroundTimeInWorkingDays,
+    OPDA.countyCouncil,
+    OPDA.credibilitySources,
+    OPDA.dangerousCladdingOrDefects,
+    OPDA.dateRemedialActionRequired,
+    OPDA.dealsWithDayToDayMaintenanceOfManagedArea,
+    OPDA.decision,
+    OPDA.decisionDate,
+    OPDA.designationType,
+    OPDA.dischargeCompliesWithGBR,
+    OPDA.displayName,
+    OPDA.distanceInMiles,
+    OPDA.districtCouncil,
+    OPDA.documentDate,
+    OPDA.documentTypeCode,
+    OPDA.expectedDeliveryDate,
+    OPDA.filedUnder,
+    OPDA.forTheManagedAreas,
+    OPDA.freeholdOwner,
+    OPDA.fromTheOwners,
+    OPDA.hasFloodDefences,
+    OPDA.hasFloorplan,
+    OPDA.hasHelpToBuyEquityLoan,
+    OPDA.hasLift,
+    OPDA.hasTenantCompanyDissolved,
+    OPDA.headLeaseholderControlled,
+    OPDA.isConnectedToNationalGrid,
+    OPDA.isFirstRegistration,
+    OPDA.isHMO,
+    OPDA.isLeaseQualifying,
+    OPDA.isLimitedCompanySale,
+    OPDA.isManagingAgentEmployed,
+    OPDA.isStudentAccommodation,
+    OPDA.landlordInsuresIfFlat,
+    OPDA.landlordNotifiedOfSale,
+    OPDA.length,
+    OPDA.listedDate,
+    OPDA.localAuthorityName,
+    OPDA.localAuthorityReference,
+    OPDA.loftBoarded,
+    OPDA.loftInsulated,
+    OPDA.managementPlanInPlace,
+    OPDA.mediaUrl,
+    OPDA.orderDate,
+    OPDA.organisesBuildingInsurance,
+    OPDA.otherRating,
+    OPDA.outstandingEnforcementAction,
+    OPDA.planningStartDate,
+    OPDA.pricingMethodology,
+    OPDA.productCode,
+    OPDA.providerName,
+    OPDA.providerReference,
+    OPDA.pupils,
+    OPDA.refNumber,
+    OPDA.regulatedSearchTurnaroundTimeInWorkingDays,
+    OPDA.religiousCharacter,
+    OPDA.reportDate,
+    OPDA.retrievedOn,
+    OPDA.roomName,
+    OPDA.saleAtUndervalue,
+    OPDA.schoolType,
+    OPDA.sellerCompletedDeedOfCertificate,
+    OPDA.sellerOwnedProperty,
+    OPDA.soldDate,
+    OPDA.specialties,
+    OPDA.status,
+    OPDA.statusDate,
+    OPDA.subCategory,
+    OPDA.typeOfHealthCare,
+    OPDA.unitaryAuthority,
+    OPDA.urgentWorksCarriedOut,
+    OPDA.urgentWorksRecommended,
+    OPDA.url,
+    OPDA.width,
+    OPDA.willingToInsure,
+    OPDA["yield"],
+)
+
 
 def build_graph() -> Graph:
     """Build the Descriptive module class graph."""
@@ -2381,5 +2490,10 @@ def build_graph() -> Graph:
     # a built structure shared across Properties / re-identified across dated
     # surveys; opda:Room on a stable room positional-or-structural token in
     # source + a query that re-identifies a room as an individual.
+
+    # opda:DescriptiveProperty membership (ODR-0008 §Q7a) — see
+    # DESCRIPTIVE_PROPERTIES above for scope/exclusion rationale.
+    for prop in DESCRIPTIVE_PROPERTIES:
+        g.add((prop, RDF.type, OPDA.DescriptiveProperty))
 
     return g

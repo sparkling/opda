@@ -93,7 +93,7 @@ opda:UPRNSuccessionEvent
     skos:scopeNote "UFO: Event particular (Guizzardi 2005 Ch. 4 §4.7 — perdurant). DOLCE: Achievement / Accomplishment (Masolo et al. 2003 D18 §4.4 — here an Achievement: instantaneous administrative re-issuance)."@en .
 
 opda:abilityToResideAtProperty
-    rdf:type owl:DatatypeProperty ;
+    rdf:type owl:DatatypeProperty, opda:DescriptiveProperty ;
     rdfs:label "ability to reside at property"@en ;
     rdfs:comment "Building-safety statement on whether occupiers can reside at the Property given any identified safety issues (typed as a string in the data dictionary). A physical-safety attribute of the Property. Plain string datatype per ODR-0008 §Q5a; flat per §Q6a."@en ;
     skos:definition "A building-safety statement on whether occupiers can reside at a Property given any identified safety issues."@en ;
@@ -103,7 +103,7 @@ opda:abilityToResideAtProperty
     rdfs:range xsd:string .
 
 opda:accessibilityAndAdaptations
-    rdf:type owl:DatatypeProperty ;
+    rdf:type owl:DatatypeProperty, opda:DescriptiveProperty ;
     rdfs:label "accessibility and adaptations"@en ;
     rdfs:comment "Accessibility features and adaptations of the Property (a multi-valued list — each value an xsd:string). UFO Quality of the physical Property. Plain multi-valued string datatype per ODR-0008 §Q5a; flat per §Q6a."@en ;
     skos:definition "An accessibility feature or adaptation present in a Property."@en ;
@@ -113,7 +113,7 @@ opda:accessibilityAndAdaptations
     rdfs:range xsd:string .
 
 opda:adHocExpenses
-    rdf:type owl:DatatypeProperty ;
+    rdf:type owl:DatatypeProperty, opda:DescriptiveProperty ;
     rdfs:label "ad hoc expenses"@en ;
     rdfs:comment "Statement of ad-hoc service-charge expenses on the leasehold LegalEstate (typed as a string in the data dictionary). Plain string datatype per ODR-0008 §Q5a; flat per §Q6a."@en ;
     skos:definition "A statement of ad-hoc service-charge expenses on a leasehold LegalEstate."@en ;
@@ -123,7 +123,7 @@ opda:adHocExpenses
     rdfs:range xsd:string .
 
 opda:area
-    rdf:type owl:DatatypeProperty ;
+    rdf:type owl:DatatypeProperty, opda:DescriptiveProperty ;
     rdfs:label "area"@en ;
     rdfs:comment "Internal floor area of the Property — a measured UFO Quality (the unit of measure is carried alongside in the source structure). Plain decimal datatype per ODR-0008 §Q5a; flat per §Q6a."@en ;
     skos:definition "The measured internal floor area of a Property."@en ;
@@ -133,7 +133,7 @@ opda:area
     rdfs:range xsd:decimal .
 
 opda:bathrooms
-    rdf:type owl:DatatypeProperty ;
+    rdf:type owl:DatatypeProperty, opda:DescriptiveProperty ;
     rdfs:label "bathrooms"@en ;
     rdfs:comment "Number of bathrooms in the Property — a countable UFO Quality. Plain integer datatype per ODR-0008 §Q5a; flat per §Q6a."@en ;
     skos:definition "The count of bathrooms in a Property."@en ;
@@ -143,7 +143,7 @@ opda:bathrooms
     rdfs:range xsd:integer .
 
 opda:bedrooms
-    rdf:type owl:DatatypeProperty ;
+    rdf:type owl:DatatypeProperty, opda:DescriptiveProperty ;
     rdfs:label "bedrooms"@en ;
     rdfs:comment "Number of bedrooms in the Property — a countable UFO Quality of the physical Property. Plain integer datatype (no enumerated value-space) per ODR-0008 §Q5a; flat per §Q6a."@en ;
     skos:definition "The count of bedrooms in a Property."@en ;
@@ -153,7 +153,7 @@ opda:bedrooms
     rdfs:range xsd:integer .
 
 opda:buildingsReinstatementCostAssessment
-    rdf:type owl:DatatypeProperty ;
+    rdf:type owl:DatatypeProperty, opda:DescriptiveProperty ;
     rdfs:label "buildings reinstatement cost assessment"@en ;
     rdfs:comment "Buildings reinstatement-cost-assessment statement for the leasehold LegalEstate's buildings insurance (typed as a string in the data dictionary). Plain string datatype per ODR-0008 §Q5a; flat per §Q6a."@en ;
     skos:definition "A buildings reinstatement-cost-assessment statement for a leasehold LegalEstate's buildings insurance."@en ;
@@ -163,7 +163,7 @@ opda:buildingsReinstatementCostAssessment
     rdfs:range xsd:string .
 
 opda:centralHeatingInstalled
-    rdf:type owl:DatatypeProperty ;
+    rdf:type owl:DatatypeProperty, opda:DescriptiveProperty ;
     rdfs:label "central heating installed"@en ;
     rdfs:comment "Central-heating installation indicator for the Property (typed as a string in the data dictionary — a Yes/No-style response). Plain string datatype per ODR-0008 §Q5a; flat per §Q6a. A physical-system attribute of the Property."@en ;
     skos:definition "An indicator of whether central heating is installed in a Property."@en ;
@@ -173,7 +173,7 @@ opda:centralHeatingInstalled
     rdfs:range xsd:string .
 
 opda:consequentialChargingBasis
-    rdf:type owl:DatatypeProperty ;
+    rdf:type owl:DatatypeProperty, opda:DescriptiveProperty ;
     rdfs:label "consequential charging basis"@en ;
     rdfs:comment "Charging basis that would apply consequentially (e.g. on a change of circumstances) for the Property's water/sewerage. Plain string datatype per ODR-0008 §Q5a; flat per §Q6a."@en ;
     skos:definition "The basis on which a Property's water and sewerage charges would be levied consequentially, such as following a change of circumstances."@en ;
@@ -183,7 +183,7 @@ opda:consequentialChargingBasis
     rdfs:range xsd:string .
 
 opda:councilTaxBand
-    rdf:type owl:DatatypeProperty ;
+    rdf:type owl:DatatypeProperty, opda:DescriptiveProperty ;
     rdfs:label "council tax band"@en ;
     rdfs:comment "Council-tax valuation band of the Property per opda:CouncilTaxBandSchemeEW (A–H / Not banded) or opda:CouncilTaxBandSchemeScotland. UFO Quale-in-Region; regulator-sourced enum (VOA / Scottish Assessors). Constrained by SHACL sh:in to the scheme members in the overlay profile, mirroring opda:currentEnergyRating. Flat per §Q6a."@en ;
     skos:definition "The council-tax valuation band of a Property (A to H, or not banded) assigned by the Valuation Office Agency or the Scottish Assessors."@en ;
@@ -203,7 +203,7 @@ opda:country
     rdfs:range xsd:string .
 
 opda:currentChargingBasis
-    rdf:type owl:DatatypeProperty ;
+    rdf:type owl:DatatypeProperty, opda:DescriptiveProperty ;
     rdfs:label "current charging basis"@en ;
     rdfs:comment "Current basis on which the Property's water/sewerage is charged. Plain string datatype per ODR-0008 §Q5a; flat per §Q6a."@en ;
     skos:definition "The basis on which a Property's water and sewerage charges are currently levied."@en ;
@@ -213,7 +213,7 @@ opda:currentChargingBasis
     rdfs:range xsd:string .
 
 opda:dateInstalled
-    rdf:type owl:DatatypeProperty ;
+    rdf:type owl:DatatypeProperty, opda:DescriptiveProperty ;
     rdfs:label "date installed"@en ;
     rdfs:comment "Date a Property system was installed (heat pump / off-mains drainage system). xsd:date (a date-valued string in the data dictionary). Flat per §Q6a."@en ;
     skos:definition "The date on which a Property system, such as a heat pump or off-mains drainage system, was installed."@en ;
@@ -223,7 +223,7 @@ opda:dateInstalled
     rdfs:range xsd:date .
 
 opda:dateLastEmptied
-    rdf:type owl:DatatypeProperty ;
+    rdf:type owl:DatatypeProperty, opda:DescriptiveProperty ;
     rdfs:label "date last emptied"@en ;
     rdfs:comment "Date the Property's off-mains drainage system was last emptied. xsd:date. Flat per §Q6a."@en ;
     skos:definition "The date on which a Property's off-mains drainage system was last emptied."@en ;
@@ -233,7 +233,7 @@ opda:dateLastEmptied
     rdfs:range xsd:date .
 
 opda:dateLastServiced
-    rdf:type owl:DatatypeProperty ;
+    rdf:type owl:DatatypeProperty, opda:DescriptiveProperty ;
     rdfs:label "date last serviced"@en ;
     rdfs:comment "Date the Property's off-mains drainage system was last serviced. xsd:date. Flat per §Q6a."@en ;
     skos:definition "The date on which a Property's off-mains drainage system was last serviced."@en ;
@@ -243,7 +243,7 @@ opda:dateLastServiced
     rdfs:range xsd:date .
 
 opda:dateReplaced
-    rdf:type owl:DatatypeProperty ;
+    rdf:type owl:DatatypeProperty, opda:DescriptiveProperty ;
     rdfs:label "date replaced"@en ;
     rdfs:comment "Date the Property's off-mains drainage system was last replaced. xsd:date. Flat per §Q6a."@en ;
     skos:definition "The date on which a Property's off-mains drainage system was last replaced."@en ;
@@ -253,7 +253,7 @@ opda:dateReplaced
     rdfs:range xsd:date .
 
 opda:dateToBeConnected
-    rdf:type owl:DatatypeProperty ;
+    rdf:type owl:DatatypeProperty, opda:DescriptiveProperty ;
     rdfs:label "date to be connected"@en ;
     rdfs:comment "Expected connection date for a not-yet-connected Property utility / service. ONE shared date property reused across the utility blocks. xsd:date. Flat per §Q6a."@en ;
     skos:definition "The expected date on which a not-yet-connected Property utility or service is to be connected."@en ;
@@ -263,7 +263,7 @@ opda:dateToBeConnected
     rdfs:range xsd:date .
 
 opda:diningAreas
-    rdf:type owl:DatatypeProperty ;
+    rdf:type owl:DatatypeProperty, opda:DescriptiveProperty ;
     rdfs:label "dining areas"@en ;
     rdfs:comment "Number of dining areas in the Property. Plain integer datatype per ODR-0008 §Q5a; flat per §Q6a."@en ;
     skos:definition "The count of dining areas in a Property."@en ;
@@ -273,7 +273,7 @@ opda:diningAreas
     rdfs:range xsd:integer .
 
 opda:distanceToNearestSewerageTreatment
-    rdf:type owl:DatatypeProperty ;
+    rdf:type owl:DatatypeProperty, opda:DescriptiveProperty ;
     rdfs:label "distance to nearest sewerage treatment"@en ;
     rdfs:comment "Distance from the Property to the nearest sewerage-treatment works (typed as a string in the data dictionary — a free-form distance band). Plain string datatype per ODR-0008 §Q5a; flat per §Q6a."@en ;
     skos:definition "The distance from a Property to the nearest sewerage-treatment works."@en ;
@@ -283,7 +283,7 @@ opda:distanceToNearestSewerageTreatment
     rdfs:range xsd:string .
 
 opda:entranceFloor
-    rdf:type owl:DatatypeProperty ;
+    rdf:type owl:DatatypeProperty, opda:DescriptiveProperty ;
     rdfs:label "entrance floor"@en ;
     rdfs:comment "Floor (storey) on which the Property's entrance is located (0 = ground). Plain integer datatype per ODR-0008 §Q5a; flat per §Q6a."@en ;
     skos:definition "The storey on which a Property's entrance is located, counted from the ground floor as zero."@en ;
@@ -293,7 +293,7 @@ opda:entranceFloor
     rdfs:range xsd:integer .
 
 opda:from
-    rdf:type owl:DatatypeProperty ;
+    rdf:type owl:DatatypeProperty, opda:DescriptiveProperty ;
     rdfs:label "from"@en ;
     rdfs:comment "Start date of a demand / decoration period on the leasehold / managed-freehold LegalEstate (ground-rent, service-charge, or buildings-insurance last-demand period; service-charge last-decorated period). xsd:date. ONE shared period-start property reused across those periods; flat per §Q6a. (FLAG: `from` is a generic period-boundary name; reused across the estate's recurring date-range blocks rather than minted per block.)"@en ;
     skos:definition "The start date of a demand or decoration period on a leasehold or managed-freehold LegalEstate."@en ;
@@ -303,7 +303,7 @@ opda:from
     rdfs:range xsd:date .
 
 opda:groundRentFrequency
-    rdf:type owl:DatatypeProperty ;
+    rdf:type owl:DatatypeProperty, opda:DescriptiveProperty ;
     rdfs:label "ground rent frequency"@en ;
     rdfs:comment "Frequency at which ground rent is payable on the leasehold LegalEstate (typed as a string in the data dictionary — a free-form frequency label). Plain string datatype per ODR-0008 §Q5a; flat per §Q6a."@en ;
     skos:definition "The frequency at which ground rent is payable on a leasehold LegalEstate."@en ;
@@ -313,7 +313,7 @@ opda:groundRentFrequency
     rdfs:range xsd:string .
 
 opda:handoverOnCompletion
-    rdf:type owl:DatatypeProperty ;
+    rdf:type owl:DatatypeProperty, opda:DescriptiveProperty ;
     rdfs:label "handover on completion"@en ;
     rdfs:comment "Whether the Property's smart-home systems will be handed over on completion. xsd:boolean. Flat per §Q6a."@en ;
     skos:definition "A boolean recording whether a Property's smart-home systems will be handed over to the buyer on completion."@en ;
@@ -323,7 +323,7 @@ opda:handoverOnCompletion
     rdfs:range xsd:boolean .
 
 opda:hasFixedRentcharge
-    rdf:type owl:DatatypeProperty ;
+    rdf:type owl:DatatypeProperty, opda:DescriptiveProperty ;
     rdfs:label "has fixed rentcharge"@en ;
     rdfs:comment "Whether the managed-freehold / commonhold LegalEstate carries a fixed rentcharge (a Yes/No-style string response). Plain string datatype per ODR-0008 §Q5a; flat per §Q6a."@en ;
     skos:definition "An indicator of whether a managed-freehold or commonhold LegalEstate carries a fixed rentcharge."@en ;
@@ -343,7 +343,7 @@ opda:hasUPRN
     rdfs:range xsd:string .
 
 opda:heading
-    rdf:type owl:DatatypeProperty ;
+    rdf:type owl:DatatypeProperty, opda:DescriptiveProperty ;
     rdfs:label "heading"@en ;
     rdfs:comment "Google Street View point-of-view compass heading (degrees) for the Property's map locator. xsd:decimal — a numeric camera parameter, NOT a free-text tail (FLAG: deviates from the generic free-text-collapse expectation; the data dictionary types it as a number). Flat per §Q6a."@en ;
     skos:definition "The compass heading, in degrees, of the Google Street View camera position for a Property's map locator."@en ;
@@ -353,7 +353,7 @@ opda:heading
     rdfs:range xsd:decimal .
 
 opda:heatingLastServicedDate
-    rdf:type owl:DatatypeProperty ;
+    rdf:type owl:DatatypeProperty, opda:DescriptiveProperty ;
     rdfs:label "heating last serviced date"@en ;
     rdfs:comment "Date the Property's central-heating system was last serviced. xsd:date. Flat per §Q6a."@en ;
     skos:definition "The date on which a Property's central-heating system was last serviced."@en ;
@@ -373,7 +373,7 @@ opda:inspireFeatureId
     rdfs:range xsd:string .
 
 opda:kitchens
-    rdf:type owl:DatatypeProperty ;
+    rdf:type owl:DatatypeProperty, opda:DescriptiveProperty ;
     rdfs:label "kitchens"@en ;
     rdfs:comment "Number of kitchens in the Property. Plain integer datatype per ODR-0008 §Q5a; flat per §Q6a."@en ;
     skos:definition "The count of kitchens in a Property."@en ;
@@ -383,7 +383,7 @@ opda:kitchens
     rdfs:range xsd:integer .
 
 opda:lastMaintained
-    rdf:type owl:DatatypeProperty ;
+    rdf:type owl:DatatypeProperty, opda:DescriptiveProperty ;
     rdfs:label "last maintained"@en ;
     rdfs:comment "Date the Property's solar-panel system was last maintained. xsd:date. Flat per §Q6a."@en ;
     skos:definition "The date on which a Property's solar-panel system was last maintained."@en ;
@@ -393,7 +393,7 @@ opda:lastMaintained
     rdfs:range xsd:date .
 
 opda:lengthOfLeaseInYears
-    rdf:type owl:DatatypeProperty ;
+    rdf:type owl:DatatypeProperty, opda:DescriptiveProperty ;
     rdfs:label "length of lease in years"@en ;
     rdfs:comment "Length of the leasehold term in years (the granted term). Plain integer datatype per ODR-0008 §Q5a; flat per §Q6a. Complements opda:LeaseTerm (the OWL-Time interval) with the headline term-length figure."@en ;
     skos:definition "The length in years of the term granted on a leasehold LegalEstate."@en ;
@@ -423,7 +423,7 @@ opda:line2
     rdfs:range xsd:string .
 
 opda:location
-    rdf:type owl:DatatypeProperty ;
+    rdf:type owl:DatatypeProperty, opda:DescriptiveProperty ;
     rdfs:label "location"@en ;
     rdfs:comment "Physical-location description of a Property fixture or measurement point — electricity / gas / water meter, stopcock, or survey/charge locus (typed as a free-form string in the data dictionary). ONE shared location-description property reused across those points. Plain string datatype per ODR-0008 §Q5a; flat per §Q6a. (FLAG: `propertyPack.location` is itself a structured geo block, not this leaf-level string; the structured locator is opda:Address territory — ODR-0015 — and is out of this leaf's scope.)"@en ;
     skos:definition "A free-text description of the physical position of a Property fixture or measurement point, such as a meter or stopcock."@en ;
@@ -433,7 +433,7 @@ opda:location
     rdfs:range xsd:string .
 
 opda:logbookProvider
-    rdf:type owl:DatatypeProperty ;
+    rdf:type owl:DatatypeProperty, opda:DescriptiveProperty ;
     rdfs:label "logbook provider"@en ;
     rdfs:comment "Name of the digital-property-logbook provider for the Property. Plain string datatype per ODR-0008 §Q5a; flat per §Q6a."@en ;
     skos:definition "The name of the provider of a Property's digital property logbook."@en ;
@@ -443,7 +443,7 @@ opda:logbookProvider
     rdfs:range xsd:string .
 
 opda:mpan
-    rdf:type owl:DatatypeProperty ;
+    rdf:type owl:DatatypeProperty, opda:DescriptiveProperty ;
     rdfs:label "MPAN"@en ;
     rdfs:comment "Meter Point Administration Number — the electricity supply-point identifier for the Property. xsd:string (a fixed-width numeric identifier whose leading zeros are significant — the same convention opda:hasUPRN follows, NOT xsd:integer despite the data-dictionary typing). Flat per §Q6a."@en ;
     skos:definition "The Meter Point Administration Number identifying a Property's electricity supply point."@en ;
@@ -453,7 +453,7 @@ opda:mpan
     rdfs:range xsd:string .
 
 opda:mprn
-    rdf:type owl:DatatypeProperty ;
+    rdf:type owl:DatatypeProperty, opda:DescriptiveProperty ;
     rdfs:label "MPRN"@en ;
     rdfs:comment "Meter Point Reference Number — the gas supply-point identifier for the Property. xsd:string (a fixed-width numeric identifier, per the opda:hasUPRN / opda:mpan convention, NOT xsd:integer). Flat per §Q6a."@en ;
     skos:definition "The Meter Point Reference Number identifying a Property's gas supply point."@en ;
@@ -463,7 +463,7 @@ opda:mprn
     rdfs:range xsd:string .
 
 opda:numberOfFloors
-    rdf:type owl:DatatypeProperty ;
+    rdf:type owl:DatatypeProperty, opda:DescriptiveProperty ;
     rdfs:label "number of floors"@en ;
     rdfs:comment "Number of floors (storeys) the Property comprises. Plain integer datatype per ODR-0008 §Q5a; flat per §Q6a."@en ;
     skos:definition "The count of floors (storeys) a Property comprises."@en ;
@@ -473,7 +473,7 @@ opda:numberOfFloors
     rdfs:range xsd:integer .
 
 opda:numberOfPropertiesSharing
-    rdf:type owl:DatatypeProperty ;
+    rdf:type owl:DatatypeProperty, opda:DescriptiveProperty ;
     rdfs:label "number of properties sharing"@en ;
     rdfs:comment "Number of other properties sharing the Property's off-mains drainage system. Plain integer datatype per ODR-0008 §Q5a; flat per §Q6a."@en ;
     skos:definition "The count of other properties sharing a Property's off-mains drainage system."@en ;
@@ -483,7 +483,7 @@ opda:numberOfPropertiesSharing
     rdfs:range xsd:integer .
 
 opda:otherCentralHeatingFuelType
-    rdf:type owl:DatatypeProperty ;
+    rdf:type owl:DatatypeProperty, opda:DescriptiveProperty ;
     rdfs:label "other central heating fuel type"@en ;
     rdfs:comment "Free-text fuel classifier captured when the central-heating fuel is 'Other' (the open-ended companion to opda:centralHeatingFuelType). Plain string datatype per ODR-0008 §Q5a; flat per §Q6a."@en ;
     skos:definition "The free-text fuel classifier captured for a Property whose central-heating fuel is recorded as 'Other'."@en ;
@@ -493,7 +493,7 @@ opda:otherCentralHeatingFuelType
     rdfs:range xsd:string .
 
 opda:otherHeatingFeatures
-    rdf:type owl:DatatypeProperty ;
+    rdf:type owl:DatatypeProperty, opda:DescriptiveProperty ;
     rdfs:label "other heating features"@en ;
     rdfs:comment "Additional heating features of the Property (a multi-valued list in the data dictionary — each value an xsd:string). UFO Quality of the physical Property. Plain multi-valued string datatype per ODR-0008 §Q5a; flat per §Q6a."@en ;
     skos:definition "An additional heating feature of a Property beyond its primary heating system."@en ;
@@ -503,7 +503,7 @@ opda:otherHeatingFeatures
     rdfs:range xsd:string .
 
 opda:otherOwnershipDetails
-    rdf:type owl:DatatypeProperty ;
+    rdf:type owl:DatatypeProperty, opda:DescriptiveProperty ;
     rdfs:label "other ownership details"@en ;
     rdfs:comment "Free-text ownership details captured when the ownership type is 'Other' for the LegalEstate. Plain string datatype per ODR-0008 §Q5a; flat per §Q6a."@en ;
     skos:definition "The free-text ownership details captured for a LegalEstate whose ownership type is recorded as 'Other'."@en ;
@@ -513,7 +513,7 @@ opda:otherOwnershipDetails
     rdfs:range xsd:string .
 
 opda:otherPropertiesInManagedArea
-    rdf:type owl:DatatypeProperty ;
+    rdf:type owl:DatatypeProperty, opda:DescriptiveProperty ;
     rdfs:label "other properties in managed area"@en ;
     rdfs:comment "Count of other properties in the managed area sharing the leasehold LegalEstate's service arrangements. xsd:decimal (typed as a number in the data dictionary). Flat per §Q6a."@en ;
     skos:definition "The count of other properties in the managed area sharing a leasehold LegalEstate's service arrangements."@en ;
@@ -523,7 +523,7 @@ opda:otherPropertiesInManagedArea
     rdfs:range xsd:decimal .
 
 opda:otherType
-    rdf:type owl:DatatypeProperty ;
+    rdf:type owl:DatatypeProperty, opda:DescriptiveProperty ;
     rdfs:label "other type"@en ;
     rdfs:comment "Free-text classifier captured when the Property's built-form / property-type is 'Other' (the open-ended companion to opda:propertyType). Plain string datatype per ODR-0008 §Q5a; flat per §Q6a."@en ;
     skos:definition "The free-text property-type classifier captured for a Property whose property type is recorded as 'Other'."@en ;
@@ -533,7 +533,7 @@ opda:otherType
     rdfs:range xsd:string .
 
 opda:outsideAreas
-    rdf:type owl:DatatypeProperty ;
+    rdf:type owl:DatatypeProperty, opda:DescriptiveProperty ;
     rdfs:label "outside areas"@en ;
     rdfs:comment "Outside areas of the Property — garden / yard / balcony / etc. (a multi-valued list — each value an xsd:string). UFO Quality of the physical Property. Plain multi-valued string datatype per ODR-0008 §Q5a; flat per §Q6a."@en ;
     skos:definition "An outside area belonging to a Property, such as a garden, yard, or balcony."@en ;
@@ -543,7 +543,7 @@ opda:outsideAreas
     rdfs:range xsd:string .
 
 opda:parkingArrangements
-    rdf:type owl:DatatypeProperty ;
+    rdf:type owl:DatatypeProperty, opda:DescriptiveProperty ;
     rdfs:label "parking arrangements"@en ;
     rdfs:comment "Parking arrangements for the Property — allocated / on-street / garage / etc. (a multi-valued list — each value an xsd:string). UFO Quality of the physical Property. Plain multi-valued string datatype per ODR-0008 §Q5a; flat per §Q6a."@en ;
     skos:definition "A parking arrangement available to a Property, such as allocated, on-street, or garage parking."@en ;
@@ -553,7 +553,7 @@ opda:parkingArrangements
     rdfs:range xsd:string .
 
 opda:personWhoDealsWithTheDeedOfCovenant
-    rdf:type owl:DatatypeProperty ;
+    rdf:type owl:DatatypeProperty, opda:DescriptiveProperty ;
     rdfs:label "person who deals with the deed of covenant"@en ;
     rdfs:comment "Name/role of the person who deals with the deed of covenant for the leasehold / managed-freehold LegalEstate. Plain string datatype per ODR-0008 §Q5a; flat per §Q6a."@en ;
     skos:definition "The name or role of the person who deals with the deed of covenant on a leasehold or managed-freehold LegalEstate."@en ;
@@ -563,7 +563,7 @@ opda:personWhoDealsWithTheDeedOfCovenant
     rdfs:range xsd:string .
 
 opda:pitch
-    rdf:type owl:DatatypeProperty ;
+    rdf:type owl:DatatypeProperty, opda:DescriptiveProperty ;
     rdfs:label "pitch"@en ;
     rdfs:comment "Google Street View point-of-view pitch (degrees) for the Property's map locator. xsd:decimal numeric camera parameter. Flat per §Q6a."@en ;
     skos:definition "The vertical pitch, in degrees, of the Google Street View camera position for a Property's map locator."@en ;
@@ -593,7 +593,7 @@ opda:postcode
     rdfs:range xsd:string .
 
 opda:procedureForObtainingCertificate
-    rdf:type owl:DatatypeProperty ;
+    rdf:type owl:DatatypeProperty, opda:DescriptiveProperty ;
     rdfs:label "procedure for obtaining certificate"@en ;
     rdfs:comment "Procedure for obtaining a transfer/registration certificate on the leasehold / managed-freehold LegalEstate. Plain string datatype per ODR-0008 §Q5a; flat per §Q6a."@en ;
     skos:definition "The procedure for obtaining a transfer or registration certificate on a leasehold or managed-freehold LegalEstate."@en ;
@@ -603,7 +603,7 @@ opda:procedureForObtainingCertificate
     rdfs:range xsd:string .
 
 opda:propertiesContributingToMaintenanceOfManagedArea
-    rdf:type owl:DatatypeProperty ;
+    rdf:type owl:DatatypeProperty, opda:DescriptiveProperty ;
     rdfs:label "properties contributing to maintenance of managed area"@en ;
     rdfs:comment "Count of properties contributing to maintenance of the managed area for the leasehold LegalEstate. xsd:decimal (a number in the data dictionary). Flat per §Q6a."@en ;
     skos:definition "The count of properties contributing to maintenance of the managed area for a leasehold LegalEstate."@en ;
@@ -613,7 +613,7 @@ opda:propertiesContributingToMaintenanceOfManagedArea
     rdfs:range xsd:decimal .
 
 opda:publicSewerMapAttached
-    rdf:type owl:DatatypeProperty ;
+    rdf:type owl:DatatypeProperty, opda:DescriptiveProperty ;
     rdfs:label "public sewer map attached"@en ;
     rdfs:comment "Whether the public-sewer map is attached for the Property (a Yes/No-style string response in the data dictionary). Plain string datatype per ODR-0008 §Q5a; flat per §Q6a."@en ;
     skos:definition "An indicator of whether the public-sewer map is attached for a Property."@en ;
@@ -623,7 +623,7 @@ opda:publicSewerMapAttached
     rdfs:range xsd:string .
 
 opda:receptions
-    rdf:type owl:DatatypeProperty ;
+    rdf:type owl:DatatypeProperty, opda:DescriptiveProperty ;
     rdfs:label "receptions"@en ;
     rdfs:comment "Number of reception rooms in the Property. Plain integer datatype per ODR-0008 §Q5a; flat per §Q6a."@en ;
     skos:definition "The count of reception rooms in a Property."@en ;
@@ -633,7 +633,7 @@ opda:receptions
     rdfs:range xsd:integer .
 
 opda:rentIncreaseCalculated
-    rdf:type owl:DatatypeProperty ;
+    rdf:type owl:DatatypeProperty, opda:DescriptiveProperty ;
     rdfs:label "rent increase calculated"@en ;
     rdfs:comment "How a ground-rent increase is calculated on the leasehold LegalEstate (e.g. RPI-linked, doubling). Plain string datatype per ODR-0008 §Q5a; flat per §Q6a."@en ;
     skos:definition "How a ground-rent increase is calculated on a leasehold LegalEstate, such as by RPI-linking or doubling."@en ;
@@ -643,7 +643,7 @@ opda:rentIncreaseCalculated
     rdfs:range xsd:string .
 
 opda:rentReviewFrequency
-    rdf:type owl:DatatypeProperty ;
+    rdf:type owl:DatatypeProperty, opda:DescriptiveProperty ;
     rdfs:label "rent review frequency"@en ;
     rdfs:comment "Frequency at which ground rent is reviewed on the leasehold LegalEstate. Plain string datatype per ODR-0008 §Q5a; flat per §Q6a."@en ;
     skos:definition "The frequency at which ground rent is reviewed on a leasehold LegalEstate."@en ;
@@ -653,7 +653,7 @@ opda:rentReviewFrequency
     rdfs:range xsd:string .
 
 opda:requirements
-    rdf:type owl:DatatypeProperty ;
+    rdf:type owl:DatatypeProperty, opda:DescriptiveProperty ;
     rdfs:label "requirements"@en ;
     rdfs:comment "Requirements stated for a licence-to-assign on the leasehold LegalEstate. Plain string datatype per ODR-0008 §Q5a; flat per §Q6a."@en ;
     skos:definition "The requirements stated for a licence to assign a leasehold LegalEstate."@en ;
@@ -663,7 +663,7 @@ opda:requirements
     rdfs:range xsd:string .
 
 opda:sewerageBills
-    rdf:type owl:DatatypeProperty ;
+    rdf:type owl:DatatypeProperty, opda:DescriptiveProperty ;
     rdfs:label "sewerage bills"@en ;
     rdfs:comment "Free-text sewerage-billing description for the Property. Plain string datatype per ODR-0008 §Q5a; flat per §Q6a."@en ;
     skos:definition "A description of the sewerage-billing arrangements for a Property."@en ;
@@ -673,7 +673,7 @@ opda:sewerageBills
     rdfs:range xsd:string .
 
 opda:sewerageProvider
-    rdf:type owl:DatatypeProperty ;
+    rdf:type owl:DatatypeProperty, opda:DescriptiveProperty ;
     rdfs:label "sewerage provider"@en ;
     rdfs:comment "Name of the Property's sewerage provider. Plain string datatype per ODR-0008 §Q5a; flat per §Q6a."@en ;
     skos:definition "The name of the undertaker providing sewerage services to a Property."@en ;
@@ -683,7 +683,7 @@ opda:sewerageProvider
     rdfs:range xsd:string .
 
 opda:sharedOwnershipPercentage
-    rdf:type owl:DatatypeProperty ;
+    rdf:type owl:DatatypeProperty, opda:DescriptiveProperty ;
     rdfs:label "shared ownership percentage"@en ;
     rdfs:comment "Percentage of the Property owned under a shared-ownership leasehold LegalEstate. xsd:decimal (a number in the data dictionary). Flat per §Q6a."@en ;
     skos:definition "The percentage of a Property owned under a shared-ownership leasehold LegalEstate."@en ;
@@ -693,7 +693,7 @@ opda:sharedOwnershipPercentage
     rdfs:range xsd:decimal .
 
 opda:startYearOfLease
-    rdf:type owl:DatatypeProperty ;
+    rdf:type owl:DatatypeProperty, opda:DescriptiveProperty ;
     rdfs:label "start year of lease"@en ;
     rdfs:comment "Calendar year the leasehold term commenced. xsd:gYear (a year value in the data dictionary). Flat per §Q6a."@en ;
     skos:definition "The calendar year in which the term of a leasehold LegalEstate commenced."@en ;
@@ -703,7 +703,7 @@ opda:startYearOfLease
     rdfs:range xsd:gYear .
 
 opda:supplier
-    rdf:type owl:DatatypeProperty ;
+    rdf:type owl:DatatypeProperty, opda:DescriptiveProperty ;
     rdfs:label "supplier"@en ;
     rdfs:comment "Name of the supplier for a Property utility / service (electricity, gas-fuel, heat-pump, solar, water, drainage, telephone, cable/satellite TV). ONE shared supplier-name property reused across the utility blocks (the data dictionary repeats the same `supplier` leaf under each). Plain string datatype per ODR-0008 §Q5a; flat per §Q6a."@en ;
     skos:definition "The name of the supplier of a Property utility or service, such as electricity, gas, water, drainage, telephone, or television."@en ;
@@ -713,7 +713,7 @@ opda:supplier
     rdfs:range xsd:string .
 
 opda:supplyClassification
-    rdf:type owl:DatatypeProperty ;
+    rdf:type owl:DatatypeProperty, opda:DescriptiveProperty ;
     rdfs:label "supply classification"@en ;
     rdfs:comment "Classification of the Property's water supply (e.g. metered / unmetered / rateable). A UFO Quale-in-Region of the physical Property. Plain string datatype per ODR-0008 §Q5a (no ontology-governed enum in the data dictionary); flat per §Q6a."@en ;
     skos:definition "The classification of a Property's water supply, such as metered, unmetered, or rateable."@en ;
@@ -723,7 +723,7 @@ opda:supplyClassification
     rdfs:range xsd:string .
 
 opda:titleExtents
-    rdf:type owl:DatatypeProperty ;
+    rdf:type owl:DatatypeProperty, opda:DescriptiveProperty ;
     rdfs:label "title extents"@en ;
     rdfs:comment "Statement of the extents covered by a title to be sold. Plain string datatype per ODR-0008 §Q5a; flat per §Q6a."@en ;
     skos:definition "A statement of the extents covered by a title to be sold."@en ;
@@ -743,7 +743,7 @@ opda:titleNumber
     rdfs:range xsd:string .
 
 opda:titlePropertyDescription
-    rdf:type owl:DatatypeProperty ;
+    rdf:type owl:DatatypeProperty, opda:DescriptiveProperty ;
     rdfs:label "title property description"@en ;
     rdfs:comment "The property description as recorded on the title for the LegalEstate to be transferred. Plain string datatype per ODR-0008 §Q5a; flat per §Q6a."@en ;
     skos:definition "The property description recorded on the title for a LegalEstate to be transferred."@en ;
@@ -753,7 +753,7 @@ opda:titlePropertyDescription
     rdfs:range xsd:string .
 
 opda:to
-    rdf:type owl:DatatypeProperty ;
+    rdf:type owl:DatatypeProperty, opda:DescriptiveProperty ;
     rdfs:label "to"@en ;
     rdfs:comment "End date of a demand / decoration period on the leasehold / managed-freehold LegalEstate (mirror of opda:from). xsd:date. ONE shared period-end property reused across those periods; flat per §Q6a. (FLAG: `to` is a generic period-boundary name; reused across the estate's recurring date-range blocks.)"@en ;
     skos:definition "The end date of a demand or decoration period on a leasehold or managed-freehold LegalEstate."@en ;
@@ -763,7 +763,7 @@ opda:to
     rdfs:range xsd:date .
 
 opda:typeOfFlooding
-    rdf:type owl:DatatypeProperty ;
+    rdf:type owl:DatatypeProperty, opda:DescriptiveProperty ;
     rdfs:label "type of flooding"@en ;
     rdfs:comment "Type(s) of historical flooding the Property has experienced (a multi-valued list — each value an xsd:string). UFO Quality of the physical Property. Plain multi-valued string datatype per ODR-0008 §Q5a; flat per §Q6a. (The per-peril flood RISK ASSESSMENT is opda:RiskAssessment territory; this is the factual historical-flooding-type attribute.)"@en ;
     skos:definition "A type of historical flooding a Property has experienced, such as river, surface-water, or groundwater flooding."@en ;
@@ -773,7 +773,7 @@ opda:typeOfFlooding
     rdfs:range xsd:string .
 
 opda:waterBills
-    rdf:type owl:DatatypeProperty ;
+    rdf:type owl:DatatypeProperty, opda:DescriptiveProperty ;
     rdfs:label "water bills"@en ;
     rdfs:comment "Free-text water-billing description for the Property. Plain string datatype per ODR-0008 §Q5a; flat per §Q6a."@en ;
     skos:definition "A description of the water-billing arrangements for a Property."@en ;
@@ -783,7 +783,7 @@ opda:waterBills
     rdfs:range xsd:string .
 
 opda:waterProvider
-    rdf:type owl:DatatypeProperty ;
+    rdf:type owl:DatatypeProperty, opda:DescriptiveProperty ;
     rdfs:label "water provider"@en ;
     rdfs:comment "Name of the Property's water-supply provider. Plain string datatype per ODR-0008 §Q5a; flat per §Q6a."@en ;
     skos:definition "The name of the undertaker supplying water to a Property."@en ;
@@ -793,7 +793,7 @@ opda:waterProvider
     rdfs:range xsd:string .
 
 opda:waterworksMapAttached
-    rdf:type owl:DatatypeProperty ;
+    rdf:type owl:DatatypeProperty, opda:DescriptiveProperty ;
     rdfs:label "waterworks map attached"@en ;
     rdfs:comment "Whether the waterworks map is attached for the Property (a Yes/No-style string response). Plain string datatype per ODR-0008 §Q5a; flat per §Q6a."@en ;
     skos:definition "An indicator of whether the waterworks map is attached for a Property."@en ;
@@ -803,7 +803,7 @@ opda:waterworksMapAttached
     rdfs:range xsd:string .
 
 opda:willHandoverLogbook
-    rdf:type owl:DatatypeProperty ;
+    rdf:type owl:DatatypeProperty, opda:DescriptiveProperty ;
     rdfs:label "will handover logbook"@en ;
     rdfs:comment "Whether the seller will hand over the digital property logbook on completion. xsd:boolean. Flat per §Q6a."@en ;
     skos:definition "A boolean recording whether the seller will hand over a Property's digital property logbook on completion."@en ;
@@ -813,7 +813,7 @@ opda:willHandoverLogbook
     rdfs:range xsd:boolean .
 
 opda:year
-    rdf:type owl:DatatypeProperty ;
+    rdf:type owl:DatatypeProperty, opda:DescriptiveProperty ;
     rdfs:label "year"@en ;
     rdfs:comment "Calendar year of a service-charge last-decorated period (externally / internally) on the leasehold LegalEstate. xsd:gYear. Flat per §Q6a."@en ;
     skos:definition "The calendar year of a service-charge last-decorated period on a leasehold LegalEstate."@en ;
@@ -823,7 +823,7 @@ opda:year
     rdfs:range xsd:gYear .
 
 opda:yearCompleted
-    rdf:type owl:DatatypeProperty ;
+    rdf:type owl:DatatypeProperty, opda:DescriptiveProperty ;
     rdfs:label "year completed"@en ;
     rdfs:comment "Calendar year a Property alteration / change was completed (change of use, conservatory addition, window replacement since 2002). xsd:gYear. Flat per §Q6a."@en ;
     skos:definition "The calendar year in which an alteration or change to a Property, such as a change of use, conservatory addition, or window replacement, was completed."@en ;
@@ -833,7 +833,7 @@ opda:yearCompleted
     rdfs:range xsd:gYear .
 
 opda:yearInstalled
-    rdf:type owl:DatatypeProperty ;
+    rdf:type owl:DatatypeProperty, opda:DescriptiveProperty ;
     rdfs:label "year installed"@en ;
     rdfs:comment "Calendar year the Property's solar-panel system was installed. xsd:gYear (a year value in the data dictionary). Flat per §Q6a."@en ;
     skos:definition "The calendar year in which a Property's solar-panel system was installed."@en ;
@@ -843,7 +843,7 @@ opda:yearInstalled
     rdfs:range xsd:gYear .
 
 opda:yearOfBuild
-    rdf:type owl:DatatypeProperty ;
+    rdf:type owl:DatatypeProperty, opda:DescriptiveProperty ;
     rdfs:label "year of build"@en ;
     rdfs:comment "Calendar year the Property was built. xsd:gYear — the data dictionary types it as a year value; plain datatype per ODR-0008 §Q5a, flat per §Q6a."@en ;
     skos:definition "The calendar year in which a Property was built."@en ;
@@ -853,7 +853,7 @@ opda:yearOfBuild
     rdfs:range xsd:gYear .
 
 opda:yearTested
-    rdf:type owl:DatatypeProperty ;
+    rdf:type owl:DatatypeProperty, opda:DescriptiveProperty ;
     rdfs:label "year tested"@en ;
     rdfs:comment "Calendar year the Property's electrical installation was last tested by a qualified electrician. xsd:gYear. Flat per §Q6a."@en ;
     skos:definition "The calendar year in which a Property's electrical installation was last tested by a qualified electrician."@en ;
@@ -863,7 +863,7 @@ opda:yearTested
     rdfs:range xsd:gYear .
 
 opda:yearWorkCarriedOut
-    rdf:type owl:DatatypeProperty ;
+    rdf:type owl:DatatypeProperty, opda:DescriptiveProperty ;
     rdfs:label "year work carried out"@en ;
     rdfs:comment "Calendar year electrical work was carried out on the Property (since 2005). xsd:gYear. Flat per §Q6a."@en ;
     skos:definition "The calendar year in which electrical work was carried out on a Property."@en ;
@@ -873,7 +873,7 @@ opda:yearWorkCarriedOut
     rdfs:range xsd:gYear .
 
 opda:zoom
-    rdf:type owl:DatatypeProperty ;
+    rdf:type owl:DatatypeProperty, opda:DescriptiveProperty ;
     rdfs:label "zoom"@en ;
     rdfs:comment "Google Street View point-of-view zoom level for the Property's map locator. xsd:decimal numeric camera parameter. Flat per §Q6a."@en ;
     skos:definition "The zoom level of the Google Street View camera position for a Property's map locator."@en ;

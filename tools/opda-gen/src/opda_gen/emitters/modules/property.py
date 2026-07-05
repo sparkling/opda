@@ -229,6 +229,92 @@ DATATYPE_PROPERTIES = (
     OPDA.zoom,
 )
 
+# opda:DescriptiveProperty membership (ODR-0008 §Q7a) — every genuine
+# ODR-0008 Property/LegalEstate descriptive datatype property this module
+# mints, so the Q7a CI test can assert the base-cardinality clause (NO
+# sh:minCount on a descriptive property in opda-shapes.ttl; per-form minCount
+# lives only in the ODR-0010 overlay profiles). Excludes: ODR-0015 identity/
+# address properties (hasUPRN, addressVariant — out of ODR-0008's own
+# declared scope) and every SKOS-Concept-valued / structural-join
+# owl:ObjectProperty above (builtForm, currentEnergyRating, tenureKind,
+# ownershipType, heatingType, centralHeatingFuelType, propertyType,
+# offMainsDrainageSystemType, the BASPI5 Yes/No discriminators, hasAddress,
+# hasEPCCertificate, identifiesSameProperty, recordsEstate) — Q6a's floor is
+# explicitly "datatype property", not object property.
+DESCRIPTIVE_PROPERTIES = (
+    OPDA.abilityToResideAtProperty,
+    OPDA.accessibilityAndAdaptations,
+    OPDA.adHocExpenses,
+    OPDA.area,
+    OPDA.bathrooms,
+    OPDA.bedrooms,
+    OPDA.buildingsReinstatementCostAssessment,
+    OPDA.centralHeatingInstalled,
+    OPDA.consequentialChargingBasis,
+    OPDA.councilTaxBand,
+    OPDA.currentChargingBasis,
+    OPDA.dateInstalled,
+    OPDA.dateLastEmptied,
+    OPDA.dateLastServiced,
+    OPDA.dateReplaced,
+    OPDA.dateToBeConnected,
+    OPDA.diningAreas,
+    OPDA.distanceToNearestSewerageTreatment,
+    OPDA.entranceFloor,
+    OPDA["from"],
+    OPDA.groundRentFrequency,
+    OPDA.handoverOnCompletion,
+    OPDA.hasFixedRentcharge,
+    OPDA.heading,
+    OPDA.heatingLastServicedDate,
+    OPDA.kitchens,
+    OPDA.lastMaintained,
+    OPDA.lengthOfLeaseInYears,
+    OPDA.location,
+    OPDA.logbookProvider,
+    OPDA.mpan,
+    OPDA.mprn,
+    OPDA.numberOfFloors,
+    OPDA.numberOfPropertiesSharing,
+    OPDA.otherCentralHeatingFuelType,
+    OPDA.otherHeatingFeatures,
+    OPDA.otherOwnershipDetails,
+    OPDA.otherPropertiesInManagedArea,
+    OPDA.otherType,
+    OPDA.outsideAreas,
+    OPDA.parkingArrangements,
+    OPDA.personWhoDealsWithTheDeedOfCovenant,
+    OPDA.pitch,
+    OPDA.procedureForObtainingCertificate,
+    OPDA.propertiesContributingToMaintenanceOfManagedArea,
+    OPDA.publicSewerMapAttached,
+    OPDA.receptions,
+    OPDA.rentIncreaseCalculated,
+    OPDA.rentReviewFrequency,
+    OPDA.requirements,
+    OPDA.sewerageBills,
+    OPDA.sewerageProvider,
+    OPDA.sharedOwnershipPercentage,
+    OPDA.startYearOfLease,
+    OPDA.supplier,
+    OPDA.supplyClassification,
+    OPDA.titleExtents,
+    OPDA.titlePropertyDescription,
+    OPDA.to,
+    OPDA.typeOfFlooding,
+    OPDA.waterBills,
+    OPDA.waterProvider,
+    OPDA.waterworksMapAttached,
+    OPDA.willHandoverLogbook,
+    OPDA.year,
+    OPDA.yearCompleted,
+    OPDA.yearInstalled,
+    OPDA.yearOfBuild,
+    OPDA.yearTested,
+    OPDA.yearWorkCarriedOut,
+    OPDA.zoom,
+)
+
 
 def build_graph() -> Graph:
     """Build the Property module class + property graph.
@@ -2121,5 +2207,10 @@ def build_graph() -> Graph:
         g.add((prop, RDFS.isDefinedBy, module_iri))
         for p in paths:
             g.add((prop, DCTERMS.source, _dd_source(p)))
+
+    # opda:DescriptiveProperty membership (ODR-0008 §Q7a) — see
+    # DESCRIPTIVE_PROPERTIES above for scope/exclusion rationale.
+    for prop in DESCRIPTIVE_PROPERTIES:
+        g.add((prop, RDF.type, OPDA.DescriptiveProperty))
 
     return g

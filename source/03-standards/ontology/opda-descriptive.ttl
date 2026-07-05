@@ -110,7 +110,7 @@ opda:Valuation
     skos:scopeNote "UFO: Information Object (corrected from \"Substance Kind\" per ODR-0008d Rule 3). RICS Red Book (regulator-cited per ODR-0011 §4a)."@en .
 
 opda:actionAlertRating
-    rdf:type owl:DatatypeProperty ;
+    rdf:type owl:DatatypeProperty, opda:DescriptiveProperty ;
     rdfs:label "action alert rating"@en ;
     rdfs:comment "The ordinal action-alert rating for the RiskAssessment's peril: an integer 1–5 where 1 is Green (lowest risk) and 5 is Red (highest). Value-space is opda:ActionAlertRatingScheme; the node shape sh:in-restricts it (ODR-0008d Rule 1c / Rule 4)."@en ;
     skos:definition "The action-alert severity of a risk assessment: an ordinal integer from 1 (Green, lowest risk) to 5 (Red, highest risk) grading the assessed peril."@en ;
@@ -120,7 +120,7 @@ opda:actionAlertRating
     rdfs:range xsd:integer .
 
 opda:ageRange
-    rdf:type owl:DatatypeProperty ;
+    rdf:type owl:DatatypeProperty, opda:DescriptiveProperty ;
     rdfs:label "age range"@en ;
     rdfs:comment "Age range of a nearby school. Domain opda:NearbyFacility (the genus bearer; the school band is SHACL-scoped per ODR-0024 R4). Plain string datatype per ODR-0008 §Q5a; flat per §Q6a."@en ;
     skos:definition "The range of pupil ages catered for by a nearby school."@en ;
@@ -140,7 +140,7 @@ opda:amount
     rdfs:range xsd:decimal .
 
 opda:applicationDate
-    rdf:type owl:DatatypeProperty ;
+    rdf:type owl:DatatypeProperty, opda:DescriptiveProperty ;
     rdfs:label "application date"@en ;
     rdfs:comment "Date a planning / building-control application was made (across the local-authority-search decision blocks). xsd:date. ONE shared property; flat per §Q6a."@en ;
     skos:definition "The date a planning or building-control application was made, as recorded in a local-authority search result."@en ;
@@ -150,7 +150,7 @@ opda:applicationDate
     rdfs:range xsd:date .
 
 opda:applicationType
-    rdf:type owl:DatatypeProperty ;
+    rdf:type owl:DatatypeProperty, opda:DescriptiveProperty ;
     rdfs:label "application type"@en ;
     rdfs:comment "Type of a planning / building-control application recorded in a local-authority Search result (across the planning-permission, building-regulations, listed-building, conservation, and certificate-of-lawfulness decision blocks). ONE shared property reused across those blocks. Plain string datatype per ODR-0008 §Q5a; flat per §Q6a."@en ;
     skos:definition "The kind of a planning or building-control application recorded in a local-authority search result."@en ;
@@ -160,7 +160,7 @@ opda:applicationType
     rdfs:range xsd:string .
 
 opda:buildingControlStartDate
-    rdf:type owl:DatatypeProperty ;
+    rdf:type owl:DatatypeProperty, opda:DescriptiveProperty ;
     rdfs:label "building control start date"@en ;
     rdfs:comment "Start date of a building-control matter in a local-authority Search result. xsd:date. Flat per §Q6a."@en ;
     skos:definition "The date a building-control matter commenced, as recorded in a local-authority search result."@en ;
@@ -170,7 +170,7 @@ opda:buildingControlStartDate
     rdfs:range xsd:date .
 
 opda:consentsObtained
-    rdf:type owl:DatatypeProperty ;
+    rdf:type owl:DatatypeProperty, opda:DescriptiveProperty ;
     rdfs:label "consents obtained"@en ;
     rdfs:comment "Whether consents were obtained for work under a tree-preservation order. Yes/No disclosure; xsd:string per §Q5a; flat per §Q6a."@en ;
     skos:definition "Whether the required consents were obtained for work carried out under a tree-preservation order."@en ;
@@ -180,7 +180,7 @@ opda:consentsObtained
     rdfs:range xsd:string .
 
 opda:contributionIncludedInServiceCharge
-    rdf:type owl:DatatypeProperty ;
+    rdf:type owl:DatatypeProperty, opda:DescriptiveProperty ;
     rdfs:label "contribution included in service charge"@en ;
     rdfs:comment "Whether a reserve-fund contribution is included in the service charge. Yes/No disclosure; xsd:string per §Q5a; flat per §Q6a."@en ;
     skos:definition "Whether a reserve-fund contribution is included within the service charge."@en ;
@@ -190,7 +190,7 @@ opda:contributionIncludedInServiceCharge
     rdfs:range xsd:string .
 
 opda:councilSearchTurnaroundTimeInWorkingDays
-    rdf:type owl:DatatypeProperty ;
+    rdf:type owl:DatatypeProperty, opda:DescriptiveProperty ;
     rdfs:label "council search turnaround time in working days"@en ;
     rdfs:comment "Quoted turnaround time (working days) for a council search. Plain integer datatype per ODR-0008 §Q5a; flat per §Q6a."@en ;
     skos:definition "The quoted turnaround time, in working days, for a council search."@en ;
@@ -200,7 +200,7 @@ opda:councilSearchTurnaroundTimeInWorkingDays
     rdfs:range xsd:integer .
 
 opda:countyCouncil
-    rdf:type owl:DatatypeProperty ;
+    rdf:type owl:DatatypeProperty, opda:DescriptiveProperty ;
     rdfs:label "county council"@en ;
     rdfs:comment "Name of the county council for the Property's locality (local-authority Search context). Plain string datatype per ODR-0008 §Q5a; flat per §Q6a."@en ;
     skos:definition "The name of the county council for the locality of the property searched."@en ;
@@ -210,7 +210,7 @@ opda:countyCouncil
     rdfs:range xsd:string .
 
 opda:credibilitySources
-    rdf:type owl:DatatypeProperty ;
+    rdf:type owl:DatatypeProperty, opda:DescriptiveProperty ;
     rdfs:label "credibility sources"@en ;
     rdfs:comment "Sources lending credibility to a Valuation's price estimate (a multi-valued list — each value an xsd:string). Plain multi-valued string datatype per ODR-0008 §Q5a; flat per §Q6a."@en ;
     skos:definition "The sources cited as lending credibility to a valuation's price estimate."@en ;
@@ -220,7 +220,7 @@ opda:credibilitySources
     rdfs:range xsd:string .
 
 opda:dangerousCladdingOrDefects
-    rdf:type owl:DatatypeProperty ;
+    rdf:type owl:DatatypeProperty, opda:DescriptiveProperty ;
     rdfs:label "dangerous cladding or defects"@en ;
     rdfs:comment "Whether there is dangerous cladding or building-safety defects. Yes/No disclosure; xsd:string per §Q5a; flat per §Q6a."@en ;
     skos:definition "Whether a property has dangerous cladding or building-safety defects."@en ;
@@ -230,7 +230,7 @@ opda:dangerousCladdingOrDefects
     rdfs:range xsd:string .
 
 opda:dateRemedialActionRequired
-    rdf:type owl:DatatypeProperty ;
+    rdf:type owl:DatatypeProperty, opda:DescriptiveProperty ;
     rdfs:label "date remedial action required"@en ;
     rdfs:comment "Date by which remedial action is required following a buildings-insurance RiskAssessment. xsd:date. Flat per §Q6a."@en ;
     skos:definition "The date by which remedial action is required following a buildings-insurance risk assessment of a managed area."@en ;
@@ -240,7 +240,7 @@ opda:dateRemedialActionRequired
     rdfs:range xsd:date .
 
 opda:dealsWithDayToDayMaintenanceOfManagedArea
-    rdf:type owl:DatatypeProperty ;
+    rdf:type owl:DatatypeProperty, opda:DescriptiveProperty ;
     rdfs:label "deals with day-to-day maintenance of managed area"@en ;
     rdfs:comment "Whether the contact deals with day-to-day maintenance of the managed area. Yes/No disclosure; xsd:string per §Q5a; flat per §Q6a."@en ;
     skos:definition "Whether a contact is responsible for the day-to-day maintenance of a managed area."@en ;
@@ -250,7 +250,7 @@ opda:dealsWithDayToDayMaintenanceOfManagedArea
     rdfs:range xsd:string .
 
 opda:decision
-    rdf:type owl:DatatypeProperty ;
+    rdf:type owl:DatatypeProperty, opda:DescriptiveProperty ;
     rdfs:label "decision"@en ;
     rdfs:comment "Decision recorded on a planning / building-control application in a local-authority Search result. ONE shared property reused across the decision blocks. Plain string datatype per ODR-0008 §Q5a; flat per §Q6a."@en ;
     skos:definition "The determination reached on a planning or building-control application in a local-authority search result."@en ;
@@ -260,7 +260,7 @@ opda:decision
     rdfs:range xsd:string .
 
 opda:decisionDate
-    rdf:type owl:DatatypeProperty ;
+    rdf:type owl:DatatypeProperty, opda:DescriptiveProperty ;
     rdfs:label "decision date"@en ;
     rdfs:comment "Date a decision was made on a planning / building-control application. xsd:date. ONE shared property; flat per §Q6a."@en ;
     skos:definition "The date a determination was reached on a planning or building-control application."@en ;
@@ -270,7 +270,7 @@ opda:decisionDate
     rdfs:range xsd:date .
 
 opda:designationType
-    rdf:type owl:DatatypeProperty ;
+    rdf:type owl:DatatypeProperty, opda:DescriptiveProperty ;
     rdfs:label "designation type"@en ;
     rdfs:comment "Type of a planning designation recorded in a local-authority Search result (e.g. conservation area, tree preservation order). Plain string datatype per ODR-0008 §Q5a; flat per §Q6a."@en ;
     skos:definition "The kind of planning designation recorded in a local-authority search result, such as a conservation area or tree-preservation order."@en ;
@@ -280,7 +280,7 @@ opda:designationType
     rdfs:range xsd:string .
 
 opda:dischargeCompliesWithGBR
-    rdf:type owl:DatatypeProperty ;
+    rdf:type owl:DatatypeProperty, opda:DescriptiveProperty ;
     rdfs:label "discharge complies with GBR"@en ;
     rdfs:comment "Whether off-mains drainage discharge complies with the General Binding Rules. Yes/No disclosure; xsd:string per §Q5a; flat per §Q6a."@en ;
     skos:definition "Whether a property's off-mains drainage discharge complies with the General Binding Rules."@en ;
@@ -299,7 +299,7 @@ opda:disclosureDetail
     rdfs:range xsd:string .
 
 opda:displayName
-    rdf:type owl:DatatypeProperty ;
+    rdf:type owl:DatatypeProperty, opda:DescriptiveProperty ;
     rdfs:label "display name"@en ;
     rdfs:comment "Human-readable display name of a document or Search artefact. Domain-less artefact-reference attribute; flat per §Q6a."@en ;
     skos:definition "The human-readable name of a document or search artefact."@en ;
@@ -308,7 +308,7 @@ opda:displayName
     rdfs:range xsd:string .
 
 opda:distanceInMiles
-    rdf:type owl:DatatypeProperty ;
+    rdf:type owl:DatatypeProperty, opda:DescriptiveProperty ;
     rdfs:label "distance in miles"@en ;
     rdfs:comment "Distance in miles from the Property to a nearby facility (school / health-care / transport). xsd:decimal. Domain opda:NearbyFacility (the proximity relation on the genus), reused across the amenity bands; flat per §Q6a."@en ;
     skos:definition "The distance in miles from a property to a nearby facility."@en ;
@@ -318,7 +318,7 @@ opda:distanceInMiles
     rdfs:range xsd:decimal .
 
 opda:districtCouncil
-    rdf:type owl:DatatypeProperty ;
+    rdf:type owl:DatatypeProperty, opda:DescriptiveProperty ;
     rdfs:label "district council"@en ;
     rdfs:comment "Name of the district council for the Property's locality. Plain string datatype per ODR-0008 §Q5a; flat per §Q6a."@en ;
     skos:definition "The name of the district council for the locality of the property searched."@en ;
@@ -328,7 +328,7 @@ opda:districtCouncil
     rdfs:range xsd:string .
 
 opda:documentDate
-    rdf:type owl:DatatypeProperty ;
+    rdf:type owl:DatatypeProperty, opda:DescriptiveProperty ;
     rdfs:label "document date"@en ;
     rdfs:comment "Date of a title / additional document. xsd:date. Domain opda:AttachedDocument (the neutral document bearer; ODR-0024 R7 — an attached doc is NOT evidence by mere attachment; a document plays the evidence role via opda:evidenceType, ODR-0027 §R6); flat per §Q6a."@en ;
     skos:definition "The date borne by a title or additional document attached to a property pack."@en ;
@@ -338,7 +338,7 @@ opda:documentDate
     rdfs:range xsd:date .
 
 opda:documentTypeCode
-    rdf:type owl:DatatypeProperty ;
+    rdf:type owl:DatatypeProperty, opda:DescriptiveProperty ;
     rdfs:label "document type code"@en ;
     rdfs:comment "Type code of a title / additional document. Domain opda:AttachedDocument (the neutral document bearer; ODR-0024 R7). Plain string datatype per ODR-0008 §Q5a (no in-data enum; session-028 Q-SKOS keeps it bare); flat per §Q6a."@en ;
     skos:definition "The type code classifying a title or additional document attached to a property pack."@en ;
@@ -348,7 +348,7 @@ opda:documentTypeCode
     rdfs:range xsd:string .
 
 opda:expectedDeliveryDate
-    rdf:type owl:DatatypeProperty ;
+    rdf:type owl:DatatypeProperty, opda:DescriptiveProperty ;
     rdfs:label "expected delivery date"@en ;
     rdfs:comment "Expected delivery date for an ordered Search. xsd:date. Flat per §Q6a."@en ;
     skos:definition "The date by which an ordered search is expected to be delivered."@en ;
@@ -358,7 +358,7 @@ opda:expectedDeliveryDate
     rdfs:range xsd:date .
 
 opda:filedUnder
-    rdf:type owl:DatatypeProperty ;
+    rdf:type owl:DatatypeProperty, opda:DescriptiveProperty ;
     rdfs:label "filed under"@en ;
     rdfs:comment "Filing reference under which a title / additional document is held. Domain opda:AttachedDocument (the neutral document bearer; ODR-0024 R7); flat per §Q6a."@en ;
     skos:definition "The filing reference under which a title or additional document is held."@en ;
@@ -368,7 +368,7 @@ opda:filedUnder
     rdfs:range xsd:string .
 
 opda:forTheManagedAreas
-    rdf:type owl:DatatypeProperty ;
+    rdf:type owl:DatatypeProperty, opda:DescriptiveProperty ;
     rdfs:label "for the managed areas"@en ;
     rdfs:comment "Portion of the service-charge reserve-fund amount attributable to the managed areas (a numeric split of the reserve fund). xsd:decimal; flat per §Q6a."@en ;
     skos:definition "The portion of a service-charge reserve fund attributable to the managed areas."@en ;
@@ -378,7 +378,7 @@ opda:forTheManagedAreas
     rdfs:range xsd:decimal .
 
 opda:freeholdOwner
-    rdf:type owl:DatatypeProperty ;
+    rdf:type owl:DatatypeProperty, opda:DescriptiveProperty ;
     rdfs:label "freehold owner"@en ;
     rdfs:comment "Freehold owner named in the leasehold ownership-and-management block (a reference/name string, not a Yes/No flag). xsd:string per §Q5a; flat per §Q6a."@en ;
     skos:definition "The named freehold owner recorded in a leasehold ownership-and-management block."@en ;
@@ -388,7 +388,7 @@ opda:freeholdOwner
     rdfs:range xsd:string .
 
 opda:fromTheOwners
-    rdf:type owl:DatatypeProperty ;
+    rdf:type owl:DatatypeProperty, opda:DescriptiveProperty ;
     rdfs:label "from the owners"@en ;
     rdfs:comment "Portion of the service-charge reserve-fund amount contributed by the owners (a numeric split of the reserve fund). xsd:decimal; flat per §Q6a."@en ;
     skos:definition "The portion of a service-charge reserve fund contributed by the owners."@en ;
@@ -398,7 +398,7 @@ opda:fromTheOwners
     rdfs:range xsd:decimal .
 
 opda:hasFloodDefences
-    rdf:type owl:DatatypeProperty ;
+    rdf:type owl:DatatypeProperty, opda:DescriptiveProperty ;
     rdfs:label "has flood defences"@en ;
     rdfs:comment "Whether the Property has flood defences. Yes/No disclosure; xsd:string per §Q5a; flat per §Q6a."@en ;
     skos:definition "Whether a property has flood defences."@en ;
@@ -408,7 +408,7 @@ opda:hasFloodDefences
     rdfs:range xsd:string .
 
 opda:hasFloorplan
-    rdf:type owl:DatatypeProperty ;
+    rdf:type owl:DatatypeProperty, opda:DescriptiveProperty ;
     rdfs:label "has floorplan"@en ;
     rdfs:comment "Whether a floorplan is available for the Property. Yes/No disclosure; xsd:string per §Q5a; flat per §Q6a."@en ;
     skos:definition "Whether a floorplan is available for a property."@en ;
@@ -418,7 +418,7 @@ opda:hasFloorplan
     rdfs:range xsd:string .
 
 opda:hasHelpToBuyEquityLoan
-    rdf:type owl:DatatypeProperty ;
+    rdf:type owl:DatatypeProperty, opda:DescriptiveProperty ;
     rdfs:label "has Help to Buy equity loan"@en ;
     rdfs:comment "Whether the Property has a Help to Buy equity loan. Yes/No disclosure; xsd:string per §Q5a; flat per §Q6a."@en ;
     skos:definition "Whether a property is subject to a Help to Buy equity loan."@en ;
@@ -428,7 +428,7 @@ opda:hasHelpToBuyEquityLoan
     rdfs:range xsd:string .
 
 opda:hasLift
-    rdf:type owl:DatatypeProperty ;
+    rdf:type owl:DatatypeProperty, opda:DescriptiveProperty ;
     rdfs:label "has lift"@en ;
     rdfs:comment "Whether the Property (building) has a lift. Yes/No disclosure; xsd:string per §Q5a; flat per §Q6a."@en ;
     skos:definition "Whether the building containing a property has a lift."@en ;
@@ -438,7 +438,7 @@ opda:hasLift
     rdfs:range xsd:string .
 
 opda:hasTenantCompanyDissolved
-    rdf:type owl:DatatypeProperty ;
+    rdf:type owl:DatatypeProperty, opda:DescriptiveProperty ;
     rdfs:label "has tenant company dissolved"@en ;
     rdfs:comment "Whether the tenant management company has been dissolved. Yes/No disclosure; xsd:string per §Q5a; flat per §Q6a."@en ;
     skos:definition "Whether the tenant management company for an estate has been dissolved."@en ;
@@ -448,7 +448,7 @@ opda:hasTenantCompanyDissolved
     rdfs:range xsd:string .
 
 opda:headLeaseholderControlled
-    rdf:type owl:DatatypeProperty ;
+    rdf:type owl:DatatypeProperty, opda:DescriptiveProperty ;
     rdfs:label "head leaseholder controlled"@en ;
     rdfs:comment "Whether the head lease is leaseholder-controlled. Yes/No disclosure; xsd:string per §Q5a; flat per §Q6a."@en ;
     skos:definition "Whether the head lease of an estate is leaseholder-controlled."@en ;
@@ -458,7 +458,7 @@ opda:headLeaseholderControlled
     rdfs:range xsd:string .
 
 opda:isConnectedToNationalGrid
-    rdf:type owl:DatatypeProperty ;
+    rdf:type owl:DatatypeProperty, opda:DescriptiveProperty ;
     rdfs:label "is connected to national grid"@en ;
     rdfs:comment "Whether the Property's solar panels are connected to the national grid. Yes/No disclosure; xsd:string per §Q5a; flat per §Q6a."@en ;
     skos:definition "Whether a property's solar panels are connected to the national grid."@en ;
@@ -468,7 +468,7 @@ opda:isConnectedToNationalGrid
     rdfs:range xsd:string .
 
 opda:isFirstRegistration
-    rdf:type owl:DatatypeProperty ;
+    rdf:type owl:DatatypeProperty, opda:DescriptiveProperty ;
     rdfs:label "is first registration"@en ;
     rdfs:comment "Whether the sale is a first registration of the title. Yes/No disclosure; xsd:string per §Q5a; flat per §Q6a."@en ;
     skos:definition "Whether a sale constitutes the first registration of the title."@en ;
@@ -478,7 +478,7 @@ opda:isFirstRegistration
     rdfs:range xsd:string .
 
 opda:isHMO
-    rdf:type owl:DatatypeProperty ;
+    rdf:type owl:DatatypeProperty, opda:DescriptiveProperty ;
     rdfs:label "is HMO"@en ;
     rdfs:comment "Whether the Property is a House in Multiple Occupation. Yes/No disclosure; xsd:string per §Q5a; flat per §Q6a."@en ;
     skos:definition "Whether a property is a House in Multiple Occupation."@en ;
@@ -488,7 +488,7 @@ opda:isHMO
     rdfs:range xsd:string .
 
 opda:isLeaseQualifying
-    rdf:type owl:DatatypeProperty ;
+    rdf:type owl:DatatypeProperty, opda:DescriptiveProperty ;
     rdfs:label "is lease qualifying"@en ;
     rdfs:comment "Whether the lease is a qualifying lease under the Building Safety Act. Yes/No disclosure; xsd:string per §Q5a; flat per §Q6a."@en ;
     skos:definition "Whether a lease is a qualifying lease under the Building Safety Act."@en ;
@@ -498,7 +498,7 @@ opda:isLeaseQualifying
     rdfs:range xsd:string .
 
 opda:isLimitedCompanySale
-    rdf:type owl:DatatypeProperty ;
+    rdf:type owl:DatatypeProperty, opda:DescriptiveProperty ;
     rdfs:label "is limited company sale"@en ;
     rdfs:comment "Whether the seller is a limited company. Yes/No disclosure; xsd:string per §Q5a; flat per §Q6a."@en ;
     skos:definition "Whether the seller in a sale is a limited company."@en ;
@@ -508,7 +508,7 @@ opda:isLimitedCompanySale
     rdfs:range xsd:string .
 
 opda:isManagingAgentEmployed
-    rdf:type owl:DatatypeProperty ;
+    rdf:type owl:DatatypeProperty, opda:DescriptiveProperty ;
     rdfs:label "is managing agent employed"@en ;
     rdfs:comment "Whether a managing agent is employed for the estate. Yes/No disclosure; xsd:string per §Q5a; flat per §Q6a."@en ;
     skos:definition "Whether a managing agent is employed to manage an estate."@en ;
@@ -518,7 +518,7 @@ opda:isManagingAgentEmployed
     rdfs:range xsd:string .
 
 opda:isStudentAccommodation
-    rdf:type owl:DatatypeProperty ;
+    rdf:type owl:DatatypeProperty, opda:DescriptiveProperty ;
     rdfs:label "is student accommodation"@en ;
     rdfs:comment "Whether the Property is student accommodation. Yes/No disclosure; xsd:string per §Q5a; flat per §Q6a."@en ;
     skos:definition "Whether a property is student accommodation."@en ;
@@ -528,7 +528,7 @@ opda:isStudentAccommodation
     rdfs:range xsd:string .
 
 opda:landlordInsuresIfFlat
-    rdf:type owl:DatatypeProperty ;
+    rdf:type owl:DatatypeProperty, opda:DescriptiveProperty ;
     rdfs:label "landlord insures if flat"@en ;
     rdfs:comment "Whether the landlord arranges buildings insurance (flat). Yes/No disclosure; xsd:string per §Q5a; flat per §Q6a."@en ;
     skos:definition "Whether the landlord arranges buildings insurance for a flat."@en ;
@@ -538,7 +538,7 @@ opda:landlordInsuresIfFlat
     rdfs:range xsd:string .
 
 opda:landlordNotifiedOfSale
-    rdf:type owl:DatatypeProperty ;
+    rdf:type owl:DatatypeProperty, opda:DescriptiveProperty ;
     rdfs:label "landlord notified of sale"@en ;
     rdfs:comment "Whether the landlord has been notified of the sale (Building Safety Act). Yes/No disclosure; xsd:string per §Q5a; flat per §Q6a."@en ;
     skos:definition "Whether the landlord has been notified of a sale under the Building Safety Act."@en ;
@@ -548,7 +548,7 @@ opda:landlordNotifiedOfSale
     rdfs:range xsd:string .
 
 opda:length
-    rdf:type owl:DatatypeProperty ;
+    rdf:type owl:DatatypeProperty, opda:DescriptiveProperty ;
     rdfs:label "length"@en ;
     rdfs:comment "Length of a room in metres (xsd:decimal) — a Quale-in-Region field of the opda:RoomDimension value structure. Metres by convention (NO opda:UnitOfLengthScheme — session-030 / ODR-0024 R10, reusing the opda:area no-unit-scheme precedent). Flat per ODR-0008 §Q6a."@en ;
     skos:definition "The length of a room in metres, recorded as a field of an opda:RoomDimension value structure."@en ;
@@ -558,7 +558,7 @@ opda:length
     rdfs:range xsd:decimal .
 
 opda:listedDate
-    rdf:type owl:DatatypeProperty ;
+    rdf:type owl:DatatypeProperty, opda:DescriptiveProperty ;
     rdfs:label "listed date"@en ;
     rdfs:comment "Date a comparable property was listed for sale. xsd:date. Flat per §Q6a."@en ;
     skos:definition "The date a comparable property was listed for sale, as recorded in valuation comparable listing information."@en ;
@@ -568,7 +568,7 @@ opda:listedDate
     rdfs:range xsd:date .
 
 opda:localAuthorityName
-    rdf:type owl:DatatypeProperty ;
+    rdf:type owl:DatatypeProperty, opda:DescriptiveProperty ;
     rdfs:label "local authority name"@en ;
     rdfs:comment "Name of the local authority that issued / governs a Search. Plain string datatype per ODR-0008 §Q5a; flat per §Q6a."@en ;
     skos:definition "The name of the local authority that issued or governs a search."@en ;
@@ -578,7 +578,7 @@ opda:localAuthorityName
     rdfs:range xsd:string .
 
 opda:localAuthorityReference
-    rdf:type owl:DatatypeProperty ;
+    rdf:type owl:DatatypeProperty, opda:DescriptiveProperty ;
     rdfs:label "local authority reference"@en ;
     rdfs:comment "Reference identifying a Search within the local authority's system. Plain string datatype per ODR-0008 §Q5a; flat per §Q6a."@en ;
     skos:definition "The reference identifying a search within its local authority's record system."@en ;
@@ -588,7 +588,7 @@ opda:localAuthorityReference
     rdfs:range xsd:string .
 
 opda:loftBoarded
-    rdf:type owl:DatatypeProperty ;
+    rdf:type owl:DatatypeProperty, opda:DescriptiveProperty ;
     rdfs:label "loft boarded"@en ;
     rdfs:comment "Whether the Property's loft is boarded. Yes/No disclosure; xsd:string per §Q5a; flat per §Q6a."@en ;
     skos:definition "Whether a property's loft is boarded."@en ;
@@ -598,7 +598,7 @@ opda:loftBoarded
     rdfs:range xsd:string .
 
 opda:loftInsulated
-    rdf:type owl:DatatypeProperty ;
+    rdf:type owl:DatatypeProperty, opda:DescriptiveProperty ;
     rdfs:label "loft insulated"@en ;
     rdfs:comment "Whether the Property's loft is insulated. Yes/No disclosure; xsd:string per §Q5a; flat per §Q6a."@en ;
     skos:definition "Whether a property's loft is insulated."@en ;
@@ -608,7 +608,7 @@ opda:loftInsulated
     rdfs:range xsd:string .
 
 opda:managementPlanInPlace
-    rdf:type owl:DatatypeProperty ;
+    rdf:type owl:DatatypeProperty, opda:DescriptiveProperty ;
     rdfs:label "management plan in place"@en ;
     rdfs:comment "Whether a Japanese-knotweed management plan is in place. Yes/No disclosure; xsd:string per §Q5a; flat per §Q6a."@en ;
     skos:definition "Whether a management plan is in place for Japanese knotweed affecting a property."@en ;
@@ -618,7 +618,7 @@ opda:managementPlanInPlace
     rdfs:range xsd:string .
 
 opda:mediaUrl
-    rdf:type owl:DatatypeProperty ;
+    rdf:type owl:DatatypeProperty, opda:DescriptiveProperty ;
     rdfs:label "media URL"@en ;
     rdfs:comment "URL of a media item (property image / floorplan / etc.). xsd:anyURI. Domain-less artefact-reference attribute; flat per §Q6a."@en ;
     skos:definition "The web address locating a media item such as a property image or floorplan."@en ;
@@ -627,7 +627,7 @@ opda:mediaUrl
     rdfs:range xsd:anyURI .
 
 opda:orderDate
-    rdf:type owl:DatatypeProperty ;
+    rdf:type owl:DatatypeProperty, opda:DescriptiveProperty ;
     rdfs:label "order date"@en ;
     rdfs:comment "Date a Search was ordered. xsd:date. Flat per §Q6a."@en ;
     skos:definition "The date a search was ordered."@en ;
@@ -637,7 +637,7 @@ opda:orderDate
     rdfs:range xsd:date .
 
 opda:organisesBuildingInsurance
-    rdf:type owl:DatatypeProperty ;
+    rdf:type owl:DatatypeProperty, opda:DescriptiveProperty ;
     rdfs:label "organises building insurance"@en ;
     rdfs:comment "Whether the service contact organises buildings insurance. Yes/No disclosure; xsd:string per §Q5a; flat per §Q6a."@en ;
     skos:definition "Whether a service contact organises buildings insurance for an estate."@en ;
@@ -647,7 +647,7 @@ opda:organisesBuildingInsurance
     rdfs:range xsd:string .
 
 opda:otherRating
-    rdf:type owl:DatatypeProperty ;
+    rdf:type owl:DatatypeProperty, opda:DescriptiveProperty ;
     rdfs:label "other rating"@en ;
     rdfs:comment "Other (non-Ofsted) rating of a nearby school. Domain opda:NearbyFacility (the genus bearer; the school band is SHACL-scoped per ODR-0024 R4). Plain string datatype per ODR-0008 §Q5a; flat per §Q6a."@en ;
     skos:definition "The rating of a nearby school awarded by a body other than Ofsted."@en ;
@@ -657,7 +657,7 @@ opda:otherRating
     rdfs:range xsd:string .
 
 opda:outstandingEnforcementAction
-    rdf:type owl:DatatypeProperty ;
+    rdf:type owl:DatatypeProperty, opda:DescriptiveProperty ;
     rdfs:label "outstanding enforcement action"@en ;
     rdfs:comment "Whether there is outstanding enforcement action (managed-area risk assessment). Yes/No disclosure; xsd:string per §Q5a; flat per §Q6a."@en ;
     skos:definition "Whether there is outstanding enforcement action recorded in a managed-area risk assessment."@en ;
@@ -667,7 +667,7 @@ opda:outstandingEnforcementAction
     rdfs:range xsd:string .
 
 opda:planningStartDate
-    rdf:type owl:DatatypeProperty ;
+    rdf:type owl:DatatypeProperty, opda:DescriptiveProperty ;
     rdfs:label "planning start date"@en ;
     rdfs:comment "Start date of a planning matter in a local-authority Search result. xsd:date. Flat per §Q6a."@en ;
     skos:definition "The date a planning matter commenced, as recorded in a local-authority search result."@en ;
@@ -686,7 +686,7 @@ opda:price
     rdfs:range xsd:decimal .
 
 opda:pricingMethodology
-    rdf:type owl:DatatypeProperty ;
+    rdf:type owl:DatatypeProperty, opda:DescriptiveProperty ;
     rdfs:label "pricing methodology"@en ;
     rdfs:comment "Methodology used to derive a Valuation's price estimate. Plain string datatype per ODR-0008 §Q5a; flat per §Q6a."@en ;
     skos:definition "The method used to derive a valuation's price estimate."@en ;
@@ -696,7 +696,7 @@ opda:pricingMethodology
     rdfs:range xsd:string .
 
 opda:productCode
-    rdf:type owl:DatatypeProperty ;
+    rdf:type owl:DatatypeProperty, opda:DescriptiveProperty ;
     rdfs:label "product code"@en ;
     rdfs:comment "Provider product code identifying a Search product. Plain string datatype per ODR-0008 §Q5a; flat per §Q6a."@en ;
     skos:definition "The provider's product code identifying a particular search product."@en ;
@@ -706,7 +706,7 @@ opda:productCode
     rdfs:range xsd:string .
 
 opda:providerName
-    rdf:type owl:DatatypeProperty ;
+    rdf:type owl:DatatypeProperty, opda:DescriptiveProperty ;
     rdfs:label "provider name"@en ;
     rdfs:comment "Name of the Search provider. Plain string datatype per ODR-0008 §Q5a; flat per §Q6a."@en ;
     skos:definition "The name of the organisation that supplied a search."@en ;
@@ -716,7 +716,7 @@ opda:providerName
     rdfs:range xsd:string .
 
 opda:providerReference
-    rdf:type owl:DatatypeProperty ;
+    rdf:type owl:DatatypeProperty, opda:DescriptiveProperty ;
     rdfs:label "provider reference"@en ;
     rdfs:comment "Provider's reference for a Search. Plain string datatype per ODR-0008 §Q5a; flat per §Q6a."@en ;
     skos:definition "The provider's own reference for a search."@en ;
@@ -726,7 +726,7 @@ opda:providerReference
     rdfs:range xsd:string .
 
 opda:pupils
-    rdf:type owl:DatatypeProperty ;
+    rdf:type owl:DatatypeProperty, opda:DescriptiveProperty ;
     rdfs:label "pupils"@en ;
     rdfs:comment "Number of pupils at a nearby school. Domain opda:NearbyFacility (the genus bearer; the school band is SHACL-scoped per ODR-0024 R4). Plain integer datatype per ODR-0008 §Q5a; flat per §Q6a."@en ;
     skos:definition "The number of pupils enrolled at a nearby school."@en ;
@@ -736,7 +736,7 @@ opda:pupils
     rdfs:range xsd:integer .
 
 opda:refNumber
-    rdf:type owl:DatatypeProperty ;
+    rdf:type owl:DatatypeProperty, opda:DescriptiveProperty ;
     rdfs:label "reference number"@en ;
     rdfs:comment "Application/case reference number on a planning / building-control result. ONE shared property; flat per §Q6a."@en ;
     skos:definition "The application or case reference identifying a planning or building-control matter in a search result."@en ;
@@ -746,7 +746,7 @@ opda:refNumber
     rdfs:range xsd:string .
 
 opda:regulatedSearchTurnaroundTimeInWorkingDays
-    rdf:type owl:DatatypeProperty ;
+    rdf:type owl:DatatypeProperty, opda:DescriptiveProperty ;
     rdfs:label "regulated search turnaround time in working days"@en ;
     rdfs:comment "Quoted turnaround time (working days) for a regulated search. Plain integer datatype per ODR-0008 §Q5a; flat per §Q6a."@en ;
     skos:definition "The quoted turnaround time, in working days, for a regulated search."@en ;
@@ -756,7 +756,7 @@ opda:regulatedSearchTurnaroundTimeInWorkingDays
     rdfs:range xsd:integer .
 
 opda:religiousCharacter
-    rdf:type owl:DatatypeProperty ;
+    rdf:type owl:DatatypeProperty, opda:DescriptiveProperty ;
     rdfs:label "religious character"@en ;
     rdfs:comment "Religious character of a nearby school. Domain opda:NearbyFacility (the genus bearer; the school band is SHACL-scoped per ODR-0024 R4). Plain string datatype per ODR-0008 §Q5a; flat per §Q6a."@en ;
     skos:definition "The religious affiliation, if any, of a nearby school."@en ;
@@ -766,7 +766,7 @@ opda:religiousCharacter
     rdfs:range xsd:string .
 
 opda:reportDate
-    rdf:type owl:DatatypeProperty ;
+    rdf:type owl:DatatypeProperty, opda:DescriptiveProperty ;
     rdfs:label "report date"@en ;
     rdfs:comment "Date a Search / survey report was produced. xsd:date. ONE shared property reused across search and survey reports; flat per §Q6a."@en ;
     skos:definition "The date a search or survey report was produced."@en ;
@@ -776,7 +776,7 @@ opda:reportDate
     rdfs:range xsd:date .
 
 opda:retrievedOn
-    rdf:type owl:DatatypeProperty ;
+    rdf:type owl:DatatypeProperty, opda:DescriptiveProperty ;
     rdfs:label "retrieved on"@en ;
     rdfs:comment "Date a title / additional document was retrieved from the registry. xsd:date. Domain opda:AttachedDocument (the neutral document bearer; ODR-0024 R7); flat per §Q6a."@en ;
     skos:definition "The date a title or additional document was retrieved from the registry."@en ;
@@ -786,7 +786,7 @@ opda:retrievedOn
     rdfs:range xsd:date .
 
 opda:roomName
-    rdf:type owl:DatatypeProperty ;
+    rdf:type owl:DatatypeProperty, opda:DescriptiveProperty ;
     rdfs:label "room name"@en ;
     rdfs:comment "Name of a room (xsd:string) — a NON-RIGID label on the opda:RoomDimension value structure, NOT an identity principle and never a key (ODR-0024 R10 / session-030). Flat per ODR-0008 §Q6a."@en ;
     skos:definition "The non-rigid label naming a room within an opda:RoomDimension value structure, never an identity principle or key."@en ;
@@ -796,7 +796,7 @@ opda:roomName
     rdfs:range xsd:string .
 
 opda:saleAtUndervalue
-    rdf:type owl:DatatypeProperty ;
+    rdf:type owl:DatatypeProperty, opda:DescriptiveProperty ;
     rdfs:label "sale at undervalue"@en ;
     rdfs:comment "Whether the sale is at undervalue. Yes/No disclosure (price information); xsd:string per §Q5a; flat per §Q6a."@en ;
     skos:definition "Whether a sale is being made at undervalue."@en ;
@@ -806,7 +806,7 @@ opda:saleAtUndervalue
     rdfs:range xsd:string .
 
 opda:schoolType
-    rdf:type owl:DatatypeProperty ;
+    rdf:type owl:DatatypeProperty, opda:DescriptiveProperty ;
     rdfs:label "school type"@en ;
     rdfs:comment "Band of a nearby school per opda:SchoolTypeScheme (College / Nursery / Primary / Secondary / Private). Domain opda:NearbyFacility (the genus bearer; the school band is SHACL-scoped per ODR-0024 R4). ONE shared datatype property over the SchoolTypeScheme value-space — replaces the five range-less generic object properties (opda:college / nursery / primary / secondary / private) the council rejected as permanent-namespace landmines (session-028 Q1). Constrained by SHACL sh:in to the scheme members in the overlay profile. Plain string datatype per ODR-0008 §Q5a; flat per §Q6a."@en ;
     skos:definition "The educational stage of a nearby school: its band within the opda:SchoolTypeScheme value-space (College, Nursery, Primary, Secondary, or Private)."@en ;
@@ -816,7 +816,7 @@ opda:schoolType
     rdfs:range xsd:string .
 
 opda:sellerCompletedDeedOfCertificate
-    rdf:type owl:DatatypeProperty ;
+    rdf:type owl:DatatypeProperty, opda:DescriptiveProperty ;
     rdfs:label "seller completed deed of certificate"@en ;
     rdfs:comment "Whether the seller completed a deed of certificate (Building Safety Act). Yes/No disclosure; xsd:string per §Q5a; flat per §Q6a."@en ;
     skos:definition "Whether the seller completed a deed of certificate under the Building Safety Act."@en ;
@@ -826,7 +826,7 @@ opda:sellerCompletedDeedOfCertificate
     rdfs:range xsd:string .
 
 opda:sellerOwnedProperty
-    rdf:type owl:DatatypeProperty ;
+    rdf:type owl:DatatypeProperty, opda:DescriptiveProperty ;
     rdfs:label "seller owned property"@en ;
     rdfs:comment "Whether the seller owned the property for enfranchisement qualification. Yes/No disclosure; xsd:string per §Q5a; flat per §Q6a."@en ;
     skos:definition "Whether the seller has owned the property long enough to satisfy enfranchisement qualification."@en ;
@@ -836,7 +836,7 @@ opda:sellerOwnedProperty
     rdfs:range xsd:string .
 
 opda:soldDate
-    rdf:type owl:DatatypeProperty ;
+    rdf:type owl:DatatypeProperty, opda:DescriptiveProperty ;
     rdfs:label "sold date"@en ;
     rdfs:comment "Date a comparable property was sold (valuation comparable listing info). xsd:date. Flat per §Q6a."@en ;
     skos:definition "The date a comparable property was sold, as recorded in valuation comparable listing information."@en ;
@@ -846,7 +846,7 @@ opda:soldDate
     rdfs:range xsd:date .
 
 opda:specialties
-    rdf:type owl:DatatypeProperty ;
+    rdf:type owl:DatatypeProperty, opda:DescriptiveProperty ;
     rdfs:label "specialties"@en ;
     rdfs:comment "Specialties of a nearby health-care facility (a multi-valued list — each value an xsd:string). Domain opda:NearbyFacility (the genus bearer; the health-care band is SHACL-scoped per ODR-0024 R4). Plain multi-valued string datatype per ODR-0008 §Q5a; flat per §Q6a."@en ;
     skos:definition "The clinical specialties offered by a nearby health-care facility."@en ;
@@ -856,7 +856,7 @@ opda:specialties
     rdfs:range xsd:string .
 
 opda:status
-    rdf:type owl:DatatypeProperty ;
+    rdf:type owl:DatatypeProperty, opda:DescriptiveProperty ;
     rdfs:label "status"@en ;
     rdfs:comment "Status of a search-derived result item — planning permission, designation plan, road-adoption status, or search-order status. Plain string datatype per ODR-0008 §Q5a; flat per §Q6a. (FLAG: polysemous across those contexts; placed on opda:Search; the data dictionary's three context-specific status enums are sh:in-restricted per-context in the overlay profile, not unified into one value-space.)"@en ;
     skos:definition "The current state of a search-derived item — a planning permission, designation plan, road-adoption entry, or search order."@en ;
@@ -866,7 +866,7 @@ opda:status
     rdfs:range xsd:string .
 
 opda:statusDate
-    rdf:type owl:DatatypeProperty ;
+    rdf:type owl:DatatypeProperty, opda:DescriptiveProperty ;
     rdfs:label "status date"@en ;
     rdfs:comment "Date a designation plan's status was set in a local-authority Search result. xsd:date. Flat per §Q6a."@en ;
     skos:definition "The date on which a designation plan's status was set in a local-authority search result."@en ;
@@ -876,7 +876,7 @@ opda:statusDate
     rdfs:range xsd:date .
 
 opda:subCategory
-    rdf:type owl:DatatypeProperty ;
+    rdf:type owl:DatatypeProperty, opda:DescriptiveProperty ;
     rdfs:label "sub-category"@en ;
     rdfs:comment "Sub-category of an environmental-peril RiskAssessment (riskSubcategories[] across the climate / coal-mining / flooding / ground-stability / radon / etc. peril blocks). ONE shared property on opda:RiskAssessment. Plain string datatype per ODR-0008 §Q5a; flat per §Q6a."@en ;
     skos:definition "The named sub-division of an environmental-peril risk assessment, drawn from the peril's riskSubcategories list."@en ;
@@ -886,7 +886,7 @@ opda:subCategory
     rdfs:range xsd:string .
 
 opda:typeOfHealthCare
-    rdf:type owl:DatatypeProperty ;
+    rdf:type owl:DatatypeProperty, opda:DescriptiveProperty ;
     rdfs:label "type of health care"@en ;
     rdfs:comment "Type of a nearby health-care facility. Domain opda:NearbyFacility (the genus bearer; the health-care band is SHACL-scoped per ODR-0024 R4). Plain string datatype per ODR-0008 §Q5a (no ontology-governed enum in the data dictionary); flat per §Q6a."@en ;
     skos:definition "The category of a nearby health-care facility."@en ;
@@ -896,7 +896,7 @@ opda:typeOfHealthCare
     rdfs:range xsd:string .
 
 opda:unitaryAuthority
-    rdf:type owl:DatatypeProperty ;
+    rdf:type owl:DatatypeProperty, opda:DescriptiveProperty ;
     rdfs:label "unitary authority"@en ;
     rdfs:comment "Name of the unitary authority for the Property's locality. Plain string datatype per ODR-0008 §Q5a; flat per §Q6a."@en ;
     skos:definition "The name of the unitary authority for the locality of the property searched."@en ;
@@ -906,7 +906,7 @@ opda:unitaryAuthority
     rdfs:range xsd:string .
 
 opda:urgentWorksCarriedOut
-    rdf:type owl:DatatypeProperty ;
+    rdf:type owl:DatatypeProperty, opda:DescriptiveProperty ;
     rdfs:label "urgent works carried out"@en ;
     rdfs:comment "Whether urgent works were carried out (managed-area risk assessment). Yes/No disclosure; xsd:string per §Q5a; flat per §Q6a."@en ;
     skos:definition "Whether urgent works were carried out, as recorded in a managed-area risk assessment."@en ;
@@ -916,7 +916,7 @@ opda:urgentWorksCarriedOut
     rdfs:range xsd:string .
 
 opda:urgentWorksRecommended
-    rdf:type owl:DatatypeProperty ;
+    rdf:type owl:DatatypeProperty, opda:DescriptiveProperty ;
     rdfs:label "urgent works recommended"@en ;
     rdfs:comment "Whether urgent works were recommended (managed-area risk assessment). Yes/No disclosure; xsd:string per §Q5a; flat per §Q6a."@en ;
     skos:definition "Whether urgent works were recommended, as recorded in a managed-area risk assessment."@en ;
@@ -926,7 +926,7 @@ opda:urgentWorksRecommended
     rdfs:range xsd:string .
 
 opda:url
-    rdf:type owl:DatatypeProperty ;
+    rdf:type owl:DatatypeProperty, opda:DescriptiveProperty ;
     rdfs:label "URL"@en ;
     rdfs:comment "URL of an external artefact (contract template, planning-permission page). xsd:anyURI. Domain-less artefact-reference attribute; flat per §Q6a."@en ;
     skos:definition "The web address locating an external artefact such as a contract template or planning-permission page."@en ;
@@ -935,7 +935,7 @@ opda:url
     rdfs:range xsd:anyURI .
 
 opda:width
-    rdf:type owl:DatatypeProperty ;
+    rdf:type owl:DatatypeProperty, opda:DescriptiveProperty ;
     rdfs:label "width"@en ;
     rdfs:comment "Width of a room in metres (xsd:decimal) — a Quale-in-Region field of the opda:RoomDimension value structure. Metres by convention (no opda:UnitOfLengthScheme). Flat per ODR-0008 §Q6a."@en ;
     skos:definition "The width of a room in metres, recorded as a field of an opda:RoomDimension value structure."@en ;
@@ -945,7 +945,7 @@ opda:width
     rdfs:range xsd:decimal .
 
 opda:willingToInsure
-    rdf:type owl:DatatypeProperty ;
+    rdf:type owl:DatatypeProperty, opda:DescriptiveProperty ;
     rdfs:label "willing to insure"@en ;
     rdfs:comment "Whether an insurer is willing to insure against an unresolved planning issue. Yes/No disclosure; xsd:string per §Q5a; flat per §Q6a."@en ;
     skos:definition "Whether an insurer is willing to insure against an unresolved planning issue affecting a property."@en ;
@@ -955,7 +955,7 @@ opda:willingToInsure
     rdfs:range xsd:string .
 
 opda:yield
-    rdf:type owl:DatatypeProperty ;
+    rdf:type owl:DatatypeProperty, opda:DescriptiveProperty ;
     rdfs:label "yield"@en ;
     rdfs:comment "Rental yield in a Valuation's pricing analysis. xsd:decimal. Flat per §Q6a."@en ;
     skos:definition "The rental yield computed in a valuation's pricing analysis."@en ;
