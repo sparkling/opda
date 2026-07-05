@@ -72,6 +72,7 @@ _G2_CURRENT_ENERGY_RATING = _dd_source(
 _G2_EPC_CERTIFICATE = _dd_source(
     "propertyPack.energyEfficiency.certificate"
 )
+_G2_SURVEY = _dd_source("propertyPack.surveys[]")
 _G2_CENTRAL_HEATING_FUEL_TYPE = _dd_source(
     "propertyPack.heating.heatingSystem.centralHeatingDetails."
     "centralHeatingFuel.centralHeatingFuelType"
@@ -119,6 +120,7 @@ CLASSES = (
 OBJECT_PROPERTIES = (
     OPDA.hasAddress,
     OPDA.hasEPCCertificate,
+    OPDA.hasSurvey,
     OPDA.identifiesSameProperty,
     OPDA.leaseTerm,
     OPDA.recordsEstate,
@@ -799,6 +801,36 @@ def build_graph() -> Graph:
     )))
     g.add((OPDA.hasEPCCertificate, RDFS.isDefinedBy, module_iri))
     g.add((OPDA.hasEPCCertificate, DCTERMS.source, _G2_EPC_CERTIFICATE))
+
+    # --- ObjectProperty: opda:hasSurvey (ODR-0008 §Q4a / ODR-0008d) -------
+    # Property → Survey join, matching opda:hasEPCCertificate's exact
+    # pattern: opda:constructionType stays flat on the Property (its
+    # rdfs:domain, M18 in the RML mapping); this join additionally reaches
+    # the RICS Level 2 survey report itself as a distinct PROV-O Entity
+    # (SurveyIdentityKeyShape's minCount 1 prov:wasGeneratedBy), not a
+    # re-homed Property-domain predicate.
+    g.add((OPDA.hasSurvey, RDF.type, OWL.ObjectProperty))
+    g.add((OPDA.hasSurvey, RDFS.domain, OPDA.Property))
+    g.add((OPDA.hasSurvey, RDFS.range, OPDA.Survey))
+    g.add((OPDA.hasSurvey, RDFS.label,
+           Literal("has survey", lang="en")))
+    g.add((OPDA.hasSurvey, RDFS.comment, Literal(
+        "Property → opda:Survey join predicate. The survey's construction-"
+        "type observation stays on the Property as opda:constructionType "
+        "(its rdfs:domain); this join reaches the survey report itself as "
+        "a distinct PROV-O artefact (RICS Level 2 professional survey, "
+        "issued/superseded/re-issued/withdrawn lifecycle, ODR-0008d Rule 3).",
+        lang="en",
+    )))
+    g.add((OPDA.hasSurvey, SKOS.definition, Literal(
+        "Relates a Property to a professional survey report retrieved for "
+        "it: a distinct survey entity with its own provenance chain and "
+        "issue/supersession lifecycle, reached separately from the "
+        "property's own construction-type observation.",
+        lang="en",
+    )))
+    g.add((OPDA.hasSurvey, RDFS.isDefinedBy, module_iri))
+    g.add((OPDA.hasSurvey, DCTERMS.source, _G2_SURVEY))
 
     # --- ObjectProperty: opda:identifiesSameProperty (ODR-0005 §Rule 5) -
     g.add((OPDA.identifiesSameProperty, RDF.type, OWL.ObjectProperty))

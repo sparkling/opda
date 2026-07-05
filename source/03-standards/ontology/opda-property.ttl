@@ -972,6 +972,16 @@ opda:hasSprayFoamInstalled
     rdfs:isDefinedBy <https://opda.org.uk/pdtf/graph/property> ;
     rdfs:range skos:Concept .
 
+opda:hasSurvey
+    rdf:type owl:ObjectProperty ;
+    rdfs:label "has survey"@en ;
+    rdfs:comment "Property → opda:Survey join predicate. The survey's construction-type observation stays on the Property as opda:constructionType (its rdfs:domain); this join reaches the survey report itself as a distinct PROV-O artefact (RICS Level 2 professional survey, issued/superseded/re-issued/withdrawn lifecycle, ODR-0008d Rule 3)."@en ;
+    skos:definition "Relates a Property to a professional survey report retrieved for it: a distinct survey entity with its own provenance chain and issue/supersession lifecycle, reached separately from the property's own construction-type observation."@en ;
+    dct:source <https://opda.org.uk/pdtf/harness/data-dictionary/propertyPack.surveys[]> ;
+    rdfs:domain opda:Property ;
+    rdfs:isDefinedBy <https://opda.org.uk/pdtf/graph/property> ;
+    rdfs:range opda:Survey .
+
 opda:hasValidGuaranteesOrWarranties
     rdf:type owl:ObjectProperty ;
     rdfs:label "has valid guarantees or warranties"@en ;
