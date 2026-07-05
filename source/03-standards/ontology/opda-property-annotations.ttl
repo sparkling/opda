@@ -27,15 +27,6 @@
     dct:title "OPDA Property Annotations"@en ;
     opda:targetsClassGraph <https://opda.org.uk/pdtf/> .
 
-opda:AddressVariantInspireRefinement
-    rdf:type opda:DPVMappingRefinement ;
-    dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0015/section-7a> ;
-    dct:references <https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX:32007L0002> ;
-    opda:lawfulBasis dpv:PublicTask ;
-    opda:targetsKind opda:Address ;
-    opda:variantPredicate opda:addressVariant ;
-    opda:variantValue "inspire" .
-
 opda:AddressVariantMarketingRefinement
     rdf:type opda:DPVMappingRefinement ;
     dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0015/section-7a> ;

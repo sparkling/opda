@@ -28,7 +28,8 @@ opda-x:claim
     rdfs:label "Identity claim: Marcus Wright is the tax-resident person at 14 Oak Road" ;
     opda:claimType "personIdentity" ;
     opda:claimContent "Marcus Wright tax-resident at 14 Oak Road, Leeds, LS1 2AB" ;
-    opda:assuranceLevel "Substantial" ;
+    # opda:assuranceLevel "Substantial" ; -- REMOVED 2026-07-05 (zero PDTF
+    # schema basis; see ODR-0009's removal amendment). Historical text preserved.
     dct:conformsTo <opda:UKPropertyDataTrustFramework> .
 
 # The verification activity (PROV-O backbone)

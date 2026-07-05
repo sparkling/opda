@@ -45,7 +45,7 @@ Physical property — the spatial-material object that sits at the centre of OPD
 
 ## Identity key
 
-Identity key = spatial-material continuity (cf. Kendall S005 Q4 + Davis legal-record-discontinuity-override hybrid per ODR-0005 §2a). `hasUPRN` is a contingent administrative surface; succession across UPRN re-numbering is tracked by [UPRNSuccessionEvent](./uprn-succession-event.md) via PROV-O. Cross-reference: Concept-tier [Property IC narrative](../../concept/property/property.md#identity-criterion).
+Identity key = spatial-material continuity (cf. Kendall S005 Q4 + Davis legal-record-discontinuity-override hybrid per ODR-0005 §2a). `hasUPRN` is a contingent administrative surface (opda:UPRNSuccessionEvent, the prior reification mechanism, was removed 2026-07-05 — zero PDTF schema basis; see ODR-0005's removal amendment). Cross-reference: Concept-tier [Property IC narrative](../../concept/property/property.md#identity-criterion).
 
 ## Constraints
 

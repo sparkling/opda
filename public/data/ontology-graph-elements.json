@@ -2,14 +2,14 @@
   "generatedFrom": "src/data/ontology-model.json",
   "counts": {
     "nodes": {
-      "class": 42,
+      "class": 41,
       "external": 4,
-      "scheme": 49,
-      "concept": 324
+      "scheme": 48,
+      "concept": 319
     },
     "edges": {
       "constrainedByScheme": 12,
-      "inScheme": 324,
+      "inScheme": 319,
       "objectProperty": 91
     }
   },
@@ -482,18 +482,6 @@
     },
     {
       "data": {
-        "id": "class:UPRNSuccessionEvent",
-        "ref": "UPRNSuccessionEvent",
-        "label": "UPRNSuccessionEvent",
-        "type": "class",
-        "ufoCategory": "Event",
-        "module": "property",
-        "hasShape": false,
-        "layer": "owl"
-      }
-    },
-    {
-      "data": {
         "id": "class:ValidationContext",
         "ref": "ValidationContext",
         "label": "ValidationContext",
@@ -601,16 +589,6 @@
         "id": "scheme:scheme/AddressVariantScheme",
         "ref": "scheme/AddressVariantScheme",
         "label": "AddressVariantScheme",
-        "type": "scheme",
-        "module": "vocabularies",
-        "layer": "skos"
-      }
-    },
-    {
-      "data": {
-        "id": "scheme:scheme/AssuranceLevelScheme",
-        "ref": "scheme/AssuranceLevelScheme",
-        "label": "AssuranceLevelScheme",
         "type": "scheme",
         "module": "vocabularies",
         "layer": "skos"
@@ -1248,16 +1226,6 @@
     },
     {
       "data": {
-        "id": "concept:scheme/addressVariant/inspire",
-        "ref": "scheme/addressVariant/inspire",
-        "label": "inspire",
-        "type": "concept",
-        "module": "vocabularies",
-        "layer": "skos"
-      }
-    },
-    {
-      "data": {
         "id": "concept:scheme/addressVariant/marketing",
         "ref": "scheme/addressVariant/marketing",
         "label": "marketing",
@@ -1281,46 +1249,6 @@
         "id": "concept:scheme/addressVariant/title",
         "ref": "scheme/addressVariant/title",
         "label": "title",
-        "type": "concept",
-        "module": "vocabularies",
-        "layer": "skos"
-      }
-    },
-    {
-      "data": {
-        "id": "concept:scheme/assuranceLevel/High",
-        "ref": "scheme/assuranceLevel/High",
-        "label": "High",
-        "type": "concept",
-        "module": "vocabularies",
-        "layer": "skos"
-      }
-    },
-    {
-      "data": {
-        "id": "concept:scheme/assuranceLevel/Low",
-        "ref": "scheme/assuranceLevel/Low",
-        "label": "Low",
-        "type": "concept",
-        "module": "vocabularies",
-        "layer": "skos"
-      }
-    },
-    {
-      "data": {
-        "id": "concept:scheme/assuranceLevel/PDTF-Standard",
-        "ref": "scheme/assuranceLevel/PDTF-Standard",
-        "label": "PDTF-Standard",
-        "type": "concept",
-        "module": "vocabularies",
-        "layer": "skos"
-      }
-    },
-    {
-      "data": {
-        "id": "concept:scheme/assuranceLevel/Substantial",
-        "ref": "scheme/assuranceLevel/Substantial",
-        "label": "Substantial",
         "type": "concept",
         "module": "vocabularies",
         "layer": "skos"
@@ -4592,15 +4520,6 @@
     },
     {
       "data": {
-        "id": "inScheme:scheme/addressVariant/inspire->scheme/AddressVariantScheme",
-        "source": "concept:scheme/addressVariant/inspire",
-        "target": "scheme:scheme/AddressVariantScheme",
-        "label": "inScheme",
-        "kind": "inScheme"
-      }
-    },
-    {
-      "data": {
         "id": "inScheme:scheme/addressVariant/marketing->scheme/AddressVariantScheme",
         "source": "concept:scheme/addressVariant/marketing",
         "target": "scheme:scheme/AddressVariantScheme",
@@ -4622,42 +4541,6 @@
         "id": "inScheme:scheme/addressVariant/title->scheme/AddressVariantScheme",
         "source": "concept:scheme/addressVariant/title",
         "target": "scheme:scheme/AddressVariantScheme",
-        "label": "inScheme",
-        "kind": "inScheme"
-      }
-    },
-    {
-      "data": {
-        "id": "inScheme:scheme/assuranceLevel/High->scheme/AssuranceLevelScheme",
-        "source": "concept:scheme/assuranceLevel/High",
-        "target": "scheme:scheme/AssuranceLevelScheme",
-        "label": "inScheme",
-        "kind": "inScheme"
-      }
-    },
-    {
-      "data": {
-        "id": "inScheme:scheme/assuranceLevel/Low->scheme/AssuranceLevelScheme",
-        "source": "concept:scheme/assuranceLevel/Low",
-        "target": "scheme:scheme/AssuranceLevelScheme",
-        "label": "inScheme",
-        "kind": "inScheme"
-      }
-    },
-    {
-      "data": {
-        "id": "inScheme:scheme/assuranceLevel/PDTF-Standard->scheme/AssuranceLevelScheme",
-        "source": "concept:scheme/assuranceLevel/PDTF-Standard",
-        "target": "scheme:scheme/AssuranceLevelScheme",
-        "label": "inScheme",
-        "kind": "inScheme"
-      }
-    },
-    {
-      "data": {
-        "id": "inScheme:scheme/assuranceLevel/Substantial->scheme/AssuranceLevelScheme",
-        "source": "concept:scheme/assuranceLevel/Substantial",
-        "target": "scheme:scheme/AssuranceLevelScheme",
         "label": "inScheme",
         "kind": "inScheme"
       }

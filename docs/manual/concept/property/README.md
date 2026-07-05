@@ -19,7 +19,6 @@ This module also contains two reified lifecycle events — **Lease Extension Eve
 - [Legal Estate](./legal-estate.md) — the bundle of legal rights vested in a Property
 - [Property](./property.md) — the physical residential property
 - [Registered Title](./registered-title.md) — the HMLR title-register record documenting a Legal Estate
-- [UPRN Succession Event](./uprn-succession-event.md) — an administrative re-numbering of a Property's UPRN
 
 ## Module-internal relationships
 

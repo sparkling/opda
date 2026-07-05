@@ -95,7 +95,6 @@ UFO_CATEGORY: dict[str, str] = {
     "LeaseExtensionEvent": "Event",
     "Milestone": "Event",
     "NameChangeEvent": "Event",
-    "UPRNSuccessionEvent": "Event",
     "VerificationActivity": "Event",
     # Relators — relational endurants mediating two or more bearers.
     "Proprietorship": "Relator",

@@ -14,7 +14,6 @@ The three short-name aliases (Document, Electronic Record, Vouch) exist for ergo
 
 ## Entities
 
-- [Assurance Level](./assurance-level.md) — quality grade on a Claim's verification
 - [Claim](./claim.md) — a verifiable assertion supported by evidence
 - [Document](./document.md) — short-name alias for Document Evidence
 - [Document Evidence](./document-evidence.md) — paper or scanned authoritative artefact

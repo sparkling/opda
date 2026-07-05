@@ -199,7 +199,6 @@ The Identity-Criterion crux of OPDA: physical Property, the legal rights vested 
 | [Legal Estate](./property/legal-estate.md) | The bundle of legal rights vested in a Property (Freehold / Leasehold / Commonhold) |
 | [Property](./property/property.md) | The physical residential property — a house, flat, bungalow, or maisonette |
 | [Registered Title](./property/registered-title.md) | The HMLR title-register record documenting a Legal Estate |
-| [UPRN Succession Event](./property/uprn-succession-event.md) | An administrative re-numbering of a Property's UPRN — identity persists across the event |
 
 ### Agent
 
@@ -231,7 +230,6 @@ Verifiable claims, the evidence supporting them, the activity that verified them
 
 | Entity | Summary |
 |---|---|
-| [Assurance Level](./claim/assurance-level.md) | A quality grade on a Claim's verification (eIDAS Low / Substantial / High) |
 | [Claim](./claim/claim.md) | A verifiable assertion supported by evidence |
 | [Document](./claim/document.md) | A short-name alias for Document Evidence (used by worked examples) |
 | [Document Evidence](./claim/document-evidence.md) | Paper or scanned artefacts issued by an authoritative source (e.g. grant of probate) |

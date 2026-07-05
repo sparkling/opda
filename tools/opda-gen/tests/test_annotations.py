@@ -181,13 +181,17 @@ def test_property_baseline_dpv_coannotation(
 def test_address_variant_refinements_present(
     emitted_annotations: dict[str, Path]
 ) -> None:
-    """Per ODR-0015 §7a + ODR-0018 §3a: three Address variant refinements."""
+    """Per ODR-0015 §7a + ODR-0018 §3a: Address variant refinements.
+
+    AddressVariantInspireRefinement REMOVED 2026-07-05 (RML gap-closing
+    session) — the "inspire" addressVariant it refined has zero PDTF
+    schema basis; see ODR-0015's removal amendment.
+    """
     g = Graph()
     g.parse(str(emitted_annotations["property"]), format="turtle")
     expected_refinements = (
         OPDA.AddressVariantTitleRefinement,
         OPDA.AddressVariantMarketingRefinement,
-        OPDA.AddressVariantInspireRefinement,
     )
     for ref in expected_refinements:
         assert (ref, RDF.type, OPDA.DPVMappingRefinement) in g, (

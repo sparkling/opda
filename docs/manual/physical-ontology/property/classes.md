@@ -243,41 +243,10 @@ None directly at TBox level (identity-key shape lives at `opda:LegalEstate` per 
 - [ODR-0005 §3c](/modelling/odr/odr-0005)
 - [ADR-0011](/modelling/adr/adr-0011)
 
-### opda:UPRNSuccessionEvent
+### opda:UPRNSuccessionEvent — REMOVED
 
-```turtle
-opda:UPRNSuccessionEvent
-    rdf:type owl:Class ;
-    rdfs:label "UPRN Succession Event"@en ;
-    rdfs:comment "Reified PROV-O activity recording an administrative re-numbering of UPRN for a single physical Property (the Property's identity PERSISTS through UPRN succession per ODR-0005 Rule 6). Canonical succession form per Gandon W3C-side recommendation (S005 Q4) — own URI, dereferenceable identity, audit trail. Coexists with the denormalised opda:previousUPRN literal-pair convenience (authoritative form: this reified event)."@en ;
-    dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0005/section-6a> ;
-    rdfs:subClassOf prov:Activity ;
-    skos:scopeNote "UFO: Event particular (Guizzardi 2005 Ch. 4 §4.7 — perdurant). DOLCE: Achievement / Accomplishment (Masolo et al. 2003 D18 §4.4 — here an Achievement: instantaneous administrative re-issuance)."@en .
-```
-
-#### A9 per-kind discipline
-
-| Triple | Value | Source |
-|---|---|---|
-| `dct:source` | `<https://opda.org.uk/pdtf/harness/odr/ODR-0005/section-6a>` | [ODR-0005 §6a](/modelling/odr/odr-0005) |
-| `skos:scopeNote @en` | "UFO: Event particular. DOLCE: Achievement / Accomplishment." | Guizzardi 2005 Ch. 4 §4.7 / Masolo D18 §4.4 |
-| `rdfs:comment @en` | "Reified PROV-O activity recording an administrative re-numbering of UPRN…" | ODR-0005 §6a Rule 6 |
-
-#### Targeting shapes
-
-- [`opda:UPRNSuccessionRule`](./shapes.md#opdauprnsuccessionrule) — SHACL-AF (Info; materialises succession-tracked / primary-uprn)
-
-#### Subclass / equivalent-class relationships
-
-- `rdfs:subClassOf prov:Activity`
-
-#### Cross-tier links
-
-- [Concept tier →](../../concept/property/uprn-succession-event.md)
-- [Logical tier →](../../logical/property/uprn-succession-event.md)
-- [Physical-Database tier (deployment) →](../../physical-database/README.md)
-
-#### Source ODR + ADR
-
-- [ODR-0005 §6a + Rule 6](/modelling/odr/odr-0005)
-- [ADR-0011](/modelling/adr/adr-0011)
+Removed 2026-07-05 (RML gap-closing session): confirmed zero basis anywhere
+in the PDTF v3 schema family (UPRN succession is cross-transaction history,
+which a single transaction instance cannot carry). No longer part of the
+active ontology. See ODR-0005's own removal amendment for the governance
+record.

@@ -1,12 +1,12 @@
 {
   "namespace": "https://opda.org.uk/pdtf/",
   "counts": {
-    "classes": 42,
+    "classes": 41,
     "objectProperties": 75,
-    "datatypeProperties": 207,
-    "shapes": 405,
-    "concepts": 324,
-    "schemes": 49,
+    "datatypeProperties": 205,
+    "shapes": 402,
+    "concepts": 319,
+    "schemes": 48,
     "contexts": 8
   },
   "classes": {
@@ -42,13 +42,6 @@
           "label": "country",
           "type": "string",
           "description": "Structural field of an opda:Address (ODR-0015 §3b, S015 Q3) — country. sh:minCount 0: absent when the addressing authority has not populated it (e.g. an INSPIRE-only locator's sparse structural fields, ODR-0015 §3a Rule 5)."
-        },
-        {
-          "localName": "inspireFeatureId",
-          "id": "inspireFeatureId",
-          "label": "INSPIRE feature ID",
-          "type": "string",
-          "description": "INSPIRE Identifier for an opda:Address of variant 'inspire' — a contingent identifier (re-instantiating ODR-0005 §6a's UPRN-as-Quality pattern), unique per addressVariant 'inspire' individual (dash:uniqueValueForClass). Populated for INSPIRE-only locatedness (ODR-0015 §3a Rule 5) and generally wherever a cadastral INSPIRE polygon feature exists for the Address."
         },
         {
           "localName": "line1",
@@ -111,10 +104,6 @@
         {
           "id": "shape/AddressStructuralShape",
           "localName": "AddressStructuralShape"
-        },
-        {
-          "id": "shape/INSPIRESuccessionRule",
-          "localName": "INSPIRESuccessionRule"
         }
       ],
       "usesSchemes": [],
@@ -264,15 +253,7 @@
       ],
       "module": "claim",
       "context": "claim",
-      "attributes": [
-        {
-          "localName": "assuranceLevel",
-          "id": "assuranceLevel",
-          "label": "assurance level",
-          "type": "string",
-          "description": "Quality judgement on a Claim's verification — eIDAS Level of Assurance (Low / Substantial / High) per OIDC4IDA trust tiering. A plain string value (matching the ratified usage in claim-with-{document,electronic-record,vouch}-evidence.ttl), not a skos:Concept reference; the value-space is documented by opda:AssuranceLevelScheme in opda-vocabularies.ttl. Local term per S009 5-residue (PROV-O carries no notion of assurance grading)."
-        }
-      ],
+      "attributes": [],
       "outgoing": [
         {
           "predicate": "supportedBy",
@@ -4299,33 +4280,6 @@
         "harness/odr/ODR-0009/section-Q5"
       ]
     },
-    "UPRNSuccessionEvent": {
-      "uri": "https://opda.org.uk/pdtf/UPRNSuccessionEvent",
-      "id": "UPRNSuccessionEvent",
-      "localName": "UPRNSuccessionEvent",
-      "label": "UPRN Succession Event",
-      "comment": "Reified PROV-O activity recording an administrative re-numbering of UPRN for a single physical Property (the Property's identity PERSISTS through UPRN succession per ODR-0005 Rule 6). Canonical succession form per Gandon W3C-side recommendation (S005 Q4) — own URI, dereferenceable identity, audit trail. Coexists with the denormalised opda:previousUPRN literal-pair convenience (authoritative form: this reified event).",
-      "definition": "A reified provenance activity recording the administrative re-numbering of the UPRN for a single physical property, through which the property's identity persists, captured with its own dereferenceable identifier and audit trail.",
-      "scopeNote": "UFO: Event particular (Guizzardi 2005 Ch. 4 §4.7 — perdurant). DOLCE: Achievement / Accomplishment (Masolo et al. 2003 D18 §4.4 — here an Achievement: instantaneous administrative re-issuance).",
-      "ufoCategory": "Event",
-      "superClasses": [
-        {
-          "id": "http://www.w3.org/ns/prov#Activity",
-          "localName": "Activity",
-          "external": true
-        }
-      ],
-      "module": "property",
-      "context": "property",
-      "attributes": [],
-      "outgoing": [],
-      "incoming": [],
-      "shapes": [],
-      "usesSchemes": [],
-      "dctSource": [
-        "harness/odr/ODR-0005/section-6a"
-      ]
-    },
     "ValidationContext": {
       "uri": "https://opda.org.uk/pdtf/ValidationContext",
       "id": "ValidationContext",
@@ -7275,7 +7229,7 @@
           "minCount": null,
           "maxCount": "1",
           "severity": "Violation",
-          "message": "Address addressVariant MUST be a single xsd:string value (one of 'title' | 'marketing' | 'inspire') per ODR-0015 §Rule 6. Distinguishes the authority lifecycle borne by the Address instance."
+          "message": "Address addressVariant MUST be a single xsd:string value (one of 'title' | 'marketing' | 'postal') per ODR-0015 §Rule 6. Distinguishes the authority lifecycle borne by the Address instance."
         }
       ],
       "dctSource": [
@@ -7500,35 +7454,6 @@
       "dctSource": [
         "harness/data-dictionary/propertyPack.buildInformation.internalArea.area",
         "harness/data-dictionary/valuationComparisonData.propertyDetails[].basicDetails.buildInformation.internalArea.area"
-      ]
-    },
-    "assuranceLevel": {
-      "uri": "https://opda.org.uk/pdtf/assuranceLevel",
-      "id": "assuranceLevel",
-      "localName": "assuranceLevel",
-      "label": "assurance level",
-      "comment": "Quality judgement on a Claim's verification — eIDAS Level of Assurance (Low / Substantial / High) per OIDC4IDA trust tiering. A plain string value (matching the ratified usage in claim-with-{document,electronic-record,vouch}-evidence.ttl), not a skos:Concept reference; the value-space is documented by opda:AssuranceLevelScheme in opda-vocabularies.ttl. Local term per S009 5-residue (PROV-O carries no notion of assurance grading).",
-      "definition": "Relates a claim to a graded quality judgement on its own verification, drawn from the eIDAS levels of assurance (Low, Substantial, High) and documented by the assurance-level concept scheme.",
-      "kind": "datatype",
-      "module": "claim",
-      "subjects": [
-        {
-          "id": "Claim",
-          "localName": "Claim",
-          "kind": "class"
-        }
-      ],
-      "objects": [
-        {
-          "id": "http://www.w3.org/2001/XMLSchema#string",
-          "localName": "string",
-          "kind": "datatype"
-        }
-      ],
-      "inverse": null,
-      "constraints": [],
-      "dctSource": [
-        "harness/odr/ODR-0009/section-Q3"
       ]
     },
     "authorisationToShare": {
@@ -8034,7 +7959,7 @@
           "minCount": "0",
           "maxCount": "1",
           "severity": "Violation",
-          "message": "Address country MUST be at most one xsd:string value when present (ODR-0015 §3b, S015 Q3 — sh:minCount 0 for graceful degradation, e.g. the INSPIRE-only case's sparse structural fields)."
+          "message": "Address country MUST be at most one xsd:string value when present (ODR-0015 §3b, S015 Q3 — sh:minCount 0 for graceful degradation of sparse structural fields)."
         }
       ],
       "dctSource": [
@@ -9547,35 +9472,6 @@
         "harness/data-dictionary/propertyPack.heating.heatingSystem.centralHeatingDetails.heatingLastServicedDate"
       ]
     },
-    "inspireFeatureId": {
-      "uri": "https://opda.org.uk/pdtf/inspireFeatureId",
-      "id": "inspireFeatureId",
-      "localName": "inspireFeatureId",
-      "label": "INSPIRE feature ID",
-      "comment": "INSPIRE Identifier for an opda:Address of variant 'inspire' — a contingent identifier (re-instantiating ODR-0005 §6a's UPRN-as-Quality pattern), unique per addressVariant 'inspire' individual (dash:uniqueValueForClass). Populated for INSPIRE-only locatedness (ODR-0015 §3a Rule 5) and generally wherever a cadastral INSPIRE polygon feature exists for the Address.",
-      "definition": "The INSPIRE Identifier of the cadastral feature corresponding to this address, where one exists.",
-      "kind": "datatype",
-      "module": "property",
-      "subjects": [
-        {
-          "id": "Address",
-          "localName": "Address",
-          "kind": "class"
-        }
-      ],
-      "objects": [
-        {
-          "id": "http://www.w3.org/2001/XMLSchema#string",
-          "localName": "string",
-          "kind": "datatype"
-        }
-      ],
-      "inverse": null,
-      "constraints": [],
-      "dctSource": [
-        "harness/odr/ODR-0015/section-4a"
-      ]
-    },
     "isConnectedToNationalGrid": {
       "uri": "https://opda.org.uk/pdtf/isConnectedToNationalGrid",
       "id": "isConnectedToNationalGrid",
@@ -10080,7 +9976,7 @@
           "minCount": "0",
           "maxCount": "1",
           "severity": "Violation",
-          "message": "Address line1 MUST be at most one xsd:string value when present (ODR-0015 §3b, S015 Q3 — sh:minCount 0 for graceful degradation, e.g. the INSPIRE-only case's sparse structural fields)."
+          "message": "Address line1 MUST be at most one xsd:string value when present (ODR-0015 §3b, S015 Q3 — sh:minCount 0 for graceful degradation of sparse structural fields)."
         }
       ],
       "dctSource": [
@@ -10121,7 +10017,7 @@
           "minCount": "0",
           "maxCount": "1",
           "severity": "Violation",
-          "message": "Address line2 MUST be at most one xsd:string value when present (ODR-0015 §3b, S015 Q3 — sh:minCount 0 for graceful degradation, e.g. the INSPIRE-only case's sparse structural fields)."
+          "message": "Address line2 MUST be at most one xsd:string value when present (ODR-0015 §3b, S015 Q3 — sh:minCount 0 for graceful degradation of sparse structural fields)."
         }
       ],
       "dctSource": [
@@ -11234,7 +11130,7 @@
           "minCount": "0",
           "maxCount": "1",
           "severity": "Violation",
-          "message": "Address postcode MUST be at most one xsd:string value when present (ODR-0015 §3b, S015 Q3 — sh:minCount 0 for graceful degradation, e.g. the INSPIRE-only case's sparse structural fields)."
+          "message": "Address postcode MUST be at most one xsd:string value when present (ODR-0015 §3b, S015 Q3 — sh:minCount 0 for graceful degradation of sparse structural fields)."
         }
       ],
       "dctSource": [
@@ -11275,7 +11171,7 @@
           "minCount": "0",
           "maxCount": "1",
           "severity": "Violation",
-          "message": "Address postTown MUST be at most one xsd:string value when present (ODR-0015 §3b, S015 Q3 — sh:minCount 0 for graceful degradation, e.g. the INSPIRE-only case's sparse structural fields)."
+          "message": "Address postTown MUST be at most one xsd:string value when present (ODR-0015 §3b, S015 Q3 — sh:minCount 0 for graceful degradation of sparse structural fields)."
         }
       ],
       "dctSource": [
@@ -13492,7 +13388,7 @@
           "minCount": null,
           "maxCount": "1",
           "severity": "Violation",
-          "message": "Address addressVariant MUST be a single xsd:string value (one of 'title' | 'marketing' | 'inspire') per ODR-0015 §Rule 6. Distinguishes the authority lifecycle borne by the Address instance."
+          "message": "Address addressVariant MUST be a single xsd:string value (one of 'title' | 'marketing' | 'postal') per ODR-0015 §Rule 6. Distinguishes the authority lifecycle borne by the Address instance."
         }
       ]
     },
@@ -13515,7 +13411,7 @@
           "minCount": "0",
           "maxCount": "1",
           "severity": "Violation",
-          "message": "Address country MUST be at most one xsd:string value when present (ODR-0015 §3b, S015 Q3 — sh:minCount 0 for graceful degradation, e.g. the INSPIRE-only case's sparse structural fields)."
+          "message": "Address country MUST be at most one xsd:string value when present (ODR-0015 §3b, S015 Q3 — sh:minCount 0 for graceful degradation of sparse structural fields)."
         },
         {
           "path": "https://opda.org.uk/pdtf/line1",
@@ -13525,7 +13421,7 @@
           "minCount": "0",
           "maxCount": "1",
           "severity": "Violation",
-          "message": "Address line1 MUST be at most one xsd:string value when present (ODR-0015 §3b, S015 Q3 — sh:minCount 0 for graceful degradation, e.g. the INSPIRE-only case's sparse structural fields)."
+          "message": "Address line1 MUST be at most one xsd:string value when present (ODR-0015 §3b, S015 Q3 — sh:minCount 0 for graceful degradation of sparse structural fields)."
         },
         {
           "path": "https://opda.org.uk/pdtf/line2",
@@ -13535,7 +13431,7 @@
           "minCount": "0",
           "maxCount": "1",
           "severity": "Violation",
-          "message": "Address line2 MUST be at most one xsd:string value when present (ODR-0015 §3b, S015 Q3 — sh:minCount 0 for graceful degradation, e.g. the INSPIRE-only case's sparse structural fields)."
+          "message": "Address line2 MUST be at most one xsd:string value when present (ODR-0015 §3b, S015 Q3 — sh:minCount 0 for graceful degradation of sparse structural fields)."
         },
         {
           "path": "https://opda.org.uk/pdtf/postcode",
@@ -13545,7 +13441,7 @@
           "minCount": "0",
           "maxCount": "1",
           "severity": "Violation",
-          "message": "Address postcode MUST be at most one xsd:string value when present (ODR-0015 §3b, S015 Q3 — sh:minCount 0 for graceful degradation, e.g. the INSPIRE-only case's sparse structural fields)."
+          "message": "Address postcode MUST be at most one xsd:string value when present (ODR-0015 §3b, S015 Q3 — sh:minCount 0 for graceful degradation of sparse structural fields)."
         },
         {
           "path": "https://opda.org.uk/pdtf/postTown",
@@ -13555,7 +13451,7 @@
           "minCount": "0",
           "maxCount": "1",
           "severity": "Violation",
-          "message": "Address postTown MUST be at most one xsd:string value when present (ODR-0015 §3b, S015 Q3 — sh:minCount 0 for graceful degradation, e.g. the INSPIRE-only case's sparse structural fields)."
+          "message": "Address postTown MUST be at most one xsd:string value when present (ODR-0015 §3b, S015 Q3 — sh:minCount 0 for graceful degradation of sparse structural fields)."
         }
       ]
     },
@@ -13710,15 +13606,6 @@
       "module": "shapes",
       "target": null,
       "targetSubjectsOf": null,
-      "constraints": []
-    },
-    "shape/assuranceLevelDomainShape": {
-      "uri": "https://opda.org.uk/pdtf/shape/assuranceLevelDomainShape",
-      "id": "shape/assuranceLevelDomainShape",
-      "localName": "assuranceLevelDomainShape",
-      "module": "shapes",
-      "target": null,
-      "targetSubjectsOf": "https://opda.org.uk/pdtf/assuranceLevel",
       "constraints": []
     },
     "shape/attestedByDomainShape": {
@@ -15260,27 +15147,6 @@
       "localName": "inclusionStatusRangeShape",
       "module": "shapes",
       "target": null,
-      "targetSubjectsOf": null,
-      "constraints": []
-    },
-    "shape/inspireFeatureIdDomainShape": {
-      "uri": "https://opda.org.uk/pdtf/shape/inspireFeatureIdDomainShape",
-      "id": "shape/inspireFeatureIdDomainShape",
-      "localName": "inspireFeatureIdDomainShape",
-      "module": "shapes",
-      "target": null,
-      "targetSubjectsOf": "https://opda.org.uk/pdtf/inspireFeatureId",
-      "constraints": []
-    },
-    "shape/INSPIRESuccessionRule": {
-      "uri": "https://opda.org.uk/pdtf/shape/INSPIRESuccessionRule",
-      "id": "shape/INSPIRESuccessionRule",
-      "localName": "INSPIRESuccessionRule",
-      "module": "property",
-      "target": {
-        "id": "Address",
-        "localName": "Address"
-      },
       "targetSubjectsOf": null,
       "constraints": []
     },
@@ -18263,25 +18129,6 @@
         "harness/data-dictionary/propertyPack.environmentalIssues.flooding.floodRisk.actionAlertRating.5"
       ]
     },
-    "scheme/addressVariant/inspire": {
-      "uri": "https://opda.org.uk/pdtf/scheme/addressVariant/inspire",
-      "id": "scheme/addressVariant/inspire",
-      "localName": "inspire",
-      "prefLabel": "inspire",
-      "definition": "INSPIRE Directive variant of an Address — the regulated postal address structure published by INSPIRE-aligned registers (administrative boundary alignment).",
-      "module": "vocabularies",
-      "schemes": [
-        {
-          "id": "scheme/AddressVariantScheme",
-          "localName": "AddressVariantScheme"
-        }
-      ],
-      "broader": [],
-      "narrower": [],
-      "dctSource": [
-        "harness/odr/ODR-0015/section-2a-address-variant"
-      ]
-    },
     "scheme/addressVariant/marketing": {
       "uri": "https://opda.org.uk/pdtf/scheme/addressVariant/marketing",
       "id": "scheme/addressVariant/marketing",
@@ -18337,82 +18184,6 @@
       "narrower": [],
       "dctSource": [
         "harness/odr/ODR-0015/section-2a-address-variant"
-      ]
-    },
-    "scheme/assuranceLevel/High": {
-      "uri": "https://opda.org.uk/pdtf/scheme/assuranceLevel/High",
-      "id": "scheme/assuranceLevel/High",
-      "localName": "High",
-      "prefLabel": "High",
-      "definition": "High degree of confidence in the claimed or asserted identity of a person (eIDAS Article 8(2)(c) High).",
-      "module": "vocabularies",
-      "schemes": [
-        {
-          "id": "scheme/AssuranceLevelScheme",
-          "localName": "AssuranceLevelScheme"
-        }
-      ],
-      "broader": [],
-      "narrower": [],
-      "dctSource": [
-        "https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX:32014R0910"
-      ]
-    },
-    "scheme/assuranceLevel/Low": {
-      "uri": "https://opda.org.uk/pdtf/scheme/assuranceLevel/Low",
-      "id": "scheme/assuranceLevel/Low",
-      "localName": "Low",
-      "prefLabel": "Low",
-      "definition": "Limited degree of confidence in the claimed or asserted identity of a person (eIDAS Article 8(2)(a) Low).",
-      "module": "vocabularies",
-      "schemes": [
-        {
-          "id": "scheme/AssuranceLevelScheme",
-          "localName": "AssuranceLevelScheme"
-        }
-      ],
-      "broader": [],
-      "narrower": [],
-      "dctSource": [
-        "https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX:32014R0910"
-      ]
-    },
-    "scheme/assuranceLevel/PDTF-Standard": {
-      "uri": "https://opda.org.uk/pdtf/scheme/assuranceLevel/PDTF-Standard",
-      "id": "scheme/assuranceLevel/PDTF-Standard",
-      "localName": "PDTF-Standard",
-      "prefLabel": "PDTF-Standard",
-      "definition": "OPDA-specific intermediate assurance level per ODR-0009 §Q3, applicable to PDTF transactions where eIDAS LoA mapping is not directly available.",
-      "module": "vocabularies",
-      "schemes": [
-        {
-          "id": "scheme/AssuranceLevelScheme",
-          "localName": "AssuranceLevelScheme"
-        }
-      ],
-      "broader": [],
-      "narrower": [],
-      "dctSource": [
-        "harness/odr/ODR-0009/section-Q3"
-      ]
-    },
-    "scheme/assuranceLevel/Substantial": {
-      "uri": "https://opda.org.uk/pdtf/scheme/assuranceLevel/Substantial",
-      "id": "scheme/assuranceLevel/Substantial",
-      "localName": "Substantial",
-      "prefLabel": "Substantial",
-      "definition": "Substantial degree of confidence in the claimed or asserted identity of a person (eIDAS Article 8(2)(b) Substantial).",
-      "module": "vocabularies",
-      "schemes": [
-        {
-          "id": "scheme/AssuranceLevelScheme",
-          "localName": "AssuranceLevelScheme"
-        }
-      ],
-      "broader": [],
-      "narrower": [],
-      "dctSource": [
-        "https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX:32014R0910"
       ]
     },
     "scheme/attachmentStatus/Attached": {
@@ -24183,10 +23954,6 @@
       "topConcepts": [],
       "concepts": [
         {
-          "id": "scheme/addressVariant/inspire",
-          "localName": "inspire"
-        },
-        {
           "id": "scheme/addressVariant/marketing",
           "localName": "marketing"
         },
@@ -24197,34 +23964,6 @@
         {
           "id": "scheme/addressVariant/title",
           "localName": "title"
-        }
-      ]
-    },
-    "scheme/AssuranceLevelScheme": {
-      "uri": "https://opda.org.uk/pdtf/scheme/AssuranceLevelScheme",
-      "id": "scheme/AssuranceLevelScheme",
-      "localName": "AssuranceLevelScheme",
-      "prefLabel": "Assurance Level",
-      "definition": "Quality Values for the eIDAS Levels of Assurance (Low, Substantial, High) plus the OPDA-specific PDTF-Standard intermediate level per ODR-0009 §Q3, applied to identity-verification claims.",
-      "ufoCategory": "",
-      "module": "vocabularies",
-      "topConcepts": [],
-      "concepts": [
-        {
-          "id": "scheme/assuranceLevel/High",
-          "localName": "High"
-        },
-        {
-          "id": "scheme/assuranceLevel/Low",
-          "localName": "Low"
-        },
-        {
-          "id": "scheme/assuranceLevel/PDTF-Standard",
-          "localName": "PDTF-Standard"
-        },
-        {
-          "id": "scheme/assuranceLevel/Substantial",
-          "localName": "Substantial"
         }
       ]
     },
@@ -26328,10 +26067,6 @@
       ],
       "datatypeProperties": [
         {
-          "id": "assuranceLevel",
-          "localName": "assuranceLevel"
-        },
-        {
           "id": "digest",
           "localName": "digest"
         }
@@ -27084,10 +26819,6 @@
         {
           "id": "RegisteredTitle",
           "localName": "RegisteredTitle"
-        },
-        {
-          "id": "UPRNSuccessionEvent",
-          "localName": "UPRNSuccessionEvent"
         }
       ],
       "objectProperties": [
@@ -27314,10 +27045,6 @@
           "localName": "heatingLastServicedDate"
         },
         {
-          "id": "inspireFeatureId",
-          "localName": "inspireFeatureId"
-        },
-        {
           "id": "kitchens",
           "localName": "kitchens"
         },
@@ -27538,10 +27265,6 @@
         {
           "id": "shape/HasAddressBearerShape",
           "localName": "HasAddressBearerShape"
-        },
-        {
-          "id": "shape/INSPIRESuccessionRule",
-          "localName": "INSPIRESuccessionRule"
         },
         {
           "id": "shape/LegalEstateIdentityKeyShape",

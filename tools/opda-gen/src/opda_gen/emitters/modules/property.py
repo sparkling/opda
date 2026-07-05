@@ -114,7 +114,6 @@ CLASSES = (
     OPDA.LegalEstate,
     OPDA.Property,
     OPDA.RegisteredTitle,
-    OPDA.UPRNSuccessionEvent,
 )
 
 OBJECT_PROPERTIES = (
@@ -164,7 +163,6 @@ DATATYPE_PROPERTIES = (
     OPDA.heading,
     OPDA.heatingLastServicedDate,
     OPDA.heatingType,
-    OPDA.inspireFeatureId,
     OPDA.isGroundRentPayable,
     OPDA.isInsured,
     OPDA.isLocatedOverCommercialPremises,
@@ -491,36 +489,17 @@ def build_graph() -> Graph:
     g.add((OPDA.Address, RDFS.isDefinedBy, module_iri))
     g.add((OPDA.Address, DCTERMS.source, _ODR_0015_S2A))
 
-    # --- opda:UPRNSuccessionEvent — provenance event (ODR-0005 §6a) -----
-    g.add((OPDA.UPRNSuccessionEvent, RDF.type, OWL.Class))
-    g.add((OPDA.UPRNSuccessionEvent, RDFS.subClassOf, PROV.Activity))
-    g.add((OPDA.UPRNSuccessionEvent, RDFS.label,
-           Literal("UPRN Succession Event", lang="en")))
-    g.add((OPDA.UPRNSuccessionEvent, RDFS.comment, Literal(
-        "Reified PROV-O activity recording an administrative re-numbering "
-        "of UPRN for a single physical Property (the Property's identity "
-        "PERSISTS through UPRN succession per ODR-0005 Rule 6). Canonical "
-        "succession form per Gandon W3C-side recommendation (S005 Q4) — "
-        "own URI, dereferenceable identity, audit trail. Coexists with "
-        "the denormalised opda:previousUPRN literal-pair convenience "
-        "(authoritative form: this reified event).",
-        lang="en",
-    )))
-    g.add((OPDA.UPRNSuccessionEvent, SKOS.scopeNote, Literal(
-        "UFO: Event particular (Guizzardi 2005 Ch. 4 §4.7 — perdurant). "
-        "DOLCE: Achievement / Accomplishment (Masolo et al. 2003 D18 §4.4 "
-        "— here an Achievement: instantaneous administrative re-issuance).",
-        lang="en",
-    )))
-    g.add((OPDA.UPRNSuccessionEvent, SKOS.definition, Literal(
-        "A reified provenance activity recording the administrative re-"
-        "numbering of the UPRN for a single physical property, through which "
-        "the property's identity persists, captured with its own "
-        "dereferenceable identifier and audit trail.",
-        lang="en",
-    )))
-    g.add((OPDA.UPRNSuccessionEvent, RDFS.isDefinedBy, module_iri))
-    g.add((OPDA.UPRNSuccessionEvent, DCTERMS.source, _ODR_0005_S6A))
+    # opda:UPRNSuccessionEvent REMOVED 2026-07-05 (RML gap-closing session).
+    # Ratified ODR-0005 §6a, but confirmed to have zero basis anywhere in
+    # the PDTF v3 schema family (transaction schema, verifiedClaims,
+    # trust-framework, v1/v2 trees — exhaustively grepped for
+    # "succession"/"supersede"/"uprnHistory": no hits). This is not merely
+    # an unpopulated field: UPRN succession is cross-transaction history,
+    # which a single PDTF transaction instance structurally cannot carry.
+    # No SHACL shape targeted this class (zero domain/range connections
+    # confirmed before removal), so removal is a clean, non-breaking
+    # deletion. See ODR-0005's own removal amendment for the governance
+    # record.
 
     # --- opda:LeaseTerm — OWL-Time-typed interval (ODR-0007 §Q5) --------
     g.add((OPDA.LeaseTerm, RDF.type, OWL.Class))
@@ -680,28 +659,17 @@ def build_graph() -> Graph:
         g.add((_prop, RDFS.isDefinedBy, module_iri))
         g.add((_prop, DCTERMS.source, _ODR_0015_S3B))
 
-    # --- DatatypeProperty: opda:inspireFeatureId (ODR-0015 §4a, S015 Q4) ---
-    g.add((OPDA.inspireFeatureId, RDF.type, OWL.DatatypeProperty))
-    g.add((OPDA.inspireFeatureId, RDFS.domain, OPDA.Address))
-    g.add((OPDA.inspireFeatureId, RDFS.range, XSD.string))
-    g.add((OPDA.inspireFeatureId, RDFS.label,
-           Literal("INSPIRE feature ID", lang="en")))
-    g.add((OPDA.inspireFeatureId, RDFS.comment, Literal(
-        "INSPIRE Identifier for an opda:Address of variant 'inspire' — a "
-        "contingent identifier (re-instantiating ODR-0005 §6a's UPRN-as-"
-        "Quality pattern), unique per addressVariant 'inspire' individual "
-        "(dash:uniqueValueForClass). Populated for INSPIRE-only locatedness "
-        "(ODR-0015 §3a Rule 5) and generally wherever a cadastral INSPIRE "
-        "polygon feature exists for the Address.",
-        lang="en",
-    )))
-    g.add((OPDA.inspireFeatureId, SKOS.definition, Literal(
-        "The INSPIRE Identifier of the cadastral feature corresponding to "
-        "this address, where one exists.",
-        lang="en",
-    )))
-    g.add((OPDA.inspireFeatureId, RDFS.isDefinedBy, module_iri))
-    g.add((OPDA.inspireFeatureId, DCTERMS.source, _ODR_0015_S4A))
+    # opda:inspireFeatureId REMOVED 2026-07-05 (RML gap-closing session).
+    # Ratified ODR-0015 §4a, but confirmed to have zero basis anywhere in
+    # the PDTF v3 schema family — "inspire"/"INSPIRE" appears nowhere in
+    # any schema file, and opda:addressVariant itself (the field this
+    # property's domain depends on) is not a real schema field either; no
+    # PDTF instance can ever assert the "inspire" variant. The "inspire"
+    # opda-v:AddressVariantScheme member and the dependent
+    # INSPIRESuccessionRule SHACL-AF rule are removed alongside this for
+    # the same reason (the rule's trigger condition, addressVariant =
+    # "inspire", could never be satisfied by any real data). See
+    # ODR-0015's own removal amendment for the governance record.
 
     # --- DatatypeProperty: opda:builtForm (ODR-0008 §Q5a) ---------------
     # ADR-0031 register: STANDS on opda:Property; Quale-in-Region; flat

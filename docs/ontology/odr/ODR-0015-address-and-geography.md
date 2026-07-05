@@ -320,3 +320,15 @@ Three exemplars authored 2026-05-27 between-session prep per ODR-0004 §8a:
 - Refactor exemplar 1 to `opda:Address` resource shape (drop literal `opda:postalAddress` on Property).
 - Add `opda:Address` instance to exemplar 3 manifesting INSPIRE-only-locatedness.
 - `expected-report.ttl` pairing deferred until SHACL shapes graph crystallises.
+
+## Amendments
+
+### Amendment — `opda:inspireFeatureId` + "inspire" `addressVariant` removed (2026-07-05, RML gap-closing session)
+
+**The "inspire" `addressVariant` value, `opda:inspireFeatureId`, and the `INSPIRESuccessionRule` SHACL-AF rule are REMOVED from the active ontology.** A full-corpus RML mapping audit (mapping every ontology resource against the complete PDTF v3 JSON schema family) found zero basis anywhere for INSPIRE: "inspire"/"INSPIRE" appears nowhere in any schema file, and `opda:addressVariant` itself is not a real schema field either — no PDTF instance can ever assert this variant, so `opda:inspireFeatureId` could never be populated by anything real.
+
+This does not reopen §7a/§8a's underlying IC commitments — the Address Substance-Kind + Quality-particularising model, and the general "graceful degradation of sparse structural fields" pattern, stand unchanged and now apply to the remaining "title"/"marketing"/"postal" variants. What is removed is specifically the INSPIRE-branded variant, which was speculative scaffolding for a data source this ontology's actual schema input never carries. The dependent `INSPIRESuccessionRule` SHACL-AF rule (materialising `opda:hasINSPIRESuccessionStatus`) is removed alongside it — its trigger condition (`addressVariant = "inspire"`) could never be satisfied by any real data, making it permanently dead scaffolding, not live logic. The `AddressVariantInspireRefinement` DPV lawful-basis annotation (§7a) is removed for the same reason.
+
+The `rural-plot-inspire-no-uprn.ttl` diagnostic exemplar (§8a) is retained as a historical record of the session-015 deliberation, with its now-removed-term content commented out and annotated; its still-real `opda:Property` / `opda:LegalEstate` / `opda:RegisteredTitle` content is unaffected. No SHACL shape besides the now-removed `INSPIRESuccessionRule` ever depended on the "inspire" variant, so removal is a clean, non-breaking deletion — confirmed via the full exemplar regression suite and the ontology byte-identity/CI gates.
+
+Full reasoning: `docs/adr/ADR-0057-rml-mapping-implementation.md` Amendments (RML gap-closing session, 2026-07-05).

@@ -29,7 +29,8 @@ opda-x:claim
     rdfs:label "Residency claim: Aaron Patel is resident at 22 Maple Court" ;
     opda:claimType "residency" ;
     opda:claimContent "Aaron Patel resident at 22 Maple Court, Bristol, BS1 5RT for >12 months" ;
-    opda:assuranceLevel "Low" ;
+    # opda:assuranceLevel "Low" ; -- REMOVED 2026-07-05 (zero PDTF schema
+    # basis; see ODR-0009's removal amendment). Historical text preserved.
     prov:wasDerivedFrom opda-x:vouch-attestation ;
     dct:conformsTo <opda:UKPropertyDataTrustFramework> .
 

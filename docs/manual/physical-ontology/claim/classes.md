@@ -20,39 +20,12 @@ Eleven OWL classes emitted by `opda-gen` into `opda-claim.ttl`.
 
 ## Classes
 
-### opda:AssuranceLevel
+### opda:assuranceLevel — REMOVED
 
-```turtle
-opda:AssuranceLevel
-    rdf:type owl:Class ;
-    rdfs:label "Assurance Level"@en ;
-    rdfs:comment "Quality judgement on a Claim's verification — eIDAS Level of Assurance (Low / Substantial / High) per OIDC trust tiering. Backed by opda:AssuranceLevelScheme SKOS scheme in opda-vocabularies.ttl. Local term per S009 5-residue (PROV-O carries no notion of assurance grading)."@en ;
-    dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0009/section-Q3> ;
-    skos:scopeNote "UFO: Quale-in-Region (Guizzardi 2005 Ch. 4 §4.3 — quality particular). eIDAS Regulation (EU) 910/2014 Article 8."@en .
-```
-
-#### A9 per-kind discipline
-
-| Triple | Value | Source |
-|---|---|---|
-| `dct:source` | `<https://opda.org.uk/pdtf/harness/odr/ODR-0009/section-Q3>` | [ODR-0009 §Q3](/modelling/odr/odr-0009) |
-| `skos:scopeNote @en` | "UFO: Quale-in-Region. eIDAS Regulation 910/2014 Article 8." | Guizzardi 2005 / eIDAS |
-| `rdfs:comment @en` | "eIDAS Level of Assurance (Low / Substantial / High) per OIDC trust tiering." | ODR-0009 §Q3 |
-
-#### Targeting shapes
-
-None directly; values bound to `opda:AssuranceLevelScheme` via SKOS in `opda-vocabularies.ttl`.
-
-#### Cross-tier links
-
-- [Concept tier →](../../concept/claim/assurance-level.md)
-- [Logical tier →](../../logical/claim/assurance-level.md)
-- [Physical-Database tier (deployment) →](../../physical-database/README.md)
-
-#### Source ODR + ADR
-
-- [ODR-0009 §Q3](/modelling/odr/odr-0009)
-- [ADR-0011](/modelling/adr/adr-0011)
+Removed 2026-07-05 (RML gap-closing session): confirmed zero basis anywhere
+in the PDTF v3 schema family (no field ever carries an eIDAS Level of
+Assurance value). No longer part of the active ontology. See ODR-0009's
+own removal amendment for the governance record.
 
 ### opda:Claim
 

@@ -5,44 +5,32 @@
 > sessions of gap-closing work and its numbers are stale. The current,
 > authoritative, mechanically-regenerable coverage state is
 > `source/03-standards/rml/build/final-gap.json` (regenerate with
-> `python3 build/final_scope2.py` from this directory): **465/472
-> schema-generated resources mapped (98.5%)**.
+> `python3 build/final_scope2.py` from this directory): **466/469
+> schema-generated resources mapped (99.4%)**.
 >
-> This session's closures, in two rounds. Round 1 reopened items an earlier
-> pass had wrongly written off as "zero JSON basis": `opda:NameChangeEvent`
-> and `opda:LeaseExtensionEvent` (real hooks:
-> `participants[].name.maidenName`/`.lastName`;
-> `ownershipsToBeTransferred[].leaseholdInformation.enfranchisement.
-> enfranchisementSteps`), plus `opda:roleNotation`,
-> `opda:numberOfSellers`/`numberOfNonUkResidentSellers` (domain retargeted
-> `Proprietorship`→`Transaction`), `opda:hasRegisteredTitle`, and
-> `opda:identifiesSameProperty`. Round 2, prompted by a direct challenge not
-> to trust prior ADR/ODR reasoning or the "leaves" framing at face value,
-> found that `opda:evidenceType`/`opda:digest`/`opda:attestedBy`/
-> `opda:Verifier` were marked "out of ODR-0035's mapping scope" for a real
-> but WRONG reason: the data lives in a genuinely separate, real PDTF schema
-> (`verifiedClaims/pdtf-verified-claims.json`, OIDC4IDA-shaped, correlated to
-> a transaction via its own `transactionId`) that this mapping's own harness
-> had never been extended to trace — not a fact about the data. Extended
-> `harness/run_mapping.py` with an optional second logical source and closed
-> all four. The same pass also found `opda:potentialCost`'s `MonetaryAmount`
-> range was a genuine ontology-generator bug — a batch decision (ODR-0024 R3)
-> that swept ~18 monetary leaves into one range convention without
-> re-checking that this ONE field is `type: string` in the schema, unlike
-> its ~17 numeric siblings — fixed by retargeting the range to `xsd:string`
-> in the generator and mapping it directly.
+> This session's closures, across several rounds. Round 1 reopened items an
+> earlier pass had wrongly written off as "zero JSON basis":
+> `opda:NameChangeEvent` and `opda:LeaseExtensionEvent`, plus
+> `opda:roleNotation`, `opda:numberOfSellers`/`numberOfNonUkResidentSellers`,
+> `opda:hasRegisteredTitle`, and `opda:identifiesSameProperty`. Round 2
+> closed `opda:evidenceType`/`opda:digest`/`opda:attestedBy`/`opda:Verifier`
+> (a genuinely separate PDTF schema, `verifiedClaims/`, that the mapping
+> harness had never been extended to trace) and fixed a real
+> ontology-generator bug on `opda:potentialCost`'s range.
 >
-> The remaining 7 (2 classes: `AssuranceLevel`, `UPRNSuccessionEvent`; 5
-> properties: `inspireFeatureId`, `founds`, `playedBy`, `plays`,
-> `hasEvidencedAuthority`) were re-verified against the FULL invariant JSON
-> schema corpus (not just `pdtf-transaction.json` — also `verifiedClaims/`,
-> `trust-framework/`, and the v1/v2 schema trees) — confirmed genuine,
-> permanent exclusions: zero data anywhere for the first three; a real
-> structural mismatch (a distinct qua-individual Role node the ontology's
-> actual co-typing convention never mints) for `founds`/`playedBy`/`plays`;
-> and a schema-less, free-form `claims` bag with no field name concretely
-> specified for capacity/authority for `hasEvidencedAuthority`. See
-> `HANDOVER-2026-07-05-rml-mapping-and-ontology-gap-closing.md` and
+> **Final round: `opda:hasEvidencedAuthority` REOPENED and mapped** (a
+> dedicated, REQUIRED schema field pair — `sellersCapacity.attachments` +
+> `sellersCapacityDetails` — was missed by an earlier verdict that conflated
+> it with an unrelated discussion); **`opda:UPRNSuccessionEvent`,
+> `opda:AssuranceLevel`/`opda:assuranceLevel`, and `opda:inspireFeatureId`
+> REMOVED from the ontology entirely** (confirmed zero basis in ANY form
+> across the full schema corpus, not merely unpopulated fields — full
+> removal including their SHACL shapes, SKOS schemes, and DPV annotations,
+> per governance amendments in ODR-0005, ODR-0009, and ODR-0015).
+> `opda:founds`/`playedBy`/`plays` remain unmapped by standing design rule
+> (upper-ontology/structural-pattern connectives are never expected to map
+> to schema data — see the project's RML memory notes) and are the only
+> 3 resources not mapped or removed. See
 > `docs/adr/ADR-0057-rml-mapping-implementation.md`'s Amendments for full
 > per-item reasoning.
 

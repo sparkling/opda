@@ -380,18 +380,12 @@ def build_property_annotations() -> Graph:
         ),
         source_iri=_ODR_0015_S7A,
     )
-    _add_dpv_variant_refinement(
-        g,
-        map_iri=OPDA.AddressVariantInspireRefinement,
-        kind=OPDA.Address,
-        variant_predicate=OPDA.addressVariant,
-        variant_value="inspire",
-        lawful_basis=DPV_PUBLICTASK,
-        regulator_source=URIRef(
-            "https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX:32007L0002"
-        ),
-        source_iri=_ODR_0015_S7A,
-    )
+    # opda:AddressVariantInspireRefinement REMOVED 2026-07-05 (RML
+    # gap-closing session) — the "inspire" addressVariant value it refined
+    # can never be asserted by any real PDTF instance (see property.py's
+    # removal note on opda:inspireFeatureId); a DPV lawful-basis refinement
+    # for a value-space member that no data can ever produce is dead
+    # scaffolding, not a real PII-annotation gap.
 
     return g
 

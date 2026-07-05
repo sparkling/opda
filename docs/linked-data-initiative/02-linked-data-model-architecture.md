@@ -234,23 +234,22 @@ The collapse is **ratified behind three enforceable gates** that convert the Dev
 
 ## 7. Controlled vocabularies — SKOS schemes as a first-class layer
 
-Every reused enum becomes a `skos:ConceptScheme`, but in a **dedicated `opda-v:` prefix** (`https://opda.org.uk/pdtf/scheme/`) so the vocabulary layer is cleanly separable from the term layer. **47 schemes / 308 concepts** are emitted. Each scheme is annotated with a **steward** and an explicit **UFO meta-category**, and each concept traces to a regulator or schema leaf via `dct:source`:
+Every reused enum becomes a `skos:ConceptScheme`, but in a **dedicated `opda-v:` prefix** (`https://opda.org.uk/pdtf/scheme/`) so the vocabulary layer is cleanly separable from the term layer. **46 schemes / 304 concepts** are emitted. Each scheme is annotated with a **steward** and an explicit **UFO meta-category**, and each concept traces to a regulator or schema leaf via `dct:source`:
 
 ```turtle
-opda-v:AssuranceLevelScheme
+opda-v:EvidenceMethodScheme
     rdf:type skos:ConceptScheme ;
-    skos:prefLabel "Assurance Level"@en ;
-    dct:source <https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX:32014R0910> ;   # eIDAS
-    opda:hasSteward "Moreau (S009 Q3)"@en ;
+    skos:prefLabel "Evidence Method"@en ;
+    dct:source <https://openid.net/specs/openid-connect-4-identity-assurance-1_0.html> ;   # OIDC4IDA
     opda:ufoCategory "Quality Value" .
 
-<https://opda.org.uk/pdtf/scheme/assuranceLevel/High>
+<https://opda.org.uk/pdtf/scheme/evidenceMethod/Document>
     rdf:type skos:Concept ;
-    skos:prefLabel "High"@en ;
-    skos:definition "High degree of confidence in the claimed or asserted identity of a person (eIDAS Article 8(2)(c) High)."@en ;
-    dct:source <https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX:32014R0910> ;
-    skos:inScheme opda-v:AssuranceLevelScheme ;
-    skos:notation "High" .
+    skos:prefLabel "Document"@en ;
+    skos:definition "OIDC4IDA Document evidence: identity evidence obtained by inspecting a physical or digital identity document (passport, driving licence, identity card, etc.)."@en ;
+    dct:source <https://openid.net/specs/openid-connect-4-identity-assurance-1_0.html> ;
+    skos:inScheme opda-v:EvidenceMethodScheme ;
+    skos:notation "Document" .
 ```
 
 The `YesNoScheme` is the form-ergonomics collapse made visible in one place — its own scope note records *"Used by ~276 BASPI5 discriminator questions; emitted as a shared scheme per ODR-0011 §1a one-scheme-per-enum discipline."* One scheme, ~276 reuse sites; the alternative was ~276 boolean form-slot properties. ✅

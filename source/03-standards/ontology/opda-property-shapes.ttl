@@ -25,13 +25,13 @@
 <https://opda.org.uk/pdtf/shape/AddressIdentityKeyShape>
     rdf:type sh:NodeShape ;
     dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0015/section-Rule-6> ;
-    sh:property _:b079937439e1e ;
+    sh:property _:b594db18f806d ;
     sh:targetClass opda:Address .
 
 <https://opda.org.uk/pdtf/shape/AddressStructuralShape>
     rdf:type sh:NodeShape ;
     dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0015/section-3b> ;
-    sh:property _:b2af37916ef34, _:b39964e2ac194, _:bce81c4eeff43, _:be33817d12a97, _:bf4bebeb9d482 ;
+    sh:property _:b396f95ea511c, _:b565446166166, _:b5a3d9b2a7c80, _:b820a7a8fba7a, _:bd34517f840e4 ;
     sh:targetClass opda:Address .
 
 <https://opda.org.uk/pdtf/shape/HasAddressBearerShape>
@@ -41,14 +41,6 @@
     sh:or _:bf27ea7af17aa ;
     sh:severity sh:Violation ;
     sh:targetSubjectsOf opda:hasAddress .
-
-<https://opda.org.uk/pdtf/shape/INSPIRESuccessionRule>
-    rdf:type sh:NodeShape ;
-    rdfs:comment "INSPIRE Identifier / OS AddressBase succession rule (ODR-0015 §4a; SHACL-AF citing site #3). Materialises opda:hasINSPIRESuccessionStatus on inspire-variant Address instances. Per ODR-0017 §1a."@en ;
-    dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0015/section-4a> ;
-    sh:rule _:b5003bd7f3930 ;
-    sh:severity sh:Info ;
-    sh:targetClass opda:Address .
 
 <https://opda.org.uk/pdtf/shape/LegalEstateIdentityKeyShape>
     rdf:type sh:NodeShape ;
@@ -76,33 +68,14 @@
     sh:severity sh:Info ;
     sh:targetClass opda:Property .
 
-_:b5003bd7f3930
-    rdf:type sh:SPARQLRule ;
-    sh:construct "PREFIX opda: <https://opda.org.uk/pdtf/>\nPREFIX prov: <http://www.w3.org/ns/prov#>\nCONSTRUCT {\n  ?address opda:hasINSPIRESuccessionStatus ?status .\n}\nWHERE {\n  ?address a opda:Address ;\n           opda:addressVariant \"inspire\" .\n  OPTIONAL { ?address prov:wasDerivedFrom ?prior .\n             ?prior opda:addressVariant \"inspire\" }\n  BIND (IF(BOUND(?prior), \"inspire-re-issued\", \"inspire-primary\") AS ?status)\n}" .
-
 _:b6369a6286ccd
     rdf:type sh:SPARQLRule ;
     sh:construct "PREFIX opda: <https://opda.org.uk/pdtf/>\nPREFIX prov: <http://www.w3.org/ns/prov#>\nCONSTRUCT {\n  ?property opda:hasUPRNSuccessionStatus ?status .\n}\nWHERE {\n  ?property a opda:Property ;\n            opda:hasUPRN ?currentUPRN .\n  OPTIONAL { ?property prov:wasDerivedFrom ?predecessor .\n             ?predecessor opda:hasUPRN ?priorUPRN .\n             FILTER (?currentUPRN != ?priorUPRN) }\n  BIND (IF(BOUND(?priorUPRN), \"succession-tracked\", \"primary-uprn\") AS ?status)\n}" .
-
-_:b079937439e1e
-    sh:datatype xsd:string ;
-    sh:maxCount "1"^^xsd:integer ;
-    sh:message "Address addressVariant MUST be a single xsd:string value (one of 'title' | 'marketing' | 'inspire') per ODR-0015 §Rule 6. Distinguishes the authority lifecycle borne by the Address instance."@en ;
-    sh:path opda:addressVariant ;
-    sh:severity sh:Violation .
 
 _:b280ef5eed74d
     sh:message "Property co-reference MUST use opda:identifiesSameProperty (an IRI-valued ObjectProperty); owl:sameAs is forbidden per ODR-0005 Rule 5 because it propagates identity-collapse across contexts under reasoning."@en ;
     sh:nodeKind sh:IRI ;
     sh:path opda:identifiesSameProperty ;
-    sh:severity sh:Violation .
-
-_:b2af37916ef34
-    sh:datatype xsd:string ;
-    sh:maxCount "1"^^xsd:integer ;
-    sh:message "Address country MUST be at most one xsd:string value when present (ODR-0015 §3b, S015 Q3 — sh:minCount 0 for graceful degradation, e.g. the INSPIRE-only case's sparse structural fields)."@en ;
-    sh:minCount "0"^^xsd:integer ;
-    sh:path opda:country ;
     sh:severity sh:Violation .
 
 _:b2f2f8e7d3de1
@@ -112,12 +85,35 @@ _:b2f2f8e7d3de1
     sh:path opda:tenureKind ;
     sh:severity sh:Violation .
 
-_:b39964e2ac194
+_:b396f95ea511c
     sh:datatype xsd:string ;
     sh:maxCount "1"^^xsd:integer ;
-    sh:message "Address line1 MUST be at most one xsd:string value when present (ODR-0015 §3b, S015 Q3 — sh:minCount 0 for graceful degradation, e.g. the INSPIRE-only case's sparse structural fields)."@en ;
+    sh:message "Address line1 MUST be at most one xsd:string value when present (ODR-0015 §3b, S015 Q3 — sh:minCount 0 for graceful degradation of sparse structural fields)."@en ;
     sh:minCount "0"^^xsd:integer ;
     sh:path opda:line1 ;
+    sh:severity sh:Violation .
+
+_:b565446166166
+    sh:datatype xsd:string ;
+    sh:maxCount "1"^^xsd:integer ;
+    sh:message "Address line2 MUST be at most one xsd:string value when present (ODR-0015 §3b, S015 Q3 — sh:minCount 0 for graceful degradation of sparse structural fields)."@en ;
+    sh:minCount "0"^^xsd:integer ;
+    sh:path opda:line2 ;
+    sh:severity sh:Violation .
+
+_:b594db18f806d
+    sh:datatype xsd:string ;
+    sh:maxCount "1"^^xsd:integer ;
+    sh:message "Address addressVariant MUST be a single xsd:string value (one of 'title' | 'marketing' | 'postal') per ODR-0015 §Rule 6. Distinguishes the authority lifecycle borne by the Address instance."@en ;
+    sh:path opda:addressVariant ;
+    sh:severity sh:Violation .
+
+_:b5a3d9b2a7c80
+    sh:datatype xsd:string ;
+    sh:maxCount "1"^^xsd:integer ;
+    sh:message "Address country MUST be at most one xsd:string value when present (ODR-0015 §3b, S015 Q3 — sh:minCount 0 for graceful degradation of sparse structural fields)."@en ;
+    sh:minCount "0"^^xsd:integer ;
+    sh:path opda:country ;
     sh:severity sh:Violation .
 
 _:b75bdcb9bc24d
@@ -126,6 +122,14 @@ _:b75bdcb9bc24d
 
 _:b8177c5ef58c0
     sh:class opda:Organisation .
+
+_:b820a7a8fba7a
+    sh:datatype xsd:string ;
+    sh:maxCount "1"^^xsd:integer ;
+    sh:message "Address postTown MUST be at most one xsd:string value when present (ODR-0015 §3b, S015 Q3 — sh:minCount 0 for graceful degradation of sparse structural fields)."@en ;
+    sh:minCount "0"^^xsd:integer ;
+    sh:path opda:postTown ;
+    sh:severity sh:Violation .
 
 _:b88b6d7d49ea1
     sh:class opda:Person .
@@ -141,33 +145,17 @@ _:baeadc871cb4d
     sh:path opda:hasUPRN ;
     sh:severity sh:Violation .
 
-_:bce81c4eeff43
+_:bd34517f840e4
     sh:datatype xsd:string ;
     sh:maxCount "1"^^xsd:integer ;
-    sh:message "Address line2 MUST be at most one xsd:string value when present (ODR-0015 §3b, S015 Q3 — sh:minCount 0 for graceful degradation, e.g. the INSPIRE-only case's sparse structural fields)."@en ;
+    sh:message "Address postcode MUST be at most one xsd:string value when present (ODR-0015 §3b, S015 Q3 — sh:minCount 0 for graceful degradation of sparse structural fields)."@en ;
     sh:minCount "0"^^xsd:integer ;
-    sh:path opda:line2 ;
-    sh:severity sh:Violation .
-
-_:be33817d12a97
-    sh:datatype xsd:string ;
-    sh:maxCount "1"^^xsd:integer ;
-    sh:message "Address postTown MUST be at most one xsd:string value when present (ODR-0015 §3b, S015 Q3 — sh:minCount 0 for graceful degradation, e.g. the INSPIRE-only case's sparse structural fields)."@en ;
-    sh:minCount "0"^^xsd:integer ;
-    sh:path opda:postTown ;
+    sh:path opda:postcode ;
     sh:severity sh:Violation .
 
 _:bf27ea7af17aa
     rdf:first _:bf81a81adb71a ;
     rdf:rest _:b75bdcb9bc24d .
-
-_:bf4bebeb9d482
-    sh:datatype xsd:string ;
-    sh:maxCount "1"^^xsd:integer ;
-    sh:message "Address postcode MUST be at most one xsd:string value when present (ODR-0015 §3b, S015 Q3 — sh:minCount 0 for graceful degradation, e.g. the INSPIRE-only case's sparse structural fields)."@en ;
-    sh:minCount "0"^^xsd:integer ;
-    sh:path opda:postcode ;
-    sh:severity sh:Violation .
 
 _:bf81a81adb71a
     sh:class opda:Property .

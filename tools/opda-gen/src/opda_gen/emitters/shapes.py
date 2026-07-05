@@ -41,8 +41,9 @@ Module structure:
 - `build_foundation_meta_shapes(graph)` — extends a graph in place with
   the five foundation-level meta-shapes + SHACL-AF rules. Called by
   `foundation.build_shapes_graph()`.
-- Helper builders for the 11 SHACL-AF citing sites:
-  `_build_uprn_succession_rule(g)`, `_build_inspire_succession_rule(g)`,
+- Helper builders for the SHACL-AF citing sites:
+  `_build_uprn_succession_rule(g)`,
+  (INSPIRESuccessionRule removed 2026-07-05 — zero PDTF schema basis)
   `_build_prov_o_claims_rule(g)`, `_build_identifier_succession_rule(g)`,
   `_build_capacity_authority_match_rule(g)`,
   `_build_lease_term_succession_rule(g)`,
@@ -889,7 +890,8 @@ def build_foundation_meta_shapes(g: Graph) -> None:
 # --- Per-module shape builders -------------------------------------------
 def build_property_shapes() -> Graph:
     """Emit per-Kind identity + IC breach shapes for the Property module
-    plus SHACL-AF rules: UPRNSuccessionRule, INSPIRESuccessionRule.
+    plus SHACL-AF rule: UPRNSuccessionRule. (INSPIRESuccessionRule removed
+    2026-07-05 — zero PDTF schema basis; see ODR-0015's removal amendment.)
     """
     g = Graph()
     _bind_common(g)
@@ -938,7 +940,7 @@ def build_property_shapes() -> Graph:
         datatype=XSD.string,
         message=(
             "Address addressVariant MUST be a single xsd:string value "
-            "(one of 'title' | 'marketing' | 'inspire') per ODR-0015 "
+            "(one of 'title' | 'marketing' | 'postal') per ODR-0015 "
             "§Rule 6. Distinguishes the authority lifecycle borne by "
             "the Address instance."
         ),
@@ -950,8 +952,8 @@ def build_property_shapes() -> Graph:
     # --- Cat 1: structural-field shape — opda:Address (ODR-0015 §3b) ----
     # The 5 structural fields ODR-0015's own Decision Outcome names
     # verbatim (opda:line1/line2/postTown/postcode/country), each
-    # sh:minCount 0 (graceful degradation, e.g. the INSPIRE-only case)
-    # per the ODR's own exact SHACL property shape spec.
+    # sh:minCount 0 (graceful degradation for variants with sparse
+    # structural fields) per the ODR's own exact SHACL property shape spec.
     _address_structural_shape = OPDA_SHAPE.AddressStructuralShape
     g.add((_address_structural_shape, RDF.type, SH.NodeShape))
     g.add((_address_structural_shape, SH.targetClass, OPDA.Address))
@@ -967,8 +969,8 @@ def build_property_shapes() -> Graph:
         g.add((_prop_shape, SH.message, Literal(
             f"Address {_addr_field.split('/')[-1]} MUST be at most one "
             "xsd:string value when present (ODR-0015 §3b, S015 Q3 — "
-            "sh:minCount 0 for graceful degradation, e.g. the "
-            "INSPIRE-only case's sparse structural fields).",
+            "sh:minCount 0 for graceful degradation of sparse structural "
+            "fields).",
             lang="en",
         )))
 
@@ -1018,34 +1020,12 @@ def build_property_shapes() -> Graph:
         ),
     )
 
-    # --- SHACL-AF rule #3: INSPIRESuccessionRule (ODR-0015 §4a) ---------
-    _add_sparql_rule_shape(
-        g,
-        shape_iri=OPDA_SHAPE.INSPIRESuccessionRule,
-        target_class=OPDA.Address,
-        sparql_construct=(
-            "PREFIX opda: <https://opda.org.uk/pdtf/>\n"
-            "PREFIX prov: <http://www.w3.org/ns/prov#>\n"
-            "CONSTRUCT {\n"
-            "  ?address opda:hasINSPIRESuccessionStatus ?status .\n"
-            "}\n"
-            "WHERE {\n"
-            "  ?address a opda:Address ;\n"
-            "           opda:addressVariant \"inspire\" .\n"
-            "  OPTIONAL { ?address prov:wasDerivedFrom ?prior .\n"
-            "             ?prior opda:addressVariant \"inspire\" }\n"
-            "  BIND (IF(BOUND(?prior), \"inspire-re-issued\", \"inspire-primary\") AS ?status)\n"
-            "}"
-        ),
-        severity=SH.Info,
-        source_iri=_ODR_0015_S4A,
-        rdfs_comment=(
-            "INSPIRE Identifier / OS AddressBase succession rule "
-            "(ODR-0015 §4a; SHACL-AF citing site #3). Materialises "
-            "opda:hasINSPIRESuccessionStatus on inspire-variant Address "
-            "instances. Per ODR-0017 §1a."
-        ),
-    )
+    # INSPIRESuccessionRule REMOVED 2026-07-05 (RML gap-closing session) —
+    # its trigger condition, addressVariant = "inspire", can never be
+    # satisfied by any real PDTF data (the "inspire" variant and
+    # opda:inspireFeatureId were removed for zero schema basis; see
+    # ODR-0015's own removal amendment). A rule whose precondition is
+    # permanently unreachable is dead scaffolding, not live logic.
 
     # --- opda:hasAddress bearer-typing: Property∪Person∪Organisation ---------
     # Council session-047 Q6: opda:hasAddress is bearer-extended to

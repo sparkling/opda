@@ -44,11 +44,13 @@ MODULE_NAMES = (
     "descriptive",
 )
 
-# The 11 SHACL-AF citing sites per ADR-0012 §"SHACL-AF rule emission".
+# The SHACL-AF citing sites per ADR-0012 §"SHACL-AF rule emission".
+# INSPIRESuccessionRule REMOVED 2026-07-05 (RML gap-closing session) — its
+# trigger condition (addressVariant = "inspire") can never be satisfied by
+# any real PDTF data; see ODR-0015's own removal amendment. 10 sites remain.
 SHACL_AF_CITING_SITES = (
     ("UPRNSuccessionRule", "property"),
     ("DeprecationChainRule", "foundation"),
-    ("INSPIRESuccessionRule", "property"),
     ("PROVOClaimsRule", "claim"),
     ("IdentifierSuccessionRule", "agent"),
     ("CapacityAuthorityMatchRule", "agent"),
@@ -331,12 +333,12 @@ def test_three_rule_interface_contract_meta_shapes_present(
 # ---------------------------------------------------------------------------
 # §"SHACL-AF rule emission" — 11 citing sites all emit by URI
 # ---------------------------------------------------------------------------
-def test_eleven_shacl_af_citing_sites_all_emit(
+def test_shacl_af_citing_sites_all_emit(
     emitted_shapes: dict[str, Path]
 ) -> None:
-    """All 11 SHACL-AF citing sites enumerated in ADR-0012 §"SHACL-AF
-    rule emission" must emit as sh:NodeShape declarations somewhere in
-    the corpus."""
+    """All SHACL-AF citing sites enumerated in ADR-0012 §"SHACL-AF
+    rule emission" (10, after INSPIRESuccessionRule's 2026-07-05 removal)
+    must emit as sh:NodeShape declarations somewhere in the corpus."""
     all_shapes: set[URIRef] = set()
     for path in emitted_shapes.values():
         g = Graph()

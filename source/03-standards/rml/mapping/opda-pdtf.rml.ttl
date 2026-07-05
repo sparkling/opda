@@ -367,6 +367,83 @@
       rr:objectMap [ rr:constant <https://opda.org.uk/pdtf/scheme/sellersCapacity/Other> ] ] .
 
 # ---------------------------------------------------------------------------
+# M3d — opda:hasEvidencedAuthority (opda:Seller -> opda:Claim) — CLOSED
+#   2026-07-05, REOPENED from a prior session's wrong "no real source data
+#   regardless" verdict (which conflated this Seller-capacity-authority
+#   predicate with the unrelated generic-identity-verification "Vouch"
+#   discussion). Real, DEDICATED schema hook: the evidence-requiring
+#   sellersCapacity branch (Personal Representative / Under Power of
+#   Attorney / Assistant / Other) REQUIRES both `sellersCapacityDetails`
+#   (baspi5Ref B1.3.2, title "Please provide details and provide any
+#   probate, grant of representation or power of attorney") and
+#   `attachments` (baspi5Ref B1.3.3, enum Attached/To follow) — this is
+#   the exact evidence-of-authority disclosure opda:hasEvidencedAuthority
+#   models, and it is what Baspi5_SellersCapacityShape's branch-(b)
+#   violation (dct:source baspi5#B1.3) actually polices.
+#
+#   Existence-gated on `attachments=="Attached"` (a compound filter added
+#   to the capacity filter — confirmed empirically that RMLMapper/Jayway
+#   supports `&&` inside one iterator filter, e.g.
+#   `@.sellersCapacity.capacity=="X" && @.sellersCapacity.attachments==
+#   "Attached"` — not previously used in this mapping). "To follow" is
+#   correctly NOT minted: the seller has disclosed the capacity but the
+#   evidencing document is not yet held, so asserting a Claim now would
+#   overstate what is actually evidenced.
+#
+#   Follows the exact <#IdentityClaim> Claim+Evidence pairing precedent
+#   (M33, below): the Claim carries prov:wasDerivedFrom / opda:supportedBy
+#   to a co-keyed opda:Evidence node (satisfies UnprovenancedClaimShape's
+#   minCount-1 prov:wasDerivedFrom requirement), typed opda:evidenceType
+#   Document (probate/grant/POA are physical documents per the BASPI5
+#   question text itself, not electronic-record or vouch).
+# ---------------------------------------------------------------------------
+<#EvidencedAuthorityPersRep> a rr:TriplesMap ;
+  rml:logicalSource [ rml:source "INSTANCE.json" ; rml:referenceFormulation ql:JSONPath ;
+                      rml:iterator "$.participants[?(@.sellersCapacity.capacity==\"Personal Representative for a Deceased Owner\" && @.sellersCapacity.attachments==\"Attached\")]" ] ;
+  rr:subjectMap [ rr:template "https://opda.org.uk/pdtf/harness/data/seller/{email}" ] ;
+  rr:predicateObjectMap [ rr:predicate opda:hasEvidencedAuthority ;
+      rr:objectMap [ rr:template "https://opda.org.uk/pdtf/harness/data/claim/{email}/authority" ] ] .
+
+<#EvidencedAuthorityPoA> a rr:TriplesMap ;
+  rml:logicalSource [ rml:source "INSTANCE.json" ; rml:referenceFormulation ql:JSONPath ;
+                      rml:iterator "$.participants[?(@.sellersCapacity.capacity==\"Under Power of Attorney\" && @.sellersCapacity.attachments==\"Attached\")]" ] ;
+  rr:subjectMap [ rr:template "https://opda.org.uk/pdtf/harness/data/seller/{email}" ] ;
+  rr:predicateObjectMap [ rr:predicate opda:hasEvidencedAuthority ;
+      rr:objectMap [ rr:template "https://opda.org.uk/pdtf/harness/data/claim/{email}/authority" ] ] .
+
+<#EvidencedAuthorityAssistant> a rr:TriplesMap ;
+  rml:logicalSource [ rml:source "INSTANCE.json" ; rml:referenceFormulation ql:JSONPath ;
+                      rml:iterator "$.participants[?(@.sellersCapacity.capacity==\"Assistant\" && @.sellersCapacity.attachments==\"Attached\")]" ] ;
+  rr:subjectMap [ rr:template "https://opda.org.uk/pdtf/harness/data/seller/{email}" ] ;
+  rr:predicateObjectMap [ rr:predicate opda:hasEvidencedAuthority ;
+      rr:objectMap [ rr:template "https://opda.org.uk/pdtf/harness/data/claim/{email}/authority" ] ] .
+
+<#EvidencedAuthorityOther> a rr:TriplesMap ;
+  rml:logicalSource [ rml:source "INSTANCE.json" ; rml:referenceFormulation ql:JSONPath ;
+                      rml:iterator "$.participants[?(@.sellersCapacity.capacity==\"Other\" && @.sellersCapacity.attachments==\"Attached\")]" ] ;
+  rr:subjectMap [ rr:template "https://opda.org.uk/pdtf/harness/data/seller/{email}" ] ;
+  rr:predicateObjectMap [ rr:predicate opda:hasEvidencedAuthority ;
+      rr:objectMap [ rr:template "https://opda.org.uk/pdtf/harness/data/claim/{email}/authority" ] ] .
+
+<#EvidencedAuthorityClaim> a rr:TriplesMap ;
+  rml:logicalSource [ rml:source "INSTANCE.json" ; rml:referenceFormulation ql:JSONPath ;
+                      rml:iterator "$.participants[?(@.sellersCapacity.attachments==\"Attached\")]" ] ;
+  rr:subjectMap [ rr:template "https://opda.org.uk/pdtf/harness/data/claim/{email}/authority" ;
+                  rr:class opda:Claim ] ;
+  rr:predicateObjectMap [ rr:predicate prov:wasDerivedFrom ;
+      rr:objectMap [ rr:template "https://opda.org.uk/pdtf/harness/data/claim/{email}/authority/evidence" ] ] ;  # SHACL: UnprovenancedClaimShape requires prov:wasDerivedFrom (minCount 1, Violation)
+  rr:predicateObjectMap [ rr:predicate opda:supportedBy ;
+      rr:objectMap [ rr:template "https://opda.org.uk/pdtf/harness/data/claim/{email}/authority/evidence" ] ] .  # <- participants[].sellersCapacity (container; class-instantiating join). opda-namespaced counterpart to prov:wasDerivedFrom, same target, per its own rdfs:comment
+
+<#EvidencedAuthorityEvidence> a rr:TriplesMap ;
+  rml:logicalSource [ rml:source "INSTANCE.json" ; rml:referenceFormulation ql:JSONPath ;
+                      rml:iterator "$.participants[?(@.sellersCapacity.attachments==\"Attached\")]" ] ;
+  rr:subjectMap [ rr:template "https://opda.org.uk/pdtf/harness/data/claim/{email}/authority/evidence" ;
+                  rr:class opda:Evidence ] ;
+  rr:predicateObjectMap [ rr:predicate opda:evidenceType ;
+      rr:objectMap [ rr:constant <https://opda.org.uk/pdtf/scheme/evidenceMethod/Document> ] ] .  # <- participants[].sellersCapacity.attachments == "Attached" (probate/grant/POA are physical documents per the BASPI5 B1.3.2 question text)
+
+# ---------------------------------------------------------------------------
 # M4 — Property  (opda:Property)   iterator: propertyPack
 #   Keyed on uprn.  All leaves reachable as JSONPath from propertyPack.
 # ---------------------------------------------------------------------------
@@ -2783,22 +2860,19 @@
 #   that every transaction processed under this schema is, by definition,
 #   governed by the OPDA/UK Property Data Trust Framework.
 #
-#   opda:assuranceLevel (renamed from the class opda:AssuranceLevel,
-#   2026-07-05 — see ADR-0057 Amendments: it was an orphaned, mis-implemented
-#   class, now a real opda:Claim-domain xsd:string property, matching what
-#   ratified exemplars claim-with-{document,electronic-record,vouch}-
-#   evidence.ttl already use) — DELIBERATELY NOT mapped, a genuine gap, not
-#   an oversight: its value-space (eIDAS Low/Substantial/High) grades the
-#   RIGOR of a verification METHOD, whereas the real field available
+#   opda:assuranceLevel (and its class-form predecessor opda:AssuranceLevel)
+#   REMOVED from the ontology 2026-07-05 — see ADR-0057 Amendments. Briefly
+#   corrected from an orphaned class to a real opda:Claim-domain xsd:string
+#   property (matching the 3 ratified claim-with-*-evidence.ttl exemplars),
+#   but a full-corpus re-check found zero basis in any schema for the value
+#   itself: its value-space (eIDAS Low/Substantial/High) grades the RIGOR of
+#   a verification METHOD, whereas the real field available
 #   (participants[].verification.*.result / reports[].result: pass/fail/
 #   consider) is an OUTCOME judgement on a different axis entirely — a "pass"
 #   from a low-rigor check is not automatically "Substantial" assurance, and
-#   "fail"/"consider" have no eIDAS-level equivalent at all. Mapping
-#   result -> assuranceLevel would assert a compliance-consequential judgement
-#   the source data does not honestly support (unlike TrustFramework's
-#   constant above, which asserts an always-true institutional fact, not a
-#   per-instance judgement). Left unmapped per this session's discipline
-#   (flag, don't fabricate).
+#   "fail"/"consider" have no eIDAS-level equivalent at all. Fixing the
+#   structure doesn't supply the missing data; removed rather than left as
+#   a permanent, un-populatable gap. See ODR-0009's removal amendment.
 #
 #   opda:Verifier — NOT instantiated here, a confirmed gap, checked directly
 #   against both schemas rather than assumed: ODR-0009's qualified-attribution
@@ -2894,12 +2968,16 @@
 
 # ---------------------------------------------------------------------------
 # M34 — opda:Address (ODR-0015, unblocked 2026-07-05 once opda-gen declared
-#   line1/line2/postTown/postcode/country/inspireFeatureId as real properties
-#   — see ADR-0057 Amendments, 2026-07-05 entry). Two of the ~9 real PDTF
-#   address occurrences honestly fit one of the 3 closed addressVariant
-#   values ("title"|"marketing"|"inspire"); the rest do not and are left
-#   unmapped (see the "NOT mapped" note below, not a gap register entry —
-#   these are checked-and-rejected, not overlooked).
+#   line1/line2/postTown/postcode/country as real properties — see
+#   ADR-0057 Amendments, 2026-07-05 entry). Two of the ~9 real PDTF
+#   address occurrences honestly fit one of the 2 remaining addressVariant
+#   values ("title"|"marketing"); the rest do not and are left unmapped
+#   (see the "NOT mapped" note below, not a gap register entry — these are
+#   checked-and-rejected, not overlooked). The "inspire" variant and
+#   opda:inspireFeatureId were REMOVED from the ontology 2026-07-05 (zero
+#   PDTF schema basis in any form; see ODR-0015's removal amendment) —
+#   the elimination reasoning below, which already correctly identified
+#   "inspire has NO real source field anywhere," is unaffected.
 #
 #   "marketing" — propertyPack.address. ODR-0015's own Decision Outcome
 #   (§More Information) names propertyPack.address / titleAddress /

@@ -78,7 +78,6 @@ flowchart LR
 - [Address](./address.md) — a Property has one or more Addresses (title / marketing / INSPIRE variants)
 - [Legal Estate](./legal-estate.md) — a Property has one or more Legal Estates vested in it
 - [Registered Title](./registered-title.md) — a Property may be documented by one or more Registered Titles
-- [UPRN Succession Event](./uprn-succession-event.md) — a Property's UPRN may be re-issued without breaking Property identity
 - [Transaction](../transaction/transaction.md) — every Transaction concerns a Property
 
 ### Related-Kinds graph

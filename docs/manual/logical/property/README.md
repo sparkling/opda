@@ -18,7 +18,6 @@ The physical Property, its socially-recognised Address(es), the legal rights-bun
 | [LegalEstate](./legal-estate.md) | Substance Kind | Rights-bundle persistence through grant / transfer / registration / discharge |
 | [Property](./property.md) | Substance Kind | Spatial-material continuity (Kendall + Davis legal-record-discontinuity-override hybrid) |
 | [RegisteredTitle](./registered-title.md) | Substance Kind (informational) | Title-number lineage + reified registry-event history |
-| [UPRNSuccessionEvent](./uprn-succession-event.md) | Event particular | Reified administrative UPRN re-numbering event |
 
 ## Enumerations bound by this module
 

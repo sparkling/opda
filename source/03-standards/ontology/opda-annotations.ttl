@@ -265,9 +265,6 @@ opda:TransactionChain
 opda:TrustFramework
     opda:ufoCategory "Information Object" .
 
-opda:UPRNSuccessionEvent
-    opda:ufoCategory "Event" .
-
 opda:ValidationContext
     opda:ufoCategory "Substance Kind" .
 

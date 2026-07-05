@@ -79,7 +79,7 @@ it does HERE** · **Evidence**.
 | **XSD** | `xsd` | Core | ✅ | Literal datatypes (`xsd:string`, `xsd:date`, `xsd:anyURI`, `xsd:boolean`, …) on every property range | 61 files |
 | **SHACL 1.2** | `sh` | Core | ✅ | **The validation contract.** Node/property shapes, `sh:targetClass`, `sh:in`/`sh:or`/`sh:xone`, severity tiers, `sh:declare` prefix maps. Validated by **Apache Jena** (ADR-0036) | 96 `sh:NodeShape`; ODR-0013 |
 | **SHACL-AF** | `sh` | Core | ✅ | SHACL Advanced Features: SPARQL-based constraints (`sh:sparql`/`sh:select`) and inference rules (`sh:rule`/`sh:construct`) for data-quality + derived triples | 10 `sh:rule`, 5 `sh:sparql`; ODR-0017 |
-| **SKOS** | `skos` | Core | ✅ | Every JSON enum → a `skos:ConceptScheme`; controlled vocabularies for roles, statuses, tenure, council-tax bands, perils, capacities… (plain SKOS, no SKOS-XL) | 47 schemes · 308 concepts; ODR-0011 |
+| **SKOS** | `skos` | Core | ✅ | Every JSON enum → a `skos:ConceptScheme`; controlled vocabularies for roles, statuses, tenure, council-tax bands, perils, capacities… (plain SKOS, no SKOS-XL) | 46 schemes · 304 concepts; ODR-0011 |
 | **Dublin Core Terms** | `dct` | Core | ✅ | Admin metadata (`title`/`creator`/`issued`/`modified`/`license`) **and the load-bearing `dct:source` provenance** — every term/shape/concept traces to a data-dictionary leaf, glossary row, ODR section, or regulator URL | **1,108 `dct:source` triples** |
 | **VANN** | `vann` | Core | ✅ | `vann:preferredNamespacePrefix`/`Uri` on the `owl:Ontology` header so dereferencers render snippets with the `opda:` prefix | `foundation.ttl` header |
 
@@ -172,7 +172,7 @@ SHACL even carries its own prefix map on the ontology header (`sh:declare` /
 `sh:namespace` / `sh:prefix`), so a SHACL processor can resolve `opda:` without an
 external prefix file.
 
-### 3.2 SKOS — controlled vocabularies (47 schemes · 308 concepts)
+### 3.2 SKOS — controlled vocabularies (46 schemes · 304 concepts)
 
 Every JSON enum in PDTF becomes a `skos:ConceptScheme`; every enum value a
 `skos:Concept`, traced back to the data-dictionary path it came from:
@@ -385,7 +385,7 @@ gaps, and both are verifiable in the TTL.
 |---|---|---|
 | Core RDF stack (RDF 1.2, RDFS, OWL 2, XSD) emitted | ✅ | substrate of every file |
 | SHACL 1.2 + SHACL-AF validation contract | ✅ | 96 node shapes; Jena-validated (ADR-0036) |
-| SKOS controlled vocabularies | ✅ | 47 schemes / 308 concepts; plain SKOS |
+| SKOS controlled vocabularies | ✅ | 46 schemes / 304 concepts; plain SKOS |
 | DCTERMS admin + `dct:source` provenance | ✅ | 1,108 provenance triples |
 | VANN namespace header | ✅ | on the ontology header |
 | PROV-O claims/evidence backbone | ✅ | `Claim ⊑ Entity`, qualified attribution |

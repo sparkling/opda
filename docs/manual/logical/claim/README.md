@@ -12,7 +12,6 @@ Verifiable claims (Claim), the three categories of evidence supporting them (Doc
 
 | Entity | UFO meta-category | Notes |
 |---|---|---|
-| [AssuranceLevel](./assurance-level.md) | Quale-in-Region | eIDAS Level of Assurance (Low / Substantial / High); backed by AssuranceLevelScheme |
 | [Claim](./claim.md) | Information particular | PROV-O Entity; S009 Q1 80%-PROV-O mapping |
 | [Document](./document.md) | Substance Kind (informational; alias) | `owl:equivalentClass` of DocumentEvidence |
 | [DocumentEvidence](./document-evidence.md) | Substance Kind (informational) | Paper / scanned artefacts issued by authoritative source |
@@ -28,7 +27,6 @@ Verifiable claims (Claim), the three categories of evidence supporting them (Doc
 
 | Scheme | Used by attribute | Closed/Open |
 |---|---|---|
-| [AssuranceLevelScheme](./enumerations/assurance-level-scheme.md) | AssuranceLevel members | Closed (4 members — eIDAS + PDTF-Standard) |
 | [EvidenceMethodScheme](./enumerations/evidence-method-scheme.md) | Evidence-method notation | Closed (3 members per OIDC4IDA) |
 
 ## ER diagram

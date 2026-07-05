@@ -81,17 +81,6 @@ opda:Verifier
     rdfs:subClassOf prov:Agent ;
     skos:scopeNote "PROV-O: Agent (W3C PROV-O REC §3.4). Aligns to the ToIP business-glossary Verifier term."@en .
 
-opda:assuranceLevel
-    rdf:type owl:DatatypeProperty ;
-    rdfs:label "assurance level"@en ;
-    rdfs:comment "Quality judgement on a Claim's verification — eIDAS Level of Assurance (Low / Substantial / High) per OIDC4IDA trust tiering. A plain string value (matching the ratified usage in claim-with-{document,electronic-record,vouch}-evidence.ttl), not a skos:Concept reference; the value-space is documented by opda:AssuranceLevelScheme in opda-vocabularies.ttl. Local term per S009 5-residue (PROV-O carries no notion of assurance grading)."@en ;
-    skos:definition "Relates a claim to a graded quality judgement on its own verification, drawn from the eIDAS levels of assurance (Low, Substantial, High) and documented by the assurance-level concept scheme."@en ;
-    dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0009/section-Q3> ;
-    rdfs:domain opda:Claim ;
-    rdfs:isDefinedBy <https://opda.org.uk/pdtf/graph/claim> ;
-    rdfs:range xsd:string ;
-    skos:scopeNote "UFO: Quale-in-Region (Guizzardi 2005 Ch. 4 §4.3 — quality particular). eIDAS Regulation (EU) 910/2014 Article 8."@en .
-
 opda:digest
     rdf:type owl:DatatypeProperty ;
     rdfs:label "digest"@en ;

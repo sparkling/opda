@@ -28,7 +28,8 @@ opda-x:claim
     rdfs:label "PR claim: Patricia Smith acts as Personal Representative for Estate of Henry Smith (deceased)" ;
     opda:claimType "sellersCapacity" ;
     opda:claimContent "Personal Representative" ;
-    opda:assuranceLevel "Substantial" ;
+    # opda:assuranceLevel "Substantial" ; -- REMOVED 2026-07-05 (zero PDTF
+    # schema basis; see ODR-0009's removal amendment). Historical text preserved.
     dct:conformsTo <opda:UKPropertyDataTrustFramework> .
 
 # The verification activity (PROV-O backbone)

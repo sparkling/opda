@@ -311,4 +311,16 @@ The three canonical exemplars (authored 2026-05-27 per ODR-0004 §8a between-ses
 - **ODR-0008 (Property Descriptive Attributes) DEFERRED** until cardinality landing crystallises (Kendall+Davis joint amendment — the 935-annotated-leaf layer's leaf-to-class mapping depends on the 3-class commitment).
 - **ODR-0009 (Claims, Evidence & Provenance), ODR-0010 (Overlay Profile Mechanism), ODR-0012 (Data-Governance Layer), ODR-0013 (SHACL Validation & Severity) UNAFFECTED** (their gates are upstream-independent of ODR-0005; they inherit specific load-bearing inputs — see Consequences).
 
+## Amendments
+
+### Amendment — `opda:UPRNSuccessionEvent` removed (2026-07-05, RML gap-closing session)
+
+**§6a's reified `opda:UPRNSuccessionEvent` form is REMOVED from the active ontology.** A full-corpus RML mapping audit (mapping every ontology resource against the complete PDTF v3 JSON schema family — the transaction schema, `verifiedClaims/`, `trust-framework/`, and the v1/v2 schema trees) found zero basis anywhere for UPRN succession: no field, in any schema, in any form, carries a UPRN's predecessor, retirement, or reissuance. This is not an unpopulated-field gap; it is a structural mismatch — UPRN succession is cross-transaction history, and a single PDTF transaction instance cannot carry it by construction.
+
+This is a genuine correction, not a re-litigation of §6a's IC reasoning: the Council's identity-persistence verdict ("the same physical Property persists across UPRN re-numbering; NO owl:sameAs") stands, and Rule 6 above is unchanged as a statement of *identity criteria*. What is removed is the specific reification mechanism (`opda:UPRNSuccessionEvent`, plus the never-actually-declared `opda:previousUPRN`/`opda:retiredUPRN`/`opda:issuedUPRN` — confirmed these three predicates were referenced by the diagnostic exemplar but never emitted by the generator at any point, an independent "ratified but not implemented" defect predating this amendment) — because it asserts data no PDTF instance can honestly supply, not because the underlying identity question was wrong.
+
+The `flat-with-split-uprn.ttl` diagnostic exemplar is retained as a historical record of the session-005 deliberation, with its now-removed-term content commented out and annotated; it is no longer part of the active, RML-mappable ontology surface. No SHACL shape targeted `opda:UPRNSuccessionEvent` (zero domain/range connections existed), so removal is a clean, non-breaking deletion — confirmed via the full exemplar regression suite (all 15 canonical exemplars still pass) and the ontology byte-identity/CI gates.
+
+Full reasoning: `docs/adr/ADR-0057-rml-mapping-implementation.md` Amendments (RML gap-closing session, 2026-07-05).
+
 

@@ -1,6 +1,19 @@
 # Diagnostic exemplar — ODR-0004 §8a, IC-only — input to ODR-0005 (Property & Land Identity Crux).
 # Situation: flat 5C Glasshouse Mansions. The building was subdivided; UPRN re-issued.
 # The physical flat is the same individual before and after — UPRN succession is administrative, not identity.
+#
+# SUPERSEDED 2026-07-05 (RML gap-closing session, see ODR-0005's own removal
+# amendment): opda:UPRNSuccessionEvent, opda:previousUPRN, opda:retiredUPRN,
+# and opda:issuedUPRN below are NO LONGER DECLARED in the active ontology —
+# confirmed to have zero basis anywhere in the PDTF v3 schema family (UPRN
+# succession is cross-transaction history, which a single transaction
+# instance structurally cannot carry; no schema field for it exists in any
+# form). Kept as a historical record of the session-005 deliberation (the
+# IC-persistence reasoning below remains a genuine modelling question) —
+# NOT part of the active, RML-mappable ontology surface. The still-real
+# opda:RegisteredTitle / opda:identifiesSameProperty content below is
+# unaffected and remains valid.
+#
 # Status: ratified. Namespace: https://opda.org.uk/pdtf/ (Session 003b + ADR-0006).
 # ODR-0004 status: accepted (council: session-004; wg-decision: session-003b).
 # ODR-0005 status: proposed (council: session-005; namespace block carries).
@@ -30,17 +43,21 @@ opda-x:property
     a opda:Property ;
     rdfs:label "Flat 5C Glasshouse Mansions — physical referent (unchanged across UPRN succession)" ;
     opda:uprn "100000000222" ;
-    opda:previousUPRN "100000000111" ;
     opda:postalAddress "Flat 5C, Glasshouse Mansions, 102 Glasshouse Walk, London SE11 5ES" .
 
-# Reified succession event — alternative modelling the Council may prefer over literal-pair.
-opda-x:uprn-succession-event
-    a opda:UPRNSuccessionEvent ;
-    rdfs:label "UPRN re-numbering on building subdivision" ;
-    prov:atTime "2022-09-01T00:00:00Z"^^xsd:dateTime ;
-    opda:retiredUPRN "100000000111" ;
-    opda:issuedUPRN "100000000222" ;
-    opda:appliesTo opda-x:property .
+# REMOVED 2026-07-05 (see header note above) — the reified succession event
+# and its literal-pair alternative both relied on terms with zero PDTF
+# schema basis (opda:UPRNSuccessionEvent, opda:previousUPRN,
+# opda:retiredUPRN, opda:issuedUPRN), none of which are declared in the
+# active ontology. Historical text, preserved for the session-005 record:
+#
+# opda-x:uprn-succession-event
+#     a opda:UPRNSuccessionEvent ;
+#     rdfs:label "UPRN re-numbering on building subdivision" ;
+#     prov:atTime "2022-09-01T00:00:00Z"^^xsd:dateTime ;
+#     opda:retiredUPRN "100000000111" ;
+#     opda:issuedUPRN "100000000222" ;
+#     opda:appliesTo opda-x:property .
 
 # Leasehold title for this flat (registered post-subdivision). The freehold of the building is a
 # separate title not included here — multi-title cardinality is the parallel S005 Q5 question

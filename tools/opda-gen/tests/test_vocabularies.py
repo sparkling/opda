@@ -76,7 +76,9 @@ _FIRST_BATCH_AND_G8 = {
     "TransactionStatusScheme",
     "MilestoneKindScheme",
     "SellersCapacityScheme",
-    "AssuranceLevelScheme",
+    # AssuranceLevelScheme REMOVED 2026-07-05 (RML gap-closing session) —
+    # backed opda:assuranceLevel, itself removed for zero PDTF schema
+    # basis; see ODR-0009's removal amendment.
     "EvidenceMethodScheme",
     "AddressVariantScheme",
     # ADR-0013 G8 additions (7)
@@ -143,18 +145,19 @@ _ALL_SCHEME_NAMES = (
 )
 
 
-def test_emit_vocabularies_produces_47_schemes(emitted_graph: Graph) -> None:
+def test_emit_vocabularies_produces_46_schemes(emitted_graph: Graph) -> None:
     """16 first-batch + 7 G8 + 14 Category-C status-enum value-spaces
     (ODR-0022 §1) + 1 candidate FixtureItemScheme (ODR-0022 §4) + 2
     Category-E schemes (ODR-0008d: PerilScheme + ActionAlertRatingScheme;
     riskIndicator reuses YesNoNotKnownScheme) + 7 ODR-0024 schemes (R3
     CurrencyScheme + R4 SchoolTypeScheme + R6 construction / price-qualifier /
-    transport / broadband / Ofsted). Total 47."""
+    transport / broadband / Ofsted). Total 47, minus AssuranceLevelScheme
+    (removed 2026-07-05, zero PDTF schema basis) = 46."""
     schemes = list(emitted_graph.subjects(RDF.type, SKOS.ConceptScheme))
-    assert len(schemes) == len(_ALL_SCHEME_NAMES) == 47, (
-        f"expected 47 schemes (16 first-batch + 7 G8 + 14 Cat-C + 1 Cat-D "
-        f"+ 2 Cat-E + 7 ODR-0024), got {len(schemes)}: "
-        f"{sorted(str(s) for s in schemes)}"
+    assert len(schemes) == len(_ALL_SCHEME_NAMES) == 46, (
+        f"expected 46 schemes (16 first-batch + 7 G8 + 14 Cat-C + 1 Cat-D "
+        f"+ 2 Cat-E + 7 ODR-0024, minus AssuranceLevelScheme), got "
+        f"{len(schemes)}: {sorted(str(s) for s in schemes)}"
     )
     emitted_names = {str(s).rsplit("/", 1)[-1] for s in schemes}
     assert emitted_names == _ALL_SCHEME_NAMES, (

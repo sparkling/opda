@@ -35,15 +35,6 @@ opda-v:AddressVariantScheme
     skos:scopeNote "UFO: Quality Value (Masolo D18 §4.3 — DOLCE Quality Region). Members particularise an Address Substance Kind per ODR-0015 §Q1. Ratified by the Council at session-015."@en ;
     opda:hasSteward "Guizzardi (S015 Q1)"@en .
 
-opda-v:AssuranceLevelScheme
-    rdf:type skos:ConceptScheme ;
-    skos:prefLabel "Assurance Level"@en ;
-    skos:definition "Quality Values for the eIDAS Levels of Assurance (Low, Substantial, High) plus the OPDA-specific PDTF-Standard intermediate level per ODR-0009 §Q3, applied to identity-verification claims."@en ;
-    dct:source <https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX:32014R0910> ;
-    dct:title "Identity assurance level (eIDAS + PDTF)"@en ;
-    skos:scopeNote "UFO: Quality Value (Masolo D18 §4.3 — DOLCE Quality Region). Low/Substantial/High inherit verbatim from Regulation (EU) No 910/2014 (eIDAS) Article 8 per ODR-0011 §4a regulator-citation discipline. PDTF-Standard ratified by ODR-0009 §Q3 as an OPDA-specific intermediate level."@en ;
-    opda:hasSteward "Moreau (S009 Q3)"@en .
-
 opda-v:AttachmentStatusNotApplicableScheme
     rdf:type skos:ConceptScheme ;
     skos:prefLabel "Attachment Status (with Not applicable)"@en ;
@@ -480,14 +471,6 @@ opda-v:YesNoScheme
     skos:inScheme opda-v:ActionAlertRatingScheme ;
     skos:notation "5" .
 
-<https://opda.org.uk/pdtf/scheme/addressVariant/inspire>
-    rdf:type skos:Concept ;
-    skos:prefLabel "inspire"@en ;
-    skos:definition "INSPIRE Directive variant of an Address — the regulated postal address structure published by INSPIRE-aligned registers (administrative boundary alignment)."@en ;
-    dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0015/section-2a-address-variant> ;
-    skos:inScheme opda-v:AddressVariantScheme ;
-    skos:notation "inspire" .
-
 <https://opda.org.uk/pdtf/scheme/addressVariant/marketing>
     rdf:type skos:Concept ;
     skos:prefLabel "marketing"@en ;
@@ -511,38 +494,6 @@ opda-v:YesNoScheme
     dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0015/section-2a-address-variant> ;
     skos:inScheme opda-v:AddressVariantScheme ;
     skos:notation "title" .
-
-<https://opda.org.uk/pdtf/scheme/assuranceLevel/High>
-    rdf:type skos:Concept ;
-    skos:prefLabel "High"@en ;
-    skos:definition "High degree of confidence in the claimed or asserted identity of a person (eIDAS Article 8(2)(c) High)."@en ;
-    dct:source <https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX:32014R0910> ;
-    skos:inScheme opda-v:AssuranceLevelScheme ;
-    skos:notation "High" .
-
-<https://opda.org.uk/pdtf/scheme/assuranceLevel/Low>
-    rdf:type skos:Concept ;
-    skos:prefLabel "Low"@en ;
-    skos:definition "Limited degree of confidence in the claimed or asserted identity of a person (eIDAS Article 8(2)(a) Low)."@en ;
-    dct:source <https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX:32014R0910> ;
-    skos:inScheme opda-v:AssuranceLevelScheme ;
-    skos:notation "Low" .
-
-<https://opda.org.uk/pdtf/scheme/assuranceLevel/PDTF-Standard>
-    rdf:type skos:Concept ;
-    skos:prefLabel "PDTF-Standard"@en ;
-    skos:definition "OPDA-specific intermediate assurance level per ODR-0009 §Q3, applicable to PDTF transactions where eIDAS LoA mapping is not directly available."@en ;
-    dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0009/section-Q3> ;
-    skos:inScheme opda-v:AssuranceLevelScheme ;
-    skos:notation "PDTF-Standard" .
-
-<https://opda.org.uk/pdtf/scheme/assuranceLevel/Substantial>
-    rdf:type skos:Concept ;
-    skos:prefLabel "Substantial"@en ;
-    skos:definition "Substantial degree of confidence in the claimed or asserted identity of a person (eIDAS Article 8(2)(b) Substantial)."@en ;
-    dct:source <https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX:32014R0910> ;
-    skos:inScheme opda-v:AssuranceLevelScheme ;
-    skos:notation "Substantial" .
 
 <https://opda.org.uk/pdtf/scheme/attachmentStatus/Attached>
     rdf:type skos:Concept ;

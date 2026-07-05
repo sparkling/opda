@@ -366,7 +366,7 @@ class Scheme:
 #   TransactionStatusScheme          ← status (top-level)
 #   MilestoneKindScheme              ← external-only (no data-dictionary enum)
 #   SellersCapacityScheme            ← participants[].sellersCapacity.capacity
-#   AssuranceLevelScheme             ← external-only (eIDAS LoA; placeholder warning)
+#   (AssuranceLevelScheme removed 2026-07-05 — zero PDTF schema basis)
 #   EvidenceMethodScheme             ← external-only (OIDC4IDA; placeholder warning)
 #   AddressVariantScheme             ← external-only (ODR-0015 §S015 Q1)
 
@@ -938,67 +938,9 @@ def _sellers_capacity_scheme() -> Scheme:
     )
 
 
-def _assurance_level_scheme() -> Scheme:
-    # G9 (closed by ADR-0013) — eIDAS Article 8 verbatim per ODR-0011
-    # §4a regulator-citation discipline + ODR-0009 §Q3 PDTF-Standard
-    # intermediate level.
-    eidas = URIRef(
-        "https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX:32014R0910"
-    )
-    odr_0009 = URIRef("https://opda.org.uk/pdtf/harness/odr/ODR-0009/section-Q3")
-    members_data = [
-        (
-            "Low",
-            "Limited degree of confidence in the claimed or asserted "
-            "identity of a person (eIDAS Article 8(2)(a) Low).",
-            eidas,
-        ),
-        (
-            "Substantial",
-            "Substantial degree of confidence in the claimed or asserted "
-            "identity of a person (eIDAS Article 8(2)(b) Substantial).",
-            eidas,
-        ),
-        (
-            "High",
-            "High degree of confidence in the claimed or asserted "
-            "identity of a person (eIDAS Article 8(2)(c) High).",
-            eidas,
-        ),
-        (
-            "PDTF-Standard",
-            "OPDA-specific intermediate assurance level per ODR-0009 §Q3, "
-            "applicable to PDTF transactions where eIDAS LoA mapping is "
-            "not directly available.",
-            odr_0009,
-        ),
-    ]
-    return Scheme(
-        local_name="AssuranceLevelScheme",
-        slug_base="assuranceLevel",
-        pref_label="Assurance Level",
-        title="Identity assurance level (eIDAS + PDTF)",
-        definition=(
-            "Quality Values for the eIDAS Levels of Assurance (Low, "
-            "Substantial, High) plus the OPDA-specific PDTF-Standard "
-            "intermediate level per ODR-0009 §Q3, applied to "
-            "identity-verification claims."
-        ),
-        ufo_category="Quality Value",
-        scope_note=(
-            "UFO: Quality Value (Masolo D18 §4.3 — DOLCE Quality Region). "
-            "Low/Substantial/High inherit verbatim from Regulation (EU) "
-            "No 910/2014 (eIDAS) Article 8 per ODR-0011 §4a regulator-"
-            "citation discipline. PDTF-Standard ratified by ODR-0009 §Q3 "
-            "as an OPDA-specific intermediate level."
-        ),
-        steward="Moreau (S009 Q3)",
-        scheme_source=eidas,
-        members=tuple(
-            Member(notation, notation, definition, source)
-            for notation, definition, source in members_data
-        ),
-    )
+# _assurance_level_scheme() REMOVED 2026-07-05 (RML gap-closing session) —
+# backed opda:assuranceLevel, itself removed (zero PDTF schema basis in
+# any form). See ODR-0009's removal amendment for the governance record.
 
 
 def _evidence_method_scheme() -> Scheme:
@@ -1085,12 +1027,9 @@ def _address_variant_scheme() -> Scheme:
             "HM Land Registry registered-title variant of an Address; "
             "the address as recorded against the title at HMLR.",
         ),
-        (
-            "inspire",
-            "INSPIRE Directive variant of an Address — the regulated "
-            "postal address structure published by INSPIRE-aligned "
-            "registers (administrative boundary alignment).",
-        ),
+        # "inspire" REMOVED 2026-07-05 (RML gap-closing session) — zero
+        # basis anywhere in the PDTF v3 schema family; no instance can
+        # ever assert this variant. See ODR-0015's own removal amendment.
         (
             "postal",
             "Royal Mail PAF-formatted variant of an Address (the "
@@ -2667,7 +2606,9 @@ def _all_schemes() -> tuple[Scheme, ...]:
         _transaction_status_scheme(),
         _milestone_kind_scheme(),
         _sellers_capacity_scheme(),
-        _assurance_level_scheme(),
+        # _assurance_level_scheme() REMOVED 2026-07-05 (RML gap-closing
+        # session) — backed opda:assuranceLevel, itself removed for zero
+        # PDTF schema basis; see ODR-0009's removal amendment.
         _evidence_method_scheme(),
         _address_variant_scheme(),
         # G8 additions (ADR-0013) ----------------------------------------

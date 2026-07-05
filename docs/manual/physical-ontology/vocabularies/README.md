@@ -47,7 +47,6 @@ Per ODR-0011 §1a + §8a, every scheme carries 7 metadata fields:
 | Scheme | UFO category | Steward | File |
 |---|---|---|---|
 | AddressVariant | Quality Value | Guizzardi (S015 Q1) | [address-variant.md](./address-variant.md) |
-| AssuranceLevel | Quality Value | Moreau (S009 Q3) | [assurance-level.md](./assurance-level.md) |
 | BuiltForm | Quale-in-Region | Allemang | [built-form.md](./built-form.md) |
 | CentralHeatingFuelType | Quale-in-Region | Allemang | [central-heating-fuel-type.md](./central-heating-fuel-type.md) |
 | CouncilTaxBandEW | Quale-in-Region | Baker (VOA) | [council-tax-band-ew.md](./council-tax-band-ew.md) |

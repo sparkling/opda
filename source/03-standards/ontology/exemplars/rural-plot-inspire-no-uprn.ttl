@@ -2,6 +2,17 @@
 # Situation: a rural plot with an INSPIRE Identifier (cadastral feature) but no UPRN — the
 # plot is undeveloped land (no built dwelling, no postal delivery point), so AddressBase
 # has no UPRN to issue. The INSPIRE identifier is the only operational join surface.
+#
+# SUPERSEDED 2026-07-05 (RML gap-closing session, see ODR-0015's own removal
+# amendment): opda:inspireFeatureId, opda:inspireId, and the "inspire"
+# opda:addressVariant value are NO LONGER DECLARED in the active ontology —
+# confirmed to have zero basis anywhere in the PDTF v3 schema family
+# ("inspire"/"INSPIRE" appears nowhere in any schema file). Kept as a
+# historical record of the session-015 deliberation, with the now-removed-
+# term content commented out below — NOT part of the active, RML-mappable
+# ontology surface. The still-real opda:Property / opda:LegalEstate /
+# opda:RegisteredTitle content below is unaffected and remains valid.
+#
 # Status: ratified. Namespace: https://opda.org.uk/pdtf/ (Session 003b + ADR-0006).
 # ODR-0004 status: accepted (council: session-004; wg-decision: session-003b).
 # ODR-0005 status: accepted (council: session-005); ODR-0015 status: accepted (council: session-015).
@@ -27,7 +38,8 @@ opda-x:exemplar
 opda-x:property
     a opda:Property ;
     rdfs:label "Grazing plot near Hereford (no built dwelling; no postal address)" ;
-    opda:inspireId "urn:opda:inspire:HMLR:200033333" ;
+    # opda:inspireId "urn:opda:inspire:HMLR:200033333" ; -- REMOVED
+    # 2026-07-05 (undeclared; zero PDTF schema basis). Historical text preserved.
     opda:landUse "grazing" ;
     opda:areaHectares "2.04"^^xsd:decimal .
 # Deliberately NO opda:uprn — no AddressBase entry for an undeveloped plot.
@@ -46,26 +58,27 @@ opda-x:title
     opda:landRegistryDistrict "Hereford" ;
     opda:firstRegisteredOn "1987-04-22"^^xsd:date .
 
-# INSPIRE-variant Address — manifests S015 Q2 IC rule 5 (INSPIRE-only locatedness).
-# Under S015 Q1 Kind commitment: opda:Address as resource with addressVariant tag.
-opda-x:address-inspire
-    a opda:Address ;
-    rdfs:label "INSPIRE-cadastral-derived Address (no postal locator)" ;
-    opda:addressVariant "inspire" ;
-    opda:inspireFeatureId "urn:opda:inspire:HMLR:200033333" ;
-    opda:country "GB" ;
-    opda:identifiesSameProperty opda-x:property .
-# Deliberately NO opda:line1, opda:line2, opda:postTown, opda:postcode — cadastral feature has no
-# derivable postal locator. All structural fields are sh:minCount 0 per S015 §3b.
-# Deliberately NO opda:uprn — AddressBase has no entry.
+# REMOVED 2026-07-05 (see header note above) — the INSPIRE-variant Address
+# relied on terms with zero PDTF schema basis (the "inspire" addressVariant
+# value, opda:inspireFeatureId), neither of which are declared in the
+# active ontology. Historical text, preserved for the session-015 record:
+#
+# opda-x:address-inspire
+#     a opda:Address ;
+#     rdfs:label "INSPIRE-cadastral-derived Address (no postal locator)" ;
+#     opda:addressVariant "inspire" ;
+#     opda:inspireFeatureId "urn:opda:inspire:HMLR:200033333" ;
+#     opda:country "GB" ;
+#     opda:identifiesSameProperty opda-x:property .
+# opda-x:property opda:hasAddress opda-x:address-inspire .
+#
+# opda:hasGeometry interface declared but not encoded — S015 Q5 GeoSPARQL
+# deferral honoured. When a consumer requires polygon-feed content (one of
+# four named triggers), encoded geometry attaches to opda-x:address-inspire
+# via opda:hasGeometry; until then, the INSPIRE Identifier dereferenced
+# upstream serves the polygon.
 
 # Co-references (NEVER owl:sameAs):
 opda-x:title opda:identifiesSameProperty opda-x:property .
 opda-x:estate opda:identifiesSameProperty opda-x:property .
 opda-x:title opda:recordsEstate opda-x:estate .
-opda-x:property opda:hasAddress opda-x:address-inspire .
-
-# opda:hasGeometry interface declared but not encoded — S015 Q5 GeoSPARQL deferral honoured.
-# When a consumer requires polygon-feed content (one of four named triggers), encoded geometry
-# attaches to opda:address-inspire via opda:hasGeometry; until then, the INSPIRE Identifier
-# dereferenced upstream serves the polygon.

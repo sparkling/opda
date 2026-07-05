@@ -4,23 +4,26 @@
 > 296-resource / 66-predicate baseline) is a point-in-time snapshot from
 > early in the gap-closing effort. The current, authoritative,
 > mechanically-regenerable state is `build/final-gap.json` (regenerate with
-> `python3 build/final_scope2.py` from this directory): **465/472
-> schema-generated resources mapped (98.5%)**, all of category A's "real
+> `python3 build/final_scope2.py` from this directory): **466/469
+> schema-generated resources mapped (99.4%)**. All of category A's "real
 > gaps" and all of category B's "ambiguous" classes have since been closed.
-> The 7 remaining gaps (2 classes, 5 distinct properties) map onto what was
-> category C here, re-verified against the FULL invariant JSON schema corpus
-> (not just `pdtf-transaction.json`) and confirmed permanently out of RML's
-> reach — see `gap-register.md`'s superseded-notice for the full current
-> list and reasoning, and
-> `HANDOVER-2026-07-05-rml-mapping-and-ontology-gap-closing.md` /
+> Of what was category C's 7 items: `opda:hasEvidencedAuthority` was
+> reopened and mapped (a dedicated required schema field pair was missed);
+> `opda:UPRNSuccessionEvent`, `opda:AssuranceLevel`/`opda:assuranceLevel`,
+> and `opda:inspireFeatureId` were removed from the ontology entirely
+> (confirmed zero basis in any form); `opda:founds`/`playedBy`/`plays`
+> remain unmapped by standing design rule (upper-ontology connectives are
+> never expected to map to schema data) and are the only 3 resources not
+> mapped or removed. See `gap-register.md`'s superseded-notice and
 > `docs/adr/ADR-0057-rml-mapping-implementation.md`'s Amendments for the
 > per-item detail, including several items this category C originally
 > miscategorised as having no real JSON basis — `opda:NameChangeEvent`,
-> `opda:LeaseExtensionEvent`, and the `verifiedClaims`-sourced cluster
-> (`opda:evidenceType`/`opda:digest`/`opda:attestedBy`/`opda:Verifier`) all
-> had real, structured JSON behind them and are now closed — plus one case
-> (`opda:potentialCost`) where the ontology's own declared range, not the
-> JSON, was the actual defect (a batch-decision oversight, now fixed).
+> `opda:LeaseExtensionEvent`, the `verifiedClaims`-sourced cluster
+> (`opda:evidenceType`/`opda:digest`/`opda:attestedBy`/`opda:Verifier`), and
+> `opda:hasEvidencedAuthority` all had real, structured JSON behind them and
+> are now closed — plus one case (`opda:potentialCost`) where the
+> ontology's own declared range, not the JSON, was the actual defect (a
+> batch-decision oversight, now fixed).
 
 Cross-references every resource (`owl:Class`, `owl:DatatypeProperty`,
 `owl:ObjectProperty`) declared in `public/ontology/artefacts/opda-merged.ttl`

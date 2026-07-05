@@ -61,7 +61,6 @@ Every entity follows the same nine-section shape:
 | Entity | Module | UFO meta-category |
 |---|---|---|
 | [Address](./property/address.md) | property | Substance Kind |
-| [AssuranceLevel](./claim/assurance-level.md) | claim | Quale-in-Region |
 | [Buyer](./agent/buyer.md) | agent | RoleMixin |
 | [Claim](./claim/claim.md) | claim | Information particular |
 | [Comparable](./descriptive/comparable.md) | descriptive | Substance Kind (informational) |
@@ -95,7 +94,6 @@ Every entity follows the same nine-section shape:
 | [Transaction](./transaction/transaction.md) | transaction | Relator |
 | [TransactionChain](./transaction/transaction-chain.md) | transaction | Aggregate |
 | [TrustFramework](./claim/trust-framework.md) | claim | Information particular |
-| [UPRNSuccessionEvent](./property/uprn-succession-event.md) | property | Event particular |
 | [Valuation](./descriptive/valuation.md) | descriptive | Substance Kind (informational) |
 | [ValidationContext](./foundation/validation-context.md) | foundation | Substance Kind (informational) |
 | [VerificationActivity](./claim/verification-activity.md) | claim | Event particular |

@@ -82,16 +82,6 @@ opda:RegisteredTitle
     rdfs:isDefinedBy <https://opda.org.uk/pdtf/graph/property> ;
     skos:scopeNote "DOLCE: NonPhysicalEndurant (HMLR record-entity per Masolo et al. 2003 D18 §4.2). UFO: Substance Kind, informational (Guizzardi 2005 Ch. 4 §4.2)."@en .
 
-opda:UPRNSuccessionEvent
-    rdf:type owl:Class ;
-    rdfs:label "UPRN Succession Event"@en ;
-    rdfs:comment "Reified PROV-O activity recording an administrative re-numbering of UPRN for a single physical Property (the Property's identity PERSISTS through UPRN succession per ODR-0005 Rule 6). Canonical succession form per Gandon W3C-side recommendation (S005 Q4) — own URI, dereferenceable identity, audit trail. Coexists with the denormalised opda:previousUPRN literal-pair convenience (authoritative form: this reified event)."@en ;
-    skos:definition "A reified provenance activity recording the administrative re-numbering of the UPRN for a single physical property, through which the property's identity persists, captured with its own dereferenceable identifier and audit trail."@en ;
-    dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0005/section-6a> ;
-    rdfs:isDefinedBy <https://opda.org.uk/pdtf/graph/property> ;
-    rdfs:subClassOf prov:Activity ;
-    skos:scopeNote "UFO: Event particular (Guizzardi 2005 Ch. 4 §4.7 — perdurant). DOLCE: Achievement / Accomplishment (Masolo et al. 2003 D18 §4.4 — here an Achievement: instantaneous administrative re-issuance)."@en .
-
 opda:abilityToResideAtProperty
     rdf:type owl:DatatypeProperty, opda:DescriptiveProperty ;
     rdfs:label "ability to reside at property"@en ;
@@ -361,16 +351,6 @@ opda:heatingLastServicedDate
     rdfs:domain opda:Property ;
     rdfs:isDefinedBy <https://opda.org.uk/pdtf/graph/property> ;
     rdfs:range xsd:date .
-
-opda:inspireFeatureId
-    rdf:type owl:DatatypeProperty ;
-    rdfs:label "INSPIRE feature ID"@en ;
-    rdfs:comment "INSPIRE Identifier for an opda:Address of variant 'inspire' — a contingent identifier (re-instantiating ODR-0005 §6a's UPRN-as-Quality pattern), unique per addressVariant 'inspire' individual (dash:uniqueValueForClass). Populated for INSPIRE-only locatedness (ODR-0015 §3a Rule 5) and generally wherever a cadastral INSPIRE polygon feature exists for the Address."@en ;
-    skos:definition "The INSPIRE Identifier of the cadastral feature corresponding to this address, where one exists."@en ;
-    dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0015/section-4a> ;
-    rdfs:domain opda:Address ;
-    rdfs:isDefinedBy <https://opda.org.uk/pdtf/graph/property> ;
-    rdfs:range xsd:string .
 
 opda:kitchens
     rdf:type owl:DatatypeProperty, opda:DescriptiveProperty ;
