@@ -2,7 +2,7 @@
   "generatedFrom": "src/data/ontology-model.json",
   "counts": {
     "nodes": {
-      "class": 43,
+      "class": 42,
       "external": 4,
       "scheme": 49,
       "concept": 324
@@ -29,7 +29,6 @@
     "Collective",
     "Event",
     "Information Object",
-    "Quality",
     "Quality Value",
     "Relator",
     "Role",
@@ -46,18 +45,6 @@
         "ufoCategory": "Substance Kind",
         "module": "property",
         "hasShape": true,
-        "layer": "owl"
-      }
-    },
-    {
-      "data": {
-        "id": "class:AssuranceLevel",
-        "ref": "AssuranceLevel",
-        "label": "AssuranceLevel",
-        "type": "class",
-        "ufoCategory": "Quality",
-        "module": "claim",
-        "hasShape": false,
         "layer": "owl"
       }
     },

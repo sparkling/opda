@@ -4,8 +4,7 @@ Module claim.
 Realises:
 - ADR-0011 §"Per-module detail — opda-claim.ttl" — Claim (subclass of
   prov:Entity) + Evidence (a RoleMixin over prov:Entity) + the neutral
-  document Kind AttachedDocument + VerificationActivity + AssuranceLevel +
-  TrustFramework.
+  document Kind AttachedDocument + VerificationActivity + TrustFramework.
 - ADR-0007 §"A9 per-kind discipline output" — every class carries
   rdfs:label + rdfs:comment + skos:scopeNote + dct:source.
 - ODR-0009 §Rules + S009 Q1 80%-PROV-O / 5-residue mapping —
@@ -60,7 +59,6 @@ _ODR_0024_R7 = URIRef("https://opda.org.uk/pdtf/harness/odr/ODR-0024/section-Rul
 
 
 CLASSES = (
-    OPDA.AssuranceLevel,
     OPDA.AttachedDocument,
     OPDA.Claim,
     OPDA.Evidence,
@@ -83,6 +81,7 @@ OBJECT_PROPERTIES = (
 # attributes are facets borne by the role (ODR-0027 §R2).
 
 DATATYPE_PROPERTIES = (
+    OPDA.assuranceLevel,
     OPDA.digest,
     OPDA.evidenceType,
 )
@@ -308,31 +307,71 @@ def build_graph() -> Graph:
     )))
     g.add((OPDA.Verifier, RDFS.isDefinedBy, _MODULE_IRI))
 
-    # --- opda:AssuranceLevel — backed by SKOS scheme --------------------
-    g.add((OPDA.AssuranceLevel, RDF.type, OWL.Class))
-    g.add((OPDA.AssuranceLevel, RDFS.label,
-           Literal("Assurance Level", lang="en")))
-    g.add((OPDA.AssuranceLevel, RDFS.comment, Literal(
+    # --- opda:assuranceLevel (2026-07-05, RML gap-closing session) -----
+    # CORRECTED a real "ratified but implemented wrong" defect: this
+    # module's OWN docstring (above) already documented the intended local
+    # term as "opda:assuranceLevel" (lowercase, a property) — matching
+    # ODR-0009's decision diagram, which routes eIDAS/OIDC4IDA's five
+    # envelope elements each to a real predicate, naming this one exactly
+    # "opda:assuranceLevel" — but what was actually emitted was an orphaned
+    # CLASS, opda:AssuranceLevel, that no property in the ontology ever
+    # referenced (confirmed by grep: zero domain/range connections
+    # anywhere), so it could never be populated by anything.
+    #
+    # Domain opda:Claim, range xsd:string (a PLAIN LITERAL, not a
+    # skos:Concept IRI) — NOT independently designed, but read directly off
+    # three already-ratified exemplars that already use this exact term:
+    # claim-with-{document,electronic-record,vouch}-evidence.ttl each carry
+    # `opda-x:claim a opda:Claim ; ... opda:assuranceLevel "Substantial"`
+    # (or "Low" for the vouch case) — confirmed by direct inspection after
+    # an initial pass wrongly guessed domain opda:VerificationActivity /
+    # range skos:Concept from the ODR diagram's prose alone without first
+    # checking every real usage, which broke those 3 exemplars' SHACL
+    # conformance (a real regression, caught by the exemplar regression
+    # suite). The now-orphaned class's OWN rdfs:comment ("Quality judgement
+    # on a CLAIM's verification") had already named the right domain; the
+    # diagram's grouping alongside the two dct:-routed, VerificationActivity
+    # -attached siblings was a red herring, not evidence of shared domain.
+    # The backing opda:AssuranceLevelScheme SKOS scheme
+    # (opda-vocabularies.ttl) is unchanged — already correctly declared
+    # with real Low / Substantial / High / PDTF-Standard members; kept as
+    # the value-space documentation even though the property itself takes
+    # a bare string, not a scheme member IRI. Still NOT RML-mapped — no
+    # concrete field for eIDAS LoA exists anywhere in the verifiedClaims
+    # schema (its `verification` object is `trust_framework` / `time` /
+    # `evidence` only, with `additionalProperties: true` leaving room for
+    # one without ever naming it) — mapping it would mean guessing a field
+    # name the schema doesn't specify.
+    g.add((OPDA.assuranceLevel, RDF.type, OWL.DatatypeProperty))
+    g.add((OPDA.assuranceLevel, RDFS.domain, OPDA.Claim))
+    g.add((OPDA.assuranceLevel, RDFS.range, XSD.string))
+    g.add((OPDA.assuranceLevel, RDFS.label,
+           Literal("assurance level", lang="en")))
+    g.add((OPDA.assuranceLevel, RDFS.comment, Literal(
         "Quality judgement on a Claim's verification — eIDAS Level of "
-        "Assurance (Low / Substantial / High) per OIDC trust tiering. "
-        "Backed by opda:AssuranceLevelScheme SKOS scheme in "
-        "opda-vocabularies.ttl. Local term per S009 5-residue (PROV-O "
-        "carries no notion of assurance grading).",
+        "Assurance (Low / Substantial / High) per OIDC4IDA trust tiering. "
+        "A plain string value (matching the ratified usage in "
+        "claim-with-{document,electronic-record,vouch}-evidence.ttl), not "
+        "a skos:Concept reference; the value-space is documented by "
+        "opda:AssuranceLevelScheme in opda-vocabularies.ttl. Local term "
+        "per S009 5-residue (PROV-O carries no notion of assurance "
+        "grading).",
         lang="en",
     )))
-    g.add((OPDA.AssuranceLevel, SKOS.scopeNote, Literal(
+    g.add((OPDA.assuranceLevel, SKOS.scopeNote, Literal(
         "UFO: Quale-in-Region (Guizzardi 2005 Ch. 4 §4.3 — quality "
         "particular). eIDAS Regulation (EU) 910/2014 Article 8.",
         lang="en",
     )))
-    g.add((OPDA.AssuranceLevel, DCTERMS.source, _ODR_0009_Q3))
-    g.add((OPDA.AssuranceLevel, SKOS.definition, Literal(
-        "A graded quality judgement on a claim's verification, drawn from the "
-        "eIDAS levels of assurance (Low, Substantial, High) and governed by "
-        "the assurance-level concept scheme.",
+    g.add((OPDA.assuranceLevel, DCTERMS.source, _ODR_0009_Q3))
+    g.add((OPDA.assuranceLevel, SKOS.definition, Literal(
+        "Relates a claim to a graded quality judgement on its own "
+        "verification, drawn from the eIDAS levels of assurance (Low, "
+        "Substantial, High) and documented by the assurance-level concept "
+        "scheme.",
         lang="en",
     )))
-    g.add((OPDA.AssuranceLevel, RDFS.isDefinedBy, _MODULE_IRI))
+    g.add((OPDA.assuranceLevel, RDFS.isDefinedBy, _MODULE_IRI))
 
     # --- opda:TrustFramework --------------------------------------------
     g.add((OPDA.TrustFramework, RDF.type, OWL.Class))

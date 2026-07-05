@@ -276,6 +276,14 @@
     sh:severity sh:Violation ;
     sh:targetSubjectsOf opda:area .
 
+<https://opda.org.uk/pdtf/shape/assuranceLevelDomainShape>
+    rdf:type sh:NodeShape ;
+    dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0029/section-Rules-R3> ;
+    sh:class opda:Claim ;
+    sh:message "opda:assuranceLevel is used off its declared rdfs:domain: every subject of opda:assuranceLevel MUST be an instance of Claim (ODR-0029 R3 — rdfs:domain validated closed-world, not inferred)."@en ;
+    sh:severity sh:Violation ;
+    sh:targetSubjectsOf opda:assuranceLevel .
+
 <https://opda.org.uk/pdtf/shape/attestedByDomainShape>
     rdf:type sh:NodeShape ;
     dct:source <https://opda.org.uk/pdtf/harness/odr/ODR-0029/section-Rules-R3> ;

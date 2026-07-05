@@ -1,10 +1,10 @@
 {
   "namespace": "https://opda.org.uk/pdtf/",
   "counts": {
-    "classes": 43,
+    "classes": 42,
     "objectProperties": 75,
-    "datatypeProperties": 206,
-    "shapes": 404,
+    "datatypeProperties": 207,
+    "shapes": 405,
     "concepts": 324,
     "schemes": 49,
     "contexts": 8
@@ -121,27 +121,6 @@
       "dctSource": [
         "harness/odr/ODR-0015/section-2a",
         "harness/odr/ODR-0015/section-7a"
-      ]
-    },
-    "AssuranceLevel": {
-      "uri": "https://opda.org.uk/pdtf/AssuranceLevel",
-      "id": "AssuranceLevel",
-      "localName": "AssuranceLevel",
-      "label": "Assurance Level",
-      "comment": "Quality judgement on a Claim's verification — eIDAS Level of Assurance (Low / Substantial / High) per OIDC trust tiering. Backed by opda:AssuranceLevelScheme SKOS scheme in opda-vocabularies.ttl. Local term per S009 5-residue (PROV-O carries no notion of assurance grading).",
-      "definition": "A graded quality judgement on a claim's verification, drawn from the eIDAS levels of assurance (Low, Substantial, High) and governed by the assurance-level concept scheme.",
-      "scopeNote": "UFO: Quale-in-Region (Guizzardi 2005 Ch. 4 §4.3 — quality particular). eIDAS Regulation (EU) 910/2014 Article 8.",
-      "ufoCategory": "Quality",
-      "superClasses": [],
-      "module": "claim",
-      "context": "claim",
-      "attributes": [],
-      "outgoing": [],
-      "incoming": [],
-      "shapes": [],
-      "usesSchemes": [],
-      "dctSource": [
-        "harness/odr/ODR-0009/section-Q3"
       ]
     },
     "AttachedDocument": {
@@ -285,7 +264,15 @@
       ],
       "module": "claim",
       "context": "claim",
-      "attributes": [],
+      "attributes": [
+        {
+          "localName": "assuranceLevel",
+          "id": "assuranceLevel",
+          "label": "assurance level",
+          "type": "string",
+          "description": "Quality judgement on a Claim's verification — eIDAS Level of Assurance (Low / Substantial / High) per OIDC4IDA trust tiering. A plain string value (matching the ratified usage in claim-with-{document,electronic-record,vouch}-evidence.ttl), not a skos:Concept reference; the value-space is documented by opda:AssuranceLevelScheme in opda-vocabularies.ttl. Local term per S009 5-residue (PROV-O carries no notion of assurance grading)."
+        }
+      ],
       "outgoing": [
         {
           "predicate": "supportedBy",
@@ -7515,6 +7502,35 @@
         "harness/data-dictionary/valuationComparisonData.propertyDetails[].basicDetails.buildInformation.internalArea.area"
       ]
     },
+    "assuranceLevel": {
+      "uri": "https://opda.org.uk/pdtf/assuranceLevel",
+      "id": "assuranceLevel",
+      "localName": "assuranceLevel",
+      "label": "assurance level",
+      "comment": "Quality judgement on a Claim's verification — eIDAS Level of Assurance (Low / Substantial / High) per OIDC4IDA trust tiering. A plain string value (matching the ratified usage in claim-with-{document,electronic-record,vouch}-evidence.ttl), not a skos:Concept reference; the value-space is documented by opda:AssuranceLevelScheme in opda-vocabularies.ttl. Local term per S009 5-residue (PROV-O carries no notion of assurance grading).",
+      "definition": "Relates a claim to a graded quality judgement on its own verification, drawn from the eIDAS levels of assurance (Low, Substantial, High) and documented by the assurance-level concept scheme.",
+      "kind": "datatype",
+      "module": "claim",
+      "subjects": [
+        {
+          "id": "Claim",
+          "localName": "Claim",
+          "kind": "class"
+        }
+      ],
+      "objects": [
+        {
+          "id": "http://www.w3.org/2001/XMLSchema#string",
+          "localName": "string",
+          "kind": "datatype"
+        }
+      ],
+      "inverse": null,
+      "constraints": [],
+      "dctSource": [
+        "harness/odr/ODR-0009/section-Q3"
+      ]
+    },
     "authorisationToShare": {
       "uri": "https://opda.org.uk/pdtf/authorisationToShare",
       "id": "authorisationToShare",
@@ -13694,6 +13710,15 @@
       "module": "shapes",
       "target": null,
       "targetSubjectsOf": null,
+      "constraints": []
+    },
+    "shape/assuranceLevelDomainShape": {
+      "uri": "https://opda.org.uk/pdtf/shape/assuranceLevelDomainShape",
+      "id": "shape/assuranceLevelDomainShape",
+      "localName": "assuranceLevelDomainShape",
+      "module": "shapes",
+      "target": null,
+      "targetSubjectsOf": "https://opda.org.uk/pdtf/assuranceLevel",
       "constraints": []
     },
     "shape/attestedByDomainShape": {
@@ -26263,10 +26288,6 @@
       "localName": "claim",
       "classes": [
         {
-          "id": "AssuranceLevel",
-          "localName": "AssuranceLevel"
-        },
-        {
           "id": "AttachedDocument",
           "localName": "AttachedDocument"
         },
@@ -26306,6 +26327,10 @@
         }
       ],
       "datatypeProperties": [
+        {
+          "id": "assuranceLevel",
+          "localName": "assuranceLevel"
+        },
         {
           "id": "digest",
           "localName": "digest"

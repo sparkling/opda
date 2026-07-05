@@ -2783,9 +2783,13 @@
 #   that every transaction processed under this schema is, by definition,
 #   governed by the OPDA/UK Property Data Trust Framework.
 #
-#   opda:AssuranceLevel — DELIBERATELY NOT mapped, a genuine gap, not an
-#   oversight: its value-space (eIDAS Low/Substantial/High) grades the RIGOR
-#   of a verification METHOD, whereas the real field available
+#   opda:assuranceLevel (renamed from the class opda:AssuranceLevel,
+#   2026-07-05 — see ADR-0057 Amendments: it was an orphaned, mis-implemented
+#   class, now a real opda:Claim-domain xsd:string property, matching what
+#   ratified exemplars claim-with-{document,electronic-record,vouch}-
+#   evidence.ttl already use) — DELIBERATELY NOT mapped, a genuine gap, not
+#   an oversight: its value-space (eIDAS Low/Substantial/High) grades the
+#   RIGOR of a verification METHOD, whereas the real field available
 #   (participants[].verification.*.result / reports[].result: pass/fail/
 #   consider) is an OUTCOME judgement on a different axis entirely — a "pass"
 #   from a low-rigor check is not automatically "Substantial" assurance, and
