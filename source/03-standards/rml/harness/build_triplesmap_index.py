@@ -70,20 +70,42 @@ def extract_placeholders(template: str) -> list[str]:
     return seen
 
 
-def parse_sections(text: str) -> dict[str, str]:
-    """Map each TriplesMap local name -> its nearest preceding '# M<N>' label."""
-    section_re = re.compile(r"^#\s*(M\d+[a-z]?)\b")
+def clean_section_title(raw: str) -> str:
+    """Strip the trailing '(opda:Class)' and 'iterator: ...' boilerplate from a
+    section header's title text — both are shown separately elsewhere (the
+    TriplesMap's own asserted class + iterator fields), so keeping them here
+    would just duplicate noise in what's meant to be a short, readable label.
+    Some headers wrap their descriptive text onto a second comment line; only
+    the first line is captured, so also trim a dangling unmatched '(' or a
+    trailing hyphen left by a mid-word line wrap, rather than showing a title
+    that reads as visibly cut off mid-sentence."""
+    title = re.sub(r"\s*iterator:.*$", "", raw)
+    title = re.sub(r"\s*\(opda:[A-Za-z0-9_]+\)\s*$", "", title)
+    title = title.strip()
+    if title.count("(") > title.count(")"):
+        title = title.rsplit("(", 1)[0].strip()
+    title = re.sub(r"[\s-]+$", "", title)
+    return title.strip()
+
+
+def parse_sections(text: str) -> dict[str, dict[str, str]]:
+    """Map each TriplesMap local name -> its nearest preceding section header,
+    as both the raw 'M<N><letter>' code (kept only for stable ordering — never
+    shown to a reader, per operator direction 2026-07-06) and a cleaned,
+    human-readable title parsed from the same comment line."""
+    section_re = re.compile(r"^#\s*(M\d+[a-z]?)\s*—\s*(.+)$")
     tm_re = re.compile(r"^<#([A-Za-z0-9_]+)>\s+a\s+rr:TriplesMap")
-    current = ""
-    out: dict[str, str] = {}
+    current_code, current_title = "", ""
+    out: dict[str, dict[str, str]] = {}
     for line in text.splitlines():
         m = section_re.match(line)
         if m:
-            current = m.group(1)
+            current_code = m.group(1)
+            current_title = clean_section_title(m.group(2))
             continue
         m = tm_re.match(line)
         if m:
-            out[m.group(1)] = current
+            out[m.group(1)] = {"code": current_code, "title": current_title}
     return out
 
 
@@ -108,7 +130,8 @@ def main() -> None:
         name = local_name(row["tm"])
         triplesmaps[name] = {
             "id": name,
-            "section": "",
+            "section_code": "",
+            "section_title": "",
             "iterator": row.get("iterator", ""),
             "subject_template": row.get("subjTemplate", ""),
             "classes": [],
@@ -192,7 +215,8 @@ def main() -> None:
     sections = parse_sections(text)
     for name, section in sections.items():
         if name in triplesmaps:
-            triplesmaps[name]["section"] = section
+            triplesmaps[name]["section_code"] = section["code"]
+            triplesmaps[name]["section_title"] = section["title"]
 
     # -- FNML call-site count (excluded from the main rows; recorded separately) --
     fnml_rows = sparql_select(PREFIXES + """
@@ -206,7 +230,7 @@ def main() -> None:
     """, MAPPING_TTL)
     total_pom_triples = int(pom_total_triples[0]["n"]) if pom_total_triples else 0
 
-    tm_list = sorted(triplesmaps.values(), key=lambda t: (t["section"] or "zzz", t["id"]))
+    tm_list = sorted(triplesmaps.values(), key=lambda t: (t["section_code"] or "zzz", t["id"]))
     real_pom_count = sum(len(t["rows"]) for t in tm_list)
     distinct_classes = sorted({c for t in tm_list for c in t["classes"]})
     distinct_predicates = sorted({r["predicate"] for t in tm_list for r in t["rows"]})

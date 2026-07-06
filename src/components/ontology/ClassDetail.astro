@@ -10,8 +10,8 @@ import { iri, ufoSlug } from '@/lib/ontology-model';
 import TermHeader from './TermHeader.astro';
 import RefLink from './RefLink.astro';
 
-interface Props { cls: ClassEntry; }
-const { cls } = Astro.props;
+interface Props { cls: ClassEntry; mappingUsage?: string[]; }
+const { cls, mappingUsage = [] } = Astro.props;
 ---
 <TermHeader
   kind="Class"
@@ -118,6 +118,19 @@ const { cls } = Astro.props;
     <h2>SKOS schemes used <span class="muted">· {cls.usesSchemes.length}</span></h2>
     <ul class="chip-list">
       {cls.usesSchemes.map((s) => <li><a href={`/pdtf/${s.id}`}><code>{s.localName}</code></a></li>)}
+    </ul>
+  </section>
+)}
+
+{mappingUsage.length > 0 && (
+  <section class="term-section">
+    <h2>Used in the RML mapping <span class="muted">· {mappingUsage.length}</span></h2>
+    <p class="term-hint">
+      TriplesMap(s) that assert this class (<a href="/mapping/triplesmaps">ADR-0060</a> — the
+      RML mapping's own bidirectional trace to the PDTF JSON Schema).
+    </p>
+    <ul class="chip-list">
+      {mappingUsage.map((tmId) => <li><a href={`/mapping/triplesmaps/${tmId}`}><code>#{tmId}</code></a></li>)}
     </ul>
   </section>
 )}

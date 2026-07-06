@@ -9,6 +9,8 @@
  * /ontology/context.) Phase 6 adds the `.ttl` alternate. Pure SSG — getStaticPaths
  * reads the committed model JSON; no runtime query.
  */
+import fs from 'node:fs';
+import path from 'node:path';
 import Layout from '@/layouts/Layout.astro';
 import ClassDetail from '@/components/ontology/ClassDetail.astro';
 import PropertyDetail from '@/components/ontology/PropertyDetail.astro';
@@ -16,6 +18,27 @@ import ShapeDetail from '@/components/ontology/ShapeDetail.astro';
 import ConceptDetail from '@/components/ontology/ConceptDetail.astro';
 import SchemeDetail from '@/components/ontology/SchemeDetail.astro';
 import { allResources } from '@/lib/ontology-model';
+
+// Bidirectional linking (operator request, 2026-07-06): every class/property
+// this route serves also shows whether — and where — it's used in the RML
+// mapping (ADR-0060), reading the same committed triplesmap-index.json the
+// /mapping/triplesmaps pages use. Built once, module scope, for every page.
+function loadMappingUsage(): Record<string, string[]> {
+  const idxPath = path.resolve(process.cwd(), 'source/03-standards/rml/triplesmap-index.json');
+  const idx = JSON.parse(fs.readFileSync(idxPath, 'utf8'));
+  const usage: Record<string, string[]> = {};
+  const add = (compact: string, tmId: string) => {
+    const id = compact.startsWith('opda:') ? compact.slice('opda:'.length) : compact;
+    if (!usage[id]) usage[id] = [];
+    if (!usage[id].includes(tmId)) usage[id].push(tmId);
+  };
+  for (const tm of idx.triplesmaps) {
+    for (const cls of tm.classes) add(cls, tm.id);
+    for (const row of tm.rows) add(row.predicate, tm.id);
+  }
+  return usage;
+}
+const MAPPING_USAGE = loadMappingUsage();
 
 export function getStaticPaths() {
   return allResources().map((r) => ({
@@ -27,11 +50,12 @@ export function getStaticPaths() {
 const { r } = Astro.props;
 const title = (r.label ?? r.prefLabel ?? r.localName) as string;
 const description = ((r.comment ?? r.definition ?? '') as string).replace(/\s+/g, ' ').trim().slice(0, 160);
+const mappingUsage = MAPPING_USAGE[r.id] ?? [];
 ---
 <Layout title={title} description={description} hideComments={true}>
   <link slot="head" rel="alternate" type="text/turtle" href={`/pdtf/${r.id}.ttl`} />
-  {r.entryKind === 'class' ? <ClassDetail cls={r} />
-    : r.entryKind === 'property' ? <PropertyDetail prop={r} />
+  {r.entryKind === 'class' ? <ClassDetail cls={r} mappingUsage={mappingUsage} />
+    : r.entryKind === 'property' ? <PropertyDetail prop={r} mappingUsage={mappingUsage} />
     : r.entryKind === 'shape' ? <ShapeDetail shape={r} />
     : r.entryKind === 'concept' ? <ConceptDetail concept={r} />
     : <SchemeDetail scheme={r} />}

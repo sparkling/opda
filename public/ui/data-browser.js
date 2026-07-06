@@ -294,6 +294,16 @@
       rerender();
     }, 150));
 
+    // ── Deep-link: pre-fill search from a URL query param ─────────
+    // opts.queryParam names the param (default 'q'); a page can link straight
+    // into a filtered view, e.g. /modelling/data-dictionary?q=propertyPack.uprn
+    var deepLinkParam = opts.queryParam || 'q';
+    var deepLinkValue = new URLSearchParams(location.search).get(deepLinkParam);
+    if (deepLinkValue) {
+      state.search = deepLinkValue.trim().toLowerCase();
+      searchInput.value = deepLinkValue;
+    }
+
     // ── Compute pipeline ─────────────────────────────────────────
     function applyFilters() {
       const q = state.search;
