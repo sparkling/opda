@@ -780,7 +780,13 @@ def render_page(slot: str, leaves_for_page: list[dict],
     for sec in sections_cfg:
         sec_objs = grouped_objs.get(sec["id"], [])
         sections.append({
-            "id":      sec["id"],
+            # "sec-" prefix keeps this heading's anchor out of the same
+            # namespace as object anchors (obj.id|lower) — theme-map.yaml
+            # section ids are short conceptual words ("chain", "transaction")
+            # that can collide with an object's own derived id, producing two
+            # elements sharing one HTML id (confirmed: /schema/chain-milestones
+            # had both <h3 id="chain"> and an object's <h4 id="chain">).
+            "id":      f"sec-{sec['id']}",
             "title":   sec["title"],
             "objects": sec_objs,
         })
