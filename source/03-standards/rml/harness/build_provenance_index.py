@@ -11,15 +11,16 @@ Outputs (repo-relative):
 """
 from __future__ import annotations
 
+import csv
 import hashlib
+import io
 import json
+import subprocess
 import urllib.parse
 from pathlib import Path
 
-from rdflib import Graph, URIRef
-from rdflib.namespace import OWL, RDF, RDFS
-
 REPO = Path(__file__).resolve().parents[4]
+ARQ = REPO / ".jena/apache-jena-6.1.0/bin/arq"
 MERGED_TTL = REPO / "public/ontology/artefacts/opda-merged.ttl"
 DICT_JSON = REPO / "source/00-deliverables/semantic-models/data-dictionary-canonical.json"
 OUT_JSON = REPO / "source/03-standards/rml/provenance-index.json"
@@ -27,7 +28,32 @@ OUT_MD = REPO / "source/03-standards/rml/provenance-index.md"
 
 OPDA = "https://opda.org.uk/pdtf/"
 DD_PREFIX = "https://opda.org.uk/pdtf/harness/data-dictionary/"
-DCT_SOURCE = URIRef("http://purl.org/dc/terms/source")
+
+# ADR-0037 (via ADR-0061): opda's sole RDF query path is Apache Jena `arq`; no
+# rdflib. `arq` parses opda-merged.ttl and answers SPARQL SELECT; results come
+# back as CSV read with the stdlib `csv` module (mirrors harness/jena_query.py).
+_PREFIXES = """\
+PREFIX owl:  <http://www.w3.org/2002/07/owl#>
+PREFIX rdf:  <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX dct:  <http://purl.org/dc/terms/>
+"""
+
+
+def _arq(body: str) -> list[dict[str, str]]:
+    """Run a SPARQL SELECT (given without prefixes) against the merged TTL."""
+    if not ARQ.exists():
+        raise RuntimeError(f"arq not found at {ARQ} — is Jena 6.1.0 provisioned under .jena/?")
+    proc = subprocess.run(
+        [str(ARQ), "--data", str(MERGED_TTL), "--query", "/dev/stdin", "--results", "CSV"],
+        input=_PREFIXES + body,
+        capture_output=True,
+        text=True,
+        timeout=120,
+    )
+    if proc.returncode != 0:
+        raise RuntimeError(f"arq failed (exit {proc.returncode}):\n{proc.stderr}")
+    return list(csv.DictReader(io.StringIO(proc.stdout)))
 
 
 def compact(iri: str) -> str:
@@ -44,75 +70,100 @@ def leaf_from_source(src: str) -> str | None:
 
 
 def main() -> None:
-    g = Graph()
-    g.parse(MERGED_TTL, format="turtle")
-
     raw = MERGED_TTL.read_bytes()
     sha = hashlib.sha256(raw).hexdigest()
 
     # -- collect the classes -----------------------------------------------------
-    # NB: must match on rdf:type owl:Class explicitly. A bare
-    # subjects(object=owl:Class) also catches opda:targetsKind, an ObjectProperty
-    # whose rdfs:range is owl:Class (false positive → 41 not 40).
-    opda_classes: set[URIRef] = set()
-    for s in g.subjects(RDF.type, OWL.Class):
-        if isinstance(s, URIRef) and str(s).startswith(OPDA):
-            opda_classes.add(s)
+    # NB: must match on rdf:type owl:Class as SUBJECT. A bare object=owl:Class
+    # match also catches opda:targetsKind, an ObjectProperty whose rdfs:range is
+    # owl:Class (false positive → 42 not 41).
+    opda_classes: set[str] = {
+        r["c"] for r in _arq(
+            f'SELECT ?c WHERE {{ ?c a owl:Class . FILTER(STRSTARTS(STR(?c), "{OPDA}")) }}'
+        )
+    }
+
+    # Single domain/range per property, matching rdflib g.value's first-in-parse
+    # pick: the canonical serialiser emits multi-valued rdfs:domain/range sorted,
+    # so first-asserted == lexicographically-smallest IRI == SPARQL MIN(STR()).
+    # (Only the UFO connectives — opda:plays/playedBy/hasAddress/founds/… — carry
+    # >1 domain/range; every dct:source-bearing data property has exactly one.)
+    domain_of = {r["p"]: r["dom"] for r in _arq(
+        "SELECT ?p (MIN(STR(?d)) AS ?dom) WHERE { ?p rdfs:domain ?d } GROUP BY ?p")}
+    range_of = {r["p"]: r["rng"] for r in _arq(
+        "SELECT ?p (MIN(STR(?r)) AS ?rng) WHERE { ?p rdfs:range ?r } GROUP BY ?p")}
+    label_of = {r["c"]: r["label"] for r in _arq(
+        "SELECT ?c (MIN(STR(?l)) AS ?label) WHERE { ?c a owl:Class ; rdfs:label ?l } GROUP BY ?c")}
+
+    # dct:source citations that resolve to a data-dictionary leaf, per predicate.
+    sources_of: dict[str, list[str]] = {}
+    for r in _arq(
+        f'SELECT ?p ?src WHERE {{ ?p dct:source ?src . '
+        f'FILTER(STRSTARTS(STR(?src), "{DD_PREFIX}")) }}'
+    ):
+        sources_of.setdefault(r["p"], []).append(r["src"])
+
+    _KIND = {
+        "http://www.w3.org/2002/07/owl#DatatypeProperty": "Datatype",
+        "http://www.w3.org/2002/07/owl#ObjectProperty": "Object",
+    }
 
     # -- walk every datatype/object property ------------------------------------
     leaves: list[dict] = []
     # map predicate_iri -> record scaffold (kind/domain/range) for class enumeration
     prop_meta: dict[str, dict] = {}
 
-    for kind_uri, kind_label in ((OWL.DatatypeProperty, "Datatype"),
-                                 (OWL.ObjectProperty, "Object")):
-        for prop in g.subjects(predicate=None, object=kind_uri):
-            if not (isinstance(prop, URIRef) and str(prop).startswith(OPDA)):
+    for r in _arq(
+        f'SELECT ?p ?kind WHERE {{ VALUES ?kind {{ owl:DatatypeProperty owl:ObjectProperty }} '
+        f'?p a ?kind . FILTER(STRSTARTS(STR(?p), "{OPDA}")) }}'
+    ):
+        prop = r["p"]
+        kind_label = _KIND[r["kind"]]
+        dom_iri = domain_of.get(prop)
+        rng_iri = range_of.get(prop)
+        is_monetary = rng_iri == OPDA + "MonetaryAmount"
+        is_object_node = (kind_label == "Object" and rng_iri is not None
+                          and rng_iri in opda_classes)
+        prop_meta[prop] = {
+            "predicate": compact(prop),
+            "kind": kind_label,
+            "domain": compact(dom_iri) if dom_iri else None,
+            "range": compact(rng_iri) if rng_iri else None,
+        }
+        for src in sources_of.get(prop, []):
+            leaf = leaf_from_source(src)
+            if leaf is None:
                 continue
-            dom = g.value(prop, RDFS.domain)
-            rng = g.value(prop, RDFS.range)
-            dom_iri = str(dom) if dom is not None else None
-            rng_iri = str(rng) if rng is not None else None
-            is_monetary = rng_iri == OPDA + "MonetaryAmount"
-            is_object_node = (kind_label == "Object" and rng is not None
-                              and isinstance(rng, URIRef) and rng in opda_classes)
-            prop_meta[str(prop)] = {
-                "predicate": compact(str(prop)),
+            flags: list[str] = []
+            if is_monetary:
+                flags.append("monetary")
+            if dom_iri is None:
+                flags.append("shared_domainless")
+            if is_object_node:
+                flags.append("object_node")
+            leaves.append({
+                "leaf_path": leaf,
+                "predicate": compact(prop),
+                "predicate_iri": prop,
                 "kind": kind_label,
                 "domain": compact(dom_iri) if dom_iri else None,
                 "range": compact(rng_iri) if rng_iri else None,
-            }
-            for src in g.objects(prop, DCT_SOURCE):
-                leaf = leaf_from_source(str(src))
-                if leaf is None:
-                    continue
-                flags: list[str] = []
-                if is_monetary:
-                    flags.append("monetary")
-                if dom is None:
-                    flags.append("shared_domainless")
-                if is_object_node:
-                    flags.append("object_node")
-                leaves.append({
-                    "leaf_path": leaf,
-                    "predicate": compact(str(prop)),
-                    "predicate_iri": str(prop),
-                    "kind": kind_label,
-                    "domain": compact(dom_iri) if dom_iri else None,
-                    "range": compact(rng_iri) if rng_iri else None,
-                    "layer": 1,
-                    "flags": flags,
-                })
+                "layer": 1,
+                "flags": flags,
+            })
 
-    leaves.sort(key=lambda r: r["leaf_path"])
+    # Deterministic order: leaf_path, then predicate_iri to break the (few)
+    # leaves cited by more than one predicate (e.g. participants[].name.lastName
+    # by both opda:currentName and opda:newName).
+    leaves.sort(key=lambda r: (r["leaf_path"], r["predicate_iri"]))
 
     # -- class -> its datatype/object properties by rdfs:domain -----------------
     classes = []
-    for cls in sorted(opda_classes, key=str):
-        label = g.value(cls, RDFS.label)
+    for cls in sorted(opda_classes):
+        label = label_of.get(cls)
         props = []
         for piri, meta in prop_meta.items():
-            if meta["domain"] == compact(str(cls)):
+            if meta["domain"] == compact(cls):
                 props.append({
                     "predicate": meta["predicate"],
                     "kind": meta["kind"],
@@ -120,9 +171,9 @@ def main() -> None:
                 })
         props.sort(key=lambda p: p["predicate"])
         classes.append({
-            "iri": str(cls),
-            "compact": compact(str(cls)),
-            "label": str(label) if label else None,
+            "iri": cls,
+            "compact": compact(cls),
+            "label": label if label else None,
             "properties": props,
         })
 
