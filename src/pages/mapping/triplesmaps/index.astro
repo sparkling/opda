@@ -4,6 +4,7 @@ import PageMeta from '@/components/PageMeta.astro';
 import fs from 'node:fs';
 import path from 'node:path';
 import { hasResource, pdtfUrl } from '@/lib/ontology-model';
+import { schemaPathIndex, schemaContainerIndex } from '@/lib/schema-anchors';
 
 // Bidirectional linking (operator request, 2026-07-06): every ontology
 // class/property mention here links to its real, dereferenceable /pdtf/{id}
@@ -14,13 +15,22 @@ function resourceHref(compact: string): string | null {
   const id = compact.startsWith('opda:') ? compact.slice('opda:'.length) : compact;
   return hasResource(id) ? pdtfUrl(id) : null;
 }
-// JSON Schema paths have no per-path page anywhere on the site (confirmed —
-// only the containing object gets an anchor on /schema/*, and JSONPath
-// array/filter syntax doesn't map onto that cleanly). Deep-link into the
-// data-dictionary's own search instead, via data-browser.js's ?q= support —
-// an honest, always-resolvable link rather than a guessed anchor.
-function schemaPathHref(jsonPath: string): string {
-  return `/modelling/data-dictionary?q=${encodeURIComponent(jsonPath)}`;
+// Real links into the /schema/* pages' own committed data-leaf-path/id
+// anchors (src/lib/schema-anchors.ts) — replaces an earlier data-dictionary
+// ?q= search link, which was too imprecise for domain-less/shared properties
+// (the dictionary indexes one canonical example path per property name, not
+// every real occurrence — confirmed directly with opda:documentDate, which
+// has two genuinely different real occurrences in the schema).
+const LEAF_INDEX = schemaPathIndex();
+const CONTAINER_INDEX = schemaContainerIndex();
+function hrefFrom(hit: { url: string; anchor: string | null } | undefined): string | null {
+  if (!hit) return null;
+  return hit.anchor ? `${hit.url}#${hit.anchor}` : hit.url;
+}
+function iteratorContainerPath(iterator: string): string {
+  let p = iterator.trim();
+  if (p.startsWith('$')) p = p.slice(1);
+  return p.replace(/^\./, '').replace(/\[\?\([^)]*\)\]/g, '[]').replace(/\[\*\]/g, '[]');
 }
 
 // triplesmap-index.json is COMMITTED (source/03-standards/rml/, sibling to the
@@ -47,6 +57,7 @@ const byRule = triplesmapIndex.triplesmaps.map(tm => ({
   id: tm.id,
   classes: tm.classes.length > 0 ? tm.classes : ['(untyped)'],
   iterator: tm.iterator,
+  iterator_href: hrefFrom(CONTAINER_INDEX[iteratorContainerPath(tm.iterator)]),
   row_count: tm.rows.length,
 }));
 
@@ -97,6 +108,17 @@ const resourceHrefs: Record<string, string | null> = {};
 for (const r of byResource) resourceHrefs[r.resource] = resourceHref(r.resource);
 for (const r of byRule) for (const c of r.classes) {
   if (!(c in resourceHrefs)) resourceHrefs[c] = resourceHref(c);
+}
+
+// Same idea for JSON Schema paths: every distinct leaf path across byResource
+// and bySchemaPath, resolved once server-side against the /schema pages'
+// own committed anchors.
+const schemaHrefs: Record<string, string | null> = {};
+for (const r of byResource) for (const p of r.json_paths) {
+  if (!(p in schemaHrefs)) schemaHrefs[p] = hrefFrom(LEAF_INDEX[p]);
+}
+for (const r of bySchemaPath) {
+  if (!(r.json_path in schemaHrefs)) schemaHrefs[r.json_path] = hrefFrom(LEAF_INDEX[r.json_path]);
 }
 ---
 <Layout
@@ -172,6 +194,7 @@ for (const r of byRule) for (const c of r.classes) {
 <script type="application/json" id="mapping-by-resource" set:html={JSON.stringify(byResource)}></script>
 <script type="application/json" id="mapping-by-schema-path" set:html={JSON.stringify(bySchemaPath)}></script>
 <script type="application/json" id="mapping-resource-hrefs" set:html={JSON.stringify(resourceHrefs)}></script>
+<script type="application/json" id="mapping-schema-hrefs" set:html={JSON.stringify(schemaHrefs)}></script>
 
 <script slot="scripts" is:inline data-astro-rerun src="/ui/data-browser.js"></script>
 <script slot="scripts" is:inline data-astro-rerun>
@@ -186,6 +209,7 @@ for (const r of byRule) for (const c of r.classes) {
       try { return JSON.parse(el.textContent); } catch (e) { return []; }
     }
     var resourceHrefs = readJson('mapping-resource-hrefs');
+    var schemaHrefs = readJson('mapping-schema-hrefs');
     // Ontology resource names -> linked (when a real /pdtf/{id} page exists).
     function joinResources(arr) {
       if (!arr || !arr.length) return '<span class="muted tiny">—</span>';
@@ -194,12 +218,13 @@ for (const r of byRule) for (const c of r.classes) {
         return href ? '<a href="' + esc(href) + '"><code>' + esc(v) + '</code></a>' : '<code>' + esc(v) + '</code>';
       }).join(' ');
     }
-    // JSON Schema paths -> deep-linked into the data-dictionary search.
+    // JSON Schema paths -> linked to the real /schema page + anchor for that
+    // leaf's containing object, when the /schema pages cover it.
     function joinPaths(arr) {
       if (!arr || !arr.length) return '<span class="muted tiny">—</span>';
       return arr.map(function (v) {
-        var href = '/modelling/data-dictionary?q=' + encodeURIComponent(v);
-        return '<a href="' + esc(href) + '"><code>' + esc(v) + '</code></a>';
+        var href = schemaHrefs[v];
+        return href ? '<a href="' + esc(href) + '"><code>' + esc(v) + '</code></a>' : '<code>' + esc(v) + '</code>';
       }).join(' ');
     }
     // TriplesMap ids -> their own detail page (./triplesmaps/{id}).
@@ -236,7 +261,11 @@ for (const r of byRule) for (const c of r.classes) {
           { key: 'classes', label: 'Class(es)', sortable: false, width: '30%',
             render: function (v) { return joinResources(v); } },
           { key: 'iterator', label: 'Iterator', sortable: false, width: '35%',
-            render: function (v) { return '<code>' + esc(v) + '</code>'; } },
+            render: function (v, row) {
+              return row.iterator_href
+                ? '<a href="' + esc(row.iterator_href) + '"><code>' + esc(v) + '</code></a>'
+                : '<code>' + esc(v) + '</code>';
+            } },
           { key: 'row_count', label: 'Rows', sortable: true, width: '10%' },
         ],
       });

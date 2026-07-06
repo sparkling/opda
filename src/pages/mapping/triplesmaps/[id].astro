@@ -10,6 +10,7 @@ import PageMeta from '@/components/PageMeta.astro';
 import fs from 'node:fs';
 import path from 'node:path';
 import { hasResource, pdtfUrl } from '@/lib/ontology-model';
+import { schemaPathIndex, schemaContainerIndex } from '@/lib/schema-anchors';
 
 // NB: getStaticPaths() is extracted into its own isolated scope by Astro's
 // build — it cannot see module-level consts declared elsewhere in this file,
@@ -44,15 +45,40 @@ function resourceHref(compact: string): string | null {
   const id = compact.startsWith('opda:') ? compact.slice('opda:'.length) : compact;
   return hasResource(id) ? pdtfUrl(id) : null;
 }
-function schemaPathHref(jsonPath: string): string {
-  return `/modelling/data-dictionary?q=${encodeURIComponent(jsonPath)}`;
+// Real, precise links into the /schema/* pages themselves — not the
+// data-dictionary search (tried first, rejected: it indexes ONE canonical
+// example path per shared property, e.g. opda:documentDate has two genuinely
+// different real occurrences, and a bare-name search can't tell them apart).
+// schemaPathIndex() reads the /schema pages' own committed
+// data-leaf-path/id anchors directly (see src/lib/schema-anchors.ts) — the
+// pipeline's real, final output, not a re-derivation of its routing rules.
+const LEAF_INDEX = schemaPathIndex();
+const CONTAINER_INDEX = schemaContainerIndex();
+function hrefFrom(hit: { url: string; anchor: string | null } | undefined): string | null {
+  if (!hit) return null;
+  return hit.anchor ? `${hit.url}#${hit.anchor}` : hit.url;
 }
+function schemaHref(jsonPath: string): string | null {
+  return hrefFrom(LEAF_INDEX[jsonPath]);
+}
+// The mapping file's own section comments (section_title/section_code) are
+// kept ONLY as an internal ordering key for prev/next below — NOT shown on
+// this page. They're the mapping author's own work-log entries, the exact
+// "rule cluster" structure a design critique already rejected as page
+// structure on the index (2026-07-06); showing the same label here would
+// just reintroduce it one level down.
+function iteratorContainerPath(iterator: string): string {
+  let p = iterator.trim();
+  if (p.startsWith("$")) p = p.slice(1);
+  return p.replace(/^\./, "").replace(/\[\?\([^)]*\)\]/g, "[]").replace(/\[\*\]/g, "[]");
+}
+const iteratorHref = hrefFrom(CONTAINER_INDEX[iteratorContainerPath(tm.iterator)]);
 ---
 <Layout
   title={`Mapping — #${tm.id}`}
-  description={`RML TriplesMap #${tm.id} (${tm.section_title}) — ${tm.classes.join(', ') || 'untyped node'}, iterator ${tm.iterator}.`}
+  description={`RML TriplesMap #${tm.id} — ${tm.classes.join(', ') || 'untyped node'}, iterator ${tm.iterator}.`}
 >
-<PageMeta category={tm.section_title || 'Rule'} variant="info" updated="Updated 2026-07-06" />
+<PageMeta category={tm.classes.join(', ') || 'Untyped node'} variant="info" updated="Updated 2026-07-06" />
 
   <nav class="breadcrumb-override" aria-label="TriplesMap breadcrumb">
     <a href="/mapping/triplesmaps">TriplesMaps reference</a>
@@ -70,12 +96,14 @@ function schemaPathHref(jsonPath: string): string {
         </>))}
       </strong></>
     ) : 'A class-assertion-only node (no predicateObjectMap rows).'}
-    {' '}from <strong>{tm.section_title || '(untitled section)'}</strong> in the RML mapping.
+    {' '}in the RML mapping.
   </p>
 
   <table>
     <tbody>
-      <tr><th>JSONPath iterator</th><td><code>{tm.iterator}</code></td></tr>
+      <tr><th>JSONPath iterator</th><td>{iteratorHref
+        ? <a href={iteratorHref}><code>{tm.iterator}</code></a>
+        : <code>{tm.iterator}</code>}</td></tr>
       <tr><th>Subject template</th><td><code>{tm.subject_template || '—'}</code></td></tr>
     </tbody>
   </table>
@@ -95,7 +123,9 @@ function schemaPathHref(jsonPath: string): string {
               <td>{r.kind}</td>
               <td>{r.kind === 'constant'
                 ? <code>{r.constant}</code>
-                : (r.json_path ? <a href={schemaPathHref(r.json_path)}><code>{r.json_path}</code></a> : <span class="muted tiny">—</span>)}
+                : (r.json_path && schemaHref(r.json_path)
+                    ? <a href={schemaHref(r.json_path)!}><code>{r.json_path}</code></a>
+                    : (r.json_path ? <code>{r.json_path}</code> : <span class="muted tiny">—</span>))}
               </td>
             </tr>
           ))}
@@ -107,8 +137,7 @@ function schemaPathHref(jsonPath: string): string {
   )}
 
   <p class="muted tiny">
-    Source: <a class="resource-link" href="/resource?path=source/03-standards/rml/mapping/opda-pdtf.rml.ttl"><code>mapping/opda-pdtf.rml.ttl</code></a>,
-    {tm.section_title || '(untitled section)'}.
+    Source: <a class="resource-link" href="/resource?path=source/03-standards/rml/mapping/opda-pdtf.rml.ttl"><code>mapping/opda-pdtf.rml.ttl</code></a>.
   </p>
 
   <p>

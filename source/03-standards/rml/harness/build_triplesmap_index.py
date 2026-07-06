@@ -70,6 +70,35 @@ def extract_placeholders(template: str) -> list[str]:
     return seen
 
 
+def iterator_prefix(iterator: str) -> str:
+    """The dotted-path prefix implied by a JSONPath iterator, matching this
+    project's own leaf_path convention (CONTRACT.md; e.g.
+    'propertyPack.ownership.ownershipsToBeTransferred[].leaseholdInformation...') —
+    strips the '$' root marker, collapses '[*]' and filter predicates
+    ('[?(@.role=="Buyer")]') down to a bare '[]' (the filter condition selects
+    WHICH row, not a distinct structural location), and returns '' for the
+    bare root iterator (no prefix needed)."""
+    p = iterator.strip()
+    if p.startswith("$"):
+        p = p[1:]
+    p = p.lstrip(".")
+    p = re.sub(r"\[\?\([^)]*\)\]", "[]", p)
+    p = re.sub(r"\[\*\]", "[]", p)
+    return p
+
+
+def full_json_path(iterator: str, relative: str) -> str:
+    """Every rml:reference / rr:template placeholder / FNML input parameter in
+    this mapping is relative to its TriplesMap's own iterator context — RML
+    semantics, not an assumption (confirmed against real fixtures: the CONTRACT's
+    own leaf_path convention combines them the same way). A bare reference like
+    'documentDate' is ambiguous on its own — the schema has multiple fields with
+    that terminal name at different locations — so linking it anywhere requires
+    the FULL combined path, not the bare fragment."""
+    prefix = iterator_prefix(iterator)
+    return f"{prefix}.{relative}" if prefix else relative
+
+
 def clean_section_title(raw: str) -> str:
     """Strip engineering-changelog boilerplate from a section header's title
     text, so what a reader sees is a short descriptive label, not a fragment
@@ -193,21 +222,22 @@ def main() -> None:
         constant = row.get("constant") or ""
         direct_object = row.get("directObject") or ""
         fn_ref = row.get("fnRef") or ""
+        iterator = triplesmaps[name]["iterator"]
 
         if ref:
             kind = "reference"
-            json_path = ref
+            json_path = full_json_path(iterator, ref)
         elif obj_template:
             placeholders = extract_placeholders(obj_template)
             kind = "template"
-            json_path = ", ".join(placeholders) if placeholders else ""
+            json_path = ", ".join(full_json_path(iterator, p) for p in placeholders) if placeholders else ""
         elif constant or direct_object:
             kind = "constant"
             json_path = ""
             constant = constant or direct_object
         elif fn_ref:
             kind = "function"
-            json_path = fn_ref
+            json_path = full_json_path(iterator, fn_ref)
         else:
             kind = "unknown"
             json_path = ""
