@@ -75,7 +75,13 @@
         theme: S.isDark() ? 'dark' : 'light',
         node: { style: nodeStyle(theme) },
         edge: { style: edgeStyle(theme) },
-        layout: { type: 'd3-force', link: { distance: 70 }, collide: { radius: 30 } },
+        // 'd3-force' (the original choice) crashes G6 v5.1.1 on this graph —
+        // confirmed via console: a TypeError deep in g-lite's shape renderer
+        // (drawKeyShape -> upsert), reproducible regardless of node style
+        // config, that disappears entirely with any other layout type. G6's
+        // own native 'force' layout gives the same force-directed spread
+        // without the crash.
+        layout: { type: 'force', linkDistance: 70, preventOverlap: true, nodeSize: 30 },
         behaviors: ['drag-canvas', 'zoom-canvas', 'drag-element'],
       });
 

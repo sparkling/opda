@@ -66,6 +66,13 @@
   }
 
   var LAYOUTS = {
+    // packComponents packs disconnected nodes/subgraphs (e.g. the ~20 isolated
+    // classes with no object-property edges) into a separate grid via a
+    // rectangle-packing step, bypassing the force layout's own node spacing —
+    // its default componentSpacing (40) only accounts for node radius, not
+    // label width, so long class-name labels overlapped badly. Raised well
+    // past the longest labels' width to give each packed node real breathing
+    // room.
     fcose: { name: 'fcose', quality: 'default', animate: false, randomize: true,
              nodeSeparation: 90, idealEdgeLength: 90, nodeRepulsion: 9000, packComponents: true },
     cose: { name: 'cose', animate: false, nodeRepulsion: 9000, idealEdgeLength: 90 },
@@ -98,9 +105,43 @@
       var curLayout = 'fcose';
       var facets = opts.facets || null;
 
+      // fcose (and cose) place zero-degree nodes (~13 classes with no
+      // object-property edges) in a fallback packed grid sized only for the
+      // node's own circle, not its label — long class-name labels overlap
+      // badly (confirmed live: neither packComponents:false nor a larger
+      // componentSpacing changed this, so it isn't the disconnected-
+      // component packer at all — these are singleton orphans handled by a
+      // separate fallback). Deterministically re-lay them out below the
+      // connected graph with real label-width spacing instead.
+      // Returns the "rest" (non-isolated) collection so the caller can fit
+      // the viewport to the main graph specifically — fitting against
+      // everything would let ~17 isolated nodes' grid footprint force the
+      // whole view to zoom out drastically, shrinking the actual connected
+      // graph into a corner.
+      function spreadIsolatedNodes() {
+        var visible = cy.nodes().filter(function (n) { return n.style('display') !== 'none'; });
+        var isolated = visible.filter(function (n) { return n.degree() === 0; });
+        var rest = visible.not(isolated);
+        if (isolated.length === 0) return rest;
+        var bb = rest.length ? rest.boundingBox() : { x1: 0, y1: 0, x2: 0, y2: 0 };
+        var cell = 190; // wide enough for the longest class-name labels
+        var cols = Math.max(1, Math.min(isolated.length, Math.round(Math.sqrt(isolated.length) * 1.6)));
+        var startX = bb.x1;
+        var startY = bb.y2 + 80;
+        isolated.forEach(function (n, i) {
+          var col = i % cols, row = Math.floor(i / cols);
+          n.position({ x: startX + col * cell, y: startY + row * cell });
+        });
+        return rest;
+      }
+
       function runLayout(name) {
         if (name === 'fcose' && !l.hasFcose) name = 'cose';
         curLayout = name;
+        cy.one('layoutstop', function () {
+          var rest = spreadIsolatedNodes();
+          cy.fit(rest.length ? rest : cy.elements(), 30);
+        });
         cy.layout(Object.assign({ fit: true, padding: 30 }, LAYOUTS[name] || LAYOUTS.cose)).run();
       }
       function applySkos(show) {

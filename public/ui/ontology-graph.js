@@ -122,6 +122,21 @@
     if (n) n.textContent = engine && engine.note ? engine.note : '';
   }
 
+  // Both Mermaid tabs render an OWL-backbone-only diagram and can't add the
+  // SKOS layer in place (hairballs past ~40 nodes) — disable + tooltip the
+  // checkbox instead of leaving it clickable with no visible effect, which
+  // read as broken rather than as an intentional per-engine limitation.
+  function syncSkosControl(engine) {
+    var wrap = el('og-skos') && el('og-skos').closest('.og-ctl--check');
+    var skos = el('og-skos');
+    if (!skos) return;
+    var unsupported = !!(engine && engine.skosUnsupported);
+    skos.disabled = unsupported;
+    var title = unsupported ? 'Not available for ' + engine.label + ' — see the note above.' : '';
+    skos.title = title;
+    if (wrap) wrap.title = title;
+  }
+
   async function activate(id) {
     var engine = S.registry[id];
     if (!engine) return;
@@ -139,6 +154,7 @@
       b.setAttribute('aria-selected', on ? 'true' : 'false');
     });
     syncLayoutControl(engine);
+    syncSkosControl(engine);
     setNote(engine);
     renderInfo(null);
     status('Loading ' + engine.label + '…');

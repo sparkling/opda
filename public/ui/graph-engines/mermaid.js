@@ -128,6 +128,11 @@
     kind: 'diagram',
     order: 70,
     note: 'OWL class backbone only — Mermaid hairballs past ~40 nodes, so the 415-node SKOS layer is omitted.',
+    // Drives the orchestrator disabling + tooltipping "Show SKOS layer"
+    // instead of leaving it clickable with no visible effect (confirmed
+    // point of confusion: the only feedback was an onStatus message easy
+    // to miss off to the side of the toolbar).
+    skosUnsupported: true,
 
     async mount(container, data, opts) {
       container.classList.add('og-canvas--diagram');

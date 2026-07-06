@@ -147,6 +147,12 @@ const showSidebar = !hideSidebar && !!activeSection;
     import { adoptBareMermaid } from '../scripts/graph-diagram';
     adoptBareMermaid();
     document.addEventListener('astro:page-load', adoptBareMermaid);
+    // Exposed so non-bundled plain scripts (e.g. the /ontology/graph engine
+    // bake-off's public/ui/graph-engines/*.js modules, which can't use Vite
+    // imports) can adopt a dynamically-created bare .mermaid div into the
+    // same pan/zoom/fullscreen viewer the rest of the site uses.
+    window.OPDA = window.OPDA || {};
+    window.OPDA.adoptBareMermaid = adoptBareMermaid;
   </script>
   <slot name="scripts" />
 </body>

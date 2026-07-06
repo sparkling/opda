@@ -18,7 +18,7 @@ const counts = model.counts;
 
 // Node fill encodes node TYPE (see _shared.js COLORS); the UFO facet is a filter,
 // not a colour. Bump clientV when the engine/orchestrator JS changes (cache-bust).
-const clientV = '7';
+const clientV = '18';
 ---
 <Layout
   title="Ontology graph — interactive bake-off"
@@ -137,6 +137,8 @@ const clientV = '7';
     .og-toolbar { display: flex; flex-wrap: wrap; gap: var(--space-3); align-items: end; padding: var(--space-3); background: var(--color-surface-tint); border: 1px solid var(--color-border); border-radius: var(--radius-md, 8px); margin: 0 0 var(--space-3); }
     .og-ctl { display: flex; flex-direction: column; gap: var(--space-1); font: 600 var(--text-xs)/1.3 var(--font-sans); color: var(--color-text-muted); text-transform: uppercase; letter-spacing: .03em; }
     .og-ctl--check { flex-direction: row; align-items: center; gap: var(--space-2); text-transform: none; letter-spacing: 0; font-size: var(--text-sm); color: var(--color-text); align-self: center; }
+    .og-ctl--check:has(input:disabled) { color: var(--color-text-muted); cursor: not-allowed; }
+    .og-ctl--check input:disabled { cursor: not-allowed; }
     .og-ctl select { font: 400 var(--text-sm)/1.4 var(--font-sans); color: var(--color-text); background: var(--color-surface); border: 1px solid var(--color-border-strong); border-radius: 6px; padding: var(--space-1) var(--space-2); min-width: 11rem; }
     .og-btn { font: 600 var(--text-sm)/1 var(--font-sans); color: var(--color-text); background: var(--color-surface); border: 1px solid var(--color-border-strong); border-radius: 6px; padding: var(--space-2) var(--space-3); cursor: pointer; align-self: center; }
     .og-btn:hover { border-color: var(--color-brand-500); }
@@ -187,6 +189,7 @@ const clientV = '7';
   <script slot="scripts" is:inline data-astro-rerun src={`/ui/graph-engines/g6.js?v=${clientV}`}></script>
   <script slot="scripts" is:inline data-astro-rerun src={`/ui/graph-engines/sigma.js?v=${clientV}`}></script>
   <script slot="scripts" is:inline data-astro-rerun src={`/ui/graph-engines/mermaid.js?v=${clientV}`}></script>
+  <script slot="scripts" is:inline data-astro-rerun src={`/ui/graph-engines/mermaid-elk.js?v=${clientV}`}></script>
   <script slot="scripts" is:inline data-astro-rerun src={`/ui/graph-engines/dot.js?v=${clientV}`}></script>
   <script slot="scripts" is:inline data-astro-rerun src={`/ui/ontology-graph.js?v=${clientV}`}></script>
   <script slot="scripts" is:inline data-astro-rerun>
