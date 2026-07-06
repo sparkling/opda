@@ -2,15 +2,13 @@
 import Layout from '@/layouts/Layout.astro';
 ---
 <Layout
-  title="Schema · Chain, milestones &amp; contracts"
+  title="Schema · Chain, milestones & contracts"
   description="The process artefacts of a transaction — its lifecycle state machine, the linked transactions ahead and behind it in a chain, and the contract documents that settle it. Everything here happens at the transaction level, not the property level."
 >
-<div class="page-meta">
+      <div class="page-meta">
         <span class="pill pill--info">Schema</span>
         <span>Page 36</span>
-        <span>Generated 2026-05-17</span>
-        <span title="DAMA-DMBOK2 Knowledge Area — per ADR-0001">DAMA · Data Modeling &amp; Design</span>
-      </div>
+        <span>Generated 2026-07-06</span>        <span title="DAMA-DMBOK2 Knowledge Area — per ADR-0001">DAMA · Data Modeling &amp; Design</span>      </div>
 
       <h1>Chain, milestones & contracts</h1>
 
@@ -209,9 +207,8 @@ are the critical path.</figcaption></figure>
                       class="mt-2 rounded-md bg-[var(--button-bg)] outline-1 outline-[var(--ring-subtle)] shadow-lg p-5 transition transition-discrete data-closed:opacity-0 data-closed:scale-95 data-enter:duration-100 data-enter:ease-out data-leave:duration-75 data-leave:ease-in">
           </el-popover>
         </el-popover-group>
-      </div>      <h3 id="chain">Chain</h3>      <div class="object-block" id="obj-Transaction" data-display-id="transaction">
-  <header class="object-block__head">
-    <div class="object-block__title-row">
+      </div>      <p class="muted tiny object-ancestors-note">Parent containers — shown for reference; their own content lives in the sections below.</p>      <div class="object-block" id="obj-Transaction" data-display-id="transaction">
+  <header class="object-block__head">    <div class="object-block__title-row">
       <h4 id="transaction" class="object-block__title" data-display-id="transaction">
         <span class="object-block__display">Transaction</span>      </h4>
       <code class="object-block__path">transaction (root)</code>
@@ -239,9 +236,9 @@ are the critical path.</figcaption></figure>
           </svg>
           <span>Milestones</span>
         </a>
-      </li>    </ul>  </header>  <p class="muted tiny">No scalar fields on this object — pure container.</p></div>      <div class="object-block" id="obj-Chain" data-display-id="chain">
-  <header class="object-block__head">
-    <div class="object-block__title-row">
+      </li>    </ul>  </header>  <p class="muted tiny">No scalar fields on this object — pure container.</p></div>      <h3 id="chain">Chain</h3>      <div class="object-block" id="obj-Chain" data-display-id="chain">
+  <header class="object-block__head">    <nav class="object-block__breadcrumb" aria-label="Location in the schema">      <a href="#transaction">Transaction</a><span aria-hidden="true"> › </span>      <span aria-current="location">Chain</span>
+    </nav>    <div class="object-block__title-row">
       <h4 id="chain" class="object-block__title" data-display-id="chain">
         <span class="object-block__display">Chain</span>      </h4>
       <code class="object-block__path">chain</code>
@@ -254,8 +251,8 @@ are the critical path.</figcaption></figure>
           <span>Onward Purchase[]</span>
         </a>
       </li>    </ul>  </header>  <p class="muted tiny">No scalar fields on this object — pure container.</p></div>      <div class="object-block" id="obj-ChainOnwardPurchase" data-display-id="onwardpurchase">
-  <header class="object-block__head">
-    <div class="object-block__title-row">
+  <header class="object-block__head">    <nav class="object-block__breadcrumb" aria-label="Location in the schema">      <a href="#transaction">Transaction</a><span aria-hidden="true"> › </span>      <a href="#chain">Chain</a><span aria-hidden="true"> › </span>      <span aria-current="location">Onward Purchase</span>
+    </nav>    <div class="object-block__title-row">
       <h4 id="chainonwardpurchase" class="object-block__title" data-display-id="onwardpurchase">
         <span class="object-block__display">Onward Purchase</span><span class="object-block__cardinality" title="array of objects">[]</span>      </h4>
       <code class="object-block__path">chain.onwardPurchase[]</code>
@@ -283,7 +280,8 @@ are the critical path.</figcaption></figure>
           <th style="width: 6rem;">Affordance</th>
         </tr>
       </thead>
-      <tbody>        <tr data-leaf-path="chain.onwardPurchase[].externalIds"
+      <tbody>        <tr id="chainonwardpurchaseexternalids"
+            data-leaf-path="chain.onwardPurchase[].externalIds"
             data-overlays="">
           <td>externalIds</td>
           <td><span class="muted">—</span></td>
@@ -293,7 +291,8 @@ are the critical path.</figcaption></figure>
           <td class="align-center"><span class="muted">—</span></td>
           <td class="overlay-cell"><span class="muted">—</span>          </td>
           <td><span class="muted">—</span>          </td>
-        </tr>        <tr data-leaf-path="chain.onwardPurchase[].sellingAgent"
+        </tr>        <tr id="chainonwardpurchasesellingagent"
+            data-leaf-path="chain.onwardPurchase[].sellingAgent"
             data-overlays="">
           <td>Estate Agent selling the property</td>
           <td>Estate Agent selling the property</td>
@@ -303,7 +302,8 @@ are the critical path.</figcaption></figure>
           <td class="align-center"><span class="muted">—</span></td>
           <td class="overlay-cell"><span class="muted">—</span>          </td>
           <td><span class="muted">—</span>          </td>
-        </tr>        <tr data-leaf-path="chain.onwardPurchase[].transactionId"
+        </tr>        <tr id="chainonwardpurchasetransactionid"
+            data-leaf-path="chain.onwardPurchase[].transactionId"
             data-overlays="">
           <td>UUID for an onward transaction</td>
           <td><span class="muted">—</span></td>
@@ -313,7 +313,8 @@ are the critical path.</figcaption></figure>
           <td class="align-center"><span class="muted">—</span></td>
           <td class="overlay-cell"><span class="muted">—</span>          </td>
           <td><span class="muted">—</span>          </td>
-        </tr>        <tr data-leaf-path="chain.onwardPurchase[].uprn"
+        </tr>        <tr id="chainonwardpurchaseuprn"
+            data-leaf-path="chain.onwardPurchase[].uprn"
             data-overlays="">
           <td>Unique Property Reference Number</td>
           <td><span class="muted">—</span></td>
@@ -326,8 +327,8 @@ are the critical path.</figcaption></figure>
         </tr>      </tbody>
     </table>
   </div></div>      <div class="object-block" id="obj-ChainOnwardPurchaseAddress" data-display-id="address">
-  <header class="object-block__head">
-    <div class="object-block__title-row">
+  <header class="object-block__head">    <nav class="object-block__breadcrumb" aria-label="Location in the schema">      <a href="#transaction">Transaction</a><span aria-hidden="true"> › </span>      <a href="#chain">Chain</a><span aria-hidden="true"> › </span>      <a href="#chainonwardpurchase">Onward Purchase</a><span aria-hidden="true"> › </span>      <span aria-current="location">Address</span>
+    </nav>    <div class="object-block__title-row">
       <h4 id="chainonwardpurchaseaddress" class="object-block__title" data-display-id="address">
         <span class="object-block__display">Address</span>      </h4>
       <code class="object-block__path">chain.onwardPurchase[].address</code>
@@ -347,7 +348,8 @@ are the critical path.</figcaption></figure>
           <th style="width: 6rem;">Affordance</th>
         </tr>
       </thead>
-      <tbody>        <tr data-leaf-path="chain.onwardPurchase[].address.buildingName"
+      <tbody>        <tr id="chainonwardpurchaseaddressbuildingname"
+            data-leaf-path="chain.onwardPurchase[].address.buildingName"
             data-overlays="">
           <td>Building name</td>
           <td><span class="muted">—</span></td>
@@ -357,7 +359,8 @@ are the critical path.</figcaption></figure>
           <td class="align-center"><span class="muted">—</span></td>
           <td class="overlay-cell"><span class="muted">—</span>          </td>
           <td><span class="muted">—</span>          </td>
-        </tr>        <tr data-leaf-path="chain.onwardPurchase[].address.buildingNumber"
+        </tr>        <tr id="chainonwardpurchaseaddressbuildingnumber"
+            data-leaf-path="chain.onwardPurchase[].address.buildingNumber"
             data-overlays="">
           <td>Building number</td>
           <td><span class="muted">—</span></td>
@@ -367,7 +370,8 @@ are the critical path.</figcaption></figure>
           <td class="align-center"><span class="muted">—</span></td>
           <td class="overlay-cell"><span class="muted">—</span>          </td>
           <td><span class="muted">—</span>          </td>
-        </tr>        <tr data-leaf-path="chain.onwardPurchase[].address.homeNation"
+        </tr>        <tr id="chainonwardpurchaseaddresshomenation"
+            data-leaf-path="chain.onwardPurchase[].address.homeNation"
             data-overlays="">
           <td>Home nation</td>
           <td><span class="muted">—</span></td>
@@ -377,7 +381,8 @@ are the critical path.</figcaption></figure>
           <td class="align-center"><span class="muted">—</span></td>
           <td class="overlay-cell"><span class="muted">—</span>          </td>
           <td><span class="muted">—</span>          </td>
-        </tr>        <tr data-leaf-path="chain.onwardPurchase[].address.line 3"
+        </tr>        <tr id="chainonwardpurchaseaddressline3"
+            data-leaf-path="chain.onwardPurchase[].address.line 3"
             data-overlays="">
           <td>Address 3</td>
           <td><span class="muted">—</span></td>
@@ -387,7 +392,8 @@ are the critical path.</figcaption></figure>
           <td class="align-center"><span class="muted">—</span></td>
           <td class="overlay-cell"><span class="muted">—</span>          </td>
           <td><span class="muted">—</span>          </td>
-        </tr>        <tr data-leaf-path="chain.onwardPurchase[].address.line1"
+        </tr>        <tr id="chainonwardpurchaseaddressline1"
+            data-leaf-path="chain.onwardPurchase[].address.line1"
             data-overlays="">
           <td>Address 1</td>
           <td><span class="muted">—</span></td>
@@ -397,7 +403,8 @@ are the critical path.</figcaption></figure>
           <td class="align-center"><span class="muted">—</span></td>
           <td class="overlay-cell"><span class="muted">—</span>          </td>
           <td><span class="muted">—</span>          </td>
-        </tr>        <tr data-leaf-path="chain.onwardPurchase[].address.line2"
+        </tr>        <tr id="chainonwardpurchaseaddressline2"
+            data-leaf-path="chain.onwardPurchase[].address.line2"
             data-overlays="">
           <td>Address 2</td>
           <td><span class="muted">—</span></td>
@@ -407,7 +414,8 @@ are the critical path.</figcaption></figure>
           <td class="align-center"><span class="muted">—</span></td>
           <td class="overlay-cell"><span class="muted">—</span>          </td>
           <td><span class="muted">—</span>          </td>
-        </tr>        <tr data-leaf-path="chain.onwardPurchase[].address.postcode"
+        </tr>        <tr id="chainonwardpurchaseaddresspostcode"
+            data-leaf-path="chain.onwardPurchase[].address.postcode"
             data-overlays="">
           <td>Postcode</td>
           <td><span class="muted">—</span></td>
@@ -417,7 +425,8 @@ are the critical path.</figcaption></figure>
           <td class="align-center"><span class="muted">—</span></td>
           <td class="overlay-cell"><span class="muted">—</span>          </td>
           <td><span class="muted">—</span>          </td>
-        </tr>        <tr data-leaf-path="chain.onwardPurchase[].address.street"
+        </tr>        <tr id="chainonwardpurchaseaddressstreet"
+            data-leaf-path="chain.onwardPurchase[].address.street"
             data-overlays="">
           <td>Street</td>
           <td><span class="muted">—</span></td>
@@ -427,7 +436,8 @@ are the critical path.</figcaption></figure>
           <td class="align-center"><span class="muted">—</span></td>
           <td class="overlay-cell"><span class="muted">—</span>          </td>
           <td><span class="muted">—</span>          </td>
-        </tr>        <tr data-leaf-path="chain.onwardPurchase[].address.subBuilding"
+        </tr>        <tr id="chainonwardpurchaseaddresssubbuilding"
+            data-leaf-path="chain.onwardPurchase[].address.subBuilding"
             data-overlays="">
           <td>Sub building name</td>
           <td><span class="muted">—</span></td>
@@ -437,7 +447,8 @@ are the critical path.</figcaption></figure>
           <td class="align-center"><span class="muted">—</span></td>
           <td class="overlay-cell"><span class="muted">—</span>          </td>
           <td><span class="muted">—</span>          </td>
-        </tr>        <tr data-leaf-path="chain.onwardPurchase[].address.town"
+        </tr>        <tr id="chainonwardpurchaseaddresstown"
+            data-leaf-path="chain.onwardPurchase[].address.town"
             data-overlays="">
           <td>Town</td>
           <td><span class="muted">—</span></td>
@@ -450,8 +461,8 @@ are the critical path.</figcaption></figure>
         </tr>      </tbody>
     </table>
   </div></div>      <h3 id="milestones">Milestones</h3>      <div class="object-block" id="obj-Milestones" data-display-id="milestones">
-  <header class="object-block__head">
-    <div class="object-block__title-row">
+  <header class="object-block__head">    <nav class="object-block__breadcrumb" aria-label="Location in the schema">      <a href="#transaction">Transaction</a><span aria-hidden="true"> › </span>      <span aria-current="location">Milestones</span>
+    </nav>    <div class="object-block__title-row">
       <h4 id="milestones" class="object-block__title" data-display-id="milestones">
         <span class="object-block__display">Milestones</span>      </h4>
       <code class="object-block__path">milestones</code>
@@ -512,8 +523,8 @@ are the critical path.</figcaption></figure>
           <span>Completion</span>
         </a>
       </li>    </ul>  </header>  <p class="muted tiny">No scalar fields on this object — pure container.</p></div>      <div class="object-block" id="obj-MilestonesCompletion" data-display-id="completion">
-  <header class="object-block__head">
-    <div class="object-block__title-row">
+  <header class="object-block__head">    <nav class="object-block__breadcrumb" aria-label="Location in the schema">      <a href="#transaction">Transaction</a><span aria-hidden="true"> › </span>      <a href="#milestones">Milestones</a><span aria-hidden="true"> › </span>      <span aria-current="location">Completion</span>
+    </nav>    <div class="object-block__title-row">
       <h4 id="milestonescompletion" class="object-block__title" data-display-id="completion">
         <span class="object-block__display">Completion</span>      </h4>
       <code class="object-block__path">milestones.completion</code>
@@ -533,7 +544,8 @@ are the critical path.</figcaption></figure>
           <th style="width: 6rem;">Affordance</th>
         </tr>
       </thead>
-      <tbody>        <tr data-leaf-path="milestones.completion.completed"
+      <tbody>        <tr id="milestonescompletioncompleted"
+            data-leaf-path="milestones.completion.completed"
             data-overlays="">
           <td>completed</td>
           <td><span class="muted">—</span></td>
@@ -543,7 +555,8 @@ are the critical path.</figcaption></figure>
           <td class="align-center"><span class="muted">—</span></td>
           <td class="overlay-cell"><span class="muted">—</span>          </td>
           <td><span class="muted">—</span>          </td>
-        </tr>        <tr data-leaf-path="milestones.completion.expected"
+        </tr>        <tr id="milestonescompletionexpected"
+            data-leaf-path="milestones.completion.expected"
             data-overlays="">
           <td>expected</td>
           <td><span class="muted">—</span></td>
@@ -553,7 +566,8 @@ are the critical path.</figcaption></figure>
           <td class="align-center"><span class="muted">—</span></td>
           <td class="overlay-cell"><span class="muted">—</span>          </td>
           <td><span class="muted">—</span>          </td>
-        </tr>        <tr data-leaf-path="milestones.completion.started"
+        </tr>        <tr id="milestonescompletionstarted"
+            data-leaf-path="milestones.completion.started"
             data-overlays="">
           <td>started</td>
           <td><span class="muted">—</span></td>
@@ -566,8 +580,8 @@ are the critical path.</figcaption></figure>
         </tr>      </tbody>
     </table>
   </div></div>      <div class="object-block" id="obj-MilestonesEnquiries" data-display-id="enquiries">
-  <header class="object-block__head">
-    <div class="object-block__title-row">
+  <header class="object-block__head">    <nav class="object-block__breadcrumb" aria-label="Location in the schema">      <a href="#transaction">Transaction</a><span aria-hidden="true"> › </span>      <a href="#milestones">Milestones</a><span aria-hidden="true"> › </span>      <span aria-current="location">Enquiries</span>
+    </nav>    <div class="object-block__title-row">
       <h4 id="milestonesenquiries" class="object-block__title" data-display-id="enquiries">
         <span class="object-block__display">Enquiries</span>      </h4>
       <code class="object-block__path">milestones.enquiries</code>
@@ -587,7 +601,8 @@ are the critical path.</figcaption></figure>
           <th style="width: 6rem;">Affordance</th>
         </tr>
       </thead>
-      <tbody>        <tr data-leaf-path="milestones.enquiries.completed"
+      <tbody>        <tr id="milestonesenquiriescompleted"
+            data-leaf-path="milestones.enquiries.completed"
             data-overlays="">
           <td>completed</td>
           <td><span class="muted">—</span></td>
@@ -597,7 +612,8 @@ are the critical path.</figcaption></figure>
           <td class="align-center"><span class="muted">—</span></td>
           <td class="overlay-cell"><span class="muted">—</span>          </td>
           <td><span class="muted">—</span>          </td>
-        </tr>        <tr data-leaf-path="milestones.enquiries.started"
+        </tr>        <tr id="milestonesenquiriesstarted"
+            data-leaf-path="milestones.enquiries.started"
             data-overlays="">
           <td>started</td>
           <td><span class="muted">—</span></td>
@@ -610,8 +626,8 @@ are the critical path.</figcaption></figure>
         </tr>      </tbody>
     </table>
   </div></div>      <div class="object-block" id="obj-MilestonesExchangeOfContracts" data-display-id="exchangeofcontracts">
-  <header class="object-block__head">
-    <div class="object-block__title-row">
+  <header class="object-block__head">    <nav class="object-block__breadcrumb" aria-label="Location in the schema">      <a href="#transaction">Transaction</a><span aria-hidden="true"> › </span>      <a href="#milestones">Milestones</a><span aria-hidden="true"> › </span>      <span aria-current="location">Exchange Of Contracts</span>
+    </nav>    <div class="object-block__title-row">
       <h4 id="milestonesexchangeofcontracts" class="object-block__title" data-display-id="exchangeofcontracts">
         <span class="object-block__display">Exchange Of Contracts</span>      </h4>
       <code class="object-block__path">milestones.exchangeOfContracts</code>
@@ -631,7 +647,8 @@ are the critical path.</figcaption></figure>
           <th style="width: 6rem;">Affordance</th>
         </tr>
       </thead>
-      <tbody>        <tr data-leaf-path="milestones.exchangeOfContracts.completed"
+      <tbody>        <tr id="milestonesexchangeofcontractscompleted"
+            data-leaf-path="milestones.exchangeOfContracts.completed"
             data-overlays="">
           <td>completed</td>
           <td><span class="muted">—</span></td>
@@ -641,7 +658,8 @@ are the critical path.</figcaption></figure>
           <td class="align-center"><span class="muted">—</span></td>
           <td class="overlay-cell"><span class="muted">—</span>          </td>
           <td><span class="muted">—</span>          </td>
-        </tr>        <tr data-leaf-path="milestones.exchangeOfContracts.expected"
+        </tr>        <tr id="milestonesexchangeofcontractsexpected"
+            data-leaf-path="milestones.exchangeOfContracts.expected"
             data-overlays="">
           <td>expected</td>
           <td><span class="muted">—</span></td>
@@ -654,8 +672,8 @@ are the critical path.</figcaption></figure>
         </tr>      </tbody>
     </table>
   </div></div>      <div class="object-block" id="obj-MilestonesLegalForms" data-display-id="legalforms">
-  <header class="object-block__head">
-    <div class="object-block__title-row">
+  <header class="object-block__head">    <nav class="object-block__breadcrumb" aria-label="Location in the schema">      <a href="#transaction">Transaction</a><span aria-hidden="true"> › </span>      <a href="#milestones">Milestones</a><span aria-hidden="true"> › </span>      <span aria-current="location">Legal Forms</span>
+    </nav>    <div class="object-block__title-row">
       <h4 id="milestoneslegalforms" class="object-block__title" data-display-id="legalforms">
         <span class="object-block__display">Legal Forms</span>      </h4>
       <code class="object-block__path">milestones.legalForms</code>
@@ -675,7 +693,8 @@ are the critical path.</figcaption></figure>
           <th style="width: 6rem;">Affordance</th>
         </tr>
       </thead>
-      <tbody>        <tr data-leaf-path="milestones.legalForms.completed"
+      <tbody>        <tr id="milestoneslegalformscompleted"
+            data-leaf-path="milestones.legalForms.completed"
             data-overlays="">
           <td>completed</td>
           <td><span class="muted">—</span></td>
@@ -685,7 +704,8 @@ are the critical path.</figcaption></figure>
           <td class="align-center"><span class="muted">—</span></td>
           <td class="overlay-cell"><span class="muted">—</span>          </td>
           <td><span class="muted">—</span>          </td>
-        </tr>        <tr data-leaf-path="milestones.legalForms.started"
+        </tr>        <tr id="milestoneslegalformsstarted"
+            data-leaf-path="milestones.legalForms.started"
             data-overlays="">
           <td>started</td>
           <td><span class="muted">—</span></td>
@@ -698,8 +718,8 @@ are the critical path.</figcaption></figure>
         </tr>      </tbody>
     </table>
   </div></div>      <div class="object-block" id="obj-MilestonesListed" data-display-id="listed">
-  <header class="object-block__head">
-    <div class="object-block__title-row">
+  <header class="object-block__head">    <nav class="object-block__breadcrumb" aria-label="Location in the schema">      <a href="#transaction">Transaction</a><span aria-hidden="true"> › </span>      <a href="#milestones">Milestones</a><span aria-hidden="true"> › </span>      <span aria-current="location">Listed</span>
+    </nav>    <div class="object-block__title-row">
       <h4 id="milestoneslisted" class="object-block__title" data-display-id="listed">
         <span class="object-block__display">Listed</span>      </h4>
       <code class="object-block__path">milestones.listed</code>
@@ -719,7 +739,8 @@ are the critical path.</figcaption></figure>
           <th style="width: 6rem;">Affordance</th>
         </tr>
       </thead>
-      <tbody>        <tr data-leaf-path="milestones.listed.completed"
+      <tbody>        <tr id="milestoneslistedcompleted"
+            data-leaf-path="milestones.listed.completed"
             data-overlays="">
           <td>completed</td>
           <td>Actual date of first public listing for sale</td>
@@ -729,7 +750,8 @@ are the critical path.</figcaption></figure>
           <td class="align-center"><span class="muted">—</span></td>
           <td class="overlay-cell"><span class="muted">—</span>          </td>
           <td><span class="muted">—</span>          </td>
-        </tr>        <tr data-leaf-path="milestones.listed.expected"
+        </tr>        <tr id="milestoneslistedexpected"
+            data-leaf-path="milestones.listed.expected"
             data-overlays="">
           <td>expected</td>
           <td>Planned date of listing, for example when scheduled in advance around e.g. Boxing Day activity</td>
@@ -742,8 +764,8 @@ are the critical path.</figcaption></figure>
         </tr>      </tbody>
     </table>
   </div></div>      <div class="object-block" id="obj-MilestonesSearches" data-display-id="searches">
-  <header class="object-block__head">
-    <div class="object-block__title-row">
+  <header class="object-block__head">    <nav class="object-block__breadcrumb" aria-label="Location in the schema">      <a href="#transaction">Transaction</a><span aria-hidden="true"> › </span>      <a href="#milestones">Milestones</a><span aria-hidden="true"> › </span>      <span aria-current="location">Searches</span>
+    </nav>    <div class="object-block__title-row">
       <h4 id="milestonessearches" class="object-block__title" data-display-id="searches">
         <span class="object-block__display">Searches</span>      </h4>
       <code class="object-block__path">milestones.searches</code>
@@ -763,7 +785,8 @@ are the critical path.</figcaption></figure>
           <th style="width: 6rem;">Affordance</th>
         </tr>
       </thead>
-      <tbody>        <tr data-leaf-path="milestones.searches.completed"
+      <tbody>        <tr id="milestonessearchescompleted"
+            data-leaf-path="milestones.searches.completed"
             data-overlays="">
           <td>completed</td>
           <td><span class="muted">—</span></td>
@@ -773,7 +796,8 @@ are the critical path.</figcaption></figure>
           <td class="align-center"><span class="muted">—</span></td>
           <td class="overlay-cell"><span class="muted">—</span>          </td>
           <td><span class="muted">—</span>          </td>
-        </tr>        <tr data-leaf-path="milestones.searches.expected"
+        </tr>        <tr id="milestonessearchesexpected"
+            data-leaf-path="milestones.searches.expected"
             data-overlays="">
           <td>expected</td>
           <td><span class="muted">—</span></td>
@@ -783,7 +807,8 @@ are the critical path.</figcaption></figure>
           <td class="align-center"><span class="muted">—</span></td>
           <td class="overlay-cell"><span class="muted">—</span>          </td>
           <td><span class="muted">—</span>          </td>
-        </tr>        <tr data-leaf-path="milestones.searches.started"
+        </tr>        <tr id="milestonessearchesstarted"
+            data-leaf-path="milestones.searches.started"
             data-overlays="">
           <td>started</td>
           <td>The date the legal form were shared with the vendor for completion</td>
@@ -796,8 +821,8 @@ are the critical path.</figcaption></figure>
         </tr>      </tbody>
     </table>
   </div></div>      <div class="object-block" id="obj-MilestonesSoldSubjectToContract" data-display-id="soldsubjecttocontract">
-  <header class="object-block__head">
-    <div class="object-block__title-row">
+  <header class="object-block__head">    <nav class="object-block__breadcrumb" aria-label="Location in the schema">      <a href="#transaction">Transaction</a><span aria-hidden="true"> › </span>      <a href="#milestones">Milestones</a><span aria-hidden="true"> › </span>      <span aria-current="location">Sold Subject To Contract</span>
+    </nav>    <div class="object-block__title-row">
       <h4 id="milestonessoldsubjecttocontract" class="object-block__title" data-display-id="soldsubjecttocontract">
         <span class="object-block__display">Sold Subject To Contract</span>      </h4>
       <code class="object-block__path">milestones.soldSubjectToContract</code>
@@ -817,7 +842,8 @@ are the critical path.</figcaption></figure>
           <th style="width: 6rem;">Affordance</th>
         </tr>
       </thead>
-      <tbody>        <tr data-leaf-path="milestones.soldSubjectToContract.completed"
+      <tbody>        <tr id="milestonessoldsubjecttocontractcompleted"
+            data-leaf-path="milestones.soldSubjectToContract.completed"
             data-overlays="">
           <td>completed</td>
           <td><span class="muted">—</span></td>
@@ -830,8 +856,8 @@ are the critical path.</figcaption></figure>
         </tr>      </tbody>
     </table>
   </div></div>      <h3 id="contracts">Contracts</h3>      <div class="object-block" id="obj-Contract" data-display-id="contract">
-  <header class="object-block__head">
-    <div class="object-block__title-row">
+  <header class="object-block__head">    <nav class="object-block__breadcrumb" aria-label="Location in the schema">      <a href="#transaction">Transaction</a><span aria-hidden="true"> › </span>      <span aria-current="location">Contracts</span>
+    </nav>    <div class="object-block__title-row">
       <h4 id="contract" class="object-block__title" data-display-id="contract">
         <span class="object-block__display">Contracts</span><span class="object-block__cardinality" title="array of objects">[]</span>      </h4>
       <code class="object-block__path">contracts[]</code>
@@ -852,8 +878,8 @@ are the critical path.</figcaption></figure>
           <span>Signatures[]</span>
         </a>
       </li>    </ul>  </header>  <p class="muted tiny">No scalar fields on this object — pure container.</p></div>      <div class="object-block" id="obj-ContractsContract" data-display-id="contract">
-  <header class="object-block__head">
-    <div class="object-block__title-row">
+  <header class="object-block__head">    <nav class="object-block__breadcrumb" aria-label="Location in the schema">      <a href="#transaction">Transaction</a><span aria-hidden="true"> › </span>      <a href="#contract">Contracts</a><span aria-hidden="true"> › </span>      <span aria-current="location">Contract</span>
+    </nav>    <div class="object-block__title-row">
       <h4 id="contractscontract" class="object-block__title" data-display-id="contract">
         <span class="object-block__display">Contract</span>      </h4>
       <code class="object-block__path">contracts[].contract</code>
@@ -881,7 +907,8 @@ are the critical path.</figcaption></figure>
           <th style="width: 6rem;">Affordance</th>
         </tr>
       </thead>
-      <tbody>        <tr data-leaf-path="contracts[].contract.terms"
+      <tbody>        <tr id="contractscontractterms"
+            data-leaf-path="contracts[].contract.terms"
             data-overlays="">
           <td>terms</td>
           <td>Data group capturing term information.</td>
@@ -894,8 +921,8 @@ are the critical path.</figcaption></figure>
         </tr>      </tbody>
     </table>
   </div></div>      <div class="object-block" id="obj-ContractsSignature" data-display-id="signature">
-  <header class="object-block__head">
-    <div class="object-block__title-row">
+  <header class="object-block__head">    <nav class="object-block__breadcrumb" aria-label="Location in the schema">      <a href="#transaction">Transaction</a><span aria-hidden="true"> › </span>      <a href="#contract">Contracts</a><span aria-hidden="true"> › </span>      <span aria-current="location">Signatures</span>
+    </nav>    <div class="object-block__title-row">
       <h4 id="contractssignature" class="object-block__title" data-display-id="signature">
         <span class="object-block__display">Signatures</span><span class="object-block__cardinality" title="array of objects">[]</span>      </h4>
       <code class="object-block__path">contracts[].signatures[]</code>
@@ -915,7 +942,8 @@ are the critical path.</figcaption></figure>
           <th style="width: 6rem;">Affordance</th>
         </tr>
       </thead>
-      <tbody>        <tr data-leaf-path="contracts[].signatures[].name"
+      <tbody>        <tr id="contractssignaturesname"
+            data-leaf-path="contracts[].signatures[].name"
             data-overlays="">
           <td>name</td>
           <td><span class="muted">—</span></td>
@@ -925,7 +953,8 @@ are the critical path.</figcaption></figure>
           <td class="align-center">yes</td>
           <td class="overlay-cell"><span class="muted">—</span>          </td>
           <td><span class="muted">—</span>          </td>
-        </tr>        <tr data-leaf-path="contracts[].signatures[].signedOn"
+        </tr>        <tr id="contractssignaturessignedon"
+            data-leaf-path="contracts[].signatures[].signedOn"
             data-overlays="">
           <td>signedOn</td>
           <td>Date and time of signature in ISO 8601 format</td>
@@ -935,7 +964,8 @@ are the critical path.</figcaption></figure>
           <td class="align-center">yes</td>
           <td class="overlay-cell"><span class="muted">—</span>          </td>
           <td><span class="muted">—</span>          </td>
-        </tr>        <tr data-leaf-path="contracts[].signatures[].externalIds"
+        </tr>        <tr id="contractssignaturesexternalids"
+            data-leaf-path="contracts[].signatures[].externalIds"
             data-overlays="">
           <td>externalIds</td>
           <td><span class="muted">—</span></td>
@@ -948,8 +978,8 @@ are the critical path.</figcaption></figure>
         </tr>      </tbody>
     </table>
   </div></div>      <div class="object-block" id="obj-ContractsContractTemplate" data-display-id="template">
-  <header class="object-block__head">
-    <div class="object-block__title-row">
+  <header class="object-block__head">    <nav class="object-block__breadcrumb" aria-label="Location in the schema">      <a href="#transaction">Transaction</a><span aria-hidden="true"> › </span>      <a href="#contract">Contracts</a><span aria-hidden="true"> › </span>      <a href="#contractscontract">Contract</a><span aria-hidden="true"> › </span>      <span aria-current="location">Template</span>
+    </nav>    <div class="object-block__title-row">
       <h4 id="contractscontracttemplate" class="object-block__title" data-display-id="template">
         <span class="object-block__display">Template</span>      </h4>
       <code class="object-block__path">contracts[].contract.template</code>
@@ -977,7 +1007,8 @@ are the critical path.</figcaption></figure>
           <th style="width: 6rem;">Affordance</th>
         </tr>
       </thead>
-      <tbody>        <tr data-leaf-path="contracts[].contract.template.name"
+      <tbody>        <tr id="contractscontracttemplatename"
+            data-leaf-path="contracts[].contract.template.name"
             data-overlays="">
           <td>name</td>
           <td><span class="muted">—</span></td>
@@ -987,7 +1018,8 @@ are the critical path.</figcaption></figure>
           <td class="align-center">yes</td>
           <td class="overlay-cell"><span class="muted">—</span>          </td>
           <td><span class="muted">—</span>          </td>
-        </tr>        <tr data-leaf-path="contracts[].contract.template.url"
+        </tr>        <tr id="contractscontracttemplateurl"
+            data-leaf-path="contracts[].contract.template.url"
             data-overlays="">
           <td>url</td>
           <td>A Uniform Resource Locator is the unique web address of a resource on the internet, such as an API, webpage, image, or file. It tells your web browser how and where to access that resource, functioning like a street address for the web. Link to application on council planning portal</td>
@@ -997,7 +1029,8 @@ are the critical path.</figcaption></figure>
           <td class="align-center">yes</td>
           <td class="overlay-cell"><span class="muted">—</span>          </td>
           <td><span class="muted">—</span>          </td>
-        </tr>        <tr data-leaf-path="contracts[].contract.template.externalIds"
+        </tr>        <tr id="contractscontracttemplateexternalids"
+            data-leaf-path="contracts[].contract.template.externalIds"
             data-overlays="">
           <td>externalIds</td>
           <td><span class="muted">—</span></td>
@@ -1010,8 +1043,8 @@ are the critical path.</figcaption></figure>
         </tr>      </tbody>
     </table>
   </div></div>      <div class="object-block" id="obj-ContractsContractTemplateRequiredSignatorie" data-display-id="requiredsignatorie">
-  <header class="object-block__head">
-    <div class="object-block__title-row">
+  <header class="object-block__head">    <nav class="object-block__breadcrumb" aria-label="Location in the schema">      <a href="#transaction">Transaction</a><span aria-hidden="true"> › </span>      <a href="#contract">Contracts</a><span aria-hidden="true"> › </span>      <a href="#contractscontract">Contract</a><span aria-hidden="true"> › </span>      <a href="#contractscontracttemplate">Template</a><span aria-hidden="true"> › </span>      <span aria-current="location">Required Signatories</span>
+    </nav>    <div class="object-block__title-row">
       <h4 id="contractscontracttemplaterequiredsignatorie" class="object-block__title" data-display-id="requiredsignatorie">
         <span class="object-block__display">Required Signatories</span><span class="object-block__cardinality" title="array of objects">[]</span>      </h4>
       <code class="object-block__path">contracts[].contract.template.requiredSignatories[]</code>
@@ -1031,7 +1064,8 @@ are the critical path.</figcaption></figure>
           <th style="width: 6rem;">Affordance</th>
         </tr>
       </thead>
-      <tbody>        <tr data-leaf-path="contracts[].contract.template.requiredSignatories[].requiresAll"
+      <tbody>        <tr id="contractscontracttemplaterequiredsignatoriesrequiresall"
+            data-leaf-path="contracts[].contract.template.requiredSignatories[].requiresAll"
             data-overlays="">
           <td>requiresAll</td>
           <td>Boolean flag: require all.</td>
@@ -1041,7 +1075,8 @@ are the critical path.</figcaption></figure>
           <td class="align-center"><span class="muted">—</span></td>
           <td class="overlay-cell"><span class="muted">—</span>          </td>
           <td><span class="muted">—</span>          </td>
-        </tr>        <tr data-leaf-path="contracts[].contract.template.requiredSignatories[].role"
+        </tr>        <tr id="contractscontracttemplaterequiredsignatoriesrole"
+            data-leaf-path="contracts[].contract.template.requiredSignatories[].role"
             data-overlays="">
           <td>role</td>
           <td><span class="muted">—</span></td>
@@ -1057,4 +1092,21 @@ are the critical path.</figcaption></figure>
         <p class="callout__label">Gap notes</p>
         <p>Milestone ordering is implicit in the schema (listed → offerAccepted → exchange → completion) but isn't expressed as a state machine. A future revision should encode valid transitions explicitly — today, a completion milestone can appear before an exchange milestone without schema-level objection.</p>
       </aside>
+<script slot="scripts" is:inline data-astro-rerun src="/ui/schema-leaf-table.js"></script>
+<script slot="scripts" is:inline data-astro-rerun>
+  if (window._opdaSchemaLeafMount) {
+    document.removeEventListener('astro:page-load', window._opdaSchemaLeafMount);
+  }
+  window._opdaSchemaLeafMount = function () {
+    if (typeof mountLeafTable === 'function') {
+      mountLeafTable({
+        page: '36',
+        showEnvelopes: false,
+        filterButtonId: 'filter-overlay-btn',
+        filterCountId: 'filter-overlay-count'
+      });
+    }
+  };
+  document.addEventListener('astro:page-load', window._opdaSchemaLeafMount);
+</script>
 </Layout>

@@ -73,6 +73,14 @@ def field_name_on_parent(path: str) -> str:
 _BAD_ID = re.compile(r"[^A-Za-z0-9]")
 
 
+def leaf_anchor(path: str) -> str:
+    """Page-unique HTML id for a scalar leaf row — the same PascalCase-then-
+    lowercase transform already used for object anchors (er_id().lower()),
+    applied to the leaf's own full path so every field gets its own real,
+    linkable id (previously only the containing object had one)."""
+    return er_id(path).lower()
+
+
 def er_id(path: str) -> str:
     """A unique, Mermaid-safe identifier derived from the path.
 

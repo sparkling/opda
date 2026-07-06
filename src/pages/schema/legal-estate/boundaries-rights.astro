@@ -2,15 +2,13 @@
 import Layout from '@/layouts/Layout.astro';
 ---
 <Layout
-  title="Schema · Boundaries &amp; rights"
-  description="Boundaries &amp;amp; rights"
+  title="Schema · Boundaries & rights"
+  description="Boundaries & rights"
 >
-<div class="page-meta">
+      <div class="page-meta">
         <span class="pill pill--info">Schema</span>
         <span>Page 38g</span>
-        <span>Generated 2026-05-17</span>
-        <span title="DAMA-DMBOK2 Knowledge Area — per ADR-0001">DAMA · Data Modeling &amp; Design</span>
-      </div>
+        <span>Generated 2026-07-06</span>        <span title="DAMA-DMBOK2 Knowledge Area — per ADR-0001">DAMA · Data Modeling &amp; Design</span>      </div>
 
       <h1>Boundaries & rights</h1>
 
@@ -197,9 +195,8 @@ erDiagram
                       class="mt-2 rounded-md bg-[var(--button-bg)] outline-1 outline-[var(--ring-subtle)] shadow-lg p-5 transition transition-discrete data-closed:opacity-0 data-closed:scale-95 data-enter:duration-100 data-enter:ease-out data-leave:duration-75 data-leave:ease-in">
           </el-popover>
         </el-popover-group>
-      </div>      <h3 id="boundaries">Legal boundaries</h3>      <div class="object-block" id="obj-Transaction" data-display-id="transaction">
-  <header class="object-block__head">
-    <div class="object-block__title-row">
+      </div>      <p class="muted tiny object-ancestors-note">Parent containers — shown for reference; their own content lives in the sections below.</p>      <div class="object-block" id="obj-Transaction" data-display-id="transaction">
+  <header class="object-block__head">    <div class="object-block__title-row">
       <h4 id="transaction" class="object-block__title" data-display-id="transaction">
         <span class="object-block__display">Transaction</span>      </h4>
       <code class="object-block__path">transaction (root)</code>
@@ -212,8 +209,8 @@ erDiagram
           <span>Property Pack</span>
         </a>
       </li>    </ul>  </header>  <p class="muted tiny">No scalar fields on this object — pure container.</p></div>      <div class="object-block" id="obj-PropertyPack" data-display-id="propertypack">
-  <header class="object-block__head">
-    <div class="object-block__title-row">
+  <header class="object-block__head">    <nav class="object-block__breadcrumb" aria-label="Location in the schema">      <a href="#transaction">Transaction</a><span aria-hidden="true"> › </span>      <span aria-current="location">Property Pack</span>
+    </nav>    <div class="object-block__title-row">
       <h4 id="propertypack" class="object-block__title" data-display-id="propertypack">
         <span class="object-block__display">Property Pack</span>      </h4>
       <code class="object-block__path">propertyPack</code>
@@ -233,9 +230,9 @@ erDiagram
           </svg>
           <span>Legal Boundaries</span>
         </a>
-      </li>    </ul>  </header>  <p class="muted tiny">No scalar fields on this object — pure container.</p></div>      <div class="object-block" id="obj-PropertyPackLegalBoundaries" data-display-id="legalboundaries">
-  <header class="object-block__head">
-    <div class="object-block__title-row">
+      </li>    </ul>  </header>  <p class="muted tiny">No scalar fields on this object — pure container.</p></div>      <h3 id="boundaries">Legal boundaries</h3>      <div class="object-block" id="obj-PropertyPackLegalBoundaries" data-display-id="legalboundaries">
+  <header class="object-block__head">    <nav class="object-block__breadcrumb" aria-label="Location in the schema">      <a href="#transaction">Transaction</a><span aria-hidden="true"> › </span>      <a href="#propertypack">Property Pack</a><span aria-hidden="true"> › </span>      <span aria-current="location">Legal Boundaries</span>
+    </nav>    <div class="object-block__title-row">
       <h4 id="propertypacklegalboundaries" class="object-block__title" data-display-id="legalboundaries">
         <span class="object-block__display">Legal Boundaries</span>      </h4>
       <code class="object-block__path">propertyPack.legalBoundaries</code>
@@ -304,8 +301,8 @@ erDiagram
           <span>Flying Freehold</span>
         </a>
       </li>    </ul>  </header>  <p class="muted tiny">No scalar fields on this object — pure container.</p></div>      <div class="object-block" id="obj-PropertyPackLegalBoundariesAdjacentLandIncluded" data-display-id="adjacentlandincluded">
-  <header class="object-block__head">
-    <div class="object-block__title-row">
+  <header class="object-block__head">    <nav class="object-block__breadcrumb" aria-label="Location in the schema">      <a href="#transaction">Transaction</a><span aria-hidden="true"> › </span>      <a href="#propertypack">Property Pack</a><span aria-hidden="true"> › </span>      <a href="#propertypacklegalboundaries">Legal Boundaries</a><span aria-hidden="true"> › </span>      <span aria-current="location">Adjacent Land Included</span>
+    </nav>    <div class="object-block__title-row">
       <h4 id="propertypacklegalboundariesadjacentlandincluded" class="object-block__title" data-display-id="adjacentlandincluded">
         <span class="object-block__display">Adjacent Land Included</span>      </h4>
       <code class="object-block__path">propertyPack.legalBoundaries.adjacentLandIncluded</code>
@@ -325,7 +322,8 @@ erDiagram
           <th style="width: 6rem;">Affordance</th>
         </tr>
       </thead>
-      <tbody>        <tr data-leaf-path="propertyPack.legalBoundaries.adjacentLandIncluded.details"
+      <tbody>        <tr id="propertypacklegalboundariesadjacentlandincludeddetails"
+            data-leaf-path="propertyPack.legalBoundaries.adjacentLandIncluded.details"
             data-overlays="baspi5,ta6">
           <td>Details</td>
           <td><span class="muted">—</span></td>
@@ -335,7 +333,8 @@ erDiagram
           <td class="align-center"><span class="muted">—</span></td>
           <td class="overlay-cell">              <div class="overlay-line">Buyers & Sellers Property Information v5 <span class="overlay-key">(BASPI5)</span></div>              <div class="overlay-line">Law Society Property Information Form <span class="overlay-key">(TA6)</span></div>          </td>
           <td><span class="muted">—</span>          </td>
-        </tr>        <tr data-leaf-path="propertyPack.legalBoundaries.adjacentLandIncluded.yesNo"
+        </tr>        <tr id="propertypacklegalboundariesadjacentlandincludedyesno"
+            data-leaf-path="propertyPack.legalBoundaries.adjacentLandIncluded.yesNo"
             data-overlays="baspi5,piq,rds,ta6">
           <td>yesNo</td>
           <td><span class="muted">—</span></td>
@@ -345,7 +344,8 @@ erDiagram
           <td class="align-center"><span class="muted">—</span></td>
           <td class="overlay-cell">              <div class="overlay-line">Buyers & Sellers Property Information v5 <span class="overlay-key">(BASPI5)</span></div>              <div class="overlay-line">Property Information Questionnaire <span class="overlay-key">(PIQ)</span></div>              <div class="overlay-line">Residential Disclosure Standard <span class="overlay-key">(RDS)</span></div>              <div class="overlay-line">Law Society Property Information Form <span class="overlay-key">(TA6)</span></div>          </td>
           <td><span class="muted">—</span>          </td>
-        </tr>        <tr data-leaf-path="propertyPack.legalBoundaries.adjacentLandIncluded.yesNo"
+        </tr>        <tr id="propertypacklegalboundariesadjacentlandincludedyesno-2"
+            data-leaf-path="propertyPack.legalBoundaries.adjacentLandIncluded.yesNo"
             data-overlays="baspi5,piq,rds,ta6">
           <td>yesNo</td>
           <td><span class="muted">—</span></td>
@@ -358,8 +358,8 @@ erDiagram
         </tr>      </tbody>
     </table>
   </div></div>      <div class="object-block" id="obj-PropertyPackLegalBoundariesBoundariesDifferFromTitlePlan" data-display-id="boundariesdifferfromtitleplan">
-  <header class="object-block__head">
-    <div class="object-block__title-row">
+  <header class="object-block__head">    <nav class="object-block__breadcrumb" aria-label="Location in the schema">      <a href="#transaction">Transaction</a><span aria-hidden="true"> › </span>      <a href="#propertypack">Property Pack</a><span aria-hidden="true"> › </span>      <a href="#propertypacklegalboundaries">Legal Boundaries</a><span aria-hidden="true"> › </span>      <span aria-current="location">Boundaries Differ From Title Plan</span>
+    </nav>    <div class="object-block__title-row">
       <h4 id="propertypacklegalboundariesboundariesdifferfromtitleplan" class="object-block__title" data-display-id="boundariesdifferfromtitleplan">
         <span class="object-block__display">Boundaries Differ From Title Plan</span>      </h4>
       <code class="object-block__path">propertyPack.legalBoundaries.boundariesDifferFromTitlePlan</code>
@@ -379,7 +379,8 @@ erDiagram
           <th style="width: 6rem;">Affordance</th>
         </tr>
       </thead>
-      <tbody>        <tr data-leaf-path="propertyPack.legalBoundaries.boundariesDifferFromTitlePlan.attachments"
+      <tbody>        <tr id="propertypacklegalboundariesboundariesdifferfromtitleplanattachments"
+            data-leaf-path="propertyPack.legalBoundaries.boundariesDifferFromTitlePlan.attachments"
             data-overlays="baspi5">
           <td>Attachments</td>
           <td><span class="muted">—</span></td>
@@ -389,7 +390,8 @@ erDiagram
           <td class="align-center"><span class="muted">—</span></td>
           <td class="overlay-cell">              <div class="overlay-line">Buyers & Sellers Property Information v5 <span class="overlay-key">(BASPI5)</span></div>          </td>
           <td><span class="muted">—</span>          </td>
-        </tr>        <tr data-leaf-path="propertyPack.legalBoundaries.boundariesDifferFromTitlePlan.details"
+        </tr>        <tr id="propertypacklegalboundariesboundariesdifferfromtitleplandetails"
+            data-leaf-path="propertyPack.legalBoundaries.boundariesDifferFromTitlePlan.details"
             data-overlays="baspi5">
           <td>Please provide details of how they differ and why they changed and provide a plan showing where you believe the boundaries are</td>
           <td><span class="muted">—</span></td>
@@ -399,7 +401,8 @@ erDiagram
           <td class="align-center"><span class="muted">—</span></td>
           <td class="overlay-cell">              <div class="overlay-line">Buyers & Sellers Property Information v5 <span class="overlay-key">(BASPI5)</span></div>          </td>
           <td><span class="muted">—</span>          </td>
-        </tr>        <tr data-leaf-path="propertyPack.legalBoundaries.boundariesDifferFromTitlePlan.yesNo"
+        </tr>        <tr id="propertypacklegalboundariesboundariesdifferfromtitleplanyesno"
+            data-leaf-path="propertyPack.legalBoundaries.boundariesDifferFromTitlePlan.yesNo"
             data-overlays="baspi5,rds">
           <td>yesNo</td>
           <td><span class="muted">—</span></td>
@@ -409,7 +412,8 @@ erDiagram
           <td class="align-center"><span class="muted">—</span></td>
           <td class="overlay-cell">              <div class="overlay-line">Buyers & Sellers Property Information v5 <span class="overlay-key">(BASPI5)</span></div>              <div class="overlay-line">Residential Disclosure Standard <span class="overlay-key">(RDS)</span></div>          </td>
           <td><span class="muted">—</span>          </td>
-        </tr>        <tr data-leaf-path="propertyPack.legalBoundaries.boundariesDifferFromTitlePlan.yesNo"
+        </tr>        <tr id="propertypacklegalboundariesboundariesdifferfromtitleplanyesno-2"
+            data-leaf-path="propertyPack.legalBoundaries.boundariesDifferFromTitlePlan.yesNo"
             data-overlays="baspi5,rds">
           <td>yesNo</td>
           <td><span class="muted">—</span></td>
@@ -422,8 +426,8 @@ erDiagram
         </tr>      </tbody>
     </table>
   </div></div>      <div class="object-block" id="obj-PropertyPackLegalBoundariesBoundaryAlterationProposal" data-display-id="boundaryalterationproposal">
-  <header class="object-block__head">
-    <div class="object-block__title-row">
+  <header class="object-block__head">    <nav class="object-block__breadcrumb" aria-label="Location in the schema">      <a href="#transaction">Transaction</a><span aria-hidden="true"> › </span>      <a href="#propertypack">Property Pack</a><span aria-hidden="true"> › </span>      <a href="#propertypacklegalboundaries">Legal Boundaries</a><span aria-hidden="true"> › </span>      <span aria-current="location">Boundary Alteration Proposal</span>
+    </nav>    <div class="object-block__title-row">
       <h4 id="propertypacklegalboundariesboundaryalterationproposal" class="object-block__title" data-display-id="boundaryalterationproposal">
         <span class="object-block__display">Boundary Alteration Proposal</span>      </h4>
       <code class="object-block__path">propertyPack.legalBoundaries.boundaryAlterationProposal</code>
@@ -443,7 +447,8 @@ erDiagram
           <th style="width: 6rem;">Affordance</th>
         </tr>
       </thead>
-      <tbody>        <tr data-leaf-path="propertyPack.legalBoundaries.boundaryAlterationProposal.details"
+      <tbody>        <tr id="propertypacklegalboundariesboundaryalterationproposaldetails"
+            data-leaf-path="propertyPack.legalBoundaries.boundaryAlterationProposal.details"
             data-overlays="baspi5,piq">
           <td>Details</td>
           <td><span class="muted">—</span></td>
@@ -453,7 +458,8 @@ erDiagram
           <td class="align-center"><span class="muted">—</span></td>
           <td class="overlay-cell">              <div class="overlay-line">Buyers & Sellers Property Information v5 <span class="overlay-key">(BASPI5)</span></div>              <div class="overlay-line">Property Information Questionnaire <span class="overlay-key">(PIQ)</span></div>          </td>
           <td><span class="muted">—</span>          </td>
-        </tr>        <tr data-leaf-path="propertyPack.legalBoundaries.boundaryAlterationProposal.yesNo"
+        </tr>        <tr id="propertypacklegalboundariesboundaryalterationproposalyesno"
+            data-leaf-path="propertyPack.legalBoundaries.boundaryAlterationProposal.yesNo"
             data-overlays="baspi5,piq,rds">
           <td>yesNo</td>
           <td><span class="muted">—</span></td>
@@ -463,7 +469,8 @@ erDiagram
           <td class="align-center"><span class="muted">—</span></td>
           <td class="overlay-cell">              <div class="overlay-line">Buyers & Sellers Property Information v5 <span class="overlay-key">(BASPI5)</span></div>              <div class="overlay-line">Property Information Questionnaire <span class="overlay-key">(PIQ)</span></div>              <div class="overlay-line">Residential Disclosure Standard <span class="overlay-key">(RDS)</span></div>          </td>
           <td><span class="muted">—</span>          </td>
-        </tr>        <tr data-leaf-path="propertyPack.legalBoundaries.boundaryAlterationProposal.yesNo"
+        </tr>        <tr id="propertypacklegalboundariesboundaryalterationproposalyesno-2"
+            data-leaf-path="propertyPack.legalBoundaries.boundaryAlterationProposal.yesNo"
             data-overlays="baspi5,piq,rds">
           <td>yesNo</td>
           <td><span class="muted">—</span></td>
@@ -476,8 +483,8 @@ erDiagram
         </tr>      </tbody>
     </table>
   </div></div>      <div class="object-block" id="obj-PropertyPackLegalBoundariesFlyingFreehold" data-display-id="flyingfreehold">
-  <header class="object-block__head">
-    <div class="object-block__title-row">
+  <header class="object-block__head">    <nav class="object-block__breadcrumb" aria-label="Location in the schema">      <a href="#transaction">Transaction</a><span aria-hidden="true"> › </span>      <a href="#propertypack">Property Pack</a><span aria-hidden="true"> › </span>      <a href="#propertypacklegalboundaries">Legal Boundaries</a><span aria-hidden="true"> › </span>      <span aria-current="location">Flying Freehold</span>
+    </nav>    <div class="object-block__title-row">
       <h4 id="propertypacklegalboundariesflyingfreehold" class="object-block__title" data-display-id="flyingfreehold">
         <span class="object-block__display">Flying Freehold</span>      </h4>
       <code class="object-block__path">propertyPack.legalBoundaries.flyingFreehold</code>
@@ -497,7 +504,8 @@ erDiagram
           <th style="width: 6rem;">Affordance</th>
         </tr>
       </thead>
-      <tbody>        <tr data-leaf-path="propertyPack.legalBoundaries.flyingFreehold.details"
+      <tbody>        <tr id="propertypacklegalboundariesflyingfreeholddetails"
+            data-leaf-path="propertyPack.legalBoundaries.flyingFreehold.details"
             data-overlays="baspi5,ta6">
           <td>Details</td>
           <td><span class="muted">—</span></td>
@@ -507,7 +515,8 @@ erDiagram
           <td class="align-center"><span class="muted">—</span></td>
           <td class="overlay-cell">              <div class="overlay-line">Buyers & Sellers Property Information v5 <span class="overlay-key">(BASPI5)</span></div>              <div class="overlay-line">Law Society Property Information Form <span class="overlay-key">(TA6)</span></div>          </td>
           <td><span class="muted">—</span>          </td>
-        </tr>        <tr data-leaf-path="propertyPack.legalBoundaries.flyingFreehold.yesNo"
+        </tr>        <tr id="propertypacklegalboundariesflyingfreeholdyesno"
+            data-leaf-path="propertyPack.legalBoundaries.flyingFreehold.yesNo"
             data-overlays="baspi5,rds,ta6">
           <td>yesNo</td>
           <td><span class="muted">—</span></td>
@@ -517,7 +526,8 @@ erDiagram
           <td class="align-center"><span class="muted">—</span></td>
           <td class="overlay-cell">              <div class="overlay-line">Buyers & Sellers Property Information v5 <span class="overlay-key">(BASPI5)</span></div>              <div class="overlay-line">Residential Disclosure Standard <span class="overlay-key">(RDS)</span></div>              <div class="overlay-line">Law Society Property Information Form <span class="overlay-key">(TA6)</span></div>          </td>
           <td><span class="muted">—</span>          </td>
-        </tr>        <tr data-leaf-path="propertyPack.legalBoundaries.flyingFreehold.yesNo"
+        </tr>        <tr id="propertypacklegalboundariesflyingfreeholdyesno-2"
+            data-leaf-path="propertyPack.legalBoundaries.flyingFreehold.yesNo"
             data-overlays="baspi5,rds,ta6">
           <td>yesNo</td>
           <td><span class="muted">—</span></td>
@@ -530,8 +540,8 @@ erDiagram
         </tr>      </tbody>
     </table>
   </div></div>      <div class="object-block" id="obj-PropertyPackLegalBoundariesHaveBoundaryFeaturesMoved" data-display-id="haveboundaryfeaturesmoved">
-  <header class="object-block__head">
-    <div class="object-block__title-row">
+  <header class="object-block__head">    <nav class="object-block__breadcrumb" aria-label="Location in the schema">      <a href="#transaction">Transaction</a><span aria-hidden="true"> › </span>      <a href="#propertypack">Property Pack</a><span aria-hidden="true"> › </span>      <a href="#propertypacklegalboundaries">Legal Boundaries</a><span aria-hidden="true"> › </span>      <span aria-current="location">Have Boundary Features Moved</span>
+    </nav>    <div class="object-block__title-row">
       <h4 id="propertypacklegalboundarieshaveboundaryfeaturesmoved" class="object-block__title" data-display-id="haveboundaryfeaturesmoved">
         <span class="object-block__display">Have Boundary Features Moved</span>      </h4>
       <code class="object-block__path">propertyPack.legalBoundaries.haveBoundaryFeaturesMoved</code>
@@ -551,7 +561,8 @@ erDiagram
           <th style="width: 6rem;">Affordance</th>
         </tr>
       </thead>
-      <tbody>        <tr data-leaf-path="propertyPack.legalBoundaries.haveBoundaryFeaturesMoved.details"
+      <tbody>        <tr id="propertypacklegalboundarieshaveboundaryfeaturesmoveddetails"
+            data-leaf-path="propertyPack.legalBoundaries.haveBoundaryFeaturesMoved.details"
             data-overlays="baspi5,piq,ta6">
           <td>Details</td>
           <td><span class="muted">—</span></td>
@@ -561,7 +572,8 @@ erDiagram
           <td class="align-center"><span class="muted">—</span></td>
           <td class="overlay-cell">              <div class="overlay-line">Buyers & Sellers Property Information v5 <span class="overlay-key">(BASPI5)</span></div>              <div class="overlay-line">Property Information Questionnaire <span class="overlay-key">(PIQ)</span></div>              <div class="overlay-line">Law Society Property Information Form <span class="overlay-key">(TA6)</span></div>          </td>
           <td><span class="muted">—</span>          </td>
-        </tr>        <tr data-leaf-path="propertyPack.legalBoundaries.haveBoundaryFeaturesMoved.yesNo"
+        </tr>        <tr id="propertypacklegalboundarieshaveboundaryfeaturesmovedyesno"
+            data-leaf-path="propertyPack.legalBoundaries.haveBoundaryFeaturesMoved.yesNo"
             data-overlays="baspi5,piq,rds,ta6">
           <td>yesNo</td>
           <td><span class="muted">—</span></td>
@@ -571,7 +583,8 @@ erDiagram
           <td class="align-center"><span class="muted">—</span></td>
           <td class="overlay-cell">              <div class="overlay-line">Buyers & Sellers Property Information v5 <span class="overlay-key">(BASPI5)</span></div>              <div class="overlay-line">Property Information Questionnaire <span class="overlay-key">(PIQ)</span></div>              <div class="overlay-line">Residential Disclosure Standard <span class="overlay-key">(RDS)</span></div>              <div class="overlay-line">Law Society Property Information Form <span class="overlay-key">(TA6)</span></div>          </td>
           <td><span class="muted">—</span>          </td>
-        </tr>        <tr data-leaf-path="propertyPack.legalBoundaries.haveBoundaryFeaturesMoved.yesNo"
+        </tr>        <tr id="propertypacklegalboundarieshaveboundaryfeaturesmovedyesno-2"
+            data-leaf-path="propertyPack.legalBoundaries.haveBoundaryFeaturesMoved.yesNo"
             data-overlays="baspi5,piq,rds,ta6">
           <td>yesNo</td>
           <td><span class="muted">—</span></td>
@@ -584,8 +597,8 @@ erDiagram
         </tr>      </tbody>
     </table>
   </div></div>      <div class="object-block" id="obj-PropertyPackLegalBoundariesOwnership" data-display-id="ownership">
-  <header class="object-block__head">
-    <div class="object-block__title-row">
+  <header class="object-block__head">    <nav class="object-block__breadcrumb" aria-label="Location in the schema">      <a href="#transaction">Transaction</a><span aria-hidden="true"> › </span>      <a href="#propertypack">Property Pack</a><span aria-hidden="true"> › </span>      <a href="#propertypacklegalboundaries">Legal Boundaries</a><span aria-hidden="true"> › </span>      <span aria-current="location">Ownership</span>
+    </nav>    <div class="object-block__title-row">
       <h4 id="propertypacklegalboundariesownership" class="object-block__title" data-display-id="ownership">
         <span class="object-block__display">Ownership</span>      </h4>
       <code class="object-block__path">propertyPack.legalBoundaries.ownership</code>
@@ -613,7 +626,8 @@ erDiagram
           <th style="width: 6rem;">Affordance</th>
         </tr>
       </thead>
-      <tbody>        <tr data-leaf-path="propertyPack.legalBoundaries.ownership.areBoundariesUniform"
+      <tbody>        <tr id="propertypacklegalboundariesownershipareboundariesuniform"
+            data-leaf-path="propertyPack.legalBoundaries.ownership.areBoundariesUniform"
             data-overlays="baspi5,rds,ta6">
           <td>areBoundariesUniform</td>
           <td>Are the boundary uniform?</td>
@@ -623,7 +637,8 @@ erDiagram
           <td class="align-center"><span class="muted">—</span></td>
           <td class="overlay-cell">              <div class="overlay-line">Buyers & Sellers Property Information v5 <span class="overlay-key">(BASPI5)</span></div>              <div class="overlay-line">Residential Disclosure Standard <span class="overlay-key">(RDS)</span></div>              <div class="overlay-line">Law Society Property Information Form <span class="overlay-key">(TA6)</span></div>          </td>
           <td><span class="muted">—</span>          </td>
-        </tr>        <tr data-leaf-path="propertyPack.legalBoundaries.ownership.areBoundariesUniform"
+        </tr>        <tr id="propertypacklegalboundariesownershipareboundariesuniform-2"
+            data-leaf-path="propertyPack.legalBoundaries.ownership.areBoundariesUniform"
             data-overlays="baspi5,rds,ta6">
           <td>areBoundariesUniform</td>
           <td>Are the boundary uniform?</td>
@@ -633,7 +648,8 @@ erDiagram
           <td class="align-center"><span class="muted">—</span></td>
           <td class="overlay-cell">              <div class="overlay-line">Buyers & Sellers Property Information v5 <span class="overlay-key">(BASPI5)</span></div>              <div class="overlay-line">Residential Disclosure Standard <span class="overlay-key">(RDS)</span></div>              <div class="overlay-line">Law Society Property Information Form <span class="overlay-key">(TA6)</span></div>          </td>
           <td><span class="muted">—</span>          </td>
-        </tr>        <tr data-leaf-path="propertyPack.legalBoundaries.ownership.areBoundariesUniform"
+        </tr>        <tr id="propertypacklegalboundariesownershipareboundariesuniform-3"
+            data-leaf-path="propertyPack.legalBoundaries.ownership.areBoundariesUniform"
             data-overlays="baspi5,rds,ta6">
           <td>areBoundariesUniform</td>
           <td>Are the boundary uniform?</td>
@@ -643,7 +659,8 @@ erDiagram
           <td class="align-center"><span class="muted">—</span></td>
           <td class="overlay-cell">              <div class="overlay-line">Buyers & Sellers Property Information v5 <span class="overlay-key">(BASPI5)</span></div>              <div class="overlay-line">Residential Disclosure Standard <span class="overlay-key">(RDS)</span></div>              <div class="overlay-line">Law Society Property Information Form <span class="overlay-key">(TA6)</span></div>          </td>
           <td><span class="muted">—</span>          </td>
-        </tr>        <tr data-leaf-path="propertyPack.legalBoundaries.ownership.attachments"
+        </tr>        <tr id="propertypacklegalboundariesownershipattachments"
+            data-leaf-path="propertyPack.legalBoundaries.ownership.attachments"
             data-overlays="baspi5,ta6">
           <td>Attachments</td>
           <td><span class="muted">—</span></td>
@@ -653,7 +670,8 @@ erDiagram
           <td class="align-center"><span class="muted">—</span></td>
           <td class="overlay-cell">              <div class="overlay-line">Buyers & Sellers Property Information v5 <span class="overlay-key">(BASPI5)</span></div>              <div class="overlay-line">Law Society Property Information Form <span class="overlay-key">(TA6)</span></div>          </td>
           <td><span class="muted">—</span>          </td>
-        </tr>        <tr data-leaf-path="propertyPack.legalBoundaries.ownership.details"
+        </tr>        <tr id="propertypacklegalboundariesownershipdetails"
+            data-leaf-path="propertyPack.legalBoundaries.ownership.details"
             data-overlays="baspi5,ta6">
           <td>Please indicate ownership or those you have repaired by written description or marking them on a plan of the property</td>
           <td><span class="muted">—</span></td>
@@ -666,8 +684,8 @@ erDiagram
         </tr>      </tbody>
     </table>
   </div></div>      <div class="object-block" id="obj-PropertyPackLegalBoundariesPartOnSeparateSiteOrDeed" data-display-id="partonseparatesiteordeed">
-  <header class="object-block__head">
-    <div class="object-block__title-row">
+  <header class="object-block__head">    <nav class="object-block__breadcrumb" aria-label="Location in the schema">      <a href="#transaction">Transaction</a><span aria-hidden="true"> › </span>      <a href="#propertypack">Property Pack</a><span aria-hidden="true"> › </span>      <a href="#propertypacklegalboundaries">Legal Boundaries</a><span aria-hidden="true"> › </span>      <span aria-current="location">Part On Separate Site Or Deed</span>
+    </nav>    <div class="object-block__title-row">
       <h4 id="propertypacklegalboundariespartonseparatesiteordeed" class="object-block__title" data-display-id="partonseparatesiteordeed">
         <span class="object-block__display">Part On Separate Site Or Deed</span>      </h4>
       <code class="object-block__path">propertyPack.legalBoundaries.partOnSeparateSiteOrDeed</code>
@@ -687,7 +705,8 @@ erDiagram
           <th style="width: 6rem;">Affordance</th>
         </tr>
       </thead>
-      <tbody>        <tr data-leaf-path="propertyPack.legalBoundaries.partOnSeparateSiteOrDeed.details"
+      <tbody>        <tr id="propertypacklegalboundariespartonseparatesiteordeeddetails"
+            data-leaf-path="propertyPack.legalBoundaries.partOnSeparateSiteOrDeed.details"
             data-overlays="baspi5">
           <td>Details</td>
           <td><span class="muted">—</span></td>
@@ -697,7 +716,8 @@ erDiagram
           <td class="align-center"><span class="muted">—</span></td>
           <td class="overlay-cell">              <div class="overlay-line">Buyers & Sellers Property Information v5 <span class="overlay-key">(BASPI5)</span></div>          </td>
           <td><span class="muted">—</span>          </td>
-        </tr>        <tr data-leaf-path="propertyPack.legalBoundaries.partOnSeparateSiteOrDeed.yesNo"
+        </tr>        <tr id="propertypacklegalboundariespartonseparatesiteordeedyesno"
+            data-leaf-path="propertyPack.legalBoundaries.partOnSeparateSiteOrDeed.yesNo"
             data-overlays="baspi5,rds">
           <td>yesNo</td>
           <td><span class="muted">—</span></td>
@@ -707,7 +727,8 @@ erDiagram
           <td class="align-center"><span class="muted">—</span></td>
           <td class="overlay-cell">              <div class="overlay-line">Buyers & Sellers Property Information v5 <span class="overlay-key">(BASPI5)</span></div>              <div class="overlay-line">Residential Disclosure Standard <span class="overlay-key">(RDS)</span></div>          </td>
           <td><span class="muted">—</span>          </td>
-        </tr>        <tr data-leaf-path="propertyPack.legalBoundaries.partOnSeparateSiteOrDeed.yesNo"
+        </tr>        <tr id="propertypacklegalboundariespartonseparatesiteordeedyesno-2"
+            data-leaf-path="propertyPack.legalBoundaries.partOnSeparateSiteOrDeed.yesNo"
             data-overlays="baspi5,rds">
           <td>yesNo</td>
           <td><span class="muted">—</span></td>
@@ -720,8 +741,8 @@ erDiagram
         </tr>      </tbody>
     </table>
   </div></div>      <div class="object-block" id="obj-PropertyPackLegalBoundariesPartOutsideLegalOwnership" data-display-id="partoutsidelegalownership">
-  <header class="object-block__head">
-    <div class="object-block__title-row">
+  <header class="object-block__head">    <nav class="object-block__breadcrumb" aria-label="Location in the schema">      <a href="#transaction">Transaction</a><span aria-hidden="true"> › </span>      <a href="#propertypack">Property Pack</a><span aria-hidden="true"> › </span>      <a href="#propertypacklegalboundaries">Legal Boundaries</a><span aria-hidden="true"> › </span>      <span aria-current="location">Part Outside Legal Ownership</span>
+    </nav>    <div class="object-block__title-row">
       <h4 id="propertypacklegalboundariespartoutsidelegalownership" class="object-block__title" data-display-id="partoutsidelegalownership">
         <span class="object-block__display">Part Outside Legal Ownership</span>      </h4>
       <code class="object-block__path">propertyPack.legalBoundaries.partOutsideLegalOwnership</code>
@@ -741,7 +762,8 @@ erDiagram
           <th style="width: 6rem;">Affordance</th>
         </tr>
       </thead>
-      <tbody>        <tr data-leaf-path="propertyPack.legalBoundaries.partOutsideLegalOwnership.details"
+      <tbody>        <tr id="propertypacklegalboundariespartoutsidelegalownershipdetails"
+            data-leaf-path="propertyPack.legalBoundaries.partOutsideLegalOwnership.details"
             data-overlays="baspi5,piq">
           <td>Please provide details. E.g. parking, garden, outbuilding, accessway, etc</td>
           <td><span class="muted">—</span></td>
@@ -751,7 +773,8 @@ erDiagram
           <td class="align-center"><span class="muted">—</span></td>
           <td class="overlay-cell">              <div class="overlay-line">Buyers & Sellers Property Information v5 <span class="overlay-key">(BASPI5)</span></div>              <div class="overlay-line">Property Information Questionnaire <span class="overlay-key">(PIQ)</span></div>          </td>
           <td><span class="muted">—</span>          </td>
-        </tr>        <tr data-leaf-path="propertyPack.legalBoundaries.partOutsideLegalOwnership.yesNo"
+        </tr>        <tr id="propertypacklegalboundariespartoutsidelegalownershipyesno"
+            data-leaf-path="propertyPack.legalBoundaries.partOutsideLegalOwnership.yesNo"
             data-overlays="baspi5,piq,rds">
           <td>yesNo</td>
           <td><span class="muted">—</span></td>
@@ -761,7 +784,8 @@ erDiagram
           <td class="align-center"><span class="muted">—</span></td>
           <td class="overlay-cell">              <div class="overlay-line">Buyers & Sellers Property Information v5 <span class="overlay-key">(BASPI5)</span></div>              <div class="overlay-line">Property Information Questionnaire <span class="overlay-key">(PIQ)</span></div>              <div class="overlay-line">Residential Disclosure Standard <span class="overlay-key">(RDS)</span></div>          </td>
           <td><span class="muted">—</span>          </td>
-        </tr>        <tr data-leaf-path="propertyPack.legalBoundaries.partOutsideLegalOwnership.yesNo"
+        </tr>        <tr id="propertypacklegalboundariespartoutsidelegalownershipyesno-2"
+            data-leaf-path="propertyPack.legalBoundaries.partOutsideLegalOwnership.yesNo"
             data-overlays="baspi5,piq,rds">
           <td>yesNo</td>
           <td><span class="muted">—</span></td>
@@ -774,8 +798,8 @@ erDiagram
         </tr>      </tbody>
     </table>
   </div></div>      <div class="object-block" id="obj-PropertyPackLegalBoundariesOwnershipUniformBoundaries" data-display-id="uniformboundaries">
-  <header class="object-block__head">
-    <div class="object-block__title-row">
+  <header class="object-block__head">    <nav class="object-block__breadcrumb" aria-label="Location in the schema">      <a href="#transaction">Transaction</a><span aria-hidden="true"> › </span>      <a href="#propertypack">Property Pack</a><span aria-hidden="true"> › </span>      <a href="#propertypacklegalboundaries">Legal Boundaries</a><span aria-hidden="true"> › </span>      <a href="#propertypacklegalboundariesownership">Ownership</a><span aria-hidden="true"> › </span>      <span aria-current="location">Uniform Boundaries</span>
+    </nav>    <div class="object-block__title-row">
       <h4 id="propertypacklegalboundariesownershipuniformboundaries" class="object-block__title" data-display-id="uniformboundaries">
         <span class="object-block__display">Uniform Boundaries</span>      </h4>
       <code class="object-block__path">propertyPack.legalBoundaries.ownership.uniformBoundaries</code>
@@ -795,7 +819,8 @@ erDiagram
           <th style="width: 6rem;">Affordance</th>
         </tr>
       </thead>
-      <tbody>        <tr data-leaf-path="propertyPack.legalBoundaries.ownership.uniformBoundaries.front"
+      <tbody>        <tr id="propertypacklegalboundariesownershipuniformboundariesfront"
+            data-leaf-path="propertyPack.legalBoundaries.ownership.uniformBoundaries.front"
             data-overlays="baspi5,piq,rds,ta6">
           <td>At the front</td>
           <td>Enumeration: Seller, Shared, Neighbour, Not known.</td>
@@ -805,7 +830,8 @@ erDiagram
           <td class="align-center"><span class="muted">—</span></td>
           <td class="overlay-cell">              <div class="overlay-line">Buyers & Sellers Property Information v5 <span class="overlay-key">(BASPI5)</span></div>              <div class="overlay-line">Property Information Questionnaire <span class="overlay-key">(PIQ)</span></div>              <div class="overlay-line">Residential Disclosure Standard <span class="overlay-key">(RDS)</span></div>              <div class="overlay-line">Law Society Property Information Form <span class="overlay-key">(TA6)</span></div>          </td>
           <td><span class="muted">—</span>          </td>
-        </tr>        <tr data-leaf-path="propertyPack.legalBoundaries.ownership.uniformBoundaries.left"
+        </tr>        <tr id="propertypacklegalboundariesownershipuniformboundariesleft"
+            data-leaf-path="propertyPack.legalBoundaries.ownership.uniformBoundaries.left"
             data-overlays="baspi5,piq,rds,ta6">
           <td>On the left</td>
           <td>Enumeration: Seller, Shared, Neighbour, Not known.</td>
@@ -815,7 +841,8 @@ erDiagram
           <td class="align-center"><span class="muted">—</span></td>
           <td class="overlay-cell">              <div class="overlay-line">Buyers & Sellers Property Information v5 <span class="overlay-key">(BASPI5)</span></div>              <div class="overlay-line">Property Information Questionnaire <span class="overlay-key">(PIQ)</span></div>              <div class="overlay-line">Residential Disclosure Standard <span class="overlay-key">(RDS)</span></div>              <div class="overlay-line">Law Society Property Information Form <span class="overlay-key">(TA6)</span></div>          </td>
           <td><span class="muted">—</span>          </td>
-        </tr>        <tr data-leaf-path="propertyPack.legalBoundaries.ownership.uniformBoundaries.rear"
+        </tr>        <tr id="propertypacklegalboundariesownershipuniformboundariesrear"
+            data-leaf-path="propertyPack.legalBoundaries.ownership.uniformBoundaries.rear"
             data-overlays="baspi5,piq,rds,ta6">
           <td>At the rear</td>
           <td>Enumeration: Seller, Shared, Neighbour, Not known.</td>
@@ -825,7 +852,8 @@ erDiagram
           <td class="align-center"><span class="muted">—</span></td>
           <td class="overlay-cell">              <div class="overlay-line">Buyers & Sellers Property Information v5 <span class="overlay-key">(BASPI5)</span></div>              <div class="overlay-line">Property Information Questionnaire <span class="overlay-key">(PIQ)</span></div>              <div class="overlay-line">Residential Disclosure Standard <span class="overlay-key">(RDS)</span></div>              <div class="overlay-line">Law Society Property Information Form <span class="overlay-key">(TA6)</span></div>          </td>
           <td><span class="muted">—</span>          </td>
-        </tr>        <tr data-leaf-path="propertyPack.legalBoundaries.ownership.uniformBoundaries.right"
+        </tr>        <tr id="propertypacklegalboundariesownershipuniformboundariesright"
+            data-leaf-path="propertyPack.legalBoundaries.ownership.uniformBoundaries.right"
             data-overlays="baspi5,piq,rds,ta6">
           <td>On the right</td>
           <td>Enumeration: Seller, Shared, Neighbour, Not known.</td>
@@ -838,8 +866,8 @@ erDiagram
         </tr>      </tbody>
     </table>
   </div></div>      <h3 id="rights">Rights & informal arrangements</h3>      <div class="object-block" id="obj-PropertyPackRightsAndInformalArrangements" data-display-id="rightsandinformalarrangements">
-  <header class="object-block__head">
-    <div class="object-block__title-row">
+  <header class="object-block__head">    <nav class="object-block__breadcrumb" aria-label="Location in the schema">      <a href="#transaction">Transaction</a><span aria-hidden="true"> › </span>      <a href="#propertypack">Property Pack</a><span aria-hidden="true"> › </span>      <span aria-current="location">Rights And Informal Arrangements</span>
+    </nav>    <div class="object-block__title-row">
       <h4 id="propertypackrightsandinformalarrangements" class="object-block__title" data-display-id="rightsandinformalarrangements">
         <span class="object-block__display">Rights And Informal Arrangements</span>      </h4>
       <code class="object-block__path">propertyPack.rightsAndInformalArrangements</code>
@@ -876,8 +904,8 @@ erDiagram
           <span>Rights Or Arrangements</span>
         </a>
       </li>    </ul>  </header>  <p class="muted tiny">No scalar fields on this object — pure container.</p></div>      <div class="object-block" id="obj-PropertyPackRightsAndInformalArrangementsAccessRestrictionAttempts" data-display-id="accessrestrictionattempts">
-  <header class="object-block__head">
-    <div class="object-block__title-row">
+  <header class="object-block__head">    <nav class="object-block__breadcrumb" aria-label="Location in the schema">      <a href="#transaction">Transaction</a><span aria-hidden="true"> › </span>      <a href="#propertypack">Property Pack</a><span aria-hidden="true"> › </span>      <a href="#propertypackrightsandinformalarrangements">Rights And Informal Arrangements</a><span aria-hidden="true"> › </span>      <span aria-current="location">Access Restriction Attempts</span>
+    </nav>    <div class="object-block__title-row">
       <h4 id="propertypackrightsandinformalarrangementsaccessrestrictionattempts" class="object-block__title" data-display-id="accessrestrictionattempts">
         <span class="object-block__display">Access Restriction Attempts</span>      </h4>
       <code class="object-block__path">propertyPack.rightsAndInformalArrangements.accessRestrictionAttempts</code>
@@ -897,7 +925,8 @@ erDiagram
           <th style="width: 6rem;">Affordance</th>
         </tr>
       </thead>
-      <tbody>        <tr data-leaf-path="propertyPack.rightsAndInformalArrangements.accessRestrictionAttempts.details"
+      <tbody>        <tr id="propertypackrightsandinformalarrangementsaccessrestrictionattemptsdetails"
+            data-leaf-path="propertyPack.rightsAndInformalArrangements.accessRestrictionAttempts.details"
             data-overlays="baspi5,piq,ta6">
           <td>Details</td>
           <td><span class="muted">—</span></td>
@@ -907,7 +936,8 @@ erDiagram
           <td class="align-center"><span class="muted">—</span></td>
           <td class="overlay-cell">              <div class="overlay-line">Buyers & Sellers Property Information v5 <span class="overlay-key">(BASPI5)</span></div>              <div class="overlay-line">Property Information Questionnaire <span class="overlay-key">(PIQ)</span></div>              <div class="overlay-line">Law Society Property Information Form <span class="overlay-key">(TA6)</span></div>          </td>
           <td><span class="muted">—</span>          </td>
-        </tr>        <tr data-leaf-path="propertyPack.rightsAndInformalArrangements.accessRestrictionAttempts.yesNo"
+        </tr>        <tr id="propertypackrightsandinformalarrangementsaccessrestrictionattemptsyesno"
+            data-leaf-path="propertyPack.rightsAndInformalArrangements.accessRestrictionAttempts.yesNo"
             data-overlays="baspi5,piq,rds,ta6">
           <td>yesNo</td>
           <td><span class="muted">—</span></td>
@@ -917,7 +947,8 @@ erDiagram
           <td class="align-center"><span class="muted">—</span></td>
           <td class="overlay-cell">              <div class="overlay-line">Buyers & Sellers Property Information v5 <span class="overlay-key">(BASPI5)</span></div>              <div class="overlay-line">Property Information Questionnaire <span class="overlay-key">(PIQ)</span></div>              <div class="overlay-line">Residential Disclosure Standard <span class="overlay-key">(RDS)</span></div>              <div class="overlay-line">Law Society Property Information Form <span class="overlay-key">(TA6)</span></div>          </td>
           <td><span class="muted">—</span>          </td>
-        </tr>        <tr data-leaf-path="propertyPack.rightsAndInformalArrangements.accessRestrictionAttempts.yesNo"
+        </tr>        <tr id="propertypackrightsandinformalarrangementsaccessrestrictionattemptsyesno-2"
+            data-leaf-path="propertyPack.rightsAndInformalArrangements.accessRestrictionAttempts.yesNo"
             data-overlays="baspi5,piq,rds,ta6">
           <td>yesNo</td>
           <td><span class="muted">—</span></td>
@@ -930,8 +961,8 @@ erDiagram
         </tr>      </tbody>
     </table>
   </div></div>      <div class="object-block" id="obj-PropertyPackRightsAndInformalArrangementsNeighbouringLandRights" data-display-id="neighbouringlandrights">
-  <header class="object-block__head">
-    <div class="object-block__title-row">
+  <header class="object-block__head">    <nav class="object-block__breadcrumb" aria-label="Location in the schema">      <a href="#transaction">Transaction</a><span aria-hidden="true"> › </span>      <a href="#propertypack">Property Pack</a><span aria-hidden="true"> › </span>      <a href="#propertypackrightsandinformalarrangements">Rights And Informal Arrangements</a><span aria-hidden="true"> › </span>      <span aria-current="location">Neighbouring Land Rights</span>
+    </nav>    <div class="object-block__title-row">
       <h4 id="propertypackrightsandinformalarrangementsneighbouringlandrights" class="object-block__title" data-display-id="neighbouringlandrights">
         <span class="object-block__display">Neighbouring Land Rights</span>      </h4>
       <code class="object-block__path">propertyPack.rightsAndInformalArrangements.neighbouringLandRights</code>
@@ -951,7 +982,8 @@ erDiagram
           <th style="width: 6rem;">Affordance</th>
         </tr>
       </thead>
-      <tbody>        <tr data-leaf-path="propertyPack.rightsAndInformalArrangements.neighbouringLandRights.attachments"
+      <tbody>        <tr id="propertypackrightsandinformalarrangementsneighbouringlandrightsattachments"
+            data-leaf-path="propertyPack.rightsAndInformalArrangements.neighbouringLandRights.attachments"
             data-overlays="baspi5">
           <td>Attachments</td>
           <td><span class="muted">—</span></td>
@@ -961,7 +993,8 @@ erDiagram
           <td class="align-center"><span class="muted">—</span></td>
           <td class="overlay-cell">              <div class="overlay-line">Buyers & Sellers Property Information v5 <span class="overlay-key">(BASPI5)</span></div>          </td>
           <td><span class="muted">—</span>          </td>
-        </tr>        <tr data-leaf-path="propertyPack.rightsAndInformalArrangements.neighbouringLandRights.details"
+        </tr>        <tr id="propertypackrightsandinformalarrangementsneighbouringlandrightsdetails"
+            data-leaf-path="propertyPack.rightsAndInformalArrangements.neighbouringLandRights.details"
             data-overlays="baspi5,piq,ta6">
           <td>Please give details and provide a plan showing the route of the access, parking etc</td>
           <td><span class="muted">—</span></td>
@@ -971,7 +1004,8 @@ erDiagram
           <td class="align-center"><span class="muted">—</span></td>
           <td class="overlay-cell">              <div class="overlay-line">Buyers & Sellers Property Information v5 <span class="overlay-key">(BASPI5)</span></div>              <div class="overlay-line">Property Information Questionnaire <span class="overlay-key">(PIQ)</span></div>              <div class="overlay-line">Law Society Property Information Form <span class="overlay-key">(TA6)</span></div>          </td>
           <td><span class="muted">—</span>          </td>
-        </tr>        <tr data-leaf-path="propertyPack.rightsAndInformalArrangements.neighbouringLandRights.yesNo"
+        </tr>        <tr id="propertypackrightsandinformalarrangementsneighbouringlandrightsyesno"
+            data-leaf-path="propertyPack.rightsAndInformalArrangements.neighbouringLandRights.yesNo"
             data-overlays="baspi5,piq,rds,ta6">
           <td>yesNo</td>
           <td><span class="muted">—</span></td>
@@ -981,7 +1015,8 @@ erDiagram
           <td class="align-center"><span class="muted">—</span></td>
           <td class="overlay-cell">              <div class="overlay-line">Buyers & Sellers Property Information v5 <span class="overlay-key">(BASPI5)</span></div>              <div class="overlay-line">Property Information Questionnaire <span class="overlay-key">(PIQ)</span></div>              <div class="overlay-line">Residential Disclosure Standard <span class="overlay-key">(RDS)</span></div>              <div class="overlay-line">Law Society Property Information Form <span class="overlay-key">(TA6)</span></div>          </td>
           <td><span class="muted">—</span>          </td>
-        </tr>        <tr data-leaf-path="propertyPack.rightsAndInformalArrangements.neighbouringLandRights.yesNo"
+        </tr>        <tr id="propertypackrightsandinformalarrangementsneighbouringlandrightsyesno-2"
+            data-leaf-path="propertyPack.rightsAndInformalArrangements.neighbouringLandRights.yesNo"
             data-overlays="baspi5,piq,rds,ta6">
           <td>yesNo</td>
           <td><span class="muted">—</span></td>
@@ -994,8 +1029,8 @@ erDiagram
         </tr>      </tbody>
     </table>
   </div></div>      <div class="object-block" id="obj-PropertyPackRightsAndInformalArrangementsRightsOrArrangements" data-display-id="rightsorarrangements">
-  <header class="object-block__head">
-    <div class="object-block__title-row">
+  <header class="object-block__head">    <nav class="object-block__breadcrumb" aria-label="Location in the schema">      <a href="#transaction">Transaction</a><span aria-hidden="true"> › </span>      <a href="#propertypack">Property Pack</a><span aria-hidden="true"> › </span>      <a href="#propertypackrightsandinformalarrangements">Rights And Informal Arrangements</a><span aria-hidden="true"> › </span>      <span aria-current="location">Rights Or Arrangements</span>
+    </nav>    <div class="object-block__title-row">
       <h4 id="propertypackrightsandinformalarrangementsrightsorarrangements" class="object-block__title" data-display-id="rightsorarrangements">
         <span class="object-block__display">Rights Or Arrangements</span>      </h4>
       <code class="object-block__path">propertyPack.rightsAndInformalArrangements.rightsOrArrangements</code>
@@ -1064,8 +1099,8 @@ erDiagram
           <span>Other Rights</span>
         </a>
       </li>    </ul>  </header>  <p class="muted tiny">No scalar fields on this object — pure container.</p></div>      <div class="object-block" id="obj-PropertyPackRightsAndInformalArrangementsSharedContributions" data-display-id="sharedcontributions">
-  <header class="object-block__head">
-    <div class="object-block__title-row">
+  <header class="object-block__head">    <nav class="object-block__breadcrumb" aria-label="Location in the schema">      <a href="#transaction">Transaction</a><span aria-hidden="true"> › </span>      <a href="#propertypack">Property Pack</a><span aria-hidden="true"> › </span>      <a href="#propertypackrightsandinformalarrangements">Rights And Informal Arrangements</a><span aria-hidden="true"> › </span>      <span aria-current="location">Shared Contributions</span>
+    </nav>    <div class="object-block__title-row">
       <h4 id="propertypackrightsandinformalarrangementssharedcontributions" class="object-block__title" data-display-id="sharedcontributions">
         <span class="object-block__display">Shared Contributions</span>      </h4>
       <code class="object-block__path">propertyPack.rightsAndInformalArrangements.sharedContributions</code>
@@ -1085,7 +1120,8 @@ erDiagram
           <th style="width: 6rem;">Affordance</th>
         </tr>
       </thead>
-      <tbody>        <tr data-leaf-path="propertyPack.rightsAndInformalArrangements.sharedContributions.details"
+      <tbody>        <tr id="propertypackrightsandinformalarrangementssharedcontributionsdetails"
+            data-leaf-path="propertyPack.rightsAndInformalArrangements.sharedContributions.details"
             data-overlays="baspi5,piq,ta6">
           <td>Please give details including who collects payments and organises the work, the amount of the payments in the last year and whether they are regular payments or only when maintenance work is required</td>
           <td><span class="muted">—</span></td>
@@ -1095,7 +1131,8 @@ erDiagram
           <td class="align-center"><span class="muted">—</span></td>
           <td class="overlay-cell">              <div class="overlay-line">Buyers & Sellers Property Information v5 <span class="overlay-key">(BASPI5)</span></div>              <div class="overlay-line">Property Information Questionnaire <span class="overlay-key">(PIQ)</span></div>              <div class="overlay-line">Law Society Property Information Form <span class="overlay-key">(TA6)</span></div>          </td>
           <td><span class="muted">—</span>          </td>
-        </tr>        <tr data-leaf-path="propertyPack.rightsAndInformalArrangements.sharedContributions.yesNo"
+        </tr>        <tr id="propertypackrightsandinformalarrangementssharedcontributionsyesno"
+            data-leaf-path="propertyPack.rightsAndInformalArrangements.sharedContributions.yesNo"
             data-overlays="baspi5,piq,rds,ta6">
           <td>yesNo</td>
           <td><span class="muted">—</span></td>
@@ -1105,7 +1142,8 @@ erDiagram
           <td class="align-center"><span class="muted">—</span></td>
           <td class="overlay-cell">              <div class="overlay-line">Buyers & Sellers Property Information v5 <span class="overlay-key">(BASPI5)</span></div>              <div class="overlay-line">Property Information Questionnaire <span class="overlay-key">(PIQ)</span></div>              <div class="overlay-line">Residential Disclosure Standard <span class="overlay-key">(RDS)</span></div>              <div class="overlay-line">Law Society Property Information Form <span class="overlay-key">(TA6)</span></div>          </td>
           <td><span class="muted">—</span>          </td>
-        </tr>        <tr data-leaf-path="propertyPack.rightsAndInformalArrangements.sharedContributions.yesNo"
+        </tr>        <tr id="propertypackrightsandinformalarrangementssharedcontributionsyesno-2"
+            data-leaf-path="propertyPack.rightsAndInformalArrangements.sharedContributions.yesNo"
             data-overlays="baspi5,piq,rds,ta6">
           <td>yesNo</td>
           <td><span class="muted">—</span></td>
@@ -1118,8 +1156,8 @@ erDiagram
         </tr>      </tbody>
     </table>
   </div></div>      <div class="object-block" id="obj-PropertyPackRightsAndInformalArrangementsRightsOrArrangementsChurchChancel" data-display-id="churchchancel">
-  <header class="object-block__head">
-    <div class="object-block__title-row">
+  <header class="object-block__head">    <nav class="object-block__breadcrumb" aria-label="Location in the schema">      <a href="#transaction">Transaction</a><span aria-hidden="true"> › </span>      <a href="#propertypack">Property Pack</a><span aria-hidden="true"> › </span>      <a href="#propertypackrightsandinformalarrangements">Rights And Informal Arrangements</a><span aria-hidden="true"> › </span>      <a href="#propertypackrightsandinformalarrangementsrightsorarrangements">Rights Or Arrangements</a><span aria-hidden="true"> › </span>      <span aria-current="location">Church Chancel</span>
+    </nav>    <div class="object-block__title-row">
       <h4 id="propertypackrightsandinformalarrangementsrightsorarrangementschurchchancel" class="object-block__title" data-display-id="churchchancel">
         <span class="object-block__display">Church Chancel</span>      </h4>
       <code class="object-block__path">propertyPack.rightsAndInformalArrangements.rightsOrArrangements.churchChancel</code>
@@ -1139,7 +1177,8 @@ erDiagram
           <th style="width: 6rem;">Affordance</th>
         </tr>
       </thead>
-      <tbody>        <tr data-leaf-path="propertyPack.rightsAndInformalArrangements.rightsOrArrangements.churchChancel.details"
+      <tbody>        <tr id="propertypackrightsandinformalarrangementsrightsorarrangementschurchchanceldetails"
+            data-leaf-path="propertyPack.rightsAndInformalArrangements.rightsOrArrangements.churchChancel.details"
             data-overlays="baspi5">
           <td>Details</td>
           <td><span class="muted">—</span></td>
@@ -1149,7 +1188,8 @@ erDiagram
           <td class="align-center"><span class="muted">—</span></td>
           <td class="overlay-cell">              <div class="overlay-line">Buyers & Sellers Property Information v5 <span class="overlay-key">(BASPI5)</span></div>          </td>
           <td><span class="muted">—</span>          </td>
-        </tr>        <tr data-leaf-path="propertyPack.rightsAndInformalArrangements.rightsOrArrangements.churchChancel.yesNo"
+        </tr>        <tr id="propertypackrightsandinformalarrangementsrightsorarrangementschurchchancelyesno"
+            data-leaf-path="propertyPack.rightsAndInformalArrangements.rightsOrArrangements.churchChancel.yesNo"
             data-overlays="baspi5,piq,rds,ta6">
           <td>yesNo</td>
           <td><span class="muted">—</span></td>
@@ -1159,7 +1199,8 @@ erDiagram
           <td class="align-center"><span class="muted">—</span></td>
           <td class="overlay-cell">              <div class="overlay-line">Buyers & Sellers Property Information v5 <span class="overlay-key">(BASPI5)</span></div>              <div class="overlay-line">Property Information Questionnaire <span class="overlay-key">(PIQ)</span></div>              <div class="overlay-line">Residential Disclosure Standard <span class="overlay-key">(RDS)</span></div>              <div class="overlay-line">Law Society Property Information Form <span class="overlay-key">(TA6)</span></div>          </td>
           <td><span class="muted">—</span>          </td>
-        </tr>        <tr data-leaf-path="propertyPack.rightsAndInformalArrangements.rightsOrArrangements.churchChancel.yesNo"
+        </tr>        <tr id="propertypackrightsandinformalarrangementsrightsorarrangementschurchchancelyesno-2"
+            data-leaf-path="propertyPack.rightsAndInformalArrangements.rightsOrArrangements.churchChancel.yesNo"
             data-overlays="baspi5,piq,rds,ta6">
           <td>yesNo</td>
           <td><span class="muted">—</span></td>
@@ -1172,8 +1213,8 @@ erDiagram
         </tr>      </tbody>
     </table>
   </div></div>      <div class="object-block" id="obj-PropertyPackRightsAndInformalArrangementsRightsOrArrangementsMinesAndMinerals" data-display-id="minesandminerals">
-  <header class="object-block__head">
-    <div class="object-block__title-row">
+  <header class="object-block__head">    <nav class="object-block__breadcrumb" aria-label="Location in the schema">      <a href="#transaction">Transaction</a><span aria-hidden="true"> › </span>      <a href="#propertypack">Property Pack</a><span aria-hidden="true"> › </span>      <a href="#propertypackrightsandinformalarrangements">Rights And Informal Arrangements</a><span aria-hidden="true"> › </span>      <a href="#propertypackrightsandinformalarrangementsrightsorarrangements">Rights Or Arrangements</a><span aria-hidden="true"> › </span>      <span aria-current="location">Mines And Minerals</span>
+    </nav>    <div class="object-block__title-row">
       <h4 id="propertypackrightsandinformalarrangementsrightsorarrangementsminesandminerals" class="object-block__title" data-display-id="minesandminerals">
         <span class="object-block__display">Mines And Minerals</span>      </h4>
       <code class="object-block__path">propertyPack.rightsAndInformalArrangements.rightsOrArrangements.minesAndMinerals</code>
@@ -1193,7 +1234,8 @@ erDiagram
           <th style="width: 6rem;">Affordance</th>
         </tr>
       </thead>
-      <tbody>        <tr data-leaf-path="propertyPack.rightsAndInformalArrangements.rightsOrArrangements.minesAndMinerals.details"
+      <tbody>        <tr id="propertypackrightsandinformalarrangementsrightsorarrangementsminesandmineralsdetails"
+            data-leaf-path="propertyPack.rightsAndInformalArrangements.rightsOrArrangements.minesAndMinerals.details"
             data-overlays="baspi5">
           <td>Details</td>
           <td><span class="muted">—</span></td>
@@ -1203,7 +1245,8 @@ erDiagram
           <td class="align-center"><span class="muted">—</span></td>
           <td class="overlay-cell">              <div class="overlay-line">Buyers & Sellers Property Information v5 <span class="overlay-key">(BASPI5)</span></div>          </td>
           <td><span class="muted">—</span>          </td>
-        </tr>        <tr data-leaf-path="propertyPack.rightsAndInformalArrangements.rightsOrArrangements.minesAndMinerals.yesNo"
+        </tr>        <tr id="propertypackrightsandinformalarrangementsrightsorarrangementsminesandmineralsyesno"
+            data-leaf-path="propertyPack.rightsAndInformalArrangements.rightsOrArrangements.minesAndMinerals.yesNo"
             data-overlays="baspi5,piq,rds,ta6">
           <td>yesNo</td>
           <td><span class="muted">—</span></td>
@@ -1213,7 +1256,8 @@ erDiagram
           <td class="align-center"><span class="muted">—</span></td>
           <td class="overlay-cell">              <div class="overlay-line">Buyers & Sellers Property Information v5 <span class="overlay-key">(BASPI5)</span></div>              <div class="overlay-line">Property Information Questionnaire <span class="overlay-key">(PIQ)</span></div>              <div class="overlay-line">Residential Disclosure Standard <span class="overlay-key">(RDS)</span></div>              <div class="overlay-line">Law Society Property Information Form <span class="overlay-key">(TA6)</span></div>          </td>
           <td><span class="muted">—</span>          </td>
-        </tr>        <tr data-leaf-path="propertyPack.rightsAndInformalArrangements.rightsOrArrangements.minesAndMinerals.yesNo"
+        </tr>        <tr id="propertypackrightsandinformalarrangementsrightsorarrangementsminesandmineralsyesno-2"
+            data-leaf-path="propertyPack.rightsAndInformalArrangements.rightsOrArrangements.minesAndMinerals.yesNo"
             data-overlays="baspi5,piq,rds,ta6">
           <td>yesNo</td>
           <td><span class="muted">—</span></td>
@@ -1226,8 +1270,8 @@ erDiagram
         </tr>      </tbody>
     </table>
   </div></div>      <div class="object-block" id="obj-PropertyPackRightsAndInformalArrangementsRightsOrArrangementsOtherRights" data-display-id="otherrights">
-  <header class="object-block__head">
-    <div class="object-block__title-row">
+  <header class="object-block__head">    <nav class="object-block__breadcrumb" aria-label="Location in the schema">      <a href="#transaction">Transaction</a><span aria-hidden="true"> › </span>      <a href="#propertypack">Property Pack</a><span aria-hidden="true"> › </span>      <a href="#propertypackrightsandinformalarrangements">Rights And Informal Arrangements</a><span aria-hidden="true"> › </span>      <a href="#propertypackrightsandinformalarrangementsrightsorarrangements">Rights Or Arrangements</a><span aria-hidden="true"> › </span>      <span aria-current="location">Other Rights</span>
+    </nav>    <div class="object-block__title-row">
       <h4 id="propertypackrightsandinformalarrangementsrightsorarrangementsotherrights" class="object-block__title" data-display-id="otherrights">
         <span class="object-block__display">Other Rights</span>      </h4>
       <code class="object-block__path">propertyPack.rightsAndInformalArrangements.rightsOrArrangements.otherRights</code>
@@ -1247,7 +1291,8 @@ erDiagram
           <th style="width: 6rem;">Affordance</th>
         </tr>
       </thead>
-      <tbody>        <tr data-leaf-path="propertyPack.rightsAndInformalArrangements.rightsOrArrangements.otherRights.details"
+      <tbody>        <tr id="propertypackrightsandinformalarrangementsrightsorarrangementsotherrightsdetails"
+            data-leaf-path="propertyPack.rightsAndInformalArrangements.rightsOrArrangements.otherRights.details"
             data-overlays="baspi5,ta6">
           <td>Details</td>
           <td><span class="muted">—</span></td>
@@ -1257,7 +1302,8 @@ erDiagram
           <td class="align-center"><span class="muted">—</span></td>
           <td class="overlay-cell">              <div class="overlay-line">Buyers & Sellers Property Information v5 <span class="overlay-key">(BASPI5)</span></div>              <div class="overlay-line">Law Society Property Information Form <span class="overlay-key">(TA6)</span></div>          </td>
           <td><span class="muted">—</span>          </td>
-        </tr>        <tr data-leaf-path="propertyPack.rightsAndInformalArrangements.rightsOrArrangements.otherRights.yesNo"
+        </tr>        <tr id="propertypackrightsandinformalarrangementsrightsorarrangementsotherrightsyesno"
+            data-leaf-path="propertyPack.rightsAndInformalArrangements.rightsOrArrangements.otherRights.yesNo"
             data-overlays="baspi5,piq,rds,ta6">
           <td>yesNo</td>
           <td><span class="muted">—</span></td>
@@ -1267,7 +1313,8 @@ erDiagram
           <td class="align-center"><span class="muted">—</span></td>
           <td class="overlay-cell">              <div class="overlay-line">Buyers & Sellers Property Information v5 <span class="overlay-key">(BASPI5)</span></div>              <div class="overlay-line">Property Information Questionnaire <span class="overlay-key">(PIQ)</span></div>              <div class="overlay-line">Residential Disclosure Standard <span class="overlay-key">(RDS)</span></div>              <div class="overlay-line">Law Society Property Information Form <span class="overlay-key">(TA6)</span></div>          </td>
           <td><span class="muted">—</span>          </td>
-        </tr>        <tr data-leaf-path="propertyPack.rightsAndInformalArrangements.rightsOrArrangements.otherRights.yesNo"
+        </tr>        <tr id="propertypackrightsandinformalarrangementsrightsorarrangementsotherrightsyesno-2"
+            data-leaf-path="propertyPack.rightsAndInformalArrangements.rightsOrArrangements.otherRights.yesNo"
             data-overlays="baspi5,piq,rds,ta6">
           <td>yesNo</td>
           <td><span class="muted">—</span></td>
@@ -1280,8 +1327,8 @@ erDiagram
         </tr>      </tbody>
     </table>
   </div></div>      <div class="object-block" id="obj-PropertyPackRightsAndInformalArrangementsRightsOrArrangementsPublicRightOfWay" data-display-id="publicrightofway">
-  <header class="object-block__head">
-    <div class="object-block__title-row">
+  <header class="object-block__head">    <nav class="object-block__breadcrumb" aria-label="Location in the schema">      <a href="#transaction">Transaction</a><span aria-hidden="true"> › </span>      <a href="#propertypack">Property Pack</a><span aria-hidden="true"> › </span>      <a href="#propertypackrightsandinformalarrangements">Rights And Informal Arrangements</a><span aria-hidden="true"> › </span>      <a href="#propertypackrightsandinformalarrangementsrightsorarrangements">Rights Or Arrangements</a><span aria-hidden="true"> › </span>      <span aria-current="location">Public Right Of Way</span>
+    </nav>    <div class="object-block__title-row">
       <h4 id="propertypackrightsandinformalarrangementsrightsorarrangementspublicrightofway" class="object-block__title" data-display-id="publicrightofway">
         <span class="object-block__display">Public Right Of Way</span>      </h4>
       <code class="object-block__path">propertyPack.rightsAndInformalArrangements.rightsOrArrangements.publicRightOfWay</code>
@@ -1301,7 +1348,8 @@ erDiagram
           <th style="width: 6rem;">Affordance</th>
         </tr>
       </thead>
-      <tbody>        <tr data-leaf-path="propertyPack.rightsAndInformalArrangements.rightsOrArrangements.publicRightOfWay.attachments"
+      <tbody>        <tr id="propertypackrightsandinformalarrangementsrightsorarrangementspublicrightofwayattachments"
+            data-leaf-path="propertyPack.rightsAndInformalArrangements.rightsOrArrangements.publicRightOfWay.attachments"
             data-overlays="baspi5">
           <td>Please mark the route on a plan of the property</td>
           <td><span class="muted">—</span></td>
@@ -1311,7 +1359,8 @@ erDiagram
           <td class="align-center"><span class="muted">—</span></td>
           <td class="overlay-cell">              <div class="overlay-line">Buyers & Sellers Property Information v5 <span class="overlay-key">(BASPI5)</span></div>          </td>
           <td><span class="muted">—</span>          </td>
-        </tr>        <tr data-leaf-path="propertyPack.rightsAndInformalArrangements.rightsOrArrangements.publicRightOfWay.details"
+        </tr>        <tr id="propertypackrightsandinformalarrangementsrightsorarrangementspublicrightofwaydetails"
+            data-leaf-path="propertyPack.rightsAndInformalArrangements.rightsOrArrangements.publicRightOfWay.details"
             data-overlays="baspi5,nts2,ntsl2,piq,ta6">
           <td>Please provide details</td>
           <td><span class="muted">—</span></td>
@@ -1321,7 +1370,8 @@ erDiagram
           <td class="align-center"><span class="muted">—</span></td>
           <td class="overlay-cell">              <div class="overlay-line">Buyers & Sellers Property Information v5 <span class="overlay-key">(BASPI5)</span></div>              <div class="overlay-line">NTS Material Information (sales) <span class="overlay-key">(NTS2)</span></div>              <div class="overlay-line">NTS Material Information (lettings) <span class="overlay-key">(NTSL2)</span></div>              <div class="overlay-line">Property Information Questionnaire <span class="overlay-key">(PIQ)</span></div>              <div class="overlay-line">Law Society Property Information Form <span class="overlay-key">(TA6)</span></div>          </td>
           <td><span class="muted">—</span>          </td>
-        </tr>        <tr data-leaf-path="propertyPack.rightsAndInformalArrangements.rightsOrArrangements.publicRightOfWay.yesNo"
+        </tr>        <tr id="propertypackrightsandinformalarrangementsrightsorarrangementspublicrightofwayyesno"
+            data-leaf-path="propertyPack.rightsAndInformalArrangements.rightsOrArrangements.publicRightOfWay.yesNo"
             data-overlays="baspi5,nts2,ntsl2,piq,rds,ta6">
           <td>yesNo</td>
           <td><span class="muted">—</span></td>
@@ -1331,7 +1381,8 @@ erDiagram
           <td class="align-center"><span class="muted">—</span></td>
           <td class="overlay-cell">              <div class="overlay-line">Buyers & Sellers Property Information v5 <span class="overlay-key">(BASPI5)</span></div>              <div class="overlay-line">NTS Material Information (sales) <span class="overlay-key">(NTS2)</span></div>              <div class="overlay-line">NTS Material Information (lettings) <span class="overlay-key">(NTSL2)</span></div>              <div class="overlay-line">Property Information Questionnaire <span class="overlay-key">(PIQ)</span></div>              <div class="overlay-line">Residential Disclosure Standard <span class="overlay-key">(RDS)</span></div>              <div class="overlay-line">Law Society Property Information Form <span class="overlay-key">(TA6)</span></div>          </td>
           <td><span class="muted">—</span>          </td>
-        </tr>        <tr data-leaf-path="propertyPack.rightsAndInformalArrangements.rightsOrArrangements.publicRightOfWay.yesNo"
+        </tr>        <tr id="propertypackrightsandinformalarrangementsrightsorarrangementspublicrightofwayyesno-2"
+            data-leaf-path="propertyPack.rightsAndInformalArrangements.rightsOrArrangements.publicRightOfWay.yesNo"
             data-overlays="baspi5,nts2,ntsl2,piq,rds,ta6">
           <td>yesNo</td>
           <td><span class="muted">—</span></td>
@@ -1344,8 +1395,8 @@ erDiagram
         </tr>      </tbody>
     </table>
   </div></div>      <div class="object-block" id="obj-PropertyPackRightsAndInformalArrangementsRightsOrArrangementsRightsCreatedThroughCustom" data-display-id="rightscreatedthroughcustom">
-  <header class="object-block__head">
-    <div class="object-block__title-row">
+  <header class="object-block__head">    <nav class="object-block__breadcrumb" aria-label="Location in the schema">      <a href="#transaction">Transaction</a><span aria-hidden="true"> › </span>      <a href="#propertypack">Property Pack</a><span aria-hidden="true"> › </span>      <a href="#propertypackrightsandinformalarrangements">Rights And Informal Arrangements</a><span aria-hidden="true"> › </span>      <a href="#propertypackrightsandinformalarrangementsrightsorarrangements">Rights Or Arrangements</a><span aria-hidden="true"> › </span>      <span aria-current="location">Rights Created Through Custom</span>
+    </nav>    <div class="object-block__title-row">
       <h4 id="propertypackrightsandinformalarrangementsrightsorarrangementsrightscreatedthroughcustom" class="object-block__title" data-display-id="rightscreatedthroughcustom">
         <span class="object-block__display">Rights Created Through Custom</span>      </h4>
       <code class="object-block__path">propertyPack.rightsAndInformalArrangements.rightsOrArrangements.rightsCreatedThroughCustom</code>
@@ -1365,7 +1416,8 @@ erDiagram
           <th style="width: 6rem;">Affordance</th>
         </tr>
       </thead>
-      <tbody>        <tr data-leaf-path="propertyPack.rightsAndInformalArrangements.rightsOrArrangements.rightsCreatedThroughCustom.details"
+      <tbody>        <tr id="propertypackrightsandinformalarrangementsrightsorarrangementsrightscreatedthroughcustomdetails"
+            data-leaf-path="propertyPack.rightsAndInformalArrangements.rightsOrArrangements.rightsCreatedThroughCustom.details"
             data-overlays="baspi5">
           <td>Details</td>
           <td><span class="muted">—</span></td>
@@ -1375,7 +1427,8 @@ erDiagram
           <td class="align-center"><span class="muted">—</span></td>
           <td class="overlay-cell">              <div class="overlay-line">Buyers & Sellers Property Information v5 <span class="overlay-key">(BASPI5)</span></div>          </td>
           <td><span class="muted">—</span>          </td>
-        </tr>        <tr data-leaf-path="propertyPack.rightsAndInformalArrangements.rightsOrArrangements.rightsCreatedThroughCustom.yesNo"
+        </tr>        <tr id="propertypackrightsandinformalarrangementsrightsorarrangementsrightscreatedthroughcustomyesno"
+            data-leaf-path="propertyPack.rightsAndInformalArrangements.rightsOrArrangements.rightsCreatedThroughCustom.yesNo"
             data-overlays="baspi5,piq,rds,ta6">
           <td>yesNo</td>
           <td><span class="muted">—</span></td>
@@ -1385,7 +1438,8 @@ erDiagram
           <td class="align-center"><span class="muted">—</span></td>
           <td class="overlay-cell">              <div class="overlay-line">Buyers & Sellers Property Information v5 <span class="overlay-key">(BASPI5)</span></div>              <div class="overlay-line">Property Information Questionnaire <span class="overlay-key">(PIQ)</span></div>              <div class="overlay-line">Residential Disclosure Standard <span class="overlay-key">(RDS)</span></div>              <div class="overlay-line">Law Society Property Information Form <span class="overlay-key">(TA6)</span></div>          </td>
           <td><span class="muted">—</span>          </td>
-        </tr>        <tr data-leaf-path="propertyPack.rightsAndInformalArrangements.rightsOrArrangements.rightsCreatedThroughCustom.yesNo"
+        </tr>        <tr id="propertypackrightsandinformalarrangementsrightsorarrangementsrightscreatedthroughcustomyesno-2"
+            data-leaf-path="propertyPack.rightsAndInformalArrangements.rightsOrArrangements.rightsCreatedThroughCustom.yesNo"
             data-overlays="baspi5,piq,rds,ta6">
           <td>yesNo</td>
           <td><span class="muted">—</span></td>
@@ -1398,8 +1452,8 @@ erDiagram
         </tr>      </tbody>
     </table>
   </div></div>      <div class="object-block" id="obj-PropertyPackRightsAndInformalArrangementsRightsOrArrangementsRightsOfLight" data-display-id="rightsoflight">
-  <header class="object-block__head">
-    <div class="object-block__title-row">
+  <header class="object-block__head">    <nav class="object-block__breadcrumb" aria-label="Location in the schema">      <a href="#transaction">Transaction</a><span aria-hidden="true"> › </span>      <a href="#propertypack">Property Pack</a><span aria-hidden="true"> › </span>      <a href="#propertypackrightsandinformalarrangements">Rights And Informal Arrangements</a><span aria-hidden="true"> › </span>      <a href="#propertypackrightsandinformalarrangementsrightsorarrangements">Rights Or Arrangements</a><span aria-hidden="true"> › </span>      <span aria-current="location">Rights Of Light</span>
+    </nav>    <div class="object-block__title-row">
       <h4 id="propertypackrightsandinformalarrangementsrightsorarrangementsrightsoflight" class="object-block__title" data-display-id="rightsoflight">
         <span class="object-block__display">Rights Of Light</span>      </h4>
       <code class="object-block__path">propertyPack.rightsAndInformalArrangements.rightsOrArrangements.rightsOfLight</code>
@@ -1419,7 +1473,8 @@ erDiagram
           <th style="width: 6rem;">Affordance</th>
         </tr>
       </thead>
-      <tbody>        <tr data-leaf-path="propertyPack.rightsAndInformalArrangements.rightsOrArrangements.rightsOfLight.details"
+      <tbody>        <tr id="propertypackrightsandinformalarrangementsrightsorarrangementsrightsoflightdetails"
+            data-leaf-path="propertyPack.rightsAndInformalArrangements.rightsOrArrangements.rightsOfLight.details"
             data-overlays="baspi5">
           <td>Details</td>
           <td><span class="muted">—</span></td>
@@ -1429,7 +1484,8 @@ erDiagram
           <td class="align-center"><span class="muted">—</span></td>
           <td class="overlay-cell">              <div class="overlay-line">Buyers & Sellers Property Information v5 <span class="overlay-key">(BASPI5)</span></div>          </td>
           <td><span class="muted">—</span>          </td>
-        </tr>        <tr data-leaf-path="propertyPack.rightsAndInformalArrangements.rightsOrArrangements.rightsOfLight.yesNo"
+        </tr>        <tr id="propertypackrightsandinformalarrangementsrightsorarrangementsrightsoflightyesno"
+            data-leaf-path="propertyPack.rightsAndInformalArrangements.rightsOrArrangements.rightsOfLight.yesNo"
             data-overlays="baspi5,piq,rds,ta6">
           <td>yesNo</td>
           <td><span class="muted">—</span></td>
@@ -1439,7 +1495,8 @@ erDiagram
           <td class="align-center"><span class="muted">—</span></td>
           <td class="overlay-cell">              <div class="overlay-line">Buyers & Sellers Property Information v5 <span class="overlay-key">(BASPI5)</span></div>              <div class="overlay-line">Property Information Questionnaire <span class="overlay-key">(PIQ)</span></div>              <div class="overlay-line">Residential Disclosure Standard <span class="overlay-key">(RDS)</span></div>              <div class="overlay-line">Law Society Property Information Form <span class="overlay-key">(TA6)</span></div>          </td>
           <td><span class="muted">—</span>          </td>
-        </tr>        <tr data-leaf-path="propertyPack.rightsAndInformalArrangements.rightsOrArrangements.rightsOfLight.yesNo"
+        </tr>        <tr id="propertypackrightsandinformalarrangementsrightsorarrangementsrightsoflightyesno-2"
+            data-leaf-path="propertyPack.rightsAndInformalArrangements.rightsOrArrangements.rightsOfLight.yesNo"
             data-overlays="baspi5,piq,rds,ta6">
           <td>yesNo</td>
           <td><span class="muted">—</span></td>
@@ -1452,8 +1509,8 @@ erDiagram
         </tr>      </tbody>
     </table>
   </div></div>      <div class="object-block" id="obj-PropertyPackRightsAndInformalArrangementsRightsOrArrangementsRightsOfSupport" data-display-id="rightsofsupport">
-  <header class="object-block__head">
-    <div class="object-block__title-row">
+  <header class="object-block__head">    <nav class="object-block__breadcrumb" aria-label="Location in the schema">      <a href="#transaction">Transaction</a><span aria-hidden="true"> › </span>      <a href="#propertypack">Property Pack</a><span aria-hidden="true"> › </span>      <a href="#propertypackrightsandinformalarrangements">Rights And Informal Arrangements</a><span aria-hidden="true"> › </span>      <a href="#propertypackrightsandinformalarrangementsrightsorarrangements">Rights Or Arrangements</a><span aria-hidden="true"> › </span>      <span aria-current="location">Rights Of Support</span>
+    </nav>    <div class="object-block__title-row">
       <h4 id="propertypackrightsandinformalarrangementsrightsorarrangementsrightsofsupport" class="object-block__title" data-display-id="rightsofsupport">
         <span class="object-block__display">Rights Of Support</span>      </h4>
       <code class="object-block__path">propertyPack.rightsAndInformalArrangements.rightsOrArrangements.rightsOfSupport</code>
@@ -1473,7 +1530,8 @@ erDiagram
           <th style="width: 6rem;">Affordance</th>
         </tr>
       </thead>
-      <tbody>        <tr data-leaf-path="propertyPack.rightsAndInformalArrangements.rightsOrArrangements.rightsOfSupport.details"
+      <tbody>        <tr id="propertypackrightsandinformalarrangementsrightsorarrangementsrightsofsupportdetails"
+            data-leaf-path="propertyPack.rightsAndInformalArrangements.rightsOrArrangements.rightsOfSupport.details"
             data-overlays="baspi5">
           <td>Details</td>
           <td><span class="muted">—</span></td>
@@ -1483,7 +1541,8 @@ erDiagram
           <td class="align-center"><span class="muted">—</span></td>
           <td class="overlay-cell">              <div class="overlay-line">Buyers & Sellers Property Information v5 <span class="overlay-key">(BASPI5)</span></div>          </td>
           <td><span class="muted">—</span>          </td>
-        </tr>        <tr data-leaf-path="propertyPack.rightsAndInformalArrangements.rightsOrArrangements.rightsOfSupport.yesNo"
+        </tr>        <tr id="propertypackrightsandinformalarrangementsrightsorarrangementsrightsofsupportyesno"
+            data-leaf-path="propertyPack.rightsAndInformalArrangements.rightsOrArrangements.rightsOfSupport.yesNo"
             data-overlays="baspi5,piq,rds,ta6">
           <td>yesNo</td>
           <td><span class="muted">—</span></td>
@@ -1493,7 +1552,8 @@ erDiagram
           <td class="align-center"><span class="muted">—</span></td>
           <td class="overlay-cell">              <div class="overlay-line">Buyers & Sellers Property Information v5 <span class="overlay-key">(BASPI5)</span></div>              <div class="overlay-line">Property Information Questionnaire <span class="overlay-key">(PIQ)</span></div>              <div class="overlay-line">Residential Disclosure Standard <span class="overlay-key">(RDS)</span></div>              <div class="overlay-line">Law Society Property Information Form <span class="overlay-key">(TA6)</span></div>          </td>
           <td><span class="muted">—</span>          </td>
-        </tr>        <tr data-leaf-path="propertyPack.rightsAndInformalArrangements.rightsOrArrangements.rightsOfSupport.yesNo"
+        </tr>        <tr id="propertypackrightsandinformalarrangementsrightsorarrangementsrightsofsupportyesno-2"
+            data-leaf-path="propertyPack.rightsAndInformalArrangements.rightsOrArrangements.rightsOfSupport.yesNo"
             data-overlays="baspi5,piq,rds,ta6">
           <td>yesNo</td>
           <td><span class="muted">—</span></td>
@@ -1506,8 +1566,8 @@ erDiagram
         </tr>      </tbody>
     </table>
   </div></div>      <div class="object-block" id="obj-PropertyPackRightsAndInformalArrangementsRightsOrArrangementsRightsToTakeFromLand" data-display-id="rightstotakefromland">
-  <header class="object-block__head">
-    <div class="object-block__title-row">
+  <header class="object-block__head">    <nav class="object-block__breadcrumb" aria-label="Location in the schema">      <a href="#transaction">Transaction</a><span aria-hidden="true"> › </span>      <a href="#propertypack">Property Pack</a><span aria-hidden="true"> › </span>      <a href="#propertypackrightsandinformalarrangements">Rights And Informal Arrangements</a><span aria-hidden="true"> › </span>      <a href="#propertypackrightsandinformalarrangementsrightsorarrangements">Rights Or Arrangements</a><span aria-hidden="true"> › </span>      <span aria-current="location">Rights To Take From Land</span>
+    </nav>    <div class="object-block__title-row">
       <h4 id="propertypackrightsandinformalarrangementsrightsorarrangementsrightstotakefromland" class="object-block__title" data-display-id="rightstotakefromland">
         <span class="object-block__display">Rights To Take From Land</span>      </h4>
       <code class="object-block__path">propertyPack.rightsAndInformalArrangements.rightsOrArrangements.rightsToTakeFromLand</code>
@@ -1527,7 +1587,8 @@ erDiagram
           <th style="width: 6rem;">Affordance</th>
         </tr>
       </thead>
-      <tbody>        <tr data-leaf-path="propertyPack.rightsAndInformalArrangements.rightsOrArrangements.rightsToTakeFromLand.details"
+      <tbody>        <tr id="propertypackrightsandinformalarrangementsrightsorarrangementsrightstotakefromlanddetails"
+            data-leaf-path="propertyPack.rightsAndInformalArrangements.rightsOrArrangements.rightsToTakeFromLand.details"
             data-overlays="baspi5,ta6">
           <td>Details</td>
           <td><span class="muted">—</span></td>
@@ -1537,7 +1598,8 @@ erDiagram
           <td class="align-center"><span class="muted">—</span></td>
           <td class="overlay-cell">              <div class="overlay-line">Buyers & Sellers Property Information v5 <span class="overlay-key">(BASPI5)</span></div>              <div class="overlay-line">Law Society Property Information Form <span class="overlay-key">(TA6)</span></div>          </td>
           <td><span class="muted">—</span>          </td>
-        </tr>        <tr data-leaf-path="propertyPack.rightsAndInformalArrangements.rightsOrArrangements.rightsToTakeFromLand.yesNo"
+        </tr>        <tr id="propertypackrightsandinformalarrangementsrightsorarrangementsrightstotakefromlandyesno"
+            data-leaf-path="propertyPack.rightsAndInformalArrangements.rightsOrArrangements.rightsToTakeFromLand.yesNo"
             data-overlays="baspi5,piq,rds,ta6">
           <td>yesNo</td>
           <td><span class="muted">—</span></td>
@@ -1547,7 +1609,8 @@ erDiagram
           <td class="align-center"><span class="muted">—</span></td>
           <td class="overlay-cell">              <div class="overlay-line">Buyers & Sellers Property Information v5 <span class="overlay-key">(BASPI5)</span></div>              <div class="overlay-line">Property Information Questionnaire <span class="overlay-key">(PIQ)</span></div>              <div class="overlay-line">Residential Disclosure Standard <span class="overlay-key">(RDS)</span></div>              <div class="overlay-line">Law Society Property Information Form <span class="overlay-key">(TA6)</span></div>          </td>
           <td><span class="muted">—</span>          </td>
-        </tr>        <tr data-leaf-path="propertyPack.rightsAndInformalArrangements.rightsOrArrangements.rightsToTakeFromLand.yesNo"
+        </tr>        <tr id="propertypackrightsandinformalarrangementsrightsorarrangementsrightstotakefromlandyesno-2"
+            data-leaf-path="propertyPack.rightsAndInformalArrangements.rightsOrArrangements.rightsToTakeFromLand.yesNo"
             data-overlays="baspi5,piq,rds,ta6">
           <td>yesNo</td>
           <td><span class="muted">—</span></td>
@@ -1560,4 +1623,21 @@ erDiagram
         </tr>      </tbody>
     </table>
   </div></div>
+<script slot="scripts" is:inline data-astro-rerun src="/ui/schema-leaf-table.js"></script>
+<script slot="scripts" is:inline data-astro-rerun>
+  if (window._opdaSchemaLeafMount) {
+    document.removeEventListener('astro:page-load', window._opdaSchemaLeafMount);
+  }
+  window._opdaSchemaLeafMount = function () {
+    if (typeof mountLeafTable === 'function') {
+      mountLeafTable({
+        page: '38g',
+        showEnvelopes: false,
+        filterButtonId: 'filter-overlay-btn',
+        filterCountId: 'filter-overlay-count'
+      });
+    }
+  };
+  document.addEventListener('astro:page-load', window._opdaSchemaLeafMount);
+</script>
 </Layout>

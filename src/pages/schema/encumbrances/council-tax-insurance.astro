@@ -2,15 +2,13 @@
 import Layout from '@/layouts/Layout.astro';
 ---
 <Layout
-  title="Schema · Council tax &amp; insurance"
-  description="Council tax &amp;amp; insurance"
+  title="Schema · Council tax & insurance"
+  description="Council tax & insurance"
 >
-<div class="page-meta">
+      <div class="page-meta">
         <span class="pill pill--info">Schema</span>
         <span>Page 47a</span>
-        <span>Generated 2026-05-17</span>
-        <span title="DAMA-DMBOK2 Knowledge Area — per ADR-0001">DAMA · Data Modeling &amp; Design</span>
-      </div>
+        <span>Generated 2026-07-06</span>        <span title="DAMA-DMBOK2 Knowledge Area — per ADR-0001">DAMA · Data Modeling &amp; Design</span>      </div>
 
       <h1>Council tax & insurance</h1>
 
@@ -127,9 +125,8 @@ erDiagram
                       class="mt-2 rounded-md bg-[var(--button-bg)] outline-1 outline-[var(--ring-subtle)] shadow-lg p-5 transition transition-discrete data-closed:opacity-0 data-closed:scale-95 data-enter:duration-100 data-enter:ease-out data-leave:duration-75 data-leave:ease-in">
           </el-popover>
         </el-popover-group>
-      </div>      <h3 id="council_tax">Council tax</h3>      <div class="object-block" id="obj-Transaction" data-display-id="transaction">
-  <header class="object-block__head">
-    <div class="object-block__title-row">
+      </div>      <p class="muted tiny object-ancestors-note">Parent containers — shown for reference; their own content lives in the sections below.</p>      <div class="object-block" id="obj-Transaction" data-display-id="transaction">
+  <header class="object-block__head">    <div class="object-block__title-row">
       <h4 id="transaction" class="object-block__title" data-display-id="transaction">
         <span class="object-block__display">Transaction</span>      </h4>
       <code class="object-block__path">transaction (root)</code>
@@ -142,8 +139,8 @@ erDiagram
           <span>Property Pack</span>
         </a>
       </li>    </ul>  </header>  <p class="muted tiny">No scalar fields on this object — pure container.</p></div>      <div class="object-block" id="obj-PropertyPack" data-display-id="propertypack">
-  <header class="object-block__head">
-    <div class="object-block__title-row">
+  <header class="object-block__head">    <nav class="object-block__breadcrumb" aria-label="Location in the schema">      <a href="#transaction">Transaction</a><span aria-hidden="true"> › </span>      <span aria-current="location">Property Pack</span>
+    </nav>    <div class="object-block__title-row">
       <h4 id="propertypack" class="object-block__title" data-display-id="propertypack">
         <span class="object-block__display">Property Pack</span>      </h4>
       <code class="object-block__path">propertyPack</code>
@@ -163,9 +160,9 @@ erDiagram
           </svg>
           <span>Insurance</span>
         </a>
-      </li>    </ul>  </header>  <p class="muted tiny">No scalar fields on this object — pure container.</p></div>      <div class="object-block" id="obj-PropertyPackCouncilTax" data-display-id="counciltax">
-  <header class="object-block__head">
-    <div class="object-block__title-row">
+      </li>    </ul>  </header>  <p class="muted tiny">No scalar fields on this object — pure container.</p></div>      <h3 id="council_tax">Council tax</h3>      <div class="object-block" id="obj-PropertyPackCouncilTax" data-display-id="counciltax">
+  <header class="object-block__head">    <nav class="object-block__breadcrumb" aria-label="Location in the schema">      <a href="#transaction">Transaction</a><span aria-hidden="true"> › </span>      <a href="#propertypack">Property Pack</a><span aria-hidden="true"> › </span>      <span aria-current="location">Council Tax</span>
+    </nav>    <div class="object-block__title-row">
       <h4 id="propertypackcounciltax" class="object-block__title" data-display-id="counciltax">
         <span class="object-block__display">Council Tax</span>      </h4>
       <code class="object-block__path">propertyPack.councilTax</code>
@@ -193,7 +190,8 @@ erDiagram
           <th style="width: 6rem;">Affordance</th>
         </tr>
       </thead>
-      <tbody>        <tr data-leaf-path="propertyPack.councilTax.councilTaxAnnualCharge"
+      <tbody>        <tr id="propertypackcounciltaxcounciltaxannualcharge"
+            data-leaf-path="propertyPack.councilTax.councilTaxAnnualCharge"
             data-overlays="">
           <td>What is the current annual Council Tax charge? (£)</td>
           <td>What is the current annual Council Tax charge? (£)</td>
@@ -203,7 +201,8 @@ erDiagram
           <td class="align-center"><span class="muted">—</span></td>
           <td class="overlay-cell"><span class="muted">—</span>          </td>
           <td><span class="muted">—</span>          </td>
-        </tr>        <tr data-leaf-path="propertyPack.councilTax.councilTaxBand"
+        </tr>        <tr id="propertypackcounciltaxcounciltaxband"
+            data-leaf-path="propertyPack.councilTax.councilTaxBand"
             data-overlays="baspi5,nts2,ntsl2,piq,rds">
           <td>Which Council Tax band does this property fall within?</td>
           <td>Band I relate to Wale only. Which Council Tax band does this property fall within?</td>
@@ -216,8 +215,8 @@ erDiagram
         </tr>      </tbody>
     </table>
   </div></div>      <div class="object-block" id="obj-PropertyPackCouncilTaxCouncilTaxAffectingAlterations" data-display-id="counciltaxaffectingalterations">
-  <header class="object-block__head">
-    <div class="object-block__title-row">
+  <header class="object-block__head">    <nav class="object-block__breadcrumb" aria-label="Location in the schema">      <a href="#transaction">Transaction</a><span aria-hidden="true"> › </span>      <a href="#propertypack">Property Pack</a><span aria-hidden="true"> › </span>      <a href="#propertypackcounciltax">Council Tax</a><span aria-hidden="true"> › </span>      <span aria-current="location">Council Tax Affecting Alterations</span>
+    </nav>    <div class="object-block__title-row">
       <h4 id="propertypackcounciltaxcounciltaxaffectingalterations" class="object-block__title" data-display-id="counciltaxaffectingalterations">
         <span class="object-block__display">Council Tax Affecting Alterations</span>      </h4>
       <code class="object-block__path">propertyPack.councilTax.councilTaxAffectingAlterations</code>
@@ -237,7 +236,8 @@ erDiagram
           <th style="width: 6rem;">Affordance</th>
         </tr>
       </thead>
-      <tbody>        <tr data-leaf-path="propertyPack.councilTax.councilTaxAffectingAlterations.attachments"
+      <tbody>        <tr id="propertypackcounciltaxcounciltaxaffectingalterationsattachments"
+            data-leaf-path="propertyPack.councilTax.councilTaxAffectingAlterations.attachments"
             data-overlays="baspi5,nts2,ntsl2">
           <td>Attachments</td>
           <td><span class="muted">—</span></td>
@@ -247,7 +247,8 @@ erDiagram
           <td class="align-center"><span class="muted">—</span></td>
           <td class="overlay-cell">              <div class="overlay-line">Buyers & Sellers Property Information v5 <span class="overlay-key">(BASPI5)</span></div>              <div class="overlay-line">NTS Material Information (sales) <span class="overlay-key">(NTS2)</span></div>              <div class="overlay-line">NTS Material Information (lettings) <span class="overlay-key">(NTSL2)</span></div>          </td>
           <td><span class="muted">—</span>          </td>
-        </tr>        <tr data-leaf-path="propertyPack.councilTax.councilTaxAffectingAlterations.details"
+        </tr>        <tr id="propertypackcounciltaxcounciltaxaffectingalterationsdetails"
+            data-leaf-path="propertyPack.councilTax.councilTaxAffectingAlterations.details"
             data-overlays="baspi5,nts2,ntsl2">
           <td>Please give details</td>
           <td><span class="muted">—</span></td>
@@ -257,7 +258,8 @@ erDiagram
           <td class="align-center"><span class="muted">—</span></td>
           <td class="overlay-cell">              <div class="overlay-line">Buyers & Sellers Property Information v5 <span class="overlay-key">(BASPI5)</span></div>              <div class="overlay-line">NTS Material Information (sales) <span class="overlay-key">(NTS2)</span></div>              <div class="overlay-line">NTS Material Information (lettings) <span class="overlay-key">(NTSL2)</span></div>          </td>
           <td><span class="muted">—</span>          </td>
-        </tr>        <tr data-leaf-path="propertyPack.councilTax.councilTaxAffectingAlterations.yesNo"
+        </tr>        <tr id="propertypackcounciltaxcounciltaxaffectingalterationsyesno"
+            data-leaf-path="propertyPack.councilTax.councilTaxAffectingAlterations.yesNo"
             data-overlays="baspi5,nts2,ntsl2,rds">
           <td>yesNo</td>
           <td><span class="muted">—</span></td>
@@ -267,7 +269,8 @@ erDiagram
           <td class="align-center"><span class="muted">—</span></td>
           <td class="overlay-cell">              <div class="overlay-line">Buyers & Sellers Property Information v5 <span class="overlay-key">(BASPI5)</span></div>              <div class="overlay-line">NTS Material Information (sales) <span class="overlay-key">(NTS2)</span></div>              <div class="overlay-line">NTS Material Information (lettings) <span class="overlay-key">(NTSL2)</span></div>              <div class="overlay-line">Residential Disclosure Standard <span class="overlay-key">(RDS)</span></div>          </td>
           <td><span class="muted">—</span>          </td>
-        </tr>        <tr data-leaf-path="propertyPack.councilTax.councilTaxAffectingAlterations.yesNo"
+        </tr>        <tr id="propertypackcounciltaxcounciltaxaffectingalterationsyesno-2"
+            data-leaf-path="propertyPack.councilTax.councilTaxAffectingAlterations.yesNo"
             data-overlays="baspi5,nts2,ntsl2,rds">
           <td>yesNo</td>
           <td><span class="muted">—</span></td>
@@ -280,8 +283,8 @@ erDiagram
         </tr>      </tbody>
     </table>
   </div></div>      <h3 id="insurance">Insurance</h3>      <div class="object-block" id="obj-PropertyPackInsurance" data-display-id="insurance">
-  <header class="object-block__head">
-    <div class="object-block__title-row">
+  <header class="object-block__head">    <nav class="object-block__breadcrumb" aria-label="Location in the schema">      <a href="#transaction">Transaction</a><span aria-hidden="true"> › </span>      <a href="#propertypack">Property Pack</a><span aria-hidden="true"> › </span>      <span aria-current="location">Insurance</span>
+    </nav>    <div class="object-block__title-row">
       <h4 id="propertypackinsurance" class="object-block__title" data-display-id="insurance">
         <span class="object-block__display">Insurance</span>      </h4>
       <code class="object-block__path">propertyPack.insurance</code>
@@ -317,7 +320,8 @@ erDiagram
           <th style="width: 6rem;">Affordance</th>
         </tr>
       </thead>
-      <tbody>        <tr data-leaf-path="propertyPack.insurance.details"
+      <tbody>        <tr id="propertypackinsurancedetails"
+            data-leaf-path="propertyPack.insurance.details"
             data-overlays="baspi5,ta6">
           <td>Why not?</td>
           <td>e.g. the work was exempt from Building Regulation. Please provide detail</td>
@@ -327,7 +331,8 @@ erDiagram
           <td class="align-center"><span class="muted">—</span></td>
           <td class="overlay-cell">              <div class="overlay-line">Buyers & Sellers Property Information v5 <span class="overlay-key">(BASPI5)</span></div>              <div class="overlay-line">Law Society Property Information Form <span class="overlay-key">(TA6)</span></div>          </td>
           <td><span class="muted">—</span>          </td>
-        </tr>        <tr data-leaf-path="propertyPack.insurance.isInsured"
+        </tr>        <tr id="propertypackinsuranceisinsured"
+            data-leaf-path="propertyPack.insurance.isInsured"
             data-overlays="baspi5,piq,rds,ta6">
           <td>isInsured</td>
           <td>Do you currently insure the property?</td>
@@ -337,7 +342,8 @@ erDiagram
           <td class="align-center"><span class="muted">—</span></td>
           <td class="overlay-cell">              <div class="overlay-line">Buyers & Sellers Property Information v5 <span class="overlay-key">(BASPI5)</span></div>              <div class="overlay-line">Property Information Questionnaire <span class="overlay-key">(PIQ)</span></div>              <div class="overlay-line">Residential Disclosure Standard <span class="overlay-key">(RDS)</span></div>              <div class="overlay-line">Law Society Property Information Form <span class="overlay-key">(TA6)</span></div>          </td>
           <td><span class="muted">—</span>          </td>
-        </tr>        <tr data-leaf-path="propertyPack.insurance.isInsured"
+        </tr>        <tr id="propertypackinsuranceisinsured-2"
+            data-leaf-path="propertyPack.insurance.isInsured"
             data-overlays="baspi5,piq,rds,ta6">
           <td>isInsured</td>
           <td>Do you currently insure the property?</td>
@@ -347,7 +353,8 @@ erDiagram
           <td class="align-center"><span class="muted">—</span></td>
           <td class="overlay-cell">              <div class="overlay-line">Buyers & Sellers Property Information v5 <span class="overlay-key">(BASPI5)</span></div>              <div class="overlay-line">Property Information Questionnaire <span class="overlay-key">(PIQ)</span></div>              <div class="overlay-line">Residential Disclosure Standard <span class="overlay-key">(RDS)</span></div>              <div class="overlay-line">Law Society Property Information Form <span class="overlay-key">(TA6)</span></div>          </td>
           <td><span class="muted">—</span>          </td>
-        </tr>        <tr data-leaf-path="propertyPack.insurance.landlordInsuresIfFlat"
+        </tr>        <tr id="propertypackinsurancelandlordinsuresifflat"
+            data-leaf-path="propertyPack.insurance.landlordInsuresIfFlat"
             data-overlays="baspi5,ta6">
           <td>If the property is a flat, does the landlord insure the building?</td>
           <td>If the property is a flat, does the landlord insure the building?</td>
@@ -360,8 +367,8 @@ erDiagram
         </tr>      </tbody>
     </table>
   </div></div>      <div class="object-block" id="obj-PropertyPackInsuranceDifficultiesObtainingInsurance" data-display-id="difficultiesobtaininginsurance">
-  <header class="object-block__head">
-    <div class="object-block__title-row">
+  <header class="object-block__head">    <nav class="object-block__breadcrumb" aria-label="Location in the schema">      <a href="#transaction">Transaction</a><span aria-hidden="true"> › </span>      <a href="#propertypack">Property Pack</a><span aria-hidden="true"> › </span>      <a href="#propertypackinsurance">Insurance</a><span aria-hidden="true"> › </span>      <span aria-current="location">Difficulties Obtaining Insurance</span>
+    </nav>    <div class="object-block__title-row">
       <h4 id="propertypackinsurancedifficultiesobtaininginsurance" class="object-block__title" data-display-id="difficultiesobtaininginsurance">
         <span class="object-block__display">Difficulties Obtaining Insurance</span>      </h4>
       <code class="object-block__path">propertyPack.insurance.difficultiesObtainingInsurance</code>
@@ -398,8 +405,8 @@ erDiagram
           <span>Refused</span>
         </a>
       </li>    </ul>  </header>  <p class="muted tiny">No scalar fields on this object — pure container.</p></div>      <div class="object-block" id="obj-PropertyPackInsuranceInsuranceClaims" data-display-id="insuranceclaims">
-  <header class="object-block__head">
-    <div class="object-block__title-row">
+  <header class="object-block__head">    <nav class="object-block__breadcrumb" aria-label="Location in the schema">      <a href="#transaction">Transaction</a><span aria-hidden="true"> › </span>      <a href="#propertypack">Property Pack</a><span aria-hidden="true"> › </span>      <a href="#propertypackinsurance">Insurance</a><span aria-hidden="true"> › </span>      <span aria-current="location">Insurance Claims</span>
+    </nav>    <div class="object-block__title-row">
       <h4 id="propertypackinsuranceinsuranceclaims" class="object-block__title" data-display-id="insuranceclaims">
         <span class="object-block__display">Insurance Claims</span>      </h4>
       <code class="object-block__path">propertyPack.insurance.insuranceClaims</code>
@@ -419,7 +426,8 @@ erDiagram
           <th style="width: 6rem;">Affordance</th>
         </tr>
       </thead>
-      <tbody>        <tr data-leaf-path="propertyPack.insurance.insuranceClaims.details"
+      <tbody>        <tr id="propertypackinsuranceinsuranceclaimsdetails"
+            data-leaf-path="propertyPack.insurance.insuranceClaims.details"
             data-overlays="baspi5,ta6">
           <td>Provide details</td>
           <td><span class="muted">—</span></td>
@@ -429,7 +437,8 @@ erDiagram
           <td class="align-center"><span class="muted">—</span></td>
           <td class="overlay-cell">              <div class="overlay-line">Buyers & Sellers Property Information v5 <span class="overlay-key">(BASPI5)</span></div>              <div class="overlay-line">Law Society Property Information Form <span class="overlay-key">(TA6)</span></div>          </td>
           <td><span class="muted">—</span>          </td>
-        </tr>        <tr data-leaf-path="propertyPack.insurance.insuranceClaims.yesNo"
+        </tr>        <tr id="propertypackinsuranceinsuranceclaimsyesno"
+            data-leaf-path="propertyPack.insurance.insuranceClaims.yesNo"
             data-overlays="baspi5,rds,ta6">
           <td>yesNo</td>
           <td><span class="muted">—</span></td>
@@ -439,7 +448,8 @@ erDiagram
           <td class="align-center"><span class="muted">—</span></td>
           <td class="overlay-cell">              <div class="overlay-line">Buyers & Sellers Property Information v5 <span class="overlay-key">(BASPI5)</span></div>              <div class="overlay-line">Residential Disclosure Standard <span class="overlay-key">(RDS)</span></div>              <div class="overlay-line">Law Society Property Information Form <span class="overlay-key">(TA6)</span></div>          </td>
           <td><span class="muted">—</span>          </td>
-        </tr>        <tr data-leaf-path="propertyPack.insurance.insuranceClaims.yesNo"
+        </tr>        <tr id="propertypackinsuranceinsuranceclaimsyesno-2"
+            data-leaf-path="propertyPack.insurance.insuranceClaims.yesNo"
             data-overlays="baspi5,rds,ta6">
           <td>yesNo</td>
           <td><span class="muted">—</span></td>
@@ -452,8 +462,8 @@ erDiagram
         </tr>      </tbody>
     </table>
   </div></div>      <div class="object-block" id="obj-PropertyPackInsuranceDifficultiesObtainingInsuranceAbnormalRiseInPremiums" data-display-id="abnormalriseinpremiums">
-  <header class="object-block__head">
-    <div class="object-block__title-row">
+  <header class="object-block__head">    <nav class="object-block__breadcrumb" aria-label="Location in the schema">      <a href="#transaction">Transaction</a><span aria-hidden="true"> › </span>      <a href="#propertypack">Property Pack</a><span aria-hidden="true"> › </span>      <a href="#propertypackinsurance">Insurance</a><span aria-hidden="true"> › </span>      <a href="#propertypackinsurancedifficultiesobtaininginsurance">Difficulties Obtaining Insurance</a><span aria-hidden="true"> › </span>      <span aria-current="location">Abnormal Rise In Premiums</span>
+    </nav>    <div class="object-block__title-row">
       <h4 id="propertypackinsurancedifficultiesobtaininginsuranceabnormalriseinpremiums" class="object-block__title" data-display-id="abnormalriseinpremiums">
         <span class="object-block__display">Abnormal Rise In Premiums</span>      </h4>
       <code class="object-block__path">propertyPack.insurance.difficultiesObtainingInsurance.abnormalRiseInPremiums</code>
@@ -473,7 +483,8 @@ erDiagram
           <th style="width: 6rem;">Affordance</th>
         </tr>
       </thead>
-      <tbody>        <tr data-leaf-path="propertyPack.insurance.difficultiesObtainingInsurance.abnormalRiseInPremiums.details"
+      <tbody>        <tr id="propertypackinsurancedifficultiesobtaininginsuranceabnormalriseinpremiumsdetails"
+            data-leaf-path="propertyPack.insurance.difficultiesObtainingInsurance.abnormalRiseInPremiums.details"
             data-overlays="baspi5,piq,ta6">
           <td>Provide details</td>
           <td><span class="muted">—</span></td>
@@ -483,7 +494,8 @@ erDiagram
           <td class="align-center"><span class="muted">—</span></td>
           <td class="overlay-cell">              <div class="overlay-line">Buyers & Sellers Property Information v5 <span class="overlay-key">(BASPI5)</span></div>              <div class="overlay-line">Property Information Questionnaire <span class="overlay-key">(PIQ)</span></div>              <div class="overlay-line">Law Society Property Information Form <span class="overlay-key">(TA6)</span></div>          </td>
           <td><span class="muted">—</span>          </td>
-        </tr>        <tr data-leaf-path="propertyPack.insurance.difficultiesObtainingInsurance.abnormalRiseInPremiums.yesNo"
+        </tr>        <tr id="propertypackinsurancedifficultiesobtaininginsuranceabnormalriseinpremiumsyesno"
+            data-leaf-path="propertyPack.insurance.difficultiesObtainingInsurance.abnormalRiseInPremiums.yesNo"
             data-overlays="baspi5,piq,ta6">
           <td>yesNo</td>
           <td><span class="muted">—</span></td>
@@ -493,7 +505,8 @@ erDiagram
           <td class="align-center"><span class="muted">—</span></td>
           <td class="overlay-cell">              <div class="overlay-line">Buyers & Sellers Property Information v5 <span class="overlay-key">(BASPI5)</span></div>              <div class="overlay-line">Property Information Questionnaire <span class="overlay-key">(PIQ)</span></div>              <div class="overlay-line">Law Society Property Information Form <span class="overlay-key">(TA6)</span></div>          </td>
           <td><span class="muted">—</span>          </td>
-        </tr>        <tr data-leaf-path="propertyPack.insurance.difficultiesObtainingInsurance.abnormalRiseInPremiums.yesNo"
+        </tr>        <tr id="propertypackinsurancedifficultiesobtaininginsuranceabnormalriseinpremiumsyesno-2"
+            data-leaf-path="propertyPack.insurance.difficultiesObtainingInsurance.abnormalRiseInPremiums.yesNo"
             data-overlays="baspi5,piq,ta6">
           <td>yesNo</td>
           <td><span class="muted">—</span></td>
@@ -506,8 +519,8 @@ erDiagram
         </tr>      </tbody>
     </table>
   </div></div>      <div class="object-block" id="obj-PropertyPackInsuranceDifficultiesObtainingInsuranceRefused" data-display-id="refused">
-  <header class="object-block__head">
-    <div class="object-block__title-row">
+  <header class="object-block__head">    <nav class="object-block__breadcrumb" aria-label="Location in the schema">      <a href="#transaction">Transaction</a><span aria-hidden="true"> › </span>      <a href="#propertypack">Property Pack</a><span aria-hidden="true"> › </span>      <a href="#propertypackinsurance">Insurance</a><span aria-hidden="true"> › </span>      <a href="#propertypackinsurancedifficultiesobtaininginsurance">Difficulties Obtaining Insurance</a><span aria-hidden="true"> › </span>      <span aria-current="location">Refused</span>
+    </nav>    <div class="object-block__title-row">
       <h4 id="propertypackinsurancedifficultiesobtaininginsurancerefused" class="object-block__title" data-display-id="refused">
         <span class="object-block__display">Refused</span>      </h4>
       <code class="object-block__path">propertyPack.insurance.difficultiesObtainingInsurance.refused</code>
@@ -527,7 +540,8 @@ erDiagram
           <th style="width: 6rem;">Affordance</th>
         </tr>
       </thead>
-      <tbody>        <tr data-leaf-path="propertyPack.insurance.difficultiesObtainingInsurance.refused.details"
+      <tbody>        <tr id="propertypackinsurancedifficultiesobtaininginsurancerefuseddetails"
+            data-leaf-path="propertyPack.insurance.difficultiesObtainingInsurance.refused.details"
             data-overlays="baspi5,piq,ta6">
           <td>Provide details</td>
           <td><span class="muted">—</span></td>
@@ -537,7 +551,8 @@ erDiagram
           <td class="align-center"><span class="muted">—</span></td>
           <td class="overlay-cell">              <div class="overlay-line">Buyers & Sellers Property Information v5 <span class="overlay-key">(BASPI5)</span></div>              <div class="overlay-line">Property Information Questionnaire <span class="overlay-key">(PIQ)</span></div>              <div class="overlay-line">Law Society Property Information Form <span class="overlay-key">(TA6)</span></div>          </td>
           <td><span class="muted">—</span>          </td>
-        </tr>        <tr data-leaf-path="propertyPack.insurance.difficultiesObtainingInsurance.refused.yesNo"
+        </tr>        <tr id="propertypackinsurancedifficultiesobtaininginsurancerefusedyesno"
+            data-leaf-path="propertyPack.insurance.difficultiesObtainingInsurance.refused.yesNo"
             data-overlays="baspi5,piq,ta6">
           <td>yesNo</td>
           <td><span class="muted">—</span></td>
@@ -547,7 +562,8 @@ erDiagram
           <td class="align-center"><span class="muted">—</span></td>
           <td class="overlay-cell">              <div class="overlay-line">Buyers & Sellers Property Information v5 <span class="overlay-key">(BASPI5)</span></div>              <div class="overlay-line">Property Information Questionnaire <span class="overlay-key">(PIQ)</span></div>              <div class="overlay-line">Law Society Property Information Form <span class="overlay-key">(TA6)</span></div>          </td>
           <td><span class="muted">—</span>          </td>
-        </tr>        <tr data-leaf-path="propertyPack.insurance.difficultiesObtainingInsurance.refused.yesNo"
+        </tr>        <tr id="propertypackinsurancedifficultiesobtaininginsurancerefusedyesno-2"
+            data-leaf-path="propertyPack.insurance.difficultiesObtainingInsurance.refused.yesNo"
             data-overlays="baspi5,piq,ta6">
           <td>yesNo</td>
           <td><span class="muted">—</span></td>
@@ -560,8 +576,8 @@ erDiagram
         </tr>      </tbody>
     </table>
   </div></div>      <div class="object-block" id="obj-PropertyPackInsuranceDifficultiesObtainingInsuranceSubjectToHighExcesses" data-display-id="subjecttohighexcesses">
-  <header class="object-block__head">
-    <div class="object-block__title-row">
+  <header class="object-block__head">    <nav class="object-block__breadcrumb" aria-label="Location in the schema">      <a href="#transaction">Transaction</a><span aria-hidden="true"> › </span>      <a href="#propertypack">Property Pack</a><span aria-hidden="true"> › </span>      <a href="#propertypackinsurance">Insurance</a><span aria-hidden="true"> › </span>      <a href="#propertypackinsurancedifficultiesobtaininginsurance">Difficulties Obtaining Insurance</a><span aria-hidden="true"> › </span>      <span aria-current="location">Subject To High Excesses</span>
+    </nav>    <div class="object-block__title-row">
       <h4 id="propertypackinsurancedifficultiesobtaininginsurancesubjecttohighexcesses" class="object-block__title" data-display-id="subjecttohighexcesses">
         <span class="object-block__display">Subject To High Excesses</span>      </h4>
       <code class="object-block__path">propertyPack.insurance.difficultiesObtainingInsurance.subjectToHighExcesses</code>
@@ -581,7 +597,8 @@ erDiagram
           <th style="width: 6rem;">Affordance</th>
         </tr>
       </thead>
-      <tbody>        <tr data-leaf-path="propertyPack.insurance.difficultiesObtainingInsurance.subjectToHighExcesses.details"
+      <tbody>        <tr id="propertypackinsurancedifficultiesobtaininginsurancesubjecttohighexcessesdetails"
+            data-leaf-path="propertyPack.insurance.difficultiesObtainingInsurance.subjectToHighExcesses.details"
             data-overlays="baspi5,piq,ta6">
           <td>Provide details</td>
           <td><span class="muted">—</span></td>
@@ -591,7 +608,8 @@ erDiagram
           <td class="align-center"><span class="muted">—</span></td>
           <td class="overlay-cell">              <div class="overlay-line">Buyers & Sellers Property Information v5 <span class="overlay-key">(BASPI5)</span></div>              <div class="overlay-line">Property Information Questionnaire <span class="overlay-key">(PIQ)</span></div>              <div class="overlay-line">Law Society Property Information Form <span class="overlay-key">(TA6)</span></div>          </td>
           <td><span class="muted">—</span>          </td>
-        </tr>        <tr data-leaf-path="propertyPack.insurance.difficultiesObtainingInsurance.subjectToHighExcesses.yesNo"
+        </tr>        <tr id="propertypackinsurancedifficultiesobtaininginsurancesubjecttohighexcessesyesno"
+            data-leaf-path="propertyPack.insurance.difficultiesObtainingInsurance.subjectToHighExcesses.yesNo"
             data-overlays="baspi5,piq,ta6">
           <td>yesNo</td>
           <td><span class="muted">—</span></td>
@@ -601,7 +619,8 @@ erDiagram
           <td class="align-center"><span class="muted">—</span></td>
           <td class="overlay-cell">              <div class="overlay-line">Buyers & Sellers Property Information v5 <span class="overlay-key">(BASPI5)</span></div>              <div class="overlay-line">Property Information Questionnaire <span class="overlay-key">(PIQ)</span></div>              <div class="overlay-line">Law Society Property Information Form <span class="overlay-key">(TA6)</span></div>          </td>
           <td><span class="muted">—</span>          </td>
-        </tr>        <tr data-leaf-path="propertyPack.insurance.difficultiesObtainingInsurance.subjectToHighExcesses.yesNo"
+        </tr>        <tr id="propertypackinsurancedifficultiesobtaininginsurancesubjecttohighexcessesyesno-2"
+            data-leaf-path="propertyPack.insurance.difficultiesObtainingInsurance.subjectToHighExcesses.yesNo"
             data-overlays="baspi5,piq,ta6">
           <td>yesNo</td>
           <td><span class="muted">—</span></td>
@@ -614,8 +633,8 @@ erDiagram
         </tr>      </tbody>
     </table>
   </div></div>      <div class="object-block" id="obj-PropertyPackInsuranceDifficultiesObtainingInsuranceSubjectToUnusualConditions" data-display-id="subjecttounusualconditions">
-  <header class="object-block__head">
-    <div class="object-block__title-row">
+  <header class="object-block__head">    <nav class="object-block__breadcrumb" aria-label="Location in the schema">      <a href="#transaction">Transaction</a><span aria-hidden="true"> › </span>      <a href="#propertypack">Property Pack</a><span aria-hidden="true"> › </span>      <a href="#propertypackinsurance">Insurance</a><span aria-hidden="true"> › </span>      <a href="#propertypackinsurancedifficultiesobtaininginsurance">Difficulties Obtaining Insurance</a><span aria-hidden="true"> › </span>      <span aria-current="location">Subject To Unusual Conditions</span>
+    </nav>    <div class="object-block__title-row">
       <h4 id="propertypackinsurancedifficultiesobtaininginsurancesubjecttounusualconditions" class="object-block__title" data-display-id="subjecttounusualconditions">
         <span class="object-block__display">Subject To Unusual Conditions</span>      </h4>
       <code class="object-block__path">propertyPack.insurance.difficultiesObtainingInsurance.subjectToUnusualConditions</code>
@@ -635,7 +654,8 @@ erDiagram
           <th style="width: 6rem;">Affordance</th>
         </tr>
       </thead>
-      <tbody>        <tr data-leaf-path="propertyPack.insurance.difficultiesObtainingInsurance.subjectToUnusualConditions.details"
+      <tbody>        <tr id="propertypackinsurancedifficultiesobtaininginsurancesubjecttounusualconditionsdetails"
+            data-leaf-path="propertyPack.insurance.difficultiesObtainingInsurance.subjectToUnusualConditions.details"
             data-overlays="baspi5,piq,ta6">
           <td>Provide details</td>
           <td><span class="muted">—</span></td>
@@ -645,7 +665,8 @@ erDiagram
           <td class="align-center"><span class="muted">—</span></td>
           <td class="overlay-cell">              <div class="overlay-line">Buyers & Sellers Property Information v5 <span class="overlay-key">(BASPI5)</span></div>              <div class="overlay-line">Property Information Questionnaire <span class="overlay-key">(PIQ)</span></div>              <div class="overlay-line">Law Society Property Information Form <span class="overlay-key">(TA6)</span></div>          </td>
           <td><span class="muted">—</span>          </td>
-        </tr>        <tr data-leaf-path="propertyPack.insurance.difficultiesObtainingInsurance.subjectToUnusualConditions.yesNo"
+        </tr>        <tr id="propertypackinsurancedifficultiesobtaininginsurancesubjecttounusualconditionsyesno"
+            data-leaf-path="propertyPack.insurance.difficultiesObtainingInsurance.subjectToUnusualConditions.yesNo"
             data-overlays="baspi5,piq,ta6">
           <td>yesNo</td>
           <td><span class="muted">—</span></td>
@@ -655,7 +676,8 @@ erDiagram
           <td class="align-center"><span class="muted">—</span></td>
           <td class="overlay-cell">              <div class="overlay-line">Buyers & Sellers Property Information v5 <span class="overlay-key">(BASPI5)</span></div>              <div class="overlay-line">Property Information Questionnaire <span class="overlay-key">(PIQ)</span></div>              <div class="overlay-line">Law Society Property Information Form <span class="overlay-key">(TA6)</span></div>          </td>
           <td><span class="muted">—</span>          </td>
-        </tr>        <tr data-leaf-path="propertyPack.insurance.difficultiesObtainingInsurance.subjectToUnusualConditions.yesNo"
+        </tr>        <tr id="propertypackinsurancedifficultiesobtaininginsurancesubjecttounusualconditionsyesno-2"
+            data-leaf-path="propertyPack.insurance.difficultiesObtainingInsurance.subjectToUnusualConditions.yesNo"
             data-overlays="baspi5,piq,ta6">
           <td>yesNo</td>
           <td><span class="muted">—</span></td>
@@ -668,4 +690,21 @@ erDiagram
         </tr>      </tbody>
     </table>
   </div></div>
+<script slot="scripts" is:inline data-astro-rerun src="/ui/schema-leaf-table.js"></script>
+<script slot="scripts" is:inline data-astro-rerun>
+  if (window._opdaSchemaLeafMount) {
+    document.removeEventListener('astro:page-load', window._opdaSchemaLeafMount);
+  }
+  window._opdaSchemaLeafMount = function () {
+    if (typeof mountLeafTable === 'function') {
+      mountLeafTable({
+        page: '47a',
+        showEnvelopes: false,
+        filterButtonId: 'filter-overlay-btn',
+        filterCountId: 'filter-overlay-count'
+      });
+    }
+  };
+  document.addEventListener('astro:page-load', window._opdaSchemaLeafMount);
+</script>
 </Layout>

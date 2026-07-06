@@ -5,12 +5,10 @@ import Layout from '@/layouts/Layout.astro';
   title="Schema · Surveys · services · water, drainage, common services"
   description="Surveys · services · water, drainage, common services"
 >
-<div class="page-meta">
+      <div class="page-meta">
         <span class="pill pill--info">Schema</span>
         <span>Page 39d10</span>
-        <span>Generated 2026-05-17</span>
-        <span title="DAMA-DMBOK2 Knowledge Area — per ADR-0001">DAMA · Data Modeling &amp; Design</span>
-      </div>
+        <span>Generated 2026-07-06</span>        <span title="DAMA-DMBOK2 Knowledge Area — per ADR-0001">DAMA · Data Modeling &amp; Design</span>      </div>
 
       <h1>Surveys · services · water, drainage, common services</h1>
 
@@ -144,9 +142,8 @@ erDiagram
                       class="mt-2 rounded-md bg-[var(--button-bg)] outline-1 outline-[var(--ring-subtle)] shadow-lg p-5 transition transition-discrete data-closed:opacity-0 data-closed:scale-95 data-enter:duration-100 data-enter:ease-out data-leave:duration-75 data-leave:ease-in">
           </el-popover>
         </el-popover-group>
-      </div>      <h3 id="surv_services_water">Services · water, drainage, common services</h3>      <div class="object-block" id="obj-Transaction" data-display-id="transaction">
-  <header class="object-block__head">
-    <div class="object-block__title-row">
+      </div>      <p class="muted tiny object-ancestors-note">Parent containers — shown for reference; their own content lives in the sections below.</p>      <div class="object-block" id="obj-Transaction" data-display-id="transaction">
+  <header class="object-block__head">    <div class="object-block__title-row">
       <h4 id="transaction" class="object-block__title" data-display-id="transaction">
         <span class="object-block__display">Transaction</span>      </h4>
       <code class="object-block__path">transaction (root)</code>
@@ -159,8 +156,8 @@ erDiagram
           <span>Property Pack</span>
         </a>
       </li>    </ul>  </header>  <p class="muted tiny">No scalar fields on this object — pure container.</p></div>      <div class="object-block" id="obj-PropertyPack" data-display-id="propertypack">
-  <header class="object-block__head">
-    <div class="object-block__title-row">
+  <header class="object-block__head">    <nav class="object-block__breadcrumb" aria-label="Location in the schema">      <a href="#transaction">Transaction</a><span aria-hidden="true"> › </span>      <span aria-current="location">Property Pack</span>
+    </nav>    <div class="object-block__title-row">
       <h4 id="propertypack" class="object-block__title" data-display-id="propertypack">
         <span class="object-block__display">Property Pack</span>      </h4>
       <code class="object-block__path">propertyPack</code>
@@ -173,8 +170,8 @@ erDiagram
           <span>Surveys[]</span>
         </a>
       </li>    </ul>  </header>  <p class="muted tiny">No scalar fields on this object — pure container.</p></div>      <div class="object-block" id="obj-PropertyPackSurvey" data-display-id="survey">
-  <header class="object-block__head">
-    <div class="object-block__title-row">
+  <header class="object-block__head">    <nav class="object-block__breadcrumb" aria-label="Location in the schema">      <a href="#transaction">Transaction</a><span aria-hidden="true"> › </span>      <a href="#propertypack">Property Pack</a><span aria-hidden="true"> › </span>      <span aria-current="location">Surveys</span>
+    </nav>    <div class="object-block__title-row">
       <h4 id="propertypacksurvey" class="object-block__title" data-display-id="survey">
         <span class="object-block__display">Surveys</span><span class="object-block__cardinality" title="array of objects">[]</span>      </h4>
       <code class="object-block__path">propertyPack.surveys[]</code>
@@ -187,8 +184,8 @@ erDiagram
           <span>Services</span>
         </a>
       </li>    </ul>  </header>  <p class="muted tiny">No scalar fields on this object — pure container.</p></div>      <div class="object-block" id="obj-PropertyPackSurveysServices" data-display-id="services">
-  <header class="object-block__head">
-    <div class="object-block__title-row">
+  <header class="object-block__head">    <nav class="object-block__breadcrumb" aria-label="Location in the schema">      <a href="#transaction">Transaction</a><span aria-hidden="true"> › </span>      <a href="#propertypack">Property Pack</a><span aria-hidden="true"> › </span>      <a href="#propertypacksurvey">Surveys</a><span aria-hidden="true"> › </span>      <span aria-current="location">Services</span>
+    </nav>    <div class="object-block__title-row">
       <h4 id="propertypacksurveysservices" class="object-block__title" data-display-id="services">
         <span class="object-block__display">Services</span>      </h4>
       <code class="object-block__path">propertyPack.surveys[].services</code>
@@ -216,9 +213,9 @@ erDiagram
           </svg>
           <span>Common Services</span>
         </a>
-      </li>    </ul>  </header>  <p class="muted tiny">No scalar fields on this object — pure container.</p></div>      <div class="object-block" id="obj-PropertyPackSurveysServicesCommonServices" data-display-id="commonservices">
-  <header class="object-block__head">
-    <div class="object-block__title-row">
+      </li>    </ul>  </header>  <p class="muted tiny">No scalar fields on this object — pure container.</p></div>      <h3 id="surv_services_water">Services · water, drainage, common services</h3>      <div class="object-block" id="obj-PropertyPackSurveysServicesCommonServices" data-display-id="commonservices">
+  <header class="object-block__head">    <nav class="object-block__breadcrumb" aria-label="Location in the schema">      <a href="#transaction">Transaction</a><span aria-hidden="true"> › </span>      <a href="#propertypack">Property Pack</a><span aria-hidden="true"> › </span>      <a href="#propertypacksurvey">Surveys</a><span aria-hidden="true"> › </span>      <a href="#propertypacksurveysservices">Services</a><span aria-hidden="true"> › </span>      <span aria-current="location">Common Services</span>
+    </nav>    <div class="object-block__title-row">
       <h4 id="propertypacksurveysservicescommonservices" class="object-block__title" data-display-id="commonservices">
         <span class="object-block__display">Common Services</span>      </h4>
       <code class="object-block__path">propertyPack.surveys[].services.commonServices</code>
@@ -246,7 +243,8 @@ erDiagram
           <th style="width: 6rem;">Affordance</th>
         </tr>
       </thead>
-      <tbody>        <tr data-leaf-path="propertyPack.surveys[].services.commonServices.advisories"
+      <tbody>        <tr id="propertypacksurveysservicescommonservicesadvisories"
+            data-leaf-path="propertyPack.surveys[].services.commonServices.advisories"
             data-overlays="">
           <td>advisories</td>
           <td><span class="muted">—</span></td>
@@ -256,7 +254,8 @@ erDiagram
           <td class="align-center"><span class="muted">—</span></td>
           <td class="overlay-cell"><span class="muted">—</span>          </td>
           <td><span class="muted">—</span>          </td>
-        </tr>        <tr data-leaf-path="propertyPack.surveys[].services.commonServices.condition"
+        </tr>        <tr id="propertypacksurveysservicescommonservicescondition"
+            data-leaf-path="propertyPack.surveys[].services.commonServices.condition"
             data-overlays="">
           <td>condition</td>
           <td><span class="muted">—</span></td>
@@ -266,7 +265,8 @@ erDiagram
           <td class="align-center"><span class="muted">—</span></td>
           <td class="overlay-cell"><span class="muted">—</span>          </td>
           <td><span class="muted">—</span>          </td>
-        </tr>        <tr data-leaf-path="propertyPack.surveys[].services.commonServices.defectDetail"
+        </tr>        <tr id="propertypacksurveysservicescommonservicesdefectdetail"
+            data-leaf-path="propertyPack.surveys[].services.commonServices.defectDetail"
             data-overlays="">
           <td>defectDetail</td>
           <td><span class="muted">—</span></td>
@@ -276,7 +276,8 @@ erDiagram
           <td class="align-center"><span class="muted">—</span></td>
           <td class="overlay-cell"><span class="muted">—</span>          </td>
           <td><span class="muted">—</span>          </td>
-        </tr>        <tr data-leaf-path="propertyPack.surveys[].services.commonServices.defects"
+        </tr>        <tr id="propertypacksurveysservicescommonservicesdefects"
+            data-leaf-path="propertyPack.surveys[].services.commonServices.defects"
             data-overlays="">
           <td>defects</td>
           <td><span class="muted">—</span></td>
@@ -286,7 +287,8 @@ erDiagram
           <td class="align-center"><span class="muted">—</span></td>
           <td class="overlay-cell"><span class="muted">—</span>          </td>
           <td><span class="muted">—</span>          </td>
-        </tr>        <tr data-leaf-path="propertyPack.surveys[].services.commonServices.defectsPresent"
+        </tr>        <tr id="propertypacksurveysservicescommonservicesdefectspresent"
+            data-leaf-path="propertyPack.surveys[].services.commonServices.defectsPresent"
             data-overlays="">
           <td>defectsPresent</td>
           <td><span class="muted">—</span></td>
@@ -296,7 +298,8 @@ erDiagram
           <td class="align-center"><span class="muted">—</span></td>
           <td class="overlay-cell"><span class="muted">—</span>          </td>
           <td><span class="muted">—</span>          </td>
-        </tr>        <tr data-leaf-path="propertyPack.surveys[].services.commonServices.description"
+        </tr>        <tr id="propertypacksurveysservicescommonservicesdescription"
+            data-leaf-path="propertyPack.surveys[].services.commonServices.description"
             data-overlays="">
           <td>description</td>
           <td><span class="muted">—</span></td>
@@ -306,7 +309,8 @@ erDiagram
           <td class="align-center"><span class="muted">—</span></td>
           <td class="overlay-cell"><span class="muted">—</span>          </td>
           <td><span class="muted">—</span>          </td>
-        </tr>        <tr data-leaf-path="propertyPack.surveys[].services.commonServices.inspectionLimitations"
+        </tr>        <tr id="propertypacksurveysservicescommonservicesinspectionlimitations"
+            data-leaf-path="propertyPack.surveys[].services.commonServices.inspectionLimitations"
             data-overlays="">
           <td>inspectionLimitations</td>
           <td><span class="muted">—</span></td>
@@ -316,7 +320,8 @@ erDiagram
           <td class="align-center"><span class="muted">—</span></td>
           <td class="overlay-cell"><span class="muted">—</span>          </td>
           <td><span class="muted">—</span>          </td>
-        </tr>        <tr data-leaf-path="propertyPack.surveys[].services.commonServices.notes"
+        </tr>        <tr id="propertypacksurveysservicescommonservicesnotes"
+            data-leaf-path="propertyPack.surveys[].services.commonServices.notes"
             data-overlays="">
           <td>notes</td>
           <td><span class="muted">—</span></td>
@@ -326,7 +331,8 @@ erDiagram
           <td class="align-center"><span class="muted">—</span></td>
           <td class="overlay-cell"><span class="muted">—</span>          </td>
           <td><span class="muted">—</span>          </td>
-        </tr>        <tr data-leaf-path="propertyPack.surveys[].services.commonServices.type"
+        </tr>        <tr id="propertypacksurveysservicescommonservicestype"
+            data-leaf-path="propertyPack.surveys[].services.commonServices.type"
             data-overlays="">
           <td>type</td>
           <td><span class="muted">—</span></td>
@@ -336,7 +342,8 @@ erDiagram
           <td class="align-center"><span class="muted">—</span></td>
           <td class="overlay-cell"><span class="muted">—</span>          </td>
           <td><span class="muted">—</span>          </td>
-        </tr>        <tr data-leaf-path="propertyPack.surveys[].services.commonServices.visibility"
+        </tr>        <tr id="propertypacksurveysservicescommonservicesvisibility"
+            data-leaf-path="propertyPack.surveys[].services.commonServices.visibility"
             data-overlays="">
           <td>visibility</td>
           <td><span class="muted">—</span></td>
@@ -349,8 +356,8 @@ erDiagram
         </tr>      </tbody>
     </table>
   </div></div>      <div class="object-block" id="obj-PropertyPackSurveysServicesDrainage" data-display-id="drainage">
-  <header class="object-block__head">
-    <div class="object-block__title-row">
+  <header class="object-block__head">    <nav class="object-block__breadcrumb" aria-label="Location in the schema">      <a href="#transaction">Transaction</a><span aria-hidden="true"> › </span>      <a href="#propertypack">Property Pack</a><span aria-hidden="true"> › </span>      <a href="#propertypacksurvey">Surveys</a><span aria-hidden="true"> › </span>      <a href="#propertypacksurveysservices">Services</a><span aria-hidden="true"> › </span>      <span aria-current="location">Drainage</span>
+    </nav>    <div class="object-block__title-row">
       <h4 id="propertypacksurveysservicesdrainage" class="object-block__title" data-display-id="drainage">
         <span class="object-block__display">Drainage</span>      </h4>
       <code class="object-block__path">propertyPack.surveys[].services.drainage</code>
@@ -378,7 +385,8 @@ erDiagram
           <th style="width: 6rem;">Affordance</th>
         </tr>
       </thead>
-      <tbody>        <tr data-leaf-path="propertyPack.surveys[].services.drainage.advisories"
+      <tbody>        <tr id="propertypacksurveysservicesdrainageadvisories"
+            data-leaf-path="propertyPack.surveys[].services.drainage.advisories"
             data-overlays="">
           <td>advisories</td>
           <td><span class="muted">—</span></td>
@@ -388,7 +396,8 @@ erDiagram
           <td class="align-center"><span class="muted">—</span></td>
           <td class="overlay-cell"><span class="muted">—</span>          </td>
           <td><span class="muted">—</span>          </td>
-        </tr>        <tr data-leaf-path="propertyPack.surveys[].services.drainage.condition"
+        </tr>        <tr id="propertypacksurveysservicesdrainagecondition"
+            data-leaf-path="propertyPack.surveys[].services.drainage.condition"
             data-overlays="">
           <td>condition</td>
           <td><span class="muted">—</span></td>
@@ -398,7 +407,8 @@ erDiagram
           <td class="align-center"><span class="muted">—</span></td>
           <td class="overlay-cell"><span class="muted">—</span>          </td>
           <td><span class="muted">—</span>          </td>
-        </tr>        <tr data-leaf-path="propertyPack.surveys[].services.drainage.defectDetail"
+        </tr>        <tr id="propertypacksurveysservicesdrainagedefectdetail"
+            data-leaf-path="propertyPack.surveys[].services.drainage.defectDetail"
             data-overlays="">
           <td>defectDetail</td>
           <td><span class="muted">—</span></td>
@@ -408,7 +418,8 @@ erDiagram
           <td class="align-center"><span class="muted">—</span></td>
           <td class="overlay-cell"><span class="muted">—</span>          </td>
           <td><span class="muted">—</span>          </td>
-        </tr>        <tr data-leaf-path="propertyPack.surveys[].services.drainage.defects"
+        </tr>        <tr id="propertypacksurveysservicesdrainagedefects"
+            data-leaf-path="propertyPack.surveys[].services.drainage.defects"
             data-overlays="">
           <td>defects</td>
           <td><span class="muted">—</span></td>
@@ -418,7 +429,8 @@ erDiagram
           <td class="align-center"><span class="muted">—</span></td>
           <td class="overlay-cell"><span class="muted">—</span>          </td>
           <td><span class="muted">—</span>          </td>
-        </tr>        <tr data-leaf-path="propertyPack.surveys[].services.drainage.defectsPresent"
+        </tr>        <tr id="propertypacksurveysservicesdrainagedefectspresent"
+            data-leaf-path="propertyPack.surveys[].services.drainage.defectsPresent"
             data-overlays="">
           <td>defectsPresent</td>
           <td><span class="muted">—</span></td>
@@ -428,7 +440,8 @@ erDiagram
           <td class="align-center"><span class="muted">—</span></td>
           <td class="overlay-cell"><span class="muted">—</span>          </td>
           <td><span class="muted">—</span>          </td>
-        </tr>        <tr data-leaf-path="propertyPack.surveys[].services.drainage.description"
+        </tr>        <tr id="propertypacksurveysservicesdrainagedescription"
+            data-leaf-path="propertyPack.surveys[].services.drainage.description"
             data-overlays="">
           <td>description</td>
           <td><span class="muted">—</span></td>
@@ -438,7 +451,8 @@ erDiagram
           <td class="align-center"><span class="muted">—</span></td>
           <td class="overlay-cell"><span class="muted">—</span>          </td>
           <td><span class="muted">—</span>          </td>
-        </tr>        <tr data-leaf-path="propertyPack.surveys[].services.drainage.features"
+        </tr>        <tr id="propertypacksurveysservicesdrainagefeatures"
+            data-leaf-path="propertyPack.surveys[].services.drainage.features"
             data-overlays="">
           <td>features</td>
           <td><span class="muted">—</span></td>
@@ -448,7 +462,8 @@ erDiagram
           <td class="align-center"><span class="muted">—</span></td>
           <td class="overlay-cell"><span class="muted">—</span>          </td>
           <td><span class="muted">—</span>          </td>
-        </tr>        <tr data-leaf-path="propertyPack.surveys[].services.drainage.inspectionLimitations"
+        </tr>        <tr id="propertypacksurveysservicesdrainageinspectionlimitations"
+            data-leaf-path="propertyPack.surveys[].services.drainage.inspectionLimitations"
             data-overlays="">
           <td>inspectionLimitations</td>
           <td><span class="muted">—</span></td>
@@ -458,7 +473,8 @@ erDiagram
           <td class="align-center"><span class="muted">—</span></td>
           <td class="overlay-cell"><span class="muted">—</span>          </td>
           <td><span class="muted">—</span>          </td>
-        </tr>        <tr data-leaf-path="propertyPack.surveys[].services.drainage.location"
+        </tr>        <tr id="propertypacksurveysservicesdrainagelocation"
+            data-leaf-path="propertyPack.surveys[].services.drainage.location"
             data-overlays="">
           <td>location</td>
           <td><span class="muted">—</span></td>
@@ -468,7 +484,8 @@ erDiagram
           <td class="align-center"><span class="muted">—</span></td>
           <td class="overlay-cell"><span class="muted">—</span>          </td>
           <td><span class="muted">—</span>          </td>
-        </tr>        <tr data-leaf-path="propertyPack.surveys[].services.drainage.notes"
+        </tr>        <tr id="propertypacksurveysservicesdrainagenotes"
+            data-leaf-path="propertyPack.surveys[].services.drainage.notes"
             data-overlays="">
           <td>notes</td>
           <td><span class="muted">—</span></td>
@@ -478,7 +495,8 @@ erDiagram
           <td class="align-center"><span class="muted">—</span></td>
           <td class="overlay-cell"><span class="muted">—</span>          </td>
           <td><span class="muted">—</span>          </td>
-        </tr>        <tr data-leaf-path="propertyPack.surveys[].services.drainage.privateSystem"
+        </tr>        <tr id="propertypacksurveysservicesdrainageprivatesystem"
+            data-leaf-path="propertyPack.surveys[].services.drainage.privateSystem"
             data-overlays="">
           <td>privateSystem</td>
           <td><span class="muted">—</span></td>
@@ -488,7 +506,8 @@ erDiagram
           <td class="align-center"><span class="muted">—</span></td>
           <td class="overlay-cell"><span class="muted">—</span>          </td>
           <td><span class="muted">—</span>          </td>
-        </tr>        <tr data-leaf-path="propertyPack.surveys[].services.drainage.restrictions"
+        </tr>        <tr id="propertypacksurveysservicesdrainagerestrictions"
+            data-leaf-path="propertyPack.surveys[].services.drainage.restrictions"
             data-overlays="">
           <td>restrictions</td>
           <td><span class="muted">—</span></td>
@@ -498,7 +517,8 @@ erDiagram
           <td class="align-center"><span class="muted">—</span></td>
           <td class="overlay-cell"><span class="muted">—</span>          </td>
           <td><span class="muted">—</span>          </td>
-        </tr>        <tr data-leaf-path="propertyPack.surveys[].services.drainage.runOff"
+        </tr>        <tr id="propertypacksurveysservicesdrainagerunoff"
+            data-leaf-path="propertyPack.surveys[].services.drainage.runOff"
             data-overlays="">
           <td>runOff</td>
           <td>Boolean flag: run off.</td>
@@ -508,7 +528,8 @@ erDiagram
           <td class="align-center"><span class="muted">—</span></td>
           <td class="overlay-cell"><span class="muted">—</span>          </td>
           <td><span class="muted">—</span>          </td>
-        </tr>        <tr data-leaf-path="propertyPack.surveys[].services.drainage.system"
+        </tr>        <tr id="propertypacksurveysservicesdrainagesystem"
+            data-leaf-path="propertyPack.surveys[].services.drainage.system"
             data-overlays="">
           <td>system</td>
           <td><span class="muted">—</span></td>
@@ -518,7 +539,8 @@ erDiagram
           <td class="align-center"><span class="muted">—</span></td>
           <td class="overlay-cell"><span class="muted">—</span>          </td>
           <td><span class="muted">—</span>          </td>
-        </tr>        <tr data-leaf-path="propertyPack.surveys[].services.drainage.visibility"
+        </tr>        <tr id="propertypacksurveysservicesdrainagevisibility"
+            data-leaf-path="propertyPack.surveys[].services.drainage.visibility"
             data-overlays="">
           <td>visibility</td>
           <td><span class="muted">—</span></td>
@@ -531,8 +553,8 @@ erDiagram
         </tr>      </tbody>
     </table>
   </div></div>      <div class="object-block" id="obj-PropertyPackSurveysServicesWater" data-display-id="water">
-  <header class="object-block__head">
-    <div class="object-block__title-row">
+  <header class="object-block__head">    <nav class="object-block__breadcrumb" aria-label="Location in the schema">      <a href="#transaction">Transaction</a><span aria-hidden="true"> › </span>      <a href="#propertypack">Property Pack</a><span aria-hidden="true"> › </span>      <a href="#propertypacksurvey">Surveys</a><span aria-hidden="true"> › </span>      <a href="#propertypacksurveysservices">Services</a><span aria-hidden="true"> › </span>      <span aria-current="location">Water</span>
+    </nav>    <div class="object-block__title-row">
       <h4 id="propertypacksurveysserviceswater" class="object-block__title" data-display-id="water">
         <span class="object-block__display">Water</span>      </h4>
       <code class="object-block__path">propertyPack.surveys[].services.water</code>
@@ -560,7 +582,8 @@ erDiagram
           <th style="width: 6rem;">Affordance</th>
         </tr>
       </thead>
-      <tbody>        <tr data-leaf-path="propertyPack.surveys[].services.water.advisories"
+      <tbody>        <tr id="propertypacksurveysserviceswateradvisories"
+            data-leaf-path="propertyPack.surveys[].services.water.advisories"
             data-overlays="">
           <td>advisories</td>
           <td><span class="muted">—</span></td>
@@ -570,7 +593,8 @@ erDiagram
           <td class="align-center"><span class="muted">—</span></td>
           <td class="overlay-cell"><span class="muted">—</span>          </td>
           <td><span class="muted">—</span>          </td>
-        </tr>        <tr data-leaf-path="propertyPack.surveys[].services.water.condition"
+        </tr>        <tr id="propertypacksurveysserviceswatercondition"
+            data-leaf-path="propertyPack.surveys[].services.water.condition"
             data-overlays="">
           <td>condition</td>
           <td><span class="muted">—</span></td>
@@ -580,7 +604,8 @@ erDiagram
           <td class="align-center"><span class="muted">—</span></td>
           <td class="overlay-cell"><span class="muted">—</span>          </td>
           <td><span class="muted">—</span>          </td>
-        </tr>        <tr data-leaf-path="propertyPack.surveys[].services.water.defectDetail"
+        </tr>        <tr id="propertypacksurveysserviceswaterdefectdetail"
+            data-leaf-path="propertyPack.surveys[].services.water.defectDetail"
             data-overlays="">
           <td>defectDetail</td>
           <td><span class="muted">—</span></td>
@@ -590,7 +615,8 @@ erDiagram
           <td class="align-center"><span class="muted">—</span></td>
           <td class="overlay-cell"><span class="muted">—</span>          </td>
           <td><span class="muted">—</span>          </td>
-        </tr>        <tr data-leaf-path="propertyPack.surveys[].services.water.defects"
+        </tr>        <tr id="propertypacksurveysserviceswaterdefects"
+            data-leaf-path="propertyPack.surveys[].services.water.defects"
             data-overlays="">
           <td>defects</td>
           <td><span class="muted">—</span></td>
@@ -600,7 +626,8 @@ erDiagram
           <td class="align-center"><span class="muted">—</span></td>
           <td class="overlay-cell"><span class="muted">—</span>          </td>
           <td><span class="muted">—</span>          </td>
-        </tr>        <tr data-leaf-path="propertyPack.surveys[].services.water.defectsPresent"
+        </tr>        <tr id="propertypacksurveysserviceswaterdefectspresent"
+            data-leaf-path="propertyPack.surveys[].services.water.defectsPresent"
             data-overlays="">
           <td>defectsPresent</td>
           <td>Boolean flag: defect present.</td>
@@ -610,7 +637,8 @@ erDiagram
           <td class="align-center"><span class="muted">—</span></td>
           <td class="overlay-cell"><span class="muted">—</span>          </td>
           <td><span class="muted">—</span>          </td>
-        </tr>        <tr data-leaf-path="propertyPack.surveys[].services.water.description"
+        </tr>        <tr id="propertypacksurveysserviceswaterdescription"
+            data-leaf-path="propertyPack.surveys[].services.water.description"
             data-overlays="">
           <td>description</td>
           <td><span class="muted">—</span></td>
@@ -620,7 +648,8 @@ erDiagram
           <td class="align-center"><span class="muted">—</span></td>
           <td class="overlay-cell"><span class="muted">—</span>          </td>
           <td><span class="muted">—</span>          </td>
-        </tr>        <tr data-leaf-path="propertyPack.surveys[].services.water.distribution"
+        </tr>        <tr id="propertypacksurveysserviceswaterdistribution"
+            data-leaf-path="propertyPack.surveys[].services.water.distribution"
             data-overlays="">
           <td>distribution</td>
           <td><span class="muted">—</span></td>
@@ -630,7 +659,8 @@ erDiagram
           <td class="align-center"><span class="muted">—</span></td>
           <td class="overlay-cell"><span class="muted">—</span>          </td>
           <td><span class="muted">—</span>          </td>
-        </tr>        <tr data-leaf-path="propertyPack.surveys[].services.water.inspectionLimitations"
+        </tr>        <tr id="propertypacksurveysserviceswaterinspectionlimitations"
+            data-leaf-path="propertyPack.surveys[].services.water.inspectionLimitations"
             data-overlays="">
           <td>inspectionLimitations</td>
           <td><span class="muted">—</span></td>
@@ -640,7 +670,8 @@ erDiagram
           <td class="align-center"><span class="muted">—</span></td>
           <td class="overlay-cell"><span class="muted">—</span>          </td>
           <td><span class="muted">—</span>          </td>
-        </tr>        <tr data-leaf-path="propertyPack.surveys[].services.water.notes"
+        </tr>        <tr id="propertypacksurveysserviceswaternotes"
+            data-leaf-path="propertyPack.surveys[].services.water.notes"
             data-overlays="">
           <td>notes</td>
           <td><span class="muted">—</span></td>
@@ -650,7 +681,8 @@ erDiagram
           <td class="align-center"><span class="muted">—</span></td>
           <td class="overlay-cell"><span class="muted">—</span>          </td>
           <td><span class="muted">—</span>          </td>
-        </tr>        <tr data-leaf-path="propertyPack.surveys[].services.water.restrictions"
+        </tr>        <tr id="propertypacksurveysserviceswaterrestrictions"
+            data-leaf-path="propertyPack.surveys[].services.water.restrictions"
             data-overlays="">
           <td>restrictions</td>
           <td><span class="muted">—</span></td>
@@ -660,7 +692,8 @@ erDiagram
           <td class="align-center"><span class="muted">—</span></td>
           <td class="overlay-cell"><span class="muted">—</span>          </td>
           <td><span class="muted">—</span>          </td>
-        </tr>        <tr data-leaf-path="propertyPack.surveys[].services.water.stopTap"
+        </tr>        <tr id="propertypacksurveysserviceswaterstoptap"
+            data-leaf-path="propertyPack.surveys[].services.water.stopTap"
             data-overlays="">
           <td>stopTap</td>
           <td><span class="muted">—</span></td>
@@ -670,7 +703,8 @@ erDiagram
           <td class="align-center"><span class="muted">—</span></td>
           <td class="overlay-cell"><span class="muted">—</span>          </td>
           <td><span class="muted">—</span>          </td>
-        </tr>        <tr data-leaf-path="propertyPack.surveys[].services.water.storageTank"
+        </tr>        <tr id="propertypacksurveysserviceswaterstoragetank"
+            data-leaf-path="propertyPack.surveys[].services.water.storageTank"
             data-overlays="">
           <td>storageTank</td>
           <td><span class="muted">—</span></td>
@@ -680,7 +714,8 @@ erDiagram
           <td class="align-center"><span class="muted">—</span></td>
           <td class="overlay-cell"><span class="muted">—</span>          </td>
           <td><span class="muted">—</span>          </td>
-        </tr>        <tr data-leaf-path="propertyPack.surveys[].services.water.supply"
+        </tr>        <tr id="propertypacksurveysserviceswatersupply"
+            data-leaf-path="propertyPack.surveys[].services.water.supply"
             data-overlays="">
           <td>supply</td>
           <td><span class="muted">—</span></td>
@@ -690,7 +725,8 @@ erDiagram
           <td class="align-center"><span class="muted">—</span></td>
           <td class="overlay-cell"><span class="muted">—</span>          </td>
           <td><span class="muted">—</span>          </td>
-        </tr>        <tr data-leaf-path="propertyPack.surveys[].services.water.visibility"
+        </tr>        <tr id="propertypacksurveysserviceswatervisibility"
+            data-leaf-path="propertyPack.surveys[].services.water.visibility"
             data-overlays="">
           <td>visibility</td>
           <td><span class="muted">—</span></td>
@@ -703,8 +739,8 @@ erDiagram
         </tr>      </tbody>
     </table>
   </div></div>      <div class="object-block" id="obj-PropertyPackSurveysServicesCommonServicesPhoto" data-display-id="photo">
-  <header class="object-block__head">
-    <div class="object-block__title-row">
+  <header class="object-block__head">    <nav class="object-block__breadcrumb" aria-label="Location in the schema">      <a href="#transaction">Transaction</a><span aria-hidden="true"> › </span>      <a href="#propertypack">Property Pack</a><span aria-hidden="true"> › </span>      <a href="#propertypacksurvey">Surveys</a><span aria-hidden="true"> › </span>      <a href="#propertypacksurveysservices">Services</a><span aria-hidden="true"> › </span>      <a href="#propertypacksurveysservicescommonservices">Common Services</a><span aria-hidden="true"> › </span>      <span aria-current="location">Photos</span>
+    </nav>    <div class="object-block__title-row">
       <h4 id="propertypacksurveysservicescommonservicesphoto" class="object-block__title" data-display-id="photo">
         <span class="object-block__display">Photos</span><span class="object-block__cardinality" title="array of objects">[]</span>      </h4>
       <code class="object-block__path">propertyPack.surveys[].services.commonServices.photos[]</code>
@@ -724,7 +760,8 @@ erDiagram
           <th style="width: 6rem;">Affordance</th>
         </tr>
       </thead>
-      <tbody>        <tr data-leaf-path="propertyPack.surveys[].services.commonServices.photos[].description"
+      <tbody>        <tr id="propertypacksurveysservicescommonservicesphotosdescription"
+            data-leaf-path="propertyPack.surveys[].services.commonServices.photos[].description"
             data-overlays="">
           <td>description</td>
           <td><span class="muted">—</span></td>
@@ -734,7 +771,8 @@ erDiagram
           <td class="align-center"><span class="muted">—</span></td>
           <td class="overlay-cell"><span class="muted">—</span>          </td>
           <td><span class="muted">—</span>          </td>
-        </tr>        <tr data-leaf-path="propertyPack.surveys[].services.commonServices.photos[].photoId"
+        </tr>        <tr id="propertypacksurveysservicescommonservicesphotosphotoid"
+            data-leaf-path="propertyPack.surveys[].services.commonServices.photos[].photoId"
             data-overlays="">
           <td>photoId</td>
           <td><span class="muted">—</span></td>
@@ -744,7 +782,8 @@ erDiagram
           <td class="align-center"><span class="muted">—</span></td>
           <td class="overlay-cell"><span class="muted">—</span>          </td>
           <td><span class="muted">—</span>          </td>
-        </tr>        <tr data-leaf-path="propertyPack.surveys[].services.commonServices.photos[].report"
+        </tr>        <tr id="propertypacksurveysservicescommonservicesphotosreport"
+            data-leaf-path="propertyPack.surveys[].services.commonServices.photos[].report"
             data-overlays="">
           <td>report</td>
           <td><span class="muted">—</span></td>
@@ -757,8 +796,8 @@ erDiagram
         </tr>      </tbody>
     </table>
   </div></div>      <div class="object-block" id="obj-PropertyPackSurveysServicesDrainagePhoto" data-display-id="photo">
-  <header class="object-block__head">
-    <div class="object-block__title-row">
+  <header class="object-block__head">    <nav class="object-block__breadcrumb" aria-label="Location in the schema">      <a href="#transaction">Transaction</a><span aria-hidden="true"> › </span>      <a href="#propertypack">Property Pack</a><span aria-hidden="true"> › </span>      <a href="#propertypacksurvey">Surveys</a><span aria-hidden="true"> › </span>      <a href="#propertypacksurveysservices">Services</a><span aria-hidden="true"> › </span>      <a href="#propertypacksurveysservicesdrainage">Drainage</a><span aria-hidden="true"> › </span>      <span aria-current="location">Photos</span>
+    </nav>    <div class="object-block__title-row">
       <h4 id="propertypacksurveysservicesdrainagephoto" class="object-block__title" data-display-id="photo">
         <span class="object-block__display">Photos</span><span class="object-block__cardinality" title="array of objects">[]</span>      </h4>
       <code class="object-block__path">propertyPack.surveys[].services.drainage.photos[]</code>
@@ -778,7 +817,8 @@ erDiagram
           <th style="width: 6rem;">Affordance</th>
         </tr>
       </thead>
-      <tbody>        <tr data-leaf-path="propertyPack.surveys[].services.drainage.photos[].description"
+      <tbody>        <tr id="propertypacksurveysservicesdrainagephotosdescription"
+            data-leaf-path="propertyPack.surveys[].services.drainage.photos[].description"
             data-overlays="">
           <td>description</td>
           <td><span class="muted">—</span></td>
@@ -788,7 +828,8 @@ erDiagram
           <td class="align-center"><span class="muted">—</span></td>
           <td class="overlay-cell"><span class="muted">—</span>          </td>
           <td><span class="muted">—</span>          </td>
-        </tr>        <tr data-leaf-path="propertyPack.surveys[].services.drainage.photos[].photoId"
+        </tr>        <tr id="propertypacksurveysservicesdrainagephotosphotoid"
+            data-leaf-path="propertyPack.surveys[].services.drainage.photos[].photoId"
             data-overlays="">
           <td>photoId</td>
           <td><span class="muted">—</span></td>
@@ -798,7 +839,8 @@ erDiagram
           <td class="align-center"><span class="muted">—</span></td>
           <td class="overlay-cell"><span class="muted">—</span>          </td>
           <td><span class="muted">—</span>          </td>
-        </tr>        <tr data-leaf-path="propertyPack.surveys[].services.drainage.photos[].report"
+        </tr>        <tr id="propertypacksurveysservicesdrainagephotosreport"
+            data-leaf-path="propertyPack.surveys[].services.drainage.photos[].report"
             data-overlays="">
           <td>report</td>
           <td><span class="muted">—</span></td>
@@ -811,8 +853,8 @@ erDiagram
         </tr>      </tbody>
     </table>
   </div></div>      <div class="object-block" id="obj-PropertyPackSurveysServicesWaterPhoto" data-display-id="photo">
-  <header class="object-block__head">
-    <div class="object-block__title-row">
+  <header class="object-block__head">    <nav class="object-block__breadcrumb" aria-label="Location in the schema">      <a href="#transaction">Transaction</a><span aria-hidden="true"> › </span>      <a href="#propertypack">Property Pack</a><span aria-hidden="true"> › </span>      <a href="#propertypacksurvey">Surveys</a><span aria-hidden="true"> › </span>      <a href="#propertypacksurveysservices">Services</a><span aria-hidden="true"> › </span>      <a href="#propertypacksurveysserviceswater">Water</a><span aria-hidden="true"> › </span>      <span aria-current="location">Photos</span>
+    </nav>    <div class="object-block__title-row">
       <h4 id="propertypacksurveysserviceswaterphoto" class="object-block__title" data-display-id="photo">
         <span class="object-block__display">Photos</span><span class="object-block__cardinality" title="array of objects">[]</span>      </h4>
       <code class="object-block__path">propertyPack.surveys[].services.water.photos[]</code>
@@ -832,7 +874,8 @@ erDiagram
           <th style="width: 6rem;">Affordance</th>
         </tr>
       </thead>
-      <tbody>        <tr data-leaf-path="propertyPack.surveys[].services.water.photos[].description"
+      <tbody>        <tr id="propertypacksurveysserviceswaterphotosdescription"
+            data-leaf-path="propertyPack.surveys[].services.water.photos[].description"
             data-overlays="">
           <td>description</td>
           <td><span class="muted">—</span></td>
@@ -842,7 +885,8 @@ erDiagram
           <td class="align-center"><span class="muted">—</span></td>
           <td class="overlay-cell"><span class="muted">—</span>          </td>
           <td><span class="muted">—</span>          </td>
-        </tr>        <tr data-leaf-path="propertyPack.surveys[].services.water.photos[].photoId"
+        </tr>        <tr id="propertypacksurveysserviceswaterphotosphotoid"
+            data-leaf-path="propertyPack.surveys[].services.water.photos[].photoId"
             data-overlays="">
           <td>photoId</td>
           <td><span class="muted">—</span></td>
@@ -852,7 +896,8 @@ erDiagram
           <td class="align-center"><span class="muted">—</span></td>
           <td class="overlay-cell"><span class="muted">—</span>          </td>
           <td><span class="muted">—</span>          </td>
-        </tr>        <tr data-leaf-path="propertyPack.surveys[].services.water.photos[].report"
+        </tr>        <tr id="propertypacksurveysserviceswaterphotosreport"
+            data-leaf-path="propertyPack.surveys[].services.water.photos[].report"
             data-overlays="">
           <td>report</td>
           <td><span class="muted">—</span></td>
@@ -865,4 +910,21 @@ erDiagram
         </tr>      </tbody>
     </table>
   </div></div>
+<script slot="scripts" is:inline data-astro-rerun src="/ui/schema-leaf-table.js"></script>
+<script slot="scripts" is:inline data-astro-rerun>
+  if (window._opdaSchemaLeafMount) {
+    document.removeEventListener('astro:page-load', window._opdaSchemaLeafMount);
+  }
+  window._opdaSchemaLeafMount = function () {
+    if (typeof mountLeafTable === 'function') {
+      mountLeafTable({
+        page: '39d10',
+        showEnvelopes: false,
+        filterButtonId: 'filter-overlay-btn',
+        filterCountId: 'filter-overlay-count'
+      });
+    }
+  };
+  document.addEventListener('astro:page-load', window._opdaSchemaLeafMount);
+</script>
 </Layout>

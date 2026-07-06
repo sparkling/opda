@@ -5,12 +5,10 @@ import Layout from '@/layouts/Layout.astro';
   title="Schema · Sale-ready declarations"
   description="Sale-ready declarations"
 >
-<div class="page-meta">
+      <div class="page-meta">
         <span class="pill pill--info">Schema</span>
         <span>Page 48b</span>
-        <span>Generated 2026-05-17</span>
-        <span title="DAMA-DMBOK2 Knowledge Area — per ADR-0001">DAMA · Data Modeling &amp; Design</span>
-      </div>
+        <span>Generated 2026-07-06</span>        <span title="DAMA-DMBOK2 Knowledge Area — per ADR-0001">DAMA · Data Modeling &amp; Design</span>      </div>
 
       <h1>Sale-ready declarations</h1>
 
@@ -102,9 +100,8 @@ erDiagram
                       class="mt-2 rounded-md bg-[var(--button-bg)] outline-1 outline-[var(--ring-subtle)] shadow-lg p-5 transition transition-discrete data-closed:opacity-0 data-closed:scale-95 data-enter:duration-100 data-enter:ease-out data-leave:duration-75 data-leave:ease-in">
           </el-popover>
         </el-popover-group>
-      </div>      <h3 id="declarations">Sale-ready declarations</h3>      <div class="object-block" id="obj-Transaction" data-display-id="transaction">
-  <header class="object-block__head">
-    <div class="object-block__title-row">
+      </div>      <p class="muted tiny object-ancestors-note">Parent containers — shown for reference; their own content lives in the sections below.</p>      <div class="object-block" id="obj-Transaction" data-display-id="transaction">
+  <header class="object-block__head">    <div class="object-block__title-row">
       <h4 id="transaction" class="object-block__title" data-display-id="transaction">
         <span class="object-block__display">Transaction</span>      </h4>
       <code class="object-block__path">transaction (root)</code>
@@ -117,8 +114,8 @@ erDiagram
           <span>Property Pack</span>
         </a>
       </li>    </ul>  </header>  <p class="muted tiny">No scalar fields on this object — pure container.</p></div>      <div class="object-block" id="obj-PropertyPack" data-display-id="propertypack">
-  <header class="object-block__head">
-    <div class="object-block__title-row">
+  <header class="object-block__head">    <nav class="object-block__breadcrumb" aria-label="Location in the schema">      <a href="#transaction">Transaction</a><span aria-hidden="true"> › </span>      <span aria-current="location">Property Pack</span>
+    </nav>    <div class="object-block__title-row">
       <h4 id="propertypack" class="object-block__title" data-display-id="propertypack">
         <span class="object-block__display">Property Pack</span>      </h4>
       <code class="object-block__path">propertyPack</code>
@@ -146,9 +143,9 @@ erDiagram
           </svg>
           <span>Sale Ready Declarations</span>
         </a>
-      </li>    </ul>  </header>  <p class="muted tiny">No scalar fields on this object — pure container.</p></div>      <div class="object-block" id="obj-PropertyPackConfirmationOfAccuracyByOwners" data-display-id="confirmationofaccuracybyowners">
-  <header class="object-block__head">
-    <div class="object-block__title-row">
+      </li>    </ul>  </header>  <p class="muted tiny">No scalar fields on this object — pure container.</p></div>      <h3 id="declarations">Sale-ready declarations</h3>      <div class="object-block" id="obj-PropertyPackConfirmationOfAccuracyByOwners" data-display-id="confirmationofaccuracybyowners">
+  <header class="object-block__head">    <nav class="object-block__breadcrumb" aria-label="Location in the schema">      <a href="#transaction">Transaction</a><span aria-hidden="true"> › </span>      <a href="#propertypack">Property Pack</a><span aria-hidden="true"> › </span>      <span aria-current="location">Confirmation Of Accuracy By Owners</span>
+    </nav>    <div class="object-block__title-row">
       <h4 id="propertypackconfirmationofaccuracybyowners" class="object-block__title" data-display-id="confirmationofaccuracybyowners">
         <span class="object-block__display">Confirmation Of Accuracy By Owners</span>      </h4>
       <code class="object-block__path">propertyPack.confirmationOfAccuracyByOwners</code>
@@ -168,7 +165,8 @@ erDiagram
           <th style="width: 6rem;">Affordance</th>
         </tr>
       </thead>
-      <tbody>        <tr data-leaf-path="propertyPack.confirmationOfAccuracyByOwners.confirmInformationIsAccurate"
+      <tbody>        <tr id="propertypackconfirmationofaccuracybyownersconfirminformationisaccurate"
+            data-leaf-path="propertyPack.confirmationOfAccuracyByOwners.confirmInformationIsAccurate"
             data-overlays="baspi5,ta6">
           <td>I/we confirm that all information provided is accurate to the best of our knowledge and if we become aware of any change to/changes which alter the information supplied/provided prior to exchange of contracts for the sale of the property, I/we will update immediately notify the person marketing the property as well as my/our property lawyer</td>
           <td>I/we confirm that all information provided is accurate to the best of our knowledge and if we become aware of any change to/change which alter the information supplied/provided prior to exchange of contract for the sale of the property, I/we will update immediately notify the person marketing the property as well as my/our property lawyer</td>
@@ -178,7 +176,8 @@ erDiagram
           <td class="align-center"><span class="muted">—</span></td>
           <td class="overlay-cell">              <div class="overlay-line">Buyers & Sellers Property Information v5 <span class="overlay-key">(BASPI5)</span></div>              <div class="overlay-line">Law Society Property Information Form <span class="overlay-key">(TA6)</span></div>          </td>
           <td><span class="muted">—</span>          </td>
-        </tr>        <tr data-leaf-path="propertyPack.confirmationOfAccuracyByOwners.confirmWillProvideAdditionalDocumentation"
+        </tr>        <tr id="propertypackconfirmationofaccuracybyownersconfirmwillprovideadditionaldocumentation"
+            data-leaf-path="propertyPack.confirmationOfAccuracyByOwners.confirmWillProvideAdditionalDocumentation"
             data-overlays="baspi5">
           <td>I/we will provide my property lawyer with the additional documentation in support of the information supplied.</td>
           <td>I/we will provide my property lawyer with the additional documentation in support of the information supplied.</td>
@@ -191,8 +190,8 @@ erDiagram
         </tr>      </tbody>
     </table>
   </div></div>      <div class="object-block" id="obj-PropertyPackConsumerProtectionRegulationsDeclaration" data-display-id="consumerprotectionregulationsdeclaration">
-  <header class="object-block__head">
-    <div class="object-block__title-row">
+  <header class="object-block__head">    <nav class="object-block__breadcrumb" aria-label="Location in the schema">      <a href="#transaction">Transaction</a><span aria-hidden="true"> › </span>      <a href="#propertypack">Property Pack</a><span aria-hidden="true"> › </span>      <span aria-current="location">Consumer Protection Regulations Declaration</span>
+    </nav>    <div class="object-block__title-row">
       <h4 id="propertypackconsumerprotectionregulationsdeclaration" class="object-block__title" data-display-id="consumerprotectionregulationsdeclaration">
         <span class="object-block__display">Consumer Protection Regulations Declaration</span>      </h4>
       <code class="object-block__path">propertyPack.consumerProtectionRegulationsDeclaration</code>
@@ -212,7 +211,8 @@ erDiagram
           <th style="width: 6rem;">Affordance</th>
         </tr>
       </thead>
-      <tbody>        <tr data-leaf-path="propertyPack.consumerProtectionRegulationsDeclaration.consumerProtectionRegulationsResponse"
+      <tbody>        <tr id="propertypackconsumerprotectionregulationsdeclarationconsumerprotectionregulationsresponse"
+            data-leaf-path="propertyPack.consumerProtectionRegulationsDeclaration.consumerProtectionRegulationsResponse"
             data-overlays="baspi5">
           <td>Seller’s declaration</td>
           <td>I/we confirm the answer to be truthful and accurate and to the best of my/our knowledge. The question have been designed to assist with the disclosure of material information and any misleading or incorrect answer are likely to be exposed later in the legal process which may hinder my/our sale. I/we will provide my property lawyer with the additional documentation in support of the information supplied on this form. If there are any change which alter the information provided, I/we will immediately notify the person marketing the property as well as my/our property lawyer.</td>
@@ -225,8 +225,8 @@ erDiagram
         </tr>      </tbody>
     </table>
   </div></div>      <div class="object-block" id="obj-PropertyPackSaleReadyDeclarations" data-display-id="salereadydeclarations">
-  <header class="object-block__head">
-    <div class="object-block__title-row">
+  <header class="object-block__head">    <nav class="object-block__breadcrumb" aria-label="Location in the schema">      <a href="#transaction">Transaction</a><span aria-hidden="true"> › </span>      <a href="#propertypack">Property Pack</a><span aria-hidden="true"> › </span>      <span aria-current="location">Sale Ready Declarations</span>
+    </nav>    <div class="object-block__title-row">
       <h4 id="propertypacksalereadydeclarations" class="object-block__title" data-display-id="salereadydeclarations">
         <span class="object-block__display">Sale Ready Declarations</span>      </h4>
       <code class="object-block__path">propertyPack.saleReadyDeclarations</code>
@@ -254,7 +254,8 @@ erDiagram
           <th style="width: 6rem;">Affordance</th>
         </tr>
       </thead>
-      <tbody>        <tr data-leaf-path="propertyPack.saleReadyDeclarations.authorisationToShare"
+      <tbody>        <tr id="propertypacksalereadydeclarationsauthorisationtoshare"
+            data-leaf-path="propertyPack.saleReadyDeclarations.authorisationToShare"
             data-overlays="sr24">
           <td>I/we consent to the sharing of the information contained in the Sale Ready pack with the my/our legal representative and the buyer(s) and their legal representatives</td>
           <td>I/we consent to the sharing of the information contained in the Sale Ready pack with the my/our legal representative and the buyer(s) and their legal representative</td>
@@ -264,7 +265,8 @@ erDiagram
           <td class="align-center"><span class="muted">—</span></td>
           <td class="overlay-cell">              <div class="overlay-line">Sustainability Report 2024 <span class="overlay-key">(SR24)</span></div>          </td>
           <td><span class="muted">—</span>          </td>
-        </tr>        <tr data-leaf-path="propertyPack.saleReadyDeclarations.authorisedToActOnBehalfOfAllSellers"
+        </tr>        <tr id="propertypacksalereadydeclarationsauthorisedtoactonbehalfofallsellers"
+            data-leaf-path="propertyPack.saleReadyDeclarations.authorisedToActOnBehalfOfAllSellers"
             data-overlays="sr24">
           <td>I/we confirm that I am/we are authorised to supply data and documents in relation to this property on behalf of all the owners of the property</td>
           <td>I/we confirm that I am/we are authorised to supply data and document in relation to this property on behalf of all the owner of the property</td>
@@ -277,8 +279,8 @@ erDiagram
         </tr>      </tbody>
     </table>
   </div></div>      <div class="object-block" id="obj-PropertyPackSaleReadyDeclarationsSellerSignature" data-display-id="sellersignature">
-  <header class="object-block__head">
-    <div class="object-block__title-row">
+  <header class="object-block__head">    <nav class="object-block__breadcrumb" aria-label="Location in the schema">      <a href="#transaction">Transaction</a><span aria-hidden="true"> › </span>      <a href="#propertypack">Property Pack</a><span aria-hidden="true"> › </span>      <a href="#propertypacksalereadydeclarations">Sale Ready Declarations</a><span aria-hidden="true"> › </span>      <span aria-current="location">Seller Signatures</span>
+    </nav>    <div class="object-block__title-row">
       <h4 id="propertypacksalereadydeclarationssellersignature" class="object-block__title" data-display-id="sellersignature">
         <span class="object-block__display">Seller Signatures</span><span class="object-block__cardinality" title="array of objects">[]</span>      </h4>
       <code class="object-block__path">propertyPack.saleReadyDeclarations.sellerSignatures[]</code>
@@ -298,7 +300,8 @@ erDiagram
           <th style="width: 6rem;">Affordance</th>
         </tr>
       </thead>
-      <tbody>        <tr data-leaf-path="propertyPack.saleReadyDeclarations.sellerSignatures[].name"
+      <tbody>        <tr id="propertypacksalereadydeclarationssellersignaturesname"
+            data-leaf-path="propertyPack.saleReadyDeclarations.sellerSignatures[].name"
             data-overlays="sr24">
           <td>Name of signatory</td>
           <td><span class="muted">—</span></td>
@@ -308,7 +311,8 @@ erDiagram
           <td class="align-center">yes</td>
           <td class="overlay-cell">              <div class="overlay-line">Sustainability Report 2024 <span class="overlay-key">(SR24)</span></div>          </td>
           <td><span class="muted">—</span>          </td>
-        </tr>        <tr data-leaf-path="propertyPack.saleReadyDeclarations.sellerSignatures[].signedOn"
+        </tr>        <tr id="propertypacksalereadydeclarationssellersignaturessignedon"
+            data-leaf-path="propertyPack.saleReadyDeclarations.sellerSignatures[].signedOn"
             data-overlays="sr24">
           <td>Date and time of signature in ISO 8601 format</td>
           <td><span class="muted">—</span></td>
@@ -318,7 +322,8 @@ erDiagram
           <td class="align-center">yes</td>
           <td class="overlay-cell">              <div class="overlay-line">Sustainability Report 2024 <span class="overlay-key">(SR24)</span></div>          </td>
           <td><span class="muted">—</span>          </td>
-        </tr>        <tr data-leaf-path="propertyPack.saleReadyDeclarations.sellerSignatures[].externalIds"
+        </tr>        <tr id="propertypacksalereadydeclarationssellersignaturesexternalids"
+            data-leaf-path="propertyPack.saleReadyDeclarations.sellerSignatures[].externalIds"
             data-overlays="">
           <td>externalIds</td>
           <td><span class="muted">—</span></td>
@@ -331,4 +336,21 @@ erDiagram
         </tr>      </tbody>
     </table>
   </div></div>
+<script slot="scripts" is:inline data-astro-rerun src="/ui/schema-leaf-table.js"></script>
+<script slot="scripts" is:inline data-astro-rerun>
+  if (window._opdaSchemaLeafMount) {
+    document.removeEventListener('astro:page-load', window._opdaSchemaLeafMount);
+  }
+  window._opdaSchemaLeafMount = function () {
+    if (typeof mountLeafTable === 'function') {
+      mountLeafTable({
+        page: '48b',
+        showEnvelopes: false,
+        filterButtonId: 'filter-overlay-btn',
+        filterCountId: 'filter-overlay-count'
+      });
+    }
+  };
+  document.addEventListener('astro:page-load', window._opdaSchemaLeafMount);
+</script>
 </Layout>

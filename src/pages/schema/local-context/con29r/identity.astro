@@ -5,12 +5,10 @@ import Layout from '@/layouts/Layout.astro';
   title="Schema · Local authority identity"
   description="Local authority identity"
 >
-<div class="page-meta">
+      <div class="page-meta">
         <span class="pill pill--info">Schema</span>
         <span>Page 46a1</span>
-        <span>Generated 2026-05-17</span>
-        <span title="DAMA-DMBOK2 Knowledge Area — per ADR-0001">DAMA · Data Modeling &amp; Design · Reference &amp; Master Data</span>
-      </div>
+        <span>Generated 2026-07-06</span>        <span title="DAMA-DMBOK2 Knowledge Area — per ADR-0001">DAMA · Data Modeling &amp; Design · Reference &amp; Master Data</span>      </div>
 
       <h1>Local authority identity</h1>
 
@@ -92,9 +90,8 @@ erDiagram
                       class="mt-2 rounded-md bg-[var(--button-bg)] outline-1 outline-[var(--ring-subtle)] shadow-lg p-5 transition transition-discrete data-closed:opacity-0 data-closed:scale-95 data-enter:duration-100 data-enter:ease-out data-leave:duration-75 data-leave:ease-in">
           </el-popover>
         </el-popover-group>
-      </div>      <h3 id="local_authority">Local authority</h3>      <div class="object-block" id="obj-Transaction" data-display-id="transaction">
-  <header class="object-block__head">
-    <div class="object-block__title-row">
+      </div>      <p class="muted tiny object-ancestors-note">Parent containers — shown for reference; their own content lives in the sections below.</p>      <div class="object-block" id="obj-Transaction" data-display-id="transaction">
+  <header class="object-block__head">    <div class="object-block__title-row">
       <h4 id="transaction" class="object-block__title" data-display-id="transaction">
         <span class="object-block__display">Transaction</span>      </h4>
       <code class="object-block__path">transaction (root)</code>
@@ -107,8 +104,8 @@ erDiagram
           <span>Property Pack</span>
         </a>
       </li>    </ul>  </header>  <p class="muted tiny">No scalar fields on this object — pure container.</p></div>      <div class="object-block" id="obj-PropertyPack" data-display-id="propertypack">
-  <header class="object-block__head">
-    <div class="object-block__title-row">
+  <header class="object-block__head">    <nav class="object-block__breadcrumb" aria-label="Location in the schema">      <a href="#transaction">Transaction</a><span aria-hidden="true"> › </span>      <span aria-current="location">Property Pack</span>
+    </nav>    <div class="object-block__title-row">
       <h4 id="propertypack" class="object-block__title" data-display-id="propertypack">
         <span class="object-block__display">Property Pack</span>      </h4>
       <code class="object-block__path">propertyPack</code>
@@ -120,9 +117,9 @@ erDiagram
           </svg>
           <span>Local Authority</span>
         </a>
-      </li>    </ul>  </header>  <p class="muted tiny">No scalar fields on this object — pure container.</p></div>      <div class="object-block" id="obj-PropertyPackLocalAuthority" data-display-id="localauthority">
-  <header class="object-block__head">
-    <div class="object-block__title-row">
+      </li>    </ul>  </header>  <p class="muted tiny">No scalar fields on this object — pure container.</p></div>      <h3 id="local_authority">Local authority</h3>      <div class="object-block" id="obj-PropertyPackLocalAuthority" data-display-id="localauthority">
+  <header class="object-block__head">    <nav class="object-block__breadcrumb" aria-label="Location in the schema">      <a href="#transaction">Transaction</a><span aria-hidden="true"> › </span>      <a href="#propertypack">Property Pack</a><span aria-hidden="true"> › </span>      <span aria-current="location">Local Authority</span>
+    </nav>    <div class="object-block__title-row">
       <h4 id="propertypacklocalauthority" class="object-block__title" data-display-id="localauthority">
         <span class="object-block__display">Local Authority</span>      </h4>
       <code class="object-block__path">propertyPack.localAuthority</code>
@@ -142,7 +139,8 @@ erDiagram
           <th style="width: 6rem;">Affordance</th>
         </tr>
       </thead>
-      <tbody>        <tr data-leaf-path="propertyPack.localAuthority.councilSearchTurnaroundTimeInWorkingDays"
+      <tbody>        <tr id="propertypacklocalauthoritycouncilsearchturnaroundtimeinworkingdays"
+            data-leaf-path="propertyPack.localAuthority.councilSearchTurnaroundTimeInWorkingDays"
             data-overlays="">
           <td>Council search turnaround time in working days</td>
           <td><span class="muted">—</span></td>
@@ -152,7 +150,8 @@ erDiagram
           <td class="align-center"><span class="muted">—</span></td>
           <td class="overlay-cell"><span class="muted">—</span>          </td>
           <td><span class="muted">—</span>          </td>
-        </tr>        <tr data-leaf-path="propertyPack.localAuthority.countyCouncil"
+        </tr>        <tr id="propertypacklocalauthoritycountycouncil"
+            data-leaf-path="propertyPack.localAuthority.countyCouncil"
             data-overlays="">
           <td>Name of the county council, if not unitary</td>
           <td>Name of the county council, if not unitary</td>
@@ -162,7 +161,8 @@ erDiagram
           <td class="align-center"><span class="muted">—</span></td>
           <td class="overlay-cell"><span class="muted">—</span>          </td>
           <td><span class="muted">—</span>          </td>
-        </tr>        <tr data-leaf-path="propertyPack.localAuthority.districtCouncil"
+        </tr>        <tr id="propertypacklocalauthoritydistrictcouncil"
+            data-leaf-path="propertyPack.localAuthority.districtCouncil"
             data-overlays="">
           <td>Name of the district council, if not unitary</td>
           <td>Name of the district council, if not unitary</td>
@@ -172,7 +172,8 @@ erDiagram
           <td class="align-center"><span class="muted">—</span></td>
           <td class="overlay-cell"><span class="muted">—</span>          </td>
           <td><span class="muted">—</span>          </td>
-        </tr>        <tr data-leaf-path="propertyPack.localAuthority.localAuthorityName"
+        </tr>        <tr id="propertypacklocalauthoritylocalauthorityname"
+            data-leaf-path="propertyPack.localAuthority.localAuthorityName"
             data-overlays="">
           <td>Local authority name</td>
           <td>The name of the local authority responsible for search and planning (district or unitary as applicable)</td>
@@ -182,7 +183,8 @@ erDiagram
           <td class="align-center"><span class="muted">—</span></td>
           <td class="overlay-cell"><span class="muted">—</span>          </td>
           <td><span class="muted">—</span>          </td>
-        </tr>        <tr data-leaf-path="propertyPack.localAuthority.localAuthorityReference"
+        </tr>        <tr id="propertypacklocalauthoritylocalauthorityreference"
+            data-leaf-path="propertyPack.localAuthority.localAuthorityReference"
             data-overlays="">
           <td>Local authority reference</td>
           <td><span class="muted">—</span></td>
@@ -192,7 +194,8 @@ erDiagram
           <td class="align-center"><span class="muted">—</span></td>
           <td class="overlay-cell"><span class="muted">—</span>          </td>
           <td><span class="muted">—</span>          </td>
-        </tr>        <tr data-leaf-path="propertyPack.localAuthority.regulatedSearchTurnaroundTimeInWorkingDays"
+        </tr>        <tr id="propertypacklocalauthorityregulatedsearchturnaroundtimeinworkingdays"
+            data-leaf-path="propertyPack.localAuthority.regulatedSearchTurnaroundTimeInWorkingDays"
             data-overlays="">
           <td>Regulated search turnaround time in working days</td>
           <td><span class="muted">—</span></td>
@@ -202,7 +205,8 @@ erDiagram
           <td class="align-center"><span class="muted">—</span></td>
           <td class="overlay-cell"><span class="muted">—</span>          </td>
           <td><span class="muted">—</span>          </td>
-        </tr>        <tr data-leaf-path="propertyPack.localAuthority.unitaryAuthority"
+        </tr>        <tr id="propertypacklocalauthorityunitaryauthority"
+            data-leaf-path="propertyPack.localAuthority.unitaryAuthority"
             data-overlays="">
           <td>Unitary authority name, if applicable</td>
           <td>Unitary authority name, if applicable</td>
@@ -215,4 +219,21 @@ erDiagram
         </tr>      </tbody>
     </table>
   </div></div>
+<script slot="scripts" is:inline data-astro-rerun src="/ui/schema-leaf-table.js"></script>
+<script slot="scripts" is:inline data-astro-rerun>
+  if (window._opdaSchemaLeafMount) {
+    document.removeEventListener('astro:page-load', window._opdaSchemaLeafMount);
+  }
+  window._opdaSchemaLeafMount = function () {
+    if (typeof mountLeafTable === 'function') {
+      mountLeafTable({
+        page: '46a1',
+        showEnvelopes: false,
+        filterButtonId: 'filter-overlay-btn',
+        filterCountId: 'filter-overlay-count'
+      });
+    }
+  };
+  document.addEventListener('astro:page-load', window._opdaSchemaLeafMount);
+</script>
 </Layout>

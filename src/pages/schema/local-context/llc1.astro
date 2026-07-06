@@ -5,12 +5,10 @@ import Layout from '@/layouts/Layout.astro';
   title="Schema · Local Land Charges (LLC1)"
   description="Local Land Charges (LLC1)"
 >
-<div class="page-meta">
+      <div class="page-meta">
         <span class="pill pill--info">Schema</span>
         <span>Page 46c</span>
-        <span>Generated 2026-05-17</span>
-        <span title="DAMA-DMBOK2 Knowledge Area — per ADR-0001">DAMA · Data Modeling &amp; Design · Reference &amp; Master Data</span>
-      </div>
+        <span>Generated 2026-07-06</span>        <span title="DAMA-DMBOK2 Knowledge Area — per ADR-0001">DAMA · Data Modeling &amp; Design · Reference &amp; Master Data</span>      </div>
 
       <h1>Local Land Charges (LLC1)</h1>
 
@@ -155,9 +153,8 @@ erDiagram
                       class="mt-2 rounded-md bg-[var(--button-bg)] outline-1 outline-[var(--ring-subtle)] shadow-lg p-5 transition transition-discrete data-closed:opacity-0 data-closed:scale-95 data-enter:duration-100 data-enter:ease-out data-leave:duration-75 data-leave:ease-in">
           </el-popover>
         </el-popover-group>
-      </div>      <h3 id="llc1">LLC1</h3>      <div class="object-block" id="obj-Transaction" data-display-id="transaction">
-  <header class="object-block__head">
-    <div class="object-block__title-row">
+      </div>      <p class="muted tiny object-ancestors-note">Parent containers — shown for reference; their own content lives in the sections below.</p>      <div class="object-block" id="obj-Transaction" data-display-id="transaction">
+  <header class="object-block__head">    <div class="object-block__title-row">
       <h4 id="transaction" class="object-block__title" data-display-id="transaction">
         <span class="object-block__display">Transaction</span>      </h4>
       <code class="object-block__path">transaction (root)</code>
@@ -170,8 +167,8 @@ erDiagram
           <span>Property Pack</span>
         </a>
       </li>    </ul>  </header>  <p class="muted tiny">No scalar fields on this object — pure container.</p></div>      <div class="object-block" id="obj-PropertyPack" data-display-id="propertypack">
-  <header class="object-block__head">
-    <div class="object-block__title-row">
+  <header class="object-block__head">    <nav class="object-block__breadcrumb" aria-label="Location in the schema">      <a href="#transaction">Transaction</a><span aria-hidden="true"> › </span>      <span aria-current="location">Property Pack</span>
+    </nav>    <div class="object-block__title-row">
       <h4 id="propertypack" class="object-block__title" data-display-id="propertypack">
         <span class="object-block__display">Property Pack</span>      </h4>
       <code class="object-block__path">propertyPack</code>
@@ -192,8 +189,8 @@ erDiagram
           <span>Searches[]</span>
         </a>
       </li>    </ul>  </header>  <p class="muted tiny">No scalar fields on this object — pure container.</p></div>      <div class="object-block" id="obj-PropertyPackLocalSearches" data-display-id="localsearches">
-  <header class="object-block__head">
-    <div class="object-block__title-row">
+  <header class="object-block__head">    <nav class="object-block__breadcrumb" aria-label="Location in the schema">      <a href="#transaction">Transaction</a><span aria-hidden="true"> › </span>      <a href="#propertypack">Property Pack</a><span aria-hidden="true"> › </span>      <span aria-current="location">Local Searches</span>
+    </nav>    <div class="object-block__title-row">
       <h4 id="propertypacklocalsearches" class="object-block__title" data-display-id="localsearches">
         <span class="object-block__display">Local Searches</span>      </h4>
       <code class="object-block__path">propertyPack.localSearches</code>
@@ -206,8 +203,8 @@ erDiagram
           <span>Local Land Charges[]</span>
         </a>
       </li>    </ul>  </header>  <p class="muted tiny">No scalar fields on this object — pure container.</p></div>      <h3 id="local_land_charges">Local land charges register</h3>      <div class="object-block" id="obj-PropertyPackLocalSearchesLocalLandCharge" data-display-id="locallandcharge">
-  <header class="object-block__head">
-    <div class="object-block__title-row">
+  <header class="object-block__head">    <nav class="object-block__breadcrumb" aria-label="Location in the schema">      <a href="#transaction">Transaction</a><span aria-hidden="true"> › </span>      <a href="#propertypack">Property Pack</a><span aria-hidden="true"> › </span>      <a href="#propertypacklocalsearches">Local Searches</a><span aria-hidden="true"> › </span>      <span aria-current="location">Local Land Charges</span>
+    </nav>    <div class="object-block__title-row">
       <h4 id="propertypacklocalsearcheslocallandcharge" class="object-block__title" data-display-id="locallandcharge">
         <span class="object-block__display">Local Land Charges</span><span class="object-block__cardinality" title="array of objects">[]</span>      </h4>
       <code class="object-block__path">propertyPack.localSearches.localLandCharges[]</code>
@@ -275,7 +272,8 @@ erDiagram
           <th style="width: 6rem;">Affordance</th>
         </tr>
       </thead>
-      <tbody>        <tr data-leaf-path="propertyPack.localSearches.localLandCharges[].adjoining"
+      <tbody>        <tr id="propertypacklocalsearcheslocallandchargesadjoining"
+            data-leaf-path="propertyPack.localSearches.localLandCharges[].adjoining"
             data-overlays="">
           <td>adjoining</td>
           <td>Boolean flag: adjoining.</td>
@@ -285,7 +283,8 @@ erDiagram
           <td class="align-center"><span class="muted">—</span></td>
           <td class="overlay-cell"><span class="muted">—</span>          </td>
           <td><span class="muted">—</span>          </td>
-        </tr>        <tr data-leaf-path="propertyPack.localSearches.localLandCharges[].advancePayment"
+        </tr>        <tr id="propertypacklocalsearcheslocallandchargesadvancepayment"
+            data-leaf-path="propertyPack.localSearches.localLandCharges[].advancePayment"
             data-overlays="">
           <td>advancePayment</td>
           <td><span class="muted">—</span></td>
@@ -295,7 +294,8 @@ erDiagram
           <td class="align-center"><span class="muted">—</span></td>
           <td class="overlay-cell"><span class="muted">—</span>          </td>
           <td><span class="muted">—</span>          </td>
-        </tr>        <tr data-leaf-path="propertyPack.localSearches.localLandCharges[].agreedOrEstimated"
+        </tr>        <tr id="propertypacklocalsearcheslocallandchargesagreedorestimated"
+            data-leaf-path="propertyPack.localSearches.localLandCharges[].agreedOrEstimated"
             data-overlays="">
           <td>agreedOrEstimated</td>
           <td><span class="muted">—</span></td>
@@ -305,7 +305,8 @@ erDiagram
           <td class="align-center"><span class="muted">—</span></td>
           <td class="overlay-cell"><span class="muted">—</span>          </td>
           <td><span class="muted">—</span>          </td>
-        </tr>        <tr data-leaf-path="propertyPack.localSearches.localLandCharges[].amount"
+        </tr>        <tr id="propertypacklocalsearcheslocallandchargesamount"
+            data-leaf-path="propertyPack.localSearches.localLandCharges[].amount"
             data-overlays="">
           <td>amount</td>
           <td><span class="muted">—</span></td>
@@ -315,7 +316,8 @@ erDiagram
           <td class="align-center"><span class="muted">—</span></td>
           <td class="overlay-cell"><span class="muted">—</span>          </td>
           <td><span class="muted">—</span>          </td>
-        </tr>        <tr data-leaf-path="propertyPack.localSearches.localLandCharges[].applicantName"
+        </tr>        <tr id="propertypacklocalsearcheslocallandchargesapplicantname"
+            data-leaf-path="propertyPack.localSearches.localLandCharges[].applicantName"
             data-overlays="">
           <td>applicantName</td>
           <td><span class="muted">—</span></td>
@@ -325,7 +327,8 @@ erDiagram
           <td class="align-center"><span class="muted">—</span></td>
           <td class="overlay-cell"><span class="muted">—</span>          </td>
           <td><span class="muted">—</span>          </td>
-        </tr>        <tr data-leaf-path="propertyPack.localSearches.localLandCharges[].authorityReference"
+        </tr>        <tr id="propertypacklocalsearcheslocallandchargesauthorityreference"
+            data-leaf-path="propertyPack.localSearches.localLandCharges[].authorityReference"
             data-overlays="">
           <td>authorityReference</td>
           <td><span class="muted">—</span></td>
@@ -335,7 +338,8 @@ erDiagram
           <td class="align-center"><span class="muted">—</span></td>
           <td class="overlay-cell"><span class="muted">—</span>          </td>
           <td><span class="muted">—</span>          </td>
-        </tr>        <tr data-leaf-path="propertyPack.localSearches.localLandCharges[].category"
+        </tr>        <tr id="propertypacklocalsearcheslocallandchargescategory"
+            data-leaf-path="propertyPack.localSearches.localLandCharges[].category"
             data-overlays="">
           <td>category</td>
           <td><span class="muted">—</span></td>
@@ -345,7 +349,8 @@ erDiagram
           <td class="align-center"><span class="muted">—</span></td>
           <td class="overlay-cell"><span class="muted">—</span>          </td>
           <td><span class="muted">—</span>          </td>
-        </tr>        <tr data-leaf-path="propertyPack.localSearches.localLandCharges[].chargeExtent"
+        </tr>        <tr id="propertypacklocalsearcheslocallandchargeschargeextent"
+            data-leaf-path="propertyPack.localSearches.localLandCharges[].chargeExtent"
             data-overlays="">
           <td>chargeExtent</td>
           <td>Stringified GeoJSON, to support object db that don't support directly nested array</td>
@@ -355,7 +360,8 @@ erDiagram
           <td class="align-center"><span class="muted">—</span></td>
           <td class="overlay-cell"><span class="muted">—</span>          </td>
           <td><span class="muted">—</span>          </td>
-        </tr>        <tr data-leaf-path="propertyPack.localSearches.localLandCharges[].chargeSubCategory"
+        </tr>        <tr id="propertypacklocalsearcheslocallandchargeschargesubcategory"
+            data-leaf-path="propertyPack.localSearches.localLandCharges[].chargeSubCategory"
             data-overlays="">
           <td>chargeSubCategory</td>
           <td><span class="muted">—</span></td>
@@ -365,7 +371,8 @@ erDiagram
           <td class="align-center"><span class="muted">—</span></td>
           <td class="overlay-cell"><span class="muted">—</span>          </td>
           <td><span class="muted">—</span>          </td>
-        </tr>        <tr data-leaf-path="propertyPack.localSearches.localLandCharges[].creationDate"
+        </tr>        <tr id="propertypacklocalsearcheslocallandchargescreationdate"
+            data-leaf-path="propertyPack.localSearches.localLandCharges[].creationDate"
             data-overlays="">
           <td>creationDate</td>
           <td><span class="muted">—</span></td>
@@ -375,7 +382,8 @@ erDiagram
           <td class="align-center"><span class="muted">—</span></td>
           <td class="overlay-cell"><span class="muted">—</span>          </td>
           <td><span class="muted">—</span>          </td>
-        </tr>        <tr data-leaf-path="propertyPack.localSearches.localLandCharges[].description"
+        </tr>        <tr id="propertypacklocalsearcheslocallandchargesdescription"
+            data-leaf-path="propertyPack.localSearches.localLandCharges[].description"
             data-overlays="">
           <td>description</td>
           <td><span class="muted">—</span></td>
@@ -385,7 +393,8 @@ erDiagram
           <td class="align-center"><span class="muted">—</span></td>
           <td class="overlay-cell"><span class="muted">—</span>          </td>
           <td><span class="muted">—</span>          </td>
-        </tr>        <tr data-leaf-path="propertyPack.localSearches.localLandCharges[].hmlrReference"
+        </tr>        <tr id="propertypacklocalsearcheslocallandchargeshmlrreference"
+            data-leaf-path="propertyPack.localSearches.localLandCharges[].hmlrReference"
             data-overlays="">
           <td>hmlrReference</td>
           <td><span class="muted">—</span></td>
@@ -395,7 +404,8 @@ erDiagram
           <td class="align-center"><span class="muted">—</span></td>
           <td class="overlay-cell"><span class="muted">—</span>          </td>
           <td><span class="muted">—</span>          </td>
-        </tr>        <tr data-leaf-path="propertyPack.localSearches.localLandCharges[].interestInLand"
+        </tr>        <tr id="propertypacklocalsearcheslocallandchargesinterestinland"
+            data-leaf-path="propertyPack.localSearches.localLandCharges[].interestInLand"
             data-overlays="">
           <td>interestInLand</td>
           <td><span class="muted">—</span></td>
@@ -405,7 +415,8 @@ erDiagram
           <td class="align-center"><span class="muted">—</span></td>
           <td class="overlay-cell"><span class="muted">—</span>          </td>
           <td><span class="muted">—</span>          </td>
-        </tr>        <tr data-leaf-path="propertyPack.localSearches.localLandCharges[].interestRate"
+        </tr>        <tr id="propertypacklocalsearcheslocallandchargesinterestrate"
+            data-leaf-path="propertyPack.localSearches.localLandCharges[].interestRate"
             data-overlays="">
           <td>interestRate</td>
           <td><span class="muted">—</span></td>
@@ -415,7 +426,8 @@ erDiagram
           <td class="align-center"><span class="muted">—</span></td>
           <td class="overlay-cell"><span class="muted">—</span>          </td>
           <td><span class="muted">—</span>          </td>
-        </tr>        <tr data-leaf-path="propertyPack.localSearches.localLandCharges[].landSold"
+        </tr>        <tr id="propertypacklocalsearcheslocallandchargeslandsold"
+            data-leaf-path="propertyPack.localSearches.localLandCharges[].landSold"
             data-overlays="">
           <td>landSold</td>
           <td><span class="muted">—</span></td>
@@ -425,7 +437,8 @@ erDiagram
           <td class="align-center"><span class="muted">—</span></td>
           <td class="overlay-cell"><span class="muted">—</span>          </td>
           <td><span class="muted">—</span>          </td>
-        </tr>        <tr data-leaf-path="propertyPack.localSearches.localLandCharges[].law"
+        </tr>        <tr id="propertypacklocalsearcheslocallandchargeslaw"
+            data-leaf-path="propertyPack.localSearches.localLandCharges[].law"
             data-overlays="">
           <td>law</td>
           <td><span class="muted">—</span></td>
@@ -435,7 +448,8 @@ erDiagram
           <td class="align-center"><span class="muted">—</span></td>
           <td class="overlay-cell"><span class="muted">—</span>          </td>
           <td><span class="muted">—</span>          </td>
-        </tr>        <tr data-leaf-path="propertyPack.localSearches.localLandCharges[].legalDocument"
+        </tr>        <tr id="propertypacklocalsearcheslocallandchargeslegaldocument"
+            data-leaf-path="propertyPack.localSearches.localLandCharges[].legalDocument"
             data-overlays="">
           <td>legalDocument</td>
           <td><span class="muted">—</span></td>
@@ -445,7 +459,8 @@ erDiagram
           <td class="align-center"><span class="muted">—</span></td>
           <td class="overlay-cell"><span class="muted">—</span>          </td>
           <td><span class="muted">—</span>          </td>
-        </tr>        <tr data-leaf-path="propertyPack.localSearches.localLandCharges[].originatingAuthority"
+        </tr>        <tr id="propertypacklocalsearcheslocallandchargesoriginatingauthority"
+            data-leaf-path="propertyPack.localSearches.localLandCharges[].originatingAuthority"
             data-overlays="">
           <td>originatingAuthority</td>
           <td><span class="muted">—</span></td>
@@ -455,7 +470,8 @@ erDiagram
           <td class="align-center"><span class="muted">—</span></td>
           <td class="overlay-cell"><span class="muted">—</span>          </td>
           <td><span class="muted">—</span>          </td>
-        </tr>        <tr data-leaf-path="propertyPack.localSearches.localLandCharges[].registrationDate"
+        </tr>        <tr id="propertypacklocalsearcheslocallandchargesregistrationdate"
+            data-leaf-path="propertyPack.localSearches.localLandCharges[].registrationDate"
             data-overlays="">
           <td>registrationDate</td>
           <td><span class="muted">—</span></td>
@@ -465,7 +481,8 @@ erDiagram
           <td class="align-center"><span class="muted">—</span></td>
           <td class="overlay-cell"><span class="muted">—</span>          </td>
           <td><span class="muted">—</span>          </td>
-        </tr>        <tr data-leaf-path="propertyPack.localSearches.localLandCharges[].sourceOfInformation"
+        </tr>        <tr id="propertypacklocalsearcheslocallandchargessourceofinformation"
+            data-leaf-path="propertyPack.localSearches.localLandCharges[].sourceOfInformation"
             data-overlays="">
           <td>sourceOfInformation</td>
           <td><span class="muted">—</span></td>
@@ -475,7 +492,8 @@ erDiagram
           <td class="align-center"><span class="muted">—</span></td>
           <td class="overlay-cell"><span class="muted">—</span>          </td>
           <td><span class="muted">—</span>          </td>
-        </tr>        <tr data-leaf-path="propertyPack.localSearches.localLandCharges[].totalCompensation"
+        </tr>        <tr id="propertypacklocalsearcheslocallandchargestotalcompensation"
+            data-leaf-path="propertyPack.localSearches.localLandCharges[].totalCompensation"
             data-overlays="">
           <td>totalCompensation</td>
           <td><span class="muted">—</span></td>
@@ -485,7 +503,8 @@ erDiagram
           <td class="align-center"><span class="muted">—</span></td>
           <td class="overlay-cell"><span class="muted">—</span>          </td>
           <td><span class="muted">—</span>          </td>
-        </tr>        <tr data-leaf-path="propertyPack.localSearches.localLandCharges[].worksDone"
+        </tr>        <tr id="propertypacklocalsearcheslocallandchargesworksdone"
+            data-leaf-path="propertyPack.localSearches.localLandCharges[].worksDone"
             data-overlays="">
           <td>worksDone</td>
           <td><span class="muted">—</span></td>
@@ -498,8 +517,8 @@ erDiagram
         </tr>      </tbody>
     </table>
   </div></div>      <div class="object-block" id="obj-PropertyPackLocalSearchesLocalLandChargesApplicantAddress" data-display-id="applicantaddress">
-  <header class="object-block__head">
-    <div class="object-block__title-row">
+  <header class="object-block__head">    <nav class="object-block__breadcrumb" aria-label="Location in the schema">      <a href="#transaction">Transaction</a><span aria-hidden="true"> › </span>      <a href="#propertypack">Property Pack</a><span aria-hidden="true"> › </span>      <a href="#propertypacklocalsearches">Local Searches</a><span aria-hidden="true"> › </span>      <a href="#propertypacklocalsearcheslocallandcharge">Local Land Charges</a><span aria-hidden="true"> › </span>      <span aria-current="location">Applicant Address</span>
+    </nav>    <div class="object-block__title-row">
       <h4 id="propertypacklocalsearcheslocallandchargesapplicantaddress" class="object-block__title" data-display-id="applicantaddress">
         <span class="object-block__display">Applicant Address</span>      </h4>
       <code class="object-block__path">propertyPack.localSearches.localLandCharges[].applicantAddress</code>
@@ -519,7 +538,8 @@ erDiagram
           <th style="width: 6rem;">Affordance</th>
         </tr>
       </thead>
-      <tbody>        <tr data-leaf-path="propertyPack.localSearches.localLandCharges[].applicantAddress.line1"
+      <tbody>        <tr id="propertypacklocalsearcheslocallandchargesapplicantaddressline1"
+            data-leaf-path="propertyPack.localSearches.localLandCharges[].applicantAddress.line1"
             data-overlays="">
           <td>line1</td>
           <td><span class="muted">—</span></td>
@@ -529,7 +549,8 @@ erDiagram
           <td class="align-center">yes</td>
           <td class="overlay-cell"><span class="muted">—</span>          </td>
           <td><span class="muted">—</span>          </td>
-        </tr>        <tr data-leaf-path="propertyPack.localSearches.localLandCharges[].applicantAddress.line2"
+        </tr>        <tr id="propertypacklocalsearcheslocallandchargesapplicantaddressline2"
+            data-leaf-path="propertyPack.localSearches.localLandCharges[].applicantAddress.line2"
             data-overlays="">
           <td>line2</td>
           <td><span class="muted">—</span></td>
@@ -539,7 +560,8 @@ erDiagram
           <td class="align-center">yes</td>
           <td class="overlay-cell"><span class="muted">—</span>          </td>
           <td><span class="muted">—</span>          </td>
-        </tr>        <tr data-leaf-path="propertyPack.localSearches.localLandCharges[].applicantAddress.postcode"
+        </tr>        <tr id="propertypacklocalsearcheslocallandchargesapplicantaddresspostcode"
+            data-leaf-path="propertyPack.localSearches.localLandCharges[].applicantAddress.postcode"
             data-overlays="">
           <td>postcode</td>
           <td><span class="muted">—</span></td>
@@ -549,7 +571,8 @@ erDiagram
           <td class="align-center">yes</td>
           <td class="overlay-cell"><span class="muted">—</span>          </td>
           <td><span class="muted">—</span>          </td>
-        </tr>        <tr data-leaf-path="propertyPack.localSearches.localLandCharges[].applicantAddress.country"
+        </tr>        <tr id="propertypacklocalsearcheslocallandchargesapplicantaddresscountry"
+            data-leaf-path="propertyPack.localSearches.localLandCharges[].applicantAddress.country"
             data-overlays="">
           <td>country</td>
           <td><span class="muted">—</span></td>
@@ -562,8 +585,8 @@ erDiagram
         </tr>      </tbody>
     </table>
   </div></div>      <div class="object-block" id="obj-PropertyPackLocalSearchesLocalLandChargesAvailableDocument" data-display-id="availabledocument">
-  <header class="object-block__head">
-    <div class="object-block__title-row">
+  <header class="object-block__head">    <nav class="object-block__breadcrumb" aria-label="Location in the schema">      <a href="#transaction">Transaction</a><span aria-hidden="true"> › </span>      <a href="#propertypack">Property Pack</a><span aria-hidden="true"> › </span>      <a href="#propertypacklocalsearches">Local Searches</a><span aria-hidden="true"> › </span>      <a href="#propertypacklocalsearcheslocallandcharge">Local Land Charges</a><span aria-hidden="true"> › </span>      <span aria-current="location">Available Document</span>
+    </nav>    <div class="object-block__title-row">
       <h4 id="propertypacklocalsearcheslocallandchargesavailabledocument" class="object-block__title" data-display-id="availabledocument">
         <span class="object-block__display">Available Document</span><span class="object-block__cardinality" title="array of objects">[]</span>      </h4>
       <code class="object-block__path">propertyPack.localSearches.localLandCharges[].availableDocument[]</code>
@@ -583,7 +606,8 @@ erDiagram
           <th style="width: 6rem;">Affordance</th>
         </tr>
       </thead>
-      <tbody>        <tr data-leaf-path="propertyPack.localSearches.localLandCharges[].availableDocument[].document"
+      <tbody>        <tr id="propertypacklocalsearcheslocallandchargesavailabledocumentdocument"
+            data-leaf-path="propertyPack.localSearches.localLandCharges[].availableDocument[].document"
             data-overlays="">
           <td>document</td>
           <td><span class="muted">—</span></td>
@@ -593,7 +617,8 @@ erDiagram
           <td class="align-center">yes</td>
           <td class="overlay-cell"><span class="muted">—</span>          </td>
           <td><span class="muted">—</span>          </td>
-        </tr>        <tr data-leaf-path="propertyPack.localSearches.localLandCharges[].availableDocument[].endDate"
+        </tr>        <tr id="propertypacklocalsearcheslocallandchargesavailabledocumentenddate"
+            data-leaf-path="propertyPack.localSearches.localLandCharges[].availableDocument[].endDate"
             data-overlays="">
           <td>endDate</td>
           <td><span class="muted">—</span></td>
@@ -603,7 +628,8 @@ erDiagram
           <td class="align-center"><span class="muted">—</span></td>
           <td class="overlay-cell"><span class="muted">—</span>          </td>
           <td><span class="muted">—</span>          </td>
-        </tr>        <tr data-leaf-path="propertyPack.localSearches.localLandCharges[].availableDocument[].startDate"
+        </tr>        <tr id="propertypacklocalsearcheslocallandchargesavailabledocumentstartdate"
+            data-leaf-path="propertyPack.localSearches.localLandCharges[].availableDocument[].startDate"
             data-overlays="">
           <td>startDate</td>
           <td><span class="muted">—</span></td>
@@ -616,8 +642,8 @@ erDiagram
         </tr>      </tbody>
     </table>
   </div></div>      <div class="object-block" id="obj-PropertyPackLocalSearchesLocalLandChargesLocation" data-display-id="location">
-  <header class="object-block__head">
-    <div class="object-block__title-row">
+  <header class="object-block__head">    <nav class="object-block__breadcrumb" aria-label="Location in the schema">      <a href="#transaction">Transaction</a><span aria-hidden="true"> › </span>      <a href="#propertypack">Property Pack</a><span aria-hidden="true"> › </span>      <a href="#propertypacklocalsearches">Local Searches</a><span aria-hidden="true"> › </span>      <a href="#propertypacklocalsearcheslocallandcharge">Local Land Charges</a><span aria-hidden="true"> › </span>      <span aria-current="location">Location</span>
+    </nav>    <div class="object-block__title-row">
       <h4 id="propertypacklocalsearcheslocallandchargeslocation" class="object-block__title" data-display-id="location">
         <span class="object-block__display">Location</span>      </h4>
       <code class="object-block__path">propertyPack.localSearches.localLandCharges[].location</code>
@@ -637,7 +663,8 @@ erDiagram
           <th style="width: 6rem;">Affordance</th>
         </tr>
       </thead>
-      <tbody>        <tr data-leaf-path="propertyPack.localSearches.localLandCharges[].location.line1"
+      <tbody>        <tr id="propertypacklocalsearcheslocallandchargeslocationline1"
+            data-leaf-path="propertyPack.localSearches.localLandCharges[].location.line1"
             data-overlays="">
           <td>line1</td>
           <td><span class="muted">—</span></td>
@@ -647,7 +674,8 @@ erDiagram
           <td class="align-center">yes</td>
           <td class="overlay-cell"><span class="muted">—</span>          </td>
           <td><span class="muted">—</span>          </td>
-        </tr>        <tr data-leaf-path="propertyPack.localSearches.localLandCharges[].location.line2"
+        </tr>        <tr id="propertypacklocalsearcheslocallandchargeslocationline2"
+            data-leaf-path="propertyPack.localSearches.localLandCharges[].location.line2"
             data-overlays="">
           <td>line2</td>
           <td><span class="muted">—</span></td>
@@ -657,7 +685,8 @@ erDiagram
           <td class="align-center">yes</td>
           <td class="overlay-cell"><span class="muted">—</span>          </td>
           <td><span class="muted">—</span>          </td>
-        </tr>        <tr data-leaf-path="propertyPack.localSearches.localLandCharges[].location.postcode"
+        </tr>        <tr id="propertypacklocalsearcheslocallandchargeslocationpostcode"
+            data-leaf-path="propertyPack.localSearches.localLandCharges[].location.postcode"
             data-overlays="">
           <td>postcode</td>
           <td><span class="muted">—</span></td>
@@ -670,8 +699,8 @@ erDiagram
         </tr>      </tbody>
     </table>
   </div></div>      <div class="object-block" id="obj-PropertyPackLocalSearchesLocalLandChargesLocationDominantBuilding" data-display-id="locationdominantbuilding">
-  <header class="object-block__head">
-    <div class="object-block__title-row">
+  <header class="object-block__head">    <nav class="object-block__breadcrumb" aria-label="Location in the schema">      <a href="#transaction">Transaction</a><span aria-hidden="true"> › </span>      <a href="#propertypack">Property Pack</a><span aria-hidden="true"> › </span>      <a href="#propertypacklocalsearches">Local Searches</a><span aria-hidden="true"> › </span>      <a href="#propertypacklocalsearcheslocallandcharge">Local Land Charges</a><span aria-hidden="true"> › </span>      <span aria-current="location">Location Dominant Building</span>
+    </nav>    <div class="object-block__title-row">
       <h4 id="propertypacklocalsearcheslocallandchargeslocationdominantbuilding" class="object-block__title" data-display-id="locationdominantbuilding">
         <span class="object-block__display">Location Dominant Building</span>      </h4>
       <code class="object-block__path">propertyPack.localSearches.localLandCharges[].locationDominantBuilding</code>
@@ -691,7 +720,8 @@ erDiagram
           <th style="width: 6rem;">Affordance</th>
         </tr>
       </thead>
-      <tbody>        <tr data-leaf-path="propertyPack.localSearches.localLandCharges[].locationDominantBuilding.line1"
+      <tbody>        <tr id="propertypacklocalsearcheslocallandchargeslocationdominantbuildingline1"
+            data-leaf-path="propertyPack.localSearches.localLandCharges[].locationDominantBuilding.line1"
             data-overlays="">
           <td>line1</td>
           <td><span class="muted">—</span></td>
@@ -701,7 +731,8 @@ erDiagram
           <td class="align-center">yes</td>
           <td class="overlay-cell"><span class="muted">—</span>          </td>
           <td><span class="muted">—</span>          </td>
-        </tr>        <tr data-leaf-path="propertyPack.localSearches.localLandCharges[].locationDominantBuilding.line2"
+        </tr>        <tr id="propertypacklocalsearcheslocallandchargeslocationdominantbuildingline2"
+            data-leaf-path="propertyPack.localSearches.localLandCharges[].locationDominantBuilding.line2"
             data-overlays="">
           <td>line2</td>
           <td><span class="muted">—</span></td>
@@ -711,7 +742,8 @@ erDiagram
           <td class="align-center">yes</td>
           <td class="overlay-cell"><span class="muted">—</span>          </td>
           <td><span class="muted">—</span>          </td>
-        </tr>        <tr data-leaf-path="propertyPack.localSearches.localLandCharges[].locationDominantBuilding.postcode"
+        </tr>        <tr id="propertypacklocalsearcheslocallandchargeslocationdominantbuildingpostcode"
+            data-leaf-path="propertyPack.localSearches.localLandCharges[].locationDominantBuilding.postcode"
             data-overlays="">
           <td>postcode</td>
           <td><span class="muted">—</span></td>
@@ -724,8 +756,8 @@ erDiagram
         </tr>      </tbody>
     </table>
   </div></div>      <div class="object-block" id="obj-PropertyPackLocalSearchesLocalLandChargesOtherData" data-display-id="otherdata">
-  <header class="object-block__head">
-    <div class="object-block__title-row">
+  <header class="object-block__head">    <nav class="object-block__breadcrumb" aria-label="Location in the schema">      <a href="#transaction">Transaction</a><span aria-hidden="true"> › </span>      <a href="#propertypack">Property Pack</a><span aria-hidden="true"> › </span>      <a href="#propertypacklocalsearches">Local Searches</a><span aria-hidden="true"> › </span>      <a href="#propertypacklocalsearcheslocallandcharge">Local Land Charges</a><span aria-hidden="true"> › </span>      <span aria-current="location">Other Data</span>
+    </nav>    <div class="object-block__title-row">
       <h4 id="propertypacklocalsearcheslocallandchargesotherdata" class="object-block__title" data-display-id="otherdata">
         <span class="object-block__display">Other Data</span><span class="object-block__cardinality" title="array of objects">[]</span>      </h4>
       <code class="object-block__path">propertyPack.localSearches.localLandCharges[].otherData[]</code>
@@ -745,7 +777,8 @@ erDiagram
           <th style="width: 6rem;">Affordance</th>
         </tr>
       </thead>
-      <tbody>        <tr data-leaf-path="propertyPack.localSearches.localLandCharges[].otherData[].dataLabel"
+      <tbody>        <tr id="propertypacklocalsearcheslocallandchargesotherdatadatalabel"
+            data-leaf-path="propertyPack.localSearches.localLandCharges[].otherData[].dataLabel"
             data-overlays="">
           <td>dataLabel</td>
           <td><span class="muted">—</span></td>
@@ -755,7 +788,8 @@ erDiagram
           <td class="align-center">yes</td>
           <td class="overlay-cell"><span class="muted">—</span>          </td>
           <td><span class="muted">—</span>          </td>
-        </tr>        <tr data-leaf-path="propertyPack.localSearches.localLandCharges[].otherData[].data"
+        </tr>        <tr id="propertypacklocalsearcheslocallandchargesotherdatadata"
+            data-leaf-path="propertyPack.localSearches.localLandCharges[].otherData[].data"
             data-overlays="">
           <td>data</td>
           <td><span class="muted">—</span></td>
@@ -768,8 +802,8 @@ erDiagram
         </tr>      </tbody>
     </table>
   </div></div>      <div class="object-block" id="obj-PropertyPackLocalSearchesLocalLandChargesServientLandDevelopment" data-display-id="servientlanddevelopment">
-  <header class="object-block__head">
-    <div class="object-block__title-row">
+  <header class="object-block__head">    <nav class="object-block__breadcrumb" aria-label="Location in the schema">      <a href="#transaction">Transaction</a><span aria-hidden="true"> › </span>      <a href="#propertypack">Property Pack</a><span aria-hidden="true"> › </span>      <a href="#propertypacklocalsearches">Local Searches</a><span aria-hidden="true"> › </span>      <a href="#propertypacklocalsearcheslocallandcharge">Local Land Charges</a><span aria-hidden="true"> › </span>      <span aria-current="location">Servient Land Development</span>
+    </nav>    <div class="object-block__title-row">
       <h4 id="propertypacklocalsearcheslocallandchargesservientlanddevelopment" class="object-block__title" data-display-id="servientlanddevelopment">
         <span class="object-block__display">Servient Land Development</span>      </h4>
       <code class="object-block__path">propertyPack.localSearches.localLandCharges[].servientLandDevelopment</code>
@@ -789,7 +823,8 @@ erDiagram
           <th style="width: 6rem;">Affordance</th>
         </tr>
       </thead>
-      <tbody>        <tr data-leaf-path="propertyPack.localSearches.localLandCharges[].servientLandDevelopment.coversAllOrPartOfExtent"
+      <tbody>        <tr id="propertypacklocalsearcheslocallandchargesservientlanddevelopmentcoversallorpartofextent"
+            data-leaf-path="propertyPack.localSearches.localLandCharges[].servientLandDevelopment.coversAllOrPartOfExtent"
             data-overlays="">
           <td>coversAllOrPartOfExtent</td>
           <td><span class="muted">—</span></td>
@@ -799,7 +834,8 @@ erDiagram
           <td class="align-center">yes</td>
           <td class="overlay-cell"><span class="muted">—</span>          </td>
           <td><span class="muted">—</span>          </td>
-        </tr>        <tr data-leaf-path="propertyPack.localSearches.localLandCharges[].servientLandDevelopment.height"
+        </tr>        <tr id="propertypacklocalsearcheslocallandchargesservientlanddevelopmentheight"
+            data-leaf-path="propertyPack.localSearches.localLandCharges[].servientLandDevelopment.height"
             data-overlays="">
           <td>height</td>
           <td><span class="muted">—</span></td>
@@ -812,8 +848,8 @@ erDiagram
         </tr>      </tbody>
     </table>
   </div></div>      <h3 id="searches">Other searches</h3>      <div class="object-block" id="obj-PropertyPackSearche" data-display-id="searche">
-  <header class="object-block__head">
-    <div class="object-block__title-row">
+  <header class="object-block__head">    <nav class="object-block__breadcrumb" aria-label="Location in the schema">      <a href="#transaction">Transaction</a><span aria-hidden="true"> › </span>      <a href="#propertypack">Property Pack</a><span aria-hidden="true"> › </span>      <span aria-current="location">Searches</span>
+    </nav>    <div class="object-block__title-row">
       <h4 id="propertypacksearche" class="object-block__title" data-display-id="searche">
         <span class="object-block__display">Searches</span><span class="object-block__cardinality" title="array of objects">[]</span>      </h4>
       <code class="object-block__path">propertyPack.searches[]</code>
@@ -833,7 +869,8 @@ erDiagram
           <th style="width: 6rem;">Affordance</th>
         </tr>
       </thead>
-      <tbody>        <tr data-leaf-path="propertyPack.searches[].description"
+      <tbody>        <tr id="propertypacksearchesdescription"
+            data-leaf-path="propertyPack.searches[].description"
             data-overlays="">
           <td>Description for instructed search product</td>
           <td>Description of the room</td>
@@ -843,7 +880,8 @@ erDiagram
           <td class="align-center"><span class="muted">—</span></td>
           <td class="overlay-cell"><span class="muted">—</span>          </td>
           <td><span class="muted">—</span>          </td>
-        </tr>        <tr data-leaf-path="propertyPack.searches[].displayName"
+        </tr>        <tr id="propertypacksearchesdisplayname"
+            data-leaf-path="propertyPack.searches[].displayName"
             data-overlays="">
           <td>Human-readable name of instructed search product</td>
           <td>Human-readable name of instructed search product</td>
@@ -853,7 +891,8 @@ erDiagram
           <td class="align-center"><span class="muted">—</span></td>
           <td class="overlay-cell"><span class="muted">—</span>          </td>
           <td><span class="muted">—</span>          </td>
-        </tr>        <tr data-leaf-path="propertyPack.searches[].expectedDeliveryDate"
+        </tr>        <tr id="propertypacksearchesexpecteddeliverydate"
+            data-leaf-path="propertyPack.searches[].expectedDeliveryDate"
             data-overlays="">
           <td>Date search provider indicates to expect delivery</td>
           <td>Date search provider indicate to expect delivery</td>
@@ -863,7 +902,8 @@ erDiagram
           <td class="align-center"><span class="muted">—</span></td>
           <td class="overlay-cell"><span class="muted">—</span>          </td>
           <td><span class="muted">—</span>          </td>
-        </tr>        <tr data-leaf-path="propertyPack.searches[].orderDate"
+        </tr>        <tr id="propertypacksearchesorderdate"
+            data-leaf-path="propertyPack.searches[].orderDate"
             data-overlays="">
           <td>Date search was ordered</td>
           <td><span class="muted">—</span></td>
@@ -873,7 +913,8 @@ erDiagram
           <td class="align-center"><span class="muted">—</span></td>
           <td class="overlay-cell"><span class="muted">—</span>          </td>
           <td><span class="muted">—</span>          </td>
-        </tr>        <tr data-leaf-path="propertyPack.searches[].productCode"
+        </tr>        <tr id="propertypacksearchesproductcode"
+            data-leaf-path="propertyPack.searches[].productCode"
             data-overlays="">
           <td>Provider code for instructed search product</td>
           <td>Provider code for instructed search product</td>
@@ -883,7 +924,8 @@ erDiagram
           <td class="align-center"><span class="muted">—</span></td>
           <td class="overlay-cell"><span class="muted">—</span>          </td>
           <td><span class="muted">—</span>          </td>
-        </tr>        <tr data-leaf-path="propertyPack.searches[].providerName"
+        </tr>        <tr id="propertypacksearchesprovidername"
+            data-leaf-path="propertyPack.searches[].providerName"
             data-overlays="">
           <td>Name of instructed search provider</td>
           <td>Name of instructed search provider</td>
@@ -893,7 +935,8 @@ erDiagram
           <td class="align-center"><span class="muted">—</span></td>
           <td class="overlay-cell"><span class="muted">—</span>          </td>
           <td><span class="muted">—</span>          </td>
-        </tr>        <tr data-leaf-path="propertyPack.searches[].providerReference"
+        </tr>        <tr id="propertypacksearchesproviderreference"
+            data-leaf-path="propertyPack.searches[].providerReference"
             data-overlays="">
           <td>Provider reference</td>
           <td><span class="muted">—</span></td>
@@ -903,7 +946,8 @@ erDiagram
           <td class="align-center"><span class="muted">—</span></td>
           <td class="overlay-cell"><span class="muted">—</span>          </td>
           <td><span class="muted">—</span>          </td>
-        </tr>        <tr data-leaf-path="propertyPack.searches[].reportDate"
+        </tr>        <tr id="propertypacksearchesreportdate"
+            data-leaf-path="propertyPack.searches[].reportDate"
             data-overlays="">
           <td>Report date</td>
           <td><span class="muted">—</span></td>
@@ -913,7 +957,8 @@ erDiagram
           <td class="align-center"><span class="muted">—</span></td>
           <td class="overlay-cell"><span class="muted">—</span>          </td>
           <td><span class="muted">—</span>          </td>
-        </tr>        <tr data-leaf-path="propertyPack.searches[].searchContentTypes"
+        </tr>        <tr id="propertypacksearchessearchcontenttypes"
+            data-leaf-path="propertyPack.searches[].searchContentTypes"
             data-overlays="">
           <td>searchContentTypes</td>
           <td>Collection of search content type item.</td>
@@ -923,7 +968,8 @@ erDiagram
           <td class="align-center"><span class="muted">—</span></td>
           <td class="overlay-cell"><span class="muted">—</span>          </td>
           <td><span class="muted">—</span>          </td>
-        </tr>        <tr data-leaf-path="propertyPack.searches[].status"
+        </tr>        <tr id="propertypacksearchesstatus"
+            data-leaf-path="propertyPack.searches[].status"
             data-overlays="">
           <td>status</td>
           <td><span class="muted">—</span></td>
@@ -933,7 +979,8 @@ erDiagram
           <td class="align-center"><span class="muted">—</span></td>
           <td class="overlay-cell"><span class="muted">—</span>          </td>
           <td><span class="muted">—</span>          </td>
-        </tr>        <tr data-leaf-path="propertyPack.searches[].status"
+        </tr>        <tr id="propertypacksearchesstatus-2"
+            data-leaf-path="propertyPack.searches[].status"
             data-overlays="">
           <td>status</td>
           <td><span class="muted">—</span></td>
@@ -946,4 +993,21 @@ erDiagram
         </tr>      </tbody>
     </table>
   </div></div>
+<script slot="scripts" is:inline data-astro-rerun src="/ui/schema-leaf-table.js"></script>
+<script slot="scripts" is:inline data-astro-rerun>
+  if (window._opdaSchemaLeafMount) {
+    document.removeEventListener('astro:page-load', window._opdaSchemaLeafMount);
+  }
+  window._opdaSchemaLeafMount = function () {
+    if (typeof mountLeafTable === 'function') {
+      mountLeafTable({
+        page: '46c',
+        showEnvelopes: false,
+        filterButtonId: 'filter-overlay-btn',
+        filterCountId: 'filter-overlay-count'
+      });
+    }
+  };
+  document.addEventListener('astro:page-load', window._opdaSchemaLeafMount);
+</script>
 </Layout>

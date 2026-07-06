@@ -48,11 +48,11 @@ let cachedContainers: Record<string, SchemaAnchor> | null = null;
 function buildIndexes(): void {
   const leaves: Record<string, SchemaAnchor> = {};
   const containers: Record<string, SchemaAnchor> = {};
-  // id="..." and data-leaf-path="..." matched together, in document order, so
-  // "nearest preceding id" can be tracked with a single left-to-right pass —
-  // the same physical-proximity principle the generator itself relies on to
-  // group a leaf row under its containing object's section.
-  const leafRe = /\bid="([a-z0-9-]+)"|\bdata-leaf-path="([^"]+)"/g;
+  // Every leaf row now carries its OWN id (2026-07-06 generator change —
+  // object-table.html.j2 emits <tr id="{leaf_anchor}" data-leaf-path="...">
+  // on the same tag) so a schema path links straight to the exact field,
+  // not just its containing object's nearest-preceding anchor.
+  const leafRe = /<tr id="([a-z0-9-]+)"[\s\S]{0,40}?data-leaf-path="([^"]+)"/g;
   // Each object's own container anchor sits right next to its real dotted
   // path, rendered verbatim for the reader (<code class="object-block__path">)
   // — reading that pair directly avoids re-deriving the anchor-slug algorithm
@@ -62,12 +62,11 @@ function buildIndexes(): void {
     const text = fs.readFileSync(file, 'utf8');
     const url = urlForFile(file);
 
-    let lastAnchor: string | null = null;
     let m: RegExpExecArray | null;
     leafRe.lastIndex = 0;
     while ((m = leafRe.exec(text))) {
-      if (m[1]) lastAnchor = m[1];
-      else if (m[2] && !(m[2] in leaves)) leaves[m[2]] = { url, anchor: lastAnchor };
+      const path = m[2];
+      if (path && !(path in leaves)) leaves[path] = { url, anchor: m[1] };
     }
 
     containerRe.lastIndex = 0;

@@ -1323,6 +1323,30 @@ a.card:hover .card-arrow { transform: translateX(3px); }
   gap: var(--space-1);
   margin-bottom: var(--space-2);
 }
+.object-block__breadcrumb {
+  font-size: 0.75rem;
+  color: var(--color-text-muted);
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.25em;
+}
+.object-block__breadcrumb a {
+  color: var(--color-text-muted);
+  text-decoration: underline;
+  text-decoration-color: var(--color-border);
+  text-underline-offset: 2px;
+}
+.object-block__breadcrumb a:hover {
+  color: var(--color-text);
+  text-decoration-color: currentColor;
+}
+.object-block__breadcrumb [aria-current="location"] {
+  color: var(--color-text);
+  font-weight: 600;
+}
+.object-ancestors-note {
+  margin: var(--space-3) 0 var(--space-2);
+}
 .prose .object-block__title {
   display: flex;
   align-items: baseline;

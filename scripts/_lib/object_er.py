@@ -49,7 +49,8 @@ def _short_comment(s: str | None) -> str:
 def _cardinality(child_is_array: bool, child_required: bool) -> str:
     """Return the Mermaid relation operator between parent and child."""
     if child_is_array:
-        return "||--o{"           # one parent : zero-or-more children
+        return "||--o&lbrace;"    # one parent : zero-or-more children (see build_er_source
+                                   # docstring note on &lbrace;/&rbrace; — raw { breaks Astro)
     if child_required:
         return "||--||"           # one : one (mandatory)
     return "||--o|"               # one : optional one
@@ -140,9 +141,14 @@ def build_er_source(
         # container objects (no scalar fields, just sub-objects) as bare
         # text without a box outline unless they have an attribute block.
         # An empty `{ }` is enough to force the box.
-        lines.append(f"  {name} {{")
+        # &lbrace;/&rbrace; instead of literal {/} — a raw { in an .astro
+        # file body is parsed by Astro as the start of a JS expression, which
+        # breaks the build (confirmed: "Expected `}` but found `Identifier`").
+        # Mermaid v11 accepts the HTML-entity form in erDiagram blocks and
+        # renders it identically.
+        lines.append(f"  {name} &lbrace;")
         lines.extend(rows)
-        lines.append("  }")
+        lines.append("  &rbrace;")
         emitted.add(name)
 
     return "\n".join(lines)

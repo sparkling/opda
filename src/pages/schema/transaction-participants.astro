@@ -2,15 +2,13 @@
 import Layout from '@/layouts/Layout.astro';
 ---
 <Layout
-  title="Schema · Transaction &amp; participants"
-  description="A PDTF transaction starts with who&amp;#39;s involved. Participants are people and organisations attached to a transaction with a role (seller, buyer, estate agent, conveyancer, surveyor, lender), an identity, a contact surface, and — for sellers — a capacity explaining their authority t"
+  title="Schema · Transaction & participants"
+  description="A PDTF transaction starts with who's involved. Participants are people and organisations attached to a transaction with a role (seller, buyer, estate agent, conveyancer, surveyor, lender), an identity, a contact surface, and — for sellers — a capacity explaining their authority t"
 >
-<div class="page-meta">
+      <div class="page-meta">
         <span class="pill pill--info">Schema</span>
         <span>Page 35</span>
-        <span>Generated 2026-05-17</span>
-        <span title="DAMA-DMBOK2 Knowledge Area — per ADR-0001">DAMA · Data Modeling &amp; Design · Reference &amp; Master Data</span>
-      </div>
+        <span>Generated 2026-07-06</span>        <span title="DAMA-DMBOK2 Knowledge Area — per ADR-0001">DAMA · Data Modeling &amp; Design · Reference &amp; Master Data</span>      </div>
 
       <h1>Transaction & participants</h1>
 
@@ -146,9 +144,8 @@ erDiagram
                       class="mt-2 rounded-md bg-[var(--button-bg)] outline-1 outline-[var(--ring-subtle)] shadow-lg p-5 transition transition-discrete data-closed:opacity-0 data-closed:scale-95 data-enter:duration-100 data-enter:ease-out data-leave:duration-75 data-leave:ease-in">
           </el-popover>
         </el-popover-group>
-      </div>      <h3 id="transaction">Transaction</h3>      <div class="object-block" id="obj-Transaction" data-display-id="transaction">
-  <header class="object-block__head">
-    <div class="object-block__title-row">
+      </div>      <p class="muted tiny object-ancestors-note">Parent containers — shown for reference; their own content lives in the sections below.</p>      <div class="object-block" id="obj-Transaction" data-display-id="transaction">
+  <header class="object-block__head">    <div class="object-block__title-row">
       <h4 id="transaction" class="object-block__title" data-display-id="transaction">
         <span class="object-block__display">Transaction</span>      </h4>
       <code class="object-block__path">transaction (root)</code>
@@ -176,7 +173,8 @@ erDiagram
           <th style="width: 6rem;">Affordance</th>
         </tr>
       </thead>
-      <tbody>        <tr data-leaf-path="externalIds"
+      <tbody>        <tr id="externalids"
+            data-leaf-path="externalIds"
             data-overlays="">
           <td>externalIds</td>
           <td>Data group capturing external id information.</td>
@@ -186,7 +184,8 @@ erDiagram
           <td class="align-center"><span class="muted">—</span></td>
           <td class="overlay-cell"><span class="muted">—</span>          </td>
           <td><span class="muted">—</span>          </td>
-        </tr>        <tr data-leaf-path="status"
+        </tr>        <tr id="status"
+            data-leaf-path="status"
             data-overlays="">
           <td>status</td>
           <td>Enumeration: active, For sale, Under offer, Sold subject to contract….</td>
@@ -196,7 +195,8 @@ erDiagram
           <td class="align-center"><span class="muted">—</span></td>
           <td class="overlay-cell"><span class="muted">—</span>          </td>
           <td>example          </td>
-        </tr>        <tr data-leaf-path="transactionId"
+        </tr>        <tr id="transactionid"
+            data-leaf-path="transactionId"
             data-overlays="">
           <td>UUID for the transaction</td>
           <td><span class="muted">—</span></td>
@@ -209,8 +209,8 @@ erDiagram
         </tr>      </tbody>
     </table>
   </div></div>      <h3 id="participants">Participants</h3>      <div class="object-block" id="obj-Participant" data-display-id="participant">
-  <header class="object-block__head">
-    <div class="object-block__title-row">
+  <header class="object-block__head">    <nav class="object-block__breadcrumb" aria-label="Location in the schema">      <a href="#transaction">Transaction</a><span aria-hidden="true"> › </span>      <span aria-current="location">Participants</span>
+    </nav>    <div class="object-block__title-row">
       <h4 id="participant" class="object-block__title" data-display-id="participant">
         <span class="object-block__display">Participants</span><span class="object-block__cardinality" title="array of objects">[]</span>      </h4>
       <code class="object-block__path">participants[]</code>
@@ -262,7 +262,8 @@ erDiagram
           <th style="width: 6rem;">Affordance</th>
         </tr>
       </thead>
-      <tbody>        <tr data-leaf-path="participants[].dateOfBirth"
+      <tbody>        <tr id="participantsdateofbirth"
+            data-leaf-path="participants[].dateOfBirth"
             data-overlays="">
           <td>Date of birth</td>
           <td><span class="muted">—</span></td>
@@ -272,7 +273,8 @@ erDiagram
           <td class="align-center"><span class="muted">—</span></td>
           <td class="overlay-cell"><span class="muted">—</span>          </td>
           <td><span class="muted">—</span>          </td>
-        </tr>        <tr data-leaf-path="participants[].email"
+        </tr>        <tr id="participantsemail"
+            data-leaf-path="participants[].email"
             data-overlays="">
           <td>Email address</td>
           <td>Company Email address</td>
@@ -282,7 +284,8 @@ erDiagram
           <td class="align-center"><span class="muted">—</span></td>
           <td class="overlay-cell"><span class="muted">—</span>          </td>
           <td><span class="muted">—</span>          </td>
-        </tr>        <tr data-leaf-path="participants[].externalIds"
+        </tr>        <tr id="participantsexternalids"
+            data-leaf-path="participants[].externalIds"
             data-overlays="">
           <td>externalIds</td>
           <td><span class="muted">—</span></td>
@@ -292,7 +295,8 @@ erDiagram
           <td class="align-center"><span class="muted">—</span></td>
           <td class="overlay-cell"><span class="muted">—</span>          </td>
           <td><span class="muted">—</span>          </td>
-        </tr>        <tr data-leaf-path="participants[].organisation"
+        </tr>        <tr id="participantsorganisation"
+            data-leaf-path="participants[].organisation"
             data-overlays="">
           <td>Organisation</td>
           <td><span class="muted">—</span></td>
@@ -302,7 +306,8 @@ erDiagram
           <td class="align-center"><span class="muted">—</span></td>
           <td class="overlay-cell"><span class="muted">—</span>          </td>
           <td><span class="muted">—</span>          </td>
-        </tr>        <tr data-leaf-path="participants[].organisationReference"
+        </tr>        <tr id="participantsorganisationreference"
+            data-leaf-path="participants[].organisationReference"
             data-overlays="">
           <td>Reference</td>
           <td><span class="muted">—</span></td>
@@ -312,7 +317,8 @@ erDiagram
           <td class="align-center"><span class="muted">—</span></td>
           <td class="overlay-cell"><span class="muted">—</span>          </td>
           <td><span class="muted">—</span>          </td>
-        </tr>        <tr data-leaf-path="participants[].participantStatus"
+        </tr>        <tr id="participantsparticipantstatus"
+            data-leaf-path="participants[].participantStatus"
             data-overlays="">
           <td>participantStatus</td>
           <td>Enumeration: Proposed, Invited, Active, Removed.</td>
@@ -322,7 +328,8 @@ erDiagram
           <td class="align-center"><span class="muted">—</span></td>
           <td class="overlay-cell"><span class="muted">—</span>          </td>
           <td><span class="muted">—</span>          </td>
-        </tr>        <tr data-leaf-path="participants[].phone"
+        </tr>        <tr id="participantsphone"
+            data-leaf-path="participants[].phone"
             data-overlays="">
           <td>Phone number</td>
           <td><span class="muted">—</span></td>
@@ -332,7 +339,8 @@ erDiagram
           <td class="align-center"><span class="muted">—</span></td>
           <td class="overlay-cell"><span class="muted">—</span>          </td>
           <td><span class="muted">—</span>          </td>
-        </tr>        <tr data-leaf-path="participants[].role"
+        </tr>        <tr id="participantsrole"
+            data-leaf-path="participants[].role"
             data-overlays="baspi5,piq">
           <td>role</td>
           <td>A role is a collection of permissions that determines what a user can do within a system.</td>
@@ -342,7 +350,8 @@ erDiagram
           <td class="align-center"><span class="muted">—</span></td>
           <td class="overlay-cell">              <div class="overlay-line">Buyers & Sellers Property Information v5 <span class="overlay-key">(BASPI5)</span></div>              <div class="overlay-line">Property Information Questionnaire <span class="overlay-key">(PIQ)</span></div>          </td>
           <td><span class="muted">—</span>          </td>
-        </tr>        <tr data-leaf-path="participants[].role"
+        </tr>        <tr id="participantsrole-2"
+            data-leaf-path="participants[].role"
             data-overlays="baspi5,piq">
           <td>role</td>
           <td>A role is a collection of permissions that determines what a user can do within a system.</td>
@@ -355,8 +364,8 @@ erDiagram
         </tr>      </tbody>
     </table>
   </div></div>      <div class="object-block" id="obj-ParticipantsAddress" data-display-id="address">
-  <header class="object-block__head">
-    <div class="object-block__title-row">
+  <header class="object-block__head">    <nav class="object-block__breadcrumb" aria-label="Location in the schema">      <a href="#transaction">Transaction</a><span aria-hidden="true"> › </span>      <a href="#participant">Participants</a><span aria-hidden="true"> › </span>      <span aria-current="location">Address</span>
+    </nav>    <div class="object-block__title-row">
       <h4 id="participantsaddress" class="object-block__title" data-display-id="address">
         <span class="object-block__display">Address</span>      </h4>
       <code class="object-block__path">participants[].address</code>
@@ -376,7 +385,8 @@ erDiagram
           <th style="width: 6rem;">Affordance</th>
         </tr>
       </thead>
-      <tbody>        <tr data-leaf-path="participants[].address.buildingName"
+      <tbody>        <tr id="participantsaddressbuildingname"
+            data-leaf-path="participants[].address.buildingName"
             data-overlays="">
           <td>Building name</td>
           <td><span class="muted">—</span></td>
@@ -386,7 +396,8 @@ erDiagram
           <td class="align-center"><span class="muted">—</span></td>
           <td class="overlay-cell"><span class="muted">—</span>          </td>
           <td><span class="muted">—</span>          </td>
-        </tr>        <tr data-leaf-path="participants[].address.buildingNumber"
+        </tr>        <tr id="participantsaddressbuildingnumber"
+            data-leaf-path="participants[].address.buildingNumber"
             data-overlays="">
           <td>Building number</td>
           <td><span class="muted">—</span></td>
@@ -396,7 +407,8 @@ erDiagram
           <td class="align-center"><span class="muted">—</span></td>
           <td class="overlay-cell"><span class="muted">—</span>          </td>
           <td><span class="muted">—</span>          </td>
-        </tr>        <tr data-leaf-path="participants[].address.countryCode"
+        </tr>        <tr id="participantsaddresscountrycode"
+            data-leaf-path="participants[].address.countryCode"
             data-overlays="">
           <td>Country code</td>
           <td><span class="muted">—</span></td>
@@ -406,7 +418,8 @@ erDiagram
           <td class="align-center"><span class="muted">—</span></td>
           <td class="overlay-cell"><span class="muted">—</span>          </td>
           <td><span class="muted">—</span>          </td>
-        </tr>        <tr data-leaf-path="participants[].address.homeNation"
+        </tr>        <tr id="participantsaddresshomenation"
+            data-leaf-path="participants[].address.homeNation"
             data-overlays="">
           <td>Home nation</td>
           <td><span class="muted">—</span></td>
@@ -416,7 +429,8 @@ erDiagram
           <td class="align-center"><span class="muted">—</span></td>
           <td class="overlay-cell"><span class="muted">—</span>          </td>
           <td><span class="muted">—</span>          </td>
-        </tr>        <tr data-leaf-path="participants[].address.line 3"
+        </tr>        <tr id="participantsaddressline3"
+            data-leaf-path="participants[].address.line 3"
             data-overlays="">
           <td>Address 3</td>
           <td><span class="muted">—</span></td>
@@ -426,7 +440,8 @@ erDiagram
           <td class="align-center"><span class="muted">—</span></td>
           <td class="overlay-cell"><span class="muted">—</span>          </td>
           <td><span class="muted">—</span>          </td>
-        </tr>        <tr data-leaf-path="participants[].address.line1"
+        </tr>        <tr id="participantsaddressline1"
+            data-leaf-path="participants[].address.line1"
             data-overlays="">
           <td>Address 1</td>
           <td><span class="muted">—</span></td>
@@ -436,7 +451,8 @@ erDiagram
           <td class="align-center"><span class="muted">—</span></td>
           <td class="overlay-cell"><span class="muted">—</span>          </td>
           <td><span class="muted">—</span>          </td>
-        </tr>        <tr data-leaf-path="participants[].address.line2"
+        </tr>        <tr id="participantsaddressline2"
+            data-leaf-path="participants[].address.line2"
             data-overlays="">
           <td>Address 2</td>
           <td><span class="muted">—</span></td>
@@ -446,7 +462,8 @@ erDiagram
           <td class="align-center"><span class="muted">—</span></td>
           <td class="overlay-cell"><span class="muted">—</span>          </td>
           <td><span class="muted">—</span>          </td>
-        </tr>        <tr data-leaf-path="participants[].address.postcode"
+        </tr>        <tr id="participantsaddresspostcode"
+            data-leaf-path="participants[].address.postcode"
             data-overlays="">
           <td>Postcode</td>
           <td><span class="muted">—</span></td>
@@ -456,7 +473,8 @@ erDiagram
           <td class="align-center"><span class="muted">—</span></td>
           <td class="overlay-cell"><span class="muted">—</span>          </td>
           <td><span class="muted">—</span>          </td>
-        </tr>        <tr data-leaf-path="participants[].address.street"
+        </tr>        <tr id="participantsaddressstreet"
+            data-leaf-path="participants[].address.street"
             data-overlays="">
           <td>Street</td>
           <td><span class="muted">—</span></td>
@@ -466,7 +484,8 @@ erDiagram
           <td class="align-center"><span class="muted">—</span></td>
           <td class="overlay-cell"><span class="muted">—</span>          </td>
           <td><span class="muted">—</span>          </td>
-        </tr>        <tr data-leaf-path="participants[].address.subBuilding"
+        </tr>        <tr id="participantsaddresssubbuilding"
+            data-leaf-path="participants[].address.subBuilding"
             data-overlays="">
           <td>Sub building name</td>
           <td><span class="muted">—</span></td>
@@ -476,7 +495,8 @@ erDiagram
           <td class="align-center"><span class="muted">—</span></td>
           <td class="overlay-cell"><span class="muted">—</span>          </td>
           <td><span class="muted">—</span>          </td>
-        </tr>        <tr data-leaf-path="participants[].address.town"
+        </tr>        <tr id="participantsaddresstown"
+            data-leaf-path="participants[].address.town"
             data-overlays="">
           <td>Town</td>
           <td><span class="muted">—</span></td>
@@ -489,8 +509,8 @@ erDiagram
         </tr>      </tbody>
     </table>
   </div></div>      <div class="object-block" id="obj-ParticipantsName" data-display-id="name">
-  <header class="object-block__head">
-    <div class="object-block__title-row">
+  <header class="object-block__head">    <nav class="object-block__breadcrumb" aria-label="Location in the schema">      <a href="#transaction">Transaction</a><span aria-hidden="true"> › </span>      <a href="#participant">Participants</a><span aria-hidden="true"> › </span>      <span aria-current="location">Name</span>
+    </nav>    <div class="object-block__title-row">
       <h4 id="participantsname" class="object-block__title" data-display-id="name">
         <span class="object-block__display">Name</span>      </h4>
       <code class="object-block__path">participants[].name</code>
@@ -510,7 +530,8 @@ erDiagram
           <th style="width: 6rem;">Affordance</th>
         </tr>
       </thead>
-      <tbody>        <tr data-leaf-path="participants[].name.firstName"
+      <tbody>        <tr id="participantsnamefirstname"
+            data-leaf-path="participants[].name.firstName"
             data-overlays="">
           <td>First name</td>
           <td><span class="muted">—</span></td>
@@ -520,7 +541,8 @@ erDiagram
           <td class="align-center"><span class="muted">—</span></td>
           <td class="overlay-cell"><span class="muted">—</span>          </td>
           <td><span class="muted">—</span>          </td>
-        </tr>        <tr data-leaf-path="participants[].name.lastName"
+        </tr>        <tr id="participantsnamelastname"
+            data-leaf-path="participants[].name.lastName"
             data-overlays="">
           <td>lastName</td>
           <td><span class="muted">—</span></td>
@@ -530,7 +552,8 @@ erDiagram
           <td class="align-center"><span class="muted">—</span></td>
           <td class="overlay-cell"><span class="muted">—</span>          </td>
           <td><span class="muted">—</span>          </td>
-        </tr>        <tr data-leaf-path="participants[].name.maidenName"
+        </tr>        <tr id="participantsnamemaidenname"
+            data-leaf-path="participants[].name.maidenName"
             data-overlays="">
           <td>Middle name(s)</td>
           <td><span class="muted">—</span></td>
@@ -540,7 +563,8 @@ erDiagram
           <td class="align-center"><span class="muted">—</span></td>
           <td class="overlay-cell"><span class="muted">—</span>          </td>
           <td><span class="muted">—</span>          </td>
-        </tr>        <tr data-leaf-path="participants[].name.middleName"
+        </tr>        <tr id="participantsnamemiddlename"
+            data-leaf-path="participants[].name.middleName"
             data-overlays="">
           <td>Middle name(s)</td>
           <td><span class="muted">—</span></td>
@@ -550,7 +574,8 @@ erDiagram
           <td class="align-center"><span class="muted">—</span></td>
           <td class="overlay-cell"><span class="muted">—</span>          </td>
           <td><span class="muted">—</span>          </td>
-        </tr>        <tr data-leaf-path="participants[].name.preferredName"
+        </tr>        <tr id="participantsnamepreferredname"
+            data-leaf-path="participants[].name.preferredName"
             data-overlays="">
           <td>Preferred name / known as</td>
           <td>Preferred name / known as</td>
@@ -560,7 +585,8 @@ erDiagram
           <td class="align-center"><span class="muted">—</span></td>
           <td class="overlay-cell"><span class="muted">—</span>          </td>
           <td><span class="muted">—</span>          </td>
-        </tr>        <tr data-leaf-path="participants[].name.title"
+        </tr>        <tr id="participantsnametitle"
+            data-leaf-path="participants[].name.title"
             data-overlays="">
           <td>Title or honorific</td>
           <td>Enumeration: Mr, Mrs, Miss, Ms….</td>
@@ -573,8 +599,8 @@ erDiagram
         </tr>      </tbody>
     </table>
   </div></div>      <div class="object-block" id="obj-ParticipantsSellersCapacity" data-display-id="sellerscapacity">
-  <header class="object-block__head">
-    <div class="object-block__title-row">
+  <header class="object-block__head">    <nav class="object-block__breadcrumb" aria-label="Location in the schema">      <a href="#transaction">Transaction</a><span aria-hidden="true"> › </span>      <a href="#participant">Participants</a><span aria-hidden="true"> › </span>      <span aria-current="location">Sellers Capacity</span>
+    </nav>    <div class="object-block__title-row">
       <h4 id="participantssellerscapacity" class="object-block__title" data-display-id="sellerscapacity">
         <span class="object-block__display">Sellers Capacity</span>      </h4>
       <code class="object-block__path">participants[].sellersCapacity</code>
@@ -594,7 +620,8 @@ erDiagram
           <th style="width: 6rem;">Affordance</th>
         </tr>
       </thead>
-      <tbody>        <tr data-leaf-path="participants[].sellersCapacity.attachments"
+      <tbody>        <tr id="participantssellerscapacityattachments"
+            data-leaf-path="participants[].sellersCapacity.attachments"
             data-overlays="baspi5">
           <td>Attachments</td>
           <td>Please attach evidence in support of the above</td>
@@ -604,7 +631,8 @@ erDiagram
           <td class="align-center"><span class="muted">—</span></td>
           <td class="overlay-cell">              <div class="overlay-line">Buyers & Sellers Property Information v5 <span class="overlay-key">(BASPI5)</span></div>          </td>
           <td><span class="muted">—</span>          </td>
-        </tr>        <tr data-leaf-path="participants[].sellersCapacity.capacity"
+        </tr>        <tr id="participantssellerscapacitycapacity"
+            data-leaf-path="participants[].sellersCapacity.capacity"
             data-overlays="baspi5,piq,rds">
           <td>capacity</td>
           <td>Please tick as applicable below, to confirm the capacity in which the answer are given.</td>
@@ -614,7 +642,8 @@ erDiagram
           <td class="align-center"><span class="muted">—</span></td>
           <td class="overlay-cell">              <div class="overlay-line">Buyers & Sellers Property Information v5 <span class="overlay-key">(BASPI5)</span></div>              <div class="overlay-line">Property Information Questionnaire <span class="overlay-key">(PIQ)</span></div>              <div class="overlay-line">Residential Disclosure Standard <span class="overlay-key">(RDS)</span></div>          </td>
           <td><span class="muted">—</span>          </td>
-        </tr>        <tr data-leaf-path="participants[].sellersCapacity.sellersCapacityDetails"
+        </tr>        <tr id="participantssellerscapacitysellerscapacitydetails"
+            data-leaf-path="participants[].sellersCapacity.sellersCapacityDetails"
             data-overlays="baspi5,rds">
           <td>Please provide details if applicable</td>
           <td>(for example if the seller name do not match the legal owner on the title deed due to change of name on marriage). Please provide detail if applicable</td>
@@ -627,8 +656,8 @@ erDiagram
         </tr>      </tbody>
     </table>
   </div></div>      <div class="object-block" id="obj-ParticipantsVerification" data-display-id="verification">
-  <header class="object-block__head">
-    <div class="object-block__title-row">
+  <header class="object-block__head">    <nav class="object-block__breadcrumb" aria-label="Location in the schema">      <a href="#transaction">Transaction</a><span aria-hidden="true"> › </span>      <a href="#participant">Participants</a><span aria-hidden="true"> › </span>      <span aria-current="location">Verification</span>
+    </nav>    <div class="object-block__title-row">
       <h4 id="participantsverification" class="object-block__title" data-display-id="verification">
         <span class="object-block__display">Verification</span>      </h4>
       <code class="object-block__path">participants[].verification</code>
@@ -649,8 +678,8 @@ erDiagram
           <span>Anti Money Laundering</span>
         </a>
       </li>    </ul>  </header>  <p class="muted tiny">No scalar fields on this object — pure container.</p></div>      <div class="object-block" id="obj-ParticipantsVerificationAntiMoneyLaundering" data-display-id="antimoneylaundering">
-  <header class="object-block__head">
-    <div class="object-block__title-row">
+  <header class="object-block__head">    <nav class="object-block__breadcrumb" aria-label="Location in the schema">      <a href="#transaction">Transaction</a><span aria-hidden="true"> › </span>      <a href="#participant">Participants</a><span aria-hidden="true"> › </span>      <a href="#participantsverification">Verification</a><span aria-hidden="true"> › </span>      <span aria-current="location">Anti Money Laundering</span>
+    </nav>    <div class="object-block__title-row">
       <h4 id="participantsverificationantimoneylaundering" class="object-block__title" data-display-id="antimoneylaundering">
         <span class="object-block__display">Anti Money Laundering</span>      </h4>
       <code class="object-block__path">participants[].verification.antiMoneyLaundering</code>
@@ -678,7 +707,8 @@ erDiagram
           <th style="width: 6rem;">Affordance</th>
         </tr>
       </thead>
-      <tbody>        <tr data-leaf-path="participants[].verification.antiMoneyLaundering.result"
+      <tbody>        <tr id="participantsverificationantimoneylaunderingresult"
+            data-leaf-path="participants[].verification.antiMoneyLaundering.result"
             data-overlays="">
           <td>result</td>
           <td><span class="muted">—</span></td>
@@ -691,8 +721,8 @@ erDiagram
         </tr>      </tbody>
     </table>
   </div></div>      <div class="object-block" id="obj-ParticipantsVerificationIdentity" data-display-id="identity">
-  <header class="object-block__head">
-    <div class="object-block__title-row">
+  <header class="object-block__head">    <nav class="object-block__breadcrumb" aria-label="Location in the schema">      <a href="#transaction">Transaction</a><span aria-hidden="true"> › </span>      <a href="#participant">Participants</a><span aria-hidden="true"> › </span>      <a href="#participantsverification">Verification</a><span aria-hidden="true"> › </span>      <span aria-current="location">Identity</span>
+    </nav>    <div class="object-block__title-row">
       <h4 id="participantsverificationidentity" class="object-block__title" data-display-id="identity">
         <span class="object-block__display">Identity</span>      </h4>
       <code class="object-block__path">participants[].verification.identity</code>
@@ -720,7 +750,8 @@ erDiagram
           <th style="width: 6rem;">Affordance</th>
         </tr>
       </thead>
-      <tbody>        <tr data-leaf-path="participants[].verification.identity.result"
+      <tbody>        <tr id="participantsverificationidentityresult"
+            data-leaf-path="participants[].verification.identity.result"
             data-overlays="">
           <td>result</td>
           <td>Enumeration: pass, fail, consider.</td>
@@ -733,8 +764,8 @@ erDiagram
         </tr>      </tbody>
     </table>
   </div></div>      <div class="object-block" id="obj-ParticipantsVerificationAntiMoneyLaunderingReport" data-display-id="report">
-  <header class="object-block__head">
-    <div class="object-block__title-row">
+  <header class="object-block__head">    <nav class="object-block__breadcrumb" aria-label="Location in the schema">      <a href="#transaction">Transaction</a><span aria-hidden="true"> › </span>      <a href="#participant">Participants</a><span aria-hidden="true"> › </span>      <a href="#participantsverification">Verification</a><span aria-hidden="true"> › </span>      <a href="#participantsverificationantimoneylaundering">Anti Money Laundering</a><span aria-hidden="true"> › </span>      <span aria-current="location">Reports</span>
+    </nav>    <div class="object-block__title-row">
       <h4 id="participantsverificationantimoneylaunderingreport" class="object-block__title" data-display-id="report">
         <span class="object-block__display">Reports</span><span class="object-block__cardinality" title="array of objects">[]</span>      </h4>
       <code class="object-block__path">participants[].verification.antiMoneyLaundering.reports[]</code>
@@ -754,7 +785,8 @@ erDiagram
           <th style="width: 6rem;">Affordance</th>
         </tr>
       </thead>
-      <tbody>        <tr data-leaf-path="participants[].verification.antiMoneyLaundering.reports[].details"
+      <tbody>        <tr id="participantsverificationantimoneylaunderingreportsdetails"
+            data-leaf-path="participants[].verification.antiMoneyLaundering.reports[].details"
             data-overlays="">
           <td>details</td>
           <td><span class="muted">—</span></td>
@@ -764,7 +796,8 @@ erDiagram
           <td class="align-center"><span class="muted">—</span></td>
           <td class="overlay-cell"><span class="muted">—</span>          </td>
           <td><span class="muted">—</span>          </td>
-        </tr>        <tr data-leaf-path="participants[].verification.antiMoneyLaundering.reports[].reportName"
+        </tr>        <tr id="participantsverificationantimoneylaunderingreportsreportname"
+            data-leaf-path="participants[].verification.antiMoneyLaundering.reports[].reportName"
             data-overlays="">
           <td>reportName</td>
           <td><span class="muted">—</span></td>
@@ -774,7 +807,8 @@ erDiagram
           <td class="align-center"><span class="muted">—</span></td>
           <td class="overlay-cell"><span class="muted">—</span>          </td>
           <td><span class="muted">—</span>          </td>
-        </tr>        <tr data-leaf-path="participants[].verification.antiMoneyLaundering.reports[].result"
+        </tr>        <tr id="participantsverificationantimoneylaunderingreportsresult"
+            data-leaf-path="participants[].verification.antiMoneyLaundering.reports[].result"
             data-overlays="">
           <td>result</td>
           <td><span class="muted">—</span></td>
@@ -787,8 +821,8 @@ erDiagram
         </tr>      </tbody>
     </table>
   </div></div>      <div class="object-block" id="obj-ParticipantsVerificationIdentityReport" data-display-id="report">
-  <header class="object-block__head">
-    <div class="object-block__title-row">
+  <header class="object-block__head">    <nav class="object-block__breadcrumb" aria-label="Location in the schema">      <a href="#transaction">Transaction</a><span aria-hidden="true"> › </span>      <a href="#participant">Participants</a><span aria-hidden="true"> › </span>      <a href="#participantsverification">Verification</a><span aria-hidden="true"> › </span>      <a href="#participantsverificationidentity">Identity</a><span aria-hidden="true"> › </span>      <span aria-current="location">Reports</span>
+    </nav>    <div class="object-block__title-row">
       <h4 id="participantsverificationidentityreport" class="object-block__title" data-display-id="report">
         <span class="object-block__display">Reports</span><span class="object-block__cardinality" title="array of objects">[]</span>      </h4>
       <code class="object-block__path">participants[].verification.identity.reports[]</code>
@@ -808,7 +842,8 @@ erDiagram
           <th style="width: 6rem;">Affordance</th>
         </tr>
       </thead>
-      <tbody>        <tr data-leaf-path="participants[].verification.identity.reports[].details"
+      <tbody>        <tr id="participantsverificationidentityreportsdetails"
+            data-leaf-path="participants[].verification.identity.reports[].details"
             data-overlays="">
           <td>details</td>
           <td><span class="muted">—</span></td>
@@ -818,7 +853,8 @@ erDiagram
           <td class="align-center"><span class="muted">—</span></td>
           <td class="overlay-cell"><span class="muted">—</span>          </td>
           <td><span class="muted">—</span>          </td>
-        </tr>        <tr data-leaf-path="participants[].verification.identity.reports[].reportName"
+        </tr>        <tr id="participantsverificationidentityreportsreportname"
+            data-leaf-path="participants[].verification.identity.reports[].reportName"
             data-overlays="">
           <td>reportName</td>
           <td><span class="muted">—</span></td>
@@ -828,7 +864,8 @@ erDiagram
           <td class="align-center"><span class="muted">—</span></td>
           <td class="overlay-cell"><span class="muted">—</span>          </td>
           <td><span class="muted">—</span>          </td>
-        </tr>        <tr data-leaf-path="participants[].verification.identity.reports[].result"
+        </tr>        <tr id="participantsverificationidentityreportsresult"
+            data-leaf-path="participants[].verification.identity.reports[].result"
             data-overlays="">
           <td>result</td>
           <td><span class="muted">—</span></td>
@@ -844,4 +881,21 @@ erDiagram
         <p class="callout__label">Gap notes</p>
         <p>Capacity is a string enum, not a graph of authorities. An executor's grant of probate, an attorney's power of attorney, a mortgagee's repossession order — all collapse to a single <code>sellersCapacity</code> value, with attachments. A future revision should split asserted-capacity from evidenced-authority.</p>
       </aside>
+<script slot="scripts" is:inline data-astro-rerun src="/ui/schema-leaf-table.js"></script>
+<script slot="scripts" is:inline data-astro-rerun>
+  if (window._opdaSchemaLeafMount) {
+    document.removeEventListener('astro:page-load', window._opdaSchemaLeafMount);
+  }
+  window._opdaSchemaLeafMount = function () {
+    if (typeof mountLeafTable === 'function') {
+      mountLeafTable({
+        page: '35',
+        showEnvelopes: false,
+        filterButtonId: 'filter-overlay-btn',
+        filterCountId: 'filter-overlay-count'
+      });
+    }
+  };
+  document.addEventListener('astro:page-load', window._opdaSchemaLeafMount);
+</script>
 </Layout>

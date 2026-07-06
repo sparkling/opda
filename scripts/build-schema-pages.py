@@ -37,9 +37,10 @@ THEME_MAP = ROOT / "source/00-deliverables/semantic-models/theme-map.yaml"
 CONTENT_DIR = ROOT / "source/_content/schema"
 EXAMPLES_DIR = ROOT / "source/_examples"
 TEMPLATES = ROOT / "scripts/templates"
-OUT_PAGES = ROOT / "src/pages/pages"
+OUT_PAGES = ROOT / "src/pages/schema"
 LEAVES_JSON = BUILD / "leaves.json"
 PROPERTIES_JS = ROOT / "public/data/properties.js"
+DAMA_KA_MAPPING = ROOT / "scripts/dama-ka-mapping.json"
 
 OVERLAY_LABELS = {
     "baspi5": "BASPI5", "ta6": "TA6", "ta7": "TA7", "ta10": "TA10",
@@ -67,109 +68,123 @@ OVERLAY_NAMES = {
     "sr24":    "Sustainability Report 2024",
 }
 PAGE_FILES = {
-    "34":   "34-physical-architecture.html",
-    "35":   "35-transaction-participants.html",
-    "36":   "36-chain-milestones-contracts.html",
-    "37":   "37-property.html",
-    "38":   "38-legal-estate-title.html",            # landing (hand-written)
-    "38a":  "38a-tenure.html",
-    "38b":  "38b-title-oc-summary.html",             # landing
-    "38b1": "38b1-title-number.html",
-    "38b2": "38b2-title-oc-meta.html",
-    "38b3": "38b3-title-oc-owners.html",
-    "38b4": "38b4-title-oc-charges-main.html",
-    "38b5": "38b5-title-oc-charges-other.html",
-    "38b6": "38b6-title-oc-notices-main.html",
-    "38b7": "38b7-title-oc-notices-other.html",
-    "38c":  "38c-title-oc-full.html",
-    "38d":  "38d-ownership-freehold.html",
-    "38e":  "38e-ownership-leasehold.html",          # landing
-    "38e1": "38e1-lease-term.html",
-    "38e2": "38e2-lease-contacts-list.html",
-    "38e3": "38e3-lease-contacts-roles.html",
-    "38e4": "38e4-lease-management.html",
-    "38e5": "38e5-lease-rent.html",
-    "38e6": "38e6-lease-charges.html",         # landing
-    "38e6a": "38e6a-lease-service-charge.html",
-    "38e6b": "38e6b-lease-buildings-insurance.html",
-    "38e7": "38e7-lease-legal.html",           # landing
-    "38e7a": "38e7a-lease-consents-alterations.html",
-    "38e7b": "38e7b-lease-restrictions-enfranchisement.html",
-    "38e7c": "38e7c-lease-building-safety.html",
-    "38e7d": "38e7d-lease-transfer.html",
-    "38e8": "38e8-lease-misc.html",            # landing
-    "38e8a": "38e8a-lease-disputes.html",
-    "38e8b": "38e8b-lease-general.html",
-    "38e8c": "38e8c-lease-required-docs.html",
-    "38f":  "38f-ownership-managed.html",      # landing
-    "38f1": "38f1-managed-contacts.html",
-    "38f2": "38f2-managed-transfer.html",
-    "38f3": "38f3-managed-service-charge.html",
-    "38f4": "38f4-managed-insurance.html",
-    "38f5": "38f5-managed-disputes-docs.html",
-    "38g":  "38g-boundaries-rights.html",
-    "39":   "39-built-form-condition-valuation.html", # landing
-    "39a":  "39a-built-form.html",
-    "39b":  "39b-condition.html",
-    "39c":  "39c-fixtures.html",                     # landing
-    "39c1": "39c1-fixtures-summary.html",
-    "39c2": "39c2-fixtures-basic.html",
-    "39c3": "39c3-fixtures-kitchen.html",
-    "39c4": "39c4-fixtures-bathroom.html",
-    "39c5": "39c5-fixtures-carpets.html",
-    "39c6": "39c6-fixtures-curtains.html",
-    "39c7": "39c7-fixtures-lights.html",
-    "39c8": "39c8-fixtures-units.html",
-    "39c9": "39c9-fixtures-outdoor.html",
-    "39c10": "39c10-fixtures-services.html",
-    "39d":  "39d-surveys.html",                      # landing
-    "39d1": "39d1-survey-meta.html",
-    "39d2": "39d2-survey-grounds.html",
-    "39d3": "39d3-survey-inside-structure.html",
-    "39d4": "39d4-survey-inside-features.html",
-    "39d5": "39d5-survey-inside-finishes.html",
-    "39d6": "39d6-survey-outside-roof.html",
-    "39d7": "39d7-survey-outside-envelope.html",
-    "39d8": "39d8-survey-outside-extras.html",
-    "39d9": "39d9-survey-services-energy.html",
-    "39d10":"39d10-survey-services-water.html",
-    "39d11":"39d11-survey-legal.html",
-    "39d12":"39d12-survey-valuation.html",
-    "39d13":"39d13-survey-advice.html",
-    "39e":  "39e-valuation.html",
-    "45":   "45-utilities-energy.html",
-    "46":   "46-local-context-searches.html",        # landing
-    "46a":  "46a-con29r.html",                       # landing
-    "46a1": "46a1-local-authority-identity.html",
-    "46a2": "46a2-local-authority-searches.html",         # landing
-    "46a2a": "46a2a-la-planning-building.html",
-    "46a2b": "46a2b-la-roads.html",
-    "46a2c": "46a2c-la-other-planning-notices.html",
-    "46a2d": "46a2d-la-other-finance.html",
-    "46a2e": "46a2e-la-other-road-rail.html",
-    "46a2f": "46a2f-la-other-environmental.html",
-    "46a2g": "46a2g-la-other-compulsory.html",
-    "46a4": "46a4-listing-conservation.html",
-    "46c":  "46c-llc1.html",
-    "46d":  "46d-environmental.html",                     # landing
-    "46d1": "46d1-flooding.html",
-    "46d2": "46d2-mining-ground.html",
-    "46d3": "46d3-pollution-radon.html",
-    "46d4": "46d4-coast-climate.html",
-    "46d5": "46d5-infra-policy.html",
-    "47":   "47-encumbrances-completion.html",            # landing
-    "47a":  "47a-council-tax-insurance.html",
-    "47b":  "47b-guarantees.html",
-    "47c":  "47c-occupiers-notices.html",
-    "47d":  "47d-letting-completion.html",
-    "48":   "48-evidence-documents-declarations.html",    # landing
-    "48a":  "48a-documents.html",
-    "48b":  "48b-declarations.html",
-    "48c":  "48c-additional.html",
-    "48d":  "48d-disputes.html",
-    "48e":  "48e-specialist.html",
-    "49":   "49-overlays-tasks-crosscuts.html",
+    "34": "index.astro",
+    "35": "transaction-participants.astro",
+    "36": "chain-milestones.astro",
+    "37": "property.astro",
+    "38": "legal-estate/index.astro",
+    "38a": "legal-estate/tenure.astro",
+    "38b": "legal-estate/title/oc-summary/index.astro",
+    "38b1": "legal-estate/title/oc-summary/title-number.astro",
+    "38b2": "legal-estate/title/oc-summary/oc-meta.astro",
+    "38b3": "legal-estate/title/oc-summary/oc-owners.astro",
+    "38b4": "legal-estate/title/oc-summary/oc-charges-main.astro",
+    "38b5": "legal-estate/title/oc-summary/oc-charges-other.astro",
+    "38b6": "legal-estate/title/oc-summary/oc-notices-main.astro",
+    "38b7": "legal-estate/title/oc-summary/oc-notices-other.astro",
+    "38c": "legal-estate/title/oc-full.astro",
+    "38d": "legal-estate/ownership/freehold.astro",
+    "38e": "legal-estate/ownership/leasehold/index.astro",
+    "38e1": "legal-estate/ownership/leasehold/lease-term.astro",
+    "38e2": "legal-estate/ownership/leasehold/lease-contacts-list.astro",
+    "38e3": "legal-estate/ownership/leasehold/lease-contacts-roles.astro",
+    "38e4": "legal-estate/ownership/leasehold/lease-management.astro",
+    "38e5": "legal-estate/ownership/leasehold/lease-rent.astro",
+    "38e6": "legal-estate/ownership/leasehold/lease-charges/index.astro",
+    "38e6a": "legal-estate/ownership/leasehold/lease-charges/service-charge.astro",
+    "38e6b": "legal-estate/ownership/leasehold/lease-charges/buildings-insurance.astro",
+    "38e7": "legal-estate/ownership/leasehold/lease-legal/index.astro",
+    "38e7a": "legal-estate/ownership/leasehold/lease-legal/consents-alterations.astro",
+    "38e7b": "legal-estate/ownership/leasehold/lease-legal/restrictions-enfranchisement.astro",
+    "38e7c": "legal-estate/ownership/leasehold/lease-legal/building-safety.astro",
+    "38e7d": "legal-estate/ownership/leasehold/lease-legal/lease-transfer.astro",
+    "38e8": "legal-estate/ownership/leasehold/lease-misc/index.astro",
+    "38e8a": "legal-estate/ownership/leasehold/lease-misc/disputes.astro",
+    "38e8b": "legal-estate/ownership/leasehold/lease-misc/general.astro",
+    "38e8c": "legal-estate/ownership/leasehold/lease-misc/required-docs.astro",
+    "38f": "legal-estate/ownership/managed/index.astro",
+    "38f1": "legal-estate/ownership/managed/contacts.astro",
+    "38f2": "legal-estate/ownership/managed/transfer.astro",
+    "38f3": "legal-estate/ownership/managed/service-charge.astro",
+    "38f4": "legal-estate/ownership/managed/insurance.astro",
+    "38f5": "legal-estate/ownership/managed/disputes-docs.astro",
+    "38g": "legal-estate/boundaries-rights.astro",
+    "39": "built-form/index.astro",
+    "39a": "built-form/built-form-form.astro",
+    "39b": "built-form/condition.astro",
+    "39c": "built-form/fixtures/index.astro",
+    "39c1": "built-form/fixtures/fixtures-summary.astro",
+    "39c2": "built-form/fixtures/basic.astro",
+    "39c3": "built-form/fixtures/kitchen.astro",
+    "39c4": "built-form/fixtures/bathroom.astro",
+    "39c5": "built-form/fixtures/carpets.astro",
+    "39c6": "built-form/fixtures/curtains.astro",
+    "39c7": "built-form/fixtures/lights.astro",
+    "39c8": "built-form/fixtures/units.astro",
+    "39c9": "built-form/fixtures/outdoor.astro",
+    "39c10": "built-form/fixtures/services.astro",
+    "39d": "built-form/surveys/index.astro",
+    "39d1": "built-form/surveys/meta.astro",
+    "39d2": "built-form/surveys/grounds.astro",
+    "39d3": "built-form/surveys/inside-structure.astro",
+    "39d4": "built-form/surveys/inside-features.astro",
+    "39d5": "built-form/surveys/inside-finishes.astro",
+    "39d6": "built-form/surveys/outside-roof.astro",
+    "39d7": "built-form/surveys/outside-envelope.astro",
+    "39d8": "built-form/surveys/outside-extras.astro",
+    "39d9": "built-form/surveys/services-energy.astro",
+    "39d10": "built-form/surveys/services-water.astro",
+    "39d11": "built-form/surveys/legal.astro",
+    "39d12": "built-form/surveys/valuation.astro",
+    "39d13": "built-form/surveys/advice.astro",
+    "39e": "built-form/valuation.astro",
+    "45": "utilities-energy.astro",
+    "46": "local-context/index.astro",
+    "46a": "local-context/con29r/index.astro",
+    "46a1": "local-context/con29r/identity.astro",
+    "46a2": "local-context/con29r/searches/index.astro",
+    "46a2a": "local-context/con29r/searches/planning-building.astro",
+    "46a2b": "local-context/con29r/searches/roads.astro",
+    "46a2c": "local-context/con29r/searches/other-planning-notices.astro",
+    "46a2d": "local-context/con29r/searches/other-finance.astro",
+    "46a2e": "local-context/con29r/searches/other-road-rail.astro",
+    "46a2f": "local-context/con29r/searches/other-environmental.astro",
+    "46a2g": "local-context/con29r/searches/other-compulsory.astro",
+    "46a4": "local-context/con29r/listing-conservation.astro",
+    "46c": "local-context/llc1.astro",
+    "46d": "local-context/environmental/index.astro",
+    "46d1": "local-context/environmental/flooding.astro",
+    "46d2": "local-context/environmental/mining-ground.astro",
+    "46d3": "local-context/environmental/pollution-radon.astro",
+    "46d4": "local-context/environmental/coast-climate.astro",
+    "46d5": "local-context/environmental/infra-policy.astro",
+    "47": "encumbrances/index.astro",
+    "47a": "encumbrances/council-tax-insurance.astro",
+    "47b": "encumbrances/guarantees.astro",
+    "47c": "encumbrances/occupiers-notices.astro",
+    "47d": "encumbrances/letting-completion.astro",
+    "48": "evidence/index.astro",
+    "48a": "evidence/documents.astro",
+    "48b": "evidence/declarations.astro",
+    "48c": "evidence/additional.astro",
+    "48d": "evidence/disputes.astro",
+    "48e": "evidence/specialist.astro",
+    "49": "overlays-tasks.astro",
 }
+
+
+def page_url(slot: str) -> str:
+    """The real Astro route for a page slot — converts a PAGE_FILES file path
+    ("legal-estate/title/oc-summary/index.astro") into the URL Astro serves it
+    at ("/schema/legal-estate/title/oc-summary"), per astro.config.mjs's
+    format:'directory' + trailingSlash:'never' convention. Cross-page hrefs
+    (breadcrumb ancestors, "Contains ->" children links) must use this, not
+    the raw PAGE_FILES value — a real file path is not a real URL."""
+    rel = PAGE_FILES[slot].rsplit(".", 1)[0]
+    rel = re.sub(r"(^|/)index$", "", rel)
+    return "/schema" + (f"/{rel}" if rel else "")
+
+
 # IA-defined page ids (must match docs/ui/site.js SECTIONS.schema.groups[*].items[*].id
 # for the sidebar to highlight + render on each page).
 PAGE_IDS = {
@@ -363,6 +378,17 @@ def load_property_descriptions() -> dict[str, str]:
     return out
 
 
+def load_dama_ka() -> dict[str, dict]:
+    """Path -> {category, kas, primary} from scripts/dama-ka-mapping.json
+    (ADR-0005 B1). Added to schema pages by hand after the original
+    generator ran (commit e70d2b3) — restoring it here so regenerating a
+    page doesn't silently drop the DAMA-DMBOK2 Knowledge Area line."""
+    if not DAMA_KA_MAPPING.exists():
+        return {}
+    data = json.loads(DAMA_KA_MAPPING.read_text())
+    return {p["path"]: p for p in data.get("pages", []) if p.get("path")}
+
+
 def load_overlay_membership() -> dict[str, list[str]]:
     """For each path, collect overlay sources from the canonical dictionary."""
     by_path: dict[str, set[str]] = {}
@@ -521,9 +547,15 @@ def markdown_to_html(md: str) -> str:
 def render_page(slot: str, leaves_for_page: list[dict],
                 theme: dict, examples: dict, overlay_membership: dict,
                 obj_to_page: dict[str, str] | None = None,
-                descriptions: dict[str, str] | None = None) -> str:
+                descriptions: dict[str, str] | None = None,
+                dama_ka: dict[str, dict] | None = None) -> str:
     page_cfg = theme["pages"][slot]
-    md_path = CONTENT_DIR / f"{slot}-{slot_filename_root(slot)}.md"
+    # Sidecar markdown filenames still use the OLD numbered convention
+    # ("37-property.md") — unrelated to the Astro output path rename, so
+    # glob for it directly rather than reconstruct the exact suffix from
+    # the (now differently-shaped) PAGE_FILES value.
+    md_matches = sorted(CONTENT_DIR.glob(f"{slot}-*.md"))
+    md_path = md_matches[0] if md_matches else CONTENT_DIR / f"{slot}-missing.md"
     fm, _body = parse_frontmatter(md_path.read_text()) if md_path.exists() else ({}, "")
     regions_raw = (fm.get("regions") or {})
     # Apply substitution + lightweight markdown for each region
@@ -579,6 +611,9 @@ def render_page(slot: str, leaves_for_page: list[dict],
             "is_envelope": leaf.get("is_envelope", False),
             "has_example": resolve_path(examples.get("london"), leaf["path"]) is not None
                           or resolve_path(examples.get("semi"), leaf["path"]) is not None,
+            # Page-unique id so a specific FIELD (not just its containing
+            # object) can be linked to and scrolled to directly.
+            "anchor": object_model.leaf_anchor(leaf["path"]),
         })
 
     # ── Build the per-page object model. Every JSON object in this page's
@@ -641,9 +676,19 @@ def render_page(slot: str, leaves_for_page: list[dict],
             sec_index.append((prefix, sec["id"]))
     sec_index.sort(key=lambda x: -len(x[0]))
 
+    # Sentinel for objects that render on the page but don't conceptually
+    # belong to any of its real, named sections — the page root and any
+    # ancestor container that exists only so a deeper section's own prefix
+    # has somewhere to live. Previously these were silently folded into
+    # sections_cfg[0]'s bucket (e.g. "Address"), which misrepresented that
+    # section's actual contents — a design critique caught this directly on
+    # /schema/property, where "Address" opened with Transaction and Property
+    # Pack object blocks that have nothing to do with address.
+    _ANCESTOR = "__ancestor__"
+
     def section_for_object(obj_path: str) -> str | None:
         if obj_path == "":
-            return sections_cfg[0]["id"] if sections_cfg else None
+            return _ANCESTOR
         for prefix, sec_id in sec_index:
             if obj_path == prefix or obj_path.startswith(prefix + ".") \
                or obj_path.startswith(prefix + "["):
@@ -651,7 +696,7 @@ def render_page(slot: str, leaves_for_page: list[dict],
         # Ancestor container: a section prefix descends from this object.
         for prefix, _ in sec_index:
             if prefix.startswith(obj_path + ".") or prefix.startswith(obj_path + "["):
-                return sections_cfg[0]["id"]
+                return _ANCESTOR
         return None
 
     # Set of object paths that will actually render on this page. Used
@@ -666,16 +711,66 @@ def render_page(slot: str, leaves_for_page: list[dict],
             if c["path"] in locally_rendered:
                 c["href"] = f"#{c['id'].lower()}"
             elif home and home != slot and home in PAGE_FILES:
-                c["href"] = f"{PAGE_FILES[home]}#{c['id'].lower()}"
+                c["href"] = f"{page_url(home)}#{c['id'].lower()}"
             else:
                 c["href"] = f"#{c['id'].lower()}"
 
+    # Real, clickable ancestor breadcrumb per object (e.g. "Transaction ›
+    # Property Pack › Address") — walks the parent chain object_model.py
+    # already computes, resolving each ancestor's href with the identical
+    # same-page/cross-page/unrendered logic used for `children` above.
+    # Replaces a single small, non-clickable path string that gave no real
+    # sense of depth or a way to jump to an ancestor.
+    def build_breadcrumb(obj_path: str) -> list[dict]:
+        crumbs: list[dict] = []
+        cur = by_path.get(obj_path, {}).get("parent")
+        while cur is not None:
+            anc = by_path.get(cur)
+            if anc is None:
+                break
+            home = (obj_to_page or {}).get(cur)
+            if cur in locally_rendered:
+                href = f"#{anc['id'].lower()}"
+            elif home and home != slot and home in PAGE_FILES:
+                href = f"{page_url(home)}#{anc['id'].lower()}"
+            else:
+                href = f"#{anc['id'].lower()}"
+            crumbs.append({"display": anc["display"], "href": href})
+            cur = anc.get("parent")
+        crumbs.reverse()
+        return crumbs
+
+    for obj in page_objects:
+        obj["breadcrumb"] = build_breadcrumb(obj["path"])
+
+    # De-duplicate leaf anchors within the page. Some JSON Schema paths are
+    # genuinely walked more than once (a pre-existing leaves.json artefact,
+    # not something this pass tries to fix — e.g. the same $ref'd sub-schema
+    # visited twice), which collides two rows onto one leaf_anchor() value.
+    # HTML ids must be document-unique, so give every collision after the
+    # first a disambiguating -2/-3/... suffix rather than emit an invalid
+    # duplicate id.
+    seen_anchors: dict[str, int] = {}
+    for obj in page_objects:
+        for f in obj.get("fields", []):
+            base = f.get("anchor")
+            if not base:
+                continue
+            seen_anchors[base] = seen_anchors.get(base, 0) + 1
+            if seen_anchors[base] > 1:
+                f["anchor"] = f"{base}-{seen_anchors[base]}"
+
     grouped_objs: dict[str, list[dict]] = {}
+    ancestor_objs: list[dict] = []
     for obj in page_objects:
         sec_id = section_for_object(obj["path"])
         if sec_id is None:
             continue
+        if sec_id == _ANCESTOR:
+            ancestor_objs.append(obj)
+            continue
         grouped_objs.setdefault(sec_id, []).append(obj)
+    ancestor_objs.sort(key=lambda o: (o["path"].count("."), o["path"]))
     # Sort each section's objects so the parent appears before its
     # descendants (path is a stable proxy).
     for sec_id in grouped_objs:
@@ -727,17 +822,6 @@ def render_page(slot: str, leaves_for_page: list[dict],
         "object_count": len([o for o in page_objects if o["field_count"] > 0 or o.get("children")]),
     }
 
-    # Prev/next
-    idx = PAGE_ORDER.index(slot)
-    prev = None
-    nxt = None
-    if idx > 0:
-        prev_slot = PAGE_ORDER[idx - 1]
-        prev = {"file": PAGE_FILES[prev_slot], "title": theme["pages"][prev_slot]["title"]}
-    if idx < len(PAGE_ORDER) - 1:
-        nxt_slot = PAGE_ORDER[idx + 1]
-        nxt = {"file": PAGE_FILES[nxt_slot], "title": theme["pages"][nxt_slot]["title"]}
-
     # Template
     env = jinja2.Environment(
         loader=jinja2.FileSystemLoader(str(TEMPLATES)),
@@ -746,6 +830,16 @@ def render_page(slot: str, leaves_for_page: list[dict],
         trim_blocks=True,
         lstrip_blocks=True,
     )
+    # A value going into Astro frontmatter (title="...", description="...")
+    # is a JS/TS string literal, NOT an HTML attribute — it must NOT be
+    # HTML-escaped there (Astro does its own HTML-escaping when it later
+    # interpolates the value into the real <title>/<meta> tags). The
+    # previous template used Jinja's `|e` (HTML-escape) filter on frontmatter
+    # values, producing a real, confirmed double-escaping bug on the live
+    # site (schema&amp;#39;s in a description attribute — visibly broken in
+    # page source / link previews). json.dumps() correctly quotes + escapes
+    # for a JS string literal instead.
+    env.filters["astro_str"] = lambda s: json.dumps(s or "", ensure_ascii=False)
     tmpl = env.get_template("aggregate-page.html.j2")
     ctx = {
         "page": {
@@ -753,20 +847,16 @@ def render_page(slot: str, leaves_for_page: list[dict],
             "id": PAGE_IDS.get(slot, f"schema-{slot}"),
             "title": page_cfg["title"],
             "voice": page_cfg.get("voice", "reference-prose-with-opinion"),
-            "prev": prev,
-            "next": nxt,
             "generated_on": str(date.today()),
+            "dama_ka": (dama_ka or {}).get(f"src/pages/schema/{PAGE_FILES[slot]}", {}).get("kas") or [],
         },
         "regions": regions,
         "sections": sections,
+        "ancestor_objects": ancestor_objs,
         "stats": stats,
         "show_envelopes": page_cfg.get("show_envelopes", False),
     }
     return tmpl.render(**ctx)
-
-
-def slot_filename_root(slot: str) -> str:
-    return PAGE_FILES[slot].rsplit(".", 1)[0].split("-", 1)[1]  # e.g. "built-form-condition-valuation"
 
 
 def main():
@@ -786,6 +876,7 @@ def main():
     }
     overlay_membership = load_overlay_membership()
     descriptions = load_property_descriptions()
+    dama_ka = load_dama_ka()
 
     classified = classify(leaves, pmap)
     (BUILD / "classified.json").write_text(json.dumps(classified, indent=2))
@@ -834,8 +925,9 @@ def main():
             print(f"skip {slot} (no leaves)")
             continue
         html = render_page(slot, by_page[slot], theme, examples, overlay_membership,
-                           obj_to_page=obj_to_page, descriptions=descriptions)
+                           obj_to_page=obj_to_page, descriptions=descriptions, dama_ka=dama_ka)
         out = OUT_PAGES / PAGE_FILES[slot]
+        out.parent.mkdir(parents=True, exist_ok=True)
         out.write_text(html)
         print(f"wrote {out}  ({len(by_page[slot])} leaves)")
 

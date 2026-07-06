@@ -5,12 +5,10 @@ import Layout from '@/layouts/Layout.astro';
   title="Schema · Leasehold · service charge"
   description="Leasehold · service charge"
 >
-<div class="page-meta">
+      <div class="page-meta">
         <span class="pill pill--info">Schema</span>
         <span>Page 38e6a</span>
-        <span>Generated 2026-05-17</span>
-        <span title="DAMA-DMBOK2 Knowledge Area — per ADR-0001">DAMA · Data Modeling &amp; Design</span>
-      </div>
+        <span>Generated 2026-07-06</span>        <span title="DAMA-DMBOK2 Knowledge Area — per ADR-0001">DAMA · Data Modeling &amp; Design</span>      </div>
 
       <h1>Leasehold · service charge</h1>
 
@@ -200,9 +198,8 @@ erDiagram
                       class="mt-2 rounded-md bg-[var(--button-bg)] outline-1 outline-[var(--ring-subtle)] shadow-lg p-5 transition transition-discrete data-closed:opacity-0 data-closed:scale-95 data-enter:duration-100 data-enter:ease-out data-leave:duration-75 data-leave:ease-in">
           </el-popover>
         </el-popover-group>
-      </div>      <h3 id="own_lease_service_charge">Service charge</h3>      <div class="object-block" id="obj-Transaction" data-display-id="transaction">
-  <header class="object-block__head">
-    <div class="object-block__title-row">
+      </div>      <p class="muted tiny object-ancestors-note">Parent containers — shown for reference; their own content lives in the sections below.</p>      <div class="object-block" id="obj-Transaction" data-display-id="transaction">
+  <header class="object-block__head">    <div class="object-block__title-row">
       <h4 id="transaction" class="object-block__title" data-display-id="transaction">
         <span class="object-block__display">Transaction</span>      </h4>
       <code class="object-block__path">transaction (root)</code>
@@ -215,8 +212,8 @@ erDiagram
           <span>Property Pack</span>
         </a>
       </li>    </ul>  </header>  <p class="muted tiny">No scalar fields on this object — pure container.</p></div>      <div class="object-block" id="obj-PropertyPack" data-display-id="propertypack">
-  <header class="object-block__head">
-    <div class="object-block__title-row">
+  <header class="object-block__head">    <nav class="object-block__breadcrumb" aria-label="Location in the schema">      <a href="#transaction">Transaction</a><span aria-hidden="true"> › </span>      <span aria-current="location">Property Pack</span>
+    </nav>    <div class="object-block__title-row">
       <h4 id="propertypack" class="object-block__title" data-display-id="propertypack">
         <span class="object-block__display">Property Pack</span>      </h4>
       <code class="object-block__path">propertyPack</code>
@@ -229,8 +226,8 @@ erDiagram
           <span>Ownership</span>
         </a>
       </li>    </ul>  </header>  <p class="muted tiny">No scalar fields on this object — pure container.</p></div>      <div class="object-block" id="obj-PropertyPackOwnership" data-display-id="ownership">
-  <header class="object-block__head">
-    <div class="object-block__title-row">
+  <header class="object-block__head">    <nav class="object-block__breadcrumb" aria-label="Location in the schema">      <a href="#transaction">Transaction</a><span aria-hidden="true"> › </span>      <a href="#propertypack">Property Pack</a><span aria-hidden="true"> › </span>      <span aria-current="location">Ownership</span>
+    </nav>    <div class="object-block__title-row">
       <h4 id="propertypackownership" class="object-block__title" data-display-id="ownership">
         <span class="object-block__display">Ownership</span>      </h4>
       <code class="object-block__path">propertyPack.ownership</code>
@@ -243,8 +240,8 @@ erDiagram
           <span>Ownerships To Be Transferred[]</span>
         </a>
       </li>    </ul>  </header>  <p class="muted tiny">No scalar fields on this object — pure container.</p></div>      <div class="object-block" id="obj-PropertyPackOwnershipOwnershipsToBeTransferred" data-display-id="ownershipstobetransferred">
-  <header class="object-block__head">
-    <div class="object-block__title-row">
+  <header class="object-block__head">    <nav class="object-block__breadcrumb" aria-label="Location in the schema">      <a href="#transaction">Transaction</a><span aria-hidden="true"> › </span>      <a href="#propertypack">Property Pack</a><span aria-hidden="true"> › </span>      <a href="#propertypackownership">Ownership</a><span aria-hidden="true"> › </span>      <span aria-current="location">Ownerships To Be Transferred</span>
+    </nav>    <div class="object-block__title-row">
       <h4 id="propertypackownershipownershipstobetransferred" class="object-block__title" data-display-id="ownershipstobetransferred">
         <span class="object-block__display">Ownerships To Be Transferred</span><span class="object-block__cardinality" title="array of objects">[]</span>      </h4>
       <code class="object-block__path">propertyPack.ownership.ownershipsToBeTransferred[]</code>
@@ -257,8 +254,8 @@ erDiagram
           <span>Leasehold Information</span>
         </a>
       </li>    </ul>  </header>  <p class="muted tiny">No scalar fields on this object — pure container.</p></div>      <div class="object-block" id="obj-PropertyPackOwnershipOwnershipsToBeTransferredLeaseholdInformation" data-display-id="leaseholdinformation">
-  <header class="object-block__head">
-    <div class="object-block__title-row">
+  <header class="object-block__head">    <nav class="object-block__breadcrumb" aria-label="Location in the schema">      <a href="#transaction">Transaction</a><span aria-hidden="true"> › </span>      <a href="#propertypack">Property Pack</a><span aria-hidden="true"> › </span>      <a href="#propertypackownership">Ownership</a><span aria-hidden="true"> › </span>      <a href="#propertypackownershipownershipstobetransferred">Ownerships To Be Transferred</a><span aria-hidden="true"> › </span>      <span aria-current="location">Leasehold Information</span>
+    </nav>    <div class="object-block__title-row">
       <h4 id="propertypackownershipownershipstobetransferredleaseholdinformation" class="object-block__title" data-display-id="leaseholdinformation">
         <span class="object-block__display">Leasehold Information</span>      </h4>
       <code class="object-block__path">propertyPack.ownership.ownershipsToBeTransferred[].leaseholdInformation</code>
@@ -270,9 +267,9 @@ erDiagram
           </svg>
           <span>Service Charge</span>
         </a>
-      </li>    </ul>  </header>  <p class="muted tiny">No scalar fields on this object — pure container.</p></div>      <div class="object-block" id="obj-PropertyPackOwnershipOwnershipsToBeTransferredLeaseholdInformationServiceCharge" data-display-id="servicecharge">
-  <header class="object-block__head">
-    <div class="object-block__title-row">
+      </li>    </ul>  </header>  <p class="muted tiny">No scalar fields on this object — pure container.</p></div>      <h3 id="own_lease_service_charge">Service charge</h3>      <div class="object-block" id="obj-PropertyPackOwnershipOwnershipsToBeTransferredLeaseholdInformationServiceCharge" data-display-id="servicecharge">
+  <header class="object-block__head">    <nav class="object-block__breadcrumb" aria-label="Location in the schema">      <a href="#transaction">Transaction</a><span aria-hidden="true"> › </span>      <a href="#propertypack">Property Pack</a><span aria-hidden="true"> › </span>      <a href="#propertypackownership">Ownership</a><span aria-hidden="true"> › </span>      <a href="#propertypackownershipownershipstobetransferred">Ownerships To Be Transferred</a><span aria-hidden="true"> › </span>      <a href="#propertypackownershipownershipstobetransferredleaseholdinformation">Leasehold Information</a><span aria-hidden="true"> › </span>      <span aria-current="location">Service Charge</span>
+    </nav>    <div class="object-block__title-row">
       <h4 id="propertypackownershipownershipstobetransferredleaseholdinformationservicecharge" class="object-block__title" data-display-id="servicecharge">
         <span class="object-block__display">Service Charge</span>      </h4>
       <code class="object-block__path">propertyPack.ownership.ownershipsToBeTransferred[].leaseholdInformation.serviceCharge</code>
@@ -428,7 +425,8 @@ erDiagram
           <th style="width: 6rem;">Affordance</th>
         </tr>
       </thead>
-      <tbody>        <tr data-leaf-path="propertyPack.ownership.ownershipsToBeTransferred[].leaseholdInformation.serviceCharge.adHocExpenses"
+      <tbody>        <tr id="propertypackownershipownershipstobetransferredleaseholdinformationservicechargeadhocexpenses"
+            data-leaf-path="propertyPack.ownership.ownershipsToBeTransferred[].leaseholdInformation.serviceCharge.adHocExpenses"
             data-overlays="lpe1">
           <td>If the Service Charge has been collected on an 'ad hoc' basis, what have been the expenses over the last three years?</td>
           <td>If the Service Charge has been collected on an 'ad hoc' basis, what have been the expense over the last three years?</td>
@@ -438,7 +436,8 @@ erDiagram
           <td class="align-center"><span class="muted">—</span></td>
           <td class="overlay-cell">              <div class="overlay-line">Leasehold Property Enquiries Form <span class="overlay-key">(LPE1)</span></div>          </td>
           <td><span class="muted">—</span>          </td>
-        </tr>        <tr data-leaf-path="propertyPack.ownership.ownershipsToBeTransferred[].leaseholdInformation.serviceCharge.annualServiceCharge"
+        </tr>        <tr id="propertypackownershipownershipstobetransferredleaseholdinformationservicechargeannualservicecharge"
+            data-leaf-path="propertyPack.ownership.ownershipsToBeTransferred[].leaseholdInformation.serviceCharge.annualServiceCharge"
             data-overlays="baspi5,lpe1,nts2">
           <td>Amount of current annual service charge (£)</td>
           <td>This should include any sum payable for the maintenance of the managed area. What is the annual Service Charge payable by this Property?</td>
@@ -448,7 +447,8 @@ erDiagram
           <td class="align-center"><span class="muted">—</span></td>
           <td class="overlay-cell">              <div class="overlay-line">Buyers & Sellers Property Information v5 <span class="overlay-key">(BASPI5)</span></div>              <div class="overlay-line">Leasehold Property Enquiries Form <span class="overlay-key">(LPE1)</span></div>              <div class="overlay-line">NTS Material Information (sales) <span class="overlay-key">(NTS2)</span></div>          </td>
           <td><span class="muted">—</span>          </td>
-        </tr>        <tr data-leaf-path="propertyPack.ownership.ownershipsToBeTransferred[].leaseholdInformation.serviceCharge.dangerousCladdingOrDefects"
+        </tr>        <tr id="propertypackownershipownershipstobetransferredleaseholdinformationservicechargedangerouscladdingordefects"
+            data-leaf-path="propertyPack.ownership.ownershipsToBeTransferred[].leaseholdInformation.serviceCharge.dangerousCladdingOrDefects"
             data-overlays="ta7">
           <td>Does the seller know of the existence or suspected existence in the building of dangerous cladding or any other defects that create a building safety risk?</td>
           <td>Does the seller know of the existence or suspected existence in the building of dangerous cladding or any other defect that create a building safety risk?</td>
@@ -458,7 +458,8 @@ erDiagram
           <td class="align-center"><span class="muted">—</span></td>
           <td class="overlay-cell">              <div class="overlay-line">Law Society Leasehold Information Form <span class="overlay-key">(TA7)</span></div>          </td>
           <td><span class="muted">—</span>          </td>
-        </tr>        <tr data-leaf-path="propertyPack.ownership.ownershipsToBeTransferred[].leaseholdInformation.serviceCharge.propertiesContributingToMaintenanceOfManagedArea"
+        </tr>        <tr id="propertypackownershipownershipstobetransferredleaseholdinformationservicechargepropertiescontributingtomaintenanceofmanagedarea"
+            data-leaf-path="propertyPack.ownership.ownershipsToBeTransferred[].leaseholdInformation.serviceCharge.propertiesContributingToMaintenanceOfManagedArea"
             data-overlays="lpe1">
           <td>How many properties contribute toward the maintenance of the Managed Area?</td>
           <td>Property Contributing To Maintenance Of Managed Area</td>
@@ -468,7 +469,8 @@ erDiagram
           <td class="align-center"><span class="muted">—</span></td>
           <td class="overlay-cell">              <div class="overlay-line">Leasehold Property Enquiries Form <span class="overlay-key">(LPE1)</span></div>          </td>
           <td><span class="muted">—</span>          </td>
-        </tr>        <tr data-leaf-path="propertyPack.ownership.ownershipsToBeTransferred[].leaseholdInformation.serviceCharge.sellerContributesToServiceCharge"
+        </tr>        <tr id="propertypackownershipownershipstobetransferredleaseholdinformationservicechargesellercontributestoservicecharge"
+            data-leaf-path="propertyPack.ownership.ownershipsToBeTransferred[].leaseholdInformation.serviceCharge.sellerContributesToServiceCharge"
             data-overlays="baspi5,lpe1,nts2,ta7">
           <td>sellerContributesToServiceCharge</td>
           <td>Does the seller contribute to the cost of maintaining the building (a service charge)?</td>
@@ -478,7 +480,8 @@ erDiagram
           <td class="align-center"><span class="muted">—</span></td>
           <td class="overlay-cell">              <div class="overlay-line">Buyers & Sellers Property Information v5 <span class="overlay-key">(BASPI5)</span></div>              <div class="overlay-line">Leasehold Property Enquiries Form <span class="overlay-key">(LPE1)</span></div>              <div class="overlay-line">NTS Material Information (sales) <span class="overlay-key">(NTS2)</span></div>              <div class="overlay-line">Law Society Leasehold Information Form <span class="overlay-key">(TA7)</span></div>          </td>
           <td><span class="muted">—</span>          </td>
-        </tr>        <tr data-leaf-path="propertyPack.ownership.ownershipsToBeTransferred[].leaseholdInformation.serviceCharge.sellerContributesToServiceCharge"
+        </tr>        <tr id="propertypackownershipownershipstobetransferredleaseholdinformationservicechargesellercontributestoservicecharge-2"
+            data-leaf-path="propertyPack.ownership.ownershipsToBeTransferred[].leaseholdInformation.serviceCharge.sellerContributesToServiceCharge"
             data-overlays="baspi5,lpe1,nts2,ta7">
           <td>sellerContributesToServiceCharge</td>
           <td>Does the seller contribute to the cost of maintaining the building (a service charge)?</td>
@@ -491,8 +494,8 @@ erDiagram
         </tr>      </tbody>
     </table>
   </div></div>      <div class="object-block" id="obj-PropertyPackOwnershipOwnershipsToBeTransferredLeaseholdInformationServiceChargeAllPropertiesContribute" data-display-id="allpropertiescontribute">
-  <header class="object-block__head">
-    <div class="object-block__title-row">
+  <header class="object-block__head">    <nav class="object-block__breadcrumb" aria-label="Location in the schema">      <a href="#transaction">Transaction</a><span aria-hidden="true"> › </span>      <a href="#propertypack">Property Pack</a><span aria-hidden="true"> › </span>      <a href="#propertypackownership">Ownership</a><span aria-hidden="true"> › </span>      <a href="#propertypackownershipownershipstobetransferred">Ownerships To Be Transferred</a><span aria-hidden="true"> › </span>      <a href="#propertypackownershipownershipstobetransferredleaseholdinformation">Leasehold Information</a><span aria-hidden="true"> › </span>      <a href="#propertypackownershipownershipstobetransferredleaseholdinformationservicecharge">Service Charge</a><span aria-hidden="true"> › </span>      <span aria-current="location">All Properties Contribute</span>
+    </nav>    <div class="object-block__title-row">
       <h4 id="propertypackownershipownershipstobetransferredleaseholdinformationservicechargeallpropertiescontribute" class="object-block__title" data-display-id="allpropertiescontribute">
         <span class="object-block__display">All Properties Contribute</span>      </h4>
       <code class="object-block__path">propertyPack.ownership.ownershipsToBeTransferred[].leaseholdInformation.serviceCharge.allPropertiesContribute</code>
@@ -512,7 +515,8 @@ erDiagram
           <th style="width: 6rem;">Affordance</th>
         </tr>
       </thead>
-      <tbody>        <tr data-leaf-path="propertyPack.ownership.ownershipsToBeTransferred[].leaseholdInformation.serviceCharge.allPropertiesContribute.details"
+      <tbody>        <tr id="propertypackownershipownershipstobetransferredleaseholdinformationservicechargeallpropertiescontributedetails"
+            data-leaf-path="propertyPack.ownership.ownershipsToBeTransferred[].leaseholdInformation.serviceCharge.allPropertiesContribute.details"
             data-overlays="lpe1">
           <td>Provide details.</td>
           <td><span class="muted">—</span></td>
@@ -522,7 +526,8 @@ erDiagram
           <td class="align-center"><span class="muted">—</span></td>
           <td class="overlay-cell">              <div class="overlay-line">Leasehold Property Enquiries Form <span class="overlay-key">(LPE1)</span></div>          </td>
           <td><span class="muted">—</span>          </td>
-        </tr>        <tr data-leaf-path="propertyPack.ownership.ownershipsToBeTransferred[].leaseholdInformation.serviceCharge.allPropertiesContribute.yesNo"
+        </tr>        <tr id="propertypackownershipownershipstobetransferredleaseholdinformationservicechargeallpropertiescontributeyesno"
+            data-leaf-path="propertyPack.ownership.ownershipsToBeTransferred[].leaseholdInformation.serviceCharge.allPropertiesContribute.yesNo"
             data-overlays="lpe1">
           <td>yesNo</td>
           <td><span class="muted">—</span></td>
@@ -532,7 +537,8 @@ erDiagram
           <td class="align-center"><span class="muted">—</span></td>
           <td class="overlay-cell">              <div class="overlay-line">Leasehold Property Enquiries Form <span class="overlay-key">(LPE1)</span></div>          </td>
           <td><span class="muted">—</span>          </td>
-        </tr>        <tr data-leaf-path="propertyPack.ownership.ownershipsToBeTransferred[].leaseholdInformation.serviceCharge.allPropertiesContribute.yesNo"
+        </tr>        <tr id="propertypackownershipownershipstobetransferredleaseholdinformationservicechargeallpropertiescontributeyesno-2"
+            data-leaf-path="propertyPack.ownership.ownershipsToBeTransferred[].leaseholdInformation.serviceCharge.allPropertiesContribute.yesNo"
             data-overlays="lpe1">
           <td>yesNo</td>
           <td><span class="muted">—</span></td>
@@ -545,8 +551,8 @@ erDiagram
         </tr>      </tbody>
     </table>
   </div></div>      <div class="object-block" id="obj-PropertyPackOwnershipOwnershipsToBeTransferredLeaseholdInformationServiceChargeDifficultyInCollectingServiceCharge" data-display-id="difficultyincollectingservicecharge">
-  <header class="object-block__head">
-    <div class="object-block__title-row">
+  <header class="object-block__head">    <nav class="object-block__breadcrumb" aria-label="Location in the schema">      <a href="#transaction">Transaction</a><span aria-hidden="true"> › </span>      <a href="#propertypack">Property Pack</a><span aria-hidden="true"> › </span>      <a href="#propertypackownership">Ownership</a><span aria-hidden="true"> › </span>      <a href="#propertypackownershipownershipstobetransferred">Ownerships To Be Transferred</a><span aria-hidden="true"> › </span>      <a href="#propertypackownershipownershipstobetransferredleaseholdinformation">Leasehold Information</a><span aria-hidden="true"> › </span>      <a href="#propertypackownershipownershipstobetransferredleaseholdinformationservicecharge">Service Charge</a><span aria-hidden="true"> › </span>      <span aria-current="location">Difficulty In Collecting Service Charge</span>
+    </nav>    <div class="object-block__title-row">
       <h4 id="propertypackownershipownershipstobetransferredleaseholdinformationservicechargedifficultyincollectingservicecharge" class="object-block__title" data-display-id="difficultyincollectingservicecharge">
         <span class="object-block__display">Difficulty In Collecting Service Charge</span>      </h4>
       <code class="object-block__path">propertyPack.ownership.ownershipsToBeTransferred[].leaseholdInformation.serviceCharge.difficultyInCollectingServiceCharge</code>
@@ -566,7 +572,8 @@ erDiagram
           <th style="width: 6rem;">Affordance</th>
         </tr>
       </thead>
-      <tbody>        <tr data-leaf-path="propertyPack.ownership.ownershipsToBeTransferred[].leaseholdInformation.serviceCharge.difficultyInCollectingServiceCharge.details"
+      <tbody>        <tr id="propertypackownershipownershipstobetransferredleaseholdinformationservicechargedifficultyincollectingservicechargedetails"
+            data-leaf-path="propertyPack.ownership.ownershipsToBeTransferred[].leaseholdInformation.serviceCharge.difficultyInCollectingServiceCharge.details"
             data-overlays="ta7">
           <td>Please give details:</td>
           <td><span class="muted">—</span></td>
@@ -576,7 +583,8 @@ erDiagram
           <td class="align-center"><span class="muted">—</span></td>
           <td class="overlay-cell">              <div class="overlay-line">Law Society Leasehold Information Form <span class="overlay-key">(TA7)</span></div>          </td>
           <td><span class="muted">—</span>          </td>
-        </tr>        <tr data-leaf-path="propertyPack.ownership.ownershipsToBeTransferred[].leaseholdInformation.serviceCharge.difficultyInCollectingServiceCharge.yesNo"
+        </tr>        <tr id="propertypackownershipownershipstobetransferredleaseholdinformationservicechargedifficultyincollectingservicechargeyesno"
+            data-leaf-path="propertyPack.ownership.ownershipsToBeTransferred[].leaseholdInformation.serviceCharge.difficultyInCollectingServiceCharge.yesNo"
             data-overlays="ta7">
           <td>yesNo</td>
           <td><span class="muted">—</span></td>
@@ -586,7 +594,8 @@ erDiagram
           <td class="align-center"><span class="muted">—</span></td>
           <td class="overlay-cell">              <div class="overlay-line">Law Society Leasehold Information Form <span class="overlay-key">(TA7)</span></div>          </td>
           <td><span class="muted">—</span>          </td>
-        </tr>        <tr data-leaf-path="propertyPack.ownership.ownershipsToBeTransferred[].leaseholdInformation.serviceCharge.difficultyInCollectingServiceCharge.yesNo"
+        </tr>        <tr id="propertypackownershipownershipstobetransferredleaseholdinformationservicechargedifficultyincollectingservicechargeyesno-2"
+            data-leaf-path="propertyPack.ownership.ownershipsToBeTransferred[].leaseholdInformation.serviceCharge.difficultyInCollectingServiceCharge.yesNo"
             data-overlays="ta7">
           <td>yesNo</td>
           <td><span class="muted">—</span></td>
@@ -599,8 +608,8 @@ erDiagram
         </tr>      </tbody>
     </table>
   </div></div>      <div class="object-block" id="obj-PropertyPackOwnershipOwnershipsToBeTransferredLeaseholdInformationServiceChargeExcessPaymentAnticipated" data-display-id="excesspaymentanticipated">
-  <header class="object-block__head">
-    <div class="object-block__title-row">
+  <header class="object-block__head">    <nav class="object-block__breadcrumb" aria-label="Location in the schema">      <a href="#transaction">Transaction</a><span aria-hidden="true"> › </span>      <a href="#propertypack">Property Pack</a><span aria-hidden="true"> › </span>      <a href="#propertypackownership">Ownership</a><span aria-hidden="true"> › </span>      <a href="#propertypackownershipownershipstobetransferred">Ownerships To Be Transferred</a><span aria-hidden="true"> › </span>      <a href="#propertypackownershipownershipstobetransferredleaseholdinformation">Leasehold Information</a><span aria-hidden="true"> › </span>      <a href="#propertypackownershipownershipstobetransferredleaseholdinformationservicecharge">Service Charge</a><span aria-hidden="true"> › </span>      <span aria-current="location">Excess Payment Anticipated</span>
+    </nav>    <div class="object-block__title-row">
       <h4 id="propertypackownershipownershipstobetransferredleaseholdinformationservicechargeexcesspaymentanticipated" class="object-block__title" data-display-id="excesspaymentanticipated">
         <span class="object-block__display">Excess Payment Anticipated</span>      </h4>
       <code class="object-block__path">propertyPack.ownership.ownershipsToBeTransferred[].leaseholdInformation.serviceCharge.excessPaymentAnticipated</code>
@@ -620,7 +629,8 @@ erDiagram
           <th style="width: 6rem;">Affordance</th>
         </tr>
       </thead>
-      <tbody>        <tr data-leaf-path="propertyPack.ownership.ownershipsToBeTransferred[].leaseholdInformation.serviceCharge.excessPaymentAnticipated.details"
+      <tbody>        <tr id="propertypackownershipownershipstobetransferredleaseholdinformationservicechargeexcesspaymentanticipateddetails"
+            data-leaf-path="propertyPack.ownership.ownershipsToBeTransferred[].leaseholdInformation.serviceCharge.excessPaymentAnticipated.details"
             data-overlays="lpe1">
           <td>Provide details</td>
           <td><span class="muted">—</span></td>
@@ -630,7 +640,8 @@ erDiagram
           <td class="align-center"><span class="muted">—</span></td>
           <td class="overlay-cell">              <div class="overlay-line">Leasehold Property Enquiries Form <span class="overlay-key">(LPE1)</span></div>          </td>
           <td><span class="muted">—</span>          </td>
-        </tr>        <tr data-leaf-path="propertyPack.ownership.ownershipsToBeTransferred[].leaseholdInformation.serviceCharge.excessPaymentAnticipated.yesNo"
+        </tr>        <tr id="propertypackownershipownershipstobetransferredleaseholdinformationservicechargeexcesspaymentanticipatedyesno"
+            data-leaf-path="propertyPack.ownership.ownershipsToBeTransferred[].leaseholdInformation.serviceCharge.excessPaymentAnticipated.yesNo"
             data-overlays="lpe1">
           <td>yesNo</td>
           <td><span class="muted">—</span></td>
@@ -640,7 +651,8 @@ erDiagram
           <td class="align-center"><span class="muted">—</span></td>
           <td class="overlay-cell">              <div class="overlay-line">Leasehold Property Enquiries Form <span class="overlay-key">(LPE1)</span></div>          </td>
           <td><span class="muted">—</span>          </td>
-        </tr>        <tr data-leaf-path="propertyPack.ownership.ownershipsToBeTransferred[].leaseholdInformation.serviceCharge.excessPaymentAnticipated.yesNo"
+        </tr>        <tr id="propertypackownershipownershipstobetransferredleaseholdinformationservicechargeexcesspaymentanticipatedyesno-2"
+            data-leaf-path="propertyPack.ownership.ownershipsToBeTransferred[].leaseholdInformation.serviceCharge.excessPaymentAnticipated.yesNo"
             data-overlays="lpe1">
           <td>yesNo</td>
           <td><span class="muted">—</span></td>
@@ -653,8 +665,8 @@ erDiagram
         </tr>      </tbody>
     </table>
   </div></div>      <div class="object-block" id="obj-PropertyPackOwnershipOwnershipsToBeTransferredLeaseholdInformationServiceChargeHasInabilityToCollectAffectedMaintenance" data-display-id="hasinabilitytocollectaffectedmaintenance">
-  <header class="object-block__head">
-    <div class="object-block__title-row">
+  <header class="object-block__head">    <nav class="object-block__breadcrumb" aria-label="Location in the schema">      <a href="#transaction">Transaction</a><span aria-hidden="true"> › </span>      <a href="#propertypack">Property Pack</a><span aria-hidden="true"> › </span>      <a href="#propertypackownership">Ownership</a><span aria-hidden="true"> › </span>      <a href="#propertypackownershipownershipstobetransferred">Ownerships To Be Transferred</a><span aria-hidden="true"> › </span>      <a href="#propertypackownershipownershipstobetransferredleaseholdinformation">Leasehold Information</a><span aria-hidden="true"> › </span>      <a href="#propertypackownershipownershipstobetransferredleaseholdinformationservicecharge">Service Charge</a><span aria-hidden="true"> › </span>      <span aria-current="location">Has Inability To Collect Affected Maintenance</span>
+    </nav>    <div class="object-block__title-row">
       <h4 id="propertypackownershipownershipstobetransferredleaseholdinformationservicechargehasinabilitytocollectaffectedmaintenance" class="object-block__title" data-display-id="hasinabilitytocollectaffectedmaintenance">
         <span class="object-block__display">Has Inability To Collect Affected Maintenance</span>      </h4>
       <code class="object-block__path">propertyPack.ownership.ownershipsToBeTransferred[].leaseholdInformation.serviceCharge.hasInabilityToCollectAffectedMaintenance</code>
@@ -674,7 +686,8 @@ erDiagram
           <th style="width: 6rem;">Affordance</th>
         </tr>
       </thead>
-      <tbody>        <tr data-leaf-path="propertyPack.ownership.ownershipsToBeTransferred[].leaseholdInformation.serviceCharge.hasInabilityToCollectAffectedMaintenance.details"
+      <tbody>        <tr id="propertypackownershipownershipstobetransferredleaseholdinformationservicechargehasinabilitytocollectaffectedmaintenancedetails"
+            data-leaf-path="propertyPack.ownership.ownershipsToBeTransferred[].leaseholdInformation.serviceCharge.hasInabilityToCollectAffectedMaintenance.details"
             data-overlays="lpe1">
           <td>Provide details</td>
           <td><span class="muted">—</span></td>
@@ -684,7 +697,8 @@ erDiagram
           <td class="align-center"><span class="muted">—</span></td>
           <td class="overlay-cell">              <div class="overlay-line">Leasehold Property Enquiries Form <span class="overlay-key">(LPE1)</span></div>          </td>
           <td><span class="muted">—</span>          </td>
-        </tr>        <tr data-leaf-path="propertyPack.ownership.ownershipsToBeTransferred[].leaseholdInformation.serviceCharge.hasInabilityToCollectAffectedMaintenance.yesNo"
+        </tr>        <tr id="propertypackownershipownershipstobetransferredleaseholdinformationservicechargehasinabilitytocollectaffectedmaintenanceyesno"
+            data-leaf-path="propertyPack.ownership.ownershipsToBeTransferred[].leaseholdInformation.serviceCharge.hasInabilityToCollectAffectedMaintenance.yesNo"
             data-overlays="lpe1">
           <td>yesNo</td>
           <td><span class="muted">—</span></td>
@@ -694,7 +708,8 @@ erDiagram
           <td class="align-center"><span class="muted">—</span></td>
           <td class="overlay-cell">              <div class="overlay-line">Leasehold Property Enquiries Form <span class="overlay-key">(LPE1)</span></div>          </td>
           <td><span class="muted">—</span>          </td>
-        </tr>        <tr data-leaf-path="propertyPack.ownership.ownershipsToBeTransferred[].leaseholdInformation.serviceCharge.hasInabilityToCollectAffectedMaintenance.yesNo"
+        </tr>        <tr id="propertypackownershipownershipstobetransferredleaseholdinformationservicechargehasinabilitytocollectaffectedmaintenanceyesno-2"
+            data-leaf-path="propertyPack.ownership.ownershipsToBeTransferred[].leaseholdInformation.serviceCharge.hasInabilityToCollectAffectedMaintenance.yesNo"
             data-overlays="lpe1">
           <td>yesNo</td>
           <td><span class="muted">—</span></td>
@@ -707,8 +722,8 @@ erDiagram
         </tr>      </tbody>
     </table>
   </div></div>      <div class="object-block" id="obj-PropertyPackOwnershipOwnershipsToBeTransferredLeaseholdInformationServiceChargeIncreaseInServiceChargeAnticipated" data-display-id="increaseinservicechargeanticipated">
-  <header class="object-block__head">
-    <div class="object-block__title-row">
+  <header class="object-block__head">    <nav class="object-block__breadcrumb" aria-label="Location in the schema">      <a href="#transaction">Transaction</a><span aria-hidden="true"> › </span>      <a href="#propertypack">Property Pack</a><span aria-hidden="true"> › </span>      <a href="#propertypackownership">Ownership</a><span aria-hidden="true"> › </span>      <a href="#propertypackownershipownershipstobetransferred">Ownerships To Be Transferred</a><span aria-hidden="true"> › </span>      <a href="#propertypackownershipownershipstobetransferredleaseholdinformation">Leasehold Information</a><span aria-hidden="true"> › </span>      <a href="#propertypackownershipownershipstobetransferredleaseholdinformationservicecharge">Service Charge</a><span aria-hidden="true"> › </span>      <span aria-current="location">Increase In Service Charge Anticipated</span>
+    </nav>    <div class="object-block__title-row">
       <h4 id="propertypackownershipownershipstobetransferredleaseholdinformationservicechargeincreaseinservicechargeanticipated" class="object-block__title" data-display-id="increaseinservicechargeanticipated">
         <span class="object-block__display">Increase In Service Charge Anticipated</span>      </h4>
       <code class="object-block__path">propertyPack.ownership.ownershipsToBeTransferred[].leaseholdInformation.serviceCharge.increaseInServiceChargeAnticipated</code>
@@ -728,7 +743,8 @@ erDiagram
           <th style="width: 6rem;">Affordance</th>
         </tr>
       </thead>
-      <tbody>        <tr data-leaf-path="propertyPack.ownership.ownershipsToBeTransferred[].leaseholdInformation.serviceCharge.increaseInServiceChargeAnticipated.details"
+      <tbody>        <tr id="propertypackownershipownershipstobetransferredleaseholdinformationservicechargeincreaseinservicechargeanticipateddetails"
+            data-leaf-path="propertyPack.ownership.ownershipsToBeTransferred[].leaseholdInformation.serviceCharge.increaseInServiceChargeAnticipated.details"
             data-overlays="lpe1">
           <td>Provide details</td>
           <td><span class="muted">—</span></td>
@@ -738,7 +754,8 @@ erDiagram
           <td class="align-center"><span class="muted">—</span></td>
           <td class="overlay-cell">              <div class="overlay-line">Leasehold Property Enquiries Form <span class="overlay-key">(LPE1)</span></div>          </td>
           <td><span class="muted">—</span>          </td>
-        </tr>        <tr data-leaf-path="propertyPack.ownership.ownershipsToBeTransferred[].leaseholdInformation.serviceCharge.increaseInServiceChargeAnticipated.yesNo"
+        </tr>        <tr id="propertypackownershipownershipstobetransferredleaseholdinformationservicechargeincreaseinservicechargeanticipatedyesno"
+            data-leaf-path="propertyPack.ownership.ownershipsToBeTransferred[].leaseholdInformation.serviceCharge.increaseInServiceChargeAnticipated.yesNo"
             data-overlays="lpe1">
           <td>yesNo</td>
           <td><span class="muted">—</span></td>
@@ -748,7 +765,8 @@ erDiagram
           <td class="align-center"><span class="muted">—</span></td>
           <td class="overlay-cell">              <div class="overlay-line">Leasehold Property Enquiries Form <span class="overlay-key">(LPE1)</span></div>          </td>
           <td><span class="muted">—</span>          </td>
-        </tr>        <tr data-leaf-path="propertyPack.ownership.ownershipsToBeTransferred[].leaseholdInformation.serviceCharge.increaseInServiceChargeAnticipated.yesNo"
+        </tr>        <tr id="propertypackownershipownershipstobetransferredleaseholdinformationservicechargeincreaseinservicechargeanticipatedyesno-2"
+            data-leaf-path="propertyPack.ownership.ownershipsToBeTransferred[].leaseholdInformation.serviceCharge.increaseInServiceChargeAnticipated.yesNo"
             data-overlays="lpe1">
           <td>yesNo</td>
           <td><span class="muted">—</span></td>
@@ -761,8 +779,8 @@ erDiagram
         </tr>      </tbody>
     </table>
   </div></div>      <div class="object-block" id="obj-PropertyPackOwnershipOwnershipsToBeTransferredLeaseholdInformationServiceChargeJapaneseKnotweedAffectingManagedAreas" data-display-id="japaneseknotweedaffectingmanagedareas">
-  <header class="object-block__head">
-    <div class="object-block__title-row">
+  <header class="object-block__head">    <nav class="object-block__breadcrumb" aria-label="Location in the schema">      <a href="#transaction">Transaction</a><span aria-hidden="true"> › </span>      <a href="#propertypack">Property Pack</a><span aria-hidden="true"> › </span>      <a href="#propertypackownership">Ownership</a><span aria-hidden="true"> › </span>      <a href="#propertypackownershipownershipstobetransferred">Ownerships To Be Transferred</a><span aria-hidden="true"> › </span>      <a href="#propertypackownershipownershipstobetransferredleaseholdinformation">Leasehold Information</a><span aria-hidden="true"> › </span>      <a href="#propertypackownershipownershipstobetransferredleaseholdinformationservicecharge">Service Charge</a><span aria-hidden="true"> › </span>      <span aria-current="location">Japanese Knotweed Affecting Managed Areas</span>
+    </nav>    <div class="object-block__title-row">
       <h4 id="propertypackownershipownershipstobetransferredleaseholdinformationservicechargejapaneseknotweedaffectingmanagedareas" class="object-block__title" data-display-id="japaneseknotweedaffectingmanagedareas">
         <span class="object-block__display">Japanese Knotweed Affecting Managed Areas</span>      </h4>
       <code class="object-block__path">propertyPack.ownership.ownershipsToBeTransferred[].leaseholdInformation.serviceCharge.japaneseKnotweedAffectingManagedAreas</code>
@@ -782,7 +800,8 @@ erDiagram
           <th style="width: 6rem;">Affordance</th>
         </tr>
       </thead>
-      <tbody>        <tr data-leaf-path="propertyPack.ownership.ownershipsToBeTransferred[].leaseholdInformation.serviceCharge.japaneseKnotweedAffectingManagedAreas.details"
+      <tbody>        <tr id="propertypackownershipownershipstobetransferredleaseholdinformationservicechargejapaneseknotweedaffectingmanagedareasdetails"
+            data-leaf-path="propertyPack.ownership.ownershipsToBeTransferred[].leaseholdInformation.serviceCharge.japaneseKnotweedAffectingManagedAreas.details"
             data-overlays="lpe1">
           <td>Provide details and a copy of any Japanese knotweed management plan in place.</td>
           <td><span class="muted">—</span></td>
@@ -792,7 +811,8 @@ erDiagram
           <td class="align-center"><span class="muted">—</span></td>
           <td class="overlay-cell">              <div class="overlay-line">Leasehold Property Enquiries Form <span class="overlay-key">(LPE1)</span></div>          </td>
           <td><span class="muted">—</span>          </td>
-        </tr>        <tr data-leaf-path="propertyPack.ownership.ownershipsToBeTransferred[].leaseholdInformation.serviceCharge.japaneseKnotweedAffectingManagedAreas.yesNo"
+        </tr>        <tr id="propertypackownershipownershipstobetransferredleaseholdinformationservicechargejapaneseknotweedaffectingmanagedareasyesno"
+            data-leaf-path="propertyPack.ownership.ownershipsToBeTransferred[].leaseholdInformation.serviceCharge.japaneseKnotweedAffectingManagedAreas.yesNo"
             data-overlays="lpe1">
           <td>yesNo</td>
           <td><span class="muted">—</span></td>
@@ -802,7 +822,8 @@ erDiagram
           <td class="align-center"><span class="muted">—</span></td>
           <td class="overlay-cell">              <div class="overlay-line">Leasehold Property Enquiries Form <span class="overlay-key">(LPE1)</span></div>          </td>
           <td><span class="muted">—</span>          </td>
-        </tr>        <tr data-leaf-path="propertyPack.ownership.ownershipsToBeTransferred[].leaseholdInformation.serviceCharge.japaneseKnotweedAffectingManagedAreas.yesNo"
+        </tr>        <tr id="propertypackownershipownershipstobetransferredleaseholdinformationservicechargejapaneseknotweedaffectingmanagedareasyesno-2"
+            data-leaf-path="propertyPack.ownership.ownershipsToBeTransferred[].leaseholdInformation.serviceCharge.japaneseKnotweedAffectingManagedAreas.yesNo"
             data-overlays="lpe1">
           <td>yesNo</td>
           <td><span class="muted">—</span></td>
@@ -815,8 +836,8 @@ erDiagram
         </tr>      </tbody>
     </table>
   </div></div>      <div class="object-block" id="obj-PropertyPackOwnershipOwnershipsToBeTransferredLeaseholdInformationServiceChargeLargeAdditionalExpense" data-display-id="largeadditionalexpense">
-  <header class="object-block__head">
-    <div class="object-block__title-row">
+  <header class="object-block__head">    <nav class="object-block__breadcrumb" aria-label="Location in the schema">      <a href="#transaction">Transaction</a><span aria-hidden="true"> › </span>      <a href="#propertypack">Property Pack</a><span aria-hidden="true"> › </span>      <a href="#propertypackownership">Ownership</a><span aria-hidden="true"> › </span>      <a href="#propertypackownershipownershipstobetransferred">Ownerships To Be Transferred</a><span aria-hidden="true"> › </span>      <a href="#propertypackownershipownershipstobetransferredleaseholdinformation">Leasehold Information</a><span aria-hidden="true"> › </span>      <a href="#propertypackownershipownershipstobetransferredleaseholdinformationservicecharge">Service Charge</a><span aria-hidden="true"> › </span>      <span aria-current="location">Large Additional Expense</span>
+    </nav>    <div class="object-block__title-row">
       <h4 id="propertypackownershipownershipstobetransferredleaseholdinformationservicechargelargeadditionalexpense" class="object-block__title" data-display-id="largeadditionalexpense">
         <span class="object-block__display">Large Additional Expense</span>      </h4>
       <code class="object-block__path">propertyPack.ownership.ownershipsToBeTransferred[].leaseholdInformation.serviceCharge.largeAdditionalExpense</code>
@@ -836,7 +857,8 @@ erDiagram
           <th style="width: 6rem;">Affordance</th>
         </tr>
       </thead>
-      <tbody>        <tr data-leaf-path="propertyPack.ownership.ownershipsToBeTransferred[].leaseholdInformation.serviceCharge.largeAdditionalExpense.details"
+      <tbody>        <tr id="propertypackownershipownershipstobetransferredleaseholdinformationservicechargelargeadditionalexpensedetails"
+            data-leaf-path="propertyPack.ownership.ownershipsToBeTransferred[].leaseholdInformation.serviceCharge.largeAdditionalExpense.details"
             data-overlays="baspi5,ta7">
           <td>Details</td>
           <td><span class="muted">—</span></td>
@@ -846,7 +868,8 @@ erDiagram
           <td class="align-center"><span class="muted">—</span></td>
           <td class="overlay-cell">              <div class="overlay-line">Buyers & Sellers Property Information v5 <span class="overlay-key">(BASPI5)</span></div>              <div class="overlay-line">Law Society Leasehold Information Form <span class="overlay-key">(TA7)</span></div>          </td>
           <td><span class="muted">—</span>          </td>
-        </tr>        <tr data-leaf-path="propertyPack.ownership.ownershipsToBeTransferred[].leaseholdInformation.serviceCharge.largeAdditionalExpense.yesNo"
+        </tr>        <tr id="propertypackownershipownershipstobetransferredleaseholdinformationservicechargelargeadditionalexpenseyesno"
+            data-leaf-path="propertyPack.ownership.ownershipsToBeTransferred[].leaseholdInformation.serviceCharge.largeAdditionalExpense.yesNo"
             data-overlays="baspi5,ta7">
           <td>yesNo</td>
           <td><span class="muted">—</span></td>
@@ -856,7 +879,8 @@ erDiagram
           <td class="align-center"><span class="muted">—</span></td>
           <td class="overlay-cell">              <div class="overlay-line">Buyers & Sellers Property Information v5 <span class="overlay-key">(BASPI5)</span></div>              <div class="overlay-line">Law Society Leasehold Information Form <span class="overlay-key">(TA7)</span></div>          </td>
           <td><span class="muted">—</span>          </td>
-        </tr>        <tr data-leaf-path="propertyPack.ownership.ownershipsToBeTransferred[].leaseholdInformation.serviceCharge.largeAdditionalExpense.yesNo"
+        </tr>        <tr id="propertypackownershipownershipstobetransferredleaseholdinformationservicechargelargeadditionalexpenseyesno-2"
+            data-leaf-path="propertyPack.ownership.ownershipsToBeTransferred[].leaseholdInformation.serviceCharge.largeAdditionalExpense.yesNo"
             data-overlays="baspi5,ta7">
           <td>yesNo</td>
           <td><span class="muted">—</span></td>
@@ -869,8 +893,8 @@ erDiagram
         </tr>      </tbody>
     </table>
   </div></div>      <div class="object-block" id="obj-PropertyPackOwnershipOwnershipsToBeTransferredLeaseholdInformationServiceChargeLastDecoratedPeriod" data-display-id="lastdecoratedperiod">
-  <header class="object-block__head">
-    <div class="object-block__title-row">
+  <header class="object-block__head">    <nav class="object-block__breadcrumb" aria-label="Location in the schema">      <a href="#transaction">Transaction</a><span aria-hidden="true"> › </span>      <a href="#propertypack">Property Pack</a><span aria-hidden="true"> › </span>      <a href="#propertypackownership">Ownership</a><span aria-hidden="true"> › </span>      <a href="#propertypackownershipownershipstobetransferred">Ownerships To Be Transferred</a><span aria-hidden="true"> › </span>      <a href="#propertypackownershipownershipstobetransferredleaseholdinformation">Leasehold Information</a><span aria-hidden="true"> › </span>      <a href="#propertypackownershipownershipstobetransferredleaseholdinformationservicecharge">Service Charge</a><span aria-hidden="true"> › </span>      <span aria-current="location">Last Decorated Period</span>
+    </nav>    <div class="object-block__title-row">
       <h4 id="propertypackownershipownershipstobetransferredleaseholdinformationservicechargelastdecoratedperiod" class="object-block__title" data-display-id="lastdecoratedperiod">
         <span class="object-block__display">Last Decorated Period</span>      </h4>
       <code class="object-block__path">propertyPack.ownership.ownershipsToBeTransferred[].leaseholdInformation.serviceCharge.lastDecoratedPeriod</code>
@@ -891,8 +915,8 @@ erDiagram
           <span>Internally</span>
         </a>
       </li>    </ul>  </header>  <p class="muted tiny">No scalar fields on this object — pure container.</p></div>      <div class="object-block" id="obj-PropertyPackOwnershipOwnershipsToBeTransferredLeaseholdInformationServiceChargeLastDemandPeriod" data-display-id="lastdemandperiod">
-  <header class="object-block__head">
-    <div class="object-block__title-row">
+  <header class="object-block__head">    <nav class="object-block__breadcrumb" aria-label="Location in the schema">      <a href="#transaction">Transaction</a><span aria-hidden="true"> › </span>      <a href="#propertypack">Property Pack</a><span aria-hidden="true"> › </span>      <a href="#propertypackownership">Ownership</a><span aria-hidden="true"> › </span>      <a href="#propertypackownershipownershipstobetransferred">Ownerships To Be Transferred</a><span aria-hidden="true"> › </span>      <a href="#propertypackownershipownershipstobetransferredleaseholdinformation">Leasehold Information</a><span aria-hidden="true"> › </span>      <a href="#propertypackownershipownershipstobetransferredleaseholdinformationservicecharge">Service Charge</a><span aria-hidden="true"> › </span>      <span aria-current="location">Last Demand Period</span>
+    </nav>    <div class="object-block__title-row">
       <h4 id="propertypackownershipownershipstobetransferredleaseholdinformationservicechargelastdemandperiod" class="object-block__title" data-display-id="lastdemandperiod">
         <span class="object-block__display">Last Demand Period</span>      </h4>
       <code class="object-block__path">propertyPack.ownership.ownershipsToBeTransferred[].leaseholdInformation.serviceCharge.lastDemandPeriod</code>
@@ -912,7 +936,8 @@ erDiagram
           <th style="width: 6rem;">Affordance</th>
         </tr>
       </thead>
-      <tbody>        <tr data-leaf-path="propertyPack.ownership.ownershipsToBeTransferred[].leaseholdInformation.serviceCharge.lastDemandPeriod.from"
+      <tbody>        <tr id="propertypackownershipownershipstobetransferredleaseholdinformationservicechargelastdemandperiodfrom"
+            data-leaf-path="propertyPack.ownership.ownershipsToBeTransferred[].leaseholdInformation.serviceCharge.lastDemandPeriod.from"
             data-overlays="">
           <td>From</td>
           <td><span class="muted">—</span></td>
@@ -922,7 +947,8 @@ erDiagram
           <td class="align-center"><span class="muted">—</span></td>
           <td class="overlay-cell"><span class="muted">—</span>          </td>
           <td><span class="muted">—</span>          </td>
-        </tr>        <tr data-leaf-path="propertyPack.ownership.ownershipsToBeTransferred[].leaseholdInformation.serviceCharge.lastDemandPeriod.to"
+        </tr>        <tr id="propertypackownershipownershipstobetransferredleaseholdinformationservicechargelastdemandperiodto"
+            data-leaf-path="propertyPack.ownership.ownershipsToBeTransferred[].leaseholdInformation.serviceCharge.lastDemandPeriod.to"
             data-overlays="">
           <td>To</td>
           <td><span class="muted">—</span></td>
@@ -935,8 +961,8 @@ erDiagram
         </tr>      </tbody>
     </table>
   </div></div>      <div class="object-block" id="obj-PropertyPackOwnershipOwnershipsToBeTransferredLeaseholdInformationServiceChargeOutstandingServiceChargeConsultation" data-display-id="outstandingservicechargeconsultation">
-  <header class="object-block__head">
-    <div class="object-block__title-row">
+  <header class="object-block__head">    <nav class="object-block__breadcrumb" aria-label="Location in the schema">      <a href="#transaction">Transaction</a><span aria-hidden="true"> › </span>      <a href="#propertypack">Property Pack</a><span aria-hidden="true"> › </span>      <a href="#propertypackownership">Ownership</a><span aria-hidden="true"> › </span>      <a href="#propertypackownershipownershipstobetransferred">Ownerships To Be Transferred</a><span aria-hidden="true"> › </span>      <a href="#propertypackownershipownershipstobetransferredleaseholdinformation">Leasehold Information</a><span aria-hidden="true"> › </span>      <a href="#propertypackownershipownershipstobetransferredleaseholdinformationservicecharge">Service Charge</a><span aria-hidden="true"> › </span>      <span aria-current="location">Outstanding Service Charge Consultation</span>
+    </nav>    <div class="object-block__title-row">
       <h4 id="propertypackownershipownershipstobetransferredleaseholdinformationservicechargeoutstandingservicechargeconsultation" class="object-block__title" data-display-id="outstandingservicechargeconsultation">
         <span class="object-block__display">Outstanding Service Charge Consultation</span>      </h4>
       <code class="object-block__path">propertyPack.ownership.ownershipsToBeTransferred[].leaseholdInformation.serviceCharge.outstandingServiceChargeConsultation</code>
@@ -956,7 +982,8 @@ erDiagram
           <th style="width: 6rem;">Affordance</th>
         </tr>
       </thead>
-      <tbody>        <tr data-leaf-path="propertyPack.ownership.ownershipsToBeTransferred[].leaseholdInformation.serviceCharge.outstandingServiceChargeConsultation.details"
+      <tbody>        <tr id="propertypackownershipownershipstobetransferredleaseholdinformationservicechargeoutstandingservicechargeconsultationdetails"
+            data-leaf-path="propertyPack.ownership.ownershipsToBeTransferred[].leaseholdInformation.serviceCharge.outstandingServiceChargeConsultation.details"
             data-overlays="lpe1">
           <td>Provide details</td>
           <td><span class="muted">—</span></td>
@@ -966,7 +993,8 @@ erDiagram
           <td class="align-center"><span class="muted">—</span></td>
           <td class="overlay-cell">              <div class="overlay-line">Leasehold Property Enquiries Form <span class="overlay-key">(LPE1)</span></div>          </td>
           <td><span class="muted">—</span>          </td>
-        </tr>        <tr data-leaf-path="propertyPack.ownership.ownershipsToBeTransferred[].leaseholdInformation.serviceCharge.outstandingServiceChargeConsultation.yesNo"
+        </tr>        <tr id="propertypackownershipownershipstobetransferredleaseholdinformationservicechargeoutstandingservicechargeconsultationyesno"
+            data-leaf-path="propertyPack.ownership.ownershipsToBeTransferred[].leaseholdInformation.serviceCharge.outstandingServiceChargeConsultation.yesNo"
             data-overlays="lpe1">
           <td>yesNo</td>
           <td><span class="muted">—</span></td>
@@ -976,7 +1004,8 @@ erDiagram
           <td class="align-center"><span class="muted">—</span></td>
           <td class="overlay-cell">              <div class="overlay-line">Leasehold Property Enquiries Form <span class="overlay-key">(LPE1)</span></div>          </td>
           <td><span class="muted">—</span>          </td>
-        </tr>        <tr data-leaf-path="propertyPack.ownership.ownershipsToBeTransferred[].leaseholdInformation.serviceCharge.outstandingServiceChargeConsultation.yesNo"
+        </tr>        <tr id="propertypackownershipownershipstobetransferredleaseholdinformationservicechargeoutstandingservicechargeconsultationyesno-2"
+            data-leaf-path="propertyPack.ownership.ownershipsToBeTransferred[].leaseholdInformation.serviceCharge.outstandingServiceChargeConsultation.yesNo"
             data-overlays="lpe1">
           <td>yesNo</td>
           <td><span class="muted">—</span></td>
@@ -989,8 +1018,8 @@ erDiagram
         </tr>      </tbody>
     </table>
   </div></div>      <div class="object-block" id="obj-PropertyPackOwnershipOwnershipsToBeTransferredLeaseholdInformationServiceChargeProblemInServiceChargeLevel" data-display-id="probleminservicechargelevel">
-  <header class="object-block__head">
-    <div class="object-block__title-row">
+  <header class="object-block__head">    <nav class="object-block__breadcrumb" aria-label="Location in the schema">      <a href="#transaction">Transaction</a><span aria-hidden="true"> › </span>      <a href="#propertypack">Property Pack</a><span aria-hidden="true"> › </span>      <a href="#propertypackownership">Ownership</a><span aria-hidden="true"> › </span>      <a href="#propertypackownershipownershipstobetransferred">Ownerships To Be Transferred</a><span aria-hidden="true"> › </span>      <a href="#propertypackownershipownershipstobetransferredleaseholdinformation">Leasehold Information</a><span aria-hidden="true"> › </span>      <a href="#propertypackownershipownershipstobetransferredleaseholdinformationservicecharge">Service Charge</a><span aria-hidden="true"> › </span>      <span aria-current="location">Problem In Service Charge Level</span>
+    </nav>    <div class="object-block__title-row">
       <h4 id="propertypackownershipownershipstobetransferredleaseholdinformationservicechargeprobleminservicechargelevel" class="object-block__title" data-display-id="probleminservicechargelevel">
         <span class="object-block__display">Problem In Service Charge Level</span>      </h4>
       <code class="object-block__path">propertyPack.ownership.ownershipsToBeTransferred[].leaseholdInformation.serviceCharge.problemInServiceChargeLevel</code>
@@ -1010,7 +1039,8 @@ erDiagram
           <th style="width: 6rem;">Affordance</th>
         </tr>
       </thead>
-      <tbody>        <tr data-leaf-path="propertyPack.ownership.ownershipsToBeTransferred[].leaseholdInformation.serviceCharge.problemInServiceChargeLevel.details"
+      <tbody>        <tr id="propertypackownershipownershipstobetransferredleaseholdinformationservicechargeprobleminservicechargeleveldetails"
+            data-leaf-path="propertyPack.ownership.ownershipsToBeTransferred[].leaseholdInformation.serviceCharge.problemInServiceChargeLevel.details"
             data-overlays="ta7">
           <td>Please give details:</td>
           <td><span class="muted">—</span></td>
@@ -1020,7 +1050,8 @@ erDiagram
           <td class="align-center"><span class="muted">—</span></td>
           <td class="overlay-cell">              <div class="overlay-line">Law Society Leasehold Information Form <span class="overlay-key">(TA7)</span></div>          </td>
           <td><span class="muted">—</span>          </td>
-        </tr>        <tr data-leaf-path="propertyPack.ownership.ownershipsToBeTransferred[].leaseholdInformation.serviceCharge.problemInServiceChargeLevel.yesNo"
+        </tr>        <tr id="propertypackownershipownershipstobetransferredleaseholdinformationservicechargeprobleminservicechargelevelyesno"
+            data-leaf-path="propertyPack.ownership.ownershipsToBeTransferred[].leaseholdInformation.serviceCharge.problemInServiceChargeLevel.yesNo"
             data-overlays="ta7">
           <td>yesNo</td>
           <td><span class="muted">—</span></td>
@@ -1030,7 +1061,8 @@ erDiagram
           <td class="align-center"><span class="muted">—</span></td>
           <td class="overlay-cell">              <div class="overlay-line">Law Society Leasehold Information Form <span class="overlay-key">(TA7)</span></div>          </td>
           <td><span class="muted">—</span>          </td>
-        </tr>        <tr data-leaf-path="propertyPack.ownership.ownershipsToBeTransferred[].leaseholdInformation.serviceCharge.problemInServiceChargeLevel.yesNo"
+        </tr>        <tr id="propertypackownershipownershipstobetransferredleaseholdinformationservicechargeprobleminservicechargelevelyesno-2"
+            data-leaf-path="propertyPack.ownership.ownershipsToBeTransferred[].leaseholdInformation.serviceCharge.problemInServiceChargeLevel.yesNo"
             data-overlays="ta7">
           <td>yesNo</td>
           <td><span class="muted">—</span></td>
@@ -1043,8 +1075,8 @@ erDiagram
         </tr>      </tbody>
     </table>
   </div></div>      <div class="object-block" id="obj-PropertyPackOwnershipOwnershipsToBeTransferredLeaseholdInformationServiceChargeReserveFund" data-display-id="reservefund">
-  <header class="object-block__head">
-    <div class="object-block__title-row">
+  <header class="object-block__head">    <nav class="object-block__breadcrumb" aria-label="Location in the schema">      <a href="#transaction">Transaction</a><span aria-hidden="true"> › </span>      <a href="#propertypack">Property Pack</a><span aria-hidden="true"> › </span>      <a href="#propertypackownership">Ownership</a><span aria-hidden="true"> › </span>      <a href="#propertypackownershipownershipstobetransferred">Ownerships To Be Transferred</a><span aria-hidden="true"> › </span>      <a href="#propertypackownershipownershipstobetransferredleaseholdinformation">Leasehold Information</a><span aria-hidden="true"> › </span>      <a href="#propertypackownershipownershipstobetransferredleaseholdinformationservicecharge">Service Charge</a><span aria-hidden="true"> › </span>      <span aria-current="location">Reserve Fund</span>
+    </nav>    <div class="object-block__title-row">
       <h4 id="propertypackownershipownershipstobetransferredleaseholdinformationservicechargereservefund" class="object-block__title" data-display-id="reservefund">
         <span class="object-block__display">Reserve Fund</span>      </h4>
       <code class="object-block__path">propertyPack.ownership.ownershipsToBeTransferred[].leaseholdInformation.serviceCharge.reserveFund</code>
@@ -1072,7 +1104,8 @@ erDiagram
           <th style="width: 6rem;">Affordance</th>
         </tr>
       </thead>
-      <tbody>        <tr data-leaf-path="propertyPack.ownership.ownershipsToBeTransferred[].leaseholdInformation.serviceCharge.reserveFund.contributionIncludedInServiceCharge"
+      <tbody>        <tr id="propertypackownershipownershipstobetransferredleaseholdinformationservicechargereservefundcontributionincludedinservicecharge"
+            data-leaf-path="propertyPack.ownership.ownershipsToBeTransferred[].leaseholdInformation.serviceCharge.reserveFund.contributionIncludedInServiceCharge"
             data-overlays="baspi5">
           <td>Is the annual contribution included in the stated service charge?</td>
           <td>Is the annual contribution included in the stated service charge?</td>
@@ -1082,7 +1115,8 @@ erDiagram
           <td class="align-center"><span class="muted">—</span></td>
           <td class="overlay-cell">              <div class="overlay-line">Buyers & Sellers Property Information v5 <span class="overlay-key">(BASPI5)</span></div>          </td>
           <td><span class="muted">—</span>          </td>
-        </tr>        <tr data-leaf-path="propertyPack.ownership.ownershipsToBeTransferred[].leaseholdInformation.serviceCharge.reserveFund.details"
+        </tr>        <tr id="propertypackownershipownershipstobetransferredleaseholdinformationservicechargereservefunddetails"
+            data-leaf-path="propertyPack.ownership.ownershipsToBeTransferred[].leaseholdInformation.serviceCharge.reserveFund.details"
             data-overlays="lpe1">
           <td>Confirm the amount collected from Lessees of the Property, currently held in the Reserve Fund:</td>
           <td><span class="muted">—</span></td>
@@ -1092,7 +1126,8 @@ erDiagram
           <td class="align-center"><span class="muted">—</span></td>
           <td class="overlay-cell">              <div class="overlay-line">Leasehold Property Enquiries Form <span class="overlay-key">(LPE1)</span></div>          </td>
           <td><span class="muted">—</span>          </td>
-        </tr>        <tr data-leaf-path="propertyPack.ownership.ownershipsToBeTransferred[].leaseholdInformation.serviceCharge.reserveFund.yesNo"
+        </tr>        <tr id="propertypackownershipownershipstobetransferredleaseholdinformationservicechargereservefundyesno"
+            data-leaf-path="propertyPack.ownership.ownershipsToBeTransferred[].leaseholdInformation.serviceCharge.reserveFund.yesNo"
             data-overlays="baspi5,lpe1">
           <td>yesNo</td>
           <td><span class="muted">—</span></td>
@@ -1102,7 +1137,8 @@ erDiagram
           <td class="align-center"><span class="muted">—</span></td>
           <td class="overlay-cell">              <div class="overlay-line">Buyers & Sellers Property Information v5 <span class="overlay-key">(BASPI5)</span></div>              <div class="overlay-line">Leasehold Property Enquiries Form <span class="overlay-key">(LPE1)</span></div>          </td>
           <td><span class="muted">—</span>          </td>
-        </tr>        <tr data-leaf-path="propertyPack.ownership.ownershipsToBeTransferred[].leaseholdInformation.serviceCharge.reserveFund.yesNo"
+        </tr>        <tr id="propertypackownershipownershipstobetransferredleaseholdinformationservicechargereservefundyesno-2"
+            data-leaf-path="propertyPack.ownership.ownershipsToBeTransferred[].leaseholdInformation.serviceCharge.reserveFund.yesNo"
             data-overlays="baspi5,lpe1">
           <td>yesNo</td>
           <td><span class="muted">—</span></td>
@@ -1115,8 +1151,8 @@ erDiagram
         </tr>      </tbody>
     </table>
   </div></div>      <div class="object-block" id="obj-PropertyPackOwnershipOwnershipsToBeTransferredLeaseholdInformationServiceChargeSection20WorksProposed" data-display-id="section20worksproposed">
-  <header class="object-block__head">
-    <div class="object-block__title-row">
+  <header class="object-block__head">    <nav class="object-block__breadcrumb" aria-label="Location in the schema">      <a href="#transaction">Transaction</a><span aria-hidden="true"> › </span>      <a href="#propertypack">Property Pack</a><span aria-hidden="true"> › </span>      <a href="#propertypackownership">Ownership</a><span aria-hidden="true"> › </span>      <a href="#propertypackownershipownershipstobetransferred">Ownerships To Be Transferred</a><span aria-hidden="true"> › </span>      <a href="#propertypackownershipownershipstobetransferredleaseholdinformation">Leasehold Information</a><span aria-hidden="true"> › </span>      <a href="#propertypackownershipownershipstobetransferredleaseholdinformationservicecharge">Service Charge</a><span aria-hidden="true"> › </span>      <span aria-current="location">Section20 Works Proposed</span>
+    </nav>    <div class="object-block__title-row">
       <h4 id="propertypackownershipownershipstobetransferredleaseholdinformationservicechargesection20worksproposed" class="object-block__title" data-display-id="section20worksproposed">
         <span class="object-block__display">Section20 Works Proposed</span>      </h4>
       <code class="object-block__path">propertyPack.ownership.ownershipsToBeTransferred[].leaseholdInformation.serviceCharge.section20WorksProposed</code>
@@ -1136,7 +1172,8 @@ erDiagram
           <th style="width: 6rem;">Affordance</th>
         </tr>
       </thead>
-      <tbody>        <tr data-leaf-path="propertyPack.ownership.ownershipsToBeTransferred[].leaseholdInformation.serviceCharge.section20WorksProposed.details"
+      <tbody>        <tr id="propertypackownershipownershipstobetransferredleaseholdinformationservicechargesection20worksproposeddetails"
+            data-leaf-path="propertyPack.ownership.ownershipsToBeTransferred[].leaseholdInformation.serviceCharge.section20WorksProposed.details"
             data-overlays="lpe1">
           <td>If so, provide details of the works and the contribution anticipated from the Lessee</td>
           <td><span class="muted">—</span></td>
@@ -1146,7 +1183,8 @@ erDiagram
           <td class="align-center"><span class="muted">—</span></td>
           <td class="overlay-cell">              <div class="overlay-line">Leasehold Property Enquiries Form <span class="overlay-key">(LPE1)</span></div>          </td>
           <td><span class="muted">—</span>          </td>
-        </tr>        <tr data-leaf-path="propertyPack.ownership.ownershipsToBeTransferred[].leaseholdInformation.serviceCharge.section20WorksProposed.yesNo"
+        </tr>        <tr id="propertypackownershipownershipstobetransferredleaseholdinformationservicechargesection20worksproposedyesno"
+            data-leaf-path="propertyPack.ownership.ownershipsToBeTransferred[].leaseholdInformation.serviceCharge.section20WorksProposed.yesNo"
             data-overlays="lpe1">
           <td>yesNo</td>
           <td><span class="muted">—</span></td>
@@ -1159,8 +1197,8 @@ erDiagram
         </tr>      </tbody>
     </table>
   </div></div>      <div class="object-block" id="obj-PropertyPackOwnershipOwnershipsToBeTransferredLeaseholdInformationServiceChargeServiceChargeChallenged" data-display-id="servicechargechallenged">
-  <header class="object-block__head">
-    <div class="object-block__title-row">
+  <header class="object-block__head">    <nav class="object-block__breadcrumb" aria-label="Location in the schema">      <a href="#transaction">Transaction</a><span aria-hidden="true"> › </span>      <a href="#propertypack">Property Pack</a><span aria-hidden="true"> › </span>      <a href="#propertypackownership">Ownership</a><span aria-hidden="true"> › </span>      <a href="#propertypackownershipownershipstobetransferred">Ownerships To Be Transferred</a><span aria-hidden="true"> › </span>      <a href="#propertypackownershipownershipstobetransferredleaseholdinformation">Leasehold Information</a><span aria-hidden="true"> › </span>      <a href="#propertypackownershipownershipstobetransferredleaseholdinformationservicecharge">Service Charge</a><span aria-hidden="true"> › </span>      <span aria-current="location">Service Charge Challenged</span>
+    </nav>    <div class="object-block__title-row">
       <h4 id="propertypackownershipownershipstobetransferredleaseholdinformationservicechargeservicechargechallenged" class="object-block__title" data-display-id="servicechargechallenged">
         <span class="object-block__display">Service Charge Challenged</span>      </h4>
       <code class="object-block__path">propertyPack.ownership.ownershipsToBeTransferred[].leaseholdInformation.serviceCharge.serviceChargeChallenged</code>
@@ -1180,7 +1218,8 @@ erDiagram
           <th style="width: 6rem;">Affordance</th>
         </tr>
       </thead>
-      <tbody>        <tr data-leaf-path="propertyPack.ownership.ownershipsToBeTransferred[].leaseholdInformation.serviceCharge.serviceChargeChallenged.details"
+      <tbody>        <tr id="propertypackownershipownershipstobetransferredleaseholdinformationservicechargeservicechargechallengeddetails"
+            data-leaf-path="propertyPack.ownership.ownershipsToBeTransferred[].leaseholdInformation.serviceCharge.serviceChargeChallenged.details"
             data-overlays="ta7">
           <td>Please give details</td>
           <td><span class="muted">—</span></td>
@@ -1190,7 +1229,8 @@ erDiagram
           <td class="align-center"><span class="muted">—</span></td>
           <td class="overlay-cell">              <div class="overlay-line">Law Society Leasehold Information Form <span class="overlay-key">(TA7)</span></div>          </td>
           <td><span class="muted">—</span>          </td>
-        </tr>        <tr data-leaf-path="propertyPack.ownership.ownershipsToBeTransferred[].leaseholdInformation.serviceCharge.serviceChargeChallenged.yesNo"
+        </tr>        <tr id="propertypackownershipownershipstobetransferredleaseholdinformationservicechargeservicechargechallengedyesno"
+            data-leaf-path="propertyPack.ownership.ownershipsToBeTransferred[].leaseholdInformation.serviceCharge.serviceChargeChallenged.yesNo"
             data-overlays="ta7">
           <td>yesNo</td>
           <td><span class="muted">—</span></td>
@@ -1200,7 +1240,8 @@ erDiagram
           <td class="align-center"><span class="muted">—</span></td>
           <td class="overlay-cell">              <div class="overlay-line">Law Society Leasehold Information Form <span class="overlay-key">(TA7)</span></div>          </td>
           <td><span class="muted">—</span>          </td>
-        </tr>        <tr data-leaf-path="propertyPack.ownership.ownershipsToBeTransferred[].leaseholdInformation.serviceCharge.serviceChargeChallenged.yesNo"
+        </tr>        <tr id="propertypackownershipownershipstobetransferredleaseholdinformationservicechargeservicechargechallengedyesno-2"
+            data-leaf-path="propertyPack.ownership.ownershipsToBeTransferred[].leaseholdInformation.serviceCharge.serviceChargeChallenged.yesNo"
             data-overlays="ta7">
           <td>yesNo</td>
           <td><span class="muted">—</span></td>
@@ -1213,8 +1254,8 @@ erDiagram
         </tr>      </tbody>
     </table>
   </div></div>      <div class="object-block" id="obj-PropertyPackOwnershipOwnershipsToBeTransferredLeaseholdInformationServiceChargeServiceChargeOwed" data-display-id="servicechargeowed">
-  <header class="object-block__head">
-    <div class="object-block__title-row">
+  <header class="object-block__head">    <nav class="object-block__breadcrumb" aria-label="Location in the schema">      <a href="#transaction">Transaction</a><span aria-hidden="true"> › </span>      <a href="#propertypack">Property Pack</a><span aria-hidden="true"> › </span>      <a href="#propertypackownership">Ownership</a><span aria-hidden="true"> › </span>      <a href="#propertypackownershipownershipstobetransferred">Ownerships To Be Transferred</a><span aria-hidden="true"> › </span>      <a href="#propertypackownershipownershipstobetransferredleaseholdinformation">Leasehold Information</a><span aria-hidden="true"> › </span>      <a href="#propertypackownershipownershipstobetransferredleaseholdinformationservicecharge">Service Charge</a><span aria-hidden="true"> › </span>      <span aria-current="location">Service Charge Owed</span>
+    </nav>    <div class="object-block__title-row">
       <h4 id="propertypackownershipownershipstobetransferredleaseholdinformationservicechargeservicechargeowed" class="object-block__title" data-display-id="servicechargeowed">
         <span class="object-block__display">Service Charge Owed</span>      </h4>
       <code class="object-block__path">propertyPack.ownership.ownershipsToBeTransferred[].leaseholdInformation.serviceCharge.serviceChargeOwed</code>
@@ -1234,7 +1275,8 @@ erDiagram
           <th style="width: 6rem;">Affordance</th>
         </tr>
       </thead>
-      <tbody>        <tr data-leaf-path="propertyPack.ownership.ownershipsToBeTransferred[].leaseholdInformation.serviceCharge.serviceChargeOwed.details"
+      <tbody>        <tr id="propertypackownershipownershipstobetransferredleaseholdinformationservicechargeservicechargeoweddetails"
+            data-leaf-path="propertyPack.ownership.ownershipsToBeTransferred[].leaseholdInformation.serviceCharge.serviceChargeOwed.details"
             data-overlays="ta7">
           <td>Please give details</td>
           <td><span class="muted">—</span></td>
@@ -1244,7 +1286,8 @@ erDiagram
           <td class="align-center"><span class="muted">—</span></td>
           <td class="overlay-cell">              <div class="overlay-line">Law Society Leasehold Information Form <span class="overlay-key">(TA7)</span></div>          </td>
           <td><span class="muted">—</span>          </td>
-        </tr>        <tr data-leaf-path="propertyPack.ownership.ownershipsToBeTransferred[].leaseholdInformation.serviceCharge.serviceChargeOwed.yesNo"
+        </tr>        <tr id="propertypackownershipownershipstobetransferredleaseholdinformationservicechargeservicechargeowedyesno"
+            data-leaf-path="propertyPack.ownership.ownershipsToBeTransferred[].leaseholdInformation.serviceCharge.serviceChargeOwed.yesNo"
             data-overlays="ta7">
           <td>yesNo</td>
           <td><span class="muted">—</span></td>
@@ -1254,7 +1297,8 @@ erDiagram
           <td class="align-center"><span class="muted">—</span></td>
           <td class="overlay-cell">              <div class="overlay-line">Law Society Leasehold Information Form <span class="overlay-key">(TA7)</span></div>          </td>
           <td><span class="muted">—</span>          </td>
-        </tr>        <tr data-leaf-path="propertyPack.ownership.ownershipsToBeTransferred[].leaseholdInformation.serviceCharge.serviceChargeOwed.yesNo"
+        </tr>        <tr id="propertypackownershipownershipstobetransferredleaseholdinformationservicechargeservicechargeowedyesno-2"
+            data-leaf-path="propertyPack.ownership.ownershipsToBeTransferred[].leaseholdInformation.serviceCharge.serviceChargeOwed.yesNo"
             data-overlays="ta7">
           <td>yesNo</td>
           <td><span class="muted">—</span></td>
@@ -1267,8 +1311,8 @@ erDiagram
         </tr>      </tbody>
     </table>
   </div></div>      <div class="object-block" id="obj-PropertyPackOwnershipOwnershipsToBeTransferredLeaseholdInformationServiceChargeServiceChargePaidUpToDate" data-display-id="servicechargepaiduptodate">
-  <header class="object-block__head">
-    <div class="object-block__title-row">
+  <header class="object-block__head">    <nav class="object-block__breadcrumb" aria-label="Location in the schema">      <a href="#transaction">Transaction</a><span aria-hidden="true"> › </span>      <a href="#propertypack">Property Pack</a><span aria-hidden="true"> › </span>      <a href="#propertypackownership">Ownership</a><span aria-hidden="true"> › </span>      <a href="#propertypackownershipownershipstobetransferred">Ownerships To Be Transferred</a><span aria-hidden="true"> › </span>      <a href="#propertypackownershipownershipstobetransferredleaseholdinformation">Leasehold Information</a><span aria-hidden="true"> › </span>      <a href="#propertypackownershipownershipstobetransferredleaseholdinformationservicecharge">Service Charge</a><span aria-hidden="true"> › </span>      <span aria-current="location">Service Charge Paid Up To Date</span>
+    </nav>    <div class="object-block__title-row">
       <h4 id="propertypackownershipownershipstobetransferredleaseholdinformationservicechargeservicechargepaiduptodate" class="object-block__title" data-display-id="servicechargepaiduptodate">
         <span class="object-block__display">Service Charge Paid Up To Date</span>      </h4>
       <code class="object-block__path">propertyPack.ownership.ownershipsToBeTransferred[].leaseholdInformation.serviceCharge.serviceChargePaidUpToDate</code>
@@ -1288,7 +1332,8 @@ erDiagram
           <th style="width: 6rem;">Affordance</th>
         </tr>
       </thead>
-      <tbody>        <tr data-leaf-path="propertyPack.ownership.ownershipsToBeTransferred[].leaseholdInformation.serviceCharge.serviceChargePaidUpToDate.details"
+      <tbody>        <tr id="propertypackownershipownershipstobetransferredleaseholdinformationservicechargeservicechargepaiduptodatedetails"
+            data-leaf-path="propertyPack.ownership.ownershipsToBeTransferred[].leaseholdInformation.serviceCharge.serviceChargePaidUpToDate.details"
             data-overlays="lpe1">
           <td>Supply details of the arrears</td>
           <td><span class="muted">—</span></td>
@@ -1298,7 +1343,8 @@ erDiagram
           <td class="align-center"><span class="muted">—</span></td>
           <td class="overlay-cell">              <div class="overlay-line">Leasehold Property Enquiries Form <span class="overlay-key">(LPE1)</span></div>          </td>
           <td><span class="muted">—</span>          </td>
-        </tr>        <tr data-leaf-path="propertyPack.ownership.ownershipsToBeTransferred[].leaseholdInformation.serviceCharge.serviceChargePaidUpToDate.yesNo"
+        </tr>        <tr id="propertypackownershipownershipstobetransferredleaseholdinformationservicechargeservicechargepaiduptodateyesno"
+            data-leaf-path="propertyPack.ownership.ownershipsToBeTransferred[].leaseholdInformation.serviceCharge.serviceChargePaidUpToDate.yesNo"
             data-overlays="lpe1">
           <td>yesNo</td>
           <td><span class="muted">—</span></td>
@@ -1308,7 +1354,8 @@ erDiagram
           <td class="align-center"><span class="muted">—</span></td>
           <td class="overlay-cell">              <div class="overlay-line">Leasehold Property Enquiries Form <span class="overlay-key">(LPE1)</span></div>          </td>
           <td><span class="muted">—</span>          </td>
-        </tr>        <tr data-leaf-path="propertyPack.ownership.ownershipsToBeTransferred[].leaseholdInformation.serviceCharge.serviceChargePaidUpToDate.yesNo"
+        </tr>        <tr id="propertypackownershipownershipstobetransferredleaseholdinformationservicechargeservicechargepaiduptodateyesno-2"
+            data-leaf-path="propertyPack.ownership.ownershipsToBeTransferred[].leaseholdInformation.serviceCharge.serviceChargePaidUpToDate.yesNo"
             data-overlays="lpe1">
           <td>yesNo</td>
           <td><span class="muted">—</span></td>
@@ -1321,8 +1368,8 @@ erDiagram
         </tr>      </tbody>
     </table>
   </div></div>      <div class="object-block" id="obj-PropertyPackOwnershipOwnershipsToBeTransferredLeaseholdInformationServiceChargeTransferFees" data-display-id="transferfees">
-  <header class="object-block__head">
-    <div class="object-block__title-row">
+  <header class="object-block__head">    <nav class="object-block__breadcrumb" aria-label="Location in the schema">      <a href="#transaction">Transaction</a><span aria-hidden="true"> › </span>      <a href="#propertypack">Property Pack</a><span aria-hidden="true"> › </span>      <a href="#propertypackownership">Ownership</a><span aria-hidden="true"> › </span>      <a href="#propertypackownershipownershipstobetransferred">Ownerships To Be Transferred</a><span aria-hidden="true"> › </span>      <a href="#propertypackownershipownershipstobetransferredleaseholdinformation">Leasehold Information</a><span aria-hidden="true"> › </span>      <a href="#propertypackownershipownershipstobetransferredleaseholdinformationservicecharge">Service Charge</a><span aria-hidden="true"> › </span>      <span aria-current="location">Transfer Fees</span>
+    </nav>    <div class="object-block__title-row">
       <h4 id="propertypackownershipownershipstobetransferredleaseholdinformationservicechargetransferfees" class="object-block__title" data-display-id="transferfees">
         <span class="object-block__display">Transfer Fees</span>      </h4>
       <code class="object-block__path">propertyPack.ownership.ownershipsToBeTransferred[].leaseholdInformation.serviceCharge.transferFees</code>
@@ -1342,7 +1389,8 @@ erDiagram
           <th style="width: 6rem;">Affordance</th>
         </tr>
       </thead>
-      <tbody>        <tr data-leaf-path="propertyPack.ownership.ownershipsToBeTransferred[].leaseholdInformation.serviceCharge.transferFees.details"
+      <tbody>        <tr id="propertypackownershipownershipstobetransferredleaseholdinformationservicechargetransferfeesdetails"
+            data-leaf-path="propertyPack.ownership.ownershipsToBeTransferred[].leaseholdInformation.serviceCharge.transferFees.details"
             data-overlays="baspi5,lpe1,nts2">
           <td>Provide details.</td>
           <td><span class="muted">—</span></td>
@@ -1352,7 +1400,8 @@ erDiagram
           <td class="align-center"><span class="muted">—</span></td>
           <td class="overlay-cell">              <div class="overlay-line">Buyers & Sellers Property Information v5 <span class="overlay-key">(BASPI5)</span></div>              <div class="overlay-line">Leasehold Property Enquiries Form <span class="overlay-key">(LPE1)</span></div>              <div class="overlay-line">NTS Material Information (sales) <span class="overlay-key">(NTS2)</span></div>          </td>
           <td><span class="muted">—</span>          </td>
-        </tr>        <tr data-leaf-path="propertyPack.ownership.ownershipsToBeTransferred[].leaseholdInformation.serviceCharge.transferFees.yesNo"
+        </tr>        <tr id="propertypackownershipownershipstobetransferredleaseholdinformationservicechargetransferfeesyesno"
+            data-leaf-path="propertyPack.ownership.ownershipsToBeTransferred[].leaseholdInformation.serviceCharge.transferFees.yesNo"
             data-overlays="baspi5,lpe1,nts2">
           <td>yesNo</td>
           <td><span class="muted">—</span></td>
@@ -1362,7 +1411,8 @@ erDiagram
           <td class="align-center"><span class="muted">—</span></td>
           <td class="overlay-cell">              <div class="overlay-line">Buyers & Sellers Property Information v5 <span class="overlay-key">(BASPI5)</span></div>              <div class="overlay-line">Leasehold Property Enquiries Form <span class="overlay-key">(LPE1)</span></div>              <div class="overlay-line">NTS Material Information (sales) <span class="overlay-key">(NTS2)</span></div>          </td>
           <td><span class="muted">—</span>          </td>
-        </tr>        <tr data-leaf-path="propertyPack.ownership.ownershipsToBeTransferred[].leaseholdInformation.serviceCharge.transferFees.yesNo"
+        </tr>        <tr id="propertypackownershipownershipstobetransferredleaseholdinformationservicechargetransferfeesyesno-2"
+            data-leaf-path="propertyPack.ownership.ownershipsToBeTransferred[].leaseholdInformation.serviceCharge.transferFees.yesNo"
             data-overlays="baspi5,lpe1,nts2">
           <td>yesNo</td>
           <td><span class="muted">—</span></td>
@@ -1375,8 +1425,8 @@ erDiagram
         </tr>      </tbody>
     </table>
   </div></div>      <div class="object-block" id="obj-PropertyPackOwnershipOwnershipsToBeTransferredLeaseholdInformationServiceChargeLastDecoratedPeriodExternally" data-display-id="externally">
-  <header class="object-block__head">
-    <div class="object-block__title-row">
+  <header class="object-block__head">    <nav class="object-block__breadcrumb" aria-label="Location in the schema">      <a href="#transaction">Transaction</a><span aria-hidden="true"> › </span>      <a href="#propertypack">Property Pack</a><span aria-hidden="true"> › </span>      <a href="#propertypackownership">Ownership</a><span aria-hidden="true"> › </span>      <a href="#propertypackownershipownershipstobetransferred">Ownerships To Be Transferred</a><span aria-hidden="true"> › </span>      <a href="#propertypackownershipownershipstobetransferredleaseholdinformation">Leasehold Information</a><span aria-hidden="true"> › </span>      <a href="#propertypackownershipownershipstobetransferredleaseholdinformationservicecharge">Service Charge</a><span aria-hidden="true"> › </span>      <a href="#propertypackownershipownershipstobetransferredleaseholdinformationservicechargelastdecoratedperiod">Last Decorated Period</a><span aria-hidden="true"> › </span>      <span aria-current="location">Externally</span>
+    </nav>    <div class="object-block__title-row">
       <h4 id="propertypackownershipownershipstobetransferredleaseholdinformationservicechargelastdecoratedperiodexternally" class="object-block__title" data-display-id="externally">
         <span class="object-block__display">Externally</span>      </h4>
       <code class="object-block__path">propertyPack.ownership.ownershipsToBeTransferred[].leaseholdInformation.serviceCharge.lastDecoratedPeriod.externally</code>
@@ -1396,7 +1446,8 @@ erDiagram
           <th style="width: 6rem;">Affordance</th>
         </tr>
       </thead>
-      <tbody>        <tr data-leaf-path="propertyPack.ownership.ownershipsToBeTransferred[].leaseholdInformation.serviceCharge.lastDecoratedPeriod.externally.from"
+      <tbody>        <tr id="propertypackownershipownershipstobetransferredleaseholdinformationservicechargelastdecoratedperiodexternallyfrom"
+            data-leaf-path="propertyPack.ownership.ownershipsToBeTransferred[].leaseholdInformation.serviceCharge.lastDecoratedPeriod.externally.from"
             data-overlays="">
           <td>To</td>
           <td><span class="muted">—</span></td>
@@ -1406,7 +1457,8 @@ erDiagram
           <td class="align-center"><span class="muted">—</span></td>
           <td class="overlay-cell"><span class="muted">—</span>          </td>
           <td><span class="muted">—</span>          </td>
-        </tr>        <tr data-leaf-path="propertyPack.ownership.ownershipsToBeTransferred[].leaseholdInformation.serviceCharge.lastDecoratedPeriod.externally.to"
+        </tr>        <tr id="propertypackownershipownershipstobetransferredleaseholdinformationservicechargelastdecoratedperiodexternallyto"
+            data-leaf-path="propertyPack.ownership.ownershipsToBeTransferred[].leaseholdInformation.serviceCharge.lastDecoratedPeriod.externally.to"
             data-overlays="">
           <td>To</td>
           <td><span class="muted">—</span></td>
@@ -1416,7 +1468,8 @@ erDiagram
           <td class="align-center"><span class="muted">—</span></td>
           <td class="overlay-cell"><span class="muted">—</span>          </td>
           <td><span class="muted">—</span>          </td>
-        </tr>        <tr data-leaf-path="propertyPack.ownership.ownershipsToBeTransferred[].leaseholdInformation.serviceCharge.lastDecoratedPeriod.externally.year"
+        </tr>        <tr id="propertypackownershipownershipstobetransferredleaseholdinformationservicechargelastdecoratedperiodexternallyyear"
+            data-leaf-path="propertyPack.ownership.ownershipsToBeTransferred[].leaseholdInformation.serviceCharge.lastDecoratedPeriod.externally.year"
             data-overlays="ta7">
           <td>Year</td>
           <td><span class="muted">—</span></td>
@@ -1429,8 +1482,8 @@ erDiagram
         </tr>      </tbody>
     </table>
   </div></div>      <div class="object-block" id="obj-PropertyPackOwnershipOwnershipsToBeTransferredLeaseholdInformationServiceChargeLastDecoratedPeriodInternally" data-display-id="internally">
-  <header class="object-block__head">
-    <div class="object-block__title-row">
+  <header class="object-block__head">    <nav class="object-block__breadcrumb" aria-label="Location in the schema">      <a href="#transaction">Transaction</a><span aria-hidden="true"> › </span>      <a href="#propertypack">Property Pack</a><span aria-hidden="true"> › </span>      <a href="#propertypackownership">Ownership</a><span aria-hidden="true"> › </span>      <a href="#propertypackownershipownershipstobetransferred">Ownerships To Be Transferred</a><span aria-hidden="true"> › </span>      <a href="#propertypackownershipownershipstobetransferredleaseholdinformation">Leasehold Information</a><span aria-hidden="true"> › </span>      <a href="#propertypackownershipownershipstobetransferredleaseholdinformationservicecharge">Service Charge</a><span aria-hidden="true"> › </span>      <a href="#propertypackownershipownershipstobetransferredleaseholdinformationservicechargelastdecoratedperiod">Last Decorated Period</a><span aria-hidden="true"> › </span>      <span aria-current="location">Internally</span>
+    </nav>    <div class="object-block__title-row">
       <h4 id="propertypackownershipownershipstobetransferredleaseholdinformationservicechargelastdecoratedperiodinternally" class="object-block__title" data-display-id="internally">
         <span class="object-block__display">Internally</span>      </h4>
       <code class="object-block__path">propertyPack.ownership.ownershipsToBeTransferred[].leaseholdInformation.serviceCharge.lastDecoratedPeriod.internally</code>
@@ -1450,7 +1503,8 @@ erDiagram
           <th style="width: 6rem;">Affordance</th>
         </tr>
       </thead>
-      <tbody>        <tr data-leaf-path="propertyPack.ownership.ownershipsToBeTransferred[].leaseholdInformation.serviceCharge.lastDecoratedPeriod.internally.from"
+      <tbody>        <tr id="propertypackownershipownershipstobetransferredleaseholdinformationservicechargelastdecoratedperiodinternallyfrom"
+            data-leaf-path="propertyPack.ownership.ownershipsToBeTransferred[].leaseholdInformation.serviceCharge.lastDecoratedPeriod.internally.from"
             data-overlays="">
           <td>To</td>
           <td><span class="muted">—</span></td>
@@ -1460,7 +1514,8 @@ erDiagram
           <td class="align-center"><span class="muted">—</span></td>
           <td class="overlay-cell"><span class="muted">—</span>          </td>
           <td><span class="muted">—</span>          </td>
-        </tr>        <tr data-leaf-path="propertyPack.ownership.ownershipsToBeTransferred[].leaseholdInformation.serviceCharge.lastDecoratedPeriod.internally.to"
+        </tr>        <tr id="propertypackownershipownershipstobetransferredleaseholdinformationservicechargelastdecoratedperiodinternallyto"
+            data-leaf-path="propertyPack.ownership.ownershipsToBeTransferred[].leaseholdInformation.serviceCharge.lastDecoratedPeriod.internally.to"
             data-overlays="">
           <td>To</td>
           <td><span class="muted">—</span></td>
@@ -1470,7 +1525,8 @@ erDiagram
           <td class="align-center"><span class="muted">—</span></td>
           <td class="overlay-cell"><span class="muted">—</span>          </td>
           <td><span class="muted">—</span>          </td>
-        </tr>        <tr data-leaf-path="propertyPack.ownership.ownershipsToBeTransferred[].leaseholdInformation.serviceCharge.lastDecoratedPeriod.internally.year"
+        </tr>        <tr id="propertypackownershipownershipstobetransferredleaseholdinformationservicechargelastdecoratedperiodinternallyyear"
+            data-leaf-path="propertyPack.ownership.ownershipsToBeTransferred[].leaseholdInformation.serviceCharge.lastDecoratedPeriod.internally.year"
             data-overlays="ta7">
           <td>Year</td>
           <td><span class="muted">—</span></td>
@@ -1483,8 +1539,8 @@ erDiagram
         </tr>      </tbody>
     </table>
   </div></div>      <div class="object-block" id="obj-PropertyPackOwnershipOwnershipsToBeTransferredLeaseholdInformationServiceChargeReserveFundSufficentToCoverSection20Expenditure" data-display-id="sufficenttocoversection20expenditure">
-  <header class="object-block__head">
-    <div class="object-block__title-row">
+  <header class="object-block__head">    <nav class="object-block__breadcrumb" aria-label="Location in the schema">      <a href="#transaction">Transaction</a><span aria-hidden="true"> › </span>      <a href="#propertypack">Property Pack</a><span aria-hidden="true"> › </span>      <a href="#propertypackownership">Ownership</a><span aria-hidden="true"> › </span>      <a href="#propertypackownershipownershipstobetransferred">Ownerships To Be Transferred</a><span aria-hidden="true"> › </span>      <a href="#propertypackownershipownershipstobetransferredleaseholdinformation">Leasehold Information</a><span aria-hidden="true"> › </span>      <a href="#propertypackownershipownershipstobetransferredleaseholdinformationservicecharge">Service Charge</a><span aria-hidden="true"> › </span>      <a href="#propertypackownershipownershipstobetransferredleaseholdinformationservicechargereservefund">Reserve Fund</a><span aria-hidden="true"> › </span>      <span aria-current="location">Sufficent To Cover Section20 Expenditure</span>
+    </nav>    <div class="object-block__title-row">
       <h4 id="propertypackownershipownershipstobetransferredleaseholdinformationservicechargereservefundsufficenttocoversection20expenditure" class="object-block__title" data-display-id="sufficenttocoversection20expenditure">
         <span class="object-block__display">Sufficent To Cover Section20 Expenditure</span>      </h4>
       <code class="object-block__path">propertyPack.ownership.ownershipsToBeTransferred[].leaseholdInformation.serviceCharge.reserveFund.sufficentToCoverSection20Expenditure</code>
@@ -1504,7 +1560,8 @@ erDiagram
           <th style="width: 6rem;">Affordance</th>
         </tr>
       </thead>
-      <tbody>        <tr data-leaf-path="propertyPack.ownership.ownershipsToBeTransferred[].leaseholdInformation.serviceCharge.reserveFund.sufficentToCoverSection20Expenditure.details"
+      <tbody>        <tr id="propertypackownershipownershipstobetransferredleaseholdinformationservicechargereservefundsufficenttocoversection20expendituredetails"
+            data-leaf-path="propertyPack.ownership.ownershipsToBeTransferred[].leaseholdInformation.serviceCharge.reserveFund.sufficentToCoverSection20Expenditure.details"
             data-overlays="lpe1">
           <td>Supply details</td>
           <td><span class="muted">—</span></td>
@@ -1514,7 +1571,8 @@ erDiagram
           <td class="align-center"><span class="muted">—</span></td>
           <td class="overlay-cell">              <div class="overlay-line">Leasehold Property Enquiries Form <span class="overlay-key">(LPE1)</span></div>          </td>
           <td><span class="muted">—</span>          </td>
-        </tr>        <tr data-leaf-path="propertyPack.ownership.ownershipsToBeTransferred[].leaseholdInformation.serviceCharge.reserveFund.sufficentToCoverSection20Expenditure.yesNo"
+        </tr>        <tr id="propertypackownershipownershipstobetransferredleaseholdinformationservicechargereservefundsufficenttocoversection20expenditureyesno"
+            data-leaf-path="propertyPack.ownership.ownershipsToBeTransferred[].leaseholdInformation.serviceCharge.reserveFund.sufficentToCoverSection20Expenditure.yesNo"
             data-overlays="lpe1">
           <td>yesNo</td>
           <td><span class="muted">—</span></td>
@@ -1524,7 +1582,8 @@ erDiagram
           <td class="align-center"><span class="muted">—</span></td>
           <td class="overlay-cell">              <div class="overlay-line">Leasehold Property Enquiries Form <span class="overlay-key">(LPE1)</span></div>          </td>
           <td><span class="muted">—</span>          </td>
-        </tr>        <tr data-leaf-path="propertyPack.ownership.ownershipsToBeTransferred[].leaseholdInformation.serviceCharge.reserveFund.sufficentToCoverSection20Expenditure.yesNo"
+        </tr>        <tr id="propertypackownershipownershipstobetransferredleaseholdinformationservicechargereservefundsufficenttocoversection20expenditureyesno-2"
+            data-leaf-path="propertyPack.ownership.ownershipsToBeTransferred[].leaseholdInformation.serviceCharge.reserveFund.sufficentToCoverSection20Expenditure.yesNo"
             data-overlays="lpe1">
           <td>yesNo</td>
           <td><span class="muted">—</span></td>
@@ -1537,4 +1596,21 @@ erDiagram
         </tr>      </tbody>
     </table>
   </div></div>
+<script slot="scripts" is:inline data-astro-rerun src="/ui/schema-leaf-table.js"></script>
+<script slot="scripts" is:inline data-astro-rerun>
+  if (window._opdaSchemaLeafMount) {
+    document.removeEventListener('astro:page-load', window._opdaSchemaLeafMount);
+  }
+  window._opdaSchemaLeafMount = function () {
+    if (typeof mountLeafTable === 'function') {
+      mountLeafTable({
+        page: '38e6a',
+        showEnvelopes: false,
+        filterButtonId: 'filter-overlay-btn',
+        filterCountId: 'filter-overlay-count'
+      });
+    }
+  };
+  document.addEventListener('astro:page-load', window._opdaSchemaLeafMount);
+</script>
 </Layout>

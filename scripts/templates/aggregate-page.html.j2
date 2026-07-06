@@ -1,13 +1,28 @@
 {#- aggregate-page.html.j2 ─────────────────────────────────────────────
-    Template for the seven aggregate Schema pages: 35, 36, 37, 38, 39,
-    45, 46, 47, 48. (Page 34 uses overview-page.html.j2; page 49 uses
-    crosscut-page.html.j2.)
+    Template for the aggregate Schema pages (slots 35, 36, 37, 38a-38g/38b1-7/
+    38e1-8b/38f1-5, 39a-e/39c1-10/39d1-13, 45, 46, 47, 48). (Page 34 uses
+    overview-page.html.j2; page 49 uses crosscut-page.html.j2.)
+
+    Emits a real .astro file — frontmatter + <Layout>, not a standalone HTML
+    document. Layout.astro already provides design-system.css/tailwind.css,
+    the Tailwind Plus Elements CDN script (<el-popover> etc.), and site-wide
+    client.js — none of that is repeated here. The only page-specific script
+    is schema-leaf-table.js's mountLeafTable(), wired the same
+    data-astro-rerun + astro:page-load pattern used elsewhere on this site so
+    it re-mounts correctly on client-side view-transition navigation, not
+    just on a hard reload.
 
     Context the renderer supplies:
-      page             — { slot, title, voice, prev, next }
+      page             — { slot, id, title, voice, generated_on }
       regions          — { intro, why_this_exists, pull_quote, worked_example,
                            gap_notes, er_diagram, mentioned_but_not_owned }
-      sections         — list of { id, title, leaves } (already grouped + sorted)
+      sections         — list of { id, title, objects } (already grouped + sorted)
+      ancestor_objects — list of object records that render on this page but
+                         don't belong to any of its named sections (the page
+                         root + any ancestor container that exists only so a
+                         deeper section's own prefix has somewhere to live) —
+                         rendered separately, never mislabeled under a real
+                         section's heading (2026-07-06 design critique fix).
       stats            — { total, decl_pct, evid_pct, deriv_pct,
                            with_overlays, with_examples, envelope_total }
       show_envelopes   — bool, True only when page.slot == "48"
@@ -21,28 +36,20 @@
 {%- import "_macros/pull-quote.html.j2" as pq -%}
 {%- import "_macros/object-table.html.j2" as ot -%}
 {%- import "_macros/er-diagram.html.j2" as er -%}
-<!doctype html>
-<html lang="en">
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Schema · {{ page.title|e }} · OPDA Knowledge Base</title>
-  <meta name="description" content="{{ regions.intro_plain|default(page.title, true)|e }}">
-  <link rel="stylesheet" href="/ui/design-system.css">
-  <link rel="stylesheet" href="/ui/tailwind.built.css">
-  {# Tailwind Plus Elements — vanilla custom elements (<el-popover>, etc.)
-     used by the Object-model header buttongroup popovers. Licensed via
-     Tailwind Plus subscription. #}
-  <script src="https://cdn.jsdelivr.net/npm/@tailwindplus/elements@1" type="module"></script>
-</head>
-<body>
-  <div id="app">
-    <article class="prose wide">
-
+---
+import Layout from '@/layouts/Layout.astro';
+---
+<Layout
+  title={{ ("Schema · " ~ page.title)|astro_str }}
+  description={{ regions.intro_plain|default(page.title, true)|astro_str }}
+>
       <div class="page-meta">
         <span class="pill pill--info">Schema</span>
         <span>Page {{ page.slot }}</span>
         <span>Generated {{ page.generated_on }}</span>
+        {%- if page.dama_ka %}
+        <span title="DAMA-DMBOK2 Knowledge Area — per ADR-0001">DAMA · {{ page.dama_ka|join(' · ')|e }}</span>
+        {%- endif %}
       </div>
 
       <h1>{{ page.title }}</h1>
@@ -132,6 +139,18 @@
         </el-popover-group>
       </div>
 
+      {%- if ancestor_objects %}
+      {# Ancestor containers (the page root, and any object that exists only
+         so a deeper section's own prefix has somewhere to live) — deliberately
+         NOT filed under any real section's heading, which used to misrepresent
+         that section's own contents (e.g. "Address" opening with Transaction
+         and Property Pack object blocks that have nothing to do with address). #}
+      <p class="muted tiny object-ancestors-note">Parent containers — shown for reference; their own content lives in the sections below.</p>
+      {%- for obj in ancestor_objects %}
+      {{ ot.object_table(obj, show_envelopes) }}
+      {%- endfor %}
+      {%- endif %}
+
       {%- for section in sections %}
       {%- if section.objects %}
       <h3 id="{{ section.id }}">{{ section.title }}</h3>
@@ -155,20 +174,12 @@
       </aside>
       {%- endif %}
 
-      <div class="page-footer">
-        {%- if page.prev %}<a href="{{ page.prev.file }}">← {{ page.prev.title }}</a>{%- else %}<span></span>{%- endif %}
-        {%- if page.next %}<a href="{{ page.next.file }}">{{ page.next.title }} →</a>{%- else %}<span></span>{%- endif %}
-      </div>
-
-    </article>
-  </div>
-
-  <script src="/ui/site.js"></script>
-  <script src="/ui/schema-leaf-table.js"></script>
-  <script>
-    if (window.OPDA && typeof OPDA.init === 'function') {
-      OPDA.init({ page: '{{ page.id }}' });
-    }
+<script slot="scripts" is:inline data-astro-rerun src="/ui/schema-leaf-table.js"></script>
+<script slot="scripts" is:inline data-astro-rerun>
+  if (window._opdaSchemaLeafMount) {
+    document.removeEventListener('astro:page-load', window._opdaSchemaLeafMount);
+  }
+  window._opdaSchemaLeafMount = function () {
     if (typeof mountLeafTable === 'function') {
       mountLeafTable({
         page: '{{ page.slot }}',
@@ -177,6 +188,7 @@
         filterCountId: 'filter-overlay-count'
       });
     }
-  </script>
-</body>
-</html>
+  };
+  document.addEventListener('astro:page-load', window._opdaSchemaLeafMount);
+</script>
+</Layout>

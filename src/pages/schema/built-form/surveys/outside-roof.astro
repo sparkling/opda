@@ -5,12 +5,10 @@ import Layout from '@/layouts/Layout.astro';
   title="Schema · Surveys · outside · chimneys, roof, rainwater"
   description="Surveys · outside · chimneys, roof, rainwater"
 >
-<div class="page-meta">
+      <div class="page-meta">
         <span class="pill pill--info">Schema</span>
         <span>Page 39d6</span>
-        <span>Generated 2026-05-17</span>
-        <span title="DAMA-DMBOK2 Knowledge Area — per ADR-0001">DAMA · Data Modeling &amp; Design</span>
-      </div>
+        <span>Generated 2026-07-06</span>        <span title="DAMA-DMBOK2 Knowledge Area — per ADR-0001">DAMA · Data Modeling &amp; Design</span>      </div>
 
       <h1>Surveys · outside · chimneys, roof, rainwater</h1>
 
@@ -152,9 +150,8 @@ erDiagram
                       class="mt-2 rounded-md bg-[var(--button-bg)] outline-1 outline-[var(--ring-subtle)] shadow-lg p-5 transition transition-discrete data-closed:opacity-0 data-closed:scale-95 data-enter:duration-100 data-enter:ease-out data-leave:duration-75 data-leave:ease-in">
           </el-popover>
         </el-popover-group>
-      </div>      <h3 id="surv_outside_roof">Outside · chimneys, roof, rainwater</h3>      <div class="object-block" id="obj-Transaction" data-display-id="transaction">
-  <header class="object-block__head">
-    <div class="object-block__title-row">
+      </div>      <p class="muted tiny object-ancestors-note">Parent containers — shown for reference; their own content lives in the sections below.</p>      <div class="object-block" id="obj-Transaction" data-display-id="transaction">
+  <header class="object-block__head">    <div class="object-block__title-row">
       <h4 id="transaction" class="object-block__title" data-display-id="transaction">
         <span class="object-block__display">Transaction</span>      </h4>
       <code class="object-block__path">transaction (root)</code>
@@ -167,8 +164,8 @@ erDiagram
           <span>Property Pack</span>
         </a>
       </li>    </ul>  </header>  <p class="muted tiny">No scalar fields on this object — pure container.</p></div>      <div class="object-block" id="obj-PropertyPack" data-display-id="propertypack">
-  <header class="object-block__head">
-    <div class="object-block__title-row">
+  <header class="object-block__head">    <nav class="object-block__breadcrumb" aria-label="Location in the schema">      <a href="#transaction">Transaction</a><span aria-hidden="true"> › </span>      <span aria-current="location">Property Pack</span>
+    </nav>    <div class="object-block__title-row">
       <h4 id="propertypack" class="object-block__title" data-display-id="propertypack">
         <span class="object-block__display">Property Pack</span>      </h4>
       <code class="object-block__path">propertyPack</code>
@@ -181,8 +178,8 @@ erDiagram
           <span>Surveys[]</span>
         </a>
       </li>    </ul>  </header>  <p class="muted tiny">No scalar fields on this object — pure container.</p></div>      <div class="object-block" id="obj-PropertyPackSurvey" data-display-id="survey">
-  <header class="object-block__head">
-    <div class="object-block__title-row">
+  <header class="object-block__head">    <nav class="object-block__breadcrumb" aria-label="Location in the schema">      <a href="#transaction">Transaction</a><span aria-hidden="true"> › </span>      <a href="#propertypack">Property Pack</a><span aria-hidden="true"> › </span>      <span aria-current="location">Surveys</span>
+    </nav>    <div class="object-block__title-row">
       <h4 id="propertypacksurvey" class="object-block__title" data-display-id="survey">
         <span class="object-block__display">Surveys</span><span class="object-block__cardinality" title="array of objects">[]</span>      </h4>
       <code class="object-block__path">propertyPack.surveys[]</code>
@@ -195,8 +192,8 @@ erDiagram
           <span>Outside</span>
         </a>
       </li>    </ul>  </header>  <p class="muted tiny">No scalar fields on this object — pure container.</p></div>      <div class="object-block" id="obj-PropertyPackSurveysOutside" data-display-id="outside">
-  <header class="object-block__head">
-    <div class="object-block__title-row">
+  <header class="object-block__head">    <nav class="object-block__breadcrumb" aria-label="Location in the schema">      <a href="#transaction">Transaction</a><span aria-hidden="true"> › </span>      <a href="#propertypack">Property Pack</a><span aria-hidden="true"> › </span>      <a href="#propertypacksurvey">Surveys</a><span aria-hidden="true"> › </span>      <span aria-current="location">Outside</span>
+    </nav>    <div class="object-block__title-row">
       <h4 id="propertypacksurveysoutside" class="object-block__title" data-display-id="outside">
         <span class="object-block__display">Outside</span>      </h4>
       <code class="object-block__path">propertyPack.surveys[].outside</code>
@@ -224,9 +221,9 @@ erDiagram
           </svg>
           <span>Rainwater Pipes Gutters</span>
         </a>
-      </li>    </ul>  </header>  <p class="muted tiny">No scalar fields on this object — pure container.</p></div>      <div class="object-block" id="obj-PropertyPackSurveysOutsideChimneyStacks" data-display-id="chimneystacks">
-  <header class="object-block__head">
-    <div class="object-block__title-row">
+      </li>    </ul>  </header>  <p class="muted tiny">No scalar fields on this object — pure container.</p></div>      <h3 id="surv_outside_roof">Outside · chimneys, roof, rainwater</h3>      <div class="object-block" id="obj-PropertyPackSurveysOutsideChimneyStacks" data-display-id="chimneystacks">
+  <header class="object-block__head">    <nav class="object-block__breadcrumb" aria-label="Location in the schema">      <a href="#transaction">Transaction</a><span aria-hidden="true"> › </span>      <a href="#propertypack">Property Pack</a><span aria-hidden="true"> › </span>      <a href="#propertypacksurvey">Surveys</a><span aria-hidden="true"> › </span>      <a href="#propertypacksurveysoutside">Outside</a><span aria-hidden="true"> › </span>      <span aria-current="location">Chimney Stacks</span>
+    </nav>    <div class="object-block__title-row">
       <h4 id="propertypacksurveysoutsidechimneystacks" class="object-block__title" data-display-id="chimneystacks">
         <span class="object-block__display">Chimney Stacks</span>      </h4>
       <code class="object-block__path">propertyPack.surveys[].outside.chimneyStacks</code>
@@ -254,7 +251,8 @@ erDiagram
           <th style="width: 6rem;">Affordance</th>
         </tr>
       </thead>
-      <tbody>        <tr data-leaf-path="propertyPack.surveys[].outside.chimneyStacks.advisories"
+      <tbody>        <tr id="propertypacksurveysoutsidechimneystacksadvisories"
+            data-leaf-path="propertyPack.surveys[].outside.chimneyStacks.advisories"
             data-overlays="">
           <td>advisories</td>
           <td><span class="muted">—</span></td>
@@ -264,7 +262,8 @@ erDiagram
           <td class="align-center"><span class="muted">—</span></td>
           <td class="overlay-cell"><span class="muted">—</span>          </td>
           <td><span class="muted">—</span>          </td>
-        </tr>        <tr data-leaf-path="propertyPack.surveys[].outside.chimneyStacks.condition"
+        </tr>        <tr id="propertypacksurveysoutsidechimneystackscondition"
+            data-leaf-path="propertyPack.surveys[].outside.chimneyStacks.condition"
             data-overlays="">
           <td>condition</td>
           <td><span class="muted">—</span></td>
@@ -274,7 +273,8 @@ erDiagram
           <td class="align-center"><span class="muted">—</span></td>
           <td class="overlay-cell"><span class="muted">—</span>          </td>
           <td><span class="muted">—</span>          </td>
-        </tr>        <tr data-leaf-path="propertyPack.surveys[].outside.chimneyStacks.defects"
+        </tr>        <tr id="propertypacksurveysoutsidechimneystacksdefects"
+            data-leaf-path="propertyPack.surveys[].outside.chimneyStacks.defects"
             data-overlays="">
           <td>defects</td>
           <td><span class="muted">—</span></td>
@@ -284,7 +284,8 @@ erDiagram
           <td class="align-center"><span class="muted">—</span></td>
           <td class="overlay-cell"><span class="muted">—</span>          </td>
           <td><span class="muted">—</span>          </td>
-        </tr>        <tr data-leaf-path="propertyPack.surveys[].outside.chimneyStacks.defectsFlag"
+        </tr>        <tr id="propertypacksurveysoutsidechimneystacksdefectsflag"
+            data-leaf-path="propertyPack.surveys[].outside.chimneyStacks.defectsFlag"
             data-overlays="">
           <td>defectsFlag</td>
           <td><span class="muted">—</span></td>
@@ -294,7 +295,8 @@ erDiagram
           <td class="align-center"><span class="muted">—</span></td>
           <td class="overlay-cell"><span class="muted">—</span>          </td>
           <td><span class="muted">—</span>          </td>
-        </tr>        <tr data-leaf-path="propertyPack.surveys[].outside.chimneyStacks.defectsList"
+        </tr>        <tr id="propertypacksurveysoutsidechimneystacksdefectslist"
+            data-leaf-path="propertyPack.surveys[].outside.chimneyStacks.defectsList"
             data-overlays="">
           <td>defectsList</td>
           <td><span class="muted">—</span></td>
@@ -304,7 +306,8 @@ erDiagram
           <td class="align-center"><span class="muted">—</span></td>
           <td class="overlay-cell"><span class="muted">—</span>          </td>
           <td><span class="muted">—</span>          </td>
-        </tr>        <tr data-leaf-path="propertyPack.surveys[].outside.chimneyStacks.description"
+        </tr>        <tr id="propertypacksurveysoutsidechimneystacksdescription"
+            data-leaf-path="propertyPack.surveys[].outside.chimneyStacks.description"
             data-overlays="">
           <td>description</td>
           <td><span class="muted">—</span></td>
@@ -314,7 +317,8 @@ erDiagram
           <td class="align-center"><span class="muted">—</span></td>
           <td class="overlay-cell"><span class="muted">—</span>          </td>
           <td><span class="muted">—</span>          </td>
-        </tr>        <tr data-leaf-path="propertyPack.surveys[].outside.chimneyStacks.flashings"
+        </tr>        <tr id="propertypacksurveysoutsidechimneystacksflashings"
+            data-leaf-path="propertyPack.surveys[].outside.chimneyStacks.flashings"
             data-overlays="">
           <td>flashings</td>
           <td><span class="muted">—</span></td>
@@ -324,7 +328,8 @@ erDiagram
           <td class="align-center"><span class="muted">—</span></td>
           <td class="overlay-cell"><span class="muted">—</span>          </td>
           <td><span class="muted">—</span>          </td>
-        </tr>        <tr data-leaf-path="propertyPack.surveys[].outside.chimneyStacks.inspectionLimitations"
+        </tr>        <tr id="propertypacksurveysoutsidechimneystacksinspectionlimitations"
+            data-leaf-path="propertyPack.surveys[].outside.chimneyStacks.inspectionLimitations"
             data-overlays="">
           <td>inspectionLimitations</td>
           <td><span class="muted">—</span></td>
@@ -334,7 +339,8 @@ erDiagram
           <td class="align-center"><span class="muted">—</span></td>
           <td class="overlay-cell"><span class="muted">—</span>          </td>
           <td><span class="muted">—</span>          </td>
-        </tr>        <tr data-leaf-path="propertyPack.surveys[].outside.chimneyStacks.notes"
+        </tr>        <tr id="propertypacksurveysoutsidechimneystacksnotes"
+            data-leaf-path="propertyPack.surveys[].outside.chimneyStacks.notes"
             data-overlays="">
           <td>notes</td>
           <td><span class="muted">—</span></td>
@@ -344,7 +350,8 @@ erDiagram
           <td class="align-center"><span class="muted">—</span></td>
           <td class="overlay-cell"><span class="muted">—</span>          </td>
           <td><span class="muted">—</span>          </td>
-        </tr>        <tr data-leaf-path="propertyPack.surveys[].outside.chimneyStacks.visibility"
+        </tr>        <tr id="propertypacksurveysoutsidechimneystacksvisibility"
+            data-leaf-path="propertyPack.surveys[].outside.chimneyStacks.visibility"
             data-overlays="">
           <td>visibility</td>
           <td><span class="muted">—</span></td>
@@ -354,7 +361,8 @@ erDiagram
           <td class="align-center"><span class="muted">—</span></td>
           <td class="overlay-cell"><span class="muted">—</span>          </td>
           <td><span class="muted">—</span>          </td>
-        </tr>        <tr data-leaf-path="propertyPack.surveys[].outside.chimneyStacks.visibilityRestriction"
+        </tr>        <tr id="propertypacksurveysoutsidechimneystacksvisibilityrestriction"
+            data-leaf-path="propertyPack.surveys[].outside.chimneyStacks.visibilityRestriction"
             data-overlays="">
           <td>visibilityRestriction</td>
           <td><span class="muted">—</span></td>
@@ -367,8 +375,8 @@ erDiagram
         </tr>      </tbody>
     </table>
   </div></div>      <div class="object-block" id="obj-PropertyPackSurveysOutsideRainwaterPipesGutters" data-display-id="rainwaterpipesgutters">
-  <header class="object-block__head">
-    <div class="object-block__title-row">
+  <header class="object-block__head">    <nav class="object-block__breadcrumb" aria-label="Location in the schema">      <a href="#transaction">Transaction</a><span aria-hidden="true"> › </span>      <a href="#propertypack">Property Pack</a><span aria-hidden="true"> › </span>      <a href="#propertypacksurvey">Surveys</a><span aria-hidden="true"> › </span>      <a href="#propertypacksurveysoutside">Outside</a><span aria-hidden="true"> › </span>      <span aria-current="location">Rainwater Pipes Gutters</span>
+    </nav>    <div class="object-block__title-row">
       <h4 id="propertypacksurveysoutsiderainwaterpipesgutters" class="object-block__title" data-display-id="rainwaterpipesgutters">
         <span class="object-block__display">Rainwater Pipes Gutters</span>      </h4>
       <code class="object-block__path">propertyPack.surveys[].outside.rainwaterPipesGutters</code>
@@ -396,7 +404,8 @@ erDiagram
           <th style="width: 6rem;">Affordance</th>
         </tr>
       </thead>
-      <tbody>        <tr data-leaf-path="propertyPack.surveys[].outside.rainwaterPipesGutters.advisories"
+      <tbody>        <tr id="propertypacksurveysoutsiderainwaterpipesguttersadvisories"
+            data-leaf-path="propertyPack.surveys[].outside.rainwaterPipesGutters.advisories"
             data-overlays="">
           <td>advisories</td>
           <td><span class="muted">—</span></td>
@@ -406,7 +415,8 @@ erDiagram
           <td class="align-center"><span class="muted">—</span></td>
           <td class="overlay-cell"><span class="muted">—</span>          </td>
           <td><span class="muted">—</span>          </td>
-        </tr>        <tr data-leaf-path="propertyPack.surveys[].outside.rainwaterPipesGutters.condition"
+        </tr>        <tr id="propertypacksurveysoutsiderainwaterpipesgutterscondition"
+            data-leaf-path="propertyPack.surveys[].outside.rainwaterPipesGutters.condition"
             data-overlays="">
           <td>condition</td>
           <td><span class="muted">—</span></td>
@@ -416,7 +426,8 @@ erDiagram
           <td class="align-center"><span class="muted">—</span></td>
           <td class="overlay-cell"><span class="muted">—</span>          </td>
           <td><span class="muted">—</span>          </td>
-        </tr>        <tr data-leaf-path="propertyPack.surveys[].outside.rainwaterPipesGutters.defects"
+        </tr>        <tr id="propertypacksurveysoutsiderainwaterpipesguttersdefects"
+            data-leaf-path="propertyPack.surveys[].outside.rainwaterPipesGutters.defects"
             data-overlays="">
           <td>defects</td>
           <td><span class="muted">—</span></td>
@@ -426,7 +437,8 @@ erDiagram
           <td class="align-center"><span class="muted">—</span></td>
           <td class="overlay-cell"><span class="muted">—</span>          </td>
           <td><span class="muted">—</span>          </td>
-        </tr>        <tr data-leaf-path="propertyPack.surveys[].outside.rainwaterPipesGutters.description"
+        </tr>        <tr id="propertypacksurveysoutsiderainwaterpipesguttersdescription"
+            data-leaf-path="propertyPack.surveys[].outside.rainwaterPipesGutters.description"
             data-overlays="">
           <td>description</td>
           <td><span class="muted">—</span></td>
@@ -436,7 +448,8 @@ erDiagram
           <td class="align-center"><span class="muted">—</span></td>
           <td class="overlay-cell"><span class="muted">—</span>          </td>
           <td><span class="muted">—</span>          </td>
-        </tr>        <tr data-leaf-path="propertyPack.surveys[].outside.rainwaterPipesGutters.downpipeDefect"
+        </tr>        <tr id="propertypacksurveysoutsiderainwaterpipesguttersdownpipedefect"
+            data-leaf-path="propertyPack.surveys[].outside.rainwaterPipesGutters.downpipeDefect"
             data-overlays="">
           <td>downpipeDefect</td>
           <td><span class="muted">—</span></td>
@@ -446,7 +459,8 @@ erDiagram
           <td class="align-center"><span class="muted">—</span></td>
           <td class="overlay-cell"><span class="muted">—</span>          </td>
           <td><span class="muted">—</span>          </td>
-        </tr>        <tr data-leaf-path="propertyPack.surveys[].outside.rainwaterPipesGutters.downpipeDescription"
+        </tr>        <tr id="propertypacksurveysoutsiderainwaterpipesguttersdownpipedescription"
+            data-leaf-path="propertyPack.surveys[].outside.rainwaterPipesGutters.downpipeDescription"
             data-overlays="">
           <td>downpipeDescription</td>
           <td><span class="muted">—</span></td>
@@ -456,7 +470,8 @@ erDiagram
           <td class="align-center"><span class="muted">—</span></td>
           <td class="overlay-cell"><span class="muted">—</span>          </td>
           <td><span class="muted">—</span>          </td>
-        </tr>        <tr data-leaf-path="propertyPack.surveys[].outside.rainwaterPipesGutters.features"
+        </tr>        <tr id="propertypacksurveysoutsiderainwaterpipesguttersfeatures"
+            data-leaf-path="propertyPack.surveys[].outside.rainwaterPipesGutters.features"
             data-overlays="">
           <td>features</td>
           <td><span class="muted">—</span></td>
@@ -466,7 +481,8 @@ erDiagram
           <td class="align-center"><span class="muted">—</span></td>
           <td class="overlay-cell"><span class="muted">—</span>          </td>
           <td><span class="muted">—</span>          </td>
-        </tr>        <tr data-leaf-path="propertyPack.surveys[].outside.rainwaterPipesGutters.gutterDefect"
+        </tr>        <tr id="propertypacksurveysoutsiderainwaterpipesguttersgutterdefect"
+            data-leaf-path="propertyPack.surveys[].outside.rainwaterPipesGutters.gutterDefect"
             data-overlays="">
           <td>gutterDefect</td>
           <td><span class="muted">—</span></td>
@@ -476,7 +492,8 @@ erDiagram
           <td class="align-center"><span class="muted">—</span></td>
           <td class="overlay-cell"><span class="muted">—</span>          </td>
           <td><span class="muted">—</span>          </td>
-        </tr>        <tr data-leaf-path="propertyPack.surveys[].outside.rainwaterPipesGutters.gutterDescription"
+        </tr>        <tr id="propertypacksurveysoutsiderainwaterpipesguttersgutterdescription"
+            data-leaf-path="propertyPack.surveys[].outside.rainwaterPipesGutters.gutterDescription"
             data-overlays="">
           <td>gutterDescription</td>
           <td><span class="muted">—</span></td>
@@ -486,7 +503,8 @@ erDiagram
           <td class="align-center"><span class="muted">—</span></td>
           <td class="overlay-cell"><span class="muted">—</span>          </td>
           <td><span class="muted">—</span>          </td>
-        </tr>        <tr data-leaf-path="propertyPack.surveys[].outside.rainwaterPipesGutters.gutterIssueLocation"
+        </tr>        <tr id="propertypacksurveysoutsiderainwaterpipesguttersgutterissuelocation"
+            data-leaf-path="propertyPack.surveys[].outside.rainwaterPipesGutters.gutterIssueLocation"
             data-overlays="">
           <td>gutterIssueLocation</td>
           <td><span class="muted">—</span></td>
@@ -496,7 +514,8 @@ erDiagram
           <td class="align-center"><span class="muted">—</span></td>
           <td class="overlay-cell"><span class="muted">—</span>          </td>
           <td><span class="muted">—</span>          </td>
-        </tr>        <tr data-leaf-path="propertyPack.surveys[].outside.rainwaterPipesGutters.gutterIssues"
+        </tr>        <tr id="propertypacksurveysoutsiderainwaterpipesguttersgutterissues"
+            data-leaf-path="propertyPack.surveys[].outside.rainwaterPipesGutters.gutterIssues"
             data-overlays="">
           <td>gutterIssues</td>
           <td>Boolean flag: gutter issue.</td>
@@ -506,7 +525,8 @@ erDiagram
           <td class="align-center"><span class="muted">—</span></td>
           <td class="overlay-cell"><span class="muted">—</span>          </td>
           <td><span class="muted">—</span>          </td>
-        </tr>        <tr data-leaf-path="propertyPack.surveys[].outside.rainwaterPipesGutters.hopperHeadDefect"
+        </tr>        <tr id="propertypacksurveysoutsiderainwaterpipesguttershopperheaddefect"
+            data-leaf-path="propertyPack.surveys[].outside.rainwaterPipesGutters.hopperHeadDefect"
             data-overlays="">
           <td>hopperHeadDefect</td>
           <td><span class="muted">—</span></td>
@@ -516,7 +536,8 @@ erDiagram
           <td class="align-center"><span class="muted">—</span></td>
           <td class="overlay-cell"><span class="muted">—</span>          </td>
           <td><span class="muted">—</span>          </td>
-        </tr>        <tr data-leaf-path="propertyPack.surveys[].outside.rainwaterPipesGutters.hopperHeadDescription"
+        </tr>        <tr id="propertypacksurveysoutsiderainwaterpipesguttershopperheaddescription"
+            data-leaf-path="propertyPack.surveys[].outside.rainwaterPipesGutters.hopperHeadDescription"
             data-overlays="">
           <td>hopperHeadDescription</td>
           <td><span class="muted">—</span></td>
@@ -526,7 +547,8 @@ erDiagram
           <td class="align-center"><span class="muted">—</span></td>
           <td class="overlay-cell"><span class="muted">—</span>          </td>
           <td><span class="muted">—</span>          </td>
-        </tr>        <tr data-leaf-path="propertyPack.surveys[].outside.rainwaterPipesGutters.inspectionLimitations"
+        </tr>        <tr id="propertypacksurveysoutsiderainwaterpipesguttersinspectionlimitations"
+            data-leaf-path="propertyPack.surveys[].outside.rainwaterPipesGutters.inspectionLimitations"
             data-overlays="">
           <td>inspectionLimitations</td>
           <td><span class="muted">—</span></td>
@@ -536,7 +558,8 @@ erDiagram
           <td class="align-center"><span class="muted">—</span></td>
           <td class="overlay-cell"><span class="muted">—</span>          </td>
           <td><span class="muted">—</span>          </td>
-        </tr>        <tr data-leaf-path="propertyPack.surveys[].outside.rainwaterPipesGutters.notes"
+        </tr>        <tr id="propertypacksurveysoutsiderainwaterpipesguttersnotes"
+            data-leaf-path="propertyPack.surveys[].outside.rainwaterPipesGutters.notes"
             data-overlays="">
           <td>notes</td>
           <td><span class="muted">—</span></td>
@@ -546,7 +569,8 @@ erDiagram
           <td class="align-center"><span class="muted">—</span></td>
           <td class="overlay-cell"><span class="muted">—</span>          </td>
           <td><span class="muted">—</span>          </td>
-        </tr>        <tr data-leaf-path="propertyPack.surveys[].outside.rainwaterPipesGutters.restrictions"
+        </tr>        <tr id="propertypacksurveysoutsiderainwaterpipesguttersrestrictions"
+            data-leaf-path="propertyPack.surveys[].outside.rainwaterPipesGutters.restrictions"
             data-overlays="">
           <td>restrictions</td>
           <td><span class="muted">—</span></td>
@@ -556,7 +580,8 @@ erDiagram
           <td class="align-center"><span class="muted">—</span></td>
           <td class="overlay-cell"><span class="muted">—</span>          </td>
           <td><span class="muted">—</span>          </td>
-        </tr>        <tr data-leaf-path="propertyPack.surveys[].outside.rainwaterPipesGutters.visibility"
+        </tr>        <tr id="propertypacksurveysoutsiderainwaterpipesguttersvisibility"
+            data-leaf-path="propertyPack.surveys[].outside.rainwaterPipesGutters.visibility"
             data-overlays="">
           <td>visibility</td>
           <td><span class="muted">—</span></td>
@@ -569,8 +594,8 @@ erDiagram
         </tr>      </tbody>
     </table>
   </div></div>      <div class="object-block" id="obj-PropertyPackSurveysOutsideRoofCoverings" data-display-id="roofcoverings">
-  <header class="object-block__head">
-    <div class="object-block__title-row">
+  <header class="object-block__head">    <nav class="object-block__breadcrumb" aria-label="Location in the schema">      <a href="#transaction">Transaction</a><span aria-hidden="true"> › </span>      <a href="#propertypack">Property Pack</a><span aria-hidden="true"> › </span>      <a href="#propertypacksurvey">Surveys</a><span aria-hidden="true"> › </span>      <a href="#propertypacksurveysoutside">Outside</a><span aria-hidden="true"> › </span>      <span aria-current="location">Roof Coverings</span>
+    </nav>    <div class="object-block__title-row">
       <h4 id="propertypacksurveysoutsideroofcoverings" class="object-block__title" data-display-id="roofcoverings">
         <span class="object-block__display">Roof Coverings</span>      </h4>
       <code class="object-block__path">propertyPack.surveys[].outside.roofCoverings</code>
@@ -598,7 +623,8 @@ erDiagram
           <th style="width: 6rem;">Affordance</th>
         </tr>
       </thead>
-      <tbody>        <tr data-leaf-path="propertyPack.surveys[].outside.roofCoverings.additionalDetail"
+      <tbody>        <tr id="propertypacksurveysoutsideroofcoveringsadditionaldetail"
+            data-leaf-path="propertyPack.surveys[].outside.roofCoverings.additionalDetail"
             data-overlays="">
           <td>additionalDetail</td>
           <td><span class="muted">—</span></td>
@@ -608,7 +634,8 @@ erDiagram
           <td class="align-center"><span class="muted">—</span></td>
           <td class="overlay-cell"><span class="muted">—</span>          </td>
           <td><span class="muted">—</span>          </td>
-        </tr>        <tr data-leaf-path="propertyPack.surveys[].outside.roofCoverings.additionalFeatures"
+        </tr>        <tr id="propertypacksurveysoutsideroofcoveringsadditionalfeatures"
+            data-leaf-path="propertyPack.surveys[].outside.roofCoverings.additionalFeatures"
             data-overlays="">
           <td>additionalFeatures</td>
           <td><span class="muted">—</span></td>
@@ -618,7 +645,8 @@ erDiagram
           <td class="align-center"><span class="muted">—</span></td>
           <td class="overlay-cell"><span class="muted">—</span>          </td>
           <td><span class="muted">—</span>          </td>
-        </tr>        <tr data-leaf-path="propertyPack.surveys[].outside.roofCoverings.additionalFlatDefects"
+        </tr>        <tr id="propertypacksurveysoutsideroofcoveringsadditionalflatdefects"
+            data-leaf-path="propertyPack.surveys[].outside.roofCoverings.additionalFlatDefects"
             data-overlays="">
           <td>additionalFlatDefects</td>
           <td>Boolean flag: additional flat defect.</td>
@@ -628,7 +656,8 @@ erDiagram
           <td class="align-center"><span class="muted">—</span></td>
           <td class="overlay-cell"><span class="muted">—</span>          </td>
           <td><span class="muted">—</span>          </td>
-        </tr>        <tr data-leaf-path="propertyPack.surveys[].outside.roofCoverings.additionalFlatDefectsDetail"
+        </tr>        <tr id="propertypacksurveysoutsideroofcoveringsadditionalflatdefectsdetail"
+            data-leaf-path="propertyPack.surveys[].outside.roofCoverings.additionalFlatDefectsDetail"
             data-overlays="">
           <td>additionalFlatDefectsDetail</td>
           <td><span class="muted">—</span></td>
@@ -638,7 +667,8 @@ erDiagram
           <td class="align-center"><span class="muted">—</span></td>
           <td class="overlay-cell"><span class="muted">—</span>          </td>
           <td><span class="muted">—</span>          </td>
-        </tr>        <tr data-leaf-path="propertyPack.surveys[].outside.roofCoverings.additionalPitchedCovering"
+        </tr>        <tr id="propertypacksurveysoutsideroofcoveringsadditionalpitchedcovering"
+            data-leaf-path="propertyPack.surveys[].outside.roofCoverings.additionalPitchedCovering"
             data-overlays="">
           <td>additionalPitchedCovering</td>
           <td><span class="muted">—</span></td>
@@ -648,7 +678,8 @@ erDiagram
           <td class="align-center"><span class="muted">—</span></td>
           <td class="overlay-cell"><span class="muted">—</span>          </td>
           <td><span class="muted">—</span>          </td>
-        </tr>        <tr data-leaf-path="propertyPack.surveys[].outside.roofCoverings.additionalPitchedDefects"
+        </tr>        <tr id="propertypacksurveysoutsideroofcoveringsadditionalpitcheddefects"
+            data-leaf-path="propertyPack.surveys[].outside.roofCoverings.additionalPitchedDefects"
             data-overlays="">
           <td>additionalPitchedDefects</td>
           <td>Boolean flag: additional pitched defect.</td>
@@ -658,7 +689,8 @@ erDiagram
           <td class="align-center"><span class="muted">—</span></td>
           <td class="overlay-cell"><span class="muted">—</span>          </td>
           <td><span class="muted">—</span>          </td>
-        </tr>        <tr data-leaf-path="propertyPack.surveys[].outside.roofCoverings.additionalPitchedDefectsDetail"
+        </tr>        <tr id="propertypacksurveysoutsideroofcoveringsadditionalpitcheddefectsdetail"
+            data-leaf-path="propertyPack.surveys[].outside.roofCoverings.additionalPitchedDefectsDetail"
             data-overlays="">
           <td>additionalPitchedDefectsDetail</td>
           <td><span class="muted">—</span></td>
@@ -668,7 +700,8 @@ erDiagram
           <td class="align-center"><span class="muted">—</span></td>
           <td class="overlay-cell"><span class="muted">—</span>          </td>
           <td><span class="muted">—</span>          </td>
-        </tr>        <tr data-leaf-path="propertyPack.surveys[].outside.roofCoverings.additionalPitchedFeatures"
+        </tr>        <tr id="propertypacksurveysoutsideroofcoveringsadditionalpitchedfeatures"
+            data-leaf-path="propertyPack.surveys[].outside.roofCoverings.additionalPitchedFeatures"
             data-overlays="">
           <td>additionalPitchedFeatures</td>
           <td><span class="muted">—</span></td>
@@ -678,7 +711,8 @@ erDiagram
           <td class="align-center"><span class="muted">—</span></td>
           <td class="overlay-cell"><span class="muted">—</span>          </td>
           <td><span class="muted">—</span>          </td>
-        </tr>        <tr data-leaf-path="propertyPack.surveys[].outside.roofCoverings.advisories"
+        </tr>        <tr id="propertypacksurveysoutsideroofcoveringsadvisories"
+            data-leaf-path="propertyPack.surveys[].outside.roofCoverings.advisories"
             data-overlays="">
           <td>advisories</td>
           <td><span class="muted">—</span></td>
@@ -688,7 +722,8 @@ erDiagram
           <td class="align-center"><span class="muted">—</span></td>
           <td class="overlay-cell"><span class="muted">—</span>          </td>
           <td><span class="muted">—</span>          </td>
-        </tr>        <tr data-leaf-path="propertyPack.surveys[].outside.roofCoverings.bay"
+        </tr>        <tr id="propertypacksurveysoutsideroofcoveringsbay"
+            data-leaf-path="propertyPack.surveys[].outside.roofCoverings.bay"
             data-overlays="">
           <td>bay</td>
           <td><span class="muted">—</span></td>
@@ -698,7 +733,8 @@ erDiagram
           <td class="align-center"><span class="muted">—</span></td>
           <td class="overlay-cell"><span class="muted">—</span>          </td>
           <td><span class="muted">—</span>          </td>
-        </tr>        <tr data-leaf-path="propertyPack.surveys[].outside.roofCoverings.bayDefects"
+        </tr>        <tr id="propertypacksurveysoutsideroofcoveringsbaydefects"
+            data-leaf-path="propertyPack.surveys[].outside.roofCoverings.bayDefects"
             data-overlays="">
           <td>bayDefects</td>
           <td>Boolean flag: bay defect.</td>
@@ -708,7 +744,8 @@ erDiagram
           <td class="align-center"><span class="muted">—</span></td>
           <td class="overlay-cell"><span class="muted">—</span>          </td>
           <td><span class="muted">—</span>          </td>
-        </tr>        <tr data-leaf-path="propertyPack.surveys[].outside.roofCoverings.bayDefectsDetail"
+        </tr>        <tr id="propertypacksurveysoutsideroofcoveringsbaydefectsdetail"
+            data-leaf-path="propertyPack.surveys[].outside.roofCoverings.bayDefectsDetail"
             data-overlays="">
           <td>bayDefectsDetail</td>
           <td><span class="muted">—</span></td>
@@ -718,7 +755,8 @@ erDiagram
           <td class="align-center"><span class="muted">—</span></td>
           <td class="overlay-cell"><span class="muted">—</span>          </td>
           <td><span class="muted">—</span>          </td>
-        </tr>        <tr data-leaf-path="propertyPack.surveys[].outside.roofCoverings.bayFeatures"
+        </tr>        <tr id="propertypacksurveysoutsideroofcoveringsbayfeatures"
+            data-leaf-path="propertyPack.surveys[].outside.roofCoverings.bayFeatures"
             data-overlays="">
           <td>bayFeatures</td>
           <td><span class="muted">—</span></td>
@@ -728,7 +766,8 @@ erDiagram
           <td class="align-center"><span class="muted">—</span></td>
           <td class="overlay-cell"><span class="muted">—</span>          </td>
           <td><span class="muted">—</span>          </td>
-        </tr>        <tr data-leaf-path="propertyPack.surveys[].outside.roofCoverings.condition"
+        </tr>        <tr id="propertypacksurveysoutsideroofcoveringscondition"
+            data-leaf-path="propertyPack.surveys[].outside.roofCoverings.condition"
             data-overlays="">
           <td>condition</td>
           <td><span class="muted">—</span></td>
@@ -738,7 +777,8 @@ erDiagram
           <td class="align-center"><span class="muted">—</span></td>
           <td class="overlay-cell"><span class="muted">—</span>          </td>
           <td><span class="muted">—</span>          </td>
-        </tr>        <tr data-leaf-path="propertyPack.surveys[].outside.roofCoverings.defects"
+        </tr>        <tr id="propertypacksurveysoutsideroofcoveringsdefects"
+            data-leaf-path="propertyPack.surveys[].outside.roofCoverings.defects"
             data-overlays="">
           <td>defects</td>
           <td><span class="muted">—</span></td>
@@ -748,7 +788,8 @@ erDiagram
           <td class="align-center"><span class="muted">—</span></td>
           <td class="overlay-cell"><span class="muted">—</span>          </td>
           <td><span class="muted">—</span>          </td>
-        </tr>        <tr data-leaf-path="propertyPack.surveys[].outside.roofCoverings.defectsGeneral"
+        </tr>        <tr id="propertypacksurveysoutsideroofcoveringsdefectsgeneral"
+            data-leaf-path="propertyPack.surveys[].outside.roofCoverings.defectsGeneral"
             data-overlays="">
           <td>defectsGeneral</td>
           <td><span class="muted">—</span></td>
@@ -758,7 +799,8 @@ erDiagram
           <td class="align-center"><span class="muted">—</span></td>
           <td class="overlay-cell"><span class="muted">—</span>          </td>
           <td><span class="muted">—</span>          </td>
-        </tr>        <tr data-leaf-path="propertyPack.surveys[].outside.roofCoverings.description"
+        </tr>        <tr id="propertypacksurveysoutsideroofcoveringsdescription"
+            data-leaf-path="propertyPack.surveys[].outside.roofCoverings.description"
             data-overlays="">
           <td>description</td>
           <td><span class="muted">—</span></td>
@@ -768,7 +810,8 @@ erDiagram
           <td class="align-center"><span class="muted">—</span></td>
           <td class="overlay-cell"><span class="muted">—</span>          </td>
           <td><span class="muted">—</span>          </td>
-        </tr>        <tr data-leaf-path="propertyPack.surveys[].outside.roofCoverings.dormer"
+        </tr>        <tr id="propertypacksurveysoutsideroofcoveringsdormer"
+            data-leaf-path="propertyPack.surveys[].outside.roofCoverings.dormer"
             data-overlays="">
           <td>dormer</td>
           <td><span class="muted">—</span></td>
@@ -778,7 +821,8 @@ erDiagram
           <td class="align-center"><span class="muted">—</span></td>
           <td class="overlay-cell"><span class="muted">—</span>          </td>
           <td><span class="muted">—</span>          </td>
-        </tr>        <tr data-leaf-path="propertyPack.surveys[].outside.roofCoverings.dormerDefects"
+        </tr>        <tr id="propertypacksurveysoutsideroofcoveringsdormerdefects"
+            data-leaf-path="propertyPack.surveys[].outside.roofCoverings.dormerDefects"
             data-overlays="">
           <td>dormerDefects</td>
           <td>Boolean flag: dormer defect.</td>
@@ -788,7 +832,8 @@ erDiagram
           <td class="align-center"><span class="muted">—</span></td>
           <td class="overlay-cell"><span class="muted">—</span>          </td>
           <td><span class="muted">—</span>          </td>
-        </tr>        <tr data-leaf-path="propertyPack.surveys[].outside.roofCoverings.dormerDefectsDetail"
+        </tr>        <tr id="propertypacksurveysoutsideroofcoveringsdormerdefectsdetail"
+            data-leaf-path="propertyPack.surveys[].outside.roofCoverings.dormerDefectsDetail"
             data-overlays="">
           <td>dormerDefectsDetail</td>
           <td><span class="muted">—</span></td>
@@ -798,7 +843,8 @@ erDiagram
           <td class="align-center"><span class="muted">—</span></td>
           <td class="overlay-cell"><span class="muted">—</span>          </td>
           <td><span class="muted">—</span>          </td>
-        </tr>        <tr data-leaf-path="propertyPack.surveys[].outside.roofCoverings.dormerFeatures"
+        </tr>        <tr id="propertypacksurveysoutsideroofcoveringsdormerfeatures"
+            data-leaf-path="propertyPack.surveys[].outside.roofCoverings.dormerFeatures"
             data-overlays="">
           <td>dormerFeatures</td>
           <td><span class="muted">—</span></td>
@@ -808,7 +854,8 @@ erDiagram
           <td class="align-center"><span class="muted">—</span></td>
           <td class="overlay-cell"><span class="muted">—</span>          </td>
           <td><span class="muted">—</span>          </td>
-        </tr>        <tr data-leaf-path="propertyPack.surveys[].outside.roofCoverings.features"
+        </tr>        <tr id="propertypacksurveysoutsideroofcoveringsfeatures"
+            data-leaf-path="propertyPack.surveys[].outside.roofCoverings.features"
             data-overlays="">
           <td>features</td>
           <td><span class="muted">—</span></td>
@@ -818,7 +865,8 @@ erDiagram
           <td class="align-center"><span class="muted">—</span></td>
           <td class="overlay-cell"><span class="muted">—</span>          </td>
           <td><span class="muted">—</span>          </td>
-        </tr>        <tr data-leaf-path="propertyPack.surveys[].outside.roofCoverings.mainFlatCovering"
+        </tr>        <tr id="propertypacksurveysoutsideroofcoveringsmainflatcovering"
+            data-leaf-path="propertyPack.surveys[].outside.roofCoverings.mainFlatCovering"
             data-overlays="">
           <td>mainFlatCovering</td>
           <td><span class="muted">—</span></td>
@@ -828,7 +876,8 @@ erDiagram
           <td class="align-center"><span class="muted">—</span></td>
           <td class="overlay-cell"><span class="muted">—</span>          </td>
           <td><span class="muted">—</span>          </td>
-        </tr>        <tr data-leaf-path="propertyPack.surveys[].outside.roofCoverings.mainFlatDefects"
+        </tr>        <tr id="propertypacksurveysoutsideroofcoveringsmainflatdefects"
+            data-leaf-path="propertyPack.surveys[].outside.roofCoverings.mainFlatDefects"
             data-overlays="">
           <td>mainFlatDefects</td>
           <td><span class="muted">—</span></td>
@@ -838,7 +887,8 @@ erDiagram
           <td class="align-center"><span class="muted">—</span></td>
           <td class="overlay-cell"><span class="muted">—</span>          </td>
           <td><span class="muted">—</span>          </td>
-        </tr>        <tr data-leaf-path="propertyPack.surveys[].outside.roofCoverings.mainFlatDefectsDetail"
+        </tr>        <tr id="propertypacksurveysoutsideroofcoveringsmainflatdefectsdetail"
+            data-leaf-path="propertyPack.surveys[].outside.roofCoverings.mainFlatDefectsDetail"
             data-overlays="">
           <td>mainFlatDefectsDetail</td>
           <td><span class="muted">—</span></td>
@@ -848,7 +898,8 @@ erDiagram
           <td class="align-center"><span class="muted">—</span></td>
           <td class="overlay-cell"><span class="muted">—</span>          </td>
           <td><span class="muted">—</span>          </td>
-        </tr>        <tr data-leaf-path="propertyPack.surveys[].outside.roofCoverings.mainFlatFeatures"
+        </tr>        <tr id="propertypacksurveysoutsideroofcoveringsmainflatfeatures"
+            data-leaf-path="propertyPack.surveys[].outside.roofCoverings.mainFlatFeatures"
             data-overlays="">
           <td>mainFlatFeatures</td>
           <td><span class="muted">—</span></td>
@@ -858,7 +909,8 @@ erDiagram
           <td class="align-center"><span class="muted">—</span></td>
           <td class="overlay-cell"><span class="muted">—</span>          </td>
           <td><span class="muted">—</span>          </td>
-        </tr>        <tr data-leaf-path="propertyPack.surveys[].outside.roofCoverings.mainPitchedCovering"
+        </tr>        <tr id="propertypacksurveysoutsideroofcoveringsmainpitchedcovering"
+            data-leaf-path="propertyPack.surveys[].outside.roofCoverings.mainPitchedCovering"
             data-overlays="">
           <td>mainPitchedCovering</td>
           <td><span class="muted">—</span></td>
@@ -868,7 +920,8 @@ erDiagram
           <td class="align-center"><span class="muted">—</span></td>
           <td class="overlay-cell"><span class="muted">—</span>          </td>
           <td><span class="muted">—</span>          </td>
-        </tr>        <tr data-leaf-path="propertyPack.surveys[].outside.roofCoverings.mainPitchedDefects"
+        </tr>        <tr id="propertypacksurveysoutsideroofcoveringsmainpitcheddefects"
+            data-leaf-path="propertyPack.surveys[].outside.roofCoverings.mainPitchedDefects"
             data-overlays="">
           <td>mainPitchedDefects</td>
           <td>Boolean flag: main pitched defect.</td>
@@ -878,7 +931,8 @@ erDiagram
           <td class="align-center"><span class="muted">—</span></td>
           <td class="overlay-cell"><span class="muted">—</span>          </td>
           <td><span class="muted">—</span>          </td>
-        </tr>        <tr data-leaf-path="propertyPack.surveys[].outside.roofCoverings.mainPitchedDefectsDetail"
+        </tr>        <tr id="propertypacksurveysoutsideroofcoveringsmainpitcheddefectsdetail"
+            data-leaf-path="propertyPack.surveys[].outside.roofCoverings.mainPitchedDefectsDetail"
             data-overlays="">
           <td>mainPitchedDefectsDetail</td>
           <td><span class="muted">—</span></td>
@@ -888,7 +942,8 @@ erDiagram
           <td class="align-center"><span class="muted">—</span></td>
           <td class="overlay-cell"><span class="muted">—</span>          </td>
           <td><span class="muted">—</span>          </td>
-        </tr>        <tr data-leaf-path="propertyPack.surveys[].outside.roofCoverings.mainPitchedFeatures"
+        </tr>        <tr id="propertypacksurveysoutsideroofcoveringsmainpitchedfeatures"
+            data-leaf-path="propertyPack.surveys[].outside.roofCoverings.mainPitchedFeatures"
             data-overlays="">
           <td>mainPitchedFeatures</td>
           <td><span class="muted">—</span></td>
@@ -898,7 +953,8 @@ erDiagram
           <td class="align-center"><span class="muted">—</span></td>
           <td class="overlay-cell"><span class="muted">—</span>          </td>
           <td><span class="muted">—</span>          </td>
-        </tr>        <tr data-leaf-path="propertyPack.surveys[].outside.roofCoverings.notes"
+        </tr>        <tr id="propertypacksurveysoutsideroofcoveringsnotes"
+            data-leaf-path="propertyPack.surveys[].outside.roofCoverings.notes"
             data-overlays="">
           <td>notes</td>
           <td><span class="muted">—</span></td>
@@ -908,7 +964,8 @@ erDiagram
           <td class="align-center"><span class="muted">—</span></td>
           <td class="overlay-cell"><span class="muted">—</span>          </td>
           <td><span class="muted">—</span>          </td>
-        </tr>        <tr data-leaf-path="propertyPack.surveys[].outside.roofCoverings.restriction"
+        </tr>        <tr id="propertypacksurveysoutsideroofcoveringsrestriction"
+            data-leaf-path="propertyPack.surveys[].outside.roofCoverings.restriction"
             data-overlays="">
           <td>restriction</td>
           <td><span class="muted">—</span></td>
@@ -918,7 +975,8 @@ erDiagram
           <td class="align-center"><span class="muted">—</span></td>
           <td class="overlay-cell"><span class="muted">—</span>          </td>
           <td><span class="muted">—</span>          </td>
-        </tr>        <tr data-leaf-path="propertyPack.surveys[].outside.roofCoverings.visibility"
+        </tr>        <tr id="propertypacksurveysoutsideroofcoveringsvisibility"
+            data-leaf-path="propertyPack.surveys[].outside.roofCoverings.visibility"
             data-overlays="">
           <td>visibility</td>
           <td><span class="muted">—</span></td>
@@ -931,8 +989,8 @@ erDiagram
         </tr>      </tbody>
     </table>
   </div></div>      <div class="object-block" id="obj-PropertyPackSurveysOutsideChimneyStacksPhoto" data-display-id="photo">
-  <header class="object-block__head">
-    <div class="object-block__title-row">
+  <header class="object-block__head">    <nav class="object-block__breadcrumb" aria-label="Location in the schema">      <a href="#transaction">Transaction</a><span aria-hidden="true"> › </span>      <a href="#propertypack">Property Pack</a><span aria-hidden="true"> › </span>      <a href="#propertypacksurvey">Surveys</a><span aria-hidden="true"> › </span>      <a href="#propertypacksurveysoutside">Outside</a><span aria-hidden="true"> › </span>      <a href="#propertypacksurveysoutsidechimneystacks">Chimney Stacks</a><span aria-hidden="true"> › </span>      <span aria-current="location">Photos</span>
+    </nav>    <div class="object-block__title-row">
       <h4 id="propertypacksurveysoutsidechimneystacksphoto" class="object-block__title" data-display-id="photo">
         <span class="object-block__display">Photos</span><span class="object-block__cardinality" title="array of objects">[]</span>      </h4>
       <code class="object-block__path">propertyPack.surveys[].outside.chimneyStacks.photos[]</code>
@@ -952,7 +1010,8 @@ erDiagram
           <th style="width: 6rem;">Affordance</th>
         </tr>
       </thead>
-      <tbody>        <tr data-leaf-path="propertyPack.surveys[].outside.chimneyStacks.photos[].description"
+      <tbody>        <tr id="propertypacksurveysoutsidechimneystacksphotosdescription"
+            data-leaf-path="propertyPack.surveys[].outside.chimneyStacks.photos[].description"
             data-overlays="">
           <td>description</td>
           <td><span class="muted">—</span></td>
@@ -962,7 +1021,8 @@ erDiagram
           <td class="align-center"><span class="muted">—</span></td>
           <td class="overlay-cell"><span class="muted">—</span>          </td>
           <td><span class="muted">—</span>          </td>
-        </tr>        <tr data-leaf-path="propertyPack.surveys[].outside.chimneyStacks.photos[].photoId"
+        </tr>        <tr id="propertypacksurveysoutsidechimneystacksphotosphotoid"
+            data-leaf-path="propertyPack.surveys[].outside.chimneyStacks.photos[].photoId"
             data-overlays="">
           <td>photoId</td>
           <td><span class="muted">—</span></td>
@@ -972,7 +1032,8 @@ erDiagram
           <td class="align-center"><span class="muted">—</span></td>
           <td class="overlay-cell"><span class="muted">—</span>          </td>
           <td><span class="muted">—</span>          </td>
-        </tr>        <tr data-leaf-path="propertyPack.surveys[].outside.chimneyStacks.photos[].report"
+        </tr>        <tr id="propertypacksurveysoutsidechimneystacksphotosreport"
+            data-leaf-path="propertyPack.surveys[].outside.chimneyStacks.photos[].report"
             data-overlays="">
           <td>report</td>
           <td><span class="muted">—</span></td>
@@ -985,8 +1046,8 @@ erDiagram
         </tr>      </tbody>
     </table>
   </div></div>      <div class="object-block" id="obj-PropertyPackSurveysOutsideRainwaterPipesGuttersPhoto" data-display-id="photo">
-  <header class="object-block__head">
-    <div class="object-block__title-row">
+  <header class="object-block__head">    <nav class="object-block__breadcrumb" aria-label="Location in the schema">      <a href="#transaction">Transaction</a><span aria-hidden="true"> › </span>      <a href="#propertypack">Property Pack</a><span aria-hidden="true"> › </span>      <a href="#propertypacksurvey">Surveys</a><span aria-hidden="true"> › </span>      <a href="#propertypacksurveysoutside">Outside</a><span aria-hidden="true"> › </span>      <a href="#propertypacksurveysoutsiderainwaterpipesgutters">Rainwater Pipes Gutters</a><span aria-hidden="true"> › </span>      <span aria-current="location">Photos</span>
+    </nav>    <div class="object-block__title-row">
       <h4 id="propertypacksurveysoutsiderainwaterpipesguttersphoto" class="object-block__title" data-display-id="photo">
         <span class="object-block__display">Photos</span><span class="object-block__cardinality" title="array of objects">[]</span>      </h4>
       <code class="object-block__path">propertyPack.surveys[].outside.rainwaterPipesGutters.photos[]</code>
@@ -1006,7 +1067,8 @@ erDiagram
           <th style="width: 6rem;">Affordance</th>
         </tr>
       </thead>
-      <tbody>        <tr data-leaf-path="propertyPack.surveys[].outside.rainwaterPipesGutters.photos[].description"
+      <tbody>        <tr id="propertypacksurveysoutsiderainwaterpipesguttersphotosdescription"
+            data-leaf-path="propertyPack.surveys[].outside.rainwaterPipesGutters.photos[].description"
             data-overlays="">
           <td>description</td>
           <td><span class="muted">—</span></td>
@@ -1016,7 +1078,8 @@ erDiagram
           <td class="align-center"><span class="muted">—</span></td>
           <td class="overlay-cell"><span class="muted">—</span>          </td>
           <td><span class="muted">—</span>          </td>
-        </tr>        <tr data-leaf-path="propertyPack.surveys[].outside.rainwaterPipesGutters.photos[].photoId"
+        </tr>        <tr id="propertypacksurveysoutsiderainwaterpipesguttersphotosphotoid"
+            data-leaf-path="propertyPack.surveys[].outside.rainwaterPipesGutters.photos[].photoId"
             data-overlays="">
           <td>photoId</td>
           <td><span class="muted">—</span></td>
@@ -1026,7 +1089,8 @@ erDiagram
           <td class="align-center"><span class="muted">—</span></td>
           <td class="overlay-cell"><span class="muted">—</span>          </td>
           <td><span class="muted">—</span>          </td>
-        </tr>        <tr data-leaf-path="propertyPack.surveys[].outside.rainwaterPipesGutters.photos[].report"
+        </tr>        <tr id="propertypacksurveysoutsiderainwaterpipesguttersphotosreport"
+            data-leaf-path="propertyPack.surveys[].outside.rainwaterPipesGutters.photos[].report"
             data-overlays="">
           <td>report</td>
           <td><span class="muted">—</span></td>
@@ -1039,8 +1103,8 @@ erDiagram
         </tr>      </tbody>
     </table>
   </div></div>      <div class="object-block" id="obj-PropertyPackSurveysOutsideRoofCoveringsPhoto" data-display-id="photo">
-  <header class="object-block__head">
-    <div class="object-block__title-row">
+  <header class="object-block__head">    <nav class="object-block__breadcrumb" aria-label="Location in the schema">      <a href="#transaction">Transaction</a><span aria-hidden="true"> › </span>      <a href="#propertypack">Property Pack</a><span aria-hidden="true"> › </span>      <a href="#propertypacksurvey">Surveys</a><span aria-hidden="true"> › </span>      <a href="#propertypacksurveysoutside">Outside</a><span aria-hidden="true"> › </span>      <a href="#propertypacksurveysoutsideroofcoverings">Roof Coverings</a><span aria-hidden="true"> › </span>      <span aria-current="location">Photos</span>
+    </nav>    <div class="object-block__title-row">
       <h4 id="propertypacksurveysoutsideroofcoveringsphoto" class="object-block__title" data-display-id="photo">
         <span class="object-block__display">Photos</span><span class="object-block__cardinality" title="array of objects">[]</span>      </h4>
       <code class="object-block__path">propertyPack.surveys[].outside.roofCoverings.photos[]</code>
@@ -1060,7 +1124,8 @@ erDiagram
           <th style="width: 6rem;">Affordance</th>
         </tr>
       </thead>
-      <tbody>        <tr data-leaf-path="propertyPack.surveys[].outside.roofCoverings.photos[].description"
+      <tbody>        <tr id="propertypacksurveysoutsideroofcoveringsphotosdescription"
+            data-leaf-path="propertyPack.surveys[].outside.roofCoverings.photos[].description"
             data-overlays="">
           <td>description</td>
           <td><span class="muted">—</span></td>
@@ -1070,7 +1135,8 @@ erDiagram
           <td class="align-center"><span class="muted">—</span></td>
           <td class="overlay-cell"><span class="muted">—</span>          </td>
           <td><span class="muted">—</span>          </td>
-        </tr>        <tr data-leaf-path="propertyPack.surveys[].outside.roofCoverings.photos[].photoId"
+        </tr>        <tr id="propertypacksurveysoutsideroofcoveringsphotosphotoid"
+            data-leaf-path="propertyPack.surveys[].outside.roofCoverings.photos[].photoId"
             data-overlays="">
           <td>photoId</td>
           <td><span class="muted">—</span></td>
@@ -1080,7 +1146,8 @@ erDiagram
           <td class="align-center"><span class="muted">—</span></td>
           <td class="overlay-cell"><span class="muted">—</span>          </td>
           <td><span class="muted">—</span>          </td>
-        </tr>        <tr data-leaf-path="propertyPack.surveys[].outside.roofCoverings.photos[].report"
+        </tr>        <tr id="propertypacksurveysoutsideroofcoveringsphotosreport"
+            data-leaf-path="propertyPack.surveys[].outside.roofCoverings.photos[].report"
             data-overlays="">
           <td>report</td>
           <td><span class="muted">—</span></td>
@@ -1093,4 +1160,21 @@ erDiagram
         </tr>      </tbody>
     </table>
   </div></div>
+<script slot="scripts" is:inline data-astro-rerun src="/ui/schema-leaf-table.js"></script>
+<script slot="scripts" is:inline data-astro-rerun>
+  if (window._opdaSchemaLeafMount) {
+    document.removeEventListener('astro:page-load', window._opdaSchemaLeafMount);
+  }
+  window._opdaSchemaLeafMount = function () {
+    if (typeof mountLeafTable === 'function') {
+      mountLeafTable({
+        page: '39d6',
+        showEnvelopes: false,
+        filterButtonId: 'filter-overlay-btn',
+        filterCountId: 'filter-overlay-count'
+      });
+    }
+  };
+  document.addEventListener('astro:page-load', window._opdaSchemaLeafMount);
+</script>
 </Layout>

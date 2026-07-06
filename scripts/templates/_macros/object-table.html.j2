@@ -18,6 +18,14 @@
 {%- set visible_fields = obj.fields | rejectattr('is_envelope') | list if not show_envelopes else obj.fields -%}
 <div class="object-block" id="obj-{{ obj.id }}" data-display-id="{{ (obj.display_id or obj.id)|lower }}">
   <header class="object-block__head">
+    {%- if obj.breadcrumb %}
+    <nav class="object-block__breadcrumb" aria-label="Location in the schema">
+      {%- for crumb in obj.breadcrumb %}
+      <a href="{{ crumb.href }}">{{ crumb.display }}</a><span aria-hidden="true"> › </span>
+      {%- endfor %}
+      <span aria-current="location">{{ obj.display }}</span>
+    </nav>
+    {%- endif %}
     <div class="object-block__title-row">
       <h4 id="{{ obj.id|lower }}" class="object-block__title" data-display-id="{{ (obj.display_id or obj.id)|lower }}">
         <span class="object-block__display">{{ obj.display }}</span>
@@ -61,7 +69,8 @@
       </thead>
       <tbody>
       {%- for f in visible_fields %}
-        <tr data-leaf-path="{{ f.path }}"
+        <tr id="{{ f.anchor }}"
+            data-leaf-path="{{ f.path }}"
             data-overlays="{{ (f.overlays or [])|map(attribute='key')|join(',') }}"
             {%- if f.is_envelope %} data-envelope="1" style="opacity: 0.6;"{% endif %}>
           <td>{{ f.title|default('', true) }}</td>
