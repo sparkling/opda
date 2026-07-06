@@ -2,10 +2,13 @@
  * Graph engine: Cytoscape.js (ADR-0043 primary pick; scorecard 91/100).
  *
  * The reference adapter. Cytoscape consumes our elements.json shape natively
- * ({ data: {...} } nodes/edges). Core + the fcose force layout lazy-load from
- * jsdelivr /+esm; the hierarchy layout uses the BUILT-IN breadthfirst
- * (cytoscape-dagre is avoided — dagre@0.8.5's /+esm build is broken). Styling
- * comes from opts.colors / opts.theme so re-theming lives in the orchestrator.
+ * ({ data: {...} } nodes/edges). Core + the fcose force layout and cytoscape-elk
+ * (a real layered/hierarchical layout — the same ELK engine used for the
+ * Mermaid tabs' erDiagram config) lazy-load from jsdelivr /+esm.
+ * cytoscape-dagre is avoided — its /+esm bundle still pulls the broken
+ * dagre@0.8.5, unlike cytoscape-elk's actively-maintained elkjs@0.9.3
+ * dependency. Styling comes from opts.colors / opts.theme so re-theming
+ * lives in the orchestrator.
  */
 (function () {
   'use strict';
@@ -13,6 +16,7 @@
   var CDN = {
     cytoscape: 'https://cdn.jsdelivr.net/npm/cytoscape@3.30.2/+esm',
     fcose: 'https://cdn.jsdelivr.net/npm/cytoscape-fcose@2.2.0/+esm',
+    elk: 'https://cdn.jsdelivr.net/npm/cytoscape-elk@2/+esm',
   };
   var libs = null;
 
@@ -27,7 +31,13 @@
       cytoscape.use(fMod.default || fMod);
       hasFcose = true;
     } catch (e) { console.warn('[OPDA] fcose unavailable; using built-in cose', e); }
-    return (libs = window.__cyLibs = { cytoscape: cytoscape, hasFcose: hasFcose });
+    var hasElk = false;
+    try {
+      var eMod = await import(CDN.elk);
+      cytoscape.use(eMod.default || eMod);
+      hasElk = true;
+    } catch (e) { console.warn('[OPDA] cytoscape-elk unavailable; using built-in breadthfirst', e); }
+    return (libs = window.__cyLibs = { cytoscape: cytoscape, hasFcose: hasFcose, hasElk: hasElk });
   }
 
   function styleSheet(opts) {
@@ -76,6 +86,13 @@
     fcose: { name: 'fcose', quality: 'default', animate: false, randomize: true,
              nodeSeparation: 90, idealEdgeLength: 90, nodeRepulsion: 9000, packComponents: true },
     cose: { name: 'cose', animate: false, nodeRepulsion: 9000, idealEdgeLength: 90 },
+    // Real layered/Sugiyama-style hierarchy (Eclipse Layout Kernel) — handles
+    // this graph's cycles and multi-parent nodes properly, unlike the
+    // built-in breadthfirst layout, which isn't a true tree algorithm and
+    // produced a near-degenerate single-row layout on this graph (most
+    // nodes landing at the same BFS depth).
+    elk: { name: 'elk', animate: false, elk: { algorithm: 'layered', 'elk.direction': 'DOWN',
+           'elk.spacing.nodeNode': 60, 'elk.layered.spacing.nodeNodeBetweenLayers': 90 } },
     breadthfirst: { name: 'breadthfirst', directed: true, animate: false, spacingFactor: 1.1, grid: true },
     concentric: { name: 'concentric', animate: false, minNodeSpacing: 24,
                   concentric: function (n) { return n.degree(); }, levelWidth: function () { return 2; } },
@@ -88,9 +105,9 @@
     label: 'Cytoscape.js',
     kind: 'interactive',
     order: 10,
-    note: 'ADR-0043 pick · OWL+SKOS+SHACL through one themeable engine · fcose / breadthfirst / concentric layouts.',
-    layouts: ['fcose', 'breadthfirst', 'concentric', 'circle', 'grid'],
-    layoutLabels: { fcose: 'Force (whole graph)', breadthfirst: 'Hierarchy (tree)',
+    note: 'ADR-0043 pick · OWL+SKOS+SHACL through one themeable engine · elk / fcose / breadthfirst / concentric layouts.',
+    layouts: ['elk', 'breadthfirst', 'fcose', 'concentric', 'circle', 'grid'],
+    layoutLabels: { elk: 'Hierarchy (layered)', fcose: 'Force (whole graph)', breadthfirst: 'Hierarchy (tree, basic)',
                     concentric: 'Concentric (by degree)', circle: 'Circle', grid: 'Grid' },
 
     async mount(container, data, opts) {
@@ -102,7 +119,14 @@
         wheelSensitivity: 0.2, minZoom: 0.05, maxZoom: 4,
         layout: { name: 'preset' },
       });
-      var curLayout = 'fcose';
+      // elk's layered hierarchy as the initial layout instead of fcose —
+      // fcose's force simulation still visibly bunches parts of this graph
+      // even after the isolated-node fix. Tried the built-in breadthfirst
+      // first; it isn't a real hierarchical algorithm (no cycle/multi-parent
+      // handling) and produced a near-degenerate single-row layout on this
+      // graph. elk's layered algorithm (same ELK engine used for the Mermaid
+      // tabs) handles that properly. fcose stays available in the dropdown.
+      var curLayout = 'elk';
       var facets = opts.facets || null;
 
       // fcose (and cose) place zero-degree nodes (~13 classes with no
@@ -113,34 +137,50 @@
       // component packer at all — these are singleton orphans handled by a
       // separate fallback). Deterministically re-lay them out below the
       // connected graph with real label-width spacing instead.
-      // Returns the "rest" (non-isolated) collection so the caller can fit
-      // the viewport to the main graph specifically — fitting against
-      // everything would let ~17 isolated nodes' grid footprint force the
-      // whole view to zoom out drastically, shrinking the actual connected
-      // graph into a corner.
+      //
+      // Originally only handled zero-degree singletons, but breadthfirst/
+      // concentric/elk (unlike fcose, which has explicit packComponents
+      // handling) can also fling a small MULTI-node disconnected component
+      // (e.g. the 2-node DPVMappingRecord<->DPVMappingRefinement pair —
+      // degree 1, so not a singleton) thousands of px from the main graph,
+      // which blew the fit-target bounding box out to ~6000px wide and
+      // zoomed the real graph down to a barely-visible speck. Generalized to
+      // use cy's own connected-components split: the LARGEST component is
+      // "the graph" for fitting purposes, every other component (whatever
+      // its size) gets moved into the same reference grid below it.
       function spreadIsolatedNodes() {
         var visible = cy.nodes().filter(function (n) { return n.style('display') !== 'none'; });
-        var isolated = visible.filter(function (n) { return n.degree() === 0; });
-        var rest = visible.not(isolated);
-        if (isolated.length === 0) return rest;
-        var bb = rest.length ? rest.boundingBox() : { x1: 0, y1: 0, x2: 0, y2: 0 };
+        // .components() needs edges in the collection to determine
+        // connectivity — passing a nodes-only collection made every node
+        // its own size-1 "component" (a real bug this surfaced: fit()
+        // picked one arbitrary node as "main", zoomed to its max cap on a
+        // ~50px bbox, and threw all 44 other nodes into the "others" grid).
+        var visibleEdges = cy.edges().filter(function (e) { return e.style('display') !== 'none'; });
+        var components = visible.union(visibleEdges).components()
+          .map(function (c) { return c.nodes(); })
+          .sort(function (a, b) { return b.length - a.length; });
+        var main = components.length ? components[0] : visible;
+        var others = visible.not(main);
+        if (others.length === 0) return main;
+        var bb = main.length ? main.boundingBox() : { x1: 0, y1: 0, x2: 0, y2: 0 };
         var cell = 190; // wide enough for the longest class-name labels
-        var cols = Math.max(1, Math.min(isolated.length, Math.round(Math.sqrt(isolated.length) * 1.6)));
+        var cols = Math.max(1, Math.min(others.length, Math.round(Math.sqrt(others.length) * 1.6)));
         var startX = bb.x1;
         var startY = bb.y2 + 80;
-        isolated.forEach(function (n, i) {
+        others.forEach(function (n, i) {
           var col = i % cols, row = Math.floor(i / cols);
           n.position({ x: startX + col * cell, y: startY + row * cell });
         });
-        return rest;
+        return main;
       }
 
       function runLayout(name) {
         if (name === 'fcose' && !l.hasFcose) name = 'cose';
+        if (name === 'elk' && !l.hasElk) name = 'breadthfirst';
         curLayout = name;
         cy.one('layoutstop', function () {
-          var rest = spreadIsolatedNodes();
-          cy.fit(rest.length ? rest : cy.elements(), 30);
+          var main = spreadIsolatedNodes();
+          cy.fit(main.length ? main : cy.elements(), 30);
         });
         cy.layout(Object.assign({ fit: true, padding: 30 }, LAYOUTS[name] || LAYOUTS.cose)).run();
       }
@@ -175,7 +215,7 @@
       applyFacets(facets);
       cy.on('tap', 'node', function (evt) { focus(evt.target); opts.onSelect(evt.target.data()); });
       cy.on('tap', function (evt) { if (evt.target === cy) { clearFocus(); opts.onSelect(null); } });
-      runLayout('fcose');
+      runLayout('elk');
       opts.onStatus(data.nodes.length + ' nodes · ' + data.edges.length + ' edges');
 
       return {
