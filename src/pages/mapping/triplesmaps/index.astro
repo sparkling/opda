@@ -31,22 +31,24 @@ const INDEX_PATH = path.resolve(process.cwd(), 'source/03-standards/rml/triplesm
 const triplesmapIndex = JSON.parse(fs.readFileSync(INDEX_PATH, 'utf8'));
 const counts = triplesmapIndex.counts;
 
-// -- View 1 data: group TriplesMaps by section for a linking index. Grouped
-// by the mapping file's own internal section code (kept only for stable
-// file-original ordering) but DISPLAYED by its human-readable title — never
-// the bare "M1"-style code (operator direction, 2026-07-06). Each rule has
-// its own detail page (./[id].astro) — this index shows only a one-line
-// summary + link, not the full predicate table (that used to be inlined here
-// for all 158 rules, ~600 DOM rows; refactored 2026-07-06).
-const sectionsMap = new Map();
-for (const tm of triplesmapIndex.triplesmaps) {
-  const code = tm.section_code || 'zzz';
-  if (!sectionsMap.has(code)) sectionsMap.set(code, { title: tm.section_title || '(untitled section)', tms: [] });
-  sectionsMap.get(code).tms.push(tm);
-}
-const sections = [...sectionsMap.entries()]
-  .sort((a, b) => a[0].localeCompare(b[0], undefined, { numeric: true }))
-  .map(([, group]) => group);
+// -- View 1 data: one row per TriplesMap, faceted by asserted class.
+// Originally grouped into 53 accordions keyed by the mapping file's own
+// internal section comments — dropped 2026-07-06 (design critique): those
+// section titles are the mapping author's own work-log entries ("...CLOSED
+// 2026-07-05", "the M28/M29 cluster, closed via RML-FNML"), not a reader-
+// facing content taxonomy, and ~45% of them wrapped a single row — an
+// accordion click for zero grouping benefit. Grouping by asserted CLASS was
+// tried and also rejected: 52 of 158 rules assert no class at all, which
+// would dump a third of the table into one undifferentiated bucket as a
+// SECTION HEADING. A flat, class-FACETED table (matching Views 2 & 3 on
+// this same page) sidesteps both problems — no group label to get wrong,
+// and "(untyped)" is just one more checkbox among many, not a giant heading.
+const byRule = triplesmapIndex.triplesmaps.map(tm => ({
+  id: tm.id,
+  classes: tm.classes.length > 0 ? tm.classes : ['(untyped)'],
+  iterator: tm.iterator,
+  row_count: tm.rows.length,
+}));
 
 // -- Views 2 & 3 data: derive both directions from the one canonical index --
 const byResourceMap = new Map();
@@ -88,10 +90,14 @@ const bySchemaPath = [...byPathMap.values()]
   .sort((a, b) => a.json_path.localeCompare(b.json_path));
 
 // One shared resource->href lookup, computed server-side (client JS has no
-// access to the ontology model) and inlined once — both DataBrowser tables'
-// render functions look up hrefs from this instead of duplicating the call.
+// access to the ontology model) and inlined once — all three DataBrowser
+// tables' render functions look up hrefs from this instead of duplicating
+// the call. Covers byResource's own resources plus every class byRule uses.
 const resourceHrefs: Record<string, string | null> = {};
 for (const r of byResource) resourceHrefs[r.resource] = resourceHref(r.resource);
+for (const r of byRule) for (const c of r.classes) {
+  if (!(c in resourceHrefs)) resourceHrefs[c] = resourceHref(c);
+}
 ---
 <Layout
   title="Mapping — TriplesMaps reference"
@@ -144,27 +150,11 @@ for (const r of byResource) resourceHrefs[r.resource] = resourceHref(r.resource)
 
   <h2 id="by-triplesmap">By TriplesMap</h2>
   <p>
-    All {counts.triplesmaps} rules, grouped by the mapping file's own section comments and
-    named by their descriptive title. Each links to its own page — JSONPath iterator,
-    asserted class(es), and every predicate row with its JSON Schema path (or constant).
+    All {counts.triplesmaps} rules, one row each. Facet by asserted class to jump straight to,
+    say, every rule that mints an <code>opda:MonetaryAmount</code> — each links to its own page
+    with the full predicate breakdown.
   </p>
-  {sections.map(group => (
-    <details>
-      <summary><strong>{group.title}</strong> — {group.tms.length} TriplesMap{group.tms.length === 1 ? '' : 's'}</summary>
-      <table>
-        <thead><tr><th>Rule</th><th>Class(es)</th><th>Iterator</th></tr></thead>
-        <tbody>
-          {group.tms.map(tm => (
-            <tr>
-              <td><a href={`/mapping/triplesmaps/${tm.id}`}><code>#{tm.id}</code></a></td>
-              <td>{tm.classes.length > 0 ? <code>{tm.classes.join(', ')}</code> : <span class="muted tiny">—</span>}</td>
-              <td><code>{tm.iterator}</code></td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
-    </details>
-  ))}
+  <div id="rule-browser" class="data-browser"></div>
 
   <h2 id="by-resource">By ontology resource</h2>
   <p>Start from a class or property — which TriplesMap(s) touch it, and which JSON Schema path(s) it reaches.</p>
@@ -178,6 +168,7 @@ for (const r of byResource) resourceHrefs[r.resource] = resourceHref(r.resource)
     <a href="/mapping/how-it-works">← How it works</a> · <a href="/mapping/coverage">Coverage &amp; gaps →</a>
   </p>
 
+<script type="application/json" id="mapping-by-rule" set:html={JSON.stringify(byRule)}></script>
 <script type="application/json" id="mapping-by-resource" set:html={JSON.stringify(byResource)}></script>
 <script type="application/json" id="mapping-by-schema-path" set:html={JSON.stringify(bySchemaPath)}></script>
 <script type="application/json" id="mapping-resource-hrefs" set:html={JSON.stringify(resourceHrefs)}></script>
@@ -217,6 +208,38 @@ for (const r of byResource) resourceHrefs[r.resource] = resourceHref(r.resource)
       return arr.map(function (v) {
         return '<a href="/mapping/triplesmaps/' + esc(v) + '"><code>#' + esc(v) + '</code></a>';
       }).join(' ');
+    }
+
+    var byRule = readJson('mapping-by-rule');
+    var ruleMount = document.getElementById('rule-browser');
+    if (ruleMount && byRule.length) {
+      // Facet values here are compact IRIs (opda:Claim) or full external IRIs
+      // (http://www.w3.org/ns/prov#Activity) — DataBrowser's default facet
+      // label falls back to naive capitalize-first-letter when no valueLabels
+      // entry exists, which mangles both ("Opda:Claim", "Http://www..."). An
+      // identity map bypasses that fallback and shows the real value as-is.
+      var classValueLabels = {};
+      byRule.forEach(function (r) { r.classes.forEach(function (c) { classValueLabels[c] = c; }); });
+      OPDA.DataBrowser.mount({
+        mount: ruleMount,
+        heading: { id: 'by-rule-browse', text: 'Browse by TriplesMap' },
+        data: byRule,
+        itemLabel: 'rules',
+        searchPlaceholder: 'Search a rule id…',
+        searchKeys: ['id'],
+        pageSize: 25,
+        defaultSort: { key: 'id', dir: 'asc' },
+        facets: [{ key: 'classes', label: 'Asserted class', valueLabels: classValueLabels, hideKey: true }],
+        columns: [
+          { key: 'id', label: 'Rule', sortable: true, width: '25%',
+            render: function (v) { return '<a href="/mapping/triplesmaps/' + esc(v) + '"><code>#' + esc(v) + '</code></a>'; } },
+          { key: 'classes', label: 'Class(es)', sortable: false, width: '30%',
+            render: function (v) { return joinResources(v); } },
+          { key: 'iterator', label: 'Iterator', sortable: false, width: '35%',
+            render: function (v) { return '<code>' + esc(v) + '</code>'; } },
+          { key: 'row_count', label: 'Rows', sortable: true, width: '10%' },
+        ],
+      });
     }
 
     var byResource = readJson('mapping-by-resource');

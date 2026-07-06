@@ -25,27 +25,9 @@
       ],
       "rows": [
         {
-          "predicate": "opda:hasParticipant",
-          "kind": "template",
-          "json_path": "participants[?(@.role==\"Buyer\")].email",
-          "constant": ""
-        },
-        {
-          "predicate": "opda:concernsProperty",
-          "kind": "template",
-          "json_path": "propertyPack.uprn",
-          "constant": ""
-        },
-        {
           "predicate": "opda:feeIncludingVAT",
           "kind": "template",
           "json_path": "propertyPack.ownership.ownershipsToBeTransferred[*].titleNumber, propertyPack.ownership.ownershipsToBeTransferred[*].leaseholdInformation.contactDetails.serviceContactAssignments.noticeOfAssignmentAndCharge.landlord.feeIncludingVAT",
-          "constant": ""
-        },
-        {
-          "predicate": "opda:dependsOnTransaction",
-          "kind": "template",
-          "json_path": "chain.onwardPurchase[*].transactionId",
           "constant": ""
         },
         {
@@ -55,9 +37,9 @@
           "constant": ""
         },
         {
-          "predicate": "opda:hasChainPosition",
+          "predicate": "opda:concerns",
           "kind": "template",
-          "json_path": "chain.onwardPurchase[*].transactionId",
+          "json_path": "propertyPack.ownership.ownershipsToBeTransferred[*].titleNumber",
           "constant": ""
         },
         {
@@ -67,9 +49,93 @@
           "constant": ""
         },
         {
-          "predicate": "opda:concerns",
+          "predicate": "opda:dependsOnTransaction",
           "kind": "template",
-          "json_path": "propertyPack.ownership.ownershipsToBeTransferred[*].titleNumber",
+          "json_path": "chain.onwardPurchase[*].transactionId",
+          "constant": ""
+        },
+        {
+          "predicate": "opda:hasParticipant",
+          "kind": "template",
+          "json_path": "participants[?(@.role==\"Buyer\")].email",
+          "constant": ""
+        },
+        {
+          "predicate": "opda:hasChainPosition",
+          "kind": "template",
+          "json_path": "chain.onwardPurchase[*].transactionId",
+          "constant": ""
+        },
+        {
+          "predicate": "opda:concernsProperty",
+          "kind": "template",
+          "json_path": "propertyPack.uprn",
+          "constant": ""
+        },
+        {
+          "predicate": "opda:authorisedToActOnBehalfOfAllSellers",
+          "kind": "reference",
+          "json_path": "propertyPack.saleReadyDeclarations.authorisedToActOnBehalfOfAllSellers",
+          "constant": ""
+        },
+        {
+          "predicate": "opda:consumerProtectionRegulationsResponse",
+          "kind": "reference",
+          "json_path": "propertyPack.consumerProtectionRegulationsDeclaration.consumerProtectionRegulationsResponse",
+          "constant": ""
+        },
+        {
+          "predicate": "opda:numberOfNonUkResidentSellers",
+          "kind": "reference",
+          "json_path": "propertyPack.ownership.numberOfNonUkResidentSellers",
+          "constant": ""
+        },
+        {
+          "predicate": "opda:takeReasonableCare",
+          "kind": "reference",
+          "json_path": "propertyPack.completionAndMoving.sellerWillEnsure.takeReasonableCare",
+          "constant": ""
+        },
+        {
+          "predicate": "opda:replaceLightFittings",
+          "kind": "reference",
+          "json_path": "propertyPack.completionAndMoving.sellerWillEnsure.replaceLightFittings",
+          "constant": ""
+        },
+        {
+          "predicate": "opda:confirmation",
+          "kind": "reference",
+          "json_path": "propertyPack.ownership.ownershipsToBeTransferred[*].leaseholdInformation.confirmationOfAccuracy.confirmation",
+          "constant": ""
+        },
+        {
+          "predicate": "opda:confirmWillProvideAdditionalDocumentation",
+          "kind": "reference",
+          "json_path": "propertyPack.confirmationOfAccuracyByOwners.confirmWillProvideAdditionalDocumentation",
+          "constant": ""
+        },
+        {
+          "predicate": "opda:response",
+          "kind": "reference",
+          "json_path": "propertyPack.ownership.ownershipsToBeTransferred[*].managedFreeholdOrCommonholdInformation.confirmation.response",
+          "constant": ""
+        },
+        {
+          "predicate": "opda:confirmInformationIsAccurate",
+          "kind": "reference",
+          "json_path": "propertyPack.confirmationOfAccuracyByOwners.confirmInformationIsAccurate",
+          "constant": ""
+        },
+        {
+          "predicate": "opda:removeRubbish",
+          "kind": "reference",
+          "json_path": "propertyPack.completionAndMoving.sellerWillEnsure.removeRubbish",
+          "constant": ""
+        },
+        {
+          "predicate": "opda:numberOfSellers",
+          "kind": "reference",
+          "json_path": "propertyPack.ownership.numberOfSellers",
           "constant": ""
         },
         {
@@ -85,75 +151,9 @@
           "constant": ""
         },
         {
-          "predicate": "opda:consumerProtectionRegulationsResponse",
-          "kind": "reference",
-          "json_path": "propertyPack.consumerProtectionRegulationsDeclaration.consumerProtectionRegulationsResponse",
-          "constant": ""
-        },
-        {
-          "predicate": "opda:takeReasonableCare",
-          "kind": "reference",
-          "json_path": "propertyPack.completionAndMoving.sellerWillEnsure.takeReasonableCare",
-          "constant": ""
-        },
-        {
-          "predicate": "opda:confirmInformationIsAccurate",
-          "kind": "reference",
-          "json_path": "propertyPack.confirmationOfAccuracyByOwners.confirmInformationIsAccurate",
-          "constant": ""
-        },
-        {
           "predicate": "opda:authorisationToShare",
           "kind": "reference",
           "json_path": "propertyPack.saleReadyDeclarations.authorisationToShare",
-          "constant": ""
-        },
-        {
-          "predicate": "opda:removeRubbish",
-          "kind": "reference",
-          "json_path": "propertyPack.completionAndMoving.sellerWillEnsure.removeRubbish",
-          "constant": ""
-        },
-        {
-          "predicate": "opda:confirmation",
-          "kind": "reference",
-          "json_path": "propertyPack.ownership.ownershipsToBeTransferred[*].leaseholdInformation.confirmationOfAccuracy.confirmation",
-          "constant": ""
-        },
-        {
-          "predicate": "opda:numberOfSellers",
-          "kind": "reference",
-          "json_path": "propertyPack.ownership.numberOfSellers",
-          "constant": ""
-        },
-        {
-          "predicate": "opda:response",
-          "kind": "reference",
-          "json_path": "propertyPack.ownership.ownershipsToBeTransferred[*].managedFreeholdOrCommonholdInformation.confirmation.response",
-          "constant": ""
-        },
-        {
-          "predicate": "opda:authorisedToActOnBehalfOfAllSellers",
-          "kind": "reference",
-          "json_path": "propertyPack.saleReadyDeclarations.authorisedToActOnBehalfOfAllSellers",
-          "constant": ""
-        },
-        {
-          "predicate": "opda:confirmWillProvideAdditionalDocumentation",
-          "kind": "reference",
-          "json_path": "propertyPack.confirmationOfAccuracyByOwners.confirmWillProvideAdditionalDocumentation",
-          "constant": ""
-        },
-        {
-          "predicate": "opda:replaceLightFittings",
-          "kind": "reference",
-          "json_path": "propertyPack.completionAndMoving.sellerWillEnsure.replaceLightFittings",
-          "constant": ""
-        },
-        {
-          "predicate": "opda:numberOfNonUkResidentSellers",
-          "kind": "reference",
-          "json_path": "propertyPack.ownership.numberOfNonUkResidentSellers",
           "constant": ""
         }
       ]
@@ -229,7 +229,7 @@
     {
       "id": "Proprietorship",
       "section_code": "M11b",
-      "section_title": "opda:Proprietorship + opda:mediates: RESOLVED 2026-07-05",
+      "section_title": "opda:Proprietorship + opda:mediates",
       "iterator": "$.propertyPack",
       "subject_template": "https://opda.org.uk/pdtf/harness/data/proprietorship/{uprn}-{legalOwners.namesOfLegalOwners[1].ownerType}",
       "classes": [
@@ -240,36 +240,6 @@
           "predicate": "opda:mediates",
           "kind": "template",
           "json_path": "legalOwners.namesOfLegalOwners[1].organisationName",
-          "constant": ""
-        },
-        {
-          "predicate": "opda:mediates",
-          "kind": "template",
-          "json_path": "legalOwners.namesOfLegalOwners[0].firstName, legalOwners.namesOfLegalOwners[0].lastName",
-          "constant": ""
-        },
-        {
-          "predicate": "opda:mediates",
-          "kind": "template",
-          "json_path": "legalOwners.namesOfLegalOwners[3].organisationName",
-          "constant": ""
-        },
-        {
-          "predicate": "opda:mediates",
-          "kind": "template",
-          "json_path": "legalOwners.namesOfLegalOwners[1].firstName, legalOwners.namesOfLegalOwners[1].lastName",
-          "constant": ""
-        },
-        {
-          "predicate": "opda:mediates",
-          "kind": "template",
-          "json_path": "legalOwners.namesOfLegalOwners[3].firstName, legalOwners.namesOfLegalOwners[3].lastName",
-          "constant": ""
-        },
-        {
-          "predicate": "opda:mediates",
-          "kind": "template",
-          "json_path": "legalOwners.namesOfLegalOwners[2].firstName, legalOwners.namesOfLegalOwners[2].lastName",
           "constant": ""
         },
         {
@@ -288,6 +258,36 @@
           "predicate": "opda:mediates",
           "kind": "template",
           "json_path": "legalOwners.namesOfLegalOwners[2].organisationName",
+          "constant": ""
+        },
+        {
+          "predicate": "opda:mediates",
+          "kind": "template",
+          "json_path": "legalOwners.namesOfLegalOwners[2].firstName, legalOwners.namesOfLegalOwners[2].lastName",
+          "constant": ""
+        },
+        {
+          "predicate": "opda:mediates",
+          "kind": "template",
+          "json_path": "legalOwners.namesOfLegalOwners[3].organisationName",
+          "constant": ""
+        },
+        {
+          "predicate": "opda:mediates",
+          "kind": "template",
+          "json_path": "legalOwners.namesOfLegalOwners[3].firstName, legalOwners.namesOfLegalOwners[3].lastName",
+          "constant": ""
+        },
+        {
+          "predicate": "opda:mediates",
+          "kind": "template",
+          "json_path": "legalOwners.namesOfLegalOwners[1].firstName, legalOwners.namesOfLegalOwners[1].lastName",
+          "constant": ""
+        },
+        {
+          "predicate": "opda:mediates",
+          "kind": "template",
+          "json_path": "legalOwners.namesOfLegalOwners[0].firstName, legalOwners.namesOfLegalOwners[0].lastName",
           "constant": ""
         }
       ]
@@ -317,7 +317,7 @@
     {
       "id": "ContractTemplate",
       "section_code": "M13",
-      "section_title": "Contract template  (domain-less opda:name + opda:url)",
+      "section_title": "Contract template (domain-less opda:name + opda:url)",
       "iterator": "$.contracts[*].contract.template",
       "subject_template": "https://opda.org.uk/pdtf/harness/data/contract-template/{name}",
       "classes": [],
@@ -347,9 +347,9 @@
       ],
       "rows": [
         {
-          "predicate": "opda:pupils",
+          "predicate": "opda:otherRating",
           "kind": "reference",
-          "json_path": "pupils",
+          "json_path": "otherRating",
           "constant": ""
         },
         {
@@ -359,15 +359,15 @@
           "constant": ""
         },
         {
-          "predicate": "opda:ageRange",
+          "predicate": "opda:pupils",
           "kind": "reference",
-          "json_path": "ageRange",
+          "json_path": "pupils",
           "constant": ""
         },
         {
-          "predicate": "opda:otherRating",
+          "predicate": "opda:name",
           "kind": "reference",
-          "json_path": "otherRating",
+          "json_path": "name",
           "constant": ""
         },
         {
@@ -377,9 +377,9 @@
           "constant": ""
         },
         {
-          "predicate": "opda:name",
+          "predicate": "opda:ageRange",
           "kind": "reference",
-          "json_path": "name",
+          "json_path": "ageRange",
           "constant": ""
         }
       ]
@@ -665,15 +665,15 @@
           "constant": ""
         },
         {
-          "predicate": "opda:name",
-          "kind": "reference",
-          "json_path": "name",
-          "constant": ""
-        },
-        {
           "predicate": "opda:distanceInMiles",
           "kind": "reference",
           "json_path": "distanceInMiles",
+          "constant": ""
+        },
+        {
+          "predicate": "opda:name",
+          "kind": "reference",
+          "json_path": "name",
           "constant": ""
         },
         {
@@ -775,15 +775,15 @@
       ],
       "rows": [
         {
-          "predicate": "opda:length",
-          "kind": "reference",
-          "json_path": "length",
-          "constant": ""
-        },
-        {
           "predicate": "opda:width",
           "kind": "reference",
           "json_path": "width",
+          "constant": ""
+        },
+        {
+          "predicate": "opda:length",
+          "kind": "reference",
+          "json_path": "length",
           "constant": ""
         },
         {
@@ -864,15 +864,15 @@
       ],
       "rows": [
         {
-          "predicate": "opda:hasChainPosition",
-          "kind": "template",
-          "json_path": "transactionId",
-          "constant": ""
-        },
-        {
           "predicate": "opda:concernsProperty",
           "kind": "template",
           "json_path": "uprn",
+          "constant": ""
+        },
+        {
+          "predicate": "opda:hasChainPosition",
+          "kind": "template",
+          "json_path": "transactionId",
           "constant": ""
         },
         {
@@ -916,15 +916,15 @@
           "constant": ""
         },
         {
-          "predicate": "opda:dateOfBirth",
-          "kind": "reference",
-          "json_path": "dateOfBirth",
-          "constant": ""
-        },
-        {
           "predicate": "opda:formerName",
           "kind": "reference",
           "json_path": "name.maidenName",
+          "constant": ""
+        },
+        {
+          "predicate": "opda:dateOfBirth",
+          "kind": "reference",
+          "json_path": "dateOfBirth",
           "constant": ""
         }
       ]
@@ -946,18 +946,6 @@
           "constant": ""
         },
         {
-          "predicate": "opda:applicationType",
-          "kind": "reference",
-          "json_path": "applicationType",
-          "constant": ""
-        },
-        {
-          "predicate": "opda:decision",
-          "kind": "reference",
-          "json_path": "decision",
-          "constant": ""
-        },
-        {
           "predicate": "opda:refNumber",
           "kind": "reference",
           "json_path": "refNumber",
@@ -973,6 +961,18 @@
           "predicate": "opda:decisionDate",
           "kind": "reference",
           "json_path": "decisionDate",
+          "constant": ""
+        },
+        {
+          "predicate": "opda:applicationType",
+          "kind": "reference",
+          "json_path": "applicationType",
+          "constant": ""
+        },
+        {
+          "predicate": "opda:decision",
+          "kind": "reference",
+          "json_path": "decision",
           "constant": ""
         }
       ]
@@ -1235,12 +1235,6 @@
       ],
       "rows": [
         {
-          "predicate": "http://www.w3.org/ns/prov#wasGeneratedBy",
-          "kind": "template",
-          "json_path": "estimatedPrice",
-          "constant": ""
-        },
-        {
           "predicate": "opda:estimatedPrice",
           "kind": "template",
           "json_path": "estimatedPrice",
@@ -1253,21 +1247,27 @@
           "constant": ""
         },
         {
+          "predicate": "http://www.w3.org/ns/prov#wasGeneratedBy",
+          "kind": "template",
+          "json_path": "estimatedPrice",
+          "constant": ""
+        },
+        {
           "predicate": "opda:yield",
           "kind": "reference",
           "json_path": "yield",
           "constant": ""
         },
         {
-          "predicate": "opda:pricingMethodology",
-          "kind": "reference",
-          "json_path": "priceEstimationDetails.pricingMethodology",
-          "constant": ""
-        },
-        {
           "predicate": "opda:credibilitySources",
           "kind": "reference",
           "json_path": "priceEstimationDetails.credibilitySources",
+          "constant": ""
+        },
+        {
+          "predicate": "opda:pricingMethodology",
+          "kind": "reference",
+          "json_path": "priceEstimationDetails.pricingMethodology",
           "constant": ""
         }
       ]
@@ -1359,15 +1359,15 @@
           "constant": ""
         },
         {
-          "predicate": "opda:subCategory",
-          "kind": "reference",
-          "json_path": "subCategory",
-          "constant": ""
-        },
-        {
           "predicate": "opda:actionAlertRating",
           "kind": "reference",
           "json_path": "actionAlertRating",
+          "constant": ""
+        },
+        {
+          "predicate": "opda:subCategory",
+          "kind": "reference",
+          "json_path": "subCategory",
           "constant": ""
         }
       ]
@@ -1511,15 +1511,15 @@
           "constant": "opda:scheme/peril/Climate"
         },
         {
-          "predicate": "http://www.w3.org/ns/prov#wasGeneratedBy",
-          "kind": "template",
-          "json_path": "uprn, environmentalIssues.climate.climateRisk.riskIndicator",
-          "constant": ""
-        },
-        {
           "predicate": "opda:hasSubAssessment",
           "kind": "template",
           "json_path": "environmentalIssues.climate.climateRisk.riskSubcategories[*].subCategory",
+          "constant": ""
+        },
+        {
+          "predicate": "http://www.w3.org/ns/prov#wasGeneratedBy",
+          "kind": "template",
+          "json_path": "uprn, environmentalIssues.climate.climateRisk.riskIndicator",
           "constant": ""
         }
       ]
@@ -1579,7 +1579,7 @@
     {
       "id": "PotentialCost",
       "section_code": "M25",
-      "section_title": "typeOfConstruction.buildingSafety.potentialCost: CLOSED 2026-07-05",
+      "section_title": "typeOfConstruction.buildingSafety.potentialCost",
       "iterator": "$.propertyPack",
       "subject_template": "https://opda.org.uk/pdtf/harness/data/property/{uprn}",
       "classes": [],
@@ -1675,18 +1675,6 @@
       ],
       "rows": [
         {
-          "predicate": "opda:accountName",
-          "kind": "reference",
-          "json_path": "leaseholdInformation.contactDetails.contacts.landlord.bankDetails.accountName",
-          "constant": ""
-        },
-        {
-          "predicate": "opda:accountNumber",
-          "kind": "reference",
-          "json_path": "leaseholdInformation.contactDetails.contacts.landlord.bankDetails.accountNumber",
-          "constant": ""
-        },
-        {
           "predicate": "opda:sortCode",
           "kind": "reference",
           "json_path": "leaseholdInformation.contactDetails.contacts.landlord.bankDetails.sortCode",
@@ -1696,6 +1684,18 @@
           "predicate": "opda:reference",
           "kind": "reference",
           "json_path": "leaseholdInformation.contactDetails.contacts.landlord.bankDetails.reference",
+          "constant": ""
+        },
+        {
+          "predicate": "opda:accountNumber",
+          "kind": "reference",
+          "json_path": "leaseholdInformation.contactDetails.contacts.landlord.bankDetails.accountNumber",
+          "constant": ""
+        },
+        {
+          "predicate": "opda:accountName",
+          "kind": "reference",
+          "json_path": "leaseholdInformation.contactDetails.contacts.landlord.bankDetails.accountName",
           "constant": ""
         }
       ]
@@ -1776,15 +1776,15 @@
       ],
       "rows": [
         {
-          "predicate": "opda:organisationReference",
-          "kind": "reference",
-          "json_path": "organisationReference",
-          "constant": ""
-        },
-        {
           "predicate": "opda:organisationName",
           "kind": "reference",
           "json_path": "organisation",
+          "constant": ""
+        },
+        {
+          "predicate": "opda:organisationReference",
+          "kind": "reference",
+          "json_path": "organisationReference",
           "constant": ""
         }
       ]
@@ -1798,57 +1798,15 @@
       "classes": [],
       "rows": [
         {
-          "predicate": "opda:builtForm",
+          "predicate": "opda:hasBeenFlooded",
           "kind": "function",
-          "json_path": "buildInformation.building.builtForm",
+          "json_path": "environmentalIssues.flooding.historicalFlooding.hasBeenFlooded",
           "constant": ""
         },
         {
-          "predicate": "opda:hasSprayFoamInstalled",
+          "predicate": "opda:propertyType",
           "kind": "function",
-          "json_path": "typeOfConstruction.sprayFoamInsulation.hasSprayFoamInstalled",
-          "constant": ""
-        },
-        {
-          "predicate": "opda:soldWithVacantPossession",
-          "kind": "function",
-          "json_path": "occupiers.othersAged17OrOver.vacantPossession.soldWithVacantPossession",
-          "constant": ""
-        },
-        {
-          "predicate": "opda:centralHeatingFuelType",
-          "kind": "function",
-          "json_path": "heating.heatingSystem.centralHeatingDetails.centralHeatingFuel.centralHeatingFuelType",
-          "constant": ""
-        },
-        {
-          "predicate": "opda:isLocatedOverCommercialPremises",
-          "kind": "function",
-          "json_path": "buildInformation.building.overCommercialPremises.isLocatedOverCommercialPremises",
-          "constant": ""
-        },
-        {
-          "predicate": "opda:hasSmartHomeSystems",
-          "kind": "function",
-          "json_path": "smartHomeSystems.hasSmartHomeSystems",
-          "constant": ""
-        },
-        {
-          "predicate": "opda:offMainsDrainageSystemType",
-          "kind": "function",
-          "json_path": "waterAndDrainage.drainage.mainsFoulDrainage.offMainsDrainageSystem.offMainsDrainageSystemType",
-          "constant": ""
-        },
-        {
-          "predicate": "opda:hasValidGuaranteesOrWarranties",
-          "kind": "function",
-          "json_path": "guaranteesWarrantiesAndIndemnityInsurances.hasValidGuaranteesOrWarranties",
-          "constant": ""
-        },
-        {
-          "predicate": "opda:isSupplyMetered",
-          "kind": "function",
-          "json_path": "waterAndDrainage.water.mainsWater.waterMeter.isSupplyMetered",
+          "json_path": "buildInformation.building.propertyType",
           "constant": ""
         },
         {
@@ -1864,21 +1822,9 @@
           "constant": ""
         },
         {
-          "predicate": "opda:priceQualifier",
+          "predicate": "opda:builtForm",
           "kind": "function",
-          "json_path": "priceInformation.priceQualifier",
-          "constant": ""
-        },
-        {
-          "predicate": "opda:propertyType",
-          "kind": "function",
-          "json_path": "buildInformation.building.propertyType",
-          "constant": ""
-        },
-        {
-          "predicate": "opda:marketingTenure",
-          "kind": "function",
-          "json_path": "marketingTenure",
+          "json_path": "buildInformation.building.builtForm",
           "constant": ""
         },
         {
@@ -1888,21 +1834,75 @@
           "constant": ""
         },
         {
+          "predicate": "opda:hasSmartHomeSystems",
+          "kind": "function",
+          "json_path": "smartHomeSystems.hasSmartHomeSystems",
+          "constant": ""
+        },
+        {
+          "predicate": "opda:offMainsDrainageSystemType",
+          "kind": "function",
+          "json_path": "waterAndDrainage.drainage.mainsFoulDrainage.offMainsDrainageSystem.offMainsDrainageSystemType",
+          "constant": ""
+        },
+        {
+          "predicate": "opda:soldWithVacantPossession",
+          "kind": "function",
+          "json_path": "occupiers.othersAged17OrOver.vacantPossession.soldWithVacantPossession",
+          "constant": ""
+        },
+        {
+          "predicate": "opda:hasValidGuaranteesOrWarranties",
+          "kind": "function",
+          "json_path": "guaranteesWarrantiesAndIndemnityInsurances.hasValidGuaranteesOrWarranties",
+          "constant": ""
+        },
+        {
+          "predicate": "opda:centralHeatingFuelType",
+          "kind": "function",
+          "json_path": "heating.heatingSystem.centralHeatingDetails.centralHeatingFuel.centralHeatingFuelType",
+          "constant": ""
+        },
+        {
           "predicate": "opda:currentEnergyRating",
           "kind": "function",
           "json_path": "energyEfficiency.certificate.currentEnergyRating",
           "constant": ""
         },
         {
-          "predicate": "opda:hasBeenFlooded",
+          "predicate": "opda:isSupplyMetered",
           "kind": "function",
-          "json_path": "environmentalIssues.flooding.historicalFlooding.hasBeenFlooded",
+          "json_path": "waterAndDrainage.water.mainsWater.waterMeter.isSupplyMetered",
+          "constant": ""
+        },
+        {
+          "predicate": "opda:priceQualifier",
+          "kind": "function",
+          "json_path": "priceInformation.priceQualifier",
           "constant": ""
         },
         {
           "predicate": "opda:heatingType",
           "kind": "function",
           "json_path": "heating.heatingSystem.heatingType",
+          "constant": ""
+        },
+        {
+          "predicate": "opda:marketingTenure",
+          "kind": "function",
+          "json_path": "marketingTenure",
+          "constant": ""
+        },
+        {
+          "predicate": "opda:hasSprayFoamInstalled",
+          "kind": "function",
+          "json_path": "typeOfConstruction.sprayFoamInsulation.hasSprayFoamInstalled",
+          "constant": ""
+        },
+        {
+          "predicate": "opda:isLocatedOverCommercialPremises",
+          "kind": "function",
+          "json_path": "buildInformation.building.overCommercialPremises.isLocatedOverCommercialPremises",
           "constant": ""
         }
       ]
@@ -1916,27 +1916,27 @@
       "classes": [],
       "rows": [
         {
-          "predicate": "opda:isSharedOwnership",
-          "kind": "function",
-          "json_path": "leaseholdInformation.sharedOwnership.isSharedOwnership",
-          "constant": ""
-        },
-        {
           "predicate": "opda:ownershipType",
           "kind": "function",
           "json_path": "ownershipType",
           "constant": ""
         },
         {
-          "predicate": "opda:isGroundRentPayable",
-          "kind": "function",
-          "json_path": "leaseholdInformation.groundRent.isGroundRentPayable",
-          "constant": ""
-        },
-        {
           "predicate": "opda:sellerContributesToServiceCharge",
           "kind": "function",
           "json_path": "leaseholdInformation.serviceCharge.sellerContributesToServiceCharge",
+          "constant": ""
+        },
+        {
+          "predicate": "opda:isSharedOwnership",
+          "kind": "function",
+          "json_path": "leaseholdInformation.sharedOwnership.isSharedOwnership",
+          "constant": ""
+        },
+        {
+          "predicate": "opda:isGroundRentPayable",
+          "kind": "function",
+          "json_path": "leaseholdInformation.groundRent.isGroundRentPayable",
           "constant": ""
         }
       ]
@@ -1974,27 +1974,27 @@
       ],
       "rows": [
         {
-          "predicate": "http://www.w3.org/ns/prov#qualifiedAssociation",
-          "kind": "template",
-          "json_path": "transactionId, milestones.completion.expected",
-          "constant": ""
-        },
-        {
           "predicate": "opda:partOfTransaction",
           "kind": "template",
           "json_path": "transactionId",
           "constant": ""
         },
         {
-          "predicate": "http://www.w3.org/ns/prov#startedAtTime",
-          "kind": "reference",
-          "json_path": "milestones.completion.started",
+          "predicate": "http://www.w3.org/ns/prov#qualifiedAssociation",
+          "kind": "template",
+          "json_path": "transactionId, milestones.completion.expected",
           "constant": ""
         },
         {
           "predicate": "http://www.w3.org/ns/prov#endedAtTime",
           "kind": "reference",
           "json_path": "milestones.completion.completed",
+          "constant": ""
+        },
+        {
+          "predicate": "http://www.w3.org/ns/prov#startedAtTime",
+          "kind": "reference",
+          "json_path": "milestones.completion.started",
           "constant": ""
         }
       ]
@@ -2052,15 +2052,15 @@
           "constant": ""
         },
         {
-          "predicate": "http://www.w3.org/ns/prov#startedAtTime",
-          "kind": "reference",
-          "json_path": "milestones.enquiries.started",
-          "constant": ""
-        },
-        {
           "predicate": "http://www.w3.org/ns/prov#endedAtTime",
           "kind": "reference",
           "json_path": "milestones.enquiries.completed",
+          "constant": ""
+        },
+        {
+          "predicate": "http://www.w3.org/ns/prov#startedAtTime",
+          "kind": "reference",
+          "json_path": "milestones.enquiries.started",
           "constant": ""
         }
       ]
@@ -2088,13 +2088,13 @@
           "constant": ""
         },
         {
-          "predicate": "opda:occurredAtTime",
+          "predicate": "http://www.w3.org/ns/prov#atTime",
           "kind": "reference",
           "json_path": "milestones.exchangeOfContracts.completed",
           "constant": ""
         },
         {
-          "predicate": "http://www.w3.org/ns/prov#atTime",
+          "predicate": "opda:occurredAtTime",
           "kind": "reference",
           "json_path": "milestones.exchangeOfContracts.completed",
           "constant": ""
@@ -2154,15 +2154,15 @@
           "constant": ""
         },
         {
-          "predicate": "http://www.w3.org/ns/prov#endedAtTime",
-          "kind": "reference",
-          "json_path": "milestones.legalForms.completed",
-          "constant": ""
-        },
-        {
           "predicate": "http://www.w3.org/ns/prov#startedAtTime",
           "kind": "reference",
           "json_path": "milestones.legalForms.started",
+          "constant": ""
+        },
+        {
+          "predicate": "http://www.w3.org/ns/prov#endedAtTime",
+          "kind": "reference",
+          "json_path": "milestones.legalForms.completed",
           "constant": ""
         }
       ]
@@ -2178,25 +2178,25 @@
       ],
       "rows": [
         {
-          "predicate": "http://www.w3.org/ns/prov#qualifiedAssociation",
-          "kind": "template",
-          "json_path": "transactionId, milestones.listed.expected",
-          "constant": ""
-        },
-        {
           "predicate": "opda:partOfTransaction",
           "kind": "template",
           "json_path": "transactionId",
           "constant": ""
         },
         {
-          "predicate": "http://www.w3.org/ns/prov#atTime",
+          "predicate": "http://www.w3.org/ns/prov#qualifiedAssociation",
+          "kind": "template",
+          "json_path": "transactionId, milestones.listed.expected",
+          "constant": ""
+        },
+        {
+          "predicate": "opda:occurredAtTime",
           "kind": "reference",
           "json_path": "milestones.listed.completed",
           "constant": ""
         },
         {
-          "predicate": "opda:occurredAtTime",
+          "predicate": "http://www.w3.org/ns/prov#atTime",
           "kind": "reference",
           "json_path": "milestones.listed.completed",
           "constant": ""
@@ -2328,13 +2328,13 @@
           "constant": ""
         },
         {
-          "predicate": "http://www.w3.org/ns/prov#atTime",
+          "predicate": "opda:occurredAtTime",
           "kind": "reference",
           "json_path": "milestones.soldSubjectToContract.completed",
           "constant": ""
         },
         {
-          "predicate": "opda:occurredAtTime",
+          "predicate": "http://www.w3.org/ns/prov#atTime",
           "kind": "reference",
           "json_path": "milestones.soldSubjectToContract.completed",
           "constant": ""
@@ -2352,12 +2352,6 @@
       ],
       "rows": [
         {
-          "predicate": "http://www.w3.org/ns/prov#wasGeneratedBy",
-          "kind": "template",
-          "json_path": "email, verification.antiMoneyLaundering.result",
-          "constant": ""
-        },
-        {
           "predicate": "opda:supportedBy",
           "kind": "template",
           "json_path": "email, verification.antiMoneyLaundering.result",
@@ -2365,6 +2359,12 @@
         },
         {
           "predicate": "http://www.w3.org/ns/prov#wasDerivedFrom",
+          "kind": "template",
+          "json_path": "email, verification.antiMoneyLaundering.result",
+          "constant": ""
+        },
+        {
+          "predicate": "http://www.w3.org/ns/prov#wasGeneratedBy",
           "kind": "template",
           "json_path": "email, verification.antiMoneyLaundering.result",
           "constant": ""
@@ -2411,13 +2411,13 @@
       ],
       "rows": [
         {
-          "predicate": "http://www.w3.org/ns/prov#wasGeneratedBy",
+          "predicate": "opda:supportedBy",
           "kind": "template",
           "json_path": "email, verification.identity.result",
           "constant": ""
         },
         {
-          "predicate": "opda:supportedBy",
+          "predicate": "http://www.w3.org/ns/prov#wasGeneratedBy",
           "kind": "template",
           "json_path": "email, verification.identity.result",
           "constant": ""
@@ -2487,15 +2487,9 @@
           "constant": "marketing"
         },
         {
-          "predicate": "opda:line2",
+          "predicate": "opda:line1",
           "kind": "reference",
-          "json_path": "address.line2",
-          "constant": ""
-        },
-        {
-          "predicate": "opda:postTown",
-          "kind": "reference",
-          "json_path": "address.town",
+          "json_path": "address.line1",
           "constant": ""
         },
         {
@@ -2505,15 +2499,21 @@
           "constant": ""
         },
         {
+          "predicate": "opda:line2",
+          "kind": "reference",
+          "json_path": "address.line2",
+          "constant": ""
+        },
+        {
           "predicate": "opda:country",
           "kind": "reference",
           "json_path": "address.countryCode",
           "constant": ""
         },
         {
-          "predicate": "opda:line1",
+          "predicate": "opda:postTown",
           "kind": "reference",
-          "json_path": "address.line1",
+          "json_path": "address.town",
           "constant": ""
         }
       ]
@@ -2551,15 +2551,15 @@
           "constant": "title"
         },
         {
-          "predicate": "opda:line2",
+          "predicate": "opda:postcode",
           "kind": "reference",
-          "json_path": "titlesToBeSold[0].registerExtract.ocSummaryData.propertyAddress.addressLine.line[1]",
+          "json_path": "titlesToBeSold[0].registerExtract.ocSummaryData.propertyAddress.postcodeZone.postcode",
           "constant": ""
         },
         {
-          "predicate": "opda:postcode",
+          "predicate": "opda:line2",
           "kind": "reference",
-          "json_path": "titlesToBeSold[0].registerExtract.ocSummaryData.propertyAddress[?(@.postcodeZone)].postcodeZone.postcode",
+          "json_path": "titlesToBeSold[0].registerExtract.ocSummaryData.propertyAddress.addressLine.line[1]",
           "constant": ""
         },
         {
@@ -2583,7 +2583,7 @@
         {
           "predicate": "opda:postcode",
           "kind": "reference",
-          "json_path": "titlesToBeSold[0].registerExtract.ocSummaryData.propertyAddress.postcodeZone.postcode",
+          "json_path": "titlesToBeSold[0].registerExtract.ocSummaryData.propertyAddress[?(@.postcodeZone)].postcodeZone.postcode",
           "constant": ""
         }
       ]
@@ -2658,7 +2658,7 @@
     {
       "id": "VerifiedClaimsDigest",
       "section_code": "M36",
-      "section_title": "VerifiedClaims evidence: opda:evidenceType / opda:digest /",
+      "section_title": "VerifiedClaims evidence: opda:evidenceType / opda:digest",
       "iterator": "$.verified_claims[*]",
       "subject_template": "https://opda.org.uk/pdtf/harness/data/evidence/{transactionId}",
       "classes": [],
@@ -2674,7 +2674,7 @@
     {
       "id": "VerifiedClaimsEvidenceDocument",
       "section_code": "M36",
-      "section_title": "VerifiedClaims evidence: opda:evidenceType / opda:digest /",
+      "section_title": "VerifiedClaims evidence: opda:evidenceType / opda:digest",
       "iterator": "$.verified_claims[?(@.verification.evidence[0].type==\"document\")]",
       "subject_template": "https://opda.org.uk/pdtf/harness/data/evidence/{transactionId}",
       "classes": [
@@ -2692,7 +2692,7 @@
     {
       "id": "VerifiedClaimsEvidenceElectronicRecord",
       "section_code": "M36",
-      "section_title": "VerifiedClaims evidence: opda:evidenceType / opda:digest /",
+      "section_title": "VerifiedClaims evidence: opda:evidenceType / opda:digest",
       "iterator": "$.verified_claims[?(@.verification.evidence[0].type==\"electronic_record\")]",
       "subject_template": "https://opda.org.uk/pdtf/harness/data/evidence/{transactionId}",
       "classes": [
@@ -2710,7 +2710,7 @@
     {
       "id": "VerifiedClaimsEvidenceVouch",
       "section_code": "M36",
-      "section_title": "VerifiedClaims evidence: opda:evidenceType / opda:digest /",
+      "section_title": "VerifiedClaims evidence: opda:evidenceType / opda:digest",
       "iterator": "$.verified_claims[?(@.verification.evidence[0].type==\"vouch\")]",
       "subject_template": "https://opda.org.uk/pdtf/harness/data/evidence/{transactionId}",
       "classes": [
@@ -2734,7 +2734,7 @@
     {
       "id": "VerifiedClaimsVerifierOrg",
       "section_code": "M36",
-      "section_title": "VerifiedClaims evidence: opda:evidenceType / opda:digest /",
+      "section_title": "VerifiedClaims evidence: opda:evidenceType / opda:digest",
       "iterator": "$.verified_claims[*]",
       "subject_template": "https://opda.org.uk/pdtf/harness/data/org/verifier-{verification.evidence[0].verifier.organization}",
       "classes": [
@@ -2752,7 +2752,7 @@
     {
       "id": "VerifiedClaimsVoucher",
       "section_code": "M36",
-      "section_title": "VerifiedClaims evidence: opda:evidenceType / opda:digest /",
+      "section_title": "VerifiedClaims evidence: opda:evidenceType / opda:digest",
       "iterator": "$.verified_claims[?(@.verification.evidence[0].type==\"vouch\")]",
       "subject_template": "https://opda.org.uk/pdtf/harness/data/person/voucher-{verification.evidence[0].attestation.voucher.name}",
       "classes": [
@@ -2908,7 +2908,7 @@
     {
       "id": "EvidencedAuthorityAssistant",
       "section_code": "M3d",
-      "section_title": "opda:hasEvidencedAuthority (opda:Seller -> opda:Claim) \u2014 CLOSED",
+      "section_title": "opda:hasEvidencedAuthority (opda:Seller -> opda:Claim)",
       "iterator": "$.participants[?(@.sellersCapacity.capacity==\"Assistant\" && @.sellersCapacity.attachments==\"Attached\")]",
       "subject_template": "https://opda.org.uk/pdtf/harness/data/seller/{email}",
       "classes": [],
@@ -2924,7 +2924,7 @@
     {
       "id": "EvidencedAuthorityClaim",
       "section_code": "M3d",
-      "section_title": "opda:hasEvidencedAuthority (opda:Seller -> opda:Claim) \u2014 CLOSED",
+      "section_title": "opda:hasEvidencedAuthority (opda:Seller -> opda:Claim)",
       "iterator": "$.participants[?(@.sellersCapacity.attachments==\"Attached\")]",
       "subject_template": "https://opda.org.uk/pdtf/harness/data/claim/{email}/authority",
       "classes": [
@@ -2932,13 +2932,13 @@
       ],
       "rows": [
         {
-          "predicate": "http://www.w3.org/ns/prov#wasDerivedFrom",
+          "predicate": "opda:supportedBy",
           "kind": "template",
           "json_path": "email",
           "constant": ""
         },
         {
-          "predicate": "opda:supportedBy",
+          "predicate": "http://www.w3.org/ns/prov#wasDerivedFrom",
           "kind": "template",
           "json_path": "email",
           "constant": ""
@@ -2948,7 +2948,7 @@
     {
       "id": "EvidencedAuthorityEvidence",
       "section_code": "M3d",
-      "section_title": "opda:hasEvidencedAuthority (opda:Seller -> opda:Claim) \u2014 CLOSED",
+      "section_title": "opda:hasEvidencedAuthority (opda:Seller -> opda:Claim)",
       "iterator": "$.participants[?(@.sellersCapacity.attachments==\"Attached\")]",
       "subject_template": "https://opda.org.uk/pdtf/harness/data/claim/{email}/authority/evidence",
       "classes": [
@@ -2966,7 +2966,7 @@
     {
       "id": "EvidencedAuthorityOther",
       "section_code": "M3d",
-      "section_title": "opda:hasEvidencedAuthority (opda:Seller -> opda:Claim) \u2014 CLOSED",
+      "section_title": "opda:hasEvidencedAuthority (opda:Seller -> opda:Claim)",
       "iterator": "$.participants[?(@.sellersCapacity.capacity==\"Other\" && @.sellersCapacity.attachments==\"Attached\")]",
       "subject_template": "https://opda.org.uk/pdtf/harness/data/seller/{email}",
       "classes": [],
@@ -2982,7 +2982,7 @@
     {
       "id": "EvidencedAuthorityPersRep",
       "section_code": "M3d",
-      "section_title": "opda:hasEvidencedAuthority (opda:Seller -> opda:Claim) \u2014 CLOSED",
+      "section_title": "opda:hasEvidencedAuthority (opda:Seller -> opda:Claim)",
       "iterator": "$.participants[?(@.sellersCapacity.capacity==\"Personal Representative for a Deceased Owner\" && @.sellersCapacity.attachments==\"Attached\")]",
       "subject_template": "https://opda.org.uk/pdtf/harness/data/seller/{email}",
       "classes": [],
@@ -2998,7 +2998,7 @@
     {
       "id": "EvidencedAuthorityPoA",
       "section_code": "M3d",
-      "section_title": "opda:hasEvidencedAuthority (opda:Seller -> opda:Claim) \u2014 CLOSED",
+      "section_title": "opda:hasEvidencedAuthority (opda:Seller -> opda:Claim)",
       "iterator": "$.participants[?(@.sellersCapacity.capacity==\"Under Power of Attorney\" && @.sellersCapacity.attachments==\"Attached\")]",
       "subject_template": "https://opda.org.uk/pdtf/harness/data/seller/{email}",
       "classes": [],
@@ -3040,6 +3040,12 @@
           "constant": ""
         },
         {
+          "predicate": "opda:councilTaxAnnualCharge",
+          "kind": "template",
+          "json_path": "uprn, councilTax.councilTaxAnnualCharge",
+          "constant": ""
+        },
+        {
           "predicate": "opda:hasRoomDimension",
           "kind": "template",
           "json_path": "buildInformation.roomDimensions.rooms[*].roomName",
@@ -3058,57 +3064,9 @@
           "constant": ""
         },
         {
-          "predicate": "opda:councilTaxAnnualCharge",
-          "kind": "template",
-          "json_path": "uprn, councilTax.councilTaxAnnualCharge",
-          "constant": ""
-        },
-        {
-          "predicate": "opda:typeOfFlooding",
+          "predicate": "opda:consentsObtained",
           "kind": "reference",
-          "json_path": "environmentalIssues.flooding.historicalFlooding.typeOfFlooding",
-          "constant": ""
-        },
-        {
-          "predicate": "opda:location",
-          "kind": "reference",
-          "json_path": "heating.heatingSystem.centralHeatingDetails.centralHeatingFuel.gasMeter.location",
-          "constant": ""
-        },
-        {
-          "predicate": "opda:waterworksMapAttached",
-          "kind": "reference",
-          "json_path": "waterAndDrainage.maps.waterworksMapAttached",
-          "constant": ""
-        },
-        {
-          "predicate": "opda:numberOfPropertiesSharing",
-          "kind": "reference",
-          "json_path": "waterAndDrainage.drainage.mainsFoulDrainage.offMainsDrainageSystem.otherConnectedProperties.numberOfPropertiesSharing",
-          "constant": ""
-        },
-        {
-          "predicate": "opda:centralHeatingInstalled",
-          "kind": "reference",
-          "json_path": "heating.heatingSystem.centralHeatingDetails.centralHeatingInstalled",
-          "constant": ""
-        },
-        {
-          "predicate": "opda:otherCentralHeatingFuelType",
-          "kind": "reference",
-          "json_path": "heating.heatingSystem.centralHeatingDetails.centralHeatingFuel.otherCentralHeatingFuelType",
-          "constant": ""
-        },
-        {
-          "predicate": "opda:yearTested",
-          "kind": "reference",
-          "json_path": "electricalWorks.testedByQualifiedElectrician.yearTested",
-          "constant": ""
-        },
-        {
-          "predicate": "opda:zoom",
-          "kind": "reference",
-          "json_path": "location.googleStreetViewPOV.zoom",
+          "json_path": "listingAndConservation.hasTreePreservationOrder.workCarriedOut.consentsObtained",
           "constant": ""
         },
         {
@@ -3118,27 +3076,15 @@
           "constant": ""
         },
         {
-          "predicate": "opda:heatingLastServicedDate",
+          "predicate": "opda:dateToBeConnected",
           "kind": "reference",
-          "json_path": "heating.heatingSystem.centralHeatingDetails.heatingLastServicedDate",
+          "json_path": "connectivity.telephone.dateToBeConnected",
           "constant": ""
         },
         {
-          "predicate": "opda:location",
+          "predicate": "opda:isHMO",
           "kind": "reference",
-          "json_path": "waterAndDrainage.water.mainsWater.waterMeter.location",
-          "constant": ""
-        },
-        {
-          "predicate": "opda:yearInstalled",
-          "kind": "reference",
-          "json_path": "electricity.solarPanels.yearInstalled",
-          "constant": ""
-        },
-        {
-          "predicate": "opda:outsideAreas",
-          "kind": "reference",
-          "json_path": "residentialPropertyFeatures.outsideAreas",
+          "json_path": "buildInformation.isHMO",
           "constant": ""
         },
         {
@@ -3148,93 +3094,9 @@
           "constant": ""
         },
         {
-          "predicate": "opda:dateInstalled",
+          "predicate": "opda:location",
           "kind": "reference",
-          "json_path": "electricity.heatPump.dateInstalled",
-          "constant": ""
-        },
-        {
-          "predicate": "opda:logbookProvider",
-          "kind": "reference",
-          "json_path": "completionAndMoving.digitalPropertyLogbook.logbookProvider",
-          "constant": ""
-        },
-        {
-          "predicate": "opda:numberOfFloors",
-          "kind": "reference",
-          "json_path": "buildInformation.building.numberOfFloors",
-          "constant": ""
-        },
-        {
-          "predicate": "opda:yearOfBuild",
-          "kind": "reference",
-          "json_path": "buildInformation.yearOfBuild",
-          "constant": ""
-        },
-        {
-          "predicate": "opda:yearWorkCarriedOut",
-          "kind": "reference",
-          "json_path": "electricalWorks.electricalWorkSince2005.yearWorkCarriedOut",
-          "constant": ""
-        },
-        {
-          "predicate": "opda:saleAtUndervalue",
-          "kind": "reference",
-          "json_path": "priceInformation.saleAtUndervalue",
-          "constant": ""
-        },
-        {
-          "predicate": "opda:supplier",
-          "kind": "reference",
-          "json_path": "connectivity.telephone.supplier",
-          "constant": ""
-        },
-        {
-          "predicate": "opda:supplier",
-          "kind": "reference",
-          "json_path": "electricity.mainsElectricity.supplier",
-          "constant": ""
-        },
-        {
-          "predicate": "opda:dateLastServiced",
-          "kind": "reference",
-          "json_path": "waterAndDrainage.drainage.mainsFoulDrainage.offMainsDrainageSystem.dateLastServiced",
-          "constant": ""
-        },
-        {
-          "predicate": "opda:pitch",
-          "kind": "reference",
-          "json_path": "location.googleStreetViewPOV.pitch",
-          "constant": ""
-        },
-        {
-          "predicate": "opda:consentsObtained",
-          "kind": "reference",
-          "json_path": "listingAndConservation.hasTreePreservationOrder.workCarriedOut.consentsObtained",
-          "constant": ""
-        },
-        {
-          "predicate": "opda:isStudentAccommodation",
-          "kind": "reference",
-          "json_path": "buildInformation.isStudentAccommodation",
-          "constant": ""
-        },
-        {
-          "predicate": "opda:yearCompleted",
-          "kind": "reference",
-          "json_path": "alterationsAndChanges.windowReplacementsSince2002.yearCompleted",
-          "constant": ""
-        },
-        {
-          "predicate": "opda:mprn",
-          "kind": "reference",
-          "json_path": "heating.heatingSystem.centralHeatingDetails.centralHeatingFuel.gasMeter.mprn",
-          "constant": ""
-        },
-        {
-          "predicate": "opda:loftBoarded",
-          "kind": "reference",
-          "json_path": "typeOfConstruction.loft.loftBoarded",
+          "json_path": "heating.heatingSystem.centralHeatingDetails.centralHeatingFuel.gasMeter.location",
           "constant": ""
         },
         {
@@ -3244,9 +3106,195 @@
           "constant": ""
         },
         {
-          "predicate": "opda:bedrooms",
+          "predicate": "opda:zoom",
           "kind": "reference",
-          "json_path": "residentialPropertyFeatures.bedrooms",
+          "json_path": "location.googleStreetViewPOV.zoom",
+          "constant": ""
+        },
+        {
+          "predicate": "opda:dateInstalled",
+          "kind": "reference",
+          "json_path": "electricity.heatPump.dateInstalled",
+          "constant": ""
+        },
+        {
+          "predicate": "opda:yearWorkCarriedOut",
+          "kind": "reference",
+          "json_path": "electricalWorks.electricalWorkSince2005.yearWorkCarriedOut",
+          "constant": ""
+        },
+        {
+          "predicate": "opda:sewerageBills",
+          "kind": "reference",
+          "json_path": "waterAndDrainage.charging.sewerageBills",
+          "constant": ""
+        },
+        {
+          "predicate": "opda:hasUPRN",
+          "kind": "reference",
+          "json_path": "uprn",
+          "constant": ""
+        },
+        {
+          "predicate": "opda:diningAreas",
+          "kind": "reference",
+          "json_path": "residentialPropertyFeatures.diningAreas",
+          "constant": ""
+        },
+        {
+          "predicate": "opda:mprn",
+          "kind": "reference",
+          "json_path": "heating.heatingSystem.centralHeatingDetails.centralHeatingFuel.gasMeter.mprn",
+          "constant": ""
+        },
+        {
+          "predicate": "opda:centralHeatingInstalled",
+          "kind": "reference",
+          "json_path": "heating.heatingSystem.centralHeatingDetails.centralHeatingInstalled",
+          "constant": ""
+        },
+        {
+          "predicate": "opda:supplyClassification",
+          "kind": "reference",
+          "json_path": "waterAndDrainage.water.supplyClassification",
+          "constant": ""
+        },
+        {
+          "predicate": "opda:supplier",
+          "kind": "reference",
+          "json_path": "connectivity.telephone.supplier",
+          "constant": ""
+        },
+        {
+          "predicate": "opda:isLimitedCompanySale",
+          "kind": "reference",
+          "json_path": "ownership.isLimitedCompanySale",
+          "constant": ""
+        },
+        {
+          "predicate": "opda:saleAtUndervalue",
+          "kind": "reference",
+          "json_path": "priceInformation.saleAtUndervalue",
+          "constant": ""
+        },
+        {
+          "predicate": "opda:heatingLastServicedDate",
+          "kind": "reference",
+          "json_path": "heating.heatingSystem.centralHeatingDetails.heatingLastServicedDate",
+          "constant": ""
+        },
+        {
+          "predicate": "opda:numberOfFloors",
+          "kind": "reference",
+          "json_path": "buildInformation.building.numberOfFloors",
+          "constant": ""
+        },
+        {
+          "predicate": "opda:typeOfFlooding",
+          "kind": "reference",
+          "json_path": "environmentalIssues.flooding.historicalFlooding.typeOfFlooding",
+          "constant": ""
+        },
+        {
+          "predicate": "opda:kitchens",
+          "kind": "reference",
+          "json_path": "residentialPropertyFeatures.kitchens",
+          "constant": ""
+        },
+        {
+          "predicate": "opda:handoverOnCompletion",
+          "kind": "reference",
+          "json_path": "smartHomeSystems.handoverOnCompletion",
+          "constant": ""
+        },
+        {
+          "predicate": "opda:entranceFloor",
+          "kind": "reference",
+          "json_path": "buildInformation.building.entranceFloor",
+          "constant": ""
+        },
+        {
+          "predicate": "opda:loftBoarded",
+          "kind": "reference",
+          "json_path": "typeOfConstruction.loft.loftBoarded",
+          "constant": ""
+        },
+        {
+          "predicate": "opda:otherHeatingFeatures",
+          "kind": "reference",
+          "json_path": "heating.otherHeatingFeatures",
+          "constant": ""
+        },
+        {
+          "predicate": "opda:publicSewerMapAttached",
+          "kind": "reference",
+          "json_path": "waterAndDrainage.maps.publicSewerMapAttached",
+          "constant": ""
+        },
+        {
+          "predicate": "opda:hasFloodDefences",
+          "kind": "reference",
+          "json_path": "environmentalIssues.flooding.floodDefences.hasFloodDefences",
+          "constant": ""
+        },
+        {
+          "predicate": "opda:location",
+          "kind": "reference",
+          "json_path": "waterAndDrainage.water.mainsWater.stopcock.location",
+          "constant": ""
+        },
+        {
+          "predicate": "opda:outsideAreas",
+          "kind": "reference",
+          "json_path": "residentialPropertyFeatures.outsideAreas",
+          "constant": ""
+        },
+        {
+          "predicate": "opda:waterProvider",
+          "kind": "reference",
+          "json_path": "waterAndDrainage.charging.waterProvider",
+          "constant": ""
+        },
+        {
+          "predicate": "opda:hasFloorplan",
+          "kind": "reference",
+          "json_path": "buildInformation.roomDimensions.hasFloorplan",
+          "constant": ""
+        },
+        {
+          "predicate": "opda:abilityToResideAtProperty",
+          "kind": "reference",
+          "json_path": "typeOfConstruction.buildingSafety.abilityToResideAtProperty",
+          "constant": ""
+        },
+        {
+          "predicate": "opda:yearInstalled",
+          "kind": "reference",
+          "json_path": "electricity.solarPanels.yearInstalled",
+          "constant": ""
+        },
+        {
+          "predicate": "opda:waterworksMapAttached",
+          "kind": "reference",
+          "json_path": "waterAndDrainage.maps.waterworksMapAttached",
+          "constant": ""
+        },
+        {
+          "predicate": "opda:dischargeCompliesWithGBR",
+          "kind": "reference",
+          "json_path": "waterAndDrainage.drainage.mainsFoulDrainage.offMainsDrainageSystem.plantDrainsIntoWaterway.dischargeCompliesWithGBR",
+          "constant": ""
+        },
+        {
+          "predicate": "opda:isFirstRegistration",
+          "kind": "reference",
+          "json_path": "ownership.isFirstRegistration",
+          "constant": ""
+        },
+        {
+          "predicate": "opda:isConnectedToNationalGrid",
+          "kind": "reference",
+          "json_path": "electricity.solarPanels.isConnectedToNationalGrid",
           "constant": ""
         },
         {
@@ -3262,249 +3310,9 @@
           "constant": ""
         },
         {
-          "predicate": "opda:otherType",
-          "kind": "reference",
-          "json_path": "buildInformation.building.otherType",
-          "constant": ""
-        },
-        {
-          "predicate": "opda:dateToBeConnected",
-          "kind": "reference",
-          "json_path": "connectivity.telephone.dateToBeConnected",
-          "constant": ""
-        },
-        {
-          "predicate": "opda:willingToInsure",
-          "kind": "reference",
-          "json_path": "alterationsAndChanges.planningPermissionBreaches.willingToInsure",
-          "constant": ""
-        },
-        {
-          "predicate": "opda:sewerageProvider",
-          "kind": "reference",
-          "json_path": "waterAndDrainage.charging.sewerageProvider",
-          "constant": ""
-        },
-        {
-          "predicate": "opda:willHandoverLogbook",
-          "kind": "reference",
-          "json_path": "completionAndMoving.digitalPropertyLogbook.willHandoverLogbook",
-          "constant": ""
-        },
-        {
-          "predicate": "opda:parkingArrangements",
-          "kind": "reference",
-          "json_path": "parking.parkingArrangements",
-          "constant": ""
-        },
-        {
-          "predicate": "opda:consequentialChargingBasis",
-          "kind": "reference",
-          "json_path": "waterAndDrainage.charging.consequentialChargingBasis",
-          "constant": ""
-        },
-        {
-          "predicate": "opda:location",
-          "kind": "reference",
-          "json_path": "electricity.mainsElectricity.electricityMeter.location",
-          "constant": ""
-        },
-        {
-          "predicate": "opda:isLimitedCompanySale",
-          "kind": "reference",
-          "json_path": "ownership.isLimitedCompanySale",
-          "constant": ""
-        },
-        {
-          "predicate": "opda:councilTaxBand",
-          "kind": "reference",
-          "json_path": "councilTax.councilTaxBand",
-          "constant": ""
-        },
-        {
-          "predicate": "opda:hasFloorplan",
-          "kind": "reference",
-          "json_path": "buildInformation.roomDimensions.hasFloorplan",
-          "constant": ""
-        },
-        {
-          "predicate": "opda:entranceFloor",
-          "kind": "reference",
-          "json_path": "buildInformation.building.entranceFloor",
-          "constant": ""
-        },
-        {
-          "predicate": "opda:handoverOnCompletion",
-          "kind": "reference",
-          "json_path": "smartHomeSystems.handoverOnCompletion",
-          "constant": ""
-        },
-        {
-          "predicate": "opda:mpan",
-          "kind": "reference",
-          "json_path": "electricity.mainsElectricity.electricityMeter.mpan",
-          "constant": ""
-        },
-        {
-          "predicate": "opda:supplyClassification",
-          "kind": "reference",
-          "json_path": "waterAndDrainage.water.supplyClassification",
-          "constant": ""
-        },
-        {
-          "predicate": "opda:hasUPRN",
-          "kind": "reference",
-          "json_path": "uprn",
-          "constant": ""
-        },
-        {
-          "predicate": "opda:loftInsulated",
-          "kind": "reference",
-          "json_path": "typeOfConstruction.loft.loftInsulated",
-          "constant": ""
-        },
-        {
-          "predicate": "opda:distanceToNearestSewerageTreatment",
-          "kind": "reference",
-          "json_path": "waterAndDrainage.drainage.distanceToNearestSewerageTreatment",
-          "constant": ""
-        },
-        {
-          "predicate": "opda:hasHelpToBuyEquityLoan",
-          "kind": "reference",
-          "json_path": "ownership.hasHelpToBuyEquityLoan",
-          "constant": ""
-        },
-        {
-          "predicate": "opda:isHMO",
-          "kind": "reference",
-          "json_path": "buildInformation.isHMO",
-          "constant": ""
-        },
-        {
-          "predicate": "opda:kitchens",
-          "kind": "reference",
-          "json_path": "residentialPropertyFeatures.kitchens",
-          "constant": ""
-        },
-        {
           "predicate": "opda:area",
           "kind": "reference",
           "json_path": "buildInformation.internalArea.area",
-          "constant": ""
-        },
-        {
-          "predicate": "opda:waterBills",
-          "kind": "reference",
-          "json_path": "waterAndDrainage.charging.waterBills",
-          "constant": ""
-        },
-        {
-          "predicate": "opda:supplier",
-          "kind": "reference",
-          "json_path": "connectivity.cableSatelliteTV.supplier",
-          "constant": ""
-        },
-        {
-          "predicate": "opda:dischargeCompliesWithGBR",
-          "kind": "reference",
-          "json_path": "waterAndDrainage.drainage.mainsFoulDrainage.offMainsDrainageSystem.plantDrainsIntoWaterway.dischargeCompliesWithGBR",
-          "constant": ""
-        },
-        {
-          "predicate": "opda:abilityToResideAtProperty",
-          "kind": "reference",
-          "json_path": "typeOfConstruction.buildingSafety.abilityToResideAtProperty",
-          "constant": ""
-        },
-        {
-          "predicate": "opda:managementPlanInPlace",
-          "kind": "reference",
-          "json_path": "specialistIssues.japaneseKnotweed.managementPlanInPlace",
-          "constant": ""
-        },
-        {
-          "predicate": "opda:diningAreas",
-          "kind": "reference",
-          "json_path": "residentialPropertyFeatures.diningAreas",
-          "constant": ""
-        },
-        {
-          "predicate": "opda:isConnectedToNationalGrid",
-          "kind": "reference",
-          "json_path": "electricity.solarPanels.isConnectedToNationalGrid",
-          "constant": ""
-        },
-        {
-          "predicate": "opda:sewerageBills",
-          "kind": "reference",
-          "json_path": "waterAndDrainage.charging.sewerageBills",
-          "constant": ""
-        },
-        {
-          "predicate": "opda:hasFloodDefences",
-          "kind": "reference",
-          "json_path": "environmentalIssues.flooding.floodDefences.hasFloodDefences",
-          "constant": ""
-        },
-        {
-          "predicate": "opda:receptions",
-          "kind": "reference",
-          "json_path": "residentialPropertyFeatures.receptions",
-          "constant": ""
-        },
-        {
-          "predicate": "opda:yearCompleted",
-          "kind": "reference",
-          "json_path": "alterationsAndChanges.hasAddedConservatory.yearCompleted",
-          "constant": ""
-        },
-        {
-          "predicate": "opda:dateLastEmptied",
-          "kind": "reference",
-          "json_path": "waterAndDrainage.drainage.mainsFoulDrainage.offMainsDrainageSystem.dateLastEmptied",
-          "constant": ""
-        },
-        {
-          "predicate": "opda:accessibilityAndAdaptations",
-          "kind": "reference",
-          "json_path": "typeOfConstruction.accessibilityAndAdaptations",
-          "constant": ""
-        },
-        {
-          "predicate": "opda:location",
-          "kind": "reference",
-          "json_path": "waterAndDrainage.water.mainsWater.stopcock.location",
-          "constant": ""
-        },
-        {
-          "predicate": "opda:lastMaintained",
-          "kind": "reference",
-          "json_path": "electricity.solarPanels.lastMaintained",
-          "constant": ""
-        },
-        {
-          "predicate": "opda:waterProvider",
-          "kind": "reference",
-          "json_path": "waterAndDrainage.charging.waterProvider",
-          "constant": ""
-        },
-        {
-          "predicate": "opda:isFirstRegistration",
-          "kind": "reference",
-          "json_path": "ownership.isFirstRegistration",
-          "constant": ""
-        },
-        {
-          "predicate": "opda:otherHeatingFeatures",
-          "kind": "reference",
-          "json_path": "heating.otherHeatingFeatures",
-          "constant": ""
-        },
-        {
-          "predicate": "opda:supplier",
-          "kind": "reference",
-          "json_path": "waterAndDrainage.water.mainsWater.supplier",
           "constant": ""
         },
         {
@@ -3514,9 +3322,201 @@
           "constant": ""
         },
         {
-          "predicate": "opda:publicSewerMapAttached",
+          "predicate": "opda:location",
           "kind": "reference",
-          "json_path": "waterAndDrainage.maps.publicSewerMapAttached",
+          "json_path": "electricity.mainsElectricity.electricityMeter.location",
+          "constant": ""
+        },
+        {
+          "predicate": "opda:logbookProvider",
+          "kind": "reference",
+          "json_path": "completionAndMoving.digitalPropertyLogbook.logbookProvider",
+          "constant": ""
+        },
+        {
+          "predicate": "opda:dateLastServiced",
+          "kind": "reference",
+          "json_path": "waterAndDrainage.drainage.mainsFoulDrainage.offMainsDrainageSystem.dateLastServiced",
+          "constant": ""
+        },
+        {
+          "predicate": "opda:isStudentAccommodation",
+          "kind": "reference",
+          "json_path": "buildInformation.isStudentAccommodation",
+          "constant": ""
+        },
+        {
+          "predicate": "opda:otherCentralHeatingFuelType",
+          "kind": "reference",
+          "json_path": "heating.heatingSystem.centralHeatingDetails.centralHeatingFuel.otherCentralHeatingFuelType",
+          "constant": ""
+        },
+        {
+          "predicate": "opda:lastMaintained",
+          "kind": "reference",
+          "json_path": "electricity.solarPanels.lastMaintained",
+          "constant": ""
+        },
+        {
+          "predicate": "opda:otherType",
+          "kind": "reference",
+          "json_path": "buildInformation.building.otherType",
+          "constant": ""
+        },
+        {
+          "predicate": "opda:yearTested",
+          "kind": "reference",
+          "json_path": "electricalWorks.testedByQualifiedElectrician.yearTested",
+          "constant": ""
+        },
+        {
+          "predicate": "opda:willHandoverLogbook",
+          "kind": "reference",
+          "json_path": "completionAndMoving.digitalPropertyLogbook.willHandoverLogbook",
+          "constant": ""
+        },
+        {
+          "predicate": "opda:waterBills",
+          "kind": "reference",
+          "json_path": "waterAndDrainage.charging.waterBills",
+          "constant": ""
+        },
+        {
+          "predicate": "opda:managementPlanInPlace",
+          "kind": "reference",
+          "json_path": "specialistIssues.japaneseKnotweed.managementPlanInPlace",
+          "constant": ""
+        },
+        {
+          "predicate": "opda:parkingArrangements",
+          "kind": "reference",
+          "json_path": "parking.parkingArrangements",
+          "constant": ""
+        },
+        {
+          "predicate": "opda:accessibilityAndAdaptations",
+          "kind": "reference",
+          "json_path": "typeOfConstruction.accessibilityAndAdaptations",
+          "constant": ""
+        },
+        {
+          "predicate": "opda:hasHelpToBuyEquityLoan",
+          "kind": "reference",
+          "json_path": "ownership.hasHelpToBuyEquityLoan",
+          "constant": ""
+        },
+        {
+          "predicate": "opda:supplier",
+          "kind": "reference",
+          "json_path": "waterAndDrainage.water.mainsWater.supplier",
+          "constant": ""
+        },
+        {
+          "predicate": "opda:sewerageProvider",
+          "kind": "reference",
+          "json_path": "waterAndDrainage.charging.sewerageProvider",
+          "constant": ""
+        },
+        {
+          "predicate": "opda:supplier",
+          "kind": "reference",
+          "json_path": "electricity.mainsElectricity.supplier",
+          "constant": ""
+        },
+        {
+          "predicate": "opda:distanceToNearestSewerageTreatment",
+          "kind": "reference",
+          "json_path": "waterAndDrainage.drainage.distanceToNearestSewerageTreatment",
+          "constant": ""
+        },
+        {
+          "predicate": "opda:loftInsulated",
+          "kind": "reference",
+          "json_path": "typeOfConstruction.loft.loftInsulated",
+          "constant": ""
+        },
+        {
+          "predicate": "opda:receptions",
+          "kind": "reference",
+          "json_path": "residentialPropertyFeatures.receptions",
+          "constant": ""
+        },
+        {
+          "predicate": "opda:mpan",
+          "kind": "reference",
+          "json_path": "electricity.mainsElectricity.electricityMeter.mpan",
+          "constant": ""
+        },
+        {
+          "predicate": "opda:pitch",
+          "kind": "reference",
+          "json_path": "location.googleStreetViewPOV.pitch",
+          "constant": ""
+        },
+        {
+          "predicate": "opda:yearCompleted",
+          "kind": "reference",
+          "json_path": "alterationsAndChanges.hasAddedConservatory.yearCompleted",
+          "constant": ""
+        },
+        {
+          "predicate": "opda:willingToInsure",
+          "kind": "reference",
+          "json_path": "alterationsAndChanges.planningPermissionBreaches.willingToInsure",
+          "constant": ""
+        },
+        {
+          "predicate": "opda:consequentialChargingBasis",
+          "kind": "reference",
+          "json_path": "waterAndDrainage.charging.consequentialChargingBasis",
+          "constant": ""
+        },
+        {
+          "predicate": "opda:numberOfPropertiesSharing",
+          "kind": "reference",
+          "json_path": "waterAndDrainage.drainage.mainsFoulDrainage.offMainsDrainageSystem.otherConnectedProperties.numberOfPropertiesSharing",
+          "constant": ""
+        },
+        {
+          "predicate": "opda:location",
+          "kind": "reference",
+          "json_path": "waterAndDrainage.water.mainsWater.waterMeter.location",
+          "constant": ""
+        },
+        {
+          "predicate": "opda:dateLastEmptied",
+          "kind": "reference",
+          "json_path": "waterAndDrainage.drainage.mainsFoulDrainage.offMainsDrainageSystem.dateLastEmptied",
+          "constant": ""
+        },
+        {
+          "predicate": "opda:councilTaxBand",
+          "kind": "reference",
+          "json_path": "councilTax.councilTaxBand",
+          "constant": ""
+        },
+        {
+          "predicate": "opda:supplier",
+          "kind": "reference",
+          "json_path": "connectivity.cableSatelliteTV.supplier",
+          "constant": ""
+        },
+        {
+          "predicate": "opda:bedrooms",
+          "kind": "reference",
+          "json_path": "residentialPropertyFeatures.bedrooms",
+          "constant": ""
+        },
+        {
+          "predicate": "opda:yearCompleted",
+          "kind": "reference",
+          "json_path": "alterationsAndChanges.windowReplacementsSince2002.yearCompleted",
+          "constant": ""
+        },
+        {
+          "predicate": "opda:yearOfBuild",
+          "kind": "reference",
+          "json_path": "buildInformation.yearOfBuild",
           "constant": ""
         }
       ]
@@ -3599,7 +3599,7 @@
     {
       "id": "Media",
       "section_code": "M4c",
-      "section_title": "Media (propertyPack.media[])  domain-less shared property, keyed on",
+      "section_title": "Media (propertyPack.media[]) domain-less shared property, keyed on",
       "iterator": "$.propertyPack.media[*]",
       "subject_template": "https://opda.org.uk/pdtf/harness/data/media/{mediaUrl}",
       "classes": [],
@@ -3719,15 +3719,15 @@
       ],
       "rows": [
         {
-          "predicate": "opda:expectedDeliveryDate",
-          "kind": "function",
-          "json_path": "expectedDeliveryDate",
-          "constant": ""
-        },
-        {
           "predicate": "opda:orderDate",
           "kind": "function",
           "json_path": "orderDate",
+          "constant": ""
+        },
+        {
+          "predicate": "opda:expectedDeliveryDate",
+          "kind": "function",
+          "json_path": "expectedDeliveryDate",
           "constant": ""
         },
         {
@@ -3749,27 +3749,27 @@
           "constant": ""
         },
         {
-          "predicate": "opda:productCode",
-          "kind": "reference",
-          "json_path": "productCode",
-          "constant": ""
-        },
-        {
           "predicate": "opda:displayName",
           "kind": "reference",
           "json_path": "displayName",
           "constant": ""
         },
         {
-          "predicate": "opda:providerReference",
+          "predicate": "opda:productCode",
           "kind": "reference",
-          "json_path": "providerReference",
+          "json_path": "productCode",
           "constant": ""
         },
         {
           "predicate": "opda:providerName",
           "kind": "reference",
           "json_path": "providerName",
+          "constant": ""
+        },
+        {
+          "predicate": "opda:providerReference",
+          "kind": "reference",
+          "json_path": "providerReference",
           "constant": ""
         }
       ]
@@ -3802,27 +3802,21 @@
           "constant": ""
         },
         {
-          "predicate": "opda:regulatedSearchTurnaroundTimeInWorkingDays",
-          "kind": "reference",
-          "json_path": "regulatedSearchTurnaroundTimeInWorkingDays",
-          "constant": ""
-        },
-        {
           "predicate": "opda:councilSearchTurnaroundTimeInWorkingDays",
           "kind": "reference",
           "json_path": "councilSearchTurnaroundTimeInWorkingDays",
           "constant": ""
         },
         {
-          "predicate": "opda:unitaryAuthority",
+          "predicate": "opda:districtCouncil",
           "kind": "reference",
-          "json_path": "unitaryAuthority",
+          "json_path": "districtCouncil",
           "constant": ""
         },
         {
-          "predicate": "opda:localAuthorityName",
+          "predicate": "opda:regulatedSearchTurnaroundTimeInWorkingDays",
           "kind": "reference",
-          "json_path": "localAuthorityName",
+          "json_path": "regulatedSearchTurnaroundTimeInWorkingDays",
           "constant": ""
         },
         {
@@ -3838,9 +3832,15 @@
           "constant": ""
         },
         {
-          "predicate": "opda:districtCouncil",
+          "predicate": "opda:unitaryAuthority",
           "kind": "reference",
-          "json_path": "districtCouncil",
+          "json_path": "unitaryAuthority",
+          "constant": ""
+        },
+        {
+          "predicate": "opda:localAuthorityName",
+          "kind": "reference",
+          "json_path": "localAuthorityName",
           "constant": ""
         }
       ]
@@ -3867,27 +3867,9 @@
       ],
       "rows": [
         {
-          "predicate": "opda:leaseTerm",
-          "kind": "template",
-          "json_path": "titleNumber, leaseholdInformation.leaseTerm.startYearOfLease",
-          "constant": ""
-        },
-        {
           "predicate": "opda:annualServiceCharge",
           "kind": "template",
           "json_path": "titleNumber, leaseholdInformation.serviceCharge.annualServiceCharge",
-          "constant": ""
-        },
-        {
-          "predicate": "opda:annualGroundRent",
-          "kind": "template",
-          "json_path": "titleNumber, leaseholdInformation.groundRent.annualGroundRent",
-          "constant": ""
-        },
-        {
-          "predicate": "opda:sharedOwnershipRent",
-          "kind": "template",
-          "json_path": "titleNumber, leaseholdInformation.sharedOwnership.sharedOwnershipRent",
           "constant": ""
         },
         {
@@ -3897,75 +3879,21 @@
           "constant": ""
         },
         {
-          "predicate": "opda:contributionIncludedInServiceCharge",
-          "kind": "reference",
-          "json_path": "leaseholdInformation.serviceCharge.reserveFund.contributionIncludedInServiceCharge",
+          "predicate": "opda:sharedOwnershipRent",
+          "kind": "template",
+          "json_path": "titleNumber, leaseholdInformation.sharedOwnership.sharedOwnershipRent",
           "constant": ""
         },
         {
-          "predicate": "opda:personWhoDealsWithTheDeedOfCovenant",
-          "kind": "reference",
-          "json_path": "leaseholdInformation.transferAndRegistration.deedOfCovenantRequired.personWhoDealsWithTheDeedOfCovenant",
+          "predicate": "opda:leaseTerm",
+          "kind": "template",
+          "json_path": "titleNumber, leaseholdInformation.leaseTerm.startYearOfLease",
           "constant": ""
         },
         {
-          "predicate": "opda:landlordNotifiedOfSale",
-          "kind": "reference",
-          "json_path": "leaseholdInformation.buildingSafetyAct.landlordNotifiedOfSale",
-          "constant": ""
-        },
-        {
-          "predicate": "opda:sharedOwnershipPercentage",
-          "kind": "reference",
-          "json_path": "leaseholdInformation.sharedOwnership.sharedOwnershipPercentage",
-          "constant": ""
-        },
-        {
-          "predicate": "opda:isLeaseQualifying",
-          "kind": "reference",
-          "json_path": "leaseholdInformation.buildingSafetyAct.isLeaseQualifying",
-          "constant": ""
-        },
-        {
-          "predicate": "opda:adHocExpenses",
-          "kind": "reference",
-          "json_path": "leaseholdInformation.serviceCharge.adHocExpenses",
-          "constant": ""
-        },
-        {
-          "predicate": "opda:buildingsReinstatementCostAssessment",
-          "kind": "reference",
-          "json_path": "leaseholdInformation.buildingsInsurance.buildingsReinstatementCostAssessment",
-          "constant": ""
-        },
-        {
-          "predicate": "opda:dangerousCladdingOrDefects",
-          "kind": "reference",
-          "json_path": "leaseholdInformation.serviceCharge.dangerousCladdingOrDefects",
-          "constant": ""
-        },
-        {
-          "predicate": "opda:forTheManagedAreas",
-          "kind": "reference",
-          "json_path": "managedFreeholdOrCommonholdInformation.serviceCharge.reserveFund.amount.forTheManagedAreas",
-          "constant": ""
-        },
-        {
-          "predicate": "opda:urgentWorksCarriedOut",
-          "kind": "reference",
-          "json_path": "leaseholdInformation.buildingsInsurance.managedAreasCoveredByPolicy.riskAssessments.urgentWorksCarriedOut",
-          "constant": ""
-        },
-        {
-          "predicate": "opda:requirements",
-          "kind": "reference",
-          "json_path": "leaseholdInformation.transferAndRegistration.licenceToAssignRequired.requirements",
-          "constant": ""
-        },
-        {
-          "predicate": "opda:headLeaseholderControlled",
-          "kind": "reference",
-          "json_path": "leaseholdInformation.ownershipAndManagement.hasHeadlease.headLeaseholderControlled",
+          "predicate": "opda:annualGroundRent",
+          "kind": "template",
+          "json_path": "titleNumber, leaseholdInformation.groundRent.annualGroundRent",
           "constant": ""
         },
         {
@@ -3975,69 +3903,15 @@
           "constant": ""
         },
         {
-          "predicate": "opda:hasTenantCompanyDissolved",
+          "predicate": "opda:requirements",
           "kind": "reference",
-          "json_path": "leaseholdInformation.ownershipAndManagement.hasTenantCompanyDissolved",
+          "json_path": "leaseholdInformation.transferAndRegistration.licenceToAssignRequired.requirements",
           "constant": ""
         },
         {
-          "predicate": "opda:propertiesContributingToMaintenanceOfManagedArea",
+          "predicate": "opda:buildingsReinstatementCostAssessment",
           "kind": "reference",
-          "json_path": "leaseholdInformation.serviceCharge.propertiesContributingToMaintenanceOfManagedArea",
-          "constant": ""
-        },
-        {
-          "predicate": "opda:fromTheOwners",
-          "kind": "reference",
-          "json_path": "managedFreeholdOrCommonholdInformation.serviceCharge.reserveFund.amount.fromTheOwners",
-          "constant": ""
-        },
-        {
-          "predicate": "opda:otherOwnershipDetails",
-          "kind": "reference",
-          "json_path": "otherOwnershipDetails",
-          "constant": ""
-        },
-        {
-          "predicate": "opda:outstandingEnforcementAction",
-          "kind": "reference",
-          "json_path": "leaseholdInformation.buildingsInsurance.managedAreasCoveredByPolicy.riskAssessments.outstandingEnforcementAction",
-          "constant": ""
-        },
-        {
-          "predicate": "opda:sellerCompletedDeedOfCertificate",
-          "kind": "reference",
-          "json_path": "leaseholdInformation.buildingSafetyAct.deedOfCertificateServed.sellerCompletedDeedOfCertificate",
-          "constant": ""
-        },
-        {
-          "predicate": "opda:dealsWithDayToDayMaintenanceOfManagedArea",
-          "kind": "reference",
-          "json_path": "managedFreeholdOrCommonholdInformation.contactDetails.dealsWithDayToDayMaintenanceOfManagedArea",
-          "constant": ""
-        },
-        {
-          "predicate": "opda:rentReviewFrequency",
-          "kind": "reference",
-          "json_path": "leaseholdInformation.groundRent.rentSubjectToIncrease.rentReviewFrequency",
-          "constant": ""
-        },
-        {
-          "predicate": "opda:organisesBuildingInsurance",
-          "kind": "reference",
-          "json_path": "leaseholdInformation.contactDetails.serviceContactAssignments.organisesBuildingInsurance",
-          "constant": ""
-        },
-        {
-          "predicate": "opda:groundRentFrequency",
-          "kind": "reference",
-          "json_path": "leaseholdInformation.groundRent.groundRentFrequency",
-          "constant": ""
-        },
-        {
-          "predicate": "opda:rentIncreaseCalculated",
-          "kind": "reference",
-          "json_path": "leaseholdInformation.groundRent.rentSubjectToIncrease.rentIncreaseCalculated",
+          "json_path": "leaseholdInformation.buildingsInsurance.buildingsReinstatementCostAssessment",
           "constant": ""
         },
         {
@@ -4047,51 +3921,51 @@
           "constant": ""
         },
         {
-          "predicate": "opda:procedureForObtainingCertificate",
-          "kind": "reference",
-          "json_path": "leaseholdInformation.transferAndRegistration.procedureForObtainingCertificate",
-          "constant": ""
-        },
-        {
-          "predicate": "opda:lengthOfLeaseInYears",
-          "kind": "reference",
-          "json_path": "leaseholdInformation.leaseTerm.lengthOfLeaseInYears",
-          "constant": ""
-        },
-        {
-          "predicate": "opda:urgentWorksRecommended",
-          "kind": "reference",
-          "json_path": "leaseholdInformation.buildingsInsurance.managedAreasCoveredByPolicy.riskAssessments.urgentWorksRecommended",
-          "constant": ""
-        },
-        {
-          "predicate": "opda:otherPropertiesInManagedArea",
-          "kind": "reference",
-          "json_path": "leaseholdInformation.general.otherPropertiesInManagedArea",
-          "constant": ""
-        },
-        {
-          "predicate": "opda:sellerOwnedProperty",
-          "kind": "reference",
-          "json_path": "leaseholdInformation.enfranchisement.sellerOwnedProperty",
-          "constant": ""
-        },
-        {
           "predicate": "opda:to",
           "kind": "reference",
           "json_path": "leaseholdInformation.buildingsInsurance.lastDemandPeriod.to",
           "constant": ""
         },
         {
-          "predicate": "opda:startYearOfLease",
+          "predicate": "opda:rentReviewFrequency",
           "kind": "reference",
-          "json_path": "leaseholdInformation.leaseTerm.startYearOfLease",
+          "json_path": "leaseholdInformation.groundRent.rentSubjectToIncrease.rentReviewFrequency",
           "constant": ""
         },
         {
-          "predicate": "opda:from",
+          "predicate": "opda:personWhoDealsWithTheDeedOfCovenant",
           "kind": "reference",
-          "json_path": "leaseholdInformation.buildingsInsurance.lastDemandPeriod.from",
+          "json_path": "leaseholdInformation.transferAndRegistration.deedOfCovenantRequired.personWhoDealsWithTheDeedOfCovenant",
+          "constant": ""
+        },
+        {
+          "predicate": "opda:procedureForObtainingCertificate",
+          "kind": "reference",
+          "json_path": "leaseholdInformation.transferAndRegistration.procedureForObtainingCertificate",
+          "constant": ""
+        },
+        {
+          "predicate": "opda:forTheManagedAreas",
+          "kind": "reference",
+          "json_path": "managedFreeholdOrCommonholdInformation.serviceCharge.reserveFund.amount.forTheManagedAreas",
+          "constant": ""
+        },
+        {
+          "predicate": "opda:fromTheOwners",
+          "kind": "reference",
+          "json_path": "managedFreeholdOrCommonholdInformation.serviceCharge.reserveFund.amount.fromTheOwners",
+          "constant": ""
+        },
+        {
+          "predicate": "opda:organisesBuildingInsurance",
+          "kind": "reference",
+          "json_path": "leaseholdInformation.contactDetails.serviceContactAssignments.organisesBuildingInsurance",
+          "constant": ""
+        },
+        {
+          "predicate": "opda:landlordNotifiedOfSale",
+          "kind": "reference",
+          "json_path": "leaseholdInformation.buildingSafetyAct.landlordNotifiedOfSale",
           "constant": ""
         },
         {
@@ -4101,15 +3975,141 @@
           "constant": ""
         },
         {
-          "predicate": "opda:titlePropertyDescription",
+          "predicate": "opda:dangerousCladdingOrDefects",
           "kind": "reference",
-          "json_path": "titlePropertyDescription",
+          "json_path": "leaseholdInformation.serviceCharge.dangerousCladdingOrDefects",
+          "constant": ""
+        },
+        {
+          "predicate": "opda:hasTenantCompanyDissolved",
+          "kind": "reference",
+          "json_path": "leaseholdInformation.ownershipAndManagement.hasTenantCompanyDissolved",
+          "constant": ""
+        },
+        {
+          "predicate": "opda:otherOwnershipDetails",
+          "kind": "reference",
+          "json_path": "otherOwnershipDetails",
+          "constant": ""
+        },
+        {
+          "predicate": "opda:urgentWorksRecommended",
+          "kind": "reference",
+          "json_path": "leaseholdInformation.buildingsInsurance.managedAreasCoveredByPolicy.riskAssessments.urgentWorksRecommended",
+          "constant": ""
+        },
+        {
+          "predicate": "opda:propertiesContributingToMaintenanceOfManagedArea",
+          "kind": "reference",
+          "json_path": "leaseholdInformation.serviceCharge.propertiesContributingToMaintenanceOfManagedArea",
+          "constant": ""
+        },
+        {
+          "predicate": "opda:dealsWithDayToDayMaintenanceOfManagedArea",
+          "kind": "reference",
+          "json_path": "managedFreeholdOrCommonholdInformation.contactDetails.dealsWithDayToDayMaintenanceOfManagedArea",
+          "constant": ""
+        },
+        {
+          "predicate": "opda:sellerOwnedProperty",
+          "kind": "reference",
+          "json_path": "leaseholdInformation.enfranchisement.sellerOwnedProperty",
+          "constant": ""
+        },
+        {
+          "predicate": "opda:lengthOfLeaseInYears",
+          "kind": "reference",
+          "json_path": "leaseholdInformation.leaseTerm.lengthOfLeaseInYears",
+          "constant": ""
+        },
+        {
+          "predicate": "opda:otherPropertiesInManagedArea",
+          "kind": "reference",
+          "json_path": "leaseholdInformation.general.otherPropertiesInManagedArea",
+          "constant": ""
+        },
+        {
+          "predicate": "opda:headLeaseholderControlled",
+          "kind": "reference",
+          "json_path": "leaseholdInformation.ownershipAndManagement.hasHeadlease.headLeaseholderControlled",
+          "constant": ""
+        },
+        {
+          "predicate": "opda:startYearOfLease",
+          "kind": "reference",
+          "json_path": "leaseholdInformation.leaseTerm.startYearOfLease",
+          "constant": ""
+        },
+        {
+          "predicate": "opda:isLeaseQualifying",
+          "kind": "reference",
+          "json_path": "leaseholdInformation.buildingSafetyAct.isLeaseQualifying",
+          "constant": ""
+        },
+        {
+          "predicate": "opda:sharedOwnershipPercentage",
+          "kind": "reference",
+          "json_path": "leaseholdInformation.sharedOwnership.sharedOwnershipPercentage",
+          "constant": ""
+        },
+        {
+          "predicate": "opda:from",
+          "kind": "reference",
+          "json_path": "leaseholdInformation.buildingsInsurance.lastDemandPeriod.from",
           "constant": ""
         },
         {
           "predicate": "opda:year",
           "kind": "reference",
           "json_path": "leaseholdInformation.serviceCharge.lastDecoratedPeriod.externally.year",
+          "constant": ""
+        },
+        {
+          "predicate": "opda:urgentWorksCarriedOut",
+          "kind": "reference",
+          "json_path": "leaseholdInformation.buildingsInsurance.managedAreasCoveredByPolicy.riskAssessments.urgentWorksCarriedOut",
+          "constant": ""
+        },
+        {
+          "predicate": "opda:rentIncreaseCalculated",
+          "kind": "reference",
+          "json_path": "leaseholdInformation.groundRent.rentSubjectToIncrease.rentIncreaseCalculated",
+          "constant": ""
+        },
+        {
+          "predicate": "opda:outstandingEnforcementAction",
+          "kind": "reference",
+          "json_path": "leaseholdInformation.buildingsInsurance.managedAreasCoveredByPolicy.riskAssessments.outstandingEnforcementAction",
+          "constant": ""
+        },
+        {
+          "predicate": "opda:adHocExpenses",
+          "kind": "reference",
+          "json_path": "leaseholdInformation.serviceCharge.adHocExpenses",
+          "constant": ""
+        },
+        {
+          "predicate": "opda:titlePropertyDescription",
+          "kind": "reference",
+          "json_path": "titlePropertyDescription",
+          "constant": ""
+        },
+        {
+          "predicate": "opda:contributionIncludedInServiceCharge",
+          "kind": "reference",
+          "json_path": "leaseholdInformation.serviceCharge.reserveFund.contributionIncludedInServiceCharge",
+          "constant": ""
+        },
+        {
+          "predicate": "opda:sellerCompletedDeedOfCertificate",
+          "kind": "reference",
+          "json_path": "leaseholdInformation.buildingSafetyAct.deedOfCertificateServed.sellerCompletedDeedOfCertificate",
+          "constant": ""
+        },
+        {
+          "predicate": "opda:groundRentFrequency",
+          "kind": "reference",
+          "json_path": "leaseholdInformation.groundRent.groundRentFrequency",
           "constant": ""
         }
       ]

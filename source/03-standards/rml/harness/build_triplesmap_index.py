@@ -71,20 +71,28 @@ def extract_placeholders(template: str) -> list[str]:
 
 
 def clean_section_title(raw: str) -> str:
-    """Strip the trailing '(opda:Class)' and 'iterator: ...' boilerplate from a
-    section header's title text — both are shown separately elsewhere (the
-    TriplesMap's own asserted class + iterator fields), so keeping them here
-    would just duplicate noise in what's meant to be a short, readable label.
-    Some headers wrap their descriptive text onto a second comment line; only
-    the first line is captured, so also trim a dangling unmatched '(' or a
-    trailing hyphen left by a mid-word line wrap, rather than showing a title
-    that reads as visibly cut off mid-sentence."""
+    """Strip engineering-changelog boilerplate from a section header's title
+    text, so what a reader sees is a short descriptive label, not a fragment
+    of the mapping author's own work-log comment. Section comments carry:
+    - the trailing '(opda:Class)' and 'iterator: ...' — shown separately
+      elsewhere (the TriplesMap's own asserted class + iterator fields);
+    - a trailing status marker + date ('CLOSED 2026-07-05', 'RESOLVED
+      2026-07-05') recording when a gap was closed — commit-log metadata,
+      not a content description;
+    - line-wrapped comments (only the first physical line is captured here),
+      which leaves a dangling unmatched '(', trailing hyphen, or trailing
+      slash at the cut point."""
     title = re.sub(r"\s*iterator:.*$", "", raw)
     title = re.sub(r"\s*\(opda:[A-Za-z0-9_]+\)\s*$", "", title)
-    title = title.strip()
+    title = re.sub(r"\s+", " ", title).strip()
+    # Truncate a dangling unmatched '(' (a line-wrapped continuation cut off
+    # mid-clause) BEFORE stripping the status marker below — otherwise a
+    # wrapped continuation after the marker (e.g. "RESOLVED 2026-07-05
+    # (Darwin-mode") hides it from the end-of-string match.
     if title.count("(") > title.count(")"):
         title = title.rsplit("(", 1)[0].strip()
-    title = re.sub(r"[\s-]+$", "", title)
+    title = re.sub(r"[:\s—-]*(CLOSED|RESOLVED)(\s+\d{4}-\d{2}-\d{2})?\s*$", "", title, flags=re.IGNORECASE)
+    title = re.sub(r"[\s/:—-]+$", "", title)
     return title.strip()
 
 
