@@ -215,7 +215,7 @@ for (const r of bySchemaPath) {
       if (!arr || !arr.length) return '<span class="muted tiny">—</span>';
       return arr.map(function (v) {
         var href = resourceHrefs[v];
-        return href ? '<a href="' + esc(href) + '"><code>' + esc(v) + '</code></a>' : '<code>' + esc(v) + '</code>';
+        return href ? '<a class="resource-link" href="' + esc(href) + '"><code>' + esc(v) + '</code></a>' : '<code>' + esc(v) + '</code>';
       }).join(' ');
     }
     // JSON Schema paths -> linked to the real /schema page + anchor for that
@@ -224,14 +224,14 @@ for (const r of bySchemaPath) {
       if (!arr || !arr.length) return '<span class="muted tiny">—</span>';
       return arr.map(function (v) {
         var href = schemaHrefs[v];
-        return href ? '<a href="' + esc(href) + '"><code>' + esc(v) + '</code></a>' : '<code>' + esc(v) + '</code>';
+        return href ? '<a class="resource-link" href="' + esc(href) + '"><code>' + esc(v) + '</code></a>' : '<code>' + esc(v) + '</code>';
       }).join(' ');
     }
     // TriplesMap ids -> their own detail page (./triplesmaps/{id}).
     function joinTriplesmaps(arr) {
       if (!arr || !arr.length) return '<span class="muted tiny">—</span>';
       return arr.map(function (v) {
-        return '<a href="/mapping/triplesmaps/' + esc(v) + '"><code>#' + esc(v) + '</code></a>';
+        return '<a class="resource-link" href="/mapping/triplesmaps/' + esc(v) + '"><code>#' + esc(v) + '</code></a>';
       }).join(' ');
     }
 
@@ -257,13 +257,13 @@ for (const r of bySchemaPath) {
         facets: [{ key: 'classes', label: 'Asserted class', valueLabels: classValueLabels, hideKey: true }],
         columns: [
           { key: 'id', label: 'Rule', sortable: true, width: '25%',
-            render: function (v) { return '<a href="/mapping/triplesmaps/' + esc(v) + '"><code>#' + esc(v) + '</code></a>'; } },
+            render: function (v) { return '<a class="resource-link" href="/mapping/triplesmaps/' + esc(v) + '"><code>#' + esc(v) + '</code></a>'; } },
           { key: 'classes', label: 'Class(es)', sortable: false, width: '30%',
             render: function (v) { return joinResources(v); } },
           { key: 'iterator', label: 'Iterator', sortable: false, width: '35%',
             render: function (v, row) {
               return row.iterator_href
-                ? '<a href="' + esc(row.iterator_href) + '"><code>' + esc(v) + '</code></a>'
+                ? '<a class="resource-link" href="' + esc(row.iterator_href) + '"><code>' + esc(v) + '</code></a>'
                 : '<code>' + esc(v) + '</code>';
             } },
           { key: 'row_count', label: 'Rows', sortable: true, width: '10%' },

@@ -102,7 +102,7 @@ const iteratorHref = hrefFrom(CONTAINER_INDEX[iteratorContainerPath(tm.iterator)
   <table>
     <tbody>
       <tr><th>JSONPath iterator</th><td>{iteratorHref
-        ? <a href={iteratorHref}><code>{tm.iterator}</code></a>
+        ? <a class="resource-link" href={iteratorHref}><code>{tm.iterator}</code></a>
         : <code>{tm.iterator}</code>}</td></tr>
       <tr><th>Subject template</th><td><code>{tm.subject_template || '—'}</code></td></tr>
     </tbody>
@@ -117,14 +117,14 @@ const iteratorHref = hrefFrom(CONTAINER_INDEX[iteratorContainerPath(tm.iterator)
           {tm.rows.map((r) => (
             <tr>
               <td>{resourceHref(r.predicate)
-                ? <a href={resourceHref(r.predicate)!}><code>{r.predicate}</code></a>
+                ? <a class="resource-link" href={resourceHref(r.predicate)!}><code>{r.predicate}</code></a>
                 : <code>{r.predicate}</code>}
               </td>
               <td>{r.kind}</td>
               <td>{r.kind === 'constant'
                 ? <code>{r.constant}</code>
                 : (r.json_path && schemaHref(r.json_path)
-                    ? <a href={schemaHref(r.json_path)!}><code>{r.json_path}</code></a>
+                    ? <a class="resource-link" href={schemaHref(r.json_path)!}><code>{r.json_path}</code></a>
                     : (r.json_path ? <code>{r.json_path}</code> : <span class="muted tiny">—</span>))}
               </td>
             </tr>
@@ -141,8 +141,8 @@ const iteratorHref = hrefFrom(CONTAINER_INDEX[iteratorContainerPath(tm.iterator)
   </p>
 
   <p>
-    {prevId && <>← <a href={`/mapping/triplesmaps/${prevId}`}><code>#{prevId}</code></a> · </>}
+    {prevId && <>← <a class="resource-link" href={`/mapping/triplesmaps/${prevId}`}><code>#{prevId}</code></a> · </>}
     <a href="/mapping/triplesmaps">All TriplesMaps</a>
-    {nextId && <> · <a href={`/mapping/triplesmaps/${nextId}`}><code>#{nextId}</code></a> →</>}
+    {nextId && <> · <a class="resource-link" href={`/mapping/triplesmaps/${nextId}`}><code>#{nextId}</code></a> →</>}
   </p>
 </Layout>
