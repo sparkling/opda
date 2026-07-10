@@ -94,6 +94,7 @@ export const SECTIONS: Record<string, Section> = {
         { url: '/governance/legislation',     title: 'Legislation & policy' },
         { url: '/governance/departments',     title: 'Departments & bodies' },
         { url: '/governance/steering-forums', title: 'Steering & coordination' },
+        { url: '/governance/smart-data-guidebook', title: 'Smart Data Guidebook (DBT)' },
       ]},
       { heading: 'OPDA the organisation', items: [
         { url: '/governance/opda-members', title: 'OPDA member firms' },

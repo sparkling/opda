@@ -59,7 +59,7 @@
     "path": "source/_content/schema/45-utilities-energy.md",
     "name": "45-utilities-energy.md",
     "ext": "md",
-    "sizeBytes": 4307,
+    "sizeBytes": 4299,
     "category": "Content (working)"
   },
   {
@@ -1673,6 +1673,34 @@
     "category": "Policy & positioning"
   },
   {
+    "path": "source/02-policy-and-positioning/opda-reports/sd-guidebook-chapter-5/SD Guidebook Minutes (External Use) - Chapter 5 Session 1.docx",
+    "name": "SD Guidebook Minutes (External Use) - Chapter 5 Session 1.docx",
+    "ext": "docx",
+    "sizeBytes": 435493,
+    "category": "Policy & positioning"
+  },
+  {
+    "path": "source/02-policy-and-positioning/opda-reports/sd-guidebook-chapter-5/SD Guidebook Minutes (External Use) - Chapter 5 Session 1.pdf",
+    "name": "SD Guidebook Minutes (External Use) - Chapter 5 Session 1.pdf",
+    "ext": "pdf",
+    "sizeBytes": 106045,
+    "category": "Policy & positioning"
+  },
+  {
+    "path": "source/02-policy-and-positioning/opda-reports/sd-guidebook-chapter-5/SMART DATA GUIDEBOOK_Chapter 5 Security, Risk and Fraud Management_V1.docx",
+    "name": "SMART DATA GUIDEBOOK_Chapter 5 Security, Risk and Fraud Management_V1.docx",
+    "ext": "docx",
+    "sizeBytes": 121411,
+    "category": "Policy & positioning"
+  },
+  {
+    "path": "source/02-policy-and-positioning/opda-reports/sd-guidebook-chapter-5/SMART DATA GUIDEBOOK_Chapter 5 Security, Risk and Fraud Management_V1.pdf",
+    "name": "SMART DATA GUIDEBOOK_Chapter 5 Security, Risk and Fraud Management_V1.pdf",
+    "ext": "pdf",
+    "sizeBytes": 381830,
+    "category": "Policy & positioning"
+  },
+  {
     "path": "source/02-policy-and-positioning/opda-reports/Startup Coalition X TBI Smart Data Report_Second Draft.pdf",
     "name": "Startup Coalition X TBI Smart Data Report_Second Draft.pdf",
     "ext": "pdf",
@@ -2313,7 +2341,7 @@
     "path": "source/03-standards/ontology/exemplars/claim-with-document-evidence.ttl",
     "name": "claim-with-document-evidence.ttl",
     "ext": "ttl",
-    "sizeBytes": 4371,
+    "sizeBytes": 4488,
     "category": "Standards"
   },
   {
@@ -2327,7 +2355,7 @@
     "path": "source/03-standards/ontology/exemplars/claim-with-electronic-record-evidence.ttl",
     "name": "claim-with-electronic-record-evidence.ttl",
     "ext": "ttl",
-    "sizeBytes": 3950,
+    "sizeBytes": 4067,
     "category": "Standards"
   },
   {
@@ -2341,7 +2369,7 @@
     "path": "source/03-standards/ontology/exemplars/claim-with-vouch-evidence.ttl",
     "name": "claim-with-vouch-evidence.ttl",
     "ext": "ttl",
-    "sizeBytes": 4294,
+    "sizeBytes": 4411,
     "category": "Standards"
   },
   {
@@ -2369,7 +2397,7 @@
     "path": "source/03-standards/ontology/exemplars/flat-with-split-uprn.ttl",
     "name": "flat-with-split-uprn.ttl",
     "ext": "ttl",
-    "sizeBytes": 3768,
+    "sizeBytes": 4785,
     "category": "Standards"
   },
   {
@@ -2474,7 +2502,7 @@
     "path": "source/03-standards/ontology/exemplars/rural-plot-inspire-no-uprn.ttl",
     "name": "rural-plot-inspire-no-uprn.ttl",
     "ext": "ttl",
-    "sizeBytes": 4585,
+    "sizeBytes": 5250,
     "category": "Standards"
   },
   {
@@ -2488,7 +2516,7 @@
     "path": "source/03-standards/ontology/exemplars/simple-transaction-with-milestones.ttl",
     "name": "simple-transaction-with-milestones.ttl",
     "ext": "ttl",
-    "sizeBytes": 9163,
+    "sizeBytes": 9593,
     "category": "Standards"
   },
   {
@@ -2523,28 +2551,28 @@
     "path": "source/03-standards/ontology/opda-agent-shapes.ttl",
     "name": "opda-agent-shapes.ttl",
     "ext": "ttl",
-    "sizeBytes": 14126,
+    "sizeBytes": 15252,
     "category": "Standards"
   },
   {
     "path": "source/03-standards/ontology/opda-agent.ttl",
     "name": "opda-agent.ttl",
     "ext": "ttl",
-    "sizeBytes": 38427,
+    "sizeBytes": 41702,
     "category": "Standards"
   },
   {
     "path": "source/03-standards/ontology/opda-annotations.ttl",
     "name": "opda-annotations.ttl",
     "ext": "ttl",
-    "sizeBytes": 12329,
+    "sizeBytes": 12272,
     "category": "Standards"
   },
   {
     "path": "source/03-standards/ontology/opda-claim-annotations.ttl",
     "name": "opda-claim-annotations.ttl",
     "ext": "ttl",
-    "sizeBytes": 2690,
+    "sizeBytes": 2935,
     "category": "Standards"
   },
   {
@@ -2558,42 +2586,42 @@
     "path": "source/03-standards/ontology/opda-claim.ttl",
     "name": "opda-claim.ttl",
     "ext": "ttl",
-    "sizeBytes": 11954,
+    "sizeBytes": 12020,
     "category": "Standards"
   },
   {
     "path": "source/03-standards/ontology/opda-classes.ttl",
     "name": "opda-classes.ttl",
     "ext": "ttl",
-    "sizeBytes": 10319,
+    "sizeBytes": 11898,
     "category": "Standards"
   },
   {
     "path": "source/03-standards/ontology/opda-contexts.ttl",
     "name": "opda-contexts.ttl",
     "ext": "ttl",
-    "sizeBytes": 5497,
+    "sizeBytes": 6196,
     "category": "Standards"
   },
   {
     "path": "source/03-standards/ontology/opda-descriptive-annotations.ttl",
     "name": "opda-descriptive-annotations.ttl",
     "ext": "ttl",
-    "sizeBytes": 4462,
+    "sizeBytes": 4770,
     "category": "Standards"
   },
   {
     "path": "source/03-standards/ontology/opda-descriptive-shapes.ttl",
     "name": "opda-descriptive-shapes.ttl",
     "ext": "ttl",
-    "sizeBytes": 29606,
+    "sizeBytes": 30363,
     "category": "Standards"
   },
   {
     "path": "source/03-standards/ontology/opda-descriptive.ttl",
     "name": "opda-descriptive.ttl",
     "ext": "ttl",
-    "sizeBytes": 99554,
+    "sizeBytes": 102089,
     "category": "Standards"
   },
   {
@@ -2614,35 +2642,35 @@
     "path": "source/03-standards/ontology/opda-governance.ttl",
     "name": "opda-governance.ttl",
     "ext": "ttl",
-    "sizeBytes": 5515,
+    "sizeBytes": 7736,
     "category": "Standards"
   },
   {
     "path": "source/03-standards/ontology/opda-property-annotations.ttl",
     "name": "opda-property-annotations.ttl",
     "ext": "ttl",
-    "sizeBytes": 3108,
+    "sizeBytes": 2911,
     "category": "Standards"
   },
   {
     "path": "source/03-standards/ontology/opda-property-shapes.ttl",
     "name": "opda-property-shapes.ttl",
     "ext": "ttl",
-    "sizeBytes": 6754,
+    "sizeBytes": 7873,
     "category": "Standards"
   },
   {
     "path": "source/03-standards/ontology/opda-property.ttl",
     "name": "opda-property.ttl",
     "ext": "ttl",
-    "sizeBytes": 86115,
+    "sizeBytes": 93244,
     "category": "Standards"
   },
   {
     "path": "source/03-standards/ontology/opda-shapes.ttl",
     "name": "opda-shapes.ttl",
     "ext": "ttl",
-    "sizeBytes": 170088,
+    "sizeBytes": 180342,
     "category": "Standards"
   },
   {
@@ -2656,21 +2684,21 @@
     "path": "source/03-standards/ontology/opda-transaction-shapes.ttl",
     "name": "opda-transaction-shapes.ttl",
     "ext": "ttl",
-    "sizeBytes": 5648,
+    "sizeBytes": 6976,
     "category": "Standards"
   },
   {
     "path": "source/03-standards/ontology/opda-transaction.ttl",
     "name": "opda-transaction.ttl",
     "ext": "ttl",
-    "sizeBytes": 20031,
+    "sizeBytes": 23212,
     "category": "Standards"
   },
   {
     "path": "source/03-standards/ontology/opda-vocabularies.ttl",
     "name": "opda-vocabularies.ttl",
     "ext": "ttl",
-    "sizeBytes": 189862,
+    "sizeBytes": 187621,
     "category": "Standards"
   },
   {
@@ -2684,7 +2712,7 @@
     "path": "source/03-standards/ontology/profiles/baspi5.ttl",
     "name": "baspi5.ttl",
     "ext": "ttl",
-    "sizeBytes": 27256,
+    "sizeBytes": 27385,
     "category": "Standards"
   },
   {
@@ -2824,7 +2852,7 @@
     "path": "source/03-standards/ontology/profiles/piq.ttl",
     "name": "piq.ttl",
     "ext": "ttl",
-    "sizeBytes": 8241,
+    "sizeBytes": 8965,
     "category": "Standards"
   },
   {
@@ -2866,21 +2894,21 @@
     "path": "source/03-standards/ontology/profiles/ta10.ttl",
     "name": "ta10.ttl",
     "ext": "ttl",
-    "sizeBytes": 2884,
+    "sizeBytes": 3612,
     "category": "Standards"
   },
   {
     "path": "source/03-standards/ontology/profiles/ta6.ttl",
     "name": "ta6.ttl",
     "ext": "ttl",
-    "sizeBytes": 15313,
+    "sizeBytes": 16107,
     "category": "Standards"
   },
   {
     "path": "source/03-standards/ontology/profiles/ta7.ttl",
     "name": "ta7.ttl",
     "ext": "ttl",
-    "sizeBytes": 9723,
+    "sizeBytes": 13153,
     "category": "Standards"
   },
   {
@@ -2888,6 +2916,272 @@
     "name": "tf.ttl",
     "ext": "ttl",
     "sizeBytes": 2321,
+    "category": "Standards"
+  },
+  {
+    "path": "source/03-standards/rml/.metaharness/archive.json",
+    "name": "archive.json",
+    "ext": "json",
+    "sizeBytes": 3956,
+    "category": "Standards"
+  },
+  {
+    "path": "source/03-standards/rml/.metaharness/bench.json",
+    "name": "bench.json",
+    "ext": "json",
+    "sizeBytes": 2777,
+    "category": "Standards"
+  },
+  {
+    "path": "source/03-standards/rml/.metaharness/lineage.json",
+    "name": "lineage.json",
+    "ext": "json",
+    "sizeBytes": 909,
+    "category": "Standards"
+  },
+  {
+    "path": "source/03-standards/rml/.metaharness/reports/winner.json",
+    "name": "winner.json",
+    "ext": "json",
+    "sizeBytes": 873,
+    "category": "Standards"
+  },
+  {
+    "path": "source/03-standards/rml/.metaharness/runs/baseline.json",
+    "name": "baseline.json",
+    "ext": "json",
+    "sizeBytes": 43399,
+    "category": "Standards"
+  },
+  {
+    "path": "source/03-standards/rml/.metaharness/runs/g1_v0.bench.json",
+    "name": "g1_v0.bench.json",
+    "ext": "json",
+    "sizeBytes": 539,
+    "category": "Standards"
+  },
+  {
+    "path": "source/03-standards/rml/.metaharness/runs/g1_v0.json",
+    "name": "g1_v0.json",
+    "ext": "json",
+    "sizeBytes": 43505,
+    "category": "Standards"
+  },
+  {
+    "path": "source/03-standards/rml/.metaharness/runs/g1_v1.bench.json",
+    "name": "g1_v1.bench.json",
+    "ext": "json",
+    "sizeBytes": 539,
+    "category": "Standards"
+  },
+  {
+    "path": "source/03-standards/rml/.metaharness/runs/g1_v1.json",
+    "name": "g1_v1.json",
+    "ext": "json",
+    "sizeBytes": 43505,
+    "category": "Standards"
+  },
+  {
+    "path": "source/03-standards/rml/.metaharness/runs/g1_v2.bench.json",
+    "name": "g1_v2.bench.json",
+    "ext": "json",
+    "sizeBytes": 455,
+    "category": "Standards"
+  },
+  {
+    "path": "source/03-standards/rml/.metaharness/runs/g1_v2.json",
+    "name": "g1_v2.json",
+    "ext": "json",
+    "sizeBytes": 43438,
+    "category": "Standards"
+  },
+  {
+    "path": "source/03-standards/rml/.pytest_cache/README.md",
+    "name": "README.md",
+    "ext": "md",
+    "sizeBytes": 302,
+    "category": "Standards"
+  },
+  {
+    "path": "source/03-standards/rml/build/completeness-report.json",
+    "name": "completeness-report.json",
+    "ext": "json",
+    "sizeBytes": 20796,
+    "category": "Standards"
+  },
+  {
+    "path": "source/03-standards/rml/build/dct-source-audit.json",
+    "name": "dct-source-audit.json",
+    "ext": "json",
+    "sizeBytes": 48009,
+    "category": "Standards"
+  },
+  {
+    "path": "source/03-standards/rml/build/final-gap.json",
+    "name": "final-gap.json",
+    "ext": "json",
+    "sizeBytes": 753,
+    "category": "Standards"
+  },
+  {
+    "path": "source/03-standards/rml/build/gap-register.json",
+    "name": "gap-register.json",
+    "ext": "json",
+    "sizeBytes": 6642,
+    "category": "Standards"
+  },
+  {
+    "path": "source/03-standards/rml/build/provenance-validation.json",
+    "name": "provenance-validation.json",
+    "ext": "json",
+    "sizeBytes": 83093,
+    "category": "Standards"
+  },
+  {
+    "path": "source/03-standards/rml/CONTRACT.md",
+    "name": "CONTRACT.md",
+    "ext": "md",
+    "sizeBytes": 4891,
+    "category": "Standards"
+  },
+  {
+    "path": "source/03-standards/rml/gap-register.md",
+    "name": "gap-register.md",
+    "ext": "md",
+    "sizeBytes": 18371,
+    "category": "Standards"
+  },
+  {
+    "path": "source/03-standards/rml/harness/darwin-poc/README.md",
+    "name": "README.md",
+    "ext": "md",
+    "sizeBytes": 1687,
+    "category": "Standards"
+  },
+  {
+    "path": "source/03-standards/rml/mapping/functions/functions.ttl",
+    "name": "functions.ttl",
+    "ext": "ttl",
+    "sizeBytes": 3709,
+    "category": "Standards"
+  },
+  {
+    "path": "source/03-standards/rml/mapping/opda-pdtf.rml.ttl",
+    "name": "opda-pdtf.rml.ttl",
+    "ext": "ttl",
+    "sizeBytes": 274039,
+    "category": "Standards"
+  },
+  {
+    "path": "source/03-standards/rml/ONTOLOGY-COVERAGE.md",
+    "name": "ONTOLOGY-COVERAGE.md",
+    "ext": "md",
+    "sizeBytes": 7225,
+    "category": "Standards"
+  },
+  {
+    "path": "source/03-standards/rml/package.json",
+    "name": "package.json",
+    "ext": "json",
+    "sizeBytes": 499,
+    "category": "Standards"
+  },
+  {
+    "path": "source/03-standards/rml/provenance-index.json",
+    "name": "provenance-index.json",
+    "ext": "json",
+    "sizeBytes": 180398,
+    "category": "Standards"
+  },
+  {
+    "path": "source/03-standards/rml/provenance-index.md",
+    "name": "provenance-index.md",
+    "ext": "md",
+    "sizeBytes": 5504,
+    "category": "Standards"
+  },
+  {
+    "path": "source/03-standards/rml/README.md",
+    "name": "README.md",
+    "ext": "md",
+    "sizeBytes": 14817,
+    "category": "Standards"
+  },
+  {
+    "path": "source/03-standards/rml/schema-generated-terms.json",
+    "name": "schema-generated-terms.json",
+    "ext": "json",
+    "sizeBytes": 71094,
+    "category": "Standards"
+  },
+  {
+    "path": "source/03-standards/rml/SCHEMA-GENERATED-TERMS.md",
+    "name": "SCHEMA-GENERATED-TERMS.md",
+    "ext": "md",
+    "sizeBytes": 32157,
+    "category": "Standards"
+  },
+  {
+    "path": "source/03-standards/rml/testdata/01-conformant-full.json",
+    "name": "01-conformant-full.json",
+    "ext": "json",
+    "sizeBytes": 34673,
+    "category": "Standards"
+  },
+  {
+    "path": "source/03-standards/rml/testdata/02-minimal.json",
+    "name": "02-minimal.json",
+    "ext": "json",
+    "sizeBytes": 294,
+    "category": "Standards"
+  },
+  {
+    "path": "source/03-standards/rml/testdata/03-multi-participant.json",
+    "name": "03-multi-participant.json",
+    "ext": "json",
+    "sizeBytes": 14597,
+    "category": "Standards"
+  },
+  {
+    "path": "source/03-standards/rml/testdata/04-negative-invalid.json",
+    "name": "04-negative-invalid.json",
+    "ext": "json",
+    "sizeBytes": 908,
+    "category": "Standards"
+  },
+  {
+    "path": "source/03-standards/rml/testdata/MANIFEST.md",
+    "name": "MANIFEST.md",
+    "ext": "md",
+    "sizeBytes": 6487,
+    "category": "Standards"
+  },
+  {
+    "path": "source/03-standards/rml/testdata/shacl-fixtures/risk-acyclicity-cyclic.ttl",
+    "name": "risk-acyclicity-cyclic.ttl",
+    "ext": "ttl",
+    "sizeBytes": 954,
+    "category": "Standards"
+  },
+  {
+    "path": "source/03-standards/rml/testdata/shacl-fixtures/risk-acyclicity-valid.ttl",
+    "name": "risk-acyclicity-valid.ttl",
+    "ext": "ttl",
+    "sizeBytes": 515,
+    "category": "Standards"
+  },
+  {
+    "path": "source/03-standards/rml/testdata/verified-claims-01.json",
+    "name": "verified-claims-01.json",
+    "ext": "json",
+    "sizeBytes": 1292,
+    "category": "Standards"
+  },
+  {
+    "path": "source/03-standards/rml/triplesmap-index.json",
+    "name": "triplesmap-index.json",
+    "ext": "json",
+    "sizeBytes": 159495,
     "category": "Standards"
   },
   {

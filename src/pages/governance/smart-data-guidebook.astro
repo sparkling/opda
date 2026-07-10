@@ -1,0 +1,95 @@
+---
+import Layout from '@/layouts/Layout.astro';
+import PageMeta from '@/components/PageMeta.astro';
+---
+<Layout
+  title="Smart Data Guidebook (DBT)"
+  description="DBT's cross-sector Smart Data Guidebook — chapter drafts and working-session notes, tracked here as they're circulated for review. Chapter 5 (Security, Risk and Fraud Management) is the first chapter on record."
+>
+<PageMeta category="UK initiative context" updated="Updated 2026-07-10" damaKa={["Data Governance"]} />
+
+      <h1>Smart Data Guidebook (DBT)</h1>
+      <p class="lead">
+        The Department for Business and Trade is developing a cross-sector Smart
+        Data Guidebook — chapter-by-chapter guidance for how Smart Data schemes
+        (property, open banking, open energy, etc.) should handle identity,
+        governance, security, and interoperability under the
+        <a href="/governance/legislation">Data (Use and Access) Act 2025</a>.
+        This page tracks each chapter draft as DBT circulates it for review,
+        alongside our own notes on how it relates to PDTF. See also
+        <a href="/governance/departments#dbt">Departments &amp; bodies — DBT</a>
+        for DBT's other Smart Data workstreams (Council, Roadmap, Challenge).
+      </p>
+
+      <h2 id="chapter5">Chapter 5 — Security, Risk and Fraud Management</h2>
+
+      <p>
+        First draft circulated 10 July 2026, for review and input by
+        <strong>Friday 24 July 2026</strong>. Working Session 1 was held
+        6 July 2026 (Teams), ahead of the draft's circulation; Session 2 is
+        scheduled for 13 July 2026.
+      </p>
+
+      <ul>
+        <li>
+          <a class="resource-link" href="/resource?path=source/02-policy-and-positioning/opda-reports/sd-guidebook-chapter-5/SMART DATA GUIDEBOOK_Chapter 5 Security, Risk and Fraud Management_V1.pdf"><code>Chapter 5 draft (PDF)</code></a>
+          — also available as
+          <a class="resource-link" href="/resource?path=source/02-policy-and-positioning/opda-reports/sd-guidebook-chapter-5/SMART DATA GUIDEBOOK_Chapter 5 Security, Risk and Fraud Management_V1.docx"><code>.docx</code></a>.
+        </li>
+        <li>
+          <a class="resource-link" href="/resource?path=source/02-policy-and-positioning/opda-reports/sd-guidebook-chapter-5/SD Guidebook Minutes (External Use) - Chapter 5 Session 1.pdf"><code>Session 1 minutes (PDF)</code></a>
+          — also available as
+          <a class="resource-link" href="/resource?path=source/02-policy-and-positioning/opda-reports/sd-guidebook-chapter-5/SD Guidebook Minutes (External Use) - Chapter 5 Session 1.docx"><code>.docx</code></a>.
+          See also <a href="/engagement/meetings-decisions#sdGuidebook">Meetings &amp; decisions — Smart Data Guidebook sessions</a>.
+        </li>
+      </ul>
+
+      <h3 id="chapter5Positions">Five DBT positions</h3>
+
+      <p>
+        The draft proposes five positions, each with a "supporting direction"
+        of non-binding recommendations:
+      </p>
+
+      <ol>
+        <li><strong>Build on recognised security standards.</strong> A baseline of OIDC FAPI, OAuth 2.0, ISO/IEC 27001/2, NIST CSF, NCSC CAF — or a demonstrably equivalent approach.</li>
+        <li><strong>Security assurance should be continuous, not point-in-time.</strong> Ongoing conformance testing, monitoring, and periodic reassessment rather than one-off accreditation.</li>
+        <li><strong>Trust should be dynamic.</strong> Machine- and human-readable trust signals — suspension status, risk scoring, incident notifications, credential validity.</li>
+        <li><strong>Schemes should support rapid, proportionate incident response.</strong> Suspend/restrict participants, revoke credentials, share threat intelligence, cover emerging threats (synthetic identity, deepfakes, AI-assisted fraud).</li>
+        <li><strong>Users should experience clear, consistent support during incidents.</strong> Clarity on what happened, what's being done, and where to get help.</li>
+      </ol>
+
+      <p>
+        The chapter also proposes a seven-step process (define the risk
+        landscape → identify trust/assurance requirements → minimum security
+        controls → fraud management framework → incident management → test
+        interoperability → monitor and improve) and eight non-prescriptive
+        model clauses (security-by-design, security assurance, fraud
+        management, incident response, digital verification, information
+        sharing, operational resilience, participant reliance).
+      </p>
+
+      <h3 id="chapter5PdtfRelevance">Relevance to PDTF</h3>
+
+      <p>
+        PDTF is a data standard, not a scheme operator — its obligation under
+        Chapter 5 is representational: does the vocabulary have the terms to
+        <em>encode</em> accreditation status, credential validity, risk
+        scores, incident notifications, data provenance, and consent scope,
+        whatever security posture a given scheme implements. This maps onto
+        the Access Control &amp; Sensitivity layer (DPV, ODRL) already
+        planned for the ontology, and to the existing
+        <a href="/governance/data-security">Data security framework</a>,
+        which covers the equivalent ground for PDTF's own trust model
+        (KYC/KYB, DID key management, signature verification, revocation,
+        audit logging).
+      </p>
+
+      <h2 id="related">Related</h2>
+      <ul>
+        <li><a href="/governance/departments#dbt">Departments &amp; bodies — DBT</a> — DBT's other Smart Data workstreams.</li>
+        <li><a href="/governance/data-security">Data security framework</a> — PDTF's own security/trust controls.</li>
+        <li><a href="/governance/legislation">Legislation &amp; policy</a> — the Data (Use and Access) Act 2025 context.</li>
+        <li><a href="/engagement/meetings-decisions#sdGuidebook">Meetings &amp; decisions — Smart Data Guidebook sessions</a>.</li>
+      </ul>
+</Layout>
