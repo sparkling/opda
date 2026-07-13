@@ -1,0 +1,158 @@
+---
+import Layout from '@/layouts/Layout.astro';
+import PageMeta from '@/components/PageMeta.astro';
+const BASE = 'source/02-policy-and-positioning/dbt-smart-data-guidebook/preamble';
+const PDF = `${BASE}/SMART DATA GUIDEBOOK_Preamble_Introductory principles and good practice_DRAFT_V5.pdf`;
+const DOCX = `${BASE}/SMART DATA GUIDEBOOK_Preamble_Introductory principles and good practice_DRAFT_V5.docx`;
+---
+<Layout
+  title="Preamble — principles & risk"
+  description="The Smart Data Guidebook's Preamble (DRAFT V5): ten cross-cutting principles, an eight-category risk taxonomy, and how DBT governs the Guidebook itself."
+>
+<PageMeta category="The Guidebook" updated="Summarises DRAFT V5 · 7 April 2026" damaKa={["Data Governance"]} />
+
+  <h1>Preamble — Introductory principles and good practice</h1>
+
+  <p class="lead">
+    The Preamble sets the foundations the five numbered chapters inherit: ten baseline principles,
+    a common decision-making framework, an interoperability doctrine, and a cross-sector risk
+    register. It explicitly disclaims being a trust framework itself — it aims to "build alignment
+    and coherence <em>across</em> trust frameworks".
+  </p>
+
+  <ul>
+    <li>
+      <a class="resource-link" href={`/resource?path=${PDF}`}><code>Preamble — DRAFT V5 (PDF)</code></a>
+      · <a class="resource-link" href={`/resource?path=${DOCX}`}><code>.docx</code></a>
+    </li>
+  </ul>
+
+  <div class="callout callout--key">
+    <div class="callout__label">The Preamble names PDTF</div>
+    <p>
+      Its "Relationship to legislation, existing trust frameworks and schemes" section lists
+      <strong>Open Property and the Property Data Trust Framework</strong> alongside Open Banking,
+      Open Finance and the Energy Smart Data Scheme. PDTF is on the record as a Smart Data
+      initiative — which is both the standing this section is built on and, per the caveat below,
+      a mischaracterisation worth correcting.
+    </p>
+  </div>
+
+  <h2 id="principles">The ten cross-cutting principles</h2>
+
+  <p>
+    Every chapter is expected to be read against these. Each is "anchored in statutory obligations
+    under the DUA Act 2025, the UK DVS Trust Framework, and the requirements of UK GDPR".
+  </p>
+
+  <ol>
+    <li><strong>Consent, user agency and fair treatment.</strong> Consent must be meaningful and revocable — but protection must go <em>beyond</em> consent to deliver good outcomes. Consent dashboards, one-click revocation, granular per-item purpose and duration. Where journeys span multiple data holders, consent must be <strong>orchestrated, machine-readable, scoped, with revocation propagating to all relying parties without re-consenting the user</strong>. Extends to <strong>fourth-party disclosure</strong> — who ultimately receives the data.</li>
+    <li><strong>Privacy and lawfulness by design.</strong> Minimisation, retention schedules, DPIAs. And the sharpest sentence in the document for a standards body: <em>"Computed outputs (e.g. risk indices) must carry provenance and purpose metadata and support selective disclosure so relying parties receive only what is necessary."</em></li>
+    <li><strong>Security and resilience.</strong> OpenID FAPI with mutual TLS, DPoP, NCSC guidance, ISO/IEC 27001 and 27701. <em>Entirely a scheme-operator obligation.</em></li>
+    <li><strong>Support interoperability and minimise fragmentation.</strong> Calls for a <strong>"shared semantic layer — a common language of attributes, roles and consent concepts"</strong> — and never says who builds it.</li>
+    <li><strong>Inclusion and accessibility.</strong> WCAG 2.2 AA. <em>"Schemes must support assisted and delegated access for vulnerable users, with verifiable delegation and auditable role boundaries."</em></li>
+    <li><strong>Transparent governance and accountability.</strong> <em>"Schemes should operate or recognise trust registries that publish machine-readable permissions, status/revocations and accreditation/conformance to automate trust decisions."</em></li>
+    <li><strong>Proportionality and innovation.</strong> Obligations proportionate to risk; room for SMEs and new entrants; tiered compliance.</li>
+    <li><strong>Evidence-led design.</strong> Research, testing, transparent reporting.</li>
+    <li><strong>Environmental and societal outcomes.</strong> Including the energy and carbon footprint of data infrastructure.</li>
+    <li><strong>Readiness for AI and automation.</strong> <em>"Making data AI-ready may involve ensuring data is well-defined, interoperable, machine-readable and accompanied by appropriate provenance, quality and purpose metadata, so that AI-driven use is traceable, accountable and transparent."</em> — which is, almost verbatim, PDTF's thesis.</li>
+  </ol>
+
+  <h2 id="risk">The eight-category risk taxonomy</h2>
+
+  <p>
+    Schemes "should explicitly document which apply and why". The eight cross-sector categories:
+  </p>
+
+  <ol>
+    <li><strong>Cybersecurity and operational resilience</strong> — confidentiality, integrity, availability; amplified by automation and third-party dependencies.</li>
+    <li><strong>Legal and regulatory</strong> — non-compliance with data protection, consumer protection, competition or sector law.</li>
+    <li><strong>Privacy and data protection</strong> — excessive, unclear or unlawful processing, including misuse of consent.</li>
+    <li><strong>Commercial and market-functioning</strong> — misaligned incentives, barriers to entry, SME impact.</li>
+    <li><strong>Reputational and trust</strong> — loss of public confidence.</li>
+    <li><strong>Ethical and societal</strong> — unfairness, bias, exclusion.</li>
+    <li><strong>Environmental and sustainability</strong> — energy, carbon and water footprint of data infrastructure.</li>
+    <li><strong>National security and systemic</strong> — strategic dependency, concentration.</li>
+  </ol>
+
+  <div class="callout callout--note">
+    <div class="callout__label">A numbering collision to watch</div>
+    <p>
+      The Preamble presents <strong>8 risk categories</strong>, then a section listing risk
+      manifestations under <strong>10 headings that are the principles</strong>. The two are easy to
+      conflate. They are kept apart here deliberately.
+    </p>
+  </div>
+
+  <h3 id="risk-method">The stress-test method</h3>
+
+  <p>Performed in the final workshop of each chapter. Reproducibly:</p>
+
+  <ol>
+    <li>Define a representative sector use case.</li>
+    <li>Map the user journey step by step (authentication → consent → data access → service delivery → redress).</li>
+    <li>At each step ask: <em>which risk categories apply here, and how might they challenge the baseline principles?</em></li>
+    <li>Record risks against the register template.</li>
+    <li>Assess baseline controls and residual mitigations.</li>
+    <li>Identify opportunities preserved — innovation, inclusion, cross-sector portability.</li>
+  </ol>
+
+  <h2 id="governance">How DBT governs the Guidebook</h2>
+
+  <ul>
+    <li><strong>DBT</strong> is steward — maintains the Guidebook, convenes DSIT, OfDIA, DESNZ and the regulators (CMA, FCA, ICO, Ofgem, Ofcom).</li>
+    <li><strong>Sector bodies</strong> review drafts and propose sector-specific content. <em>This is OPDA's slot for property.</em></li>
+    <li><strong>The Smart Data Council</strong> provides oversight and reviews major revisions. <em>OPDA's Chair sits on it.</em></li>
+    <li><strong>Cadence:</strong> annual comprehensive review, interim updates after major developments, two-to-three workshops per chapter.</li>
+  </ul>
+
+  <h2 id="pdtf">What this means for PDTF</h2>
+
+  <p>
+    Full analysis on <a href="/dbt-smart-data/pdtf-overlap#asks-preamble">the overlap page</a>. In short:
+  </p>
+
+  <ul>
+    <li><strong>Principle 4 and Principle 10 describe PDTF.</strong> A "shared semantic layer" and data that is "machine-readable and accompanied by provenance, quality and purpose metadata" is what an OWL/SKOS/SHACL standard <em>is</em>. The Preamble asks for it twice and assigns it to nobody. <a href="/dbt-smart-data/pdtf-overlap#strengths">This is the largest open landgrab in the document.</a></li>
+    <li><strong>Principle 2 is a live conformance failure.</strong> "Support selective disclosure" — PDTF's Ed25519 proof suite cannot do this. See <a href="/dbt-smart-data/gap-register#ranked">gap G8</a>.</li>
+    <li><strong>Principles 3, 8 and 9 create no data-modelling obligation at all.</strong> Say so; do not manufacture ontology work from them.</li>
+    <li>
+      <strong>Principle 5 is a trap — half of it <em>is</em> ours.</strong> Its WCAG / assisted-channel
+      half is pure scheme-operator territory. But the same principle says schemes "must support
+      assisted and delegated access… with <strong>verifiable delegation and auditable role
+      boundaries</strong>" — and a verifiable delegation is a <em>data structure</em>, not a screen.
+      That is <a href="/dbt-smart-data/gap-register#g5">gap G5</a>. Waving Principle 5 away as
+      "accessibility" would let a real obligation escape unassigned — <em>exactly</em> the failure
+      this section exists to prevent.
+    </li>
+  </ul>
+
+  <h2 id="caveats">Caveats on this draft</h2>
+
+  <ul>
+    <li>
+      <strong>It mischaracterises PDTF.</strong> The Open Property section says PDTF is "adopting
+      similar approaches to <em>directory-based onboarding, secure API specifications</em> and
+      consent-driven, portable data-sharing". Directory onboarding and API security are
+      <em>scheme-operator</em> functions; PDTF is a data standard. DBT appears to have conflated
+      PDTF with the Raidiam sandbox operator layer.
+    </li>
+    <li>
+      <strong>"Not a trust framework" — but it behaves like one.</strong> It disclaims the status
+      while issuing MUST-flavoured requirements, and notes schemes "may, over time, be expected to
+      align with its principles more formally". <em>Soft law hardening.</em>
+    </li>
+    <li>
+      <strong>V5 has visible editorial defects</strong> — empty bullets, a duplicated
+      "functional interoperability" paragraph, and an empty second table. Treat quoted text as
+      provisional.
+    </li>
+  </ul>
+
+  <h2 id="related">Related</h2>
+  <ul>
+    <li><a href="/dbt-smart-data/pdtf-overlap">What the Guidebook asks of PDTF</a></li>
+    <li><a href="/dbt-smart-data/identity">Ch.1 — Identity, roles and trust frameworks</a></li>
+    <li><a href="/dbt-smart-data">Section overview</a></li>
+  </ul>
+</Layout>

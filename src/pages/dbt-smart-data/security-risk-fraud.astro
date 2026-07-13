@@ -1,0 +1,170 @@
+---
+import Layout from '@/layouts/Layout.astro';
+import PageMeta from '@/components/PageMeta.astro';
+const BASE = 'source/02-policy-and-positioning/dbt-smart-data-guidebook/chapter-5';
+const PDF = `${BASE}/SMART DATA GUIDEBOOK_Chapter 5 Security, Risk and Fraud Management_V1.pdf`;
+const DOCX = `${BASE}/SMART DATA GUIDEBOOK_Chapter 5 Security, Risk and Fraud Management_V1.docx`;
+const MIN_PDF = `${BASE}/SD Guidebook Minutes (External Use) - Chapter 5 Session 1.pdf`;
+const MIN_DOCX = `${BASE}/SD Guidebook Minutes (External Use) - Chapter 5 Session 1.docx`;
+---
+<Layout
+  title="Ch.5 — Security, risk & fraud"
+  description="Smart Data Guidebook Chapter 5 (V1): five DBT positions on security standards, continuous assurance, dynamic trust and incident response. OPDA review and input due 24 July 2026."
+>
+<PageMeta category="The Guidebook" variant="brand" updated="Summarises V1 · 8 July 2026" damaKa={["Data Security"]} />
+
+  <h1>Chapter 5 — Security, Risk and Fraud Management</h1>
+
+  <p class="lead">
+    The first chapter circulated to OPDA, and the one with a <strong>live deadline</strong>. It is
+    also the chapter where the scheme-operator / data-standard distinction matters most — because
+    almost all of it is scheme-operator territory, and reading it otherwise would saddle PDTF with
+    obligations a data standard structurally cannot meet.
+  </p>
+
+  <div class="callout callout--key">
+    <div class="callout__label">Review and input due Friday 24 July 2026</div>
+    <p>
+      DBT is also running a <strong>Call for Evidence</strong> on this chapter: "any key research,
+      standards, frameworks, or reports you believe we should consider", and "any evidence of
+      materials specifically relevant to Chapter 5".
+    </p>
+  </div>
+
+  <ul>
+    <li>
+      <a class="resource-link" href={`/resource?path=${PDF}`}><code>Chapter 5 — V1 (PDF)</code></a>
+      · <a class="resource-link" href={`/resource?path=${DOCX}`}><code>.docx</code></a>
+    </li>
+    <li>
+      <a class="resource-link" href={`/resource?path=${MIN_PDF}`}><code>Session 1 minutes — 6 July 2026 (PDF)</code></a>
+      · <a class="resource-link" href={`/resource?path=${MIN_DOCX}`}><code>.docx</code></a>
+      · see also <a href="/engagement/meetings-decisions#sdGuidebook">Meetings &amp; decisions</a>
+    </li>
+  </ul>
+
+  <h2 id="positions">The five DBT positions</h2>
+
+  <ol>
+    <li>
+      <strong>Build on recognised security standards.</strong> A baseline of OIDC FAPI, OAuth 2.0,
+      ISO/IEC 27001/2, NIST CSF, NCSC CAF — <em>"or demonstrate that an equivalent approach provides
+      comparable levels of security, interoperability and assurance."</em>
+    </li>
+    <li>
+      <strong>Security assurance should be continuous, not point-in-time.</strong> "Accreditation
+      alone should not be relied upon as evidence that participants remain trustworthy." Conformance
+      testing, monitoring, periodic reassessment, and mechanisms to suspend or restrict.
+    </li>
+    <li>
+      <strong>Trust should be dynamic.</strong> Machine- <em>and</em> human-readable trust signals:
+      suspension status, dynamic risk scoring, security incident notifications, accreditation status
+      changes, credential validity, recent assurance outcomes.
+    </li>
+    <li>
+      <strong>Rapid, proportionate incident response.</strong> Suspend or restrict participants,
+      revoke credentials, isolate services, share threat intelligence — covering emerging threats:
+      <em>synthetic identities, deepfake impersonation, automated fraud and AI-assisted social
+      engineering</em>.
+    </li>
+    <li>
+      <strong>Clear, consistent user support during incidents.</strong> Users should understand
+      whether they are affected, what happened, what they must do, and who is resolving it.
+    </li>
+  </ol>
+
+  <p>
+    The chapter also sets out a <strong>seven-step process</strong> (define the risk landscape →
+    identify trust and assurance requirements → minimum security controls → fraud management
+    framework → incident management → test interoperability → monitor and improve), each with
+    "suggested outputs", and <strong>eight non-prescriptive model clauses</strong> (A–H:
+    security-by-design, security assurance, fraud management, incident response, digital
+    verification, information sharing, operational resilience, participant reliance).
+  </p>
+
+  <h2 id="session1">Session 1 — what was discussed</h2>
+
+  <p>
+    Held 6 July 2026 on Teams, ahead of the draft's circulation. Attendees spanned DBT, DSIT, OBL,
+    CMA, FCA, ICO and industry (including OPDA). The substance:
+  </p>
+
+  <ul>
+    <li><strong>FAPI-grade security</strong> was floated as a potential baseline across future schemes.</li>
+    <li><strong>Onward sharing through unregulated third parties and subcontractors</strong> was identified as a major risk.</li>
+    <li><strong>Data provenance, authenticity and traceability</strong> were named as prerequisites for trust — with the note that <em>"derived data should retain links to its original source"</em>.</li>
+    <li><strong>Liability remains unresolved</strong> — who notifies consumers, who resolves issues, where liability sits.</li>
+  </ul>
+
+  <h2 id="pdtf">What this means for PDTF</h2>
+
+  <p>
+    This chapter is the clearest demonstration of why the
+    <a href="/dbt-smart-data/pdtf-overlap">layer separation</a> matters.
+  </p>
+
+  <div class="callout callout--note">
+    <div class="callout__label">Positions 1, 2, 4 and 5 are not PDTF obligations</div>
+    <p>
+      FAPI, ISO 27001, continuous conformance testing, incident response, user comms during an
+      incident — these are things a <strong>scheme operator</strong> does at runtime. PDTF is a data
+      model and vocabulary. It is not PDTF's job to implement a security stack, run conformance
+      testing, or operate incident response. Those are properties of a scheme's <em>runtime</em>, not
+      of its <em>data standard</em>.
+    </p>
+  </div>
+
+  <p>
+    <strong>Position 3 is the exception, and it is a real data-standard obligation.</strong> "Trust
+    should be dynamic" asks for <em>machine-readable</em> trust signals — participant suspension
+    status, risk scores, incident notifications, accreditation status changes, credential validity.
+    Those are <strong>data</strong>. And PDTF cannot currently emit a single one of them: there is no
+    accreditation-status vocabulary, no participant lifecycle state, no incident notice, no risk tier
+    — <a href="/dbt-smart-data/gap-register#g12">gap G12</a>, the only gap on the register with a
+    <strong>dated deadline against it</strong>.
+  </p>
+
+  <div class="callout callout--warn">
+    <div class="callout__label">If the response says nothing else, it should say this</div>
+    <p>
+      Even if G12 cannot be closed by 24 July, OPDA's Chapter 5 response should <em>name</em> it —
+      acknowledging that Position 3 lands on the data standard, and that PDTF does not yet meet it.
+      Letting the review pass in silence concedes the point by default.
+    </p>
+  </div>
+
+  <p>
+    Two further items land on PDTF from the session minutes rather than the positions:
+  </p>
+  <ul>
+    <li><strong>"Derived data should retain links to its original source"</strong> — <a href="/dbt-smart-data/gap-register#ranked">gap G4</a>, the highest-value gap on the register.</li>
+    <li><strong>Onward-sharing risk</strong> — PDTF cannot express a fourth-party recipient chain, nor an obligation that survives onward transfer (<a href="/dbt-smart-data/gap-register#ranked">gap G9</a>).</li>
+  </ul>
+
+  <h2 id="tension">The tension worth raising with DBT</h2>
+
+  <p>
+    The draft self-describes as non-prescriptive — Section 6 calls its clauses "non-prescriptive
+    wording", "flexible formulation rather than a binding requirement". But it names <em>specific
+    technical standards</em> (FAPI, OAuth 2.0, ISO 27001), <em>specific live initiatives</em> (the UK
+    Finance digital verification service, the City of London's Digital Verification Orchestrator), and
+    a <em>fixed list of suggested outputs</em> per step. In practice, "or equivalent" gets judged
+    against the named standard.
+  </p>
+
+  <p>
+    The relevant point for property is not that FAPI is wrong — it is that
+    <strong>most of the property industry does not have financial-grade APIs today</strong>, and a
+    baseline written to a finance-grade norm risks being exclusionary rather than proportionate. The
+    chapter's own Position 2 supplies the counterweight ("proportionate and risk-based"), and the
+    Preamble prohibits creating unnecessary burdens for SMEs. <em>That is the ground to argue from.</em>
+  </p>
+
+  <h2 id="related">Related</h2>
+  <ul>
+    <li><a href="/governance/data-security">PDTF's own data security framework</a> — the five controls (KYC/KYB, DID key management, signature verification, revocation, audit logging). Chapter 5 sits <em>alongside</em> this, not above it.</li>
+    <li><a href="/governance/risk-liability">Risk &amp; liability</a></li>
+    <li><a href="/dbt-smart-data/pdtf-overlap#asks-ch5">The overlap analysis for this chapter</a></li>
+    <li><a href="/engagement/meetings-decisions#sdGuidebook">Meetings &amp; decisions — Guidebook working sessions</a></li>
+  </ul>
+</Layout>

@@ -57,6 +57,12 @@ EXCLUDES=(
   --exclude "*/.DS_Store"
   --exclude ".DS_Store"
   --exclude "*.log"
+  # Agent tooling (ruvector/ruflo) drops scratch SQLite DBs into whatever cwd it
+  # runs in, which can be a source/ subdir. They are gitignored, so they never
+  # reach CI — but this script syncs the WORKING TREE, so without this exclude a
+  # local agent run would publish them to the public bucket.
+  --exclude "*.db"
+  --exclude "*/ruvector.db"
 )
 
 # ── 1. Prereqs ────────────────────────────────────────────────────────────

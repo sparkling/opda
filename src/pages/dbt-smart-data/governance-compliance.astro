@@ -1,0 +1,208 @@
+---
+import Layout from '@/layouts/Layout.astro';
+import PageMeta from '@/components/PageMeta.astro';
+const BASE = 'source/02-policy-and-positioning/dbt-smart-data-guidebook/chapter-2';
+const PDF = `${BASE}/SMART DATA GUIDEBOOK_Chapter 2 Governance Compliance and Legal Framework_DRAFT_V5.pdf`;
+const DOCX = `${BASE}/SMART DATA GUIDEBOOK_Chapter 2 Governance Compliance and Legal Framework_DRAFT_V5.docx`;
+const SCOPING_PDF = `${BASE}/Scoping Paper - Accountability and Liability across Smart Data Schemes.pdf`;
+const SCOPING_DOCX = `${BASE}/Scoping Paper - Accountability and Liability across Smart Data Schemes.docx`;
+---
+<Layout
+  title="Ch.2 — Governance & legal"
+  description="Smart Data Guidebook Chapter 2 (DRAFT V5): the five-layer governance model, accreditation and enforcement — plus the accountability & liability scoping paper that names property packs as its first test case."
+>
+<PageMeta category="The Guidebook" updated="Summarises DRAFT V5 · 27 May 2026" damaKa={["Data Governance"]} />
+
+  <h1>Chapter 2 — Governance, Compliance and Legal Framework</h1>
+
+  <p class="lead">
+    The <em>institutional</em> layer: who has authority, how participants are accredited and held to
+    account, and how sector rules meet cross-sector expectations. This is the chapter that lands on
+    OPDA hardest — because OPDA now owns the property scheme's accreditation criteria, most of its
+    asks are on <strong>OPDA the organisation</strong>, not on PDTF the vocabulary.
+  </p>
+
+  <ul>
+    <li>
+      <a class="resource-link" href={`/resource?path=${PDF}`}><code>Chapter 2 — DRAFT V5 (PDF)</code></a>
+      · <a class="resource-link" href={`/resource?path=${DOCX}`}><code>.docx</code></a>
+    </li>
+    <li>
+      <a class="resource-link" href={`/resource?path=${SCOPING_PDF}`}><code>Scoping Paper — Accountability and Liability (PDF)</code></a>
+      · <a class="resource-link" href={`/resource?path=${SCOPING_DOCX}`}><code>.docx</code></a>
+    </li>
+  </ul>
+
+  <div class="callout callout--key">
+    <div class="callout__label">Property is a named test case, not a bystander</div>
+    <p>
+      The scoping paper names <strong>"property–finance: digital property packs for home buying"</strong>
+      as the <em>first</em> of only two cross-sector use cases it will examine in detail — "tests data
+      accuracy, provenance, reliance, and redress where outcomes are legally consequential". Its
+      stated output is <strong>template clauses</strong>. There is an unusually clear invitation here
+      to write the property accountability map rather than receive one.
+    </p>
+  </div>
+
+  <h2 id="five-layer">The five-layer governance model</h2>
+
+  <table>
+    <thead><tr><th>Layer</th><th>Governs</th><th>Who holds it for property?</th></tr></thead>
+    <tbody>
+      <tr><td><strong>1. Policy</strong></td><td>Statutory basis, scheme scope, permitted activities</td><td><strong>Not OPDA</strong> — DBT/MHCLG. Currently <em>undefined</em> for property.</td></tr>
+      <tr><td><strong>2. Governance</strong></td><td>Scheme rule-setting, accreditation, trust-registry oversight, liability standards</td><td><strong>OPDA</strong> — newly.</td></tr>
+      <tr><td><strong>3. Implementation</strong></td><td>Interface body operation, onboarding, conformance tooling, technical standards</td><td><strong>OPDA</strong> — PDTF + the conformance scheme.</td></tr>
+      <tr><td><strong>4. Operational</strong></td><td>Day-to-day functioning by ATPs, data holders, issuers</td><td>OPDA's members.</td></tr>
+      <tr><td><strong>5. Enforcement</strong></td><td>Investigation, sanctions, appeals</td><td><strong>OPDA</strong> — property has no statutory Smart Data regulator.</td></tr>
+    </tbody>
+  </table>
+
+  <p>
+    The chapter permits this concentration, via one sentence that is the most consequential in the
+    document for OPDA:
+  </p>
+
+  <blockquote style="border-left: 4px solid var(--color-brand-700); padding-left: var(--space-4); color: var(--color-ink-700); font-style: italic;">
+    "In sectors without a statutory regulator, enforcement functions may be exercised through
+    contractual or scheme-rule mechanisms operated by the implementation authority, provided that
+    powers, escalation routes and safeguards are clearly defined."
+  </blockquote>
+
+  <p>
+    So OPDA <em>may</em> hold layers 2, 3 and 5 simultaneously — <strong>but only on that
+    condition</strong>. Meanwhile the chapter's own prohibitions forbid "governance bodies operating
+    without transparency or accountability", and its first design principle requires role separation
+    "to avoid conflicts of interest".
+  </p>
+
+  <div class="callout callout--warn">
+    <div class="callout__label">The conflict of interest nobody has named</div>
+    <p>
+      Chapter 2 assumes a scheme where the interface body is <em>not</em> the trade association of
+      the participants. OPDA is a membership organisation that now writes the standard, sets
+      accreditation criteria, runs conformance, signs the trust registry, and enforces against
+      non-compliant members — <em>while being funded by those members</em>. Every layer except
+      policy runs through one member-funded body.
+    </p>
+    <p>
+      Brazil's "regulator + industry association hybrid" — which the chapter praises — works
+      precisely because the central bank sits above the association. <strong>Property has no
+      equivalent.</strong> OPDA should decide deliberately whether to (a) invite MHCLG/a regulator
+      into the policy layer above it, (b) create genuine internal separation with an independent
+      appeals function, or (c) argue proportionality. Doing none of these and hoping the carve-out
+      holds is the weakest option — and it is better to surface this first, with a mitigation, than
+      to have a reviewer find it.
+    </p>
+  </div>
+
+  <h2 id="accreditation">The accreditation bar</h2>
+
+  <p>Chapter 2 says accreditation "would be likely to cover":</p>
+
+  <p>
+    Security posture · risk-based permissions · organisational and personnel checks · technical
+    conformance · API performance · fraud controls · <strong>liability acceptance</strong> ·
+    <strong>insurance requirements</strong> · governance obligations, reporting and
+    dispute-resolution commitments.
+  </p>
+
+  <p>
+    And equivalence "should <strong>normally</strong> be anchored in certification issued by
+    <strong>UKAS-accredited conformity assessment bodies</strong>".
+  </p>
+
+  <h3 id="conformance-gap">Does OPDA's conformance scheme meet this?</h3>
+
+  <p>
+    <a href="/governance/conformance-scheme">OPDA's scheme</a> is a three-reviewer panel with an 80%
+    pass mark. Measured against Chapter 2 it falls short on three distinct grounds:
+  </p>
+
+  <ol>
+    <li><strong>Scope.</strong> An 80% technical conformance review answers roughly one line of the list above. Liability acceptance, insurance, fraud controls and personnel checks are absent. <em>Fixable — extend the criteria.</em></li>
+    <li><strong>Independence.</strong> Three reviewers drawn from the membership judging fellow members is <em>peer assessment</em>, not third-party conformity assessment. But note the word "<strong>normally</strong>" — it is the hook for a proportionality argument. Property's participant base is thousands of small conveyancers and estate agents; a UKAS-CAB audit each would be disproportionate and would breach the chapter's own SME-burden prohibition. <strong>OPDA's strongest move is to pre-empt this: publish a documented equivalence rationale explaining why peer conformance plus a signed registry is proportionate, and what it would escalate to UKAS-anchored assessment for. Do not wait to be asked.</strong></li>
+    <li><strong>The 80% mark itself.</strong> A percentage pass implies up to 20% of a conformance suite may fail. For data "with legal effects" — the chapter's own words about property — that is very hard to defend. <em>Which</em> 20%? Consider criticality-weighted must-pass assertions instead of a flat percentage.</li>
+  </ol>
+
+  <h2 id="liability">Accountability and liability</h2>
+
+  <p>
+    Chapter 2's liability text is acknowledged as inadequate; the scoping paper is the patch. Its
+    position to be tested:
+  </p>
+
+  <blockquote style="border-left: 4px solid var(--color-brand-700); padding-left: var(--space-4); color: var(--color-ink-700); font-style: italic;">
+    "Accountability should, in principle, follow the specific decision or processing activity being
+    undertaken, rather than remaining with one organisation 'down the chain'."
+  </blockquote>
+
+  <p>Operationalised as: <em>"Issuers of trust signals (e.g. accreditation status and permissions) remain accountable for their accuracy, while relying parties are accountable for executing required status and revocation checks."</em> And, bluntly:</p>
+
+  <blockquote style="border-left: 4px solid var(--color-brand-700); padding-left: var(--space-4); color: var(--color-ink-700); font-style: italic;">
+    "Failures of governance design or operation (e.g. ineffective controls, monitoring, audit trails,
+    oversight or escalation) can themselves be relevant to regulatory enforcement and legal exposure."
+  </blockquote>
+
+  <div class="callout callout--warn">
+    <div class="callout__label">The £1 liability cap is aimed at the wrong target</div>
+    <p>
+      OPDA's Articles cap <em>members'</em> liability <em>to the company</em> at £1 — a standard
+      company-limited-by-guarantee provision. It is orthogonal to the exposures the scoping paper
+      identifies:
+    </p>
+    <ul>
+      <li><strong>OPDA as issuer.</strong> OPDA's Governance Authority signs the Trust Registry. If OPDA asserts a firm is accredited when it is not — or fails to reflect a suspension "promptly across all relying parties" — the exposure is OPDA's. The guarantee cap does nothing about it.</li>
+      <li><strong>OPDA as governance body.</strong> Governance-design failure is <em>itself</em> in the liability chain, per the quote above.</li>
+    </ul>
+    <p>
+      The cap survives, because it was never the relevant instrument. <strong>The real finding is
+      that OPDA has no articulated liability position at all</strong> for either role. That silence
+      is the risk — and the answer is probably insurance plus a stated liability position in the
+      scheme rules, not amending the Articles. See <a href="/governance/risk-liability">Risk &amp; liability</a>.
+    </p>
+  </div>
+
+  <h2 id="pdtf">What this means for PDTF</h2>
+
+  <p>
+    Most of Chapter 2 is <em>not</em> a data-modelling problem. The data-standard residue is on
+    <a href="/dbt-smart-data/pdtf-overlap#asks-ch2">the overlap page</a>; the sharpest items:
+  </p>
+
+  <ul>
+    <li>
+      <strong>Signed, provenance-rich computed results</strong> retaining "issuer, inputs, methods,
+      timestamps and purpose". <em>A property pack is exactly this.</em> If the pack is wrong but
+      every source claim was right, who is accountable? PDTF models source claims well and derived
+      claims not at all — <a href="/dbt-smart-data/gap-register#ranked">gap G4</a>, simultaneously
+      OPDA's largest modelling gap and its largest liability gap.
+    </li>
+    <li>
+      <strong>Liability needs evidence, not a verdict.</strong> PDTF does <em>not</em> need a
+      <code>liableParty</code> property — Clause D allocates liability by rule. What the standard
+      must supply is what the rule operates on: who issued a signal, when, at what assurance, and
+      whether a status check happened. <strong>Encode the evidence, not the verdict.</strong>
+    </li>
+    <li>
+      <strong>Property ID.</strong> The chapter uses a hard <em>"must"</em>, aimed by name at our
+      sector: where identifiers like Property ID "are not yet included in DVS, schemes <strong>must</strong>
+      define interim governance and trust-anchor arrangements". There is no reading in which this is
+      someone else's job.
+    </li>
+  </ul>
+
+  <h2 id="open">Open questions this chapter raises</h2>
+
+  <ul>
+    <li><strong>Does the DUA Act even reach property?</strong> Its powers apply only to data from a <em>trader–customer</em> relationship, and the Act "does not provide a general power to mandate sharing of public-sector data unless those bodies act in a commercial function". Much of a property pack originates from <strong>HM Land Registry and local authorities</strong>. Large parts may sit <em>outside</em> DUAA powers entirely. Nobody has done this analysis publicly.</li>
+    <li><strong>No ombudsman for property.</strong> Open Banking escalates to the Financial Ombudsman; energy to Ofgem. A Smart-Data-specific harm (bad data in a pack) has no obvious destination. OPDA cannot fix this alone but must not stay silent on it.</li>
+    <li><strong>Cross-scheme revocation.</strong> If a firm is suspended in property, should it lose access in finance? Either answer is expensive. Have a view before you are given one.</li>
+    <li><strong>Consent is the wrong frame for property</strong> — and the chapter half-admits it ("data sharing may rely on multiple legal bases"). Property runs on contract, professional duty and statutory obligation far more than consumer consent. Its "no re-validation by data holders" rule sits badly with a conveyancer's professional duty to check. <strong>OPDA has standing to push back here.</strong></li>
+  </ul>
+
+  <h2 id="related">Related</h2>
+  <ul>
+    <li><a href="/governance/conformance-scheme">OPDA's conformance scheme</a> · <a href="/governance/risk-liability">Risk &amp; liability</a> · <a href="/governance/toip-governance">ToIP governance model</a></li>
+    <li><a href="/dbt-smart-data/pdtf-overlap#asks-ch2">The overlap analysis for this chapter</a></li>
+  </ul>
+</Layout>

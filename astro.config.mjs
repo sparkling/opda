@@ -219,6 +219,11 @@ export default defineConfig({
   // so the per-tier dynamic routes are redirected individually (there is no single
   // `/model/[...slug]` route — the section is split into per-tier `[...slug]` routes).
   redirects: {
+    // ADR-0062: `/governance/smart-data-guidebook` (a single page, created when only
+    // Chapter 5 had been circulated) became the `/dbt-smart-data` section once the
+    // full Guidebook arrived. The old URL was e-mailed to the OPDA chair and to
+    // DBT-adjacent stakeholders, so it must keep resolving.
+    '/governance/smart-data-guidebook': '/dbt-smart-data',
     '/manual': '/model',
     '/manual/validation-report': '/model/validation-report',
     '/manual/information-architecture': '/model/information-architecture',

@@ -1,0 +1,156 @@
+---
+import Layout from '@/layouts/Layout.astro';
+import PageMeta from '@/components/PageMeta.astro';
+const BASE = 'source/02-policy-and-positioning/dbt-smart-data-guidebook/chapter-1';
+const PDF = `${BASE}/SMART DATA GUIDEBOOK_Chapter 1 Digital Identity Roles and Trust Frameworks_DRAFT_V7.pdf`;
+const DOCX = `${BASE}/SMART DATA GUIDEBOOK_Chapter 1 Digital Identity Roles and Trust Frameworks_DRAFT_V7.docx`;
+---
+<Layout
+  title="Ch.1 — Identity, roles & trust"
+  description="Smart Data Guidebook Chapter 1 (DRAFT V7): Minimum Viable Identity, the role catalogue, the six-stage scheme lifecycle, credential types and trust registries — and where its role model collides with PDTF's."
+>
+<PageMeta category="The Guidebook" updated="Summarises DRAFT V7 · 10 May 2026" damaKa={["Data Governance", "Reference & Master Data"]} />
+
+  <h1>Chapter 1 — Digital Identity, Roles and Trust Frameworks</h1>
+
+  <p class="lead">
+    "The first mile of every scheme and the anchor for consent, authorisation and interoperability."
+    Chapter 1 is on its <strong>seventh draft</strong> — the most worked-over document in the
+    Guidebook — and it has the <strong>deepest overlap with PDTF</strong>, because PDTF already
+    models participants, roles, DIDs, verifiable credentials and a trust registry — though
+    <strong>not</strong> assurance levels, which were removed from the corpus in July 2026.
+  </p>
+
+  <ul>
+    <li>
+      <a class="resource-link" href={`/resource?path=${PDF}`}><code>Chapter 1 — DRAFT V7 (PDF)</code></a>
+      · <a class="resource-link" href={`/resource?path=${DOCX}`}><code>.docx</code></a>
+      · earlier drafts (V4–V6, plus a version carrying OGD comments) are in the
+      <a class="resource-link" href="/library/resources#cat-policy-positioning">archive</a>
+    </li>
+  </ul>
+
+  <h2 id="mvi">Minimum Viable Identity</h2>
+
+  <p>
+    The chapter's central heuristic — "to reduce fragmentation, duplication and inconsistent
+    assurance approaches across the economy". Four elements:
+  </p>
+
+  <ol>
+    <li><strong>Persistent identifier</strong> — stable across sessions, consent events and multi-provider journeys; supports revocation and expiry.</li>
+    <li><strong>Authentication protocol</strong> — recognised open standards (OIDC, OAuth 2.0, FAPI), risk-based, supporting assurance elevation.</li>
+    <li><strong>Role assertion</strong> — a standardised way to assert a role (ATP, data holder, issuer, identity provider, end-user) <strong>including the scope of permitted actions</strong>.</li>
+    <li><strong>Accountability role</strong> — who issued the assertion, who relies on it, <strong>and who is accountable if it becomes invalid or misused</strong>.</li>
+  </ol>
+
+  <p>
+    It is explicitly "a suggested design heuristic, not a formal standard". The key default:
+    <strong>"Where identity verification is required and outsourced, DVS is the default."</strong>
+  </p>
+
+  <h2 id="roles">The role catalogue</h2>
+
+  <p>Chapter 1's roles are <strong>infrastructure roles</strong> — who does what in a data-sharing scheme:</p>
+
+  <table>
+    <thead><tr><th>Role</th><th>What it is</th></tr></thead>
+    <tbody>
+      <tr><td><strong>Data holder</strong></td><td>Holds consumer data and provides regulated access. Notably: in Open Banking they are <em>"prohibited from validating or re-interpreting consent directly"</em>.</td></tr>
+      <tr><td><strong>Authorised Third Party (ATP)</strong></td><td>Accredited to access data <em>on behalf of</em> a consumer. Defined by consumption + consent-handling + accreditation.</td></tr>
+      <tr><td><strong>Interface body</strong></td><td>Coordinates onboarding, accreditation, directories and technical standards.</td></tr>
+      <tr><td><strong>Relying party</strong></td><td>Relies on identity/attribute assertions. Must check status <em>at the point of reliance</em>.</td></tr>
+      <tr><td><strong>Issuer</strong></td><td>"A trusted party responsible for issuing specific credentials. These may relate to <strong>property</strong>, organisational identity, regulatory status…"</td></tr>
+      <tr><td><strong>Authoritative source</strong> / <strong>trust anchor</strong></td><td>The primary origin of a type of information; root of trust for the scheme.</td></tr>
+      <tr><td><strong>DVS roles</strong></td><td>IDSP (identity), ASP (attributes), HSP (holder/wallet), OSP (orchestration), CSP (components) — imported wholesale from the DVS Trust Framework.</td></tr>
+    </tbody>
+  </table>
+
+  <div class="callout callout--key">
+    <div class="callout__label">These are not PDTF's roles — and that is the point</div>
+    <p>
+      PDTF's roles are <strong>transaction roles</strong> (Seller, Buyer, Conveyancer, Estate Agent,
+      Lender, Surveyor). DBT's are <strong>infrastructure roles</strong>. They are orthogonal axes,
+      not competing lists — a conveyancer is simultaneously a data holder, an ATP, a relying party
+      <em>and</em> an issuer depending on the flow. Full analysis:
+      <a href="/dbt-smart-data/pdtf-overlap#roles">the role-model collision</a>.
+    </p>
+  </div>
+
+  <h2 id="lifecycle">The six-stage scheme lifecycle</h2>
+
+  <ol>
+    <li><strong>Scheme setup and governance</strong> — legal basis; the interface body defines standards and operates trust services.</li>
+    <li><strong>Participant onboarding</strong> — ATPs demonstrate capability and get accredited. Crucially: <em>"Identity providers and credential issuers are not normally onboarded as scheme participants"</em> — schemes rely on external DVS certification instead.</li>
+    <li><strong>Consumer initiation</strong> — consent captured and evidenced "through standardised machine-readable trust signals".</li>
+    <li><strong>Data access and sharing</strong> — the data holder verifies consent signals and ATP accreditation, then releases data.</li>
+    <li><strong>Ongoing operation</strong> — consent renewal and withdrawal; credential status maintained.</li>
+    <li><strong>Oversight, audit and enforcement</strong> — <em>conformance</em> (scheme rules) split from <em>enforcement</em> (statutory breaches).</li>
+  </ol>
+
+  <h2 id="credentials">Credential types and the CBOM</h2>
+
+  <ol>
+    <li><strong>Identity/attribute evidence from DVS-certified services</strong> — the Trust Framework certifies <em>services and provider roles</em>, not identities.</li>
+    <li><strong>OAuth / OIDC tokens</strong> — short-lived, scoped access authorisation.</li>
+    <li><strong>Verifiable credentials</strong> — portable, tamper-evident proofs (W3C VC models, status lists).</li>
+    <li><strong>Sector-specific credentials</strong> — statutory or regulatory authorisations.</li>
+  </ol>
+
+  <p>
+    Cutting across all four is the <strong>Credential Bill of Materials (CBOM)</strong>: per journey
+    step, the credential format, its issuer/holder/verifier, assurance type, and status/expiry/
+    revocation endpoints. <em>"Relying parties should perform status checks at the point of reliance."</em>
+  </p>
+
+  <div class="callout callout--note">
+    <div class="callout__label">The CBOM is OPDA's open goal</div>
+    <p>
+      PDTF has <em>most</em> ingredients — VC types, issuers, a Bitstring Status List. The one it
+      lacks is the <strong>assurance type</strong> per credential (<code>opda:assuranceLevel</code>
+      was removed on 2026-07-05 per ODR-0009 — <a href="/dbt-smart-data/gap-register#g13">gap G13</a>).
+      Close that, and a <strong>PDTF CBOM</strong> becomes the cheapest, highest-visibility
+      demonstration of Chapter 1 conformance available.
+    </p>
+  </div>
+
+  <h2 id="guardrails">The six design guardrails</h2>
+
+  <p>What schemes <em>must not</em> do:</p>
+
+  <ol>
+    <li>Over-centralise identity or consent flows.</li>
+    <li>Mandate external identity providers where not proportionate.</li>
+    <li><strong>Unbounded credential reuse</strong> — credentials issued for one purpose must not be reused for unrelated ones.</li>
+    <li><strong>Opaque delegation chains</strong> — <em>"all delegation must be verifiable. 'Password sharing' or unverifiable proxies must not be permitted."</em></li>
+    <li><strong>Fragmented role definitions</strong> — "roles must be aligned with cross-sector patterns to avoid ambiguity". <em>Read this one carefully — see below.</em></li>
+    <li>Failure to maintain revocation or suspension information — "relying on stale trust signals is a systemic risk".</li>
+  </ol>
+
+  <h2 id="pdtf">What this means for PDTF</h2>
+
+  <p>Full table on <a href="/dbt-smart-data/pdtf-overlap#asks-ch1">the overlap page</a>. The load-bearing findings:</p>
+
+  <ul>
+    <li><strong>Power of Attorney, deputyship and executors must be "verifiable delegation credentials".</strong> Chapter 1 names PoA as a mechanism used across finance, energy <em>and property</em>. PDTF has no delegation model at all — and property is the delegation-heavy sector (<a href="/dbt-smart-data/gap-register#ranked">gap G5</a>).</li>
+    <li><strong>Selective disclosure is a live conformance failure.</strong> PDTF's Ed25519 proof suite cannot do it (<a href="/dbt-smart-data/gap-register#ranked">gap G8</a>).</li>
+    <li><strong>The consent gap is the strategic exposure.</strong> Stage 3/4 presupposes a machine-readable consent object that data holders must <em>not</em> re-interpret. PDTF cannot emit one. Every other sector has an answer; property has nothing named.</li>
+    <li><strong>Guardrail 5 is an unbounded demand.</strong> Read literally it invites a future editor to require property schemes to adopt data-holder/ATP terminology <em>in place of</em> Seller/Buyer/Conveyancer. DBT has promised a cross-reference table; <strong>OPDA should supply the property column rather than have it drafted for us.</strong></li>
+    <li><strong>"Schemes should rely on DVS certification, not accredit identity providers themselves"</strong> cuts against PDTF's KYC/KYB issuer onboarding. The reconciliation: PDTF's issuers are not <em>identity</em> providers, they are <strong>issuers of facts about properties</strong> — and DVS has no certification route for "issuer of a fact about a building". Nobody certifies HM Land Registry as an ASP. <em>Say this plainly and early, or risk being told the accreditation function is redundant when it demonstrably is not.</em></li>
+  </ul>
+
+  <h2 id="caveats">Caveats on this draft</h2>
+
+  <ul>
+    <li><strong>It cannot decide what PDTF is.</strong> One passage calls it a peer of Open Banking and DVS; another calls it "a sandbox environment rather than operating as a statutory or mandated framework". Push for consistent framing — the sandbox sentence describes a <em>pilot deployment</em>, not PDTF-the-standard.</li>
+    <li><strong>The property section is stale.</strong> It says Open Property aligns to <strong>DIATF</strong> patterns — while the same chapter states DIATF has been superseded by the statutory DVS Trust Framework.</li>
+    <li><strong>Almost everything is deferred</strong> — diagrams, the cross-reference table, conformance detail, role allocation. <strong>The 17 model clauses are the live surface</strong>: they are the only text concrete enough to become scheme regulation.</li>
+  </ul>
+
+  <h2 id="related">Related</h2>
+  <ul>
+    <li><a href="/dbt-smart-data/pdtf-overlap#roles">The role-model collision</a> and <a href="/dbt-smart-data/pdtf-overlap#assurance">why PDTF has no assurance-level vocabulary</a></li>
+    <li><a href="/governance/data-security">PDTF's data security framework</a> — DID key management, signature verification, revocation</li>
+    <li><a href="/dbt-smart-data/user-lifecycle">Ch.3 — User lifecycle</a> — where the consent gap is worked out in full</li>
+  </ul>
+</Layout>

@@ -1,0 +1,202 @@
+---
+import Layout from '@/layouts/Layout.astro';
+import PageMeta from '@/components/PageMeta.astro';
+const BASE = 'source/02-policy-and-positioning/dbt-smart-data-guidebook/chapter-4';
+const PDF = `${BASE}/SMART DATA GUIDEBOOK_Chapter 4 Data Stewardship, Privacy and Ethics_V2.pdf`;
+const DOCX = `${BASE}/SMART DATA GUIDEBOOK_Chapter 4 Data Stewardship, Privacy and Ethics_V2.docx`;
+---
+<Layout
+  title="Ch.4 — Stewardship & ethics"
+  description="Smart Data Guidebook Chapter 4 (V2): data stewardship, provenance and lineage, source vs derived data, and AI-decision disclosure — the chapter that is almost entirely ontology territory."
+>
+<PageMeta category="The Guidebook" updated="Summarises V2" damaKa={["Data Governance", "Metadata Management", "Data Privacy"]} />
+
+  <h1>Chapter 4 — Data Stewardship, Privacy and Ethics</h1>
+
+  <p class="lead">
+    <strong>The chapter with the deepest data-standard obligation of the whole Guidebook.</strong>
+    Provenance, lineage, purpose limitation, retention, sensitivity classification and
+    machine-readable metadata are exactly what an ontology is for. It is also the chapter that
+    creates PDTF's most genuinely <em>new</em> obligation: AI-decision disclosure.
+  </p>
+
+  <ul>
+    <li>
+      <a class="resource-link" href={`/resource?path=${PDF}`}><code>Chapter 4 — V2 (PDF)</code></a>
+      · <a class="resource-link" href={`/resource?path=${DOCX}`}><code>.docx</code></a>
+    </li>
+  </ul>
+
+  <p>
+    Its through-line: data stewardship is <strong>economic infrastructure</strong>. Governance
+    choices about access, interoperability and standards shape market contestability, not just
+    compliance.
+  </p>
+
+  <h2 id="derived">Source · derived · insight · profiling</h2>
+
+  <p>
+    The chapter requires schemes to <strong>explicitly distinguish four categories</strong> of data:
+  </p>
+
+  <table>
+    <thead><tr><th>Category</th><th>What it is</th></tr></thead>
+    <tbody>
+      <tr><td><strong>Source data</strong></td><td>Provided by data holders.</td></tr>
+      <tr><td><strong>Derived data</strong></td><td>Transformed or enriched.</td></tr>
+      <tr><td><strong>Insights</strong></td><td>Analytical outputs or recommendations.</td></tr>
+      <tr><td><strong>Profiling</strong></td><td>Inferences about individuals or behaviours.</td></tr>
+    </tbody>
+  </table>
+
+  <p>
+    Because decisions increasingly rest on derived or inferred data that is "less visible to users
+    and more difficult to interpret", the chapter demands: users are <strong>informed when outcomes
+    are based on derived insights</strong>; responsibility for derived outputs is
+    <strong>clearly assigned</strong>; and high-impact decisions from derived data remain
+    <strong>explainable and contestable</strong>.
+  </p>
+
+  <div class="callout callout--key">
+    <div class="callout__label">A property pack is a derived output</div>
+    <p>
+      This is the chapter's most consequential implication for OPDA. A PDTF property pack is an
+      <em>aggregation of claims from many sources</em>. If the pack is wrong but every source claim
+      was right, who is accountable? PDTF models source claims well — <code>prov:wasDerivedFrom</code>
+      is SHACL-mandatory on every <code>opda:Claim</code> — and derived claims not at all.
+      <a href="/dbt-smart-data/gap-register#ranked">Gap G4.</a>
+    </p>
+  </div>
+
+  <h2 id="lineage">Provenance and lineage</h2>
+
+  <blockquote style="border-left: 4px solid var(--color-brand-700); padding-left: var(--space-4); color: var(--color-ink-700); font-style: italic;">
+    "Schemes should ensure the origin and lineage of data can be verified, particularly in high-value
+    or legally sensitive use cases."
+  </blockquote>
+
+  <p>
+    Accountability must remain "traceable across the full data journey" and must not fragment as data
+    moves between actors. Responsibility <strong>transfers with the data</strong> (Clause I) — at each
+    stage the receiving party assumes responsibility for lawful, secure and ethical use, and scheme
+    rules continue to apply downstream (Clause H).
+  </p>
+
+  <p>
+    One honest caveat the chapter itself supplies: <em>"Full traceability may not always be feasible
+    beyond initial sharing points."</em> That is a get-out clause which lowers the bar — but it also
+    invites a weaker downstream standard. <strong>PDTF, which can do end-to-end lineage, has an
+    interest in arguing traceability <em>is</em> feasible.</strong>
+  </p>
+
+  <h2 id="transparency">The three-level transparency model</h2>
+
+  <table>
+    <thead><tr><th>Level</th><th>Users should understand</th></tr></thead>
+    <tbody>
+      <tr><td><strong>Participant</strong></td><td>Who is accessing their data, and the role of each participant.</td></tr>
+      <tr><td><strong>Data</strong></td><td>What data is being used, and <strong>whether it is original or derived</strong>.</td></tr>
+      <tr><td><strong>Decision</strong></td><td>How decisions are generated, and <strong>whether automation or AI has been used</strong>.</td></tr>
+    </tbody>
+  </table>
+
+  <p>
+    Plus a user-visible <strong>"data receipt"</strong> — metadata and logs confirming transactions,
+    with visibility of the actors involved.
+  </p>
+
+  <h2 id="ai">AI governance — the genuinely new obligation</h2>
+
+  <p>
+    "AI governance is becoming inseparable from data governance" (one of the chapter's five findings).
+    Concretely it requires: proportionate risk-based AI governance with <strong>human oversight</strong>;
+    limits on fully automated decision-making in high-impact contexts; enhanced audit for critical
+    systems; and — the sharp one — that users understand <strong>whether automation or AI has been
+    used</strong> to generate a decision affecting them.
+  </p>
+
+  <div class="callout callout--warn">
+    <div class="callout__label">PDTF has no notion of a decision at all</div>
+    <p>
+      This is the ask PDTF most clearly cannot meet and has not planned for. It needs a
+      decision/outcome artefact, an AI-involvement flag, the model that produced it, a
+      human-oversight level, and the inputs it consumed tagged source-vs-derived. DPV-AI is a
+      near-exact upstream fit and PDTF has adopted <em>none</em> of it.
+    </p>
+    <p>
+      It is hard not because the vocabulary is missing but because the ontology today models
+      <strong>property facts and nothing else</strong> — it has no concept of an actor's
+      <em>output</em>. That is a scope extension, and a council question.
+      <a href="/dbt-smart-data/gap-register#ranked">Gap G6.</a>
+    </p>
+  </div>
+
+  <h2 id="dual">Machine-readable <em>and</em> human-readable</h2>
+
+  <blockquote style="border-left: 4px solid var(--color-brand-700); padding-left: var(--space-4); color: var(--color-ink-700); font-style: italic;">
+    "Machine-readable to support interoperability, automation and reuse… Human-readable to support
+    transparency, user understanding and trust."
+  </blockquote>
+
+  <p>
+    Applied to four artefact classes: <strong>consent records · portability outputs · trust signals
+    and audit information · decision explanations</strong>. The human-readable half is not UI copy —
+    it must be carried <em>alongside</em> the machine encoding. In RDF terms, labels and definitions
+    are a <strong>conformance requirement, not a documentation nicety</strong>.
+  </p>
+
+  <p>
+    PDTF satisfies this structurally (SKOS labels, OWL annotations). But "we <em>can</em> label
+    everything" is not "everything <em>is</em> labelled" — ship a SHACL shape requiring it and the
+    soft claim becomes auditable (<a href="/dbt-smart-data/gap-register#ranked">gap G11</a>, a day's work).
+  </p>
+
+  <h2 id="pdtf">What this means for PDTF</h2>
+
+  <p>Full table on <a href="/dbt-smart-data/pdtf-overlap#asks-ch4">the overlap page</a>. The honest scorecard:</p>
+
+  <h3>What PDTF can already claim, without stretching</h3>
+  <ul>
+    <li><strong>Machine-readability, in full.</strong> Clause D and Clause F describe PDTF's reason for existing.</li>
+    <li><strong>Claim-level provenance.</strong> Real, in the corpus, and SHACL-enforced.</li>
+    <li><strong>Data quality.</strong> The chapter asks for "responsibility for data quality"; <a href="/governance/data-quality">PDTF's framework</a> already has six dimensions. <em>We over-deliver.</em></li>
+    <li><strong>Temporal state and long-lived validity</strong> — the chapter's property paragraph specifically calls out "version control" and reuse over extended periods.</li>
+  </ul>
+
+  <h3>What PDTF must <em>not</em> claim</h3>
+  <p>
+    <strong>Model provenance is not instance provenance.</strong> PDTF's <code>dct:source</code> chain
+    from every ontology term back to its JSON Schema leaf is genuine provenance <em>of the model</em>.
+    Citing it as evidence of the <em>instance-data lineage</em> this chapter asks for would be a
+    material overclaim that would not survive anyone actually reading the ontology. (The real evidence
+    is the mandatory <code>prov:wasDerivedFrom</code> on <code>opda:Claim</code> — cite that instead.)
+  </p>
+
+  <h3>The tension to expect</h3>
+  <p>
+    §3.1.7 says derived data "may represent proprietary analysis or intellectual property" and "not all
+    derived outputs can or should be treated identically to source data" — yet lineage must be
+    verifiable and users must know when outcomes rest on derived data. <strong>A standard that makes
+    derivation edges mandatory and public will meet resistance from members whose derived products are
+    their margin.</strong> The resolution is probably <em>lineage is asserted, but the derivation logic
+    is not disclosed</em> — and the chapter's own words support exactly that compromise:
+    "explainability should prioritise clarity of outcomes rather than full technical transparency".
+    <em>Quote it.</em>
+  </p>
+
+  <h2 id="caveats">Caveats</h2>
+
+  <ul>
+    <li><strong>It frames property as the laggard.</strong> "Low interoperability and fragmented systems, compared to more mature Smart Data sectors such as Open Banking." Flattering elsewhere ("focus on provenance and data governance") but OPDA should decide whether to accept that framing or contest it with evidence — the ontology, the schema and the quality framework are all real, and more than most sectors have.</li>
+    <li><strong>The risk model is use-case-shaped; PDTF's is dataset-shaped.</strong> The chapter insists risk is assessed "at the use case and ecosystem level". PDTF has no <code>UseCase</code> class. Either add the dimension or scope out of use-case risk explicitly — <em>drifting between them is not an option</em> (<a href="/dbt-smart-data/gap-register#ranked">gap G7</a>).</li>
+    <li><strong>Watch footnote 9.</strong> The only concrete machine-readable data-documentation standard the chapter cites is <strong>MLCommons Croissant</strong> — an ML dataset-documentation format, not a semantic-web stack. If DBT converges on Croissant as the reference, PDTF's DCAT/DPV/PROV approach becomes an alternative that must be <em>argued for</em> rather than an obvious fit. Worth an early intervention.</li>
+    <li><strong>"Trust signals" is undefined.</strong> The chapter demands "standardised metadata and trust signals" without saying what a trust signal <em>is</em> or who defines the vocabulary. That is a standards-shaped hole, and OPDA is well placed to fill it — <em>if someone claims it before a scheme operator invents a bespoke one.</em></li>
+  </ul>
+
+  <h2 id="related">Related</h2>
+  <ul>
+    <li><a href="/dbt-smart-data/gap-register#ranked">Gap register</a> — G3, G4, G6, G7 all originate here</li>
+    <li><a href="/governance/data-quality">Data quality framework</a> · <a href="/ontology/provenance">Ontology — provenance</a></li>
+    <li><a href="/dbt-smart-data/user-lifecycle">Ch.3 — User lifecycle</a> — the consent half of the same fabric</li>
+  </ul>
+</Layout>

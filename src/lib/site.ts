@@ -46,6 +46,7 @@ export type Section = {
 export const HEADER_ORDER = [
   'strategy',
   'governance',
+  'dbt-smart-data',
   'engagement',
   'modelling',
   'model',
@@ -94,7 +95,6 @@ export const SECTIONS: Record<string, Section> = {
         { url: '/governance/legislation',     title: 'Legislation & policy' },
         { url: '/governance/departments',     title: 'Departments & bodies' },
         { url: '/governance/steering-forums', title: 'Steering & coordination' },
-        { url: '/governance/smart-data-guidebook', title: 'Smart Data Guidebook (DBT)' },
       ]},
       { heading: 'OPDA the organisation', items: [
         { url: '/governance/opda-members', title: 'OPDA member firms' },
@@ -122,6 +122,30 @@ export const SECTIONS: Record<string, Section> = {
       { heading: 'Quality & security', items: [
         { url: '/governance/data-quality',           title: 'Data quality framework' },
         { url: '/governance/data-security',          title: 'Data security framework' },
+      ]},
+    ],
+  },
+
+  'dbt-smart-data': {
+    key: 'dbt-smart-data',
+    title: 'DBT Smart Data',
+    summary:
+      "DBT's cross-sector Smart Data Guidebook — the Preamble and five chapters that will shape how every UK Smart Data scheme operates under the Data (Use and Access) Act 2025 — and, the reason this section exists, the analysis of which of its asks PDTF must be able to encode.",
+    groups: [
+      { heading: 'Overview', items: [
+        { url: '/dbt-smart-data', title: 'Section overview' },
+      ]},
+      { heading: 'The Guidebook', items: [
+        { url: '/dbt-smart-data/preamble',                   title: 'Preamble — principles & risk' },
+        { url: '/dbt-smart-data/identity',                   title: 'Ch.1 — Identity, roles & trust' },
+        { url: '/dbt-smart-data/governance-compliance',      title: 'Ch.2 — Governance & legal' },
+        { url: '/dbt-smart-data/user-lifecycle',             title: 'Ch.3 — User lifecycle' },
+        { url: '/dbt-smart-data/stewardship-privacy-ethics', title: 'Ch.4 — Stewardship & ethics' },
+        { url: '/dbt-smart-data/security-risk-fraud',        title: 'Ch.5 — Security, risk & fraud' },
+      ]},
+      { heading: 'PDTF alignment', items: [
+        { url: '/dbt-smart-data/pdtf-overlap',  title: 'What the Guidebook asks of PDTF' },
+        { url: '/dbt-smart-data/gap-register',  title: 'Gap register' },
       ]},
     ],
   },

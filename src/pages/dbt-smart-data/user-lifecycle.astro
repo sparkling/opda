@@ -1,0 +1,196 @@
+---
+import Layout from '@/layouts/Layout.astro';
+import PageMeta from '@/components/PageMeta.astro';
+const BASE = 'source/02-policy-and-positioning/dbt-smart-data-guidebook/chapter-3';
+const PDF = `${BASE}/SMART DATA GUIDEBOOK_Chapter 3 User Lifecycle and Experience_V1.pdf`;
+const DOCX = `${BASE}/SMART DATA GUIDEBOOK_Chapter 3 User Lifecycle and Experience_V1.docx`;
+const WHICH_PDF = `${BASE}/Which response Chapter 3 to the call for evidence for the Smart Data Guidebook Working Groups.pdf`;
+const WHICH_DOCX = `${BASE}/Which response Chapter 3 to the call for evidence for the Smart Data Guidebook Working Groups.docx`;
+---
+<Layout
+  title="Ch.3 — User lifecycle"
+  description="Smart Data Guidebook Chapter 3 (V1): the six-stage user lifecycle, consent, withdrawal and delegation — read as a data-modelling problem, not a UI one. Plus the Which? consumer response."
+>
+<PageMeta category="The Guidebook" updated="Summarises V1 · 29 June 2026" damaKa={["Data Governance", "Data Privacy"]} />
+
+  <h1>Chapter 3 — User Lifecycle and Experience</h1>
+
+  <p class="lead">
+    The chapter most likely to be waved away as "just UX, not our problem". It is not. Consent,
+    withdrawal and delegation leave <strong>data</strong> trails that a standard must be able to
+    represent — and this chapter, read carefully, over-determines a consent-record model that PDTF
+    does not have.
+  </p>
+
+  <ul>
+    <li>
+      <a class="resource-link" href={`/resource?path=${PDF}`}><code>Chapter 3 — V1 (PDF)</code></a>
+      · <a class="resource-link" href={`/resource?path=${DOCX}`}><code>.docx</code></a>
+    </li>
+    <li>
+      <a class="resource-link" href={`/resource?path=${WHICH_PDF}`}><code>Which? response to the Call for Evidence (PDF)</code></a>
+      · <a class="resource-link" href={`/resource?path=${WHICH_DOCX}`}><code>.docx</code></a>
+    </li>
+  </ul>
+
+  <p>
+    Its own framing: user experience is <em>"an emergent property of smart data trust frameworks"</em>
+    — the combined effect of identity, consent, governance and data-use decisions as experienced over
+    time. Not interface design.
+  </p>
+
+  <h2 id="lifecycle">The six-stage lifecycle</h2>
+
+  <ol>
+    <li><strong>Entry and awareness</strong> — the user must understand who they are dealing with: "the role, status and trust framework of participating organisations".</li>
+    <li><strong>Identity and onboarding</strong> — verification proportionate to risk (GPG 45/44/46). Property transactions are named <em>twice</em> as a high-assurance trigger ("decisions [that] have significant or long-term consequences").</li>
+    <li><strong>Consent and authorisation</strong> — what data, with whom, for what purpose, for how long. Onward sharing disclosed at consent time. Multi-party consent (joint owners, delegates) treated as <em>normal, not exceptional</em>.</li>
+    <li><strong>Data sharing and use</strong> — provenance surfaced to the user as a simple signal: <strong>verified / self-reported / derived</strong>. A clear accountable contact per datum. Correction rights.</li>
+    <li><strong>Ongoing management</strong> — see and manage <strong>active, expired and withdrawn</strong> permissions, and <em>track how they changed over time</em>. Withdrawal must be as easy as consent.</li>
+    <li><strong>Exit and withdrawal</strong> — what is <strong>retained, deleted or anonymised</strong>; portability of validated data; and reducing wasted effort <em>where transactions do not complete</em> (the property case).</li>
+  </ol>
+
+  <p>
+    Plus a cross-cutting <strong>redress</strong> pathway — explicitly not a stage — available at any
+    point of failure.
+  </p>
+
+  <h2 id="delegation">Delegation is a first-class pathway</h2>
+
+  <p>
+    The chapter's single densest data-modelling requirement is in its model clause:
+  </p>
+
+  <blockquote style="border-left: 4px solid var(--color-brand-700); padding-left: var(--space-4); color: var(--color-ink-700); font-style: italic;">
+    "The Scheme SHOULD ensure that users can understand, review and withdraw permissions throughout
+    this lifecycle, and that delegated authority is <strong>visible, attributable and revocable</strong>."
+  </blockquote>
+
+  <p>
+    <em>Visible, attributable and revocable</em> is a triple of properties only a data structure can
+    carry. And property is the delegation-heavy sector: elderly sellers, probate and executor sales,
+    divorce, lasting power of attorney, co-ownership with unequal digital capability. <strong>Every
+    one of those is a delegation or multi-party consent case</strong> — which is to say, a
+    data-modelling problem: the authority under which a person acts, its scope, its evidence, its
+    validity window and its revocation are all <em>facts to be recorded</em>, not screens to be drawn.
+  </p>
+
+  <h2 id="consent-model">The consent-record model Chapter 3 implies</h2>
+
+  <p>
+    The chapter never says "data model". But Clause A plus §3.1 plus §2.3, read together,
+    over-determine one. This is the most valuable thing in the chapter, and PDTF today can satisfy
+    roughly one line of it.
+  </p>
+
+  <h3>Append-only, not mutable</h3>
+  <p>
+    Because the user must see <em>expired</em> and <em>withdrawn</em> permissions and <em>how they
+    changed over time</em>, and because confidentiality duties <strong>survive</strong> withdrawal, a
+    consent record can never be mutated in place or deleted. Modification produces a <em>new</em>
+    record revising the old; the old becomes <code>superseded</code>, not nothing.
+    <strong>A binary active/inactive flag fails this chapter.</strong>
+  </p>
+
+  <h3>Three distinct parties — conflating them is the classic error</h3>
+  <ul>
+    <li><strong>Data subject</strong> — who the data is about (possibly <em>both</em> co-owners).</li>
+    <li><strong>Grantor</strong> — who actually performed the grant. Usually the subject; <strong>in property, frequently not</strong> — an attorney under an LPA, an executor, a solicitor with a letter of authority.</li>
+    <li><strong>Grantee / recipient</strong> — who may receive the data, plus any onward recipients.</li>
+  </ul>
+  <p>
+    Where grantor ≠ subject, the record <em>must</em> carry the delegated authority it was made
+    under. <strong>That link is the whole of "attributable".</strong>
+  </p>
+
+  <h3>Scope, purpose, and time</h3>
+  <ul>
+    <li><strong>Scope</strong> — a machine-checkable selector over PDTF's own structure (paths, classes, property IRIs), not free text. This is the join between the consent layer and the property-data layer. <em>If PDTF does not give consent a stable vocabulary of things-to-consent-to, every scheme invents its own and the chapter's "alignment of meaning" fails at exactly the point it matters.</em></li>
+    <li><strong>Purpose</strong> — a controlled vocabulary (conveyancing, mortgage underwriting, valuation, AML/KYC, insurance, marketing…). Purpose limitation is unenforceable without it.</li>
+    <li><strong>Time</strong> — <code>validFrom</code>/<code>validUntil</code>, with <code>validUntil</code> <strong>required</strong>: the chapter explicitly warns that default states "must not lead to unintended ongoing data sharing". <em>A standard that permits an absent expiry enables the harm.</em></li>
+  </ul>
+
+  <h3>Duties that outlive the consent — the sleeper requirement</h3>
+  <p>
+    §2.3 (common-law confidentiality) is easy to miss and structurally important. Confidentiality,
+    purpose limitation on data already received, and onward-sharing prohibitions must be modelled as
+    <strong>obligations attached to the recipient</strong>, with their own validity — possibly
+    indefinite — and explicitly <em>not</em> terminated by the consent's expiry or withdrawal.
+  </p>
+  <p>
+    <strong>A permission-only model cannot say: "you may no longer receive this, and you must still
+    keep secret what you already received."</strong> That is what ODRL <code>Duty</code> is for —
+    and ODRL has <em>zero</em> occurrences in PDTF's corpus.
+  </p>
+
+  <h3>Withdrawal is an event, not a flipped boolean</h3>
+  <p>
+    It needs: who withdrew (possibly a <em>different</em> party from the grantor — a subject revoking
+    what their attorney granted, or one co-owner revoking a joint consent), under what authority,
+    when, effective from when, and <strong>what obligations survive</strong>. It must also carry a
+    <strong>disposition instruction</strong> per data category — retain (with legal basis and
+    retain-until), delete, or anonymise — because withdrawal does not undo sharing that already
+    happened.
+  </p>
+
+  <div class="callout callout--note">
+    <div class="callout__label">Withdrawal in a property transaction is semantically ugly — and the chapter doesn't touch it</div>
+    <p>
+      Once a lender has underwritten on a datum and a searches provider has relied on it, "withdraw
+      consent" cannot mean "unshare". The chapter's own §2.3 and §3.1 imply the answer — withdrawal
+      terminates <em>future</em> sharing and converts the recipient's position into a
+      <em>duty-bearing</em> one — but it never says so. A scheme reading only Clause A could
+      reasonably build something incoherent. <strong>PDTF should model the distinction rather than
+      wait for it.</strong>
+    </p>
+  </div>
+
+  <h3>Multi-party consent</h3>
+  <p>
+    One record, <em>n</em> grantors, plus a <strong>revocation rule</strong> (any-one / unanimous /
+    per-grantor-partial). This is a scheme policy choice — but it must be a <em>recorded</em> one,
+    otherwise the behaviour of a joint consent is unknowable from the data. In property this is not
+    exotic: two co-owners, one abroad, one having instructed a solicitor, mid-divorce.
+  </p>
+
+  <h3>The one-sentence version</h3>
+  <p>
+    Chapter 3 requires that, for any datum in a property transaction, a machine can answer:
+    <em>who consented to this being here, under what authority, for what purpose, until when, has
+    that been withdrawn, what obligations survive the withdrawal, who is accountable for the datum's
+    accuracy, and who has relied on the identity check behind it</em> — and PDTF today can answer
+    roughly <strong>one</strong> of those nine.
+  </p>
+
+  <h2 id="which">The Which? response</h2>
+
+  <p>
+    Not a critique of the draft — a submission to DBT's Call for Evidence. Which? is a consumer
+    champion, an OPDA-listed stakeholder, and is cited in the chapter's own authority list. Its
+    position is politically load-bearing:
+  </p>
+
+  <ul>
+    <li><strong>It wants requirements, not SHOULDs.</strong> "Clear requirements in the guidebook"; standards "universally adopted by service providers"; regulatory intervention for vulnerable people. <em>That is the live fault line with the chapter's non-prescriptive posture.</em></li>
+    <li><strong>On property specifically</strong> it asks for: clear and accessible information <strong>including non-digital options</strong>; and — directly PDTF's remit — <em>"Data sources must be trusted, and consistent data standards must be used for comparisons between datasets and interoperability across systems."</em> <strong>On the data-standards question, Which? is an ally.</strong></li>
+    <li><strong>The harm the chapter has no answer to.</strong> Its Financial Inclusion Centre piece argues that richer shared data <em>enables finer, discriminatory segmentation</em> — a harm that transparency and user control do not fix. In property it manifests as differential mortgage and insurance pricing. Neither DBT nor OPDA currently has a position. <em>Worth having one before being asked.</em></li>
+  </ul>
+
+  <h2 id="pdtf">What this means for PDTF</h2>
+
+  <p>Full table on <a href="/dbt-smart-data/pdtf-overlap#asks-ch3">the overlap page</a>. In short:</p>
+
+  <ul>
+    <li>The entire consent/delegation/withdrawal cluster is <a href="/dbt-smart-data/gap-register#ranked">gap G5</a> — the largest hole, and it needs ODRL, which the corpus does not have.</li>
+    <li>The "verified / self-reported / derived" provenance signal needs the origin facet — <a href="/dbt-smart-data/gap-register#ranked">gap G3</a>, and the cheapest thing on the register.</li>
+    <li><strong>The dashboard is theirs; its data dependencies are ours.</strong> Chapter 3's required dashboard views (active/expired/withdrawn permissions, who holds data, change history, act to revoke) can only be populated from a model that has all four. The <em>screen</em> is a product problem. The <em>model behind it</em> is PDTF's.</li>
+    <li><strong>PDTF is cited for a capability it does not ship.</strong> §4.1 credits "emerging PDTF work" with showing the importance of <em>delegated authority controls</em>, provenance and attribute-level assurance. The provenance is real. <strong>The delegated authority controls are not.</strong> Being cited for a capability you don't have is a reputational exposure and a roadmap forcing-function.</li>
+  </ul>
+
+  <h2 id="related">Related</h2>
+  <ul>
+    <li><a href="/dbt-smart-data/gap-register#ranked">Gap register</a> — G3 and G5</li>
+    <li><a href="/dbt-smart-data/identity">Ch.1 — Identity, roles and trust</a> — where the consent signal is first assumed</li>
+    <li><a href="/dbt-smart-data/stewardship-privacy-ethics">Ch.4 — Stewardship &amp; ethics</a> — the derived-data half of the same problem</li>
+  </ul>
+</Layout>
