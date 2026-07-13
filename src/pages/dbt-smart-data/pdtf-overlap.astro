@@ -73,8 +73,8 @@ import PageMeta from '@/components/PageMeta.astro';
       </tr>
       <tr>
         <td><strong>DPV</strong> — personal data &amp; legal basis</td>
-        <td>⚠️ <strong>Narrow, and internally broken</strong></td>
-        <td><code>dpv-pd:hasPersonalDataCategory</code> is asserted. Legal basis is asserted as <code>opda:lawfulBasis</code> with <code>dpv:</code> <em>values</em> (<code>dpv:PublicTask</code>, <code>dpv:Consent</code>…) — but the SHACL shape validates for <code>dpv:hasLegalBasis</code>, <strong>a predicate the corpus never emits</strong>. See the defect note below.</td>
+        <td>⚠️ <strong>Narrow, and two-layered</strong></td>
+        <td><code>dpv-pd:hasPersonalDataCategory</code> is asserted. Lawful basis exists at <em>two</em> layers: <code>opda:lawfulBasis</code> is the class-level co-annotation (reference-not-import, ODR-0012), while <code>dpv:hasLegalBasis</code> is the <em>instance</em>-level predicate the SHACL Cat-4 shape enforces — and instance-level lawful basis is <strong>Phase-2</strong> per ODR-0012, so it is not yet exercised. No consent/processing-event model exists to hang it on.</td>
       </tr>
       <tr>
         <td><strong>SKOS / OWL / SHACL</strong></td>
@@ -115,22 +115,29 @@ import PageMeta from '@/components/PageMeta.astro';
   </table>
 
   <div class="callout callout--warn">
-    <div class="callout__label">Two live defects this analysis surfaced in our own artefacts</div>
-    <ol style="margin-bottom: 0;">
-      <li>
-        <strong>The legal-basis SHACL shape can never pass.</strong>
-        <code>opda-agent-shapes.ttl</code> flags special-category PII lacking
-        <code>dpv:hasLegalBasis</code> as a <em>Violation</em> — but the corpus asserts
-        <code>opda:lawfulBasis</code>. Conformant OPDA data would still fail the shape. Either the
-        shape or the predicate must change.
-      </li>
-      <li>
-        <strong>We publish a selective-disclosure claim we cannot honour.</strong>
-        <code>governance.md</code> says "Data minimization and selective disclosure enforced". With
-        an Ed25519-only proof suite, selective disclosure is not possible. <strong>That sentence
-        should be withdrawn</strong> — see <a href="/dbt-smart-data/gap-register#sd8">gap SD8</a>.
-      </li>
-    </ol>
+    <div class="callout__label">One live defect this analysis surfaced in our own artefacts</div>
+    <p style="margin-bottom: 0;">
+      <strong>We published a selective-disclosure capability we do not have.</strong>
+      <code>trust-framework/docs/governance.md</code> said "Data minimization and selective
+      disclosure enforced". With an <code>Ed25519Signature2020</code>-only proof suite, selective
+      disclosure is not possible. <strong>That sentence has been withdrawn</strong> — see
+      <a href="/dbt-smart-data/gap-register#sd8">gap SD8</a>.
+    </p>
+  </div>
+
+  <div class="callout callout--note">
+    <div class="callout__label">A defect this analysis wrongly reported, and retracts</div>
+    <p style="margin-bottom: 0;">
+      An earlier draft of this page claimed the legal-basis SHACL shape "can never pass", on the
+      grounds that it validates for <code>dpv:hasLegalBasis</code> while the corpus asserts
+      <code>opda:lawfulBasis</code>. <strong>That was wrong.</strong> The two are different layers,
+      not a mismatch: <code>opda:lawfulBasis</code> is the <em>class-level co-annotation</em>
+      (reference-not-import, per <a href="/modelling/odr/odr-0012">ODR-0012</a>), whereas
+      <code>dpv:hasLegalBasis</code> is asserted on <em>instance</em> data — which ODR-0012 makes
+      explicitly <strong>Phase-2</strong>, because a lawful basis is irreducibly an assertion about a
+      processing <em>act</em>. The shape is correct and simply not yet exercised (no exemplar carries
+      special-category data). <code>dpv:hasLegalBasis</code> stands as the instance-level predicate.
+    </p>
   </div>
 
   <h2 id="strengths">Where PDTF is ahead of the Guidebook</h2>

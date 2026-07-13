@@ -218,22 +218,27 @@ import PageMeta from '@/components/PageMeta.astro';
   </ol>
 
   <div class="callout callout--warn">
-    <div class="callout__label">Two of our own artefacts are wrong, independently of DBT</div>
-    <p>
-      Surfaced while compiling this register, and worth fixing whatever happens with the Guidebook:
+    <div class="callout__label">One of our own artefacts was wrong, independently of DBT — now fixed</div>
+    <p style="margin-bottom: 0;">
+      <code>trust-framework/docs/governance.md</code> claimed <em>"Data minimization and selective
+      disclosure enforced"</em>. OPDA cannot enforce selective disclosure with an
+      <code>Ed25519Signature2020</code>-only proof suite. <strong>The sentence has been
+      withdrawn</strong> and replaced with an accurate statement of what the trust framework does do
+      (data minimisation) and what it does not yet do (selective disclosure). See <strong>SD8</strong>.
     </p>
-    <ol style="margin-bottom: 0;">
-      <li>
-        <strong>The legal-basis SHACL shape can never pass.</strong> <code>opda-agent-shapes.ttl</code>
-        raises a <em>Violation</em> when special-category PII lacks <code>dpv:hasLegalBasis</code> —
-        but the corpus asserts <code>opda:lawfulBasis</code> (with <code>dpv:</code> values).
-        Conformant data would still fail. Either the shape or the predicate must change.
-      </li>
-      <li>
-        <strong><code>governance.md</code> claims "selective disclosure enforced"</strong> — see SD8.
-        We cannot do it with an Ed25519-only proof suite.
-      </li>
-    </ol>
+  </div>
+
+  <div class="callout callout--note">
+    <div class="callout__label">Retraction: a defect this register wrongly reported</div>
+    <p style="margin-bottom: 0;">
+      An earlier draft claimed the legal-basis SHACL shape "can never pass" because it validates for
+      <code>dpv:hasLegalBasis</code> while the corpus asserts <code>opda:lawfulBasis</code>.
+      <strong>That was wrong</strong> — they are different layers, not a mismatch.
+      <code>opda:lawfulBasis</code> is the class-level co-annotation; <code>dpv:hasLegalBasis</code>
+      is the instance-level predicate, which <a href="/modelling/odr/odr-0012">ODR-0012</a> makes
+      <strong>Phase-2</strong> (a lawful basis is an assertion about a processing <em>act</em>). The
+      shape is correct and simply not yet exercised. <code>dpv:hasLegalBasis</code> stands.
+    </p>
   </div>
 
   <h2 id="related">Related</h2>

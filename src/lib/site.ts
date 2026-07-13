@@ -135,16 +135,20 @@ export const SECTIONS: Record<string, Section> = {
       { heading: 'Overview', items: [
         { url: '/dbt-smart-data', title: 'Section overview' },
       ]},
+      // Sidebar labels are the shortest unique handle, not a summary — the page
+      // <h1> does the explaining. Site median is ~16 chars; anything past ~20
+      // wraps to two lines in the sidebar. The chapter number is kept (readers
+      // say "Chapter 3"); the "Ch." prefix and em-dash were pure width cost.
       { heading: 'The Guidebook', items: [
-        { url: '/dbt-smart-data/preamble',                   title: 'Preamble — principles & risk' },
-        { url: '/dbt-smart-data/identity',                   title: 'Ch.1 — Identity, roles & trust' },
-        { url: '/dbt-smart-data/governance-compliance',      title: 'Ch.2 — Governance & legal' },
-        { url: '/dbt-smart-data/user-lifecycle',             title: 'Ch.3 — User lifecycle' },
-        { url: '/dbt-smart-data/stewardship-privacy-ethics', title: 'Ch.4 — Stewardship & ethics' },
-        { url: '/dbt-smart-data/security-risk-fraud',        title: 'Ch.5 — Security, risk & fraud' },
+        { url: '/dbt-smart-data/preamble',                   title: 'Preamble' },
+        { url: '/dbt-smart-data/identity',                   title: '1. Identity & trust' },
+        { url: '/dbt-smart-data/governance-compliance',      title: '2. Governance & law' },
+        { url: '/dbt-smart-data/user-lifecycle',             title: '3. User lifecycle' },
+        { url: '/dbt-smart-data/stewardship-privacy-ethics', title: '4. Data stewardship' },
+        { url: '/dbt-smart-data/security-risk-fraud',        title: '5. Security & fraud' },
       ]},
       { heading: 'PDTF alignment', items: [
-        { url: '/dbt-smart-data/pdtf-overlap',  title: 'What the Guidebook asks of PDTF' },
+        { url: '/dbt-smart-data/pdtf-overlap',  title: 'What it asks of PDTF' },
         { url: '/dbt-smart-data/gap-register',  title: 'Gap register' },
       ]},
     ],

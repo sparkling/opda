@@ -87,18 +87,34 @@ be an analytical device applied per-ask, not a blanket "we're only a standard" d
      plan only) — so every "PDTF can already express consent/permissions/datasets" claim
      resting on them is void.
   2. **DPV** is present only for personal-data categories and legal basis.
-  3. **The legal-basis SHACL shape can never pass** — `opda-agent-shapes.ttl` validates for
-     `dpv:hasLegalBasis`, but the corpus asserts `opda:lawfulBasis`. A live defect.
-  4. **Selective disclosure is unsupported** — the only `bbs` string in the repo is inside a
+  3. **Selective disclosure is unsupported** — the only `bbs` string in the repo is inside a
      base64 PNG. PDTF is `Ed25519Signature2020` Linked Data Proofs only.
-  5. **`trust-framework/docs/governance.md` publishes a capability OPDA does not have** —
-     "selective disclosure enforced" — which OPDA cannot honour. It must be withdrawn.
-  6. **Assurance levels do not exist.** `opda:assuranceLevel` was **deleted on 2026-07-05
+  4. **`trust-framework/docs/governance.md` published a capability OPDA does not have** —
+     "selective disclosure enforced". **Withdrawn** (in the nested trust-framework repo, both
+     the markdown and its built HTML mirror) and replaced with an accurate statement: data
+     minimisation is enforced; selective disclosure is an objective requiring a BBS/SD-JWT
+     proof suite, which is an open Technical WG decision.
+  5. **Assurance levels do not exist.** `opda:assuranceLevel` was **deleted on 2026-07-05
      per ODR-0009** ("zero PDTF schema basis"); `AL1`–`AL4` have never existed at all.
      The first draft of this section asserted them as a PDTF *strength* — i.e. presented a
      council-ratified *removal* to a working group as a capability. Caught only by
      adversarial review. **This is the cautionary tale that justifies the whole
      verify-against-corpus rule: an unverified conformance claim is worse than no page.**
+
+**One claim this ADR previously made, and retracts.** An earlier revision recorded a sixth
+"defect": that the legal-basis SHACL shape *can never pass*, because `opda-agent-shapes.ttl`
+validates for `dpv:hasLegalBasis` while the corpus asserts `opda:lawfulBasis`. **That was
+wrong**, and it is worth recording as an error rather than quietly deleting. The two are
+*different layers*, not a mismatch: `opda:lawfulBasis` is the class-level co-annotation
+(reference-not-import, [ODR-0012](../ontology/odr/ODR-0012-data-governance-layer.md)), while
+`dpv:hasLegalBasis` is the **instance**-level predicate — and ODR-0012 makes instance-level
+lawful basis explicitly **Phase-2**, because "a lawful basis is irreducibly an assertion about
+a processing *act*". No exemplar carries special-category data, so the shape is simply not yet
+exercised. `dpv:hasLegalBasis` stands as the instance-level predicate (operator decision,
+2026-07-13). The generator and corpus are unchanged.
+
+The lesson generalises the one above: reading a grep result without reading the ODR that
+governs it produces confident, plausible, wrong findings — in *both* directions.
 * Preserve the inbound link. `/governance/smart-data-guidebook` has been circulated by
   e-mail to the OPDA chair and to DBT-adjacent stakeholders. It must not 404.
 
