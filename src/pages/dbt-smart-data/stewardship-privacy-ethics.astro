@@ -64,7 +64,7 @@ const DOCX = `${BASE}/SMART DATA GUIDEBOOK_Chapter 4 Data Stewardship, Privacy a
       <em>aggregation of claims from many sources</em>. If the pack is wrong but every source claim
       was right, who is accountable? PDTF models source claims well — <code>prov:wasDerivedFrom</code>
       is SHACL-mandatory on every <code>opda:Claim</code> — and derived claims not at all.
-      <a href="/dbt-smart-data/gap-register#ranked">Gap G4.</a>
+      <a href="/dbt-smart-data/gap-register#ranked">Gap SD4.</a>
     </p>
   </div>
 
@@ -127,7 +127,7 @@ const DOCX = `${BASE}/SMART DATA GUIDEBOOK_Chapter 4 Data Stewardship, Privacy a
       It is hard not because the vocabulary is missing but because the ontology today models
       <strong>property facts and nothing else</strong> — it has no concept of an actor's
       <em>output</em>. That is a scope extension, and a council question.
-      <a href="/dbt-smart-data/gap-register#ranked">Gap G6.</a>
+      <a href="/dbt-smart-data/gap-register#ranked">Gap SD6.</a>
     </p>
   </div>
 
@@ -148,7 +148,7 @@ const DOCX = `${BASE}/SMART DATA GUIDEBOOK_Chapter 4 Data Stewardship, Privacy a
   <p>
     PDTF satisfies this structurally (SKOS labels, OWL annotations). But "we <em>can</em> label
     everything" is not "everything <em>is</em> labelled" — ship a SHACL shape requiring it and the
-    soft claim becomes auditable (<a href="/dbt-smart-data/gap-register#ranked">gap G11</a>, a day's work).
+    soft claim becomes auditable (<a href="/dbt-smart-data/gap-register#ranked">gap SD11</a>, a day's work).
   </p>
 
   <h2 id="pdtf">What this means for PDTF</h2>
@@ -188,14 +188,14 @@ const DOCX = `${BASE}/SMART DATA GUIDEBOOK_Chapter 4 Data Stewardship, Privacy a
 
   <ul>
     <li><strong>It frames property as the laggard.</strong> "Low interoperability and fragmented systems, compared to more mature Smart Data sectors such as Open Banking." Flattering elsewhere ("focus on provenance and data governance") but OPDA should decide whether to accept that framing or contest it with evidence — the ontology, the schema and the quality framework are all real, and more than most sectors have.</li>
-    <li><strong>The risk model is use-case-shaped; PDTF's is dataset-shaped.</strong> The chapter insists risk is assessed "at the use case and ecosystem level". PDTF has no <code>UseCase</code> class. Either add the dimension or scope out of use-case risk explicitly — <em>drifting between them is not an option</em> (<a href="/dbt-smart-data/gap-register#ranked">gap G7</a>).</li>
+    <li><strong>The risk model is use-case-shaped; PDTF's is dataset-shaped.</strong> The chapter insists risk is assessed "at the use case and ecosystem level". PDTF has no <code>UseCase</code> class. Either add the dimension or scope out of use-case risk explicitly — <em>drifting between them is not an option</em> (<a href="/dbt-smart-data/gap-register#ranked">gap SD7</a>).</li>
     <li><strong>Watch footnote 9.</strong> The only concrete machine-readable data-documentation standard the chapter cites is <strong>MLCommons Croissant</strong> — an ML dataset-documentation format, not a semantic-web stack. If DBT converges on Croissant as the reference, PDTF's DCAT/DPV/PROV approach becomes an alternative that must be <em>argued for</em> rather than an obvious fit. Worth an early intervention.</li>
     <li><strong>"Trust signals" is undefined.</strong> The chapter demands "standardised metadata and trust signals" without saying what a trust signal <em>is</em> or who defines the vocabulary. That is a standards-shaped hole, and OPDA is well placed to fill it — <em>if someone claims it before a scheme operator invents a bespoke one.</em></li>
   </ul>
 
   <h2 id="related">Related</h2>
   <ul>
-    <li><a href="/dbt-smart-data/gap-register#ranked">Gap register</a> — G3, G4, G6, G7 all originate here</li>
+    <li><a href="/dbt-smart-data/gap-register#ranked">Gap register</a> — SD3, SD4, SD6, SD7 all originate here</li>
     <li><a href="/governance/data-quality">Data quality framework</a> · <a href="/ontology/provenance">Ontology — provenance</a></li>
     <li><a href="/dbt-smart-data/user-lifecycle">Ch.3 — User lifecycle</a> — the consent half of the same fabric</li>
   </ul>

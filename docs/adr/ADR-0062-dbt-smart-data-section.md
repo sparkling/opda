@@ -30,8 +30,24 @@ created when only Chapter 5 had been circulated. All six documents are now in ha
 (Preamble + Chapters 1–5, plus a liability scoping paper and the Which? consumer
 response). A single page nested under `/governance` cannot carry them, and — more
 importantly — nesting it there frames the Guidebook as a *governance reference*, when
-its real significance to this project is **the set of data-modelling obligations it
-creates for PDTF**.
+its real significance to this project is **the set of data-modelling capabilities it
+would require of PDTF**.
+
+**A framing point that governs the whole section: Smart Data and PDTF are two
+different initiatives.** DBT's Smart Data is a cross-sector government programme under
+the DUA Act; PDTF is OPDA's property data standard, with its own lineage and purpose.
+**PDTF is not bound by the Guidebook, does not "conform" to it, and cannot "fail" it.**
+The relationship is *conditional*: if and when property becomes a designated Smart Data
+scheme, PDTF would need to be able to encode certain things the Guidebook assumes.
+
+The first draft of these pages got this wrong — writing "live conformance failure" and
+"PDTF fails them today", as though the Guidebook were a specification OPDA is in breach
+of. That misrepresents OPDA's position and concedes ground that has not been conceded.
+Corrected throughout: gaps are stated as **capability** ("PDTF cannot currently encode
+X"), never as compliance. The one genuine exception is SD8, where OPDA's *own*
+`governance.md` publishes a selective-disclosure capability it does not have — that is a
+real defect, because it is OPDA failing OPDA's own claim, and it would be wrong even if
+the Guidebook did not exist.
 
 That is the crux. The Guidebook repeatedly conflates two different kinds of obligation:
 
@@ -75,7 +91,7 @@ be an analytical device applied per-ask, not a blanket "we're only a standard" d
      `dpv:hasLegalBasis`, but the corpus asserts `opda:lawfulBasis`. A live defect.
   4. **Selective disclosure is unsupported** — the only `bbs` string in the repo is inside a
      base64 PNG. PDTF is `Ed25519Signature2020` Linked Data Proofs only.
-  5. **`trust-framework/docs/governance.md` publishes a false conformance claim** —
+  5. **`trust-framework/docs/governance.md` publishes a capability OPDA does not have** —
      "selective disclosure enforced" — which OPDA cannot honour. It must be withdrawn.
   6. **Assurance levels do not exist.** `opda:assuranceLevel` was **deleted on 2026-07-05
      per ODR-0009** ("zero PDTF schema basis"); `AL1`–`AL4` have never existed at all.
@@ -144,6 +160,19 @@ and add a `dbt-smart-data` entry to `SECTIONS` with `title: 'DBT Smart Data'`.
 9. `/dbt-smart-data/gap-register` — the ranked register of asks PDTF **cannot currently
    encode**, each verified against the committed TTL corpus, with the closing move for
    each.
+
+**Gap numbering — `SD1`–`SD13`, and why not `G1`–`G13`.** The first draft numbered these
+`G1`–`G13` and thereby **collided head-on with [ADR-0005](./ADR-0005-deferred-work-register.md)**,
+whose deferred-work register already uses `G1`–`G25` for entirely unrelated items. "G4"
+would have meant two different things in the same project. Renumbered to `SD*` (Smart
+Data), which is unused.
+
+The deeper point the collision exposed: ADR-0005 is this project's **single canonical
+register of committed work**, and a parallel board is explicitly disallowed. The gap
+register is therefore scoped as **analysis, not deferred work** — findings against an
+external *draft* document, carrying no owner and no triggering condition. An item becomes
+deferred work only when a council or WG adopts it, at which point it **moves to ADR-0005**.
+Both pages now state this reciprocally, so the boundary cannot quietly erode.
 
 **Migration + redirect** — `/governance/smart-data-guidebook` is removed; its Chapter 5
 content moves to `/dbt-smart-data/security-risk-fraud`. `astro.config.mjs` gains

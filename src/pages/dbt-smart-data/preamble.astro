@@ -114,14 +114,14 @@ const DOCX = `${BASE}/SMART DATA GUIDEBOOK_Preamble_Introductory principles and 
 
   <ul>
     <li><strong>Principle 4 and Principle 10 describe PDTF.</strong> A "shared semantic layer" and data that is "machine-readable and accompanied by provenance, quality and purpose metadata" is what an OWL/SKOS/SHACL standard <em>is</em>. The Preamble asks for it twice and assigns it to nobody. <a href="/dbt-smart-data/pdtf-overlap#strengths">This is the largest open landgrab in the document.</a></li>
-    <li><strong>Principle 2 is a live conformance failure.</strong> "Support selective disclosure" — PDTF's Ed25519 proof suite cannot do this. See <a href="/dbt-smart-data/gap-register#ranked">gap G8</a>.</li>
+    <li><strong>Principle 2 would need selective disclosure</strong>, which PDTF's Ed25519 proof suite cannot do. That is a <em>capability</em> gap against a conditional — but it exposes a real defect of our own: OPDA's <code>governance.md</code> already claims "selective disclosure enforced". <strong>That claim is untrue regardless of what DBT does</strong> (<a href="/dbt-smart-data/gap-register#sd8">gap SD8</a>).</li>
     <li><strong>Principles 3, 8 and 9 create no data-modelling obligation at all.</strong> Say so; do not manufacture ontology work from them.</li>
     <li>
       <strong>Principle 5 is a trap — half of it <em>is</em> ours.</strong> Its WCAG / assisted-channel
       half is pure scheme-operator territory. But the same principle says schemes "must support
       assisted and delegated access… with <strong>verifiable delegation and auditable role
       boundaries</strong>" — and a verifiable delegation is a <em>data structure</em>, not a screen.
-      That is <a href="/dbt-smart-data/gap-register#g5">gap G5</a>. Waving Principle 5 away as
+      That is <a href="/dbt-smart-data/gap-register#sd5">gap SD5</a>. Waving Principle 5 away as
       "accessibility" would let a real obligation escape unassigned — <em>exactly</em> the failure
       this section exists to prevent.
     </li>

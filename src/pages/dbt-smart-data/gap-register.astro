@@ -14,17 +14,43 @@ import PageMeta from '@/components/PageMeta.astro';
     The asks in the <a href="/dbt-smart-data/pdtf-overlap">overlap analysis</a> that PDTF
     <strong>cannot currently encode</strong>. Every gap here was verified against the committed
     TTL corpus, not the ontology's layer plan. Ranked by effort to close — noting that the
-    highest-<em>value</em> gap (G4) is mid-difficulty rather than hard, and the
-    highest-<em>leverage</em> one (G3) is genuinely easy.
+    highest-<em>value</em> gap (SD4) is mid-difficulty rather than hard, and the
+    highest-<em>leverage</em> one (SD3) is genuinely easy.
   </p>
 
-  <div class="callout callout--key">
-    <div class="callout__label">This is a draft register, not a ratified work plan</div>
+  <div class="callout callout--warn">
+    <div class="callout__label">Scope note: these are capability gaps, not compliance failures</div>
     <p>
-      These are engineering judgements from a read of the Guidebook drafts against the corpus.
-      Anything that changes the ontology's shape — particularly <strong>G7</strong> (a
-      <code>UseCase</code> class) and <strong>G6</strong> (modelling decisions and outcomes) —
-      is a council question, not a unilateral one.
+      <strong>Smart Data and PDTF are two different initiatives.</strong> DBT's Smart Data is a
+      cross-sector programme under the Data (Use and Access) Act. PDTF is OPDA's property data
+      standard. <strong>PDTF is not bound by the Guidebook, does not "conform" to it, and cannot
+      "fail" it.</strong>
+    </p>
+    <p style="margin-bottom: 0;">
+      The relationship is <em>conditional</em>: <strong>if and when property becomes a designated
+      Smart Data scheme</strong>, PDTF would need to be able to encode the things listed below.
+      Everything here is therefore a statement about <em>capability</em> — "PDTF cannot currently
+      say X" — never about non-compliance. The single exception is <strong>SD8</strong>, which is a
+      defect in OPDA's own published claim and would be wrong even if the Guidebook did not exist.
+    </p>
+  </div>
+
+  <div class="callout callout--key">
+    <div class="callout__label">This is analysis, not the deferred-work register</div>
+    <p>
+      OPDA has <strong>one</strong> canonical register of committed work:
+      <a href="/resource?path=docs/adr/ADR-0005-deferred-work-register.md">ADR-0005</a>, mirrored at
+      <a href="/governance/deferred-work">/governance/deferred-work</a>. <strong>This page is not a
+      second one</strong>, and its <code>SD<em>n</em></code> items are deliberately numbered to avoid
+      colliding with ADR-0005's <code>A</code>–<code>G</code> series.
+    </p>
+    <p style="margin-bottom: 0;">
+      These are engineering judgements from reading external <em>draft</em> guidance against the
+      corpus. They become <strong>deferred work only when a council or WG adopts them</strong> — at
+      which point the item moves to ADR-0005 and this row should link to it. Anything that changes
+      the ontology's shape — particularly <strong>SD7</strong> (a <code>UseCase</code> class),
+      <strong>SD6</strong> (modelling decisions and outcomes) and <strong>SD13</strong> (reinstating
+      an assurance ladder a council removed) — is a council question, not a unilateral one.
     </p>
   </div>
 
@@ -40,94 +66,97 @@ import PageMeta from '@/components/PageMeta.astro';
       </tr>
     </thead>
     <tbody>
-      <tr id="g1">
-        <td><strong>G1</strong></td>
+      <tr id="sd1">
+        <td><strong>SD1</strong></td>
         <td><strong>Retention &amp; disposition terms.</strong> No way to say how long data is kept, or whether it is deleted <em>or anonymised</em> when its purpose ends.</td>
         <td>🟢 Very easy</td>
         <td>Closes Ch.4 Clause C outright. DPV already has the terms (<code>StorageDuration</code>, <code>Erase</code> vs <code>Anonymise</code>); binding them is a shape and a handful of triples.</td>
       </tr>
-      <tr id="g2">
-        <td><strong>G2</strong></td>
+      <tr id="sd2">
+        <td><strong>SD2</strong></td>
         <td><strong>Lifecycle stages with a responsible party.</strong> No vocabulary for collection → processing → sharing → retention → deletion, and no <code>hasResponsibleParty</code> per stage.</td>
         <td>🟢 Easy</td>
         <td>Closes Ch.4 §3.1.4 and Clause I ("responsibility transfers with the data"). DPV's processing terms map 1:1 onto the five stages; PROV supplies the actor attribution.</td>
       </tr>
-      <tr id="g3">
-        <td><strong>G3</strong></td>
+      <tr id="sd3">
+        <td><strong>SD3</strong></td>
         <td><strong>The origin facet: source / derived / insight / profiling.</strong> PDTF cannot say whether a datum was asserted or computed.</td>
         <td>🟢 Easy — <strong>do this first</strong></td>
-        <td><strong>Cheap and unlocks three other gaps.</strong> Per house doctrine it ships as a <em>facet</em> (<code>sh:in</code> over a four-term SKOS scheme), not a subclass tree. It is the precondition for G4 and G6, and it delivers Ch.3's user-facing "verified / self-reported / derived" signal and Ch.4's transparency <em>data level</em>. Add the individual-linkable vs anonymised flag alongside it — that flag drives Ch.4's entire proportionality carve-out.</td>
+        <td><strong>Cheap and unlocks three other gaps.</strong> Per house doctrine it ships as a <em>facet</em> (<code>sh:in</code> over a four-term SKOS scheme), not a subclass tree. It is the precondition for SD4 and SD6, and it delivers Ch.3's user-facing "verified / self-reported / derived" signal and Ch.4's transparency <em>data level</em>. Add the individual-linkable vs anonymised flag alongside it — that flag drives Ch.4's entire proportionality carve-out.</td>
       </tr>
-      <tr id="g4">
-        <td><strong>G4</strong></td>
+      <tr id="sd4">
+        <td><strong>SD4</strong></td>
         <td><strong>Derived-value provenance.</strong> A <em>property pack</em> is an aggregation of claims from many sources. If the pack is wrong but every source claim was right — who is accountable? PDTF models source claims well and derived claims not at all.</td>
         <td>🟡 Moderate — <strong>highest value</strong></td>
-        <td><strong>OPDA's largest modelling gap and its largest liability gap are the same gap.</strong> The Ch.2 scoping paper says liability is hardest "where value is created through aggregation, transformation, or derived outputs" — and names property packs as its first test case. PROV is already adopted and SHACL-enforced on source claims; the work is choosing the granularity of derivation, requiring it on anything flagged "derived" (G3), and not confusing instance lineage with the existing <em>model</em> provenance chain.</td>
+        <td><strong>OPDA's largest modelling gap and its largest liability gap are the same gap.</strong> The Ch.2 scoping paper says liability is hardest "where value is created through aggregation, transformation, or derived outputs" — and names property packs as its first test case. PROV is already adopted and SHACL-enforced on source claims; the work is choosing the granularity of derivation, requiring it on anything flagged "derived" (SD3), and not confusing instance lineage with the existing <em>model</em> provenance chain.</td>
       </tr>
-      <tr id="g5">
-        <td><strong>G5</strong></td>
+      <tr id="sd5">
+        <td><strong>SD5</strong></td>
         <td><strong>Consent, delegation and the trust-signal cluster.</strong> No consent record, no delegated authority, no accreditation status, no audit event. Four missing artefacts that the Guidebook treats as one fabric.</td>
         <td>🟡 Moderate — <strong>largest hole</strong></td>
         <td>Chapter 1's data-holder role is <em>defined</em> by relying on a consent signal it must not re-interpret; PDTF cannot emit that signal. Chapter 3's dashboard requires active/expired/withdrawn permissions with history. Property is the <strong>delegation-heavy sector</strong> — LPA, probate, executors, divorce, co-ownership — and none of it is modelled. Needs ODRL (currently <em>zero</em> occurrences in the corpus). Full structure: <a href="/dbt-smart-data/user-lifecycle#consent-model">the consent-record model Ch.3 implies</a>.</td>
       </tr>
-      <tr id="g6">
-        <td><strong>G6</strong></td>
+      <tr id="sd6">
+        <td><strong>SD6</strong></td>
         <td><strong>AI-decision disclosure.</strong> "Whether automation or AI has been used" — and what it did to the outcome.</td>
         <td>🔴 Moderate-to-hard — genuinely new</td>
         <td>Hard not because the vocabulary is missing (DPV-AI is a near-exact fit and is <em>completely</em> unadopted) but because it requires PDTF to model <strong>decisions and outcomes</strong> — a new domain concept. The ontology today has no notion of an actor's <em>output</em> at all, only of property facts. This is a scope extension, and a council question.</td>
       </tr>
-      <tr id="g7">
-        <td><strong>G7</strong></td>
+      <tr id="sd7">
+        <td><strong>SD7</strong></td>
         <td><strong>Use-case as a first-class object.</strong> The Guidebook insists risk is assessed "at the use case and ecosystem level" — data combination, re-identification, inference, cumulative exposure. PDTF has no <code>UseCase</code> class and no risk-tier vocabulary.</td>
         <td>🔴 Hardest — structural</td>
         <td><strong>The deepest mismatch between the Guidebook's mental model and PDTF's.</strong> PDTF's entire model is property/dataset-centric; risk attaches to <em>data</em>, not to a <em>use of</em> data. Either PDTF adds the dimension (a council, and a real one) or it explicitly scopes itself out and hands use-case risk to scheme operators. Both are defensible. <em>Drifting between them is not.</em></td>
       </tr>
-      <tr id="g8">
-        <td><strong>G8</strong></td>
+      <tr id="sd8">
+        <td><strong>SD8</strong></td>
         <td><strong>Selective disclosure — and a false claim to retract.</strong> The proof suite is <code>Ed25519Signature2020</code> Linked Data Proofs (MUST, per the access specification), which does not support selective disclosure.</td>
         <td>🟡 Moderate — <strong>retraction is urgent</strong></td>
         <td>
-          <strong>A live conformance failure, not a roadmap item.</strong> The Preamble's Principle 2
-          and Chapter 1's Example D both require selective disclosure. Worse than a silent gap:
-          <code>trust-framework/docs/governance.md</code> currently asserts
-          <em>"Data minimization and selective disclosure enforced"</em> — <strong>a published claim
-          OPDA cannot honour.</strong> Two actions, and the first is not optional:
-          <strong>(1) withdraw that sentence</strong>; (2) adopt a BBS or SD-JWT proof suite — a
-          trust-framework decision, not just an ontology one.
+          <strong>The only item here that is a defect in its own right</strong>, independent of
+          anything DBT says. <code>trust-framework/docs/governance.md</code> asserts
+          <em>"Data minimization and selective disclosure enforced"</em> — <strong>a claim OPDA
+          publishes and cannot honour</strong> with an Ed25519-only proof suite. That is OPDA failing
+          <em>OPDA's own</em> stated capability, and it would be wrong whether or not the Smart Data
+          Guidebook existed. Two actions, and the first is not optional:
+          <strong>(1) withdraw that sentence</strong>; (2) decide whether to adopt a BBS or SD-JWT
+          proof suite — a trust-framework decision, not just an ontology one. (The Guidebook's
+          Principle 2 and Example D would also want selective disclosure, but that is a *separate*,
+          conditional matter — see the scope note above.)
         </td>
       </tr>
-      <tr id="g9">
-        <td><strong>G9</strong></td>
+      <tr id="sd9">
+        <td><strong>SD9</strong></td>
         <td><strong>Policy propagation on onward sharing.</strong> "Obligations travel with the data" (Ch.4 Clauses H &amp; I).</td>
         <td>🟡 Moderate</td>
-        <td>Distinct from G5: <em>recording</em> a share and <em>binding the downstream policy</em> are different asks. ODRL's <code>nextPolicy</code>/<code>Duty</code> is exactly the primitive — and is the same reason the "confidentiality survives withdrawal" requirement (Ch.3 §2.3) cannot currently be expressed. A permission-only model cannot say <em>"you may no longer receive this, and you must still keep secret what you already received."</em></td>
+        <td>Distinct from SD5: <em>recording</em> a share and <em>binding the downstream policy</em> are different asks. ODRL's <code>nextPolicy</code>/<code>Duty</code> is exactly the primitive — and is the same reason the "confidentiality survives withdrawal" requirement (Ch.3 §2.3) cannot currently be expressed. A permission-only model cannot say <em>"you may no longer receive this, and you must still keep secret what you already received."</em></td>
       </tr>
-      <tr id="g10">
-        <td><strong>G10</strong></td>
+      <tr id="sd10">
+        <td><strong>SD10</strong></td>
         <td><strong>Data-quality metadata.</strong> A quality <em>framework</em> exists as policy; there is no DQV/ISO-25012 vocabulary attaching accuracy/completeness/currency to a value.</td>
         <td>🟢 Easy</td>
         <td>Converts an existing OPDA strength into a machine-checkable claim. We already over-deliver on the <em>substance</em> (six dimensions vs the Guidebook's vague ask); we just cannot yet <em>say</em> it in RDF.</td>
       </tr>
-      <tr id="g11">
-        <td><strong>G11</strong></td>
+      <tr id="sd11">
+        <td><strong>SD11</strong></td>
         <td><strong>Label coverage as a conformance property.</strong> Ch.4 requires outputs be human-readable <em>and</em> machine-readable.</td>
         <td>🟢 Trivial</td>
         <td>"We <em>can</em> label everything" is not the same as "everything <em>is</em> labelled". Ship a SHACL shape requiring <code>skos:prefLabel</code> on every concept and <code>rdfs:label</code> on every class/property, then assert coverage. <strong>A day's work that converts a soft claim into an auditable one.</strong></td>
       </tr>
-      <tr id="g12">
-        <td><strong>G12</strong></td>
+      <tr id="sd12">
+        <td><strong>SD12</strong></td>
         <td><strong>Dynamic trust signals.</strong> Participant suspension status, dynamic risk score, security incident notification, accreditation status change, credential validity — as <em>machine-readable</em> signals.</td>
         <td>🟡 Moderate — <strong>live deadline</strong></td>
         <td>
           <strong>This is Chapter 5's one and only data-standard ask</strong> (Position 3, "Trust
           should be dynamic") — and Chapter 5 is the chapter with the
           <strong>24 July 2026 review deadline</strong>. PDTF cannot emit a single one of these
-          signals. Overlaps heavily with G5's accreditation-status half, but is listed separately
+          signals. Overlaps heavily with SD5's accreditation-status half, but is listed separately
           because it is the one thing OPDA could commit to <em>in the Chapter 5 response</em>.
         </td>
       </tr>
-      <tr id="g13">
-        <td><strong>G13</strong></td>
+      <tr id="sd13">
+        <td><strong>SD13</strong></td>
         <td><strong>Assurance-level vocabulary.</strong> <code>opda:assuranceLevel</code> was <strong>removed</strong> on 2026-07-05 (ODR-0009 — "zero PDTF schema basis"). There is no assurance ladder in the corpus today.</td>
         <td>🟡 Moderate — needs a council</td>
         <td>
@@ -162,7 +191,7 @@ import PageMeta from '@/components/PageMeta.astro';
     <li>
       <strong>Security controls.</strong> FAPI, ISO 27001, encryption, incident response. These are
       scheme-operator obligations. PDTF's job is at most to <em>encode</em> that a participant
-      holds a given certification — which is part of G5, not a separate security gap.
+      holds a given certification — which is part of SD5, not a separate security gap.
     </li>
     <li>
       <strong>Model provenance ≠ instance provenance.</strong> PDTF's <code>dct:source</code> chain
@@ -179,13 +208,13 @@ import PageMeta from '@/components/PageMeta.astro';
   <h2 id="sequencing">Suggested sequencing</h2>
 
   <ol>
-    <li><strong>G3 first</strong> (origin facet) — cheap, and G4 and G6 both depend on it.</li>
-    <li><strong>G11, G1, G2, G10</strong> — a batch of easy wins that between them convert several soft conformance claims into auditable ones.</li>
-    <li><strong>G4</strong> (derived-value provenance) — the highest-value gap, and the one property is being <em>watched</em> on. Chapter 2's scoping paper has property packs as its named test case, and its stated output is <em>template clauses</em>. There is an unusually clear invitation here to write the property accountability map rather than receive one.</li>
-    <li><strong>G5</strong> (consent/delegation/trust signals) — the largest hole, and the one where the window may close. Every other sector already has an answer (Open Banking's consent dashboard, energy's RECCo Consumer Consent Solution). Property has nothing named. Either OPDA scopes consent into PDTF, or another body will own it for property — <em>and consent is where the scheme power sits.</em></li>
-    <li><strong>G8's retraction is immediate and unconditional</strong> — the false selective-disclosure claim in <code>governance.md</code> should be withdrawn regardless of when the proof-suite work happens. The proof-suite decision itself needs the trust framework, so start that conversation early.</li>
-    <li><strong>G12</strong> — the only gap with a <em>dated</em> deadline (Chapter 5, 24 July). Even if it cannot be closed by then, OPDA's Chapter 5 response should <em>name</em> it rather than let the review pass silently.</li>
-    <li><strong>G6, G7, G13</strong> — council questions. Do not start unilaterally, and in G13's case do not simply reinstate what a council previously removed.</li>
+    <li><strong>SD3 first</strong> (origin facet) — cheap, and SD4 and SD6 both depend on it.</li>
+    <li><strong>SD11, SD1, SD2, SD10</strong> — a batch of easy wins that between them convert several soft conformance claims into auditable ones.</li>
+    <li><strong>SD4</strong> (derived-value provenance) — the highest-value gap, and the one property is being <em>watched</em> on. Chapter 2's scoping paper has property packs as its named test case, and its stated output is <em>template clauses</em>. There is an unusually clear invitation here to write the property accountability map rather than receive one.</li>
+    <li><strong>SD5</strong> (consent/delegation/trust signals) — the largest hole, and the one where the window may close. Every other sector already has an answer (Open Banking's consent dashboard, energy's RECCo Consumer Consent Solution). Property has nothing named. Either OPDA scopes consent into PDTF, or another body will own it for property — <em>and consent is where the scheme power sits.</em></li>
+    <li><strong>SD8's retraction is immediate and unconditional</strong> — the false selective-disclosure claim in <code>governance.md</code> should be withdrawn regardless of when the proof-suite work happens. The proof-suite decision itself needs the trust framework, so start that conversation early.</li>
+    <li><strong>SD12</strong> — the only gap with a <em>dated</em> deadline (Chapter 5, 24 July). Even if it cannot be closed by then, OPDA's Chapter 5 response should <em>name</em> it rather than let the review pass silently.</li>
+    <li><strong>SD6, SD7, SD13</strong> — council questions. Do not start unilaterally, and in SD13's case do not simply reinstate what a council previously removed.</li>
   </ol>
 
   <div class="callout callout--warn">
@@ -201,7 +230,7 @@ import PageMeta from '@/components/PageMeta.astro';
         Conformant data would still fail. Either the shape or the predicate must change.
       </li>
       <li>
-        <strong><code>governance.md</code> claims "selective disclosure enforced"</strong> — see G8.
+        <strong><code>governance.md</code> claims "selective disclosure enforced"</strong> — see SD8.
         We cannot do it with an Ed25519-only proof suite.
       </li>
     </ol>

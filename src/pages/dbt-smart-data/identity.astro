@@ -108,9 +108,9 @@ const DOCX = `${BASE}/SMART DATA GUIDEBOOK_Chapter 1 Digital Identity Roles and 
     <p>
       PDTF has <em>most</em> ingredients — VC types, issuers, a Bitstring Status List. The one it
       lacks is the <strong>assurance type</strong> per credential (<code>opda:assuranceLevel</code>
-      was removed on 2026-07-05 per ODR-0009 — <a href="/dbt-smart-data/gap-register#g13">gap G13</a>).
+      was removed on 2026-07-05 per ODR-0009 — <a href="/dbt-smart-data/gap-register#sd13">gap SD13</a>).
       Close that, and a <strong>PDTF CBOM</strong> becomes the cheapest, highest-visibility
-      demonstration of Chapter 1 conformance available.
+      way to show a property Smart Data scheme could be built on PDTF, should one be established.
     </p>
   </div>
 
@@ -132,8 +132,8 @@ const DOCX = `${BASE}/SMART DATA GUIDEBOOK_Chapter 1 Digital Identity Roles and 
   <p>Full table on <a href="/dbt-smart-data/pdtf-overlap#asks-ch1">the overlap page</a>. The load-bearing findings:</p>
 
   <ul>
-    <li><strong>Power of Attorney, deputyship and executors must be "verifiable delegation credentials".</strong> Chapter 1 names PoA as a mechanism used across finance, energy <em>and property</em>. PDTF has no delegation model at all — and property is the delegation-heavy sector (<a href="/dbt-smart-data/gap-register#ranked">gap G5</a>).</li>
-    <li><strong>Selective disclosure is a live conformance failure.</strong> PDTF's Ed25519 proof suite cannot do it (<a href="/dbt-smart-data/gap-register#ranked">gap G8</a>).</li>
+    <li><strong>Power of Attorney, deputyship and executors must be "verifiable delegation credentials".</strong> Chapter 1 names PoA as a mechanism used across finance, energy <em>and property</em>. PDTF has no delegation model at all — and property is the delegation-heavy sector (<a href="/dbt-smart-data/gap-register#ranked">gap SD5</a>).</li>
+    <li><strong>Selective disclosure is unsupported</strong> — PDTF's Ed25519 proof suite cannot do it. The Guidebook's ask is <em>conditional</em>; <em>our own</em> published claim that we already support it is not (<a href="/dbt-smart-data/gap-register#sd8">gap SD8</a>).</li>
     <li><strong>The consent gap is the strategic exposure.</strong> Stage 3/4 presupposes a machine-readable consent object that data holders must <em>not</em> re-interpret. PDTF cannot emit one. Every other sector has an answer; property has nothing named.</li>
     <li><strong>Guardrail 5 is an unbounded demand.</strong> Read literally it invites a future editor to require property schemes to adopt data-holder/ATP terminology <em>in place of</em> Seller/Buyer/Conveyancer. DBT has promised a cross-reference table; <strong>OPDA should supply the property column rather than have it drafted for us.</strong></li>
     <li><strong>"Schemes should rely on DVS certification, not accredit identity providers themselves"</strong> cuts against PDTF's KYC/KYB issuer onboarding. The reconciliation: PDTF's issuers are not <em>identity</em> providers, they are <strong>issuers of facts about properties</strong> — and DVS has no certification route for "issuer of a fact about a building". Nobody certifies HM Land Registry as an ASP. <em>Say this plainly and early, or risk being told the accreditation function is redundant when it demonstrably is not.</em></li>

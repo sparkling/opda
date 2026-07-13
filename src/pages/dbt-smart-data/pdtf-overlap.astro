@@ -18,14 +18,26 @@ import PageMeta from '@/components/PageMeta.astro';
     creates <strong>no data-modelling obligation at all</strong>, rather than manufacturing one.
   </p>
 
+  <div class="callout callout--warn">
+    <div class="callout__label">Read "asks of PDTF" conditionally, not as compliance</div>
+    <p style="margin-bottom: 0;">
+      <strong>Smart Data and PDTF are two different initiatives.</strong> PDTF is not bound by the
+      Guidebook and cannot "fail" it. Where this page says PDTF ❌ <em>cannot</em> encode something,
+      it means exactly that — a <strong>capability</strong> statement about what the vocabulary can
+      currently say, describing what would be needed <em>if and when</em> property became a
+      designated Smart Data scheme. It is never an assertion of non-compliance.
+    </p>
+  </div>
+
   <div class="callout callout--key">
     <div class="callout__label">How the right-hand column was produced</div>
     <p>
       Every "does PDTF already have this?" verdict below is checked against the
       <strong>committed TTL corpus</strong> in
       <a class="resource-link" href="/library/resources#cat-standards"><code>source/03-standards/ontology/</code></a>,
-      not against the ontology's aspirational layer plan. That distinction matters: four claims
-      that looked true on the plan turned out to be false in the corpus — see
+      not against the ontology's aspirational layer plan. That distinction matters: <strong>six</strong>
+      claims that looked true on the plan turned out to be false in the corpus — including one this
+      page originally got backwards, asserting a capability that a council had <em>deleted</em>. See
       <a href="#reality-check">the reality check</a> below.
     </p>
   </div>
@@ -46,7 +58,7 @@ import PageMeta from '@/components/PageMeta.astro';
   <p>
     The ontology's planned layer stack (OWL2 · SKOS · DCAT · SHACL · DPV/ODRL · PROV/RML ·
     OWL-Time · DPROD) is a <em>plan</em>. What is actually in the committed corpus today is
-    narrower, and any conformance claim must rest on the corpus:
+    narrower, and any capability claim must rest on the corpus:
   </p>
 
   <table>
@@ -87,7 +99,7 @@ import PageMeta from '@/components/PageMeta.astro';
       <tr>
         <td><strong>Selective disclosure</strong></td>
         <td>❌ <strong>Not supported — and we currently claim otherwise</strong></td>
-        <td><code>Ed25519Signature2020</code> Linked Data Proofs (MUST, per the access specification). No BBS or SD-JWT suite. Yet <code>trust-framework/docs/governance.md</code> asserts "selective disclosure enforced" — <strong>a published false conformance claim</strong></td>
+        <td><code>Ed25519Signature2020</code> Linked Data Proofs (MUST, per the access specification). No BBS or SD-JWT suite. Yet <code>trust-framework/docs/governance.md</code> asserts "selective disclosure enforced" — <strong>a capability OPDA publicly claims and does not have</strong></td>
       </tr>
       <tr>
         <td><strong>Assurance levels</strong></td>
@@ -116,7 +128,7 @@ import PageMeta from '@/components/PageMeta.astro';
         <strong>We publish a selective-disclosure claim we cannot honour.</strong>
         <code>governance.md</code> says "Data minimization and selective disclosure enforced". With
         an Ed25519-only proof suite, selective disclosure is not possible. <strong>That sentence
-        should be withdrawn</strong> — see <a href="/dbt-smart-data/gap-register#g8">gap G8</a>.
+        should be withdrawn</strong> — see <a href="/dbt-smart-data/gap-register#sd8">gap SD8</a>.
       </li>
     </ol>
   </div>
@@ -242,7 +254,7 @@ import PageMeta from '@/components/PageMeta.astro';
         <td><strong>Selective disclosure</strong> / minimisation (P2, Example D)</td>
         <td>Data standard</td>
         <td>A credential proof suite supporting selective disclosure</td>
-        <td>❌ <strong>Fails today</strong> — <code>Ed25519Signature2020</code> Linked Data Proofs only. A live conformance failure, not a roadmap item — <em>and one our own governance doc wrongly claims we meet.</em></td>
+        <td>❌ <strong>Cannot</strong> — <code>Ed25519Signature2020</code> Linked Data Proofs only. A capability gap against the Guidebook, <em>and</em> a real defect in its own right: our own governance doc wrongly claims we support it.</td>
       </tr>
       <tr>
         <td>Credential revocation / suspension at point of reliance</td>
@@ -260,7 +272,7 @@ import PageMeta from '@/components/PageMeta.astro';
         <td>Credential Bill of Materials — per journey step: format, issuer, holder, verifier, <em>assurance type</em>, status endpoints</td>
         <td>Data standard</td>
         <td>A manifest over PDTF's own credential set</td>
-        <td>❌ <strong>Most</strong> ingredients exist (VC types, issuers, Bitstring Status List). <strong>Assurance type does not</strong> — <a href="#assurance">it was removed</a>. A CBOM is still the cheapest high-visibility conformance demonstration available, but it needs G13 first.</td>
+        <td>❌ <strong>Most</strong> ingredients exist (VC types, issuers, Bitstring Status List). <strong>Assurance type does not</strong> — <a href="#assurance">it was removed</a>. A CBOM is still the cheapest high-visibility conformance demonstration available, but it needs SD13 first.</td>
       </tr>
     </tbody>
   </table>
@@ -460,7 +472,7 @@ import PageMeta from '@/components/PageMeta.astro';
         <td><strong>Trust should be dynamic</strong> — machine-readable suspension status, risk scoring, incident notifications, credential validity</td>
         <td><strong>Both</strong></td>
         <td>The <em>signals</em> are data: participant status, risk score, incident notice, credential validity</td>
-        <td>❌ <strong>This is Chapter 5's one real data-standard ask</strong>, and PDTF cannot emit any of these signals — <a href="/dbt-smart-data/gap-register#g12">gap G12</a>. Note this is the chapter with the <strong>live 24 July deadline</strong>.</td>
+        <td>❌ <strong>This is Chapter 5's one real data-standard ask</strong>, and PDTF cannot emit any of these signals — <a href="/dbt-smart-data/gap-register#sd12">gap SD12</a>. Note this is the chapter with the <strong>live 24 July deadline</strong>.</td>
       </tr>
     </tbody>
   </table>
@@ -579,7 +591,7 @@ import PageMeta from '@/components/PageMeta.astro';
   <p>
     The opportunity is real but <strong>unbuilt</strong>: no other sector in the Guidebook has an
     evidential-provenance ladder, and PDTF's mandatory claim provenance is the natural substrate for
-    one. But it must be proposed as <em>future work</em> (<a href="/dbt-smart-data/gap-register#g13">gap G13</a>),
+    one. But it must be proposed as <em>future work</em> (<a href="/dbt-smart-data/gap-register#sd13">gap SD13</a>),
     never presented as something OPDA already ships.
   </p>
 
