@@ -37,7 +37,7 @@ npx agentdb@latest benchmark
 ### Enable Optimizations
 
 ```typescript
-import { createAgentDBAdapter } from '@sparkleideas/agentic-flow/reasoningbank';
+import { createAgentDBAdapter } from 'agentic-flow/reasoningbank';
 
 // Optimized configuration
 const adapter = await createAgentDBAdapter({

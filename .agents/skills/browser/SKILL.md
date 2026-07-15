@@ -180,19 +180,19 @@ All browser operations are available as MCP tools with `browser/` prefix:
 ### Memory Integration
 ```bash
 # Store successful patterns
-npx @sparkleideas/ruflo memory store --namespace browser-patterns --key "login-flow" --value "snapshot->fill->click->wait"
+npx ruflo memory store --namespace browser-patterns --key "login-flow" --value "snapshot->fill->click->wait"
 
 # Retrieve before similar task
-npx @sparkleideas/ruflo memory search --query "login automation"
+npx ruflo memory search --query "login automation"
 ```
 
 ### Hooks
 ```bash
 # Pre-browse hook (get context)
-npx @sparkleideas/ruflo hooks pre-edit --file "browser-task.ts"
+npx ruflo hooks pre-edit --file "browser-task.ts"
 
 # Post-browse hook (record success)
-npx @sparkleideas/ruflo hooks post-task --task-id "browse-1" --success true
+npx ruflo hooks post-task --task-id "browse-1" --success true
 ```
 
 ## Tips

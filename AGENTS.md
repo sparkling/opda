@@ -1,35 +1,132 @@
-# Codex Configuration
+# opda
 
-## Behavioral Rules (Always Enforced)
+> Multi-agent orchestration project (Claude Flow / ruflo).
+>
+> **This file (`AGENTS.md`) is the single CANONICAL, shared instruction source for
+> BOTH OpenAI Codex and Claude Code.** Codex reads it directly; Claude Code imports
+> it via `@AGENTS.md` at the top of `CLAUDE.md`. Edit SHARED instructions HERE.
+> Claude-Code-only guidance lives in `CLAUDE.md` (below its `@AGENTS.md` line).
+
+## Project
+
+opda is a new linked-data project for a new data standard for property data, backed by
+government, finance, banking, estate agents, surveyors, etc. They already have a JSON
+standard; the first step is to create the linked-data model for these standards. First
+comes a plan, roadmap, and presentations for the approach. This also includes setting up
+DCAM-based data governance, and engaging with stakeholders in activities such as semantic
+modelling: glossaries, taxonomies, dictionaries, data models, etc.
+
+There is a lot of information involved. Follow all links and index them. Transcribe YouTube
+videos and recordings if not already done. Find all documentation in the GitHub repos. Scan
+the entire company website. Index links to several levels. Download all resources to the
+project folder and organise it. Maintain a project README.
+
+## Rules
 
 - Do what has been asked; nothing more, nothing less
-- NEVER create files unless they're absolutely necessary for achieving your goal
-- ALWAYS prefer editing an existing file to creating a new one
-- NEVER proactively create documentation files (*.md) or README files unless explicitly requested
-- NEVER save working files, text/mds, or tests to the root folder
-- Never continuously check status after spawning a swarm — wait for results
+- NEVER create files unless absolutely necessary; prefer editing existing files
+- NEVER create documentation files unless explicitly requested
+- NEVER save working files or tests to root; use `/src`, `/tests`, `/docs`, `/config`, `/scripts`
 - ALWAYS read a file before editing it
-- NEVER commit secrets, credentials, or .env files
-- NEVER add a `Co-Authored-By` trailer to user commits unless this project's `.Codex/settings.json` has `attribution.commit` set (#2078). The Codex Bash tool may suggest one in its default commit-message template — ignore it. `Co-Authored-By` is semantic authorship attribution under git/GitHub convention; the tool is the facilitator, not a co-author.
-
-## File Organization
-
-- NEVER save to root folder — use the directories below
-- Use `/src` for source code files
-- Use `/tests` for test files
-- Use `/docs` for documentation and markdown files
-- Use `/config` for configuration files
-- Use `/scripts` for utility scripts
-- Use `/examples` for example code
-
-## Project Architecture
-
-- Follow Domain-Driven Design with bounded contexts
+- NEVER commit secrets, credentials, or `.env` files
+- Do NOT add a `Co-Authored-By` trailer to user commits unless this project explicitly opts in
 - Keep files under 500 lines
-- Use typed interfaces for all public APIs
-- Prefer TDD London School (mock-first) for new code
-- Use event sourcing for state changes
-- Ensure input validation at system boundaries
+- Validate input at system boundaries
+
+## Swarm & Coordination
+
+| Setting | Value | Purpose |
+|---------|-------|---------|
+| Topology | `hierarchical` | Queen-led coordination (anti-drift) |
+| Max Agents | 8 | Optimal team size |
+| Strategy | `specialized` | Clear role boundaries |
+| Consensus | `raft` | Leader-based consistency |
+
+```bash
+npx @claude-flow/cli@latest swarm init --topology hierarchical --max-agents 8 --strategy specialized
+```
+
+### When to use a swarm
+- **YES**: 3+ files, new features, cross-module refactoring, API changes with tests, security-related changes, performance optimization
+- **NO**: single-file edits, 1–2 line fixes, documentation updates, configuration changes, questions
+
+### Agent types
+
+| Type | Role |
+|------|------|
+| `researcher` | Requirements analysis, understanding scope |
+| `architect` / `system-architect` | System design, planning structure |
+| `coder` / `backend-dev` | Implementation |
+| `tester` | Test creation, quality assurance |
+| `reviewer` | Code review, security and quality |
+
+Also: `security-architect`, `security-auditor`, `performance-engineer`, `perf-analyzer`,
+`hierarchical-coordinator`, `mesh-coordinator`, `adaptive-coordinator`, `pr-manager`,
+`code-review-swarm`, `issue-tracker`, `release-manager`. Any string works as a custom agent type.
+
+## MCP Integration
+
+Use MCP tools for coordination, then keep working. Coordination calls return instantly.
+
+| Category | Key tools |
+|----------|-----------|
+| **Swarm** | `swarm_init`, `swarm_status`, `swarm_health` |
+| **Agents** | `agent_spawn`, `agent_list`, `agent_status` |
+| **Memory** | `memory_store`, `memory_search`, `memory_search_unified` |
+| **Hooks** | `hooks_route`, `hooks_post-task`, `hooks_worker-dispatch` |
+| **Security** | `aidefence_scan`, `aidefence_is_safe`, `aidefence_has_pii` |
+| **Hive-Mind** | `hive-mind_init`, `hive-mind_consensus`, `hive-mind_spawn` |
+
+## Memory & Learning
+
+### Before any task
+```bash
+npx @claude-flow/cli@latest memory search --query "[task keywords]" --namespace patterns
+npx @claude-flow/cli@latest hooks route --task "[task description]"
+```
+
+### After success
+```bash
+npx @claude-flow/cli@latest memory store --namespace patterns --key "[name]" --value "[what worked]"
+npx @claude-flow/cli@latest hooks post-task --task-id "[id]" --success true --store-results true
+```
+
+### Background workers
+
+| Worker | When |
+|--------|------|
+| `audit` | After security changes |
+| `optimize` | After performance work |
+| `testgaps` | After adding features |
+| `map` | Every 5+ file changes |
+| `document` | After API changes |
+
+```bash
+npx @claude-flow/cli@latest hooks worker dispatch --trigger audit
+```
+
+## Code Standards
+
+- File organization: never save to root; use `/src`, `/tests`, `/docs`, `/config`, `/scripts`
+- Files under 500 lines
+- No hardcoded secrets or API keys
+- Input validation at boundaries; typed interfaces for public APIs
+- TDD (London School / mock-first) preferred
+
+### Commit messages
+```
+<type>(<scope>): <description>
+
+[optional body]
+```
+Types: `feat`, `fix`, `docs`, `style`, `refactor`, `perf`, `test`, `chore`.
+(Do NOT append a `Co-Authored-By` trailer to user commits unless the project opts in.)
+
+## Security
+
+- NEVER commit secrets, credentials, or `.env` files; NEVER hardcode API keys
+- Always validate user input; use parameterized queries for SQL; sanitize output (XSS)
+- Path security: validate all file paths, prevent directory traversal (`../`), use absolute paths internally
 
 ## Build & Test
 
@@ -65,114 +162,12 @@ Each JS target wraps a matching npm script (e.g. `npm run serve:data`, `npm run 
 4. Run build — verify success
 5. Commit
 
-## Security Rules
+## Codex platform notes
 
-- NEVER hardcode API keys, secrets, or credentials in source files
-- NEVER commit .env files or any file containing secrets
-- Always validate user input at system boundaries
-- Always sanitize file paths to prevent directory traversal
-- Run `ruflo security scan` after security-related changes
+- **Skill syntax**: invoke skills with `$skill-name`. (Claude Code uses `/skill-name`; see `CLAUDE.md`.)
+- **Execution model**: `claude-flow` = LEDGER (coordinates memory, routing, swarm state); **Codex = EXECUTOR** (writes code, runs tests, creates files). Coordination commands return instantly, so DON'T STOP after them; continue immediately with the next implementation step.
+- Codex config lives in `.agents/config.toml` (project) and `.codex/config.toml` (local overrides, gitignored).
 
-## Concurrency
-
-- Batch ALL independent operations into a single message
-- Spawn ALL agents in ONE message using the Agent tool with `run_in_background: true`
-- Batch ALL independent file reads/writes/edits in ONE message
-- Batch ALL independent Bash commands in ONE message
-
-## Task Complexity
-
-- Single file edit or fix: work directly, no agents needed
-- 3+ files, new feature, or cross-module refactoring: spawn agents
-- When in doubt, start direct — escalate to agents if scope grows
-
-## Agent Orchestration
-
-| Situation | Use | Never |
-|---|---|---|
-| Multi-file / fan-out work | `Agent` tool, `run_in_background:true`, all spawns in ONE message | Poll status; use CLI as substitute |
-| Reflexive coordination at task start | (skip) | `swarm_init` unless user asked or persistent state needed |
-| User explicitly asked for a Codex-flow swarm | `swarm_init` (CLI auto-reuses matching) | `--new` flag unless parallel swarm genuinely needed |
-
-- DO NOT call `swarm_init` reflexively at task start (ADR-0098 — applies to flat-coordination swarms only).
-- After spawning agents: STOP and wait for results. Do not poll.
-
-## Tool Selection Rules
-
-When you need a capability, choose in this order. Stop at the first match.
-
-| You need to... | Use | Prefer over |
-|---|---|---|
-| Coordinate parallel sub-tasks | `Agent` tool with `run_in_background: true` | `swarm_init` for one-shot work |
-| Persist patterns/decisions across sessions | `mcp__ruflo__memory_store` | Writing to MEMORY.md from in-session work |
-| Recall past decisions/patterns | `mcp__ruflo__memory_search` | Asking the user to re-explain |
-
-When the active toolset doesn't cover a capability:
-1. Run `ruflo skill list` — a skill may already provide it
-2. Run `ruflo plugins list` — an installable plugin may provide it
-3. Only after both come up empty, build the capability inline or ask the user
-
-Sub-agents spawned via `Agent` typically inherit the parent's `mcp__ruflo__*` toolset. For long-running sub-tasks where MCP visibility is uncertain, run a discovery probe before spawning rather than pre-fetching results.
-
-## Plugin Installation Rule
-
-NEVER install plugins without explicit user confirmation. Plugins persist past the session.
-
-Install only when ALL hold:
-- User asked for a capability not covered by `ruflo skill list` or active MCP tools
-- User confirmed the install
-
-Discovery: `ruflo plugins --help`.
-Install: `/plugin install ruflo-<name>@ruflo` (after `/plugin marketplace add sparkling/ruflo`).
-Tell user to run `/reload-plugins` if commands don't appear post-install.
-
-## MCP Tools (Deferred)
-
-The `ruflo` MCP server is registered. Tools are deferred — call ToolSearch
-to load a tool's schema before invoking it.
-
-Quick discovery:
-- `ToolSearch("ruflo memory")` — store, search, retrieve patterns
-- `ToolSearch("ruflo agent")` — spawn, list, manage agents
-- `ToolSearch("ruflo swarm")` — multi-agent coordination
-- `ToolSearch("ruflo hooks")` — lifecycle hooks and learning
-
-Do NOT call `mcp__ruflo__agentdb_session-start` or
-`mcp__ruflo__agentdb_session-end` — hooks manage session lifecycle
-automatically.
-
-## Hook Signals
-
-Hooks inject signals into the conversation at three points:
-
-- **Before task**: `[INTELLIGENCE] Relevant patterns...` — incorporate when relevant
-- **During task**: `[INFO] Routing task...` — consider the recommended agent type
-- **After task**: hooks store outcomes automatically; do not call session-start/end
-
-If `[INFO] Router not available` appears, proceed normally without routing.
-
-## Reference Pointers (when you need more than this file says)
-
-- Tool catalog: `ToolSearch` with a relevant query
-- Skill catalog: `ruflo skill list`
-- Plugin catalog: `ruflo plugins list`
-- Agent type catalog: `ruflo agent list`
-- CLI diagnostics: `ruflo doctor --fix`
-- Architecture decisions for this project: `docs/adr/`
-- Cross-session memory: `~/.Codex/projects/<project>/memory/MEMORY.md`
-- Full feature reference: https://github.com/ruvnet/ruflo/blob/main/docs/USERGUIDE.md
-
-## Support
-
-One-time bootstrap (user runs once, AI never): `Codex mcp add ruflo -- npx -y @sparkleideas/ruflo@latest`
-
+## Links
 - Documentation: https://github.com/ruvnet/ruflo
 - Issues: https://github.com/ruvnet/ruflo/issues
-
-## Imported Claude Cowork project instructions
-
-I am creating a new linked data project for a new data standard for property data, backed by government, finance, banking, estate agents, surveyors, etc. They already have a JSON standard, first step will be to create the linked data model for these standards. First we need to create a plan, roadmap, and presentations for the approach. This also includes setting up DCAM based data governance, and engaging with stakeholders in activities such as semantic modelling: glossaries, taxonomies, dictionaries, data models, etc.
-
-There is a lot of information here. Follow all links and index them. Transcribe youtube videos and recordings, if not already done. Find all documentation in the github repos. Scan the entire company website. Index links to several levels. 
-
-Download all resources to the folder and organise it. Create a project README.

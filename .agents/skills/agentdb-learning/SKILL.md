@@ -68,7 +68,7 @@ npx agentdb@latest plugin-info my-agent
 ## Quick Start with API
 
 ```typescript
-import { createAgentDBAdapter } from '@sparkleideas/agentic-flow/reasoningbank';
+import { createAgentDBAdapter } from 'agentic-flow/reasoningbank';
 
 // Initialize with learning enabled
 const adapter = await createAgentDBAdapter({

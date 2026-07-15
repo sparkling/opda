@@ -13,10 +13,10 @@ Master advanced swarm patterns for distributed research, development, and testin
 ### Prerequisites
 ```bash
 # Ensure Codex Flow is installed
-npm install -g @sparkleideas/ruflo@latest
+npm install -g ruflo@latest
 
 # Add MCP server (if using MCP tools)
-Codex mcp add Codex-flow npx @sparkleideas/ruflo@latest mcp start
+Codex mcp add Codex-flow npx ruflo@latest mcp start
 ```
 
 ### Basic Pattern

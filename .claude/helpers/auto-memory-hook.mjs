@@ -29,15 +29,15 @@ if (!existsSync(DATA_DIR)) mkdirSync(DATA_DIR, { recursive: true });
 
 async function loadMemoryPackage() {
   // Strategy 1: Use createRequire for CJS-style resolution (handles nested node_modules
-  // when installed as a transitive dependency via npx @sparkleideas/ruflo / npx claude-flow)
+  // when installed as a transitive dependency via npx ruflo / npx claude-flow)
   try {
     const { createRequire } = await import('module');
     const require = createRequire(join(PROJECT_ROOT, 'package.json'));
-    return require('@sparkleideas/memory');
+    return require('@claude-flow/memory');
   } catch { /* T4: optional module probe — fall through to next strategy */ }
 
-  // Strategy 2: ESM import (works when @sparkleideas/memory is a direct dependency)
-  try { return await import('@sparkleideas/memory'); } catch { /* T4: optional module probe — fall through to next strategy */ }
+  // Strategy 2: ESM import (works when @claude-flow/memory is a direct dependency)
+  try { return await import('@claude-flow/memory'); } catch { /* T4: optional module probe — fall through to next strategy */ }
 
   // Strategy 3: Walk up from PROJECT_ROOT looking for the package in any node_modules
   let searchDir = PROJECT_ROOT;

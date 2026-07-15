@@ -36,7 +36,7 @@ gh issue create \
   --label "enhancement,swarm-ready"
 
 # Initialize swarm for issue
-npx @sparkleideas/ruflo@latest hooks pre-task --description "Feature implementation"
+npx ruflo@latest hooks pre-task --description "Feature implementation"
 ```
 
 ### Project Board Quick Setup

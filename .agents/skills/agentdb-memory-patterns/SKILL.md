@@ -65,7 +65,7 @@ npx agentdb@latest create-plugin -t decision-transformer -n my-agent
 ## Quick Start with API
 
 ```typescript
-import { createAgentDBAdapter } from '@sparkleideas/agentic-flow/reasoningbank';
+import { createAgentDBAdapter } from 'agentic-flow/reasoningbank';
 
 // Initialize with default configuration
 const adapter = await createAgentDBAdapter({
@@ -229,7 +229,7 @@ npx agentdb@latest benchmark
 ## Integration with ReasoningBank
 
 ```typescript
-import { createAgentDBAdapter, migrateToAgentDB } from '@sparkleideas/agentic-flow/reasoningbank';
+import { createAgentDBAdapter, migrateToAgentDB } from 'agentic-flow/reasoningbank';
 
 // Migrate from legacy ReasoningBank
 const result = await migrateToAgentDB(

@@ -55,7 +55,7 @@ gh run view <run-id> --json jobs,conclusion | \
 
 ```bash
 # Usage example
-npx @sparkleideas/ruflo@latest github gh-coordinator \
+npx ruflo@latest github gh-coordinator \
   "Coordinate multi-repo release across 5 repositories"
 ```
 
@@ -81,7 +81,7 @@ gh pr create --title "Feature: New capability" \
 
 ```bash
 # Create coordinated issue workflow
-npx @sparkleideas/ruflo@latest github issue-tracker \
+npx ruflo@latest github issue-tracker \
   "Manage sprint issues with automated tracking"
 ```
 
@@ -93,7 +93,7 @@ npx @sparkleideas/ruflo@latest github issue-tracker \
 
 ```bash
 # Automated release management
-npx @sparkleideas/ruflo@latest github release-manager \
+npx ruflo@latest github release-manager \
   "Create v2.0.0 release with changelog and deployment"
 ```
 
@@ -105,7 +105,7 @@ npx @sparkleideas/ruflo@latest github release-manager \
 
 ```bash
 # Optimize repository structure
-npx @sparkleideas/ruflo@latest github repo-architect \
+npx ruflo@latest github repo-architect \
   "Restructure monorepo with optimal organization"
 ```
 
@@ -131,7 +131,7 @@ gh pr view 123 --json files | \
 
 ```bash
 # Orchestrate CI/CD pipeline
-npx @sparkleideas/ruflo@latest github ci-orchestrator \
+npx ruflo@latest github ci-orchestrator \
   "Setup parallel test execution with smart caching"
 ```
 
@@ -493,7 +493,7 @@ runs:
   main: 'dist/index.js'
 
 // index.js
-const { SwarmAction } = require('@sparkleideas/ruv-swarm');
+const { SwarmAction } = require('ruv-swarm');
 
 async function run() {
   const swarm = new SwarmAction({
@@ -541,17 +541,17 @@ mcp__ruflo__task_orchestrate {
 #### GitHub Hooks Integration
 ```bash
 # Pre-task: Setup GitHub context
-npx @sparkleideas/ruflo@latest hooks pre-task \
+npx ruflo@latest hooks pre-task \
   --description "PR review workflow" \
   --context "pr-123"
 
 # During task: Track progress
-npx @sparkleideas/ruflo@latest hooks notify \
+npx ruflo@latest hooks notify \
   --message "Completed security scan" \
   --type "github-action"
 
 # Post-task: Export results
-npx @sparkleideas/ruflo@latest hooks post-task \
+npx ruflo@latest hooks post-task \
   --task-id "pr-review-123" \
   --export-github-summary
 ```
@@ -899,7 +899,7 @@ jobs:
 #### Example 3: Multi-Repo Synchronization
 ```bash
 # Synchronize multiple repositories
-npx @sparkleideas/ruflo@latest github sync-coordinator \
+npx ruflo@latest github sync-coordinator \
   "Synchronize version updates across:
    - github.com/org/repo-a
    - github.com/org/repo-b
@@ -987,7 +987,7 @@ npx ruv-swarm actions analytics [options]
 - [ ] GitHub CLI (`gh`) installed and authenticated
 - [ ] Git configured with user credentials
 - [ ] Node.js v16+ installed
-- [ ] `@sparkleideas/ruflo@latest` package available
+- [ ] `ruflo@latest` package available
 - [ ] Repository has `.github/workflows` directory
 - [ ] GitHub Actions enabled on repository
 - [ ] Necessary secrets configured
@@ -999,7 +999,7 @@ npx ruv-swarm actions analytics [options]
 # setup-github-automation.sh
 
 # Install dependencies
-npm install -g @sparkleideas/ruflo@latest
+npm install -g ruflo@latest
 
 # Verify GitHub CLI
 gh auth status || gh auth login

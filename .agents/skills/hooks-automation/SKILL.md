@@ -23,7 +23,7 @@ This skill provides a comprehensive hook system that automatically manages devel
 ## Prerequisites
 
 **Required:**
-- Codex Flow CLI installed (`npm install -g @sparkleideas/ruflo@latest`)
+- Codex Flow CLI installed (`npm install -g ruflo@latest`)
 - Codex with hooks enabled
 - `.Codex/settings.json` with hook configurations
 

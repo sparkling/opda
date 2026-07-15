@@ -18,7 +18,7 @@ Implements ReasoningBank's adaptive learning system for AI agents to learn from 
 ## Quick Start
 
 ```typescript
-import { ReasoningBank } from '@sparkleideas/agentic-flow/reasoningbank';
+import { ReasoningBank } from 'agentic-flow/reasoningbank';
 
 // Initialize ReasoningBank
 const rb = new ReasoningBank({

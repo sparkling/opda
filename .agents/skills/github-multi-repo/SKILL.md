@@ -500,7 +500,7 @@ dependencies:
 
 ### 1. Webhook-Based Coordination
 ```javascript
-const { MultiRepoSwarm } = require('@sparkleideas/ruv-swarm');
+const { MultiRepoSwarm } = require('ruv-swarm');
 
 const swarm = new MultiRepoSwarm({
   webhook: {

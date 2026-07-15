@@ -544,10 +544,10 @@ Flow Nexus swarms integrate seamlessly with Codex Flow hooks:
 
 ```bash
 # Pre-task coordination setup
-npx @sparkleideas/ruflo@latest hooks pre-task --description "Initialize swarm"
+npx ruflo@latest hooks pre-task --description "Initialize swarm"
 
 # Post-task metrics export
-npx @sparkleideas/ruflo@latest hooks post-task --task-id "swarm-execution"
+npx ruflo@latest hooks post-task --task-id "swarm-execution"
 ```
 
 ## Common Use Cases

@@ -75,7 +75,7 @@ npx agentdb@latest stats ./vectors.db
 ## Quick Start with API
 
 ```typescript
-import { createAgentDBAdapter, computeEmbedding } from '@sparkleideas/agentic-flow/reasoningbank';
+import { createAgentDBAdapter, computeEmbedding } from 'agentic-flow/reasoningbank';
 
 // Initialize with vector search optimizations
 const adapter = await createAgentDBAdapter({

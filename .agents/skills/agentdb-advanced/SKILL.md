@@ -36,7 +36,7 @@ QUIC (Quick UDP Internet Connections) enables sub-millisecond latency synchroniz
 ### Enable QUIC Sync
 
 ```typescript
-import { createAgentDBAdapter } from '@sparkleideas/agentic-flow/reasoningbank';
+import { createAgentDBAdapter } from 'agentic-flow/reasoningbank';
 
 // Initialize with QUIC synchronization
 const adapter = await createAgentDBAdapter({

@@ -38,7 +38,7 @@ node scripts/audit-tool-descriptions.mjs                       # fails if any ba
 node scripts/audit-tool-descriptions.mjs --update-baseline     # lock the new floor after a fix lands
 
 # Behavioral smokes (each builds what it needs; safe to run individually)
-node plugins/ruflo-core/scripts/test-hooks.mjs "node $PWD/v3/@sparkleideas/ruflo/bin/cli.js"
+node plugins/ruflo-core/scripts/test-hooks.mjs "node $PWD/v3/ruflo/bin/cli.js"
 node plugins/ruflo-core/scripts/test-mcp-protocol.mjs
 node plugins/ruflo-core/scripts/test-memory-import.mjs
 node plugins/ruflo-core/scripts/test-mcp-roundtrips.mjs        # #1889 paired-tool round-trip
@@ -62,7 +62,7 @@ node plugins/ruflo-core/scripts/witness/history.mjs --history verification/macos
 
 ## Prerequisites
 
-- Ruflo installed (`npx @sparkleideas/ruflo@alpha`)
+- Ruflo installed (`npx ruflo@alpha`)
 - Git repository (for rollback features)
 - Node.js 18+ (for dashboard features)
 - `@noble/ed25519` (for the witness verifier — a single runtime dep, `npm i @noble/ed25519`)
@@ -71,16 +71,16 @@ node plugins/ruflo-core/scripts/witness/history.mjs --history verification/macos
 
 ```bash
 # View current truth scores
-npx @sparkleideas/ruflo@alpha truth
+npx ruflo@alpha truth
 
 # Run verification check
-npx @sparkleideas/ruflo@alpha verify check
+npx ruflo@alpha verify check
 
 # Verify specific file with custom threshold
-npx @sparkleideas/ruflo@alpha verify check --file src/app.js --threshold 0.98
+npx ruflo@alpha verify check --file src/app.js --threshold 0.98
 
 # Rollback last failed verification
-npx @sparkleideas/ruflo@alpha verify rollback --last-good
+npx ruflo@alpha verify rollback --last-good
 ```
 
 ---
@@ -96,40 +96,40 @@ Display comprehensive quality and reliability metrics for your codebase and agen
 **Basic Usage:**
 ```bash
 # View current truth scores (default: table format)
-npx @sparkleideas/ruflo@alpha truth
+npx ruflo@alpha truth
 
 # View scores for specific time period
-npx @sparkleideas/ruflo@alpha truth --period 7d
+npx ruflo@alpha truth --period 7d
 
 # View scores for specific agent
-npx @sparkleideas/ruflo@alpha truth --agent coder --period 24h
+npx ruflo@alpha truth --agent coder --period 24h
 
 # Find files/tasks below threshold
-npx @sparkleideas/ruflo@alpha truth --threshold 0.8
+npx ruflo@alpha truth --threshold 0.8
 ```
 
 **Output Formats:**
 ```bash
 # Table format (default)
-npx @sparkleideas/ruflo@alpha truth --format table
+npx ruflo@alpha truth --format table
 
 # JSON for programmatic access
-npx @sparkleideas/ruflo@alpha truth --format json
+npx ruflo@alpha truth --format json
 
 # CSV for spreadsheet analysis
-npx @sparkleideas/ruflo@alpha truth --format csv
+npx ruflo@alpha truth --format csv
 
 # HTML report with visualizations
-npx @sparkleideas/ruflo@alpha truth --format html --export report.html
+npx ruflo@alpha truth --format html --export report.html
 ```
 
 **Real-time Monitoring:**
 ```bash
 # Watch mode with live updates
-npx @sparkleideas/ruflo@alpha truth --watch
+npx ruflo@alpha truth --watch
 
 # Export metrics automatically
-npx @sparkleideas/ruflo@alpha truth --export .Codex-flow/metrics/truth-$(date +%Y%m%d).json
+npx ruflo@alpha truth --export .Codex-flow/metrics/truth-$(date +%Y%m%d).json
 ```
 
 #### Truth Score Dashboard
@@ -185,40 +185,40 @@ Execute comprehensive verification checks on code, tasks, or agent outputs.
 **File Verification:**
 ```bash
 # Verify single file
-npx @sparkleideas/ruflo@alpha verify check --file src/app.js
+npx ruflo@alpha verify check --file src/app.js
 
 # Verify directory recursively
-npx @sparkleideas/ruflo@alpha verify check --directory src/
+npx ruflo@alpha verify check --directory src/
 
 # Verify with auto-fix enabled
-npx @sparkleideas/ruflo@alpha verify check --file src/utils.js --auto-fix
+npx ruflo@alpha verify check --file src/utils.js --auto-fix
 
 # Verify current working directory
-npx @sparkleideas/ruflo@alpha verify check
+npx ruflo@alpha verify check
 ```
 
 **Task Verification:**
 ```bash
 # Verify specific task output
-npx @sparkleideas/ruflo@alpha verify check --task task-123
+npx ruflo@alpha verify check --task task-123
 
 # Verify with custom threshold
-npx @sparkleideas/ruflo@alpha verify check --task task-456 --threshold 0.99
+npx ruflo@alpha verify check --task task-456 --threshold 0.99
 
 # Verbose output for debugging
-npx @sparkleideas/ruflo@alpha verify check --task task-789 --verbose
+npx ruflo@alpha verify check --task task-789 --verbose
 ```
 
 **Batch Verification:**
 ```bash
 # Verify multiple files in parallel
-npx @sparkleideas/ruflo@alpha verify batch --files "*.js" --parallel
+npx ruflo@alpha verify batch --files "*.js" --parallel
 
 # Verify with pattern matching
-npx @sparkleideas/ruflo@alpha verify batch --pattern "src/**/*.ts"
+npx ruflo@alpha verify batch --pattern "src/**/*.ts"
 
 # Integration test suite
-npx @sparkleideas/ruflo@alpha verify integration --test-suite full
+npx ruflo@alpha verify integration --test-suite full
 ```
 
 #### Verification Criteria
@@ -259,7 +259,7 @@ The verification system evaluates:
 
 ```bash
 # Get structured JSON output
-npx @sparkleideas/ruflo@alpha verify check --json > verification.json
+npx ruflo@alpha verify check --json > verification.json
 
 # Example JSON structure:
 {
@@ -291,25 +291,25 @@ Automatically revert changes that fail verification checks.
 **Basic Rollback:**
 ```bash
 # Rollback to last known good state
-npx @sparkleideas/ruflo@alpha verify rollback --last-good
+npx ruflo@alpha verify rollback --last-good
 
 # Rollback to specific commit
-npx @sparkleideas/ruflo@alpha verify rollback --to-commit abc123
+npx ruflo@alpha verify rollback --to-commit abc123
 
 # Interactive rollback with preview
-npx @sparkleideas/ruflo@alpha verify rollback --interactive
+npx ruflo@alpha verify rollback --interactive
 ```
 
 **Smart Rollback:**
 ```bash
 # Rollback only failed files (preserve good changes)
-npx @sparkleideas/ruflo@alpha verify rollback --selective
+npx ruflo@alpha verify rollback --selective
 
 # Rollback with automatic backup
-npx @sparkleideas/ruflo@alpha verify rollback --backup-first
+npx ruflo@alpha verify rollback --backup-first
 
 # Dry-run mode (preview without executing)
-npx @sparkleideas/ruflo@alpha verify rollback --dry-run
+npx ruflo@alpha verify rollback --dry-run
 ```
 
 **Rollback Performance:**
@@ -326,31 +326,31 @@ Create detailed verification reports with metrics and visualizations.
 **Report Formats:**
 ```bash
 # JSON report
-npx @sparkleideas/ruflo@alpha verify report --format json
+npx ruflo@alpha verify report --format json
 
 # HTML report with charts
-npx @sparkleideas/ruflo@alpha verify report --export metrics.html --format html
+npx ruflo@alpha verify report --export metrics.html --format html
 
 # CSV for data analysis
-npx @sparkleideas/ruflo@alpha verify report --format csv --export metrics.csv
+npx ruflo@alpha verify report --format csv --export metrics.csv
 
 # Markdown summary
-npx @sparkleideas/ruflo@alpha verify report --format markdown
+npx ruflo@alpha verify report --format markdown
 ```
 
 **Time-based Reports:**
 ```bash
 # Last 24 hours
-npx @sparkleideas/ruflo@alpha verify report --period 24h
+npx ruflo@alpha verify report --period 24h
 
 # Last 7 days
-npx @sparkleideas/ruflo@alpha verify report --period 7d
+npx ruflo@alpha verify report --period 7d
 
 # Last 30 days with trends
-npx @sparkleideas/ruflo@alpha verify report --period 30d --include-trends
+npx ruflo@alpha verify report --period 30d --include-trends
 
 # Custom date range
-npx @sparkleideas/ruflo@alpha verify report --from 2025-01-01 --to 2025-01-31
+npx ruflo@alpha verify report --from 2025-01-01 --to 2025-01-31
 ```
 
 **Report Content:**
@@ -370,16 +370,16 @@ Run interactive web-based verification dashboard with real-time updates.
 
 ```bash
 # Launch dashboard on default port (3000)
-npx @sparkleideas/ruflo@alpha verify dashboard
+npx ruflo@alpha verify dashboard
 
 # Custom port
-npx @sparkleideas/ruflo@alpha verify dashboard --port 8080
+npx ruflo@alpha verify dashboard --port 8080
 
 # Export dashboard data
-npx @sparkleideas/ruflo@alpha verify dashboard --export
+npx ruflo@alpha verify dashboard --export
 
 # Dashboard with auto-refresh
-npx @sparkleideas/ruflo@alpha verify dashboard --refresh 5s
+npx ruflo@alpha verify dashboard --refresh 5s
 ```
 
 **Dashboard Features:**
@@ -434,13 +434,13 @@ Set verification preferences in `.Codex-flow/config.json`:
 **Adjust verification strictness:**
 ```bash
 # Strict mode (99% accuracy required)
-npx @sparkleideas/ruflo@alpha verify check --threshold 0.99
+npx ruflo@alpha verify check --threshold 0.99
 
 # Lenient mode (90% acceptable)
-npx @sparkleideas/ruflo@alpha verify check --threshold 0.90
+npx ruflo@alpha verify check --threshold 0.90
 
 # Set default threshold
-npx @sparkleideas/ruflo@alpha config set verification.threshold 0.98
+npx ruflo@alpha config set verification.threshold 0.98
 ```
 
 **Per-environment thresholds:**
@@ -477,7 +477,7 @@ jobs:
 
       - name: Run Verification
         run: |
-          npx @sparkleideas/ruflo@alpha verify check --json > verification.json
+          npx ruflo@alpha verify check --json > verification.json
 
       - name: Check Truth Score
         run: |
@@ -499,7 +499,7 @@ jobs:
 verify:
   stage: test
   script:
-    - npx @sparkleideas/ruflo@alpha verify check --threshold 0.95 --json > verification.json
+    - npx ruflo@alpha verify check --threshold 0.95 --json > verification.json
     - |
       score=$(jq '.overallScore' verification.json)
       if [ $(echo "$score < 0.95" | bc) -eq 1 ]; then
@@ -519,13 +519,13 @@ Run verification automatically during swarm operations:
 
 ```bash
 # Swarm with verification enabled
-npx @sparkleideas/ruflo@alpha swarm --verify --threshold 0.98
+npx ruflo@alpha swarm --verify --threshold 0.98
 
 # Hive Mind with auto-rollback
-npx @sparkleideas/ruflo@alpha hive-mind --verify --rollback-on-fail
+npx ruflo@alpha hive-mind --verify --rollback-on-fail
 
 # Training pipeline with verification
-npx @sparkleideas/ruflo@alpha train --verify --threshold 0.99
+npx ruflo@alpha train --verify --threshold 0.99
 ```
 
 #### Pair Programming Integration
@@ -534,10 +534,10 @@ Enable real-time verification during collaborative development:
 
 ```bash
 # Pair with verification
-npx @sparkleideas/ruflo@alpha pair --verify --real-time
+npx ruflo@alpha pair --verify --real-time
 
 # Pair with custom threshold
-npx @sparkleideas/ruflo@alpha pair --verify --threshold 0.97 --auto-fix
+npx ruflo@alpha pair --verify --threshold 0.97 --auto-fix
 ```
 
 ### Advanced Workflows
@@ -548,13 +548,13 @@ Monitor codebase continuously during development:
 
 ```bash
 # Watch directory for changes
-npx @sparkleideas/ruflo@alpha verify watch --directory src/
+npx ruflo@alpha verify watch --directory src/
 
 # Watch with auto-fix
-npx @sparkleideas/ruflo@alpha verify watch --directory src/ --auto-fix
+npx ruflo@alpha verify watch --directory src/ --auto-fix
 
 # Watch with notifications
-npx @sparkleideas/ruflo@alpha verify watch --notify --threshold 0.95
+npx ruflo@alpha verify watch --notify --threshold 0.95
 ```
 
 #### Monitoring Integration
@@ -563,18 +563,18 @@ Send metrics to external monitoring systems:
 
 ```bash
 # Export to Prometheus
-npx @sparkleideas/ruflo@alpha truth --format json | \
+npx ruflo@alpha truth --format json | \
   curl -X POST https://pushgateway.example.com/metrics/job/Codex-flow \
   -d @-
 
 # Send to DataDog
-npx @sparkleideas/ruflo@alpha verify report --format json | \
+npx ruflo@alpha verify report --format json | \
   curl -X POST "https://api.datadoghq.com/api/v1/series?api_key=${DD_API_KEY}" \
   -H "Content-Type: application/json" \
   -d @-
 
 # Custom webhook
-npx @sparkleideas/ruflo@alpha truth --format json | \
+npx ruflo@alpha truth --format json | \
   curl -X POST https://metrics.example.com/api/truth \
   -H "Content-Type: application/json" \
   -d @-
@@ -586,16 +586,16 @@ Automatically verify before commits:
 
 ```bash
 # Install pre-commit hook
-npx @sparkleideas/ruflo@alpha verify install-hook --pre-commit
+npx ruflo@alpha verify install-hook --pre-commit
 
 # .git/hooks/pre-commit example:
 #!/bin/bash
-npx @sparkleideas/ruflo@alpha verify check --threshold 0.95 --json > /tmp/verify.json
+npx ruflo@alpha verify check --threshold 0.95 --json > /tmp/verify.json
 
 score=$(jq '.overallScore' /tmp/verify.json)
 if (( $(echo "$score < 0.95" | bc -l) )); then
   echo "❌ Verification failed with score: $score"
-  echo "Run 'npx @sparkleideas/ruflo@alpha verify check --verbose' for details"
+  echo "Run 'npx ruflo@alpha verify check --verbose' for details"
   exit 1
 fi
 
@@ -627,13 +627,13 @@ echo "✅ Verification passed with score: $score"
 **Low Truth Scores:**
 ```bash
 # Get detailed breakdown
-npx @sparkleideas/ruflo@alpha truth --verbose --threshold 0.0
+npx ruflo@alpha truth --verbose --threshold 0.0
 
 # Check specific criteria
-npx @sparkleideas/ruflo@alpha verify check --verbose
+npx ruflo@alpha verify check --verbose
 
 # View agent-specific issues
-npx @sparkleideas/ruflo@alpha truth --agent <agent-name> --format json
+npx ruflo@alpha truth --agent <agent-name> --format json
 ```
 
 **Rollback Failures:**
@@ -642,7 +642,7 @@ npx @sparkleideas/ruflo@alpha truth --agent <agent-name> --format json
 git status
 
 # View rollback history
-npx @sparkleideas/ruflo@alpha verify rollback --history
+npx ruflo@alpha verify rollback --history
 
 # Manual rollback
 git reset --hard HEAD~1
@@ -651,10 +651,10 @@ git reset --hard HEAD~1
 **Verification Timeouts:**
 ```bash
 # Increase timeout
-npx @sparkleideas/ruflo@alpha verify check --timeout 60s
+npx ruflo@alpha verify check --timeout 60s
 
 # Verify in batches
-npx @sparkleideas/ruflo@alpha verify batch --batch-size 10
+npx ruflo@alpha verify batch --batch-size 10
 ```
 
 ### Exit Codes
@@ -667,10 +667,10 @@ Verification commands return standard exit codes:
 
 ### Related Commands
 
-- `npx @sparkleideas/ruflo@alpha pair` - Collaborative development with verification
-- `npx @sparkleideas/ruflo@alpha train` - Training with verification feedback
-- `npx @sparkleideas/ruflo@alpha swarm` - Multi-agent coordination with quality checks
-- `npx @sparkleideas/ruflo@alpha report` - Generate comprehensive project reports
+- `npx ruflo@alpha pair` - Collaborative development with verification
+- `npx ruflo@alpha train` - Training with verification feedback
+- `npx ruflo@alpha swarm` - Multi-agent coordination with quality checks
+- `npx ruflo@alpha report` - Generate comprehensive project reports
 
 ### Best Practices
 

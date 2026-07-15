@@ -118,3 +118,20 @@ ruvector.db
 # Local scratch / probe outputs (bake-off renders, runtime probes, presentation
 # runs) — regenerable, ~275MB; never tracked.
 /outputs/
+.claude/.bundle-backup/
+
+# Codex local configuration
+.codex/
+
+# Claude Flow runtime data
+.claude-flow/data/
+.claude-flow/logs/
+
+# Environment variables
+.env
+.env.local
+.env.*.local
+
+# ruflo-add-codex:gitignore — secrets + runtime
+.claude-flow/sessions/
+*.bak

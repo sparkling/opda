@@ -713,7 +713,7 @@ jobs:
             --jq '.commits[].commit.message')
 
           # Initialize swarm coordination
-          npx @sparkleideas/ruflo@latest swarm init --topology hierarchical
+          npx ruflo@latest swarm init --topology hierarchical
 
           # Store release context
           echo "$PRS" > /tmp/release-prs.json
@@ -722,7 +722,7 @@ jobs:
       - name: Generate Release Changelog
         run: |
           # Generate intelligent changelog
-          CHANGELOG=$(npx @sparkleideas/ruflo@latest github changelog \
+          CHANGELOG=$(npx ruflo@latest github changelog \
             --prs "$(cat /tmp/release-prs.json)" \
             --commits "$(cat /tmp/release-commits.txt)" \
             --from $PREV_TAG \
@@ -745,7 +745,7 @@ jobs:
           npm run build
 
           # Build platform-specific binaries
-          npx @sparkleideas/ruflo@latest github release-build \
+          npx ruflo@latest github release-build \
             --platforms "linux,macos,windows" \
             --architectures "x64,arm64" \
             --parallel
@@ -755,7 +755,7 @@ jobs:
           # Run security validation
           npm audit --audit-level=moderate
 
-          npx @sparkleideas/ruflo@latest github release-security \
+          npx ruflo@latest github release-security \
             --scan-dependencies \
             --check-secrets \
             --sign-artifacts
@@ -788,7 +788,7 @@ jobs:
           npm run test:smoke
 
           # Validate deployment
-          npx @sparkleideas/ruflo@latest github release-validate \
+          npx ruflo@latest github release-validate \
             --version ${{ github.ref_name }} \
             --smoke-tests \
             --health-checks
@@ -811,7 +811,7 @@ jobs:
       - name: Monitor Release
         run: |
           # Start release monitoring
-          npx @sparkleideas/ruflo@latest github release-monitor \
+          npx ruflo@latest github release-monitor \
             --version ${{ github.ref_name }} \
             --duration 1h \
             --alert-on-errors &
@@ -846,7 +846,7 @@ jobs:
 
       - name: Emergency Release
         run: |
-          npx @sparkleideas/ruflo@latest github emergency-release \
+          npx ruflo@latest github emergency-release \
             --issue ${{ github.event.issue.number }} \
             --severity critical \
             --fast-track \
@@ -924,7 +924,7 @@ jobs:
 ### Issue: Failed Release Build
 ```bash
 # Debug build failures
-npx @sparkleideas/ruflo@latest diagnostic-run \
+npx ruflo@latest diagnostic-run \
   --component build \
   --verbose
 
@@ -942,7 +942,7 @@ npm run test -- --verbose --coverage
 npm run test:ci
 
 # Compare local vs CI environment
-npx @sparkleideas/ruflo@latest github compat-test \
+npx ruflo@latest github compat-test \
   --environments "local,ci" \
   --compare
 ```
@@ -950,14 +950,14 @@ npx @sparkleideas/ruflo@latest github compat-test \
 ### Issue: Deployment Rollback Needed
 ```bash
 # Immediate rollback to previous version
-npx @sparkleideas/ruflo@latest github rollback \
+npx ruflo@latest github rollback \
   --to-version v1.9.9 \
   --reason "Critical bug in v2.0.0" \
   --preserve-data \
   --notify-users
 
 # Investigate rollback cause
-npx @sparkleideas/ruflo@latest github release-analytics \
+npx ruflo@latest github release-analytics \
   --version v2.0.0 \
   --identify-issues
 ```
@@ -965,12 +965,12 @@ npx @sparkleideas/ruflo@latest github release-analytics \
 ### Issue: Version Conflicts
 ```bash
 # Check and resolve version conflicts
-npx @sparkleideas/ruflo@latest github release-validate \
+npx ruflo@latest github release-validate \
   --checks version-conflicts \
   --auto-resolve
 
 # Align multi-package versions
-npx @sparkleideas/ruflo@latest github version-sync \
+npx ruflo@latest github version-sync \
   --packages "package-a,package-b" \
   --strategy semantic
 ```

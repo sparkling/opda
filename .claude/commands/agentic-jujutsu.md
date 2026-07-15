@@ -1,9 +1,9 @@
 ---
-description: AI-native version control via @sparkleideas/agentic-jujutsu — invokes the agentic-jujutsu skill with $ARGUMENTS routed to the underlying jj wrapper
+description: AI-native version control via agentic-jujutsu — invokes the agentic-jujutsu skill with $ARGUMENTS routed to the underlying jj wrapper
 ---
 $ARGUMENTS
 
-Invoke the `/agentic-jujutsu` skill (loaded from `.claude/skills/agentic-jujutsu/SKILL.md`) to operate AI-native version control via the `@sparkleideas/agentic-jujutsu` npm package.
+Invoke the `/agentic-jujutsu` skill (loaded from `.claude/skills/agentic-jujutsu/SKILL.md`) to operate AI-native version control via the `agentic-jujutsu` npm package.
 
 The skill body provides full subcommand reference (status, log, diff, new, analyze, mcp-server, mcp-tools, mcp-call, compare-git). Pass `$ARGUMENTS` through to the skill — common patterns:
 
@@ -28,7 +28,7 @@ The skill body provides full subcommand reference (status, log, diff, new, analy
 
 ## Underlying binary
 
-The skill shells out to `npx @sparkleideas/agentic-jujutsu` which loads
+The skill shells out to `npx agentic-jujutsu` which loads
 `agentic-jujutsu.darwin-arm64.node` (built by the fork's napi-rebuild
 pipeline per ADR-0150). Binary is a Mach-O 64-bit arm64 dylib (~22.8MB)
 exposing `JjWrapper`, `QuantumSigner`, `signMessage`, `verifySignature`,
@@ -38,6 +38,6 @@ and `generateSigningKeypair`.
 
 - USERGUIDE.md §"Agentic-Jujutsu — Self-Learning AI Version Control" (L5156-5340)
 - Skill: `.claude/skills/agentic-jujutsu/SKILL.md`
-- Package: `@sparkleideas/agentic-jujutsu` (Verdaccio: `http://localhost:4873`)
+- Package: `agentic-jujutsu` (Verdaccio: `http://localhost:4873`)
 - ADR-0148 §"Findings — Category C" (skill wired into init's SKILLS_MAP)
 - ADR-0150 (multi-fork napi-rebuild + bundle-native-binaries that ships the .node binary)

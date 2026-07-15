@@ -658,7 +658,7 @@ function generateStatusline() {
     const pkgPaths = [
       // 1. The plugin's own root (installed via /plugin install).
       path.join(home, '.claude', 'plugins', 'marketplaces', 'ruflo', 'package.json'),
-      // 2. Project-local @sparkleideas/ruflo — npm-style install.
+      // 2. Project-local ruflo — npm-style install.
       path.join(CWD, 'node_modules', '@claude-flow', 'cli', 'package.json'),
       // 3. Project-local ruflo umbrella.
       path.join(CWD, 'node_modules', 'ruflo', 'package.json'),

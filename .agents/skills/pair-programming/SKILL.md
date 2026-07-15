@@ -22,7 +22,7 @@ This skill provides professional pair programming capabilities with AI assistanc
 ## Prerequisites
 
 **Required:**
-- Codex Flow CLI installed (`npm install -g @sparkleideas/ruflo@latest`)
+- Codex Flow CLI installed (`npm install -g ruflo@latest`)
 - Git repository (optional but recommended)
 
 **Recommended:**

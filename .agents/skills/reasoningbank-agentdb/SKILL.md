@@ -47,7 +47,7 @@ npx agentdb@latest stats ./.agentdb/reasoningbank.db
 ## Quick Start with API
 
 ```typescript
-import { createAgentDBAdapter, computeEmbedding } from '@sparkleideas/agentic-flow/reasoningbank';
+import { createAgentDBAdapter, computeEmbedding } from 'agentic-flow/reasoningbank';
 
 // Initialize ReasoningBank with AgentDB
 const rb = await createAgentDBAdapter({
@@ -275,7 +275,7 @@ import {
   retrieveMemories,
   judgeTrajectory,
   distillMemories
-} from '@sparkleideas/agentic-flow/reasoningbank';
+} from 'agentic-flow/reasoningbank';
 
 // Legacy API works unchanged (uses AgentDB backend automatically)
 const memories = await retrieveMemories(query, {

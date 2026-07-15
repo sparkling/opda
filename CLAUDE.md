@@ -1,170 +1,73 @@
-# Claude Code Configuration
+@AGENTS.md
 
-## Behavioral Rules (Always Enforced)
+# Claude Code overlay for opda
 
-- Do what has been asked; nothing more, nothing less
-- NEVER create files unless they're absolutely necessary for achieving your goal
-- ALWAYS prefer editing an existing file to creating a new one
-- NEVER proactively create documentation files (*.md) or README files unless explicitly requested
-- NEVER save working files, text/mds, or tests to the root folder
-- Never continuously check status after spawning a swarm — wait for results
-- ALWAYS read a file before editing it
-- NEVER commit secrets, credentials, or .env files
-- NEVER add a `Co-Authored-By` trailer to user commits unless this project's `.claude/settings.json` has `attribution.commit` set (#2078). The Claude Code Bash tool may suggest one in its default commit-message template — ignore it. `Co-Authored-By` is semantic authorship attribution under git/GitHub convention; the tool is the facilitator, not a co-author.
+> **The shared, canonical instructions are in `AGENTS.md`, imported above.**
+> Edit shared rules THERE: they apply to both Claude Code and Codex.
+> This file carries ONLY what has no bearing on Codex. If a rule would also be
+> true under Codex, it belongs in `AGENTS.md`, not here.
 
-## File Organization
+## Skill syntax
 
-- NEVER save to root folder — use the directories below
-- Use `/src` for source code files
-- Use `/tests` for test files
-- Use `/docs` for documentation and markdown files
-- Use `/config` for configuration files
-- Use `/scripts` for utility scripts
-- Use `/examples` for example code
+Claude Code invokes skills with `/skill-name`. (Codex uses `$skill-name`.)
 
-## Project Architecture
+## Agent comms
 
-- Follow Domain-Driven Design with bounded contexts
-- Keep files under 500 lines
-- Use typed interfaces for all public APIs
-- Prefer TDD London School (mock-first) for new code
-- Use event sourcing for state changes
-- Ensure input validation at system boundaries
+The `Agent` tool and `SendMessage` are Claude Code features; Codex has no equivalent.
+Named agents coordinate by messaging each other directly, not by polling shared state.
 
-## Build & Test
+```javascript
+// ALL agents in ONE message, each knowing WHO to message next
+Agent({ prompt: "Research the codebase. SendMessage findings to 'architect'.",
+  subagent_type: "researcher", name: "researcher", run_in_background: true })
+Agent({ prompt: "Wait for 'researcher'. Design the solution. SendMessage to 'coder'.",
+  subagent_type: "system-architect", name: "architect", run_in_background: true })
+Agent({ prompt: "Wait for 'architect'. Implement it. SendMessage to 'tester'.",
+  subagent_type: "coder", name: "coder", run_in_background: true })
+Agent({ prompt: "Wait for 'coder'. Write tests. SendMessage results to 'reviewer'.",
+  subagent_type: "tester", name: "tester", run_in_background: true })
+Agent({ prompt: "Wait for 'tester'. Review code quality and security.",
+  subagent_type: "reviewer", name: "reviewer", run_in_background: true })
 
-Tasks run through the **Makefile** (thin wrappers over npm scripts + the
-`opda-gen` CLI). `make help` prints the grouped list. Key targets:
+// Kick off the pipeline
+SendMessage({ to: "researcher", summary: "Start", message: "[task context]" })
+```
 
-| Target | What it does |
-|---|---|
-| `make dev` | Astro dev server (auto-picks port 4330–4339) |
-| `make build` | Static site → `dist/` (no triplestore) |
-| `make build-data` | Full build: Fuseki + GRLC API + astro → `dist/` (what CI deploys; needs JDK 17+) |
-| `make serve-data` | Start Fuseki + the GRLC API and keep them running (develop pages/queries against live data) |
-| `make jena-load` | Load the ontology TTLs into a running Fuseki |
-| `make api` | Run the GRLC SPARQL→REST API alone (needs Fuseki on :3031) |
-| `make test` | Remark plugin tests (the JS unit suite) |
-| `make verify-ontology` | Byte-identity: re-emit the ontology and diff vs the committed corpus |
-| `make ci-ontology` | All `opda-gen` CI gates (byte-identity, three-graph, dup, profile, baspi5) — mirrors the GH workflows |
-| `make ci` | Everything CI checks locally (JS + ontology gates) |
-| `make deploy` | Push `main` → CI builds & deploys to Cloudflare Pages |
+| Pattern | Flow | Use when |
+|---------|------|----------|
+| **Pipeline** | A to B to C to D | Sequential dependencies (feature work) |
+| **Fan-out** | Lead to A, B, C, back to lead | Independent parallel work (research) |
+| **Supervisor** | Lead and workers, both ways | Ongoing coordination (complex refactor) |
 
-Each JS target wraps a matching npm script (e.g. `npm run serve:data`, `npm run jena:load`).
+- ALWAYS name agents; `name: "role"` is what makes one addressable
+- ALWAYS tell an agent who to message and what to send. An agent with no SendMessage
+  instruction finishes and goes idle without ever reporting back
+- Spawn ALL agents in ONE message with `run_in_background: true`
+- After spawning: STOP, tell the user what is running, and wait
+- NEVER poll status. Agents message back, or they complete
 
-- There is **no `lint` script** — validation is `make test` (JS) + `make ci-ontology` (ontology).
-- `opda-gen` targets run in `tools/opda-gen/` and need `make ontology-install` once first.
-- Deploys are **CI-only** (push to `main`); `make deploy-manual` (direct wrangler) is an escape hatch — avoid it.
-- ALWAYS run `make test` after code changes; run `make build` (or `make build-data` for triplestore-backed pages) before committing.
+(Which agent types exist, and when a swarm is worth it at all, is in `AGENTS.md`.)
 
-### Feature Workflow
+## Model routing
 
-1. Create or update tests first
-2. Implement the change
-3. Run tests — verify pass
-4. Run build — verify success
-5. Commit
+Claude's model lineup, so it lives here and not in `AGENTS.md`. Route by complexity, not by habit:
+the cheapest tier that can do the job correctly.
 
-## Security Rules
+| Tier | Handler | Use cases |
+|------|---------|-----------|
+| 1 | Agent Booster (WASM) | Mechanical transforms; skip the LLM and use an edit directly |
+| 2 | Haiku | Simple, low-complexity tasks |
+| 3 | Sonnet | Everyday implementation, tests, refactors |
+| 4 | Opus | Architecture, security, the hardest reasoning |
 
-- NEVER hardcode API keys, secrets, or credentials in source files
-- NEVER commit .env files or any file containing secrets
-- Always validate user input at system boundaries
-- Always sanitize file paths to prevent directory traversal
-- Run `ruflo security scan` after security-related changes
+## Commit attribution
 
-## Concurrency
+The Bash tool's default commit-message template suggests a `Co-Authored-By` trailer. Ignore it.
+The rule itself, and its rationale, are in `AGENTS.md`.
 
-- Batch ALL independent operations into a single message
-- Spawn ALL agents in ONE message using the Agent tool with `run_in_background: true`
-- Batch ALL independent file reads/writes/edits in ONE message
-- Batch ALL independent Bash commands in ONE message
+## Setup
 
-## Task Complexity
-
-- Single file edit or fix: work directly, no agents needed
-- 3+ files, new feature, or cross-module refactoring: spawn agents
-- When in doubt, start direct — escalate to agents if scope grows
-
-## Agent Orchestration
-
-| Situation | Use | Never |
-|---|---|---|
-| Multi-file / fan-out work | `Agent` tool, `run_in_background:true`, all spawns in ONE message | Poll status; use CLI as substitute |
-| Reflexive coordination at task start | (skip) | `swarm_init` unless user asked or persistent state needed |
-| User explicitly asked for a claude-flow swarm | `swarm_init` (CLI auto-reuses matching) | `--new` flag unless parallel swarm genuinely needed |
-
-- DO NOT call `swarm_init` reflexively at task start (ADR-0098 — applies to flat-coordination swarms only).
-- After spawning agents: STOP and wait for results. Do not poll.
-
-## Tool Selection Rules
-
-When you need a capability, choose in this order. Stop at the first match.
-
-| You need to... | Use | Prefer over |
-|---|---|---|
-| Coordinate parallel sub-tasks | `Agent` tool with `run_in_background: true` | `swarm_init` for one-shot work |
-| Persist patterns/decisions across sessions | `mcp__ruflo__memory_store` | Writing to MEMORY.md from in-session work |
-| Recall past decisions/patterns | `mcp__ruflo__memory_search` | Asking the user to re-explain |
-
-When the active toolset doesn't cover a capability:
-1. Run `ruflo skill list` — a skill may already provide it
-2. Run `ruflo plugins list` — an installable plugin may provide it
-3. Only after both come up empty, build the capability inline or ask the user
-
-Sub-agents spawned via `Agent` typically inherit the parent's `mcp__ruflo__*` toolset. For long-running sub-tasks where MCP visibility is uncertain, run a discovery probe before spawning rather than pre-fetching results.
-
-## Plugin Installation Rule
-
-NEVER install plugins without explicit user confirmation. Plugins persist past the session.
-
-Install only when ALL hold:
-- User asked for a capability not covered by `ruflo skill list` or active MCP tools
-- User confirmed the install
-
-Discovery: `ruflo plugins --help`.
-Install: `/plugin install ruflo-<name>@sparkleideas` (after `/plugin marketplace add sparkling/ruflo`). NEVER `@ruflo` here — that is upstream's marketplace (ADR-0301); never change plugin enable/disable at user scope.
-Tell user to run `/reload-plugins` if commands don't appear post-install.
-
-## MCP Tools (Deferred)
-
-The `ruflo` MCP server is registered. Tools are deferred — call ToolSearch
-to load a tool's schema before invoking it.
-
-Quick discovery:
-- `ToolSearch("ruflo memory")` — store, search, retrieve patterns
-- `ToolSearch("ruflo agent")` — spawn, list, manage agents
-- `ToolSearch("ruflo swarm")` — multi-agent coordination
-- `ToolSearch("ruflo hooks")` — lifecycle hooks and learning
-
-Do NOT call `mcp__ruflo__agentdb_session-start` or
-`mcp__ruflo__agentdb_session-end` — hooks manage session lifecycle
-automatically.
-
-## Hook Signals
-
-Hooks inject signals into the conversation at three points:
-
-- **Before task**: `[INTELLIGENCE] Relevant patterns...` — incorporate when relevant
-- **During task**: `[INFO] Routing task...` — consider the recommended agent type
-- **After task**: hooks store outcomes automatically; do not call session-start/end
-
-If `[INFO] Router not available` appears, proceed normally without routing.
-
-## Reference Pointers (when you need more than this file says)
-
-- Tool catalog: `ToolSearch` with a relevant query
-- Skill catalog: `ruflo skill list`
-- Plugin catalog: `ruflo plugins list`
-- Agent type catalog: `ruflo agent list`
-- CLI diagnostics: `ruflo doctor --fix`
-- Architecture decisions for this project: `docs/adr/`
-- Cross-session memory: `~/.claude/projects/<project>/memory/MEMORY.md`
-- Full feature reference: https://github.com/ruvnet/ruflo/blob/main/docs/USERGUIDE.md
-
-## Support
-
-One-time bootstrap (user runs once, AI never): `claude mcp add ruflo -- npx -y @sparkleideas/ruflo@latest`
-
-- Documentation: https://github.com/ruvnet/ruflo
-- Issues: https://github.com/ruvnet/ruflo/issues
+```bash
+claude mcp add claude-flow -- npx -y ruflo@latest mcp start
+npx ruflo@latest doctor --fix
+```

@@ -1,47 +1,22 @@
-[shell_environment_policy]
-inherit = "core"
+# Local Codex Configuration
+# This file overrides .agents/config.toml for local development
+# DO NOT commit this file to version control
 
-[shell_environment_policy.set]
-CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS = "1"
+# Development profile - more permissive
+approval_policy = "never"
+sandbox_mode = "danger-full-access"
+web_search = "live"
 
-[mcp_servers.flow-nexus]
-command = "npx"
-args = [
-    "-y",
-    "flow-nexus@latest",
-    "mcp",
-    "start",
-]
+# Debug settings
+# Uncomment to enable debug logging
+# CODEX_LOG_LEVEL = "debug"
 
-[mcp_servers.flow-nexus.env]
-npm_config_update_notifier = "false"
+# Local MCP server overrides
+# [mcp_servers.local]
+# command = "node"
+# args = ["./local-mcp-server.js"]
+# enabled = true
 
-[mcp_servers.notebooklm]
-command = "notebooklm-mcp"
-
-[mcp_servers.ruflo]
-command = "npx"
-args = [
-    "-y",
-    "@sparkleideas/ruflo@latest",
-    "mcp",
-    "start",
-]
-
-[mcp_servers.ruflo.env]
-npm_config_update_notifier = "false"
-CLAUDE_FLOW_MAX_AGENTS = "15"
-CLAUDE_FLOW_SWARM_TOPOLOGY = "hierarchical-mesh"
-CLAUDE_FLOW_MEMORY_TYPE = "hybrid"
-
-[mcp_servers.ruv-swarm]
-command = "npx"
-args = [
-    "-y",
-    "ruv-swarm@latest",
-    "mcp",
-    "start",
-]
-
-[mcp_servers.ruv-swarm.env]
-npm_config_update_notifier = "false"
+# Environment-specific settings
+# [env]
+# ANTHROPIC_API_KEY = "your-local-key"
