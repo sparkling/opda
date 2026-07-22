@@ -219,6 +219,10 @@ export default defineConfig({
   // so the per-tier dynamic routes are redirected individually (there is no single
   // `/model/[...slug]` route — the section is split into per-tier `[...slug]` routes).
   redirects: {
+    // The finance and banking orientation deck was developed under a temporary
+    // route. Keep that URL working while publishing the deck at its public,
+    // audience-facing address.
+    '/presentations/finance-banking-kickoff': '/presentation/working-group-kickoff',
     // ADR-0062: `/governance/smart-data-guidebook` (a single page, created when only
     // Chapter 5 had been circulated) became the `/dbt-smart-data` section once the
     // full Guidebook arrived. The old URL was e-mailed to the OPDA chair and to

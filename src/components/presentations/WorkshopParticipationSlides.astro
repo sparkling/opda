@@ -1,0 +1,86 @@
+---
+interface Props { total: number; }
+const { total } = Astro.props;
+---
+
+<section class="slide" id="resources" data-testid="slide" data-title="First step: share what already exists" role="group" aria-roledescription="slide" aria-label={`18 of ${total}: First step: share what already exists`}>
+  <div class="scene scene--wide">
+    <div class="title-row"><div><p class="eyebrow">Resource-first modelling</p><h2>First: share what <em>already exists</em></h2></div><p class="scene-intro">The first candidate will be grounded in the materials, language and edge cases the sector already uses.</p></div>
+    <div class="resource-cloud" aria-label="Useful source material"><span>Schemas</span><span>Electronic forms</span><span>Standards</span><span>Vocabularies</span><span>Policies</span><span>Guidance</span><span>Business rules</span><span>Worked examples</span><span>Representative data</span><span>Process maps</span><span>Screenshots</span><span>Authoritative definitions</span><span>Known exceptions</span></div>
+    <div class="warning-note"><strong>Collection details will follow.</strong> Do not send restricted material until the handling route, permissions and access controls have been confirmed.</div>
+  </div>
+</section>
+
+<section class="slide" id="intake" data-testid="slide" data-title="Share resources, discuss model candidates, repeat" role="group" aria-roledescription="slide" aria-label={`19 of ${total}: Share resources, discuss model candidates, repeat`}>
+  <div class="scene scene--wide">
+    <div class="title-row"><div><p class="eyebrow">The modelling loop</p><h2>Share resources. Discuss a candidate. <em>Repeat.</em></h2></div><p class="scene-intro">Participants contribute information that can be shared. Henrik and AI turn it into something concrete for the group to challenge and improve.</p></div>
+    <div class="intake-cycle" role="img" aria-label="Shareable resources flow to AI, which produces a model candidate for discussion. Feedback and new evidence then return to AI for the next candidate.">
+      <article class="intake-cycle__stage" style="--cycle-step: 0"><small>01</small><strong>Shareable resources</strong><span>Schemas · forms · standards · guidance · examples</span></article>
+      <article class="intake-cycle__stage intake-cycle__stage--ai" style="--cycle-step: 1"><small>02</small><strong>AI</strong><span>Henrik directs · AI extracts, compares and drafts</span></article>
+      <article class="intake-cycle__stage intake-cycle__stage--candidate" style="--cycle-step: 2"><small>03</small><strong>Model candidate</strong><span>Definitions · relationships · assumptions · questions</span></article>
+      <article class="intake-cycle__stage intake-cycle__stage--discuss" style="--cycle-step: 3"><small>04</small><strong>Discuss</strong><span>Challenge · correct · clarify · add evidence</span></article>
+      <div class="intake-feedback" aria-hidden="true"><span>Feedback · corrections · new evidence</span><i></i></div>
+    </div>
+    <p class="qualifier qualifier--strong">Discussion feeds the next AI-assisted modelling pass—not a separate report or a final answer.</p>
+  </div>
+</section>
+
+<section class="slide" id="ai-assist" data-testid="slide" data-title="What AI helps with — and what it cannot decide" role="group" aria-roledescription="slide" aria-label={`20 of ${total}: What AI helps with — and what it cannot decide`}>
+  <div class="scene scene--wide">
+    <div class="title-row"><div><p class="eyebrow">AI is the drafting accelerator</p><h2>What AI helps with — and <em>what it cannot decide</em></h2></div><p class="scene-intro">Henrik leads the modelling. AI analyses evidence from several perspectives; people remain the source of domain truth and accountability.</p></div>
+    <div class="responsibility-grid">
+      <article class="can"><span>AI can help</span><ul><li>Extract terms, rules and examples</li><li>Compare sources and expose differences</li><li>Propose relationships and candidate definitions</li><li>Find gaps, contradictions and missing evidence</li><li>Incorporate reviewed feedback rapidly</li></ul></article>
+      <article class="cannot"><span>AI cannot decide</span><ul><li>What is true in Finance and Banking</li><li>Which stakeholder judgement should prevail</li><li>Whether restricted material may be published</li><li>Whether a disputed issue is resolved</li><li>Whether a version is official or approved</li></ul></article>
+    </div>
+    <div class="human-control-band"><strong>Always visible</strong><span>Sources</span><span>Uncertainty</span><span>Dissent</span><span>Automated checks</span><span>Change history</span><span>Human judgement</span></div>
+    <p class="qualifier qualifier--strong">Participants and vendors do not need to run or adopt AI. AI helps build the ontology; the ontology then gives future AI clearer, governed context.</p>
+  </div>
+</section>
+
+<section class="slide" id="iteration" data-testid="slide" data-title="Publish, review, revise, repeat" role="group" aria-roledescription="slide" aria-label={`21 of ${total}: Publish, review, revise, repeat`}>
+  <div class="scene scene--wide">
+    <div class="title-row"><div><p class="eyebrow">A visible candidate cycle</p><h2>Publish, review, revise, <em>repeat</em></h2></div><p class="scene-intro">We keep iterating until the group judges the model stable enough to become its first official working-group draft.</p></div>
+    <div class="version-journey" data-interaction="iteration">
+      <button type="button" data-version="0.1" data-detail="First evidence-grounded candidate: broad coverage, visible assumptions and many open questions." aria-pressed="true"><small>Candidate</small><strong>0.1</strong><span>Evidence assembled</span></button><i aria-hidden="true">→</i>
+      <button type="button" data-version="0.2" data-detail="Feedback is incorporated, disagreements are recorded and definitions become more precise."><small>Candidate</small><strong>0.2</strong><span>Feedback incorporated</span></button><i aria-hidden="true">→</i>
+      <button type="button" data-version="0.x" data-detail="Successive candidates show changes, validation results and unresolved questions."><small>Candidates</small><strong>0.x</strong><span>Tested and refined</span></button><i aria-hidden="true">→</i>
+      <button type="button" data-version="draft" data-detail="A stable, reviewed first working-group draft—not a final, normative or ratified standard."><small>Stable milestone</small><strong>First draft</strong><span>Versioned and reviewable</span></button>
+    </div>
+    <output class="interaction-callout" data-output="iteration" role="status" aria-live="polite">First evidence-grounded candidate: broad coverage, visible assumptions and many open questions.</output>
+    <div class="open-governance"><strong>Still to define</strong><span>Consensus threshold</span><span>Dispute resolution</span><span>Escalation</span><span>Normative approval</span></div>
+  </div>
+</section>
+
+<section class="slide" id="channels" data-testid="slide" data-title="Where each conversation belongs" role="group" aria-roledescription="slide" aria-label={`22 of ${total}: Where each conversation belongs`}>
+  <div class="scene scene--wide">
+    <div class="title-row"><div><p class="eyebrow">One hub, clear channel roles</p><h2>Where each conversation <em>belongs</em></h2></div><p class="scene-intro">The exact details will be circulated once each channel is established.</p></div>
+    <div class="channel-map" data-interaction="channels">
+      <button type="button" data-channel="teams" data-detail="Use the Teams channel for working-group discussion. Start one topic per post and keep replies in its thread." aria-pressed="true"><span>Forthcoming</span><strong>Microsoft Teams</strong><small>Communication hub · threaded discussion</small></button>
+      <button type="button" data-channel="email" data-detail="Use the dedicated email for source intake, direct contact and administration. It is not a mailing list or a parallel discussion channel."><span>Forthcoming</span><strong>Working-group email</strong><small>Resource intake · direct contact · not a mailing list</small></button>
+      <button type="button" data-channel="web" data-detail="Use the planned page discussion for feedback tied to a particular term, relationship or candidate-model page."><span>Planned</span><strong>Website discussion</strong><small>Page-specific feedback · like Discourse</small></button>
+      <div class="issue-register"><span>One canonical record</span><strong>Issue &amp; feedback disposition</strong><div><i>Accepted</i><i>Needs evidence</i><i>Deferred</i><i>Not accepted</i></div></div>
+    </div>
+    <output class="interaction-callout" data-output="channels" role="status" aria-live="polite">Use the Teams channel for working-group discussion. Start one topic per post and keep replies in its thread.</output>
+    <p class="qualifier">Do not send restricted material until the agreed handling route has been communicated.</p>
+  </div>
+</section>
+
+<section class="slide" id="next-steps" data-testid="slide" data-title="What happens after this session" role="group" aria-roledescription="slide" aria-label={`23 of ${total}: What happens after this session`}>
+  <div class="scene scene--wide">
+    <p class="eyebrow">The immediate sequence</p>
+    <h2>What happens <em>after this session</em></h2>
+    <div class="next-step-flow"><article><span>01</span><h3>OPDA confirms the route</h3><p>Maria circulates the collection method, Teams channel and working-group email details.</p></article><b aria-hidden="true">→</b><article><span>02</span><h3>Members share resources</h3><p>Existing materials arrive with source, permission and sensitivity information.</p></article><b aria-hidden="true">→</b><article><span>03</span><h3>Henrik builds candidate 0.1</h3><p>AI-assisted modelling produces the ontology, schemas, documentation and open questions.</p></article><b aria-hidden="true">→</b><article><span>04</span><h3>The group reviews</h3><p>The candidate is published through the working-group review surface, announced in Teams and improved from feedback.</p></article></div>
+    <p class="qualifier qualifier--strong">The first ask is simple: when the route arrives, share the resources that best explain how your part of the domain works.</p>
+  </div>
+</section>
+
+<section class="slide slide--close" id="close" data-testid="slide" data-title="You bring the knowledge; OPDA makes it reviewable" role="group" aria-roledescription="slide" aria-label={`24 of ${total}: You bring the knowledge; OPDA makes it reviewable`}>
+  <div class="scene scene--close">
+    <p class="eyebrow">The working-group promise</p>
+    <h2>You bring the knowledge.<br /><em>OPDA makes it reviewable.</em></h2>
+    <div class="closing-equation"><span><b>01</b>Share evidence<br />and domain judgement</span><i>+</i><span><b>02</b>Henrik and AI<br />prepare candidates</span><i>+</i><span><b>03</b>The group challenges<br />and improves the meaning</span></div>
+    <p class="closing-line">No ontology expertise. No AI adoption. Just the knowledge needed to make the model correct.</p>
+    <p class="handoff-line">Questions — then hand back to Maria.</p>
+  </div>
+  <p class="corner-note">opda.org.uk · Open Property Data Association</p>
+</section>

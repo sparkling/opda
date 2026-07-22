@@ -1,0 +1,68 @@
+@font-face {
+  font-family: 'Inter';
+  src: url('/ui/fonts/Inter-400.woff2') format('woff2');
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Inter';
+  src: url('/ui/fonts/Inter-600.woff2') format('woff2');
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Fraunces';
+  src: url('/ui/fonts/Fraunces-400.woff2') format('woff2');
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Fraunces';
+  src: url('/ui/fonts/Fraunces-400-italic.woff2') format('woff2');
+  font-style: italic;
+  font-weight: 400;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'JetBrains Mono';
+  src: url('/ui/fonts/JetBrainsMono-400.woff2') format('woff2');
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+}
+
+:root {
+  color-scheme: dark;
+  --deck-forest-950: #061713;
+  --deck-forest-900: #071d18;
+  --deck-forest-800: #0d2b24;
+  --deck-forest-700: #17473a;
+  --deck-cream: #f5f2e8;
+  --deck-cream-muted: #c7cec4;
+  --deck-mint: #bfe8cd;
+  --deck-lime: #d7f48b;
+  --deck-amber: #ffbd59;
+  --deck-coral: #ff7a64;
+  --deck-line: rgb(245 242 232 / 18%);
+  --deck-panel: rgb(255 255 255 / 6%);
+  --deck-shadow: 0 24px 80px rgb(0 0 0 / 34%);
+  --deck-sans: 'Inter', system-ui, sans-serif;
+  --deck-serif: 'Fraunces', Georgia, serif;
+  --deck-mono: 'JetBrains Mono', ui-monospace, monospace;
+  --deck-gutter: clamp(1.25rem, 3vw, 4rem);
+  --deck-hud-height: clamp(3rem, 4vw, 3.75rem);
+  --deck-radius-sm: 0.45rem;
+  --deck-radius-md: 0.85rem;
+  --deck-radius-lg: 1.5rem;
+  --deck-ease: cubic-bezier(0.2, 0.75, 0.25, 1);
+  --deck-fast: 180ms;
+  --deck-medium: 420ms;
+  --deck-focus: 0 0 0 3px var(--deck-forest-900), 0 0 0 6px var(--deck-lime);
+}

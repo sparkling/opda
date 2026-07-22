@@ -1,0 +1,176 @@
+---
+interface Props { total: number; }
+const { total } = Astro.props;
+---
+
+<section class="slide slide--welcome" id="welcome" data-testid="slide" data-title="A shared language for property finance data" data-active="true" role="group" aria-roledescription="slide" aria-label={`1 of ${total}: A shared language for property finance data`}>
+  <div class="ambient-orbits" aria-hidden="true"><i></i><i></i><i></i></div>
+  <div class="scene scene--hero">
+    <p class="eyebrow">Finance &amp; Banking working group</p>
+    <h1>A shared language for <em>property finance data</em></h1>
+    <p class="lede">You bring the domain knowledge. OPDA turns it into a model the group can understand, challenge and improve.</p>
+    <div class="reassurance-rail" aria-label="Participation reassurances"><span>No ontology skills</span><span>No graph tools</span><span>No AI adoption required</span></div>
+    <button class="primary-action" type="button" data-action="next">Begin <span aria-hidden="true">→</span></button>
+  </div>
+  <p class="corner-note">Questions are welcome throughout</p>
+</section>
+
+<section class="slide slide--profile" id="about-henrik" data-testid="slide" data-title="Henrik Pettersen — ontology strategist and agentic engineer" role="group" aria-roledescription="slide" aria-label={`2 of ${total}: Henrik Pettersen — ontology strategist and agentic engineer`}>
+  <div class="profile-signal-field" aria-hidden="true"><i></i><i></i><i></i><i></i></div>
+  <div class="scene scene--profile">
+    <div class="profile-copy">
+      <p class="eyebrow">Ontology strategist <span aria-hidden="true">·</span> Agentic engineer</p>
+      <p class="profile-kicker">Hello, I&rsquo;m</p>
+      <h2>Henrik <em>Pettersen</em></h2>
+      <div class="profile-facts" aria-label="Professional focus"><span>Ontologies · standards · working systems</span><span>Human judgement stays in control</span></div>
+      <p class="profile-lede">I turn specialist knowledge into shared models, international standards and working systems. Today, agentic engineering helps me do that faster&mdash;without outsourcing judgement.</p>
+      <div class="profile-role"><span>For this working group</span><p>You bring the Finance and Banking knowledge. I turn your resources, discussions and feedback into reviewable model candidates, schemas and a website.</p></div>
+      <a class="profile-site" href="https://sparklingideas.co.uk" target="_blank" rel="noreferrer"><span>Professional services</span><strong>sparklingideas.co.uk</strong><i aria-hidden="true">↗</i></a>
+    </div>
+    <div class="professional-summary" aria-label="Professional capability summary">
+      <div class="professional-summary__heading"><span>What I bring to OPDA</span><strong>Shared meaning, <em>engineered.</em></strong></div>
+      <p class="professional-experience"><strong>25 years working with ontologies.</strong> Connecting specialist knowledge, international standards and production systems.</p>
+      <div class="professional-proposition" aria-label="Henrik models meaning, builds working systems and brings people with him, accelerated by agentic engineering and governed by human judgement">
+        <p class="proposition-title"><span>One continuous practice</span><strong>From expert knowledge to <em>working standards.</em></strong></p>
+        <div class="proposition-stages" role="list">
+          <article role="listitem" style="--summary-step: 0">
+            <span>Model meaning</span>
+            <strong>Make the domain explicit</strong>
+            <small>Concepts · relationships · rules</small>
+          </article>
+          <article role="listitem" style="--summary-step: 1">
+            <span>Build working systems</span>
+            <strong>Turn meaning into useful outputs</strong>
+            <small>Schemas · validation · websites</small>
+          </article>
+          <article role="listitem" style="--summary-step: 2">
+            <span>Bring people with us</span>
+            <strong>Make the standard adoptable</strong>
+            <small>Review · governance · agreement</small>
+          </article>
+          <b class="proposition-signal" aria-hidden="true"></b>
+        </div>
+        <div class="proposition-agentic">
+          <span>Agentic engineering</span>
+          <strong>Accelerates the whole loop</strong>
+          <small>Evidence in · challenged drafts out · people decide</small>
+          <i aria-hidden="true"></i>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="slide" id="working-agreement" data-testid="slide" data-title="What this first meeting is for" role="group" aria-roledescription="slide" aria-label={`3 of ${total}: What this first meeting is for`}>
+  <div class="scene">
+    <p class="eyebrow">Working-group orientation</p>
+    <h2>What this first meeting <em>is for</em></h2>
+    <div class="promise-grid">
+      <article><span>01</span><h3>Set the context</h3><p>Why OPDA is convening the Finance and Banking group, the problem it addresses and how it fits the wider programme.</p></article>
+      <article><span>02</span><h3>Present the approach</h3><p>How existing work will inform domain-led modelling, with distinct contexts connected through interoperability.</p></article>
+      <article><span>03</span><h3>Make the model accessible</h3><p>A plain-language introduction to data models and ontologies—and how familiar schemas and forms can be generated from them.</p></article>
+      <article><span>04</span><h3>Show the path ahead</h3><p>How shared resources become published model candidates, and how the group will review and improve them.</p></article>
+    </div>
+    <p class="qualifier qualifier--strong">This is an orientation and presentation, with questions welcome throughout—not a live modelling workshop.</p>
+  </div>
+</section>
+
+<section class="slide" id="handoffs" data-testid="slide" data-title="Meaning changes across bounded contexts" role="group" aria-roledescription="slide" aria-label={`4 of ${total}: Meaning changes across bounded contexts`}>
+  <div class="scene scene--wide">
+    <div class="title-row"><div><p class="eyebrow">Different domains, valid local meanings</p><h2>Meaning changes across <em>bounded contexts</em></h2></div><p class="scene-intro">A property does not need one universal definition. Each domain can describe what matters locally; explicit mappings carry information across the boundary.</p></div>
+    <div class="handoff-flow" data-interaction="handoffs" aria-label="Example OPDA bounded contexts exchanging property information">
+      <button type="button" data-detail="Estate Agency treats Property as something to market: listing, features, asking price, availability and buyer interest.">Estate<br />Agency</button><span aria-hidden="true">↔</span>
+      <button type="button" data-detail="Finance and Banking treats Property as mortgage security: eligibility, valuation basis, loan-to-value, risk and supporting evidence." aria-pressed="true">Finance &amp;<br />Banking</button><span aria-hidden="true">↔</span>
+      <button type="button" data-detail="Surveying and Valuation treats Property as a physical asset to inspect and value: condition, defects, measurements and market evidence.">Surveying &amp;<br />Valuation</button><span aria-hidden="true">↔</span>
+      <button type="button" data-detail="Conveyancing treats Property as a legal estate: title, tenure, rights, restrictions, obligations and parties.">Conveyancing</button><span aria-hidden="true">↔</span>
+      <button type="button" data-detail="Property Data Services treats Property as a resolved record across identifiers, authoritative sources, datasets and changes over time.">Property Data<br />Services</button>
+    </div>
+    <output class="interaction-callout" data-output="handoffs" role="status" aria-live="polite">Finance and Banking treats Property as mortgage security: eligibility, valuation basis, loan-to-value, risk and supporting evidence.</output>
+    <div class="metric-strip"><span>Local meaning</span><span>Clear boundaries</span><span>Explicit mappings</span><span>Shared identifiers</span><span>Traceable sources</span></div>
+  </div>
+</section>
+
+<section class="slide" id="foundation" data-testid="slide" data-title="Evolution, not replacement" role="group" aria-roledescription="slide" aria-label={`5 of ${total}: Evolution, not replacement`}>
+  <div class="scene">
+    <p class="eyebrow">Continuity with a better source of meaning</p>
+    <h2>Evolution, <em>not replacement</em></h2>
+    <div class="continuity-grid">
+      <article><h3>What carries forward</h3><ul><li>JSON Schemas and examples</li><li>Schema-derived ontology and mappings</li><li>Glossary, dictionary and validation</li><li>Website and implementation experience</li></ul><p>Evidence, traceability, tests and compatibility inputs.</p></article>
+      <div class="method-shift" aria-label="Method shift"><span>Schema-led derivation</span><b aria-hidden="true">→</b><span>Domain-led, evidence-up modelling</span></div>
+      <article><h3>What changes</h3><ul><li>Practitioners become the authority for meaning</li><li>Each bounded context receives equal focus</li><li>Differences are mapped rather than flattened</li><li>Review happens through readable website drafts</li></ul><p>Bottom-up domain precision, held together by explicit interoperability.</p></article>
+    </div>
+  </div>
+</section>
+
+<section class="slide" id="data-model" data-testid="slide" data-title="What is a data model?" role="group" aria-roledescription="slide" aria-label={`6 of ${total}: What is a data model?`}>
+  <div class="scene split-scene split-scene--balanced">
+    <div><p class="eyebrow">Start with the basics</p><h2>What is a <em>data model?</em></h2><blockquote class="definition">An agreed map of the important business things, what they mean, how they fit together and the rules that apply.</blockquote></div>
+    <div class="model-anatomy" aria-label="Parts of a data model">
+      <article><span>Things</span><strong>Applicant · Mortgage · Property · Evidence</strong></article>
+      <article><span>Meaning</span><strong>Clear definitions in this context</strong></article>
+      <article><span>Relationships</span><strong>Applicant applies for Mortgage</strong></article>
+      <article><span>Rules</span><strong>Evidence supports a dated assertion</strong></article>
+      <p>Before choosing a file format, agree what the information means.</p>
+    </div>
+  </div>
+</section>
+
+<section class="slide" id="tree-view" data-testid="slide" data-title="Forms and schemas organise data as a tree" role="group" aria-roledescription="slide" aria-label={`7 of ${total}: Forms and schemas organise data as a tree`}>
+  <div class="scene scene--wide">
+    <div class="title-row"><div><p class="eyebrow">A familiar view</p><h2>Forms and schemas organise data as a <em>tree</em></h2></div><p class="scene-intro">A tree is excellent for one workflow, form or exchange contract: every item has a chosen place and path.</p></div>
+    <div class="tree-lab">
+      <div class="form-mock" aria-label="Example mortgage application form"><h3>Mortgage application</h3><label>Applicant <span>Alex Morgan</span></label><label>Mortgage <span>Residential purchase</span></label><fieldset><legend>Property</legend><label>Address <span>14 Oak Road</span></label><label>Estimated value <span>£425,000</span></label></fieldset><label>Evidence <span>Payslip · June</span></label></div>
+      <div class="transform-arrow"><span>one chosen shape</span><b aria-hidden="true">→</b></div>
+      <pre class="json-tree" aria-label="Tree-shaped JSON example"><code><b>{`{`}</b>
+  <span>"applicant"</span>: {`{`} … {`}`},
+  <span>"mortgage"</span>: {`{`}
+    "purpose": "purchase",
+    <span>"property"</span>: {`{`}
+      "address": "14 Oak Road",
+      "estimatedValue": 425000
+    {`}`}
+  {`}`},
+  <span>"evidence"</span>: [ … ]
+<b>{`}`}</b></code></pre>
+    </div>
+    <p class="qualifier">The tree answers: “Where does this value go in this particular message or form?”</p>
+  </div>
+</section>
+
+<section class="slide" id="graph-view" data-testid="slide" data-title="An ontology connects knowledge as a graph" role="group" aria-roledescription="slide" aria-label={`8 of ${total}: An ontology connects knowledge as a graph`}>
+  <div class="scene scene--wide">
+    <div class="title-row"><div><p class="eyebrow">The connected view</p><h2>An ontology connects knowledge as a <em>graph</em></h2></div><p class="scene-intro">The same concepts can participate in several relationships without being trapped inside one document path.</p></div>
+    <div class="relation-graph" role="img" aria-label="Applicant applies for Mortgage, Mortgage is secured against Property, Evidence supports an assertion about Applicant">
+      <div class="relation-row"><span class="relation-node">Applicant</span><i><span>applies for</span></i><span class="relation-node relation-node--accent">Mortgage</span><i><span>is secured against</span></i><span class="relation-node">Property</span></div>
+      <div class="relation-branch"><span class="relation-node">Evidence</span><i><span>supports</span></i><span class="relation-node">Income assertion</span><i><span>is about</span></i><span class="relation-node">Applicant</span></div>
+    </div>
+    <div class="graph-questions"><span>What is it?</span><span>How is it related?</span><span>Who asserted it?</span><span>When was it true?</span><span>Which rule applies?</span></div>
+    <p class="qualifier">The graph answers: “What does this mean, and how can it connect safely to other information?”</p>
+  </div>
+</section>
+
+<section class="slide" id="same-knowledge" data-testid="slide" data-title="Same knowledge, different views" role="group" aria-roledescription="slide" aria-label={`9 of ${total}: Same knowledge, different views`}>
+  <div class="scene scene--wide">
+    <div class="title-row"><div><p class="eyebrow">Complementary, not competing</p><h2>Same knowledge, <em>different views</em></h2></div><div class="concept-switch" data-interaction="view-sync" role="group" aria-label="Highlight a concept"><button type="button" data-concept="applicant">Applicant</button><button type="button" data-concept="mortgage">Mortgage</button><button type="button" data-concept="property" aria-pressed="true">Property</button><button type="button" data-concept="evidence">Evidence</button></div></div>
+    <div class="synchronised-views" data-sync-root>
+      <article><h3>Electronic form</h3><p data-concept="applicant">Applicant details</p><p data-concept="mortgage">Mortgage request</p><p data-concept="property" class="is-active">Property details</p><p data-concept="evidence">Supporting documents</p></article>
+      <article><h3>JSON tree</h3><code data-concept="applicant">$.applicant</code><code data-concept="mortgage">$.mortgage</code><code data-concept="property" class="is-active">$.mortgage.property</code><code data-concept="evidence">$.evidence[]</code></article>
+      <article><h3>Ontology graph</h3><div class="sync-nodes"><span data-concept="applicant">Applicant</span><span data-concept="mortgage">Mortgage</span><span data-concept="property" class="is-active">Property</span><span data-concept="evidence">Evidence</span></div></article>
+    </div>
+    <output class="interaction-callout" data-output="view-sync" role="status" aria-live="polite">Property appears at one path in this JSON message, but the graph can connect it to valuation, title, survey and provenance contexts.</output>
+  </div>
+</section>
+
+<section class="slide" id="familiar-outputs" data-testid="slide" data-title="You do not need to work with the graph" role="group" aria-roledescription="slide" aria-label={`10 of ${total}: You do not need to work with the graph`}>
+  <div class="scene scene--wide">
+    <p class="eyebrow">A governed source, familiar views</p>
+    <h2>You do not need to <em>work with the graph</em></h2>
+    <div class="publication-flow">
+      <div class="review-input"><span>You review</span><strong>Definitions · examples · relationships · rules</strong></div>
+      <div class="semantic-core"><small>Governed meaning</small><strong>Ontology</strong><span>connected graph</span></div>
+      <div class="generator-layer"><span>Mappings</span><span>Generators</span><span>Templates</span><span>Tests</span></div>
+      <div class="output-grid"><small>Familiar outputs</small><span>JSON Schemas</span><span>Forms &amp; APIs</span><span>Website</span><span>PDF &amp; Markdown</span><span>Validation</span><span>Integrations</span></div>
+    </div>
+    <p class="qualifier qualifier--strong">The ontology supplies governed meaning. Tested transformations produce the useful formats.</p>
+  </div>
+</section>

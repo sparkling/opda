@@ -1,0 +1,25 @@
+---
+import WorkshopDeck from '../../components/presentations/WorkshopDeck.astro';
+import '../../styles/presentations/workshop-tokens.css';
+import '../../styles/presentations/workshop-deck.css';
+import '../../styles/presentations/workshop-scenes.css';
+import '../../styles/presentations/workshop-responsive.css';
+---
+
+<!doctype html>
+<html lang="en-GB">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta
+      name="description"
+      content="OPDA Finance & Banking working group kick-off: a nontechnical, interactive introduction to shared data modelling, participation and review."
+    />
+    <meta name="theme-color" content="#071d18" />
+    <title>Finance & Banking Working Group — OPDA</title>
+  </head>
+  <body>
+    <WorkshopDeck />
+    <script is:inline type="module" src="/ui/finance-banking-deck.js"></script>
+  </body>
+</html>

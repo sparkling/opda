@@ -1,0 +1,59 @@
+---
+import WorkshopOrientationSlides from './WorkshopOrientationSlides.astro';
+import WorkshopArchitectureSlides from './WorkshopArchitectureSlides.astro';
+import WorkshopParticipationSlides from './WorkshopParticipationSlides.astro';
+
+const slideCount = 24;
+---
+
+<main class="deck" data-testid="presentation" data-slide-count={slideCount}>
+  <header class="deck-hud deck-hud--top">
+    <a class="deck-brand" href="#welcome" aria-label="OPDA presentation start">
+      <span class="deck-brand__mark" aria-hidden="true">O</span>
+      <span>Open Property Data Association</span>
+    </a>
+    <div class="deck-context">
+      <span>Finance &amp; Banking</span><span class="deck-context__dot"></span><span>Working group kick-off</span>
+    </div>
+    <button class="overview-button" type="button" data-action="overview" data-testid="overview-toggle" aria-label="Open slide overview" title="Overview (O)">
+      <span aria-hidden="true">▦</span><span>Slides</span>
+    </button>
+  </header>
+
+  <div class="deck-stage">
+    <WorkshopOrientationSlides total={slideCount} />
+    <WorkshopArchitectureSlides total={slideCount} />
+    <WorkshopParticipationSlides total={slideCount} />
+  </div>
+
+  <footer class="deck-hud deck-hud--bottom">
+    <div class="deck-progress-wrap">
+      <progress data-testid="presentation-progress" max={slideCount} value="1">1 of {slideCount}</progress>
+      <span data-testid="slide-counter">01 / {String(slideCount).padStart(2, '0')}</span>
+    </div>
+    <div class="deck-controls">
+      <button class="icon-button" type="button" data-action="prev" data-testid="prev-slide" aria-label="Previous slide" title="Previous (←)" disabled>←</button>
+      <button class="icon-button" type="button" data-action="fullscreen" data-testid="fullscreen-toggle" aria-label="Enter fullscreen" aria-pressed="false" title="Fullscreen (F)">⛶</button>
+      <button class="next-button" type="button" data-action="next" data-testid="next-slide">Next <span aria-hidden="true">→</span></button>
+    </div>
+  </footer>
+
+  <div class="sr-only" data-testid="slide-announcer" aria-live="polite" aria-atomic="true"></div>
+
+  <dialog class="overview-dialog" data-testid="overview-dialog" aria-labelledby="overview-title">
+    <form method="dialog" class="dialog-head">
+      <div><p class="eyebrow">Navigate the story</p><h2 id="overview-title">Slide overview</h2></div>
+      <button class="icon-button" value="close" aria-label="Close overview">×</button>
+    </form>
+    <label class="overview-search"><span class="sr-only">Search slides</span><input type="search" data-testid="overview-search" placeholder="Search the presentation…" autocomplete="off" /></label>
+    <nav class="overview-grid" aria-label="Presentation slides"></nav>
+    <p class="dialog-hint"><kbd>←</kbd><kbd>→</kbd> navigate <kbd>O</kbd> overview <kbd>F</kbd> fullscreen <kbd>?</kbd> help</p>
+  </dialog>
+
+  <dialog class="help-dialog" data-testid="help-dialog" aria-labelledby="help-title">
+    <form method="dialog"><button class="icon-button" value="close" aria-label="Close help">×</button></form>
+    <p class="eyebrow">Presenter controls</p>
+    <h2 id="help-title">Keyboard shortcuts</h2>
+    <dl><div><dt>Next / previous</dt><dd><kbd>→</kbd> <kbd>←</kbd> or <kbd>Space</kbd></dd></div><div><dt>Overview / search</dt><dd><kbd>O</kbd> or <kbd>⌘ K</kbd></dd></div><div><dt>Fullscreen</dt><dd><kbd>F</kbd></dd></div></dl>
+  </dialog>
+</main>

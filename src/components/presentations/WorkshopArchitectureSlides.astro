@@ -1,0 +1,84 @@
+---
+interface Props { total: number; }
+const { total } = Astro.props;
+---
+
+<section class="slide" id="context-lenses" data-testid="slide" data-title="Why separate domain models?" role="group" aria-roledescription="slide" aria-label={`11 of ${total}: Why separate domain models?`}>
+  <div class="scene scene--wide">
+    <div class="title-row"><div><p class="eyebrow">Precision without fragmentation</p><h2>Why separate <em>domain models?</em></h2></div><p class="scene-intro">“Property” can legitimately mean something different in each context. Mappings make those differences explicit.</p></div>
+    <div class="context-lab" data-interaction="property-lenses">
+      <div class="context-controls" role="group" aria-label="Choose a domain context"><button type="button" data-context="finance" aria-pressed="true">Finance &amp; Banking</button><button type="button" data-context="conveyancing">Conveyancing</button><button type="button" data-context="surveying">Surveying &amp; Valuation</button><button type="button" data-context="agency">Estate Agency</button><button type="button" data-context="services">Data Services</button></div>
+      <div class="context-stage"><span class="context-label">In this context</span><strong>Property</strong><output data-output="property-lenses" role="status" aria-live="polite">The asset offered as security for lending; valuation, tenure and risk matter.</output></div>
+      <div class="boundary-band"><span>Mappings</span><strong>Small common boundary</strong><span>Shared identifiers &amp; provenance</span></div>
+    </div>
+    <p class="qualifier">The aim is not competing truths. It is local precision plus an explicit translation at every boundary.</p>
+  </div>
+</section>
+
+<section class="slide" id="working-groups" data-testid="slide" data-title="A governed family of working groups" role="group" aria-roledescription="slide" aria-label={`12 of ${total}: A governed family of working groups`}>
+  <div class="scene scene--wide">
+    <div class="title-row"><div><p class="eyebrow">Programme structure</p><h2>A governed family of <em>working groups</em></h2></div><p class="scene-intro">Each group owns its domain meaning. Selected representatives align what crosses the boundaries.</p></div>
+    <div class="group-ecosystem" data-interaction="group-scope">
+      <div class="domain-group-grid"><button type="button" data-detail="Mortgage journey, lending decisions, parties, evidence, risk and finance-data exchange." aria-pressed="true">Finance &amp; Banking</button><button type="button" data-detail="Instruction, legal transfer, enquiries, searches, exchange and completion.">Conveyancing</button><button type="button" data-detail="Marketing, listings, material information, viewings, offers and seller information.">Estate Agency</button><button type="button" data-detail="Inspection, condition, valuation, professional evidence and property risk.">Surveying &amp; Valuation</button><button type="button" data-detail="Registries, searches, authoritative sources, provenance, currency and reuse.">Property Data Services</button><button type="button" data-detail="Platforms, workflow, APIs, implementation and operational feedback.">Property Technology</button><button class="scheme-group" type="button" data-detail="A cross-sector scheme group for Smart Data roles, trust, consent and shared obligations."><small>Cross-sector scheme</small>DBT Smart Data</button></div>
+      <div class="interoperability-band"><span>Selected representatives from every group</span><strong>Interoperability Working Group</strong><div><i>Common boundary</i><i>Context map</i><i>Cross-domain mappings</i><i>Shared conventions</i></div><small>Aligns boundaries; does not control internal domain meaning.</small></div>
+      <output class="interaction-callout" data-output="group-scope" role="status" aria-live="polite">Mortgage journey, lending decisions, parties, evidence, risk and finance-data exchange.</output>
+    </div>
+  </div>
+</section>
+
+<section class="slide" id="interoperability" data-testid="slide" data-title="The Interoperability Working Group aligns the boundaries" role="group" aria-roledescription="slide" aria-label={`13 of ${total}: The Interoperability Working Group aligns the boundaries`}>
+  <div class="scene scene--wide">
+    <div class="title-row"><div><p class="eyebrow">Cross-group alignment</p><h2>The Interoperability Working Group <em>aligns the boundaries</em></h2></div><p class="scene-intro">Selected representatives from every domain and scheme working group agree what must work across boundaries.</p></div>
+    <div class="quality-band"><strong>Membership</strong><span>Representatives from every group</span><span>Each brings its domain&rsquo;s language</span><span>Domain questions return to the owning group</span></div>
+    <div class="artefact-grid">
+      <article><span class="status">Shared only where needed</span><h3>Small common boundary ontology</h3><p>Only concepts and relationships genuinely required for exchange across multiple contexts.</p></article>
+      <article><span class="status">Makes ownership visible</span><h3>Context map</h3><p>Where meaning originates, where information crosses a boundary and which group owns each decision.</p></article>
+      <article><span class="status">Preserves local precision</span><h3>Cross-domain mappings</h3><p>Explicit translations between related local terms, vocabularies, taxonomies, identifiers and relationships.</p></article>
+      <article><span class="status">Agreed at the boundary</span><h3>Shared conventions</h3><p>Identifiers, provenance, versioning and change conventions where cross-context consistency is required.</p></article>
+    </div>
+    <div class="warning-note"><strong>Boundary agreements, not domain redesign.</strong> Each working group retains authority over its internal meaning.</div>
+  </div>
+</section>
+
+<section class="slide" id="semantic-package" data-testid="slide" data-title="What this working group defines" role="group" aria-roledescription="slide" aria-label={`14 of ${total}: What this working group defines`}>
+  <div class="scene scene--wide">
+    <div class="title-row"><div><p class="eyebrow">The semantic content</p><h2>What this working group <em>defines</em></h2></div><p class="scene-intro">Six connected kinds of content describe the same business agreement.</p></div>
+    <div class="semantic-grid">
+      <article><span>01</span><h3>Business glossary</h3><p>What do practitioners mean by each term?</p></article><article><span>02</span><h3>Data dictionary</h3><p>Which data elements are recorded, in what form and with what expectations?</p></article><article><span>03</span><h3>Taxonomies</h3><p>How are concepts organised into broader and narrower meanings?</p></article><article><span>04</span><h3>Controlled vocabularies</h3><p>Which governed terms, codes and values may be used?</p></article><article><span>05</span><h3>Resources</h3><p>Which important things and concepts need stable identity and description?</p></article><article><span>06</span><h3>Relationships</h3><p>How do those resources connect, participate and constrain one another?</p></article>
+    </div>
+  </div>
+</section>
+
+<section class="slide" id="publication-package" data-testid="slide" data-title="What OPDA publishes and generates" role="group" aria-roledescription="slide" aria-label={`15 of ${total}: What OPDA publishes and generates`}>
+  <div class="scene scene--wide">
+    <div class="title-row"><div><p class="eyebrow">Representations for different consumers</p><h2>What OPDA publishes <em>and generates</em></h2></div><p class="scene-intro">One governed agreement, released through formats that people and systems can use.</p></div>
+    <div class="artefact-grid">
+      <article><span class="status">Planned output</span><h3>Ontology in RDF</h3><p>The machine-readable graph of resources, relationships and constraints.</p></article><article><span class="status">Planned output</span><h3>JSON Schemas</h3><p>Generated exchange contracts for existing schema and form tooling.</p></article><article><span class="status">Planned output</span><h3>Website · PDF · Markdown</h3><p>Readable, versioned documentation for review and reuse.</p></article><article><span class="status status--optional">Optional service</span><h3>Mapping runtime</h3><p>A potential runtime for ontology/schema mapping and validation where a deployment needs it.</p></article>
+    </div>
+    <div class="quality-band"><strong>Every generated artefact needs</strong><span>an explicit mapping</span><span>a governed template</span><span>automated tests</span><span>a release status</span></div>
+  </div>
+</section>
+
+<section class="slide" id="dimensions" data-testid="slide" data-title="One completeness lens, eleven themes" role="group" aria-roledescription="slide" aria-label={`16 of ${total}: One completeness lens, eleven themes`}>
+  <div class="scene scene--wide">
+    <div class="title-row"><div><p class="eyebrow">Questions that expose gaps</p><h2>One completeness lens, <em>eleven themes</em></h2></div><p class="scene-intro">A checklist, not eleven models. Select a theme to reveal the practical question it asks.</p></div>
+    <div class="dimension-grid" data-interaction="dimensions">
+      <article><h3>Meaning <small>4 themes</small></h3><button type="button" data-detail="What important things exist, and how do they relate?">Domain structure</button><button type="button" data-detail="Which governed values, labels and codes do we use?">Controlled vocabulary</button><button type="button" data-detail="How do broader and narrower concepts fit together?">Taxonomy</button><button type="button" data-detail="How do we classify status, subject and regulatory relevance?">Classification</button></article>
+      <article><h3>Trust <small>3 themes</small></h3><button type="button" data-detail="Who owns, stewards and is accountable for the meaning?">Governance &amp; compliance</button><button type="button" data-detail="Where did a fact come from, and how reliable and current is it?">Provenance &amp; quality</button><button type="button" data-detail="Who may see or use sensitive information, and for what purpose?">Sensitivity &amp; access</button></article>
+      <article><h3>Correctness <small>2 themes</small></h3><button type="button" data-detail="What must be true for the data to be acceptable?">Validation constraints</button><button type="button" data-detail="When was it true, when was it recorded and how did it change?">Time &amp; history</button></article>
+      <article><h3>Exchange <small>2 themes</small></h3><button type="button" data-detail="How does a local meaning translate when it crosses a domain boundary?">Cross-domain mappings</button><button type="button" data-detail="Which small set of concepts genuinely needs a shared boundary meaning?">Common ontology</button></article>
+    </div>
+    <output class="interaction-callout" data-output="dimensions" role="status" aria-live="polite">Select a theme to reveal the business question it helps us answer.</output>
+  </div>
+</section>
+
+<section class="slide" id="website" data-testid="slide" data-title="The website becomes the working surface" role="group" aria-roledescription="slide" aria-label={`17 of ${total}: The website becomes the working surface`}>
+  <div class="scene split-scene split-scene--website">
+    <div><p class="eyebrow">Readable, reviewable candidates</p><h2>The website becomes the <em>working surface</em></h2><p class="scene-intro">Members review diagrams, terms, definitions, examples and changes—not source code.</p><div class="status-comparison"><p><span>Current demonstration</span>The present site documents the schema-derived model.</p><p><span>Future candidate surface</span>Versioned Finance and Banking drafts, open questions and page-level discussion.</p></div><a class="primary-action" href="/ontology/classes" target="_blank" rel="noreferrer">Open current demonstration <span aria-hidden="true">↗</span></a></div>
+    <div class="review-browser" data-interaction="review-surface">
+      <div class="review-browser__bar"><i></i><i></i><i></i><span>opda.org.uk / finance-and-banking / candidate-0.1</span></div>
+      <div class="review-tabs" role="group" aria-label="Explore future review views"><button type="button" data-view="graph" aria-pressed="true">Graph</button><button type="button" data-view="term">Term</button><button type="button" data-view="glossary">Glossary</button><button type="button" data-view="dictionary">Dictionary</button><button type="button" data-view="schema">Schema</button><button type="button" data-view="changes">Changes</button><button type="button" data-view="discussion">Discussion</button></div>
+      <div class="review-browser__body"><span class="draft-badge">Working-group candidate · 0.1</span><output data-output="review-surface" role="status" aria-live="polite"><strong>Graph view</strong><small>Explore concepts and labelled relationships.</small></output><div class="review-meta"><span>3 open questions</span><span>8 sources</span><span>Updated after feedback</span></div></div>
+    </div>
+  </div>
+</section>
