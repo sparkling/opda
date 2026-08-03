@@ -4,646 +4,248 @@ import PageMeta from '@/components/PageMeta.astro';
 import Diagram from '@/components/Diagram.astro';
 ---
 <Layout
-  title="Meeting cadence &amp; feedback channels"
-  description="The operational rhythm of OPDA governance: who meets when, what's on the agenda, how feedback enters and leaves, and how the decision log preserves the 10-year retention Articles art. 16 requires."
+  title="Meetings, feedback &amp; decision records"
+  description="How OPDA combines meetings, asynchronous discussion, public review and durable issue records without treating message volume or attendance as authority."
 >
-<PageMeta category="Operating Model" updated="Draft · Updated 2026-05-18" damaKa={["Data Governance"]} />
+<PageMeta
+  category="Operating model"
+  variant="warn"
+  updated="Mixed status · Reconciled with proposed ADR-0068 · Updated 2026-08-03"
+  damaKa={["Data Governance"]}
+/>
 
-      <h1>Meeting cadence &amp; feedback channels</h1>
+      <h1>Meetings, feedback &amp; decision records</h1>
       <p class="lead">
-        When OPDA's governing bodies meet, what they discuss, how feedback gets into
-        the standard, and how decisions get recorded. Pulls AGM and Board rhythm from
-        the Articles, codifies the working-group cadence implied by the DPMSG meeting
-        archive, and proposes the public-consultation and Stakeholder Version Register
-        mechanics needed to fill the <code>X</code> placeholders in the 8-step SOP.
+        Meetings help people understand and challenge the work. Persistent channels make
+        participation possible between meetings. A durable issue-and-disposition register—not a
+        meeting, chat thread or reaction count—preserves the standards decision record.
       </p>
 
-      <div class="callout callout--note">
-        <div class="callout__label">Status — what's ratified, what's practice, what's proposed</div>
+      <div class="callout callout--warn">
+        <div class="callout__label">Status — ratified facts, evidenced practice and proposals</div>
         <p>
-          <strong>Ratified</strong> in this page: AGM rhythm (Articles arts. 24–34),
-          Board cadence (art. 10), 10-year decision retention (art. 16), and the four
-          function definitions in
-          <a class="resource-link" href="/resource?path=source/03-standards/trust-framework/docs/governance.md"><code>governance.md</code></a> §3.
-          <strong>Practice-as-ratified</strong>: DPMSG Steering Group monthly cadence
-          (8 meetings archived Sep 2025 – Apr 2026), Engagement WG monthly all-member
-          update (4 calls archived Feb – May 2026), and the Trust &amp; Interoperability
-          sub-group co-chair pair.
-          <strong>Proposed</strong>: EC and Technical WG cadence numbers, cadence for
-          the Comms / Regulator / Policy WGs (folders sparse or empty), Steward
-          Roundtable, public consultation window (<strong>4 weeks for breaking
-          changes</strong>, 10 working days for non-breaking), feedback SLAs, and the
-          decision-log paths.
+          The AGM and Board requirements and the 10-year Board/Executive Committee decision-record
+          baseline come from OPDA's governing documents. Archived meeting cadences are evidenced
+          practice, not formally codified rules. The standards feedback, consensus, public-review
+          and record-keeping model comes from <a href="/modelling/adr/adr-0068">proposed
+          ADR-0068</a> and is not yet operative.
         </p>
       </div>
 
-      <h2 id="topology">Meeting topology</h2>
+      <h2 id="principles">Five operating principles</h2>
+      <ol>
+        <li><strong>Questions are welcome during meetings.</strong> A live session is for orientation, scrutiny and discussion—not automatic approval.</li>
+        <li><strong>Decisions remain open asynchronously.</strong> A proposal first discussed in a meeting receives at least five working days for confirmation under ADR-0068.</li>
+        <li><strong>One issue, one durable record.</strong> Related discussion from Teams, the website, meetings and email is linked to the same issue.</li>
+        <li><strong>Reply in threads.</strong> Persistent channels should keep one subject per post and subsequent discussion beneath it, so participation can scale.</li>
+        <li><strong>Participation is not authority.</strong> Attendance, message volume, reactions and AI agreement do not establish consensus.</li>
+      </ol>
 
-      <p>
-        Three clusters of bodies, each operating on its own rhythm but feeding the
-        same decision log. The constitutional cluster sets strategic direction; the
-        DPMSG cluster runs the cross-stakeholder workstreams; the operational cluster
-        coordinates schema work and external consultation.
-      </p>
+      <h2 id="topology">Where discussion and decisions happen</h2>
+      <Diagram size="large" caption="Discussion may begin anywhere, but substantive standards work is routed through one issue record to the body with the relevant authority. Stage decisions and release manifests are maintained separately by the proposed Standards Secretariat.">
+flowchart LR
+  M["`**Meetings**
+  orientation · challenge`"]:::infra
+  T["`**Teams**
+  persistent threaded discussion`"]:::infra
+  W["`**Website review**
+  exact candidate · public feedback`"]:::infra
+  E["`**Email / GitHub / evidence**
+  other inputs`"]:::infra
+  I["`**Canonical issue record**
+  source · affiliation · impact
+  discussion · disposition`"]:::data
+  A{"`**Route by authority**`"}:::warning
+  D["Domain Working Group
+  *domain meaning*"]:::service
+  X["Interoperability Working Group
+  *boundaries + mappings*"]:::service
+  G["Technical / risk gates
+  *independent checks*"]:::process
+  R["`**Stage + decision record**
+  exact proposal · reasons · result`"]:::success
 
-      <Diagram caption="Three clusters, one decision log. Blue = statutory bodies (GA, Board, EC). Green = DPMSG ecosystem (Steering Group + 5 working groups + Sandbox sub-group). Cyan = proposed operational bodies (Steward Roundtable + Public Consultation Window).">
-flowchart TB
-  %% NOTE: prop nodes lost stroke-dasharray styling — apply via inline `style NodeId stroke-dasharray:5 5` if dashed border is needed
-  GA["`**General Assembly**
-annual by 31 Oct`"]:::infra
-  BD["`**Board of Directors**
-min 4/yr · quorum 5`"]:::infra
-  EC["`**Executive Committee**
-monthly *(proposed)* · 12 voting seats`"]:::infra
+  M --> I
+  T --> I
+  W --> I
+  E --> I
+  I --> A
+  A --> D
+  A --> X
+  A --> G
+  D --> R
+  X --> R
+  G --> R
+      </Diagram>
 
-  SG["`DPMSG Steering Group
-monthly *(practice)*`"]:::service
-  TR["`Technical WG
-monthly *(proposed)*`"]:::service
-  EN["`Engagement WG
-monthly *(practice)*`"]:::service
-  CP["`Comms &amp; PR WG
-*(proposed)*`"]:::service
-  RG["`Regulator WG
-quarterly *(proposed)*`"]:::service
-  PO["`Policy WG
-*(proposed)*`"]:::service
-  TI["`Trust &amp; Interop
-sub-group *(active)*`"]:::service
-
-  STR["`**Steward Roundtable**
-quarterly`"]:::process
-  PCW["`**Public Consultation**
-per breaking change`"]:::process
-
-  LOG["`Decision Log
-10y retention *(Art. 16)*`"]:::data
-
-  GA --> EC
-  EC --> BD
-  EC -.delegates technical to.-> SG
-  SG --> TR
-  SG --> EN
-  SG --> CP
-  SG --> RG
-  SG --> PO
-  SG --> TI
-  TR --- STR
-  TR --- PCW
-  EN --- PCW
-  GA --> LOG
-  BD --> LOG
-  EC --> LOG
-  TR --> LOG
-  STR --> LOG
-</Diagram>
-
-      <h2 id="cadence">Cadence table</h2>
-
-      <p>
-        Per-body cadence, with the corpus evidence (or its absence) cited inline.
-        Codes: <strong>R</strong> = ratified in primary documents; <strong>R-practice</strong> = evidenced
-        by archived materials but not formally codified; <strong>P</strong> = proposed
-        and not yet ratified.
-      </p>
-
+      <h2 id="channels">Channels and their purpose</h2>
       <table>
-        <thead>
-          <tr>
-            <th>Body</th>
-            <th>Cadence</th>
-            <th>Evidence / source</th>
-            <th>Format</th>
-            <th>Status</th>
-          </tr>
-        </thead>
+        <thead><tr><th>Surface</th><th>Use it for</th><th>Do not treat it as</th></tr></thead>
         <tbody>
           <tr>
-            <td><strong>General Assembly</strong></td>
-            <td>Annually, no later than <strong>31 October</strong></td>
-            <td>Articles art. 24(1)</td>
-            <td>Hybrid (in person or interactive platform); majority vote; quorum 2</td>
-            <td>R</td>
+            <td><strong>Teams channels</strong></td>
+            <td>Working-group updates, questions, evidence requests and discussion of candidates. Use one clear topic per post and reply in its thread.</td>
+            <td>The sole decision record or a vote by reaction count.</td>
           </tr>
           <tr>
-            <td><strong>Board of Directors</strong></td>
-            <td>Minimum <strong>4 per year</strong></td>
-            <td>Articles art. 10(1); quorum 5 per art. 12(2)</td>
-            <td>Hybrid; majority vote or unanimous written; chair's casting vote</td>
-            <td>R</td>
+            <td><strong>Meetings</strong></td>
+            <td>Orientation, demonstrations, domain explanation, challenge and working through difficult issues.</td>
+            <td>A venue where absence becomes consent or a live decision is instantly final.</td>
           </tr>
           <tr>
-            <td><strong>Executive Committee</strong></td>
-            <td>Monthly</td>
-            <td>Not codified; proposed here</td>
-            <td>Hybrid; 12 voting seats (2 per bounded context); consensus &amp; majority; topic-based steward observers</td>
-            <td>P</td>
+            <td><strong>Website</strong></td>
+            <td>The exact candidate, definitions, diagrams, data dictionary, glossary, shapes, generated outputs, evidence citations, open questions and change diff.</td>
+            <td>Proof that a candidate has advanced or become normative.</td>
           </tr>
           <tr>
-            <td><strong>DPMSG Steering Group</strong></td>
-            <td>Monthly</td>
-            <td>8 meetings archived Sep 2025 – Apr 2026 at <a class="resource-link" href="/library/resources#cat-governance-bodies"><code>steering-group/materials/</code></a></td>
-            <td>Hybrid; minutes archived; transcripts at <a class="resource-link" href="/library/resources#cat-governance-bodies"><code>meetings/transcripts/</code></a></td>
-            <td>R-practice</td>
+            <td><strong>Public-review discussion</strong></td>
+            <td>Comments on a clearly identified Public Review Draft during its published window.</td>
+            <td>The canonical issue-and-disposition register.</td>
           </tr>
           <tr>
-            <td><strong>Engagement WG</strong> (all-member sandbox update)</td>
-            <td>Monthly</td>
-            <td>4 calls archived Feb – May 2026 at <a class="resource-link" href="/library/resources#cat-governance-bodies"><code>engagement/transcripts/</code></a></td>
-            <td>Open call, recorded, transcripts published</td>
-            <td>R-practice</td>
-          </tr>
-          <tr>
-            <td><strong>Technical WG</strong></td>
-            <td>Monthly</td>
-            <td>governance.md §3.B (composition); cadence proposed here</td>
-            <td>Async-first via PR review; synchronous call for breaking-change deliberation</td>
-            <td>P</td>
-          </tr>
-          <tr>
-            <td><strong>Compliance &amp; Risk function</strong></td>
-            <td>On-demand + pre-release review</td>
-            <td>governance.md §3.C ("Compliance check of proposed major schema releases before release")</td>
-            <td>Async; written impact assessments</td>
-            <td>R-existing / P-cadence</td>
-          </tr>
-          <tr>
-            <td><strong>Comms &amp; PR WG</strong></td>
-            <td>Monthly</td>
-            <td>
-              Chaired by Claire B; stood up Jan 2026 (<a class="resource-link" href="/resource?path=source/04-governance-bodies/steering-group/materials/29_Jan_2026/DPMSG Trust %26 Interoperability Steering Group.eml"><code>29 Jan 2026 SG email</code></a>: <em>"Comms &amp; PR group up and running, first meeting tomorrow"</em>); monthly cycle confirmed Apr 2026 (<a class="resource-link" href="/resource?path=source/04-governance-bodies/working-groups/engagement/transcripts/OPDA all member update - sandbox project-20260401_153255-Meeting Recording.en-GB.vtt"><code>Engagement WG transcript 1 Apr 2026</code></a>: <em>"next comms over April"</em>); LR project-support lead per <a class="resource-link" href="/resource?path=source/04-governance-bodies/steering-group/meetings/transcripts/DPMSG Trust Framework intro-20250925_110315-Meeting Recording.en-GB.vtt"><code>25 Sep 2025 launch transcript</code></a>. Owns <a class="resource-link" href="/resource?path=source/04-governance-bodies/working-groups/comms-pr/DRAFT Data Trust Framework comms plan.docx"><code>Trust Framework comms plan</code></a>, <a class="resource-link" href="/resource?path=source/04-governance-bodies/working-groups/comms-pr/DPMSG-Data-Standards-Interoperability-Report-Spring-2025-FINAL-1-1.pdf"><code>DPMSG Interoperability Report (Spring 2025)</code></a>, <a class="resource-link" href="/resource?path=source/04-governance-bodies/working-groups/comms-pr/data_standards_for_smart_data.pdf"><code>Data Standards for Smart Data paper</code></a>.
-            </td>
-            <td>Monthly comms output cycle; own budget</td>
-            <td>R-practice</td>
-          </tr>
-          <tr>
-            <td><strong>Regulator WG</strong></td>
-            <td>Quarterly standing + ad-hoc on breaking changes</td>
-            <td>No archived materials. Cadence proposed because regulators (SRA, CLC, CILEx Reg, FCA, ICO) cannot resource a monthly forum; most regulator engagement is event-driven (releases, consultations), not standing-cadence.</td>
-            <td>Hybrid; quarterly meetings (Mar / Jun / Sep / Dec); ad-hoc sessions convened when a MAJOR consultation is open</td>
-            <td>P</td>
-          </tr>
-          <tr>
-            <td><strong>Policy WG</strong> — incl. trust &amp; interoperability policy</td>
-            <td>TBD</td>
-            <td>Folder <a class="resource-link" href="/library/resources#cat-governance-bodies"><code>working-groups/policy/</code></a> is <strong>intentionally empty</strong>: the trust &amp; interoperability policy workstream is owned by <strong>Tom Treadwell (MHCLG)</strong> and is blocked pending publication of the <strong>MHCLG consultation response</strong>. Material will follow once that lands.</td>
-            <td>TBD</td>
-            <td>P</td>
-          </tr>
-          <tr>
-            <td><strong>Trust &amp; Interoperability sub-group</strong> (sandbox)</td>
-            <td>Active alongside sandbox cycle</td>
-            <td>Co-chaired by Tom Treadwell (MHCLG) + Maria Harris (OPDA); 5 transcripts at <a class="resource-link" href="/library/resources#cat-governance-bodies"><code>steering-group/meetings/transcripts/</code></a></td>
-            <td>Hybrid; sandbox-aligned</td>
-            <td>R-practice</td>
-          </tr>
-          <tr>
-            <td><strong>Steward Roundtable</strong></td>
-            <td>Quarterly</td>
-            <td>New — see <a href="/governance/data-stewardship#stewardRoundtable">Data stewardship §Steward Roundtable</a></td>
-            <td>Hybrid; cross-overlay coordination, annual chair rotation</td>
-            <td>P</td>
-          </tr>
-          <tr>
-            <td><strong>Public Consultation Window</strong></td>
-            <td>Per breaking change (<strong>6 weeks / 30 working days</strong>); per non-breaking change (<strong>3 weeks / 15 working days</strong>)</td>
-            <td>Fills the <code>X</code> placeholder in <a href="/governance/change-management#thresholds">change-management §thresholds</a></td>
-            <td>Public portal + Engagement WG all-member call</td>
-            <td>P</td>
+            <td><strong>Email and GitHub</strong></td>
+            <td>Access problems, private procedural matters, technical reports and other inputs that need routing.</td>
+            <td>A parallel, invisible decision path.</td>
           </tr>
         </tbody>
       </table>
 
-      <h2 id="agendaTemplates">Agenda templates</h2>
+      <h2 id="cadence">Known cadence and proposed additions</h2>
+      <table>
+        <thead><tr><th>Body or activity</th><th>Cadence</th><th>Status</th></tr></thead>
+        <tbody>
+          <tr><td><strong>General Assembly / AGM</strong></td><td>Annually, no later than 31 October</td><td>Ratified · Articles arts. 24–34</td></tr>
+          <tr><td><strong>Board of Directors</strong></td><td>At least four meetings each year</td><td>Ratified · Article 10</td></tr>
+          <tr><td><strong>DPMSG Steering Group</strong></td><td>Monthly in the archived 2025–26 record</td><td>Evidenced practice—not formally codified</td></tr>
+          <tr><td><strong>Engagement Working Group update</strong></td><td>Monthly in the archived 2026 record</td><td>Evidenced practice—not formally codified</td></tr>
+          <tr><td><strong>Domain Working Groups</strong></td><td>Defined in each charter; asynchronous work continues between meetings</td><td>Proposed standards operating model</td></tr>
+          <tr><td><strong>Interoperability Working Group</strong></td><td>Defined in its charter and aligned to domain hand-offs</td><td>Proposed standards operating model</td></tr>
+          <tr><td><strong>Public review</strong></td><td>Event-driven by a candidate's maturity, not a fixed meeting cycle</td><td>Proposed in ADR-0068</td></tr>
+        </tbody>
+      </table>
 
       <p>
-        Standard agenda structures for the main bodies, so that meetings produce
-        comparable outputs and the decision log captures consistent data.
+        Meeting frequency should be set by workload and participant capacity. A busy calendar is
+        not evidence of good governance; clear decisions, timely dispositions and broad
+        participation are.
       </p>
 
-      <h3 id="ecAgenda">Executive Committee — monthly</h3>
-
-      <p>
-        <strong>Topic-flagging convention</strong> (supports the topic-based steward
-        observer pattern in <a href="/governance/data-stewardship#stewardOverlap">page 24 §Role overlap</a>):
-        the Chair publishes the <strong>draft agenda 14 working days</strong> before
-        the meeting; Domain Data Stewards self-identify any agenda items affecting
-        their bounded context; the Chair issues the <strong>confirmed
-        steward-attendance list 7 working days</strong> before the meeting. The 14-day
-        notice gives volunteer stewards time to clear day-job commitments.
-      </p>
-
-      <ol>
-        <li><strong>Cadence items</strong> (5 min) — minutes from last meeting; standing actions; Chair updates.</li>
-        <li><strong>Topic-based steward agenda</strong> (10 min) — confirmed steward attendees per the topic-flagging convention above are recognised; any context-specific items from their inbox surfaced.</li>
-        <li><strong>Workstream updates</strong> (30 min) — WG chairs report (Technical, Engagement, Comms &amp; PR, Regulator, Policy); Sandbox / T&amp;I sub-group; finance &amp; budget.</li>
-        <li><strong>Decisions for ratification</strong> (30 min) — breaking-change escalations from Technical WG (per <a href="/governance/data-stewardship#raci">RACI step 6</a>); accreditation policy changes; conformance scheme adjustments; member admissions / suspensions.</li>
-        <li><strong>Strategic items</strong> (15 min) — items rising to next AGM; new bounded-context proposals; cross-cutting initiatives.</li>
-        <li><strong>Next month</strong> (5 min) — date, location/platform, anticipated agenda items, stewards to invite.</li>
-      </ol>
-
-      <h3 id="techWgAgenda">Technical WG — monthly</h3>
-
-      <ol>
-        <li><strong>PR triage</strong> — open PRs against the <code>next</code> branch; reviewers' availability; release-readiness assessment.</li>
-        <li><strong>Impact assessments due</strong> — Compliance &amp; Risk pipeline; backwards-compatibility flags.</li>
-        <li><strong>Breaking-change deliberation</strong> — synchronous discussion of MAJOR changes; consultation responses incoming; merge dates.</li>
-        <li><strong>Stewardship coordination</strong> — cross-overlay conflicts raised by stewards; escalations to Steward Roundtable.</li>
-        <li><strong>Tooling / process</strong> — schema CI, validator state, registry-publication pipeline.</li>
-        <li><strong>Blockers</strong> — anything waiting on EC / external stakeholder / regulator.</li>
-      </ol>
-
-      <h3 id="stewardRoundtableAgenda">Steward Roundtable — quarterly</h3>
-
-      <ol>
-        <li><strong>Cross-overlay calendar</strong> — changes planned in each bounded context next quarter; clash detection.</li>
-        <li><strong>Joint position papers</strong> — items where two or more contexts need to publish coordinated guidance.</li>
-        <li><strong>External liaison report-back</strong> — each steward summarises their interactions with industry-steward counterparts (Propertymark, RICS, Law Society, etc.) since last roundtable.</li>
-        <li><strong>Conflict raising</strong> — issues a single steward cannot resolve in their bounded context that affect adjacent ones.</li>
-        <li><strong>Pattern review</strong> — dissents and abstentions logged since last roundtable, per <a href="/governance/data-stewardship#dissent">page 24 §Dissent</a> — flag where they cluster.</li>
-        <li><strong>Chair rotation</strong> (annually) — handover.</li>
-      </ol>
-
-      <h3 id="engagementAgenda">Engagement WG — monthly all-member update</h3>
-
-      <p>
-        Existing practice (4 archived calls; "OPDA all member update — sandbox project"
-        is the prevailing format). Codifying the structure rather than reinventing it:
-      </p>
-
-      <ol>
-        <li><strong>Sandbox progress</strong> — workstreams, participants joined / left, next milestones.</li>
-        <li><strong>Schema &amp; standards updates</strong> — recent releases, upcoming consultations, breaking-change pipeline.</li>
-        <li><strong>Member spotlights / case studies</strong> — short member presentations.</li>
-        <li><strong>Open Q&amp;A</strong> — questions from members, association members, observers.</li>
-        <li><strong>Public consultation calls-to-action</strong> — open consultations the call attendees can respond to (with deadlines).</li>
-      </ol>
-
-      <h2 id="decisionLog">Decision log &amp; 10-year retention</h2>
-
-      <p>
-        <strong>Articles art. 16</strong> requires every unanimous or majority EC /
-        Board decision to be recorded in writing and retained for at least 10 years.
-        This page operationalises that requirement and extends the same pattern
-        (voluntarily) to working-group decisions.
-      </p>
-
-      <h3 id="decisionLogPath">Decision log path</h3>
-
+      <h2 id="meeting-record">What every standards meeting records</h2>
       <ul>
-        <li><strong>Location</strong>: <code>source/04-governance-bodies/decisions/YYYY/MM/decision-NNN.md</code></li>
-        <li><strong>One file per decision</strong>, with deterministic numbering inside the month folder for predictable URLs.</li>
-        <li><strong>Decisions index</strong> at <code>source/04-governance-bodies/decisions/INDEX.md</code> linking every decision in reverse-chronological order.</li>
+        <li>date, purpose, convenor, attendees, affiliations and declared interests;</li>
+        <li>the agenda and exact artefact or issue versions discussed;</li>
+        <li>evidence presented, material alternatives and unresolved questions;</li>
+        <li>proposals to take to asynchronous review—not simply “agreed in the room”;</li>
+        <li>actions, owners, due dates and links to canonical issues; and</li>
+        <li>recording and transcript details where participants were notified and the use is lawful.</li>
+      </ul>
+      <p>
+        Recordings and transcripts are evidence inputs. They are not decisions, and they do not
+        authorise AI to infer agreement from tone, attendance or silence.
+      </p>
+
+      <h2 id="issue-record">The canonical issue and disposition record</h2>
+      <p>Every substantive question should contain:</p>
+      <ul>
+        <li>a stable ID, title, bounded context and affected artefact/version;</li>
+        <li>proposer, affiliation, date, evidence links and rights classification;</li>
+        <li>the problem, options, candidate change and interoperability/compatibility impact;</li>
+        <li>links to relevant threads, meetings and reviewer comments;</li>
+        <li>declared interests and disclosure of material AI assistance;</li>
+        <li>a reasoned disposition: accepted, needs evidence, deferred, duplicate/out of scope, or not accepted;</li>
+        <li>any dissent, Formal Objection, remedy, response or appeal; and</li>
+        <li>the eligible decision set, result, Chair, date, implementation link and validation result.</li>
       </ul>
 
-      <h3 id="decisionLogSchema">What each entry records</h3>
-
-      <table>
-        <thead>
-          <tr><th>Field</th><th>Required?</th><th>Notes</th></tr>
-        </thead>
-        <tbody>
-          <tr><td>Decision ID</td><td>Required</td><td><code>NNN</code> matches the filename suffix.</td></tr>
-          <tr><td>Date</td><td>Required</td><td>ISO 8601.</td></tr>
-          <tr><td>Body</td><td>Required</td><td>GA / Board / EC / Technical WG / Compliance &amp; Risk / Engagement WG / Steward Roundtable.</td></tr>
-          <tr><td>Decision text</td><td>Required</td><td>One paragraph; the actual decision, not the discussion.</td></tr>
-          <tr><td>Vote split</td><td>Required for EC / Board (Art. 16); proposed for WGs</td><td>For/against/abstain counts; named votes for breaking changes.</td></tr>
-          <tr><td>Linked release</td><td>If applicable</td><td>Tag in <a class="resource-link" href="/resource?path=source/03-standards/trust-framework/docs/release-version-register.md"><code>release-version-register.md</code></a>.</td></tr>
-          <tr><td>Dissenting position</td><td>Voluntary</td><td>Publish-on-submit per <a href="/governance/data-stewardship#dissent">page 24 §Dissent</a> — up to 200 words; the Engagement WG curates.</td></tr>
-          <tr><td>Action items</td><td>If applicable</td><td>Owner + due date; surfaces in next meeting's "cadence items".</td></tr>
-        </tbody>
-      </table>
-
-      <h3 id="patternAnalysis">Pattern analysis</h3>
-
-      <p>
-        Compliance &amp; Risk (governance.md §3.C) reviews the decision log on a
-        rolling quarterly basis for patterns: who dissents and on what, which bounded
-        contexts have the highest decision velocity, where action items consistently
-        miss due dates. Surface findings to the Steward Roundtable and to the EC at
-        the strategic-items agenda slot.
-      </p>
-
-      <h2 id="ingressChannels">Feedback channels — ingress</h2>
-
-      <p>
-        Five named channels through which feedback enters the standard. The first
-        four are <strong>ratified-as-practice</strong> (they exist and are used); the
-        fifth is <strong>proposed</strong>.
-      </p>
-
-      <table>
-        <thead>
-          <tr>
-            <th>Channel</th>
-            <th>For what</th>
-            <th>Status</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td><strong>GitHub Issues</strong> on the schema and trust-framework repos</td>
-            <td>Technical change proposals; bug reports; comment on PRs</td>
-            <td>R-practice — public repos</td>
-          </tr>
-          <tr>
-            <td><strong>Engagement WG monthly all-member call</strong></td>
-            <td>Verbal feedback; informal questions; sandbox-relevant input</td>
-            <td>R-practice — 4 calls archived</td>
-          </tr>
-          <tr>
-            <td><strong>Annual self-reassessment forms</strong></td>
-            <td>Continuous-improvement input from accredited members</td>
-            <td>R — Accreditation Policy clauses 16–17</td>
-          </tr>
-          <tr>
-            <td><strong>Open consultation responses</strong> (to MHCLG, FCA, ICO)</td>
-            <td>OPDA's own positions on external consultations; received responses inform internal direction</td>
-            <td>R-practice — informal</td>
-          </tr>
-          <tr>
-            <td><strong>Public Consultation Portal</strong> — Artalk on Astro consultation pages</td>
-            <td>Structured responses to OPDA-issued consultations on breaking changes. Each consultation is published as an Astro page (the "paper"); an embedded self-hosted Artalk thread on that page captures responses Quora-style — page is the question, thread is the answers. See §<a href="#consultationPortal">Where consultations live</a>.</td>
-            <td>P — toolchain chosen; deployment timed to first MAJOR consultation</td>
-          </tr>
-          <tr>
-            <td><strong>Stewardship Inbox</strong></td>
-            <td>Domain-specific feedback routed to the relevant Domain Data Steward</td>
-            <td>P — new with stewardship layer</td>
-          </tr>
-        </tbody>
-      </table>
-
-      <h2 id="ingestionWorkflow">Feedback ingestion workflow</h2>
-
-      <p>
-        How any incoming item — regardless of channel — moves from receipt to
-        resolution and into the decision log.
-      </p>
-
-      <Diagram caption="Feedback ingestion swimlane. The five ingress channels (left) feed a single triage queue handled by the relevant Domain Data Steward, which categorises and routes to the appropriate body. Resolution closes the loop back to the original channel and writes to the decision log.">
-flowchart LR
-  GH["GitHub Issues"]:::infra
-  EWG["Engagement WG call"]:::infra
-  PCP["Public Consultation Portal"]:::infra
-  SI["Stewardship Inbox"]:::infra
-  SR["Self-reassessment"]:::infra
-
-  TR["`**Triage**
-assigned steward
-5–15 working days
-(tiered by issue type)`"]:::process
-  CAT{"`**Categorise**`"}:::warning
-  RT["`**Route**
-Technical WG /
-C&amp;R / Engagement WG /
-EC`"]:::process
-  RES["`**Resolve**
-20–40 working days
-(tiered by issue type)`"]:::process
-  REC["`**Record**
-decision log +
-Stakeholder Version Register`"]:::success
-
-  GH --> TR
-  EWG --> TR
-  PCP --> TR
-  SI --> TR
-  SR --> TR
-  TR --> CAT
-  CAT -->|Clarification| RT
-  CAT -->|Proposal| RT
-  CAT -->|Bug| RT
-  CAT -->|Breaking| RT
-  RT --> RES
-  RES --> REC
-</Diagram>
-
-      <h3 id="slas">Proposed service-level agreements — calibrated to volunteer-body reality</h3>
-
       <div class="callout callout--note">
-        <div class="callout__label">Calibration</div>
+        <div class="callout__label">Tool-independent governance</div>
         <p>
-          OPDA is a volunteer-staffed federation. Stewards, Technical WG reviewers, and
-          Compliance &amp; Risk participants all hold full-time jobs at their member
-          firms. These SLAs reflect that reality — they are calibrated to allow people
-          to respond around day-job priorities rather than as their primary
-          occupation. DCAM and DAMA-DMBOK both endorse <em>tiered</em> SLAs (rather
-          than flat) but neither prescribes specific numbers; the timings below are
-          OPDA's proposal, with precedent drawn from HMRC consultations (6 weeks
-          standard), Open Banking (28-day cycles) and W3C wide review (4 weeks).
+          Teams, Artalk, GitHub or another interface may make discussion easier. None should be
+          allowed to become the only copy of the formal record. The register must preserve stable
+          identifiers, provenance, dispositions and decisions even if a discussion tool changes.
         </p>
       </div>
 
+      <h2 id="consensus">Consensus calls</h2>
+      <p>
+        ADR-0068 proposes a default 10-working-day call identifying the exact proposal, diff,
+        evidence, open risks and deadline. Silence is abstention. Unless a charter is stronger,
+        advancement needs explicit support from at least three independent organisations across
+        two materially affected stakeholder categories. Voting is an exceptional deadlock route,
+        not the default way to settle technical meaning.
+      </p>
+
+      <h2 id="public-review">Public review</h2>
       <table>
-        <thead>
-          <tr>
-            <th>Issue type</th>
-            <th>Triage SLA</th>
-            <th>Substantive response SLA</th>
-          </tr>
-        </thead>
+        <thead><tr><th>Review event</th><th>Minimum proposed window</th><th>Required outcome</th></tr></thead>
         <tbody>
           <tr>
-            <td><strong>Bug</strong> — production-affecting schema or framework error</td>
-            <td>5 working days</td>
-            <td>20 working days fix or workaround</td>
+            <td><strong>First Public Review Draft</strong></td>
+            <td>30 calendar days</td>
+            <td>Every material comment acknowledged, linked to an issue and given a reasoned disposition.</td>
           </tr>
           <tr>
-            <td><strong>Clarification</strong> — questions about existing artefacts</td>
-            <td>10 working days</td>
-            <td>20 working days</td>
+            <td><strong>Material change after review</strong></td>
+            <td>15 calendar days for the affected material</td>
+            <td>The changed material is reviewed again before advancement.</td>
           </tr>
           <tr>
-            <td><strong>Proposal</strong> — new feature / overlay change request</td>
-            <td>15 working days</td>
-            <td>40 working days decision</td>
-          </tr>
-          <tr>
-            <td><strong>Breaking change</strong></td>
-            <td>15 working days</td>
-            <td>Per public consultation window (see §<a href="#publicConsultation">Public consultation mechanics</a>)</td>
-          </tr>
-          <tr>
-            <td><strong>Auto-acknowledge</strong> — every inbound message</td>
-            <td>1 hour (automated)</td>
-            <td>—</td>
+            <td><strong>Editorial correction</strong></td>
+            <td>No restarted public-review window</td>
+            <td>Independent review and a change-log entry.</td>
           </tr>
         </tbody>
       </table>
+      <p>
+        Closing the review window does not authorise release. Comment disposition, consensus,
+        independent technical and risk gates, conformance, implementation evidence and formal
+        ratification still follow. See
+        <a href="/governance/standards-lifecycle#public-review">standards lifecycle &amp; ratification</a>.
+      </p>
 
+      <h2 id="retention">Decision records and retention</h2>
+      <p>
+        Article 16 requires Executive Committee and Board decision records to be kept for at
+        least 10 years. ADR-0068 proposes using that as the baseline for standards stage-decision
+        records as well. The proposed Standards Secretariat maintains charters, rosters, notices,
+        minutes, issue and disposition records, stage registers, review windows, release manifests
+        and appeals; it verifies completeness but does not approve content.
+      </p>
+
+      <h2 id="measures">Useful operating measures</h2>
       <ul>
-        <li><strong>Triage</strong> means the assigned Domain Data Steward acknowledges receipt, classifies the issue, and confirms routing. In-progress responses are acceptable ("we are evaluating; expect substantive response by &lt;date&gt;") and count as meeting the SLA.</li>
-        <li><strong>Breaking-change consultation comments</strong> are governed by a tighter rule: every substantive comment received during a Public Consultation Window receives a <strong>documented response before merge</strong>. This is non-negotiable — if responses cannot be completed in time, the merge slips.</li>
-        <li><strong>Seasonal flex</strong>: during member-firm seasonal peaks (conveyancing year-end, lender financial year-end, tax year-end), SLAs may extend; the Engagement WG flags expected delays in advance via the all-member call.</li>
+        <li>age of untriaged evidence and unresolved blocking issues;</li>
+        <li>time to acknowledge and dispose substantive comments;</li>
+        <li>participating organisations and affected stakeholder breadth;</li>
+        <li>coverage, validation, conformance and implementation results;</li>
+        <li>appeals, overdue reviews and decisions without complete records.</li>
+      </ul>
+      <p>
+        Raw message volume, meeting attendance, reaction counts and model agreement are not
+        quality measures.
+      </p>
+
+      <h2 id="open-decisions">Operational decisions still required</h2>
+      <ul>
+        <li>the initial Standards Secretariat, accountable sponsor and named role holders;</li>
+        <li>approved Domain and Interoperability Working Group charters and their cadences;</li>
+        <li>the issue/stage register implementation and public consultation interface;</li>
+        <li>service targets for triage and disposition that reflect volunteer capacity;</li>
+        <li>recording, transcription, retention and access rules; and</li>
+        <li>contribution, IPR and confidentiality terms before first public review.</li>
       </ul>
 
-      <h2 id="versionRegister">Stakeholder Version Register operationalised</h2>
-
-      <p>
-        The artefact already exists at
-        <a class="resource-link" href="/resource?path=source/03-standards/trust-framework/docs/release-version-register.md"><code>release-version-register.md</code></a>
-        and is referenced in <code>governance.md</code> §6 (SOP step 8). The process
-        for maintaining it is what this page proposes.
-      </p>
-
-      <h3 id="versionRegisterContents">What it records per release</h3>
-
+      <h2 id="sources">Sources and related pages</h2>
       <ul>
-        <li><strong>Version</strong> — semver tag (MAJOR.MINOR.PATCH).</li>
-        <li><strong>Change type</strong> — breaking / non-breaking; per-overlay or framework-wide.</li>
-        <li><strong>Bounded context(s) affected</strong> — links to the relevant Domain Data Steward.</li>
-        <li><strong>Stakeholders notified</strong> — list of organisations + notification date.</li>
-        <li><strong>Public consultation summary</strong> — number of substantive responses, headline themes, link to full responses log.</li>
-        <li><strong>Vote split</strong> — at Technical WG and (for breaking changes) at EC.</li>
-        <li><strong>Submitted dissents</strong> — links to any 200-word positions filed per <a href="/governance/data-stewardship#dissent">page 24 §Dissent</a>.</li>
-        <li><strong>Linked decision log entry</strong> — back-pointer to the canonical decision file.</li>
+        <li><a href="/governance/standards-lifecycle">How OPDA develops and approves standards</a></li>
+        <li><a href="/governance/data-stewardship">Data stewardship &amp; decision rights</a></li>
+        <li><a href="/governance/change-management">Current change-management process</a></li>
+        <li><a class="resource-link" href="/resource?path=source/01-organisation/constitution-and-policies/Articles of Association 2026.pdf">Articles of Association 2026</a></li>
+        <li><a class="resource-link" href="/resource?path=source/03-standards/trust-framework/docs/governance.md">Current Trust Framework governance material</a></li>
       </ul>
 
-      <h3 id="versionRegisterMaintenance">Who maintains it</h3>
-
-      <p>
-        The <strong>Engagement WG</strong> per <code>governance.md</code> §3.D
-        ("Regular publishing of findings related to PDTF"). Each release adds one row.
-        Compliance &amp; Risk reviews quarterly per §<a href="#patternAnalysis">Pattern analysis</a>.
-      </p>
-
-      <h2 id="publicConsultation">Public consultation mechanics</h2>
-
-      <p>
-        Fills the <code>X</code> placeholders in <a href="/governance/change-management#thresholds">change-management §thresholds</a>.
-      </p>
-
-      <h3 id="consultationPortal">Where consultations live: Astro pages + Artalk threads</h3>
-
-      <p>
-        Each consultation is published as an Astro page on the OPDA site — the page
-        itself is the "paper" containing the proposal, rationale, evidence, and call
-        for feedback. An embedded self-hosted
-        <a href="https://artalk.js.org/" target="_blank" rel="noopener">Artalk</a>
-        threaded-discussion widget on the same page captures responses, Quora-style:
-        the page is the question, the thread is the answers. Responses persist in
-        OPDA-hosted storage with full PII control, supporting governance-grade
-        retention even though they sit outside the strict Articles art. 16 scope
-        (which covers EC and Board decisions).
-      </p>
-
-      <p>
-        Artalk is the same toolchain already operational on OPDA's sister ontology
-        browser, where it serves as a per-page discussion thread on every page. The
-        plan extends the same pattern to the OPDA site: a per-page general
-        discussion thread on every Astro page, plus dedicated consultation pages
-        whose thread is the formal consultation response record. Identity is
-        pre-filled from single sign-on so respondents are known and accountable;
-        moderation, accessibility (WCAG via ARIA patches), and design-system
-        integration carry over from the sister implementation.
-      </p>
-
-      <h3 id="consultationTiming">Window length</h3>
-
-      <table>
-        <thead>
-          <tr><th>Change type</th><th>Consultation window</th><th>Precedent</th></tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td><strong>Breaking</strong> (MAJOR) or stable-area touching</td>
-            <td><strong>6 weeks (30 working days)</strong></td>
-            <td>HMRC standard consultation window; above W3C wide review (4 weeks) and Open Banking (28 days), below gov.uk 12-week ceiling. Calibrated to volunteer respondents who need time to consult internally.</td>
-          </tr>
-          <tr>
-            <td><strong>Non-breaking</strong> (MINOR) — new fields or overlays, backward compatible</td>
-            <td><strong>3 weeks (15 working days)</strong></td>
-            <td>Proportional to lower impact but gives day-job respondents a weekend or two to engage. Wider than IETF "last call" because OPDA respondents lack institutional support.</td>
-          </tr>
-          <tr>
-            <td><strong>PATCH</strong> — doc-only, typo, bug fix</td>
-            <td>No consultation required</td>
-            <td>Steward decides alone per <a href="/governance/data-stewardship#decisionRights">Decision rights</a>; stakeholders informed at release via Stakeholder Version Register.</td>
-          </tr>
-        </tbody>
-      </table>
-
-      <h3 id="consultationTimeline">Breaking-change timeline</h3>
-
-      <Diagram caption="Breaking-change consultation timeline at 6 weeks. T-42 days (6 weeks) = notification published; T-21 days (3 weeks) = Engagement WG all-member call surfaces the change at the consultation midpoint; T-14 days (2 weeks) = final comment deadline, giving OPDA respondents 2 weeks to answer comments before merge; T-0 = merge to master; T+30 days = post-release review. The 4-week open / 2-week response split is calibrated for volunteer respondents.">
-flowchart LR
-  T0["`**T &minus; 42 days**
-Breaking-change
-notification published`"]:::process
-  T1["`**T &minus; 21 days**
-Engagement WG
-all-member call
-surfaces the change`"]:::process
-  T2["`**T &minus; 14 days**
-Final comment
-deadline`"]:::process
-  T3["`**T 0**
-Merge to master
-+ tag release`"]:::infra
-  T4["`**T + 30 days**
-Post-release
-review`"]:::success
-
-  T0 --> T1 --> T2 --> T3 --> T4
-</Diagram>
-
-      <h3 id="consultationObligations">Response obligations</h3>
-
-      <ul>
-        <li><strong>Every substantive comment receives a documented response before merge.</strong> If responses cannot be completed in time, the merge slips. Non-negotiable per §<a href="#slas">SLAs</a>.</li>
-        <li>Responses published in the Stakeholder Version Register entry for that release.</li>
-        <li>"Substantive" excludes off-topic, abusive, or fully-out-of-scope comments — the Engagement WG curates with the relevant steward.</li>
-      </ul>
-
-      <h3 id="consultationParticipants">Who can respond</h3>
-
-      <p>
-        Open to <strong>all stakeholders</strong>: members, non-member firms,
-        regulators, government departments, consumers / the public. Detail on
-        differential participation rights — what regulators get to weigh in on vs.
-        what consumers can comment on — is on the <a href="/governance/stakeholder-engagement">Stakeholder engagement</a> page.
-      </p>
-
-      <h3 id="publicationPolicy">Publication policy — public by default with opt-out</h3>
-
-      <p>
-        Consultation responses are <strong>published by default with respondent name
-        attributed</strong>, matching gov.uk standard practice and W3C wide-review
-        norms. Respondents may submit a written <strong>opt-out request</strong>
-        alongside their response asking for anonymisation; the Engagement WG decides
-        based on the substance — typically granted for commercially sensitive
-        content where naming the firm would create competitive harm, and declined
-        for statements of position where the public interest in transparency
-        outweighs.
-      </p>
-
-      <p>
-        Anonymisation, when granted, removes the respondent's name and firm but
-        preserves the content. The Engagement WG's decision on each request is
-        itself recorded (against the response ID, anonymously if the request was
-        granted) in the <a href="#versionRegister">Stakeholder Version Register</a>
-        for audit. Artalk supports the dual-mode configuration via per-thread
-        settings, so the toolchain enforces the policy automatically once
-        configured.
-      </p>
-
-      <h2 id="openQuestions">Open questions</h2>
-
-      <ol>
-        <li><strong>Policy WG remit</strong> — the <a class="resource-link" href="/library/resources#cat-governance-bodies"><code>working-groups/policy/</code></a> folder is empty in the corpus. Before setting cadence, the WG's remit needs to be defined (policy positions for external consultations? internal OPDA policy authoring? regulatory alignment? something else?). Cadence follows from remit, not the other way round.</li>
-        <li><strong>Async vs synchronous default for Technical WG</strong> — async-first is proposed; whether the synchronous call should be standing monthly or convened only for breaking-change discussions is a coordination choice.</li>
-        <li><strong>Decision-log retention extension</strong> — Articles art. 16 mandates 10y for EC + Board. Should we extend to all WG decisions for symmetry? Storage cost is negligible; the choice is about retention policy obligation.</li>
-        <li><strong>Quorum for Comms &amp; PR, Regulator, Policy WGs</strong> — not yet defined; presumably 3 members per <a href="/governance/data-stewardship#techWgQuorum">Technical WG pattern</a>, but each WG may need bespoke rules.</li>
-      </ol>
-
-      <h2 id="relatedPages">Related pages</h2>
-
-      <ul>
-        <li><a href="/governance/steering-forums">Steering &amp; coordination</a> — DPMSG structure that this page operationalises.</li>
-        <li><a href="/governance/change-management">Change management</a> — the 8-step SOP whose <code>X</code> placeholders this page fills.</li>
-        <li><a href="/governance/lifecycle-versioning">Lifecycle &amp; versioning</a> — how the version register intersects with semver.</li>
-        <li><a href="/governance/data-stewardship">Data stewardship &amp; decision rights</a> — the roles whose rhythm this page sets.</li>
-        <li><a href="/governance/stakeholder-engagement">Stakeholder engagement</a> — who gets to participate in the consultations described here.</li>
-      </ul>
+      <div class="page-footer">
+        <a href="/governance/data-stewardship">&larr; Data stewardship</a>
+        <a href="/governance/stakeholder-engagement">Stakeholder engagement &rarr;</a>
+      </div>
 </Layout>

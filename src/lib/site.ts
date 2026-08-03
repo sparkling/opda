@@ -85,7 +85,7 @@ export const SECTIONS: Record<string, Section> = {
     key: 'governance',
     title: 'Governance',
     summary:
-      "How OPDA is governed, who governs it, the UK government initiative it sits inside, and the published rules that make the standard authoritative.",
+      "How OPDA is governed, who has authority, how standards are developed, and which rules are ratified, practised or proposed.",
     groups: [
       { heading: 'Overview', items: [
         { url: '/governance', title: 'Section overview' },
@@ -105,17 +105,18 @@ export const SECTIONS: Record<string, Section> = {
         { url: '/governance/strategic-alignment', title: 'Strategic alignment' },
       ]},
       { heading: "OPDA's rules", items: [
+        { url: '/governance/standards-lifecycle',     title: 'Standards lifecycle' },
+        { url: '/governance/change-management',      title: 'Change management' },
+        { url: '/governance/lifecycle-versioning',   title: 'Release versioning' },
         { url: '/governance/conformance-scheme',     title: 'Conformance & certification' },
         { url: '/governance/accreditation-directory',title: 'Accreditation Directory' },
-        { url: '/governance/change-management',      title: 'Change management' },
-        { url: '/governance/lifecycle-versioning',   title: 'Lifecycle & versioning' },
         { url: '/governance/risk-liability',         title: 'Risk & liability' },
         { url: '/governance/deferred-work',          title: 'Deferred work register' },
         { url: '/governance/council',                title: 'Council sessions' },
       ]},
       { heading: 'Operating Model', items: [
         { url: '/governance/data-stewardship',       title: 'Data stewardship & decision rights' },
-        { url: '/governance/meetings-and-feedback',  title: 'Meeting cadence & feedback' },
+        { url: '/governance/meetings-and-feedback',  title: 'Meetings & feedback' },
         { url: '/governance/stakeholder-engagement', title: 'Stakeholder engagement' },
         { url: '/governance/overlay-attachments',    title: 'Overlay attachments' },
       ]},

@@ -4,17 +4,16 @@ import PageMeta from '@/components/PageMeta.astro';
 ---
 <Layout
   title="Governance"
-  description="How OPDA is governed: UK initiative context, ToIP framework, conformance, change management, lifecycle, risk."
+  description="How OPDA is governed: constitutional authority, standards development, conformance, change management, lifecycle and risk."
 >
-<PageMeta category="Section overview" variant="brand" updated="Updated 2026-05-17" />
+<PageMeta category="Section overview" variant="brand" updated="Updated 2026-08-03" />
 
       <h1>Governance</h1>
       <p class="lead">
-        How OPDA is governed, who governs it, the UK government initiative it sits
-        inside, and the published rules that make the standard authoritative. PDTF
-        follows the Trust Over IP four-layer model, with the wider context defined by
-        the Digital Markets, Competition and Consumers Act 2024 and coordinated through
-        the Digital Property Market Steering Group.
+        How OPDA is governed, who has authority, how standards are developed, and which
+        rules are ratified, practised or still proposed. The wider context includes the
+        Trust Over IP model, the Digital Markets, Competition and Consumers Act 2024 and
+        coordination through the Digital Property Market Steering Group.
       </p>
 
       <h2 id="uk-initiative-context">UK initiative context</h2>
@@ -73,8 +72,26 @@ import PageMeta from '@/components/PageMeta.astro';
       </div>
 
       <h2 id="opda-rules">OPDA's rules</h2>
-      <p>The published rules and procedures that make OPDA's standard authoritative.</p>
+      <p>
+        Constitutional rules, current procedures and clearly labelled proposals. A page
+        describing a proposal does not itself make that proposal authoritative.
+      </p>
       <div class="card-grid">
+        <a class="card" href="/governance/standards-lifecycle">
+          <div class="pill pill--warn">Proposed · ADR-0068</div>
+          <h3>Standards lifecycle &amp; ratification</h3>
+          <p>How evidence earns human consensus, passes public and independent review, and becomes a ratified OPDA Standard.</p>
+        </a>
+        <a class="card" href="/governance/change-management">
+          <div class="pill pill--info">Rules</div>
+          <h3>Change management</h3>
+          <p>Constitutional change through the General Assembly and the current 8-step schema implementation procedure.</p>
+        </a>
+        <a class="card" href="/governance/lifecycle-versioning">
+          <div class="pill pill--info">Draft policy</div>
+          <h3>Release versioning &amp; retirement</h3>
+          <p>Current version domains and the remaining rules for compatibility, deprecation, support and retirement.</p>
+        </a>
         <a class="card" href="/governance/conformance-scheme">
           <div class="pill pill--info">Rules</div>
           <h3>Conformance &amp; certification</h3>
@@ -84,16 +101,6 @@ import PageMeta from '@/components/PageMeta.astro';
           <div class="pill pill--brand">Rules · new</div>
           <h3>Accreditation Directory</h3>
           <p>Two-axis maturity view per member firm — AL coverage + capability scores. Full spec in ADR 0004.</p>
-        </a>
-        <a class="card" href="/governance/change-management">
-          <div class="pill pill--info">Rules</div>
-          <h3>Change management</h3>
-          <p>Two pathways: constitutional change (General Assembly, 30-day notice) and technical change (8-step SOP).</p>
-        </a>
-        <a class="card" href="/governance/lifecycle-versioning">
-          <div class="pill pill--info">Rules</div>
-          <h3>Lifecycle &amp; versioning</h3>
-          <p>PDTF schemas v3.5.0 (semver). Deprecation policy still in design.</p>
         </a>
         <a class="card" href="/governance/risk-liability">
           <div class="pill pill--info">Rules</div>
@@ -106,19 +113,19 @@ import PageMeta from '@/components/PageMeta.astro';
       <p>How the framework runs day-to-day: who's accountable, when meetings happen, who engages with stakeholders, how unstructured attachments flow. Adopts DCAM v3's "Operating Model" component name directly.</p>
       <div class="card-grid">
         <a class="card" href="/governance/data-stewardship">
-          <div class="pill pill--info">Operating</div>
+          <div class="pill pill--warn">Operating · proposed</div>
           <h3>Data stewardship &amp; decision rights</h3>
-          <p>Domain Data Stewards (one per bounded context), RACI for the 8-step SOP, decision rights matrix, and voting mechanics grounded in the Articles.</p>
+          <p>Domain Working Groups own local meaning; Interoperability owns common boundaries and mappings; independent functions verify; authorised OPDA governance ratifies.</p>
         </a>
         <a class="card" href="/governance/meetings-and-feedback">
           <div class="pill pill--info">Operating</div>
           <h3>Meeting cadence &amp; feedback</h3>
-          <p>Volunteer-paced SLAs, 6-week breaking-change consultations on Astro+Artalk pages, 10-year decision log, and the topic-flagging convention for EC stewards.</p>
+          <p>Meeting cadence, feedback channels, issue disposition, public review and the 10-year constitutional decision-record baseline.</p>
         </a>
         <a class="card" href="/governance/stakeholder-engagement">
           <div class="pill pill--info">Operating</div>
           <h3>Stakeholder engagement</h3>
-          <p>Five engagement modes — members, non-member firms, regulators, government, consumers. FCA via PRISM, Which? as consumer voice, devolved-nations engagement active.</p>
+          <p>Broad standards participation for members, invited non-members, regulators, government and the public—without confusing contribution with corporate authority.</p>
         </a>
         <a class="card" href="/governance/overlay-attachments">
           <div class="pill pill--brand">Operating · new</div>
@@ -144,6 +151,11 @@ import PageMeta from '@/components/PageMeta.astro';
 
       <h2 id="status">Status at a glance</h2>
 
+      <p>
+        Status here describes the maturity of the website page or proposal—not the maturity
+        of an ontology, schema or standards release.
+      </p>
+
       <table>
         <thead><tr><th>Artefact</th><th>Status</th><th>Where</th></tr></thead>
         <tbody>
@@ -158,11 +170,12 @@ import PageMeta from '@/components/PageMeta.astro';
           <tr><td>Conformance &amp; certification</td><td>✅ Draft</td><td><a href="/governance/conformance-scheme">/governance/conformance-scheme</a></td></tr>
           <tr><td>Accreditation Directory</td><td>📋 Spec (ADR 0004) · ✅ Draft page</td><td><a href="/governance/accreditation-directory">/governance/accreditation-directory</a></td></tr>
           <tr><td>Change management</td><td>✅ Draft</td><td><a href="/governance/change-management">/governance/change-management</a></td></tr>
-          <tr><td>Lifecycle &amp; versioning</td><td>⏳ Stub</td><td><a href="/governance/lifecycle-versioning">/governance/lifecycle-versioning</a></td></tr>
+          <tr><td>Standards lifecycle &amp; ratification</td><td>⚠️ Proposed — not yet operative</td><td><a href="/governance/standards-lifecycle">/governance/standards-lifecycle</a></td></tr>
+          <tr><td>Release versioning &amp; retirement</td><td>✅ Draft page · policy incomplete</td><td><a href="/governance/lifecycle-versioning">/governance/lifecycle-versioning</a></td></tr>
           <tr><td>Risk &amp; liability</td><td>✅ Draft</td><td><a href="/governance/risk-liability">/governance/risk-liability</a></td></tr>
-          <tr><td>Data stewardship &amp; decision rights</td><td>✅ Draft</td><td><a href="/governance/data-stewardship">/governance/data-stewardship</a></td></tr>
-          <tr><td>Meeting cadence &amp; feedback channels</td><td>✅ Draft</td><td><a href="/governance/meetings-and-feedback">/governance/meetings-and-feedback</a></td></tr>
-          <tr><td>Stakeholder engagement</td><td>✅ Draft</td><td><a href="/governance/stakeholder-engagement">/governance/stakeholder-engagement</a></td></tr>
+          <tr><td>Data stewardship &amp; decision rights</td><td>⚠️ Proposed operating model</td><td><a href="/governance/data-stewardship">/governance/data-stewardship</a></td></tr>
+          <tr><td>Meetings, feedback &amp; decision records</td><td>⚠️ Mixed status · proposal clearly labelled</td><td><a href="/governance/meetings-and-feedback">/governance/meetings-and-feedback</a></td></tr>
+          <tr><td>Stakeholder engagement</td><td>⚠️ Mixed status · proposal clearly labelled</td><td><a href="/governance/stakeholder-engagement">/governance/stakeholder-engagement</a></td></tr>
           <tr><td>Overlay attachments policy</td><td>🚧 Stub · Technical WG</td><td><a href="/governance/overlay-attachments">/governance/overlay-attachments</a></td></tr>
           <tr><td>Data quality framework</td><td>✅ Draft · C&amp;R WG</td><td><a href="/governance/data-quality">/governance/data-quality</a></td></tr>
           <tr><td>Data security framework</td><td>✅ Draft · C&amp;R WG</td><td><a href="/governance/data-security">/governance/data-security</a></td></tr>

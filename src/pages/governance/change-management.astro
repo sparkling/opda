@@ -5,29 +5,49 @@ import Diagram from '@/components/Diagram.astro';
 ---
 <Layout
   title="Change management process"
-  description="How OPDA changes its rules and standards &amp;mdash; constitutional amendments through the General Assembly, and technical schema changes via the PDTF SOP."
+  description="How OPDA currently changes its constitutional rules and implements technical schema changes, with the proposed standards lifecycle shown separately."
 >
-<PageMeta category="Governance" updated="Draft · Updated 2026-05-17" damaKa={["Data Governance"]} />
+<PageMeta category="Governance" updated="Current baseline + proposed extension · Updated 2026-08-03" damaKa={["Data Governance"]} />
 
       <h1>Change management process</h1>
       <p class="lead">
-        Two distinct change pathways exist at OPDA: <strong>constitutional / governance change</strong>
-        (the rules of the Association itself) and <strong>technical / schema change</strong>
-        (the PDTF artefacts). Each has its own approval route and authority.
+        OPDA has constitutional machinery for changing the Association's rules and an
+        8-step procedure for implementing changes to the existing PDTF schema corpus. A
+        separate, end-to-end standards-development and ratification lifecycle is now proposed.
       </p>
 
-      <Diagram size="small" caption="Two pathways, two authorities. The constitutional route runs through company-law machinery; the technical route runs through the PDTF Standard Operating Procedure.">
+      <div class="callout callout--warn">
+        <div class="callout__label">Do not confuse implementation approval with standards ratification</div>
+        <p>
+          The current 8-step SOP remains the baseline for the legacy schema implementation
+          workflow. <a href="/governance/standards-lifecycle">ADR-0068's proposed standards
+          lifecycle</a> adds working-group consensus, public review, objections, independent
+          checks, implementation evidence and formal ratification. It is not operative until
+          accepted by the Executive Committee, Board or a valid recorded delegate.
+        </p>
+      </div>
+
+      <Diagram size="medium" caption="Three related routes with different authority. Blue paths are current constitutional or technical procedures; the standards route is proposed in ADR-0068.">
 flowchart LR
   C["`Constitutional
-change`"]:::process
-  T["`Technical /
-schema change`"]:::process
+  change`"]:::process
+  T["`Existing schema
+  implementation`"]:::process
+  S["`Standards-track
+  proposal *(proposed)*`"]:::warning
   GA["`General Assembly
-*majority vote*`"]:::infra
+  *majority vote*`"]:::infra
   TR["`Technical Reviewers
-*at least two members*`"]:::service
+  *current SOP*`"]:::service
+  WG["`Domain WG / Interoperability WG
+  *human consensus*`"]:::service
+  GATES["`Independent technical
+  + risk gates`"]:::process
+  RAT["`Executive Committee / Board
+  *ratification*`"]:::success
   C --> GA
   T --> TR
+  S --> WG --> GATES --> RAT
 </Diagram>
 
       <h2 id="constitutional">A. Constitutional &amp; governance change</h2>
@@ -101,8 +121,8 @@ schema change`"]:::process
       <h2 id="technical">B. Technical &amp; schema change</h2>
 
       <p>
-        Changes to the PDTF schema, overlays, and trust-framework artefacts follow the
-        canonical Standard Operating Procedure documented in
+        Changes to the existing PDTF schema, overlays, and trust-framework artefacts currently
+        use the Standard Operating Procedure documented in
         <a class="resource-link" href="/resource?path=source/03-standards/trust-framework/docs/governance.md"><code>source/03-standards/trust-framework/docs/governance.md</code></a> &sect; 6.
         The current published schema version is
         <strong>3.5.0</strong> (per <a class="resource-link" href="/resource?path=source/03-standards/schemas/package.json"><code>schemas/package.json</code></a>).
@@ -134,7 +154,12 @@ flowchart LR
         <li><strong>Release.</strong> Once fully approved the release is operational. Stakeholders are advised to update the Stakeholder Version Register.</li>
       </ol>
 
-      <h3 id="thresholds">Approval thresholds</h3>
+      <h3 id="thresholds">Current implementation-review thresholds</h3>
+
+      <p>
+        These reviewer thresholds belong to the existing schema SOP. They are not the proposed
+        consensus or ratification thresholds for a new OPDA Standard.
+      </p>
 
       <ul>
         <li><strong>Promotion to <code>next</code>.</strong> At least <em>X</em> Technical Reviewers must approve (the SOP placeholder &mdash; specific number still TBD).</li>
@@ -212,16 +237,20 @@ flowchart LR
         <li><a class="resource-link" href="/resource?path=source/03-standards/trust-framework/docs/compliance-and-policy-checklist.md"><code>source/03-standards/trust-framework/docs/compliance-and-policy-checklist.md</code></a> &mdash; Compliance and policy checklist (pre-release).</li>
       </ul>
 
-      <h2 id="canonical">Canonical source</h2>
+      <h2 id="canonical">Sources and relationship between the procedures</h2>
 
       <p>
-        The single authoritative reference for the technical change procedure is
+        For the <strong>existing schema implementation workflow</strong>, the authoritative
+        reference remains
         <a class="resource-link" href="/resource?path=source/03-standards/trust-framework/docs/governance.md"><code>source/03-standards/trust-framework/docs/governance.md</code></a>.
-        If this page and that file disagree, governance.md wins.
+        If this page and that file disagree about the current 8-step SOP, that file wins.
+        <a href="/governance/standards-lifecycle">The proposed standards lifecycle</a> addresses
+        the broader route from evidence to an OPDA Standard and would become authoritative only
+        after ADR-0068 is accepted.
       </p>
 
       <div class="page-footer">
         <a href="/governance/conformance-scheme">&larr; Conformance &amp; certification</a>
-        <a href="/governance/lifecycle-versioning">Lifecycle &amp; versioning &rarr;</a>
+        <a href="/governance/standards-lifecycle">Standards lifecycle &amp; ratification &rarr;</a>
       </div>
 </Layout>

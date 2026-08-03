@@ -1,0 +1,305 @@
+---
+import Layout from '@/layouts/Layout.astro';
+import PageMeta from '@/components/PageMeta.astro';
+import Diagram from '@/components/Diagram.astro';
+---
+<Layout
+  title="Standards lifecycle &amp; ratification"
+  description="The proposed human-governed lifecycle for turning evidence and AI-assisted model candidates into reviewed, tested and ratified OPDA Standards."
+>
+<PageMeta
+  category="Governance · proposed operating model"
+  variant="warn"
+  updated="ADR-0068 · Updated 2026-08-03"
+  damaKa={["Data Governance", "Metadata Management"]}
+/>
+
+      <h1>How OPDA develops and approves standards</h1>
+      <p class="lead">
+        How OPDA proposes to turn evidence and domain expertise into reviewed, tested and
+        ratified standards. AI and editors accelerate the work; people with recorded authority
+        decide what advances.
+      </p>
+
+      <div class="callout callout--warn">
+        <div class="callout__label">Proposal — not yet an operative OPDA rule</div>
+        <p>
+          This page explains <a href="/modelling/adr/adr-0068">ADR-0068</a>, which remains
+          <strong>proposed</strong>. It becomes operative only when the Executive Committee,
+          Board or a constitutionally valid delegate records its acceptance. The current
+          published ontology, schemas and technical change procedure remain unchanged in the
+          meantime.
+        </p>
+      </div>
+
+      <h2 id="at-a-glance">From evidence to an OPDA Standard</h2>
+      <p>
+        Each stage says what has—and has not—been approved. Publishing a website preview does
+        not move a candidate to a new stage.
+      </p>
+
+      <Diagram size="large" caption="The proposed maturity path. Review can return work to an earlier stage whenever evidence, feedback or validation identifies a material problem.">
+flowchart LR
+  E["`**Evidence record**
+  screened input`"]:::data
+  C["`**Editor's candidate**
+  AI/editor draft`"]:::process
+  W["`**Working Draft**
+  basis for work`"]:::service
+  P["`**Public Review Draft**
+  wide review`"]:::warning
+  R["`**Release Candidate**
+  gates complete`"]:::process
+  S["`**OPDA Standard**
+  ratified release`"]:::success
+  M["`**Maintain**
+  errata · supersede · withdraw`"]:::infra
+
+  E --> C --> W --> P --> R --> S --> M
+  P -.material feedback.-> C
+  R -.failed gate.-> C
+  M -.revision.-> C
+      </Diagram>
+
+      <table>
+        <thead>
+          <tr><th>Stage</th><th>What readers may rely on</th><th>What advances it</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Evidence record</strong></td>
+            <td>A source, transcript, comment or observation—not model content.</td>
+            <td>Rights, provenance, sensitivity and security screening.</td>
+          </tr>
+          <tr>
+            <td><strong>Editor's candidate</strong></td>
+            <td>An AI/editor-authored preview that may be incomplete or wrong.</td>
+            <td>Enough deterministic validation and disclosed uncertainty for review.</td>
+          </tr>
+          <tr>
+            <td><strong>Working Draft</strong></td>
+            <td>The group has adopted it as a basis for work—not as consensus or an OPDA endorsement.</td>
+            <td>A recorded group decision plus published scope, status, provenance, changes and open issues.</td>
+          </tr>
+          <tr>
+            <td><strong>Public Review Draft</strong></td>
+            <td>The group considers it complete enough for wide review.</td>
+            <td>Domain consensus, Interoperability concurrence where needed, and permission to open review.</td>
+          </tr>
+          <tr>
+            <td><strong>Release Candidate</strong></td>
+            <td>Comments are disposed and the normative model is technically complete.</td>
+            <td>Every release gate passes and no blocking objection remains unresolved.</td>
+          </tr>
+          <tr>
+            <td><strong>OPDA Standard</strong></td>
+            <td>An immutable, normative and versioned OPDA release.</td>
+            <td>Ratification of the exact release pack by the authorised body.</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <h2 id="working-loop">The working-group loop</h2>
+      <p>
+        The lifecycle preserves the way of working introduced to the Finance and Banking Working
+        Group: gather real evidence, create a candidate, publish it for human scrutiny, then feed
+        adjudicated feedback into the next modelling pass.
+      </p>
+
+      <ol>
+        <li><strong>Intake.</strong> Register permitted files, transcripts, standards, examples and participant knowledge with provenance and rights.</li>
+        <li><strong>Scope.</strong> Freeze the evidence, competency questions, bounded context, modelling dimensions and acceptance checks for the run.</li>
+        <li><strong>Draft.</strong> Human-directed AI agents and editors produce a candidate, alternatives and explicit uncertainties.</li>
+        <li><strong>Check.</strong> Run deterministic RDF, OWL, SKOS, SHACL, provenance, coverage, duplication, authorisation and profile tests.</li>
+        <li><strong>Publish for review.</strong> Present definitions, diagrams, dictionaries, shapes, generated familiar artefacts, evidence references, open questions and a change diff.</li>
+        <li><strong>Discuss and dispose.</strong> Link feedback from Teams, meetings, the website and email to one durable issue and record the outcome.</li>
+        <li><strong>Re-run.</strong> Put accepted feedback and resolved evidence requests into a new frozen work order; never silently rewrite a reviewed draft.</li>
+        <li><strong>Advance or continue.</strong> Iterate again or open a recorded stage decision when the exit criteria appear satisfied.</li>
+      </ol>
+
+      <div class="callout callout--key">
+        <div class="callout__label">AI → ontology → useful outputs—and back again</div>
+        <p>
+          Participants do not need to understand ontology technology or adopt AI. They provide
+          evidence and judge whether the resulting meaning is correct. AI helps OPDA draft and
+          challenge the ontology; the governed ontology can then generate schemas, forms,
+          validation, documentation and integrations that people already use. Feedback on those
+          outputs becomes evidence for the next candidate.
+        </p>
+      </div>
+
+      <h2 id="decision-rights">Who decides what</h2>
+      <table>
+        <thead><tr><th>Actor</th><th>Authority in the proposed lifecycle</th></tr></thead>
+        <tbody>
+          <tr>
+            <td><strong>Domain Working Group</strong></td>
+            <td>Owns consensus on meaning inside its bounded context and recommends stage advancement.</td>
+          </tr>
+          <tr>
+            <td><strong>Interoperability Working Group</strong></td>
+            <td>Owns the common boundary, context map, cross-domain mappings and shared conventions; it does not control a domain's internal meaning.</td>
+          </tr>
+          <tr>
+            <td><strong>Technical Review</strong></td>
+            <td>Independently verifies architecture, identifiers, provenance, generated artefacts, tests, compatibility and release completeness.</td>
+          </tr>
+          <tr>
+            <td><strong>Compliance and Risk</strong></td>
+            <td>Reviews privacy, security, law, competition, intellectual property, accessibility and evidence handling.</td>
+          </tr>
+          <tr>
+            <td><strong>Executive Committee / Board</strong></td>
+            <td>Charters the work, accepts residual organisational risk and ratifies or withdraws OPDA Standards.</td>
+          </tr>
+          <tr>
+            <td><strong>General Assembly</strong></td>
+            <td>Retains constitutional, member and reserve powers; it is not the routine approval body for individual terms.</td>
+          </tr>
+          <tr>
+            <td><strong>Chair, editor and secretariat</strong></td>
+            <td>Facilitate, author and preserve the record. None may substitute personal preference for consensus or ratification.</td>
+          </tr>
+          <tr>
+            <td><strong>AI agents and councils</strong></td>
+            <td>Extract, compare, challenge, draft and test. They have no membership, vote, approval or ontology authority.</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <h2 id="ai-guardrails">AI guardrails</h2>
+      <table>
+        <thead><tr><th>AI may</th><th>AI may not</th></tr></thead>
+        <tbody>
+          <tr><td>Extract candidate concepts and evidence references.</td><td>Turn a source statement directly into accepted model content.</td></tr>
+          <tr><td>Compare sources, standards, candidate definitions and model routes.</td><td>Decide which stakeholder, domain or source has authority.</td></tr>
+          <tr><td>Draft, challenge and test candidates under a frozen work order.</td><td>Accept feedback, close its own issue or silently rewrite a reviewed draft.</td></tr>
+          <tr><td>Surface disagreements, uncertainty, missing evidence and validation failures.</td><td>Establish human consensus, approve residual risk or dispose of a Formal Objection.</td></tr>
+          <tr><td>Generate familiar artefacts from the governed ontology.</td><td>Write directly to an accepted branch or advance a maturity stage.</td></tr>
+        </tbody>
+      </table>
+      <p>
+        Material runs record the evidence snapshot, model/provider route, role, task envelope,
+        relevant tool and standards versions, output digest, disagreements and validation
+        results. Public drafts disclose AI-assisted authoring while keeping accountable humans
+        and decision reasons visible.
+      </p>
+
+      <h2 id="consensus">Consensus, not popularity</h2>
+      <div class="card-grid">
+        <div class="card">
+          <div class="pill pill--info">Default call</div>
+          <h3>10 working days</h3>
+          <p>The exact proposal, diff, evidence, open risks and deadline are posted in the group's persistent channel.</p>
+        </div>
+        <div class="card">
+          <div class="pill pill--info">Active support</div>
+          <h3>Independent organisations</h3>
+          <p>Unless a charter is stronger: at least three organisations across two materially affected stakeholder categories.</p>
+        </div>
+        <div class="card">
+          <div class="pill pill--info">Meeting decisions</div>
+          <h3>5-day confirmation</h3>
+          <p>A proposal first discussed live remains open for asynchronous confirmation. Silence is abstention, not consent.</p>
+        </div>
+      </div>
+
+      <p>
+        Consensus means substantial active support and no unresolved sustained objection after
+        legitimate views have been considered. It does not require unanimity. If good-faith
+        discussion reaches deadlock, the Chair may call an exceptional recorded vote: one vote
+        per represented organisation and a two-thirds threshold. The record must explain why
+        consensus failed; a vote cannot waive a legal, privacy, security, competition or
+        intellectual-property block.
+      </p>
+
+      <h3 id="objections">Objections and appeals</h3>
+      <p>
+        A Formal Objection identifies substantial technical or procedural harm, its evidence and,
+        where possible, a remedy. It is not an automatic veto, but it must receive a reasoned,
+        equally visible response. Unresolved objections are routed to the relevant Domain Working
+        Group, Interoperability Working Group, Technical Review or Compliance and Risk function.
+        A participant may appeal within 10 working days to independent reviewers appointed by the
+        Executive Committee or Board.
+      </p>
+
+      <h2 id="public-review">Public review and proof that it works</h2>
+      <ul>
+        <li><strong>First Public Review Draft:</strong> at least 30 calendar days.</li>
+        <li><strong>Material changes after review:</strong> the affected material receives at least a further 15 calendar days.</li>
+        <li><strong>Every material comment:</strong> acknowledged, linked to an issue and given a reasoned disposition.</li>
+        <li><strong>Every normative feature:</strong> a conformance test or a documented reason objective testing is impossible.</li>
+        <li><strong>Independent use:</strong> evidence from at least two organisations, including one that did not author the feature.</li>
+      </ul>
+
+      <h3 id="release-pack">What accompanies a Release Candidate</h3>
+      <div class="card-grid">
+        <div class="card">
+          <div class="pill pill--accent">Scope</div>
+          <h3>Authority &amp; traceability</h3>
+          <p>Approved charter, requirements, immutable versions, content digests and traceability from sources to model constructs and exclusions.</p>
+        </div>
+        <div class="card">
+          <div class="pill pill--accent">Quality</div>
+          <h3>Technical evidence</h3>
+          <p>Ontology, vocabulary, SHACL, generated artefact and conformance results, plus independent implementation evidence.</p>
+        </div>
+        <div class="card">
+          <div class="pill pill--accent">Accountability</div>
+          <h3>Human record</h3>
+          <p>Comment dispositions, consensus, objections, appeals, interoperability review, independent technical review and risk sign-off.</p>
+        </div>
+        <div class="card">
+          <div class="pill pill--accent">Adoption</div>
+          <h3>Release readiness</h3>
+          <p>IPR checks, release notes, compatibility class, migration and deprecation plans, and named maintenance owners.</p>
+        </div>
+      </div>
+
+      <h2 id="versions">Versions and maintenance</h2>
+      <table>
+        <thead><tr><th>Change class</th><th>Minimum route</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Editorial</strong></td><td>No normative change; editor plus one independent reviewer and a change-log entry.</td></tr>
+          <tr><td><strong>Compatible substantive</strong></td><td>Domain consensus, affected-context review and a minor-version release.</td></tr>
+          <tr><td><strong>Breaking / material</strong></td><td>Full public review, implementation evidence, migration/deprecation plan and major-version ratification.</td></tr>
+          <tr><td><strong>Urgent legal/security erratum</strong></td><td>A clearly marked provisional correction after Compliance and Risk plus Technical Review; expires after 90 days unless completed through the ordinary route.</td></tr>
+        </tbody>
+      </table>
+      <p>
+        Every ratified OPDA Standard would receive a systematic review at least every 24 months;
+        this governance process would be reviewed annually. Historical releases remain available
+        and visibly labelled when superseded or withdrawn.
+      </p>
+
+      <h3 id="existing-artefacts">Existing versioned artefacts</h3>
+      <p>
+        OPDA already maintains artefacts on separate version tracks. At the time this page was
+        updated, the legacy PDTF schema package was <strong>3.5.0</strong>, the trust-framework
+        package was <strong>0.3.0</strong>, and the API corpus included 1.x and 2.0.0 definitions.
+        These facts describe the current corpus; they do not imply that ADR-0068 has governed
+        those earlier releases.
+      </p>
+
+      <h2 id="before-first-review">Before the first Property Pack public review</h2>
+      <ul>
+        <li>Approve the relevant Domain Working Group and Interoperability Working Group charters.</li>
+        <li>Create the canonical issue/disposition register and maturity-stage register.</li>
+        <li>Adopt contribution, feedback, copyright and patent terms.</li>
+        <li>Prepare consensus-call, Formal Objection, public-review and release-manifest templates.</li>
+        <li>Dry-run one candidate from evidence through feedback, re-run, validation and a human stage decision.</li>
+      </ul>
+
+      <h2 id="related">Related governance</h2>
+      <ul>
+        <li><a href="/modelling/adr/adr-0068">ADR-0068 — full proposed standards lifecycle decision</a></li>
+        <li><a href="/governance/change-management">Change management</a> — constitutional machinery and the current technical SOP.</li>
+        <li><a href="/governance/meetings-and-feedback">Meetings &amp; feedback</a> — channels, records and proposed operating cadence.</li>
+        <li><a href="/governance/data-stewardship">Data stewardship &amp; decision rights</a> — the earlier stewardship operating-model proposal.</li>
+      </ul>
+
+      <div class="page-footer">
+        <a href="/governance/change-management">&larr; Change management</a>
+        <a href="/governance/risk-liability">Risk &amp; liability &rarr;</a>
+      </div>
+</Layout>
