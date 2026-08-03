@@ -21,7 +21,7 @@
  * @property {string} date    - ISO date string from frontmatter, or ''
  */
 
-/** All 59 ADRs in the corpus. Every ADR gets a live page. */
+/** All 65 ADRs in the corpus. Every ADR gets a live page. */
 export const ADR_REGISTRY = [
   { id: "adr-0001", number: "0001", title: "Selective adoption of DCAM v3 and DAMA-DMBOK2 elements", status: "accepted", date: "2026-05-18" },
   { id: "adr-0002", number: "0002", title: "Folder hierarchy and slug taxonomy", status: "accepted", date: "2026-05-18" },
@@ -82,4 +82,10 @@ export const ADR_REGISTRY = [
   { id: "adr-0057", number: "0057", title: "RML Mapping Implementation", status: "accepted", date: "2026-07-04" },
   { id: "adr-0058", number: "0058", title: "MetaHarness Darwin Mode for Ontology Authoring and RML Gap-Closing", status: "accepted", date: "2026-07-04" },
   { id: "adr-0059", number: "0059", title: "RML Mapping Section — Positioned Between Ontology and Schema", status: "accepted", date: "2026-07-05" },
+  { id: "adr-0060", number: "0060", title: "TriplesMap Reference Page — Bidirectional JSON Schema ↔ Ontology Resource Browsing", status: "accepted", date: "2026-07-06" },
+  { id: "adr-0061", number: "0061", title: "Jena-Sole-Toolchain Enforcement and the rdflib Migration Register", status: "accepted", date: "2026-07-06" },
+  { id: "adr-0062", number: "0062", title: "`DBT Smart Data` Top-Level Section — Track the Guidebook and the PDTF Overlap It Creates", status: "accepted", date: "2026-07-13" },
+  { id: "adr-0066", number: "0066", title: "The 451 required Property Pack data points are the closed seed scope for a greenfield ontology", status: "accepted", date: "2026-08-03" },
+  { id: "adr-0067", number: "0067", title: "Model the Property Pack from first principles with bounded-context ownership", status: "accepted", date: "2026-08-03" },
+  { id: "adr-0068", number: "0068", title: "Govern the OPDA standards lifecycle through human consensus and staged ratification", status: "proposed", date: "2026-08-03" },
 ];

@@ -62,6 +62,7 @@ with the next sequential number and canonical sections.
 |---|---|---|
 | [ADR-0066](./ADR-0066-property-pack-451-seed-scope-and-greenfield-ontology.md) | The 451 required Property Pack data points are the closed seed scope for a greenfield ontology | accepted |
 | [ADR-0067](./ADR-0067-first-principles-property-pack-ontology-by-bounded-context.md) | Model the Property Pack from first principles with bounded-context ownership | accepted |
+| [ADR-0068](./ADR-0068-govern-opda-standards-lifecycle.md) | Govern the OPDA standards lifecycle through human consensus and staged ratification | proposed |
 
 ## Authoring a new ADR
 
