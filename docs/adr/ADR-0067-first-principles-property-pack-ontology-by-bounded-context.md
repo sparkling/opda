@@ -312,12 +312,12 @@ Interoperability Working Group may approve durable mappings or common-boundary p
 
 #### 5.3 Role-aware multi-model routing
 
-The available bootstrap candidates are `claude-fable-5` through Claude Code and
-`gpt-5.6-sol` through Codex/ChatGPT. They are **candidate routes, not an already
-qualified portfolio**. Routine work uses one role-qualified route. High-risk,
-uncertain, disagreement-prone and calibration work produces independent artefacts from
-both available model families under the same frozen work order, then performs blinded
-comparison and whole-candidate revalidation.
+Semantic Builder defines the portfolio roles and a **provisional development roster**; its manifest labels that roster `development-hypotheses` and its catalogue marks the named routes
+unavailable pending refresh and its prices as placeholders. OPDA therefore adopts that design,
+but pins an active OPDA roster before the first governed run. `claude-fable-5` through Claude
+Code and `gpt-5.6-sol` through Codex/ChatGPT are the first routes to qualify. Routine work uses
+one role-qualified route; high-risk, uncertain or calibration work uses both model families
+under one work order, followed by blinded comparison and whole-candidate revalidation.
 
 Expert-lens diversity and model-family diversity remain separate: opposed published
 lenses create methodological variety; providers provide a robustness check. A model
