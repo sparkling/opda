@@ -22,21 +22,52 @@ test('source facts and candidate semantics remain distinguishable', () => {
     assert.ok(record.semantic.preferred_label);
     assert.ok(record.semantic.candidate_definition);
     assert.equal(record.semantic.definition_status, 'machine-drafted-from-source');
-    assert.equal(record.governance.approval_status, 'proposed');
+    assert.equal('governance' in record, false);
+    assert.equal(record.review.approval_status, 'proposed');
+    assert.equal(record.review.quality, 'needs-semantic-review');
     assert.equal(record.review.status, 'needs-semantic-review');
+    assert.equal(record.model.sensitivity, 'unclassified');
     assert.ok(record.evidence.some((item) => item.startsWith('workbook:')));
   }
 });
 
-test('old tree structure is not silently asserted as the new ontology', () => {
+test('work packages batch the closed scope without claiming semantic ownership', () => {
+  const expected = {
+    'construction-services-energy': 74,
+    'evidence-declarations': 13,
+    'fixtures-fittings': 109,
+    'property-identity-address': 3,
+    'rights-restrictions-boundaries': 24,
+    'searches-notices-environment': 166,
+    'titles-ownership': 51,
+    'transaction-occupiers-completion': 11,
+  };
+  const actual = Object.fromEntries(
+    Object.entries(Object.groupBy(records, (record) => record.work_package))
+      .map(([key, values]) => [key, values.length])
+      .sort(([left], [right]) => left.localeCompare(right)),
+  );
+  assert.deepEqual(actual, expected);
+  assert.deepEqual(report.work_packages, expected);
+  assert.equal(Object.values(actual).reduce((sum, count) => sum + count, 0), 451);
+});
+
+test('old tree structure and one-field-one-term assumptions are not silently asserted', () => {
   for (const record of records) {
-    assert.equal(record.model.role, 'unclassified');
+    assert.equal(record.model.classification_status, 'unclassified');
+    assert.deepEqual(record.model.roles, []);
     assert.equal(record.model.owning_context, 'unassigned');
-    assert.equal(record.model.resource, 'unresolved');
-    assert.equal(record.model.relationship, 'unresolved');
-    assert.equal(record.model.attribute, 'unresolved');
-    assert.equal(record.model.iri, 'unresolved');
+    assert.deepEqual(record.model.construct_refs, []);
+    assert.equal(record.model.disposition, 'unresolved');
+    assert.equal(record.model.rationale, '');
+    assert.deepEqual(record.model.decision_refs, []);
+    for (const legacyKey of ['role', 'resource', 'relationship', 'attribute', 'local_name', 'iri']) {
+      assert.equal(legacyKey in record.model, false);
+    }
   }
+  assert.deepEqual(report.classification_statuses, { unclassified: 451 });
+  assert.deepEqual(report.semantic_homes, { unassigned: 451 });
+  assert.equal(report.unresolved_classifications, 451);
 });
 
 test('conditional requiredness and repeatable contexts are represented honestly', () => {

@@ -1,4 +1,4 @@
-format_version = "1.0"
+format_version = "1.1"
 title = "451 required Property Pack source properties"
 status = "working-baseline"
 maintained_source = "TOML"
@@ -12,5 +12,6 @@ legacy_schema = "source/03-standards/schemas/src/schemas/v3/pdtf-transaction.jso
 legacy_schema_role = "Structural corroboration only; not semantic authority."
 approval_status = "proposed"
 scope_note = "The 451 rows are source data points, not 451 pre-decided ontology properties or entities."
+work_package_note = "Operational review batches only; not ontology modules or semantic homes."
 authority_note = "Complete against the workbook baseline; not evidence of final DPMSG approval."
 fragments = ["properties/part-01.toml", "properties/part-02.toml", "properties/part-03.toml", "properties/part-04.toml", "properties/part-05.toml", "properties/part-06.toml", "properties/part-07.toml", "properties/part-08.toml", "properties/part-09.toml", "properties/part-10.toml", "properties/part-11.toml", "properties/part-12.toml", "properties/part-13.toml"]

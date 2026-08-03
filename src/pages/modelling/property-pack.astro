@@ -8,6 +8,7 @@ const rows = records.map((record) => ({
   id: record.id,
   label: record.semantic.preferred_label,
   definition: record.semantic.candidate_definition,
+  workPackage: record.work_package,
   heading: record.source.heading,
   path: record.source.path,
   datatype: record.value.xsd_datatype,
@@ -15,7 +16,8 @@ const rows = records.map((record) => ({
   repeatable: record.value.repeatable_context ? 'repeatable context' : 'single context',
   vocabulary: record.vocabulary.status === 'candidate' ? 'candidate' : 'none identified',
   review: record.review.status,
-  role: record.model.role,
+  classification: record.model.classification_status,
+  home: record.model.owning_context,
 }));
 const safeRows = JSON.stringify(rows).replace(/</g, '\\u003c');
 const safeDetails = JSON.stringify(records).replace(/</g, '\\u003c');
@@ -54,7 +56,7 @@ const safeDetails = JSON.stringify(records).replace(/</g, '\\u003c');
     <article><strong>{report.conditional_required}</strong><span>conditionally required</span></article>
     <article><strong>{report.repeatable_context}</strong><span>inside repeatable contexts</span></article>
     <article><strong>{report.controlled_vocabulary_candidates}</strong><span>vocabulary candidates</span></article>
-    <article><strong>{report.review_statuses['needs-semantic-review']}</strong><span>await semantic review</span></article>
+    <article><strong>{report.unresolved_classifications}</strong><span>await semantic classification</span></article>
   </section>
 
   <h2 id="how-to-read">How to read this baseline</h2>
@@ -68,8 +70,8 @@ const safeDetails = JSON.stringify(records).replace(/</g, '\\u003c');
       <p>Schema types, formats, ranges and permitted values are retained as attributed evidence only. They have no automatic semantic authority.</p>
     </article>
     <article>
-      <h3>Fresh modelling decisions</h3>
-      <p>Each item must still be classified as a resource, relationship, attribute, controlled concept or validation rule and assigned to a bounded context.</p>
+      <h3>Work packages, then decisions</h3>
+      <p>Each item has one operational review batch. A work package is not an ontology module or semantic home; model roles and context ownership remain separate decisions.</p>
     </article>
   </div>
 
@@ -104,7 +106,7 @@ const safeDetails = JSON.stringify(records).replace(/</g, '\\u003c');
       <tr><th scope="row">Unique source identities</th><td>{report.unique_paths} full JSON paths and {report.unique_ids} stable catalogue IDs</td></tr>
       <tr><th scope="row">Schema corroboration</th><td>Every path found; zero source-type mismatches; schema treated as legacy evidence</td></tr>
       <tr><th scope="row">Semantic completeness</th><td>Not yet claimed — all 451 items require domain and ontology review</td></tr>
-      <tr><th scope="row">Governance approval</th><td>Proposed — the evidence says consensus and DPMSG approval are still to be obtained</td></tr>
+      <tr><th scope="row">Candidate review state</th><td>Proposed — no machine-drafted classification is an approved semantic decision</td></tr>
     </tbody>
   </table>
 
@@ -144,7 +146,7 @@ const safeDetails = JSON.stringify(records).replace(/</g, '\\u003c');
         var permitted = record.restrictions.permitted_values;
         body.innerHTML =
           '<p class="lead">' + esc(record.semantic.candidate_definition) + '</p>' +
-          '<p><span class="pill pill--warn">' + esc(record.review.status) + '</span> <span class="pill pill--info">' + esc(record.model.role) + '</span></p>' +
+          '<p><span class="pill pill--warn">' + esc(record.review.status) + '</span> <span class="pill pill--info">' + esc(record.model.classification_status) + '</span></p>' +
           '<div class="detail-grid">' +
             '<section><h3>Source evidence</h3><dl>' +
               pair('Stable ID', record.id, true) + pair('Workbook row', record.source.row, false) +
@@ -159,13 +161,14 @@ const safeDetails = JSON.stringify(records).replace(/</g, '\\u003c');
               pair('Minimum length', record.restrictions.min_length, false) + pair('Minimum value', record.restrictions.minimum, false) +
             '</dl><h4>Permitted values from legacy schema</h4>' + list(permitted) + '</section>' +
             '<section><h3>Fresh model decisions</h3><dl>' +
-              pair('Ontology role', record.model.role, false) + pair('Owning context', record.model.owning_context, false) +
-              pair('Resource', record.model.resource, true) + pair('Relationship', record.model.relationship, true) +
-              pair('Attribute', record.model.attribute, true) + pair('IRI', record.model.iri, true) +
+              pair('Work package', record.work_package, false) + pair('Classification', record.model.classification_status, false) +
+              pair('Ontology roles', record.model.roles.join(', '), false) + pair('Owning context', record.model.owning_context, false) +
+              pair('Construct references', record.model.construct_refs.join(', '), true) + pair('Disposition', record.model.disposition, false) +
+              pair('Sensitivity', record.model.sensitivity, false) + pair('Rationale', record.model.rationale, false) +
               pair('Vocabulary scheme', record.vocabulary.scheme_id, true) +
             '</dl></section>' +
-            '<section><h3>Provenance and review</h3><dl>' +
-              pair('Approval', record.governance.approval_status, false) + pair('Quality', record.governance.quality, false) +
+            '<section><h3>Evidence and review</h3><dl>' +
+              pair('Approval', record.review.approval_status, false) + pair('Quality', record.review.quality, false) +
               pair('Confidence', record.review.confidence, false) + pair('Definition status', record.semantic.definition_status, false) +
             '</dl><h4>Evidence</h4>' + list(record.evidence) + '<h4>Review flags</h4>' + list(record.review.flags) + '</section>' +
           '</div>';
@@ -186,22 +189,26 @@ const safeDetails = JSON.stringify(records).replace(/</g, '\\u003c');
           pageSize: 25,
           defaultSort: { key: 'label', dir: 'asc' },
           facets: [
+            { key: 'workPackage', label: 'Operational work package' },
             { key: 'heading', label: 'Property Pack heading' },
             { key: 'datatype', label: 'Datatype' },
             { key: 'requiredness', label: 'Requiredness' },
             { key: 'repeatable', label: 'Occurrence context' },
             { key: 'vocabulary', label: 'Controlled vocabulary' },
             { key: 'review', label: 'Review status' },
+            { key: 'classification', label: 'Classification state' },
+            { key: 'home', label: 'Semantic home' },
           ],
           columns: [
-            { key: 'label', label: 'Candidate label', sortable: true, width: '22%', render: function (value, row) {
+            { key: 'label', label: 'Candidate label', sortable: true, width: '18%', render: function (value, row) {
               return '<button class="property-detail-link" type="button" data-property-id="' + esc(row.id) + '">' + esc(value) + '</button>';
             } },
-            { key: 'heading', label: 'Heading', sortable: true, width: '16%', render: function (value) { return '<code>' + esc(value) + '</code>'; } },
-            { key: 'datatype', label: 'Datatype', sortable: true, width: '12%', render: function (value) { return '<code>' + esc(value) + '</code>'; } },
-            { key: 'requiredness', label: 'Requiredness', sortable: true, width: '13%' },
-            { key: 'role', label: 'Model role', sortable: true, width: '12%' },
-            { key: 'path', label: 'Source path', sortable: true, width: '25%', render: function (value) { return '<code>' + esc(value) + '</code>'; } },
+            { key: 'heading', label: 'Heading', sortable: true, width: '13%', render: function (value) { return '<code>' + esc(value) + '</code>'; } },
+            { key: 'datatype', label: 'Datatype', sortable: true, width: '10%', render: function (value) { return '<code>' + esc(value) + '</code>'; } },
+            { key: 'requiredness', label: 'Requiredness', sortable: true, width: '11%' },
+            { key: 'workPackage', label: 'Work package', sortable: true, width: '16%' },
+            { key: 'classification', label: 'Classification', sortable: true, width: '12%' },
+            { key: 'path', label: 'Source path', sortable: true, width: '20%', render: function (value) { return '<code>' + esc(value) + '</code>'; } },
           ],
         });
         mount.onclick = function (event) {

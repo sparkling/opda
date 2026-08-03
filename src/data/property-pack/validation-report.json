@@ -1,5 +1,8 @@
 {
   "actual_count": 451,
+  "classification_statuses": {
+    "unclassified": 451
+  },
   "conditional_required": 283,
   "controlled_vocabulary_candidates": 320,
   "distinct_array_containers": 28,
@@ -23,12 +26,12 @@
   "legacy_formats": 17,
   "legacy_min_lengths": 23,
   "legacy_numeric_minimums": 2,
-  "model_roles": {
-    "unclassified": 451
-  },
   "repeatable_context": 133,
   "review_statuses": {
     "needs-semantic-review": 451
+  },
+  "semantic_homes": {
+    "unassigned": 451
   },
   "source_comparison": {
     "field_mismatches": [],
@@ -50,5 +53,16 @@
   "unconditional_required": 168,
   "unique_ids": 451,
   "unique_paths": 451,
-  "unique_terminal_field_names": 100
+  "unique_terminal_field_names": 100,
+  "unresolved_classifications": 451,
+  "work_packages": {
+    "construction-services-energy": 74,
+    "evidence-declarations": 13,
+    "fixtures-fittings": 109,
+    "property-identity-address": 3,
+    "rights-restrictions-boundaries": 24,
+    "searches-notices-environment": 166,
+    "titles-ownership": 51,
+    "transaction-occupiers-completion": 11
+  }
 }

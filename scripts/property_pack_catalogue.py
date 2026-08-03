@@ -20,6 +20,10 @@ from collections import Counter, defaultdict
 from pathlib import Path
 from typing import Any
 
+from _lib.property_pack_classification import (
+    classification_report, empty_model, package_for_heading, validate_classification,
+)
+
 
 ROOT = Path(__file__).resolve().parent.parent
 DATA_DIR = ROOT / "src/data/property-pack"
@@ -237,11 +241,8 @@ def catalogue_record(
             "preferred_label": label, "candidate_definition": candidate_definition(row, label),
             "definition_status": "machine-drafted-from-source", "source_description": row["description"],
         },
-        "model": {
-            "role": "unclassified", "owning_context": "unassigned", "consuming_contexts": [],
-            "resource": "unresolved", "relationship": "unresolved", "attribute": "unresolved",
-            "local_name": "unresolved", "iri": "unresolved",
-        },
+        "work_package": package_for_heading(row["heading"] or "propertyPack"),
+        "model": empty_model(),
         "value": {
             "source_datatype": row["datatype"],
             "xsd_datatype": FORMAT_TYPES.get(schema_format, XSD_TYPES[row["datatype"]]),
@@ -258,16 +259,15 @@ def catalogue_record(
             "permitted_values": enum_values,
         },
         "vocabulary": {"status": "candidate" if enum_values else "not-applicable", "scheme_id": "unresolved" if enum_values else "", "values": enum_values},
-        "governance": {
-            "approval_status": "proposed", "sensitivity": "unclassified",
-            "provenance": "source-referenced", "quality": "needs-semantic-review",
-        },
         "legacy_schema": {
             "matched_occurrences": len(schema_records), "title": first_value(schema_records, "title"),
             "description": first_value(schema_records, "description"), "format": schema_format,
         },
         "evidence": [f"workbook:Sheet1!A{row['row']}:H{row['row']}", f"legacy-schema:{row['path']}"],
-        "review": {"status": "needs-semantic-review", "confidence": "low", "flags": flags},
+        "review": {
+            "status": "needs-semantic-review", "confidence": "low", "flags": flags,
+            "approval_status": "proposed", "quality": "needs-semantic-review",
+        },
     }
 
 
@@ -288,8 +288,9 @@ def toml_inline(table: dict[str, Any]) -> str:
 
 
 def render_record(record: dict[str, Any]) -> str:
-    lines = ["[[property]]", f"id = {toml_scalar(record['id'])}"]
-    for key in ("source", "semantic", "model", "value", "restrictions", "vocabulary", "governance", "legacy_schema"):
+    lines = ["[[property]]", f"id = {toml_scalar(record['id'])}",
+             f"work_package = {toml_scalar(record['work_package'])}"]
+    for key in ("source", "semantic", "model", "value", "restrictions", "vocabulary", "legacy_schema"):
         lines.append(f"{key} = {toml_inline(record[key])}")
     lines.append(f"evidence = {toml_scalar(record['evidence'])}")
     lines.append(f"review = {toml_inline(record['review'])}")
@@ -298,7 +299,7 @@ def render_record(record: dict[str, Any]) -> str:
 
 def render_manifest(fragment_names: list[str]) -> str:
     return "\n".join([
-        'format_version = "1.0"',
+        'format_version = "1.1"',
         'title = "451 required Property Pack source properties"',
         'status = "working-baseline"',
         'maintained_source = "TOML"',
@@ -312,6 +313,7 @@ def render_manifest(fragment_names: list[str]) -> str:
         'legacy_schema_role = "Structural corroboration only; not semantic authority."',
         'approval_status = "proposed"',
         'scope_note = "The 451 rows are source data points, not 451 pre-decided ontology properties or entities."',
+        'work_package_note = "Operational review batches only; not ontology modules or semantic homes."',
         'authority_note = "Complete against the workbook baseline; not evidence of final DPMSG approval."',
         f"fragments = {toml_scalar(fragment_names)}",
         "",
@@ -369,13 +371,12 @@ def validate(manifest: dict[str, Any], records: list[dict[str, Any]], compare_so
         if duplicates:
             errors.append(f"duplicate {label}: {duplicates[:5]}")
     for record in records:
-        source, model, value = record.get("source", {}), record.get("model", {}), record.get("value", {})
+        source, value = record.get("source", {}), record.get("value", {})
+        errors.extend(validate_classification(record))
         if source.get("status") != "Required":
             errors.append(f"{record.get('id')}: source status is not Required")
         if source.get("datatype") not in ALLOWED_TYPES:
             errors.append(f"{record.get('id')}: unsupported datatype {source.get('datatype')}")
-        if model.get("role") not in {"unclassified", "resource", "relationship", "attribute", "validation-rule", "controlled-concept"}:
-            errors.append(f"{record.get('id')}: invalid model role {model.get('role')}")
         expected_min = 0 if source.get("condition") else 1
         if value.get("min_count") != expected_min or value.get("max_count") != 1:
             errors.append(f"{record.get('id')}: cardinality does not reflect source requiredness")
@@ -418,7 +419,7 @@ def validate(manifest: dict[str, Any], records: list[dict[str, Any]], compare_so
         for key in ("missing_from_catalogue", "not_required_in_workbook", "field_mismatches"):
             if source_comparison[key]:
                 errors.append(f"source comparison failed: {key} ({len(source_comparison[key])})")
-    return {
+    report = {
         "status": "pass" if not errors else "fail",
         "expected_count": EXPECTED_COUNT,
         "actual_count": len(records),
@@ -436,12 +437,13 @@ def validate(manifest: dict[str, Any], records: list[dict[str, Any]], compare_so
         "legacy_formats": sum(bool(r["restrictions"]["format"]) for r in records),
         "legacy_min_lengths": sum(r["restrictions"]["min_length"] != "" for r in records),
         "legacy_numeric_minimums": sum(r["restrictions"]["minimum"] != "" for r in records),
-        "model_roles": dict(sorted(Counter(r["model"]["role"] for r in records).items())),
         "review_statuses": dict(sorted(Counter(r["review"]["status"] for r in records).items())),
         "fragment_lines": fragment_lines,
         "source_comparison": source_comparison,
         "errors": errors,
     }
+    report.update(classification_report(records))
+    return report
 
 
 def generated_bytes(records: list[dict[str, Any]]) -> bytes:

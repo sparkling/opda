@@ -1,404 +1,404 @@
-# Generated bootstrap; curate fields in place, then run generate/check.
+# Maintained source; curate fields in place, then run generate/check.
 
 [[property]]
 id = "pp-85bc34a45dcc"
+work_package = "titles-ownership"
 source = { row = 1639, path = "propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.title.titleRegistrationDetails.landRegistryOfficeName", top_level_section = "propertyPack", heading = "titlesToBeSold", field_name = "landRegistryOfficeName", datatype = "string", status = "Required", condition = "", description = "" }
 semantic = { preferred_label = "Land registry office name", candidate_definition = "Records the land registry office name for title registration details.", definition_status = "machine-drafted-from-source", source_description = "" }
-model = { role = "unclassified", owning_context = "unassigned", consuming_contexts = [], resource = "unresolved", relationship = "unresolved", attribute = "unresolved", local_name = "unresolved", iri = "unresolved" }
+model = { classification_status = "unclassified", roles = [], owning_context = "unassigned", consuming_contexts = [], construct_refs = [], disposition = "unresolved", sensitivity = "unclassified", rationale = "", decision_refs = [] }
 value = { source_datatype = "string", xsd_datatype = "xsd:string", min_count = 1, max_count = 1, requiredness = "unconditional", repeatable_context = true, occurrence_scope = "per-list-item" }
 restrictions = { format = "", pattern = "", min_length = "", max_length = "", minimum = "", maximum = "", permitted_values = [] }
 vocabulary = { status = "not-applicable", scheme_id = "", values = [] }
-governance = { approval_status = "proposed", sensitivity = "unclassified", provenance = "source-referenced", quality = "needs-semantic-review" }
 legacy_schema = { matched_occurrences = 1, title = "", description = "", format = "" }
 evidence = ["workbook:Sheet1!A1639:H1639", "legacy-schema:propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.title.titleRegistrationDetails.landRegistryOfficeName"]
-review = { status = "needs-semantic-review", confidence = "low", flags = ["model-role-unassigned", "owning-context-unassigned", "iri-unassigned", "source-description-missing", "container-cardinality-needs-review"] }
+review = { status = "needs-semantic-review", confidence = "low", flags = ["model-role-unassigned", "owning-context-unassigned", "iri-unassigned", "source-description-missing", "container-cardinality-needs-review"], approval_status = "proposed", quality = "needs-semantic-review" }
 
 [[property]]
 id = "pp-6ee114858283"
+work_package = "titles-ownership"
 source = { row = 1640, path = "propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.title.titleRegistrationDetails.latestEditionDate", top_level_section = "propertyPack", heading = "titlesToBeSold", field_name = "latestEditionDate", datatype = "string", status = "Required", condition = "", description = "" }
 semantic = { preferred_label = "Latest edition date", candidate_definition = "Records the latest edition date for title registration details.", definition_status = "machine-drafted-from-source", source_description = "" }
-model = { role = "unclassified", owning_context = "unassigned", consuming_contexts = [], resource = "unresolved", relationship = "unresolved", attribute = "unresolved", local_name = "unresolved", iri = "unresolved" }
+model = { classification_status = "unclassified", roles = [], owning_context = "unassigned", consuming_contexts = [], construct_refs = [], disposition = "unresolved", sensitivity = "unclassified", rationale = "", decision_refs = [] }
 value = { source_datatype = "string", xsd_datatype = "xsd:date", min_count = 1, max_count = 1, requiredness = "unconditional", repeatable_context = true, occurrence_scope = "per-list-item" }
 restrictions = { format = "date", pattern = "", min_length = "", max_length = "", minimum = "", maximum = "", permitted_values = [] }
 vocabulary = { status = "not-applicable", scheme_id = "", values = [] }
-governance = { approval_status = "proposed", sensitivity = "unclassified", provenance = "source-referenced", quality = "needs-semantic-review" }
 legacy_schema = { matched_occurrences = 1, title = "", description = "", format = "date" }
 evidence = ["workbook:Sheet1!A1640:H1640", "legacy-schema:propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.title.titleRegistrationDetails.latestEditionDate"]
-review = { status = "needs-semantic-review", confidence = "low", flags = ["model-role-unassigned", "owning-context-unassigned", "iri-unassigned", "source-description-missing", "container-cardinality-needs-review"] }
+review = { status = "needs-semantic-review", confidence = "low", flags = ["model-role-unassigned", "owning-context-unassigned", "iri-unassigned", "source-description-missing", "container-cardinality-needs-review"], approval_status = "proposed", quality = "needs-semantic-review" }
 
 [[property]]
 id = "pp-95820935e514"
+work_package = "titles-ownership"
 source = { row = 1641, path = "propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.title.titleRegistrationDetails.postcodeZone.postcode", top_level_section = "propertyPack", heading = "titlesToBeSold", field_name = "postcode", datatype = "string", status = "Required", condition = "", description = "" }
 semantic = { preferred_label = "Postcode", candidate_definition = "Records the postcode for postcode zone.", definition_status = "machine-drafted-from-source", source_description = "" }
-model = { role = "unclassified", owning_context = "unassigned", consuming_contexts = [], resource = "unresolved", relationship = "unresolved", attribute = "unresolved", local_name = "unresolved", iri = "unresolved" }
+model = { classification_status = "unclassified", roles = [], owning_context = "unassigned", consuming_contexts = [], construct_refs = [], disposition = "unresolved", sensitivity = "unclassified", rationale = "", decision_refs = [] }
 value = { source_datatype = "string", xsd_datatype = "xsd:string", min_count = 1, max_count = 1, requiredness = "unconditional", repeatable_context = true, occurrence_scope = "per-list-item" }
 restrictions = { format = "", pattern = "", min_length = "", max_length = "", minimum = "", maximum = "", permitted_values = [] }
 vocabulary = { status = "not-applicable", scheme_id = "", values = [] }
-governance = { approval_status = "proposed", sensitivity = "unclassified", provenance = "source-referenced", quality = "needs-semantic-review" }
 legacy_schema = { matched_occurrences = 1, title = "", description = "", format = "" }
 evidence = ["workbook:Sheet1!A1641:H1641", "legacy-schema:propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.title.titleRegistrationDetails.postcodeZone.postcode"]
-review = { status = "needs-semantic-review", confidence = "low", flags = ["model-role-unassigned", "owning-context-unassigned", "iri-unassigned", "source-description-missing", "container-cardinality-needs-review"] }
+review = { status = "needs-semantic-review", confidence = "low", flags = ["model-role-unassigned", "owning-context-unassigned", "iri-unassigned", "source-description-missing", "container-cardinality-needs-review"], approval_status = "proposed", quality = "needs-semantic-review" }
 
 [[property]]
 id = "pp-a298d0446a05"
+work_package = "construction-services-energy"
 source = { row = 1645, path = "propertyPack.typeOfConstruction.buildingSafety.yesNo", top_level_section = "propertyPack", heading = "typeOfConstruction", field_name = "yesNo", datatype = "string", status = "Required", condition = "Conditional via oneOf / discriminator", description = "" }
 semantic = { preferred_label = "Building safety", candidate_definition = "Indicates whether building safety is applicable.", definition_status = "machine-drafted-from-source", source_description = "" }
-model = { role = "unclassified", owning_context = "unassigned", consuming_contexts = [], resource = "unresolved", relationship = "unresolved", attribute = "unresolved", local_name = "unresolved", iri = "unresolved" }
+model = { classification_status = "unclassified", roles = [], owning_context = "unassigned", consuming_contexts = [], construct_refs = [], disposition = "unresolved", sensitivity = "unclassified", rationale = "", decision_refs = [] }
 value = { source_datatype = "string", xsd_datatype = "xsd:string", min_count = 0, max_count = 1, requiredness = "conditional", repeatable_context = false, occurrence_scope = "per-parent-resource" }
 restrictions = { format = "", pattern = "", min_length = "", max_length = "", minimum = "", maximum = "", permitted_values = ["No", "Yes", "Not applicable"] }
 vocabulary = { status = "candidate", scheme_id = "unresolved", values = ["No", "Yes", "Not applicable"] }
-governance = { approval_status = "proposed", sensitivity = "unclassified", provenance = "source-referenced", quality = "needs-semantic-review" }
 legacy_schema = { matched_occurrences = 2, title = "", description = "", format = "" }
 evidence = ["workbook:Sheet1!A1645:H1645", "legacy-schema:propertyPack.typeOfConstruction.buildingSafety.yesNo"]
-review = { status = "needs-semantic-review", confidence = "low", flags = ["model-role-unassigned", "owning-context-unassigned", "iri-unassigned", "source-description-missing", "condition-expression-unresolved", "controlled-vocabulary-candidate"] }
+review = { status = "needs-semantic-review", confidence = "low", flags = ["model-role-unassigned", "owning-context-unassigned", "iri-unassigned", "source-description-missing", "condition-expression-unresolved", "controlled-vocabulary-candidate"], approval_status = "proposed", quality = "needs-semantic-review" }
 
 [[property]]
 id = "pp-142fe5795041"
+work_package = "construction-services-energy"
 source = { row = 1646, path = "propertyPack.typeOfConstruction.isStandardForm.yesNo", top_level_section = "propertyPack", heading = "typeOfConstruction", field_name = "yesNo", datatype = "string", status = "Required", condition = "Conditional via oneOf / discriminator", description = "" }
 semantic = { preferred_label = "Is standard form", candidate_definition = "Indicates whether is standard form is applicable.", definition_status = "machine-drafted-from-source", source_description = "" }
-model = { role = "unclassified", owning_context = "unassigned", consuming_contexts = [], resource = "unresolved", relationship = "unresolved", attribute = "unresolved", local_name = "unresolved", iri = "unresolved" }
+model = { classification_status = "unclassified", roles = [], owning_context = "unassigned", consuming_contexts = [], construct_refs = [], disposition = "unresolved", sensitivity = "unclassified", rationale = "", decision_refs = [] }
 value = { source_datatype = "string", xsd_datatype = "xsd:string", min_count = 0, max_count = 1, requiredness = "conditional", repeatable_context = false, occurrence_scope = "per-parent-resource" }
 restrictions = { format = "", pattern = "", min_length = "", max_length = "", minimum = "", maximum = "", permitted_values = ["Yes", "No"] }
 vocabulary = { status = "candidate", scheme_id = "unresolved", values = ["Yes", "No"] }
-governance = { approval_status = "proposed", sensitivity = "unclassified", provenance = "source-referenced", quality = "needs-semantic-review" }
 legacy_schema = { matched_occurrences = 2, title = "", description = "", format = "" }
 evidence = ["workbook:Sheet1!A1646:H1646", "legacy-schema:propertyPack.typeOfConstruction.isStandardForm.yesNo"]
-review = { status = "needs-semantic-review", confidence = "low", flags = ["model-role-unassigned", "owning-context-unassigned", "iri-unassigned", "source-description-missing", "condition-expression-unresolved", "controlled-vocabulary-candidate"] }
+review = { status = "needs-semantic-review", confidence = "low", flags = ["model-role-unassigned", "owning-context-unassigned", "iri-unassigned", "source-description-missing", "condition-expression-unresolved", "controlled-vocabulary-candidate"], approval_status = "proposed", quality = "needs-semantic-review" }
 
 [[property]]
 id = "pp-5dd2a85b60bb"
+work_package = "construction-services-energy"
 source = { row = 1647, path = "propertyPack.typeOfConstruction.loft.loftAccess", top_level_section = "propertyPack", heading = "typeOfConstruction", field_name = "loftAccess", datatype = "string", status = "Required", condition = "Conditional via oneOf / discriminator", description = "" }
 semantic = { preferred_label = "Loft access", candidate_definition = "Records the loft access for loft.", definition_status = "machine-drafted-from-source", source_description = "" }
-model = { role = "unclassified", owning_context = "unassigned", consuming_contexts = [], resource = "unresolved", relationship = "unresolved", attribute = "unresolved", local_name = "unresolved", iri = "unresolved" }
+model = { classification_status = "unclassified", roles = [], owning_context = "unassigned", consuming_contexts = [], construct_refs = [], disposition = "unresolved", sensitivity = "unclassified", rationale = "", decision_refs = [] }
 value = { source_datatype = "string", xsd_datatype = "xsd:string", min_count = 0, max_count = 1, requiredness = "conditional", repeatable_context = false, occurrence_scope = "per-parent-resource" }
 restrictions = { format = "", pattern = "", min_length = "", max_length = "", minimum = "", maximum = "", permitted_values = ["No", "Yes"] }
 vocabulary = { status = "candidate", scheme_id = "unresolved", values = ["No", "Yes"] }
-governance = { approval_status = "proposed", sensitivity = "unclassified", provenance = "source-referenced", quality = "needs-semantic-review" }
 legacy_schema = { matched_occurrences = 2, title = "", description = "", format = "" }
 evidence = ["workbook:Sheet1!A1647:H1647", "legacy-schema:propertyPack.typeOfConstruction.loft.loftAccess"]
-review = { status = "needs-semantic-review", confidence = "low", flags = ["model-role-unassigned", "owning-context-unassigned", "iri-unassigned", "source-description-missing", "condition-expression-unresolved", "controlled-vocabulary-candidate"] }
+review = { status = "needs-semantic-review", confidence = "low", flags = ["model-role-unassigned", "owning-context-unassigned", "iri-unassigned", "source-description-missing", "condition-expression-unresolved", "controlled-vocabulary-candidate"], approval_status = "proposed", quality = "needs-semantic-review" }
 
 [[property]]
 id = "pp-cae0fe65332a"
+work_package = "construction-services-energy"
 source = { row = 1648, path = "propertyPack.typeOfConstruction.sprayFoamInsulation.hasSprayFoamInstalled", top_level_section = "propertyPack", heading = "typeOfConstruction", field_name = "hasSprayFoamInstalled", datatype = "string", status = "Required", condition = "Conditional via oneOf / discriminator", description = "" }
 semantic = { preferred_label = "Has spray foam installed", candidate_definition = "Records the has spray foam installed for spray foam insulation.", definition_status = "machine-drafted-from-source", source_description = "" }
-model = { role = "unclassified", owning_context = "unassigned", consuming_contexts = [], resource = "unresolved", relationship = "unresolved", attribute = "unresolved", local_name = "unresolved", iri = "unresolved" }
+model = { classification_status = "unclassified", roles = [], owning_context = "unassigned", consuming_contexts = [], construct_refs = [], disposition = "unresolved", sensitivity = "unclassified", rationale = "", decision_refs = [] }
 value = { source_datatype = "string", xsd_datatype = "xsd:string", min_count = 0, max_count = 1, requiredness = "conditional", repeatable_context = false, occurrence_scope = "per-parent-resource" }
 restrictions = { format = "", pattern = "", min_length = "", max_length = "", minimum = "", maximum = "", permitted_values = ["No", "Yes"] }
 vocabulary = { status = "candidate", scheme_id = "unresolved", values = ["No", "Yes"] }
-governance = { approval_status = "proposed", sensitivity = "unclassified", provenance = "source-referenced", quality = "needs-semantic-review" }
 legacy_schema = { matched_occurrences = 2, title = "", description = "", format = "" }
 evidence = ["workbook:Sheet1!A1648:H1648", "legacy-schema:propertyPack.typeOfConstruction.sprayFoamInsulation.hasSprayFoamInstalled"]
-review = { status = "needs-semantic-review", confidence = "low", flags = ["model-role-unassigned", "owning-context-unassigned", "iri-unassigned", "source-description-missing", "condition-expression-unresolved", "controlled-vocabulary-candidate"] }
+review = { status = "needs-semantic-review", confidence = "low", flags = ["model-role-unassigned", "owning-context-unassigned", "iri-unassigned", "source-description-missing", "condition-expression-unresolved", "controlled-vocabulary-candidate"], approval_status = "proposed", quality = "needs-semantic-review" }
 
 [[property]]
 id = "pp-f7d27c8db550"
+work_package = "construction-services-energy"
 source = { row = 1661, path = "propertyPack.waterAndDrainage.charging.consequentialChargingBasis", top_level_section = "propertyPack", heading = "waterAndDrainage", field_name = "consequentialChargingBasis", datatype = "string", status = "Required", condition = "", description = "Will the basis for charging for sewerage and water services at the property change as a consequence of a change of occupation?" }
 semantic = { preferred_label = "Consequential charging basis", candidate_definition = "Records the response to the source question: Will the basis for charging for sewerage and water services at the property change as a consequence of a change of occupation?", definition_status = "machine-drafted-from-source", source_description = "Will the basis for charging for sewerage and water services at the property change as a consequence of a change of occupation?" }
-model = { role = "unclassified", owning_context = "unassigned", consuming_contexts = [], resource = "unresolved", relationship = "unresolved", attribute = "unresolved", local_name = "unresolved", iri = "unresolved" }
+model = { classification_status = "unclassified", roles = [], owning_context = "unassigned", consuming_contexts = [], construct_refs = [], disposition = "unresolved", sensitivity = "unclassified", rationale = "", decision_refs = [] }
 value = { source_datatype = "string", xsd_datatype = "xsd:string", min_count = 1, max_count = 1, requiredness = "unconditional", repeatable_context = false, occurrence_scope = "per-parent-resource" }
 restrictions = { format = "", pattern = "", min_length = 1, max_length = "", minimum = "", maximum = "", permitted_values = [] }
 vocabulary = { status = "not-applicable", scheme_id = "", values = [] }
-governance = { approval_status = "proposed", sensitivity = "unclassified", provenance = "source-referenced", quality = "needs-semantic-review" }
 legacy_schema = { matched_occurrences = 1, title = "Will the basis for charging for sewerage and water services at the property change as a consequence of a change of occupation?", description = "", format = "" }
 evidence = ["workbook:Sheet1!A1661:H1661", "legacy-schema:propertyPack.waterAndDrainage.charging.consequentialChargingBasis"]
-review = { status = "needs-semantic-review", confidence = "low", flags = ["model-role-unassigned", "owning-context-unassigned", "iri-unassigned"] }
+review = { status = "needs-semantic-review", confidence = "low", flags = ["model-role-unassigned", "owning-context-unassigned", "iri-unassigned"], approval_status = "proposed", quality = "needs-semantic-review" }
 
 [[property]]
 id = "pp-0637f7c4516f"
+work_package = "construction-services-energy"
 source = { row = 1662, path = "propertyPack.waterAndDrainage.charging.currentChargingBasis", top_level_section = "propertyPack", heading = "waterAndDrainage", field_name = "currentChargingBasis", datatype = "string", status = "Required", condition = "", description = "What is the current basis for charging for sewerage and/or water services at the property?" }
 semantic = { preferred_label = "Current charging basis", candidate_definition = "Records the response to the source question: What is the current basis for charging for sewerage and/or water services at the property?", definition_status = "machine-drafted-from-source", source_description = "What is the current basis for charging for sewerage and/or water services at the property?" }
-model = { role = "unclassified", owning_context = "unassigned", consuming_contexts = [], resource = "unresolved", relationship = "unresolved", attribute = "unresolved", local_name = "unresolved", iri = "unresolved" }
+model = { classification_status = "unclassified", roles = [], owning_context = "unassigned", consuming_contexts = [], construct_refs = [], disposition = "unresolved", sensitivity = "unclassified", rationale = "", decision_refs = [] }
 value = { source_datatype = "string", xsd_datatype = "xsd:string", min_count = 1, max_count = 1, requiredness = "unconditional", repeatable_context = false, occurrence_scope = "per-parent-resource" }
 restrictions = { format = "", pattern = "", min_length = 1, max_length = "", minimum = "", maximum = "", permitted_values = [] }
 vocabulary = { status = "not-applicable", scheme_id = "", values = [] }
-governance = { approval_status = "proposed", sensitivity = "unclassified", provenance = "source-referenced", quality = "needs-semantic-review" }
 legacy_schema = { matched_occurrences = 1, title = "What is the current basis for charging for sewerage and/or water services at the property?", description = "", format = "" }
 evidence = ["workbook:Sheet1!A1662:H1662", "legacy-schema:propertyPack.waterAndDrainage.charging.currentChargingBasis"]
-review = { status = "needs-semantic-review", confidence = "low", flags = ["model-role-unassigned", "owning-context-unassigned", "iri-unassigned"] }
+review = { status = "needs-semantic-review", confidence = "low", flags = ["model-role-unassigned", "owning-context-unassigned", "iri-unassigned"], approval_status = "proposed", quality = "needs-semantic-review" }
 
 [[property]]
 id = "pp-965e59011452"
+work_package = "construction-services-energy"
 source = { row = 1663, path = "propertyPack.waterAndDrainage.charging.sewerageBills", top_level_section = "propertyPack", heading = "waterAndDrainage", field_name = "sewerageBills", datatype = "string", status = "Required", condition = "", description = "Who bills the property for sewerage services?" }
 semantic = { preferred_label = "Sewerage bills", candidate_definition = "Records the response to the source question: Who bills the property for sewerage services?", definition_status = "machine-drafted-from-source", source_description = "Who bills the property for sewerage services?" }
-model = { role = "unclassified", owning_context = "unassigned", consuming_contexts = [], resource = "unresolved", relationship = "unresolved", attribute = "unresolved", local_name = "unresolved", iri = "unresolved" }
+model = { classification_status = "unclassified", roles = [], owning_context = "unassigned", consuming_contexts = [], construct_refs = [], disposition = "unresolved", sensitivity = "unclassified", rationale = "", decision_refs = [] }
 value = { source_datatype = "string", xsd_datatype = "xsd:string", min_count = 1, max_count = 1, requiredness = "unconditional", repeatable_context = false, occurrence_scope = "per-parent-resource" }
 restrictions = { format = "", pattern = "", min_length = 1, max_length = "", minimum = "", maximum = "", permitted_values = [] }
 vocabulary = { status = "not-applicable", scheme_id = "", values = [] }
-governance = { approval_status = "proposed", sensitivity = "unclassified", provenance = "source-referenced", quality = "needs-semantic-review" }
 legacy_schema = { matched_occurrences = 1, title = "Who bills the property for sewerage services?", description = "", format = "" }
 evidence = ["workbook:Sheet1!A1663:H1663", "legacy-schema:propertyPack.waterAndDrainage.charging.sewerageBills"]
-review = { status = "needs-semantic-review", confidence = "low", flags = ["model-role-unassigned", "owning-context-unassigned", "iri-unassigned"] }
+review = { status = "needs-semantic-review", confidence = "low", flags = ["model-role-unassigned", "owning-context-unassigned", "iri-unassigned"], approval_status = "proposed", quality = "needs-semantic-review" }
 
 [[property]]
 id = "pp-4d4fdff36c0c"
+work_package = "construction-services-energy"
 source = { row = 1664, path = "propertyPack.waterAndDrainage.charging.sewerageProvider", top_level_section = "propertyPack", heading = "waterAndDrainage", field_name = "sewerageProvider", datatype = "string", status = "Required", condition = "", description = "Who are the sewerage undertakers for the property?" }
 semantic = { preferred_label = "Sewerage provider", candidate_definition = "Records the response to the source question: Who are the sewerage undertakers for the property?", definition_status = "machine-drafted-from-source", source_description = "Who are the sewerage undertakers for the property?" }
-model = { role = "unclassified", owning_context = "unassigned", consuming_contexts = [], resource = "unresolved", relationship = "unresolved", attribute = "unresolved", local_name = "unresolved", iri = "unresolved" }
+model = { classification_status = "unclassified", roles = [], owning_context = "unassigned", consuming_contexts = [], construct_refs = [], disposition = "unresolved", sensitivity = "unclassified", rationale = "", decision_refs = [] }
 value = { source_datatype = "string", xsd_datatype = "xsd:string", min_count = 1, max_count = 1, requiredness = "unconditional", repeatable_context = false, occurrence_scope = "per-parent-resource" }
 restrictions = { format = "", pattern = "", min_length = 1, max_length = "", minimum = "", maximum = "", permitted_values = [] }
 vocabulary = { status = "not-applicable", scheme_id = "", values = [] }
-governance = { approval_status = "proposed", sensitivity = "unclassified", provenance = "source-referenced", quality = "needs-semantic-review" }
 legacy_schema = { matched_occurrences = 1, title = "Who are the sewerage undertakers for the property?", description = "", format = "" }
 evidence = ["workbook:Sheet1!A1664:H1664", "legacy-schema:propertyPack.waterAndDrainage.charging.sewerageProvider"]
-review = { status = "needs-semantic-review", confidence = "low", flags = ["model-role-unassigned", "owning-context-unassigned", "iri-unassigned"] }
+review = { status = "needs-semantic-review", confidence = "low", flags = ["model-role-unassigned", "owning-context-unassigned", "iri-unassigned"], approval_status = "proposed", quality = "needs-semantic-review" }
 
 [[property]]
 id = "pp-88b76eea6bf7"
+work_package = "construction-services-energy"
 source = { row = 1665, path = "propertyPack.waterAndDrainage.charging.waterBills", top_level_section = "propertyPack", heading = "waterAndDrainage", field_name = "waterBills", datatype = "string", status = "Required", condition = "", description = "Who bills the property for water services?" }
 semantic = { preferred_label = "Water bills", candidate_definition = "Records the response to the source question: Who bills the property for water services?", definition_status = "machine-drafted-from-source", source_description = "Who bills the property for water services?" }
-model = { role = "unclassified", owning_context = "unassigned", consuming_contexts = [], resource = "unresolved", relationship = "unresolved", attribute = "unresolved", local_name = "unresolved", iri = "unresolved" }
+model = { classification_status = "unclassified", roles = [], owning_context = "unassigned", consuming_contexts = [], construct_refs = [], disposition = "unresolved", sensitivity = "unclassified", rationale = "", decision_refs = [] }
 value = { source_datatype = "string", xsd_datatype = "xsd:string", min_count = 1, max_count = 1, requiredness = "unconditional", repeatable_context = false, occurrence_scope = "per-parent-resource" }
 restrictions = { format = "", pattern = "", min_length = 1, max_length = "", minimum = "", maximum = "", permitted_values = [] }
 vocabulary = { status = "not-applicable", scheme_id = "", values = [] }
-governance = { approval_status = "proposed", sensitivity = "unclassified", provenance = "source-referenced", quality = "needs-semantic-review" }
 legacy_schema = { matched_occurrences = 1, title = "Who bills the property for water services?", description = "", format = "" }
 evidence = ["workbook:Sheet1!A1665:H1665", "legacy-schema:propertyPack.waterAndDrainage.charging.waterBills"]
-review = { status = "needs-semantic-review", confidence = "low", flags = ["model-role-unassigned", "owning-context-unassigned", "iri-unassigned"] }
+review = { status = "needs-semantic-review", confidence = "low", flags = ["model-role-unassigned", "owning-context-unassigned", "iri-unassigned"], approval_status = "proposed", quality = "needs-semantic-review" }
 
 [[property]]
 id = "pp-ac4096435aa1"
+work_package = "construction-services-energy"
 source = { row = 1666, path = "propertyPack.waterAndDrainage.charging.waterProvider", top_level_section = "propertyPack", heading = "waterAndDrainage", field_name = "waterProvider", datatype = "string", status = "Required", condition = "", description = "Who are the water undertakers for the property?" }
 semantic = { preferred_label = "Water provider", candidate_definition = "Records the response to the source question: Who are the water undertakers for the property?", definition_status = "machine-drafted-from-source", source_description = "Who are the water undertakers for the property?" }
-model = { role = "unclassified", owning_context = "unassigned", consuming_contexts = [], resource = "unresolved", relationship = "unresolved", attribute = "unresolved", local_name = "unresolved", iri = "unresolved" }
+model = { classification_status = "unclassified", roles = [], owning_context = "unassigned", consuming_contexts = [], construct_refs = [], disposition = "unresolved", sensitivity = "unclassified", rationale = "", decision_refs = [] }
 value = { source_datatype = "string", xsd_datatype = "xsd:string", min_count = 1, max_count = 1, requiredness = "unconditional", repeatable_context = false, occurrence_scope = "per-parent-resource" }
 restrictions = { format = "", pattern = "", min_length = 1, max_length = "", minimum = "", maximum = "", permitted_values = [] }
 vocabulary = { status = "not-applicable", scheme_id = "", values = [] }
-governance = { approval_status = "proposed", sensitivity = "unclassified", provenance = "source-referenced", quality = "needs-semantic-review" }
 legacy_schema = { matched_occurrences = 1, title = "Who are the water undertakers for the property?", description = "", format = "" }
 evidence = ["workbook:Sheet1!A1666:H1666", "legacy-schema:propertyPack.waterAndDrainage.charging.waterProvider"]
-review = { status = "needs-semantic-review", confidence = "low", flags = ["model-role-unassigned", "owning-context-unassigned", "iri-unassigned"] }
+review = { status = "needs-semantic-review", confidence = "low", flags = ["model-role-unassigned", "owning-context-unassigned", "iri-unassigned"], approval_status = "proposed", quality = "needs-semantic-review" }
 
 [[property]]
 id = "pp-2b39a2a77748"
+work_package = "construction-services-energy"
 source = { row = 1667, path = "propertyPack.waterAndDrainage.drainage.distanceToNearestSewerageTreatment", top_level_section = "propertyPack", heading = "waterAndDrainage", field_name = "distanceToNearestSewerageTreatment", datatype = "string", status = "Required", condition = "", description = "Please state the distance from the property to the nearest boundary of the nearest sewage treatment works." }
 semantic = { preferred_label = "Distance to nearest sewerage treatment", candidate_definition = "The value recorded for “Please state the distance from the property to the nearest boundary of the nearest sewage treatment works” in the Property Pack.", definition_status = "machine-drafted-from-source", source_description = "Please state the distance from the property to the nearest boundary of the nearest sewage treatment works." }
-model = { role = "unclassified", owning_context = "unassigned", consuming_contexts = [], resource = "unresolved", relationship = "unresolved", attribute = "unresolved", local_name = "unresolved", iri = "unresolved" }
+model = { classification_status = "unclassified", roles = [], owning_context = "unassigned", consuming_contexts = [], construct_refs = [], disposition = "unresolved", sensitivity = "unclassified", rationale = "", decision_refs = [] }
 value = { source_datatype = "string", xsd_datatype = "xsd:string", min_count = 1, max_count = 1, requiredness = "unconditional", repeatable_context = false, occurrence_scope = "per-parent-resource" }
 restrictions = { format = "", pattern = "", min_length = 1, max_length = "", minimum = "", maximum = "", permitted_values = [] }
 vocabulary = { status = "not-applicable", scheme_id = "", values = [] }
-governance = { approval_status = "proposed", sensitivity = "unclassified", provenance = "source-referenced", quality = "needs-semantic-review" }
 legacy_schema = { matched_occurrences = 1, title = "Please state the distance from the property to the nearest boundary of the nearest sewage treatment works.", description = "", format = "" }
 evidence = ["workbook:Sheet1!A1667:H1667", "legacy-schema:propertyPack.waterAndDrainage.drainage.distanceToNearestSewerageTreatment"]
-review = { status = "needs-semantic-review", confidence = "low", flags = ["model-role-unassigned", "owning-context-unassigned", "iri-unassigned"] }
+review = { status = "needs-semantic-review", confidence = "low", flags = ["model-role-unassigned", "owning-context-unassigned", "iri-unassigned"], approval_status = "proposed", quality = "needs-semantic-review" }
 
 [[property]]
 id = "pp-660e307abd27"
+work_package = "construction-services-energy"
 source = { row = 1668, path = "propertyPack.waterAndDrainage.drainage.mainsFoulDrainage.yesNo", top_level_section = "propertyPack", heading = "waterAndDrainage", field_name = "yesNo", datatype = "string", status = "Required", condition = "Conditional via oneOf / discriminator", description = "" }
 semantic = { preferred_label = "Mains foul drainage", candidate_definition = "Indicates whether mains foul drainage is applicable.", definition_status = "machine-drafted-from-source", source_description = "" }
-model = { role = "unclassified", owning_context = "unassigned", consuming_contexts = [], resource = "unresolved", relationship = "unresolved", attribute = "unresolved", local_name = "unresolved", iri = "unresolved" }
+model = { classification_status = "unclassified", roles = [], owning_context = "unassigned", consuming_contexts = [], construct_refs = [], disposition = "unresolved", sensitivity = "unclassified", rationale = "", decision_refs = [] }
 value = { source_datatype = "string", xsd_datatype = "xsd:string", min_count = 0, max_count = 1, requiredness = "conditional", repeatable_context = false, occurrence_scope = "per-parent-resource" }
 restrictions = { format = "", pattern = "", min_length = "", max_length = "", minimum = "", maximum = "", permitted_values = ["Yes", "To be connected", "No", "Not known"] }
 vocabulary = { status = "candidate", scheme_id = "unresolved", values = ["Yes", "To be connected", "No", "Not known"] }
-governance = { approval_status = "proposed", sensitivity = "unclassified", provenance = "source-referenced", quality = "needs-semantic-review" }
 legacy_schema = { matched_occurrences = 2, title = "", description = "", format = "" }
 evidence = ["workbook:Sheet1!A1668:H1668", "legacy-schema:propertyPack.waterAndDrainage.drainage.mainsFoulDrainage.yesNo"]
-review = { status = "needs-semantic-review", confidence = "low", flags = ["model-role-unassigned", "owning-context-unassigned", "iri-unassigned", "source-description-missing", "condition-expression-unresolved", "controlled-vocabulary-candidate"] }
+review = { status = "needs-semantic-review", confidence = "low", flags = ["model-role-unassigned", "owning-context-unassigned", "iri-unassigned", "source-description-missing", "condition-expression-unresolved", "controlled-vocabulary-candidate"], approval_status = "proposed", quality = "needs-semantic-review" }
 
 [[property]]
 id = "pp-bf9050f3eca7"
+work_package = "construction-services-energy"
 source = { row = 1669, path = "propertyPack.waterAndDrainage.drainage.mainsSurfaceWaterDrainage.yesNo", top_level_section = "propertyPack", heading = "waterAndDrainage", field_name = "yesNo", datatype = "string", status = "Required", condition = "Conditional via oneOf / discriminator", description = "" }
 semantic = { preferred_label = "Mains surface water drainage", candidate_definition = "Indicates whether mains surface water drainage is applicable.", definition_status = "machine-drafted-from-source", source_description = "" }
-model = { role = "unclassified", owning_context = "unassigned", consuming_contexts = [], resource = "unresolved", relationship = "unresolved", attribute = "unresolved", local_name = "unresolved", iri = "unresolved" }
+model = { classification_status = "unclassified", roles = [], owning_context = "unassigned", consuming_contexts = [], construct_refs = [], disposition = "unresolved", sensitivity = "unclassified", rationale = "", decision_refs = [] }
 value = { source_datatype = "string", xsd_datatype = "xsd:string", min_count = 0, max_count = 1, requiredness = "conditional", repeatable_context = false, occurrence_scope = "per-parent-resource" }
 restrictions = { format = "", pattern = "", min_length = "", max_length = "", minimum = "", maximum = "", permitted_values = ["No", "Not known", "Yes", "To be connected"] }
 vocabulary = { status = "candidate", scheme_id = "unresolved", values = ["No", "Not known", "Yes", "To be connected"] }
-governance = { approval_status = "proposed", sensitivity = "unclassified", provenance = "source-referenced", quality = "needs-semantic-review" }
 legacy_schema = { matched_occurrences = 3, title = "", description = "", format = "" }
 evidence = ["workbook:Sheet1!A1669:H1669", "legacy-schema:propertyPack.waterAndDrainage.drainage.mainsSurfaceWaterDrainage.yesNo"]
-review = { status = "needs-semantic-review", confidence = "low", flags = ["model-role-unassigned", "owning-context-unassigned", "iri-unassigned", "source-description-missing", "condition-expression-unresolved", "controlled-vocabulary-candidate"] }
+review = { status = "needs-semantic-review", confidence = "low", flags = ["model-role-unassigned", "owning-context-unassigned", "iri-unassigned", "source-description-missing", "condition-expression-unresolved", "controlled-vocabulary-candidate"], approval_status = "proposed", quality = "needs-semantic-review" }
 
 [[property]]
 id = "pp-16c450559b76"
+work_package = "construction-services-energy"
 source = { row = 1670, path = "propertyPack.waterAndDrainage.drainage.publicDrainWithinBoundaries.yesNo", top_level_section = "propertyPack", heading = "waterAndDrainage", field_name = "yesNo", datatype = "string", status = "Required", condition = "Conditional via oneOf / discriminator", description = "" }
 semantic = { preferred_label = "Public drain within boundaries", candidate_definition = "Indicates whether public drain within boundaries is applicable.", definition_status = "machine-drafted-from-source", source_description = "" }
-model = { role = "unclassified", owning_context = "unassigned", consuming_contexts = [], resource = "unresolved", relationship = "unresolved", attribute = "unresolved", local_name = "unresolved", iri = "unresolved" }
+model = { classification_status = "unclassified", roles = [], owning_context = "unassigned", consuming_contexts = [], construct_refs = [], disposition = "unresolved", sensitivity = "unclassified", rationale = "", decision_refs = [] }
 value = { source_datatype = "string", xsd_datatype = "xsd:string", min_count = 0, max_count = 1, requiredness = "conditional", repeatable_context = false, occurrence_scope = "per-parent-resource" }
 restrictions = { format = "", pattern = "", min_length = "", max_length = "", minimum = "", maximum = "", permitted_values = ["No", "Yes"] }
 vocabulary = { status = "candidate", scheme_id = "unresolved", values = ["No", "Yes"] }
-governance = { approval_status = "proposed", sensitivity = "unclassified", provenance = "source-referenced", quality = "needs-semantic-review" }
 legacy_schema = { matched_occurrences = 2, title = "", description = "", format = "" }
 evidence = ["workbook:Sheet1!A1670:H1670", "legacy-schema:propertyPack.waterAndDrainage.drainage.publicDrainWithinBoundaries.yesNo"]
-review = { status = "needs-semantic-review", confidence = "low", flags = ["model-role-unassigned", "owning-context-unassigned", "iri-unassigned", "source-description-missing", "condition-expression-unresolved", "controlled-vocabulary-candidate"] }
+review = { status = "needs-semantic-review", confidence = "low", flags = ["model-role-unassigned", "owning-context-unassigned", "iri-unassigned", "source-description-missing", "condition-expression-unresolved", "controlled-vocabulary-candidate"], approval_status = "proposed", quality = "needs-semantic-review" }
 
 [[property]]
 id = "pp-f56ee6a9b759"
+work_package = "construction-services-energy"
 source = { row = 1671, path = "propertyPack.waterAndDrainage.drainage.publicPumpingStationWithin50mOfBuildings.yesNo", top_level_section = "propertyPack", heading = "waterAndDrainage", field_name = "yesNo", datatype = "string", status = "Required", condition = "Conditional via oneOf / discriminator", description = "" }
 semantic = { preferred_label = "Public pumping station within50m of buildings", candidate_definition = "Indicates whether public pumping station within50m of buildings is applicable.", definition_status = "machine-drafted-from-source", source_description = "" }
-model = { role = "unclassified", owning_context = "unassigned", consuming_contexts = [], resource = "unresolved", relationship = "unresolved", attribute = "unresolved", local_name = "unresolved", iri = "unresolved" }
+model = { classification_status = "unclassified", roles = [], owning_context = "unassigned", consuming_contexts = [], construct_refs = [], disposition = "unresolved", sensitivity = "unclassified", rationale = "", decision_refs = [] }
 value = { source_datatype = "string", xsd_datatype = "xsd:string", min_count = 0, max_count = 1, requiredness = "conditional", repeatable_context = false, occurrence_scope = "per-parent-resource" }
 restrictions = { format = "", pattern = "", min_length = "", max_length = "", minimum = "", maximum = "", permitted_values = ["No", "Yes"] }
 vocabulary = { status = "candidate", scheme_id = "unresolved", values = ["No", "Yes"] }
-governance = { approval_status = "proposed", sensitivity = "unclassified", provenance = "source-referenced", quality = "needs-semantic-review" }
 legacy_schema = { matched_occurrences = 2, title = "", description = "", format = "" }
 evidence = ["workbook:Sheet1!A1671:H1671", "legacy-schema:propertyPack.waterAndDrainage.drainage.publicPumpingStationWithin50mOfBuildings.yesNo"]
-review = { status = "needs-semantic-review", confidence = "low", flags = ["model-role-unassigned", "owning-context-unassigned", "iri-unassigned", "source-description-missing", "condition-expression-unresolved", "controlled-vocabulary-candidate"] }
+review = { status = "needs-semantic-review", confidence = "low", flags = ["model-role-unassigned", "owning-context-unassigned", "iri-unassigned", "source-description-missing", "condition-expression-unresolved", "controlled-vocabulary-candidate"], approval_status = "proposed", quality = "needs-semantic-review" }
 
 [[property]]
 id = "pp-219fe5825926"
+work_package = "construction-services-energy"
 source = { row = 1672, path = "propertyPack.waterAndDrainage.drainage.publicPumpingStationWithinBoundaries.yesNo", top_level_section = "propertyPack", heading = "waterAndDrainage", field_name = "yesNo", datatype = "string", status = "Required", condition = "Conditional via oneOf / discriminator", description = "" }
 semantic = { preferred_label = "Public pumping station within boundaries", candidate_definition = "Indicates whether public pumping station within boundaries is applicable.", definition_status = "machine-drafted-from-source", source_description = "" }
-model = { role = "unclassified", owning_context = "unassigned", consuming_contexts = [], resource = "unresolved", relationship = "unresolved", attribute = "unresolved", local_name = "unresolved", iri = "unresolved" }
+model = { classification_status = "unclassified", roles = [], owning_context = "unassigned", consuming_contexts = [], construct_refs = [], disposition = "unresolved", sensitivity = "unclassified", rationale = "", decision_refs = [] }
 value = { source_datatype = "string", xsd_datatype = "xsd:string", min_count = 0, max_count = 1, requiredness = "conditional", repeatable_context = false, occurrence_scope = "per-parent-resource" }
 restrictions = { format = "", pattern = "", min_length = "", max_length = "", minimum = "", maximum = "", permitted_values = ["No", "Yes"] }
 vocabulary = { status = "candidate", scheme_id = "unresolved", values = ["No", "Yes"] }
-governance = { approval_status = "proposed", sensitivity = "unclassified", provenance = "source-referenced", quality = "needs-semantic-review" }
 legacy_schema = { matched_occurrences = 2, title = "", description = "", format = "" }
 evidence = ["workbook:Sheet1!A1672:H1672", "legacy-schema:propertyPack.waterAndDrainage.drainage.publicPumpingStationWithinBoundaries.yesNo"]
-review = { status = "needs-semantic-review", confidence = "low", flags = ["model-role-unassigned", "owning-context-unassigned", "iri-unassigned", "source-description-missing", "condition-expression-unresolved", "controlled-vocabulary-candidate"] }
+review = { status = "needs-semantic-review", confidence = "low", flags = ["model-role-unassigned", "owning-context-unassigned", "iri-unassigned", "source-description-missing", "condition-expression-unresolved", "controlled-vocabulary-candidate"], approval_status = "proposed", quality = "needs-semantic-review" }
 
 [[property]]
 id = "pp-f31232720b80"
+work_package = "construction-services-energy"
 source = { row = 1673, path = "propertyPack.waterAndDrainage.drainage.publicSewerWithin100ft.yesNo", top_level_section = "propertyPack", heading = "waterAndDrainage", field_name = "yesNo", datatype = "string", status = "Required", condition = "Conditional via oneOf / discriminator", description = "" }
 semantic = { preferred_label = "Public sewer within100ft", candidate_definition = "Indicates whether public sewer within100ft is applicable.", definition_status = "machine-drafted-from-source", source_description = "" }
-model = { role = "unclassified", owning_context = "unassigned", consuming_contexts = [], resource = "unresolved", relationship = "unresolved", attribute = "unresolved", local_name = "unresolved", iri = "unresolved" }
+model = { classification_status = "unclassified", roles = [], owning_context = "unassigned", consuming_contexts = [], construct_refs = [], disposition = "unresolved", sensitivity = "unclassified", rationale = "", decision_refs = [] }
 value = { source_datatype = "string", xsd_datatype = "xsd:string", min_count = 0, max_count = 1, requiredness = "conditional", repeatable_context = false, occurrence_scope = "per-parent-resource" }
 restrictions = { format = "", pattern = "", min_length = "", max_length = "", minimum = "", maximum = "", permitted_values = ["No", "Yes"] }
 vocabulary = { status = "candidate", scheme_id = "unresolved", values = ["No", "Yes"] }
-governance = { approval_status = "proposed", sensitivity = "unclassified", provenance = "source-referenced", quality = "needs-semantic-review" }
 legacy_schema = { matched_occurrences = 2, title = "", description = "", format = "" }
 evidence = ["workbook:Sheet1!A1673:H1673", "legacy-schema:propertyPack.waterAndDrainage.drainage.publicSewerWithin100ft.yesNo"]
-review = { status = "needs-semantic-review", confidence = "low", flags = ["model-role-unassigned", "owning-context-unassigned", "iri-unassigned", "source-description-missing", "condition-expression-unresolved", "controlled-vocabulary-candidate"] }
+review = { status = "needs-semantic-review", confidence = "low", flags = ["model-role-unassigned", "owning-context-unassigned", "iri-unassigned", "source-description-missing", "condition-expression-unresolved", "controlled-vocabulary-candidate"], approval_status = "proposed", quality = "needs-semantic-review" }
 
 [[property]]
 id = "pp-095fb90dbfe9"
+work_package = "construction-services-energy"
 source = { row = 1674, path = "propertyPack.waterAndDrainage.drainage.riskOfInternalFlooding.yesNo", top_level_section = "propertyPack", heading = "waterAndDrainage", field_name = "yesNo", datatype = "string", status = "Required", condition = "Conditional via oneOf / discriminator", description = "" }
 semantic = { preferred_label = "Risk of internal flooding", candidate_definition = "Indicates whether risk of internal flooding is applicable.", definition_status = "machine-drafted-from-source", source_description = "" }
-model = { role = "unclassified", owning_context = "unassigned", consuming_contexts = [], resource = "unresolved", relationship = "unresolved", attribute = "unresolved", local_name = "unresolved", iri = "unresolved" }
+model = { classification_status = "unclassified", roles = [], owning_context = "unassigned", consuming_contexts = [], construct_refs = [], disposition = "unresolved", sensitivity = "unclassified", rationale = "", decision_refs = [] }
 value = { source_datatype = "string", xsd_datatype = "xsd:string", min_count = 0, max_count = 1, requiredness = "conditional", repeatable_context = false, occurrence_scope = "per-parent-resource" }
 restrictions = { format = "", pattern = "", min_length = "", max_length = "", minimum = "", maximum = "", permitted_values = ["No", "Yes"] }
 vocabulary = { status = "candidate", scheme_id = "unresolved", values = ["No", "Yes"] }
-governance = { approval_status = "proposed", sensitivity = "unclassified", provenance = "source-referenced", quality = "needs-semantic-review" }
 legacy_schema = { matched_occurrences = 2, title = "", description = "", format = "" }
 evidence = ["workbook:Sheet1!A1674:H1674", "legacy-schema:propertyPack.waterAndDrainage.drainage.riskOfInternalFlooding.yesNo"]
-review = { status = "needs-semantic-review", confidence = "low", flags = ["model-role-unassigned", "owning-context-unassigned", "iri-unassigned", "source-description-missing", "condition-expression-unresolved", "controlled-vocabulary-candidate"] }
+review = { status = "needs-semantic-review", confidence = "low", flags = ["model-role-unassigned", "owning-context-unassigned", "iri-unassigned", "source-description-missing", "condition-expression-unresolved", "controlled-vocabulary-candidate"], approval_status = "proposed", quality = "needs-semantic-review" }
 
 [[property]]
 id = "pp-785e26de944b"
+work_package = "construction-services-energy"
 source = { row = 1675, path = "propertyPack.waterAndDrainage.drainage.sewerageUndertakerApproval.yesNo", top_level_section = "propertyPack", heading = "waterAndDrainage", field_name = "yesNo", datatype = "string", status = "Required", condition = "Conditional via oneOf / discriminator", description = "" }
 semantic = { preferred_label = "Sewerage undertaker approval", candidate_definition = "Indicates whether sewerage undertaker approval is applicable.", definition_status = "machine-drafted-from-source", source_description = "" }
-model = { role = "unclassified", owning_context = "unassigned", consuming_contexts = [], resource = "unresolved", relationship = "unresolved", attribute = "unresolved", local_name = "unresolved", iri = "unresolved" }
+model = { classification_status = "unclassified", roles = [], owning_context = "unassigned", consuming_contexts = [], construct_refs = [], disposition = "unresolved", sensitivity = "unclassified", rationale = "", decision_refs = [] }
 value = { source_datatype = "string", xsd_datatype = "xsd:string", min_count = 0, max_count = 1, requiredness = "conditional", repeatable_context = false, occurrence_scope = "per-parent-resource" }
 restrictions = { format = "", pattern = "", min_length = "", max_length = "", minimum = "", maximum = "", permitted_values = ["No", "Yes"] }
 vocabulary = { status = "candidate", scheme_id = "unresolved", values = ["No", "Yes"] }
-governance = { approval_status = "proposed", sensitivity = "unclassified", provenance = "source-referenced", quality = "needs-semantic-review" }
 legacy_schema = { matched_occurrences = 2, title = "", description = "", format = "" }
 evidence = ["workbook:Sheet1!A1675:H1675", "legacy-schema:propertyPack.waterAndDrainage.drainage.sewerageUndertakerApproval.yesNo"]
-review = { status = "needs-semantic-review", confidence = "low", flags = ["model-role-unassigned", "owning-context-unassigned", "iri-unassigned", "source-description-missing", "condition-expression-unresolved", "controlled-vocabulary-candidate"] }
+review = { status = "needs-semantic-review", confidence = "low", flags = ["model-role-unassigned", "owning-context-unassigned", "iri-unassigned", "source-description-missing", "condition-expression-unresolved", "controlled-vocabulary-candidate"], approval_status = "proposed", quality = "needs-semantic-review" }
 
 [[property]]
 id = "pp-45c309f95fad"
+work_package = "construction-services-energy"
 source = { row = 1676, path = "propertyPack.waterAndDrainage.drainage.sewersSubjectOfAdoptionAgreement.yesNo", top_level_section = "propertyPack", heading = "waterAndDrainage", field_name = "yesNo", datatype = "string", status = "Required", condition = "Conditional via oneOf / discriminator", description = "" }
 semantic = { preferred_label = "Sewers subject of adoption agreement", candidate_definition = "Indicates whether sewers subject of adoption agreement is applicable.", definition_status = "machine-drafted-from-source", source_description = "" }
-model = { role = "unclassified", owning_context = "unassigned", consuming_contexts = [], resource = "unresolved", relationship = "unresolved", attribute = "unresolved", local_name = "unresolved", iri = "unresolved" }
+model = { classification_status = "unclassified", roles = [], owning_context = "unassigned", consuming_contexts = [], construct_refs = [], disposition = "unresolved", sensitivity = "unclassified", rationale = "", decision_refs = [] }
 value = { source_datatype = "string", xsd_datatype = "xsd:string", min_count = 0, max_count = 1, requiredness = "conditional", repeatable_context = false, occurrence_scope = "per-parent-resource" }
 restrictions = { format = "", pattern = "", min_length = "", max_length = "", minimum = "", maximum = "", permitted_values = ["No", "Yes"] }
 vocabulary = { status = "candidate", scheme_id = "unresolved", values = ["No", "Yes"] }
-governance = { approval_status = "proposed", sensitivity = "unclassified", provenance = "source-referenced", quality = "needs-semantic-review" }
 legacy_schema = { matched_occurrences = 2, title = "", description = "", format = "" }
 evidence = ["workbook:Sheet1!A1676:H1676", "legacy-schema:propertyPack.waterAndDrainage.drainage.sewersSubjectOfAdoptionAgreement.yesNo"]
-review = { status = "needs-semantic-review", confidence = "low", flags = ["model-role-unassigned", "owning-context-unassigned", "iri-unassigned", "source-description-missing", "condition-expression-unresolved", "controlled-vocabulary-candidate"] }
+review = { status = "needs-semantic-review", confidence = "low", flags = ["model-role-unassigned", "owning-context-unassigned", "iri-unassigned", "source-description-missing", "condition-expression-unresolved", "controlled-vocabulary-candidate"], approval_status = "proposed", quality = "needs-semantic-review" }
 
 [[property]]
 id = "pp-7bb4177bdf62"
+work_package = "construction-services-energy"
 source = { row = 1677, path = "propertyPack.waterAndDrainage.drainage.surfaceDrainageCharge.yesNo", top_level_section = "propertyPack", heading = "waterAndDrainage", field_name = "yesNo", datatype = "string", status = "Required", condition = "Conditional via oneOf / discriminator", description = "" }
 semantic = { preferred_label = "Surface drainage charge", candidate_definition = "Indicates whether surface drainage charge is applicable.", definition_status = "machine-drafted-from-source", source_description = "" }
-model = { role = "unclassified", owning_context = "unassigned", consuming_contexts = [], resource = "unresolved", relationship = "unresolved", attribute = "unresolved", local_name = "unresolved", iri = "unresolved" }
+model = { classification_status = "unclassified", roles = [], owning_context = "unassigned", consuming_contexts = [], construct_refs = [], disposition = "unresolved", sensitivity = "unclassified", rationale = "", decision_refs = [] }
 value = { source_datatype = "string", xsd_datatype = "xsd:string", min_count = 0, max_count = 1, requiredness = "conditional", repeatable_context = false, occurrence_scope = "per-parent-resource" }
 restrictions = { format = "", pattern = "", min_length = "", max_length = "", minimum = "", maximum = "", permitted_values = ["No", "Yes"] }
 vocabulary = { status = "candidate", scheme_id = "unresolved", values = ["No", "Yes"] }
-governance = { approval_status = "proposed", sensitivity = "unclassified", provenance = "source-referenced", quality = "needs-semantic-review" }
 legacy_schema = { matched_occurrences = 2, title = "", description = "", format = "" }
 evidence = ["workbook:Sheet1!A1677:H1677", "legacy-schema:propertyPack.waterAndDrainage.drainage.surfaceDrainageCharge.yesNo"]
-review = { status = "needs-semantic-review", confidence = "low", flags = ["model-role-unassigned", "owning-context-unassigned", "iri-unassigned", "source-description-missing", "condition-expression-unresolved", "controlled-vocabulary-candidate"] }
+review = { status = "needs-semantic-review", confidence = "low", flags = ["model-role-unassigned", "owning-context-unassigned", "iri-unassigned", "source-description-missing", "condition-expression-unresolved", "controlled-vocabulary-candidate"], approval_status = "proposed", quality = "needs-semantic-review" }
 
 [[property]]
 id = "pp-dc27af89e40d"
+work_package = "construction-services-energy"
 source = { row = 1678, path = "propertyPack.waterAndDrainage.maintenanceAgreements.yesNo", top_level_section = "propertyPack", heading = "waterAndDrainage", field_name = "yesNo", datatype = "string", status = "Required", condition = "Conditional via oneOf / discriminator", description = "" }
 semantic = { preferred_label = "Maintenance agreements", candidate_definition = "Indicates whether maintenance agreements is applicable.", definition_status = "machine-drafted-from-source", source_description = "" }
-model = { role = "unclassified", owning_context = "unassigned", consuming_contexts = [], resource = "unresolved", relationship = "unresolved", attribute = "unresolved", local_name = "unresolved", iri = "unresolved" }
+model = { classification_status = "unclassified", roles = [], owning_context = "unassigned", consuming_contexts = [], construct_refs = [], disposition = "unresolved", sensitivity = "unclassified", rationale = "", decision_refs = [] }
 value = { source_datatype = "string", xsd_datatype = "xsd:string", min_count = 0, max_count = 1, requiredness = "conditional", repeatable_context = false, occurrence_scope = "per-parent-resource" }
 restrictions = { format = "", pattern = "", min_length = "", max_length = "", minimum = "", maximum = "", permitted_values = ["No", "Yes"] }
 vocabulary = { status = "candidate", scheme_id = "unresolved", values = ["No", "Yes"] }
-governance = { approval_status = "proposed", sensitivity = "unclassified", provenance = "source-referenced", quality = "needs-semantic-review" }
 legacy_schema = { matched_occurrences = 2, title = "", description = "", format = "" }
 evidence = ["workbook:Sheet1!A1678:H1678", "legacy-schema:propertyPack.waterAndDrainage.maintenanceAgreements.yesNo"]
-review = { status = "needs-semantic-review", confidence = "low", flags = ["model-role-unassigned", "owning-context-unassigned", "iri-unassigned", "source-description-missing", "condition-expression-unresolved", "controlled-vocabulary-candidate"] }
+review = { status = "needs-semantic-review", confidence = "low", flags = ["model-role-unassigned", "owning-context-unassigned", "iri-unassigned", "source-description-missing", "condition-expression-unresolved", "controlled-vocabulary-candidate"], approval_status = "proposed", quality = "needs-semantic-review" }
 
 [[property]]
 id = "pp-01613c1f9655"
+work_package = "construction-services-energy"
 source = { row = 1679, path = "propertyPack.waterAndDrainage.maps.publicSewerMapAttached", top_level_section = "propertyPack", heading = "waterAndDrainage", field_name = "publicSewerMapAttached", datatype = "string", status = "Required", condition = "", description = "Where relevant, please include a copy of an extract from the public sewer map." }
 semantic = { preferred_label = "Where relevant, please include a copy of an extract from the public sewer map", candidate_definition = "The value recorded for “Where relevant, please include a copy of an extract from the public sewer map” in the Property Pack.", definition_status = "machine-drafted-from-source", source_description = "Where relevant, please include a copy of an extract from the public sewer map." }
-model = { role = "unclassified", owning_context = "unassigned", consuming_contexts = [], resource = "unresolved", relationship = "unresolved", attribute = "unresolved", local_name = "unresolved", iri = "unresolved" }
+model = { classification_status = "unclassified", roles = [], owning_context = "unassigned", consuming_contexts = [], construct_refs = [], disposition = "unresolved", sensitivity = "unclassified", rationale = "", decision_refs = [] }
 value = { source_datatype = "string", xsd_datatype = "xsd:string", min_count = 1, max_count = 1, requiredness = "unconditional", repeatable_context = false, occurrence_scope = "per-parent-resource" }
 restrictions = { format = "", pattern = "", min_length = 1, max_length = "", minimum = "", maximum = "", permitted_values = [] }
 vocabulary = { status = "not-applicable", scheme_id = "", values = [] }
-governance = { approval_status = "proposed", sensitivity = "unclassified", provenance = "source-referenced", quality = "needs-semantic-review" }
 legacy_schema = { matched_occurrences = 1, title = "Where relevant, please include a copy of an extract from the public sewer map.", description = "", format = "" }
 evidence = ["workbook:Sheet1!A1679:H1679", "legacy-schema:propertyPack.waterAndDrainage.maps.publicSewerMapAttached"]
-review = { status = "needs-semantic-review", confidence = "low", flags = ["model-role-unassigned", "owning-context-unassigned", "iri-unassigned"] }
+review = { status = "needs-semantic-review", confidence = "low", flags = ["model-role-unassigned", "owning-context-unassigned", "iri-unassigned"], approval_status = "proposed", quality = "needs-semantic-review" }
 
 [[property]]
 id = "pp-ec7d5a0f35ae"
+work_package = "construction-services-energy"
 source = { row = 1680, path = "propertyPack.waterAndDrainage.maps.waterworksMapAttached", top_level_section = "propertyPack", heading = "waterAndDrainage", field_name = "waterworksMapAttached", datatype = "string", status = "Required", condition = "", description = "Where relevant, please include a copy of an extract from the map of waterworks." }
 semantic = { preferred_label = "Where relevant, please include a copy of an extract from the map of waterworks", candidate_definition = "The value recorded for “Where relevant, please include a copy of an extract from the map of waterworks” in the Property Pack.", definition_status = "machine-drafted-from-source", source_description = "Where relevant, please include a copy of an extract from the map of waterworks." }
-model = { role = "unclassified", owning_context = "unassigned", consuming_contexts = [], resource = "unresolved", relationship = "unresolved", attribute = "unresolved", local_name = "unresolved", iri = "unresolved" }
+model = { classification_status = "unclassified", roles = [], owning_context = "unassigned", consuming_contexts = [], construct_refs = [], disposition = "unresolved", sensitivity = "unclassified", rationale = "", decision_refs = [] }
 value = { source_datatype = "string", xsd_datatype = "xsd:string", min_count = 1, max_count = 1, requiredness = "unconditional", repeatable_context = false, occurrence_scope = "per-parent-resource" }
 restrictions = { format = "", pattern = "", min_length = 1, max_length = "", minimum = "", maximum = "", permitted_values = [] }
 vocabulary = { status = "not-applicable", scheme_id = "", values = [] }
-governance = { approval_status = "proposed", sensitivity = "unclassified", provenance = "source-referenced", quality = "needs-semantic-review" }
 legacy_schema = { matched_occurrences = 1, title = "Where relevant, please include a copy of an extract from the map of waterworks.", description = "", format = "" }
 evidence = ["workbook:Sheet1!A1680:H1680", "legacy-schema:propertyPack.waterAndDrainage.maps.waterworksMapAttached"]
-review = { status = "needs-semantic-review", confidence = "low", flags = ["model-role-unassigned", "owning-context-unassigned", "iri-unassigned"] }
+review = { status = "needs-semantic-review", confidence = "low", flags = ["model-role-unassigned", "owning-context-unassigned", "iri-unassigned"], approval_status = "proposed", quality = "needs-semantic-review" }
 
 [[property]]
 id = "pp-64dc353451dc"
+work_package = "construction-services-energy"
 source = { row = 1681, path = "propertyPack.waterAndDrainage.water.lowWaterPressureRisk.yesNo", top_level_section = "propertyPack", heading = "waterAndDrainage", field_name = "yesNo", datatype = "string", status = "Required", condition = "Conditional via oneOf / discriminator", description = "" }
 semantic = { preferred_label = "Low water pressure risk", candidate_definition = "Indicates whether low water pressure risk is applicable.", definition_status = "machine-drafted-from-source", source_description = "" }
-model = { role = "unclassified", owning_context = "unassigned", consuming_contexts = [], resource = "unresolved", relationship = "unresolved", attribute = "unresolved", local_name = "unresolved", iri = "unresolved" }
+model = { classification_status = "unclassified", roles = [], owning_context = "unassigned", consuming_contexts = [], construct_refs = [], disposition = "unresolved", sensitivity = "unclassified", rationale = "", decision_refs = [] }
 value = { source_datatype = "string", xsd_datatype = "xsd:string", min_count = 0, max_count = 1, requiredness = "conditional", repeatable_context = false, occurrence_scope = "per-parent-resource" }
 restrictions = { format = "", pattern = "", min_length = "", max_length = "", minimum = "", maximum = "", permitted_values = ["No", "Yes"] }
 vocabulary = { status = "candidate", scheme_id = "unresolved", values = ["No", "Yes"] }
-governance = { approval_status = "proposed", sensitivity = "unclassified", provenance = "source-referenced", quality = "needs-semantic-review" }
 legacy_schema = { matched_occurrences = 2, title = "", description = "", format = "" }
 evidence = ["workbook:Sheet1!A1681:H1681", "legacy-schema:propertyPack.waterAndDrainage.water.lowWaterPressureRisk.yesNo"]
-review = { status = "needs-semantic-review", confidence = "low", flags = ["model-role-unassigned", "owning-context-unassigned", "iri-unassigned", "source-description-missing", "condition-expression-unresolved", "controlled-vocabulary-candidate"] }
+review = { status = "needs-semantic-review", confidence = "low", flags = ["model-role-unassigned", "owning-context-unassigned", "iri-unassigned", "source-description-missing", "condition-expression-unresolved", "controlled-vocabulary-candidate"], approval_status = "proposed", quality = "needs-semantic-review" }
 
 [[property]]
 id = "pp-68bb21cb7a61"
+work_package = "construction-services-energy"
 source = { row = 1682, path = "propertyPack.waterAndDrainage.water.mainsWater.yesNo", top_level_section = "propertyPack", heading = "waterAndDrainage", field_name = "yesNo", datatype = "string", status = "Required", condition = "Conditional via oneOf / discriminator", description = "" }
 semantic = { preferred_label = "Mains water", candidate_definition = "Indicates whether mains water is applicable.", definition_status = "machine-drafted-from-source", source_description = "" }
-model = { role = "unclassified", owning_context = "unassigned", consuming_contexts = [], resource = "unresolved", relationship = "unresolved", attribute = "unresolved", local_name = "unresolved", iri = "unresolved" }
+model = { classification_status = "unclassified", roles = [], owning_context = "unassigned", consuming_contexts = [], construct_refs = [], disposition = "unresolved", sensitivity = "unclassified", rationale = "", decision_refs = [] }
 value = { source_datatype = "string", xsd_datatype = "xsd:string", min_count = 0, max_count = 1, requiredness = "conditional", repeatable_context = false, occurrence_scope = "per-parent-resource" }
 restrictions = { format = "", pattern = "", min_length = "", max_length = "", minimum = "", maximum = "", permitted_values = ["No", "Yes", "To be connected"] }
 vocabulary = { status = "candidate", scheme_id = "unresolved", values = ["No", "Yes", "To be connected"] }
-governance = { approval_status = "proposed", sensitivity = "unclassified", provenance = "source-referenced", quality = "needs-semantic-review" }
 legacy_schema = { matched_occurrences = 3, title = "", description = "", format = "" }
 evidence = ["workbook:Sheet1!A1682:H1682", "legacy-schema:propertyPack.waterAndDrainage.water.mainsWater.yesNo"]
-review = { status = "needs-semantic-review", confidence = "low", flags = ["model-role-unassigned", "owning-context-unassigned", "iri-unassigned", "source-description-missing", "condition-expression-unresolved", "controlled-vocabulary-candidate"] }
+review = { status = "needs-semantic-review", confidence = "low", flags = ["model-role-unassigned", "owning-context-unassigned", "iri-unassigned", "source-description-missing", "condition-expression-unresolved", "controlled-vocabulary-candidate"], approval_status = "proposed", quality = "needs-semantic-review" }
 
 [[property]]
 id = "pp-0067a00fc9eb"
+work_package = "construction-services-energy"
 source = { row = 1684, path = "propertyPack.waterAndDrainage.water.waterMainsSubjectOfAdoptionAgreement.yesNo", top_level_section = "propertyPack", heading = "waterAndDrainage", field_name = "yesNo", datatype = "string", status = "Required", condition = "Conditional via oneOf / discriminator", description = "" }
 semantic = { preferred_label = "Water mains subject of adoption agreement", candidate_definition = "Indicates whether water mains subject of adoption agreement is applicable.", definition_status = "machine-drafted-from-source", source_description = "" }
-model = { role = "unclassified", owning_context = "unassigned", consuming_contexts = [], resource = "unresolved", relationship = "unresolved", attribute = "unresolved", local_name = "unresolved", iri = "unresolved" }
+model = { classification_status = "unclassified", roles = [], owning_context = "unassigned", consuming_contexts = [], construct_refs = [], disposition = "unresolved", sensitivity = "unclassified", rationale = "", decision_refs = [] }
 value = { source_datatype = "string", xsd_datatype = "xsd:string", min_count = 0, max_count = 1, requiredness = "conditional", repeatable_context = false, occurrence_scope = "per-parent-resource" }
 restrictions = { format = "", pattern = "", min_length = "", max_length = "", minimum = "", maximum = "", permitted_values = ["No", "Yes"] }
 vocabulary = { status = "candidate", scheme_id = "unresolved", values = ["No", "Yes"] }
-governance = { approval_status = "proposed", sensitivity = "unclassified", provenance = "source-referenced", quality = "needs-semantic-review" }
 legacy_schema = { matched_occurrences = 2, title = "", description = "", format = "" }
 evidence = ["workbook:Sheet1!A1684:H1684", "legacy-schema:propertyPack.waterAndDrainage.water.waterMainsSubjectOfAdoptionAgreement.yesNo"]
-review = { status = "needs-semantic-review", confidence = "low", flags = ["model-role-unassigned", "owning-context-unassigned", "iri-unassigned", "source-description-missing", "condition-expression-unresolved", "controlled-vocabulary-candidate"] }
+review = { status = "needs-semantic-review", confidence = "low", flags = ["model-role-unassigned", "owning-context-unassigned", "iri-unassigned", "source-description-missing", "condition-expression-unresolved", "controlled-vocabulary-candidate"], approval_status = "proposed", quality = "needs-semantic-review" }
 
 [[property]]
 id = "pp-fa31ab7b8be1"
+work_package = "construction-services-energy"
 source = { row = 1685, path = "propertyPack.waterAndDrainage.water.waterMainsWithinBoundaries.yesNo", top_level_section = "propertyPack", heading = "waterAndDrainage", field_name = "yesNo", datatype = "string", status = "Required", condition = "Conditional via oneOf / discriminator", description = "" }
 semantic = { preferred_label = "Water mains within boundaries", candidate_definition = "Indicates whether water mains within boundaries is applicable.", definition_status = "machine-drafted-from-source", source_description = "" }
-model = { role = "unclassified", owning_context = "unassigned", consuming_contexts = [], resource = "unresolved", relationship = "unresolved", attribute = "unresolved", local_name = "unresolved", iri = "unresolved" }
+model = { classification_status = "unclassified", roles = [], owning_context = "unassigned", consuming_contexts = [], construct_refs = [], disposition = "unresolved", sensitivity = "unclassified", rationale = "", decision_refs = [] }
 value = { source_datatype = "string", xsd_datatype = "xsd:string", min_count = 0, max_count = 1, requiredness = "conditional", repeatable_context = false, occurrence_scope = "per-parent-resource" }
 restrictions = { format = "", pattern = "", min_length = "", max_length = "", minimum = "", maximum = "", permitted_values = ["No", "Yes"] }
 vocabulary = { status = "candidate", scheme_id = "unresolved", values = ["No", "Yes"] }
-governance = { approval_status = "proposed", sensitivity = "unclassified", provenance = "source-referenced", quality = "needs-semantic-review" }
 legacy_schema = { matched_occurrences = 2, title = "", description = "", format = "" }
 evidence = ["workbook:Sheet1!A1685:H1685", "legacy-schema:propertyPack.waterAndDrainage.water.waterMainsWithinBoundaries.yesNo"]
-review = { status = "needs-semantic-review", confidence = "low", flags = ["model-role-unassigned", "owning-context-unassigned", "iri-unassigned", "source-description-missing", "condition-expression-unresolved", "controlled-vocabulary-candidate"] }
+review = { status = "needs-semantic-review", confidence = "low", flags = ["model-role-unassigned", "owning-context-unassigned", "iri-unassigned", "source-description-missing", "condition-expression-unresolved", "controlled-vocabulary-candidate"], approval_status = "proposed", quality = "needs-semantic-review" }

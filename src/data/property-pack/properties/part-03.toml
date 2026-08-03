@@ -1,456 +1,456 @@
-# Generated bootstrap; curate fields in place, then run generate/check.
+# Maintained source; curate fields in place, then run generate/check.
 
 [[property]]
 id = "pp-3f28da10454e"
+work_package = "fixtures-fittings"
 source = { row = 386, path = "propertyPack.fixturesAndFittings.bathroom.bathroomCabinet.isIncludedExcludedOrNone", top_level_section = "propertyPack", heading = "fixturesAndFittings", field_name = "isIncludedExcludedOrNone", datatype = "string", status = "Required", condition = "Conditional via oneOf / discriminator", description = "Included, Excluded or None" }
 semantic = { preferred_label = "Included, Excluded or None", candidate_definition = "The value recorded for “Included, Excluded or None” in the Property Pack.", definition_status = "machine-drafted-from-source", source_description = "Included, Excluded or None" }
-model = { role = "unclassified", owning_context = "unassigned", consuming_contexts = [], resource = "unresolved", relationship = "unresolved", attribute = "unresolved", local_name = "unresolved", iri = "unresolved" }
+model = { classification_status = "unclassified", roles = [], owning_context = "unassigned", consuming_contexts = [], construct_refs = [], disposition = "unresolved", sensitivity = "unclassified", rationale = "", decision_refs = [] }
 value = { source_datatype = "string", xsd_datatype = "xsd:string", min_count = 0, max_count = 1, requiredness = "conditional", repeatable_context = false, occurrence_scope = "per-parent-resource" }
 restrictions = { format = "", pattern = "", min_length = "", max_length = "", minimum = "", maximum = "", permitted_values = ["Included", "None", "Excluded"] }
 vocabulary = { status = "candidate", scheme_id = "unresolved", values = ["Included", "None", "Excluded"] }
-governance = { approval_status = "proposed", sensitivity = "unclassified", provenance = "source-referenced", quality = "needs-semantic-review" }
 legacy_schema = { matched_occurrences = 2, title = "", description = "", format = "" }
 evidence = ["workbook:Sheet1!A386:H386", "legacy-schema:propertyPack.fixturesAndFittings.bathroom.bathroomCabinet.isIncludedExcludedOrNone"]
-review = { status = "needs-semantic-review", confidence = "low", flags = ["model-role-unassigned", "owning-context-unassigned", "iri-unassigned", "condition-expression-unresolved", "controlled-vocabulary-candidate"] }
+review = { status = "needs-semantic-review", confidence = "low", flags = ["model-role-unassigned", "owning-context-unassigned", "iri-unassigned", "condition-expression-unresolved", "controlled-vocabulary-candidate"], approval_status = "proposed", quality = "needs-semantic-review" }
 
 [[property]]
 id = "pp-ab332599b3b9"
+work_package = "fixtures-fittings"
 source = { row = 388, path = "propertyPack.fixturesAndFittings.bathroom.bathroomMirror.isIncludedExcludedOrNone", top_level_section = "propertyPack", heading = "fixturesAndFittings", field_name = "isIncludedExcludedOrNone", datatype = "string", status = "Required", condition = "Conditional via oneOf / discriminator", description = "Included, Excluded or None" }
 semantic = { preferred_label = "Included, Excluded or None", candidate_definition = "The value recorded for “Included, Excluded or None” in the Property Pack.", definition_status = "machine-drafted-from-source", source_description = "Included, Excluded or None" }
-model = { role = "unclassified", owning_context = "unassigned", consuming_contexts = [], resource = "unresolved", relationship = "unresolved", attribute = "unresolved", local_name = "unresolved", iri = "unresolved" }
+model = { classification_status = "unclassified", roles = [], owning_context = "unassigned", consuming_contexts = [], construct_refs = [], disposition = "unresolved", sensitivity = "unclassified", rationale = "", decision_refs = [] }
 value = { source_datatype = "string", xsd_datatype = "xsd:string", min_count = 0, max_count = 1, requiredness = "conditional", repeatable_context = false, occurrence_scope = "per-parent-resource" }
 restrictions = { format = "", pattern = "", min_length = "", max_length = "", minimum = "", maximum = "", permitted_values = ["Included", "None", "Excluded"] }
 vocabulary = { status = "candidate", scheme_id = "unresolved", values = ["Included", "None", "Excluded"] }
-governance = { approval_status = "proposed", sensitivity = "unclassified", provenance = "source-referenced", quality = "needs-semantic-review" }
 legacy_schema = { matched_occurrences = 2, title = "", description = "", format = "" }
 evidence = ["workbook:Sheet1!A388:H388", "legacy-schema:propertyPack.fixturesAndFittings.bathroom.bathroomMirror.isIncludedExcludedOrNone"]
-review = { status = "needs-semantic-review", confidence = "low", flags = ["model-role-unassigned", "owning-context-unassigned", "iri-unassigned", "condition-expression-unresolved", "controlled-vocabulary-candidate"] }
+review = { status = "needs-semantic-review", confidence = "low", flags = ["model-role-unassigned", "owning-context-unassigned", "iri-unassigned", "condition-expression-unresolved", "controlled-vocabulary-candidate"], approval_status = "proposed", quality = "needs-semantic-review" }
 
 [[property]]
 id = "pp-eed46eddf831"
+work_package = "fixtures-fittings"
 source = { row = 390, path = "propertyPack.fixturesAndFittings.bathroom.separateShowersAndFittings.isIncludedExcludedOrNone", top_level_section = "propertyPack", heading = "fixturesAndFittings", field_name = "isIncludedExcludedOrNone", datatype = "string", status = "Required", condition = "Conditional via oneOf / discriminator", description = "Included, Excluded or None" }
 semantic = { preferred_label = "Included, Excluded or None", candidate_definition = "The value recorded for “Included, Excluded or None” in the Property Pack.", definition_status = "machine-drafted-from-source", source_description = "Included, Excluded or None" }
-model = { role = "unclassified", owning_context = "unassigned", consuming_contexts = [], resource = "unresolved", relationship = "unresolved", attribute = "unresolved", local_name = "unresolved", iri = "unresolved" }
+model = { classification_status = "unclassified", roles = [], owning_context = "unassigned", consuming_contexts = [], construct_refs = [], disposition = "unresolved", sensitivity = "unclassified", rationale = "", decision_refs = [] }
 value = { source_datatype = "string", xsd_datatype = "xsd:string", min_count = 0, max_count = 1, requiredness = "conditional", repeatable_context = false, occurrence_scope = "per-parent-resource" }
 restrictions = { format = "", pattern = "", min_length = "", max_length = "", minimum = "", maximum = "", permitted_values = ["Included", "None", "Excluded"] }
 vocabulary = { status = "candidate", scheme_id = "unresolved", values = ["Included", "None", "Excluded"] }
-governance = { approval_status = "proposed", sensitivity = "unclassified", provenance = "source-referenced", quality = "needs-semantic-review" }
 legacy_schema = { matched_occurrences = 2, title = "", description = "", format = "" }
 evidence = ["workbook:Sheet1!A390:H390", "legacy-schema:propertyPack.fixturesAndFittings.bathroom.separateShowersAndFittings.isIncludedExcludedOrNone"]
-review = { status = "needs-semantic-review", confidence = "low", flags = ["model-role-unassigned", "owning-context-unassigned", "iri-unassigned", "condition-expression-unresolved", "controlled-vocabulary-candidate"] }
+review = { status = "needs-semantic-review", confidence = "low", flags = ["model-role-unassigned", "owning-context-unassigned", "iri-unassigned", "condition-expression-unresolved", "controlled-vocabulary-candidate"], approval_status = "proposed", quality = "needs-semantic-review" }
 
 [[property]]
 id = "pp-bbaa7f382441"
+work_package = "fixtures-fittings"
 source = { row = 392, path = "propertyPack.fixturesAndFittings.bathroom.showerCurtain.isIncludedExcludedOrNone", top_level_section = "propertyPack", heading = "fixturesAndFittings", field_name = "isIncludedExcludedOrNone", datatype = "string", status = "Required", condition = "Conditional via oneOf / discriminator", description = "Included, Excluded or None" }
 semantic = { preferred_label = "Included, Excluded or None", candidate_definition = "The value recorded for “Included, Excluded or None” in the Property Pack.", definition_status = "machine-drafted-from-source", source_description = "Included, Excluded or None" }
-model = { role = "unclassified", owning_context = "unassigned", consuming_contexts = [], resource = "unresolved", relationship = "unresolved", attribute = "unresolved", local_name = "unresolved", iri = "unresolved" }
+model = { classification_status = "unclassified", roles = [], owning_context = "unassigned", consuming_contexts = [], construct_refs = [], disposition = "unresolved", sensitivity = "unclassified", rationale = "", decision_refs = [] }
 value = { source_datatype = "string", xsd_datatype = "xsd:string", min_count = 0, max_count = 1, requiredness = "conditional", repeatable_context = false, occurrence_scope = "per-parent-resource" }
 restrictions = { format = "", pattern = "", min_length = "", max_length = "", minimum = "", maximum = "", permitted_values = ["Included", "None", "Excluded"] }
 vocabulary = { status = "candidate", scheme_id = "unresolved", values = ["Included", "None", "Excluded"] }
-governance = { approval_status = "proposed", sensitivity = "unclassified", provenance = "source-referenced", quality = "needs-semantic-review" }
 legacy_schema = { matched_occurrences = 2, title = "", description = "", format = "" }
 evidence = ["workbook:Sheet1!A392:H392", "legacy-schema:propertyPack.fixturesAndFittings.bathroom.showerCurtain.isIncludedExcludedOrNone"]
-review = { status = "needs-semantic-review", confidence = "low", flags = ["model-role-unassigned", "owning-context-unassigned", "iri-unassigned", "condition-expression-unresolved", "controlled-vocabulary-candidate"] }
+review = { status = "needs-semantic-review", confidence = "low", flags = ["model-role-unassigned", "owning-context-unassigned", "iri-unassigned", "condition-expression-unresolved", "controlled-vocabulary-candidate"], approval_status = "proposed", quality = "needs-semantic-review" }
 
 [[property]]
 id = "pp-3feae3809491"
+work_package = "fixtures-fittings"
 source = { row = 394, path = "propertyPack.fixturesAndFittings.bathroom.showerFittingForBath.isIncludedExcludedOrNone", top_level_section = "propertyPack", heading = "fixturesAndFittings", field_name = "isIncludedExcludedOrNone", datatype = "string", status = "Required", condition = "Conditional via oneOf / discriminator", description = "Included, Excluded or None" }
 semantic = { preferred_label = "Included, Excluded or None", candidate_definition = "The value recorded for “Included, Excluded or None” in the Property Pack.", definition_status = "machine-drafted-from-source", source_description = "Included, Excluded or None" }
-model = { role = "unclassified", owning_context = "unassigned", consuming_contexts = [], resource = "unresolved", relationship = "unresolved", attribute = "unresolved", local_name = "unresolved", iri = "unresolved" }
+model = { classification_status = "unclassified", roles = [], owning_context = "unassigned", consuming_contexts = [], construct_refs = [], disposition = "unresolved", sensitivity = "unclassified", rationale = "", decision_refs = [] }
 value = { source_datatype = "string", xsd_datatype = "xsd:string", min_count = 0, max_count = 1, requiredness = "conditional", repeatable_context = false, occurrence_scope = "per-parent-resource" }
 restrictions = { format = "", pattern = "", min_length = "", max_length = "", minimum = "", maximum = "", permitted_values = ["Included", "None", "Excluded"] }
 vocabulary = { status = "candidate", scheme_id = "unresolved", values = ["Included", "None", "Excluded"] }
-governance = { approval_status = "proposed", sensitivity = "unclassified", provenance = "source-referenced", quality = "needs-semantic-review" }
 legacy_schema = { matched_occurrences = 2, title = "", description = "", format = "" }
 evidence = ["workbook:Sheet1!A394:H394", "legacy-schema:propertyPack.fixturesAndFittings.bathroom.showerFittingForBath.isIncludedExcludedOrNone"]
-review = { status = "needs-semantic-review", confidence = "low", flags = ["model-role-unassigned", "owning-context-unassigned", "iri-unassigned", "condition-expression-unresolved", "controlled-vocabulary-candidate"] }
+review = { status = "needs-semantic-review", confidence = "low", flags = ["model-role-unassigned", "owning-context-unassigned", "iri-unassigned", "condition-expression-unresolved", "controlled-vocabulary-candidate"], approval_status = "proposed", quality = "needs-semantic-review" }
 
 [[property]]
 id = "pp-fffc35c047ef"
+work_package = "fixtures-fittings"
 source = { row = 396, path = "propertyPack.fixturesAndFittings.bathroom.soapToothbrushHolders.isIncludedExcludedOrNone", top_level_section = "propertyPack", heading = "fixturesAndFittings", field_name = "isIncludedExcludedOrNone", datatype = "string", status = "Required", condition = "Conditional via oneOf / discriminator", description = "Included, Excluded or None" }
 semantic = { preferred_label = "Included, Excluded or None", candidate_definition = "The value recorded for “Included, Excluded or None” in the Property Pack.", definition_status = "machine-drafted-from-source", source_description = "Included, Excluded or None" }
-model = { role = "unclassified", owning_context = "unassigned", consuming_contexts = [], resource = "unresolved", relationship = "unresolved", attribute = "unresolved", local_name = "unresolved", iri = "unresolved" }
+model = { classification_status = "unclassified", roles = [], owning_context = "unassigned", consuming_contexts = [], construct_refs = [], disposition = "unresolved", sensitivity = "unclassified", rationale = "", decision_refs = [] }
 value = { source_datatype = "string", xsd_datatype = "xsd:string", min_count = 0, max_count = 1, requiredness = "conditional", repeatable_context = false, occurrence_scope = "per-parent-resource" }
 restrictions = { format = "", pattern = "", min_length = "", max_length = "", minimum = "", maximum = "", permitted_values = ["Included", "None", "Excluded"] }
 vocabulary = { status = "candidate", scheme_id = "unresolved", values = ["Included", "None", "Excluded"] }
-governance = { approval_status = "proposed", sensitivity = "unclassified", provenance = "source-referenced", quality = "needs-semantic-review" }
 legacy_schema = { matched_occurrences = 2, title = "", description = "", format = "" }
 evidence = ["workbook:Sheet1!A396:H396", "legacy-schema:propertyPack.fixturesAndFittings.bathroom.soapToothbrushHolders.isIncludedExcludedOrNone"]
-review = { status = "needs-semantic-review", confidence = "low", flags = ["model-role-unassigned", "owning-context-unassigned", "iri-unassigned", "condition-expression-unresolved", "controlled-vocabulary-candidate"] }
+review = { status = "needs-semantic-review", confidence = "low", flags = ["model-role-unassigned", "owning-context-unassigned", "iri-unassigned", "condition-expression-unresolved", "controlled-vocabulary-candidate"], approval_status = "proposed", quality = "needs-semantic-review" }
 
 [[property]]
 id = "pp-1c362b3d12e7"
+work_package = "fixtures-fittings"
 source = { row = 398, path = "propertyPack.fixturesAndFittings.bathroom.taps.isIncludedExcludedOrNone", top_level_section = "propertyPack", heading = "fixturesAndFittings", field_name = "isIncludedExcludedOrNone", datatype = "string", status = "Required", condition = "Conditional via oneOf / discriminator", description = "Included, Excluded or None" }
 semantic = { preferred_label = "Included, Excluded or None", candidate_definition = "The value recorded for “Included, Excluded or None” in the Property Pack.", definition_status = "machine-drafted-from-source", source_description = "Included, Excluded or None" }
-model = { role = "unclassified", owning_context = "unassigned", consuming_contexts = [], resource = "unresolved", relationship = "unresolved", attribute = "unresolved", local_name = "unresolved", iri = "unresolved" }
+model = { classification_status = "unclassified", roles = [], owning_context = "unassigned", consuming_contexts = [], construct_refs = [], disposition = "unresolved", sensitivity = "unclassified", rationale = "", decision_refs = [] }
 value = { source_datatype = "string", xsd_datatype = "xsd:string", min_count = 0, max_count = 1, requiredness = "conditional", repeatable_context = false, occurrence_scope = "per-parent-resource" }
 restrictions = { format = "", pattern = "", min_length = "", max_length = "", minimum = "", maximum = "", permitted_values = ["Included", "None", "Excluded"] }
 vocabulary = { status = "candidate", scheme_id = "unresolved", values = ["Included", "None", "Excluded"] }
-governance = { approval_status = "proposed", sensitivity = "unclassified", provenance = "source-referenced", quality = "needs-semantic-review" }
 legacy_schema = { matched_occurrences = 2, title = "", description = "", format = "" }
 evidence = ["workbook:Sheet1!A398:H398", "legacy-schema:propertyPack.fixturesAndFittings.bathroom.taps.isIncludedExcludedOrNone"]
-review = { status = "needs-semantic-review", confidence = "low", flags = ["model-role-unassigned", "owning-context-unassigned", "iri-unassigned", "condition-expression-unresolved", "controlled-vocabulary-candidate"] }
+review = { status = "needs-semantic-review", confidence = "low", flags = ["model-role-unassigned", "owning-context-unassigned", "iri-unassigned", "condition-expression-unresolved", "controlled-vocabulary-candidate"], approval_status = "proposed", quality = "needs-semantic-review" }
 
 [[property]]
 id = "pp-7b8462bdf90a"
+work_package = "fixtures-fittings"
 source = { row = 400, path = "propertyPack.fixturesAndFittings.bathroom.toiletRollHolders.isIncludedExcludedOrNone", top_level_section = "propertyPack", heading = "fixturesAndFittings", field_name = "isIncludedExcludedOrNone", datatype = "string", status = "Required", condition = "Conditional via oneOf / discriminator", description = "Included, Excluded or None" }
 semantic = { preferred_label = "Included, Excluded or None", candidate_definition = "The value recorded for “Included, Excluded or None” in the Property Pack.", definition_status = "machine-drafted-from-source", source_description = "Included, Excluded or None" }
-model = { role = "unclassified", owning_context = "unassigned", consuming_contexts = [], resource = "unresolved", relationship = "unresolved", attribute = "unresolved", local_name = "unresolved", iri = "unresolved" }
+model = { classification_status = "unclassified", roles = [], owning_context = "unassigned", consuming_contexts = [], construct_refs = [], disposition = "unresolved", sensitivity = "unclassified", rationale = "", decision_refs = [] }
 value = { source_datatype = "string", xsd_datatype = "xsd:string", min_count = 0, max_count = 1, requiredness = "conditional", repeatable_context = false, occurrence_scope = "per-parent-resource" }
 restrictions = { format = "", pattern = "", min_length = "", max_length = "", minimum = "", maximum = "", permitted_values = ["Included", "None", "Excluded"] }
 vocabulary = { status = "candidate", scheme_id = "unresolved", values = ["Included", "None", "Excluded"] }
-governance = { approval_status = "proposed", sensitivity = "unclassified", provenance = "source-referenced", quality = "needs-semantic-review" }
 legacy_schema = { matched_occurrences = 2, title = "", description = "", format = "" }
 evidence = ["workbook:Sheet1!A400:H400", "legacy-schema:propertyPack.fixturesAndFittings.bathroom.toiletRollHolders.isIncludedExcludedOrNone"]
-review = { status = "needs-semantic-review", confidence = "low", flags = ["model-role-unassigned", "owning-context-unassigned", "iri-unassigned", "condition-expression-unresolved", "controlled-vocabulary-candidate"] }
+review = { status = "needs-semantic-review", confidence = "low", flags = ["model-role-unassigned", "owning-context-unassigned", "iri-unassigned", "condition-expression-unresolved", "controlled-vocabulary-candidate"], approval_status = "proposed", quality = "needs-semantic-review" }
 
 [[property]]
 id = "pp-c5f7b7935d1a"
+work_package = "fixtures-fittings"
 source = { row = 402, path = "propertyPack.fixturesAndFittings.bathroom.towelRail.isIncludedExcludedOrNone", top_level_section = "propertyPack", heading = "fixturesAndFittings", field_name = "isIncludedExcludedOrNone", datatype = "string", status = "Required", condition = "Conditional via oneOf / discriminator", description = "Included, Excluded or None" }
 semantic = { preferred_label = "Included, Excluded or None", candidate_definition = "The value recorded for “Included, Excluded or None” in the Property Pack.", definition_status = "machine-drafted-from-source", source_description = "Included, Excluded or None" }
-model = { role = "unclassified", owning_context = "unassigned", consuming_contexts = [], resource = "unresolved", relationship = "unresolved", attribute = "unresolved", local_name = "unresolved", iri = "unresolved" }
+model = { classification_status = "unclassified", roles = [], owning_context = "unassigned", consuming_contexts = [], construct_refs = [], disposition = "unresolved", sensitivity = "unclassified", rationale = "", decision_refs = [] }
 value = { source_datatype = "string", xsd_datatype = "xsd:string", min_count = 0, max_count = 1, requiredness = "conditional", repeatable_context = false, occurrence_scope = "per-parent-resource" }
 restrictions = { format = "", pattern = "", min_length = "", max_length = "", minimum = "", maximum = "", permitted_values = ["Included", "None", "Excluded"] }
 vocabulary = { status = "candidate", scheme_id = "unresolved", values = ["Included", "None", "Excluded"] }
-governance = { approval_status = "proposed", sensitivity = "unclassified", provenance = "source-referenced", quality = "needs-semantic-review" }
 legacy_schema = { matched_occurrences = 2, title = "", description = "", format = "" }
 evidence = ["workbook:Sheet1!A402:H402", "legacy-schema:propertyPack.fixturesAndFittings.bathroom.towelRail.isIncludedExcludedOrNone"]
-review = { status = "needs-semantic-review", confidence = "low", flags = ["model-role-unassigned", "owning-context-unassigned", "iri-unassigned", "condition-expression-unresolved", "controlled-vocabulary-candidate"] }
+review = { status = "needs-semantic-review", confidence = "low", flags = ["model-role-unassigned", "owning-context-unassigned", "iri-unassigned", "condition-expression-unresolved", "controlled-vocabulary-candidate"], approval_status = "proposed", quality = "needs-semantic-review" }
 
 [[property]]
 id = "pp-a444d2f99eb2"
+work_package = "fixtures-fittings"
 source = { row = 404, path = "propertyPack.fixturesAndFittings.carpets.bedroom1.isIncludedExcludedOrNone", top_level_section = "propertyPack", heading = "fixturesAndFittings", field_name = "isIncludedExcludedOrNone", datatype = "string", status = "Required", condition = "Conditional via oneOf / discriminator", description = "Included, Excluded or None" }
 semantic = { preferred_label = "Included, Excluded or None", candidate_definition = "The value recorded for “Included, Excluded or None” in the Property Pack.", definition_status = "machine-drafted-from-source", source_description = "Included, Excluded or None" }
-model = { role = "unclassified", owning_context = "unassigned", consuming_contexts = [], resource = "unresolved", relationship = "unresolved", attribute = "unresolved", local_name = "unresolved", iri = "unresolved" }
+model = { classification_status = "unclassified", roles = [], owning_context = "unassigned", consuming_contexts = [], construct_refs = [], disposition = "unresolved", sensitivity = "unclassified", rationale = "", decision_refs = [] }
 value = { source_datatype = "string", xsd_datatype = "xsd:string", min_count = 0, max_count = 1, requiredness = "conditional", repeatable_context = false, occurrence_scope = "per-parent-resource" }
 restrictions = { format = "", pattern = "", min_length = "", max_length = "", minimum = "", maximum = "", permitted_values = ["Included", "None", "Excluded"] }
 vocabulary = { status = "candidate", scheme_id = "unresolved", values = ["Included", "None", "Excluded"] }
-governance = { approval_status = "proposed", sensitivity = "unclassified", provenance = "source-referenced", quality = "needs-semantic-review" }
 legacy_schema = { matched_occurrences = 2, title = "", description = "", format = "" }
 evidence = ["workbook:Sheet1!A404:H404", "legacy-schema:propertyPack.fixturesAndFittings.carpets.bedroom1.isIncludedExcludedOrNone"]
-review = { status = "needs-semantic-review", confidence = "low", flags = ["model-role-unassigned", "owning-context-unassigned", "iri-unassigned", "condition-expression-unresolved", "controlled-vocabulary-candidate"] }
+review = { status = "needs-semantic-review", confidence = "low", flags = ["model-role-unassigned", "owning-context-unassigned", "iri-unassigned", "condition-expression-unresolved", "controlled-vocabulary-candidate"], approval_status = "proposed", quality = "needs-semantic-review" }
 
 [[property]]
 id = "pp-8b54ce61163e"
+work_package = "fixtures-fittings"
 source = { row = 406, path = "propertyPack.fixturesAndFittings.carpets.bedroom2.isIncludedExcludedOrNone", top_level_section = "propertyPack", heading = "fixturesAndFittings", field_name = "isIncludedExcludedOrNone", datatype = "string", status = "Required", condition = "Conditional via oneOf / discriminator", description = "Included, Excluded or None" }
 semantic = { preferred_label = "Included, Excluded or None", candidate_definition = "The value recorded for “Included, Excluded or None” in the Property Pack.", definition_status = "machine-drafted-from-source", source_description = "Included, Excluded or None" }
-model = { role = "unclassified", owning_context = "unassigned", consuming_contexts = [], resource = "unresolved", relationship = "unresolved", attribute = "unresolved", local_name = "unresolved", iri = "unresolved" }
+model = { classification_status = "unclassified", roles = [], owning_context = "unassigned", consuming_contexts = [], construct_refs = [], disposition = "unresolved", sensitivity = "unclassified", rationale = "", decision_refs = [] }
 value = { source_datatype = "string", xsd_datatype = "xsd:string", min_count = 0, max_count = 1, requiredness = "conditional", repeatable_context = false, occurrence_scope = "per-parent-resource" }
 restrictions = { format = "", pattern = "", min_length = "", max_length = "", minimum = "", maximum = "", permitted_values = ["Included", "None", "Excluded"] }
 vocabulary = { status = "candidate", scheme_id = "unresolved", values = ["Included", "None", "Excluded"] }
-governance = { approval_status = "proposed", sensitivity = "unclassified", provenance = "source-referenced", quality = "needs-semantic-review" }
 legacy_schema = { matched_occurrences = 2, title = "", description = "", format = "" }
 evidence = ["workbook:Sheet1!A406:H406", "legacy-schema:propertyPack.fixturesAndFittings.carpets.bedroom2.isIncludedExcludedOrNone"]
-review = { status = "needs-semantic-review", confidence = "low", flags = ["model-role-unassigned", "owning-context-unassigned", "iri-unassigned", "condition-expression-unresolved", "controlled-vocabulary-candidate"] }
+review = { status = "needs-semantic-review", confidence = "low", flags = ["model-role-unassigned", "owning-context-unassigned", "iri-unassigned", "condition-expression-unresolved", "controlled-vocabulary-candidate"], approval_status = "proposed", quality = "needs-semantic-review" }
 
 [[property]]
 id = "pp-87999fa650f3"
+work_package = "fixtures-fittings"
 source = { row = 408, path = "propertyPack.fixturesAndFittings.carpets.bedroom3.isIncludedExcludedOrNone", top_level_section = "propertyPack", heading = "fixturesAndFittings", field_name = "isIncludedExcludedOrNone", datatype = "string", status = "Required", condition = "Conditional via oneOf / discriminator", description = "Included, Excluded or None" }
 semantic = { preferred_label = "Included, Excluded or None", candidate_definition = "The value recorded for “Included, Excluded or None” in the Property Pack.", definition_status = "machine-drafted-from-source", source_description = "Included, Excluded or None" }
-model = { role = "unclassified", owning_context = "unassigned", consuming_contexts = [], resource = "unresolved", relationship = "unresolved", attribute = "unresolved", local_name = "unresolved", iri = "unresolved" }
+model = { classification_status = "unclassified", roles = [], owning_context = "unassigned", consuming_contexts = [], construct_refs = [], disposition = "unresolved", sensitivity = "unclassified", rationale = "", decision_refs = [] }
 value = { source_datatype = "string", xsd_datatype = "xsd:string", min_count = 0, max_count = 1, requiredness = "conditional", repeatable_context = false, occurrence_scope = "per-parent-resource" }
 restrictions = { format = "", pattern = "", min_length = "", max_length = "", minimum = "", maximum = "", permitted_values = ["Included", "None", "Excluded"] }
 vocabulary = { status = "candidate", scheme_id = "unresolved", values = ["Included", "None", "Excluded"] }
-governance = { approval_status = "proposed", sensitivity = "unclassified", provenance = "source-referenced", quality = "needs-semantic-review" }
 legacy_schema = { matched_occurrences = 2, title = "", description = "", format = "" }
 evidence = ["workbook:Sheet1!A408:H408", "legacy-schema:propertyPack.fixturesAndFittings.carpets.bedroom3.isIncludedExcludedOrNone"]
-review = { status = "needs-semantic-review", confidence = "low", flags = ["model-role-unassigned", "owning-context-unassigned", "iri-unassigned", "condition-expression-unresolved", "controlled-vocabulary-candidate"] }
+review = { status = "needs-semantic-review", confidence = "low", flags = ["model-role-unassigned", "owning-context-unassigned", "iri-unassigned", "condition-expression-unresolved", "controlled-vocabulary-candidate"], approval_status = "proposed", quality = "needs-semantic-review" }
 
 [[property]]
 id = "pp-58128956e10a"
+work_package = "fixtures-fittings"
 source = { row = 410, path = "propertyPack.fixturesAndFittings.carpets.diningRoom.isIncludedExcludedOrNone", top_level_section = "propertyPack", heading = "fixturesAndFittings", field_name = "isIncludedExcludedOrNone", datatype = "string", status = "Required", condition = "Conditional via oneOf / discriminator", description = "Included, Excluded or None" }
 semantic = { preferred_label = "Included, Excluded or None", candidate_definition = "The value recorded for “Included, Excluded or None” in the Property Pack.", definition_status = "machine-drafted-from-source", source_description = "Included, Excluded or None" }
-model = { role = "unclassified", owning_context = "unassigned", consuming_contexts = [], resource = "unresolved", relationship = "unresolved", attribute = "unresolved", local_name = "unresolved", iri = "unresolved" }
+model = { classification_status = "unclassified", roles = [], owning_context = "unassigned", consuming_contexts = [], construct_refs = [], disposition = "unresolved", sensitivity = "unclassified", rationale = "", decision_refs = [] }
 value = { source_datatype = "string", xsd_datatype = "xsd:string", min_count = 0, max_count = 1, requiredness = "conditional", repeatable_context = false, occurrence_scope = "per-parent-resource" }
 restrictions = { format = "", pattern = "", min_length = "", max_length = "", minimum = "", maximum = "", permitted_values = ["Included", "None", "Excluded"] }
 vocabulary = { status = "candidate", scheme_id = "unresolved", values = ["Included", "None", "Excluded"] }
-governance = { approval_status = "proposed", sensitivity = "unclassified", provenance = "source-referenced", quality = "needs-semantic-review" }
 legacy_schema = { matched_occurrences = 2, title = "", description = "", format = "" }
 evidence = ["workbook:Sheet1!A410:H410", "legacy-schema:propertyPack.fixturesAndFittings.carpets.diningRoom.isIncludedExcludedOrNone"]
-review = { status = "needs-semantic-review", confidence = "low", flags = ["model-role-unassigned", "owning-context-unassigned", "iri-unassigned", "condition-expression-unresolved", "controlled-vocabulary-candidate"] }
+review = { status = "needs-semantic-review", confidence = "low", flags = ["model-role-unassigned", "owning-context-unassigned", "iri-unassigned", "condition-expression-unresolved", "controlled-vocabulary-candidate"], approval_status = "proposed", quality = "needs-semantic-review" }
 
 [[property]]
 id = "pp-aee0daadf2fa"
+work_package = "fixtures-fittings"
 source = { row = 412, path = "propertyPack.fixturesAndFittings.carpets.hallStairsLanding.isIncludedExcludedOrNone", top_level_section = "propertyPack", heading = "fixturesAndFittings", field_name = "isIncludedExcludedOrNone", datatype = "string", status = "Required", condition = "Conditional via oneOf / discriminator", description = "Included, Excluded or None" }
 semantic = { preferred_label = "Included, Excluded or None", candidate_definition = "The value recorded for “Included, Excluded or None” in the Property Pack.", definition_status = "machine-drafted-from-source", source_description = "Included, Excluded or None" }
-model = { role = "unclassified", owning_context = "unassigned", consuming_contexts = [], resource = "unresolved", relationship = "unresolved", attribute = "unresolved", local_name = "unresolved", iri = "unresolved" }
+model = { classification_status = "unclassified", roles = [], owning_context = "unassigned", consuming_contexts = [], construct_refs = [], disposition = "unresolved", sensitivity = "unclassified", rationale = "", decision_refs = [] }
 value = { source_datatype = "string", xsd_datatype = "xsd:string", min_count = 0, max_count = 1, requiredness = "conditional", repeatable_context = false, occurrence_scope = "per-parent-resource" }
 restrictions = { format = "", pattern = "", min_length = "", max_length = "", minimum = "", maximum = "", permitted_values = ["Included", "None", "Excluded"] }
 vocabulary = { status = "candidate", scheme_id = "unresolved", values = ["Included", "None", "Excluded"] }
-governance = { approval_status = "proposed", sensitivity = "unclassified", provenance = "source-referenced", quality = "needs-semantic-review" }
 legacy_schema = { matched_occurrences = 2, title = "", description = "", format = "" }
 evidence = ["workbook:Sheet1!A412:H412", "legacy-schema:propertyPack.fixturesAndFittings.carpets.hallStairsLanding.isIncludedExcludedOrNone"]
-review = { status = "needs-semantic-review", confidence = "low", flags = ["model-role-unassigned", "owning-context-unassigned", "iri-unassigned", "condition-expression-unresolved", "controlled-vocabulary-candidate"] }
+review = { status = "needs-semantic-review", confidence = "low", flags = ["model-role-unassigned", "owning-context-unassigned", "iri-unassigned", "condition-expression-unresolved", "controlled-vocabulary-candidate"], approval_status = "proposed", quality = "needs-semantic-review" }
 
 [[property]]
 id = "pp-151332ccf7c9"
+work_package = "fixtures-fittings"
 source = { row = 414, path = "propertyPack.fixturesAndFittings.carpets.kitchen.isIncludedExcludedOrNone", top_level_section = "propertyPack", heading = "fixturesAndFittings", field_name = "isIncludedExcludedOrNone", datatype = "string", status = "Required", condition = "Conditional via oneOf / discriminator", description = "Included, Excluded or None" }
 semantic = { preferred_label = "Included, Excluded or None", candidate_definition = "The value recorded for “Included, Excluded or None” in the Property Pack.", definition_status = "machine-drafted-from-source", source_description = "Included, Excluded or None" }
-model = { role = "unclassified", owning_context = "unassigned", consuming_contexts = [], resource = "unresolved", relationship = "unresolved", attribute = "unresolved", local_name = "unresolved", iri = "unresolved" }
+model = { classification_status = "unclassified", roles = [], owning_context = "unassigned", consuming_contexts = [], construct_refs = [], disposition = "unresolved", sensitivity = "unclassified", rationale = "", decision_refs = [] }
 value = { source_datatype = "string", xsd_datatype = "xsd:string", min_count = 0, max_count = 1, requiredness = "conditional", repeatable_context = false, occurrence_scope = "per-parent-resource" }
 restrictions = { format = "", pattern = "", min_length = "", max_length = "", minimum = "", maximum = "", permitted_values = ["Included", "None", "Excluded"] }
 vocabulary = { status = "candidate", scheme_id = "unresolved", values = ["Included", "None", "Excluded"] }
-governance = { approval_status = "proposed", sensitivity = "unclassified", provenance = "source-referenced", quality = "needs-semantic-review" }
 legacy_schema = { matched_occurrences = 2, title = "", description = "", format = "" }
 evidence = ["workbook:Sheet1!A414:H414", "legacy-schema:propertyPack.fixturesAndFittings.carpets.kitchen.isIncludedExcludedOrNone"]
-review = { status = "needs-semantic-review", confidence = "low", flags = ["model-role-unassigned", "owning-context-unassigned", "iri-unassigned", "condition-expression-unresolved", "controlled-vocabulary-candidate"] }
+review = { status = "needs-semantic-review", confidence = "low", flags = ["model-role-unassigned", "owning-context-unassigned", "iri-unassigned", "condition-expression-unresolved", "controlled-vocabulary-candidate"], approval_status = "proposed", quality = "needs-semantic-review" }
 
 [[property]]
 id = "pp-d0490b6f330b"
+work_package = "fixtures-fittings"
 source = { row = 416, path = "propertyPack.fixturesAndFittings.carpets.livingRoom.isIncludedExcludedOrNone", top_level_section = "propertyPack", heading = "fixturesAndFittings", field_name = "isIncludedExcludedOrNone", datatype = "string", status = "Required", condition = "Conditional via oneOf / discriminator", description = "Included, Excluded or None" }
 semantic = { preferred_label = "Included, Excluded or None", candidate_definition = "The value recorded for “Included, Excluded or None” in the Property Pack.", definition_status = "machine-drafted-from-source", source_description = "Included, Excluded or None" }
-model = { role = "unclassified", owning_context = "unassigned", consuming_contexts = [], resource = "unresolved", relationship = "unresolved", attribute = "unresolved", local_name = "unresolved", iri = "unresolved" }
+model = { classification_status = "unclassified", roles = [], owning_context = "unassigned", consuming_contexts = [], construct_refs = [], disposition = "unresolved", sensitivity = "unclassified", rationale = "", decision_refs = [] }
 value = { source_datatype = "string", xsd_datatype = "xsd:string", min_count = 0, max_count = 1, requiredness = "conditional", repeatable_context = false, occurrence_scope = "per-parent-resource" }
 restrictions = { format = "", pattern = "", min_length = "", max_length = "", minimum = "", maximum = "", permitted_values = ["Included", "None", "Excluded"] }
 vocabulary = { status = "candidate", scheme_id = "unresolved", values = ["Included", "None", "Excluded"] }
-governance = { approval_status = "proposed", sensitivity = "unclassified", provenance = "source-referenced", quality = "needs-semantic-review" }
 legacy_schema = { matched_occurrences = 2, title = "", description = "", format = "" }
 evidence = ["workbook:Sheet1!A416:H416", "legacy-schema:propertyPack.fixturesAndFittings.carpets.livingRoom.isIncludedExcludedOrNone"]
-review = { status = "needs-semantic-review", confidence = "low", flags = ["model-role-unassigned", "owning-context-unassigned", "iri-unassigned", "condition-expression-unresolved", "controlled-vocabulary-candidate"] }
+review = { status = "needs-semantic-review", confidence = "low", flags = ["model-role-unassigned", "owning-context-unassigned", "iri-unassigned", "condition-expression-unresolved", "controlled-vocabulary-candidate"], approval_status = "proposed", quality = "needs-semantic-review" }
 
 [[property]]
 id = "pp-188af6f9188e"
+work_package = "fixtures-fittings"
 source = { row = 417, path = "propertyPack.fixturesAndFittings.carpets.otherRooms[].isIncludedOrExcluded", top_level_section = "propertyPack", heading = "fixturesAndFittings", field_name = "isIncludedOrExcluded", datatype = "string", status = "Required", condition = "", description = "Included or Excluded" }
 semantic = { preferred_label = "Included or Excluded", candidate_definition = "The value recorded for “Included or Excluded” in the Property Pack.", definition_status = "machine-drafted-from-source", source_description = "Included or Excluded" }
-model = { role = "unclassified", owning_context = "unassigned", consuming_contexts = [], resource = "unresolved", relationship = "unresolved", attribute = "unresolved", local_name = "unresolved", iri = "unresolved" }
+model = { classification_status = "unclassified", roles = [], owning_context = "unassigned", consuming_contexts = [], construct_refs = [], disposition = "unresolved", sensitivity = "unclassified", rationale = "", decision_refs = [] }
 value = { source_datatype = "string", xsd_datatype = "xsd:string", min_count = 1, max_count = 1, requiredness = "unconditional", repeatable_context = true, occurrence_scope = "per-list-item" }
 restrictions = { format = "", pattern = "", min_length = "", max_length = "", minimum = "", maximum = "", permitted_values = ["Included", "Excluded"] }
 vocabulary = { status = "candidate", scheme_id = "unresolved", values = ["Included", "Excluded"] }
-governance = { approval_status = "proposed", sensitivity = "unclassified", provenance = "source-referenced", quality = "needs-semantic-review" }
 legacy_schema = { matched_occurrences = 2, title = "", description = "", format = "" }
 evidence = ["workbook:Sheet1!A417:H417", "legacy-schema:propertyPack.fixturesAndFittings.carpets.otherRooms[].isIncludedOrExcluded"]
-review = { status = "needs-semantic-review", confidence = "low", flags = ["model-role-unassigned", "owning-context-unassigned", "iri-unassigned", "controlled-vocabulary-candidate", "container-cardinality-needs-review"] }
+review = { status = "needs-semantic-review", confidence = "low", flags = ["model-role-unassigned", "owning-context-unassigned", "iri-unassigned", "controlled-vocabulary-candidate", "container-cardinality-needs-review"], approval_status = "proposed", quality = "needs-semantic-review" }
 
 [[property]]
 id = "pp-a43f50a1aee6"
+work_package = "fixtures-fittings"
 source = { row = 418, path = "propertyPack.fixturesAndFittings.carpets.otherRooms[].itemName", top_level_section = "propertyPack", heading = "fixturesAndFittings", field_name = "itemName", datatype = "string", status = "Required", condition = "", description = "Name" }
 semantic = { preferred_label = "Name", candidate_definition = "The value recorded for “Name” in the Property Pack.", definition_status = "machine-drafted-from-source", source_description = "Name" }
-model = { role = "unclassified", owning_context = "unassigned", consuming_contexts = [], resource = "unresolved", relationship = "unresolved", attribute = "unresolved", local_name = "unresolved", iri = "unresolved" }
+model = { classification_status = "unclassified", roles = [], owning_context = "unassigned", consuming_contexts = [], construct_refs = [], disposition = "unresolved", sensitivity = "unclassified", rationale = "", decision_refs = [] }
 value = { source_datatype = "string", xsd_datatype = "xsd:string", min_count = 1, max_count = 1, requiredness = "unconditional", repeatable_context = true, occurrence_scope = "per-list-item" }
 restrictions = { format = "", pattern = "", min_length = "", max_length = "", minimum = "", maximum = "", permitted_values = [] }
 vocabulary = { status = "not-applicable", scheme_id = "", values = [] }
-governance = { approval_status = "proposed", sensitivity = "unclassified", provenance = "source-referenced", quality = "needs-semantic-review" }
 legacy_schema = { matched_occurrences = 1, title = "Name", description = "", format = "" }
 evidence = ["workbook:Sheet1!A418:H418", "legacy-schema:propertyPack.fixturesAndFittings.carpets.otherRooms[].itemName"]
-review = { status = "needs-semantic-review", confidence = "low", flags = ["model-role-unassigned", "owning-context-unassigned", "iri-unassigned", "container-cardinality-needs-review"] }
+review = { status = "needs-semantic-review", confidence = "low", flags = ["model-role-unassigned", "owning-context-unassigned", "iri-unassigned", "container-cardinality-needs-review"], approval_status = "proposed", quality = "needs-semantic-review" }
 
 [[property]]
 id = "pp-f9afe23d8a05"
+work_package = "fixtures-fittings"
 source = { row = 419, path = "propertyPack.fixturesAndFittings.confirmationOfAccuracy.confirmInformationIsAccurate", top_level_section = "propertyPack", heading = "fixturesAndFittings", field_name = "confirmInformationIsAccurate", datatype = "boolean", status = "Required", condition = "", description = "I/we confirm that all information provided is accurate to the best of our knowledge and if we become aware of any change to/changes which alter the information supplied/provided prior to exchange of contracts for the sale of the property, I/we will update immediately notify the person marketing the property as well as my/our property lawyer" }
 semantic = { preferred_label = "Confirm information is accurate", candidate_definition = "The value recorded for “I/we confirm that all information provided is accurate to the best of our knowledge and if we become aware of any change to/changes which alter the information supplied/provided prior to exchange of contracts for the sale of the property, I/we will update immediately notify the person marketing the property as well as my/our property lawyer” in the Property Pack.", definition_status = "machine-drafted-from-source", source_description = "I/we confirm that all information provided is accurate to the best of our knowledge and if we become aware of any change to/changes which alter the information supplied/provided prior to exchange of contracts for the sale of the property, I/we will update immediately notify the person marketing the property as well as my/our property lawyer" }
-model = { role = "unclassified", owning_context = "unassigned", consuming_contexts = [], resource = "unresolved", relationship = "unresolved", attribute = "unresolved", local_name = "unresolved", iri = "unresolved" }
+model = { classification_status = "unclassified", roles = [], owning_context = "unassigned", consuming_contexts = [], construct_refs = [], disposition = "unresolved", sensitivity = "unclassified", rationale = "", decision_refs = [] }
 value = { source_datatype = "boolean", xsd_datatype = "xsd:boolean", min_count = 1, max_count = 1, requiredness = "unconditional", repeatable_context = false, occurrence_scope = "per-parent-resource" }
 restrictions = { format = "", pattern = "", min_length = "", max_length = "", minimum = "", maximum = "", permitted_values = [] }
 vocabulary = { status = "not-applicable", scheme_id = "", values = [] }
-governance = { approval_status = "proposed", sensitivity = "unclassified", provenance = "source-referenced", quality = "needs-semantic-review" }
 legacy_schema = { matched_occurrences = 1, title = "I/we confirm that all information provided is accurate to the best of our knowledge and if we become aware of any change to/changes which alter the information supplied/provided prior to exchange of contracts for the sale of the property, I/we will update immediately notify the person marketing the property as well as my/our property lawyer", description = "", format = "" }
 evidence = ["workbook:Sheet1!A419:H419", "legacy-schema:propertyPack.fixturesAndFittings.confirmationOfAccuracy.confirmInformationIsAccurate"]
-review = { status = "needs-semantic-review", confidence = "low", flags = ["model-role-unassigned", "owning-context-unassigned", "iri-unassigned"] }
+review = { status = "needs-semantic-review", confidence = "low", flags = ["model-role-unassigned", "owning-context-unassigned", "iri-unassigned"], approval_status = "proposed", quality = "needs-semantic-review" }
 
 [[property]]
 id = "pp-7e6cb6462209"
+work_package = "fixtures-fittings"
 source = { row = 421, path = "propertyPack.fixturesAndFittings.curtainsAndCurtainRails.curtainRailsPolesPelmets.bedroom1.isIncludedExcludedOrNone", top_level_section = "propertyPack", heading = "fixturesAndFittings", field_name = "isIncludedExcludedOrNone", datatype = "string", status = "Required", condition = "Conditional via oneOf / discriminator", description = "Included, Excluded or None" }
 semantic = { preferred_label = "Included, Excluded or None", candidate_definition = "The value recorded for “Included, Excluded or None” in the Property Pack.", definition_status = "machine-drafted-from-source", source_description = "Included, Excluded or None" }
-model = { role = "unclassified", owning_context = "unassigned", consuming_contexts = [], resource = "unresolved", relationship = "unresolved", attribute = "unresolved", local_name = "unresolved", iri = "unresolved" }
+model = { classification_status = "unclassified", roles = [], owning_context = "unassigned", consuming_contexts = [], construct_refs = [], disposition = "unresolved", sensitivity = "unclassified", rationale = "", decision_refs = [] }
 value = { source_datatype = "string", xsd_datatype = "xsd:string", min_count = 0, max_count = 1, requiredness = "conditional", repeatable_context = false, occurrence_scope = "per-parent-resource" }
 restrictions = { format = "", pattern = "", min_length = "", max_length = "", minimum = "", maximum = "", permitted_values = ["Included", "None", "Excluded"] }
 vocabulary = { status = "candidate", scheme_id = "unresolved", values = ["Included", "None", "Excluded"] }
-governance = { approval_status = "proposed", sensitivity = "unclassified", provenance = "source-referenced", quality = "needs-semantic-review" }
 legacy_schema = { matched_occurrences = 2, title = "", description = "", format = "" }
 evidence = ["workbook:Sheet1!A421:H421", "legacy-schema:propertyPack.fixturesAndFittings.curtainsAndCurtainRails.curtainRailsPolesPelmets.bedroom1.isIncludedExcludedOrNone"]
-review = { status = "needs-semantic-review", confidence = "low", flags = ["model-role-unassigned", "owning-context-unassigned", "iri-unassigned", "condition-expression-unresolved", "controlled-vocabulary-candidate"] }
+review = { status = "needs-semantic-review", confidence = "low", flags = ["model-role-unassigned", "owning-context-unassigned", "iri-unassigned", "condition-expression-unresolved", "controlled-vocabulary-candidate"], approval_status = "proposed", quality = "needs-semantic-review" }
 
 [[property]]
 id = "pp-86c2b75d7c28"
+work_package = "fixtures-fittings"
 source = { row = 423, path = "propertyPack.fixturesAndFittings.curtainsAndCurtainRails.curtainRailsPolesPelmets.bedroom2.isIncludedExcludedOrNone", top_level_section = "propertyPack", heading = "fixturesAndFittings", field_name = "isIncludedExcludedOrNone", datatype = "string", status = "Required", condition = "Conditional via oneOf / discriminator", description = "Included, Excluded or None" }
 semantic = { preferred_label = "Included, Excluded or None", candidate_definition = "The value recorded for “Included, Excluded or None” in the Property Pack.", definition_status = "machine-drafted-from-source", source_description = "Included, Excluded or None" }
-model = { role = "unclassified", owning_context = "unassigned", consuming_contexts = [], resource = "unresolved", relationship = "unresolved", attribute = "unresolved", local_name = "unresolved", iri = "unresolved" }
+model = { classification_status = "unclassified", roles = [], owning_context = "unassigned", consuming_contexts = [], construct_refs = [], disposition = "unresolved", sensitivity = "unclassified", rationale = "", decision_refs = [] }
 value = { source_datatype = "string", xsd_datatype = "xsd:string", min_count = 0, max_count = 1, requiredness = "conditional", repeatable_context = false, occurrence_scope = "per-parent-resource" }
 restrictions = { format = "", pattern = "", min_length = "", max_length = "", minimum = "", maximum = "", permitted_values = ["Included", "None", "Excluded"] }
 vocabulary = { status = "candidate", scheme_id = "unresolved", values = ["Included", "None", "Excluded"] }
-governance = { approval_status = "proposed", sensitivity = "unclassified", provenance = "source-referenced", quality = "needs-semantic-review" }
 legacy_schema = { matched_occurrences = 2, title = "", description = "", format = "" }
 evidence = ["workbook:Sheet1!A423:H423", "legacy-schema:propertyPack.fixturesAndFittings.curtainsAndCurtainRails.curtainRailsPolesPelmets.bedroom2.isIncludedExcludedOrNone"]
-review = { status = "needs-semantic-review", confidence = "low", flags = ["model-role-unassigned", "owning-context-unassigned", "iri-unassigned", "condition-expression-unresolved", "controlled-vocabulary-candidate"] }
+review = { status = "needs-semantic-review", confidence = "low", flags = ["model-role-unassigned", "owning-context-unassigned", "iri-unassigned", "condition-expression-unresolved", "controlled-vocabulary-candidate"], approval_status = "proposed", quality = "needs-semantic-review" }
 
 [[property]]
 id = "pp-7fb7e30855d2"
+work_package = "fixtures-fittings"
 source = { row = 425, path = "propertyPack.fixturesAndFittings.curtainsAndCurtainRails.curtainRailsPolesPelmets.bedroom3.isIncludedExcludedOrNone", top_level_section = "propertyPack", heading = "fixturesAndFittings", field_name = "isIncludedExcludedOrNone", datatype = "string", status = "Required", condition = "Conditional via oneOf / discriminator", description = "Included, Excluded or None" }
 semantic = { preferred_label = "Included, Excluded or None", candidate_definition = "The value recorded for “Included, Excluded or None” in the Property Pack.", definition_status = "machine-drafted-from-source", source_description = "Included, Excluded or None" }
-model = { role = "unclassified", owning_context = "unassigned", consuming_contexts = [], resource = "unresolved", relationship = "unresolved", attribute = "unresolved", local_name = "unresolved", iri = "unresolved" }
+model = { classification_status = "unclassified", roles = [], owning_context = "unassigned", consuming_contexts = [], construct_refs = [], disposition = "unresolved", sensitivity = "unclassified", rationale = "", decision_refs = [] }
 value = { source_datatype = "string", xsd_datatype = "xsd:string", min_count = 0, max_count = 1, requiredness = "conditional", repeatable_context = false, occurrence_scope = "per-parent-resource" }
 restrictions = { format = "", pattern = "", min_length = "", max_length = "", minimum = "", maximum = "", permitted_values = ["Included", "None", "Excluded"] }
 vocabulary = { status = "candidate", scheme_id = "unresolved", values = ["Included", "None", "Excluded"] }
-governance = { approval_status = "proposed", sensitivity = "unclassified", provenance = "source-referenced", quality = "needs-semantic-review" }
 legacy_schema = { matched_occurrences = 2, title = "", description = "", format = "" }
 evidence = ["workbook:Sheet1!A425:H425", "legacy-schema:propertyPack.fixturesAndFittings.curtainsAndCurtainRails.curtainRailsPolesPelmets.bedroom3.isIncludedExcludedOrNone"]
-review = { status = "needs-semantic-review", confidence = "low", flags = ["model-role-unassigned", "owning-context-unassigned", "iri-unassigned", "condition-expression-unresolved", "controlled-vocabulary-candidate"] }
+review = { status = "needs-semantic-review", confidence = "low", flags = ["model-role-unassigned", "owning-context-unassigned", "iri-unassigned", "condition-expression-unresolved", "controlled-vocabulary-candidate"], approval_status = "proposed", quality = "needs-semantic-review" }
 
 [[property]]
 id = "pp-f39179752a4a"
+work_package = "fixtures-fittings"
 source = { row = 427, path = "propertyPack.fixturesAndFittings.curtainsAndCurtainRails.curtainRailsPolesPelmets.diningRoom.isIncludedExcludedOrNone", top_level_section = "propertyPack", heading = "fixturesAndFittings", field_name = "isIncludedExcludedOrNone", datatype = "string", status = "Required", condition = "Conditional via oneOf / discriminator", description = "Included, Excluded or None" }
 semantic = { preferred_label = "Included, Excluded or None", candidate_definition = "The value recorded for “Included, Excluded or None” in the Property Pack.", definition_status = "machine-drafted-from-source", source_description = "Included, Excluded or None" }
-model = { role = "unclassified", owning_context = "unassigned", consuming_contexts = [], resource = "unresolved", relationship = "unresolved", attribute = "unresolved", local_name = "unresolved", iri = "unresolved" }
+model = { classification_status = "unclassified", roles = [], owning_context = "unassigned", consuming_contexts = [], construct_refs = [], disposition = "unresolved", sensitivity = "unclassified", rationale = "", decision_refs = [] }
 value = { source_datatype = "string", xsd_datatype = "xsd:string", min_count = 0, max_count = 1, requiredness = "conditional", repeatable_context = false, occurrence_scope = "per-parent-resource" }
 restrictions = { format = "", pattern = "", min_length = "", max_length = "", minimum = "", maximum = "", permitted_values = ["Included", "None", "Excluded"] }
 vocabulary = { status = "candidate", scheme_id = "unresolved", values = ["Included", "None", "Excluded"] }
-governance = { approval_status = "proposed", sensitivity = "unclassified", provenance = "source-referenced", quality = "needs-semantic-review" }
 legacy_schema = { matched_occurrences = 2, title = "", description = "", format = "" }
 evidence = ["workbook:Sheet1!A427:H427", "legacy-schema:propertyPack.fixturesAndFittings.curtainsAndCurtainRails.curtainRailsPolesPelmets.diningRoom.isIncludedExcludedOrNone"]
-review = { status = "needs-semantic-review", confidence = "low", flags = ["model-role-unassigned", "owning-context-unassigned", "iri-unassigned", "condition-expression-unresolved", "controlled-vocabulary-candidate"] }
+review = { status = "needs-semantic-review", confidence = "low", flags = ["model-role-unassigned", "owning-context-unassigned", "iri-unassigned", "condition-expression-unresolved", "controlled-vocabulary-candidate"], approval_status = "proposed", quality = "needs-semantic-review" }
 
 [[property]]
 id = "pp-ab89f30c7d8f"
+work_package = "fixtures-fittings"
 source = { row = 429, path = "propertyPack.fixturesAndFittings.curtainsAndCurtainRails.curtainRailsPolesPelmets.hallStairsLanding.isIncludedExcludedOrNone", top_level_section = "propertyPack", heading = "fixturesAndFittings", field_name = "isIncludedExcludedOrNone", datatype = "string", status = "Required", condition = "Conditional via oneOf / discriminator", description = "Included, Excluded or None" }
 semantic = { preferred_label = "Included, Excluded or None", candidate_definition = "The value recorded for “Included, Excluded or None” in the Property Pack.", definition_status = "machine-drafted-from-source", source_description = "Included, Excluded or None" }
-model = { role = "unclassified", owning_context = "unassigned", consuming_contexts = [], resource = "unresolved", relationship = "unresolved", attribute = "unresolved", local_name = "unresolved", iri = "unresolved" }
+model = { classification_status = "unclassified", roles = [], owning_context = "unassigned", consuming_contexts = [], construct_refs = [], disposition = "unresolved", sensitivity = "unclassified", rationale = "", decision_refs = [] }
 value = { source_datatype = "string", xsd_datatype = "xsd:string", min_count = 0, max_count = 1, requiredness = "conditional", repeatable_context = false, occurrence_scope = "per-parent-resource" }
 restrictions = { format = "", pattern = "", min_length = "", max_length = "", minimum = "", maximum = "", permitted_values = ["Included", "None", "Excluded"] }
 vocabulary = { status = "candidate", scheme_id = "unresolved", values = ["Included", "None", "Excluded"] }
-governance = { approval_status = "proposed", sensitivity = "unclassified", provenance = "source-referenced", quality = "needs-semantic-review" }
 legacy_schema = { matched_occurrences = 2, title = "", description = "", format = "" }
 evidence = ["workbook:Sheet1!A429:H429", "legacy-schema:propertyPack.fixturesAndFittings.curtainsAndCurtainRails.curtainRailsPolesPelmets.hallStairsLanding.isIncludedExcludedOrNone"]
-review = { status = "needs-semantic-review", confidence = "low", flags = ["model-role-unassigned", "owning-context-unassigned", "iri-unassigned", "condition-expression-unresolved", "controlled-vocabulary-candidate"] }
+review = { status = "needs-semantic-review", confidence = "low", flags = ["model-role-unassigned", "owning-context-unassigned", "iri-unassigned", "condition-expression-unresolved", "controlled-vocabulary-candidate"], approval_status = "proposed", quality = "needs-semantic-review" }
 
 [[property]]
 id = "pp-fc05f277180b"
+work_package = "fixtures-fittings"
 source = { row = 431, path = "propertyPack.fixturesAndFittings.curtainsAndCurtainRails.curtainRailsPolesPelmets.kitchen.isIncludedExcludedOrNone", top_level_section = "propertyPack", heading = "fixturesAndFittings", field_name = "isIncludedExcludedOrNone", datatype = "string", status = "Required", condition = "Conditional via oneOf / discriminator", description = "Included, Excluded or None" }
 semantic = { preferred_label = "Included, Excluded or None", candidate_definition = "The value recorded for “Included, Excluded or None” in the Property Pack.", definition_status = "machine-drafted-from-source", source_description = "Included, Excluded or None" }
-model = { role = "unclassified", owning_context = "unassigned", consuming_contexts = [], resource = "unresolved", relationship = "unresolved", attribute = "unresolved", local_name = "unresolved", iri = "unresolved" }
+model = { classification_status = "unclassified", roles = [], owning_context = "unassigned", consuming_contexts = [], construct_refs = [], disposition = "unresolved", sensitivity = "unclassified", rationale = "", decision_refs = [] }
 value = { source_datatype = "string", xsd_datatype = "xsd:string", min_count = 0, max_count = 1, requiredness = "conditional", repeatable_context = false, occurrence_scope = "per-parent-resource" }
 restrictions = { format = "", pattern = "", min_length = "", max_length = "", minimum = "", maximum = "", permitted_values = ["Included", "None", "Excluded"] }
 vocabulary = { status = "candidate", scheme_id = "unresolved", values = ["Included", "None", "Excluded"] }
-governance = { approval_status = "proposed", sensitivity = "unclassified", provenance = "source-referenced", quality = "needs-semantic-review" }
 legacy_schema = { matched_occurrences = 2, title = "", description = "", format = "" }
 evidence = ["workbook:Sheet1!A431:H431", "legacy-schema:propertyPack.fixturesAndFittings.curtainsAndCurtainRails.curtainRailsPolesPelmets.kitchen.isIncludedExcludedOrNone"]
-review = { status = "needs-semantic-review", confidence = "low", flags = ["model-role-unassigned", "owning-context-unassigned", "iri-unassigned", "condition-expression-unresolved", "controlled-vocabulary-candidate"] }
+review = { status = "needs-semantic-review", confidence = "low", flags = ["model-role-unassigned", "owning-context-unassigned", "iri-unassigned", "condition-expression-unresolved", "controlled-vocabulary-candidate"], approval_status = "proposed", quality = "needs-semantic-review" }
 
 [[property]]
 id = "pp-e63b14471c2c"
+work_package = "fixtures-fittings"
 source = { row = 433, path = "propertyPack.fixturesAndFittings.curtainsAndCurtainRails.curtainRailsPolesPelmets.livingRoom.isIncludedExcludedOrNone", top_level_section = "propertyPack", heading = "fixturesAndFittings", field_name = "isIncludedExcludedOrNone", datatype = "string", status = "Required", condition = "Conditional via oneOf / discriminator", description = "Included, Excluded or None" }
 semantic = { preferred_label = "Included, Excluded or None", candidate_definition = "The value recorded for “Included, Excluded or None” in the Property Pack.", definition_status = "machine-drafted-from-source", source_description = "Included, Excluded or None" }
-model = { role = "unclassified", owning_context = "unassigned", consuming_contexts = [], resource = "unresolved", relationship = "unresolved", attribute = "unresolved", local_name = "unresolved", iri = "unresolved" }
+model = { classification_status = "unclassified", roles = [], owning_context = "unassigned", consuming_contexts = [], construct_refs = [], disposition = "unresolved", sensitivity = "unclassified", rationale = "", decision_refs = [] }
 value = { source_datatype = "string", xsd_datatype = "xsd:string", min_count = 0, max_count = 1, requiredness = "conditional", repeatable_context = false, occurrence_scope = "per-parent-resource" }
 restrictions = { format = "", pattern = "", min_length = "", max_length = "", minimum = "", maximum = "", permitted_values = ["Included", "None", "Excluded"] }
 vocabulary = { status = "candidate", scheme_id = "unresolved", values = ["Included", "None", "Excluded"] }
-governance = { approval_status = "proposed", sensitivity = "unclassified", provenance = "source-referenced", quality = "needs-semantic-review" }
 legacy_schema = { matched_occurrences = 2, title = "", description = "", format = "" }
 evidence = ["workbook:Sheet1!A433:H433", "legacy-schema:propertyPack.fixturesAndFittings.curtainsAndCurtainRails.curtainRailsPolesPelmets.livingRoom.isIncludedExcludedOrNone"]
-review = { status = "needs-semantic-review", confidence = "low", flags = ["model-role-unassigned", "owning-context-unassigned", "iri-unassigned", "condition-expression-unresolved", "controlled-vocabulary-candidate"] }
+review = { status = "needs-semantic-review", confidence = "low", flags = ["model-role-unassigned", "owning-context-unassigned", "iri-unassigned", "condition-expression-unresolved", "controlled-vocabulary-candidate"], approval_status = "proposed", quality = "needs-semantic-review" }
 
 [[property]]
 id = "pp-2201c5fd0b56"
+work_package = "fixtures-fittings"
 source = { row = 434, path = "propertyPack.fixturesAndFittings.curtainsAndCurtainRails.curtainRailsPolesPelmets.otherRooms[].isIncludedOrExcluded", top_level_section = "propertyPack", heading = "fixturesAndFittings", field_name = "isIncludedOrExcluded", datatype = "string", status = "Required", condition = "", description = "Included or Excluded" }
 semantic = { preferred_label = "Included or Excluded", candidate_definition = "The value recorded for “Included or Excluded” in the Property Pack.", definition_status = "machine-drafted-from-source", source_description = "Included or Excluded" }
-model = { role = "unclassified", owning_context = "unassigned", consuming_contexts = [], resource = "unresolved", relationship = "unresolved", attribute = "unresolved", local_name = "unresolved", iri = "unresolved" }
+model = { classification_status = "unclassified", roles = [], owning_context = "unassigned", consuming_contexts = [], construct_refs = [], disposition = "unresolved", sensitivity = "unclassified", rationale = "", decision_refs = [] }
 value = { source_datatype = "string", xsd_datatype = "xsd:string", min_count = 1, max_count = 1, requiredness = "unconditional", repeatable_context = true, occurrence_scope = "per-list-item" }
 restrictions = { format = "", pattern = "", min_length = "", max_length = "", minimum = "", maximum = "", permitted_values = ["Included", "Excluded"] }
 vocabulary = { status = "candidate", scheme_id = "unresolved", values = ["Included", "Excluded"] }
-governance = { approval_status = "proposed", sensitivity = "unclassified", provenance = "source-referenced", quality = "needs-semantic-review" }
 legacy_schema = { matched_occurrences = 2, title = "", description = "", format = "" }
 evidence = ["workbook:Sheet1!A434:H434", "legacy-schema:propertyPack.fixturesAndFittings.curtainsAndCurtainRails.curtainRailsPolesPelmets.otherRooms[].isIncludedOrExcluded"]
-review = { status = "needs-semantic-review", confidence = "low", flags = ["model-role-unassigned", "owning-context-unassigned", "iri-unassigned", "controlled-vocabulary-candidate", "container-cardinality-needs-review"] }
+review = { status = "needs-semantic-review", confidence = "low", flags = ["model-role-unassigned", "owning-context-unassigned", "iri-unassigned", "controlled-vocabulary-candidate", "container-cardinality-needs-review"], approval_status = "proposed", quality = "needs-semantic-review" }
 
 [[property]]
 id = "pp-28f5d8eb7e15"
+work_package = "fixtures-fittings"
 source = { row = 435, path = "propertyPack.fixturesAndFittings.curtainsAndCurtainRails.curtainRailsPolesPelmets.otherRooms[].itemName", top_level_section = "propertyPack", heading = "fixturesAndFittings", field_name = "itemName", datatype = "string", status = "Required", condition = "", description = "Name" }
 semantic = { preferred_label = "Name", candidate_definition = "The value recorded for “Name” in the Property Pack.", definition_status = "machine-drafted-from-source", source_description = "Name" }
-model = { role = "unclassified", owning_context = "unassigned", consuming_contexts = [], resource = "unresolved", relationship = "unresolved", attribute = "unresolved", local_name = "unresolved", iri = "unresolved" }
+model = { classification_status = "unclassified", roles = [], owning_context = "unassigned", consuming_contexts = [], construct_refs = [], disposition = "unresolved", sensitivity = "unclassified", rationale = "", decision_refs = [] }
 value = { source_datatype = "string", xsd_datatype = "xsd:string", min_count = 1, max_count = 1, requiredness = "unconditional", repeatable_context = true, occurrence_scope = "per-list-item" }
 restrictions = { format = "", pattern = "", min_length = "", max_length = "", minimum = "", maximum = "", permitted_values = [] }
 vocabulary = { status = "not-applicable", scheme_id = "", values = [] }
-governance = { approval_status = "proposed", sensitivity = "unclassified", provenance = "source-referenced", quality = "needs-semantic-review" }
 legacy_schema = { matched_occurrences = 1, title = "Name", description = "", format = "" }
 evidence = ["workbook:Sheet1!A435:H435", "legacy-schema:propertyPack.fixturesAndFittings.curtainsAndCurtainRails.curtainRailsPolesPelmets.otherRooms[].itemName"]
-review = { status = "needs-semantic-review", confidence = "low", flags = ["model-role-unassigned", "owning-context-unassigned", "iri-unassigned", "container-cardinality-needs-review"] }
+review = { status = "needs-semantic-review", confidence = "low", flags = ["model-role-unassigned", "owning-context-unassigned", "iri-unassigned", "container-cardinality-needs-review"], approval_status = "proposed", quality = "needs-semantic-review" }
 
 [[property]]
 id = "pp-1a5a7bc16f09"
+work_package = "fixtures-fittings"
 source = { row = 437, path = "propertyPack.fixturesAndFittings.curtainsAndCurtainRails.curtainsBlinds.bedroom1.isIncludedExcludedOrNone", top_level_section = "propertyPack", heading = "fixturesAndFittings", field_name = "isIncludedExcludedOrNone", datatype = "string", status = "Required", condition = "Conditional via oneOf / discriminator", description = "Included, Excluded or None" }
 semantic = { preferred_label = "Included, Excluded or None", candidate_definition = "The value recorded for “Included, Excluded or None” in the Property Pack.", definition_status = "machine-drafted-from-source", source_description = "Included, Excluded or None" }
-model = { role = "unclassified", owning_context = "unassigned", consuming_contexts = [], resource = "unresolved", relationship = "unresolved", attribute = "unresolved", local_name = "unresolved", iri = "unresolved" }
+model = { classification_status = "unclassified", roles = [], owning_context = "unassigned", consuming_contexts = [], construct_refs = [], disposition = "unresolved", sensitivity = "unclassified", rationale = "", decision_refs = [] }
 value = { source_datatype = "string", xsd_datatype = "xsd:string", min_count = 0, max_count = 1, requiredness = "conditional", repeatable_context = false, occurrence_scope = "per-parent-resource" }
 restrictions = { format = "", pattern = "", min_length = "", max_length = "", minimum = "", maximum = "", permitted_values = ["Included", "None", "Excluded"] }
 vocabulary = { status = "candidate", scheme_id = "unresolved", values = ["Included", "None", "Excluded"] }
-governance = { approval_status = "proposed", sensitivity = "unclassified", provenance = "source-referenced", quality = "needs-semantic-review" }
 legacy_schema = { matched_occurrences = 2, title = "", description = "", format = "" }
 evidence = ["workbook:Sheet1!A437:H437", "legacy-schema:propertyPack.fixturesAndFittings.curtainsAndCurtainRails.curtainsBlinds.bedroom1.isIncludedExcludedOrNone"]
-review = { status = "needs-semantic-review", confidence = "low", flags = ["model-role-unassigned", "owning-context-unassigned", "iri-unassigned", "condition-expression-unresolved", "controlled-vocabulary-candidate"] }
+review = { status = "needs-semantic-review", confidence = "low", flags = ["model-role-unassigned", "owning-context-unassigned", "iri-unassigned", "condition-expression-unresolved", "controlled-vocabulary-candidate"], approval_status = "proposed", quality = "needs-semantic-review" }
 
 [[property]]
 id = "pp-44483c869fdd"
+work_package = "fixtures-fittings"
 source = { row = 439, path = "propertyPack.fixturesAndFittings.curtainsAndCurtainRails.curtainsBlinds.bedroom2.isIncludedExcludedOrNone", top_level_section = "propertyPack", heading = "fixturesAndFittings", field_name = "isIncludedExcludedOrNone", datatype = "string", status = "Required", condition = "Conditional via oneOf / discriminator", description = "Included, Excluded or None" }
 semantic = { preferred_label = "Included, Excluded or None", candidate_definition = "The value recorded for “Included, Excluded or None” in the Property Pack.", definition_status = "machine-drafted-from-source", source_description = "Included, Excluded or None" }
-model = { role = "unclassified", owning_context = "unassigned", consuming_contexts = [], resource = "unresolved", relationship = "unresolved", attribute = "unresolved", local_name = "unresolved", iri = "unresolved" }
+model = { classification_status = "unclassified", roles = [], owning_context = "unassigned", consuming_contexts = [], construct_refs = [], disposition = "unresolved", sensitivity = "unclassified", rationale = "", decision_refs = [] }
 value = { source_datatype = "string", xsd_datatype = "xsd:string", min_count = 0, max_count = 1, requiredness = "conditional", repeatable_context = false, occurrence_scope = "per-parent-resource" }
 restrictions = { format = "", pattern = "", min_length = "", max_length = "", minimum = "", maximum = "", permitted_values = ["Included", "None", "Excluded"] }
 vocabulary = { status = "candidate", scheme_id = "unresolved", values = ["Included", "None", "Excluded"] }
-governance = { approval_status = "proposed", sensitivity = "unclassified", provenance = "source-referenced", quality = "needs-semantic-review" }
 legacy_schema = { matched_occurrences = 2, title = "", description = "", format = "" }
 evidence = ["workbook:Sheet1!A439:H439", "legacy-schema:propertyPack.fixturesAndFittings.curtainsAndCurtainRails.curtainsBlinds.bedroom2.isIncludedExcludedOrNone"]
-review = { status = "needs-semantic-review", confidence = "low", flags = ["model-role-unassigned", "owning-context-unassigned", "iri-unassigned", "condition-expression-unresolved", "controlled-vocabulary-candidate"] }
+review = { status = "needs-semantic-review", confidence = "low", flags = ["model-role-unassigned", "owning-context-unassigned", "iri-unassigned", "condition-expression-unresolved", "controlled-vocabulary-candidate"], approval_status = "proposed", quality = "needs-semantic-review" }
 
 [[property]]
 id = "pp-4ce7177c7699"
+work_package = "fixtures-fittings"
 source = { row = 441, path = "propertyPack.fixturesAndFittings.curtainsAndCurtainRails.curtainsBlinds.bedroom3.isIncludedExcludedOrNone", top_level_section = "propertyPack", heading = "fixturesAndFittings", field_name = "isIncludedExcludedOrNone", datatype = "string", status = "Required", condition = "Conditional via oneOf / discriminator", description = "Included, Excluded or None" }
 semantic = { preferred_label = "Included, Excluded or None", candidate_definition = "The value recorded for “Included, Excluded or None” in the Property Pack.", definition_status = "machine-drafted-from-source", source_description = "Included, Excluded or None" }
-model = { role = "unclassified", owning_context = "unassigned", consuming_contexts = [], resource = "unresolved", relationship = "unresolved", attribute = "unresolved", local_name = "unresolved", iri = "unresolved" }
+model = { classification_status = "unclassified", roles = [], owning_context = "unassigned", consuming_contexts = [], construct_refs = [], disposition = "unresolved", sensitivity = "unclassified", rationale = "", decision_refs = [] }
 value = { source_datatype = "string", xsd_datatype = "xsd:string", min_count = 0, max_count = 1, requiredness = "conditional", repeatable_context = false, occurrence_scope = "per-parent-resource" }
 restrictions = { format = "", pattern = "", min_length = "", max_length = "", minimum = "", maximum = "", permitted_values = ["Included", "None", "Excluded"] }
 vocabulary = { status = "candidate", scheme_id = "unresolved", values = ["Included", "None", "Excluded"] }
-governance = { approval_status = "proposed", sensitivity = "unclassified", provenance = "source-referenced", quality = "needs-semantic-review" }
 legacy_schema = { matched_occurrences = 2, title = "", description = "", format = "" }
 evidence = ["workbook:Sheet1!A441:H441", "legacy-schema:propertyPack.fixturesAndFittings.curtainsAndCurtainRails.curtainsBlinds.bedroom3.isIncludedExcludedOrNone"]
-review = { status = "needs-semantic-review", confidence = "low", flags = ["model-role-unassigned", "owning-context-unassigned", "iri-unassigned", "condition-expression-unresolved", "controlled-vocabulary-candidate"] }
+review = { status = "needs-semantic-review", confidence = "low", flags = ["model-role-unassigned", "owning-context-unassigned", "iri-unassigned", "condition-expression-unresolved", "controlled-vocabulary-candidate"], approval_status = "proposed", quality = "needs-semantic-review" }
 
 [[property]]
 id = "pp-82ea9d4368b4"
+work_package = "fixtures-fittings"
 source = { row = 443, path = "propertyPack.fixturesAndFittings.curtainsAndCurtainRails.curtainsBlinds.diningRoom.isIncludedExcludedOrNone", top_level_section = "propertyPack", heading = "fixturesAndFittings", field_name = "isIncludedExcludedOrNone", datatype = "string", status = "Required", condition = "Conditional via oneOf / discriminator", description = "Included, Excluded or None" }
 semantic = { preferred_label = "Included, Excluded or None", candidate_definition = "The value recorded for “Included, Excluded or None” in the Property Pack.", definition_status = "machine-drafted-from-source", source_description = "Included, Excluded or None" }
-model = { role = "unclassified", owning_context = "unassigned", consuming_contexts = [], resource = "unresolved", relationship = "unresolved", attribute = "unresolved", local_name = "unresolved", iri = "unresolved" }
+model = { classification_status = "unclassified", roles = [], owning_context = "unassigned", consuming_contexts = [], construct_refs = [], disposition = "unresolved", sensitivity = "unclassified", rationale = "", decision_refs = [] }
 value = { source_datatype = "string", xsd_datatype = "xsd:string", min_count = 0, max_count = 1, requiredness = "conditional", repeatable_context = false, occurrence_scope = "per-parent-resource" }
 restrictions = { format = "", pattern = "", min_length = "", max_length = "", minimum = "", maximum = "", permitted_values = ["Included", "None", "Excluded"] }
 vocabulary = { status = "candidate", scheme_id = "unresolved", values = ["Included", "None", "Excluded"] }
-governance = { approval_status = "proposed", sensitivity = "unclassified", provenance = "source-referenced", quality = "needs-semantic-review" }
 legacy_schema = { matched_occurrences = 2, title = "", description = "", format = "" }
 evidence = ["workbook:Sheet1!A443:H443", "legacy-schema:propertyPack.fixturesAndFittings.curtainsAndCurtainRails.curtainsBlinds.diningRoom.isIncludedExcludedOrNone"]
-review = { status = "needs-semantic-review", confidence = "low", flags = ["model-role-unassigned", "owning-context-unassigned", "iri-unassigned", "condition-expression-unresolved", "controlled-vocabulary-candidate"] }
+review = { status = "needs-semantic-review", confidence = "low", flags = ["model-role-unassigned", "owning-context-unassigned", "iri-unassigned", "condition-expression-unresolved", "controlled-vocabulary-candidate"], approval_status = "proposed", quality = "needs-semantic-review" }
 
 [[property]]
 id = "pp-1d2367da7939"
+work_package = "fixtures-fittings"
 source = { row = 445, path = "propertyPack.fixturesAndFittings.curtainsAndCurtainRails.curtainsBlinds.hallStairsLanding.isIncludedExcludedOrNone", top_level_section = "propertyPack", heading = "fixturesAndFittings", field_name = "isIncludedExcludedOrNone", datatype = "string", status = "Required", condition = "Conditional via oneOf / discriminator", description = "Included, Excluded or None" }
 semantic = { preferred_label = "Included, Excluded or None", candidate_definition = "The value recorded for “Included, Excluded or None” in the Property Pack.", definition_status = "machine-drafted-from-source", source_description = "Included, Excluded or None" }
-model = { role = "unclassified", owning_context = "unassigned", consuming_contexts = [], resource = "unresolved", relationship = "unresolved", attribute = "unresolved", local_name = "unresolved", iri = "unresolved" }
+model = { classification_status = "unclassified", roles = [], owning_context = "unassigned", consuming_contexts = [], construct_refs = [], disposition = "unresolved", sensitivity = "unclassified", rationale = "", decision_refs = [] }
 value = { source_datatype = "string", xsd_datatype = "xsd:string", min_count = 0, max_count = 1, requiredness = "conditional", repeatable_context = false, occurrence_scope = "per-parent-resource" }
 restrictions = { format = "", pattern = "", min_length = "", max_length = "", minimum = "", maximum = "", permitted_values = ["Included", "None", "Excluded"] }
 vocabulary = { status = "candidate", scheme_id = "unresolved", values = ["Included", "None", "Excluded"] }
-governance = { approval_status = "proposed", sensitivity = "unclassified", provenance = "source-referenced", quality = "needs-semantic-review" }
 legacy_schema = { matched_occurrences = 2, title = "", description = "", format = "" }
 evidence = ["workbook:Sheet1!A445:H445", "legacy-schema:propertyPack.fixturesAndFittings.curtainsAndCurtainRails.curtainsBlinds.hallStairsLanding.isIncludedExcludedOrNone"]
-review = { status = "needs-semantic-review", confidence = "low", flags = ["model-role-unassigned", "owning-context-unassigned", "iri-unassigned", "condition-expression-unresolved", "controlled-vocabulary-candidate"] }
+review = { status = "needs-semantic-review", confidence = "low", flags = ["model-role-unassigned", "owning-context-unassigned", "iri-unassigned", "condition-expression-unresolved", "controlled-vocabulary-candidate"], approval_status = "proposed", quality = "needs-semantic-review" }
 
 [[property]]
 id = "pp-7d963885a5a1"
+work_package = "fixtures-fittings"
 source = { row = 447, path = "propertyPack.fixturesAndFittings.curtainsAndCurtainRails.curtainsBlinds.kitchen.isIncludedExcludedOrNone", top_level_section = "propertyPack", heading = "fixturesAndFittings", field_name = "isIncludedExcludedOrNone", datatype = "string", status = "Required", condition = "Conditional via oneOf / discriminator", description = "Included, Excluded or None" }
 semantic = { preferred_label = "Included, Excluded or None", candidate_definition = "The value recorded for “Included, Excluded or None” in the Property Pack.", definition_status = "machine-drafted-from-source", source_description = "Included, Excluded or None" }
-model = { role = "unclassified", owning_context = "unassigned", consuming_contexts = [], resource = "unresolved", relationship = "unresolved", attribute = "unresolved", local_name = "unresolved", iri = "unresolved" }
+model = { classification_status = "unclassified", roles = [], owning_context = "unassigned", consuming_contexts = [], construct_refs = [], disposition = "unresolved", sensitivity = "unclassified", rationale = "", decision_refs = [] }
 value = { source_datatype = "string", xsd_datatype = "xsd:string", min_count = 0, max_count = 1, requiredness = "conditional", repeatable_context = false, occurrence_scope = "per-parent-resource" }
 restrictions = { format = "", pattern = "", min_length = "", max_length = "", minimum = "", maximum = "", permitted_values = ["Included", "None", "Excluded"] }
 vocabulary = { status = "candidate", scheme_id = "unresolved", values = ["Included", "None", "Excluded"] }
-governance = { approval_status = "proposed", sensitivity = "unclassified", provenance = "source-referenced", quality = "needs-semantic-review" }
 legacy_schema = { matched_occurrences = 2, title = "", description = "", format = "" }
 evidence = ["workbook:Sheet1!A447:H447", "legacy-schema:propertyPack.fixturesAndFittings.curtainsAndCurtainRails.curtainsBlinds.kitchen.isIncludedExcludedOrNone"]
-review = { status = "needs-semantic-review", confidence = "low", flags = ["model-role-unassigned", "owning-context-unassigned", "iri-unassigned", "condition-expression-unresolved", "controlled-vocabulary-candidate"] }
+review = { status = "needs-semantic-review", confidence = "low", flags = ["model-role-unassigned", "owning-context-unassigned", "iri-unassigned", "condition-expression-unresolved", "controlled-vocabulary-candidate"], approval_status = "proposed", quality = "needs-semantic-review" }
 
 [[property]]
 id = "pp-9949c75b326b"
+work_package = "fixtures-fittings"
 source = { row = 449, path = "propertyPack.fixturesAndFittings.curtainsAndCurtainRails.curtainsBlinds.livingRoom.isIncludedExcludedOrNone", top_level_section = "propertyPack", heading = "fixturesAndFittings", field_name = "isIncludedExcludedOrNone", datatype = "string", status = "Required", condition = "Conditional via oneOf / discriminator", description = "Included, Excluded or None" }
 semantic = { preferred_label = "Included, Excluded or None", candidate_definition = "The value recorded for “Included, Excluded or None” in the Property Pack.", definition_status = "machine-drafted-from-source", source_description = "Included, Excluded or None" }
-model = { role = "unclassified", owning_context = "unassigned", consuming_contexts = [], resource = "unresolved", relationship = "unresolved", attribute = "unresolved", local_name = "unresolved", iri = "unresolved" }
+model = { classification_status = "unclassified", roles = [], owning_context = "unassigned", consuming_contexts = [], construct_refs = [], disposition = "unresolved", sensitivity = "unclassified", rationale = "", decision_refs = [] }
 value = { source_datatype = "string", xsd_datatype = "xsd:string", min_count = 0, max_count = 1, requiredness = "conditional", repeatable_context = false, occurrence_scope = "per-parent-resource" }
 restrictions = { format = "", pattern = "", min_length = "", max_length = "", minimum = "", maximum = "", permitted_values = ["Included", "None", "Excluded"] }
 vocabulary = { status = "candidate", scheme_id = "unresolved", values = ["Included", "None", "Excluded"] }
-governance = { approval_status = "proposed", sensitivity = "unclassified", provenance = "source-referenced", quality = "needs-semantic-review" }
 legacy_schema = { matched_occurrences = 2, title = "", description = "", format = "" }
 evidence = ["workbook:Sheet1!A449:H449", "legacy-schema:propertyPack.fixturesAndFittings.curtainsAndCurtainRails.curtainsBlinds.livingRoom.isIncludedExcludedOrNone"]
-review = { status = "needs-semantic-review", confidence = "low", flags = ["model-role-unassigned", "owning-context-unassigned", "iri-unassigned", "condition-expression-unresolved", "controlled-vocabulary-candidate"] }
+review = { status = "needs-semantic-review", confidence = "low", flags = ["model-role-unassigned", "owning-context-unassigned", "iri-unassigned", "condition-expression-unresolved", "controlled-vocabulary-candidate"], approval_status = "proposed", quality = "needs-semantic-review" }
