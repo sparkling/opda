@@ -1,7 +1,7 @@
 ---
 status: accepted
 date: 2026-08-03
-tags: [ontology, property-pack, greenfield, bounded-context, common-boundary, interoperability, skos, shacl, provenance, authorisation]
+tags: [ontology, property-pack, greenfield, bounded-context, common-boundary, interoperability, council, swarm, ai-assisted, skos, shacl, provenance, authorisation]
 supersedes: []
 depends-on: [ADR-0039, ADR-0066]
 implements: []
@@ -55,8 +55,10 @@ website.
 - Reuse established linked-data standards instead of inventing OPDA equivalents.
 - Keep legacy artefacts available as attributed evidence without granting them
   semantic authority or allowing them to expand the closed Property Pack scope.
-- Avoid coupling the ontology to Semantic Builder or to any particular agentic
-  implementation.
+- Use an auditable, escalation-driven agentic authoring method without making the
+  ontology corpus depend on Semantic Builder, one agent substrate or one LLM family.
+- Preserve material disagreement for human resolution instead of manufacturing
+  consensus through agent votes.
 
 ## Considered Options
 
@@ -79,11 +81,26 @@ predicates, nesting, identities or number of ontology terms. One item may requir
 several semantic constructs, and several items may be represented by one well-founded
 construct. No source item may disappear without an explicit coverage disposition.
 
-The ontology model is independent of Semantic Builder. AI agents and expert councils
-may assist with evidence analysis, candidate generation and review, but they are an
-authoring method rather than part of the ontology's architecture or authority. The
-maintained OPDA artefacts, evidence links, review state and recorded decisions remain
-the source of authority.
+The ontology model and durable corpus are independent of Semantic Builder. The
+authoring programme will nevertheless follow Semantic Builder's accepted council
+configuration: ADR-0007 for cross-boundary harmonisation, ADR-0008 for typed execution
+and escalation, ADR-0009 for convergence and termination, and ADR-0021 for the expert
+lens pool and running protocol. These records configure how candidate models are
+produced and challenged; they do not become ontology dependencies or grant an agent
+authority over OPDA decisions.
+
+Semantic Modelling ODR-0104 is deprecated and relocated to Semantic Builder ADR-0021;
+it is historical provenance rather than a governing record. The earlier OPDA
+ODR-0001 protocol also does not govern this greenfield programme: its voting Queen,
+vote tallies and selectable consensus machinery are replaced here by the Builder
+configuration's non-voting lead, independent priors, bounded cross-examination and
+escalation of unresolved disagreement. Historical sessions remain part of the
+evidence trail for the previous ontology, not authority for the replacement model.
+
+AI agents and expert councils assist with evidence analysis, candidate generation and
+review. They are an authoring method rather than part of the ontology's architecture
+or authority. The maintained OPDA artefacts, evidence links, review state and recorded
+human decisions remain the source of authority.
 
 ### 1. Evidence hierarchy and scope guard
 
@@ -198,7 +215,163 @@ Generated JSON Schemas, forms, documentation and other familiar representations 
 be produced from the governed model later. They are projections of the semantic
 agreement and must not become independent sources of meaning.
 
-### 5. Modelling and review gates
+### 5. Agentic authoring and council configuration
+
+#### 5.1 Swarm and council are different mechanisms
+
+A swarm is the execution substrate used to route bounded work, run independent agents
+and collect their artefacts. A council is a deliberation protocol used only when a
+specific semantic decision warrants multiple opposed lenses. Swarm topology,
+model-provider diversity, a vote tally or a Ruflo consensus primitive does not by
+itself constitute an ontology council or establish semantic truth.
+
+Every work order starts with the least costly sufficient mechanism:
+
+1. a deterministic tool for exact extraction, normalisation, coverage and validation;
+2. one typed specialist for routine bounded authoring;
+3. a linked pair or small specialist panel for a known dependency;
+4. an ontology council for underdetermined, high-lock-in, cross-profile or
+   failed-specialist questions; and
+5. the relevant OPDA working group or Interoperability Working Group when durable
+   authority, contested correspondence or the common boundary is involved.
+
+The 451 source items must therefore be grouped into evidence-backed concept packages
+and bounded-context work orders. They must not be sent individually to a standing
+451-item voting fleet, nor may the source paths be treated as 451 predetermined
+ontology properties.
+
+#### 5.2 Per-bounded-context creation councils
+
+Each bounded-context working group has a creation mode that reads its own evidence and
+the common boundary, proposes only within its candidate context namespace, and cannot
+write into the common boundary. A creation council is convened only for a defined
+semantic crux such as:
+
+- identity criteria, kind/role/phase distinctions or class-versus-value choices;
+- competing OWL, SKOS, SHACL or structured-value patterns;
+- reuse of an external standard versus minting an OPDA resource;
+- conflicting evidence about cardinality, lifecycle, provenance or authorisation;
+- candidate bounded-context ownership; or
+- failure of a single specialist to produce a defensible, validated candidate.
+
+The available creation-council pool is drawn from Semantic Builder ADR-0021. A session
+seats only the subset required for its question, normally four to six lenses including
+one explicitly opposed Devil's Advocate:
+
+| Lens | Primary contribution to OPDA modelling |
+|---|---|
+| Dean Allemang | Pragmatic RDF, simplest sufficient model and reuse-versus-mint. |
+| Jim Hendler or Fabien Gandon | RDF/OWL semantics, web architecture and W3C conformance. |
+| Elisa Kendall | Enterprise patterns, FIBO awareness and class-versus-datum choices. |
+| Kurt Cagle | SHACL and the structured-value-versus-class challenge. |
+| Tom Baker | Namespaces, vocabulary stewardship and SKOS. |
+| Giancarlo Guizzardi | Kinds, roles, phases, relators and rigidity. |
+| Nicola Guarino | Formal identity criteria and dependence. |
+| Eric Evans or Vaughn Vernon | Bounded contexts and strategic domain integration. |
+
+Guests are seated only when the question requires them: Holger Knublauch for SHACL;
+Antoine Isaac or Alistair Miles for SKOS; Luc Moreau for provenance; Harshvardhan
+Pandit or Renato Iannella for privacy, consent, authorisation and rights; and a
+Ranganathan/ISO 25964 lens for classification and thesauri. A temporal specialist must
+be selected when OWL-Time or material valid-time/recorded-time semantics are on the
+docket rather than assuming that the standing pool covers that concern.
+
+These names denote simulated, citation-grounded methodological lenses. They do not
+claim the named person's participation, approval or endorsement. At least one real
+working-group domain expert must review every material candidate package. The AI
+panel's output is a proposal; actual domain participants own its business meaning and
+OPDA governance owns adoption.
+
+The lead is a non-voting protocol officer. It frames the propositions and disclosed
+evidence, enforces scope and clean contexts, routes challenges and composes the
+synthesis. It has no merit vote, no additional tally and no durable write authority.
+The Devil's Advocate must be chosen because a published methodology genuinely opposes
+a load-bearing premise, not merely to fill a role or because it uses another LLM.
+
+#### 5.3 Interoperability Council
+
+Cross-context harmonisation is a separate ownership mode, not a review of creation
+councils. It begins only when two or more contexts have candidate definitions to
+compare. Its primary outputs are context-map relationships and governed mappings;
+promotion into the common boundary is exceptional.
+
+The Interoperability Council draws from:
+
+- Guarino and Guizzardi for identity, dependence and rigidity;
+- Isaac or Miles for SKOS mapping semantics;
+- an SSSOM mapping-set and provenance specialist;
+- Evans or Vernon for DDD strategic context mapping;
+- an ontology-matching or logical-coherence challenger; and
+- one real domain steward from every bounded context under comparison.
+
+Its default is **map before merge**. It keeps context-specific meanings separate when
+they merely share a label, records the most defensible mapping with provenance, and
+recommends common-boundary promotion only when the contexts share the same identity
+criterion and stable exchange meaning. Only the Interoperability Working Group may
+approve that promotion or a durable cross-context mapping.
+
+#### 5.4 Three-round council protocol
+
+Every council follows the Builder protocol:
+
+1. **Independent priors.** Each lens receives a clean context, verifies load-bearing
+   source facts and records its verdict and rationale before seeing peers.
+2. **Bounded adversarial cross-examination.** The lead reveals the independent
+   positions and Devil's Advocate challenge. First-round positions remain in the
+   record; every change requires a reason; no running tally is shown. One or two
+   bounded rounds sharpen or separate the alternatives rather than manufacturing
+   agreement.
+3. **Re-poll and escalate.** The record compares initial and revised positions.
+   Persistent disagreement is an explicit output for the relevant human governance
+   body. Fast unanimity, off-task convergence or unexplained position changes are
+   failure signals that reopen the work.
+
+Majority, weighted, quorum, Byzantine, Raft or other infrastructure consensus is not
+an ontology decision rule. A council maps the disagreement surface; it does not vote
+OPDA meaning into existence.
+
+Each session must preserve the work order and evidence bundle, Property Pack item IDs,
+bounded-context and write scope, competency questions and hard cases, independent
+positions, cross-examination, reasons for changed positions, held dissents, synthesis,
+deterministic validation results and the human disposition. Claims attributed to a
+named lens must be grounded in a verifiable publication or standard.
+
+#### 5.5 Multiple models and calibration
+
+Expert-lens diversity and LLM-family diversity are separate. Opposed published lenses
+provide the council's methodological variety. Different underlying LLM families may
+replicate or challenge high-risk results as a robustness test, but their outputs are
+not independent votes. Two providers routing the same underlying model do not create
+independence.
+
+For a cross-model comparison, the evidence snapshot, work order, tools, target law,
+budget and output contract must remain fixed. Provider and model identity should be
+hidden from the evaluator where practical, and every synthesized candidate must pass
+the same deterministic validation and human review.
+
+Before council use is expanded, a representative calibration set of approximately
+20–30 semantically difficult Property Pack items will be run through:
+
+1. one strong agent with the same evidence and tools;
+2. typed specialists with deterministic validation; and
+3. the council protocol.
+
+The comparison records reference conformance, unsupported claims, identity and
+resource-home errors, human correction effort, defensibility, reliability, latency
+and cost. Council activation must demonstrate material value for the relevant work
+class; otherwise the specialist path remains primary.
+
+#### 5.6 Implementation boundary
+
+Semantic Builder currently supplies the governing architecture, typed contracts and
+configuration, but does not yet provide a production-composed ontology-build command,
+active model portfolio or council executor. OPDA may run the protocol manually or on
+another agent substrate, including staged fan-out when concurrency is constrained,
+provided that clean first-round contexts and the required session artefacts are
+preserved. This ADR makes no claim that the current Semantic Builder runtime executes
+the council end to end.
+
+### 6. Modelling and review gates
 
 Before the first ontology candidate is eligible for working-group review:
 
@@ -242,6 +415,12 @@ constraints; it does not pre-approve the resulting ontology terms.
   without controlling the new design.
 - Good, because ontology authoring can use agentic assistance without a dependency on
   Semantic Builder or one LLM implementation.
+- Good, because routine modelling is not burdened with council ceremony, while
+  high-lock-in decisions receive opposed, citation-grounded review.
+- Good, because the Interoperability Council maps context meanings without becoming a
+  central authority over each bounded context.
+- Good, because agent convergence cannot silently replace working-group and OPDA
+  governance.
 - Neutral, because correct modelling may produce more or fewer than 451 ontology terms.
 - Neutral, because some Property Pack items will be represented through common
   resources or relationships rather than one direct datatype property.
@@ -251,6 +430,10 @@ constraints; it does not pre-approve the resulting ontology terms.
   published ontology and legacy JSON Schemas.
 - Bad, because a small common boundary and separate context meanings require ongoing
   mapping and version governance.
+- Bad, because auditable council sessions require preserved evidence, independent
+  positions, dissent records and human dispositions.
+- Bad, because the Builder council configuration must initially be orchestrated without
+  a production council executor.
 
 ### Confirmation
 
@@ -266,6 +449,12 @@ constraints; it does not pre-approve the resulting ontology terms.
 - The ontology and SHACL corpus pass the project's deterministic validation gates.
 - A provenance audit can distinguish Property Pack source facts, external standards,
   legacy OPDA evidence, AI-generated proposals and human approvals.
+- Every council activation is traceable to a documented escalation reason or the
+  calibration experiment, and its lead has no vote or durable write authority.
+- Council records preserve clean-context priors, reasons for changed positions,
+  unresolved disagreement and the responsible human disposition.
+- A calibrated comparison demonstrates whether a strong agent, typed specialists or a
+  council is the proportionate mechanism for each modelling work class.
 - No build or validation step requires Semantic Builder.
 - Publication or replacement of the current website remains separately authorised.
 
@@ -277,6 +466,11 @@ constraints; it does not pre-approve the resulting ontology terms.
 - [ADR-0065 — proposed AI-assisted evidence-to-model workflow](./ADR-0065-ai-assisted-evidence-to-model-workflow.md)
 - [Property Pack 451 evidence validation](../research/property-pack-451-evidence-validation.md)
 - [ODR-0071 — Ontology Modelling Category Framework](https://github.com/hm-group/semantic-modelling/blob/main/docs/ontology/odr/ODR-0071-ontology-modelling-category-framework.md)
+- [Semantic Builder ADR-0007 — Cross-boundary harmonisation council](https://github.com/hm-group/semantic-builder/blob/main/docs/adr/ADR-0007-cross-boundary-harmonisation-council.md)
+- [Semantic Builder ADR-0008 — Council architecture](https://github.com/hm-group/semantic-builder/blob/main/docs/adr/ADR-0008-council-architecture.md)
+- [Semantic Builder ADR-0009 — Council convergence and termination](https://github.com/hm-group/semantic-builder/blob/main/docs/adr/ADR-0009-council-convergence-and-termination.md)
+- [Semantic Builder ADR-0021 — Council roster and running protocol](https://github.com/hm-group/semantic-builder/blob/main/docs/adr/ADR-0021-council-of-experts.md)
+- [Semantic Builder implementation reality audit](https://github.com/hm-group/semantic-builder/blob/main/docs/reviews/semantic-builder-implementation-reality-audit-2026-08-03.html)
 
 ## Amendments
 
@@ -285,3 +479,9 @@ constraints; it does not pre-approve the resulting ontology terms.
   non-OPDA ODR-0071 concerns; retained authorisation and the other nine concerns; and
   required every OPDA-defined resource to live in one bounded context or the common
   boundary.
+- **2026-08-03 — Builder council configuration adopted.** The operator required this
+  programme to follow Semantic Builder's accepted execution, roster, harmonisation and
+  termination configuration; deprecated Semantic Modelling ODR-0104 remains historical
+  provenance. The ontology remains runtime-independent, the lead does not vote,
+  councils are escalation-driven, unresolved disagreement goes to human governance,
+  and common-boundary promotion remains the Interoperability Working Group's decision.
