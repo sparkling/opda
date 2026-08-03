@@ -28,8 +28,7 @@ model in ODR-0071. It was designed for a source-code extraction pipeline and the
 contains concerns that do not belong in this OPDA model, including process modelling,
 service and enterprise architecture, capability modelling, source-to-ontology mappings
 and data-product packaging. It also contains concerns OPDA does need, including domain
-structure, vocabularies, governance, validation, provenance, time, sensitivity and
-authorisation.
+structure, vocabularies, validation, provenance, time, sensitivity and authorisation.
 
 The Property Pack is not itself a bounded context. It is a delivery profile that draws
 on meanings owned in several domain contexts. OPDA therefore also needs a firm rule for
@@ -50,8 +49,8 @@ website.
 - Give every OPDA-defined resource one accountable semantic home.
 - Preserve legitimate differences between bounded contexts while making exchange
   explicit.
-- Keep governance, provenance, validation, time, sensitivity and authorisation as
-  first-class modelling concerns.
+- Keep provenance, validation, time, sensitivity and authorisation as first-class
+  modelling concerns.
 - Reuse established linked-data standards instead of inventing OPDA equivalents.
 - Keep legacy artefacts available as attributed evidence without granting them
   semantic authority or allowing them to expand the closed Property Pack scope.
@@ -133,9 +132,9 @@ It may be cited when it supports a decision about one or more of the 451 items.
 Modelling from first principles may introduce the classes, relationships, policy
 concepts and other scaffolding required to represent the 451 items correctly. Every
 new business construct must trace to one or more Property Pack source-item IDs. A
-supporting technical or governance construct that is not itself a Property Pack item
-must trace to a retained modelling concern, a named standard and a documented need; it
-must not enlarge the Property Pack's business-data scope.
+supporting technical construct that is not itself a Property Pack item must trace to a
+retained modelling concern, a named standard and a documented need; it must not enlarge
+the Property Pack's business-data scope.
 
 ### 2. Resource-home rule
 
@@ -153,8 +152,8 @@ Every OPDA-defined ontology resource must have exactly one semantic home:
 This home rule applies to OPDA-minted classes, properties, relationships, shapes,
 vocabulary schemes and concepts. An externally governed resource keeps its external
 home; OPDA records which context reuses it and any local constraint or mapping.
-Semantic home records definition ownership and governance; it does not require a
-namespace per context or prevent one resource from being used by several contexts.
+Semantic home records definition responsibility; it does not require a namespace per
+context or prevent one resource from being used by several contexts.
 
 Each Property Pack source item receives one candidate semantic home—one context or the
 common boundary—and may name additional consuming contexts. Usage by several contexts
@@ -174,7 +173,7 @@ shared folder or a default for unresolved ownership.
 ### 3. ODR-0071 adoption profile
 
 ODR-0071 is adopted as a taxonomy of modelling concerns, not as a wholesale pipeline
-architecture. OPDA retains nine of its fourteen categories:
+architecture. OPDA retains eight of its fourteen categories:
 
 | # | ODR-0071 concern | OPDA decision | Application to the Property Pack ontology |
 |---:|---|---|---|
@@ -182,8 +181,8 @@ architecture. OPDA retains nine of its fourteen categories:
 | 2 | Vocabulary & Taxonomy | **Retain** | Business terms, labels, definitions, controlled vocabularies and broader/narrower taxonomies using SKOS. |
 | 3 | Process Modelling | **Exclude** | Operational workflows and BPMN are outside this domain-model scope. |
 | 4 | Service Architecture | **Exclude** | Applications, interfaces and enterprise/service architecture are implementation concerns. |
-| 5 | Classification Metadata | **Retain** | Subject, status, lifecycle, regulatory relevance and stewardship classifications. |
-| 6 | Governance & Compliance | **Retain** | Ownership, stewardship, approval, obligations, regulatory basis and auditability. |
+| 5 | Classification Metadata | **Retain** | Subject, status, lifecycle and regulatory-relevance classifications. |
+| 6 | Governance & Compliance | **Exclude** | OPDA standards governance remains in ADRs, operating procedures and decision records rather than the property ontology. |
 | 7 | Validation & Constraints | **Retain** | SHACL shapes for agreed cardinality, datatype, value and cross-field rules. |
 | 8 | Cross-Domain Mappings | **Retain** | The DDD context map and governed mappings between context-owned resources and vocabularies. |
 | 9 | Provenance & Quality | **Retain, adapted** | Source, attribution, derivation, confidence, currency and quality evidence; not limited to source-code extraction. |
@@ -193,11 +192,10 @@ architecture. OPDA retains nine of its fourteen categories:
 | 13 | Source Mapping | **Exclude** | RML/R2RML mappings from code, databases or legacy schemas are migration artefacts, not part of the greenfield domain model. |
 | 14 | Data Product | **Exclude** | Product packaging, ports and operational lifecycle are delivery concerns; the Property Pack remains a profile over the domain models. |
 
-The nine retained categories are a completeness check, not a demand for nine separate
-ontology files. For practitioner review they may continue to be presented as the
-eleven OPDA lenses already used in the working-group material: controlled vocabulary
-and taxonomy are shown separately, and the common boundary is shown explicitly beside
-cross-domain mappings. That presentation does not add new formal categories.
+The eight retained categories are a completeness check, not a demand for eight separate
+ontology files. Working-group presentation lenses are not formal ontology categories.
+Governance remains an operating concern for authoring, review and release, but is not an
+ontology output or a source of property-domain terms.
 
 The access-control category models the meaning of sensitivity, consent, roles,
 purposes and authorisation. It does not by itself implement a runtime security system
@@ -217,7 +215,7 @@ The first candidate must keep the following outputs aligned:
 - SKOS controlled vocabularies and taxonomies;
 - SHACL data shapes and validation rules;
 - the DDD context map and cross-domain mappings;
-- governance, provenance, quality, temporal, sensitivity and authorisation metadata;
+- provenance, quality, temporal, sensitivity and authorisation metadata;
 - a coverage matrix from all 451 source-item IDs to their semantic home and resulting
   semantic constructs.
 
@@ -344,8 +342,8 @@ unsupported semantics or an empty report cannot become `pass`.
 The existing OPDA Jena/Fuseki toolchain is the initial implementation candidate, but
 this ADR does not silently adopt Semantic Builder's precise engine or RDF/SPARQL/SHACL
 version pins. A separate technical decision must qualify the actual OPDA standards
-profile with positive and negative semantic probes. For this nine-concern profile, the
-five excluded concerns are predeclared `not-applicable`; they are not omitted silently.
+profile with positive and negative semantic probes. For this eight-concern profile, the
+six excluded concerns are predeclared `not-applicable`; they are not omitted silently.
 
 Only a human disposition authorised through the OPDA authority chain above can move a
 validated candidate into the governed corpus. Published releases are immutable named
@@ -384,9 +382,9 @@ Before the first ontology candidate is eligible for working-group review:
    the Interoperability Working Group;
 8. context mappings preserve local meaning and avoid unjustified `owl:sameAs` or
    premature merging;
-9. the nine retained concerns each have a recorded disposition: `model here`, `reuse
+9. the eight retained concerns each have a recorded disposition: `model here`, `reuse
    shared`, `boundary contribution`, or `not applicable` with rationale;
-10. the five excluded concerns have not re-entered the ontology by accident;
+10. the six excluded concerns have not re-entered the ontology by accident;
 11. every evidence snapshot has passed the source-policy boundary and retains source,
     digest, span and taint through its candidate derivatives;
 12. every model-produced candidate records its exact route and work-order binding, and
@@ -497,3 +495,5 @@ constraints; it does not pre-approve the resulting ontology terms.
 - **2026-08-03 — OPDA governance clarified.** Constitutional authority and the technical
   change process govern human review and promotion; incomplete release mechanics must be
   ratified before a normative ontology release.
+- **2026-08-04 — Governance excluded from ontology scope.** Category 6 remains an
+  operational Builder and OPDA control; the ontology retains eight concerns and excludes six.
