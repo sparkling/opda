@@ -6,7 +6,7 @@ import Diagram from '@/components/Diagram.astro';
 <Layout
   title="Standards stack"
 >
-<PageMeta category="Modelling" variant="info" updated="Updated 2026-05-14" damaKa={["Data Architecture"]} />
+<PageMeta category="Modelling" variant="info" updated="Updated 2026-08-03" damaKa={["Data Architecture"]} />
 
       <h1>Standards stack</h1>
       <p class="lead">
@@ -198,7 +198,7 @@ Law Society · BASPI · NTS · HMLR · CON`"]:::data
         <code>source/07-website/source/public/trustframework/api/members/did:*</code>.
       </p>
 
-      <h2 id="externalStandards">External standards alignment</h2>
+      <h2 id="externalStandards">External standards and methodology references</h2>
 
       <div class="card-grid">
         <div class="card">
@@ -221,6 +221,28 @@ Law Society · BASPI · NTS · HMLR · CON`"]:::data
           <h3>Trust Over IP (ToIP)</h3>
           <p>The 4-layer governance model PDTF follows. See <a href="/governance/toip-governance">ToIP governance</a>.</p>
         </div>
+        <div class="card">
+          <div class="pill pill--warn">ISO · candidate method</div>
+          <h3>
+            <a href="https://www.iso.org/standard/75401.html" target="_blank" rel="noopener">ISO 23386:2020</a>
+          </h3>
+          <p>
+            A methodology for governing construction data attributes and characteristics in interconnected data dictionaries.
+            It is relevant to OPDA's glossary, dictionary, vocabulary and mapping process, but is not yet an
+            adopted conformance requirement.
+          </p>
+        </div>
+      </div>
+
+      <div class="callout callout--note">
+        <div class="callout__label">Method, not model content</div>
+        <p>
+          ISO 23386 uses <em>property</em> for a data attribute or characteristic, not for a real-estate asset.
+          It defines how those properties and groups should be described and maintained; it does not supply their
+          domain definitions or a construction ontology. OPDA can therefore use it as process evidence while the
+          working groups remain responsible for agreeing the meanings needed by each bounded context.
+          See the annotated entry in <a href="/library/external-references#constructionBim">External references</a>.
+        </p>
       </div>
 
       <h2 id="developerResources">Where to start (for the linked-data project)</h2>

@@ -6,7 +6,7 @@ import PageMeta from '@/components/PageMeta.astro';
   title="External references"
   description="Source material from outside OPDA — gov.uk, NTS Material Information archive, related standards bodies."
 >
-<PageMeta category="Library" variant="brand" updated="Updated 2026-05-14" damaKa={["Document & Content Management"]} />
+<PageMeta category="Library" variant="brand" updated="Updated 2026-08-03" damaKa={["Document & Content Management"]} />
 
       <h1>External references</h1>
       <p class="lead">
@@ -54,6 +54,57 @@ import PageMeta from '@/components/PageMeta.astro';
           </tr>
         </tbody>
       </table>
+
+      <h2 id="constructionBim">Construction and BIM property dictionaries</h2>
+
+      <div class="callout callout--note">
+        <div class="callout__label">Candidate modelling reference — not an OPDA requirement</div>
+        <p>
+          <a href="https://www.iso.org/standard/75401.html" target="_blank" rel="noopener">ISO 23386:2020</a>
+          is a published International Standard for describing, authoring and maintaining construction data
+          properties and groups of properties in interconnected data dictionaries. Here, <em>property</em> means
+          an attribute or characteristic described in a data dictionary, not a real-estate asset. The standard
+          defines a method and governance expectations; it does not provide the dictionary's domain content.
+        </p>
+      </div>
+
+      <table>
+        <thead><tr><th>Reference</th><th>Authority and status</th><th>Why it matters to OPDA</th><th>OPDA treatment</th></tr></thead>
+        <tbody>
+          <tr>
+            <td>
+              <a href="https://www.iso.org/standard/75401.html" target="_blank" rel="noopener">
+                ISO 23386:2020
+              </a><br />
+              <span class="muted">
+                Building information modelling and other digital processes used in construction — methodology
+                to describe, author and maintain properties in interconnected data dictionaries
+              </span>
+            </td>
+            <td>ISO; edition 1, published March 2020 and confirmed current following its 2025 review.</td>
+            <td>
+              Provides a reference method for data-property definitions, property metadata, expert review,
+              change requests, governance and mappings between data dictionaries. This is directly relevant
+              to OPDA's glossary, data-dictionary and controlled-vocabulary work.
+            </td>
+            <td>
+              Record as evidence for the relevant domain working groups and as a candidate modelling-method
+              reference. Do not import it wholesale or treat it as an OPDA conformance requirement without an
+              explicit review and decision.
+            </td>
+          </tr>
+        </tbody>
+      </table>
+
+      <p>
+        <strong>Stakeholder context:</strong> OPDA has been advised that NLIS (Land Data) is working to this
+        standard for property construction data. That relationship is useful discovery evidence and should be
+        confirmed directly with NLIS before it is recorded as a formal dependency or commitment.
+      </p>
+      <p class="muted">
+        The catalogue records the official reference and OPDA's assessment only. The paid ISO publication has
+        not been copied into the OPDA resource archive.
+      </p>
 
       <h2 id="relatedStandards">Related W3C standards</h2>
       <p>
