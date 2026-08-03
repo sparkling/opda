@@ -1,0 +1,456 @@
+# Generated bootstrap; curate fields in place, then run generate/check.
+
+[[property]]
+id = "pp-ea136e996216"
+source = { row = 609, path = "propertyPack.localSearches.localAuthoritySearches.otherMatters.contraventionOfBuildingRegulations.yesNo", top_level_section = "propertyPack", heading = "localSearches", field_name = "yesNo", datatype = "string", status = "Required", condition = "Conditional via oneOf / discriminator", description = "" }
+semantic = { preferred_label = "Contravention of building regulations", candidate_definition = "Indicates whether contravention of building regulations is applicable.", definition_status = "machine-drafted-from-source", source_description = "" }
+model = { role = "unclassified", owning_context = "unassigned", consuming_contexts = [], resource = "unresolved", relationship = "unresolved", attribute = "unresolved", local_name = "unresolved", iri = "unresolved" }
+value = { source_datatype = "string", xsd_datatype = "xsd:string", min_count = 0, max_count = 1, requiredness = "conditional", repeatable_context = false, occurrence_scope = "per-parent-resource" }
+restrictions = { format = "", pattern = "", min_length = "", max_length = "", minimum = "", maximum = "", permitted_values = ["No", "Yes"] }
+vocabulary = { status = "candidate", scheme_id = "unresolved", values = ["No", "Yes"] }
+governance = { approval_status = "proposed", sensitivity = "unclassified", provenance = "source-referenced", quality = "needs-semantic-review" }
+legacy_schema = { matched_occurrences = 2, title = "", description = "", format = "" }
+evidence = ["workbook:Sheet1!A609:H609", "legacy-schema:propertyPack.localSearches.localAuthoritySearches.otherMatters.contraventionOfBuildingRegulations.yesNo"]
+review = { status = "needs-semantic-review", confidence = "low", flags = ["model-role-unassigned", "owning-context-unassigned", "iri-unassigned", "source-description-missing", "condition-expression-unresolved", "controlled-vocabulary-candidate"] }
+
+[[property]]
+id = "pp-4d2f879aaa62"
+source = { row = 610, path = "propertyPack.localSearches.localAuthoritySearches.otherMatters.drainageMatters.ifPropertyBenefitsFromASuDsForWhichThereIsAChargeWhoBillsThePropertyForSurfaceWaterDrainageCharge.yesNo", top_level_section = "propertyPack", heading = "localSearches", field_name = "yesNo", datatype = "string", status = "Required", condition = "Conditional via oneOf / discriminator", description = "" }
+semantic = { preferred_label = "If property benefits from a su ds for which there is a charge who bills the property for surface water drainage charge", candidate_definition = "Indicates whether if property benefits from a su ds for which there is a charge who bills the property for surface water drainage charge is applicable.", definition_status = "machine-drafted-from-source", source_description = "" }
+model = { role = "unclassified", owning_context = "unassigned", consuming_contexts = [], resource = "unresolved", relationship = "unresolved", attribute = "unresolved", local_name = "unresolved", iri = "unresolved" }
+value = { source_datatype = "string", xsd_datatype = "xsd:string", min_count = 0, max_count = 1, requiredness = "conditional", repeatable_context = false, occurrence_scope = "per-parent-resource" }
+restrictions = { format = "", pattern = "", min_length = "", max_length = "", minimum = "", maximum = "", permitted_values = ["No", "Yes"] }
+vocabulary = { status = "candidate", scheme_id = "unresolved", values = ["No", "Yes"] }
+governance = { approval_status = "proposed", sensitivity = "unclassified", provenance = "source-referenced", quality = "needs-semantic-review" }
+legacy_schema = { matched_occurrences = 2, title = "", description = "", format = "" }
+evidence = ["workbook:Sheet1!A610:H610", "legacy-schema:propertyPack.localSearches.localAuthoritySearches.otherMatters.drainageMatters.ifPropertyBenefitsFromASuDsForWhichThereIsAChargeWhoBillsThePropertyForSurfaceWaterDrainageCharge.yesNo"]
+review = { status = "needs-semantic-review", confidence = "low", flags = ["model-role-unassigned", "owning-context-unassigned", "iri-unassigned", "source-description-missing", "condition-expression-unresolved", "controlled-vocabulary-candidate"] }
+
+[[property]]
+id = "pp-e8ced6458112"
+source = { row = 611, path = "propertyPack.localSearches.localAuthoritySearches.otherMatters.drainageMatters.propertyServedByASustainableUrbanDrainage.yesNo", top_level_section = "propertyPack", heading = "localSearches", field_name = "yesNo", datatype = "string", status = "Required", condition = "Conditional via oneOf / discriminator", description = "" }
+semantic = { preferred_label = "Property served by a sustainable urban drainage", candidate_definition = "Indicates whether property served by a sustainable urban drainage is applicable.", definition_status = "machine-drafted-from-source", source_description = "" }
+model = { role = "unclassified", owning_context = "unassigned", consuming_contexts = [], resource = "unresolved", relationship = "unresolved", attribute = "unresolved", local_name = "unresolved", iri = "unresolved" }
+value = { source_datatype = "string", xsd_datatype = "xsd:string", min_count = 0, max_count = 1, requiredness = "conditional", repeatable_context = false, occurrence_scope = "per-parent-resource" }
+restrictions = { format = "", pattern = "", min_length = "", max_length = "", minimum = "", maximum = "", permitted_values = ["No", "Yes"] }
+vocabulary = { status = "candidate", scheme_id = "unresolved", values = ["No", "Yes"] }
+governance = { approval_status = "proposed", sensitivity = "unclassified", provenance = "source-referenced", quality = "needs-semantic-review" }
+legacy_schema = { matched_occurrences = 2, title = "", description = "", format = "" }
+evidence = ["workbook:Sheet1!A611:H611", "legacy-schema:propertyPack.localSearches.localAuthoritySearches.otherMatters.drainageMatters.propertyServedByASustainableUrbanDrainage.yesNo"]
+review = { status = "needs-semantic-review", confidence = "low", flags = ["model-role-unassigned", "owning-context-unassigned", "iri-unassigned", "source-description-missing", "condition-expression-unresolved", "controlled-vocabulary-candidate"] }
+
+[[property]]
+id = "pp-c23ff6a9028d"
+source = { row = 612, path = "propertyPack.localSearches.localAuthoritySearches.otherMatters.drainageMatters.suDsFeaturesWithinTheBoundaryOfTheProperty.yesNo", top_level_section = "propertyPack", heading = "localSearches", field_name = "yesNo", datatype = "string", status = "Required", condition = "Conditional via oneOf / discriminator", description = "" }
+semantic = { preferred_label = "Su ds features within the boundary of the property", candidate_definition = "Indicates whether su ds features within the boundary of the property is applicable.", definition_status = "machine-drafted-from-source", source_description = "" }
+model = { role = "unclassified", owning_context = "unassigned", consuming_contexts = [], resource = "unresolved", relationship = "unresolved", attribute = "unresolved", local_name = "unresolved", iri = "unresolved" }
+value = { source_datatype = "string", xsd_datatype = "xsd:string", min_count = 0, max_count = 1, requiredness = "conditional", repeatable_context = false, occurrence_scope = "per-parent-resource" }
+restrictions = { format = "", pattern = "", min_length = "", max_length = "", minimum = "", maximum = "", permitted_values = ["No", "Yes"] }
+vocabulary = { status = "candidate", scheme_id = "unresolved", values = ["No", "Yes"] }
+governance = { approval_status = "proposed", sensitivity = "unclassified", provenance = "source-referenced", quality = "needs-semantic-review" }
+legacy_schema = { matched_occurrences = 2, title = "", description = "", format = "" }
+evidence = ["workbook:Sheet1!A612:H612", "legacy-schema:propertyPack.localSearches.localAuthoritySearches.otherMatters.drainageMatters.suDsFeaturesWithinTheBoundaryOfTheProperty.yesNo"]
+review = { status = "needs-semantic-review", confidence = "low", flags = ["model-role-unassigned", "owning-context-unassigned", "iri-unassigned", "source-description-missing", "condition-expression-unresolved", "controlled-vocabulary-candidate"] }
+
+[[property]]
+id = "pp-287a5db05d01"
+source = { row = 613, path = "propertyPack.localSearches.localAuthoritySearches.otherMatters.landRequiredForPublicPurposes.yesNo", top_level_section = "propertyPack", heading = "localSearches", field_name = "yesNo", datatype = "string", status = "Required", condition = "Conditional via oneOf / discriminator", description = "" }
+semantic = { preferred_label = "Land required for public purposes", candidate_definition = "Indicates whether land required for public purposes is applicable.", definition_status = "machine-drafted-from-source", source_description = "" }
+model = { role = "unclassified", owning_context = "unassigned", consuming_contexts = [], resource = "unresolved", relationship = "unresolved", attribute = "unresolved", local_name = "unresolved", iri = "unresolved" }
+value = { source_datatype = "string", xsd_datatype = "xsd:string", min_count = 0, max_count = 1, requiredness = "conditional", repeatable_context = false, occurrence_scope = "per-parent-resource" }
+restrictions = { format = "", pattern = "", min_length = "", max_length = "", minimum = "", maximum = "", permitted_values = ["No", "Yes"] }
+vocabulary = { status = "candidate", scheme_id = "unresolved", values = ["No", "Yes"] }
+governance = { approval_status = "proposed", sensitivity = "unclassified", provenance = "source-referenced", quality = "needs-semantic-review" }
+legacy_schema = { matched_occurrences = 2, title = "", description = "", format = "" }
+evidence = ["workbook:Sheet1!A613:H613", "legacy-schema:propertyPack.localSearches.localAuthoritySearches.otherMatters.landRequiredForPublicPurposes.yesNo"]
+review = { status = "needs-semantic-review", confidence = "low", flags = ["model-role-unassigned", "owning-context-unassigned", "iri-unassigned", "source-description-missing", "condition-expression-unresolved", "controlled-vocabulary-candidate"] }
+
+[[property]]
+id = "pp-ea7e091a3df1"
+source = { row = 614, path = "propertyPack.localSearches.localAuthoritySearches.otherMatters.landToBeAcquiredForRoadWorks.yesNo", top_level_section = "propertyPack", heading = "localSearches", field_name = "yesNo", datatype = "string", status = "Required", condition = "Conditional via oneOf / discriminator", description = "" }
+semantic = { preferred_label = "Land to be acquired for road works", candidate_definition = "Indicates whether land to be acquired for road works is applicable.", definition_status = "machine-drafted-from-source", source_description = "" }
+model = { role = "unclassified", owning_context = "unassigned", consuming_contexts = [], resource = "unresolved", relationship = "unresolved", attribute = "unresolved", local_name = "unresolved", iri = "unresolved" }
+value = { source_datatype = "string", xsd_datatype = "xsd:string", min_count = 0, max_count = 1, requiredness = "conditional", repeatable_context = false, occurrence_scope = "per-parent-resource" }
+restrictions = { format = "", pattern = "", min_length = "", max_length = "", minimum = "", maximum = "", permitted_values = ["No", "Yes"] }
+vocabulary = { status = "candidate", scheme_id = "unresolved", values = ["No", "Yes"] }
+governance = { approval_status = "proposed", sensitivity = "unclassified", provenance = "source-referenced", quality = "needs-semantic-review" }
+legacy_schema = { matched_occurrences = 2, title = "", description = "", format = "" }
+evidence = ["workbook:Sheet1!A614:H614", "legacy-schema:propertyPack.localSearches.localAuthoritySearches.otherMatters.landToBeAcquiredForRoadWorks.yesNo"]
+review = { status = "needs-semantic-review", confidence = "low", flags = ["model-role-unassigned", "owning-context-unassigned", "iri-unassigned", "source-description-missing", "condition-expression-unresolved", "controlled-vocabulary-candidate"] }
+
+[[property]]
+id = "pp-52857d69aed9"
+source = { row = 615, path = "propertyPack.localSearches.localAuthoritySearches.otherMatters.nearbyRailwaySchemes.propertyWithin200MetersOfTheCentreLineOfAProposedRailwayTramwayLightRailwayOrMonorail.yesNo", top_level_section = "propertyPack", heading = "localSearches", field_name = "yesNo", datatype = "string", status = "Required", condition = "Conditional via oneOf / discriminator", description = "" }
+semantic = { preferred_label = "Property within200 meters of the centre line of a proposed railway tramway light railway or monorail", candidate_definition = "Indicates whether property within200 meters of the centre line of a proposed railway tramway light railway or monorail is applicable.", definition_status = "machine-drafted-from-source", source_description = "" }
+model = { role = "unclassified", owning_context = "unassigned", consuming_contexts = [], resource = "unresolved", relationship = "unresolved", attribute = "unresolved", local_name = "unresolved", iri = "unresolved" }
+value = { source_datatype = "string", xsd_datatype = "xsd:string", min_count = 0, max_count = 1, requiredness = "conditional", repeatable_context = false, occurrence_scope = "per-parent-resource" }
+restrictions = { format = "", pattern = "", min_length = "", max_length = "", minimum = "", maximum = "", permitted_values = ["No", "Yes"] }
+vocabulary = { status = "candidate", scheme_id = "unresolved", values = ["No", "Yes"] }
+governance = { approval_status = "proposed", sensitivity = "unclassified", provenance = "source-referenced", quality = "needs-semantic-review" }
+legacy_schema = { matched_occurrences = 2, title = "", description = "", format = "" }
+evidence = ["workbook:Sheet1!A615:H615", "legacy-schema:propertyPack.localSearches.localAuthoritySearches.otherMatters.nearbyRailwaySchemes.propertyWithin200MetersOfTheCentreLineOfAProposedRailwayTramwayLightRailwayOrMonorail.yesNo"]
+review = { status = "needs-semantic-review", confidence = "low", flags = ["model-role-unassigned", "owning-context-unassigned", "iri-unassigned", "source-description-missing", "condition-expression-unresolved", "controlled-vocabulary-candidate"] }
+
+[[property]]
+id = "pp-0ae942c18577"
+source = { row = 616, path = "propertyPack.localSearches.localAuthoritySearches.otherMatters.nearbyRailwaySchemes.proposalsForARailwayTramwayLightRailwayOrMonorail.yesNo", top_level_section = "propertyPack", heading = "localSearches", field_name = "yesNo", datatype = "string", status = "Required", condition = "Conditional via oneOf / discriminator", description = "" }
+semantic = { preferred_label = "Proposals for a railway tramway light railway or monorail", candidate_definition = "Indicates whether proposals for a railway tramway light railway or monorail is applicable.", definition_status = "machine-drafted-from-source", source_description = "" }
+model = { role = "unclassified", owning_context = "unassigned", consuming_contexts = [], resource = "unresolved", relationship = "unresolved", attribute = "unresolved", local_name = "unresolved", iri = "unresolved" }
+value = { source_datatype = "string", xsd_datatype = "xsd:string", min_count = 0, max_count = 1, requiredness = "conditional", repeatable_context = false, occurrence_scope = "per-parent-resource" }
+restrictions = { format = "", pattern = "", min_length = "", max_length = "", minimum = "", maximum = "", permitted_values = ["No", "Yes"] }
+vocabulary = { status = "candidate", scheme_id = "unresolved", values = ["No", "Yes"] }
+governance = { approval_status = "proposed", sensitivity = "unclassified", provenance = "source-referenced", quality = "needs-semantic-review" }
+legacy_schema = { matched_occurrences = 2, title = "", description = "", format = "" }
+evidence = ["workbook:Sheet1!A616:H616", "legacy-schema:propertyPack.localSearches.localAuthoritySearches.otherMatters.nearbyRailwaySchemes.proposalsForARailwayTramwayLightRailwayOrMonorail.yesNo"]
+review = { status = "needs-semantic-review", confidence = "low", flags = ["model-role-unassigned", "owning-context-unassigned", "iri-unassigned", "source-description-missing", "condition-expression-unresolved", "controlled-vocabulary-candidate"] }
+
+[[property]]
+id = "pp-8e69b2d9829b"
+source = { row = 617, path = "propertyPack.localSearches.localAuthoritySearches.otherMatters.nearbyRoadSchemes.centreLineOfANewTrunkRoadOrSpecialRoadSpecifiedInAnyOrderDraftOrderOrScheme.yesNo", top_level_section = "propertyPack", heading = "localSearches", field_name = "yesNo", datatype = "string", status = "Required", condition = "Conditional via oneOf / discriminator", description = "" }
+semantic = { preferred_label = "Centre line of a new trunk road or special road specified in any order draft order or scheme", candidate_definition = "Indicates whether centre line of a new trunk road or special road specified in any order draft order or scheme is applicable.", definition_status = "machine-drafted-from-source", source_description = "" }
+model = { role = "unclassified", owning_context = "unassigned", consuming_contexts = [], resource = "unresolved", relationship = "unresolved", attribute = "unresolved", local_name = "unresolved", iri = "unresolved" }
+value = { source_datatype = "string", xsd_datatype = "xsd:string", min_count = 0, max_count = 1, requiredness = "conditional", repeatable_context = false, occurrence_scope = "per-parent-resource" }
+restrictions = { format = "", pattern = "", min_length = "", max_length = "", minimum = "", maximum = "", permitted_values = ["No", "Yes"] }
+vocabulary = { status = "candidate", scheme_id = "unresolved", values = ["No", "Yes"] }
+governance = { approval_status = "proposed", sensitivity = "unclassified", provenance = "source-referenced", quality = "needs-semantic-review" }
+legacy_schema = { matched_occurrences = 2, title = "", description = "", format = "" }
+evidence = ["workbook:Sheet1!A617:H617", "legacy-schema:propertyPack.localSearches.localAuthoritySearches.otherMatters.nearbyRoadSchemes.centreLineOfANewTrunkRoadOrSpecialRoadSpecifiedInAnyOrderDraftOrderOrScheme.yesNo"]
+review = { status = "needs-semantic-review", confidence = "low", flags = ["model-role-unassigned", "owning-context-unassigned", "iri-unassigned", "source-description-missing", "condition-expression-unresolved", "controlled-vocabulary-candidate"] }
+
+[[property]]
+id = "pp-393b4957b84e"
+source = { row = 618, path = "propertyPack.localSearches.localAuthoritySearches.otherMatters.nearbyRoadSchemes.centreLineOfAProposedAlterationOrImprovementToAnExistingRoad.yesNo", top_level_section = "propertyPack", heading = "localSearches", field_name = "yesNo", datatype = "string", status = "Required", condition = "Conditional via oneOf / discriminator", description = "" }
+semantic = { preferred_label = "Centre line of a proposed alteration or improvement to an existing road", candidate_definition = "Indicates whether centre line of a proposed alteration or improvement to an existing road is applicable.", definition_status = "machine-drafted-from-source", source_description = "" }
+model = { role = "unclassified", owning_context = "unassigned", consuming_contexts = [], resource = "unresolved", relationship = "unresolved", attribute = "unresolved", local_name = "unresolved", iri = "unresolved" }
+value = { source_datatype = "string", xsd_datatype = "xsd:string", min_count = 0, max_count = 1, requiredness = "conditional", repeatable_context = false, occurrence_scope = "per-parent-resource" }
+restrictions = { format = "", pattern = "", min_length = "", max_length = "", minimum = "", maximum = "", permitted_values = ["No", "Yes"] }
+vocabulary = { status = "candidate", scheme_id = "unresolved", values = ["No", "Yes"] }
+governance = { approval_status = "proposed", sensitivity = "unclassified", provenance = "source-referenced", quality = "needs-semantic-review" }
+legacy_schema = { matched_occurrences = 2, title = "", description = "", format = "" }
+evidence = ["workbook:Sheet1!A618:H618", "legacy-schema:propertyPack.localSearches.localAuthoritySearches.otherMatters.nearbyRoadSchemes.centreLineOfAProposedAlterationOrImprovementToAnExistingRoad.yesNo"]
+review = { status = "needs-semantic-review", confidence = "low", flags = ["model-role-unassigned", "owning-context-unassigned", "iri-unassigned", "source-description-missing", "condition-expression-unresolved", "controlled-vocabulary-candidate"] }
+
+[[property]]
+id = "pp-794f89e10b9c"
+source = { row = 619, path = "propertyPack.localSearches.localAuthoritySearches.otherMatters.nearbyRoadSchemes.centreLineOfTheProposedRouteOfANewRoad.yesNo", top_level_section = "propertyPack", heading = "localSearches", field_name = "yesNo", datatype = "string", status = "Required", condition = "Conditional via oneOf / discriminator", description = "" }
+semantic = { preferred_label = "Centre line of the proposed route of a new road", candidate_definition = "Indicates whether centre line of the proposed route of a new road is applicable.", definition_status = "machine-drafted-from-source", source_description = "" }
+model = { role = "unclassified", owning_context = "unassigned", consuming_contexts = [], resource = "unresolved", relationship = "unresolved", attribute = "unresolved", local_name = "unresolved", iri = "unresolved" }
+value = { source_datatype = "string", xsd_datatype = "xsd:string", min_count = 0, max_count = 1, requiredness = "conditional", repeatable_context = false, occurrence_scope = "per-parent-resource" }
+restrictions = { format = "", pattern = "", min_length = "", max_length = "", minimum = "", maximum = "", permitted_values = ["No", "Yes"] }
+vocabulary = { status = "candidate", scheme_id = "unresolved", values = ["No", "Yes"] }
+governance = { approval_status = "proposed", sensitivity = "unclassified", provenance = "source-referenced", quality = "needs-semantic-review" }
+legacy_schema = { matched_occurrences = 2, title = "", description = "", format = "" }
+evidence = ["workbook:Sheet1!A619:H619", "legacy-schema:propertyPack.localSearches.localAuthoritySearches.otherMatters.nearbyRoadSchemes.centreLineOfTheProposedRouteOfANewRoad.yesNo"]
+review = { status = "needs-semantic-review", confidence = "low", flags = ["model-role-unassigned", "owning-context-unassigned", "iri-unassigned", "source-description-missing", "condition-expression-unresolved", "controlled-vocabulary-candidate"] }
+
+[[property]]
+id = "pp-ef0d72e344d2"
+source = { row = 620, path = "propertyPack.localSearches.localAuthoritySearches.otherMatters.nearbyRoadSchemes.outerLimitsOf.approvedAlterationOrImprovementToAnExistingRoad.yesNo", top_level_section = "propertyPack", heading = "localSearches", field_name = "yesNo", datatype = "string", status = "Required", condition = "Conditional via oneOf / discriminator", description = "" }
+semantic = { preferred_label = "Approved alteration or improvement to an existing road", candidate_definition = "Indicates whether approved alteration or improvement to an existing road is applicable.", definition_status = "machine-drafted-from-source", source_description = "" }
+model = { role = "unclassified", owning_context = "unassigned", consuming_contexts = [], resource = "unresolved", relationship = "unresolved", attribute = "unresolved", local_name = "unresolved", iri = "unresolved" }
+value = { source_datatype = "string", xsd_datatype = "xsd:string", min_count = 0, max_count = 1, requiredness = "conditional", repeatable_context = false, occurrence_scope = "per-parent-resource" }
+restrictions = { format = "", pattern = "", min_length = "", max_length = "", minimum = "", maximum = "", permitted_values = ["No", "Yes"] }
+vocabulary = { status = "candidate", scheme_id = "unresolved", values = ["No", "Yes"] }
+governance = { approval_status = "proposed", sensitivity = "unclassified", provenance = "source-referenced", quality = "needs-semantic-review" }
+legacy_schema = { matched_occurrences = 2, title = "", description = "", format = "" }
+evidence = ["workbook:Sheet1!A620:H620", "legacy-schema:propertyPack.localSearches.localAuthoritySearches.otherMatters.nearbyRoadSchemes.outerLimitsOf.approvedAlterationOrImprovementToAnExistingRoad.yesNo"]
+review = { status = "needs-semantic-review", confidence = "low", flags = ["model-role-unassigned", "owning-context-unassigned", "iri-unassigned", "source-description-missing", "condition-expression-unresolved", "controlled-vocabulary-candidate"] }
+
+[[property]]
+id = "pp-f88987de349b"
+source = { row = 621, path = "propertyPack.localSearches.localAuthoritySearches.otherMatters.nearbyRoadSchemes.outerLimitsOf.constructionOfANewRoadToBeBuiltByALocalAuthority.yesNo", top_level_section = "propertyPack", heading = "localSearches", field_name = "yesNo", datatype = "string", status = "Required", condition = "Conditional via oneOf / discriminator", description = "" }
+semantic = { preferred_label = "Construction of a new road to be built by a local authority", candidate_definition = "Indicates whether construction of a new road to be built by a local authority is applicable.", definition_status = "machine-drafted-from-source", source_description = "" }
+model = { role = "unclassified", owning_context = "unassigned", consuming_contexts = [], resource = "unresolved", relationship = "unresolved", attribute = "unresolved", local_name = "unresolved", iri = "unresolved" }
+value = { source_datatype = "string", xsd_datatype = "xsd:string", min_count = 0, max_count = 1, requiredness = "conditional", repeatable_context = false, occurrence_scope = "per-parent-resource" }
+restrictions = { format = "", pattern = "", min_length = "", max_length = "", minimum = "", maximum = "", permitted_values = ["No", "Yes"] }
+vocabulary = { status = "candidate", scheme_id = "unresolved", values = ["No", "Yes"] }
+governance = { approval_status = "proposed", sensitivity = "unclassified", provenance = "source-referenced", quality = "needs-semantic-review" }
+legacy_schema = { matched_occurrences = 2, title = "", description = "", format = "" }
+evidence = ["workbook:Sheet1!A621:H621", "legacy-schema:propertyPack.localSearches.localAuthoritySearches.otherMatters.nearbyRoadSchemes.outerLimitsOf.constructionOfANewRoadToBeBuiltByALocalAuthority.yesNo"]
+review = { status = "needs-semantic-review", confidence = "low", flags = ["model-role-unassigned", "owning-context-unassigned", "iri-unassigned", "source-description-missing", "condition-expression-unresolved", "controlled-vocabulary-candidate"] }
+
+[[property]]
+id = "pp-9cd52cd1224e"
+source = { row = 622, path = "propertyPack.localSearches.localAuthoritySearches.otherMatters.nearbyRoadSchemes.outerLimitsOf.constructionOfARoundaboutOtherThanAMiniRoundaboutOrWideningByConstructionOfOneOrMoreAdditionalTrafficLanes.yesNo", top_level_section = "propertyPack", heading = "localSearches", field_name = "yesNo", datatype = "string", status = "Required", condition = "Conditional via oneOf / discriminator", description = "" }
+semantic = { preferred_label = "Construction of a roundabout other than a mini roundabout or widening by construction of one or more additional traffic lanes", candidate_definition = "Indicates whether construction of a roundabout other than a mini roundabout or widening by construction of one or more additional traffic lanes is applicable.", definition_status = "machine-drafted-from-source", source_description = "" }
+model = { role = "unclassified", owning_context = "unassigned", consuming_contexts = [], resource = "unresolved", relationship = "unresolved", attribute = "unresolved", local_name = "unresolved", iri = "unresolved" }
+value = { source_datatype = "string", xsd_datatype = "xsd:string", min_count = 0, max_count = 1, requiredness = "conditional", repeatable_context = false, occurrence_scope = "per-parent-resource" }
+restrictions = { format = "", pattern = "", min_length = "", max_length = "", minimum = "", maximum = "", permitted_values = ["No", "Yes"] }
+vocabulary = { status = "candidate", scheme_id = "unresolved", values = ["No", "Yes"] }
+governance = { approval_status = "proposed", sensitivity = "unclassified", provenance = "source-referenced", quality = "needs-semantic-review" }
+legacy_schema = { matched_occurrences = 2, title = "", description = "", format = "" }
+evidence = ["workbook:Sheet1!A622:H622", "legacy-schema:propertyPack.localSearches.localAuthoritySearches.otherMatters.nearbyRoadSchemes.outerLimitsOf.constructionOfARoundaboutOtherThanAMiniRoundaboutOrWideningByConstructionOfOneOrMoreAdditionalTrafficLanes.yesNo"]
+review = { status = "needs-semantic-review", confidence = "low", flags = ["model-role-unassigned", "owning-context-unassigned", "iri-unassigned", "source-description-missing", "condition-expression-unresolved", "controlled-vocabulary-candidate"] }
+
+[[property]]
+id = "pp-4681563e5c6d"
+source = { row = 623, path = "propertyPack.localSearches.localAuthoritySearches.otherMatters.nearbyRoadSchemes.outerLimitsOfConstructionUnderProposalsUnderPublicConsultation.constructionOfAProposedAlterationOrImprovementToAnExistingRoad.yesNo", top_level_section = "propertyPack", heading = "localSearches", field_name = "yesNo", datatype = "string", status = "Required", condition = "Conditional via oneOf / discriminator", description = "" }
+semantic = { preferred_label = "Construction of a proposed alteration or improvement to an existing road", candidate_definition = "Indicates whether construction of a proposed alteration or improvement to an existing road is applicable.", definition_status = "machine-drafted-from-source", source_description = "" }
+model = { role = "unclassified", owning_context = "unassigned", consuming_contexts = [], resource = "unresolved", relationship = "unresolved", attribute = "unresolved", local_name = "unresolved", iri = "unresolved" }
+value = { source_datatype = "string", xsd_datatype = "xsd:string", min_count = 0, max_count = 1, requiredness = "conditional", repeatable_context = false, occurrence_scope = "per-parent-resource" }
+restrictions = { format = "", pattern = "", min_length = "", max_length = "", minimum = "", maximum = "", permitted_values = ["No", "Yes"] }
+vocabulary = { status = "candidate", scheme_id = "unresolved", values = ["No", "Yes"] }
+governance = { approval_status = "proposed", sensitivity = "unclassified", provenance = "source-referenced", quality = "needs-semantic-review" }
+legacy_schema = { matched_occurrences = 2, title = "", description = "", format = "" }
+evidence = ["workbook:Sheet1!A623:H623", "legacy-schema:propertyPack.localSearches.localAuthoritySearches.otherMatters.nearbyRoadSchemes.outerLimitsOfConstructionUnderProposalsUnderPublicConsultation.constructionOfAProposedAlterationOrImprovementToAnExistingRoad.yesNo"]
+review = { status = "needs-semantic-review", confidence = "low", flags = ["model-role-unassigned", "owning-context-unassigned", "iri-unassigned", "source-description-missing", "condition-expression-unresolved", "controlled-vocabulary-candidate"] }
+
+[[property]]
+id = "pp-9b248d278896"
+source = { row = 624, path = "propertyPack.localSearches.localAuthoritySearches.otherMatters.nearbyRoadSchemes.outerLimitsOfConstructionUnderProposalsUnderPublicConsultation.constructionOfARoundaboutOtherThanAMiniRoundabout.yesNo", top_level_section = "propertyPack", heading = "localSearches", field_name = "yesNo", datatype = "string", status = "Required", condition = "Conditional via oneOf / discriminator", description = "" }
+semantic = { preferred_label = "Construction of a roundabout other than a mini roundabout", candidate_definition = "Indicates whether construction of a roundabout other than a mini roundabout is applicable.", definition_status = "machine-drafted-from-source", source_description = "" }
+model = { role = "unclassified", owning_context = "unassigned", consuming_contexts = [], resource = "unresolved", relationship = "unresolved", attribute = "unresolved", local_name = "unresolved", iri = "unresolved" }
+value = { source_datatype = "string", xsd_datatype = "xsd:string", min_count = 0, max_count = 1, requiredness = "conditional", repeatable_context = false, occurrence_scope = "per-parent-resource" }
+restrictions = { format = "", pattern = "", min_length = "", max_length = "", minimum = "", maximum = "", permitted_values = ["No", "Yes"] }
+vocabulary = { status = "candidate", scheme_id = "unresolved", values = ["No", "Yes"] }
+governance = { approval_status = "proposed", sensitivity = "unclassified", provenance = "source-referenced", quality = "needs-semantic-review" }
+legacy_schema = { matched_occurrences = 2, title = "", description = "", format = "" }
+evidence = ["workbook:Sheet1!A624:H624", "legacy-schema:propertyPack.localSearches.localAuthoritySearches.otherMatters.nearbyRoadSchemes.outerLimitsOfConstructionUnderProposalsUnderPublicConsultation.constructionOfARoundaboutOtherThanAMiniRoundabout.yesNo"]
+review = { status = "needs-semantic-review", confidence = "low", flags = ["model-role-unassigned", "owning-context-unassigned", "iri-unassigned", "source-description-missing", "condition-expression-unresolved", "controlled-vocabulary-candidate"] }
+
+[[property]]
+id = "pp-dc1d4227a37a"
+source = { row = 625, path = "propertyPack.localSearches.localAuthoritySearches.otherMatters.nearbyRoadSchemes.outerLimitsOfConstructionUnderProposalsUnderPublicConsultation.wideningByConstructionOfOneOrMoreAdditionalTrafficLanes.yesNo", top_level_section = "propertyPack", heading = "localSearches", field_name = "yesNo", datatype = "string", status = "Required", condition = "Conditional via oneOf / discriminator", description = "" }
+semantic = { preferred_label = "Widening by construction of one or more additional traffic lanes", candidate_definition = "Indicates whether widening by construction of one or more additional traffic lanes is applicable.", definition_status = "machine-drafted-from-source", source_description = "" }
+model = { role = "unclassified", owning_context = "unassigned", consuming_contexts = [], resource = "unresolved", relationship = "unresolved", attribute = "unresolved", local_name = "unresolved", iri = "unresolved" }
+value = { source_datatype = "string", xsd_datatype = "xsd:string", min_count = 0, max_count = 1, requiredness = "conditional", repeatable_context = false, occurrence_scope = "per-parent-resource" }
+restrictions = { format = "", pattern = "", min_length = "", max_length = "", minimum = "", maximum = "", permitted_values = ["No", "Yes"] }
+vocabulary = { status = "candidate", scheme_id = "unresolved", values = ["No", "Yes"] }
+governance = { approval_status = "proposed", sensitivity = "unclassified", provenance = "source-referenced", quality = "needs-semantic-review" }
+legacy_schema = { matched_occurrences = 2, title = "", description = "", format = "" }
+evidence = ["workbook:Sheet1!A625:H625", "legacy-schema:propertyPack.localSearches.localAuthoritySearches.otherMatters.nearbyRoadSchemes.outerLimitsOfConstructionUnderProposalsUnderPublicConsultation.wideningByConstructionOfOneOrMoreAdditionalTrafficLanes.yesNo"]
+review = { status = "needs-semantic-review", confidence = "low", flags = ["model-role-unassigned", "owning-context-unassigned", "iri-unassigned", "source-description-missing", "condition-expression-unresolved", "controlled-vocabulary-candidate"] }
+
+[[property]]
+id = "pp-791319a414a2"
+source = { row = 626, path = "propertyPack.localSearches.localAuthoritySearches.otherMatters.nearbyRoadSchemes.outerLimitsOfConstructionWorksForAProposedAlterationOrImprovementToAnExistingRoad.constructionOfARoundaboutOtherThanAMiniRoundabout.yesNo", top_level_section = "propertyPack", heading = "localSearches", field_name = "yesNo", datatype = "string", status = "Required", condition = "Conditional via oneOf / discriminator", description = "" }
+semantic = { preferred_label = "Construction of a roundabout other than a mini roundabout", candidate_definition = "Indicates whether construction of a roundabout other than a mini roundabout is applicable.", definition_status = "machine-drafted-from-source", source_description = "" }
+model = { role = "unclassified", owning_context = "unassigned", consuming_contexts = [], resource = "unresolved", relationship = "unresolved", attribute = "unresolved", local_name = "unresolved", iri = "unresolved" }
+value = { source_datatype = "string", xsd_datatype = "xsd:string", min_count = 0, max_count = 1, requiredness = "conditional", repeatable_context = false, occurrence_scope = "per-parent-resource" }
+restrictions = { format = "", pattern = "", min_length = "", max_length = "", minimum = "", maximum = "", permitted_values = ["No", "Yes"] }
+vocabulary = { status = "candidate", scheme_id = "unresolved", values = ["No", "Yes"] }
+governance = { approval_status = "proposed", sensitivity = "unclassified", provenance = "source-referenced", quality = "needs-semantic-review" }
+legacy_schema = { matched_occurrences = 2, title = "", description = "", format = "" }
+evidence = ["workbook:Sheet1!A626:H626", "legacy-schema:propertyPack.localSearches.localAuthoritySearches.otherMatters.nearbyRoadSchemes.outerLimitsOfConstructionWorksForAProposedAlterationOrImprovementToAnExistingRoad.constructionOfARoundaboutOtherThanAMiniRoundabout.yesNo"]
+review = { status = "needs-semantic-review", confidence = "low", flags = ["model-role-unassigned", "owning-context-unassigned", "iri-unassigned", "source-description-missing", "condition-expression-unresolved", "controlled-vocabulary-candidate"] }
+
+[[property]]
+id = "pp-3839e8cee9f1"
+source = { row = 627, path = "propertyPack.localSearches.localAuthoritySearches.otherMatters.nearbyRoadSchemes.outerLimitsOfConstructionWorksForAProposedAlterationOrImprovementToAnExistingRoad.wideningByConstructionOfOneOrMoreAdditionalTrafficLanes.yesNo", top_level_section = "propertyPack", heading = "localSearches", field_name = "yesNo", datatype = "string", status = "Required", condition = "Conditional via oneOf / discriminator", description = "" }
+semantic = { preferred_label = "Widening by construction of one or more additional traffic lanes", candidate_definition = "Indicates whether widening by construction of one or more additional traffic lanes is applicable.", definition_status = "machine-drafted-from-source", source_description = "" }
+model = { role = "unclassified", owning_context = "unassigned", consuming_contexts = [], resource = "unresolved", relationship = "unresolved", attribute = "unresolved", local_name = "unresolved", iri = "unresolved" }
+value = { source_datatype = "string", xsd_datatype = "xsd:string", min_count = 0, max_count = 1, requiredness = "conditional", repeatable_context = false, occurrence_scope = "per-parent-resource" }
+restrictions = { format = "", pattern = "", min_length = "", max_length = "", minimum = "", maximum = "", permitted_values = ["No", "Yes"] }
+vocabulary = { status = "candidate", scheme_id = "unresolved", values = ["No", "Yes"] }
+governance = { approval_status = "proposed", sensitivity = "unclassified", provenance = "source-referenced", quality = "needs-semantic-review" }
+legacy_schema = { matched_occurrences = 2, title = "", description = "", format = "" }
+evidence = ["workbook:Sheet1!A627:H627", "legacy-schema:propertyPack.localSearches.localAuthoritySearches.otherMatters.nearbyRoadSchemes.outerLimitsOfConstructionWorksForAProposedAlterationOrImprovementToAnExistingRoad.wideningByConstructionOfOneOrMoreAdditionalTrafficLanes.yesNo"]
+review = { status = "needs-semantic-review", confidence = "low", flags = ["model-role-unassigned", "owning-context-unassigned", "iri-unassigned", "source-description-missing", "condition-expression-unresolved", "controlled-vocabulary-candidate"] }
+
+[[property]]
+id = "pp-ac7440fd14e5"
+source = { row = 628, path = "propertyPack.localSearches.localAuthoritySearches.otherMatters.noticesOrdersDirectionsAndProceedingsUnderPlanningActs.anotherNoticeRelatingToBreachOfPlanningControl.yesNo", top_level_section = "propertyPack", heading = "localSearches", field_name = "yesNo", datatype = "string", status = "Required", condition = "Conditional via oneOf / discriminator", description = "" }
+semantic = { preferred_label = "Another notice relating to breach of planning control", candidate_definition = "Indicates whether another notice relating to breach of planning control is applicable.", definition_status = "machine-drafted-from-source", source_description = "" }
+model = { role = "unclassified", owning_context = "unassigned", consuming_contexts = [], resource = "unresolved", relationship = "unresolved", attribute = "unresolved", local_name = "unresolved", iri = "unresolved" }
+value = { source_datatype = "string", xsd_datatype = "xsd:string", min_count = 0, max_count = 1, requiredness = "conditional", repeatable_context = false, occurrence_scope = "per-parent-resource" }
+restrictions = { format = "", pattern = "", min_length = "", max_length = "", minimum = "", maximum = "", permitted_values = ["No", "Yes"] }
+vocabulary = { status = "candidate", scheme_id = "unresolved", values = ["No", "Yes"] }
+governance = { approval_status = "proposed", sensitivity = "unclassified", provenance = "source-referenced", quality = "needs-semantic-review" }
+legacy_schema = { matched_occurrences = 2, title = "", description = "", format = "" }
+evidence = ["workbook:Sheet1!A628:H628", "legacy-schema:propertyPack.localSearches.localAuthoritySearches.otherMatters.noticesOrdersDirectionsAndProceedingsUnderPlanningActs.anotherNoticeRelatingToBreachOfPlanningControl.yesNo"]
+review = { status = "needs-semantic-review", confidence = "low", flags = ["model-role-unassigned", "owning-context-unassigned", "iri-unassigned", "source-description-missing", "condition-expression-unresolved", "controlled-vocabulary-candidate"] }
+
+[[property]]
+id = "pp-7394db06aa3d"
+source = { row = 629, path = "propertyPack.localSearches.localAuthoritySearches.otherMatters.noticesOrdersDirectionsAndProceedingsUnderPlanningActs.breachOfConditionNotice.yesNo", top_level_section = "propertyPack", heading = "localSearches", field_name = "yesNo", datatype = "string", status = "Required", condition = "Conditional via oneOf / discriminator", description = "" }
+semantic = { preferred_label = "Breach of condition notice", candidate_definition = "Indicates whether breach of condition notice is applicable.", definition_status = "machine-drafted-from-source", source_description = "" }
+model = { role = "unclassified", owning_context = "unassigned", consuming_contexts = [], resource = "unresolved", relationship = "unresolved", attribute = "unresolved", local_name = "unresolved", iri = "unresolved" }
+value = { source_datatype = "string", xsd_datatype = "xsd:string", min_count = 0, max_count = 1, requiredness = "conditional", repeatable_context = false, occurrence_scope = "per-parent-resource" }
+restrictions = { format = "", pattern = "", min_length = "", max_length = "", minimum = "", maximum = "", permitted_values = ["No", "Yes"] }
+vocabulary = { status = "candidate", scheme_id = "unresolved", values = ["No", "Yes"] }
+governance = { approval_status = "proposed", sensitivity = "unclassified", provenance = "source-referenced", quality = "needs-semantic-review" }
+legacy_schema = { matched_occurrences = 2, title = "", description = "", format = "" }
+evidence = ["workbook:Sheet1!A629:H629", "legacy-schema:propertyPack.localSearches.localAuthoritySearches.otherMatters.noticesOrdersDirectionsAndProceedingsUnderPlanningActs.breachOfConditionNotice.yesNo"]
+review = { status = "needs-semantic-review", confidence = "low", flags = ["model-role-unassigned", "owning-context-unassigned", "iri-unassigned", "source-description-missing", "condition-expression-unresolved", "controlled-vocabulary-candidate"] }
+
+[[property]]
+id = "pp-daced85b086f"
+source = { row = 630, path = "propertyPack.localSearches.localAuthoritySearches.otherMatters.noticesOrdersDirectionsAndProceedingsUnderPlanningActs.buildingPreservationNotice.yesNo", top_level_section = "propertyPack", heading = "localSearches", field_name = "yesNo", datatype = "string", status = "Required", condition = "Conditional via oneOf / discriminator", description = "" }
+semantic = { preferred_label = "Building preservation notice", candidate_definition = "Indicates whether building preservation notice is applicable.", definition_status = "machine-drafted-from-source", source_description = "" }
+model = { role = "unclassified", owning_context = "unassigned", consuming_contexts = [], resource = "unresolved", relationship = "unresolved", attribute = "unresolved", local_name = "unresolved", iri = "unresolved" }
+value = { source_datatype = "string", xsd_datatype = "xsd:string", min_count = 0, max_count = 1, requiredness = "conditional", repeatable_context = false, occurrence_scope = "per-parent-resource" }
+restrictions = { format = "", pattern = "", min_length = "", max_length = "", minimum = "", maximum = "", permitted_values = ["No", "Yes"] }
+vocabulary = { status = "candidate", scheme_id = "unresolved", values = ["No", "Yes"] }
+governance = { approval_status = "proposed", sensitivity = "unclassified", provenance = "source-referenced", quality = "needs-semantic-review" }
+legacy_schema = { matched_occurrences = 2, title = "", description = "", format = "" }
+evidence = ["workbook:Sheet1!A630:H630", "legacy-schema:propertyPack.localSearches.localAuthoritySearches.otherMatters.noticesOrdersDirectionsAndProceedingsUnderPlanningActs.buildingPreservationNotice.yesNo"]
+review = { status = "needs-semantic-review", confidence = "low", flags = ["model-role-unassigned", "owning-context-unassigned", "iri-unassigned", "source-description-missing", "condition-expression-unresolved", "controlled-vocabulary-candidate"] }
+
+[[property]]
+id = "pp-2ea95768b2eb"
+source = { row = 631, path = "propertyPack.localSearches.localAuthoritySearches.otherMatters.noticesOrdersDirectionsAndProceedingsUnderPlanningActs.directionRestrictingPermittedDevelopment.yesNo", top_level_section = "propertyPack", heading = "localSearches", field_name = "yesNo", datatype = "string", status = "Required", condition = "Conditional via oneOf / discriminator", description = "" }
+semantic = { preferred_label = "Direction restricting permitted development", candidate_definition = "Indicates whether direction restricting permitted development is applicable.", definition_status = "machine-drafted-from-source", source_description = "" }
+model = { role = "unclassified", owning_context = "unassigned", consuming_contexts = [], resource = "unresolved", relationship = "unresolved", attribute = "unresolved", local_name = "unresolved", iri = "unresolved" }
+value = { source_datatype = "string", xsd_datatype = "xsd:string", min_count = 0, max_count = 1, requiredness = "conditional", repeatable_context = false, occurrence_scope = "per-parent-resource" }
+restrictions = { format = "", pattern = "", min_length = "", max_length = "", minimum = "", maximum = "", permitted_values = ["No", "Yes"] }
+vocabulary = { status = "candidate", scheme_id = "unresolved", values = ["No", "Yes"] }
+governance = { approval_status = "proposed", sensitivity = "unclassified", provenance = "source-referenced", quality = "needs-semantic-review" }
+legacy_schema = { matched_occurrences = 2, title = "", description = "", format = "" }
+evidence = ["workbook:Sheet1!A631:H631", "legacy-schema:propertyPack.localSearches.localAuthoritySearches.otherMatters.noticesOrdersDirectionsAndProceedingsUnderPlanningActs.directionRestrictingPermittedDevelopment.yesNo"]
+review = { status = "needs-semantic-review", confidence = "low", flags = ["model-role-unassigned", "owning-context-unassigned", "iri-unassigned", "source-description-missing", "condition-expression-unresolved", "controlled-vocabulary-candidate"] }
+
+[[property]]
+id = "pp-08d925fd92e4"
+source = { row = 632, path = "propertyPack.localSearches.localAuthoritySearches.otherMatters.noticesOrdersDirectionsAndProceedingsUnderPlanningActs.enforcementNotice.yesNo", top_level_section = "propertyPack", heading = "localSearches", field_name = "yesNo", datatype = "string", status = "Required", condition = "Conditional via oneOf / discriminator", description = "" }
+semantic = { preferred_label = "Enforcement notice", candidate_definition = "Indicates whether enforcement notice is applicable.", definition_status = "machine-drafted-from-source", source_description = "" }
+model = { role = "unclassified", owning_context = "unassigned", consuming_contexts = [], resource = "unresolved", relationship = "unresolved", attribute = "unresolved", local_name = "unresolved", iri = "unresolved" }
+value = { source_datatype = "string", xsd_datatype = "xsd:string", min_count = 0, max_count = 1, requiredness = "conditional", repeatable_context = false, occurrence_scope = "per-parent-resource" }
+restrictions = { format = "", pattern = "", min_length = "", max_length = "", minimum = "", maximum = "", permitted_values = ["No", "Yes"] }
+vocabulary = { status = "candidate", scheme_id = "unresolved", values = ["No", "Yes"] }
+governance = { approval_status = "proposed", sensitivity = "unclassified", provenance = "source-referenced", quality = "needs-semantic-review" }
+legacy_schema = { matched_occurrences = 2, title = "", description = "", format = "" }
+evidence = ["workbook:Sheet1!A632:H632", "legacy-schema:propertyPack.localSearches.localAuthoritySearches.otherMatters.noticesOrdersDirectionsAndProceedingsUnderPlanningActs.enforcementNotice.yesNo"]
+review = { status = "needs-semantic-review", confidence = "low", flags = ["model-role-unassigned", "owning-context-unassigned", "iri-unassigned", "source-description-missing", "condition-expression-unresolved", "controlled-vocabulary-candidate"] }
+
+[[property]]
+id = "pp-44ddc2ce2390"
+source = { row = 633, path = "propertyPack.localSearches.localAuthoritySearches.otherMatters.noticesOrdersDirectionsAndProceedingsUnderPlanningActs.inTheCaseOfAListedBuildingDeliberatelyAllowedToFallIntoDisrepairACompulsoryPurchaseOrderWithADirectionForMinimumCompensation.yesNo", top_level_section = "propertyPack", heading = "localSearches", field_name = "yesNo", datatype = "string", status = "Required", condition = "Conditional via oneOf / discriminator", description = "" }
+semantic = { preferred_label = "In the case of a listed building deliberately allowed to fall into disrepair a compulsory purchase order with a direction for minimum compensation", candidate_definition = "Indicates whether in the case of a listed building deliberately allowed to fall into disrepair a compulsory purchase order with a direction for minimum compensation is applicable.", definition_status = "machine-drafted-from-source", source_description = "" }
+model = { role = "unclassified", owning_context = "unassigned", consuming_contexts = [], resource = "unresolved", relationship = "unresolved", attribute = "unresolved", local_name = "unresolved", iri = "unresolved" }
+value = { source_datatype = "string", xsd_datatype = "xsd:string", min_count = 0, max_count = 1, requiredness = "conditional", repeatable_context = false, occurrence_scope = "per-parent-resource" }
+restrictions = { format = "", pattern = "", min_length = "", max_length = "", minimum = "", maximum = "", permitted_values = ["No", "Yes"] }
+vocabulary = { status = "candidate", scheme_id = "unresolved", values = ["No", "Yes"] }
+governance = { approval_status = "proposed", sensitivity = "unclassified", provenance = "source-referenced", quality = "needs-semantic-review" }
+legacy_schema = { matched_occurrences = 2, title = "", description = "", format = "" }
+evidence = ["workbook:Sheet1!A633:H633", "legacy-schema:propertyPack.localSearches.localAuthoritySearches.otherMatters.noticesOrdersDirectionsAndProceedingsUnderPlanningActs.inTheCaseOfAListedBuildingDeliberatelyAllowedToFallIntoDisrepairACompulsoryPurchaseOrderWithADirectionForMinimumCompensation.yesNo"]
+review = { status = "needs-semantic-review", confidence = "low", flags = ["model-role-unassigned", "owning-context-unassigned", "iri-unassigned", "source-description-missing", "condition-expression-unresolved", "controlled-vocabulary-candidate"] }
+
+[[property]]
+id = "pp-0dc0d851e11b"
+source = { row = 634, path = "propertyPack.localSearches.localAuthoritySearches.otherMatters.noticesOrdersDirectionsAndProceedingsUnderPlanningActs.listedBuildingEnforcementNotice.yesNo", top_level_section = "propertyPack", heading = "localSearches", field_name = "yesNo", datatype = "string", status = "Required", condition = "Conditional via oneOf / discriminator", description = "" }
+semantic = { preferred_label = "Listed building enforcement notice", candidate_definition = "Indicates whether listed building enforcement notice is applicable.", definition_status = "machine-drafted-from-source", source_description = "" }
+model = { role = "unclassified", owning_context = "unassigned", consuming_contexts = [], resource = "unresolved", relationship = "unresolved", attribute = "unresolved", local_name = "unresolved", iri = "unresolved" }
+value = { source_datatype = "string", xsd_datatype = "xsd:string", min_count = 0, max_count = 1, requiredness = "conditional", repeatable_context = false, occurrence_scope = "per-parent-resource" }
+restrictions = { format = "", pattern = "", min_length = "", max_length = "", minimum = "", maximum = "", permitted_values = ["No", "Yes"] }
+vocabulary = { status = "candidate", scheme_id = "unresolved", values = ["No", "Yes"] }
+governance = { approval_status = "proposed", sensitivity = "unclassified", provenance = "source-referenced", quality = "needs-semantic-review" }
+legacy_schema = { matched_occurrences = 2, title = "", description = "", format = "" }
+evidence = ["workbook:Sheet1!A634:H634", "legacy-schema:propertyPack.localSearches.localAuthoritySearches.otherMatters.noticesOrdersDirectionsAndProceedingsUnderPlanningActs.listedBuildingEnforcementNotice.yesNo"]
+review = { status = "needs-semantic-review", confidence = "low", flags = ["model-role-unassigned", "owning-context-unassigned", "iri-unassigned", "source-description-missing", "condition-expression-unresolved", "controlled-vocabulary-candidate"] }
+
+[[property]]
+id = "pp-d65cf2e97af0"
+source = { row = 635, path = "propertyPack.localSearches.localAuthoritySearches.otherMatters.noticesOrdersDirectionsAndProceedingsUnderPlanningActs.listedBuildingRepairsNotice.yesNo", top_level_section = "propertyPack", heading = "localSearches", field_name = "yesNo", datatype = "string", status = "Required", condition = "Conditional via oneOf / discriminator", description = "" }
+semantic = { preferred_label = "Listed building repairs notice", candidate_definition = "Indicates whether listed building repairs notice is applicable.", definition_status = "machine-drafted-from-source", source_description = "" }
+model = { role = "unclassified", owning_context = "unassigned", consuming_contexts = [], resource = "unresolved", relationship = "unresolved", attribute = "unresolved", local_name = "unresolved", iri = "unresolved" }
+value = { source_datatype = "string", xsd_datatype = "xsd:string", min_count = 0, max_count = 1, requiredness = "conditional", repeatable_context = false, occurrence_scope = "per-parent-resource" }
+restrictions = { format = "", pattern = "", min_length = "", max_length = "", minimum = "", maximum = "", permitted_values = ["No", "Yes"] }
+vocabulary = { status = "candidate", scheme_id = "unresolved", values = ["No", "Yes"] }
+governance = { approval_status = "proposed", sensitivity = "unclassified", provenance = "source-referenced", quality = "needs-semantic-review" }
+legacy_schema = { matched_occurrences = 2, title = "", description = "", format = "" }
+evidence = ["workbook:Sheet1!A635:H635", "legacy-schema:propertyPack.localSearches.localAuthoritySearches.otherMatters.noticesOrdersDirectionsAndProceedingsUnderPlanningActs.listedBuildingRepairsNotice.yesNo"]
+review = { status = "needs-semantic-review", confidence = "low", flags = ["model-role-unassigned", "owning-context-unassigned", "iri-unassigned", "source-description-missing", "condition-expression-unresolved", "controlled-vocabulary-candidate"] }
+
+[[property]]
+id = "pp-36388439e227"
+source = { row = 636, path = "propertyPack.localSearches.localAuthoritySearches.otherMatters.noticesOrdersDirectionsAndProceedingsUnderPlanningActs.orderRequiringDiscontinuanceOfUseOrAlterationOrRemovalOfBuildingOrWorks.yesNo", top_level_section = "propertyPack", heading = "localSearches", field_name = "yesNo", datatype = "string", status = "Required", condition = "Conditional via oneOf / discriminator", description = "" }
+semantic = { preferred_label = "Order requiring discontinuance of use or alteration or removal of building or works", candidate_definition = "Indicates whether order requiring discontinuance of use or alteration or removal of building or works is applicable.", definition_status = "machine-drafted-from-source", source_description = "" }
+model = { role = "unclassified", owning_context = "unassigned", consuming_contexts = [], resource = "unresolved", relationship = "unresolved", attribute = "unresolved", local_name = "unresolved", iri = "unresolved" }
+value = { source_datatype = "string", xsd_datatype = "xsd:string", min_count = 0, max_count = 1, requiredness = "conditional", repeatable_context = false, occurrence_scope = "per-parent-resource" }
+restrictions = { format = "", pattern = "", min_length = "", max_length = "", minimum = "", maximum = "", permitted_values = ["No", "Yes"] }
+vocabulary = { status = "candidate", scheme_id = "unresolved", values = ["No", "Yes"] }
+governance = { approval_status = "proposed", sensitivity = "unclassified", provenance = "source-referenced", quality = "needs-semantic-review" }
+legacy_schema = { matched_occurrences = 2, title = "", description = "", format = "" }
+evidence = ["workbook:Sheet1!A636:H636", "legacy-schema:propertyPack.localSearches.localAuthoritySearches.otherMatters.noticesOrdersDirectionsAndProceedingsUnderPlanningActs.orderRequiringDiscontinuanceOfUseOrAlterationOrRemovalOfBuildingOrWorks.yesNo"]
+review = { status = "needs-semantic-review", confidence = "low", flags = ["model-role-unassigned", "owning-context-unassigned", "iri-unassigned", "source-description-missing", "condition-expression-unresolved", "controlled-vocabulary-candidate"] }
+
+[[property]]
+id = "pp-fd9b637b6e45"
+source = { row = 637, path = "propertyPack.localSearches.localAuthoritySearches.otherMatters.noticesOrdersDirectionsAndProceedingsUnderPlanningActs.orderRevokingOrModifyingPlanningPermission.yesNo", top_level_section = "propertyPack", heading = "localSearches", field_name = "yesNo", datatype = "string", status = "Required", condition = "Conditional via oneOf / discriminator", description = "" }
+semantic = { preferred_label = "Order revoking or modifying planning permission", candidate_definition = "Indicates whether order revoking or modifying planning permission is applicable.", definition_status = "machine-drafted-from-source", source_description = "" }
+model = { role = "unclassified", owning_context = "unassigned", consuming_contexts = [], resource = "unresolved", relationship = "unresolved", attribute = "unresolved", local_name = "unresolved", iri = "unresolved" }
+value = { source_datatype = "string", xsd_datatype = "xsd:string", min_count = 0, max_count = 1, requiredness = "conditional", repeatable_context = false, occurrence_scope = "per-parent-resource" }
+restrictions = { format = "", pattern = "", min_length = "", max_length = "", minimum = "", maximum = "", permitted_values = ["No", "Yes"] }
+vocabulary = { status = "candidate", scheme_id = "unresolved", values = ["No", "Yes"] }
+governance = { approval_status = "proposed", sensitivity = "unclassified", provenance = "source-referenced", quality = "needs-semantic-review" }
+legacy_schema = { matched_occurrences = 2, title = "", description = "", format = "" }
+evidence = ["workbook:Sheet1!A637:H637", "legacy-schema:propertyPack.localSearches.localAuthoritySearches.otherMatters.noticesOrdersDirectionsAndProceedingsUnderPlanningActs.orderRevokingOrModifyingPlanningPermission.yesNo"]
+review = { status = "needs-semantic-review", confidence = "low", flags = ["model-role-unassigned", "owning-context-unassigned", "iri-unassigned", "source-description-missing", "condition-expression-unresolved", "controlled-vocabulary-candidate"] }
+
+[[property]]
+id = "pp-2dd97d17a14a"
+source = { row = 638, path = "propertyPack.localSearches.localAuthoritySearches.otherMatters.noticesOrdersDirectionsAndProceedingsUnderPlanningActs.planningContraventionNotice.yesNo", top_level_section = "propertyPack", heading = "localSearches", field_name = "yesNo", datatype = "string", status = "Required", condition = "Conditional via oneOf / discriminator", description = "" }
+semantic = { preferred_label = "Planning contravention notice", candidate_definition = "Indicates whether planning contravention notice is applicable.", definition_status = "machine-drafted-from-source", source_description = "" }
+model = { role = "unclassified", owning_context = "unassigned", consuming_contexts = [], resource = "unresolved", relationship = "unresolved", attribute = "unresolved", local_name = "unresolved", iri = "unresolved" }
+value = { source_datatype = "string", xsd_datatype = "xsd:string", min_count = 0, max_count = 1, requiredness = "conditional", repeatable_context = false, occurrence_scope = "per-parent-resource" }
+restrictions = { format = "", pattern = "", min_length = "", max_length = "", minimum = "", maximum = "", permitted_values = ["No", "Yes"] }
+vocabulary = { status = "candidate", scheme_id = "unresolved", values = ["No", "Yes"] }
+governance = { approval_status = "proposed", sensitivity = "unclassified", provenance = "source-referenced", quality = "needs-semantic-review" }
+legacy_schema = { matched_occurrences = 2, title = "", description = "", format = "" }
+evidence = ["workbook:Sheet1!A638:H638", "legacy-schema:propertyPack.localSearches.localAuthoritySearches.otherMatters.noticesOrdersDirectionsAndProceedingsUnderPlanningActs.planningContraventionNotice.yesNo"]
+review = { status = "needs-semantic-review", confidence = "low", flags = ["model-role-unassigned", "owning-context-unassigned", "iri-unassigned", "source-description-missing", "condition-expression-unresolved", "controlled-vocabulary-candidate"] }
+
+[[property]]
+id = "pp-4024c46e9d54"
+source = { row = 639, path = "propertyPack.localSearches.localAuthoritySearches.otherMatters.noticesOrdersDirectionsAndProceedingsUnderPlanningActs.proceedingsToEnforceAPlanningAgreementOrPlanningContribution.yesNo", top_level_section = "propertyPack", heading = "localSearches", field_name = "yesNo", datatype = "string", status = "Required", condition = "Conditional via oneOf / discriminator", description = "" }
+semantic = { preferred_label = "Proceedings to enforce a planning agreement or planning contribution", candidate_definition = "Indicates whether proceedings to enforce a planning agreement or planning contribution is applicable.", definition_status = "machine-drafted-from-source", source_description = "" }
+model = { role = "unclassified", owning_context = "unassigned", consuming_contexts = [], resource = "unresolved", relationship = "unresolved", attribute = "unresolved", local_name = "unresolved", iri = "unresolved" }
+value = { source_datatype = "string", xsd_datatype = "xsd:string", min_count = 0, max_count = 1, requiredness = "conditional", repeatable_context = false, occurrence_scope = "per-parent-resource" }
+restrictions = { format = "", pattern = "", min_length = "", max_length = "", minimum = "", maximum = "", permitted_values = ["No", "Yes"] }
+vocabulary = { status = "candidate", scheme_id = "unresolved", values = ["No", "Yes"] }
+governance = { approval_status = "proposed", sensitivity = "unclassified", provenance = "source-referenced", quality = "needs-semantic-review" }
+legacy_schema = { matched_occurrences = 2, title = "", description = "", format = "" }
+evidence = ["workbook:Sheet1!A639:H639", "legacy-schema:propertyPack.localSearches.localAuthoritySearches.otherMatters.noticesOrdersDirectionsAndProceedingsUnderPlanningActs.proceedingsToEnforceAPlanningAgreementOrPlanningContribution.yesNo"]
+review = { status = "needs-semantic-review", confidence = "low", flags = ["model-role-unassigned", "owning-context-unassigned", "iri-unassigned", "source-description-missing", "condition-expression-unresolved", "controlled-vocabulary-candidate"] }
+
+[[property]]
+id = "pp-4e4b55c973b8"
+source = { row = 640, path = "propertyPack.localSearches.localAuthoritySearches.otherMatters.noticesOrdersDirectionsAndProceedingsUnderPlanningActs.stopNotice.yesNo", top_level_section = "propertyPack", heading = "localSearches", field_name = "yesNo", datatype = "string", status = "Required", condition = "Conditional via oneOf / discriminator", description = "" }
+semantic = { preferred_label = "Stop notice", candidate_definition = "Indicates whether stop notice is applicable.", definition_status = "machine-drafted-from-source", source_description = "" }
+model = { role = "unclassified", owning_context = "unassigned", consuming_contexts = [], resource = "unresolved", relationship = "unresolved", attribute = "unresolved", local_name = "unresolved", iri = "unresolved" }
+value = { source_datatype = "string", xsd_datatype = "xsd:string", min_count = 0, max_count = 1, requiredness = "conditional", repeatable_context = false, occurrence_scope = "per-parent-resource" }
+restrictions = { format = "", pattern = "", min_length = "", max_length = "", minimum = "", maximum = "", permitted_values = ["No", "Yes"] }
+vocabulary = { status = "candidate", scheme_id = "unresolved", values = ["No", "Yes"] }
+governance = { approval_status = "proposed", sensitivity = "unclassified", provenance = "source-referenced", quality = "needs-semantic-review" }
+legacy_schema = { matched_occurrences = 2, title = "", description = "", format = "" }
+evidence = ["workbook:Sheet1!A640:H640", "legacy-schema:propertyPack.localSearches.localAuthoritySearches.otherMatters.noticesOrdersDirectionsAndProceedingsUnderPlanningActs.stopNotice.yesNo"]
+review = { status = "needs-semantic-review", confidence = "low", flags = ["model-role-unassigned", "owning-context-unassigned", "iri-unassigned", "source-description-missing", "condition-expression-unresolved", "controlled-vocabulary-candidate"] }
+
+[[property]]
+id = "pp-c8df8e3a8562"
+source = { row = 641, path = "propertyPack.localSearches.localAuthoritySearches.otherMatters.noticesOrdersDirectionsAndProceedingsUnderPlanningActs.treePreservationOrder.yesNo", top_level_section = "propertyPack", heading = "localSearches", field_name = "yesNo", datatype = "string", status = "Required", condition = "Conditional via oneOf / discriminator", description = "" }
+semantic = { preferred_label = "Tree preservation order", candidate_definition = "Indicates whether tree preservation order is applicable.", definition_status = "machine-drafted-from-source", source_description = "" }
+model = { role = "unclassified", owning_context = "unassigned", consuming_contexts = [], resource = "unresolved", relationship = "unresolved", attribute = "unresolved", local_name = "unresolved", iri = "unresolved" }
+value = { source_datatype = "string", xsd_datatype = "xsd:string", min_count = 0, max_count = 1, requiredness = "conditional", repeatable_context = false, occurrence_scope = "per-parent-resource" }
+restrictions = { format = "", pattern = "", min_length = "", max_length = "", minimum = "", maximum = "", permitted_values = ["No", "Yes"] }
+vocabulary = { status = "candidate", scheme_id = "unresolved", values = ["No", "Yes"] }
+governance = { approval_status = "proposed", sensitivity = "unclassified", provenance = "source-referenced", quality = "needs-semantic-review" }
+legacy_schema = { matched_occurrences = 2, title = "", description = "", format = "" }
+evidence = ["workbook:Sheet1!A641:H641", "legacy-schema:propertyPack.localSearches.localAuthoritySearches.otherMatters.noticesOrdersDirectionsAndProceedingsUnderPlanningActs.treePreservationOrder.yesNo"]
+review = { status = "needs-semantic-review", confidence = "low", flags = ["model-role-unassigned", "owning-context-unassigned", "iri-unassigned", "source-description-missing", "condition-expression-unresolved", "controlled-vocabulary-candidate"] }
+
+[[property]]
+id = "pp-c51f7de5eda7"
+source = { row = 642, path = "propertyPack.localSearches.localAuthoritySearches.otherMatters.outstandingNotices.buildingWorks.yesNo", top_level_section = "propertyPack", heading = "localSearches", field_name = "yesNo", datatype = "string", status = "Required", condition = "Conditional via oneOf / discriminator", description = "" }
+semantic = { preferred_label = "Building works", candidate_definition = "Indicates whether building works is applicable.", definition_status = "machine-drafted-from-source", source_description = "" }
+model = { role = "unclassified", owning_context = "unassigned", consuming_contexts = [], resource = "unresolved", relationship = "unresolved", attribute = "unresolved", local_name = "unresolved", iri = "unresolved" }
+value = { source_datatype = "string", xsd_datatype = "xsd:string", min_count = 0, max_count = 1, requiredness = "conditional", repeatable_context = false, occurrence_scope = "per-parent-resource" }
+restrictions = { format = "", pattern = "", min_length = "", max_length = "", minimum = "", maximum = "", permitted_values = ["No", "Yes"] }
+vocabulary = { status = "candidate", scheme_id = "unresolved", values = ["No", "Yes"] }
+governance = { approval_status = "proposed", sensitivity = "unclassified", provenance = "source-referenced", quality = "needs-semantic-review" }
+legacy_schema = { matched_occurrences = 2, title = "", description = "", format = "" }
+evidence = ["workbook:Sheet1!A642:H642", "legacy-schema:propertyPack.localSearches.localAuthoritySearches.otherMatters.outstandingNotices.buildingWorks.yesNo"]
+review = { status = "needs-semantic-review", confidence = "low", flags = ["model-role-unassigned", "owning-context-unassigned", "iri-unassigned", "source-description-missing", "condition-expression-unresolved", "controlled-vocabulary-candidate"] }
+
+[[property]]
+id = "pp-77f7cfa0ba30"
+source = { row = 643, path = "propertyPack.localSearches.localAuthoritySearches.otherMatters.outstandingNotices.environment.yesNo", top_level_section = "propertyPack", heading = "localSearches", field_name = "yesNo", datatype = "string", status = "Required", condition = "Conditional via oneOf / discriminator", description = "" }
+semantic = { preferred_label = "Environment", candidate_definition = "Indicates whether environment is applicable.", definition_status = "machine-drafted-from-source", source_description = "" }
+model = { role = "unclassified", owning_context = "unassigned", consuming_contexts = [], resource = "unresolved", relationship = "unresolved", attribute = "unresolved", local_name = "unresolved", iri = "unresolved" }
+value = { source_datatype = "string", xsd_datatype = "xsd:string", min_count = 0, max_count = 1, requiredness = "conditional", repeatable_context = false, occurrence_scope = "per-parent-resource" }
+restrictions = { format = "", pattern = "", min_length = "", max_length = "", minimum = "", maximum = "", permitted_values = ["No", "Yes"] }
+vocabulary = { status = "candidate", scheme_id = "unresolved", values = ["No", "Yes"] }
+governance = { approval_status = "proposed", sensitivity = "unclassified", provenance = "source-referenced", quality = "needs-semantic-review" }
+legacy_schema = { matched_occurrences = 2, title = "", description = "", format = "" }
+evidence = ["workbook:Sheet1!A643:H643", "legacy-schema:propertyPack.localSearches.localAuthoritySearches.otherMatters.outstandingNotices.environment.yesNo"]
+review = { status = "needs-semantic-review", confidence = "low", flags = ["model-role-unassigned", "owning-context-unassigned", "iri-unassigned", "source-description-missing", "condition-expression-unresolved", "controlled-vocabulary-candidate"] }

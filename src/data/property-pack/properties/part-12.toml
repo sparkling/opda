@@ -1,0 +1,456 @@
+# Generated bootstrap; curate fields in place, then run generate/check.
+
+[[property]]
+id = "pp-8ca4c626d6fd"
+source = { row = 1604, path = "propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.registerEntryIndicators.agreedNoticeIndicator", top_level_section = "propertyPack", heading = "titlesToBeSold", field_name = "agreedNoticeIndicator", datatype = "boolean", status = "Required", condition = "", description = "" }
+semantic = { preferred_label = "Agreed notice indicator", candidate_definition = "Records the agreed notice indicator for register entry indicators.", definition_status = "machine-drafted-from-source", source_description = "" }
+model = { role = "unclassified", owning_context = "unassigned", consuming_contexts = [], resource = "unresolved", relationship = "unresolved", attribute = "unresolved", local_name = "unresolved", iri = "unresolved" }
+value = { source_datatype = "boolean", xsd_datatype = "xsd:boolean", min_count = 1, max_count = 1, requiredness = "unconditional", repeatable_context = true, occurrence_scope = "per-list-item" }
+restrictions = { format = "", pattern = "", min_length = "", max_length = "", minimum = "", maximum = "", permitted_values = [] }
+vocabulary = { status = "not-applicable", scheme_id = "", values = [] }
+governance = { approval_status = "proposed", sensitivity = "unclassified", provenance = "source-referenced", quality = "needs-semantic-review" }
+legacy_schema = { matched_occurrences = 1, title = "", description = "", format = "" }
+evidence = ["workbook:Sheet1!A1604:H1604", "legacy-schema:propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.registerEntryIndicators.agreedNoticeIndicator"]
+review = { status = "needs-semantic-review", confidence = "low", flags = ["model-role-unassigned", "owning-context-unassigned", "iri-unassigned", "source-description-missing", "container-cardinality-needs-review"] }
+
+[[property]]
+id = "pp-41ae2d96206e"
+source = { row = 1605, path = "propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.registerEntryIndicators.bankruptcyIndicator", top_level_section = "propertyPack", heading = "titlesToBeSold", field_name = "bankruptcyIndicator", datatype = "boolean", status = "Required", condition = "", description = "" }
+semantic = { preferred_label = "Bankruptcy indicator", candidate_definition = "Records the bankruptcy indicator for register entry indicators.", definition_status = "machine-drafted-from-source", source_description = "" }
+model = { role = "unclassified", owning_context = "unassigned", consuming_contexts = [], resource = "unresolved", relationship = "unresolved", attribute = "unresolved", local_name = "unresolved", iri = "unresolved" }
+value = { source_datatype = "boolean", xsd_datatype = "xsd:boolean", min_count = 1, max_count = 1, requiredness = "unconditional", repeatable_context = true, occurrence_scope = "per-list-item" }
+restrictions = { format = "", pattern = "", min_length = "", max_length = "", minimum = "", maximum = "", permitted_values = [] }
+vocabulary = { status = "not-applicable", scheme_id = "", values = [] }
+governance = { approval_status = "proposed", sensitivity = "unclassified", provenance = "source-referenced", quality = "needs-semantic-review" }
+legacy_schema = { matched_occurrences = 1, title = "", description = "", format = "" }
+evidence = ["workbook:Sheet1!A1605:H1605", "legacy-schema:propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.registerEntryIndicators.bankruptcyIndicator"]
+review = { status = "needs-semantic-review", confidence = "low", flags = ["model-role-unassigned", "owning-context-unassigned", "iri-unassigned", "source-description-missing", "container-cardinality-needs-review"] }
+
+[[property]]
+id = "pp-03fbe50367cf"
+source = { row = 1606, path = "propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.registerEntryIndicators.cautionIndicator", top_level_section = "propertyPack", heading = "titlesToBeSold", field_name = "cautionIndicator", datatype = "boolean", status = "Required", condition = "", description = "" }
+semantic = { preferred_label = "Caution indicator", candidate_definition = "Records the caution indicator for register entry indicators.", definition_status = "machine-drafted-from-source", source_description = "" }
+model = { role = "unclassified", owning_context = "unassigned", consuming_contexts = [], resource = "unresolved", relationship = "unresolved", attribute = "unresolved", local_name = "unresolved", iri = "unresolved" }
+value = { source_datatype = "boolean", xsd_datatype = "xsd:boolean", min_count = 1, max_count = 1, requiredness = "unconditional", repeatable_context = true, occurrence_scope = "per-list-item" }
+restrictions = { format = "", pattern = "", min_length = "", max_length = "", minimum = "", maximum = "", permitted_values = [] }
+vocabulary = { status = "not-applicable", scheme_id = "", values = [] }
+governance = { approval_status = "proposed", sensitivity = "unclassified", provenance = "source-referenced", quality = "needs-semantic-review" }
+legacy_schema = { matched_occurrences = 1, title = "", description = "", format = "" }
+evidence = ["workbook:Sheet1!A1606:H1606", "legacy-schema:propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.registerEntryIndicators.cautionIndicator"]
+review = { status = "needs-semantic-review", confidence = "low", flags = ["model-role-unassigned", "owning-context-unassigned", "iri-unassigned", "source-description-missing", "container-cardinality-needs-review"] }
+
+[[property]]
+id = "pp-32d734238bd4"
+source = { row = 1607, path = "propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.registerEntryIndicators.ccbiIndicator", top_level_section = "propertyPack", heading = "titlesToBeSold", field_name = "ccbiIndicator", datatype = "boolean", status = "Required", condition = "", description = "" }
+semantic = { preferred_label = "Ccbi indicator", candidate_definition = "Records the ccbi indicator for register entry indicators.", definition_status = "machine-drafted-from-source", source_description = "" }
+model = { role = "unclassified", owning_context = "unassigned", consuming_contexts = [], resource = "unresolved", relationship = "unresolved", attribute = "unresolved", local_name = "unresolved", iri = "unresolved" }
+value = { source_datatype = "boolean", xsd_datatype = "xsd:boolean", min_count = 1, max_count = 1, requiredness = "unconditional", repeatable_context = true, occurrence_scope = "per-list-item" }
+restrictions = { format = "", pattern = "", min_length = "", max_length = "", minimum = "", maximum = "", permitted_values = [] }
+vocabulary = { status = "not-applicable", scheme_id = "", values = [] }
+governance = { approval_status = "proposed", sensitivity = "unclassified", provenance = "source-referenced", quality = "needs-semantic-review" }
+legacy_schema = { matched_occurrences = 1, title = "", description = "", format = "" }
+evidence = ["workbook:Sheet1!A1607:H1607", "legacy-schema:propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.registerEntryIndicators.ccbiIndicator"]
+review = { status = "needs-semantic-review", confidence = "low", flags = ["model-role-unassigned", "owning-context-unassigned", "iri-unassigned", "source-description-missing", "container-cardinality-needs-review"] }
+
+[[property]]
+id = "pp-209319fd979c"
+source = { row = 1608, path = "propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.registerEntryIndicators.chargeIndicator", top_level_section = "propertyPack", heading = "titlesToBeSold", field_name = "chargeIndicator", datatype = "boolean", status = "Required", condition = "", description = "" }
+semantic = { preferred_label = "Charge indicator", candidate_definition = "Records the charge indicator for register entry indicators.", definition_status = "machine-drafted-from-source", source_description = "" }
+model = { role = "unclassified", owning_context = "unassigned", consuming_contexts = [], resource = "unresolved", relationship = "unresolved", attribute = "unresolved", local_name = "unresolved", iri = "unresolved" }
+value = { source_datatype = "boolean", xsd_datatype = "xsd:boolean", min_count = 1, max_count = 1, requiredness = "unconditional", repeatable_context = true, occurrence_scope = "per-list-item" }
+restrictions = { format = "", pattern = "", min_length = "", max_length = "", minimum = "", maximum = "", permitted_values = [] }
+vocabulary = { status = "not-applicable", scheme_id = "", values = [] }
+governance = { approval_status = "proposed", sensitivity = "unclassified", provenance = "source-referenced", quality = "needs-semantic-review" }
+legacy_schema = { matched_occurrences = 1, title = "", description = "", format = "" }
+evidence = ["workbook:Sheet1!A1608:H1608", "legacy-schema:propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.registerEntryIndicators.chargeIndicator"]
+review = { status = "needs-semantic-review", confidence = "low", flags = ["model-role-unassigned", "owning-context-unassigned", "iri-unassigned", "source-description-missing", "container-cardinality-needs-review"] }
+
+[[property]]
+id = "pp-74f641cf9cac"
+source = { row = 1609, path = "propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.registerEntryIndicators.chargeRelatedRestrictionIndicator", top_level_section = "propertyPack", heading = "titlesToBeSold", field_name = "chargeRelatedRestrictionIndicator", datatype = "boolean", status = "Required", condition = "", description = "" }
+semantic = { preferred_label = "Charge related restriction indicator", candidate_definition = "Records the charge related restriction indicator for register entry indicators.", definition_status = "machine-drafted-from-source", source_description = "" }
+model = { role = "unclassified", owning_context = "unassigned", consuming_contexts = [], resource = "unresolved", relationship = "unresolved", attribute = "unresolved", local_name = "unresolved", iri = "unresolved" }
+value = { source_datatype = "boolean", xsd_datatype = "xsd:boolean", min_count = 1, max_count = 1, requiredness = "unconditional", repeatable_context = true, occurrence_scope = "per-list-item" }
+restrictions = { format = "", pattern = "", min_length = "", max_length = "", minimum = "", maximum = "", permitted_values = [] }
+vocabulary = { status = "not-applicable", scheme_id = "", values = [] }
+governance = { approval_status = "proposed", sensitivity = "unclassified", provenance = "source-referenced", quality = "needs-semantic-review" }
+legacy_schema = { matched_occurrences = 1, title = "", description = "", format = "" }
+evidence = ["workbook:Sheet1!A1609:H1609", "legacy-schema:propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.registerEntryIndicators.chargeRelatedRestrictionIndicator"]
+review = { status = "needs-semantic-review", confidence = "low", flags = ["model-role-unassigned", "owning-context-unassigned", "iri-unassigned", "source-description-missing", "container-cardinality-needs-review"] }
+
+[[property]]
+id = "pp-cc7f87a2d848"
+source = { row = 1610, path = "propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.registerEntryIndicators.chargeRestrictionIndicator", top_level_section = "propertyPack", heading = "titlesToBeSold", field_name = "chargeRestrictionIndicator", datatype = "boolean", status = "Required", condition = "", description = "" }
+semantic = { preferred_label = "Charge restriction indicator", candidate_definition = "Records the charge restriction indicator for register entry indicators.", definition_status = "machine-drafted-from-source", source_description = "" }
+model = { role = "unclassified", owning_context = "unassigned", consuming_contexts = [], resource = "unresolved", relationship = "unresolved", attribute = "unresolved", local_name = "unresolved", iri = "unresolved" }
+value = { source_datatype = "boolean", xsd_datatype = "xsd:boolean", min_count = 1, max_count = 1, requiredness = "unconditional", repeatable_context = true, occurrence_scope = "per-list-item" }
+restrictions = { format = "", pattern = "", min_length = "", max_length = "", minimum = "", maximum = "", permitted_values = [] }
+vocabulary = { status = "not-applicable", scheme_id = "", values = [] }
+governance = { approval_status = "proposed", sensitivity = "unclassified", provenance = "source-referenced", quality = "needs-semantic-review" }
+legacy_schema = { matched_occurrences = 1, title = "", description = "", format = "" }
+evidence = ["workbook:Sheet1!A1610:H1610", "legacy-schema:propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.registerEntryIndicators.chargeRestrictionIndicator"]
+review = { status = "needs-semantic-review", confidence = "low", flags = ["model-role-unassigned", "owning-context-unassigned", "iri-unassigned", "source-description-missing", "container-cardinality-needs-review"] }
+
+[[property]]
+id = "pp-bf84a040e98a"
+source = { row = 1611, path = "propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.registerEntryIndicators.chargeeIndicator", top_level_section = "propertyPack", heading = "titlesToBeSold", field_name = "chargeeIndicator", datatype = "boolean", status = "Required", condition = "", description = "" }
+semantic = { preferred_label = "Chargee indicator", candidate_definition = "Records the chargee indicator for register entry indicators.", definition_status = "machine-drafted-from-source", source_description = "" }
+model = { role = "unclassified", owning_context = "unassigned", consuming_contexts = [], resource = "unresolved", relationship = "unresolved", attribute = "unresolved", local_name = "unresolved", iri = "unresolved" }
+value = { source_datatype = "boolean", xsd_datatype = "xsd:boolean", min_count = 1, max_count = 1, requiredness = "unconditional", repeatable_context = true, occurrence_scope = "per-list-item" }
+restrictions = { format = "", pattern = "", min_length = "", max_length = "", minimum = "", maximum = "", permitted_values = [] }
+vocabulary = { status = "not-applicable", scheme_id = "", values = [] }
+governance = { approval_status = "proposed", sensitivity = "unclassified", provenance = "source-referenced", quality = "needs-semantic-review" }
+legacy_schema = { matched_occurrences = 1, title = "", description = "", format = "" }
+evidence = ["workbook:Sheet1!A1611:H1611", "legacy-schema:propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.registerEntryIndicators.chargeeIndicator"]
+review = { status = "needs-semantic-review", confidence = "low", flags = ["model-role-unassigned", "owning-context-unassigned", "iri-unassigned", "source-description-missing", "container-cardinality-needs-review"] }
+
+[[property]]
+id = "pp-26428a464ee3"
+source = { row = 1612, path = "propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.registerEntryIndicators.creditorsNoticeIndicator", top_level_section = "propertyPack", heading = "titlesToBeSold", field_name = "creditorsNoticeIndicator", datatype = "boolean", status = "Required", condition = "", description = "" }
+semantic = { preferred_label = "Creditors notice indicator", candidate_definition = "Records the creditors notice indicator for register entry indicators.", definition_status = "machine-drafted-from-source", source_description = "" }
+model = { role = "unclassified", owning_context = "unassigned", consuming_contexts = [], resource = "unresolved", relationship = "unresolved", attribute = "unresolved", local_name = "unresolved", iri = "unresolved" }
+value = { source_datatype = "boolean", xsd_datatype = "xsd:boolean", min_count = 1, max_count = 1, requiredness = "unconditional", repeatable_context = true, occurrence_scope = "per-list-item" }
+restrictions = { format = "", pattern = "", min_length = "", max_length = "", minimum = "", maximum = "", permitted_values = [] }
+vocabulary = { status = "not-applicable", scheme_id = "", values = [] }
+governance = { approval_status = "proposed", sensitivity = "unclassified", provenance = "source-referenced", quality = "needs-semantic-review" }
+legacy_schema = { matched_occurrences = 1, title = "", description = "", format = "" }
+evidence = ["workbook:Sheet1!A1612:H1612", "legacy-schema:propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.registerEntryIndicators.creditorsNoticeIndicator"]
+review = { status = "needs-semantic-review", confidence = "low", flags = ["model-role-unassigned", "owning-context-unassigned", "iri-unassigned", "source-description-missing", "container-cardinality-needs-review"] }
+
+[[property]]
+id = "pp-fd7a9da220db"
+source = { row = 1613, path = "propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.registerEntryIndicators.deathOfProprietorIndicator", top_level_section = "propertyPack", heading = "titlesToBeSold", field_name = "deathOfProprietorIndicator", datatype = "boolean", status = "Required", condition = "", description = "" }
+semantic = { preferred_label = "Death of proprietor indicator", candidate_definition = "Records the death of proprietor indicator for register entry indicators.", definition_status = "machine-drafted-from-source", source_description = "" }
+model = { role = "unclassified", owning_context = "unassigned", consuming_contexts = [], resource = "unresolved", relationship = "unresolved", attribute = "unresolved", local_name = "unresolved", iri = "unresolved" }
+value = { source_datatype = "boolean", xsd_datatype = "xsd:boolean", min_count = 1, max_count = 1, requiredness = "unconditional", repeatable_context = true, occurrence_scope = "per-list-item" }
+restrictions = { format = "", pattern = "", min_length = "", max_length = "", minimum = "", maximum = "", permitted_values = [] }
+vocabulary = { status = "not-applicable", scheme_id = "", values = [] }
+governance = { approval_status = "proposed", sensitivity = "unclassified", provenance = "source-referenced", quality = "needs-semantic-review" }
+legacy_schema = { matched_occurrences = 1, title = "", description = "", format = "" }
+evidence = ["workbook:Sheet1!A1613:H1613", "legacy-schema:propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.registerEntryIndicators.deathOfProprietorIndicator"]
+review = { status = "needs-semantic-review", confidence = "low", flags = ["model-role-unassigned", "owning-context-unassigned", "iri-unassigned", "source-description-missing", "container-cardinality-needs-review"] }
+
+[[property]]
+id = "pp-719401564690"
+source = { row = 1614, path = "propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.registerEntryIndicators.deedOfPostponementIndicator", top_level_section = "propertyPack", heading = "titlesToBeSold", field_name = "deedOfPostponementIndicator", datatype = "boolean", status = "Required", condition = "", description = "" }
+semantic = { preferred_label = "Deed of postponement indicator", candidate_definition = "Records the deed of postponement indicator for register entry indicators.", definition_status = "machine-drafted-from-source", source_description = "" }
+model = { role = "unclassified", owning_context = "unassigned", consuming_contexts = [], resource = "unresolved", relationship = "unresolved", attribute = "unresolved", local_name = "unresolved", iri = "unresolved" }
+value = { source_datatype = "boolean", xsd_datatype = "xsd:boolean", min_count = 1, max_count = 1, requiredness = "unconditional", repeatable_context = true, occurrence_scope = "per-list-item" }
+restrictions = { format = "", pattern = "", min_length = "", max_length = "", minimum = "", maximum = "", permitted_values = [] }
+vocabulary = { status = "not-applicable", scheme_id = "", values = [] }
+governance = { approval_status = "proposed", sensitivity = "unclassified", provenance = "source-referenced", quality = "needs-semantic-review" }
+legacy_schema = { matched_occurrences = 1, title = "", description = "", format = "" }
+evidence = ["workbook:Sheet1!A1614:H1614", "legacy-schema:propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.registerEntryIndicators.deedOfPostponementIndicator"]
+review = { status = "needs-semantic-review", confidence = "low", flags = ["model-role-unassigned", "owning-context-unassigned", "iri-unassigned", "source-description-missing", "container-cardinality-needs-review"] }
+
+[[property]]
+id = "pp-9910a863305a"
+source = { row = 1615, path = "propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.registerEntryIndicators.discountChargeIndicator", top_level_section = "propertyPack", heading = "titlesToBeSold", field_name = "discountChargeIndicator", datatype = "boolean", status = "Required", condition = "", description = "" }
+semantic = { preferred_label = "Discount charge indicator", candidate_definition = "Records the discount charge indicator for register entry indicators.", definition_status = "machine-drafted-from-source", source_description = "" }
+model = { role = "unclassified", owning_context = "unassigned", consuming_contexts = [], resource = "unresolved", relationship = "unresolved", attribute = "unresolved", local_name = "unresolved", iri = "unresolved" }
+value = { source_datatype = "boolean", xsd_datatype = "xsd:boolean", min_count = 1, max_count = 1, requiredness = "unconditional", repeatable_context = true, occurrence_scope = "per-list-item" }
+restrictions = { format = "", pattern = "", min_length = "", max_length = "", minimum = "", maximum = "", permitted_values = [] }
+vocabulary = { status = "not-applicable", scheme_id = "", values = [] }
+governance = { approval_status = "proposed", sensitivity = "unclassified", provenance = "source-referenced", quality = "needs-semantic-review" }
+legacy_schema = { matched_occurrences = 1, title = "", description = "", format = "" }
+evidence = ["workbook:Sheet1!A1615:H1615", "legacy-schema:propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.registerEntryIndicators.discountChargeIndicator"]
+review = { status = "needs-semantic-review", confidence = "low", flags = ["model-role-unassigned", "owning-context-unassigned", "iri-unassigned", "source-description-missing", "container-cardinality-needs-review"] }
+
+[[property]]
+id = "pp-99ec29dadbe1"
+source = { row = 1616, path = "propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.registerEntryIndicators.equitableChargeIndicator", top_level_section = "propertyPack", heading = "titlesToBeSold", field_name = "equitableChargeIndicator", datatype = "boolean", status = "Required", condition = "", description = "" }
+semantic = { preferred_label = "Equitable charge indicator", candidate_definition = "Records the equitable charge indicator for register entry indicators.", definition_status = "machine-drafted-from-source", source_description = "" }
+model = { role = "unclassified", owning_context = "unassigned", consuming_contexts = [], resource = "unresolved", relationship = "unresolved", attribute = "unresolved", local_name = "unresolved", iri = "unresolved" }
+value = { source_datatype = "boolean", xsd_datatype = "xsd:boolean", min_count = 1, max_count = 1, requiredness = "unconditional", repeatable_context = true, occurrence_scope = "per-list-item" }
+restrictions = { format = "", pattern = "", min_length = "", max_length = "", minimum = "", maximum = "", permitted_values = [] }
+vocabulary = { status = "not-applicable", scheme_id = "", values = [] }
+governance = { approval_status = "proposed", sensitivity = "unclassified", provenance = "source-referenced", quality = "needs-semantic-review" }
+legacy_schema = { matched_occurrences = 1, title = "", description = "", format = "" }
+evidence = ["workbook:Sheet1!A1616:H1616", "legacy-schema:propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.registerEntryIndicators.equitableChargeIndicator"]
+review = { status = "needs-semantic-review", confidence = "low", flags = ["model-role-unassigned", "owning-context-unassigned", "iri-unassigned", "source-description-missing", "container-cardinality-needs-review"] }
+
+[[property]]
+id = "pp-c144ebcedc82"
+source = { row = 1617, path = "propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.registerEntryIndicators.greenOutEntryIndicator", top_level_section = "propertyPack", heading = "titlesToBeSold", field_name = "greenOutEntryIndicator", datatype = "boolean", status = "Required", condition = "", description = "" }
+semantic = { preferred_label = "Green out entry indicator", candidate_definition = "Records the green out entry indicator for register entry indicators.", definition_status = "machine-drafted-from-source", source_description = "" }
+model = { role = "unclassified", owning_context = "unassigned", consuming_contexts = [], resource = "unresolved", relationship = "unresolved", attribute = "unresolved", local_name = "unresolved", iri = "unresolved" }
+value = { source_datatype = "boolean", xsd_datatype = "xsd:boolean", min_count = 1, max_count = 1, requiredness = "unconditional", repeatable_context = true, occurrence_scope = "per-list-item" }
+restrictions = { format = "", pattern = "", min_length = "", max_length = "", minimum = "", maximum = "", permitted_values = [] }
+vocabulary = { status = "not-applicable", scheme_id = "", values = [] }
+governance = { approval_status = "proposed", sensitivity = "unclassified", provenance = "source-referenced", quality = "needs-semantic-review" }
+legacy_schema = { matched_occurrences = 1, title = "", description = "", format = "" }
+evidence = ["workbook:Sheet1!A1617:H1617", "legacy-schema:propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.registerEntryIndicators.greenOutEntryIndicator"]
+review = { status = "needs-semantic-review", confidence = "low", flags = ["model-role-unassigned", "owning-context-unassigned", "iri-unassigned", "source-description-missing", "container-cardinality-needs-review"] }
+
+[[property]]
+id = "pp-21fad586698a"
+source = { row = 1618, path = "propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.registerEntryIndicators.homeRightsChangeOfAddressIndicator", top_level_section = "propertyPack", heading = "titlesToBeSold", field_name = "homeRightsChangeOfAddressIndicator", datatype = "boolean", status = "Required", condition = "", description = "" }
+semantic = { preferred_label = "Home rights change of address indicator", candidate_definition = "Records the home rights change of address indicator for register entry indicators.", definition_status = "machine-drafted-from-source", source_description = "" }
+model = { role = "unclassified", owning_context = "unassigned", consuming_contexts = [], resource = "unresolved", relationship = "unresolved", attribute = "unresolved", local_name = "unresolved", iri = "unresolved" }
+value = { source_datatype = "boolean", xsd_datatype = "xsd:boolean", min_count = 1, max_count = 1, requiredness = "unconditional", repeatable_context = true, occurrence_scope = "per-list-item" }
+restrictions = { format = "", pattern = "", min_length = "", max_length = "", minimum = "", maximum = "", permitted_values = [] }
+vocabulary = { status = "not-applicable", scheme_id = "", values = [] }
+governance = { approval_status = "proposed", sensitivity = "unclassified", provenance = "source-referenced", quality = "needs-semantic-review" }
+legacy_schema = { matched_occurrences = 1, title = "", description = "", format = "" }
+evidence = ["workbook:Sheet1!A1618:H1618", "legacy-schema:propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.registerEntryIndicators.homeRightsChangeOfAddressIndicator"]
+review = { status = "needs-semantic-review", confidence = "low", flags = ["model-role-unassigned", "owning-context-unassigned", "iri-unassigned", "source-description-missing", "container-cardinality-needs-review"] }
+
+[[property]]
+id = "pp-8df54f5586ea"
+source = { row = 1619, path = "propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.registerEntryIndicators.homeRightsIndicator", top_level_section = "propertyPack", heading = "titlesToBeSold", field_name = "homeRightsIndicator", datatype = "boolean", status = "Required", condition = "", description = "" }
+semantic = { preferred_label = "Home rights indicator", candidate_definition = "Records the home rights indicator for register entry indicators.", definition_status = "machine-drafted-from-source", source_description = "" }
+model = { role = "unclassified", owning_context = "unassigned", consuming_contexts = [], resource = "unresolved", relationship = "unresolved", attribute = "unresolved", local_name = "unresolved", iri = "unresolved" }
+value = { source_datatype = "boolean", xsd_datatype = "xsd:boolean", min_count = 1, max_count = 1, requiredness = "unconditional", repeatable_context = true, occurrence_scope = "per-list-item" }
+restrictions = { format = "", pattern = "", min_length = "", max_length = "", minimum = "", maximum = "", permitted_values = [] }
+vocabulary = { status = "not-applicable", scheme_id = "", values = [] }
+governance = { approval_status = "proposed", sensitivity = "unclassified", provenance = "source-referenced", quality = "needs-semantic-review" }
+legacy_schema = { matched_occurrences = 1, title = "", description = "", format = "" }
+evidence = ["workbook:Sheet1!A1619:H1619", "legacy-schema:propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.registerEntryIndicators.homeRightsIndicator"]
+review = { status = "needs-semantic-review", confidence = "low", flags = ["model-role-unassigned", "owning-context-unassigned", "iri-unassigned", "source-description-missing", "container-cardinality-needs-review"] }
+
+[[property]]
+id = "pp-62cc7224399f"
+source = { row = 1620, path = "propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.registerEntryIndicators.leaseHoldTitleIndicator", top_level_section = "propertyPack", heading = "titlesToBeSold", field_name = "leaseHoldTitleIndicator", datatype = "boolean", status = "Required", condition = "", description = "" }
+semantic = { preferred_label = "Lease hold title indicator", candidate_definition = "Records the lease hold title indicator for register entry indicators.", definition_status = "machine-drafted-from-source", source_description = "" }
+model = { role = "unclassified", owning_context = "unassigned", consuming_contexts = [], resource = "unresolved", relationship = "unresolved", attribute = "unresolved", local_name = "unresolved", iri = "unresolved" }
+value = { source_datatype = "boolean", xsd_datatype = "xsd:boolean", min_count = 1, max_count = 1, requiredness = "unconditional", repeatable_context = true, occurrence_scope = "per-list-item" }
+restrictions = { format = "", pattern = "", min_length = "", max_length = "", minimum = "", maximum = "", permitted_values = [] }
+vocabulary = { status = "not-applicable", scheme_id = "", values = [] }
+governance = { approval_status = "proposed", sensitivity = "unclassified", provenance = "source-referenced", quality = "needs-semantic-review" }
+legacy_schema = { matched_occurrences = 1, title = "", description = "", format = "" }
+evidence = ["workbook:Sheet1!A1620:H1620", "legacy-schema:propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.registerEntryIndicators.leaseHoldTitleIndicator"]
+review = { status = "needs-semantic-review", confidence = "low", flags = ["model-role-unassigned", "owning-context-unassigned", "iri-unassigned", "source-description-missing", "container-cardinality-needs-review"] }
+
+[[property]]
+id = "pp-f7821f248c03"
+source = { row = 1621, path = "propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.registerEntryIndicators.multipleChargeIndicator", top_level_section = "propertyPack", heading = "titlesToBeSold", field_name = "multipleChargeIndicator", datatype = "boolean", status = "Required", condition = "", description = "" }
+semantic = { preferred_label = "Multiple charge indicator", candidate_definition = "Records the multiple charge indicator for register entry indicators.", definition_status = "machine-drafted-from-source", source_description = "" }
+model = { role = "unclassified", owning_context = "unassigned", consuming_contexts = [], resource = "unresolved", relationship = "unresolved", attribute = "unresolved", local_name = "unresolved", iri = "unresolved" }
+value = { source_datatype = "boolean", xsd_datatype = "xsd:boolean", min_count = 1, max_count = 1, requiredness = "unconditional", repeatable_context = true, occurrence_scope = "per-list-item" }
+restrictions = { format = "", pattern = "", min_length = "", max_length = "", minimum = "", maximum = "", permitted_values = [] }
+vocabulary = { status = "not-applicable", scheme_id = "", values = [] }
+governance = { approval_status = "proposed", sensitivity = "unclassified", provenance = "source-referenced", quality = "needs-semantic-review" }
+legacy_schema = { matched_occurrences = 1, title = "", description = "", format = "" }
+evidence = ["workbook:Sheet1!A1621:H1621", "legacy-schema:propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.registerEntryIndicators.multipleChargeIndicator"]
+review = { status = "needs-semantic-review", confidence = "low", flags = ["model-role-unassigned", "owning-context-unassigned", "iri-unassigned", "source-description-missing", "container-cardinality-needs-review"] }
+
+[[property]]
+id = "pp-fec1f9251553"
+source = { row = 1622, path = "propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.registerEntryIndicators.nonChargeRestrictionIndicator", top_level_section = "propertyPack", heading = "titlesToBeSold", field_name = "nonChargeRestrictionIndicator", datatype = "boolean", status = "Required", condition = "", description = "" }
+semantic = { preferred_label = "Non charge restriction indicator", candidate_definition = "Records the non charge restriction indicator for register entry indicators.", definition_status = "machine-drafted-from-source", source_description = "" }
+model = { role = "unclassified", owning_context = "unassigned", consuming_contexts = [], resource = "unresolved", relationship = "unresolved", attribute = "unresolved", local_name = "unresolved", iri = "unresolved" }
+value = { source_datatype = "boolean", xsd_datatype = "xsd:boolean", min_count = 1, max_count = 1, requiredness = "unconditional", repeatable_context = true, occurrence_scope = "per-list-item" }
+restrictions = { format = "", pattern = "", min_length = "", max_length = "", minimum = "", maximum = "", permitted_values = [] }
+vocabulary = { status = "not-applicable", scheme_id = "", values = [] }
+governance = { approval_status = "proposed", sensitivity = "unclassified", provenance = "source-referenced", quality = "needs-semantic-review" }
+legacy_schema = { matched_occurrences = 1, title = "", description = "", format = "" }
+evidence = ["workbook:Sheet1!A1622:H1622", "legacy-schema:propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.registerEntryIndicators.nonChargeRestrictionIndicator"]
+review = { status = "needs-semantic-review", confidence = "low", flags = ["model-role-unassigned", "owning-context-unassigned", "iri-unassigned", "source-description-missing", "container-cardinality-needs-review"] }
+
+[[property]]
+id = "pp-d6b6d4ecb1ea"
+source = { row = 1623, path = "propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.registerEntryIndicators.notedChargeIndicator", top_level_section = "propertyPack", heading = "titlesToBeSold", field_name = "notedChargeIndicator", datatype = "boolean", status = "Required", condition = "", description = "" }
+semantic = { preferred_label = "Noted charge indicator", candidate_definition = "Records the noted charge indicator for register entry indicators.", definition_status = "machine-drafted-from-source", source_description = "" }
+model = { role = "unclassified", owning_context = "unassigned", consuming_contexts = [], resource = "unresolved", relationship = "unresolved", attribute = "unresolved", local_name = "unresolved", iri = "unresolved" }
+value = { source_datatype = "boolean", xsd_datatype = "xsd:boolean", min_count = 1, max_count = 1, requiredness = "unconditional", repeatable_context = true, occurrence_scope = "per-list-item" }
+restrictions = { format = "", pattern = "", min_length = "", max_length = "", minimum = "", maximum = "", permitted_values = [] }
+vocabulary = { status = "not-applicable", scheme_id = "", values = [] }
+governance = { approval_status = "proposed", sensitivity = "unclassified", provenance = "source-referenced", quality = "needs-semantic-review" }
+legacy_schema = { matched_occurrences = 1, title = "", description = "", format = "" }
+evidence = ["workbook:Sheet1!A1623:H1623", "legacy-schema:propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.registerEntryIndicators.notedChargeIndicator"]
+review = { status = "needs-semantic-review", confidence = "low", flags = ["model-role-unassigned", "owning-context-unassigned", "iri-unassigned", "source-description-missing", "container-cardinality-needs-review"] }
+
+[[property]]
+id = "pp-dd27ae34f2e1"
+source = { row = 1624, path = "propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.registerEntryIndicators.pricePaidIndicator", top_level_section = "propertyPack", heading = "titlesToBeSold", field_name = "pricePaidIndicator", datatype = "boolean", status = "Required", condition = "", description = "" }
+semantic = { preferred_label = "Price paid indicator", candidate_definition = "Records the price paid indicator for register entry indicators.", definition_status = "machine-drafted-from-source", source_description = "" }
+model = { role = "unclassified", owning_context = "unassigned", consuming_contexts = [], resource = "unresolved", relationship = "unresolved", attribute = "unresolved", local_name = "unresolved", iri = "unresolved" }
+value = { source_datatype = "boolean", xsd_datatype = "xsd:boolean", min_count = 1, max_count = 1, requiredness = "unconditional", repeatable_context = true, occurrence_scope = "per-list-item" }
+restrictions = { format = "", pattern = "", min_length = "", max_length = "", minimum = "", maximum = "", permitted_values = [] }
+vocabulary = { status = "not-applicable", scheme_id = "", values = [] }
+governance = { approval_status = "proposed", sensitivity = "unclassified", provenance = "source-referenced", quality = "needs-semantic-review" }
+legacy_schema = { matched_occurrences = 1, title = "", description = "", format = "" }
+evidence = ["workbook:Sheet1!A1624:H1624", "legacy-schema:propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.registerEntryIndicators.pricePaidIndicator"]
+review = { status = "needs-semantic-review", confidence = "low", flags = ["model-role-unassigned", "owning-context-unassigned", "iri-unassigned", "source-description-missing", "container-cardinality-needs-review"] }
+
+[[property]]
+id = "pp-6c06707f2aa5"
+source = { row = 1625, path = "propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.registerEntryIndicators.propertyDescriptionNotesIndicator", top_level_section = "propertyPack", heading = "titlesToBeSold", field_name = "propertyDescriptionNotesIndicator", datatype = "boolean", status = "Required", condition = "", description = "" }
+semantic = { preferred_label = "Property description notes indicator", candidate_definition = "Records the property description notes indicator for register entry indicators.", definition_status = "machine-drafted-from-source", source_description = "" }
+model = { role = "unclassified", owning_context = "unassigned", consuming_contexts = [], resource = "unresolved", relationship = "unresolved", attribute = "unresolved", local_name = "unresolved", iri = "unresolved" }
+value = { source_datatype = "boolean", xsd_datatype = "xsd:boolean", min_count = 1, max_count = 1, requiredness = "unconditional", repeatable_context = true, occurrence_scope = "per-list-item" }
+restrictions = { format = "", pattern = "", min_length = "", max_length = "", minimum = "", maximum = "", permitted_values = [] }
+vocabulary = { status = "not-applicable", scheme_id = "", values = [] }
+governance = { approval_status = "proposed", sensitivity = "unclassified", provenance = "source-referenced", quality = "needs-semantic-review" }
+legacy_schema = { matched_occurrences = 1, title = "", description = "", format = "" }
+evidence = ["workbook:Sheet1!A1625:H1625", "legacy-schema:propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.registerEntryIndicators.propertyDescriptionNotesIndicator"]
+review = { status = "needs-semantic-review", confidence = "low", flags = ["model-role-unassigned", "owning-context-unassigned", "iri-unassigned", "source-description-missing", "container-cardinality-needs-review"] }
+
+[[property]]
+id = "pp-707b646ba548"
+source = { row = 1626, path = "propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.registerEntryIndicators.rentChargeIndicator", top_level_section = "propertyPack", heading = "titlesToBeSold", field_name = "rentChargeIndicator", datatype = "boolean", status = "Required", condition = "", description = "" }
+semantic = { preferred_label = "Rent charge indicator", candidate_definition = "Records the rent charge indicator for register entry indicators.", definition_status = "machine-drafted-from-source", source_description = "" }
+model = { role = "unclassified", owning_context = "unassigned", consuming_contexts = [], resource = "unresolved", relationship = "unresolved", attribute = "unresolved", local_name = "unresolved", iri = "unresolved" }
+value = { source_datatype = "boolean", xsd_datatype = "xsd:boolean", min_count = 1, max_count = 1, requiredness = "unconditional", repeatable_context = true, occurrence_scope = "per-list-item" }
+restrictions = { format = "", pattern = "", min_length = "", max_length = "", minimum = "", maximum = "", permitted_values = [] }
+vocabulary = { status = "not-applicable", scheme_id = "", values = [] }
+governance = { approval_status = "proposed", sensitivity = "unclassified", provenance = "source-referenced", quality = "needs-semantic-review" }
+legacy_schema = { matched_occurrences = 1, title = "", description = "", format = "" }
+evidence = ["workbook:Sheet1!A1626:H1626", "legacy-schema:propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.registerEntryIndicators.rentChargeIndicator"]
+review = { status = "needs-semantic-review", confidence = "low", flags = ["model-role-unassigned", "owning-context-unassigned", "iri-unassigned", "source-description-missing", "container-cardinality-needs-review"] }
+
+[[property]]
+id = "pp-ad22c516200f"
+source = { row = 1627, path = "propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.registerEntryIndicators.rightOfPreEmptionIndicator", top_level_section = "propertyPack", heading = "titlesToBeSold", field_name = "rightOfPreEmptionIndicator", datatype = "boolean", status = "Required", condition = "", description = "" }
+semantic = { preferred_label = "Right of pre emption indicator", candidate_definition = "Records the right of pre emption indicator for register entry indicators.", definition_status = "machine-drafted-from-source", source_description = "" }
+model = { role = "unclassified", owning_context = "unassigned", consuming_contexts = [], resource = "unresolved", relationship = "unresolved", attribute = "unresolved", local_name = "unresolved", iri = "unresolved" }
+value = { source_datatype = "boolean", xsd_datatype = "xsd:boolean", min_count = 1, max_count = 1, requiredness = "unconditional", repeatable_context = true, occurrence_scope = "per-list-item" }
+restrictions = { format = "", pattern = "", min_length = "", max_length = "", minimum = "", maximum = "", permitted_values = [] }
+vocabulary = { status = "not-applicable", scheme_id = "", values = [] }
+governance = { approval_status = "proposed", sensitivity = "unclassified", provenance = "source-referenced", quality = "needs-semantic-review" }
+legacy_schema = { matched_occurrences = 1, title = "", description = "", format = "" }
+evidence = ["workbook:Sheet1!A1627:H1627", "legacy-schema:propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.registerEntryIndicators.rightOfPreEmptionIndicator"]
+review = { status = "needs-semantic-review", confidence = "low", flags = ["model-role-unassigned", "owning-context-unassigned", "iri-unassigned", "source-description-missing", "container-cardinality-needs-review"] }
+
+[[property]]
+id = "pp-0c02ca620369"
+source = { row = 1628, path = "propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.registerEntryIndicators.scheduleOfLeasesIndicator", top_level_section = "propertyPack", heading = "titlesToBeSold", field_name = "scheduleOfLeasesIndicator", datatype = "boolean", status = "Required", condition = "", description = "" }
+semantic = { preferred_label = "Schedule of leases indicator", candidate_definition = "Records the schedule of leases indicator for register entry indicators.", definition_status = "machine-drafted-from-source", source_description = "" }
+model = { role = "unclassified", owning_context = "unassigned", consuming_contexts = [], resource = "unresolved", relationship = "unresolved", attribute = "unresolved", local_name = "unresolved", iri = "unresolved" }
+value = { source_datatype = "boolean", xsd_datatype = "xsd:boolean", min_count = 1, max_count = 1, requiredness = "unconditional", repeatable_context = true, occurrence_scope = "per-list-item" }
+restrictions = { format = "", pattern = "", min_length = "", max_length = "", minimum = "", maximum = "", permitted_values = [] }
+vocabulary = { status = "not-applicable", scheme_id = "", values = [] }
+governance = { approval_status = "proposed", sensitivity = "unclassified", provenance = "source-referenced", quality = "needs-semantic-review" }
+legacy_schema = { matched_occurrences = 1, title = "", description = "", format = "" }
+evidence = ["workbook:Sheet1!A1628:H1628", "legacy-schema:propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.registerEntryIndicators.scheduleOfLeasesIndicator"]
+review = { status = "needs-semantic-review", confidence = "low", flags = ["model-role-unassigned", "owning-context-unassigned", "iri-unassigned", "source-description-missing", "container-cardinality-needs-review"] }
+
+[[property]]
+id = "pp-252acbb708f9"
+source = { row = 1629, path = "propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.registerEntryIndicators.subChargeIndicator", top_level_section = "propertyPack", heading = "titlesToBeSold", field_name = "subChargeIndicator", datatype = "boolean", status = "Required", condition = "", description = "" }
+semantic = { preferred_label = "Sub charge indicator", candidate_definition = "Records the sub charge indicator for register entry indicators.", definition_status = "machine-drafted-from-source", source_description = "" }
+model = { role = "unclassified", owning_context = "unassigned", consuming_contexts = [], resource = "unresolved", relationship = "unresolved", attribute = "unresolved", local_name = "unresolved", iri = "unresolved" }
+value = { source_datatype = "boolean", xsd_datatype = "xsd:boolean", min_count = 1, max_count = 1, requiredness = "unconditional", repeatable_context = true, occurrence_scope = "per-list-item" }
+restrictions = { format = "", pattern = "", min_length = "", max_length = "", minimum = "", maximum = "", permitted_values = [] }
+vocabulary = { status = "not-applicable", scheme_id = "", values = [] }
+governance = { approval_status = "proposed", sensitivity = "unclassified", provenance = "source-referenced", quality = "needs-semantic-review" }
+legacy_schema = { matched_occurrences = 1, title = "", description = "", format = "" }
+evidence = ["workbook:Sheet1!A1629:H1629", "legacy-schema:propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.registerEntryIndicators.subChargeIndicator"]
+review = { status = "needs-semantic-review", confidence = "low", flags = ["model-role-unassigned", "owning-context-unassigned", "iri-unassigned", "source-description-missing", "container-cardinality-needs-review"] }
+
+[[property]]
+id = "pp-525dc6daab25"
+source = { row = 1630, path = "propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.registerEntryIndicators.unidentifiedEntryIndicator", top_level_section = "propertyPack", heading = "titlesToBeSold", field_name = "unidentifiedEntryIndicator", datatype = "boolean", status = "Required", condition = "", description = "" }
+semantic = { preferred_label = "Unidentified entry indicator", candidate_definition = "Records the unidentified entry indicator for register entry indicators.", definition_status = "machine-drafted-from-source", source_description = "" }
+model = { role = "unclassified", owning_context = "unassigned", consuming_contexts = [], resource = "unresolved", relationship = "unresolved", attribute = "unresolved", local_name = "unresolved", iri = "unresolved" }
+value = { source_datatype = "boolean", xsd_datatype = "xsd:boolean", min_count = 1, max_count = 1, requiredness = "unconditional", repeatable_context = true, occurrence_scope = "per-list-item" }
+restrictions = { format = "", pattern = "", min_length = "", max_length = "", minimum = "", maximum = "", permitted_values = [] }
+vocabulary = { status = "not-applicable", scheme_id = "", values = [] }
+governance = { approval_status = "proposed", sensitivity = "unclassified", provenance = "source-referenced", quality = "needs-semantic-review" }
+legacy_schema = { matched_occurrences = 1, title = "", description = "", format = "" }
+evidence = ["workbook:Sheet1!A1630:H1630", "legacy-schema:propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.registerEntryIndicators.unidentifiedEntryIndicator"]
+review = { status = "needs-semantic-review", confidence = "low", flags = ["model-role-unassigned", "owning-context-unassigned", "iri-unassigned", "source-description-missing", "container-cardinality-needs-review"] }
+
+[[property]]
+id = "pp-74dba795a6db"
+source = { row = 1631, path = "propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.registerEntryIndicators.unilateralNoticeBeneficiaryIndicator", top_level_section = "propertyPack", heading = "titlesToBeSold", field_name = "unilateralNoticeBeneficiaryIndicator", datatype = "boolean", status = "Required", condition = "", description = "" }
+semantic = { preferred_label = "Unilateral notice beneficiary indicator", candidate_definition = "Records the unilateral notice beneficiary indicator for register entry indicators.", definition_status = "machine-drafted-from-source", source_description = "" }
+model = { role = "unclassified", owning_context = "unassigned", consuming_contexts = [], resource = "unresolved", relationship = "unresolved", attribute = "unresolved", local_name = "unresolved", iri = "unresolved" }
+value = { source_datatype = "boolean", xsd_datatype = "xsd:boolean", min_count = 1, max_count = 1, requiredness = "unconditional", repeatable_context = true, occurrence_scope = "per-list-item" }
+restrictions = { format = "", pattern = "", min_length = "", max_length = "", minimum = "", maximum = "", permitted_values = [] }
+vocabulary = { status = "not-applicable", scheme_id = "", values = [] }
+governance = { approval_status = "proposed", sensitivity = "unclassified", provenance = "source-referenced", quality = "needs-semantic-review" }
+legacy_schema = { matched_occurrences = 1, title = "", description = "", format = "" }
+evidence = ["workbook:Sheet1!A1631:H1631", "legacy-schema:propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.registerEntryIndicators.unilateralNoticeBeneficiaryIndicator"]
+review = { status = "needs-semantic-review", confidence = "low", flags = ["model-role-unassigned", "owning-context-unassigned", "iri-unassigned", "source-description-missing", "container-cardinality-needs-review"] }
+
+[[property]]
+id = "pp-2060b2953380"
+source = { row = 1632, path = "propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.registerEntryIndicators.unilateralNoticeIndicator", top_level_section = "propertyPack", heading = "titlesToBeSold", field_name = "unilateralNoticeIndicator", datatype = "boolean", status = "Required", condition = "", description = "" }
+semantic = { preferred_label = "Unilateral notice indicator", candidate_definition = "Records the unilateral notice indicator for register entry indicators.", definition_status = "machine-drafted-from-source", source_description = "" }
+model = { role = "unclassified", owning_context = "unassigned", consuming_contexts = [], resource = "unresolved", relationship = "unresolved", attribute = "unresolved", local_name = "unresolved", iri = "unresolved" }
+value = { source_datatype = "boolean", xsd_datatype = "xsd:boolean", min_count = 1, max_count = 1, requiredness = "unconditional", repeatable_context = true, occurrence_scope = "per-list-item" }
+restrictions = { format = "", pattern = "", min_length = "", max_length = "", minimum = "", maximum = "", permitted_values = [] }
+vocabulary = { status = "not-applicable", scheme_id = "", values = [] }
+governance = { approval_status = "proposed", sensitivity = "unclassified", provenance = "source-referenced", quality = "needs-semantic-review" }
+legacy_schema = { matched_occurrences = 1, title = "", description = "", format = "" }
+evidence = ["workbook:Sheet1!A1632:H1632", "legacy-schema:propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.registerEntryIndicators.unilateralNoticeIndicator"]
+review = { status = "needs-semantic-review", confidence = "low", flags = ["model-role-unassigned", "owning-context-unassigned", "iri-unassigned", "source-description-missing", "container-cardinality-needs-review"] }
+
+[[property]]
+id = "pp-dce277e19535"
+source = { row = 1633, path = "propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.registerEntryIndicators.vendorsLienIndicator", top_level_section = "propertyPack", heading = "titlesToBeSold", field_name = "vendorsLienIndicator", datatype = "boolean", status = "Required", condition = "", description = "" }
+semantic = { preferred_label = "Vendors lien indicator", candidate_definition = "Records the vendors lien indicator for register entry indicators.", definition_status = "machine-drafted-from-source", source_description = "" }
+model = { role = "unclassified", owning_context = "unassigned", consuming_contexts = [], resource = "unresolved", relationship = "unresolved", attribute = "unresolved", local_name = "unresolved", iri = "unresolved" }
+value = { source_datatype = "boolean", xsd_datatype = "xsd:boolean", min_count = 1, max_count = 1, requiredness = "unconditional", repeatable_context = true, occurrence_scope = "per-list-item" }
+restrictions = { format = "", pattern = "", min_length = "", max_length = "", minimum = "", maximum = "", permitted_values = [] }
+vocabulary = { status = "not-applicable", scheme_id = "", values = [] }
+governance = { approval_status = "proposed", sensitivity = "unclassified", provenance = "source-referenced", quality = "needs-semantic-review" }
+legacy_schema = { matched_occurrences = 1, title = "", description = "", format = "" }
+evidence = ["workbook:Sheet1!A1633:H1633", "legacy-schema:propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.registerEntryIndicators.vendorsLienIndicator"]
+review = { status = "needs-semantic-review", confidence = "low", flags = ["model-role-unassigned", "owning-context-unassigned", "iri-unassigned", "source-description-missing", "container-cardinality-needs-review"] }
+
+[[property]]
+id = "pp-c92306c4fca8"
+source = { row = 1634, path = "propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.title.classOfTitleCode", top_level_section = "propertyPack", heading = "titlesToBeSold", field_name = "classOfTitleCode", datatype = "string", status = "Required", condition = "", description = "" }
+semantic = { preferred_label = "Class of title code", candidate_definition = "Records the class of title code for title.", definition_status = "machine-drafted-from-source", source_description = "" }
+model = { role = "unclassified", owning_context = "unassigned", consuming_contexts = [], resource = "unresolved", relationship = "unresolved", attribute = "unresolved", local_name = "unresolved", iri = "unresolved" }
+value = { source_datatype = "string", xsd_datatype = "xsd:string", min_count = 1, max_count = 1, requiredness = "unconditional", repeatable_context = true, occurrence_scope = "per-list-item" }
+restrictions = { format = "", pattern = "", min_length = "", max_length = "", minimum = "", maximum = "", permitted_values = ["10", "20", "30", "40", "50", "60", "70", "80", "90", "100", "110", "120", "130"] }
+vocabulary = { status = "candidate", scheme_id = "unresolved", values = ["10", "20", "30", "40", "50", "60", "70", "80", "90", "100", "110", "120", "130"] }
+governance = { approval_status = "proposed", sensitivity = "unclassified", provenance = "source-referenced", quality = "needs-semantic-review" }
+legacy_schema = { matched_occurrences = 1, title = "", description = "", format = "" }
+evidence = ["workbook:Sheet1!A1634:H1634", "legacy-schema:propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.title.classOfTitleCode"]
+review = { status = "needs-semantic-review", confidence = "low", flags = ["model-role-unassigned", "owning-context-unassigned", "iri-unassigned", "source-description-missing", "controlled-vocabulary-candidate", "container-cardinality-needs-review"] }
+
+[[property]]
+id = "pp-3b9d1e8b56fb"
+source = { row = 1635, path = "propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.title.commonholdIndicator", top_level_section = "propertyPack", heading = "titlesToBeSold", field_name = "commonholdIndicator", datatype = "boolean", status = "Required", condition = "", description = "" }
+semantic = { preferred_label = "Commonhold indicator", candidate_definition = "Records the commonhold indicator for title.", definition_status = "machine-drafted-from-source", source_description = "" }
+model = { role = "unclassified", owning_context = "unassigned", consuming_contexts = [], resource = "unresolved", relationship = "unresolved", attribute = "unresolved", local_name = "unresolved", iri = "unresolved" }
+value = { source_datatype = "boolean", xsd_datatype = "xsd:boolean", min_count = 1, max_count = 1, requiredness = "unconditional", repeatable_context = true, occurrence_scope = "per-list-item" }
+restrictions = { format = "", pattern = "", min_length = "", max_length = "", minimum = "", maximum = "", permitted_values = [] }
+vocabulary = { status = "not-applicable", scheme_id = "", values = [] }
+governance = { approval_status = "proposed", sensitivity = "unclassified", provenance = "source-referenced", quality = "needs-semantic-review" }
+legacy_schema = { matched_occurrences = 1, title = "", description = "", format = "" }
+evidence = ["workbook:Sheet1!A1635:H1635", "legacy-schema:propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.title.commonholdIndicator"]
+review = { status = "needs-semantic-review", confidence = "low", flags = ["model-role-unassigned", "owning-context-unassigned", "iri-unassigned", "source-description-missing", "container-cardinality-needs-review"] }
+
+[[property]]
+id = "pp-db91104a4659"
+source = { row = 1636, path = "propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.title.titleNumber", top_level_section = "propertyPack", heading = "titlesToBeSold", field_name = "titleNumber", datatype = "string", status = "Required", condition = "", description = "" }
+semantic = { preferred_label = "Title number", candidate_definition = "Records the title number for title.", definition_status = "machine-drafted-from-source", source_description = "" }
+model = { role = "unclassified", owning_context = "unassigned", consuming_contexts = [], resource = "unresolved", relationship = "unresolved", attribute = "unresolved", local_name = "unresolved", iri = "unresolved" }
+value = { source_datatype = "string", xsd_datatype = "xsd:string", min_count = 1, max_count = 1, requiredness = "unconditional", repeatable_context = true, occurrence_scope = "per-list-item" }
+restrictions = { format = "", pattern = "", min_length = "", max_length = "", minimum = "", maximum = "", permitted_values = [] }
+vocabulary = { status = "not-applicable", scheme_id = "", values = [] }
+governance = { approval_status = "proposed", sensitivity = "unclassified", provenance = "source-referenced", quality = "needs-semantic-review" }
+legacy_schema = { matched_occurrences = 1, title = "", description = "", format = "" }
+evidence = ["workbook:Sheet1!A1636:H1636", "legacy-schema:propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.title.titleNumber"]
+review = { status = "needs-semantic-review", confidence = "low", flags = ["model-role-unassigned", "owning-context-unassigned", "iri-unassigned", "source-description-missing", "container-cardinality-needs-review"] }
+
+[[property]]
+id = "pp-0806a326568d"
+source = { row = 1637, path = "propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.title.titleRegistrationDetails.administrativeArea", top_level_section = "propertyPack", heading = "titlesToBeSold", field_name = "administrativeArea", datatype = "string", status = "Required", condition = "", description = "" }
+semantic = { preferred_label = "Administrative area", candidate_definition = "Records the administrative area for title registration details.", definition_status = "machine-drafted-from-source", source_description = "" }
+model = { role = "unclassified", owning_context = "unassigned", consuming_contexts = [], resource = "unresolved", relationship = "unresolved", attribute = "unresolved", local_name = "unresolved", iri = "unresolved" }
+value = { source_datatype = "string", xsd_datatype = "xsd:string", min_count = 1, max_count = 1, requiredness = "unconditional", repeatable_context = true, occurrence_scope = "per-list-item" }
+restrictions = { format = "", pattern = "", min_length = "", max_length = "", minimum = "", maximum = "", permitted_values = [] }
+vocabulary = { status = "not-applicable", scheme_id = "", values = [] }
+governance = { approval_status = "proposed", sensitivity = "unclassified", provenance = "source-referenced", quality = "needs-semantic-review" }
+legacy_schema = { matched_occurrences = 1, title = "", description = "", format = "" }
+evidence = ["workbook:Sheet1!A1637:H1637", "legacy-schema:propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.title.titleRegistrationDetails.administrativeArea"]
+review = { status = "needs-semantic-review", confidence = "low", flags = ["model-role-unassigned", "owning-context-unassigned", "iri-unassigned", "source-description-missing", "container-cardinality-needs-review"] }
+
+[[property]]
+id = "pp-18c74c722cb8"
+source = { row = 1638, path = "propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.title.titleRegistrationDetails.districtName", top_level_section = "propertyPack", heading = "titlesToBeSold", field_name = "districtName", datatype = "string", status = "Required", condition = "", description = "" }
+semantic = { preferred_label = "District name", candidate_definition = "Records the district name for title registration details.", definition_status = "machine-drafted-from-source", source_description = "" }
+model = { role = "unclassified", owning_context = "unassigned", consuming_contexts = [], resource = "unresolved", relationship = "unresolved", attribute = "unresolved", local_name = "unresolved", iri = "unresolved" }
+value = { source_datatype = "string", xsd_datatype = "xsd:string", min_count = 1, max_count = 1, requiredness = "unconditional", repeatable_context = true, occurrence_scope = "per-list-item" }
+restrictions = { format = "", pattern = "", min_length = "", max_length = "", minimum = "", maximum = "", permitted_values = [] }
+vocabulary = { status = "not-applicable", scheme_id = "", values = [] }
+governance = { approval_status = "proposed", sensitivity = "unclassified", provenance = "source-referenced", quality = "needs-semantic-review" }
+legacy_schema = { matched_occurrences = 1, title = "", description = "", format = "" }
+evidence = ["workbook:Sheet1!A1638:H1638", "legacy-schema:propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.title.titleRegistrationDetails.districtName"]
+review = { status = "needs-semantic-review", confidence = "low", flags = ["model-role-unassigned", "owning-context-unassigned", "iri-unassigned", "source-description-missing", "container-cardinality-needs-review"] }

@@ -1,0 +1,456 @@
+# Generated bootstrap; curate fields in place, then run generate/check.
+
+[[property]]
+id = "pp-987ea4dcdf35"
+source = { row = 878, path = "propertyPack.priceInformation.price", top_level_section = "propertyPack", heading = "priceInformation", field_name = "price", datatype = "number", status = "Required", condition = "", description = "Price" }
+semantic = { preferred_label = "Price", candidate_definition = "The value recorded for “Price” in the Property Pack.", definition_status = "machine-drafted-from-source", source_description = "Price" }
+model = { role = "unclassified", owning_context = "unassigned", consuming_contexts = [], resource = "unresolved", relationship = "unresolved", attribute = "unresolved", local_name = "unresolved", iri = "unresolved" }
+value = { source_datatype = "number", xsd_datatype = "xsd:decimal", min_count = 1, max_count = 1, requiredness = "unconditional", repeatable_context = false, occurrence_scope = "per-parent-resource" }
+restrictions = { format = "", pattern = "", min_length = "", max_length = "", minimum = 1, maximum = "", permitted_values = [] }
+vocabulary = { status = "not-applicable", scheme_id = "", values = [] }
+governance = { approval_status = "proposed", sensitivity = "unclassified", provenance = "source-referenced", quality = "needs-semantic-review" }
+legacy_schema = { matched_occurrences = 1, title = "Price", description = "", format = "" }
+evidence = ["workbook:Sheet1!A878:H878", "legacy-schema:propertyPack.priceInformation.price"]
+review = { status = "needs-semantic-review", confidence = "low", flags = ["model-role-unassigned", "owning-context-unassigned", "iri-unassigned"] }
+
+[[property]]
+id = "pp-fcdd50d3d2ac"
+source = { row = 879, path = "propertyPack.priceInformation.priceQualifier", top_level_section = "propertyPack", heading = "priceInformation", field_name = "priceQualifier", datatype = "string", status = "Required", condition = "", description = "Price type" }
+semantic = { preferred_label = "Price type", candidate_definition = "The value recorded for “Price type” in the Property Pack.", definition_status = "machine-drafted-from-source", source_description = "Price type" }
+model = { role = "unclassified", owning_context = "unassigned", consuming_contexts = [], resource = "unresolved", relationship = "unresolved", attribute = "unresolved", local_name = "unresolved", iri = "unresolved" }
+value = { source_datatype = "string", xsd_datatype = "xsd:string", min_count = 1, max_count = 1, requiredness = "unconditional", repeatable_context = false, occurrence_scope = "per-parent-resource" }
+restrictions = { format = "", pattern = "", min_length = "", max_length = "", minimum = "", maximum = "", permitted_values = ["Price", "Fixed price", "Guide price", "Offers in excess of", "Offers in region of", "Offers over", "Offers invited", "Sale by tender", "From"] }
+vocabulary = { status = "candidate", scheme_id = "unresolved", values = ["Price", "Fixed price", "Guide price", "Offers in excess of", "Offers in region of", "Offers over", "Offers invited", "Sale by tender", "From"] }
+governance = { approval_status = "proposed", sensitivity = "unclassified", provenance = "source-referenced", quality = "needs-semantic-review" }
+legacy_schema = { matched_occurrences = 1, title = "Price type", description = "", format = "" }
+evidence = ["workbook:Sheet1!A879:H879", "legacy-schema:propertyPack.priceInformation.priceQualifier"]
+review = { status = "needs-semantic-review", confidence = "low", flags = ["model-role-unassigned", "owning-context-unassigned", "iri-unassigned", "controlled-vocabulary-candidate"] }
+
+[[property]]
+id = "pp-cb97dae1fa81"
+source = { row = 886, path = "propertyPack.rightsAndInformalArrangements.accessRestrictionAttempts.yesNo", top_level_section = "propertyPack", heading = "rightsAndInformalArrangements", field_name = "yesNo", datatype = "string", status = "Required", condition = "Conditional via oneOf / discriminator", description = "" }
+semantic = { preferred_label = "Access restriction attempts", candidate_definition = "Indicates whether access restriction attempts is applicable.", definition_status = "machine-drafted-from-source", source_description = "" }
+model = { role = "unclassified", owning_context = "unassigned", consuming_contexts = [], resource = "unresolved", relationship = "unresolved", attribute = "unresolved", local_name = "unresolved", iri = "unresolved" }
+value = { source_datatype = "string", xsd_datatype = "xsd:string", min_count = 0, max_count = 1, requiredness = "conditional", repeatable_context = false, occurrence_scope = "per-parent-resource" }
+restrictions = { format = "", pattern = "", min_length = "", max_length = "", minimum = "", maximum = "", permitted_values = ["No", "Yes"] }
+vocabulary = { status = "candidate", scheme_id = "unresolved", values = ["No", "Yes"] }
+governance = { approval_status = "proposed", sensitivity = "unclassified", provenance = "source-referenced", quality = "needs-semantic-review" }
+legacy_schema = { matched_occurrences = 2, title = "", description = "", format = "" }
+evidence = ["workbook:Sheet1!A886:H886", "legacy-schema:propertyPack.rightsAndInformalArrangements.accessRestrictionAttempts.yesNo"]
+review = { status = "needs-semantic-review", confidence = "low", flags = ["model-role-unassigned", "owning-context-unassigned", "iri-unassigned", "source-description-missing", "condition-expression-unresolved", "controlled-vocabulary-candidate"] }
+
+[[property]]
+id = "pp-7c1080faaa21"
+source = { row = 887, path = "propertyPack.rightsAndInformalArrangements.neighbouringLandRights.yesNo", top_level_section = "propertyPack", heading = "rightsAndInformalArrangements", field_name = "yesNo", datatype = "string", status = "Required", condition = "Conditional via oneOf / discriminator", description = "" }
+semantic = { preferred_label = "Neighbouring land rights", candidate_definition = "Indicates whether neighbouring land rights is applicable.", definition_status = "machine-drafted-from-source", source_description = "" }
+model = { role = "unclassified", owning_context = "unassigned", consuming_contexts = [], resource = "unresolved", relationship = "unresolved", attribute = "unresolved", local_name = "unresolved", iri = "unresolved" }
+value = { source_datatype = "string", xsd_datatype = "xsd:string", min_count = 0, max_count = 1, requiredness = "conditional", repeatable_context = false, occurrence_scope = "per-parent-resource" }
+restrictions = { format = "", pattern = "", min_length = "", max_length = "", minimum = "", maximum = "", permitted_values = ["No", "Yes"] }
+vocabulary = { status = "candidate", scheme_id = "unresolved", values = ["No", "Yes"] }
+governance = { approval_status = "proposed", sensitivity = "unclassified", provenance = "source-referenced", quality = "needs-semantic-review" }
+legacy_schema = { matched_occurrences = 2, title = "", description = "", format = "" }
+evidence = ["workbook:Sheet1!A887:H887", "legacy-schema:propertyPack.rightsAndInformalArrangements.neighbouringLandRights.yesNo"]
+review = { status = "needs-semantic-review", confidence = "low", flags = ["model-role-unassigned", "owning-context-unassigned", "iri-unassigned", "source-description-missing", "condition-expression-unresolved", "controlled-vocabulary-candidate"] }
+
+[[property]]
+id = "pp-c6a59a4d6ff8"
+source = { row = 888, path = "propertyPack.rightsAndInformalArrangements.rightsOrArrangements.churchChancel.yesNo", top_level_section = "propertyPack", heading = "rightsAndInformalArrangements", field_name = "yesNo", datatype = "string", status = "Required", condition = "Conditional via oneOf / discriminator", description = "" }
+semantic = { preferred_label = "Church chancel", candidate_definition = "Indicates whether church chancel is applicable.", definition_status = "machine-drafted-from-source", source_description = "" }
+model = { role = "unclassified", owning_context = "unassigned", consuming_contexts = [], resource = "unresolved", relationship = "unresolved", attribute = "unresolved", local_name = "unresolved", iri = "unresolved" }
+value = { source_datatype = "string", xsd_datatype = "xsd:string", min_count = 0, max_count = 1, requiredness = "conditional", repeatable_context = false, occurrence_scope = "per-parent-resource" }
+restrictions = { format = "", pattern = "", min_length = "", max_length = "", minimum = "", maximum = "", permitted_values = ["No", "Yes"] }
+vocabulary = { status = "candidate", scheme_id = "unresolved", values = ["No", "Yes"] }
+governance = { approval_status = "proposed", sensitivity = "unclassified", provenance = "source-referenced", quality = "needs-semantic-review" }
+legacy_schema = { matched_occurrences = 2, title = "", description = "", format = "" }
+evidence = ["workbook:Sheet1!A888:H888", "legacy-schema:propertyPack.rightsAndInformalArrangements.rightsOrArrangements.churchChancel.yesNo"]
+review = { status = "needs-semantic-review", confidence = "low", flags = ["model-role-unassigned", "owning-context-unassigned", "iri-unassigned", "source-description-missing", "condition-expression-unresolved", "controlled-vocabulary-candidate"] }
+
+[[property]]
+id = "pp-e4ac6536efb7"
+source = { row = 889, path = "propertyPack.rightsAndInformalArrangements.rightsOrArrangements.minesAndMinerals.yesNo", top_level_section = "propertyPack", heading = "rightsAndInformalArrangements", field_name = "yesNo", datatype = "string", status = "Required", condition = "Conditional via oneOf / discriminator", description = "" }
+semantic = { preferred_label = "Mines and minerals", candidate_definition = "Indicates whether mines and minerals is applicable.", definition_status = "machine-drafted-from-source", source_description = "" }
+model = { role = "unclassified", owning_context = "unassigned", consuming_contexts = [], resource = "unresolved", relationship = "unresolved", attribute = "unresolved", local_name = "unresolved", iri = "unresolved" }
+value = { source_datatype = "string", xsd_datatype = "xsd:string", min_count = 0, max_count = 1, requiredness = "conditional", repeatable_context = false, occurrence_scope = "per-parent-resource" }
+restrictions = { format = "", pattern = "", min_length = "", max_length = "", minimum = "", maximum = "", permitted_values = ["No", "Yes"] }
+vocabulary = { status = "candidate", scheme_id = "unresolved", values = ["No", "Yes"] }
+governance = { approval_status = "proposed", sensitivity = "unclassified", provenance = "source-referenced", quality = "needs-semantic-review" }
+legacy_schema = { matched_occurrences = 2, title = "", description = "", format = "" }
+evidence = ["workbook:Sheet1!A889:H889", "legacy-schema:propertyPack.rightsAndInformalArrangements.rightsOrArrangements.minesAndMinerals.yesNo"]
+review = { status = "needs-semantic-review", confidence = "low", flags = ["model-role-unassigned", "owning-context-unassigned", "iri-unassigned", "source-description-missing", "condition-expression-unresolved", "controlled-vocabulary-candidate"] }
+
+[[property]]
+id = "pp-eb38c1f063ec"
+source = { row = 890, path = "propertyPack.rightsAndInformalArrangements.rightsOrArrangements.otherRights.yesNo", top_level_section = "propertyPack", heading = "rightsAndInformalArrangements", field_name = "yesNo", datatype = "string", status = "Required", condition = "Conditional via oneOf / discriminator", description = "" }
+semantic = { preferred_label = "Other rights", candidate_definition = "Indicates whether other rights is applicable.", definition_status = "machine-drafted-from-source", source_description = "" }
+model = { role = "unclassified", owning_context = "unassigned", consuming_contexts = [], resource = "unresolved", relationship = "unresolved", attribute = "unresolved", local_name = "unresolved", iri = "unresolved" }
+value = { source_datatype = "string", xsd_datatype = "xsd:string", min_count = 0, max_count = 1, requiredness = "conditional", repeatable_context = false, occurrence_scope = "per-parent-resource" }
+restrictions = { format = "", pattern = "", min_length = "", max_length = "", minimum = "", maximum = "", permitted_values = ["No", "Yes"] }
+vocabulary = { status = "candidate", scheme_id = "unresolved", values = ["No", "Yes"] }
+governance = { approval_status = "proposed", sensitivity = "unclassified", provenance = "source-referenced", quality = "needs-semantic-review" }
+legacy_schema = { matched_occurrences = 2, title = "", description = "", format = "" }
+evidence = ["workbook:Sheet1!A890:H890", "legacy-schema:propertyPack.rightsAndInformalArrangements.rightsOrArrangements.otherRights.yesNo"]
+review = { status = "needs-semantic-review", confidence = "low", flags = ["model-role-unassigned", "owning-context-unassigned", "iri-unassigned", "source-description-missing", "condition-expression-unresolved", "controlled-vocabulary-candidate"] }
+
+[[property]]
+id = "pp-d0e2ab47a310"
+source = { row = 891, path = "propertyPack.rightsAndInformalArrangements.rightsOrArrangements.publicRightOfWay.yesNo", top_level_section = "propertyPack", heading = "rightsAndInformalArrangements", field_name = "yesNo", datatype = "string", status = "Required", condition = "Conditional via oneOf / discriminator", description = "" }
+semantic = { preferred_label = "Public right of way", candidate_definition = "Indicates whether public right of way is applicable.", definition_status = "machine-drafted-from-source", source_description = "" }
+model = { role = "unclassified", owning_context = "unassigned", consuming_contexts = [], resource = "unresolved", relationship = "unresolved", attribute = "unresolved", local_name = "unresolved", iri = "unresolved" }
+value = { source_datatype = "string", xsd_datatype = "xsd:string", min_count = 0, max_count = 1, requiredness = "conditional", repeatable_context = false, occurrence_scope = "per-parent-resource" }
+restrictions = { format = "", pattern = "", min_length = "", max_length = "", minimum = "", maximum = "", permitted_values = ["No", "Yes"] }
+vocabulary = { status = "candidate", scheme_id = "unresolved", values = ["No", "Yes"] }
+governance = { approval_status = "proposed", sensitivity = "unclassified", provenance = "source-referenced", quality = "needs-semantic-review" }
+legacy_schema = { matched_occurrences = 2, title = "", description = "", format = "" }
+evidence = ["workbook:Sheet1!A891:H891", "legacy-schema:propertyPack.rightsAndInformalArrangements.rightsOrArrangements.publicRightOfWay.yesNo"]
+review = { status = "needs-semantic-review", confidence = "low", flags = ["model-role-unassigned", "owning-context-unassigned", "iri-unassigned", "source-description-missing", "condition-expression-unresolved", "controlled-vocabulary-candidate"] }
+
+[[property]]
+id = "pp-3b88d70a2fae"
+source = { row = 892, path = "propertyPack.rightsAndInformalArrangements.rightsOrArrangements.rightsCreatedThroughCustom.yesNo", top_level_section = "propertyPack", heading = "rightsAndInformalArrangements", field_name = "yesNo", datatype = "string", status = "Required", condition = "Conditional via oneOf / discriminator", description = "" }
+semantic = { preferred_label = "Rights created through custom", candidate_definition = "Indicates whether rights created through custom is applicable.", definition_status = "machine-drafted-from-source", source_description = "" }
+model = { role = "unclassified", owning_context = "unassigned", consuming_contexts = [], resource = "unresolved", relationship = "unresolved", attribute = "unresolved", local_name = "unresolved", iri = "unresolved" }
+value = { source_datatype = "string", xsd_datatype = "xsd:string", min_count = 0, max_count = 1, requiredness = "conditional", repeatable_context = false, occurrence_scope = "per-parent-resource" }
+restrictions = { format = "", pattern = "", min_length = "", max_length = "", minimum = "", maximum = "", permitted_values = ["No", "Yes"] }
+vocabulary = { status = "candidate", scheme_id = "unresolved", values = ["No", "Yes"] }
+governance = { approval_status = "proposed", sensitivity = "unclassified", provenance = "source-referenced", quality = "needs-semantic-review" }
+legacy_schema = { matched_occurrences = 2, title = "", description = "", format = "" }
+evidence = ["workbook:Sheet1!A892:H892", "legacy-schema:propertyPack.rightsAndInformalArrangements.rightsOrArrangements.rightsCreatedThroughCustom.yesNo"]
+review = { status = "needs-semantic-review", confidence = "low", flags = ["model-role-unassigned", "owning-context-unassigned", "iri-unassigned", "source-description-missing", "condition-expression-unresolved", "controlled-vocabulary-candidate"] }
+
+[[property]]
+id = "pp-98f8dd1af65c"
+source = { row = 893, path = "propertyPack.rightsAndInformalArrangements.rightsOrArrangements.rightsOfLight.yesNo", top_level_section = "propertyPack", heading = "rightsAndInformalArrangements", field_name = "yesNo", datatype = "string", status = "Required", condition = "Conditional via oneOf / discriminator", description = "" }
+semantic = { preferred_label = "Rights of light", candidate_definition = "Indicates whether rights of light is applicable.", definition_status = "machine-drafted-from-source", source_description = "" }
+model = { role = "unclassified", owning_context = "unassigned", consuming_contexts = [], resource = "unresolved", relationship = "unresolved", attribute = "unresolved", local_name = "unresolved", iri = "unresolved" }
+value = { source_datatype = "string", xsd_datatype = "xsd:string", min_count = 0, max_count = 1, requiredness = "conditional", repeatable_context = false, occurrence_scope = "per-parent-resource" }
+restrictions = { format = "", pattern = "", min_length = "", max_length = "", minimum = "", maximum = "", permitted_values = ["No", "Yes"] }
+vocabulary = { status = "candidate", scheme_id = "unresolved", values = ["No", "Yes"] }
+governance = { approval_status = "proposed", sensitivity = "unclassified", provenance = "source-referenced", quality = "needs-semantic-review" }
+legacy_schema = { matched_occurrences = 2, title = "", description = "", format = "" }
+evidence = ["workbook:Sheet1!A893:H893", "legacy-schema:propertyPack.rightsAndInformalArrangements.rightsOrArrangements.rightsOfLight.yesNo"]
+review = { status = "needs-semantic-review", confidence = "low", flags = ["model-role-unassigned", "owning-context-unassigned", "iri-unassigned", "source-description-missing", "condition-expression-unresolved", "controlled-vocabulary-candidate"] }
+
+[[property]]
+id = "pp-8a439f1e662f"
+source = { row = 894, path = "propertyPack.rightsAndInformalArrangements.rightsOrArrangements.rightsOfSupport.yesNo", top_level_section = "propertyPack", heading = "rightsAndInformalArrangements", field_name = "yesNo", datatype = "string", status = "Required", condition = "Conditional via oneOf / discriminator", description = "" }
+semantic = { preferred_label = "Rights of support", candidate_definition = "Indicates whether rights of support is applicable.", definition_status = "machine-drafted-from-source", source_description = "" }
+model = { role = "unclassified", owning_context = "unassigned", consuming_contexts = [], resource = "unresolved", relationship = "unresolved", attribute = "unresolved", local_name = "unresolved", iri = "unresolved" }
+value = { source_datatype = "string", xsd_datatype = "xsd:string", min_count = 0, max_count = 1, requiredness = "conditional", repeatable_context = false, occurrence_scope = "per-parent-resource" }
+restrictions = { format = "", pattern = "", min_length = "", max_length = "", minimum = "", maximum = "", permitted_values = ["No", "Yes"] }
+vocabulary = { status = "candidate", scheme_id = "unresolved", values = ["No", "Yes"] }
+governance = { approval_status = "proposed", sensitivity = "unclassified", provenance = "source-referenced", quality = "needs-semantic-review" }
+legacy_schema = { matched_occurrences = 2, title = "", description = "", format = "" }
+evidence = ["workbook:Sheet1!A894:H894", "legacy-schema:propertyPack.rightsAndInformalArrangements.rightsOrArrangements.rightsOfSupport.yesNo"]
+review = { status = "needs-semantic-review", confidence = "low", flags = ["model-role-unassigned", "owning-context-unassigned", "iri-unassigned", "source-description-missing", "condition-expression-unresolved", "controlled-vocabulary-candidate"] }
+
+[[property]]
+id = "pp-5f89e1c75d55"
+source = { row = 895, path = "propertyPack.rightsAndInformalArrangements.rightsOrArrangements.rightsToTakeFromLand.yesNo", top_level_section = "propertyPack", heading = "rightsAndInformalArrangements", field_name = "yesNo", datatype = "string", status = "Required", condition = "Conditional via oneOf / discriminator", description = "" }
+semantic = { preferred_label = "Rights to take from land", candidate_definition = "Indicates whether rights to take from land is applicable.", definition_status = "machine-drafted-from-source", source_description = "" }
+model = { role = "unclassified", owning_context = "unassigned", consuming_contexts = [], resource = "unresolved", relationship = "unresolved", attribute = "unresolved", local_name = "unresolved", iri = "unresolved" }
+value = { source_datatype = "string", xsd_datatype = "xsd:string", min_count = 0, max_count = 1, requiredness = "conditional", repeatable_context = false, occurrence_scope = "per-parent-resource" }
+restrictions = { format = "", pattern = "", min_length = "", max_length = "", minimum = "", maximum = "", permitted_values = ["No", "Yes"] }
+vocabulary = { status = "candidate", scheme_id = "unresolved", values = ["No", "Yes"] }
+governance = { approval_status = "proposed", sensitivity = "unclassified", provenance = "source-referenced", quality = "needs-semantic-review" }
+legacy_schema = { matched_occurrences = 2, title = "", description = "", format = "" }
+evidence = ["workbook:Sheet1!A895:H895", "legacy-schema:propertyPack.rightsAndInformalArrangements.rightsOrArrangements.rightsToTakeFromLand.yesNo"]
+review = { status = "needs-semantic-review", confidence = "low", flags = ["model-role-unassigned", "owning-context-unassigned", "iri-unassigned", "source-description-missing", "condition-expression-unresolved", "controlled-vocabulary-candidate"] }
+
+[[property]]
+id = "pp-b7ded437ac42"
+source = { row = 896, path = "propertyPack.rightsAndInformalArrangements.sharedContributions.yesNo", top_level_section = "propertyPack", heading = "rightsAndInformalArrangements", field_name = "yesNo", datatype = "string", status = "Required", condition = "Conditional via oneOf / discriminator", description = "" }
+semantic = { preferred_label = "Shared contributions", candidate_definition = "Indicates whether shared contributions is applicable.", definition_status = "machine-drafted-from-source", source_description = "" }
+model = { role = "unclassified", owning_context = "unassigned", consuming_contexts = [], resource = "unresolved", relationship = "unresolved", attribute = "unresolved", local_name = "unresolved", iri = "unresolved" }
+value = { source_datatype = "string", xsd_datatype = "xsd:string", min_count = 0, max_count = 1, requiredness = "conditional", repeatable_context = false, occurrence_scope = "per-parent-resource" }
+restrictions = { format = "", pattern = "", min_length = "", max_length = "", minimum = "", maximum = "", permitted_values = ["No", "Yes"] }
+vocabulary = { status = "candidate", scheme_id = "unresolved", values = ["No", "Yes"] }
+governance = { approval_status = "proposed", sensitivity = "unclassified", provenance = "source-referenced", quality = "needs-semantic-review" }
+legacy_schema = { matched_occurrences = 2, title = "", description = "", format = "" }
+evidence = ["workbook:Sheet1!A896:H896", "legacy-schema:propertyPack.rightsAndInformalArrangements.sharedContributions.yesNo"]
+review = { status = "needs-semantic-review", confidence = "low", flags = ["model-role-unassigned", "owning-context-unassigned", "iri-unassigned", "source-description-missing", "condition-expression-unresolved", "controlled-vocabulary-candidate"] }
+
+[[property]]
+id = "pp-6510a39ceb24"
+source = { row = 897, path = "propertyPack.saleReadyDeclarations.authorisationToShare", top_level_section = "propertyPack", heading = "saleReadyDeclarations", field_name = "authorisationToShare", datatype = "boolean", status = "Required", condition = "", description = "I/we consent to the sharing of the information contained in the Sale Ready pack with the my/our legal representative and the buyer(s) and their legal representatives" }
+semantic = { preferred_label = "Authorisation to share", candidate_definition = "The value recorded for “I/we consent to the sharing of the information contained in the Sale Ready pack with the my/our legal representative and the buyer(s) and their legal representatives” in the Property Pack.", definition_status = "machine-drafted-from-source", source_description = "I/we consent to the sharing of the information contained in the Sale Ready pack with the my/our legal representative and the buyer(s) and their legal representatives" }
+model = { role = "unclassified", owning_context = "unassigned", consuming_contexts = [], resource = "unresolved", relationship = "unresolved", attribute = "unresolved", local_name = "unresolved", iri = "unresolved" }
+value = { source_datatype = "boolean", xsd_datatype = "xsd:boolean", min_count = 1, max_count = 1, requiredness = "unconditional", repeatable_context = false, occurrence_scope = "per-parent-resource" }
+restrictions = { format = "", pattern = "", min_length = "", max_length = "", minimum = "", maximum = "", permitted_values = [] }
+vocabulary = { status = "not-applicable", scheme_id = "", values = [] }
+governance = { approval_status = "proposed", sensitivity = "unclassified", provenance = "source-referenced", quality = "needs-semantic-review" }
+legacy_schema = { matched_occurrences = 1, title = "I/we consent to the sharing of the information contained in the Sale Ready pack with the my/our legal representative and the buyer(s) and their legal representatives", description = "", format = "" }
+evidence = ["workbook:Sheet1!A897:H897", "legacy-schema:propertyPack.saleReadyDeclarations.authorisationToShare"]
+review = { status = "needs-semantic-review", confidence = "low", flags = ["model-role-unassigned", "owning-context-unassigned", "iri-unassigned"] }
+
+[[property]]
+id = "pp-e2e3ee34a5d5"
+source = { row = 898, path = "propertyPack.saleReadyDeclarations.authorisedToActOnBehalfOfAllSellers", top_level_section = "propertyPack", heading = "saleReadyDeclarations", field_name = "authorisedToActOnBehalfOfAllSellers", datatype = "boolean", status = "Required", condition = "", description = "I/we confirm that I am/we are authorised to supply data and documents in relation to this property on behalf of all the owners of the property" }
+semantic = { preferred_label = "Authorised to act on behalf of all sellers", candidate_definition = "The value recorded for “I/we confirm that I am/we are authorised to supply data and documents in relation to this property on behalf of all the owners of the property” in the Property Pack.", definition_status = "machine-drafted-from-source", source_description = "I/we confirm that I am/we are authorised to supply data and documents in relation to this property on behalf of all the owners of the property" }
+model = { role = "unclassified", owning_context = "unassigned", consuming_contexts = [], resource = "unresolved", relationship = "unresolved", attribute = "unresolved", local_name = "unresolved", iri = "unresolved" }
+value = { source_datatype = "boolean", xsd_datatype = "xsd:boolean", min_count = 1, max_count = 1, requiredness = "unconditional", repeatable_context = false, occurrence_scope = "per-parent-resource" }
+restrictions = { format = "", pattern = "", min_length = "", max_length = "", minimum = "", maximum = "", permitted_values = [] }
+vocabulary = { status = "not-applicable", scheme_id = "", values = [] }
+governance = { approval_status = "proposed", sensitivity = "unclassified", provenance = "source-referenced", quality = "needs-semantic-review" }
+legacy_schema = { matched_occurrences = 1, title = "I/we confirm that I am/we are authorised to supply data and documents in relation to this property on behalf of all the owners of the property", description = "", format = "" }
+evidence = ["workbook:Sheet1!A898:H898", "legacy-schema:propertyPack.saleReadyDeclarations.authorisedToActOnBehalfOfAllSellers"]
+review = { status = "needs-semantic-review", confidence = "low", flags = ["model-role-unassigned", "owning-context-unassigned", "iri-unassigned"] }
+
+[[property]]
+id = "pp-8535ea45c8d8"
+source = { row = 907, path = "propertyPack.servicesCrossing.formalOrInformalAgreements.yesNo", top_level_section = "propertyPack", heading = "servicesCrossing", field_name = "yesNo", datatype = "string", status = "Required", condition = "Conditional via oneOf / discriminator", description = "" }
+semantic = { preferred_label = "Formal or informal agreements", candidate_definition = "Indicates whether formal or informal agreements is applicable.", definition_status = "machine-drafted-from-source", source_description = "" }
+model = { role = "unclassified", owning_context = "unassigned", consuming_contexts = [], resource = "unresolved", relationship = "unresolved", attribute = "unresolved", local_name = "unresolved", iri = "unresolved" }
+value = { source_datatype = "string", xsd_datatype = "xsd:string", min_count = 0, max_count = 1, requiredness = "conditional", repeatable_context = false, occurrence_scope = "per-parent-resource" }
+restrictions = { format = "", pattern = "", min_length = "", max_length = "", minimum = "", maximum = "", permitted_values = ["No", "Not known", "Yes"] }
+vocabulary = { status = "candidate", scheme_id = "unresolved", values = ["No", "Not known", "Yes"] }
+governance = { approval_status = "proposed", sensitivity = "unclassified", provenance = "source-referenced", quality = "needs-semantic-review" }
+legacy_schema = { matched_occurrences = 2, title = "", description = "", format = "" }
+evidence = ["workbook:Sheet1!A907:H907", "legacy-schema:propertyPack.servicesCrossing.formalOrInformalAgreements.yesNo"]
+review = { status = "needs-semantic-review", confidence = "low", flags = ["model-role-unassigned", "owning-context-unassigned", "iri-unassigned", "source-description-missing", "condition-expression-unresolved", "controlled-vocabulary-candidate"] }
+
+[[property]]
+id = "pp-2284e085c810"
+source = { row = 908, path = "propertyPack.servicesCrossing.pipesWiresCablesDrainsFromProperty.yesNo", top_level_section = "propertyPack", heading = "servicesCrossing", field_name = "yesNo", datatype = "string", status = "Required", condition = "Conditional via oneOf / discriminator", description = "" }
+semantic = { preferred_label = "Pipes wires cables drains from property", candidate_definition = "Indicates whether pipes wires cables drains from property is applicable.", definition_status = "machine-drafted-from-source", source_description = "" }
+model = { role = "unclassified", owning_context = "unassigned", consuming_contexts = [], resource = "unresolved", relationship = "unresolved", attribute = "unresolved", local_name = "unresolved", iri = "unresolved" }
+value = { source_datatype = "string", xsd_datatype = "xsd:string", min_count = 0, max_count = 1, requiredness = "conditional", repeatable_context = false, occurrence_scope = "per-parent-resource" }
+restrictions = { format = "", pattern = "", min_length = "", max_length = "", minimum = "", maximum = "", permitted_values = ["No", "Not known", "Yes"] }
+vocabulary = { status = "candidate", scheme_id = "unresolved", values = ["No", "Not known", "Yes"] }
+governance = { approval_status = "proposed", sensitivity = "unclassified", provenance = "source-referenced", quality = "needs-semantic-review" }
+legacy_schema = { matched_occurrences = 2, title = "", description = "", format = "" }
+evidence = ["workbook:Sheet1!A908:H908", "legacy-schema:propertyPack.servicesCrossing.pipesWiresCablesDrainsFromProperty.yesNo"]
+review = { status = "needs-semantic-review", confidence = "low", flags = ["model-role-unassigned", "owning-context-unassigned", "iri-unassigned", "source-description-missing", "condition-expression-unresolved", "controlled-vocabulary-candidate"] }
+
+[[property]]
+id = "pp-5030327dba3d"
+source = { row = 909, path = "propertyPack.servicesCrossing.pipesWiresCablesDrainsToProperty.yesNo", top_level_section = "propertyPack", heading = "servicesCrossing", field_name = "yesNo", datatype = "string", status = "Required", condition = "Conditional via oneOf / discriminator", description = "" }
+semantic = { preferred_label = "Pipes wires cables drains to property", candidate_definition = "Indicates whether pipes wires cables drains to property is applicable.", definition_status = "machine-drafted-from-source", source_description = "" }
+model = { role = "unclassified", owning_context = "unassigned", consuming_contexts = [], resource = "unresolved", relationship = "unresolved", attribute = "unresolved", local_name = "unresolved", iri = "unresolved" }
+value = { source_datatype = "string", xsd_datatype = "xsd:string", min_count = 0, max_count = 1, requiredness = "conditional", repeatable_context = false, occurrence_scope = "per-parent-resource" }
+restrictions = { format = "", pattern = "", min_length = "", max_length = "", minimum = "", maximum = "", permitted_values = ["No", "Not known", "Yes"] }
+vocabulary = { status = "candidate", scheme_id = "unresolved", values = ["No", "Not known", "Yes"] }
+governance = { approval_status = "proposed", sensitivity = "unclassified", provenance = "source-referenced", quality = "needs-semantic-review" }
+legacy_schema = { matched_occurrences = 2, title = "", description = "", format = "" }
+evidence = ["workbook:Sheet1!A909:H909", "legacy-schema:propertyPack.servicesCrossing.pipesWiresCablesDrainsToProperty.yesNo"]
+review = { status = "needs-semantic-review", confidence = "low", flags = ["model-role-unassigned", "owning-context-unassigned", "iri-unassigned", "source-description-missing", "condition-expression-unresolved", "controlled-vocabulary-candidate"] }
+
+[[property]]
+id = "pp-5989ba8aa8c5"
+source = { row = 910, path = "propertyPack.smartHomeSystems.hasSmartHomeSystems", top_level_section = "propertyPack", heading = "smartHomeSystems", field_name = "hasSmartHomeSystems", datatype = "string", status = "Required", condition = "Conditional via oneOf / discriminator", description = "Are there Smart Home Systems at the property?" }
+semantic = { preferred_label = "Has smart home systems", candidate_definition = "Records the response to the source question: Are there Smart Home Systems at the property?", definition_status = "machine-drafted-from-source", source_description = "Are there Smart Home Systems at the property?" }
+model = { role = "unclassified", owning_context = "unassigned", consuming_contexts = [], resource = "unresolved", relationship = "unresolved", attribute = "unresolved", local_name = "unresolved", iri = "unresolved" }
+value = { source_datatype = "string", xsd_datatype = "xsd:string", min_count = 0, max_count = 1, requiredness = "conditional", repeatable_context = false, occurrence_scope = "per-parent-resource" }
+restrictions = { format = "", pattern = "", min_length = "", max_length = "", minimum = "", maximum = "", permitted_values = ["No", "Yes"] }
+vocabulary = { status = "candidate", scheme_id = "unresolved", values = ["No", "Yes"] }
+governance = { approval_status = "proposed", sensitivity = "unclassified", provenance = "source-referenced", quality = "needs-semantic-review" }
+legacy_schema = { matched_occurrences = 2, title = "", description = "", format = "" }
+evidence = ["workbook:Sheet1!A910:H910", "legacy-schema:propertyPack.smartHomeSystems.hasSmartHomeSystems"]
+review = { status = "needs-semantic-review", confidence = "low", flags = ["model-role-unassigned", "owning-context-unassigned", "iri-unassigned", "condition-expression-unresolved", "controlled-vocabulary-candidate"] }
+
+[[property]]
+id = "pp-66a2f7d7635f"
+source = { row = 911, path = "propertyPack.specialistIssues.containsAsbestos.yesNo", top_level_section = "propertyPack", heading = "specialistIssues", field_name = "yesNo", datatype = "string", status = "Required", condition = "Conditional via oneOf / discriminator", description = "" }
+semantic = { preferred_label = "Contains asbestos", candidate_definition = "Indicates whether contains asbestos is applicable.", definition_status = "machine-drafted-from-source", source_description = "" }
+model = { role = "unclassified", owning_context = "unassigned", consuming_contexts = [], resource = "unresolved", relationship = "unresolved", attribute = "unresolved", local_name = "unresolved", iri = "unresolved" }
+value = { source_datatype = "string", xsd_datatype = "xsd:string", min_count = 0, max_count = 1, requiredness = "conditional", repeatable_context = false, occurrence_scope = "per-parent-resource" }
+restrictions = { format = "", pattern = "", min_length = "", max_length = "", minimum = "", maximum = "", permitted_values = ["No", "Yes"] }
+vocabulary = { status = "candidate", scheme_id = "unresolved", values = ["No", "Yes"] }
+governance = { approval_status = "proposed", sensitivity = "unclassified", provenance = "source-referenced", quality = "needs-semantic-review" }
+legacy_schema = { matched_occurrences = 2, title = "", description = "", format = "" }
+evidence = ["workbook:Sheet1!A911:H911", "legacy-schema:propertyPack.specialistIssues.containsAsbestos.yesNo"]
+review = { status = "needs-semantic-review", confidence = "low", flags = ["model-role-unassigned", "owning-context-unassigned", "iri-unassigned", "source-description-missing", "condition-expression-unresolved", "controlled-vocabulary-candidate"] }
+
+[[property]]
+id = "pp-b08e41268297"
+source = { row = 912, path = "propertyPack.specialistIssues.dryRotEtcTreatment.yesNo", top_level_section = "propertyPack", heading = "specialistIssues", field_name = "yesNo", datatype = "string", status = "Required", condition = "Conditional via oneOf / discriminator", description = "" }
+semantic = { preferred_label = "Dry rot etc treatment", candidate_definition = "Indicates whether dry rot etc treatment is applicable.", definition_status = "machine-drafted-from-source", source_description = "" }
+model = { role = "unclassified", owning_context = "unassigned", consuming_contexts = [], resource = "unresolved", relationship = "unresolved", attribute = "unresolved", local_name = "unresolved", iri = "unresolved" }
+value = { source_datatype = "string", xsd_datatype = "xsd:string", min_count = 0, max_count = 1, requiredness = "conditional", repeatable_context = false, occurrence_scope = "per-parent-resource" }
+restrictions = { format = "", pattern = "", min_length = "", max_length = "", minimum = "", maximum = "", permitted_values = ["No", "Yes"] }
+vocabulary = { status = "candidate", scheme_id = "unresolved", values = ["No", "Yes"] }
+governance = { approval_status = "proposed", sensitivity = "unclassified", provenance = "source-referenced", quality = "needs-semantic-review" }
+legacy_schema = { matched_occurrences = 2, title = "", description = "", format = "" }
+evidence = ["workbook:Sheet1!A912:H912", "legacy-schema:propertyPack.specialistIssues.dryRotEtcTreatment.yesNo"]
+review = { status = "needs-semantic-review", confidence = "low", flags = ["model-role-unassigned", "owning-context-unassigned", "iri-unassigned", "source-description-missing", "condition-expression-unresolved", "controlled-vocabulary-candidate"] }
+
+[[property]]
+id = "pp-ea7f17cdb0c1"
+source = { row = 913, path = "propertyPack.specialistIssues.japaneseKnotweed.yesNo", top_level_section = "propertyPack", heading = "specialistIssues", field_name = "yesNo", datatype = "string", status = "Required", condition = "Conditional via oneOf / discriminator", description = "" }
+semantic = { preferred_label = "Japanese knotweed", candidate_definition = "Indicates whether japanese knotweed is applicable.", definition_status = "machine-drafted-from-source", source_description = "" }
+model = { role = "unclassified", owning_context = "unassigned", consuming_contexts = [], resource = "unresolved", relationship = "unresolved", attribute = "unresolved", local_name = "unresolved", iri = "unresolved" }
+value = { source_datatype = "string", xsd_datatype = "xsd:string", min_count = 0, max_count = 1, requiredness = "conditional", repeatable_context = false, occurrence_scope = "per-parent-resource" }
+restrictions = { format = "", pattern = "", min_length = "", max_length = "", minimum = "", maximum = "", permitted_values = ["No", "Not known", "Yes"] }
+vocabulary = { status = "candidate", scheme_id = "unresolved", values = ["No", "Not known", "Yes"] }
+governance = { approval_status = "proposed", sensitivity = "unclassified", provenance = "source-referenced", quality = "needs-semantic-review" }
+legacy_schema = { matched_occurrences = 2, title = "", description = "", format = "" }
+evidence = ["workbook:Sheet1!A913:H913", "legacy-schema:propertyPack.specialistIssues.japaneseKnotweed.yesNo"]
+review = { status = "needs-semantic-review", confidence = "low", flags = ["model-role-unassigned", "owning-context-unassigned", "iri-unassigned", "source-description-missing", "condition-expression-unresolved", "controlled-vocabulary-candidate"] }
+
+[[property]]
+id = "pp-f09654d59bf9"
+source = { row = 914, path = "propertyPack.specialistIssues.ongoingHealthOrSafetyIssue.yesNo", top_level_section = "propertyPack", heading = "specialistIssues", field_name = "yesNo", datatype = "string", status = "Required", condition = "Conditional via oneOf / discriminator", description = "" }
+semantic = { preferred_label = "Ongoing health or safety issue", candidate_definition = "Indicates whether ongoing health or safety issue is applicable.", definition_status = "machine-drafted-from-source", source_description = "" }
+model = { role = "unclassified", owning_context = "unassigned", consuming_contexts = [], resource = "unresolved", relationship = "unresolved", attribute = "unresolved", local_name = "unresolved", iri = "unresolved" }
+value = { source_datatype = "string", xsd_datatype = "xsd:string", min_count = 0, max_count = 1, requiredness = "conditional", repeatable_context = false, occurrence_scope = "per-parent-resource" }
+restrictions = { format = "", pattern = "", min_length = "", max_length = "", minimum = "", maximum = "", permitted_values = ["No", "Yes"] }
+vocabulary = { status = "candidate", scheme_id = "unresolved", values = ["No", "Yes"] }
+governance = { approval_status = "proposed", sensitivity = "unclassified", provenance = "source-referenced", quality = "needs-semantic-review" }
+legacy_schema = { matched_occurrences = 2, title = "", description = "", format = "" }
+evidence = ["workbook:Sheet1!A914:H914", "legacy-schema:propertyPack.specialistIssues.ongoingHealthOrSafetyIssue.yesNo"]
+review = { status = "needs-semantic-review", confidence = "low", flags = ["model-role-unassigned", "owning-context-unassigned", "iri-unassigned", "source-description-missing", "condition-expression-unresolved", "controlled-vocabulary-candidate"] }
+
+[[property]]
+id = "pp-a56c6271262f"
+source = { row = 915, path = "propertyPack.specialistIssues.subsidenceOrStructuralFault.yesNo", top_level_section = "propertyPack", heading = "specialistIssues", field_name = "yesNo", datatype = "string", status = "Required", condition = "Conditional via oneOf / discriminator", description = "" }
+semantic = { preferred_label = "Subsidence or structural fault", candidate_definition = "Indicates whether subsidence or structural fault is applicable.", definition_status = "machine-drafted-from-source", source_description = "" }
+model = { role = "unclassified", owning_context = "unassigned", consuming_contexts = [], resource = "unresolved", relationship = "unresolved", attribute = "unresolved", local_name = "unresolved", iri = "unresolved" }
+value = { source_datatype = "string", xsd_datatype = "xsd:string", min_count = 0, max_count = 1, requiredness = "conditional", repeatable_context = false, occurrence_scope = "per-parent-resource" }
+restrictions = { format = "", pattern = "", min_length = "", max_length = "", minimum = "", maximum = "", permitted_values = ["No", "Yes"] }
+vocabulary = { status = "candidate", scheme_id = "unresolved", values = ["No", "Yes"] }
+governance = { approval_status = "proposed", sensitivity = "unclassified", provenance = "source-referenced", quality = "needs-semantic-review" }
+legacy_schema = { matched_occurrences = 2, title = "", description = "", format = "" }
+evidence = ["workbook:Sheet1!A915:H915", "legacy-schema:propertyPack.specialistIssues.subsidenceOrStructuralFault.yesNo"]
+review = { status = "needs-semantic-review", confidence = "low", flags = ["model-role-unassigned", "owning-context-unassigned", "iri-unassigned", "source-description-missing", "condition-expression-unresolved", "controlled-vocabulary-candidate"] }
+
+[[property]]
+id = "pp-6bf0083f50bc"
+source = { row = 1578, path = "propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.editionDate", top_level_section = "propertyPack", heading = "titlesToBeSold", field_name = "editionDate", datatype = "string", status = "Required", condition = "", description = "" }
+semantic = { preferred_label = "Edition date", candidate_definition = "Records the edition date for oc summary data.", definition_status = "machine-drafted-from-source", source_description = "" }
+model = { role = "unclassified", owning_context = "unassigned", consuming_contexts = [], resource = "unresolved", relationship = "unresolved", attribute = "unresolved", local_name = "unresolved", iri = "unresolved" }
+value = { source_datatype = "string", xsd_datatype = "xsd:date", min_count = 1, max_count = 1, requiredness = "unconditional", repeatable_context = true, occurrence_scope = "per-list-item" }
+restrictions = { format = "date", pattern = "", min_length = "", max_length = "", minimum = "", maximum = "", permitted_values = [] }
+vocabulary = { status = "not-applicable", scheme_id = "", values = [] }
+governance = { approval_status = "proposed", sensitivity = "unclassified", provenance = "source-referenced", quality = "needs-semantic-review" }
+legacy_schema = { matched_occurrences = 1, title = "", description = "", format = "date" }
+evidence = ["workbook:Sheet1!A1578:H1578", "legacy-schema:propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.editionDate"]
+review = { status = "needs-semantic-review", confidence = "low", flags = ["model-role-unassigned", "owning-context-unassigned", "iri-unassigned", "source-description-missing", "container-cardinality-needs-review"] }
+
+[[property]]
+id = "pp-336f89c938d4"
+source = { row = 1580, path = "propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.lease.leaseEntry[].entryDetails.entryNumber", top_level_section = "propertyPack", heading = "titlesToBeSold", field_name = "entryNumber", datatype = "string", status = "Required", condition = "", description = "" }
+semantic = { preferred_label = "Entry number", candidate_definition = "Records the entry number for entry details.", definition_status = "machine-drafted-from-source", source_description = "" }
+model = { role = "unclassified", owning_context = "unassigned", consuming_contexts = [], resource = "unresolved", relationship = "unresolved", attribute = "unresolved", local_name = "unresolved", iri = "unresolved" }
+value = { source_datatype = "string", xsd_datatype = "xsd:string", min_count = 1, max_count = 1, requiredness = "unconditional", repeatable_context = true, occurrence_scope = "per-list-item" }
+restrictions = { format = "", pattern = "", min_length = "", max_length = "", minimum = "", maximum = "", permitted_values = [] }
+vocabulary = { status = "not-applicable", scheme_id = "", values = [] }
+governance = { approval_status = "proposed", sensitivity = "unclassified", provenance = "source-referenced", quality = "needs-semantic-review" }
+legacy_schema = { matched_occurrences = 1, title = "", description = "", format = "" }
+evidence = ["workbook:Sheet1!A1580:H1580", "legacy-schema:propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.lease.leaseEntry[].entryDetails.entryNumber"]
+review = { status = "needs-semantic-review", confidence = "low", flags = ["model-role-unassigned", "owning-context-unassigned", "iri-unassigned", "source-description-missing", "container-cardinality-needs-review"] }
+
+[[property]]
+id = "pp-5ecd7116db48"
+source = { row = 1581, path = "propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.lease.leaseEntry[].entryDetails.entryText", top_level_section = "propertyPack", heading = "titlesToBeSold", field_name = "entryText", datatype = "string", status = "Required", condition = "", description = "" }
+semantic = { preferred_label = "Entry text", candidate_definition = "Records the entry text for entry details.", definition_status = "machine-drafted-from-source", source_description = "" }
+model = { role = "unclassified", owning_context = "unassigned", consuming_contexts = [], resource = "unresolved", relationship = "unresolved", attribute = "unresolved", local_name = "unresolved", iri = "unresolved" }
+value = { source_datatype = "string", xsd_datatype = "xsd:string", min_count = 1, max_count = 1, requiredness = "unconditional", repeatable_context = true, occurrence_scope = "per-list-item" }
+restrictions = { format = "", pattern = "", min_length = "", max_length = "", minimum = "", maximum = "", permitted_values = [] }
+vocabulary = { status = "not-applicable", scheme_id = "", values = [] }
+governance = { approval_status = "proposed", sensitivity = "unclassified", provenance = "source-referenced", quality = "needs-semantic-review" }
+legacy_schema = { matched_occurrences = 1, title = "", description = "", format = "" }
+evidence = ["workbook:Sheet1!A1581:H1581", "legacy-schema:propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.lease.leaseEntry[].entryDetails.entryText"]
+review = { status = "needs-semantic-review", confidence = "low", flags = ["model-role-unassigned", "owning-context-unassigned", "iri-unassigned", "source-description-missing", "container-cardinality-needs-review"] }
+
+[[property]]
+id = "pp-4ecba38f7989"
+source = { row = 1585, path = "propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.lease.leaseEntry[].leaseDate", top_level_section = "propertyPack", heading = "titlesToBeSold", field_name = "leaseDate", datatype = "string", status = "Required", condition = "", description = "" }
+semantic = { preferred_label = "Lease date", candidate_definition = "Records the lease date for lease entry.", definition_status = "machine-drafted-from-source", source_description = "" }
+model = { role = "unclassified", owning_context = "unassigned", consuming_contexts = [], resource = "unresolved", relationship = "unresolved", attribute = "unresolved", local_name = "unresolved", iri = "unresolved" }
+value = { source_datatype = "string", xsd_datatype = "xsd:string", min_count = 1, max_count = 1, requiredness = "unconditional", repeatable_context = true, occurrence_scope = "per-list-item" }
+restrictions = { format = "", pattern = "", min_length = "", max_length = "", minimum = "", maximum = "", permitted_values = [] }
+vocabulary = { status = "not-applicable", scheme_id = "", values = [] }
+governance = { approval_status = "proposed", sensitivity = "unclassified", provenance = "source-referenced", quality = "needs-semantic-review" }
+legacy_schema = { matched_occurrences = 1, title = "", description = "", format = "" }
+evidence = ["workbook:Sheet1!A1585:H1585", "legacy-schema:propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.lease.leaseEntry[].leaseDate"]
+review = { status = "needs-semantic-review", confidence = "low", flags = ["model-role-unassigned", "owning-context-unassigned", "iri-unassigned", "source-description-missing", "container-cardinality-needs-review", "date-format-needs-review"] }
+
+[[property]]
+id = "pp-8af440a480af"
+source = { row = 1586, path = "propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.lease.leaseEntry[].leaseParty[].address.postcodeZone.postcode", top_level_section = "propertyPack", heading = "titlesToBeSold", field_name = "postcode", datatype = "string", status = "Required", condition = "", description = "" }
+semantic = { preferred_label = "Postcode", candidate_definition = "Records the postcode for postcode zone.", definition_status = "machine-drafted-from-source", source_description = "" }
+model = { role = "unclassified", owning_context = "unassigned", consuming_contexts = [], resource = "unresolved", relationship = "unresolved", attribute = "unresolved", local_name = "unresolved", iri = "unresolved" }
+value = { source_datatype = "string", xsd_datatype = "xsd:string", min_count = 1, max_count = 1, requiredness = "unconditional", repeatable_context = true, occurrence_scope = "per-list-item" }
+restrictions = { format = "", pattern = "", min_length = "", max_length = "", minimum = "", maximum = "", permitted_values = [] }
+vocabulary = { status = "not-applicable", scheme_id = "", values = [] }
+governance = { approval_status = "proposed", sensitivity = "unclassified", provenance = "source-referenced", quality = "needs-semantic-review" }
+legacy_schema = { matched_occurrences = 1, title = "", description = "", format = "" }
+evidence = ["workbook:Sheet1!A1586:H1586", "legacy-schema:propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.lease.leaseEntry[].leaseParty[].address.postcodeZone.postcode"]
+review = { status = "needs-semantic-review", confidence = "low", flags = ["model-role-unassigned", "owning-context-unassigned", "iri-unassigned", "source-description-missing", "container-cardinality-needs-review"] }
+
+[[property]]
+id = "pp-772ed04c022f"
+source = { row = 1589, path = "propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.lease.leaseEntry[].leaseParty[].organization.name", top_level_section = "propertyPack", heading = "titlesToBeSold", field_name = "name", datatype = "string", status = "Required", condition = "", description = "" }
+semantic = { preferred_label = "Name", candidate_definition = "Records the name for organization.", definition_status = "machine-drafted-from-source", source_description = "" }
+model = { role = "unclassified", owning_context = "unassigned", consuming_contexts = [], resource = "unresolved", relationship = "unresolved", attribute = "unresolved", local_name = "unresolved", iri = "unresolved" }
+value = { source_datatype = "string", xsd_datatype = "xsd:string", min_count = 1, max_count = 1, requiredness = "unconditional", repeatable_context = true, occurrence_scope = "per-list-item" }
+restrictions = { format = "", pattern = "", min_length = "", max_length = "", minimum = "", maximum = "", permitted_values = [] }
+vocabulary = { status = "not-applicable", scheme_id = "", values = [] }
+governance = { approval_status = "proposed", sensitivity = "unclassified", provenance = "source-referenced", quality = "needs-semantic-review" }
+legacy_schema = { matched_occurrences = 1, title = "", description = "", format = "" }
+evidence = ["workbook:Sheet1!A1589:H1589", "legacy-schema:propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.lease.leaseEntry[].leaseParty[].organization.name"]
+review = { status = "needs-semantic-review", confidence = "low", flags = ["model-role-unassigned", "owning-context-unassigned", "iri-unassigned", "source-description-missing", "container-cardinality-needs-review"] }
+
+[[property]]
+id = "pp-815a7ae133e7"
+source = { row = 1593, path = "propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.lease.leaseEntry[].leaseParty[].privateIndividual.name.surnameName", top_level_section = "propertyPack", heading = "titlesToBeSold", field_name = "surnameName", datatype = "string", status = "Required", condition = "", description = "" }
+semantic = { preferred_label = "Surname name", candidate_definition = "Records the surname name for name.", definition_status = "machine-drafted-from-source", source_description = "" }
+model = { role = "unclassified", owning_context = "unassigned", consuming_contexts = [], resource = "unresolved", relationship = "unresolved", attribute = "unresolved", local_name = "unresolved", iri = "unresolved" }
+value = { source_datatype = "string", xsd_datatype = "xsd:string", min_count = 1, max_count = 1, requiredness = "unconditional", repeatable_context = true, occurrence_scope = "per-list-item" }
+restrictions = { format = "", pattern = "", min_length = "", max_length = "", minimum = "", maximum = "", permitted_values = [] }
+vocabulary = { status = "not-applicable", scheme_id = "", values = [] }
+governance = { approval_status = "proposed", sensitivity = "unclassified", provenance = "source-referenced", quality = "needs-semantic-review" }
+legacy_schema = { matched_occurrences = 1, title = "", description = "", format = "" }
+evidence = ["workbook:Sheet1!A1593:H1593", "legacy-schema:propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.lease.leaseEntry[].leaseParty[].privateIndividual.name.surnameName"]
+review = { status = "needs-semantic-review", confidence = "low", flags = ["model-role-unassigned", "owning-context-unassigned", "iri-unassigned", "source-description-missing", "container-cardinality-needs-review"] }
+
+[[property]]
+id = "pp-5cace3a7b78e"
+source = { row = 1595, path = "propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.lease.leaseEntry[].leaseTerm", top_level_section = "propertyPack", heading = "titlesToBeSold", field_name = "leaseTerm", datatype = "string", status = "Required", condition = "", description = "" }
+semantic = { preferred_label = "Lease term", candidate_definition = "Records the lease term for lease entry.", definition_status = "machine-drafted-from-source", source_description = "" }
+model = { role = "unclassified", owning_context = "unassigned", consuming_contexts = [], resource = "unresolved", relationship = "unresolved", attribute = "unresolved", local_name = "unresolved", iri = "unresolved" }
+value = { source_datatype = "string", xsd_datatype = "xsd:string", min_count = 1, max_count = 1, requiredness = "unconditional", repeatable_context = true, occurrence_scope = "per-list-item" }
+restrictions = { format = "", pattern = "", min_length = "", max_length = "", minimum = "", maximum = "", permitted_values = [] }
+vocabulary = { status = "not-applicable", scheme_id = "", values = [] }
+governance = { approval_status = "proposed", sensitivity = "unclassified", provenance = "source-referenced", quality = "needs-semantic-review" }
+legacy_schema = { matched_occurrences = 1, title = "", description = "", format = "" }
+evidence = ["workbook:Sheet1!A1595:H1595", "legacy-schema:propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.lease.leaseEntry[].leaseTerm"]
+review = { status = "needs-semantic-review", confidence = "low", flags = ["model-role-unassigned", "owning-context-unassigned", "iri-unassigned", "source-description-missing", "container-cardinality-needs-review"] }
+
+[[property]]
+id = "pp-f7d8d7f57961"
+source = { row = 1596, path = "propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.officialCopyDateTime", top_level_section = "propertyPack", heading = "titlesToBeSold", field_name = "officialCopyDateTime", datatype = "string", status = "Required", condition = "", description = "" }
+semantic = { preferred_label = "Official copy date time", candidate_definition = "Records the official copy date time for oc summary data.", definition_status = "machine-drafted-from-source", source_description = "" }
+model = { role = "unclassified", owning_context = "unassigned", consuming_contexts = [], resource = "unresolved", relationship = "unresolved", attribute = "unresolved", local_name = "unresolved", iri = "unresolved" }
+value = { source_datatype = "string", xsd_datatype = "xsd:dateTime", min_count = 1, max_count = 1, requiredness = "unconditional", repeatable_context = true, occurrence_scope = "per-list-item" }
+restrictions = { format = "date-time", pattern = "", min_length = "", max_length = "", minimum = "", maximum = "", permitted_values = [] }
+vocabulary = { status = "not-applicable", scheme_id = "", values = [] }
+governance = { approval_status = "proposed", sensitivity = "unclassified", provenance = "source-referenced", quality = "needs-semantic-review" }
+legacy_schema = { matched_occurrences = 1, title = "", description = "", format = "date-time" }
+evidence = ["workbook:Sheet1!A1596:H1596", "legacy-schema:propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.officialCopyDateTime"]
+review = { status = "needs-semantic-review", confidence = "low", flags = ["model-role-unassigned", "owning-context-unassigned", "iri-unassigned", "source-description-missing", "container-cardinality-needs-review"] }
+
+[[property]]
+id = "pp-f3da41eccf35"
+source = { row = 1597, path = "propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.pricePaidEntry.entryDetails.entryNumber", top_level_section = "propertyPack", heading = "titlesToBeSold", field_name = "entryNumber", datatype = "string", status = "Required", condition = "", description = "" }
+semantic = { preferred_label = "Entry number", candidate_definition = "Records the entry number for entry details.", definition_status = "machine-drafted-from-source", source_description = "" }
+model = { role = "unclassified", owning_context = "unassigned", consuming_contexts = [], resource = "unresolved", relationship = "unresolved", attribute = "unresolved", local_name = "unresolved", iri = "unresolved" }
+value = { source_datatype = "string", xsd_datatype = "xsd:string", min_count = 1, max_count = 1, requiredness = "unconditional", repeatable_context = true, occurrence_scope = "per-list-item" }
+restrictions = { format = "", pattern = "", min_length = "", max_length = "", minimum = "", maximum = "", permitted_values = [] }
+vocabulary = { status = "not-applicable", scheme_id = "", values = [] }
+governance = { approval_status = "proposed", sensitivity = "unclassified", provenance = "source-referenced", quality = "needs-semantic-review" }
+legacy_schema = { matched_occurrences = 1, title = "", description = "", format = "" }
+evidence = ["workbook:Sheet1!A1597:H1597", "legacy-schema:propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.pricePaidEntry.entryDetails.entryNumber"]
+review = { status = "needs-semantic-review", confidence = "low", flags = ["model-role-unassigned", "owning-context-unassigned", "iri-unassigned", "source-description-missing", "container-cardinality-needs-review"] }
+
+[[property]]
+id = "pp-f6631cf32fed"
+source = { row = 1598, path = "propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.pricePaidEntry.entryDetails.entryText", top_level_section = "propertyPack", heading = "titlesToBeSold", field_name = "entryText", datatype = "string", status = "Required", condition = "", description = "" }
+semantic = { preferred_label = "Entry text", candidate_definition = "Records the entry text for entry details.", definition_status = "machine-drafted-from-source", source_description = "" }
+model = { role = "unclassified", owning_context = "unassigned", consuming_contexts = [], resource = "unresolved", relationship = "unresolved", attribute = "unresolved", local_name = "unresolved", iri = "unresolved" }
+value = { source_datatype = "string", xsd_datatype = "xsd:string", min_count = 1, max_count = 1, requiredness = "unconditional", repeatable_context = true, occurrence_scope = "per-list-item" }
+restrictions = { format = "", pattern = "", min_length = "", max_length = "", minimum = "", maximum = "", permitted_values = [] }
+vocabulary = { status = "not-applicable", scheme_id = "", values = [] }
+governance = { approval_status = "proposed", sensitivity = "unclassified", provenance = "source-referenced", quality = "needs-semantic-review" }
+legacy_schema = { matched_occurrences = 1, title = "", description = "", format = "" }
+evidence = ["workbook:Sheet1!A1598:H1598", "legacy-schema:propertyPack.titlesToBeSold[].registerExtract.ocSummaryData.pricePaidEntry.entryDetails.entryText"]
+review = { status = "needs-semantic-review", confidence = "low", flags = ["model-role-unassigned", "owning-context-unassigned", "iri-unassigned", "source-description-missing", "container-cardinality-needs-review"] }

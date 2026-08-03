@@ -1,0 +1,54 @@
+{
+  "actual_count": 451,
+  "conditional_required": 283,
+  "controlled_vocabulary_candidates": 320,
+  "distinct_array_containers": 28,
+  "errors": [],
+  "expected_count": 451,
+  "fragment_lines": {
+    "properties/part-01.toml": 456,
+    "properties/part-02.toml": 456,
+    "properties/part-03.toml": 456,
+    "properties/part-04.toml": 456,
+    "properties/part-05.toml": 456,
+    "properties/part-06.toml": 456,
+    "properties/part-07.toml": 456,
+    "properties/part-08.toml": 456,
+    "properties/part-09.toml": 456,
+    "properties/part-10.toml": 456,
+    "properties/part-11.toml": 456,
+    "properties/part-12.toml": 456,
+    "properties/part-13.toml": 404
+  },
+  "legacy_formats": 17,
+  "legacy_min_lengths": 23,
+  "legacy_numeric_minimums": 2,
+  "model_roles": {
+    "unclassified": 451
+  },
+  "repeatable_context": 133,
+  "review_statuses": {
+    "needs-semantic-review": 451
+  },
+  "source_comparison": {
+    "field_mismatches": [],
+    "legacy_schema_sha256_matches": true,
+    "missing_from_catalogue": [],
+    "not_required_in_workbook": [],
+    "performed": true,
+    "workbook_sha256_matches": true
+  },
+  "source_datatypes": {
+    "boolean": 37,
+    "integer": 2,
+    "number": 2,
+    "string": 410
+  },
+  "source_descriptions_missing": 240,
+  "source_descriptions_present": 211,
+  "status": "pass",
+  "unconditional_required": 168,
+  "unique_ids": 451,
+  "unique_paths": 451,
+  "unique_terminal_field_names": 100
+}
