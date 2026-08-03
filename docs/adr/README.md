@@ -56,6 +56,13 @@ with the next sequential number and canonical sections.
 | [ADR-0004](./ADR-0004-accreditation-directory.md) | Accreditation Directory spec | proposed |
 | [ADR-0005](./ADR-0005-deferred-work-register.md) | Deferred work register | accepted · living document |
 
+## August 2026 greenfield Property Pack ontology sequence
+
+| # | Title | Status |
+|---|---|---|
+| [ADR-0066](./ADR-0066-property-pack-451-seed-scope-and-greenfield-ontology.md) | The 451 required Property Pack data points are the closed seed scope for a greenfield ontology | accepted |
+| [ADR-0067](./ADR-0067-first-principles-property-pack-ontology-by-bounded-context.md) | Model the Property Pack from first principles with bounded-context ownership | accepted |
+
 ## Authoring a new ADR
 
 1. Run `/ruflo-adr:adr-create "<short title>"` — the skill picks the
