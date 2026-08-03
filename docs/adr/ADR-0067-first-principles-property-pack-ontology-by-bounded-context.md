@@ -209,11 +209,11 @@ not reinstate Category 13.
 
 The first candidate must keep the following outputs aligned:
 
-- the context-owned RDF/OWL domain ontologies and small common-boundary ontology;
+- the context-owned RDF 1.2 and OWL 2 domain ontologies and small common-boundary ontology;
 - a plain-language business glossary;
 - a data dictionary tied to the 451 source items;
 - SKOS controlled vocabularies and taxonomies;
-- SHACL data shapes and validation rules;
+- SHACL 1.2 data shapes and validation rules;
 - the DDD context map and cross-domain mappings;
 - provenance, quality, temporal, sensitivity and authorisation metadata;
 - a coverage matrix from all 451 source-item IDs to their semantic home and resulting
@@ -237,7 +237,7 @@ dependency:
 | ADR-0006 plus the model-portfolio manifests — role-aware routing | Adopt exact route identity, independence groups, frozen task envelopes, qualification, expiry and no silent fallback. |
 | ADR-0026 — branchable candidates and separated promotion authority | Adopt isolated candidate branches/deltas; agents cannot mutate or promote the accepted corpus. |
 | ADR-0039 — replaceable orchestration and memory | Adopt swarms, retrieval and memory only as disposable coordination/context capabilities, never ontology or citation authority. |
-| ADR-0040/0041 — exact graph context and deterministic conformance | Adopt pinned standards/tool profiles, semantic feature probes, complete coverage states and fail-closed validation. |
+| ADR-0040/0041 — exact graph context and deterministic conformance | Adopt full RDF 1.2, SPARQL 1.2 and SHACL 1.2, pinned standards/tool profiles, semantic feature probes, complete coverage states and fail-closed validation. |
 | ADR-0012 — stable releases over a living corpus | Adopt immutable releases, ontology-aware compatibility, deprecation/supersession and a machine-readable change record. |
 
 This ADR does **not** import the complete fourteen-category target, code-analysis and RML
@@ -331,19 +331,19 @@ per role; it will not hard-code provider specialisms before measurement.
 
 #### 5.4 Deterministic validation, promotion and releases
 
-Agents may propose RDF, SKOS, SHACL and repairs; they never run, suppress or certify the
+Agents may propose RDF 1.2, SKOS, SHACL 1.2 and repairs; they never run, suppress or certify the
 validation gate. A trusted deterministic attempt pins the candidate, base graph,
-standards/tool profile, applicable OPDA concerns and evidence, then parses RDF, checks
-write scope and provenance, builds the exact graph view, runs SHACL/OWL/SPARQL and
+standards/tool profile, applicable OPDA concerns and evidence, then parses RDF 1.2, checks
+write scope and provenance, builds the exact graph view, runs SHACL 1.2, OWL 2, SPARQL 1.2 and
 competency queries, and seals the results. Each required validation cell is one of
 `pass`, `fail`, `not-applicable`, `not-run` or `infrastructure-error`; missing output,
 unsupported semantics or an empty report cannot become `pass`.
 
-The existing OPDA Jena/Fuseki toolchain is the initial implementation candidate, but
-this ADR does not silently adopt Semantic Builder's precise engine or RDF/SPARQL/SHACL
-version pins. A separate technical decision must qualify the actual OPDA standards
-profile with positive and negative semantic probes. For this eight-concern profile, the
-six excluded concerns are predeclared `not-applicable`; they are not omitted silently.
+The target profile is Semantic Builder's full RDF 1.2, SPARQL 1.2 and SHACL 1.2 Union
+Profile—not RDF 1.1, query-only SPARQL or SHACL Core. Every run pins dated specification
+and test snapshots and qualifies its engine and extensions with positive and negative
+semantic probes. Jena/Fuseki is an implementation, not the standards boundary; unsupported
+or inert required behaviour blocks the run. Six excluded concerns are predeclared `not-applicable`.
 
 Only a human disposition authorised through the OPDA authority chain above can move a
 validated candidate into the governed corpus. Published releases are immutable named
@@ -495,5 +495,5 @@ constraints; it does not pre-approve the resulting ontology terms.
 - **2026-08-03 — OPDA governance clarified.** Constitutional authority and the technical
   change process govern human review and promotion; incomplete release mechanics must be
   ratified before a normative ontology release.
-- **2026-08-04 — Governance excluded from ontology scope.** Category 6 remains an
-  operational Builder and OPDA control; the ontology retains eight concerns and excludes six.
+- **2026-08-04 — Governance excluded from ontology scope.** Category 6 remains an operational Builder and OPDA control; the ontology retains eight concerns and excludes six.
+- **2026-08-04 — Semantic standards target fixed.** Generate full RDF 1.2, SPARQL 1.2 and SHACL 1.2 Union Profile output under pinned, fail-closed Semantic Builder-compatible qualification.
