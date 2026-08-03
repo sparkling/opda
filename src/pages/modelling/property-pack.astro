@@ -1,0 +1,239 @@
+---
+import Layout from '@/layouts/Layout.astro';
+import PageMeta from '@/components/PageMeta.astro';
+import records from '@/data/property-pack/required-properties.json';
+import report from '@/data/property-pack/validation-report.json';
+
+const rows = records.map((record) => ({
+  id: record.id,
+  label: record.semantic.preferred_label,
+  definition: record.semantic.candidate_definition,
+  heading: record.source.heading,
+  path: record.source.path,
+  datatype: record.value.xsd_datatype,
+  requiredness: record.value.requiredness,
+  repeatable: record.value.repeatable_context ? 'repeatable context' : 'single context',
+  vocabulary: record.vocabulary.status === 'candidate' ? 'candidate' : 'none identified',
+  review: record.review.status,
+  role: record.model.role,
+}));
+const safeRows = JSON.stringify(rows).replace(/</g, '\\u003c');
+const safeDetails = JSON.stringify(records).replace(/</g, '\\u003c');
+---
+<Layout
+  title="Property Pack seed catalogue"
+  description="The verified 451-item Property Pack evidence baseline for greenfield ontology modelling."
+>
+  <PageMeta
+    category="Working baseline"
+    variant="warn"
+    updated="Extracted and verified 2026-08-03"
+    damaKa={["Metadata Management", "Data Modeling & Design", "Data Quality"]}
+  />
+
+  <h1>Property Pack seed catalogue</h1>
+  <p class="lead">
+    The closed starting scope for the new ontology: exactly <strong>451 source data points</strong>
+    marked <strong>Required</strong> in the Property Pack workbook. They are evidence to model—not
+    451 pre-decided RDF properties, and not a reason to reproduce the old JSON tree.
+  </p>
+
+  <div class="callout callout--warning">
+    <div class="callout__label">Working evidence baseline—not an approved semantic model</div>
+    <p>
+      The inventory is structurally complete against the workbook and reconciled with the legacy
+      v3.5 schema. Its definitions are machine-drafted candidates; ontology roles, bounded-context
+      ownership, resources, relationships, attributes, IRIs and vocabulary schemes remain deliberately
+      unresolved until domain review. The source material does not establish final DPMSG approval.
+    </p>
+  </div>
+
+  <section class="baseline-metrics" aria-label="Catalogue summary">
+    <article><strong>{report.actual_count}</strong><span>required source data points</span></article>
+    <article><strong>{report.unconditional_required}</strong><span>unconditionally required</span></article>
+    <article><strong>{report.conditional_required}</strong><span>conditionally required</span></article>
+    <article><strong>{report.repeatable_context}</strong><span>inside repeatable contexts</span></article>
+    <article><strong>{report.controlled_vocabulary_candidates}</strong><span>vocabulary candidates</span></article>
+    <article><strong>{report.review_statuses['needs-semantic-review']}</strong><span>await semantic review</span></article>
+  </section>
+
+  <h2 id="how-to-read">How to read this baseline</h2>
+  <div class="baseline-explanation">
+    <article>
+      <h3>Source evidence</h3>
+      <p>Workbook row, full JSON path, field name, source datatype, status, condition and source description are preserved verbatim.</p>
+    </article>
+    <article>
+      <h3>Legacy corroboration</h3>
+      <p>Schema types, formats, ranges and permitted values are retained as attributed evidence only. They have no automatic semantic authority.</p>
+    </article>
+    <article>
+      <h3>Fresh modelling decisions</h3>
+      <p>Each item must still be classified as a resource, relationship, attribute, controlled concept or validation rule and assigned to a bounded context.</p>
+    </article>
+  </div>
+
+  <h2 id="browse">Browse all 451 items</h2>
+  <p>
+    Search by label, definition or full source path. Use the filters to isolate a heading,
+    datatype, conditional field, repeatable context, vocabulary candidate or review state.
+    Select a label to inspect the full evidence and modelling record.
+  </p>
+  <p class="download-line">
+    <a class="resource-link" href="/data/property-pack-required.json" download>Download the generated JSON list</a>
+    <span aria-hidden="true">·</span>
+    <a href="/resource?path=docs/adr/ADR-0066-property-pack-451-seed-scope-and-greenfield-ontology.md">Read ADR-0066</a>
+  </p>
+  <div id="property-pack-browser" class="data-browser"></div>
+
+  <section id="property-detail" class="property-detail" aria-live="polite" hidden>
+    <div class="property-detail__header">
+      <div>
+        <p class="eyebrow">Selected source data point</p>
+        <h2 id="property-detail-title">Item detail</h2>
+      </div>
+      <button id="property-detail-close" type="button" class="property-detail__close">Close</button>
+    </div>
+    <div id="property-detail-body"></div>
+  </section>
+
+  <h2 id="validation">Validation boundary</h2>
+  <table>
+    <tbody>
+      <tr><th scope="row">Workbook reconciliation</th><td>{report.status === 'pass' ? 'Pass' : 'Fail'} — 451/451 required rows accounted for</td></tr>
+      <tr><th scope="row">Unique source identities</th><td>{report.unique_paths} full JSON paths and {report.unique_ids} stable catalogue IDs</td></tr>
+      <tr><th scope="row">Schema corroboration</th><td>Every path found; zero source-type mismatches; schema treated as legacy evidence</td></tr>
+      <tr><th scope="row">Semantic completeness</th><td>Not yet claimed — all 451 items require domain and ontology review</td></tr>
+      <tr><th scope="row">Governance approval</th><td>Proposed — the evidence says consensus and DPMSG approval are still to be obtained</td></tr>
+    </tbody>
+  </table>
+
+  <script type="application/json" id="property-pack-rows" set:html={safeRows}></script>
+  <script type="application/json" id="property-pack-details" set:html={safeDetails}></script>
+  <script slot="scripts" is:inline data-astro-rerun src="/ui/data-browser.js"></script>
+  <script slot="scripts" is:inline data-astro-rerun>
+    if (window._opdaPropertyPackMount) {
+      document.removeEventListener('astro:page-load', window._opdaPropertyPackMount);
+    }
+    window._opdaPropertyPackMount = function () {
+      function esc(value) {
+        return String(value == null ? '' : value).replace(/[<>&"]/g, function (char) {
+          return { '<': '&lt;', '>': '&gt;', '&': '&amp;', '"': '&quot;' }[char];
+        });
+      }
+      function readJson(id) {
+        var node = document.getElementById(id);
+        if (!node) return [];
+        try { return JSON.parse(node.textContent); } catch (error) { return []; }
+      }
+      function list(values) {
+        if (!values || !values.length) return '<span class="muted">None recorded</span>';
+        return '<ul>' + values.map(function (value) { return '<li><code>' + esc(value) + '</code></li>'; }).join('') + '</ul>';
+      }
+      function pair(label, value, code) {
+        var shown = value === '' || value == null ? '<span class="muted">Unresolved</span>' : (code ? '<code>' + esc(value) + '</code>' : esc(value));
+        return '<div><dt>' + esc(label) + '</dt><dd>' + shown + '</dd></div>';
+      }
+      function showDetail(id) {
+        var record = readJson('property-pack-details').find(function (item) { return item.id === id; });
+        var panel = document.getElementById('property-detail');
+        var title = document.getElementById('property-detail-title');
+        var body = document.getElementById('property-detail-body');
+        if (!record || !panel || !title || !body) return;
+        title.textContent = record.semantic.preferred_label;
+        var permitted = record.restrictions.permitted_values;
+        body.innerHTML =
+          '<p class="lead">' + esc(record.semantic.candidate_definition) + '</p>' +
+          '<p><span class="pill pill--warn">' + esc(record.review.status) + '</span> <span class="pill pill--info">' + esc(record.model.role) + '</span></p>' +
+          '<div class="detail-grid">' +
+            '<section><h3>Source evidence</h3><dl>' +
+              pair('Stable ID', record.id, true) + pair('Workbook row', record.source.row, false) +
+              pair('JSON path', record.source.path, true) + pair('Heading', record.source.heading, true) +
+              pair('Source field', record.source.field_name, true) + pair('Source description', record.source.description, false) +
+              pair('Condition', record.source.condition, false) +
+            '</dl></section>' +
+            '<section><h3>Value and constraints</h3><dl>' +
+              pair('Datatype', record.value.xsd_datatype, true) + pair('Requiredness', record.value.requiredness, false) +
+              pair('Minimum count', record.value.min_count, false) + pair('Maximum count', record.value.max_count, false) +
+              pair('Occurrence scope', record.value.occurrence_scope, false) + pair('Format', record.restrictions.format, true) +
+              pair('Minimum length', record.restrictions.min_length, false) + pair('Minimum value', record.restrictions.minimum, false) +
+            '</dl><h4>Permitted values from legacy schema</h4>' + list(permitted) + '</section>' +
+            '<section><h3>Fresh model decisions</h3><dl>' +
+              pair('Ontology role', record.model.role, false) + pair('Owning context', record.model.owning_context, false) +
+              pair('Resource', record.model.resource, true) + pair('Relationship', record.model.relationship, true) +
+              pair('Attribute', record.model.attribute, true) + pair('IRI', record.model.iri, true) +
+              pair('Vocabulary scheme', record.vocabulary.scheme_id, true) +
+            '</dl></section>' +
+            '<section><h3>Provenance and review</h3><dl>' +
+              pair('Approval', record.governance.approval_status, false) + pair('Quality', record.governance.quality, false) +
+              pair('Confidence', record.review.confidence, false) + pair('Definition status', record.semantic.definition_status, false) +
+            '</dl><h4>Evidence</h4>' + list(record.evidence) + '<h4>Review flags</h4>' + list(record.review.flags) + '</section>' +
+          '</div>';
+        panel.hidden = false;
+        panel.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+
+      var data = readJson('property-pack-rows');
+      var mount = document.getElementById('property-pack-browser');
+      if (mount && data.length) {
+        OPDA.DataBrowser.mount({
+          mount: mount,
+          heading: { id: 'property-pack-table', text: 'Required Property Pack source data points' },
+          data: data,
+          itemLabel: 'source data points',
+          searchPlaceholder: 'Search label, definition or full path…',
+          searchKeys: ['label', 'definition', 'path'],
+          pageSize: 25,
+          defaultSort: { key: 'label', dir: 'asc' },
+          facets: [
+            { key: 'heading', label: 'Property Pack heading' },
+            { key: 'datatype', label: 'Datatype' },
+            { key: 'requiredness', label: 'Requiredness' },
+            { key: 'repeatable', label: 'Occurrence context' },
+            { key: 'vocabulary', label: 'Controlled vocabulary' },
+            { key: 'review', label: 'Review status' },
+          ],
+          columns: [
+            { key: 'label', label: 'Candidate label', sortable: true, width: '22%', render: function (value, row) {
+              return '<button class="property-detail-link" type="button" data-property-id="' + esc(row.id) + '">' + esc(value) + '</button>';
+            } },
+            { key: 'heading', label: 'Heading', sortable: true, width: '16%', render: function (value) { return '<code>' + esc(value) + '</code>'; } },
+            { key: 'datatype', label: 'Datatype', sortable: true, width: '12%', render: function (value) { return '<code>' + esc(value) + '</code>'; } },
+            { key: 'requiredness', label: 'Requiredness', sortable: true, width: '13%' },
+            { key: 'role', label: 'Model role', sortable: true, width: '12%' },
+            { key: 'path', label: 'Source path', sortable: true, width: '25%', render: function (value) { return '<code>' + esc(value) + '</code>'; } },
+          ],
+        });
+        mount.onclick = function (event) {
+          var button = event.target.closest('[data-property-id]');
+          if (button) showDetail(button.getAttribute('data-property-id'));
+        };
+      }
+      var close = document.getElementById('property-detail-close');
+      if (close) close.onclick = function () { document.getElementById('property-detail').hidden = true; };
+    };
+    document.addEventListener('astro:page-load', window._opdaPropertyPackMount);
+  </script>
+
+  <style>
+    .baseline-metrics { display: grid; grid-template-columns: repeat(auto-fit, minmax(9rem, 1fr)); gap: .75rem; margin: 1.5rem 0 2rem; }
+    .baseline-metrics article { border: 1px solid var(--color-border); border-radius: .75rem; padding: 1rem; background: var(--color-surface-card); }
+    .baseline-metrics strong { display: block; font-size: clamp(1.8rem, 3vw, 2.7rem); line-height: 1; color: var(--color-brand-700); }
+    .baseline-metrics span { display: block; margin-top: .5rem; font-size: .88rem; line-height: 1.25; }
+    .baseline-explanation { display: grid; grid-template-columns: repeat(auto-fit, minmax(14rem, 1fr)); gap: 1rem; margin-bottom: 2rem; }
+    .baseline-explanation article { border-left: 3px solid var(--color-brand-700); padding: .25rem 1rem; }
+    .baseline-explanation h3 { margin-top: 0; }
+    .download-line { display: flex; flex-wrap: wrap; gap: .6rem; align-items: center; }
+    .property-detail { margin: 2rem 0; padding: clamp(1rem, 3vw, 2rem); border: 2px solid var(--color-brand-700); border-radius: 1rem; background: var(--color-surface-card); scroll-margin-top: 5rem; }
+    .property-detail__header { display: flex; justify-content: space-between; gap: 1rem; align-items: start; }
+    .property-detail__header h2 { margin-top: 0; }
+    .property-detail__close { border: 1px solid var(--color-border); border-radius: .4rem; padding: .45rem .75rem; background: transparent; color: inherit; cursor: pointer; }
+    .eyebrow { margin: 0 0 .25rem; text-transform: uppercase; letter-spacing: .08em; font-size: .75rem; color: var(--color-text-muted); }
+    .detail-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(18rem, 1fr)); gap: 1rem; }
+    .detail-grid section { border-top: 1px solid var(--color-border); }
+    .detail-grid dl > div { display: grid; grid-template-columns: minmax(8rem, .7fr) 1.3fr; gap: .7rem; padding: .4rem 0; border-bottom: 1px solid var(--color-border); }
+    .detail-grid dt { font-weight: 650; }
+    .detail-grid dd { margin: 0; overflow-wrap: anywhere; }
+    :global(.property-detail-link) { border: 0; padding: 0; background: transparent; color: var(--color-link); text-decoration: underline; font: inherit; text-align: left; cursor: pointer; }
+  </style>
+</Layout>

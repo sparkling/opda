@@ -1,6 +1,7 @@
 ---
 status: accepted
 date: 2026-06-03
+updated: 2026-08-03
 tags: [strategy, direction, linked-data, ontology, pdtf, model-driven, governance, rbac, ai, mcp, standards-development]
 supersedes: []
 depends-on: [ODR-0003, ADR-0006, ADR-0007, ADR-0014]
@@ -198,3 +199,4 @@ A comprehensive supporting knowledgebase is maintained at `docs/linked-data-init
 ## Amendments
 
 - **2026-06-16 — RATIFIED (operator).** Status `proposed` → `accepted`. The operator ratifies the strategic direction — the linked-data model as the foundation and direction of PDTF standards development; the substrate-now (RBAC) / adopted-but-deferred (ODRL policies) dispositions in §Decision stand.
+- **2026-08-03 — GREENFIELD SCOPE CORRECTION (ADR-0066).** The linked-data and model-driven direction remains accepted, but ADR-0066 overrides the claim that the current schema-derived ontology is the semantic starting point for future modelling. The new ontology starts from the closed set of 451 required Property Pack source data points and re-decides resources, relationships, attributes, identities, contexts, constraints and vocabularies. Requirement R8 and the full-PDTF round-trip language remain evidence and compatibility goals for the legacy corpus; they are not acceptance gates for the greenfield model. The existing published ontology remains the current baseline until a separately governed migration is approved.
