@@ -1,7 +1,7 @@
 ---
 status: accepted
 date: 2026-08-03
-tags: [ontology, property-pack, greenfield, bounded-context, common-boundary, interoperability, council, ai-assisted, model-routing, source-security, release, skos, shacl, provenance, authorisation]
+tags: [ontology, property-pack, greenfield, bounded-context, common-boundary, interoperability, governance, council, ai-assisted, model-routing, source-security, release, skos, shacl, provenance, authorisation]
 supersedes: []
 depends-on: [ADR-0039, ADR-0066]
 implements: []
@@ -81,26 +81,36 @@ predicates, nesting, identities or number of ontology terms. One item may requir
 several semantic constructs, and several items may be represented by one well-founded
 construct. No source item may disappear without an explicit coverage disposition.
 
-The ontology model and durable corpus are independent of Semantic Builder. The
-authoring programme nevertheless adopts a pinned OPDA execution profile over Semantic
-Builder's accepted contracts for workcells, model routing, source isolation, candidate
-branches, deterministic conformance, councils, authority and releases. These contracts
-govern how candidate models are produced and challenged; they do not become ontology
-dependencies or grant an agent authority over OPDA decisions.
+The ontology model and durable corpus are independent of Semantic Builder. The authoring
+programme nevertheless adopts a pinned OPDA execution profile over Semantic Builder's
+accepted contracts for workcells, model routing, source isolation, candidate branches,
+deterministic conformance, councils, authority and releases. These contracts govern how
+candidate models are produced and challenged; they do not become ontology dependencies
+or grant an agent authority over OPDA decisions.
 
-Semantic Modelling ODR-0104 is deprecated and relocated to Semantic Builder ADR-0021;
-it is historical provenance rather than a governing record. The earlier OPDA
-ODR-0001 protocol also does not govern this greenfield programme: its voting Queen,
-vote tallies and selectable consensus machinery are replaced here by the Builder
-configuration's non-voting lead, independent priors, bounded cross-examination and
-escalation of unresolved disagreement. Historical sessions remain part of the
-evidence trail for the previous ontology, not authority for the replacement model.
+Semantic Modelling ODR-0104 is deprecated and relocated to Semantic Builder ADR-0021; it
+is historical provenance rather than a governing record. The earlier OPDA ODR-0001
+protocol also does not govern this greenfield programme: its voting Queen, vote tallies
+and selectable consensus machinery are replaced here by the Builder configuration's
+non-voting lead, independent priors, bounded cross-examination and escalation of
+unresolved disagreement. Historical sessions remain evidence, not authority.
 
-AI agents and expert councils assist with evidence analysis and candidate generation.
-They are an authoring method rather than ontology authority. Deterministic tools certify
-conformance; real domain participants judge business meaning; OPDA governance approves
-durable changes. The maintained OPDA artefacts, evidence links, review state and
-recorded human decisions remain authoritative.
+AI agents and expert councils assist with evidence analysis and candidate generation;
+they have no vote or ontology authority. Deterministic tools certify conformance, while
+real domain participants judge meaning and recorded OPDA decisions remain authoritative.
+
+OPDA authority follows its Constitution and Articles: the General Assembly is the
+overall decision-making body; the Executive Committee oversees the Trust Framework and may
+delegate work; and the directors retain management and delegation powers. Within that chain,
+the affected domain working group reviews local meaning; the Interoperability Working Group
+reviews common-boundary terms and mappings without overriding local meaning; Technical Review
+applies change and conformance controls, with Compliance and Risk input for major or sensitive
+changes; and only the Executive Committee, Board or a recorded delegate may authorise promotion.
+
+The current PDTF governance SOP is the process baseline, not a complete release charter:
+its placeholders, working-group decision rules, conflicts, appeals and final release
+delegation still require recorded approval. Until ratified, outputs remain non-normative
+candidates: AI agreement, informal consensus or validation cannot authorise release alone.
 
 ### 1. Evidence hierarchy and scope guard
 
@@ -232,12 +242,11 @@ dependency:
 | ADR-0040/0041 — exact graph context and deterministic conformance | Adopt pinned standards/tool profiles, semantic feature probes, complete coverage states and fail-closed validation. |
 | ADR-0012 — stable releases over a living corpus | Adopt immutable releases, ontology-aware compatibility, deprecation/supersession and a machine-readable change record. |
 
-This ADR does **not** import the complete fourteen-category target, code-analysis and
-RML pipeline, Data Product packaging, H&M governance names, gold/training/Darwin
-machinery, unattended autonomy, exact Jena version, signed-ledger implementation or
-deployment topology. Those are either excluded here or require separate OPDA technical
-decisions. Semantic Builder's Fable/Sol **build-collaboration** policy is also not an
-ontology-runtime model policy.
+This ADR does **not** import the complete fourteen-category target, code-analysis and RML
+pipeline, Data Product packaging, H&M-specific governance bodies or role names, gold/training/
+Darwin machinery, unattended autonomy, exact Jena version, signed-ledger implementation or
+deployment topology. Excluding those mechanisms does not exclude OPDA governance. Semantic
+Builder's Fable/Sol **build-collaboration** policy is not an ontology-runtime model policy.
 
 #### 5.1 Bounded work orders and untrusted evidence
 
@@ -338,11 +347,11 @@ version pins. A separate technical decision must qualify the actual OPDA standar
 profile with positive and negative semantic probes. For this nine-concern profile, the
 five excluded concerns are predeclared `not-applicable`; they are not omitted silently.
 
-Only an authorised human disposition can move a validated candidate into the governed
-corpus. Published releases are immutable named cuts. Later changes supersede rather
-than rewrite history, classify compatibility for generated schemas and other consumers,
-retain deprecated terms for a declared window, and emit a machine-readable change
-record. Publication remains separately authorised.
+Only a human disposition authorised through the OPDA authority chain above can move a
+validated candidate into the governed corpus. Published releases are immutable named
+cuts. Later changes supersede rather than rewrite history, classify compatibility for
+generated schemas and other consumers, retain deprecated terms for a declared window,
+and emit a machine-readable change record. Publication remains separately authorised.
 
 #### 5.5 Calibration and implementation boundary
 
@@ -466,6 +475,8 @@ constraints; it does not pre-approve the resulting ontology terms.
 - [ADR-0039 — linked data as the standards foundation](./ADR-0039-linked-data-model-as-pdtf-standards-foundation.md)
 - [ADR-0063 — proposed domain-led bounded-context working groups](./ADR-0063-domain-led-bounded-context-working-groups.md)
 - [ADR-0065 — proposed AI-assisted evidence-to-model workflow](./ADR-0065-ai-assisted-evidence-to-model-workflow.md)
+- [OPDA Constitution](../../source/01-organisation/constitution-and-policies/OPDA%20Constitution%202026.pdf) and [Articles of Association](../../source/01-organisation/constitution-and-policies/Articles%20of%20Association%202026.pdf)
+- [PDTF technical governance process](../../source/03-standards/trust-framework/docs/governance.md) and [website status summary](../../src/pages/governance/index.astro)
 - [Property Pack 451 evidence validation](../research/property-pack-451-evidence-validation.md)
 - [ODR-0071 — Ontology Modelling Category Framework](https://github.com/hm-group/semantic-modelling/blob/main/docs/ontology/odr/ODR-0071-ontology-modelling-category-framework.md)
 - [Pinned Semantic Builder baseline](https://github.com/hm-group/semantic-builder/tree/b64e4288bc07277198abad83bd7978db5c938b6b)
@@ -477,13 +488,12 @@ constraints; it does not pre-approve the resulting ontology terms.
 
 ## Amendments
 
-- **2026-08-03 — Accepted by operator.** The operator selected a first-principles,
-  Property-Pack-scoped ontology; rejected a Semantic Builder dependency and the five
-  non-OPDA ODR-0071 concerns; retained authorisation and the other nine concerns; and
-  required every OPDA-defined resource to live in one bounded context or the common
-  boundary.
-- **2026-08-03 — Pinned Builder execution profile adopted.** The operator required the
-  programme to inherit Semantic Builder's accepted workcell, model-routing, untrusted-
-  source, candidate-isolation, deterministic-conformance, council, harmonisation,
-  termination and release contracts without importing its runtime or excluded target
-  categories. Human working groups retain meaning and promotion authority.
+- **2026-08-03 — Accepted by operator.** Selected a first-principles Property-Pack scope;
+  rejected a Builder dependency and five non-OPDA concerns; retained the other nine; and
+  required one bounded-context or common-boundary home for every OPDA resource.
+- **2026-08-03 — Pinned Builder execution profile adopted.** Inherit Builder's accepted
+  authoring and assurance contracts without its runtime or excluded target categories;
+  human working groups retain meaning and promotion authority.
+- **2026-08-03 — OPDA governance clarified.** Constitutional authority and the technical
+  change process govern human review and promotion; incomplete release mechanics must be
+  ratified before a normative ontology release.
