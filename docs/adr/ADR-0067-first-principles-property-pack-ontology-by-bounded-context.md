@@ -339,15 +339,27 @@ named lens must be grounded in a verifiable publication or standard.
 #### 5.5 Multiple models and calibration
 
 Expert-lens diversity and LLM-family diversity are separate. Opposed published lenses
-provide the council's methodological variety. Different underlying LLM families may
-replicate or challenge high-risk results as a robustness test, but their outputs are
-not independent votes. Two providers routing the same underlying model do not create
-independence.
+provide the council's methodological variety; model families provide a separate
+robustness check. The initial qualified portfolio is:
 
-For a cross-model comparison, the evidence snapshot, work order, tools, target law,
-budget and output contract must remain fixed. Provider and model identity should be
-hidden from the evaluator where practical, and every synthesized candidate must pass
-the same deterministic validation and human review.
+| Route | Underlying family | Council position |
+|---|---|---|
+| `gpt-5.6-sol` through Codex/ChatGPT | OpenAI GPT | Peer author, reasoner and challenger. |
+| `claude-fable-5` through Claude Code | Anthropic Claude | Peer author, reasoner and challenger. |
+
+Every material council session must use both routes in independent first-round contexts.
+Neither is the standing primary or fallback, and neither receives an extra
+vote. Lens assignments rotate between families; calibration must sometimes give the
+same lens and evidence to both so model effects can be distinguished from lens effects.
+Lead routes alternate where practical and hold no session lens. The Devil's Advocate follows an
+opposed published methodology, never a provider; routine specialist work may use either route.
+
+The evidence snapshot, work order, tools, target law, budget and output contract remain fixed
+across models. Session receipts record route, returned model identity, client version, time and
+evidence digest. An unavailable route must not be silently replaced or collapsed into a
+single-model council: record the degraded state and postpone the material session unless human
+governance explicitly authorises it. A replacement route requires recorded requalification, and
+every synthesized candidate passes the same deterministic validation and human review.
 
 Before council use is expanded, a representative calibration set of approximately
 20–30 semantically difficult Property Pack items will be run through:
