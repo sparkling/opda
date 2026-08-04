@@ -306,6 +306,7 @@ export const SECTIONS: Record<string, Section> = {
     groups: [
       { heading: 'Overview', items: [
         { url: '/v2', title: 'Candidate overview' },
+        { url: '/v2/comparison', title: 'V1 and V2 compared' },
       ]},
       { heading: 'Model atlas', items: [
         { url: '/v2/model', title: 'Complete model' },

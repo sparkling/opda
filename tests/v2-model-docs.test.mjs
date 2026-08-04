@@ -2,6 +2,14 @@ import assert from 'node:assert/strict';
 import test from 'node:test';
 
 import {
+  changedKindLexicalMatches,
+  comparisonDimensions,
+  lexicalMatches,
+  sameKindLexicalMatches,
+  v1Counts,
+  v2Counts,
+} from '../src/lib/model-comparison.mjs';
+import {
   boundaryDiagram,
   completeModelDiagram,
   contextDiagram,
@@ -17,6 +25,61 @@ import {
   vocabularies,
   vocabularyRoute,
 } from '../src/lib/v2-model.mjs';
+
+test('V1 and V2 comparison uses the generated model projections', () => {
+  assert.deepEqual(v1Counts, {
+    resources: 321,
+    classes: 41,
+    objectProperties: 75,
+    datatypeProperties: 205,
+    shapes: 402,
+    schemes: 48,
+    concepts: 319,
+    domainModules: 7,
+    overlayProfiles: 31,
+    exemplars: 17,
+  });
+  assert.deepEqual(v2Counts, {
+    sourceItems: 451,
+    resources: 159,
+    classes: 53,
+    objectProperties: 77,
+    datatypeProperties: 29,
+    shapes: 45,
+    constraints: 100,
+    schemes: 14,
+    concepts: 85,
+    topicConcepts: 413,
+    semanticHomes: 8,
+  });
+});
+
+test('comparison dimensions are complete, unique and evidence-linked', () => {
+  assert.ok(comparisonDimensions.length >= 10);
+  assert.equal(
+    new Set(comparisonDimensions.map((dimension) => dimension.id)).size,
+    comparisonDimensions.length,
+  );
+  for (const dimension of comparisonDimensions) {
+    assert.match(dimension.id, /^[a-z0-9-]+$/);
+    assert.ok(dimension.label);
+    assert.ok(dimension.v1);
+    assert.ok(dimension.v2);
+    assert.ok(dimension.implication);
+    assert.ok(dimension.evidence.length > 0);
+    assert.ok(dimension.evidence.every((item) => item.label && item.href.startsWith('/')));
+  }
+});
+
+test('lexical overlap is measured without asserting semantic equivalence', () => {
+  assert.equal(lexicalMatches.length, 20);
+  assert.equal(sameKindLexicalMatches.length, 16);
+  assert.equal(changedKindLexicalMatches.length, 4);
+  assert.deepEqual(
+    changedKindLexicalMatches.map((item) => item.localName),
+    ['applicationType', 'councilTaxBand', 'designationType', 'leaseTerm'],
+  );
+});
 
 test('V2 documentation model has exact candidate coverage', () => {
   assert.deepEqual(counts, {
