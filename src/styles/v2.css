@@ -149,6 +149,7 @@
 .v2-swatch--object { background: #e1f5fe; border-color: #0277bd; }
 .v2-swatch--datatype { background: #e3f2fd; border-color: #1565c0; }
 .v2-swatch--external { background: #eceff1; border-color: #455a64; }
+.v2-swatch--cross-context { background: #e3eef3; border-color: #4f7a8c; border-style: dashed; }
 .v2-swatch--common { background: #fff3e0; border-color: #e65100; }
 .v2-swatch--bounded { background: #f3e5f5; border-color: #7b1fa2; }
 .v2-swatch--scheme { background: #eceff1; border-color: #455a64; }
@@ -159,6 +160,7 @@
 :root[data-theme="dark"] .v2-swatch--object { background: #012830; border-color: #4dd0e1; }
 :root[data-theme="dark"] .v2-swatch--datatype { background: #0d2137; border-color: #42a5f5; }
 :root[data-theme="dark"] .v2-swatch--external { background: #211a17; border-color: #d7ccc8; }
+:root[data-theme="dark"] .v2-swatch--cross-context { background: #0e2030; border-color: #7fa8bd; }
 :root[data-theme="dark"] .v2-swatch--common { background: #2f1b05; border-color: #ffb74d; }
 :root[data-theme="dark"] .v2-swatch--bounded { background: #1a0a2e; border-color: #ba68c8; }
 :root[data-theme="dark"] .v2-swatch--scheme { background: #211a17; border-color: #d7ccc8; }

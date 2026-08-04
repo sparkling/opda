@@ -5,7 +5,9 @@ import V2DiagramLegend from '@/components/v2/V2DiagramLegend.astro';
 import V2Page from '@/components/v2/V2Page.astro';
 import {
   compactIri,
+  contextById,
   contextDiagram,
+  contextDiagramProjection,
   contextKindLabels,
   contextRoute,
   contexts,
@@ -31,7 +33,8 @@ const stats = contextStats(context.id);
 const ownedResources = resourcesByContext.get(context.id) ?? [];
 const ownedShapes = shapesByContext.get(context.id) ?? [];
 const ownedSchemes = vocabulariesByContext.get(context.id) ?? [];
-const rows = structuralRows(ownedResources);
+const graph = contextDiagramProjection(context.id);
+const rows = structuralRows(graph.carriers);
 const files = {
   ontology: generatedFilesForContext(context.id, 'ontology'),
   shapes: generatedFilesForContext(context.id, 'shapes'),
@@ -40,6 +43,11 @@ const files = {
 
 function targetLabel(row) {
   return row.target?.label ?? compactIri(row.targetIri);
+}
+
+function semanticHomeLabel(row) {
+  const resource = row.edgeKind === 'subclass' ? row.source : row.relationship;
+  return contextById.get(resource.semantic_home)?.label ?? resource.semantic_home;
 }
 ---
 <V2Page
@@ -82,12 +90,12 @@ function targetLabel(row) {
   </div>
 
   <h2 id="diagram">Complete context diagram</h2>
-  <p>Every resource owned by this semantic home is included. Referenced terms from other contexts or standards are visually separated and do not change ownership.</p>
-  <V2DiagramLegend />
+  <p>Every resource owned by this semantic home is included, together with one-hop incoming and outgoing properties and their attached resources. Dotted nodes and links identify resources owned by another semantic home; the owning boundary appears beneath each foreign resource. Referenced standards remain visually distinct. These are asserted OWL relationships, not reviewed cross-domain mappings.</p>
+  <V2DiagramLegend variant="context" />
   <GraphDiagram
     source={contextDiagram(context.id)}
-    minHeight={ownedResources.length > 30 ? '820px' : '620px'}
-    caption={`All ${stats.resources} ${context.label} resources. Click a local node to open its detailed reference page.`}
+    minHeight={graph.displayedNodeCount > 30 ? '820px' : '620px'}
+    caption={`${stats.resources} resources owned by ${context.label}, ${graph.foreignResources.length} from other semantic homes, and ${graph.standardIris.length} referenced standard ${graph.standardIris.length === 1 ? 'term' : 'terms'}. Click any candidate resource node to open its detailed reference page.`}
   />
 
   <h2 id="resources">Owned resources</h2>
@@ -118,10 +126,10 @@ function targetLabel(row) {
   })}
 
   <h2 id="relationships">Structured relationship view</h2>
-  <p>This text table is the accessible equivalent of the context diagram. Domainless properties are reported as unresolved; no domain is guessed.</p>
+  <p>This text table covers the same one-hop relationships as the context diagram, including properties that enter or leave this semantic home. Domainless properties are reported as unresolved; no domain is guessed.</p>
   <div class="v2-table-wrap">
     <table>
-      <thead><tr><th>Source / domain</th><th>Relationship</th><th>Target / range</th><th>Kind</th></tr></thead>
+      <thead><tr><th>Source / domain</th><th>Relationship</th><th>Target / range</th><th>Kind</th><th>Semantic home</th></tr></thead>
       <tbody>
         {rows.map((row) => (
           <tr>
@@ -129,6 +137,7 @@ function targetLabel(row) {
             <td>{row.edgeKind === 'subclass' ? 'subclass of' : <a href={resourceRoute(row.relationship)}>{row.relationship.label}</a>}</td>
             <td>{row.target ? <a href={resourceRoute(row.target)}>{targetLabel(row)}</a> : <code>{targetLabel(row)}</code>}</td>
             <td>{row.edgeKind === 'subclass' ? 'Class hierarchy' : kindLabels[row.edgeKind]}</td>
+            <td>{semanticHomeLabel(row)}</td>
           </tr>
         ))}
       </tbody>

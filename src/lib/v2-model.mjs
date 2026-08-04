@@ -197,12 +197,15 @@ function externalReferences(selected) {
   return [...references].sort();
 }
 
-function addTermNodes(lines, selected, nodeIds) {
+function addTermNodes(lines, selected, nodeIds, activeContextId = '') {
   for (const resource of selected) {
-    const className = resource.kind === 'class'
+    const foreign = activeContextId && resource.semantic_home !== activeContextId;
+    const className = foreign ? 'xsection' : resource.kind === 'class'
       ? 'user' : resource.kind === 'object-property' ? 'process' : 'infra';
     const kind = kindLabels[resource.kind];
-    lines.push(`    ${nodeIds.get(resource.iri)}["${wrapLabel(resource.label)}<br/><small>${kind}</small>"]:::${className}`);
+    const home = contextById.get(resource.semantic_home)?.label ?? resource.semantic_home;
+    const detail = foreign ? `${kind} · ${escapeHtml(home)}` : kind;
+    lines.push(`    ${nodeIds.get(resource.iri)}["${wrapLabel(resource.label)}<br/><small>${detail}</small>"]:::${className}`);
   }
 }
 
@@ -217,19 +220,26 @@ function addExternalNodes(lines, external, nodeIds) {
   lines.push('  end', '');
 }
 
-function addStructuralEdges(lines, selected, nodeIds) {
+function addStructuralEdges(lines, selected, nodeIds, activeContextId = '') {
   const selectedIris = new Set(selected.map((resource) => resource.iri));
+  const arrow = (fromIri, toIri) => {
+    if (!activeContextId) return '-->';
+    const from = resourceByIri.get(fromIri);
+    const to = resourceByIri.get(toIri);
+    return [from, to].some((item) => item && item.semantic_home !== activeContextId)
+      ? '-.->' : '-->';
+  };
   for (const resource of selected) {
     const source = nodeIds.get(resource.iri);
     if (resource.subclass_of && nodeIds.has(resource.subclass_of)) {
-      lines.push(`  ${source} -->|"subclass of"| ${nodeIds.get(resource.subclass_of)}`);
+      lines.push(`  ${source} ${arrow(resource.iri, resource.subclass_of)}|"subclass of"| ${nodeIds.get(resource.subclass_of)}`);
     }
     if (resource.kind === 'class') continue;
     if (resource.domain && nodeIds.has(resource.domain)) {
-      lines.push(`  ${nodeIds.get(resource.domain)} -->|"domain"| ${source}`);
+      lines.push(`  ${nodeIds.get(resource.domain)} ${arrow(resource.domain, resource.iri)}|"domain"| ${source}`);
     }
     if (resource.range && nodeIds.has(resource.range)) {
-      lines.push(`  ${source} -->|"range"| ${nodeIds.get(resource.range)}`);
+      lines.push(`  ${source} ${arrow(resource.iri, resource.range)}|"range"| ${nodeIds.get(resource.range)}`);
     }
     // A local property can reference another local resource not selected only
     // when a caller requests an invalid subset; fail visibly during generation.
@@ -296,23 +306,62 @@ export function completeModelDiagram() {
   return lines.join('\n');
 }
 
-export function contextDiagram(contextId) {
+export function contextDiagramProjection(contextId) {
   const context = contextById.get(contextId);
   if (!context) throw new Error(`unknown context: ${contextId}`);
-  const selected = resourcesByContext.get(contextId) ?? [];
-  const external = externalReferences(selected);
-  const allIris = [...selected.map((resource) => resource.iri), ...external];
+  const owned = resourcesByContext.get(contextId) ?? [];
+  const ownedIris = new Set(owned.map((resource) => resource.iri));
+  const incidentForeignProperties = resources.filter((resource) =>
+    resource.semantic_home !== contextId
+    && resource.kind !== 'class'
+    && (ownedIris.has(resource.domain) || ownedIris.has(resource.range))
+  );
+  const carriers = [...owned, ...incidentForeignProperties];
+  const references = externalReferences(carriers);
+  const displayedIris = new Set([
+    ...carriers.map((resource) => resource.iri),
+    ...references.filter((iri) => resourceByIri.has(iri)),
+  ]);
+  const displayedResources = resources.filter((resource) => displayedIris.has(resource.iri));
+  const foreignResources = displayedResources.filter((resource) => resource.semantic_home !== contextId);
+  const standardIris = references.filter((iri) => !resourceByIri.has(iri));
+  return {
+    context,
+    owned,
+    carriers,
+    displayedResources,
+    foreignResources,
+    standardIris,
+    displayedNodeCount: displayedResources.length + standardIris.length,
+  };
+}
+
+export function contextDiagram(contextId) {
+  const projection = contextDiagramProjection(contextId);
+  const { context, owned, carriers, displayedResources, foreignResources, standardIris } = projection;
+  const allIris = [...displayedResources.map((resource) => resource.iri), ...standardIris];
   const nodeIds = new Map(allIris.map((iri, index) => [iri, diagramNodeId(index)]));
   const lines = diagramPreamble(
     `${context.label} candidate model`,
-    `All ${selected.length} resources whose single semantic home is ${context.label}, with their asserted subclass, domain and range links. Referenced terms from standards or neighbouring contexts are shown separately.`,
+    `All ${owned.length} resources whose single semantic home is ${context.label}, plus one-hop incoming and outgoing properties and their attached resources. Resources from different semantic homes and their asserted cross-boundary links are dotted; referenced standard terms are shown separately.`,
   );
   lines.push(`  subgraph local_context["${escapeHtml(context.label)} · semantic home"]`);
-  addTermNodes(lines, selected, nodeIds);
+  addTermNodes(lines, owned, nodeIds, contextId);
   lines.push('  end', '');
-  addExternalNodes(lines, external, nodeIds);
-  addStructuralEdges(lines, selected, nodeIds);
-  addClicks(lines, selected, external, nodeIds);
+  if (foreignResources.length) {
+    lines.push('  subgraph cross_context_refs["Resources owned by other semantic homes"]');
+    addTermNodes(lines, foreignResources, nodeIds, contextId);
+    lines.push('  end', '');
+  }
+  if (standardIris.length) {
+    lines.push('  subgraph standard_refs["Referenced standards"]');
+    for (const iri of standardIris) {
+      lines.push(`    ${nodeIds.get(iri)}["${wrapLabel(compactIri(iri))}"]:::external`);
+    }
+    lines.push('  end', '');
+  }
+  addStructuralEdges(lines, carriers, nodeIds, contextId);
+  addClicks(lines, displayedResources, [], nodeIds);
   return lines.join('\n');
 }
 

@@ -136,11 +136,79 @@ test('context diagrams and boundary map preserve semantic-home distinctions', ()
     const source = contextDiagram(context.id);
     const owned = resources.filter((resource) => resource.semantic_home === context.id);
     const ownedIris = new Set(owned.map((resource) => resource.iri));
-    const linkedNeighbours = new Set(owned.flatMap((resource) => [
+    const incidentForeignProperties = resources.filter((resource) =>
+      resource.semantic_home !== context.id
+      && resource.kind !== 'class'
+      && (ownedIris.has(resource.domain) || ownedIris.has(resource.range))
+    );
+    const carriers = [...owned, ...incidentForeignProperties];
+    const linkedNeighbours = new Set(carriers.flatMap((resource) => [
       resource.domain, resource.range, resource.subclass_of,
-    ]).filter((iri) => iri && !ownedIris.has(iri) && resourceByIri.has(iri)));
-    assert.equal((source.match(/^  click term_\d+ /gm) ?? []).length, owned.length + linkedNeighbours.size);
+    ]).filter((iri) => iri && resourceByIri.has(iri)));
+    const displayed = new Set([
+      ...carriers.map((resource) => resource.iri),
+      ...linkedNeighbours,
+    ]);
+    const clickRoutes = [...source.matchAll(/^  click term_\d+ "([^"]+)"$/gm)]
+      .map((match) => match[1]);
+    const expectedRoutes = resources
+      .filter((resource) => displayed.has(resource.iri))
+      .map(resourceRoute);
+    assert.deepEqual(new Set(clickRoutes), new Set(expectedRoutes));
+    assert.equal(clickRoutes.length, new Set(clickRoutes).size);
     assert.match(source, /accTitle:/);
-    assert.match(source, /accDescr:/);
+    assert.match(source, /accDescr:.*incoming and outgoing properties/i);
+
+    const nodeIds = [...source.matchAll(/^    (term_\d+)\["/gm)].map((match) => match[1]);
+    assert.equal(nodeIds.length, new Set(nodeIds).size);
+    const edges = [...source.matchAll(/^  (term_\d+)\s+(-->|-\.->)\|"(subclass of|domain|range)"\|\s+(term_\d+)$/gm)]
+      .map((match) => match.slice(1).join('|'));
+    assert.equal(edges.length, new Set(edges).size);
   }
+});
+
+function nodeIdForRoute(source, route) {
+  const escapedRoute = route.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+  return source.match(new RegExp(`^  click (term_\\d+) "${escapedRoute}"$`, 'm'))?.[1];
+}
+
+function nodeDefinition(source, nodeId) {
+  return source.match(new RegExp(`^    ${nodeId}\\[".*$`, 'm'))?.[0] ?? '';
+}
+
+test('context diagrams show the same cross-boundary relationship from both semantic homes', () => {
+  const property = resources.find((resource) => resource.key === 'common:Property');
+  const relationship = resources.find((resource) => resource.key === 'conveyancing:hasRegisteredTitle');
+  const title = resources.find((resource) => resource.key === 'conveyancing:RegisteredTitle');
+  assert.ok(property && relationship && title);
+
+  const common = contextDiagram('common');
+  const commonPropertyId = nodeIdForRoute(common, resourceRoute(property));
+  const commonRelationshipId = nodeIdForRoute(common, resourceRoute(relationship));
+  const commonTitleId = nodeIdForRoute(common, resourceRoute(title));
+  assert.ok(commonPropertyId && commonRelationshipId && commonTitleId);
+  assert.match(nodeDefinition(common, commonPropertyId), /:::user$/);
+  assert.match(nodeDefinition(common, commonRelationshipId), /Object property · Conveyancing<\/small>.*:::xsection$/);
+  assert.match(nodeDefinition(common, commonTitleId), /Class · Conveyancing<\/small>.*:::xsection$/);
+  assert.ok(common.includes(`  ${commonPropertyId} -.->|"domain"| ${commonRelationshipId}`));
+  assert.ok(common.includes(`  ${commonRelationshipId} -.->|"range"| ${commonTitleId}`));
+
+  const conveyancing = contextDiagram('conveyancing');
+  const conveyancingPropertyId = nodeIdForRoute(conveyancing, resourceRoute(property));
+  const conveyancingRelationshipId = nodeIdForRoute(conveyancing, resourceRoute(relationship));
+  const conveyancingTitleId = nodeIdForRoute(conveyancing, resourceRoute(title));
+  assert.ok(conveyancingPropertyId && conveyancingRelationshipId && conveyancingTitleId);
+  assert.match(nodeDefinition(conveyancing, conveyancingPropertyId), /Class · Common boundary<\/small>.*:::xsection$/);
+  assert.match(nodeDefinition(conveyancing, conveyancingRelationshipId), /:::process$/);
+  assert.match(nodeDefinition(conveyancing, conveyancingTitleId), /:::user$/);
+  assert.ok(conveyancing.includes(`  ${conveyancingPropertyId} -.->|"domain"| ${conveyancingRelationshipId}`));
+  assert.ok(conveyancing.includes(`  ${conveyancingRelationshipId} -->|"range"| ${conveyancingTitleId}`));
+});
+
+test('standard references remain distinct from resources owned by another context', () => {
+  const source = contextDiagram('conveyancing');
+  assert.match(source, /\["xsd:string"\]:::external/);
+  assert.doesNotMatch(source, /xsd:string.*:::xsection/);
+  assert.match(source, /subgraph cross_context_refs\["Resources owned by other semantic homes"\]/);
+  assert.match(source, /subgraph standard_refs\["Referenced standards"\]/);
 });
