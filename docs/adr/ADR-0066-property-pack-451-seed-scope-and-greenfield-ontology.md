@@ -1,11 +1,11 @@
 ---
 status: accepted
 date: 2026-08-03
-updated: 2026-08-03
+updated: 2026-08-04
 tags: [ontology, property-pack, greenfield, provenance, toml, generation, semantic-modelling]
 supersedes: []
 depends-on: [ADR-0039]
-implements: [scripts/property_pack_catalogue.py, src/data/property-pack, src/pages/modelling/property-pack.astro]
+implements: [scripts/property_pack_catalogue.py, scripts/property_pack_candidate.py, src/data/property-pack, source/03-standards/ontology-candidates/property-pack/0.1, src/pages/modelling/property-pack.astro]
 ---
 
 # The 451 required Property Pack data points are the closed seed scope for a greenfield ontology
@@ -87,6 +87,10 @@ The enriched TOML catalogue is the single maintained source:
   deterministic generated projection, never an independently edited copy;
 - [`validation-report.json`](../../src/data/property-pack/validation-report.json) is the
   deterministic validation receipt;
+- [`candidate-model/`](../../src/data/property-pack/candidate-model/) is the separate maintained
+  source for machine-proposed semantic decisions; it does not overwrite the evidence catalogue;
+- [`ontology-candidates/property-pack/0.1/`](../../source/03-standards/ontology-candidates/property-pack/0.1/)
+  is the deterministic, isolated RDF, SHACL, vocabulary, glossary, dictionary and trace projection;
 - `/modelling/property-pack` reads the generated JSON and is a local working view, not an
   authorised publication of the revised modelling strategy.
 
@@ -139,9 +143,10 @@ explain, challenge and enrich the 451 items; they may not silently enlarge the s
 
 ### Release governance
 
-Before a semantic release, a fresh ODR must decide field-to-term identity, split/consolidation
-rules, context ownership and the profile's relationship to domain ontologies. Existing ODRs may
-inform that decision but do not automatically govern the greenfield model.
+ADR-0067 now decides the candidate architecture, field-to-term split/consolidation rules and
+context-home policy. The generated dispositions remain machine proposals: working groups must
+review domain meaning, the Interoperability Working Group must review the common boundary and
+mappings, and recorded human approval is still required before a semantic release.
 
 ## Consequences
 
@@ -165,10 +170,10 @@ inform that decision but do not automatically govern the greenfield model.
 | Extract and reconcile the 451-row baseline | Complete | [Validation report](../../src/data/property-pack/validation-report.json) |
 | TOML single source and deterministic JSON | Complete | [`property_pack_catalogue.py`](../../scripts/property_pack_catalogue.py) |
 | Searchable local working view | Complete | `/modelling/property-pack` |
-| Domain/context ownership decisions | Not started | All 451 records remain `unassigned` |
-| Resource/relationship/attribute classification | Not started | All 451 records remain `unclassified` |
-| Vocabulary rationalisation and definition review | Not started | 320 candidates; all 451 need semantic review |
-| New ontology, SHACL shapes and mappings | Not started | Requires a fresh ODR and reviewed catalogue |
+| Domain/context ownership candidates | Generated; human review pending | All 451 items have one proposed semantic home; common contains one source item |
+| Resource/relationship/attribute classification | Generated; human review pending | Every item reaches one or more of 159 traced candidate resources |
+| Vocabulary rationalisation and definition review | Generated; human review pending | 14 candidate SKOS schemes; definitions remain machine-proposed |
+| New ontology, SHACL shapes and context map | Local candidate complete | 53-file isolated corpus; 56 deterministic checks pass; no cross-context equivalence asserted |
 | Public migration/replacement of current pages | Not authorised | Requires a separate publication and migration decision |
 
 ## Evidence and Related Decisions
@@ -181,3 +186,7 @@ inform that decision but do not automatically govern the greenfield model.
 - **2026-08-03 — Accepted by operator.** The operator selected the 451 required Property Pack
   items as the greenfield starting scope and explicitly rejected the previous ontology and schema
   topology as foundations for the new model.
+- **2026-08-04 — Local candidate implemented.** Added a separate TOML semantic source, exact
+  451-item trace projection, 159-resource ontology candidate, 14 controlled vocabularies,
+  context-owned SHACL shapes and a fail-closed deterministic validation receipt. All semantic
+  dispositions remain machine proposals pending human review.

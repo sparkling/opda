@@ -3,61 +3,106 @@ import Layout from '@/layouts/Layout.astro';
 import PageMeta from '@/components/PageMeta.astro';
 import records from '@/data/property-pack/required-properties.json';
 import report from '@/data/property-pack/validation-report.json';
+import candidateSummary from '../../../source/03-standards/ontology-candidates/property-pack/0.1/candidate-summary.json';
+import candidateCoverage from '../../../source/03-standards/ontology-candidates/property-pack/0.1/projections/coverage.json';
+import contextMap from '../../../source/03-standards/ontology-candidates/property-pack/0.1/projections/context-map.json';
+import candidateValidation from '../../../source/03-standards/ontology-candidates/property-pack/0.1/validation/report.json';
 
-const rows = records.map((record) => ({
-  id: record.id,
-  label: record.semantic.preferred_label,
-  definition: record.semantic.candidate_definition,
-  workPackage: record.work_package,
-  heading: record.source.heading,
-  path: record.source.path,
-  datatype: record.value.xsd_datatype,
-  requiredness: record.value.requiredness,
-  repeatable: record.value.repeatable_context ? 'repeatable context' : 'single context',
-  vocabulary: record.vocabulary.status === 'candidate' ? 'candidate' : 'none identified',
-  review: record.review.status,
-  classification: record.model.classification_status,
-  home: record.model.owning_context,
+const candidateById = new Map(candidateCoverage.map((entry) => [entry.item_id, entry]));
+
+const rows = records.map((record) => {
+  const candidate = candidateById.get(record.id);
+  return {
+    id: record.id,
+    label: candidate?.preferred_label ?? record.semantic.preferred_label,
+    definition: candidate?.candidate_definition ?? record.semantic.candidate_definition,
+    workPackage: candidate?.work_package ?? record.work_package,
+    heading: record.source.heading,
+    path: record.source.path,
+    datatype: candidate?.source_constraints.datatype ?? record.value.xsd_datatype,
+    requiredness: candidate?.source_constraints.requiredness ?? record.value.requiredness,
+    repeatable: candidate?.source_constraints.repeatable_context ? 'repeatable context' : 'single context',
+    vocabulary: candidate?.vocabulary_ref ? 'candidate scheme' : 'none identified',
+    review: candidate?.candidate_status ?? record.review.status,
+    classification: candidate?.roles.join(', ') ?? record.model.classification_status,
+    home: candidate?.semantic_home ?? record.model.owning_context,
+    disposition: candidate?.disposition ?? record.model.disposition,
+  };
+});
+const details = records.map((record) => ({
+  source: { id: record.id, source: record.source },
+  candidate: candidateById.get(record.id),
 }));
 const safeRows = JSON.stringify(rows).replace(/</g, '\\u003c');
-const safeDetails = JSON.stringify(records).replace(/</g, '\\u003c');
+const safeDetails = JSON.stringify(details).replace(/</g, '\\u003c');
 ---
 <Layout
-  title="Property Pack seed catalogue"
-  description="The verified 451-item Property Pack evidence baseline for greenfield ontology modelling."
+  title="Property Pack ontology candidate"
+  description="A local review view of the machine-proposed Property Pack ontology candidate and its exact 451-item evidence coverage."
 >
   <PageMeta
-    category="Working baseline"
+    category="Machine-proposed candidate"
     variant="warn"
-    updated="Extracted and verified 2026-08-03"
+    updated="Generated and validated 2026-08-04"
     damaKa={["Metadata Management", "Data Modeling & Design", "Data Quality"]}
   />
 
-  <h1>Property Pack seed catalogue</h1>
+  <h1>Property Pack ontology candidate</h1>
   <p class="lead">
-    The closed starting scope for the new ontology: exactly <strong>451 source data points</strong>
-    marked <strong>Required</strong> in the Property Pack workbook. They are evidence to model—not
-    451 pre-decided RDF properties, and not a reason to reproduce the old JSON tree.
+    A first-principles model of exactly <strong>{candidateSummary.source_item_count} required source data points</strong>
+    as <strong>{candidateSummary.ontology_resource_count} candidate ontology resources</strong> across bounded contexts
+    and a deliberately small common boundary. The source rows are evidence to model—not 451 pre-decided RDF properties.
   </p>
 
   <div class="callout callout--warning">
-    <div class="callout__label">Working evidence baseline—not an approved semantic model</div>
+    <div class="callout__label">Review candidate—not an approved semantic release</div>
     <p>
-      The inventory is structurally complete against the workbook and reconciled with the legacy
-      v3.5 schema. Its definitions are machine-drafted candidates; ontology roles, bounded-context
-      ownership, resources, relationships, attributes, IRIs and vocabulary schemes remain deliberately
-      unresolved until domain review. The source material does not establish final DPMSG approval.
+      Every item has a machine-proposed semantic home, role, disposition and trace to one or more model
+      constructs. These are reviewable hypotheses, not settled meaning. Working groups must challenge the
+      definitions and context ownership; the Interoperability Working Group must review common-boundary
+      terms and mappings. This candidate does not replace the current published ontology.
     </p>
   </div>
 
   <section class="baseline-metrics" aria-label="Catalogue summary">
-    <article><strong>{report.actual_count}</strong><span>required source data points</span></article>
-    <article><strong>{report.unconditional_required}</strong><span>unconditionally required</span></article>
-    <article><strong>{report.conditional_required}</strong><span>conditionally required</span></article>
-    <article><strong>{report.repeatable_context}</strong><span>inside repeatable contexts</span></article>
-    <article><strong>{report.controlled_vocabulary_candidates}</strong><span>vocabulary candidates</span></article>
-    <article><strong>{report.unresolved_classifications}</strong><span>await semantic classification</span></article>
+    <article><strong>{candidateSummary.source_item_count}</strong><span>source data points covered</span></article>
+    <article><strong>{candidateSummary.ontology_resource_count}</strong><span>candidate ontology resources</span></article>
+    <article><strong>{contextMap.contexts.length}</strong><span>semantic homes</span></article>
+    <article><strong>{candidateSummary.controlled_vocabulary_count}</strong><span>controlled vocabularies</span></article>
+    <article><strong>{candidateSummary.semantic_home_counts.common}</strong><span>source item in common</span></article>
+    <article><strong>{candidateValidation.checks.length}</strong><span>passing deterministic checks</span></article>
   </section>
+
+  <h2 id="context-map">Semantic homes</h2>
+  <p>
+    Each candidate resource has one owner. The common boundary is exceptional: it carries only meaning
+    genuinely shared across domains and does not control a bounded context's internal language.
+  </p>
+  <div class="context-grid">
+    {contextMap.contexts.map((context) => (
+      <article class:list={{ 'context-card': true, 'context-card--common': context.id === contextMap.common_boundary }}>
+        <p class="eyebrow">{context.kind.replace('-', ' ')}</p>
+        <h3>{context.label}</h3>
+        <p>{context.definition}</p>
+        <p><strong>{context.source_item_count}</strong> source data point{context.source_item_count === 1 ? '' : 's'}</p>
+      </article>
+    ))}
+  </div>
+  <p class="muted">
+    Cross-domain mappings: <strong>{contextMap.mapping_status}</strong>. The current candidate asserts no default
+    <code>owl:sameAs</code> relationships.
+  </p>
+
+  <h2 id="candidate-artefacts">Candidate artefacts</h2>
+  <p>All views are generated from the maintained TOML model and the closed 451-item evidence catalogue.</p>
+  <ul class="artifact-links">
+    <li><a class="resource-link" href="/resource?path=source/03-standards/ontology-candidates/property-pack/0.1/projections/business-glossary.json">Business glossary</a></li>
+    <li><a class="resource-link" href="/resource?path=source/03-standards/ontology-candidates/property-pack/0.1/projections/data-dictionary.json">Data dictionary</a></li>
+    <li><a class="resource-link" href="/resource?path=source/03-standards/ontology-candidates/property-pack/0.1/projections/controlled-vocabularies.json">Controlled vocabularies</a></li>
+    <li><a class="resource-link" href="/resource?path=source/03-standards/ontology-candidates/property-pack/0.1/projections/context-map.json">Context map</a></li>
+    <li><a class="resource-link" href="/resource?path=source/03-standards/ontology-candidates/property-pack/0.1/candidate-manifest.json">Candidate manifest</a></li>
+    <li><a class="resource-link" href="/resource?path=source/03-standards/ontology-candidates/property-pack/0.1/validation/report.json">Validation receipt</a></li>
+  </ul>
 
   <h2 id="how-to-read">How to read this baseline</h2>
   <div class="baseline-explanation">
@@ -66,25 +111,27 @@ const safeDetails = JSON.stringify(records).replace(/</g, '\\u003c');
       <p>Workbook row, full JSON path, field name, source datatype, status, condition and source description are preserved verbatim.</p>
     </article>
     <article>
-      <h3>Legacy corroboration</h3>
-      <p>Schema types, formats, ranges and permitted values are retained as attributed evidence only. They have no automatic semantic authority.</p>
+      <h3>Candidate meaning</h3>
+      <p>Each source item has a proposed definition, semantic home, model role, disposition, vocabulary and trace to candidate resources.</p>
     </article>
     <article>
-      <h3>Work packages, then decisions</h3>
-      <p>Each item has one operational review batch. A work package is not an ontology module or semantic home; model roles and context ownership remain separate decisions.</p>
+      <h3>Deterministic assurance</h3>
+      <p>Coverage, trace closure, RDF syntax, SHACL probes and SPARQL competency questions are regenerated and checked without granting semantic approval.</p>
     </article>
   </div>
 
   <h2 id="browse">Browse all 451 items</h2>
   <p>
-    Search by label, definition or full source path. Use the filters to isolate a heading,
-    datatype, conditional field, repeatable context, vocabulary candidate or review state.
-    Select a label to inspect the full evidence and modelling record.
+    Search by label, definition or full source path. Filter by bounded context, proposed model
+    role, disposition, datatype, requiredness or vocabulary use. Select a label to inspect the
+    source evidence, candidate semantics, constraints and traced model constructs together.
   </p>
   <p class="download-line">
     <a class="resource-link" href="/data/property-pack-required.json" download>Download the generated JSON list</a>
     <span aria-hidden="true">·</span>
     <a href="/resource?path=docs/adr/ADR-0066-property-pack-451-seed-scope-and-greenfield-ontology.md">Read ADR-0066</a>
+    <span aria-hidden="true">·</span>
+    <a href="/resource?path=docs/adr/ADR-0067-first-principles-property-pack-ontology-by-bounded-context.md">Read ADR-0067</a>
   </p>
   <div id="property-pack-browser" class="data-browser"></div>
 
@@ -104,9 +151,11 @@ const safeDetails = JSON.stringify(records).replace(/</g, '\\u003c');
     <tbody>
       <tr><th scope="row">Workbook reconciliation</th><td>{report.status === 'pass' ? 'Pass' : 'Fail'} — 451/451 required rows accounted for</td></tr>
       <tr><th scope="row">Unique source identities</th><td>{report.unique_paths} full JSON paths and {report.unique_ids} stable catalogue IDs</td></tr>
-      <tr><th scope="row">Schema corroboration</th><td>Every path found; zero source-type mismatches; schema treated as legacy evidence</td></tr>
-      <tr><th scope="row">Semantic completeness</th><td>Not yet claimed — all 451 items require domain and ontology review</td></tr>
-      <tr><th scope="row">Candidate review state</th><td>Proposed — no machine-drafted classification is an approved semantic decision</td></tr>
+      <tr><th scope="row">Candidate coverage</th><td>Pass — every item has one semantic home and reaches at least one traced ontology resource</td></tr>
+      <tr><th scope="row">RDF profile</th><td>RDF 1.2 Basic syntax accepted by {candidateValidation.tooling.riot}; full RDF 1.2 is not claimed</td></tr>
+      <tr><th scope="row">SHACL profile</th><td>SHACL 1.2 Core target; positive and negative core-subset probes pass under {candidateValidation.tooling.shacl}</td></tr>
+      <tr><th scope="row">SPARQL profile</th><td>SPARQL 1.2 target; portable competency-query subset passes under {candidateValidation.tooling.arq}</td></tr>
+      <tr><th scope="row">Semantic authority</th><td>Machine-proposed — working-group review and recorded human disposition remain required</td></tr>
     </tbody>
   </table>
 
@@ -137,40 +186,46 @@ const safeDetails = JSON.stringify(records).replace(/</g, '\\u003c');
         return '<div><dt>' + esc(label) + '</dt><dd>' + shown + '</dd></div>';
       }
       function showDetail(id) {
-        var record = readJson('property-pack-details').find(function (item) { return item.id === id; });
+        var record = readJson('property-pack-details').find(function (item) { return item.source && item.source.id === id; });
         var panel = document.getElementById('property-detail');
         var title = document.getElementById('property-detail-title');
         var body = document.getElementById('property-detail-body');
-        if (!record || !panel || !title || !body) return;
-        title.textContent = record.semantic.preferred_label;
-        var permitted = record.restrictions.permitted_values;
+        if (!record || !record.source || !record.candidate || !panel || !title || !body) return;
+        var source = record.source;
+        var candidate = record.candidate;
+        var constraints = candidate.source_constraints;
+        title.textContent = candidate.preferred_label;
+        var permitted = constraints.permitted_values;
         body.innerHTML =
-          '<p class="lead">' + esc(record.semantic.candidate_definition) + '</p>' +
-          '<p><span class="pill pill--warn">' + esc(record.review.status) + '</span> <span class="pill pill--info">' + esc(record.model.classification_status) + '</span></p>' +
+          '<p class="lead">' + esc(candidate.candidate_definition) + '</p>' +
+          '<p><span class="pill pill--warn">' + esc(candidate.candidate_status) + '</span> <span class="pill pill--info">' + esc(candidate.semantic_home) + '</span></p>' +
           '<div class="detail-grid">' +
             '<section><h3>Source evidence</h3><dl>' +
-              pair('Stable ID', record.id, true) + pair('Workbook row', record.source.row, false) +
-              pair('JSON path', record.source.path, true) + pair('Heading', record.source.heading, true) +
-              pair('Source field', record.source.field_name, true) + pair('Source description', record.source.description, false) +
-              pair('Condition', record.source.condition, false) +
+              pair('Stable ID', source.id, true) + pair('Workbook row', source.source.row, false) +
+              pair('JSON path', source.source.path, true) + pair('Heading', source.source.heading, true) +
+              pair('Source field', source.source.field_name, true) + pair('Source description', source.source.description, false) +
+              pair('Condition', source.source.condition, false) +
             '</dl></section>' +
-            '<section><h3>Value and constraints</h3><dl>' +
-              pair('Datatype', record.value.xsd_datatype, true) + pair('Requiredness', record.value.requiredness, false) +
-              pair('Minimum count', record.value.min_count, false) + pair('Maximum count', record.value.max_count, false) +
-              pair('Occurrence scope', record.value.occurrence_scope, false) + pair('Format', record.restrictions.format, true) +
-              pair('Minimum length', record.restrictions.min_length, false) + pair('Minimum value', record.restrictions.minimum, false) +
-            '</dl><h4>Permitted values from legacy schema</h4>' + list(permitted) + '</section>' +
-            '<section><h3>Fresh model decisions</h3><dl>' +
-              pair('Work package', record.work_package, false) + pair('Classification', record.model.classification_status, false) +
-              pair('Ontology roles', record.model.roles.join(', '), false) + pair('Owning context', record.model.owning_context, false) +
-              pair('Construct references', record.model.construct_refs.join(', '), true) + pair('Disposition', record.model.disposition, false) +
-              pair('Sensitivity', record.model.sensitivity, false) + pair('Rationale', record.model.rationale, false) +
-              pair('Vocabulary scheme', record.vocabulary.scheme_id, true) +
+            '<section><h3>Value and source constraints</h3><dl>' +
+              pair('Datatype', constraints.datatype, true) + pair('Requiredness', constraints.requiredness, false) +
+              pair('Minimum count', constraints.min_count, false) + pair('Maximum count', constraints.max_count, false) +
+              pair('Occurrence scope', constraints.occurrence_scope, false) + pair('Format', constraints.format, true) +
+              pair('Pattern', constraints.pattern, true) + pair('Minimum length', constraints.min_length, false) +
+              pair('Maximum length', constraints.max_length, false) + pair('Minimum value', constraints.minimum, false) +
+              pair('Maximum value', constraints.maximum, false) +
+            '</dl><h4>Permitted source values</h4>' + list(permitted) + '</section>' +
+            '<section><h3>Candidate model</h3><dl>' +
+              pair('Semantic home', candidate.semantic_home, false) + pair('Ontology roles', candidate.roles.join(', '), false) +
+              pair('Disposition', candidate.disposition, false) + pair('Work package', candidate.work_package, false) +
+              pair('Rule', candidate.rule_id, true) + pair('Consuming contexts', candidate.consuming_contexts.join(', '), false) +
+              pair('Vocabulary scheme', candidate.vocabulary_ref, true) + pair('Topic concept', candidate.topic_iri, true) +
+              pair('Rationale', candidate.rationale, false) +
             '</dl></section>' +
-            '<section><h3>Evidence and review</h3><dl>' +
-              pair('Approval', record.review.approval_status, false) + pair('Quality', record.review.quality, false) +
-              pair('Confidence', record.review.confidence, false) + pair('Definition status', record.semantic.definition_status, false) +
-            '</dl><h4>Evidence</h4>' + list(record.evidence) + '<h4>Review flags</h4>' + list(record.review.flags) + '</section>' +
+            '<section><h3>Trace and review</h3><dl>' +
+              pair('Candidate status', candidate.candidate_status, false) +
+              pair('Definition status', candidate.definition_status, false) +
+            '</dl><h4>Model constructs</h4>' + list(candidate.construct_refs) +
+              '<h4>Evidence</h4>' + list(candidate.evidence) + '</section>' +
           '</div>';
         panel.hidden = false;
         panel.scrollIntoView({ behavior: 'smooth', block: 'start' });
@@ -196,18 +251,19 @@ const safeDetails = JSON.stringify(records).replace(/</g, '\\u003c');
             { key: 'repeatable', label: 'Occurrence context' },
             { key: 'vocabulary', label: 'Controlled vocabulary' },
             { key: 'review', label: 'Review status' },
-            { key: 'classification', label: 'Classification state' },
+            { key: 'classification', label: 'Model roles' },
             { key: 'home', label: 'Semantic home' },
+            { key: 'disposition', label: 'Disposition' },
           ],
           columns: [
             { key: 'label', label: 'Candidate label', sortable: true, width: '18%', render: function (value, row) {
               return '<button class="property-detail-link" type="button" data-property-id="' + esc(row.id) + '">' + esc(value) + '</button>';
             } },
-            { key: 'heading', label: 'Heading', sortable: true, width: '13%', render: function (value) { return '<code>' + esc(value) + '</code>'; } },
-            { key: 'datatype', label: 'Datatype', sortable: true, width: '10%', render: function (value) { return '<code>' + esc(value) + '</code>'; } },
-            { key: 'requiredness', label: 'Requiredness', sortable: true, width: '11%' },
-            { key: 'workPackage', label: 'Work package', sortable: true, width: '16%' },
-            { key: 'classification', label: 'Classification', sortable: true, width: '12%' },
+            { key: 'home', label: 'Semantic home', sortable: true, width: '13%' },
+            { key: 'classification', label: 'Model roles', sortable: true, width: '15%' },
+            { key: 'disposition', label: 'Disposition', sortable: true, width: '10%' },
+            { key: 'datatype', label: 'Source datatype', sortable: true, width: '10%', render: function (value) { return '<code>' + esc(value) + '</code>'; } },
+            { key: 'workPackage', label: 'Work package', sortable: true, width: '14%' },
             { key: 'path', label: 'Source path', sortable: true, width: '20%', render: function (value) { return '<code>' + esc(value) + '</code>'; } },
           ],
         });
@@ -230,6 +286,12 @@ const safeDetails = JSON.stringify(records).replace(/</g, '\\u003c');
     .baseline-explanation { display: grid; grid-template-columns: repeat(auto-fit, minmax(14rem, 1fr)); gap: 1rem; margin-bottom: 2rem; }
     .baseline-explanation article { border-left: 3px solid var(--color-brand-700); padding: .25rem 1rem; }
     .baseline-explanation h3 { margin-top: 0; }
+    .context-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr)); gap: 1rem; margin: 1.25rem 0; }
+    .context-card { border: 1px solid var(--color-border); border-radius: .8rem; padding: 1rem; background: var(--color-surface-card); }
+    .context-card--common { border-color: var(--color-brand-700); box-shadow: inset 0 .25rem 0 var(--color-brand-700); }
+    .context-card h3 { margin: .2rem 0 .5rem; }
+    .context-card p:last-child { margin-bottom: 0; }
+    .artifact-links { display: grid; grid-template-columns: repeat(auto-fit, minmax(14rem, 1fr)); gap: .5rem 1.25rem; }
     .download-line { display: flex; flex-wrap: wrap; gap: .6rem; align-items: center; }
     .property-detail { margin: 2rem 0; padding: clamp(1rem, 3vw, 2rem); border: 2px solid var(--color-brand-700); border-radius: 1rem; background: var(--color-surface-card); scroll-margin-top: 5rem; }
     .property-detail__header { display: flex; justify-content: space-between; gap: 1rem; align-items: start; }

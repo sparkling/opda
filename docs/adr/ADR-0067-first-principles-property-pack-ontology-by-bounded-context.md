@@ -1,10 +1,11 @@
 ---
 status: accepted
 date: 2026-08-03
+updated: 2026-08-04
 tags: [ontology, property-pack, greenfield, bounded-context, common-boundary, interoperability, governance, council, ai-assisted, model-routing, source-security, release, skos, shacl, provenance, authorisation]
 supersedes: []
 depends-on: [ADR-0039, ADR-0066]
-implements: []
+implements: [config/calibration/property-pack-v1.json, scripts/property-pack-calibration.mjs, scripts/property_pack_candidate.py, src/data/property-pack/candidate-model, source/03-standards/ontology-candidates/property-pack/0.1, src/pages/modelling/property-pack.astro]
 ---
 
 # Model the Property Pack from first principles with bounded-context ownership
@@ -37,8 +38,8 @@ boundary, and how different context-specific meanings remain connected without b
 collapsed.
 
 This ADR decides the target architecture for the first greenfield Property Pack
-ontology. It does not author the ontology or publish a replacement for the current
-website.
+ontology. Its implementation may generate isolated review candidates; it neither approves
+their meaning nor publishes a replacement for the current website.
 
 ## Decision Drivers
 
@@ -237,7 +238,7 @@ dependency:
 | ADR-0006 plus the model-portfolio manifests — role-aware routing | Adopt exact route identity, independence groups, frozen task envelopes, qualification, expiry and no silent fallback. |
 | ADR-0026 — branchable candidates and separated promotion authority | Adopt isolated candidate branches/deltas; agents cannot mutate or promote the accepted corpus. |
 | ADR-0039 — replaceable orchestration and memory | Adopt swarms, retrieval and memory only as disposable coordination/context capabilities, never ontology or citation authority. |
-| ADR-0040/0041 — exact graph context and deterministic conformance | Adopt full RDF 1.2, SPARQL 1.2 and SHACL 1.2, pinned standards/tool profiles, semantic feature probes, complete coverage states and fail-closed validation. |
+| ADR-0040/0041 — exact graph context and deterministic conformance | Target RDF 1.2, SPARQL 1.2 and SHACL 1.2 with pinned standards/tool profiles, explicit conformance levels, semantic feature probes, complete coverage states and fail-closed validation. |
 | ADR-0012 — stable releases over a living corpus | Adopt immutable releases, ontology-aware compatibility, deprecation/supersession and a machine-readable change record. |
 
 This ADR does **not** import the complete fourteen-category target, code-analysis and RML
@@ -339,11 +340,13 @@ competency queries, and seals the results. Each required validation cell is one 
 `pass`, `fail`, `not-applicable`, `not-run` or `infrastructure-error`; missing output,
 unsupported semantics or an empty report cannot become `pass`.
 
-The target profile is Semantic Builder's full RDF 1.2, SPARQL 1.2 and SHACL 1.2 Union
-Profile—not RDF 1.1, query-only SPARQL or SHACL Core. Every run pins dated specification
-and test snapshots and qualifies its engine and extensions with positive and negative
-semantic probes. Jena/Fuseki is an implementation, not the standards boundary; unsupported
-or inert required behaviour blocks the run. Six excluded concerns are predeclared `not-applicable`.
+The standards family is RDF 1.2, SPARQL 1.2 and SHACL 1.2. Each candidate declares the exact
+conformance level it actually uses and tests: the initial Property Pack candidate uses valid
+RDF 1.2 Basic syntax, targets SHACL 1.2 Core, and tests a portable SPARQL 1.2 subset. Full RDF
+1.2 and the SHACL 1.2 Union Profile are not claimed until a qualified engine and positive and
+negative feature probes demonstrate them. Jena/Fuseki is an implementation, not the standards
+boundary; unsupported or inert required behaviour blocks the run. Six excluded concerns are
+predeclared `not-applicable`.
 
 Only a human disposition authorised through the OPDA authority chain above can move a
 validated candidate into the governed corpus. Published releases are immutable named
@@ -353,11 +356,16 @@ and emit a machine-readable change record. Publication remains separately author
 
 #### 5.5 Calibration and implementation boundary
 
-Approximately 20–30 difficult Property Pack items will compare one strong agent, typed
-specialists and the council protocol under the same evidence, tools and budget. Measure
+The calibration harness pins 24 difficult Property Pack items across eight cases and compares
+the GPT and Claude routes under the same evidence contract. It measures
 conformance, unsupported claims, identity/resource-home errors, human correction,
 defensibility, reliability, latency and cost. Councils remain escalation-driven unless
 they demonstrate material value for the work class.
+
+The first dual-provider execution produced all 16 case candidates and divergent fingerprints
+for every pair, but remains `incomplete`: Claude returned an attested model identity, the Codex
+CLI exposed only the requested route, and semantic RDF/SHACL validation was not run inside that
+calibration. The result is evidence for human disposition, not a route qualification or winner.
 
 Semantic Builder has substantial typed contracts and tested foundations but no
 production-composed ontology-build command, qualified active runtime portfolio or
@@ -445,15 +453,12 @@ constraints; it does not pre-approve the resulting ontology terms.
 - A generated coverage report accounts for every source-item ID and flags duplicate,
   missing and unresolved dispositions.
 - A resource register demonstrates exactly one home for every OPDA-defined resource.
-- The Interoperability Working Group reviews every common-boundary term and every
-  cross-context mapping before release-candidate status.
-- Each bounded context can review its glossary, dictionary, model diagrams,
-  vocabularies and constraints without needing to edit RDF or JSON Schema.
+- The Interoperability Working Group reviews every common-boundary term and every cross-context mapping before release-candidate status.
+- Each bounded context can review its glossary, dictionary, model diagrams, vocabularies and constraints without needing to edit RDF or JSON Schema.
 - The ontology and SHACL corpus pass the project's deterministic validation gates.
 - A provenance audit can distinguish Property Pack source facts, external standards,
   legacy OPDA evidence, AI-generated proposals and human approvals.
-- Adversarial source fixtures cannot select instructions, tools, models, policy or
-  destinations, and quarantined evidence cannot reach a candidate unnoticed.
+- Adversarial source fixtures cannot select instructions, tools, models, policy or destinations, and quarantined evidence cannot reach a candidate unnoticed.
 - Model receipts identify the actual provider, family and route; high-risk comparison
   uses independent families, and no silent fallback counts as evidence.
 - Every council activation is traceable to a documented escalation reason or the
@@ -486,14 +491,9 @@ constraints; it does not pre-approve the resulting ontology terms.
 
 ## Amendments
 
-- **2026-08-03 — Accepted by operator.** Selected a first-principles Property-Pack scope;
-  rejected a Builder dependency and five non-OPDA concerns; retained the other nine; and
-  required one bounded-context or common-boundary home for every OPDA resource.
-- **2026-08-03 — Pinned Builder execution profile adopted.** Inherit Builder's accepted
-  authoring and assurance contracts without its runtime or excluded target categories;
-  human working groups retain meaning and promotion authority.
-- **2026-08-03 — OPDA governance clarified.** Constitutional authority and the technical
-  change process govern human review and promotion; incomplete release mechanics must be
-  ratified before a normative ontology release.
+- **2026-08-03 — Accepted by operator.** Selected a first-principles Property-Pack scope; rejected a Builder dependency and five non-OPDA concerns; retained the other nine; and required one bounded-context or common-boundary home for every OPDA resource.
+- **2026-08-03 — Pinned Builder execution profile adopted.** Inherit Builder's accepted authoring and assurance contracts without its runtime or excluded target categories; human working groups retain meaning and promotion authority.
+- **2026-08-03 — OPDA governance clarified.** Constitutional authority and the technical change process govern human review and promotion; incomplete release mechanics must be ratified before a normative ontology release.
 - **2026-08-04 — Governance excluded from ontology scope.** Category 6 remains an operational Builder and OPDA control; the ontology retains eight concerns and excludes six.
-- **2026-08-04 — Semantic standards target fixed.** Generate full RDF 1.2, SPARQL 1.2 and SHACL 1.2 Union Profile output under pinned, fail-closed Semantic Builder-compatible qualification.
+- **2026-08-04 — Semantic standards target fixed.** Generate RDF 1.2, SPARQL 1.2 and SHACL 1.2 output with explicit conformance levels and fail-closed qualification; do not claim full RDF or SHACL Union support without feature evidence.
+- **2026-08-04 — Candidate implementation recorded.** Generated an isolated 451-item, context-owned review candidate and dual-provider calibration evidence. Deterministic candidate gates pass; route qualification and every semantic disposition remain pending human review.
