@@ -5,7 +5,9 @@ import json
 from collections import Counter, defaultdict
 from typing import Any
 
-from .property_pack_candidate import canonical_json, compact_array, full_iri, sha256
+from .property_pack_candidate import (
+    canonical_json, canonical_term_key, compact_array, full_iri, sha256,
+)
 
 
 STANDARD_PREFIXES = {
@@ -236,6 +238,12 @@ def semantic_projections(model: dict[str, Any], classification: dict[str, Any]) 
             "label": term["label"], "definition": term["definition"], "identity_criterion": term.get("identity", ""),
             "domain": full_iri(model, term["domain"]) if term.get("domain") else "",
             "range": full_iri(model, term.get("range") or term.get("datatype")) if term.get("range") or term.get("datatype") else "",
+            "subclass_of": full_iri(model, term["subclass_of"]) if term.get("subclass_of") else "",
+            "constraints": {
+                "datatype": full_iri(model, term["datatype"]) if term.get("datatype") else "",
+                "min_count": term.get("min_count"), "max_count": term.get("max_count"),
+                "pattern": term.get("pattern", ""),
+            },
             "source_item_ids": classification["term_traces"][key], "candidate_status": model["manifest"]["status"],
         })
     dictionary = [{
@@ -264,6 +272,28 @@ def semantic_projections(model: dict[str, Any], classification: dict[str, Any]) 
         "concepts": vocabulary["concepts"], "source_item_ids": classification["vocabulary_traces"][key],
         "candidate_status": model["manifest"]["status"],
     } for key, vocabulary in sorted(model["vocabularies"].items())]
+    shape_projection: list[dict[str, Any]] = []
+    for context_id in sorted(model["contexts"]):
+        by_domain: dict[str, list[dict[str, Any]]] = defaultdict(list)
+        for key, term in sorted(model["terms"].items()):
+            if term["home"] == context_id and term["kind"] != "class" and term.get("domain"):
+                by_domain[term["domain"]].append({
+                    "path_iri": full_iri(model, key), "path_key": key, "label": term["label"],
+                    "kind": term["kind"],
+                    "datatype": full_iri(model, term["datatype"]) if term.get("datatype") else "",
+                    "class": full_iri(model, term["range"]) if term.get("range") else "",
+                    "min_count": term.get("min_count"), "max_count": term.get("max_count"),
+                    "pattern": term.get("pattern", ""),
+                })
+        for domain, properties in sorted(by_domain.items()):
+            target_key = canonical_term_key(model, domain)
+            shape_projection.append({
+                "iri": f"{base}shape/{context_id}/{domain.split(':', 1)[1]}",
+                "semantic_home": context_id, "target_class": full_iri(model, domain),
+                "target_key": target_key,
+                "target_label": model["terms"][target_key]["label"],
+                "properties": properties, "candidate_status": model["manifest"]["status"],
+            })
     standards = {
         "target": model["manifest"]["standards"],
         "claims": {
@@ -280,6 +310,7 @@ def semantic_projections(model: dict[str, Any], classification: dict[str, Any]) 
         "projections/business-glossary.json": compact_array(glossary),
         "projections/resource-register.json": compact_array(glossary),
         "projections/controlled-vocabularies.json": compact_array(vocabulary_projection),
+        "projections/shapes.json": compact_array(shape_projection),
         "projections/context-map.json": canonical_json(context_map),
         "standards-profile.json": canonical_json(standards),
         "candidate-summary.json": canonical_json({

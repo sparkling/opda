@@ -8,6 +8,7 @@ const manifest = JSON.parse(readFileSync(`${root}/candidate-manifest.json`, 'utf
 const coverage = JSON.parse(readFileSync(`${root}/projections/coverage.json`, 'utf8'));
 const dictionary = JSON.parse(readFileSync(`${root}/projections/data-dictionary.json`, 'utf8'));
 const glossary = JSON.parse(readFileSync(`${root}/projections/business-glossary.json`, 'utf8'));
+const shapes = JSON.parse(readFileSync(`${root}/projections/shapes.json`, 'utf8'));
 const report = JSON.parse(readFileSync(`${root}/validation/report.json`, 'utf8'));
 
 test('candidate covers the exact closed scope and remains explicitly non-authoritative', () => {
@@ -42,6 +43,21 @@ test('profile constraints stay attributable and controlled values reach schemes'
     assert.match(entry.datatype, /^xsd:/);
     assert.ok(['conditional', 'unconditional'].includes(entry.requiredness));
   }
+});
+
+test('the documentation projection exposes every emitted SHACL property constraint', () => {
+  const constrainedTerms = glossary.filter((term) =>
+    term.kind !== 'class' && term.domain
+  );
+  const projected = shapes.flatMap((shape) => shape.properties);
+  assert.equal(shapes.length, 45);
+  assert.equal(projected.length, constrainedTerms.length);
+  assert.deepEqual(
+    projected.map((property) => property.path_key).sort(),
+    constrainedTerms.map((term) => term.key).sort(),
+  );
+  assert.ok(shapes.every((shape) => shape.candidate_status === 'machine-proposed'));
+  assert.ok(shapes.every((shape) => shape.target_key && shape.target_label));
 });
 
 test('the common boundary stays small and context ownership is explicit', () => {

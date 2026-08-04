@@ -66,9 +66,9 @@
       "sha256": "951c315a2ab320e549650de33128c64765ab88121c490f0ec909f074d90d0faa"
     },
     {
-      "bytes": 134382,
+      "bytes": 152391,
       "path": "projections/business-glossary.json",
-      "sha256": "4a355aded27cf4f53b0434b97071cef54bb1d4ceacec4c843c0c091b080df7db"
+      "sha256": "02d58b329e9ad1bcde776102799992a340f05bb749d0700e1673a0211a3d4476"
     },
     {
       "bytes": 3400,
@@ -91,9 +91,14 @@
       "sha256": "1fa193a3b161e7180676e3efb3d1b11306fac534268eb9a5090c287d5db32bd7"
     },
     {
-      "bytes": 134382,
+      "bytes": 152391,
       "path": "projections/resource-register.json",
-      "sha256": "4a355aded27cf4f53b0434b97071cef54bb1d4ceacec4c843c0c091b080df7db"
+      "sha256": "02d58b329e9ad1bcde776102799992a340f05bb749d0700e1673a0211a3d4476"
+    },
+    {
+      "bytes": 49666,
+      "path": "projections/shapes.json",
+      "sha256": "31e9a4cb6181fbdebbc9a32020be3a67f904240f141b25abefebc3a864fc6522"
     },
     {
       "bytes": 1568,
@@ -173,7 +178,7 @@
     {
       "bytes": 9379,
       "path": "validation/report.json",
-      "sha256": "d74856308bb9a95f94fe27a24a4e85327b958685c83f87eba8f846784ca241ca"
+      "sha256": "626b4aadd77a83e7a4c38700e8d77d929461ef202f19d45b0bc90c35318c50af"
     },
     {
       "bytes": 3394,
@@ -334,5 +339,5 @@
     }
   ],
   "source_item_count": 451,
-  "tree_digest": "95eb3fb2a086010e1b6a84e55c82420c8a96ec23ba15896d3af261f5071d9217"
+  "tree_digest": "ba3f5edd7dccbedd419f17e8d8937e4f925447facb5d0f7c505c924711cb448d"
 }
