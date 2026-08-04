@@ -1,0 +1,108 @@
+{
+  "schemaVersion": "1.0",
+  "experimentId": "property-pack-calibration-v1",
+  "builderBaseline": "b64e4288bc07277198abad83bd7978db5c938b6b",
+  "catalogue": {
+    "path": "src/data/property-pack/required-properties.json",
+    "sha256": "8f60ffa353b064bc8232ed44dac2aba956d0a493395215f15da4ba3650be72b4"
+  },
+  "standardsProfile": {
+    "rdf": "1.2",
+    "sparql": "1.2",
+    "shacl": "1.2-union"
+  },
+  "retainedConcerns": [1, 2, 5, 7, 8, 9, 10, 11],
+  "excludedConcerns": [3, 4, 6, 12, 13, 14],
+  "allowedHomes": [
+    "finance-and-banking",
+    "conveyancing",
+    "estate-agency",
+    "surveying-and-valuation",
+    "property-data-services",
+    "property-technology",
+    "dbt-smart-data",
+    "common"
+  ],
+  "routes": {
+    "gpt": {
+      "routeId": "local-cli:openai:codex:gpt-5.6-sol",
+      "provider": "openai",
+      "cli": "codex",
+      "model": "gpt-5.6-sol",
+      "independenceGroup": "openai"
+    },
+    "claude": {
+      "routeId": "local-cli:anthropic:claude-code:claude-fable-5",
+      "provider": "anthropic",
+      "cli": "claude",
+      "model": "claude-fable-5",
+      "independenceGroup": "anthropic"
+    }
+  },
+  "cases": [
+    {
+      "id": "identity-address",
+      "itemIds": ["pp-d1f058853e2f", "pp-3ea52a4dc5b1", "pp-27cb6f2d84ae"],
+      "candidateHomes": ["common", "property-data-services", "conveyancing"],
+      "hardCases": ["identity criterion", "address as resource versus string", "common-boundary threshold"],
+      "competencyQuestions": ["How is a property identified independently of an address?", "How can address change without changing property identity?"],
+      "alwaysChallenge": true
+    },
+    {
+      "id": "titles-ownership",
+      "itemIds": ["pp-db91104a4659", "pp-863d68de4c61", "pp-209319fd979c"],
+      "candidateHomes": ["conveyancing", "property-data-services", "common"],
+      "hardCases": ["registered title identity", "party role versus owner type", "register indicator semantics"],
+      "competencyQuestions": ["Which title is being sold?", "What does a register indicator assert and about which register?"],
+      "alwaysChallenge": true
+    },
+    {
+      "id": "construction-energy",
+      "itemIds": ["pp-cc96982f12e0", "pp-81569fcbac22", "pp-15a04970b279"],
+      "candidateHomes": ["surveying-and-valuation", "property-data-services", "common"],
+      "hardCases": ["classification scheme boundaries", "certificate identity", "property reference reuse"],
+      "competencyQuestions": ["Which building does an EPC describe?", "Are built form and property type classifications or intrinsic classes?"],
+      "alwaysChallenge": false
+    },
+    {
+      "id": "searches-environment",
+      "itemIds": ["pp-f11721503b6a", "pp-f14e5211e33a", "pp-de935b15a13a"],
+      "candidateHomes": ["property-data-services", "conveyancing", "surveying-and-valuation"],
+      "hardCases": ["finding versus source record", "valid time", "risk assertion provenance"],
+      "competencyQuestions": ["What search produced a finding and when?", "Whose assessment supports a risk indicator?"],
+      "alwaysChallenge": true
+    },
+    {
+      "id": "fixtures-evidence",
+      "itemIds": ["pp-2b82e1d1b030", "pp-9b0989f688b7", "pp-f9afe23d8a05"],
+      "candidateHomes": ["conveyancing", "estate-agency"],
+      "hardCases": ["repeatable fixture item", "disposition vocabulary", "attestation scope"],
+      "competencyQuestions": ["Which fixture is included or excluded?", "Who attested to which schedule and when?"],
+      "alwaysChallenge": false
+    },
+    {
+      "id": "transaction-finance",
+      "itemIds": ["pp-987ea4dcdf35", "pp-e16384254af4", "pp-c61c54c24f33"],
+      "candidateHomes": ["estate-agency", "finance-and-banking", "conveyancing"],
+      "hardCases": ["amount and currency", "rent period vocabulary", "seller assertion about mortgage discharge"],
+      "competencyQuestions": ["What price applies to which sale proposition?", "Is mortgage repayment a fact, forecast or declaration?"],
+      "alwaysChallenge": true
+    },
+    {
+      "id": "declarations-media",
+      "itemIds": ["pp-6510a39ceb24", "pp-f3a31cde745a", "pp-88f781a6ad54"],
+      "candidateHomes": ["dbt-smart-data", "conveyancing", "estate-agency", "property-technology"],
+      "hardCases": ["authorisation semantics", "attestation provenance", "media resource versus locator"],
+      "competencyQuestions": ["Who authorised which disclosure for what purpose?", "What resource does a media URL identify?"],
+      "alwaysChallenge": true
+    },
+    {
+      "id": "boundaries-vocabularies",
+      "itemIds": ["pp-9203e6679306", "pp-d0e2ab47a310", "pp-190dd6e44cdb"],
+      "candidateHomes": ["conveyancing", "property-data-services", "common"],
+      "hardCases": ["observed versus legal boundary", "right as legal relation", "jurisdiction-specific taxonomy"],
+      "competencyQuestions": ["Which boundary differs from which title plan?", "Which jurisdiction governs a council-tax band?"],
+      "alwaysChallenge": true
+    }
+  ]
+}

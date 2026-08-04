@@ -1,0 +1,50 @@
+{
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schemaVersion", "workOrderId", "itemDecisions", "resources", "competencyAnswers", "assumptions", "unresolvedIssues"],
+  "properties": {
+    "schemaVersion": {"type": "string", "const": "1.0"},
+    "workOrderId": {"type": "string", "minLength": 1},
+    "itemDecisions": {
+      "type": "array",
+      "minItems": 3,
+      "maxItems": 3,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["itemId", "disposition", "semanticHome", "consumingContexts", "roles", "constructRefs", "evidenceRefs", "rationale", "retainedConcerns"],
+        "properties": {
+          "itemId": {"type": "string", "pattern": "^pp-[0-9a-f]{12}$"},
+          "disposition": {"type": "string", "enum": ["model", "consolidate", "split", "challenge"]},
+          "semanticHome": {"type": "string"},
+          "consumingContexts": {"type": "array", "items": {"type": "string"}},
+          "roles": {"type": "array", "minItems": 1, "items": {"type": "string", "enum": ["resource", "relationship", "attribute", "validation-rule", "controlled-concept"]}},
+          "constructRefs": {"type": "array", "minItems": 1, "items": {"type": "string", "minLength": 1}},
+          "evidenceRefs": {"type": "array", "minItems": 1, "items": {"type": "string", "minLength": 1}},
+          "rationale": {"type": "string", "minLength": 1},
+          "retainedConcerns": {"type": "array", "minItems": 1, "items": {"type": "integer"}}
+        }
+      }
+    },
+    "resources": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["iri", "kind", "semanticHome", "label", "definition", "identityCriterion", "evidenceRefs"],
+        "properties": {
+          "iri": {"type": "string", "minLength": 1},
+          "kind": {"type": "string", "enum": ["class", "object-property", "datatype-property", "shape", "concept-scheme", "concept"]},
+          "semanticHome": {"type": "string"},
+          "label": {"type": "string", "minLength": 1},
+          "definition": {"type": "string", "minLength": 1},
+          "identityCriterion": {"type": "string", "minLength": 1},
+          "evidenceRefs": {"type": "array", "minItems": 1, "items": {"type": "string", "minLength": 1}}
+        }
+      }
+    },
+    "competencyAnswers": {"type": "array", "items": {"type": "string"}},
+    "assumptions": {"type": "array", "items": {"type": "string"}},
+    "unresolvedIssues": {"type": "array", "items": {"type": "string"}}
+  }
+}
