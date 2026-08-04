@@ -1,0 +1,83 @@
+---
+import GraphDiagram from '@/components/GraphDiagram.astro';
+import V2Contents from '@/components/v2/V2Contents.astro';
+import V2DiagramLegend from '@/components/v2/V2DiagramLegend.astro';
+import V2Page from '@/components/v2/V2Page.astro';
+import {
+  boundaryDiagram,
+  contexts,
+  contextKindLabels,
+  contextRoute,
+  contextStats,
+  contextMap,
+} from '@/lib/v2-model.mjs';
+---
+<V2Page
+  title="Contextual boundaries"
+  description="The semantic homes of the V2 Property Pack candidate: six bounded contexts, a deliberately small common boundary and the separate DBT Smart Data scheme context."
+  category="Model atlas"
+  crumbs={[{ label: 'Contextual boundaries' }]}
+>
+  <h1>Contextual boundaries</h1>
+  <p class="lead">
+    The candidate does not force every participant to use one universal meaning. Each
+    resource belongs to one semantic home, while the Common boundary carries only meaning
+    genuinely needed for exchange across several domains.
+  </p>
+
+  <V2Contents items={[
+    { id: 'map', label: 'Boundary map' },
+    { id: 'homes', label: 'Semantic-home register' },
+    { id: 'rules', label: 'Interpretation rules' },
+  ]} />
+
+  <h2 id="map">Boundary map</h2>
+  <V2DiagramLegend variant="boundary" />
+  <GraphDiagram
+    source={boundaryDiagram()}
+    minHeight="580px"
+    caption="Declared architectural connections only. No cross-domain mappings have yet been accepted."
+  />
+
+  <h2 id="homes">Semantic-home register</h2>
+  <div class="v2-table-wrap">
+    <table>
+      <thead><tr><th>Semantic home</th><th>Kind</th><th>Definition</th><th>OWL resources</th><th>Source data points</th><th>Shapes</th></tr></thead>
+      <tbody>
+        {contexts.map((context) => {
+          const stats = contextStats(context.id);
+          return (
+            <tr>
+              <td><a href={contextRoute(context)}><strong>{context.label}</strong></a><br/><code>{context.id}</code></td>
+              <td>{contextKindLabels[context.kind]}</td>
+              <td>{context.definition}</td>
+              <td>{stats.resources}</td>
+              <td>{stats.sourceItems}</td>
+              <td>{stats.shapes}</td>
+            </tr>
+          );
+        })}
+      </tbody>
+    </table>
+  </div>
+
+  <h2 id="rules">Interpretation rules</h2>
+  <div class="v2-note-grid">
+    <section>
+      <h3>One semantic home</h3>
+      <p>{contextMap.rule}</p>
+    </section>
+    <section>
+      <h3>Six bounded contexts</h3>
+      <p>Conveyancing, Estate agency, Finance and banking, Property data services, Property technology, and Surveying and valuation own their internal meanings.</p>
+    </section>
+    <section>
+      <h3>DBT Smart Data is different</h3>
+      <p>It is a cross-sector scheme context for authorisation and controlled sharing—not a property-domain bounded context.</p>
+    </section>
+    <section>
+      <h3>Mappings are not invented</h3>
+      <p>The cross-domain mapping register is empty. Its current status is <strong>{contextMap.mapping_status}</strong>.</p>
+    </section>
+  </div>
+</V2Page>

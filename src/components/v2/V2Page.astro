@@ -1,0 +1,73 @@
+---
+import Layout from '@/layouts/Layout.astro';
+import PageMeta from '@/components/PageMeta.astro';
+import {
+  candidateManifest,
+  validationReport,
+} from '@/lib/v2-model.mjs';
+import '@/styles/v2.css';
+
+interface Crumb {
+  label: string;
+  href?: string;
+}
+
+interface Props {
+  title: string;
+  description: string;
+  category?: string;
+  crumbs?: Crumb[];
+}
+
+const {
+  title,
+  description,
+  category = 'V2 candidate reference',
+  crumbs = [],
+} = Astro.props;
+const technicalState = validationReport.status === 'pass'
+  ? 'Technical candidate checks passed'
+  : `Technical candidate checks: ${validationReport.status}`;
+---
+<Layout
+  title={`${title} · V2`}
+  description={description}
+  hideBreadcrumbs={true}
+  proseClass="prose wide"
+>
+  <div class="v2-doc">
+    <nav class="v2-breadcrumbs" aria-label="Breadcrumb">
+      <a href="/v2">V2</a>
+      {crumbs.map((crumb) => (
+        <>
+          <span aria-hidden="true">/</span>
+          {crumb.href ? <a href={crumb.href}>{crumb.label}</a> : <span aria-current="page">{crumb.label}</span>}
+        </>
+      ))}
+    </nav>
+
+    <PageMeta
+      category={category}
+      variant="warn"
+      updated={`${candidateManifest.candidate_version} · ${candidateManifest.candidate_status}`}
+    />
+
+    <aside class="v2-candidate-banner" aria-label="Candidate status">
+      <div>
+        <span class="pill pill--warn">Machine-proposed</span>
+        <strong>{candidateManifest.candidate_version}</strong>
+        <span>{candidateManifest.publication_status.replaceAll('-', ' ')}</span>
+      </div>
+      <p>
+        This is a review candidate, not an approved or ratified standard. AI has no
+        decision authority; OPDA working groups must review and disposition the model.
+      </p>
+      <p>
+        <strong>{technicalState}.</strong> This records machine checks, not semantic approval.
+        <a href="/v2/validation"> Review the evidence</a>.
+      </p>
+    </aside>
+
+    <slot />
+  </div>
+</Layout>

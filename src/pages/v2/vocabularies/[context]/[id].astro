@@ -1,0 +1,63 @@
+---
+import V2Contents from '@/components/v2/V2Contents.astro';
+import V2Page from '@/components/v2/V2Page.astro';
+import {
+  contextById,
+  coverageById,
+  dataPointRoute,
+  localName,
+  vocabularies,
+} from '@/lib/v2-model.mjs';
+
+export function getStaticPaths() {
+  return vocabularies.map((scheme) => ({
+    params: { context: scheme.semantic_home, id: localName(scheme.key) },
+    props: { scheme },
+  }));
+}
+
+const { scheme } = Astro.props;
+const context = contextById.get(scheme.semantic_home);
+const sourceItems = scheme.source_item_ids.map((id) => coverageById.get(id)).filter(Boolean);
+---
+<V2Page
+  title={scheme.label}
+  description={`Candidate SKOS scheme ${scheme.key}: ${scheme.definition}`}
+  category="SKOS concept scheme"
+  crumbs={[
+    { label: 'Controlled vocabularies', href: '/v2/vocabularies' },
+    { label: context?.label ?? scheme.semantic_home, href: `/v2/contexts/${scheme.semantic_home}` },
+    { label: scheme.label },
+  ]}
+>
+  <h1>{scheme.label}</h1>
+  <p class="lead">{scheme.definition}</p>
+
+  <V2Contents items={[
+    { id: 'identity', label: 'Scheme identity' },
+    { id: 'concepts', label: `Concepts (${scheme.concepts.length})` },
+    { id: 'evidence', label: `Source evidence (${sourceItems.length})` },
+  ]} />
+
+  <h2 id="identity">Scheme identity</h2>
+  <dl class="v2-facts">
+    <div><dt>Identifier</dt><dd><code>{scheme.key}</code></dd></div>
+    <div><dt>IRI</dt><dd><code>{scheme.iri}</code></dd></div>
+    <div><dt>Semantic home</dt><dd><a href={`/v2/contexts/${scheme.semantic_home}`}>{context?.label}</a></dd></div>
+    <div><dt>Candidate status</dt><dd>{scheme.candidate_status.replaceAll('-', ' ')}</dd></div>
+  </dl>
+
+  <h2 id="concepts">Concepts ({scheme.concepts.length})</h2>
+  <div class="v2-table-wrap">
+    <table>
+      <thead><tr><th>Label</th><th>Notation</th><th>Local identifier</th><th>Concept IRI</th></tr></thead>
+      <tbody>{scheme.concepts.map((concept) => <tr><td><strong>{concept.label}</strong></td><td><code>{concept.notation}</code></td><td><code>{concept.id}</code></td><td><code>{`${scheme.iri}/${concept.id}`}</code></td></tr>)}</tbody>
+    </table>
+  </div>
+
+  <h2 id="evidence">Source evidence ({sourceItems.length})</h2>
+  <details open={sourceItems.length <= 12}>
+    <summary>Show source data points using this scheme</summary>
+    <ul>{sourceItems.map((item) => <li><a href={dataPointRoute(item)}>{item.preferred_label}</a> <code>{item.item_id}</code></li>)}</ul>
+  </details>
+</V2Page>

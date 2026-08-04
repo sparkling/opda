@@ -1,0 +1,112 @@
+---
+import GraphDiagram from '@/components/GraphDiagram.astro';
+import V2Contents from '@/components/v2/V2Contents.astro';
+import V2DiagramLegend from '@/components/v2/V2DiagramLegend.astro';
+import V2Page from '@/components/v2/V2Page.astro';
+import {
+  boundaryDiagram,
+  candidateManifest,
+  contexts,
+  contextRoute,
+  contextStats,
+  counts,
+} from '@/lib/v2-model.mjs';
+---
+<V2Page
+  title="Property Pack ontology candidate"
+  description="The V2 reference for the machine-proposed Property Pack ontology candidate: contextual boundaries, model resources, validation shapes, controlled vocabularies and complete source traceability."
+>
+  <h1>V2 — Property Pack ontology candidate</h1>
+
+  <p class="lead">
+    A reviewable linked-data model derived from exactly 451 required Property Pack source
+    data points. The candidate separates meaning by contextual boundary, keeps the Common
+    boundary deliberately small, and publishes OWL resources, SKOS vocabularies, SHACL
+    constraints and source evidence as one traceable reference.
+  </p>
+
+  <div class="callout callout--key">
+    <p class="callout__label">What “V2” means here</p>
+    <p>
+      <strong>V2 is the site label for the renewed modelling effort.</strong> It is not a
+      ratified release number and it does not replace the current ontology. The underlying
+      candidate is <code>{candidateManifest.candidate_version}</code>, remains
+      <code>{candidateManifest.candidate_status}</code>, and is available for local review only.
+    </p>
+  </div>
+
+  <V2Contents items={[
+    { id: 'headline-counts', label: 'Candidate at a glance' },
+    { id: 'boundaries', label: 'Contextual boundaries' },
+    { id: 'reference', label: 'Explore the reference' },
+    { id: 'scope', label: 'Scope and authority' },
+  ]} />
+
+  <h2 id="headline-counts">Candidate at a glance</h2>
+  <div class="v2-metrics">
+    <div class="v2-metric"><strong>{counts.sourceItems}</strong><span>required source data points, each traced to the candidate</span></div>
+    <div class="v2-metric"><strong>{counts.resources}</strong><span>OWL resources: {counts.classes} classes and {counts.objectProperties + counts.datatypeProperties} properties</span></div>
+    <div class="v2-metric"><strong>{counts.schemes}</strong><span>controlled-vocabulary schemes with {counts.concepts} curated concepts</span></div>
+    <div class="v2-metric"><strong>{counts.shapes}</strong><span>SHACL node shapes carrying {counts.constraints} property constraints</span></div>
+    <div class="v2-metric"><strong>{contexts.length}</strong><span>semantic homes: six bounded contexts, one common boundary and one scheme context</span></div>
+    <div class="v2-metric"><strong>{counts.topicConcepts}</strong><span>source-topic concepts for consolidated Property Pack questions</span></div>
+  </div>
+
+  <h2 id="boundaries">Contextual boundaries</h2>
+  <p>
+    Every ontology resource has one semantic home. The dashed lines below mean only that
+    each context interoperates through the Common boundary. They do not assert reviewed
+    cross-domain mappings, control or inheritance. Cross-domain mappings remain
+    <strong>awaiting working-group evidence</strong>.
+  </p>
+  <V2DiagramLegend variant="boundary" />
+  <GraphDiagram
+    source={boundaryDiagram()}
+    minHeight="560px"
+    caption="Declared context architecture: six bounded contexts, the DBT Smart Data scheme context, and the deliberately small Common boundary. Click a node to open its context page."
+  />
+
+  <div class="v2-card-grid">
+    {contexts.map((context) => {
+      const stats = contextStats(context.id);
+      return (
+        <a class="v2-card" href={contextRoute(context)}>
+          <span class={`pill ${context.kind === 'common-boundary' ? 'pill--brand' : context.kind === 'scheme-context' ? 'pill--warn' : 'pill--info'}`}>
+            {context.kind === 'bounded-context' ? 'Bounded context' : context.kind === 'common-boundary' ? 'Common boundary' : 'Scheme context'}
+          </span>
+          <h3>{context.label}</h3>
+          <p>{context.definition}</p>
+          <p class="v2-card__meta">{stats.resources} resources · {stats.sourceItems} source data points</p>
+        </a>
+      );
+    })}
+  </div>
+
+  <h2 id="reference">Explore the reference</h2>
+  <div class="v2-card-grid">
+    <a class="v2-card" href="/v2/model"><span class="pill pill--brand">Atlas</span><h3>Complete model</h3><p>All 159 candidate resources and 229 asserted structural links, with a synchronized text representation.</p></a>
+    <a class="v2-card" href="/v2/resources"><span class="pill pill--info">OWL</span><h3>Ontology resources</h3><p>Human definitions, technical identifiers, semantic homes, domains, ranges, constraints and evidence traces.</p></a>
+    <a class="v2-card" href="/v2/data-dictionary"><span class="pill pill--info">451 items</span><h3>Data dictionary</h3><p>The exact Property Pack source scope, source constraints and candidate-model disposition for every item.</p></a>
+    <a class="v2-card" href="/v2/vocabularies"><span class="pill pill--info">SKOS</span><h3>Controlled vocabularies</h3><p>Fourteen curated value schemes plus the distinct source-topic concept layer.</p></a>
+    <a class="v2-card" href="/v2/shapes"><span class="pill pill--info">SHACL</span><h3>Validation shapes</h3><p>Forty-five target-class shapes and every emitted datatype, class, count and pattern constraint.</p></a>
+    <a class="v2-card" href="/v2/coverage"><span class="pill pill--success">Traceable</span><h3>Source coverage</h3><p>How all 451 source items reach candidate constructs without importing the legacy ontology.</p></a>
+    <a class="v2-card" href="/v2/standards"><span class="pill pill--warn">Exact claims</span><h3>Standards profile</h3><p>RDF 1.2 Basic, SPARQL 1.2 and SHACL 1.2 targets, with explicit non-claims.</p></a>
+    <a class="v2-card" href="/v2/validation"><span class="pill pill--success">Evidence</span><h3>Technical validation</h3><p>Parser, SHACL probe, competency-query and deterministic-regeneration results.</p></a>
+  </div>
+
+  <h2 id="scope">Scope and authority</h2>
+  <div class="v2-note-grid">
+    <section>
+      <h3>Closed business-data scope</h3>
+      <p>Exactly the 451 workbook rows marked Required. Supporting ontology constructs make the data meaningful but do not enlarge that business-data scope.</p>
+    </section>
+    <section>
+      <h3>Greenfield semantics</h3>
+      <p>The legacy JSON schemas and current ontology are attributed evidence only. This candidate imports neither and does not assert unreviewed equivalence.</p>
+    </section>
+    <section>
+      <h3>Human authority</h3>
+      <p>AI drafted the candidate. OPDA working groups and recorded delegates decide whether meanings, boundaries, constraints and mappings are accepted.</p>
+    </section>
+  </div>
+</V2Page>

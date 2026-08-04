@@ -50,6 +50,7 @@ export const HEADER_ORDER = [
   'engagement',
   'modelling',
   'model',
+  'v2',
   'ontology',
   'mapping',
   'schema',
@@ -294,6 +295,43 @@ export const SECTIONS: Record<string, Section> = {
           { url: '/model/physical-relational/descriptive', title: 'Descriptive' },
         ],
       },
+    ],
+  },
+
+  v2: {
+    key: 'v2',
+    title: 'V2',
+    summary:
+      'The machine-proposed Property Pack ontology candidate: contextual boundaries, complete model atlas, resource reference, data dictionary, vocabularies, SHACL constraints, source coverage and technical assurance.',
+    groups: [
+      { heading: 'Overview', items: [
+        { url: '/v2', title: 'Candidate overview' },
+      ]},
+      { heading: 'Model atlas', items: [
+        { url: '/v2/model', title: 'Complete model' },
+        { url: '/v2/contexts', title: 'Context overview' },
+        { url: '/v2/contexts/common', title: 'Common boundary' },
+        { url: '/v2/contexts/conveyancing', title: 'Conveyancing' },
+        { url: '/v2/contexts/estate-agency', title: 'Estate agency' },
+        { url: '/v2/contexts/finance-and-banking', title: 'Finance and banking' },
+        { url: '/v2/contexts/property-data-services', title: 'Property data services' },
+        { url: '/v2/contexts/property-technology', title: 'Property technology' },
+        { url: '/v2/contexts/surveying-and-valuation', title: 'Surveying and valuation' },
+        { url: '/v2/contexts/dbt-smart-data', title: 'DBT Smart Data' },
+      ]},
+      { heading: 'Meaning & constraints', items: [
+        { url: '/v2/resources', title: 'Ontology resources' },
+        { url: '/v2/relationships', title: 'Relationships' },
+        { url: '/v2/data-dictionary', title: 'Data dictionary' },
+        { url: '/v2/vocabularies', title: 'Controlled vocabularies' },
+        { url: '/v2/shapes', title: 'SHACL shapes' },
+      ]},
+      { heading: 'Evidence & assurance', items: [
+        { url: '/v2/coverage', title: 'Source coverage' },
+        { url: '/v2/standards', title: 'Standards profile' },
+        { url: '/v2/validation', title: 'Validation evidence' },
+        { url: '/v2/artefacts', title: 'Generated artefacts' },
+      ]},
     ],
   },
 
@@ -597,6 +635,12 @@ export function findPage(path: string):
       }
     }
   }
+  // Generated detail routes (for example /v2/resources/{context}/{term}) are
+  // intentionally absent from the sidebar taxonomy. They still belong to the
+  // section and need its header/sidebar shell; their page layout supplies the
+  // deeper, record-specific breadcrumb.
+  const sectionKey = norm.split('/').filter(Boolean)[0];
+  if (sectionKey === 'v2') return { section: SECTIONS.v2 };
   return null;
 }
 

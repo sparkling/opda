@@ -1,0 +1,24 @@
+---
+interface Props {
+  variant?: 'model' | 'boundary';
+}
+const { variant = 'model' } = Astro.props;
+---
+<div class="v2-diagram-legend" aria-label="Diagram legend">
+  {variant === 'boundary' ? (
+    <>
+      <span><i class="v2-swatch v2-swatch--common"></i>Common boundary</span>
+      <span><i class="v2-swatch v2-swatch--bounded"></i>Bounded context</span>
+      <span><i class="v2-swatch v2-swatch--scheme"></i>Scheme context</span>
+      <span><i class="v2-line v2-line--dashed"></i>Architectural connection</span>
+    </>
+  ) : (
+    <>
+      <span><i class="v2-swatch v2-swatch--class"></i>Class</span>
+      <span><i class="v2-swatch v2-swatch--object"></i>Object property</span>
+      <span><i class="v2-swatch v2-swatch--datatype"></i>Datatype property</span>
+      <span><i class="v2-swatch v2-swatch--external"></i>Referenced term</span>
+      <span><i class="v2-line v2-line--solid"></i>Asserted OWL structure</span>
+    </>
+  )}
+</div>

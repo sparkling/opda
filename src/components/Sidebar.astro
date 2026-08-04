@@ -16,7 +16,14 @@ const sectionKey = getActiveSection(path);
 const section = sectionKey ? SECTIONS[sectionKey] : null;
 
 function containsActive(item: Item): boolean {
-  if (normalizeUrl(item.url) === path) return true;
+  const itemPath = normalizeUrl(item.url);
+  const generatedV2Parents = new Set([
+    '/v2/resources', '/v2/data-dictionary', '/v2/vocabularies', '/v2/shapes',
+  ]);
+  const isGeneratedDescendant = !item.children
+    && generatedV2Parents.has(itemPath)
+    && path.startsWith(`${itemPath}/`);
+  if (itemPath === path || isGeneratedDescendant) return true;
   if (item.children) return item.children.some(containsActive);
   return false;
 }

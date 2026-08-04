@@ -1,0 +1,82 @@
+---
+interface Option {
+  value: string;
+  label: string;
+}
+
+interface Props {
+  targetId: string;
+  placeholder?: string;
+  contextOptions?: Option[];
+  kindOptions?: Option[];
+  kindLabel?: string;
+}
+
+const {
+  targetId,
+  placeholder = 'Search labels and definitions…',
+  contextOptions = [],
+  kindOptions = [],
+  kindLabel = 'Type',
+} = Astro.props;
+---
+<div class="v2-filter" data-v2-filter={targetId}>
+  <label>
+    Search
+    <input type="search" placeholder={placeholder} data-v2-query />
+  </label>
+  {contextOptions.length > 0 && (
+    <label>
+      Semantic home
+      <select data-v2-context>
+        <option value="">All semantic homes</option>
+        {contextOptions.map((option) => <option value={option.value}>{option.label}</option>)}
+      </select>
+    </label>
+  )}
+  {kindOptions.length > 0 && (
+    <label>
+      {kindLabel}
+      <select data-v2-kind>
+        <option value="">All {kindLabel.toLowerCase()}s</option>
+        {kindOptions.map((option) => <option value={option.value}>{option.label}</option>)}
+      </select>
+    </label>
+  )}
+</div>
+<p class="v2-filter-summary" data-v2-filter-summary={targetId} aria-live="polite"></p>
+
+<script>
+  function mountV2Filters() {
+    document.querySelectorAll<HTMLElement>('[data-v2-filter]:not([data-v2-mounted])').forEach((filter) => {
+      filter.setAttribute('data-v2-mounted', 'true');
+      const targetId = filter.getAttribute('data-v2-filter');
+      const target = targetId ? document.getElementById(targetId) : null;
+      if (!target) return;
+      const query = filter.querySelector<HTMLInputElement>('[data-v2-query]');
+      const context = filter.querySelector<HTMLSelectElement>('[data-v2-context]');
+      const kind = filter.querySelector<HTMLSelectElement>('[data-v2-kind]');
+      const summary = document.querySelector(`[data-v2-filter-summary="${CSS.escape(targetId)}"]`);
+      const rows = [...target.querySelectorAll<HTMLTableRowElement>('tbody tr[data-search]')];
+      const apply = () => {
+        const needle = (query?.value || '').trim().toLocaleLowerCase();
+        const contextValue = context?.value || '';
+        const kindValue = kind?.value || '';
+        let visible = 0;
+        for (const row of rows) {
+          const matches = (!needle || (row.dataset.search || '').includes(needle))
+            && (!contextValue || row.dataset.context === contextValue)
+            && (!kindValue || row.dataset.kind === kindValue);
+          row.hidden = !matches;
+          if (matches) visible += 1;
+        }
+        if (summary) summary.textContent = `Showing ${visible} of ${rows.length}`;
+      };
+      filter.addEventListener('input', apply);
+      filter.addEventListener('change', apply);
+      apply();
+    });
+  }
+  mountV2Filters();
+  document.addEventListener('astro:page-load', mountV2Filters);
+</script>

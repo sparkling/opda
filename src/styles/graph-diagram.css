@@ -49,6 +49,10 @@
 .gd-mermaid svg .node, .gd-mermaid svg .edgePaths path.flowchart-link, .gd-mermaid svg .edgeLabels > .edgeLabel {
   transition: opacity 0.2s ease, stroke 0.2s ease, stroke-width 0.2s ease, filter 0.2s ease;
 }
+.gd-mermaid svg .node[role="link"]:focus-visible {
+  outline: 3px solid #CC785C;
+  outline-offset: 4px;
+}
 .gd-empty { display: block; padding: 2.5rem 0.5rem; text-align: center; font-size: 0.85rem; color: #8A8780; }
 .gd-caption { margin-top: 0.5rem; font-size: 0.8rem; color: #6C6A64; }
 

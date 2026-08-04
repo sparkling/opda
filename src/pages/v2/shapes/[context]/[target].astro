@@ -1,0 +1,57 @@
+---
+import V2Contents from '@/components/v2/V2Contents.astro';
+import V2Page from '@/components/v2/V2Page.astro';
+import {
+  compactIri,
+  contextById,
+  localName,
+  resourceByIri,
+  resourceRoute,
+  shapes,
+} from '@/lib/v2-model.mjs';
+
+export function getStaticPaths() {
+  return shapes.map((shape) => ({
+    params: { context: shape.semantic_home, target: localName(shape.target_key) },
+    props: { shape },
+  }));
+}
+
+const { shape } = Astro.props;
+const context = contextById.get(shape.semantic_home);
+const target = resourceByIri.get(shape.target_class);
+---
+<V2Page
+  title={`${shape.target_label} shape`}
+  description={`Candidate SHACL node shape for ${shape.target_label}, with ${shape.properties.length} property constraints.`}
+  category="SHACL node shape"
+  crumbs={[
+    { label: 'SHACL shapes', href: '/v2/shapes' },
+    { label: context?.label ?? shape.semantic_home, href: `/v2/contexts/${shape.semantic_home}` },
+    { label: `${shape.target_label} shape` },
+  ]}
+>
+  <h1>{shape.target_label} shape</h1>
+  <p class="lead">Validates candidate RDF instances of {target ? <a href={resourceRoute(target)}>{target.label}</a> : <code>{compactIri(shape.target_class)}</code>}.</p>
+
+  <V2Contents items={[
+    { id: 'identity', label: 'Shape identity' },
+    { id: 'constraints', label: `Property constraints (${shape.properties.length})` },
+  ]} />
+
+  <h2 id="identity">Shape identity</h2>
+  <dl class="v2-facts">
+    <div><dt>Shape IRI</dt><dd><code>{shape.iri}</code></dd></div>
+    <div><dt>Target class</dt><dd>{target ? <a href={resourceRoute(target)}>{target.label}</a> : <code>{compactIri(shape.target_class)}</code>}</dd></div>
+    <div><dt>Semantic home</dt><dd><a href={`/v2/contexts/${shape.semantic_home}`}>{context?.label}</a></dd></div>
+    <div><dt>Candidate status</dt><dd>{shape.candidate_status.replaceAll('-', ' ')}</dd></div>
+  </dl>
+
+  <h2 id="constraints">Property constraints ({shape.properties.length})</h2>
+  <div class="v2-table-wrap">
+    <table>
+      <thead><tr><th>Path</th><th>Kind</th><th>Cardinality</th><th>Value constraint</th><th>Pattern</th></tr></thead>
+      <tbody>{shape.properties.map((property) => { const path = resourceByIri.get(property.path_iri); const value = property.datatype ? compactIri(property.datatype) : property.class ? compactIri(property.class) : 'Not constrained'; return <tr><td>{path ? <a href={resourceRoute(path)}><strong>{property.label}</strong><br/><code>{property.path_key}</code></a> : <code>{property.path_key}</code>}</td><td>{property.kind.replaceAll('-', ' ')}</td><td>{property.min_count ?? 0}..{property.max_count ?? '*'}</td><td><code>{value}</code></td><td><code>{property.pattern || '—'}</code></td></tr>; })}</tbody>
+    </table>
+  </div>
+</V2Page>

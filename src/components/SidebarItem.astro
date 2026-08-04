@@ -17,7 +17,14 @@ interface Props {
 
 const { item, path, containsActive } = Astro.props;
 const isLeaf = !item.children;
-const isActive = normalizeUrl(item.url) === path;
+const itemPath = normalizeUrl(item.url);
+const generatedV2Parents = new Set([
+  '/v2/resources', '/v2/data-dictionary', '/v2/vocabularies', '/v2/shapes',
+]);
+const isGeneratedDescendant = isLeaf
+  && generatedV2Parents.has(itemPath)
+  && path.startsWith(`${itemPath}/`);
+const isActive = itemPath === path || isGeneratedDescendant;
 const isOpen = !isLeaf && containsActive(item);
 ---
 {isLeaf ? (

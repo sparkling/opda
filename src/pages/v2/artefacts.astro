@@ -1,0 +1,66 @@
+---
+import V2Contents from '@/components/v2/V2Contents.astro';
+import V2Page from '@/components/v2/V2Page.astro';
+import { candidateManifest, candidateSummary } from '@/lib/v2-model.mjs';
+
+const root = 'source/03-standards/ontology-candidates/property-pack/0.1';
+const manifestEntry = { path: 'candidate-manifest.json', bytes: null, sha256: null };
+const files = [manifestEntry, ...candidateManifest.files];
+const families = [
+  ['Manifest and summary', files.filter((file) => !file.path.includes('/'))],
+  ['Ontology', files.filter((file) => file.path.startsWith('ontology/'))],
+  ['Human-readable projections', files.filter((file) => file.path.startsWith('projections/'))],
+  ['SHACL shapes', files.filter((file) => file.path.startsWith('shapes/'))],
+  ['SKOS vocabularies', files.filter((file) => file.path.startsWith('vocabularies/'))],
+  ['Validation', files.filter((file) => file.path.startsWith('validation/'))],
+];
+
+function resourceUrl(path) {
+  return `/resource?path=${encodeURIComponent(`${root}/${path}`)}`;
+}
+function formatBytes(bytes) {
+  if (bytes == null) return '—';
+  return bytes < 1024 ? `${bytes} B` : `${(bytes / 1024).toFixed(1)} KiB`;
+}
+---
+<V2Page
+  title="Generated artefacts"
+  description="Manifested ontology, SHACL, SKOS, projection and validation files comprising the V2 Property Pack candidate."
+  category="Evidence & assurance"
+  crumbs={[{ label: 'Generated artefacts' }]}
+>
+  <h1>Generated artefacts</h1>
+  <p class="lead">The candidate is a 54-file review package: one manifest plus 53 payloads. Every payload records its byte size and SHA-256 digest in the manifest.</p>
+
+  <V2Contents items={[
+    { id: 'identity', label: 'Package identity' },
+    { id: 'files', label: 'Complete file register' },
+    { id: 'packaging', label: 'Packaging rules' },
+  ]} />
+
+  <h2 id="identity">Package identity</h2>
+  <dl class="v2-facts">
+    <div><dt>Candidate ID</dt><dd><code>{candidateManifest.candidate_id}</code></dd></div>
+    <div><dt>Version</dt><dd><code>{candidateManifest.candidate_version}</code></dd></div>
+    <div><dt>Base IRI</dt><dd><code>{candidateManifest.base_iri}</code></dd></div>
+    <div><dt>Publication status</dt><dd>{candidateManifest.publication_status.replaceAll('-', ' ')}</dd></div>
+    <div><dt>Tree digest</dt><dd><code>{candidateManifest.tree_digest}</code></dd></div>
+    <div><dt>Ontology resources</dt><dd>{candidateSummary.ontology_resource_count}</dd></div>
+  </dl>
+  <p>{candidateManifest.authority_note}</p>
+
+  <h2 id="files">Complete file register ({files.length})</h2>
+  {families.map(([label, family]) => (
+    <section>
+      <h3>{label} ({family.length})</h3>
+      <div class="v2-table-wrap"><table><thead><tr><th>Path</th><th>Size</th><th>SHA-256</th></tr></thead><tbody>{family.map((file) => <tr><td><a href={resourceUrl(file.path)}><code>{file.path}</code></a></td><td>{formatBytes(file.bytes)}</td><td><code>{file.sha256 ?? '—'}</code></td></tr>)}</tbody></table></div>
+    </section>
+  ))}
+
+  <h2 id="packaging">Packaging rules</h2>
+  <div class="v2-note-grid">
+    <section><h3>One semantic home</h3><p>Ontology, shape and vocabulary files are packaged by their declared context. The common boundary is its own package.</p></section>
+    <section><h3>TTL shards are mechanical</h3><p>Numbered Turtle files keep generated files under the repository’s line limit. They do not create additional modules or semantic boundaries.</p></section>
+    <section><h3>Manifested payloads</h3><p>The manifest covers every payload file. The manifest itself is the package root and is therefore not recursively listed inside its own payload array.</p></section>
+  </div>
+</V2Page>

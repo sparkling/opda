@@ -1,0 +1,49 @@
+---
+import V2Contents from '@/components/v2/V2Contents.astro';
+import V2Page from '@/components/v2/V2Page.astro';
+import { standardsProfile } from '@/lib/v2-model.mjs';
+
+const claimLabels = {
+  rdf: 'RDF',
+  shacl: 'SHACL',
+  sparql: 'SPARQL',
+  full_union_profile: 'Full Union profile',
+};
+const targetLabels = {
+  rdf_profile: 'RDF profile',
+  shacl_profile: 'SHACL profile',
+  rdf_concepts: 'RDF 1.2 Concepts',
+  rdf_turtle: 'RDF 1.2 Turtle',
+  shacl_core: 'SHACL 1.2 Core',
+  sparql_query: 'SPARQL 1.2 Query',
+  owl: 'OWL 2',
+  skos: 'SKOS',
+  dcterms: 'DCMI Terms',
+  prov: 'PROV-O',
+};
+---
+<V2Page
+  title="Standards profile"
+  description="The explicit RDF 1.2, SHACL 1.2, SPARQL, OWL, SKOS, DCMI and PROV standards targets and non-claims for the V2 candidate."
+  category="Evidence & assurance"
+  crumbs={[{ label: 'Standards profile' }]}
+>
+  <h1>Standards profile</h1>
+  <p class="lead">The candidate records both what it targets and what it does not yet claim. This avoids turning an implementation compatibility result into an unsupported conformance claim.</p>
+
+  <V2Contents items={[
+    { id: 'claims', label: 'Profile claims' },
+    { id: 'references', label: 'Normative and informative targets' },
+    { id: 'limits', label: 'Assurance boundary' },
+  ]} />
+
+  <h2 id="claims">Profile claims</h2>
+  <dl class="v2-facts">{Object.entries(standardsProfile.claims).map(([key, value]) => <div><dt>{claimLabels[key] ?? key}</dt><dd>{value}</dd></div>)}</dl>
+
+  <h2 id="references">Normative and informative targets</h2>
+  <div class="v2-table-wrap"><table><thead><tr><th>Target</th><th>Profile or specification</th></tr></thead><tbody>{Object.entries(standardsProfile.target).map(([key, value]) => <tr><td>{targetLabels[key] ?? key}</td><td>{String(value).startsWith('http') ? <a href={value} rel="external">{value}</a> : value}</td></tr>)}</tbody></table></div>
+
+  <h2 id="limits">Assurance boundary</h2>
+  <div class="callout callout--warn"><p class="callout__label">No full Union-profile claim</p><p>{standardsProfile.claims.full_union_profile}</p></div>
+  <p>The technical validation page records the actual tested implementation and subset. Standards targets can be broader than the features exercised by one candidate corpus.</p>
+</V2Page>

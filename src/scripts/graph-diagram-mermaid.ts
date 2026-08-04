@@ -237,7 +237,21 @@ export function createMermaidView(opts: MermaidViewOpts): MermaidView {
 
     nodes.forEach((node) => {
       const n = nameOf(node);
-      (node as HTMLElement).style.cursor = (mode === 'navigate' && navTarget(node)) || mode === 'explore' ? 'pointer' : 'default';
+      const target = navTarget(node);
+      (node as HTMLElement).style.cursor = (mode === 'navigate' && target) || mode === 'explore' ? 'pointer' : 'default';
+      if (target) {
+        const label = extractFirstLineText(node) || 'diagram item';
+        node.setAttribute('tabindex', '0');
+        node.setAttribute('role', 'link');
+        node.setAttribute('aria-label', `Open ${label}`);
+        node.addEventListener('keydown', (event) => {
+          const key = (event as KeyboardEvent).key;
+          if (key !== 'Enter' && key !== ' ') return;
+          event.preventDefault();
+          event.stopPropagation();
+          window.location.href = target;
+        });
+      }
       if (isER) return; // hover-highlight is edge-based (flowchart); skip for ER
       node.addEventListener('mouseenter', () => { if (dragging || lockedNode) return; applyHighlight(n); });
       node.addEventListener('mouseleave', () => { if (lockedNode) return; clearHighlight(); });

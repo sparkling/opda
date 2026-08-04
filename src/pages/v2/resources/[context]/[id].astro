@@ -1,0 +1,113 @@
+---
+import V2Contents from '@/components/v2/V2Contents.astro';
+import V2Page from '@/components/v2/V2Page.astro';
+import {
+  compactIri,
+  contextById,
+  coverageById,
+  dataPointRoute,
+  kindLabels,
+  localName,
+  resourceByIri,
+  resourceRoute,
+  resources,
+  resourceSchemes,
+  resourceShapes,
+  shapeRoute,
+  vocabularyRoute,
+} from '@/lib/v2-model.mjs';
+
+export function getStaticPaths() {
+  return resources.map((resource) => ({
+    params: { context: resource.semantic_home, id: localName(resource.key) },
+    props: { resource },
+  }));
+}
+
+const { resource } = Astro.props;
+const context = contextById.get(resource.semantic_home);
+const direct = resource.direct_source_item_ids.map((id) => coverageById.get(id)).filter(Boolean);
+const structural = resource.structural_source_item_ids.map((id) => coverageById.get(id)).filter(Boolean);
+const relatedShapes = resourceShapes(resource);
+const relatedSchemes = resourceSchemes(resource);
+const subclasses = resources.filter((item) => item.subclass_of === resource.iri);
+const domainProperties = resources.filter((item) => item.domain === resource.iri);
+const rangeProperties = resources.filter((item) => item.range === resource.iri);
+const parent = resource.subclass_of ? resourceByIri.get(resource.subclass_of) : undefined;
+const domain = resource.domain ? resourceByIri.get(resource.domain) : undefined;
+const range = resource.range ? resourceByIri.get(resource.range) : undefined;
+---
+<V2Page
+  title={resource.label}
+  description={`${kindLabels[resource.kind]} in the ${context?.label} semantic home: ${resource.definition}`}
+  category={kindLabels[resource.kind]}
+  crumbs={[
+    { label: 'Ontology resources', href: '/v2/resources' },
+    { label: context?.label ?? resource.semantic_home, href: `/v2/contexts/${resource.semantic_home}` },
+    { label: resource.label },
+  ]}
+>
+  <h1>{resource.label}</h1>
+  <p class="lead">{resource.definition}</p>
+
+  <V2Contents items={[
+    { id: 'identity', label: 'Identity and meaning' },
+    { id: 'structure', label: 'Model structure' },
+    { id: 'constraints', label: 'Constraints and shapes' },
+    { id: 'vocabularies', label: 'Controlled vocabularies' },
+    { id: 'evidence', label: 'Source evidence' },
+  ]} />
+
+  <h2 id="identity">Identity and meaning</h2>
+  <dl class="v2-facts">
+    <div><dt>Identifier</dt><dd><code>{resource.key}</code></dd></div>
+    <div><dt>IRI</dt><dd><code>{resource.iri}</code></dd></div>
+    <div><dt>Kind</dt><dd>{kindLabels[resource.kind]}</dd></div>
+    <div><dt>Semantic home</dt><dd><a href={`/v2/contexts/${resource.semantic_home}`}>{context?.label}</a></dd></div>
+    <div><dt>Candidate status</dt><dd>{resource.candidate_status.replaceAll('-', ' ')}</dd></div>
+    {resource.identity_criterion && <div><dt>Identity criterion</dt><dd>{resource.identity_criterion}</dd></div>}
+  </dl>
+
+  <h2 id="structure">Model structure</h2>
+  <dl class="v2-facts">
+    {resource.kind === 'class' && <div><dt>Superclass</dt><dd>{parent ? <a href={resourceRoute(parent)}>{parent.label}</a> : resource.subclass_of ? <code>{compactIri(resource.subclass_of)}</code> : 'Not specified'}</dd></div>}
+    {resource.kind !== 'class' && <div><dt>Domain</dt><dd>{domain ? <a href={resourceRoute(domain)}>{domain.label}</a> : resource.domain ? <code>{compactIri(resource.domain)}</code> : 'Not specified'}</dd></div>}
+    {resource.kind !== 'class' && <div><dt>Range</dt><dd>{range ? <a href={resourceRoute(range)}>{range.label}</a> : resource.range ? <code>{compactIri(resource.range)}</code> : 'Not specified'}</dd></div>}
+    <div><dt>Subclasses</dt><dd>{subclasses.length ? subclasses.map((item, index) => <>{index > 0 && ', '}<a href={resourceRoute(item)}>{item.label}</a></>) : 'None asserted'}</dd></div>
+    <div><dt>Properties with this domain</dt><dd>{domainProperties.length ? domainProperties.map((item, index) => <>{index > 0 && ', '}<a href={resourceRoute(item)}>{item.label}</a></>) : 'None asserted'}</dd></div>
+    <div><dt>Properties with this range</dt><dd>{rangeProperties.length ? rangeProperties.map((item, index) => <>{index > 0 && ', '}<a href={resourceRoute(item)}>{item.label}</a></>) : 'None asserted'}</dd></div>
+  </dl>
+
+  <h2 id="constraints">Constraints and shapes</h2>
+  {resource.kind !== 'class' && (
+    <dl class="v2-facts">
+      <div><dt>Minimum count</dt><dd>{resource.constraints.min_count ?? 'Not constrained'}</dd></div>
+      <div><dt>Maximum count</dt><dd>{resource.constraints.max_count ?? 'Not constrained'}</dd></div>
+      <div><dt>Datatype</dt><dd><code>{compactIri(resource.constraints.datatype) || 'Not applicable'}</code></dd></div>
+      <div><dt>Pattern</dt><dd><code>{resource.constraints.pattern || 'Not constrained'}</code></dd></div>
+    </dl>
+  )}
+  {relatedShapes.length ? (
+    <ul>{relatedShapes.map((shape) => <li><a href={shapeRoute(shape)}>{shape.target_label} shape</a> — {shape.properties.length} property constraint{shape.properties.length === 1 ? '' : 's'}</li>)}</ul>
+  ) : <p>No generated SHACL node shape targets or constrains this resource.</p>}
+
+  <h2 id="vocabularies">Controlled vocabularies</h2>
+  <p>These schemes overlap the resource’s source evidence. This is an evidence relationship, not an asserted OWL link.</p>
+  {relatedSchemes.length ? <ul>{relatedSchemes.map((scheme) => <li><a href={vocabularyRoute(scheme)}>{scheme.label}</a></li>)}</ul> : <p>No controlled vocabulary shares its source evidence.</p>}
+
+  <h2 id="evidence">Source evidence</h2>
+  {direct.length ? (
+    <details open={direct.length <= 12}>
+      <summary>{direct.length} direct source trace{direct.length === 1 ? '' : 's'}</summary>
+      <ul>{direct.map((item) => <li><a href={dataPointRoute(item)}>{item.preferred_label}</a> <code>{item.item_id}</code></li>)}</ul>
+    </details>
+  ) : (
+    <div class="callout callout--warn"><p class="callout__label">No direct source trace</p><p>This organising class is supported structurally through the directly evidenced resources beneath it. It must not be presented as source wording.</p></div>
+  )}
+  {structural.length > 0 && (
+    <details open={structural.length <= 12}>
+      <summary>{structural.length} structural source trace{structural.length === 1 ? '' : 's'}</summary>
+      <ul>{structural.map((item) => <li><a href={dataPointRoute(item)}>{item.preferred_label}</a> <code>{item.item_id}</code></li>)}</ul>
+    </details>
+  )}
+</V2Page>
