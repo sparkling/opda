@@ -1,0 +1,78 @@
+[context]
+id = "property-technology"
+prefix = "pt"
+
+[[term]]
+id = "DigitalPropertyLogbook"
+kind = "class"
+label = "digital property logbook"
+definition = "A digital record that brings together information maintained about a property."
+identity = "Identified by the responsible logbook service and its logbook identifier, neither of which is supplied in the initial scope."
+
+[[term]]
+id = "hasDigitalPropertyLogbook"
+kind = "object-property"
+label = "has digital property logbook"
+definition = "Relates a property to a digital property logbook."
+domain = "common:Property"
+range = "pt:DigitalPropertyLogbook"
+
+[[term]]
+id = "logbookAvailable"
+kind = "object-property"
+label = "logbook available"
+definition = "Records whether a digital property logbook is available."
+domain = "pt:DigitalPropertyLogbook"
+range = "skos:Concept"
+
+[[term]]
+id = "SmartHomeCapability"
+kind = "class"
+label = "smart-home capability"
+definition = "A connected or automated capability installed at a property."
+
+[[term]]
+id = "hasSmartHomeCapability"
+kind = "object-property"
+label = "has smart-home capability"
+definition = "Relates a property to a smart-home capability or to a statement that such capabilities exist."
+domain = "common:Property"
+range = "pt:SmartHomeCapability"
+
+[[term]]
+id = "smartHomeOutcome"
+kind = "object-property"
+label = "smart-home outcome"
+definition = "Records whether smart-home systems are present."
+domain = "pt:SmartHomeCapability"
+range = "skos:Concept"
+
+[[term]]
+id = "ConnectivityService"
+kind = "class"
+label = "connectivity service"
+definition = "A communications connection or service available at a property."
+
+[[term]]
+id = "hasConnectivityService"
+kind = "object-property"
+label = "has connectivity service"
+definition = "Relates a property to a communications connection or service record."
+domain = "common:Property"
+range = "pt:ConnectivityService"
+
+[[term]]
+id = "connectivityType"
+kind = "object-property"
+label = "connectivity type"
+definition = "Classifies a communications medium or connection technology."
+domain = "pt:ConnectivityService"
+range = "skos:Concept"
+
+[[term]]
+id = "connectivityOutcome"
+kind = "object-property"
+label = "connectivity outcome"
+definition = "Records the availability or issue status of a connectivity service."
+domain = "pt:ConnectivityService"
+range = "skos:Concept"

@@ -1,0 +1,315 @@
+VERSION "1.2-basic"
+
+@prefix common: <https://w3id.org/opda/candidate/property-pack/0.1/common/> .
+@prefix conv: <https://w3id.org/opda/candidate/property-pack/0.1/conveyancing/> .
+@prefix dbt: <https://w3id.org/opda/candidate/property-pack/0.1/dbt-smart-data/> .
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix ea: <https://w3id.org/opda/candidate/property-pack/0.1/estate-agency/> .
+@prefix fb: <https://w3id.org/opda/candidate/property-pack/0.1/finance-and-banking/> .
+@prefix opdac: <https://w3id.org/opda/candidate/property-pack/0.1/meta/> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix pds: <https://w3id.org/opda/candidate/property-pack/0.1/property-data-services/> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix pt: <https://w3id.org/opda/candidate/property-pack/0.1/property-technology/> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix sv: <https://w3id.org/opda/candidate/property-pack/0.1/surveying-and-valuation/> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+<https://w3id.org/opda/candidate/property-pack/0.1/ontology/conveyancing>
+  a owl:Ontology ;
+  rdfs:label "Conveyancing candidate ontology (part 1 of 2)"@en ;
+  dcterms:description "Legal title, ownership, rights, disclosure, completion and transfer meanings used in conveyancing."@en ;
+  owl:versionInfo "0.1.0-draft" ;
+  opdac:candidateStatus "machine-proposed" .
+
+<https://w3id.org/opda/candidate/property-pack/0.1/conveyancing/Attestation>
+  a owl:Class ;
+  rdfs:label "attestation"@en ;
+  skos:definition "A declaration by an accountable party confirming accuracy, authority or a commitment to provide information."@en ;
+  opdac:semanticHome <https://w3id.org/opda/candidate/property-pack/0.1/context/conveyancing> ;
+  opdac:sourceItemCount "4"^^xsd:integer ;
+  opdac:candidateStatus "machine-proposed" .
+
+<https://w3id.org/opda/candidate/property-pack/0.1/conveyancing/BoundaryStatement>
+  a owl:Class ;
+  rdfs:label "boundary statement"@en ;
+  skos:definition "A statement about the extent, features, ownership or discrepancy of a property boundary."@en ;
+  opdac:semanticHome <https://w3id.org/opda/candidate/property-pack/0.1/context/conveyancing> ;
+  opdac:sourceItemCount "8"^^xsd:integer ;
+  opdac:candidateStatus "machine-proposed" ;
+  rdfs:subClassOf <https://w3id.org/opda/candidate/property-pack/0.1/conveyancing/LegalStatement> .
+
+<https://w3id.org/opda/candidate/property-pack/0.1/conveyancing/CompletionStatement>
+  a owl:Class ;
+  rdfs:label "completion statement"@en ;
+  skos:definition "A statement about timing, dependencies or readiness for completion and moving."@en ;
+  opdac:semanticHome <https://w3id.org/opda/candidate/property-pack/0.1/context/conveyancing> ;
+  opdac:sourceItemCount "2"^^xsd:integer ;
+  opdac:candidateStatus "machine-proposed" ;
+  rdfs:subClassOf <https://w3id.org/opda/candidate/property-pack/0.1/conveyancing/LegalStatement> .
+
+<https://w3id.org/opda/candidate/property-pack/0.1/conveyancing/DisclosureStatement>
+  a owl:Class ;
+  rdfs:label "disclosure statement"@en ;
+  skos:definition "A statement disclosing another material, legal or transaction issue."@en ;
+  opdac:semanticHome <https://w3id.org/opda/candidate/property-pack/0.1/context/conveyancing> ;
+  opdac:sourceItemCount "9"^^xsd:integer ;
+  opdac:candidateStatus "machine-proposed" ;
+  rdfs:subClassOf <https://w3id.org/opda/candidate/property-pack/0.1/conveyancing/LegalStatement> .
+
+<https://w3id.org/opda/candidate/property-pack/0.1/conveyancing/FixtureItem>
+  a owl:Class ;
+  rdfs:label "fixture or fitting item"@en ;
+  skos:definition "An item or item category recorded in a fixtures and fittings schedule."@en ;
+  opdac:semanticHome <https://w3id.org/opda/candidate/property-pack/0.1/context/conveyancing> ;
+  opdac:sourceItemCount "108"^^xsd:integer ;
+  opdac:candidateStatus "machine-proposed" .
+
+<https://w3id.org/opda/candidate/property-pack/0.1/conveyancing/FixtureSchedule>
+  a owl:Class ;
+  rdfs:label "fixtures and fittings schedule"@en ;
+  skos:definition "A schedule recording how fixtures, fittings and other items are to be treated in a sale."@en ;
+  opdac:semanticHome <https://w3id.org/opda/candidate/property-pack/0.1/context/conveyancing> ;
+  opdac:sourceItemCount "108"^^xsd:integer ;
+  opdac:candidateStatus "machine-proposed" .
+
+<https://w3id.org/opda/candidate/property-pack/0.1/conveyancing/GuaranteeStatement>
+  a owl:Class ;
+  rdfs:label "guarantee statement"@en ;
+  skos:definition "A statement about a guarantee, warranty or indemnity insurance relating to the property."@en ;
+  opdac:semanticHome <https://w3id.org/opda/candidate/property-pack/0.1/context/conveyancing> ;
+  opdac:sourceItemCount "1"^^xsd:integer ;
+  opdac:candidateStatus "machine-proposed" ;
+  rdfs:subClassOf <https://w3id.org/opda/candidate/property-pack/0.1/conveyancing/LegalStatement> .
+
+<https://w3id.org/opda/candidate/property-pack/0.1/conveyancing/Lease>
+  a owl:Class ;
+  rdfs:label "lease"@en ;
+  skos:definition "A lease referred to by a registered title or register entry."@en ;
+  opdac:semanticHome <https://w3id.org/opda/candidate/property-pack/0.1/context/conveyancing> ;
+  opdac:sourceItemCount "7"^^xsd:integer ;
+  opdac:candidateStatus "machine-proposed" ;
+  opdac:identityCriterion "Identified by the represented title, lease date, term and parties, subject to review."@en .
+
+<https://w3id.org/opda/candidate/property-pack/0.1/conveyancing/LegalParty>
+  a owl:Class ;
+  rdfs:label "legal party"@en ;
+  skos:definition "A person or organisation named in a title, lease, ownership interest or transaction."@en ;
+  opdac:semanticHome <https://w3id.org/opda/candidate/property-pack/0.1/context/conveyancing> ;
+  opdac:sourceItemCount "4"^^xsd:integer ;
+  opdac:candidateStatus "machine-proposed" ;
+  opdac:identityCriterion "Identity must be established by the relevant authoritative party record; names alone are descriptive."@en .
+
+<https://w3id.org/opda/candidate/property-pack/0.1/conveyancing/LegalStatement>
+  a owl:Class ;
+  rdfs:label "legal statement"@en ;
+  skos:definition "A typed disclosure of a legal fact, issue or position concerning a property."@en ;
+  opdac:semanticHome <https://w3id.org/opda/candidate/property-pack/0.1/context/conveyancing> ;
+  opdac:sourceItemCount "43"^^xsd:integer ;
+  opdac:candidateStatus "machine-proposed" .
+
+<https://w3id.org/opda/candidate/property-pack/0.1/conveyancing/NoticeStatement>
+  a owl:Class ;
+  rdfs:label "notice statement"@en ;
+  skos:definition "A statement about a notice, application, proposal or proceeding affecting a property."@en ;
+  opdac:semanticHome <https://w3id.org/opda/candidate/property-pack/0.1/context/conveyancing> ;
+  opdac:sourceItemCount "7"^^xsd:integer ;
+  opdac:candidateStatus "machine-proposed" ;
+  rdfs:subClassOf <https://w3id.org/opda/candidate/property-pack/0.1/conveyancing/LegalStatement> .
+
+<https://w3id.org/opda/candidate/property-pack/0.1/conveyancing/OccupancyStatement>
+  a owl:Class ;
+  rdfs:label "occupancy statement"@en ;
+  skos:definition "A statement about people occupying the property in connection with a sale."@en ;
+  opdac:semanticHome <https://w3id.org/opda/candidate/property-pack/0.1/context/conveyancing> ;
+  opdac:sourceItemCount "2"^^xsd:integer ;
+  opdac:candidateStatus "machine-proposed" ;
+  rdfs:subClassOf <https://w3id.org/opda/candidate/property-pack/0.1/conveyancing/LegalStatement> .
+
+<https://w3id.org/opda/candidate/property-pack/0.1/conveyancing/OwnershipInterest>
+  a owl:Class ;
+  rdfs:label "ownership interest"@en ;
+  skos:definition "A legal ownership interest in a property that is to be transferred."@en ;
+  opdac:semanticHome <https://w3id.org/opda/candidate/property-pack/0.1/context/conveyancing> ;
+  opdac:sourceItemCount "1"^^xsd:integer ;
+  opdac:candidateStatus "machine-proposed" .
+
+<https://w3id.org/opda/candidate/property-pack/0.1/conveyancing/RegisterEntry>
+  a owl:Class ;
+  rdfs:label "register entry"@en ;
+  skos:definition "A numbered statement recorded in a land-register extract."@en ;
+  opdac:semanticHome <https://w3id.org/opda/candidate/property-pack/0.1/context/conveyancing> ;
+  opdac:sourceItemCount "6"^^xsd:integer ;
+  opdac:candidateStatus "machine-proposed" ;
+  opdac:identityCriterion "Identified within an extract by its entry number."@en .
+
+<https://w3id.org/opda/candidate/property-pack/0.1/conveyancing/RegisterExtract>
+  a owl:Class ;
+  rdfs:label "Register extract"@en ;
+  skos:definition "A dated extract containing title and entry information supplied from a land register."@en ;
+  opdac:semanticHome <https://w3id.org/opda/candidate/property-pack/0.1/context/conveyancing> ;
+  opdac:sourceItemCount "34"^^xsd:integer ;
+  opdac:candidateStatus "machine-proposed" ;
+  opdac:identityCriterion "Identified by the represented title, edition and official-copy timestamp."@en .
+
+<https://w3id.org/opda/candidate/property-pack/0.1/conveyancing/RegisterIndicator>
+  a owl:Class ;
+  rdfs:label "register indicator"@en ;
+  skos:definition "A typed indication that a category of entry is present in a register extract."@en ;
+  opdac:semanticHome <https://w3id.org/opda/candidate/property-pack/0.1/context/conveyancing> ;
+  opdac:sourceItemCount "30"^^xsd:integer ;
+  opdac:candidateStatus "machine-proposed" .
+
+<https://w3id.org/opda/candidate/property-pack/0.1/conveyancing/RegisteredTitle>
+  a owl:Class ;
+  rdfs:label "Registered title"@en ;
+  skos:definition "A registered legal title to an estate or interest in land."@en ;
+  opdac:semanticHome <https://w3id.org/opda/candidate/property-pack/0.1/context/conveyancing> ;
+  opdac:sourceItemCount "10"^^xsd:integer ;
+  opdac:candidateStatus "machine-proposed" ;
+  opdac:identityCriterion "Identified by the title number assigned by the land registration authority."@en .
+
+<https://w3id.org/opda/candidate/property-pack/0.1/conveyancing/RightStatement>
+  a owl:Class ;
+  rdfs:label "right statement"@en ;
+  skos:definition "A statement about a right, restriction or informal arrangement affecting land."@en ;
+  opdac:semanticHome <https://w3id.org/opda/candidate/property-pack/0.1/context/conveyancing> ;
+  opdac:sourceItemCount "11"^^xsd:integer ;
+  opdac:candidateStatus "machine-proposed" ;
+  rdfs:subClassOf <https://w3id.org/opda/candidate/property-pack/0.1/conveyancing/LegalStatement> .
+
+<https://w3id.org/opda/candidate/property-pack/0.1/conveyancing/ServiceCrossingStatement>
+  a owl:Class ;
+  rdfs:label "service crossing statement"@en ;
+  skos:definition "A statement about service media crossing the property or serving other land."@en ;
+  opdac:semanticHome <https://w3id.org/opda/candidate/property-pack/0.1/context/conveyancing> ;
+  opdac:sourceItemCount "3"^^xsd:integer ;
+  opdac:candidateStatus "machine-proposed" ;
+  rdfs:subClassOf <https://w3id.org/opda/candidate/property-pack/0.1/conveyancing/LegalStatement> .
+
+<https://w3id.org/opda/candidate/property-pack/0.1/conveyancing/TitleAttributeStatement>
+  a owl:Class ;
+  rdfs:label "title attribute statement"@en ;
+  skos:definition "A typed statement about the registration or classification of a registered title."@en ;
+  opdac:semanticHome <https://w3id.org/opda/candidate/property-pack/0.1/context/conveyancing> ;
+  opdac:sourceItemCount "7"^^xsd:integer ;
+  opdac:candidateStatus "machine-proposed" .
+
+<https://w3id.org/opda/candidate/property-pack/0.1/conveyancing/attestationType>
+  a owl:ObjectProperty ;
+  rdfs:label "attestation type"@en ;
+  skos:definition "Classifies the proposition covered by an attestation."@en ;
+  opdac:semanticHome <https://w3id.org/opda/candidate/property-pack/0.1/context/conveyancing> ;
+  opdac:sourceItemCount "4"^^xsd:integer ;
+  opdac:candidateStatus "machine-proposed" ;
+  rdfs:domain <https://w3id.org/opda/candidate/property-pack/0.1/conveyancing/Attestation> ;
+  rdfs:range <http://www.w3.org/2004/02/skos/core#Concept> .
+
+<https://w3id.org/opda/candidate/property-pack/0.1/conveyancing/attestedOutcome>
+  a owl:DatatypeProperty ;
+  rdfs:label "attested outcome"@en ;
+  skos:definition "The truth value explicitly attested by the accountable party."@en ;
+  opdac:semanticHome <https://w3id.org/opda/candidate/property-pack/0.1/context/conveyancing> ;
+  opdac:sourceItemCount "4"^^xsd:integer ;
+  opdac:candidateStatus "machine-proposed" ;
+  rdfs:domain <https://w3id.org/opda/candidate/property-pack/0.1/conveyancing/Attestation> ;
+  rdfs:range <http://www.w3.org/2001/XMLSchema#boolean> .
+
+<https://w3id.org/opda/candidate/property-pack/0.1/conveyancing/editionDate>
+  a owl:DatatypeProperty ;
+  rdfs:label "edition date"@en ;
+  skos:definition "The date of the register edition represented by an extract."@en ;
+  opdac:semanticHome <https://w3id.org/opda/candidate/property-pack/0.1/context/conveyancing> ;
+  opdac:sourceItemCount "2"^^xsd:integer ;
+  opdac:candidateStatus "machine-proposed" ;
+  rdfs:domain <https://w3id.org/opda/candidate/property-pack/0.1/conveyancing/RegisterExtract> ;
+  rdfs:range <http://www.w3.org/2001/XMLSchema#date> .
+
+<https://w3id.org/opda/candidate/property-pack/0.1/conveyancing/entryNumber>
+  a owl:DatatypeProperty ;
+  rdfs:label "entry number"@en ;
+  skos:definition "The local number assigned to a register entry within an extract."@en ;
+  opdac:semanticHome <https://w3id.org/opda/candidate/property-pack/0.1/context/conveyancing> ;
+  opdac:sourceItemCount "6"^^xsd:integer ;
+  opdac:candidateStatus "machine-proposed" ;
+  rdfs:domain <https://w3id.org/opda/candidate/property-pack/0.1/conveyancing/RegisterEntry> ;
+  rdfs:range <http://www.w3.org/2001/XMLSchema#string> .
+
+<https://w3id.org/opda/candidate/property-pack/0.1/conveyancing/entryText>
+  a owl:DatatypeProperty ;
+  rdfs:label "entry text"@en ;
+  skos:definition "The text stated for a register entry."@en ;
+  opdac:semanticHome <https://w3id.org/opda/candidate/property-pack/0.1/context/conveyancing> ;
+  opdac:sourceItemCount "6"^^xsd:integer ;
+  opdac:candidateStatus "machine-proposed" ;
+  rdfs:domain <https://w3id.org/opda/candidate/property-pack/0.1/conveyancing/RegisterEntry> ;
+  rdfs:range <http://www.w3.org/2001/XMLSchema#string> .
+
+<https://w3id.org/opda/candidate/property-pack/0.1/conveyancing/fixtureCategory>
+  a owl:ObjectProperty ;
+  rdfs:label "fixture category"@en ;
+  skos:definition "Classifies the kind or source category of a fixture or fitting item."@en ;
+  opdac:semanticHome <https://w3id.org/opda/candidate/property-pack/0.1/context/conveyancing> ;
+  opdac:sourceItemCount "108"^^xsd:integer ;
+  opdac:candidateStatus "machine-proposed" ;
+  rdfs:domain <https://w3id.org/opda/candidate/property-pack/0.1/conveyancing/FixtureItem> ;
+  rdfs:range <http://www.w3.org/2004/02/skos/core#Concept> .
+
+<https://w3id.org/opda/candidate/property-pack/0.1/conveyancing/fixtureLocation>
+  a owl:ObjectProperty ;
+  rdfs:label "fixture location"@en ;
+  skos:definition "Classifies the room or area associated with a fixture or fitting item."@en ;
+  opdac:semanticHome <https://w3id.org/opda/candidate/property-pack/0.1/context/conveyancing> ;
+  opdac:sourceItemCount "108"^^xsd:integer ;
+  opdac:candidateStatus "machine-proposed" ;
+  rdfs:domain <https://w3id.org/opda/candidate/property-pack/0.1/conveyancing/FixtureItem> ;
+  rdfs:range <http://www.w3.org/2004/02/skos/core#Concept> .
+
+<https://w3id.org/opda/candidate/property-pack/0.1/conveyancing/fixtureName>
+  a owl:DatatypeProperty ;
+  rdfs:label "fixture name"@en ;
+  skos:definition "The name stated for a fixture or fitting that is not represented by a predefined category."@en ;
+  opdac:semanticHome <https://w3id.org/opda/candidate/property-pack/0.1/context/conveyancing> ;
+  opdac:sourceItemCount "8"^^xsd:integer ;
+  opdac:candidateStatus "machine-proposed" ;
+  rdfs:domain <https://w3id.org/opda/candidate/property-pack/0.1/conveyancing/FixtureItem> ;
+  rdfs:range <http://www.w3.org/2001/XMLSchema#string> .
+
+<https://w3id.org/opda/candidate/property-pack/0.1/conveyancing/hasAttestation>
+  a owl:ObjectProperty ;
+  rdfs:label "has attestation"@en ;
+  skos:definition "Relates a Property Pack to an attestation made by an accountable party."@en ;
+  opdac:semanticHome <https://w3id.org/opda/candidate/property-pack/0.1/context/conveyancing> ;
+  opdac:sourceItemCount "4"^^xsd:integer ;
+  opdac:candidateStatus "machine-proposed" ;
+  rdfs:range <https://w3id.org/opda/candidate/property-pack/0.1/conveyancing/Attestation> .
+
+<https://w3id.org/opda/candidate/property-pack/0.1/conveyancing/hasFixtureItem>
+  a owl:ObjectProperty ;
+  rdfs:label "has fixture item"@en ;
+  skos:definition "Relates a fixtures and fittings schedule to an item entry."@en ;
+  opdac:semanticHome <https://w3id.org/opda/candidate/property-pack/0.1/context/conveyancing> ;
+  opdac:sourceItemCount "108"^^xsd:integer ;
+  opdac:candidateStatus "machine-proposed" ;
+  rdfs:domain <https://w3id.org/opda/candidate/property-pack/0.1/conveyancing/FixtureSchedule> ;
+  rdfs:range <https://w3id.org/opda/candidate/property-pack/0.1/conveyancing/FixtureItem> .
+
+<https://w3id.org/opda/candidate/property-pack/0.1/conveyancing/hasFixtureSchedule>
+  a owl:ObjectProperty ;
+  rdfs:label "has fixtures and fittings schedule"@en ;
+  skos:definition "Relates a property transaction to its fixtures and fittings schedule."@en ;
+  opdac:semanticHome <https://w3id.org/opda/candidate/property-pack/0.1/context/conveyancing> ;
+  opdac:sourceItemCount "100"^^xsd:integer ;
+  opdac:candidateStatus "machine-proposed" ;
+  rdfs:range <https://w3id.org/opda/candidate/property-pack/0.1/conveyancing/FixtureSchedule> .
+
+<https://w3id.org/opda/candidate/property-pack/0.1/conveyancing/hasLease>
+  a owl:ObjectProperty ;
+  rdfs:label "has lease"@en ;
+  skos:definition "Relates a registered title or entry to a lease that it records."@en ;
+  opdac:semanticHome <https://w3id.org/opda/candidate/property-pack/0.1/context/conveyancing> ;
+  opdac:sourceItemCount "4"^^xsd:integer ;
+  opdac:candidateStatus "machine-proposed" ;
+  rdfs:range <https://w3id.org/opda/candidate/property-pack/0.1/conveyancing/Lease> .

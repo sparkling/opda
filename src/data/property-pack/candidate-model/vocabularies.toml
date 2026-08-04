@@ -1,0 +1,239 @@
+schema_version = "0.1"
+
+[[vocabulary]]
+id = "ResponseStatusScheme"
+home = "common"
+label = "response status"
+definition = "Controlled responses used when a Property Pack source question records applicability, knowledge or a future connection state."
+concepts = [
+  { id = "yes", label = "Yes", notation = "Yes" },
+  { id = "no", label = "No", notation = "No" },
+  { id = "not-known", label = "Not known", notation = "Not known" },
+  { id = "not-applicable", label = "Not applicable", notation = "Not applicable" },
+  { id = "to-be-connected", label = "To be connected", notation = "To be connected" },
+  { id = "no-mortgage", label = "No mortgage", notation = "No mortgage" },
+]
+
+[[vocabulary]]
+id = "FixtureInclusionStatusScheme"
+home = "conveyancing"
+label = "fixture inclusion status"
+definition = "How a fixture, fitting or other item is treated in a property sale."
+concepts = [
+  { id = "included", label = "Included", notation = "Included" },
+  { id = "excluded", label = "Excluded", notation = "Excluded" },
+  { id = "none", label = "None", notation = "None" },
+]
+
+[[vocabulary]]
+id = "BuiltFormScheme"
+home = "surveying-and-valuation"
+label = "built form"
+definition = "The physical relationship of the principal building to neighbouring buildings."
+concepts = [
+  { id = "detached", label = "Detached", notation = "Detached" },
+  { id = "semi-detached", label = "Semi-detached", notation = "Semi-detached" },
+  { id = "mid-terrace", label = "Mid-terrace", notation = "Mid-terrace" },
+  { id = "end-terrace", label = "End-terrace", notation = "End-terrace" },
+  { id = "other", label = "Other", notation = "Other" },
+]
+
+[[vocabulary]]
+id = "PropertyTypeScheme"
+home = "surveying-and-valuation"
+label = "property type"
+definition = "A physical residential-property type used in the Property Pack profile."
+concepts = [
+  { id = "house", label = "House", notation = "House" },
+  { id = "bungalow", label = "Bungalow", notation = "Bungalow" },
+  { id = "park-home", label = "Park home", notation = "Park home" },
+  { id = "maisonette", label = "Maisonette", notation = "Maisonette" },
+  { id = "flat", label = "Flat", notation = "Flat" },
+  { id = "other", label = "Other", notation = "Other" },
+]
+
+[[vocabulary]]
+id = "EnergyRatingScheme"
+home = "property-data-services"
+label = "energy rating"
+definition = "Energy performance certificate rating or source-status value."
+concepts = [
+  { id = "a", label = "A", notation = "A" }, { id = "b", label = "B", notation = "B" },
+  { id = "c", label = "C", notation = "C" }, { id = "d", label = "D", notation = "D" },
+  { id = "e", label = "E", notation = "E" }, { id = "f", label = "F", notation = "F" },
+  { id = "g", label = "G", notation = "G" },
+  { id = "exempt-property", label = "Exempt property", notation = "Exempt Property" },
+  { id = "survey-instructed", label = "Survey instructed", notation = "Survey Instructed" },
+  { id = "no-certificate", label = "No certificate", notation = "No Certificate" },
+]
+
+[[vocabulary]]
+id = "CouncilTaxBandScheme"
+home = "property-data-services"
+label = "council tax band"
+definition = "Domestic council-tax bands and the unbanded state."
+concepts = [
+  { id = "a", label = "A", notation = "A" }, { id = "b", label = "B", notation = "B" },
+  { id = "c", label = "C", notation = "C" }, { id = "d", label = "D", notation = "D" },
+  { id = "e", label = "E", notation = "E" }, { id = "f", label = "F", notation = "F" },
+  { id = "g", label = "G", notation = "G" }, { id = "h", label = "H", notation = "H" },
+  { id = "i", label = "I", notation = "I" },
+  { id = "not-banded", label = "Not banded", notation = "Not banded" },
+]
+
+[[vocabulary]]
+id = "OwnershipTypeScheme"
+home = "conveyancing"
+label = "ownership type"
+definition = "Tenure or ownership form used for an interest to be transferred."
+concepts = [
+  { id = "freehold", label = "Freehold", notation = "Freehold" },
+  { id = "managed-freehold", label = "Managed freehold", notation = "Managed Freehold" },
+  { id = "commonhold", label = "Commonhold", notation = "Commonhold" },
+  { id = "leasehold", label = "Leasehold", notation = "Leasehold" },
+  { id = "other", label = "Other", notation = "Other" },
+]
+
+[[vocabulary]]
+id = "PartyTypeScheme"
+home = "conveyancing"
+label = "party type"
+definition = "Whether a named legal owner is a person or an organisation."
+concepts = [
+  { id = "private-individual", label = "Private individual", notation = "Private individual" },
+  { id = "organisation", label = "Organisation", notation = "Organisation" },
+]
+
+[[vocabulary]]
+id = "ClassOfTitleCodeScheme"
+home = "conveyancing"
+label = "class of title code"
+definition = "Land-register class-of-title codes present in the source profile; code meanings require authoritative registry evidence before definition."
+concepts = [
+  { id = "10", label = "Class code 10", notation = "10" }, { id = "20", label = "Class code 20", notation = "20" },
+  { id = "30", label = "Class code 30", notation = "30" }, { id = "40", label = "Class code 40", notation = "40" },
+  { id = "50", label = "Class code 50", notation = "50" }, { id = "60", label = "Class code 60", notation = "60" },
+  { id = "70", label = "Class code 70", notation = "70" }, { id = "80", label = "Class code 80", notation = "80" },
+  { id = "90", label = "Class code 90", notation = "90" }, { id = "100", label = "Class code 100", notation = "100" },
+  { id = "110", label = "Class code 110", notation = "110" }, { id = "120", label = "Class code 120", notation = "120" },
+  { id = "130", label = "Class code 130", notation = "130" },
+]
+
+[[vocabulary]]
+id = "BroadbandConnectionTypeScheme"
+home = "property-technology"
+label = "broadband connection type"
+definition = "A broadband access technology stated as available at a property."
+concepts = [
+  { id = "none", label = "None", notation = "None" },
+  { id = "adsl", label = "ADSL copper wire", notation = "ADSL copper wire" },
+  { id = "cable", label = "Cable", notation = "Cable" },
+  { id = "fttc", label = "FTTC", notation = "FTTC (Fibre to the Cabinet)" },
+  { id = "fttp", label = "FTTP", notation = "FTTP (Fibre to the Premises)" },
+]
+
+[[vocabulary]]
+id = "HeatingTypeScheme"
+home = "surveying-and-valuation"
+label = "heating type"
+definition = "The principal heating arrangement stated for a property."
+concepts = [
+  { id = "none", label = "None", notation = "None" },
+  { id = "room-heaters", label = "Room heaters only", notation = "Room heaters only" },
+  { id = "central-heating", label = "Central heating", notation = "Central heating" },
+  { id = "communal-heating", label = "Communal heating system", notation = "Communal heating system" },
+]
+
+[[vocabulary]]
+id = "PriceQualifierScheme"
+home = "estate-agency"
+label = "price qualifier"
+definition = "How a marketing price should be interpreted by a prospective buyer."
+concepts = [
+  { id = "price", label = "Price", notation = "Price" }, { id = "fixed-price", label = "Fixed price", notation = "Fixed price" },
+  { id = "guide-price", label = "Guide price", notation = "Guide price" }, { id = "offers-over", label = "Offers over", notation = "Offers over" },
+  { id = "offers-in-excess", label = "Offers in excess of", notation = "Offers in excess of" },
+  { id = "offers-in-region", label = "Offers in region of", notation = "Offers in region of" },
+  { id = "offers-invited", label = "Offers invited", notation = "Offers invited" },
+  { id = "sale-by-tender", label = "Sale by tender", notation = "Sale by tender" },
+  { id = "from", label = "From", notation = "From" },
+]
+
+[[vocabulary]]
+id = "RentFrequencyScheme"
+home = "estate-agency"
+label = "rent frequency"
+definition = "The period to which a stated rent amount applies."
+concepts = [
+  { id = "yearly", label = "Yearly", notation = "Yearly" },
+  { id = "quarterly", label = "Quarterly", notation = "Quarterly" },
+  { id = "monthly", label = "Monthly", notation = "Monthly" },
+  { id = "weekly", label = "Weekly", notation = "Weekly" },
+]
+
+[[vocabulary]]
+id = "DocumentSupplyStatusScheme"
+home = "property-data-services"
+label = "document supply status"
+definition = "How a referenced certificate or document is being supplied."
+concepts = [
+  { id = "attached", label = "Attached", notation = "Attached" },
+  { id = "to-follow", label = "To follow", notation = "To follow" },
+  { id = "already-supplied", label = "Already supplied", notation = "Already supplied" },
+]
+
+[[vocabulary_rule]]
+field_name = "isIncludedExcludedOrNone"
+scheme = "conveyancing:FixtureInclusionStatusScheme"
+
+[[vocabulary_rule]]
+field_name = "isIncludedOrExcluded"
+scheme = "conveyancing:FixtureInclusionStatusScheme"
+
+[[vocabulary_rule]]
+field_name = "builtForm"
+scheme = "surveying-and-valuation:BuiltFormScheme"
+
+[[vocabulary_rule]]
+field_name = "propertyType"
+scheme = "surveying-and-valuation:PropertyTypeScheme"
+
+[[vocabulary_rule]]
+field_name = "currentEnergyRating"
+scheme = "property-data-services:EnergyRatingScheme"
+
+[[vocabulary_rule]]
+field_name = "councilTaxBand"
+scheme = "property-data-services:CouncilTaxBandScheme"
+
+[[vocabulary_rule]]
+field_name = "ownershipType"
+scheme = "conveyancing:OwnershipTypeScheme"
+
+[[vocabulary_rule]]
+field_name = "ownerType"
+scheme = "conveyancing:PartyTypeScheme"
+
+[[vocabulary_rule]]
+field_name = "classOfTitleCode"
+scheme = "conveyancing:ClassOfTitleCodeScheme"
+
+[[vocabulary_rule]]
+field_name = "typeOfConnection"
+scheme = "property-technology:BroadbandConnectionTypeScheme"
+
+[[vocabulary_rule]]
+field_name = "heatingType"
+scheme = "surveying-and-valuation:HeatingTypeScheme"
+
+[[vocabulary_rule]]
+field_name = "priceQualifier"
+scheme = "estate-agency:PriceQualifierScheme"
+
+[[vocabulary_rule]]
+field_name = "rentFrequency"
+scheme = "estate-agency:RentFrequencyScheme"
+
+[[vocabulary_rule]]
+field_name = "certificateIsSupplied"
+scheme = "property-data-services:DocumentSupplyStatusScheme"

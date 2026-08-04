@@ -1,0 +1,330 @@
+schema_version = "0.1"
+
+[[rule]]
+id = "common-property-uprn"
+priority = 400
+path = "propertyPack.uprn"
+home = "common"
+roles = ["attribute", "validation-rule"]
+construct_refs = ["common:Property", "common:uprn"]
+disposition = "challenge"
+consuming_contexts = ["conveyancing", "property-data-services", "surveying-and-valuation", "estate-agency", "finance-and-banking", "property-technology", "dbt-smart-data"]
+rationale = "Treat UPRN as the cross-domain identity key for Property and challenge its legacy numeric datatype because it is a nominal identifier."
+
+[[rule]]
+id = "address-components"
+priority = 300
+heading = "address"
+home = "property-data-services"
+roles = ["attribute", "validation-rule"]
+construct_refs = ["pds:Address", "pds:hasAddress", "pds:addressLine1", "pds:postcode"]
+disposition = "consolidate"
+consuming_contexts = ["common", "conveyancing", "surveying-and-valuation", "estate-agency", "finance-and-banking", "property-technology"]
+rationale = "Consolidate address components into a separate mutable Address resource so an address can change without changing Property identity."
+
+[[rule]]
+id = "address-line-1"
+priority = 360
+heading = "address"
+field_name = "line1"
+home = "property-data-services"
+roles = ["attribute", "validation-rule"]
+construct_refs = ["pds:Address", "pds:hasAddress", "pds:addressLine1"]
+disposition = "consolidate"
+consuming_contexts = ["common", "conveyancing", "surveying-and-valuation", "estate-agency", "finance-and-banking", "property-technology"]
+rationale = "Model address line 1 as a component of a mutable Address resource, not an attribute of Property identity."
+
+[[rule]]
+id = "address-postcode"
+priority = 360
+heading = "address"
+field_name = "postcode"
+home = "property-data-services"
+roles = ["attribute", "validation-rule"]
+construct_refs = ["pds:Address", "pds:hasAddress", "pds:postcode"]
+disposition = "consolidate"
+consuming_contexts = ["common", "conveyancing", "surveying-and-valuation", "estate-agency", "finance-and-banking", "property-technology"]
+rationale = "Model postcode as a changeable Address component and keep it outside the Property identity criterion."
+
+[[rule]]
+id = "title-number"
+priority = 360
+heading = "titlesToBeSold"
+field_name = "titleNumber"
+home = "conveyancing"
+roles = ["resource", "attribute", "validation-rule"]
+construct_refs = ["conv:RegisteredTitle", "conv:hasRegisteredTitle", "conv:titleNumber"]
+disposition = "consolidate"
+rationale = "Use the authority-assigned title number as the identity-bearing attribute of a RegisteredTitle resource."
+
+[[rule]]
+id = "title-register-indicators"
+priority = 350
+heading = "titlesToBeSold"
+path_contains = ".registerEntryIndicators."
+home = "conveyancing"
+roles = ["resource", "controlled-concept", "attribute"]
+construct_refs = ["conv:RegisterExtract", "conv:RegisterIndicator", "conv:hasRegisterIndicator", "conv:indicatorType", "conv:indicatorPresent"]
+disposition = "consolidate"
+rationale = "Represent the many boolean register flags as typed RegisterIndicator instances rather than one predicate for each source flag."
+
+[[rule]]
+id = "title-lease-party"
+priority = 350
+heading = "titlesToBeSold"
+path_contains = ".leaseParty[]."
+home = "conveyancing"
+roles = ["resource", "relationship", "attribute"]
+construct_refs = ["conv:Lease", "conv:LegalParty", "conv:hasLegalParty", "conv:legalPartyName"]
+disposition = "consolidate"
+rationale = "Model people and organisations named by a lease as LegalParty resources rather than embedded strings."
+
+[[rule]]
+id = "title-lease"
+priority = 340
+heading = "titlesToBeSold"
+path_contains = ".lease."
+home = "conveyancing"
+roles = ["resource", "relationship", "attribute"]
+construct_refs = ["conv:RegisterEntry", "conv:Lease", "conv:hasLease", "conv:leaseDate", "conv:leaseTerm", "conv:entryNumber", "conv:entryText"]
+disposition = "consolidate"
+rationale = "Consolidate lease fields under a Lease resource related to its register entry."
+
+[[rule]]
+id = "title-price-paid-entry"
+priority = 340
+heading = "titlesToBeSold"
+path_contains = ".pricePaidEntry."
+home = "conveyancing"
+roles = ["resource", "relationship", "attribute"]
+construct_refs = ["conv:RegisterExtract", "conv:RegisterEntry", "conv:hasRegisterEntry", "conv:entryNumber", "conv:entryText"]
+disposition = "consolidate"
+rationale = "Represent the price-paid source fields as one register entry rather than flattening entry structure."
+
+[[rule]]
+id = "title-registration-attributes"
+priority = 330
+heading = "titlesToBeSold"
+path_contains = ".title."
+home = "conveyancing"
+roles = ["resource", "attribute", "controlled-concept"]
+construct_refs = ["conv:RegisteredTitle", "conv:TitleAttributeStatement", "conv:hasTitleAttribute", "conv:titleAttributeType", "conv:titleAttributeValue"]
+disposition = "consolidate"
+rationale = "Represent registration details and title classification as typed statements attached to RegisteredTitle."
+
+[[rule]]
+id = "title-extract"
+priority = 200
+heading = "titlesToBeSold"
+home = "conveyancing"
+roles = ["resource", "relationship", "attribute"]
+construct_refs = ["conv:RegisteredTitle", "conv:RegisterExtract", "conv:hasRegisterExtract", "conv:editionDate", "conv:officialCopyDateTime"]
+disposition = "consolidate"
+rationale = "Treat remaining source fields as evidence about a dated RegisterExtract, not as direct Property attributes."
+
+[[rule]]
+id = "legal-owner-parties"
+priority = 300
+heading = "legalOwners"
+home = "conveyancing"
+roles = ["resource", "relationship", "attribute", "controlled-concept"]
+construct_refs = ["conv:LegalParty", "conv:hasLegalParty", "conv:legalPartyName"]
+disposition = "consolidate"
+rationale = "Represent each legal owner as a LegalParty with an explicit party type and name."
+
+[[rule]]
+id = "ownership-interests"
+priority = 300
+heading = "ownership"
+home = "conveyancing"
+roles = ["resource", "relationship", "controlled-concept"]
+construct_refs = ["conv:OwnershipInterest", "conv:hasOwnershipInterest", "conv:ownershipType"]
+disposition = "consolidate"
+rationale = "Represent transferable tenure as an OwnershipInterest rather than a string on Property."
+
+[[rule]]
+id = "legal-boundaries"
+priority = 250
+heading = "legalBoundaries"
+home = "conveyancing"
+roles = ["resource", "relationship", "controlled-concept"]
+construct_refs = ["conv:BoundaryStatement", "conv:hasLegalStatement", "conv:statementType", "conv:statementOutcome"]
+disposition = "consolidate"
+rationale = "Represent each boundary question as a typed BoundaryStatement and preserve context-specific legal meaning."
+
+[[rule]]
+id = "rights-arrangements"
+priority = 250
+heading = "rightsAndInformalArrangements"
+home = "conveyancing"
+roles = ["resource", "relationship", "controlled-concept"]
+construct_refs = ["conv:RightStatement", "conv:hasLegalStatement", "conv:statementType", "conv:statementOutcome"]
+disposition = "consolidate"
+rationale = "Represent rights, restrictions and informal arrangements as typed legal statements rather than separate booleans."
+
+[[rule]]
+id = "services-crossing"
+priority = 250
+heading = "servicesCrossing"
+home = "conveyancing"
+roles = ["resource", "relationship", "controlled-concept"]
+construct_refs = ["conv:ServiceCrossingStatement", "conv:hasLegalStatement", "conv:statementType", "conv:statementOutcome"]
+disposition = "consolidate"
+rationale = "Represent service-crossing disclosures as typed legal statements about rights and arrangements."
+
+[[rule]]
+id = "notices"
+priority = 250
+heading = "notices"
+home = "conveyancing"
+roles = ["resource", "relationship", "controlled-concept"]
+construct_refs = ["conv:NoticeStatement", "conv:hasLegalStatement", "conv:statementType", "conv:statementOutcome"]
+disposition = "consolidate"
+rationale = "Consolidate notices and nearby proposals into typed NoticeStatement resources."
+
+[[rule]]
+id = "additional-disclosures"
+priority = 250
+heading = "additionalInformation"
+home = "conveyancing"
+roles = ["resource", "relationship", "controlled-concept"]
+construct_refs = ["conv:DisclosureStatement", "conv:hasLegalStatement", "conv:statementType", "conv:statementOutcome"]
+disposition = "consolidate"
+rationale = "Represent additional material legal issues as typed disclosures."
+
+[[rule]]
+id = "disputes-disclosures"
+priority = 250
+heading = "disputesAndComplaints"
+home = "conveyancing"
+roles = ["resource", "relationship", "controlled-concept"]
+construct_refs = ["conv:DisclosureStatement", "conv:hasLegalStatement", "conv:statementType", "conv:statementOutcome"]
+disposition = "consolidate"
+rationale = "Represent dispute and complaint information as a typed conveyancing disclosure."
+
+[[rule]]
+id = "other-issue-disclosures"
+priority = 250
+heading = "otherIssues"
+home = "conveyancing"
+roles = ["resource", "relationship", "controlled-concept"]
+construct_refs = ["conv:DisclosureStatement", "conv:hasLegalStatement", "conv:statementType", "conv:statementOutcome"]
+disposition = "consolidate"
+rationale = "Retain heterogeneous material issues as individually typed disclosure statements."
+
+[[rule]]
+id = "fixture-attestation"
+priority = 350
+heading = "fixturesAndFittings"
+path_contains = ".confirmationOfAccuracy."
+home = "conveyancing"
+roles = ["resource", "relationship", "validation-rule"]
+construct_refs = ["conv:Attestation", "conv:hasAttestation", "conv:attestationType", "conv:attestedOutcome"]
+disposition = "consolidate"
+rationale = "Keep the fixture-schedule accuracy confirmation as an attestation, not a fixture attribute."
+
+[[rule]]
+id = "fixture-item-name"
+priority = 340
+heading = "fixturesAndFittings"
+field_name = "itemName"
+home = "conveyancing"
+roles = ["resource", "attribute"]
+construct_refs = ["conv:FixtureSchedule", "conv:FixtureItem", "conv:hasFixtureItem", "conv:fixtureName", "conv:fixtureCategory", "conv:fixtureLocation"]
+disposition = "consolidate"
+rationale = "Represent user-named schedule entries as FixtureItem resources with category, location and name."
+
+[[rule]]
+id = "fixture-items"
+priority = 250
+heading = "fixturesAndFittings"
+home = "conveyancing"
+roles = ["resource", "relationship", "controlled-concept"]
+construct_refs = ["conv:FixtureSchedule", "conv:hasFixtureSchedule", "conv:FixtureItem", "conv:hasFixtureItem", "conv:fixtureCategory", "conv:fixtureLocation", "conv:inclusionStatus"]
+disposition = "consolidate"
+rationale = "Consolidate the 100-plus fixture fields into schedule items classified by category, location and inclusion status."
+
+[[rule]]
+id = "accuracy-attestations"
+priority = 250
+heading = "confirmationOfAccuracyByOwners"
+home = "conveyancing"
+roles = ["resource", "relationship", "validation-rule"]
+construct_refs = ["conv:Attestation", "conv:hasAttestation", "conv:attestationType", "conv:attestedOutcome"]
+disposition = "consolidate"
+rationale = "Model accuracy and further-document commitments as accountable attestations."
+
+[[rule]]
+id = "seller-authority-attestation"
+priority = 300
+heading = "saleReadyDeclarations"
+field_name = "authorisedToActOnBehalfOfAllSellers"
+home = "conveyancing"
+roles = ["resource", "relationship", "validation-rule"]
+construct_refs = ["conv:Attestation", "conv:hasAttestation", "conv:attestationType", "conv:attestedOutcome"]
+disposition = "consolidate"
+rationale = "Model authority to act for sellers as an accountable conveyancing attestation."
+
+[[rule]]
+id = "data-sharing-authorisation"
+priority = 400
+heading = "saleReadyDeclarations"
+field_name = "authorisationToShare"
+home = "dbt-smart-data"
+roles = ["resource", "relationship", "attribute", "validation-rule"]
+construct_refs = ["dbt:DataSharingAuthorisation", "dbt:hasDataSharingAuthorisation", "dbt:authorisedToShare"]
+disposition = "challenge"
+consuming_contexts = ["conveyancing", "estate-agency", "finance-and-banking", "property-data-services"]
+rationale = "Treat sharing authority as scheme-level authorisation and flag the source boolean as insufficient for actor, scope, purpose and time."
+
+[[rule]]
+id = "completion-logbook"
+priority = 400
+heading = "completionAndMoving"
+path_contains = ".digitalPropertyLogbook."
+home = "property-technology"
+roles = ["resource", "relationship", "controlled-concept"]
+construct_refs = ["pt:DigitalPropertyLogbook", "pt:hasDigitalPropertyLogbook", "pt:logbookAvailable"]
+disposition = "split"
+rationale = "Separate logbook availability from conveyancing completion meaning and home it in Property Technology."
+
+[[rule]]
+id = "completion-mortgage"
+priority = 400
+heading = "completionAndMoving"
+path_contains = ".sufficientToRepayAllMortgages."
+home = "finance-and-banking"
+roles = ["resource", "relationship", "controlled-concept"]
+construct_refs = ["fb:MortgageDischargeStatement", "fb:hasMortgageDischargeStatement", "fb:mortgageDischargeOutcome"]
+disposition = "split"
+rationale = "Home mortgage repayment sufficiency in Finance and Banking, while preserving it as a transaction input."
+
+[[rule]]
+id = "completion-statements"
+priority = 250
+heading = "completionAndMoving"
+home = "conveyancing"
+roles = ["resource", "relationship", "controlled-concept"]
+construct_refs = ["conv:CompletionStatement", "conv:hasLegalStatement", "conv:statementType", "conv:statementOutcome"]
+disposition = "consolidate"
+rationale = "Represent completion and moving dependencies as typed completion statements."
+
+[[rule]]
+id = "occupancy-statements"
+priority = 250
+heading = "occupiers"
+home = "conveyancing"
+roles = ["resource", "relationship", "controlled-concept"]
+construct_refs = ["conv:OccupancyStatement", "conv:hasLegalStatement", "conv:statementType", "conv:statementOutcome"]
+disposition = "consolidate"
+rationale = "Represent sale-related occupier information as typed occupancy statements."
+
+[[rule]]
+id = "guarantee-statements"
+priority = 250
+heading = "guaranteesWarrantiesAndIndemnityInsurances"
+home = "conveyancing"
+roles = ["resource", "relationship", "controlled-concept"]
+construct_refs = ["conv:GuaranteeStatement", "conv:hasLegalStatement", "conv:statementType", "conv:statementOutcome"]
+disposition = "consolidate"
+rationale = "Represent guarantees, warranties and indemnities as a typed disclosure resource."

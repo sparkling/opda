@@ -1,0 +1,140 @@
+[context]
+id = "estate-agency"
+prefix = "ea"
+
+[[term]]
+id = "Listing"
+kind = "class"
+label = "property listing"
+definition = "A market-facing offer or advertisement to sell or let a property."
+identity = "Identified by the responsible agent and listing identifier, which are not supplied in the initial Property Pack scope."
+
+[[term]]
+id = "hasListing"
+kind = "object-property"
+label = "has listing"
+definition = "Relates a property to a market listing."
+domain = "common:Property"
+range = "ea:Listing"
+
+[[term]]
+id = "PriceStatement"
+kind = "class"
+label = "price statement"
+definition = "A stated price and qualifier used to market a property."
+
+[[term]]
+id = "hasPriceStatement"
+kind = "object-property"
+label = "has price statement"
+definition = "Relates a listing to a price statement."
+domain = "ea:Listing"
+range = "ea:PriceStatement"
+
+[[term]]
+id = "priceAmount"
+kind = "datatype-property"
+label = "price amount"
+definition = "The monetary amount stated in a property price statement."
+domain = "ea:PriceStatement"
+datatype = "xsd:decimal"
+max_count = 1
+
+[[term]]
+id = "priceQualifier"
+kind = "object-property"
+label = "price qualifier"
+definition = "Classifies how a stated marketing price should be interpreted."
+domain = "ea:PriceStatement"
+range = "skos:Concept"
+
+[[term]]
+id = "MediaResource"
+kind = "class"
+label = "listing media resource"
+definition = "A media asset used to describe or market a property."
+identity = "Identified by its governed media-resource IRI; a URL alone is treated as a locator."
+
+[[term]]
+id = "hasMediaResource"
+kind = "object-property"
+label = "has media resource"
+definition = "Relates a listing to a media resource."
+domain = "ea:Listing"
+range = "ea:MediaResource"
+
+[[term]]
+id = "mediaUrl"
+kind = "datatype-property"
+label = "media URL"
+definition = "A URL at which a listing media resource can be accessed."
+domain = "ea:MediaResource"
+datatype = "xsd:anyURI"
+
+[[term]]
+id = "LettingTerms"
+kind = "class"
+label = "letting terms"
+definition = "The rent amount and payment frequency used when a property is offered to let."
+
+[[term]]
+id = "hasLettingTerms"
+kind = "object-property"
+label = "has letting terms"
+definition = "Relates a listing to its letting terms."
+domain = "ea:Listing"
+range = "ea:LettingTerms"
+
+[[term]]
+id = "rentAmount"
+kind = "datatype-property"
+label = "rent amount"
+definition = "The monetary amount stated as rent."
+domain = "ea:LettingTerms"
+datatype = "xsd:decimal"
+max_count = 1
+
+[[term]]
+id = "rentFrequency"
+kind = "object-property"
+label = "rent frequency"
+definition = "Classifies the period to which a rent amount applies."
+domain = "ea:LettingTerms"
+range = "skos:Concept"
+
+[[term]]
+id = "MarketDisclosure"
+kind = "class"
+label = "market disclosure"
+definition = "A disclosure made for the fair and accurate marketing of a property."
+
+[[term]]
+id = "hasMarketDisclosure"
+kind = "object-property"
+label = "has market disclosure"
+definition = "Relates a listing to a market disclosure."
+domain = "ea:Listing"
+range = "ea:MarketDisclosure"
+
+[[term]]
+id = "marketDisclosureType"
+kind = "object-property"
+label = "market disclosure type"
+definition = "Classifies the issue or proposition addressed by a market disclosure."
+domain = "ea:MarketDisclosure"
+range = "skos:Concept"
+
+[[term]]
+id = "marketDisclosureOutcome"
+kind = "object-property"
+label = "market disclosure outcome"
+definition = "Records the controlled response or status asserted by a market disclosure."
+domain = "ea:MarketDisclosure"
+range = "skos:Concept"
+
+[[term]]
+id = "ConsumerProtectionDeclaration"
+kind = "class"
+label = "consumer protection declaration"
+definition = "A declaration that consumer-protection information has been considered or supplied for property marketing."
+subclass_of = "ea:MarketDisclosure"

@@ -1,0 +1,115 @@
+[context]
+id = "surveying-and-valuation"
+prefix = "sv"
+
+[[term]]
+id = "PropertyDescription"
+kind = "class"
+label = "property description"
+definition = "A surveying view describing the physical form and type of a property."
+
+[[term]]
+id = "hasPropertyDescription"
+kind = "object-property"
+label = "has property description"
+definition = "Relates a property to a physical description used in surveying and valuation."
+domain = "common:Property"
+range = "sv:PropertyDescription"
+
+[[term]]
+id = "builtForm"
+kind = "object-property"
+label = "built form"
+definition = "Classifies how the principal building adjoins or stands relative to neighbouring buildings."
+domain = "sv:PropertyDescription"
+range = "skos:Concept"
+
+[[term]]
+id = "propertyType"
+kind = "object-property"
+label = "property type"
+definition = "Classifies the physical residential property type."
+domain = "sv:PropertyDescription"
+range = "skos:Concept"
+
+[[term]]
+id = "floorplanAvailable"
+kind = "datatype-property"
+label = "floorplan available"
+definition = "States whether a floorplan is supplied for the property."
+domain = "sv:PropertyDescription"
+datatype = "xsd:boolean"
+max_count = 1
+
+[[term]]
+id = "PhysicalFeatureStatement"
+kind = "class"
+label = "physical feature statement"
+definition = "A typed observation or disclosure about construction, condition, alterations or installed features."
+
+[[term]]
+id = "hasPhysicalFeatureStatement"
+kind = "object-property"
+label = "has physical feature statement"
+definition = "Relates a property to a statement about one of its physical features or conditions."
+domain = "common:Property"
+range = "sv:PhysicalFeatureStatement"
+
+[[term]]
+id = "featureType"
+kind = "object-property"
+label = "feature type"
+definition = "Classifies the construction, condition, alteration or installed feature addressed by a statement."
+domain = "sv:PhysicalFeatureStatement"
+range = "skos:Concept"
+
+[[term]]
+id = "featureOutcome"
+kind = "object-property"
+label = "feature outcome"
+definition = "Records the controlled response or status asserted for a physical feature."
+domain = "sv:PhysicalFeatureStatement"
+range = "skos:Concept"
+
+[[term]]
+id = "ConstructionStatement"
+kind = "class"
+label = "construction statement"
+definition = "A statement about construction form, material, safety or access."
+subclass_of = "sv:PhysicalFeatureStatement"
+
+[[term]]
+id = "ConditionStatement"
+kind = "class"
+label = "condition statement"
+definition = "A statement about damage, defect, hazard, treatment or another property condition."
+subclass_of = "sv:PhysicalFeatureStatement"
+
+[[term]]
+id = "AlterationStatement"
+kind = "class"
+label = "alteration statement"
+definition = "A statement about physical works, alteration, conversion or change of use."
+subclass_of = "sv:PhysicalFeatureStatement"
+
+[[term]]
+id = "ElectricalStatement"
+kind = "class"
+label = "electrical statement"
+definition = "A statement about electrical works, testing or electricity installations."
+subclass_of = "sv:PhysicalFeatureStatement"
+
+[[term]]
+id = "EnergyInstallationStatement"
+kind = "class"
+label = "energy installation statement"
+definition = "A statement about heating, energy-generation or energy-efficiency installations at a property."
+subclass_of = "sv:PhysicalFeatureStatement"
+
+[[term]]
+id = "heatingType"
+kind = "object-property"
+label = "heating type"
+definition = "Classifies the principal heating arrangement at a property."
+domain = "sv:EnergyInstallationStatement"
+range = "skos:Concept"

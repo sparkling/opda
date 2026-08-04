@@ -1,0 +1,21 @@
+{
+  "candidate_status": "machine-proposed",
+  "claims": {
+    "full_union_profile": "not claimed until a qualified implementation passes the required feature matrix",
+    "rdf": "RDF 1.2 Basic authoring profile with explicit VERSION labels",
+    "shacl": "SHACL 1.2 Core target; emitted constraints use the implementation-tested Core subset",
+    "sparql": "SPARQL 1.2 target; competency queries use the portable basic graph-pattern subset"
+  },
+  "target": {
+    "dcterms": "https://www.dublincore.org/specifications/dublin-core/dcmi-terms/",
+    "owl": "https://www.w3.org/TR/owl2-overview/",
+    "prov": "https://www.w3.org/TR/prov-o/",
+    "rdf_concepts": "https://www.w3.org/TR/2026/CR-rdf12-concepts-20260407/",
+    "rdf_profile": "RDF 1.2 Basic",
+    "rdf_turtle": "https://www.w3.org/TR/2026/WD-rdf12-turtle-20260528/",
+    "shacl_core": "https://www.w3.org/TR/2026/WD-shacl12-core-20260516/",
+    "shacl_profile": "SHACL 1.2 Core working-draft subset used by this candidate",
+    "skos": "https://www.w3.org/TR/skos-reference/",
+    "sparql_query": "https://www.w3.org/TR/2026/WD-sparql12-query-20260605/"
+  }
+}

@@ -1,0 +1,184 @@
+VERSION "1.2-basic"
+
+@prefix common: <https://w3id.org/opda/candidate/property-pack/0.1/common/> .
+@prefix conv: <https://w3id.org/opda/candidate/property-pack/0.1/conveyancing/> .
+@prefix dbt: <https://w3id.org/opda/candidate/property-pack/0.1/dbt-smart-data/> .
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix ea: <https://w3id.org/opda/candidate/property-pack/0.1/estate-agency/> .
+@prefix fb: <https://w3id.org/opda/candidate/property-pack/0.1/finance-and-banking/> .
+@prefix opdac: <https://w3id.org/opda/candidate/property-pack/0.1/meta/> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix pds: <https://w3id.org/opda/candidate/property-pack/0.1/property-data-services/> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix pt: <https://w3id.org/opda/candidate/property-pack/0.1/property-technology/> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix sv: <https://w3id.org/opda/candidate/property-pack/0.1/surveying-and-valuation/> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+<https://w3id.org/opda/candidate/property-pack/0.1/conveyancing/vocabulary/ClassOfTitleCodeScheme>
+  a skos:ConceptScheme ;
+  skos:prefLabel "class of title code"@en ;
+  skos:definition "Land-register class-of-title codes present in the source profile; code meanings require authoritative registry evidence before definition."@en ;
+  opdac:semanticHome <https://w3id.org/opda/candidate/property-pack/0.1/context/conveyancing> ;
+  opdac:candidateStatus "machine-proposed" .
+
+<https://w3id.org/opda/candidate/property-pack/0.1/conveyancing/vocabulary/ClassOfTitleCodeScheme/concept/10>
+  a skos:Concept ;
+  skos:inScheme <https://w3id.org/opda/candidate/property-pack/0.1/conveyancing/vocabulary/ClassOfTitleCodeScheme> ;
+  skos:prefLabel "Class code 10"@en ;
+  skos:notation "10" .
+
+<https://w3id.org/opda/candidate/property-pack/0.1/conveyancing/vocabulary/ClassOfTitleCodeScheme/concept/20>
+  a skos:Concept ;
+  skos:inScheme <https://w3id.org/opda/candidate/property-pack/0.1/conveyancing/vocabulary/ClassOfTitleCodeScheme> ;
+  skos:prefLabel "Class code 20"@en ;
+  skos:notation "20" .
+
+<https://w3id.org/opda/candidate/property-pack/0.1/conveyancing/vocabulary/ClassOfTitleCodeScheme/concept/30>
+  a skos:Concept ;
+  skos:inScheme <https://w3id.org/opda/candidate/property-pack/0.1/conveyancing/vocabulary/ClassOfTitleCodeScheme> ;
+  skos:prefLabel "Class code 30"@en ;
+  skos:notation "30" .
+
+<https://w3id.org/opda/candidate/property-pack/0.1/conveyancing/vocabulary/ClassOfTitleCodeScheme/concept/40>
+  a skos:Concept ;
+  skos:inScheme <https://w3id.org/opda/candidate/property-pack/0.1/conveyancing/vocabulary/ClassOfTitleCodeScheme> ;
+  skos:prefLabel "Class code 40"@en ;
+  skos:notation "40" .
+
+<https://w3id.org/opda/candidate/property-pack/0.1/conveyancing/vocabulary/ClassOfTitleCodeScheme/concept/50>
+  a skos:Concept ;
+  skos:inScheme <https://w3id.org/opda/candidate/property-pack/0.1/conveyancing/vocabulary/ClassOfTitleCodeScheme> ;
+  skos:prefLabel "Class code 50"@en ;
+  skos:notation "50" .
+
+<https://w3id.org/opda/candidate/property-pack/0.1/conveyancing/vocabulary/ClassOfTitleCodeScheme/concept/60>
+  a skos:Concept ;
+  skos:inScheme <https://w3id.org/opda/candidate/property-pack/0.1/conveyancing/vocabulary/ClassOfTitleCodeScheme> ;
+  skos:prefLabel "Class code 60"@en ;
+  skos:notation "60" .
+
+<https://w3id.org/opda/candidate/property-pack/0.1/conveyancing/vocabulary/ClassOfTitleCodeScheme/concept/70>
+  a skos:Concept ;
+  skos:inScheme <https://w3id.org/opda/candidate/property-pack/0.1/conveyancing/vocabulary/ClassOfTitleCodeScheme> ;
+  skos:prefLabel "Class code 70"@en ;
+  skos:notation "70" .
+
+<https://w3id.org/opda/candidate/property-pack/0.1/conveyancing/vocabulary/ClassOfTitleCodeScheme/concept/80>
+  a skos:Concept ;
+  skos:inScheme <https://w3id.org/opda/candidate/property-pack/0.1/conveyancing/vocabulary/ClassOfTitleCodeScheme> ;
+  skos:prefLabel "Class code 80"@en ;
+  skos:notation "80" .
+
+<https://w3id.org/opda/candidate/property-pack/0.1/conveyancing/vocabulary/ClassOfTitleCodeScheme/concept/90>
+  a skos:Concept ;
+  skos:inScheme <https://w3id.org/opda/candidate/property-pack/0.1/conveyancing/vocabulary/ClassOfTitleCodeScheme> ;
+  skos:prefLabel "Class code 90"@en ;
+  skos:notation "90" .
+
+<https://w3id.org/opda/candidate/property-pack/0.1/conveyancing/vocabulary/ClassOfTitleCodeScheme/concept/100>
+  a skos:Concept ;
+  skos:inScheme <https://w3id.org/opda/candidate/property-pack/0.1/conveyancing/vocabulary/ClassOfTitleCodeScheme> ;
+  skos:prefLabel "Class code 100"@en ;
+  skos:notation "100" .
+
+<https://w3id.org/opda/candidate/property-pack/0.1/conveyancing/vocabulary/ClassOfTitleCodeScheme/concept/110>
+  a skos:Concept ;
+  skos:inScheme <https://w3id.org/opda/candidate/property-pack/0.1/conveyancing/vocabulary/ClassOfTitleCodeScheme> ;
+  skos:prefLabel "Class code 110"@en ;
+  skos:notation "110" .
+
+<https://w3id.org/opda/candidate/property-pack/0.1/conveyancing/vocabulary/ClassOfTitleCodeScheme/concept/120>
+  a skos:Concept ;
+  skos:inScheme <https://w3id.org/opda/candidate/property-pack/0.1/conveyancing/vocabulary/ClassOfTitleCodeScheme> ;
+  skos:prefLabel "Class code 120"@en ;
+  skos:notation "120" .
+
+<https://w3id.org/opda/candidate/property-pack/0.1/conveyancing/vocabulary/ClassOfTitleCodeScheme/concept/130>
+  a skos:Concept ;
+  skos:inScheme <https://w3id.org/opda/candidate/property-pack/0.1/conveyancing/vocabulary/ClassOfTitleCodeScheme> ;
+  skos:prefLabel "Class code 130"@en ;
+  skos:notation "130" .
+
+<https://w3id.org/opda/candidate/property-pack/0.1/conveyancing/vocabulary/FixtureInclusionStatusScheme>
+  a skos:ConceptScheme ;
+  skos:prefLabel "fixture inclusion status"@en ;
+  skos:definition "How a fixture, fitting or other item is treated in a property sale."@en ;
+  opdac:semanticHome <https://w3id.org/opda/candidate/property-pack/0.1/context/conveyancing> ;
+  opdac:candidateStatus "machine-proposed" .
+
+<https://w3id.org/opda/candidate/property-pack/0.1/conveyancing/vocabulary/FixtureInclusionStatusScheme/concept/included>
+  a skos:Concept ;
+  skos:inScheme <https://w3id.org/opda/candidate/property-pack/0.1/conveyancing/vocabulary/FixtureInclusionStatusScheme> ;
+  skos:prefLabel "Included"@en ;
+  skos:notation "Included" .
+
+<https://w3id.org/opda/candidate/property-pack/0.1/conveyancing/vocabulary/FixtureInclusionStatusScheme/concept/excluded>
+  a skos:Concept ;
+  skos:inScheme <https://w3id.org/opda/candidate/property-pack/0.1/conveyancing/vocabulary/FixtureInclusionStatusScheme> ;
+  skos:prefLabel "Excluded"@en ;
+  skos:notation "Excluded" .
+
+<https://w3id.org/opda/candidate/property-pack/0.1/conveyancing/vocabulary/FixtureInclusionStatusScheme/concept/none>
+  a skos:Concept ;
+  skos:inScheme <https://w3id.org/opda/candidate/property-pack/0.1/conveyancing/vocabulary/FixtureInclusionStatusScheme> ;
+  skos:prefLabel "None"@en ;
+  skos:notation "None" .
+
+<https://w3id.org/opda/candidate/property-pack/0.1/conveyancing/vocabulary/OwnershipTypeScheme>
+  a skos:ConceptScheme ;
+  skos:prefLabel "ownership type"@en ;
+  skos:definition "Tenure or ownership form used for an interest to be transferred."@en ;
+  opdac:semanticHome <https://w3id.org/opda/candidate/property-pack/0.1/context/conveyancing> ;
+  opdac:candidateStatus "machine-proposed" .
+
+<https://w3id.org/opda/candidate/property-pack/0.1/conveyancing/vocabulary/OwnershipTypeScheme/concept/freehold>
+  a skos:Concept ;
+  skos:inScheme <https://w3id.org/opda/candidate/property-pack/0.1/conveyancing/vocabulary/OwnershipTypeScheme> ;
+  skos:prefLabel "Freehold"@en ;
+  skos:notation "Freehold" .
+
+<https://w3id.org/opda/candidate/property-pack/0.1/conveyancing/vocabulary/OwnershipTypeScheme/concept/managed-freehold>
+  a skos:Concept ;
+  skos:inScheme <https://w3id.org/opda/candidate/property-pack/0.1/conveyancing/vocabulary/OwnershipTypeScheme> ;
+  skos:prefLabel "Managed freehold"@en ;
+  skos:notation "Managed Freehold" .
+
+<https://w3id.org/opda/candidate/property-pack/0.1/conveyancing/vocabulary/OwnershipTypeScheme/concept/commonhold>
+  a skos:Concept ;
+  skos:inScheme <https://w3id.org/opda/candidate/property-pack/0.1/conveyancing/vocabulary/OwnershipTypeScheme> ;
+  skos:prefLabel "Commonhold"@en ;
+  skos:notation "Commonhold" .
+
+<https://w3id.org/opda/candidate/property-pack/0.1/conveyancing/vocabulary/OwnershipTypeScheme/concept/leasehold>
+  a skos:Concept ;
+  skos:inScheme <https://w3id.org/opda/candidate/property-pack/0.1/conveyancing/vocabulary/OwnershipTypeScheme> ;
+  skos:prefLabel "Leasehold"@en ;
+  skos:notation "Leasehold" .
+
+<https://w3id.org/opda/candidate/property-pack/0.1/conveyancing/vocabulary/OwnershipTypeScheme/concept/other>
+  a skos:Concept ;
+  skos:inScheme <https://w3id.org/opda/candidate/property-pack/0.1/conveyancing/vocabulary/OwnershipTypeScheme> ;
+  skos:prefLabel "Other"@en ;
+  skos:notation "Other" .
+
+<https://w3id.org/opda/candidate/property-pack/0.1/conveyancing/vocabulary/PartyTypeScheme>
+  a skos:ConceptScheme ;
+  skos:prefLabel "party type"@en ;
+  skos:definition "Whether a named legal owner is a person or an organisation."@en ;
+  opdac:semanticHome <https://w3id.org/opda/candidate/property-pack/0.1/context/conveyancing> ;
+  opdac:candidateStatus "machine-proposed" .
+
+<https://w3id.org/opda/candidate/property-pack/0.1/conveyancing/vocabulary/PartyTypeScheme/concept/private-individual>
+  a skos:Concept ;
+  skos:inScheme <https://w3id.org/opda/candidate/property-pack/0.1/conveyancing/vocabulary/PartyTypeScheme> ;
+  skos:prefLabel "Private individual"@en ;
+  skos:notation "Private individual" .
+
+<https://w3id.org/opda/candidate/property-pack/0.1/conveyancing/vocabulary/PartyTypeScheme/concept/organisation>
+  a skos:Concept ;
+  skos:inScheme <https://w3id.org/opda/candidate/property-pack/0.1/conveyancing/vocabulary/PartyTypeScheme> ;
+  skos:prefLabel "Organisation"@en ;
+  skos:notation "Organisation" .

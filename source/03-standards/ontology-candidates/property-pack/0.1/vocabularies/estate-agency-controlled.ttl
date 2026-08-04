@@ -1,0 +1,110 @@
+VERSION "1.2-basic"
+
+@prefix common: <https://w3id.org/opda/candidate/property-pack/0.1/common/> .
+@prefix conv: <https://w3id.org/opda/candidate/property-pack/0.1/conveyancing/> .
+@prefix dbt: <https://w3id.org/opda/candidate/property-pack/0.1/dbt-smart-data/> .
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix ea: <https://w3id.org/opda/candidate/property-pack/0.1/estate-agency/> .
+@prefix fb: <https://w3id.org/opda/candidate/property-pack/0.1/finance-and-banking/> .
+@prefix opdac: <https://w3id.org/opda/candidate/property-pack/0.1/meta/> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix pds: <https://w3id.org/opda/candidate/property-pack/0.1/property-data-services/> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix pt: <https://w3id.org/opda/candidate/property-pack/0.1/property-technology/> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix sv: <https://w3id.org/opda/candidate/property-pack/0.1/surveying-and-valuation/> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+<https://w3id.org/opda/candidate/property-pack/0.1/estate-agency/vocabulary/PriceQualifierScheme>
+  a skos:ConceptScheme ;
+  skos:prefLabel "price qualifier"@en ;
+  skos:definition "How a marketing price should be interpreted by a prospective buyer."@en ;
+  opdac:semanticHome <https://w3id.org/opda/candidate/property-pack/0.1/context/estate-agency> ;
+  opdac:candidateStatus "machine-proposed" .
+
+<https://w3id.org/opda/candidate/property-pack/0.1/estate-agency/vocabulary/PriceQualifierScheme/concept/price>
+  a skos:Concept ;
+  skos:inScheme <https://w3id.org/opda/candidate/property-pack/0.1/estate-agency/vocabulary/PriceQualifierScheme> ;
+  skos:prefLabel "Price"@en ;
+  skos:notation "Price" .
+
+<https://w3id.org/opda/candidate/property-pack/0.1/estate-agency/vocabulary/PriceQualifierScheme/concept/fixed-price>
+  a skos:Concept ;
+  skos:inScheme <https://w3id.org/opda/candidate/property-pack/0.1/estate-agency/vocabulary/PriceQualifierScheme> ;
+  skos:prefLabel "Fixed price"@en ;
+  skos:notation "Fixed price" .
+
+<https://w3id.org/opda/candidate/property-pack/0.1/estate-agency/vocabulary/PriceQualifierScheme/concept/guide-price>
+  a skos:Concept ;
+  skos:inScheme <https://w3id.org/opda/candidate/property-pack/0.1/estate-agency/vocabulary/PriceQualifierScheme> ;
+  skos:prefLabel "Guide price"@en ;
+  skos:notation "Guide price" .
+
+<https://w3id.org/opda/candidate/property-pack/0.1/estate-agency/vocabulary/PriceQualifierScheme/concept/offers-over>
+  a skos:Concept ;
+  skos:inScheme <https://w3id.org/opda/candidate/property-pack/0.1/estate-agency/vocabulary/PriceQualifierScheme> ;
+  skos:prefLabel "Offers over"@en ;
+  skos:notation "Offers over" .
+
+<https://w3id.org/opda/candidate/property-pack/0.1/estate-agency/vocabulary/PriceQualifierScheme/concept/offers-in-excess>
+  a skos:Concept ;
+  skos:inScheme <https://w3id.org/opda/candidate/property-pack/0.1/estate-agency/vocabulary/PriceQualifierScheme> ;
+  skos:prefLabel "Offers in excess of"@en ;
+  skos:notation "Offers in excess of" .
+
+<https://w3id.org/opda/candidate/property-pack/0.1/estate-agency/vocabulary/PriceQualifierScheme/concept/offers-in-region>
+  a skos:Concept ;
+  skos:inScheme <https://w3id.org/opda/candidate/property-pack/0.1/estate-agency/vocabulary/PriceQualifierScheme> ;
+  skos:prefLabel "Offers in region of"@en ;
+  skos:notation "Offers in region of" .
+
+<https://w3id.org/opda/candidate/property-pack/0.1/estate-agency/vocabulary/PriceQualifierScheme/concept/offers-invited>
+  a skos:Concept ;
+  skos:inScheme <https://w3id.org/opda/candidate/property-pack/0.1/estate-agency/vocabulary/PriceQualifierScheme> ;
+  skos:prefLabel "Offers invited"@en ;
+  skos:notation "Offers invited" .
+
+<https://w3id.org/opda/candidate/property-pack/0.1/estate-agency/vocabulary/PriceQualifierScheme/concept/sale-by-tender>
+  a skos:Concept ;
+  skos:inScheme <https://w3id.org/opda/candidate/property-pack/0.1/estate-agency/vocabulary/PriceQualifierScheme> ;
+  skos:prefLabel "Sale by tender"@en ;
+  skos:notation "Sale by tender" .
+
+<https://w3id.org/opda/candidate/property-pack/0.1/estate-agency/vocabulary/PriceQualifierScheme/concept/from>
+  a skos:Concept ;
+  skos:inScheme <https://w3id.org/opda/candidate/property-pack/0.1/estate-agency/vocabulary/PriceQualifierScheme> ;
+  skos:prefLabel "From"@en ;
+  skos:notation "From" .
+
+<https://w3id.org/opda/candidate/property-pack/0.1/estate-agency/vocabulary/RentFrequencyScheme>
+  a skos:ConceptScheme ;
+  skos:prefLabel "rent frequency"@en ;
+  skos:definition "The period to which a stated rent amount applies."@en ;
+  opdac:semanticHome <https://w3id.org/opda/candidate/property-pack/0.1/context/estate-agency> ;
+  opdac:candidateStatus "machine-proposed" .
+
+<https://w3id.org/opda/candidate/property-pack/0.1/estate-agency/vocabulary/RentFrequencyScheme/concept/yearly>
+  a skos:Concept ;
+  skos:inScheme <https://w3id.org/opda/candidate/property-pack/0.1/estate-agency/vocabulary/RentFrequencyScheme> ;
+  skos:prefLabel "Yearly"@en ;
+  skos:notation "Yearly" .
+
+<https://w3id.org/opda/candidate/property-pack/0.1/estate-agency/vocabulary/RentFrequencyScheme/concept/quarterly>
+  a skos:Concept ;
+  skos:inScheme <https://w3id.org/opda/candidate/property-pack/0.1/estate-agency/vocabulary/RentFrequencyScheme> ;
+  skos:prefLabel "Quarterly"@en ;
+  skos:notation "Quarterly" .
+
+<https://w3id.org/opda/candidate/property-pack/0.1/estate-agency/vocabulary/RentFrequencyScheme/concept/monthly>
+  a skos:Concept ;
+  skos:inScheme <https://w3id.org/opda/candidate/property-pack/0.1/estate-agency/vocabulary/RentFrequencyScheme> ;
+  skos:prefLabel "Monthly"@en ;
+  skos:notation "Monthly" .
+
+<https://w3id.org/opda/candidate/property-pack/0.1/estate-agency/vocabulary/RentFrequencyScheme/concept/weekly>
+  a skos:Concept ;
+  skos:inScheme <https://w3id.org/opda/candidate/property-pack/0.1/estate-agency/vocabulary/RentFrequencyScheme> ;
+  skos:prefLabel "Weekly"@en ;
+  skos:notation "Weekly" .

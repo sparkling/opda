@@ -1,0 +1,303 @@
+{
+  "candidate_id": "property-pack-0.1",
+  "candidate_status": "machine-proposed",
+  "checked_tree_digest": "2fc3aa43d2605fc027a5a46a3fbd9654aaa3d187bf5e9df78b46b71487412435",
+  "checks": [
+    {
+      "detail": "451 unique=451",
+      "name": "exact-451-coverage",
+      "state": "pass"
+    },
+    {
+      "detail": "Every coverage row has one recognised home.",
+      "name": "one-semantic-home-per-item",
+      "state": "pass"
+    },
+    {
+      "detail": "Every source item reaches at least one ontology resource.",
+      "name": "construct-reference-closure",
+      "state": "pass"
+    },
+    {
+      "detail": "Every consolidated controlled subject has a topic concept.",
+      "name": "topic-closure",
+      "state": "pass"
+    },
+    {
+      "detail": "Every ontology resource traces to source items directly or structurally.",
+      "name": "term-trace-closure",
+      "state": "pass"
+    },
+    {
+      "detail": "No current ontology path is imported.",
+      "name": "legacy-import-exclusion",
+      "state": "pass"
+    },
+    {
+      "detail": "Candidate graphs import no legacy or external ontology graph.",
+      "name": "no-owl-imports",
+      "state": "pass"
+    },
+    {
+      "detail": "No equivalence is asserted without reviewed identity evidence.",
+      "name": "no-default-same-as",
+      "state": "pass"
+    },
+    {
+      "detail": "forbidden tokens=[]",
+      "name": "excluded-concerns",
+      "state": "pass"
+    },
+    {
+      "detail": "files over 500 lines=[]",
+      "name": "generated-file-size",
+      "state": "pass"
+    },
+    {
+      "detail": "missing or invalid labels=[]",
+      "name": "rdf-1.2-version-labels",
+      "state": "pass"
+    },
+    {
+      "detail": "RDF 1.2 Basic syntax accepted.",
+      "name": "riot-parse:ontology/common.ttl",
+      "state": "pass"
+    },
+    {
+      "detail": "RDF 1.2 Basic syntax accepted.",
+      "name": "riot-parse:ontology/context-map.ttl",
+      "state": "pass"
+    },
+    {
+      "detail": "RDF 1.2 Basic syntax accepted.",
+      "name": "riot-parse:ontology/conveyancing-01.ttl",
+      "state": "pass"
+    },
+    {
+      "detail": "RDF 1.2 Basic syntax accepted.",
+      "name": "riot-parse:ontology/conveyancing-02.ttl",
+      "state": "pass"
+    },
+    {
+      "detail": "RDF 1.2 Basic syntax accepted.",
+      "name": "riot-parse:ontology/dbt-smart-data.ttl",
+      "state": "pass"
+    },
+    {
+      "detail": "RDF 1.2 Basic syntax accepted.",
+      "name": "riot-parse:ontology/estate-agency.ttl",
+      "state": "pass"
+    },
+    {
+      "detail": "RDF 1.2 Basic syntax accepted.",
+      "name": "riot-parse:ontology/finance-and-banking.ttl",
+      "state": "pass"
+    },
+    {
+      "detail": "RDF 1.2 Basic syntax accepted.",
+      "name": "riot-parse:ontology/property-data-services-01.ttl",
+      "state": "pass"
+    },
+    {
+      "detail": "RDF 1.2 Basic syntax accepted.",
+      "name": "riot-parse:ontology/property-data-services-02.ttl",
+      "state": "pass"
+    },
+    {
+      "detail": "RDF 1.2 Basic syntax accepted.",
+      "name": "riot-parse:ontology/property-technology.ttl",
+      "state": "pass"
+    },
+    {
+      "detail": "RDF 1.2 Basic syntax accepted.",
+      "name": "riot-parse:ontology/surveying-and-valuation.ttl",
+      "state": "pass"
+    },
+    {
+      "detail": "RDF 1.2 Basic syntax accepted.",
+      "name": "riot-parse:shapes/common.ttl",
+      "state": "pass"
+    },
+    {
+      "detail": "RDF 1.2 Basic syntax accepted.",
+      "name": "riot-parse:shapes/conveyancing.ttl",
+      "state": "pass"
+    },
+    {
+      "detail": "RDF 1.2 Basic syntax accepted.",
+      "name": "riot-parse:shapes/dbt-smart-data.ttl",
+      "state": "pass"
+    },
+    {
+      "detail": "RDF 1.2 Basic syntax accepted.",
+      "name": "riot-parse:shapes/estate-agency.ttl",
+      "state": "pass"
+    },
+    {
+      "detail": "RDF 1.2 Basic syntax accepted.",
+      "name": "riot-parse:shapes/finance-and-banking.ttl",
+      "state": "pass"
+    },
+    {
+      "detail": "RDF 1.2 Basic syntax accepted.",
+      "name": "riot-parse:shapes/property-data-services.ttl",
+      "state": "pass"
+    },
+    {
+      "detail": "RDF 1.2 Basic syntax accepted.",
+      "name": "riot-parse:shapes/property-technology.ttl",
+      "state": "pass"
+    },
+    {
+      "detail": "RDF 1.2 Basic syntax accepted.",
+      "name": "riot-parse:shapes/surveying-and-valuation.ttl",
+      "state": "pass"
+    },
+    {
+      "detail": "RDF 1.2 Basic syntax accepted.",
+      "name": "riot-parse:validation/fixtures/invalid-property.ttl",
+      "state": "pass"
+    },
+    {
+      "detail": "RDF 1.2 Basic syntax accepted.",
+      "name": "riot-parse:validation/fixtures/valid-property.ttl",
+      "state": "pass"
+    },
+    {
+      "detail": "RDF 1.2 Basic syntax accepted.",
+      "name": "riot-parse:vocabularies/common-controlled.ttl",
+      "state": "pass"
+    },
+    {
+      "detail": "RDF 1.2 Basic syntax accepted.",
+      "name": "riot-parse:vocabularies/conveyancing-controlled.ttl",
+      "state": "pass"
+    },
+    {
+      "detail": "RDF 1.2 Basic syntax accepted.",
+      "name": "riot-parse:vocabularies/estate-agency-controlled.ttl",
+      "state": "pass"
+    },
+    {
+      "detail": "RDF 1.2 Basic syntax accepted.",
+      "name": "riot-parse:vocabularies/property-data-services-controlled.ttl",
+      "state": "pass"
+    },
+    {
+      "detail": "RDF 1.2 Basic syntax accepted.",
+      "name": "riot-parse:vocabularies/property-technology-controlled.ttl",
+      "state": "pass"
+    },
+    {
+      "detail": "RDF 1.2 Basic syntax accepted.",
+      "name": "riot-parse:vocabularies/surveying-and-valuation-controlled.ttl",
+      "state": "pass"
+    },
+    {
+      "detail": "RDF 1.2 Basic syntax accepted.",
+      "name": "riot-parse:vocabularies/topics/conveyancing-01.ttl",
+      "state": "pass"
+    },
+    {
+      "detail": "RDF 1.2 Basic syntax accepted.",
+      "name": "riot-parse:vocabularies/topics/conveyancing-02.ttl",
+      "state": "pass"
+    },
+    {
+      "detail": "RDF 1.2 Basic syntax accepted.",
+      "name": "riot-parse:vocabularies/topics/conveyancing-03.ttl",
+      "state": "pass"
+    },
+    {
+      "detail": "RDF 1.2 Basic syntax accepted.",
+      "name": "riot-parse:vocabularies/topics/conveyancing-04.ttl",
+      "state": "pass"
+    },
+    {
+      "detail": "RDF 1.2 Basic syntax accepted.",
+      "name": "riot-parse:vocabularies/topics/estate-agency-01.ttl",
+      "state": "pass"
+    },
+    {
+      "detail": "RDF 1.2 Basic syntax accepted.",
+      "name": "riot-parse:vocabularies/topics/finance-and-banking-01.ttl",
+      "state": "pass"
+    },
+    {
+      "detail": "RDF 1.2 Basic syntax accepted.",
+      "name": "riot-parse:vocabularies/topics/property-data-services-01.ttl",
+      "state": "pass"
+    },
+    {
+      "detail": "RDF 1.2 Basic syntax accepted.",
+      "name": "riot-parse:vocabularies/topics/property-data-services-02.ttl",
+      "state": "pass"
+    },
+    {
+      "detail": "RDF 1.2 Basic syntax accepted.",
+      "name": "riot-parse:vocabularies/topics/property-data-services-03.ttl",
+      "state": "pass"
+    },
+    {
+      "detail": "RDF 1.2 Basic syntax accepted.",
+      "name": "riot-parse:vocabularies/topics/property-data-services-04.ttl",
+      "state": "pass"
+    },
+    {
+      "detail": "RDF 1.2 Basic syntax accepted.",
+      "name": "riot-parse:vocabularies/topics/property-technology-01.ttl",
+      "state": "pass"
+    },
+    {
+      "detail": "RDF 1.2 Basic syntax accepted.",
+      "name": "riot-parse:vocabularies/topics/surveying-and-valuation-01.ttl",
+      "state": "pass"
+    },
+    {
+      "detail": "expected_conforms=true observed=Conforms",
+      "name": "shacl-probe:valid-property.ttl",
+      "state": "pass"
+    },
+    {
+      "detail": "expected_conforms=false observed=Node=<urn:example:address>\n  Path=<https://w3id.org/opda/candidate/property-pack/0.1/property-data-services/postcode>\n  Message: minCount[1]: Invalid cardinality: expected min 1: Got count = 0\nNode=<urn:example:property>\n  Path=<https://w3id.org/opda/candidate/property-pack/0.1/common/uprn>\n  Value: \"NOT-A-UPRN\"\n  Message: Pattern[^[0-9]+$]: Does not match: 'NOT-A-UPRN'",
+      "name": "shacl-probe:invalid-property.ttl",
+      "state": "pass"
+    },
+    {
+      "detail": "expected=true observed=yes",
+      "name": "sparql-competency:address-separation.rq",
+      "state": "pass"
+    },
+    {
+      "detail": "expected=true observed=yes",
+      "name": "sparql-competency:fixture-consolidation.rq",
+      "state": "pass"
+    },
+    {
+      "detail": "expected=false observed=no",
+      "name": "sparql-competency:no-same-as.rq",
+      "state": "pass"
+    },
+    {
+      "detail": "expected=true observed=yes",
+      "name": "sparql-competency:property-identity.rq",
+      "state": "pass"
+    }
+  ],
+  "schema_version": "0.1",
+  "source_item_count": 451,
+  "standards_assurance": {
+    "qualification_note": "Full RDF 1.2 and SHACL 1.2 Union conformance are not claimed by this Jena 6.1.0 compatibility run.",
+    "rdf_1_2_basic": "pass",
+    "rdf_1_2_full": "not-applicable",
+    "shacl_1_2_core_target": "implementation-tested-core-subset",
+    "shacl_1_2_union_profile": "not-applicable",
+    "sparql_1_2_target": "portable-subset-tested"
+  },
+  "status": "pass",
+  "tooling": {
+    "arq": "Apache Jena version 6.1.0",
+    "riot": "Apache Jena RIOT version 6.1.0",
+    "shacl": "Apache Jena SHACL version 6.1.0"
+  }
+}

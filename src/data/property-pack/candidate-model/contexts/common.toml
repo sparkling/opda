@@ -1,0 +1,21 @@
+[context]
+id = "common"
+prefix = "common"
+
+[[term]]
+id = "Property"
+kind = "class"
+label = "Property"
+definition = "An identifiable unit of land, buildings or both that persists independently of any particular address, transaction or domain view."
+identity = "Candidate identity is continuity of the unit associated with the same assigned UPRN; lifecycle rules remain for working-group review."
+
+[[term]]
+id = "uprn"
+kind = "datatype-property"
+label = "Unique Property Reference Number"
+definition = "The reference assigned to a property in the national address gazetteer and used as a non-arithmetic identifier."
+domain = "common:Property"
+datatype = "xsd:string"
+pattern = "^[0-9]+$"
+min_count = 1
+max_count = 1

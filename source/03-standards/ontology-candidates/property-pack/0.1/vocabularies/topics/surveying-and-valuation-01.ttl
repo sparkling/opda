@@ -1,0 +1,224 @@
+VERSION "1.2-basic"
+
+@prefix common: <https://w3id.org/opda/candidate/property-pack/0.1/common/> .
+@prefix conv: <https://w3id.org/opda/candidate/property-pack/0.1/conveyancing/> .
+@prefix dbt: <https://w3id.org/opda/candidate/property-pack/0.1/dbt-smart-data/> .
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix ea: <https://w3id.org/opda/candidate/property-pack/0.1/estate-agency/> .
+@prefix fb: <https://w3id.org/opda/candidate/property-pack/0.1/finance-and-banking/> .
+@prefix opdac: <https://w3id.org/opda/candidate/property-pack/0.1/meta/> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix pds: <https://w3id.org/opda/candidate/property-pack/0.1/property-data-services/> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix pt: <https://w3id.org/opda/candidate/property-pack/0.1/property-technology/> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix sv: <https://w3id.org/opda/candidate/property-pack/0.1/surveying-and-valuation/> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+<https://w3id.org/opda/candidate/property-pack/0.1/surveying-and-valuation/topic/PropertyPackTopicScheme>
+  a skos:ConceptScheme ;
+  skos:prefLabel "Surveying and valuation Property Pack topics"@en ;
+  skos:definition "Candidate subjects used to classify consolidated Property Pack source questions."@en ;
+  opdac:semanticHome <https://w3id.org/opda/candidate/property-pack/0.1/context/surveying-and-valuation> .
+
+<https://w3id.org/opda/candidate/property-pack/0.1/surveying-and-valuation/topic/pp-142fe5795041>
+  a skos:Concept ;
+  skos:inScheme <https://w3id.org/opda/candidate/property-pack/0.1/surveying-and-valuation/topic/PropertyPackTopicScheme> ;
+  skos:prefLabel "Is standard form"@en ;
+  skos:definition "Indicates whether is standard form is applicable."@en ;
+  skos:notation "pp-142fe5795041" ;
+  dcterms:source <urn:opda:property-pack:item:pp-142fe5795041> .
+
+<https://w3id.org/opda/candidate/property-pack/0.1/surveying-and-valuation/topic/pp-1c47fbca0c17>
+  a skos:Concept ;
+  skos:inScheme <https://w3id.org/opda/candidate/property-pack/0.1/surveying-and-valuation/topic/PropertyPackTopicScheme> ;
+  skos:prefLabel "Heating type"@en ;
+  skos:definition "Records the response to the source question: What type of heating system does the property have?"@en ;
+  skos:notation "pp-1c47fbca0c17" ;
+  dcterms:source <urn:opda:property-pack:item:pp-1c47fbca0c17> .
+
+<https://w3id.org/opda/candidate/property-pack/0.1/surveying-and-valuation/topic/pp-1d8015840c69>
+  a skos:Concept ;
+  skos:inScheme <https://w3id.org/opda/candidate/property-pack/0.1/surveying-and-valuation/topic/PropertyPackTopicScheme> ;
+  skos:prefLabel "Has added conservatory"@en ;
+  skos:definition "Indicates whether has added conservatory is applicable."@en ;
+  skos:notation "pp-1d8015840c69" ;
+  dcterms:source <urn:opda:property-pack:item:pp-1d8015840c69> .
+
+<https://w3id.org/opda/candidate/property-pack/0.1/surveying-and-valuation/topic/pp-206d31299c3b>
+  a skos:Concept ;
+  skos:inScheme <https://w3id.org/opda/candidate/property-pack/0.1/surveying-and-valuation/topic/PropertyPackTopicScheme> ;
+  skos:prefLabel "Solar panels"@en ;
+  skos:definition "Indicates whether solar panels is applicable."@en ;
+  skos:notation "pp-206d31299c3b" ;
+  dcterms:source <urn:opda:property-pack:item:pp-206d31299c3b> .
+
+<https://w3id.org/opda/candidate/property-pack/0.1/surveying-and-valuation/topic/pp-24783dd0c385>
+  a skos:Concept ;
+  skos:inScheme <https://w3id.org/opda/candidate/property-pack/0.1/surveying-and-valuation/topic/PropertyPackTopicScheme> ;
+  skos:prefLabel "Works unfinished"@en ;
+  skos:definition "Indicates whether works unfinished is applicable."@en ;
+  skos:notation "pp-24783dd0c385" ;
+  dcterms:source <urn:opda:property-pack:item:pp-24783dd0c385> .
+
+<https://w3id.org/opda/candidate/property-pack/0.1/surveying-and-valuation/topic/pp-4f391f1cbb9a>
+  a skos:Concept ;
+  skos:inScheme <https://w3id.org/opda/candidate/property-pack/0.1/surveying-and-valuation/topic/PropertyPackTopicScheme> ;
+  skos:prefLabel "Electrical work since2005"@en ;
+  skos:definition "Indicates whether electrical work since2005 is applicable."@en ;
+  skos:notation "pp-4f391f1cbb9a" ;
+  dcterms:source <urn:opda:property-pack:item:pp-4f391f1cbb9a> .
+
+<https://w3id.org/opda/candidate/property-pack/0.1/surveying-and-valuation/topic/pp-595ac8165078>
+  a skos:Concept ;
+  skos:inScheme <https://w3id.org/opda/candidate/property-pack/0.1/surveying-and-valuation/topic/PropertyPackTopicScheme> ;
+  skos:prefLabel "Window replacements since2002"@en ;
+  skos:definition "Indicates whether window replacements since2002 is applicable."@en ;
+  skos:notation "pp-595ac8165078" ;
+  dcterms:source <urn:opda:property-pack:item:pp-595ac8165078> .
+
+<https://w3id.org/opda/candidate/property-pack/0.1/surveying-and-valuation/topic/pp-5dd2a85b60bb>
+  a skos:Concept ;
+  skos:inScheme <https://w3id.org/opda/candidate/property-pack/0.1/surveying-and-valuation/topic/PropertyPackTopicScheme> ;
+  skos:prefLabel "Loft access"@en ;
+  skos:definition "Records the loft access for loft."@en ;
+  skos:notation "pp-5dd2a85b60bb" ;
+  dcterms:source <urn:opda:property-pack:item:pp-5dd2a85b60bb> .
+
+<https://w3id.org/opda/candidate/property-pack/0.1/surveying-and-valuation/topic/pp-66a2f7d7635f>
+  a skos:Concept ;
+  skos:inScheme <https://w3id.org/opda/candidate/property-pack/0.1/surveying-and-valuation/topic/PropertyPackTopicScheme> ;
+  skos:prefLabel "Contains asbestos"@en ;
+  skos:definition "Indicates whether contains asbestos is applicable."@en ;
+  skos:notation "pp-66a2f7d7635f" ;
+  dcterms:source <urn:opda:property-pack:item:pp-66a2f7d7635f> .
+
+<https://w3id.org/opda/candidate/property-pack/0.1/surveying-and-valuation/topic/pp-7554e0ba56f8>
+  a skos:Concept ;
+  skos:inScheme <https://w3id.org/opda/candidate/property-pack/0.1/surveying-and-valuation/topic/PropertyPackTopicScheme> ;
+  skos:prefLabel "Heat pump"@en ;
+  skos:definition "Indicates whether heat pump is applicable."@en ;
+  skos:notation "pp-7554e0ba56f8" ;
+  dcterms:source <urn:opda:property-pack:item:pp-7554e0ba56f8> .
+
+<https://w3id.org/opda/candidate/property-pack/0.1/surveying-and-valuation/topic/pp-7573116a1864>
+  a skos:Concept ;
+  skos:inScheme <https://w3id.org/opda/candidate/property-pack/0.1/surveying-and-valuation/topic/PropertyPackTopicScheme> ;
+  skos:prefLabel "Change of use"@en ;
+  skos:definition "Indicates whether change of use is applicable."@en ;
+  skos:notation "pp-7573116a1864" ;
+  dcterms:source <urn:opda:property-pack:item:pp-7573116a1864> .
+
+<https://w3id.org/opda/candidate/property-pack/0.1/surveying-and-valuation/topic/pp-81569fcbac22>
+  a skos:Concept ;
+  skos:inScheme <https://w3id.org/opda/candidate/property-pack/0.1/surveying-and-valuation/topic/PropertyPackTopicScheme> ;
+  skos:prefLabel "Property type"@en ;
+  skos:definition "The value recorded for “Property type” in the Property Pack."@en ;
+  skos:notation "pp-81569fcbac22" ;
+  dcterms:source <urn:opda:property-pack:item:pp-81569fcbac22> .
+
+<https://w3id.org/opda/candidate/property-pack/0.1/surveying-and-valuation/topic/pp-84de93dd02f8>
+  a skos:Concept ;
+  skos:inScheme <https://w3id.org/opda/candidate/property-pack/0.1/surveying-and-valuation/topic/PropertyPackTopicScheme> ;
+  skos:prefLabel "Tested by qualified electrician"@en ;
+  skos:definition "Indicates whether tested by qualified electrician is applicable."@en ;
+  skos:notation "pp-84de93dd02f8" ;
+  dcterms:source <urn:opda:property-pack:item:pp-84de93dd02f8> .
+
+<https://w3id.org/opda/candidate/property-pack/0.1/surveying-and-valuation/topic/pp-871b42806902>
+  a skos:Concept ;
+  skos:inScheme <https://w3id.org/opda/candidate/property-pack/0.1/surveying-and-valuation/topic/PropertyPackTopicScheme> ;
+  skos:prefLabel "Has structural alterations"@en ;
+  skos:definition "Indicates whether has structural alterations is applicable."@en ;
+  skos:notation "pp-871b42806902" ;
+  dcterms:source <urn:opda:property-pack:item:pp-871b42806902> .
+
+<https://w3id.org/opda/candidate/property-pack/0.1/surveying-and-valuation/topic/pp-a12b2f51cfd2>
+  a skos:Concept ;
+  skos:inScheme <https://w3id.org/opda/candidate/property-pack/0.1/surveying-and-valuation/topic/PropertyPackTopicScheme> ;
+  skos:prefLabel "Unresolved planning issues"@en ;
+  skos:definition "Indicates whether unresolved planning issues is applicable."@en ;
+  skos:notation "pp-a12b2f51cfd2" ;
+  dcterms:source <urn:opda:property-pack:item:pp-a12b2f51cfd2> .
+
+<https://w3id.org/opda/candidate/property-pack/0.1/surveying-and-valuation/topic/pp-a298d0446a05>
+  a skos:Concept ;
+  skos:inScheme <https://w3id.org/opda/candidate/property-pack/0.1/surveying-and-valuation/topic/PropertyPackTopicScheme> ;
+  skos:prefLabel "Building safety"@en ;
+  skos:definition "Indicates whether building safety is applicable."@en ;
+  skos:notation "pp-a298d0446a05" ;
+  dcterms:source <urn:opda:property-pack:item:pp-a298d0446a05> .
+
+<https://w3id.org/opda/candidate/property-pack/0.1/surveying-and-valuation/topic/pp-a56c6271262f>
+  a skos:Concept ;
+  skos:inScheme <https://w3id.org/opda/candidate/property-pack/0.1/surveying-and-valuation/topic/PropertyPackTopicScheme> ;
+  skos:prefLabel "Subsidence or structural fault"@en ;
+  skos:definition "Indicates whether subsidence or structural fault is applicable."@en ;
+  skos:notation "pp-a56c6271262f" ;
+  dcterms:source <urn:opda:property-pack:item:pp-a56c6271262f> .
+
+<https://w3id.org/opda/candidate/property-pack/0.1/surveying-and-valuation/topic/pp-b08e41268297>
+  a skos:Concept ;
+  skos:inScheme <https://w3id.org/opda/candidate/property-pack/0.1/surveying-and-valuation/topic/PropertyPackTopicScheme> ;
+  skos:prefLabel "Dry rot etc treatment"@en ;
+  skos:definition "Indicates whether dry rot etc treatment is applicable."@en ;
+  skos:notation "pp-b08e41268297" ;
+  dcterms:source <urn:opda:property-pack:item:pp-b08e41268297> .
+
+<https://w3id.org/opda/candidate/property-pack/0.1/surveying-and-valuation/topic/pp-c6252d706b67>
+  a skos:Concept ;
+  skos:inScheme <https://w3id.org/opda/candidate/property-pack/0.1/surveying-and-valuation/topic/PropertyPackTopicScheme> ;
+  skos:prefLabel "Planning permission breaches"@en ;
+  skos:definition "Indicates whether planning permission breaches is applicable."@en ;
+  skos:notation "pp-c6252d706b67" ;
+  dcterms:source <urn:opda:property-pack:item:pp-c6252d706b67> .
+
+<https://w3id.org/opda/candidate/property-pack/0.1/surveying-and-valuation/topic/pp-cae0fe65332a>
+  a skos:Concept ;
+  skos:inScheme <https://w3id.org/opda/candidate/property-pack/0.1/surveying-and-valuation/topic/PropertyPackTopicScheme> ;
+  skos:prefLabel "Has spray foam installed"@en ;
+  skos:definition "Records the has spray foam installed for spray foam insulation."@en ;
+  skos:notation "pp-cae0fe65332a" ;
+  dcterms:source <urn:opda:property-pack:item:pp-cae0fe65332a> .
+
+<https://w3id.org/opda/candidate/property-pack/0.1/surveying-and-valuation/topic/pp-cc96982f12e0>
+  a skos:Concept ;
+  skos:inScheme <https://w3id.org/opda/candidate/property-pack/0.1/surveying-and-valuation/topic/PropertyPackTopicScheme> ;
+  skos:prefLabel "Built form"@en ;
+  skos:definition "The value recorded for “Built form” in the Property Pack."@en ;
+  skos:notation "pp-cc96982f12e0" ;
+  dcterms:source <urn:opda:property-pack:item:pp-cc96982f12e0> .
+
+<https://w3id.org/opda/candidate/property-pack/0.1/surveying-and-valuation/topic/pp-ea7f17cdb0c1>
+  a skos:Concept ;
+  skos:inScheme <https://w3id.org/opda/candidate/property-pack/0.1/surveying-and-valuation/topic/PropertyPackTopicScheme> ;
+  skos:prefLabel "Japanese knotweed"@en ;
+  skos:definition "Indicates whether japanese knotweed is applicable."@en ;
+  skos:notation "pp-ea7f17cdb0c1" ;
+  dcterms:source <urn:opda:property-pack:item:pp-ea7f17cdb0c1> .
+
+<https://w3id.org/opda/candidate/property-pack/0.1/surveying-and-valuation/topic/pp-f09654d59bf9>
+  a skos:Concept ;
+  skos:inScheme <https://w3id.org/opda/candidate/property-pack/0.1/surveying-and-valuation/topic/PropertyPackTopicScheme> ;
+  skos:prefLabel "Ongoing health or safety issue"@en ;
+  skos:definition "Indicates whether ongoing health or safety issue is applicable."@en ;
+  skos:notation "pp-f09654d59bf9" ;
+  dcterms:source <urn:opda:property-pack:item:pp-f09654d59bf9> .
+
+<https://w3id.org/opda/candidate/property-pack/0.1/surveying-and-valuation/topic/pp-f176631e2c87>
+  a skos:Concept ;
+  skos:inScheme <https://w3id.org/opda/candidate/property-pack/0.1/surveying-and-valuation/topic/PropertyPackTopicScheme> ;
+  skos:prefLabel "Other sources"@en ;
+  skos:definition "Indicates whether other sources is applicable."@en ;
+  skos:notation "pp-f176631e2c87" ;
+  dcterms:source <urn:opda:property-pack:item:pp-f176631e2c87> .
+
+<https://w3id.org/opda/candidate/property-pack/0.1/surveying-and-valuation/topic/pp-f4cc34e0a889>
+  a skos:Concept ;
+  skos:inScheme <https://w3id.org/opda/candidate/property-pack/0.1/surveying-and-valuation/topic/PropertyPackTopicScheme> ;
+  skos:prefLabel "Mains electricity"@en ;
+  skos:definition "Indicates whether mains electricity is applicable."@en ;
+  skos:notation "pp-f4cc34e0a889" ;
+  dcterms:source <urn:opda:property-pack:item:pp-f4cc34e0a889> .

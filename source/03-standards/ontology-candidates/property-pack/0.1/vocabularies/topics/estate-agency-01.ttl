@@ -1,0 +1,48 @@
+VERSION "1.2-basic"
+
+@prefix common: <https://w3id.org/opda/candidate/property-pack/0.1/common/> .
+@prefix conv: <https://w3id.org/opda/candidate/property-pack/0.1/conveyancing/> .
+@prefix dbt: <https://w3id.org/opda/candidate/property-pack/0.1/dbt-smart-data/> .
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix ea: <https://w3id.org/opda/candidate/property-pack/0.1/estate-agency/> .
+@prefix fb: <https://w3id.org/opda/candidate/property-pack/0.1/finance-and-banking/> .
+@prefix opdac: <https://w3id.org/opda/candidate/property-pack/0.1/meta/> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix pds: <https://w3id.org/opda/candidate/property-pack/0.1/property-data-services/> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix pt: <https://w3id.org/opda/candidate/property-pack/0.1/property-technology/> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix sv: <https://w3id.org/opda/candidate/property-pack/0.1/surveying-and-valuation/> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+<https://w3id.org/opda/candidate/property-pack/0.1/estate-agency/topic/PropertyPackTopicScheme>
+  a skos:ConceptScheme ;
+  skos:prefLabel "Estate agency Property Pack topics"@en ;
+  skos:definition "Candidate subjects used to classify consolidated Property Pack source questions."@en ;
+  opdac:semanticHome <https://w3id.org/opda/candidate/property-pack/0.1/context/estate-agency> .
+
+<https://w3id.org/opda/candidate/property-pack/0.1/estate-agency/topic/pp-02cf9ef3ad07>
+  a skos:Concept ;
+  skos:inScheme <https://w3id.org/opda/candidate/property-pack/0.1/estate-agency/topic/PropertyPackTopicScheme> ;
+  skos:prefLabel "Has delay factors"@en ;
+  skos:definition "Indicates whether has delay factors is applicable."@en ;
+  skos:notation "pp-02cf9ef3ad07" ;
+  dcterms:source <urn:opda:property-pack:item:pp-02cf9ef3ad07> .
+
+<https://w3id.org/opda/candidate/property-pack/0.1/estate-agency/topic/pp-e16384254af4>
+  a skos:Concept ;
+  skos:inScheme <https://w3id.org/opda/candidate/property-pack/0.1/estate-agency/topic/PropertyPackTopicScheme> ;
+  skos:prefLabel "Rent frequency"@en ;
+  skos:definition "The value recorded for “Rent frequency” in the Property Pack."@en ;
+  skos:notation "pp-e16384254af4" ;
+  dcterms:source <urn:opda:property-pack:item:pp-e16384254af4> .
+
+<https://w3id.org/opda/candidate/property-pack/0.1/estate-agency/topic/pp-fcdd50d3d2ac>
+  a skos:Concept ;
+  skos:inScheme <https://w3id.org/opda/candidate/property-pack/0.1/estate-agency/topic/PropertyPackTopicScheme> ;
+  skos:prefLabel "Price type"@en ;
+  skos:definition "The value recorded for “Price type” in the Property Pack."@en ;
+  skos:notation "pp-fcdd50d3d2ac" ;
+  dcterms:source <urn:opda:property-pack:item:pp-fcdd50d3d2ac> .

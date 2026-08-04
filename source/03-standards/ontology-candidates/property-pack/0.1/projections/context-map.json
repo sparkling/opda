@@ -1,0 +1,109 @@
+{
+  "common_boundary": "common",
+  "connections": [
+    {
+      "from": "conveyancing",
+      "kind": "interoperates-through",
+      "to": "common"
+    },
+    {
+      "from": "dbt-smart-data",
+      "kind": "interoperates-through",
+      "to": "common"
+    },
+    {
+      "from": "estate-agency",
+      "kind": "interoperates-through",
+      "to": "common"
+    },
+    {
+      "from": "finance-and-banking",
+      "kind": "interoperates-through",
+      "to": "common"
+    },
+    {
+      "from": "property-data-services",
+      "kind": "interoperates-through",
+      "to": "common"
+    },
+    {
+      "from": "property-technology",
+      "kind": "interoperates-through",
+      "to": "common"
+    },
+    {
+      "from": "surveying-and-valuation",
+      "kind": "interoperates-through",
+      "to": "common"
+    }
+  ],
+  "contexts": [
+    {
+      "definition": "A deliberately small exchange boundary for stable identity and meaning genuinely shared by several property domains.",
+      "id": "common",
+      "kind": "common-boundary",
+      "label": "Common boundary",
+      "prefix": "common",
+      "source_item_count": 1
+    },
+    {
+      "definition": "Legal title, ownership, rights, disclosure, completion and transfer meanings used in conveyancing.",
+      "id": "conveyancing",
+      "kind": "bounded-context",
+      "label": "Conveyancing",
+      "prefix": "conv",
+      "source_item_count": 206
+    },
+    {
+      "definition": "Scheme-level authorisation and controlled sharing meanings that apply across participating sectors.",
+      "id": "dbt-smart-data",
+      "kind": "scheme-context",
+      "label": "DBT Smart Data",
+      "prefix": "dbt",
+      "source_item_count": 1
+    },
+    {
+      "definition": "Marketing, pricing, letting, media and consumer disclosure meanings used in estate agency.",
+      "id": "estate-agency",
+      "kind": "bounded-context",
+      "label": "Estate agency",
+      "prefix": "ea",
+      "source_item_count": 7
+    },
+    {
+      "definition": "Mortgage, repayment, insurance and financial-obligation meanings used by lenders and advisers.",
+      "id": "finance-and-banking",
+      "kind": "bounded-context",
+      "label": "Finance and banking",
+      "prefix": "fb",
+      "source_item_count": 7
+    },
+    {
+      "definition": "Authoritative and derived property information supplied through searches, registers, certificates and utility records.",
+      "id": "property-data-services",
+      "kind": "bounded-context",
+      "label": "Property data services",
+      "prefix": "pds",
+      "source_item_count": 197
+    },
+    {
+      "definition": "Digital property records, smart-home capabilities and connectivity meanings used by property technology.",
+      "id": "property-technology",
+      "kind": "bounded-context",
+      "label": "Property technology",
+      "prefix": "pt",
+      "source_item_count": 6
+    },
+    {
+      "definition": "Physical construction, condition, alteration and installed-feature meanings used to inspect and value property.",
+      "id": "surveying-and-valuation",
+      "kind": "bounded-context",
+      "label": "Surveying and valuation",
+      "prefix": "sv",
+      "source_item_count": 26
+    }
+  ],
+  "cross_domain_mappings": [],
+  "mapping_status": "awaiting working-group evidence",
+  "rule": "Each OPDA resource has one semantic home; common is exceptional and does not control internal domain meaning."
+}

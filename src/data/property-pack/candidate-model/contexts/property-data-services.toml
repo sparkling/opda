@@ -1,0 +1,383 @@
+[context]
+id = "property-data-services"
+prefix = "pds"
+
+[[term]]
+id = "Address"
+kind = "class"
+label = "address"
+definition = "A structured, mutable address description associated with a property."
+identity = "This candidate gives Address structural identity from its components; an authoritative address identifier remains unresolved."
+
+[[term]]
+id = "hasAddress"
+kind = "object-property"
+label = "has address"
+definition = "Relates a property to the address currently asserted for it in the Property Pack."
+domain = "common:Property"
+range = "pds:Address"
+min_count = 1
+max_count = 1
+
+[[term]]
+id = "addressLine1"
+kind = "datatype-property"
+label = "address line 1"
+definition = "The first textual line of a structured address."
+domain = "pds:Address"
+datatype = "xsd:string"
+min_count = 1
+max_count = 1
+
+[[term]]
+id = "postcode"
+kind = "datatype-property"
+label = "postcode"
+definition = "The postal code recorded as part of an address."
+domain = "pds:Address"
+datatype = "xsd:string"
+min_count = 1
+max_count = 1
+
+[[term]]
+id = "InformationRecord"
+kind = "class"
+label = "property information record"
+definition = "An evidence-bearing record supplied by a property-data service about a property."
+
+[[term]]
+id = "Search"
+kind = "class"
+label = "search"
+definition = "A search performed by or through an information authority for matters affecting a property."
+subclass_of = "pds:InformationRecord"
+
+[[term]]
+id = "SearchFinding"
+kind = "class"
+label = "search finding"
+definition = "A typed finding returned by a property or local-authority search."
+
+[[term]]
+id = "hasSearchFinding"
+kind = "object-property"
+label = "has search finding"
+definition = "Relates a search to one of its typed findings."
+domain = "pds:Search"
+range = "pds:SearchFinding"
+
+[[term]]
+id = "findingType"
+kind = "object-property"
+label = "finding type"
+definition = "Classifies the question or subject addressed by a search finding."
+domain = "pds:SearchFinding"
+range = "skos:Concept"
+
+[[term]]
+id = "findingOutcome"
+kind = "object-property"
+label = "finding outcome"
+definition = "Records the controlled response or status returned for a search finding."
+domain = "pds:SearchFinding"
+range = "skos:Concept"
+
+[[term]]
+id = "findingDescription"
+kind = "datatype-property"
+label = "finding description"
+definition = "Free text describing a search finding."
+domain = "pds:SearchFinding"
+datatype = "xsd:string"
+
+[[term]]
+id = "PlanningApplication"
+kind = "class"
+label = "planning application"
+definition = "An application for planning permission or another planning decision recorded by a competent authority."
+subclass_of = "pds:InformationRecord"
+identity = "Identified by the issuing authority and its application reference number."
+
+[[term]]
+id = "hasPlanningApplication"
+kind = "object-property"
+label = "has planning application"
+definition = "Relates a property to a planning application that affects it."
+domain = "common:Property"
+range = "pds:PlanningApplication"
+
+[[term]]
+id = "applicationReference"
+kind = "datatype-property"
+label = "application reference"
+definition = "The reference assigned to a planning application by the competent authority."
+domain = "pds:PlanningApplication"
+datatype = "xsd:string"
+max_count = 1
+
+[[term]]
+id = "applicationDate"
+kind = "datatype-property"
+label = "application date"
+definition = "The date associated with submission or registration of a planning application."
+domain = "pds:PlanningApplication"
+datatype = "xsd:date"
+max_count = 1
+
+[[term]]
+id = "applicationType"
+kind = "object-property"
+label = "application type"
+definition = "Classifies the kind of planning application."
+domain = "pds:PlanningApplication"
+range = "skos:Concept"
+
+[[term]]
+id = "LocalLandCharge"
+kind = "class"
+label = "local land charge"
+definition = "A charge or restriction registered as a local land charge against land."
+subclass_of = "pds:InformationRecord"
+identity = "Identified by the competent authority and its charge reference."
+
+[[term]]
+id = "hasLocalLandCharge"
+kind = "object-property"
+label = "has local land charge"
+definition = "Relates a property to a local land charge that affects it."
+domain = "common:Property"
+range = "pds:LocalLandCharge"
+
+[[term]]
+id = "chargeReference"
+kind = "datatype-property"
+label = "charge reference"
+definition = "The reference assigned to a local land charge by the competent authority."
+domain = "pds:LocalLandCharge"
+datatype = "xsd:string"
+
+[[term]]
+id = "registrationDate"
+kind = "datatype-property"
+label = "registration date"
+definition = "The date on which a local land charge was registered."
+domain = "pds:LocalLandCharge"
+datatype = "xsd:date"
+
+[[term]]
+id = "EnvironmentalAssessment"
+kind = "class"
+label = "environmental assessment"
+definition = "A typed assessment of an environmental condition or risk affecting a property."
+subclass_of = "pds:InformationRecord"
+
+[[term]]
+id = "hasEnvironmentalAssessment"
+kind = "object-property"
+label = "has environmental assessment"
+definition = "Relates a property to an environmental assessment."
+domain = "common:Property"
+range = "pds:EnvironmentalAssessment"
+
+[[term]]
+id = "environmentalTopic"
+kind = "object-property"
+label = "environmental topic"
+definition = "Classifies the environmental hazard or condition assessed."
+domain = "pds:EnvironmentalAssessment"
+range = "skos:Concept"
+
+[[term]]
+id = "riskLevel"
+kind = "object-property"
+label = "risk level"
+definition = "Records a controlled risk level assigned by an assessment."
+domain = "pds:EnvironmentalAssessment"
+range = "skos:Concept"
+
+[[term]]
+id = "EnergyPerformanceCertificate"
+kind = "class"
+label = "energy performance certificate"
+definition = "A certificate recording an assessed energy performance rating for a property."
+subclass_of = "pds:InformationRecord"
+
+[[term]]
+id = "hasEnergyPerformanceCertificate"
+kind = "object-property"
+label = "has energy performance certificate"
+definition = "Relates a property to an energy performance certificate."
+domain = "common:Property"
+range = "pds:EnergyPerformanceCertificate"
+
+[[term]]
+id = "energyRating"
+kind = "object-property"
+label = "energy rating"
+definition = "The controlled energy-efficiency rating stated by a certificate."
+domain = "pds:EnergyPerformanceCertificate"
+range = "skos:Concept"
+
+[[term]]
+id = "certificateAddress"
+kind = "datatype-property"
+label = "certificate address"
+definition = "The address text recorded on an energy performance certificate."
+domain = "pds:EnergyPerformanceCertificate"
+datatype = "xsd:string"
+
+[[term]]
+id = "certificateUprn"
+kind = "datatype-property"
+label = "certificate UPRN"
+definition = "The UPRN stated on an energy performance certificate for reconciliation with the property identity."
+domain = "pds:EnergyPerformanceCertificate"
+datatype = "xsd:string"
+
+[[term]]
+id = "certificateSupplyStatus"
+kind = "object-property"
+label = "certificate supply status"
+definition = "Records whether and how the certificate is supplied."
+domain = "pds:EnergyPerformanceCertificate"
+range = "skos:Concept"
+
+[[term]]
+id = "CouncilTaxAssessment"
+kind = "class"
+label = "council tax assessment"
+definition = "A local-tax banding and related status recorded for a domestic property."
+subclass_of = "pds:InformationRecord"
+
+[[term]]
+id = "hasCouncilTaxAssessment"
+kind = "object-property"
+label = "has council tax assessment"
+definition = "Relates a property to its council-tax assessment."
+domain = "common:Property"
+range = "pds:CouncilTaxAssessment"
+
+[[term]]
+id = "councilTaxBand"
+kind = "object-property"
+label = "council tax band"
+definition = "The controlled council-tax band recorded for a property."
+domain = "pds:CouncilTaxAssessment"
+range = "skos:Concept"
+
+[[term]]
+id = "UtilityServiceRecord"
+kind = "class"
+label = "utility service record"
+definition = "A record describing provision, infrastructure, charging or evidence for a utility service at a property."
+subclass_of = "pds:InformationRecord"
+
+[[term]]
+id = "hasUtilityServiceRecord"
+kind = "object-property"
+label = "has utility service record"
+definition = "Relates a property to a utility service record."
+domain = "common:Property"
+range = "pds:UtilityServiceRecord"
+
+[[term]]
+id = "utilityTopic"
+kind = "object-property"
+label = "utility topic"
+definition = "Classifies the service or utility question addressed by a record."
+domain = "pds:UtilityServiceRecord"
+range = "skos:Concept"
+
+[[term]]
+id = "utilityOutcome"
+kind = "object-property"
+label = "utility outcome"
+definition = "Records the controlled response or status stated for a utility topic."
+domain = "pds:UtilityServiceRecord"
+range = "skos:Concept"
+
+[[term]]
+id = "serviceProviderName"
+kind = "datatype-property"
+label = "service provider name"
+definition = "The name stated for a utility service provider."
+domain = "pds:UtilityServiceRecord"
+datatype = "xsd:string"
+
+[[term]]
+id = "serviceCharge"
+kind = "datatype-property"
+label = "service charge"
+definition = "A charge or charging basis stated for a utility service."
+domain = "pds:UtilityServiceRecord"
+datatype = "xsd:string"
+
+[[term]]
+id = "supportingMap"
+kind = "object-property"
+label = "supporting map"
+definition = "Relates a utility service record to an attached map or map extract."
+domain = "pds:UtilityServiceRecord"
+range = "dcterms:PhysicalResource"
+
+[[term]]
+id = "Designation"
+kind = "class"
+label = "designation"
+definition = "A statutory listing, conservation or protection designation affecting a property."
+subclass_of = "pds:InformationRecord"
+
+[[term]]
+id = "hasDesignation"
+kind = "object-property"
+label = "has designation"
+definition = "Relates a property to a statutory designation."
+domain = "common:Property"
+range = "pds:Designation"
+
+[[term]]
+id = "designationType"
+kind = "object-property"
+label = "designation type"
+definition = "Classifies the kind of statutory designation."
+domain = "pds:Designation"
+range = "skos:Concept"
+
+[[term]]
+id = "designationOutcome"
+kind = "object-property"
+label = "designation outcome"
+definition = "Records the controlled applicability or status of a designation."
+domain = "pds:Designation"
+range = "skos:Concept"
+
+[[term]]
+id = "ParkingCondition"
+kind = "class"
+label = "parking condition"
+definition = "A typed parking control, facility or restriction associated with a property."
+subclass_of = "pds:InformationRecord"
+
+[[term]]
+id = "hasParkingCondition"
+kind = "object-property"
+label = "has parking condition"
+definition = "Relates a property to a parking condition."
+domain = "common:Property"
+range = "pds:ParkingCondition"
+
+[[term]]
+id = "parkingTopic"
+kind = "object-property"
+label = "parking topic"
+definition = "Classifies the parking facility or restriction described."
+domain = "pds:ParkingCondition"
+range = "skos:Concept"
+
+[[term]]
+id = "parkingOutcome"
+kind = "object-property"
+label = "parking outcome"
+definition = "Records the controlled response or status for a parking topic."
+domain = "pds:ParkingCondition"
+range = "skos:Concept"

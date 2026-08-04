@@ -1,0 +1,19 @@
+{
+  "base_iri": "https://w3id.org/opda/candidate/property-pack/0.1/",
+  "candidate_id": "property-pack-0.1",
+  "controlled_vocabulary_count": 14,
+  "coverage_digest": "2bdacbb9f721aa16fe8723d70b4b1f840d6ba3811688c13f7f033b69ae69688b",
+  "ontology_resource_count": 159,
+  "semantic_home_counts": {
+    "common": 1,
+    "conveyancing": 206,
+    "dbt-smart-data": 1,
+    "estate-agency": 7,
+    "finance-and-banking": 7,
+    "property-data-services": 197,
+    "property-technology": 6,
+    "surveying-and-valuation": 26
+  },
+  "source_item_count": 451,
+  "status": "machine-proposed"
+}

@@ -1,0 +1,365 @@
+schema_version = "0.1"
+
+[[rule]]
+id = "local-land-charges"
+priority = 360
+heading = "localSearches"
+path_contains = ".localLandCharges[]."
+home = "property-data-services"
+roles = ["resource", "relationship", "attribute"]
+construct_refs = ["pds:LocalLandCharge", "pds:hasLocalLandCharge", "pds:chargeReference", "pds:registrationDate", "pds:findingDescription"]
+disposition = "consolidate"
+rationale = "Consolidate charge fields under an identifiable LocalLandCharge resource."
+
+[[rule]]
+id = "local-search-planning-application"
+priority = 350
+heading = "localSearches"
+path_contains = ".decisionsAndPendingApplications."
+home = "property-data-services"
+roles = ["resource", "relationship", "attribute", "controlled-concept"]
+construct_refs = ["pds:PlanningApplication", "pds:hasPlanningApplication", "pds:applicationReference", "pds:applicationDate", "pds:applicationType"]
+disposition = "consolidate"
+rationale = "Represent structured planning records as PlanningApplication resources identified by authority reference."
+
+[[rule]]
+id = "local-search-findings"
+priority = 250
+heading = "localSearches"
+home = "property-data-services"
+roles = ["resource", "relationship", "controlled-concept"]
+construct_refs = ["pds:Search", "pds:SearchFinding", "pds:hasSearchFinding", "pds:findingType", "pds:findingOutcome", "pds:findingDescription"]
+disposition = "consolidate"
+rationale = "Represent the many local-search questions as typed SearchFinding instances rather than one predicate per form field."
+
+[[rule]]
+id = "environmental-assessments"
+priority = 250
+heading = "environmentalIssues"
+home = "property-data-services"
+roles = ["resource", "relationship", "controlled-concept"]
+construct_refs = ["pds:EnvironmentalAssessment", "pds:hasEnvironmentalAssessment", "pds:environmentalTopic", "pds:riskLevel", "pds:findingOutcome"]
+disposition = "consolidate"
+rationale = "Consolidate environmental risk and history fields into typed EnvironmentalAssessment resources."
+
+[[rule]]
+id = "energy-performance"
+priority = 250
+heading = "energyEfficiency"
+home = "property-data-services"
+roles = ["resource", "relationship", "attribute", "controlled-concept"]
+construct_refs = ["pds:EnergyPerformanceCertificate", "pds:hasEnergyPerformanceCertificate", "pds:energyRating", "pds:certificateAddress", "pds:certificateUprn", "pds:certificateSupplyStatus"]
+disposition = "consolidate"
+rationale = "Model certificate fields under an EnergyPerformanceCertificate resource and keep its UPRN as reconciliation evidence."
+
+[[rule]]
+id = "energy-rating"
+priority = 360
+heading = "energyEfficiency"
+field_name = "currentEnergyRating"
+home = "property-data-services"
+roles = ["resource", "relationship", "controlled-concept"]
+construct_refs = ["pds:EnergyPerformanceCertificate", "pds:hasEnergyPerformanceCertificate", "pds:energyRating"]
+disposition = "consolidate"
+rationale = "Place the controlled rating on the certificate that reports the assessment."
+
+[[rule]]
+id = "energy-certificate-address"
+priority = 360
+heading = "energyEfficiency"
+field_name = "address"
+home = "property-data-services"
+roles = ["resource", "relationship", "attribute"]
+construct_refs = ["pds:EnergyPerformanceCertificate", "pds:hasEnergyPerformanceCertificate", "pds:certificateAddress"]
+disposition = "consolidate"
+rationale = "Keep certificate address text as reconciliation evidence on the certificate, not as the current Property address."
+
+[[rule]]
+id = "energy-certificate-uprn"
+priority = 360
+heading = "energyEfficiency"
+field_name = "uprn"
+home = "property-data-services"
+roles = ["resource", "relationship", "attribute", "validation-rule"]
+construct_refs = ["pds:EnergyPerformanceCertificate", "pds:hasEnergyPerformanceCertificate", "pds:certificateUprn"]
+disposition = "challenge"
+rationale = "Use the certificate UPRN for reconciliation with common Property identity and challenge the legacy numeric datatype."
+
+[[rule]]
+id = "energy-certificate-supply"
+priority = 360
+heading = "energyEfficiency"
+field_name = "certificateIsSupplied"
+home = "property-data-services"
+roles = ["resource", "relationship", "controlled-concept"]
+construct_refs = ["pds:EnergyPerformanceCertificate", "pds:hasEnergyPerformanceCertificate", "pds:certificateSupplyStatus"]
+disposition = "consolidate"
+rationale = "Record how the certificate is supplied as controlled certificate metadata."
+
+[[rule]]
+id = "green-deal-finance"
+priority = 400
+heading = "energyEfficiency"
+path_contains = ".greenDealLoan."
+home = "finance-and-banking"
+roles = ["resource", "relationship", "controlled-concept"]
+construct_refs = ["fb:GreenDealFinanceStatement", "fb:hasGreenDealFinanceStatement", "fb:greenDealFinanceOutcome"]
+disposition = "split"
+rationale = "Home the Green Deal loan obligation in Finance and Banking while retaining it as Property Pack evidence."
+
+[[rule]]
+id = "council-tax"
+priority = 250
+heading = "councilTax"
+home = "property-data-services"
+roles = ["resource", "relationship", "controlled-concept"]
+construct_refs = ["pds:CouncilTaxAssessment", "pds:hasCouncilTaxAssessment", "pds:councilTaxBand", "pds:findingOutcome"]
+disposition = "consolidate"
+rationale = "Model band and alteration status as one CouncilTaxAssessment."
+
+[[rule]]
+id = "water-drainage"
+priority = 250
+heading = "waterAndDrainage"
+home = "property-data-services"
+roles = ["resource", "relationship", "attribute", "controlled-concept"]
+construct_refs = ["pds:UtilityServiceRecord", "pds:hasUtilityServiceRecord", "pds:utilityTopic", "pds:utilityOutcome", "pds:serviceProviderName", "pds:serviceCharge", "pds:supportingMap"]
+disposition = "consolidate"
+rationale = "Consolidate infrastructure, provider, charging and evidence fields into typed utility service records."
+
+[[rule]]
+id = "statutory-designations"
+priority = 250
+heading = "listingAndConservation"
+home = "property-data-services"
+roles = ["resource", "relationship", "controlled-concept"]
+construct_refs = ["pds:Designation", "pds:hasDesignation", "pds:designationType", "pds:designationOutcome"]
+disposition = "consolidate"
+rationale = "Represent listing, conservation and tree-protection status as typed authority designations."
+
+[[rule]]
+id = "parking-conditions"
+priority = 250
+heading = "parking"
+home = "property-data-services"
+roles = ["resource", "relationship", "controlled-concept"]
+construct_refs = ["pds:ParkingCondition", "pds:hasParkingCondition", "pds:parkingTopic", "pds:parkingOutcome"]
+disposition = "consolidate"
+rationale = "Represent parking facilities and restrictions as typed ParkingCondition resources."
+
+[[rule]]
+id = "build-built-form"
+priority = 350
+heading = "buildInformation"
+field_name = "builtForm"
+home = "surveying-and-valuation"
+roles = ["resource", "relationship", "controlled-concept"]
+construct_refs = ["sv:PropertyDescription", "sv:hasPropertyDescription", "sv:builtForm"]
+disposition = "consolidate"
+rationale = "Place built form on a surveying PropertyDescription rather than directly on Property."
+
+[[rule]]
+id = "build-property-type"
+priority = 350
+heading = "buildInformation"
+field_name = "propertyType"
+home = "surveying-and-valuation"
+roles = ["resource", "relationship", "controlled-concept"]
+construct_refs = ["sv:PropertyDescription", "sv:hasPropertyDescription", "sv:propertyType"]
+disposition = "consolidate"
+rationale = "Place physical property type on a surveying PropertyDescription."
+
+[[rule]]
+id = "build-floorplan"
+priority = 350
+heading = "buildInformation"
+field_name = "hasFloorplan"
+home = "surveying-and-valuation"
+roles = ["resource", "relationship", "attribute"]
+construct_refs = ["sv:PropertyDescription", "sv:hasPropertyDescription", "sv:floorplanAvailable"]
+disposition = "consolidate"
+rationale = "Record floorplan availability on the surveying PropertyDescription."
+
+[[rule]]
+id = "construction-statements"
+priority = 250
+heading = "typeOfConstruction"
+home = "surveying-and-valuation"
+roles = ["resource", "relationship", "controlled-concept"]
+construct_refs = ["sv:ConstructionStatement", "sv:hasPhysicalFeatureStatement", "sv:featureType", "sv:featureOutcome"]
+disposition = "consolidate"
+rationale = "Represent construction and building-safety questions as typed ConstructionStatement resources."
+
+[[rule]]
+id = "condition-statements"
+priority = 250
+heading = "specialistIssues"
+home = "surveying-and-valuation"
+roles = ["resource", "relationship", "controlled-concept"]
+construct_refs = ["sv:ConditionStatement", "sv:hasPhysicalFeatureStatement", "sv:featureType", "sv:featureOutcome"]
+disposition = "consolidate"
+rationale = "Represent hazards, defects and treatments as typed ConditionStatement resources."
+
+[[rule]]
+id = "alteration-statements"
+priority = 250
+heading = "alterationsAndChanges"
+home = "surveying-and-valuation"
+roles = ["resource", "relationship", "controlled-concept"]
+construct_refs = ["sv:AlterationStatement", "sv:hasPhysicalFeatureStatement", "sv:featureType", "sv:featureOutcome"]
+disposition = "consolidate"
+rationale = "Represent alterations and changes of use as typed physical statements; legal approvals remain separate search evidence."
+
+[[rule]]
+id = "electrical-statements"
+priority = 250
+heading = "electricalWorks"
+home = "surveying-and-valuation"
+roles = ["resource", "relationship", "controlled-concept"]
+construct_refs = ["sv:ElectricalStatement", "sv:hasPhysicalFeatureStatement", "sv:featureType", "sv:featureOutcome"]
+disposition = "consolidate"
+rationale = "Represent electrical works and testing as typed physical statements."
+
+[[rule]]
+id = "electricity-installations"
+priority = 250
+heading = "electricity"
+home = "surveying-and-valuation"
+roles = ["resource", "relationship", "controlled-concept"]
+construct_refs = ["sv:EnergyInstallationStatement", "sv:hasPhysicalFeatureStatement", "sv:featureType", "sv:featureOutcome"]
+disposition = "consolidate"
+rationale = "Represent electricity and energy installations as typed installed-feature statements."
+
+[[rule]]
+id = "heating-installation"
+priority = 250
+heading = "heating"
+home = "surveying-and-valuation"
+roles = ["resource", "relationship", "controlled-concept"]
+construct_refs = ["sv:EnergyInstallationStatement", "sv:hasPhysicalFeatureStatement", "sv:heatingType"]
+disposition = "consolidate"
+rationale = "Represent the heating arrangement as an installed feature with a controlled type."
+
+[[rule]]
+id = "listing-price"
+priority = 250
+heading = "priceInformation"
+home = "estate-agency"
+roles = ["resource", "relationship", "attribute", "controlled-concept"]
+construct_refs = ["ea:Listing", "ea:hasListing", "ea:PriceStatement", "ea:hasPriceStatement", "ea:priceAmount", "ea:priceQualifier"]
+disposition = "consolidate"
+rationale = "Represent price and qualifier together as a PriceStatement within an estate-agency Listing."
+
+[[rule]]
+id = "listing-price-amount"
+priority = 360
+heading = "priceInformation"
+field_name = "price"
+home = "estate-agency"
+roles = ["resource", "relationship", "attribute"]
+construct_refs = ["ea:Listing", "ea:hasListing", "ea:PriceStatement", "ea:hasPriceStatement", "ea:priceAmount"]
+disposition = "consolidate"
+rationale = "Model the monetary amount as part of a PriceStatement."
+
+[[rule]]
+id = "listing-price-qualifier"
+priority = 360
+heading = "priceInformation"
+field_name = "priceQualifier"
+home = "estate-agency"
+roles = ["resource", "relationship", "controlled-concept"]
+construct_refs = ["ea:Listing", "ea:hasListing", "ea:PriceStatement", "ea:hasPriceStatement", "ea:priceQualifier"]
+disposition = "consolidate"
+rationale = "Model the controlled interpretation of a marketing price on its PriceStatement."
+
+[[rule]]
+id = "listing-media"
+priority = 300
+heading = "media"
+home = "estate-agency"
+roles = ["resource", "relationship", "attribute"]
+construct_refs = ["ea:Listing", "ea:hasListing", "ea:MediaResource", "ea:hasMediaResource", "ea:mediaUrl"]
+disposition = "consolidate"
+rationale = "Treat each media item as a MediaResource whose URL is a locator, not its complete identity."
+
+[[rule]]
+id = "letting-terms"
+priority = 250
+heading = "lettingInformation"
+home = "estate-agency"
+roles = ["resource", "relationship", "attribute", "controlled-concept"]
+construct_refs = ["ea:Listing", "ea:hasListing", "ea:LettingTerms", "ea:hasLettingTerms", "ea:rentAmount", "ea:rentFrequency"]
+disposition = "consolidate"
+rationale = "Represent rent amount and frequency as one LettingTerms resource."
+
+[[rule]]
+id = "letting-rent-amount"
+priority = 360
+heading = "lettingInformation"
+field_name = "rent"
+home = "estate-agency"
+roles = ["resource", "relationship", "attribute"]
+construct_refs = ["ea:Listing", "ea:hasListing", "ea:LettingTerms", "ea:hasLettingTerms", "ea:rentAmount"]
+disposition = "consolidate"
+rationale = "Model the rent amount within one LettingTerms resource."
+
+[[rule]]
+id = "letting-rent-frequency"
+priority = 360
+heading = "lettingInformation"
+field_name = "rentFrequency"
+home = "estate-agency"
+roles = ["resource", "relationship", "controlled-concept"]
+construct_refs = ["ea:Listing", "ea:hasListing", "ea:LettingTerms", "ea:hasLettingTerms", "ea:rentFrequency"]
+disposition = "consolidate"
+rationale = "Model rent frequency as a controlled term on the LettingTerms resource."
+
+[[rule]]
+id = "consumer-protection"
+priority = 300
+heading = "consumerProtectionRegulationsDeclaration"
+home = "estate-agency"
+roles = ["resource", "relationship", "validation-rule"]
+construct_refs = ["ea:ConsumerProtectionDeclaration", "ea:hasMarketDisclosure", "ea:marketDisclosureType", "ea:marketDisclosureOutcome"]
+disposition = "consolidate"
+rationale = "Home the consumer-protection declaration in the market-facing estate-agency context."
+
+[[rule]]
+id = "market-disclosures"
+priority = 250
+heading = "delayFactors"
+home = "estate-agency"
+roles = ["resource", "relationship", "controlled-concept"]
+construct_refs = ["ea:MarketDisclosure", "ea:hasMarketDisclosure", "ea:marketDisclosureType", "ea:marketDisclosureOutcome"]
+disposition = "consolidate"
+rationale = "Represent delay factors as typed market disclosures for prospective transactors."
+
+[[rule]]
+id = "insurance-statements"
+priority = 300
+heading = "insurance"
+home = "finance-and-banking"
+roles = ["resource", "relationship", "controlled-concept"]
+construct_refs = ["fb:InsuranceStatement", "fb:hasInsuranceStatement", "fb:insuranceTopic", "fb:insuranceOutcome"]
+disposition = "consolidate"
+rationale = "Represent current cover and insurance difficulties as typed Finance and Banking statements."
+
+[[rule]]
+id = "connectivity-services"
+priority = 300
+heading = "connectivity"
+home = "property-technology"
+roles = ["resource", "relationship", "controlled-concept"]
+construct_refs = ["pt:ConnectivityService", "pt:hasConnectivityService", "pt:connectivityType", "pt:connectivityOutcome"]
+disposition = "consolidate"
+rationale = "Represent communications connectivity as typed service availability rather than independent property flags."
+
+[[rule]]
+id = "smart-home-capabilities"
+priority = 300
+heading = "smartHomeSystems"
+home = "property-technology"
+roles = ["resource", "relationship", "controlled-concept"]
+construct_refs = ["pt:SmartHomeCapability", "pt:hasSmartHomeCapability", "pt:smartHomeOutcome"]
+disposition = "challenge"
+rationale = "Record only that smart-home capability exists; the source field is too coarse to identify systems or their capabilities."

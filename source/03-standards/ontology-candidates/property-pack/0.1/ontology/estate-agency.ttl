@@ -1,0 +1,196 @@
+VERSION "1.2-basic"
+
+@prefix common: <https://w3id.org/opda/candidate/property-pack/0.1/common/> .
+@prefix conv: <https://w3id.org/opda/candidate/property-pack/0.1/conveyancing/> .
+@prefix dbt: <https://w3id.org/opda/candidate/property-pack/0.1/dbt-smart-data/> .
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix ea: <https://w3id.org/opda/candidate/property-pack/0.1/estate-agency/> .
+@prefix fb: <https://w3id.org/opda/candidate/property-pack/0.1/finance-and-banking/> .
+@prefix opdac: <https://w3id.org/opda/candidate/property-pack/0.1/meta/> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix pds: <https://w3id.org/opda/candidate/property-pack/0.1/property-data-services/> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix pt: <https://w3id.org/opda/candidate/property-pack/0.1/property-technology/> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix sv: <https://w3id.org/opda/candidate/property-pack/0.1/surveying-and-valuation/> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+<https://w3id.org/opda/candidate/property-pack/0.1/ontology/estate-agency>
+  a owl:Ontology ;
+  rdfs:label "Estate agency candidate ontology"@en ;
+  dcterms:description "Marketing, pricing, letting, media and consumer disclosure meanings used in estate agency."@en ;
+  owl:versionInfo "0.1.0-draft" ;
+  opdac:candidateStatus "machine-proposed" .
+
+<https://w3id.org/opda/candidate/property-pack/0.1/estate-agency/ConsumerProtectionDeclaration>
+  a owl:Class ;
+  rdfs:label "consumer protection declaration"@en ;
+  skos:definition "A declaration that consumer-protection information has been considered or supplied for property marketing."@en ;
+  opdac:semanticHome <https://w3id.org/opda/candidate/property-pack/0.1/context/estate-agency> ;
+  opdac:sourceItemCount "1"^^xsd:integer ;
+  opdac:candidateStatus "machine-proposed" ;
+  rdfs:subClassOf <https://w3id.org/opda/candidate/property-pack/0.1/estate-agency/MarketDisclosure> .
+
+<https://w3id.org/opda/candidate/property-pack/0.1/estate-agency/LettingTerms>
+  a owl:Class ;
+  rdfs:label "letting terms"@en ;
+  skos:definition "The rent amount and payment frequency used when a property is offered to let."@en ;
+  opdac:semanticHome <https://w3id.org/opda/candidate/property-pack/0.1/context/estate-agency> ;
+  opdac:sourceItemCount "2"^^xsd:integer ;
+  opdac:candidateStatus "machine-proposed" .
+
+<https://w3id.org/opda/candidate/property-pack/0.1/estate-agency/Listing>
+  a owl:Class ;
+  rdfs:label "property listing"@en ;
+  skos:definition "A market-facing offer or advertisement to sell or let a property."@en ;
+  opdac:semanticHome <https://w3id.org/opda/candidate/property-pack/0.1/context/estate-agency> ;
+  opdac:sourceItemCount "7"^^xsd:integer ;
+  opdac:candidateStatus "machine-proposed" ;
+  opdac:identityCriterion "Identified by the responsible agent and listing identifier, which are not supplied in the initial Property Pack scope."@en .
+
+<https://w3id.org/opda/candidate/property-pack/0.1/estate-agency/MarketDisclosure>
+  a owl:Class ;
+  rdfs:label "market disclosure"@en ;
+  skos:definition "A disclosure made for the fair and accurate marketing of a property."@en ;
+  opdac:semanticHome <https://w3id.org/opda/candidate/property-pack/0.1/context/estate-agency> ;
+  opdac:sourceItemCount "2"^^xsd:integer ;
+  opdac:candidateStatus "machine-proposed" .
+
+<https://w3id.org/opda/candidate/property-pack/0.1/estate-agency/MediaResource>
+  a owl:Class ;
+  rdfs:label "listing media resource"@en ;
+  skos:definition "A media asset used to describe or market a property."@en ;
+  opdac:semanticHome <https://w3id.org/opda/candidate/property-pack/0.1/context/estate-agency> ;
+  opdac:sourceItemCount "1"^^xsd:integer ;
+  opdac:candidateStatus "machine-proposed" ;
+  opdac:identityCriterion "Identified by its governed media-resource IRI; a URL alone is treated as a locator."@en .
+
+<https://w3id.org/opda/candidate/property-pack/0.1/estate-agency/PriceStatement>
+  a owl:Class ;
+  rdfs:label "price statement"@en ;
+  skos:definition "A stated price and qualifier used to market a property."@en ;
+  opdac:semanticHome <https://w3id.org/opda/candidate/property-pack/0.1/context/estate-agency> ;
+  opdac:sourceItemCount "2"^^xsd:integer ;
+  opdac:candidateStatus "machine-proposed" .
+
+<https://w3id.org/opda/candidate/property-pack/0.1/estate-agency/hasLettingTerms>
+  a owl:ObjectProperty ;
+  rdfs:label "has letting terms"@en ;
+  skos:definition "Relates a listing to its letting terms."@en ;
+  opdac:semanticHome <https://w3id.org/opda/candidate/property-pack/0.1/context/estate-agency> ;
+  opdac:sourceItemCount "2"^^xsd:integer ;
+  opdac:candidateStatus "machine-proposed" ;
+  rdfs:domain <https://w3id.org/opda/candidate/property-pack/0.1/estate-agency/Listing> ;
+  rdfs:range <https://w3id.org/opda/candidate/property-pack/0.1/estate-agency/LettingTerms> .
+
+<https://w3id.org/opda/candidate/property-pack/0.1/estate-agency/hasListing>
+  a owl:ObjectProperty ;
+  rdfs:label "has listing"@en ;
+  skos:definition "Relates a property to a market listing."@en ;
+  opdac:semanticHome <https://w3id.org/opda/candidate/property-pack/0.1/context/estate-agency> ;
+  opdac:sourceItemCount "5"^^xsd:integer ;
+  opdac:candidateStatus "machine-proposed" ;
+  rdfs:domain <https://w3id.org/opda/candidate/property-pack/0.1/common/Property> ;
+  rdfs:range <https://w3id.org/opda/candidate/property-pack/0.1/estate-agency/Listing> .
+
+<https://w3id.org/opda/candidate/property-pack/0.1/estate-agency/hasMarketDisclosure>
+  a owl:ObjectProperty ;
+  rdfs:label "has market disclosure"@en ;
+  skos:definition "Relates a listing to a market disclosure."@en ;
+  opdac:semanticHome <https://w3id.org/opda/candidate/property-pack/0.1/context/estate-agency> ;
+  opdac:sourceItemCount "2"^^xsd:integer ;
+  opdac:candidateStatus "machine-proposed" ;
+  rdfs:domain <https://w3id.org/opda/candidate/property-pack/0.1/estate-agency/Listing> ;
+  rdfs:range <https://w3id.org/opda/candidate/property-pack/0.1/estate-agency/MarketDisclosure> .
+
+<https://w3id.org/opda/candidate/property-pack/0.1/estate-agency/hasMediaResource>
+  a owl:ObjectProperty ;
+  rdfs:label "has media resource"@en ;
+  skos:definition "Relates a listing to a media resource."@en ;
+  opdac:semanticHome <https://w3id.org/opda/candidate/property-pack/0.1/context/estate-agency> ;
+  opdac:sourceItemCount "1"^^xsd:integer ;
+  opdac:candidateStatus "machine-proposed" ;
+  rdfs:domain <https://w3id.org/opda/candidate/property-pack/0.1/estate-agency/Listing> ;
+  rdfs:range <https://w3id.org/opda/candidate/property-pack/0.1/estate-agency/MediaResource> .
+
+<https://w3id.org/opda/candidate/property-pack/0.1/estate-agency/hasPriceStatement>
+  a owl:ObjectProperty ;
+  rdfs:label "has price statement"@en ;
+  skos:definition "Relates a listing to a price statement."@en ;
+  opdac:semanticHome <https://w3id.org/opda/candidate/property-pack/0.1/context/estate-agency> ;
+  opdac:sourceItemCount "2"^^xsd:integer ;
+  opdac:candidateStatus "machine-proposed" ;
+  rdfs:domain <https://w3id.org/opda/candidate/property-pack/0.1/estate-agency/Listing> ;
+  rdfs:range <https://w3id.org/opda/candidate/property-pack/0.1/estate-agency/PriceStatement> .
+
+<https://w3id.org/opda/candidate/property-pack/0.1/estate-agency/marketDisclosureOutcome>
+  a owl:ObjectProperty ;
+  rdfs:label "market disclosure outcome"@en ;
+  skos:definition "Records the controlled response or status asserted by a market disclosure."@en ;
+  opdac:semanticHome <https://w3id.org/opda/candidate/property-pack/0.1/context/estate-agency> ;
+  opdac:sourceItemCount "2"^^xsd:integer ;
+  opdac:candidateStatus "machine-proposed" ;
+  rdfs:domain <https://w3id.org/opda/candidate/property-pack/0.1/estate-agency/MarketDisclosure> ;
+  rdfs:range <http://www.w3.org/2004/02/skos/core#Concept> .
+
+<https://w3id.org/opda/candidate/property-pack/0.1/estate-agency/marketDisclosureType>
+  a owl:ObjectProperty ;
+  rdfs:label "market disclosure type"@en ;
+  skos:definition "Classifies the issue or proposition addressed by a market disclosure."@en ;
+  opdac:semanticHome <https://w3id.org/opda/candidate/property-pack/0.1/context/estate-agency> ;
+  opdac:sourceItemCount "2"^^xsd:integer ;
+  opdac:candidateStatus "machine-proposed" ;
+  rdfs:domain <https://w3id.org/opda/candidate/property-pack/0.1/estate-agency/MarketDisclosure> ;
+  rdfs:range <http://www.w3.org/2004/02/skos/core#Concept> .
+
+<https://w3id.org/opda/candidate/property-pack/0.1/estate-agency/mediaUrl>
+  a owl:DatatypeProperty ;
+  rdfs:label "media URL"@en ;
+  skos:definition "A URL at which a listing media resource can be accessed."@en ;
+  opdac:semanticHome <https://w3id.org/opda/candidate/property-pack/0.1/context/estate-agency> ;
+  opdac:sourceItemCount "1"^^xsd:integer ;
+  opdac:candidateStatus "machine-proposed" ;
+  rdfs:domain <https://w3id.org/opda/candidate/property-pack/0.1/estate-agency/MediaResource> ;
+  rdfs:range <http://www.w3.org/2001/XMLSchema#anyURI> .
+
+<https://w3id.org/opda/candidate/property-pack/0.1/estate-agency/priceAmount>
+  a owl:DatatypeProperty ;
+  rdfs:label "price amount"@en ;
+  skos:definition "The monetary amount stated in a property price statement."@en ;
+  opdac:semanticHome <https://w3id.org/opda/candidate/property-pack/0.1/context/estate-agency> ;
+  opdac:sourceItemCount "1"^^xsd:integer ;
+  opdac:candidateStatus "machine-proposed" ;
+  rdfs:domain <https://w3id.org/opda/candidate/property-pack/0.1/estate-agency/PriceStatement> ;
+  rdfs:range <http://www.w3.org/2001/XMLSchema#decimal> .
+
+<https://w3id.org/opda/candidate/property-pack/0.1/estate-agency/priceQualifier>
+  a owl:ObjectProperty ;
+  rdfs:label "price qualifier"@en ;
+  skos:definition "Classifies how a stated marketing price should be interpreted."@en ;
+  opdac:semanticHome <https://w3id.org/opda/candidate/property-pack/0.1/context/estate-agency> ;
+  opdac:sourceItemCount "1"^^xsd:integer ;
+  opdac:candidateStatus "machine-proposed" ;
+  rdfs:domain <https://w3id.org/opda/candidate/property-pack/0.1/estate-agency/PriceStatement> ;
+  rdfs:range <http://www.w3.org/2004/02/skos/core#Concept> .
+
+<https://w3id.org/opda/candidate/property-pack/0.1/estate-agency/rentAmount>
+  a owl:DatatypeProperty ;
+  rdfs:label "rent amount"@en ;
+  skos:definition "The monetary amount stated as rent."@en ;
+  opdac:semanticHome <https://w3id.org/opda/candidate/property-pack/0.1/context/estate-agency> ;
+  opdac:sourceItemCount "1"^^xsd:integer ;
+  opdac:candidateStatus "machine-proposed" ;
+  rdfs:domain <https://w3id.org/opda/candidate/property-pack/0.1/estate-agency/LettingTerms> ;
+  rdfs:range <http://www.w3.org/2001/XMLSchema#decimal> .
+
+<https://w3id.org/opda/candidate/property-pack/0.1/estate-agency/rentFrequency>
+  a owl:ObjectProperty ;
+  rdfs:label "rent frequency"@en ;
+  skos:definition "Classifies the period to which a rent amount applies."@en ;
+  opdac:semanticHome <https://w3id.org/opda/candidate/property-pack/0.1/context/estate-agency> ;
+  opdac:sourceItemCount "1"^^xsd:integer ;
+  opdac:candidateStatus "machine-proposed" ;
+  rdfs:domain <https://w3id.org/opda/candidate/property-pack/0.1/estate-agency/LettingTerms> ;
+  rdfs:range <http://www.w3.org/2004/02/skos/core#Concept> .

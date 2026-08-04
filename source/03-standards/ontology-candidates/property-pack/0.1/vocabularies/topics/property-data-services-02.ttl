@@ -1,0 +1,464 @@
+VERSION "1.2-basic"
+
+@prefix common: <https://w3id.org/opda/candidate/property-pack/0.1/common/> .
+@prefix conv: <https://w3id.org/opda/candidate/property-pack/0.1/conveyancing/> .
+@prefix dbt: <https://w3id.org/opda/candidate/property-pack/0.1/dbt-smart-data/> .
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix ea: <https://w3id.org/opda/candidate/property-pack/0.1/estate-agency/> .
+@prefix fb: <https://w3id.org/opda/candidate/property-pack/0.1/finance-and-banking/> .
+@prefix opdac: <https://w3id.org/opda/candidate/property-pack/0.1/meta/> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix pds: <https://w3id.org/opda/candidate/property-pack/0.1/property-data-services/> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix pt: <https://w3id.org/opda/candidate/property-pack/0.1/property-technology/> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix sv: <https://w3id.org/opda/candidate/property-pack/0.1/surveying-and-valuation/> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+<https://w3id.org/opda/candidate/property-pack/0.1/property-data-services/topic/PropertyPackTopicScheme>
+  a skos:ConceptScheme ;
+  skos:prefLabel "Property data services Property Pack topics"@en ;
+  skos:definition "Candidate subjects used to classify consolidated Property Pack source questions."@en ;
+  opdac:semanticHome <https://w3id.org/opda/candidate/property-pack/0.1/context/property-data-services> .
+
+<https://w3id.org/opda/candidate/property-pack/0.1/property-data-services/topic/pp-3de7c119ca1c>
+  a skos:Concept ;
+  skos:inScheme <https://w3id.org/opda/candidate/property-pack/0.1/property-data-services/topic/PropertyPackTopicScheme> ;
+  skos:prefLabel "Reference number for the planning application"@en ;
+  skos:definition "The value recorded for “Reference number for the planning application” in the Property Pack."@en ;
+  skos:notation "pp-3de7c119ca1c" ;
+  dcterms:source <urn:opda:property-pack:item:pp-3de7c119ca1c> .
+
+<https://w3id.org/opda/candidate/property-pack/0.1/property-data-services/topic/pp-3e96dc94d72a>
+  a skos:Concept ;
+  skos:inScheme <https://w3id.org/opda/candidate/property-pack/0.1/property-data-services/topic/PropertyPackTopicScheme> ;
+  skos:prefLabel "Housing"@en ;
+  skos:definition "Indicates whether housing is applicable."@en ;
+  skos:notation "pp-3e96dc94d72a" ;
+  dcterms:source <urn:opda:property-pack:item:pp-3e96dc94d72a> .
+
+<https://w3id.org/opda/candidate/property-pack/0.1/property-data-services/topic/pp-3eed292e852a>
+  a skos:Concept ;
+  skos:inScheme <https://w3id.org/opda/candidate/property-pack/0.1/property-data-services/topic/PropertyPackTopicScheme> ;
+  skos:prefLabel "Located in ulez"@en ;
+  skos:definition "Indicates whether located in ulez is applicable."@en ;
+  skos:notation "pp-3eed292e852a" ;
+  dcterms:source <urn:opda:property-pack:item:pp-3eed292e852a> .
+
+<https://w3id.org/opda/candidate/property-pack/0.1/property-data-services/topic/pp-3ef007667745>
+  a skos:Concept ;
+  skos:inScheme <https://w3id.org/opda/candidate/property-pack/0.1/property-data-services/topic/PropertyPackTopicScheme> ;
+  skos:prefLabel "Listed as an asset of community value"@en ;
+  skos:definition "Indicates whether listed as an asset of community value is applicable."@en ;
+  skos:notation "pp-3ef007667745" ;
+  dcterms:source <urn:opda:property-pack:item:pp-3ef007667745> .
+
+<https://w3id.org/opda/candidate/property-pack/0.1/property-data-services/topic/pp-4024c46e9d54>
+  a skos:Concept ;
+  skos:inScheme <https://w3id.org/opda/candidate/property-pack/0.1/property-data-services/topic/PropertyPackTopicScheme> ;
+  skos:prefLabel "Proceedings to enforce a planning agreement or planning contribution"@en ;
+  skos:definition "Indicates whether proceedings to enforce a planning agreement or planning contribution is applicable."@en ;
+  skos:notation "pp-4024c46e9d54" ;
+  dcterms:source <urn:opda:property-pack:item:pp-4024c46e9d54> .
+
+<https://w3id.org/opda/candidate/property-pack/0.1/property-data-services/topic/pp-40f7dbd5566e>
+  a skos:Concept ;
+  skos:inScheme <https://w3id.org/opda/candidate/property-pack/0.1/property-data-services/topic/PropertyPackTopicScheme> ;
+  skos:prefLabel "Prohibition of driving"@en ;
+  skos:definition "Indicates whether prohibition of driving is applicable."@en ;
+  skos:notation "pp-40f7dbd5566e" ;
+  dcterms:source <urn:opda:property-pack:item:pp-40f7dbd5566e> .
+
+<https://w3id.org/opda/candidate/property-pack/0.1/property-data-services/topic/pp-43620bc5cdf8>
+  a skos:Concept ;
+  skos:inScheme <https://w3id.org/opda/candidate/property-pack/0.1/property-data-services/topic/PropertyPackTopicScheme> ;
+  skos:prefLabel "Is proposal"@en ;
+  skos:definition "Records the response to the source question: Is this a proposal?"@en ;
+  skos:notation "pp-43620bc5cdf8" ;
+  dcterms:source <urn:opda:property-pack:item:pp-43620bc5cdf8> .
+
+<https://w3id.org/opda/candidate/property-pack/0.1/property-data-services/topic/pp-44ddc2ce2390>
+  a skos:Concept ;
+  skos:inScheme <https://w3id.org/opda/candidate/property-pack/0.1/property-data-services/topic/PropertyPackTopicScheme> ;
+  skos:prefLabel "In the case of a listed building deliberately allowed to fall into disrepair a compulsory purchase order with a direction for minimum compensation"@en ;
+  skos:definition "Indicates whether in the case of a listed building deliberately allowed to fall into disrepair a compulsory purchase order with a direction for minimum compensation is applicable."@en ;
+  skos:notation "pp-44ddc2ce2390" ;
+  dcterms:source <urn:opda:property-pack:item:pp-44ddc2ce2390> .
+
+<https://w3id.org/opda/candidate/property-pack/0.1/property-data-services/topic/pp-45c309f95fad>
+  a skos:Concept ;
+  skos:inScheme <https://w3id.org/opda/candidate/property-pack/0.1/property-data-services/topic/PropertyPackTopicScheme> ;
+  skos:prefLabel "Sewers subject of adoption agreement"@en ;
+  skos:definition "Indicates whether sewers subject of adoption agreement is applicable."@en ;
+  skos:notation "pp-45c309f95fad" ;
+  dcterms:source <urn:opda:property-pack:item:pp-45c309f95fad> .
+
+<https://w3id.org/opda/candidate/property-pack/0.1/property-data-services/topic/pp-4681563e5c6d>
+  a skos:Concept ;
+  skos:inScheme <https://w3id.org/opda/candidate/property-pack/0.1/property-data-services/topic/PropertyPackTopicScheme> ;
+  skos:prefLabel "Construction of a proposed alteration or improvement to an existing road"@en ;
+  skos:definition "Indicates whether construction of a proposed alteration or improvement to an existing road is applicable."@en ;
+  skos:notation "pp-4681563e5c6d" ;
+  dcterms:source <urn:opda:property-pack:item:pp-4681563e5c6d> .
+
+<https://w3id.org/opda/candidate/property-pack/0.1/property-data-services/topic/pp-47b3c8d421b3>
+  a skos:Concept ;
+  skos:inScheme <https://w3id.org/opda/candidate/property-pack/0.1/property-data-services/topic/PropertyPackTopicScheme> ;
+  skos:prefLabel "Description of the application"@en ;
+  skos:definition "The value recorded for “Description of the application” in the Property Pack."@en ;
+  skos:notation "pp-47b3c8d421b3" ;
+  dcterms:source <urn:opda:property-pack:item:pp-47b3c8d421b3> .
+
+<https://w3id.org/opda/candidate/property-pack/0.1/property-data-services/topic/pp-49bc53589d00>
+  a skos:Concept ;
+  skos:inScheme <https://w3id.org/opda/candidate/property-pack/0.1/property-data-services/topic/PropertyPackTopicScheme> ;
+  skos:prefLabel "Has been flooded"@en ;
+  skos:definition "Records the response to the source question: Has the property been flooded in the last 5 years?"@en ;
+  skos:notation "pp-49bc53589d00" ;
+  dcterms:source <urn:opda:property-pack:item:pp-49bc53589d00> .
+
+<https://w3id.org/opda/candidate/property-pack/0.1/property-data-services/topic/pp-49d605f2e507>
+  a skos:Concept ;
+  skos:inScheme <https://w3id.org/opda/candidate/property-pack/0.1/property-data-services/topic/PropertyPackTopicScheme> ;
+  skos:prefLabel "Liability order been granted"@en ;
+  skos:definition "Indicates whether liability order been granted is applicable."@en ;
+  skos:notation "pp-49d605f2e507" ;
+  dcterms:source <urn:opda:property-pack:item:pp-49d605f2e507> .
+
+<https://w3id.org/opda/candidate/property-pack/0.1/property-data-services/topic/pp-4aef4d1162c1>
+  a skos:Concept ;
+  skos:inScheme <https://w3id.org/opda/candidate/property-pack/0.1/property-data-services/topic/PropertyPackTopicScheme> ;
+  skos:prefLabel "Compulsory purchase"@en ;
+  skos:definition "Indicates whether compulsory purchase is applicable."@en ;
+  skos:notation "pp-4aef4d1162c1" ;
+  dcterms:source <urn:opda:property-pack:item:pp-4aef4d1162c1> .
+
+<https://w3id.org/opda/candidate/property-pack/0.1/property-data-services/topic/pp-4b73ae6162d1>
+  a skos:Concept ;
+  skos:inScheme <https://w3id.org/opda/candidate/property-pack/0.1/property-data-services/topic/PropertyPackTopicScheme> ;
+  skos:prefLabel "In relation to a register maintained under section 78 r"@en ;
+  skos:definition "Indicates whether in relation to a register maintained under section 78 r is applicable."@en ;
+  skos:notation "pp-4b73ae6162d1" ;
+  dcterms:source <urn:opda:property-pack:item:pp-4b73ae6162d1> .
+
+<https://w3id.org/opda/candidate/property-pack/0.1/property-data-services/topic/pp-4c79f7dc9fe1>
+  a skos:Concept ;
+  skos:inScheme <https://w3id.org/opda/candidate/property-pack/0.1/property-data-services/topic/PropertyPackTopicScheme> ;
+  skos:prefLabel "Application type"@en ;
+  skos:definition "Records the response to the source question: What type of application was this?"@en ;
+  skos:notation "pp-4c79f7dc9fe1" ;
+  dcterms:source <urn:opda:property-pack:item:pp-4c79f7dc9fe1> .
+
+<https://w3id.org/opda/candidate/property-pack/0.1/property-data-services/topic/pp-4c8308d1fa60>
+  a skos:Concept ;
+  skos:inScheme <https://w3id.org/opda/candidate/property-pack/0.1/property-data-services/topic/PropertyPackTopicScheme> ;
+  skos:prefLabel "Description of the application"@en ;
+  skos:definition "The value recorded for “Description of the application” in the Property Pack."@en ;
+  skos:notation "pp-4c8308d1fa60" ;
+  dcterms:source <urn:opda:property-pack:item:pp-4c8308d1fa60> .
+
+<https://w3id.org/opda/candidate/property-pack/0.1/property-data-services/topic/pp-4d2f879aaa62>
+  a skos:Concept ;
+  skos:inScheme <https://w3id.org/opda/candidate/property-pack/0.1/property-data-services/topic/PropertyPackTopicScheme> ;
+  skos:prefLabel "If property benefits from a su ds for which there is a charge who bills the property for surface water drainage charge"@en ;
+  skos:definition "Indicates whether if property benefits from a su ds for which there is a charge who bills the property for surface water drainage charge is applicable."@en ;
+  skos:notation "pp-4d2f879aaa62" ;
+  dcterms:source <urn:opda:property-pack:item:pp-4d2f879aaa62> .
+
+<https://w3id.org/opda/candidate/property-pack/0.1/property-data-services/topic/pp-4d4fdff36c0c>
+  a skos:Concept ;
+  skos:inScheme <https://w3id.org/opda/candidate/property-pack/0.1/property-data-services/topic/PropertyPackTopicScheme> ;
+  skos:prefLabel "Sewerage provider"@en ;
+  skos:definition "Records the response to the source question: Who are the sewerage undertakers for the property?"@en ;
+  skos:notation "pp-4d4fdff36c0c" ;
+  dcterms:source <urn:opda:property-pack:item:pp-4d4fdff36c0c> .
+
+<https://w3id.org/opda/candidate/property-pack/0.1/property-data-services/topic/pp-4e4b55c973b8>
+  a skos:Concept ;
+  skos:inScheme <https://w3id.org/opda/candidate/property-pack/0.1/property-data-services/topic/PropertyPackTopicScheme> ;
+  skos:prefLabel "Stop notice"@en ;
+  skos:definition "Indicates whether stop notice is applicable."@en ;
+  skos:notation "pp-4e4b55c973b8" ;
+  dcterms:source <urn:opda:property-pack:item:pp-4e4b55c973b8> .
+
+<https://w3id.org/opda/candidate/property-pack/0.1/property-data-services/topic/pp-4e720a007f8c>
+  a skos:Concept ;
+  skos:inScheme <https://w3id.org/opda/candidate/property-pack/0.1/property-data-services/topic/PropertyPackTopicScheme> ;
+  skos:prefLabel "Is conservation area"@en ;
+  skos:definition "Indicates whether is conservation area is applicable."@en ;
+  skos:notation "pp-4e720a007f8c" ;
+  dcterms:source <urn:opda:property-pack:item:pp-4e720a007f8c> .
+
+<https://w3id.org/opda/candidate/property-pack/0.1/property-data-services/topic/pp-52857d69aed9>
+  a skos:Concept ;
+  skos:inScheme <https://w3id.org/opda/candidate/property-pack/0.1/property-data-services/topic/PropertyPackTopicScheme> ;
+  skos:prefLabel "Property within200 meters of the centre line of a proposed railway tramway light railway or monorail"@en ;
+  skos:definition "Indicates whether property within200 meters of the centre line of a proposed railway tramway light railway or monorail is applicable."@en ;
+  skos:notation "pp-52857d69aed9" ;
+  dcterms:source <urn:opda:property-pack:item:pp-52857d69aed9> .
+
+<https://w3id.org/opda/candidate/property-pack/0.1/property-data-services/topic/pp-53d69bb69360>
+  a skos:Concept ;
+  skos:inScheme <https://w3id.org/opda/candidate/property-pack/0.1/property-data-services/topic/PropertyPackTopicScheme> ;
+  skos:prefLabel "Public health"@en ;
+  skos:definition "Indicates whether public health is applicable."@en ;
+  skos:notation "pp-53d69bb69360" ;
+  dcterms:source <urn:opda:property-pack:item:pp-53d69bb69360> .
+
+<https://w3id.org/opda/candidate/property-pack/0.1/property-data-services/topic/pp-54627fa74a35>
+  a skos:Concept ;
+  skos:inScheme <https://w3id.org/opda/candidate/property-pack/0.1/property-data-services/topic/PropertyPackTopicScheme> ;
+  skos:prefLabel "Is proposal"@en ;
+  skos:definition "Records the response to the source question: Is this a proposal?"@en ;
+  skos:notation "pp-54627fa74a35" ;
+  dcterms:source <urn:opda:property-pack:item:pp-54627fa74a35> .
+
+<https://w3id.org/opda/candidate/property-pack/0.1/property-data-services/topic/pp-5571647d7f01>
+  a skos:Concept ;
+  skos:inScheme <https://w3id.org/opda/candidate/property-pack/0.1/property-data-services/topic/PropertyPackTopicScheme> ;
+  skos:prefLabel "Application type"@en ;
+  skos:definition "Records the response to the source question: What type of application was this?"@en ;
+  skos:notation "pp-5571647d7f01" ;
+  dcterms:source <urn:opda:property-pack:item:pp-5571647d7f01> .
+
+<https://w3id.org/opda/candidate/property-pack/0.1/property-data-services/topic/pp-561ddca73387>
+  a skos:Concept ;
+  skos:inScheme <https://w3id.org/opda/candidate/property-pack/0.1/property-data-services/topic/PropertyPackTopicScheme> ;
+  skos:prefLabel "Application type"@en ;
+  skos:definition "Records the response to the source question: What type of application was this?"@en ;
+  skos:notation "pp-561ddca73387" ;
+  dcterms:source <urn:opda:property-pack:item:pp-561ddca73387> .
+
+<https://w3id.org/opda/candidate/property-pack/0.1/property-data-services/topic/pp-5660b6088788>
+  a skos:Concept ;
+  skos:inScheme <https://w3id.org/opda/candidate/property-pack/0.1/property-data-services/topic/PropertyPackTopicScheme> ;
+  skos:prefLabel "Pedestrianisation"@en ;
+  skos:definition "Indicates whether pedestrianisation is applicable."@en ;
+  skos:notation "pp-5660b6088788" ;
+  dcterms:source <urn:opda:property-pack:item:pp-5660b6088788> .
+
+<https://w3id.org/opda/candidate/property-pack/0.1/property-data-services/topic/pp-56c2e8f013ab>
+  a skos:Concept ;
+  skos:inScheme <https://w3id.org/opda/candidate/property-pack/0.1/property-data-services/topic/PropertyPackTopicScheme> ;
+  skos:prefLabel "Flood and coastal erosion risk management"@en ;
+  skos:definition "Indicates whether flood and coastal erosion risk management is applicable."@en ;
+  skos:notation "pp-56c2e8f013ab" ;
+  dcterms:source <urn:opda:property-pack:item:pp-56c2e8f013ab> .
+
+<https://w3id.org/opda/candidate/property-pack/0.1/property-data-services/topic/pp-58b1104eb394>
+  a skos:Concept ;
+  skos:inScheme <https://w3id.org/opda/candidate/property-pack/0.1/property-data-services/topic/PropertyPackTopicScheme> ;
+  skos:prefLabel "Application type"@en ;
+  skos:definition "Records the response to the source question: What type of application was this?"@en ;
+  skos:notation "pp-58b1104eb394" ;
+  dcterms:source <urn:opda:property-pack:item:pp-58b1104eb394> .
+
+<https://w3id.org/opda/candidate/property-pack/0.1/property-data-services/topic/pp-5b8febd650dc>
+  a skos:Concept ;
+  skos:inScheme <https://w3id.org/opda/candidate/property-pack/0.1/property-data-services/topic/PropertyPackTopicScheme> ;
+  skos:prefLabel "Remedial measures on construction"@en ;
+  skos:definition "Indicates whether remedial measures on construction is applicable."@en ;
+  skos:notation "pp-5b8febd650dc" ;
+  dcterms:source <urn:opda:property-pack:item:pp-5b8febd650dc> .
+
+<https://w3id.org/opda/candidate/property-pack/0.1/property-data-services/topic/pp-61f9583a3033>
+  a skos:Concept ;
+  skos:inScheme <https://w3id.org/opda/candidate/property-pack/0.1/property-data-services/topic/PropertyPackTopicScheme> ;
+  skos:prefLabel "Application date"@en ;
+  skos:definition "Records the response to the source question: On what date was the application made?"@en ;
+  skos:notation "pp-61f9583a3033" ;
+  dcterms:source <urn:opda:property-pack:item:pp-61f9583a3033> .
+
+<https://w3id.org/opda/candidate/property-pack/0.1/property-data-services/topic/pp-64dc353451dc>
+  a skos:Concept ;
+  skos:inScheme <https://w3id.org/opda/candidate/property-pack/0.1/property-data-services/topic/PropertyPackTopicScheme> ;
+  skos:prefLabel "Low water pressure risk"@en ;
+  skos:definition "Indicates whether low water pressure risk is applicable."@en ;
+  skos:notation "pp-64dc353451dc" ;
+  dcterms:source <urn:opda:property-pack:item:pp-64dc353451dc> .
+
+<https://w3id.org/opda/candidate/property-pack/0.1/property-data-services/topic/pp-660e307abd27>
+  a skos:Concept ;
+  skos:inScheme <https://w3id.org/opda/candidate/property-pack/0.1/property-data-services/topic/PropertyPackTopicScheme> ;
+  skos:prefLabel "Mains foul drainage"@en ;
+  skos:definition "Indicates whether mains foul drainage is applicable."@en ;
+  skos:notation "pp-660e307abd27" ;
+  dcterms:source <urn:opda:property-pack:item:pp-660e307abd27> .
+
+<https://w3id.org/opda/candidate/property-pack/0.1/property-data-services/topic/pp-68bb21cb7a61>
+  a skos:Concept ;
+  skos:inScheme <https://w3id.org/opda/candidate/property-pack/0.1/property-data-services/topic/PropertyPackTopicScheme> ;
+  skos:prefLabel "Mains water"@en ;
+  skos:definition "Indicates whether mains water is applicable."@en ;
+  skos:notation "pp-68bb21cb7a61" ;
+  dcterms:source <urn:opda:property-pack:item:pp-68bb21cb7a61> .
+
+<https://w3id.org/opda/candidate/property-pack/0.1/property-data-services/topic/pp-6c5fa0dc7b5f>
+  a skos:Concept ;
+  skos:inScheme <https://w3id.org/opda/candidate/property-pack/0.1/property-data-services/topic/PropertyPackTopicScheme> ;
+  skos:prefLabel "Current energy efficiency rating"@en ;
+  skos:definition "The value recorded for “Current energy efficiency rating” in the Property Pack."@en ;
+  skos:notation "pp-6c5fa0dc7b5f" ;
+  dcterms:source <urn:opda:property-pack:item:pp-6c5fa0dc7b5f> .
+
+<https://w3id.org/opda/candidate/property-pack/0.1/property-data-services/topic/pp-6fa2cfd5ffb4>
+  a skos:Concept ;
+  skos:inScheme <https://w3id.org/opda/candidate/property-pack/0.1/property-data-services/topic/PropertyPackTopicScheme> ;
+  skos:prefLabel "Risk indicator"@en ;
+  skos:definition "Records the response to the source question: Is the property impacted?"@en ;
+  skos:notation "pp-6fa2cfd5ffb4" ;
+  dcterms:source <urn:opda:property-pack:item:pp-6fa2cfd5ffb4> .
+
+<https://w3id.org/opda/candidate/property-pack/0.1/property-data-services/topic/pp-7394db06aa3d>
+  a skos:Concept ;
+  skos:inScheme <https://w3id.org/opda/candidate/property-pack/0.1/property-data-services/topic/PropertyPackTopicScheme> ;
+  skos:prefLabel "Breach of condition notice"@en ;
+  skos:definition "Indicates whether breach of condition notice is applicable."@en ;
+  skos:notation "pp-7394db06aa3d" ;
+  dcterms:source <urn:opda:property-pack:item:pp-7394db06aa3d> .
+
+<https://w3id.org/opda/candidate/property-pack/0.1/property-data-services/topic/pp-73b95eb09fc6>
+  a skos:Concept ;
+  skos:inScheme <https://w3id.org/opda/candidate/property-pack/0.1/property-data-services/topic/PropertyPackTopicScheme> ;
+  skos:prefLabel "Waiting or loading restrictions"@en ;
+  skos:definition "Indicates whether waiting or loading restrictions is applicable."@en ;
+  skos:notation "pp-73b95eb09fc6" ;
+  dcterms:source <urn:opda:property-pack:item:pp-73b95eb09fc6> .
+
+<https://w3id.org/opda/candidate/property-pack/0.1/property-data-services/topic/pp-759780bdbbd7>
+  a skos:Concept ;
+  skos:inScheme <https://w3id.org/opda/candidate/property-pack/0.1/property-data-services/topic/PropertyPackTopicScheme> ;
+  skos:prefLabel "Local authority decided to apply to the land registry"@en ;
+  skos:definition "Indicates whether local authority decided to apply to the land registry is applicable."@en ;
+  skos:notation "pp-759780bdbbd7" ;
+  dcterms:source <urn:opda:property-pack:item:pp-759780bdbbd7> .
+
+<https://w3id.org/opda/candidate/property-pack/0.1/property-data-services/topic/pp-77f7cfa0ba30>
+  a skos:Concept ;
+  skos:inScheme <https://w3id.org/opda/candidate/property-pack/0.1/property-data-services/topic/PropertyPackTopicScheme> ;
+  skos:prefLabel "Environment"@en ;
+  skos:definition "Indicates whether environment is applicable."@en ;
+  skos:notation "pp-77f7cfa0ba30" ;
+  dcterms:source <urn:opda:property-pack:item:pp-77f7cfa0ba30> .
+
+<https://w3id.org/opda/candidate/property-pack/0.1/property-data-services/topic/pp-785e26de944b>
+  a skos:Concept ;
+  skos:inScheme <https://w3id.org/opda/candidate/property-pack/0.1/property-data-services/topic/PropertyPackTopicScheme> ;
+  skos:prefLabel "Sewerage undertaker approval"@en ;
+  skos:definition "Indicates whether sewerage undertaker approval is applicable."@en ;
+  skos:notation "pp-785e26de944b" ;
+  dcterms:source <urn:opda:property-pack:item:pp-785e26de944b> .
+
+<https://w3id.org/opda/candidate/property-pack/0.1/property-data-services/topic/pp-791319a414a2>
+  a skos:Concept ;
+  skos:inScheme <https://w3id.org/opda/candidate/property-pack/0.1/property-data-services/topic/PropertyPackTopicScheme> ;
+  skos:prefLabel "Construction of a roundabout other than a mini roundabout"@en ;
+  skos:definition "Indicates whether construction of a roundabout other than a mini roundabout is applicable."@en ;
+  skos:notation "pp-791319a414a2" ;
+  dcterms:source <urn:opda:property-pack:item:pp-791319a414a2> .
+
+<https://w3id.org/opda/candidate/property-pack/0.1/property-data-services/topic/pp-794f89e10b9c>
+  a skos:Concept ;
+  skos:inScheme <https://w3id.org/opda/candidate/property-pack/0.1/property-data-services/topic/PropertyPackTopicScheme> ;
+  skos:prefLabel "Centre line of the proposed route of a new road"@en ;
+  skos:definition "Indicates whether centre line of the proposed route of a new road is applicable."@en ;
+  skos:notation "pp-794f89e10b9c" ;
+  dcterms:source <urn:opda:property-pack:item:pp-794f89e10b9c> .
+
+<https://w3id.org/opda/candidate/property-pack/0.1/property-data-services/topic/pp-7a6592e00b84>
+  a skos:Concept ;
+  skos:inScheme <https://w3id.org/opda/candidate/property-pack/0.1/property-data-services/topic/PropertyPackTopicScheme> ;
+  skos:prefLabel "Pedestrian crossings"@en ;
+  skos:definition "Indicates whether pedestrian crossings is applicable."@en ;
+  skos:notation "pp-7a6592e00b84" ;
+  dcterms:source <urn:opda:property-pack:item:pp-7a6592e00b84> .
+
+<https://w3id.org/opda/candidate/property-pack/0.1/property-data-services/topic/pp-7abb4400b80a>
+  a skos:Concept ;
+  skos:inScheme <https://w3id.org/opda/candidate/property-pack/0.1/property-data-services/topic/PropertyPackTopicScheme> ;
+  skos:prefLabel "Vehicle type restriction"@en ;
+  skos:definition "Indicates whether vehicle type restriction is applicable."@en ;
+  skos:notation "pp-7abb4400b80a" ;
+  dcterms:source <urn:opda:property-pack:item:pp-7abb4400b80a> .
+
+<https://w3id.org/opda/candidate/property-pack/0.1/property-data-services/topic/pp-7bb4177bdf62>
+  a skos:Concept ;
+  skos:inScheme <https://w3id.org/opda/candidate/property-pack/0.1/property-data-services/topic/PropertyPackTopicScheme> ;
+  skos:prefLabel "Surface drainage charge"@en ;
+  skos:definition "Indicates whether surface drainage charge is applicable."@en ;
+  skos:notation "pp-7bb4177bdf62" ;
+  dcterms:source <urn:opda:property-pack:item:pp-7bb4177bdf62> .
+
+<https://w3id.org/opda/candidate/property-pack/0.1/property-data-services/topic/pp-7d3eb1a2da0e>
+  a skos:Concept ;
+  skos:inScheme <https://w3id.org/opda/candidate/property-pack/0.1/property-data-services/topic/PropertyPackTopicScheme> ;
+  skos:prefLabel "Permanent stopping up or diversion"@en ;
+  skos:definition "Indicates whether permanent stopping up or diversion is applicable."@en ;
+  skos:notation "pp-7d3eb1a2da0e" ;
+  dcterms:source <urn:opda:property-pack:item:pp-7d3eb1a2da0e> .
+
+<https://w3id.org/opda/candidate/property-pack/0.1/property-data-services/topic/pp-7ededa95bb50>
+  a skos:Concept ;
+  skos:inScheme <https://w3id.org/opda/candidate/property-pack/0.1/property-data-services/topic/PropertyPackTopicScheme> ;
+  skos:prefLabel "Electric vehicle charging point"@en ;
+  skos:definition "Indicates whether electric vehicle charging point is applicable."@en ;
+  skos:notation "pp-7ededa95bb50" ;
+  dcterms:source <urn:opda:property-pack:item:pp-7ededa95bb50> .
+
+<https://w3id.org/opda/candidate/property-pack/0.1/property-data-services/topic/pp-835bc597fcc8>
+  a skos:Concept ;
+  skos:inScheme <https://w3id.org/opda/candidate/property-pack/0.1/property-data-services/topic/PropertyPackTopicScheme> ;
+  skos:prefLabel "Is proposal"@en ;
+  skos:definition "Records the response to the source question: Is this a proposal?"@en ;
+  skos:notation "pp-835bc597fcc8" ;
+  dcterms:source <urn:opda:property-pack:item:pp-835bc597fcc8> .
+
+<https://w3id.org/opda/candidate/property-pack/0.1/property-data-services/topic/pp-8501f301d8e8>
+  a skos:Concept ;
+  skos:inScheme <https://w3id.org/opda/candidate/property-pack/0.1/property-data-services/topic/PropertyPackTopicScheme> ;
+  skos:prefLabel "Application date"@en ;
+  skos:definition "Records the response to the source question: On what date was the application made?"@en ;
+  skos:notation "pp-8501f301d8e8" ;
+  dcterms:source <urn:opda:property-pack:item:pp-8501f301d8e8> .
+
+<https://w3id.org/opda/candidate/property-pack/0.1/property-data-services/topic/pp-88b76eea6bf7>
+  a skos:Concept ;
+  skos:inScheme <https://w3id.org/opda/candidate/property-pack/0.1/property-data-services/topic/PropertyPackTopicScheme> ;
+  skos:prefLabel "Water bills"@en ;
+  skos:definition "Records the response to the source question: Who bills the property for water services?"@en ;
+  skos:notation "pp-88b76eea6bf7" ;
+  dcterms:source <urn:opda:property-pack:item:pp-88b76eea6bf7> .
+
+<https://w3id.org/opda/candidate/property-pack/0.1/property-data-services/topic/pp-8a0f952c6905>
+  a skos:Concept ;
+  skos:inScheme <https://w3id.org/opda/candidate/property-pack/0.1/property-data-services/topic/PropertyPackTopicScheme> ;
+  skos:prefLabel "Description of the application"@en ;
+  skos:definition "The value recorded for “Description of the application” in the Property Pack."@en ;
+  skos:notation "pp-8a0f952c6905" ;
+  dcterms:source <urn:opda:property-pack:item:pp-8a0f952c6905> .
+
+<https://w3id.org/opda/candidate/property-pack/0.1/property-data-services/topic/pp-8b2ee7510504>
+  a skos:Concept ;
+  skos:inScheme <https://w3id.org/opda/candidate/property-pack/0.1/property-data-services/topic/PropertyPackTopicScheme> ;
+  skos:prefLabel "Is proposal"@en ;
+  skos:definition "Records the response to the source question: Is this a proposal?"@en ;
+  skos:notation "pp-8b2ee7510504" ;
+  dcterms:source <urn:opda:property-pack:item:pp-8b2ee7510504> .
+
+<https://w3id.org/opda/candidate/property-pack/0.1/property-data-services/topic/pp-8b82a31e34c0>
+  a skos:Concept ;
+  skos:inScheme <https://w3id.org/opda/candidate/property-pack/0.1/property-data-services/topic/PropertyPackTopicScheme> ;
+  skos:prefLabel "Other enforcement measures been taken"@en ;
+  skos:definition "Indicates whether other enforcement measures been taken is applicable."@en ;
+  skos:notation "pp-8b82a31e34c0" ;
+  dcterms:source <urn:opda:property-pack:item:pp-8b82a31e34c0> .
+
+<https://w3id.org/opda/candidate/property-pack/0.1/property-data-services/topic/pp-8df2c53ec245>
+  a skos:Concept ;
+  skos:inScheme <https://w3id.org/opda/candidate/property-pack/0.1/property-data-services/topic/PropertyPackTopicScheme> ;
+  skos:prefLabel "Reference number for the planning application"@en ;
+  skos:definition "The value recorded for “Reference number for the planning application” in the Property Pack."@en ;
+  skos:notation "pp-8df2c53ec245" ;
+  dcterms:source <urn:opda:property-pack:item:pp-8df2c53ec245> .

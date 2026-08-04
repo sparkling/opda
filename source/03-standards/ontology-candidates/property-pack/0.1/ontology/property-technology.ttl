@@ -1,0 +1,120 @@
+VERSION "1.2-basic"
+
+@prefix common: <https://w3id.org/opda/candidate/property-pack/0.1/common/> .
+@prefix conv: <https://w3id.org/opda/candidate/property-pack/0.1/conveyancing/> .
+@prefix dbt: <https://w3id.org/opda/candidate/property-pack/0.1/dbt-smart-data/> .
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix ea: <https://w3id.org/opda/candidate/property-pack/0.1/estate-agency/> .
+@prefix fb: <https://w3id.org/opda/candidate/property-pack/0.1/finance-and-banking/> .
+@prefix opdac: <https://w3id.org/opda/candidate/property-pack/0.1/meta/> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix pds: <https://w3id.org/opda/candidate/property-pack/0.1/property-data-services/> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix pt: <https://w3id.org/opda/candidate/property-pack/0.1/property-technology/> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix sv: <https://w3id.org/opda/candidate/property-pack/0.1/surveying-and-valuation/> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+<https://w3id.org/opda/candidate/property-pack/0.1/ontology/property-technology>
+  a owl:Ontology ;
+  rdfs:label "Property technology candidate ontology"@en ;
+  dcterms:description "Digital property records, smart-home capabilities and connectivity meanings used by property technology."@en ;
+  owl:versionInfo "0.1.0-draft" ;
+  opdac:candidateStatus "machine-proposed" .
+
+<https://w3id.org/opda/candidate/property-pack/0.1/property-technology/ConnectivityService>
+  a owl:Class ;
+  rdfs:label "connectivity service"@en ;
+  skos:definition "A communications connection or service available at a property."@en ;
+  opdac:semanticHome <https://w3id.org/opda/candidate/property-pack/0.1/context/property-technology> ;
+  opdac:sourceItemCount "4"^^xsd:integer ;
+  opdac:candidateStatus "machine-proposed" .
+
+<https://w3id.org/opda/candidate/property-pack/0.1/property-technology/DigitalPropertyLogbook>
+  a owl:Class ;
+  rdfs:label "digital property logbook"@en ;
+  skos:definition "A digital record that brings together information maintained about a property."@en ;
+  opdac:semanticHome <https://w3id.org/opda/candidate/property-pack/0.1/context/property-technology> ;
+  opdac:sourceItemCount "1"^^xsd:integer ;
+  opdac:candidateStatus "machine-proposed" ;
+  opdac:identityCriterion "Identified by the responsible logbook service and its logbook identifier, neither of which is supplied in the initial scope."@en .
+
+<https://w3id.org/opda/candidate/property-pack/0.1/property-technology/SmartHomeCapability>
+  a owl:Class ;
+  rdfs:label "smart-home capability"@en ;
+  skos:definition "A connected or automated capability installed at a property."@en ;
+  opdac:semanticHome <https://w3id.org/opda/candidate/property-pack/0.1/context/property-technology> ;
+  opdac:sourceItemCount "1"^^xsd:integer ;
+  opdac:candidateStatus "machine-proposed" .
+
+<https://w3id.org/opda/candidate/property-pack/0.1/property-technology/connectivityOutcome>
+  a owl:ObjectProperty ;
+  rdfs:label "connectivity outcome"@en ;
+  skos:definition "Records the availability or issue status of a connectivity service."@en ;
+  opdac:semanticHome <https://w3id.org/opda/candidate/property-pack/0.1/context/property-technology> ;
+  opdac:sourceItemCount "4"^^xsd:integer ;
+  opdac:candidateStatus "machine-proposed" ;
+  rdfs:domain <https://w3id.org/opda/candidate/property-pack/0.1/property-technology/ConnectivityService> ;
+  rdfs:range <http://www.w3.org/2004/02/skos/core#Concept> .
+
+<https://w3id.org/opda/candidate/property-pack/0.1/property-technology/connectivityType>
+  a owl:ObjectProperty ;
+  rdfs:label "connectivity type"@en ;
+  skos:definition "Classifies a communications medium or connection technology."@en ;
+  opdac:semanticHome <https://w3id.org/opda/candidate/property-pack/0.1/context/property-technology> ;
+  opdac:sourceItemCount "4"^^xsd:integer ;
+  opdac:candidateStatus "machine-proposed" ;
+  rdfs:domain <https://w3id.org/opda/candidate/property-pack/0.1/property-technology/ConnectivityService> ;
+  rdfs:range <http://www.w3.org/2004/02/skos/core#Concept> .
+
+<https://w3id.org/opda/candidate/property-pack/0.1/property-technology/hasConnectivityService>
+  a owl:ObjectProperty ;
+  rdfs:label "has connectivity service"@en ;
+  skos:definition "Relates a property to a communications connection or service record."@en ;
+  opdac:semanticHome <https://w3id.org/opda/candidate/property-pack/0.1/context/property-technology> ;
+  opdac:sourceItemCount "4"^^xsd:integer ;
+  opdac:candidateStatus "machine-proposed" ;
+  rdfs:domain <https://w3id.org/opda/candidate/property-pack/0.1/common/Property> ;
+  rdfs:range <https://w3id.org/opda/candidate/property-pack/0.1/property-technology/ConnectivityService> .
+
+<https://w3id.org/opda/candidate/property-pack/0.1/property-technology/hasDigitalPropertyLogbook>
+  a owl:ObjectProperty ;
+  rdfs:label "has digital property logbook"@en ;
+  skos:definition "Relates a property to a digital property logbook."@en ;
+  opdac:semanticHome <https://w3id.org/opda/candidate/property-pack/0.1/context/property-technology> ;
+  opdac:sourceItemCount "1"^^xsd:integer ;
+  opdac:candidateStatus "machine-proposed" ;
+  rdfs:domain <https://w3id.org/opda/candidate/property-pack/0.1/common/Property> ;
+  rdfs:range <https://w3id.org/opda/candidate/property-pack/0.1/property-technology/DigitalPropertyLogbook> .
+
+<https://w3id.org/opda/candidate/property-pack/0.1/property-technology/hasSmartHomeCapability>
+  a owl:ObjectProperty ;
+  rdfs:label "has smart-home capability"@en ;
+  skos:definition "Relates a property to a smart-home capability or to a statement that such capabilities exist."@en ;
+  opdac:semanticHome <https://w3id.org/opda/candidate/property-pack/0.1/context/property-technology> ;
+  opdac:sourceItemCount "1"^^xsd:integer ;
+  opdac:candidateStatus "machine-proposed" ;
+  rdfs:domain <https://w3id.org/opda/candidate/property-pack/0.1/common/Property> ;
+  rdfs:range <https://w3id.org/opda/candidate/property-pack/0.1/property-technology/SmartHomeCapability> .
+
+<https://w3id.org/opda/candidate/property-pack/0.1/property-technology/logbookAvailable>
+  a owl:ObjectProperty ;
+  rdfs:label "logbook available"@en ;
+  skos:definition "Records whether a digital property logbook is available."@en ;
+  opdac:semanticHome <https://w3id.org/opda/candidate/property-pack/0.1/context/property-technology> ;
+  opdac:sourceItemCount "1"^^xsd:integer ;
+  opdac:candidateStatus "machine-proposed" ;
+  rdfs:domain <https://w3id.org/opda/candidate/property-pack/0.1/property-technology/DigitalPropertyLogbook> ;
+  rdfs:range <http://www.w3.org/2004/02/skos/core#Concept> .
+
+<https://w3id.org/opda/candidate/property-pack/0.1/property-technology/smartHomeOutcome>
+  a owl:ObjectProperty ;
+  rdfs:label "smart-home outcome"@en ;
+  skos:definition "Records whether smart-home systems are present."@en ;
+  opdac:semanticHome <https://w3id.org/opda/candidate/property-pack/0.1/context/property-technology> ;
+  opdac:sourceItemCount "1"^^xsd:integer ;
+  opdac:candidateStatus "machine-proposed" ;
+  rdfs:domain <https://w3id.org/opda/candidate/property-pack/0.1/property-technology/SmartHomeCapability> ;
+  rdfs:range <http://www.w3.org/2004/02/skos/core#Concept> .

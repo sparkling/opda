@@ -1,0 +1,464 @@
+VERSION "1.2-basic"
+
+@prefix common: <https://w3id.org/opda/candidate/property-pack/0.1/common/> .
+@prefix conv: <https://w3id.org/opda/candidate/property-pack/0.1/conveyancing/> .
+@prefix dbt: <https://w3id.org/opda/candidate/property-pack/0.1/dbt-smart-data/> .
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix ea: <https://w3id.org/opda/candidate/property-pack/0.1/estate-agency/> .
+@prefix fb: <https://w3id.org/opda/candidate/property-pack/0.1/finance-and-banking/> .
+@prefix opdac: <https://w3id.org/opda/candidate/property-pack/0.1/meta/> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix pds: <https://w3id.org/opda/candidate/property-pack/0.1/property-data-services/> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix pt: <https://w3id.org/opda/candidate/property-pack/0.1/property-technology/> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix sv: <https://w3id.org/opda/candidate/property-pack/0.1/surveying-and-valuation/> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+<https://w3id.org/opda/candidate/property-pack/0.1/conveyancing/topic/PropertyPackTopicScheme>
+  a skos:ConceptScheme ;
+  skos:prefLabel "Conveyancing Property Pack topics"@en ;
+  skos:definition "Candidate subjects used to classify consolidated Property Pack source questions."@en ;
+  opdac:semanticHome <https://w3id.org/opda/candidate/property-pack/0.1/context/conveyancing> .
+
+<https://w3id.org/opda/candidate/property-pack/0.1/conveyancing/topic/pp-9203e6679306>
+  a skos:Concept ;
+  skos:inScheme <https://w3id.org/opda/candidate/property-pack/0.1/conveyancing/topic/PropertyPackTopicScheme> ;
+  skos:prefLabel "Boundaries differ from title plan"@en ;
+  skos:definition "Indicates whether boundaries differ from title plan is applicable."@en ;
+  skos:notation "pp-9203e6679306" ;
+  dcterms:source <urn:opda:property-pack:item:pp-9203e6679306> .
+
+<https://w3id.org/opda/candidate/property-pack/0.1/conveyancing/topic/pp-92e68f73df7e>
+  a skos:Concept ;
+  skos:inScheme <https://w3id.org/opda/candidate/property-pack/0.1/conveyancing/topic/PropertyPackTopicScheme> ;
+  skos:prefLabel "Included, Excluded or None"@en ;
+  skos:definition "The value recorded for “Included, Excluded or None” in the Property Pack."@en ;
+  skos:notation "pp-92e68f73df7e" ;
+  dcterms:source <urn:opda:property-pack:item:pp-92e68f73df7e> .
+
+<https://w3id.org/opda/candidate/property-pack/0.1/conveyancing/topic/pp-94a8ce97ea71>
+  a skos:Concept ;
+  skos:inScheme <https://w3id.org/opda/candidate/property-pack/0.1/conveyancing/topic/PropertyPackTopicScheme> ;
+  skos:prefLabel "Included, Excluded or None"@en ;
+  skos:definition "The value recorded for “Included, Excluded or None” in the Property Pack."@en ;
+  skos:notation "pp-94a8ce97ea71" ;
+  dcterms:source <urn:opda:property-pack:item:pp-94a8ce97ea71> .
+
+<https://w3id.org/opda/candidate/property-pack/0.1/conveyancing/topic/pp-95820935e514>
+  a skos:Concept ;
+  skos:inScheme <https://w3id.org/opda/candidate/property-pack/0.1/conveyancing/topic/PropertyPackTopicScheme> ;
+  skos:prefLabel "Postcode"@en ;
+  skos:definition "Records the postcode for postcode zone."@en ;
+  skos:notation "pp-95820935e514" ;
+  dcterms:source <urn:opda:property-pack:item:pp-95820935e514> .
+
+<https://w3id.org/opda/candidate/property-pack/0.1/conveyancing/topic/pp-95df87d5707a>
+  a skos:Concept ;
+  skos:inScheme <https://w3id.org/opda/candidate/property-pack/0.1/conveyancing/topic/PropertyPackTopicScheme> ;
+  skos:prefLabel "Required maintenance"@en ;
+  skos:definition "Indicates whether required maintenance is applicable."@en ;
+  skos:notation "pp-95df87d5707a" ;
+  dcterms:source <urn:opda:property-pack:item:pp-95df87d5707a> .
+
+<https://w3id.org/opda/candidate/property-pack/0.1/conveyancing/topic/pp-98f8dd1af65c>
+  a skos:Concept ;
+  skos:inScheme <https://w3id.org/opda/candidate/property-pack/0.1/conveyancing/topic/PropertyPackTopicScheme> ;
+  skos:prefLabel "Rights of light"@en ;
+  skos:definition "Indicates whether rights of light is applicable."@en ;
+  skos:notation "pp-98f8dd1af65c" ;
+  dcterms:source <urn:opda:property-pack:item:pp-98f8dd1af65c> .
+
+<https://w3id.org/opda/candidate/property-pack/0.1/conveyancing/topic/pp-9910a863305a>
+  a skos:Concept ;
+  skos:inScheme <https://w3id.org/opda/candidate/property-pack/0.1/conveyancing/topic/PropertyPackTopicScheme> ;
+  skos:prefLabel "Discount charge indicator"@en ;
+  skos:definition "Records the discount charge indicator for register entry indicators."@en ;
+  skos:notation "pp-9910a863305a" ;
+  dcterms:source <urn:opda:property-pack:item:pp-9910a863305a> .
+
+<https://w3id.org/opda/candidate/property-pack/0.1/conveyancing/topic/pp-9949c75b326b>
+  a skos:Concept ;
+  skos:inScheme <https://w3id.org/opda/candidate/property-pack/0.1/conveyancing/topic/PropertyPackTopicScheme> ;
+  skos:prefLabel "Included, Excluded or None"@en ;
+  skos:definition "The value recorded for “Included, Excluded or None” in the Property Pack."@en ;
+  skos:notation "pp-9949c75b326b" ;
+  dcterms:source <urn:opda:property-pack:item:pp-9949c75b326b> .
+
+<https://w3id.org/opda/candidate/property-pack/0.1/conveyancing/topic/pp-99ec29dadbe1>
+  a skos:Concept ;
+  skos:inScheme <https://w3id.org/opda/candidate/property-pack/0.1/conveyancing/topic/PropertyPackTopicScheme> ;
+  skos:prefLabel "Equitable charge indicator"@en ;
+  skos:definition "Records the equitable charge indicator for register entry indicators."@en ;
+  skos:notation "pp-99ec29dadbe1" ;
+  dcterms:source <urn:opda:property-pack:item:pp-99ec29dadbe1> .
+
+<https://w3id.org/opda/candidate/property-pack/0.1/conveyancing/topic/pp-9bc7446f4171>
+  a skos:Concept ;
+  skos:inScheme <https://w3id.org/opda/candidate/property-pack/0.1/conveyancing/topic/PropertyPackTopicScheme> ;
+  skos:prefLabel "Included, Excluded or None"@en ;
+  skos:definition "The value recorded for “Included, Excluded or None” in the Property Pack."@en ;
+  skos:notation "pp-9bc7446f4171" ;
+  dcterms:source <urn:opda:property-pack:item:pp-9bc7446f4171> .
+
+<https://w3id.org/opda/candidate/property-pack/0.1/conveyancing/topic/pp-9bc97e83bcce>
+  a skos:Concept ;
+  skos:inScheme <https://w3id.org/opda/candidate/property-pack/0.1/conveyancing/topic/PropertyPackTopicScheme> ;
+  skos:prefLabel "Included, Excluded or None"@en ;
+  skos:definition "The value recorded for “Included, Excluded or None” in the Property Pack."@en ;
+  skos:notation "pp-9bc97e83bcce" ;
+  dcterms:source <urn:opda:property-pack:item:pp-9bc97e83bcce> .
+
+<https://w3id.org/opda/candidate/property-pack/0.1/conveyancing/topic/pp-9f27f824df5f>
+  a skos:Concept ;
+  skos:inScheme <https://w3id.org/opda/candidate/property-pack/0.1/conveyancing/topic/PropertyPackTopicScheme> ;
+  skos:prefLabel "Caution or conviction"@en ;
+  skos:definition "Indicates whether caution or conviction is applicable."@en ;
+  skos:notation "pp-9f27f824df5f" ;
+  dcterms:source <urn:opda:property-pack:item:pp-9f27f824df5f> .
+
+<https://w3id.org/opda/candidate/property-pack/0.1/conveyancing/topic/pp-a444d2f99eb2>
+  a skos:Concept ;
+  skos:inScheme <https://w3id.org/opda/candidate/property-pack/0.1/conveyancing/topic/PropertyPackTopicScheme> ;
+  skos:prefLabel "Included, Excluded or None"@en ;
+  skos:definition "The value recorded for “Included, Excluded or None” in the Property Pack."@en ;
+  skos:notation "pp-a444d2f99eb2" ;
+  dcterms:source <urn:opda:property-pack:item:pp-a444d2f99eb2> .
+
+<https://w3id.org/opda/candidate/property-pack/0.1/conveyancing/topic/pp-a69604822460>
+  a skos:Concept ;
+  skos:inScheme <https://w3id.org/opda/candidate/property-pack/0.1/conveyancing/topic/PropertyPackTopicScheme> ;
+  skos:prefLabel "Restrictions on use not complied with"@en ;
+  skos:definition "Indicates whether restrictions on use not complied with is applicable."@en ;
+  skos:notation "pp-a69604822460" ;
+  dcterms:source <urn:opda:property-pack:item:pp-a69604822460> .
+
+<https://w3id.org/opda/candidate/property-pack/0.1/conveyancing/topic/pp-a82ad66d531f>
+  a skos:Concept ;
+  skos:inScheme <https://w3id.org/opda/candidate/property-pack/0.1/conveyancing/topic/PropertyPackTopicScheme> ;
+  skos:prefLabel "Other material issue"@en ;
+  skos:definition "Indicates whether other material issue is applicable."@en ;
+  skos:notation "pp-a82ad66d531f" ;
+  dcterms:source <urn:opda:property-pack:item:pp-a82ad66d531f> .
+
+<https://w3id.org/opda/candidate/property-pack/0.1/conveyancing/topic/pp-ab332599b3b9>
+  a skos:Concept ;
+  skos:inScheme <https://w3id.org/opda/candidate/property-pack/0.1/conveyancing/topic/PropertyPackTopicScheme> ;
+  skos:prefLabel "Included, Excluded or None"@en ;
+  skos:definition "The value recorded for “Included, Excluded or None” in the Property Pack."@en ;
+  skos:notation "pp-ab332599b3b9" ;
+  dcterms:source <urn:opda:property-pack:item:pp-ab332599b3b9> .
+
+<https://w3id.org/opda/candidate/property-pack/0.1/conveyancing/topic/pp-ab89f30c7d8f>
+  a skos:Concept ;
+  skos:inScheme <https://w3id.org/opda/candidate/property-pack/0.1/conveyancing/topic/PropertyPackTopicScheme> ;
+  skos:prefLabel "Included, Excluded or None"@en ;
+  skos:definition "The value recorded for “Included, Excluded or None” in the Property Pack."@en ;
+  skos:notation "pp-ab89f30c7d8f" ;
+  dcterms:source <urn:opda:property-pack:item:pp-ab89f30c7d8f> .
+
+<https://w3id.org/opda/candidate/property-pack/0.1/conveyancing/topic/pp-ad22c516200f>
+  a skos:Concept ;
+  skos:inScheme <https://w3id.org/opda/candidate/property-pack/0.1/conveyancing/topic/PropertyPackTopicScheme> ;
+  skos:prefLabel "Right of pre emption indicator"@en ;
+  skos:definition "Records the right of pre emption indicator for register entry indicators."@en ;
+  skos:notation "pp-ad22c516200f" ;
+  dcterms:source <urn:opda:property-pack:item:pp-ad22c516200f> .
+
+<https://w3id.org/opda/candidate/property-pack/0.1/conveyancing/topic/pp-aee0daadf2fa>
+  a skos:Concept ;
+  skos:inScheme <https://w3id.org/opda/candidate/property-pack/0.1/conveyancing/topic/PropertyPackTopicScheme> ;
+  skos:prefLabel "Included, Excluded or None"@en ;
+  skos:definition "The value recorded for “Included, Excluded or None” in the Property Pack."@en ;
+  skos:notation "pp-aee0daadf2fa" ;
+  dcterms:source <urn:opda:property-pack:item:pp-aee0daadf2fa> .
+
+<https://w3id.org/opda/candidate/property-pack/0.1/conveyancing/topic/pp-b4801f7f9a6f>
+  a skos:Concept ;
+  skos:inScheme <https://w3id.org/opda/candidate/property-pack/0.1/conveyancing/topic/PropertyPackTopicScheme> ;
+  skos:prefLabel "Included, Excluded or None"@en ;
+  skos:definition "The value recorded for “Included, Excluded or None” in the Property Pack."@en ;
+  skos:notation "pp-b4801f7f9a6f" ;
+  dcterms:source <urn:opda:property-pack:item:pp-b4801f7f9a6f> .
+
+<https://w3id.org/opda/candidate/property-pack/0.1/conveyancing/topic/pp-b6854a5d3397>
+  a skos:Concept ;
+  skos:inScheme <https://w3id.org/opda/candidate/property-pack/0.1/conveyancing/topic/PropertyPackTopicScheme> ;
+  skos:prefLabel "Included, Excluded or None"@en ;
+  skos:definition "The value recorded for “Included, Excluded or None” in the Property Pack."@en ;
+  skos:notation "pp-b6854a5d3397" ;
+  dcterms:source <urn:opda:property-pack:item:pp-b6854a5d3397> .
+
+<https://w3id.org/opda/candidate/property-pack/0.1/conveyancing/topic/pp-b6e3172aed21>
+  a skos:Concept ;
+  skos:inScheme <https://w3id.org/opda/candidate/property-pack/0.1/conveyancing/topic/PropertyPackTopicScheme> ;
+  skos:prefLabel "Included or Excluded"@en ;
+  skos:definition "The value recorded for “Included or Excluded” in the Property Pack."@en ;
+  skos:notation "pp-b6e3172aed21" ;
+  dcterms:source <urn:opda:property-pack:item:pp-b6e3172aed21> .
+
+<https://w3id.org/opda/candidate/property-pack/0.1/conveyancing/topic/pp-b7ded437ac42>
+  a skos:Concept ;
+  skos:inScheme <https://w3id.org/opda/candidate/property-pack/0.1/conveyancing/topic/PropertyPackTopicScheme> ;
+  skos:prefLabel "Shared contributions"@en ;
+  skos:definition "Indicates whether shared contributions is applicable."@en ;
+  skos:notation "pp-b7ded437ac42" ;
+  dcterms:source <urn:opda:property-pack:item:pp-b7ded437ac42> .
+
+<https://w3id.org/opda/candidate/property-pack/0.1/conveyancing/topic/pp-b82fc9ab9aae>
+  a skos:Concept ;
+  skos:inScheme <https://w3id.org/opda/candidate/property-pack/0.1/conveyancing/topic/PropertyPackTopicScheme> ;
+  skos:prefLabel "Included, Excluded or None"@en ;
+  skos:definition "The value recorded for “Included, Excluded or None” in the Property Pack."@en ;
+  skos:notation "pp-b82fc9ab9aae" ;
+  dcterms:source <urn:opda:property-pack:item:pp-b82fc9ab9aae> .
+
+<https://w3id.org/opda/candidate/property-pack/0.1/conveyancing/topic/pp-b83bf077010b>
+  a skos:Concept ;
+  skos:inScheme <https://w3id.org/opda/candidate/property-pack/0.1/conveyancing/topic/PropertyPackTopicScheme> ;
+  skos:prefLabel "Included, Excluded or None"@en ;
+  skos:definition "The value recorded for “Included, Excluded or None” in the Property Pack."@en ;
+  skos:notation "pp-b83bf077010b" ;
+  dcterms:source <urn:opda:property-pack:item:pp-b83bf077010b> .
+
+<https://w3id.org/opda/candidate/property-pack/0.1/conveyancing/topic/pp-b9ba0fe897be>
+  a skos:Concept ;
+  skos:inScheme <https://w3id.org/opda/candidate/property-pack/0.1/conveyancing/topic/PropertyPackTopicScheme> ;
+  skos:prefLabel "Other property in chain"@en ;
+  skos:definition "Indicates whether other property in chain is applicable."@en ;
+  skos:notation "pp-b9ba0fe897be" ;
+  dcterms:source <urn:opda:property-pack:item:pp-b9ba0fe897be> .
+
+<https://w3id.org/opda/candidate/property-pack/0.1/conveyancing/topic/pp-bbaa7f382441>
+  a skos:Concept ;
+  skos:inScheme <https://w3id.org/opda/candidate/property-pack/0.1/conveyancing/topic/PropertyPackTopicScheme> ;
+  skos:prefLabel "Included, Excluded or None"@en ;
+  skos:definition "The value recorded for “Included, Excluded or None” in the Property Pack."@en ;
+  skos:notation "pp-bbaa7f382441" ;
+  dcterms:source <urn:opda:property-pack:item:pp-bbaa7f382441> .
+
+<https://w3id.org/opda/candidate/property-pack/0.1/conveyancing/topic/pp-bbc611f3f113>
+  a skos:Concept ;
+  skos:inScheme <https://w3id.org/opda/candidate/property-pack/0.1/conveyancing/topic/PropertyPackTopicScheme> ;
+  skos:prefLabel "Included, Excluded or None"@en ;
+  skos:definition "The value recorded for “Included, Excluded or None” in the Property Pack."@en ;
+  skos:notation "pp-bbc611f3f113" ;
+  dcterms:source <urn:opda:property-pack:item:pp-bbc611f3f113> .
+
+<https://w3id.org/opda/candidate/property-pack/0.1/conveyancing/topic/pp-bf84a040e98a>
+  a skos:Concept ;
+  skos:inScheme <https://w3id.org/opda/candidate/property-pack/0.1/conveyancing/topic/PropertyPackTopicScheme> ;
+  skos:prefLabel "Chargee indicator"@en ;
+  skos:definition "Records the chargee indicator for register entry indicators."@en ;
+  skos:notation "pp-bf84a040e98a" ;
+  dcterms:source <urn:opda:property-pack:item:pp-bf84a040e98a> .
+
+<https://w3id.org/opda/candidate/property-pack/0.1/conveyancing/topic/pp-c144ebcedc82>
+  a skos:Concept ;
+  skos:inScheme <https://w3id.org/opda/candidate/property-pack/0.1/conveyancing/topic/PropertyPackTopicScheme> ;
+  skos:prefLabel "Green out entry indicator"@en ;
+  skos:definition "Records the green out entry indicator for register entry indicators."@en ;
+  skos:notation "pp-c144ebcedc82" ;
+  dcterms:source <urn:opda:property-pack:item:pp-c144ebcedc82> .
+
+<https://w3id.org/opda/candidate/property-pack/0.1/conveyancing/topic/pp-c483bfab7d82>
+  a skos:Concept ;
+  skos:inScheme <https://w3id.org/opda/candidate/property-pack/0.1/conveyancing/topic/PropertyPackTopicScheme> ;
+  skos:prefLabel "Included or Excluded"@en ;
+  skos:definition "The value recorded for “Included or Excluded” in the Property Pack."@en ;
+  skos:notation "pp-c483bfab7d82" ;
+  dcterms:source <urn:opda:property-pack:item:pp-c483bfab7d82> .
+
+<https://w3id.org/opda/candidate/property-pack/0.1/conveyancing/topic/pp-c5f7b7935d1a>
+  a skos:Concept ;
+  skos:inScheme <https://w3id.org/opda/candidate/property-pack/0.1/conveyancing/topic/PropertyPackTopicScheme> ;
+  skos:prefLabel "Included, Excluded or None"@en ;
+  skos:definition "The value recorded for “Included, Excluded or None” in the Property Pack."@en ;
+  skos:notation "pp-c5f7b7935d1a" ;
+  dcterms:source <urn:opda:property-pack:item:pp-c5f7b7935d1a> .
+
+<https://w3id.org/opda/candidate/property-pack/0.1/conveyancing/topic/pp-c6a59a4d6ff8>
+  a skos:Concept ;
+  skos:inScheme <https://w3id.org/opda/candidate/property-pack/0.1/conveyancing/topic/PropertyPackTopicScheme> ;
+  skos:prefLabel "Church chancel"@en ;
+  skos:definition "Indicates whether church chancel is applicable."@en ;
+  skos:notation "pp-c6a59a4d6ff8" ;
+  dcterms:source <urn:opda:property-pack:item:pp-c6a59a4d6ff8> .
+
+<https://w3id.org/opda/candidate/property-pack/0.1/conveyancing/topic/pp-c92306c4fca8>
+  a skos:Concept ;
+  skos:inScheme <https://w3id.org/opda/candidate/property-pack/0.1/conveyancing/topic/PropertyPackTopicScheme> ;
+  skos:prefLabel "Class of title code"@en ;
+  skos:definition "Records the class of title code for title."@en ;
+  skos:notation "pp-c92306c4fca8" ;
+  dcterms:source <urn:opda:property-pack:item:pp-c92306c4fca8> .
+
+<https://w3id.org/opda/candidate/property-pack/0.1/conveyancing/topic/pp-cb97dae1fa81>
+  a skos:Concept ;
+  skos:inScheme <https://w3id.org/opda/candidate/property-pack/0.1/conveyancing/topic/PropertyPackTopicScheme> ;
+  skos:prefLabel "Access restriction attempts"@en ;
+  skos:definition "Indicates whether access restriction attempts is applicable."@en ;
+  skos:notation "pp-cb97dae1fa81" ;
+  dcterms:source <urn:opda:property-pack:item:pp-cb97dae1fa81> .
+
+<https://w3id.org/opda/candidate/property-pack/0.1/conveyancing/topic/pp-cc7f87a2d848>
+  a skos:Concept ;
+  skos:inScheme <https://w3id.org/opda/candidate/property-pack/0.1/conveyancing/topic/PropertyPackTopicScheme> ;
+  skos:prefLabel "Charge restriction indicator"@en ;
+  skos:definition "Records the charge restriction indicator for register entry indicators."@en ;
+  skos:notation "pp-cc7f87a2d848" ;
+  dcterms:source <urn:opda:property-pack:item:pp-cc7f87a2d848> .
+
+<https://w3id.org/opda/candidate/property-pack/0.1/conveyancing/topic/pp-cf4b149bf3f7>
+  a skos:Concept ;
+  skos:inScheme <https://w3id.org/opda/candidate/property-pack/0.1/conveyancing/topic/PropertyPackTopicScheme> ;
+  skos:prefLabel "Included, Excluded or None"@en ;
+  skos:definition "The value recorded for “Included, Excluded or None” in the Property Pack."@en ;
+  skos:notation "pp-cf4b149bf3f7" ;
+  dcterms:source <urn:opda:property-pack:item:pp-cf4b149bf3f7> .
+
+<https://w3id.org/opda/candidate/property-pack/0.1/conveyancing/topic/pp-cf710027cabe>
+  a skos:Concept ;
+  skos:inScheme <https://w3id.org/opda/candidate/property-pack/0.1/conveyancing/topic/PropertyPackTopicScheme> ;
+  skos:prefLabel "Has valid guarantees or warranties"@en ;
+  skos:definition "Records the response to the source question: Are there any valid guarantees, warranties or indemnity insurances relating to this property?"@en ;
+  skos:notation "pp-cf710027cabe" ;
+  dcterms:source <urn:opda:property-pack:item:pp-cf710027cabe> .
+
+<https://w3id.org/opda/candidate/property-pack/0.1/conveyancing/topic/pp-d0490b6f330b>
+  a skos:Concept ;
+  skos:inScheme <https://w3id.org/opda/candidate/property-pack/0.1/conveyancing/topic/PropertyPackTopicScheme> ;
+  skos:prefLabel "Included, Excluded or None"@en ;
+  skos:definition "The value recorded for “Included, Excluded or None” in the Property Pack."@en ;
+  skos:notation "pp-d0490b6f330b" ;
+  dcterms:source <urn:opda:property-pack:item:pp-d0490b6f330b> .
+
+<https://w3id.org/opda/candidate/property-pack/0.1/conveyancing/topic/pp-d0e2ab47a310>
+  a skos:Concept ;
+  skos:inScheme <https://w3id.org/opda/candidate/property-pack/0.1/conveyancing/topic/PropertyPackTopicScheme> ;
+  skos:prefLabel "Public right of way"@en ;
+  skos:definition "Indicates whether public right of way is applicable."@en ;
+  skos:notation "pp-d0e2ab47a310" ;
+  dcterms:source <urn:opda:property-pack:item:pp-d0e2ab47a310> .
+
+<https://w3id.org/opda/candidate/property-pack/0.1/conveyancing/topic/pp-d2c0afee1b6b>
+  a skos:Concept ;
+  skos:inScheme <https://w3id.org/opda/candidate/property-pack/0.1/conveyancing/topic/PropertyPackTopicScheme> ;
+  skos:prefLabel "Included, Excluded or None"@en ;
+  skos:definition "The value recorded for “Included, Excluded or None” in the Property Pack."@en ;
+  skos:notation "pp-d2c0afee1b6b" ;
+  dcterms:source <urn:opda:property-pack:item:pp-d2c0afee1b6b> .
+
+<https://w3id.org/opda/candidate/property-pack/0.1/conveyancing/topic/pp-d6b6d4ecb1ea>
+  a skos:Concept ;
+  skos:inScheme <https://w3id.org/opda/candidate/property-pack/0.1/conveyancing/topic/PropertyPackTopicScheme> ;
+  skos:prefLabel "Noted charge indicator"@en ;
+  skos:definition "Records the noted charge indicator for register entry indicators."@en ;
+  skos:notation "pp-d6b6d4ecb1ea" ;
+  dcterms:source <urn:opda:property-pack:item:pp-d6b6d4ecb1ea> .
+
+<https://w3id.org/opda/candidate/property-pack/0.1/conveyancing/topic/pp-d7d7485778a7>
+  a skos:Concept ;
+  skos:inScheme <https://w3id.org/opda/candidate/property-pack/0.1/conveyancing/topic/PropertyPackTopicScheme> ;
+  skos:prefLabel "Are boundaries uniform"@en ;
+  skos:definition "Records the response to the source question: Are the boundaries uniform?"@en ;
+  skos:notation "pp-d7d7485778a7" ;
+  dcterms:source <urn:opda:property-pack:item:pp-d7d7485778a7> .
+
+<https://w3id.org/opda/candidate/property-pack/0.1/conveyancing/topic/pp-dce277e19535>
+  a skos:Concept ;
+  skos:inScheme <https://w3id.org/opda/candidate/property-pack/0.1/conveyancing/topic/PropertyPackTopicScheme> ;
+  skos:prefLabel "Vendors lien indicator"@en ;
+  skos:definition "Records the vendors lien indicator for register entry indicators."@en ;
+  skos:notation "pp-dce277e19535" ;
+  dcterms:source <urn:opda:property-pack:item:pp-dce277e19535> .
+
+<https://w3id.org/opda/candidate/property-pack/0.1/conveyancing/topic/pp-dcf0cdf9985a>
+  a skos:Concept ;
+  skos:inScheme <https://w3id.org/opda/candidate/property-pack/0.1/conveyancing/topic/PropertyPackTopicScheme> ;
+  skos:prefLabel "Included, Excluded or None"@en ;
+  skos:definition "The value recorded for “Included, Excluded or None” in the Property Pack."@en ;
+  skos:notation "pp-dcf0cdf9985a" ;
+  dcterms:source <urn:opda:property-pack:item:pp-dcf0cdf9985a> .
+
+<https://w3id.org/opda/candidate/property-pack/0.1/conveyancing/topic/pp-dd27ae34f2e1>
+  a skos:Concept ;
+  skos:inScheme <https://w3id.org/opda/candidate/property-pack/0.1/conveyancing/topic/PropertyPackTopicScheme> ;
+  skos:prefLabel "Price paid indicator"@en ;
+  skos:definition "Records the price paid indicator for register entry indicators."@en ;
+  skos:notation "pp-dd27ae34f2e1" ;
+  dcterms:source <urn:opda:property-pack:item:pp-dd27ae34f2e1> .
+
+<https://w3id.org/opda/candidate/property-pack/0.1/conveyancing/topic/pp-de9c238b9626>
+  a skos:Concept ;
+  skos:inScheme <https://w3id.org/opda/candidate/property-pack/0.1/conveyancing/topic/PropertyPackTopicScheme> ;
+  skos:prefLabel "Included, Excluded or None"@en ;
+  skos:definition "The value recorded for “Included, Excluded or None” in the Property Pack."@en ;
+  skos:notation "pp-de9c238b9626" ;
+  dcterms:source <urn:opda:property-pack:item:pp-de9c238b9626> .
+
+<https://w3id.org/opda/candidate/property-pack/0.1/conveyancing/topic/pp-e0164520924d>
+  a skos:Concept ;
+  skos:inScheme <https://w3id.org/opda/candidate/property-pack/0.1/conveyancing/topic/PropertyPackTopicScheme> ;
+  skos:prefLabel "Items to include"@en ;
+  skos:definition "Indicates whether items to include is applicable."@en ;
+  skos:notation "pp-e0164520924d" ;
+  dcterms:source <urn:opda:property-pack:item:pp-e0164520924d> .
+
+<https://w3id.org/opda/candidate/property-pack/0.1/conveyancing/topic/pp-e4ac6536efb7>
+  a skos:Concept ;
+  skos:inScheme <https://w3id.org/opda/candidate/property-pack/0.1/conveyancing/topic/PropertyPackTopicScheme> ;
+  skos:prefLabel "Mines and minerals"@en ;
+  skos:definition "Indicates whether mines and minerals is applicable."@en ;
+  skos:notation "pp-e4ac6536efb7" ;
+  dcterms:source <urn:opda:property-pack:item:pp-e4ac6536efb7> .
+
+<https://w3id.org/opda/candidate/property-pack/0.1/conveyancing/topic/pp-e63b14471c2c>
+  a skos:Concept ;
+  skos:inScheme <https://w3id.org/opda/candidate/property-pack/0.1/conveyancing/topic/PropertyPackTopicScheme> ;
+  skos:prefLabel "Included, Excluded or None"@en ;
+  skos:definition "The value recorded for “Included, Excluded or None” in the Property Pack."@en ;
+  skos:notation "pp-e63b14471c2c" ;
+  dcterms:source <urn:opda:property-pack:item:pp-e63b14471c2c> .
+
+<https://w3id.org/opda/candidate/property-pack/0.1/conveyancing/topic/pp-e7faf52a3fcf>
+  a skos:Concept ;
+  skos:inScheme <https://w3id.org/opda/candidate/property-pack/0.1/conveyancing/topic/PropertyPackTopicScheme> ;
+  skos:prefLabel "Part on separate site or deed"@en ;
+  skos:definition "Indicates whether part on separate site or deed is applicable."@en ;
+  skos:notation "pp-e7faf52a3fcf" ;
+  dcterms:source <urn:opda:property-pack:item:pp-e7faf52a3fcf> .
+
+<https://w3id.org/opda/candidate/property-pack/0.1/conveyancing/topic/pp-eb38c1f063ec>
+  a skos:Concept ;
+  skos:inScheme <https://w3id.org/opda/candidate/property-pack/0.1/conveyancing/topic/PropertyPackTopicScheme> ;
+  skos:prefLabel "Other rights"@en ;
+  skos:definition "Indicates whether other rights is applicable."@en ;
+  skos:notation "pp-eb38c1f063ec" ;
+  dcterms:source <urn:opda:property-pack:item:pp-eb38c1f063ec> .
+
+<https://w3id.org/opda/candidate/property-pack/0.1/conveyancing/topic/pp-eda41a67c85c>
+  a skos:Concept ;
+  skos:inScheme <https://w3id.org/opda/candidate/property-pack/0.1/conveyancing/topic/PropertyPackTopicScheme> ;
+  skos:prefLabel "Included, Excluded or None"@en ;
+  skos:definition "The value recorded for “Included, Excluded or None” in the Property Pack."@en ;
+  skos:notation "pp-eda41a67c85c" ;
+  dcterms:source <urn:opda:property-pack:item:pp-eda41a67c85c> .
+
+<https://w3id.org/opda/candidate/property-pack/0.1/conveyancing/topic/pp-eed46eddf831>
+  a skos:Concept ;
+  skos:inScheme <https://w3id.org/opda/candidate/property-pack/0.1/conveyancing/topic/PropertyPackTopicScheme> ;
+  skos:prefLabel "Included, Excluded or None"@en ;
+  skos:definition "The value recorded for “Included, Excluded or None” in the Property Pack."@en ;
+  skos:notation "pp-eed46eddf831" ;
+  dcterms:source <urn:opda:property-pack:item:pp-eed46eddf831> .
+
+<https://w3id.org/opda/candidate/property-pack/0.1/conveyancing/topic/pp-eed6a1fd6462>
+  a skos:Concept ;
+  skos:inScheme <https://w3id.org/opda/candidate/property-pack/0.1/conveyancing/topic/PropertyPackTopicScheme> ;
+  skos:prefLabel "Excessive noise"@en ;
+  skos:definition "Indicates whether excessive noise is applicable."@en ;
+  skos:notation "pp-eed6a1fd6462" ;
+  dcterms:source <urn:opda:property-pack:item:pp-eed6a1fd6462> .

@@ -29,6 +29,9 @@ dist/
 /source/03-standards/*
 !/source/03-standards/ontology/
 !/source/03-standards/ontology/**
+# Isolated, non-published greenfield Property Pack candidate (ADR-0067).
+!/source/03-standards/ontology-candidates/
+!/source/03-standards/ontology-candidates/**
 # RML provenance-mapping standard (ODR-0035/ADR-0057) — hand-authored, peer to ontology/.
 # (source/03-standards/rml/.gitignore handles build/__pycache__/.metaharness locally.)
 !/source/03-standards/rml/

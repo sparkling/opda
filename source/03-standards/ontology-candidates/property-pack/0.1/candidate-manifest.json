@@ -1,0 +1,338 @@
+{
+  "authority_note": "Machine-proposed candidate. OPDA working-group review and recorded human disposition are required.",
+  "base_iri": "https://w3id.org/opda/candidate/property-pack/0.1/",
+  "candidate_id": "property-pack-0.1",
+  "candidate_status": "machine-proposed",
+  "candidate_version": "0.1.0-draft",
+  "files": [
+    {
+      "bytes": 583,
+      "path": "candidate-summary.json",
+      "sha256": "89ea9eb0233f2fd7f30fd06d5a4aae16b63ee95f0bfafcb7d59c4cb7a449ecce"
+    },
+    {
+      "bytes": 2725,
+      "path": "ontology/common.ttl",
+      "sha256": "ce5ae73dd922d067de2a1f0c703bcab5621446218ccbd4585ebfee1984faee61"
+    },
+    {
+      "bytes": 4650,
+      "path": "ontology/context-map.ttl",
+      "sha256": "64073885e8878226dbc64a187198c516d08300ac62cf76164ef415858b2cc875"
+    },
+    {
+      "bytes": 18038,
+      "path": "ontology/conveyancing-01.ttl",
+      "sha256": "0c9183deab11bd08ada736b5596cb3a53ccc145d7eaa1565a60981ffa6081b47"
+    },
+    {
+      "bytes": 13698,
+      "path": "ontology/conveyancing-02.ttl",
+      "sha256": "b623751b72e182d245503dcf8ee31f8969708729da2374ed980a3f59858a8a5d"
+    },
+    {
+      "bytes": 3309,
+      "path": "ontology/dbt-smart-data.ttl",
+      "sha256": "2d96c17d8f51a84db7d146ee70047447a3978f5d392960b190e0e6e1d59dbeec"
+    },
+    {
+      "bytes": 11271,
+      "path": "ontology/estate-agency.ttl",
+      "sha256": "7ae18761fe511d000369fef8624adcf6e465945d8b124b23c800de17fa35c475"
+    },
+    {
+      "bytes": 7251,
+      "path": "ontology/finance-and-banking.ttl",
+      "sha256": "bb34365542d1c121b3d6db60da7a4906c7c906dd852164df77e12e09a9596bc2"
+    },
+    {
+      "bytes": 20592,
+      "path": "ontology/property-data-services-01.ttl",
+      "sha256": "1d75ebc165bddd4b6cf2f42b1e798f063fa780eb61511a5f233e73fa9ec858e6"
+    },
+    {
+      "bytes": 11324,
+      "path": "ontology/property-data-services-02.ttl",
+      "sha256": "2883c2d9fa3ea6e5966eecacfa35c86dc86a4a6da6506288b7702779c99947a1"
+    },
+    {
+      "bytes": 7319,
+      "path": "ontology/property-technology.ttl",
+      "sha256": "67090f9268fead7bf1a566d677095ff3c3ca053d840ae028eee70ee3a4b1d32a"
+    },
+    {
+      "bytes": 10402,
+      "path": "ontology/surveying-and-valuation.ttl",
+      "sha256": "951c315a2ab320e549650de33128c64765ab88121c490f0ec909f074d90d0faa"
+    },
+    {
+      "bytes": 134382,
+      "path": "projections/business-glossary.json",
+      "sha256": "4a355aded27cf4f53b0434b97071cef54bb1d4ceacec4c843c0c091b080df7db"
+    },
+    {
+      "bytes": 3400,
+      "path": "projections/context-map.json",
+      "sha256": "1cd6997b2ec7387003498e470ad1ed83e0898ccc3a4bd28766aae1a7fe7b056c"
+    },
+    {
+      "bytes": 16028,
+      "path": "projections/controlled-vocabularies.json",
+      "sha256": "a6b3d9f0521171cb99546a117174aba1c291f18908e2989bb671df32e19991c7"
+    },
+    {
+      "bytes": 930289,
+      "path": "projections/coverage.json",
+      "sha256": "2bdacbb9f721aa16fe8723d70b4b1f840d6ba3811688c13f7f033b69ae69688b"
+    },
+    {
+      "bytes": 548767,
+      "path": "projections/data-dictionary.json",
+      "sha256": "1fa193a3b161e7180676e3efb3d1b11306fac534268eb9a5090c287d5db32bd7"
+    },
+    {
+      "bytes": 134382,
+      "path": "projections/resource-register.json",
+      "sha256": "4a355aded27cf4f53b0434b97071cef54bb1d4ceacec4c843c0c091b080df7db"
+    },
+    {
+      "bytes": 1568,
+      "path": "shapes/common.ttl",
+      "sha256": "5f427a4d5f4706d5121c931e5ec29203b317c457b5c4062b1d77a4a98c1b1874"
+    },
+    {
+      "bytes": 9066,
+      "path": "shapes/conveyancing.ttl",
+      "sha256": "5d5010cb3f7bbcab551f52e909ad34d50efa87fb12503ae3c45080884ab69b1c"
+    },
+    {
+      "bytes": 1598,
+      "path": "shapes/dbt-smart-data.ttl",
+      "sha256": "35310cbb128afecd16b4eda08c1932724ddd3e64be8f3bff5f1d9131a5ab2c80"
+    },
+    {
+      "bytes": 4588,
+      "path": "shapes/estate-agency.ttl",
+      "sha256": "b52f20b8c9e73496d3cc7fac6de7c7da9124480051a344e38f3a914102199a83"
+    },
+    {
+      "bytes": 3259,
+      "path": "shapes/finance-and-banking.ttl",
+      "sha256": "cd9114dbef1de0382679196a959b563cec9ad598d9eab9abd3ca454907d65023"
+    },
+    {
+      "bytes": 10867,
+      "path": "shapes/property-data-services.ttl",
+      "sha256": "fffd03f612929213fee3d8421f4ff9187a423d99b197a2397b0d8bf7ca512755"
+    },
+    {
+      "bytes": 3453,
+      "path": "shapes/property-technology.ttl",
+      "sha256": "c1a7dbf8ca7f6ce585575b8e0edf87a58a74bf98e428e7600064db80bfd7f516"
+    },
+    {
+      "bytes": 3659,
+      "path": "shapes/surveying-and-valuation.ttl",
+      "sha256": "070f1b77c670069ff9ed092f07c8dfcab2054ccc13b5399ca04f7e1bd3ef69a6"
+    },
+    {
+      "bytes": 1121,
+      "path": "standards-profile.json",
+      "sha256": "9550507bdd45c602270f4d587a57271ed0a1498924fbed16188d3a7010645878"
+    },
+    {
+      "bytes": 492,
+      "path": "validation/competency/address-separation.rq",
+      "sha256": "31fe211b2fa7a81224b67f7aae63bd69f3b3ce14ed4beca9f1200edca5488eee"
+    },
+    {
+      "bytes": 529,
+      "path": "validation/competency/fixture-consolidation.rq",
+      "sha256": "5aeaf81be29a12d38437e8da83a1fb6fbadda7cdb8d4b56debb880648b701100"
+    },
+    {
+      "bytes": 424,
+      "path": "validation/competency/no-same-as.rq",
+      "sha256": "faedec2fd5b4312194bd9785863984ce8179c717d1bdcde558ffb2d5100e0143"
+    },
+    {
+      "bytes": 492,
+      "path": "validation/competency/property-identity.rq",
+      "sha256": "e256f4ce9f8bc2ca36f5bee96592e00e3df68b2b3a2805462a95c2ce2a357292"
+    },
+    {
+      "bytes": 1332,
+      "path": "validation/fixtures/invalid-property.ttl",
+      "sha256": "c390f7e0ad9ba101dc171b51f083636eb61ae068f531dbcdf1aaa3c4d62a3247"
+    },
+    {
+      "bytes": 1361,
+      "path": "validation/fixtures/valid-property.ttl",
+      "sha256": "91dd2710f57f1daaea8896a238f585a182847d34a106a07c0f6f210ffc2cc8ed"
+    },
+    {
+      "bytes": 9379,
+      "path": "validation/report.json",
+      "sha256": "d74856308bb9a95f94fe27a24a4e85327b958685c83f87eba8f846784ca241ca"
+    },
+    {
+      "bytes": 3394,
+      "path": "vocabularies/common-controlled.ttl",
+      "sha256": "bdfd583875ac50dc660d21a72b16e076dc055832eb844c8d1206538b6fd85301"
+    },
+    {
+      "bytes": 9996,
+      "path": "vocabularies/conveyancing-controlled.ttl",
+      "sha256": "0e1940134071661794b9be8337f46c19ad59f608f79c69f553f411e5383319a1"
+    },
+    {
+      "bytes": 6068,
+      "path": "vocabularies/estate-agency-controlled.ttl",
+      "sha256": "4e21f4bcb5f8fe4bdf5c5006ff4b843114ff982286f43dc52692f518d70b7220"
+    },
+    {
+      "bytes": 9741,
+      "path": "vocabularies/property-data-services-controlled.ttl",
+      "sha256": "907e073efe08b21d9c0ba210d77a60b969362813bc6a4993c271b20e95b362ca"
+    },
+    {
+      "bytes": 3295,
+      "path": "vocabularies/property-technology-controlled.ttl",
+      "sha256": "06effefe0aaa85b1e345ccab6f1edf5effd4282c7c70ee987f4bb25e6307ba24"
+    },
+    {
+      "bytes": 7349,
+      "path": "vocabularies/surveying-and-valuation-controlled.ttl",
+      "sha256": "380da92c52248e727f129bab0c90f735b4f62bd19e0510ea481a88b151fc8399"
+    },
+    {
+      "bytes": 27131,
+      "path": "vocabularies/topics/conveyancing-01.ttl",
+      "sha256": "25253b53d554ccc2edc60d90b53d409bd10c7fb87ac4ddaf14b0594fd7f5f5b9"
+    },
+    {
+      "bytes": 27335,
+      "path": "vocabularies/topics/conveyancing-02.ttl",
+      "sha256": "38aa21792457dd4d968530bc45987f641e4c7d4098addd7960a015c605a7f818"
+    },
+    {
+      "bytes": 27031,
+      "path": "vocabularies/topics/conveyancing-03.ttl",
+      "sha256": "9b65625e8c819abcdf7c597b240f3ef6df32ebd7d116a94537d8f693f2fb531d"
+    },
+    {
+      "bytes": 9477,
+      "path": "vocabularies/topics/conveyancing-04.ttl",
+      "sha256": "e267bab781d937710992608b4568357fec6022e75311b90b050dc87f10660c9b"
+    },
+    {
+      "bytes": 2862,
+      "path": "vocabularies/topics/estate-agency-01.ttl",
+      "sha256": "17f7961a1c6b68c1b0f5a6732db16dd36b69ed73d0c4caeba550e964e9a8dec6"
+    },
+    {
+      "bytes": 4807,
+      "path": "vocabularies/topics/finance-and-banking-01.ttl",
+      "sha256": "f06204172ac3762ecdab4c4b9e635e7bb4b78b62dff692f399c8001b27b5df2a"
+    },
+    {
+      "bytes": 29206,
+      "path": "vocabularies/topics/property-data-services-01.ttl",
+      "sha256": "748316b42554be1c04f55e230983567b2ce28bf90ec4901018c277d9c88a6850"
+    },
+    {
+      "bytes": 28944,
+      "path": "vocabularies/topics/property-data-services-02.ttl",
+      "sha256": "1d7c699c3a6d63e17304b6f5716eabf9c3bc8c30d0a32c8ab632badd62457f09"
+    },
+    {
+      "bytes": 28902,
+      "path": "vocabularies/topics/property-data-services-03.ttl",
+      "sha256": "43cd88dcdf753f7e5ff9a072f698b37b0a3467ba3c8b86c5975066be00c1b3e9"
+    },
+    {
+      "bytes": 14251,
+      "path": "vocabularies/topics/property-data-services-04.ttl",
+      "sha256": "949b6b44531dd8b0e04139a7b643a15ab9f84b77bd85772fc8ada26d485f2c38"
+    },
+    {
+      "bytes": 4328,
+      "path": "vocabularies/topics/property-technology-01.ttl",
+      "sha256": "dcc34dc03ffe30deba25e4995c3b5d07b28ad95db36e534c4ce3458be901bcf2"
+    },
+    {
+      "bytes": 13276,
+      "path": "vocabularies/topics/surveying-and-valuation-01.ttl",
+      "sha256": "920003719a8d99ffc6df2cf2be2ae5ae2fc8fedf1ada1f8cba9984bb389091f9"
+    }
+  ],
+  "ontology_resource_count": 159,
+  "publication_status": "local-review-only",
+  "schema_version": "0.1",
+  "semantic_home_counts": {
+    "common": 1,
+    "conveyancing": 206,
+    "dbt-smart-data": 1,
+    "estate-agency": 7,
+    "finance-and-banking": 7,
+    "property-data-services": 197,
+    "property-technology": 6,
+    "surveying-and-valuation": 26
+  },
+  "source_inputs": [
+    {
+      "path": "src/data/property-pack/candidate-model/contexts/common.toml",
+      "sha256": "3fbf54fa54a664fad91a4a158881939954e0a2ec25e37f36000b3a5decb969a0"
+    },
+    {
+      "path": "src/data/property-pack/candidate-model/contexts/conveyancing.toml",
+      "sha256": "db00c5ee064d1af621f78d746683d35ec1649766aea1e4737e200b65b0224e40"
+    },
+    {
+      "path": "src/data/property-pack/candidate-model/contexts/dbt-smart-data.toml",
+      "sha256": "c41691345ea17687b064790a614f708ec89194d09f6dec2b2e7ec73fa2af32e6"
+    },
+    {
+      "path": "src/data/property-pack/candidate-model/contexts/estate-agency.toml",
+      "sha256": "d4246289d6aeea71eccb65afae7f219b2cd6d7b2cb777d284f61702581011893"
+    },
+    {
+      "path": "src/data/property-pack/candidate-model/contexts/finance-and-banking.toml",
+      "sha256": "bc4d92197edbec206efc9539c316b79b7ccc4d6492e7d1aa62ed61c78d99306e"
+    },
+    {
+      "path": "src/data/property-pack/candidate-model/contexts/property-data-services.toml",
+      "sha256": "451b70ccdfae554c954c65d2a701a1bab371f400f8b119d747384aafaf894b02"
+    },
+    {
+      "path": "src/data/property-pack/candidate-model/contexts/property-technology.toml",
+      "sha256": "1c6bfc22d5a8cb21b83fb28fe3eed5873e8a925dd7e10210fc38eb9985716736"
+    },
+    {
+      "path": "src/data/property-pack/candidate-model/contexts/surveying-and-valuation.toml",
+      "sha256": "d4cb7474bbf17477c2c5c301d9609748547864570fef9e2c9ad771648f864f02"
+    },
+    {
+      "path": "src/data/property-pack/candidate-model/manifest.toml",
+      "sha256": "162794b993694f4f21b42e1a8b211c0ecd57bdeb275c94bca0afcaac9412f489"
+    },
+    {
+      "path": "src/data/property-pack/candidate-model/rules-conveyancing.toml",
+      "sha256": "ff002378651a2b395d9937bc465b18a685e60f78c6780c76ede583fe90e4e697"
+    },
+    {
+      "path": "src/data/property-pack/candidate-model/rules-domains.toml",
+      "sha256": "f3c4832b2c83d0d50ba338e22e38339d1896f8c24584b8ed1482a7bbdd8f47ae"
+    },
+    {
+      "path": "src/data/property-pack/candidate-model/vocabularies.toml",
+      "sha256": "e50a8f107cf2b113bb355b5bdef527df1d05f710428302db82ec3277a99e98a2"
+    },
+    {
+      "path": "src/data/property-pack/required-properties.json",
+      "sha256": "8f60ffa353b064bc8232ed44dac2aba956d0a493395215f15da4ba3650be72b4"
+    }
+  ],
+  "source_item_count": 451,
+  "tree_digest": "95eb3fb2a086010e1b6a84e55c82420c8a96ec23ba15896d3af261f5071d9217"
+}

@@ -1,0 +1,76 @@
+[context]
+id = "finance-and-banking"
+prefix = "fb"
+
+[[term]]
+id = "MortgageDischargeStatement"
+kind = "class"
+label = "mortgage discharge statement"
+definition = "A statement about whether sale proceeds are expected to repay secured mortgage obligations."
+
+[[term]]
+id = "hasMortgageDischargeStatement"
+kind = "object-property"
+label = "has mortgage discharge statement"
+definition = "Relates a property transaction to a mortgage discharge statement."
+range = "fb:MortgageDischargeStatement"
+
+[[term]]
+id = "mortgageDischargeOutcome"
+kind = "object-property"
+label = "mortgage discharge outcome"
+definition = "Records whether the stated proceeds are sufficient to repay all mortgages, or that no mortgage exists."
+domain = "fb:MortgageDischargeStatement"
+range = "skos:Concept"
+
+[[term]]
+id = "InsuranceStatement"
+kind = "class"
+label = "insurance statement"
+definition = "A typed statement about current insurance or difficulty obtaining cover for a property."
+
+[[term]]
+id = "hasInsuranceStatement"
+kind = "object-property"
+label = "has insurance statement"
+definition = "Relates a property to a property-insurance statement."
+domain = "common:Property"
+range = "fb:InsuranceStatement"
+
+[[term]]
+id = "insuranceTopic"
+kind = "object-property"
+label = "insurance topic"
+definition = "Classifies the insurance status or difficulty addressed by a statement."
+domain = "fb:InsuranceStatement"
+range = "skos:Concept"
+
+[[term]]
+id = "insuranceOutcome"
+kind = "object-property"
+label = "insurance outcome"
+definition = "Records the controlled response or status stated for an insurance topic."
+domain = "fb:InsuranceStatement"
+range = "skos:Concept"
+
+[[term]]
+id = "GreenDealFinanceStatement"
+kind = "class"
+label = "Green Deal finance statement"
+definition = "A statement that a Green Deal finance obligation is associated with a property."
+
+[[term]]
+id = "hasGreenDealFinanceStatement"
+kind = "object-property"
+label = "has Green Deal finance statement"
+definition = "Relates a property to a Green Deal finance statement."
+domain = "common:Property"
+range = "fb:GreenDealFinanceStatement"
+
+[[term]]
+id = "greenDealFinanceOutcome"
+kind = "object-property"
+label = "Green Deal finance outcome"
+definition = "Records whether a Green Deal finance obligation is stated for the property."
+domain = "fb:GreenDealFinanceStatement"
+range = "skos:Concept"

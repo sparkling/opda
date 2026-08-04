@@ -89,6 +89,22 @@ ontology-install:	## Install the opda-gen toolchain (editable + dev extras)
 ontology-test:	## Run the opda-gen unit suite (pytest)
 	$(OPDA_GEN) pytest -q
 
+.PHONY: property-pack-candidate
+property-pack-candidate:	## Generate the isolated 451-item Property Pack ontology candidate
+	npm run property-pack:candidate:generate
+
+.PHONY: validate-property-pack-candidate
+validate-property-pack-candidate:	## Re-run RDF, SHACL, SPARQL and coverage checks without rewriting the candidate
+	npm run property-pack:candidate:validate
+
+.PHONY: verify-property-pack-candidate
+verify-property-pack-candidate:	## Regenerate in a temporary directory and prove byte identity
+	npm run property-pack:candidate:check
+
+.PHONY: ci-property-pack-candidate
+ci-property-pack-candidate: validate-property-pack-candidate verify-property-pack-candidate	## All local gates for the non-published Property Pack candidate
+	@echo "✓ Property Pack candidate gates passed"
+
 ##@ Validation / CI gates (run before pushing)
 .PHONY: test
 test: node_modules	## Remark plugin tests (mermaid fence / details unwrap)

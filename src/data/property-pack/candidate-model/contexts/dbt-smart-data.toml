@@ -1,0 +1,26 @@
+[context]
+id = "dbt-smart-data"
+prefix = "dbt"
+
+[[term]]
+id = "DataSharingAuthorisation"
+kind = "class"
+label = "data sharing authorisation"
+definition = "A scheme-level authorisation to share specified property information for an agreed purpose."
+identity = "Identified by accountable party, scope, purpose and authorisation event; these details remain outside the initial boolean source field."
+
+[[term]]
+id = "hasDataSharingAuthorisation"
+kind = "object-property"
+label = "has data sharing authorisation"
+definition = "Relates a Property Pack submission to its scheme-level sharing authorisation."
+range = "dbt:DataSharingAuthorisation"
+
+[[term]]
+id = "authorisedToShare"
+kind = "datatype-property"
+label = "authorised to share"
+definition = "States that the accountable party has authorised the scoped information to be shared."
+domain = "dbt:DataSharingAuthorisation"
+datatype = "xsd:boolean"
+max_count = 1

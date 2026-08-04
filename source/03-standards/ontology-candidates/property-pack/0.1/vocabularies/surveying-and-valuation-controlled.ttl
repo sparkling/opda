@@ -1,0 +1,129 @@
+VERSION "1.2-basic"
+
+@prefix common: <https://w3id.org/opda/candidate/property-pack/0.1/common/> .
+@prefix conv: <https://w3id.org/opda/candidate/property-pack/0.1/conveyancing/> .
+@prefix dbt: <https://w3id.org/opda/candidate/property-pack/0.1/dbt-smart-data/> .
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix ea: <https://w3id.org/opda/candidate/property-pack/0.1/estate-agency/> .
+@prefix fb: <https://w3id.org/opda/candidate/property-pack/0.1/finance-and-banking/> .
+@prefix opdac: <https://w3id.org/opda/candidate/property-pack/0.1/meta/> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix pds: <https://w3id.org/opda/candidate/property-pack/0.1/property-data-services/> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix pt: <https://w3id.org/opda/candidate/property-pack/0.1/property-technology/> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix sv: <https://w3id.org/opda/candidate/property-pack/0.1/surveying-and-valuation/> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+<https://w3id.org/opda/candidate/property-pack/0.1/surveying-and-valuation/vocabulary/BuiltFormScheme>
+  a skos:ConceptScheme ;
+  skos:prefLabel "built form"@en ;
+  skos:definition "The physical relationship of the principal building to neighbouring buildings."@en ;
+  opdac:semanticHome <https://w3id.org/opda/candidate/property-pack/0.1/context/surveying-and-valuation> ;
+  opdac:candidateStatus "machine-proposed" .
+
+<https://w3id.org/opda/candidate/property-pack/0.1/surveying-and-valuation/vocabulary/BuiltFormScheme/concept/detached>
+  a skos:Concept ;
+  skos:inScheme <https://w3id.org/opda/candidate/property-pack/0.1/surveying-and-valuation/vocabulary/BuiltFormScheme> ;
+  skos:prefLabel "Detached"@en ;
+  skos:notation "Detached" .
+
+<https://w3id.org/opda/candidate/property-pack/0.1/surveying-and-valuation/vocabulary/BuiltFormScheme/concept/semi-detached>
+  a skos:Concept ;
+  skos:inScheme <https://w3id.org/opda/candidate/property-pack/0.1/surveying-and-valuation/vocabulary/BuiltFormScheme> ;
+  skos:prefLabel "Semi-detached"@en ;
+  skos:notation "Semi-detached" .
+
+<https://w3id.org/opda/candidate/property-pack/0.1/surveying-and-valuation/vocabulary/BuiltFormScheme/concept/mid-terrace>
+  a skos:Concept ;
+  skos:inScheme <https://w3id.org/opda/candidate/property-pack/0.1/surveying-and-valuation/vocabulary/BuiltFormScheme> ;
+  skos:prefLabel "Mid-terrace"@en ;
+  skos:notation "Mid-terrace" .
+
+<https://w3id.org/opda/candidate/property-pack/0.1/surveying-and-valuation/vocabulary/BuiltFormScheme/concept/end-terrace>
+  a skos:Concept ;
+  skos:inScheme <https://w3id.org/opda/candidate/property-pack/0.1/surveying-and-valuation/vocabulary/BuiltFormScheme> ;
+  skos:prefLabel "End-terrace"@en ;
+  skos:notation "End-terrace" .
+
+<https://w3id.org/opda/candidate/property-pack/0.1/surveying-and-valuation/vocabulary/BuiltFormScheme/concept/other>
+  a skos:Concept ;
+  skos:inScheme <https://w3id.org/opda/candidate/property-pack/0.1/surveying-and-valuation/vocabulary/BuiltFormScheme> ;
+  skos:prefLabel "Other"@en ;
+  skos:notation "Other" .
+
+<https://w3id.org/opda/candidate/property-pack/0.1/surveying-and-valuation/vocabulary/HeatingTypeScheme>
+  a skos:ConceptScheme ;
+  skos:prefLabel "heating type"@en ;
+  skos:definition "The principal heating arrangement stated for a property."@en ;
+  opdac:semanticHome <https://w3id.org/opda/candidate/property-pack/0.1/context/surveying-and-valuation> ;
+  opdac:candidateStatus "machine-proposed" .
+
+<https://w3id.org/opda/candidate/property-pack/0.1/surveying-and-valuation/vocabulary/HeatingTypeScheme/concept/none>
+  a skos:Concept ;
+  skos:inScheme <https://w3id.org/opda/candidate/property-pack/0.1/surveying-and-valuation/vocabulary/HeatingTypeScheme> ;
+  skos:prefLabel "None"@en ;
+  skos:notation "None" .
+
+<https://w3id.org/opda/candidate/property-pack/0.1/surveying-and-valuation/vocabulary/HeatingTypeScheme/concept/room-heaters>
+  a skos:Concept ;
+  skos:inScheme <https://w3id.org/opda/candidate/property-pack/0.1/surveying-and-valuation/vocabulary/HeatingTypeScheme> ;
+  skos:prefLabel "Room heaters only"@en ;
+  skos:notation "Room heaters only" .
+
+<https://w3id.org/opda/candidate/property-pack/0.1/surveying-and-valuation/vocabulary/HeatingTypeScheme/concept/central-heating>
+  a skos:Concept ;
+  skos:inScheme <https://w3id.org/opda/candidate/property-pack/0.1/surveying-and-valuation/vocabulary/HeatingTypeScheme> ;
+  skos:prefLabel "Central heating"@en ;
+  skos:notation "Central heating" .
+
+<https://w3id.org/opda/candidate/property-pack/0.1/surveying-and-valuation/vocabulary/HeatingTypeScheme/concept/communal-heating>
+  a skos:Concept ;
+  skos:inScheme <https://w3id.org/opda/candidate/property-pack/0.1/surveying-and-valuation/vocabulary/HeatingTypeScheme> ;
+  skos:prefLabel "Communal heating system"@en ;
+  skos:notation "Communal heating system" .
+
+<https://w3id.org/opda/candidate/property-pack/0.1/surveying-and-valuation/vocabulary/PropertyTypeScheme>
+  a skos:ConceptScheme ;
+  skos:prefLabel "property type"@en ;
+  skos:definition "A physical residential-property type used in the Property Pack profile."@en ;
+  opdac:semanticHome <https://w3id.org/opda/candidate/property-pack/0.1/context/surveying-and-valuation> ;
+  opdac:candidateStatus "machine-proposed" .
+
+<https://w3id.org/opda/candidate/property-pack/0.1/surveying-and-valuation/vocabulary/PropertyTypeScheme/concept/house>
+  a skos:Concept ;
+  skos:inScheme <https://w3id.org/opda/candidate/property-pack/0.1/surveying-and-valuation/vocabulary/PropertyTypeScheme> ;
+  skos:prefLabel "House"@en ;
+  skos:notation "House" .
+
+<https://w3id.org/opda/candidate/property-pack/0.1/surveying-and-valuation/vocabulary/PropertyTypeScheme/concept/bungalow>
+  a skos:Concept ;
+  skos:inScheme <https://w3id.org/opda/candidate/property-pack/0.1/surveying-and-valuation/vocabulary/PropertyTypeScheme> ;
+  skos:prefLabel "Bungalow"@en ;
+  skos:notation "Bungalow" .
+
+<https://w3id.org/opda/candidate/property-pack/0.1/surveying-and-valuation/vocabulary/PropertyTypeScheme/concept/park-home>
+  a skos:Concept ;
+  skos:inScheme <https://w3id.org/opda/candidate/property-pack/0.1/surveying-and-valuation/vocabulary/PropertyTypeScheme> ;
+  skos:prefLabel "Park home"@en ;
+  skos:notation "Park home" .
+
+<https://w3id.org/opda/candidate/property-pack/0.1/surveying-and-valuation/vocabulary/PropertyTypeScheme/concept/maisonette>
+  a skos:Concept ;
+  skos:inScheme <https://w3id.org/opda/candidate/property-pack/0.1/surveying-and-valuation/vocabulary/PropertyTypeScheme> ;
+  skos:prefLabel "Maisonette"@en ;
+  skos:notation "Maisonette" .
+
+<https://w3id.org/opda/candidate/property-pack/0.1/surveying-and-valuation/vocabulary/PropertyTypeScheme/concept/flat>
+  a skos:Concept ;
+  skos:inScheme <https://w3id.org/opda/candidate/property-pack/0.1/surveying-and-valuation/vocabulary/PropertyTypeScheme> ;
+  skos:prefLabel "Flat"@en ;
+  skos:notation "Flat" .
+
+<https://w3id.org/opda/candidate/property-pack/0.1/surveying-and-valuation/vocabulary/PropertyTypeScheme/concept/other>
+  a skos:Concept ;
+  skos:inScheme <https://w3id.org/opda/candidate/property-pack/0.1/surveying-and-valuation/vocabulary/PropertyTypeScheme> ;
+  skos:prefLabel "Other"@en ;
+  skos:notation "Other" .

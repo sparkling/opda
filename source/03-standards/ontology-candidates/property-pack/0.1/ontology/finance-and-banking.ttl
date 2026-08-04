@@ -1,0 +1,118 @@
+VERSION "1.2-basic"
+
+@prefix common: <https://w3id.org/opda/candidate/property-pack/0.1/common/> .
+@prefix conv: <https://w3id.org/opda/candidate/property-pack/0.1/conveyancing/> .
+@prefix dbt: <https://w3id.org/opda/candidate/property-pack/0.1/dbt-smart-data/> .
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix ea: <https://w3id.org/opda/candidate/property-pack/0.1/estate-agency/> .
+@prefix fb: <https://w3id.org/opda/candidate/property-pack/0.1/finance-and-banking/> .
+@prefix opdac: <https://w3id.org/opda/candidate/property-pack/0.1/meta/> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix pds: <https://w3id.org/opda/candidate/property-pack/0.1/property-data-services/> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix pt: <https://w3id.org/opda/candidate/property-pack/0.1/property-technology/> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix sv: <https://w3id.org/opda/candidate/property-pack/0.1/surveying-and-valuation/> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+<https://w3id.org/opda/candidate/property-pack/0.1/ontology/finance-and-banking>
+  a owl:Ontology ;
+  rdfs:label "Finance and banking candidate ontology"@en ;
+  dcterms:description "Mortgage, repayment, insurance and financial-obligation meanings used by lenders and advisers."@en ;
+  owl:versionInfo "0.1.0-draft" ;
+  opdac:candidateStatus "machine-proposed" .
+
+<https://w3id.org/opda/candidate/property-pack/0.1/finance-and-banking/GreenDealFinanceStatement>
+  a owl:Class ;
+  rdfs:label "Green Deal finance statement"@en ;
+  skos:definition "A statement that a Green Deal finance obligation is associated with a property."@en ;
+  opdac:semanticHome <https://w3id.org/opda/candidate/property-pack/0.1/context/finance-and-banking> ;
+  opdac:sourceItemCount "1"^^xsd:integer ;
+  opdac:candidateStatus "machine-proposed" .
+
+<https://w3id.org/opda/candidate/property-pack/0.1/finance-and-banking/InsuranceStatement>
+  a owl:Class ;
+  rdfs:label "insurance statement"@en ;
+  skos:definition "A typed statement about current insurance or difficulty obtaining cover for a property."@en ;
+  opdac:semanticHome <https://w3id.org/opda/candidate/property-pack/0.1/context/finance-and-banking> ;
+  opdac:sourceItemCount "5"^^xsd:integer ;
+  opdac:candidateStatus "machine-proposed" .
+
+<https://w3id.org/opda/candidate/property-pack/0.1/finance-and-banking/MortgageDischargeStatement>
+  a owl:Class ;
+  rdfs:label "mortgage discharge statement"@en ;
+  skos:definition "A statement about whether sale proceeds are expected to repay secured mortgage obligations."@en ;
+  opdac:semanticHome <https://w3id.org/opda/candidate/property-pack/0.1/context/finance-and-banking> ;
+  opdac:sourceItemCount "1"^^xsd:integer ;
+  opdac:candidateStatus "machine-proposed" .
+
+<https://w3id.org/opda/candidate/property-pack/0.1/finance-and-banking/greenDealFinanceOutcome>
+  a owl:ObjectProperty ;
+  rdfs:label "Green Deal finance outcome"@en ;
+  skos:definition "Records whether a Green Deal finance obligation is stated for the property."@en ;
+  opdac:semanticHome <https://w3id.org/opda/candidate/property-pack/0.1/context/finance-and-banking> ;
+  opdac:sourceItemCount "1"^^xsd:integer ;
+  opdac:candidateStatus "machine-proposed" ;
+  rdfs:domain <https://w3id.org/opda/candidate/property-pack/0.1/finance-and-banking/GreenDealFinanceStatement> ;
+  rdfs:range <http://www.w3.org/2004/02/skos/core#Concept> .
+
+<https://w3id.org/opda/candidate/property-pack/0.1/finance-and-banking/hasGreenDealFinanceStatement>
+  a owl:ObjectProperty ;
+  rdfs:label "has Green Deal finance statement"@en ;
+  skos:definition "Relates a property to a Green Deal finance statement."@en ;
+  opdac:semanticHome <https://w3id.org/opda/candidate/property-pack/0.1/context/finance-and-banking> ;
+  opdac:sourceItemCount "1"^^xsd:integer ;
+  opdac:candidateStatus "machine-proposed" ;
+  rdfs:domain <https://w3id.org/opda/candidate/property-pack/0.1/common/Property> ;
+  rdfs:range <https://w3id.org/opda/candidate/property-pack/0.1/finance-and-banking/GreenDealFinanceStatement> .
+
+<https://w3id.org/opda/candidate/property-pack/0.1/finance-and-banking/hasInsuranceStatement>
+  a owl:ObjectProperty ;
+  rdfs:label "has insurance statement"@en ;
+  skos:definition "Relates a property to a property-insurance statement."@en ;
+  opdac:semanticHome <https://w3id.org/opda/candidate/property-pack/0.1/context/finance-and-banking> ;
+  opdac:sourceItemCount "5"^^xsd:integer ;
+  opdac:candidateStatus "machine-proposed" ;
+  rdfs:domain <https://w3id.org/opda/candidate/property-pack/0.1/common/Property> ;
+  rdfs:range <https://w3id.org/opda/candidate/property-pack/0.1/finance-and-banking/InsuranceStatement> .
+
+<https://w3id.org/opda/candidate/property-pack/0.1/finance-and-banking/hasMortgageDischargeStatement>
+  a owl:ObjectProperty ;
+  rdfs:label "has mortgage discharge statement"@en ;
+  skos:definition "Relates a property transaction to a mortgage discharge statement."@en ;
+  opdac:semanticHome <https://w3id.org/opda/candidate/property-pack/0.1/context/finance-and-banking> ;
+  opdac:sourceItemCount "1"^^xsd:integer ;
+  opdac:candidateStatus "machine-proposed" ;
+  rdfs:range <https://w3id.org/opda/candidate/property-pack/0.1/finance-and-banking/MortgageDischargeStatement> .
+
+<https://w3id.org/opda/candidate/property-pack/0.1/finance-and-banking/insuranceOutcome>
+  a owl:ObjectProperty ;
+  rdfs:label "insurance outcome"@en ;
+  skos:definition "Records the controlled response or status stated for an insurance topic."@en ;
+  opdac:semanticHome <https://w3id.org/opda/candidate/property-pack/0.1/context/finance-and-banking> ;
+  opdac:sourceItemCount "5"^^xsd:integer ;
+  opdac:candidateStatus "machine-proposed" ;
+  rdfs:domain <https://w3id.org/opda/candidate/property-pack/0.1/finance-and-banking/InsuranceStatement> ;
+  rdfs:range <http://www.w3.org/2004/02/skos/core#Concept> .
+
+<https://w3id.org/opda/candidate/property-pack/0.1/finance-and-banking/insuranceTopic>
+  a owl:ObjectProperty ;
+  rdfs:label "insurance topic"@en ;
+  skos:definition "Classifies the insurance status or difficulty addressed by a statement."@en ;
+  opdac:semanticHome <https://w3id.org/opda/candidate/property-pack/0.1/context/finance-and-banking> ;
+  opdac:sourceItemCount "5"^^xsd:integer ;
+  opdac:candidateStatus "machine-proposed" ;
+  rdfs:domain <https://w3id.org/opda/candidate/property-pack/0.1/finance-and-banking/InsuranceStatement> ;
+  rdfs:range <http://www.w3.org/2004/02/skos/core#Concept> .
+
+<https://w3id.org/opda/candidate/property-pack/0.1/finance-and-banking/mortgageDischargeOutcome>
+  a owl:ObjectProperty ;
+  rdfs:label "mortgage discharge outcome"@en ;
+  skos:definition "Records whether the stated proceeds are sufficient to repay all mortgages, or that no mortgage exists."@en ;
+  opdac:semanticHome <https://w3id.org/opda/candidate/property-pack/0.1/context/finance-and-banking> ;
+  opdac:sourceItemCount "1"^^xsd:integer ;
+  opdac:candidateStatus "machine-proposed" ;
+  rdfs:domain <https://w3id.org/opda/candidate/property-pack/0.1/finance-and-banking/MortgageDischargeStatement> ;
+  rdfs:range <http://www.w3.org/2004/02/skos/core#Concept> .

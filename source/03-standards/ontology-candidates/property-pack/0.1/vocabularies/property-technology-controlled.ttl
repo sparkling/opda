@@ -1,0 +1,55 @@
+VERSION "1.2-basic"
+
+@prefix common: <https://w3id.org/opda/candidate/property-pack/0.1/common/> .
+@prefix conv: <https://w3id.org/opda/candidate/property-pack/0.1/conveyancing/> .
+@prefix dbt: <https://w3id.org/opda/candidate/property-pack/0.1/dbt-smart-data/> .
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix ea: <https://w3id.org/opda/candidate/property-pack/0.1/estate-agency/> .
+@prefix fb: <https://w3id.org/opda/candidate/property-pack/0.1/finance-and-banking/> .
+@prefix opdac: <https://w3id.org/opda/candidate/property-pack/0.1/meta/> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix pds: <https://w3id.org/opda/candidate/property-pack/0.1/property-data-services/> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix pt: <https://w3id.org/opda/candidate/property-pack/0.1/property-technology/> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix sv: <https://w3id.org/opda/candidate/property-pack/0.1/surveying-and-valuation/> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+<https://w3id.org/opda/candidate/property-pack/0.1/property-technology/vocabulary/BroadbandConnectionTypeScheme>
+  a skos:ConceptScheme ;
+  skos:prefLabel "broadband connection type"@en ;
+  skos:definition "A broadband access technology stated as available at a property."@en ;
+  opdac:semanticHome <https://w3id.org/opda/candidate/property-pack/0.1/context/property-technology> ;
+  opdac:candidateStatus "machine-proposed" .
+
+<https://w3id.org/opda/candidate/property-pack/0.1/property-technology/vocabulary/BroadbandConnectionTypeScheme/concept/none>
+  a skos:Concept ;
+  skos:inScheme <https://w3id.org/opda/candidate/property-pack/0.1/property-technology/vocabulary/BroadbandConnectionTypeScheme> ;
+  skos:prefLabel "None"@en ;
+  skos:notation "None" .
+
+<https://w3id.org/opda/candidate/property-pack/0.1/property-technology/vocabulary/BroadbandConnectionTypeScheme/concept/adsl>
+  a skos:Concept ;
+  skos:inScheme <https://w3id.org/opda/candidate/property-pack/0.1/property-technology/vocabulary/BroadbandConnectionTypeScheme> ;
+  skos:prefLabel "ADSL copper wire"@en ;
+  skos:notation "ADSL copper wire" .
+
+<https://w3id.org/opda/candidate/property-pack/0.1/property-technology/vocabulary/BroadbandConnectionTypeScheme/concept/cable>
+  a skos:Concept ;
+  skos:inScheme <https://w3id.org/opda/candidate/property-pack/0.1/property-technology/vocabulary/BroadbandConnectionTypeScheme> ;
+  skos:prefLabel "Cable"@en ;
+  skos:notation "Cable" .
+
+<https://w3id.org/opda/candidate/property-pack/0.1/property-technology/vocabulary/BroadbandConnectionTypeScheme/concept/fttc>
+  a skos:Concept ;
+  skos:inScheme <https://w3id.org/opda/candidate/property-pack/0.1/property-technology/vocabulary/BroadbandConnectionTypeScheme> ;
+  skos:prefLabel "FTTC"@en ;
+  skos:notation "FTTC (Fibre to the Cabinet)" .
+
+<https://w3id.org/opda/candidate/property-pack/0.1/property-technology/vocabulary/BroadbandConnectionTypeScheme/concept/fttp>
+  a skos:Concept ;
+  skos:inScheme <https://w3id.org/opda/candidate/property-pack/0.1/property-technology/vocabulary/BroadbandConnectionTypeScheme> ;
+  skos:prefLabel "FTTP"@en ;
+  skos:notation "FTTP (Fibre to the Premises)" .

@@ -1,0 +1,406 @@
+[context]
+id = "conveyancing"
+prefix = "conv"
+
+[[term]]
+id = "RegisteredTitle"
+kind = "class"
+label = "Registered title"
+definition = "A registered legal title to an estate or interest in land."
+identity = "Identified by the title number assigned by the land registration authority."
+
+[[term]]
+id = "hasRegisteredTitle"
+kind = "object-property"
+label = "has registered title"
+definition = "Relates a property to a registered title intended to be transferred."
+domain = "common:Property"
+range = "conv:RegisteredTitle"
+
+[[term]]
+id = "titleNumber"
+kind = "datatype-property"
+label = "title number"
+definition = "The identifier assigned to a registered title by the land registration authority."
+domain = "conv:RegisteredTitle"
+datatype = "xsd:string"
+max_count = 1
+
+[[term]]
+id = "RegisterExtract"
+kind = "class"
+label = "Register extract"
+definition = "A dated extract containing title and entry information supplied from a land register."
+identity = "Identified by the represented title, edition and official-copy timestamp."
+
+[[term]]
+id = "hasRegisterExtract"
+kind = "object-property"
+label = "has register extract"
+definition = "Relates a registered title to an extract supplied as evidence."
+domain = "conv:RegisteredTitle"
+range = "conv:RegisterExtract"
+
+[[term]]
+id = "editionDate"
+kind = "datatype-property"
+label = "edition date"
+definition = "The date of the register edition represented by an extract."
+domain = "conv:RegisterExtract"
+datatype = "xsd:date"
+max_count = 1
+
+[[term]]
+id = "officialCopyDateTime"
+kind = "datatype-property"
+label = "official copy date and time"
+definition = "The date and time at which an official register copy was produced."
+domain = "conv:RegisterExtract"
+datatype = "xsd:dateTime"
+max_count = 1
+
+[[term]]
+id = "RegisterEntry"
+kind = "class"
+label = "register entry"
+definition = "A numbered statement recorded in a land-register extract."
+identity = "Identified within an extract by its entry number."
+
+[[term]]
+id = "hasRegisterEntry"
+kind = "object-property"
+label = "has register entry"
+definition = "Relates a register extract to one of its entries."
+domain = "conv:RegisterExtract"
+range = "conv:RegisterEntry"
+
+[[term]]
+id = "entryNumber"
+kind = "datatype-property"
+label = "entry number"
+definition = "The local number assigned to a register entry within an extract."
+domain = "conv:RegisterEntry"
+datatype = "xsd:string"
+max_count = 1
+
+[[term]]
+id = "entryText"
+kind = "datatype-property"
+label = "entry text"
+definition = "The text stated for a register entry."
+domain = "conv:RegisterEntry"
+datatype = "xsd:string"
+max_count = 1
+
+[[term]]
+id = "TitleAttributeStatement"
+kind = "class"
+label = "title attribute statement"
+definition = "A typed statement about the registration or classification of a registered title."
+
+[[term]]
+id = "hasTitleAttribute"
+kind = "object-property"
+label = "has title attribute"
+definition = "Relates a registered title to a typed title-attribute statement."
+domain = "conv:RegisteredTitle"
+range = "conv:TitleAttributeStatement"
+
+[[term]]
+id = "titleAttributeType"
+kind = "object-property"
+label = "title attribute type"
+definition = "Classifies the subject addressed by a title-attribute statement."
+domain = "conv:TitleAttributeStatement"
+range = "skos:Concept"
+
+[[term]]
+id = "titleAttributeValue"
+kind = "datatype-property"
+label = "title attribute value"
+definition = "The literal value stated for a title attribute."
+domain = "conv:TitleAttributeStatement"
+datatype = "xsd:string"
+max_count = 1
+
+[[term]]
+id = "RegisterIndicator"
+kind = "class"
+label = "register indicator"
+definition = "A typed indication that a category of entry is present in a register extract."
+
+[[term]]
+id = "hasRegisterIndicator"
+kind = "object-property"
+label = "has register indicator"
+definition = "Relates a register extract to a typed presence indicator."
+domain = "conv:RegisterExtract"
+range = "conv:RegisterIndicator"
+
+[[term]]
+id = "indicatorType"
+kind = "object-property"
+label = "indicator type"
+definition = "Classifies the category of register entry covered by an indicator."
+domain = "conv:RegisterIndicator"
+range = "skos:Concept"
+
+[[term]]
+id = "indicatorPresent"
+kind = "datatype-property"
+label = "indicator present"
+definition = "States whether the indicated category is present."
+domain = "conv:RegisterIndicator"
+datatype = "xsd:boolean"
+max_count = 1
+
+[[term]]
+id = "Lease"
+kind = "class"
+label = "lease"
+definition = "A lease referred to by a registered title or register entry."
+identity = "Identified by the represented title, lease date, term and parties, subject to review."
+
+[[term]]
+id = "hasLease"
+kind = "object-property"
+label = "has lease"
+definition = "Relates a registered title or entry to a lease that it records."
+range = "conv:Lease"
+
+[[term]]
+id = "leaseDate"
+kind = "datatype-property"
+label = "lease date"
+definition = "The date on which a lease was made."
+domain = "conv:Lease"
+datatype = "xsd:date"
+max_count = 1
+
+[[term]]
+id = "leaseTerm"
+kind = "datatype-property"
+label = "lease term"
+definition = "The duration and commencement terms stated for a lease."
+domain = "conv:Lease"
+datatype = "xsd:string"
+max_count = 1
+
+[[term]]
+id = "LegalParty"
+kind = "class"
+label = "legal party"
+definition = "A person or organisation named in a title, lease, ownership interest or transaction."
+identity = "Identity must be established by the relevant authoritative party record; names alone are descriptive."
+
+[[term]]
+id = "hasLegalParty"
+kind = "object-property"
+label = "has legal party"
+definition = "Relates a legal record or interest to a named person or organisation."
+range = "conv:LegalParty"
+
+[[term]]
+id = "legalPartyName"
+kind = "datatype-property"
+label = "legal party name"
+definition = "A name stated for a legal party in the source record."
+domain = "conv:LegalParty"
+datatype = "xsd:string"
+
+[[term]]
+id = "OwnershipInterest"
+kind = "class"
+label = "ownership interest"
+definition = "A legal ownership interest in a property that is to be transferred."
+
+[[term]]
+id = "hasOwnershipInterest"
+kind = "object-property"
+label = "has ownership interest"
+definition = "Relates a property to a legal ownership interest."
+domain = "common:Property"
+range = "conv:OwnershipInterest"
+
+[[term]]
+id = "ownershipType"
+kind = "object-property"
+label = "ownership type"
+definition = "Classifies the tenure or ownership form of an ownership interest."
+domain = "conv:OwnershipInterest"
+range = "skos:Concept"
+
+[[term]]
+id = "LegalStatement"
+kind = "class"
+label = "legal statement"
+definition = "A typed disclosure of a legal fact, issue or position concerning a property."
+
+[[term]]
+id = "hasLegalStatement"
+kind = "object-property"
+label = "has legal statement"
+definition = "Relates a property to a legal statement supplied for conveyancing."
+domain = "common:Property"
+range = "conv:LegalStatement"
+
+[[term]]
+id = "statementType"
+kind = "object-property"
+label = "statement type"
+definition = "Classifies the precise subject addressed by a legal statement."
+domain = "conv:LegalStatement"
+range = "skos:Concept"
+
+[[term]]
+id = "statementOutcome"
+kind = "object-property"
+label = "statement outcome"
+definition = "Records the controlled response or status asserted by a legal statement."
+domain = "conv:LegalStatement"
+range = "skos:Concept"
+
+[[term]]
+id = "BoundaryStatement"
+kind = "class"
+label = "boundary statement"
+definition = "A statement about the extent, features, ownership or discrepancy of a property boundary."
+subclass_of = "conv:LegalStatement"
+
+[[term]]
+id = "RightStatement"
+kind = "class"
+label = "right statement"
+definition = "A statement about a right, restriction or informal arrangement affecting land."
+subclass_of = "conv:LegalStatement"
+
+[[term]]
+id = "NoticeStatement"
+kind = "class"
+label = "notice statement"
+definition = "A statement about a notice, application, proposal or proceeding affecting a property."
+subclass_of = "conv:LegalStatement"
+
+[[term]]
+id = "DisclosureStatement"
+kind = "class"
+label = "disclosure statement"
+definition = "A statement disclosing another material, legal or transaction issue."
+subclass_of = "conv:LegalStatement"
+
+[[term]]
+id = "FixtureSchedule"
+kind = "class"
+label = "fixtures and fittings schedule"
+definition = "A schedule recording how fixtures, fittings and other items are to be treated in a sale."
+
+[[term]]
+id = "hasFixtureSchedule"
+kind = "object-property"
+label = "has fixtures and fittings schedule"
+definition = "Relates a property transaction to its fixtures and fittings schedule."
+range = "conv:FixtureSchedule"
+
+[[term]]
+id = "FixtureItem"
+kind = "class"
+label = "fixture or fitting item"
+definition = "An item or item category recorded in a fixtures and fittings schedule."
+
+[[term]]
+id = "hasFixtureItem"
+kind = "object-property"
+label = "has fixture item"
+definition = "Relates a fixtures and fittings schedule to an item entry."
+domain = "conv:FixtureSchedule"
+range = "conv:FixtureItem"
+
+[[term]]
+id = "fixtureCategory"
+kind = "object-property"
+label = "fixture category"
+definition = "Classifies the kind or source category of a fixture or fitting item."
+domain = "conv:FixtureItem"
+range = "skos:Concept"
+
+[[term]]
+id = "fixtureName"
+kind = "datatype-property"
+label = "fixture name"
+definition = "The name stated for a fixture or fitting that is not represented by a predefined category."
+domain = "conv:FixtureItem"
+datatype = "xsd:string"
+
+[[term]]
+id = "fixtureLocation"
+kind = "object-property"
+label = "fixture location"
+definition = "Classifies the room or area associated with a fixture or fitting item."
+domain = "conv:FixtureItem"
+range = "skos:Concept"
+
+[[term]]
+id = "inclusionStatus"
+kind = "object-property"
+label = "inclusion status"
+definition = "Records whether an item is included, excluded or absent from the sale."
+domain = "conv:FixtureItem"
+range = "skos:Concept"
+
+[[term]]
+id = "Attestation"
+kind = "class"
+label = "attestation"
+definition = "A declaration by an accountable party confirming accuracy, authority or a commitment to provide information."
+
+[[term]]
+id = "hasAttestation"
+kind = "object-property"
+label = "has attestation"
+definition = "Relates a Property Pack to an attestation made by an accountable party."
+range = "conv:Attestation"
+
+[[term]]
+id = "attestationType"
+kind = "object-property"
+label = "attestation type"
+definition = "Classifies the proposition covered by an attestation."
+domain = "conv:Attestation"
+range = "skos:Concept"
+
+[[term]]
+id = "attestedOutcome"
+kind = "datatype-property"
+label = "attested outcome"
+definition = "The truth value explicitly attested by the accountable party."
+domain = "conv:Attestation"
+datatype = "xsd:boolean"
+max_count = 1
+
+[[term]]
+id = "CompletionStatement"
+kind = "class"
+label = "completion statement"
+definition = "A statement about timing, dependencies or readiness for completion and moving."
+subclass_of = "conv:LegalStatement"
+
+[[term]]
+id = "OccupancyStatement"
+kind = "class"
+label = "occupancy statement"
+definition = "A statement about people occupying the property in connection with a sale."
+subclass_of = "conv:LegalStatement"
+
+[[term]]
+id = "GuaranteeStatement"
+kind = "class"
+label = "guarantee statement"
+definition = "A statement about a guarantee, warranty or indemnity insurance relating to the property."
+subclass_of = "conv:LegalStatement"
+
+[[term]]
+id = "ServiceCrossingStatement"
+kind = "class"
+label = "service crossing statement"
+definition = "A statement about service media crossing the property or serving other land."
+subclass_of = "conv:LegalStatement"

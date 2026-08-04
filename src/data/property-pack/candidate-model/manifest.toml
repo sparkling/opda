@@ -1,0 +1,94 @@
+schema_version = "0.1"
+candidate_id = "property-pack-0.1"
+candidate_version = "0.1.0-draft"
+status = "machine-proposed"
+base_iri = "https://w3id.org/opda/candidate/property-pack/0.1/"
+catalogue_path = "src/data/property-pack/required-properties.json"
+catalogue_sha256 = "8f60ffa353b064bc8232ed44dac2aba956d0a493395215f15da4ba3650be72b4"
+builder_baseline = "b64e4288bc07277198abad83bd7978db5c938b6b"
+rules_fragments = ["rules-conveyancing.toml", "rules-domains.toml"]
+vocabulary_fragment = "vocabularies.toml"
+context_fragments = [
+  "contexts/common.toml",
+  "contexts/conveyancing.toml",
+  "contexts/property-data-services.toml",
+  "contexts/surveying-and-valuation.toml",
+  "contexts/estate-agency.toml",
+  "contexts/finance-and-banking.toml",
+  "contexts/property-technology.toml",
+  "contexts/dbt-smart-data.toml",
+]
+
+[scope]
+source_item_count = 451
+scope_rule = "Exactly the workbook rows marked Required; supporting ontology constructs do not enlarge the business-data scope."
+legacy_rule = "Legacy schemas and ontology are attributed evidence only and are never imported by this candidate."
+authority = "OPDA working groups and recorded delegates; AI outputs have no decision authority."
+
+[standards]
+rdf_profile = "RDF 1.2 Basic"
+rdf_concepts = "https://www.w3.org/TR/2026/CR-rdf12-concepts-20260407/"
+rdf_turtle = "https://www.w3.org/TR/2026/WD-rdf12-turtle-20260528/"
+sparql_query = "https://www.w3.org/TR/2026/WD-sparql12-query-20260605/"
+shacl_profile = "SHACL 1.2 Core working-draft subset used by this candidate"
+shacl_core = "https://www.w3.org/TR/2026/WD-shacl12-core-20260516/"
+owl = "https://www.w3.org/TR/owl2-overview/"
+skos = "https://www.w3.org/TR/skos-reference/"
+prov = "https://www.w3.org/TR/prov-o/"
+dcterms = "https://www.dublincore.org/specifications/dublin-core/dcmi-terms/"
+
+[[context]]
+id = "common"
+prefix = "common"
+kind = "common-boundary"
+label = "Common boundary"
+definition = "A deliberately small exchange boundary for stable identity and meaning genuinely shared by several property domains."
+
+[[context]]
+id = "conveyancing"
+prefix = "conv"
+kind = "bounded-context"
+label = "Conveyancing"
+definition = "Legal title, ownership, rights, disclosure, completion and transfer meanings used in conveyancing."
+
+[[context]]
+id = "property-data-services"
+prefix = "pds"
+kind = "bounded-context"
+label = "Property data services"
+definition = "Authoritative and derived property information supplied through searches, registers, certificates and utility records."
+
+[[context]]
+id = "surveying-and-valuation"
+prefix = "sv"
+kind = "bounded-context"
+label = "Surveying and valuation"
+definition = "Physical construction, condition, alteration and installed-feature meanings used to inspect and value property."
+
+[[context]]
+id = "estate-agency"
+prefix = "ea"
+kind = "bounded-context"
+label = "Estate agency"
+definition = "Marketing, pricing, letting, media and consumer disclosure meanings used in estate agency."
+
+[[context]]
+id = "finance-and-banking"
+prefix = "fb"
+kind = "bounded-context"
+label = "Finance and banking"
+definition = "Mortgage, repayment, insurance and financial-obligation meanings used by lenders and advisers."
+
+[[context]]
+id = "property-technology"
+prefix = "pt"
+kind = "bounded-context"
+label = "Property technology"
+definition = "Digital property records, smart-home capabilities and connectivity meanings used by property technology."
+
+[[context]]
+id = "dbt-smart-data"
+prefix = "dbt"
+kind = "scheme-context"
+label = "DBT Smart Data"
+definition = "Scheme-level authorisation and controlled sharing meanings that apply across participating sectors."
