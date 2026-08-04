@@ -173,8 +173,8 @@ mappings, and recorded human approval is still required before a semantic releas
 | Domain/context ownership candidates | Generated; human review pending | All 451 items have one proposed semantic home; common contains one source item |
 | Resource/relationship/attribute classification | Generated; human review pending | Every item reaches one or more of 159 traced candidate resources |
 | Vocabulary rationalisation and definition review | Generated; human review pending | 14 candidate SKOS schemes; definitions remain machine-proposed |
-| New ontology, SHACL shapes and context map | Local candidate complete | 53-file isolated corpus; 56 deterministic checks pass; no cross-context equivalence asserted |
-| Public migration/replacement of current pages | Not authorised | Requires a separate publication and migration decision |
+| New ontology, SHACL shapes and context map | Public review candidate | Isolated corpus; 56 deterministic checks pass; no cross-context equivalence asserted |
+| Public migration/replacement of current pages | Not authorised | The separate V2 review section is published; replacing current pages still requires a migration decision |
 
 ## Evidence and Related Decisions
 
@@ -190,3 +190,6 @@ mappings, and recorded human approval is still required before a semantic releas
   451-item trace projection, 159-resource ontology candidate, 14 controlled vocabularies,
   context-owned SHACL shapes and a fail-closed deterministic validation receipt. All semantic
   dispositions remain machine proposals pending human review.
+- **2026-08-04 — Public review authorised.** The operator authorised publication of the isolated
+  candidate under the V2 review section. Publication makes the candidate reviewable; it does not
+  approve its semantics or replace the current ontology.

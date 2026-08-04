@@ -58,7 +58,7 @@ def candidate_manifest(out_dir: Path, model: dict[str, Any], classification: dic
     return {
         "schema_version": "0.1", "candidate_id": model["manifest"]["candidate_id"],
         "candidate_version": model["manifest"]["candidate_version"],
-        "candidate_status": model["manifest"]["status"], "publication_status": "local-review-only",
+        "candidate_status": model["manifest"]["status"], "publication_status": "public-review-only",
         "base_iri": model["manifest"]["base_iri"], "source_item_count": len(classification["coverage"]),
         "ontology_resource_count": len(model["terms"]), "semantic_home_counts": dict(sorted(home_counts.items())),
         "source_inputs": source_inputs(model), "files": files,

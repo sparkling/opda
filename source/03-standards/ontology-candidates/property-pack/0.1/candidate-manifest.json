@@ -272,7 +272,7 @@
     }
   ],
   "ontology_resource_count": 159,
-  "publication_status": "local-review-only",
+  "publication_status": "public-review-only",
   "schema_version": "0.1",
   "semantic_home_counts": {
     "common": 1,

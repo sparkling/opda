@@ -14,7 +14,7 @@ const report = JSON.parse(readFileSync(`${root}/validation/report.json`, 'utf8')
 test('candidate covers the exact closed scope and remains explicitly non-authoritative', () => {
   assert.equal(manifest.source_item_count, 451);
   assert.equal(manifest.candidate_status, 'machine-proposed');
-  assert.equal(manifest.publication_status, 'local-review-only');
+  assert.equal(manifest.publication_status, 'public-review-only');
   assert.equal(coverage.length, 451);
   assert.equal(dictionary.length, 451);
   assert.equal(new Set(coverage.map((entry) => entry.item_id)).size, 451);
