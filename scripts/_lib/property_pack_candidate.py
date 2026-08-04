@@ -255,6 +255,7 @@ def build_classification(model: dict[str, Any]) -> dict[str, Any]:
             "evidence": record["evidence"],
             "candidate_status": "machine-proposed",
         })
+    direct_traces = {key: set(values) for key, values in traces.items()}
     changed = True
     while changed:
         changed = False
@@ -270,5 +271,9 @@ def build_classification(model: dict[str, Any]) -> dict[str, Any]:
     return {
         "coverage": coverage,
         "term_traces": {key: sorted(values) for key, values in traces.items()},
+        "term_direct_traces": {key: sorted(values) for key, values in direct_traces.items()},
+        "term_structural_traces": {
+            key: sorted(values - direct_traces[key]) for key, values in traces.items()
+        },
         "vocabulary_traces": {key: sorted(values) for key, values in vocabulary_traces.items()},
     }

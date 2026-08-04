@@ -70,6 +70,23 @@ test('the common boundary stays small and context ownership is explicit', () => 
   assert.ok(glossary.every((term) => term.source_item_ids.length));
 });
 
+test('direct evidence is distinguished from structurally inherited traces', () => {
+  const structuralOnly = glossary.filter((term) =>
+    term.direct_source_item_ids.length === 0 && term.structural_source_item_ids.length > 0
+  );
+  assert.deepEqual(structuralOnly.map((term) => term.key), [
+    'conveyancing:LegalStatement',
+    'property-data-services:InformationRecord',
+    'surveying-and-valuation:PhysicalFeatureStatement',
+  ]);
+  for (const term of glossary) {
+    assert.deepEqual(
+      [...term.direct_source_item_ids, ...term.structural_source_item_ids].sort(),
+      term.source_item_ids,
+    );
+  }
+});
+
 test('RDF 1.2 Basic, SHACL and SPARQL compatibility gates pass without overclaiming', () => {
   assert.equal(report.status, 'pass');
   assert.equal(report.standards_assurance.rdf_1_2_basic, 'pass');

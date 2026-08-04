@@ -244,7 +244,10 @@ def semantic_projections(model: dict[str, Any], classification: dict[str, Any]) 
                 "min_count": term.get("min_count"), "max_count": term.get("max_count"),
                 "pattern": term.get("pattern", ""),
             },
-            "source_item_ids": classification["term_traces"][key], "candidate_status": model["manifest"]["status"],
+            "source_item_ids": classification["term_traces"][key],
+            "direct_source_item_ids": classification["term_direct_traces"][key],
+            "structural_source_item_ids": classification["term_structural_traces"][key],
+            "candidate_status": model["manifest"]["status"],
         })
     dictionary = [{
         "item_id": entry["item_id"], "source_path": entry["source_path"], "label": entry["preferred_label"],
