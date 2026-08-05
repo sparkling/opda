@@ -2,7 +2,7 @@
 
 | Field | Value |
 |---|---|
-| Status | In progress; Wave 1 prepared; no Postmark wave sent |
+| Status | In progress; Wave 1 sent and reconciled at submission; observation underway |
 | Prepared | 2026-08-05 |
 | Updated | 2026-08-05 |
 | Initial scope | Finance and Banking Working Group |
@@ -85,8 +85,8 @@ The following is the starting state on 2026-08-05:
   Postmark recorded successful delivery for both; the later test recorded one open and
   one click while its per-message link tracking was still enabled. Current server and
   Wave 1 settings are opens on and links off. No Postmark bulk wave has occurred.
-- The existing ignored not-accepted mailing list contains 311 entries. Live acceptance
-  removes two people who accepted after that snapshot, leaving 309 current candidates.
+- The ignored not-accepted mailing list was refreshed from live acceptance on
+  2026-08-05 and contains the 309 current pending candidates.
 
 Current acceptance, suppression and deliverability state is deliberately not frozen
 in this document because it changes. The sender must query it again immediately before
@@ -210,7 +210,7 @@ organisations/domains.
 
 ### Phase 3 — final deliverability preflight
 
-- **Status:** Ready for exact-digest approval
+- **Status:** Completed for Wave 1 on 2026-08-05
 - **Cost:** Low
 - **Precondition:** QA gate B passes.
 - **Effect:** A named first wave is ready for an approval decision.
@@ -238,7 +238,7 @@ approval, stop after the report.
 
 ### Phase 4 — staged live rollout
 
-- **Status:** Pending and not authorised
+- **Status:** In progress; Wave 1 sent on 2026-08-05; later waves not authorised
 - **Cost:** Three controlled send windows plus at least two observation intervals
 - **Precondition:** QA gate C passes for the specific wave.
 - **Effect:** Invitations are delivered gradually, with evidence reviewed before volume
@@ -256,6 +256,13 @@ The default sequence is:
 5. **Wave 3 — remaining eligible recipients.** Re-derive, digest and obtain a third
    explicit approval. If the remaining population or evidence justifies it, split this
    into smaller waves rather than increasing risk.
+
+Wave 1 used digest
+`9cb44ffc9c517d34a9bd6092a4d231e144279246e3df4a8b4626e5ed327bb28a`.
+Postmark accepted all 50 submissions, returned 50 unique message IDs and subsequently
+reported all 50 messages as `Sent`. The private append-only ledger and immutable
+snapshot record the exact recipients. These are submission and sending results, not
+proof that every receiving mail system placed the message in an inbox.
 
 Prefer a staffed UK working-day window, normally 09:30–11:30 Europe/London, so that
 OPDA can investigate blocks and replies the same day. Timing is an operational support
@@ -340,6 +347,8 @@ Actions:
 
 ## Next authorised work
 
-The next safe action is Henrik's explicit confirmation of the prepared Wave 1 digest.
-After that confirmation, execute only that 50-recipient snapshot and reconcile its
-append-only ledger before any later wave is considered.
+Observe and reconcile Wave 1 for at least one working day. Before Wave 2, refresh
+Microsoft acceptance and Postmark suppression state, remove Wave 1 recipients from the
+candidate population, prepare a new 100-recipient snapshot and digest, and obtain
+Henrik's explicit approval for that specific wave. No later wave is currently
+authorised.
