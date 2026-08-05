@@ -49,7 +49,7 @@ The rollout is complete when:
 - Sending newsletters, promotional marketing or a model-update campaign.
 - Building a general contact-management or mailing-list system.
 - Replacing Microsoft Teams or SharePoint access provisioning.
-- Measuring opens or clicks.
+- Treating an open event as proof of inbox placement or enabling click tracking.
 - Sending all working-group messages automatically.
 - Buying or warming a dedicated IP. This volume uses Postmark's managed shared pool.
 - Falling back to a Microsoft 365 bulk send if Postmark or a preflight gate fails.
@@ -75,10 +75,12 @@ The following is the starting state on 2026-08-05:
 - The live HTML is unchanged from the carefully reviewed source template. The
   plain-text counterpart is present and Postmark's template validator accepts the
   HTML, text and subject.
-- Server defaults are `TrackOpens: false` and `TrackLinks: None`.
-- Two separately approved test messages have been sent to Henrik only. The latest uses
-  the `broadcast` stream with open and link tracking disabled, and Postmark recorded a
-  successful SMTP delivery event. No bulk send has occurred.
+- Server defaults are `TrackOpens: true` and `TrackLinks: None`. Future HTML messages
+  include Postmark's open-tracking pixel without rewriting their links.
+- Two separately approved test messages have been sent to Henrik only. Both predate
+  the enabled server-wide open tracking and are not retroactively tracked. Postmark
+  recorded a successful SMTP delivery event for the latest test. No bulk send has
+  occurred.
 
 Current acceptance, suppression and deliverability state is deliberately not frozen
 in this document because it changes. The sender must query it again immediately before
@@ -97,6 +99,7 @@ every wave.
 | Inline brand asset | `docs/templates/assets/opda-email-logo.png` | Attach as CID `opda-logo`; do not use a remote image |
 | Unsubscribes, hard bounces and complaints | Postmark Broadcast-stream suppressions | Exclude on every derived send |
 | Delivery receipt | Ignored append-only wave ledger plus Postmark message activity | Store Message IDs and results; no secrets in tracked files |
+| Open indication | Postmark first-open activity | Report separately as an approximate secondary signal, never as proof of delivery or readership |
 
 Generated wave manifests are immutable operational snapshots, not separately maintained
 mailing lists. They are recreated from the sources above and identified by a SHA-256
@@ -109,7 +112,8 @@ digest.
 - **Status:** Completed 2026-08-05
 - **Cost:** Low
 - **Precondition:** The existing live template and its source HTML are recoverable.
-- **Effect:** A multipart, privacy-preserving template is ready for controlled delivery.
+- **Effect:** A multipart template with embedded branding, delivery evidence and
+  first-open indication is ready for controlled delivery.
 
 Completed work:
 
@@ -118,8 +122,8 @@ Completed work:
    normalisation.
 3. Added and validated the plain-text counterpart.
 4. Updated the same live template without changing its ID, alias, subject or HTML.
-5. Disabled server-default open and link tracking.
-6. Confirmed that no message was sent by these changes.
+5. Enabled server-wide open tracking while keeping link tracking disabled.
+6. Confirmed that no message was sent by these configuration changes.
 
 ### Phase 1 — reconcile the live baseline
 
@@ -172,8 +176,8 @@ Implement a repository sender with these invariants:
   `smartdata@openpropdata.org.uk`, the recipient's `display_name` and that recipient's
   own `access_url`;
 - the tracked logo is attached inline with CID `opda-logo`;
-- `TrackOpens` is false and `TrackLinks` is `None` at message level as well as server
-  level;
+- `TrackOpens` is true and `TrackLinks` is `None` at message level; the dedicated
+  server also enforces open tracking and keeps link tracking disabled;
 - one recipient-specific message is constructed per participant, although bounded
   sub-batches may be submitted through Postmark's template batch endpoint;
 - every per-message response is inspected because Postmark can return HTTP success
@@ -187,7 +191,7 @@ Implement a repository sender with these invariants:
 Tests use synthetic recipients and URLs. They cover roster normalisation, alias and
 duplicate rejection, accepted/suppressed exclusion, URL-host allowlisting, template
 variables, CID attachment, dry-run no-send behaviour, digest mismatch, per-message
-batch errors, ledger idempotency and crash recovery.
+batch errors, open-on/link-off tracking flags, ledger idempotency and crash recovery.
 
 **QA gate B:** unit tests pass, Postmark validates the live template, a dry run renders
 every selected message, the final candidate digest is stable across two clean runs and
@@ -208,7 +212,8 @@ Immediately before a wave:
 3. Confirm the `broadcast` stream uses Postmark unsubscribe handling and that the
    visible `pm:unsubscribe` link remains in both template variants.
 4. Confirm SPF, DKIM and DMARC alignment and run Postmark's content/template checks.
-5. Confirm server and per-message tracking remain disabled.
+5. Confirm open tracking remains enabled and link tracking remains disabled at both
+   server and per-message level.
 6. Review the rendered HTML and text using a synthetic model; do not send another live
    test unless separately approved.
 7. Stratify the first wave across organisations and receiving domains rather than
@@ -274,13 +279,15 @@ rollout. This is deliberately stricter than Postmark's service maximums.
 Actions:
 
 1. Reconcile the append-only ledger with Postmark activity and Microsoft acceptance.
-2. Classify outcomes as delivered-to-server, bounced, blocked, suppressed,
-   unsubscribed, accepted or still pending. Do not count an out-of-office response as
-   non-delivery and do not equate server acceptance with inbox placement.
+2. Classify outcomes as delivered-to-server, first-open observed, bounced, blocked,
+   suppressed, unsubscribed, accepted or still pending. Do not count an out-of-office
+   response as non-delivery, do not equate server acceptance with inbox placement, and
+   do not treat the absence or presence of an open event as definitive readership.
 3. Contact blocked organisations through an already authorised route only when human
    follow-up is approved; do not blindly resend.
 4. Produce a privacy-safe completion report with wave sizes, authentication state,
-   bounce/complaint/suppression counts and acceptance movement.
+   delivery, approximate first-open, bounce/complaint/suppression counts and acceptance
+   movement.
 5. Update ADR-0065's facts, `updated` date and implementation state when OPDA decides
    whether to accept the workflow. The plan and ADR must not retain the 368-versus-370
    discrepancy.
@@ -310,6 +317,8 @@ Actions:
   defines Broadcast streams and required unsubscribe management.
 - [Postmark Suppressions API](https://postmarkapp.com/developer/api/suppressions-api)
   is the live source for unsubscribes, hard bounces and complaints.
+- [Postmark open tracking](https://postmarkapp.com/developer/user-guide/tracking-opens)
+  defines the tracking pixel and its blocked-image and privacy-proxy limitations.
 - [Postmark domain warm-up guidance](https://postmarkapp.com/guides/how-to-warm-up-a-domain)
   supports gradual, evidence-led volume increases; its published troubleshooting
   threshold treats bounce rates above 3% as high.
