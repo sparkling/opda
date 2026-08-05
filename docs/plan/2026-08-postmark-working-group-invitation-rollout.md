@@ -76,8 +76,9 @@ The following is the starting state on 2026-08-05:
   plain-text counterpart is present and Postmark's template validator accepts the
   HTML, text and subject.
 - Server defaults are `TrackOpens: false` and `TrackLinks: None`.
-- One approved pilot message has been sent. It authenticated successfully and remains
-  the only Postmark outbound message. No bulk send has occurred.
+- Two separately approved test messages have been sent to Henrik only. The latest uses
+  the `broadcast` stream with open and link tracking disabled, and Postmark recorded a
+  successful SMTP delivery event. No bulk send has occurred.
 
 Current acceptance, suppression and deliverability state is deliberately not frozen
 in this document because it changes. The sender must query it again immediately before
@@ -167,7 +168,7 @@ Implement a repository sender with these invariants:
 - Codex does not invoke execution until Henrik explicitly approves that named digest;
 - the macOS Keychain supplies the Postmark token; tokens never enter command output,
   source, manifests or logs;
-- every message uses the existing template alias, the `broadcasts` Message Stream,
+- every message uses the existing template alias, the `broadcast` Message Stream,
   `smartdata@openpropdata.org.uk`, the recipient's `display_name` and that recipient's
   own `access_url`;
 - the tracked logo is attached inline with CID `opda-logo`;
@@ -204,7 +205,7 @@ Immediately before a wave:
 1. Re-query Microsoft acceptance and Postmark suppressions and regenerate the wave.
 2. Confirm the Postmark account and server are Live and the sender domain remains
    verified.
-3. Confirm the `broadcasts` stream uses Postmark unsubscribe handling and that the
+3. Confirm the `broadcast` stream uses Postmark unsubscribe handling and that the
    visible `pm:unsubscribe` link remains in both template variants.
 4. Confirm SPF, DKIM and DMARC alignment and run Postmark's content/template checks.
 5. Confirm server and per-message tracking remain disabled.
