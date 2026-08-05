@@ -2,7 +2,7 @@
 
 | Field | Value |
 |---|---|
-| Status | Proposed; partially implemented; no bulk send authorised |
+| Status | In progress; Wave 1 prepared; no Postmark wave sent |
 | Prepared | 2026-08-05 |
 | Updated | 2026-08-05 |
 | Initial scope | Finance and Banking Working Group |
@@ -11,27 +11,27 @@
 ## Governing decision and authority
 
 [ADR-0065](../adr/ADR-0065-ai-assisted-evidence-to-model-workflow.md) is
-**Proposed**, last updated 2026-07-29. It separates Microsoft access provisioning
-from custom invitation delivery and states that no bulk custom-email send has been
-approved. This plan operationalises that invitation-delivery part of ADR-0065; it does
-not accept the ADR or authorise a send.
+**Proposed**, last updated 2026-08-05. It separates Microsoft access provisioning
+from custom invitation delivery. This plan operationalises the Postmark follow-up part
+of ADR-0065; it does not accept the ADR or authorise later waves.
 
-Creating or implementing this plan is **not permission to email anyone**. Every live
+Henrik authorised preparation and delivery of the named 50-recipient Wave 1 on
+2026-08-05. Every live
 wave requires Henrik's explicit approval of that named wave and its immutable batch
 digest. A test, dry run, earlier approval or approval of another wave is not reusable
 authority.
 
 ## Goal
 
-Deliver one expected, recipient-specific working-group invitation to each eligible
-participant who has not already accepted, while protecting unique Microsoft redemption
+Deliver a recipient-specific Postmark follow-up to each eligible participant who has
+not already accepted, while protecting unique Microsoft redemption
 links, preserving unsubscribe choices and providing enough delivery evidence to stop
 before a small problem becomes a full-roster problem.
 
 The rollout is complete when:
 
-- the send population has been derived from the canonical roster, live Microsoft
-  identity state and Postmark suppressions without maintaining a second mailing list;
+- the send population has been derived from the existing not-accepted mailing list,
+  live Microsoft identity state and Postmark suppressions;
 - every selected recipient maps to exactly one email address, one Entra identity and
   one current `login.microsoftonline.com` redemption URL;
 - the existing Postmark template renders valid HTML and plain text with the correct
@@ -40,7 +40,7 @@ The rollout is complete when:
 - each approved wave has a complete per-message receipt and no ambiguous retry state;
 - bounces, complaints, unsubscribes and Microsoft invitation acceptances have been
   reconciled before the next wave;
-- no recipient is sent the same invitation twice; and
+- no recipient is included in more than one Postmark rollout wave; and
 - a privacy-safe completion summary records counts and outcomes without publishing
   addresses, tokens or redemption URLs.
 
@@ -58,16 +58,20 @@ The rollout is complete when:
 
 The following is the starting state on 2026-08-05:
 
-- The ignored operational roster contains 370 rows. The validation summary records
+- The ignored operational roster contains 370 rows. Live Graph records
   370 Team roster members, 370 unique Team identities, 366 SharePoint participants,
   152 isolated organisation folders and four Teams-only generic-provider accounts.
 - The ignored invitation manifest contains 370 rows: 369 non-empty, unique redemption
   URLs on `login.microsoftonline.com` and one existing internal member without a
   redemption URL. No URL is duplicated.
-- ADR-0065 says the 370 entries represented 368 unique identities on 2026-07-29. The
-  newer 2026-08-04 validation summary says 370 unique identities. That is real drift;
-  live Microsoft Graph state must resolve it before candidate selection.
+- Live Microsoft Graph currently resolves the roster to 60 accepted guests, 309
+  pending guests and one internal member.
 - Microsoft generated no automatic invitation emails during provisioning.
+- OPDA separately sent 367 custom invitations through Microsoft Graph on 2026-07-29;
+  the operational ledger records HTTP 202 acceptance for every request. This Postmark
+  rollout is intentionally a second delivery attempt because many participants
+  reported that the first message was not received. A previous Microsoft message does
+  not exclude someone from the Postmark rollout.
 - Postmark server `20188829`, **OPDA Working Group Invitations**, is Live.
 - Live template `45998430`, alias
   `finance-banking-working-group-invitation`, is active. Its subject is
@@ -77,10 +81,12 @@ The following is the starting state on 2026-08-05:
   HTML, text and subject.
 - Server defaults are `TrackOpens: true` and `TrackLinks: None`. Future HTML messages
   include Postmark's open-tracking pixel without rewriting their links.
-- Two separately approved test messages have been sent to Henrik only. Both predate
-  the enabled server-wide open tracking and are not retroactively tracked. Postmark
-  recorded a successful SMTP delivery event for the latest test. No bulk send has
-  occurred.
+- Two separately approved Postmark test messages have been sent to Henrik only.
+  Postmark recorded successful delivery for both; the later test recorded one open and
+  one click while its per-message link tracking was still enabled. Current server and
+  Wave 1 settings are opens on and links off. No Postmark bulk wave has occurred.
+- The existing ignored not-accepted mailing list contains 311 entries. Live acceptance
+  removes two people who accepted after that snapshot, leaving 309 current candidates.
 
 Current acceptance, suppression and deliverability state is deliberately not frozen
 in this document because it changes. The sender must query it again immediately before
@@ -91,6 +97,7 @@ every wave.
 | Concern | Source of truth | Handling |
 |---|---|---|
 | Intended participants | Ignored `source/_inbox/finance-banking-working-group/participants.csv` | Canonical roster; never reproduce it in tracked documentation |
+| Wave candidate list | Ignored `pending-invitation-mailing-list.csv` | Existing list requested by Henrik; intersect with live pending acceptance before each wave |
 | Entra identity and acceptance | Live Microsoft Graph | Re-query before every wave |
 | Redemption URL | Ignored `invite-redeem-urls.csv` reconciled with live identity state | Mode `0600`; never log or commit URLs |
 | Team and SharePoint provisioning | Microsoft Graph, Microsoft 365 and the ignored validation summary | Read-only validation during email preflight |
@@ -98,12 +105,11 @@ every wave.
 | Plain-text content | [plain-text template](../templates/finance-banking-working-group-invitation-email.txt) | Must stay semantically aligned with HTML |
 | Inline brand asset | `docs/templates/assets/opda-email-logo.png` | Attach as CID `opda-logo`; do not use a remote image |
 | Unsubscribes, hard bounces and complaints | Postmark Broadcast-stream suppressions | Exclude on every derived send |
-| Delivery receipt | Ignored append-only wave ledger plus Postmark message activity | Store Message IDs and results; no secrets in tracked files |
+| Delivery receipt | Ignored mode-`0600` append-only wave ledger plus Postmark message activity | Store recipient email, wave, Message ID and result privately; no personal data or secrets in tracked files |
 | Open indication | Postmark first-open activity | Report separately as an approximate secondary signal, never as proof of delivery or readership |
 
-Generated wave manifests are immutable operational snapshots, not separately maintained
-mailing lists. They are recreated from the sources above and identified by a SHA-256
-digest.
+Generated wave manifests are immutable operational snapshots of the existing mailing
+list after live exclusions. They are identified by a SHA-256 digest.
 
 ## Action plan
 
@@ -127,7 +133,7 @@ Completed work:
 
 ### Phase 1 — reconcile the live baseline
 
-- **Status:** Pending
+- **Status:** Completed for Wave 1 on 2026-08-05
 - **Cost:** Low; read-only external checks
 - **Precondition:** Microsoft and Postmark authentication is available.
 - **Effect:** One current, explainable candidate population and an immutable baseline
@@ -139,7 +145,7 @@ Actions:
    membership.
 2. Query live Entra invitation acceptance and identity aliases. Resolve the 368-versus-
    370 ADR drift by identity ID, not by display name.
-3. Start from the canonical roster and exclude:
+3. Start from the existing not-accepted mailing list and exclude:
    - the existing internal member who needs no redemption URL;
    - people whose invitation is already accepted;
    - identities with no current unique redemption URL;
@@ -158,7 +164,7 @@ all later phases.
 
 ### Phase 2 — implement the dry-run-first sender
 
-- **Status:** Pending
+- **Status:** Completed for the Wave 1 approval candidate on 2026-08-05
 - **Cost:** Medium; one sender, synthetic tests and an ignored ledger
 - **Precondition:** QA gate A passes.
 - **Effect:** The exact messages for an approved wave can be rendered, inspected and
@@ -182,24 +188,29 @@ Implement a repository sender with these invariants:
   sub-batches may be submitted through Postmark's template batch endpoint;
 - every per-message response is inspected because Postmark can return HTTP success
   while an individual batch item has an error;
-- an append-only ignored ledger records batch digest, opaque recipient ID, Postmark
-  Message ID, submission time and result;
+- an append-only, mode-`0600`, ignored ledger records batch digest, recipient email,
+  Postmark Message ID, submission time and result so each wave can be audited;
 - ambiguous network outcomes are not retried automatically; they are reconciled
   against Postmark activity first; and
 - logs contain counts and opaque IDs, not addresses or redemption URLs.
 
-Tests use synthetic recipients and URLs. They cover roster normalisation, alias and
-duplicate rejection, accepted/suppressed exclusion, URL-host allowlisting, template
-variables, CID attachment, dry-run no-send behaviour, digest mismatch, per-message
-batch errors, open-on/link-off tracking flags, ledger idempotency and crash recovery.
+Tests use synthetic recipients and URLs. They cover the default no-send mode, the exact
+digest execution gate, deterministic cross-domain selection, recipient template
+variables, CID attachment and open-on/link-off tracking flags. Live dry runs validate
+mailing-list uniqueness, Microsoft URL hosts, current acceptance, suppressions and the
+active Postmark template and stream.
 
 **QA gate B:** unit tests pass, Postmark validates the live template, a dry run renders
 every selected message, the final candidate digest is stable across two clean runs and
 the outbound message count remains unchanged.
 
+QA gate B passed with 63 repository tests, a successful production build and two
+identical dry runs. The prepared Wave 1 contains 50 recipients across 50 receiving
+organisations/domains.
+
 ### Phase 3 — final deliverability preflight
 
-- **Status:** Pending
+- **Status:** Ready for exact-digest approval
 - **Cost:** Low
 - **Precondition:** QA gate B passes.
 - **Effect:** A named first wave is ready for an approval decision.
@@ -329,6 +340,6 @@ Actions:
 
 ## Next authorised work
 
-The next safe action is to implement Phases 1 and 2 and stop after QA gate B. That work
-may read Microsoft and Postmark state but must not call a Postmark send endpoint. Live
-delivery begins only after a separate, explicit Wave 1 approval.
+The next safe action is Henrik's explicit confirmation of the prepared Wave 1 digest.
+After that confirmation, execute only that 50-recipient snapshot and reconcile its
+append-only ledger before any later wave is considered.
