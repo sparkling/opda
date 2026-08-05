@@ -1,0 +1,155 @@
+FINANCE AND BANKING WORKING GROUP
+
+You’re invited to help shape the Smart Property Data Trust Framework
+
+Hello {{display_name}},
+
+OPDA is bringing the property sector together to make UK property
+transaction data interoperable, verifiable and consent-driven. Today, the
+same information is repeatedly re-entered, translated and interpreted as it
+moves between organisations and systems. The OPDA Smart Property Data
+Standard will establish a shared language so that information can be
+understood, exchanged and reused with greater confidence.
+
+Rather than forcing the whole property lifecycle into one universal model,
+OPDA is creating a governed family of connected domain models, each shaped by
+the people who understand that part of the market. Finance and Banking is one
+part of that wider standard. The models will preserve precise local meaning
+while allowing information to cross boundaries, and will support familiar
+outputs such as business glossaries, data dictionaries, schemas, APIs, forms
+and readable documentation.
+
+You are not being asked to understand ontologies, adopt AI, or have technical
+knowledge. We ask you to share the material your organisation already uses,
+contribute your domain knowledge in Teams and challenge successive model
+drafts. OPDA will use an AI-assisted, human-governed process to turn that
+evidence and feedback into reviewable candidates, publishing and revising them
+with the group until the Finance and Banking model is ready to become its
+first official working-group draft.
+
+I ACCEPT
+{{access_url}}
+
+IMPORTANT: Sign in using the email account that received this invitation.
+This invitation link is unique to that account, so please do not forward this
+email.
+
+YOUR CONTRIBUTION
+
+There are three ways to take part:
+
+1. Share resources. Upload approved source material from your organisation as
+   evidence for the model.
+2. Join the discussion. Contribute to relevant conversations in Teams and
+   keep replies in their existing threads.
+3. Review model drafts. Provide feedback on model candidates published in
+   Teams.
+
+HOW TO CONTRIBUTE SOURCE MATERIAL
+
+1. Open your company folder. Go to the Source Material Intake and select the
+   folder named for your company. You will normally see only the organisation
+   folder you are permitted to access:
+
+   https://openpropertydataassociation.sharepoint.com/sites/FinanceBankingSourceIntake/Incoming%20Source%20Material/Forms/AllItems.aspx?id=%2Fsites%2FFinanceBankingSourceIntake%2FIncoming%20Source%20Material%2FBy%20Organisation
+
+2. Organise your area as you need. You may upload files and create, edit,
+   rename, move or delete folders, documents and notes in your organisation’s
+   area.
+
+3. Keep a README at the top level. Include an index and enough explanation for
+   OPDA to understand the contents. Keep it current as the material changes.
+
+SharePoint uploads require an approved company-domain account. This does not
+affect participation in Teams. If your organisation needs another company
+account added for uploads, email smartdata@openpropdata.org.uk.
+
+HOW TO PARTICIPATE
+
+Reply in threads. With hundreds of participants, threads keep each subject
+together and make the discussion manageable.
+
+Open the most relevant channel and check whether a thread already covers the
+subject. If it does, select Reply beneath the original post. The Start a post
+box creates a separate thread, so use it only for a genuinely new subject.
+
+WHERE DISCUSSIONS HAPPEN
+
+Announcements — official notices; read-only for participants:
+https://teams.cloud.microsoft/l/channel/19%3A8cc5e0e244a046fb9a737d9a041489bc%40thread.tacv2/Announcements?groupId=5f9b7675-328a-44fd-8df7-4755096b7629&tenantId=143540d4-4fbc-4005-882a-29656cd01a36&allowXTenantAccess=False
+
+Common Topics and Coordination — cross-cutting questions, coordination and
+whole-model review:
+https://teams.cloud.microsoft/l/channel/19%3ApMps7lqMA-_UlUiCD_IftTAS9dveF4u-U16YN_88jSo1%40thread.tacv2/OPDA%20Finance%20and%20Banking%20Working%20Group?groupId=5f9b7675-328a-44fd-8df7-4755096b7629&tenantId=143540d4-4fbc-4005-882a-29656cd01a36&allowXTenantAccess=False
+
+Mortgage Advice and Intermediation — advice, broking, suitability, sourcing,
+consent and application preparation:
+https://teams.cloud.microsoft/l/channel/19%3A36b776fb0cef4495be41c4522cb0d690%40thread.tacv2/Mortgage%20Advice%20and%20Intermediation?groupId=5f9b7675-328a-44fd-8df7-4755096b7629&tenantId=143540d4-4fbc-4005-882a-29656cd01a36&allowXTenantAccess=False
+
+Mortgage Lending and Underwriting — eligibility, affordability, underwriting,
+valuations, offers and lender decisions:
+https://teams.cloud.microsoft/l/channel/19%3Adb284555211e45909c5a2ba94676c98e%40thread.tacv2/Mortgage%20Lending%20and%20Underwriting?groupId=5f9b7675-328a-44fd-8df7-4755096b7629&tenantId=143540d4-4fbc-4005-882a-29656cd01a36&allowXTenantAccess=False
+
+Mortgage Systems and Integration — platforms, sourcing, APIs, schemas, status
+exchange and integration:
+https://teams.cloud.microsoft/l/channel/19%3A616c9bc759b447bebe365a0983cfb9cd%40thread.tacv2/Mortgage%20Systems%20and%20Integration?groupId=5f9b7675-328a-44fd-8df7-4755096b7629&tenantId=143540d4-4fbc-4005-882a-29656cd01a36&allowXTenantAccess=False
+
+Use the most specific channel that fits. Use Common Topics and Coordination
+when a subject crosses boundaries or concerns the working group as a whole.
+
+ACCESS AND PRIVACY
+
+- Invitation only. Access is limited to people invited by OPDA. To invite
+  additional colleagues, email smartdata@openpropdata.org.uk with their names,
+  email addresses and organisations.
+- Private organisation area. Approved company-domain contributors can view,
+  create, upload, edit, rename, move and delete material in their organisation’s
+  area. Other organisations cannot see it.
+- Permissions stay controlled. Contributors cannot view another organisation’s
+  submissions, invite people, change permissions or make material public.
+
+USEFUL SOURCE MATERIAL
+
+- Schemas and APIs: JSON Schemas; OpenAPI, Swagger and AsyncAPI definitions;
+  GraphQL schemas; XML Schemas.
+- Database structures: database schemas, entity-relationship diagrams, data
+  dictionaries and non-production DDL extracts.
+- Data and field lists: CSV, TSV, spreadsheets, JSON and XML.
+- Documents, guidance and blank forms: PDF, Word, Markdown and plain text.
+- Taxonomies, controlled vocabularies and semantic models: CSV, spreadsheets,
+  Turtle/RDF, OWL and JSON-LD.
+- Diagrams and screenshots: draw.io, Visio, SVG, PNG, JPEG and PDF.
+
+Audio and video files are not accepted. Recordings must be transcribed before
+submission. Include the transcript’s date, speakers and context where known.
+
+Upload the material itself—do not submit links. OPDA will not follow links to
+websites, cloud drives, shared folders or online documents. If authorised,
+download or export the material and place the file in your company folder.
+
+DO NOT SUBMIT
+
+- Personal, customer or live property-transaction data.
+- Passwords, API keys, credentials, private keys or other secrets.
+- Material restricted by confidentiality, contract, licence or NDA.
+- Executable software, active scripts or macros.
+- Password-protected files, encrypted archives or compressed archives.
+
+WHAT HAPPENS NEXT
+
+OPDA keeps the original source, reviews it for security and suitability, and
+uses approved information as evidence for AI-assisted data-model candidates.
+People review every candidate before it becomes a working-group draft. Source
+files are not automatically published or shared with other participants.
+
+Questions and model feedback: use the most relevant channel and reply in an
+existing thread whenever one covers the subject.
+
+Additional invitations or private access problems:
+smartdata@openpropdata.org.uk
+
+Open Property Data Association · Finance and Banking Working Group
+This email was sent because OPDA invited {{display_name}} to participate.
+
+Stop receiving Smart Property Data Trust Framework working-group emails:
+{{{ pm:unsubscribe }}}
