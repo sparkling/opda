@@ -56,6 +56,17 @@ with the next sequential number and canonical sections.
 | [ADR-0004](./ADR-0004-accreditation-directory.md) | Accreditation Directory spec | proposed |
 | [ADR-0005](./ADR-0005-deferred-work-register.md) | Deferred work register | accepted · living document |
 
+## July 2026 modelling-strategy sequence
+
+These linked proposed records capture the current strategy work while the public
+modelling website remains unchanged:
+
+| # | Title | Status |
+|---|---|---|
+| [ADR-0063](./ADR-0063-domain-led-bounded-context-working-groups.md) | Domain-led bounded-context working groups for the next modelling phase | accepted |
+| [ADR-0064](./ADR-0064-modelling-website-revamp-before-strategy-publication.md) | Revamp the modelling website before publishing the new working-group approach | accepted |
+| [ADR-0065](./ADR-0065-ai-assisted-evidence-to-model-workflow.md) | AI-assisted evidence-to-model workflow with human-governed review | proposed |
+
 ## August 2026 greenfield Property Pack ontology sequence
 
 | # | Title | Status |

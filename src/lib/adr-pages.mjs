@@ -21,7 +21,7 @@
  * @property {string} date    - ISO date string from frontmatter, or ''
  */
 
-/** All 65 ADRs in the corpus. Every ADR gets a live page. */
+/** All 68 ADRs in the corpus. Every ADR gets a live page. */
 export const ADR_REGISTRY = [
   { id: "adr-0001", number: "0001", title: "Selective adoption of DCAM v3 and DAMA-DMBOK2 elements", status: "accepted", date: "2026-05-18" },
   { id: "adr-0002", number: "0002", title: "Folder hierarchy and slug taxonomy", status: "accepted", date: "2026-05-18" },
@@ -85,6 +85,9 @@ export const ADR_REGISTRY = [
   { id: "adr-0060", number: "0060", title: "TriplesMap Reference Page — Bidirectional JSON Schema ↔ Ontology Resource Browsing", status: "accepted", date: "2026-07-06" },
   { id: "adr-0061", number: "0061", title: "Jena-Sole-Toolchain Enforcement and the rdflib Migration Register", status: "accepted", date: "2026-07-06" },
   { id: "adr-0062", number: "0062", title: "`DBT Smart Data` Top-Level Section — Track the Guidebook and the PDTF Overlap It Creates", status: "accepted", date: "2026-07-13" },
+  { id: "adr-0063", number: "0063", title: "Domain-led bounded-context working groups for the next modelling phase", status: "accepted", date: "2026-07-19" },
+  { id: "adr-0064", number: "0064", title: "Revamp the modelling website before publishing the new working-group approach", status: "accepted", date: "2026-07-19" },
+  { id: "adr-0065", number: "0065", title: "AI-assisted evidence-to-model workflow with human-governed review", status: "proposed", date: "2026-07-19" },
   { id: "adr-0066", number: "0066", title: "The 451 required Property Pack data points are the closed seed scope for a greenfield ontology", status: "accepted", date: "2026-08-03" },
   { id: "adr-0067", number: "0067", title: "Model the Property Pack from first principles with bounded-context ownership", status: "accepted", date: "2026-08-03" },
   { id: "adr-0068", number: "0068", title: "Govern the OPDA standards lifecycle through human consensus and staged ratification", status: "proposed", date: "2026-08-03" },
