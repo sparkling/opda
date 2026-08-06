@@ -92,12 +92,6 @@
             "type": "command",
             "command": "bash \"$(git rev-parse --show-toplevel)\"/.claude/scripts/check-patches.sh --global",
             "timeout": 30000
-          },
-          {
-            "type": "command",
-            "command": "npx ruflo@latest daemon start --quiet 2>/dev/null || true",
-            "timeout": 5000,
-            "continueOnError": true
           }
         ]
       }
@@ -172,8 +166,6 @@
   },
   "permissions": {
     "allow": [
-      "Bash(npx ruflo:*)",
-      "Bash(npx claude-flow:*)",
       "Bash(node \"$(git rev-parse --show-toplevel)\"/.claude/*)"
     ],
     "deny": [
@@ -182,6 +174,7 @@
     ]
   },
   "env": {
+    "RUFLO_HARNESS_LOOP": "1",
     "CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS": "1"
   },
   "claudeFlow": {

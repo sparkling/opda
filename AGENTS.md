@@ -32,6 +32,9 @@ project folder and organise it. Maintain a project README.
 - Do NOT add a `Co-Authored-By` trailer to user commits unless this project explicitly opts in
 - Keep files under 500 lines
 - Validate input at system boundaries
+- For Microsoft Teams tasks, NEVER use the Teams web interface or browser automation.
+  Use MCP, Microsoft Graph, or another API/CLI. If those routes are unavailable or
+  blocked, report the exact blocker and stop instead of switching to the web UI.
 
 ## Swarm & Coordination
 

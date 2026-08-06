@@ -114,9 +114,13 @@ public/ontology/artefacts/
 .claude/memory.db*
 .claude/*.lock
 .claude/settings.json.before-*
+.claude/sessions/
+.claude/*.bak-*
 .claude-flow/
 .swarm/
+.ruvector/
 ruvector.db
+/agentdb.rvf*
 
 # Local scratch / probe outputs (bake-off renders, runtime probes, presentation
 # runs) — regenerable, ~275MB; never tracked.
@@ -138,3 +142,4 @@ ruvector.db
 # ruflo-add-codex:gitignore — secrets + runtime
 .claude-flow/sessions/
 *.bak
+*.bak-*
