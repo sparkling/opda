@@ -72,6 +72,11 @@
     } catch { /* ignore quota / disabled */ }
   }
 
+  function hasDevMockSession(): boolean {
+    return import.meta.env.DEV
+      && window.localStorage.getItem('opda-dev-auth') === '1';
+  }
+
   // Decode the exp claim from a JWT without verifying — for client-side
   // "is this still valid?" check before reusing it.
   function jwtExp(token: string): number | null {
@@ -164,6 +169,17 @@
     if (!container) return;
 
     tearDown();
+
+    // The local dev sign-in can preview authenticated navigation, but it
+    // cannot mint the Artalk JWT issued by the deployed SSO bridge. State
+    // that boundary explicitly instead of mounting a widget whose writes
+    // would fail with an unauthorised API request.
+    if (hasDevMockSession()) {
+      container.innerHTML =
+        '<p class="comments-section__gated" role="status">Local preview session active. Live comments require the deployed SSO bridge.</p>';
+      initedPageKey = pageKey;
+      return;
+    }
 
     // Code + session + config are all fetched only now — after the section
     // neared the viewport — so none of it competes with page startup.

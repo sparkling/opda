@@ -1,0 +1,26 @@
+.edgePath path {
+  stroke: #4c8878 !important;
+  stroke-width: 2px !important;
+  opacity: 0.72;
+}
+
+.cluster-label {
+  color: #17473a !important;
+  font-family: Inter, Arial, sans-serif !important;
+  font-size: 13px !important;
+  font-weight: 700 !important;
+  letter-spacing: 0.08em;
+}
+
+.nodeLabel,
+.nodeLabel * {
+  font-family: Inter, Arial, sans-serif !important;
+}
+
+.node {
+  filter: none !important;
+}
+
+foreignObject {
+  overflow: visible !important;
+}

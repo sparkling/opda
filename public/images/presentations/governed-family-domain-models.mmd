@@ -1,0 +1,60 @@
+%%{init: {
+  "theme": "base",
+  "htmlLabels": true,
+  "themeVariables": {
+    "fontFamily": "Arial, sans-serif",
+    "primaryColor": "#F7F3E8",
+    "primaryTextColor": "#071D18",
+    "primaryBorderColor": "#17473A",
+    "lineColor": "#4C8878",
+    "background": "#F5F2E8"
+  }
+}}%%
+block
+  columns 12
+
+  block:GROUPS:12
+    columns 6
+    GROUPS_LABEL["<b>WORKING GROUPS</b><br/><small>Local domain ownership</small>"]:6
+    FB["Finance & Banking"]
+    CONV["Conveyancing"]
+    EA["Estate Agency"]
+    SV["Surveying & Valuation"]
+    PDS["Property Data Services"]
+    PT["Property Technology"]
+    space:2
+    DBT["<b>DBT Smart Data</b><br/><small>Cross-sector scheme group</small>"]:2
+    space:2
+  end
+
+  IWG["<b>INTEROPERABILITY WORKING GROUP</b><br/><small>Coordinates only what crosses a boundary</small>"]:7
+  PRINCIPLE["<b>Federated, not centralised</b><br/><small>Each group owns the meaning inside its domain</small>"]:5
+
+  block:OUTPUTS:12
+    columns 4
+    OUTPUTS_LABEL["SHARED BOUNDARY OUTPUTS"]:4
+    ONT["Small common<br/>boundary ontology"]
+    MAP["Context map"]
+    XMAP["Cross-domain<br/>mappings"]
+    CONV2["Shared conventions"]
+  end
+
+  GROUPS --> IWG
+  IWG --> OUTPUTS
+
+  class FB,CONV,EA,SV,PDS,PT domain
+  class DBT scheme
+  class IWG hub
+  class PRINCIPLE principle
+  class ONT,MAP,XMAP,CONV2 output
+  class GROUPS_LABEL,OUTPUTS_LABEL sectionLabel
+
+  classDef domain fill:#F7F3E8,stroke:#17473A,stroke-width:2px,color:#071D18,font-size:16px
+  classDef scheme fill:#BFE8CD,stroke:#17473A,stroke-width:2px,color:#071D18,font-size:16px
+  classDef hub fill:#D7F48B,stroke:#17473A,stroke-width:3px,color:#071D18,font-size:21px
+  classDef principle fill:#EAF2E8,stroke:#4C8878,stroke-width:1.5px,color:#071D18,font-size:16px
+  classDef output fill:#F7F3E8,stroke:#17473A,stroke-width:2px,color:#071D18,font-size:16px
+  classDef sectionLabel fill:#BFE8CD,stroke:#17473A,stroke-width:0,color:#071D18,font-size:15px
+
+  style GROUPS fill:#EAF2E8,stroke:#4C8878,stroke-width:2px
+  style OUTPUTS fill:#EAF2E8,stroke:#4C8878,stroke-width:2px

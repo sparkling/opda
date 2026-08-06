@@ -47,10 +47,19 @@
   // it same-origin: /_auth/me (identity), /_auth/login (starts the PKCE
   // flow), /_auth/logout (clears cookies + ends the Auth0 SSO session). This
   // button is a thin view over that surface. On gated pages /_auth/me always
-  // succeeds; on the public homepage a 401 shows "Sign in". On dev servers
-  // (no gate) the endpoints 404 — treated as signed-out.
+  // succeeds; on the public homepage a 401 shows "Sign in".
+  //
+  // On the dev server there is no gate, so /_auth/* 404s. Rather than leave
+  // "Sign in" pointing at a dead route, a dev-only mock lets you flip into a
+  // fake local session, keyed on localStorage['opda-dev-auth']. Every mock
+  // branch is guarded by import.meta.env.DEV inline — Vite replaces it with
+  // `false` in production builds, so each block collapses to nothing and no
+  // mock code (not even the identity object) reaches live.
 
   async function gateIdentity() {
+    if (import.meta.env.DEV && window.localStorage.getItem('opda-dev-auth') === '1') {
+      return { email: 'dev@localhost', name: 'Local Dev', picture: '' };
+    }
     try {
       const r = await fetch('/_auth/me', { credentials: 'same-origin' });
       if (!r.ok) return null;
@@ -96,6 +105,13 @@
     if (loginBtn && !loginBtn.dataset.bound) {
       loginBtn.dataset.bound = '1';
       loginBtn.addEventListener('click', () => {
+        if (import.meta.env.DEV) {
+          // No gate on the dev server — fake a local session instead of
+          // 404ing on /_auth/login. Stripped from production builds.
+          window.localStorage.setItem('opda-dev-auth', '1');
+          reconcile();
+          return;
+        }
         const ret = window.location.pathname + window.location.search;
         window.location.href = '/_auth/login?return=' + encodeURIComponent(ret);
       });
@@ -107,6 +123,12 @@
         // Clear the cached Artalk SSO JWT so the Comments widget can't reuse it,
         // then let the gate clear its cookies and end the Auth0 SSO session.
         try { window.localStorage.removeItem('ArtalkUser'); } catch { /* ignore */ }
+        if (import.meta.env.DEV) {
+          // Tear down the mock local session; no gate to call. Stripped from prod.
+          window.localStorage.removeItem('opda-dev-auth');
+          reconcile();
+          return;
+        }
         window.location.href = '/_auth/logout';
       });
     }

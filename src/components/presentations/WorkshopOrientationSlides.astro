@@ -1,6 +1,8 @@
 ---
 interface Props { total: number; }
 const { total } = Astro.props;
+const recordingUrl =
+  'https://openpropertydataassociation-my.sharepoint.com/:v:/g/personal/contact_openpropdata_org_uk/IQCUqKVN-85BTKyTre7kRdD2AfMjmqinRiImko1lnqbQlAc';
 ---
 
 <section class="slide slide--welcome" id="welcome" data-testid="slide" data-title="A shared language for property finance data" data-active="true" role="group" aria-roledescription="slide" aria-label={`1 of ${total}: A shared language for property finance data`}>
@@ -10,7 +12,10 @@ const { total } = Astro.props;
     <h1>A shared language for <em>property finance data</em></h1>
     <p class="lede">You bring the domain knowledge. OPDA turns it into a model the group can understand, challenge and improve.</p>
     <div class="reassurance-rail" aria-label="Participation reassurances"><span>No ontology skills</span><span>No graph tools</span><span>No AI adoption required</span></div>
-    <button class="primary-action" type="button" data-action="next">Begin <span aria-hidden="true">→</span></button>
+    <div class="button-row hero-actions">
+      <button class="primary-action" type="button" data-action="next">Begin <span aria-hidden="true">→</span></button>
+      <a class="secondary-action" href={recordingUrl} target="_blank" rel="noreferrer">Watch the recording <span aria-hidden="true">↗</span></a>
+    </div>
   </div>
   <p class="corner-note">Questions are welcome throughout</p>
 </section>
