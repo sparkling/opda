@@ -47,7 +47,7 @@ Note: a ~500 MB `source/` directory of cloned upstream repos, transcripts, and r
 
 ```bash
 # install Astro deps
-npm install
+pnpm install --frozen-lockfile
 
 # serve over Astro's dev server (port 4321)
 npm run dev

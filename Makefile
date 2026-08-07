@@ -24,7 +24,7 @@ help:	## Show this help
 ##@ Site (Astro website)
 .PHONY: install
 install:	## Install npm deps
-	npm install --no-fund --no-audit
+	pnpm install --frozen-lockfile
 
 .PHONY: dev
 dev: node_modules	## Astro dev server (auto-picks port 4330–4339)

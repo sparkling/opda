@@ -38,6 +38,6 @@ and `generateSigningKeypair`.
 
 - USERGUIDE.md §"Agentic-Jujutsu — Self-Learning AI Version Control" (L5156-5340)
 - Skill: `.claude/skills/agentic-jujutsu/SKILL.md`
-- Package: `agentic-jujutsu` (Verdaccio: `http://localhost:4873`)
+- Package: `agentic-jujutsu` (resolved through the configured npm registry)
 - ADR-0148 §"Findings — Category C" (skill wired into init's SKILLS_MAP)
 - ADR-0150 (multi-fork napi-rebuild + bundle-native-binaries that ships the .node binary)
