@@ -212,7 +212,8 @@ received, so the staged Postmark rollout is an intentional second delivery attem
 Wave 1 sent 50 recipient-specific Postmark invitations on 5 August. Postmark later
 reported all 50 as `Sent`, with no bounce, complaint or Broadcast suppression recorded
 when reconciled on 11 August. Wave 2 is scheduled for 100 recipients at 10:00
-Europe/London on 12 August under the controls in the
+Europe/London on 12 August, and Wave 3 is scheduled for every remaining eligible
+recipient at 10:00 on 13 August, under the controls in the
 [rollout plan](../plan/2026-08-postmark-working-group-invitation-rollout.md). The
 Postmark population comes from the existing not-accepted mailing list, intersected
 with live acceptance and suppression state, and each result is recorded in a private

@@ -16,8 +16,11 @@ const LOGO = path.join(ROOT, 'docs/templates/assets/opda-email-logo.png');
 const POSTMARK_API = 'https://api.postmarkapp.com';
 const GRAPH_API = 'https://graph.microsoft.com';
 const TENANT_ID = '143540d4-4fbc-4005-882a-29656cd01a36';
-const WAVE_ID = 'finance-banking-wave-2';
-const WAVE_SIZE = 100;
+const DEFAULT_WAVE_ID = 'finance-banking-wave-2';
+const DEFAULT_WAVE_SIZE = '100';
+const WAVE = waveConfig(process.env);
+const WAVE_ID = WAVE.id;
+const WAVE_SIZE = WAVE.size;
 const TEMPLATE_ID = 45998430;
 const TEMPLATE_ALIAS = 'finance-banking-working-group-invitation';
 const SUBJECT = 'You’re invited to help shape the Smart Property Data Trust Framework';
@@ -28,6 +31,32 @@ const LEDGER_FIELDS = [
 
 function normalizeEmail(value) {
   return String(value ?? '').trim().toLowerCase();
+}
+
+function waveConfig(env = {}) {
+  const id = String(env.OPDA_INVITATION_WAVE_ID || DEFAULT_WAVE_ID).trim();
+  if (!/^finance-banking-wave-[1-9]\d*$/.test(id)) throw new Error('The invitation wave ID is invalid');
+
+  const rawSize = String(env.OPDA_INVITATION_WAVE_SIZE || DEFAULT_WAVE_SIZE).trim();
+  const size = rawSize === 'remaining' ? null : Number(rawSize);
+  if (size !== null && (!Number.isSafeInteger(size) || size < 1 || size > 500)) {
+    throw new Error('The invitation wave size is invalid');
+  }
+
+  const prerequisiteId = String(env.OPDA_INVITATION_PREREQUISITE_WAVE_ID || '').trim();
+  const prerequisiteCountRaw = String(env.OPDA_INVITATION_PREREQUISITE_COUNT || '').trim();
+  if (Boolean(prerequisiteId) !== Boolean(prerequisiteCountRaw)) {
+    throw new Error('The prerequisite wave ID and count must be supplied together');
+  }
+  if (!prerequisiteId) return { id, size, prerequisite: null };
+  if (!/^finance-banking-wave-[1-9]\d*$/.test(prerequisiteId) || prerequisiteId === id) {
+    throw new Error('The prerequisite invitation wave ID is invalid');
+  }
+  const prerequisiteCount = Number(prerequisiteCountRaw);
+  if (!Number.isSafeInteger(prerequisiteCount) || prerequisiteCount < 1 || prerequisiteCount > 500) {
+    throw new Error('The prerequisite invitation count is invalid');
+  }
+  return { id, size, prerequisite: { id: prerequisiteId, count: prerequisiteCount } };
 }
 
 function sha256(value) {
@@ -137,7 +166,13 @@ function validatedCandidates(mailingList, invitations, excludedEmails, acceptedI
     });
 }
 
-function selectAcrossDomains(candidates) {
+function selectAcrossDomains(candidates, options = {}) {
+  const waveId = options.waveId ?? WAVE_ID;
+  const waveSize = options.waveSize === undefined ? WAVE_SIZE : options.waveSize;
+  const targetSize = waveSize === null ? candidates.length : waveSize;
+  if (!Number.isSafeInteger(targetSize) || targetSize < 1) {
+    throw new Error(`No eligible recipients remain for ${waveId}`);
+  }
   const groups = new Map();
   for (const candidate of candidates) {
     const group = groups.get(candidate.domain) ?? [];
@@ -145,26 +180,60 @@ function selectAcrossDomains(candidates) {
     groups.set(candidate.domain, group);
   }
   const ordered = [...groups.entries()]
-    .sort(([left], [right]) => sha256(`${WAVE_ID}:${left}`).localeCompare(sha256(`${WAVE_ID}:${right}`)))
+    .sort(([left], [right]) => sha256(`${waveId}:${left}`).localeCompare(sha256(`${waveId}:${right}`)))
     .map(([domain, members]) => [
       domain,
-      members.sort((left, right) => sha256(`${WAVE_ID}:${left.email}`).localeCompare(sha256(`${WAVE_ID}:${right.email}`))),
+      members.sort((left, right) => sha256(`${waveId}:${left.email}`).localeCompare(sha256(`${waveId}:${right.email}`))),
     ]);
   const selected = [];
-  for (let round = 0; selected.length < WAVE_SIZE; round += 1) {
+  for (let round = 0; selected.length < targetSize; round += 1) {
     let found = false;
     for (const [, members] of ordered) {
-      if (members[round] && selected.length < WAVE_SIZE) {
+      if (members[round] && selected.length < targetSize) {
         selected.push(members[round]);
         found = true;
       }
     }
     if (!found) break;
   }
-  if (selected.length !== WAVE_SIZE) {
-    throw new Error(`The mailing list cannot supply ${WAVE_SIZE} ${WAVE_ID} recipients`);
+  if (selected.length !== targetSize) {
+    throw new Error(`The mailing list cannot supply ${targetSize} ${waveId} recipients`);
   }
   return selected;
+}
+
+function validatePrerequisiteWave(rows, prerequisite) {
+  if (!prerequisite) return new Set();
+  const waveRows = rows.filter((row) => row.wave_id === prerequisite.id);
+  const acceptedRows = waveRows.filter((row) => row.status === 'accepted');
+  const acceptedEmails = new Set(acceptedRows.map((row) => normalizeEmail(row.email)));
+  const failed = waveRows.some((row) => ['unknown', 'rejected'].includes(row.status));
+  if (failed || acceptedRows.length !== acceptedEmails.size || acceptedEmails.size !== prerequisite.count) {
+    throw new Error(`Prerequisite ${prerequisite.id} has not completed cleanly`);
+  }
+  const attemptedEmails = new Set(waveRows
+    .filter((row) => row.status === 'attempting')
+    .map((row) => normalizeEmail(row.email)));
+  if (attemptedEmails.size !== prerequisite.count
+      || [...acceptedEmails].some((email) => !attemptedEmails.has(email))) {
+    throw new Error(`Prerequisite ${prerequisite.id} has an incomplete ledger`);
+  }
+  return acceptedEmails;
+}
+
+function validatePrerequisiteDelivery(result, suppressions, prerequisite, acceptedEmails) {
+  if (!prerequisite) return;
+  const messages = result.Messages ?? [];
+  const messageIds = new Set(messages.map((row) => row.MessageID));
+  const clean = result.TotalCount === prerequisite.count
+    && messages.length === prerequisite.count
+    && messageIds.size === prerequisite.count
+    && messages.every((row) => row.Tag === prerequisite.id && row.Status === 'Sent');
+  const priorSuppression = (suppressions ?? [])
+    .some((row) => acceptedEmails.has(normalizeEmail(row.EmailAddress)));
+  if (!clean || priorSuppression) {
+    throw new Error(`Prerequisite ${prerequisite.id} has not settled cleanly in Postmark`);
+  }
 }
 
 function validatePostmark(template, server, stream) {
@@ -238,6 +307,7 @@ async function main() {
   const token = keychainToken();
   const acceptedIds = await acceptedIdentityIds(graphToken());
   const ledger = readCsv(LEDGER);
+  const prerequisiteEmails = validatePrerequisiteWave(ledger, WAVE.prerequisite);
   const [template, server, stream, suppressionResult] = await Promise.all([
     postmark(token, `/templates/${TEMPLATE_ALIAS}`),
     postmark(token, '/server'),
@@ -245,6 +315,15 @@ async function main() {
     postmark(token, '/message-streams/broadcast/suppressions/dump'),
   ]);
   validatePostmark(template, server, stream);
+  if (WAVE.prerequisite) {
+    const delivery = await postmark(token, `/messages/outbound?count=${WAVE.prerequisite.count}&offset=0&tag=${encodeURIComponent(WAVE.prerequisite.id)}`);
+    validatePrerequisiteDelivery(
+      delivery,
+      suppressionResult.Suppressions,
+      WAVE.prerequisite,
+      prerequisiteEmails,
+    );
+  }
   const excluded = blockedFromLedger(ledger);
   for (const row of suppressionResult.Suppressions ?? []) excluded.add(normalizeEmail(row.EmailAddress));
   const candidates = validatedCandidates(readCsv(MAILING_LIST), readCsv(INVITATIONS), excluded, acceptedIds);
@@ -299,4 +378,12 @@ if (process.argv[1] && path.resolve(process.argv[1]) === fileURLToPath(import.me
   });
 }
 
-export { messageFor, parseArgs, selectAcrossDomains, sha256 };
+export {
+  messageFor,
+  parseArgs,
+  selectAcrossDomains,
+  sha256,
+  validatePrerequisiteDelivery,
+  validatePrerequisiteWave,
+  waveConfig,
+};

@@ -2,7 +2,7 @@
 
 | Field | Value |
 |---|---|
-| Status | In progress; Wave 2 scheduled for 2026-08-12 at 10:00 Europe/London |
+| Status | In progress; Waves 2 and 3 scheduled for 2026-08-12 and 2026-08-13 at 10:00 Europe/London |
 | Prepared | 2026-08-05 |
 | Updated | 2026-08-11 |
 | Initial scope | Finance and Banking Working Group |
@@ -18,8 +18,12 @@ of ADR-0065; it does not accept the ADR or authorise later waves.
 Henrik authorised preparation and delivery of the named 50-recipient Wave 1 on
 2026-08-05 and scheduled the named 100-recipient Wave 2 for 10:00 Europe/London on
 2026-08-12. The sender binds that authority to the immutable digest produced by the
-final dry run. A test, dry run, earlier approval or approval of another wave is not
-reusable authority.
+final dry run. On 2026-08-11 Henrik also authorised the remaining eligible recipients
+as Wave 3 at 10:00 Europe/London on 2026-08-13. Because that population depends on Wave
+2 and live acceptance and suppression state, its exact digest is generated at the
+start of the scheduled job and passed unchanged into execution. A changed population
+between those two operations blocks the send. A test, dry run, earlier approval or
+approval of another wave is not reusable authority.
 
 ## Goal
 
@@ -179,7 +183,9 @@ Implement a repository sender with these invariants:
 - dry run is the default and performs no Postmark send call;
 - execution requires both an explicit `--execute` switch and the exact digest printed
   by the final dry run;
-- Codex does not invoke execution until Henrik explicitly approves that named digest;
+- execution requires Henrik's explicit authority for the named wave; when he
+  authorises a future dynamically derived population, the scheduled job may generate
+  its digest immediately before execution and must pass that exact digest unchanged;
 - the macOS Keychain supplies the Postmark token; tokens never enter command output,
   source, manifests or logs;
 - every message uses the existing template alias, the `broadcast` Message Stream,
@@ -236,14 +242,14 @@ Immediately before a wave:
    template ID, subject, stream, batch digest and proposed send window without printing
    personal data or URLs.
 
-**QA gate C:** Henrik explicitly approves the named wave. Execution must also present
-the exact digest from its final dry run; a changed live population therefore blocks
-the send. Without both conditions, stop after the report.
+**QA gate C:** Henrik explicitly approves the named wave and its selection rule.
+Execution must also present the exact digest from its final dry run; a changed live
+population therefore blocks the send. Without both conditions, stop after the report.
 
 ### Phase 4 — staged live rollout
 
 - **Status:** In progress; Wave 1 sent on 2026-08-05; Wave 2 scheduled for 2026-08-12
-  at 10:00 Europe/London
+  and Wave 3 for 2026-08-13, both at 10:00 Europe/London
 - **Cost:** Three controlled send windows plus at least two observation intervals
 - **Precondition:** QA gate C passes for the specific wave.
 - **Effect:** Invitations are delivered gradually, with evidence reviewed before volume
@@ -257,10 +263,13 @@ The default sequence is:
    complaint, unsubscribe, recipient reply and Microsoft acceptance.
 3. **Wave 2 — 100 recipients.** Re-derive the population, issue a new digest and obtain
    new explicit approval.
-4. **Observe for at least one working day** and repeat the reconciliation.
-5. **Wave 3 — remaining eligible recipients.** Re-derive, digest and obtain a third
-   explicit approval. If the remaining population or evidence justifies it, split this
-   into smaller waves rather than increasing risk.
+4. **Observe through the following working-day send window** and repeat the automated
+   reconciliation.
+5. **Wave 3 — remaining eligible recipients.** Re-derive and digest the population at
+   the scheduled start. The 2026-08-11 instruction authorises this selection rule. The
+   job still blocks unless Wave 2 has exactly 100 reconciled ledger acceptances, all
+   100 Postmark records have settled as `Sent`, no Wave 2 recipient is suppressed and
+   the live Wave 3 digest remains unchanged between dry run and execution.
 
 Wave 1 used digest
 `9cb44ffc9c517d34a9bd6092a4d231e144279246e3df4a8b4626e5ed327bb28a`.
@@ -275,6 +284,13 @@ It is scheduled as a one-shot local job for 10:00 Europe/London on 2026-08-12. T
 sender re-queries Microsoft acceptance and Postmark suppressions at execution time.
 Any change to the selected population changes the digest and blocks the send instead
 of silently changing the approved audience.
+
+Wave 3 is scheduled as a one-shot local job for 10:00 Europe/London on 2026-08-13. Its
+size and digest are intentionally not fixed in advance: it selects every recipient who
+remains eligible after Waves 1 and 2, current Microsoft acceptance and current
+Postmark suppressions. The private execution log will record only the resulting count
+and digest, while the immutable snapshot and append-only ledger retain the exact
+operational population.
 
 Prefer a staffed UK working-day window, normally 09:30–11:30 Europe/London, so that
 OPDA can investigate blocks and replies the same day. Timing is an operational support
@@ -358,6 +374,6 @@ Actions:
 ## Next authorised work
 
 Execute Wave 2 at 10:00 Europe/London on 2026-08-12 if its live preflight reproduces
-the approved digest. Then reconcile Postmark outcomes, replies and Microsoft
-acceptances for at least one working day before deriving Wave 3. Wave 3 is not yet
-authorised and may be split if the evidence warrants smaller tranches.
+the approved digest. Execute the remaining eligible Wave 3 at 10:00 Europe/London on
+2026-08-13 only if the Wave 2 completion and delivery gates pass. After Wave 3,
+reconcile Postmark outcomes, replies and Microsoft acceptances and close the rollout.
