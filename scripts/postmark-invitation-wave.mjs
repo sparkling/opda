@@ -16,8 +16,8 @@ const LOGO = path.join(ROOT, 'docs/templates/assets/opda-email-logo.png');
 const POSTMARK_API = 'https://api.postmarkapp.com';
 const GRAPH_API = 'https://graph.microsoft.com';
 const TENANT_ID = '143540d4-4fbc-4005-882a-29656cd01a36';
-const WAVE_ID = 'finance-banking-wave-1';
-const WAVE_SIZE = 50;
+const WAVE_ID = 'finance-banking-wave-2';
+const WAVE_SIZE = 100;
 const TEMPLATE_ID = 45998430;
 const TEMPLATE_ALIAS = 'finance-banking-working-group-invitation';
 const SUBJECT = 'You’re invited to help shape the Smart Property Data Trust Framework';
@@ -161,7 +161,9 @@ function selectAcrossDomains(candidates) {
     }
     if (!found) break;
   }
-  if (selected.length !== WAVE_SIZE) throw new Error('The mailing list cannot supply 50 Wave 1 recipients');
+  if (selected.length !== WAVE_SIZE) {
+    throw new Error(`The mailing list cannot supply ${WAVE_SIZE} ${WAVE_ID} recipients`);
+  }
   return selected;
 }
 
@@ -203,7 +205,7 @@ function writeSnapshot(digest, basis) {
   const target = path.join(SNAPSHOTS, `${digest}.json`);
   const content = `${JSON.stringify({ digest, ...basis }, null, 2)}\n`;
   if (fs.existsSync(target) && fs.readFileSync(target, 'utf8') !== content) {
-    throw new Error('The immutable Wave 1 snapshot changed');
+    throw new Error('The immutable wave snapshot changed');
   }
   if (!fs.existsSync(target)) fs.writeFileSync(target, content, { mode: 0o600, flag: 'wx' });
   fs.chmodSync(target, 0o600);
@@ -266,7 +268,7 @@ async function main() {
     process.stdout.write(`${JSON.stringify({ mode: 'dry-run', wave: WAVE_ID, recipients: selected.length, organisations_or_domains: domainCount, digest }, null, 2)}\n`);
     return;
   }
-  if (args.digest !== digest) throw new Error('The approved digest does not match the current Wave 1 snapshot');
+  if (args.digest !== digest) throw new Error('The approved digest does not match the current wave snapshot');
 
   const logo = logoBuffer.toString('base64');
   let accepted = 0;
@@ -278,11 +280,11 @@ async function main() {
       result = await postmark(token, '/email/withTemplate', { method: 'POST', body: messageFor(candidate, logo, digest) });
     } catch {
       appendLedger({ wave_id: WAVE_ID, batch_digest: digest, email: candidate.email, status: 'unknown', submitted_at: submittedAt, error_code: 'network' });
-      throw new Error(`Wave 1 stopped after ${accepted} accepted messages; the last outcome needs reconciliation`);
+      throw new Error(`${WAVE_ID} stopped after ${accepted} accepted messages; the last outcome needs reconciliation`);
     }
     if (result.ErrorCode !== 0 || !result.MessageID) {
       appendLedger({ wave_id: WAVE_ID, batch_digest: digest, email: candidate.email, status: 'rejected', submitted_at: result.SubmittedAt || submittedAt, error_code: result.ErrorCode ?? 'unknown' });
-      throw new Error(`Wave 1 stopped after ${accepted} accepted messages`);
+      throw new Error(`${WAVE_ID} stopped after ${accepted} accepted messages`);
     }
     appendLedger({ wave_id: WAVE_ID, batch_digest: digest, email: candidate.email, status: 'accepted', postmark_message_id: result.MessageID, submitted_at: result.SubmittedAt || submittedAt, error_code: result.ErrorCode });
     accepted += 1;

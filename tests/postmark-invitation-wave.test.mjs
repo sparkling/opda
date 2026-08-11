@@ -28,12 +28,12 @@ test('execution requires the exact digest shape', () => {
   });
 });
 
-test('Wave 1 selects 50 deterministic, distinct organisations', () => {
-  const input = candidates(60);
+test('Wave 2 selects 100 deterministic, distinct organisations', () => {
+  const input = candidates(120);
   const first = selectAcrossDomains(input);
   const second = selectAcrossDomains(input);
-  assert.equal(first.length, 50);
-  assert.equal(new Set(first.map((row) => row.domain)).size, 50);
+  assert.equal(first.length, 100);
+  assert.equal(new Set(first.map((row) => row.domain)).size, 100);
   assert.deepEqual(first, second);
   assert.equal(sha256(JSON.stringify(first)), sha256(JSON.stringify(second)));
 });

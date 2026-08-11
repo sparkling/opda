@@ -1,7 +1,7 @@
 ---
 status: proposed
 date: 2026-07-19
-updated: 2026-08-05
+updated: 2026-08-11
 tags: [ai, ontology, working-groups, evidence, governance, review, provenance, standards-development, human-governance]
 supersedes: []
 depends-on: [ADR-0027, ADR-0039, ADR-0063, ADR-0064, ODR-0001]
@@ -209,9 +209,15 @@ redemption successfully during the first test. OPDA then sent 367 custom invitat
 messages through Microsoft Graph; the private operational ledger records HTTP 202
 acceptance for each request. Participant reports indicate that many messages were not
 received, so the staged Postmark rollout is an intentional second delivery attempt.
-No Postmark bulk wave has been sent. The Postmark population comes from the existing
-not-accepted mailing list, intersected with live acceptance and suppression state, and
-each result is recorded in a private append-only wave ledger.
+Wave 1 sent 50 recipient-specific Postmark invitations on 5 August. Postmark later
+reported all 50 as `Sent`, with no bounce, complaint or Broadcast suppression recorded
+when reconciled on 11 August. Wave 2 is scheduled for 100 recipients at 10:00
+Europe/London on 12 August under the controls in the
+[rollout plan](../plan/2026-08-postmark-working-group-invitation-rollout.md). The
+Postmark population comes from the existing not-accepted mailing list, intersected
+with live acceptance and suppression state, and each result is recorded in a private
+append-only wave ledger. This Finance and Banking roster is not a recruitment template
+for later working groups, which will use a social-media campaign and explicit sign-up.
 
 ### 3. Governed capture
 

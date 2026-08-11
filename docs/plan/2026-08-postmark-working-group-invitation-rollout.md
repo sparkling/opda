@@ -2,24 +2,24 @@
 
 | Field | Value |
 |---|---|
-| Status | In progress; Wave 1 sent and reconciled at submission; observation underway |
+| Status | In progress; Wave 2 scheduled for 2026-08-12 at 10:00 Europe/London |
 | Prepared | 2026-08-05 |
-| Updated | 2026-08-05 |
+| Updated | 2026-08-11 |
 | Initial scope | Finance and Banking Working Group |
-| Reusable scope | Later Smart Property Data Trust Framework working groups |
+| Reusable scope | None; later working groups will recruit through social media and sign-up |
 
 ## Governing decision and authority
 
 [ADR-0065](../adr/ADR-0065-ai-assisted-evidence-to-model-workflow.md) is
-**Proposed**, last updated 2026-08-05. It separates Microsoft access provisioning
+**Proposed**, last updated 2026-08-11. It separates Microsoft access provisioning
 from custom invitation delivery. This plan operationalises the Postmark follow-up part
 of ADR-0065; it does not accept the ADR or authorise later waves.
 
 Henrik authorised preparation and delivery of the named 50-recipient Wave 1 on
-2026-08-05. Every live
-wave requires Henrik's explicit approval of that named wave and its immutable batch
-digest. A test, dry run, earlier approval or approval of another wave is not reusable
-authority.
+2026-08-05 and scheduled the named 100-recipient Wave 2 for 10:00 Europe/London on
+2026-08-12. The sender binds that authority to the immutable digest produced by the
+final dry run. A test, dry run, earlier approval or approval of another wave is not
+reusable authority.
 
 ## Goal
 
@@ -84,7 +84,11 @@ The following is the starting state on 2026-08-05:
 - Two separately approved Postmark test messages have been sent to Henrik only.
   Postmark recorded successful delivery for both; the later test recorded one open and
   one click while its per-message link tracking was still enabled. Current server and
-  Wave 1 settings are opens on and links off. No Postmark bulk wave has occurred.
+  Wave 1 settings are opens on and links off.
+- Wave 1 contained 50 recipients. Postmark records all 50 as `Sent`, with no bounce,
+  complaint or Broadcast suppression recorded when reconciled on 2026-08-11. No open
+  event was recorded; open tracking remains an approximate signal rather than proof of
+  delivery or readership.
 - The ignored not-accepted mailing list was refreshed from live acceptance on
   2026-08-05 and contains the 309 current pending candidates.
 
@@ -133,7 +137,7 @@ Completed work:
 
 ### Phase 1 — reconcile the live baseline
 
-- **Status:** Completed for Wave 1 on 2026-08-05
+- **Status:** Completed for Wave 2 on 2026-08-11
 - **Cost:** Low; read-only external checks
 - **Precondition:** Microsoft and Postmark authentication is available.
 - **Effect:** One current, explainable candidate population and an immutable baseline
@@ -164,7 +168,7 @@ all later phases.
 
 ### Phase 2 — implement the dry-run-first sender
 
-- **Status:** Completed for the Wave 1 approval candidate on 2026-08-05
+- **Status:** Completed for the Wave 2 approval candidate on 2026-08-11
 - **Cost:** Medium; one sender, synthetic tests and an ignored ledger
 - **Precondition:** QA gate A passes.
 - **Effect:** The exact messages for an approved wave can be rendered, inspected and
@@ -204,13 +208,12 @@ active Postmark template and stream.
 every selected message, the final candidate digest is stable across two clean runs and
 the outbound message count remains unchanged.
 
-QA gate B passed with 63 repository tests, a successful production build and two
-identical dry runs. The prepared Wave 1 contains 50 recipients across 50 receiving
-organisations/domains.
+QA gate B passed for Wave 2 with 63 repository tests and two identical dry runs. The
+prepared Wave 2 contains 100 recipients across 100 receiving organisations/domains.
 
 ### Phase 3 — final deliverability preflight
 
-- **Status:** Completed for Wave 1 on 2026-08-05
+- **Status:** Completed for Wave 2 on 2026-08-11
 - **Cost:** Low
 - **Precondition:** QA gate B passes.
 - **Effect:** A named first wave is ready for an approval decision.
@@ -233,12 +236,14 @@ Immediately before a wave:
    template ID, subject, stream, batch digest and proposed send window without printing
    personal data or URLs.
 
-**QA gate C:** Henrik explicitly approves the named wave and exact digest. Without that
-approval, stop after the report.
+**QA gate C:** Henrik explicitly approves the named wave. Execution must also present
+the exact digest from its final dry run; a changed live population therefore blocks
+the send. Without both conditions, stop after the report.
 
 ### Phase 4 — staged live rollout
 
-- **Status:** In progress; Wave 1 sent on 2026-08-05; later waves not authorised
+- **Status:** In progress; Wave 1 sent on 2026-08-05; Wave 2 scheduled for 2026-08-12
+  at 10:00 Europe/London
 - **Cost:** Three controlled send windows plus at least two observation intervals
 - **Precondition:** QA gate C passes for the specific wave.
 - **Effect:** Invitations are delivered gradually, with evidence reviewed before volume
@@ -264,6 +269,13 @@ reported all 50 messages as `Sent`. The private append-only ledger and immutable
 snapshot record the exact recipients. These are submission and sending results, not
 proof that every receiving mail system placed the message in an inbox.
 
+Wave 2 uses digest
+`618bc3fe11894a57f834d306275fa80d41bd2169d0b96ace9db800b03a4285e5`.
+It is scheduled as a one-shot local job for 10:00 Europe/London on 2026-08-12. The
+sender re-queries Microsoft acceptance and Postmark suppressions at execution time.
+Any change to the selected population changes the digest and blocks the send instead
+of silently changing the approved audience.
+
 Prefer a staffed UK working-day window, normally 09:30–11:30 Europe/London, so that
 OPDA can investigate blocks and replies the same day. Timing is an operational support
 choice, not a claim that a particular hour bypasses spam filtering.
@@ -286,13 +298,12 @@ Any spam complaint, authentication failure, wrong-recipient or wrong-link eviden
 ambiguous duplicate, Postmark account pause, or bounce rate at or above 3% pauses the
 rollout. This is deliberately stricter than Postmark's service maximums.
 
-### Phase 5 — reconcile, close and generalise
+### Phase 5 — reconcile and close
 
 - **Status:** Pending
 - **Cost:** Low to medium
 - **Precondition:** Every authorised wave has settled or has an explicit exception.
-- **Effect:** The Finance and Banking rollout has an auditable result and the safe parts
-  can be reused for later working groups.
+- **Effect:** The Finance and Banking rollout has an auditable result.
 
 Actions:
 
@@ -309,10 +320,9 @@ Actions:
 5. Update ADR-0065's facts, `updated` date and implementation state when OPDA decides
    whether to accept the workflow. The plan and ADR must not retain the 368-versus-370
    discrepancy.
-6. Generalise the sender through configuration for later working groups only after the
-   first rollout is proven. Reuse the Trust Framework-wide Broadcast suppression
-   semantics expressed by the template; do not create parallel manually maintained
-   unsubscribe lists.
+6. Do not generalise this roster-based invitation campaign to later working groups.
+   Those groups will recruit through a social-media campaign and an explicit sign-up
+   journey rather than an email list OPDA does not possess.
 
 ## Risk responses and replanning triggers
 
@@ -347,8 +357,7 @@ Actions:
 
 ## Next authorised work
 
-Observe and reconcile Wave 1 for at least one working day. Before Wave 2, refresh
-Microsoft acceptance and Postmark suppression state, remove Wave 1 recipients from the
-candidate population, prepare a new 100-recipient snapshot and digest, and obtain
-Henrik's explicit approval for that specific wave. No later wave is currently
-authorised.
+Execute Wave 2 at 10:00 Europe/London on 2026-08-12 if its live preflight reproduces
+the approved digest. Then reconcile Postmark outcomes, replies and Microsoft
+acceptances for at least one working day before deriving Wave 3. Wave 3 is not yet
+authorised and may be split if the evidence warrants smaller tranches.
