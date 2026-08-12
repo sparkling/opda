@@ -53,6 +53,5 @@ You bring the knowledge. OPDA makes it reviewable, reusable and ready to connect
 ## Publishing note
 
 Publish as a LinkedIn post from the OPDA account. Do not use paid targeting or upload a contact
-list for this campaign. Keep the canonical link unchanged so source attribution and conversion
-reporting remain consistent. Registration is an expression of interest, not automatic admission.
-
+list for this campaign. Keep the canonical link unchanged so it remains stable and easy to
+verify or share. Registration is an expression of interest, not automatic admission.
