@@ -82,15 +82,34 @@ test('Wave 3 blocks unless Wave 2 is complete in the ledger and settled in Postm
     }], prerequisite),
     /has not completed cleanly/,
   );
-  assert.throws(
-    () => validatePrerequisiteDelivery(
-      delivery,
-      [{ EmailAddress: 'a@example.com' }],
-      prerequisite,
-      accepted,
-    ),
-    /has not settled cleanly/,
-  );
+  const onePerCentPrerequisite = { id: prerequisite.id, count: 100 };
+  const onePerCentAccepted = new Set(candidates(100).map((row) => row.email));
+  const onePerCentDelivery = {
+    TotalCount: 100,
+    Messages: candidates(100).map((_, index) => ({
+      MessageID: `message-${index}`,
+      Tag: prerequisite.id,
+      Status: 'Sent',
+    })),
+  };
+  assert.doesNotThrow(() => validatePrerequisiteDelivery(
+    onePerCentDelivery,
+    [{ EmailAddress: 'participant-0@company-0.example', SuppressionReason: 'HardBounce' }],
+    onePerCentPrerequisite,
+    onePerCentAccepted,
+  ));
+  assert.throws(() => validatePrerequisiteDelivery(
+    onePerCentDelivery,
+    [{ EmailAddress: 'participant-0@company-0.example', SuppressionReason: 'SpamComplaint' }],
+    onePerCentPrerequisite,
+    onePerCentAccepted,
+  ), /has not settled cleanly/);
+  assert.throws(() => validatePrerequisiteDelivery(
+    onePerCentDelivery,
+    candidates(3).map((row) => ({ EmailAddress: row.email, SuppressionReason: 'HardBounce' })),
+    onePerCentPrerequisite,
+    onePerCentAccepted,
+  ), /has not settled cleanly/);
 });
 
 test('template message preserves recipient URL, CID logo and tracking policy', () => {

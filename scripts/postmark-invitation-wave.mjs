@@ -229,9 +229,14 @@ function validatePrerequisiteDelivery(result, suppressions, prerequisite, accept
     && messages.length === prerequisite.count
     && messageIds.size === prerequisite.count
     && messages.every((row) => row.Tag === prerequisite.id && row.Status === 'Sent');
-  const priorSuppression = (suppressions ?? [])
-    .some((row) => acceptedEmails.has(normalizeEmail(row.EmailAddress)));
-  if (!clean || priorSuppression) {
+  const priorSuppressions = (suppressions ?? [])
+    .filter((row) => acceptedEmails.has(normalizeEmail(row.EmailAddress)));
+  const hardOrPolicyBounces = priorSuppressions.filter((row) => [
+    'HardBounce', 'ManualSuppression', 'SpamComplaint',
+  ].includes(row.SuppressionReason));
+  const hasComplaint = priorSuppressions.some((row) => row.SuppressionReason === 'SpamComplaint');
+  const suppressionRate = acceptedEmails.size ? hardOrPolicyBounces.length / acceptedEmails.size : 1;
+  if (!clean || hasComplaint || suppressionRate >= 0.03) {
     throw new Error(`Prerequisite ${prerequisite.id} has not settled cleanly in Postmark`);
   }
 }

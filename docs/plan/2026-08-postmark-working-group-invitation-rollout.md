@@ -268,8 +268,10 @@ The default sequence is:
 5. **Wave 3 — remaining eligible recipients.** Re-derive and digest the population at
    the scheduled start. The 2026-08-11 instruction authorises this selection rule. The
    job still blocks unless Wave 2 has exactly 100 reconciled ledger acceptances, all
-   100 Postmark records have settled as `Sent`, no Wave 2 recipient is suppressed and
-   the live Wave 3 digest remains unchanged between dry run and execution.
+   100 Postmark records have settled as `Sent`, there is no spam complaint, the
+   hard/policy bounce rate remains below 3%, and the live Wave 3 digest remains
+   unchanged between dry run and execution. Suppressed recipients are excluded from
+   the remaining mailing list rather than retried.
 
 Wave 1 used digest
 `9cb44ffc9c517d34a9bd6092a4d231e144279246e3df4a8b4626e5ed327bb28a`.
