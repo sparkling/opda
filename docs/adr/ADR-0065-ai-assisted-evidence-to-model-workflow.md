@@ -218,7 +218,9 @@ recipient at 10:00 on 13 August, under the controls in the
 Postmark population comes from the existing not-accepted mailing list, intersected
 with live acceptance and suppression state, and each result is recorded in a private
 append-only wave ledger. This Finance and Banking roster is not a recruitment template
-for later working groups, which will use a social-media campaign and explicit sign-up.
+for later working groups. [ADR-0069](./ADR-0069-public-working-group-recruitment-and-signup.md)
+implements the social-media campaign, verified expression-of-interest form and human review
+boundary for the five later bounded-context working groups.
 
 ### 3. Governed capture
 
