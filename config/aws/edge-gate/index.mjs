@@ -49,6 +49,7 @@ const PUBLIC_EXACT = new Set([
   '/favicon.svg',
   '/favicon.ico',
   '/coming-soon.jpg', // the homepage hero/og image
+  '/images/working-group-recruitment-social.png',
 ]);
 // `/sitemap-` covers the @astrojs/sitemap output (/sitemap-index.xml +
 // /sitemap-0.xml, and any future /sitemap-N.xml) so search engines can fetch

@@ -9,6 +9,7 @@ test('only the intended join route family is explicitly public', async () => {
   assert.match(gate, /PUBLIC_EXACT[\s\S]*'\/working-groups\/join'/u);
   assert.match(gate, /PUBLIC_PREFIXES[^\n]*'\/working-groups\/join\/'/u);
   assert.match(gate, /PUBLIC_PREFIXES[^\n]*'\/ui\/'/u);
+  assert.match(gate, /PUBLIC_EXACT[\s\S]*'\/images\/working-group-recruitment-social\.png'/u);
   assert.doesNotMatch(gate, /'\/working-groups\/'/u);
 });
 
