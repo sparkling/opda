@@ -1,7 +1,7 @@
 ---
 status: proposed
 date: 2026-07-19
-updated: 2026-08-11
+updated: 2026-08-12
 tags: [ai, ontology, working-groups, evidence, governance, review, provenance, standards-development, human-governance]
 supersedes: []
 depends-on: [ADR-0027, ADR-0039, ADR-0063, ADR-0064, ODR-0001]
@@ -219,8 +219,9 @@ Postmark population comes from the existing not-accepted mailing list, intersect
 with live acceptance and suppression state, and each result is recorded in a private
 append-only wave ledger. This Finance and Banking roster is not a recruitment template
 for later working groups. [ADR-0069](./ADR-0069-public-working-group-recruitment-and-signup.md)
-implements the social-media campaign, verified expression-of-interest form and human review
-boundary for the five later bounded-context working groups.
+implements the public campaign—including social media and selective trade/professional-body
+outreach—verified expression-of-interest form and human review boundary for the five later
+bounded-context working groups.
 
 ### 3. Governed capture
 

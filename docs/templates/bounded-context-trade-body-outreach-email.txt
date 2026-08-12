@@ -1,0 +1,32 @@
+Subject: {{email_subject}}
+
+Hello {{organisation_name}} team,
+
+OPDA is creating the Smart Property Data Trust Framework: a governed family of connected domain
+models intended to make property information clearer, more reusable and easier to exchange. We
+are now recruiting practitioners and subject-matter experts for the {{context_name}} Working Group.
+
+Could you share this opportunity with {{audience_description}} in your membership or network?
+
+The group will focus on {{context_scope}}. Participants can contribute {{contribution_examples}}.
+They are not being asked to understand ontologies, adopt AI or have technical knowledge. OPDA
+will turn the evidence and expertise they provide into model candidates for human review and
+feedback.
+
+View and share the invitation
+{{signup_url}}
+
+Registration is an expression of interest, not automatic membership or access. Each person
+registers directly, verifies their own email address and is reviewed by OPDA before onboarding.
+
+We are not asking you to provide a member list. Please share the public registration link with
+people for whom it is relevant. Sharing the opportunity does not imply endorsement or partnership.
+
+If another contact in your organisation is better placed to consider this request, please feel
+free to forward this message or reply to smartdata@openpropdata.org.uk.
+
+Thank you,
+
+Smart Property Data Trust Framework
+Open Property Data Association
+smartdata@openpropdata.org.uk

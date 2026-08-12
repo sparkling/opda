@@ -1,0 +1,41 @@
+{
+  "template": "bounded-context-trade-body-outreach-email",
+  "signup_url": "https://opda.org.uk/working-groups/join",
+  "contexts": {
+    "conveyancing": {
+      "context_name": "Conveyancing",
+      "email_subject": "Please share with your network: help shape the Conveyancing data model",
+      "audience_description": "conveyancers, property lawyers and specialists in title, searches, enquiries, exchange and completion",
+      "context_scope": "the legal transfer of property, including title, searches, enquiries, exchange and completion",
+      "contribution_examples": "current terminology, business rules, data dictionaries, forms, schemas, process knowledge and feedback on model drafts"
+    },
+    "estate-agency": {
+      "context_name": "Estate Agency",
+      "email_subject": "Please share with your network: help shape the Estate Agency data model",
+      "audience_description": "estate agents and specialists in instructions, listings, marketing, negotiation and sales progression",
+      "context_scope": "property instructions, listings, marketing, negotiation and sales progression",
+      "contribution_examples": "current terminology, business rules, data dictionaries, forms, schemas, process knowledge and feedback on model drafts"
+    },
+    "surveying-and-valuation": {
+      "context_name": "Surveying and Valuation",
+      "email_subject": "Please share with your network: help shape the Surveying and Valuation data model",
+      "audience_description": "residential surveyors, valuers and specialists in inspection, measurement, condition and professional opinion",
+      "context_scope": "inspection, measurement, property condition, valuation and professional opinion",
+      "contribution_examples": "current terminology, standards, inspection and valuation artefacts, data dictionaries, schemas, professional knowledge and feedback on model drafts"
+    },
+    "property-data-services": {
+      "context_name": "Property Data Services",
+      "email_subject": "Please share with your network: help shape the Property Data Services data model",
+      "audience_description": "property-search, information, assurance and data-service specialists",
+      "context_scope": "the sourcing, assurance, exchange and interpretation of property information",
+      "contribution_examples": "search and information products, provenance and quality rules, data dictionaries, schemas, controlled vocabularies and feedback on model drafts"
+    },
+    "property-technology": {
+      "context_name": "Property Technology",
+      "email_subject": "Please share with your network: help shape the Property Technology data model",
+      "audience_description": "property technology product, platform, integration and data specialists",
+      "context_scope": "the products, platforms and integrations through which property data is captured, exchanged and used",
+      "contribution_examples": "API definitions, schemas, integration patterns, product knowledge, implementation experience and feedback on model drafts"
+    }
+  }
+}

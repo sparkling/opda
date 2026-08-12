@@ -6,7 +6,7 @@
 | Prepared | 2026-08-05 |
 | Updated | 2026-08-11 |
 | Initial scope | Finance and Banking Working Group |
-| Reusable scope | None; later working groups will recruit through social media and sign-up |
+| Reusable scope | None; later working groups use the ADR-0069 public campaign, selective trade/professional-body outreach and sign-up |
 
 ## Governing decision and authority
 

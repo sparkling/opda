@@ -1,7 +1,8 @@
 ---
 status: accepted
 date: 2026-08-12
-tags: [engagement, recruitment, working-groups, linkedin, signup, privacy, security, aws, postmark]
+updated: 2026-08-12
+tags: [engagement, recruitment, working-groups, linkedin, trade-bodies, professional-bodies, signup, privacy, security, aws, postmark]
 supersedes: []
 depends-on: [ADR-0038, ADR-0040, ADR-0063, ADR-0065]
 implements: [ADR-0065]
@@ -32,9 +33,22 @@ The public campaign is an invitation to **register interest**, not a claim that 
 has become an OPDA member, represents their employer, joins a standards decision body, or will
 receive access automatically.
 
+The public page is a campaign landing experience rather than a form presented without context.
+Its scroll narrative demonstrates how the meaning of property changes across handoffs, explains
+bounded contexts and interoperability, shows the evidence-to-candidate review loop, and makes the
+practical outputs and human decision boundary visible before asking for registration. Motion is
+progressive enhancement: the complete argument and form remain available without JavaScript and
+with reduced-motion or small-screen preferences.
+
+LinkedIn gives the campaign public reach, but its audience is shaped by existing networks and
+platform distribution. Selective outreach through established UK trade and professional bodies
+can broaden and balance participation without asking those bodies for member lists or bypassing
+the same public registration and human-review process.
+
 ## Decision Drivers
 
 - Reach practitioners and subject-matter experts beyond the Finance and Banking roster.
+- Reach relevant professional communities outside OPDA's immediate LinkedIn network.
 - Explain the work in non-technical language and make several forms of contribution visible.
 - Keep the form short enough to complete from a LinkedIn visit.
 - Preserve one authoritative recruitment register rather than maintaining spreadsheets,
@@ -66,8 +80,9 @@ Chosen option: **D — add a public, verified sign-up service to the OPDA AWS si
 
 ### 1. Campaign scope and message
 
-The first campaign is a LinkedIn post linking to the OPDA sign-up page. It recruits expressions
-of interest for exactly five bounded-context groups:
+The first campaign combines a LinkedIn post with selective, one-to-one outreach to relevant UK
+trade and professional bodies. Both routes link to the same OPDA sign-up page and recruit
+expressions of interest for exactly five bounded-context groups:
 
 1. Conveyancing;
 2. Estate Agency;
@@ -91,6 +106,27 @@ voting rights, endorsement, publication of a person's material, or a release dat
 
 The maintained campaign copy lives in
 [`docs/recruitment/2026-08-bounded-context-working-group-linkedin.md`](../recruitment/2026-08-bounded-context-working-group-linkedin.md).
+
+Trade-body outreach asks an organisation to share the public registration opportunity with its
+relevant members or network. OPDA does not request or accept a member list, infer endorsement,
+bulk-add people, or grant access through this route. Every interested person registers directly,
+verifies their own address, and enters the same human review queue. Messages are sent individually
+to an official organisation-level contact or published contact route, not scraped personal
+addresses. Where an official mailbox is available, the approved message is sent individually from
+`smartdata@openpropdata.org.uk` through Postmark with open and link tracking disabled. Where only
+an official contact form is available, the same approved text is submitted through that form.
+Organisations are not added to a broadcast list. Outreach status and responses are recorded in the
+local register, and any follow-up requires either a relevant response or separate approval.
+
+The maintained outreach assets are:
+
+- [`docs/recruitment/2026-08-bounded-context-trade-body-outreach.md`](../recruitment/2026-08-bounded-context-trade-body-outreach.md),
+  the official-source recipient and status register;
+- [`docs/templates/bounded-context-trade-body-outreach-email.html`](../templates/bounded-context-trade-body-outreach-email.html)
+  and its [plain-text alternative](../templates/bounded-context-trade-body-outreach-email.txt);
+  and
+- [`docs/recruitment/2026-08-bounded-context-outreach-parameters.json`](../recruitment/2026-08-bounded-context-outreach-parameters.json),
+  the approved per-context template values.
 
 ### 2. Public sign-up experience
 
@@ -197,6 +233,8 @@ must not enter the AI evidence or ontology-building corpus.
 
 - Good, because later groups can recruit beyond an unavailable email roster while retaining a
   clear human approval boundary.
+- Good, because professional-body outreach can reach established communities that OPDA's current
+  LinkedIn network may not reach, while preserving self-registration and equal review.
 - Good, because the public explanation and form live on the OPDA domain and use the site's design
   system rather than presenting an unrelated form-provider experience.
 - Good, because a single encrypted register replaces parallel participant spreadsheets and
@@ -211,6 +249,8 @@ must not enter the AI evidence or ontology-building corpus.
   an unverified form.
 - Neutral, because registration does not automate Microsoft provisioning; OPDA still performs
   the acceptance and invitation steps deliberately.
+- Neutral, because inclusion in the outreach register identifies a relevant distribution route;
+  it does not imply that the organisation endorses OPDA or will distribute the invitation.
 - Neutral, because Turnstile introduces Cloudflare as an abuse-control subprocessor while the
   application and records remain hosted on AWS.
 
@@ -220,6 +260,8 @@ This decision is confirmed when:
 
 - the exact campaign copy names only the five intended contexts and links to the canonical public
   route;
+- trade-body outreach uses only the approved template and parameter values, records each contact
+  and outcome, and never requests a member list;
 - anonymous `GET` requests can access the sign-up, confirmation and privacy routes while an
   unrelated knowledge-base route still redirects to authentication;
 - registration and confirmation accept only valid allowlisted payloads and never mutate through
@@ -233,6 +275,8 @@ This decision is confirmed when:
 - no Teams or SharePoint access is provisioned by the public service;
 - keyboard-only and screen-reader checks pass and the interface respects reduced-motion and
   high-contrast preferences;
+- the campaign argument and form remain complete without JavaScript, and parallax/reveal effects
+  are disabled for reduced-motion and small-screen contexts;
 - `make test` and `make build` pass; and
 - the infrastructure and static site deploy through the existing CI-only AWS workflows.
 
@@ -281,3 +325,7 @@ This decision is confirmed when:
 - [ICO Guide to UK GDPR](https://ico.org.uk/for-organisations/uk-gdpr-guidance-and-resources/)
 - [Working-group email verification template](../templates/working-group-interest-verification-email.html)
 - [Plain-text working-group email verification template](../templates/working-group-interest-verification-email.txt)
+- [Bounded-context trade and professional body outreach register](../recruitment/2026-08-bounded-context-trade-body-outreach.md)
+- [Bounded-context outreach parameter values](../recruitment/2026-08-bounded-context-outreach-parameters.json)
+- [Trade and professional body outreach email](../templates/bounded-context-trade-body-outreach-email.html)
+- [Plain-text trade and professional body outreach email](../templates/bounded-context-trade-body-outreach-email.txt)
