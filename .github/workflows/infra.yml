@@ -1,7 +1,7 @@
 name: Infrastructure (CloudFormation)
 
 # Infra CI/CD per ADR-0040 §3: validates and deploys the CloudFormation stacks
-# in dependency order — artifacts (us-east-1) → edge (us-east-1: ACM cert +
+# in dependency order — regional artifacts → edge (us-east-1: ACM cert +
 # Lambda@Edge gate) → site (eu-west-2: everything else). Change-set based and
 # idempotent (--no-fail-on-empty-changeset), so a run that touches only one
 # stack is a no-op for the others.
@@ -90,6 +90,14 @@ jobs:
             --no-fail-on-empty-changeset \
             --parameter-overrides HostedZoneId="$HOSTED_ZONE_ID"
 
+      # ---- eu-west-2: artifacts bucket (site Lambda + nested template) ----
+      - name: Deploy artifacts stack (eu-west-2)
+        run: |
+          aws cloudformation deploy --region eu-west-2 \
+            --stack-name opda-artifacts \
+            --template-file config/aws/artifacts-stack.yaml \
+            --no-fail-on-empty-changeset
+
       # ---- eu-west-2: site stack (consumes edge stack ARNs as parameters —
       # CloudFormation exports do not cross regions, ADR-0040 §3) ----
       - name: Deploy site stack (eu-west-2)
@@ -108,10 +116,19 @@ jobs:
           # comma-separated. Supersedes the OPDA_MEMBER_EMAILS Actions variable.
           MEMBER_EMAILS=$(grep -vE '^[[:space:]]*#|^[[:space:]]*$' config/aws/members.txt | paste -sd, -)
           if [ -z "$MEMBER_EMAILS" ]; then echo "config/aws/members.txt has no addresses — refusing to lock everyone out" >&2; exit 1; fi
+          ARTIFACTS_BUCKET=$(aws cloudformation describe-stacks --region eu-west-2 \
+            --stack-name opda-artifacts \
+            --query "Stacks[0].Outputs[?OutputKey=='ArtifactsBucketName'].OutputValue" --output text)
+          npm ci --omit=dev --ignore-scripts \
+            --prefix config/aws/working-group-interest
+          aws cloudformation package --region eu-west-2 \
+            --template-file config/aws/site-stack.yaml \
+            --s3-bucket "$ARTIFACTS_BUCKET" \
+            --output-template-file /tmp/site-packaged.yaml
           aws cloudformation deploy --region eu-west-2 \
             --stack-name opda-site \
-            --template-file config/aws/site-stack.yaml \
-            --capabilities CAPABILITY_NAMED_IAM \
+            --template-file /tmp/site-packaged.yaml \
+            --capabilities CAPABILITY_NAMED_IAM CAPABILITY_AUTO_EXPAND \
             --no-fail-on-empty-changeset \
             --parameter-overrides \
               CertificateArn="$CERT_ARN" \

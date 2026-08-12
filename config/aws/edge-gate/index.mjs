@@ -44,6 +44,7 @@ const VERIFIER_COOKIE = 'opda_verifier';
 const PUBLIC_EXACT = new Set([
   '/',
   '/index.html',
+  '/working-groups/join',
   '/robots.txt',
   '/favicon.svg',
   '/favicon.ico',
@@ -53,7 +54,7 @@ const PUBLIC_EXACT = new Set([
 // /sitemap-0.xml, and any future /sitemap-N.xml) so search engines can fetch
 // the sitemap without hitting the auth gate — the listed URLs stay gated, only
 // the index of them is public.
-const PUBLIC_PREFIXES = ['/_astro/', '/fonts/', '/favicon', '/sitemap-'];
+const PUBLIC_PREFIXES = ['/_astro/', '/fonts/', '/ui/', '/favicon', '/sitemap-', '/working-groups/join/'];
 
 // Cold-start caches (per edge-PoP execution environment). Config is
 // re-fetched after a TTL so allowlist/IdP changes in SSM reach warm

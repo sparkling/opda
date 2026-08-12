@@ -21,7 +21,8 @@
 AWSTemplateFormatVersion: '2010-09-09'
 Description: >-
   opda.org.uk site resources (eu-west-2): S3 + CloudFront, Route 53 records,
-  edge-gate Auth0 config (ADR-0038/ADR-0040).
+  edge-gate Auth0 config and public working-group interest API
+  (ADR-0038/ADR-0040/ADR-0069).
 
 Parameters:
   DomainName:
@@ -48,6 +49,12 @@ Parameters:
       membership is a gate-side check). Sourced by the infra workflow from the
       committed config/aws/members.txt (one e-mail per line) — edit that file to
       change who has access.
+  WorkingGroupInterestRuntimeConfigParameterName:
+    Type: String
+    Default: /opda/working-group-interest/runtime
+    Description: >-
+      Existing SSM SecureString read by the working-group interest Lambda.
+      The secret JSON is provisioned independently and never enters this stack.
 
 Resources:
   # The edge gate's runtime config (read at cold start from eu-west-2;
@@ -61,6 +68,20 @@ Resources:
       Type: String
       Value: !Sub |
         {"domain":"${Auth0Domain}","clientId":"${Auth0ClientId}","members":"${MemberEmails}"}
+
+  WorkingGroupInterestApplication:
+    Type: AWS::CloudFormation::Stack
+    Metadata:
+      cfn-lint:
+        config:
+          # A local nested-template URL is intentional: the infra workflow
+          # runs `aws cloudformation package` before deployment.
+          ignore_checks: [W3002]
+    Properties:
+      TemplateURL: working-group-interest-stack.yaml
+      Parameters:
+        DomainName: !Ref DomainName
+        RuntimeConfigParameterName: !Ref WorkingGroupInterestRuntimeConfigParameterName
 
   # ---------------- Static site: S3 + CloudFront ----------------
 
@@ -145,6 +166,18 @@ Resources:
         CookiesConfig: { CookieBehavior: none }
         QueryStringsConfig: { QueryStringBehavior: all }
 
+  WorkingGroupInterestOriginRequestPolicy:
+    Type: AWS::CloudFront::OriginRequestPolicy
+    Properties:
+      OriginRequestPolicyConfig:
+        Name: opda-working-group-interest-minimal
+        Comment: Forward only JSON content type; no viewer cookies or query strings
+        HeadersConfig:
+          HeaderBehavior: whitelist
+          Headers: [Content-Type]
+        CookiesConfig: { CookieBehavior: none }
+        QueryStringsConfig: { QueryStringBehavior: none }
+
   OriginAccessControl:
     Type: AWS::CloudFront::OriginAccessControl
     Properties:
@@ -219,6 +252,12 @@ Resources:
             CustomOriginConfig:
               HTTPPort: 23366
               OriginProtocolPolicy: http-only
+          - Id: working-group-interest-api
+            DomainName: !GetAtt WorkingGroupInterestApplication.Outputs.ApiOriginDomainName
+            CustomOriginConfig:
+              HTTPSPort: 443
+              OriginProtocolPolicy: https-only
+              OriginSSLProtocols: [TLSv1.2]
         DefaultCacheBehavior:
           TargetOriginId: site-s3
           ViewerProtocolPolicy: redirect-to-https
@@ -252,6 +291,15 @@ Resources:
             LambdaFunctionAssociations:
               - EventType: viewer-request
                 LambdaFunctionARN: !Ref GateFunctionVersionArn
+          # Public same-origin API. HTTP API exposes only the two POST routes;
+          # CloudFront's POST-capable method set necessarily includes the
+          # remaining verbs, which API Gateway rejects because no routes exist.
+          - PathPattern: '/api/working-group-interest*'
+            TargetOriginId: working-group-interest-api
+            ViewerProtocolPolicy: redirect-to-https
+            AllowedMethods: [GET, HEAD, OPTIONS, PUT, POST, PATCH, DELETE]
+            CachePolicyId: 4135ea2d-6df8-44a3-9df3-4b5a84be39ad     # Managed-CachingDisabled
+            OriginRequestPolicyId: !Ref WorkingGroupInterestOriginRequestPolicy
         CustomErrorResponses:
           # OAC without ListBucket → S3 answers missing keys with 403.
           - ErrorCode: 403
@@ -295,3 +343,12 @@ Outputs:
   GateCallbackUrl:
     Description: Must be listed in the Auth0 SPA application's allowed callback URLs.
     Value: !Sub 'https://${DomainName}/_auth/callback'
+  WorkingGroupInterestApiEndpoint:
+    Description: Direct HTTP API endpoint for diagnostics; browsers use the same-origin CloudFront path.
+    Value: !GetAtt WorkingGroupInterestApplication.Outputs.ApiEndpoint
+  WorkingGroupInterestFunctionName:
+    Value: !GetAtt WorkingGroupInterestApplication.Outputs.FunctionName
+  WorkingGroupInterestRegistrationsTableName:
+    Value: !GetAtt WorkingGroupInterestApplication.Outputs.RegistrationsTableName
+  WorkingGroupInterestRuntimeConfigParameterName:
+    Value: !GetAtt WorkingGroupInterestApplication.Outputs.RuntimeConfigParameterName
