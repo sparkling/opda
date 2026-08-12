@@ -1,0 +1,145 @@
+---
+import PublicWorkingGroupLayout from '@/layouts/PublicWorkingGroupLayout.astro';
+import '@/styles/working-group-join.css';
+import '@/styles/working-group-privacy.css';
+---
+
+<PublicWorkingGroupLayout
+  title="Working-group privacy notice"
+  description="How OPDA uses personal information supplied through its public working-group expression-of-interest form."
+  current="privacy"
+>
+  <div class="wg-page">
+    <section class="wg-section wg-privacy" aria-labelledby="privacy-title">
+      <p class="wg-eyebrow">Privacy notice · Version 2026-08-12</p>
+      <h1 id="privacy-title">Working-group expressions of interest</h1>
+      <p class="wg-lead">
+        This notice explains how the Open Property Data Association uses information supplied by
+        people who register interest in the Smart Property Data Trust Framework working groups.
+      </p>
+      <p class="wg-updated">Effective 12 August 2026</p>
+
+      <div class="wg-privacy__summary">
+        <p>
+          We use these details to verify your email, review your expression of interest and, if
+          accepted, administer your participation. Registration is not newsletter consent, does
+          not create membership or access, and is not used as evidence for AI-assisted modelling.
+        </p>
+      </div>
+
+      <nav class="wg-privacy__contents" aria-labelledby="contents-title">
+        <h2 id="contents-title">On this page</h2>
+        <ol>
+          <li><a href="#controller">Who controls your information</a></li>
+          <li><a href="#information">What we collect</a></li>
+          <li><a href="#purpose">Why we use it</a></li>
+          <li><a href="#services">Services and recipients</a></li>
+          <li><a href="#transfers">International transfers</a></li>
+          <li><a href="#retention">How long we keep it</a></li>
+          <li><a href="#choices">Your choices and rights</a></li>
+        </ol>
+      </nav>
+
+      <article>
+        <section id="controller">
+          <h2>Who controls your information</h2>
+          <p>
+            Open Property Data Association Ltd (company number 14789946) is the controller for
+            information collected through this expression-of-interest service. Its registered
+            office is Tanfield Lea Business Centre, Unit G2, Stanley, Co Durham, DH9 9DB.
+            Questions and requests can be sent to
+            <a href="mailto:smartdata@openpropdata.org.uk">smartdata@openpropdata.org.uk</a>.
+          </p>
+        </section>
+
+        <section id="information">
+          <h2>What we collect</h2>
+          <p>We collect only the information you enter in the form:</p>
+          <ul>
+            <li>your full name, email address, organisation, and role or area of expertise;</li>
+            <li>the working groups and contribution types you select;</li>
+            <li>an optional, length-limited note about relevant experience or perspective;</li>
+            <li>your acknowledgement of the registration purpose and this notice; and</li>
+            <li>technical status and timestamps needed to verify and administer the registration.</li>
+          </ul>
+          <p>
+            Do not include confidential information, evidence, links, property or customer data,
+            transaction details, or special-category personal information in the optional note.
+          </p>
+        </section>
+
+        <section id="purpose">
+          <h2>Why we use it</h2>
+          <p>OPDA uses the information to:</p>
+          <ul>
+            <li>send a one-time email-verification message and confirm control of the address;</li>
+            <li>review interest, experience and potential fit across the selected groups;</li>
+            <li>contact you about the groups you selected and, if accepted, administer participation; and</li>
+            <li>protect the public form from automated or abusive submissions.</li>
+          </ul>
+          <p>
+            OPDA relies on its legitimate interests in organising and administering an open,
+            evidence-led standards process. You may object to this use or withdraw your interest at
+            any time. We do not add you to a general marketing list through this form.
+          </p>
+          <p>
+            Registration data is operational recruitment data. It is not put into the source corpus
+            used by AI-assisted ontology or data-model development.
+          </p>
+        </section>
+
+        <section id="services">
+          <h2>Services and recipients</h2>
+          <p>Access is limited to authorised people acting for OPDA and the providers needed to run the service:</p>
+          <ul>
+            <li><strong>Amazon Web Services</strong> hosts the form service and encrypted register in the UK region;</li>
+            <li><strong>Postmark</strong> sends the individual email-verification message without open or link tracking;</li>
+            <li><strong>Cloudflare Turnstile</strong> checks for automated or abusive submissions; and</li>
+            <li><strong>Microsoft Teams and SharePoint</strong> may be used later only if OPDA accepts and invites you.</li>
+          </ul>
+          <p>
+            The public service does not automatically create a Microsoft guest account, grant access
+            or confer standards decision rights.
+          </p>
+        </section>
+
+        <section id="transfers">
+          <h2>International transfers</h2>
+          <p>
+            Some providers may process personal information outside the UK. OPDA requires providers
+            to protect it using applicable UK adequacy arrangements or approved contractual
+            safeguards, such as the UK International Data Transfer Agreement or UK Addendum, where
+            required.
+          </p>
+        </section>
+
+        <section id="retention">
+          <h2>How long we keep it</h2>
+          <ul>
+            <li><strong>Unverified registrations:</strong> up to 30 days.</li>
+            <li><strong>Verified registrations that are declined, withdrawn or not progressed:</strong> up to six months.</li>
+            <li><strong>Accepted participant records:</strong> for the working group's duration plus 12 months.</li>
+          </ul>
+          <p>
+            A longer period applies only where a separately documented legal obligation requires it.
+          </p>
+        </section>
+
+        <section id="choices">
+          <h2>Your choices and rights</h2>
+          <p>
+            You can ask OPDA for access to or correction of your information, withdraw your
+            expression of interest, object to processing, or ask for deletion or restriction where
+            applicable. Email
+            <a href="mailto:smartdata@openpropdata.org.uk">smartdata@openpropdata.org.uk</a>.
+          </p>
+          <p>
+            You can also complain to the UK Information Commissioner's Office. For the association's
+            wider activities, see the
+            <a href="https://openpropdata.org.uk/privacy-policy/">OPDA general privacy policy</a>.
+          </p>
+        </section>
+      </article>
+    </section>
+  </div>
+</PublicWorkingGroupLayout>

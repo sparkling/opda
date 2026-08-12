@@ -1,0 +1,256 @@
+const WORKING_GROUPS = new Set([
+  'conveyancing',
+  'estate-agency',
+  'surveying-and-valuation',
+  'property-data-services',
+  'property-technology',
+  'not-sure',
+]);
+
+const CONTRIBUTIONS = new Set([
+  'share-source-material',
+  'explain-domain-language-and-rules',
+  'review-model-candidates',
+  'test-schemas-and-integrations',
+  'contribute-consumer-accessibility-regulatory-public-interest-experience',
+]);
+
+const CONTROL_CHARACTERS = /[\u0000-\u0008\u000b\u000c\u000e-\u001f\u007f]/u;
+const HTML_MARKUP = /[<>]/u;
+
+type TextInput = HTMLInputElement | HTMLTextAreaElement;
+
+interface RegistrationPayload {
+  fullName: string;
+  email: string;
+  organisation: string;
+  role: string;
+  workingGroups: string[];
+  contributions: string[];
+  relevantPerspective?: string;
+  acknowledgement: true;
+  privacyNoticeVersion: '2026-08-12';
+  turnstileToken: string;
+  website: string;
+  startedAt: number;
+}
+
+interface TurnstileWindow extends Window {
+  turnstile?: { reset: () => void };
+}
+
+function initWorkingGroupForm(): void {
+  const form = document.querySelector<HTMLFormElement>('#working-group-interest-form');
+  if (!form || form.dataset.initialised === 'true') return;
+  form.dataset.initialised = 'true';
+
+  const startedAt = form.querySelector<HTMLInputElement>('#started-at');
+  const perspective = form.querySelector<HTMLTextAreaElement>('#relevant-perspective');
+  const perspectiveCount = form.querySelector<HTMLElement>('#perspective-count');
+  const submitButton = form.querySelector<HTMLButtonElement>('button[type="submit"]');
+  const status = form.querySelector<HTMLElement>('#form-status');
+  const summary = form.querySelector<HTMLElement>('#form-errors');
+  const summaryList = summary?.querySelector<HTMLUListElement>('ul');
+  const success = document.querySelector<HTMLElement>('#registration-success');
+
+  if (startedAt) startedAt.value = String(Date.now());
+
+  function selected(name: 'workingGroups' | 'contributions'): string[] {
+    return [...form.querySelectorAll<HTMLInputElement>(`input[name="${name}"]:checked`)]
+      .map((input) => input.value);
+  }
+
+  function updateCharacterCount(): void {
+    if (perspective && perspectiveCount) {
+      perspectiveCount.textContent = `${perspective.value.length} of 600 characters`;
+    }
+  }
+
+  function clearErrors(): void {
+    form.querySelectorAll<HTMLElement>('.wg-field-error').forEach((node) => {
+      node.textContent = '';
+    });
+    form.querySelectorAll<HTMLElement>('[aria-invalid="true"]').forEach((node) => {
+      node.removeAttribute('aria-invalid');
+    });
+    if (summary) summary.hidden = true;
+    if (summaryList) summaryList.replaceChildren();
+  }
+
+  function addError(control: Element | null, errorId: string, message: string): void {
+    const error = document.getElementById(errorId);
+    if (error) error.textContent = message;
+    control?.setAttribute('aria-invalid', 'true');
+
+    if (summaryList) {
+      const item = document.createElement('li');
+      if (control instanceof HTMLElement && control.id) {
+        const link = document.createElement('a');
+        link.href = `#${control.id}`;
+        link.textContent = message;
+        item.append(link);
+      } else {
+        item.textContent = message;
+      }
+      summaryList.append(item);
+    }
+  }
+
+  function validateText(
+    selector: string,
+    errorId: string,
+    label: string,
+    minLength: number,
+    maxLength: number,
+  ): string {
+    const control = form.querySelector<TextInput>(selector);
+    const value = control?.value.trim() ?? '';
+    if (value.length < minLength || value.length > maxLength) {
+      addError(control, errorId, `${label} must be between ${minLength} and ${maxLength} characters.`);
+    } else if (CONTROL_CHARACTERS.test(value) || HTML_MARKUP.test(value)) {
+      addError(control, errorId, `${label} contains characters that cannot be accepted.`);
+    }
+    return value;
+  }
+
+  function validate(): RegistrationPayload | null {
+    clearErrors();
+
+    const fullName = validateText('#full-name', 'full-name-error', 'Full name', 2, 100);
+    const emailControl = form.querySelector<HTMLInputElement>('#email');
+    const email = emailControl?.value.trim() ?? '';
+    if (!email || email.length > 254 || !emailControl?.checkValidity()) {
+      addError(emailControl, 'email-error', 'Enter a valid email address.');
+    }
+    const organisation = validateText('#organisation', 'organisation-error', 'Organisation', 2, 150);
+    const role = validateText('#role', 'role-error', 'Role or area of expertise', 2, 120);
+
+    const workingGroups = selected('workingGroups');
+    const workingGroupFieldset = form.querySelector<HTMLElement>('[data-group="workingGroups"]');
+    if (
+      workingGroups.length === 0 ||
+      workingGroups.some((value) => !WORKING_GROUPS.has(value)) ||
+      (workingGroups.includes('not-sure') && workingGroups.length > 1)
+    ) {
+      addError(workingGroupFieldset, 'working-groups-error', 'Select one or more working groups, or choose “Not sure”.');
+    }
+
+    const contributions = selected('contributions');
+    const contributionFieldset = form.querySelector<HTMLElement>('[data-group="contributions"]');
+    if (contributions.length === 0 || contributions.some((value) => !CONTRIBUTIONS.has(value))) {
+      addError(contributionFieldset, 'contributions-error', 'Select at least one way you might contribute.');
+    }
+
+    const relevantPerspective = perspective?.value.trim() ?? '';
+    if (
+      relevantPerspective.length > 600 ||
+      CONTROL_CHARACTERS.test(relevantPerspective) ||
+      HTML_MARKUP.test(relevantPerspective)
+    ) {
+      addError(perspective, 'relevant-perspective-error', 'The optional note contains characters that cannot be accepted.');
+    }
+
+    const acknowledgement = form.querySelector<HTMLInputElement>('#acknowledgement');
+    if (!acknowledgement?.checked) {
+      addError(acknowledgement, 'acknowledgement-error', 'Confirm that you understand how this expression of interest will be used.');
+    }
+
+    const turnstileEnabled = form.dataset.turnstileEnabled === 'true';
+    const turnstileToken = form.querySelector<HTMLInputElement>('[name="cf-turnstile-response"]')?.value ?? '';
+    if (!turnstileEnabled || !turnstileToken) {
+      const message = turnstileEnabled
+        ? 'Complete the verification check before submitting.'
+        : 'Verification is temporarily unavailable. Please try again later.';
+      if (summaryList) {
+        const item = document.createElement('li');
+        item.textContent = message;
+        summaryList.append(item);
+      }
+    }
+
+    const beganAt = Number(startedAt?.value);
+    const website = form.querySelector<HTMLInputElement>('#website')?.value ?? '';
+    const privacyNoticeVersion = form.dataset.privacyNoticeVersion;
+
+    if ((summaryList?.children.length ?? 0) > 0) {
+      if (summary) {
+        summary.hidden = false;
+        summary.focus();
+      }
+      return null;
+    }
+
+    if (!Number.isInteger(beganAt) || privacyNoticeVersion !== '2026-08-12') return null;
+
+    const payload: RegistrationPayload = {
+      fullName,
+      email,
+      organisation,
+      role,
+      workingGroups,
+      contributions,
+      acknowledgement: true,
+      privacyNoticeVersion: '2026-08-12',
+      turnstileToken,
+      website,
+      startedAt: beganAt,
+    };
+    if (relevantPerspective) payload.relevantPerspective = relevantPerspective;
+    return payload;
+  }
+
+  form.querySelectorAll<HTMLInputElement>('input[name="workingGroups"]').forEach((input) => {
+    input.addEventListener('change', () => {
+      const exclusive = form.querySelector<HTMLInputElement>('input[name="workingGroups"][data-exclusive]');
+      if (input === exclusive && input.checked) {
+        form.querySelectorAll<HTMLInputElement>('input[name="workingGroups"]:not([data-exclusive])')
+          .forEach((other) => { other.checked = false; });
+      } else if (input.checked && exclusive) {
+        exclusive.checked = false;
+      }
+    });
+  });
+
+  perspective?.addEventListener('input', updateCharacterCount);
+  updateCharacterCount();
+
+  form.addEventListener('submit', async (event) => {
+    event.preventDefault();
+    const payload = validate();
+    if (!payload || !submitButton) return;
+
+    submitButton.disabled = true;
+    form.setAttribute('aria-busy', 'true');
+    if (status) status.textContent = 'Sending your registration…';
+
+    try {
+      const response = await fetch('/api/working-group-interest', {
+        method: 'POST',
+        credentials: 'same-origin',
+        headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+        body: JSON.stringify(payload),
+      });
+      if (!response.ok) throw new Error(`Registration failed with status ${response.status}`);
+
+      form.hidden = true;
+      if (success) {
+        success.hidden = false;
+        success.focus();
+      }
+    } catch {
+      if (status) {
+        status.textContent = 'We could not submit your registration. Please try again. If the problem continues, email smartdata@openpropdata.org.uk.';
+      }
+      (window as TurnstileWindow).turnstile?.reset();
+      submitButton.disabled = false;
+    } finally {
+      form.removeAttribute('aria-busy');
+    }
+  });
+}
+
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', initWorkingGroupForm, { once: true });
+} else {
+  initWorkingGroupForm();
+}

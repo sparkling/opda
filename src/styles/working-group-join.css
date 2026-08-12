@@ -1,0 +1,486 @@
+.wg-page {
+  width: min(74rem, calc(100% - 2rem));
+  margin: 0 auto;
+}
+
+.wg-hero {
+  display: grid;
+  grid-template-columns: minmax(0, 1.35fr) minmax(18rem, 0.65fr);
+  gap: clamp(var(--space-7), 6vw, var(--space-12));
+  padding-block: clamp(var(--space-8), 8vw, var(--space-12));
+  border-bottom: 1px solid var(--color-border);
+}
+
+.wg-eyebrow {
+  margin: 0 0 var(--space-4);
+  color: var(--terracotta-700);
+  font: 700 var(--text-xs) / 1.2 var(--font-sans);
+  letter-spacing: var(--tracking-meta);
+  text-transform: uppercase;
+}
+
+.wg-hero h1,
+.wg-confirm h1,
+.wg-privacy h1 {
+  max-width: 18ch;
+  margin: 0;
+  color: var(--color-text-strong);
+  font: 600 clamp(2.45rem, 6vw, 4.75rem) / 0.98 var(--font-serif);
+  letter-spacing: var(--tracking-display);
+  text-wrap: balance;
+}
+
+.wg-lead {
+  max-width: 66ch;
+  margin: var(--space-6) 0 0;
+  color: var(--color-text);
+  font: 400 clamp(var(--text-lg), 2.25vw, var(--text-xl)) / 1.55 var(--font-serif);
+  text-wrap: pretty;
+}
+
+.wg-assurance {
+  align-self: end;
+  margin: 0;
+  padding: var(--space-5);
+  border: 1px solid var(--color-border);
+  border-top: 3px solid var(--teal-500);
+  border-radius: var(--radius-lg);
+  background: var(--cream-200);
+}
+
+.wg-assurance strong {
+  display: block;
+  margin-bottom: var(--space-2);
+  color: var(--color-text-strong);
+  font-family: var(--font-serif);
+  font-size: var(--text-lg);
+}
+
+.wg-assurance span {
+  color: var(--color-text-muted);
+  font-size: var(--text-sm);
+  line-height: var(--leading-normal);
+}
+
+.wg-section {
+  padding-block: clamp(var(--space-8), 7vw, var(--space-12));
+}
+
+.wg-section + .wg-section {
+  border-top: 1px solid var(--color-border);
+}
+
+.wg-section__heading {
+  display: grid;
+  grid-template-columns: minmax(0, 0.7fr) minmax(18rem, 1.3fr);
+  gap: var(--space-7);
+  align-items: start;
+  margin-bottom: var(--space-7);
+}
+
+.wg-section h2,
+.wg-form-section h2,
+.wg-privacy h2 {
+  margin: 0;
+  color: var(--color-text-strong);
+  font: 600 clamp(var(--text-2xl), 4vw, var(--text-4xl)) / 1.1 var(--font-serif);
+  letter-spacing: var(--tracking-tight);
+  text-wrap: balance;
+}
+
+.wg-section__heading p,
+.wg-form-intro p {
+  max-width: 64ch;
+  margin: 0;
+  color: var(--color-text-muted);
+  line-height: var(--leading-normal);
+}
+
+.wg-contexts,
+.wg-process {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: var(--space-3);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.wg-contexts li,
+.wg-process li {
+  min-height: 100%;
+  padding: var(--space-5);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  background: var(--color-surface);
+}
+
+.wg-contexts strong,
+.wg-process strong {
+  display: block;
+  margin-bottom: var(--space-2);
+  color: var(--color-text-strong);
+  font-family: var(--font-serif);
+}
+
+.wg-contexts span,
+.wg-process span {
+  color: var(--color-text-muted);
+  font-size: var(--text-sm);
+  line-height: 1.5;
+}
+
+.wg-process {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  counter-reset: process;
+}
+
+.wg-process li {
+  counter-increment: process;
+}
+
+.wg-process li::before {
+  content: counter(process, decimal-leading-zero);
+  display: block;
+  margin-bottom: var(--space-4);
+  color: var(--terracotta-700);
+  font: 700 var(--text-sm) / 1 var(--font-mono);
+}
+
+.wg-form-shell {
+  display: grid;
+  grid-template-columns: minmax(0, 0.58fr) minmax(25rem, 1.42fr);
+  gap: clamp(var(--space-7), 6vw, var(--space-12));
+  align-items: start;
+}
+
+.wg-form-intro {
+  position: sticky;
+  top: var(--space-6);
+}
+
+.wg-form-intro .callout {
+  margin-top: var(--space-6);
+}
+
+.wg-form {
+  min-width: 0;
+  padding: clamp(var(--space-5), 5vw, var(--space-8));
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-xl);
+  background: var(--color-surface);
+  box-shadow: var(--shadow-md);
+}
+
+.wg-form[aria-busy='true'] {
+  opacity: 0.72;
+}
+
+.wg-form-section {
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+
+.wg-form-section + .wg-form-section {
+  margin-top: var(--space-8);
+  padding-top: var(--space-8);
+  border-top: 1px solid var(--color-border);
+}
+
+.wg-form-section legend,
+.wg-form-section h2 {
+  width: 100%;
+  margin-bottom: var(--space-2);
+  color: var(--color-text-strong);
+  font: 600 var(--text-2xl) / 1.25 var(--font-serif);
+}
+
+.wg-form-section > p:first-of-type,
+.wg-field-hint {
+  margin: 0 0 var(--space-5);
+  color: var(--color-text-muted);
+  font-size: var(--text-sm);
+  line-height: 1.55;
+}
+
+.wg-fields {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--space-5);
+}
+
+.wg-field {
+  min-width: 0;
+}
+
+.wg-field--full {
+  grid-column: 1 / -1;
+}
+
+.wg-field label,
+.wg-label {
+  display: block;
+  margin-bottom: var(--space-2);
+  color: var(--color-text-strong);
+  font-size: var(--text-sm);
+  font-weight: 600;
+}
+
+.wg-required {
+  color: var(--crimson-700);
+}
+
+.wg-field input,
+.wg-field textarea {
+  width: 100%;
+  padding: 0.7rem 0.75rem;
+  border: 1px solid var(--color-border-strong);
+  border-radius: var(--radius-md);
+  background: var(--button-bg);
+  color: var(--color-text);
+  font: 400 var(--text-base) / 1.45 var(--font-sans);
+}
+
+.wg-field textarea {
+  min-height: 8rem;
+  resize: vertical;
+}
+
+.wg-field input:focus-visible,
+.wg-field textarea:focus-visible,
+.wg-choice:focus-within {
+  outline: 2px solid var(--focus-ring);
+  outline-offset: 2px;
+}
+
+.wg-field input[aria-invalid='true'],
+.wg-field textarea[aria-invalid='true'] {
+  border-color: var(--crimson-500);
+}
+
+.wg-choice-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--space-3);
+}
+
+.wg-choice {
+  position: relative;
+  display: grid;
+  grid-template-columns: 1.25rem minmax(0, 1fr);
+  gap: var(--space-3);
+  align-items: start;
+  min-height: 100%;
+  margin: 0;
+  padding: var(--space-4);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  background: var(--color-surface);
+  cursor: pointer;
+}
+
+.wg-choice:hover {
+  border-color: var(--terracotta-400);
+}
+
+.wg-choice:has(input:checked) {
+  border-color: var(--terracotta-500);
+  background: var(--terracotta-50);
+  box-shadow: 0 0 0 1px var(--terracotta-500);
+}
+
+:root[data-theme='dark'] .wg-choice:has(input:checked) {
+  background: rgba(204, 120, 92, 0.14);
+}
+
+.wg-choice input {
+  width: 1.15rem;
+  height: 1.15rem;
+  margin: 0.15rem 0 0;
+  accent-color: var(--terracotta-700);
+}
+
+.wg-choice strong {
+  display: block;
+  margin-bottom: var(--space-1);
+  color: var(--color-text-strong);
+  line-height: 1.35;
+}
+
+.wg-choice span span {
+  display: block;
+  color: var(--color-text-muted);
+  font-size: var(--text-sm);
+  line-height: 1.45;
+}
+
+.wg-choice--wide {
+  grid-column: 1 / -1;
+}
+
+.wg-field-error,
+.wg-error-summary {
+  color: var(--crimson-700);
+}
+
+.wg-field-error {
+  min-height: 1.25rem;
+  margin: var(--space-2) 0 0;
+  font-size: var(--text-sm);
+}
+
+.wg-character-count {
+  display: block;
+  margin-top: var(--space-2);
+  color: var(--color-text-muted);
+  font-size: var(--text-xs);
+  text-align: right;
+}
+
+.wg-field .wg-field-hint {
+  display: block;
+  margin-block: var(--space-2) 0;
+}
+
+.wg-error-summary {
+  margin: 0 0 var(--space-6);
+  padding: var(--space-4);
+  border-left: 3px solid var(--crimson-500);
+  background: var(--crimson-100);
+}
+
+.wg-error-summary:focus {
+  outline: 2px solid var(--crimson-500);
+  outline-offset: 2px;
+}
+
+.wg-error-summary h2 {
+  margin: 0 0 var(--space-2);
+  font: 700 var(--text-base) / 1.4 var(--font-sans);
+}
+
+.wg-error-summary ul {
+  margin: 0;
+  padding-left: var(--space-5);
+}
+
+.wg-acknowledgement {
+  display: grid;
+  grid-template-columns: 1.25rem minmax(0, 1fr);
+  gap: var(--space-3);
+  align-items: start;
+  margin: var(--space-6) 0;
+}
+
+.wg-acknowledgement input {
+  width: 1.15rem;
+  height: 1.15rem;
+  margin-top: 0.2rem;
+  accent-color: var(--terracotta-700);
+}
+
+.wg-form-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-3);
+  align-items: center;
+}
+
+.wg-form-actions .btn {
+  min-height: 2.75rem;
+  justify-content: center;
+  padding-inline: var(--space-5);
+}
+
+.wg-form-status {
+  margin: var(--space-4) 0 0;
+  color: var(--color-text-muted);
+  font-size: var(--text-sm);
+}
+
+.wg-honeypot {
+  position: absolute !important;
+  left: -10000px !important;
+  width: 1px !important;
+  height: 1px !important;
+  overflow: hidden !important;
+}
+
+.wg-success,
+.wg-confirm-card {
+  padding: clamp(var(--space-6), 7vw, var(--space-10));
+  border: 1px solid var(--color-border);
+  border-top: 4px solid var(--teal-500);
+  border-radius: var(--radius-xl);
+  background: var(--color-surface);
+  box-shadow: var(--shadow-md);
+}
+
+.wg-success h2,
+.wg-confirm-card h2 {
+  margin: 0 0 var(--space-4);
+  color: var(--color-text-strong);
+  font: 600 var(--text-4xl) / 1.1 var(--font-serif);
+}
+
+.wg-success p,
+.wg-confirm-card p {
+  max-width: 62ch;
+  line-height: var(--leading-normal);
+}
+
+@media (max-width: 64rem) {
+  .wg-contexts {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .wg-process {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .wg-form-shell {
+    grid-template-columns: 1fr;
+  }
+
+  .wg-form-intro {
+    position: static;
+  }
+}
+
+@media (max-width: 44rem) {
+  .wg-hero,
+  .wg-section__heading {
+    grid-template-columns: 1fr;
+  }
+
+  .wg-contexts,
+  .wg-process,
+  .wg-fields,
+  .wg-choice-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .wg-choice--wide,
+  .wg-field--full {
+    grid-column: auto;
+  }
+
+  .wg-form {
+    padding-inline: var(--space-4);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .wg-choice,
+  .wg-form {
+    scroll-behavior: auto;
+    transition: none;
+  }
+}
+
+@media (forced-colors: active) {
+  .wg-choice:has(input:checked) {
+    outline: 3px solid Highlight;
+  }
+}

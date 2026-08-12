@@ -1,0 +1,241 @@
+---
+interface Props {
+  title: string;
+  description: string;
+  current?: 'join' | 'privacy' | 'confirm';
+}
+
+const { title, description, current } = Astro.props;
+const pageTitle = `${title} | OPDA`;
+---
+
+<!doctype html>
+<html lang="en" data-theme="light">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width" />
+    <meta name="description" content={description} />
+    <meta name="color-scheme" content="light dark" />
+    <meta name="theme-color" content="#f4f1e8" />
+    <script is:inline>
+      try {
+        const savedTheme = localStorage.getItem('opda-theme');
+        const prefersDark = matchMedia('(prefers-color-scheme: dark)').matches;
+        document.documentElement.dataset.theme = savedTheme || (prefersDark ? 'dark' : 'light');
+      } catch {}
+    </script>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>⌂</text></svg>" />
+    <link rel="stylesheet" href="/ui/design-system.css" />
+    <title>{pageTitle}</title>
+  </head>
+  <body class="public-working-groups">
+    <a class="skip-link" href="#main-content">Skip to main content</a>
+
+    <header class="public-header">
+      <div class="public-header__inner">
+        <a class="public-brand" href="https://openpropdata.org.uk/" aria-label="Open Property Data Association home">
+          <span class="public-brand__mark" aria-hidden="true">OPDA</span>
+          <span class="public-brand__name">Smart Property Data Trust Framework</span>
+        </a>
+        <nav aria-label="Working group recruitment">
+          <a href="/working-groups/join" aria-current={current === 'join' ? 'page' : undefined}>Join a working group</a>
+          <a href="/working-groups/join/privacy" aria-current={current === 'privacy' ? 'page' : undefined}>Privacy</a>
+          <button class="public-theme-toggle" type="button" aria-label="Switch colour theme" title="Switch colour theme">
+            <span aria-hidden="true">◐</span>
+          </button>
+        </nav>
+      </div>
+    </header>
+
+    <main id="main-content" tabindex="-1">
+      <slot />
+    </main>
+
+    <footer class="public-footer">
+      <div class="public-footer__inner">
+        <p><strong>Open Property Data Association</strong><br />Developing open, interoperable property data standards.</p>
+        <nav aria-label="Footer">
+          <a href="/working-groups/join/privacy">Working-group privacy notice</a>
+          <a href="https://openpropdata.org.uk/privacy-policy/">General privacy policy</a>
+          <a href="mailto:smartdata@openpropdata.org.uk">smartdata@openpropdata.org.uk</a>
+        </nav>
+      </div>
+    </footer>
+    <script>
+      const toggle = document.querySelector<HTMLButtonElement>('.public-theme-toggle');
+      toggle?.addEventListener('click', () => {
+        const next = document.documentElement.dataset.theme === 'dark' ? 'light' : 'dark';
+        document.documentElement.dataset.theme = next;
+        try { localStorage.setItem('opda-theme', next); } catch {}
+      });
+    </script>
+  </body>
+</html>
+
+<style is:global>
+  .public-working-groups {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .public-working-groups main {
+    flex: 1;
+  }
+
+  .skip-link {
+    position: fixed;
+    inset: var(--space-3) auto auto var(--space-3);
+    z-index: 100;
+    padding: var(--space-2) var(--space-3);
+    border-radius: var(--radius-md);
+    background: var(--color-text-strong);
+    color: var(--color-surface);
+    transform: translateY(-160%);
+  }
+
+  .skip-link:focus {
+    transform: translateY(0);
+  }
+
+  .public-header {
+    border-bottom: 1px solid var(--color-border);
+    background: var(--cream-200);
+  }
+
+  .public-header__inner,
+  .public-footer__inner {
+    width: min(74rem, calc(100% - 2rem));
+    margin: 0 auto;
+  }
+
+  .public-header__inner {
+    min-height: 4.75rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-5);
+  }
+
+  .public-brand {
+    display: flex;
+    align-items: baseline;
+    gap: var(--space-3);
+    color: var(--color-text-strong);
+    text-decoration: none;
+  }
+
+  .public-brand:hover {
+    color: var(--color-text-strong);
+    text-decoration: none;
+  }
+
+  .public-brand__mark {
+    color: var(--terracotta-700);
+    font: 700 var(--text-2xl) / 1 var(--font-serif);
+    letter-spacing: var(--tracking-tight);
+  }
+
+  .public-brand__name {
+    color: var(--color-text-muted);
+    font-size: var(--text-sm);
+  }
+
+  .public-header nav,
+  .public-footer nav {
+    display: flex;
+    align-items: center;
+    gap: var(--space-5);
+    font-size: var(--text-sm);
+  }
+
+  .public-header nav a {
+    color: var(--color-text);
+    font-weight: 600;
+  }
+
+  .public-header nav a[aria-current='page'] {
+    color: var(--terracotta-800);
+    text-decoration: underline;
+    text-decoration-thickness: 2px;
+    text-underline-offset: 0.35rem;
+  }
+
+  .public-theme-toggle {
+    display: inline-grid;
+    width: 2.25rem;
+    height: 2.25rem;
+    place-items: center;
+    padding: 0;
+    border: 1px solid var(--color-border-strong);
+    border-radius: var(--radius-md);
+    background: var(--button-bg);
+    color: var(--color-text-strong);
+    cursor: pointer;
+  }
+
+  .public-theme-toggle:hover {
+    background: var(--button-bg-hover);
+  }
+
+  .public-theme-toggle:focus-visible {
+    outline: 2px solid var(--focus-ring);
+    outline-offset: 2px;
+  }
+
+  .public-footer {
+    margin-top: var(--space-10);
+    border-top: 1px solid var(--color-border);
+    background: var(--cream-200);
+  }
+
+  .public-footer__inner {
+    padding-block: var(--space-7);
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: var(--space-6);
+  }
+
+  .public-footer p {
+    max-width: 36ch;
+    margin: 0;
+    color: var(--color-text-muted);
+    font-size: var(--text-sm);
+  }
+
+  .public-footer nav {
+    align-items: flex-end;
+    flex-direction: column;
+    gap: var(--space-2);
+  }
+
+  @media (max-width: 44rem) {
+    .public-header__inner,
+    .public-footer__inner {
+      align-items: flex-start;
+      flex-direction: column;
+      padding-block: var(--space-4);
+    }
+
+    .public-header nav {
+      width: 100%;
+      justify-content: space-between;
+    }
+
+    .public-footer nav {
+      align-items: flex-start;
+    }
+
+    .public-brand__name {
+      max-width: 20ch;
+    }
+  }
+
+  @media (forced-colors: active) {
+    .public-header,
+    .public-footer {
+      border-color: CanvasText;
+    }
+  }
+</style>
