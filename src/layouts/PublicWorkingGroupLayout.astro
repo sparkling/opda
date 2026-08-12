@@ -3,10 +3,15 @@ interface Props {
   title: string;
   description: string;
   current?: 'join' | 'privacy' | 'confirm';
+  socialImage?: string;
 }
 
-const { title, description, current } = Astro.props;
+const { title, description, current, socialImage } = Astro.props;
 const pageTitle = `${title} | OPDA`;
+const canonicalUrl = new URL(Astro.url.pathname, Astro.site ?? Astro.url.origin);
+const socialImageUrl = socialImage
+  ? new URL(socialImage, Astro.site ?? Astro.url.origin)
+  : undefined;
 ---
 
 <!doctype html>
@@ -15,6 +20,16 @@ const pageTitle = `${title} | OPDA`;
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width" />
     <meta name="description" content={description} />
+    <link rel="canonical" href={canonicalUrl} />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content={pageTitle} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonicalUrl} />
+    {socialImageUrl && <meta property="og:image" content={socialImageUrl} />}
+    <meta name="twitter:card" content={socialImageUrl ? 'summary_large_image' : 'summary'} />
+    <meta name="twitter:title" content={pageTitle} />
+    <meta name="twitter:description" content={description} />
+    {socialImageUrl && <meta name="twitter:image" content={socialImageUrl} />}
     <meta name="color-scheme" content="light dark" />
     <meta name="theme-color" content="#f4f1e8" />
     <script is:inline>

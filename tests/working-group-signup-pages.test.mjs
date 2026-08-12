@@ -7,6 +7,10 @@ const paths = {
   confirmation: new URL('../src/scripts/working-group-confirm.ts', import.meta.url),
   privacy: new URL('../src/pages/working-groups/join/privacy.astro', import.meta.url),
   registration: new URL('../src/scripts/working-group-join.ts', import.meta.url),
+  campaign: new URL('../src/scripts/working-group-campaign.ts', import.meta.url),
+  campaignCss: new URL('../src/styles/working-group-campaign.css', import.meta.url),
+  campaignResponsiveCss: new URL('../src/styles/working-group-campaign-responsive.css', import.meta.url),
+  campaignSectionsCss: new URL('../src/styles/working-group-campaign-sections.css', import.meta.url),
 };
 
 const expectedGroups = [
@@ -50,6 +54,51 @@ test('registration script sends the fixed allowlisted payload to the same-origin
   assert.match(source, /fetch\('\/api\/working-group-interest'/u);
   assert.match(source, /privacyNoticeVersion:\s*'2026-08-12'/u);
   assert.match(source, /Date\.now\(\)/u);
+});
+
+test('campaign story progressively enhances a complete no-JS narrative', async () => {
+  const [page, script, sectionsCss, responsiveCss] = await Promise.all([
+    readFile(paths.join, 'utf8'),
+    readFile(paths.campaign, 'utf8'),
+    readFile(paths.campaignSectionsCss, 'utf8'),
+    readFile(paths.campaignResponsiveCss, 'utf8'),
+  ]);
+  for (const phrase of [
+    'One property.',
+    'Many meanings.',
+    'One connected journey.',
+    'The problem is in the handoffs',
+    'Estate Agency',
+    'Conveyancing',
+    'Surveying and Valuation',
+    'Property Data Services',
+    'Property Technology',
+    'AI-assisted modelling',
+    'Human review',
+    'You do not need to understand ontologies or adopt AI',
+    'People decide;',
+    'no candidate becomes official through AI alone',
+  ]) {
+    assert.match(page, new RegExp(phrase, 'u'));
+  }
+  assert.match(script, /requestAnimationFrame/u);
+  assert.match(script, /IntersectionObserver/u);
+  assert.match(script, /prefers-reduced-motion/u);
+  assert.match(script, /typeof card\.animate === 'function'/u);
+  assert.match(script, /classList\.add\('has-campaign-js'\)/u);
+  assert.doesNotMatch(script, /innerHTML/u);
+  assert.doesNotMatch(sectionsCss, /^\[data-reveal\]\s*\{/mu);
+  assert.match(sectionsCss, /\.has-campaign-js \[data-reveal\]/u);
+  assert.match(responsiveCss, /prefers-reduced-motion/u);
+  assert.match(page, /data-parallax-layer/u);
+  assert.match(page, /data-story-step/u);
+});
+
+test('campaign styles remain split below the project file limit', async () => {
+  for (const path of [paths.campaignCss, paths.campaignResponsiveCss, paths.campaignSectionsCss]) {
+    const source = await readFile(path, 'utf8');
+    assert.ok(source.split('\n').length < 500, `${path.pathname} must remain below 500 lines`);
+  }
 });
 
 test('confirmation strips a fragment token and mutates only after an explicit form submit', async () => {
