@@ -1,0 +1,28 @@
+WORKING-GROUP REGISTRATION
+
+Confirm your email address
+
+Hello {{full_name}},
+
+Thank you for registering your interest in {{working_groups}}. Verify this
+address so OPDA can place your registration in the human review queue.
+
+Opening the page does not confirm anything automatically. On the next page,
+select "Confirm my email" to complete verification:
+
+{{verification_url}}
+
+This link expires in {{expiry_hours}} hours. It is unique to this registration
+and should not be forwarded.
+
+WHAT HAPPENS NEXT
+
+Verification is not automatic admission. OPDA will review the registration and
+contact you separately if it is progressed. This process does not automatically
+create Teams or SharePoint access.
+
+If you did not submit this registration, you can ignore this message. For help,
+email smartdata@openpropdata.org.uk.
+
+Open Property Data Association
+This operational message was sent to verify a working-group registration.

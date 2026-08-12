@@ -1,0 +1,13 @@
+{
+  "name": "opda-working-group-interest",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "engines": {
+    "node": ">=22"
+  },
+  "dependencies": {
+    "@aws-sdk/client-dynamodb": "3.1109.0",
+    "@aws-sdk/client-ssm": "3.1109.0"
+  }
+}

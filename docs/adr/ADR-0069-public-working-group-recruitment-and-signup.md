@@ -168,10 +168,7 @@ The public form uses a honeypot, a minimum plausible completion time, route-leve
 throttling and Cloudflare Turnstile in managed mode. Turnstile is independent of Cloudflare
 hosting and is valid behind AWS CloudFront. The Lambda must validate each short-lived,
 single-use token through Siteverify and check the expected hostname and action. The Turnstile
-secret, email-HMAC secret and a dedicated runtime Postmark token are stored in AWS Secrets
-Manager; the browser receives only the public Turnstile site key.
-
-The Turnstile secret, email-HMAC secret and a dedicated runtime Postmark token are stored as one
+secret, email-HMAC secret and the Postmark server token are stored as one
 JSON value in an AWS Systems Manager Parameter Store `SecureString`; the browser receives only
 the public Turnstile site key. The Lambda role receives only the specific DynamoDB item
 operations and parameter read it needs. No runtime credential is committed to this repository
@@ -282,3 +279,5 @@ This decision is confirmed when:
 - [DynamoDB time to live](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/TTL.html)
 - [Postmark sending with the API](https://postmarkapp.com/developer/user-guide/send-email-with-api)
 - [ICO Guide to UK GDPR](https://ico.org.uk/for-organisations/uk-gdpr-guidance-and-resources/)
+- [Working-group email verification template](../templates/working-group-interest-verification-email.html)
+- [Plain-text working-group email verification template](../templates/working-group-interest-verification-email.txt)
