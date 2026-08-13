@@ -1,88 +1,62 @@
 ---
 status: accepted
 date: 2026-08-12
-updated: 2026-08-12
-tags: [engagement, recruitment, working-groups, linkedin, trade-bodies, professional-bodies, signup, privacy, security, aws, postmark]
+updated: 2026-08-13
+tags: [engagement, recruitment, working-groups, linkedin, trade-bodies, professional-bodies, signup, privacy, security, aws]
 supersedes: []
 depends-on: [ADR-0038, ADR-0040, ADR-0063, ADR-0065]
 implements: [ADR-0065]
 ---
 
-# Recruit later bounded-context working groups through a public campaign and verified sign-up
+# Recruit later bounded-context working groups through a public campaign and simple sign-up
+
+> **Change note — 2026-08-13:** Before the first publication, the sign-up design was simplified
+> to match the operating need: accept a short form and store it for human review. The undeployed
+> email-verification, Postmark, WAF, custom-origin and secret-management components were removed.
 
 ## Context and Problem Statement
 
-The Finance and Banking Working Group began from a private roster supplied by OPDA. That
-roster cannot be reused as the recruitment model for the other bounded contexts: OPDA does
-not hold equivalent contact lists for Conveyancing, Estate Agency, Surveying and Valuation,
-Property Data Services or Property Technology.
+The Finance and Banking Working Group began from a private roster supplied by OPDA. Equivalent
+contact lists do not exist for Conveyancing, Estate Agency, Surveying and Valuation, Property
+Data Services or Property Technology. ADR-0065 therefore calls for social-media recruitment and
+an explicit sign-up for those later groups.
 
-ADR-0065 therefore says that later working groups will use social-media recruitment and an
-explicit sign-up. It does not decide what OPDA will say publicly, what sign-up means, which
-information is necessary, how an address is verified, where the records live, or how an open
-campaign can coexist with invitation-only Teams and SharePoint spaces.
+The campaign must explain the programme before asking someone to register. It needs a public,
+branded route that shows why connected domain models matter, how people contribute, and that
+technical or ontology knowledge is not required.
 
-The current Astro site is statically built into a private S3 origin and delivered by CloudFront.
-The apex and a small set of assets are public; most routes are protected by Lambda@Edge. A
-public form therefore needs both a deliberately public website surface and a small runtime
-submission service. It must not expose Postmark credentials in the browser, create a second
-uncontrolled participant list, automatically provision Microsoft access, or turn evidence
-intake into a public file-upload surface.
-
-The public campaign is an invitation to **register interest**, not a claim that every registrant
-has become an OPDA member, represents their employer, joins a standards decision body, or will
-receive access automatically.
-
-The public page is a campaign landing experience rather than a form presented without context.
-Its scroll narrative demonstrates how the meaning of property changes across handoffs, explains
-bounded contexts and interoperability, shows the evidence-to-candidate review loop, and makes the
-practical outputs and human decision boundary visible before asking for registration. Motion is
-progressive enhancement: the complete argument and form remain available without JavaScript and
-with reduced-motion or small-screen preferences.
-
-LinkedIn gives the campaign public reach, but its audience is shaped by existing networks and
-platform distribution. Selective outreach through established UK trade and professional bodies
-can broaden and balance participation without asking those bodies for member lists or bypassing
-the same public registration and human-review process.
+The existing Astro site is statically built into a private S3 origin and delivered by CloudFront.
+A submitted form therefore needs a very small runtime boundary. Registration is an expression of
+interest, not automatic OPDA membership, standards authority, Teams access or SharePoint access.
 
 ## Decision Drivers
 
-- Reach practitioners and subject-matter experts beyond the Finance and Banking roster.
-- Reach relevant professional communities outside OPDA's immediate LinkedIn network.
-- Explain the work in non-technical language and make several forms of contribution visible.
+- Reach practitioners beyond the existing Finance and Banking roster.
+- Explain the work in non-technical language before asking people to register.
 - Keep the form short enough to complete from a LinkedIn visit.
-- Preserve one authoritative recruitment register rather than maintaining spreadsheets,
-  SharePoint lists and provider-specific contact lists in parallel.
-- Verify ownership of the supplied email address before OPDA reviews a registration.
-- Keep working-group access invitation-only and subject to human review.
-- Minimise personal data and give privacy information at the point of collection.
-- Allow a personal or generic-provider address to register and participate in Teams while
-  retaining the existing company-domain rule for later SharePoint evidence access.
-- Reuse the accepted AWS hosting and CI/CD architecture and the existing verified Postmark
-  sender domain.
-- Protect a public endpoint from automated abuse without placing credentials in the browser.
+- Store responses in one authoritative place rather than parallel spreadsheets and lists.
+- Keep acceptance, onboarding and Microsoft access subject to human review.
+- Minimise personal data and explain its use at the point of collection.
+- Reuse the existing AWS hosting and CI/CD architecture.
+- Keep the solution proportional to a simple expression-of-interest form.
 
 ## Considered Options
 
-- **Option A — Recruit only through privately assembled email lists.** Wait until OPDA obtains a
-  roster for each context and repeat the Finance and Banking invitation process.
-- **Option B — Use a third-party hosted form.** Link LinkedIn to Microsoft Forms, Typeform or a
-  similar service, then export responses into the OPDA operating process.
-- **Option C — Use email as the sign-up mechanism.** Ask interested people to email the OPDA
-  mailbox with their details and preferred context.
-- **Option D — Add a public, verified sign-up service to the OPDA AWS site.** Publish the campaign
-  and form on the OPDA domain, verify addresses through Postmark, and store registrations in one
-  access-controlled register for human review.
+- **Option A — Private email lists.** Wait for OPDA to obtain a roster for every context.
+- **Option B — Third-party hosted form.** Link to Microsoft Forms, Typeform or similar.
+- **Option C — Email sign-up.** Ask interested people to send an unstructured email.
+- **Option D — Simple OPDA-hosted form.** Add a public form to the existing Astro site and store
+  each valid submission through API Gateway, Lambda and DynamoDB.
 
 ## Decision Outcome
 
-Chosen option: **D — add a public, verified sign-up service to the OPDA AWS site**.
+Chosen option: **D — a simple OPDA-hosted form on the existing AWS site**.
 
 ### 1. Campaign scope and message
 
-The first campaign combines a LinkedIn post with selective, one-to-one outreach to relevant UK
-trade and professional bodies. Both routes link to the same OPDA sign-up page and recruit
-expressions of interest for exactly five bounded-context groups:
+The campaign combines a LinkedIn post with selective, one-to-one outreach to relevant UK trade
+and professional bodies. Both routes link to the same public page and recruit expressions of
+interest for exactly five bounded-context groups:
 
 1. Conveyancing;
 2. Estate Agency;
@@ -91,55 +65,41 @@ expressions of interest for exactly five bounded-context groups:
 5. Property Technology.
 
 Finance and Banking continues through its existing participant process. DBT Smart Data and the
-Interoperability Working Group are not advertised as additional property bounded contexts in
-this campaign.
+Interoperability Working Group are not advertised as additional property bounded contexts.
 
 The campaign explains that OPDA is creating the **Smart Property Data Trust Framework** as a
-governed family of connected domain models. It seeks practitioners, subject-matter experts,
-professional bodies, data and product specialists, and technology providers. People may
-contribute by sharing authorised source material later, explaining domain language and rules,
-reviewing model candidates, testing familiar outputs, and challenging drafts.
+governed family of connected domain models. People may contribute later by sharing authorised
+source material, explaining domain language and rules, reviewing model candidates, testing
+familiar outputs and challenging drafts.
 
-The campaign must say that participants are not being asked to understand ontologies, adopt AI,
-or have technical knowledge. It must not promise immediate access, membership, accreditation,
-voting rights, endorsement, publication of a person's material, or a release date.
+Participants are not being asked to understand ontologies, adopt AI or have technical knowledge.
+The campaign must not promise immediate access, membership, accreditation, voting rights,
+endorsement, publication of material or a release date.
 
-The maintained campaign copy lives in
+The approved LinkedIn copy is maintained in
 [`docs/recruitment/2026-08-bounded-context-working-group-linkedin.md`](../recruitment/2026-08-bounded-context-working-group-linkedin.md).
 
-Trade-body outreach asks an organisation to share the public registration opportunity with its
-relevant members or network. OPDA does not request or accept a member list, infer endorsement,
-bulk-add people, or grant access through this route. Every interested person registers directly,
-verifies their own address, and enters the same human review queue. Messages are sent individually
-to an official organisation-level contact or published contact route, not scraped personal
-addresses. Where an official mailbox is available, the approved message is sent individually from
-`smartdata@openpropdata.org.uk` through Postmark with open and link tracking disabled. Where only
-an official contact form is available, the same approved text is submitted through that form.
-Organisations are not added to a broadcast list. Outreach status and responses are recorded in the
-local register, and any follow-up requires either a relevant response or separate approval.
-
+Trade-body outreach asks an organisation to share the public opportunity with its network. OPDA
+does not request a member list, infer endorsement, bulk-add people or grant access through this
+route. Messages are sent individually to an official organisation-level contact or contact form.
 The maintained outreach assets are:
 
-- [`docs/recruitment/2026-08-bounded-context-trade-body-outreach.md`](../recruitment/2026-08-bounded-context-trade-body-outreach.md),
-  the official-source recipient and status register;
+- [`docs/recruitment/2026-08-bounded-context-trade-body-outreach.md`](../recruitment/2026-08-bounded-context-trade-body-outreach.md);
 - [`docs/templates/bounded-context-trade-body-outreach-email.html`](../templates/bounded-context-trade-body-outreach-email.html)
-  and its [plain-text alternative](../templates/bounded-context-trade-body-outreach-email.txt);
-  and
-- [`docs/recruitment/2026-08-bounded-context-outreach-parameters.json`](../recruitment/2026-08-bounded-context-outreach-parameters.json),
-  the approved per-context template values.
+  and its [plain-text alternative](../templates/bounded-context-trade-body-outreach-email.txt); and
+- [`docs/recruitment/2026-08-bounded-context-outreach-parameters.json`](../recruitment/2026-08-bounded-context-outreach-parameters.json).
 
 ### 2. Public sign-up experience
 
-The canonical public route is `/working-groups/join`, with confirmation and privacy information
-under the same prefix. Only that prefix and the same-origin submission API become public; the
-ontology, evidence corpus and existing knowledge-base routes remain protected.
+The canonical public route is `/working-groups/join`, with the privacy notice under the same
+prefix. Only that route family and the same-origin submission API become public; ontology,
+evidence and existing knowledge-base routes remain protected.
 
-The page describes the five groups, what participants can contribute, and the sequence:
+The page explains the five groups, the kinds of contribution OPDA needs and the sequence:
 
-1. register interest;
-2. verify the supplied email address;
-3. OPDA reviews the registration; and
-4. if accepted, OPDA sends working-group onboarding and access separately.
+1. the person registers their interest;
+2. OPDA reviews the expression of interest; and
+3. if accepted, OPDA sends onboarding and access separately.
 
 The form collects only:
 
@@ -147,185 +107,128 @@ The form collects only:
 - email address;
 - organisation;
 - role or area of expertise;
-- one or more of the five working groups, or `Not sure — help me choose`;
+- one or more of the five groups, or `Not sure — help me choose`;
 - one or more contribution preferences; and
 - an optional, length-limited note about relevant experience or perspective.
 
-It does not collect telephone numbers, postal addresses, social-media profiles, demographic or
-special-category data, property or customer data, evidence files, or links to evidence. A
-required acknowledgement makes clear that this is an expression of interest and permits OPDA to
-contact the person about the selected groups. There is no bundled newsletter or marketing
-consent.
+It does not collect telephone numbers, addresses, social profiles, demographic or special-
+category data, property or customer data, evidence files, or links to evidence. A required
+acknowledgement makes clear that this is an expression of interest and permits OPDA to contact
+the person about selected groups. There is no newsletter or marketing consent.
 
-### 3. Identity, review and Microsoft access
+### 3. Review and access
 
-The address must be verified with a one-time link before the registration enters the review
-queue. Loading a link does not mutate state because mail-security scanners may follow links:
-the confirmation page requires an explicit human action that sends `POST` to the confirmation
-endpoint.
-
-Verification is not acceptance. A human acting for OPDA reviews every verified registration.
-The public service does not create Entra guests, add Team members, create SharePoint groups or
-folders, send working-group invitations, or assign standards decision rights.
+A human acting for OPDA reviews every expression of interest. The public service does not create
+Entra guests, add Team members, create SharePoint groups or folders, send invitations, or assign
+standards decision rights.
 
 Generic-provider addresses are permitted at sign-up and may later be invited to Teams. The
 company-domain restriction applies only if SharePoint evidence access is later provisioned.
 
-### 4. Hosting and authoritative register
+### 4. Hosting and storage
 
-The existing AWS architecture in ADR-0038 and ADR-0040 is extended as follows:
+The existing AWS architecture in ADR-0038 and ADR-0040 is extended only as follows:
 
-- static Astro pages remain in S3 and are delivered through CloudFront;
+- the static Astro campaign page and privacy notice remain in S3 behind CloudFront;
 - a cache-disabled CloudFront behaviour for `/api/working-group-interest*` targets an Amazon API
   Gateway HTTP API in `eu-west-2`;
-- one Node.js Lambda handles `POST` registration and confirmation operations;
-- one encrypted, on-demand DynamoDB table in `eu-west-2` is the authoritative recruitment
-  register; and
-- Postmark sends one-to-one transactional verification messages from
-  `smartdata@openpropdata.org.uk` without open or link tracking.
+- one small Node.js Lambda accepts `POST /api/working-group-interest`; and
+- one encrypted, on-demand DynamoDB table in `eu-west-2` stores each expression of interest.
 
-The table is keyed by an HMAC of the normalised email address rather than the address itself. It
-stores the supplied fields, selected contexts, status, timestamps, the active privacy-notice
-version, a hash of the opaque verification token, expiry time and Postmark message identifier.
-It does not store the Turnstile token, raw IP address or user-agent string. Request bodies and
-email addresses must never be written to application logs.
+Each accepted request receives a generated registration identifier. The table stores the form
+fields, status `received`, timestamps and active privacy-notice version. Request bodies, email
+addresses, raw IP addresses and user-agent strings must not be written to application logs.
 
-The status lifecycle is `pending-email-verification` → `verified` → `reviewed` → `accepted` or
-`declined`, with later `invited` and `withdrawn` states available to the operating process.
+### 5. Boundary validation and basic abuse controls
 
-### 5. Boundary validation and abuse protection
+The Lambda accepts JSON only, enforces a 16 KB body limit, rejects unknown fields, HTML, control
+characters, invalid email syntax, excessive lengths and values outside the explicit group and
+contribution allowlists. A hidden honeypot and minimum plausible completion time discard obvious
+automated submissions without storing them. API Gateway applies a low route throttle, Lambda has
+bounded concurrency, and the table is on-demand.
 
-The Lambda accepts JSON only and enforces a small request-body limit. It rejects unknown fields,
-HTML, control characters, invalid email syntax, values beyond declared lengths and working-group
-or contribution values outside explicit allowlists. Conditional writes make repeats idempotent,
-and responses do not reveal whether an email address is already registered.
+This design intentionally has no email verification, confirmation route, Postmark call, WAF,
+custom API hostname or runtime secret. These can be reconsidered if observed abuse or an operating
+requirement justifies them.
 
-The public form uses a honeypot, a minimum plausible completion time, route-level API Gateway
-throttling and Cloudflare Turnstile in managed mode. Turnstile is independent of Cloudflare
-hosting and is valid behind AWS CloudFront. The Lambda must validate each short-lived,
-single-use token through Siteverify and check the expected hostname and action. The Turnstile
-secret, email-HMAC secret and the Postmark server token are stored as one
-JSON value in an AWS Systems Manager Parameter Store `SecureString`; the browser receives only
-the public Turnstile site key. The Lambda role receives only the specific DynamoDB item
-operations and parameter read it needs. No runtime credential is committed to this repository
-or copied from the local operator keychain.
+### 6. Privacy and retention
 
-### 6. Privacy, retention and participant control
+The form links to `/working-groups/join/privacy`, which names OPDA as controller, explains the
+recruitment and administration purposes, lists the information collected and AWS/Microsoft
+service relationships, states retention and provides `smartdata@openpropdata.org.uk` for rights
+requests.
 
-The form includes a concise collection notice and links to a dedicated public notice at
-`/working-groups/join/privacy`. It names OPDA as controller, explains the recruitment and
-working-group administration purposes, identifies the categories collected and the AWS,
-Postmark and later Microsoft service relationships, describes international-transfer safeguards,
-states the retention periods and provides `smartdata@openpropdata.org.uk` for access, correction,
-withdrawal and deletion requests. It also links to the association's general privacy policy.
+Expressions of interest that are declined, withdrawn or not progressed are retained for no more
+than six months. Accepted participant records are retained for the working group's duration plus
+12 months unless a separately documented legal obligation applies. DynamoDB TTL is enabled for
+the initial six-month period; accepted records require a deliberate retention update in the later
+operating process.
 
-Unverified registrations expire after 30 days. Verified registrations that are declined,
-withdrawn or not progressed are deleted after six months. Accepted participant contact records
-are retained for the working group's duration plus 12 months, unless a separately documented
-legal obligation applies. DynamoDB TTL is enabled, but the application treats an expired record
-as unavailable immediately because physical TTL deletion is asynchronous.
-
-The free-text field warns against including confidential, personal, customer, property-
-transaction or special-category information. Sign-up data is operational recruitment data and
-must not enter the AI evidence or ontology-building corpus.
+The optional note warns against confidential, personal, customer, property-transaction or
+special-category information. Registration data is operational recruitment data and must not
+enter the AI evidence or ontology-building corpus.
 
 ### Consequences
 
-- Good, because later groups can recruit beyond an unavailable email roster while retaining a
-  clear human approval boundary.
-- Good, because professional-body outreach can reach established communities that OPDA's current
-  LinkedIn network may not reach, while preserving self-registration and equal review.
-- Good, because the public explanation and form live on the OPDA domain and use the site's design
-  system rather than presenting an unrelated form-provider experience.
-- Good, because a single encrypted register replaces parallel participant spreadsheets and
-  exports.
-- Good, because address verification, Turnstile, strict validation, throttling and idempotency
-  reduce spam and accidental duplicates without requiring an expensive always-on service.
-- Good, because personal email addresses are not incorrectly excluded from Teams participation;
-  the company-domain restriction remains scoped to SharePoint evidence access.
-- Bad, because a public form adds runtime infrastructure, personal-data handling, secrets and an
-  operational review queue to a predominantly static site.
-- Bad, because confirmation adds one step before review and may reduce completion compared with
-  an unverified form.
-- Neutral, because registration does not automate Microsoft provisioning; OPDA still performs
-  the acceptance and invitation steps deliberately.
-- Neutral, because inclusion in the outreach register identifies a relevant distribution route;
-  it does not imply that the organisation endorses OPDA or will distribute the invitation.
-- Neutral, because Turnstile introduces Cloudflare as an abuse-control subprocessor while the
-  application and records remain hosted on AWS.
+- Good, because later groups can recruit beyond unavailable email rosters.
+- Good, because the public explanation and form use the OPDA domain and design system.
+- Good, because one encrypted register replaces parallel spreadsheets and exports.
+- Good, because the runtime has one route, one write operation and no secret or email dependency.
+- Good, because human review remains the acceptance and access boundary.
+- Bad, because OPDA still owns a small public runtime and a personal-data register.
+- Bad, because an unverified address can be mistyped or deliberately submitted by another person.
+- Neutral, because obvious automation is filtered but determined abuse may require stronger
+  controls later.
 
 ### Confirmation
 
 This decision is confirmed when:
 
-- the exact campaign copy names only the five intended contexts and links to the canonical public
-  route;
-- trade-body outreach uses only the approved template and parameter values, records each contact
-  and outcome, and never requests a member list;
-- anonymous `GET` requests can access the sign-up, confirmation and privacy routes while an
-  unrelated knowledge-base route still redirects to authentication;
-- registration and confirmation accept only valid allowlisted payloads and never mutate through
-  `GET`;
-- automated tests cover invalid fields, oversize bodies, honeypot and timing failures, duplicate
-  registrations, invalid/replayed/expired tokens, Turnstile rejection and Postmark failure;
-- an address cannot reach `verified` without a successful human `POST` confirmation;
-- no test or production log contains submitted personal data, tokens or request bodies;
-- the DynamoDB table is encrypted, uses TTL, and the Lambda role is limited to the declared table
-  and secrets;
+- the campaign names only the five intended contexts and links to the canonical public route;
+- trade-body outreach uses approved assets and never requests a member list;
+- anonymous visitors can access the join and privacy routes while unrelated protected routes
+  still redirect to authentication;
+- the service exposes one POST route and stores one validated record per accepted submission;
+- automated tests cover invalid fields, oversized bodies, honeypot/timing submissions and storage
+  failure;
+- DynamoDB is encrypted, on-demand, TTL-enabled and the Lambda can only write to its table;
 - no Teams or SharePoint access is provisioned by the public service;
-- keyboard-only and screen-reader checks pass and the interface respects reduced-motion and
-  high-contrast preferences;
-- the campaign argument and form remain complete without JavaScript, and parallax/reveal effects
-  are disabled for reduced-motion and small-screen contexts;
-- `make test` and `make build` pass; and
-- the infrastructure and static site deploy through the existing CI-only AWS workflows.
+- keyboard, no-JavaScript and reduced-motion behavior remains usable;
+- `make test` and `make build-data` pass; and
+- infrastructure and static pages deploy through the existing CI-only AWS workflows.
 
 ## Pros and Cons of the Options
 
 ### Option A — Private email lists
 
-- Good, because it reuses the Finance and Banking delivery process.
-- Bad, because OPDA does not have the five required rosters and assembling them would delay and
-  narrow recruitment.
+- Good, because it reuses the Finance and Banking process.
+- Bad, because OPDA lacks the five required rosters.
 
 ### Option B — Third-party hosted form
 
-- Good, because it is quick to publish and provides a ready-made response interface.
-- Bad, because it adds a provider and export workflow, fragments the participant record, and
-  cannot enforce the complete verification and review boundary without further integration.
+- Good, because it is quick to publish.
+- Bad, because it adds a provider and fragments the participant record.
 
 ### Option C — Email sign-up
 
 - Good, because it needs no application runtime.
-- Bad, because unstructured messages create manual transcription, inconsistent fields,
-  duplicate records and weak campaign attribution.
+- Bad, because unstructured messages require manual transcription and create inconsistent records.
 
-### Option D — OPDA-hosted verified sign-up
+### Option D — Simple OPDA-hosted form
 
-- Good, because it gives one branded, accessible and testable journey with an authoritative
-  register and explicit lifecycle.
-- Bad, because OPDA owns the runtime, security, privacy and retention controls.
+- Good, because it gives one branded journey and one authoritative register.
+- Bad, because OPDA owns the small runtime, privacy and retention process.
 
 ## More Information
 
-- [ADR-0038](./ADR-0038-hosting-auth-and-comments-architecture-aws.md) establishes the private
-  S3, CloudFront and Lambda@Edge architecture that this decision extends with a narrow public
-  surface.
-- [ADR-0040](./ADR-0040-aws-hosting-ci-cd-pipeline.md) requires infrastructure and site
-  publication through GitHub Actions and AWS OIDC rather than operator credentials.
-- [ADR-0063](./ADR-0063-domain-led-bounded-context-working-groups.md) defines the working-group
-  and bounded-context structure advertised here.
+- [ADR-0038](./ADR-0038-hosting-auth-and-comments-architecture-aws.md) establishes the private S3,
+  CloudFront and Lambda@Edge architecture extended by this narrow public surface.
+- [ADR-0040](./ADR-0040-aws-hosting-ci-cd-pipeline.md) requires publication through GitHub Actions
+  and AWS OIDC rather than operator credentials.
+- [ADR-0063](./ADR-0063-domain-led-bounded-context-working-groups.md) defines the working groups.
 - [ADR-0065](./ADR-0065-ai-assisted-evidence-to-model-workflow.md) decides that later groups use
-  social-media recruitment and explicit sign-up; this ADR implements that recruitment boundary.
-- [Cloudflare Turnstile server-side validation](https://developers.cloudflare.com/turnstile/get-started/server-side-validation/)
+  public recruitment and explicit sign-up.
 - [AWS HTTP API throttling](https://docs.aws.amazon.com/apigateway/latest/developerguide/http-api-throttling.html)
 - [DynamoDB encryption at rest](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/EncryptionAtRest.html)
 - [DynamoDB time to live](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/TTL.html)
-- [Postmark sending with the API](https://postmarkapp.com/developer/user-guide/send-email-with-api)
 - [ICO Guide to UK GDPR](https://ico.org.uk/for-organisations/uk-gdpr-guidance-and-resources/)
-- [Working-group email verification template](../templates/working-group-interest-verification-email.html)
-- [Plain-text working-group email verification template](../templates/working-group-interest-verification-email.txt)
-- [Bounded-context trade and professional body outreach register](../recruitment/2026-08-bounded-context-trade-body-outreach.md)
-- [Bounded-context outreach parameter values](../recruitment/2026-08-bounded-context-outreach-parameters.json)
-- [Trade and professional body outreach email](../templates/bounded-context-trade-body-outreach-email.html)
-- [Plain-text trade and professional body outreach email](../templates/bounded-context-trade-body-outreach-email.txt)

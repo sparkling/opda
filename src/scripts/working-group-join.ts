@@ -29,14 +29,9 @@ interface RegistrationPayload {
   contributions: string[];
   relevantPerspective?: string;
   acknowledgement: true;
-  privacyNoticeVersion: '2026-08-12';
-  turnstileToken: string;
+  privacyNoticeVersion: '2026-08-13';
   website: string;
   startedAt: number;
-}
-
-interface TurnstileWindow extends Window {
-  turnstile?: { reset: () => void };
 }
 
 function initWorkingGroupForm(): void {
@@ -155,19 +150,6 @@ function initWorkingGroupForm(): void {
       addError(acknowledgement, 'acknowledgement-error', 'Confirm that you understand how this expression of interest will be used.');
     }
 
-    const turnstileEnabled = form.dataset.turnstileEnabled === 'true';
-    const turnstileToken = form.querySelector<HTMLInputElement>('[name="cf-turnstile-response"]')?.value ?? '';
-    if (!turnstileEnabled || !turnstileToken) {
-      const message = turnstileEnabled
-        ? 'Complete the verification check before submitting.'
-        : 'Verification is temporarily unavailable. Please try again later.';
-      if (summaryList) {
-        const item = document.createElement('li');
-        item.textContent = message;
-        summaryList.append(item);
-      }
-    }
-
     const beganAt = Number(startedAt?.value);
     const website = form.querySelector<HTMLInputElement>('#website')?.value ?? '';
     const privacyNoticeVersion = form.dataset.privacyNoticeVersion;
@@ -180,7 +162,7 @@ function initWorkingGroupForm(): void {
       return null;
     }
 
-    if (!Number.isInteger(beganAt) || privacyNoticeVersion !== '2026-08-12') return null;
+    if (!Number.isInteger(beganAt) || privacyNoticeVersion !== '2026-08-13') return null;
 
     const payload: RegistrationPayload = {
       fullName,
@@ -190,8 +172,7 @@ function initWorkingGroupForm(): void {
       workingGroups,
       contributions,
       acknowledgement: true,
-      privacyNoticeVersion: '2026-08-12',
-      turnstileToken,
+      privacyNoticeVersion: '2026-08-13',
       website,
       startedAt: beganAt,
     };
@@ -241,7 +222,6 @@ function initWorkingGroupForm(): void {
       if (status) {
         status.textContent = 'We could not submit your registration. Please try again. If the problem continues, email smartdata@openpropdata.org.uk.';
       }
-      (window as TurnstileWindow).turnstile?.reset();
       submitButton.disabled = false;
     } finally {
       form.removeAttribute('aria-busy');

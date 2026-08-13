@@ -49,12 +49,6 @@ Parameters:
       membership is a gate-side check). Sourced by the infra workflow from the
       committed config/aws/members.txt (one e-mail per line) — edit that file to
       change who has access.
-  WorkingGroupInterestRuntimeConfigParameterName:
-    Type: String
-    Default: /opda/working-group-interest/runtime
-    Description: >-
-      Existing SSM SecureString read by the working-group interest Lambda.
-      The secret JSON is provisioned independently and never enters this stack.
 
 Resources:
   # The edge gate's runtime config (read at cold start from eu-west-2;
@@ -79,9 +73,6 @@ Resources:
           ignore_checks: [W3002]
     Properties:
       TemplateURL: working-group-interest-stack.yaml
-      Parameters:
-        DomainName: !Ref DomainName
-        RuntimeConfigParameterName: !Ref WorkingGroupInterestRuntimeConfigParameterName
 
   # ---------------- Static site: S3 + CloudFront ----------------
 
@@ -291,7 +282,7 @@ Resources:
             LambdaFunctionAssociations:
               - EventType: viewer-request
                 LambdaFunctionARN: !Ref GateFunctionVersionArn
-          # Public same-origin API. HTTP API exposes only the two POST routes;
+          # Public same-origin API. HTTP API exposes only the registration POST route;
           # CloudFront's POST-capable method set necessarily includes the
           # remaining verbs, which API Gateway rejects because no routes exist.
           - PathPattern: '/api/working-group-interest*'
@@ -350,5 +341,3 @@ Outputs:
     Value: !GetAtt WorkingGroupInterestApplication.Outputs.FunctionName
   WorkingGroupInterestRegistrationsTableName:
     Value: !GetAtt WorkingGroupInterestApplication.Outputs.RegistrationsTableName
-  WorkingGroupInterestRuntimeConfigParameterName:
-    Value: !GetAtt WorkingGroupInterestApplication.Outputs.RuntimeConfigParameterName

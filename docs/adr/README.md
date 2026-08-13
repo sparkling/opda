@@ -79,7 +79,7 @@ modelling website remains unchanged:
 
 | # | Title | Status |
 |---|---|---|
-| [ADR-0069](./ADR-0069-public-working-group-recruitment-and-signup.md) | Recruit later bounded-context working groups through a public campaign and verified sign-up | accepted |
+| [ADR-0069](./ADR-0069-public-working-group-recruitment-and-signup.md) | Recruit later bounded-context working groups through a public campaign and simple sign-up | accepted |
 
 ## Authoring a new ADR
 

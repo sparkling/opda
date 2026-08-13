@@ -17,7 +17,7 @@ View and share the invitation
 {{signup_url}}
 
 Registration is an expression of interest, not automatic membership or access. Each person
-registers directly, verifies their own email address and is reviewed by OPDA before onboarding.
+registers directly and is reviewed by OPDA before onboarding.
 
 We are not asking you to provide a member list. Please share the public registration link with
 people for whom it is relevant. Sharing the opportunity does not imply endorsement or partnership.

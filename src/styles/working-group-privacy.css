@@ -1,5 +1,4 @@
-.wg-privacy,
-.wg-confirm {
+.wg-privacy {
   width: min(54rem, 100%);
   margin-inline: auto;
 }

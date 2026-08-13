@@ -93,14 +93,7 @@ jobs:
       # build-exclusive + ephemeral — only dist/ (static HTML) is deployed;
       # production never runs, reaches, or exposes them.
       - name: Build static site
-        env:
-          PUBLIC_TURNSTILE_SITE_KEY: ${{ vars.OPDA_TURNSTILE_SITE_KEY }}
-        run: |
-          if [ -z "$PUBLIC_TURNSTILE_SITE_KEY" ]; then
-            echo "OPDA_TURNSTILE_SITE_KEY is required for the public registration form" >&2
-            exit 1
-          fi
-          npm run build:data
+        run: npm run build:data
 
       # ADR-0048 gate needs the opda-gen CLI on PATH (mirrors the sibling
       # ontology workflows' `pip install -e .[dev]`).

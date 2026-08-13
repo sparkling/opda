@@ -21,7 +21,7 @@ of the five bounded contexts on its own official website.
 - Use the approved [HTML](../templates/bounded-context-trade-body-outreach-email.html) or
   [plain-text](../templates/bounded-context-trade-body-outreach-email.txt) template with the
   [approved parameters](./2026-08-bounded-context-outreach-parameters.json).
-- Registration, email verification and human review remain identical for every referral source.
+- Registration and human review remain identical for every referral source.
 - Record the date, sender, recipient route, response and any follow-up before further contact.
 - Listing does not imply endorsement, partnership or agreement to distribute the invitation.
 

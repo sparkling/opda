@@ -4,28 +4,16 @@ Description: >-
   Public working-group expression-of-interest API: HTTP API, Lambda and the
   encrypted authoritative DynamoDB register (ADR-0069).
 
-Parameters:
-  DomainName:
-    Type: String
-    Default: opda.org.uk
-  RuntimeConfigParameterName:
-    Type: String
-    Default: /opda/working-group-interest/runtime
-    AllowedPattern: '^/opda/[A-Za-z0-9/_.-]+$'
-    Description: >-
-      Existing SSM SecureString containing the runtime JSON config. It is read
-      with decryption at invocation time and is never resolved into the stack.
-
 Resources:
   RegistrationsTable:
     Type: AWS::DynamoDB::Table
     Properties:
       BillingMode: PAY_PER_REQUEST
       AttributeDefinitions:
-        - AttributeName: registrationKey
+        - AttributeName: registrationId
           AttributeType: S
       KeySchema:
-        - AttributeName: registrationKey
+        - AttributeName: registrationId
           KeyType: HASH
       SSESpecification:
         SSEEnabled: true
@@ -54,7 +42,7 @@ Resources:
             Principal: { Service: lambda.amazonaws.com }
             Action: sts:AssumeRole
       Policies:
-        - PolicyName: working-group-interest-runtime
+        - PolicyName: working-group-interest-storage
           PolicyDocument:
             Version: '2012-10-17'
             Statement:
@@ -64,25 +52,8 @@ Resources:
                 Resource: !Sub 'arn:${AWS::Partition}:logs:${AWS::Region}:${AWS::AccountId}:log-group:/aws/lambda/opda-working-group-interest:*'
               - Sid: RegistrationRecords
                 Effect: Allow
-                Action:
-                  - dynamodb:GetItem
-                  - dynamodb:PutItem
-                  - dynamodb:UpdateItem
-                  - dynamodb:DeleteItem
+                Action: [dynamodb:PutItem]
                 Resource: !GetAtt RegistrationsTable.Arn
-              - Sid: RuntimeConfig
-                Effect: Allow
-                Action: [ssm:GetParameter]
-                Resource: !Sub 'arn:${AWS::Partition}:ssm:${AWS::Region}:${AWS::AccountId}:parameter${RuntimeConfigParameterName}'
-              - Sid: RuntimeConfigDecrypt
-                Effect: Allow
-                Action: [kms:Decrypt]
-                Resource: '*'
-                Condition:
-                  StringEquals:
-                    kms:ViaService: !Sub 'ssm.${AWS::Region}.amazonaws.com'
-                  StringLike:
-                    kms:EncryptionContext:PARAMETER_ARN: !Sub 'arn:${AWS::Partition}:ssm:${AWS::Region}:${AWS::AccountId}:parameter${RuntimeConfigParameterName}'
 
   Function:
     Type: AWS::Serverless::Function
@@ -100,9 +71,6 @@ Resources:
       Environment:
         Variables:
           REGISTRATIONS_TABLE_NAME: !Ref RegistrationsTable
-          RUNTIME_CONFIG_PARAMETER_NAME: !Ref RuntimeConfigParameterName
-          EXPECTED_TURNSTILE_HOSTNAME: !Ref DomainName
-          EXPECTED_TURNSTILE_ACTION: working-group-interest
 
   Api:
     Type: AWS::ApiGatewayV2::Api
@@ -130,13 +98,6 @@ Resources:
       RouteKey: POST /api/working-group-interest
       Target: !Sub 'integrations/${Integration}'
 
-  ConfirmRoute:
-    Type: AWS::ApiGatewayV2::Route
-    Properties:
-      ApiId: !Ref Api
-      RouteKey: POST /api/working-group-interest/confirm
-      Target: !Sub 'integrations/${Integration}'
-
   Stage:
     Type: AWS::ApiGatewayV2::Stage
     Properties:
@@ -154,7 +115,7 @@ Resources:
       Action: lambda:InvokeFunction
       FunctionName: !Ref Function
       Principal: apigateway.amazonaws.com
-      SourceArn: !Sub 'arn:${AWS::Partition}:execute-api:${AWS::Region}:${AWS::AccountId}:${Api}/*/POST/api/working-group-interest*'
+      SourceArn: !Sub 'arn:${AWS::Partition}:execute-api:${AWS::Region}:${AWS::AccountId}:${Api}/*/POST/api/working-group-interest'
 
 Outputs:
   ApiId:
@@ -169,5 +130,3 @@ Outputs:
     Value: !Ref RegistrationsTable
   RegistrationsTableArn:
     Value: !GetAtt RegistrationsTable.Arn
-  RuntimeConfigParameterName:
-    Value: !Ref RuntimeConfigParameterName

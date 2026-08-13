@@ -5,8 +5,7 @@ import '@/styles/working-group-campaign.css';
 import '@/styles/working-group-campaign-responsive.css';
 import '@/styles/working-group-campaign-sections.css';
 
-const turnstileSiteKey = import.meta.env.PUBLIC_TURNSTILE_SITE_KEY ?? '';
-const privacyNoticeVersion = '2026-08-12';
+const privacyNoticeVersion = '2026-08-13';
 
 const contexts = [
   ['conveyancing', 'Conveyancing', 'The legal transfer of property, including title, searches, enquiries and completion.'],
@@ -239,8 +238,7 @@ const contributions = [
       </div>
       <ol class="wg-process">
         <li><strong>Register interest</strong><span>Tell us where your experience is most relevant.</span></li>
-        <li><strong>Verify your email</strong><span>Use the one-time link we send to the address you provide.</span></li>
-        <li><strong>OPDA reviews it</strong><span>A person reviews every verified registration.</span></li>
+        <li><strong>OPDA reviews it</strong><span>A person reviews every expression of interest.</span></li>
         <li><strong>Onboarding follows</strong><span>If accepted, we send working-group access separately.</span></li>
       </ol>
     </section>
@@ -256,7 +254,7 @@ const contributions = [
         <div class="callout callout--note">
           <div class="callout__label">How we use these details</div>
           <p>
-            We use them only to verify, review and administer your working-group interest. This is
+            We use them only to review and administer your working-group interest. This is
             not newsletter or marketing consent. Read the
             <a href="/working-groups/join/privacy">working-group privacy notice</a>.
           </p>
@@ -267,7 +265,6 @@ const contributions = [
         id="working-group-interest-form"
         class="wg-form"
         novalidate
-        data-turnstile-enabled={turnstileSiteKey ? 'true' : 'false'}
         data-privacy-notice-version={privacyNoticeVersion}
       >
         <div id="form-errors" class="wg-error-summary" role="alert" tabindex="-1" hidden>
@@ -365,43 +362,23 @@ const contributions = [
         </label>
         <p id="acknowledgement-error" class="wg-field-error"></p>
 
-        {turnstileSiteKey ? (
-          <div
-            class="cf-turnstile"
-            data-sitekey={turnstileSiteKey}
-            data-action="working-group-interest"
-            data-theme="auto"
-          ></div>
-        ) : (
-          <p class="callout callout--warn" data-turnstile-unavailable>
-            Verification is not configured in this environment. The form cannot be submitted.
-          </p>
-        )}
-
         <div class="wg-form-actions">
-          <button class="btn" type="submit" disabled={!turnstileSiteKey}>Register my interest</button>
+          <button class="btn" type="submit">Register my interest</button>
           <a class="btn btn--ghost" href="/working-groups/join/privacy">Read the privacy notice</a>
         </div>
         <p id="form-status" class="wg-form-status" aria-live="polite"></p>
       </form>
 
       <section id="registration-success" class="wg-success" tabindex="-1" hidden>
-        <p class="wg-eyebrow">One more step</p>
-        <h2>Check your email</h2>
+        <p class="wg-eyebrow">Registration received</p>
+        <h2>Thank you for registering</h2>
         <p>
-          If your registration can be progressed, we will send a verification message to the
-          address you supplied. Open it and confirm your address so that OPDA can review your
-          registration.
-        </p>
-        <p>
-          The message may take a few minutes. Check your junk folder if it does not appear. The
-          link is personal to your registration and should not be forwarded.
+          OPDA will review your expression of interest. If we can progress it, we will contact you
+          about the relevant working group and send onboarding information separately.
         </p>
       </section>
     </section>
   </div>
-
-  {turnstileSiteKey && <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>}
   <script>
     import '@/scripts/working-group-join';
     import '@/scripts/working-group-campaign';

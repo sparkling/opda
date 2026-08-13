@@ -1,9 +1,5 @@
-import { createHash, createHmac, randomBytes, timingSafeEqual } from 'node:crypto';
-
-export const PRIVACY_NOTICE_VERSION = '2026-08-12';
-export const VERIFICATION_TTL_MS = 24 * 60 * 60 * 1000;
-export const PENDING_RETENTION_SECONDS = 30 * 24 * 60 * 60;
-export const VERIFIED_RETENTION_SECONDS = 180 * 24 * 60 * 60;
+export const PRIVACY_NOTICE_VERSION = '2026-08-13';
+export const REGISTRATION_RETENTION_SECONDS = 180 * 24 * 60 * 60;
 export const MINIMUM_COMPLETION_MS = 3_000;
 
 export const WORKING_GROUPS = new Set([
@@ -33,7 +29,6 @@ const REGISTRATION_FIELDS = new Set([
   'relevantPerspective',
   'acknowledgement',
   'privacyNoticeVersion',
-  'turnstileToken',
   'website',
   'startedAt',
 ]);
@@ -80,7 +75,6 @@ export function validateRegistration(payload) {
   const workingGroups = selection(payload.workingGroups, WORKING_GROUPS);
   const contributions = selection(payload.contributions, CONTRIBUTIONS);
   const relevantPerspective = text(payload.relevantPerspective ?? '', 0, 600, { multiline: true });
-  const turnstileToken = text(payload.turnstileToken, 1, 2_048);
   const website = typeof payload.website === 'string' ? payload.website.trim() : null;
   const startedAt = Number(payload.startedAt);
 
@@ -100,7 +94,6 @@ export function validateRegistration(payload) {
   if (payload.privacyNoticeVersion !== PRIVACY_NOTICE_VERSION) {
     errors.privacyNoticeVersion = 'Reload the page and review the current privacy notice.';
   }
-  if (!turnstileToken) errors.turnstileToken = 'Complete the anti-spam check.';
   if (website === null || Array.from(website).length > 200) errors.form = 'The submission is invalid.';
   if (!Number.isSafeInteger(startedAt) || startedAt < 0) errors.form = 'The submission is invalid.';
 
@@ -117,7 +110,6 @@ export function validateRegistration(payload) {
       relevantPerspective,
       acknowledgement: true,
       privacyNoticeVersion: PRIVACY_NOTICE_VERSION,
-      turnstileToken,
       website,
       startedAt,
     },
@@ -130,42 +122,4 @@ export function isPlausibleHumanSubmission(value, now) {
   // Only reject impossibly fast submissions. There is deliberately no upper
   // time limit: people using assistive technology can take as long as needed.
   return elapsed >= MINIMUM_COMPLETION_MS;
-}
-
-export function registrationKey(email, hmacSecret) {
-  return createHmac('sha256', hmacSecret).update(normalizeEmail(email)).digest('hex');
-}
-
-export function createVerification(registrationId, bytes = randomBytes(32)) {
-  const secret = Buffer.from(bytes).toString('base64url');
-  return {
-    token: `${registrationId}.${secret}`,
-    tokenHash: createHash('sha256').update(secret).digest('hex'),
-  };
-}
-
-export function parseVerificationToken(token) {
-  if (typeof token !== 'string' || token.length > 160) return null;
-  const match = token.match(/^([a-f0-9]{64})\.([A-Za-z0-9_-]{43})$/u);
-  if (!match) return null;
-  return {
-    registrationId: match[1],
-    tokenHash: createHash('sha256').update(match[2]).digest('hex'),
-  };
-}
-
-export function tokenHashesMatch(left, right) {
-  if (!/^[a-f0-9]{64}$/u.test(left ?? '') || !/^[a-f0-9]{64}$/u.test(right ?? '')) return false;
-  return timingSafeEqual(Buffer.from(left, 'hex'), Buffer.from(right, 'hex'));
-}
-
-export function publicWorkingGroupName(slug) {
-  return {
-    'conveyancing': 'Conveyancing',
-    'estate-agency': 'Estate Agency',
-    'surveying-and-valuation': 'Surveying and Valuation',
-    'property-data-services': 'Property Data Services',
-    'property-technology': 'Property Technology',
-    'not-sure': 'Not sure — help me choose',
-  }[slug];
 }

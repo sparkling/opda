@@ -20,7 +20,6 @@
 }
 
 .wg-hero h1,
-.wg-confirm h1,
 .wg-privacy h1 {
   max-width: 18ch;
   margin: 0;
@@ -407,8 +406,7 @@
   overflow: hidden !important;
 }
 
-.wg-success,
-.wg-confirm-card {
+.wg-success {
   padding: clamp(var(--space-6), 7vw, var(--space-10));
   border: 1px solid var(--color-border);
   border-top: 4px solid var(--teal-500);
@@ -417,15 +415,13 @@
   box-shadow: var(--shadow-md);
 }
 
-.wg-success h2,
-.wg-confirm-card h2 {
+.wg-success h2 {
   margin: 0 0 var(--space-4);
   color: var(--color-text-strong);
   font: 600 var(--text-4xl) / 1.1 var(--font-serif);
 }
 
-.wg-success p,
-.wg-confirm-card p {
+.wg-success p {
   max-width: 62ch;
   line-height: var(--leading-normal);
 }

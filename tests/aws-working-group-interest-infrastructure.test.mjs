@@ -30,16 +30,16 @@ test('the public API is same-origin, cache-disabled and bypasses the member gate
   assert.match(policy ?? '', /QueryStringBehavior: none/u);
 });
 
-test('the registration service exposes only two POST routes with bounded capacity', async () => {
+test('the registration service exposes one POST route with bounded capacity', async () => {
   const stack = await read('config/aws/working-group-interest-stack.yaml');
   assert.match(stack, /RouteKey: POST \/api\/working-group-interest\n/u);
-  assert.match(stack, /RouteKey: POST \/api\/working-group-interest\/confirm/u);
-  assert.equal((stack.match(/RouteKey:/gu) ?? []).length, 2);
+  assert.equal((stack.match(/RouteKey:/gu) ?? []).length, 1);
   assert.match(stack, /RequestBodyBoundaryBytes: 16384/u);
   assert.match(stack, /ThrottlingBurstLimit: 10/u);
   assert.match(stack, /ThrottlingRateLimit: 2/u);
   assert.match(stack, /ReservedConcurrentExecutions: 5/u);
   assert.doesNotMatch(stack, /CorsConfiguration/u);
+  assert.doesNotMatch(stack, /AWS::ApiGatewayV2::DomainName|AWS::ApiGatewayV2::ApiMapping/u);
 });
 
 test('DynamoDB is on-demand, encrypted, TTL-enabled and protected', async () => {
@@ -51,21 +51,15 @@ test('DynamoDB is on-demand, encrypted, TTL-enabled and protected', async () => 
   assert.match(stack, /DeletionProtectionEnabled: true/u);
 });
 
-test('Lambda references runtime SecureString with least-privilege access', async () => {
+test('Lambda has only the table write access needed by the form', async () => {
   const stack = await read('config/aws/working-group-interest-stack.yaml');
-  assert.match(stack, /Default: \/opda\/working-group-interest\/runtime/u);
   assert.match(stack, /CodeUri: working-group-interest\//u);
   assert.match(stack, /Handler: index\.handler/u);
   assert.match(stack, /REGISTRATIONS_TABLE_NAME: !Ref RegistrationsTable/u);
-  assert.match(stack, /RUNTIME_CONFIG_PARAMETER_NAME: !Ref RuntimeConfigParameterName/u);
-  assert.match(stack, /ssm:GetParameter/u);
-  assert.match(stack, /kms:ViaService: !Sub 'ssm\.\$\{AWS::Region\}\.amazonaws\.com'/u);
-  for (const action of ['GetItem', 'PutItem', 'UpdateItem', 'DeleteItem']) {
-    assert.match(stack, new RegExp(`dynamodb:${action}`, 'u'));
-  }
+  assert.match(stack, /Action: \[dynamodb:PutItem\]/u);
+  assert.doesNotMatch(stack, /dynamodb:(?:GetItem|UpdateItem|DeleteItem)/u);
   assert.doesNotMatch(stack, /dynamodb:\*/u);
-  assert.doesNotMatch(stack, /Type: AWS::SSM::Parameter/u);
-  assert.doesNotMatch(stack, /emailHmacSecret|turnstileSecret|postmarkServerToken/u);
+  assert.doesNotMatch(stack, /ssm:|kms:Decrypt|RUNTIME_CONFIG|Postmark|Turnstile/u);
 });
 
 test('CI packages the regional Lambda and nested template before site deployment', async () => {
@@ -77,8 +71,10 @@ test('CI packages the regional Lambda and nested template before site deployment
   assert.match(workflow, /CAPABILITY_NAMED_IAM CAPABILITY_AUTO_EXPAND/u);
 });
 
-test('site deployment fails closed when the public Turnstile site key is absent', async () => {
-  const workflow = await read('.github/workflows/deploy-aws.yml');
-  assert.match(workflow, /PUBLIC_TURNSTILE_SITE_KEY: \$\{\{ vars\.OPDA_TURNSTILE_SITE_KEY \}\}/u);
-  assert.match(workflow, /if \[ -z "\$PUBLIC_TURNSTILE_SITE_KEY" \]/u);
+test('deployment has no external abuse-control or runtime-secret dependency', async () => {
+  const [infra, deploy, edge, site] = await Promise.all([
+    read('.github/workflows/infra.yml'), read('.github/workflows/deploy-aws.yml'),
+    read('config/aws/edge-stack.yaml'), read('config/aws/site-stack.yaml'),
+  ]);
+  assert.doesNotMatch(`${infra}\n${deploy}\n${edge}\n${site}`, /Turnstile|TURNSTILE|WAFv2|WebACL|WorkingGroupInterestWebAcl/u);
 });

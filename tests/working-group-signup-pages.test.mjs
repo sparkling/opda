@@ -4,7 +4,6 @@ import test from 'node:test';
 
 const paths = {
   join: new URL('../src/pages/working-groups/join/index.astro', import.meta.url),
-  confirmation: new URL('../src/scripts/working-group-confirm.ts', import.meta.url),
   privacy: new URL('../src/pages/working-groups/join/privacy.astro', import.meta.url),
   registration: new URL('../src/scripts/working-group-join.ts', import.meta.url),
   campaign: new URL('../src/scripts/working-group-campaign.ts', import.meta.url),
@@ -30,15 +29,22 @@ const expectedContributions = [
   'contribute-consumer-accessibility-regulatory-public-interest-experience',
 ];
 
+function extractTupleValues(source, constantName) {
+  const block = source.match(new RegExp(`const ${constantName} = \\[([\\s\\S]*?)\\n\\] as const;`, 'u'))?.[1];
+  assert.ok(block, `Expected ${constantName} tuple allowlist`);
+  return [...block.matchAll(/^\s*\[\s*['"]([^'"]+)['"],/gmu)].map((match) => match[1]);
+}
+
 test('public sign-up form exposes only the accepted working-group and contribution values', async () => {
   const source = await readFile(paths.join, 'utf8');
-  for (const value of [...expectedGroups, ...expectedContributions]) {
-    assert.match(source, new RegExp(`['"]${value}['"]`, 'u'));
-  }
+  assert.deepEqual(extractTupleValues(source, 'contexts'), expectedGroups.slice(0, -1));
+  assert.deepEqual(extractTupleValues(source, 'contributions'), expectedContributions);
+  assert.match(source, /name="workingGroups" value="not-sure"/u);
   assert.doesNotMatch(source, /type=["'](?:file|tel|url)["']/u);
   assert.doesNotMatch(source, /name=["'](?:address|phone|socialProfile|evidence|materialInterest)["']/u);
-  assert.match(source, /PUBLIC_TURNSTILE_SITE_KEY/u);
-  assert.match(source, /data-action=["']working-group-interest["']/u);
+  assert.doesNotMatch(source, /Turnstile|turnstile|cf-turnstile|PUBLIC_TURNSTILE/u);
+  assert.match(source, /name="website"/u);
+  assert.match(source, /name="startedAt"/u);
   assert.match(source, /data-privacy-notice-version=\{privacyNoticeVersion\}/u);
 });
 
@@ -46,13 +52,14 @@ test('registration script sends the fixed allowlisted payload to the same-origin
   const source = await readFile(paths.registration, 'utf8');
   for (const field of [
     'fullName', 'email', 'organisation', 'role', 'workingGroups', 'contributions',
-    'relevantPerspective', 'acknowledgement', 'privacyNoticeVersion', 'turnstileToken',
+    'relevantPerspective', 'acknowledgement', 'privacyNoticeVersion',
     'website', 'startedAt',
   ]) {
     assert.match(source, new RegExp(`\\b${field}\\b`, 'u'));
   }
+  assert.doesNotMatch(source, /Turnstile|turnstile|cf-turnstile|turnstileToken/u);
   assert.match(source, /fetch\('\/api\/working-group-interest'/u);
-  assert.match(source, /privacyNoticeVersion:\s*'2026-08-12'/u);
+  assert.match(source, /privacyNoticeVersion:\s*'2026-08-13'/u);
   assert.match(source, /Date\.now\(\)/u);
 });
 
@@ -101,29 +108,19 @@ test('campaign styles remain split below the project file limit', async () => {
   }
 });
 
-test('confirmation strips a fragment token and mutates only after an explicit form submit', async () => {
-  const source = await readFile(paths.confirmation, 'utf8');
-  assert.match(source, /window\.location\.hash/u);
-  assert.match(source, /window\.history\.replaceState/u);
-  assert.match(source, /\^\[a-f0-9\]\{64\}\\\./u);
-  assert.doesNotMatch(source, /searchParams\.get\(['"]token['"]\)/u);
-  assert.match(source, /form\.addEventListener\(['"]submit['"]/u);
-  assert.match(source, /fetch\('\/api\/working-group-interest\/confirm'/u);
-  assert.match(source, /body:\s*JSON\.stringify\(\{ token \}\)/u);
-});
-
 test('privacy page publishes the current notice and operational boundaries', async () => {
   const source = await readFile(paths.privacy, 'utf8');
   for (const text of [
-    'Version 2026-08-12',
+    'Version 2026-08-13',
+    'Effective 13 August 2026',
     'Amazon Web Services',
-    'Postmark',
-    'Cloudflare Turnstile',
+    'request-rate controls',
     'Microsoft Teams and SharePoint',
-    'Unverified registrations',
+    'Expressions of interest that are declined',
     'smartdata@openpropdata.org.uk',
     'not put into the source corpus',
   ]) {
     assert.match(source, new RegExp(text, 'u'));
   }
+  assert.doesNotMatch(source, /Cloudflare|Turnstile|turnstile|Postmark|email-verification/u);
 });
