@@ -8,6 +8,7 @@ import '@/styles/working-group-campaign-sections.css';
 const privacyNoticeVersion = '2026-08-13';
 
 const contexts = [
+  ['finance-and-banking', 'Finance and Banking', 'Mortgage advice, lending decisions, security, affordability and the systems that support them.'],
   ['conveyancing', 'Conveyancing', 'The legal transfer of property, including title, searches, enquiries and completion.'],
   ['estate-agency', 'Estate Agency', 'Marketing, listing, negotiation and the progression of a sale.'],
   ['surveying-and-valuation', 'Surveying and Valuation', 'Property condition, measurement, inspection, valuation and professional opinion.'],
@@ -46,7 +47,13 @@ const contributions = [
         </div>
       </div>
 
-      <div class="wg-journey" aria-label="A property record crossing five connected contexts" data-parallax-layer data-speed="-0.055">
+      <div
+        class="wg-journey"
+        aria-label="A property record crossing six connected contexts"
+        data-parallax-layer
+        data-speed="-0.055"
+        style={`--context-angle:${360 / contexts.length}deg`}
+      >
         <div class="wg-journey__property" aria-hidden="true">
           <span class="wg-journey__roof"></span>
           <span class="wg-journey__door"></span>
@@ -76,7 +83,7 @@ const contributions = [
             <small data-handoff-definition>A place someone lives.</small>
           </div>
           <div class="wg-handoff-stage__path"></div>
-          <div class="wg-handoff-stage__counter"><span data-story-index>01</span> / 05</div>
+          <div class="wg-handoff-stage__counter"><span data-story-index>01</span> / 06</div>
         </div>
       </div>
       <div class="wg-story__steps">
@@ -88,6 +95,11 @@ const contributions = [
           <span>Estate Agency</span>
           <h3>“Property” means something marketable</h3>
           <p>Descriptions, asking price, tenure and readiness for sale shape the view.</p>
+        </article>
+        <article data-story-step data-term="Mortgage security" data-definition="An asset assessed for lending, affordability and risk." data-accent="teal">
+          <span>Finance and Banking</span>
+          <h3>Then it becomes security for lending</h3>
+          <p>Value, affordability, eligibility and risk determine how the property supports a mortgage.</p>
         </article>
         <article data-story-step data-term="Legal title" data-definition="Rights, restrictions and the asset being transferred." data-accent="plum">
           <span>Conveyancing</span>

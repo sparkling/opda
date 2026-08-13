@@ -3,6 +3,7 @@ export const REGISTRATION_RETENTION_SECONDS = 180 * 24 * 60 * 60;
 export const MINIMUM_COMPLETION_MS = 3_000;
 
 export const WORKING_GROUPS = new Set([
+  'finance-and-banking',
   'conveyancing',
   'estate-agency',
   'surveying-and-valuation',

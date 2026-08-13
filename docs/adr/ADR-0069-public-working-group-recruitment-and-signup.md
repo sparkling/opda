@@ -13,6 +13,8 @@ implements: [ADR-0065]
 > **Change note — 2026-08-13:** Before the first publication, the sign-up design was simplified
 > to match the operating need: accept a short form and store it for human review. The undeployed
 > email-verification, Postmark, WAF, custom-origin and secret-management components were removed.
+> The public form was subsequently extended to include Finance and Banking, while the social and
+> trade-body recruitment campaign remains focused on the five groups without existing rosters.
 
 ## Context and Problem Statement
 
@@ -56,7 +58,7 @@ Chosen option: **D — a simple OPDA-hosted form on the existing AWS site**.
 
 The campaign combines a LinkedIn post with selective, one-to-one outreach to relevant UK trade
 and professional bodies. Both routes link to the same public page and recruit expressions of
-interest for exactly five bounded-context groups:
+interest for exactly five later bounded-context groups:
 
 1. Conveyancing;
 2. Estate Agency;
@@ -64,8 +66,9 @@ interest for exactly five bounded-context groups:
 4. Property Data Services; and
 5. Property Technology.
 
-Finance and Banking continues through its existing participant process. DBT Smart Data and the
-Interoperability Working Group are not advertised as additional property bounded contexts.
+Finance and Banking continues through its existing participant process, but people may also
+register interest in that group through the public form. DBT Smart Data and the Interoperability
+Working Group are not advertised as additional property bounded contexts.
 
 The campaign explains that OPDA is creating the **Smart Property Data Trust Framework** as a
 governed family of connected domain models. People may contribute later by sharing authorised
@@ -95,7 +98,8 @@ The canonical public route is `/working-groups/join`, with the privacy notice un
 prefix. Only that route family and the same-origin submission API become public; ontology,
 evidence and existing knowledge-base routes remain protected.
 
-The page explains the five groups, the kinds of contribution OPDA needs and the sequence:
+The page explains the six selectable domain groups, the kinds of contribution OPDA needs and the
+sequence:
 
 1. the person registers their interest;
 2. OPDA reviews the expression of interest; and
@@ -107,7 +111,7 @@ The form collects only:
 - email address;
 - organisation;
 - role or area of expertise;
-- one or more of the five groups, or `Not sure — help me choose`;
+- one or more of the six groups, or `Not sure — help me choose`;
 - one or more contribution preferences; and
 - an optional, length-limited note about relevant experience or perspective.
 
@@ -184,7 +188,8 @@ enter the AI evidence or ontology-building corpus.
 
 This decision is confirmed when:
 
-- the campaign names only the five intended contexts and links to the canonical public route;
+- the campaign names only the five later contexts, while the form also accepts Finance and
+  Banking, and links to the canonical public route;
 - trade-body outreach uses approved assets and never requests a member list;
 - anonymous visitors can access the join and privacy routes while unrelated protected routes
   still redirect to authentication;

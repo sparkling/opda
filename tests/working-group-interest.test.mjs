@@ -68,6 +68,13 @@ test('registration validation normalises valid input and rejects unknown, HTML a
   }
 });
 
+test('registration validation accepts the Finance and Banking working group', () => {
+  const result = validateRegistration(payload({ workingGroups: ['finance-and-banking'] }));
+
+  assert.equal(result.ok, true);
+  assert.deepEqual(result.value.workingGroups, ['finance-and-banking']);
+});
+
 test('registration enforces the route, JSON content type and 16KB boundary', async () => {
   const handler = createHandler(dependencies().values);
   assert.equal((await handler(event('GET /api/working-group-interest', {}))).statusCode, 405);

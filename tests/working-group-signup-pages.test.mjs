@@ -13,6 +13,7 @@ const paths = {
 };
 
 const expectedGroups = [
+  'finance-and-banking',
   'conveyancing',
   'estate-agency',
   'surveying-and-valuation',
@@ -35,6 +36,12 @@ function extractTupleValues(source, constantName) {
   return [...block.matchAll(/^\s*\[\s*['"]([^'"]+)['"],/gmu)].map((match) => match[1]);
 }
 
+function extractSetValues(source, constantName) {
+  const block = source.match(new RegExp(`const ${constantName} = new Set\\(\\[([\\s\\S]*?)\\n\\]\\);`, 'u'))?.[1];
+  assert.ok(block, `Expected ${constantName} set allowlist`);
+  return [...block.matchAll(/^\s*['"]([^'"]+)['"],?$/gmu)].map((match) => match[1]);
+}
+
 test('public sign-up form exposes only the accepted working-group and contribution values', async () => {
   const source = await readFile(paths.join, 'utf8');
   assert.deepEqual(extractTupleValues(source, 'contexts'), expectedGroups.slice(0, -1));
@@ -50,6 +57,7 @@ test('public sign-up form exposes only the accepted working-group and contributi
 
 test('registration script sends the fixed allowlisted payload to the same-origin endpoint', async () => {
   const source = await readFile(paths.registration, 'utf8');
+  assert.deepEqual(extractSetValues(source, 'WORKING_GROUPS'), expectedGroups);
   for (const field of [
     'fullName', 'email', 'organisation', 'role', 'workingGroups', 'contributions',
     'relevantPerspective', 'acknowledgement', 'privacyNoticeVersion',
@@ -76,6 +84,7 @@ test('campaign story progressively enhances a complete no-JS narrative', async (
     'One connected journey.',
     'The problem is in the handoffs',
     'Estate Agency',
+    'Finance and Banking',
     'Conveyancing',
     'Surveying and Valuation',
     'Property Data Services',

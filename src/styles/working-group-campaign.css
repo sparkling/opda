@@ -127,7 +127,7 @@
 }
 
 .wg-journey li {
-  --angle: calc(var(--context-index) * 72deg - 90deg);
+  --angle: calc(var(--context-index) * var(--context-angle) - 90deg);
   position: absolute;
   width: 9.5rem;
   left: calc(50% - 4.75rem);

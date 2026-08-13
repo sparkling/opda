@@ -1,4 +1,5 @@
 const WORKING_GROUPS = new Set([
+  'finance-and-banking',
   'conveyancing',
   'estate-agency',
   'surveying-and-valuation',
