@@ -65,7 +65,7 @@ test('Lambda has only the table write access needed by the form', async () => {
 test('CI packages the regional Lambda and nested template before site deployment', async () => {
   const workflow = await read('.github/workflows/infra.yml');
   assert.match(workflow, /Deploy artifacts stack \(eu-west-2\)[\s\S]*--region eu-west-2/u);
-  assert.match(workflow, /npm ci --omit=dev --ignore-scripts[\s\S]*--prefix config\/aws\/working-group-interest/u);
+  assert.match(workflow, /timeout 120 npm ci --omit=dev --ignore-scripts --no-audit --no-fund[\s\S]*--prefix config\/aws\/working-group-interest/u);
   assert.match(workflow, /cloudformation package --region eu-west-2[\s\S]*config\/aws\/site-stack\.yaml/u);
   assert.match(workflow, /--template-file \/tmp\/site-packaged\.yaml/u);
   assert.match(workflow, /CAPABILITY_NAMED_IAM CAPABILITY_AUTO_EXPAND/u);

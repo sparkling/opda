@@ -119,7 +119,10 @@ jobs:
           ARTIFACTS_BUCKET=$(aws cloudformation describe-stacks --region eu-west-2 \
             --stack-name opda-artifacts \
             --query "Stacks[0].Outputs[?OutputKey=='ArtifactsBucketName'].OutputValue" --output text)
-          npm ci --omit=dev --ignore-scripts \
+          # This package has no lifecycle scripts. npm's runner-side exit
+          # handler has occasionally stalled after a successful install, so
+          # bound the step and disable optional network work before packaging.
+          timeout 120 npm ci --omit=dev --ignore-scripts --no-audit --no-fund \
             --prefix config/aws/working-group-interest
           aws cloudformation package --region eu-west-2 \
             --template-file config/aws/site-stack.yaml \
