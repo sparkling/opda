@@ -1,6 +1,7 @@
 ---
 status: accepted
 date: 2026-08-14
+updated: 2026-08-14
 tags: [working-groups, microsoft-365, teams, sharepoint, evidence-intake, access-control, technology-review]
 supersedes: []
 depends-on: [ADR-0063, ADR-0065, ADR-0067, ADR-0068]
@@ -119,10 +120,14 @@ separate permission silos.
 
 Every Team has:
 
-- **Announcements** — owner/moderator posts only, participant replies restricted, bots and
-  connectors disabled; and
+- **General** — the platform-created landing channel, used for orientation and the channel
+  directory and, where no separate Announcements channel is retained, official notices;
+- **Common Topics and Coordination** — cross-cutting questions, shared issues and coordination
+  that span contexts or concern the working group as a whole;
 - one or more **discussion channels** — participants can start a post and reply, with one subject
-  per post and replies kept in the existing thread.
+  per post and replies kept in the existing thread; and
+- optionally, **Announcements** — a separate owner/moderator notice channel where the group needs
+  one, with participant posting restricted and bots and connectors disabled.
 
 The implemented Finance and Banking channels are:
 
@@ -134,8 +139,8 @@ The implemented Finance and Banking channels are:
 
 The implemented Technology channels are:
 
-1. Announcements;
-2. General, for cross-cutting technical topics;
+1. General, for orientation, the channel directory and official notices;
+2. Common Topics and Coordination, for cross-cutting technical topics;
 3. Finance and Banking;
 4. Conveyancing;
 5. Estate Agency;
@@ -145,8 +150,12 @@ The implemented Technology channels are:
 
 The six context channels let the Technology Working Group review context-specific implementation
 issues without confusing technical assurance with domain ownership. Future groups start with
-Announcements and Common Topics and Coordination; stable additional channels are added only when
-the group's scope requires them.
+General and Common Topics and Coordination; stable context channels are added when the group's
+scope requires them, and a separate Announcements channel is retained only where it adds value.
+
+> **Technology workspace update — 14 August 2026:** the separate Announcements channel was
+> consolidated into General, its presentation-and-recording post was recreated there, and Common
+> Topics and Coordination was added as the cross-cutting discussion channel.
 
 ### 4. SharePoint source-intake pattern
 
@@ -206,8 +215,11 @@ Provisioning and communication are separate operations:
 
 The invitation tells the recipient to sign in using the account that received it and not to
 forward the unique access URL. It links to the common **By Organisation** index; SharePoint shows
-only the folders the signed-in identity may browse. The Announcements channel contains a Source
-Material Intake tab pointing to the same standalone library.
+only the folders the signed-in identity may browse. Where a Source Material Intake tab is used,
+it points to the same standalone library; its hosting channel is an interface choice rather than
+the permission boundary. Finance and Banking currently hosts the tab in Announcements. Technology
+removed its separate Announcements channel on 2026-08-14, so General is its durable directory and
+notice surface and the standalone intake site remains available through its direct link.
 
 No invitation or channel post is authorised merely by creating or updating this ADR.
 
@@ -220,7 +232,9 @@ No invitation or channel post is authorised merely by creating or updating this 
 
 On 2026-08-14 the Technology intake was validated with 18 Team members, 11 company-domain areas,
 no cross-organisation folder grants, restricted external sharing and a Source Material Intake
-tab in Announcements. These counts are point-in-time validation evidence, not a membership
+tab initially hosted in Announcements. The Announcements channel and its tab were removed later
+that day when notices were consolidated into General; the standalone intake site and its access
+controls were not removed. These counts are point-in-time validation evidence, not a membership
 baseline. Participant identities and subsequent roster changes remain in the private operational
 register, not this ADR.
 
@@ -248,9 +262,9 @@ workspaces remain planned until separately provisioned and validated.
 For each implementation, confirmation requires:
 
 - the group and Team settings match section 2;
-- Announcements is moderated and discussion channels use the Posts layout;
+- the official-notice surface is clearly identified and discussion channels use the Posts layout;
 - every current channel intended for participation is visible by default where supported;
-- the Source Material Intake tab targets the standalone intake site, not Shared Documents;
+- any Source Material Intake tab targets the standalone intake site, not Shared Documents;
 - every approved company folder has unique permissions and no foreign company group;
 - no folder is created for a generic email-provider domain;
 - a test external identity can browse the index, open its own folder, create and delete content,
@@ -270,4 +284,3 @@ For each implementation, confirmation requires:
 - [Technology Working Group invitation, plain text](../templates/technology-working-group-invitation-email.txt)
 - [Finance and Banking invitation rollout plan](../plan/2026-08-postmark-working-group-invitation-rollout.md)
 - [Microsoft Graph invitation resource](https://learn.microsoft.com/en-us/graph/api/resources/invitation?view=graph-rest-1.0)
-
