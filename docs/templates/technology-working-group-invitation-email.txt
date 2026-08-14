@@ -1,0 +1,191 @@
+TECHNOLOGY WORKING GROUP
+
+You’re invited to help shape the Smart Property Data Trust Framework
+
+Hello {{display_name}},
+
+OPDA is bringing the property sector together to make UK property transaction
+data interoperable, verifiable and consent-driven. Today, the same information
+is repeatedly re-entered, translated and interpreted as it moves between
+organisations and systems. The Smart Property Data Trust Framework will
+establish a shared language and the technical foundations needed to exchange
+and reuse that information with greater confidence.
+
+Rather than forcing the whole property lifecycle into one universal model,
+OPDA is creating a governed family of connected domain models. Domain working
+groups shape meaning inside Finance and Banking, Conveyancing, Estate Agency,
+Surveying and Valuation, Property Data Services and Property Technology. The
+Interoperability Working Group aligns their boundaries and mappings.
+
+The Technology Working Group works across all of those contexts. It brings
+practical implementation experience to architecture, identifiers, provenance,
+generated artefacts, conformance, compatibility and release readiness. It also
+supports the trust-framework implementation work around APIs, sandbox services,
+credentials, PKI, onboarding and developer guidance. Its job is to help prove
+that the standard can work; it does not decide a domain’s business meaning or
+ratify an OPDA Standard.
+
+I ACCEPT
+{{access_url}}
+
+IMPORTANT: Sign in using the email account that received this invitation.
+This invitation link is unique to that account, so please do not forward this
+email.
+
+YOUR CONTRIBUTION
+
+There are three ways to take part:
+
+1. Share implementation evidence. Contribute approved schemas, API definitions,
+   architecture, integration guidance, test cases, compatibility findings and
+   other technical material.
+2. Review and test candidates. Challenge whether generated models, validation,
+   schemas, APIs, forms and documentation are coherent, implementable and
+   complete.
+3. Join the discussion. Bring cross-sector implementation experience to the
+   relevant Teams channel and keep replies in their existing threads.
+
+HOW THE GROUP FITS
+
+- Domain Working Groups decide business meaning inside each bounded context.
+- The Interoperability Working Group owns the common boundary, context map,
+  cross-domain mappings and shared conventions.
+- The Technology Working Group provides cross-cutting technical review,
+  implementation evidence and assurance.
+- Compliance and Risk reviews privacy, security, law, competition,
+  intellectual property and accessibility.
+- The Executive Committee / Board holds the authority to ratify or withdraw an
+  OPDA Standard.
+
+OPDA’s end-to-end standards lifecycle is a proposed operating model, not yet an
+operative rule. The group supports today’s technical implementation work and
+helps shape the independent technical-review gate envisaged for future
+releases.
+
+HOW TO CONTRIBUTE SOURCE MATERIAL
+
+1. Open your organisation’s source-intake folder. Sign in with the same company
+   account that received SharePoint access, then open Source Material Intake and
+   select your company folder:
+
+   https://openpropertydataassociation.sharepoint.com/sites/TechnologySourceIntake/Incoming%20Source%20Material/Forms/AllItems.aspx?id=%2Fsites%2FTechnologySourceIntake%2FIncoming%20Source%20Material%2FBy%20Organisation
+
+2. Organise your organisation’s material. You may create folders, upload files
+   and create supporting documents inside your company folder.
+
+3. Include a README. Add an index, provenance, relevant context, version and
+   enough explanation for reviewers to understand the material and any
+   restrictions on its use.
+
+Your organisation’s folder is private to its approved contributors and OPDA
+administrators. Other participating organisations cannot see it. Upload only
+material your organisation is authorised to share with OPDA for this work.
+
+HOW TO PARTICIPATE
+
+Reply in threads. Threads keep each technical question, implementation finding
+or review issue together and make the discussion manageable.
+
+Open the most relevant channel and check whether a thread already covers the
+subject. If it does, select Reply beneath the original post. Use Start a post
+only for a genuinely new subject, with one clear issue per thread.
+
+WHERE DISCUSSIONS HAPPEN
+
+Announcements — official notices; read-only for participants:
+https://teams.cloud.microsoft/l/channel/19%3A49869626bcba4b1aa13e5dff8292e6dc%40thread.tacv2/Announcements?groupId=286b29b1-163d-4cb5-aaec-39b1c5ceef4b&tenantId=143540d4-4fbc-4005-882a-29656cd01a36&allowXTenantAccess=False
+
+General — cross-cutting architecture, identifiers, provenance, validation,
+versioning and release readiness:
+https://teams.cloud.microsoft/l/channel/19%3AEhhhmMLawK4BKudHWidPdMyWweicWuJtspGc7SZEZCE1%40thread.tacv2/OPDA%20Technology%20Working%20Group?groupId=286b29b1-163d-4cb5-aaec-39b1c5ceef4b&tenantId=143540d4-4fbc-4005-882a-29656cd01a36&allowXTenantAccess=False
+
+Finance and Banking — technical issues and implementation evidence for finance
+and lending:
+https://teams.cloud.microsoft/l/channel/19%3Ad8cd9632e60b4cddac587ca00bfd50fd%40thread.tacv2/Finance%20and%20Banking?groupId=286b29b1-163d-4cb5-aaec-39b1c5ceef4b&tenantId=143540d4-4fbc-4005-882a-29656cd01a36&allowXTenantAccess=False
+
+Conveyancing — technical issues and implementation evidence for conveyancing:
+https://teams.cloud.microsoft/l/channel/19%3Aef7e85949ecc4877a1ed6e87b3fa9899%40thread.tacv2/Conveyancing?groupId=286b29b1-163d-4cb5-aaec-39b1c5ceef4b&tenantId=143540d4-4fbc-4005-882a-29656cd01a36&allowXTenantAccess=False
+
+Estate Agency — technical issues and implementation evidence for estate agency:
+https://teams.cloud.microsoft/l/channel/19%3Afd2c9b8c33e0485cabf33d6e11a3c3f0%40thread.tacv2/Estate%20Agency?groupId=286b29b1-163d-4cb5-aaec-39b1c5ceef4b&tenantId=143540d4-4fbc-4005-882a-29656cd01a36&allowXTenantAccess=False
+
+Surveying and Valuation — technical issues and implementation evidence for
+surveying and valuation:
+https://teams.cloud.microsoft/l/channel/19%3A5b8e96d301114f60b737eb9240fcd719%40thread.tacv2/Surveying%20and%20Valuation?groupId=286b29b1-163d-4cb5-aaec-39b1c5ceef4b&tenantId=143540d4-4fbc-4005-882a-29656cd01a36&allowXTenantAccess=False
+
+Property Data Services — technical issues and implementation evidence for
+searches and property data services:
+https://teams.cloud.microsoft/l/channel/19%3Acb8f296b9c6b4b77b019b3ec36e90411%40thread.tacv2/Property%20Data%20Services?groupId=286b29b1-163d-4cb5-aaec-39b1c5ceef4b&tenantId=143540d4-4fbc-4005-882a-29656cd01a36&allowXTenantAccess=False
+
+Property Technology — platforms, tooling, integrations and developer experience
+across property technology:
+https://teams.cloud.microsoft/l/channel/19%3Aa48803b09cd340798db8563b97801989%40thread.tacv2/Property%20Technology?groupId=286b29b1-163d-4cb5-aaec-39b1c5ceef4b&tenantId=143540d4-4fbc-4005-882a-29656cd01a36&allowXTenantAccess=False
+
+Use the most specific context channel that fits. Use General for shared
+technical concerns, cross-context architecture or release-wide review.
+
+ACCESS AND PRIVACY
+
+- Invitation only. Access is limited to people invited by OPDA. To invite
+  additional colleagues, email smartdata@openpropdata.org.uk with their names,
+  email addresses and organisations.
+- Company accounts for SharePoint only. Source-intake access requires an
+  approved company-domain account. This restriction does not prevent an
+  invited participant from joining Teams with another account.
+- Private organisation folders. Other organisations cannot see your
+  submissions. Teams discussions and the ordinary Team files area are shared
+  with the working group, so do not place restricted source material there.
+- Not automatically public. Working material may inform review candidates, but
+  OPDA will not treat a submission as permission to publish the source itself.
+
+USEFUL SOURCE MATERIAL
+
+- Schemas and interfaces: JSON Schema, OpenAPI, AsyncAPI, GraphQL, XML Schema
+  and message or event definitions.
+- Linked-data and validation artefacts: RDF, OWL, SKOS, SHACL, JSON-LD contexts
+  and mapping examples.
+- Architecture and trust: identity, credentials, PKI, authorisation, consent,
+  provenance, audit and trust-framework patterns.
+- Implementation evidence: integration findings, producer and consumer
+  examples, compatibility reports, migrations, test cases and conformance
+  results.
+- Data structures: database schemas, entity-relationship diagrams, data
+  dictionaries, field lists and non-production examples.
+- Developer experience: sandbox and mock-service designs, onboarding guidance,
+  technical documentation, diagrams and FAQs.
+
+Audio and video files are not accepted. Recordings must be transcribed before
+submission. Include the transcript’s date, speakers and context where known.
+
+Upload the material itself—do not submit links. OPDA will not rely on links to
+websites, cloud drives, shared folders or online documents. If authorised,
+download or export the material and place the file in your company folder.
+
+DO NOT SUBMIT
+
+- Personal, customer or live property-transaction data.
+- Passwords, API keys, credentials, private keys or other secrets.
+- Material restricted by confidentiality, contract, licence or NDA.
+- Executable software, active scripts or macros.
+- Password-protected files, encrypted archives or compressed archives.
+
+WHAT HAPPENS NEXT
+
+OPDA screens submitted material and uses approved evidence to develop
+reviewable candidates. Domain working groups remain responsible for business
+meaning. The Technology Working Group reviews technical integrity, feasibility,
+generated outputs, compatibility and conformance, and feeds its findings into
+the next iteration. A candidate does not become an OPDA Standard without the
+required human review and authorised ratification.
+
+Questions and technical feedback: use the most relevant channel and reply in
+an existing thread whenever one covers the subject.
+
+Additional invitations or private access problems:
+smartdata@openpropdata.org.uk
+
+Open Property Data Association · Technology Working Group
+This email was sent because OPDA invited {{display_name}} to participate.
+
+Stop receiving Smart Property Data Trust Framework working-group emails:
+{{{ pm:unsubscribe }}}

@@ -1,7 +1,7 @@
 ---
 status: accepted
 date: 2026-08-12
-updated: 2026-08-13
+updated: 2026-08-14
 tags: [engagement, recruitment, working-groups, linkedin, trade-bodies, professional-bodies, signup, privacy, security, aws]
 supersedes: []
 depends-on: [ADR-0038, ADR-0040, ADR-0063, ADR-0065]
@@ -10,6 +10,10 @@ implements: [ADR-0065]
 
 # Recruit later bounded-context working groups through a public campaign and simple sign-up
 
+> **Change note — 2026-08-14:** ADR-0071 now records the campaign operating plan, including
+> LinkedIn publishing, selective trade-body outreach, sequencing and measures. This ADR remains
+> the authority for campaign scope, the public signup experience, storage and review boundaries.
+>
 > **Change note — 2026-08-13:** Before the first publication, the sign-up design was simplified
 > to match the operating need: accept a short form and store it for human review. The undeployed
 > email-verification, Postmark, WAF, custom-origin and secret-management components were removed.
@@ -233,6 +237,8 @@ This decision is confirmed when:
 - [ADR-0063](./ADR-0063-domain-led-bounded-context-working-groups.md) defines the working groups.
 - [ADR-0065](./ADR-0065-ai-assisted-evidence-to-model-workflow.md) decides that later groups use
   public recruitment and explicit sign-up.
+- [ADR-0071](./ADR-0071-bounded-context-recruitment-campaign.md) defines the coordinated campaign
+  operating plan and links the maintained LinkedIn and trade-body assets.
 - [AWS HTTP API throttling](https://docs.aws.amazon.com/apigateway/latest/developerguide/http-api-throttling.html)
 - [DynamoDB encryption at rest](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/EncryptionAtRest.html)
 - [DynamoDB time to live](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/TTL.html)

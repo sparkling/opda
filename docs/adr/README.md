@@ -75,11 +75,13 @@ modelling website remains unchanged:
 | [ADR-0067](./ADR-0067-first-principles-property-pack-ontology-by-bounded-context.md) | Model the Property Pack from first principles with bounded-context ownership | accepted |
 | [ADR-0068](./ADR-0068-govern-opda-standards-lifecycle.md) | Govern the OPDA standards lifecycle through human consensus and staged ratification | proposed |
 
-## August 2026 working-group recruitment
+## August 2026 working-group operations and recruitment
 
 | # | Title | Status |
 |---|---|---|
 | [ADR-0069](./ADR-0069-public-working-group-recruitment-and-signup.md) | Recruit later bounded-context working groups through a public campaign and simple sign-up | accepted |
+| [ADR-0070](./ADR-0070-uniform-microsoft-365-working-group-workspaces.md) | Operate OPDA working groups through a uniform Microsoft 365 workspace pattern | accepted |
+| [ADR-0071](./ADR-0071-bounded-context-recruitment-campaign.md) | Recruit later bounded-context groups through a coordinated public campaign | accepted |
 
 ## Authoring a new ADR
 
