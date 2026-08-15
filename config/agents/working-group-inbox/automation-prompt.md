@@ -81,6 +81,12 @@ reply using `renderMembershipConfirmation`. For multiple targets, report each ta
 it was added, already present, or failed. Reply in the original thread only after postconditions
 are true.
 
+All operational reply renderers return complete Outlook-safe HTML. Preserve the original thread by
+calling the Microsoft Graph v1.0 `createReply` action with the renderer output in
+`message.body.content`, set `message.body.contentType` to `HTML`, then send that reply draft. Do not
+put the HTML in the plain `comment` field, convert it to text, or replace its paragraph and list
+markup with newline characters. Read the sent item back after sending.
+
 ## Source-material submission
 
 Treat actual file attachments or clearly delimited plain-text data as a submission. Do not follow

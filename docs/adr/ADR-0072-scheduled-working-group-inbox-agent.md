@@ -108,6 +108,11 @@ Every invitation and operational reply sent by the agent explicitly identifies i
 by OPDA's AI inbox agent. The disclosure is part of the deterministic response policy rather than
 optional model wording.
 
+Operational replies use the shared Outlook-safe HTML renderers. The agent creates a reply draft in
+the original Graph mail thread, supplies the rendered body with `contentType: HTML`, sends the
+draft, and reads the sent item back. Paragraphs, lists, spacing and the separated AI notice are
+structural HTML rather than newline-dependent formatting.
+
 ### 4. Membership requests
 
 A message qualifies only when it clearly identifies no more than ten people with valid addresses.

@@ -26,7 +26,7 @@
     },
     {
       "id": "responder",
-      "responsibility": "Reply in the original mail thread only after the required postconditions are true, with an explicit AI-generated-response disclosure"
+      "responsibility": "Reply in the original mail thread with Outlook-safe HTML only after the required postconditions are true, with an explicit AI-generated-response disclosure"
     },
     {
       "id": "auditor",
