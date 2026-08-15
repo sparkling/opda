@@ -7,6 +7,7 @@ After=network-online.target
 Type=oneshot
 Environment=HOME=/home/claude
 Environment=CODEX_HOME=/home/claude/.codex
+Environment=PATH=/home/claude/.npm-global/bin:/usr/local/bin:/usr/bin:/bin
 Environment=CODEX_BIN=/home/claude/.codex/packages/standalone/current/codex
 Environment=OPDA_INBOX_AGENT_ROOT=/home/claude/.local/share/opda-working-group-inbox/repo
 WorkingDirectory=/home/claude/.local/share/opda-working-group-inbox/repo
