@@ -1,0 +1,14 @@
+[Unit]
+Description=OPDA working-group inbox monitor
+Wants=network-online.target
+After=network-online.target
+
+[Service]
+Type=oneshot
+Environment=HOME=/home/claude
+Environment=CODEX_HOME=/home/claude/.codex
+Environment=CODEX_BIN=/home/claude/.codex/packages/standalone/current/codex
+Environment=OPDA_INBOX_AGENT_ROOT=/home/claude/.local/share/opda-working-group-inbox/repo
+WorkingDirectory=/home/claude/.local/share/opda-working-group-inbox/repo
+ExecStart=/home/claude/.local/share/opda-working-group-inbox/repo/scripts/run-working-group-inbox-agent.sh
+TimeoutStartSec=2h

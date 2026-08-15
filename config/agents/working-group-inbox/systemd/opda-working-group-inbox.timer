@@ -1,0 +1,12 @@
+[Unit]
+Description=Run the OPDA working-group inbox monitor twice each weekday
+
+[Timer]
+OnCalendar=Mon..Fri *-*-* 10:00:00 Europe/London
+OnCalendar=Mon..Fri *-*-* 17:00:00 Europe/London
+Persistent=true
+AccuracySec=1min
+Unit=opda-working-group-inbox.service
+
+[Install]
+WantedBy=timers.target

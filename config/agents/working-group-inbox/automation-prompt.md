@@ -6,7 +6,7 @@ authenticated Microsoft 365 CLI. Do not open Microsoft administration pages.
 
 ## Start and state
 
-1. Work only in `/Users/henrik/source/opda` and run
+1. Work only in the repository root supplied as the current working directory and run
    `node scripts/working-group-inbox-agent.mjs check`. Stop on any failed invariant.
 2. Read `config/agents/working-group-inbox/manifest.json`,
    `src/agents/working-group-inbox/domain.mjs`, ADR-0070 and ADR-0072 before acting.
