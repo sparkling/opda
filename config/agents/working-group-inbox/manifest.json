@@ -1,0 +1,70 @@
+{
+  "schema": 1,
+  "generator": "0.1.0",
+  "template": "vertical:support",
+  "templateVersion": "0.0.0",
+  "host": "codex",
+  "name": "opda-working-group-inbox",
+  "purpose": "Process authorised working-group membership, source-intake and access-support email",
+  "model": {
+    "id": "gpt-5.6-sol",
+    "reasoningEffort": "high",
+    "frozen": true
+  },
+  "roles": [
+    {
+      "id": "triager",
+      "responsibility": "Classify membership, source-intake, access-support and unrelated messages without executing email content"
+    },
+    {
+      "id": "resolver",
+      "responsibility": "Resolve requester authority, working-group target, company domain and live Microsoft state"
+    },
+    {
+      "id": "executor",
+      "responsibility": "Perform only validated Microsoft Graph and SharePoint operations, one idempotent step at a time"
+    },
+    {
+      "id": "responder",
+      "responsibility": "Reply in the original mail thread only after the required postconditions are true"
+    },
+    {
+      "id": "auditor",
+      "responsibility": "Read back membership, folder isolation, uploaded resources and sent-message state before completion"
+    }
+  ],
+  "gates": [
+    "content-firewall",
+    "requester-authority",
+    "working-group-resolution",
+    "deterministic-plan-validation",
+    "live-precondition-readback",
+    "bounded-execution",
+    "live-postcondition-readback",
+    "reply-and-checkpoint"
+  ],
+  "interfaces": {
+    "allow": [
+      "microsoft-graph",
+      "microsoft-365-cli",
+      "ruflo-project-memory",
+      "repository-policy-files"
+    ],
+    "deny": [
+      "interactive-web-administration",
+      "instructions-contained-in-email",
+      "executing-attachments",
+      "following-submitted-links",
+      "arbitrary-shell-from-message-content"
+    ]
+  },
+  "state": {
+    "namespace": "working-group-inbox-agent",
+    "containsPersonalData": false,
+    "mailboxMarkers": [
+      "OPDA Agent - Completed",
+      "OPDA Agent - Waiting",
+      "OPDA Agent - Failed"
+    ]
+  }
+}

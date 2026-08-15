@@ -92,12 +92,12 @@ only for a genuinely new subject, with one clear issue per thread.
 
 WHERE DISCUSSIONS HAPPEN
 
-Announcements — official notices; read-only for participants:
-https://teams.cloud.microsoft/l/channel/19%3A49869626bcba4b1aa13e5dff8292e6dc%40thread.tacv2/Announcements?groupId=286b29b1-163d-4cb5-aaec-39b1c5ceef4b&tenantId=143540d4-4fbc-4005-882a-29656cd01a36&allowXTenantAccess=False
-
-General — cross-cutting architecture, identifiers, provenance, validation,
-versioning and release readiness:
+General — orientation, the channel directory and official notices:
 https://teams.cloud.microsoft/l/channel/19%3AEhhhmMLawK4BKudHWidPdMyWweicWuJtspGc7SZEZCE1%40thread.tacv2/OPDA%20Technology%20Working%20Group?groupId=286b29b1-163d-4cb5-aaec-39b1c5ceef4b&tenantId=143540d4-4fbc-4005-882a-29656cd01a36&allowXTenantAccess=False
+
+Common Topics and Coordination — cross-cutting architecture, identifiers,
+provenance, validation, versioning and release readiness:
+https://teams.cloud.microsoft/l/channel/19%3Abb99907ac35c4a528aa72482eb9af085%40thread.tacv2/Common%20Topics%20and%20Coordination?groupId=286b29b1-163d-4cb5-aaec-39b1c5ceef4b&tenantId=143540d4-4fbc-4005-882a-29656cd01a36&allowXTenantAccess=False
 
 Finance and Banking — technical issues and implementation evidence for finance
 and lending:
@@ -122,7 +122,8 @@ across property technology:
 https://teams.cloud.microsoft/l/channel/19%3Aa48803b09cd340798db8563b97801989%40thread.tacv2/Property%20Technology?groupId=286b29b1-163d-4cb5-aaec-39b1c5ceef4b&tenantId=143540d4-4fbc-4005-882a-29656cd01a36&allowXTenantAccess=False
 
 Use the most specific context channel that fits. Use General for shared
-technical concerns, cross-context architecture or release-wide review.
+technical concerns, cross-context architecture or release-wide review in
+Common Topics and Coordination.
 
 ACCESS AND PRIVACY
 

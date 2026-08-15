@@ -1,7 +1,7 @@
 ---
 status: accepted
 date: 2026-08-14
-updated: 2026-08-14
+updated: 2026-08-15
 tags: [working-groups, microsoft-365, teams, sharepoint, evidence-intake, access-control, technology-review]
 supersedes: []
 depends-on: [ADR-0063, ADR-0065, ADR-0067, ADR-0068]
@@ -238,6 +238,19 @@ controls were not removed. These counts are point-in-time validation evidence, n
 baseline. Participant identities and subsequent roster changes remain in the private operational
 register, not this ADR.
 
+### 8. Scheduled inbox operations
+
+ADR-0072 automates the bounded membership, intake and access-support operations described here.
+The automation does not create a second roster: it reads the live Team membership and derives
+company-domain SharePoint access exactly as sections 4 and 5 require. Ambiguous working-group
+requests produce a clarification reply, and only workspaces listed as implemented in section 7
+may receive automatic writes.
+
+Emailed attachments are an approved fallback when an authorised participant cannot use
+SharePoint. They must pass the ADR-0072 file-policy gate and are stored in the same isolated
+organisation folder; a successful reply is sent only after SharePoint readback. Email content is
+treated as untrusted evidence and cannot alter workspace configuration or tool policy.
+
 ### Consequences
 
 - Good, because every group has the same discussion and evidence-intake model.
@@ -273,6 +286,8 @@ For each implementation, confirmation requires:
 - no Microsoft welcome email or custom invitation is sent before explicit approval; and
 - the reconciliation report accounts for every accepted Team member without placing participant
   personal data in the repository.
+- the scheduled inbox agent passes the ADR-0072 content, authority, plan and postcondition gates
+  before it changes membership, stores evidence or sends a success reply.
 
 ## More Information
 
@@ -284,3 +299,4 @@ For each implementation, confirmation requires:
 - [Technology Working Group invitation, plain text](../templates/technology-working-group-invitation-email.txt)
 - [Finance and Banking invitation rollout plan](../plan/2026-08-postmark-working-group-invitation-rollout.md)
 - [Microsoft Graph invitation resource](https://learn.microsoft.com/en-us/graph/api/resources/invitation?view=graph-rest-1.0)
+- [ADR-0072 — scheduled working-group inbox agent](./ADR-0072-scheduled-working-group-inbox-agent.md)

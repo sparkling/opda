@@ -82,6 +82,7 @@ modelling website remains unchanged:
 | [ADR-0069](./ADR-0069-public-working-group-recruitment-and-signup.md) | Recruit later bounded-context working groups through a public campaign and simple sign-up | accepted |
 | [ADR-0070](./ADR-0070-uniform-microsoft-365-working-group-workspaces.md) | Operate OPDA working groups through a uniform Microsoft 365 workspace pattern | accepted |
 | [ADR-0071](./ADR-0071-bounded-context-recruitment-campaign.md) | Recruit later bounded-context groups through a coordinated public campaign | accepted |
+| [ADR-0072](./ADR-0072-scheduled-working-group-inbox-agent.md) | Operate a scheduled, harnessed working-group inbox agent | accepted |
 
 ## Authoring a new ADR
 
