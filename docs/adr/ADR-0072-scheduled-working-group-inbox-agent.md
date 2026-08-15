@@ -72,7 +72,8 @@ The `vertical:support` template is adapted into five sequential roles:
 
 The mandatory gates are: content firewall, requester authority, working-group resolution,
 deterministic plan validation, live precondition readback, bounded execution, live postcondition
-readback, and reply plus checkpoint. Any failed gate stops dependent writes.
+readback, AI-authorship disclosure, and reply plus checkpoint. Any failed gate stops dependent
+writes.
 
 ### 2. Ruflo usage and state boundary
 
@@ -102,6 +103,10 @@ copied from a message.
 Automated replies, bounces, delivery reports, out-of-office messages, bulk mail and mail from the
 monitored account receive no response. Unrelated human messages remain untouched. The agent does
 not mark mail read, move it, archive it or delete it.
+
+Every invitation and operational reply sent by the agent explicitly identifies itself as generated
+by OPDA's AI inbox agent. The disclosure is part of the deterministic response policy rather than
+optional model wording.
 
 ### 4. Membership requests
 

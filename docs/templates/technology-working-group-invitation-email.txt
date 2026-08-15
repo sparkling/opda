@@ -187,6 +187,7 @@ smartdata@openpropdata.org.uk
 
 Open Property Data Association · Technology Working Group
 This email was sent because OPDA invited {{display_name}} to participate.
+This email was generated and sent by OPDA’s AI inbox agent.
 
 Stop receiving Smart Property Data Trust Framework working-group emails:
 {{{ pm:unsubscribe }}}

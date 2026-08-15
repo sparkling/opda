@@ -26,7 +26,7 @@
     },
     {
       "id": "responder",
-      "responsibility": "Reply in the original mail thread only after the required postconditions are true"
+      "responsibility": "Reply in the original mail thread only after the required postconditions are true, with an explicit AI-generated-response disclosure"
     },
     {
       "id": "auditor",
@@ -41,6 +41,7 @@
     "live-precondition-readback",
     "bounded-execution",
     "live-postcondition-readback",
+    "ai-authorship-disclosure",
     "reply-and-checkpoint"
   ],
   "interfaces": {
