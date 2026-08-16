@@ -13,6 +13,7 @@ import {
   boundaryDiagram,
   completeModelDiagram,
   contextDiagram,
+  contextDiagramProjection,
   contexts,
   counts,
   coverage,
@@ -25,6 +26,7 @@ import {
   vocabularies,
   vocabularyRoute,
 } from '../src/lib/v2-model.mjs';
+import { buildEstateAgencyEditorialDiagram } from '../src/lib/estate-agency-editorial-diagram.mjs';
 
 test('V1 and V2 comparison uses the generated model projections', () => {
   assert.deepEqual(v1Counts, {
@@ -211,4 +213,70 @@ test('standard references remain distinct from resources owned by another contex
   assert.doesNotMatch(source, /xsd:string.*:::xsection/);
   assert.match(source, /subgraph cross_context_refs\["Resources owned by other semantic homes"\]/);
   assert.match(source, /subgraph standard_refs\["Referenced standards"\]/);
+});
+
+test('estate-agency editorial projection preserves the complete candidate model', () => {
+  const projection = contextDiagramProjection('estate-agency');
+  const diagram = buildEstateAgencyEditorialDiagram(projection);
+  const expectedRoutes = new Set(projection.displayedResources.map(resourceRoute));
+  const mermaidRoutes = new Set([...contextDiagram('estate-agency')
+    .matchAll(/^  click term_\d+ "([^"]+)"$/gm)]
+    .map((match) => match[1]));
+  const placedResources = [
+    ...diagram.cards.flatMap((card) => [card.resource, ...card.fields.map((field) => field.resource)]),
+    ...diagram.relationships.map((relationship) => relationship.resource),
+  ];
+
+  assert.equal(diagram.cards.length, 7);
+  assert.equal(diagram.relationships.length, 5);
+  assert.equal(diagram.cards.flatMap((card) => card.fields).length, 7);
+  assert.equal(diagram.structuralEdges.length, 6);
+  assert.equal(diagram.fidelity.structuralRows, 13);
+  assert.equal(placedResources.length, projection.displayedResources.length);
+  assert.equal(new Set(placedResources.map((resource) => resource.key)).size, placedResources.length);
+  assert.deepEqual(new Set(diagram.routes), expectedRoutes);
+  assert.deepEqual(new Set(diagram.routes), mermaidRoutes);
+  assert.deepEqual(new Set(diagram.standardTerms.map((term) => term.iri)), new Set(projection.standardIris));
+  assert.ok(diagram.geometryValues.every((value) => value % 4 === 0));
+  assert.ok(diagram.relationships.every((relationship) => relationship.shortLabel.length <= 14));
+  assert.ok(diagram.cards.every((card) => card.cardinality == null));
+});
+
+test('estate-agency editorial projection fails closed on candidate drift', () => {
+  const projection = contextDiagramProjection('estate-agency');
+  const removed = {
+    ...projection,
+    displayedResources: projection.displayedResources.slice(1),
+  };
+  assert.throws(
+    () => buildEstateAgencyEditorialDiagram(removed),
+    /estate-agency-diagram:resource-set.*missing common:Property/u,
+  );
+
+  const added = {
+    ...projection,
+    displayedResources: [...projection.displayedResources, {
+      iri: 'https://example.invalid/Unexpected',
+      key: 'estate-agency:Unexpected',
+      label: 'unexpected',
+      local_name: 'Unexpected',
+      semantic_home: 'estate-agency',
+      kind: 'class',
+    }],
+  };
+  assert.throws(
+    () => buildEstateAgencyEditorialDiagram(added),
+    /estate-agency-diagram:resource-set.*unexpected estate-agency:Unexpected/u,
+  );
+
+  const changedRange = {
+    ...projection,
+    displayedResources: projection.displayedResources.map((resource) => (
+      resource.key === 'estate-agency:rentAmount' ? { ...resource, range: '' } : resource
+    )),
+  };
+  assert.throws(
+    () => buildEstateAgencyEditorialDiagram(changedRange),
+    /estate-agency-diagram:field-range.*estate-agency:rentAmount/u,
+  );
 });
