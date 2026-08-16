@@ -297,6 +297,7 @@ test('graph and data tools preserve keyboard and semantic state contracts', asyn
   assert.match(graph, /setAttribute\('role', 'dialog'\)/u);
   assert.match(graph, /setAttribute\('aria-modal', 'true'\)/u);
   assert.match(graph, /returnFocus\?\.isConnected/u);
+  assert.match(graph, /document\.fonts\?\.ready/u);
   for (const key of ['ArrowLeft', 'ArrowRight', 'ArrowUp', 'ArrowDown']) assert.match(mermaid, new RegExp(key, 'u'));
   assert.match(mermaid, /setAttribute\('aria-pressed'/u);
   assert.doesNotMatch(graphCss, /drop-shadow\(0 0 0\b/iu);

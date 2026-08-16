@@ -60,6 +60,27 @@ export async function visit(page, path) {
   return response;
 }
 
+export async function settleVisualState(page) {
+  await page.waitForLoadState('load');
+  await page.evaluate(() => document.fonts?.ready);
+
+  // GraphDiagram boots lazily near the viewport. A screenshot must observe the
+  // completed SVG, not race the loading placeholder or fallback-font layout.
+  await page.waitForFunction(() => [...document.querySelectorAll('.graph-diagram-wrapper')]
+    .filter((wrapper) => {
+      const rect = wrapper.getBoundingClientRect();
+      return rect.width > 0 && rect.top < window.innerHeight + 300 && rect.bottom > -300;
+    })
+    .every((wrapper) => (
+      !wrapper.querySelector('.diagram-loading')
+      && Boolean(wrapper.querySelector('.gd-mermaid svg, .gd-empty'))
+    )), undefined, { timeout: 15_000 });
+
+  await page.evaluate(() => new Promise((resolve) => {
+    requestAnimationFrame(() => requestAnimationFrame(resolve));
+  }));
+}
+
 export async function assertNoBodyOverflow(page) {
   const overflow = await page.evaluate(() => ({
     documentWidth: document.documentElement.scrollWidth,

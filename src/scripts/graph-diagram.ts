@@ -213,7 +213,16 @@ function setupWrapper(wrapper: HTMLElement) {
     setFullscreenControlState(false);
     document.addEventListener('keydown', handleFullscreenKeydown);
     mermaidView.initControls();
-    if (lightSource) mermaidView.render();
+    // Mermaid measures label geometry while it builds the SVG. Rendering before
+    // the self-hosted fonts settle produces a fallback-font graph whose height
+    // can change between otherwise identical loads. Wait on FontFaceSet so the
+    // diagram and the surrounding page have one deterministic layout.
+    if (lightSource) {
+      const render = () => mermaidView.render();
+      const fontsReady = document.fonts?.ready;
+      if (fontsReady) fontsReady.then(render, render);
+      else render();
+    }
     else { wrapper.querySelector('.diagram-loading')?.remove(); pre.innerHTML = '<span class="gd-empty">No diagram source.</span>'; }
   }
 

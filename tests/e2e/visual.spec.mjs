@@ -1,5 +1,5 @@
 import { test, expect } from '@playwright/test';
-import { visit, watchRuntime } from './support.mjs';
+import { settleVisualState, visit, watchRuntime } from './support.mjs';
 
 const routeFamilies = [
   ['public-entry', '/'],
@@ -17,7 +17,7 @@ for (const [name, path] of routeFamilies) {
   test(`${name} desktop light visual contract`, async ({ page }) => {
     const clean = watchRuntime(page);
     await visit(page, path);
-    await page.evaluate(() => document.fonts?.ready);
+    await settleVisualState(page);
     await expect(page).toHaveScreenshot(`${name}-desktop-light.png`, {
       animations: 'disabled',
       fullPage: name !== 'presentation',
@@ -31,7 +31,7 @@ for (const [name, path] of routeFamilies) {
     await page.setViewportSize({ width: 390, height: 844 });
     const themedPath = `${path}${path.includes('?') ? '&' : '?'}theme=dark`;
     await visit(page, themedPath);
-    await page.evaluate(() => document.fonts?.ready);
+    await settleVisualState(page);
     await expect(page).toHaveScreenshot(`${name}-mobile-dark.png`, {
       animations: 'disabled',
       fullPage: name !== 'presentation',
