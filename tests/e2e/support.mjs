@@ -2,6 +2,7 @@ import assert from 'node:assert/strict';
 
 export const ROUTES = [
   '/',
+  '/home',
   '/design-system',
   '/strategy/strategy-overview',
   '/governance/data-security',

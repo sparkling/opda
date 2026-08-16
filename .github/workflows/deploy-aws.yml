@@ -112,6 +112,10 @@ jobs:
 
       - run: pnpm install --frozen-lockfile
 
+      # Fail before the build has a chance to rewrite a stale committed facade.
+      - name: Design module facade drift gate
+        run: pnpm run check:design-system
+
       # Build-time GRLC API's own deps (express, js-yaml).
       - run: npm --prefix src/api install --no-audit --no-fund
 

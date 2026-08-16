@@ -159,7 +159,7 @@ application or mutation of any other production site.
   resources and zero unlinked routes. Ontology resources whose canonical IDs differ
   only by case are checked exactly on Linux CI and identified explicitly on
   case-insensitive development filesystems.
-- The 47-test Chromium release matrix passes: 17 axe route-family checks with zero
+- The 48-test Chromium release matrix passes: 18 axe route-family checks with zero
   tagged WCAG findings, 18 reviewed desktop/mobile light/dark visual baselines,
   eight keyboard/behaviour smoke tests, and four 320px/400%-equivalent reflow,
   forced-colour and descendant reduced-motion checks.

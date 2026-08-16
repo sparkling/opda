@@ -132,6 +132,10 @@ test-visual: node_modules	## Screenshot visual-drift gate (use --update-snapshot
 check-routes:	## Crawl built resources and application-owned navigation
 	npm run check:routes
 
+.PHONY: check-design-system
+check-design-system:	## Fail when the committed design-module graph hash is stale
+	npm run check:design-system
+
 .PHONY: test-schema
 test-schema:	## Focused schema reproducibility and drift-boundary contracts
 	npm run test:schema
@@ -185,7 +189,7 @@ check-links-external:	## Live external-URL 200 sweep over /ontology + /pdtf (ADR
 	node scripts/check-external-links.mjs
 
 .PHONY: ci
-ci: test test-schema check-schema-drift check-adr ci-ontology ci-ontology-doc ci-ontology-graph	## Everything CI runs that is checkable locally (JS + ontology gates + doc-drift)
+ci: test test-schema check-schema-drift check-design-system check-adr ci-ontology ci-ontology-doc ci-ontology-graph	## Everything CI runs that is checkable locally (JS + ontology gates + doc-drift)
 	@echo "✓ all local CI gates passed"
 
 ##@ Deploy
