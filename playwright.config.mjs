@@ -20,10 +20,11 @@ export default defineConfig({
   reporter: process.env.CI ? [['line'], ['html', { open: 'never' }]] : 'list',
   outputDir: 'test-results',
   snapshotDir: 'tests/e2e/__screenshots__',
-  // One reviewed baseline is shared across native Chromium hosts. The bounded
-  // per-pixel tolerance above absorbs OS rasterisation without accepting
-  // component geometry or colour drift.
-  snapshotPathTemplate: '{snapshotDir}/{testFileName}-snapshots/{arg}{ext}',
+  // Font rasterisation and text metrics differ between Darwin and Linux even
+  // with the same bundled webfonts and Chromium revision. Keep a reviewed,
+  // strict baseline for each release-test platform instead of weakening the
+  // visual-drift threshold to absorb cross-platform geometry changes.
+  snapshotPathTemplate: '{snapshotDir}/{testFileName}-snapshots/{platform}/{arg}{ext}',
   use: {
     baseURL,
     browserName: 'chromium',
