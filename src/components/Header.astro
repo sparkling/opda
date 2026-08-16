@@ -7,42 +7,75 @@ import { HEADER_ORDER, SECTIONS, getActiveSection } from '@/lib/site';
 import AuthButton from '@/components/AuthButton.astro';
 
 const activeSection = getActiveSection(Astro.url.pathname);
+interface Props { showSidebar?: boolean; }
+const { showSidebar = false } = Astro.props;
 ---
 <header class="app-header">
-  <a href="/home" class="brand-link">
-    <span class="brand-mark">OPDA</span>
-    <span class="brand-sub">Knowledge base</span>
+  <a href="/" class="brand-link" aria-label="Open Property Data Association knowledge base home">
+    <img
+      class="brand-wordmark"
+      src="/ui/brand/opda-wordmark-white.svg"
+      alt="Open Property Data Association"
+      width="149"
+      height="42"
+    />
+    <span class="brand-context">Knowledge base</span>
   </a>
 
-  <nav class="global-nav">
-    {HEADER_ORDER.map(key => (
-      <a
-        href={`/${key}`}
-        class={activeSection === key ? 'active' : undefined}
-        aria-current={activeSection === key ? 'page' : undefined}
-      >{SECTIONS[key].title}</a>
-    ))}
-  </nav>
-
-  <button class="menu-toggle" aria-label="Toggle sidebar" id="menu-toggle">
-    <svg viewBox="0 0 24 24" width="22" height="22" fill="currentColor">
-      <path d="M3 6h18v2H3V6zm0 5h18v2H3v-2zm0 5h18v2H3v-2z"/>
+  <button
+    type="button"
+    class="global-nav-toggle"
+    aria-label="Open site navigation"
+    aria-controls="global-nav-panel"
+    aria-expanded="false"
+    id="global-nav-toggle"
+  >
+    <svg viewBox="0 0 24 24" width="22" height="22" fill="currentColor" aria-hidden="true">
+      <path d="M4 5h16v2H4V5zm0 6h16v2H4v-2zm0 6h16v2H4v-2z"/>
     </svg>
   </button>
 
-  <nav class="header-nav">
-    <a href="https://github.com/Property-Data-Trust-Framework" target="_blank" rel="noopener">GitHub</a>
-  </nav>
+  <div class="global-nav-panel" id="global-nav-panel">
+    <nav class="global-nav" aria-label="Primary">
+      {HEADER_ORDER.map(key => (
+        <a
+          href={`/${key}`}
+          class={activeSection === key ? 'active' : undefined}
+          aria-current={activeSection === key ? 'page' : undefined}
+        >{SECTIONS[key].title}</a>
+      ))}
+    </nav>
 
-  <button class="theme-toggle" id="theme-toggle" aria-label="Toggle light/dark mode" title="Toggle light/dark mode">
-    <svg class="theme-icon theme-icon--sun" viewBox="0 0 24 24" width="20" height="20" fill="currentColor">
-      <path d="M12 4V2m0 20v-2m8-8h2M2 12h2m13.66-5.66l1.42-1.42M4.92 19.08l1.42-1.42m11.32 0l1.42 1.42M4.92 4.92l1.42 1.42M12 7a5 5 0 100 10 5 5 0 000-10z"
-            fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-    </svg>
-    <svg class="theme-icon theme-icon--moon" viewBox="0 0 24 24" width="20" height="20" fill="currentColor">
-      <path d="M20 14.5A8 8 0 0 1 9.5 4a8 8 0 1 0 10.5 10.5z"/>
-    </svg>
-  </button>
+    <nav class="header-nav" aria-label="Utilities">
+      <a href="https://github.com/Property-Data-Trust-Framework" target="_blank" rel="noopener">GitHub</a>
+    </nav>
 
-  <AuthButton />
+    <button type="button" class="theme-toggle" id="theme-toggle" aria-label="Switch to dark mode" aria-pressed="false" title="Switch to dark mode">
+      <svg class="theme-icon theme-icon--sun" viewBox="0 0 24 24" width="20" height="20" fill="currentColor" aria-hidden="true">
+        <path d="M12 4V2m0 20v-2m8-8h2M2 12h2m13.66-5.66l1.42-1.42M4.92 19.08l1.42-1.42m11.32 0l1.42 1.42M4.92 4.92l1.42 1.42M12 7a5 5 0 100 10 5 5 0 000-10z"
+              fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+      </svg>
+      <svg class="theme-icon theme-icon--moon" viewBox="0 0 24 24" width="20" height="20" fill="currentColor" aria-hidden="true">
+        <path d="M20 14.5A8 8 0 0 1 9.5 4a8 8 0 1 0 10.5 10.5z"/>
+      </svg>
+    </button>
+
+    <AuthButton />
+  </div>
+
+  {showSidebar && (
+    <button
+      type="button"
+      class="menu-toggle"
+      aria-label="Open section navigation"
+      aria-controls="app-sidebar"
+      aria-expanded="false"
+      id="menu-toggle"
+    >
+      <svg viewBox="0 0 24 24" width="22" height="22" fill="currentColor" aria-hidden="true">
+        <path d="M3 6h18v2H3V6zm0 5h18v2H3v-2zm0 5h18v2H3v-2z"/>
+      </svg>
+    </button>
+  )}
+
 </header>

@@ -1,0 +1,484 @@
+/* ─────────────────────────────────────────────────────────────
+   DATA BROWSER
+   ───────────────────────────────────────────────────────────── */
+.data-browser {
+  margin: var(--space-5) 0;
+}
+.db-toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: end;
+  gap: var(--space-4);
+  padding: 0 0 var(--space-3);
+  background: transparent;
+}
+/* Heading variant: section <h2> sits on the same row as the search +
+   count. Grid lays out [heading | centred search | count]; the 1fr
+   middle column lets the search-group sit visually centred regardless
+   of the heading width. Collapses to a stacked layout on narrow viewports.
+   The top hairline restores the section break the standalone <h2> used to
+   provide before it was moved inside the toolbar. */
+.db-toolbar--with-heading {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  align-items: center;
+  column-gap: var(--space-5);
+  row-gap: var(--space-3);
+  border-top: 1px solid var(--color-border);
+  margin-top: var(--space-6);
+  padding-top: var(--space-5);
+}
+.db-toolbar--with-heading .db-heading {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  flex: 0 0 auto;
+}
+.db-toolbar--with-heading .db-search-group {
+  justify-self: center;
+  width: 100%;
+  max-width: 32rem;
+}
+.db-toolbar--with-heading .db-field--grow {
+  flex: 1 1 auto;
+}
+.db-toolbar--with-heading .db-inline-count {
+  margin-left: 0;
+  align-self: center;
+}
+@media (max-width: 720px) {
+  .db-toolbar--with-heading {
+    grid-template-columns: 1fr;
+  }
+  .db-toolbar--with-heading .db-search-group { max-width: none; }
+  .db-toolbar--with-heading .db-inline-count { justify-self: start; }
+}
+/* Object-model header layout is now Tailwind utilities — see
+   aggregate-page.html.j2. The .objects-header class remains as a marker
+   so the post-header h3 spacing rule can target the following section. */
+.objects-header + h3 { margin-top: var(--space-3); }
+.objects-header + .object-block { margin-top: var(--space-3); }
+.db-field {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+  min-width: 9rem;
+}
+.db-field--grow { flex: 1 1 18rem; }
+.db-field label {
+  font: 700 var(--text-xs) / 1.2 var(--font-sans);
+  text-transform: uppercase;
+  letter-spacing: var(--tracking-meta);
+  color: var(--color-text-muted);
+}
+.db-inline-count {
+  margin-left: auto;
+  align-self: flex-end;
+  font: 400 var(--text-xs) / 1.4 var(--font-sans);
+  color: var(--color-text-muted);
+  white-space: nowrap;
+}
+/* Tailwind Plus input pattern (Forms.Input Groups.*) recoloured.
+   inset-ring instead of border so it composes cleanly in buttongroups. */
+.db-input,
+.db-select {
+  min-height: var(--target-min);
+  padding: 0.5rem 0.75rem;
+  border: 1px solid var(--color-border-strong);
+  box-shadow: none;
+  border-radius: var(--radius-md);
+  font: 400 var(--text-sm) / 1.4 var(--font-sans);
+  background: var(--button-bg);
+  color: var(--color-text);
+  transition: box-shadow var(--duration-fast) var(--ease);
+}
+.db-input:focus-visible,
+.db-select:focus-visible {
+  outline: 2px solid var(--color-focus);
+  outline-offset: 2px;
+  box-shadow: 0 0 0 2px var(--color-focus-contrast);
+}
+.db-input { min-width: 14rem; max-width: 28rem; }
+.db-reset {
+  align-self: end;
+  min-height: var(--target-min);
+  padding: 0.5rem 0.95rem;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border-strong);
+  border-radius: var(--radius-md);
+  color: var(--color-text);
+  font: 500 var(--text-sm) / 1 var(--font-sans);
+  cursor: pointer;
+  transition: background var(--duration-fast) var(--ease);
+}
+.db-reset:hover { background: var(--cream-200); }
+
+/* Search + filter joined group */
+.db-search-group {
+  display: flex;
+  align-items: flex-end;
+  gap: var(--space-2);
+  flex: 1 1 auto;
+  max-width: calc(28rem + 2.5rem);
+}
+.db-search-group .db-field { flex: 1 1 auto; }
+.db-search-group .db-input { max-width: 100%; }
+
+/* Filter toggle button + overlay panel */
+.db-filter-wrap {
+  position: relative;
+  flex-shrink: 0;
+}
+/* Tailwind Plus icon-button pattern (button-groups / Icon only) recoloured.
+   Inset ring instead of border, shadow-xs for slight lift, focus-visible
+   outline 2px offset 2px for a11y parity with Plus. */
+.db-filter-btn {
+  min-height: var(--target-min);
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.5rem 0.6rem;
+  background: var(--button-bg);
+  box-shadow: inset 0 0 0 1px var(--ring-subtle),            /* Plus: inset-ring-1 inset-ring-gray-300 */
+              0 1px 2px 0 rgba(0,0,0,0.05);                  /* Plus: shadow-xs */
+  border: 0;
+  border-radius: var(--radius-md);
+  color: var(--color-text);
+  font: 500 var(--text-sm) / 1.4 var(--font-sans);
+  cursor: pointer;
+  transition: background var(--duration-fast) var(--ease),
+              color var(--duration-fast) var(--ease);
+}
+.db-filter-btn:hover { background: var(--button-bg-hover); }
+.db-filter-btn:focus-visible {
+  outline: 2px solid var(--color-focus);
+  outline-offset: 2px;
+  box-shadow: 0 0 0 2px var(--color-focus-contrast);
+}
+.db-filter-btn[aria-expanded="true"] {
+  background: var(--button-bg-active);
+}
+:root[data-theme="dark"] .db-filter-btn[aria-expanded="true"] {
+  background: var(--surface-dark-tint);
+  border-color: var(--color-border-strong);
+}
+.db-filter-btn.is-active {
+  background: var(--terracotta-50);
+  border-color: var(--terracotta-400);
+  color: var(--terracotta-800);
+}
+:root[data-theme="dark"] .db-filter-btn.is-active {
+  background: var(--terracotta-900);
+  border-color: var(--terracotta-500);
+  color: var(--terracotta-200);
+}
+.db-filter-btn.is-active[aria-expanded="true"] {
+  background: var(--terracotta-100);
+}
+:root[data-theme="dark"] .db-filter-btn.is-active[aria-expanded="true"] {
+  background: var(--terracotta-800);
+}
+.db-filter-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 1.125rem;
+  height: 1.125rem;
+  padding: 0 0.25rem;
+  border-radius: var(--radius-sm);
+  background: var(--terracotta-500);
+  color: var(--brand-ink);
+  font: 700 var(--text-xs) / 1 var(--font-sans);
+}
+.db-filter-badge[hidden] { display: none !important; }
+/* Object-tables popover panels are <el-popover> elements styled with
+   Tailwind utilities (mt-2, rounded-md, bg-..., inset-ring-..., shadow-lg,
+   p-5, transition data-closed:...). These selectors target INSIDE the
+   popover for the per-facet column layout. */
+#filter-overlay-panel,
+#objects-config-panel {
+  flex-direction: column;
+  gap: var(--space-4);
+  min-width: 18rem;
+}
+#filter-overlay-panel:popover-open,
+#objects-config-panel:popover-open {
+  display: flex;
+}
+
+/* Legacy .db-filter-panel (still used by data-browser.js on the data
+   dictionary and business glossary pages — those haven't migrated to
+   <el-popover> yet). Position-fixed dropdown that opens via the
+   .is-open class set by data-browser.js. */
+.db-filter-panel {
+  position: fixed;
+  z-index: 9999;
+  display: none;
+  flex-direction: column;
+  gap: var(--space-4);
+  width: 38rem;
+  max-width: calc(100vw - 2rem);
+  padding: var(--space-5);
+  background: var(--button-bg);
+  border-radius: var(--radius-md);
+  border: 1px solid var(--color-border);
+  box-shadow: var(--shadow-md);
+}
+.db-filter-panel.is-open { display: flex; }
+.db-filter-cols {
+  display: grid;
+  grid-template-columns: max-content max-content;
+  column-gap: var(--space-7);
+  align-items: start;
+}
+#filter-overlay-panel .db-filter-col {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-5);
+  min-width: 0;
+}
+#filter-overlay-panel .db-filter-section { margin: 0; }
+#filter-overlay-panel .db-filter-option { white-space: nowrap; }
+.db-filter-col {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+.db-filter-section {
+  display: flex;
+  flex-direction: column;
+}
+.db-filter-heading {
+  grid-column: 1 / -1;
+  font: 700 var(--text-xs) / 1.2 var(--font-sans);
+  text-transform: uppercase;
+  letter-spacing: var(--tracking-meta);
+  color: var(--color-text-muted);
+  margin-bottom: var(--space-1);
+}
+.db-filter-option {
+  min-height: var(--target-min);
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: 0.2rem 0;
+  font: 400 var(--text-sm) / 1.4 var(--font-sans);
+  color: var(--color-text);
+  cursor: pointer;
+  user-select: none;
+}
+.db-filter-option-key {
+  color: var(--color-text-muted);
+  text-transform: uppercase;
+}
+.db-filter-option-count {
+  color: var(--color-text-muted);
+  font-variant-numeric: tabular-nums;
+  font-size: 0.85em;
+  margin-left: 0.35em;
+}
+.db-filter-option input[type="checkbox"] {
+  width: 1.25rem;
+  height: 1.25rem;
+  flex-shrink: 0;
+  accent-color: var(--terracotta-500);
+  cursor: pointer;
+}
+.db-filter-sep {
+  border-top: 1px solid var(--color-border);
+  margin: var(--space-1) 0 0;
+}
+.db-filter-panel .db-reset {
+  align-self: stretch;
+  text-align: center;
+}
+
+.db-summary {
+  padding: var(--space-3) var(--space-5);
+  font: 400 var(--text-sm) / 1.4 var(--font-sans);
+  color: var(--color-text-muted);
+  border-bottom: 1px solid var(--color-border);
+  background: var(--color-surface);
+}
+.db-summary strong { color: var(--color-text-strong); font-weight: 600; }
+.db-table-wrap {
+  /* No scrollbars — render the whole table on the page. The wrapping
+     table-layout: fixed + overflow-wrap: anywhere handles long paths
+     and field names without horizontal scroll. */
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-bottom: 0;
+  border-radius: 0;
+  box-shadow: none;
+}
+.prose .db-table,
+.db-table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  font-size: var(--text-sm);
+  margin: 0;
+}
+.db-table.db-table--fixed { table-layout: fixed; }
+.db-table.db-table--fixed td,
+.db-table.db-table--fixed th { overflow-wrap: anywhere; word-break: break-word; }
+.db-table.db-table--fixed td code {
+  display: inline-block; max-width: 100%; word-break: break-all; white-space: normal;
+}
+.db-table th.align-right,  .db-table td.align-right  { text-align: right; }
+.db-table th.align-center, .db-table td.align-center { text-align: center; }
+.db-table th.align-left,   .db-table td.align-left   { text-align: left; }
+
+/* Overlays column — descriptive name per line + the short key in muted
+   text in parens after. One overlay per line; the cell wraps naturally
+   even with table-layout: fixed. */
+.db-table td.overlay-cell { line-height: 1.4; vertical-align: top; }
+.db-table .overlay-line { display: block; padding: 1px 0; }
+.db-table .overlay-line + .overlay-line { margin-top: 0.15em; }
+.db-table .overlay-key {
+  color: var(--color-text-muted);
+  font-size: var(--text-xs);
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+.db-table .db-cell--truncate { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+
+.db-table thead th {
+  position: sticky; top: 0; z-index: 1;
+  background: var(--cream-200);
+  color: var(--color-text-strong);
+  font: 700 var(--text-sm) / 1.4 var(--font-sans);
+  letter-spacing: 0;
+  text-align: left;
+  padding: 0.55rem 0.85rem;
+  white-space: nowrap;
+}
+:root[data-theme="dark"] .db-table thead th { background: var(--surface-dark-tint); }
+.db-table thead th.sortable { padding: 0; user-select: none; }
+.db-sort-button {
+  width: 100%;
+  min-height: var(--target-min);
+  display: inline-flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-2);
+  padding: 0.55rem 0.85rem;
+  border: 0;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  text-align: inherit;
+  cursor: pointer;
+  transition: background var(--duration-fast) var(--ease), color var(--duration-fast) var(--ease);
+}
+.db-table th.align-right .db-sort-button { justify-content: flex-end; }
+.db-table th.align-center .db-sort-button { justify-content: center; }
+.db-sort-button:hover { background: var(--terracotta-100); color: var(--terracotta-800); }
+:root[data-theme="dark"] .db-sort-button:hover { background: var(--terracotta-900); color: var(--terracotta-200); }
+.db-sort-button:focus-visible {
+  position: relative;
+  z-index: 2;
+  outline: 2px solid var(--color-focus);
+  outline-offset: -2px;
+  box-shadow: inset 0 0 0 2px var(--color-focus-contrast);
+}
+.db-table thead th .sort-indicator { display: inline-block; margin-left: 0.35em; color: var(--bone-600); }
+.db-table thead th.sort-asc  .sort-indicator,
+.db-table thead th.sort-desc .sort-indicator { color: var(--terracotta-700); }
+.db-table tbody td {
+  padding: 0.55rem 0.85rem;
+  vertical-align: top;
+  color: var(--color-text);
+  font: 400 var(--text-sm) / 1.45 var(--font-sans);
+}
+.db-table tbody tr:nth-child(2n) td { background: var(--cream-200); }
+:root[data-theme="dark"] .db-table tbody tr:nth-child(2n) td { background: var(--surface-dark-alt); }
+.db-table code {
+  font: 400 var(--text-caption) / 1.4 var(--font-mono);
+  padding: 1px 5px;
+  border-radius: 3px;
+  background: var(--cream-200);
+  color: var(--terracotta-800);
+}
+.db-table .pill { font-size: var(--text-xs); padding: 1px 8px; }
+.db-table .enum-pill {
+  display: inline-block;
+  font: 400 var(--text-xs) / 1.4 var(--font-mono);
+  padding: 1px 6px;
+  margin: 1px 2px 1px 0;
+  border-radius: var(--radius-sm);
+  background: var(--terracotta-50);
+  color: var(--terracotta-800);
+  border: 1px solid var(--terracotta-200);
+}
+:root[data-theme="dark"] .db-table .enum-pill { background: var(--terracotta-900); color: var(--terracotta-200); border-color: var(--terracotta-800); }
+
+.db-pagination {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3);
+  padding: var(--space-3) var(--space-5);
+  background: var(--cream-200);
+  border: 1px solid var(--color-border);
+  border-radius: 0;
+  box-shadow: none;
+  font-size: var(--text-sm);
+}
+:root[data-theme="dark"] .db-pagination { background: var(--surface-dark-tint); }
+.db-pagination .db-page-info { color: var(--color-text-muted); }
+.db-pagination .db-page-controls { display: flex; gap: 2px; }
+.db-pagination button {
+  min-width: var(--target-min);
+  min-height: var(--target-min);
+  padding: 0.25rem 0.6rem;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border-strong);
+  border-radius: var(--radius-sm);
+  color: var(--color-text);
+  font: 500 var(--text-sm) / 1 var(--font-sans);
+  cursor: pointer;
+  transition: background var(--duration-fast) var(--ease);
+}
+.db-pagination button:hover:not(:disabled) {
+  background: var(--terracotta-100);
+  color: var(--terracotta-800);
+  border-color: var(--terracotta-300);
+}
+.db-pagination button.current {
+  background: var(--terracotta-500);
+  color: var(--brand-ink);
+  border-color: var(--terracotta-600);
+}
+.db-pagination button:disabled { opacity: 0.45; cursor: not-allowed; }
+.db-pagination .db-page-size {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  color: var(--color-text-muted);
+}
+.db-pagination .db-page-size select {
+  min-height: var(--target-min);
+  padding: 0.2rem 0.4rem;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border-strong);
+  border-radius: var(--radius-sm);
+  color: var(--color-text);
+  font: 500 var(--text-sm) / 1 var(--font-sans);
+  cursor: pointer;
+}
+.db-empty,
+.db-status-loading {
+  padding: var(--space-7) var(--space-5);
+  text-align: center;
+  color: var(--color-text-muted);
+  font: 400 var(--text-sm) / 1.45 var(--font-sans);
+}
+@media (max-width: 760px) {
+  .db-toolbar { flex-direction: column; align-items: stretch; }
+  .db-field, .db-field--grow { min-width: 0; }
+  .db-input { min-width: 0; width: 100%; }
+  .db-pagination { flex-direction: column; align-items: stretch; }
+  .db-pagination .db-page-controls { justify-content: center; }
+  .db-pagination .db-page-size { justify-content: center; }
+}

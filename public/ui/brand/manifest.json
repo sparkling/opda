@@ -1,0 +1,34 @@
+{
+  "version": "2026-Q3",
+  "scope": "opda.org.uk design system",
+  "provenance": {
+    "source": "Ben Kansy email attachment",
+    "messageId": "19f8e8b5dc1da827",
+    "received": "2026-07-23",
+    "classification": "authoritative-supplied"
+  },
+  "assets": [
+    {
+      "id": "wordmark-dark",
+      "path": "/ui/brand/opda-wordmark-dark.svg",
+      "sha256": "91f10f8481a2caab8700fdb540489004777a246348644e126eca7a4e3b9efb8f",
+      "viewBox": "0 0 1385.6 392.9",
+      "surface": "light"
+    },
+    {
+      "id": "wordmark-white",
+      "path": "/ui/brand/opda-wordmark-white.svg",
+      "sha256": "18bc8957fdd84342de4acc9284dd574a2604ecfcc5bdba5e26099e02168de97a",
+      "viewBox": "0 0 1385.6 392.9",
+      "surface": "dark"
+    },
+    {
+      "id": "icon-yellow",
+      "path": "/ui/brand/opda-icon-yellow.svg",
+      "sha256": "e547e3a8fc9f4f9b0195b1dc4fae3deb71a70c5a24a634e4f7fc356c6488ab81",
+      "viewBox": "0 0 84 100",
+      "surface": "dark-or-decorative"
+    }
+  ],
+  "integrityRule": "Do not alter geometry or embedded colours; add a new version when source assets change."
+}

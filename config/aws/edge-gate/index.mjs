@@ -38,7 +38,7 @@ const ID_COOKIE = 'opda_id';
 const AT_COOKIE = 'opda_at';
 const VERIFIER_COOKIE = 'opda_verifier';
 
-// Public surface: the coming-soon homepage and non-content assets. Hashed
+// Public surface: the branded homepage and non-content assets. Hashed
 // build assets (/_astro/) are deliberately public — they are styling/scripts,
 // not KB content, and the homepage needs them (ADR-0038: "/ and its assets").
 const PUBLIC_EXACT = new Set([
@@ -48,7 +48,6 @@ const PUBLIC_EXACT = new Set([
   '/robots.txt',
   '/favicon.svg',
   '/favicon.ico',
-  '/coming-soon.jpg', // the homepage hero/og image
   '/images/working-group-recruitment-social.png',
 ]);
 // `/sitemap-` covers the @astrojs/sitemap output (/sitemap-index.xml +

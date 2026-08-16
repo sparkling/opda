@@ -59,6 +59,8 @@ interface Props {
   hideFooter?: boolean;
   /** Hide the Artalk comments section (e.g. on /404, /design-system). */
   hideComments?: boolean;
+  /** Optional class added to the main region for page-level compositions. */
+  mainClass?: string;
 }
 
 const {
@@ -71,6 +73,7 @@ const {
   hideBreadcrumbs = false,
   hideFooter = false,
   hideComments = false,
+  mainClass = '',
 } = Astro.props;
 
 const fullTitle = /knowledge base/i.test(title)
@@ -82,7 +85,7 @@ const sectionAttr = activeSection ?? '';
 const showSidebar = !hideSidebar && !!activeSection;
 ---
 <!doctype html>
-<html lang="en" data-section={sectionAttr}>
+<html lang="en" class="app-document" data-section={sectionAttr}>
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -92,7 +95,7 @@ const showSidebar = !hideSidebar && !!activeSection;
   <link rel="stylesheet" href={`/ui/tailwind.built.css?v=${twV}`} />
 
   {/* Pre-paint theme: applies data-theme before first render to avoid FOUC.
-      Reads ?theme= URL param, then localStorage, falls back to dark.
+      Reads ?theme= URL param, then localStorage, falls back to light.
       data-astro-rerun makes it re-execute on every view transition; without
       that flag the new <html> would render without data-theme on navigation,
       flashing back to the default. */}
@@ -103,10 +106,10 @@ const showSidebar = !hideSidebar && !!activeSection;
         if (t !== 'light' && t !== 'dark') {
           t = localStorage.getItem('opda-theme');
         }
-        if (t !== 'light' && t !== 'dark') t = 'dark';
+        if (t !== 'light' && t !== 'dark') t = 'light';
         document.documentElement.setAttribute('data-theme', t);
       } catch (e) {
-        document.documentElement.setAttribute('data-theme', 'dark');
+        document.documentElement.setAttribute('data-theme', 'light');
       }
     })();
   </script>
@@ -119,11 +122,12 @@ const showSidebar = !hideSidebar && !!activeSection;
   <slot name="head" />
 </head>
 <body>
+  <a class="skip-link" href="#main-content">Skip to main content</a>
   <div id="app">
-    <Header />
+    <Header showSidebar={showSidebar} />
     <div class={`app-body${showSidebar ? '' : ' no-sidebar'}`}>
       {showSidebar && <Sidebar />}
-      <main class="app-main">
+      <main class={`app-main${mainClass ? ` ${mainClass}` : ''}`} id="main-content" tabindex="-1">
         {!hideBreadcrumbs && <Breadcrumbs />}
         {wrapArticle ? (
           <article class={proseClass}>

@@ -1,0 +1,136 @@
+/* ─────────────────────────────────────────────────────────────
+   GLOSSARY (.glossary-search, .glossary-table)
+   Used by /glossary and any other acronym index.
+   ───────────────────────────────────────────────────────────── */
+.glossary-search {
+  width: 100%;
+  max-width: 36rem;
+  padding: 0.625rem 0.875rem;
+  border: 1px solid var(--color-border-strong);
+  border-radius: var(--radius-md);
+  background: var(--color-surface);
+  color: var(--color-text);
+  font: 400 var(--text-base) / 1.4 var(--font-sans);
+  margin: var(--space-4) 0 var(--space-5);
+  transition: border-color var(--duration-fast) var(--ease),
+              box-shadow var(--duration-fast) var(--ease);
+}
+.glossary-search:focus-visible {
+  outline: 2px solid var(--color-focus);
+  outline-offset: 2px;
+  border-color: var(--color-border-strong);
+  box-shadow: 0 0 0 2px var(--color-focus-contrast);
+}
+.glossary-table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  margin: var(--space-5) 0;
+  font-size: var(--text-sm);
+  border-radius: 0;
+  overflow: hidden;
+  border: 1px solid var(--color-border);
+  background: var(--color-surface);
+}
+.glossary-table th,
+.glossary-table td {
+  text-align: left;
+  padding: var(--space-3) var(--space-4);
+  border-bottom: 1px solid var(--color-border);
+  vertical-align: top;
+}
+.glossary-table tbody tr:last-child td { border-bottom: 0; }
+.glossary-table th {
+  background: var(--cream-200);
+  color: var(--color-text-strong);
+  font: 600 var(--text-xs) / 1.4 var(--font-sans);
+  text-transform: uppercase;
+  letter-spacing: var(--tracking-meta);
+}
+:root[data-theme="dark"] .glossary-table th { background: var(--surface-dark-tint); }
+.glossary-table tbody tr:nth-child(2n) { background: var(--cream-200); }
+:root[data-theme="dark"] .glossary-table tbody tr:nth-child(2n) { background: var(--surface-dark-alt); }
+.glossary-table td:first-child {
+  font: 600 var(--text-sm) / 1.4 var(--font-mono);
+  color: var(--terracotta-700);
+  white-space: nowrap;
+}
+.glossary-table tr.is-hidden { display: none; }
+
+
+/* ─────────────────────────────────────────────────────────────
+   RIGHT-RAIL TOC
+   ───────────────────────────────────────────────────────────── */
+.toc {
+  position: sticky;
+  top: var(--header-height);
+  align-self: start;
+  height: calc(100vh - var(--header-height));
+  overflow-y: auto;
+  padding: var(--space-6) var(--space-4) var(--space-7) var(--space-3);
+  background: transparent;
+  border-left: 1px solid var(--color-border);
+  font-size: var(--text-sm);
+  scrollbar-width: thin;
+}
+.toc-title,
+.toc-toggle__label {
+  font: 700 var(--text-xs) / 1.2 var(--font-sans);
+  text-transform: uppercase;
+  letter-spacing: var(--tracking-meta);
+  color: var(--color-text-muted);
+}
+.toc > .toc-toggle {
+  width: 100%;
+  margin: 0 0 var(--space-3);
+  padding-inline: var(--space-2);
+  justify-content: space-between;
+}
+.toc:not(.is-collapsed) > .toc-toggle svg { transform: rotate(90deg); }
+.toc.is-collapsed > ul { display: none; }
+.app-body.toc-collapsed .toc > .toc-toggle {
+  width: var(--target-min);
+  margin: var(--space-4) auto var(--space-3);
+  padding: 0;
+}
+.app-body.toc-collapsed .toc-toggle__label { display: none; }
+.toc ul { list-style: none; padding: 0; margin: 0; }
+.toc li + li { margin-top: 1px; }
+.toc a {
+  min-height: var(--target-min);
+  display: flex;
+  align-items: center;
+  padding: var(--space-2) var(--space-3);
+  border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+  border-left: 2px solid transparent;
+  margin-left: -2px;
+  color: var(--color-text);
+  font: 400 var(--text-sm) / 1.4 var(--font-sans);
+  text-decoration: none;
+  transition: color var(--duration-fast) var(--ease),
+              border-color var(--duration-fast) var(--ease);
+}
+.toc a:hover { color: var(--color-link-hover); text-decoration: none; }
+.toc a.active {
+  color: var(--color-text-strong);
+  font-weight: 600;
+  border-left-color: var(--brand-yellow);
+}
+.toc .toc-level-h2 a { font-size: var(--text-sm); }
+.toc .toc-level-h3 a { padding-left: var(--space-6); font-size: var(--text-caption); color: var(--color-text-muted); }
+.toc .toc-level-h4 a { padding-left: var(--space-7); font-size: var(--text-caption); color: var(--color-text-muted); }
+@media (max-width: 1280px) {
+  .toc {
+    position: relative;
+    top: auto;
+    height: auto;
+    margin: 0 0 var(--space-6);
+    padding: var(--space-4);
+    overflow: visible;
+    background: var(--color-surface-alt);
+    border: 1px solid var(--color-border);
+  }
+  .toc > .toc-toggle { margin-bottom: 0; }
+  .toc:not(.is-collapsed) > .toc-toggle { margin-bottom: var(--space-3); }
+  .toc > ul { max-height: 50vh; overflow-y: auto; }
+}

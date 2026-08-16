@@ -87,9 +87,9 @@ Every post and outreach message links to:
 `https://opda.org.uk/working-groups/join`
 
 The public page is the campaign landing page as well as the form. It uses the OPDA design system,
-an accessible property-information handoff narrative and progressive parallax/reveal effects to
-explain the case before asking a visitor to register. The form and privacy controls remain usable
-without animation and with reduced motion.
+an accessible property-information handoff narrative and brief, optional reveal effects to explain
+the case before asking a visitor to register. The form and privacy controls remain usable without
+animation and with reduced motion.
 
 Registration is an expression of interest. It is stored in the AWS-hosted register decided by
 ADR-0069 and reviewed by a human. It does not automatically create an Entra guest, Team
@@ -201,6 +201,12 @@ Before launch:
 After each wave, the campaign register records date, route, response and coverage outcome. Changes
 to target contexts, collected fields, automated onboarding or data use require an ADR amendment.
 
+## Amendments
+
+- **2026-08-16 — OPDA design-system adoption.** ADR-0073 removes parallax and
+  constrains the remaining reveal feedback to the shared 120–200ms motion
+  contract. Campaign content, signup behaviour and governance are unchanged.
+
 ## More Information
 
 - [ADR-0063 — domain-led bounded-context working groups](./ADR-0063-domain-led-bounded-context-working-groups.md)
@@ -211,4 +217,3 @@ to target contexts, collected fields, automated onboarding or data use require a
 - [Outreach parameter set](../recruitment/2026-08-bounded-context-outreach-parameters.json)
 - [Trade-body outreach template, HTML](../templates/bounded-context-trade-body-outreach-email.html)
 - [Trade-body outreach template, plain text](../templates/bounded-context-trade-body-outreach-email.txt)
-

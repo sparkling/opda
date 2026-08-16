@@ -14,38 +14,6 @@ function initCampaignExperience(): void {
 
   const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
   const desktop = window.matchMedia('(min-width: 49rem)');
-  const parallaxLayers = [...document.querySelectorAll<HTMLElement>('[data-parallax-layer]')];
-  let frame = 0;
-
-  function updateParallax(): void {
-    frame = 0;
-    if (reducedMotion.matches || !desktop.matches) {
-      parallaxLayers.forEach((layer) => { layer.style.removeProperty('transform'); });
-      return;
-    }
-
-    const viewportMidpoint = window.innerHeight / 2;
-    parallaxLayers.forEach((layer) => {
-      const scene = layer.closest<HTMLElement>('[data-campaign-scene]');
-      if (!scene) return;
-      const rect = scene.getBoundingClientRect();
-      if (rect.bottom < 0 || rect.top > window.innerHeight) return;
-      const speed = Number(layer.dataset.speed ?? 0);
-      const distance = rect.top + rect.height / 2 - viewportMidpoint;
-      const offset = Math.max(-52, Math.min(52, distance * speed));
-      layer.style.transform = `translate3d(0, ${offset.toFixed(2)}px, 0)`;
-    });
-  }
-
-  function requestParallaxUpdate(): void {
-    if (!frame) frame = window.requestAnimationFrame(updateParallax);
-  }
-
-  window.addEventListener('scroll', requestParallaxUpdate, { passive: true });
-  window.addEventListener('resize', requestParallaxUpdate, { passive: true });
-  reducedMotion.addEventListener('change', requestParallaxUpdate);
-  desktop.addEventListener('change', requestParallaxUpdate);
-  requestParallaxUpdate();
 
   const revealObserver = 'IntersectionObserver' in window
     ? new IntersectionObserver((entries, observer) => {
@@ -81,7 +49,7 @@ function initCampaignExperience(): void {
           { opacity: 0.7, transform: 'translateY(0.65rem) scale(0.985)' },
           { opacity: 1, transform: 'translateY(0) scale(1)' },
         ],
-        { duration: reducedMotion.matches ? 0 : 360, easing: 'cubic-bezier(.2,.8,.2,1)' },
+        { duration: reducedMotion.matches ? 0 : 160, easing: 'cubic-bezier(.2,0,0,1)' },
       );
     }
   }

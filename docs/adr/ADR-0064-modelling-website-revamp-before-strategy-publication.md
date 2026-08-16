@@ -1,7 +1,7 @@
 ---
 status: accepted
 date: 2026-07-19
-updated: 2026-08-06
+updated: 2026-08-16
 tags: [website, information-architecture, modelling, migration, bounded-context, publication]
 supersedes: []
 depends-on: [ADR-0041, ADR-0044, ADR-0063]
@@ -44,8 +44,8 @@ Supporting rationale is in
 - Give the new domain models a coherent navigation, status and provenance system.
 - Make non-technical working-group review the primary interaction, not an appendix to
   schema documentation.
-- Obtain an explicit OPDA brand system rather than inferring one from informal review
-  comments.
+- Apply the supplied Q3 2026 OPDA guide and original vectors through the complete,
+  governed web contract adopted by ADR-0073.
 - Plan redirects and archival treatment before changing circulated URLs.
 - Avoid spending effort patching pages that will be replaced by a complete redesign.
 
@@ -106,9 +106,9 @@ The follow-on website plan must resolve, as one coherent release:
    schema/mapping pages to the appropriate future equivalents.
 12. **Release completeness** — identify every page whose meaning changes so the
    transition lands as a coherent set, not a mixture of old and new claims.
-13. **Brand system** — obtain the current OPDA logo assets, colour, typography,
-   illustration, accessibility and component guidance, or explicitly record which
-   elements remain undecided before visual design begins.
+13. **Brand system** — use ADR-0073 and `DESIGN.md` for the supplied logo, colour and
+   typography evidence and for the derived accessibility, imagery and component
+   decisions that complete it.
 
 ### Interim use of the website
 
@@ -147,8 +147,8 @@ separate migration decision authorises replacement of current pages.
   group and the Interoperability Working Group, and exposes the eight-category
   coverage statement for each modelling group.
 - The release plan includes a full-site consistency review and rendered-page review.
-- The design brief cites an approved OPDA brand pack or records the agreed substitute;
-  informal email comments are not treated as a complete style guide.
+- The design implementation distinguishes supplied, observed and derived evidence,
+  and tests the complete contract recorded by ADR-0073.
 - Existing URLs continue to resolve through retained pages or explicit redirects.
 
 ## Amendments
@@ -157,6 +157,11 @@ separate migration decision authorises replacement of current pages.
   publication of the Property Pack candidate and V2 documentation as a separate,
   clearly labelled review surface. This satisfies the anti-mixing intent of this ADR;
   it does not authorise an in-place rewrite or replacement of current V1 pages.
+- **2026-08-16 — Coherent visual-system replacement authorised.** The operator
+  authorised ADR-0073 to replace the shared design system, website shell, home page
+  and design-system reference coherently across opda.org.uk. This does not alter the
+  status or meaning of V1/V2 standards content, approve a modelling-content migration,
+  change the other production sites or authorise deployment.
 
 ## More Information
 

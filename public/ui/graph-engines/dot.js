@@ -54,7 +54,7 @@
         g = parseInt(h.slice(2, 4), 16),
         b = parseInt(h.slice(4, 6), 16);
     // Perceived luminance (ITU-R BT.601).
-    return (0.299 * r + 0.587 * g + 0.114 * b) > 150 ? '#141413' : '#ffffff';
+    return (0.299 * r + 0.587 * g + 0.114 * b) > 150 ? '#231F2F' : '#ffffff';
   }
 
   // node shape by model type (mirrors the other engines' visual vocabulary).
@@ -124,7 +124,7 @@
 
       function fail(msg) {
         container.innerHTML = '<div style="padding:1rem;font:14px/1.5 var(--font-sans,sans-serif);' +
-          'color:var(--color-text-muted,#6C6A64)">' + msg + '</div>';
+          'color:var(--color-text-muted,#625D72)">' + msg + '</div>';
         if (opts.onStatus) opts.onStatus('Graphviz render failed');
       }
 

@@ -1,17 +1,7 @@
 ---
-/**
- * Public "coming soon" homepage — opda.org.uk/
- *
- * Standalone: no KB Layout, so it carries none of the gated chrome (auth
- * header, sidebar, Artalk comments, logout button). Pure static, edge-cacheable,
- * sitting in front of the gated knowledge base (the KB landing lives at /home).
- *
- * Plain block flow: centred brand heading, illustration directly underneath
- * (centred via margin:auto). "Members sign in" is a corner link, top-right.
- */
-const title = 'OPDA — Coming Soon';
+const title = 'OPDA Knowledge Base';
 const description =
-  'The OPDA knowledge base is being built. Coming soon — stay tuned for our grand opening.';
+  'Evidence-led strategy, governance, semantic models and implementation guidance for connected UK property data.';
 ---
 <!doctype html>
 <html lang="en">
@@ -22,73 +12,75 @@ const description =
   <meta name="description" content={description} />
   <meta property="og:title" content={title} />
   <meta property="og:description" content={description} />
-  <meta property="og:image" content="/coming-soon.jpg" />
-  <meta name="twitter:card" content="summary_large_image" />
-  <style is:global>
-    :root { color-scheme: dark; }
-    * { box-sizing: border-box; }
-    html, body { margin: 0; }
-    body {
-      min-height: 100vh;
-      font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
-      background: radial-gradient(120% 120% at 50% 0%, #3a2a1e 0%, #1a1310 55%, #0d0a08 100%);
-      color: #f3e9dc;
-      text-align: center;
-      padding: clamp(1.5rem, 5vh, 3.5rem) clamp(1rem, 4vw, 3rem) clamp(2rem, 6vh, 4rem);
-    }
-    .cs-signin {
-      position: absolute;
-      top: clamp(1rem, 3vw, 1.75rem);
-      right: clamp(1.25rem, 4vw, 2.5rem);
-      font-size: clamp(0.8rem, 0.7rem + 0.4vw, 0.95rem);
-      font-weight: 600;
-      letter-spacing: 0.02em;
-      color: #d9c4a8;
-      text-decoration: none;
-      opacity: 0.85;
-    }
-    .cs-signin:hover { opacity: 1; color: #fff; }
-    .cs-wordmark {
-      display: block;
-      margin: 0 0 clamp(1rem, 3vh, 2rem);
-      font-weight: 800;
-      font-size: clamp(1.5rem, 1rem + 2vw, 2.5rem);
-      letter-spacing: 0.04em;
-      color: #f3e9dc;
-      text-decoration: none;
-    }
-    .cs-art {
-      display: block;
-      margin: 0 auto;
-      max-width: min(100%, 1500px);
-      max-height: 78vh;
-      width: auto;
-      height: auto;
-      border-radius: 14px;
-      box-shadow: 0 24px 60px -20px rgba(0, 0, 0, 0.7),
-                  0 0 0 1px rgba(255, 255, 255, 0.04);
-    }
-    .sr-only {
-      position: absolute;
-      width: 1px; height: 1px;
-      padding: 0; margin: -1px;
-      overflow: hidden;
-      clip: rect(0, 0, 0, 0);
-      white-space: nowrap; border: 0;
-    }
-  </style>
+  <meta name="twitter:card" content="summary" />
+  <script is:inline>
+    (function () {
+      try {
+        var t = new URLSearchParams(location.search).get('theme');
+        if (t !== 'light' && t !== 'dark') t = localStorage.getItem('opda-theme');
+        if (t !== 'light' && t !== 'dark') t = 'light';
+        document.documentElement.setAttribute('data-theme', t);
+      } catch (e) {
+        document.documentElement.setAttribute('data-theme', 'light');
+      }
+    })();
+  </script>
+  <link rel="stylesheet" href="/ui/design-system.css" />
 </head>
-<body>
-  <h1 class="sr-only">Coming soon — the OPDA knowledge base is being built</h1>
-  <a class="cs-signin" href="/home">Members sign in →</a>
-  <a class="cs-wordmark" href="/">Open Property Data Association</a>
-  <img
-    class="cs-art"
-    src="/coming-soon.jpg"
-    width="2400"
-    height="1339"
-    alt="A colony of cartoon beavers building a dam at sunset, beside a wooden sign reading ‘Coming soon — our new home is being built. Stay tuned for our grand opening.’"
-    fetchpriority="high"
-  />
+<body class="public-site">
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+  <header class="public-header">
+    <a href="/" aria-label="Open Property Data Association home">
+      <img src="/ui/brand/opda-wordmark-white.svg" alt="Open Property Data Association" width="149" height="42" />
+    </a>
+    <button type="button" class="theme-toggle" id="theme-toggle" aria-label="Switch to dark mode" aria-pressed="false" title="Switch to dark mode">
+      <svg class="theme-icon theme-icon--sun" viewBox="0 0 24 24" width="20" height="20" fill="currentColor" aria-hidden="true">
+        <path d="M12 4V2m0 20v-2m8-8h2M2 12h2m13.66-5.66l1.42-1.42M4.92 19.08l1.42-1.42m11.32 0l1.42 1.42M4.92 4.92l1.42 1.42M12 7a5 5 0 100 10 5 5 0 000-10z" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+      </svg>
+      <svg class="theme-icon theme-icon--moon" viewBox="0 0 24 24" width="20" height="20" fill="currentColor" aria-hidden="true">
+        <path d="M20 14.5A8 8 0 0 1 9.5 4a8 8 0 1 0 10.5 10.5z"/>
+      </svg>
+    </button>
+    <a class="public-header__signin" href="/home">
+      <span class="public-header__signin-full">Members enter the knowledge base</span>
+      <span class="public-header__signin-short">Enter</span>
+    </a>
+  </header>
+  <main id="main-content" tabindex="-1">
+    <section class="public-hero" aria-labelledby="public-title">
+      <div class="public-hero__inner">
+        <p class="eyebrow">Connected property data</p>
+        <h1 id="public-title">One shared language for property data.</h1>
+        <p>
+          OPDA is connecting the evidence, governance, semantic models and
+          implementation guidance needed to make property information easier to
+          trust and exchange.
+        </p>
+        <div class="public-hero__actions">
+          <a class="btn" href="/home">Enter the knowledge base</a>
+          <a class="btn btn--outline-dark" href="https://openpropdata.org.uk/" rel="noopener">
+            Visit the association website
+          </a>
+        </div>
+      </div>
+    </section>
+    <section class="public-overview" aria-labelledby="inside-title">
+      <header>
+        <p class="overline">Inside the knowledge base</p>
+        <h2 id="inside-title">Trace the work from intent to implementation</h2>
+      </header>
+      <div class="public-overview__grid">
+        <article><span>01</span><h3>Strategy</h3><p>The programme, policy context and roadmap.</p></article>
+        <article><span>02</span><h3>Governance</h3><p>Authority, evidence, lifecycle and conformance.</p></article>
+        <article><span>03</span><h3>Model</h3><p>Shared concepts, relationships, schemas and constraints.</p></article>
+        <article><span>04</span><h3>Implementation</h3><p>Guidance for building, validating and linking data.</p></article>
+      </div>
+    </section>
+  </main>
+  <footer class="public-footer">
+    <img src="/ui/brand/opda-wordmark-white.svg" alt="Open Property Data Association" width="149" height="42" />
+    <span>Property data that people and systems can understand together.</span>
+  </footer>
+  <script is:inline src="/ui/client.js"></script>
 </body>
 </html>

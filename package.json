@@ -20,7 +20,7 @@
     "css": "tailwindcss -i src/styles/global.css -o public/ui/tailwind.built.css --minify",
     "css:watch": "tailwindcss -i src/styles/global.css -o public/ui/tailwind.built.css --watch",
     "tailwindplus:download": "bash scripts/tailwindplus-download.sh",
-    "test": "node --test tests/lib/remark/*.test.mjs tests/property-pack-catalogue.test.mjs tests/property-pack-calibration.test.mjs tests/property-pack-candidate.test.mjs tests/postmark-invitation-wave.test.mjs tests/v2-model-docs.test.mjs tests/working-group-interest.test.mjs tests/aws-working-group-interest-infrastructure.test.mjs tests/working-group-signup-pages.test.mjs tests/trade-body-outreach-assets.test.mjs tests/working-group-inbox-agent.test.mjs",
+    "test": "node --test tests/lib/remark/*.test.mjs tests/design-system-contract.test.mjs tests/property-pack-catalogue.test.mjs tests/property-pack-calibration.test.mjs tests/property-pack-candidate.test.mjs tests/postmark-invitation-wave.test.mjs tests/v2-model-docs.test.mjs tests/working-group-interest.test.mjs tests/aws-working-group-interest-infrastructure.test.mjs tests/working-group-signup-pages.test.mjs tests/trade-body-outreach-assets.test.mjs tests/working-group-inbox-agent.test.mjs",
     "calibration": "node scripts/property-pack-calibration.mjs",
     "property-pack:generate": "python3 scripts/property_pack_catalogue.py generate",
     "property-pack:check": "python3 scripts/property_pack_catalogue.py check",

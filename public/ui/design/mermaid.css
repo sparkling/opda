@@ -1,0 +1,35 @@
+/* Mermaid text and dark-mode corrections. Palette ownership lives in
+   src/lib/diagram-palette.ts and is injected by the GraphDiagram renderer. */
+.mermaid svg { background: transparent; }
+.mermaid foreignObject div { font-size: 14px !important; line-height: 1.3 !important; }
+.mermaid .nodeLabel,
+.mermaid .edgeLabel,
+.mermaid .cluster-label { font-family: var(--font-sans) !important; }
+.mermaid .nodeLabel { font-size: 14px !important; }
+.mermaid .edgeLabel { font-size: 13px !important; }
+
+:root[data-theme='dark'] .mermaid svg.erDiagram g.label > rect,
+:root[data-theme='dark'] .mermaid svg.erDiagram foreignObject + rect {
+  fill: transparent !important;
+  stroke: none !important;
+}
+:root[data-theme='dark'] .mermaid svg.erDiagram foreignObject .labelBkg,
+:root[data-theme='dark'] .mermaid svg.erDiagram foreignObject .edgeLabel {
+  color: var(--brand-off-white) !important;
+  background-color: transparent !important;
+}
+:root[data-theme='dark'] .mermaid svg.erDiagram text,
+:root[data-theme='dark'] .mermaid svg.erDiagram foreignObject div,
+:root[data-theme='dark'] .mermaid svg.erDiagram foreignObject span,
+:root[data-theme='dark'] .mermaid svg.erDiagram foreignObject p {
+  fill: var(--brand-off-white) !important;
+  color: var(--brand-off-white) !important;
+}
+:root[data-theme='dark'] .mermaid svg.erDiagram .relationshipLine {
+  stroke: var(--neutral-400) !important;
+}
+
+@media (forced-colors: active) {
+  .mermaid g.node :is(rect, polygon, path) { fill: Canvas !important; stroke: CanvasText !important; }
+  .mermaid :is(text, .nodeLabel, .edgeLabel) { fill: CanvasText !important; color: CanvasText !important; }
+}

@@ -18,7 +18,9 @@ The Astro site (per [ADR-0003](./ADR-0003-idiomatic-astro-refactor.md)) is the p
 - 8 top sections per `src/lib/site.ts` (strategy / governance / engagement / modelling / schema / implementation / adoption / library), each with sidebar groups + items declared in TypeScript
 - A single `Layout.astro` + ~9 named components (`Diagram`, `Sidebar`, `SidebarItem`, `Header`, `Breadcrumbs`, `PageMeta`, `PageFooter`, `AuthButton`, `Comments`)
 - A `data-theme="dark"` attribute-driven token system (NOT `prefers-color-scheme`) — light/dark switched via a top-bar toggle; CSS custom-variant rewires `dark` to `[data-theme="dark"]`
-- Mermaid loaded client-side at `public/ui/client.js:228+` (mermaid@11 + `@mermaid-js/layout-elk@0` from CDN, theme `'base'` with `themeVars` per `design/mermaid-theme.js`)
+- Mermaid loaded client-side by `public/ui/client.js`; its current theme values
+  derive from `src/lib/diagram-palette.ts` and `public/ui/design-tokens.css`.
+  The former `design/mermaid-theme.js` is retained only as historical evidence.
 - `Diagram.astro` wrapper component with `size` + `caption` props; mermaid source goes in the slot
 - All pages are individual `.astro` files; **no Astro content collections in use yet** — every page is hand-written
 
@@ -43,7 +45,9 @@ This ADR decides:
 
 * **Regenerability.** The manual is generated from the TTLs; integrating it shouldn't lock the content into hand-authored `.astro` files that drift from the source.
 * **Audience routing.** The umbrella README's tier-table maps audience → tier. The site navigation should mirror that mapping so a visiting surveyor / data engineer / SPARQL consumer lands on the right tier directly.
-* **Design coherence.** Existing site has a settled visual language (header / breadcrumbs / sidebar / footer + design tokens + dark/light toggle). The manual must reuse it, not introduce a parallel theme.
+* **Design coherence.** The site provides a shared header, breadcrumbs, sidebar,
+  footer, tokens and dark/light behavior. Manual pages reuse that shared shell;
+  ADR-0073 may evolve its visual language without creating a parallel theme.
 * **Mermaid discipline.** Diagrams already render client-side via `public/ui/client.js` + `Diagram.astro`. Manual pages must use the same loader and the same `themeVars` for dark/light coherence — no per-tier mermaid setup, no inline `<script>` mermaid initialisation.
 * **`src/lib/site.ts` as single navigation source.** Per [ADR-0003](./ADR-0003-idiomatic-astro-refactor.md), navigation lives in typed TS, not in markdown frontmatter or filesystem walks. The manual integration must extend `site.ts` consistently.
 * **No `.astro` files per entity.** Authoring (or regenerating) 41 × 3 = 123 entity `.astro` files is bad ergonomics + bad re-gen story.
@@ -270,13 +274,16 @@ Five files stay as hand-authored Astro pages:
 
 ### Mermaid integration
 
-The 239 PNGs at `docs/manual/<tier>/diagrams/<doc>/<name>.png` are local-export artefacts produced for offline browsing of the markdown. **They are NOT shipped to the Astro site.** Instead, the manual's mermaid source (already preserved in `<details>` blocks per the `/diagramming` skill's post-export contract) renders **client-side at view time** via the existing `public/ui/client.js` loader, identical to how every other site page handles Mermaid.
+The 239 PNGs at `docs/manual/<tier>/diagrams/<doc>/<name>.png` are local-export artefacts produced for offline browsing of the markdown. **They are NOT shipped to the Astro site.** Instead, the manual's Mermaid source renders **client-side at view time** through the shared `GraphDiagram` island, identical to every other site page.
 
 Concrete consequences:
 
 - Source markdown's `<details><summary>Mermaid Source</summary>\n\`\`\`mermaid\n...\n\`\`\`\n</details>` blocks → at Astro build time, the markdown processor unwraps the `<details>` source and emits `<div class="mermaid">...</div>` blocks (or `<pre class="mermaid">` per the existing site convention). The PNG `<img>` references in the .md are stripped at build (or wrapped in a `<noscript>` fallback).
-- The existing `public/ui/client.js:228-269` mermaid loader handles initialisation: detects `.mermaid` blocks, loads `mermaid@11` + `@mermaid-js/layout-elk@0` from CDN, applies `themeVars` from `design/mermaid-theme.js`.
-- **Dark/light**: the existing `client.js` mermaid setup already reads `themeVars` per the active `data-theme`; toggling the site theme re-runs `mermaid.run()` with the new theme variables and diagrams re-render in-place. **No additional dark-mode wiring needed** for the manual — it inherits.
+- `src/layouts/Layout.astro` adopts bare `.mermaid` blocks into the shared
+  island; `src/scripts/graph-diagram-mermaid.ts` loads Mermaid and ELK.
+- **Dark/light**: `src/lib/diagram-palette.ts` projects the OPDA semantic and
+  categorical palette for each theme; a theme change re-renders the island.
+  **No additional dark-mode wiring is needed** for the manual.
 - The `Diagram.astro` component's `size` + `caption` props remain the canonical authoring path for new diagrams elsewhere on the site; the manual content uses bare `<div class="mermaid">` because its source is generator-emitted (not hand-authored).
 
 ELK layout flows through naturally — any mermaid block in the manual content whose YAML frontmatter has `config: layout: elk` gets the ELK plugin (already loaded by `client.js:233`).
@@ -326,7 +333,8 @@ The ADR is honoured when ALL of these hold:
 2. **Content collection wired** — `src/content.config.ts` defines `manualEntries` with the Zod schema; `getCollection('manual')` returns ≥220 entries.
 3. **Four dynamic routes emit** — `src/pages/manual/{concept,logical,physical-database,physical-ontology}/[...slug].astro` each `getStaticPaths` from their tier's entries; `astro build` produces a static `.html` per entry.
 4. **12 reusable components live under `src/components/manual/`** and consume entry data + slot the `<Content />` from markdown.
-5. **`Diagram.astro` is unchanged** — no parallel mermaid setup for the manual; the existing loader handles every manual page's diagrams.
+5. **No parallel Mermaid setup** — the shared GraphDiagram adoption path handles
+   every manual page's diagrams.
 6. **Dark/light toggle works on a manual page** — manually verify by opening `/manual/concept/property/property`, toggling the theme, confirming mermaid diagrams re-render with the dark theme variables.
 7. **ELK-laid-out diagrams render correctly** — any `config: layout: elk` block in the manual's `<div class="mermaid">` output renders via the ELK plugin client-side.
 8. **No `docs/manual/_export/` files referenced from `src/`** — the local PNG export is offline-only; the Astro site renders Mermaid live.

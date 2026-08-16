@@ -11,6 +11,39 @@
  */
 import { createMermaidView } from './graph-diagram-mermaid';
 
+let graphDiagramFrameId = 0;
+
+function ensureAccessibleFrame(wrapper: HTMLElement): string {
+  let caption = wrapper.querySelector('.gd-caption') as HTMLElement | null;
+  if (!caption) {
+    caption = document.createElement('figcaption');
+    caption.className = 'gd-caption';
+    caption.textContent = 'Interactive diagram.';
+    wrapper.appendChild(caption);
+  }
+  if (!caption.id) caption.id = `gd-caption-${++graphDiagramFrameId}`;
+
+  if (!caption.querySelector('.gd-figure-number') && !/^\s*Figure\s+\d+\b/iu.test(caption.textContent || '')) {
+    const wrappers = [...document.querySelectorAll('.graph-diagram-wrapper')];
+    const number = Math.max(1, wrappers.indexOf(wrapper) + 1);
+    const prefix = document.createElement('span');
+    prefix.className = 'gd-figure-number';
+    prefix.textContent = `Figure ${number}. `;
+    caption.prepend(prefix);
+  }
+
+  if (!caption.querySelector('.gd-keyboard-hint')) {
+    const hint = document.createElement('span');
+    hint.className = 'gd-keyboard-hint';
+    hint.textContent = ' Keyboard: focus the diagram, use arrow keys to pan, + or − to zoom, and 0 to reset.';
+    caption.appendChild(hint);
+  }
+
+  wrapper.setAttribute('role', 'figure');
+  wrapper.setAttribute('aria-labelledby', caption.id);
+  return caption.id;
+}
+
 export function mountGraphDiagrams() {
   document.querySelectorAll('.graph-diagram-wrapper').forEach((w) => {
     if ((w as any)._gdMounted) return;
@@ -50,12 +83,12 @@ const GD_SHELL_HTML = `
     <button type="button" class="gd-ctrl" aria-pressed="false" tabindex="-1" aria-label="Zoom — hold Ctrl (⌘) and scroll" title="Hold Ctrl (⌘) and scroll to zoom · drag to pan">${GD_ICON.search}Ctrl</button>
     <span class="gd-actionbar-spacer"></span>
     <span class="diagram-toolbar" role="group" aria-label="Diagram controls">
-      <button type="button" data-diagram-action="toggle-mode" title="Navigate: click opens the linked page. Explore: click locks the highlight." class="gd-seg-btn diagram-mode-toggle">${GD_ICON.navigate}<span class="diagram-mode-label">Navigate</span></button>
+      <button type="button" data-diagram-action="toggle-mode" title="Navigate: click opens the linked page. Explore: click locks the highlight." class="gd-seg-btn diagram-mode-toggle" aria-pressed="false" aria-label="Navigate mode. Activate to switch to explore mode.">${GD_ICON.navigate}<span class="diagram-mode-label">Navigate</span></button>
       <button type="button" data-diagram-action="zoom-in" title="Zoom in" class="gd-seg-btn" aria-label="Zoom in">${GD_ICON.zoomIn}</button>
       <button type="button" data-diagram-action="zoom-out" title="Zoom out" class="gd-seg-btn" aria-label="Zoom out">${GD_ICON.zoomOut}</button>
-      <span class="gd-seg-btn gd-seg-label diagram-zoom-label">100%</span>
+      <span class="gd-seg-btn gd-seg-label diagram-zoom-label" role="status" aria-live="polite" aria-label="Zoom level">100%</span>
       <button type="button" data-diagram-action="reset" title="Reset view (100%)" class="gd-seg-btn" aria-label="Reset view">${GD_ICON.reset}</button>
-      <button type="button" data-diagram-action="fullscreen" title="Toggle fullscreen" class="gd-seg-btn" aria-label="Toggle fullscreen">${GD_ICON.fullscreen}</button>
+      <button type="button" data-diagram-action="fullscreen" title="Enter fullscreen" class="gd-seg-btn" aria-pressed="false" aria-label="Enter fullscreen diagram">${GD_ICON.fullscreen}</button>
     </span>
   </div>
   <div class="gd-box">
@@ -85,14 +118,14 @@ export function adoptBareMermaid() {
     (el as any)._gdAdopted = true;
     const source = readMermaidDiv(el);
     if (!source) return;
-    const shell = document.createElement('div');
+    const shell = document.createElement('figure');
     shell.className = 'graph-diagram-wrapper';
     shell.innerHTML = GD_SHELL_HTML;
     (shell.querySelector('.gd-mermaid') as HTMLElement).textContent = source;
     // Preserve a caption sibling if the diagram sits in a <figure>.
     const figure = el.closest('figure');
     const cap = figure?.querySelector('figcaption');
-    if (cap) { const p = document.createElement('p'); p.className = 'gd-caption'; p.innerHTML = cap.innerHTML; shell.appendChild(p); }
+    if (cap) { const nextCaption = document.createElement('figcaption'); nextCaption.className = 'gd-caption'; nextCaption.innerHTML = cap.innerHTML; shell.appendChild(nextCaption); }
     (figure || el).replaceWith(shell);
   });
   mountGraphDiagrams();
@@ -106,21 +139,79 @@ function setupWrapper(wrapper: HTMLElement) {
   const canvas = wrapper.querySelector('.diagram-canvas') as HTMLElement | null;
   const pre = wrapper.querySelector('.gd-mermaid') as HTMLElement | null;
   if (!viewport || !canvas || !pre) return;
+  const captionId = ensureAccessibleFrame(wrapper);
 
   // Source: the `source` prop (config.source), else the inline slot the
   // component rendered into the <pre> (reconstructed preserving <br/>).
   const lightSource: string = (config.source && String(config.source).trim()) || readPreSource(pre);
   let mermaidView: any = null;
+  let fullscreenReturnFocus: HTMLElement | null = null;
+  let previousBodyOverflow = '';
+
+  const fullscreenButtons = () => [...wrapper.querySelectorAll<HTMLButtonElement>('[data-diagram-action="fullscreen"]')];
+  const focusableInFullscreen = () => [...wrapper.querySelectorAll<HTMLElement>(
+    'a[href], button:not([disabled]), [tabindex]:not([tabindex="-1"])',
+  )].filter((element) => !element.hasAttribute('hidden'));
+
+  function setFullscreenControlState(fullscreen: boolean) {
+    fullscreenButtons().forEach((button) => {
+      button.setAttribute('aria-pressed', String(fullscreen));
+      button.setAttribute('aria-label', fullscreen ? 'Exit fullscreen diagram' : 'Enter fullscreen diagram');
+      button.title = fullscreen ? 'Exit fullscreen (Escape)' : 'Enter fullscreen';
+    });
+  }
 
   function toggleFullscreen() {
-    const full = wrapper.classList.toggle('diagram-fullscreen');
-    document.body.style.overflow = full ? 'hidden' : '';
+    const full = !wrapper.classList.contains('diagram-fullscreen');
+    if (full) {
+      fullscreenReturnFocus = document.activeElement instanceof HTMLElement ? document.activeElement : null;
+      previousBodyOverflow = document.body.style.overflow;
+      wrapper.classList.add('diagram-fullscreen');
+      wrapper.setAttribute('role', 'dialog');
+      wrapper.setAttribute('aria-modal', 'true');
+      wrapper.setAttribute('aria-labelledby', captionId);
+      document.body.style.overflow = 'hidden';
+      setFullscreenControlState(true);
+      requestAnimationFrame(() => fullscreenButtons()[0]?.focus());
+      return;
+    }
+
+    wrapper.classList.remove('diagram-fullscreen');
+    wrapper.setAttribute('role', 'figure');
+    wrapper.removeAttribute('aria-modal');
+    document.body.style.overflow = previousBodyOverflow;
+    setFullscreenControlState(false);
+    const returnFocus = fullscreenReturnFocus;
+    fullscreenReturnFocus = null;
+    requestAnimationFrame(() => returnFocus?.isConnected && returnFocus.focus());
+  }
+
+  function handleFullscreenKeydown(event: KeyboardEvent) {
+    if (!wrapper.classList.contains('diagram-fullscreen')) return;
+    if (event.key === 'Escape') {
+      event.preventDefault();
+      toggleFullscreen();
+      return;
+    }
+    if (event.key !== 'Tab') return;
+    const focusable = focusableInFullscreen();
+    const first = focusable[0];
+    const last = focusable.at(-1);
+    if (!first || !last) return;
+    if (event.shiftKey && document.activeElement === first) {
+      event.preventDefault();
+      last.focus();
+    } else if (!event.shiftKey && document.activeElement === last) {
+      event.preventDefault();
+      first.focus();
+    }
   }
 
   function boot() {
-    mermaidView = createMermaidView({ wrapper, viewport, canvas, pre, getLightSource: () => lightSource });
+    mermaidView = createMermaidView({ wrapper, viewport, canvas, pre, captionId, getLightSource: () => lightSource });
     wrapper.querySelectorAll('[data-diagram-action="fullscreen"]').forEach((b) => b.addEventListener('click', toggleFullscreen));
-    document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && wrapper.classList.contains('diagram-fullscreen')) toggleFullscreen(); });
+    setFullscreenControlState(false);
+    document.addEventListener('keydown', handleFullscreenKeydown);
     mermaidView.initControls();
     if (lightSource) mermaidView.render();
     else { wrapper.querySelector('.diagram-loading')?.remove(); pre.innerHTML = '<span class="gd-empty">No diagram source.</span>'; }

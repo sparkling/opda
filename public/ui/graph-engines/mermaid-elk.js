@@ -15,7 +15,7 @@
  * the real GraphDiagram shell and wires up the same pan/zoom/fullscreen.
  *
  * Colour: the site viewer resolves palette/theme itself (Cagle classDefs +
- * Claude theme, src/lib/diagram-palette) via bare `:::name` class shorthand —
+ * OPDA diagram theme (`src/lib/diagram-palette`) via bare `:::name` class shorthand —
  * NEVER hardcode classDef/%%{init}%% here (opda-diagram-theming-convention).
  */
 (function () {
@@ -38,7 +38,7 @@
   }
 
   // Build the Mermaid `flowchart LR` source from the OWL backbone view. Uses
-  // the site's own Cagle palette classes (:::process / :::info) instead of
+  // the site's own OPDA diagram classes (:::process / :::info) instead of
   // hardcoded classDef colours — the GraphDiagram viewer injects the real
   // classDef block itself, light or dark, per diagram-palette.ts.
   function buildSource(data, facets) {

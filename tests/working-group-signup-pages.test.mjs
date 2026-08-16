@@ -97,7 +97,8 @@ test('campaign story progressively enhances a complete no-JS narrative', async (
   ]) {
     assert.match(page, new RegExp(phrase, 'u'));
   }
-  assert.match(script, /requestAnimationFrame/u);
+  assert.doesNotMatch(script, /parallax|requestAnimationFrame/iu);
+  assert.match(script, /duration: reducedMotion\.matches \? 0 : 160/u);
   assert.match(script, /IntersectionObserver/u);
   assert.match(script, /prefers-reduced-motion/u);
   assert.match(script, /typeof card\.animate === 'function'/u);
@@ -106,7 +107,7 @@ test('campaign story progressively enhances a complete no-JS narrative', async (
   assert.doesNotMatch(sectionsCss, /^\[data-reveal\]\s*\{/mu);
   assert.match(sectionsCss, /\.has-campaign-js \[data-reveal\]/u);
   assert.match(responsiveCss, /prefers-reduced-motion/u);
-  assert.match(page, /data-parallax-layer/u);
+  assert.doesNotMatch(page, /data-parallax-layer/u);
   assert.match(page, /data-story-step/u);
 });
 

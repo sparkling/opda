@@ -1,0 +1,445 @@
+/* ─────────────────────────────────────────────────────────────
+   DIAGRAMS
+   ───────────────────────────────────────────────────────────── */
+/* Object-model block — one per JSON object owned by the page. */
+.object-block {
+  margin: var(--space-4) 0 0;
+  padding-top: var(--space-3);
+}
+.prose h3 + .object-block { margin-top: 0; padding-top: var(--space-5); }
+.object-block__head {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+  margin-bottom: var(--space-2);
+}
+.object-block__breadcrumb {
+  font-size: 0.75rem;
+  color: var(--color-text-muted);
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.25em;
+}
+.object-block__breadcrumb a {
+  color: var(--color-text-muted);
+  text-decoration: underline;
+  text-decoration-color: var(--color-border);
+  text-underline-offset: 2px;
+}
+.object-block__breadcrumb a:hover {
+  color: var(--color-text);
+  text-decoration-color: currentColor;
+}
+.object-block__breadcrumb [aria-current="location"] {
+  color: var(--color-text);
+  font-weight: 600;
+}
+.object-ancestors-note {
+  margin: var(--space-3) 0 var(--space-2);
+}
+.prose .object-block__title {
+  display: flex;
+  align-items: baseline;
+  gap: var(--space-2);
+  flex-wrap: wrap;
+  margin: 0;
+  font-size: 1.125rem;
+  font-weight: 600;
+}
+.object-block__display {
+  color: var(--color-text);
+}
+/* Heading row: h4 on the left, JSON path on the right, same baseline.
+   The path is a separate <code> sibling of the h4 (so it isn't part of
+   the heading tag itself) and stretches into the remaining row width to
+   right-align via its own text-align. */
+.object-block__title-row {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--space-3);
+  flex-wrap: wrap;
+}
+
+/* Override the default `.prose code` chip styling and let the path push
+   to the right edge of the row. */
+.prose code.object-block__path,
+.object-block__path {
+  flex: 1 1 auto;
+  text-align: right;
+  padding: 0;
+  background: transparent;
+  font-size: 0.8125rem;
+  color: var(--color-text-muted);
+  font-weight: 400;
+  font-family: var(--font-mono, ui-monospace, monospace);
+  word-break: break-all;
+}
+:root[data-theme="dark"] .prose code.object-block__path,
+:root[data-theme="dark"] .object-block__path {
+  background: transparent;
+  color: var(--color-text-muted);
+}
+/* The Type, Path, and Field cells in the object/field tables wrap their
+   content in <code>. Inherit `.prose code`'s monospace font but drop the
+   cream-chip background + terracotta colour — they're load-bearing
+   columns and the chip styling makes the table read as a wall of pills. */
+.db-table code,
+:root[data-theme="dark"] .db-table code {
+  background: transparent;
+  padding: 0;
+  color: inherit;
+  border-radius: 0;
+}
+.object-block__cardinality {
+  font-family: var(--font-mono, ui-monospace, monospace);
+  color: var(--color-text-muted);
+  font-weight: 400;
+}
+.prose ul.object-block__children,
+.object-block__children {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+  font-size: var(--text-sm);
+}
+.object-block__children li { margin: 0; padding: 0; }
+.object-block__child-link {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  color: var(--terracotta-700);
+  text-decoration: none;
+  font-weight: 500;
+}
+.object-block__child-link:hover { text-decoration: underline; text-underline-offset: 2px; }
+.object-block__child-icon {
+  width: 14px;
+  height: 14px;
+  flex-shrink: 0;
+  color: var(--terracotta-500);
+}
+.object-block__children a {
+  color: var(--terracotta-700);
+  text-decoration: none;
+  font-weight: 500;
+}
+.object-block__children a:hover {
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.diagram {
+  position: relative;
+  margin: var(--space-6) 0;
+  padding: var(--space-5);
+  background: var(--cream-200);
+  border: 1px solid var(--color-border);
+  border-radius: 0;
+  overflow-x: auto;
+}
+.diagram .mermaid svg {
+  /* Cap diagrams at 750px (50% over the previous 500px cap). The
+     fullscreen lightbox (zoom icon top-right of every diagram) is the
+     escape hatch for inspection. */
+  max-height: 750px;
+  height: auto;
+  /* Cap inline diagrams at 50% of the column — the fullscreen lightbox
+     (zoom icon top-right of every diagram) is the escape hatch for full-size
+     inspection. The !important overrides Mermaid's inline `max-width: <Npx>`
+     (Mermaid bakes the initially-measured container width into the SVG, which
+     is wrong for Gantt charts in particular, often measured at 300px before
+     the grid has settled). */
+  max-width: 50% !important;
+  width: auto;
+}
+/* Compact variant for supporting/illustrative diagrams that don't need
+   to dominate the column. Cap the SVG width and let it centre itself. */
+.diagram--small .mermaid svg {
+  max-width: 36rem !important;
+  max-height: 320px;
+}
+/* Medium variant — between the compact small (36rem/320px) and the
+   default cap (100%/750px). For diagrams that need more room than
+   --small allows but still shouldn't fill the column. */
+.diagram--medium .mermaid svg {
+  max-width: 44rem !important;
+  max-height: 420px;
+}
+/* Large variant — one step below the unconstrained default. */
+.diagram--large .mermaid svg {
+  max-width: 56rem !important;
+  max-height: 540px;
+}
+
+/* OPDA diagram roles. Statuses use semantic tokens; architecture types follow
+   the ordered categorical palette. Labels and authored class names reinforce
+   colour, so diagrams remain understandable in grayscale. */
+
+/* --- Status colours ------------------------------------------------------ */
+.mermaid g.node.success rect,
+.mermaid g.node.success polygon,
+.mermaid g.node.success path { fill: var(--color-status-success-surface) !important; stroke: var(--color-status-success) !important; }
+:root[data-theme="dark"] .mermaid g.node.success rect,
+:root[data-theme="dark"] .mermaid g.node.success polygon,
+:root[data-theme="dark"] .mermaid g.node.success path { fill: var(--brand-night) !important; stroke: #66c28f !important; }
+
+.mermaid g.node.warning rect,
+.mermaid g.node.warning polygon,
+.mermaid g.node.warning path { fill: var(--color-status-warning-surface) !important; stroke: var(--color-status-warning) !important; }
+:root[data-theme="dark"] .mermaid g.node.warning rect,
+:root[data-theme="dark"] .mermaid g.node.warning polygon,
+:root[data-theme="dark"] .mermaid g.node.warning path { fill: var(--brand-night) !important; stroke: #ffb84d !important; }
+
+.mermaid g.node.error rect,
+.mermaid g.node.error polygon,
+.mermaid g.node.error path { fill: var(--color-status-danger-surface) !important; stroke: var(--color-status-danger) !important; }
+:root[data-theme="dark"] .mermaid g.node.error rect,
+:root[data-theme="dark"] .mermaid g.node.error polygon,
+:root[data-theme="dark"] .mermaid g.node.error path { fill: var(--brand-night) !important; stroke: #ff958a !important; }
+
+.mermaid g.node.info rect,
+.mermaid g.node.info polygon,
+.mermaid g.node.info path { fill: var(--color-status-info-surface) !important; stroke: var(--color-status-info) !important; }
+:root[data-theme="dark"] .mermaid g.node.info rect,
+:root[data-theme="dark"] .mermaid g.node.info polygon,
+:root[data-theme="dark"] .mermaid g.node.info path { fill: var(--brand-night) !important; stroke: #7fb5ff !important; }
+
+.mermaid g.node.neutral rect,
+.mermaid g.node.neutral polygon,
+.mermaid g.node.neutral path { fill: var(--neutral-100) !important; stroke: var(--neutral-600) !important; }
+:root[data-theme="dark"] .mermaid g.node.neutral rect,
+:root[data-theme="dark"] .mermaid g.node.neutral polygon,
+:root[data-theme="dark"] .mermaid g.node.neutral path { fill: var(--brand-night) !important; stroke: var(--neutral-400) !important; }
+
+/* --- Architecture types --------------------------------------------------- */
+.mermaid g.node.infra rect,
+.mermaid g.node.infra polygon,
+.mermaid g.node.infra path { fill: var(--color-status-info-surface) !important; stroke: var(--color-data-5) !important; }
+:root[data-theme="dark"] .mermaid g.node.infra rect,
+:root[data-theme="dark"] .mermaid g.node.infra polygon,
+:root[data-theme="dark"] .mermaid g.node.infra path { fill: var(--brand-night) !important; stroke: #7f9dbd !important; }
+
+.mermaid g.node.service rect,
+.mermaid g.node.service polygon,
+.mermaid g.node.service path { fill: #edf3e2 !important; stroke: var(--color-data-6) !important; }
+:root[data-theme="dark"] .mermaid g.node.service rect,
+:root[data-theme="dark"] .mermaid g.node.service polygon,
+:root[data-theme="dark"] .mermaid g.node.service path { fill: var(--brand-night) !important; stroke: #8cad4d !important; }
+
+.mermaid g.node.data rect,
+.mermaid g.node.data polygon,
+.mermaid g.node.data path { fill: var(--color-status-warning-surface) !important; stroke: var(--color-data-2) !important; }
+:root[data-theme="dark"] .mermaid g.node.data rect,
+:root[data-theme="dark"] .mermaid g.node.data polygon,
+:root[data-theme="dark"] .mermaid g.node.data path { fill: var(--brand-night) !important; stroke: #dca23a !important; }
+
+.mermaid g.node.user rect,
+.mermaid g.node.user polygon,
+.mermaid g.node.user path { fill: #f5e8f1 !important; stroke: var(--color-data-4) !important; }
+:root[data-theme="dark"] .mermaid g.node.user rect,
+:root[data-theme="dark"] .mermaid g.node.user polygon,
+:root[data-theme="dark"] .mermaid g.node.user path { fill: var(--brand-night) !important; stroke: #d77abb !important; }
+
+.mermaid g.node.process rect,
+.mermaid g.node.process polygon,
+.mermaid g.node.process path { fill: #eeebfa !important; stroke: var(--color-data-1) !important; }
+:root[data-theme="dark"] .mermaid g.node.process rect,
+:root[data-theme="dark"] .mermaid g.node.process polygon,
+:root[data-theme="dark"] .mermaid g.node.process path { fill: var(--brand-night) !important; stroke: #9a8fe8 !important; }
+
+.mermaid g.node.security rect,
+.mermaid g.node.security polygon,
+.mermaid g.node.security path { fill: #e4f3f0 !important; stroke: var(--color-data-3) !important; }
+:root[data-theme="dark"] .mermaid g.node.security rect,
+:root[data-theme="dark"] .mermaid g.node.security polygon,
+:root[data-theme="dark"] .mermaid g.node.security path { fill: var(--brand-night) !important; stroke: #55b7ae !important; }
+
+.mermaid g.node.external rect,
+.mermaid g.node.external polygon,
+.mermaid g.node.external path { fill: #f0eef2 !important; stroke: var(--color-data-8) !important; }
+:root[data-theme="dark"] .mermaid g.node.external rect,
+:root[data-theme="dark"] .mermaid g.node.external polygon,
+:root[data-theme="dark"] .mermaid g.node.external path { fill: var(--brand-night) !important; stroke: #9c93aa !important; }
+/* Same cap for inline content images in articles (icons / screenshots
+   / illustrations). */
+.prose img,
+.resource-link img {
+  max-height: 750px;
+  height: auto;
+}
+:root[data-theme="dark"] .diagram { background: var(--surface-dark-alt); }
+.diagram .mermaid {
+  /* display:block is REQUIRED. Mermaid's Gantt renderer reads the
+     container's measured width to compute the chart's intrinsic width;
+     a flex container reports a shrunk/intrinsic width before any child
+     SVG exists, so Mermaid renders the Gantt at ~300px and the SVG
+     never recovers. Block + width:100% gives Mermaid the correct
+     container width on the first measurement.
+
+     Diagrams whose natural width is smaller than the column are still
+     centred via `margin: 0 auto` on the SVG below. */
+  display: block;
+  width: 100%;
+  font-family: var(--font-sans);
+}
+.diagram .mermaid > svg { display: block; margin: 0 auto; }
+.diagram-caption {
+  font: 500 var(--text-sm) / 1.4 var(--font-sans);
+  color: var(--color-text-muted);
+  text-align: center;
+  margin-top: var(--space-3);
+  padding-top: var(--space-3);
+  border-top: 1px dashed var(--color-border-strong);
+}
+/* Cursor stays default on the SVG body; the explicit zoom button below is
+   the trigger for the fullscreen lightbox. ER entity nodes set their own
+   pointer cursor via .er-clickable. */
+.diagram .mermaid svg { cursor: default; }
+
+/* Zoom-in icon overlay in the top-right of each diagram — explicit affordance
+   for the fullscreen lightbox. Click-anywhere-on-svg still works as a
+   shortcut, but the icon makes the feature discoverable. */
+.diagram-zoom-btn {
+  position: absolute;
+  top: var(--space-2);
+  right: var(--space-2);
+  z-index: 5;
+  width: var(--target-min);
+  height: var(--target-min);
+  padding: 0;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--color-border);
+  background: var(--color-surface);
+  color: var(--color-text-muted);
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0.55;
+  transition: opacity var(--duration-fast) var(--ease),
+              background var(--duration-fast) var(--ease),
+              color var(--duration-fast) var(--ease),
+              transform var(--duration-fast) var(--ease);
+}
+.diagram-zoom-btn svg { display: block; width: 1rem; height: 1rem; }
+.diagram:hover .diagram-zoom-btn { opacity: 1; }
+.diagram-zoom-btn:hover {
+  background: var(--color-brand-100);
+  color: var(--color-brand-900);
+  transform: scale(1.05);
+}
+@media (prefers-reduced-motion: reduce) {
+  .diagram-zoom-btn,
+  .diagram-zoom-btn:hover { transform: none; }
+}
+.diagram-zoom-btn:focus-visible {
+  opacity: 1;
+  outline: 2px solid var(--color-focus);
+  outline-offset: 2px;
+  box-shadow: 0 0 0 2px var(--color-focus-contrast);
+}
+:root[data-theme="dark"] .diagram-zoom-btn {
+  background: var(--surface-dark);
+  color: var(--color-text);
+  border-color: var(--color-border-strong);
+}
+:root[data-theme="dark"] .diagram-zoom-btn:hover {
+  background: var(--brand-yellow);
+  color: var(--brand-ink);
+}
+
+/* ER entity nodes are clickable for navigation. Pointer cursor on the
+   group; subtle thicker outline on hover so users see the target. */
+.diagram .mermaid svg g.er-clickable { cursor: pointer; }
+.diagram .mermaid svg g.er-clickable:hover rect,
+.diagram .mermaid svg g.er-clickable:hover > rect.er.entityBox {
+  stroke-width: 2.5px;
+  filter: brightness(1.04);
+}
+.diagram .mermaid svg g.er-clickable:focus-visible rect {
+  stroke-width: 3px;
+  stroke: var(--brand-yellow) !important;
+  stroke-dasharray: 4 2;
+}
+
+/* Fullscreen pan/zoom lightbox for diagram SVGs (opened by site.js click handler). */
+.diagram-lightbox { display: none; }
+.diagram-lightbox.open {
+  display: block;
+  position: fixed;
+  inset: 0;
+  background: rgb(19 18 36 / 96%);
+  z-index: 9999;
+}
+.diagram-lightbox .viewer-canvas {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  cursor: grab;
+}
+.diagram-lightbox .viewer-canvas:active { cursor: grabbing; }
+.diagram-lightbox .viewer-canvas .mermaid {
+  position: absolute;
+  top: 0;
+  left: 0;
+  transform-origin: 0 0;
+  background: var(--color-surface);
+  border-radius: 0;
+}
+.diagram-lightbox .viewer-canvas svg {
+  width: 100%;
+  height: 100%;
+  display: block;
+  cursor: inherit;
+}
+.diagram-lightbox .viewer-close {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  width: var(--target-min);
+  height: var(--target-min);
+  border: 0;
+  border-radius: var(--radius-sm);
+  background: rgba(255, 255, 255, 0.14);
+  color: #fff;
+  font-size: 1.5rem;
+  line-height: 1;
+  cursor: pointer;
+  z-index: 1;
+}
+.diagram-lightbox .viewer-close:hover { background: rgba(255, 255, 255, 0.24); }
+.diagram-lightbox .viewer-controls {
+  position: absolute;
+  bottom: 1rem;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: rgba(0, 0, 0, 0.6);
+  border-radius: var(--radius-sm);
+  padding: 0.5rem 0.75rem;
+  color: #fff;
+  z-index: 1;
+}
+.diagram-lightbox .viewer-controls button {
+  min-width: var(--target-min);
+  min-height: var(--target-min);
+  border: 0;
+  background: rgba(255, 255, 255, 0.14);
+  color: #fff;
+  padding: 0.35rem 0.75rem;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  font: 500 0.875rem / 1 var(--font-sans);
+}
+.diagram-lightbox .viewer-controls button:hover { background: rgba(255, 255, 255, 0.24); }
+.diagram-lightbox .viewer-zoom-label {
+  min-width: 3.5em;
+  text-align: center;
+  font: 500 0.875rem / 1 var(--font-mono);
+}

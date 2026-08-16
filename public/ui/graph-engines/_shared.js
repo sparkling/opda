@@ -43,11 +43,11 @@
   // a 9-hue fill, and painting gUFO categories onto domain nodes conflated the
   // layers. One calm colour per type keeps the OWL / SKOS / external layers legible.
   var COLORS = {
-    class:    '#0072B2',      // owl:Class (uniform — filter by facet, not colour)
-    scheme:   '#6E56CF',      // skos:ConceptScheme
-    concept:  '#9E8CFC',      // skos:Concept
-    external: '#9E9E9E',      // non-opda object-property target
-    derived:  '#009E73',      // derived "constrained-by" bridge — dashed, never an asserted edge
+    class:    '#6C5BD4',      // categorical 1 · owl:Class
+    scheme:   '#C77F00',      // categorical 2 · skos:ConceptScheme
+    concept:  '#0E8478',      // categorical 3 · skos:Concept
+    external: '#6E6580',      // categorical 8 · external target
+    derived:  '#C24E1A',      // categorical 7 · derived bridge, never asserted
   };
 
   // Resolve a CSS custom property to a concrete rgb() string — a hidden probe
@@ -63,11 +63,11 @@
 
   function themeColors() {
     return {
-      text:    resolveColor('--color-text-strong', '#141413'),
-      muted:   resolveColor('--color-text-muted', '#6C6A64'),
-      line:    resolveColor('--color-border-strong', '#6C6A64'),
-      surface: resolveColor('--color-surface', '#FAF9F5'),
-      brand:   resolveColor('--color-brand-500', '#CC785C'),
+      text:    resolveColor('--color-text-strong', '#131224'),
+      muted:   resolveColor('--color-text-muted', '#625D72'),
+      line:    resolveColor('--color-border-strong', '#CBC8D5'),
+      surface: resolveColor('--color-surface', '#FFFFFF'),
+      brand:   resolveColor('--color-data-1', '#6C5BD4'),
     };
   }
 

@@ -1,0 +1,454 @@
+/* Sidebar */
+.app-body {
+  display: grid;
+  grid-template-columns: var(--sidebar-width) 1fr;
+  align-items: start;
+  min-height: calc(100vh - var(--header-height));
+}
+.app-body.no-sidebar { grid-template-columns: 1fr; }
+.app-body.with-toc { grid-template-columns: var(--sidebar-width) 1fr 16rem; }
+.app-body.no-sidebar.with-toc { grid-template-columns: 1fr 16rem; }
+
+/* Collapsed rails — narrow strip showing only the expand-toggle button. */
+.app-body.sidebar-collapsed { grid-template-columns: var(--target-min) 1fr; }
+.app-body.sidebar-collapsed.with-toc { grid-template-columns: var(--target-min) 1fr 16rem; }
+.app-body.sidebar-collapsed.with-toc.toc-collapsed { grid-template-columns: var(--target-min) 1fr var(--target-min); }
+.app-body.with-toc.toc-collapsed { grid-template-columns: var(--sidebar-width) 1fr var(--target-min); }
+.app-body.no-sidebar.with-toc.toc-collapsed { grid-template-columns: 1fr var(--target-min); }
+
+/* Toggle button common styles. Sits at the top of each rail. */
+.rail-collapse-toggle {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 var(--space-3) var(--space-3) auto;
+  width: var(--target-min);
+  height: var(--target-min);
+  padding: 0;
+  border: 1px solid var(--color-border);
+  background: var(--color-surface);
+  cursor: pointer;
+  color: var(--brand-ink);
+  border-radius: var(--radius-md);
+  box-shadow: none;
+  transition: background var(--duration-fast) var(--ease),
+              color var(--duration-fast) var(--ease),
+              border-color var(--duration-fast) var(--ease);
+}
+.rail-collapse-toggle:hover {
+  background: var(--neutral-100);
+  color: var(--brand-deep);
+  border-color: var(--neutral-400);
+}
+.rail-collapse-toggle:focus-visible {
+  outline: 2px solid var(--color-focus);
+  outline-offset: 2px;
+  box-shadow: 0 0 0 2px var(--color-focus-contrast);
+}
+:root[data-theme="dark"] .rail-collapse-toggle {
+  background: var(--surface-dark-tint);
+  border-color: var(--color-border);
+  color: var(--terracotta-300);
+}
+:root[data-theme="dark"] .rail-collapse-toggle:hover {
+  background: var(--surface-dark-alt);
+  color: var(--terracotta-200);
+  border-color: var(--terracotta-700);
+}
+.rail-collapse-toggle svg {
+  width: 1.25rem;
+  height: 1.25rem;
+  stroke-width: 2.5px;
+  transition: transform var(--duration-fast) var(--ease);
+}
+
+/* When collapsed: hide nav content, centre the toggle on the rail,
+   flip the chevron via rotate. */
+.app-body.sidebar-collapsed .sidebar-nav { display: none; }
+.app-body.sidebar-collapsed .app-sidebar { padding-left: 0; padding-right: 0; }
+.app-body.sidebar-collapsed .app-sidebar > .rail-collapse-toggle { margin: var(--space-4) auto var(--space-3); }
+.app-body.sidebar-collapsed .app-sidebar > .rail-collapse-toggle svg { transform: rotate(180deg); }
+
+.app-body.toc-collapsed .toc-title,
+.app-body.toc-collapsed .toc > ul { display: none; }
+.app-body.toc-collapsed .toc { padding-left: 0; padding-right: 0; }
+.app-body.toc-collapsed .toc > .rail-collapse-toggle { margin: var(--space-4) auto var(--space-3); }
+.app-body.toc-collapsed .toc > .rail-collapse-toggle svg { transform: rotate(180deg); }
+
+.app-sidebar {
+  position: sticky;
+  top: var(--header-height);
+  height: calc(100vh - var(--header-height));
+  overflow-y: auto;
+  padding: var(--space-6) 0 var(--space-7);
+  background: var(--color-surface-alt);
+  border-right: 1px solid var(--color-border);
+}
+.sidebar-nav { padding: 0 var(--space-5); }
+.nav-group + .nav-group { margin-top: var(--space-5); }
+/* Tighten the stack when adjacent groups are both collapsed —
+   collapsed groups are just a summary line, so the default
+   inter-group margin feels airy. Keep the comfortable gap when
+   either neighbour is open (the open one's tree has visual weight). */
+.app-sidebar details.nav-group:not([open]) + details.nav-group:not([open]) {
+  margin-top: var(--space-1);
+}
+.app-sidebar details.nav-group[open] + details.nav-group:not([open]),
+.app-sidebar details.nav-group:not([open]) + details.nav-group[open] {
+  margin-top: var(--space-3);
+}
+.nav-subgroup + .nav-subgroup { margin-top: var(--space-3); }
+.app-sidebar h3,
+.sidebar-section-title {
+  font: 700 var(--text-xs) / 1.4 var(--font-sans);
+  text-transform: uppercase;
+  letter-spacing: var(--tracking-meta);
+  color: var(--color-text-muted);
+  margin: 0 var(--space-3) var(--space-2);
+  padding-top: var(--space-1);
+}
+
+/* Collapsible nav-group — <details>/<summary> with caret. The summary
+   inherits the h3 styling above; the caret rotates on open. */
+.app-sidebar details.nav-group { padding: 0; }
+.app-sidebar details.nav-group > summary {
+  min-height: var(--target-min);
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  font: 700 var(--text-xs) / 1.4 var(--font-sans);
+  text-transform: uppercase;
+  letter-spacing: var(--tracking-meta);
+  color: var(--color-text-muted);
+  margin: 0 var(--space-3) var(--space-2);
+  padding: var(--space-2) 0;
+  cursor: pointer;
+  user-select: none;
+  list-style: none;
+}
+.app-sidebar details.nav-group > summary::-webkit-details-marker { display: none; }
+.app-sidebar details.nav-group > summary::marker { content: ''; }
+.app-sidebar details.nav-group > summary:hover { color: var(--color-text); }
+.app-sidebar .nav-group-caret {
+  width: 0.6rem;
+  height: 0.6rem;
+  flex-shrink: 0;
+  transition: transform var(--duration-normal) var(--ease),
+              color var(--duration-fast) var(--ease);
+  color: var(--color-text-muted);
+  vertical-align: -0.1em;
+}
+.app-sidebar details.nav-group[open] > summary > .nav-group-caret {
+  transform: rotate(90deg);
+  color: var(--color-brand-700);
+}
+.app-sidebar details.nav-group > summary:hover > .nav-group-caret {
+  color: var(--color-text);
+}
+
+/* ── Comments (Artalk) ─────────────────────────────────────────────── */
+.comments-section {
+  margin-top: var(--space-8);
+  padding-top: var(--space-6);
+  border-top: 1px solid var(--color-border);
+}
+.comments-section__heading {
+  font: 600 var(--text-lg) / 1.4 var(--font-sans);
+  margin: 0 0 var(--space-4);
+  color: var(--color-text-strong);
+}
+.comments-section__loading {
+  font: 400 var(--text-sm) / 1.4 var(--font-sans);
+  color: var(--color-text-muted);
+  padding: var(--space-3) 0;
+}
+/* ── Auth button (Auth0 SPA) ───────────────────────────────────────── */
+.auth-button {
+  position: relative;
+  display: flex;
+  flex: 0 0 auto;
+  align-items: center;
+  margin-left: var(--space-2);
+}
+/* Class rules below set `display`, which clobbers the HTML `hidden`
+   attribute. Restore [hidden]→display:none for any descendant. */
+.auth-button [hidden] { display: none !important; }
+.auth-button__signin {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.4rem 0.8rem;
+  font: 600 var(--text-caption) / 1 var(--font-sans);
+  min-height: var(--target-min);
+  background: var(--brand-yellow);
+  color: var(--brand-ink);
+  border: 1px solid var(--brand-yellow);
+  border-radius: var(--radius-md);
+  white-space: nowrap;
+  cursor: pointer;
+  transition: background var(--duration-fast) var(--ease),
+              transform var(--duration-fast) var(--ease);
+}
+.auth-button__signin:hover { background: var(--brand-yellow-active); }
+.auth-button__signin:active { transform: translateY(1px); }
+.auth-button__user-trigger {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  min-height: var(--target-min);
+  padding: 0.25rem 0.5rem;
+  border: 1px solid transparent;
+  background: transparent;
+  color: var(--color-text);
+  font: 500 var(--text-caption) / 1.1 var(--font-sans);
+  cursor: pointer;
+  border-radius: var(--radius-md);
+}
+.auth-button__user-trigger:hover { background: var(--cream-200); }
+.app-header .auth-button__user-trigger { color: var(--brand-white); }
+.app-header .auth-button__user-trigger:hover { background: rgb(255 255 255 / 8%); }
+:root[data-theme="dark"] .auth-button__user-trigger:hover {
+  background: var(--surface-dark-tint);
+}
+.auth-button__avatar {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  border-radius: var(--radius-sm);
+  background-color: var(--color-status-warning-surface);
+  background-size: cover;
+  background-position: center;
+  color: var(--color-status-warning);
+  font-weight: 700;
+  font-size: var(--text-xs);
+}
+.auth-button__email {
+  max-width: 12rem;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.auth-button__chevron {
+  color: var(--color-text-muted);
+  transition: transform var(--duration-fast) var(--ease);
+}
+.auth-button__user-trigger[aria-expanded="true"] .auth-button__chevron {
+  transform: rotate(180deg);
+}
+.auth-button__dropdown {
+  position: absolute;
+  top: calc(100% + 0.35rem);
+  right: 0;
+  min-width: 14rem;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-md);
+  padding: var(--space-2);
+  z-index: 50;
+}
+.auth-button__dropdown-header {
+  padding: var(--space-2) var(--space-3);
+  font-size: 0.8125rem;
+  color: var(--color-text-muted);
+  border-bottom: 1px solid var(--color-border);
+  margin-bottom: var(--space-1);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.auth-button__dropdown-item {
+  display: block;
+  width: 100%;
+  min-height: var(--target-min);
+  padding: var(--space-2) var(--space-3);
+  font: 500 0.875rem / 1.2 var(--font-sans);
+  background: transparent;
+  border: 0;
+  color: var(--color-text);
+  text-align: left;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+}
+.auth-button__dropdown-item:hover {
+  background: var(--cream-200);
+}
+:root[data-theme="dark"] .auth-button__dropdown-item:hover {
+  background: var(--surface-dark-tint);
+}
+/* Hide email on small screens — keep just the avatar */
+@media (max-width: 720px) {
+  .auth-button__email { display: none; }
+}
+/* Indent top-level items inside an open nav-group so the tree sits
+   visually under the summary heading. The summary's label text starts
+   at ~1.6rem from its container edge (margin + caret + gap), so item
+   padding-left must exceed that to look indented. */
+.app-sidebar details.nav-group > ul.tree > li.tree-leaf > a,
+.app-sidebar details.nav-group > ul.tree > li.tree-folder > .tree-toggle {
+  padding-left: calc(var(--space-3) + 1.25rem);
+}
+/* ── Tree-view nav ───────────────────────────────────────────────────
+   Sidebar items render as a tree. Leaves are plain links; folders show
+   a caret that flips on open/close. Nesting is arbitrary; only the
+   leaves get backgrounds. */
+.app-sidebar ul.tree,
+.app-sidebar ul.tree-children {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+.app-sidebar .tree-folder { position: relative; }
+.app-sidebar .tree-toggle {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  width: 100%;
+  min-height: var(--target-min);
+  padding: var(--space-2) var(--space-3);
+  border: 0;
+  background: transparent;
+  color: var(--color-text);
+  font: 500 var(--text-sm) / 1.4 var(--font-sans);
+  text-align: left;
+  cursor: pointer;
+  border-radius: var(--radius-md);
+}
+.app-sidebar .tree-toggle:hover {
+  background: var(--cream-200);
+  color: var(--ink-1000);
+}
+:root[data-theme="dark"] .app-sidebar .tree-toggle:hover {
+  background: var(--surface-dark-tint);
+  color: var(--on-dark);
+}
+/* Chevron icon — Lucide chevron-right rotated via transform on open. */
+.app-sidebar .tree-caret {
+  display: inline-block;
+  width: 0.75rem;
+  height: 0.75rem;
+  color: var(--color-text-muted);
+  transition: transform var(--duration-normal) var(--ease),
+              color var(--duration-fast) var(--ease);
+  flex-shrink: 0;
+  /* Vertical-align so the chevron sits on the label baseline cleanly. */
+  vertical-align: -0.1em;
+}
+.app-sidebar .tree-toggle:hover > .tree-caret { color: var(--color-text); }
+.app-sidebar .tree-folder.is-open > .tree-toggle > .tree-caret {
+  transform: rotate(90deg);
+  color: var(--color-brand-700);
+}
+.app-sidebar .tree-children { display: none; }
+.app-sidebar .tree-folder.is-open > .tree-children { display: block; }
+
+/* Indent: children get pushed in relative to their parent. Applies to
+   leaves and to nested folder toggles. Compounds with each nesting
+   level because `.tree-children` is added at every depth. */
+.app-sidebar .tree-children .tree-leaf > a,
+.app-sidebar .tree-children .tree-toggle {
+  padding-left: calc(var(--space-3) + 0.5rem);
+}
+.app-sidebar .tree-children .tree-children .tree-leaf > a,
+.app-sidebar .tree-children .tree-children .tree-toggle {
+  padding-left: calc(var(--space-3) + 1rem);
+}
+.app-sidebar .tree-children .tree-children .tree-children .tree-leaf > a,
+.app-sidebar .tree-children .tree-children .tree-children .tree-toggle {
+  padding-left: calc(var(--space-3) + 1.5rem);
+}
+
+/* A thin guide line down the active folder's children, for that
+   "tree" feeling without committing to per-row hairlines. */
+.app-sidebar .tree-folder.is-open > .tree-children {
+  border-left: 1px solid var(--color-border);
+  margin-left: calc(var(--space-3) + 0.15rem);
+}
+.app-sidebar .tree-folder.is-open > .tree-children .tree-leaf > a,
+.app-sidebar .tree-folder.is-open > .tree-children > .tree-folder > .tree-toggle {
+  padding-left: calc(var(--space-3) + 0.35rem);
+}
+
+.app-sidebar ul { list-style: none; padding: 0; margin: 0; }
+.app-sidebar li + li { margin-top: 1px; }
+.app-sidebar a {
+  min-height: var(--target-min);
+  display: flex;
+  align-items: center;
+  padding: var(--space-2) var(--space-3);
+  border-radius: var(--radius-md);
+  font: 500 var(--text-sm) / 1.4 var(--font-sans);
+  color: var(--color-text);
+}
+.app-sidebar a:hover {
+  background: var(--cream-200);
+  color: var(--ink-1000);
+  text-decoration: none;
+}
+.app-sidebar a.active {
+  background: var(--neutral-100);
+  color: var(--brand-deep);
+  font-weight: 700;
+  box-shadow: inset 4px 0 0 var(--brand-yellow);
+}
+:root[data-theme="dark"] .app-sidebar a:hover { background: var(--surface-dark-tint); color: var(--color-text-strong); }
+:root[data-theme="dark"] .app-sidebar a.active {
+  background: var(--surface-dark-tint);
+  color: var(--brand-white);
+  box-shadow: inset 4px 0 0 var(--brand-yellow);
+}
+
+.app-main {
+  min-width: 0;
+  padding: var(--space-8) clamp(var(--space-6), 4vw, var(--space-10));
+  max-width: 100%;
+  background: var(--color-surface);
+}
+
+@media (max-width: 960px) {
+  .menu-toggle { display: inline-flex; margin-left: auto; }
+  .app-header .header-nav { display: none; }
+  .app-header .global-nav { margin-left: var(--space-3); gap: 0; }
+  .app-header .global-nav a { padding: var(--space-2) var(--space-3); font-size: var(--text-sm); }
+  .app-body,
+  .app-body.with-toc,
+  .app-body.no-sidebar.with-toc,
+  .app-body.sidebar-collapsed,
+  .app-body.sidebar-collapsed.with-toc,
+  .app-body.sidebar-collapsed.with-toc.toc-collapsed,
+  .app-body.with-toc.toc-collapsed,
+  .app-body.no-sidebar.with-toc.toc-collapsed {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .app-sidebar {
+    position: fixed;
+    top: var(--header-height);
+    left: 0;
+    right: auto;
+    width: min(22rem, 92vw);
+    height: calc(100vh - var(--header-height));
+    transform: translateX(-100%);
+    transition: transform var(--duration-normal) var(--ease);
+    visibility: hidden;
+    pointer-events: none;
+    z-index: 40;
+    border-right: 0;
+    border-bottom: 1px solid var(--color-border);
+    box-shadow: var(--shadow-lg);
+  }
+  .app-sidebar.open {
+    transform: translateX(0);
+    visibility: visible;
+    pointer-events: auto;
+  }
+  .app-main { padding: var(--space-5) var(--space-5); }
+  html.nav-open { overflow: hidden; }
+}
+
+@media (max-width: 48rem) {
+  .menu-toggle { margin-left: 0; }
+  .app-header .global-nav { margin-left: 0; gap: var(--space-1); }
+  .auth-button { margin-left: 0; }
+}

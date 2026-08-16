@@ -1,8 +1,8 @@
 // @ts-nocheck
 /**
  * GraphDiagram core renderer — ported from hm/semantic-app (ADR-0190), adapted
- * for opda: the Cagle palette + Claude theme are INJECTED (client.js's
- * spliceCageClassDefs convention) rather than embedded-and-swapped, navigation
+ * for OPDA: the semantic status and categorical diagram palette is injected
+ * rather than embedded per page, navigation
  * uses `click NODE "url"` directives the page emits, and re-render on theme
  * toggle is driven by a MutationObserver on `data-theme` (opda has no
  * `hm:theme-change` event).
@@ -20,6 +20,7 @@ export interface MermaidViewOpts {
   viewport: HTMLElement;
   canvas: HTMLElement;
   pre: HTMLElement;
+  captionId?: string;
   getLightSource: () => string;
 }
 export interface MermaidView {
@@ -30,6 +31,7 @@ export interface MermaidView {
 
 let mermaidMod: any = null;
 let mermaidRenderId = 0;   // globally-unique id per mermaid.render() call
+let svgA11yId = 0;
 function loadMermaid() {
   if (mermaidMod) return Promise.resolve(mermaidMod);
   return Promise.all([import('mermaid'), import('@mermaid-js/layout-elk')]).then((mods) => {
@@ -55,8 +57,8 @@ function fixErRowContrast(pre: HTMLElement, dark: boolean) {
     const m = f && f.match(/\d+(?:\.\d+)?/g);
     if (!m || m.length < 3) return;                 // skip fill:none borders/edges
     const lum = 0.299 * +m[0] + 0.587 * +m[1] + 0.114 * +m[2];
-    if (dark && lum > 140) (p as HTMLElement).style.setProperty('fill', '#2B2823', 'important');
-    else if (!dark && lum < 100) (p as HTMLElement).style.setProperty('fill', '#FAF9F5', 'important');
+    if (dark && lum > 140) (p as HTMLElement).style.setProperty('fill', '#231F2F', 'important');
+    else if (!dark && lum < 100) (p as HTMLElement).style.setProperty('fill', '#F1F0F4', 'important');
   });
 }
 
@@ -90,8 +92,8 @@ function extractFirstLineText(el: Element): string {
   return (el.textContent || '').split('\n')[0].trim();
 }
 
-// Inject the Cagle classDef block after the diagram-type line, so a page can
-// author bare `:::user` (client.js's spliceCageClassDefs, ported).
+// Inject the OPDA classDef block after the diagram-type line, so a page can
+// author bare semantic classes such as `:::user`.
 const CLASSDEF_TYPE_RE = /^\s*(flowchart|graph|classDiagram|stateDiagram(?:-v2)?)\b/i;
 function injectClassDefs(src: string, dark: boolean): string {
   const block = (dark ? CLASSDEFS_DARK : CLASSDEFS_LIGHT).join('\n');
@@ -103,7 +105,7 @@ function injectClassDefs(src: string, dark: boolean): string {
 }
 
 export function createMermaidView(opts: MermaidViewOpts): MermaidView {
-  const { wrapper, viewport, canvas, pre } = opts;
+  const { wrapper, viewport, canvas, pre, captionId } = opts;
 
   let scale = 1, panX = 0, panY = 0;
   const MIN = 0.1, MAX = 5, ZOOM_BTN = 1.2;
@@ -119,6 +121,7 @@ export function createMermaidView(opts: MermaidViewOpts): MermaidView {
     if (label) label.textContent = Math.round(scale * 100) + '%';
   }
   function resetView() { scale = 1; panX = 0; panY = 0; applyTransform(); }
+  function panBy(x: number, y: number) { panX += x; panY += y; applyTransform(); }
   function zoom(factor: number, cx?: number, cy?: number) {
     const rect = viewport.getBoundingClientRect();
     const px = cx ?? rect.width / 2;
@@ -129,6 +132,33 @@ export function createMermaidView(opts: MermaidViewOpts): MermaidView {
     panX = px - ratio * (px - panX);
     panY = py - ratio * (py - panY);
     applyTransform();
+  }
+
+  function handleSvgKeydown(event: KeyboardEvent) {
+    if (event.altKey || event.ctrlKey || event.metaKey) return;
+    const step = event.shiftKey ? 120 : 40;
+    if (event.key === 'ArrowLeft') { event.preventDefault(); panBy(step, 0); }
+    else if (event.key === 'ArrowRight') { event.preventDefault(); panBy(-step, 0); }
+    else if (event.key === 'ArrowUp') { event.preventDefault(); panBy(0, step); }
+    else if (event.key === 'ArrowDown') { event.preventDefault(); panBy(0, -step); }
+    else if (event.key === '+' || event.key === '=') { event.preventDefault(); zoom(ZOOM_BTN); }
+    else if (event.key === '-' || event.key === '_') { event.preventDefault(); zoom(1 / ZOOM_BTN); }
+    else if (event.key === '0') { event.preventDefault(); resetView(); }
+  }
+
+  function makeSvgFocusable(svg: SVGSVGElement) {
+    const id = `gd-svg-title-${++svgA11yId}`;
+    const title = document.createElementNS('http://www.w3.org/2000/svg', 'title');
+    title.id = id;
+    title.textContent = 'Interactive diagram';
+    svg.prepend(title);
+    svg.setAttribute('role', 'group');
+    svg.setAttribute('tabindex', '0');
+    svg.setAttribute('focusable', 'true');
+    svg.setAttribute('aria-labelledby', id);
+    svg.setAttribute('aria-keyshortcuts', 'ArrowLeft ArrowRight ArrowUp ArrowDown + - 0');
+    if (captionId) svg.setAttribute('aria-describedby', captionId);
+    svg.addEventListener('keydown', handleSvgKeydown);
   }
 
   function render() {
@@ -159,6 +189,8 @@ export function createMermaidView(opts: MermaidViewOpts): MermaidView {
         wrapper.querySelector('.diagram-loading')?.remove();
         didRender = true;
         fixErRowContrast(pre, dark);
+        const renderedSvg = pre.querySelector('svg');
+        if (renderedSvg instanceof SVGSVGElement) makeSvgFocusable(renderedSvg);
         initHoverHighlight();
       });
     }).catch((e: any) => console.error('[graph-diagram] mermaid render', e));
@@ -181,7 +213,7 @@ export function createMermaidView(opts: MermaidViewOpts): MermaidView {
     if (edgePaths.length === 0) edgePaths = svg.querySelectorAll('.edgePaths path.flowchart-link');
     const edgeLabels = svg.querySelectorAll('.edgeLabels > .edgeLabel');
     const nodes = svg.querySelectorAll('.node');
-    const hi = isDark() ? '#FFA726' : '#CC785C';
+    const hi = isDark() ? '#FEC92B' : '#6C5BD4';
     const DIM = '0.1';
 
     const nameOf = (el: Element) => { const mx = (el.id || '').match(/flowchart-(.+?)-\d+$/); return mx ? mx[1] : el.id || ''; };
@@ -221,41 +253,75 @@ export function createMermaidView(opts: MermaidViewOpts): MermaidView {
       return manifest[normToManifestKey(raw)] || null;
     }
 
+    function toggleExploreNode(nodeEl: Element) {
+      const name = nameOf(nodeEl);
+      if (lockedNode === name) { lockedNode = null; clearHighlight(); }
+      else { lockedNode = name; applyHighlight(name); }
+    }
+
+    function activateNode(nodeEl: Element) {
+      if (mode === 'navigate') {
+        const url = navTarget(nodeEl);
+        if (url) window.location.href = url;
+        return;
+      }
+      toggleExploreNode(nodeEl);
+    }
+
+    function updateNodeAccessibility() {
+      nodes.forEach((node) => {
+        const target = navTarget(node);
+        const label = extractFirstLineText(node) || 'diagram item';
+        const interactive = mode === 'explore' || Boolean(target);
+        (node as HTMLElement).style.cursor = interactive ? 'pointer' : 'default';
+        if (!interactive) {
+          node.removeAttribute('tabindex');
+          node.removeAttribute('focusable');
+          node.removeAttribute('role');
+          node.removeAttribute('aria-label');
+          return;
+        }
+        node.setAttribute('tabindex', '0');
+        node.setAttribute('focusable', 'true');
+        node.setAttribute('role', mode === 'navigate' ? 'link' : 'button');
+        node.setAttribute('aria-label', mode === 'navigate' ? `Open ${label}` : `Explore ${label}`);
+      });
+    }
+
     svg.addEventListener('click', (evt) => {
       if (didDrag) { didDrag = false; return; }
       const nodeEl = (evt.target as Element).closest('.node, g[id*="entity-"]');
       if (mode === 'navigate') {
-        if (nodeEl) { const url = navTarget(nodeEl); if (url) { evt.preventDefault(); evt.stopPropagation(); window.location.href = url; } }
+        if (nodeEl && navTarget(nodeEl)) {
+          evt.preventDefault();
+          evt.stopPropagation();
+          activateNode(nodeEl);
+        }
         return;
       }
       if (nodeEl) {
-        evt.preventDefault(); evt.stopPropagation();
-        const n = nameOf(nodeEl);
-        if (lockedNode === n) { lockedNode = null; clearHighlight(); } else { lockedNode = n; applyHighlight(n); }
+        evt.preventDefault();
+        evt.stopPropagation();
+        activateNode(nodeEl);
       } else if (lockedNode) { lockedNode = null; clearHighlight(); }
     }, true);
 
     nodes.forEach((node) => {
       const n = nameOf(node);
-      const target = navTarget(node);
-      (node as HTMLElement).style.cursor = (mode === 'navigate' && target) || mode === 'explore' ? 'pointer' : 'default';
-      if (target) {
-        const label = extractFirstLineText(node) || 'diagram item';
-        node.setAttribute('tabindex', '0');
-        node.setAttribute('role', 'link');
-        node.setAttribute('aria-label', `Open ${label}`);
-        node.addEventListener('keydown', (event) => {
-          const key = (event as KeyboardEvent).key;
-          if (key !== 'Enter' && key !== ' ') return;
-          event.preventDefault();
-          event.stopPropagation();
-          window.location.href = target;
-        });
-      }
+      node.addEventListener('keydown', (event) => {
+        const key = (event as KeyboardEvent).key;
+        if (key !== 'Enter' && key !== ' ') return;
+        if (mode === 'navigate' && !navTarget(node)) return;
+        event.preventDefault();
+        event.stopPropagation();
+        activateNode(node);
+      });
       if (isER) return; // hover-highlight is edge-based (flowchart); skip for ER
       node.addEventListener('mouseenter', () => { if (dragging || lockedNode) return; applyHighlight(n); });
       node.addEventListener('mouseleave', () => { if (lockedNode) return; clearHighlight(); });
     });
+    updateNodeAccessibility();
+    (wrapper as any)._gdUpdateNodeAccessibility = updateNodeAccessibility;
   }
 
   function initControls() {
@@ -271,19 +337,22 @@ export function createMermaidView(opts: MermaidViewOpts): MermaidView {
 
     function toggleMode() {
       const label = wrapper.querySelector('.diagram-mode-label');
-      const toggle = wrapper.querySelector('.diagram-mode-toggle');
+      const toggle = wrapper.querySelector<HTMLButtonElement>('.diagram-mode-toggle');
       if (mode === 'navigate') {
         mode = 'explore';
         if (label) label.textContent = 'Explore';
         toggle?.classList.add('gd-mode-on');
+        toggle?.setAttribute('aria-pressed', 'true');
+        toggle?.setAttribute('aria-label', 'Explore mode. Activate to switch to navigate mode.');
       } else {
         mode = 'navigate'; lockedNode = null;
         if (label) label.textContent = 'Navigate';
         toggle?.classList.remove('gd-mode-on');
+        toggle?.setAttribute('aria-pressed', 'false');
+        toggle?.setAttribute('aria-label', 'Navigate mode. Activate to switch to explore mode.');
         clearAllHighlight();
       }
-      const svg = pre.querySelector('svg');
-      svg?.querySelectorAll('.node').forEach((n) => { (n as HTMLElement).style.cursor = 'pointer'; });
+      (wrapper as any)._gdUpdateNodeAccessibility?.();
     }
     function clearAllHighlight() {
       const svg = pre.querySelector('svg'); if (!svg) return;
@@ -292,10 +361,37 @@ export function createMermaidView(opts: MermaidViewOpts): MermaidView {
       svg.querySelectorAll('.edgeLabel').forEach((el) => { (el as HTMLElement).style.opacity = ''; });
     }
 
+    const modeToggle = wrapper.querySelector<HTMLButtonElement>('.diagram-mode-toggle');
+    modeToggle?.setAttribute('aria-pressed', 'false');
+    modeToggle?.setAttribute('aria-label', 'Navigate mode. Activate to switch to explore mode.');
+    const zoomLabel = wrapper.querySelector('.diagram-zoom-label');
+    zoomLabel?.setAttribute('role', 'status');
+    zoomLabel?.setAttribute('aria-live', 'polite');
+    zoomLabel?.setAttribute('aria-label', 'Zoom level');
+
+    const zoomControl = wrapper.querySelector<HTMLButtonElement>('.gd-ctrl');
+    let zoomMode = false;
+    let modifierZoom = false;
+    function updateZoomState() {
+      const zoomActive = zoomMode || modifierZoom;
+      wrapper.classList.toggle('zoom-active', zoomActive);
+      if (!zoomControl) return;
+      zoomControl.removeAttribute('tabindex');
+      zoomControl.setAttribute('aria-pressed', String(zoomMode));
+      zoomControl.setAttribute('aria-label', zoomMode
+        ? 'Zoom mode enabled. Activate to disable zoom mode.'
+        : 'Zoom mode disabled. Activate to enable zoom mode.');
+      zoomControl.title = zoomMode
+        ? 'Zoom mode enabled — scroll over the diagram to zoom'
+        : 'Enable zoom mode, or hold Ctrl (⌘) and scroll to zoom';
+    }
+    zoomControl?.addEventListener('click', () => { zoomMode = !zoomMode; updateZoomState(); });
+    updateZoomState();
+
     let nudgeTimer: any = null;
     function nudge() { wrapper.classList.add('zoom-nudge'); if (nudgeTimer) clearTimeout(nudgeTimer); nudgeTimer = setTimeout(() => wrapper.classList.remove('zoom-nudge'), 900); }
     viewport.addEventListener('wheel', (e) => {
-      if (!(e.ctrlKey || e.metaKey)) { nudge(); return; }
+      if (!(zoomMode || e.ctrlKey || e.metaKey)) { nudge(); return; }
       e.preventDefault();
       const rect = viewport.getBoundingClientRect();
       const factor = Math.min(1.18, Math.max(0.85, Math.exp(-e.deltaY * 0.0012)));
@@ -335,14 +431,10 @@ export function createMermaidView(opts: MermaidViewOpts): MermaidView {
     }, { passive: false });
     viewport.addEventListener('touchend', () => { dragging = false; lastTouches = null; });
 
-    const armZoom = (on: boolean) => {
-      wrapper.classList.toggle('zoom-active', on);
-      wrapper.querySelector('.gd-ctrl')?.setAttribute('aria-pressed', on ? 'true' : 'false');
-    };
-    const setZoomArmed = (e: KeyboardEvent) => armZoom(e.ctrlKey || e.metaKey);
-    window.addEventListener('keydown', setZoomArmed);
-    window.addEventListener('keyup', setZoomArmed);
-    window.addEventListener('blur', () => armZoom(false));
+    const setZoomModifier = (e: KeyboardEvent) => { modifierZoom = e.ctrlKey || e.metaKey; updateZoomState(); };
+    window.addEventListener('keydown', setZoomModifier);
+    window.addEventListener('keyup', setZoomModifier);
+    window.addEventListener('blur', () => { modifierZoom = false; updateZoomState(); });
 
     // Re-render on theme toggle (opda flips <html data-theme>; no custom event).
     let lastTheme = document.documentElement.getAttribute('data-theme');

@@ -98,7 +98,7 @@
           var on = keep[nid];
           return {
             id: nid,
-            color: { background: on ? S.colorForNode(d) : (S.isDark() ? '#333' : '#e0e0e0'),
+            color: { background: on ? S.colorForNode(d) : (S.isDark() ? '#231F2F' : '#E3E1E9'),
                      border: S.isDark() ? '#222' : '#fff' },
             font: { color: on ? th.text : th.muted, size: d.type === 'concept' ? 9 : 11 },
           };

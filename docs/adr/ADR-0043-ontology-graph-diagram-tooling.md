@@ -16,7 +16,9 @@ The ADR-0041 documentation bake-off settled how to *document* the ontology (term
 This is a distinct problem from documentation, with a hard filter set by the OPDA stack:
 
 - **Static Astro site, client-side rendered, CDN-deployed — no application server at runtime.** Anything needing a live SPARQL endpoint or a hosted Java/PHP service *at runtime* is out (Fuseki exists only at build/serve time, `localhost:3031`).
-- **Theming is centralised** in `public/ui/client.js` (Cagle palette + dark mode, WCAG/CVD-audited). A new engine must theme from the same CSS tokens, not ship a fixed palette.
+- **Theming is centralised** in the shared design tokens and diagram-palette
+  module (semantic status, categorical data colours and dark mode). A new
+  engine must theme from those sources, not ship a fixed palette.
 - **Generated artefacts are byte-identity gated** (ODR-0004 §6a / `make verify-ontology`); deterministic, diff-able output is strongly preferred.
 - **The model is OWL + SKOS + SHACL**, and ~314 of its ~610 graph nodes are **SKOS concepts** — so any "OWL-only" visualiser (the whole VOWL family) misses the majority of the model.
 - **Two distinct jobs:** the **whole ontology** (only usable interactively — a static whole-graph is a hairball at this scale) and **parts** (curated or auto-scoped subgraphs, where static works well).
@@ -27,7 +29,8 @@ A focused, link-validated study of ~25 tools across three categories (OWL/RDF-na
 
 * **Coverage** — must draw the whole ontology *and* arbitrary parts, across OWL, SKOS, and SHACL uniformly (not OWL-only).
 * **Embeddability** — must work in a server-less static site (client island or committed asset), with data pre-extracted at build time.
-* **Theming parity** — must be drivable from the existing Cagle CSS dark-mode tokens, not a fixed notation palette.
+* **Theming parity** — must be drivable from the shared CSS dark-mode and
+  diagram tokens, not a fixed notation palette.
 * **Auto-from-TTL** — diagrams should regenerate from the source of truth (the committed Turtle / build-time Fuseki), not drift as hand-maintained copies.
 * **CI-gateability** — fit the byte-identity / anti-drift discipline where feasible (gate the deterministic text artefact).
 * **Interactivity** — the whole-ontology graph is only usable with zoom/filter/focus.
@@ -54,7 +57,8 @@ Final adoption is the operator's call on inspection (consistent with the ADR-004
 * Good, because OWL, SKOS, and SHACL all render through one themeable engine — the SKOS majority (314 concepts) is no longer invisible as it is under the VOWL family.
 * Good, because the whole-ontology graph becomes genuinely usable (interactive zoom/filter/focus) rather than a static hairball, while scoped subgraphs stay legible.
 * Good, because diagrams regenerate from the source of truth — the build-time extractor reads the committed TTL (or Fuseki), so the graph can't drift from the corpus; the generated `elements.json` is committed and CI-diffed (gate at the data layer).
-* Good, because theming reuses the existing Cagle CSS dark-mode tokens — no second palette to maintain.
+* Good, because theming reuses the shared OPDA dark-mode and diagram tokens —
+  no second palette to maintain.
 * Good, because the static rdf2dot/Graphviz (or D2) complement gives byte-gateable SVG for figures woven into prose, matching the doc-drift discipline.
 * Bad, because it introduces a new client-side dependency (Cytoscape + layout extensions) and a small build step (N3.js/Comunica → JSON) — engineering beyond the incumbent Mermaid.
 * Bad, because the interactive canvas itself is not byte-diffable; CI gating shifts to the deterministic JSON input rather than the rendered output.
@@ -119,3 +123,8 @@ Final adoption is the operator's call on inspection (consistent with the ADR-004
 ## Amendments
 
 - **2026-06-15 — RATIFIED `proposed` → `accepted` (operator, this session).** The Confirmation condition is now met: the build-time extractor (`scripts/ontology-graph.mjs`) lands a committed, deterministic `public/data/ontology-graph-elements.json` derived **from the committed SPARQL model** (`src/data/ontology-model.json`) — not N3.js/Comunica as the §"Next step" speculated; the model already carries the OWL+SKOS+SHACL data, so the extractor is a pure, Fuseki-free transform — and the data-layer anti-drift gate is green (`make ci-ontology-graph` → `node scripts/ontology-graph.mjs --check`, wired into `make ci`). The Cytoscape island ships at `/ontology/graph` (`src/pages/ontology/graph.astro` + `public/ui/ontology-graph.js`): the engine + `fcose` lazy-load from the jsdelivr CDN client-side (the Mermaid pattern), themed from the CSS dark-mode tokens, with the OWL class backbone shown by default and the SKOS layer (49 schemes + 323 concepts) one toggle away; class colour encodes the `opda:ufoCategory` facet (Okabe–Ito CVD-safe). **Deviation recorded:** `cytoscape-dagre` was dropped (dagre@0.8.5's `/+esm` build is broken — `graphlib.Graph` undefined); the hierarchy layout uses Cytoscape's built-in `breadthfirst`, and `fcose` degrades to the built-in `cose` if its CDN module fails. Mermaid stays for authored subgraphs (composition unchanged); the rdf2dot/Graphviz static path + SKOS Play! remain optional, unadopted complements. Browser-validated render + theme + SKOS toggle + force layout; no console errors.
+- **2026-08-16 — DESIGN-SYSTEM AMENDMENT.** ADR-0073 superseded the
+  cream/terracotta website system. Diagram mechanics and semantic class names
+  remain unchanged, but `src/lib/diagram-palette.ts` now projects the OPDA
+  categorical and status tokens defined by `DESIGN.md`. This amendment changes
+  presentation, not the ontology tooling decision or generated-data gates.

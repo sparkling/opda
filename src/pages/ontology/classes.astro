@@ -45,7 +45,7 @@ const cats = ufoCategories();
 // appears in BOTH endpoints' sections. The foreign class is pulled in as a
 // :::xsection node (dashed border + muted fill) with its owning "(Section)" on a
 // second line, and its connector is dashed (-.->) to mark the boundary. Authored
-// bare — client.js owns the theme + Cagle palette (ODR diagram convention), so no
+// bare — the GraphDiagram island owns the OPDA diagram palette, so no
 // classDef / %%init%% here (the :::xsection palette entry lives in client.js).
 function sectionDiagram(g: { heading: string; classes: any[] }): string {
   const safe = (s: string) => 'c_' + String(s).replace(/[^A-Za-z0-9]/g, '_');

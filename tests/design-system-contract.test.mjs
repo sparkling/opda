@@ -1,0 +1,274 @@
+import assert from 'node:assert/strict';
+import { createHash } from 'node:crypto';
+import { access, readFile, readdir } from 'node:fs/promises';
+import test from 'node:test';
+
+const root = new URL('../', import.meta.url);
+const file = (path) => new URL(path, root);
+const sha256 = (value) => createHash('sha256').update(value).digest('hex');
+
+function luminance(hex) {
+  const channels = hex.replace('#', '').match(/../gu)
+    .map((channel) => Number.parseInt(channel, 16) / 255)
+    .map((channel) => channel <= 0.04045
+      ? channel / 12.92
+      : ((channel + 0.055) / 1.055) ** 2.4);
+  return 0.2126 * channels[0] + 0.7152 * channels[1] + 0.0722 * channels[2];
+}
+
+function contrast(foreground, background) {
+  const values = [luminance(foreground), luminance(background)].sort((a, b) => b - a);
+  return (values[0] + 0.05) / (values[1] + 0.05);
+}
+
+async function markdownFiles(path) {
+  try {
+    const entries = await readdir(file(path), { withFileTypes: true });
+    const nested = await Promise.all(entries.map((entry) => {
+      const child = `${path}/${entry.name}`;
+      if (entry.isDirectory()) return markdownFiles(child);
+      return entry.name.endsWith('.md') || entry.name.endsWith('.mdx') ? [child] : [];
+    }));
+    return nested.flat();
+  } catch (error) {
+    if (error.code === 'ENOENT') return [];
+    throw error;
+  }
+}
+
+const contractFiles = [
+  'DESIGN.md',
+  'public/ui/design-tokens.css',
+  'public/ui/design-system.css',
+  'public/ui/design/base.css',
+  'public/ui/design/shell.css',
+  'public/ui/design/content.css',
+  'public/ui/design/components.css',
+  'public/ui/design/diagrams.css',
+  'public/ui/design/navigation.css',
+  'public/ui/design/data.css',
+  'public/ui/design/glossary-toc.css',
+  'public/ui/design/mermaid.css',
+  'public/ui/design/print.css',
+  'src/pages/design-system.astro',
+  'docs/design-system-site/index.html',
+  'docs/design-system-site/styles.css',
+  'docs/design-system-site/site.js',
+];
+
+test('the replacement design system ships its normative contract and presentation', async () => {
+  for (const path of contractFiles) await access(file(path));
+});
+
+test('official brand assets retain supplied geometry, bytes and presentation parity', async () => {
+  const assets = [
+    ['opda-wordmark-dark.svg', '0 0 1385.6 392.9', '91f10f8481a2caab8700fdb540489004777a246348644e126eca7a4e3b9efb8f'],
+    ['opda-wordmark-white.svg', '0 0 1385.6 392.9', '18bc8957fdd84342de4acc9284dd574a2604ecfcc5bdba5e26099e02168de97a'],
+    ['opda-icon-yellow.svg', '0 0 84 100', 'e547e3a8fc9f4f9b0195b1dc4fae3deb71a70c5a24a634e4f7fc356c6488ab81'],
+  ];
+  for (const [name, viewBox, hash] of assets) {
+    const canonical = await readFile(file(`public/ui/brand/${name}`));
+    const presentation = await readFile(file(`docs/design-system-site/assets/${name}`));
+    assert.match(canonical.toString('utf8'), new RegExp(`viewBox=["']${viewBox.replaceAll('.', '\\.')}["']`, 'u'));
+    assert.equal(sha256(canonical), hash, `${name} differs from the supplied vector`);
+    assert.equal(sha256(presentation), hash, `presentation copy of ${name} drifted`);
+  }
+});
+
+test('tokens encode the supplied identity and derived accessible roles', async () => {
+  const source = await readFile(file('public/ui/design-tokens.css'), 'utf8');
+  for (const value of ['#2c273b', '#231f2f', '#fec92b', '#fac238', '#ffffff', '#f9f9f9']) {
+    assert.ok(source.toLowerCase().includes(value), `missing supplied brand value ${value}`);
+  }
+  for (const token of [
+    '--font-display', '--font-sans', '--font-mono', '--color-focus',
+    '--color-status-success', '--color-status-warning', '--color-status-danger',
+    '--color-data-1', '--target-min', '--content-reading', '--motion-standard',
+    '--color-text-placeholder', '--on-dark-muted', '--text-caption',
+  ]) assert.ok(source.includes(token), `missing derived token ${token}`);
+  assert.match(source, /Roboto Slab/u);
+  assert.match(source, /DM Sans/u);
+});
+
+test('the documentation corpus no longer freezes the superseded design system', async () => {
+  const paths = [
+    'DESIGN.md', 'CLAUDE-DESIGN-BRIEF.md',
+    ...await markdownFiles('design'),
+    ...await markdownFiles('docs'),
+  ];
+  const forbidden = /(?:Claude Design is authoritative|FROZEN SNAPSHOT|design system (?:is )?(?:locked|unchangeable)|never re-imported|MUST remain (?:unlayered|unchanged))/iu;
+  for (const path of paths) {
+    const source = await readFile(file(path), 'utf8');
+    assert.doesNotMatch(source, forbidden, path);
+  }
+});
+
+test('major semantic pairs meet the AA contrast contract', () => {
+  const pairs = [
+    ['body', '#231f2f', '#ffffff'],
+    ['muted', '#625d72', '#ffffff'],
+    ['link', '#5b51d8', '#ffffff'],
+    ['ink on amber', '#2c273b', '#fec92b'],
+    ['success', '#1e7b4d', '#e7f4ed'],
+    ['warning', '#8a5a00', '#fbf1da'],
+    ['danger', '#b42318', '#fbeae8'],
+    ['information', '#2e5fa3', '#e9f0fa'],
+    ['dark text', '#f9f9f9', '#131224'],
+    ['dark secondary', '#a5a1b2', '#131224'],
+    ['light placeholder', '#625d72', '#ffffff'],
+    ['dark placeholder', '#a5a1b2', '#131224'],
+    ['dark link', '#a9a0ff', '#131224'],
+  ];
+  for (const [name, foreground, background] of pairs) {
+    assert.ok(contrast(foreground, background) >= 4.5, `${name} fails AA`);
+  }
+});
+
+test('live shared surfaces no longer depend on the superseded visual language', async () => {
+  const paths = [
+    'public/ui/design-tokens.css',
+    ...contractFiles.filter((path) => path.startsWith('public/ui/design/')),
+    'src/styles/graph-diagram.css',
+    'src/lib/diagram-palette.ts',
+    'public/ui/graph-engines/_shared.js',
+    'public/ui/graph-engines/mermaid.js',
+    'public/ui/graph-engines/mermaid-elk.js',
+    'src/styles/presentations/workshop-tokens.css',
+  ];
+  const legacy = /(?:Fraunces|JetBrains Mono|fontFamily:\s*['"]Inter|font-family:\s*['"]Inter|#CC785C|#FAF9F5|Cagle palette|Claude theme)/iu;
+  for (const path of paths) assert.doesNotMatch(await readFile(file(path), 'utf8'), legacy, path);
+});
+
+test('the adopted motion contract excludes parallax and long campaign motion', async () => {
+  const paths = [
+    'src/pages/working-groups/join/index.astro',
+    'src/scripts/working-group-campaign.ts',
+    'src/styles/working-group-campaign.css',
+    'src/styles/working-group-campaign-sections.css',
+    'src/styles/working-group-campaign-responsive.css',
+  ];
+  const source = (await Promise.all(paths.map((path) => readFile(file(path), 'utf8')))).join('\n');
+  assert.doesNotMatch(source, /parallax/iu);
+  assert.doesNotMatch(source, /(?:transition|duration)[^;\n]*(?:[3-9]\d{2}|\d{4,})ms/iu);
+  assert.doesNotMatch(source, /animation:[^;\n]*infinite/iu);
+});
+
+test('shared navigation exposes visible focus, state and 44px targets', async () => {
+  const [contentSource, shell, toc, client, header, layout, base] = await Promise.all([
+    readFile(file('public/ui/design/content.css'), 'utf8'),
+    readFile(file('public/ui/design/shell.css'), 'utf8'),
+    readFile(file('public/ui/design/glossary-toc.css'), 'utf8'),
+    readFile(file('public/ui/client.js'), 'utf8'),
+    readFile(file('src/components/Header.astro'), 'utf8'),
+    readFile(file('src/layouts/Layout.astro'), 'utf8'),
+    readFile(file('public/ui/design/base.css'), 'utf8'),
+  ]);
+  assert.match(contentSource, /heading-anchor:focus-visible[^}]*opacity:\s*1/su);
+  assert.match(contentSource, /\.heading-anchor\s*\{[^}]*width:\s*var\(--target-min\)[^}]*min-height:\s*var\(--target-min\)/su);
+  assert.match(shell, /\.app-sidebar a\s*\{[^}]*min-height:\s*var\(--target-min\)/su);
+  assert.match(toc, /\.toc a\s*\{[^}]*min-height:\s*var\(--target-min\)/su);
+  assert.match(client, /aside\.inert = mobileQuery\.matches && !shouldOpen/u);
+  assert.match(client, /aria-current['"], ['"]location/u);
+  assert.match(client, /Permalink to/u);
+  assert.match(client, /aria-pressed/u);
+  assert.match(client, /bindPrimaryNavigation/u);
+  assert.match(client, /panel\.inert/u);
+  assert.match(client, /function placeToc/u);
+  assert.match(header, /showSidebar &&/u);
+  assert.match(header, /id="global-nav-toggle"/u);
+  assert.match(header, /id="global-nav-panel"/u);
+  assert.match(layout, /<Header showSidebar=\{showSidebar\}/u);
+  assert.doesNotMatch(base, /--header-height:\s*6\.5rem/u);
+  assert.doesNotMatch(toc, /@media[^}]+\.toc\s*\{\s*display:\s*none/su);
+});
+
+test('the adversarial conformance blockers remain closed', async () => {
+  const [rootPage, homePage, base, content, components, navigation, print] = await Promise.all([
+    readFile(file('src/pages/index.astro'), 'utf8'),
+    readFile(file('src/pages/home.astro'), 'utf8'),
+    readFile(file('public/ui/design/base.css'), 'utf8'),
+    readFile(file('public/ui/design/content.css'), 'utf8'),
+    readFile(file('public/ui/design/components.css'), 'utf8'),
+    readFile(file('public/ui/design/navigation.css'), 'utf8'),
+    readFile(file('public/ui/design/print.css'), 'utf8'),
+  ]);
+  assert.doesNotMatch(rootPage, /<html[^>]+data-theme="light"/u);
+  assert.match(rootPage, /URLSearchParams\(location\.search\)/u);
+  assert.match(rootPage, /id="theme-toggle"/u);
+  assert.match(rootPage, /class="btn btn--outline-dark"/u);
+  assert.match(homePage, /class="btn btn--outline-dark"/u);
+  assert.match(base, /color:\s*var\(--on-dark-muted\)/u);
+  assert.doesNotMatch(base, /#d8d5df/iu);
+  assert.match(content, /\[data-theme="dark"\]\s+:where\(\.pill\)/u);
+  assert.match(components, /home-hero__index strong[^}]+var\(--text-3xl\)/su);
+  assert.doesNotMatch(navigation + print, /0\.85em|#666\b/iu);
+});
+
+test('graph and data tools preserve keyboard and semantic state contracts', async () => {
+  const [component, graph, mermaid, graphCss, dataBrowser] = await Promise.all([
+    readFile(file('src/components/GraphDiagram.astro'), 'utf8'),
+    readFile(file('src/scripts/graph-diagram.ts'), 'utf8'),
+    readFile(file('src/scripts/graph-diagram-mermaid.ts'), 'utf8'),
+    readFile(file('src/styles/graph-diagram.css'), 'utf8'),
+    readFile(file('public/ui/data-browser.js'), 'utf8'),
+  ]);
+  assert.match(component, /<figure class="graph-diagram-wrapper">/u);
+  assert.match(component, /<figcaption class="gd-caption"/u);
+  assert.match(graph, /Figure \$\{number\}/u);
+  assert.match(graph, /setAttribute\('role', 'dialog'\)/u);
+  assert.match(graph, /setAttribute\('aria-modal', 'true'\)/u);
+  assert.match(graph, /returnFocus\?\.isConnected/u);
+  for (const key of ['ArrowLeft', 'ArrowRight', 'ArrowUp', 'ArrowDown']) assert.match(mermaid, new RegExp(key, 'u'));
+  assert.match(mermaid, /setAttribute\('aria-pressed'/u);
+  assert.doesNotMatch(graphCss, /drop-shadow\(0 0 0\b/iu);
+  assert.match(dataBrowser, /class:\s*'db-sort-button'/u);
+  assert.match(dataBrowser, /setAttribute\('aria-sort', 'ascending'\)/u);
+  assert.match(dataBrowser, /aria-label': 'Choose visible columns'/u);
+});
+
+test('shared buttons expose the adopted interaction and outcome states', async () => {
+  const source = await readFile(file('public/ui/design/content.css'), 'utf8');
+  for (const state of [':hover', ':active', ':focus-visible', ':disabled', '[aria-busy="true"]']) {
+    assert.ok(source.includes(state), `missing button state ${state}`);
+  }
+  assert.match(source, /\.btn--danger/u);
+  assert.match(source, /\.btn--success/u);
+});
+
+test('design-system source files remain reviewable', async () => {
+  for (const path of contractFiles) {
+    const source = await readFile(file(path), 'utf8');
+    assert.ok(source.split('\n').length < 500, `${path} must remain below 500 lines`);
+  }
+});
+
+test('the presentation exposes evidence tiers and complete component states', async () => {
+  const [html, script, styles] = await Promise.all([
+    readFile(file('docs/design-system-site/index.html'), 'utf8'),
+    readFile(file('docs/design-system-site/site.js'), 'utf8'),
+    readFile(file('docs/design-system-site/styles.css'), 'utf8'),
+  ]);
+  for (const section of [
+    'overview', 'foundations', 'brand', 'components', 'data-display',
+    'motion', 'patterns', 'accessibility', 'governance', 'implementation',
+  ]) assert.match(html, new RegExp(`id=["']${section}["']`, 'u'));
+  for (const tier of ['Authoritative', 'Observed', 'Derived']) assert.match(html, new RegExp(tier, 'u'));
+  for (const state of ['Default', 'Hover', 'Focus', 'Disabled', 'Loading', 'Error', 'Success']) {
+    assert.match(html, new RegExp(state, 'u'));
+  }
+  assert.match(html, /aria-current/u);
+  assert.match(html, /class="rail-close"/u);
+  assert.match(html, /role="tabpanel"/u);
+  for (const specimen of ['Categorical', 'Sequential', 'Diverging', 'Grayscale']) {
+    assert.match(html, new RegExp(specimen, 'iu'));
+  }
+  assert.match(script, /IntersectionObserver/u);
+  assert.match(script, /prefers-reduced-motion/u);
+  assert.match(script, /rail\.inert/u);
+  assert.match(script, /target\?\.focus/u);
+  assert.match(script, /panel\.hidden = !selected/u);
+  assert.match(styles, /aria-current='location'/u);
+  assert.doesNotMatch(styles, /animation:[^;\n]*infinite/iu);
+  assert.match(styles, /grid-template-columns:\s*minmax\(0, 1fr\)/u);
+  assert.match(styles, /transform:\s*none !important;\s*transition:\s*none !important/u);
+});

@@ -1,72 +1,65 @@
 /**
- * Shared Mermaid palette + theme variables for the GraphDiagram island
- * (src/scripts/graph-diagram*). Mirrors the Cagle classDefs + Claude theme
- * `public/ui/client.js` uses for the legacy `.mermaid` renderer, so the
- * ontology diagrams look identical whichever engine renders them. Pages author
- * bare `:::user` / `:::xsection` / `:::upper` etc.; the renderer injects the
- * matching classDef block (light or dark) after the diagram-type line, exactly
- * as client.js's `spliceCageClassDefs` does.
+ * Shared OPDA Mermaid palette and theme variables for GraphDiagram.
  *
- * ODR diagram convention: NEVER hardcode `%%{init}%%` / classDef in a page —
- * this module is the single palette source for the island engine.
+ * Pages author semantic classes such as `:::user` or `:::success`; the
+ * renderer injects this single source of colour and type. Architecture classes
+ * follow the ordered categorical palette in DESIGN.md. Status classes use the
+ * exact semantic foreground/surface pairs. Dark-mode strokes are lifted only
+ * where the source categorical value would fall below the 3:1 UI threshold.
  */
 
-/** Cagle palette classDefs — light mode. Injected after the flowchart/graph line. */
 export const CLASSDEFS_LIGHT: string[] = [
-  'classDef infra fill:#E3F2FD,stroke:#1565C0,stroke-width:2px,color:#0D47A1',
-  'classDef service fill:#E8F5E9,stroke:#2E7D32,stroke-width:2px,color:#1B5E20',
-  'classDef data fill:#FFF8E1,stroke:#F57F17,stroke-width:2px,color:#E65100',
-  'classDef user fill:#F3E5F5,stroke:#7B1FA2,stroke-width:2px,color:#4A148C',
-  'classDef process fill:#E1F5FE,stroke:#0277BD,stroke-width:2px,color:#01579B',
-  'classDef security fill:#E0F2F1,stroke:#00695C,stroke-width:2px,color:#004D40',
-  'classDef external fill:#ECEFF1,stroke:#455A64,stroke-width:2px,color:#263238',
-  'classDef xsection fill:#E3EEF3,stroke:#4F7A8C,stroke-width:1.5px,color:#2C4A57,stroke-dasharray:6 3',
-  'classDef upper fill:#EEEEEE,stroke:#9E9E9E,stroke-width:1px,color:#5F5F5F,stroke-dasharray:2 2',
-  'classDef success fill:#C8E6C9,stroke:#2E7D32,stroke-width:2px,color:#1B5E20',
-  'classDef warning fill:#FFF9C4,stroke:#F9A825,stroke-width:2px,color:#F57F17',
-  'classDef error fill:#FFCDD2,stroke:#C62828,stroke-width:2px,color:#B71C1C',
-  'classDef info fill:#BBDEFB,stroke:#1565C0,stroke-width:2px,color:#0D47A1',
-  'classDef neutral fill:#F5F5F5,stroke:#757575,stroke-width:2px,color:#424242',
+  'classDef infra fill:#E9F0FA,stroke:#4E6E93,stroke-width:2px,color:#231F2F',
+  'classDef service fill:#EDF3E2,stroke:#58810B,stroke-width:2px,color:#231F2F',
+  'classDef data fill:#FBF1DA,stroke:#C77F00,stroke-width:2px,color:#231F2F',
+  'classDef user fill:#F5E8F1,stroke:#A5317F,stroke-width:2px,color:#231F2F',
+  'classDef process fill:#EEEBFA,stroke:#6C5BD4,stroke-width:2px,color:#231F2F',
+  'classDef security fill:#E4F3F0,stroke:#0E8478,stroke-width:2px,color:#231F2F',
+  'classDef external fill:#F0EEF2,stroke:#6E6580,stroke-width:2px,color:#231F2F',
+  'classDef xsection fill:#F8EBE5,stroke:#C24E1A,stroke-width:1.5px,color:#231F2F,stroke-dasharray:6 3',
+  'classDef upper fill:#F1F0F4,stroke:#817C90,stroke-width:1px,color:#4A4558,stroke-dasharray:2 2',
+  'classDef success fill:#E7F4ED,stroke:#1E7B4D,stroke-width:2px,color:#1E7B4D',
+  'classDef warning fill:#FBF1DA,stroke:#8A5A00,stroke-width:2px,color:#8A5A00',
+  'classDef error fill:#FBEAE8,stroke:#B42318,stroke-width:2px,color:#B42318',
+  'classDef info fill:#E9F0FA,stroke:#2E5FA3,stroke-width:2px,color:#2E5FA3',
+  'classDef neutral fill:#F1F0F4,stroke:#625D72,stroke-width:2px,color:#4A4558',
 ];
 
-/** Cagle palette classDefs — dark mode. */
 export const CLASSDEFS_DARK: string[] = [
-  'classDef infra fill:#0D2137,stroke:#42A5F5,stroke-width:2px,color:#90CAF9',
-  'classDef service fill:#0D2818,stroke:#66BB6A,stroke-width:2px,color:#A5D6A7',
-  'classDef data fill:#2E1500,stroke:#FFA726,stroke-width:2px,color:#FFCC80',
-  'classDef user fill:#1A0A2E,stroke:#BA68C8,stroke-width:2px,color:#E1BEE7',
-  'classDef process fill:#012830,stroke:#4DD0E1,stroke-width:2px,color:#B2EBF2',
-  'classDef security fill:#002A22,stroke:#4DB6AC,stroke-width:2px,color:#B2DFDB',
-  'classDef external fill:#211A17,stroke:#D7CCC8,stroke-width:2px,color:#EFEBE9',
-  'classDef xsection fill:#0E2030,stroke:#7FA8BD,stroke-width:1.5px,color:#AECBD6,stroke-dasharray:6 3',
-  'classDef upper fill:#161616,stroke:#5E5E5E,stroke-width:1px,color:#9E9E9E,stroke-dasharray:2 2',
-  'classDef success fill:#0D2818,stroke:#66BB6A,stroke-width:2px,color:#A5D6A7',
-  'classDef warning fill:#2E2400,stroke:#FFEE58,stroke-width:2px,color:#FFF59D',
-  'classDef error fill:#2A0A0A,stroke:#EF5350,stroke-width:2px,color:#EF9A9A',
-  'classDef info fill:#0D2137,stroke:#42A5F5,stroke-width:2px,color:#90CAF9',
-  'classDef neutral fill:#1E1E1E,stroke:#9E9E9E,stroke-width:2px,color:#BDBDBD',
+  'classDef infra fill:#231F2F,stroke:#7F9DBD,stroke-width:2px,color:#F9F9F9',
+  'classDef service fill:#231F2F,stroke:#8CAD4D,stroke-width:2px,color:#F9F9F9',
+  'classDef data fill:#231F2F,stroke:#DCA23A,stroke-width:2px,color:#F9F9F9',
+  'classDef user fill:#231F2F,stroke:#D77ABB,stroke-width:2px,color:#F9F9F9',
+  'classDef process fill:#231F2F,stroke:#9A8FE8,stroke-width:2px,color:#F9F9F9',
+  'classDef security fill:#231F2F,stroke:#55B7AE,stroke-width:2px,color:#F9F9F9',
+  'classDef external fill:#231F2F,stroke:#9C93AA,stroke-width:2px,color:#F9F9F9',
+  'classDef xsection fill:#231F2F,stroke:#E28159,stroke-width:1.5px,color:#F9F9F9,stroke-dasharray:6 3',
+  'classDef upper fill:#231F2F,stroke:#817C90,stroke-width:1px,color:#A5A1B2,stroke-dasharray:2 2',
+  'classDef success fill:#231F2F,stroke:#66C28F,stroke-width:2px,color:#66C28F',
+  'classDef warning fill:#231F2F,stroke:#FFB84D,stroke-width:2px,color:#FFB84D',
+  'classDef error fill:#231F2F,stroke:#FF958A,stroke-width:2px,color:#FF958A',
+  'classDef info fill:#231F2F,stroke:#7FB5FF,stroke-width:2px,color:#7FB5FF',
+  'classDef neutral fill:#231F2F,stroke:#A5A1B2,stroke-width:2px,color:#F9F9F9',
 ];
 
-const FONT = { fontFamily: 'Inter, system-ui, -apple-system, sans-serif', fontSize: '14px' };
+const FONT = { fontFamily: 'DM Sans, system-ui, sans-serif', fontSize: '14px' };
 
-/** Mermaid `themeVariables` — light (the Claude cream/terracotta theme). */
 export const THEMEVARS_LIGHT: Record<string, string> = {
-  primaryColor: '#EFE9DE', primaryBorderColor: '#CC785C', primaryTextColor: '#141413',
-  secondaryColor: '#F5F0E8', tertiaryColor: '#E8E0D2',
-  lineColor: '#6C6A64', arrowheadColor: '#6C6A64', edgeLabelBackground: '#FAF9F5',
-  clusterBkg: '#FAF9F5', clusterBorder: '#E6DFD0',
-  noteBkgColor: '#FBF3EE', noteBorderColor: '#CC785C', noteTextColor: '#141413',
-  titleColor: '#141413', labelColor: '#3D3D3A', nodeTextColor: '#141413',
-  background: '#FAF9F5', mainBkg: '#EFE9DE', ...FONT,
+  primaryColor: '#F1F0F4', primaryBorderColor: '#6C5BD4', primaryTextColor: '#231F2F',
+  secondaryColor: '#F9F9F9', tertiaryColor: '#E3E1E9',
+  lineColor: '#625D72', arrowheadColor: '#625D72', edgeLabelBackground: '#FFFFFF',
+  clusterBkg: '#F9F9F9', clusterBorder: '#CBC8D5',
+  noteBkgColor: '#FBF1DA', noteBorderColor: '#8A5A00', noteTextColor: '#231F2F',
+  titleColor: '#131224', labelColor: '#231F2F', nodeTextColor: '#231F2F',
+  background: '#FFFFFF', mainBkg: '#F1F0F4', ...FONT,
 };
 
-/** Mermaid `themeVariables` — dark. */
 export const THEMEVARS_DARK: Record<string, string> = {
-  primaryColor: '#2B2823', primaryBorderColor: '#CC785C', primaryTextColor: '#EFE9DE',
-  secondaryColor: '#36322C', tertiaryColor: '#3D3935',
-  lineColor: '#A8A39B', arrowheadColor: '#A8A39B', edgeLabelBackground: '#1F1D1A',
-  clusterBkg: '#1F1D1A', clusterBorder: '#3D3935',
-  noteBkgColor: '#3D2A22', noteBorderColor: '#CC785C', noteTextColor: '#EFE9DE',
-  titleColor: '#EFE9DE', labelColor: '#C4BEB1', nodeTextColor: '#EFE9DE',
-  background: '#1F1D1A', mainBkg: '#2B2823', ...FONT,
+  primaryColor: '#231F2F', primaryBorderColor: '#9A8FE8', primaryTextColor: '#F9F9F9',
+  secondaryColor: '#2C273B', tertiaryColor: '#3A3550',
+  lineColor: '#A5A1B2', arrowheadColor: '#A5A1B2', edgeLabelBackground: '#131224',
+  clusterBkg: '#131224', clusterBorder: '#3A3550',
+  noteBkgColor: '#231F2F', noteBorderColor: '#FFB84D', noteTextColor: '#F9F9F9',
+  titleColor: '#F9F9F9', labelColor: '#A5A1B2', nodeTextColor: '#F9F9F9',
+  background: '#131224', mainBkg: '#231F2F', ...FONT,
 };

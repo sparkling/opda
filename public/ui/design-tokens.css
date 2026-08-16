@@ -1,481 +1,372 @@
-/* ==========================================================================
-   OPDA Knowledge Base — colors_and_type.css
-   Claude-inspired warm-canvas, terracotta-accent, slab-serif editorial system.
-   
-   Keeps the original PDTF token *names* (so every existing component class
-   continues to read the right surface/text/border colour) but rewires the
-   *values* to the new palette. Drop this in front of design-tokens.css and
-   the chrome restyles automatically.
-   ==========================================================================
-   
-   PALETTE FOUNDATIONS
-     canvas (#faf9f5) ····· page background — warm cream, never bright white
-     surface-card (#efe9de) inset panel — slightly darker cream
-     primary (#cc785c) ···· terracotta — links, CTAs, key accents
-     primary-active ······· deeper terracotta for hover / pressed
-     ink (#141413) ········ true near-black for display headings
-     body (#3d3d3a) ······· warm dark grey for paragraphs
-     muted (#6c6a64) ······ stone — captions, meta, deprecated
-     accent-teal (#5db8a6)  success / info second
-     accent-amber (#e8a55a) caution / status amber
-   
-   TYPE
-     serif ··· Source Serif 4 (open, slab-leaning old-style)
-               Substitutes for Tiempos / Copernicus (licensed — do not ship).
-     sans ···· Inter (already in stack)
-     mono ···· JetBrains Mono
-   ==========================================================================
-*/
+/* OPDA Design System 1.0 — token projection of DESIGN.md (ADR-0073). */
 
-/* Open-font @font-face declarations — self-hosted in /fonts.
-   Licensed faces (Tiempos, Copernicus, Söhne) MUST NOT ship.
-   
-   Serif: Fraunces (open, OFL) — strong editorial old-style with slab-leaning
-   high-weight cuts. Distinct from Anthropic's licensed Copernicus.
-   Sans:  Inter (open, OFL) — the open Söhne analog.
-   Mono:  JetBrains Mono (open, OFL).
-*/
 @font-face {
-  font-family: 'Fraunces';
-  src: url('./fonts/Fraunces-400.woff2') format('woff2');
-  font-weight: 400; font-style: normal; font-display: swap;
+  font-family: 'Roboto Slab';
+  src: url('./fonts/RobotoSlab-Variable-latin-ext.woff2') format('woff2');
+  font-style: normal;
+  font-weight: 600 700;
+  font-display: swap;
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7,
+    U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F,
+    U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F,
+    U+A720-A7FF;
 }
 @font-face {
-  font-family: 'Fraunces';
-  src: url('./fonts/Fraunces-400-italic.woff2') format('woff2');
-  font-weight: 400; font-style: italic; font-display: swap;
+  font-family: 'Roboto Slab';
+  src: url('./fonts/RobotoSlab-Variable-latin.woff2') format('woff2');
+  font-style: normal;
+  font-weight: 600 700;
+  font-display: swap;
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6,
+    U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122,
+    U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
 }
 @font-face {
-  font-family: 'Fraunces';
-  src: url('./fonts/Fraunces-600.woff2') format('woff2');
-  font-weight: 600; font-style: normal; font-display: swap;
+  font-family: 'DM Sans';
+  src: url('./fonts/DMSans-Variable-latin-ext.woff2') format('woff2');
+  font-style: normal;
+  font-weight: 400 700;
+  font-display: swap;
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7,
+    U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F,
+    U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F,
+    U+A720-A7FF;
 }
 @font-face {
-  font-family: 'Fraunces';
-  src: url('./fonts/Fraunces-700.woff2') format('woff2');
-  font-weight: 700; font-style: normal; font-display: swap;
+  font-family: 'DM Sans';
+  src: url('./fonts/DMSans-Variable-latin.woff2') format('woff2');
+  font-style: normal;
+  font-weight: 400 700;
+  font-display: swap;
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6,
+    U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122,
+    U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
 }
 @font-face {
-  font-family: 'Inter';
-  src: url('./fonts/Inter-400.woff2') format('woff2');
-  font-weight: 400; font-style: normal; font-display: swap;
+  font-family: 'Roboto Mono';
+  src: url('./fonts/RobotoMono-Variable-latin-ext.woff2') format('woff2');
+  font-style: normal;
+  font-weight: 400 700;
+  font-display: swap;
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7,
+    U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F,
+    U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F,
+    U+A720-A7FF;
 }
 @font-face {
-  font-family: 'Inter';
-  src: url('./fonts/Inter-500.woff2') format('woff2');
-  font-weight: 500; font-style: normal; font-display: swap;
-}
-@font-face {
-  font-family: 'Inter';
-  src: url('./fonts/Inter-600.woff2') format('woff2');
-  font-weight: 600; font-style: normal; font-display: swap;
-}
-@font-face {
-  font-family: 'Inter';
-  src: url('./fonts/Inter-700.woff2') format('woff2');
-  font-weight: 700; font-style: normal; font-display: swap;
-}
-@font-face {
-  font-family: 'JetBrains Mono';
-  src: url('./fonts/JetBrainsMono-400.woff2') format('woff2');
-  font-weight: 400; font-style: normal; font-display: swap;
-}
-@font-face {
-  font-family: 'JetBrains Mono';
-  src: url('./fonts/JetBrainsMono-700.woff2') format('woff2');
-  font-weight: 700; font-style: normal; font-display: swap;
+  font-family: 'Roboto Mono';
+  src: url('./fonts/RobotoMono-Variable-latin.woff2') format('woff2');
+  font-style: normal;
+  font-weight: 400 700;
+  font-display: swap;
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6,
+    U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122,
+    U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
 }
 
 :root {
-  /* ──────────────────────────────────────────────────────────────
-     RAW PALETTE — name these by hue, not by role.
-     ────────────────────────────────────────────────────────────── */
+  color-scheme: light;
 
-  /* Warm neutrals — the cream → bone → stone → graphite spine */
-  --cream-50:   #fdfcf8;   /* lightest cream — hover row tint */
-  --cream-100:  #faf9f5;   /* canvas (page background) */
-  --cream-200:  #f4f1e8;   /* faint surface — sticky bars, code chips */
-  --cream-300:  #efe9de;   /* surface-card (inset panels) */
-  --cream-400:  #e6dfd0;   /* card border, hairline */
-  --cream-500:  #d4ccb8;   /* stronger border */
+  /* Supplied OPDA palette. */
+  --brand-deep: #131224;
+  --brand-night: #231f2f;
+  --brand-ink: #2c273b;
+  --brand-yellow: #fec92b;
+  --brand-yellow-active: #fac238;
+  --brand-white: #ffffff;
+  --brand-off-white: #f9f9f9;
 
-  --bone-600:   #a8a39a;   /* deprecated text */
-  --stone-700:  #6c6a64;   /* muted text */
-  --graphite-800: #3d3d3a; /* body text */
-  --graphite-900: #2a2a28;
-  --ink-1000:   #141413;   /* near-black for display heads */
+  /* Derived violet-cast neutral ramp. */
+  --neutral-100: #f1f0f4;
+  --neutral-200: #e3e1e9;
+  --neutral-300: #cbc8d5;
+  --neutral-400: #a5a1b2;
+  --neutral-500: #817c90;
+  --neutral-600: #625d72;
+  --neutral-700: #4a4558;
 
-  --surface-dark: #181715; /* dark mode canvas */
-  --surface-dark-alt: #211f1c;
-  --surface-dark-tint: #2b2925;
+  /* Semantic surfaces and text. */
+  --color-surface: var(--brand-white);
+  --color-surface-alt: var(--brand-off-white);
+  --color-surface-tint: var(--neutral-100);
+  --color-surface-card: var(--brand-white);
+  --color-surface-inset: var(--neutral-100);
+  --color-surface-dark: var(--brand-deep);
+  --color-surface-dark-raised: var(--brand-night);
+  --color-text: var(--brand-night);
+  --color-text-strong: var(--brand-deep);
+  --color-text-muted: var(--neutral-600);
+  --color-text-placeholder: var(--neutral-600);
+  --color-text-disabled: var(--neutral-500);
+  --color-text-deprecated: var(--neutral-500);
+  --color-border: var(--neutral-200);
+  --color-border-strong: var(--neutral-300);
+  --color-link: #5b51d8;
+  --color-link-hover: #4a41be;
+  --color-link-visited: #6d3e91;
+  --color-focus: var(--brand-ink);
+  --color-focus-contrast: var(--brand-yellow);
+  --on-dark: var(--brand-white);
+  --on-dark-muted: var(--neutral-400);
 
-  /* Terracotta — the single brand accent. Mid-warm clay, never red */
-  --terracotta-50:  #fbf3ee;
-  --terracotta-100: #f5e1d4;
-  --terracotta-200: #ebc3a9;
-  --terracotta-300: #de9d7c;
-  --terracotta-400: #d58a6e;
-  --terracotta-500: #cc785c;   /* primary */
-  --terracotta-600: #bb6850;
-  --terracotta-700: #a9583e;   /* primary-active */
-  --terracotta-800: #874838;
-  --terracotta-900: #5f342a;
+  /* Semantic status: foreground + tint + strong border. */
+  --color-status-success: #1e7b4d;
+  --color-status-success-surface: #e7f4ed;
+  --color-status-warning: #8a5a00;
+  --color-status-warning-surface: #fbf1da;
+  --color-status-danger: #b42318;
+  --color-status-danger-surface: #fbeae8;
+  --color-status-info: #2e5fa3;
+  --color-status-info-surface: #e9f0fa;
 
-  /* Editorial second accents — teal + amber. Used sparingly. */
-  --teal-100:  #d6ede7;
-  --teal-500:  #5db8a6;
-  --teal-700:  #2e8775;
+  /* Ordered categorical data palette; yellow is intentionally excluded. */
+  --color-data-1: #6c5bd4;
+  --color-data-2: #c77f00;
+  --color-data-3: #0e8478;
+  --color-data-4: #a5317f;
+  --color-data-5: #4e6e93;
+  --color-data-6: #58810b;
+  --color-data-7: #c24e1a;
+  --color-data-8: #6e6580;
+  --color-data-sequential-low: var(--neutral-100);
+  --color-data-sequential-high: var(--brand-ink);
+  --color-data-diverging-low: var(--color-data-1);
+  --color-data-diverging-mid: var(--neutral-100);
+  --color-data-diverging-high: var(--color-data-2);
 
-  --amber-100: #fbe6c8;
-  --amber-500: #e8a55a;
-  --amber-700: #b07432;
+  /* Typography. */
+  --font-display: 'Roboto Slab', Rockwell, 'Roboto Slab Fallback', Georgia, serif;
+  --font-sans: 'DM Sans', 'Avenir Next', 'Segoe UI', system-ui, sans-serif;
+  --font-mono: 'Roboto Mono', 'SFMono-Regular', Consolas, monospace;
+  --font-serif: var(--font-display);
+  --text-xs: 0.75rem;
+  --text-caption: 0.8125rem;
+  --text-sm: 0.875rem;
+  --text-base: 1rem;
+  --text-lg: 1.125rem;
+  --text-xl: 1.375rem;
+  --text-2xl: 1.75rem;
+  --text-3xl: 2.25rem;
+  --text-4xl: 2.75rem;
+  --text-5xl: 3.5rem;
+  --leading-tight: 1.18;
+  --leading-snug: 1.36;
+  --leading-normal: 1.625;
+  --leading-relaxed: 1.7;
+  --tracking-display: -0.018em;
+  --tracking-tight: -0.01em;
+  --tracking-normal: 0;
+  --tracking-meta: 0.08em;
+  --display: 600 2.75rem / 3.25rem var(--font-display);
+  --h1: 600 2.25rem / 2.75rem var(--font-display);
+  --h2: 700 1.75rem / 2.25rem var(--font-sans);
+  --h3: 700 1.375rem / 1.875rem var(--font-sans);
+  --h4: 600 1.125rem / 1.625rem var(--font-sans);
+  --lead: 400 1.125rem / 1.75rem var(--font-sans);
+  --body: 400 1rem / 1.625rem var(--font-sans);
+  --code: 400 0.875rem / 1.375rem var(--font-mono);
 
-  --plum-100:  #e8d8e4;
-  --plum-500:  #9a6b8e;
-  --plum-700:  #663d5d;
-
-  --crimson-100: #f1d5cc;
-  --crimson-500: #b85a44;
-  --crimson-700: #7d3a2b;
-
-  /* ──────────────────────────────────────────────────────────────
-     SEMANTIC TOKENS — what original PDTF code reads.
-     Keep these names; only the values change.
-     ────────────────────────────────────────────────────────────── */
-
-  /* Brand scale (mapped to terracotta) */
-  --color-brand-50:  var(--terracotta-50);
-  --color-brand-100: var(--terracotta-100);
-  --color-brand-200: var(--terracotta-200);
-  --color-brand-300: var(--terracotta-300);
-  --color-brand-400: var(--terracotta-400);
-  --color-brand-500: var(--terracotta-500);
-  --color-brand-600: var(--terracotta-600);
-  --color-brand-700: var(--terracotta-700);
-  --color-brand-800: var(--terracotta-800);
-  --color-brand-900: var(--ink-1000);   /* on terracotta tints, deepest text reads as near-black */
-
-  /* Ink (neutral) scale — warm, not slate */
-  --color-ink-0:   #ffffff;
-  --color-ink-50:  var(--cream-50);
-  --color-ink-100: var(--cream-200);
-  --color-ink-200: var(--cream-400);
-  --color-ink-300: var(--cream-500);
-  --color-ink-400: var(--bone-600);
-  --color-ink-500: var(--stone-700);
-  --color-ink-600: var(--stone-700);
-  --color-ink-700: var(--graphite-800);
-  --color-ink-800: var(--graphite-900);
-  --color-ink-900: var(--ink-1000);
-
-  /* Accent (warm amber — for "Modelling" gradient + status amber) */
-  --color-accent-100: var(--amber-100);
-  --color-accent-500: var(--amber-500);
-  --color-accent-700: var(--amber-700);
-
-  /* Semantic statuses — re-tuned for the warm system */
-  --color-success-100: var(--teal-100);
-  --color-success-500: var(--teal-500);
-  --color-success-700: var(--teal-700);
-
-  --color-info-100:    #dde4ec;
-  --color-info-500:    #6c8aa8;
-  --color-info-700:    #3a546f;
-
-  --color-warning-100: var(--amber-100);
-  --color-warning-500: var(--amber-500);
-  --color-warning-700: var(--amber-700);
-
-  --color-danger-100:  var(--crimson-100);
-  --color-danger-500:  var(--crimson-500);
-  --color-danger-700:  var(--crimson-700);
-
-  /* Surface stack */
-  --color-surface:        var(--cream-100);  /* canvas */
-  --color-surface-alt:    var(--cream-100);  /* same — keep one warm field */
-  --color-surface-tint:   var(--cream-200);  /* sticky bars, code chips */
-  --color-surface-card:   var(--cream-100);  /* card body — kept as canvas; panels lift via border + shadow, not fill */
-  --color-surface-inset:  var(--cream-300);  /* explicit recessed panel */
-  --color-border:         var(--cream-400);
-  --color-border-strong:  var(--cream-500);
-
-  /* TailwindPlus re-skin tokens. Components adopted from Tailwind Plus
-     reference patterns reference these instead of bg-white/gray-300/
-     indigo-600 so the cream + terracotta identity is preserved and dark
-     mode flips automatically via the [data-theme="dark"] overrides
-     below. Used as `bg-[var(--button-bg)]`, `inset-ring-[var(--ring-subtle)]`,
-     `text-[var(--brand)]`, etc. in HTML templates. */
-  --button-bg:        var(--color-surface);
-  --button-bg-hover:  var(--cream-200);
-  --button-bg-active: var(--cream-300);
-  --ring-subtle:      var(--color-border);
-  --ring-strong:      var(--color-border-strong);
-  --brand:            var(--terracotta-600);
-  --brand-strong:     var(--terracotta-700);
-  --focus-ring:       var(--terracotta-500);
-
-  /* Text */
-  --color-text:           var(--graphite-800);
-  --color-text-strong:    var(--ink-1000);
-  --color-text-muted:     var(--stone-700);
-  --color-text-deprecated:var(--bone-600);
-
-  /* Link */
-  --color-link:           var(--terracotta-700);
-  --color-link-hover:     var(--terracotta-800);
-
-  /* ──────────────────────────────────────────────────────────────
-     TYPOGRAPHY
-     ────────────────────────────────────────────────────────────── */
-  --font-sans:  'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
-  --font-serif: 'Fraunces', 'Source Serif 4', 'Charter', 'Iowan Old Style',
-                'Apple Garamond', Georgia, serif;
-  --font-mono:  'JetBrains Mono', 'SF Mono', Menlo, Consolas, monospace;
-
-  --text-xs:   0.75rem;   /* 12 */
-  --text-sm:   0.875rem;  /* 14 */
-  --text-base: 1rem;      /* 16 */
-  --text-lg:   1.125rem;  /* 18 */
-  --text-xl:   1.25rem;   /* 20 */
-  --text-2xl:  1.5rem;    /* 24 */
-  --text-3xl:  1.875rem;  /* 30 */
-  --text-4xl:  2.25rem;   /* 36 */
-  --text-5xl:  3rem;      /* 48 */
-
-  --leading-tight:   1.15;
-  --leading-snug:    1.35;
-  --leading-normal:  1.6;
-  --leading-relaxed: 1.75;
-
-  --tracking-display: -0.022em;
-  --tracking-tight:   -0.012em;
-  --tracking-normal:  0;
-  --tracking-meta:    0.08em;
-
-  /* ──────────────────────────────────────────────────────────────
-     SPACING + RADII + SHADOWS
-     Same scale as upstream — radii nudged down (editorial = less rounded).
-     ────────────────────────────────────────────────────────────── */
-  --space-1: 0.25rem;
-  --space-2: 0.5rem;
-  --space-3: 0.75rem;
-  --space-4: 1rem;
-  --space-5: 1.5rem;
-  --space-6: 2rem;
-  --space-7: 2.5rem;
+  /* 4px-derived spacing, sharp geometry and restrained elevation. */
+  --space-1: 0.125rem;
+  --space-2: 0.25rem;
+  --space-3: 0.5rem;
+  --space-4: 0.75rem;
+  --space-5: 1rem;
+  --space-6: 1.5rem;
+  --space-7: 2rem;
   --space-8: 3rem;
   --space-10: 4rem;
   --space-12: 6rem;
-
-  --radius-sm: 0.1875rem;   /* 3px  — pill chips, code */
-  --radius-md: 0.25rem;     /* 4px  — buttons, inputs */
-  --radius-lg: 0.375rem;    /* 6px  — cards */
-  --radius-xl: 0.5rem;      /* 8px  — hero, large panels */
-
-  /* Editorial shadows: soft warm + dark hairline. */
-  --shadow-sm: 0 1px 0 rgba(20,20,19,0.04), 0 1px 2px rgba(20,20,19,0.04);
-  --shadow-md: 0 1px 2px rgba(20,20,19,0.06), 0 6px 18px -8px rgba(20,20,19,0.08);
-  --shadow-lg: 0 2px 4px rgba(20,20,19,0.06), 0 14px 32px -12px rgba(20,20,19,0.12);
-  --shadow-inset: inset 0 1px 0 rgba(255,255,255,0.6), inset 0 -1px 0 rgba(20,20,19,0.04);
-
-  /* Layout */
-  --content-max: 112.5rem;
-  --content-narrow: 48rem;
-  --sidebar-width: 17rem;
+  --radius-sm: 2px;
+  --radius-md: 2px;
+  --radius-lg: 4px;
+  --radius-xl: 4px;
+  --shadow-sm: 0 1px 2px rgb(19 18 36 / 10%);
+  --shadow-md: 0 8px 24px rgb(19 18 36 / 16%);
+  --shadow-lg: var(--shadow-md);
+  --target-min: 2.75rem;
   --header-height: 4rem;
+  --sidebar-width: 17.5rem;
+  --toc-width: 15rem;
+  --content-max: 80rem;
+  --content-reading: 66ch;
+  --duration-fast: 120ms;
+  --duration-normal: 160ms;
+  --motion-standard: 160ms;
+  --duration-slow: 200ms;
+  --ease: cubic-bezier(0.2, 0, 0, 1);
+  --ease-in: cubic-bezier(0.4, 0, 1, 1);
 
-  /* Motion — editorial = restrained */
-  --ease:           cubic-bezier(0.32, 0.72, 0.0, 1);
-  --ease-snap:      cubic-bezier(0.2, 0.9, 0.2, 1);
-  --duration-fast:   140ms;
-  --duration-normal: 240ms;
+  /* TailwindPlus bridge. */
+  --button-bg: var(--color-surface);
+  --button-bg-hover: var(--brand-off-white);
+  --button-bg-active: var(--neutral-100);
+  --ring-subtle: var(--color-border);
+  --ring-strong: var(--color-border-strong);
+  --brand: var(--brand-yellow);
+  --brand-strong: var(--brand-yellow-active);
+  --focus-ring: var(--color-focus);
+
+  /* Deprecated compatibility aliases for existing specialist views. Prefer the
+     semantic OPDA tokens above; do not introduce new usage. */
+  --cream-50: var(--brand-white);
+  --cream-100: var(--brand-off-white);
+  --cream-200: var(--neutral-100);
+  --cream-300: var(--neutral-200);
+  --cream-400: var(--neutral-200);
+  --cream-500: var(--neutral-300);
+  --bone-600: var(--neutral-500);
+  --stone-700: var(--neutral-600);
+  --graphite-800: var(--brand-night);
+  --graphite-900: var(--brand-ink);
+  --ink-1000: var(--brand-deep);
+  --surface-dark: var(--brand-deep);
+  --surface-dark-alt: var(--brand-night);
+  --surface-dark-tint: #3a3550;
+  --terracotta-50: #fffaf0;
+  --terracotta-100: #fff3c4;
+  --terracotta-200: #ffe58a;
+  --terracotta-300: #ffd65a;
+  --terracotta-400: var(--brand-yellow);
+  --terracotta-500: var(--brand-yellow);
+  --terracotta-600: #c77f00;
+  --terracotta-700: #8a5a00;
+  --terracotta-800: #684300;
+  --terracotta-900: var(--brand-ink);
+  --teal-100: var(--color-status-success-surface);
+  --teal-500: var(--color-status-success);
+  --teal-700: var(--color-status-success);
+  --amber-100: var(--color-status-warning-surface);
+  --amber-500: var(--color-status-warning);
+  --amber-700: var(--color-status-warning);
+  --plum-100: #f2eafb;
+  --plum-500: var(--color-data-4);
+  --plum-700: #7c245f;
+  --crimson-100: var(--color-status-danger-surface);
+  --crimson-500: var(--color-status-danger);
+  --crimson-700: var(--color-status-danger);
+  --color-brand-50: var(--terracotta-50);
+  --color-brand-100: var(--terracotta-100);
+  --color-brand-200: var(--terracotta-200);
+  --color-brand-300: var(--terracotta-300);
+  --color-brand-400: var(--brand-yellow);
+  --color-brand-500: var(--brand-yellow);
+  --color-brand-600: var(--color-data-2);
+  --color-brand-700: var(--color-status-warning);
+  --color-brand-800: var(--brand-ink);
+  --color-brand-900: var(--brand-night);
+  --color-ink-0: var(--brand-white);
+  --color-ink-50: var(--brand-off-white);
+  --color-ink-100: var(--neutral-100);
+  --color-ink-200: var(--neutral-200);
+  --color-ink-300: var(--neutral-300);
+  --color-ink-400: var(--neutral-400);
+  --color-ink-500: var(--neutral-500);
+  --color-ink-600: var(--neutral-600);
+  --color-ink-700: var(--neutral-700);
+  --color-ink-800: var(--brand-ink);
+  --color-ink-900: var(--brand-deep);
+  --color-accent-100: var(--color-status-warning-surface);
+  --color-accent-500: var(--color-status-warning);
+  --color-accent-700: var(--color-status-warning);
+  --color-success-100: var(--color-status-success-surface);
+  --color-success-500: var(--color-status-success);
+  --color-success-700: var(--color-status-success);
+  --color-warning-100: var(--color-status-warning-surface);
+  --color-warning-500: var(--color-status-warning);
+  --color-warning-700: var(--color-status-warning);
+  --color-danger-100: var(--color-status-danger-surface);
+  --color-danger-500: var(--color-status-danger);
+  --color-danger-700: var(--color-status-danger);
+  --color-info-100: var(--color-status-info-surface);
+  --color-info-500: var(--color-status-info);
+  --color-info-700: var(--color-status-info);
 }
 
-/* ──────────────────────────────────────────────────────────────
-   SEMANTIC TYPE ROLES
-   Use these directly in component CSS instead of re-quoting font + size + leading.
-   ────────────────────────────────────────────────────────────── */
-:root {
-  /* Display — serif, slab-leaning. For hero + h1 only. */
-  --display:
-    700 clamp(2.5rem, 1.8rem + 2vw, 3.5rem) / 1.05 var(--font-serif);
-
-  /* H1 — serif inside prose pages */
-  --h1:
-    700 clamp(1.875rem, 1.4rem + 1.5vw, 2.5rem) / 1.1 var(--font-serif);
-
-  /* H2 — serif, smaller — section starters inside prose */
-  --h2:
-    600 var(--text-2xl) / 1.2 var(--font-serif);
-
-  /* H3 — sans, tight, the "kicker" heading */
-  --h3:
-    600 var(--text-xl) / 1.25 var(--font-sans);
-
-  /* H4 — sans */
-  --h4:
-    600 var(--text-lg) / 1.3 var(--font-sans);
-
-  /* Lead — first paragraph after H1 */
-  --lead:
-    400 var(--text-xl) / 1.5 var(--font-sans);
-
-  /* Body — every paragraph */
-  --body:
-    400 var(--text-base) / var(--leading-normal) var(--font-sans);
-
-  /* Caption / meta / source-note */
-  --meta:
-    500 var(--text-xs) / 1.4 var(--font-sans);
-  --meta-uppercase-tracking: var(--tracking-meta);
-
-  /* Code */
-  --code:
-    400 0.875em / 1.55 var(--font-mono);
-}
-
-/* ──────────────────────────────────────────────────────────────
-   DARK MODE
-   Three activations preserved per the brief:
-     1.  :root[data-theme="dark"]
-     2.  prefers-color-scheme: dark (when user has not pinned light)
-     3.  implicit light :root (above)
-   Dark mode mood: deep oak / espresso, not slate. Terracotta stays as the
-   single accent.
-   ────────────────────────────────────────────────────────────── */
-:root[data-theme="dark"] {
+[data-theme='dark'] {
   color-scheme: dark;
-
-  --color-surface:        var(--surface-dark);
-  --color-surface-alt:    var(--surface-dark);
-  --color-surface-tint:   var(--surface-dark-tint);
-  --color-surface-card:   var(--surface-dark-alt);
-  --color-surface-inset:  var(--surface-dark-tint);
-  --color-border:         #34302b;
-  --color-border-strong:  #463f37;
-
-  /* Dark-mode reskin tokens — flip surfaces & hover, keep brand chain.
-     Ring + focus inherit dark --color-border / --terracotta-* set above
-     and elsewhere; only the BG flip needs explicit override here. */
-  --button-bg:        var(--surface-dark);
-  --button-bg-hover:  var(--surface-dark-tint);
-  --button-bg-active: var(--surface-dark-tint);
-
-  --color-text:           #e8e2d4;
-  --color-text-strong:    #f7f3e9;
-  --color-text-muted:     #a8a097;
-  --color-text-deprecated:#73695e;
-
-  --color-link:           var(--terracotta-300);
-  --color-link-hover:     var(--terracotta-200);
-
-  /* Brand scale — keep terracotta hue, swap roles so 100=deep tint, 900=light text */
-  --color-brand-50:  #2a1e18;
-  --color-brand-100: #3a261d;
-  --color-brand-200: #5f342a;
-  --color-brand-300: #874838;
-  --color-brand-400: #a9583e;
-  --color-brand-500: #cc785c;
-  --color-brand-600: #d68a68;
-  --color-brand-700: #de9d7c;
-  --color-brand-800: #ebc3a9;
-  --color-brand-900: #f5e1d4;
-
-  /* Ink scale inverted */
-  --color-ink-0:   var(--surface-dark);
-  --color-ink-50:  var(--surface-dark-alt);
-  --color-ink-100: var(--surface-dark-tint);
-  --color-ink-200: #34302b;
-  --color-ink-300: #463f37;
-  --color-ink-400: #5f574c;
-  --color-ink-500: #8a8175;
-  --color-ink-600: #a8a097;
-  --color-ink-700: #c7c0b3;
-  --color-ink-800: #e0d9ca;
-  --color-ink-900: #f7f3e9;
-
-  --color-accent-100: #3a2810;
-  --color-accent-500: var(--amber-500);
-  --color-accent-700: #f0c184;
-
-  --color-success-100: #1a3a32;
-  --color-success-500: var(--teal-500);
-  --color-success-700: #9ad6c9;
-
-  --color-info-100:    #1f2a37;
-  --color-info-500:    #8aa5c0;
-  --color-info-700:    #c0d0e0;
-
-  --color-warning-100: #3a2810;
-  --color-warning-500: var(--amber-500);
-  --color-warning-700: #f0c184;
-
-  --color-danger-100:  #3a1f17;
-  --color-danger-500:  #d47661;
-  --color-danger-700:  #f0b8a7;
+  --color-surface: var(--brand-deep);
+  --color-surface-alt: var(--brand-night);
+  --color-surface-tint: #3a3550;
+  --color-surface-card: var(--brand-night);
+  --color-surface-inset: #1c1a2b;
+  --color-text: var(--brand-off-white);
+  --color-text-strong: var(--brand-white);
+  --color-text-muted: var(--neutral-400);
+  --color-text-placeholder: var(--neutral-400);
+  --color-text-disabled: var(--neutral-500);
+  --color-border: #3a3550;
+  --color-border-strong: #56506d;
+  --color-link: #a9a0ff;
+  --color-link-hover: #c7c1ff;
+  --color-link-visited: #d8a8ed;
+  --color-focus: var(--brand-yellow);
+  --color-focus-contrast: var(--brand-deep);
+  --color-status-success: #66c28f;
+  --color-status-success-surface: #173a2b;
+  --color-status-warning: #ffb84d;
+  --color-status-warning-surface: #3d2d13;
+  --color-status-danger: #ff958a;
+  --color-status-danger-surface: #442022;
+  --color-status-info: #7fb5ff;
+  --color-status-info-surface: #182d4a;
+  --button-bg: var(--brand-night);
+  --button-bg-hover: #3a3550;
+  --button-bg-active: #4a445e;
+  --ring-subtle: #3a3550;
+  --ring-strong: #56506d;
+  --cream-50: var(--brand-night);
+  --cream-100: var(--brand-deep);
+  --cream-200: var(--brand-night);
+  --cream-300: #3a3550;
+  --cream-400: #3a3550;
+  --cream-500: #56506d;
+  --bone-600: var(--neutral-500);
+  --stone-700: var(--neutral-400);
+  --graphite-800: var(--brand-off-white);
+  --graphite-900: var(--brand-white);
+  --ink-1000: var(--brand-white);
+  --terracotta-50: #3b3217;
+  --terracotta-100: #4d3e13;
+  --terracotta-200: #6a5414;
+  --terracotta-300: var(--brand-yellow);
+  --terracotta-400: var(--brand-yellow);
+  --terracotta-500: var(--brand-yellow);
+  --terracotta-600: var(--brand-yellow-active);
+  --terracotta-700: var(--brand-yellow);
+  --terracotta-800: var(--brand-yellow);
+  --terracotta-900: var(--brand-off-white);
+  --color-brand-100: #4d3e13;
+  --color-brand-200: #6a5414;
+  --color-brand-700: var(--brand-yellow);
+  --color-brand-800: var(--brand-yellow);
+  --color-brand-900: var(--brand-off-white);
+  --color-success-100: var(--color-status-success-surface);
+  --color-success-500: var(--color-status-success);
+  --color-success-700: var(--color-status-success);
+  --color-warning-100: var(--color-status-warning-surface);
+  --color-warning-500: var(--color-status-warning);
+  --color-warning-700: var(--color-status-warning);
+  --color-danger-100: var(--color-status-danger-surface);
+  --color-danger-500: var(--color-status-danger);
+  --color-danger-700: var(--color-status-danger);
+  --color-info-100: var(--color-status-info-surface);
+  --color-info-500: var(--color-status-info);
+  --color-info-700: var(--color-status-info);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root:not([data-theme="light"]):not([data-theme="dark"]) {
-    color-scheme: dark;
+@media (max-width: 40rem) {
+  :root {
+    --display: 600 2.125rem / 2.625rem var(--font-display);
+    --h1: 600 1.875rem / 2.375rem var(--font-display);
+  }
+}
 
-    --color-surface:        var(--surface-dark);
-    --color-surface-alt:    var(--surface-dark);
-    --color-surface-tint:   var(--surface-dark-tint);
-    --color-surface-card:   var(--surface-dark-alt);
-    --color-surface-inset:  var(--surface-dark-tint);
-    --color-border:         #34302b;
-    --color-border-strong:  #463f37;
-
-    --color-text:           #e8e2d4;
-    --color-text-strong:    #f7f3e9;
-    --color-text-muted:     #a8a097;
-    --color-text-deprecated:#73695e;
-
-    --color-link:           var(--terracotta-300);
-    --color-link-hover:     var(--terracotta-200);
-
-    --color-brand-50:  #2a1e18;
-    --color-brand-100: #3a261d;
-    --color-brand-200: #5f342a;
-    --color-brand-300: #874838;
-    --color-brand-400: #a9583e;
-    --color-brand-500: #cc785c;
-    --color-brand-600: #d68a68;
-    --color-brand-700: #de9d7c;
-    --color-brand-800: #ebc3a9;
-    --color-brand-900: #f5e1d4;
-
-    --color-ink-0:   var(--surface-dark);
-    --color-ink-50:  var(--surface-dark-alt);
-    --color-ink-100: var(--surface-dark-tint);
-    --color-ink-200: #34302b;
-    --color-ink-300: #463f37;
-    --color-ink-400: #5f574c;
-    --color-ink-500: #8a8175;
-    --color-ink-600: #a8a097;
-    --color-ink-700: #c7c0b3;
-    --color-ink-800: #e0d9ca;
-    --color-ink-900: #f7f3e9;
-
-    --color-accent-100: #3a2810;
-    --color-accent-500: var(--amber-500);
-    --color-accent-700: #f0c184;
-
-    --color-success-100: #1a3a32;
-    --color-success-500: var(--teal-500);
-    --color-success-700: #9ad6c9;
-
-    --color-info-100:    #1f2a37;
-    --color-info-500:    #8aa5c0;
-    --color-info-700:    #c0d0e0;
-
-    --color-warning-100: #3a2810;
-    --color-warning-500: var(--amber-500);
-    --color-warning-700: #f0c184;
-
-    --color-danger-100:  #3a1f17;
-    --color-danger-500:  #d47661;
-    --color-danger-700:  #f0b8a7;
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --duration-fast: 0.01ms;
+    --duration-normal: 0.01ms;
+    --motion-standard: 0.01ms;
+    --duration-slow: 0.01ms;
   }
 }

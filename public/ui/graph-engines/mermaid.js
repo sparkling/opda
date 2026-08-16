@@ -69,7 +69,7 @@
       background: theme.surface,
       mainBkg: theme.surface,
       edgeLabelBackground: theme.surface,
-      fontFamily: 'Inter, system-ui, -apple-system, sans-serif',
+      fontFamily: 'DM Sans, system-ui, sans-serif',
       fontSize: '14px',
     };
   }
@@ -140,7 +140,7 @@
 
       function fail(msg) {
         container.innerHTML = '<div style="padding:1rem;font:14px/1.5 var(--font-sans,sans-serif);' +
-          'color:var(--color-text-muted,#6C6A64)">' + msg + '</div>';
+          'color:var(--color-text-muted,#625D72)">' + msg + '</div>';
       }
 
       async function render() {

@@ -1,165 +1,238 @@
 ---
 import Layout from '@/layouts/Layout.astro';
-import Diagram from '@/components/Diagram.astro';
+
+const brandColours = [
+  { name: 'Deep ink', value: '#131224', role: 'Header, hero, footer and code' },
+  { name: 'Night', value: '#231F2F', role: 'Body ink and raised dark surfaces' },
+  { name: 'Brand ink', value: '#2C273B', role: 'Strong text and ink on amber' },
+  { name: 'Amber', value: '#FEC92B', role: 'Primary action and signature rule' },
+  { name: 'Amber active', value: '#FAC238', role: 'Yellow hover and pressed state' },
+  { name: 'Off-white', value: '#F9F9F9', role: 'Quiet surface and zebra rows' },
+];
+
+const dataColours = ['#6C5BD4', '#C77F00', '#0E8478', '#A5317F', '#4E6E93', '#58810B', '#C24E1A', '#6E6580'];
+const tokenSample = `:root {
+  --brand-deep: #131224;
+  --brand-yellow: #fec92b;
+  --color-link: #5b51d8;
+  --target-min: 2.75rem;
+}`;
 ---
 <Layout
   title="Design system"
+  description="The evidence-grounded brand, interaction and accessibility contract for the OPDA knowledge base."
+  hideComments={true}
 >
-<div class="page-meta">
-        <span class="pill">Reference</span>
-        <span>Updated 2026-05-14</span>
-      </div>
+  <div class="page-meta">
+    <span class="pill pill--brand">Normative reference</span>
+    <span>Version 1.0 · 16 August 2026</span>
+  </div>
 
-      <h1>Design system</h1>
-      <p class="lead">
-        Tokens, components, and prose styles shared by every doc page in this knowledge base.
-        Live examples below — open the source files to copy markup.
-      </p>
+  <h1>OPDA design system</h1>
+  <p class="lead">
+    An ink-and-amber data publication for trusted evidence, standards, semantic
+    models and implementation. This page is the compact production projection;
+    <code>DESIGN.md</code> is the complete normative contract and the separate local
+    review site carries the expanded presentation.
+  </p>
 
-      <h2 id="palette">Brand palette</h2>
-      <p>OPDA-inspired deep blue spine, with semantic colours for callouts.</p>
-      <div class="card-grid" style="grid-template-columns: repeat(auto-fill, minmax(11rem, 1fr));">
-        <div class="card" style="border-color: #1a4d80;">
-          <div style="height: 3rem; background: #1a4d80; border-radius: 0.5rem; margin-bottom: 0.5rem;"></div>
-          <strong>Brand 700</strong>
-          <p><code>#1a4d80</code></p>
-        </div>
-        <div class="card">
-          <div style="height: 3rem; background: #0b2545; border-radius: 0.5rem; margin-bottom: 0.5rem;"></div>
-          <strong>Brand 900</strong>
-          <p><code>#0b2545</code></p>
-        </div>
-        <div class="card">
-          <div style="height: 3rem; background: #4a90c2; border-radius: 0.5rem; margin-bottom: 0.5rem;"></div>
-          <strong>Brand 500</strong>
-          <p><code>#4a90c2</code></p>
-        </div>
-        <div class="card">
-          <div style="height: 3rem; background: #eef4f8; border-radius: 0.5rem; border: 1px solid #ccc; margin-bottom: 0.5rem;"></div>
-          <strong>Brand 100</strong>
-          <p><code>#eef4f8</code></p>
-        </div>
-        <div class="card">
-          <div style="height: 3rem; background: #f59e0b; border-radius: 0.5rem; margin-bottom: 0.5rem;"></div>
-          <strong>Accent</strong>
-          <p><code>#f59e0b</code></p>
-        </div>
-      </div>
+  <div class="design-signoff">
+    <span>Delegated visual authority · operator-adopted</span>
+    <strong>DESIGN AUTHORITY SIGN-OFF — Fable 5 · max effort</strong>
+  </div>
 
-      <h2 id="typography">Typography</h2>
-      <p>System font stack with serif optional. Tight headings, relaxed body.</p>
-      <div class="card" style="max-width: none;">
-        <h1 style="margin-top: 0;">H1 · 36px</h1>
-        <h2 style="border: 0; padding: 0; margin-top: 0;">H2 · 24px</h2>
-        <h3 style="margin-top: 0;">H3 · 20px</h3>
-        <h4 style="margin-top: 0;">H4 · 18px</h4>
-        <p>Body — 16px / 1.6 leading. Used for all paragraph copy.</p>
-        <p style="font-size: var(--text-sm); color: var(--color-text-muted);">
-          Small — 14px / muted colour. Used for captions and meta.
-        </p>
-        <p><code>Monospace</code> for inline code and identifiers.</p>
-      </div>
+  <h2 id="authority">Evidence and authority</h2>
+  <div class="evidence-grid">
+    <article>
+      <span>01 · Authoritative</span>
+      <h3>Supplied guide and vectors</h3>
+      <p>Typography, brand palette, logo geometry and photography direction from Ben Kansy's Q3 2026 resources.</p>
+    </article>
+    <article>
+      <span>02 · Observed</span>
+      <h3>Sites and current application</h3>
+      <p>Useful content and interaction patterns, with defects retained as findings rather than promoted into policy.</p>
+    </article>
+    <article>
+      <span>03 · Derived</span>
+      <h3>Complete web system</h3>
+      <p>Accessible semantic roles, component states, responsive layouts, data display, motion and governance.</p>
+    </article>
+  </div>
 
-      <h2 id="callouts">Callouts</h2>
-      <p>Five semantic variants. Use sparingly.</p>
+  <h2 id="brand">Brand assets</h2>
+  <div class="brand-assets">
+    <figure class="brand-asset brand-asset--light">
+      <img src="/ui/brand/opda-wordmark-dark.svg" alt="Open Property Data Association dark wordmark" width="330" height="94" />
+      <figcaption>Dark wordmark · white and off-white surfaces</figcaption>
+    </figure>
+    <figure class="brand-asset brand-asset--dark">
+      <img src="/ui/brand/opda-wordmark-white.svg" alt="Open Property Data Association white wordmark" width="330" height="94" />
+      <figcaption>White wordmark · deep-ink surfaces</figcaption>
+    </figure>
+  </div>
+  <div class="callout callout--key">
+    <h3 class="callout__label"><span aria-hidden="true">◇</span> Asset rule</h3>
+    <p>Use the supplied SVGs unchanged. Logo-specific fills stay inside the files; interface colours stay in tokens.</p>
+  </div>
 
-      <div class="callout callout--note">
-        <div class="callout__label">Note</div>
-        <p>Background context or aside.</p>
-      </div>
+  <h2 id="colour">Colour</h2>
+  <div class="colour-grid">
+    {brandColours.map((colour) => (
+      <article>
+        <i style={`--sample:${colour.value}`} aria-hidden="true"></i>
+        <strong>{colour.name}</strong>
+        <code>{colour.value}</code>
+        <small>{colour.role}</small>
+      </article>
+    ))}
+  </div>
+  <p>
+    Amber directs attention and always carries dark ink. It is not body copy, a
+    status colour or a sole functional boundary. Prose links use <code>#5B51D8</code>.
+  </p>
 
-      <div class="callout callout--key">
-        <div class="callout__label">Key finding</div>
-        <p>Pull-quote-style emphasis on a load-bearing claim. Use one per page max.</p>
-      </div>
+  <h2 id="type">Typography</h2>
+  <div class="type-board">
+    <article class="type-display"><span>Roboto Slab · 600</span>One shared language.</article>
+    <article class="type-body"><span>DM Sans · 400–700</span>Definitions stay clear at every density.</article>
+    <article class="type-code"><span>Roboto Mono · 400–700</span>propertyPack.tenure.type</article>
+  </div>
+  <table>
+    <caption>Core type scale</caption>
+    <thead><tr><th scope="col">Role</th><th scope="col">Desktop</th><th scope="col">Mobile</th></tr></thead>
+    <tbody>
+      <tr><th scope="row">Display</th><td>44 / 52</td><td>34 / 42</td></tr>
+      <tr><th scope="row">H1</th><td>36 / 44</td><td>30 / 38</td></tr>
+      <tr><th scope="row">H2</th><td>28 / 36</td><td>28 / 36</td></tr>
+      <tr><th scope="row">Body</th><td>16 / 26</td><td>16 / 26</td></tr>
+      <tr><th scope="row">Code</th><td>14 / 22</td><td>14 / 22</td></tr>
+    </tbody>
+  </table>
 
-      <div class="callout callout--success">
-        <div class="callout__label">Success</div>
-        <p>Confirms a positive outcome or completed milestone.</p>
-      </div>
+  <h2 id="components">Components and states</h2>
+  <p>Every interactive component provides hover, active, focus and disabled states, plus loading, error and success where work is asynchronous.</p>
+  <div class="component-board">
+    <article>
+      <span>Primary action</span>
+      <a class="btn" href="#implementation">Use the contract</a>
+    </article>
+    <article>
+      <span>Secondary action</span>
+      <a class="btn btn--ghost" href="#accessibility">Review the gates</a>
+    </article>
+    <article>
+      <span>Disabled</span>
+      <button class="btn" type="button" disabled>Unavailable</button>
+    </article>
+  </div>
+  <div class="status-board">
+    <span class="pill pill--success">✓ Current baseline</span>
+    <span class="pill pill--warn">◇ Review candidate</span>
+    <span class="pill pill--info">i Evidence attached</span>
+  </div>
+  <div class="callout callout--note"><h3 class="callout__label"><span aria-hidden="true">i</span> Information</h3><p>Context that changes how evidence should be read.</p></div>
+  <div class="callout callout--success"><h3 class="callout__label"><span aria-hidden="true">✓</span> Success</h3><p>The validation contract has passed.</p></div>
+  <div class="callout callout--warn"><h3 class="callout__label"><span aria-hidden="true">◇</span> Warning</h3><p>This candidate has not been adopted.</p></div>
+  <div class="callout callout--danger"><h3 class="callout__label"><span aria-hidden="true">!</span> Critical</h3><p>A required provenance field is missing.</p></div>
 
-      <div class="callout callout--warn">
-        <div class="callout__label">Watch out</div>
-        <p>Something the reader should be careful about.</p>
-      </div>
+  <h2 id="data">Data display</h2>
+  <div class="data-palette" aria-label="Ordered categorical data colours">
+    {dataColours.map((colour, index) => <span style={`--data:${colour}`}><b>{index + 1}</b><code>{colour}</code></span>)}
+  </div>
+  <p>Colour is reinforced by order, labels and markers. Tables use captions, scoped headers, visible sorting and labelled horizontal overflow.</p>
+  <div class="table-region" tabindex="0" aria-label="Example standards table, horizontally scrollable">
+    <table>
+      <caption>Standards-status pattern</caption>
+      <thead><tr><th scope="col" aria-sort="ascending">Term ↑</th><th scope="col">Context</th><th scope="col">Status</th><th scope="col">Source</th></tr></thead>
+      <tbody>
+        <tr><th scope="row"><code>Property</code></th><td>Common boundary</td><td><span class="pill pill--success">✓ Current</span></td><td><code>Committed corpus</code></td></tr>
+        <tr><th scope="row"><code>RegisteredTitle</code></th><td>Conveyancing</td><td><span class="pill pill--warn">◇ Candidate</span></td><td><code>Review evidence</code></td></tr>
+      </tbody>
+    </table>
+  </div>
 
-      <div class="callout callout--danger">
-        <div class="callout__label">Critical</div>
-        <p>Hard blocker or risk.</p>
-      </div>
+  <h2 id="accessibility">Accessibility gates</h2>
+  <div class="gate-grid">
+    <article><strong>4.5:1</strong><span>Normal text contrast</span></article>
+    <article><strong>44px</strong><span>Minimum control target</span></article>
+    <article><strong>320px</strong><span>Lossless reflow width</span></article>
+    <article><strong>200ms</strong><span>Maximum motion duration</span></article>
+  </div>
+  <ul>
+    <li>Two-colour amber-and-ink focus treatment on every interactive control.</li>
+    <li>Complete keyboard paths, Escape and focus return for drawers and dialogs.</li>
+    <li>Status combines an icon, full text label and colour.</li>
+    <li>Reduced-motion and forced-colour equivalents are required.</li>
+    <li>No generative identity imagery; photography requires recorded rights and an alt-text decision.</li>
+  </ul>
 
-      <h2 id="pills">Pills &amp; badges</h2>
-      <p>
-        <span class="pill">Default</span>
-        <span class="pill pill--brand">Brand</span>
-        <span class="pill pill--info">Info</span>
-        <span class="pill pill--success">Success</span>
-        <span class="pill pill--warn">Warning</span>
-        <span class="pill pill--accent">Accent</span>
-      </p>
+  <h2 id="implementation">Implementation contract</h2>
+  <div class="implementation-grid">
+    <article><span>Normative</span><strong>DESIGN.md</strong><p>Evidence, rules, patterns and release gates.</p></article>
+    <article><span>Tokens</span><strong>design-tokens.css</strong><p>Colour, typography, space, geometry and motion.</p></article>
+    <article><span>Components</span><strong>public/ui/design/</strong><p>Reviewable CSS modules behind one live facade.</p></article>
+    <article><span>Decision</span><strong>ADR-0073</strong><p>Adoption, supersession, scope and publication boundary.</p></article>
+  </div>
+  <pre><code set:text={tokenSample} /></pre>
+  <p class="closing-rule">The system may evolve. Its evidence and consequences must remain visible.</p>
 
-      <h2 id="tables">Tables</h2>
-      <table>
-        <thead>
-          <tr><th>Column A</th><th>Column B</th><th>Column C</th></tr>
-        </thead>
-        <tbody>
-          <tr><td>Cell 1</td><td>Cell 2</td><td>Cell 3</td></tr>
-          <tr><td>Cell 4</td><td>Cell 5</td><td>Cell 6</td></tr>
-        </tbody>
-      </table>
-
-      <h2 id="diagrams">Diagrams (mermaid)</h2>
-      <p>
-        Diagrams use the shared <strong>Cagle palette</strong> — 12 semantic classes injected
-        globally by <code>/ui/client.js</code>. Use class names like <code>:::infra</code>,
-        <code>:::service</code>, <code>:::data</code>, <code>:::process</code>, <code>:::user</code>,
-        <code>:::success</code>, <code>:::warning</code>, <code>:::error</code>, etc. — do not
-        hardcode <code>fill:#…</code> in diagrams.
-      </p>
-      <Diagram caption="All diagrams render client-side via mermaid.js using the Cagle palette.">
-flowchart LR
-  A[Source]:::data --> B[Transform]:::process --> C[Knowledge]:::success
-</Diagram>
-
-      <h3>Cagle classes available</h3>
-      <p>
-        Semantic types: <code>infra</code> (deep blue), <code>service</code> (green),
-        <code>data</code> (orange), <code>user</code> (purple), <code>process</code> (cyan),
-        <code>security</code> (teal), <code>external</code> (gray).
-        Status types: <code>success</code> (green), <code>warning</code> (amber),
-        <code>error</code> (red), <code>info</code> (blue), <code>neutral</code> (gray).
-      </p>
-
-      <h2 id="cards">Card grid</h2>
-      <div class="card-grid">
-        <div class="card">
-          <div class="pill pill--brand">Section</div>
-          <h3><a href="#">Card title</a></h3>
-          <p>Short description, max ~2 lines, muted.</p>
-        </div>
-        <div class="card">
-          <div class="pill pill--success">Done</div>
-          <h3><a href="#">Another card</a></h3>
-          <p>Cards lift on hover and link to deeper pages.</p>
-        </div>
-        <div class="card">
-          <div class="pill pill--warn">In progress</div>
-          <h3><a href="#">Third card</a></h3>
-          <p>Use the pill row for status / category.</p>
-        </div>
-      </div>
-
-      <h2 id="usage">Using this in a page</h2>
-      <p>
-        Copy <code>_template.html</code> as a starting point. Each page provides only
-        the <code>&lt;article class="prose"&gt;</code> contents inside
-        <code>&lt;div id="app"&gt;</code>; <code>site.js</code> wraps it with header and sidebar.
-      </p>
-      <pre><code>&lt;script src="/ui/site.js"&gt;&lt;/script&gt;
-&lt;script&gt;OPDA.init(&lbrace; page: 'page-id' &rbrace;);&lt;/script&gt;</code></pre>
-      <p>
-        The <code>page</code> id matches one in the sidebar NAV array (in <code>site.js</code>)
-        and gets highlighted automatically.
-      </p>
+  <style>
+    .design-signoff { margin: var(--space-7) 0; padding: var(--space-5); display: flex; flex-direction: column; color: var(--brand-white); background: var(--brand-deep); border-bottom: 4px solid var(--brand-yellow); }
+    .design-signoff span { color: var(--neutral-400); }
+    .design-signoff strong { color: var(--brand-white); }
+    .design-signoff span, .evidence-grid > article > span, .implementation-grid article > span { font: 600 var(--text-xs)/1.4 var(--font-mono); text-transform: uppercase; }
+    .evidence-grid > article > span, .implementation-grid article > span { color: var(--color-text-muted); }
+    .evidence-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); margin-top: var(--space-5); border: 1px solid var(--color-border); }
+    .evidence-grid article { padding: var(--space-6); border-right: 1px solid var(--color-border); }
+    .evidence-grid article:last-child { border-right: 0; }
+    .evidence-grid h3 { margin: var(--space-6) 0 var(--space-3); }
+    .brand-assets { display: grid; grid-template-columns: 1fr 1fr; border: 1px solid var(--color-border); }
+    .brand-asset { min-height: 15rem; margin: 0; padding: var(--space-7); display: grid; place-items: center; border-right: 1px solid var(--color-border); }
+    .brand-asset:last-child { border-right: 0; }
+    .brand-asset img { width: min(100%, 20rem); height: auto; }
+    .brand-asset figcaption { align-self: end; color: var(--color-text-muted); font-size: var(--text-sm); }
+    .brand-asset--light { color: var(--brand-night); background: var(--brand-white); }
+    .brand-asset--light figcaption { color: var(--neutral-600); }
+    .brand-asset--dark { color: var(--brand-white); background: var(--brand-deep); }
+    .brand-asset--dark figcaption { color: var(--neutral-400); }
+    .colour-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); border: 1px solid var(--color-border); }
+    .colour-grid article { min-height: 13rem; padding: var(--space-5); display: flex; flex-direction: column; border-right: 1px solid var(--color-border); border-bottom: 1px solid var(--color-border); }
+    .colour-grid i { height: 5rem; margin: calc(-1 * var(--space-5)) calc(-1 * var(--space-5)) var(--space-5); background: var(--sample); border-bottom: 1px solid var(--color-border); }
+    .colour-grid code, .colour-grid small { color: var(--color-text-muted); }
+    .colour-grid small { margin-top: auto; }
+    .type-board { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); border: 1px solid var(--color-border); }
+    .type-board article { min-height: 10rem; padding: var(--space-6); border-right: 1px solid var(--color-border); }
+    .type-board span { display: block; margin-bottom: var(--space-5); color: var(--color-text-muted); font: 500 var(--text-xs)/1.4 var(--font-mono); }
+    .type-display { font: 600 var(--text-2xl)/1.3 var(--font-display); }
+    .type-body { font: 500 var(--text-lg)/1.5 var(--font-sans); }
+    .type-code { font: var(--code); }
+    .component-board { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); border: 1px solid var(--color-border); }
+    .component-board article { min-height: 8rem; padding: var(--space-5); display: flex; flex-direction: column; align-items: flex-start; gap: var(--space-5); border-right: 1px solid var(--color-border); }
+    .component-board span { color: var(--color-text-muted); font: 500 var(--text-xs)/1.4 var(--font-mono); }
+    .status-board { margin: var(--space-5) 0; display: flex; flex-wrap: wrap; gap: var(--space-3); }
+    .data-palette { display: grid; grid-template-columns: repeat(8, 1fr); margin-top: var(--space-5); }
+    .data-palette span { min-height: 6rem; padding: var(--space-3); display: flex; flex-direction: column; justify-content: space-between; color: var(--brand-white); background: var(--data); }
+    .data-palette span:nth-child(2) { color: var(--brand-night); }
+    .data-palette code { padding: 0; border-radius: 0; color: inherit; background: transparent; font-size: var(--text-xs); }
+    .table-region { overflow-x: auto; }
+    .table-region table { min-width: 42rem; }
+    .gate-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); border: 1px solid var(--color-border); }
+    .gate-grid article { min-height: 8rem; padding: var(--space-5); border-right: 1px solid var(--color-border); }
+    .gate-grid strong { display: block; color: var(--color-text-strong); font: 700 var(--text-2xl)/1.2 var(--font-sans); }
+    .gate-grid span { display: block; margin-top: var(--space-3); color: var(--color-text-muted); }
+    .implementation-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--space-5); }
+    .implementation-grid article { padding: var(--space-6); border: 1px solid var(--color-border); }
+    .implementation-grid strong { display: block; margin-top: var(--space-5); font: var(--h3); }
+    .closing-rule { margin-top: var(--space-8); padding-left: var(--space-5); border-left: 4px solid var(--brand-yellow); font: 600 var(--text-lg)/1.5 var(--font-sans); }
+    @media (max-width: 60rem) {
+      .evidence-grid, .colour-grid, .type-board, .component-board { grid-template-columns: 1fr 1fr; }
+      .data-palette { grid-template-columns: repeat(4, 1fr); }
+      .gate-grid { grid-template-columns: 1fr 1fr; }
+    }
+    @media (max-width: 40rem) {
+      .evidence-grid, .brand-assets, .colour-grid, .type-board, .component-board, .implementation-grid, .gate-grid { grid-template-columns: 1fr; }
+      .evidence-grid article, .brand-asset, .type-board article, .component-board article, .gate-grid article { border-right: 0; border-bottom: 1px solid var(--color-border); }
+    }
+  </style>
 </Layout>

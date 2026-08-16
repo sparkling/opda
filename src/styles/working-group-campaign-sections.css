@@ -241,7 +241,7 @@
 .has-campaign-js [data-reveal] {
   opacity: 0;
   transform: translateY(1.5rem);
-  transition: opacity 550ms var(--ease), transform 550ms var(--ease);
+  transition: opacity 160ms var(--ease), transform 160ms var(--ease);
   transition-delay: var(--reveal-delay, 0ms);
 }
 

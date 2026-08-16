@@ -97,10 +97,6 @@
     animation: none;
   }
 
-  [data-parallax-layer] {
-    transform: none !important;
-  }
-
   .wg-story__steps article {
     opacity: 1;
     transform: none !important;

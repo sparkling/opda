@@ -21,7 +21,7 @@
  * @property {string} date    - ISO date string from frontmatter, or ''
  */
 
-/** All 68 ADRs in the corpus. Every ADR gets a live page. */
+/** All 73 ADRs in the corpus. Every ADR gets a live page. */
 export const ADR_REGISTRY = [
   { id: "adr-0001", number: "0001", title: "Selective adoption of DCAM v3 and DAMA-DMBOK2 elements", status: "accepted", date: "2026-05-18" },
   { id: "adr-0002", number: "0002", title: "Folder hierarchy and slug taxonomy", status: "accepted", date: "2026-05-18" },
@@ -47,7 +47,7 @@ export const ADR_REGISTRY = [
   { id: "adr-0022", number: "0022", title: "Make manual diagram elements clickable (navigate to entity pages)", status: "accepted", date: "2026-05-28" },
   { id: "adr-0023", number: "0023", title: "Build-time ODR pages: convert markdown to enriched HTML once, freeze, and commit", status: "superseded", date: "2026-05-29" },
   { id: "adr-0024", number: "0024", title: "ODR enrichment lives in the markdown; HTML is generated from it every build", status: "accepted", date: "2026-05-29" },
-  { id: "adr-0025", number: "0025", title: "The CSS architecture: Claude Design is authoritative; Tailwind is a scoped guest", status: "accepted", date: "2026-05-29" },
+  { id: "adr-0025", number: "0025", title: "Keep the hand-authored design above Tailwind Preflight", status: "superseded", date: "2026-05-29" },
   { id: "adr-0026", number: "0026", title: "Bounded-Context Scheme Emission", status: "accepted", date: "2026-05-30" },
   { id: "adr-0027", number: "0027", title: "Council-Session Indexing in AgentDB", status: "accepted", date: "2026-05-30" },
   { id: "adr-0028", number: "0028", title: "Descriptive-Layer Walk Emission and Generated Home-Pass", status: "accepted", date: "2026-05-30" },
@@ -91,4 +91,9 @@ export const ADR_REGISTRY = [
   { id: "adr-0066", number: "0066", title: "The 451 required Property Pack data points are the closed seed scope for a greenfield ontology", status: "accepted", date: "2026-08-03" },
   { id: "adr-0067", number: "0067", title: "Model the Property Pack from first principles with bounded-context ownership", status: "accepted", date: "2026-08-03" },
   { id: "adr-0068", number: "0068", title: "Govern the OPDA standards lifecycle through human consensus and staged ratification", status: "proposed", date: "2026-08-03" },
+  { id: "adr-0069", number: "0069", title: "Recruit later bounded-context working groups through a public campaign and simple sign-up", status: "accepted", date: "2026-08-12" },
+  { id: "adr-0070", number: "0070", title: "Operate OPDA working groups through a uniform Microsoft 365 workspace pattern", status: "accepted", date: "2026-08-14" },
+  { id: "adr-0071", number: "0071", title: "Recruit later bounded-context groups through a coordinated public campaign", status: "accepted", date: "2026-08-14" },
+  { id: "adr-0072", number: "0072", title: "Operate a scheduled, harnessed working-group inbox agent", status: "accepted", date: "2026-08-15" },
+  { id: "adr-0073", number: "0073", title: "Adopt the OPDA brand and replace the website design system", status: "accepted", date: "2026-08-16" },
 ];

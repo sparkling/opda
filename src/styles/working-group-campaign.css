@@ -115,7 +115,7 @@
   aspect-ratio: 1;
   border: 1px dashed var(--color-border-strong);
   border-radius: 50%;
-  animation: campaign-orbit 90s linear infinite;
+  animation: none;
 }
 
 .wg-journey ol {
@@ -208,7 +208,7 @@
   background:
     radial-gradient(circle at 50% 48%, color-mix(in srgb, var(--story-accent, var(--terracotta-500)) 18%, transparent), transparent 43%),
     var(--cream-200);
-  transition: background 500ms var(--ease);
+  transition: background 160ms var(--ease);
 }
 
 .wg-handoff-stage::before,
@@ -235,7 +235,7 @@
   border-top: 4px solid var(--story-accent, var(--terracotta-500));
   background: var(--color-surface);
   box-shadow: var(--shadow-lg);
-  transition: border-color 350ms var(--ease), transform 350ms var(--ease);
+  transition: border-color 160ms var(--ease), transform 160ms var(--ease);
 }
 
 .wg-handoff-stage__property strong,
@@ -306,7 +306,7 @@
   padding-block: var(--space-10);
   border-top: 1px solid var(--color-border);
   opacity: 0.46;
-  transition: opacity 350ms var(--ease), transform 350ms var(--ease);
+  transition: opacity 160ms var(--ease), transform 160ms var(--ease);
 }
 
 .wg-story__steps article.is-active {
