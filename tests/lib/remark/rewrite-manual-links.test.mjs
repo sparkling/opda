@@ -5,13 +5,14 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import path from 'node:path';
+import { fileURLToPath } from 'node:url';
 import { createJiti } from 'jiti';
 import { unified } from 'unified';
 import remarkParse from 'remark-parse';
 
 const jiti = createJiti(import.meta.url, { moduleCache: false });
 const { remarkRewriteManualLinks, toManualRoute } = await jiti.import(
-  '/Users/henrik/source/opda/src/lib/remark/rewrite-manual-links.ts'
+  fileURLToPath(new URL('../../../src/lib/remark/rewrite-manual-links.ts', import.meta.url))
 );
 
 /** Absolute path of a manual source file, as Astro hands it to the plugin. */

@@ -110,6 +110,21 @@ jobs:
         with:
           python-version: '3.11'
 
+      - name: Cache Apache Jena dist
+        uses: actions/cache@v6
+        with:
+          path: .jena
+          key: jena-6.1.0
+
+      # Property Pack candidate tests execute RIOT, ARQ and SHACL. Provision
+      # the byte-pinned Jena distribution before the JavaScript test stage.
+      - name: Install opda-gen
+        working-directory: tools/opda-gen
+        run: pip install -e .[dev]
+
+      - name: Provision Apache Jena semantic toolchain
+        run: python -c "from opda_gen.jena_shacl import resolve_jena_shacl; print(resolve_jena_shacl())"
+
       - run: pnpm install --frozen-lockfile
 
       # Fail before the build has a chance to rewrite a stale committed facade.
@@ -153,12 +168,6 @@ jobs:
 
       - name: Generated model and graph drift gate
         run: git diff --exit-code -- src/data/ontology-model.json public/data/ontology-graph-elements.json
-
-      # ADR-0048 gate needs the opda-gen CLI on PATH (mirrors the sibling
-      # ontology workflows' `pip install -e .[dev]`).
-      - name: Install opda-gen
-        working-directory: tools/opda-gen
-        run: pip install -e .[dev]
 
       # ADR-0048 — relationship-layer object-property coverage gate. Fail the
       # deploy if any owl:ObjectProperty is rangeless-AND-shapeless, a

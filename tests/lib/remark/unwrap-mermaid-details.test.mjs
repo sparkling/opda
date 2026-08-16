@@ -4,13 +4,14 @@
  */
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
+import { fileURLToPath } from 'node:url';
 import { createJiti } from 'jiti';
 import { unified } from 'unified';
 import remarkParse from 'remark-parse';
 
 const jiti = createJiti(import.meta.url, { moduleCache: false });
 const { remarkUnwrapMermaidDetails } = await jiti.import(
-  '/Users/henrik/source/opda/src/lib/remark/unwrap-mermaid-details.ts'
+  fileURLToPath(new URL('../../../src/lib/remark/unwrap-mermaid-details.ts', import.meta.url))
 );
 
 /** Parse markdown and run the plugin, returning children array. */

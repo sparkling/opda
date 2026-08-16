@@ -4,11 +4,12 @@
  */
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
+import { fileURLToPath } from 'node:url';
 import { createJiti } from 'jiti';
 
 const jiti = createJiti(import.meta.url, { moduleCache: false });
 const { rehypeFrontmatterUriExtraction } = await jiti.import(
-  '/Users/henrik/source/opda/src/lib/remark/frontmatter-uri-extraction.ts'
+  fileURLToPath(new URL('../../../src/lib/remark/frontmatter-uri-extraction.ts', import.meta.url))
 );
 
 /** Build a minimal hast root with optional heading. */

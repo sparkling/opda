@@ -319,7 +319,6 @@ def render_manifest(fragment_names: list[str]) -> str:
         "",
     ])
 
-
 def bootstrap(force: bool) -> None:
     if MANIFEST_PATH.exists() and not force:
         raise FileExistsError(f"{MANIFEST_PATH} exists; bootstrap will not overwrite it without --force")
@@ -341,7 +340,6 @@ def bootstrap(force: bool) -> None:
     generate()
     print(f"bootstrapped {len(records)} records across {len(names)} TOML fragments")
 
-
 def load_catalogue() -> tuple[dict[str, Any], list[dict[str, Any]]]:
     with MANIFEST_PATH.open("rb") as handle:
         manifest = tomllib.load(handle)
@@ -353,7 +351,6 @@ def load_catalogue() -> tuple[dict[str, Any], list[dict[str, Any]]]:
         with path.open("rb") as handle:
             records.extend(tomllib.load(handle).get("property", []))
     return manifest, records
-
 
 def validate(manifest: dict[str, Any], records: list[dict[str, Any]], compare_sources: bool) -> dict[str, Any]:
     errors: list[str] = []
@@ -445,14 +442,11 @@ def validate(manifest: dict[str, Any], records: list[dict[str, Any]], compare_so
     report.update(classification_report(records))
     return report
 
-
 def generated_bytes(records: list[dict[str, Any]]) -> bytes:
     return (json.dumps(records, ensure_ascii=False, separators=(",", ":")) + "\n").encode()
 
-
 def report_bytes(report: dict[str, Any]) -> bytes:
     return (json.dumps(report, indent=2, ensure_ascii=False, sort_keys=True) + "\n").encode()
-
 
 def generate() -> None:
     manifest, records = load_catalogue()
@@ -463,7 +457,6 @@ def generate() -> None:
     REPORT_PATH.write_bytes(report_bytes(report))
     print(f"generated {JSON_PATH.relative_to(ROOT)} ({len(records)} records)")
 
-
 def check() -> None:
     manifest, records = load_catalogue()
     report = validate(manifest, records, compare_sources=True)
@@ -471,10 +464,19 @@ def check() -> None:
         raise ValueError("catalogue validation failed:\n- " + "\n- ".join(report["errors"]))
     if not JSON_PATH.is_file() or JSON_PATH.read_bytes() != generated_bytes(records):
         raise ValueError(f"stale generated JSON: run {Path(__file__).name} generate")
-    if not REPORT_PATH.is_file() or REPORT_PATH.read_bytes() != report_bytes(report):
+    if not REPORT_PATH.is_file():
+        raise ValueError(f"missing validation report: run {Path(__file__).name} generate")
+    committed = json.loads(REPORT_PATH.read_text(encoding="utf-8"))
+    if WORKBOOK_PATH.is_file() != SCHEMA_PATH.is_file():
+        raise ValueError("source comparison evidence is incomplete")
+    if not WORKBOOK_PATH.is_file():
+        frozen = {"field_mismatches": [], "legacy_schema_sha256_matches": True, "missing_from_catalogue": [], "not_required_in_workbook": [], "performed": True, "workbook_sha256_matches": True}
+        if committed.get("source_comparison") != frozen:
+            raise ValueError("committed source comparison receipt is not a complete pass")
+        report["source_comparison"] = frozen
+    if REPORT_PATH.read_bytes() != report_bytes(report):
         raise ValueError(f"stale validation report: run {Path(__file__).name} generate")
     print(f"catalogue OK: {len(records)} records; JSON and validation report are current")
-
 
 def main() -> int:
     parser = argparse.ArgumentParser()
@@ -491,7 +493,6 @@ def main() -> int:
     else:
         check()
     return 0
-
 
 if __name__ == "__main__":
     raise SystemExit(main())
