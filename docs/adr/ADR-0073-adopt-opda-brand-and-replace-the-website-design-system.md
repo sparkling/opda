@@ -1,6 +1,7 @@
 ---
 status: accepted
 date: 2026-08-16
+updated: 2026-08-16
 tags: [design-system, brand, website, accessibility, css, governance, presentation]
 supersedes: [ADR-0025]
 depends-on: [ADR-0064]
@@ -86,7 +87,7 @@ The system has six ownership boundaries:
 2. **Interface primitives** — semantic tokens, controls, states and interaction.
 3. **Knowledge patterns** — long-form content, evidence, provenance and decisions.
 4. **Data and semantic display** — tables, filters, schema, diagrams and statuses.
-5. **Presentation** — a local, standalone one-page catalogue derived from the same
+5. **Presentation** — a standalone one-page catalogue derived from the same
    contract; it is not a second product implementation.
 6. **Governance and release** — evidence tiers, ownership, change review, tests and
    version history.
@@ -120,6 +121,11 @@ deploy openpropdata.org.uk, smartpropdata.org.uk or any legacy PDTF site. It doe
 not approve standards content, promote candidate models, alter URLs or authorise a
 production deployment. Existing status/provenance governance remains in force.
 
+On 16 August 2026 the operator separately authorised public publication of the
+standalone design-system presentation through OpenAI Sites. That publication is a
+review artefact only and does not authorise deployment of the opda.org.uk
+application or mutation of any other production site.
+
 ## Considered options
 
 - **Keep the previous design.** Rejected because it contradicts supplied OPDA brand
@@ -150,7 +156,9 @@ production deployment. Existing status/provenance governance remains in force.
 - Desktop and mobile rendered checks cover the home page, prose, data browser,
   status/provenance patterns and the design-system catalogue.
 - Focus, contrast, reduced motion and overflow are checked before commit.
-- No deployment or external-site mutation occurs in this implementation.
+- The standalone review artefact may be published through OpenAI Sites under the
+  operator's separate 16 August 2026 authorisation; no application deployment or
+  external production-site mutation occurs.
 
 ## Relationship to earlier decisions
 

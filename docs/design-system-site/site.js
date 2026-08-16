@@ -4,6 +4,7 @@ const menuButton = document.querySelector('.menu-button');
 const closeButton = document.querySelector('.rail-close');
 const liveRegion = document.querySelector('.live-region');
 const railLinks = [...rail.querySelectorAll('nav a')];
+const railSectionLinks = [...rail.querySelectorAll('a[href^="#"]')];
 const mobileQuery = window.matchMedia('(max-width: 48rem)');
 const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
 let returnFocus = null;
@@ -95,7 +96,7 @@ if ('IntersectionObserver' in window) {
   sections.forEach((section) => observer.observe(section));
 }
 
-railLinks.forEach((link) => link.addEventListener('click', (event) => {
+railSectionLinks.forEach((link) => link.addEventListener('click', (event) => {
   const id = link.hash.slice(1);
   setCurrent(id);
   if (!mobileQuery.matches) return;
