@@ -75,3 +75,51 @@ test('reduced motion disables non-essential motion', async ({ page }) => {
   expect(motion.offenders).toEqual([]);
   clean();
 });
+
+test('estate agency diagram is contained and operable at 320 CSS px', async ({ page }) => {
+  const clean = watchRuntime(page);
+  await page.setViewportSize({ width: 320, height: 900 });
+  await visit(page, '/v2/contexts/estate-agency');
+  const wrapper = page.locator('.graph-diagram-wrapper[data-diagram-renderer="editorial"]');
+  await wrapper.scrollIntoViewIfNeeded();
+  await expect(wrapper).toHaveAttribute('data-diagram-ready', 'true');
+  await assertNoBodyOverflow(page);
+
+  const containment = await wrapper.evaluate((element) => {
+    const viewport = element.querySelector('.diagram-viewport').getBoundingClientRect();
+    const box = element.querySelector('.gd-box').getBoundingClientRect();
+    return { viewportLeft: viewport.left, viewportRight: viewport.right, boxLeft: box.left, boxRight: box.right };
+  });
+  expect(containment.viewportLeft).toBeGreaterThanOrEqual(containment.boxLeft);
+  expect(containment.viewportRight).toBeLessThanOrEqual(containment.boxRight + 1);
+
+  const undersized = await wrapper.locator('button').evaluateAll((buttons) => buttons
+    .map((button) => ({ label: button.getAttribute('aria-label'), rect: button.getBoundingClientRect() }))
+    .filter(({ rect }) => rect.width < 44 || rect.height < 44));
+  expect(undersized).toEqual([]);
+
+  const fullscreen = wrapper.locator('[data-diagram-action="fullscreen"]');
+  await fullscreen.click();
+  await expect(wrapper).toHaveClass(/diagram-fullscreen/u);
+  await page.keyboard.press('Escape');
+  await expect(wrapper).not.toHaveClass(/diagram-fullscreen/u);
+  clean();
+});
+
+test('estate agency diagram preserves forced-colour and reduced-motion states', async ({ page }) => {
+  const clean = watchRuntime(page);
+  await page.emulateMedia({ forcedColors: 'active', reducedMotion: 'reduce' });
+  await visit(page, '/v2/contexts/estate-agency');
+  const wrapper = page.locator('.graph-diagram-wrapper[data-diagram-renderer="editorial"]');
+  await wrapper.scrollIntoViewIfNeeded();
+  await expect(wrapper).toHaveAttribute('data-diagram-ready', 'true');
+  const resource = wrapper.locator('a.dd-resource').first();
+  await resource.focus();
+  const state = await resource.locator('rect').first().evaluate((element) => {
+    const style = getComputedStyle(element);
+    return { stroke: style.stroke, transitionDuration: style.transitionDuration };
+  });
+  expect(state.stroke).not.toBe('none');
+  expect(state.transitionDuration).toMatch(/^(0s|0\.0+1ms)$/u);
+  clean();
+});

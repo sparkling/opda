@@ -1,0 +1,217 @@
+.estate-agency-diagram {
+  --dd-accent: var(--color-data-1);
+  --dd-boundary: var(--color-data-5);
+  --dd-line: var(--color-data-8);
+  display: block;
+  overflow: visible;
+  color: var(--color-text-strong);
+  background: var(--color-surface-alt);
+  font-family: var(--font-sans);
+  text-rendering: geometricPrecision;
+}
+
+html[data-theme='dark'] .estate-agency-diagram {
+  --dd-accent: var(--color-data-1-dark);
+  --dd-boundary: var(--color-data-5-dark);
+  --dd-line: var(--color-data-8-dark);
+}
+
+.estate-agency-diagram .dd-zone__frame {
+  fill: var(--color-surface);
+  stroke: var(--color-border);
+  stroke-width: 1;
+  vector-effect: non-scaling-stroke;
+}
+
+.estate-agency-diagram .dd-zone--boundary .dd-zone__frame {
+  fill: var(--color-surface-card);
+  stroke: var(--dd-boundary);
+  stroke-width: 2;
+  stroke-dasharray: 8 8;
+}
+
+.estate-agency-diagram .dd-zone__label,
+.estate-agency-diagram .dd-card__kind,
+.estate-agency-diagram .dd-legend text {
+  fill: var(--color-text-muted);
+  font: 700 var(--text-xs) / 1 var(--font-mono);
+  letter-spacing: var(--tracking-meta);
+}
+
+.estate-agency-diagram .dd-card__frame {
+  fill: var(--color-surface-card);
+  stroke: var(--color-border-strong);
+  stroke-width: 2;
+  vector-effect: non-scaling-stroke;
+}
+
+.estate-agency-diagram [data-card-variant='focal'] .dd-card__frame {
+  stroke: var(--dd-accent);
+  stroke-width: 3;
+}
+
+.estate-agency-diagram [data-card-variant='boundary'] .dd-card__frame {
+  stroke: var(--dd-boundary);
+  stroke-dasharray: 8 8;
+}
+
+.estate-agency-diagram .dd-card__header-hit,
+.estate-agency-diagram .dd-field__hit {
+  fill: transparent;
+  stroke: transparent;
+  stroke-width: 2;
+  transition: fill var(--motion-standard) var(--ease), stroke var(--motion-standard) var(--ease);
+  vector-effect: non-scaling-stroke;
+}
+
+.estate-agency-diagram .dd-field__hit {
+  stroke: var(--color-border);
+  stroke-width: 1;
+}
+
+.estate-agency-diagram .dd-card__title {
+  fill: var(--color-text-strong);
+  font: 700 var(--text-lg) / 1.2 var(--font-sans);
+}
+
+.estate-agency-diagram .dd-card__subtitle {
+  fill: var(--color-text-muted);
+  font: 500 var(--text-xs) / 1.3 var(--font-sans);
+}
+
+.estate-agency-diagram .dd-field__label {
+  fill: var(--color-text-strong);
+  font: 600 var(--text-sm) / 1.3 var(--font-sans);
+}
+
+.estate-agency-diagram .dd-field__type {
+  fill: var(--color-text-muted);
+  font: 500 var(--text-xs) / 1.3 var(--font-mono);
+}
+
+.estate-agency-diagram .dd-connector {
+  fill: none;
+  stroke: var(--dd-line);
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  vector-effect: non-scaling-stroke;
+}
+
+.estate-agency-diagram .dd-connector--boundary,
+.estate-agency-diagram .dd-connector--hierarchy {
+  stroke-dasharray: 8 8;
+}
+
+.estate-agency-diagram .dd-arrow-head {
+  fill: var(--dd-line);
+}
+
+.estate-agency-diagram .dd-hierarchy-arrow-head {
+  fill: var(--color-surface-card);
+  stroke: var(--dd-line);
+  stroke-width: 1;
+}
+
+.estate-agency-diagram .dd-relationship__hit,
+.estate-agency-diagram .dd-hierarchy-label rect {
+  fill: var(--color-surface-card);
+  stroke: var(--dd-line);
+  stroke-width: 2;
+  transition: fill var(--motion-standard) var(--ease), stroke var(--motion-standard) var(--ease);
+  vector-effect: non-scaling-stroke;
+}
+
+.estate-agency-diagram .dd-relationship__label,
+.estate-agency-diagram .dd-hierarchy-label text {
+  fill: var(--color-text-strong);
+  font: 700 var(--text-xs) / 1 var(--font-mono);
+  letter-spacing: var(--tracking-meta);
+  pointer-events: none;
+}
+
+.estate-agency-diagram .dd-hierarchy-label rect {
+  stroke-dasharray: 8 8;
+}
+
+.estate-agency-diagram .dd-resource {
+  color: inherit;
+  cursor: pointer;
+  text-decoration: none;
+}
+
+.estate-agency-diagram .dd-resource:hover .dd-card__header-hit,
+.estate-agency-diagram .dd-resource:hover .dd-field__hit,
+.estate-agency-diagram .dd-resource:hover .dd-relationship__hit {
+  fill: var(--color-surface-tint);
+  stroke: var(--dd-accent);
+}
+
+.estate-agency-diagram .dd-resource:active .dd-card__header-hit,
+.estate-agency-diagram .dd-resource:active .dd-field__hit,
+.estate-agency-diagram .dd-resource:active .dd-relationship__hit {
+  fill: var(--color-surface-alt);
+  stroke: var(--color-text-strong);
+}
+
+.estate-agency-diagram .dd-resource:focus-visible {
+  outline: none;
+}
+
+.estate-agency-diagram .dd-resource:focus-visible .dd-card__header-hit,
+.estate-agency-diagram .dd-resource:focus-visible .dd-field__hit,
+.estate-agency-diagram .dd-resource:focus-visible .dd-relationship__hit {
+  fill: var(--color-surface-tint);
+  stroke: var(--color-focus);
+  stroke-width: 4;
+  filter: drop-shadow(0 0 2px var(--color-focus-contrast));
+}
+
+.estate-agency-diagram .dd-legend line {
+  stroke: var(--color-border-strong);
+  stroke-width: 1;
+  vector-effect: non-scaling-stroke;
+}
+
+.estate-agency-diagram .dd-legend .dd-legend__boundary {
+  stroke: var(--dd-boundary);
+  stroke-width: 2;
+  stroke-dasharray: 8 8;
+}
+
+.estate-agency-diagram .dd-legend__count {
+  fill: var(--color-text-strong);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .estate-agency-diagram .dd-card__header-hit,
+  .estate-agency-diagram .dd-field__hit,
+  .estate-agency-diagram .dd-relationship__hit {
+    transition: none;
+  }
+}
+
+@media (forced-colors: active) {
+  .estate-agency-diagram,
+  .estate-agency-diagram .dd-zone__frame,
+  .estate-agency-diagram .dd-card__frame,
+  .estate-agency-diagram .dd-relationship__hit,
+  .estate-agency-diagram .dd-hierarchy-label rect {
+    fill: Canvas;
+    stroke: CanvasText;
+  }
+
+  .estate-agency-diagram text { fill: CanvasText; }
+  .estate-agency-diagram .dd-connector,
+  .estate-agency-diagram .dd-legend line { stroke: CanvasText; }
+  .estate-agency-diagram .dd-arrow-head { fill: CanvasText; }
+  .estate-agency-diagram .dd-hierarchy-arrow-head { fill: Canvas; stroke: CanvasText; }
+
+  .estate-agency-diagram .dd-resource:focus-visible .dd-card__header-hit,
+  .estate-agency-diagram .dd-resource:focus-visible .dd-field__hit,
+  .estate-agency-diagram .dd-resource:focus-visible .dd-relationship__hit {
+    fill: Canvas;
+    stroke: Highlight;
+    filter: none;
+  }
+}

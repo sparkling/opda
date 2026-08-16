@@ -1,12 +1,8 @@
 ---
 /**
- * GraphDiagram — Mermaid diagram widget, ported from hm/semantic-app (ADR-0190)
- * for the ontology section. Renders a static Mermaid `source` inside a pan/zoom
- * shell: Ctrl-scroll zoom (with % indicator), drag-pan, Navigate/Explore
- * (click-to-open-page vs click-to-lock-highlight), reset, fullscreen, and
- * hover-highlight. The OPDA semantic and categorical palette comes from
- * `src/lib/diagram-palette` (injected by the island), so pages author bare
- * `:::user` and, for click-navigation, emit `click NODE "url"` directives.
+ * GraphDiagram — shared pan/zoom/fullscreen shell for Mermaid and authored SVG.
+ * Mermaid remains the default renderer and supplies Navigate/Explore. Editorial
+ * SVGs keep native links and use the renderer-neutral viewport controls.
  *
  * Only the hm `static` mode is ported; `subject`/`concept-graph` (in-browser
  * RDF-store graph building) are out of scope for opda.
@@ -17,12 +13,18 @@ interface Props {
   caption?: string;
   /** Static min-height for the diagram box (e.g. "520px"). */
   minHeight?: string;
+  renderer?: 'mermaid' | 'editorial';
 }
-const { source, caption, minHeight } = Astro.props;
-const configJson = JSON.stringify({ mode: 'static', source: source ?? '' }).replace(/</g, '\\u003c');
+const { source, caption, minHeight, renderer = 'mermaid' } = Astro.props;
+const configJson = JSON.stringify({ mode: 'static', renderer, source: source ?? '' }).replace(/</g, '\\u003c');
+const viewportStyle = [
+  'cursor:grab',
+  minHeight && `min-height:${minHeight}`,
+  renderer === 'editorial' && minHeight && `height:${minHeight}`,
+].filter(Boolean).join(';');
 ---
 
-<figure class="graph-diagram-wrapper">
+<figure class="graph-diagram-wrapper" data-diagram-renderer={renderer} data-diagram-ready="false">
   <script type="application/json" class="gd-config" set:html={configJson} />
 
   <div class="gd-actionbar">
@@ -33,10 +35,12 @@ const configJson = JSON.stringify({ mode: 'static', source: source ?? '' }).repl
     <span class="gd-actionbar-spacer"></span>
 
     <span class="diagram-toolbar" role="group" aria-label="Diagram controls">
-      <button type="button" data-diagram-action="toggle-mode" title="Navigate: click opens the term page. Explore: click locks the highlight." class="gd-seg-btn diagram-mode-toggle" aria-pressed="false" aria-label="Navigate mode. Activate to switch to explore mode.">
-        <svg class="gd-icon" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M13.5 6H5.25A2.25 2.25 0 003 8.25v10.5A2.25 2.25 0 005.25 21h10.5A2.25 2.25 0 0018 18.75V10.5m-10.5 6L21 3m0 0h-5.25M21 3v5.25" /></svg>
-        <span class="diagram-mode-label">Navigate</span>
-      </button>
+      {renderer === 'mermaid' && (
+        <button type="button" data-diagram-action="toggle-mode" title="Navigate: click opens the term page. Explore: click locks the highlight." class="gd-seg-btn diagram-mode-toggle" aria-pressed="false" aria-label="Navigate mode. Activate to switch to explore mode.">
+          <svg class="gd-icon" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M13.5 6H5.25A2.25 2.25 0 003 8.25v10.5A2.25 2.25 0 005.25 21h10.5A2.25 2.25 0 0018 18.75V10.5m-10.5 6L21 3m0 0h-5.25M21 3v5.25" /></svg>
+          <span class="diagram-mode-label">Navigate</span>
+        </button>
+      )}
       <button type="button" data-diagram-action="zoom-in" title="Zoom in" class="gd-seg-btn" aria-label="Zoom in">
         <svg class="gd-icon" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v6m3-3H7" /></svg>
       </button>
@@ -54,11 +58,15 @@ const configJson = JSON.stringify({ mode: 'static', source: source ?? '' }).repl
   </div>
 
   <div class="gd-box">
-    <div class="gd-view-mermaid">
-      <div class="diagram-viewport" style={`cursor:grab${minHeight ? `;min-height:${minHeight}` : ''}`}>
+    <div class={`gd-view-${renderer}`}>
+      <div class="diagram-viewport" style={viewportStyle}>
         <div class="diagram-canvas">
-          <p class="diagram-loading">Loading diagram…</p>
-          <pre class="gd-mermaid"><slot /></pre>
+          {renderer === 'mermaid' ? (
+            <>
+              <p class="diagram-loading">Loading diagram…</p>
+              <pre class="gd-mermaid"><slot /></pre>
+            </>
+          ) : <div class="gd-editorial"><slot /></div>}
         </div>
       </div>
     </div>

@@ -19,25 +19,35 @@ const CARD_LAYOUT = [
   },
   {
     key: 'estate-agency:LettingTerms', x: 664, y: 24, width: 260, height: 136,
-    titleLines: ['Letting terms'], fields: ['estate-agency:rentAmount', 'estate-agency:rentFrequency'],
+    titleLines: ['Letting terms'], fields: [
+      { key: 'estate-agency:rentAmount', kind: 'datatype-property' },
+      { key: 'estate-agency:rentFrequency', kind: 'object-property' },
+    ],
   },
   {
     key: 'estate-agency:MarketDisclosure', x: 664, y: 224, width: 260, height: 136,
     titleLines: ['Market disclosure'],
-    fields: ['estate-agency:marketDisclosureOutcome', 'estate-agency:marketDisclosureType'],
+    fields: [
+      { key: 'estate-agency:marketDisclosureOutcome', kind: 'object-property' },
+      { key: 'estate-agency:marketDisclosureType', kind: 'object-property' },
+    ],
   },
   {
     key: 'estate-agency:MediaResource', x: 664, y: 408, width: 260, height: 92,
-    titleLines: ['Listing media resource'], fields: ['estate-agency:mediaUrl'],
+    titleLines: ['Listing media resource'],
+    fields: [{ key: 'estate-agency:mediaUrl', kind: 'datatype-property' }],
   },
   {
     key: 'estate-agency:PriceStatement', x: 664, y: 548, width: 260, height: 136,
-    titleLines: ['Price statement'], fields: ['estate-agency:priceAmount', 'estate-agency:priceQualifier'],
+    titleLines: ['Price statement'], fields: [
+      { key: 'estate-agency:priceAmount', kind: 'datatype-property' },
+      { key: 'estate-agency:priceQualifier', kind: 'object-property' },
+    ],
   },
   {
     key: 'estate-agency:ConsumerProtectionDeclaration',
     x: 944, y: 24, width: 136, height: 112,
-    titleLines: ['Consumer protection', 'declaration'], subtitle: 'Estate agency class', fields: [],
+    titleLines: ['Consumer', 'protection', 'declaration'], subtitle: 'Estate agency class', fields: [],
   },
 ];
 
@@ -174,18 +184,15 @@ export function buildEstateAgencyEditorialDiagram(
   }
   const placedKeys = new Set([
     ...CARD_LAYOUT.map((card) => card.key),
-    ...CARD_LAYOUT.flatMap((card) => card.fields),
+    ...CARD_LAYOUT.flatMap((card) => card.fields.map((field) => field.key)),
     ...RELATIONSHIP_LAYOUT.map((relationship) => relationship.key),
   ]);
   compareSets(new Set(resourcesByKey.keys()), placedKeys, 'resource-set', 'resource sets');
 
   const cards = CARD_LAYOUT.map((layout) => {
     const { resource, route } = requireResource(resourcesByKey, layout.key, 'class');
-    const fields = layout.fields.map((key) => {
-      const placed = requireResource(resourcesByKey, key, resourcesByKey.get(key)?.kind);
-      if (!['object-property', 'datatype-property'].includes(placed.resource.kind)) {
-        fail('field-kind', `${key} cannot be represented as a field`);
-      }
+    const fields = layout.fields.map(({ key, kind }) => {
+      const placed = requireResource(resourcesByKey, key, kind);
       if (placed.resource.domain !== resource.iri) {
         fail('field-domain', `${key} no longer belongs to ${layout.key}`);
       }

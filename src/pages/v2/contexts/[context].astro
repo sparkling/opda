@@ -1,5 +1,6 @@
 ---
 import GraphDiagram from '@/components/GraphDiagram.astro';
+import EstateAgencyDiagram from '@/components/v2/EstateAgencyDiagram.astro';
 import V2Contents from '@/components/v2/V2Contents.astro';
 import V2DiagramLegend from '@/components/v2/V2DiagramLegend.astro';
 import V2Page from '@/components/v2/V2Page.astro';
@@ -29,6 +30,7 @@ export function getStaticPaths() {
 }
 
 const { context } = Astro.props;
+const usesEditorialDiagram = context.id === 'estate-agency';
 const stats = contextStats(context.id);
 const ownedResources = resourcesByContext.get(context.id) ?? [];
 const ownedShapes = shapesByContext.get(context.id) ?? [];
@@ -90,13 +92,22 @@ function semanticHomeLabel(row) {
   </div>
 
   <h2 id="diagram">Complete context diagram</h2>
-  <p>Every resource owned by this semantic home is included, together with one-hop incoming and outgoing properties and their attached resources. Dotted nodes and links identify resources owned by another semantic home; the owning boundary appears beneath each foreign resource. Referenced standards remain visually distinct. These are asserted OWL relationships, not reviewed cross-domain mappings.</p>
-  <V2DiagramLegend variant="context" />
-  <GraphDiagram
-    source={contextDiagram(context.id)}
-    minHeight={graph.displayedNodeCount > 30 ? '820px' : '620px'}
-    caption={`${stats.resources} resources owned by ${context.label}, ${graph.foreignResources.length} from other semantic homes, and ${graph.standardIris.length} referenced standard ${graph.standardIris.length === 1 ? 'term' : 'terms'}. Click any candidate resource node to open its detailed reference page.`}
-  />
+  {usesEditorialDiagram ? (
+    <>
+      <p>This editorial view applies the pinned Diagram Design 2.4 method to the complete estate agency projection. Seven class cards retain all nineteen linked resources: object properties become short labelled connectors, datatype and concept properties become linked rows, and referenced standards remain unlinked type labels. The dashed Property card marks the Common boundary. The subclass connector is asserted by the candidate model; no cardinalities are inferred.</p>
+      <EstateAgencyDiagram />
+    </>
+  ) : (
+    <>
+      <p>Every resource owned by this semantic home is included, together with one-hop incoming and outgoing properties and their attached resources. Dotted nodes and links identify resources owned by another semantic home; the owning boundary appears beneath each foreign resource. Referenced standards remain visually distinct. These are asserted OWL relationships, not reviewed cross-domain mappings.</p>
+      <V2DiagramLegend variant="context" />
+      <GraphDiagram
+        source={contextDiagram(context.id)}
+        minHeight={graph.displayedNodeCount > 30 ? '820px' : '620px'}
+        caption={`${stats.resources} resources owned by ${context.label}, ${graph.foreignResources.length} from other semantic homes, and ${graph.standardIris.length} referenced standard ${graph.standardIris.length === 1 ? 'term' : 'terms'}. Click any candidate resource node to open its detailed reference page.`}
+      />
+    </>
+  )}
 
   <h2 id="resources">Owned resources</h2>
   {['class', 'object-property', 'datatype-property'].map((kind) => {

@@ -1,0 +1,165 @@
+---
+import GraphDiagram from '@/components/GraphDiagram.astro';
+import { buildEstateAgencyEditorialDiagram } from '@/lib/estate-agency-editorial-diagram.mjs';
+import '@/styles/estate-agency-diagram.css';
+
+const diagram = buildEstateAgencyEditorialDiagram();
+const titleId = 'estate-agency-diagram-title';
+const descriptionId = 'estate-agency-diagram-description';
+
+function fieldLabel(card, field) {
+  return card.key === 'estate-agency:MarketDisclosure'
+    ? field.resource.label.replace(/^market disclosure /u, '')
+    : field.resource.label;
+}
+
+function relationshipName(relationship) {
+  const from = diagram.cards.find((card) => card.key === relationship.from)?.resource.label;
+  const to = diagram.cards.find((card) => card.key === relationship.to)?.resource.label;
+  return `Open ${relationship.resource.label} relationship: ${from} to ${to}`;
+}
+---
+
+<GraphDiagram
+  renderer="editorial"
+  minHeight="620px"
+  caption="Estate agency candidate model. Seven class cards, five labelled object-property relationships, seven linked datatype or concept rows, and one asserted subclass relationship. Dashed treatment marks the Common boundary; no cardinalities are inferred."
+>
+  <svg
+    class="estate-agency-diagram"
+    viewBox={`0 0 ${diagram.viewBox.width} ${diagram.viewBox.height}`}
+    width={diagram.viewBox.width}
+    height={diagram.viewBox.height}
+    role="group"
+    aria-labelledby={`${titleId} ${descriptionId}`}
+    data-diagram-design-version="2.4.0"
+    data-diagram-design-commit="09df49d8d1a1c7fb2efdfcdc7a2a0713534350a6"
+    data-source-node-count={diagram.fidelity.sourceNodes}
+    data-linked-resource-count={diagram.fidelity.linkedResources}
+  >
+    <title id={titleId}>Estate agency candidate model</title>
+    <desc id={descriptionId}>An interactive entity relationship view of the estate agency semantic home. Property listing connects Property to letting terms, market disclosure, listing media resource and price statement. Consumer protection declaration is a subclass of market disclosure. Linked classes, relationships and fields open their detailed resource pages.</desc>
+    <metadata>{JSON.stringify({ method: diagram.method, fidelity: diagram.fidelity })}</metadata>
+    <defs>
+      <marker id="estate-agency-arrow" viewBox="0 0 8 8" refX="8" refY="4" markerWidth="8" markerHeight="8" orient="auto">
+        <path class="dd-arrow-head" d="M 0 0 L 8 4 L 0 8 Z"></path>
+      </marker>
+      <marker id="estate-agency-hierarchy-arrow" viewBox="0 0 12 8" refX="12" refY="4" markerWidth="12" markerHeight="8" orient="auto">
+        <path class="dd-hierarchy-arrow-head" d="M 0 0 L 12 4 L 0 8 Z"></path>
+      </marker>
+    </defs>
+
+    <g class="dd-zones" aria-hidden="true">
+      {diagram.zones.map((zone) => (
+        <g class:list={['dd-zone', zone.id === 'common' && 'dd-zone--boundary']}>
+          <rect class="dd-zone__frame" x={zone.x} y={zone.y} width={zone.width} height={zone.height}></rect>
+          <text class="dd-zone__label" x={zone.x + 16} y={zone.y + 24}>{zone.label}</text>
+        </g>
+      ))}
+    </g>
+
+    <g class="dd-connectors" aria-hidden="true">
+      {diagram.relationships.map((relationship) => (
+        <path
+          class:list={['dd-connector', relationship.boundary && 'dd-connector--boundary']}
+          data-source-key={relationship.from}
+          data-target-key={relationship.to}
+          d={relationship.path}
+          marker-end="url(#estate-agency-arrow)"
+        ></path>
+      ))}
+      <path
+        class="dd-connector dd-connector--hierarchy"
+        data-source-key={diagram.hierarchy.from}
+        data-target-key={diagram.hierarchy.to}
+        d={diagram.hierarchy.path}
+        marker-end="url(#estate-agency-hierarchy-arrow)"
+      ></path>
+    </g>
+
+    <g class="dd-cards">
+      {diagram.cards.map((card) => {
+        const headerHeight = card.fields.length ? 48 : card.height;
+        return (
+          <g class="dd-card" data-resource-key={card.key} data-card-variant={card.variant ?? 'standard'}>
+            <rect class="dd-card__frame" x={card.x} y={card.y} width={card.width} height={card.height}></rect>
+            <a
+              class="dd-resource dd-resource--class"
+              href={card.route}
+              aria-label={`Open ${card.resource.label} class`}
+              data-resource-key={card.key}
+            >
+              <rect class="dd-card__header-hit" x={card.x} y={card.y} width={card.width} height={headerHeight}></rect>
+              <text class="dd-card__kind" x={card.x + 12} y={card.y + 18}>CLASS</text>
+              <text class="dd-card__title" x={card.x + 12} y={card.y + 42}>
+                {card.titleLines.map((line, index) => <tspan x={card.x + 12} dy={index ? 20 : 0}>{line}</tspan>)}
+              </text>
+              {card.subtitle && <text class="dd-card__subtitle" x={card.x + 12} y={card.y + card.height - 14}>{card.subtitle}</text>}
+            </a>
+            {card.fields.map((field, index) => {
+              const rowY = card.y + 48 + index * 44;
+              return (
+                <a
+                  class="dd-resource dd-resource--field"
+                  href={field.route}
+                  aria-label={`Open ${field.resource.label} property; range ${field.typeLabel}`}
+                  data-resource-key={field.resource.key}
+                >
+                  <rect class="dd-field__hit" x={card.x} y={rowY} width={card.width} height="44"></rect>
+                  <text class="dd-field__label" x={card.x + 12} y={rowY + 27}>{fieldLabel(card, field)}</text>
+                  <text class="dd-field__type" x={card.x + card.width - 12} y={rowY + 27} text-anchor="end">{field.typeLabel}</text>
+                </a>
+              );
+            })}
+          </g>
+        );
+      })}
+    </g>
+
+    <g class="dd-relationship-labels">
+      {diagram.relationships.map((relationship) => (
+        <a
+          class="dd-resource dd-resource--relationship"
+          href={relationship.route}
+          aria-label={relationshipName(relationship)}
+          data-resource-key={relationship.key}
+        >
+          <rect
+            class="dd-relationship__hit"
+            x={relationship.label.x}
+            y={relationship.label.y}
+            width={relationship.label.width}
+            height={relationship.label.height}
+          ></rect>
+          <text
+            class="dd-relationship__label"
+            x={relationship.label.x + relationship.label.width / 2}
+            y={relationship.label.y + 29}
+            text-anchor="middle"
+          >{relationship.shortLabel}</text>
+        </a>
+      ))}
+      <g class="dd-hierarchy-label" aria-hidden="true">
+        <rect
+          x={diagram.hierarchy.label.x}
+          y={diagram.hierarchy.label.y}
+          width={diagram.hierarchy.label.width}
+          height={diagram.hierarchy.label.height}
+        ></rect>
+        <text
+          x={diagram.hierarchy.label.x + diagram.hierarchy.label.width / 2}
+          y={diagram.hierarchy.label.y + 29}
+          text-anchor="middle"
+        >{diagram.hierarchy.shortLabel}</text>
+      </g>
+    </g>
+
+    <g class="dd-legend" aria-hidden="true">
+      <line x1="16" y1={diagram.legend.ruleY} x2="1104" y2={diagram.legend.ruleY}></line>
+      <text x="16" y={diagram.legend.labelY}>SOLID · ESTATE AGENCY HOME</text>
+      <line class="dd-legend__boundary" x1="304" y1={diagram.legend.labelY - 5} x2="352" y2={diagram.legend.labelY - 5}></line>
+      <text x="364" y={diagram.legend.labelY}>DASHED · COMMON BOUNDARY</text>
+      <text class="dd-legend__count" x="1104" y={diagram.legend.labelY} text-anchor="end">19 LINKED RESOURCES · 0 OMITTED</text>
+    </g>
+  </svg>
+</GraphDiagram>

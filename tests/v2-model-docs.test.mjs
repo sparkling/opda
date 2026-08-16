@@ -279,4 +279,17 @@ test('estate-agency editorial projection fails closed on candidate drift', () =>
     () => buildEstateAgencyEditorialDiagram(changedRange),
     /estate-agency-diagram:field-range.*estate-agency:rentAmount/u,
   );
+
+  const changedKind = {
+    ...projection,
+    displayedResources: projection.displayedResources.map((resource) => (
+      resource.key === 'estate-agency:rentAmount'
+        ? { ...resource, kind: 'object-property' }
+        : resource
+    )),
+  };
+  assert.throws(
+    () => buildEstateAgencyEditorialDiagram(changedKind),
+    /estate-agency-diagram:resource-kind.*estate-agency:rentAmount/u,
+  );
 });

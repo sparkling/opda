@@ -14,6 +14,7 @@
 import {
   CLASSDEFS_LIGHT, CLASSDEFS_DARK, THEMEVARS_LIGHT, THEMEVARS_DARK,
 } from '../lib/diagram-palette';
+import { createDiagramViewport } from './graph-diagram-viewport';
 
 export interface MermaidViewOpts {
   wrapper: HTMLElement;
@@ -107,44 +108,18 @@ function injectClassDefs(src: string, dark: boolean): string {
 export function createMermaidView(opts: MermaidViewOpts): MermaidView {
   const { wrapper, viewport, canvas, pre, captionId } = opts;
 
-  let scale = 1, panX = 0, panY = 0;
-  const MIN = 0.1, MAX = 5, ZOOM_BTN = 1.2;
-  let dragging = false, didDrag = false, dsx = 0, dsy = 0, psx = 0, psy = 0;
   let mode: 'navigate' | 'explore' = 'navigate';
   let lockedNode: string | null = null;
   let didRender = false;
   let renderSeq = 0;   // latest-wins guard: a newer render() supersedes older ones
-
-  function applyTransform() {
-    canvas.style.transform = `translate(${panX}px,${panY}px) scale(${scale})`;
-    const label = wrapper.querySelector('.diagram-zoom-label');
-    if (label) label.textContent = Math.round(scale * 100) + '%';
-  }
-  function resetView() { scale = 1; panX = 0; panY = 0; applyTransform(); }
-  function panBy(x: number, y: number) { panX += x; panY += y; applyTransform(); }
-  function zoom(factor: number, cx?: number, cy?: number) {
-    const rect = viewport.getBoundingClientRect();
-    const px = cx ?? rect.width / 2;
-    const py = cy ?? rect.height / 2;
-    const old = scale;
-    scale = Math.min(MAX, Math.max(MIN, scale * factor));
-    const ratio = scale / old;
-    panX = px - ratio * (px - panX);
-    panY = py - ratio * (py - panY);
-    applyTransform();
-  }
-
-  function handleSvgKeydown(event: KeyboardEvent) {
-    if (event.altKey || event.ctrlKey || event.metaKey) return;
-    const step = event.shiftKey ? 120 : 40;
-    if (event.key === 'ArrowLeft') { event.preventDefault(); panBy(step, 0); }
-    else if (event.key === 'ArrowRight') { event.preventDefault(); panBy(-step, 0); }
-    else if (event.key === 'ArrowUp') { event.preventDefault(); panBy(0, step); }
-    else if (event.key === 'ArrowDown') { event.preventDefault(); panBy(0, -step); }
-    else if (event.key === '+' || event.key === '=') { event.preventDefault(); zoom(ZOOM_BTN); }
-    else if (event.key === '-' || event.key === '_') { event.preventDefault(); zoom(1 / ZOOM_BTN); }
-    else if (event.key === '0') { event.preventDefault(); resetView(); }
-  }
+  const viewportController = createDiagramViewport({
+    wrapper,
+    viewport,
+    canvas,
+    shouldStartDrag: (target) => !(
+      mode === 'navigate' && target.closest('.node, g[id*="entity-"]')
+    ),
+  });
 
   function makeSvgFocusable(svg: SVGSVGElement) {
     const id = `gd-svg-title-${++svgA11yId}`;
@@ -156,14 +131,14 @@ export function createMermaidView(opts: MermaidViewOpts): MermaidView {
     svg.setAttribute('tabindex', '0');
     svg.setAttribute('focusable', 'true');
     svg.setAttribute('aria-labelledby', id);
-    svg.setAttribute('aria-keyshortcuts', 'ArrowLeft ArrowRight ArrowUp ArrowDown + - 0');
     if (captionId) svg.setAttribute('aria-describedby', captionId);
-    svg.addEventListener('keydown', handleSvgKeydown);
+    viewportController.bindKeyboard(svg);
   }
 
   function render() {
     const lightSource = opts.getLightSource();
     if (!lightSource) return;
+    wrapper.setAttribute('data-diagram-ready', 'false');
     const seq = ++renderSeq;   // this render's ticket; a later render() bumps it
     loadDiagramLinks();  // manifest for click-navigation (cached; ready by click time)
     loadMermaid().then((mermaid) => {
@@ -188,6 +163,7 @@ export function createMermaidView(opts: MermaidViewOpts): MermaidView {
         pre.innerHTML = svg;
         wrapper.querySelector('.diagram-loading')?.remove();
         didRender = true;
+        wrapper.setAttribute('data-diagram-ready', 'true');
         fixErRowContrast(pre, dark);
         const renderedSvg = pre.querySelector('svg');
         if (renderedSvg instanceof SVGSVGElement) makeSvgFocusable(renderedSvg);
@@ -289,7 +265,7 @@ export function createMermaidView(opts: MermaidViewOpts): MermaidView {
     }
 
     svg.addEventListener('click', (evt) => {
-      if (didDrag) { didDrag = false; return; }
+      if (viewportController.consumeDidDrag()) return;
       const nodeEl = (evt.target as Element).closest('.node, g[id*="entity-"]');
       if (mode === 'navigate') {
         if (nodeEl && navTarget(nodeEl)) {
@@ -317,7 +293,7 @@ export function createMermaidView(opts: MermaidViewOpts): MermaidView {
         activateNode(node);
       });
       if (isER) return; // hover-highlight is edge-based (flowchart); skip for ER
-      node.addEventListener('mouseenter', () => { if (dragging || lockedNode) return; applyHighlight(n); });
+      node.addEventListener('mouseenter', () => { if (viewportController.dragging || lockedNode) return; applyHighlight(n); });
       node.addEventListener('mouseleave', () => { if (lockedNode) return; clearHighlight(); });
     });
     updateNodeAccessibility();
@@ -325,15 +301,7 @@ export function createMermaidView(opts: MermaidViewOpts): MermaidView {
   }
 
   function initControls() {
-    wrapper.querySelectorAll('[data-diagram-action]').forEach((btn) => {
-      btn.addEventListener('click', () => {
-        const a = btn.getAttribute('data-diagram-action');
-        if (a === 'zoom-in') zoom(ZOOM_BTN);
-        else if (a === 'zoom-out') zoom(1 / ZOOM_BTN);
-        else if (a === 'reset') resetView();
-        else if (a === 'toggle-mode') toggleMode();
-      });
-    });
+    viewportController.initControls();
 
     function toggleMode() {
       const label = wrapper.querySelector('.diagram-mode-label');
@@ -362,79 +330,9 @@ export function createMermaidView(opts: MermaidViewOpts): MermaidView {
     }
 
     const modeToggle = wrapper.querySelector<HTMLButtonElement>('.diagram-mode-toggle');
+    modeToggle?.addEventListener('click', toggleMode);
     modeToggle?.setAttribute('aria-pressed', 'false');
     modeToggle?.setAttribute('aria-label', 'Navigate mode. Activate to switch to explore mode.');
-    const zoomLabel = wrapper.querySelector('.diagram-zoom-label');
-    zoomLabel?.setAttribute('role', 'status');
-    zoomLabel?.setAttribute('aria-live', 'polite');
-    zoomLabel?.setAttribute('aria-label', 'Zoom level');
-
-    const zoomControl = wrapper.querySelector<HTMLButtonElement>('.gd-ctrl');
-    let zoomMode = false;
-    let modifierZoom = false;
-    function updateZoomState() {
-      const zoomActive = zoomMode || modifierZoom;
-      wrapper.classList.toggle('zoom-active', zoomActive);
-      if (!zoomControl) return;
-      zoomControl.removeAttribute('tabindex');
-      zoomControl.setAttribute('aria-pressed', String(zoomMode));
-      zoomControl.setAttribute('aria-label', zoomMode
-        ? 'Zoom mode enabled. Activate to disable zoom mode.'
-        : 'Zoom mode disabled. Activate to enable zoom mode.');
-      zoomControl.title = zoomMode
-        ? 'Zoom mode enabled — scroll over the diagram to zoom'
-        : 'Enable zoom mode, or hold Ctrl (⌘) and scroll to zoom';
-    }
-    zoomControl?.addEventListener('click', () => { zoomMode = !zoomMode; updateZoomState(); });
-    updateZoomState();
-
-    let nudgeTimer: any = null;
-    function nudge() { wrapper.classList.add('zoom-nudge'); if (nudgeTimer) clearTimeout(nudgeTimer); nudgeTimer = setTimeout(() => wrapper.classList.remove('zoom-nudge'), 900); }
-    viewport.addEventListener('wheel', (e) => {
-      if (!(zoomMode || e.ctrlKey || e.metaKey)) { nudge(); return; }
-      e.preventDefault();
-      const rect = viewport.getBoundingClientRect();
-      const factor = Math.min(1.18, Math.max(0.85, Math.exp(-e.deltaY * 0.0012)));
-      zoom(factor, e.clientX - rect.left, e.clientY - rect.top);
-    }, { passive: false });
-
-    viewport.addEventListener('mousedown', (e) => {
-      if (e.button !== 0) return;
-      if ((e.target as Element).closest('.node') && mode === 'navigate') return;
-      dragging = true; didDrag = false; dsx = e.clientX; dsy = e.clientY; psx = panX; psy = panY;
-      viewport.style.cursor = 'grabbing'; e.preventDefault();
-    });
-    window.addEventListener('mousemove', (e) => {
-      if (!dragging) return;
-      const dx = e.clientX - dsx, dy = e.clientY - dsy;
-      if (Math.abs(dx) > 3 || Math.abs(dy) > 3) didDrag = true;
-      panX = psx + dx; panY = psy + dy; applyTransform();
-    });
-    window.addEventListener('mouseup', () => { if (dragging) { dragging = false; viewport.style.cursor = 'grab'; } });
-
-    let lastTouches: TouchList | null = null;
-    viewport.addEventListener('touchstart', (e) => {
-      if (e.touches.length === 1) { dragging = true; dsx = e.touches[0].clientX; dsy = e.touches[0].clientY; psx = panX; psy = panY; }
-      lastTouches = e.touches;
-    }, { passive: true });
-    viewport.addEventListener('touchmove', (e) => {
-      if (e.touches.length === 1 && dragging) {
-        panX = psx + (e.touches[0].clientX - dsx); panY = psy + (e.touches[0].clientY - dsy); applyTransform(); e.preventDefault();
-      } else if (e.touches.length === 2 && lastTouches && lastTouches.length === 2) {
-        const od = Math.hypot(lastTouches[0].clientX - lastTouches[1].clientX, lastTouches[0].clientY - lastTouches[1].clientY);
-        const nd = Math.hypot(e.touches[0].clientX - e.touches[1].clientX, e.touches[0].clientY - e.touches[1].clientY);
-        const rect = viewport.getBoundingClientRect();
-        const cx = (e.touches[0].clientX + e.touches[1].clientX) / 2 - rect.left;
-        const cy = (e.touches[0].clientY + e.touches[1].clientY) / 2 - rect.top;
-        if (od > 0) zoom(nd / od, cx, cy); lastTouches = e.touches; e.preventDefault();
-      }
-    }, { passive: false });
-    viewport.addEventListener('touchend', () => { dragging = false; lastTouches = null; });
-
-    const setZoomModifier = (e: KeyboardEvent) => { modifierZoom = e.ctrlKey || e.metaKey; updateZoomState(); };
-    window.addEventListener('keydown', setZoomModifier);
-    window.addEventListener('keyup', setZoomModifier);
-    window.addEventListener('blur', () => { modifierZoom = false; updateZoomState(); });
 
     // Re-render on theme toggle (opda flips <html data-theme>; no custom event).
     let lastTheme = document.documentElement.getAttribute('data-theme');

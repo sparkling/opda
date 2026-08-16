@@ -63,6 +63,11 @@ const contractFiles = [
   'public/ui/design/mermaid.css',
   'public/ui/design/print.css',
   'public/ui/design/forced-colors.css',
+  'src/components/v2/EstateAgencyDiagram.astro',
+  'src/lib/estate-agency-editorial-diagram.mjs',
+  'src/scripts/graph-diagram-editorial.ts',
+  'src/scripts/graph-diagram-viewport.ts',
+  'src/styles/estate-agency-diagram.css',
   'src/pages/design-system.astro',
   'docs/design-system-site/index.html',
   'docs/design-system-site/styles.css',
@@ -284,26 +289,54 @@ test('the adversarial conformance blockers remain closed', async () => {
 });
 
 test('graph and data tools preserve keyboard and semantic state contracts', async () => {
-  const [component, graph, mermaid, graphCss, dataBrowser] = await Promise.all([
+  const [component, graph, mermaid, viewport, graphCss, dataBrowser] = await Promise.all([
     readFile(file('src/components/GraphDiagram.astro'), 'utf8'),
     readFile(file('src/scripts/graph-diagram.ts'), 'utf8'),
     readFile(file('src/scripts/graph-diagram-mermaid.ts'), 'utf8'),
+    readFile(file('src/scripts/graph-diagram-viewport.ts'), 'utf8'),
     readFile(file('src/styles/graph-diagram.css'), 'utf8'),
     readFile(file('public/ui/data-browser.js'), 'utf8'),
   ]);
-  assert.match(component, /<figure class="graph-diagram-wrapper">/u);
+  assert.match(component, /<figure class="graph-diagram-wrapper"[^>]*data-diagram-renderer/u);
   assert.match(component, /<figcaption class="gd-caption"/u);
   assert.match(graph, /Figure \$\{number\}/u);
   assert.match(graph, /setAttribute\('role', 'dialog'\)/u);
   assert.match(graph, /setAttribute\('aria-modal', 'true'\)/u);
   assert.match(graph, /returnFocus\?\.isConnected/u);
   assert.match(graph, /document\.fonts\?\.ready/u);
-  for (const key of ['ArrowLeft', 'ArrowRight', 'ArrowUp', 'ArrowDown']) assert.match(mermaid, new RegExp(key, 'u'));
+  for (const key of ['ArrowLeft', 'ArrowRight', 'ArrowUp', 'ArrowDown']) assert.match(viewport, new RegExp(key, 'u'));
   assert.match(mermaid, /setAttribute\('aria-pressed'/u);
   assert.doesNotMatch(graphCss, /drop-shadow\(0 0 0\b/iu);
   assert.match(dataBrowser, /class:\s*'db-sort-button'/u);
   assert.match(dataBrowser, /setAttribute\('aria-sort', 'ascending'\)/u);
   assert.match(dataBrowser, /aria-label': 'Choose visible columns'/u);
+});
+
+test('estate-agency uses the pinned editorial SVG method without a new runtime', async () => {
+  const [route, component, graph, editorial, viewport, styles, packageJson] = await Promise.all([
+    readFile(file('src/pages/v2/contexts/[context].astro'), 'utf8'),
+    readFile(file('src/components/v2/EstateAgencyDiagram.astro'), 'utf8'),
+    readFile(file('src/scripts/graph-diagram.ts'), 'utf8'),
+    readFile(file('src/scripts/graph-diagram-editorial.ts'), 'utf8'),
+    readFile(file('src/scripts/graph-diagram-viewport.ts'), 'utf8'),
+    readFile(file('src/styles/estate-agency-diagram.css'), 'utf8'),
+    readFile(file('package.json'), 'utf8'),
+  ]);
+  assert.match(route, /context\.id === 'estate-agency'/u);
+  assert.match(route, /<EstateAgencyDiagram/u);
+  assert.match(component, /renderer="editorial"/u);
+  assert.match(component, /data-diagram-design-version="2\.4\.0"/u);
+  assert.match(component, /09df49d8d1a1c7fb2efdfcdc7a2a0713534350a6/u);
+  assert.match(component, /<title[^>]*>.*<\/title>\s*<desc[^>]*>.*<\/desc>/su);
+  assert.match(component, /role="group"/u);
+  assert.doesNotMatch(component, /set:html/u);
+  assert.match(graph, /createEditorialView/u);
+  assert.match(editorial, /createDiagramViewport/u);
+  for (const key of ['ArrowLeft', 'ArrowRight', 'ArrowUp', 'ArrowDown']) {
+    assert.match(viewport, new RegExp(key, 'u'));
+  }
+  assert.doesNotMatch(styles, /#[0-9a-f]{3,8}\b|\brgb\(/iu);
+  assert.doesNotMatch(packageJson, /cathrynlavery|diagram-design/iu);
 });
 
 test('shared buttons expose the adopted interaction and outcome states', async () => {

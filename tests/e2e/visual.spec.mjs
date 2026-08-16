@@ -8,6 +8,7 @@ const routeFamilies = [
   ['v2-data', '/v2'],
   ['schema', '/schema/legal-estate/ownership/leasehold/lease-legal/building-safety'],
   ['diagram', '/ontology/graph'],
+  ['estate-agency-diagram', '/v2/contexts/estate-agency'],
   ['working-group', '/working-groups/join'],
   ['presentation', '/presentation/working-group-kickoff'],
   ['design-system', '/design-system'],
