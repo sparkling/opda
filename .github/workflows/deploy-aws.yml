@@ -120,7 +120,7 @@ jobs:
       # the byte-pinned Jena distribution before the JavaScript test stage.
       - name: Install opda-gen
         working-directory: tools/opda-gen
-        run: pip install -e .[dev]
+        run: pip install -e .[dev] jinja2==3.1.6
 
       - name: Provision Apache Jena semantic toolchain
         run: python -c "from opda_gen.jena_shacl import resolve_jena_shacl; print(resolve_jena_shacl())"
