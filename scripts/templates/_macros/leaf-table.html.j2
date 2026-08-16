@@ -62,7 +62,7 @@
           <span aria-label="VC envelope leaf" title="VC envelope leaf — see page 48">🔒</span>
           <code><em>{{ leaf.path }}</em></code>
           {%- else -%}
-          <code>{{ leaf.path }}</code>{% if leaf.required %}<span aria-label="required" title="required" style="color: var(--terracotta-700); font-weight: 700; margin-left: 0.25em;">*</span>{% endif %}
+          <code>{{ leaf.path }}</code>{% if leaf.required %}<span class="required-marker" aria-label="required" title="required">*</span>{% endif %}
           {%- endif %}
         </td>
         <td class="align-center">{% if leaf.required %}yes{% else %}<span class="muted">—</span>{% endif %}</td>

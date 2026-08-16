@@ -13,14 +13,18 @@ Pipeline steps:
 Usage:
   python3 scripts/build-schema-pages.py build --page 39
   python3 scripts/build-schema-pages.py build --all
+
+SOURCE_DATE_EPOCH is required. It is converted to a UTC ISO date for generated
+metadata, so a rebuild cannot change pages merely because the wall clock moved.
 """
 import argparse
 import fnmatch
 import json
+import os
 import re
 import subprocess
 import sys
-from datetime import date
+from datetime import datetime, timezone
 from pathlib import Path
 
 import yaml
@@ -41,6 +45,27 @@ OUT_PAGES = ROOT / "src/pages/schema"
 LEAVES_JSON = BUILD / "leaves.json"
 PROPERTIES_JS = ROOT / "public/data/properties.js"
 DAMA_KA_MAPPING = ROOT / "scripts/dama-ka-mapping.json"
+
+
+def deterministic_generated_on(raw: str | None = None) -> str:
+    """Return the reproducible UTC date required in generated page metadata.
+
+    A missing, non-integer, negative, or out-of-range epoch is an input error;
+    silently falling back to today's date would make the generated corpus drift.
+    ``raw`` is injectable for focused tests, while production callers use the
+    explicitly supplied SOURCE_DATE_EPOCH environment variable.
+    """
+    value = os.environ.get("SOURCE_DATE_EPOCH") if raw is None else raw
+    if value is None:
+        raise ValueError("SOURCE_DATE_EPOCH is required for reproducible schema pages")
+    value = value.strip()
+    if not re.fullmatch(r"[0-9]+", value):
+        raise ValueError("SOURCE_DATE_EPOCH must be a non-negative Unix epoch integer")
+    try:
+        epoch = int(value, 10)
+        return datetime.fromtimestamp(epoch, tz=timezone.utc).date().isoformat()
+    except (OverflowError, OSError, ValueError) as exc:
+        raise ValueError("SOURCE_DATE_EPOCH is outside the supported UTC date range") from exc
 
 OVERLAY_LABELS = {
     "baspi5": "BASPI5", "ta6": "TA6", "ta7": "TA7", "ta10": "TA10",
@@ -548,7 +573,8 @@ def render_page(slot: str, leaves_for_page: list[dict],
                 theme: dict, examples: dict, overlay_membership: dict,
                 obj_to_page: dict[str, str] | None = None,
                 descriptions: dict[str, str] | None = None,
-                dama_ka: dict[str, dict] | None = None) -> str:
+                dama_ka: dict[str, dict] | None = None,
+                generated_on: str | None = None) -> str:
     page_cfg = theme["pages"][slot]
     # Sidecar markdown filenames still use the OLD numbered convention
     # ("37-property.md") — unrelated to the Astro output path rename, so
@@ -853,7 +879,7 @@ def render_page(slot: str, leaves_for_page: list[dict],
             "id": PAGE_IDS.get(slot, f"schema-{slot}"),
             "title": page_cfg["title"],
             "voice": page_cfg.get("voice", "reference-prose-with-opinion"),
-            "generated_on": str(date.today()),
+            "generated_on": generated_on or deterministic_generated_on(),
             "dama_ka": (dama_ka or {}).get(f"src/pages/schema/{PAGE_FILES[slot]}", {}).get("kas") or [],
         },
         "regions": regions,
@@ -872,6 +898,9 @@ def main():
     p.add_argument("--all", action="store_true")
     args = p.parse_args()
 
+    # Validate this before creating build artefacts. A moving wall-clock date
+    # is never an acceptable fallback for generated source.
+    generated_on = deterministic_generated_on()
     BUILD.mkdir(exist_ok=True)
     leaves = load_leaves()
     pmap = yaml.safe_load(PROVENANCE.read_text())
@@ -931,7 +960,8 @@ def main():
             print(f"skip {slot} (no leaves)")
             continue
         html = render_page(slot, by_page[slot], theme, examples, overlay_membership,
-                           obj_to_page=obj_to_page, descriptions=descriptions, dama_ka=dama_ka)
+                           obj_to_page=obj_to_page, descriptions=descriptions, dama_ka=dama_ka,
+                           generated_on=generated_on)
         out = OUT_PAGES / PAGE_FILES[slot]
         out.parent.mkdir(parents=True, exist_ok=True)
         out.write_text(html)
