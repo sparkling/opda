@@ -1,0 +1,217 @@
+{
+  "schemaVersion": 1,
+  "skill": {
+    "repository": "https://github.com/cathrynlavery/diagram-design",
+    "pluginId": "diagram-design@diagram-design",
+    "version": "2.4.0",
+    "commit": "09df49d8d1a1c7fb2efdfcdc7a2a0713534350a6",
+    "license": "MIT",
+    "skillSha256": "8366ef4d11c3a9591556deb55320ea3521c138ccdad834eb087b8062f41d93a1"
+  },
+  "references": {
+    "README.md": "12d51301d2204fac89375768b7ada26abc6282b324e36fb47543c1a7e802c88b",
+    "commands/import-mermaid.md": "b4933a5b4dff1a68b7d073e3cf6b126469207b2eba191d456f4146cac261efba",
+    "references/import-mermaid.md": "491ff83440fc995401b5ba20f63325f976732bf1669003c1840b4137072cc274",
+    "references/output-spec.md": "d8fa916f523b99ada083a652f4440d3f0d086a8af61ae333bac50153338f42a3",
+    "references/type-architecture.md": "cb5672b5c69cbe24a0b18d144f8b2e4507a124ebb0dbc0bc898ceafb27612caa",
+    "references/type-er.md": "61ee3643c9e3a1e2c3a329640132ede2c193bfabaebbbb5fa486be800b6afa29",
+    "references/style-guide.md": "a122617d3528795c3be8918c50c53bfb758beec735b9d57abecce47e52f1ecbb",
+    "references/onboarding.md": "7b9ef85e8f79c6f32e7c92c785d65b9abbaa5036e678a4eb056764a04b0f887a",
+    "references/profiles.md": "51f6d24e40eca1a13dc562b4b33aa76b56172c5c30fc94897e5bb369a34f9886",
+    "scripts/mermaid_extract.py": "297ff6a8042c33d33df72ac4384bf666b2ab045f74030269adb45a89a7a2e0f8"
+  },
+  "profile": {
+    "slug": "opda",
+    "path": ".agents/skills/opda-diagram-design/references/opda-profile.md",
+    "sha256": "a7bfc53c7dc1a62a1a637867ea19d044d1941041975e9f29db5bb172e69bb711"
+  },
+  "invocation": {
+    "host": "Codex",
+    "provider": "OpenAI native",
+    "entrypoint": "$diagram-design",
+    "operation": "import-mermaid",
+    "command": "codex exec --cd <isolated-authoring-dir> --approve-for-me --skip-git-repo-check --ephemeral --json --output-last-message final.txt -",
+    "result": "success",
+    "promptSha256": "80acf61626a49306119d9ecd435f4596e7de6dc70876f7c721f710842f5fe5b1",
+    "finalResponseSha256": "eca4fb8806938098855f35affccb3f4af6aecb5d150180312e899c987a076cbb",
+    "transcriptSha256": "76a278f28467571d662a89b5372e1f1eaff5038b2b7a523a011bc5fed0bc0491",
+    "dials": {
+      "format": "html",
+      "size": "doc-wide",
+      "detail": "faithful",
+      "audience": "engineer",
+      "type": "er",
+      "variant": "light"
+    },
+    "typeOverride": "The extractor proposed architecture, but the source is an ontology domain model of entities, typed fields and named relationships, so the ER/data-model grammar is authoritative.",
+    "generatedArtifact": {
+      "path": "src/data/diagrams/estate-agency.diagram-design.html",
+      "sha256": "5bf74c1cba6c1bb002444bd512679ba9d456ae7d753e670c5807a5400b59ccad"
+    },
+    "validation": {
+      "mermaidExtractor": "pass",
+      "selfCheck": "pass",
+      "geometry": "pass",
+      "skin": "pass"
+    }
+  },
+  "input": {
+    "rawPath": "src/data/diagrams/estate-agency.raw.mmd",
+    "normalizedPath": "src/data/diagrams/estate-agency.normalized.mmd",
+    "rawSha256": "1ffe6a38116b0615751e0aff814d0ef678947723d6aa6f6a8c5e2baeea922a1e",
+    "normalizedSha256": "4f4553b121b6156178045021bf9de69ab3218b1d0e5b997afdc1449accb235dd",
+    "removedDirectives": ["accTitle", "accDescr"]
+  },
+  "extractor": {
+    "diagramType": "flowchart",
+    "drawableNodes": 22,
+    "edges": 25,
+    "containers": 3,
+    "clickHandlersDiscarded": 19,
+    "styleDirectivesDiscarded": 0,
+    "danglingEdges": 0,
+    "typeCandidate": "architecture"
+  },
+  "fidelity": {
+    "sourceNodes": 22,
+    "sourceEdges": 25,
+    "classCards": 7,
+    "relationshipLabels": 5,
+    "propertyRows": 7,
+    "standardTypes": 3,
+    "subclassConnectors": 1,
+    "representationChanges": [
+      "Five object-property carrier nodes and their ten domain/range edges become five directly labelled class-to-class connectors.",
+      "Seven datatype or concept property carrier nodes and their fourteen domain/range edges become seven typed rows inside their owning class cards.",
+      "Three referenced-standard nodes become unlinked type labels repeated in the relevant rows and listed once in the legend.",
+      "The asserted ConsumerProtectionDeclaration subclass edge remains a distinct hierarchy connector.",
+      "Nineteen Mermaid click handlers are discarded as untrusted input; website routes are re-derived from the validated ontology projection."
+    ],
+    "omittedResources": 0,
+    "inventedCardinalities": 0
+  },
+  "layout": {
+    "preset": "doc-wide",
+    "viewBox": { "width": 1280, "height": 720 },
+    "cornerRadius": 8,
+    "projectionAdjustments": [
+      "Interactive property rows are expanded from the authoring artefact's 24px visual rows to 44px website targets.",
+      "Relationship label masks are expanded to 48px interactive targets while retaining the authoring artefact's connector routing.",
+      "The estate-agency zone gains 24px height so expanded property rows retain bottom breathing room.",
+      "The static authoring SVG retains role=img; the website SVG uses a labelled role=group because it adds 19 focusable resource links."
+    ],
+    "zones": [
+      { "id": "estate-agency", "label": "Estate agency semantic home", "x": 280, "y": 40, "width": 960, "height": 560 },
+      { "id": "common", "label": "Common ontology boundary", "x": 40, "y": 256, "width": 200, "height": 144 },
+      { "id": "standards", "label": "Referenced range types · unlinked", "x": 40, "y": 440, "width": 200, "height": 136 }
+    ],
+    "standardTypes": [
+      { "label": "xsd:anyURI", "x": 64, "y": 472, "width": 152, "height": 24 },
+      { "label": "xsd:decimal", "x": 64, "y": 504, "width": 152, "height": 24 },
+      { "label": "skos:Concept", "x": 64, "y": 536, "width": 152, "height": 24 }
+    ],
+    "cards": [
+      {
+        "key": "common:Property",
+        "x": 64, "y": 296, "width": 152, "height": 64,
+        "variant": "boundary",
+        "titleLines": ["Property"],
+        "fields": []
+      },
+      {
+        "key": "estate-agency:LettingTerms",
+        "x": 304, "y": 96, "width": 256, "height": 136,
+        "titleLines": ["Letting terms"],
+        "fields": [
+          { "key": "estate-agency:rentAmount", "kind": "datatype-property" },
+          { "key": "estate-agency:rentFrequency", "kind": "object-property" }
+        ]
+      },
+      {
+        "key": "estate-agency:MarketDisclosure",
+        "x": 704, "y": 96, "width": 240, "height": 136,
+        "titleLines": ["Market disclosure"],
+        "fields": [
+          { "key": "estate-agency:marketDisclosureOutcome", "kind": "object-property" },
+          { "key": "estate-agency:marketDisclosureType", "kind": "object-property" }
+        ]
+      },
+      {
+        "key": "estate-agency:ConsumerProtectionDeclaration",
+        "x": 980, "y": 112, "width": 228, "height": 80,
+        "titleLines": ["Consumer protection", "declaration"],
+        "fields": []
+      },
+      {
+        "key": "estate-agency:Listing",
+        "x": 488, "y": 296, "width": 240, "height": 64,
+        "variant": "focal",
+        "titleLines": ["Property listing"],
+        "fields": []
+      },
+      {
+        "key": "estate-agency:MediaResource",
+        "x": 980, "y": 284, "width": 228, "height": 92,
+        "titleLines": ["Listing media resource"],
+        "fields": [
+          { "key": "estate-agency:mediaUrl", "kind": "datatype-property" }
+        ]
+      },
+      {
+        "key": "estate-agency:PriceStatement",
+        "x": 704, "y": 440, "width": 240, "height": 136,
+        "titleLines": ["Price statement"],
+        "fields": [
+          { "key": "estate-agency:priceAmount", "kind": "datatype-property" },
+          { "key": "estate-agency:priceQualifier", "kind": "object-property" }
+        ]
+      }
+    ],
+    "relationships": [
+      {
+        "key": "estate-agency:hasListing",
+        "from": "common:Property", "to": "estate-agency:Listing",
+        "shortLabel": "LISTING",
+        "points": [[216, 328], [488, 328]],
+        "label": { "x": 312, "y": 280, "width": 80, "height": 48 },
+        "boundary": true
+      },
+      {
+        "key": "estate-agency:hasLettingTerms",
+        "from": "estate-agency:Listing", "to": "estate-agency:LettingTerms",
+        "shortLabel": "LETTING",
+        "points": [[536, 296], [536, 232]],
+        "label": { "x": 544, "y": 240, "width": 104, "height": 48 }
+      },
+      {
+        "key": "estate-agency:hasMarketDisclosure",
+        "from": "estate-agency:Listing", "to": "estate-agency:MarketDisclosure",
+        "shortLabel": "DISCLOSURE",
+        "points": [[640, 296], [640, 248], [824, 248], [824, 232]],
+        "label": { "x": 676, "y": 236, "width": 112, "height": 48 }
+      },
+      {
+        "key": "estate-agency:hasMediaResource",
+        "from": "estate-agency:Listing", "to": "estate-agency:MediaResource",
+        "shortLabel": "MEDIA",
+        "points": [[728, 328], [980, 328]],
+        "label": { "x": 808, "y": 280, "width": 96, "height": 48 }
+      },
+      {
+        "key": "estate-agency:hasPriceStatement",
+        "from": "estate-agency:Listing", "to": "estate-agency:PriceStatement",
+        "shortLabel": "PRICE",
+        "points": [[640, 360], [640, 400], [824, 400], [824, 440]],
+        "label": { "x": 684, "y": 360, "width": 96, "height": 48 }
+      }
+    ],
+    "hierarchy": {
+      "from": "estate-agency:ConsumerProtectionDeclaration",
+      "to": "estate-agency:MarketDisclosure",
+      "shortLabel": "SUBCLASS OF",
+      "points": [[1096, 112], [1096, 72], [824, 72], [824, 96]],
+      "label": { "x": 912, "y": 48, "width": 96, "height": 48 }
+    },
+    "legend": { "ruleY": 640, "labelY": 688 }
+  }
+}

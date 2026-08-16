@@ -64,7 +64,7 @@ Require:
 
 Write `src/data/diagrams/<slug>.diagram-design.json` as the deterministic authoring receipt. Include source hashes, plugin and reference hashes, invocation entrypoint/result/dials, extractor counts, fidelity transformations, the complete layout, and the generated HTML hash.
 
-Website code must consume this receipt as data and validate it against the live ontology projection. Render native Astro/SVG markup; never inject the generated HTML with `set:html`. The SVG must have `role="img"`, a first-child `<title>`, a non-empty `<desc>`, keyboard-operable links, and no runtime Diagram Design dependency.
+Website code must consume this receipt as data and validate it against the live ontology projection. Render native Astro/SVG markup; never inject the generated HTML with `set:html`. Keep `role="img"`, a first-child `<title>`, and a non-empty `<desc>` on the static authoring artefact. If the website projection adds focusable SVG links, use a labelled `role="group"` instead: `role="img"` with interactive descendants violates the nested-interactive accessibility rule. In either case, require keyboard-operable links, Axe validation, and no runtime Diagram Design dependency.
 
 ### 5. Validate fail-closed
 

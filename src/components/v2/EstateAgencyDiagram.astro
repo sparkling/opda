@@ -32,14 +32,27 @@ function relationshipName(relationship) {
     height={diagram.viewBox.height}
     role="group"
     aria-labelledby={`${titleId} ${descriptionId}`}
-    data-diagram-design-version="2.4.0"
-    data-diagram-design-commit="09df49d8d1a1c7fb2efdfcdc7a2a0713534350a6"
+    data-diagram-design-version={diagram.receipt.skill.version}
+    data-diagram-design-commit={diagram.receipt.skill.commit}
+    data-diagram-design-entrypoint={diagram.receipt.invocation.entrypoint}
+    data-source-sha256={diagram.receipt.input.normalizedSha256}
+    data-generated-artifact-sha256={diagram.receipt.invocation.generatedArtifact.sha256}
     data-source-node-count={diagram.fidelity.sourceNodes}
     data-linked-resource-count={diagram.fidelity.linkedResources}
   >
     <title id={titleId}>Estate agency candidate model</title>
     <desc id={descriptionId}>An interactive entity relationship view of the estate agency semantic home. Property listing connects Property to letting terms, market disclosure, listing media resource and price statement. Consumer protection declaration is a subclass of market disclosure. Linked classes, relationships and fields open their detailed resource pages.</desc>
-    <metadata>{JSON.stringify({ method: diagram.method, fidelity: diagram.fidelity })}</metadata>
+    <metadata>{JSON.stringify({
+      skill: diagram.receipt.skill,
+      invocation: {
+        entrypoint: diagram.receipt.invocation.entrypoint,
+        operation: diagram.receipt.invocation.operation,
+        dials: diagram.receipt.invocation.dials,
+      },
+      sourceSha256: diagram.receipt.input.normalizedSha256,
+      generatedArtifactSha256: diagram.receipt.invocation.generatedArtifact.sha256,
+      fidelity: diagram.fidelity,
+    })}</metadata>
     <defs>
       <marker id="estate-agency-arrow" viewBox="0 0 8 8" refX="8" refY="4" markerWidth="8" markerHeight="8" orient="auto">
         <path class="dd-arrow-head" d="M 0 0 L 8 4 L 0 8 Z"></path>
@@ -116,6 +129,26 @@ function relationshipName(relationship) {
       })}
     </g>
 
+    <g class="dd-standard-types" aria-hidden="true">
+      {diagram.standardTerms.map((term) => (
+        <g>
+          <rect
+            class="dd-standard__chip"
+            x={term.x}
+            y={term.y}
+            width={term.width}
+            height={term.height}
+          ></rect>
+          <text
+            class="dd-standard__label"
+            x={term.x + term.width / 2}
+            y={term.y + 16}
+            text-anchor="middle"
+          >{term.label}</text>
+        </g>
+      ))}
+    </g>
+
     <g class="dd-relationship-labels">
       {diagram.relationships.map((relationship) => (
         <a
@@ -155,11 +188,11 @@ function relationshipName(relationship) {
     </g>
 
     <g class="dd-legend" aria-hidden="true">
-      <line x1="16" y1={diagram.legend.ruleY} x2="1104" y2={diagram.legend.ruleY}></line>
-      <text x="16" y={diagram.legend.labelY}>SOLID · ESTATE AGENCY HOME</text>
+      <line x1="40" y1={diagram.legend.ruleY} x2={diagram.viewBox.width - 40} y2={diagram.legend.ruleY}></line>
+      <text x="40" y={diagram.legend.labelY}>SOLID · ESTATE AGENCY HOME</text>
       <line class="dd-legend__boundary" x1="304" y1={diagram.legend.labelY - 5} x2="352" y2={diagram.legend.labelY - 5}></line>
       <text x="364" y={diagram.legend.labelY}>DASHED · COMMON BOUNDARY</text>
-      <text class="dd-legend__count" x="1104" y={diagram.legend.labelY} text-anchor="end">19 LINKED RESOURCES · 0 OMITTED</text>
+      <text class="dd-legend__count" x={diagram.viewBox.width - 40} y={diagram.legend.labelY} text-anchor="end">19 LINKED RESOURCES · 0 OMITTED</text>
     </g>
   </svg>
 </GraphDiagram>

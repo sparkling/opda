@@ -313,7 +313,7 @@ test('graph and data tools preserve keyboard and semantic state contracts', asyn
 });
 
 test('estate-agency uses the pinned editorial SVG method without a new runtime', async () => {
-  const [route, component, graph, editorial, viewport, styles, packageJson] = await Promise.all([
+  const [route, component, graph, editorial, viewport, styles, packageJson, receiptSource] = await Promise.all([
     readFile(file('src/pages/v2/contexts/[context].astro'), 'utf8'),
     readFile(file('src/components/v2/EstateAgencyDiagram.astro'), 'utf8'),
     readFile(file('src/scripts/graph-diagram.ts'), 'utf8'),
@@ -321,12 +321,16 @@ test('estate-agency uses the pinned editorial SVG method without a new runtime',
     readFile(file('src/scripts/graph-diagram-viewport.ts'), 'utf8'),
     readFile(file('src/styles/estate-agency-diagram.css'), 'utf8'),
     readFile(file('package.json'), 'utf8'),
+    readFile(file('src/data/diagrams/estate-agency.diagram-design.json'), 'utf8'),
   ]);
+  const receipt = JSON.parse(receiptSource);
   assert.match(route, /context\.id === 'estate-agency'/u);
   assert.match(route, /<EstateAgencyDiagram/u);
   assert.match(component, /renderer="editorial"/u);
-  assert.match(component, /data-diagram-design-version="2\.4\.0"/u);
-  assert.match(component, /09df49d8d1a1c7fb2efdfcdc7a2a0713534350a6/u);
+  assert.match(component, /data-diagram-design-version=\{diagram\.receipt\.skill\.version\}/u);
+  assert.equal(receipt.skill.version, '2.4.0');
+  assert.equal(receipt.skill.commit, '09df49d8d1a1c7fb2efdfcdc7a2a0713534350a6');
+  assert.equal(receipt.invocation.entrypoint, '$diagram-design');
   assert.match(component, /<title[^>]*>.*<\/title>\s*<desc[^>]*>.*<\/desc>/su);
   assert.match(component, /role="group"/u);
   assert.doesNotMatch(component, /set:html/u);
@@ -336,7 +340,13 @@ test('estate-agency uses the pinned editorial SVG method without a new runtime',
     assert.match(viewport, new RegExp(key, 'u'));
   }
   assert.doesNotMatch(styles, /#[0-9a-f]{3,8}\b|\brgb\(/iu);
-  assert.doesNotMatch(packageJson, /cathrynlavery|diagram-design/iu);
+  const packageManifest = JSON.parse(packageJson);
+  const runtimePackages = {
+    ...packageManifest.dependencies,
+    ...packageManifest.devDependencies,
+  };
+  assert.equal(runtimePackages['diagram-design'], undefined);
+  assert.doesNotMatch(JSON.stringify(runtimePackages), /cathrynlavery/iu);
 });
 
 test('shared buttons expose the adopted interaction and outcome states', async () => {

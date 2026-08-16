@@ -27,6 +27,7 @@ Verify SHA-256 before each OPDA generation. Stop on mismatch and inspect upstrea
 
 | Relative path | SHA-256 |
 |---|---|
+| `README.md` | `12d51301d2204fac89375768b7ada26abc6282b324e36fb47543c1a7e802c88b` |
 | `skills/diagram-design/SKILL.md` | `8366ef4d11c3a9591556deb55320ea3521c138ccdad834eb087b8062f41d93a1` |
 | `commands/import-mermaid.md` | `b4933a5b4dff1a68b7d073e3cf6b126469207b2eba191d456f4146cac261efba` |
 | `skills/diagram-design/references/import-mermaid.md` | `491ff83440fc995401b5ba20f63325f976732bf1669003c1840b4137072cc274` |
