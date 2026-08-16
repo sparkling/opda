@@ -1,11 +1,11 @@
 ---
-status: accepted
+status: implemented
 date: 2026-08-16
 updated: 2026-08-16
 tags: [design-system, brand, website, accessibility, css, governance, presentation]
 supersedes: [ADR-0025]
 depends-on: [ADR-0064]
-implements: [DESIGN.md, public/ui, src/layouts/Layout.astro, src/components/Header.astro, src/pages/home.astro, src/pages/design-system.astro, docs/design-system-site]
+implements: [DESIGN.md, public/ui, src/layouts/Layout.astro, src/layouts/PublicWorkingGroupLayout.astro, src/components/Header.astro, src/pages/index.astro, src/pages/home.astro, src/pages/design-system.astro, src/styles/v2.css, src/styles/presentations, docs/design-system-site, playwright.config.mjs, tests/e2e, scripts/crawl-routes.mjs, scripts/check-schema-reproducibility.mjs, .github/workflows/deploy-aws.yml]
 ---
 
 # Adopt the OPDA brand and replace the website design system
@@ -152,10 +152,23 @@ application or mutation of any other production site.
 
 - Contract tests verify official asset geometry, supplied palette values, derived
   token roles, presentation coverage and removal of obsolete lock language.
-- `make test` and the CI-equivalent `make build-data` pass.
-- Desktop and mobile rendered checks cover the home page, prose, data browser,
-  status/provenance patterns and the design-system catalogue.
-- Focus, contrast, reduced motion and overflow are checked before commit.
+- `make test` passes all 117 JavaScript contract and behaviour tests.
+- The CI-equivalent `make build-data` emits 2,554 pages successfully.
+- The emitted-site crawl resolves all internal application assets and navigation
+  across 3,435 HTML documents and 5,234 emitted files, with zero unresolved
+  resources and zero unlinked routes. Ontology resources whose canonical IDs differ
+  only by case are checked exactly on Linux CI and identified explicitly on
+  case-insensitive development filesystems.
+- The 47-test Chromium release matrix passes: 17 axe route-family checks with zero
+  tagged WCAG findings, 18 reviewed desktop/mobile light/dark visual baselines,
+  eight keyboard/behaviour smoke tests, and four 320px/400%-equivalent reflow,
+  forced-colour and descendant reduced-motion checks.
+- Five schema reproducibility tests and the deterministic strict generated-page
+  drift check pass with zero errors and zero warnings. Its canonical
+  `SOURCE_DATE_EPOCH` and tracked offline input projections run in local CI, pull
+  requests and the deployment workflow.
+- Pull requests execute the full build, crawl, browser, accessibility and model
+  gates; AWS credentials, upload and invalidation remain deployment-only steps.
 - The standalone review artefact may be published through OpenAI Sites under the
   operator's separate 16 August 2026 authorisation; no application deployment or
   external production-site mutation occurs.

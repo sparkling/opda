@@ -1,6 +1,7 @@
 ---
 status: accepted
 date: 2026-06-14
+updated: 2026-08-16
 tags: [ontology, visualization, graph-diagram, tooling, cytoscape, mermaid, rdf2dot, bake-off, ci-gate, astro]
 supersedes: []
 depends-on: [ADR-0041, ADR-0037, ODR-0004]

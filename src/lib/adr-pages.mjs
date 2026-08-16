@@ -95,5 +95,5 @@ export const ADR_REGISTRY = [
   { id: "adr-0070", number: "0070", title: "Operate OPDA working groups through a uniform Microsoft 365 workspace pattern", status: "accepted", date: "2026-08-14" },
   { id: "adr-0071", number: "0071", title: "Recruit later bounded-context groups through a coordinated public campaign", status: "accepted", date: "2026-08-14" },
   { id: "adr-0072", number: "0072", title: "Operate a scheduled, harnessed working-group inbox agent", status: "accepted", date: "2026-08-15" },
-  { id: "adr-0073", number: "0073", title: "Adopt the OPDA brand and replace the website design system", status: "accepted", date: "2026-08-16" },
+  { id: "adr-0073", number: "0073", title: "Adopt the OPDA brand and replace the website design system", status: "implemented", date: "2026-08-16" },
 ];

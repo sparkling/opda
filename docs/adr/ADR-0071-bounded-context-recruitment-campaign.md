@@ -1,6 +1,7 @@
 ---
 status: accepted
 date: 2026-08-14
+updated: 2026-08-16
 tags: [engagement, recruitment, linkedin, trade-bodies, working-groups, signup, campaign, measurement]
 supersedes: []
 depends-on: [ADR-0063, ADR-0065, ADR-0069]
