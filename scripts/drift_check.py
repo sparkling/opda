@@ -41,6 +41,9 @@ REQUIRED_SCHEMA_INPUTS = (
     Path("source/_examples/flat-london.json"),
     Path("source/_examples/semi-manchester.json"),
     Path("_build/leaves.json"),
+)
+
+REQUIRED_DERIVED_INPUTS = (
     Path("_build/classified.json"),
     Path("_build/orphans.json"),
 )
@@ -178,7 +181,10 @@ def check_subtable_sizes():
 
 
 def main():
+    strict = "--strict" in sys.argv
     missing = missing_required_inputs()
+    if not strict:
+        missing.extend(path for path in REQUIRED_DERIVED_INPUTS if not (ROOT / path).is_file())
     if missing:
         print("=== drift check === status=UNAVAILABLE")
         print("  UNAVAILABLE required schema inputs/artifacts are absent:")
@@ -186,20 +192,22 @@ def main():
             print(f"    - {relative}")
         sys.exit(2)
 
-    if "--strict" in sys.argv:
+    if strict:
         date_error = source_date_epoch_error()
         if date_error:
             print("=== drift check === status=UNAVAILABLE")
             print(f"  UNAVAILABLE {date_error}")
             sys.exit(2)
 
+    # Strict mode regenerates the derived build artefacts and schema pages
+    # before the coverage checks consume them. This keeps a clean checkout
+    # fail-closed without requiring ignored intermediates to be pre-populated.
+    if strict:
+        check_reproducibility()
     check_theme_coverage()
     check_provenance_coverage()
     check_example_paths()
     check_subtable_sizes()
-    # Reproducibility is heavy — only run if --strict
-    if "--strict" in sys.argv:
-        check_reproducibility()
 
     print(f"=== drift check ===  errors={len(errors)}  warnings={len(warnings)}")
     for e in errors:

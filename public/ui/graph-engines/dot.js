@@ -79,8 +79,8 @@
       '  overlap=false;',
       '  nodesep=0.35;',
       '  ranksep=0.7;',
-      '  node [style=filled, fontname="Inter, Arial, sans-serif", fontsize=11, penwidth=1.5];',
-      '  edge [fontname="Inter, Arial, sans-serif", fontsize=8, color=' + q(line) +
+      '  node [style=filled, fontname="DM Sans", fontsize=11, penwidth=1.5];',
+      '  edge [fontname="DM Sans", fontsize=8, color=' + q(line) +
         ', fontcolor=' + q(muted) + ', arrowsize=0.7];',
     ];
 

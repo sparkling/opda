@@ -1,11 +1,3 @@
-const ACCENTS: Record<string, string> = {
-  terracotta: 'var(--terracotta-500)',
-  plum: 'var(--plum-500)',
-  amber: 'var(--amber-500)',
-  teal: 'var(--teal-500)',
-  info: 'var(--color-info-500)',
-};
-
 function initCampaignExperience(): void {
   const root = document.querySelector<HTMLElement>('.wg-page');
   if (!root || root.dataset.campaignInitialised === 'true') return;
@@ -42,12 +34,12 @@ function initCampaignExperience(): void {
     if (handoffDefinition) handoffDefinition.textContent = step.dataset.definition ?? '';
     if (storyIndex) storyIndex.textContent = String(index + 1).padStart(2, '0');
     if (handoffStage) {
-      handoffStage.style.setProperty('--story-accent', ACCENTS[step.dataset.accent ?? 'terracotta']);
+      handoffStage.style.setProperty('--story-accent', 'var(--brand-yellow)');
       const card = handoffStage.querySelector<HTMLElement>('.wg-handoff-stage__property');
       if (card && typeof card.animate === 'function') card.animate(
         [
-          { opacity: 0.7, transform: 'translateY(0.65rem) scale(0.985)' },
-          { opacity: 1, transform: 'translateY(0) scale(1)' },
+          { transform: 'translateY(0.65rem) scale(0.985)' },
+          { transform: 'translateY(0) scale(1)' },
         ],
         { duration: reducedMotion.matches ? 0 : 160, easing: 'cubic-bezier(.2,0,0,1)' },
       );

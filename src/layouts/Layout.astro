@@ -115,7 +115,9 @@ const showSidebar = !hideSidebar && !!activeSection;
   </script>
 
   {tailwindPlus && (
-    <script src="https://cdn.jsdelivr.net/npm/@tailwindplus/elements@1" type="module"></script>
+    <script>
+      import '@tailwindplus/elements';
+    </script>
   )}
 
   <ClientRouter />

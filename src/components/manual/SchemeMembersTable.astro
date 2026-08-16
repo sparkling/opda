@@ -26,7 +26,7 @@ const sorted = [...members].sort((a, b) => a.notation.localeCompare(b.notation))
 ---
 
 {sorted.length > 0 && (
-  <div class="scheme-members-table-wrap">
+  <div class="scheme-members-table-wrap" role="region" aria-label="Scheme members table" tabindex="0">
     <table class="scheme-members-table">
       <thead>
         <tr>

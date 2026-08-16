@@ -39,7 +39,7 @@ const localOf = (uri: string) => uri.replace(/^.*[/#]/, '');
 {shape.constraints.length > 0 && (
   <section class="term-section">
     <h2>Constraints <span class="muted">· {shape.constraints.length}</span></h2>
-    <div class="table-wrap">
+    <div class="table-wrap" role="region" aria-label="Constraints table" tabindex="0">
       <table>
         <thead><tr><th>Path</th><th>Type</th><th>Card.</th><th>Severity</th><th>Message</th></tr></thead>
         <tbody>

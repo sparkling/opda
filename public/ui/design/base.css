@@ -77,7 +77,7 @@ a:visited { text-decoration-color: currentColor; }
   padding: 0 var(--space-6);
   color: var(--brand-white);
   background: var(--brand-deep);
-  border-bottom: 1px solid #3a3550;
+  border-bottom: 1px solid var(--color-surface-dark-tint);
   box-shadow: var(--shadow-sm);
 }
 .app-header .brand-link {
@@ -228,7 +228,7 @@ a:visited { text-decoration-color: currentColor; }
     overflow-y: auto;
     color: var(--brand-white);
     background: var(--brand-deep);
-    border-top: 1px solid #3a3550;
+    border-top: 1px solid var(--color-surface-dark-tint);
     border-bottom: 4px solid var(--brand-yellow);
     box-shadow: var(--shadow-md);
   }

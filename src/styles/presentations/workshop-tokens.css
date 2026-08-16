@@ -1,60 +1,31 @@
-@font-face {
-  font-family: 'DM Sans';
-  src: url('/ui/fonts/DMSans-Variable-latin.woff2') format('woff2');
-  font-style: normal;
-  font-weight: 400 700;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: 'Roboto Slab';
-  src: url('/ui/fonts/RobotoSlab-Variable-latin.woff2') format('woff2');
-  font-style: normal;
-  font-weight: 600 700;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: 'Roboto Mono';
-  src: url('/ui/fonts/RobotoMono-Variable-latin.woff2') format('woff2');
-  font-style: normal;
-  font-weight: 400 700;
-  font-display: swap;
-}
+@import url('/ui/design-tokens.css');
 
 :root {
   color-scheme: dark;
-  --deck-forest-950: #131224;
-  --deck-forest-900: #131224;
-  --deck-forest-800: #231f2f;
-  --deck-forest-700: #2c273b;
-  --deck-cream: #f9f9f9;
-  --deck-cream-muted: #a5a1b2;
-  --deck-mint: #66c28f;
-  --deck-lime: #fec92b;
-  --deck-amber: #ffb84d;
-  --deck-coral: #ff958a;
-  --deck-line: #3a3550;
-  --deck-panel: rgb(255 255 255 / 6%);
-  --deck-shadow: 0 24px 80px rgb(0 0 0 / 34%);
-  --deck-sans: 'DM Sans', system-ui, sans-serif;
-  --deck-serif: 'Roboto Slab', Georgia, serif;
-  --deck-mono: 'Roboto Mono', ui-monospace, monospace;
+  --deck-surface: var(--color-surface);
+  --deck-raised: var(--color-surface-card);
+  --deck-inset: var(--color-surface-inset);
+  --deck-text: var(--color-text);
+  --deck-text-strong: var(--color-text-strong);
+  --deck-muted: var(--color-text-muted);
+  --deck-border: var(--color-border);
+  --deck-border-strong: var(--color-border-strong);
+  --deck-accent: var(--brand-yellow);
+  --deck-accent-active: var(--brand-yellow-active);
+  --deck-success: var(--color-status-success);
+  --deck-warning: var(--color-status-warning);
+  --deck-danger: var(--color-status-danger);
+  --deck-info: var(--color-status-info);
+  --deck-info-surface: var(--color-status-info-surface);
+  --deck-sans: var(--font-sans);
+  --deck-display: var(--font-display);
+  --deck-mono: var(--font-mono);
   --deck-gutter: clamp(1.25rem, 3vw, 4rem);
   --deck-hud-height: clamp(3rem, 4vw, 3.75rem);
-  --deck-radius-sm: 2px;
-  --deck-radius-md: 4px;
-  --deck-radius-lg: 4px;
-  --deck-ease: cubic-bezier(0.2, 0, 0, 1);
-  --deck-fast: 120ms;
-  --deck-medium: 200ms;
-  --deck-focus: 0 0 0 2px var(--deck-forest-900), 0 0 0 4px var(--deck-lime);
-}
-
-/* Purposeful motion only: no ambient loops and no transition over 200ms. */
-body *, body *::before, body *::after {
-  animation-duration: 200ms !important;
-  animation-delay: 0ms !important;
-  animation-iteration-count: 1 !important;
-  transition-duration: 160ms !important;
+  --deck-radius-control: var(--radius-sm);
+  --deck-radius-code: var(--radius-lg);
+  --deck-ease: var(--ease);
+  --deck-fast: var(--duration-fast);
+  --deck-medium: var(--duration-slow);
+  --deck-focus: 0 0 0 2px var(--brand-deep), 0 0 0 4px var(--brand-yellow);
 }

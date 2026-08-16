@@ -1,104 +1,12 @@
 @media (max-width: 64rem) {
-  .wg-campaign-hero {
-    grid-template-columns: 1fr;
-  }
-
-  .wg-journey {
-    width: min(100%, 38rem);
-    margin: 0 auto;
-  }
-
-  .wg-story {
-    grid-template-columns: minmax(18rem, 0.8fr) minmax(0, 1.2fr);
-    gap: var(--space-7);
-  }
+  .wg-journey { width: 100%; }
 }
 
 @media (max-width: 48rem) {
-  .wg-campaign-hero {
-    min-height: auto;
-    padding-top: var(--space-10);
-  }
-
-  .wg-campaign-hero h1 {
-    font-size: clamp(3rem, 15vw, 5rem);
-  }
-
-  .wg-journey {
-    min-height: auto;
-    display: block;
-  }
-
-  .wg-journey__property,
-  .wg-journey__orbit,
-  .wg-journey > p {
-    display: none;
-  }
-
-  .wg-journey ol {
-    position: static;
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: var(--space-2);
-  }
-
-  .wg-journey li {
-    position: static;
-    width: auto;
-    transform: none;
-  }
-
-  .wg-proof-strip,
-  .wg-story {
-    grid-template-columns: 1fr;
-  }
-
-  .wg-proof-strip span {
-    padding: var(--space-2) 0 0;
-    border-left: 0;
-    border-top: 1px solid var(--color-border);
-  }
-
-  .wg-story__visual {
-    display: none;
-  }
-
-  .wg-story__steps > header,
-  .wg-story__steps article {
-    min-height: auto;
-    padding-block: var(--space-8);
-    opacity: 1;
-  }
-
-  .wg-story__steps article.is-active {
-    transform: none;
-  }
-
-  .wg-context-map {
-    padding-bottom: 0;
-  }
-
-  .wg-contexts li::after,
-  .wg-context-map__bridge::before {
-    display: none;
-  }
-
-  .wg-context-map__bridge {
-    position: static;
-    width: 100%;
-    margin-top: var(--space-4);
-    border-radius: var(--radius-lg);
-    transform: none;
-  }
+  .wg-hero-actions { flex-direction: column; align-items: stretch; }
+  .wg-hero-actions :is(.btn, .wg-text-link) { justify-content: center; }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .wg-journey__orbit {
-    animation: none;
-  }
-
-  .wg-story__steps article {
-    opacity: 1;
-    transform: none !important;
-  }
+  .wg-page * { animation: none !important; transition-duration: 0.01ms !important; }
 }

@@ -183,9 +183,9 @@
       b.className = 'og-tab cursor-pointer whitespace-nowrap rounded-t-md border border-b-0 ' +
         'border-[var(--color-border-strong)] -mb-px px-3 py-2 text-sm font-semibold ' +
         'text-[var(--color-text-muted)] bg-[var(--button-bg)] transition-colors ' +
-        'hover:text-[var(--color-brand-600)] hover:bg-[var(--button-bg-hover)] ' +
+        'hover:text-[var(--color-link-hover)] hover:bg-[var(--button-bg-hover)] ' +
         'focus:z-10 focus:outline-2 focus:-outline-offset-2 focus:outline-[var(--focus-ring)] ' +
-        'aria-selected:bg-[var(--color-brand-500)] aria-selected:text-white aria-selected:border-[var(--color-brand-500)]';
+        'aria-selected:bg-[var(--brand-yellow)] aria-selected:text-[var(--brand-ink)] aria-selected:border-[var(--brand-yellow)]';
       b.dataset.engine = eng.id;
       b.setAttribute('role', 'tab');
       b.setAttribute('aria-selected', 'false');

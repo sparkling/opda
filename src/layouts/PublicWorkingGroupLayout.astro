@@ -31,13 +31,17 @@ const socialImageUrl = socialImage
     <meta name="twitter:description" content={description} />
     {socialImageUrl && <meta name="twitter:image" content={socialImageUrl} />}
     <meta name="color-scheme" content="light dark" />
-    <meta name="theme-color" content="#f4f1e8" />
+    <meta name="theme-color" content="#131224" />
     <script is:inline>
-      try {
-        const savedTheme = localStorage.getItem('opda-theme');
-        const prefersDark = matchMedia('(prefers-color-scheme: dark)').matches;
-        document.documentElement.dataset.theme = savedTheme || (prefersDark ? 'dark' : 'light');
-      } catch {}
+      (function () {
+        try {
+          var theme = new URLSearchParams(location.search).get('theme');
+          if (theme !== 'light' && theme !== 'dark') theme = localStorage.getItem('opda-theme');
+          document.documentElement.dataset.theme = theme === 'dark' ? 'dark' : 'light';
+        } catch (error) {
+          document.documentElement.dataset.theme = 'light';
+        }
+      })();
     </script>
     <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>⌂</text></svg>" />
     <link rel="stylesheet" href="/ui/design-system.css" />
@@ -46,16 +50,16 @@ const socialImageUrl = socialImage
   <body class="public-working-groups">
     <a class="skip-link" href="#main-content">Skip to main content</a>
 
-    <header class="public-header">
-      <div class="public-header__inner">
-        <a class="public-brand" href="https://openpropdata.org.uk/" aria-label="Open Property Data Association home">
-          <span class="public-brand__mark" aria-hidden="true">OPDA</span>
-          <span class="public-brand__name">Smart Property Data Trust Framework</span>
+    <header class="wg-public-header">
+      <div class="wg-public-header__inner">
+        <a class="wg-public-brand" href="https://openpropdata.org.uk/" aria-label="Open Property Data Association home">
+          <img src="/ui/brand/opda-wordmark-white.svg" alt="Open Property Data Association" width="149" height="42" />
+          <span>Smart Property Data Trust Framework</span>
         </a>
         <nav aria-label="Working group recruitment">
           <a href="/working-groups/join" aria-current={current === 'join' ? 'page' : undefined}>Join a working group</a>
           <a href="/working-groups/join/privacy" aria-current={current === 'privacy' ? 'page' : undefined}>Privacy</a>
-          <button class="public-theme-toggle" type="button" aria-label="Switch colour theme" title="Switch colour theme">
+          <button class="wg-theme-toggle" type="button" aria-label="Switch to dark mode" aria-pressed="false" title="Switch to dark mode">
             <span aria-hidden="true">◐</span>
           </button>
         </nav>
@@ -66,8 +70,8 @@ const socialImageUrl = socialImage
       <slot />
     </main>
 
-    <footer class="public-footer">
-      <div class="public-footer__inner">
+    <footer class="wg-public-footer">
+      <div class="wg-public-footer__inner">
         <p><strong>Open Property Data Association</strong><br />Developing open, interoperable property data standards.</p>
         <nav aria-label="Footer">
           <a href="/working-groups/join/privacy">Working-group privacy notice</a>
@@ -77,11 +81,21 @@ const socialImageUrl = socialImage
       </div>
     </footer>
     <script>
-      const toggle = document.querySelector<HTMLButtonElement>('.public-theme-toggle');
+      const toggle = document.querySelector<HTMLButtonElement>('.wg-theme-toggle');
+      const syncThemeToggle = () => {
+        if (!toggle) return;
+        const dark = document.documentElement.dataset.theme === 'dark';
+        const label = dark ? 'Switch to light mode' : 'Switch to dark mode';
+        toggle.setAttribute('aria-pressed', String(dark));
+        toggle.setAttribute('aria-label', label);
+        toggle.title = label;
+      };
+      syncThemeToggle();
       toggle?.addEventListener('click', () => {
         const next = document.documentElement.dataset.theme === 'dark' ? 'light' : 'dark';
         document.documentElement.dataset.theme = next;
         try { localStorage.setItem('opda-theme', next); } catch {}
+        syncThemeToggle();
       });
     </script>
   </body>
@@ -113,98 +127,100 @@ const socialImageUrl = socialImage
     transform: translateY(0);
   }
 
-  .public-header {
-    border-bottom: 1px solid var(--color-border);
-    background: var(--cream-200);
+  .wg-public-header {
+    background: var(--brand-deep);
+    border-bottom: 4px solid var(--brand-yellow);
   }
 
-  .public-header__inner,
-  .public-footer__inner {
-    width: min(74rem, calc(100% - 2rem));
+  .wg-public-header__inner,
+  .wg-public-footer__inner {
+    width: min(var(--content-max), calc(100% - 2rem));
     margin: 0 auto;
   }
 
-  .public-header__inner {
-    min-height: 4.75rem;
+  .wg-public-header__inner {
+    min-height: var(--header-height);
     display: flex;
     align-items: center;
     justify-content: space-between;
-    gap: var(--space-5);
+    gap: var(--space-6);
   }
 
-  .public-brand {
-    display: flex;
-    align-items: baseline;
-    gap: var(--space-3);
-    color: var(--color-text-strong);
-    text-decoration: none;
-  }
-
-  .public-brand:hover {
-    color: var(--color-text-strong);
-    text-decoration: none;
-  }
-
-  .public-brand__mark {
-    color: var(--terracotta-700);
-    font: 700 var(--text-2xl) / 1 var(--font-serif);
-    letter-spacing: var(--tracking-tight);
-  }
-
-  .public-brand__name {
-    color: var(--color-text-muted);
-    font-size: var(--text-sm);
-  }
-
-  .public-header nav,
-  .public-footer nav {
+  .wg-public-brand {
     display: flex;
     align-items: center;
-    gap: var(--space-5);
+    gap: var(--space-4);
+    min-height: var(--target-min);
+    color: var(--brand-white);
+    text-decoration: none;
+  }
+
+  .wg-public-brand:hover {
+    color: var(--brand-white);
+    text-decoration: none;
+  }
+
+  .wg-public-brand img {
+    display: block;
+    width: 9.3125rem;
+    height: auto;
+  }
+
+  .wg-public-brand span {
+    color: var(--on-dark-muted);
     font-size: var(--text-sm);
   }
 
-  .public-header nav a {
-    color: var(--color-text);
+  .wg-public-header nav,
+  .wg-public-footer nav {
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+    font-size: var(--text-sm);
+  }
+
+  .wg-public-header nav a {
+    min-height: var(--target-min);
+    display: inline-flex;
+    align-items: center;
+    padding-inline: var(--space-3);
+    color: var(--on-dark-muted);
     font-weight: 600;
   }
 
-  .public-header nav a[aria-current='page'] {
-    color: var(--terracotta-800);
-    text-decoration: underline;
-    text-decoration-thickness: 2px;
-    text-underline-offset: 0.35rem;
+  .wg-public-header nav a:hover,
+  .wg-public-header nav a[aria-current='page'] {
+    color: var(--brand-white);
   }
 
-  .public-theme-toggle {
+  .wg-public-header nav a[aria-current='page'] {
+    box-shadow: inset 0 -4px 0 var(--brand-yellow);
+  }
+
+  .wg-theme-toggle {
     display: inline-grid;
-    width: 2.25rem;
-    height: 2.25rem;
+    width: var(--target-min);
+    height: var(--target-min);
     place-items: center;
     padding: 0;
-    border: 1px solid var(--color-border-strong);
+    border: 1px solid rgb(255 255 255 / 28%);
     border-radius: var(--radius-md);
-    background: var(--button-bg);
-    color: var(--color-text-strong);
+    background: transparent;
+    color: var(--brand-white);
     cursor: pointer;
   }
 
-  .public-theme-toggle:hover {
-    background: var(--button-bg-hover);
+  .wg-theme-toggle:hover {
+    background: rgb(255 255 255 / 8%);
   }
 
-  .public-theme-toggle:focus-visible {
-    outline: 2px solid var(--focus-ring);
-    outline-offset: 2px;
-  }
-
-  .public-footer {
+  .wg-public-footer {
     margin-top: var(--space-10);
-    border-top: 1px solid var(--color-border);
-    background: var(--cream-200);
+    border-top: 4px solid var(--brand-yellow);
+    background: var(--brand-deep);
   }
 
-  .public-footer__inner {
+  .wg-public-footer__inner {
     padding-block: var(--space-7);
     display: flex;
     justify-content: space-between;
@@ -212,45 +228,51 @@ const socialImageUrl = socialImage
     gap: var(--space-6);
   }
 
-  .public-footer p {
+  .wg-public-footer p {
     max-width: 36ch;
     margin: 0;
-    color: var(--color-text-muted);
+    color: var(--on-dark-muted);
     font-size: var(--text-sm);
   }
 
-  .public-footer nav {
+  .wg-public-footer nav {
     align-items: flex-end;
     flex-direction: column;
     gap: var(--space-2);
   }
 
+  .wg-public-footer a { color: var(--brand-white); }
+
   @media (max-width: 44rem) {
-    .public-header__inner,
-    .public-footer__inner {
+    .wg-public-header__inner,
+    .wg-public-footer__inner {
       align-items: flex-start;
       flex-direction: column;
       padding-block: var(--space-4);
     }
 
-    .public-header nav {
+    .wg-public-header nav {
       width: 100%;
       justify-content: space-between;
     }
 
-    .public-footer nav {
+    .wg-public-footer nav {
       align-items: flex-start;
     }
 
-    .public-brand__name {
+    .wg-public-brand span {
       max-width: 20ch;
     }
   }
 
   @media (forced-colors: active) {
-    .public-header,
-    .public-footer {
+    .wg-public-header,
+    .wg-public-footer {
       border-color: CanvasText;
     }
+    .wg-public-header,
+    .wg-public-footer { background: Canvas; color: CanvasText; }
+    .wg-public-header :is(a, button), .wg-public-footer a { color: LinkText; }
+    .wg-public-header nav a[aria-current='page'] { box-shadow: inset 0 -4px 0 Highlight; }
   }
 </style>

@@ -46,14 +46,14 @@
   box-shadow: 0 0 0 2px var(--color-focus-contrast);
 }
 :root[data-theme="dark"] .rail-collapse-toggle {
-  background: var(--surface-dark-tint);
+  background: var(--color-surface-dark-tint);
   border-color: var(--color-border);
-  color: var(--terracotta-300);
+  color: var(--brand-yellow);
 }
 :root[data-theme="dark"] .rail-collapse-toggle:hover {
-  background: var(--surface-dark-alt);
-  color: var(--terracotta-200);
-  border-color: var(--terracotta-700);
+  background: var(--color-surface-dark-raised);
+  color: var(--on-dark);
+  border-color: var(--brand-yellow);
 }
 .rail-collapse-toggle svg {
   width: 1.25rem;
@@ -140,7 +140,7 @@
 }
 .app-sidebar details.nav-group[open] > summary > .nav-group-caret {
   transform: rotate(90deg);
-  color: var(--color-brand-700);
+  color: var(--color-action-selected);
 }
 .app-sidebar details.nav-group > summary:hover > .nav-group-caret {
   color: var(--color-text);
@@ -204,11 +204,11 @@
   cursor: pointer;
   border-radius: var(--radius-md);
 }
-.auth-button__user-trigger:hover { background: var(--cream-200); }
+.auth-button__user-trigger:hover { background: var(--color-action-subtle); }
 .app-header .auth-button__user-trigger { color: var(--brand-white); }
 .app-header .auth-button__user-trigger:hover { background: rgb(255 255 255 / 8%); }
 :root[data-theme="dark"] .auth-button__user-trigger:hover {
-  background: var(--surface-dark-tint);
+  background: var(--color-surface-dark-tint);
 }
 .auth-button__avatar {
   display: inline-flex;
@@ -273,10 +273,10 @@
   cursor: pointer;
 }
 .auth-button__dropdown-item:hover {
-  background: var(--cream-200);
+  background: var(--color-action-subtle);
 }
 :root[data-theme="dark"] .auth-button__dropdown-item:hover {
-  background: var(--surface-dark-tint);
+  background: var(--color-surface-dark-tint);
 }
 /* Hide email on small screens — keep just the avatar */
 @media (max-width: 720px) {
@@ -317,11 +317,11 @@
   border-radius: var(--radius-md);
 }
 .app-sidebar .tree-toggle:hover {
-  background: var(--cream-200);
-  color: var(--ink-1000);
+  background: var(--color-action-subtle);
+  color: var(--color-text-strong);
 }
 :root[data-theme="dark"] .app-sidebar .tree-toggle:hover {
-  background: var(--surface-dark-tint);
+  background: var(--color-surface-dark-tint);
   color: var(--on-dark);
 }
 /* Chevron icon — Lucide chevron-right rotated via transform on open. */
@@ -339,7 +339,7 @@
 .app-sidebar .tree-toggle:hover > .tree-caret { color: var(--color-text); }
 .app-sidebar .tree-folder.is-open > .tree-toggle > .tree-caret {
   transform: rotate(90deg);
-  color: var(--color-brand-700);
+  color: var(--color-action-selected);
 }
 .app-sidebar .tree-children { display: none; }
 .app-sidebar .tree-folder.is-open > .tree-children { display: block; }
@@ -383,8 +383,8 @@
   color: var(--color-text);
 }
 .app-sidebar a:hover {
-  background: var(--cream-200);
-  color: var(--ink-1000);
+  background: var(--color-action-subtle);
+  color: var(--color-text-strong);
   text-decoration: none;
 }
 .app-sidebar a.active {
@@ -393,9 +393,9 @@
   font-weight: 700;
   box-shadow: inset 4px 0 0 var(--brand-yellow);
 }
-:root[data-theme="dark"] .app-sidebar a:hover { background: var(--surface-dark-tint); color: var(--color-text-strong); }
+:root[data-theme="dark"] .app-sidebar a:hover { background: var(--color-surface-dark-tint); color: var(--color-text-strong); }
 :root[data-theme="dark"] .app-sidebar a.active {
-  background: var(--surface-dark-tint);
+  background: var(--color-surface-dark-tint);
   color: var(--brand-white);
   box-shadow: inset 4px 0 0 var(--brand-yellow);
 }

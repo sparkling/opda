@@ -10,7 +10,9 @@ SHELL         := /usr/bin/env bash
 
 # Canonical ontology corpus (source of truth) + opda-gen working dir.
 ONTOLOGY_DIR := source/03-standards/ontology
-OPDA_GEN     := cd tools/opda-gen &&
+# Run opda-gen inside its repository-local Python 3.11 environment without
+# changing the interpreter used by root-level schema tooling.
+OPDA_GEN     := cd tools/opda-gen && PATH="$(CURDIR)/tools/opda-gen/.venv/bin:$$PATH"
 
 # -----------------------------------------------------------------------------
 .PHONY: help
@@ -111,8 +113,36 @@ test: node_modules	## Remark plugin tests (mermaid fence / details unwrap)
 	npm test
 
 .PHONY: test-smoke
-test-smoke: node_modules	## Playwright smoke test (mermaid + data tables); needs a running server + Playwright
+test-smoke: node_modules	## Playwright smoke test (mermaid + data tables) against the built-site preview
 	npm run test:smoke
+
+.PHONY: test-e2e
+test-e2e: node_modules	## Playwright browser, accessibility and responsive gates against dist/ preview
+	npm run test:e2e
+
+.PHONY: test-a11y
+test-a11y: node_modules	## Axe WCAG 2.2 AA gate over representative routes
+	npm run test:a11y
+
+.PHONY: test-visual
+test-visual: node_modules	## Screenshot visual-drift gate (use --update-snapshots locally only)
+	npm run test:visual
+
+.PHONY: check-routes
+check-routes:	## Crawl built resources and application-owned navigation
+	npm run check:routes
+
+.PHONY: test-schema
+test-schema:	## Focused schema reproducibility and drift-boundary contracts
+	npm run test:schema
+
+.PHONY: check-schema-drift
+check-schema-drift:	## Strict schema drift gate; unavailable input bundles fail closed
+	npm run check:schema-drift
+
+.PHONY: ci-browser
+ci-browser: build check-routes test-e2e	## Build and run all static/browser release gates
+	@echo "✓ static and browser release gates passed"
 
 .PHONY: verify-ontology
 verify-ontology:	## Byte-identity: re-emit the ontology and diff it against the committed corpus
@@ -155,16 +185,16 @@ check-links-external:	## Live external-URL 200 sweep over /ontology + /pdtf (ADR
 	node scripts/check-external-links.mjs
 
 .PHONY: ci
-ci: test check-adr ci-ontology ci-ontology-doc ci-ontology-graph	## Everything CI runs that is checkable locally (JS + ontology gates + doc-drift)
+ci: test test-schema check-schema-drift check-adr ci-ontology ci-ontology-doc ci-ontology-graph	## Everything CI runs that is checkable locally (JS + ontology gates + doc-drift)
 	@echo "✓ all local CI gates passed"
 
 ##@ Deploy
 .PHONY: deploy
-deploy:	## Push main → GitHub Actions builds (Fuseki+API+astro) & deploys to Cloudflare Pages
+deploy:	## Push main → GitHub Actions builds (Fuseki+API+astro) & deploys to AWS
 	npm run deploy:ci
 
 .PHONY: deploy-manual
-deploy-manual:	## Build + wrangler deploy directly (bypasses CI — avoid; CI-on-push is canonical)
+deploy-manual:	## Legacy Wrangler escape hatch (not canonical production; avoid)
 	npm run deploy
 
 ##@ Data / housekeeping

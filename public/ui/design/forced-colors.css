@@ -1,0 +1,48 @@
+/* System-wide Windows high-contrast mappings. Colour is never the sole cue. */
+
+@media (forced-colors: active) {
+  :where(a, button, input, select, textarea, summary, [tabindex]):focus-visible {
+    outline: 3px solid Highlight;
+    outline-offset: 3px;
+    box-shadow: none;
+  }
+
+  :where(.app-header, .home-hero, .public-hero, .public-footer, .home-footer) {
+    border-color: CanvasText;
+    forced-color-adjust: auto;
+  }
+
+  :where(.btn, .icon-button, .theme-toggle, .menu-toggle, .db-filter-btn,
+    .db-reset, .db-pagination button, .graph-diagram button) {
+    border: 1px solid ButtonText;
+    forced-color-adjust: auto;
+  }
+
+  :where(.btn[aria-pressed='true'], .btn[aria-current], .global-nav a[aria-current],
+    .sidebar-nav a[aria-current], .toc a[aria-current], .db-pagination button.current) {
+    border-bottom: 4px solid Highlight;
+  }
+
+  :where(.pill, .callout, .status-card, .evidence-card, .home-card,
+    .responsive-table, .db-table-wrap, .diagram, .graph-diagram-wrapper) {
+    border: 1px solid CanvasText;
+    forced-color-adjust: auto;
+  }
+
+  :where(.pill, .callout)::before {
+    color: CanvasText;
+  }
+
+  :where(input, select, textarea, .choice-card) {
+    border: 1px solid FieldText;
+    forced-color-adjust: auto;
+  }
+
+  :where(input:checked, [aria-selected='true'], [aria-pressed='true']) {
+    outline: 2px solid Highlight;
+    outline-offset: 2px;
+  }
+
+  .responsive-table { border-top: 4px solid Highlight; }
+  .responsive-table__viewport { scrollbar-color: ButtonText Canvas; }
+}

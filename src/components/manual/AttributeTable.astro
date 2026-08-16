@@ -29,7 +29,7 @@ const { attributes } = Astro.props;
 ---
 
 {attributes.length > 0 && (
-  <div class="attribute-table-wrap">
+  <div class="attribute-table-wrap" role="region" aria-label="Attributes table" tabindex="0">
     <table class="attribute-table">
       <thead>
         <tr>

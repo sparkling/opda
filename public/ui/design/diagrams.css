@@ -111,7 +111,7 @@
   display: inline-flex;
   align-items: center;
   gap: var(--space-2);
-  color: var(--terracotta-700);
+  color: var(--color-link);
   text-decoration: none;
   font-weight: 500;
 }
@@ -120,10 +120,10 @@
   width: 14px;
   height: 14px;
   flex-shrink: 0;
-  color: var(--terracotta-500);
+  color: var(--color-data-1);
 }
 .object-block__children a {
-  color: var(--terracotta-700);
+  color: var(--color-link);
   text-decoration: none;
   font-weight: 500;
 }
@@ -136,7 +136,7 @@
   position: relative;
   margin: var(--space-6) 0;
   padding: var(--space-5);
-  background: var(--cream-200);
+  background: var(--color-surface-tint);
   border: 1px solid var(--color-border);
   border-radius: 0;
   overflow-x: auto;
@@ -185,28 +185,28 @@
 .mermaid g.node.success path { fill: var(--color-status-success-surface) !important; stroke: var(--color-status-success) !important; }
 :root[data-theme="dark"] .mermaid g.node.success rect,
 :root[data-theme="dark"] .mermaid g.node.success polygon,
-:root[data-theme="dark"] .mermaid g.node.success path { fill: var(--brand-night) !important; stroke: #66c28f !important; }
+:root[data-theme="dark"] .mermaid g.node.success path { fill: var(--brand-night) !important; stroke: var(--color-status-success) !important; }
 
 .mermaid g.node.warning rect,
 .mermaid g.node.warning polygon,
 .mermaid g.node.warning path { fill: var(--color-status-warning-surface) !important; stroke: var(--color-status-warning) !important; }
 :root[data-theme="dark"] .mermaid g.node.warning rect,
 :root[data-theme="dark"] .mermaid g.node.warning polygon,
-:root[data-theme="dark"] .mermaid g.node.warning path { fill: var(--brand-night) !important; stroke: #ffb84d !important; }
+:root[data-theme="dark"] .mermaid g.node.warning path { fill: var(--brand-night) !important; stroke: var(--color-status-warning) !important; }
 
 .mermaid g.node.error rect,
 .mermaid g.node.error polygon,
 .mermaid g.node.error path { fill: var(--color-status-danger-surface) !important; stroke: var(--color-status-danger) !important; }
 :root[data-theme="dark"] .mermaid g.node.error rect,
 :root[data-theme="dark"] .mermaid g.node.error polygon,
-:root[data-theme="dark"] .mermaid g.node.error path { fill: var(--brand-night) !important; stroke: #ff958a !important; }
+:root[data-theme="dark"] .mermaid g.node.error path { fill: var(--brand-night) !important; stroke: var(--color-status-danger) !important; }
 
 .mermaid g.node.info rect,
 .mermaid g.node.info polygon,
 .mermaid g.node.info path { fill: var(--color-status-info-surface) !important; stroke: var(--color-status-info) !important; }
 :root[data-theme="dark"] .mermaid g.node.info rect,
 :root[data-theme="dark"] .mermaid g.node.info polygon,
-:root[data-theme="dark"] .mermaid g.node.info path { fill: var(--brand-night) !important; stroke: #7fb5ff !important; }
+:root[data-theme="dark"] .mermaid g.node.info path { fill: var(--brand-night) !important; stroke: var(--color-status-info) !important; }
 
 .mermaid g.node.neutral rect,
 .mermaid g.node.neutral polygon,
@@ -221,49 +221,49 @@
 .mermaid g.node.infra path { fill: var(--color-status-info-surface) !important; stroke: var(--color-data-5) !important; }
 :root[data-theme="dark"] .mermaid g.node.infra rect,
 :root[data-theme="dark"] .mermaid g.node.infra polygon,
-:root[data-theme="dark"] .mermaid g.node.infra path { fill: var(--brand-night) !important; stroke: #7f9dbd !important; }
+:root[data-theme="dark"] .mermaid g.node.infra path { fill: var(--brand-night) !important; stroke: var(--color-data-5-dark) !important; }
 
 .mermaid g.node.service rect,
 .mermaid g.node.service polygon,
-.mermaid g.node.service path { fill: #edf3e2 !important; stroke: var(--color-data-6) !important; }
+.mermaid g.node.service path { fill: var(--color-data-6-surface) !important; stroke: var(--color-data-6) !important; }
 :root[data-theme="dark"] .mermaid g.node.service rect,
 :root[data-theme="dark"] .mermaid g.node.service polygon,
-:root[data-theme="dark"] .mermaid g.node.service path { fill: var(--brand-night) !important; stroke: #8cad4d !important; }
+:root[data-theme="dark"] .mermaid g.node.service path { fill: var(--brand-night) !important; stroke: var(--color-data-6-dark) !important; }
 
 .mermaid g.node.data rect,
 .mermaid g.node.data polygon,
 .mermaid g.node.data path { fill: var(--color-status-warning-surface) !important; stroke: var(--color-data-2) !important; }
 :root[data-theme="dark"] .mermaid g.node.data rect,
 :root[data-theme="dark"] .mermaid g.node.data polygon,
-:root[data-theme="dark"] .mermaid g.node.data path { fill: var(--brand-night) !important; stroke: #dca23a !important; }
+:root[data-theme="dark"] .mermaid g.node.data path { fill: var(--brand-night) !important; stroke: var(--color-data-2-dark) !important; }
 
 .mermaid g.node.user rect,
 .mermaid g.node.user polygon,
-.mermaid g.node.user path { fill: #f5e8f1 !important; stroke: var(--color-data-4) !important; }
+.mermaid g.node.user path { fill: var(--color-data-4-surface) !important; stroke: var(--color-data-4) !important; }
 :root[data-theme="dark"] .mermaid g.node.user rect,
 :root[data-theme="dark"] .mermaid g.node.user polygon,
-:root[data-theme="dark"] .mermaid g.node.user path { fill: var(--brand-night) !important; stroke: #d77abb !important; }
+:root[data-theme="dark"] .mermaid g.node.user path { fill: var(--brand-night) !important; stroke: var(--color-data-4-dark) !important; }
 
 .mermaid g.node.process rect,
 .mermaid g.node.process polygon,
-.mermaid g.node.process path { fill: #eeebfa !important; stroke: var(--color-data-1) !important; }
+.mermaid g.node.process path { fill: var(--color-data-1-surface) !important; stroke: var(--color-data-1) !important; }
 :root[data-theme="dark"] .mermaid g.node.process rect,
 :root[data-theme="dark"] .mermaid g.node.process polygon,
-:root[data-theme="dark"] .mermaid g.node.process path { fill: var(--brand-night) !important; stroke: #9a8fe8 !important; }
+:root[data-theme="dark"] .mermaid g.node.process path { fill: var(--brand-night) !important; stroke: var(--color-data-1-dark) !important; }
 
 .mermaid g.node.security rect,
 .mermaid g.node.security polygon,
-.mermaid g.node.security path { fill: #e4f3f0 !important; stroke: var(--color-data-3) !important; }
+.mermaid g.node.security path { fill: var(--color-data-3-surface) !important; stroke: var(--color-data-3) !important; }
 :root[data-theme="dark"] .mermaid g.node.security rect,
 :root[data-theme="dark"] .mermaid g.node.security polygon,
-:root[data-theme="dark"] .mermaid g.node.security path { fill: var(--brand-night) !important; stroke: #55b7ae !important; }
+:root[data-theme="dark"] .mermaid g.node.security path { fill: var(--brand-night) !important; stroke: var(--color-data-3-dark) !important; }
 
 .mermaid g.node.external rect,
 .mermaid g.node.external polygon,
 .mermaid g.node.external path { fill: #f0eef2 !important; stroke: var(--color-data-8) !important; }
 :root[data-theme="dark"] .mermaid g.node.external rect,
 :root[data-theme="dark"] .mermaid g.node.external polygon,
-:root[data-theme="dark"] .mermaid g.node.external path { fill: var(--brand-night) !important; stroke: #9c93aa !important; }
+:root[data-theme="dark"] .mermaid g.node.external path { fill: var(--brand-night) !important; stroke: var(--color-data-8-dark) !important; }
 /* Same cap for inline content images in articles (icons / screenshots
    / illustrations). */
 .prose img,
@@ -271,7 +271,7 @@
   max-height: 750px;
   height: auto;
 }
-:root[data-theme="dark"] .diagram { background: var(--surface-dark-alt); }
+:root[data-theme="dark"] .diagram { background: var(--color-surface-dark-raised); }
 .diagram .mermaid {
   /* display:block is REQUIRED. Mermaid's Gantt renderer reads the
      container's measured width to compute the chart's intrinsic width;
@@ -328,8 +328,8 @@
 .diagram-zoom-btn svg { display: block; width: 1rem; height: 1rem; }
 .diagram:hover .diagram-zoom-btn { opacity: 1; }
 .diagram-zoom-btn:hover {
-  background: var(--color-brand-100);
-  color: var(--color-brand-900);
+  background: var(--color-action-subtle-hover);
+  color: var(--color-text-strong);
   transform: scale(1.05);
 }
 @media (prefers-reduced-motion: reduce) {
@@ -343,7 +343,7 @@
   box-shadow: 0 0 0 2px var(--color-focus-contrast);
 }
 :root[data-theme="dark"] .diagram-zoom-btn {
-  background: var(--surface-dark);
+  background: var(--color-surface-dark);
   color: var(--color-text);
   border-color: var(--color-border-strong);
 }

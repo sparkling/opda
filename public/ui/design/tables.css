@@ -1,0 +1,106 @@
+/* OPDA responsive table pattern — labelled, keyboard-scrollable and sharp. */
+
+.prose table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  margin: var(--space-5) 0;
+  border: 1px solid var(--color-border);
+  border-radius: 0;
+  background: var(--color-surface);
+  font-size: var(--text-sm);
+}
+
+.prose th,
+.prose td {
+  padding: var(--space-3) var(--space-4);
+  text-align: left;
+  vertical-align: top;
+}
+
+.prose th {
+  background: var(--color-surface-tint);
+  color: var(--color-text-strong);
+  font: 700 var(--text-sm) / 1.4 var(--font-sans);
+  letter-spacing: 0;
+}
+
+.prose tbody tr:nth-child(2n) { background: var(--color-surface-tint); }
+.prose table.ext-table { width: auto; table-layout: fixed; }
+
+/* No-JavaScript fallback: contain wide direct-child tables within the article. */
+.prose > table {
+  display: block;
+  max-width: 100%;
+  overflow-x: auto;
+}
+
+.responsive-table {
+  max-width: 100%;
+  margin: var(--space-5) 0;
+  border-top: 4px solid var(--brand-yellow);
+}
+
+.responsive-table__label {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: var(--space-2) var(--space-4);
+  margin: 0;
+  padding: var(--space-3) var(--space-4);
+  border: 1px solid var(--color-border);
+  border-bottom: 0;
+  background: var(--color-surface-alt);
+  color: var(--color-text-strong);
+  font: 700 var(--text-caption) / 1.4 var(--font-sans);
+}
+
+.responsive-table__hint {
+  color: var(--color-text-muted);
+  font-weight: 400;
+}
+
+.responsive-table__viewport {
+  max-width: 100%;
+  overflow-x: auto;
+  overscroll-behavior-inline: contain;
+  scrollbar-gutter: stable;
+}
+
+.responsive-table__viewport:focus-visible {
+  outline: 2px solid var(--color-focus);
+  outline-offset: 2px;
+  box-shadow: 0 0 0 2px var(--color-focus-contrast);
+}
+
+.responsive-table__viewport > table {
+  display: table;
+  min-width: 100%;
+  width: max-content;
+  max-width: none;
+  margin: 0;
+}
+
+@media (min-width: 48rem) {
+  .responsive-table:not(.is-overflowing) {
+    border-top: 0;
+  }
+
+  .responsive-table:not(.is-overflowing) .responsive-table__label {
+    display: none;
+  }
+
+  .responsive-table:not(.is-overflowing) .responsive-table__viewport {
+    overflow-x: visible;
+  }
+
+  .responsive-table:not(.is-overflowing) .responsive-table__viewport > table {
+    width: 100%;
+  }
+}
+
+@media print {
+  .responsive-table { border-top: 0; }
+  .responsive-table__label { display: none; }
+  .responsive-table__viewport { overflow: visible; }
+}

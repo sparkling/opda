@@ -36,6 +36,16 @@ async function markdownFiles(path) {
   }
 }
 
+async function filesWithExtension(path, extension) {
+  const entries = await readdir(file(path), { withFileTypes: true });
+  const nested = await Promise.all(entries.map((entry) => {
+    const child = `${path}/${entry.name}`;
+    if (entry.isDirectory()) return filesWithExtension(child, extension);
+    return entry.name.endsWith(extension) ? [child] : [];
+  }));
+  return nested.flat();
+}
+
 const contractFiles = [
   'DESIGN.md',
   'public/ui/design-tokens.css',
@@ -43,13 +53,16 @@ const contractFiles = [
   'public/ui/design/base.css',
   'public/ui/design/shell.css',
   'public/ui/design/content.css',
+  'public/ui/design/tables.css',
   'public/ui/design/components.css',
+  'public/ui/design/public.css',
   'public/ui/design/diagrams.css',
   'public/ui/design/navigation.css',
   'public/ui/design/data.css',
   'public/ui/design/glossary-toc.css',
   'public/ui/design/mermaid.css',
   'public/ui/design/print.css',
+  'public/ui/design/forced-colors.css',
   'src/pages/design-system.astro',
   'docs/design-system-site/index.html',
   'docs/design-system-site/styles.css',
@@ -139,6 +152,59 @@ test('live shared surfaces no longer depend on the superseded visual language', 
   for (const path of paths) assert.doesNotMatch(await readFile(file(path), 'utf8'), legacy, path);
 });
 
+test('live implementation consumes semantic tokens rather than legacy aliases', async () => {
+  const modules = [
+    'public/ui/design-tokens.css',
+    ...await filesWithExtension('public/ui/design', '.css'),
+    ...await filesWithExtension('src/styles', '.css'),
+    ...await filesWithExtension('src/pages', '.astro'),
+    ...await filesWithExtension('src/components', '.astro'),
+    ...await filesWithExtension('src/layouts', '.astro'),
+    ...await filesWithExtension('public/ui', '.js'),
+  ].filter((path) => path !== 'public/ui/tailwind.built.css');
+  const legacyAlias = /--(?:(?:cream|bone|stone|graphite|terracotta|teal|amber|plum|crimson)-|ink-1000\b|surface-dark(?:-alt|-tint)?\b|color-(?:brand|ink|accent|success|warning|danger|info)-)/u;
+  for (const path of modules) {
+    assert.doesNotMatch(await readFile(file(path), 'utf8'), legacyAlias, path);
+  }
+  const dot = await readFile(file('public/ui/graph-engines/dot.js'), 'utf8');
+  assert.match(dot, /fontname="DM Sans"/u);
+  assert.doesNotMatch(dot, /fontname="Inter/u);
+});
+
+test('the design facade versions every imported module from one graph hash', async () => {
+  const source = await readFile(file('public/ui/design-system.css'), 'utf8');
+  const imports = [...source.matchAll(/@import url\("[^"?]+\.css\?v=([a-f0-9]{12})"\);/gu)];
+  assert.ok(imports.length >= 14, 'every design module must be versioned');
+  assert.equal(new Set(imports.map((entry) => entry[1])).size, 1, 'module graph must share one hash');
+  const script = await readFile(file('scripts/version-design-system.mjs'), 'utf8');
+  assert.match(script, /renderVersionedFacade/u);
+  assert.match(script, /design-system import escapes public\/ui/u);
+});
+
+test('interactive shell dependencies are pinned and bundled locally', async () => {
+  const layout = await readFile(file('src/layouts/Layout.astro'), 'utf8');
+  const packageSource = JSON.parse(await readFile(file('package.json'), 'utf8'));
+  assert.match(layout, /import '@tailwindplus\/elements'/u);
+  assert.doesNotMatch(layout, /cdn\.jsdelivr\.net|@tailwindplus\/elements@1/u);
+  assert.equal(packageSource.dependencies['@tailwindplus/elements'], '1.0.22');
+});
+
+test('every Astro page belongs to an explicit visual route family', async () => {
+  const routes = await filesWithExtension('src/pages', '.astro');
+  const standalone = new Set([
+    'src/pages/index.astro',
+    'src/pages/presentation/working-group-kickoff.astro',
+  ]);
+  for (const path of routes) {
+    const source = await readFile(file(path), 'utf8');
+    const owned = source.includes("@/layouts/Layout.astro")
+      || source.includes("@/layouts/PublicWorkingGroupLayout.astro")
+      || source.includes("@/components/v2/V2Page.astro")
+      || standalone.has(path);
+    assert.ok(owned, `${path} has no declared visual route-family owner`);
+  }
+});
+
 test('the adopted motion contract excludes parallax and long campaign motion', async () => {
   const paths = [
     'src/pages/working-groups/join/index.astro',
@@ -180,6 +246,19 @@ test('shared navigation exposes visible focus, state and 44px targets', async ()
   assert.match(layout, /<Header showSidebar=\{showSidebar\}/u);
   assert.doesNotMatch(base, /--header-height:\s*6\.5rem/u);
   assert.doesNotMatch(toc, /@media[^}]+\.toc\s*\{\s*display:\s*none/su);
+});
+
+test('dense prose tables become labelled keyboard-scrollable regions', async () => {
+  const [client, tables] = await Promise.all([
+    readFile(file('public/ui/client.js'), 'utf8'),
+    readFile(file('public/ui/design/tables.css'), 'utf8'),
+  ]);
+  assert.match(client, /function enhanceResponsiveTables/u);
+  assert.match(client, /responsive-table__viewport/u);
+  assert.match(client, /Scroll horizontally to view all columns/u);
+  assert.match(client, /setAttribute\('role', 'region'\)/u);
+  assert.match(tables, /\.responsive-table__viewport:focus-visible/u);
+  assert.match(tables, /\.prose > table/u, 'no-JavaScript containment fallback is required');
 });
 
 test('the adversarial conformance blockers remain closed', async () => {

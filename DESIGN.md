@@ -215,7 +215,21 @@ left navigation is an off-canvas dialog with focus containment, Escape and focus
 return. At 640px cards, toolbars and component state boards become one column.
 
 Genuinely two-dimensional tables use a labelled horizontal overflow region; primary
-controls and row identity stay visible. Pages must reflow at 320px and 400% zoom.
+controls and row identity stay visible. The region label comes from the table caption
+or nearest section heading, includes a visible horizontal-scroll hint only while the
+table overflows, and makes the viewport keyboard-focusable only in that state. Pages
+must reflow at 320px and 400% zoom without page-level horizontal scrolling.
+
+Below 768px the global site navigation is a non-modal disclosure anchored to the
+64px header. Its button owns `aria-controls` and `aria-expanded`; the closed panel is
+both hidden and inert. Escape and link activation close it, and Escape returns focus
+to the trigger. This is distinct from the below-960px section navigation, which is a
+modal off-canvas dialog with background inertness and focus containment.
+
+In forced-colour mode, system colours replace authored fills. Current/selected
+states retain a border or outline as well as text, status and callout roles retain
+their labels and structural borders, and controls, tables and diagrams remain
+bounded with `ButtonText`, `CanvasText`, `FieldText` and `Highlight`.
 
 ## 8. Application shell and homepage
 
@@ -224,7 +238,12 @@ DM Sans; the current item has a 4px amber underline and `aria-current`. A skip l
 is the first focusable element. The sidebar is `#F9F9F9`. The footer is deep ink
 with a 4px yellow top rule.
 
-The homepage sequence is:
+`/` is the public entry: an intentionally abbreviated route with the official
+masthead, public hero, source/status strip, four-part knowledge-base overview and
+footer. It introduces the work and points to `/home`; it is not a second version of
+the full knowledge-base homepage.
+
+`/home` is the knowledge-base homepage. Its sequence is:
 
 1. Flat deep-ink hero with the single permitted subtle gradient
    (`#131224` to `#231F2F`), a Slab headline of at most 12 words, amber underscore,
@@ -318,6 +337,24 @@ and tests together. Supplied assets and guide values change only when newer sour
 evidence is recorded. Derived decisions may evolve through an ADR or proportionate
 review; the system is designed to change without losing provenance.
 
+Every live route belongs to one explicit visual family:
+
+| Family | Routes/pattern | Owner |
+|---|---|---|
+| Public entry | `/` | public entry styles and official wordmark |
+| Knowledge base | `/home`, prose, governance and catalogue routes | shared `Layout` shell |
+| Data and V2 | data browser, validation and V2 reference routes | shared tokens plus dense data patterns |
+| Schema/manual | generated schema, ontology and manual reference routes | shared shell plus labelled table/diagram patterns |
+| Working groups | join, privacy and campaign states | public working-group shell using shared tokens |
+| Presentation | working-group kickoff deck | isolated presentation composition using shared tokens |
+
+Release validation runs against the built artefact before any deployment: source
+contract tests, deterministic schema checks, a built-route asset and
+application-navigation crawl, and
+Playwright smoke, keyboard, responsive, axe and visual-diff suites. The rendered
+matrix includes every route family at desktop light and mobile dark, plus explicit
+forced-colour and reduced-motion checks.
+
 Release gates:
 
 1. Text contrast, including placeholders and helper text, is at least 4.5:1
@@ -335,6 +372,11 @@ Release gates:
 11. Every component state has dark-mode parity.
 12. Fonts are self-hosted; fallback rendering stays readable, preserves type
     roles and does not cause destructive layout shift.
+13. Every route belongs to a declared visual family and the representative browser
+    matrix passes without tagged WCAG axe findings, runtime errors, broken
+    resources or page-level overflow.
+14. The design module graph is content-hashed as one cache version, and mutable CDN
+    imports are not part of the shared shell.
 
 ## 14. Explicitly rejected
 

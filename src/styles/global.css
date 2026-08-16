@@ -21,106 +21,55 @@
    MANUAL SECTION — accent CSS tokens (ADR-0017)
    Extends the :root token system with UFO meta-category badge
    colours and SHACL severity-tier badge colours.
-   All values reference existing palette raw tokens (cream-*, teal-*,
-   amber-*, crimson-*, terracotta-*) from design-tokens.css.
-   No new hex literals; everything via var(). Dark-mode variants
-   reuse the [data-theme="dark"] pattern already established there.
+   All values reference the semantic roles in design-tokens.css. Dark mode
+   switches those roles centrally; this file does not maintain a second palette.
    ───────────────────────────────────────────────────────────── */
 
 :root {
   /* Tier badge backgrounds + text — light mode
-     Concept: terracotta tint (warm, approachable — for SMEs)
-     Logical: teal tint (cool, analytical — for engineers)
-     Physical-Database: amber tint (operational — for DevOps)
-     Physical-Ontology: lavender/violet via crimson-tinted surface (specialist)
+     Each badge retains a complete text label; colour is a secondary cue.
   */
-  --accent-tier-concept-bg:              var(--terracotta-100);
-  --accent-tier-concept-text:            var(--terracotta-700);
-  --accent-tier-logical-bg:              var(--color-success-100);
-  --accent-tier-logical-text:            var(--color-success-700);
-  --accent-tier-physical-database-bg:    var(--color-accent-100);
-  --accent-tier-physical-database-text:  var(--color-accent-700);
-  --accent-tier-physical-ontology-bg:    var(--color-info-100);
-  --accent-tier-physical-ontology-text:  var(--color-info-700);
-  --accent-tier-physical-relational-bg:    var(--plum-100);
-  --accent-tier-physical-relational-text:  var(--plum-700);
+  --accent-tier-concept-bg:              var(--color-status-info-surface);
+  --accent-tier-concept-text:            var(--color-status-info);
+  --accent-tier-logical-bg:              var(--color-status-success-surface);
+  --accent-tier-logical-text:            var(--color-status-success);
+  --accent-tier-physical-database-bg:    var(--color-status-warning-surface);
+  --accent-tier-physical-database-text:  var(--color-status-warning);
+  --accent-tier-physical-ontology-bg:    var(--color-surface-tint);
+  --accent-tier-physical-ontology-text:  var(--color-text-strong);
+  --accent-tier-physical-relational-bg:  var(--color-surface-tint);
+  --accent-tier-physical-relational-text: var(--color-text-strong);
 
   /* UFO meta-category accents — light mode
-     Hues follow the palette: substance kinds = teal, role = terracotta,
-     relator = amber, validation-context = info-blue, generator-run = muted.
+     Hues use the same semantic roles as their labelled tier badges.
   */
-  --accent-ufo-substance-kind-bg:        var(--color-success-100);
-  --accent-ufo-substance-kind-text:      var(--color-success-700);
-  --accent-ufo-role-mixin-bg:            var(--terracotta-100);
-  --accent-ufo-role-mixin-text:          var(--terracotta-700);
-  --accent-ufo-role-bg:                  var(--terracotta-50);
-  --accent-ufo-role-text:                var(--terracotta-600);
-  --accent-ufo-relator-bg:               var(--color-accent-100);
-  --accent-ufo-relator-text:             var(--color-accent-700);
-  --accent-ufo-validation-context-bg:    var(--color-info-100);
-  --accent-ufo-validation-context-text:  var(--color-info-700);
-  --accent-ufo-generator-run-bg:         var(--color-info-100);
-  --accent-ufo-generator-run-text:       var(--color-info-700);
-  --accent-ufo-diagnostic-exemplar-bg:   var(--color-success-100);
-  --accent-ufo-diagnostic-exemplar-text: var(--color-success-700);
+  --accent-ufo-substance-kind-bg:        var(--color-status-success-surface);
+  --accent-ufo-substance-kind-text:      var(--color-status-success);
+  --accent-ufo-role-mixin-bg:            var(--color-status-info-surface);
+  --accent-ufo-role-mixin-text:          var(--color-status-info);
+  --accent-ufo-role-bg:                  var(--color-status-info-surface);
+  --accent-ufo-role-text:                var(--color-status-info);
+  --accent-ufo-relator-bg:               var(--color-status-warning-surface);
+  --accent-ufo-relator-text:             var(--color-status-warning);
+  --accent-ufo-validation-context-bg:    var(--color-status-info-surface);
+  --accent-ufo-validation-context-text:  var(--color-status-info);
+  --accent-ufo-generator-run-bg:         var(--color-surface-tint);
+  --accent-ufo-generator-run-text:       var(--color-text-muted);
+  --accent-ufo-diagnostic-exemplar-bg:   var(--color-status-success-surface);
+  --accent-ufo-diagnostic-exemplar-text: var(--color-status-success);
 
   /* SHACL severity-tier badge colours — light mode
      Violation = danger-red, Warning = amber, Info = info-blue.
   */
-  --accent-severity-violation:      var(--color-danger-500);
-  --accent-severity-violation-bg:   var(--color-danger-100);
-  --accent-severity-violation-text: var(--color-danger-700);
+  --accent-severity-violation:      var(--color-status-danger);
+  --accent-severity-violation-bg:   var(--color-status-danger-surface);
+  --accent-severity-violation-text: var(--color-status-danger);
 
-  --accent-severity-warning:      var(--color-warning-500);
-  --accent-severity-warning-bg:   var(--color-warning-100);
-  --accent-severity-warning-text: var(--color-warning-700);
+  --accent-severity-warning:      var(--color-status-warning);
+  --accent-severity-warning-bg:   var(--color-status-warning-surface);
+  --accent-severity-warning-text: var(--color-status-warning);
 
-  --accent-severity-info:      var(--color-info-500);
-  --accent-severity-info-bg:   var(--color-info-100);
-  --accent-severity-info-text: var(--color-info-700);
-}
-
-[data-theme="dark"] {
-  /* Tier badge backgrounds + text — dark mode
-     Tints are deepened to read against the dark canvas.
-  */
-  --accent-tier-concept-bg:              var(--color-brand-100);
-  --accent-tier-concept-text:            var(--color-brand-800);
-  --accent-tier-logical-bg:              var(--color-success-100);
-  --accent-tier-logical-text:            var(--color-success-700);
-  --accent-tier-physical-database-bg:    var(--color-accent-100);
-  --accent-tier-physical-database-text:  var(--color-accent-700);
-  --accent-tier-physical-ontology-bg:    var(--color-info-100);
-  --accent-tier-physical-ontology-text:  var(--color-info-700);
-  --accent-tier-physical-relational-bg:    var(--plum-100);
-  --accent-tier-physical-relational-text:  var(--plum-700);
-
-  /* UFO meta-category accents — dark mode */
-  --accent-ufo-substance-kind-bg:        var(--color-success-100);
-  --accent-ufo-substance-kind-text:      var(--color-success-700);
-  --accent-ufo-role-mixin-bg:            var(--color-brand-100);
-  --accent-ufo-role-mixin-text:          var(--color-brand-800);
-  --accent-ufo-role-bg:                  var(--color-brand-100);
-  --accent-ufo-role-text:                var(--color-brand-700);
-  --accent-ufo-relator-bg:               var(--color-accent-100);
-  --accent-ufo-relator-text:             var(--color-accent-700);
-  --accent-ufo-validation-context-bg:    var(--color-info-100);
-  --accent-ufo-validation-context-text:  var(--color-info-700);
-  --accent-ufo-generator-run-bg:         var(--color-info-100);
-  --accent-ufo-generator-run-text:       var(--color-info-700);
-  --accent-ufo-diagnostic-exemplar-bg:   var(--color-success-100);
-  --accent-ufo-diagnostic-exemplar-text: var(--color-success-700);
-
-  /* SHACL severity-tier badge colours — dark mode */
-  --accent-severity-violation:      var(--color-danger-500);
-  --accent-severity-violation-bg:   var(--color-danger-100);
-  --accent-severity-violation-text: var(--color-danger-700);
-
-  --accent-severity-warning:      var(--color-warning-500);
-  --accent-severity-warning-bg:   var(--color-warning-100);
-  --accent-severity-warning-text: var(--color-warning-700);
-
-  --accent-severity-info:      var(--color-info-500);
-  --accent-severity-info-bg:   var(--color-info-100);
-  --accent-severity-info-text: var(--color-info-700);
+  --accent-severity-info:      var(--color-status-info);
+  --accent-severity-info-bg:   var(--color-status-info-surface);
+  --accent-severity-info-text: var(--color-status-info);
 }
