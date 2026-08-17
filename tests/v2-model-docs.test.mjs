@@ -26,7 +26,7 @@ import {
   vocabularies,
   vocabularyRoute,
 } from '../src/lib/v2-model.mjs';
-import { buildEstateAgencyEditorialDiagram } from '../src/lib/estate-agency-editorial-diagram.mjs';
+import { buildEstateAgencyMermaidDiagram } from '../src/lib/estate-agency-editorial-diagram.mjs';
 
 test('V1 and V2 comparison uses the generated model projections', () => {
   assert.deepEqual(v1Counts, {
@@ -215,42 +215,36 @@ test('standard references remain distinct from resources owned by another contex
   assert.match(source, /subgraph standard_refs\["Referenced standards"\]/);
 });
 
-test('estate-agency editorial projection preserves the complete candidate model', () => {
+test('estate-agency adapter preserves Mermaid/ELK geometry and validates all links', () => {
   const projection = contextDiagramProjection('estate-agency');
-  const diagram = buildEstateAgencyEditorialDiagram(projection);
-  const expectedRoutes = new Set(projection.displayedResources.map(resourceRoute));
-  const mermaidRoutes = new Set([...contextDiagram('estate-agency')
-    .matchAll(/^  click term_\d+ "([^"]+)"$/gm)]
-    .map((match) => match[1]));
-  const placedResources = [
-    ...diagram.cards.flatMap((card) => [card.resource, ...card.fields.map((field) => field.resource)]),
-    ...diagram.relationships.map((relationship) => relationship.resource),
-  ];
+  const diagram = buildEstateAgencyMermaidDiagram(projection);
+  const expectedLinks = Object.fromEntries(
+    projection.displayedResources.map((resource, index) => [`term_${index}`, resourceRoute(resource)]),
+  );
 
-  assert.equal(diagram.cards.length, 7);
-  assert.equal(diagram.relationships.length, 5);
-  assert.equal(diagram.cards.flatMap((card) => card.fields).length, 7);
-  assert.equal(diagram.structuralEdges.length, 6);
-  assert.equal(diagram.fidelity.structuralRows, 13);
-  assert.equal(placedResources.length, projection.displayedResources.length);
-  assert.equal(new Set(placedResources.map((resource) => resource.key)).size, placedResources.length);
-  assert.deepEqual(new Set(diagram.routes), expectedRoutes);
-  assert.deepEqual(new Set(diagram.routes), mermaidRoutes);
-  assert.deepEqual(new Set(diagram.standardTerms.map((term) => term.iri)), new Set(projection.standardIris));
-  assert.ok(diagram.geometryValues.every((value) => value % 4 === 0));
-  assert.ok(diagram.relationships.every((relationship) => relationship.shortLabel.length <= 14));
-  assert.ok(diagram.cards.every((card) => card.cardinality == null));
+  assert.match(diagram.source, /^---\nconfig:\n  layout: elk\n---\nflowchart LR/mu);
+  assert.doesNotMatch(diagram.source, /^\s*click\s+/gmu);
+  assert.equal((diagram.source.match(/^    term_\d+\["/gmu) ?? []).length, 22);
+  assert.equal((diagram.source.match(/^  term_\d+\s+(?:-->|-\.->)\|/gmu) ?? []).length, 25);
+  assert.deepEqual(diagram.links, expectedLinks);
+  assert.equal(new Set(Object.values(diagram.links)).size, 19);
+  assert.equal(diagram.provenance.mode, 'preserve-renderer-layout');
+  assert.match(diagram.provenance.layoutAuthority, /Mermaid 11\.16\.0.*layout-elk 0\.2\.2/u);
+  assert.equal(diagram.provenance.styleAuthority, 'Diagram Design OPDA profile');
+  assert.equal(diagram.receipt.integration.runtimeSourceSha256, diagram.runtimeSourceSha256);
+  assert.equal(diagram.receipt.integration.projectionSha256, diagram.projectionSha256);
+  assert.equal(diagram.receipt.layout.acceptedForWebsite, false);
 });
 
-test('estate-agency editorial projection fails closed on candidate drift', () => {
+test('estate-agency Mermaid adapter fails closed on candidate drift', () => {
   const projection = contextDiagramProjection('estate-agency');
   const removed = {
     ...projection,
     displayedResources: projection.displayedResources.slice(1),
   };
   assert.throws(
-    () => buildEstateAgencyEditorialDiagram(removed),
-    /estate-agency-diagram:resource-set.*missing common:Property/u,
+    () => buildEstateAgencyMermaidDiagram(removed),
+    /estate-agency-diagram:projection-hash/u,
   );
 
   const added = {
@@ -265,8 +259,8 @@ test('estate-agency editorial projection fails closed on candidate drift', () =>
     }],
   };
   assert.throws(
-    () => buildEstateAgencyEditorialDiagram(added),
-    /estate-agency-diagram:resource-set.*unexpected estate-agency:Unexpected/u,
+    () => buildEstateAgencyMermaidDiagram(added),
+    /estate-agency-diagram:projection-hash/u,
   );
 
   const changedRange = {
@@ -276,8 +270,8 @@ test('estate-agency editorial projection fails closed on candidate drift', () =>
     )),
   };
   assert.throws(
-    () => buildEstateAgencyEditorialDiagram(changedRange),
-    /estate-agency-diagram:field-range.*estate-agency:rentAmount/u,
+    () => buildEstateAgencyMermaidDiagram(changedRange),
+    /estate-agency-diagram:projection-hash/u,
   );
 
   const changedKind = {
@@ -289,7 +283,7 @@ test('estate-agency editorial projection fails closed on candidate drift', () =>
     )),
   };
   assert.throws(
-    () => buildEstateAgencyEditorialDiagram(changedKind),
-    /estate-agency-diagram:resource-kind.*estate-agency:rentAmount/u,
+    () => buildEstateAgencyMermaidDiagram(changedKind),
+    /estate-agency-diagram:projection-hash/u,
   );
 });

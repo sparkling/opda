@@ -1,16 +1,5 @@
 // @ts-nocheck
-/**
- * GraphDiagram core renderer — ported from hm/semantic-app (ADR-0190), adapted
- * for OPDA: the semantic status and categorical diagram palette is injected
- * rather than embedded per page, navigation
- * uses `click NODE "url"` directives the page emits, and re-render on theme
- * toggle is driven by a MutationObserver on `data-theme` (opda has no
- * `hm:theme-change` event).
- *
- * mermaid + @mermaid-js/layout-elk are dynamic-import()ed (Astro island); they
- * are pre-bundled via vite.optimizeDeps (astro.config.mjs) so Astro 7 / Vite 8
- * never races the on-demand re-optimisation.
- */
+// Shared Mermaid/ELK renderer with OPDA palette, navigation and theme support.
 import {
   CLASSDEFS_LIGHT, CLASSDEFS_DARK, THEMEVARS_LIGHT, THEMEVARS_DARK,
 } from '../lib/diagram-palette';
@@ -22,6 +11,7 @@ export interface MermaidViewOpts {
   canvas: HTMLElement;
   pre: HTMLElement;
   captionId?: string;
+  links?: Record<string, string>;
   getLightSource: () => string;
 }
 export interface MermaidView {
@@ -93,6 +83,32 @@ function extractFirstLineText(el: Element): string {
   return (el.textContent || '').split('\n')[0].trim();
 }
 
+function safeRootRelativeRoute(value: unknown): string | null {
+  if (typeof value !== 'string' || !/^\/(?!\/)[^\\\u0000-\u001f]*$/u.test(value)) return null;
+  try {
+    const url = new URL(value, window.location.origin);
+    return url.origin === window.location.origin ? value : null;
+  } catch {
+    return null;
+  }
+}
+
+function validateConfiguredLinks(input: unknown): Record<string, string> {
+  if (input == null) return {};
+  if (typeof input !== 'object' || Array.isArray(input)) {
+    throw new Error('[graph-diagram] configured links must be an object');
+  }
+  const configuredLinks: Record<string, string> = {};
+  for (const [nodeId, value] of Object.entries(input as Record<string, unknown>)) {
+    const route = safeRootRelativeRoute(value);
+    if (!/^\w+$/u.test(nodeId) || !route) {
+      throw new Error(`[graph-diagram] invalid configured link ${nodeId}`);
+    }
+    configuredLinks[nodeId] = route;
+  }
+  return configuredLinks;
+}
+
 // Inject the OPDA classDef block after the diagram-type line, so a page can
 // author bare semantic classes such as `:::user`.
 const CLASSDEF_TYPE_RE = /^\s*(flowchart|graph|classDiagram|stateDiagram(?:-v2)?)\b/i;
@@ -105,8 +121,123 @@ function injectClassDefs(src: string, dark: boolean): string {
   return lines.slice(0, insertIdx).concat([block]).concat(lines.slice(insertIdx)).join('\n');
 }
 
+const GEOMETRY_ATTRS = [
+  'viewBox', 'width', 'height', 'transform', 'x', 'y', 'x1', 'y1', 'x2', 'y2',
+  'cx', 'cy', 'r', 'rx', 'ry', 'points', 'd', 'refX', 'refY', 'markerWidth',
+  'markerHeight', 'marker-start', 'marker-end',
+];
+function geometryProjection(svg: Element): string {
+  return JSON.stringify([svg, ...svg.querySelectorAll('*')].map((element) => [
+    element.tagName, element.id, ...GEOMETRY_ATTRS.map((name) => element.getAttribute(name)),
+  ]));
+}
+
+async function sha256(value: string): Promise<string> {
+  const digest = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(value));
+  return [...new Uint8Array(digest)].map((byte) => byte.toString(16).padStart(2, '0')).join('');
+}
+
+// Mermaid serialises classDef paint as inline !important declarations. An
+// OPDA profile stylesheet cannot reliably override those declarations, so the
+// preservation adapter repaints the completed SVG after ELK has laid it out.
+// Only CSS paint/type properties are changed; geometry attributes and the SVG
+// structure remain byte-for-byte as emitted by Mermaid.
+async function applyOpdaDiagramProfile(wrapper: HTMLElement, pre: HTMLElement) {
+  if (wrapper.dataset.diagramProfile !== 'opda-diagram-design') return;
+  const svg = pre.querySelector('svg');
+  if (!svg) throw new Error('[graph-diagram] OPDA profile requires a rendered Mermaid SVG');
+  const geometryBefore = geometryProjection(svg);
+  const tokens = getComputedStyle(document.documentElement);
+  const token = (name: string) => tokens.getPropertyValue(name).trim();
+  const palette = {
+    paper: token('--color-surface-alt'),
+    paper2: token('--color-surface-card'),
+    ink: token('--color-text-strong'),
+    muted: token('--color-text-muted'),
+    rule: token('--color-border'),
+    ruleStrong: token('--color-border-strong'),
+    accent: token(isDark() ? '--color-data-1-dark' : '--color-data-1'),
+    accentTint: token(isDark() ? '--color-surface-tint' : '--color-data-1-surface'),
+    focus: token('--color-focus'),
+  };
+  const set = (element: Element, property: string, value: string) => {
+    if (value) (element as HTMLElement).style.setProperty(property, value, 'important');
+  };
+  const directShapes = (node: Element) => [...node.querySelectorAll(':scope > rect, :scope > polygon, :scope > path')];
+
+  function paintNode(node: Element) {
+    let fill = palette.paper2;
+    let stroke = node.classList.contains('process') ? palette.muted : palette.ruleStrong;
+    let dash = 'none';
+    if (node.classList.contains('xsection')) {
+      fill = palette.paper;
+      stroke = palette.ruleStrong;
+      dash = '4 3';
+    } else if (node.classList.contains('external')) {
+      fill = palette.paper;
+      stroke = palette.rule;
+    }
+    if (/-term_3-\d+$/u.test(node.id)) {
+      fill = palette.accentTint;
+      stroke = palette.accent;
+    }
+    directShapes(node).forEach((shape) => {
+      set(shape, 'fill', fill);
+      set(shape, 'stroke', stroke);
+      set(shape, 'stroke-width', /-term_3-\d+$/u.test(node.id) ? '2px' : '1px');
+      set(shape, 'stroke-dasharray', dash);
+    });
+    node.querySelectorAll('.nodeLabel, .nodeLabel p, .nodeLabel span').forEach((label) => {
+      set(label, 'color', palette.ink);
+    });
+    node.querySelectorAll('.nodeLabel small').forEach((label) => set(label, 'color', palette.muted));
+  }
+
+  svg.querySelectorAll('.node').forEach((node) => {
+    paintNode(node);
+    node.addEventListener('focus', () => directShapes(node).forEach((shape) => {
+      set(shape, 'stroke', palette.focus);
+      set(shape, 'stroke-width', '3px');
+      set(shape, 'filter', 'none');
+    }));
+    node.addEventListener('blur', () => paintNode(node));
+  });
+  svg.querySelectorAll('.cluster > rect').forEach((frame) => {
+    set(frame, 'fill', palette.paper);
+    set(frame, 'stroke', palette.ruleStrong);
+    set(frame, 'stroke-width', '1px');
+  });
+  svg.querySelectorAll('.cluster-label, .cluster-label span').forEach((label) => {
+    set(label, 'color', palette.muted);
+    set(label, 'fill', palette.muted);
+  });
+  svg.querySelectorAll('.edgePaths path.flowchart-link').forEach((edge) => {
+    set(edge, 'stroke', palette.muted);
+    set(edge, 'stroke-width', '1px');
+    set(edge, 'filter', 'none');
+  });
+  svg.querySelectorAll('marker path').forEach((marker) => {
+    set(marker, 'fill', palette.muted);
+    set(marker, 'stroke', palette.muted);
+  });
+  svg.querySelectorAll('.edgeLabel, .edgeLabel p, .edgeLabel span').forEach((label) => {
+    set(label, 'color', palette.muted);
+    set(label, 'background', palette.paper);
+  });
+  const geometryAfter = geometryProjection(svg);
+  const [beforeSha256, afterSha256] = await Promise.all([
+    sha256(geometryBefore), sha256(geometryAfter),
+  ]);
+  const geometryUnchanged = geometryAfter === geometryBefore && afterSha256 === beforeSha256;
+  wrapper.dataset.profileGeometryBeforeSha256 = beforeSha256;
+  wrapper.dataset.profileGeometryAfterSha256 = afterSha256;
+  wrapper.dataset.profileGeometryInvariant = String(geometryUnchanged);
+  if (!geometryUnchanged) throw new Error('[graph-diagram] OPDA profile changed Mermaid geometry');
+}
+
 export function createMermaidView(opts: MermaidViewOpts): MermaidView {
   const { wrapper, viewport, canvas, pre, captionId } = opts;
+  const configuredLinks = validateConfiguredLinks(opts.links);
 
   let mode: 'navigate' | 'explore' = 'navigate';
   let lockedNode: string | null = null;
@@ -158,18 +289,31 @@ export function createMermaidView(opts: MermaidViewOpts): MermaidView {
       // could land last (dark diagram in light mode) or the diagram went blank on
       // the 2nd light→dark→light cycle. render() + seq guard makes the LATEST
       // theme win and never overlaps.
-      return mermaid.render('gd-render-' + (++mermaidRenderId), src).then(({ svg }: { svg: string }) => {
+      return mermaid.render('gd-render-' + (++mermaidRenderId), src).then(async ({ svg }: { svg: string }) => {
         if (seq !== renderSeq) return;               // superseded mid-render — drop this SVG
         pre.innerHTML = svg;
-        wrapper.querySelector('.diagram-loading')?.remove();
-        didRender = true;
-        wrapper.setAttribute('data-diagram-ready', 'true');
         fixErRowContrast(pre, dark);
+        await applyOpdaDiagramProfile(wrapper, pre);
+        if (seq !== renderSeq) return;
         const renderedSvg = pre.querySelector('svg');
         if (renderedSvg instanceof SVGSVGElement) makeSvgFocusable(renderedSvg);
         initHoverHighlight();
+        wrapper.querySelector('.diagram-loading')?.remove();
+        didRender = true;
+        wrapper.setAttribute('data-diagram-ready', 'true');
       });
-    }).catch((e: any) => console.error('[graph-diagram] mermaid render', e));
+    }).catch((error: any) => {
+      if (seq !== renderSeq) return;
+      didRender = false;
+      wrapper.setAttribute('data-diagram-ready', 'false');
+      wrapper.querySelector('.diagram-loading')?.remove();
+      const empty = document.createElement('span');
+      empty.className = 'gd-empty';
+      empty.setAttribute('role', 'status');
+      empty.textContent = 'Diagram unavailable.';
+      pre.replaceChildren(empty);
+      console.error('[graph-diagram] mermaid render', error);
+    });
   }
 
   function initHoverHighlight() {
@@ -200,7 +344,13 @@ export function createMermaidView(opts: MermaidViewOpts): MermaidView {
       nodes.forEach((n) => { (n as HTMLElement).style.opacity = connected[nameOf(n)] ? '1' : DIM; });
       edgePaths.forEach((p, i) => {
         const el = p as HTMLElement;
-        if (idx.indexOf(i) !== -1) { el.style.opacity = '1'; el.style.stroke = hi; el.style.strokeWidth = '3px'; el.style.filter = `drop-shadow(0 0 3px ${hi})`; }
+        if (idx.indexOf(i) !== -1) {
+          el.style.opacity = '1';
+          el.style.stroke = hi;
+          el.style.strokeWidth = '3px';
+          el.style.filter = wrapper.dataset.diagramProfile === 'opda-diagram-design'
+            ? 'none' : `drop-shadow(0 0 3px ${hi})`;
+        }
         else el.style.opacity = DIM;
       });
       edgeLabels.forEach((el, i) => { (el as HTMLElement).style.opacity = idx.indexOf(i) !== -1 ? '1' : DIM; });
@@ -217,10 +367,13 @@ export function createMermaidView(opts: MermaidViewOpts): MermaidView {
     const urls: Record<string, string> = {};
     const cre = /^\s*click\s+(\w+)\s+"([^"]+)"/gm;
     let cm: RegExpExecArray | null;
-    while ((cm = cre.exec(lightSource)) !== null) urls[cm[1]] = cm[2];
+    while ((cm = cre.exec(lightSource)) !== null) {
+      const route = safeRootRelativeRoute(cm[2]);
+      if (route) urls[cm[1]] = route;
+    }
     const isER = (svg.getAttribute('class') || '') === 'erDiagram';
     function navTarget(nodeEl: Element): string | null {
-      const direct = urls[nameOf(nodeEl)];
+      const direct = configuredLinks[nameOf(nodeEl)] ?? urls[nameOf(nodeEl)];
       if (direct) return direct;
       const manifest = (window as any).__diagramLinks as Record<string, string> | undefined;
       if (!manifest) return null;

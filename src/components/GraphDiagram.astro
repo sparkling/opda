@@ -14,9 +14,19 @@ interface Props {
   /** Static min-height for the diagram box (e.g. "520px"). */
   minHeight?: string;
   renderer?: 'mermaid' | 'editorial';
+  /** Validated node-id to same-origin route map; preferred over Mermaid click directives. */
+  links?: Record<string, string>;
+  /** Optional authoring profile. Profiles may style, but never change, renderer geometry. */
+  profile?: string;
+  /** Build-time authority receipt exposed for inspection and browser assertions. */
+  provenance?: Record<string, string>;
 }
-const { source, caption, minHeight, renderer = 'mermaid' } = Astro.props;
-const configJson = JSON.stringify({ mode: 'static', renderer, source: source ?? '' }).replace(/</g, '\\u003c');
+const {
+  source, caption, minHeight, renderer = 'mermaid', links = {}, profile, provenance = {},
+} = Astro.props;
+const configJson = JSON.stringify({
+  mode: 'static', renderer, source: source ?? '', links, profile: profile ?? '', provenance,
+}).replace(/</g, '\\u003c');
 const viewportStyle = [
   'cursor:grab',
   minHeight && `min-height:${minHeight}`,
@@ -24,7 +34,19 @@ const viewportStyle = [
 ].filter(Boolean).join(';');
 ---
 
-<figure class="graph-diagram-wrapper" data-diagram-renderer={renderer} data-diagram-ready="false">
+<figure
+  class="graph-diagram-wrapper"
+  data-diagram-renderer={renderer}
+  data-diagram-profile={profile}
+  data-layout-authority={provenance.layoutAuthority}
+  data-style-authority={provenance.styleAuthority}
+  data-diagram-design-version={provenance.diagramDesignVersion}
+  data-diagram-design-commit={provenance.diagramDesignCommit}
+  data-source-sha256={provenance.sourceSha256}
+  data-runtime-source-sha256={provenance.runtimeSourceSha256}
+  data-projection-sha256={provenance.projectionSha256}
+  data-diagram-ready="false"
+>
   <script type="application/json" class="gd-config" set:html={configJson} />
 
   <div class="gd-actionbar">

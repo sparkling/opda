@@ -25,6 +25,24 @@
     "path": ".agents/skills/opda-diagram-design/references/opda-profile.md",
     "sha256": "a7bfc53c7dc1a62a1a637867ea19d044d1941041975e9f29db5bb172e69bb711"
   },
+  "integration": {
+    "mode": "preserve-renderer-layout",
+    "source": "contextDiagram('estate-agency')",
+    "layout": "elk",
+    "layoutAuthority": "Mermaid 11.16.0 + @mermaid-js/layout-elk 0.2.2",
+    "styleAuthority": "Diagram Design OPDA profile",
+    "nativeRedrawGeometryUsed": false,
+    "upstreamLimitation": "Native Diagram Design import-mermaid redraws from a blank viewBox and does not preserve renderer geometry.",
+    "geometryProof": {
+      "algorithm": "SHA-256",
+      "projection": "ordered SVG element tag, id, viewBox, dimensions, coordinates, transforms, paths, points and marker geometry",
+      "beforeAttribute": "data-profile-geometry-before-sha256",
+      "afterAttribute": "data-profile-geometry-after-sha256",
+      "requiredResult": "equal before profile readiness"
+    },
+    "runtimeSourceSha256": "403c573e497fb1be4c8753b3c02aedacf71a74a63548c508436fa8c915ec8ad9",
+    "projectionSha256": "42cf48df891c440472ce9e3dd5850a3956bbe4eb3ecea8513e1a021907628da7"
+  },
   "invocation": {
     "host": "Codex",
     "provider": "OpenAI native",
@@ -91,6 +109,7 @@
     "inventedCardinalities": 0
   },
   "layout": {
+    "acceptedForWebsite": false,
     "preset": "doc-wide",
     "viewBox": { "width": 1280, "height": 720 },
     "cornerRadius": 8,

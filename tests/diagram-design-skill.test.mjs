@@ -22,6 +22,8 @@ test('the OPDA adapter is a discoverable Codex skill backed by the native plugin
   assert.match(skill, /\$diagram-design/u);
   assert.match(skill, /mermaid_extract\.py/u);
   assert.match(skill, /authoring-time/u);
+  assert.match(skill, /preserve-renderer-layout/u);
+  assert.match(skill, /does not preserve Mermaid's computed layout/u);
   assert.match(agent, /\$opda-diagram-design/u);
   assert.match(upstream, /diagram-design@diagram-design/u);
   assert.match(upstream, /09df49d8d1a1c7fb2efdfcdc7a2a0713534350a6/u);
@@ -50,7 +52,7 @@ test('the committed Mermaid input is exact and its adapter removes directives on
   assert.equal(generated, normalized);
 });
 
-test('the authoring receipt binds the installed skill, inputs, dials and layout', async () => {
+test('the receipt separates the rejected redraw from the accepted Mermaid layout adapter', async () => {
   const [receiptSource, raw, normalized, artifact, profile] = await Promise.all([
     read('src/data/diagrams/estate-agency.diagram-design.json'),
     read('src/data/diagrams/estate-agency.raw.mmd'),
@@ -103,18 +105,37 @@ test('the authoring receipt binds the installed skill, inputs, dials and layout'
   assert.match(receipt.invocation.typeOverride, /domain model/iu);
   assert.equal(receipt.fidelity.omittedResources, 0);
   assert.equal(receipt.fidelity.inventedCardinalities, 0);
+  assert.equal(receipt.layout.acceptedForWebsite, false);
   assert.deepEqual(receipt.layout.viewBox, { width: 1280, height: 720 });
   assert.equal(receipt.layout.cornerRadius, 8);
   assert.equal(receipt.layout.cards.length, 7);
   assert.equal(receipt.layout.relationships.length, 5);
   assert.equal(receipt.layout.cards.flatMap((card) => card.fields).length, 7);
   assert.equal(receipt.layout.standardTypes.length, 3);
+  assert.deepEqual(receipt.integration, {
+    mode: 'preserve-renderer-layout',
+    source: "contextDiagram('estate-agency')",
+    layout: 'elk',
+    layoutAuthority: 'Mermaid 11.16.0 + @mermaid-js/layout-elk 0.2.2',
+    styleAuthority: 'Diagram Design OPDA profile',
+    nativeRedrawGeometryUsed: false,
+    upstreamLimitation: 'Native Diagram Design import-mermaid redraws from a blank viewBox and does not preserve renderer geometry.',
+    geometryProof: {
+      algorithm: 'SHA-256',
+      projection: 'ordered SVG element tag, id, viewBox, dimensions, coordinates, transforms, paths, points and marker geometry',
+      beforeAttribute: 'data-profile-geometry-before-sha256',
+      afterAttribute: 'data-profile-geometry-after-sha256',
+      requiredResult: 'equal before profile readiness',
+    },
+    runtimeSourceSha256: '403c573e497fb1be4c8753b3c02aedacf71a74a63548c508436fa8c915ec8ad9',
+    projectionSha256: '42cf48df891c440472ce9e3dd5850a3956bbe4eb3ecea8513e1a021907628da7',
+  });
   assert.match(artifact, /<svg[^>]+role="img"[^>]*>\s*<title/isu);
   assert.doesNotMatch(artifact, /<script|(?:src|href)=["']https?:\/\//iu);
   assert.ok(artifact.split('\n').length <= 500);
 });
 
-test('the page consumes the receipt while keeping Diagram Design out of runtime', async () => {
+test('the page preserves Mermaid geometry while keeping Diagram Design authoring-only', async () => {
   const [helper, component, packageSource] = await Promise.all([
     read('src/lib/estate-agency-editorial-diagram.mjs'),
     read('src/components/v2/EstateAgencyDiagram.astro'),
@@ -122,13 +143,15 @@ test('the page consumes the receipt while keeping Diagram Design out of runtime'
   ]);
 
   assert.match(helper, /estate-agency\.diagram-design\.json/u);
-  assert.doesNotMatch(helper, /const CARD_LAYOUT/u);
-  assert.match(component, /role="group"/u);
-  assert.match(component, /diagram\.receipt\.input\.normalizedSha256/u);
-  assert.match(component, /diagram\.receipt\.invocation\.dials/u);
-  assert.match(component, /diagram\.standardTerms\.map/u);
-  assert.doesNotMatch(component, /set:html/u);
-  assert.match(helper, /roundedPath/u);
+  assert.match(helper, /buildEstateAgencyMermaidDiagram/u);
+  assert.match(helper, /stripClickDirectives/u);
+  assert.match(helper, /projectionSha256/u);
+  assert.doesNotMatch(helper, /roundedPath|RECEIPT\.layout\.cards/u);
+  assert.match(component, /source=\{diagram\.source\}/u);
+  assert.match(component, /links=\{diagram\.links\}/u);
+  assert.match(component, /profile="opda-diagram-design"/u);
+  assert.match(component, /provenance=\{diagram\.provenance\}/u);
+  assert.doesNotMatch(component, /<svg|set:html/u);
   assert.match(helper, /generated HTML hash/u);
   const packageManifest = JSON.parse(packageSource);
   const runtimePackages = {

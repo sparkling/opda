@@ -80,7 +80,7 @@ test('estate agency diagram is contained and operable at 320 CSS px', async ({ p
   const clean = watchRuntime(page);
   await page.setViewportSize({ width: 320, height: 900 });
   await visit(page, '/v2/contexts/estate-agency');
-  const wrapper = page.locator('.graph-diagram-wrapper[data-diagram-renderer="editorial"]');
+  const wrapper = page.locator('.graph-diagram-wrapper[data-diagram-renderer="mermaid"][data-diagram-profile="opda-diagram-design"]');
   await wrapper.scrollIntoViewIfNeeded();
   await expect(wrapper).toHaveAttribute('data-diagram-ready', 'true');
   await assertNoBodyOverflow(page);
@@ -110,16 +110,17 @@ test('estate agency diagram preserves forced-colour and reduced-motion states', 
   const clean = watchRuntime(page);
   await page.emulateMedia({ forcedColors: 'active', reducedMotion: 'reduce' });
   await visit(page, '/v2/contexts/estate-agency');
-  const wrapper = page.locator('.graph-diagram-wrapper[data-diagram-renderer="editorial"]');
+  const wrapper = page.locator('.graph-diagram-wrapper[data-diagram-renderer="mermaid"][data-diagram-profile="opda-diagram-design"]');
   await wrapper.scrollIntoViewIfNeeded();
   await expect(wrapper).toHaveAttribute('data-diagram-ready', 'true');
-  const resource = wrapper.locator('a.dd-resource').first();
+  const resource = wrapper.locator('.node[role="link"]').first();
   await resource.focus();
-  const state = await resource.locator('rect').first().evaluate((element) => {
+  const state = await resource.evaluate((element) => {
     const style = getComputedStyle(element);
-    return { stroke: style.stroke, transitionDuration: style.transitionDuration };
+    const shape = element.querySelector('rect, polygon, path');
+    return { stroke: getComputedStyle(shape).stroke, transitionDuration: style.transitionDuration };
   });
   expect(state.stroke).not.toBe('none');
-  expect(state.transitionDuration).toMatch(/^(0s|0\.0+1ms)$/u);
+  expect(Number.parseFloat(state.transitionDuration)).toBeLessThanOrEqual(0.00001);
   clean();
 });

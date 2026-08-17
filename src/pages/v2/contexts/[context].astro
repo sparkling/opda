@@ -30,7 +30,7 @@ export function getStaticPaths() {
 }
 
 const { context } = Astro.props;
-const usesEditorialDiagram = context.id === 'estate-agency';
+const usesDiagramDesignProfile = context.id === 'estate-agency';
 const stats = contextStats(context.id);
 const ownedResources = resourcesByContext.get(context.id) ?? [];
 const ownedShapes = shapesByContext.get(context.id) ?? [];
@@ -92,9 +92,10 @@ function semanticHomeLabel(row) {
   </div>
 
   <h2 id="diagram">Complete context diagram</h2>
-  {usesEditorialDiagram ? (
+  {usesDiagramDesignProfile ? (
     <>
-      <p>This editorial view applies the pinned Diagram Design 2.4 method to the complete estate agency projection. Seven class cards retain all nineteen linked resources: object properties become short labelled connectors, datatype and concept properties become linked rows, and referenced standards remain unlinked type labels. The dashed Property card marks the Common boundary. The subclass connector is asserted by the candidate model; no cardinalities are inferred.</p>
+      <p>This view keeps the complete Mermaid graph and its ELK layout. The pinned Diagram Design 2.4 method and OPDA profile supply the visual hierarchy and accessibility treatment without changing node positions or connector routes. Dotted nodes and links mark the Common boundary, referenced standards remain distinct, and no cardinalities are inferred.</p>
+      <V2DiagramLegend variant="context" />
       <EstateAgencyDiagram />
     </>
   ) : (

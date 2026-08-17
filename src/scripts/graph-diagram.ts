@@ -218,7 +218,15 @@ function setupWrapper(wrapper: HTMLElement) {
   function boot() {
     diagramView = renderer === 'editorial'
       ? createEditorialView({ wrapper, viewport, canvas, root: editorialRoot!, captionId })
-      : createMermaidView({ wrapper, viewport, canvas, pre: pre!, captionId, getLightSource: () => lightSource });
+      : createMermaidView({
+        wrapper,
+        viewport,
+        canvas,
+        pre: pre!,
+        captionId,
+        links: config.links,
+        getLightSource: () => lightSource,
+      });
     wrapper.querySelectorAll('[data-diagram-action="fullscreen"]').forEach((b) => b.addEventListener('click', toggleFullscreen));
     setFullscreenControlState(false);
     document.addEventListener('keydown', handleFullscreenKeydown);

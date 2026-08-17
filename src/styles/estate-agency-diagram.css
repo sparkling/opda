@@ -1,237 +1,128 @@
-.estate-agency-diagram {
-  --dd-accent: var(--color-data-1);
-  --dd-boundary: var(--color-data-5);
-  --dd-line: var(--color-data-8);
-  display: block;
-  overflow: visible;
-  color: var(--color-text-strong);
+/* Diagram Design OPDA skin for the estate-agency Mermaid/ELK projection.
+   This file owns paint and type only. It must never set SVG geometry,
+   transforms, connector paths, viewBox values, or renderer layout options. */
+[data-diagram-profile='opda-diagram-design'] .gd-box {
   background: var(--color-surface-alt);
+  border-color: var(--color-border);
+}
+
+[data-diagram-profile='opda-diagram-design'] .diagram-viewport {
+  background: var(--color-surface-alt);
+}
+
+[data-diagram-profile='opda-diagram-design'] .gd-mermaid svg {
+  color: var(--color-text);
+  background: transparent;
   font-family: var(--font-sans);
-  text-rendering: geometricPrecision;
 }
 
-html[data-theme='dark'] .estate-agency-diagram {
-  --dd-accent: var(--color-data-1-dark);
-  --dd-boundary: var(--color-data-5-dark);
-  --dd-line: var(--color-data-8-dark);
+[data-diagram-profile='opda-diagram-design'] .gd-mermaid .cluster rect {
+  fill: var(--color-surface-alt) !important;
+  stroke: var(--color-border-strong) !important;
+  stroke-width: 1px !important;
 }
 
-.estate-agency-diagram .dd-zone__frame {
-  fill: var(--color-surface);
-  stroke: var(--color-border);
-  stroke-width: 1;
-  vector-effect: non-scaling-stroke;
+[data-diagram-profile='opda-diagram-design'] .gd-mermaid .cluster-label,
+[data-diagram-profile='opda-diagram-design'] .gd-mermaid .cluster-label span {
+  color: var(--color-text-muted) !important;
+  fill: var(--color-text-muted) !important;
+  font: 700 var(--text-xs)/1.25 var(--font-sans) !important;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
 }
 
-.estate-agency-diagram .dd-zone--boundary .dd-zone__frame {
-  fill: var(--color-surface-card);
-  stroke: var(--dd-boundary);
-  stroke-width: 2;
-  stroke-dasharray: 8 8;
+[data-diagram-profile='opda-diagram-design'] .gd-mermaid .node :is(rect, polygon, path) {
+  fill: var(--color-surface-card) !important;
+  stroke: var(--color-border-strong) !important;
+  stroke-width: 1px !important;
 }
 
-.estate-agency-diagram .dd-zone__label,
-.estate-agency-diagram .dd-card__kind,
-.estate-agency-diagram .dd-legend text {
-  fill: var(--color-text-muted);
-  font: 700 var(--text-xs) / 1 var(--font-mono);
-  letter-spacing: var(--tracking-meta);
+[data-diagram-profile='opda-diagram-design'] .gd-mermaid .node.process :is(rect, polygon, path) {
+  fill: var(--color-surface-card) !important;
+  stroke: var(--color-text-muted) !important;
 }
 
-.estate-agency-diagram .dd-card__frame {
-  fill: var(--color-surface-card);
-  stroke: var(--color-border-strong);
-  stroke-width: 2;
-  vector-effect: non-scaling-stroke;
+[data-diagram-profile='opda-diagram-design'] .gd-mermaid .node.xsection :is(rect, polygon, path) {
+  fill: var(--color-surface-alt) !important;
+  stroke: var(--color-border-strong) !important;
+  stroke-dasharray: 4 3 !important;
 }
 
-.estate-agency-diagram [data-card-variant='focal'] .dd-card__frame {
-  stroke: var(--dd-accent);
-  stroke-width: 3;
+[data-diagram-profile='opda-diagram-design'] .gd-mermaid .node.external :is(rect, polygon, path) {
+  fill: var(--color-surface-alt) !important;
+  stroke: var(--color-border) !important;
 }
 
-.estate-agency-diagram [data-card-variant='boundary'] .dd-card__frame {
-  stroke: var(--dd-boundary);
-  stroke-dasharray: 8 8;
+[data-diagram-profile='opda-diagram-design'] .gd-mermaid .node[id*='term_3'] :is(rect, polygon, path) {
+  fill: var(--color-data-1-surface) !important;
+  stroke: var(--color-data-1) !important;
+  stroke-width: 2px !important;
 }
 
-.estate-agency-diagram .dd-card__header-hit,
-.estate-agency-diagram .dd-field__hit {
-  fill: transparent;
-  stroke: transparent;
-  stroke-width: 2;
-  transition: fill var(--motion-standard) var(--ease), stroke var(--motion-standard) var(--ease);
-  vector-effect: non-scaling-stroke;
+[data-diagram-profile='opda-diagram-design'] .gd-mermaid .nodeLabel,
+[data-diagram-profile='opda-diagram-design'] .gd-mermaid .nodeLabel :is(p, span) {
+  color: var(--color-text-strong) !important;
+  font: 700 var(--text-xs)/1.25 var(--font-sans) !important;
 }
 
-.estate-agency-diagram .dd-field__hit {
-  stroke: var(--color-border);
-  stroke-width: 1;
+[data-diagram-profile='opda-diagram-design'] .gd-mermaid .nodeLabel small {
+  color: var(--color-text-muted) !important;
+  font: 400 var(--text-xs)/1.25 var(--font-mono) !important;
 }
 
-.estate-agency-diagram .dd-card__title {
-  fill: var(--color-text-strong);
-  font: 700 var(--text-lg) / 1.2 var(--font-sans);
+[data-diagram-profile='opda-diagram-design'] .gd-mermaid .edgePaths path.flowchart-link {
+  stroke: var(--color-text-muted) !important;
+  stroke-width: 1px !important;
 }
 
-.estate-agency-diagram .dd-card__subtitle {
-  fill: var(--color-text-muted);
-  font: 500 var(--text-xs) / 1.3 var(--font-sans);
+[data-diagram-profile='opda-diagram-design'] .gd-mermaid marker path {
+  fill: var(--color-text-muted) !important;
+  stroke: var(--color-text-muted) !important;
 }
 
-.estate-agency-diagram .dd-field__label {
-  fill: var(--color-text-strong);
-  font: 600 var(--text-sm) / 1.3 var(--font-sans);
+[data-diagram-profile='opda-diagram-design'] .gd-mermaid .edgeLabel,
+[data-diagram-profile='opda-diagram-design'] .gd-mermaid .edgeLabel :is(p, span) {
+  color: var(--color-text-muted) !important;
+  background: var(--color-surface-alt) !important;
+  font: 500 var(--text-xs)/1.25 var(--font-mono) !important;
 }
 
-.estate-agency-diagram .dd-field__type {
-  fill: var(--color-text-muted);
-  font: 500 var(--text-xs) / 1.3 var(--font-mono);
+[data-diagram-profile='opda-diagram-design'] .gd-mermaid svg[tabindex='0']:focus-visible,
+[data-diagram-profile='opda-diagram-design'] .gd-mermaid .node[role]:focus-visible {
+  outline: 3px solid var(--color-focus);
+  outline-offset: 4px;
+  filter: none !important;
 }
 
-.estate-agency-diagram .dd-standard__chip {
-  fill: var(--color-surface-inset);
-  stroke: var(--color-border-strong);
-  stroke-width: 1;
-  vector-effect: non-scaling-stroke;
+[data-diagram-profile='opda-diagram-design'] .gd-mermaid .node[role]:focus-visible :is(rect, polygon, path) {
+  stroke: var(--color-focus) !important;
+  stroke-width: 3px !important;
+  filter: none !important;
 }
 
-.estate-agency-diagram .dd-standard__label {
-  fill: var(--color-text-muted);
-  font: 500 var(--text-xs) / 1 var(--font-mono);
-}
-
-.estate-agency-diagram .dd-connector {
-  fill: none;
-  stroke: var(--dd-line);
-  stroke-width: 2;
-  stroke-linecap: round;
-  stroke-linejoin: round;
-  vector-effect: non-scaling-stroke;
-}
-
-.estate-agency-diagram .dd-connector--boundary {
-  stroke-dasharray: 8 8;
-}
-
-.estate-agency-diagram .dd-connector--hierarchy {
-  stroke: var(--dd-accent);
-}
-
-.estate-agency-diagram .dd-arrow-head {
-  fill: var(--dd-line);
-}
-
-.estate-agency-diagram .dd-hierarchy-arrow-head {
-  fill: var(--color-surface-card);
-  stroke: var(--dd-accent);
-  stroke-width: 1;
-}
-
-.estate-agency-diagram .dd-relationship__hit,
-.estate-agency-diagram .dd-hierarchy-label rect {
-  fill: var(--color-surface-card);
-  stroke: var(--dd-line);
-  stroke-width: 2;
-  transition: fill var(--motion-standard) var(--ease), stroke var(--motion-standard) var(--ease);
-  vector-effect: non-scaling-stroke;
-}
-
-.estate-agency-diagram .dd-relationship__label,
-.estate-agency-diagram .dd-hierarchy-label text {
-  fill: var(--color-text-strong);
-  font: 700 var(--text-xs) / 1 var(--font-mono);
-  letter-spacing: var(--tracking-meta);
-  pointer-events: none;
-}
-
-.estate-agency-diagram .dd-hierarchy-label rect {
-  stroke: var(--dd-accent);
-}
-
-.estate-agency-diagram .dd-hierarchy-label text {
-  fill: var(--dd-accent);
-}
-
-.estate-agency-diagram .dd-resource {
-  color: inherit;
-  cursor: pointer;
-  text-decoration: none;
-}
-
-.estate-agency-diagram .dd-resource:hover .dd-card__header-hit,
-.estate-agency-diagram .dd-resource:hover .dd-field__hit,
-.estate-agency-diagram .dd-resource:hover .dd-relationship__hit {
-  fill: var(--color-surface-tint);
-  stroke: var(--dd-accent);
-}
-
-.estate-agency-diagram .dd-resource:active .dd-card__header-hit,
-.estate-agency-diagram .dd-resource:active .dd-field__hit,
-.estate-agency-diagram .dd-resource:active .dd-relationship__hit {
-  fill: var(--color-surface-alt);
-  stroke: var(--color-text-strong);
-}
-
-.estate-agency-diagram .dd-resource:focus-visible {
-  outline: none;
-}
-
-.estate-agency-diagram .dd-resource:focus-visible .dd-card__header-hit,
-.estate-agency-diagram .dd-resource:focus-visible .dd-field__hit,
-.estate-agency-diagram .dd-resource:focus-visible .dd-relationship__hit {
-  fill: var(--color-surface-tint);
-  stroke: var(--color-focus);
-  stroke-width: 4;
-  filter: drop-shadow(0 0 2px var(--color-focus-contrast));
-}
-
-.estate-agency-diagram .dd-legend line {
-  stroke: var(--color-border-strong);
-  stroke-width: 1;
-  vector-effect: non-scaling-stroke;
-}
-
-.estate-agency-diagram .dd-legend .dd-legend__boundary {
-  stroke: var(--dd-boundary);
-  stroke-width: 2;
-  stroke-dasharray: 8 8;
-}
-
-.estate-agency-diagram .dd-legend__count {
-  fill: var(--color-text-strong);
+html[data-theme='dark'] [data-diagram-profile='opda-diagram-design'] .gd-mermaid .node[id*='term_3'] :is(rect, polygon, path) {
+  fill: var(--color-surface-tint) !important;
+  stroke: var(--color-data-1-dark) !important;
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .estate-agency-diagram .dd-card__header-hit,
-  .estate-agency-diagram .dd-field__hit,
-  .estate-agency-diagram .dd-relationship__hit {
-    transition: none;
+  [data-diagram-profile='opda-diagram-design'] .gd-mermaid :is(.node, .flowchart-link, .edgeLabel) {
+    transition-duration: 0.01ms !important;
   }
 }
 
 @media (forced-colors: active) {
-  .estate-agency-diagram,
-  .estate-agency-diagram .dd-zone__frame,
-  .estate-agency-diagram .dd-card__frame,
-  .estate-agency-diagram .dd-standard__chip,
-  .estate-agency-diagram .dd-relationship__hit,
-  .estate-agency-diagram .dd-hierarchy-label rect {
-    fill: Canvas;
-    stroke: CanvasText;
+  [data-diagram-profile='opda-diagram-design'] .gd-mermaid :is(.cluster, .node) :is(rect, polygon, path) {
+    fill: Canvas !important;
+    stroke: CanvasText !important;
   }
 
-  .estate-agency-diagram text { fill: CanvasText; }
-  .estate-agency-diagram .dd-connector,
-  .estate-agency-diagram .dd-legend line { stroke: CanvasText; }
-  .estate-agency-diagram .dd-arrow-head { fill: CanvasText; }
-  .estate-agency-diagram .dd-hierarchy-arrow-head { fill: Canvas; stroke: CanvasText; }
+  [data-diagram-profile='opda-diagram-design'] .gd-mermaid :is(.nodeLabel, .edgeLabel, .cluster-label) {
+    color: CanvasText !important;
+    fill: CanvasText !important;
+  }
 
-  .estate-agency-diagram .dd-resource:focus-visible .dd-card__header-hit,
-  .estate-agency-diagram .dd-resource:focus-visible .dd-field__hit,
-  .estate-agency-diagram .dd-resource:focus-visible .dd-relationship__hit {
-    fill: Canvas;
-    stroke: Highlight;
-    filter: none;
+  [data-diagram-profile='opda-diagram-design'] .gd-mermaid .node[role]:focus-visible :is(rect, polygon, path) {
+    stroke: Highlight !important;
   }
 }
