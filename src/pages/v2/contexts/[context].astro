@@ -1,6 +1,5 @@
 ---
 import GraphDiagram from '@/components/GraphDiagram.astro';
-import EstateAgencyDiagram from '@/components/v2/EstateAgencyDiagram.astro';
 import V2Contents from '@/components/v2/V2Contents.astro';
 import V2DiagramLegend from '@/components/v2/V2DiagramLegend.astro';
 import V2Page from '@/components/v2/V2Page.astro';
@@ -30,7 +29,6 @@ export function getStaticPaths() {
 }
 
 const { context } = Astro.props;
-const usesDiagramDesignProfile = context.id === 'estate-agency';
 const stats = contextStats(context.id);
 const ownedResources = resourcesByContext.get(context.id) ?? [];
 const ownedShapes = shapesByContext.get(context.id) ?? [];
@@ -92,23 +90,13 @@ function semanticHomeLabel(row) {
   </div>
 
   <h2 id="diagram">Complete context diagram</h2>
-  {usesDiagramDesignProfile ? (
-    <>
-      <p>This view keeps the complete Mermaid graph and its ELK layout. The pinned Diagram Design 2.4 method and OPDA profile supply the visual hierarchy and accessibility treatment without changing node positions or connector routes. Dotted nodes and links mark the Common boundary, referenced standards remain distinct, and no cardinalities are inferred.</p>
-      <V2DiagramLegend variant="context" />
-      <EstateAgencyDiagram />
-    </>
-  ) : (
-    <>
-      <p>Every resource owned by this semantic home is included, together with one-hop incoming and outgoing properties and their attached resources. Dotted nodes and links identify resources owned by another semantic home; the owning boundary appears beneath each foreign resource. Referenced standards remain visually distinct. These are asserted OWL relationships, not reviewed cross-domain mappings.</p>
-      <V2DiagramLegend variant="context" />
-      <GraphDiagram
-        source={contextDiagram(context.id)}
-        minHeight={graph.displayedNodeCount > 30 ? '820px' : '620px'}
-        caption={`${stats.resources} resources owned by ${context.label}, ${graph.foreignResources.length} from other semantic homes, and ${graph.standardIris.length} referenced standard ${graph.standardIris.length === 1 ? 'term' : 'terms'}. Click any candidate resource node to open its detailed reference page.`}
-      />
-    </>
-  )}
+  <p>Every resource owned by this semantic home is included, together with one-hop incoming and outgoing properties and their attached resources. Dotted nodes and links identify resources owned by another semantic home; the owning boundary appears beneath each foreign resource. Referenced standards remain visually distinct. These are asserted OWL relationships, not reviewed cross-domain mappings.</p>
+  <V2DiagramLegend variant="context" />
+  <GraphDiagram
+    source={contextDiagram(context.id)}
+    minHeight={graph.displayedNodeCount > 30 ? '820px' : '620px'}
+    caption={`${stats.resources} resources owned by ${context.label}, ${graph.foreignResources.length} from other semantic homes, and ${graph.standardIris.length} referenced standard ${graph.standardIris.length === 1 ? 'term' : 'terms'}. Click any candidate resource node to open its detailed reference page.`}
+  />
 
   <h2 id="resources">Owned resources</h2>
   {['class', 'object-property', 'datatype-property'].map((kind) => {

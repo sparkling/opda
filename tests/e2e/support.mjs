@@ -15,7 +15,6 @@ export const ROUTES = [
   '/ontology/graph',
   '/ontology/classes',
   '/pdtf/Seller',
-  '/v2/contexts/estate-agency',
   '/v2/validation',
   '/working-groups/join',
   '/working-groups/join/privacy',
@@ -73,8 +72,8 @@ export async function settleVisualState(page) {
       return rect.width > 0 && rect.top < window.innerHeight + 300 && rect.bottom > -300;
     })
     .every((wrapper) => (
-      wrapper.getAttribute('data-diagram-ready') === 'true'
-      || Boolean(wrapper.querySelector('.gd-empty'))
+      !wrapper.querySelector('.diagram-loading')
+      && Boolean(wrapper.querySelector('.gd-mermaid svg, .gd-empty'))
     )), undefined, { timeout: 15_000 });
 
   await page.evaluate(() => new Promise((resolve) => {

@@ -13,7 +13,6 @@ import {
   boundaryDiagram,
   completeModelDiagram,
   contextDiagram,
-  contextDiagramProjection,
   contexts,
   counts,
   coverage,
@@ -26,7 +25,6 @@ import {
   vocabularies,
   vocabularyRoute,
 } from '../src/lib/v2-model.mjs';
-import { buildEstateAgencyMermaidDiagram } from '../src/lib/estate-agency-editorial-diagram.mjs';
 
 test('V1 and V2 comparison uses the generated model projections', () => {
   assert.deepEqual(v1Counts, {
@@ -213,77 +211,4 @@ test('standard references remain distinct from resources owned by another contex
   assert.doesNotMatch(source, /xsd:string.*:::xsection/);
   assert.match(source, /subgraph cross_context_refs\["Resources owned by other semantic homes"\]/);
   assert.match(source, /subgraph standard_refs\["Referenced standards"\]/);
-});
-
-test('estate-agency adapter preserves Mermaid/ELK geometry and validates all links', () => {
-  const projection = contextDiagramProjection('estate-agency');
-  const diagram = buildEstateAgencyMermaidDiagram(projection);
-  const expectedLinks = Object.fromEntries(
-    projection.displayedResources.map((resource, index) => [`term_${index}`, resourceRoute(resource)]),
-  );
-
-  assert.match(diagram.source, /^---\nconfig:\n  layout: elk\n---\nflowchart LR/mu);
-  assert.doesNotMatch(diagram.source, /^\s*click\s+/gmu);
-  assert.equal((diagram.source.match(/^    term_\d+\["/gmu) ?? []).length, 22);
-  assert.equal((diagram.source.match(/^  term_\d+\s+(?:-->|-\.->)\|/gmu) ?? []).length, 25);
-  assert.deepEqual(diagram.links, expectedLinks);
-  assert.equal(new Set(Object.values(diagram.links)).size, 19);
-  assert.equal(diagram.provenance.mode, 'preserve-renderer-layout');
-  assert.match(diagram.provenance.layoutAuthority, /Mermaid 11\.16\.0.*layout-elk 0\.2\.2/u);
-  assert.equal(diagram.provenance.styleAuthority, 'Diagram Design OPDA profile');
-  assert.equal(diagram.receipt.integration.runtimeSourceSha256, diagram.runtimeSourceSha256);
-  assert.equal(diagram.receipt.integration.projectionSha256, diagram.projectionSha256);
-  assert.equal(diagram.receipt.layout.acceptedForWebsite, false);
-});
-
-test('estate-agency Mermaid adapter fails closed on candidate drift', () => {
-  const projection = contextDiagramProjection('estate-agency');
-  const removed = {
-    ...projection,
-    displayedResources: projection.displayedResources.slice(1),
-  };
-  assert.throws(
-    () => buildEstateAgencyMermaidDiagram(removed),
-    /estate-agency-diagram:projection-hash/u,
-  );
-
-  const added = {
-    ...projection,
-    displayedResources: [...projection.displayedResources, {
-      iri: 'https://example.invalid/Unexpected',
-      key: 'estate-agency:Unexpected',
-      label: 'unexpected',
-      local_name: 'Unexpected',
-      semantic_home: 'estate-agency',
-      kind: 'class',
-    }],
-  };
-  assert.throws(
-    () => buildEstateAgencyMermaidDiagram(added),
-    /estate-agency-diagram:projection-hash/u,
-  );
-
-  const changedRange = {
-    ...projection,
-    displayedResources: projection.displayedResources.map((resource) => (
-      resource.key === 'estate-agency:rentAmount' ? { ...resource, range: '' } : resource
-    )),
-  };
-  assert.throws(
-    () => buildEstateAgencyMermaidDiagram(changedRange),
-    /estate-agency-diagram:projection-hash/u,
-  );
-
-  const changedKind = {
-    ...projection,
-    displayedResources: projection.displayedResources.map((resource) => (
-      resource.key === 'estate-agency:rentAmount'
-        ? { ...resource, kind: 'object-property' }
-        : resource
-    )),
-  };
-  assert.throws(
-    () => buildEstateAgencyMermaidDiagram(changedKind),
-    /estate-agency-diagram:projection-hash/u,
-  );
 });

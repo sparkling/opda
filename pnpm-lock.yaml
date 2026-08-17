@@ -15,7 +15,7 @@ importers:
         specifier: ^3.7.3
         version: 3.7.3
       '@mermaid-js/layout-elk':
-        specifier: 0.2.2
+        specifier: ^0.2.2
         version: 0.2.2(mermaid@11.16.0)
       '@tailwindcss/vite':
         specifier: ^4.3.2
@@ -30,7 +30,7 @@ importers:
         specifier: ^7.0.4
         version: 7.0.4(@astrojs/markdown-remark@7.2.0)(@emnapi/core@1.11.1)(@emnapi/runtime@1.11.1)(@types/node@24.13.2)(jiti@2.7.0)(rollup@4.60.4)
       mermaid:
-        specifier: 11.16.0
+        specifier: ^11.16.0
         version: 11.16.0
       tailwindcss:
         specifier: ^4.3.2

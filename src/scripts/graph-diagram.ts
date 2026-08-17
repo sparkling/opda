@@ -10,7 +10,6 @@
  * view-transition SPA navigation (opda-view-transition-render-patterns).
  */
 import { createMermaidView } from './graph-diagram-mermaid';
-import { createEditorialView } from './graph-diagram-editorial';
 
 let graphDiagramFrameId = 0;
 
@@ -138,21 +137,14 @@ function setupWrapper(wrapper: HTMLElement) {
 
   const viewport = wrapper.querySelector('.diagram-viewport') as HTMLElement | null;
   const canvas = wrapper.querySelector('.diagram-canvas') as HTMLElement | null;
-  const editorialRoot = wrapper.querySelector('.gd-editorial') as HTMLElement | null;
   const pre = wrapper.querySelector('.gd-mermaid') as HTMLElement | null;
-  const renderer = config.renderer === 'editorial' ? 'editorial' : 'mermaid';
-  if (config.renderer && !['editorial', 'mermaid'].includes(config.renderer)) {
-    throw new Error(`[graph-diagram] unsupported renderer ${String(config.renderer)}`);
-  }
-  if (!viewport || !canvas || (renderer === 'mermaid' ? !pre : !editorialRoot)) return;
+  if (!viewport || !canvas || !pre) return;
   const captionId = ensureAccessibleFrame(wrapper);
 
   // Source: the `source` prop (config.source), else the inline slot the
   // component rendered into the <pre> (reconstructed preserving <br/>).
-  const lightSource: string = renderer === 'mermaid'
-    ? ((config.source && String(config.source).trim()) || readPreSource(pre!))
-    : '';
-  let diagramView: any = null;
+  const lightSource: string = (config.source && String(config.source).trim()) || readPreSource(pre);
+  let mermaidView: any = null;
   let fullscreenReturnFocus: HTMLElement | null = null;
   let previousBodyOverflow = '';
 
@@ -216,42 +208,22 @@ function setupWrapper(wrapper: HTMLElement) {
   }
 
   function boot() {
-    diagramView = renderer === 'editorial'
-      ? createEditorialView({ wrapper, viewport, canvas, root: editorialRoot!, captionId })
-      : createMermaidView({
-        wrapper,
-        viewport,
-        canvas,
-        pre: pre!,
-        captionId,
-        links: config.links,
-        getLightSource: () => lightSource,
-      });
+    mermaidView = createMermaidView({ wrapper, viewport, canvas, pre, captionId, getLightSource: () => lightSource });
     wrapper.querySelectorAll('[data-diagram-action="fullscreen"]').forEach((b) => b.addEventListener('click', toggleFullscreen));
     setFullscreenControlState(false);
     document.addEventListener('keydown', handleFullscreenKeydown);
-    diagramView.initControls();
+    mermaidView.initControls();
     // Mermaid measures label geometry while it builds the SVG. Rendering before
     // the self-hosted fonts settle produces a fallback-font graph whose height
     // can change between otherwise identical loads. Wait on FontFaceSet so the
     // diagram and the surrounding page have one deterministic layout.
-    const hasContent = renderer === 'editorial'
-      ? Boolean(editorialRoot!.querySelector('svg'))
-      : Boolean(lightSource);
-    if (hasContent) {
-      const render = () => diagramView.render();
+    if (lightSource) {
+      const render = () => mermaidView.render();
       const fontsReady = document.fonts?.ready;
       if (fontsReady) fontsReady.then(render, render);
       else render();
     }
-    else {
-      wrapper.querySelector('.diagram-loading')?.remove();
-      const empty = document.createElement('span');
-      empty.className = 'gd-empty';
-      empty.textContent = 'No diagram source.';
-      (renderer === 'editorial' ? editorialRoot! : pre!).replaceChildren(empty);
-      wrapper.setAttribute('data-diagram-ready', 'true');
-    }
+    else { wrapper.querySelector('.diagram-loading')?.remove(); pre.innerHTML = '<span class="gd-empty">No diagram source.</span>'; }
   }
 
   // Lazy boot when scrolled near; immediate check + scroll/resize fallback so it

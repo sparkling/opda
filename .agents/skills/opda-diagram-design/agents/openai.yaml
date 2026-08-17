@@ -1,4 +1,0 @@
-interface:
-  display_name: "OPDA Diagram Design"
-  short_description: "Generate verified OPDA editorial diagrams"
-  default_prompt: "Use $opda-diagram-design to regenerate the estate-agency diagram from its authoritative Mermaid source."

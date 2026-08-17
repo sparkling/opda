@@ -63,11 +63,6 @@ const contractFiles = [
   'public/ui/design/mermaid.css',
   'public/ui/design/print.css',
   'public/ui/design/forced-colors.css',
-  'src/components/v2/EstateAgencyDiagram.astro',
-  'src/lib/estate-agency-editorial-diagram.mjs',
-  'src/scripts/graph-diagram-editorial.ts',
-  'src/scripts/graph-diagram-viewport.ts',
-  'src/styles/estate-agency-diagram.css',
   'src/pages/design-system.astro',
   'docs/design-system-site/index.html',
   'docs/design-system-site/styles.css',
@@ -289,76 +284,26 @@ test('the adversarial conformance blockers remain closed', async () => {
 });
 
 test('graph and data tools preserve keyboard and semantic state contracts', async () => {
-  const [component, graph, mermaid, viewport, graphCss, dataBrowser] = await Promise.all([
+  const [component, graph, mermaid, graphCss, dataBrowser] = await Promise.all([
     readFile(file('src/components/GraphDiagram.astro'), 'utf8'),
     readFile(file('src/scripts/graph-diagram.ts'), 'utf8'),
     readFile(file('src/scripts/graph-diagram-mermaid.ts'), 'utf8'),
-    readFile(file('src/scripts/graph-diagram-viewport.ts'), 'utf8'),
     readFile(file('src/styles/graph-diagram.css'), 'utf8'),
     readFile(file('public/ui/data-browser.js'), 'utf8'),
   ]);
-  assert.match(component, /<figure[\s\S]*class="graph-diagram-wrapper"[\s\S]*data-diagram-renderer/u);
+  assert.match(component, /<figure class="graph-diagram-wrapper">/u);
   assert.match(component, /<figcaption class="gd-caption"/u);
   assert.match(graph, /Figure \$\{number\}/u);
   assert.match(graph, /setAttribute\('role', 'dialog'\)/u);
   assert.match(graph, /setAttribute\('aria-modal', 'true'\)/u);
   assert.match(graph, /returnFocus\?\.isConnected/u);
   assert.match(graph, /document\.fonts\?\.ready/u);
-  for (const key of ['ArrowLeft', 'ArrowRight', 'ArrowUp', 'ArrowDown']) assert.match(viewport, new RegExp(key, 'u'));
+  for (const key of ['ArrowLeft', 'ArrowRight', 'ArrowUp', 'ArrowDown']) assert.match(mermaid, new RegExp(key, 'u'));
   assert.match(mermaid, /setAttribute\('aria-pressed'/u);
   assert.doesNotMatch(graphCss, /drop-shadow\(0 0 0\b/iu);
   assert.match(dataBrowser, /class:\s*'db-sort-button'/u);
   assert.match(dataBrowser, /setAttribute\('aria-sort', 'ascending'\)/u);
   assert.match(dataBrowser, /aria-label': 'Choose visible columns'/u);
-});
-
-test('estate-agency preserves Mermaid geometry under the pinned Diagram Design skin', async () => {
-  const [route, component, graph, mermaid, viewport, styles, packageJson, receiptSource] = await Promise.all([
-    readFile(file('src/pages/v2/contexts/[context].astro'), 'utf8'),
-    readFile(file('src/components/v2/EstateAgencyDiagram.astro'), 'utf8'),
-    readFile(file('src/scripts/graph-diagram.ts'), 'utf8'),
-    readFile(file('src/scripts/graph-diagram-mermaid.ts'), 'utf8'),
-    readFile(file('src/scripts/graph-diagram-viewport.ts'), 'utf8'),
-    readFile(file('src/styles/estate-agency-diagram.css'), 'utf8'),
-    readFile(file('package.json'), 'utf8'),
-    readFile(file('src/data/diagrams/estate-agency.diagram-design.json'), 'utf8'),
-  ]);
-  const receipt = JSON.parse(receiptSource);
-  assert.match(route, /context\.id === 'estate-agency'/u);
-  assert.match(route, /<EstateAgencyDiagram/u);
-  assert.match(component, /source=\{diagram\.source\}/u);
-  assert.match(component, /profile="opda-diagram-design"/u);
-  assert.match(component, /provenance=\{diagram\.provenance\}/u);
-  assert.equal(receipt.skill.version, '2.4.0');
-  assert.equal(receipt.skill.commit, '09df49d8d1a1c7fb2efdfcdc7a2a0713534350a6');
-  assert.equal(receipt.invocation.entrypoint, '$diagram-design');
-  assert.equal(receipt.integration.mode, 'preserve-renderer-layout');
-  assert.equal(receipt.integration.nativeRedrawGeometryUsed, false);
-  assert.match(graph, /links: config\.links/u);
-  assert.match(mermaid, /configuredLinks/u);
-  assert.match(mermaid, /safeRootRelativeRoute/u);
-  assert.match(mermaid, /profileGeometryInvariant/u);
-  assert.match(mermaid, /profileGeometryBeforeSha256/u);
-  assert.match(mermaid, /profileGeometryAfterSha256/u);
-  assert.match(mermaid, /OPDA profile requires a rendered Mermaid SVG/u);
-  assert.ok(
-    mermaid.indexOf('await applyOpdaDiagramProfile')
-      < mermaid.indexOf("setAttribute('data-diagram-ready', 'true')"),
-    'profile geometry proof must complete before the ready state',
-  );
-  assert.match(mermaid, /pre\.replaceChildren\(empty\)/u);
-  for (const key of ['ArrowLeft', 'ArrowRight', 'ArrowUp', 'ArrowDown']) {
-    assert.match(viewport, new RegExp(key, 'u'));
-  }
-  assert.doesNotMatch(styles, /#[0-9a-f]{3,8}\b|\brgb\(/iu);
-  assert.doesNotMatch(styles, /^\s*(?:transform|rx|ry)\s*:|drop-shadow/imu);
-  const packageManifest = JSON.parse(packageJson);
-  const runtimePackages = {
-    ...packageManifest.dependencies,
-    ...packageManifest.devDependencies,
-  };
-  assert.equal(runtimePackages['diagram-design'], undefined);
-  assert.doesNotMatch(JSON.stringify(runtimePackages), /cathrynlavery/iu);
 });
 
 test('shared buttons expose the adopted interaction and outcome states', async () => {

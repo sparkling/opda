@@ -1,9 +1,19 @@
 // @ts-nocheck
-// Shared Mermaid/ELK renderer with OPDA palette, navigation and theme support.
+/**
+ * GraphDiagram core renderer — ported from hm/semantic-app (ADR-0190), adapted
+ * for OPDA: the semantic status and categorical diagram palette is injected
+ * rather than embedded per page, navigation
+ * uses `click NODE "url"` directives the page emits, and re-render on theme
+ * toggle is driven by a MutationObserver on `data-theme` (opda has no
+ * `hm:theme-change` event).
+ *
+ * mermaid + @mermaid-js/layout-elk are dynamic-import()ed (Astro island); they
+ * are pre-bundled via vite.optimizeDeps (astro.config.mjs) so Astro 7 / Vite 8
+ * never races the on-demand re-optimisation.
+ */
 import {
   CLASSDEFS_LIGHT, CLASSDEFS_DARK, THEMEVARS_LIGHT, THEMEVARS_DARK,
 } from '../lib/diagram-palette';
-import { createDiagramViewport } from './graph-diagram-viewport';
 
 export interface MermaidViewOpts {
   wrapper: HTMLElement;
@@ -11,7 +21,6 @@ export interface MermaidViewOpts {
   canvas: HTMLElement;
   pre: HTMLElement;
   captionId?: string;
-  links?: Record<string, string>;
   getLightSource: () => string;
 }
 export interface MermaidView {
@@ -83,32 +92,6 @@ function extractFirstLineText(el: Element): string {
   return (el.textContent || '').split('\n')[0].trim();
 }
 
-function safeRootRelativeRoute(value: unknown): string | null {
-  if (typeof value !== 'string' || !/^\/(?!\/)[^\\\u0000-\u001f]*$/u.test(value)) return null;
-  try {
-    const url = new URL(value, window.location.origin);
-    return url.origin === window.location.origin ? value : null;
-  } catch {
-    return null;
-  }
-}
-
-function validateConfiguredLinks(input: unknown): Record<string, string> {
-  if (input == null) return {};
-  if (typeof input !== 'object' || Array.isArray(input)) {
-    throw new Error('[graph-diagram] configured links must be an object');
-  }
-  const configuredLinks: Record<string, string> = {};
-  for (const [nodeId, value] of Object.entries(input as Record<string, unknown>)) {
-    const route = safeRootRelativeRoute(value);
-    if (!/^\w+$/u.test(nodeId) || !route) {
-      throw new Error(`[graph-diagram] invalid configured link ${nodeId}`);
-    }
-    configuredLinks[nodeId] = route;
-  }
-  return configuredLinks;
-}
-
 // Inject the OPDA classDef block after the diagram-type line, so a page can
 // author bare semantic classes such as `:::user`.
 const CLASSDEF_TYPE_RE = /^\s*(flowchart|graph|classDiagram|stateDiagram(?:-v2)?)\b/i;
@@ -121,136 +104,47 @@ function injectClassDefs(src: string, dark: boolean): string {
   return lines.slice(0, insertIdx).concat([block]).concat(lines.slice(insertIdx)).join('\n');
 }
 
-const GEOMETRY_ATTRS = [
-  'viewBox', 'width', 'height', 'transform', 'x', 'y', 'x1', 'y1', 'x2', 'y2',
-  'cx', 'cy', 'r', 'rx', 'ry', 'points', 'd', 'refX', 'refY', 'markerWidth',
-  'markerHeight', 'marker-start', 'marker-end',
-];
-function geometryProjection(svg: Element): string {
-  return JSON.stringify([svg, ...svg.querySelectorAll('*')].map((element) => [
-    element.tagName, element.id, ...GEOMETRY_ATTRS.map((name) => element.getAttribute(name)),
-  ]));
-}
-
-async function sha256(value: string): Promise<string> {
-  const digest = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(value));
-  return [...new Uint8Array(digest)].map((byte) => byte.toString(16).padStart(2, '0')).join('');
-}
-
-// Mermaid serialises classDef paint as inline !important declarations. An
-// OPDA profile stylesheet cannot reliably override those declarations, so the
-// preservation adapter repaints the completed SVG after ELK has laid it out.
-// Only CSS paint/type properties are changed; geometry attributes and the SVG
-// structure remain byte-for-byte as emitted by Mermaid.
-async function applyOpdaDiagramProfile(wrapper: HTMLElement, pre: HTMLElement) {
-  if (wrapper.dataset.diagramProfile !== 'opda-diagram-design') return;
-  const svg = pre.querySelector('svg');
-  if (!svg) throw new Error('[graph-diagram] OPDA profile requires a rendered Mermaid SVG');
-  const geometryBefore = geometryProjection(svg);
-  const tokens = getComputedStyle(document.documentElement);
-  const token = (name: string) => tokens.getPropertyValue(name).trim();
-  const palette = {
-    paper: token('--color-surface-alt'),
-    paper2: token('--color-surface-card'),
-    ink: token('--color-text-strong'),
-    muted: token('--color-text-muted'),
-    rule: token('--color-border'),
-    ruleStrong: token('--color-border-strong'),
-    accent: token(isDark() ? '--color-data-1-dark' : '--color-data-1'),
-    accentTint: token(isDark() ? '--color-surface-tint' : '--color-data-1-surface'),
-    focus: token('--color-focus'),
-  };
-  const set = (element: Element, property: string, value: string) => {
-    if (value) (element as HTMLElement).style.setProperty(property, value, 'important');
-  };
-  const directShapes = (node: Element) => [...node.querySelectorAll(':scope > rect, :scope > polygon, :scope > path')];
-
-  function paintNode(node: Element) {
-    let fill = palette.paper2;
-    let stroke = node.classList.contains('process') ? palette.muted : palette.ruleStrong;
-    let dash = 'none';
-    if (node.classList.contains('xsection')) {
-      fill = palette.paper;
-      stroke = palette.ruleStrong;
-      dash = '4 3';
-    } else if (node.classList.contains('external')) {
-      fill = palette.paper;
-      stroke = palette.rule;
-    }
-    if (/-term_3-\d+$/u.test(node.id)) {
-      fill = palette.accentTint;
-      stroke = palette.accent;
-    }
-    directShapes(node).forEach((shape) => {
-      set(shape, 'fill', fill);
-      set(shape, 'stroke', stroke);
-      set(shape, 'stroke-width', /-term_3-\d+$/u.test(node.id) ? '2px' : '1px');
-      set(shape, 'stroke-dasharray', dash);
-    });
-    node.querySelectorAll('.nodeLabel, .nodeLabel p, .nodeLabel span').forEach((label) => {
-      set(label, 'color', palette.ink);
-    });
-    node.querySelectorAll('.nodeLabel small').forEach((label) => set(label, 'color', palette.muted));
-  }
-
-  svg.querySelectorAll('.node').forEach((node) => {
-    paintNode(node);
-    node.addEventListener('focus', () => directShapes(node).forEach((shape) => {
-      set(shape, 'stroke', palette.focus);
-      set(shape, 'stroke-width', '3px');
-      set(shape, 'filter', 'none');
-    }));
-    node.addEventListener('blur', () => paintNode(node));
-  });
-  svg.querySelectorAll('.cluster > rect').forEach((frame) => {
-    set(frame, 'fill', palette.paper);
-    set(frame, 'stroke', palette.ruleStrong);
-    set(frame, 'stroke-width', '1px');
-  });
-  svg.querySelectorAll('.cluster-label, .cluster-label span').forEach((label) => {
-    set(label, 'color', palette.muted);
-    set(label, 'fill', palette.muted);
-  });
-  svg.querySelectorAll('.edgePaths path.flowchart-link').forEach((edge) => {
-    set(edge, 'stroke', palette.muted);
-    set(edge, 'stroke-width', '1px');
-    set(edge, 'filter', 'none');
-  });
-  svg.querySelectorAll('marker path').forEach((marker) => {
-    set(marker, 'fill', palette.muted);
-    set(marker, 'stroke', palette.muted);
-  });
-  svg.querySelectorAll('.edgeLabel, .edgeLabel p, .edgeLabel span').forEach((label) => {
-    set(label, 'color', palette.muted);
-    set(label, 'background', palette.paper);
-  });
-  const geometryAfter = geometryProjection(svg);
-  const [beforeSha256, afterSha256] = await Promise.all([
-    sha256(geometryBefore), sha256(geometryAfter),
-  ]);
-  const geometryUnchanged = geometryAfter === geometryBefore && afterSha256 === beforeSha256;
-  wrapper.dataset.profileGeometryBeforeSha256 = beforeSha256;
-  wrapper.dataset.profileGeometryAfterSha256 = afterSha256;
-  wrapper.dataset.profileGeometryInvariant = String(geometryUnchanged);
-  if (!geometryUnchanged) throw new Error('[graph-diagram] OPDA profile changed Mermaid geometry');
-}
-
 export function createMermaidView(opts: MermaidViewOpts): MermaidView {
   const { wrapper, viewport, canvas, pre, captionId } = opts;
-  const configuredLinks = validateConfiguredLinks(opts.links);
 
+  let scale = 1, panX = 0, panY = 0;
+  const MIN = 0.1, MAX = 5, ZOOM_BTN = 1.2;
+  let dragging = false, didDrag = false, dsx = 0, dsy = 0, psx = 0, psy = 0;
   let mode: 'navigate' | 'explore' = 'navigate';
   let lockedNode: string | null = null;
   let didRender = false;
   let renderSeq = 0;   // latest-wins guard: a newer render() supersedes older ones
-  const viewportController = createDiagramViewport({
-    wrapper,
-    viewport,
-    canvas,
-    shouldStartDrag: (target) => !(
-      mode === 'navigate' && target.closest('.node, g[id*="entity-"]')
-    ),
-  });
+
+  function applyTransform() {
+    canvas.style.transform = `translate(${panX}px,${panY}px) scale(${scale})`;
+    const label = wrapper.querySelector('.diagram-zoom-label');
+    if (label) label.textContent = Math.round(scale * 100) + '%';
+  }
+  function resetView() { scale = 1; panX = 0; panY = 0; applyTransform(); }
+  function panBy(x: number, y: number) { panX += x; panY += y; applyTransform(); }
+  function zoom(factor: number, cx?: number, cy?: number) {
+    const rect = viewport.getBoundingClientRect();
+    const px = cx ?? rect.width / 2;
+    const py = cy ?? rect.height / 2;
+    const old = scale;
+    scale = Math.min(MAX, Math.max(MIN, scale * factor));
+    const ratio = scale / old;
+    panX = px - ratio * (px - panX);
+    panY = py - ratio * (py - panY);
+    applyTransform();
+  }
+
+  function handleSvgKeydown(event: KeyboardEvent) {
+    if (event.altKey || event.ctrlKey || event.metaKey) return;
+    const step = event.shiftKey ? 120 : 40;
+    if (event.key === 'ArrowLeft') { event.preventDefault(); panBy(step, 0); }
+    else if (event.key === 'ArrowRight') { event.preventDefault(); panBy(-step, 0); }
+    else if (event.key === 'ArrowUp') { event.preventDefault(); panBy(0, step); }
+    else if (event.key === 'ArrowDown') { event.preventDefault(); panBy(0, -step); }
+    else if (event.key === '+' || event.key === '=') { event.preventDefault(); zoom(ZOOM_BTN); }
+    else if (event.key === '-' || event.key === '_') { event.preventDefault(); zoom(1 / ZOOM_BTN); }
+    else if (event.key === '0') { event.preventDefault(); resetView(); }
+  }
 
   function makeSvgFocusable(svg: SVGSVGElement) {
     const id = `gd-svg-title-${++svgA11yId}`;
@@ -262,14 +156,14 @@ export function createMermaidView(opts: MermaidViewOpts): MermaidView {
     svg.setAttribute('tabindex', '0');
     svg.setAttribute('focusable', 'true');
     svg.setAttribute('aria-labelledby', id);
+    svg.setAttribute('aria-keyshortcuts', 'ArrowLeft ArrowRight ArrowUp ArrowDown + - 0');
     if (captionId) svg.setAttribute('aria-describedby', captionId);
-    viewportController.bindKeyboard(svg);
+    svg.addEventListener('keydown', handleSvgKeydown);
   }
 
   function render() {
     const lightSource = opts.getLightSource();
     if (!lightSource) return;
-    wrapper.setAttribute('data-diagram-ready', 'false');
     const seq = ++renderSeq;   // this render's ticket; a later render() bumps it
     loadDiagramLinks();  // manifest for click-navigation (cached; ready by click time)
     loadMermaid().then((mermaid) => {
@@ -289,31 +183,17 @@ export function createMermaidView(opts: MermaidViewOpts): MermaidView {
       // could land last (dark diagram in light mode) or the diagram went blank on
       // the 2nd light→dark→light cycle. render() + seq guard makes the LATEST
       // theme win and never overlaps.
-      return mermaid.render('gd-render-' + (++mermaidRenderId), src).then(async ({ svg }: { svg: string }) => {
+      return mermaid.render('gd-render-' + (++mermaidRenderId), src).then(({ svg }: { svg: string }) => {
         if (seq !== renderSeq) return;               // superseded mid-render — drop this SVG
         pre.innerHTML = svg;
+        wrapper.querySelector('.diagram-loading')?.remove();
+        didRender = true;
         fixErRowContrast(pre, dark);
-        await applyOpdaDiagramProfile(wrapper, pre);
-        if (seq !== renderSeq) return;
         const renderedSvg = pre.querySelector('svg');
         if (renderedSvg instanceof SVGSVGElement) makeSvgFocusable(renderedSvg);
         initHoverHighlight();
-        wrapper.querySelector('.diagram-loading')?.remove();
-        didRender = true;
-        wrapper.setAttribute('data-diagram-ready', 'true');
       });
-    }).catch((error: any) => {
-      if (seq !== renderSeq) return;
-      didRender = false;
-      wrapper.setAttribute('data-diagram-ready', 'false');
-      wrapper.querySelector('.diagram-loading')?.remove();
-      const empty = document.createElement('span');
-      empty.className = 'gd-empty';
-      empty.setAttribute('role', 'status');
-      empty.textContent = 'Diagram unavailable.';
-      pre.replaceChildren(empty);
-      console.error('[graph-diagram] mermaid render', error);
-    });
+    }).catch((e: any) => console.error('[graph-diagram] mermaid render', e));
   }
 
   function initHoverHighlight() {
@@ -344,13 +224,7 @@ export function createMermaidView(opts: MermaidViewOpts): MermaidView {
       nodes.forEach((n) => { (n as HTMLElement).style.opacity = connected[nameOf(n)] ? '1' : DIM; });
       edgePaths.forEach((p, i) => {
         const el = p as HTMLElement;
-        if (idx.indexOf(i) !== -1) {
-          el.style.opacity = '1';
-          el.style.stroke = hi;
-          el.style.strokeWidth = '3px';
-          el.style.filter = wrapper.dataset.diagramProfile === 'opda-diagram-design'
-            ? 'none' : `drop-shadow(0 0 3px ${hi})`;
-        }
+        if (idx.indexOf(i) !== -1) { el.style.opacity = '1'; el.style.stroke = hi; el.style.strokeWidth = '3px'; el.style.filter = `drop-shadow(0 0 3px ${hi})`; }
         else el.style.opacity = DIM;
       });
       edgeLabels.forEach((el, i) => { (el as HTMLElement).style.opacity = idx.indexOf(i) !== -1 ? '1' : DIM; });
@@ -367,13 +241,10 @@ export function createMermaidView(opts: MermaidViewOpts): MermaidView {
     const urls: Record<string, string> = {};
     const cre = /^\s*click\s+(\w+)\s+"([^"]+)"/gm;
     let cm: RegExpExecArray | null;
-    while ((cm = cre.exec(lightSource)) !== null) {
-      const route = safeRootRelativeRoute(cm[2]);
-      if (route) urls[cm[1]] = route;
-    }
+    while ((cm = cre.exec(lightSource)) !== null) urls[cm[1]] = cm[2];
     const isER = (svg.getAttribute('class') || '') === 'erDiagram';
     function navTarget(nodeEl: Element): string | null {
-      const direct = configuredLinks[nameOf(nodeEl)] ?? urls[nameOf(nodeEl)];
+      const direct = urls[nameOf(nodeEl)];
       if (direct) return direct;
       const manifest = (window as any).__diagramLinks as Record<string, string> | undefined;
       if (!manifest) return null;
@@ -418,7 +289,7 @@ export function createMermaidView(opts: MermaidViewOpts): MermaidView {
     }
 
     svg.addEventListener('click', (evt) => {
-      if (viewportController.consumeDidDrag()) return;
+      if (didDrag) { didDrag = false; return; }
       const nodeEl = (evt.target as Element).closest('.node, g[id*="entity-"]');
       if (mode === 'navigate') {
         if (nodeEl && navTarget(nodeEl)) {
@@ -446,7 +317,7 @@ export function createMermaidView(opts: MermaidViewOpts): MermaidView {
         activateNode(node);
       });
       if (isER) return; // hover-highlight is edge-based (flowchart); skip for ER
-      node.addEventListener('mouseenter', () => { if (viewportController.dragging || lockedNode) return; applyHighlight(n); });
+      node.addEventListener('mouseenter', () => { if (dragging || lockedNode) return; applyHighlight(n); });
       node.addEventListener('mouseleave', () => { if (lockedNode) return; clearHighlight(); });
     });
     updateNodeAccessibility();
@@ -454,7 +325,15 @@ export function createMermaidView(opts: MermaidViewOpts): MermaidView {
   }
 
   function initControls() {
-    viewportController.initControls();
+    wrapper.querySelectorAll('[data-diagram-action]').forEach((btn) => {
+      btn.addEventListener('click', () => {
+        const a = btn.getAttribute('data-diagram-action');
+        if (a === 'zoom-in') zoom(ZOOM_BTN);
+        else if (a === 'zoom-out') zoom(1 / ZOOM_BTN);
+        else if (a === 'reset') resetView();
+        else if (a === 'toggle-mode') toggleMode();
+      });
+    });
 
     function toggleMode() {
       const label = wrapper.querySelector('.diagram-mode-label');
@@ -483,9 +362,79 @@ export function createMermaidView(opts: MermaidViewOpts): MermaidView {
     }
 
     const modeToggle = wrapper.querySelector<HTMLButtonElement>('.diagram-mode-toggle');
-    modeToggle?.addEventListener('click', toggleMode);
     modeToggle?.setAttribute('aria-pressed', 'false');
     modeToggle?.setAttribute('aria-label', 'Navigate mode. Activate to switch to explore mode.');
+    const zoomLabel = wrapper.querySelector('.diagram-zoom-label');
+    zoomLabel?.setAttribute('role', 'status');
+    zoomLabel?.setAttribute('aria-live', 'polite');
+    zoomLabel?.setAttribute('aria-label', 'Zoom level');
+
+    const zoomControl = wrapper.querySelector<HTMLButtonElement>('.gd-ctrl');
+    let zoomMode = false;
+    let modifierZoom = false;
+    function updateZoomState() {
+      const zoomActive = zoomMode || modifierZoom;
+      wrapper.classList.toggle('zoom-active', zoomActive);
+      if (!zoomControl) return;
+      zoomControl.removeAttribute('tabindex');
+      zoomControl.setAttribute('aria-pressed', String(zoomMode));
+      zoomControl.setAttribute('aria-label', zoomMode
+        ? 'Zoom mode enabled. Activate to disable zoom mode.'
+        : 'Zoom mode disabled. Activate to enable zoom mode.');
+      zoomControl.title = zoomMode
+        ? 'Zoom mode enabled — scroll over the diagram to zoom'
+        : 'Enable zoom mode, or hold Ctrl (⌘) and scroll to zoom';
+    }
+    zoomControl?.addEventListener('click', () => { zoomMode = !zoomMode; updateZoomState(); });
+    updateZoomState();
+
+    let nudgeTimer: any = null;
+    function nudge() { wrapper.classList.add('zoom-nudge'); if (nudgeTimer) clearTimeout(nudgeTimer); nudgeTimer = setTimeout(() => wrapper.classList.remove('zoom-nudge'), 900); }
+    viewport.addEventListener('wheel', (e) => {
+      if (!(zoomMode || e.ctrlKey || e.metaKey)) { nudge(); return; }
+      e.preventDefault();
+      const rect = viewport.getBoundingClientRect();
+      const factor = Math.min(1.18, Math.max(0.85, Math.exp(-e.deltaY * 0.0012)));
+      zoom(factor, e.clientX - rect.left, e.clientY - rect.top);
+    }, { passive: false });
+
+    viewport.addEventListener('mousedown', (e) => {
+      if (e.button !== 0) return;
+      if ((e.target as Element).closest('.node') && mode === 'navigate') return;
+      dragging = true; didDrag = false; dsx = e.clientX; dsy = e.clientY; psx = panX; psy = panY;
+      viewport.style.cursor = 'grabbing'; e.preventDefault();
+    });
+    window.addEventListener('mousemove', (e) => {
+      if (!dragging) return;
+      const dx = e.clientX - dsx, dy = e.clientY - dsy;
+      if (Math.abs(dx) > 3 || Math.abs(dy) > 3) didDrag = true;
+      panX = psx + dx; panY = psy + dy; applyTransform();
+    });
+    window.addEventListener('mouseup', () => { if (dragging) { dragging = false; viewport.style.cursor = 'grab'; } });
+
+    let lastTouches: TouchList | null = null;
+    viewport.addEventListener('touchstart', (e) => {
+      if (e.touches.length === 1) { dragging = true; dsx = e.touches[0].clientX; dsy = e.touches[0].clientY; psx = panX; psy = panY; }
+      lastTouches = e.touches;
+    }, { passive: true });
+    viewport.addEventListener('touchmove', (e) => {
+      if (e.touches.length === 1 && dragging) {
+        panX = psx + (e.touches[0].clientX - dsx); panY = psy + (e.touches[0].clientY - dsy); applyTransform(); e.preventDefault();
+      } else if (e.touches.length === 2 && lastTouches && lastTouches.length === 2) {
+        const od = Math.hypot(lastTouches[0].clientX - lastTouches[1].clientX, lastTouches[0].clientY - lastTouches[1].clientY);
+        const nd = Math.hypot(e.touches[0].clientX - e.touches[1].clientX, e.touches[0].clientY - e.touches[1].clientY);
+        const rect = viewport.getBoundingClientRect();
+        const cx = (e.touches[0].clientX + e.touches[1].clientX) / 2 - rect.left;
+        const cy = (e.touches[0].clientY + e.touches[1].clientY) / 2 - rect.top;
+        if (od > 0) zoom(nd / od, cx, cy); lastTouches = e.touches; e.preventDefault();
+      }
+    }, { passive: false });
+    viewport.addEventListener('touchend', () => { dragging = false; lastTouches = null; });
+
+    const setZoomModifier = (e: KeyboardEvent) => { modifierZoom = e.ctrlKey || e.metaKey; updateZoomState(); };
+    window.addEventListener('keydown', setZoomModifier);
+    window.addEventListener('keyup', setZoomModifier);
+    window.addEventListener('blur', () => { modifierZoom = false; updateZoomState(); });
 
     // Re-render on theme toggle (opda flips <html data-theme>; no custom event).
     let lastTheme = document.documentElement.getAttribute('data-theme');
