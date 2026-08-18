@@ -86,7 +86,6 @@ a:visited { text-decoration-color: currentColor; }
   flex: 0 0 auto;
   display: flex;
   align-items: center;
-  gap: var(--space-4);
   padding-right: var(--space-5);
   border-right: 1px solid rgb(255 255 255 / 14%);
   color: var(--brand-white);
@@ -98,12 +97,6 @@ a:visited { text-decoration-color: currentColor; }
   height: auto;
   max-height: 2.5rem;
 }
-.brand-context {
-  color: var(--neutral-400);
-  font: 500 var(--text-sm) / 1.2 var(--font-sans);
-  white-space: nowrap;
-}
-
 .global-nav-panel {
   min-width: 0;
   height: 100%;
@@ -195,7 +188,6 @@ a:visited { text-decoration-color: currentColor; }
 :root[data-theme='dark'] .theme-icon--sun { display: block; }
 
 @media (max-width: 75rem) {
-  .brand-context { display: none; }
   .app-header .brand-link { width: 10rem; }
   .app-header .global-nav a { padding-inline: var(--space-3); }
 }
