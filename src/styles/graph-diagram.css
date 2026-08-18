@@ -63,13 +63,14 @@
 }
 .diagram-viewport { overflow: hidden; padding: var(--space-5); }
 .diagram-canvas { transform-origin: 0 0; }
-.diagram-loading, .gd-empty {
+.diagram-loading, .diagram-fallback, .gd-empty {
   display: block;
   padding: var(--space-8) var(--space-3);
   color: var(--color-text-muted);
   text-align: center;
   font-size: var(--text-sm);
 }
+.diagram-fallback { color: var(--color-status-danger); }
 .graph-diagram-wrapper .gd-mermaid {
   margin: 0;
   padding: 0;
@@ -81,6 +82,19 @@
   font: inherit;
   text-align: center;
   white-space: normal;
+}
+/* The server-rendered node contains Mermaid source for the client renderer.
+   Keep that implementation detail out of the visual loading state; only the
+   labelled status or fallback message may occupy the box until SVG succeeds. */
+.graph-diagram-wrapper .gd-mermaid:not(.gd-rendered) {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  opacity: 0;
+  pointer-events: none;
+  white-space: nowrap;
 }
 .gd-mermaid svg { max-width: 100%; }
 .gd-mermaid svg .node,

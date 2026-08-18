@@ -57,8 +57,8 @@ const configJson = JSON.stringify({ mode: 'static', source: source ?? '' }).repl
     <div class="gd-view-mermaid">
       <div class="diagram-viewport" style={`cursor:grab${minHeight ? `;min-height:${minHeight}` : ''}`}>
         <div class="diagram-canvas">
-          <p class="diagram-loading">Loading diagram…</p>
-          <pre class="gd-mermaid"><slot /></pre>
+          <p class="diagram-loading" role="status" aria-live="polite">Loading diagram…</p>
+          <pre class="gd-mermaid" aria-hidden="true"><slot /></pre>
         </div>
       </div>
     </div>
