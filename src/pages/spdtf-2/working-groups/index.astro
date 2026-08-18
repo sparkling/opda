@@ -3,6 +3,7 @@ import Layout from '@/layouts/Layout.astro';
 import PageMeta from '@/components/PageMeta.astro';
 import AuthorityPanel from '@/components/ia/AuthorityPanel.astro';
 import GatewayCard from '@/components/ia/GatewayCard.astro';
+import { WORKING_GROUPS } from '@/components/ia/working-groups';
 ---
 
 <Layout
@@ -22,14 +23,9 @@ import GatewayCard from '@/components/ia/GatewayCard.astro';
 
   <h2 id="roster">The working-group family</h2>
   <div class="card-grid">
-    <GatewayCard href="/spdtf-2/working-groups#finance" title="Finance and Banking" eyebrow="Bounded context" description="Mortgage journey, lending decisions, parties, evidence, risk and finance-data exchange." />
-    <GatewayCard href="/spdtf-2/working-groups#conveyancing" title="Conveyancing" eyebrow="Bounded context" description="Instruction, legal transfer, enquiries, searches, exchange and completion." />
-    <GatewayCard href="/spdtf-2/working-groups#estate-agency" title="Estate Agency" eyebrow="Bounded context" description="Marketing, listings, material information, viewings, offers and seller information." />
-    <GatewayCard href="/spdtf-2/working-groups#surveying" title="Surveying and Valuation" eyebrow="Bounded context" description="Inspection, condition, valuation, professional evidence and property risk." />
-    <GatewayCard href="/spdtf-2/working-groups#data-services" title="Property Data Services" eyebrow="Bounded context" description="Registries, searches, authoritative sources, provenance, currency and reuse." />
-    <GatewayCard href="/spdtf-2/working-groups#technology" title="Property Technology" eyebrow="Bounded context" description="Platforms, workflow, integration, APIs, implementation and operational feedback." />
-    <GatewayCard href="/spdtf-2/working-groups#dbt-smart-data" title="DBT Smart Data" eyebrow="OPDA-internal scheme group" description="Participants, roles, trust, consent, authorisation, accreditation, liability and cross-sector alignment." />
-    <GatewayCard href="/spdtf-2/working-groups#interoperability" title="Interoperability Working Group" eyebrow="Peer cross-cutting group" description="The small common boundary, context map, cross-context mappings and shared exchange conventions." />
+    {WORKING_GROUPS.map((group) => (
+      <GatewayCard href={`/spdtf-2/working-groups/${group.slug}`} title={group.name} eyebrow={group.kind} description={group.scope} />
+    ))}
   </div>
 
   <h2 id="workspace">A common workspace shape</h2>
@@ -42,26 +38,16 @@ import GatewayCard from '@/components/ia/GatewayCard.astro';
     <li>coverage assessment, technical views and generated exports.</li>
   </ul>
 
-  <h2 id="finance">Finance and Banking</h2>
-  <h2 id="conveyancing">Conveyancing</h2>
-  <h2 id="estate-agency">Estate Agency</h2>
-  <h2 id="surveying">Surveying and Valuation</h2>
-  <h2 id="data-services">Property Data Services</h2>
-  <h2 id="technology">Property Technology</h2>
-  <h2 id="dbt-smart-data">DBT Smart Data scheme group</h2>
-  <p>
-    This is an OPDA-internal cross-sector scheme-design group, not a government-established
-    property scheme body. Its name and work cannot confer statutory or government-approved
-    status on SPDTF. It supplies scheme-level questions and requirements to the property
-    groups without taking ownership of their internal domain meanings.
-  </p>
-
   <h2 id="interoperability">Interoperability Working Group</h2>
   <p>
     Interoperability is a peer of the domain and scheme groups, not a child of one group.
     Representatives agree only the boundary arrangements needed for exchange: a small
     common boundary, a context map, qualified mappings, and shared identifier, provenance,
     versioning and change conventions.
+  </p>
+  <p>
+    The <a href="/spdtf-2/working-groups/dbt-smart-data">DBT Smart Data group</a> is
+    OPDA-internal, not government-established and cannot confer statutory status.
   </p>
   <p><a href="/working-groups/join">Find participation routes and joining information</a>.</p>
 </Layout>
