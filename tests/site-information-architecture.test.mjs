@@ -1,4 +1,6 @@
 import assert from 'node:assert/strict';
+import { spawnSync } from 'node:child_process';
+import { fileURLToPath } from 'node:url';
 import test from 'node:test';
 
 import {
@@ -23,6 +25,9 @@ const expectedDestinations = [
   ['governance', 'Governance', '/governance'],
   ['resources', 'Resources', '/resources'],
 ];
+
+const preservationScript = fileURLToPath(new URL('../scripts/check-ia-preservation.mjs', import.meta.url));
+const projectRoot = fileURLToPath(new URL('..', import.meta.url));
 
 test('the global information architecture has exactly the six accepted destinations', () => {
   assert.deepEqual(
@@ -91,11 +96,36 @@ test('the migration ledger preserves every audited high-risk information family'
   const paths = PRESERVATION_LEDGER.map(({ currentPath }) => currentPath).join('\n');
   for (const required of [
     '/resources/**', '/council/**', '/ontology/artefacts/**', '/data/**',
-    '/pdtf/**', 'authentication', '/ui/**',
+    '/pdtf/**', '/v2/**', 'authentication', '/ui/**',
   ]) assert.ok(paths.includes(required), `${required} is missing from the preservation ledger`);
 
   assert.ok(PRESERVATION_LEDGER.every(({ disposition }) => disposition !== 'retire'));
   assert.ok(PRESERVATION_LEDGER.every(({ consumers, verification }) => consumers.length && verification));
+  const v2 = PRESERVATION_LEDGER.find(({ currentPath }) => currentPath === '/v2/**');
+  assert.deepEqual(
+    { owner: v2.owner, preservedAt: v2.preservedAt, disposition: v2.disposition },
+    { owner: 'spdtf-2', preservedAt: '/v2/**', disposition: 'reframe-equivalent' },
+  );
+});
+
+test('preservation checker validates clean and strict CLI boundaries', () => {
+  const run = (...args) => spawnSync(process.execPath, [preservationScript, ...args], {
+    cwd: projectRoot, encoding: 'utf8',
+  });
+  const clean = run();
+  assert.equal(clean.status, 0, clean.stderr || clean.stdout);
+
+  const strictWithoutBaseline = run('--strict');
+  assert.notEqual(strictWithoutBaseline.status, 0);
+  assert.match(`${strictWithoutBaseline.stdout}${strictWithoutBaseline.stderr}`, /baseline-root/u);
+
+  const unknown = run('--unexpected');
+  assert.notEqual(unknown.status, 0);
+  assert.match(`${unknown.stdout}${unknown.stderr}`, /unknown/u);
+
+  const duplicate = run('--strict', '--strict');
+  assert.notEqual(duplicate.status, 0);
+  assert.match(`${duplicate.stdout}${duplicate.stderr}`, /duplicate/u);
 });
 
 test('reader-facing IA vocabulary rejects stale labels but exempts immutable records', () => {

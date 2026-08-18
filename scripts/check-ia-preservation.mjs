@@ -18,8 +18,45 @@ import {
 } from '../src/lib/site-ia.mjs';
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
-const baselineArg = process.argv.find((arg) => arg.startsWith('--baseline-root='));
-const BASELINE = baselineArg ? path.resolve(baselineArg.slice('--baseline-root='.length)) : null;
+
+function parseArgs(args) {
+  let strict = false;
+  let baselineRoot = null;
+  for (const arg of args) {
+    if (arg === '--strict') {
+      if (strict) throw new Error('duplicate --strict flag');
+      strict = true;
+      continue;
+    }
+    if (arg.startsWith('--baseline-root=')) {
+      if (baselineRoot) throw new Error('duplicate --baseline-root flag');
+      const value = arg.slice('--baseline-root='.length);
+      if (!value || !path.isAbsolute(value)) {
+        throw new Error('--baseline-root must contain a non-empty absolute path');
+      }
+      baselineRoot = value;
+      continue;
+    }
+    if (arg === '--baseline-root' || arg.startsWith('--baseline-root')) {
+      throw new Error('malformed --baseline-root flag; use --baseline-root=/absolute/path');
+    }
+    throw new Error(`unknown argument: ${arg}`);
+  }
+  if (strict && !baselineRoot) {
+    throw new Error('--strict requires --baseline-root=/absolute/path');
+  }
+  return { strict, baselineRoot };
+}
+
+let options;
+try {
+  options = parseArgs(process.argv.slice(2));
+} catch (error) {
+  console.error(`FAIL usage: ${error.message}`);
+  process.exit(2);
+}
+
+const BASELINE = options.baselineRoot;
 const failures = [];
 const notes = [];
 

@@ -44,9 +44,32 @@ test('aria-current follows canonical and legacy route ownership', async ({ page 
   clean();
 });
 
+test('retained V2 seed is owned by SPDTF development, not a top-level V2 destination', async ({ page }) => {
+  const clean = watchRuntime(page);
+  await visit(page, '/v2/validation');
+  await expect(page.locator('nav[aria-label="Primary"] a[aria-current="page"]'))
+    .toHaveText('SPDTF 2.0 Development');
+  expect(await page.locator('nav[aria-label="Primary"] a').allTextContents()).not.toContain('V2');
+  clean();
+});
+
 test('gateway pages expose the complete five-field status contract', async ({ page }) => {
   const clean = watchRuntime(page);
   for (const route of primary.map(({ url }) => url)) {
+    await visit(page, route);
+    const status = page.locator('[data-ia-status]').first();
+    await expect(status).toBeVisible();
+    for (const field of IA_STATUS_FIELDS) {
+      await expect(status.locator(`[data-ia-field="${field}"]`)).toHaveCount(1);
+      await expect(status.locator(`[data-ia-field="${field}"]`)).not.toBeEmpty();
+    }
+  }
+  clean();
+});
+
+test('canonical development routes expose the complete five-field status contract', async ({ page }) => {
+  const clean = watchRuntime(page);
+  for (const route of ['/spdtf-2/ontologies', '/spdtf-2/working-groups/estate-agency']) {
     await visit(page, route);
     const status = page.locator('[data-ia-status]').first();
     await expect(status).toBeVisible();
