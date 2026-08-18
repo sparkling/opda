@@ -1,5 +1,6 @@
 ---
 const pages = [
+  ['', 'Overview'],
   ['why-ontologies', 'Why ontologies'],
   ['semantic-package', 'Six-part semantic package'],
   ['bounded-contexts', 'Bounded contexts and common boundary'],
@@ -16,7 +17,7 @@ const current = Astro.url.pathname.split('/').filter(Boolean).at(-1);
   <ol>
     {pages.map(([slug, label], index) => (
       <li>
-        <a href={`/spdtf-2/ontologies/${slug}`} aria-current={current === slug ? 'page' : undefined}>
+        <a href={slug ? `/spdtf-2/ontologies/${slug}` : '/spdtf-2/ontologies'} aria-current={current === (slug || 'ontologies') ? 'page' : undefined}>
           <span>{String(index + 1).padStart(2, '0')}</span>{label}
         </a>
       </li>
@@ -25,13 +26,15 @@ const current = Astro.url.pathname.split('/').filter(Boolean).at(-1);
 </nav>
 
 <style>
-  .ia-journey { margin: 1.25rem 0 2rem; padding: 1rem 1.1rem; border: 1px solid var(--color-border, #d6d9de); border-radius: 0.35rem; background: var(--color-surface-subtle, #f5f7f8); }
-  .ia-journey .overline { margin: 0 0 0.65rem; }
-  .ia-journey ol { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 0.4rem 0.75rem; margin: 0; padding: 0; list-style: none; }
-  .ia-journey a { display: block; padding: 0.35rem 0.45rem; border-radius: 0.2rem; color: inherit; font-size: 0.88rem; text-decoration: none; }
-  .ia-journey a:hover, .ia-journey a:focus-visible, .ia-journey a[aria-current='page'] { background: var(--color-surface-raised, #fff); color: var(--color-brand, #135f75); }
-  .ia-journey a:focus-visible { outline: 3px solid var(--color-focus, #a94600); outline-offset: 2px; }
-  .ia-journey a span { display: inline-block; width: 2rem; color: var(--color-text-muted, #5b6470); font-size: 0.72rem; font-weight: 700; }
+  .ia-journey { margin: var(--space-5) 0 var(--space-7); padding: var(--space-5) var(--space-6); border: 1px solid var(--color-border); border-radius: 0; background: var(--color-surface-alt); }
+  .ia-journey .overline { margin: 0 0 var(--space-4); }
+  .ia-journey ol { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: var(--space-2) var(--space-4); margin: 0; padding: 0; list-style: none; }
+  .ia-journey a { display: block; min-block-size: 44px; padding: var(--space-3) var(--space-4); border-radius: 0; color: inherit; font: var(--text-sm) / 1.5 var(--font-sans); text-decoration: none; }
+  .ia-journey a:hover, .ia-journey a[aria-current='page'] { background: var(--color-surface-card); color: var(--color-link); }
+  .ia-journey a:focus-visible { outline: 2px solid var(--color-focus); outline-offset: 2px; box-shadow: 0 0 0 4px var(--color-focus-contrast); }
+  .ia-journey a span { display: inline-block; width: var(--space-7); color: var(--color-text-muted); font: 700 var(--text-xs) / 1.3 var(--font-mono); }
   @media (max-width: 800px) { .ia-journey ol { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
   @media (max-width: 480px) { .ia-journey ol { grid-template-columns: 1fr; } }
+  @media (prefers-reduced-motion: reduce) { .ia-journey * { transition: none !important; } }
+  @media (forced-colors: active) { .ia-journey { border-color: CanvasText; background: Canvas; } .ia-journey a:hover, .ia-journey a[aria-current='page'] { outline: 1px solid Highlight; } }
 </style>
