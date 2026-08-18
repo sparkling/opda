@@ -2,7 +2,7 @@
 #
 # Task runner for the site, the build-time triplestore/API, the ontology
 # generator, and the CI validation gates. Targets are thin wrappers over the
-# npm scripts (package.json) and the opda-gen CLI (tools/opda-gen) so the same
+# package scripts (package.json) and the opda-gen CLI (tools/opda-gen) so the same
 # commands work locally and in CI. Run `make help` for the grouped list.
 
 .DEFAULT_GOAL := help
@@ -25,8 +25,8 @@ help:	## Show this help
 
 ##@ Site (Astro website)
 .PHONY: install
-install:	## Install npm deps
-	npm install --no-fund --no-audit
+install:	## Install the CI-locked pnpm dependencies
+	pnpm install --frozen-lockfile
 
 .PHONY: dev
 dev: node_modules	## Astro dev server (auto-picks port 4330–4339)
