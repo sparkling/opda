@@ -81,7 +81,7 @@ export async function settleVisualState(page) {
     })
     .every((wrapper) => (
       !wrapper.querySelector('.diagram-loading')
-      && Boolean(wrapper.querySelector('.gd-mermaid svg, .gd-empty'))
+      && Boolean(wrapper.querySelector('.gd-mermaid svg, .gd-empty, .diagram-fallback'))
     )), undefined, { timeout: 15_000 });
 
   await page.evaluate(() => new Promise((resolve) => {

@@ -115,6 +115,26 @@ export function createMermaidView(opts: MermaidViewOpts): MermaidView {
   let didRender = false;
   let renderSeq = 0;   // latest-wins guard: a newer render() supersedes older ones
 
+  function finishDiagram(state: 'rendered' | 'empty' | 'error') {
+    wrapper.setAttribute('aria-busy', 'false');
+    wrapper.dataset.diagramState = state;
+  }
+
+  function showFallback() {
+    pre.innerHTML = '';
+    pre.classList.remove('gd-rendered');
+    pre.setAttribute('aria-hidden', 'true');
+    if (!canvas.querySelector('.diagram-fallback')) {
+      const fallback = document.createElement('p');
+      fallback.className = 'diagram-fallback';
+      fallback.setAttribute('role', 'alert');
+      fallback.textContent = 'Diagram unavailable. Try reloading the page to view it.';
+      canvas.appendChild(fallback);
+    }
+    canvas.querySelector('.diagram-loading')?.remove();
+    finishDiagram('error');
+  }
+
   function applyTransform() {
     canvas.style.transform = `translate(${panX}px,${panY}px) scale(${scale})`;
     const label = wrapper.querySelector('.diagram-zoom-label');
@@ -185,15 +205,22 @@ export function createMermaidView(opts: MermaidViewOpts): MermaidView {
       // theme win and never overlaps.
       return mermaid.render('gd-render-' + (++mermaidRenderId), src).then(({ svg }: { svg: string }) => {
         if (seq !== renderSeq) return;               // superseded mid-render — drop this SVG
+        canvas.querySelector('.diagram-fallback')?.remove();
         pre.innerHTML = svg;
+        pre.classList.add('gd-rendered');
+        pre.removeAttribute('aria-hidden');
         wrapper.querySelector('.diagram-loading')?.remove();
         didRender = true;
+        finishDiagram('rendered');
         fixErRowContrast(pre, dark);
         const renderedSvg = pre.querySelector('svg');
         if (renderedSvg instanceof SVGSVGElement) makeSvgFocusable(renderedSvg);
         initHoverHighlight();
       });
-    }).catch((e: any) => console.error('[graph-diagram] mermaid render', e));
+    }).catch((e: any) => {
+      console.error('[graph-diagram] mermaid render', e);
+      if (seq === renderSeq) showFallback();
+    });
   }
 
   function initHoverHighlight() {

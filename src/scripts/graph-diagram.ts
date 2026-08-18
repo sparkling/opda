@@ -95,8 +95,8 @@ const GD_SHELL_HTML = `
     <div class="gd-view-mermaid">
       <div class="diagram-viewport" style="cursor:grab;min-height:340px">
         <div class="diagram-canvas">
-          <p class="diagram-loading">Loading diagram…</p>
-          <pre class="gd-mermaid"></pre>
+          <p class="diagram-loading" role="status" aria-live="polite">Loading diagram…</p>
+          <pre class="gd-mermaid" aria-hidden="true"></pre>
         </div>
       </div>
     </div>
@@ -140,6 +140,7 @@ function setupWrapper(wrapper: HTMLElement) {
   const pre = wrapper.querySelector('.gd-mermaid') as HTMLElement | null;
   if (!viewport || !canvas || !pre) return;
   const captionId = ensureAccessibleFrame(wrapper);
+  wrapper.setAttribute('aria-busy', 'true');
 
   // Source: the `source` prop (config.source), else the inline slot the
   // component rendered into the <pre> (reconstructed preserving <br/>).
@@ -223,7 +224,14 @@ function setupWrapper(wrapper: HTMLElement) {
       if (fontsReady) fontsReady.then(render, render);
       else render();
     }
-    else { wrapper.querySelector('.diagram-loading')?.remove(); pre.innerHTML = '<span class="gd-empty">No diagram source.</span>'; }
+    else {
+      wrapper.querySelector('.diagram-loading')?.remove();
+      pre.innerHTML = '<span class="gd-empty">No diagram source.</span>';
+      pre.classList.add('gd-rendered');
+      pre.removeAttribute('aria-hidden');
+      wrapper.setAttribute('aria-busy', 'false');
+      wrapper.dataset.diagramState = 'empty';
+    }
   }
 
   // Lazy boot when scrolled near; immediate check + scroll/resize fallback so it

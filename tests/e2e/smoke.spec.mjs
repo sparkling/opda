@@ -101,6 +101,23 @@ test('representative diagrams and data tables render', async ({ page }) => {
   clean();
 });
 
+test('Mermaid source stays hidden while an off-screen diagram loads', async ({ page }) => {
+  const clean = watchRuntime(page);
+  await page.setViewportSize({ width: 390, height: 844 });
+  await visit(page, '/strategy/strategy-overview?theme=dark');
+  const loading = page.locator('.graph-diagram-wrapper').filter({ has: page.locator('.diagram-loading') }).first();
+  await expect(loading.locator('.diagram-loading')).toHaveAttribute('role', 'status');
+  await expect(loading.locator('.diagram-loading')).toHaveAttribute('aria-live', 'polite');
+  await expect(loading.locator('.gd-mermaid')).toHaveAttribute('aria-hidden', 'true');
+  const sourceVisibility = await loading.locator('.gd-mermaid').evaluate((element) => {
+    const style = getComputedStyle(element);
+    return { opacity: style.opacity, clipPath: style.clipPath };
+  });
+  expect(sourceVisibility.opacity).toBe('0');
+  expect(sourceVisibility.clipPath).toContain('50%');
+  clean();
+});
+
 test('mobile shell has no body overflow', async ({ page }) => {
   const clean = watchRuntime(page);
   await page.setViewportSize({ width: 320, height: 900 });

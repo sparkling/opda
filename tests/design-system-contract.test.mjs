@@ -171,6 +171,23 @@ test('live implementation consumes semantic tokens rather than legacy aliases', 
   assert.doesNotMatch(dot, /fontname="Inter/u);
 });
 
+test('Mermaid loading state hides raw source and exposes labelled outcomes', async () => {
+  const component = await readFile(file('src/components/GraphDiagram.astro'), 'utf8');
+  const shell = await readFile(file('src/scripts/graph-diagram.ts'), 'utf8');
+  const renderer = await readFile(file('src/scripts/graph-diagram-mermaid.ts'), 'utf8');
+  const styles = await readFile(file('src/styles/graph-diagram.css'), 'utf8');
+
+  assert.match(component, /class="diagram-loading" role="status" aria-live="polite"/u);
+  assert.match(component, /class="gd-mermaid" aria-hidden="true"/u);
+  assert.match(shell, /class="diagram-loading" role="status" aria-live="polite"/u);
+  assert.match(shell, /class="gd-mermaid" aria-hidden="true"/u);
+  assert.match(styles, /\.graph-diagram-wrapper \.gd-mermaid:not\(\.gd-rendered\)[\s\S]*?opacity:\s*0;/u);
+  assert.match(styles, /\.graph-diagram-wrapper \.gd-mermaid:not\(\.gd-rendered\)[\s\S]*?clip-path:\s*inset\(50%\);/u);
+  assert.match(renderer, /pre\.classList\.add\('gd-rendered'\)/u);
+  assert.match(renderer, /className = 'diagram-fallback'/u);
+  assert.match(renderer, /setAttribute\('role', 'alert'\)/u);
+});
+
 test('the design facade versions every imported module from one graph hash', async () => {
   const source = await readFile(file('public/ui/design-system.css'), 'utf8');
   const imports = [...source.matchAll(/@import url\("[^"?]+\.css\?v=([a-f0-9]{12})"\);/gu)];
