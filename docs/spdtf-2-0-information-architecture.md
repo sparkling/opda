@@ -1,24 +1,24 @@
-# Proposed SPDTF Phase 2 information architecture
+# Proposed SPDTF 2.0 information architecture
 
-Status: **proposed for review**  
-Date: 2026-08-18  
-Decision record: [ADR-0074](./adr/ADR-0074-organise-site-around-spdtf-phase-2-and-phase-1-baseline.md)  
-Review artefact: [HTML presentation](./spdtf-phase-2-information-architecture.html)
+Status: **proposed for review**<br>
+Date: 2026-08-18<br>
+Decision record: [ADR-0074](./adr/ADR-0074-organise-site-around-spdtf-2-0-and-pdtf-1-0.md)<br>
+Review artefact: [HTML presentation](./spdtf-2-0-information-architecture.html)
 
 ## Executive decision
 
 Reorganise the documentation around six global destinations:
 
 1. **Programme**
-2. **Develop SPDTF** — Phase 2
-3. **Working groups** — a direct shortcut into the Phase 2 workspace
-4. **Published baseline** — Phase 1
+2. **Develop SPDTF 2.0**
+3. **Working groups** — a direct shortcut into the SPDTF 2.0 development workspace
+4. **PDTF 1.0**
 5. **Governance**
 6. **Resources**
 
-This is an asymmetric structure. The two phases separate bodies of work, while
-governance, participation and source resources remain shared services. It avoids two
-mirrored sites with competing definitions of authority.
+This is an asymmetric continuation structure. It distinguishes PDTF 1.0 from SPDTF
+2.0 work in development, while governance, participation and source resources remain
+shared services. It avoids mirrored sites with competing definitions of authority.
 
 The proposal changes no live navigation or route. It defines the information
 architecture and the gates that a later coherent implementation must pass.
@@ -27,39 +27,42 @@ architecture and the gates that a later coherent implementation must pass.
 
 - **SPDTF** means **Smart Property Data Trust Framework**. It is the current name of
   the programme and standardisation process.
-- **PDTF** is deprecated in current-facing prose. Keep it only where historically or
-  technically exact: original records, quotations, package names, legacy URLs and
-  stable `/pdtf/**` identifiers.
-- **Phase 1 — Published baseline** is the existing schema-led implementation and the
-  semantic corpus derived from it. No replacement has been authorised. Support
-  status is not defined by this publication.
-- **Phase 2 — Develop SPDTF** is the current, domain-led, evidence-up modelling
-  process. “Current work” does not mean “current standard”, “approved model” or
-  “replacement implementation”.
-- **Transition evidence** is material prepared between the methods. The existing
-  `/v2` Property Pack model is a machine-generated seed: structured and reviewable,
-  but non-normative and not reviewed by a working group.
+- **PDTF** without a version is deprecated as the name for current work. Keep it only
+  where historically or technically exact: original records, quotations, package
+  names, legacy URLs and stable `/pdtf/**` identifiers.
+- **PDTF 1.0** is the existing schema-led implementation and the semantic corpus
+  derived from it. It is the published implementation against which continuity is
+  assessed. No replacement has been authorised. Support status is not defined by
+  this publication.
+- **SPDTF 2.0 development** is the continuation of the programme through a
+  domain-led, evidence-up modelling process. “2.0” is a development-generation
+  label, not a release, ratification or approval claim. It does not mean “current
+  standard”, “approved model” or “replacement implementation”.
+- **SPDTF 2.0 development inputs** are material prepared before or during the change
+  in method. The existing `/v2` Property Pack model is a machine-generated seed:
+  structured and reviewable, but non-normative and not reviewed by a working group.
 
 ## Why the structure must change
 
 The current header presents thirteen peer sections. It mixes programme context,
-governance, policy, Phase 1 implementation, a machine-generated seed and archival
-resources. A reader cannot reliably infer which material is operative, proposed,
-historical or under review.
+governance, policy, the published implementation, a machine-generated seed and
+historical resources. A reader cannot reliably infer which material is operative,
+proposed, historical or under review.
 
-The programme has two materially different modelling phases:
+The programme is continuing from one materially different modelling approach to
+another:
 
-| | Phase 1 — published baseline | Phase 2 — develop SPDTF |
+| Dimension | PDTF 1.0 | SPDTF 2.0 development |
 |---|---|---|
-| Starting point | JSON Schemas, overlays, dictionaries, glossary, documents and implementation material | Participant evidence, recognised sources, domain questions and attributed Phase 1 evidence |
+| Starting point | JSON Schemas, overlays, dictionaries, glossary, documents and implementation material | Participant evidence, recognised sources, domain questions and attributed PDTF 1.0 evidence |
 | Method | Schema-led; ontology and related views derived from the existing corpus | Domain-led, evidence-up ontology modelling in bounded contexts |
-| Authority | Published implementation baseline; no replacement authorised | Human working groups own domain meaning; governance controls later promotion |
+| Authority | PDTF 1.0 implementation; no replacement authorised | Human working groups own domain meaning; governance controls later promotion |
 | Primary outputs | Schemas, overlays, derived ontology, mappings, model views, implementation and adoption evidence | Reviewable model candidates, evidence lineage, questions, dispositions and governed downstream projections |
 
-Phase 1 is not discarded. Its dictionary, glossary, documentation, ontology and
+PDTF 1.0 is not discarded. Its dictionary, glossary, documentation, ontology and
 mappings are attributed semantic evidence. Its JSON Schemas are especially useful
 for compatibility, constraints, coverage and migration, but should not determine
-Phase 2 identities or relationships merely because their data has already been
+SPDTF 2.0 identities or relationships merely because their data has already been
 encoded in a tree structure.
 
 ## Evidence for this proposal
@@ -81,6 +84,44 @@ The proposal is grounded in:
 - the accepted council protocol in ADR-0067 and the project’s current OPDA design
   contract.
 
+## How DBT Smart Data fits
+
+DBT Smart Data is a UK government programme for secure, trusted data sharing across
+the economy. Part 1 of the [Data (Use and Access) Act 2025](https://www.legislation.gov.uk/ukpga/2025/18/notes/division/4/index.htm)
+provides regulation-making powers for schemes that can give customers or authorised
+third parties access to customer and business data. [Smart Data 2035](https://www.gov.uk/government/publications/smart-data-strategy)
+sets the cross-economy direction.
+
+Property is a prospective scheme area, not a designated operating scheme. DBT’s
+[8 July 2026 call for evidence](https://www.gov.uk/government/calls-for-evidence/smart-data-multi-sector-call-for-evidence)
+says property use cases still require feasibility analysis, governance design, legal
+assessment and formal consultation before regulatory change. The
+[Home Buying and Selling Reform Roadmap](https://www.gov.uk/government/consultations/home-buying-and-selling-reform/outcome/home-buying-and-selling-reform-roadmap)
+likewise commits government to evidence gathering and a later property-scheme
+consultation. It recognises OPDA’s trust-framework testing as market activity and
+says government will work with industry on accreditation criteria for data standards;
+it does not designate OPDA, PDTF 1.0 or SPDTF 2.0 as the statutory scheme or its
+approved standard.
+
+The site must therefore use this relationship:
+
+- **DBT Smart Data** is external government policy, statutory enablement and scheme
+  design context.
+- **SPDTF** is an OPDA-led standards programme that contributes evidence and tested
+  approaches to prospective property Smart Data work.
+- **Programme** owns the canonical UK Smart Data context page; **Governance** owns
+  the external-constraint view; **Resources** holds the official sources; and
+  **Develop SPDTF 2.0** links the relevant evidence into modelling work.
+- The [Smart Data Council](https://www.gov.uk/government/groups/smart-data-council)
+  is advisory. OPDA representation is a participation channel, not government
+  authority for SPDTF.
+- The accepted OPDA working-group roster includes a **DBT Smart Data cross-sector
+  scheme-design group**. It is an OPDA-internal group and modelling lens; its name
+  and work do not make it a government-established property-scheme body.
+
+Safe summary: **SPDTF contributes to the UK’s prospective property Smart Data work;
+it is not an approved statutory property Smart Data scheme.**
+
 ## Audiences and tasks
 
 | Audience | Primary task | First destination |
@@ -88,7 +129,7 @@ The proposal is grounded in:
 | Working-group participant | Understand scope, contribute evidence, review meaning and see dispositions | Working groups |
 | Domain steward or facilitator | Manage evidence, questions, candidate versions and review records | Develop SPDTF → Working groups |
 | Interoperability representative | Compare context meanings and agree boundaries or mappings | Develop SPDTF → Interoperability |
-| Current implementer | Find the published schemas, validation and implementation guidance | Published baseline → Implementation |
+| Current implementer | Find the published schemas, validation and implementation guidance | PDTF 1.0 → Implementation |
 | Governance reviewer | Determine authority, maturity, unresolved issues and decision history | Governance |
 | Researcher or auditor | Trace a claim from source through proposal, review and decision | Resources plus the record’s evidence panel |
 
@@ -96,44 +137,46 @@ The home page should expose six task shortcuts without adding global destination
 
 - review developing SPDTF work;
 - join or visit a working group;
-- implement the published baseline;
+- implement PDTF 1.0;
 - check authority and maturity;
 - find a term, source or decision;
-- understand the Phase 1 to Phase 2 transition.
+- understand the continuation from PDTF 1.0 into SPDTF 2.0.
 
 ## Options considered
 
-### Option A — mirrored phase sites
+### Option A — mirrored generations
 
-Create parallel Phase 1 and Phase 2 trees, each with modelling, governance,
+Create parallel PDTF 1.0 and SPDTF 2.0 trees, each with modelling, governance,
 implementation and resources.
 
-Rejected because it duplicates authority and lifecycle definitions, makes Phase 1
-look retired, and can make Phase 2 machine proposals look like the current standard.
+Rejected because it duplicates authority and lifecycle definitions, makes PDTF 1.0
+look retired, and can make developing machine proposals look like the current
+standard.
 
 ### Option B — keep the thirteen-section header
 
-Retain the present structure and add phase banners to individual pages.
+Retain the present structure and add work-area banners to individual pages.
 
 Rejected because banners cannot repair the underlying task and authority mixture.
 It would also leave “V2” as a misleading global concept.
 
 ### Option C — asymmetric task-and-authority structure
 
-Separate the two bodies of work, give working-group review a direct task path, and
-share Programme, Governance and Resources across the phases.
+Distinguish PDTF 1.0 from work in development, give working-group review a direct
+task path, and share Programme, Governance and Resources across the continuing
+programme.
 
 Chosen because it keeps implementation continuity visible while making participant
-review the centre of Phase 2.
+review the centre of SPDTF 2.0 development.
 
 ## Global navigation contract
 
 | Position | Label | Purpose | Canonical landing |
 |---:|---|---|---|
-| 1 | Programme | Purpose, transition, roadmap and policy context | `/programme` |
-| 2 | Develop SPDTF | Current Phase 2 method, work products and interoperability | `/phase-2` |
-| 3 | Working groups | Task shortcut to the single Phase 2 working-group family | `/phase-2/working-groups` |
-| 4 | Published baseline | Phase 1 implementation and derived semantic corpus | `/phase-1` |
+| 1 | Programme | Purpose, continuation, roadmap and policy context | `/programme` |
+| 2 | Develop SPDTF 2.0 | Current development method, work products and interoperability | `/spdtf-2` |
+| 3 | Working groups | Task shortcut to the single SPDTF 2.0 working-group family | `/spdtf-2/working-groups` |
+| 4 | PDTF 1.0 | Published implementation and derived semantic corpus | `/pdtf-1` |
 | 5 | Governance | One authority, status, lifecycle and decision system | `/governance` |
 | 6 | Resources | Source registry, library, glossary and historical records | `/resources` |
 
@@ -151,25 +194,27 @@ Home /
 ├── Programme /programme
 │   ├── Purpose and scope
 │   ├── Why the method changed
-│   ├── Phase 1 → Phase 2 relationship
+│   ├── PDTF 1.0 → SPDTF 2.0 relationship
 │   ├── Roadmap and current programme status
-│   ├── UK policy, legislation and DBT Smart Data context
+│   ├── UK Smart Data policy, DUAA and prospective property-scheme context
 │   ├── Organisations and forums
 │   ├── Naming and identifier policy
-│   └── Transition evidence
+│   └── SPDTF 2.0 development inputs
 │       └── Property Pack seed — machine-generated, non-normative
-├── Develop SPDTF /phase-2
-│   ├── Overview: what Phase 2 is and is not
+├── Develop SPDTF 2.0 /spdtf-2
+│   ├── Overview: what SPDTF 2.0 development is and is not
 │   ├── Evidence-up modelling method
 │   ├── Inputs to the first ontology draft
-│   ├── Working groups /phase-2/working-groups
+│   │   └── Government Smart Data evidence and use-case constraints
+│   ├── Working groups /spdtf-2/working-groups
 │   │   ├── Finance and Banking
 │   │   ├── Conveyancing
 │   │   ├── Estate Agency
 │   │   ├── Surveying and Valuation
 │   │   ├── Property Data Services
 │   │   ├── Property Technology
-│   │   └── DBT Smart Data scheme group [status to be confirmed]
+│   │   └── DBT Smart Data scheme-design group
+│   │       └── OPDA-internal; no government status
 │   ├── Interoperability working group
 │   │   ├── Remit and membership
 │   │   ├── Context map
@@ -180,11 +225,11 @@ Home /
 │   ├── Candidate register
 │   ├── Open questions and changes
 │   └── Generated outputs and validation evidence
-├── Published baseline /phase-1
-│   ├── Overview, limitations and transition
-│   ├── Modelling — baseline-era material only
+├── PDTF 1.0 /pdtf-1
+│   ├── Overview, limitations and continuation
+│   ├── Modelling — PDTF 1.0 material only
 │   ├── Model
-│   ├── Ontology — derived Phase 1 ontology
+│   ├── Ontology — PDTF 1.0-derived ontology
 │   ├── Mapping
 │   ├── Schema and overlays
 │   ├── Implementation
@@ -197,8 +242,9 @@ Home /
 │   ├── Change, versioning and deprecation
 │   ├── Assurance, conformance and validation
 │   ├── Data stewardship, security, privacy and risk
+│   ├── External statutory and prospective-scheme constraints
 │   ├── Decisions, issues and feedback disposition
-│   └── ADR and ODR registers, faceted by phase
+│   └── ADR and ODR registers, faceted by work area
 └── Resources /resources
     ├── Source registry
     ├── Participant resources
@@ -206,12 +252,17 @@ Home /
     ├── Glossary and terminology
     ├── Meetings, recordings and transcripts
     ├── External standards, policy and research
+    ├── Official Smart Data sources
     ├── Historical snapshots
     └── Machine-readable artefact manifests
 ```
 
-Interoperability is a peer of the domain working groups, not a child of one group.
-Its Phase 2 work lives in one place; Governance defines its decision rights.
+The DBT Smart Data scheme-design group is the accepted OPDA cross-sector working
+group for participants, roles, trust, consent, authorisation, accreditation,
+liability, data-sharing obligations and cross-sector alignment. It is not a
+government-established group and cannot confer statutory status. Interoperability
+is a peer of the domain working groups, not a child of one group. Its SPDTF 2.0 work
+lives in one place; Governance defines its decision rights.
 
 ## Standard working-group workspace
 
@@ -241,16 +292,16 @@ does not confer membership, consensus or standards authority.
 |---|---|---|
 | Strategy | Programme | Use SPDTF in current prose; retain URLs initially. |
 | Governance | Governance | Keep one cross-programme authority tree. |
-| DBT Smart Data | Programme; cross-link a confirmed scheme group | Separate policy context from group activity. |
+| DBT Smart Data | Programme; cross-link Governance, Resources and the OPDA-internal scheme-design group | Treat government policy as external context. Do not imply that the internal group is a designated property scheme body or that SPDTF is government-approved. |
 | Engagement | Working groups for live actions; Resources for records | Keep DPMSG and OPDA groups explicitly distinct. |
-| Modelling | Published baseline for baseline-era content | Phase 2 ADR/ODR records are faceted into Develop SPDTF or Governance. |
-| Model | Published baseline | Label every tier as a Phase 1 view. |
-| V2 | Programme → Transition evidence; linked from Phase 2 inputs | Rename in reader-facing navigation; preserve `/v2/**`. |
-| Ontology | Published baseline | Describe as the derived Phase 1 ontology, not the unqualified SPDTF ontology. |
-| Mapping | Published baseline | Retain as evidence, traceability and migration support. |
-| Schema | Published baseline | Keep directly findable for implementers. |
-| Implementation | Published baseline | Reachable within two interactions from every primary landing. |
-| Adoption | Published baseline | Existing implementation evidence, not Phase 2 adoption. |
+| Modelling | PDTF 1.0 material | SPDTF 2.0 ADR/ODR records are faceted into Develop SPDTF 2.0 or Governance. |
+| Model | PDTF 1.0 | Label every tier as a PDTF 1.0 view. |
+| V2 | Programme → SPDTF 2.0 development input | Rename in reader-facing navigation; preserve `/v2/**` and link it from SPDTF 2.0 inputs. |
+| Ontology | PDTF 1.0 | Describe as the PDTF 1.0-derived ontology, not the unqualified SPDTF ontology. |
+| Mapping | PDTF 1.0 | Retain as evidence, traceability and migration support. |
+| Schema | PDTF 1.0 | Keep directly findable for implementers. |
+| Implementation | PDTF 1.0 | Reachable within two interactions from every primary landing. |
+| Adoption | PDTF 1.0 | Existing implementation evidence, not evidence that SPDTF 2.0 is adopted. |
 | Library | Resources | Separate source records from internal working material by provenance. |
 
 ### Standalone and generated surfaces
@@ -258,30 +309,30 @@ does not confer membership, consensus or standards authority.
 | Current surface | Proposed treatment |
 |---|---|
 | `/` and `/home` | One future task gateway; retain both until a separate canonical/redirect decision. |
-| `/glossary` | Resources utility with phase and source facets. |
+| `/glossary` | Resources utility with work-area and source facets. |
 | `/design-system` | Utility/footer link, outside standards authority. |
 | `/working-groups/join/**` | Working groups participation path. |
 | `/presentation/working-group-kickoff` | Working-group orientation resource, not evidence or a decision. |
-| `/modelling/property-pack` | Property Pack source-scope view; link to transition evidence. |
-| `/modelling/adr/**`, `/modelling/odr/**` | Preserve URLs; assign navigation/search ownership per record phase. |
-| `/pdtf/**` and `.ttl` | Preserve stable identifiers and label their Phase 1/historical naming context. |
-| `/ontology/tools/**` | Preserve as Phase 1 technical renderings. |
+| `/modelling/property-pack` | Property Pack source-scope view; link to its SPDTF 2.0 development-input context. |
+| `/modelling/adr/**`, `/modelling/odr/**` | Preserve URLs; assign navigation/search ownership per record work area. |
+| `/pdtf/**` and `.ttl` | Preserve stable identifiers and label their PDTF 1.0 or historical naming context. |
+| `/ontology/tools/**` | Preserve as PDTF 1.0 technical renderings. |
 | Generated model, schema, mapping and ontology families | Apply owner/status once per generator, not by manual page moves. |
 | `/resource`, data files, redirects and 404 | Preserve as utilities; include in the migration ledger. |
 
 ## The V2/Property Pack seed
 
-Retire “V2” as a reader-facing information-architecture label. A version number
-cannot express phase, authority or maturity.
+Retire “V2” as a reader-facing information-architecture label. That technical path
+name does not express authority, maturity or its relationship to SPDTF 2.0.
 
 Use this full statement on the current corpus:
 
-> **Transition evidence · Machine-generated Property Pack seed · Non-normative ·
-> No working-group review recorded**
+> **SPDTF 2.0 development input · Machine-generated Property Pack pre-draft ·
+> Non-normative · No working-group review or approval recorded**
 
 The seed is more than raw evidence: it is a structured, immutable and reviewable
 pre-draft artefact. It may inform the first evidence-up work orders, but it must not
-be called the Phase 2 ontology, a working-group candidate, an approved SPDTF model
+be called the SPDTF 2.0 ontology, a working-group candidate, an approved SPDTF model
 or a replacement contract.
 
 Keep `/v2/**` stable. Add contextual and forward links before considering any
@@ -289,13 +340,13 @@ canonical move.
 
 ## Candidate-review page contract
 
-Every substantive Phase 2 page should expose, in this order:
+Every substantive SPDTF 2.0 development page should expose, in this order:
 
 1. **Purpose and non-claim** — what is being reviewed and what authority it lacks.
-2. **Five-field status line** — phase, authority, maturity, version and provenance.
+2. **Five-field status line** — work area, authority, maturity, version and provenance.
 3. **Plain-language model** — definitions, examples, relationships and diagram.
 4. **Changes** — what changed since the previous immutable cut and why.
-5. **Evidence** — participant, external, Phase 1 and machine contributions separated.
+5. **Evidence** — participant, external, PDTF 1.0 and machine contributions separated.
 6. **Open questions** — affected terms, evidence needed and decision owner.
 7. **Review action** — how to challenge, contribute or confirm the content.
 8. **Feedback disposition** — accepted, needs evidence, deferred or not accepted,
@@ -313,11 +364,11 @@ One versioned registry owned by Governance supplies five independent fields:
 
 | Field | Examples | Question answered |
 |---|---|---|
-| Phase | Phase 1; transition; Phase 2; cross-programme | Which body of work? |
-| Authority | Published baseline; non-normative; governed release | What may a reader rely on? |
+| Work area | PDTF 1.0; SPDTF 2.0 development input; SPDTF 2.0 development; cross-programme | Which body of work? |
+| Authority | Published implementation; non-normative; governed release | What may a reader rely on? |
 | Maturity | Evidence record; machine seed; under review; first working-group draft | What review has occurred? |
-| Version | Baseline release; candidate identifier; immutable cut | Which exact version? |
-| Provenance | Participant-supplied; observed source; derived from Phase 1; machine-generated; human-reviewed | Where did it come from? |
+| Version | PDTF 1.0 release; candidate identifier; immutable cut | Which exact version? |
+| Provenance | Participant-supplied; observed source; derived from PDTF 1.0; machine-generated; human-reviewed | Where did it come from? |
 
 The vocabulary ceiling is **first working-group draft — non-normative** until a
 separate accepted governance decision defines later promotion states. ADR-0068 is
@@ -340,7 +391,7 @@ moving thousands of generated pages.
 2. **Classify every entry.** Every authored route, generated family, bundled artefact,
    utility and alias receives: `keep`, `reframe`, `redirect` or `retire`; canonical
    content owner from the six-section taxonomy; accountable governance body where one
-   exists; five-field status source; search facet; and cross-phase relationship.
+   exists; five-field status source; search facet; and cross-work-area relationship.
 3. **Add context before movement.** Introduce landing pages, status strips,
    breadcrumbs, search facets and cross-links while existing URLs continue to work.
 4. **Change global navigation coherently.** Do not mix old and new authority labels
@@ -359,14 +410,14 @@ moving thousands of generated pages.
 - Do not duplicate content under new paths to make the hierarchy look symmetrical.
 - Search for “PDTF” must find relevant SPDTF material while labelling historical
   results.
-- A Phase 1 to Phase 2 link must state whether the relationship is evidence,
+- A PDTF 1.0 to SPDTF 2.0 link must state whether the relationship is evidence,
   corroboration, compatibility, comparison, projection or supersession.
 
 ## Implementation sequence for a later decision
 
 1. Create the canonical taxonomy, status registry and migration manifest schema.
 2. Add the new landing pages and task paths without moving existing content.
-3. Apply inherited phase/status metadata to every route-family generator.
+3. Apply inherited work-area/status metadata to every route-family generator.
 4. Build one standard working-group workspace and its review records.
 5. Reframe the Property Pack seed and add forward links.
 6. Replace the global navigation, breadcrumbs, search facets and home tasks as one
@@ -381,7 +432,7 @@ This proposal authorises none of those implementation changes by itself.
 The later implementation is not complete unless all of these pass:
 
 - Every entry in the current-site inventory has an explicit migration disposition.
-- Every generated page inherits phase, authority, maturity, version and provenance.
+- Every generated page inherits work area, authority, maturity, version and provenance.
 - A participant can reach their group, evidence, questions and review action without
   knowing RDF vocabulary.
 - A current implementer can reach schema and validation guidance within two
@@ -389,9 +440,10 @@ The later implementation is not complete unless all of these pass:
 - A governance reviewer can identify who may decide and whether a decision occurred.
 - Any deep-linked existing route and fragment still resolves or has a tested,
   semantically equivalent redirect.
-- Search results expose phase and authority and treat PDTF as a historical alias.
+- Search results expose work area and authority and treat PDTF as a historical alias.
 - No page equates technical validation with semantic approval.
-- Interoperability remains a peer of domain groups and has one canonical Phase 2 home.
+- Interoperability remains a peer of domain groups and has one canonical home in
+  SPDTF 2.0 development.
 - The whole release passes the project’s route crawl, accessibility, responsive,
   keyboard, visual-regression, unit and build gates.
 
@@ -408,32 +460,32 @@ cross-examination.
 | Devil’s Advocate | OpenAI `gpt-5.6-sol` | xhigh | Hard-fail conditions and scored adversarial review |
 | Fable experience authority | Anthropic `claude-fable-5` | max for independent prior; high/medium for bounded review | Working-group surface, page patterns, usability and continuity challenge |
 
-The first synthesis scored 83/100 because it called Phase 1 an archive and assigned
-the seed too strongly to Phase 2. The corrected synthesis scored 98/100 with no hard
-failures from the Devil’s Advocate. Fable then required three mechanical corrections:
-one canonical working-group family, phase-aware decision-record filing, and a complete
-inventory-bound migration ledger. Those corrections are part of this proposal, and
-Fable’s regrade accepted it at 98/100 with no hard failure.
+The first synthesis scored 83/100 because it treated PDTF 1.0 as an archive and
+assigned the seed too strongly to the new work. The corrected synthesis
+scored 98/100 with no hard failures from the Devil’s Advocate. Fable then required
+three mechanical corrections: one canonical working-group family, work-area-aware
+decision-record filing, and a complete inventory-bound migration ledger. Those
+corrections are part of this proposal, and Fable’s regrade accepted it at 98/100 with
+no hard failure.
 
 ### Held dissent
 
-- Fable would place the published baseline before Develop SPDTF in the navigation
+- Fable would place PDTF 1.0 before Develop SPDTF 2.0 in the navigation
   because implementation is the majority task today. The chosen order is
   programme-first; task testing must validate it before implementation.
 - The information architect prefers describing the seed as a structured pre-draft
-  candidate rather than “evidence” alone. The full label therefore says transition
-  evidence and machine-generated seed, and the body records its structured nature.
+  candidate rather than “evidence” alone. The full label therefore says SPDTF 2.0
+  development input and machine-generated pre-draft, and the body records its
+  structured nature.
 - “Working groups” must remain visibly and technically a shortcut into Develop
-  SPDTF, not become a second owner.
+  SPDTF 2.0, not become a second owner.
 
 ## Unresolved governance decisions
 
-1. Whether Phase 1 receives a defined support period during migration.
+1. Whether PDTF 1.0 receives a defined support period during migration.
 2. The future SPDTF IRI/namespace policy and relationship to `/pdtf/**`.
 3. Promotion states above first working-group draft and their decision thresholds.
-4. Whether DBT Smart Data is currently programme context, an active scheme group, or
-   both with distinct owners.
-5. Consent, access and confidentiality rules for participant evidence and discussion.
-6. Whether `/` and `/home` should eventually become one canonical landing.
-7. The discussion system, moderation policy and durable feedback-disposition record.
-8. Whether navigation ordering should favour current implementers or Phase 2 work.
+4. Consent, access and confidentiality rules for participant evidence and discussion.
+5. Whether `/` and `/home` should eventually become one canonical landing.
+6. The discussion system, moderation policy and durable feedback-disposition record.
+7. Whether navigation ordering should favour current implementers or SPDTF 2.0 work.

@@ -58,7 +58,7 @@ with the next sequential number and canonical sections.
 
 ## July 2026 modelling-strategy sequence
 
-These linked proposed records capture the current strategy work while the public
+These linked decision records capture the current strategy work while the public
 modelling website remains unchanged:
 
 | # | Title | Status |
@@ -89,7 +89,7 @@ modelling website remains unchanged:
 | # | Title | Status |
 |---|---|---|
 | [ADR-0073](./ADR-0073-adopt-opda-brand-and-replace-the-website-design-system.md) | Adopt the OPDA brand and replace the website design system | implemented |
-| [ADR-0074](./ADR-0074-organise-site-around-spdtf-phase-2-and-phase-1-baseline.md) | Organise the site around SPDTF Phase 2 and the Phase 1 published baseline | proposed |
+| [ADR-0074](./ADR-0074-organise-site-around-spdtf-2-0-and-pdtf-1-0.md) | Organise the site around SPDTF 2.0 and PDTF 1.0 | proposed |
 
 ## Authoring a new ADR
 
