@@ -37,6 +37,19 @@ test('forced colours preserve visible focus and labelled controls', async ({ pag
   clean();
 });
 
+test('canonical IA tables and group pages reflow at 320 CSS px', async ({ page }) => {
+  const clean = watchRuntime(page);
+  await page.setViewportSize({ width: 320, height: 900 });
+  for (const path of [
+    '/spdtf-2/ontologies/standards',
+    '/spdtf-2/working-groups/estate-agency',
+  ]) {
+    await visit(page, path);
+    await assertNoBodyOverflow(page);
+  }
+  clean();
+});
+
 test('reduced motion disables non-essential motion', async ({ page }) => {
   const clean = watchRuntime(page);
   await page.emulateMedia({ reducedMotion: 'reduce' });

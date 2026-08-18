@@ -3,6 +3,9 @@ import { spawnSync } from 'node:child_process';
 import { fileURLToPath } from 'node:url';
 import test from 'node:test';
 
+import { SECTIONS } from '../src/lib/site.ts';
+import { comparisonDimensions } from '../src/lib/model-comparison.mjs';
+
 import {
   AUTHORITY_BY_DESTINATION,
   DESTINATION_SHORTCUTS,
@@ -132,4 +135,7 @@ test('reader-facing IA vocabulary rejects stale labels but exempts immutable rec
   assert.equal(findForbiddenIaLabels('Develop SPDTF · Property Pack V2').length, 2);
   assert.deepEqual(findForbiddenIaLabels('Published baseline from Phase 1/2', { historical: true }), []);
   assert.deepEqual(findForbiddenIaLabels('SPDTF 2.0 development input · machine-generated pre-draft'), []);
+  assert.equal(SECTIONS.v2.title, 'SPDTF 2.0 development input');
+  assert.equal(SECTIONS.v2.groups[0].items[1].title, 'PDTF 1.0 and Property Pack seed compared');
+  assert.deepEqual(findForbiddenIaLabels(JSON.stringify(comparisonDimensions)), []);
 });

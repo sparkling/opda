@@ -199,7 +199,7 @@ export const comparisonDimensions = Object.freeze([
   {
     id: 'authority-status',
     label: 'Authority and status',
-    v1: 'Current published baseline and canonical reference for its corpus, while the site still marks the model draft and under review.',
+    v1: 'Published PDTF 1.0 implementation and canonical reference for its corpus, while the site still marks the derived model draft and under review.',
     v2: 'Public review candidate: 0.1.0-draft, machine-proposed and non-normative. Human review and recorded disposition remain required.',
     implication: 'Publication makes V2 reviewable; it does not approve it or replace V1.',
     evidence: [evidence.current, evidence.v2Overview, evidence.v2Validation],

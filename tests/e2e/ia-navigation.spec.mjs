@@ -20,6 +20,15 @@ test('primary navigation exposes exactly six ordered destinations', async ({ pag
   clean();
 });
 
+test('public entry stays abbreviated while the knowledge home carries six paths', async ({ page }) => {
+  const clean = watchRuntime(page);
+  await visit(page, '/');
+  await expect(page.locator('.public-overview article')).toHaveCount(4);
+  await visit(page, '/home');
+  await expect(page.locator('.home-section-card')).toHaveCount(6);
+  clean();
+});
+
 test('aria-current follows canonical and legacy route ownership', async ({ page }) => {
   const clean = watchRuntime(page);
   const cases = [

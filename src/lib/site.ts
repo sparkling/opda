@@ -300,13 +300,13 @@ export const SECTIONS: Record<string, Section> = {
 
   v2: {
     key: 'v2',
-    title: 'V2',
+    title: 'SPDTF 2.0 development input',
     summary:
       'The machine-proposed Property Pack ontology candidate: contextual boundaries, complete model atlas, resource reference, data dictionary, vocabularies, SHACL constraints, source coverage and technical assurance.',
     groups: [
       { heading: 'Overview', items: [
         { url: '/v2', title: 'Candidate overview' },
-        { url: '/v2/comparison', title: 'V1 and V2 compared' },
+        { url: '/v2/comparison', title: 'PDTF 1.0 and Property Pack seed compared' },
       ]},
       { heading: 'Model atlas', items: [
         { url: '/v2/model', title: 'Complete model' },
