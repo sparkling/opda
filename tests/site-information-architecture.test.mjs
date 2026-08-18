@@ -3,10 +3,16 @@ import test from 'node:test';
 
 import {
   AUTHORITY_BY_DESTINATION,
+  DESTINATION_SHORTCUTS,
   GLOBAL_DESTINATIONS,
+  IA_STATUS_FIELDS,
   PRESERVATION_LEDGER,
+  ROUTE_DISPOSITION_LEDGER,
   ROUTE_FAMILY_OWNERS,
+  findForbiddenIaLabels,
+  getContentOwner,
   getActiveDestination,
+  validateIaContract,
 } from '../src/lib/site-ia.mjs';
 
 const expectedDestinations = [
@@ -24,12 +30,21 @@ test('the global information architecture has exactly the six accepted destinati
     expectedDestinations,
   );
   assert.equal(new Set(GLOBAL_DESTINATIONS.map(({ url }) => url)).size, 6);
+  assert.equal(new Set(GLOBAL_DESTINATIONS.map(({ title }) => title)).size, 6);
+  assert.equal(validateIaContract(), true);
 });
 
 test('working groups is a shortcut into the canonical SPDTF 2.0 workspace', () => {
   const workingGroups = GLOBAL_DESTINATIONS.find(({ key }) => key === 'working-groups');
   assert.equal(workingGroups.url, '/spdtf-2/working-groups');
-  assert.equal(getActiveDestination('/spdtf-2/working-groups/estate-agency'), 'spdtf-2');
+  assert.equal(getActiveDestination('/spdtf-2/working-groups'), 'working-groups');
+  assert.equal(getActiveDestination('/spdtf-2/working-groups/estate-agency'), 'working-groups');
+  assert.equal(getActiveDestination('/spdtf-2/working-groups/?view=records'), 'working-groups');
+  assert.equal(getActiveDestination('/spdtf-2/ontology'), 'spdtf-2');
+  assert.equal(getContentOwner('/spdtf-2/working-groups/estate-agency'), 'spdtf-2');
+  assert.deepEqual(DESTINATION_SHORTCUTS['working-groups'], {
+    target: '/spdtf-2/working-groups', contentOwner: 'spdtf-2',
+  });
   assert.equal(getActiveDestination('/working-groups/join'), 'working-groups');
 });
 
@@ -47,11 +62,29 @@ test('every current header section has one retained global owner', () => {
 });
 
 test('each destination has the complete five-field authority contract', () => {
-  const fields = ['workArea', 'authority', 'maturity', 'version', 'provenance'];
   for (const { key } of GLOBAL_DESTINATIONS) {
-    assert.deepEqual(Object.keys(AUTHORITY_BY_DESTINATION[key]), fields);
-    for (const field of fields) assert.ok(AUTHORITY_BY_DESTINATION[key][field]);
+    assert.deepEqual(Object.keys(AUTHORITY_BY_DESTINATION[key]), IA_STATUS_FIELDS);
+    for (const field of IA_STATUS_FIELDS) assert.ok(AUTHORITY_BY_DESTINATION[key][field]);
   }
+});
+
+test('every audited route family has a deterministic owner and disposition', () => {
+  const entries = new Map(ROUTE_DISPOSITION_LEDGER.map((entry) => [entry.currentPath, entry]));
+  for (const path of [
+    '/programme/**', '/spdtf-2/**', '/spdtf-2/working-groups/**', '/pdtf-1/**',
+    '/resources/**', '/strategy/**', '/governance/**',
+    '/dbt-smart-data/**', '/engagement/**', '/modelling/**', '/model/**', '/v2/**',
+    '/ontology/**', '/mapping/**', '/schema/**', '/implementation/**', '/adoption/**',
+    '/library/**', '/', '/home', '/glossary', '/design-system', '/resource', '/404',
+    '/pdtf/**', '/ontology/artefacts/**', '/ontology/tools/**', '/data/**', '/ui/**',
+    '/images/**', '/council/**',
+  ]) {
+    const entry = entries.get(path);
+    assert.ok(entry, `${path} has no disposition`);
+    assert.ok(entry.owner, `${path} has no owner`);
+    assert.notEqual(entry.disposition, 'retire', `${path} is marked retire`);
+  }
+  assert.ok(ROUTE_DISPOSITION_LEDGER.every(({ preservedAt, statusSource }) => preservedAt && statusSource));
 });
 
 test('the migration ledger preserves every audited high-risk information family', () => {
@@ -63,4 +96,10 @@ test('the migration ledger preserves every audited high-risk information family'
 
   assert.ok(PRESERVATION_LEDGER.every(({ disposition }) => disposition !== 'retire'));
   assert.ok(PRESERVATION_LEDGER.every(({ consumers, verification }) => consumers.length && verification));
+});
+
+test('reader-facing IA vocabulary rejects stale labels but exempts immutable records', () => {
+  assert.equal(findForbiddenIaLabels('Develop SPDTF · Property Pack V2').length, 2);
+  assert.deepEqual(findForbiddenIaLabels('Published baseline from Phase 1/2', { historical: true }), []);
+  assert.deepEqual(findForbiddenIaLabels('SPDTF 2.0 development input · machine-generated pre-draft'), []);
 });
