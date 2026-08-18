@@ -15,6 +15,18 @@ export const GLOBAL_DESTINATIONS = Object.freeze([
   { key: 'resources', title: 'Resources', url: '/resources' },
 ]);
 
+export const IA_STATUS_FIELDS = Object.freeze([
+  'workArea', 'authority', 'maturity', 'version', 'provenance',
+]);
+
+/** The third destination is a navigation shortcut, not a second content owner. */
+export const DESTINATION_SHORTCUTS = Object.freeze({
+  'working-groups': Object.freeze({
+    target: '/spdtf-2/working-groups',
+    contentOwner: 'spdtf-2',
+  }),
+});
+
 /** Current and transitional first path segments mapped to one global owner. */
 export const ROUTE_FAMILY_OWNERS = Object.freeze({
   programme: 'programme',
@@ -123,6 +135,7 @@ export const PRESERVATION_LEDGER = Object.freeze([
     currentPath: '/data/**',
     kind: 'generated-data',
     expectedCount: 46,
+    minimumCount: 45,
     owner: 'resources',
     preservedAt: '/data/**',
     consumers: ['generated pages', 'client-side data views', 'validation'],
@@ -158,14 +171,139 @@ export const PRESERVATION_LEDGER = Object.freeze([
   },
 ]);
 
+/**
+ * Route-family migration ledger. Entries are deliberately family-level: moving
+ * one generated record must not silently omit its siblings or representation.
+ */
+export const ROUTE_DISPOSITION_LEDGER = Object.freeze([
+  ...[
+    ['programme', 'programme', 'reframe'],
+    ['spdtf-2', 'spdtf-2', 'reframe'],
+    ['working-groups', 'working-groups', 'reframe'],
+    ['pdtf-1', 'pdtf-1', 'reframe'],
+    ['strategy', 'programme', 'reframe'],
+    ['governance', 'governance', 'keep'],
+    ['dbt-smart-data', 'programme', 'reframe'],
+    ['engagement', 'working-groups', 'reframe'],
+    ['modelling', 'pdtf-1', 'reframe'],
+    ['model', 'pdtf-1', 'reframe'],
+    ['v2', 'spdtf-2', 'reframe'],
+    ['ontology', 'pdtf-1', 'reframe'],
+    ['mapping', 'pdtf-1', 'reframe'],
+    ['schema', 'pdtf-1', 'reframe'],
+    ['implementation', 'pdtf-1', 'reframe'],
+    ['adoption', 'pdtf-1', 'reframe'],
+    ['resources', 'resources', 'reframe'],
+    ['library', 'resources', 'reframe'],
+  ].map(([path, owner, disposition]) => ({
+    currentPath: `/${path}/**`, owner, disposition,
+    preservedAt: `/${path}/**`, statusSource: 'governance status registry',
+  })),
+  ...[
+    ['/', 'programme', 'reframe'],
+    ['/spdtf-2/working-groups/**', 'working-groups', 'reframe'],
+    ['/home', 'programme', 'reframe'],
+    ['/glossary', 'resources', 'reframe'],
+    ['/design-system', 'resources', 'keep'],
+    ['/presentation/**', 'working-groups', 'reframe'],
+    ['/working-groups/join/**', 'working-groups', 'keep'],
+    ['/modelling/property-pack', 'spdtf-2', 'reframe'],
+    ['/ontology/datatypes', 'pdtf-1', 'keep'],
+    ['/ontology/namespaces', 'pdtf-1', 'keep'],
+    ['/resource', 'resources', 'keep'],
+    ['/404', 'resources', 'keep'],
+    ['/mapping/triplesmaps/**', 'pdtf-1', 'keep'],
+    ['/model/information-architecture/**', 'pdtf-1', 'keep'],
+    ['/model/concept/**', 'pdtf-1', 'keep'],
+    ['/model/logical/**', 'pdtf-1', 'keep'],
+    ['/model/physical-database/**', 'pdtf-1', 'keep'],
+    ['/model/physical-ontology/**', 'pdtf-1', 'keep'],
+    ['/model/physical-relational/**', 'pdtf-1', 'keep'],
+    ['/modelling/adr/**', 'governance', 'reframe'],
+    ['/modelling/odr/**', 'governance', 'reframe'],
+    ['/ontology/category/**', 'pdtf-1', 'keep'],
+    ['/ontology/context/**', 'pdtf-1', 'keep'],
+    ['/ontology/exemplar/**', 'pdtf-1', 'keep'],
+    ['/ontology/profile/**', 'pdtf-1', 'keep'],
+    ['/pdtf/**', 'pdtf-1', 'keep'],
+    ['/v2/contexts/**', 'spdtf-2', 'reframe'],
+    ['/v2/data-dictionary/**', 'spdtf-2', 'reframe'],
+    ['/v2/resources/**', 'spdtf-2', 'reframe'],
+    ['/v2/shapes/**', 'spdtf-2', 'reframe'],
+    ['/v2/vocabularies/**', 'spdtf-2', 'reframe'],
+    ['/ontology/artefacts/**', 'pdtf-1', 'keep'],
+    ['/ontology/tools/**', 'pdtf-1', 'keep'],
+    ['/data/**', 'resources', 'keep'],
+    ['/ui/**', 'resources', 'keep'],
+    ['/images/**', 'resources', 'keep'],
+    ['/council/**', 'governance', 'keep'],
+  ].map(([currentPath, owner, disposition]) => ({
+    currentPath, owner, disposition, preservedAt: currentPath,
+    statusSource: 'governance status registry',
+  })),
+]);
+
 export function normalizeIaPath(path) {
   const pathname = String(path || '/').split(/[?#]/u, 1)[0] || '/';
   return pathname === '/' ? pathname : pathname.replace(/\/+$/u, '');
 }
 
 export function getActiveDestination(path) {
-  const segment = normalizeIaPath(path).split('/').filter(Boolean)[0];
+  const normalized = normalizeIaPath(path);
+  if (normalized === '/spdtf-2/working-groups'
+    || normalized.startsWith('/spdtf-2/working-groups/')) return 'working-groups';
+  const segment = normalized.split('/').filter(Boolean)[0];
   return segment ? ROUTE_FAMILY_OWNERS[segment] ?? null : null;
+}
+
+/** Content ownership remains SPDTF 2.0 for the working-groups shortcut family. */
+export function getContentOwner(path) {
+  const active = getActiveDestination(path);
+  return DESTINATION_SHORTCUTS[active]?.contentOwner ?? active;
+}
+
+const FORBIDDEN_PRIMARY_LABELS = Object.freeze([
+  /\bPhase\s+[12]\b/iu,
+  /\bPublished\s+baseline\b/iu,
+  /\bDevelop\s+SPDTF\b/iu,
+  /\bProperty\s+Pack\s+V2\b/iu,
+]);
+
+/** Find stale reader-facing vocabulary; immutable historical records may opt out. */
+export function findForbiddenIaLabels(text, { historical = false } = {}) {
+  if (historical) return [];
+  const value = String(text ?? '');
+  return FORBIDDEN_PRIMARY_LABELS
+    .filter((pattern) => pattern.test(value))
+    .map((pattern) => pattern.source);
+}
+
+export function validateIaContract() {
+  if (GLOBAL_DESTINATIONS.length !== 6) throw new Error('IA requires exactly six destinations');
+  const keys = GLOBAL_DESTINATIONS.map(({ key }) => key);
+  const labels = GLOBAL_DESTINATIONS.map(({ title }) => title);
+  const urls = GLOBAL_DESTINATIONS.map(({ url }) => url);
+  for (const [name, values] of [['keys', keys], ['labels', labels], ['URLs', urls]]) {
+    if (new Set(values).size !== values.length) throw new Error(`IA ${name} must be unique`);
+  }
+  for (const destination of GLOBAL_DESTINATIONS) {
+    const metadata = AUTHORITY_BY_DESTINATION[destination.key];
+    if (!metadata || JSON.stringify(Object.keys(metadata)) !== JSON.stringify(IA_STATUS_FIELDS)) {
+      throw new Error(`IA metadata is incomplete for ${destination.key}`);
+    }
+    if (IA_STATUS_FIELDS.some((field) => typeof metadata[field] !== 'string' || !metadata[field].trim())) {
+      throw new Error(`IA metadata contains an empty field for ${destination.key}`);
+    }
+  }
+  const destinationKeys = new Set(keys);
+  for (const entry of ROUTE_DISPOSITION_LEDGER) {
+    if (!entry.currentPath || !destinationKeys.has(entry.owner)
+      || !['keep', 'reframe', 'redirect'].includes(entry.disposition)
+      || !entry.preservedAt || !entry.statusSource) {
+      throw new Error(`Invalid route disposition: ${entry.currentPath || '(missing path)'}`);
+    }
+  }
+  return true;
 }
 
 export function getDestination(key) {

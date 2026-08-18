@@ -33,6 +33,7 @@
     "test:a11y": "playwright test --config=playwright.config.mjs tests/e2e/accessibility.spec.mjs",
     "test:visual": "playwright test --config=playwright.config.mjs tests/e2e/visual.spec.mjs",
     "check:routes": "node scripts/crawl-routes.mjs",
+    "check:ia-preservation": "node scripts/check-ia-preservation.mjs",
     "test:schema": "python3 -m unittest tests/test_schema_reproducibility.py",
     "check:schema-drift": "SOURCE_DATE_EPOCH=1783296000 node scripts/check-schema-reproducibility.mjs",
     "clean": "rm -rf dist .astro",
