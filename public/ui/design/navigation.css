@@ -2,18 +2,31 @@
    BREADCRUMBS
    ───────────────────────────────────────────────────────────── */
 .breadcrumbs {
-  display: flex;
-  align-items: center;
-  flex-wrap: wrap;
-  gap: var(--space-2);
   margin: 0 0 var(--space-6);
   color: var(--color-text-muted);
   font: 500 var(--text-sm) / 1.4 var(--font-sans);
 }
-.breadcrumbs a {
+.breadcrumbs__list {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.breadcrumbs__list > li {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+.breadcrumbs a,
+.breadcrumbs .breadcrumb-current {
   min-height: var(--target-min);
   display: inline-flex;
   align-items: center;
+}
+.breadcrumbs a {
   color: var(--color-link);
 }
 .breadcrumb-sep { color: var(--color-text-muted); }

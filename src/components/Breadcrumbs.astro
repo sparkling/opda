@@ -7,20 +7,72 @@
 import { findPage, normalizeUrl } from '@/lib/site';
 import { getActiveDestination, getDestination } from '@/lib/site-ia.mjs';
 
+interface Breadcrumb {
+  label: string;
+  href?: string;
+  current?: boolean;
+}
+interface Props {
+  currentPageTitle: string;
+}
+
+const { currentPageTitle } = Astro.props;
+
 const path = normalizeUrl(Astro.url.pathname);
 const found = findPage(path);
 const isSectionRoot = found && !found.item;
 const destination = getDestination(getActiveDestination(path));
-const showGlobalOwner = Boolean(destination && (!found || destination.title !== found.section.title));
+const destinationLanding = Boolean(destination && path === normalizeUrl(destination.url));
+const sectionLabel = found
+  ? found.section.key === 'v2'
+    ? 'Property Pack seed (development input)'
+    : found.section.title
+  : '';
+const showGlobalOwner = Boolean(
+  destination && !destinationLanding && (!found || destination.title !== sectionLabel),
+);
+
+const breadcrumbs: Breadcrumb[] = [];
+
+if (destinationLanding && destination) {
+  breadcrumbs.push({ label: destination.title, current: true });
+} else {
+  if (showGlobalOwner && destination) {
+    breadcrumbs.push({ label: destination.title, href: destination.url });
+  }
+
+  if (found) {
+    breadcrumbs.push({
+      label: sectionLabel,
+      href: isSectionRoot ? undefined : `/${found.section.key}`,
+      current: isSectionRoot,
+    });
+    if (!isSectionRoot && found.group) {
+      breadcrumbs.push({ label: found.group.heading });
+    }
+    if (!isSectionRoot && found.item) {
+      breadcrumbs.push({ label: found.item.title, current: true });
+    }
+  } else if (destination) {
+    breadcrumbs.push({ label: currentPageTitle, current: true });
+  }
+}
 ---
-{(found || destination) && (
+{breadcrumbs.length > 0 && (
   <nav class="breadcrumbs" aria-label="Breadcrumb">
-    {showGlobalOwner && destination && <a href={destination.url}>{destination.title}</a>}
-    {showGlobalOwner && found && <span class="breadcrumb-sep" aria-hidden="true">›</span>}
-    {found && <a href={`/${found.section.key}`}>{found.section.title}</a>}
-    {found && !isSectionRoot && found.group && <span class="breadcrumb-sep" aria-hidden="true">›</span>}
-    {found && !isSectionRoot && found.group && <span class="breadcrumb-group">{found.group.heading}</span>}
-    {found && !isSectionRoot && found.item && <span class="breadcrumb-sep" aria-hidden="true">›</span>}
-    {found && !isSectionRoot && found.item && <span class="breadcrumb-current" aria-current="page">{found.item.title}</span>}
+    <ol class="breadcrumbs__list">
+      {breadcrumbs.map((breadcrumb, index) => (
+        <li>
+          {index > 0 && <span class="breadcrumb-sep" aria-hidden="true">›</span>}
+          {breadcrumb.current ? (
+            <span class="breadcrumb-current" aria-current="page">{breadcrumb.label}</span>
+          ) : breadcrumb.href ? (
+            <a href={breadcrumb.href}>{breadcrumb.label}</a>
+          ) : (
+            <span class="breadcrumb-group">{breadcrumb.label}</span>
+          )}
+        </li>
+      ))}
+    </ol>
   </nav>
 )}

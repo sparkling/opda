@@ -130,7 +130,7 @@ const showSidebar = !hideSidebar && !!activeSection;
     <div class={`app-body${showSidebar ? '' : ' no-sidebar'}`}>
       {showSidebar && <Sidebar />}
       <main class={`app-main${mainClass ? ` ${mainClass}` : ''}`} id="main-content" tabindex="-1">
-        {!hideBreadcrumbs && <Breadcrumbs />}
+        {!hideBreadcrumbs && <Breadcrumbs currentPageTitle={title} />}
         {wrapArticle ? (
           <article class={proseClass}>
             <slot />

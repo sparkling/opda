@@ -120,6 +120,14 @@
   border-top: 4px solid var(--brand-yellow);
 }
 .public-footer img { width: 9rem; height: auto; }
+.public-footer a {
+  min-height: var(--target-min);
+  display: inline-flex;
+  align-items: center;
+  color: var(--brand-white);
+  font-weight: 700;
+}
+.public-footer a:hover { color: var(--brand-yellow); }
 
 .not-found {
   width: min(100% - 2 * var(--space-5), 42rem);
