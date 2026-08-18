@@ -122,3 +122,29 @@ test('wide technical tables use a labelled keyboard overflow region', async ({ p
   await assertNoBodyOverflow(page);
   clean();
 });
+
+test('schema tables stay readable inside their mobile overflow region', async ({ page }) => {
+  const clean = watchRuntime(page);
+  for (const width of [320, 390]) {
+    await page.setViewportSize({ width, height: 900 });
+    await visit(page, '/schema/legal-estate/ownership/leasehold/lease-legal/building-safety');
+
+    const region = page.locator('.responsive-table:has(table.db-table)').first();
+    const viewport = region.locator('.responsive-table__viewport');
+    const table = viewport.locator('table.db-table').first();
+    await expect(table).toHaveCSS('min-width', '960px');
+    await expect(viewport).toHaveAttribute('role', 'region');
+    await expect(viewport).toHaveAttribute('tabindex', '0');
+    await expect(region.locator('.responsive-table__hint')).toContainText('Scroll horizontally');
+
+    const dimensions = await viewport.evaluate((node) => ({
+      viewport: node.clientWidth,
+      scroll: node.scrollWidth,
+      table: node.querySelector('table')?.getBoundingClientRect().width || 0,
+    }));
+    expect(dimensions.scroll).toBeGreaterThan(dimensions.viewport);
+    expect(dimensions.table).toBeGreaterThanOrEqual(960);
+    await assertNoBodyOverflow(page);
+  }
+  clean();
+});
