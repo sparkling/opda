@@ -1,0 +1,56 @@
+---
+import Layout from '@/layouts/Layout.astro';
+import PageMeta from '@/components/PageMeta.astro';
+import AuthorityPanel from '@/components/ia/AuthorityPanel.astro';
+import JourneyNav from '@/components/ia/JourneyNav.astro';
+---
+
+<Layout title="Validation, conformance and generated projections" description="How SPDTF 2.0 separates deterministic checks, semantic review, lifecycle records and generated delivery views.">
+  <PageMeta category="Ontology journey" variant="brand" updated="SPDTF 2.0 development · assurance and projections" />
+  <h1>Validation, conformance, lifecycle and generated projections</h1>
+  <p class="lead">
+    Validation makes encoded checks visible. Conformance states which features and tests
+    were exercised. Neither one is semantic approval: practitioners review meaning and
+    governance records any promotion.
+  </p>
+  <AuthorityPanel destination="spdtf-2" />
+  <JourneyNav />
+
+  <h2 id="separate">Keep the decisions separate</h2>
+  <table>
+    <caption>Different checks answer different questions</caption>
+    <thead><tr><th scope="col">Layer</th><th scope="col">Question</th><th scope="col">Evidence</th></tr></thead>
+    <tbody>
+      <tr><th scope="row">Semantic review</th><td>Does this definition, relationship or boundary match the group’s domain meaning?</td><td>Participant evidence, examples, questions, review comments and disposition.</td></tr>
+      <tr><th scope="row">Deterministic validation</th><td>Does the candidate satisfy the encoded structural, provenance, coverage and constraint checks?</td><td>Fail-closed reports, SHACL scope, parser results and reproducible receipts.</td></tr>
+      <tr><th scope="row">Conformance</th><td>Which exact standards features and profiles were tested?</td><td>Version, feature declaration, test suite and known non-claims.</td></tr>
+      <tr><th scope="row">Governance promotion</th><td>Who may make the decision, and was it recorded?</td><td>Decision record, authority, lifecycle state and immutable release identifier.</td></tr>
+    </tbody>
+  </table>
+
+  <h2 id="lifecycle">Candidate lifecycle</h2>
+  <p>
+    The current vocabulary ceiling is <strong>first working-group draft — non-normative</strong>
+    until a separately accepted governance decision defines later promotion states. A
+    candidate can be revised, deferred or returned for evidence without being described
+    as an adopted standard.
+  </p>
+  <ol>
+    <li>Publish a readable candidate with sources, questions, status and change history.</li>
+    <li>Run the declared validation and conformance checks; record their exact scope.</li>
+    <li>Review feedback and record accepted, needs evidence, deferred or not accepted dispositions.</li>
+    <li>Preserve the immutable diff and receipts; only recorded human authority can promote a release.</li>
+  </ol>
+
+  <h2 id="projections">Generated projections</h2>
+  <p>
+    A governed semantic package may produce RDF/OWL/SKOS, SHACL constraints, JSON Schema,
+    JSON-LD contexts, forms, APIs, website pages, PDF and Markdown. These are tested
+    projections for different consumers, not independent specifications. An optional
+    transformation runtime is an implementation service, not a source of meaning.
+  </p>
+  <p>
+    <a href="/spdtf-2">Return to SPDTF 2.0 Development</a> ·
+    <a href="/pdtf-1">Compare with the retained PDTF 1.0 implementation</a>
+  </p>
+</Layout>

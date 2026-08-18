@@ -1,0 +1,71 @@
+---
+import Layout from '@/layouts/Layout.astro';
+import PageMeta from '@/components/PageMeta.astro';
+import AuthorityPanel from '@/components/ia/AuthorityPanel.astro';
+import GatewayCard from '@/components/ia/GatewayCard.astro';
+---
+
+<Layout
+  title="Programme"
+  description="The Smart Property Data Trust Framework programme: its purpose, continuation, policy context and current direction."
+>
+  <PageMeta category="Programme" variant="brand" updated="Current programme view · 2026-08-18" />
+  <h1>Programme</h1>
+  <p class="lead">
+    The Smart Property Data Trust Framework (SPDTF) is an OPDA-led standards programme
+    for trusted, connected property data. This page explains the continuation from the
+    published PDTF 1.0 implementation into SPDTF 2.0 development.
+  </p>
+
+  <AuthorityPanel destination="programme" />
+
+  <div class="callout callout--key">
+    <p class="callout__label">The short version</p>
+    <p>
+      <strong>SPDTF 2.0 is in development, not adopted.</strong> PDTF 1.0 remains the
+      published schema implementation and its derived corpus. Its individual ontology,
+      model and mapping artefacts retain their own maturity; no replacement has been
+      authorised by this programme view.
+    </p>
+  </div>
+
+  <h2 id="continuation">A continuation, not a reset</h2>
+  <p>
+    PDTF 1.0 provides schemas, overlays, dictionaries, documentation and implementation
+    evidence. SPDTF 2.0 development uses that material as attributed evidence alongside
+    participant evidence, recognised sources and competency questions. Domain working
+    groups then test meaning in bounded contexts before governance can promote any
+    candidate.
+  </p>
+  <table>
+    <caption>How the two bodies of work relate</caption>
+    <thead><tr><th scope="col">PDTF 1.0</th><th scope="col">SPDTF 2.0 development</th></tr></thead>
+    <tbody>
+      <tr><td>Published schema implementation plus derived artefacts.</td><td>Evidence-up modelling and reviewable candidates.</td></tr>
+      <tr><td>Useful compatibility, constraint, coverage and migration evidence.</td><td>Human working groups own domain meaning; governance controls promotion.</td></tr>
+      <tr><td>Each child artefact keeps its own status.</td><td>Not a release, ratification or replacement standard.</td></tr>
+    </tbody>
+  </table>
+
+  <h2 id="policy">UK Smart Data context</h2>
+  <p>
+    DBT Smart Data is external government policy and prospective scheme context. Property
+    remains subject to feasibility, governance, legal assessment and consultation. OPDA
+    contributes evidence and tested approaches; SPDTF is not an approved statutory
+    property Smart Data scheme, and OPDA participation in government forums does not
+    confer government authority.
+  </p>
+  <p>
+    Read the official context in the <a href="https://www.gov.uk/government/publications/smart-data-strategy" rel="noreferrer">Smart Data 2035 strategy</a>,
+    the <a href="https://www.gov.uk/government/calls-for-evidence/smart-data-multi-sector-call-for-evidence" rel="noreferrer">multi-sector call for evidence</a>
+    and the <a href="https://www.gov.uk/government/consultations/home-buying-and-selling-reform/outcome/home-buying-and-selling-reform-roadmap" rel="noreferrer">Home Buying and Selling Reform Roadmap</a>.
+  </p>
+
+  <h2 id="start">Choose a starting point</h2>
+  <div class="card-grid">
+    <GatewayCard href="/spdtf-2" title="SPDTF 2.0 Development" eyebrow="Develop" description="Follow the evidence-up method, ontologies journey, candidates and generated projections." />
+    <GatewayCard href="/spdtf-2/working-groups" title="Working groups" eyebrow="Participate" description="Join the single SPDTF 2.0 working-group family, including Interoperability." />
+    <GatewayCard href="/pdtf-1" title="PDTF 1.0" eyebrow="Implement" description="Find the published schema implementation and derived artefacts with their own status." />
+    <GatewayCard href="/resources" title="Resources" eyebrow="Trace" description="Find attributed sources, programme records, standards references and historical material." />
+  </div>
+</Layout>
