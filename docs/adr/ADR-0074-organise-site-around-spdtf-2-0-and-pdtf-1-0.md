@@ -63,7 +63,7 @@ decision until this proposal is accepted and implemented.
 Proposed: adopt six global destinations:
 
 1. Programme.
-2. Develop SPDTF 2.0.
+2. SPDTF 2.0 Development.
 3. Working groups — a shortcut to the single canonical family within SPDTF 2.0
    development.
 4. PDTF 1.0.
@@ -114,7 +114,7 @@ deployment change.
 Acceptance requires explicit human approval. Implementation then requires:
 
 - a disposition for every route and route family in the current-site IA inventory;
-- one canonical working-group URL family under Develop SPDTF 2.0;
+- one canonical working-group URL family under SPDTF 2.0 Development;
 - inherited five-field status metadata on every generated page;
 - a machine-readable migration manifest;
 - task tests for participant, implementer and governance journeys;
@@ -153,7 +153,7 @@ decision-record filing and a complete inventory-bound migration ledger; all thre
 binding in the proposed outcome. Fable’s corrected regrade also accepted the proposal
 at 98/100 with no hard failure.
 
-Held dissent: Fable would order PDTF 1.0 before Develop SPDTF 2.0 because
+Held dissent: Fable would order PDTF 1.0 before SPDTF 2.0 Development because
 implementation is the majority task today. Navigation task testing must decide the
 final order before implementation.
 

@@ -10,7 +10,7 @@ Review artefact: [HTML presentation](./spdtf-2-0-information-architecture.html)
 Reorganise the documentation around six global destinations:
 
 1. **Programme**
-2. **Develop SPDTF 2.0**
+2. **SPDTF 2.0 Development**
 3. **Working groups** — a direct shortcut into the SPDTF 2.0 development workspace
 4. **PDTF 1.0**
 5. **Governance**
@@ -111,7 +111,7 @@ The site must therefore use this relationship:
   approaches to prospective property Smart Data work.
 - **Programme** owns the canonical UK Smart Data context page; **Governance** owns
   the external-constraint view; **Resources** holds the official sources; and
-  **Develop SPDTF 2.0** links the relevant evidence into modelling work.
+  **SPDTF 2.0 Development** links the relevant evidence into modelling work.
 - The [Smart Data Council](https://www.gov.uk/government/groups/smart-data-council)
   is advisory. OPDA representation is a participation channel, not government
   authority for SPDTF.
@@ -174,7 +174,7 @@ review the centre of SPDTF 2.0 development.
 | Position | Label | Purpose | Canonical landing |
 |---:|---|---|---|
 | 1 | Programme | Purpose, continuation, roadmap and policy context | `/programme` |
-| 2 | Develop SPDTF 2.0 | Current development method, work products and interoperability | `/spdtf-2` |
+| 2 | SPDTF 2.0 Development | Current development method, work products and interoperability | `/spdtf-2` |
 | 3 | Working groups | Task shortcut to the single SPDTF 2.0 working-group family | `/spdtf-2/working-groups` |
 | 4 | PDTF 1.0 | Published implementation and derived semantic corpus | `/pdtf-1` |
 | 5 | Governance | One authority, status, lifecycle and decision system | `/governance` |
@@ -201,7 +201,7 @@ Home /
 │   ├── Naming and identifier policy
 │   └── SPDTF 2.0 development inputs
 │       └── Property Pack seed — machine-generated, non-normative
-├── Develop SPDTF 2.0 /spdtf-2
+├── SPDTF 2.0 Development /spdtf-2
 │   ├── Overview: what SPDTF 2.0 development is and is not
 │   ├── Evidence-up modelling method
 │   ├── Inputs to the first ontology draft
@@ -294,7 +294,7 @@ does not confer membership, consensus or standards authority.
 | Governance | Governance | Keep one cross-programme authority tree. |
 | DBT Smart Data | Programme; cross-link Governance, Resources and the OPDA-internal scheme-design group | Treat government policy as external context. Do not imply that the internal group is a designated property scheme body or that SPDTF is government-approved. |
 | Engagement | Working groups for live actions; Resources for records | Keep DPMSG and OPDA groups explicitly distinct. |
-| Modelling | PDTF 1.0 material | SPDTF 2.0 ADR/ODR records are faceted into Develop SPDTF 2.0 or Governance. |
+| Modelling | PDTF 1.0 material | SPDTF 2.0 ADR/ODR records are faceted into SPDTF 2.0 Development or Governance. |
 | Model | PDTF 1.0 | Label every tier as a PDTF 1.0 view. |
 | V2 | Programme → SPDTF 2.0 development input | Rename in reader-facing navigation; preserve `/v2/**` and link it from SPDTF 2.0 inputs. |
 | Ontology | PDTF 1.0 | Describe as the PDTF 1.0-derived ontology, not the unqualified SPDTF ontology. |
@@ -470,15 +470,15 @@ no hard failure.
 
 ### Held dissent
 
-- Fable would place PDTF 1.0 before Develop SPDTF 2.0 in the navigation
+- Fable would place PDTF 1.0 before SPDTF 2.0 Development in the navigation
   because implementation is the majority task today. The chosen order is
   programme-first; task testing must validate it before implementation.
 - The information architect prefers describing the seed as a structured pre-draft
   candidate rather than “evidence” alone. The full label therefore says SPDTF 2.0
   development input and machine-generated pre-draft, and the body records its
   structured nature.
-- “Working groups” must remain visibly and technically a shortcut into Develop
-  SPDTF 2.0, not become a second owner.
+- “Working groups” must remain visibly and technically a shortcut into SPDTF 2.0
+  Development, not become a second owner.
 
 ## Unresolved governance decisions
 
