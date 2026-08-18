@@ -84,6 +84,13 @@ modelling website remains unchanged:
 | [ADR-0071](./ADR-0071-bounded-context-recruitment-campaign.md) | Recruit later bounded-context groups through a coordinated public campaign | accepted |
 | [ADR-0072](./ADR-0072-scheduled-working-group-inbox-agent.md) | Operate a scheduled, harnessed working-group inbox agent | accepted |
 
+## August 2026 website architecture and design
+
+| # | Title | Status |
+|---|---|---|
+| [ADR-0073](./ADR-0073-adopt-opda-brand-and-replace-the-website-design-system.md) | Adopt the OPDA brand and replace the website design system | implemented |
+| [ADR-0074](./ADR-0074-organise-site-around-spdtf-phase-2-and-phase-1-baseline.md) | Organise the site around SPDTF Phase 2 and the Phase 1 published baseline | proposed |
+
 ## Authoring a new ADR
 
 1. Run `/ruflo-adr:adr-create "<short title>"` — the skill picks the
