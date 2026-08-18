@@ -3,12 +3,12 @@ import Layout from '@/layouts/Layout.astro';
 import PageMeta from '@/components/PageMeta.astro';
 ---
 <Layout
-  title="What the Guidebook asks of PDTF"
-  description="The DBT Smart Data Guidebook's asks, separated into scheme-operator obligations and data-standard obligations, with each 'does PDTF already have this?' claim checked against the committed TTL corpus."
+  title="What the Guidebook asks SPDTF 2.0 Development"
+  description="The DBT Smart Data Guidebook's asks, separated into scheme-operator obligations and future SPDTF 2.0 Development questions, with PDTF 1.0 capability evidence checked against the committed TTL corpus."
 >
-<PageMeta category="PDTF alignment" variant="brand" updated="Updated 2026-07-13" damaKa={["Data Governance", "Metadata Management"]} />
+<PageMeta category="SPDTF 2.0 Development · PDTF 1.0 evidence" variant="brand" updated="Updated 2026-07-13" damaKa={["Data Governance", "Metadata Management"]} />
 
-  <h1>What the Guidebook asks of PDTF</h1>
+  <h1>What the Guidebook asks SPDTF 2.0 Development</h1>
 
   <p class="lead">
     The Guidebook addresses everything to "schemes" and "participants", and never separates an
@@ -19,10 +19,10 @@ import PageMeta from '@/components/PageMeta.astro';
   </p>
 
   <div class="callout callout--warn">
-    <div class="callout__label">Read "asks of PDTF" conditionally, not as compliance</div>
+    <div class="callout__label">Read "asks of SPDTF 2.0 Development" conditionally, not as compliance</div>
     <p style="margin-bottom: 0;">
-      <strong>Smart Data and PDTF are two different initiatives.</strong> PDTF is not bound by the
-      Guidebook and cannot "fail" it. Where this page says PDTF ❌ <em>cannot</em> encode something,
+      <strong>Smart Data and SPDTF are two different initiatives.</strong> PDTF 1.0 is not bound by the
+      Guidebook and cannot "fail" it. Where this page says PDTF 1.0 ❌ <em>cannot</em> encode something,
       it means exactly that — a <strong>capability</strong> statement about what the vocabulary can
       currently say, describing what would be needed <em>if and when</em> property became a
       designated Smart Data scheme. It is never an assertion of non-compliance.
@@ -32,7 +32,7 @@ import PageMeta from '@/components/PageMeta.astro';
   <div class="callout callout--key">
     <div class="callout__label">How the right-hand column was produced</div>
     <p>
-      Every "does PDTF already have this?" verdict below is checked against the
+      Every "does PDTF 1.0 already have this?" verdict below is checked against the
       <strong>committed TTL corpus</strong> in
       <a class="resource-link" href="/library/resources#cat-standards"><code>source/03-standards/ontology/</code></a>,
       not against the ontology's aspirational layer plan. That distinction matters: <strong>six</strong>
@@ -45,15 +45,15 @@ import PageMeta from '@/components/PageMeta.astro';
   <nav class="callout callout--note" aria-label="On this page">
     <div class="callout__label">On this page</div>
     <ul style="margin: 0;">
-      <li><a href="#reality-check">Reality check: what PDTF actually contains</a></li>
-      <li><a href="#strengths">Where PDTF is ahead of the Guidebook</a></li>
+      <li><a href="#reality-check">Reality check: what PDTF 1.0 actually contains</a></li>
+      <li><a href="#strengths">Where PDTF 1.0 is ahead of the Guidebook</a></li>
       <li><a href="#asks">The asks, by chapter</a></li>
       <li><a href="#not-ours">What is <em>not</em> a data-standard obligation</a></li>
       <li><a href="#roles">The role-model collision</a></li>
     </ul>
   </nav>
 
-  <h2 id="reality-check">Reality check: what PDTF actually contains</h2>
+  <h2 id="reality-check">Reality check: what PDTF 1.0 actually contains</h2>
 
   <p>
     The ontology's planned layer stack (OWL2 · SKOS · DCAT · SHACL · DPV/ODRL · PROV/RML ·
@@ -104,12 +104,12 @@ import PageMeta from '@/components/PageMeta.astro';
       <tr>
         <td><strong>Assurance levels</strong></td>
         <td>❌ <strong>Removed</strong></td>
-        <td><code>opda:assuranceLevel</code> deleted 2026-07-05 (ODR-0009, "zero PDTF schema basis"). <a href="#assurance">See below</a> — do not claim this as a strength</td>
+        <td><code>opda:assuranceLevel</code> deleted 2026-07-05 (ODR-0009, exact source wording: "zero PDTF schema basis"). <a href="#assurance">See below</a> — do not claim this as a strength</td>
       </tr>
       <tr>
         <td>Consent · delegation · accreditation · audit-event · decision classes</td>
         <td>❌ <strong>None exist</strong></td>
-        <td>(<code>opda:consentsObtained</code> is a schema leaf field inherited from the PDTF JSON Schema — a yes/no property fact, not a consent artefact)</td>
+        <td>(<code>opda:consentsObtained</code> is a schema leaf field inherited from the PDTF 1.0 JSON Schema — a yes/no property fact, not a consent artefact)</td>
       </tr>
     </tbody>
   </table>
@@ -140,7 +140,7 @@ import PageMeta from '@/components/PageMeta.astro';
     </p>
   </div>
 
-  <h2 id="strengths">Where PDTF is ahead of the Guidebook</h2>
+  <h2 id="strengths">Where PDTF 1.0 is ahead of the Guidebook</h2>
 
   <p>
     Three claims OPDA can make without qualification, and should make loudly — because no other
@@ -149,7 +149,7 @@ import PageMeta from '@/components/PageMeta.astro';
 
   <ol>
     <li>
-      <strong>The "shared semantic layer" the Preamble asks for is what PDTF <em>is</em>.</strong>
+      <strong>The "shared semantic layer" the Preamble asks for is what PDTF 1.0 <em>is</em>.</strong>
       The Preamble demands "a shared semantic layer — a common language of attributes, roles and
       consent concepts" and never says who builds it. Chapter 2 asks for "ontological models to
       define the meaning of data fields, attributes and claims". Chapter 3 says interoperability
@@ -161,12 +161,12 @@ import PageMeta from '@/components/PageMeta.astro';
       <strong>Claim-level provenance, mandatory and machine-checked.</strong> Chapter 4 asks that
       "the origin and lineage of data can be verified"; Chapter 2 says "attribute-level assurances
       and provenance rules are essential for data with legal effects" — <em>in its section about
-      property</em>. PDTF already refuses to accept an unprovenanced Claim: the SHACL shape makes
+      property</em>. PDTF 1.0 already refuses to accept an unprovenanced Claim: the SHACL shape makes
       <code>prov:wasDerivedFrom</code> a hard requirement. This is the one place the Guidebook
-      describes a problem and PDTF is already past it.
+      describes a problem and PDTF 1.0 is already past it.
     </li>
     <li>
-      <strong>Data quality.</strong> Chapter 4 asks for "responsibility for data quality". PDTF's
+      <strong>Data quality.</strong> Chapter 4 asks for "responsibility for data quality". PDTF 1.0's
       <a href="/governance/data-quality">quality framework</a> already defines six dimensions.
       We over-deliver against the ask.
     </li>
@@ -178,7 +178,7 @@ import PageMeta from '@/components/PageMeta.astro';
 
   <table>
     <thead>
-      <tr><th>Ask</th><th>Layer</th><th>PDTF must be able to encode</th><th>Has it?</th></tr>
+      <tr><th>Ask</th><th>Layer</th><th>What SPDTF 2.0 Development may need to model</th><th>PDTF 1.0 evidence</th></tr>
     </thead>
     <tbody>
       <tr>
@@ -196,14 +196,14 @@ import PageMeta from '@/components/PageMeta.astro';
       <tr>
         <td>ATPs authorised only for data categories appropriate to their assurance level</td>
         <td>Both</td>
-        <td>A per-attribute <strong>sensitivity/risk classification</strong> over PDTF's own terms, bound to an assurance level</td>
+        <td>A per-attribute <strong>sensitivity/risk classification</strong> over PDTF 1.0 terms, bound to an assurance level</td>
         <td>⚠️ Partial — special-category PII exists; a general risk tiering over the corpus does not</td>
       </tr>
       <tr>
         <td>Origin, history and transformation "persistently linked to the data throughout its lifecycle"</td>
         <td>Data standard</td>
         <td>Provenance that survives export and re-sharing (per-claim, not per-document)</td>
-        <td>✅ Strong — this is PDTF's mandatory claim provenance</td>
+        <td>✅ Strong — this is PDTF 1.0's mandatory claim provenance</td>
       </tr>
       <tr>
         <td>Data quality per ISO 8000 / ISO 25012</td>
@@ -221,7 +221,7 @@ import PageMeta from '@/components/PageMeta.astro';
         <td>FAPI · mTLS · ISO 27001 · encryption · monitoring</td>
         <td><strong>Scheme operator only</strong></td>
         <td>—</td>
-        <td>🚫 <strong>Not a PDTF obligation.</strong> Say so plainly.</td>
+        <td>🚫 <strong>Not a SPDTF 2.0 Development obligation.</strong> Say so plainly.</td>
       </tr>
     </tbody>
   </table>
@@ -230,14 +230,14 @@ import PageMeta from '@/components/PageMeta.astro';
 
   <table>
     <thead>
-      <tr><th>Ask</th><th>Layer</th><th>PDTF must be able to encode</th><th>Has it?</th></tr>
+      <tr><th>Ask</th><th>Layer</th><th>What SPDTF 2.0 Development may need to model</th><th>PDTF 1.0 evidence</th></tr>
     </thead>
     <tbody>
       <tr>
         <td><strong>Role assertion</strong> "including the scope of permitted actions"</td>
         <td>Both</td>
         <td>Infrastructure roles (ATP, data holder, relying party, interface body) <em>and</em> a permission scope</td>
-        <td>❌ PDTF has transaction roles only — see <a href="#roles">the role collision</a></td>
+        <td>❌ PDTF 1.0 has transaction roles only — see <a href="#roles">the role collision</a></td>
       </tr>
       <tr>
         <td>Power of Attorney, deputyship, executors as <strong>verifiable delegation credentials</strong></td>
@@ -278,7 +278,7 @@ import PageMeta from '@/components/PageMeta.astro';
       <tr>
         <td>Credential Bill of Materials — per journey step: format, issuer, holder, verifier, <em>assurance type</em>, status endpoints</td>
         <td>Data standard</td>
-        <td>A manifest over PDTF's own credential set</td>
+        <td>A manifest over the PDTF 1.0 credential set</td>
         <td>❌ <strong>Most</strong> ingredients exist (VC types, issuers, Bitstring Status List). <strong>Assurance type does not</strong> — <a href="#assurance">it was removed</a>. A CBOM is still the cheapest high-visibility conformance demonstration available, but it needs SD13 first.</td>
       </tr>
     </tbody>
@@ -287,15 +287,16 @@ import PageMeta from '@/components/PageMeta.astro';
   <h3 id="asks-ch2">Chapter 2 — Governance and legal</h3>
 
   <p>
-    Chapter 2 hits OPDA at <strong>both</strong> layers, because OPDA now owns the property
-    scheme's accreditation criteria. Most of its asks are on OPDA <em>the organisation</em>, not
-    on PDTF the vocabulary — those are set out on
+    Chapter 2 hits OPDA at <strong>both</strong> analytical layers, because OPDA has an internal,
+    prospective role in property scheme accreditation criteria. No property Smart Data scheme has
+    been designated; this does not confer government approval or statutory scheme-body status. Most
+    asks are on OPDA <em>the organisation</em>, not on PDTF 1.0 the vocabulary — those are set out on
     <a href="/dbt-smart-data/governance-compliance">the chapter page</a>. The data-standard residue:
   </p>
 
   <table>
     <thead>
-      <tr><th>Ask</th><th>Layer</th><th>PDTF must be able to encode</th><th>Has it?</th></tr>
+      <tr><th>Ask</th><th>Layer</th><th>What SPDTF 2.0 Development may need to model</th><th>PDTF 1.0 evidence</th></tr>
     </thead>
     <tbody>
       <tr>
@@ -320,7 +321,7 @@ import PageMeta from '@/components/PageMeta.astro';
         <td>Liability allocation (Clause D)</td>
         <td>Scheme rules</td>
         <td>—</td>
-        <td>🚫 PDTF does <strong>not</strong> need a <code>liableParty</code> property. It needs the <em>evidence</em> the rule operates on: who issued a signal, when, at what assurance, and whether a status check happened. <strong>Encode the evidence, not the verdict.</strong></td>
+        <td>🚫 PDTF 1.0 does <strong>not</strong> need a <code>liableParty</code> property. It needs the <em>evidence</em> the rule operates on: who issued a signal, when, at what assurance, and whether a status check happened. <strong>Encode the evidence, not the verdict.</strong></td>
       </tr>
       <tr>
         <td>UKAS-anchored equivalence · appeals · tribunals · annual reports</td>
@@ -342,7 +343,7 @@ import PageMeta from '@/components/PageMeta.astro';
 
   <table>
     <thead>
-      <tr><th>Ask</th><th>Layer</th><th>PDTF must be able to encode</th><th>Has it?</th></tr>
+      <tr><th>Ask</th><th>Layer</th><th>What SPDTF 2.0 Development may need to model</th><th>PDTF 1.0 evidence</th></tr>
     </thead>
     <tbody>
       <tr>
@@ -379,7 +380,7 @@ import PageMeta from '@/components/PageMeta.astro';
         <td>Dashboard layout, plain language, no dark patterns</td>
         <td><strong>Product / UI</strong></td>
         <td>—</td>
-        <td>🚫 No PDTF obligation — <em>but</em> the dashboard's four required views can only be populated from a model that has all four. <strong>The dashboard is theirs; its data dependencies are ours.</strong></td>
+        <td>🚫 No SPDTF 2.0 Development obligation — <em>but</em> the dashboard's four required views can only be populated from a model that has all four. <strong>The dashboard is theirs; its data dependencies are ours.</strong></td>
       </tr>
     </tbody>
   </table>
@@ -390,7 +391,7 @@ import PageMeta from '@/components/PageMeta.astro';
 
   <table>
     <thead>
-      <tr><th>Ask</th><th>Layer</th><th>PDTF must be able to encode</th><th>Has it?</th></tr>
+      <tr><th>Ask</th><th>Layer</th><th>What SPDTF 2.0 Development may need to model</th><th>PDTF 1.0 evidence</th></tr>
     </thead>
     <tbody>
       <tr>
@@ -409,7 +410,7 @@ import PageMeta from '@/components/PageMeta.astro';
         <td>"Whether automation or <strong>AI</strong> has been used" to generate a decision</td>
         <td>Data standard</td>
         <td>A decision/outcome artefact + AI-involvement flag + the model that produced it + human-oversight level</td>
-        <td>❌ <strong>None, and unplanned.</strong> Genuinely new: PDTF has no notion of an actor's <em>output</em> at all — only of property facts.</td>
+        <td>❌ <strong>None, and unplanned.</strong> Genuinely new: PDTF 1.0 has no notion of an actor's <em>output</em> at all — only of property facts.</td>
       </tr>
       <tr>
         <td>Audit record of every access / share / use, supporting dispute resolution</td>
@@ -439,13 +440,13 @@ import PageMeta from '@/components/PageMeta.astro';
         <td>Risk assessed at <strong>use-case</strong> and ecosystem level, not dataset level</td>
         <td>Data standard</td>
         <td>A <code>UseCase</code> class</td>
-        <td>❌ None — <strong>structural mismatch.</strong> PDTF's whole model is property/dataset-centric. Closing this needs a council.</td>
+        <td>❌ None — <strong>structural mismatch.</strong> PDTF 1.0's whole model is property/dataset-centric. Closing this in SPDTF 2.0 Development needs a council.</td>
       </tr>
       <tr>
         <td>Real-time monitoring · dashboards · enforcement · AI inventories</td>
         <td><strong>Scheme operator</strong></td>
         <td>—</td>
-        <td>🚫 Not PDTF's job. <strong>Disclaim these explicitly</strong>, or the standard will be held to them.</td>
+        <td>🚫 Not SPDTF 2.0 Development's job. <strong>Disclaim these explicitly</strong>, or the standard will be held to them.</td>
       </tr>
     </tbody>
   </table>
@@ -460,26 +461,26 @@ import PageMeta from '@/components/PageMeta.astro';
 
   <table>
     <thead>
-      <tr><th>Ask</th><th>Layer</th><th>PDTF must be able to encode</th><th>Has it?</th></tr>
+      <tr><th>Ask</th><th>Layer</th><th>What SPDTF 2.0 Development may need to model</th><th>PDTF 1.0 evidence</th></tr>
     </thead>
     <tbody>
       <tr>
         <td>FAPI · OAuth 2.0 · ISO 27001 · NIST CSF · NCSC CAF baseline</td>
         <td><strong>Scheme operator</strong></td>
         <td>—</td>
-        <td>🚫 Not a PDTF obligation.</td>
+        <td>🚫 Not a SPDTF 2.0 Development obligation.</td>
       </tr>
       <tr>
         <td>Continuous assurance; suspend/restrict participants</td>
         <td><strong>Scheme operator</strong></td>
         <td>—</td>
-        <td>🚫 Not a PDTF obligation.</td>
+        <td>🚫 Not a SPDTF 2.0 Development obligation.</td>
       </tr>
       <tr>
         <td><strong>Trust should be dynamic</strong> — machine-readable suspension status, risk scoring, incident notifications, credential validity</td>
         <td><strong>Both</strong></td>
         <td>The <em>signals</em> are data: participant status, risk score, incident notice, credential validity</td>
-        <td>❌ <strong>This is Chapter 5's one real data-standard ask</strong>, and PDTF cannot emit any of these signals — <a href="/dbt-smart-data/gap-register#sd12">gap SD12</a>. Note this is the chapter with the <strong>live 24 July deadline</strong>.</td>
+        <td>❌ <strong>This is Chapter 5's one real data-standard ask</strong>, and PDTF 1.0 cannot emit any of these signals — <a href="/dbt-smart-data/gap-register#sd12">gap SD12</a>. Note this is the chapter with the <strong>live 24 July deadline</strong>.</td>
       </tr>
     </tbody>
   </table>
@@ -508,7 +509,7 @@ import PageMeta from '@/components/PageMeta.astro';
     <p>
       "Non-digital options for consumer engagement" (Which?, on property) looks like pure UI — but
       a consent captured on <em>paper</em> still needs a machine-readable record, with an
-      attestation of <em>how</em> it was captured. PDTF should be able to say "consent given in
+      attestation of <em>how</em> it was captured. SPDTF 2.0 Development should be able to say "consent given in
       writing, witnessed by X, recorded by Y". A purely-digital model would never think to include
       a <code>consentCaptureMethod</code>.
     </p>
@@ -517,14 +518,14 @@ import PageMeta from '@/components/PageMeta.astro';
   <h2 id="roles">The role-model collision</h2>
 
   <p>
-    Chapter 1's roles and PDTF's roles are <strong>orthogonal axes, not competing lists</strong> —
+    Chapter 1's roles and PDTF 1.0's roles are <strong>orthogonal axes, not competing lists</strong> —
     and this is the single most likely place for a damaging misalignment.
   </p>
 
   <ul>
     <li><strong>DBT's roles are infrastructure roles</strong>, per interaction: data holder, Authorised Third Party (ATP), interface body, relying party, issuer, plus the five DVS provider roles (IDSP, ASP, HSP, OSP, CSP).</li>
     <li>
-      <strong>PDTF's roles are transaction roles</strong>, per person per transaction. Precisely:
+      <strong>PDTF 1.0's roles are transaction roles</strong>, per person per transaction. Precisely:
       <strong>three OWL classes</strong> (<code>opda:Seller</code>, <code>opda:Buyer</code>,
       <code>opda:Proprietor</code> — the last founded by a <em>Proprietorship</em> relator, a
       different axis from Transaction) plus a <strong>12-member SKOS <code>RoleScheme</code></strong>:
@@ -535,7 +536,7 @@ import PageMeta from '@/components/PageMeta.astro';
   </ul>
 
   <p>
-    Note that PDTF has <strong>no bare "Conveyancer"</strong> — it already splits the role by side.
+    Note that PDTF 1.0 has <strong>no bare "Conveyancer"</strong> — it already splits the role by side.
     That is a real modelling asset and exactly the kind of nuance a cross-sector mapping table would
     destroy.
   </p>
@@ -556,15 +557,15 @@ import PageMeta from '@/components/PageMeta.astro';
     column rather than let it be drafted for us.</strong>
   </p>
 
-  <h3 id="assurance">PDTF has no assurance-level vocabulary — it was removed</h3>
+  <h3 id="assurance">PDTF 1.0 has no assurance-level vocabulary — it was removed</h3>
 
   <div class="callout callout--warn">
     <div class="callout__label">Correcting a claim it would be easy to make</div>
     <p>
-      It is tempting to say "PDTF has assurance levels, DVS has assurance levels, therefore we are
+      It is tempting to say "PDTF 1.0 has assurance levels, DVS has assurance levels, therefore we are
       aligned". <strong>That would be false.</strong> <code>opda:assuranceLevel</code> was
       <strong>removed from the corpus on 2026-07-05</strong> (ODR-0009 removal amendment — "zero
-      PDTF schema basis"); the tombstone is still visible in the exemplars. Its values were
+      PDTF schema basis" (exact ODR-0009 wording); the tombstone is still visible in the exemplars. Its values were
       eIDAS-style (<code>Low</code>/<code>Substantial</code>/<code>High</code>), and
       <code>opda:AssuranceLevel</code> now survives only as an orphan UFO annotation with no class
       declaration, no label and no SKOS scheme.
@@ -575,12 +576,12 @@ import PageMeta from '@/components/PageMeta.astro';
     So this is a <strong>gap, not a strength</strong>. Chapter 2 asks for a provenance schema
     carrying "issuer, inputs, timestamps, <strong>assurance level</strong>, and revocation checks";
     Chapter 1 asks for assurance metadata per credential (and the CBOM requires an assurance
-    <em>type</em> per journey step). PDTF cannot currently express any of it.
+    <em>type</em> per journey step). PDTF 1.0 cannot currently express any of it.
   </p>
 
   <p>
     That said, the <em>conceptual</em> point still stands and is worth making to DBT, because the
-    three ladders genuinely measure different things and a future PDTF assurance vocabulary must not
+    three ladders genuinely measure different things and a future SPDTF 2.0 Development assurance vocabulary must not
     be conflated with the identity ones:
   </p>
 
@@ -591,13 +592,13 @@ import PageMeta from '@/components/PageMeta.astro';
     <tbody>
       <tr><td><strong>GPG 45</strong> identity confidence</td><td>Is this person who they say they are?</td><td>a person</td></tr>
       <tr><td><strong>GPG 44</strong> authentication strength</td><td>Is this the same person as last time?</td><td>a session</td></tr>
-      <tr><td><em>An evidential-provenance scale</em> (which PDTF <strong>does not have</strong>)</td><td>How authoritative is this <em>fact about this house</em>?</td><td>a claim</td></tr>
+      <tr><td><em>An evidential-provenance scale</em> (which PDTF 1.0 <strong>does not have</strong>)</td><td>How authoritative is this <em>fact about this house</em>?</td><td>a claim</td></tr>
     </tbody>
   </table>
 
   <p>
     The opportunity is real but <strong>unbuilt</strong>: no other sector in the Guidebook has an
-    evidential-provenance ladder, and PDTF's mandatory claim provenance is the natural substrate for
+    evidential-provenance ladder, and PDTF 1.0's mandatory claim provenance is the natural substrate for
     one. But it must be proposed as <em>future work</em> (<a href="/dbt-smart-data/gap-register#sd13">gap SD13</a>),
     never presented as something OPDA already ships.
   </p>
@@ -606,7 +607,7 @@ import PageMeta from '@/components/PageMeta.astro';
   <ul>
     <li><a href="/dbt-smart-data/gap-register">Gap register</a> — the same gaps, ranked by effort to close, with the closing move for each.</li>
     <li><a href="/modelling/standards-stack">Standards stack</a> — the ontology's planned layers (the plan this page checks reality against).</li>
-    <li><a href="/ontology/provenance">Ontology — provenance</a> — the claim-provenance machinery PDTF already ships.</li>
-    <li><a href="/governance/data-security">Data security framework</a> — PDTF's own controls.</li>
+    <li><a href="/ontology/provenance">Ontology — provenance</a> — the claim-provenance machinery PDTF 1.0 already ships.</li>
+    <li><a href="/governance/data-security">Data security framework</a> — PDTF 1.0's published controls.</li>
   </ul>
 </Layout>

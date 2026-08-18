@@ -18,8 +18,10 @@ const SCOPING_DOCX = `${BASE}/Scoping Paper - Accountability and Liability acros
   <p class="lead">
     The <em>institutional</em> layer: who has authority, how participants are accredited and held to
     account, and how sector rules meet cross-sector expectations. This is the chapter that lands on
-    OPDA hardest — because OPDA now owns the property scheme's accreditation criteria, most of its
-    asks are on <strong>OPDA the organisation</strong>, not on PDTF the vocabulary.
+    OPDA hardest — because OPDA has taken on an internal, prospective role in property scheme
+    accreditation criteria; no property Smart Data scheme has been designated, and this does not
+    confer government approval or statutory scheme-body status. Most asks are on <strong>OPDA the
+    organisation</strong>, not on the PDTF 1.0 vocabulary.
   </p>
 
   <ul>
@@ -50,8 +52,8 @@ const SCOPING_DOCX = `${BASE}/Scoping Paper - Accountability and Liability acros
     <thead><tr><th>Layer</th><th>Governs</th><th>Who holds it for property?</th></tr></thead>
     <tbody>
       <tr><td><strong>1. Policy</strong></td><td>Statutory basis, scheme scope, permitted activities</td><td><strong>Not OPDA</strong> — DBT/MHCLG. Currently <em>undefined</em> for property.</td></tr>
-      <tr><td><strong>2. Governance</strong></td><td>Scheme rule-setting, accreditation, trust-registry oversight, liability standards</td><td><strong>OPDA</strong> — newly.</td></tr>
-      <tr><td><strong>3. Implementation</strong></td><td>Interface body operation, onboarding, conformance tooling, technical standards</td><td><strong>OPDA</strong> — PDTF + the conformance scheme.</td></tr>
+      <tr><td><strong>2. Governance</strong></td><td>Scheme rule-setting, accreditation, trust-registry oversight, liability standards</td><td><strong>OPDA's prospective/internal role</strong> — not statutory authority.</td></tr>
+      <tr><td><strong>3. Implementation</strong></td><td>Interface body operation, onboarding, conformance tooling, technical standards</td><td><strong>OPDA's current programme work</strong> — PDTF 1.0 plus the conformance scheme; not government approval.</td></tr>
       <tr><td><strong>4. Operational</strong></td><td>Day-to-day functioning by ATPs, data holders, issuers</td><td>OPDA's members.</td></tr>
       <tr><td><strong>5. Enforcement</strong></td><td>Investigation, sanctions, appeals</td><td><strong>OPDA</strong> — property has no statutory Smart Data regulator.</td></tr>
     </tbody>
@@ -151,7 +153,7 @@ const SCOPING_DOCX = `${BASE}/Scoping Paper - Accountability and Liability acros
       identifies:
     </p>
     <ul>
-      <li><strong>OPDA as issuer.</strong> OPDA's Governance Authority signs the Trust Registry. If OPDA asserts a firm is accredited when it is not — or fails to reflect a suspension "promptly across all relying parties" — the exposure is OPDA's. The guarantee cap does nothing about it.</li>
+      <li><strong>OPDA as issuer.</strong> OPDA's Governance Authority signs the OPDA-internal Trust Registry. If OPDA asserts a firm is accredited when it is not — or fails to reflect a suspension "promptly across all relying parties" — the exposure is OPDA's. This is not a government designation, and the guarantee cap does nothing about it.</li>
       <li><strong>OPDA as governance body.</strong> Governance-design failure is <em>itself</em> in the liability chain, per the quote above.</li>
     </ul>
     <p>
@@ -162,7 +164,7 @@ const SCOPING_DOCX = `${BASE}/Scoping Paper - Accountability and Liability acros
     </p>
   </div>
 
-  <h2 id="pdtf">What this means for PDTF</h2>
+  <h2 id="pdtf">What this means for SPDTF 2.0 Development</h2>
 
   <p>
     Most of Chapter 2 is <em>not</em> a data-modelling problem. The data-standard residue is on
@@ -173,12 +175,12 @@ const SCOPING_DOCX = `${BASE}/Scoping Paper - Accountability and Liability acros
     <li>
       <strong>Signed, provenance-rich computed results</strong> retaining "issuer, inputs, methods,
       timestamps and purpose". <em>A property pack is exactly this.</em> If the pack is wrong but
-      every source claim was right, who is accountable? PDTF models source claims well and derived
-      claims not at all — <a href="/dbt-smart-data/gap-register#ranked">gap SD4</a>, simultaneously
+      every source claim was right, who is accountable? PDTF 1.0 models source claims well and derived
+      claims not at all — a question for SPDTF 2.0 Development (<a href="/dbt-smart-data/gap-register#ranked">gap SD4</a>), simultaneously
       OPDA's largest modelling gap and its largest liability gap.
     </li>
     <li>
-      <strong>Liability needs evidence, not a verdict.</strong> PDTF does <em>not</em> need a
+      <strong>Liability needs evidence, not a verdict.</strong> PDTF 1.0 does <em>not</em> need a
       <code>liableParty</code> property — Clause D allocates liability by rule. What the standard
       must supply is what the rule operates on: who issued a signal, when, at what assurance, and
       whether a status check happened. <strong>Encode the evidence, not the verdict.</strong>
