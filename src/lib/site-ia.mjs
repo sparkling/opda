@@ -143,6 +143,15 @@ export const PRESERVATION_LEDGER = Object.freeze([
     disposition: 'regenerate-equivalently',
   },
   {
+    currentPath: '/v2/**',
+    kind: 'SPDTF 2.0 development input',
+    owner: 'spdtf-2',
+    preservedAt: '/v2/**',
+    consumers: ['candidate register', 'immutable seed references', 'legacy links'],
+    verification: 'stable route/representation identity and reframe-equivalent context; no duplicate seed',
+    disposition: 'reframe-equivalent',
+  },
+  {
     currentPath: '/pdtf/**, /ontology/tools/** and generated semantic routes',
     kind: 'stable-technical-identifiers',
     owner: 'pdtf-1',
