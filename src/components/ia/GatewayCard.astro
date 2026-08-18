@@ -1,0 +1,45 @@
+---
+interface Props {
+  href: string;
+  title: string;
+  description: string;
+  eyebrow?: string;
+}
+
+const { href, title, description, eyebrow = 'Explore' } = Astro.props;
+---
+
+<a class="ia-gateway-card" href={href}>
+  <span class="ia-gateway-card__eyebrow">{eyebrow}</span>
+  <h3>{title}</h3>
+  <p>{description}</p>
+  <span class="ia-gateway-card__link">Open page <span aria-hidden="true">→</span></span>
+</a>
+
+<style>
+  .ia-gateway-card {
+    display: flex;
+    flex-direction: column;
+    min-height: 11rem;
+    padding: 1.25rem;
+    border: 1px solid var(--color-border, #d6d9de);
+    border-radius: 0.35rem;
+    background: var(--color-surface-raised, #fff);
+    color: inherit;
+    text-decoration: none;
+    transition: border-color 140ms ease, transform 140ms ease, box-shadow 140ms ease;
+  }
+
+  .ia-gateway-card:hover,
+  .ia-gateway-card:focus-visible {
+    border-color: var(--color-brand, #135f75);
+    box-shadow: 0 0.35rem 1rem rgb(15 35 48 / 12%);
+    transform: translateY(-2px);
+  }
+
+  .ia-gateway-card:focus-visible { outline: 3px solid var(--color-focus, #a94600); outline-offset: 3px; }
+  .ia-gateway-card__eyebrow { color: var(--color-brand, #135f75); font-size: 0.75rem; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; }
+  .ia-gateway-card h3 { margin: 0.4rem 0 0.45rem; }
+  .ia-gateway-card p { margin: 0; color: var(--color-text-muted, #5b6470); line-height: 1.5; }
+  .ia-gateway-card__link { margin-top: auto; padding-top: 1rem; color: var(--color-brand, #135f75); font-weight: 700; }
+</style>

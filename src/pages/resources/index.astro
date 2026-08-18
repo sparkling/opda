@@ -1,0 +1,60 @@
+---
+import Layout from '@/layouts/Layout.astro';
+import PageMeta from '@/components/PageMeta.astro';
+import AuthorityPanel from '@/components/ia/AuthorityPanel.astro';
+import GatewayCard from '@/components/ia/GatewayCard.astro';
+---
+
+<Layout
+  title="Resources"
+  description="The OPDA source registry and resource gateway for participant, programme, policy, technical and historical records."
+>
+  <PageMeta category="Resources" variant="brand" updated="Source registry and resource gateway · 2026-08-18" />
+  <h1>Resources</h1>
+  <p class="lead">
+    Resources hold the evidence that people can inspect, cite and reuse: source records,
+    participant material, programme decisions, external standards and policy, recordings,
+    transcripts and historical snapshots.
+  </p>
+
+  <AuthorityPanel destination="resources" />
+
+  <div class="callout callout--key">
+    <p class="callout__label">Evidence is not authority</p>
+    <p>
+      Listing or downloading a source does not make it an adopted standard. Every record
+      keeps its attribution, rights, provenance and source-specific maturity. Follow a
+      claim from its source through candidate, review and decision records.
+    </p>
+  </div>
+
+  <h2 id="browse">Browse the resource collections</h2>
+  <div class="card-grid">
+    <GatewayCard href="/library/resources" title="Source registry" eyebrow="Sources" description="Browse the preserved source archive with logical paths, provenance and download links." />
+    <GatewayCard href="/library" title="Programme library" eyebrow="Programme records" description="Programme documents, external references, meeting records and transcripts." />
+    <GatewayCard href="/glossary" title="Glossary and terminology" eyebrow="Semantic utility" description="Find terms while retaining their work-area, source and maturity context." />
+    <GatewayCard href="/engagement/transcripts" title="Meetings and recordings" eyebrow="Participant records" description="Consent-aware meeting records, recordings and transcripts for the programme." />
+    <GatewayCard href="/governance" title="Decisions and governance" eyebrow="Decision records" description="Use Governance for authority, lifecycle and decision rights; raw evidence remains attributable here." />
+    <GatewayCard href="/v2" title="SPDTF 2.0 development input" eyebrow="Retained machine artefact" description="The Property Pack pre-draft is structured and reviewable, but non-normative and not working-group approved." />
+  </div>
+
+  <h2 id="official">Official Smart Data sources</h2>
+  <p>
+    The official government sources below provide policy and prospective-scheme context;
+    they are not OPDA decision records:
+  </p>
+  <ul>
+    <li><a href="https://www.gov.uk/government/publications/smart-data-strategy" rel="noreferrer">Smart Data 2035</a> — the cross-economy direction.</li>
+    <li><a href="https://www.gov.uk/government/calls-for-evidence/smart-data-multi-sector-call-for-evidence" rel="noreferrer">Smart Data multi-sector call for evidence</a> — feasibility and scheme-design evidence gathering.</li>
+    <li><a href="https://www.gov.uk/government/consultations/home-buying-and-selling-reform/outcome/home-buying-and-selling-reform-roadmap" rel="noreferrer">Home Buying and Selling Reform Roadmap</a> — property-sector context and future consultation work.</li>
+  </ul>
+
+  <h2 id="preservation">Preservation and traceability</h2>
+  <p>
+    Existing <code>/resources/**</code>, <code>/resource?path=source/**</code>, data files,
+    council records, technical artefacts, support assets and runtime services remain
+    retained inputs. Paths, checksums, consumers, rights and open/download behaviour are
+    part of the preservation contract.
+  </p>
+  <p><a href="/resource">Open the existing resource viewer</a> · <a href="/library/document-archive">Browse the document archive</a></p>
+</Layout>

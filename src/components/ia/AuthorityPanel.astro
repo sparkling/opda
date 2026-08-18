@@ -1,0 +1,102 @@
+---
+import { AUTHORITY_BY_DESTINATION } from '@/lib/site-ia.mjs';
+
+type Destination = keyof typeof AUTHORITY_BY_DESTINATION;
+
+interface Props {
+  destination: Destination;
+  label?: string;
+}
+
+const { destination, label = 'Authority and status' } = Astro.props;
+const authority = AUTHORITY_BY_DESTINATION[destination];
+if (!authority) throw new Error(`Unknown information-architecture destination: ${destination}`);
+
+const fields = [
+  ['Work area', authority.workArea],
+  ['Authority', authority.authority],
+  ['Maturity', authority.maturity],
+  ['Version', authority.version],
+  ['Provenance', authority.provenance],
+] as const;
+---
+
+<aside class="ia-authority" aria-label={label}>
+  <div class="ia-authority__heading">
+    <p class="overline">{label}</p>
+    <p class="ia-authority__note">Read the words; colour is only a visual cue.</p>
+  </div>
+  <dl class="ia-authority__grid">
+    {fields.map(([name, value]) => (
+      <div class="ia-authority__field">
+        <dt>{name}</dt>
+        <dd>{value}</dd>
+      </div>
+    ))}
+  </dl>
+</aside>
+
+<style>
+  .ia-authority {
+    margin: 1.5rem 0 2rem;
+    padding: 1.1rem 1.25rem;
+    border: 1px solid var(--color-border, #d6d9de);
+    border-left: 4px solid var(--color-brand, #135f75);
+    border-radius: 0.35rem;
+    background: color-mix(in srgb, var(--color-surface-raised, #fff) 92%, var(--color-brand, #135f75));
+  }
+
+  .ia-authority__heading {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 1rem;
+    margin-bottom: 0.8rem;
+  }
+
+  .ia-authority__heading .overline { margin: 0; }
+
+  .ia-authority__note {
+    margin: 0;
+    color: var(--color-text-muted, #5b6470);
+    font-size: 0.78rem;
+  }
+
+  .ia-authority__grid {
+    display: grid;
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+    gap: 0.75rem;
+    margin: 0;
+  }
+
+  .ia-authority__field {
+    min-width: 0;
+    padding-top: 0.65rem;
+    border-top: 1px solid var(--color-border, #d6d9de);
+  }
+
+  .ia-authority dt {
+    color: var(--color-text-muted, #5b6470);
+    font-size: 0.74rem;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+  }
+
+  .ia-authority dd {
+    margin: 0.3rem 0 0;
+    color: var(--color-text, #17202a);
+    font-size: 0.9rem;
+    line-height: 1.45;
+  }
+
+  @media (max-width: 800px) {
+    .ia-authority__heading { display: block; }
+    .ia-authority__note { margin-top: 0.35rem; }
+    .ia-authority__grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  }
+
+  @media (max-width: 480px) {
+    .ia-authority__grid { grid-template-columns: 1fr; }
+  }
+</style>

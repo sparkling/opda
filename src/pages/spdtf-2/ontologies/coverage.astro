@@ -1,0 +1,59 @@
+---
+import Layout from '@/layouts/Layout.astro';
+import PageMeta from '@/components/PageMeta.astro';
+import AuthorityPanel from '@/components/ia/AuthorityPanel.astro';
+import JourneyNav from '@/components/ia/JourneyNav.astro';
+---
+
+<Layout title="Coverage crosswalk" description="The separate four-lens, 11-theme workshop view and eight formal ontology concerns for SPDTF 2.0.">
+  <PageMeta category="Ontology journey" variant="brand" updated="SPDTF 2.0 development · coverage framework" />
+  <h1>Coverage crosswalk</h1>
+  <p class="lead">
+    The workshop uses four plain-language lenses and eleven themes to help participants
+    spot gaps. The formal ontology framework has eight concerns. These are related but
+    distinct views; they are not one taxonomy or a set of eight mini-ontologies.
+  </p>
+  <AuthorityPanel destination="spdtf-2" />
+  <JourneyNav />
+
+  <h2 id="workshop">Four lenses and eleven workshop themes</h2>
+  <table>
+    <caption>Participant-facing completeness lens</caption>
+    <thead><tr><th scope="col">Lens</th><th scope="col">Themes</th><th scope="col">Formal relationship</th></tr></thead>
+    <tbody>
+      <tr><th scope="row">Meaning</th><td>Domain structure; Controlled vocabulary; Taxonomy; Classification</td><td>Maps to the first three formal concerns.</td></tr>
+      <tr><th scope="row">Trust</th><td>Governance and compliance; Provenance and quality; Sensitivity and access</td><td>Governance is an operating concern; the other two map to formal concerns.</td></tr>
+      <tr><th scope="row">Correctness</th><td>Validation constraints; Time and history</td><td>Maps to validation and temporal concerns.</td></tr>
+      <tr><th scope="row">Exchange</th><td>Cross-domain mappings; Common ontology</td><td>Mapping is formal; the common ontology is a small architectural boundary, not a ninth concern.</td></tr>
+    </tbody>
+  </table>
+
+  <h2 id="formal">Eight formal ontology concerns</h2>
+  <table>
+    <caption>Each concern receives one recorded disposition</caption>
+    <thead><tr><th scope="col">Concern</th><th scope="col">Business question</th></tr></thead>
+    <tbody>
+      <tr><th scope="row">Domain structure</th><td>What things, identities, relationships and rules matter here?</td></tr>
+      <tr><th scope="row">Vocabulary and taxonomy</th><td>Which terms, values, codes and broader/narrower structures are governed?</td></tr>
+      <tr><th scope="row">Classification metadata</th><td>Which subject, lifecycle, regulatory and status facets are needed?</td></tr>
+      <tr><th scope="row">Provenance and quality</th><td>What source, attribution, derivation, confidence, lineage and quality evidence is required?</td></tr>
+      <tr><th scope="row">Access control and data sensitivity</th><td>Which sensitivity, purpose, consent, role and authorisation semantics apply?</td></tr>
+      <tr><th scope="row">Validation and constraints</th><td>Which completeness, consistency and business rules can be tested?</td></tr>
+      <tr><th scope="row">Temporal state and history</th><td>How are valid time, recorded time, state changes and version chains represented?</td></tr>
+      <tr><th scope="row">Cross-domain mappings</th><td>Which meaning-preserving translations are needed at context boundaries?</td></tr>
+    </tbody>
+  </table>
+
+  <h2 id="dispositions">Four allowed dispositions</h2>
+  <ul>
+    <li><strong>model here</strong> — the group owns substantive domain content;</li>
+    <li><strong>reuse shared</strong> — the group uses a common or externally governed model;</li>
+    <li><strong>boundary contribution</strong> — the group supplies requirements or mappings to Interoperability;</li>
+    <li><strong>not applicable</strong> — only with a recorded rationale.</li>
+  </ul>
+  <p>
+    The assessment travels with the semantic package and is revisited at each candidate
+    version. It prevents silent gaps without forcing every group to duplicate common terms.
+  </p>
+  <p><a href="/spdtf-2/ontologies/standards">Next: standards, vocabularies and frameworks →</a></p>
+</Layout>

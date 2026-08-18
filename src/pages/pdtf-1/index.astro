@@ -1,0 +1,60 @@
+---
+import Layout from '@/layouts/Layout.astro';
+import PageMeta from '@/components/PageMeta.astro';
+import AuthorityPanel from '@/components/ia/AuthorityPanel.astro';
+import GatewayCard from '@/components/ia/GatewayCard.astro';
+---
+
+<Layout
+  title="PDTF 1.0"
+  description="The published PDTF 1.0 schema implementation and derived semantic artefacts, each with its own status and maturity."
+>
+  <PageMeta category="PDTF 1.0" variant="info" updated="Published implementation · status varies by artefact" />
+  <h1>PDTF 1.0</h1>
+  <p class="lead">
+    PDTF 1.0 is the published schema implementation and the semantic corpus derived from
+    it. It remains directly findable for implementers while the programme continues into
+    SPDTF 2.0 development.
+  </p>
+
+  <AuthorityPanel destination="pdtf-1" />
+
+  <div class="callout callout--key">
+    <p class="callout__label">Read the status carefully</p>
+    <p>
+      The PDTF 1.0 label does not grant inherited authority to every child artefact.
+      Individual ontologies, models, mappings and stubs retain their own maturity and
+      review status. No replacement has been authorised, and this page does not define a
+      support period.
+    </p>
+  </div>
+
+  <h2 id="contents">Published implementation and derived views</h2>
+  <div class="card-grid">
+    <GatewayCard href="/schema" title="Schemas and overlays" eyebrow="Implementation" description="The published JSON Schema composition and overlay views used by implementers." />
+    <GatewayCard href="/implementation" title="Implementation guidance" eyebrow="Implementation" description="Quickstart, validation and developer guidance for using the published schema implementation." />
+    <GatewayCard href="/model" title="Model views" eyebrow="Derived artefact" description="Logical, physical and concept views with their own status and provenance." />
+    <GatewayCard href="/ontology" title="PDTF 1.0-derived ontology" eyebrow="Derived artefact" description="The ontology and technical renderings derived from the existing corpus; not SPDTF 2.0 authority." />
+    <GatewayCard href="/mapping" title="Qualified mappings" eyebrow="Derived artefact" description="RML schema–ontology verification and related migration evidence, labelled by meaning." />
+    <GatewayCard href="/adoption" title="Adoption evidence" eyebrow="Evidence" description="Member implementations, pilots and ecosystem evidence for the published implementation." />
+  </div>
+
+  <h2 id="continuation">Continuation into SPDTF 2.0</h2>
+  <p>
+    Existing dictionaries, glossary entries, documentation, schemas and mappings are
+    attributed evidence for the next modelling method. Schemas can inform compatibility,
+    constraints, coverage and migration; they do not determine new domain identities or
+    relationships simply because those meanings were encoded in a document tree.
+  </p>
+  <p>
+    <a href="/spdtf-2">Read the SPDTF 2.0 development method</a> or
+    <a href="/spdtf-2/ontologies/evidence-and-mappings">trace how evidence and mappings are qualified</a>.
+  </p>
+
+  <h2 id="legacy">Retained routes</h2>
+  <p>
+    Existing <code>/pdtf/**</code>, schema, ontology, mapping, model, implementation and
+    adoption routes are retained inputs and implementation views. They are not moved,
+    deleted or redirected by this gateway.
+  </p>
+</Layout>

@@ -1,0 +1,52 @@
+---
+import Layout from '@/layouts/Layout.astro';
+import PageMeta from '@/components/PageMeta.astro';
+import AuthorityPanel from '@/components/ia/AuthorityPanel.astro';
+import JourneyNav from '@/components/ia/JourneyNav.astro';
+---
+
+<Layout title="Why ontologies" description="Why SPDTF 2.0 uses ontologies alongside schemas, in business language.">
+  <PageMeta category="Ontology journey" variant="brand" updated="SPDTF 2.0 development · candidate method" />
+  <h1>Why ontologies?</h1>
+  <p class="lead">
+    A form or JSON Schema tells a producer where a value belongs in one exchange. An
+    ontology helps people and systems agree what a thing means, how it is identified and
+    how it relates to other things across documents, organisations and professions.
+  </p>
+  <AuthorityPanel destination="spdtf-2" />
+  <JourneyNav />
+
+  <h2 id="business-question">The business question</h2>
+  <p>
+    Property work crosses lending, conveyancing, agency, surveying, data services and
+    technology. The same word can carry a useful local meaning in one context and a
+    different meaning in another. Ontology work makes those meanings explicit before an
+    exchange contract silently flattens them.
+  </p>
+  <table>
+    <caption>What an ontology contributes</caption>
+    <thead><tr><th scope="col">Need</th><th scope="col">Contribution</th></tr></thead>
+    <tbody>
+      <tr><th scope="row">Shared meaning</th><td>Definitions, identities, relationships and rules that do not depend on one document tree.</td></tr>
+      <tr><th scope="row">Local precision</th><td>Context-owned models let professions keep distinctions that matter to their work.</td></tr>
+      <tr><th scope="row">Safe exchange</th><td>A small common boundary and qualified mappings explain what crosses a context boundary.</td></tr>
+      <tr><th scope="row">Traceability</th><td>Terms and decisions can link to evidence, provenance, questions, review and dispositions.</td></tr>
+      <tr><th scope="row">Reusable delivery</th><td>One governed semantic package can support tested schemas, forms, APIs, validation and documentation.</td></tr>
+    </tbody>
+  </table>
+
+  <h2 id="limits">What an ontology does not do</h2>
+  <ul>
+    <li>It does not make source data true or decide that a claim is trustworthy.</li>
+    <li>It does not approve a standard, grant runtime access or implement authorisation.</li>
+    <li>It does not guarantee that a generated schema or form is a correct projection.</li>
+    <li>It does not replace practitioners: working groups judge meaning and governance records promotion.</li>
+  </ul>
+  <p>
+    Deterministic checks prove only the rules they execute. The authority for domain
+    meaning remains with the relevant human working group.
+  </p>
+
+  <h2 id="next">Continue the journey</h2>
+  <p><a href="/spdtf-2/ontologies/semantic-package">See the six-part semantic package →</a></p>
+</Layout>

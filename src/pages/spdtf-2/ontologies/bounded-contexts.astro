@@ -1,0 +1,64 @@
+---
+import Layout from '@/layouts/Layout.astro';
+import PageMeta from '@/components/PageMeta.astro';
+import AuthorityPanel from '@/components/ia/AuthorityPanel.astro';
+import JourneyNav from '@/components/ia/JourneyNav.astro';
+---
+
+<Layout title="Bounded contexts and common boundary" description="How SPDTF 2.0 working groups retain local meaning and agree a small interoperability boundary.">
+  <PageMeta category="Ontology journey" variant="brand" updated="SPDTF 2.0 development · context ownership" />
+  <h1>Bounded contexts and the common boundary</h1>
+  <p class="lead">
+    A bounded context is the boundary within which a particular model and language are
+    meaningful. SPDTF 2.0 starts with context-owned evidence, then makes the agreements
+    between contexts explicit instead of forcing one universal definition too early.
+  </p>
+  <AuthorityPanel destination="spdtf-2" />
+  <JourneyNav />
+
+  <h2 id="contexts">Context ownership</h2>
+  <table>
+    <caption>Initial working-group contexts</caption>
+    <thead><tr><th scope="col">Context</th><th scope="col">Illustrative scope</th></tr></thead>
+    <tbody>
+      <tr><th scope="row">Finance and Banking</th><td>Mortgage journey, lending decisions, parties, evidence, risk and finance-data exchange.</td></tr>
+      <tr><th scope="row">Conveyancing</th><td>Instruction, legal transfer, enquiries, searches, exchange and completion.</td></tr>
+      <tr><th scope="row">Estate Agency</th><td>Marketing, listings, material information, viewings, offers and seller information.</td></tr>
+      <tr><th scope="row">Surveying and Valuation</th><td>Inspection, condition, valuation, professional evidence and property risk.</td></tr>
+      <tr><th scope="row">Property Data Services</th><td>Registries, searches, authoritative sources, provenance, currency and reuse.</td></tr>
+      <tr><th scope="row">Property Technology</th><td>Platforms, workflow, integration, APIs, implementation and operational feedback.</td></tr>
+      <tr><th scope="row">DBT Smart Data</th><td>OPDA-internal scheme context for participants, roles, trust, consent, authorisation, accreditation, liability and cross-sector alignment.</td></tr>
+    </tbody>
+  </table>
+  <p>
+    The DBT Smart Data group is not asserted to be another property bounded context and
+    is not a government-established group. It supplies scheme-level questions without
+    redefining meanings owned by the property groups.
+  </p>
+
+  <h2 id="interoperability">The small common boundary</h2>
+  <p>
+    The Interoperability Working Group is a peer of the domain groups. It owns only what
+    is genuinely needed for exchange across boundaries:
+  </p>
+  <ul>
+    <li>a deliberately small common boundary ontology;</li>
+    <li>a context map showing where meanings originate and which group owns a decision;</li>
+    <li>qualified mappings between related local terms, vocabularies and taxonomies;</li>
+    <li>shared identifier, provenance, versioning and change conventions where needed.</li>
+  </ul>
+  <p>
+    A concept belongs in the common boundary because multiple contexts need a stable
+    exchange agreement, not because centralisation is convenient. A boundary agreement is
+    not a redesign of a domain model.
+  </p>
+
+  <h2 id="evidence">Evidence becomes a candidate</h2>
+  <p>
+    Participants bring language, rules, examples, documents and scenarios. Facilitators
+    separate context-owned evidence from cross-context questions. Candidates keep the
+    source, open questions, review evidence and disposition that explain how a meaning
+    was proposed.
+  </p>
+  <p><a href="/spdtf-2/ontologies/coverage">Next: coverage crosswalk →</a></p>
+</Layout>
