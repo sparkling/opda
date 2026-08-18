@@ -18,8 +18,8 @@ const WHICH_DOCX = `${BASE}/Which response Chapter 3 to the call for evidence fo
   <p class="lead">
     The chapter most likely to be waved away as "just UX, not our problem". It is not. Consent,
     withdrawal and delegation leave <strong>data</strong> trails that a standard must be able to
-    represent — and this chapter, read carefully, over-determines a consent-record model that PDTF
-    does not have.
+    represent — and this chapter, read carefully, raises a consent-record model for SPDTF 2.0 Development
+    that the PDTF 1.0 baseline does not have.
   </p>
 
   <ul>
@@ -79,7 +79,7 @@ const WHICH_DOCX = `${BASE}/Which response Chapter 3 to the call for evidence fo
 
   <p>
     The chapter never says "data model". But Clause A plus §3.1 plus §2.3, read together,
-    over-determine one. This is the most valuable thing in the chapter, and PDTF today can satisfy
+    over-determine one. This is the most valuable thing in the chapter, and PDTF 1.0 today can satisfy
     roughly one line of it.
   </p>
 
@@ -105,7 +105,7 @@ const WHICH_DOCX = `${BASE}/Which response Chapter 3 to the call for evidence fo
 
   <h3>Scope, purpose, and time</h3>
   <ul>
-    <li><strong>Scope</strong> — a machine-checkable selector over PDTF's own structure (paths, classes, property IRIs), not free text. This is the join between the consent layer and the property-data layer. <em>If PDTF does not give consent a stable vocabulary of things-to-consent-to, every scheme invents its own and the chapter's "alignment of meaning" fails at exactly the point it matters.</em></li>
+    <li><strong>Scope</strong> — a machine-checkable selector over the PDTF 1.0 structure (paths, classes, property IRIs), not free text. This is the join between the consent layer and the property-data layer. <em>If SPDTF 2.0 Development does not give consent a stable vocabulary of things-to-consent-to, every scheme invents its own and the chapter's "alignment of meaning" fails at exactly the point it matters.</em></li>
     <li><strong>Purpose</strong> — a controlled vocabulary (conveyancing, mortgage underwriting, valuation, AML/KYC, insurance, marketing…). Purpose limitation is unenforceable without it.</li>
     <li><strong>Time</strong> — <code>validFrom</code>/<code>validUntil</code>, with <code>validUntil</code> <strong>required</strong>: the chapter explicitly warns that default states "must not lead to unintended ongoing data sharing". <em>A standard that permits an absent expiry enables the harm.</em></li>
   </ul>
@@ -120,7 +120,7 @@ const WHICH_DOCX = `${BASE}/Which response Chapter 3 to the call for evidence fo
   <p>
     <strong>A permission-only model cannot say: "you may no longer receive this, and you must still
     keep secret what you already received."</strong> That is what ODRL <code>Duty</code> is for —
-    and ODRL has <em>zero</em> occurrences in PDTF's corpus.
+    and ODRL has <em>zero</em> occurrences in the PDTF 1.0 corpus.
   </p>
 
   <h3>Withdrawal is an event, not a flipped boolean</h3>
@@ -140,7 +140,7 @@ const WHICH_DOCX = `${BASE}/Which response Chapter 3 to the call for evidence fo
       consent" cannot mean "unshare". The chapter's own §2.3 and §3.1 imply the answer — withdrawal
       terminates <em>future</em> sharing and converts the recipient's position into a
       <em>duty-bearing</em> one — but it never says so. A scheme reading only Clause A could
-      reasonably build something incoherent. <strong>PDTF should model the distinction rather than
+      reasonably build something incoherent. <strong>SPDTF 2.0 Development should model the distinction rather than
       wait for it.</strong>
     </p>
   </div>
@@ -158,7 +158,7 @@ const WHICH_DOCX = `${BASE}/Which response Chapter 3 to the call for evidence fo
     Chapter 3 requires that, for any datum in a property transaction, a machine can answer:
     <em>who consented to this being here, under what authority, for what purpose, until when, has
     that been withdrawn, what obligations survive the withdrawal, who is accountable for the datum's
-    accuracy, and who has relied on the identity check behind it</em> — and PDTF today can answer
+    accuracy, and who has relied on the identity check behind it</em> — and PDTF 1.0 today can answer
     roughly <strong>one</strong> of those nine.
   </p>
 
@@ -172,19 +172,19 @@ const WHICH_DOCX = `${BASE}/Which response Chapter 3 to the call for evidence fo
 
   <ul>
     <li><strong>It wants requirements, not SHOULDs.</strong> "Clear requirements in the guidebook"; standards "universally adopted by service providers"; regulatory intervention for vulnerable people. <em>That is the live fault line with the chapter's non-prescriptive posture.</em></li>
-    <li><strong>On property specifically</strong> it asks for: clear and accessible information <strong>including non-digital options</strong>; and — directly PDTF's remit — <em>"Data sources must be trusted, and consistent data standards must be used for comparisons between datasets and interoperability across systems."</em> <strong>On the data-standards question, Which? is an ally.</strong></li>
+    <li><strong>On property specifically</strong> it asks for: clear and accessible information <strong>including non-digital options</strong>; and — directly within the PDTF 1.0 data-standard remit — <em>"Data sources must be trusted, and consistent data standards must be used for comparisons between datasets and interoperability across systems."</em> <strong>On the data-standards question, Which? is an ally.</strong></li>
     <li><strong>The harm the chapter has no answer to.</strong> Its Financial Inclusion Centre piece argues that richer shared data <em>enables finer, discriminatory segmentation</em> — a harm that transparency and user control do not fix. In property it manifests as differential mortgage and insurance pricing. Neither DBT nor OPDA currently has a position. <em>Worth having one before being asked.</em></li>
   </ul>
 
-  <h2 id="pdtf">What this means for PDTF</h2>
+  <h2 id="pdtf">What this means for SPDTF 2.0 Development</h2>
 
   <p>Full table on <a href="/dbt-smart-data/pdtf-overlap#asks-ch3">the overlap page</a>. In short:</p>
 
   <ul>
     <li>The entire consent/delegation/withdrawal cluster is <a href="/dbt-smart-data/gap-register#ranked">gap SD5</a> — the largest hole, and it needs ODRL, which the corpus does not have.</li>
     <li>The "verified / self-reported / derived" provenance signal needs the origin facet — <a href="/dbt-smart-data/gap-register#ranked">gap SD3</a>, and the cheapest thing on the register.</li>
-    <li><strong>The dashboard is theirs; its data dependencies are ours.</strong> Chapter 3's required dashboard views (active/expired/withdrawn permissions, who holds data, change history, act to revoke) can only be populated from a model that has all four. The <em>screen</em> is a product problem. The <em>model behind it</em> is PDTF's.</li>
-    <li><strong>PDTF is cited for a capability it does not ship.</strong> §4.1 credits "emerging PDTF work" with showing the importance of <em>delegated authority controls</em>, provenance and attribute-level assurance. The provenance is real. <strong>The delegated authority controls are not.</strong> Being cited for a capability you don't have is a reputational exposure and a roadmap forcing-function.</li>
+    <li><strong>The dashboard is theirs; its data dependencies are ours.</strong> Chapter 3's required dashboard views (active/expired/withdrawn permissions, who holds data, change history, act to revoke) can only be populated from a model that has all four. The <em>screen</em> is a product problem. The <em>future model behind it</em> belongs to SPDTF 2.0 Development.</li>
+    <li><strong>PDTF 1.0 is cited for a capability it does not ship.</strong> §4.1 credits "emerging PDTF work" (the source document's wording) with showing the importance of <em>delegated authority controls</em>, provenance and attribute-level assurance. The provenance is real. <strong>The delegated authority controls are not.</strong> Being cited for a capability you don't have is a reputational exposure and a roadmap forcing-function for SPDTF 2.0 Development.</li>
   </ul>
 
   <h2 id="related">Related</h2>
