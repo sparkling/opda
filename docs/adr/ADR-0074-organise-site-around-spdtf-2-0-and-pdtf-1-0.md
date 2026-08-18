@@ -1,5 +1,5 @@
 ---
-status: proposed
+status: accepted
 date: 2026-08-18
 updated: 2026-08-18
 tags: [website, information-architecture, pdtf-1-0, spdtf-2-0, ontology, semantic-modelling, standards, migration, governance]
@@ -10,9 +10,9 @@ implements: [docs/spdtf-2-0-information-architecture.md]
 
 # Organise the site around SPDTF 2.0 and PDTF 1.0
 
-> Update 2026-08-18: this proposal now defines the ontology rationale, semantic
-> modelling hierarchy, coverage taxonomies, standards profile and mapping vocabulary.
-> It remains Proposed and changes no live site.
+> Update 2026-08-18: the user accepted this decision and authorised implementation
+> in a separate feature worktree. Acceptance changes no production site; the ADR
+> becomes Implemented only after the migration and release gates pass.
 
 ## Context and Problem Statement
 
@@ -74,7 +74,7 @@ decision until this proposal is accepted and implemented.
 
 ## Decision Outcome
 
-Proposed: adopt six global destinations:
+Accepted: adopt six global destinations:
 
 1. Programme.
 2. SPDTF 2.0 Development.
@@ -136,7 +136,7 @@ defined in
 If accepted, this ADR supersedes only the **top-level navigation and content-owner
 placement clauses** of ADR-0002, ADR-0041, ADR-0059 and ADR-0062. Their stable routes,
 ontology-generation rules, mapping provenance, Smart Data source treatment and other
-technical decisions remain. Proposed status means no prior decision changes yet.
+technical decisions remain. Acceptance changes only those placement clauses.
 
 ### Consequences
 
@@ -156,10 +156,11 @@ technical decisions remain. Proposed status means no prior decision changes yet.
 
 ### Confirmation
 
-This ADR is Proposed. It makes no navigation, route, content-authority, publication or
-deployment change.
+This ADR is Accepted for implementation on the isolated `feat/spdtf-2-ia` branch. It
+authorises the navigation and content-ownership change described here, but no
+publication or deployment.
 
-Acceptance requires explicit human approval. Implementation then requires:
+Implementation requires:
 
 - a disposition for every route, generated family, bundled artefact, published source
   object and compatibility alias in the current-site IA inventory;
@@ -178,7 +179,8 @@ Acceptance requires explicit human approval. Implementation then requires:
   unit and build gates;
 - a coherent release rather than piecemeal changes.
 
-ADR-0064 remains operative until those conditions are authorised and completed.
+ADR-0064 remains operative until those conditions are completed and this ADR is marked
+Implemented.
 
 ## Rules
 
