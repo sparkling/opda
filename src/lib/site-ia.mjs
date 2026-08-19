@@ -2,8 +2,8 @@
  * Executable information-architecture contract for the SPDTF website.
  *
  * Global destinations describe reader tasks and authority. They deliberately do
- * not replace the existing SECTIONS registry, which continues to own stable
- * routes, local sidebars and previous/next navigation during migration.
+ * do not replace the existing SECTIONS route taxonomy. site-navigation.ts
+ * composes those stable routes into current sidebars and page sequences.
  */
 
 export const GLOBAL_DESTINATIONS = Object.freeze([

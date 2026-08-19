@@ -16,6 +16,15 @@ implements: [docs/spdtf-2-0-information-architecture.md]
 > evidence baseline `24f9fb4ca8405343dc13d2d4b7119a30e1b883d7`, so this ADR is
 > Implemented. This status does not mean published or deployed, and the redesigned
 > root information architecture remains outside the frozen `/v2/**` route family.
+>
+> Update 2026-08-19 — preview reconciliation: the initial implementation retained
+> the legacy 13-section local rail even though the six destinations were present
+> in the global header. `src/lib/site-navigation.ts` now composes every legacy
+> section route under its current owner and drives all six left rails, breadcrumbs
+> and exact-match previous/next sequences. The heading-derived page navigation is
+> visible in-article or in the optional right rail, and container-responsive panels
+> preserve the reading width. Status remains Implemented; this note makes no new
+> deployment claim.
 
 ## Context and Problem Statement
 

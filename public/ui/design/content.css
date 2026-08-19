@@ -110,18 +110,26 @@ html { scroll-padding-top: calc(var(--header-height) + 1rem); }
 }
 
 .heading-anchor {
+  position: absolute;
+  inset-block-start: 50%;
+  inset-inline-end: 0;
+  transform: translateY(-50%);
   width: var(--target-min);
   min-height: var(--target-min);
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  margin-left: var(--space-2);
+  margin: 0;
   opacity: 0;
   color: var(--color-link);
   font: 600 var(--text-sm) / 1 var(--font-mono);
   vertical-align: middle;
   transition: opacity var(--duration-fast) var(--ease);
   text-decoration: none;
+}
+.prose :is(h2, h3, h4)[id] {
+  position: relative;
+  padding-inline-end: var(--target-min);
 }
 .prose h2:hover .heading-anchor,
 .prose h3:hover .heading-anchor,

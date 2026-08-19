@@ -1,6 +1,7 @@
 ---
 status: accepted
 date: 2026-05-18
+updated: 2026-08-19
 tags: [information-architecture, urls, navigation, astro]
 supersedes: []
 depends-on: [ADR-0001]
@@ -8,6 +9,11 @@ implements: []
 ---
 
 # Folder hierarchy and slug taxonomy
+
+> Update 2026-08-19: ADR-0074 retains `src/lib/site.ts` as the stable legacy
+> route taxonomy and composes those routes into the six current reader sections
+> in `src/lib/site-navigation.ts`. The same composition now drives the left rail
+> and exact-match previous/next sequence; no route is moved by this update.
 
 ## Context and Problem Statement
 

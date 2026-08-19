@@ -23,7 +23,7 @@ import Sidebar from '@/components/Sidebar.astro';
 import Breadcrumbs from '@/components/Breadcrumbs.astro';
 import PageFooter from '@/components/PageFooter.astro';
 import Comments from '@/components/Comments.astro';
-import { getActiveSection } from '@/lib/site';
+import { getNavigationSection } from '@/lib/site-navigation';
 import { assetVersion } from '@/lib/asset-version.mjs';
 import {
   IA_STATUS_REGISTRY_VERSION,
@@ -75,9 +75,9 @@ const fullTitle = /knowledge base/i.test(title)
   ? title
   : `${title} · OPDA Knowledge Base`;
 
-const activeSection = getActiveSection(Astro.url.pathname);
-const sectionAttr = activeSection ?? '';
-const showSidebar = !hideSidebar && !!activeSection;
+const navigationSection = getNavigationSection(Astro.url.pathname);
+const sectionAttr = navigationSection?.key ?? '';
+const showSidebar = !hideSidebar && !!navigationSection;
 const routeStatus = getRouteStatus(Astro.url.pathname);
 const routeDisposition = getRouteDisposition(Astro.url.pathname);
 const searchAliases = routeDisposition?.search?.historicalAliases ?? [];

@@ -37,7 +37,7 @@ test('desktop sidebar and nested tree controls work', async ({ page }) => {
   await expect(body).not.toHaveClass(/sidebar-collapsed/);
 
   await visit(page, '/schema');
-  const trigger = page.locator('.tree-folder > .tree-toggle').first();
+  const trigger = page.locator('.tree-folder .tree-toggle').first();
   await expect(trigger).toHaveAttribute('aria-expanded', 'false');
   await trigger.click();
   await expect(trigger).toHaveAttribute('aria-expanded', 'true');
@@ -54,8 +54,8 @@ test('mobile section drawer returns focus on Escape', async ({ page }) => {
   await expect(sidebar).toHaveClass(/open/);
   await expect(sidebar).toHaveAttribute('role', 'dialog');
   await expect(opener).toHaveAttribute('aria-expanded', 'true');
-  const first = sidebar.locator('a[href], button, summary').first();
-  const last = sidebar.locator('a[href], button, summary').last();
+  const first = sidebar.locator('a[href]:visible, button:visible, summary:visible').first();
+  const last = sidebar.locator('a[href]:visible, button:visible, summary:visible').last();
   await expect(first).toBeFocused();
   await page.keyboard.press('Shift+Tab');
   await expect(last).toBeFocused();

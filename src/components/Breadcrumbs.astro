@@ -4,7 +4,8 @@
  * section/group/page chain remains the stable local navigation contract; the
  * global owner adds context only when it has a different label.
  */
-import { findPage, normalizeUrl } from '@/lib/site';
+import { normalizeUrl } from '@/lib/site';
+import { findNavigationPage } from '@/lib/site-navigation';
 import { getActiveDestination, getDestination } from '@/lib/site-ia.mjs';
 
 interface Breadcrumb {
@@ -19,42 +20,39 @@ interface Props {
 const { currentPageTitle } = Astro.props;
 
 const path = normalizeUrl(Astro.url.pathname);
-const found = findPage(path);
-const isSectionRoot = found && !found.item;
+const found = findNavigationPage(path);
 const destination = getDestination(getActiveDestination(path));
 const destinationLanding = Boolean(destination && path === normalizeUrl(destination.url));
-const sectionLabel = found
-  ? found.section.key === 'v2'
-    ? 'Property Pack seed (development input)'
-    : found.section.title
-  : '';
-const showGlobalOwner = Boolean(
-  destination && !destinationLanding && (!found || destination.title !== sectionLabel),
-);
 
 const breadcrumbs: Breadcrumb[] = [];
 
 if (destinationLanding && destination) {
   breadcrumbs.push({ label: destination.title, current: true });
 } else {
-  if (showGlobalOwner && destination) {
+  if (destination) {
     breadcrumbs.push({ label: destination.title, href: destination.url });
   }
 
   if (found) {
-    breadcrumbs.push({
-      label: sectionLabel,
-      href: isSectionRoot ? undefined : `/${found.section.key}`,
-      current: isSectionRoot,
-    });
-    if (!isSectionRoot && found.group) {
+    if (found.group.heading !== 'Overview') {
       breadcrumbs.push({ label: found.group.heading });
     }
-    if (!isSectionRoot && found.item) {
-      breadcrumbs.push({ label: found.item.title, current: true });
-    }
+    found.trail.forEach((item, index) => {
+      const exact = normalizeUrl(item.url) === path;
+      const last = index === found.trail.length - 1;
+      breadcrumbs.push(exact
+        ? { label: item.title, current: true }
+        : { label: item.title, href: item.url });
+      if (last && !exact) breadcrumbs.push({ label: currentPageTitle, current: true });
+    });
   } else if (destination) {
     breadcrumbs.push({ label: currentPageTitle, current: true });
+  } else {
+    breadcrumbs.push({ label: currentPageTitle, current: true });
+  }
+
+  if (breadcrumbs.length > 1 && breadcrumbs.at(-1)?.href === destination?.url) {
+    breadcrumbs[breadcrumbs.length - 1] = { label: currentPageTitle, current: true };
   }
 }
 ---

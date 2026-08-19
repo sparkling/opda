@@ -1,6 +1,7 @@
 ---
 status: accepted
 date: 2026-05-18
+updated: 2026-08-19
 tags: [astro, frontend, refactor, typescript]
 supersedes: []
 depends-on: [ADR-0002]
@@ -8,6 +9,12 @@ implements: []
 ---
 
 # Refactor to idiomatic Astro architecture
+
+> Update 2026-08-19: the build-time shell now reads the six-section composition
+> from `src/lib/site-navigation.ts`, while `src/lib/site.ts` retains stable route
+> data. Sidebar links, breadcrumbs and previous/next navigation remain rendered
+> by Astro; only disclosure state and the heading-derived page contents rail are
+> progressively enhanced in `public/ui/client.js`.
 
 ## Context and Problem Statement
 

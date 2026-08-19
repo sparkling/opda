@@ -53,6 +53,98 @@ test('aria-current follows canonical and legacy route ownership', async ({ page 
   clean();
 });
 
+test('left section navigation covers every canonical destination', async ({ page }) => {
+  const clean = watchRuntime(page);
+  await page.setViewportSize({ width: 1440, height: 1000 });
+  for (const [route, section, label] of [
+    ['/programme', 'programme', 'Programme overview'],
+    ['/spdtf-2', 'spdtf-2', 'Development overview'],
+    ['/spdtf-2/working-groups', 'working-groups', 'Working-group overview'],
+    ['/pdtf-1', 'pdtf-1', 'PDTF 1.0 overview'],
+    ['/governance', 'governance', 'Section overview'],
+    ['/resources', 'resources', 'Resources overview'],
+  ]) {
+    await visit(page, route);
+    const sidebar = page.locator('#app-sidebar');
+    const navigation = sidebar.locator('#section-navigation');
+    await expect(sidebar).toBeVisible();
+    await expect(navigation).toHaveAttribute('data-section', section);
+    await expect(navigation).toHaveAttribute('aria-label', / section$/u);
+    const active = navigation.locator('a[aria-current="page"]');
+    await expect(active).toHaveCount(1);
+    await expect(active).toHaveText(label);
+    await expect(active.locator('xpath=ancestor::details[1]')).toHaveAttribute('open', '');
+    await expect(sidebar.locator('#sidebar-collapse')).toHaveAttribute('aria-controls', 'section-navigation');
+  }
+  clean();
+});
+
+test('left navigation follows route ownership with one active link', async ({ page }) => {
+  const clean = watchRuntime(page);
+  await page.setViewportSize({ width: 1440, height: 1000 });
+  for (const [route, section, label] of [
+    ['/strategy/project-roadmap', 'programme', 'Project roadmap'],
+    ['/v2/validation', 'spdtf-2', 'Validation evidence'],
+    ['/spdtf-2/working-groups/estate-agency/evidence', 'working-groups', 'Evidence'],
+    ['/ontology/classes', 'pdtf-1', 'Classes'],
+    ['/engagement/meetings-decisions', 'governance', 'Meetings & decisions'],
+    ['/engagement/transcripts', 'resources', 'Transcripts index'],
+  ]) {
+    await visit(page, route);
+    const navigation = page.locator('#section-navigation');
+    await expect(navigation).toHaveAttribute('data-section', section);
+    const active = navigation.locator('a[aria-current="page"]');
+    await expect(active).toHaveCount(1);
+    await expect(active).toHaveText(label);
+  }
+
+  await visit(page, '/ontology/classes');
+  await page.evaluate(() => localStorage.setItem('opda.sidebar.pdtf-1.Ontology reference', 'closed'));
+  await page.reload();
+  await expect(page.locator('#section-navigation details[data-active="true"]')).toHaveAttribute('open', '');
+  clean();
+});
+
+test('folder pages remain links beside independent disclosure controls', async ({ page }) => {
+  const clean = watchRuntime(page);
+  await page.setViewportSize({ width: 1440, height: 1000 });
+  await visit(page, '/spdtf-2/ontologies/standards');
+  const folder = page.locator('.tree-folder', { has: page.locator('a[href="/spdtf-2/ontologies"]') }).first();
+  const link = folder.locator('a[href="/spdtf-2/ontologies"]');
+  const toggle = folder.locator(':scope > .tree-folder-row > .tree-toggle');
+  await expect(link).toBeVisible();
+  await expect(toggle).toHaveAttribute('aria-expanded', 'true');
+  const controls = await toggle.getAttribute('aria-controls');
+  expect(controls).toBeTruthy();
+  await expect(page.locator(`#${controls}`)).toBeVisible();
+  await toggle.click();
+  await expect(toggle).toHaveAttribute('aria-expanded', 'false');
+  await expect(page.locator(`#${controls}`)).toBeHidden();
+  clean();
+});
+
+test('page navigation exposes headings and a single previous-next sequence', async ({ page }) => {
+  const clean = watchRuntime(page);
+  await page.setViewportSize({ width: 1440, height: 1000 });
+  await visit(page, '/programme');
+  const toc = page.locator('aside.toc[aria-label="On this page"]');
+  await expect(toc).toBeVisible();
+  expect(await toc.locator('a').evaluateAll((links) => links.map((link) => link.getAttribute('href'))))
+    .toEqual(['#continuation', '#policy', '#start']);
+  const toggle = toc.locator('#toc-collapse');
+  await expect(toggle).toHaveAttribute('aria-expanded', 'true');
+  await toggle.click();
+  await expect(toggle).toHaveAttribute('aria-expanded', 'false');
+  await toggle.click();
+  await expect(toggle).toHaveAttribute('aria-expanded', 'true');
+
+  const sequence = page.locator('nav.page-footer[aria-label="Previous and next pages"]');
+  await expect(sequence).toHaveCount(1);
+  await expect(sequence.locator('a')).toHaveCount(1);
+  await expect(sequence.locator('a')).toHaveAttribute('href', '/strategy');
+  clean();
+});
+
 test('retained V2 seed is owned by SPDTF development, not a top-level V2 destination', async ({ page }) => {
   const clean = watchRuntime(page);
   await visit(page, '/v2/validation');

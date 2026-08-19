@@ -39,6 +39,7 @@ const fields = [
 
 <style>
   .ia-authority {
+    container-type: inline-size;
     margin: 1.5rem 0 2rem;
     padding: var(--space-5) var(--space-6);
     border: 1px solid var(--color-border);
@@ -49,6 +50,7 @@ const fields = [
 
   .ia-authority__heading {
     display: flex;
+    flex-wrap: wrap;
     align-items: baseline;
     justify-content: space-between;
     gap: var(--space-5);
@@ -66,7 +68,7 @@ const fields = [
 
   .ia-authority__grid {
     display: grid;
-    grid-template-columns: repeat(5, minmax(0, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 11rem), 1fr));
     gap: var(--space-4);
     margin: 0;
   }
@@ -90,16 +92,6 @@ const fields = [
     color: var(--color-text);
     font: var(--text-sm) / 1.45 var(--font-sans);
     line-height: 1.45;
-  }
-
-  @media (max-width: 800px) {
-    .ia-authority__heading { display: block; }
-    .ia-authority__note { margin-top: var(--space-2); }
-    .ia-authority__grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-  }
-
-  @media (max-width: 480px) {
-    .ia-authority__grid { grid-template-columns: 1fr; }
   }
 
   @media (prefers-reduced-motion: reduce) {
