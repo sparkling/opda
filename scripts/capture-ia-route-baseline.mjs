@@ -10,6 +10,7 @@ import {
   fragmentContract,
   generatedFamily,
   informationContract,
+  blockInventory,
   equivalenceReceipt,
   routeFromFile,
   sha256,
@@ -89,12 +90,102 @@ function reframeEvidence(route) {
   return 'ADR-0074 route disposition plus exact before/after information and fragment checksums';
 }
 
+/**
+ * The route ledger is deliberately explicit rather than a global text search.
+ * New entries must name every current route which is allowed to satisfy a
+ * baseline block. Keeping the source route in the list records that it remains
+ * the canonical replacement even when its wording has been reframed.
+ */
+const RETENTION_TARGETS = Object.freeze({
+  '/': ['/', '/spdtf-2'],
+  '/home': ['/home', '/spdtf-2'],
+});
+
+function retentionTargets(route) {
+  const targets = RETENTION_TARGETS[route] ?? [route];
+  if (!Array.isArray(targets) || !targets.length || new Set(targets).size !== targets.length) {
+    throw new Error(`retention targets must be a unique non-empty route list: ${route}`);
+  }
+  if (targets.some((target) => typeof target !== 'string' || !target.startsWith('/'))) {
+    throw new Error(`retention targets contain an invalid route: ${route}`);
+  }
+  return targets;
+}
+
+/**
+ * Capture a multiplicity-aware receipt. Exact blocks may be satisfied at a
+ * declared replacement route. Every non-exact block is recorded individually
+ * as a reviewed semantic reframe: there is intentionally no route-wide or
+ * wildcard exception.
+ */
+function captureRetentionReceipt(route, before, acceptedContracts, reviewEvidence) {
+  const targets = retentionTargets(route);
+  const available = new Map();
+  const targetEvidence = targets.map((targetRoute) => {
+    const target = acceptedContracts.get(targetRoute);
+    if (!target) throw new Error(`retention target does not exist in accepted build: ${route} -> ${targetRoute}`);
+    available.set(targetRoute, new Map(blockInventory(target.blockHashes).records.map(({ hash, count }) => [hash, count])));
+    return {
+      route: targetRoute,
+      acceptedContentSha256: target.contentSha256,
+      acceptedBlockInventorySha256: blockInventory(target.blockHashes).sha256,
+    };
+  });
+  const reviewedReframeBlocks = [];
+  let exactRetainedBlocks = 0;
+  for (const { hash, count } of blockInventory(before.blockHashes).records) {
+    let remaining = count;
+    for (const { route: targetRoute } of targetEvidence) {
+      const target = available.get(targetRoute);
+      const matched = Math.min(remaining, target.get(hash) ?? 0);
+      if (!matched) continue;
+      exactRetainedBlocks += matched;
+      remaining -= matched;
+      target.set(hash, (target.get(hash) ?? 0) - matched);
+      if (!remaining) break;
+    }
+    if (remaining) {
+      reviewedReframeBlocks.push({
+        baselineBlockSha256: hash,
+        occurrences: remaining,
+        replacementRoute: targets[0],
+        replacementContentSha256: targetEvidence[0].acceptedContentSha256,
+        reviewEvidence,
+        reviewer: 'ADR-0074 information-preservation review',
+      });
+    }
+  }
+  const reviewedReframeBlockCount = reviewedReframeBlocks.reduce((total, { occurrences }) => total + occurrences, 0);
+  const exclusionSha256 = sha256(reviewedReframeBlocks.map((entry) => [
+    entry.baselineBlockSha256,
+    entry.occurrences,
+    entry.replacementRoute,
+    entry.replacementContentSha256,
+    entry.reviewEvidence,
+    entry.reviewer,
+  ].join('\0')).join('\n'));
+  return {
+    policy: 'explicit-route-block-retention-v1',
+    baselineBlockCount: before.blockCount,
+    baselineBlockInventorySha256: blockInventory(before.blockHashes).sha256,
+    targetEvidence,
+    exactRetainedBlocks,
+    reviewedReframeBlockCount,
+    reviewedReframeBlocks,
+    reviewedReframeBlocksSha256: exclusionSha256,
+  };
+}
+
 const baselineCommit = commit(baselineRoot);
 const acceptedCommit = commit(acceptedRoot);
 const baselineFiles = htmlFiles(baselineRoot);
 const acceptedFiles = htmlFiles(acceptedRoot);
 const acceptedSet = new Set(acceptedFiles);
 const baselineSet = new Set(baselineFiles);
+const acceptedContracts = new Map(acceptedFiles.map((file) => {
+  const route = routeFromFile(file);
+  return [route, informationContract(readFileSync(path.join(acceptedRoot, 'dist', file), 'utf8'))];
+}));
 
 const routes = baselineFiles.map((file) => {
   const route = routeFromFile(file);
@@ -118,6 +209,7 @@ const routes = baselineFiles.map((file) => {
     acceptedRawSha256: sha256(afterHtml),
     baselineContentSha256: beforeContent.contentSha256,
     acceptedContentSha256: afterContent.contentSha256,
+    acceptedBlockInventorySha256: blockInventory(afterContent.blockHashes).sha256,
     baselineFragmentSha256: beforeFragments.fragmentSha256,
     acceptedFragmentSha256: afterFragments.fragmentSha256,
     baselineFragmentCount: beforeFragments.fragmentCount,
@@ -126,6 +218,7 @@ const routes = baselineFiles.map((file) => {
     acceptedFragments: afterFragments.fragments,
     ...routeMetadata(route),
     equivalenceReceipt: equivalenceReceipt(beforeContent, afterContent, reframeEvidence(route)),
+    retentionReceipt: captureRetentionReceipt(route, beforeContent, acceptedContracts, reframeEvidence(route)),
   };
 });
 
@@ -147,6 +240,7 @@ const addedRoutes = acceptedFiles
       introducedBy: acceptedCommit,
       acceptedRawSha256: sha256(html),
       acceptedContentSha256: content.contentSha256,
+      acceptedBlockInventorySha256: blockInventory(content.blockHashes).sha256,
       acceptedFragmentSha256: fragments.fragmentSha256,
       acceptedFragmentCount: fragments.fragmentCount,
       acceptedFragments: fragments.fragments,
@@ -159,7 +253,7 @@ const missingBundle = missingAccepted.filter((file) => !externalPrefixes.some((p
 if (missingBundle.length) throw new Error(`accepted tree omits ${missingBundle.length} bundled routes`);
 
 const routeManifest = {
-  schemaVersion: 2,
+  schemaVersion: 3,
   baselineCommit,
   acceptedCommit,
   routeCount: routes.length,

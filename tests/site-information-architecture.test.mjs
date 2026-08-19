@@ -163,13 +163,13 @@ test('the migration ledger preserves every audited high-risk information family'
 });
 
 test('the frozen preservation proof resolves content, ownership and exact family checksums', () => {
-  assert.equal(routeBaseline.schemaVersion, 2);
+  assert.equal(routeBaseline.schemaVersion, 3);
   assert.equal(routeBaseline.routeCount, 3436);
   assert.equal(routeBaseline.addedRouteCount, 49);
   assert.equal(routeBaseline.routes.length, routeBaseline.routeCount);
   assert.equal(routeBaseline.addedRoutes.length, routeBaseline.addedRouteCount);
   const requiredRouteFields = [
-    'baselineContentSha256', 'acceptedContentSha256', 'baselineFragmentSha256',
+    'baselineContentSha256', 'acceptedContentSha256', 'acceptedBlockInventorySha256', 'baselineFragmentSha256',
     'acceptedFragmentSha256', 'contentOwner', 'governanceOwner', 'statusId',
     'baselineFragments', 'acceptedFragments', 'searchFacet', 'crossWorkArea',
     'preservedDestination', 'consumers', 'endpoints',
@@ -177,6 +177,22 @@ test('the frozen preservation proof resolves content, ownership and exact family
   assert.ok(routeBaseline.routes.every((record) => requiredRouteFields.every((field) => record[field])));
   assert.ok(routeBaseline.routes.every(({ equivalenceReceipt }) => (
     equivalenceReceipt?.reviewEvidence && Number.isFinite(equivalenceReceipt.retentionRatio)
+    && /^[a-f0-9]{64}$/u.test(equivalenceReceipt.baselineBlockInventorySha256)
+    && /^[a-f0-9]{64}$/u.test(equivalenceReceipt.acceptedBlockInventorySha256)
+  )));
+  assert.ok(routeBaseline.routes.every(({ retentionReceipt, equivalenceReceipt }) => (
+    retentionReceipt?.policy === 'explicit-route-block-retention-v1'
+    && retentionReceipt.baselineBlockCount === equivalenceReceipt.baselineBlocks
+    && retentionReceipt.targetEvidence.length
+    && retentionReceipt.exactRetainedBlocks + retentionReceipt.reviewedReframeBlockCount
+      === retentionReceipt.baselineBlockCount
+    && /^[a-f0-9]{64}$/u.test(retentionReceipt.baselineBlockInventorySha256)
+    && /^[a-f0-9]{64}$/u.test(retentionReceipt.reviewedReframeBlocksSha256)
+    && retentionReceipt.reviewedReframeBlocks.every((entry) => (
+      /^[a-f0-9]{64}$/u.test(entry.baselineBlockSha256)
+      && entry.occurrences > 0 && entry.replacementRoute && entry.replacementContentSha256
+      && entry.reviewEvidence && entry.reviewer
+    ))
   )));
   assert.ok(routeBaseline.routes.every(({ baselineFragments, acceptedFragments }) => (
     baselineFragments.every((fragment) => acceptedFragments.includes(fragment))

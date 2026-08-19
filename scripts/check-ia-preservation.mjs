@@ -8,6 +8,7 @@ import {
   filesUnder,
   fragmentContract,
   informationContract,
+  blockInventory,
   routeFromFile,
   sha256,
 } from './lib/ia-preservation-contract.mjs';
@@ -141,6 +142,9 @@ function verifyAcceptedRoute(record, file) {
   const fragments = fragmentContract(html);
   if (sha256(html) !== record.acceptedRawSha256) fail(`accepted HTML checksum changed: ${record.route}`);
   if (content.contentSha256 !== record.acceptedContentSha256) fail(`accepted information checksum changed: ${record.route}`);
+  if (blockInventory(content.blockHashes).sha256 !== record.acceptedBlockInventorySha256) {
+    fail(`accepted information-block inventory changed: ${record.route}`);
+  }
   if (fragments.fragmentSha256 !== record.acceptedFragmentSha256
     || fragments.fragmentCount !== record.acceptedFragmentCount) fail(`accepted fragment contract changed: ${record.route}`);
 }
@@ -151,8 +155,79 @@ function verifyBaselineRoute(record, file) {
   const fragments = fragmentContract(html);
   if (sha256(html) !== record.baselineRawSha256) fail(`baseline HTML checksum changed: ${record.route}`);
   if (content.contentSha256 !== record.baselineContentSha256) fail(`baseline information checksum changed: ${record.route}`);
+  if (blockInventory(content.blockHashes).sha256 !== record.equivalenceReceipt?.baselineBlockInventorySha256) {
+    fail(`baseline information-block inventory changed: ${record.route}`);
+  }
   if (fragments.fragmentSha256 !== record.baselineFragmentSha256
     || fragments.fragmentCount !== record.baselineFragmentCount) fail(`baseline fragment contract changed: ${record.route}`);
+}
+
+function reviewedBlocksDigest(blocks) {
+  return sha256(blocks.map((entry) => [
+    entry.baselineBlockSha256,
+    entry.occurrences,
+    entry.replacementRoute,
+    entry.replacementContentSha256,
+    entry.reviewEvidence,
+    entry.reviewer,
+  ].join('\0')).join('\n'));
+}
+
+/**
+ * A route receipt is the fail-closed answer to content moving during a
+ * reframe. It only trusts declared routes and exact, committed content hashes;
+ * it never searches the whole site for similar text. Non-exact wording must be
+ * accounted for block-by-block with a reviewed semantic-reframe entry.
+ */
+function validateRetentionReceipt(record, classifiedByRoute) {
+  const receipt = record.retentionReceipt;
+  if (!receipt || receipt.policy !== 'explicit-route-block-retention-v1'
+    || receipt.baselineBlockCount !== record.equivalenceReceipt?.baselineBlocks
+    || !HASH.test(receipt.baselineBlockInventorySha256 ?? '')
+    || !Array.isArray(receipt.targetEvidence) || !receipt.targetEvidence.length
+    || !Array.isArray(receipt.reviewedReframeBlocks)
+    || !Number.isSafeInteger(receipt.exactRetainedBlocks) || receipt.exactRetainedBlocks < 0
+    || !Number.isSafeInteger(receipt.reviewedReframeBlockCount) || receipt.reviewedReframeBlockCount < 0
+    || !HASH.test(receipt.reviewedReframeBlocksSha256 ?? '')) {
+    fail(`route lacks an explicit block-retention receipt: ${record.route}`);
+    return;
+  }
+  const targetRoutes = new Set();
+  for (const target of receipt.targetEvidence) {
+    const classified = classifiedByRoute.get(target?.route);
+    if (!classified || targetRoutes.has(target.route)
+      || !HASH.test(target.acceptedContentSha256 ?? '')
+      || !HASH.test(target.acceptedBlockInventorySha256 ?? '')
+      || target.acceptedContentSha256 !== classified.acceptedContentSha256
+      || target.acceptedBlockInventorySha256 !== classified.acceptedBlockInventorySha256) {
+      fail(`retention target evidence is invalid: ${record.route} -> ${target?.route ?? '(missing route)'}`);
+      continue;
+    }
+    targetRoutes.add(target.route);
+  }
+  const exceptions = new Set();
+  let reviewedCount = 0;
+  for (const entry of receipt.reviewedReframeBlocks) {
+    const key = `${entry?.baselineBlockSha256}\0${entry?.replacementRoute}`;
+    const target = classifiedByRoute.get(entry?.replacementRoute);
+    if (!HASH.test(entry?.baselineBlockSha256 ?? '') || !Number.isSafeInteger(entry?.occurrences) || entry.occurrences < 1
+      || exceptions.has(key) || !targetRoutes.has(entry.replacementRoute)
+      || entry.replacementContentSha256 !== target?.acceptedContentSha256
+      || typeof entry.reviewEvidence !== 'string' || !entry.reviewEvidence.trim()
+      || typeof entry.reviewer !== 'string' || !entry.reviewer.trim()) {
+      fail(`reviewed reframe block is incomplete or unapproved: ${record.route}`);
+      continue;
+    }
+    exceptions.add(key);
+    reviewedCount += entry.occurrences;
+  }
+  if (reviewedCount !== receipt.reviewedReframeBlockCount
+    || reviewedBlocksDigest(receipt.reviewedReframeBlocks) !== receipt.reviewedReframeBlocksSha256) {
+    fail(`reviewed reframe block receipt checksum is inconsistent: ${record.route}`);
+  }
+  if (receipt.exactRetainedBlocks + receipt.reviewedReframeBlockCount !== receipt.baselineBlockCount) {
+    fail(`baseline information blocks are not fully accounted for: ${record.route}`);
+  }
 }
 
 validateIaContract();
@@ -161,7 +236,7 @@ if (ROUTE_DISPOSITION_LEDGER.some(({ disposition }) => disposition === 'retire')
 const routeManifest = readJson('src/data/ia-route-baseline.json');
 const familyManifest = readJson('src/data/ia-preservation-baseline.json');
 if (routeManifest) {
-  if (routeManifest.schemaVersion !== 2 || routeManifest.routeCount !== routeManifest.routes?.length
+  if (routeManifest.schemaVersion !== 3 || routeManifest.routeCount !== routeManifest.routes?.length
     || routeManifest.addedRouteCount !== routeManifest.addedRoutes?.length) fail('route manifest has an invalid schema or count');
   const all = [...(routeManifest.routes ?? []), ...(routeManifest.addedRoutes ?? [])];
   const files = new Set();
@@ -171,7 +246,7 @@ if (routeManifest) {
     if (files.has(record.file) || routes.has(record.route)) fail(`duplicate classified route: ${record.route}`);
     files.add(record.file);
     routes.add(record.route);
-    for (const field of ['acceptedRawSha256', 'acceptedContentSha256', 'acceptedFragmentSha256']) {
+    for (const field of ['acceptedRawSha256', 'acceptedContentSha256', 'acceptedBlockInventorySha256', 'acceptedFragmentSha256']) {
       if (!HASH.test(record[field] ?? '')) fail(`${record.route} has invalid ${field}`);
     }
     if (record.acceptedFragmentCount !== record.acceptedFragments?.length
@@ -179,6 +254,7 @@ if (routeManifest) {
       fail(`${record.route} has an inconsistent accepted fragment inventory`);
     }
   }
+  const classifiedByRoute = new Map(all.map((record) => [record.route, record]));
   for (const record of routeManifest.routes ?? []) {
     for (const field of ['baselineRawSha256', 'baselineContentSha256', 'baselineFragmentSha256']) {
       if (!HASH.test(record[field] ?? '')) fail(`${record.route} has invalid ${field}`);
@@ -189,8 +265,10 @@ if (routeManifest) {
     }
     const receipt = record.equivalenceReceipt;
     if (!receipt || !['byte-normalized-equivalent', 'reviewed-reframe-equivalent'].includes(receipt.policy)
-      || !receipt.reviewEvidence || !Number.isFinite(receipt.retentionRatio)) fail(`route lacks an exact equivalence receipt: ${record.route}`);
-    if (record.disposition === 'keep' && receipt.retentionRatio < 0.98) fail(`kept route loses information blocks: ${record.route}`);
+      || !receipt.reviewEvidence || !Number.isFinite(receipt.retentionRatio)
+      || !HASH.test(receipt.baselineBlockInventorySha256 ?? '')
+      || !HASH.test(receipt.acceptedBlockInventorySha256 ?? '')) fail(`route lacks an exact equivalence receipt: ${record.route}`);
+    validateRetentionReceipt(record, classifiedByRoute);
     const acceptedFragments = new Set(record.acceptedFragments ?? []);
     for (const fragment of record.baselineFragments ?? []) {
       if (!acceptedFragments.has(fragment)) fail(`deep-linked fragment was not preserved: ${record.route}#${fragment}`);

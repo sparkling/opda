@@ -125,6 +125,20 @@ export function informationContract(html) {
   };
 }
 
+/** A multiplicity-aware, deterministic fingerprint for a set of content blocks. */
+export function blockInventory(blockHashes) {
+  const counts = new Map();
+  for (const hash of blockHashes) counts.set(hash, (counts.get(hash) ?? 0) + 1);
+  const records = [...counts]
+    .sort(([left], [right]) => left.localeCompare(right))
+    .map(([hash, count]) => ({ hash, count }));
+  return {
+    count: blockHashes.length,
+    records,
+    sha256: sha256(records.map(({ hash, count }) => `${hash}\0${count}`).join('\n')),
+  };
+}
+
 export function equivalenceReceipt(before, after, reviewEvidence = 'IA migration before/after comparison') {
   const remaining = new Map();
   for (const hash of after.blockHashes) remaining.set(hash, (remaining.get(hash) ?? 0) + 1);
@@ -145,6 +159,8 @@ export function equivalenceReceipt(before, after, reviewEvidence = 'IA migration
     retentionRatio: before.blockCount ? Number((preservedBlocks / before.blockCount).toFixed(6)) : 1,
     baselineBlockSetSha256: before.blockSetSha256,
     acceptedBlockSetSha256: after.blockSetSha256,
+    baselineBlockInventorySha256: blockInventory(before.blockHashes).sha256,
+    acceptedBlockInventorySha256: blockInventory(after.blockHashes).sha256,
     reviewEvidence: exact ? 'normalized information contract unchanged' : reviewEvidence,
   };
 }
