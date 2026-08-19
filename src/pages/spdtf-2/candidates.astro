@@ -1,0 +1,29 @@
+---
+import Layout from '@/layouts/Layout.astro';
+import PageMeta from '@/components/PageMeta.astro';
+import AuthorityPanel from '@/components/ia/AuthorityPanel.astro';
+import { WORKING_GROUPS } from '@/components/ia/working-groups';
+import { getWorkspaceRecord } from '@/lib/spdtf-workspace.mjs';
+const rows = WORKING_GROUPS.map((group) => ({ group, workspace: getWorkspaceRecord(group.slug) }));
+---
+
+<Layout title="SPDTF 2.0 candidate register" description="Canonical register of context-owned SPDTF 2.0 candidates and their authority status.">
+  <PageMeta category="Candidate register" variant="warn" updated="No working-group candidate recorded" />
+  <h1>SPDTF 2.0 candidate register</h1>
+  <p class="lead">A candidate appears here only with a convened group, accountable decision owner, evidence closure, competency questions, coverage receipt, semantic-package version and immutable diff.</p>
+  <AuthorityPanel destination="spdtf-2" />
+  <table>
+    <caption>Candidate status by canonical working-group workspace</caption>
+    <thead><tr><th scope="col">Working group</th><th scope="col">Workspace version</th><th scope="col">Candidate</th><th scope="col">Review route</th></tr></thead>
+    <tbody>{rows.map(({ group, workspace }) => (
+      <tr>
+        <th scope="row"><a href={`/spdtf-2/working-groups/${group.slug}`}>{group.name}</a></th>
+        <td><code>{workspace.workspaceVersion}</code></td>
+        <td>No candidate recorded</td>
+        <td><a href={`/spdtf-2/working-groups/${group.slug}/review`}>Coverage and review</a></td>
+      </tr>
+    ))}</tbody>
+  </table>
+  <p>The machine-generated <a href="/v2">Property Pack seed</a> remains a development input. It is not silently promoted into this register.</p>
+</Layout>
+

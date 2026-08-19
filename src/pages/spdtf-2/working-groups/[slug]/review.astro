@@ -1,0 +1,53 @@
+---
+import Layout from '@/layouts/Layout.astro';
+import PageMeta from '@/components/PageMeta.astro';
+import AuthorityPanel from '@/components/ia/AuthorityPanel.astro';
+import WorkspaceNav from '@/components/ia/WorkspaceNav.astro';
+import { WORKING_GROUPS, getWorkingGroup } from '@/components/ia/working-groups';
+import {
+  ALLOWED_DISPOSITIONS,
+  SEMANTIC_PACKAGE_MANIFEST,
+  getWorkspaceRecord,
+} from '@/lib/spdtf-workspace.mjs';
+
+export function getStaticPaths() {
+  return WORKING_GROUPS.map((group) => ({ params: { slug: group.slug }, props: { group } }));
+}
+const { group } = Astro.props;
+if (!group || !getWorkingGroup(group.slug)) throw new Error('Unknown SPDTF working-group route');
+const workspace = getWorkspaceRecord(group.slug);
+if (!workspace) throw new Error('Working group has no workspace record');
+---
+
+<Layout title={`${group.name} coverage and review`} description={`Coverage receipt and review gate for the ${group.name} SPDTF 2.0 workspace.`}>
+  <PageMeta category="Working-group review" variant="warn" updated="No candidate or group disposition recorded" />
+  <h1>{group.name}: coverage and review</h1>
+  <p class="lead">The receipt exposes every required concern. Empty assessments remain explicit; the site does not invent a decision before the group is convened.</p>
+  <AuthorityPanel destination="working-groups" />
+  <WorkspaceNav slug={group.slug} />
+
+  <h2 id="coverage">Eight-concern coverage receipt</h2>
+  <table>
+    <caption>Coverage receipt for workspace {workspace.workspaceVersion}</caption>
+    <thead><tr><th scope="col">Formal concern</th><th scope="col">Disposition</th><th scope="col">Status</th></tr></thead>
+    <tbody>{workspace.coverageReceipt.map((item) => (
+      <tr><th scope="row">{item.concern}</th><td>Not recorded</td><td>{item.status}</td></tr>
+    ))}</tbody>
+  </table>
+
+  <h2 id="dispositions">Four allowed dispositions</h2>
+  <ul>{ALLOWED_DISPOSITIONS.map((disposition) => <li><code>{disposition}</code></li>)}</ul>
+
+  <h2 id="candidate">Candidate and feedback status</h2>
+  <dl>
+    <dt>Decision owner</dt><dd>{workspace.decisionOwner}</dd>
+    <dt>Candidate version</dt><dd>No candidate recorded</dd>
+    <dt>Immutable candidate diff</dt><dd>Not applicable until a candidate exists</dd>
+    <dt>Feedback dispositions</dt><dd>No feedback dispositions recorded</dd>
+    <dt>Semantic-package manifest</dt><dd><a href={SEMANTIC_PACKAGE_MANIFEST.canonicalSource}><code>{SEMANTIC_PACKAGE_MANIFEST.version}</code></a></dd>
+  </dl>
+
+  <h2 id="action">Review action</h2>
+  <p>Participants can <a href="/working-groups/join">register their interest</a>. A review action becomes available only after the group is convened, the evidence-handling rules are confirmed and an accountable decision owner is recorded.</p>
+</Layout>
+

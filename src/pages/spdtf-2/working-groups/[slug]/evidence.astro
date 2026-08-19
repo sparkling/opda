@@ -1,0 +1,43 @@
+---
+import Layout from '@/layouts/Layout.astro';
+import PageMeta from '@/components/PageMeta.astro';
+import AuthorityPanel from '@/components/ia/AuthorityPanel.astro';
+import WorkspaceNav from '@/components/ia/WorkspaceNav.astro';
+import { WORKING_GROUPS, getWorkingGroup } from '@/components/ia/working-groups';
+import { getWorkspaceRecord } from '@/lib/spdtf-workspace.mjs';
+
+export function getStaticPaths() {
+  return WORKING_GROUPS.map((group) => ({ params: { slug: group.slug }, props: { group } }));
+}
+const { group } = Astro.props;
+if (!group || !getWorkingGroup(group.slug)) throw new Error('Unknown SPDTF working-group route');
+const workspace = getWorkspaceRecord(group.slug);
+if (!workspace) throw new Error('Working group has no workspace record');
+---
+
+<Layout title={`${group.name} evidence register`} description={`Attributed development inputs for the ${group.name} SPDTF 2.0 workspace.`}>
+  <PageMeta category="Working-group evidence" variant="info" updated="Pre-convening register · no group review recorded" />
+  <h1>{group.name}: evidence register</h1>
+  <p class="lead">This register keeps development inputs findable without presenting them as working-group evidence, consensus or approval.</p>
+  <AuthorityPanel destination="working-groups" />
+  <WorkspaceNav slug={group.slug} />
+
+  <h2 id="inputs">Attributed inputs</h2>
+  <table>
+    <caption>Inputs registered for later participant assessment</caption>
+    <thead><tr><th scope="col">Record</th><th scope="col">Source</th><th scope="col">Status</th></tr></thead>
+    <tbody>{workspace.evidence.map((record) => (
+      <tr><th scope="row"><code>{record.id}</code></th><td><a href={record.href}>{record.href}</a></td><td>{record.status}</td></tr>
+    ))}</tbody>
+  </table>
+
+  <h2 id="handling">Evidence handling boundary</h2>
+  <ul>
+    <li>Attribute the source, permission, date, version and submitting participant.</li>
+    <li>Separate source wording from a facilitator’s derived interpretation.</li>
+    <li>Record challenge, withdrawal and supersession without erasing the original receipt.</li>
+    <li>Do not treat inclusion here as permission to publish confidential participant material.</li>
+  </ul>
+  <p><a href={`/spdtf-2/working-groups/${group.slug}/questions`}>Continue to competency questions →</a></p>
+</Layout>
+

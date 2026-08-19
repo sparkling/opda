@@ -1,15 +1,16 @@
 ---
-import { AUTHORITY_BY_DESTINATION } from '@/lib/site-ia.mjs';
+import { AUTHORITY_BY_DESTINATION, getRouteStatus } from '@/lib/site-ia.mjs';
 
 type Destination = keyof typeof AUTHORITY_BY_DESTINATION;
 
 interface Props {
   destination: Destination;
   label?: string;
+  path?: string;
 }
 
-const { destination, label = 'Authority and status' } = Astro.props;
-const authority = AUTHORITY_BY_DESTINATION[destination];
+const { destination, label = 'Authority and status', path = Astro.url.pathname } = Astro.props;
+const authority = getRouteStatus(path) ?? AUTHORITY_BY_DESTINATION[destination];
 if (!authority) throw new Error(`Unknown information-architecture destination: ${destination}`);
 
 const fields = [

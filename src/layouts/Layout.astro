@@ -26,6 +26,11 @@ import Breadcrumbs from '@/components/Breadcrumbs.astro';
 import PageFooter from '@/components/PageFooter.astro';
 import Comments from '@/components/Comments.astro';
 import { getActiveSection } from '@/lib/site';
+import {
+  IA_STATUS_REGISTRY_VERSION,
+  getRouteDisposition,
+  getRouteStatus,
+} from '@/lib/site-ia.mjs';
 
 function assetVersion(rel: string): string {
   try {
@@ -83,14 +88,34 @@ const fullTitle = /knowledge base/i.test(title)
 const activeSection = getActiveSection(Astro.url.pathname);
 const sectionAttr = activeSection ?? '';
 const showSidebar = !hideSidebar && !!activeSection;
+const routeStatus = getRouteStatus(Astro.url.pathname);
+const routeDisposition = getRouteDisposition(Astro.url.pathname);
+const searchAliases = routeDisposition?.search?.historicalAliases ?? [];
 ---
 <!doctype html>
-<html lang="en" class="app-document" data-section={sectionAttr}>
+<html
+  lang="en"
+  class="app-document"
+  data-section={sectionAttr}
+  data-ia-status-version={IA_STATUS_REGISTRY_VERSION}
+  data-work-area={routeStatus.workArea}
+  data-authority={routeStatus.authority}
+  data-maturity={routeStatus.maturity}
+  data-content-version={routeStatus.version}
+  data-provenance={routeStatus.provenance}
+>
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>{fullTitle}</title>
   {description && <meta name="description" content={description} />}
+  <meta name="opda:status-registry-version" content={IA_STATUS_REGISTRY_VERSION} />
+  <meta name="opda:work-area" content={routeStatus.workArea} />
+  <meta name="opda:authority" content={routeStatus.authority} />
+  <meta name="opda:maturity" content={routeStatus.maturity} />
+  <meta name="opda:version" content={routeStatus.version} />
+  <meta name="opda:provenance" content={routeStatus.provenance} />
+  {searchAliases.map((alias) => <meta name="opda:search-alias" content={alias} />)}
   <link rel="stylesheet" href={`/ui/design-system.css?v=${cssV}`} />
   <link rel="stylesheet" href={`/ui/tailwind.built.css?v=${twV}`} />
 

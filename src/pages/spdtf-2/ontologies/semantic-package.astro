@@ -3,6 +3,7 @@ import Layout from '@/layouts/Layout.astro';
 import PageMeta from '@/components/PageMeta.astro';
 import AuthorityPanel from '@/components/ia/AuthorityPanel.astro';
 import JourneyNav from '@/components/ia/JourneyNav.astro';
+import { SEMANTIC_PACKAGE_MANIFEST } from '@/lib/spdtf-workspace.mjs';
 ---
 
 <Layout title="Six-part semantic package" description="The six distinct semantic outputs that each SPDTF 2.0 working group keeps aligned.">
@@ -14,6 +15,12 @@ import JourneyNav from '@/components/ia/JourneyNav.astro';
   </p>
   <AuthorityPanel destination="spdtf-2" />
   <JourneyNav />
+
+  <div class="callout callout--key">
+    <p class="callout__label">Versioned package contract</p>
+    <p><code>{SEMANTIC_PACKAGE_MANIFEST.id}</code> · version <code>{SEMANTIC_PACKAGE_MANIFEST.version}</code> · {SEMANTIC_PACKAGE_MANIFEST.status}.</p>
+    <p>{SEMANTIC_PACKAGE_MANIFEST.synchronizationRule}</p>
+  </div>
 
   <h2 id="outputs">Six distinct outputs</h2>
   <table>
@@ -40,6 +47,7 @@ import JourneyNav from '@/components/ia/JourneyNav.astro';
     RDF/OWL, SKOS, SHACL, JSON Schema, forms and documentation are aligned
     representations or projections of the agreement, not independent sources of meaning.
   </p>
+  <p><a href="/spdtf-2/outputs">Inspect the manifest and projection-status register</a>.</p>
 
   <h2 id="review">Review boundary</h2>
   <p>

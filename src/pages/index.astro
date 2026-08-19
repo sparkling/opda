@@ -1,15 +1,22 @@
 ---
+import { IA_STATUS_REGISTRY_VERSION, getRouteStatus } from '@/lib/site-ia.mjs';
 const title = 'OPDA Knowledge Base';
 const description =
   'Follow the continuation from PDTF 1.0 into SPDTF 2.0 development through evidence, governance, working groups and implementation.';
+const routeStatus = getRouteStatus('/');
 ---
 <!doctype html>
-<html lang="en">
+<html lang="en" data-ia-status-version={IA_STATUS_REGISTRY_VERSION} data-work-area={routeStatus.workArea} data-authority={routeStatus.authority} data-maturity={routeStatus.maturity} data-content-version={routeStatus.version} data-provenance={routeStatus.provenance}>
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>{title}</title>
   <meta name="description" content={description} />
+  <meta name="opda:work-area" content={routeStatus.workArea} />
+  <meta name="opda:authority" content={routeStatus.authority} />
+  <meta name="opda:maturity" content={routeStatus.maturity} />
+  <meta name="opda:version" content={routeStatus.version} />
+  <meta name="opda:provenance" content={routeStatus.provenance} />
   <meta property="og:title" content={title} />
   <meta property="og:description" content={description} />
   <meta name="twitter:card" content="summary" />

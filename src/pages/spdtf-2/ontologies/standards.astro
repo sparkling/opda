@@ -3,17 +3,12 @@ import Layout from '@/layouts/Layout.astro';
 import PageMeta from '@/components/PageMeta.astro';
 import AuthorityPanel from '@/components/ia/AuthorityPanel.astro';
 import JourneyNav from '@/components/ia/JourneyNav.astro';
-
-const standardsProfile = [
-  ['Context-owned terms', 'SPDTF candidate namespace; immutable candidate identifier', 'Mint a term only when no suitable governed term is reusable', 'Candidate namespace and ownership recorded; no release authority', 'mint', 'Candidate, first working-group draft ceiling', 'The owning domain working group', 'Competency question, evidence register and candidate diff', 'A reusable term, boundary decision or namespace policy'],
-  ['Core semantics', 'RDF 1.2 Basic; RDFS; OWL 2; SKOS', 'Shared meaning and concept schemes', 'Exact features declared per candidate', 'reference', 'Accepted modelling targets', 'Interoperability with each domain owner', 'ADR-0067; candidate feature receipts', 'New feature evidence or a domain requirement'],
-  ['Query and constraints', 'Portable SPARQL 1.2 subset; SHACL 1.2 Core initially', 'Portable queries and fail-closed constraints', 'Subset and SHACL features tested explicitly', 'reference', 'Accepted bounded targets', 'Interoperability and validation maintainers', 'Validation receipts and conformance probes', 'A query or constraint feature outside the declared subset'],
-  ['Metadata, provenance and time', 'Dublin Core Terms; DCAT 3; PROV-O; DQV; OWL-Time', 'Attribution, quality, cataloguing and temporal state', 'Concern-specific terms only where required', 'reuse', 'Candidate by concern; not blanket adoption', 'Concern-owning working group', 'Coverage assessment and source requirements', 'A missing provenance, quality or temporal competency question'],
-  ['Sensitivity and authorisation', 'DPV; DPV-PD; DPV-LEGAL; ODRL where justified', 'Sensitivity, purpose, consent and authorisation semantics', 'Semantic description; no runtime access-control claim', 'reference', 'Candidate by concern', 'DBT Smart Data group with Governance', 'Handling requirements and legal review', 'New policy, legal or handling evidence'],
-  ['Cross-context alignment', 'SKOS Mapping; SSSOM', 'Meaning-preserving boundary mappings', 'No unjustified owl:sameAs; mapping relation qualified', 'map', 'Candidate mechanism governed by Interoperability', 'Interoperability Working Group', 'Context map and affected-group review', 'A boundary disagreement or new cross-context use case'],
-  ['Domain and methodology references', 'FIBO; GeoSPARQL; Schema.org; VC/DID; ORG; ISO 23386; UFO/OntoClean', 'Evidence and comparison for domain modelling', 'Assess each reference; no wholesale import', 'reference', 'Reference candidates only', 'Relevant domain group', 'Standards assessment and competency questions', 'A reuse decision with version and scope evidence'],
-  ['Delivery projections', 'JSON Schema; JSON-LD; forms; APIs; website; PDF; Markdown', 'Consumer-specific tested representations', 'Generated from a governed package; projection is not authority', 'projection', 'Tested downstream view', 'Projection owner with semantic package owner', 'Generator tests and package manifest', 'A projection drift or package-version change'],
-];
+import {
+  STANDARDS_PROFILE,
+  STANDARDS_PROFILE_VERSION,
+  validateStandardsProfile,
+} from '@/lib/spdtf-standards-profile.mjs';
+validateStandardsProfile();
 ---
 
 <Layout title="Standards, vocabularies and frameworks" description="The bounded SPDTF 2.0 standards profile: targets, candidates, mechanisms, owners and evidence.">
@@ -28,18 +23,25 @@ const standardsProfile = [
   <JourneyNav />
 
   <h2 id="profile">Bounded profile</h2>
-  <div class="table-scroll" role="region" tabindex="0" aria-label="Standards profile register">
   <table>
-    <caption>Standards-profile register: every item has a bounded status and re-open trigger</caption>
-    <thead><tr><th scope="col">Profile role</th><th scope="col">Exact version / boundary</th><th scope="col">Purpose</th><th scope="col">Conformance boundary</th><th scope="col">Mechanism</th><th scope="col">Status</th><th scope="col">Owner</th><th scope="col">Evidence / decision</th><th scope="col">Re-open trigger</th></tr></thead>
+    <caption>Standards-profile register {STANDARDS_PROFILE_VERSION}: one bounded record per item</caption>
+    <thead><tr><th scope="col">Standard or method</th><th scope="col">Exact version / boundary</th><th scope="col">Purpose</th><th scope="col">Conformance boundary</th><th scope="col">Mechanism</th><th scope="col">Status</th><th scope="col">Owner</th><th scope="col">Evidence / decision</th><th scope="col">Re-open trigger</th></tr></thead>
     <tbody>
-      {standardsProfile.map((row) => <tr>{row.map((cell, index) => index === 0 ? <th scope="row">{cell}</th> : <td>{cell}</td>)}</tr>)}
+      {STANDARDS_PROFILE.map((record) => <tr>
+        <th scope="row">{record.name}</th>
+        <td>{record.versionBoundary}</td>
+        <td>{record.purpose}</td>
+        <td>{record.conformance}</td>
+        <td><code>{record.mechanism}</code></td>
+        <td>{record.status}</td>
+        <td>{record.owner}</td>
+        <td>{record.evidence}</td>
+        <td>{record.reopenTrigger}</td>
+      </tr>)}
     </tbody>
   </table>
-  </div>
 
   <h2 id="record">Required profile record</h2>
-  <div class="table-scroll" role="region" tabindex="0" aria-label="Standards profile record fields">
   <table>
     <caption>Fields required for every standards-profile item</caption>
     <thead><tr><th scope="col">Field</th><th scope="col">Example question</th></tr></thead>
@@ -53,7 +55,15 @@ const standardsProfile = [
       <tr><th scope="row">Re-open trigger</th><td>What new evidence, feature need or boundary decision would revisit it?</td></tr>
     </tbody>
   </table>
-  </div>
+
+  <h2 id="projections">Projections are not standards mechanisms</h2>
+  <p>
+    JSON Schema, JSON-LD, forms, APIs, website pages, PDF and Markdown are generated
+    projections. Their relationship to the semantic package is recorded in the
+    <a href="/spdtf-2/outputs">outputs register</a>; it is not a fifth standards-profile
+    mechanism. The only allowed mechanisms here are <code>reuse</code>,
+    <code>reference</code>, <code>map</code> and <code>mint</code>.
+  </p>
 
   <h2 id="non-claims">Non-claims</h2>
   <p>
