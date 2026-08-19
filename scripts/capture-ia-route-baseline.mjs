@@ -10,6 +10,7 @@ import {
   fragmentContract,
   generatedFamily,
   informationContract,
+  linkedInformationBlocks,
   blockInventory,
   equivalenceReceipt,
   routeFromFile,
@@ -53,12 +54,24 @@ const externalPrefixes = [
 const semanticLedger = JSON.parse(readFileSync(semanticLedgerPath, 'utf8'));
 const SEMANTIC_CLASSES = new Set([
   'terminology-and-scope-reframe',
-  'landing-page-recomposition',
   'authority-and-label-reframe',
   'decision-status-update',
   'scope-and-maturity-clarification',
 ]);
 const NON_INFORMATION_CLASS = 'superseded-navigation-copy';
+const NAVIGATION_EVIDENCE = new Set(['containing-link', 'declared-original-destination']);
+/**
+ * Old landing navigation may point at a legacy route that is deliberately
+ * represented by a current canonical surface. This is a closed allow-list;
+ * every other navigation destination must be the original retained route.
+ */
+const NAVIGATION_CANONICAL_EQUIVALENTS = Object.freeze({
+  '/strategy': ['/programme'],
+  '/model': ['/pdtf-1'],
+  '/implementation': ['/pdtf-1'],
+  '/library': ['/resources'],
+  '/engagement': ['/resources', '/spdtf-2/working-groups'],
+});
 if (semanticLedger.schemaVersion !== 1 || semanticLedger.baselineCommit !== commit(baselineRoot)
   || !Array.isArray(semanticLedger.entries)) {
   throw new Error('semantic reframe ledger has an invalid baseline contract');
@@ -80,9 +93,18 @@ for (const entry of semanticLedger.entries) {
     || !entry.reviewNote.includes(entry.sourceText) || !entry.reviewNote.includes(entry.replacementText)
   );
   const nonInformationInvalid = entry.classification === NON_INFORMATION_CLASS && (
-    !entry.destinationRoute?.startsWith('/') || typeof entry.supersessionReason !== 'string'
-    || !entry.supersessionReason.includes(entry.sourceText)
-    || !entry.supersessionReason.includes(entry.destinationRoute)
+    !Array.isArray(entry.navigationDestinations) || !entry.navigationDestinations.length
+    || new Set(entry.navigationDestinations.map(({ sourceRoute }) => sourceRoute)).size !== entry.navigationDestinations.length
+    || entry.navigationDestinations.some((resolution) => (
+      !entry.sourceRoutes.includes(resolution?.sourceRoute)
+      || !resolution.originalDestinationRoute?.startsWith('/')
+      || !resolution.destinationRoute?.startsWith('/')
+      || !NAVIGATION_EVIDENCE.has(resolution.sourceEvidence)
+      || typeof resolution.supersessionReason !== 'string'
+      || !resolution.supersessionReason.includes(entry.sourceText)
+      || !resolution.supersessionReason.includes(resolution.originalDestinationRoute)
+      || !resolution.supersessionReason.includes(resolution.destinationRoute)
+    ))
   );
   if (commonInvalid || semanticInvalid || nonInformationInvalid
     || (!SEMANTIC_CLASSES.has(entry.classification) && entry.classification !== NON_INFORMATION_CLASS)) {
@@ -133,6 +155,26 @@ function reframeEvidence(route) {
   return 'ADR-0074 route disposition plus exact before/after information and fragment checksums';
 }
 
+function localRouteFromHref(href) {
+  if (typeof href !== 'string' || !href.startsWith('/')) return null;
+  const pathname = href.split(/[?#]/u, 1)[0];
+  return pathname.length > 1 ? pathname.replace(/\/+$/u, '') : '/';
+}
+
+function navigationResolution(entry, route) {
+  const resolution = entry.navigationDestinations?.find(({ sourceRoute }) => sourceRoute === route);
+  if (!resolution) throw new Error(`navigation-copy supersession has no source-route resolution: ${route}#${entry.sourceBlockSha256}`);
+  const policy = resolution.destinationRoute === resolution.originalDestinationRoute
+    ? 'same-retained-route'
+    : NAVIGATION_CANONICAL_EQUIVALENTS[resolution.originalDestinationRoute]?.includes(resolution.destinationRoute)
+      ? 'canonical-equivalent'
+      : null;
+  if (!policy) {
+    throw new Error(`navigation-copy supersession has no canonical destination proof: ${route}#${entry.sourceBlockSha256}`);
+  }
+  return { ...resolution, destinationPolicy: policy };
+}
+
 /**
  * The route ledger is deliberately explicit rather than a global text search.
  * New entries must name every current route which is allowed to satisfy a
@@ -150,7 +192,12 @@ function retentionTargets(route, before) {
     ...blockInventory(before.blockHashes).records
       .map(({ hash }) => {
         const resolution = semanticReframes.get(hash);
-        return resolution?.replacementRoute ?? resolution?.destinationRoute;
+        return resolution?.replacementRoute
+          ?? (resolution?.classification === NON_INFORMATION_CLASS
+            ? resolution.navigationDestinations.some(({ sourceRoute }) => sourceRoute === route)
+              ? navigationResolution(resolution, route).destinationRoute
+              : null
+            : null);
       })
       .filter(Boolean),
   ];
@@ -164,13 +211,22 @@ function retentionTargets(route, before) {
   return uniqueTargets;
 }
 
+function baselineLinkEvidence(html) {
+  const evidence = new Map();
+  for (const { hash, containingLink } of linkedInformationBlocks(html)) {
+    if (!evidence.has(hash)) evidence.set(hash, new Set());
+    evidence.get(hash).add(containingLink || null);
+  }
+  return evidence;
+}
+
 /**
  * Capture a multiplicity-aware receipt. Exact blocks may be satisfied at a
  * declared replacement route. Every non-exact block resolves through the
  * committed semantic ledger to one concrete target block; there are no
  * catch-all or route-wide approvals.
  */
-function captureRetentionReceipt(route, before, acceptedContracts) {
+function captureRetentionReceipt(route, before, acceptedContracts, sourceLinks) {
   const targets = retentionTargets(route, before);
   const available = new Map();
   const targetEvidence = targets.map((targetRoute) => {
@@ -199,13 +255,22 @@ function captureRetentionReceipt(route, before, acceptedContracts) {
     }
     if (remaining) {
       const semantic = semanticReframes.get(hash);
-      const targetRoute = semantic?.replacementRoute ?? semantic?.destinationRoute;
+      const navigation = semantic?.classification === NON_INFORMATION_CLASS
+        ? navigationResolution(semantic, route)
+        : null;
+      const targetRoute = semantic?.replacementRoute ?? navigation?.destinationRoute;
       if (!semantic || !targetEvidence.some(({ route: target }) => target === targetRoute)) {
         throw new Error(`no concrete retention resolution is declared for ${route}#${hash}`);
       }
       if (semantic.classification === NON_INFORMATION_CLASS) {
-        if (!semantic.sourceRoutes.includes(route)) {
-          throw new Error(`navigation-copy supersession is declared for the wrong source route: ${route}#${hash}`);
+        const hrefs = sourceLinks.get(hash) ?? new Set();
+        if (navigation.sourceEvidence === 'containing-link') {
+          if (hrefs.size !== 1 || !hrefs.values().next().value
+            || localRouteFromHref(hrefs.values().next().value) !== navigation.originalDestinationRoute) {
+            throw new Error(`navigation-copy containing-link evidence does not match the baseline: ${route}#${hash}`);
+          }
+        } else if (hrefs.size !== 1 || hrefs.values().next().value !== null) {
+          throw new Error(`navigation-copy declared destination is not allowed when baseline link evidence exists: ${route}#${hash}`);
         }
         nonInformationBlocks.push({
           sourceBlockSha256: hash,
@@ -213,9 +278,13 @@ function captureRetentionReceipt(route, before, acceptedContracts) {
           sourceText: semantic.sourceText,
           occurrences: remaining,
           classification: semantic.classification,
-          destinationRoute: semantic.destinationRoute,
+          originalDestinationRoute: navigation.originalDestinationRoute,
+          destinationRoute: navigation.destinationRoute,
+          destinationPolicy: navigation.destinationPolicy,
+          sourceEvidence: navigation.sourceEvidence,
+          baselineLinkHref: navigation.sourceEvidence === 'containing-link' ? hrefs.values().next().value : null,
           destinationContentSha256: targetEvidence.find(({ route: target }) => target === targetRoute).acceptedContentSha256,
-          supersessionReason: semantic.supersessionReason,
+          supersessionReason: navigation.supersessionReason,
         });
         continue;
       }
@@ -255,7 +324,11 @@ function captureRetentionReceipt(route, before, acceptedContracts) {
     entry.sourceText,
     entry.occurrences,
     entry.classification,
+    entry.originalDestinationRoute,
     entry.destinationRoute,
+    entry.destinationPolicy,
+    entry.sourceEvidence,
+    entry.baselineLinkHref ?? '',
     entry.destinationContentSha256,
     entry.supersessionReason,
   ].join('\0')).join('\n'));
@@ -316,7 +389,7 @@ const routes = baselineFiles.map((file) => {
     acceptedFragments: afterFragments.fragments,
     ...routeMetadata(route),
     equivalenceReceipt: equivalenceReceipt(beforeContent, afterContent, reframeEvidence(route)),
-    retentionReceipt: captureRetentionReceipt(route, beforeContent, acceptedContracts),
+    retentionReceipt: captureRetentionReceipt(route, beforeContent, acceptedContracts, baselineLinkEvidence(beforeHtml)),
   };
 });
 
@@ -361,7 +434,7 @@ if (usedSemanticReframes.size !== semanticReframes.size
 }
 
 const routeManifest = {
-  schemaVersion: 4,
+  schemaVersion: 5,
   baselineCommit,
   acceptedCommit,
   routeCount: routes.length,

@@ -8,6 +8,7 @@ import {
   filesUnder,
   fragmentContract,
   informationContract,
+  linkedInformationBlocks,
   blockInventory,
   routeFromFile,
   sha256,
@@ -171,12 +172,32 @@ function verifyBaselineRoute(record, file) {
 
 const SEMANTIC_CLASSES = new Set([
   'terminology-and-scope-reframe',
-  'landing-page-recomposition',
   'authority-and-label-reframe',
   'decision-status-update',
   'scope-and-maturity-clarification',
 ]);
 const NON_INFORMATION_CLASS = 'superseded-navigation-copy';
+const NAVIGATION_EVIDENCE = new Set(['containing-link', 'declared-original-destination']);
+const NAVIGATION_CANONICAL_EQUIVALENTS = Object.freeze({
+  '/strategy': ['/programme'],
+  '/model': ['/pdtf-1'],
+  '/implementation': ['/pdtf-1'],
+  '/library': ['/resources'],
+  '/engagement': ['/resources', '/spdtf-2/working-groups'],
+});
+
+function localRouteFromHref(href) {
+  if (typeof href !== 'string' || !href.startsWith('/')) return null;
+  const pathname = href.split(/[?#]/u, 1)[0];
+  return pathname.length > 1 ? pathname.replace(/\/+$/u, '') : '/';
+}
+
+function validNavigationDestination(entry) {
+  return (entry.destinationPolicy === 'same-retained-route'
+    && entry.destinationRoute === entry.originalDestinationRoute)
+    || (entry.destinationPolicy === 'canonical-equivalent'
+      && NAVIGATION_CANONICAL_EQUIVALENTS[entry.originalDestinationRoute]?.includes(entry.destinationRoute));
+}
 
 function semanticBlocksDigest(blocks) {
   return sha256(blocks.map((entry) => [
@@ -201,7 +222,11 @@ function nonInformationBlocksDigest(blocks) {
     entry.sourceText,
     entry.occurrences,
     entry.classification,
+    entry.originalDestinationRoute,
     entry.destinationRoute,
+    entry.destinationPolicy,
+    entry.sourceEvidence,
+    entry.baselineLinkHref ?? '',
     entry.destinationContentSha256,
     entry.supersessionReason,
   ].join('\0')).join('\n'));
@@ -279,7 +304,13 @@ function validateRetentionReceipt(record, classifiedByRoute) {
       || !target || entry.destinationContentSha256 !== target.acceptedContentSha256
       || typeof entry.sourceTag !== 'string' || typeof entry.sourceText !== 'string'
       || sha256(`${entry.sourceTag}\0${entry.sourceText}`) !== entry.sourceBlockSha256
+      || !entry.originalDestinationRoute?.startsWith('/') || !entry.destinationRoute?.startsWith('/')
+      || !validNavigationDestination(entry) || !NAVIGATION_EVIDENCE.has(entry.sourceEvidence)
+      || (entry.sourceEvidence === 'containing-link'
+        ? localRouteFromHref(entry.baselineLinkHref) !== entry.originalDestinationRoute
+        : entry.baselineLinkHref !== null)
       || typeof entry.supersessionReason !== 'string' || !entry.supersessionReason.includes(entry.sourceText)
+      || !entry.supersessionReason.includes(entry.originalDestinationRoute)
       || !entry.supersessionReason.includes(entry.destinationRoute)) {
       fail(`non-information supersession is incomplete or unbound: ${record.route}`);
       continue;
@@ -296,13 +327,30 @@ function validateRetentionReceipt(record, classifiedByRoute) {
   }
 }
 
+function verifyBaselineNavigationEvidence(record, html) {
+  const sourceLinks = new Map();
+  for (const { hash, containingLink } of linkedInformationBlocks(html)) {
+    if (!sourceLinks.has(hash)) sourceLinks.set(hash, new Set());
+    sourceLinks.get(hash).add(containingLink || null);
+  }
+  for (const entry of record.retentionReceipt?.nonInformationBlocks ?? []) {
+    const hrefs = sourceLinks.get(entry.sourceBlockSha256) ?? new Set();
+    const actualHref = hrefs.values().next().value;
+    const supported = entry.sourceEvidence === 'containing-link'
+      ? hrefs.size === 1 && actualHref === entry.baselineLinkHref
+        && localRouteFromHref(actualHref) === entry.originalDestinationRoute
+      : hrefs.size === 1 && actualHref === null;
+    if (!supported) fail(`baseline navigation provenance changed or is ambiguous: ${record.route}#${entry.sourceBlockSha256}`);
+  }
+}
+
 validateIaContract();
 if (ROUTE_DISPOSITION_LEDGER.some(({ disposition }) => disposition === 'retire')) fail('route disposition ledger contains a retire entry');
 
 const routeManifest = readJson(options.routeManifestPath ?? 'src/data/ia-route-baseline.json');
 const familyManifest = readJson('src/data/ia-preservation-baseline.json');
 if (routeManifest) {
-  if (routeManifest.schemaVersion !== 4 || routeManifest.routeCount !== routeManifest.routes?.length
+  if (routeManifest.schemaVersion !== 5 || routeManifest.routeCount !== routeManifest.routes?.length
     || routeManifest.addedRouteCount !== routeManifest.addedRoutes?.length) fail('route manifest has an invalid schema or count');
   const all = [...(routeManifest.routes ?? []), ...(routeManifest.addedRoutes ?? [])];
   const files = new Set();
@@ -380,7 +428,10 @@ if (routeManifest) {
     else for (const record of routeManifest.routes ?? []) {
       const baselineFile = path.join(options.baselineRoot, 'dist', record.file);
       if (!existsSync(baselineFile)) fail(`baseline route is missing: ${record.route}`);
-      else verifyBaselineRoute(record, baselineFile);
+      else {
+        verifyBaselineRoute(record, baselineFile);
+        verifyBaselineNavigationEvidence(record, readFileSync(baselineFile, 'utf8'));
+      }
     }
     notes.push(`baseline routes: ${routeManifest.routeCount} before-state records verified`);
   }

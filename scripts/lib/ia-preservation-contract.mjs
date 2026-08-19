@@ -110,21 +110,40 @@ export function fragmentContract(html) {
   };
 }
 
-export function informationContract(html) {
+function informationBlocks(html, { includeContainingLink = false } = {}) {
   const document = parse(html);
   const root = findMain(document) ?? document;
   const blocks = [];
-  const visit = (node, parentIgnored = false) => {
+  const visit = (node, parentIgnored = false, containingLink = null) => {
     const skip = ignored(node, parentIgnored);
     if (skip) return;
+    const nextContainingLink = node.tagName === 'a' ? attr(node, 'href') : containingLink;
     if (CONTENT_TAGS.has(node.tagName)) {
       const text = normalizeText(nodeText(node));
-      if (text && !generatedShellArtifact(text)) blocks.push(`${node.tagName}\0${text}`);
+      if (text && !generatedShellArtifact(text)) {
+        const value = `${node.tagName}\0${text}`;
+        blocks.push(includeContainingLink ? {
+          hash: sha256(value), tag: node.tagName, text, containingLink: nextContainingLink,
+        } : value);
+      }
       return;
     }
-    node.childNodes?.forEach((child) => visit(child, skip));
+    node.childNodes?.forEach((child) => visit(child, skip, nextContainingLink));
   };
   visit(root);
+  return blocks;
+}
+
+/**
+ * Meaningful reader blocks, with the href of the nearest enclosing baseline
+ * link when one exists. This is provenance evidence, not a link-text search.
+ */
+export function linkedInformationBlocks(html) {
+  return informationBlocks(html, { includeContainingLink: true });
+}
+
+export function informationContract(html) {
+  const blocks = informationBlocks(html);
   const blockHashes = blocks.map(sha256);
   return {
     contentSha256: sha256(blocks.join('\n')),

@@ -165,7 +165,7 @@ test('the migration ledger preserves every audited high-risk information family'
 });
 
 test('the frozen preservation proof resolves content, ownership and exact family checksums', () => {
-  assert.equal(routeBaseline.schemaVersion, 4);
+  assert.equal(routeBaseline.schemaVersion, 5);
   assert.equal(routeBaseline.routeCount, 3436);
   assert.equal(routeBaseline.addedRouteCount, 49);
   assert.equal(routeBaseline.routes.length, routeBaseline.routeCount);
@@ -201,7 +201,10 @@ test('the frozen preservation proof resolves content, ownership and exact family
       /^[a-f0-9]{64}$/u.test(entry.sourceBlockSha256)
       && entry.occurrences > 0 && entry.destinationRoute && entry.destinationContentSha256
       && entry.classification === 'superseded-navigation-copy'
-      && entry.sourceText && entry.supersessionReason.includes(entry.destinationRoute)
+      && entry.sourceText && entry.originalDestinationRoute && entry.destinationPolicy
+      && ['containing-link', 'declared-original-destination'].includes(entry.sourceEvidence)
+      && entry.supersessionReason.includes(entry.originalDestinationRoute)
+      && entry.supersessionReason.includes(entry.destinationRoute)
     ))
   )));
   assert.ok(routeBaseline.routes.every(({ baselineFragments, acceptedFragments }) => (
@@ -362,6 +365,27 @@ test('preservation checker rejects an unbound navigation-copy supersession', () 
       .flatMap(({ retentionReceipt }) => retentionReceipt.nonInformationBlocks)
       .find(Boolean);
     supersession.destinationRoute = '/not-a-real-destination';
+    writeFileSync(fixture, JSON.stringify(candidate));
+    const result = spawnSync(process.execPath, [preservationScript, '--manifest-only', `--route-manifest=${fixture}`], {
+      cwd: projectRoot, encoding: 'utf8',
+    });
+    assert.notEqual(result.status, 0);
+    assert.match(`${result.stdout}${result.stderr}`, /non-information supersession/u);
+  } finally {
+    rmSync(directory, { recursive: true, force: true });
+  }
+});
+
+test('preservation checker rejects invalid navigation-copy provenance evidence', () => {
+  const directory = mkdtempSync(path.join(tmpdir(), 'opda-ia-preservation-'));
+  const fixture = path.join(directory, 'route-baseline.json');
+  try {
+    const candidate = structuredClone(routeBaseline);
+    const supersession = candidate.routes
+      .flatMap(({ retentionReceipt }) => retentionReceipt.nonInformationBlocks)
+      .find(({ sourceEvidence }) => sourceEvidence === 'containing-link');
+    assert.ok(supersession, 'the receipt must include baseline-link provenance');
+    supersession.sourceEvidence = 'declared-original-destination';
     writeFileSync(fixture, JSON.stringify(candidate));
     const result = spawnSync(process.execPath, [preservationScript, '--manifest-only', `--route-manifest=${fixture}`], {
       cwd: projectRoot, encoding: 'utf8',
