@@ -33,6 +33,12 @@ implements: [docs/spdtf-2-0-information-architecture.md]
 > Working Group determination followed by later domain review. This ADR still records
 > the currently implemented site; the amended hierarchy is Accepted but not yet
 > implemented.
+>
+> Update 2026-08-19 — route-continuity exception: the operator subsequently chose one
+> canonical `/spdtf-2/property-pack/**` family and explicitly declined compatibility
+> routes for `/v2/**` and `/modelling/property-pack`. ADR-0075 supersedes this ADR's
+> stable-route clauses only for those Property Pack routes. Atomic information,
+> fragment and feedback-thread preservation remain release gates.
 
 ## Context and Problem Statement
 

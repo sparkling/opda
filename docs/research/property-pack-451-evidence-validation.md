@@ -112,4 +112,5 @@ DPMSG. Those are explicit review and governance gates in
   [`required-properties.json`](../../src/data/property-pack/required-properties.json)
 - Deterministic validation receipt:
   [`validation-report.json`](../../src/data/property-pack/validation-report.json)
-- Local working web view: `/modelling/property-pack`
+- Canonical web view: `/spdtf-2/property-pack/definition-and-scope` (the former
+  `/modelling/property-pack` route is removed without a redirect).

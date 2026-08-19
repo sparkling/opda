@@ -1,13 +1,13 @@
-# Current site information architecture
+# Pre-consolidation site information architecture
 
-Status: current-state inventory  
-Captured: 2026-08-18  
-Implementation baseline: `3e06f29`  
+Status: historical pre-consolidation baseline
+Captured: 2026-08-18
+Implementation baseline: `3e06f29`
 Site: `https://opda.org.uk`
 
 ## Purpose and scope
 
-This document records the information architecture implemented by the current Astro site before any restructuring. It covers canonical pages, generated page families, standalone public experiences, utility pages, bundled ontology-tool output, and redirects. It describes what exists; it does not propose a replacement hierarchy.
+This document records the information architecture at baseline `3e06f29`, before the Property Pack consolidation and wider restructuring. It covers canonical pages, generated page families, standalone public experiences, utility pages, bundled ontology-tool output, and redirects. Its old route names and labels are preserved as historical facts, not current destinations or compatibility promises.
 
 Every authored or index page is listed individually. Repeated generated records are listed by route family, exact count, child grouping, and common page contents. This keeps the inventory reviewable while still accounting for every emitted route; the corresponding index pages enumerate the individual records.
 
@@ -21,6 +21,10 @@ The inventory is derived from:
 - redirects in `astro.config.mjs`.
 
 The governing IA decisions are Accepted: ADR-0002 (semantic folder hierarchy), ADR-0003 (build-time Astro navigation), ADR-0016 (generated model/manual routes), ADR-0042 (`/manual` renamed to `/model`), ADR-0059 (Mapping placed between Ontology and Schema), ADR-0062 (DBT Smart Data section), and ADR-0064 (the separate V2 candidate surface, updated 2026-08-16).
+
+### Superseding Property Pack route decision
+
+ADR-0075 replaces only the baseline Property Pack addresses. With no redirects, old `/v2` maps to `/spdtf-2/property-pack`; old `/v2/comparison` maps to `/spdtf-2/property-pack/pdtf-1-lineage`; every other old `/v2/{suffix}` maps to `/spdtf-2/property-pack/{suffix}`; and old `/modelling/property-pack` maps to `/spdtf-2/property-pack/definition-and-scope`. Information blocks, fragments and logical comment identity must survive at their declared replacements; neither old route family remains published.
 
 ## Route totals
 
@@ -36,7 +40,7 @@ The current macOS build contains 3,435 physical HTML files because the case-sens
 
 ## Global hierarchy and navigation
 
-The primary application header exposes thirteen sections in this order:
+At the captured baseline, the primary application header exposed thirteen sections in this order:
 
 1. Strategy
 2. Governance
@@ -158,7 +162,7 @@ The public entry page, application home, design system, glossary, working-group 
 | `/model/information-architecture` | Index of the five specifications governing the model documentation's four-tier structure and traceability. |
 | `/model/validation-report` | Generated validation report for source discipline, entity inventory, cross-tier links and diagrams. |
 
-### V2 Property Pack candidate — 13 index and assurance pages
+### V2 Property Pack candidate — 13 baseline index and assurance pages
 
 | Page | What it contains |
 |---|---|
@@ -465,13 +469,13 @@ Authentication, comments and the working-group submission API are runtime servic
 | `/governance/smart-data-guidebook` | `/dbt-smart-data` | Preserves the original single-page Guidebook URL after the section expansion. |
 | `/presentations/finance-banking-kickoff` | `/presentation/working-group-kickoff` | Preserves the deck's temporary development URL. |
 
-## Structural observations for the reorganisation phase
+## Structural observations at the captured baseline
 
-- Generated reference records are 91% of canonical routes (2,322 of 2,552); the reorganisation therefore needs route-family rules, not a manual page-by-page migration.
-- The top-level application navigation has thirteen peer sections, while the home page promotes only eight task pathways.
-- `Modelling`, `Model`, `V2` and `Ontology` are separate top-level destinations with related subject matter but different authority, audience and maturity.
-- `/` and `/home` form two successive landing layers: a public gateway and the application home.
-- Schema is the deepest authored hierarchy; record/reference depth is otherwise handled by generated routes and contextual links.
-- The design system, glossary, public recruitment flow and presentation deck are standalone experiences rather than children of a primary section.
-- Three canonical pages are unregistered in the section taxonomy, and most ontology/PDTF generated details rely on contextual links rather than sidebar placement.
-- The V2 surface consistently labels itself as a candidate and keeps its resources, shapes, vocabularies and evidence separate from the current ontology reference.
+- Generated reference records were 91% of canonical routes (2,322 of 2,552), requiring route-family rules rather than a manual page-by-page migration.
+- The top-level application navigation had thirteen peer sections, while the home page promoted only eight task pathways.
+- `Modelling`, `Model`, `V2` and `Ontology` were separate top-level destinations with related subject matter but different authority, audience and maturity.
+- `/` and `/home` formed two successive landing layers: a public gateway and the application home.
+- Schema was the deepest authored hierarchy; generated routes and contextual links handled other record/reference depth.
+- The design system, glossary, public recruitment flow and presentation deck were standalone experiences rather than children of a primary section.
+- Three canonical pages were unregistered in the section taxonomy, and most ontology/PDTF generated details relied on contextual links rather than sidebar placement.
+- The V2 surface labelled itself as a candidate and kept its resources, shapes, vocabularies and evidence separate from the then-current ontology reference.

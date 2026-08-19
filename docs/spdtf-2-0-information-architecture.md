@@ -1,6 +1,6 @@
 # SPDTF 2.0 information architecture
 
-Status: **implemented on `feat/spdtf-2-ia`; publication pending**<br>
+Status: **implemented on `main`; Property Pack consolidation in progress; publication pending**<br>
 Date: 2026-08-19<br>
 Decision record: [ADR-0074](./adr/ADR-0074-organise-site-around-spdtf-2-0-and-pdtf-1-0.md)<br>
 Review artefact: [HTML presentation](./spdtf-2-0-information-architecture.html)
@@ -18,7 +18,7 @@ Reorganise the documentation around six global destinations:
 
 This is an asymmetric continuation structure. It distinguishes PDTF 1.0 from SPDTF 2.0 work in development, while governance, participation and source resources remain shared services. It avoids mirrored sites with competing definitions of authority.
 
-The feature branch implements the navigation, hierarchy, status model and preservation gates as one coherent change. It does not by itself publish or deploy the production site; existing stable routes remain valid throughout the change.
+The site implements the navigation, hierarchy, status model and preservation gates as one coherent system. It does not by itself publish or deploy the production site. ADR-0075 authorises one deliberate route break: the obsolete Property Pack paths move without redirects to one canonical SPDTF 2.0 family.
 
 ## Terminology and authority
 
@@ -26,7 +26,7 @@ The feature branch implements the navigation, hierarchy, status model and preser
 - **PDTF** without a version is deprecated as the name for current work. Keep it only where historically or technically exact: original records, quotations, package names, legacy URLs and stable `/pdtf/**` identifiers.
 - **PDTF 1.0** contains the existing published schema implementation and the semantic corpus derived from it. Authority is not inherited by every child artefact: each ontology, model, mapping or stub keeps its own maturity and review status. No replacement has been authorised. Support status is not defined by this publication.
 - **SPDTF 2.0 development** is the continuation of the programme through a domain-led, evidence-up modelling process. “2.0” is a development-generation label, not a release, ratification or approval claim. It does not mean “current standard”, “approved model” or “replacement implementation”.
-- **SPDTF 2.0 development inputs** are material prepared before or during the change in method. The existing `/v2` Property Pack model is a machine-generated seed: structured and reviewable, but non-normative and not reviewed by a working group.
+- **The Property Pack ontology** is a machine-generated, non-normative component of SPDTF 2.0. The Technical Working Group determination is pending; later domain-group review remains a separate status. It is not merely an external development input and it is not the whole SPDTF 2.0 ontology.
 
 ## Why the structure must change
 
@@ -57,16 +57,22 @@ The architecture is grounded in:
 The implementation is made auditable by:
 
 - an executable route, ownership and status contract in `src/lib/site-ia.mjs`;
-- a frozen before/after route manifest covering 3,436 baseline routes and every retained fragment, plus classified records for 49 new routes;
-- exact path, size and SHA-256 manifests for the eight families: source archive, council Markdown, ontology artefacts, deployed data, UI assets, image assets, ontology tools and the immutable 690-route `/v2/**` seed;
+- a frozen before/after route manifest covering 3,436 baseline routes and every retained fragment, plus classified records for 52 new routes;
+- exact path, size and SHA-256 manifests for high-risk source, council, ontology,
+  data, UI, image, tool and Property Pack route families;
 - end-to-end journeys for authentication, comments, source viewing/download and
   working-group submissions; and
 - fail-closed build, route, accessibility, responsive, keyboard, visual and
   information-preservation gates before deployment credentials are available.
 
-The migration does not delete a current route or source family. Preservation schema v5 accounts for all 562,664 baseline information-block occurrences: 561,743 exact, 868 source/hash-bound semantic reframes and 53 provenance-bound superseded navigation copies. Unchanged high-risk artefact families remain byte-identified. The release gate rejects an unclassified route, a lost legacy fragment, a changed frozen-family checksum, or any new route beneath `/v2/**` (`scripts/check-ia-preservation.mjs`).
+The general migration retains current routes. The operator made one explicit exception:
+the 690-page Property Pack technical corpus and the separate 451-item catalogue move
+to `/spdtf-2/property-pack/**` with no redirects. A move-aware receipt binds each old
+route, information block and fragment to its declared replacement and asserts that the
+two obsolete route families are absent. Unchanged high-risk artefact families remain
+byte-identified (`scripts/check-ia-preservation.mjs`).
 
-The build counts describe different surfaces: Astro reports 2,604 pages it renders; preservation and the crawler see 3,485 HTML files after copied/generated static HTML is included; the crawler's 5,284 emitted files also include non-HTML data and support assets. All three denominators are therefore expected and independently gated.
+The build counts describe different surfaces: Astro reports 2,607 pages it renders; preservation and the crawler see 3,488 HTML files after copied/generated static HTML is included; the crawler's 5,287 emitted files also include non-HTML data and support assets. All three denominators are therefore expected and independently gated.
 
 ## How DBT Smart Data fits
 
@@ -184,7 +190,7 @@ The home page should expose six task shortcuts without adding global destination
 
 “Working groups” is not a second content owner. It links to the exact canonical landing inside SPDTF 2.0 Development. Candidate, evidence, question and disposition records exist once.
 
-ADR-0074 amends only the top-level placement clauses in ADR-0002, ADR-0041, ADR-0059 and ADR-0062. Their stable-route, generation, traceability and provenance decisions survive. ADR-0074 is Implemented; this branch implements the amended navigation without publishing it until the release gates and a separately authorised deployment pass.
+ADR-0074 amends only the top-level placement clauses in ADR-0002, ADR-0041, ADR-0059 and ADR-0062. Their generation, traceability and provenance decisions survive. ADR-0074 is Implemented on `main`; ADR-0075 governs the authorised Property Pack consolidation described below, without authorising publication.
 
 Home is reached through the wordmark. Programme is the home task gateway's content owner and may therefore be shown as current there. Search, glossary, design system, account and feedback controls are utilities rather than primary destinations.
 
@@ -200,13 +206,16 @@ Home /
 │   ├── UK Smart Data policy, DUAA and prospective property-scheme context
 │   ├── Organisations and forums
 │   ├── Naming and identifier policy
-│   └── SPDTF 2.0 development inputs
-│       └── Property Pack seed — machine-generated, non-normative
+│   └── Evidence and external programme context
 ├── SPDTF 2.0 Development /spdtf-2
 │   ├── Overview: what SPDTF 2.0 development is and is not
-│   ├── Evidence-up modelling method
-│   ├── Inputs to the first context-owned ontology candidates
-│   │   └── Government Smart Data evidence and use-case constraints
+│   ├── Property Pack ontology /spdtf-2/property-pack
+│   │   ├── Definition and 451-item scope
+│   │   ├── PDTF 1.0 lineage and incomplete semantic crosswalk
+│   │   ├── Model, contexts, resources, relationships and vocabularies
+│   │   ├── Candidate source coverage, shapes, standards and validation
+│   │   ├── Technical Working Group determination — due by end September 2026
+│   │   └── Later domain review, versions and releases
 │   ├── Ontologies and semantic modelling
 │   │   ├── Why ontologies
 │   │   ├── How we use them and the six-part semantic package
@@ -305,7 +314,7 @@ does not confer membership, consensus or standards authority.
 | Engagement | Working groups for live actions; Resources for records | Keep DPMSG and OPDA groups explicitly distinct. |
 | Modelling | PDTF 1.0 material | Keep the schema-derived method in PDTF 1.0; re-author reusable lessons into SPDTF 2.0 with provenance. Facet current ADR/ODR records into SPDTF 2.0 Development or Governance. |
 | Model | PDTF 1.0 | Label every tier and child artefact with its own PDTF 1.0 maturity; use as evidence, not inherited SPDTF 2.0 authority. |
-| V2 | Programme → SPDTF 2.0 development input | Rename in reader-facing navigation; preserve `/v2/**` and link it from SPDTF 2.0 inputs. |
+| V2 Property Pack corpus | SPDTF 2.0 → Property Pack ontology | Move the complete 690-page technical family to `/spdtf-2/property-pack/**`; remove `/v2/**` without redirects. |
 | Ontology | PDTF 1.0 | Describe as the PDTF 1.0-derived ontology and preserve route-level draft/review status. Re-assess its methods and alignments rather than inheriting them. |
 | Mapping | PDTF 1.0; cross-link SPDTF 2.0 | Keep RML and JSON-LD work as qualified traceability/migration evidence; do not confuse it with cross-context semantic mapping or coverage links. |
 | Schema | PDTF 1.0 | Keep directly findable for implementers; treat future schemas as tested projections of governed SPDTF 2.0 meaning. |
@@ -322,7 +331,7 @@ does not confer membership, consensus or standards authority.
 | `/design-system` | Utility/footer link, outside standards authority. |
 | `/working-groups/join/**` | Working groups participation path. |
 | `/presentation/working-group-kickoff` | Working-group orientation resource, not evidence or a decision. |
-| `/modelling/property-pack` | Property Pack source-scope view; link to its SPDTF 2.0 development-input context. |
+| `/modelling/property-pack` | Move the complete interactive source catalogue to `/spdtf-2/property-pack/definition-and-scope`; remove the old route without a redirect. |
 | `/modelling/adr/**`, `/modelling/odr/**` | Preserve URLs; assign navigation/search ownership per record work area. |
 | `/pdtf/**` and `.ttl` | Preserve stable identifiers and label their PDTF 1.0 or historical naming context. |
 | `/ontology/tools/**` | Preserve as PDTF 1.0 technical renderings. |
@@ -335,17 +344,22 @@ does not confer membership, consensus or standards authority.
 | `/resource`, redirects and 404 | Preserve as utilities; include in the migration ledger. |
 | Authentication, comments and working-group submissions | Cross-cutting runtime services, not content pages; record dependencies, data ownership, permissions and continuity in a separate service ledger. |
 
-## The V2/Property Pack seed
+## The Property Pack ontology
 
-Retire “V2” as a reader-facing information-architecture label. That technical path name does not express authority, maturity or its relationship to SPDTF 2.0.
+Retire “V2” as a reader-facing label and path. The exact no-redirect mapping is: old
+`/v2` → `/spdtf-2/property-pack`; old `/v2/comparison` → `/spdtf-2/property-pack/pdtf-1-lineage`; every other old `/v2/{suffix}` → `/spdtf-2/property-pack/{suffix}`; and old `/modelling/property-pack` → `/spdtf-2/property-pack/definition-and-scope`.
 
 Use this full statement on the current corpus:
 
-> **SPDTF 2.0 development input · Machine-generated Property Pack pre-draft · Non-normative · No working-group review or approval recorded**
+> **SPDTF 2.0 · Property Pack ontology candidate · Machine-generated · Non-normative · Technical Working Group determination pending · Later domain review pending**
 
-The seed is more than raw evidence: it is a structured, immutable and reviewable pre-draft artefact. It may inform the first evidence-up work orders, but it must not be called the SPDTF 2.0 ontology, a working-group candidate, an approved SPDTF model or a replacement contract.
+The candidate is a priority component of SPDTF 2.0, not the whole ontology or an
+approved exchange contract. Its current `0.1.0-draft` source cut remains immutable;
+a determination or later revision receives a distinct version and change record.
 
-Keep `/v2/**` stable. Add contextual and forward links before considering any canonical move.
+The old `/v2/**` and `/modelling/property-pack` paths are intentionally absent. Route
+compatibility was declined; content, fragments and comment identity are preserved by
+the migration contract rather than redirects.
 
 ## Candidate-review page contract
 
@@ -373,7 +387,7 @@ One versioned registry owned by Governance supplies five independent fields:
 
 | Field | Examples | Question answered |
 |---|---|---|
-| Work area | PDTF 1.0; SPDTF 2.0 development input; SPDTF 2.0 development; cross-programme | Which body of work? |
+| Work area | PDTF 1.0; SPDTF 2.0 development; Property Pack ontology; cross-programme | Which body of work? |
 | Authority | Published implementation; non-normative; governed release | What may a reader rely on? |
 | Maturity | Evidence record; machine seed; under review; first working-group draft | What review has occurred? |
 | Version | PDTF 1.0 release; candidate identifier; immutable cut | Which exact version? |
@@ -389,8 +403,8 @@ operational.
 
 ## Route and migration contract
 
-Navigation is a view over stable content addresses. Reorganisation does not require
-moving thousands of generated pages.
+Navigation is normally a view over stable content addresses. This authorised exception
+moves only the complete Property Pack family and catalogue, with explicit receipts.
 
 ### Required sequence
 
@@ -404,11 +418,11 @@ moving thousands of generated pages.
    exists; five-field status source; search facet; cross-work-area relationship; current
    path, content checksum, preserved destination and consumers.
 3. **Add context before movement.** Introduce landing pages, status strips,
-   breadcrumbs, search facets and cross-links while existing URLs continue to work.
+   breadcrumbs, search facets and cross-links before changing a route family.
 4. **Change global navigation coherently.** Do not mix old and new authority labels
    across route families.
-5. **Redirect only semantic equivalents.** Test the destination’s claim, fragments,
-   inbound links, refresh behaviour and previous/next navigation.
+5. **Record an explicit route decision.** Retain by default; redirect only semantic
+   equivalents; remove without redirect only with operator authority and a move receipt.
 6. **Publish an explicit migration manifest.** Machine-readable dispositions and
    deterministic route tests become the release evidence.
 
@@ -416,21 +430,23 @@ moving thousands of generated pages.
 
 - Preserve `/pdtf/**` identifiers and their representations unless a separate
   identifier-governance decision authorises change.
-- Keep `/v2/**` as the immutable seed cut during the first release.
-- Treat each generated route family as an atomic unit.
+- Apply the exact Property Pack mapping above atomically; emit no compatibility route.
+- Treat each generated route family as an atomic unit and preserve logical comment identity.
 - Do not duplicate content under new paths to make the hierarchy look symmetrical.
 - Search for “PDTF” must find relevant SPDTF material while labelling historical
   results.
 - A PDTF 1.0 to SPDTF 2.0 link must state whether the relationship is evidence,
   corroboration, compatibility, comparison, projection or supersession.
 
-## Implementation record
+## Implementation plan and record
 
 1. The canonical taxonomy, status registry and migration-manifest schema are executable.
-2. New landing pages and task paths were added without removing existing content.
+2. New landing pages and task paths must preserve existing information; authorised
+   obsolete Property Pack URLs are removed without redirects.
 3. Work-area/status metadata is resolved centrally for every classified route family.
 4. All eight working groups use one truthful pre-convening workspace contract, with empty candidate/output registers rather than fabricated decisions.
-5. The Property Pack seed is reframed in place and its 690-route family is frozen.
+5. The 690 technical Property Pack routes must move atomically beneath the canonical
+   branch; the 451-item catalogue is folded into it and lifecycle pages are added.
 6. Global navigation, breadcrumbs, search facets and home tasks change together.
 7. Route, accessibility, content-authority, task-finding and runtime-continuity gates run before release.
 8. No redirect is introduced without a semantic-equivalence receipt and test.
@@ -459,8 +475,8 @@ The implementation is not releasable unless all of these pass:
 - A current implementer can reach schema and validation guidance within two
   interactions and without entering anything labelled “archive”.
 - A governance reviewer can identify who may decide and whether a decision occurred.
-- Any deep-linked existing route and fragment still resolves or has a tested,
-  semantically equivalent redirect.
+- Every route is retained, redirected with semantic proof, or covered by an explicitly
+  authorised move receipt; every retained or moved fragment resolves at its destination.
 - Search results expose work area and authority and treat PDTF as a historical alias.
 - No page equates technical validation with semantic approval.
 - Interoperability remains a peer of domain groups and has one canonical home in
@@ -470,28 +486,12 @@ The implementation is not releasable unless all of these pass:
 
 ## Council record
 
-A hierarchical specialised Ruflo council used Raft consensus, independent priors and a non-voting chair. OpenAI information-architecture and standards seats ran at high effort; the OpenAI Devil’s Advocate ran at xhigh; Anthropic Fable reviewed experience at maximum/high/medium effort. At audited evidence baseline `24f9fb4ca8405343dc13d2d4b7119a30e1b883d7`, Fable and Claude Sonnet each scored the integrated implementation 98/100, and the OpenAI Devil’s Advocate scored it 100/100; all reported zero hard failures. A native subscription Claude–Codex deliberation then returned `accepted`, explicitly withholding publication and deployment authority.
-
-The executable evidence was `make ci-browser` (data build; 3,485/3,485 preserved HTML; zero unresolved/unlinked outputs; 84/84 Playwright) and `make ci` (140/140 unit tests; 5/5 schema tests; zero drift; 74 ADRs; all ontology, documentation, graph and IA-parity gates). Two consecutive data builds kept content-derived asset versions and strict preservation stable.
-
-### Held dissent
-
-- Fable would place PDTF 1.0 before SPDTF 2.0 Development in the navigation because implementation is the majority task today. The chosen order remains programme-first; task testing validated direct implementer access within two interactions.
-- The information architect prefers describing the seed as a structured pre-draft
-  candidate rather than “evidence” alone. The full label therefore says SPDTF 2.0
-  development input and machine-generated pre-draft, and the body records its
-  structured nature.
-- “Working groups” must remain visibly and technically a shortcut into SPDTF 2.0
-  Development, not become a second owner.
+The full multi-model council evidence, scores, gates and dissent are recorded in ADR-0074. ADR-0075 records the later correction: Property Pack is an accelerated SPDTF 2.0 ontology component; Working groups remains a shortcut to one owner. Neither review authorises publication.
 
 ## Unresolved governance decisions
 
-1. Whether PDTF 1.0 receives a defined support period during migration.
-2. The future SPDTF IRI/namespace policy and relationship to `/pdtf/**`.
-3. Promotion states above first working-group draft and their decision thresholds.
-4. Consent, access and confidentiality rules for participant evidence and discussion.
-5. Whether `/` and `/home` should eventually become one canonical landing.
-6. The discussion system, moderation policy and durable feedback-disposition record.
-7. Whether navigation ordering should favour current implementers or SPDTF 2.0 work.
-8. Which candidate domain vocabularies and modelling frameworks the SPDTF 2.0
-   standards profile will accept, defer or exclude.
+1. PDTF 1.0 support period and the future SPDTF IRI/namespace relationship to `/pdtf/**`.
+2. Promotion states above first working-group draft and their decision thresholds.
+3. Consent, access, confidentiality, moderation and durable feedback disposition.
+4. Whether `/` and `/home` should eventually become one canonical landing.
+5. Which candidate vocabularies and modelling frameworks the standards profile accepts, defers or excludes.

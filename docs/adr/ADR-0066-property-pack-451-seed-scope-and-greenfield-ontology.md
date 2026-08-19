@@ -5,7 +5,7 @@ updated: 2026-08-19
 tags: [ontology, property-pack, greenfield, provenance, toml, generation, semantic-modelling]
 supersedes: []
 depends-on: [ADR-0039]
-implements: [scripts/property_pack_catalogue.py, scripts/property_pack_candidate.py, src/data/property-pack, source/03-standards/ontology-candidates/property-pack/0.1, src/pages/modelling/property-pack.astro]
+implements: [scripts/property_pack_catalogue.py, scripts/property_pack_candidate.py, src/data/property-pack, source/03-standards/ontology-candidates/property-pack/0.1, src/pages/spdtf-2/property-pack]
 ---
 
 # The 451 required Property Pack data points are the closed seed scope for a greenfield ontology
@@ -91,8 +91,9 @@ The enriched TOML catalogue is the single maintained source:
   source for machine-proposed semantic decisions; it does not overwrite the evidence catalogue;
 - [`ontology-candidates/property-pack/0.1/`](../../source/03-standards/ontology-candidates/property-pack/0.1/)
   is the deterministic, isolated RDF, SHACL, vocabulary, glossary, dictionary and trace projection;
-- `/modelling/property-pack` reads the generated JSON and is a local working view, not an
-  authorised publication of the revised modelling strategy.
+- At the original 2026-08-04 implementation, `/modelling/property-pack` read the
+  generated JSON as a local working view, not an authorised publication of the revised
+  modelling strategy.
 
 Each TOML record must distinguish:
 
@@ -169,12 +170,12 @@ mappings, and recorded human approval is still required before a semantic releas
 |---|---|---|
 | Extract and reconcile the 451-row baseline | Complete | [Validation report](../../src/data/property-pack/validation-report.json) |
 | TOML single source and deterministic JSON | Complete | [`property_pack_catalogue.py`](../../scripts/property_pack_catalogue.py) |
-| Searchable local working view | Complete | `/modelling/property-pack` |
+| Searchable local working view | Complete | `/spdtf-2/property-pack/definition-and-scope` |
 | Domain/context ownership candidates | Generated; human review pending | All 451 items have one proposed semantic home; common contains one source item |
 | Resource/relationship/attribute classification | Generated; human review pending | Every item reaches one or more of 159 traced candidate resources |
 | Vocabulary rationalisation and definition review | Generated; human review pending | 14 candidate SKOS schemes; definitions remain machine-proposed |
 | New ontology, SHACL shapes and context map | Public review candidate | Isolated corpus; 56 deterministic checks pass; no cross-context equivalence asserted |
-| Public migration/replacement of current pages | Not authorised | The separate V2 review section is published; replacing current pages still requires a migration decision |
+| Public migration/replacement of current pages | Property Pack exception authorised | ADR-0075 authorises only the no-redirect Property Pack consolidation; no wider replacement is authorised |
 
 ## Evidence and Related Decisions
 
@@ -199,3 +200,10 @@ mappings, and recorded human approval is still required before a semantic releas
   is expected to contain corresponding semantic coverage, but a maintained item-to-ontology
   crosswalk must verify that expectation. The Technical Working Group makes the accelerated
   September determination; wider domain-group review and controlled revision follow later.
+- **2026-08-19 — Canonical route consolidation authorised.** The 451-item browser and
+  all source-scope evidence move to `/spdtf-2/property-pack/definition-and-scope`;
+  `/modelling/property-pack` is removed without a redirect under ADR-0075's explicit
+  move-and-retention contract. The technical corpus follows ADR-0075's exact mapping:
+  old `/v2` maps to `/spdtf-2/property-pack`, old `/v2/comparison` maps to
+  `/spdtf-2/property-pack/pdtf-1-lineage`, and every other old `/v2/{suffix}` maps to
+  `/spdtf-2/property-pack/{suffix}`, with no redirects.

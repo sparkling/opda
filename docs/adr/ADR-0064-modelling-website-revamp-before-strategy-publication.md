@@ -1,11 +1,11 @@
 ---
 status: accepted
 date: 2026-07-19
-updated: 2026-08-16
+updated: 2026-08-19
 tags: [website, information-architecture, modelling, migration, bounded-context, publication]
 supersedes: []
 depends-on: [ADR-0041, ADR-0044, ADR-0063]
-implements: [src/pages/v2, src/pages/modelling/property-pack.astro]
+implements: [src/pages/spdtf-2/property-pack]
 ---
 
 # Revamp the modelling website before publishing the new working-group approach
@@ -162,6 +162,13 @@ separate migration decision authorises replacement of current pages.
   and design-system reference coherently across opda.org.uk. This does not alter the
   status or meaning of V1/V2 standards content, approve a modelling-content migration,
   change the other production sites or authorise deployment.
+- **2026-08-19 — Property Pack route exception authorised by ADR-0075.** The operator
+  authorised a no-redirect move: old `/v2` maps to `/spdtf-2/property-pack`, old
+  `/v2/comparison` maps to `/spdtf-2/property-pack/pdtf-1-lineage`, every other old
+  `/v2/{suffix}` maps to `/spdtf-2/property-pack/{suffix}`, and old
+  `/modelling/property-pack` maps to `/spdtf-2/property-pack/definition-and-scope`.
+  This narrowly amends the earlier URL-continuity rule; atomic content, fragment and
+  comment-identity preservation remain mandatory.
 
 ## More Information
 

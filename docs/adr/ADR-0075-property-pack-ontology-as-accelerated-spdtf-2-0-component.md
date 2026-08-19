@@ -6,7 +6,7 @@ tags: [information-architecture, property-pack, pdtf-1-0, spdtf-2-0, ontology, t
 supersedes: []
 amends: [ADR-0066, ADR-0067, ADR-0074]
 depends-on: [ADR-0039, ADR-0063, ADR-0066, ADR-0067, ADR-0074]
-implements: []
+implements: [src/pages/spdtf-2/property-pack, src/lib/site-navigation.ts, src/lib/site-ia.mjs]
 ---
 
 # Treat the Property Pack ontology as an accelerated SPDTF 2.0 component
@@ -30,7 +30,7 @@ exact entries in the current ontology provenance index. Consolidation, one-to-ma
 modelling and provenance gaps mean that this is not a semantic coverage percentage.
 It establishes the need for a proper crosswalk.
 
-The `/v2/**` corpus is the Property Pack ontology generated from the Property Pack
+The former `/v2/**` corpus is the Property Pack ontology generated from the Property Pack
 definition. “V2” was the original label because this work belongs to SPDTF 2.0. It is
 not an external input sitting beside SPDTF 2.0 and it is not the whole future SPDTF
 2.0 ontology. It is a priority component that the wider ontology will identify as its
@@ -132,15 +132,19 @@ PDTF 1.0
 
 ### Property Pack route and version contract
 
-- `/spdtf-2/property-pack` becomes the canonical lifecycle and governance hub.
-- The existing `/v2/**` family remains the stable technical representation of the
-  current candidate cut. Its 690 existing routes and fragments remain valid.
-- `/modelling/property-pack` is the source-catalogue and traceability view, not a
-  competing ontology landing page.
+- `/spdtf-2/property-pack/**` is the single canonical Property Pack ontology family.
+- The 690-page technical corpus moves there as one atomic family: old `/v2` maps to
+  `/spdtf-2/property-pack`, old `/v2/comparison` maps to
+  `/spdtf-2/property-pack/pdtf-1-lineage`, and every other old `/v2/{suffix}` maps to
+  `/spdtf-2/property-pack/{suffix}`.
+- The complete `/modelling/property-pack` source catalogue moves to
+  `/spdtf-2/property-pack/definition-and-scope`; it is not a competing landing page.
+- `/v2/**` and `/modelling/property-pack` are removed without redirects. The operator
+  explicitly accepted that URL break on 2026-08-19; this is not a compatibility promise.
 - A later determination or revision receives an explicit version and immutable change
   record. It must not silently rewrite the evidence for the September determination.
-- No new route is added beneath `/v2/**` without a separately tested route-family
-  decision. New lifecycle pages sit beneath the canonical SPDTF 2.0 hub.
+- The migration receipt maps every old page and fragment to its exact canonical
+  replacement and proves that neither retired family is emitted.
 
 ### PDTF 1.0 to Property Pack crosswalk
 
@@ -217,14 +221,15 @@ described as DBT use.
 - Bad, because the current implemented navigation and status registry now require a
   coherent follow-up change.
 - Bad, because a complete 451-item semantic crosswalk is additional work.
-- Neutral, because all current technical URLs remain available.
+- Bad, because circulated `/v2/**` and `/modelling/property-pack` URLs intentionally
+  stop resolving; the cleaner information architecture is preferred over compatibility.
 
 ### Confirmation
 
-This decision is **Accepted but not yet implemented**. It records the operator's
-programme and governance clarification on 2026-08-19. The earlier six-destination IA
-was merged into `main` at `177044a`; that merge describes the currently implemented
-site, while this ADR governs the next correction.
+This decision remains **Accepted** while its full governance and lineage contract is
+completed. The operator additionally authorised the no-redirect route consolidation on
+2026-08-19. The route slice is independently complete only when the atomic move,
+information-retention receipts, navigation, status and browser gates all pass.
 
 Implementation requires all of the following:
 
@@ -237,7 +242,8 @@ Implementation requires all of the following:
 - distinct DBT policy, internal-group and model-context labels;
 - removal of generic modelling guidance from the SPDTF 2.0 root in favour of the
   ontology-method branch;
-- preservation of every current `/v2/**` route and fragment; and
+- preservation of every current Property Pack information block and fragment at its
+  declared canonical replacement, with the old route families absent; and
 - unit and browser tests for hierarchy, ownership, search facets, breadcrumbs,
   status wording, route preservation, accessibility and responsive behaviour.
 
