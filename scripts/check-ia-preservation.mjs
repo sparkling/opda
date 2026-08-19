@@ -42,6 +42,7 @@ function parseArgs(args) {
   let strict = false;
   let manifestOnly = false;
   let baselineRoot = null;
+  let routeManifestPath = null;
   for (const arg of args) {
     if (arg === '--strict') {
       if (strict) throw new Error('duplicate --strict flag');
@@ -53,13 +54,17 @@ function parseArgs(args) {
       if (baselineRoot) throw new Error('duplicate --baseline-root flag');
       baselineRoot = arg.slice('--baseline-root='.length);
       if (!baselineRoot || !path.isAbsolute(baselineRoot)) throw new Error('--baseline-root must contain a non-empty absolute path');
+    } else if (arg.startsWith('--route-manifest=')) {
+      if (routeManifestPath) throw new Error('duplicate --route-manifest flag');
+      routeManifestPath = arg.slice('--route-manifest='.length);
+      if (!routeManifestPath || !path.isAbsolute(routeManifestPath)) throw new Error('--route-manifest must contain a non-empty absolute path');
     } else if (arg === '--baseline-root' || arg.startsWith('--baseline-root')) {
       throw new Error('malformed --baseline-root flag; use --baseline-root=/absolute/path');
     } else throw new Error(`unknown argument: ${arg}`);
   }
   if (strict && !baselineRoot) throw new Error('--strict requires --baseline-root=/absolute/path');
   if (strict && manifestOnly) throw new Error('--strict and --manifest-only are mutually exclusive');
-  return { strict, manifestOnly, baselineRoot };
+  return { strict, manifestOnly, baselineRoot, routeManifestPath };
 }
 
 let options;
@@ -70,7 +75,8 @@ catch (error) {
 }
 
 function readJson(relative) {
-  try { return JSON.parse(readFileSync(path.join(ROOT, relative), 'utf8')); }
+  const file = path.isAbsolute(relative) ? relative : path.join(ROOT, relative);
+  try { return JSON.parse(readFileSync(file, 'utf8')); }
   catch (error) { fail(`${relative}: invalid or unreadable JSON (${error.message})`); return null; }
 }
 
@@ -147,6 +153,7 @@ function verifyAcceptedRoute(record, file) {
   }
   if (fragments.fragmentSha256 !== record.acceptedFragmentSha256
     || fragments.fragmentCount !== record.acceptedFragmentCount) fail(`accepted fragment contract changed: ${record.route}`);
+  return content;
 }
 
 function verifyBaselineRoute(record, file) {
@@ -162,14 +169,41 @@ function verifyBaselineRoute(record, file) {
     || fragments.fragmentCount !== record.baselineFragmentCount) fail(`baseline fragment contract changed: ${record.route}`);
 }
 
-function reviewedBlocksDigest(blocks) {
+const SEMANTIC_CLASSES = new Set([
+  'terminology-and-scope-reframe',
+  'landing-page-recomposition',
+  'authority-and-label-reframe',
+  'decision-status-update',
+  'scope-and-maturity-clarification',
+]);
+const NON_INFORMATION_CLASS = 'superseded-navigation-copy';
+
+function semanticBlocksDigest(blocks) {
   return sha256(blocks.map((entry) => [
-    entry.baselineBlockSha256,
+    entry.sourceBlockSha256,
+    entry.sourceTag,
+    entry.sourceText,
     entry.occurrences,
     entry.replacementRoute,
+    entry.replacementBlockSha256,
+    entry.replacementTag,
+    entry.replacementText,
     entry.replacementContentSha256,
-    entry.reviewEvidence,
-    entry.reviewer,
+    entry.classification,
+    entry.reviewNote,
+  ].join('\0')).join('\n'));
+}
+
+function nonInformationBlocksDigest(blocks) {
+  return sha256(blocks.map((entry) => [
+    entry.sourceBlockSha256,
+    entry.sourceTag,
+    entry.sourceText,
+    entry.occurrences,
+    entry.classification,
+    entry.destinationRoute,
+    entry.destinationContentSha256,
+    entry.supersessionReason,
   ].join('\0')).join('\n'));
 }
 
@@ -177,7 +211,8 @@ function reviewedBlocksDigest(blocks) {
  * A route receipt is the fail-closed answer to content moving during a
  * reframe. It only trusts declared routes and exact, committed content hashes;
  * it never searches the whole site for similar text. Non-exact wording must be
- * accounted for block-by-block with a reviewed semantic-reframe entry.
+ * bound block-by-block to one concrete replacement block in the committed
+ * semantic-reframe ledger.
  */
 function validateRetentionReceipt(record, classifiedByRoute) {
   const receipt = record.retentionReceipt;
@@ -185,10 +220,13 @@ function validateRetentionReceipt(record, classifiedByRoute) {
     || receipt.baselineBlockCount !== record.equivalenceReceipt?.baselineBlocks
     || !HASH.test(receipt.baselineBlockInventorySha256 ?? '')
     || !Array.isArray(receipt.targetEvidence) || !receipt.targetEvidence.length
-    || !Array.isArray(receipt.reviewedReframeBlocks)
+    || !Array.isArray(receipt.semanticReframeBlocks)
+    || !Array.isArray(receipt.nonInformationBlocks)
     || !Number.isSafeInteger(receipt.exactRetainedBlocks) || receipt.exactRetainedBlocks < 0
-    || !Number.isSafeInteger(receipt.reviewedReframeBlockCount) || receipt.reviewedReframeBlockCount < 0
-    || !HASH.test(receipt.reviewedReframeBlocksSha256 ?? '')) {
+    || !Number.isSafeInteger(receipt.semanticReframeBlockCount) || receipt.semanticReframeBlockCount < 0
+    || !Number.isSafeInteger(receipt.nonInformationBlockCount) || receipt.nonInformationBlockCount < 0
+    || !HASH.test(receipt.semanticReframeBlocksSha256 ?? '')
+    || !HASH.test(receipt.nonInformationBlocksSha256 ?? '')) {
     fail(`route lacks an explicit block-retention receipt: ${record.route}`);
     return;
   }
@@ -205,27 +243,55 @@ function validateRetentionReceipt(record, classifiedByRoute) {
     }
     targetRoutes.add(target.route);
   }
-  const exceptions = new Set();
-  let reviewedCount = 0;
-  for (const entry of receipt.reviewedReframeBlocks) {
-    const key = `${entry?.baselineBlockSha256}\0${entry?.replacementRoute}`;
+  const resolutions = new Set();
+  let semanticCount = 0;
+  for (const entry of receipt.semanticReframeBlocks) {
+    const key = `${entry?.sourceBlockSha256}\0${entry?.replacementRoute}\0${entry?.replacementBlockSha256}`;
     const target = classifiedByRoute.get(entry?.replacementRoute);
-    if (!HASH.test(entry?.baselineBlockSha256 ?? '') || !Number.isSafeInteger(entry?.occurrences) || entry.occurrences < 1
-      || exceptions.has(key) || !targetRoutes.has(entry.replacementRoute)
+    if (!HASH.test(entry?.sourceBlockSha256 ?? '') || !HASH.test(entry?.replacementBlockSha256 ?? '')
+      || !Number.isSafeInteger(entry?.occurrences) || entry.occurrences < 1
+      || resolutions.has(key) || !targetRoutes.has(entry.replacementRoute)
       || entry.replacementContentSha256 !== target?.acceptedContentSha256
-      || typeof entry.reviewEvidence !== 'string' || !entry.reviewEvidence.trim()
-      || typeof entry.reviewer !== 'string' || !entry.reviewer.trim()) {
-      fail(`reviewed reframe block is incomplete or unapproved: ${record.route}`);
+      || !SEMANTIC_CLASSES.has(entry.classification)
+      || typeof entry.reviewNote !== 'string' || !entry.reviewNote.trim()
+      || typeof entry.sourceTag !== 'string' || typeof entry.replacementTag !== 'string'
+      || typeof entry.sourceText !== 'string' || typeof entry.replacementText !== 'string'
+      || sha256(`${entry.sourceTag}\0${entry.sourceText}`) !== entry.sourceBlockSha256
+      || sha256(`${entry.replacementTag}\0${entry.replacementText}`) !== entry.replacementBlockSha256
+      || !entry.reviewNote.includes(entry.sourceText)
+      || !entry.reviewNote.includes(entry.replacementText)) {
+      fail(`semantic reframe block is incomplete or unbound: ${record.route}`);
       continue;
     }
-    exceptions.add(key);
-    reviewedCount += entry.occurrences;
+    resolutions.add(key);
+    semanticCount += entry.occurrences;
   }
-  if (reviewedCount !== receipt.reviewedReframeBlockCount
-    || reviewedBlocksDigest(receipt.reviewedReframeBlocks) !== receipt.reviewedReframeBlocksSha256) {
-    fail(`reviewed reframe block receipt checksum is inconsistent: ${record.route}`);
+  if (semanticCount !== receipt.semanticReframeBlockCount
+    || semanticBlocksDigest(receipt.semanticReframeBlocks) !== receipt.semanticReframeBlocksSha256) {
+    fail(`semantic reframe block receipt checksum is inconsistent: ${record.route}`);
   }
-  if (receipt.exactRetainedBlocks + receipt.reviewedReframeBlockCount !== receipt.baselineBlockCount) {
+  const nonInformation = new Set();
+  let nonInformationCount = 0;
+  for (const entry of receipt.nonInformationBlocks) {
+    const target = classifiedByRoute.get(entry?.destinationRoute);
+    if (!HASH.test(entry?.sourceBlockSha256 ?? '') || !Number.isSafeInteger(entry?.occurrences) || entry.occurrences < 1
+      || nonInformation.has(entry.sourceBlockSha256) || entry.classification !== NON_INFORMATION_CLASS
+      || !target || entry.destinationContentSha256 !== target.acceptedContentSha256
+      || typeof entry.sourceTag !== 'string' || typeof entry.sourceText !== 'string'
+      || sha256(`${entry.sourceTag}\0${entry.sourceText}`) !== entry.sourceBlockSha256
+      || typeof entry.supersessionReason !== 'string' || !entry.supersessionReason.includes(entry.sourceText)
+      || !entry.supersessionReason.includes(entry.destinationRoute)) {
+      fail(`non-information supersession is incomplete or unbound: ${record.route}`);
+      continue;
+    }
+    nonInformation.add(entry.sourceBlockSha256);
+    nonInformationCount += entry.occurrences;
+  }
+  if (nonInformationCount !== receipt.nonInformationBlockCount
+    || nonInformationBlocksDigest(receipt.nonInformationBlocks) !== receipt.nonInformationBlocksSha256) {
+    fail(`non-information supersession receipt checksum is inconsistent: ${record.route}`);
+  }
+  if (receipt.exactRetainedBlocks + receipt.semanticReframeBlockCount + receipt.nonInformationBlockCount !== receipt.baselineBlockCount) {
     fail(`baseline information blocks are not fully accounted for: ${record.route}`);
   }
 }
@@ -233,10 +299,10 @@ function validateRetentionReceipt(record, classifiedByRoute) {
 validateIaContract();
 if (ROUTE_DISPOSITION_LEDGER.some(({ disposition }) => disposition === 'retire')) fail('route disposition ledger contains a retire entry');
 
-const routeManifest = readJson('src/data/ia-route-baseline.json');
+const routeManifest = readJson(options.routeManifestPath ?? 'src/data/ia-route-baseline.json');
 const familyManifest = readJson('src/data/ia-preservation-baseline.json');
 if (routeManifest) {
-  if (routeManifest.schemaVersion !== 3 || routeManifest.routeCount !== routeManifest.routes?.length
+  if (routeManifest.schemaVersion !== 4 || routeManifest.routeCount !== routeManifest.routes?.length
     || routeManifest.addedRouteCount !== routeManifest.addedRoutes?.length) fail('route manifest has an invalid schema or count');
   const all = [...(routeManifest.routes ?? []), ...(routeManifest.addedRoutes ?? [])];
   const files = new Set();
@@ -291,11 +357,19 @@ if (routeManifest) {
       const currentFiles = filesUnder(dist).filter((file) => file.endsWith('.html'))
         .map((file) => path.relative(dist, file).split(path.sep).join('/'));
       for (const file of currentFiles) if (!files.has(file)) fail(`unclassified built route: ${routeFromFile(file)}`);
+      const acceptedBlockHashes = new Map();
       for (const record of all) {
         const current = path.join(dist, record.file);
         if (!existsSync(current)) {
           if (record.kind !== 'external-retain') fail(`classified bundled route is missing: ${record.route}`);
-        } else verifyAcceptedRoute(record, current);
+        } else acceptedBlockHashes.set(record.route, new Set(verifyAcceptedRoute(record, current).blockHashes));
+      }
+      for (const record of routeManifest.routes ?? []) {
+        for (const semantic of record.retentionReceipt?.semanticReframeBlocks ?? []) {
+          if (!acceptedBlockHashes.get(semantic.replacementRoute)?.has(semantic.replacementBlockSha256)) {
+            fail(`semantic replacement block is absent from accepted route: ${record.route} -> ${semantic.replacementRoute}`);
+          }
+        }
       }
       notes.push(`accepted routes: ${currentFiles.length}/${all.length} built HTML records verified`);
     }

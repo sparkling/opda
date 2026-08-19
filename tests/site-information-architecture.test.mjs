@@ -1,6 +1,8 @@
 import assert from 'node:assert/strict';
 import { spawnSync } from 'node:child_process';
-import { readFileSync } from 'node:fs';
+import { mkdtempSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
+import { tmpdir } from 'node:os';
+import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import test from 'node:test';
 
@@ -163,7 +165,7 @@ test('the migration ledger preserves every audited high-risk information family'
 });
 
 test('the frozen preservation proof resolves content, ownership and exact family checksums', () => {
-  assert.equal(routeBaseline.schemaVersion, 3);
+  assert.equal(routeBaseline.schemaVersion, 4);
   assert.equal(routeBaseline.routeCount, 3436);
   assert.equal(routeBaseline.addedRouteCount, 49);
   assert.equal(routeBaseline.routes.length, routeBaseline.routeCount);
@@ -184,14 +186,22 @@ test('the frozen preservation proof resolves content, ownership and exact family
     retentionReceipt?.policy === 'explicit-route-block-retention-v1'
     && retentionReceipt.baselineBlockCount === equivalenceReceipt.baselineBlocks
     && retentionReceipt.targetEvidence.length
-    && retentionReceipt.exactRetainedBlocks + retentionReceipt.reviewedReframeBlockCount
+    && retentionReceipt.exactRetainedBlocks + retentionReceipt.semanticReframeBlockCount
+      + retentionReceipt.nonInformationBlockCount
       === retentionReceipt.baselineBlockCount
     && /^[a-f0-9]{64}$/u.test(retentionReceipt.baselineBlockInventorySha256)
-    && /^[a-f0-9]{64}$/u.test(retentionReceipt.reviewedReframeBlocksSha256)
-    && retentionReceipt.reviewedReframeBlocks.every((entry) => (
-      /^[a-f0-9]{64}$/u.test(entry.baselineBlockSha256)
+    && /^[a-f0-9]{64}$/u.test(retentionReceipt.semanticReframeBlocksSha256)
+    && retentionReceipt.semanticReframeBlocks.every((entry) => (
+      /^[a-f0-9]{64}$/u.test(entry.sourceBlockSha256)
+      && /^[a-f0-9]{64}$/u.test(entry.replacementBlockSha256)
       && entry.occurrences > 0 && entry.replacementRoute && entry.replacementContentSha256
-      && entry.reviewEvidence && entry.reviewer
+      && entry.sourceText && entry.replacementText && entry.reviewNote
+    ))
+    && retentionReceipt.nonInformationBlocks.every((entry) => (
+      /^[a-f0-9]{64}$/u.test(entry.sourceBlockSha256)
+      && entry.occurrences > 0 && entry.destinationRoute && entry.destinationContentSha256
+      && entry.classification === 'superseded-navigation-copy'
+      && entry.sourceText && entry.supersessionReason.includes(entry.destinationRoute)
     ))
   )));
   assert.ok(routeBaseline.routes.every(({ baselineFragments, acceptedFragments }) => (
@@ -321,6 +331,46 @@ test('preservation checker validates clean and strict CLI boundaries', () => {
   const duplicate = run('--strict', '--strict');
   assert.notEqual(duplicate.status, 0);
   assert.match(`${duplicate.stdout}${duplicate.stderr}`, /duplicate/u);
+});
+
+test('preservation checker rejects an unbound semantic replacement mutation', () => {
+  const directory = mkdtempSync(path.join(tmpdir(), 'opda-ia-preservation-'));
+  const fixture = path.join(directory, 'route-baseline.json');
+  try {
+    const candidate = structuredClone(routeBaseline);
+    const semantic = candidate.routes
+      .flatMap(({ retentionReceipt }) => retentionReceipt.semanticReframeBlocks)
+      .find(Boolean);
+    semantic.replacementBlockSha256 = '0'.repeat(64);
+    writeFileSync(fixture, JSON.stringify(candidate));
+    const result = spawnSync(process.execPath, [preservationScript, '--manifest-only', `--route-manifest=${fixture}`], {
+      cwd: projectRoot, encoding: 'utf8',
+    });
+    assert.notEqual(result.status, 0);
+    assert.match(`${result.stdout}${result.stderr}`, /semantic reframe block/u);
+  } finally {
+    rmSync(directory, { recursive: true, force: true });
+  }
+});
+
+test('preservation checker rejects an unbound navigation-copy supersession', () => {
+  const directory = mkdtempSync(path.join(tmpdir(), 'opda-ia-preservation-'));
+  const fixture = path.join(directory, 'route-baseline.json');
+  try {
+    const candidate = structuredClone(routeBaseline);
+    const supersession = candidate.routes
+      .flatMap(({ retentionReceipt }) => retentionReceipt.nonInformationBlocks)
+      .find(Boolean);
+    supersession.destinationRoute = '/not-a-real-destination';
+    writeFileSync(fixture, JSON.stringify(candidate));
+    const result = spawnSync(process.execPath, [preservationScript, '--manifest-only', `--route-manifest=${fixture}`], {
+      cwd: projectRoot, encoding: 'utf8',
+    });
+    assert.notEqual(result.status, 0);
+    assert.match(`${result.stdout}${result.stderr}`, /non-information supersession/u);
+  } finally {
+    rmSync(directory, { recursive: true, force: true });
+  }
 });
 
 test('reader-facing IA vocabulary rejects stale labels but exempts immutable records', () => {

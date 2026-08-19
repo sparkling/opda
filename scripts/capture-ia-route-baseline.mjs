@@ -41,12 +41,55 @@ for (const [label, value] of [['baseline', baselineRoot], ['accepted', acceptedR
 
 const output = path.join(ROOT, 'src/data/ia-route-baseline.json');
 const familyOutput = path.join(ROOT, 'src/data/ia-preservation-baseline.json');
+const semanticLedgerPath = path.join(ROOT, 'src/data/ia-semantic-reframe-ledger.json');
+const HASH = /^[a-f0-9]{64}$/u;
 const externalPrefixes = [
   'ontology/tools/ontospy/',
   'ontology/tools/pylode/',
   'ontology/tools/shaclplay/',
   'ontology/tools/widoco/',
 ];
+
+const semanticLedger = JSON.parse(readFileSync(semanticLedgerPath, 'utf8'));
+const SEMANTIC_CLASSES = new Set([
+  'terminology-and-scope-reframe',
+  'landing-page-recomposition',
+  'authority-and-label-reframe',
+  'decision-status-update',
+  'scope-and-maturity-clarification',
+]);
+const NON_INFORMATION_CLASS = 'superseded-navigation-copy';
+if (semanticLedger.schemaVersion !== 1 || semanticLedger.baselineCommit !== commit(baselineRoot)
+  || !Array.isArray(semanticLedger.entries)) {
+  throw new Error('semantic reframe ledger has an invalid baseline contract');
+}
+const semanticReframes = new Map();
+for (const entry of semanticLedger.entries) {
+  const commonInvalid = !HASH.test(entry.sourceBlockSha256 ?? '') || typeof entry.sourceTag !== 'string'
+    || typeof entry.sourceText !== 'string' || !entry.sourceRoute?.startsWith('/')
+    || !Array.isArray(entry.sourceRoutes) || !entry.sourceRoutes.length
+    || new Set(entry.sourceRoutes).size !== entry.sourceRoutes.length
+    || entry.sourceRoutes.some((route) => typeof route !== 'string' || !route.startsWith('/'))
+    || sha256(`${entry.sourceTag}\0${entry.sourceText}`) !== entry.sourceBlockSha256
+    || semanticReframes.has(entry.sourceBlockSha256);
+  const semanticInvalid = SEMANTIC_CLASSES.has(entry.classification) && (
+    !HASH.test(entry.replacementBlockSha256 ?? '') || typeof entry.replacementTag !== 'string'
+    || typeof entry.replacementText !== 'string' || !entry.replacementRoute?.startsWith('/')
+    || typeof entry.reviewNote !== 'string'
+    || sha256(`${entry.replacementTag}\0${entry.replacementText}`) !== entry.replacementBlockSha256
+    || !entry.reviewNote.includes(entry.sourceText) || !entry.reviewNote.includes(entry.replacementText)
+  );
+  const nonInformationInvalid = entry.classification === NON_INFORMATION_CLASS && (
+    !entry.destinationRoute?.startsWith('/') || typeof entry.supersessionReason !== 'string'
+    || !entry.supersessionReason.includes(entry.sourceText)
+    || !entry.supersessionReason.includes(entry.destinationRoute)
+  );
+  if (commonInvalid || semanticInvalid || nonInformationInvalid
+    || (!SEMANTIC_CLASSES.has(entry.classification) && entry.classification !== NON_INFORMATION_CLASS)) {
+    throw new Error(`semantic reframe ledger entry is invalid: ${entry.sourceBlockSha256 ?? '(missing source hash)'}`);
+  }
+  semanticReframes.set(entry.sourceBlockSha256, entry);
+}
 
 function commit(root) {
   return execFileSync('git', ['rev-parse', 'HEAD'], { cwd: root, encoding: 'utf8' }).trim();
@@ -101,25 +144,34 @@ const RETENTION_TARGETS = Object.freeze({
   '/home': ['/home', '/spdtf-2'],
 });
 
-function retentionTargets(route) {
-  const targets = RETENTION_TARGETS[route] ?? [route];
-  if (!Array.isArray(targets) || !targets.length || new Set(targets).size !== targets.length) {
+function retentionTargets(route, before) {
+  const targets = [
+    ...(RETENTION_TARGETS[route] ?? [route]),
+    ...blockInventory(before.blockHashes).records
+      .map(({ hash }) => {
+        const resolution = semanticReframes.get(hash);
+        return resolution?.replacementRoute ?? resolution?.destinationRoute;
+      })
+      .filter(Boolean),
+  ];
+  const uniqueTargets = [...new Set(targets)];
+  if (!uniqueTargets.length) {
     throw new Error(`retention targets must be a unique non-empty route list: ${route}`);
   }
-  if (targets.some((target) => typeof target !== 'string' || !target.startsWith('/'))) {
+  if (uniqueTargets.some((target) => typeof target !== 'string' || !target.startsWith('/'))) {
     throw new Error(`retention targets contain an invalid route: ${route}`);
   }
-  return targets;
+  return uniqueTargets;
 }
 
 /**
  * Capture a multiplicity-aware receipt. Exact blocks may be satisfied at a
- * declared replacement route. Every non-exact block is recorded individually
- * as a reviewed semantic reframe: there is intentionally no route-wide or
- * wildcard exception.
+ * declared replacement route. Every non-exact block resolves through the
+ * committed semantic ledger to one concrete target block; there are no
+ * catch-all or route-wide approvals.
  */
-function captureRetentionReceipt(route, before, acceptedContracts, reviewEvidence) {
-  const targets = retentionTargets(route);
+function captureRetentionReceipt(route, before, acceptedContracts) {
+  const targets = retentionTargets(route, before);
   const available = new Map();
   const targetEvidence = targets.map((targetRoute) => {
     const target = acceptedContracts.get(targetRoute);
@@ -131,7 +183,8 @@ function captureRetentionReceipt(route, before, acceptedContracts, reviewEvidenc
       acceptedBlockInventorySha256: blockInventory(target.blockHashes).sha256,
     };
   });
-  const reviewedReframeBlocks = [];
+  const semanticReframeBlocks = [];
+  const nonInformationBlocks = [];
   let exactRetainedBlocks = 0;
   for (const { hash, count } of blockInventory(before.blockHashes).records) {
     let remaining = count;
@@ -145,24 +198,66 @@ function captureRetentionReceipt(route, before, acceptedContracts, reviewEvidenc
       if (!remaining) break;
     }
     if (remaining) {
-      reviewedReframeBlocks.push({
-        baselineBlockSha256: hash,
+      const semantic = semanticReframes.get(hash);
+      const targetRoute = semantic?.replacementRoute ?? semantic?.destinationRoute;
+      if (!semantic || !targetEvidence.some(({ route: target }) => target === targetRoute)) {
+        throw new Error(`no concrete retention resolution is declared for ${route}#${hash}`);
+      }
+      if (semantic.classification === NON_INFORMATION_CLASS) {
+        if (!semantic.sourceRoutes.includes(route)) {
+          throw new Error(`navigation-copy supersession is declared for the wrong source route: ${route}#${hash}`);
+        }
+        nonInformationBlocks.push({
+          sourceBlockSha256: hash,
+          sourceTag: semantic.sourceTag,
+          sourceText: semantic.sourceText,
+          occurrences: remaining,
+          classification: semantic.classification,
+          destinationRoute: semantic.destinationRoute,
+          destinationContentSha256: targetEvidence.find(({ route: target }) => target === targetRoute).acceptedContentSha256,
+          supersessionReason: semantic.supersessionReason,
+        });
+        continue;
+      }
+      semanticReframeBlocks.push({
+        sourceBlockSha256: hash,
+        sourceTag: semantic.sourceTag,
+        sourceText: semantic.sourceText,
         occurrences: remaining,
-        replacementRoute: targets[0],
-        replacementContentSha256: targetEvidence[0].acceptedContentSha256,
-        reviewEvidence,
-        reviewer: 'ADR-0074 information-preservation review',
+        replacementRoute: semantic.replacementRoute,
+        replacementBlockSha256: semantic.replacementBlockSha256,
+        replacementTag: semantic.replacementTag,
+        replacementText: semantic.replacementText,
+        replacementContentSha256: targetEvidence.find(({ route: target }) => target === semantic.replacementRoute).acceptedContentSha256,
+        classification: semantic.classification,
+        reviewNote: semantic.reviewNote,
       });
     }
   }
-  const reviewedReframeBlockCount = reviewedReframeBlocks.reduce((total, { occurrences }) => total + occurrences, 0);
-  const exclusionSha256 = sha256(reviewedReframeBlocks.map((entry) => [
-    entry.baselineBlockSha256,
+  const semanticReframeBlockCount = semanticReframeBlocks.reduce((total, { occurrences }) => total + occurrences, 0);
+  const nonInformationBlockCount = nonInformationBlocks.reduce((total, { occurrences }) => total + occurrences, 0);
+  const semanticReframeBlocksSha256 = sha256(semanticReframeBlocks.map((entry) => [
+    entry.sourceBlockSha256,
+    entry.sourceTag,
+    entry.sourceText,
     entry.occurrences,
     entry.replacementRoute,
+    entry.replacementBlockSha256,
+    entry.replacementTag,
+    entry.replacementText,
     entry.replacementContentSha256,
-    entry.reviewEvidence,
-    entry.reviewer,
+    entry.classification,
+    entry.reviewNote,
+  ].join('\0')).join('\n'));
+  const nonInformationBlocksSha256 = sha256(nonInformationBlocks.map((entry) => [
+    entry.sourceBlockSha256,
+    entry.sourceTag,
+    entry.sourceText,
+    entry.occurrences,
+    entry.classification,
+    entry.destinationRoute,
+    entry.destinationContentSha256,
+    entry.supersessionReason,
   ].join('\0')).join('\n'));
   return {
     policy: 'explicit-route-block-retention-v1',
@@ -170,9 +265,12 @@ function captureRetentionReceipt(route, before, acceptedContracts, reviewEvidenc
     baselineBlockInventorySha256: blockInventory(before.blockHashes).sha256,
     targetEvidence,
     exactRetainedBlocks,
-    reviewedReframeBlockCount,
-    reviewedReframeBlocks,
-    reviewedReframeBlocksSha256: exclusionSha256,
+    semanticReframeBlockCount,
+    semanticReframeBlocks,
+    semanticReframeBlocksSha256,
+    nonInformationBlockCount,
+    nonInformationBlocks,
+    nonInformationBlocksSha256,
   };
 }
 
@@ -218,7 +316,7 @@ const routes = baselineFiles.map((file) => {
     acceptedFragments: afterFragments.fragments,
     ...routeMetadata(route),
     equivalenceReceipt: equivalenceReceipt(beforeContent, afterContent, reframeEvidence(route)),
-    retentionReceipt: captureRetentionReceipt(route, beforeContent, acceptedContracts, reframeEvidence(route)),
+    retentionReceipt: captureRetentionReceipt(route, beforeContent, acceptedContracts),
   };
 });
 
@@ -251,9 +349,19 @@ const addedRoutes = acceptedFiles
 const missingAccepted = baselineFiles.filter((file) => !acceptedSet.has(file));
 const missingBundle = missingAccepted.filter((file) => !externalPrefixes.some((prefix) => file.startsWith(prefix)));
 if (missingBundle.length) throw new Error(`accepted tree omits ${missingBundle.length} bundled routes`);
+const usedSemanticReframes = new Set(routes.flatMap(({ retentionReceipt }) => (
+  [
+    ...retentionReceipt.semanticReframeBlocks,
+    ...retentionReceipt.nonInformationBlocks,
+  ].map(({ sourceBlockSha256 }) => sourceBlockSha256)
+)));
+if (usedSemanticReframes.size !== semanticReframes.size
+  || [...semanticReframes.keys()].some((hash) => !usedSemanticReframes.has(hash))) {
+  throw new Error('semantic reframe ledger contains unused or unaccounted source blocks');
+}
 
 const routeManifest = {
-  schemaVersion: 3,
+  schemaVersion: 4,
   baselineCommit,
   acceptedCommit,
   routeCount: routes.length,

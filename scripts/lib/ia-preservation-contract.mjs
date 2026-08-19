@@ -76,6 +76,15 @@ function normalizeText(value) {
     .trim();
 }
 
+/**
+ * A malformed legacy list can make parse5 fold the emitted page shell into a
+ * list item's text. That build-path material is not reader information and is
+ * deliberately excluded before any preservation receipt is calculated.
+ */
+function generatedShellArtifact(text) {
+  return /<\/(?:article|section|main|body|html)>|<script\b|\/_astro\//iu.test(text);
+}
+
 function findMain(node) {
   if (node.tagName === 'main' || attr(node, 'id') === 'main-content') return node;
   for (const child of node.childNodes ?? []) {
@@ -110,7 +119,7 @@ export function informationContract(html) {
     if (skip) return;
     if (CONTENT_TAGS.has(node.tagName)) {
       const text = normalizeText(nodeText(node));
-      if (text) blocks.push(`${node.tagName}\0${text}`);
+      if (text && !generatedShellArtifact(text)) blocks.push(`${node.tagName}\0${text}`);
       return;
     }
     node.childNodes?.forEach((child) => visit(child, skip));
