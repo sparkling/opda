@@ -1,288 +1,298 @@
 #!/usr/bin/env node
-/**
- * Fail-closed IA preservation contract.
- *
- * A clean checkout can verify committed manifests and dependency contracts. The
- * source archive and generated ontology mirror are intentionally ignored, so
- * their hydrated counts are checked only when an explicit --baseline-root is
- * supplied (normally the maintainer's full working tree). No files are written.
- */
-import { createHash } from 'node:crypto';
-import { existsSync, readFileSync, readdirSync, statSync } from 'node:fs';
+/** Fail-closed route, information, artefact and runtime preservation gate. */
+import { existsSync, readFileSync, statSync } from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { parse } from 'parse5';
 import {
+  fileInventory,
+  filesUnder,
+  fragmentContract,
+  informationContract,
+  routeFromFile,
+  sha256,
+} from './lib/ia-preservation-contract.mjs';
+import {
+  IA_STATUS_REGISTRY_VERSION,
   PRESERVATION_LEDGER,
   ROUTE_DISPOSITION_LEDGER,
+  getContentOwner,
+  getRouteDisposition,
+  getRouteStatus,
   validateIaContract,
 } from '../src/lib/site-ia.mjs';
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
+const EXPECTED_FAMILY_COUNTS = Object.freeze({
+  'source-archive': 1620,
+  'council-markdown': 261,
+  'ontology-artefacts': 27,
+  'deployed-data': 46,
+  'ui-assets': 53,
+  'image-assets': 5,
+  'ontology-tools': 837,
+  'v2-atomic-seed': 690,
+});
+const HASH = /^[a-f0-9]{64}$/u;
+const failures = [];
+const notes = [];
+const fail = (message) => failures.push(message);
 
 function parseArgs(args) {
   let strict = false;
+  let manifestOnly = false;
   let baselineRoot = null;
   for (const arg of args) {
     if (arg === '--strict') {
       if (strict) throw new Error('duplicate --strict flag');
       strict = true;
-      continue;
-    }
-    if (arg.startsWith('--baseline-root=')) {
+    } else if (arg === '--manifest-only') {
+      if (manifestOnly) throw new Error('duplicate --manifest-only flag');
+      manifestOnly = true;
+    } else if (arg.startsWith('--baseline-root=')) {
       if (baselineRoot) throw new Error('duplicate --baseline-root flag');
-      const value = arg.slice('--baseline-root='.length);
-      if (!value || !path.isAbsolute(value)) {
-        throw new Error('--baseline-root must contain a non-empty absolute path');
-      }
-      baselineRoot = value;
-      continue;
-    }
-    if (arg === '--baseline-root' || arg.startsWith('--baseline-root')) {
+      baselineRoot = arg.slice('--baseline-root='.length);
+      if (!baselineRoot || !path.isAbsolute(baselineRoot)) throw new Error('--baseline-root must contain a non-empty absolute path');
+    } else if (arg === '--baseline-root' || arg.startsWith('--baseline-root')) {
       throw new Error('malformed --baseline-root flag; use --baseline-root=/absolute/path');
-    }
-    throw new Error(`unknown argument: ${arg}`);
+    } else throw new Error(`unknown argument: ${arg}`);
   }
-  if (strict && !baselineRoot) {
-    throw new Error('--strict requires --baseline-root=/absolute/path');
-  }
-  return { strict, baselineRoot };
+  if (strict && !baselineRoot) throw new Error('--strict requires --baseline-root=/absolute/path');
+  if (strict && manifestOnly) throw new Error('--strict and --manifest-only are mutually exclusive');
+  return { strict, manifestOnly, baselineRoot };
 }
 
 let options;
-try {
-  options = parseArgs(process.argv.slice(2));
-} catch (error) {
+try { options = parseArgs(process.argv.slice(2)); }
+catch (error) {
   console.error(`FAIL usage: ${error.message}`);
   process.exit(2);
 }
 
-const BASELINE = options.baselineRoot;
-const failures = [];
-const notes = [];
-
-function fail(message) { failures.push(message); }
-function exists(relative, root = ROOT) { return existsSync(path.join(root, relative)); }
-function filesUnder(relative, root = ROOT) {
-  const absolute = path.join(root, relative);
-  if (!existsSync(absolute)) return [];
-  const out = [];
-  const walk = (directory) => {
-    for (const entry of readdirSync(directory, { withFileTypes: true })) {
-      if (entry.name.startsWith('.') || entry.name === 'node_modules') continue;
-      const item = path.join(directory, entry.name);
-      if (entry.isDirectory()) walk(item);
-      else if (entry.isFile()) out.push(item);
-    }
-  };
-  walk(absolute);
-  return out;
-}
-function allFilesUnder(relative, root = ROOT) {
-  const absolute = path.join(root, relative);
-  if (!existsSync(absolute)) return [];
-  const out = [];
-  const walk = (directory) => {
-    for (const entry of readdirSync(directory, { withFileTypes: true })) {
-      const item = path.join(directory, entry.name);
-      if (entry.isDirectory()) walk(item);
-      else if (entry.isFile()) out.push(item);
-    }
-  };
-  walk(absolute);
-  return out;
-}
 function readJson(relative) {
   try { return JSON.parse(readFileSync(path.join(ROOT, relative), 'utf8')); }
   catch (error) { fail(`${relative}: invalid or unreadable JSON (${error.message})`); return null; }
 }
-function digest(relative) {
-  return createHash('sha256').update(readFileSync(path.join(ROOT, relative))).digest('hex');
+
+function safeRelative(value) {
+  return typeof value === 'string' && value.length > 0 && !path.isAbsolute(value)
+    && !value.split('/').includes('..');
 }
-function treeDigest(relative, root = ROOT) {
-  const base = path.join(root, relative);
-  const files = filesUnder(relative, root).sort();
-  const hash = createHash('sha256');
-  for (const file of files) {
-    hash.update(path.relative(base, file));
-    hash.update(readFileSync(file));
+
+function statusId(route) {
+  return `${IA_STATUS_REGISTRY_VERSION}:${sha256(JSON.stringify(getRouteStatus(route))).slice(0, 16)}`;
+}
+
+function inventoryDigest(records) {
+  return sha256(records.map((record) => `${record.path}\0${record.size}\0${record.sha256}`).join('\n'));
+}
+
+function validateInventory(label, inventory) {
+  if (!inventory || inventory.count !== inventory.records?.length || !HASH.test(inventory.treeSha256 ?? '')) {
+    fail(`${label} has an invalid inventory shape`);
+    return;
   }
-  return hash.digest('hex');
+  const seen = new Set();
+  for (const record of inventory.records) {
+    if (!safeRelative(record.path) || !Number.isSafeInteger(record.size) || record.size < 0 || !HASH.test(record.sha256 ?? '')) {
+      fail(`${label} contains an invalid file record`);
+      continue;
+    }
+    if (seen.has(record.path)) fail(`${label} contains duplicate path ${record.path}`);
+    seen.add(record.path);
+  }
+  if (inventoryDigest(inventory.records) !== inventory.treeSha256) fail(`${label} tree checksum is inconsistent`);
 }
-function fragmentContract(file) {
-  const ids = [];
-  const shellIds = new Set(['app', 'app-sidebar', 'global-nav-panel', 'global-nav-toggle', 'main-content', 'menu-toggle', 'sidebar-collapse', 'theme-toggle']);
-  const visit = (node) => {
-    const id = node.attrs?.find(({ name }) => name === 'id')?.value;
-    if (id && !shellIds.has(id)) ids.push(id);
-    node.childNodes?.forEach(visit);
-  };
-  visit(parse(readFileSync(file, 'utf8')));
-  const unique = [...new Set(ids)].sort();
-  return {
-    fragmentCount: unique.length,
-    fragmentHash: createHash('sha256').update(unique.join('\n')).digest('hex'),
-  };
+
+function compareInventory(label, root, relative, expected) {
+  const actual = fileInventory(root, relative);
+  if (actual.count !== expected.count || actual.treeSha256 !== expected.treeSha256) {
+    fail(`${label} differs: expected ${expected.count}/${expected.treeSha256.slice(0, 12)}, got ${actual.count}/${actual.treeSha256.slice(0, 12)}`);
+    return;
+  }
+  if (JSON.stringify(actual.records) !== JSON.stringify(expected.records)) fail(`${label} per-file manifest differs`);
 }
-function preservation(kind) {
-  const entry = PRESERVATION_LEDGER.find((record) => record.kind === kind);
-  if (!entry) throw new Error(`missing preservation ledger entry: ${kind}`);
-  return entry;
+
+function validateRouteMetadata(record) {
+  const required = [
+    'route', 'file', 'kind', 'generatedFamily', 'contentOwner', 'governanceOwner',
+    'statusId', 'searchFacet', 'preservedDestination',
+  ];
+  if (required.some((field) => typeof record[field] !== 'string' || !record[field])) {
+    fail(`route record is incomplete: ${record.file ?? '(missing file)'}`);
+    return;
+  }
+  if (!safeRelative(record.file) || !record.route.startsWith('/') || !record.consumers?.length
+    || !record.endpoints?.length || !record.crossWorkArea?.length) {
+    fail(`route record has unsafe or incomplete contracts: ${record.file}`);
+    return;
+  }
+  const disposition = getRouteDisposition(record.route);
+  const owner = getContentOwner(record.route);
+  if (!disposition || disposition.owner !== record.contentOwner || owner !== record.contentOwner) {
+    fail(`route owner/disposition drift: ${record.route}`);
+  }
+  if (record.statusId !== statusId(record.route)) fail(`route status registry drift: ${record.route}`);
+  if (record.searchFacet !== disposition?.search.workArea) fail(`route search facet drift: ${record.route}`);
+}
+
+function verifyAcceptedRoute(record, file) {
+  const html = readFileSync(file, 'utf8');
+  const content = informationContract(html);
+  const fragments = fragmentContract(html);
+  if (sha256(html) !== record.acceptedRawSha256) fail(`accepted HTML checksum changed: ${record.route}`);
+  if (content.contentSha256 !== record.acceptedContentSha256) fail(`accepted information checksum changed: ${record.route}`);
+  if (fragments.fragmentSha256 !== record.acceptedFragmentSha256
+    || fragments.fragmentCount !== record.acceptedFragmentCount) fail(`accepted fragment contract changed: ${record.route}`);
+}
+
+function verifyBaselineRoute(record, file) {
+  const html = readFileSync(file, 'utf8');
+  const content = informationContract(html);
+  const fragments = fragmentContract(html);
+  if (sha256(html) !== record.baselineRawSha256) fail(`baseline HTML checksum changed: ${record.route}`);
+  if (content.contentSha256 !== record.baselineContentSha256) fail(`baseline information checksum changed: ${record.route}`);
+  if (fragments.fragmentSha256 !== record.baselineFragmentSha256
+    || fragments.fragmentCount !== record.baselineFragmentCount) fail(`baseline fragment contract changed: ${record.route}`);
 }
 
 validateIaContract();
-if (ROUTE_DISPOSITION_LEDGER.some(({ disposition }) => disposition === 'retire')) {
-  fail('route disposition ledger contains a retire entry');
+if (ROUTE_DISPOSITION_LEDGER.some(({ disposition }) => disposition === 'retire')) fail('route disposition ledger contains a retire entry');
+
+const routeManifest = readJson('src/data/ia-route-baseline.json');
+const familyManifest = readJson('src/data/ia-preservation-baseline.json');
+if (routeManifest) {
+  if (routeManifest.schemaVersion !== 2 || routeManifest.routeCount !== routeManifest.routes?.length
+    || routeManifest.addedRouteCount !== routeManifest.addedRoutes?.length) fail('route manifest has an invalid schema or count');
+  const all = [...(routeManifest.routes ?? []), ...(routeManifest.addedRoutes ?? [])];
+  const files = new Set();
+  const routes = new Set();
+  for (const record of all) {
+    validateRouteMetadata(record);
+    if (files.has(record.file) || routes.has(record.route)) fail(`duplicate classified route: ${record.route}`);
+    files.add(record.file);
+    routes.add(record.route);
+    for (const field of ['acceptedRawSha256', 'acceptedContentSha256', 'acceptedFragmentSha256']) {
+      if (!HASH.test(record[field] ?? '')) fail(`${record.route} has invalid ${field}`);
+    }
+    if (record.acceptedFragmentCount !== record.acceptedFragments?.length
+      || sha256((record.acceptedFragments ?? []).join('\n')) !== record.acceptedFragmentSha256) {
+      fail(`${record.route} has an inconsistent accepted fragment inventory`);
+    }
+  }
+  for (const record of routeManifest.routes ?? []) {
+    for (const field of ['baselineRawSha256', 'baselineContentSha256', 'baselineFragmentSha256']) {
+      if (!HASH.test(record[field] ?? '')) fail(`${record.route} has invalid ${field}`);
+    }
+    if (record.baselineFragmentCount !== record.baselineFragments?.length
+      || sha256((record.baselineFragments ?? []).join('\n')) !== record.baselineFragmentSha256) {
+      fail(`${record.route} has an inconsistent baseline fragment inventory`);
+    }
+    const receipt = record.equivalenceReceipt;
+    if (!receipt || !['byte-normalized-equivalent', 'reviewed-reframe-equivalent'].includes(receipt.policy)
+      || !receipt.reviewEvidence || !Number.isFinite(receipt.retentionRatio)) fail(`route lacks an exact equivalence receipt: ${record.route}`);
+    if (record.disposition === 'keep' && receipt.retentionRatio < 0.98) fail(`kept route loses information blocks: ${record.route}`);
+    const acceptedFragments = new Set(record.acceptedFragments ?? []);
+    for (const fragment of record.baselineFragments ?? []) {
+      if (!acceptedFragments.has(fragment)) fail(`deep-linked fragment was not preserved: ${record.route}#${fragment}`);
+    }
+  }
+  for (const record of routeManifest.addedRoutes ?? []) {
+    if (record.route === '/v2' || record.route.startsWith('/v2/')) fail(`frozen /v2 family contains new route ${record.route}`);
+  }
+
+  const workflow = readFileSync(path.join(ROOT, '.github/workflows/deploy-aws.yml'), 'utf8');
+  for (const prefix of routeManifest.externalPrefixes ?? []) {
+    if (!workflow.includes(`--exclude "${prefix}*"`)) fail(`deployment does not protect externally retained ${prefix}`);
+  }
+  if (!workflow.includes('--exclude "ontology/artefacts/*"')) fail('deployment does not protect frozen ontology artefacts');
+
+  if (!options.manifestOnly) {
+    const dist = path.join(ROOT, 'dist');
+    if (!existsSync(dist) || !statSync(dist).isDirectory()) fail('built dist/ is required for the release preservation gate');
+    else {
+      const currentFiles = filesUnder(dist).filter((file) => file.endsWith('.html'))
+        .map((file) => path.relative(dist, file).split(path.sep).join('/'));
+      for (const file of currentFiles) if (!files.has(file)) fail(`unclassified built route: ${routeFromFile(file)}`);
+      for (const record of all) {
+        const current = path.join(dist, record.file);
+        if (!existsSync(current)) {
+          if (record.kind !== 'external-retain') fail(`classified bundled route is missing: ${record.route}`);
+        } else verifyAcceptedRoute(record, current);
+      }
+      notes.push(`accepted routes: ${currentFiles.length}/${all.length} built HTML records verified`);
+    }
+  }
+
+  if (options.strict) {
+    if (!existsSync(options.baselineRoot) || !statSync(options.baselineRoot).isDirectory()) fail(`baseline root is not a directory: ${options.baselineRoot}`);
+    else for (const record of routeManifest.routes ?? []) {
+      const baselineFile = path.join(options.baselineRoot, 'dist', record.file);
+      if (!existsSync(baselineFile)) fail(`baseline route is missing: ${record.route}`);
+      else verifyBaselineRoute(record, baselineFile);
+    }
+    notes.push(`baseline routes: ${routeManifest.routeCount} before-state records verified`);
+  }
+}
+
+if (familyManifest) {
+  if (familyManifest.schemaVersion !== 1 || !Array.isArray(familyManifest.families)) fail('family manifest has an invalid schema');
+  const seen = new Set();
+  for (const family of familyManifest.families ?? []) {
+    if (seen.has(family.id)) fail(`duplicate preservation family: ${family.id}`);
+    seen.add(family.id);
+    if (!['byte-identical', 'regenerate-equivalent', 'reframe-equivalent'].includes(family.policy)
+      || !family.owner || !family.dataOwner || !family.consumers?.length || !family.endpoints?.length || !family.journeyTests?.length) {
+      fail(`incomplete preservation family contract: ${family.id}`);
+    }
+    validateInventory(`${family.id} baseline`, family.baseline);
+    validateInventory(`${family.id} accepted`, family.accepted);
+    if (family.baseline?.count !== EXPECTED_FAMILY_COUNTS[family.id]) fail(`${family.id} baseline count is not the frozen exact count`);
+    if (family.policy === 'byte-identical' && family.baseline?.treeSha256 !== family.accepted?.treeSha256) {
+      fail(`${family.id} violates byte-identical policy`);
+    }
+    if (!options.manifestOnly && family.ciMode === 'verify-current') {
+      compareInventory(`${family.id} accepted tree`, ROOT, family.acceptedPath, family.accepted);
+    }
+    if (options.strict) {
+      compareInventory(`${family.id} baseline tree`, options.baselineRoot, family.baselinePath, family.baseline);
+      compareInventory(`${family.id} accepted tree`, ROOT, family.acceptedPath, family.accepted);
+    }
+  }
+  for (const id of Object.keys(EXPECTED_FAMILY_COUNTS)) if (!seen.has(id)) fail(`missing preservation family: ${id}`);
+  for (const journey of familyManifest.runtimeJourneys ?? []) {
+    if (!journey.id || !journey.endpoint || !safeRelative(journey.test) || !existsSync(path.join(ROOT, journey.test))) {
+      fail(`runtime journey is not executable: ${journey.id ?? '(missing id)'}`);
+    }
+  }
 }
 
 const resources = readJson('src/data/resources-manifest.json');
 if (Array.isArray(resources)) {
-  const contract = preservation('source-records');
+  const sourceContract = PRESERVATION_LEDGER.find(({ kind }) => kind === 'source-records');
   const paths = resources.map((entry) => entry?.path);
-  if (paths.some((entry) => typeof entry !== 'string' || !entry.startsWith('source/'))) {
-    fail('resources manifest contains a non-source or malformed path');
+  if (resources.length !== sourceContract?.indexedCount || new Set(paths).size !== paths.length
+    || paths.some((entry) => typeof entry !== 'string' || !entry.startsWith('source/'))) {
+    fail('committed public source index differs from its exact 790-record contract');
   }
-  if (new Set(paths).size !== paths.length) fail('resources manifest contains duplicate paths');
-  if (resources.length < contract.indexedCount) {
-    fail(`resources manifest has ${resources.length} records; indexed baseline is ${contract.indexedCount}`);
-  }
-  notes.push(`committed source manifest: ${resources.length} records (sha256 ${digest('src/data/resources-manifest.json').slice(0, 12)})`);
 }
 
 const council = readJson('src/data/council-manifest.json');
 if (Array.isArray(council)) {
-  const contract = preservation('generated-records');
   const markdown = council.filter((entry) => entry?.type === 'file' && entry?.ext === 'md');
-  if (markdown.length < contract.expectedCount) {
-    fail(`council manifest has ${markdown.length} markdown files; minimum is ${contract.expectedCount}`);
-  }
-  const paths = council.map((entry) => entry?.path);
-  if (new Set(paths).size !== paths.length) fail('council manifest contains duplicate paths');
-  notes.push(`committed council manifest: ${markdown.length} markdown files (${council.length} entries; sha256 ${digest('src/data/council-manifest.json').slice(0, 12)})`);
-}
-
-const routeBaseline = readJson('src/data/ia-route-baseline.json');
-if (routeBaseline) {
-  if (routeBaseline.schemaVersion !== 1 || routeBaseline.routeCount !== routeBaseline.routes?.length) {
-    fail('route baseline manifest has an invalid schema or count');
-  }
-  const external = routeBaseline.routes?.filter(({ mode }) => mode === 'external-retain') ?? [];
-  if (external.length !== routeBaseline.externalRetainCount) fail('route baseline external-retain count is inconsistent');
-  const workflow = readFileSync(path.join(ROOT, '.github/workflows/deploy-aws.yml'), 'utf8');
-  for (const prefix of routeBaseline.externalPrefixes ?? []) {
-    if (!workflow.includes(`--exclude "${prefix}*"`)) fail(`deployment does not protect externally retained ${prefix}`);
-  }
-  if (exists('dist')) {
-    let bundleChecked = 0;
-    let externalChecked = 0;
-    for (const record of routeBaseline.routes ?? []) {
-      const current = path.join(ROOT, 'dist', record.file);
-      if (!existsSync(current)) {
-        if (record.mode === 'bundle' || options.strict) fail(`frozen route is missing from dist: ${record.file}`);
-        continue;
-      }
-      const actual = fragmentContract(current);
-      if (actual.fragmentCount !== record.fragmentCount || actual.fragmentHash !== record.fragmentHash) {
-        fail(`frozen fragment contract changed: ${record.file}`);
-      }
-      record.mode === 'bundle' ? bundleChecked++ : externalChecked++;
-    }
-    notes.push(`frozen route inventory: ${bundleChecked} bundled + ${externalChecked}/${external.length} externally retained routes verified`);
-  } else {
-    notes.push(`frozen route inventory: ${routeBaseline.routeCount} records; dist verification deferred to build gate`);
+  if (markdown.length !== 261 || new Set(council.map((entry) => entry?.path)).size !== council.length) {
+    fail('council manifest differs from its exact 261-Markdown contract');
   }
 }
 
-// These contracts are runtime dependencies, not page content. Keep alternatives
-// explicit so a future implementation can move them without silently dropping one.
-const dependencyGroups = [
-  ['authentication', ['src/components/AuthButton.astro', 'src/pages/api/auth/[...slug].js']],
-  ['comments', ['src/components/Comments.astro']],
-  ['working-group submissions', ['src/pages/working-groups/join/index.astro', 'src/pages/api/working-group-interest.js']],
-];
-for (const [label, candidates] of dependencyGroups) {
-  if (!candidates.some((candidate) => exists(candidate))) fail(`${label} dependency contract has no known implementation`);
-}
-
-const viewerSource = readFileSync(path.join(ROOT, 'src/pages/resource.astro'), 'utf8');
-for (const marker of ['source/', '/resources/', 'council-manifest', 'path=']) {
-  if (!viewerSource.includes(marker)) fail(`source viewer contract is missing ${marker}`);
-}
-
-if (!BASELINE) {
-  notes.push('hydrated baseline checks skipped: pass --baseline-root=/absolute/path to enable strict archive/output verification');
-} else {
-  if (!existsSync(BASELINE) || !statSync(BASELINE).isDirectory()) {
-    fail(`baseline root is not a directory: ${BASELINE}`);
-  } else {
-    // The explicit hydrated baseline is a physical archive inventory. Count
-    // every regular file (including nested mirrored repositories) so this
-    // check cannot silently mistake a partial hydration for the baseline.
-    const sourceContract = preservation('source-records');
-    const ontologyContract = preservation('machine-representations');
-    const dataContract = preservation('generated-data');
-    const councilContract = preservation('generated-records');
-    const sourceCount = allFilesUnder('source', BASELINE).length;
-    if (sourceCount < sourceContract.expectedCount) {
-      fail(`hydrated source archive has ${sourceCount} files; minimum baseline is ${sourceContract.expectedCount}`);
-    }
-    const ontologyCount = filesUnder('public/ontology/artefacts', BASELINE).length;
-    if (ontologyCount < ontologyContract.expectedCount) {
-      fail(`hydrated ontology artefacts have ${ontologyCount} files; minimum baseline is ${ontologyContract.expectedCount}`);
-    }
-    // The historical IA inventory records 46 outputs; one output is optional in
-    // a hydrated tree when build-only generation is not run, so 45 is the strict
-    // pre-build floor and the report retains the 46 audit expectation.
-    const dataCount = filesUnder('public/data', BASELINE).length;
-    if (dataCount < dataContract.minimumCount) {
-      fail(`hydrated data output tree has ${dataCount} files; minimum pre-build floor is ${dataContract.minimumCount}`);
-    }
-    const councilMarkdown = filesUnder('docs/ontology/odr/council', BASELINE)
-      .filter((file) => file.toLowerCase().endsWith('.md')).length;
-    if (councilMarkdown < councilContract.expectedCount) {
-      fail(`hydrated council corpus has ${councilMarkdown} markdown files; minimum is ${councilContract.expectedCount}`);
-    }
-    const routeFamilies = [
-      ['/pdtf/**', ['dist/pdtf', 'public/pdtf']],
-      ['/ontology/tools/**', ['dist/ontology/tools', 'public/ontology/tools']],
-      ['/ui/**', ['dist/ui', 'public/ui']],
-      ['/images/**', ['dist/images', 'public/images']],
-      ['/resources/**', ['public/data/resources', 'dist/resources', 'public/resources']],
-    ];
-    for (const [label, candidates] of routeFamilies) {
-      if (!candidates.some((candidate) => filesUnder(candidate, BASELINE).length)) {
-        fail(`hydrated baseline has no emitted files for ${label}`);
-      }
-    }
-    notes.push(`hydrated baseline: source=${sourceCount}, ontology artefacts=${ontologyCount}, data=${dataCount}, council markdown=${councilMarkdown}`);
-    notes.push(`hydrated checksums: source=${treeDigest('source', BASELINE).slice(0, 12)}, ontology=${treeDigest('public/ontology/artefacts', BASELINE).slice(0, 12)}, data=${treeDigest('public/data', BASELINE).slice(0, 12)}`);
-  }
-}
-
-const ontologyContract = preservation('machine-representations');
-const ontologyFiles = filesUnder('public/ontology/artefacts');
-if (ontologyFiles.length < ontologyContract.expectedCount) {
-  fail(`committed ontology artefacts have ${ontologyFiles.length} files; minimum is ${ontologyContract.expectedCount}`);
-}
-if (ontologyFiles.length) notes.push(`ontology artefacts: ${ontologyFiles.length} files (sha256 ${treeDigest('public/ontology/artefacts').slice(0, 12)})`);
-
-const dataContract = preservation('generated-data');
-const outputRoot = filesUnder('dist/data').length ? 'dist/data' : 'public/data';
-const outputCount = filesUnder(outputRoot).length;
-const outputFloor = outputRoot === 'dist/data' ? dataContract.expectedCount : dataContract.minimumCount;
-if (outputCount < outputFloor) fail(`${outputRoot} has ${outputCount} files; minimum is ${outputFloor}`);
-if (outputCount) notes.push(`${outputRoot}: ${outputCount} files (sha256 ${treeDigest(outputRoot).slice(0, 12)})`);
-
-const publicFamilies = ['/ui', '/images', '/ontology/tools'];
-for (const family of publicFamilies) {
-  if (!filesUnder(`public${family}`).length) fail(`preserved support family is empty or missing: ${family}/**`);
-  else notes.push(`${family}/**: ${filesUnder(`public${family}`).length} files (sha256 ${treeDigest(`public${family}`).slice(0, 12)})`);
-}
+const viewer = readFileSync(path.join(ROOT, 'src/pages/resource.astro'), 'utf8');
+for (const marker of ['source/', '/resources/', 'council-manifest', 'path=']) if (!viewer.includes(marker)) fail(`source viewer contract is missing ${marker}`);
 
 if (failures.length) {
-  for (const failure of failures) console.error(`FAIL ${failure}`);
+  for (const message of failures) console.error(`FAIL ${message}`);
   process.exitCode = 1;
 } else {
   console.log('PASS IA preservation contract');
+  console.log(`  route manifest: ${routeManifest?.routeCount ?? 0} baseline + ${routeManifest?.addedRouteCount ?? 0} classified additions`);
+  console.log(`  family manifest: ${familyManifest?.families?.length ?? 0} exact inventories; runtime journeys=${familyManifest?.runtimeJourneys?.length ?? 0}`);
   for (const note of notes) console.log(`  ${note}`);
 }

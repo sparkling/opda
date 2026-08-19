@@ -200,11 +200,11 @@ jobs:
           SITE_BUCKET=$(aws cloudformation describe-stacks --region eu-west-2 \
             --stack-name opda-site \
             --query "Stacks[0].Outputs[?OutputKey=='SiteBucketName'].OutputValue" --output text)
-          # The four third-party ontology render trees are deliberately ignored,
-          # heavyweight generated assets. Preserve their frozen, manifest-audited
-          # S3 objects until a separately governed reproducible generator replaces
-          # them; --delete must never erase these deep-linked PDTF 1.0 references.
+          # These ignored ontology artefacts are preserved, manifest-audited S3
+          # objects. Keep them outside --delete until a governed reproducible
+          # generator can supply byte-verified replacements in the release bundle.
           aws s3 sync dist/ "s3://$SITE_BUCKET" --delete \
+            --exclude "ontology/artefacts/*" \
             --exclude "ontology/tools/ontospy/*" \
             --exclude "ontology/tools/pylode/*" \
             --exclude "ontology/tools/shaclplay/*" \

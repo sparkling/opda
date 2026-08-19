@@ -48,6 +48,8 @@ const expectedDestinations = [
 
 const preservationScript = fileURLToPath(new URL('../scripts/check-ia-preservation.mjs', import.meta.url));
 const projectRoot = fileURLToPath(new URL('..', import.meta.url));
+const routeBaseline = JSON.parse(readFileSync(new URL('../src/data/ia-route-baseline.json', import.meta.url), 'utf8'));
+const preservationBaseline = JSON.parse(readFileSync(new URL('../src/data/ia-preservation-baseline.json', import.meta.url), 'utf8'));
 
 test('the global information architecture has exactly the six accepted destinations', () => {
   assert.deepEqual(
@@ -102,12 +104,15 @@ test('every current header section has one retained global owner', () => {
   const currentSections = [
     'strategy', 'governance', 'dbt-smart-data', 'engagement', 'modelling', 'model',
     'v2', 'ontology', 'mapping', 'schema', 'implementation', 'adoption', 'library',
+    'manual', 'presentations',
   ];
   for (const section of currentSections) {
     assert.ok(ROUTE_FAMILY_OWNERS[section], `${section} has no global owner`);
   }
   assert.equal(getActiveDestination('/v2/contexts/estate-agency'), 'spdtf-2');
   assert.equal(getActiveDestination('/ontology/classes'), 'pdtf-1');
+  assert.equal(getActiveDestination('/manual/concept/agent/buyer'), 'pdtf-1');
+  assert.equal(getContentOwner('/presentations/finance-banking-kickoff'), 'spdtf-2');
   assert.equal(getActiveDestination('/library/resources'), 'resources');
 });
 
@@ -128,6 +133,7 @@ test('every audited route family has a deterministic owner and disposition', () 
     '/library/**', '/', '/home', '/glossary', '/design-system', '/resource', '/404',
     '/pdtf/**', '/ontology/artefacts/**', '/ontology/tools/**', '/data/**', '/ui/**',
     '/images/**', '/council/**',
+    '/manual/**', '/presentations/**',
   ]) {
     const entry = entries.get(path);
     assert.ok(entry, `${path} has no disposition`);
@@ -154,6 +160,48 @@ test('the migration ledger preserves every audited high-risk information family'
     { owner: v2.owner, preservedAt: v2.preservedAt, disposition: v2.disposition },
     { owner: 'spdtf-2', preservedAt: '/v2/**', disposition: 'reframe-equivalent' },
   );
+});
+
+test('the frozen preservation proof resolves content, ownership and exact family checksums', () => {
+  assert.equal(routeBaseline.schemaVersion, 2);
+  assert.equal(routeBaseline.routeCount, 3436);
+  assert.equal(routeBaseline.addedRouteCount, 49);
+  assert.equal(routeBaseline.routes.length, routeBaseline.routeCount);
+  assert.equal(routeBaseline.addedRoutes.length, routeBaseline.addedRouteCount);
+  const requiredRouteFields = [
+    'baselineContentSha256', 'acceptedContentSha256', 'baselineFragmentSha256',
+    'acceptedFragmentSha256', 'contentOwner', 'governanceOwner', 'statusId',
+    'baselineFragments', 'acceptedFragments', 'searchFacet', 'crossWorkArea',
+    'preservedDestination', 'consumers', 'endpoints',
+  ];
+  assert.ok(routeBaseline.routes.every((record) => requiredRouteFields.every((field) => record[field])));
+  assert.ok(routeBaseline.routes.every(({ equivalenceReceipt }) => (
+    equivalenceReceipt?.reviewEvidence && Number.isFinite(equivalenceReceipt.retentionRatio)
+  )));
+  assert.ok(routeBaseline.routes.every(({ baselineFragments, acceptedFragments }) => (
+    baselineFragments.every((fragment) => acceptedFragments.includes(fragment))
+  )));
+  assert.ok(routeBaseline.addedRoutes.every(({ route }) => route !== '/v2' && !route.startsWith('/v2/')));
+
+  assert.equal(preservationBaseline.schemaVersion, 1);
+  const counts = Object.fromEntries(preservationBaseline.families.map(({ id, baseline }) => [id, baseline.count]));
+  assert.deepEqual(counts, {
+    'source-archive': 1620,
+    'council-markdown': 261,
+    'ontology-artefacts': 27,
+    'deployed-data': 46,
+    'ui-assets': 53,
+    'image-assets': 5,
+    'ontology-tools': 837,
+    'v2-atomic-seed': 690,
+  });
+  assert.ok(preservationBaseline.families.every((family) => (
+    family.owner && family.dataOwner && family.consumers.length
+    && family.endpoints.length && family.journeyTests.length
+    && family.baseline.records.length === family.baseline.count
+    && family.accepted.records.length === family.accepted.count
+  )));
+  assert.equal(preservationBaseline.runtimeJourneys.length, 4);
 });
 
 test('the versioned route-status registry protects derived and pre-candidate authority', () => {
@@ -233,7 +281,7 @@ test('preservation checker validates clean and strict CLI boundaries', () => {
   const run = (...args) => spawnSync(process.execPath, [preservationScript, ...args], {
     cwd: projectRoot, encoding: 'utf8',
   });
-  const clean = run();
+  const clean = run('--manifest-only');
   assert.equal(clean.status, 0, clean.stderr || clean.stdout);
 
   const strictWithoutBaseline = run('--strict');

@@ -21,7 +21,6 @@ export const IA_STATUS_FIELDS = Object.freeze([
 
 export const IA_STATUS_REGISTRY_VERSION = '2026-08-19';
 
-/** The third destination is a navigation shortcut, not a second content owner. */
 export const DESTINATION_SHORTCUTS = Object.freeze({
   'working-groups': Object.freeze({
     target: '/spdtf-2/working-groups',
@@ -29,7 +28,6 @@ export const DESTINATION_SHORTCUTS = Object.freeze({
   }),
 });
 
-/** Current and transitional first path segments mapped to one global owner. */
 export const ROUTE_FAMILY_OWNERS = Object.freeze({
   programme: 'programme',
   strategy: 'programme',
@@ -39,6 +37,7 @@ export const ROUTE_FAMILY_OWNERS = Object.freeze({
   'working-groups': 'working-groups',
   engagement: 'resources',
   presentation: 'working-groups',
+  presentations: 'spdtf-2',
   'pdtf-1': 'pdtf-1',
   pdtf: 'pdtf-1',
   modelling: 'pdtf-1',
@@ -48,6 +47,7 @@ export const ROUTE_FAMILY_OWNERS = Object.freeze({
   schema: 'pdtf-1',
   implementation: 'pdtf-1',
   adoption: 'pdtf-1',
+  manual: 'pdtf-1',
   governance: 'governance',
   council: 'governance',
   resources: 'resources',
@@ -56,7 +56,6 @@ export const ROUTE_FAMILY_OWNERS = Object.freeze({
   glossary: 'resources',
 });
 
-/** More-specific ownership rules win over first-segment family defaults. */
 export const ROUTE_OWNER_OVERRIDES = Object.freeze([
   { pattern: /^\/$/u, owner: 'programme' },
   { pattern: /^\/home$/u, owner: 'programme' },
@@ -167,7 +166,7 @@ export const ROUTE_STATUS_OVERRIDES = Object.freeze([
     },
   },
   {
-    pattern: /^\/(?:pdtf|ontology|model)(?:\/|$)/u,
+    pattern: /^\/(?:pdtf|ontology|model|manual)(?:\/|$)/u,
     status: PDTF_DERIVED_DRAFT_STATUS,
   },
   {
@@ -193,7 +192,7 @@ export const ROUTE_STATUS_OVERRIDES = Object.freeze([
     },
   },
   {
-    pattern: /^\/presentation(?:\/|$)/u,
+    pattern: /^\/presentations?(?:\/|$)/u,
     status: {
       workArea: 'SPDTF 2.0 development',
       authority: 'Facilitation material; participant review and governance records control decisions',
@@ -338,6 +337,7 @@ export const ROUTE_DISPOSITION_LEDGER = Object.freeze([
     ['programme', 'programme', 'reframe'],
     ['spdtf-2', 'spdtf-2', 'reframe'],
     ['working-groups', 'spdtf-2', 'reframe'],
+    ['presentations', 'spdtf-2', 'reframe'],
     ['pdtf-1', 'pdtf-1', 'reframe'],
     ['strategy', 'programme', 'reframe'],
     ['governance', 'governance', 'keep'],
@@ -351,6 +351,7 @@ export const ROUTE_DISPOSITION_LEDGER = Object.freeze([
     ['schema', 'pdtf-1', 'reframe'],
     ['implementation', 'pdtf-1', 'reframe'],
     ['adoption', 'pdtf-1', 'reframe'],
+    ['manual', 'pdtf-1', 'keep'],
     ['resources', 'resources', 'reframe'],
     ['library', 'resources', 'reframe'],
   ].map(([path, owner, disposition]) => routeDisposition(`/${path}/**`, owner, disposition)),
