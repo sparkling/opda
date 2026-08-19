@@ -125,6 +125,43 @@ test('folder pages remain links beside independent disclosure controls', async (
   await toggle.click();
   await expect(toggle).toHaveAttribute('aria-expanded', 'false');
   await expect(page.locator(`#${controls}`)).toBeHidden();
+
+  await visit(page, '/spdtf-2/ontologies');
+  const activeFolder = page.locator('.tree-folder.is-active-page', {
+    has: page.locator('a[aria-current="page"][href="/spdtf-2/ontologies"]'),
+  });
+  await expect(activeFolder).toHaveCount(1);
+  clean();
+});
+
+test('nested navigation follows one consistent indentation ladder', async ({ page }) => {
+  const clean = watchRuntime(page);
+  await page.setViewportSize({ width: 1440, height: 1000 });
+  await visit(page, '/spdtf-2/ontologies/standards');
+
+  const geometry = await page.evaluate(() => {
+    const link = (href) => document.querySelector(`#section-navigation a[href="${href}"]`);
+    const textLeft = (element) => {
+      const range = document.createRange();
+      range.selectNodeContents(element);
+      return range.getBoundingClientRect().left;
+    };
+    const rootLeaf = link('/spdtf-2');
+    const rootFolder = link('/spdtf-2/ontologies');
+    const childLeaf = link('/spdtf-2/ontologies/why-ontologies');
+    const toggle = rootFolder?.parentElement?.querySelector('.tree-toggle');
+    return {
+      rootLeaf: textLeft(rootLeaf),
+      rootFolder: textLeft(rootFolder),
+      childLeaf: textLeft(childLeaf),
+      toggleWidth: toggle?.getBoundingClientRect().width,
+    };
+  });
+
+  expect(Math.abs(geometry.rootLeaf - geometry.rootFolder)).toBeLessThanOrEqual(1);
+  expect(geometry.childLeaf - geometry.rootFolder).toBeGreaterThanOrEqual(15);
+  expect(geometry.childLeaf - geometry.rootFolder).toBeLessThanOrEqual(17);
+  expect(geometry.toggleWidth).toBeGreaterThanOrEqual(44);
   clean();
 });
 

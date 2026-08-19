@@ -31,7 +31,7 @@ const childrenId = `section-nav-${itemPath.replace(/[^a-z0-9]+/giu, '-').replace
     >{item.title}</a>
   </li>
 ) : (
-  <li class={`tree-folder${isOpen ? ' is-open' : ''}`}>
+  <li class={`tree-folder${isOpen ? ' is-open' : ''}${isActive ? ' is-active-page' : ''}`}>
     <div class="tree-folder-row">
       <button
         type="button"

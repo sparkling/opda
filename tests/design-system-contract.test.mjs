@@ -273,6 +273,10 @@ test('shared navigation exposes visible focus, state and 44px targets', async ()
   assert.match(contentSource, /heading-anchor:focus-visible[^}]*opacity:\s*1/su);
   assert.match(contentSource, /\.heading-anchor\s*\{[^}]*width:\s*var\(--target-min\)[^}]*min-height:\s*var\(--target-min\)/su);
   assert.match(shell, /\.app-sidebar a\s*\{[^}]*min-height:\s*var\(--target-min\)/su);
+  assert.match(shell, /\.tree-leaf > a\s*\{[^}]*padding-inline-start:\s*calc\(var\(--target-min\) \+ var\(--space-3\)\)/su);
+  assert.match(shell, /\.tree-folder\.is-open > \.tree-children\s*\{[^}]*margin-inline-start:\s*var\(--space-5\)[^}]*border-inline-start:/su);
+  assert.match(shell, /\.tree-folder\.is-active-page > \.tree-folder-row\s*\{/u);
+  assert.doesNotMatch(shell, /\.tree-children \.tree-children \.tree-leaf/u);
   assert.match(toc, /\.toc a\s*\{[^}]*min-height:\s*var\(--target-min\)/su);
   assert.match(client, /aside\.inert = mobileQuery\.matches && !shouldOpen/u);
   assert.match(client, /aria-current['"], ['"]location/u);
