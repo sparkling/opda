@@ -277,6 +277,16 @@ test('preservation is a local and deployment gate', () => {
   assert.match(workflow, /Information-architecture preservation gate[\s\S]*pnpm run check:ia-preservation/u);
 });
 
+test('AWS publication is fail-closed on ADR and ontology documentation gates', () => {
+  const workflow = readFileSync(new URL('../.github/workflows/deploy-aws.yml', import.meta.url), 'utf8');
+  const gate = workflow.indexOf('- name: ADR and ontology documentation gates');
+  const credentials = workflow.indexOf('- name: Assume deploy role (OIDC)');
+  assert.ok(gate >= 0, 'workflow must run the shared documentation gates');
+  assert.match(workflow.slice(gate, credentials), /run: make check-adr ci-ontology-doc/u);
+  assert.ok(gate < credentials, 'documentation gates must precede AWS credentials');
+  assert.doesNotMatch(workflow.slice(0, gate), /configure-aws-credentials/u);
+});
+
 test('preservation checker validates clean and strict CLI boundaries', () => {
   const run = (...args) => spawnSync(process.execPath, [preservationScript, ...args], {
     cwd: projectRoot, encoding: 'utf8',
