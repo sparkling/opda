@@ -1,6 +1,14 @@
 import { test, expect } from '@playwright/test';
 import { visit, watchRuntime } from './support.mjs';
 
+async function exposeCompactHeaderControls(page) {
+  const toggle = page.locator('#global-nav-toggle');
+  if (await toggle.isVisible()) {
+    await toggle.click();
+    await expect(page.locator('#global-nav-panel')).toBeVisible();
+  }
+}
+
 test.describe('runtime continuity boundaries', () => {
   test('signed-out auth preserves the return target and stays same-origin', async ({ page }) => {
     const clean = watchRuntime(page);
@@ -17,6 +25,7 @@ test.describe('runtime continuity boundaries', () => {
     });
 
     await visit(page, '/programme');
+    await exposeCompactHeaderControls(page);
     const login = page.locator('#auth-login-btn');
     await expect(login).toBeVisible();
     await login.click();
@@ -42,6 +51,7 @@ test.describe('runtime continuity boundaries', () => {
     });
 
     await visit(page, '/programme');
+    await exposeCompactHeaderControls(page);
     await expect(page.locator('#auth-user-menu')).toBeVisible();
     await page.locator('#auth-user-trigger').click();
     await expect(page.locator('#auth-user-dropdown')).toBeVisible();
