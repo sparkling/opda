@@ -301,7 +301,7 @@ test('historical PDTF search alias returns labelled current and historical work'
 test('preservation is a local and deployment gate', () => {
   const makefile = readFileSync(new URL('../Makefile', import.meta.url), 'utf8');
   const workflow = readFileSync(new URL('../.github/workflows/deploy-aws.yml', import.meta.url), 'utf8');
-  assert.match(makefile, /ci-browser: build check-ia-preservation check-routes test-e2e/u);
+  assert.match(makefile, /ci-browser: build-data check-ia-preservation check-routes test-e2e/u);
   assert.match(makefile, /ci: .*check-ia-preservation/u);
   assert.match(workflow, /Information-architecture preservation gate[\s\S]*pnpm run check:ia-preservation/u);
 });

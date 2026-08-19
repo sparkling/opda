@@ -149,7 +149,7 @@ check-schema-drift:	## Strict schema drift gate; unavailable input bundles fail 
 	npm run check:schema-drift
 
 .PHONY: ci-browser
-ci-browser: build check-ia-preservation check-routes test-e2e	## Build and run all static/browser release gates
+ci-browser: build-data check-ia-preservation check-routes test-e2e	## Full data build, then run all static/browser release gates against that dist/
 	@echo "✓ static and browser release gates passed"
 
 .PHONY: verify-ontology
