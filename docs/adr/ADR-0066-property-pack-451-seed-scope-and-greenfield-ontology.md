@@ -1,7 +1,7 @@
 ---
 status: accepted
 date: 2026-08-03
-updated: 2026-08-04
+updated: 2026-08-19
 tags: [ontology, property-pack, greenfield, provenance, toml, generation, semantic-modelling]
 supersedes: []
 depends-on: [ADR-0039]
@@ -193,3 +193,9 @@ mappings, and recorded human approval is still required before a semantic releas
 - **2026-08-04 — Public review authorised.** The operator authorised publication of the isolated
   candidate under the V2 review section. Publication makes the candidate reviewable; it does not
   approve its semantics or replace the current ontology.
+- **2026-08-19 — SPDTF 2.0 lineage and review sequence clarified by ADR-0075.** The `/v2/**`
+  corpus is the Property Pack ontology within SPDTF 2.0, not an external development input. The
+  original PDTF 1.0 schema contains the complete 451-item source scope and its extracted ontology
+  is expected to contain corresponding semantic coverage, but a maintained item-to-ontology
+  crosswalk must verify that expectation. The Technical Working Group makes the accelerated
+  September determination; wider domain-group review and controlled revision follow later.

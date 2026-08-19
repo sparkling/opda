@@ -11,8 +11,8 @@ ADRs follow canonical [MADR 4.x](https://adr.github.io/madr/) with two
 project extensions (per the `ruflo-adr` `adr-create` skill):
 
 - A `tags:` frontmatter field for cross-cutting categorisation.
-- Three typed-relation frontmatter slots: `supersedes:`, `depends-on:`,
-  `implements:`.
+- Four typed-relation frontmatter slots: `supersedes:`, `amends:`,
+  `depends-on:`, `implements:`.
 
 Specifics:
 
@@ -26,7 +26,7 @@ Specifics:
   ODR corpus in `docs/ontology/odr/ODR-NNNN-<slug>.md`.
 - **H1**: title only, no `ADR-NNNN —` prefix (the number lives in the
   filename).
-- **Frontmatter (YAML)**: `status`, `date`, `tags`, `supersedes`,
+- **Frontmatter (YAML)**: `status`, `date`, `tags`, `supersedes`, `amends`,
   `depends-on`, `implements`. DACI fields (`decision-makers`,
   `consulted`, `informed`) are intentionally omitted —
   `git log --follow <file>` is the canonical authorship surface.
@@ -74,6 +74,7 @@ modelling website remains unchanged:
 | [ADR-0066](./ADR-0066-property-pack-451-seed-scope-and-greenfield-ontology.md) | The 451 required Property Pack data points are the closed seed scope for a greenfield ontology | accepted |
 | [ADR-0067](./ADR-0067-first-principles-property-pack-ontology-by-bounded-context.md) | Model the Property Pack from first principles with bounded-context ownership | accepted |
 | [ADR-0068](./ADR-0068-govern-opda-standards-lifecycle.md) | Govern the OPDA standards lifecycle through human consensus and staged ratification | proposed |
+| [ADR-0075](./ADR-0075-property-pack-ontology-as-accelerated-spdtf-2-0-component.md) | Treat the Property Pack ontology as an accelerated SPDTF 2.0 component | accepted · implementation pending |
 
 ## August 2026 working-group operations and recruitment
 
@@ -95,7 +96,7 @@ modelling website remains unchanged:
 
 1. Run `/ruflo-adr:adr-create "<short title>"` — the skill picks the
    next number and scaffolds the file with the canonical MADR template.
-2. Cross-link related ADRs through `supersedes:`, `depends-on:`,
+2. Cross-link related ADRs through `supersedes:`, `amends:`, `depends-on:`,
    `implements:` (frontmatter) and `## More Information` (human prose).
 3. Update this index.
 

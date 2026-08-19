@@ -102,7 +102,7 @@ test('the left section navigation implements all six destinations from one regis
   ));
   assert.deepEqual(Object.fromEntries(Object.entries(SECTION_NAVIGATION).map(([key, section]) => [
     key, section.groups.flatMap((group) => flattenItems(group.items)).length,
-  ])), { programme: 18, 'spdtf-2': 34, 'working-groups': 33, 'pdtf-1': 195, governance: 136, resources: 12 });
+  ])), { programme: 18, 'spdtf-2': 34, 'working-groups': 33, 'pdtf-1': 195, governance: 137, resources: 12 });
   for (const url of new Set(legacyUrls)) {
     assert.equal(compositeUrls.filter((candidate) => candidate === url).length, 1, `${url} must appear once`);
   }

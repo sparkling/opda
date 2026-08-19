@@ -25,6 +25,14 @@ implements: [docs/spdtf-2-0-information-architecture.md]
 > visible in-article or in the optional right rail, and container-responsive panels
 > preserve the reading width. Status remains Implemented; this note makes no new
 > deployment claim.
+>
+> Update 2026-08-19 — accepted correction pending implementation: ADR-0075 now
+> treats `/v2/**` as the Property Pack ontology component of SPDTF 2.0, replaces the
+> generic Development input branch with a canonical Property Pack workstream, exposes
+> PDTF 1.0 as original standard plus extracted ontology, and records a Technical
+> Working Group determination followed by later domain review. This ADR still records
+> the currently implemented site; the amended hierarchy is Accepted but not yet
+> implemented.
 
 ## Context and Problem Statement
 
@@ -264,6 +272,7 @@ final order before implementation.
 - [ADR-0064 — Modelling website revamp](./ADR-0064-modelling-website-revamp-before-strategy-publication.md)
 - [ADR-0066 — Property Pack seed scope](./ADR-0066-property-pack-451-seed-scope-and-greenfield-ontology.md)
 - [ADR-0067 — First-principles ontology by bounded context](./ADR-0067-first-principles-property-pack-ontology-by-bounded-context.md)
+- [ADR-0075 — Property Pack ontology as an accelerated SPDTF 2.0 component](./ADR-0075-property-pack-ontology-as-accelerated-spdtf-2-0-component.md)
 - [DBT — Smart Data 2035](https://www.gov.uk/government/publications/smart-data-strategy)
 - [DBT — Smart Data multi-sector call for evidence](https://www.gov.uk/government/calls-for-evidence/smart-data-multi-sector-call-for-evidence)
 - [MHCLG — Home Buying and Selling Reform Roadmap](https://www.gov.uk/government/consultations/home-buying-and-selling-reform/outcome/home-buying-and-selling-reform-roadmap)

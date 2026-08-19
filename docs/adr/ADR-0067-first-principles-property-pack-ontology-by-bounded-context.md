@@ -1,7 +1,7 @@
 ---
 status: accepted
 date: 2026-08-03
-updated: 2026-08-04
+updated: 2026-08-19
 tags: [ontology, property-pack, greenfield, bounded-context, common-boundary, interoperability, governance, council, ai-assisted, model-routing, source-security, release, skos, shacl, provenance, authorisation]
 supersedes: []
 depends-on: [ADR-0039, ADR-0066]
@@ -490,10 +490,10 @@ constraints; it does not pre-approve the resulting ontology terms.
 - Builder [ADR-0040 — semantic standards plane](https://github.com/hm-group/semantic-builder/blob/b64e4288bc07277198abad83bd7978db5c938b6b/docs/adr/ADR-0040-adopt-apache-jena-semantic-standards-plane.md), [ADR-0041 — deterministic validation](https://github.com/hm-group/semantic-builder/blob/b64e4288bc07277198abad83bd7978db5c938b6b/docs/adr/ADR-0041-odr-compiled-deterministic-validation-and-promotion-gate.md) and the [development model portfolio](https://github.com/hm-group/semantic-builder/blob/b64e4288bc07277198abad83bd7978db5c938b6b/config/model-portfolios/portfolio.development.v1.json)
 
 ## Amendments
-
 - **2026-08-03 — Accepted by operator.** Selected a first-principles Property-Pack scope; rejected a Builder dependency and five non-OPDA concerns; retained the other nine; and required one bounded-context or common-boundary home for every OPDA resource.
 - **2026-08-03 — Pinned Builder execution profile adopted.** Inherit Builder's accepted authoring and assurance contracts without its runtime or excluded target categories; human working groups retain meaning and promotion authority.
 - **2026-08-03 — OPDA governance clarified.** Constitutional authority and the technical change process govern human review and promotion; incomplete release mechanics must be ratified before a normative ontology release.
 - **2026-08-04 — Governance excluded from ontology scope.** Category 6 remains an operational Builder and OPDA control; the ontology retains eight concerns and excludes six.
 - **2026-08-04 — Semantic standards target fixed.** Generate RDF 1.2, SPARQL 1.2 and SHACL 1.2 output with explicit conformance levels and fail-closed qualification; do not claim full RDF or SHACL Union support without feature evidence.
 - **2026-08-04 — Candidate implementation recorded.** Generated an isolated 451-item, context-owned review candidate and dual-provider calibration evidence. Deterministic candidate gates pass; route qualification and every semantic disposition remain pending human review.
+- **2026-08-19 — Accelerated Property Pack determination adopted through ADR-0075.** The current candidate is the Property Pack ontology component of SPDTF 2.0. The Technical Working Group reviews it as-is and makes the initial determination by the end of September 2026; prior review by every bounded-context group is not a prerequisite. Domain, scheme and Interoperability groups subsequently review the meanings they own and may propose controlled, versioned changes. This does not turn technical validation into semantic approval, conflate the Technical Working Group with Property Technology, or authorise an unrecorded release.
