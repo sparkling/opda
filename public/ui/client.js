@@ -101,6 +101,9 @@
       try {
         if (localStorage.getItem('opda-sidebar-collapsed') === '1') {
           appBody.classList.add('sidebar-collapsed');
+          sidebarCollapse?.setAttribute('aria-expanded', 'false');
+          sidebarCollapse?.setAttribute('aria-label', 'Expand sidebar');
+          sidebarCollapse?.setAttribute('title', 'Expand sidebar');
         }
         if (localStorage.getItem('opda-toc-collapsed') === '1') {
           appBody.classList.add('toc-collapsed');
@@ -158,8 +161,11 @@
           aside.removeAttribute('aria-label');
           document.documentElement.classList.remove('nav-open');
           if (sidebarCollapse) {
-            sidebarCollapse.setAttribute('aria-label', 'Collapse sidebar');
-            sidebarCollapse.setAttribute('title', 'Collapse sidebar');
+            const isCollapsed = appBody?.classList.contains('sidebar-collapsed') === true;
+            const collapseLabel = isCollapsed ? 'Expand sidebar' : 'Collapse sidebar';
+            sidebarCollapse.setAttribute('aria-expanded', String(!isCollapsed));
+            sidebarCollapse.setAttribute('aria-label', collapseLabel);
+            sidebarCollapse.setAttribute('title', collapseLabel);
           }
           if (restoreFocus !== false && returnFocus && typeof returnFocus.focus === 'function') returnFocus.focus();
           returnFocus = null;

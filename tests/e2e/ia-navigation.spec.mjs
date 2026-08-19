@@ -102,6 +102,11 @@ test('left navigation follows route ownership with one active link', async ({ pa
   await page.evaluate(() => localStorage.setItem('opda.sidebar.pdtf-1.Ontology reference', 'closed'));
   await page.reload();
   await expect(page.locator('#section-navigation details[data-active="true"]')).toHaveAttribute('open', '');
+  await page.evaluate(() => localStorage.setItem('opda-sidebar-collapsed', '1'));
+  await page.reload();
+  await expect(page.locator('.app-body')).toHaveClass(/sidebar-collapsed/u);
+  await expect(page.locator('#sidebar-collapse')).toHaveAttribute('aria-expanded', 'false');
+  await expect(page.locator('#sidebar-collapse')).toHaveAttribute('aria-label', 'Expand sidebar');
   clean();
 });
 
