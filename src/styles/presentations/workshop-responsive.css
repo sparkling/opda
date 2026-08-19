@@ -10,7 +10,6 @@
   .deck-progress-wrap { min-width: 0; }
   .deck-progress-wrap progress { display: none; }
   .deck-controls { gap: .25rem; }
-  .icon-button { min-width: 2.5rem; }
 }
 
 @media print {

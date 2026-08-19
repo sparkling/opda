@@ -20,6 +20,7 @@
 .public-header img { display: block; width: 9.25rem; height: auto; }
 .public-header .theme-toggle { margin-left: auto; }
 .public-header__signin {
+  min-width: var(--target-min);
   min-height: var(--target-min);
   display: inline-flex;
   align-items: center;
