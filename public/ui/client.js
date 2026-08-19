@@ -309,13 +309,21 @@
       if (!existingViewport) viewport.appendChild(table);
 
       function syncOverflow() {
-        const overflowing = viewport.scrollWidth > viewport.clientWidth + 1;
+        // Measure the table's intrinsic width independently of the current
+        // overflow class. Otherwise the desktop `width: 100%` rule can make
+        // the first resize callback disagree with the pre-stylesheet pass.
+        const inlineWidth = table.style.width;
+        table.style.width = 'max-content';
+        const contentWidth = table.getBoundingClientRect().width;
+        table.style.width = inlineWidth;
+        const overflowing = contentWidth > viewport.clientWidth + 1;
         region.classList.toggle('is-overflowing', overflowing);
         viewport.tabIndex = overflowing ? 0 : -1;
         hint.hidden = !overflowing;
       }
 
       requestAnimationFrame(syncOverflow);
+      document.fonts?.ready.then(syncOverflow);
       if ('ResizeObserver' in window) new ResizeObserver(syncOverflow).observe(viewport);
     }
 
