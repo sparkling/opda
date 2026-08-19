@@ -56,7 +56,10 @@
     const panel = document.getElementById('global-nav-panel');
     const toggle = document.getElementById('global-nav-toggle');
     if (!header || !panel || !toggle) return;
-    const mobileQuery = window.matchMedia('(max-width: 48rem)');
+    // Match the CSS compact-header boundary. The six global destinations must
+    // remain fully discoverable on intermediate desktop/tablet widths; a
+    // clipped horizontal row is not an acceptable navigation state.
+    const mobileQuery = window.matchMedia('(max-width: 80rem)');
 
     function setOpen(open, restoreFocus) {
       const shouldOpen = mobileQuery.matches && open;
