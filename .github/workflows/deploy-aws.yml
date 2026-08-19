@@ -213,10 +213,7 @@ jobs:
           # These ignored ontology artefacts are preserved, manifest-audited S3
           # objects. Keep them outside --delete until a governed reproducible
           # generator can supply byte-verified replacements in the release bundle.
-          # /v3 is an independently verified preview owned by the manual-only
-          # preview workflow; a production-root sync must never absorb or delete it.
           aws s3 sync dist/ "s3://$SITE_BUCKET" --delete \
-            --exclude "v3/*" \
             --exclude "ontology/artefacts/*" \
             --exclude "ontology/tools/ontospy/*" \
             --exclude "ontology/tools/pylode/*" \

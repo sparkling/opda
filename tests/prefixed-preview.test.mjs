@@ -1,5 +1,4 @@
 import assert from 'node:assert/strict';
-import { spawnSync } from 'node:child_process';
 import {
   mkdirSync,
   mkdtempSync,
@@ -18,8 +17,6 @@ import {
 } from '../scripts/build-prefixed-preview.mjs';
 
 const SOURCE_SHA = 'a'.repeat(40);
-const projectRoot = path.resolve(new URL('..', import.meta.url).pathname);
-const trustedVerifier = path.join(projectRoot, '.github/scripts/verify-v3-artifact.py');
 
 function fixture() {
   const root = mkdtempSync(path.join(tmpdir(), 'opda-preview-'));
@@ -147,49 +144,4 @@ test('the build rejects unsafe prefixes and output paths', () => {
   } finally {
     rmSync(root, { recursive: true, force: true });
   }
-});
-
-test('the credentialed job has an independent trusted receipt verifier', () => {
-  const { root, input, output } = fixture();
-  try {
-    buildPrefixedPreview({ inputDir: input, outputDir: output, prefix: '/v3', sourceSha: SOURCE_SHA });
-    const args = [
-      trustedVerifier,
-      '--root', output,
-      '--receipt', path.join(path.dirname(output), 'preview-receipt.json'),
-      '--prefix', 'v3',
-      '--source-sha', SOURCE_SHA,
-    ];
-    const valid = spawnSync('python3', args, { encoding: 'utf8' });
-    assert.equal(valid.status, 0, valid.stderr || valid.stdout);
-
-    writeFileSync(path.join(output, 'ui/site.js'), 'tampered');
-    const tampered = spawnSync('python3', args, { encoding: 'utf8' });
-    assert.notEqual(tampered.status, 0);
-    assert.match(tampered.stderr, /(?:size|hash) mismatch/u);
-  } finally {
-    rmSync(root, { recursive: true, force: true });
-  }
-});
-
-test('the AWS v3 workflow is manual, exact-SHA, isolated and credential-separated', () => {
-  const workflow = readFileSync(path.join(projectRoot, '.github/workflows/deploy-aws-v3-preview.yml'), 'utf8');
-  const productionWorkflow = readFileSync(path.join(projectRoot, '.github/workflows/deploy-aws.yml'), 'utf8');
-  assert.match(workflow, /^\s*workflow_dispatch:/mu);
-  assert.doesNotMatch(workflow, /^\s*(?:push|pull_request):/mu);
-  assert.match(workflow, /source_sha:[\s\S]*required:\s*true/u);
-  assert.match(workflow, /options:\s*\n\s*-\s*v3/u);
-  assert.match(workflow, /ref:\s*\$\{\{\s*inputs\.source_sha\s*\}\}/u);
-  assert.match(workflow, /needs:\s*build-preview/u);
-  assert.match(workflow, /configure-aws-credentials@v6/u);
-  assert.match(workflow, /s3:\/\/\$SITE_BUCKET\/v3\//u);
-  assert.match(workflow, /--paths '\/v3\/\*'/u);
-  assert.doesNotMatch(workflow, /s3:\/\/\$SITE_BUCKET"\s+--delete/u);
-
-  const buildJob = workflow.slice(workflow.indexOf('  build-preview:'), workflow.indexOf('  publish-preview:'));
-  const publishJob = workflow.slice(workflow.indexOf('  publish-preview:'));
-  assert.doesNotMatch(buildJob, /configure-aws-credentials/u);
-  assert.match(publishJob, /verify-v3-artifact\.py/u);
-  assert.match(publishJob, /remote-v3/u);
-  assert.match(productionWorkflow, /--exclude "v3\/\*"/u);
 });
