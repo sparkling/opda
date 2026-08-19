@@ -152,7 +152,9 @@
       var on = b.dataset.engine === id;
       b.classList.toggle('is-active', on);
       b.setAttribute('aria-selected', on ? 'true' : 'false');
+      b.tabIndex = on ? 0 : -1;
     });
+    container.setAttribute('aria-labelledby', 'og-tab-' + id);
     syncLayoutControl(engine);
     syncSkosControl(engine);
     setNote(engine);
@@ -187,10 +189,26 @@
         'focus:z-10 focus:outline-2 focus:-outline-offset-2 focus:outline-[var(--focus-ring)] ' +
         'aria-selected:bg-[var(--brand-yellow)] aria-selected:text-[var(--brand-ink)] aria-selected:border-[var(--brand-yellow)]';
       b.dataset.engine = eng.id;
+      b.id = 'og-tab-' + eng.id;
       b.setAttribute('role', 'tab');
       b.setAttribute('aria-selected', 'false');
+      b.setAttribute('aria-controls', 'ontology-graph');
+      b.tabIndex = engines[0] === eng ? 0 : -1;
       b.textContent = eng.label;
       b.addEventListener('click', function () { activate(eng.id); });
+      b.addEventListener('keydown', function (event) {
+        var index = engines.findIndex(function (item) { return item.id === eng.id; });
+        var next = null;
+        if (event.key === 'ArrowRight' || event.key === 'ArrowDown') next = (index + 1) % engines.length;
+        if (event.key === 'ArrowLeft' || event.key === 'ArrowUp') next = (index - 1 + engines.length) % engines.length;
+        if (event.key === 'Home') next = 0;
+        if (event.key === 'End') next = engines.length - 1;
+        if (next === null) return;
+        event.preventDefault();
+        var target = bar.querySelector('#og-tab-' + engines[next].id);
+        target.focus();
+        activate(engines[next].id);
+      });
       bar.appendChild(b);
     });
     return engines;
