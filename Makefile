@@ -2,7 +2,7 @@
 #
 # Task runner for the site, the build-time triplestore/API, the ontology
 # generator, and the CI validation gates. Targets are thin wrappers over the
-# npm scripts (package.json) and the opda-gen CLI (tools/opda-gen) so the same
+# package scripts (package.json) and the opda-gen CLI (tools/opda-gen) so the same
 # commands work locally and in CI. Run `make help` for the grouped list.
 
 .DEFAULT_GOAL := help
@@ -25,8 +25,8 @@ help:	## Show this help
 
 ##@ Site (Astro website)
 .PHONY: install
-install:	## Install npm deps
-	npm install --no-fund --no-audit
+install:	## Install the CI-locked pnpm dependencies
+	pnpm install --frozen-lockfile
 
 .PHONY: dev
 dev: node_modules	## Astro dev server (auto-picks port 4330–4339)
@@ -136,6 +136,10 @@ check-routes:	## Crawl built resources and application-owned navigation
 check-design-system:	## Fail when the committed design-module graph hash is stale
 	npm run check:design-system
 
+.PHONY: check-ia-preservation
+check-ia-preservation:	## Verify route, artefact, service and support-asset preservation contracts
+	pnpm run check:ia-preservation
+
 .PHONY: test-schema
 test-schema:	## Focused schema reproducibility and drift-boundary contracts
 	npm run test:schema
@@ -145,7 +149,7 @@ check-schema-drift:	## Strict schema drift gate; unavailable input bundles fail 
 	npm run check:schema-drift
 
 .PHONY: ci-browser
-ci-browser: build check-routes test-e2e	## Build and run all static/browser release gates
+ci-browser: build-data check-ia-preservation check-routes test-e2e	## Full data build, then run all static/browser release gates against that dist/
 	@echo "✓ static and browser release gates passed"
 
 .PHONY: verify-ontology
@@ -189,7 +193,8 @@ check-links-external:	## Live external-URL 200 sweep over /ontology + /pdtf (ADR
 	node scripts/check-external-links.mjs
 
 .PHONY: ci
-ci: test test-schema check-schema-drift check-design-system check-adr ci-ontology ci-ontology-doc ci-ontology-graph	## Everything CI runs that is checkable locally (JS + ontology gates + doc-drift)
+ci: test test-schema check-schema-drift check-design-system check-ia-preservation check-adr ci-ontology ci-ontology-doc ci-ontology-graph	## Everything CI runs that is checkable locally (JS + ontology gates + doc-drift)
+	pnpm run check:spdtf-ia
 	@echo "✓ all local CI gates passed"
 
 ##@ Deploy

@@ -6,13 +6,13 @@
  * Renders nothing for pages not in a section (top-level reference pages,
  * 404s) or section roots that have no prev/next.
  */
-import { getPrevNext } from '@/lib/site';
+import { getNavigationPrevNext } from '@/lib/site-navigation';
 
-const { prev, next } = getPrevNext(Astro.url.pathname);
+const { prev, next } = getNavigationPrevNext(Astro.url.pathname);
 ---
 {(prev || next) && (
-  <div class="page-footer">
+  <nav class="page-footer" aria-label="Previous and next pages">
     {prev && <a href={prev.url}>← {prev.title}</a>}
     {next && <a href={next.url}>{next.title} →</a>}
-  </div>
+  </nav>
 )}

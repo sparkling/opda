@@ -1,0 +1,114 @@
+---
+import Layout from '@/layouts/Layout.astro';
+import PageMeta from '@/components/PageMeta.astro';
+import AuthorityPanel from '@/components/ia/AuthorityPanel.astro';
+import GatewayCard from '@/components/ia/GatewayCard.astro';
+import WorkspaceNav from '@/components/ia/WorkspaceNav.astro';
+import { WORKING_GROUPS, getWorkingGroup } from '@/components/ia/working-groups';
+import {
+  ALLOWED_DISPOSITIONS,
+  SEMANTIC_PACKAGE_MANIFEST,
+  getWorkspaceRecord,
+} from '@/lib/spdtf-workspace.mjs';
+
+export function getStaticPaths() {
+  return WORKING_GROUPS.map((group) => ({ params: { slug: group.slug }, props: { group } }));
+}
+
+const { group } = Astro.props;
+if (!group || !getWorkingGroup(group.slug)) throw new Error('Unknown SPDTF working-group route');
+const workspace = getWorkspaceRecord(group.slug);
+if (!workspace) throw new Error('Working group has no workspace record');
+---
+
+<Layout
+  title={`${group.name} working group`}
+  description={`${group.name}: scope, evidence route and review boundaries within SPDTF 2.0 development.`}
+>
+  <PageMeta category="Working groups" variant="brand" updated="Scope record · convening status to be confirmed" />
+  <h1>{group.name}</h1>
+  <p class="lead">{group.scope}</p>
+
+  <AuthorityPanel destination="working-groups" />
+  <WorkspaceNav slug={group.slug} />
+
+  <div class="callout callout--key">
+    <p class="callout__label">Group status</p>
+    <p><strong>{group.status}</strong> Workspace version <code>{workspace.workspaceVersion}</code>. This page does not assert that the group is convened or that a candidate exists.</p>
+    {group.note && <p>{group.note}</p>}
+  </div>
+
+  <h2 id="remit">Remit and boundaries</h2>
+  <p>
+    Participants would review language, examples, rules, resources and competency
+    questions from this context. Domain meaning remains with practitioners; facilitators
+    help make it explicit and reviewable. Interoperability handles only agreements needed
+    across context boundaries.
+  </p>
+
+  <h3 id="charter">Draft charter record</h3>
+  <dl>
+    <dt>Charter status</dt><dd>{workspace.charter.status}</dd>
+    <dt>Scope source</dt><dd><a href={workspace.charter.scopeSource}>{workspace.charter.scopeSource}</a></dd>
+    <dt>Decision eligible</dt><dd>No</dd>
+    <dt>Decision occurred</dt><dd>No</dd>
+    <dt>Decision authority</dt><dd>{workspace.decisionAuthority}</dd>
+  </dl>
+  <p><strong>Explicit exclusions</strong></p>
+  <ul>{workspace.charter.exclusions.map((exclusion) => <li>{exclusion}</li>)}</ul>
+
+  <h3 id="participation">Participation and meetings</h3>
+  <p>{workspace.participation.status} <a href={workspace.participation.interestRoute}>Register an expression of interest</a>.</p>
+  <p><strong>Meeting register:</strong> No meetings or sessions are recorded.</p>
+
+  <h2 id="workspace">Shared workspace shape</h2>
+  <ul>
+    <li>charter, scope, exclusions, competency questions and decision owner;</li>
+    <li>consent-aware evidence register and attributed source records;</li>
+    <li>six-part semantic package: glossary, dictionary, taxonomies, controlled vocabularies, resources and relationships;</li>
+    <li>eight formal concerns, four dispositions, open questions and feedback records;</li>
+    <li>candidate versions only when a group is convened and the relevant review evidence exists.</li>
+  </ul>
+
+  <h2 id="records">Reach the review records</h2>
+  <div class="card-grid">
+    <GatewayCard href={`/spdtf-2/working-groups/${group.slug}/evidence`} title="Evidence register" description={`${workspace.evidence.length} attributed input records; no group review is implied.`} />
+    <GatewayCard href={`/spdtf-2/working-groups/${group.slug}/questions`} title="Competency questions" description={`${workspace.competencyQuestions.length} initial questions for participant challenge.`} />
+    <GatewayCard href={`/spdtf-2/working-groups/${group.slug}/review`} title="Coverage and review" description="Eight formal concerns, the four allowed dispositions and the candidate gate." />
+  </div>
+
+  <h2 id="coverage">Coverage receipt</h2>
+  <table>
+    <caption>{group.name}: pre-convening assessment of the eight formal concerns</caption>
+    <thead><tr><th scope="col">Formal concern</th><th scope="col">Recorded assessment</th></tr></thead>
+    <tbody>{workspace.coverageReceipt.map((item) => <tr><th scope="row">{item.concern}</th><td>{item.status}</td></tr>)}</tbody>
+  </table>
+  <p>The only dispositions available after review are: {ALLOWED_DISPOSITIONS.join('; ')}.</p>
+
+  <h2 id="manifest">Semantic-package manifest</h2>
+  <p>
+    All six outputs and any later technical projection cite manifest
+    <code>{SEMANTIC_PACKAGE_MANIFEST.version}</code>. No candidate, candidate diff or
+    feedback disposition has been recorded for this pre-convening workspace.
+  </p>
+  <table>
+    <caption>{group.name}: six-output register</caption>
+    <thead><tr><th scope="col">Semantic output</th><th scope="col">Recorded state</th></tr></thead>
+    <tbody>{workspace.outputRegister.map((entry) => <tr><th scope="row">{entry.output}</th><td>{entry.status}</td></tr>)}</tbody>
+  </table>
+
+  <h3 id="empty-registers">Explicit empty registers</h3>
+  <ul>
+    <li>Candidate versions: none recorded.</li>
+    <li>Change history: none recorded.</li>
+    <li>Session records: none recorded.</li>
+    <li>Technical exports: none recorded.</li>
+  </ul>
+
+  <h2 id="next">Related development paths</h2>
+  <div class="card-grid">
+    <GatewayCard href="/spdtf-2/ontologies/why-ontologies" title="Ontology journey" description="Understand the business-language modelling method before reviewing technical views." />
+    <GatewayCard href="/spdtf-2/ontologies/coverage" title="Coverage crosswalk" description="See the separate workshop themes and formal concern dispositions." />
+    <GatewayCard href="/working-groups/join" title="Participation route" description="Use the existing joining path for expressions of interest and contribution details." />
+  </div>
+</Layout>

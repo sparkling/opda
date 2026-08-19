@@ -20,6 +20,7 @@
 .public-header img { display: block; width: 9.25rem; height: auto; }
 .public-header .theme-toggle { margin-left: auto; }
 .public-header__signin {
+  min-width: var(--target-min);
   min-height: var(--target-min);
   display: inline-flex;
   align-items: center;
@@ -50,7 +51,6 @@
 }
 .public-hero .eyebrow { color: var(--brand-yellow); }
 .public-hero h1 {
-  max-width: 12ch;
   margin: 0;
   color: var(--brand-white);
   font: var(--display);
@@ -65,7 +65,6 @@
   background: var(--brand-yellow);
 }
 .public-hero p:not(.eyebrow) {
-  max-width: 52ch;
   margin: var(--space-6) 0 0;
   color: var(--on-dark-muted);
   font: var(--lead);
@@ -90,12 +89,12 @@
   margin: 0 auto;
   padding: var(--space-10) var(--space-7);
 }
-.public-overview > header { max-width: 48rem; margin-bottom: var(--space-7); }
+.public-overview > header { margin-bottom: var(--space-7); }
 .public-overview .overline { color: var(--color-text-muted); }
 .public-overview h2 { margin: 0; font: var(--h2); }
 .public-overview__grid {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  grid-template-columns: repeat(3, 1fr);
   border-top: 1px solid var(--color-border);
   border-left: 1px solid var(--color-border);
 }
@@ -120,6 +119,14 @@
   border-top: 4px solid var(--brand-yellow);
 }
 .public-footer img { width: 9rem; height: auto; }
+.public-footer a {
+  min-height: var(--target-min);
+  display: inline-flex;
+  align-items: center;
+  color: var(--brand-white);
+  font-weight: 700;
+}
+.public-footer a:hover { color: var(--brand-yellow); }
 
 .not-found {
   width: min(100% - 2 * var(--space-5), 42rem);

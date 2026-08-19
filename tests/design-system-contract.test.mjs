@@ -1,7 +1,11 @@
 import assert from 'node:assert/strict';
 import { createHash } from 'node:crypto';
-import { access, readFile, readdir } from 'node:fs/promises';
+import { access, mkdtemp, readFile, readdir, rm, utimes, writeFile } from 'node:fs/promises';
+import { tmpdir } from 'node:os';
+import path from 'node:path';
 import test from 'node:test';
+
+import { assetVersion } from '../src/lib/asset-version.mjs';
 
 const root = new URL('../', import.meta.url);
 const file = (path) => new URL(path, root);
@@ -171,6 +175,23 @@ test('live implementation consumes semantic tokens rather than legacy aliases', 
   assert.doesNotMatch(dot, /fontname="Inter/u);
 });
 
+test('Mermaid loading state hides raw source and exposes labelled outcomes', async () => {
+  const component = await readFile(file('src/components/GraphDiagram.astro'), 'utf8');
+  const shell = await readFile(file('src/scripts/graph-diagram.ts'), 'utf8');
+  const renderer = await readFile(file('src/scripts/graph-diagram-mermaid.ts'), 'utf8');
+  const styles = await readFile(file('src/styles/graph-diagram.css'), 'utf8');
+
+  assert.match(component, /class="diagram-loading" role="status" aria-live="polite"/u);
+  assert.match(component, /class="gd-mermaid" aria-hidden="true"/u);
+  assert.match(shell, /class="diagram-loading" role="status" aria-live="polite"/u);
+  assert.match(shell, /class="gd-mermaid" aria-hidden="true"/u);
+  assert.match(styles, /\.graph-diagram-wrapper \.gd-mermaid:not\(\.gd-rendered\)[\s\S]*?opacity:\s*0;/u);
+  assert.match(styles, /\.graph-diagram-wrapper \.gd-mermaid:not\(\.gd-rendered\)[\s\S]*?clip-path:\s*inset\(50%\);/u);
+  assert.match(renderer, /pre\.classList\.add\('gd-rendered'\)/u);
+  assert.match(renderer, /className = 'diagram-fallback'/u);
+  assert.match(renderer, /setAttribute\('role', 'alert'\)/u);
+});
+
 test('the design facade versions every imported module from one graph hash', async () => {
   const source = await readFile(file('public/ui/design-system.css'), 'utf8');
   const imports = [...source.matchAll(/@import url\("[^"?]+\.css\?v=([a-f0-9]{12})"\);/gu)];
@@ -181,10 +202,30 @@ test('the design facade versions every imported module from one graph hash', asy
   assert.match(script, /design-system import escapes public\/ui/u);
 });
 
+test('public asset versions are content-derived, not timestamp-derived', async () => {
+  const directory = await mkdtemp(path.join(tmpdir(), 'opda-asset-version-'));
+  const fixture = path.join(directory, 'client.js');
+  try {
+    await writeFile(fixture, 'export const version = 1;\n');
+    const first = assetVersion('/client.js', directory);
+    await utimes(fixture, new Date('2001-01-01T00:00:00Z'), new Date('2001-01-01T00:00:00Z'));
+    assert.equal(assetVersion('/client.js', directory), first, 'mtime alone must not alter rendered asset URLs');
+    await writeFile(fixture, 'export const version = 1;\n');
+    assert.equal(assetVersion('/client.js', directory), first, 'a clean rebuild with identical bytes must preserve rendered asset URLs');
+    await writeFile(fixture, 'export const version = 2;\n');
+    assert.notEqual(assetVersion('/client.js', directory), first, 'changed bytes must alter rendered asset URLs');
+    assert.throws(() => assetVersion('/../outside.js', directory), /stay within the public directory/u);
+  } finally {
+    await rm(directory, { recursive: true, force: true });
+  }
+});
+
 test('interactive shell dependencies are pinned and bundled locally', async () => {
   const layout = await readFile(file('src/layouts/Layout.astro'), 'utf8');
   const packageSource = JSON.parse(await readFile(file('package.json'), 'utf8'));
   assert.match(layout, /import '@tailwindplus\/elements'/u);
+  assert.match(layout, /import \{ assetVersion \} from '@\/lib\/asset-version\.mjs'/u);
+  assert.doesNotMatch(layout, /mtimeMs|statSync/u);
   assert.doesNotMatch(layout, /cdn\.jsdelivr\.net|@tailwindplus\/elements@1/u);
   assert.equal(packageSource.dependencies['@tailwindplus/elements'], '1.0.22');
 });
@@ -232,6 +273,10 @@ test('shared navigation exposes visible focus, state and 44px targets', async ()
   assert.match(contentSource, /heading-anchor:focus-visible[^}]*opacity:\s*1/su);
   assert.match(contentSource, /\.heading-anchor\s*\{[^}]*width:\s*var\(--target-min\)[^}]*min-height:\s*var\(--target-min\)/su);
   assert.match(shell, /\.app-sidebar a\s*\{[^}]*min-height:\s*var\(--target-min\)/su);
+  assert.match(shell, /\.tree-leaf > a\s*\{[^}]*padding-inline-start:\s*calc\(var\(--target-min\) \+ var\(--space-3\)\)/su);
+  assert.match(shell, /\.tree-folder\.is-open > \.tree-children\s*\{[^}]*margin-inline-start:\s*var\(--space-5\)[^}]*border-inline-start:/su);
+  assert.match(shell, /\.tree-folder\.is-active-page > \.tree-folder-row\s*\{/u);
+  assert.doesNotMatch(shell, /\.tree-children \.tree-children \.tree-leaf/u);
   assert.match(toc, /\.toc a\s*\{[^}]*min-height:\s*var\(--target-min\)/su);
   assert.match(client, /aside\.inert = mobileQuery\.matches && !shouldOpen/u);
   assert.match(client, /aria-current['"], ['"]location/u);
@@ -239,6 +284,7 @@ test('shared navigation exposes visible focus, state and 44px targets', async ()
   assert.match(client, /aria-pressed/u);
   assert.match(client, /bindPrimaryNavigation/u);
   assert.match(client, /panel\.inert/u);
+  assert.match(client, /matchMedia\('\(max-width: 86rem\)'\)/u);
   assert.match(client, /function placeToc/u);
   assert.match(header, /showSidebar &&/u);
   assert.match(header, /id="global-nav-toggle"/u);
@@ -246,6 +292,7 @@ test('shared navigation exposes visible focus, state and 44px targets', async ()
   assert.match(layout, /<Header showSidebar=\{showSidebar\}/u);
   assert.doesNotMatch(base, /--header-height:\s*6\.5rem/u);
   assert.doesNotMatch(toc, /@media[^}]+\.toc\s*\{\s*display:\s*none/su);
+  assert.match(base, /@media \(max-width: 86rem\) \{[\s\S]*\.global-nav-toggle \{ display: inline-flex; \}/u);
 });
 
 test('dense prose tables become labelled keyboard-scrollable regions', async () => {
@@ -259,6 +306,69 @@ test('dense prose tables become labelled keyboard-scrollable regions', async () 
   assert.match(client, /setAttribute\('role', 'region'\)/u);
   assert.match(tables, /\.responsive-table__viewport:focus-visible/u);
   assert.match(tables, /\.prose > table/u, 'no-JavaScript containment fallback is required');
+});
+
+test('text inherits its outer layout width instead of stacking nested measures', async () => {
+  const [
+    design,
+    content,
+    components,
+    publicEntry,
+    workingGroupLayout,
+    campaign,
+    campaignSections,
+    join,
+    privacy,
+    ontologyGraph,
+    workshopDeck,
+    workshopScenes,
+    presentation,
+  ] = await Promise.all([
+    readFile(file('DESIGN.md'), 'utf8'),
+    readFile(file('public/ui/design/content.css'), 'utf8'),
+    readFile(file('public/ui/design/components.css'), 'utf8'),
+    readFile(file('public/ui/design/public.css'), 'utf8'),
+    readFile(file('src/layouts/PublicWorkingGroupLayout.astro'), 'utf8'),
+    readFile(file('src/styles/working-group-campaign.css'), 'utf8'),
+    readFile(file('src/styles/working-group-campaign-sections.css'), 'utf8'),
+    readFile(file('src/styles/working-group-join.css'), 'utf8'),
+    readFile(file('src/styles/working-group-privacy.css'), 'utf8'),
+    readFile(file('src/pages/ontology/graph.astro'), 'utf8'),
+    readFile(file('src/styles/presentations/workshop-deck.css'), 'utf8'),
+    readFile(file('src/styles/presentations/workshop-scenes.css'), 'utf8'),
+    readFile(file('docs/design-system-site/styles.css'), 'utf8'),
+  ]);
+
+  assert.match(design, /The outer layout container is the sole owner of content measure/u);
+  assert.match(content, /\.prose\s*\{[^}]*max-width:\s*var\(--content-reading\)/su);
+  assert.match(content, /\.prose\.wide\s*\{[^}]*max-width:\s*var\(--content-max\)/su);
+
+  const contentWithoutOuterMeasures = content
+    .replace(/\.prose\s*\{[^}]*\}/su, '')
+    .replace(/\.prose\.wide\s*\{[^}]*\}/su, '');
+  const maxWidthDeclaration = /(?:^\s*|[;{]\s*)max-width\s*:/mu;
+  assert.doesNotMatch(contentWithoutOuterMeasures, maxWidthDeclaration, 'content descendants must not own a second measure');
+
+  for (const [path, source] of [
+    ['public/ui/design/components.css', components],
+    ['public/ui/design/public.css', publicEntry],
+    ['src/layouts/PublicWorkingGroupLayout.astro', workingGroupLayout],
+    ['src/styles/working-group-campaign.css', campaign],
+    ['src/styles/working-group-campaign-sections.css', campaignSections],
+    ['src/styles/working-group-join.css', join],
+    ['src/styles/working-group-privacy.css', privacy],
+    ['src/pages/ontology/graph.astro', ontologyGraph],
+    ['src/styles/presentations/workshop-deck.css', workshopDeck],
+  ]) {
+    assert.doesNotMatch(source, maxWidthDeclaration, `${path} contains a nested max-width`);
+  }
+
+  for (const selector of ['scene--hero \\.lede', 'profile-lede', 'closing-line']) {
+    assert.doesNotMatch(workshopScenes, new RegExp(`\\.${selector}\\s*\\{[^}]*max-width\\s*:`, 'su'));
+  }
+  for (const selector of ['p', '\\.chapter-hero h1', '\\.chapter-hero \\.lede']) {
+    assert.doesNotMatch(presentation, new RegExp(`(?:^|\\n)${selector}\\s*\\{[^}]*max-width\\s*:`, 'su'));
+  }
 });
 
 test('the adversarial conformance blockers remain closed', async () => {

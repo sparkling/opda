@@ -1,0 +1,54 @@
+---
+import Layout from '@/layouts/Layout.astro';
+import PageMeta from '@/components/PageMeta.astro';
+import AuthorityPanel from '@/components/ia/AuthorityPanel.astro';
+import GatewayCard from '@/components/ia/GatewayCard.astro';
+import { WORKING_GROUPS } from '@/components/ia/working-groups';
+---
+
+<Layout
+  title="SPDTF 2.0 Working groups"
+  description="The canonical SPDTF 2.0 working-group family: bounded-context groups, the DBT Smart Data scheme group and Interoperability."
+>
+  <PageMeta category="Working groups" variant="brand" updated="Participation and candidate review · 2026-08-18" />
+  <h1>SPDTF 2.0 working groups</h1>
+  <p class="lead">
+    Working groups are one canonical family inside SPDTF 2.0 Development. Practitioners
+    contribute evidence, language, examples and judgement; facilitators make that
+    meaning reviewable and machine-readable. Registration or a generated page does not
+    confer membership, consensus or standards authority.
+  </p>
+
+  <AuthorityPanel destination="working-groups" />
+
+  <h2 id="roster">The working-group family</h2>
+  <div class="card-grid">
+    {WORKING_GROUPS.map((group) => (
+      <GatewayCard href={`/spdtf-2/working-groups/${group.slug}`} title={group.name} eyebrow={group.kind} description={group.scope} />
+    ))}
+  </div>
+
+  <h2 id="workspace">A common workspace shape</h2>
+  <p>Each group works through the same review path, while retaining ownership of its local meaning:</p>
+  <ul>
+    <li>charter, scope, competency questions and decision owner;</li>
+    <li>participation routes, evidence register and source handling;</li>
+    <li>glossary, dictionary, taxonomies, controlled vocabularies, resources and relationships;</li>
+    <li>candidate versions, open questions, feedback dispositions and change history;</li>
+    <li>coverage assessment, technical views and generated exports.</li>
+  </ul>
+
+  <h2 id="interoperability">Interoperability Working Group</h2>
+  <p>
+    Interoperability is a peer of the domain and scheme groups, not a child of one group.
+    Representatives agree only the boundary arrangements needed for exchange: a small
+    common boundary, a context map, qualified mappings, and shared identifier, provenance,
+    versioning and change conventions.
+  </p>
+  <p>
+    The <a href="/spdtf-2/working-groups/dbt-smart-data">DBT Smart Data group</a> is
+    OPDA-internal, not government-established and cannot confer statutory status.
+  </p>
+  <p><a href="/working-groups/join">Find participation routes and joining information</a>.</p>
+  <p>Programme-wide records: <a href="/spdtf-2/candidates">candidate register</a>, <a href="/spdtf-2/questions">open questions</a>, and <a href="/spdtf-2/outputs">outputs and validation evidence</a>.</p>
+</Layout>

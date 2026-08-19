@@ -28,11 +28,11 @@ const DOCX = `${BASE}/SMART DATA GUIDEBOOK_Preamble_Introductory principles and 
   </ul>
 
   <div class="callout callout--key">
-    <div class="callout__label">The Preamble names PDTF</div>
+    <div class="callout__label">The Preamble names bare “PDTF” (source wording)</div>
     <p>
       Its "Relationship to legislation, existing trust frameworks and schemes" section lists
-      <strong>Open Property and the Property Data Trust Framework</strong> alongside Open Banking,
-      Open Finance and the Energy Smart Data Scheme. PDTF is on the record as a Smart Data
+      <strong>Open Property and the Property Data Trust Framework (the Guidebook's wording)</strong> alongside Open Banking,
+      Open Finance and the Energy Smart Data Scheme. The source document's bare <strong>“PDTF”</strong> is on the record as a Smart Data
       initiative — which is both the standing this section is built on and, per the caveat below,
       a mischaracterisation worth correcting.
     </p>
@@ -55,7 +55,7 @@ const DOCX = `${BASE}/SMART DATA GUIDEBOOK_Preamble_Introductory principles and 
     <li><strong>Proportionality and innovation.</strong> Obligations proportionate to risk; room for SMEs and new entrants; tiered compliance.</li>
     <li><strong>Evidence-led design.</strong> Research, testing, transparent reporting.</li>
     <li><strong>Environmental and societal outcomes.</strong> Including the energy and carbon footprint of data infrastructure.</li>
-    <li><strong>Readiness for AI and automation.</strong> <em>"Making data AI-ready may involve ensuring data is well-defined, interoperable, machine-readable and accompanied by appropriate provenance, quality and purpose metadata, so that AI-driven use is traceable, accountable and transparent."</em> — which is, almost verbatim, PDTF's thesis.</li>
+    <li><strong>Readiness for AI and automation.</strong> <em>"Making data AI-ready may involve ensuring data is well-defined, interoperable, machine-readable and accompanied by appropriate provenance, quality and purpose metadata, so that AI-driven use is traceable, accountable and transparent."</em> — which is, almost verbatim, the PDTF 1.0 published schema's thesis.</li>
   </ol>
 
   <h2 id="risk">The eight-category risk taxonomy</h2>
@@ -106,15 +106,15 @@ const DOCX = `${BASE}/SMART DATA GUIDEBOOK_Preamble_Introductory principles and 
     <li><strong>Cadence:</strong> annual comprehensive review, interim updates after major developments, two-to-three workshops per chapter.</li>
   </ul>
 
-  <h2 id="pdtf">What this means for PDTF</h2>
+  <h2 id="pdtf">What this means for SPDTF 2.0 Development</h2>
 
   <p>
     Full analysis on <a href="/dbt-smart-data/pdtf-overlap#asks-preamble">the overlap page</a>. In short:
   </p>
 
   <ul>
-    <li><strong>Principle 4 and Principle 10 describe PDTF.</strong> A "shared semantic layer" and data that is "machine-readable and accompanied by provenance, quality and purpose metadata" is what an OWL/SKOS/SHACL standard <em>is</em>. The Preamble asks for it twice and assigns it to nobody. <a href="/dbt-smart-data/pdtf-overlap#strengths">This is the largest open landgrab in the document.</a></li>
-    <li><strong>Principle 2 would need selective disclosure</strong>, which PDTF's Ed25519 proof suite cannot do. That is a <em>capability</em> gap against a conditional — but it exposes a real defect of our own: OPDA's <code>governance.md</code> already claims "selective disclosure enforced". <strong>That claim is untrue regardless of what DBT does</strong> (<a href="/dbt-smart-data/gap-register#sd8">gap SD8</a>).</li>
+    <li><strong>Principle 4 and Principle 10 describe the direction for SPDTF 2.0 Development.</strong> A "shared semantic layer" and data that is "machine-readable and accompanied by provenance, quality and purpose metadata" is what an OWL/SKOS/SHACL standard <em>is</em>. PDTF 1.0 is evidence for that direction; the Preamble asks for it twice and assigns it to nobody. <a href="/dbt-smart-data/pdtf-overlap#strengths">This is the largest open landgrab in the document.</a></li>
+    <li><strong>Principle 2 would need selective disclosure</strong>, which the PDTF 1.0 Ed25519 proof suite cannot do. That is a <em>capability</em> gap for SPDTF 2.0 Development to assess against a conditional — but it exposes a real defect of our own: OPDA's <code>governance.md</code> already claims "selective disclosure enforced". <strong>That claim is untrue regardless of what DBT does</strong> (<a href="/dbt-smart-data/gap-register#sd8">gap SD8</a>).</li>
     <li><strong>Principles 3, 8 and 9 create no data-modelling obligation at all.</strong> Say so; do not manufacture ontology work from them.</li>
     <li>
       <strong>Principle 5 is a trap — half of it <em>is</em> ours.</strong> Its WCAG / assisted-channel
@@ -131,11 +131,12 @@ const DOCX = `${BASE}/SMART DATA GUIDEBOOK_Preamble_Introductory principles and 
 
   <ul>
     <li>
-      <strong>It mischaracterises PDTF.</strong> The Open Property section says PDTF is "adopting
+      <strong>It mischaracterises the programme.</strong> The Open Property section says the bare
+      <strong>“PDTF” (the source document's wording)</strong> is "adopting
       similar approaches to <em>directory-based onboarding, secure API specifications</em> and
       consent-driven, portable data-sharing". Directory onboarding and API security are
-      <em>scheme-operator</em> functions; PDTF is a data standard. DBT appears to have conflated
-      PDTF with the Raidiam sandbox operator layer.
+      <em>scheme-operator</em> functions; PDTF 1.0 has a published JSON Schema implementation. DBT appears to have conflated
+      the standard with the Raidiam sandbox operator layer.
     </li>
     <li>
       <strong>"Not a trust framework" — but it behaves like one.</strong> It disclaims the status
@@ -151,7 +152,7 @@ const DOCX = `${BASE}/SMART DATA GUIDEBOOK_Preamble_Introductory principles and 
 
   <h2 id="related">Related</h2>
   <ul>
-    <li><a href="/dbt-smart-data/pdtf-overlap">What the Guidebook asks of PDTF</a></li>
+    <li><a href="/dbt-smart-data/pdtf-overlap">What the Guidebook asks SPDTF 2.0 Development</a></li>
     <li><a href="/dbt-smart-data/identity">Ch.1 — Identity, roles and trust frameworks</a></li>
     <li><a href="/dbt-smart-data">Section overview</a></li>
   </ul>

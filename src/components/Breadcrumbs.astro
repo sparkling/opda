@@ -1,21 +1,76 @@
 ---
 /**
- * Breadcrumbs — Section → Group → Page chain. Derived from site.ts via
- * the current URL. Renders nothing on the home page or top-level
- * reference pages.
+ * Breadcrumbs — global owner → Section → Group → Page chain. The existing
+ * section/group/page chain remains the stable local navigation contract; the
+ * global owner adds context only when it has a different label.
  */
-import { findPage, normalizeUrl } from '@/lib/site';
+import { normalizeUrl } from '@/lib/site';
+import { findNavigationPage } from '@/lib/site-navigation';
+import { getActiveDestination, getDestination } from '@/lib/site-ia.mjs';
+
+interface Breadcrumb {
+  label: string;
+  href?: string;
+  current?: boolean;
+}
+interface Props {
+  currentPageTitle: string;
+}
+
+const { currentPageTitle } = Astro.props;
 
 const path = normalizeUrl(Astro.url.pathname);
-const found = findPage(path);
-const isSectionRoot = found && !found.item;
+const found = findNavigationPage(path);
+const destination = getDestination(getActiveDestination(path));
+const destinationLanding = Boolean(destination && path === normalizeUrl(destination.url));
+
+const breadcrumbs: Breadcrumb[] = [];
+
+if (destinationLanding && destination) {
+  breadcrumbs.push({ label: destination.title, current: true });
+} else {
+  if (destination) {
+    breadcrumbs.push({ label: destination.title, href: destination.url });
+  }
+
+  if (found) {
+    if (found.group.heading !== 'Overview') {
+      breadcrumbs.push({ label: found.group.heading });
+    }
+    found.trail.forEach((item, index) => {
+      const exact = normalizeUrl(item.url) === path;
+      const last = index === found.trail.length - 1;
+      breadcrumbs.push(exact
+        ? { label: item.title, current: true }
+        : { label: item.title, href: item.url });
+      if (last && !exact) breadcrumbs.push({ label: currentPageTitle, current: true });
+    });
+  } else if (destination) {
+    breadcrumbs.push({ label: currentPageTitle, current: true });
+  } else {
+    breadcrumbs.push({ label: currentPageTitle, current: true });
+  }
+
+  if (breadcrumbs.length > 1 && breadcrumbs.at(-1)?.href === destination?.url) {
+    breadcrumbs[breadcrumbs.length - 1] = { label: currentPageTitle, current: true };
+  }
+}
 ---
-{found && (
+{breadcrumbs.length > 0 && (
   <nav class="breadcrumbs" aria-label="Breadcrumb">
-    <a href={`/${found.section.key}`}>{found.section.title}</a>
-    {!isSectionRoot && found.group && <span class="breadcrumb-sep">›</span>}
-    {!isSectionRoot && found.group && <span class="breadcrumb-group">{found.group.heading}</span>}
-    {!isSectionRoot && found.item && <span class="breadcrumb-sep">›</span>}
-    {!isSectionRoot && found.item && <span class="breadcrumb-current" aria-current="page">{found.item.title}</span>}
+    <ol class="breadcrumbs__list">
+      {breadcrumbs.map((breadcrumb, index) => (
+        <li>
+          {index > 0 && <span class="breadcrumb-sep" aria-hidden="true">›</span>}
+          {breadcrumb.current ? (
+            <span class="breadcrumb-current" aria-current="page">{breadcrumb.label}</span>
+          ) : breadcrumb.href ? (
+            <a href={breadcrumb.href}>{breadcrumb.label}</a>
+          ) : (
+            <span class="breadcrumb-group">{breadcrumb.label}</span>
+          )}
+        </li>
+      ))}
+    </ol>
   </nav>
 )}

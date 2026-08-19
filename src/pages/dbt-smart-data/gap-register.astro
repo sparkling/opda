@@ -4,15 +4,15 @@ import PageMeta from '@/components/PageMeta.astro';
 ---
 <Layout
   title="Gap register"
-  description="What PDTF cannot currently encode against the DBT Smart Data Guidebook — each gap verified against the committed TTL corpus, ranked by effort to close, with the closing move for each."
+  description="What PDTF 1.0 cannot currently encode against the DBT Smart Data Guidebook, and what SPDTF 2.0 Development may need to model — each gap verified against the committed TTL corpus."
 >
-<PageMeta category="PDTF alignment" variant="warn" updated="Updated 2026-07-13" damaKa={["Data Governance", "Metadata Management"]} />
+<PageMeta category="SPDTF 2.0 Development · PDTF 1.0 evidence" variant="warn" updated="Updated 2026-07-13" damaKa={["Data Governance", "Metadata Management"]} />
 
   <h1>Gap register</h1>
 
   <p class="lead">
-    The asks in the <a href="/dbt-smart-data/pdtf-overlap">overlap analysis</a> that PDTF
-    <strong>cannot currently encode</strong>. Every gap here was verified against the committed
+    The asks in the <a href="/dbt-smart-data/pdtf-overlap">overlap analysis</a> that PDTF 1.0
+    <strong>cannot currently encode</strong>, and that SPDTF 2.0 Development may need to model. Every gap here was verified against the committed
     TTL corpus, not the ontology's layer plan. Ranked by effort to close — noting that the
     highest-<em>value</em> gap (SD4) is mid-difficulty rather than hard, and the
     highest-<em>leverage</em> one (SD3) is genuinely easy.
@@ -21,15 +21,15 @@ import PageMeta from '@/components/PageMeta.astro';
   <div class="callout callout--warn">
     <div class="callout__label">Scope note: these are capability gaps, not compliance failures</div>
     <p>
-      <strong>Smart Data and PDTF are two different initiatives.</strong> DBT's Smart Data is a
-      cross-sector programme under the Data (Use and Access) Act. PDTF is OPDA's property data
-      standard. <strong>PDTF is not bound by the Guidebook, does not "conform" to it, and cannot
+      <strong>Smart Data and SPDTF are two different initiatives.</strong> DBT's Smart Data is a
+      cross-sector programme under the Data (Use and Access) Act. PDTF 1.0 is OPDA's published property data
+      standard; SPDTF 2.0 Development is its future modelling programme. <strong>Neither is bound by the Guidebook, and PDTF 1.0 cannot "conform" to it or
       "fail" it.</strong>
     </p>
     <p style="margin-bottom: 0;">
       The relationship is <em>conditional</em>: <strong>if and when property becomes a designated
-      Smart Data scheme</strong>, PDTF would need to be able to encode the things listed below.
-      Everything here is therefore a statement about <em>capability</em> — "PDTF cannot currently
+      Smart Data scheme</strong>, SPDTF 2.0 Development would need to decide how to model the things listed below, using PDTF 1.0 as evidence.
+      Everything here is therefore a statement about <em>capability</em> — "PDTF 1.0 cannot currently
       say X" — never about non-compliance. The single exception is <strong>SD8</strong>, which is a
       defect in OPDA's own published claim and would be wrong even if the Guidebook did not exist.
     </p>
@@ -80,13 +80,13 @@ import PageMeta from '@/components/PageMeta.astro';
       </tr>
       <tr id="sd3">
         <td><strong>SD3</strong></td>
-        <td><strong>The origin facet: source / derived / insight / profiling.</strong> PDTF cannot say whether a datum was asserted or computed.</td>
+        <td><strong>The origin facet: source / derived / insight / profiling.</strong> PDTF 1.0 cannot say whether a datum was asserted or computed; SPDTF 2.0 Development must decide the facet.</td>
         <td>🟢 Easy — <strong>do this first</strong></td>
         <td><strong>Cheap and unlocks three other gaps.</strong> Per house doctrine it ships as a <em>facet</em> (<code>sh:in</code> over a four-term SKOS scheme), not a subclass tree. It is the precondition for SD4 and SD6, and it delivers Ch.3's user-facing "verified / self-reported / derived" signal and Ch.4's transparency <em>data level</em>. Add the individual-linkable vs anonymised flag alongside it — that flag drives Ch.4's entire proportionality carve-out.</td>
       </tr>
       <tr id="sd4">
         <td><strong>SD4</strong></td>
-        <td><strong>Derived-value provenance.</strong> A <em>property pack</em> is an aggregation of claims from many sources. If the pack is wrong but every source claim was right — who is accountable? PDTF models source claims well and derived claims not at all.</td>
+        <td><strong>Derived-value provenance.</strong> A <em>property pack</em> is an aggregation of claims from many sources. If the pack is wrong but every source claim was right — who is accountable? PDTF 1.0 models source claims well and derived claims not at all.</td>
         <td>🟡 Moderate — <strong>highest value</strong></td>
         <td><strong>OPDA's largest modelling gap and its largest liability gap are the same gap.</strong> The Ch.2 scoping paper says liability is hardest "where value is created through aggregation, transformation, or derived outputs" — and names property packs as its first test case. PROV is already adopted and SHACL-enforced on source claims; the work is choosing the granularity of derivation, requiring it on anything flagged "derived" (SD3), and not confusing instance lineage with the existing <em>model</em> provenance chain.</td>
       </tr>
@@ -94,19 +94,19 @@ import PageMeta from '@/components/PageMeta.astro';
         <td><strong>SD5</strong></td>
         <td><strong>Consent, delegation and the trust-signal cluster.</strong> No consent record, no delegated authority, no accreditation status, no audit event. Four missing artefacts that the Guidebook treats as one fabric.</td>
         <td>🟡 Moderate — <strong>largest hole</strong></td>
-        <td>Chapter 1's data-holder role is <em>defined</em> by relying on a consent signal it must not re-interpret; PDTF cannot emit that signal. Chapter 3's dashboard requires active/expired/withdrawn permissions with history. Property is the <strong>delegation-heavy sector</strong> — LPA, probate, executors, divorce, co-ownership — and none of it is modelled. Needs ODRL (currently <em>zero</em> occurrences in the corpus). Full structure: <a href="/dbt-smart-data/user-lifecycle#consent-model">the consent-record model Ch.3 implies</a>.</td>
+        <td>Chapter 1's data-holder role is <em>defined</em> by relying on a consent signal it must not re-interpret; PDTF 1.0 cannot emit that signal. Chapter 3's dashboard requires active/expired/withdrawn permissions with history. Property is the <strong>delegation-heavy sector</strong> — LPA, probate, executors, divorce, co-ownership — and none of it is modelled. Needs ODRL (currently <em>zero</em> occurrences in the corpus). Full structure: <a href="/dbt-smart-data/user-lifecycle#consent-model">the consent-record model SPDTF 2.0 Development implies</a>.</td>
       </tr>
       <tr id="sd6">
         <td><strong>SD6</strong></td>
         <td><strong>AI-decision disclosure.</strong> "Whether automation or AI has been used" — and what it did to the outcome.</td>
         <td>🔴 Moderate-to-hard — genuinely new</td>
-        <td>Hard not because the vocabulary is missing (DPV-AI is a near-exact fit and is <em>completely</em> unadopted) but because it requires PDTF to model <strong>decisions and outcomes</strong> — a new domain concept. The ontology today has no notion of an actor's <em>output</em> at all, only of property facts. This is a scope extension, and a council question.</td>
+        <td>Hard not because the vocabulary is missing (DPV-AI is a near-exact fit and is <em>completely</em> unadopted) but because it requires SPDTF 2.0 Development to model <strong>decisions and outcomes</strong> — a new domain concept. The PDTF 1.0 ontology has no notion of an actor's <em>output</em> at all, only of property facts. This is a scope extension, and a council question.</td>
       </tr>
       <tr id="sd7">
         <td><strong>SD7</strong></td>
-        <td><strong>Use-case as a first-class object.</strong> The Guidebook insists risk is assessed "at the use case and ecosystem level" — data combination, re-identification, inference, cumulative exposure. PDTF has no <code>UseCase</code> class and no risk-tier vocabulary.</td>
+        <td><strong>Use-case as a first-class object.</strong> The Guidebook insists risk is assessed "at the use case and ecosystem level" — data combination, re-identification, inference, cumulative exposure. PDTF 1.0 has no <code>UseCase</code> class and no risk-tier vocabulary.</td>
         <td>🔴 Hardest — structural</td>
-        <td><strong>The deepest mismatch between the Guidebook's mental model and PDTF's.</strong> PDTF's entire model is property/dataset-centric; risk attaches to <em>data</em>, not to a <em>use of</em> data. Either PDTF adds the dimension (a council, and a real one) or it explicitly scopes itself out and hands use-case risk to scheme operators. Both are defensible. <em>Drifting between them is not.</em></td>
+        <td><strong>The deepest mismatch between the Guidebook's mental model and PDTF 1.0's.</strong> The PDTF 1.0 model is property/dataset-centric; risk attaches to <em>data</em>, not to a <em>use of</em> data. Either SPDTF 2.0 Development adds the dimension (a council, and a real one) or explicitly scopes itself out and hands use-case risk to scheme operators. Both are defensible. <em>Drifting between them is not.</em></td>
       </tr>
       <tr id="sd8">
         <td><strong>SD8</strong></td>
@@ -150,14 +150,14 @@ import PageMeta from '@/components/PageMeta.astro';
         <td>
           <strong>This is Chapter 5's one and only data-standard ask</strong> (Position 3, "Trust
           should be dynamic") — and Chapter 5 is the chapter with the
-          <strong>24 July 2026 review deadline</strong>. PDTF cannot emit a single one of these
+          <strong>24 July 2026 review deadline</strong>. PDTF 1.0 cannot emit a single one of these
           signals. Overlaps heavily with SD5's accreditation-status half, but is listed separately
           because it is the one thing OPDA could commit to <em>in the Chapter 5 response</em>.
         </td>
       </tr>
       <tr id="sd13">
         <td><strong>SD13</strong></td>
-        <td><strong>Assurance-level vocabulary.</strong> <code>opda:assuranceLevel</code> was <strong>removed</strong> on 2026-07-05 (ODR-0009 — "zero PDTF schema basis"). There is no assurance ladder in the corpus today.</td>
+        <td><strong>Assurance-level vocabulary.</strong> <code>opda:assuranceLevel</code> was <strong>removed</strong> on 2026-07-05 (ODR-0009 — exact source wording: "zero PDTF schema basis"). There is no assurance ladder in the PDTF 1.0 corpus today.</td>
         <td>🟡 Moderate — needs a council</td>
         <td>
           Chapter 2 asks for a provenance schema carrying "issuer, inputs, timestamps,
@@ -166,7 +166,7 @@ import PageMeta from '@/components/PageMeta.astro';
           for a good reason (no schema basis), and re-adding it to satisfy DBT would repeat the
           original mistake. The right move is to ask whether an <em>evidential-provenance</em> scale
           (how authoritative is this fact about this house?) is warranted on its own merits, distinct
-          from GPG 44/45 identity assurance. If it is, PDTF's mandatory claim provenance is the
+          from GPG 44/45 identity assurance. If it is, PDTF 1.0's mandatory claim provenance is the
           natural substrate — and <em>no other sector in the Guidebook has one</em>.
         </td>
       </tr>
@@ -182,7 +182,7 @@ import PageMeta from '@/components/PageMeta.astro';
 
   <ul>
     <li>
-      <strong>Liability allocation.</strong> PDTF does <em>not</em> need a <code>liableParty</code>
+      <strong>Liability allocation.</strong> PDTF 1.0 does <em>not</em> need a <code>liableParty</code>
       property. Chapter 2 allocates liability <em>by rule</em>, not by data field. What the standard
       must supply is the <strong>evidence the rule operates on</strong>: who issued a signal, when,
       at what assurance level, and whether a status check was performed at the point of reliance.
@@ -190,16 +190,16 @@ import PageMeta from '@/components/PageMeta.astro';
     </li>
     <li>
       <strong>Security controls.</strong> FAPI, ISO 27001, encryption, incident response. These are
-      scheme-operator obligations. PDTF's job is at most to <em>encode</em> that a participant
+      scheme-operator obligations. PDTF 1.0's job is at most to <em>encode</em> that a participant
       holds a given certification — which is part of SD5, not a separate security gap.
     </li>
     <li>
-      <strong>Model provenance ≠ instance provenance.</strong> PDTF's <code>dct:source</code> chain
+      <strong>Model provenance ≠ instance provenance.</strong> PDTF 1.0's <code>dct:source</code> chain
       from every ontology term back to the JSON Schema leaf it was minted from is genuine,
       verifiable provenance — <em>of the model</em>. Claiming it satisfies Chapter 4's
       <em>instance-data lineage</em> ask would be a material overclaim that would not survive
       scrutiny by anyone who reads the ontology. (The good news, established while writing this
-      register: PDTF <em>does</em> have real instance-level claim provenance —
+      register: PDTF 1.0 <em>does</em> have real instance-level claim provenance —
       <code>prov:wasDerivedFrom</code> is SHACL-mandatory on every <code>opda:Claim</code>. The
       strength is real; just don't cite the wrong evidence for it.)
     </li>
@@ -211,7 +211,7 @@ import PageMeta from '@/components/PageMeta.astro';
     <li><strong>SD3 first</strong> (origin facet) — cheap, and SD4 and SD6 both depend on it.</li>
     <li><strong>SD11, SD1, SD2, SD10</strong> — a batch of easy wins that between them convert several soft conformance claims into auditable ones.</li>
     <li><strong>SD4</strong> (derived-value provenance) — the highest-value gap, and the one property is being <em>watched</em> on. Chapter 2's scoping paper has property packs as its named test case, and its stated output is <em>template clauses</em>. There is an unusually clear invitation here to write the property accountability map rather than receive one.</li>
-    <li><strong>SD5</strong> (consent/delegation/trust signals) — the largest hole, and the one where the window may close. Every other sector already has an answer (Open Banking's consent dashboard, energy's RECCo Consumer Consent Solution). Property has nothing named. Either OPDA scopes consent into PDTF, or another body will own it for property — <em>and consent is where the scheme power sits.</em></li>
+    <li><strong>SD5</strong> (consent/delegation/trust signals) — the largest hole, and the one where the window may close. Every other sector already has an answer (Open Banking's consent dashboard, energy's RECCo Consumer Consent Solution). Property has nothing named. Either SPDTF 2.0 Development scopes consent into its future model, or another body will own it for property — <em>and consent is where the scheme power sits.</em></li>
     <li><strong>SD8's retraction is immediate and unconditional</strong> — the false selective-disclosure claim in <code>governance.md</code> should be withdrawn regardless of when the proof-suite work happens. The proof-suite decision itself needs the trust framework, so start that conversation early.</li>
     <li><strong>SD12</strong> — the only gap with a <em>dated</em> deadline (Chapter 5, 24 July). Even if it cannot be closed by then, OPDA's Chapter 5 response should <em>name</em> it rather than let the review pass silently.</li>
     <li><strong>SD6, SD7, SD13</strong> — council questions. Do not start unilaterally, and in SD13's case do not simply reinstate what a council previously removed.</li>
@@ -243,7 +243,7 @@ import PageMeta from '@/components/PageMeta.astro';
 
   <h2 id="related">Related</h2>
   <ul>
-    <li><a href="/dbt-smart-data/pdtf-overlap">What the Guidebook asks of PDTF</a> — the full ask-by-ask analysis these gaps fall out of.</li>
+    <li><a href="/dbt-smart-data/pdtf-overlap">What the Guidebook asks SPDTF 2.0 Development</a> — the full ask-by-ask analysis these gaps fall out of, grounded in PDTF 1.0 evidence.</li>
     <li><a href="/governance/deferred-work">Deferred work register</a> — where ratified work items live once a council has taken them.</li>
     <li><a href="/modelling/standards-stack">Standards stack</a> — the planned ontology layers (ODRL, DCAT and DPROD are on the plan but absent from the corpus).</li>
   </ul>

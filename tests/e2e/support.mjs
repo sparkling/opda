@@ -3,6 +3,18 @@ import assert from 'node:assert/strict';
 export const ROUTES = [
   '/',
   '/home',
+  '/programme',
+  '/spdtf-2',
+  '/spdtf-2/ontologies',
+  '/spdtf-2/ontologies/standards',
+  '/spdtf-2/working-groups/estate-agency',
+  '/spdtf-2/working-groups/estate-agency/review',
+  '/spdtf-2/candidates',
+  '/spdtf-2/outputs',
+  '/pdtf-1',
+  '/governance',
+  '/resources',
+  '/search?q=PDTF',
   '/design-system',
   '/strategy/strategy-overview',
   '/governance/data-security',
@@ -73,7 +85,7 @@ export async function settleVisualState(page) {
     })
     .every((wrapper) => (
       !wrapper.querySelector('.diagram-loading')
-      && Boolean(wrapper.querySelector('.gd-mermaid svg, .gd-empty'))
+      && Boolean(wrapper.querySelector('.gd-mermaid svg, .gd-empty, .diagram-fallback'))
     )), undefined, { timeout: 15_000 });
 
   await page.evaluate(() => new Promise((resolve) => {

@@ -21,7 +21,7 @@
 
 .v2-candidate-banner {
   display: grid;
-  grid-template-columns: minmax(12rem, .72fr) minmax(18rem, 1.4fr) minmax(18rem, 1fr);
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 14rem), 1fr));
   gap: var(--v2-gap);
   align-items: start;
   margin: var(--space-5) 0 var(--space-7);
@@ -335,11 +335,6 @@ a.v2-card:focus-visible { border-color: var(--color-data-1); }
 .v2-check-list li::before { content: '✓'; color: var(--color-status-success); }
 .v2-limit-list li::before { content: '!'; color: var(--color-status-warning); }
 
-@media (max-width: 70rem) {
-  .v2-candidate-banner { grid-template-columns: 1fr 1fr; }
-  .v2-candidate-banner > div { grid-column: 1 / -1; }
-}
-
 @media (max-width: 58rem) {
   .v2-snapshot-grid { grid-template-columns: 1fr; }
   .v2-compare__head { display: none; }
@@ -359,12 +354,9 @@ a.v2-card:focus-visible { border-color: var(--color-data-1); }
 }
 
 @media (max-width: 44rem) {
-  .v2-candidate-banner,
   .v2-filter { grid-template-columns: 1fr; }
   .v2-contents ul { columns: 1; }
   .v2-facts > div { grid-template-columns: 1fr; gap: var(--space-1); }
-  .v2-candidate-banner > div { margin-bottom: var(--space-3); }
-  .v2-candidate-banner p + p { margin-top: var(--space-3); }
 }
 
 @media (forced-colors: active) {

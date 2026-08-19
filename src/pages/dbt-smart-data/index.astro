@@ -12,7 +12,7 @@ const pdfCount = files.filter(f => f.ext === 'pdf').length;
 ---
 <Layout
   title="DBT Smart Data"
-  description="DBT's cross-sector Smart Data Guidebook — Preamble and Chapters 1–5 — and the analysis of which of its asks the PDTF data standard must be able to encode."
+  description="DBT's cross-sector Smart Data Guidebook — Preamble and Chapters 1–5 — and the analysis of which future SPDTF 2.0 Development capabilities its asks may require, using PDTF 1.0 as the published baseline."
 >
 <PageMeta category="Section overview" variant="brand" updated="Updated 2026-07-13" damaKa={["Data Governance"]} />
 
@@ -24,8 +24,8 @@ const pdfCount = files.filter(f => f.ext === 'pdf').length;
     every UK Smart Data scheme (open banking, open energy, <em>property</em>) is expected to
     operate under the <a href="/governance/legislation">Data (Use and Access) Act 2025</a>.
     This section tracks each document as DBT circulates it, and — the reason the section
-    exists — works out <a href="/dbt-smart-data/pdtf-overlap">which of its asks PDTF must be
-    able to encode</a>.
+    exists — works out <a href="/dbt-smart-data/pdtf-overlap">which of its asks SPDTF 2.0 Development may need to
+    be able to encode</a>.
   </p>
 
   <nav class="callout callout--note" aria-label="On this page">
@@ -51,8 +51,8 @@ const pdfCount = files.filter(f => f.ext === 'pdf').length;
     OPDA is not a bystander. Its Chair sits on DBT's <strong>Smart Data Council</strong> and
     chairs the <strong>Smart Property Data delivery group</strong> within
     <a href="/governance/steering-forums">DPMSG</a>. OPDA is on the review distribution for
-    every chapter. And the Guidebook names us: the Preamble cites Open Property and the PDTF
-    as a Smart Data initiative, Chapter 2 puts a hard <em>"must"</em> on the property sector
+    every chapter. And the Guidebook names us: the Preamble's source wording cites Open Property
+    and the bare <strong>“PDTF” (source wording)</strong> as a Smart Data initiative, Chapter 2 puts a hard <em>"must"</em> on the property sector
     over Property ID governance, and the Chapter 2 liability scoping paper names
     <strong>"property–finance: digital property packs for home buying"</strong> as the first of
     only two use cases it will examine in detail.
@@ -93,25 +93,25 @@ const pdfCount = files.filter(f => f.ext === 'pdf').length;
   </table>
 
   <p>
-    <strong>PDTF is a data standard.</strong> Conflating the two either overstates OPDA's
-    obligations (implying PDTF must ship a security stack) or understates them (implying consent
+    <strong>PDTF 1.0 has a published JSON Schema implementation.</strong> Conflating the two either overstates OPDA's
+    obligations (implying SPDTF 2.0 Development must ship a security stack) or understates them (implying consent
     is "just UX, not our problem"). Both readings are wrong. Holding the two apart, ask by ask,
     is what <a href="/dbt-smart-data/pdtf-overlap">the overlap analysis</a> does — and it is the
     only thing in this section that DBT has not already written for us.
   </p>
 
   <div class="callout callout--warn">
-    <div class="callout__label">Smart Data and PDTF are two different initiatives</div>
+    <div class="callout__label">Smart Data and SPDTF are two different initiatives</div>
     <p>
       <strong>DBT's Smart Data</strong> is a cross-sector government programme under the Data (Use
-      and Access) Act. <strong>PDTF</strong> is OPDA's property data standard. They are not two
-      views of one thing, and <strong>PDTF is not bound by the Guidebook</strong> — it does not
+      and Access) Act. <strong>SPDTF</strong> is OPDA's property data standards programme; <strong>PDTF 1.0</strong>
+      is its published schema baseline. They are not two views of one thing, and <strong>SPDTF is not bound by the Guidebook</strong> — it does not
       "conform" to it and cannot "fail" it.
     </p>
     <p style="margin-bottom: 0;">
       The relationship is <em>conditional</em>: <strong>if and when property becomes a designated
-      Smart Data scheme</strong>, PDTF would need to be able to encode certain things the Guidebook
-      assumes. So everything in this section is framed as <em>capability</em> — "PDTF cannot
+      Smart Data scheme</strong>, SPDTF 2.0 Development would need to decide how to model certain things the Guidebook
+      assumes, using PDTF 1.0 as evidence. So everything in this section is framed as <em>capability</em> — "PDTF 1.0 cannot
       currently say X" — and never as non-compliance. Read the
       <a href="/dbt-smart-data/gap-register">gap register</a> in that light.
     </p>
@@ -120,10 +120,11 @@ const pdfCount = files.filter(f => f.ext === 'pdf').length;
   <div class="callout callout--note">
     <div class="callout__label">One complication, stated up front</div>
     <p>
-      OPDA has <em>also</em> taken on responsibility for the property scheme's accreditation
-      criteria and 'scheme' standards. So Chapters 1 and 2 land on OPDA at <strong>both</strong>
-      layers. The separation above is an analytical device to be applied per ask — not a blanket
-      "we're only a standard" defence.
+      OPDA has <em>also</em> taken on an internal, prospective role in property accreditation
+      criteria and 'scheme' standards. No property Smart Data scheme has been designated and this
+      work does not confer government approval or statutory scheme-body status. So Chapters 1 and 2
+      land on OPDA at <strong>both</strong> analytical layers. The separation above is an analytical
+      device to be applied per ask — not a blanket "we're only a standard" defence.
     </p>
   </div>
 
@@ -144,7 +145,7 @@ const pdfCount = files.filter(f => f.ext === 'pdf').length;
     </thead>
     <tbody>
       <tr><td><a href="/dbt-smart-data/preamble">Preamble — Introductory principles and good practice</a></td><td>V5</td><td>10 principles · 8 risk categories</td></tr>
-      <tr><td><a href="/dbt-smart-data/identity">Ch.1 — Digital Identity, Roles and Trust Frameworks</a></td><td>V7</td><td>Deepest PDTF overlap</td></tr>
+      <tr><td><a href="/dbt-smart-data/identity">Ch.1 — Digital Identity, Roles and Trust Frameworks</a></td><td>V7</td><td>Deepest PDTF 1.0 overlap</td></tr>
       <tr><td><a href="/dbt-smart-data/governance-compliance">Ch.2 — Governance, Compliance and Legal Framework</a></td><td>V5</td><td>+ liability scoping paper</td></tr>
       <tr><td><a href="/dbt-smart-data/user-lifecycle">Ch.3 — User Lifecycle and Experience</a></td><td>V1</td><td>+ Which? consumer response</td></tr>
       <tr><td><a href="/dbt-smart-data/stewardship-privacy-ethics">Ch.4 — Data Stewardship, Privacy and Ethics</a></td><td>V2</td><td>Richest modelling obligations</td></tr>
@@ -180,13 +181,13 @@ const pdfCount = files.filter(f => f.ext === 'pdf').length;
   <div class="card-grid">
     <a class="card" href="/dbt-smart-data/pdtf-overlap">
       <div class="pill pill--brand">Start here</div>
-      <h3>What the Guidebook asks of PDTF</h3>
+      <h3>What the Guidebook asks SPDTF 2.0 Development</h3>
       <p>The layer separation applied ask by ask across all six documents — including where an ask creates <em>no</em> data-modelling obligation at all.</p>
     </a>
     <a class="card" href="/dbt-smart-data/gap-register">
       <div class="pill pill--warn">Gaps</div>
       <h3>Gap register</h3>
-      <p>What PDTF cannot currently encode, each claim checked against the committed TTL corpus, ranked by effort to close.</p>
+      <p>What PDTF 1.0 cannot currently encode, and what SPDTF 2.0 Development may need to model; each claim is checked against the committed TTL corpus.</p>
     </a>
     <a class="card" href="/dbt-smart-data/preamble">
       <div class="pill pill--info">Guidebook</div>
@@ -196,7 +197,7 @@ const pdfCount = files.filter(f => f.ext === 'pdf').length;
     <a class="card" href="/dbt-smart-data/identity">
       <div class="pill pill--info">Guidebook</div>
       <h3>Ch.1 — Identity, roles &amp; trust</h3>
-      <p>Minimum Viable Identity, the six-stage lifecycle, trust registries, and the role-model collision with PDTF.</p>
+      <p>Minimum Viable Identity, the six-stage lifecycle, trust registries, and the role-model collision with PDTF 1.0.</p>
     </a>
     <a class="card" href="/dbt-smart-data/governance-compliance">
       <div class="pill pill--info">Guidebook</div>
@@ -223,7 +224,7 @@ const pdfCount = files.filter(f => f.ext === 'pdf').length;
   <h2 id="related">Related</h2>
   <ul>
     <li><a href="/governance/departments#dbt">Departments &amp; bodies — DBT</a> — DBT's other Smart Data workstreams (Council, Roadmap, Challenge).</li>
-    <li><a href="/governance/data-security">Data security framework</a> — PDTF's <em>own</em> security controls. Chapter 5 sits alongside this, not above it.</li>
+    <li><a href="/governance/data-security">Data security framework</a> — the PDTF 1.0-era <em>published</em> security controls. Chapter 5 sits alongside this, not above it.</li>
     <li><a href="/governance/legislation">Legislation &amp; policy</a> — the Data (Use and Access) Act 2025.</li>
     <li><a href="/engagement/meetings-decisions#sdGuidebook">Meetings &amp; decisions</a> — the Guidebook working sessions.</li>
   </ul>

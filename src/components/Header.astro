@@ -1,12 +1,12 @@
 ---
 /**
- * Global site header — brand, section nav, external links, theme toggle.
- * Renders at build time. Active section derived from Astro.url.pathname.
+ * Global site header — brand, destination nav, external links, theme toggle.
+ * Renders at build time. Active destination is resolved by the IA contract.
  */
-import { HEADER_ORDER, SECTIONS, getActiveSection } from '@/lib/site';
+import { GLOBAL_DESTINATIONS, getActiveDestination } from '@/lib/site-ia.mjs';
 import AuthButton from '@/components/AuthButton.astro';
 
-const activeSection = getActiveSection(Astro.url.pathname);
+const activeDestination = getActiveDestination(Astro.url.pathname);
 interface Props { showSidebar?: boolean; }
 const { showSidebar = false } = Astro.props;
 ---
@@ -36,16 +36,17 @@ const { showSidebar = false } = Astro.props;
 
   <div class="global-nav-panel" id="global-nav-panel">
     <nav class="global-nav" aria-label="Primary">
-      {HEADER_ORDER.map(key => (
+      {GLOBAL_DESTINATIONS.map(destination => (
         <a
-          href={`/${key}`}
-          class={activeSection === key ? 'active' : undefined}
-          aria-current={activeSection === key ? 'page' : undefined}
-        >{SECTIONS[key].title}</a>
+          href={destination.url}
+          class={activeDestination === destination.key ? 'active' : undefined}
+          aria-current={activeDestination === destination.key ? 'page' : undefined}
+        >{destination.title}</a>
       ))}
     </nav>
 
     <nav class="header-nav" aria-label="Utilities">
+      <a href="/search">Search</a>
       <a href="https://github.com/Property-Data-Trust-Framework" target="_blank" rel="noopener">GitHub</a>
     </nav>
 

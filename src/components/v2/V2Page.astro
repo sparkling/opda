@@ -22,7 +22,7 @@ interface Props {
 const {
   title,
   description,
-  category = 'V2 candidate reference',
+  category = 'SPDTF 2.0 development input',
   crumbs = [],
 } = Astro.props;
 const technicalState = validationReport.status === 'pass'
@@ -30,14 +30,14 @@ const technicalState = validationReport.status === 'pass'
   : `Technical candidate checks: ${validationReport.status}`;
 ---
 <Layout
-  title={`${title} · V2`}
+  title={`${title} · SPDTF 2.0 development input`}
   description={description}
   hideBreadcrumbs={true}
   proseClass="prose wide"
 >
   <div class="v2-doc">
     <nav class="v2-breadcrumbs" aria-label="Breadcrumb">
-      <a href="/v2">V2</a>
+      <a href="/v2">SPDTF 2.0 development input</a>
       {crumbs.map((crumb) => (
         <>
           <span aria-hidden="true">/</span>
@@ -59,8 +59,11 @@ const technicalState = validationReport.status === 'pass'
         <span>{candidateManifest.publication_status.replaceAll('-', ' ')}</span>
       </div>
       <p>
-        This is a review candidate, not an approved or ratified standard. AI has no
-        decision authority; OPDA working groups must review and disposition the model.
+        <strong>SPDTF 2.0 development input · Machine-generated Property Pack pre-draft ·
+        Non-normative · No working-group review or approval recorded.</strong> This is a
+        retained, reviewable input, not an approved or ratified standard. AI has no
+        decision authority. Read the <a href="/spdtf-2">SPDTF 2.0 development method</a>
+        before using these technical views.
       </p>
       <p>
         <strong>{technicalState}.</strong> This records machine checks, not semantic approval.

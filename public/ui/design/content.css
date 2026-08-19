@@ -1,6 +1,7 @@
 /* ─────────────────────────────────────────────────────────────
    PROSE — typography for body content
-   Roboto Slab H1; DM Sans H2–H4 and body; 66ch reading measure.
+   Roboto Slab H1; DM Sans H2–H4 and body. The article owns
+   the measure; textual descendants fill that outer container.
    ───────────────────────────────────────────────────────────── */
 .prose {
   min-width: 0;
@@ -18,15 +19,9 @@
 .prose:has(+ .comments-section) { padding-bottom: var(--space-8); }
 html { scroll-padding-top: calc(var(--header-height) + 1rem); }
 /* Wide track: overview pages, schema browsers, dictionary tables, Mermaid.
-   At --content-max (1800px) the 8,458-row data dictionary and full Mermaid
-   diagrams render without horizontal scroll on standard desktop widths.
-   Data-dense pages opt out of the 60–68ch readability caps so paragraphs,
-   lists and tables use the full wide-content width. */
+   This is the default documentation track. Width is set once here rather
+   than repeated on paragraphs, lists, leads, quotes or component copy. */
 .prose.wide { max-width: var(--content-max); }
-.prose.wide .lead,
-.prose.wide table,
-.prose.wide blockquote,
-.prose.wide .callout--key p { max-width: none; }
 /* Inside narrow .prose, let load-bearing wide elements (data-browser,
    diagrams, multi-column tables) break out to the wider track via the
    .full-bleed escape hatch. */
@@ -55,7 +50,6 @@ html { scroll-padding-top: calc(var(--header-height) + 1rem); }
   color: var(--color-text-muted);
   font-weight: 400;
   margin: var(--space-4) 0 var(--space-6);
-  max-width: 60ch;
   letter-spacing: 0;
 }
 .prose h2 {
@@ -72,8 +66,8 @@ html { scroll-padding-top: calc(var(--header-height) + 1rem); }
 .prose h4 { font: var(--h4); color: var(--color-text); }
 
 .prose p, .prose ul, .prose ol { margin: 0; }
-.prose p { text-wrap: pretty; max-width: var(--content-reading); }
-.prose ul, .prose ol { padding-left: 1.25em; max-width: var(--content-reading); }
+.prose p { text-wrap: pretty; }
+.prose ul, .prose ol { padding-left: 1.25em; }
 /* Restore the default list markers the design system relies on for visual
    rhythm (README §"Bullet markers… carry visual rhythm"). The original CSS only
    recoloured the markers, relying on the browser-default disc/circle/square +
@@ -98,7 +92,6 @@ html { scroll-padding-top: calc(var(--header-height) + 1rem); }
   border-radius: 0;
   font-style: normal;
   color: var(--color-text-strong);
-  max-width: 60ch;
 }
 .prose blockquote > * + * { margin-top: var(--space-2); }
 .prose blockquote cite {
@@ -110,18 +103,26 @@ html { scroll-padding-top: calc(var(--header-height) + 1rem); }
 }
 
 .heading-anchor {
+  position: absolute;
+  inset-block-start: 50%;
+  inset-inline-end: 0;
+  transform: translateY(-50%);
   width: var(--target-min);
   min-height: var(--target-min);
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  margin-left: var(--space-2);
+  margin: 0;
   opacity: 0;
   color: var(--color-link);
   font: 600 var(--text-sm) / 1 var(--font-mono);
   vertical-align: middle;
   transition: opacity var(--duration-fast) var(--ease);
   text-decoration: none;
+}
+.prose :is(h2, h3, h4)[id] {
+  position: relative;
+  padding-inline-end: var(--target-min);
 }
 .prose h2:hover .heading-anchor,
 .prose h3:hover .heading-anchor,
@@ -273,7 +274,6 @@ html { scroll-padding-top: calc(var(--header-height) + 1rem); }
 .callout--key p {
   font: 500 var(--text-lg) / 1.5 var(--font-sans);
   color: var(--color-text-strong);
-  max-width: 56ch;
 }
 .callout--warn    { border-color: var(--color-status-warning); background: var(--color-status-warning-surface); }
 .callout--success { border-color: var(--color-status-success); background: var(--color-status-success-surface); }

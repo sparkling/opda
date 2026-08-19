@@ -1,0 +1,70 @@
+---
+import Layout from '@/layouts/Layout.astro';
+import PageMeta from '@/components/PageMeta.astro';
+import { SITE_SEARCH_ENTRIES } from '@/lib/site-search.mjs';
+import { getRouteStatus } from '@/lib/site-ia.mjs';
+const results = SITE_SEARCH_ENTRIES.map((entry) => ({ ...entry, status: getRouteStatus(entry.url) }));
+---
+
+<Layout title="Search" description="Search the OPDA documentation by task, work area and historical name." hideComments>
+  <PageMeta category="Utility" variant="brand" updated="IA registry search" />
+  <h1>Search the documentation</h1>
+  <p class="lead">Results always show work area and authority. “PDTF” is a historical alias that finds both PDTF 1.0 material and relevant SPDTF continuation pages.</p>
+  <label for="site-search"><strong>Search by task, topic or name</strong></label>
+  <input id="site-search" type="search" autocomplete="off" placeholder="Try PDTF, ontology, mapping or governance" />
+  <p id="search-summary" role="status" aria-live="polite">{results.length} indexed destinations</p>
+  <div class="search-results" data-search-results>
+    {results.map((record) => (
+      <article
+        class="card search-result"
+        data-search-text={[record.title, record.summary, ...record.aliases].join(' ').toLocaleLowerCase('en-GB')}
+      >
+        <p class="overline">{record.status.workArea}{record.historicalName ? ' · historical name' : ''}</p>
+        <h2><a href={record.url}>{record.title}</a></h2>
+        <p>{record.summary}</p>
+        <dl>
+          <dt>Authority</dt><dd>{record.status.authority}</dd>
+          <dt>Maturity</dt><dd>{record.status.maturity}</dd>
+        </dl>
+      </article>
+    ))}
+  </div>
+  <p data-no-results hidden>No indexed destination matches this search.</p>
+
+  <script is:inline>
+    (function () {
+      var input = document.getElementById('site-search');
+      var summary = document.getElementById('search-summary');
+      var empty = document.querySelector('[data-no-results]');
+      var rows = Array.from(document.querySelectorAll('[data-search-text]'));
+      function apply() {
+        var query = input.value.trim().toLocaleLowerCase('en-GB');
+        var shown = 0;
+        rows.forEach(function (row) {
+          var match = !query || row.dataset.searchText.includes(query);
+          row.hidden = !match;
+          if (match) shown += 1;
+        });
+        empty.hidden = shown !== 0;
+        summary.textContent = shown + (shown === 1 ? ' result' : ' results');
+        var url = new URL(location.href);
+        query ? url.searchParams.set('q', input.value.trim()) : url.searchParams.delete('q');
+        history.replaceState(null, '', url);
+      }
+      input.value = new URL(location.href).searchParams.get('q') || '';
+      input.addEventListener('input', apply);
+      apply();
+    })();
+  </script>
+</Layout>
+
+<style>
+  #site-search { width: 100%; min-height: 44px; margin: var(--space-3) 0; padding: var(--space-3) var(--space-4); border: 1px solid var(--color-border-strong); border-radius: 2px; background: var(--color-surface); color: var(--color-text); font: inherit; }
+  .search-results { display: grid; gap: var(--space-4); margin-block: var(--space-5); }
+  .search-result { margin: 0; }
+  .search-result h2 { margin-block: var(--space-2); font-family: var(--font-sans); font-size: var(--text-lg); }
+  .search-result dl { display: grid; grid-template-columns: max-content minmax(0, 1fr); gap: var(--space-2) var(--space-4); margin: 0; font-size: var(--text-sm); }
+  .search-result dt { font-weight: 700; }
+  .search-result dd { margin: 0; }
+</style>
+

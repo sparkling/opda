@@ -1,0 +1,76 @@
+---
+import Layout from '@/layouts/Layout.astro';
+import PageMeta from '@/components/PageMeta.astro';
+import AuthorityPanel from '@/components/ia/AuthorityPanel.astro';
+import JourneyNav from '@/components/ia/JourneyNav.astro';
+import {
+  STANDARDS_PROFILE,
+  STANDARDS_PROFILE_VERSION,
+  validateStandardsProfile,
+} from '@/lib/spdtf-standards-profile.mjs';
+validateStandardsProfile();
+---
+
+<Layout title="Standards, vocabularies and frameworks" description="The bounded SPDTF 2.0 standards profile: targets, candidates, mechanisms, owners and evidence.">
+  <PageMeta category="Ontology journey" variant="brand" updated="Profile for development review · not an adoption register" />
+  <h1>Standards, vocabularies and modelling frameworks</h1>
+  <p class="lead">
+    This is a development profile, not a claim that every listed technology is adopted
+    by SPDTF. Each candidate records its purpose, exact version and conformance level,
+    mechanism, status, owner, evidence or decision, and re-open trigger.
+  </p>
+  <AuthorityPanel destination="spdtf-2" />
+  <JourneyNav />
+
+  <h2 id="profile">Bounded profile</h2>
+  <table>
+    <caption>Standards-profile register {STANDARDS_PROFILE_VERSION}: one bounded record per item</caption>
+    <thead><tr><th scope="col">Standard or method</th><th scope="col">Exact version / boundary</th><th scope="col">Purpose</th><th scope="col">Conformance boundary</th><th scope="col">Mechanism</th><th scope="col">Status</th><th scope="col">Owner</th><th scope="col">Evidence / decision</th><th scope="col">Re-open trigger</th></tr></thead>
+    <tbody>
+      {STANDARDS_PROFILE.map((record) => <tr>
+        <th scope="row">{record.name}</th>
+        <td>{record.versionBoundary}</td>
+        <td>{record.purpose}</td>
+        <td>{record.conformance}</td>
+        <td><code>{record.mechanism}</code></td>
+        <td>{record.status}</td>
+        <td>{record.owner}</td>
+        <td>{record.evidence}</td>
+        <td>{record.reopenTrigger}</td>
+      </tr>)}
+    </tbody>
+  </table>
+
+  <h2 id="record">Required profile record</h2>
+  <table>
+    <caption>Fields required for every standards-profile item</caption>
+    <thead><tr><th scope="col">Field</th><th scope="col">Example question</th></tr></thead>
+    <tbody>
+      <tr><th scope="row">Purpose</th><td>What business or technical need does this item address?</td></tr>
+      <tr><th scope="row">Exact version and conformance level</th><td>Which specification and bounded feature set are being used?</td></tr>
+      <tr><th scope="row">Mechanism</th><td>Is the relationship to the item <code>reuse</code>, <code>reference</code>, <code>map</code> or <code>mint</code>?</td></tr>
+      <tr><th scope="row">Decision status</th><td>Is it a target, candidate, reference, deferred item or retained legacy mechanism?</td></tr>
+      <tr><th scope="row">Owner</th><td>Which working group or governance body is accountable?</td></tr>
+      <tr><th scope="row">Evidence or decision</th><td>Which source, competency question, ADR or review supports the record?</td></tr>
+      <tr><th scope="row">Re-open trigger</th><td>What new evidence, feature need or boundary decision would revisit it?</td></tr>
+    </tbody>
+  </table>
+
+  <h2 id="projections">Projections are not standards mechanisms</h2>
+  <p>
+    JSON Schema, JSON-LD, forms, APIs, website pages, PDF and Markdown are generated
+    projections. Their relationship to the semantic package is recorded in the
+    <a href="/spdtf-2/outputs">outputs register</a>; it is not a fifth standards-profile
+    mechanism. The only allowed mechanisms here are <code>reuse</code>,
+    <code>reference</code>, <code>map</code> and <code>mint</code>.
+  </p>
+
+  <h2 id="non-claims">Non-claims</h2>
+  <p>
+    A reference to FIBO, GeoSPARQL, Schema.org or another framework is not wholesale
+    adoption. A target is not a conformance result. An accepted modelling target is not
+    an adopted SPDTF standard. The profile remains subordinate to human review and the
+    governance record.
+  </p>
+  <p><a href="/spdtf-2/ontologies/evidence-and-mappings">Next: evidence, provenance and qualified mappings →</a></p>
+</Layout>

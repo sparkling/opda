@@ -8,22 +8,18 @@
  * /glossary, /design-system, or the home page).
  */
 import type { Item } from '@/lib/site';
-import { SECTIONS, getActiveSection, normalizeUrl } from '@/lib/site';
+import { normalizeUrl } from '@/lib/site';
+import { findNavigationPage, getNavigationSection } from '@/lib/site-navigation';
 import SidebarItem from './SidebarItem.astro';
 
 const path = normalizeUrl(Astro.url.pathname);
-const sectionKey = getActiveSection(path);
-const section = sectionKey ? SECTIONS[sectionKey] : null;
+const section = getNavigationSection(path);
+const sectionKey = section?.key ?? null;
+const activePath = normalizeUrl(findNavigationPage(path)?.trail.at(-1)?.url ?? '');
 
 function containsActive(item: Item): boolean {
   const itemPath = normalizeUrl(item.url);
-  const generatedV2Parents = new Set([
-    '/v2/resources', '/v2/data-dictionary', '/v2/vocabularies', '/v2/shapes',
-  ]);
-  const isGeneratedDescendant = !item.children
-    && generatedV2Parents.has(itemPath)
-    && path.startsWith(`${itemPath}/`);
-  if (itemPath === path || isGeneratedDescendant) return true;
+  if (itemPath === activePath) return true;
   if (item.children) return item.children.some(containsActive);
   return false;
 }
@@ -34,6 +30,8 @@ function containsActive(item: Item): boolean {
       type="button"
       class="rail-collapse-toggle"
       id="sidebar-collapse"
+      aria-controls="section-navigation"
+      aria-expanded="true"
       aria-label="Collapse sidebar"
       title="Collapse sidebar"
     >
@@ -43,15 +41,18 @@ function containsActive(item: Item): boolean {
       </svg>
     </button>
 
-    <nav class="sidebar-nav" data-section={sectionKey}>
+    <nav
+      class="sidebar-nav"
+      id="section-navigation"
+      data-section={sectionKey}
+      aria-label={`${section.title} section`}
+    >
+      <p class="sidebar-section-title">{section.title}</p>
       {section.groups.map(group => {
-        // Governance has many groups; collapse all by default except Overview.
-        // Other sections default to all-open. localStorage overrides both.
-        const collapseByDefault = sectionKey === 'governance' && group.heading !== 'Overview';
         const containsActivePage = group.items.some(containsActive);
-        const defaultOpen = !collapseByDefault || containsActivePage;
+        const defaultOpen = group.heading === 'Overview' || containsActivePage;
         return (
-          <details class="nav-group" open={defaultOpen} data-group={group.heading}>
+          <details class="nav-group" open={defaultOpen} data-group={group.heading} data-active={containsActivePage ? 'true' : undefined}>
             <summary>
               <svg class="nav-group-caret" viewBox="0 0 24 24" fill="none"
                    stroke="currentColor" stroke-width="2.25" stroke-linecap="round"
@@ -61,7 +62,7 @@ function containsActive(item: Item): boolean {
               <span class="nav-group-label">{group.heading}</span>
             </summary>
             <ul class="tree">
-              {group.items.map(item => <SidebarItem item={item} path={path} containsActive={containsActive} />)}
+              {group.items.map(item => <SidebarItem item={item} activePath={activePath} containsActive={containsActive} />)}
             </ul>
           </details>
         );

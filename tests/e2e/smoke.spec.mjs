@@ -37,7 +37,7 @@ test('desktop sidebar and nested tree controls work', async ({ page }) => {
   await expect(body).not.toHaveClass(/sidebar-collapsed/);
 
   await visit(page, '/schema');
-  const trigger = page.locator('.tree-folder > .tree-toggle').first();
+  const trigger = page.locator('.tree-folder .tree-toggle').first();
   await expect(trigger).toHaveAttribute('aria-expanded', 'false');
   await trigger.click();
   await expect(trigger).toHaveAttribute('aria-expanded', 'true');
@@ -54,8 +54,8 @@ test('mobile section drawer returns focus on Escape', async ({ page }) => {
   await expect(sidebar).toHaveClass(/open/);
   await expect(sidebar).toHaveAttribute('role', 'dialog');
   await expect(opener).toHaveAttribute('aria-expanded', 'true');
-  const first = sidebar.locator('a[href], button, summary').first();
-  const last = sidebar.locator('a[href], button, summary').last();
+  const first = sidebar.locator('a[href]:visible, button:visible, summary:visible').first();
+  const last = sidebar.locator('a[href]:visible, button:visible, summary:visible').last();
   await expect(first).toBeFocused();
   await page.keyboard.press('Shift+Tab');
   await expect(last).toBeFocused();
@@ -101,6 +101,23 @@ test('representative diagrams and data tables render', async ({ page }) => {
   clean();
 });
 
+test('Mermaid source stays hidden while an off-screen diagram loads', async ({ page }) => {
+  const clean = watchRuntime(page);
+  await page.setViewportSize({ width: 390, height: 844 });
+  await visit(page, '/strategy/strategy-overview?theme=dark');
+  const loading = page.locator('.graph-diagram-wrapper').filter({ has: page.locator('.diagram-loading') }).first();
+  await expect(loading.locator('.diagram-loading')).toHaveAttribute('role', 'status');
+  await expect(loading.locator('.diagram-loading')).toHaveAttribute('aria-live', 'polite');
+  await expect(loading.locator('.gd-mermaid')).toHaveAttribute('aria-hidden', 'true');
+  const sourceVisibility = await loading.locator('.gd-mermaid').evaluate((element) => {
+    const style = getComputedStyle(element);
+    return { opacity: style.opacity, clipPath: style.clipPath };
+  });
+  expect(sourceVisibility.opacity).toBe('0');
+  expect(sourceVisibility.clipPath).toContain('50%');
+  clean();
+});
+
 test('mobile shell has no body overflow', async ({ page }) => {
   const clean = watchRuntime(page);
   await page.setViewportSize({ width: 320, height: 900 });
@@ -120,5 +137,112 @@ test('wide technical tables use a labelled keyboard overflow region', async ({ p
   await expect(viewport).toHaveAttribute('role', 'region');
   await expect(viewport).toHaveAttribute('tabindex', '0');
   await assertNoBodyOverflow(page);
+  clean();
+});
+
+test('schema tables stay readable inside their mobile overflow region', async ({ page }) => {
+  const clean = watchRuntime(page);
+  for (const width of [320, 390]) {
+    await page.setViewportSize({ width, height: 900 });
+    await visit(page, '/schema/legal-estate/ownership/leasehold/lease-legal/building-safety');
+
+    const region = page.locator('.responsive-table:has(table.db-table)').first();
+    const viewport = region.locator('.responsive-table__viewport');
+    const table = viewport.locator('table.db-table').first();
+    await expect(table).toHaveCSS('min-width', '960px');
+    await expect(viewport).toHaveAttribute('role', 'region');
+    await expect(viewport).toHaveAttribute('tabindex', '0');
+    await expect(region.locator('.responsive-table__hint')).toContainText('Scroll horizontally');
+
+    const dimensions = await viewport.evaluate((node) => ({
+      viewport: node.clientWidth,
+      scroll: node.scrollWidth,
+      table: node.querySelector('table')?.getBoundingClientRect().width || 0,
+    }));
+    expect(dimensions.scroll).toBeGreaterThan(dimensions.viewport);
+    expect(dimensions.table).toBeGreaterThanOrEqual(960);
+    await assertNoBodyOverflow(page);
+  }
+  clean();
+});
+
+test('mobile interactive targets meet the 44px minimum', async ({ page }) => {
+  const clean = watchRuntime(page);
+  await page.setViewportSize({ width: 375, height: 900 });
+
+  await visit(page, '/schema/legal-estate/ownership/leasehold/lease-legal/building-safety');
+  for (const selector of ['#objects-search', '#filter-overlay-btn', '#objects-config-btn']) {
+    const size = await page.locator(selector).evaluate((element) => {
+      const rect = element.getBoundingClientRect();
+      return { width: rect.width, height: rect.height };
+    });
+    expect(size.height, `${selector} height`).toBeGreaterThanOrEqual(44);
+    if (selector !== '#objects-search') expect(size.width, `${selector} width`).toBeGreaterThanOrEqual(44);
+  }
+
+  await visit(page, '/presentation/working-group-kickoff');
+  for (const selector of ['[data-testid="prev-slide"]', '[data-testid="fullscreen-toggle"]', '[data-testid="next-slide"]']) {
+    const size = await page.locator(selector).evaluate((element) => {
+      const rect = element.getBoundingClientRect();
+      return { width: rect.width, height: rect.height };
+    });
+    expect(size.width, `${selector} width`).toBeGreaterThanOrEqual(44);
+    expect(size.height, `${selector} height`).toBeGreaterThanOrEqual(44);
+  }
+  const overviewSize = await page.locator('[data-testid="overview-toggle"]').evaluate((element) => {
+    const rect = element.getBoundingClientRect();
+    return { width: rect.width, height: rect.height };
+  });
+  expect(overviewSize.width, 'presentation overview width').toBeGreaterThanOrEqual(44);
+  expect(overviewSize.height, 'presentation overview height').toBeGreaterThanOrEqual(44);
+
+  await page.evaluate(() => { location.hash = '#dimensions'; });
+  await page.waitForTimeout(250);
+  for (const button of await page.locator('[data-interaction="dimensions"] button').all()) {
+    const size = await button.evaluate((element) => {
+      const rect = element.getBoundingClientRect();
+      return { width: rect.width, height: rect.height };
+    });
+    expect(size.width, 'completeness lens button width').toBeGreaterThanOrEqual(44);
+    expect(size.height, 'completeness lens button height').toBeGreaterThanOrEqual(44);
+  }
+
+  await page.evaluate(() => { location.hash = '#website'; });
+  await page.waitForTimeout(250);
+  for (const button of await page.locator('[data-interaction="review-surface"] button').all()) {
+    const size = await button.evaluate((element) => {
+      const rect = element.getBoundingClientRect();
+      return { width: rect.width, height: rect.height };
+    });
+    expect(size.width, 'review view button width').toBeGreaterThanOrEqual(44);
+    expect(size.height, 'review view button height').toBeGreaterThanOrEqual(44);
+  }
+
+  await visit(page, '/ontology/graph');
+  await expect(page.locator('.og-tab').first()).toBeVisible();
+  const graphTabHeight = await page.locator('.og-tab').first().evaluate((element) => element.getBoundingClientRect().height);
+  expect(graphTabHeight, 'graph engine tab height').toBeGreaterThanOrEqual(44);
+  const skosLabelSize = await page.locator('.og-ctl--check').evaluate((element) => {
+    const rect = element.getBoundingClientRect();
+    return { width: rect.width, height: rect.height };
+  });
+  expect(skosLabelSize.height, 'SKOS toggle label height').toBeGreaterThanOrEqual(44);
+  const tabs = page.locator('.og-tab');
+  await expect(tabs.first()).toHaveAttribute('role', 'tab');
+  await expect(tabs.first()).toHaveAttribute('aria-controls', 'ontology-graph');
+  await expect(page.locator('#ontology-graph')).toHaveAttribute('role', 'tabpanel');
+  await tabs.first().focus();
+  await tabs.first().press('ArrowRight');
+  await expect(tabs.nth(1)).toBeFocused();
+  await expect(tabs.nth(1)).toHaveAttribute('aria-selected', 'true');
+  await expect(page.locator('#ontology-graph')).toHaveAttribute('aria-labelledby', await tabs.nth(1).getAttribute('id'));
+
+  await visit(page, '/');
+  const enterSize = await page.locator('.public-header__signin').evaluate((element) => {
+    const rect = element.getBoundingClientRect();
+    return { width: rect.width, height: rect.height };
+  });
+  expect(enterSize.width, 'public Enter link width').toBeGreaterThanOrEqual(44);
+  expect(enterSize.height, 'public Enter link height').toBeGreaterThanOrEqual(44);
   clean();
 });

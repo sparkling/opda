@@ -56,7 +56,10 @@
     const panel = document.getElementById('global-nav-panel');
     const toggle = document.getElementById('global-nav-toggle');
     if (!header || !panel || !toggle) return;
-    const mobileQuery = window.matchMedia('(max-width: 48rem)');
+    // Match the CSS compact-header boundary. The six global destinations must
+    // remain fully discoverable on intermediate desktop/tablet widths; a
+    // clipped horizontal row is not an acceptable navigation state.
+    const mobileQuery = window.matchMedia('(max-width: 86rem)');
 
     function setOpen(open, restoreFocus) {
       const shouldOpen = mobileQuery.matches && open;
@@ -98,6 +101,9 @@
       try {
         if (localStorage.getItem('opda-sidebar-collapsed') === '1') {
           appBody.classList.add('sidebar-collapsed');
+          sidebarCollapse?.setAttribute('aria-expanded', 'false');
+          sidebarCollapse?.setAttribute('aria-label', 'Expand sidebar');
+          sidebarCollapse?.setAttribute('title', 'Expand sidebar');
         }
         if (localStorage.getItem('opda-toc-collapsed') === '1') {
           appBody.classList.add('toc-collapsed');
@@ -155,8 +161,11 @@
           aside.removeAttribute('aria-label');
           document.documentElement.classList.remove('nav-open');
           if (sidebarCollapse) {
-            sidebarCollapse.setAttribute('aria-label', 'Collapse sidebar');
-            sidebarCollapse.setAttribute('title', 'Collapse sidebar');
+            const isCollapsed = appBody?.classList.contains('sidebar-collapsed') === true;
+            const collapseLabel = isCollapsed ? 'Expand sidebar' : 'Collapse sidebar';
+            sidebarCollapse.setAttribute('aria-expanded', String(!isCollapsed));
+            sidebarCollapse.setAttribute('aria-label', collapseLabel);
+            sidebarCollapse.setAttribute('title', collapseLabel);
           }
           if (restoreFocus !== false && returnFocus && typeof returnFocus.focus === 'function') returnFocus.focus();
           returnFocus = null;
@@ -187,7 +196,11 @@
         }
         if (event.key !== 'Tab') return;
         const focusable = Array.from(aside.querySelectorAll(focusableSelector))
-          .filter(function (element) { return element.getClientRects().length > 0; });
+          .filter(function (element) {
+            const closed = element.closest('details:not([open])');
+            return element.getClientRects().length > 0 &&
+              (!closed || closed.querySelector(':scope > summary')?.contains(element));
+          });
         if (!focusable.length) return;
         const first = focusable[0];
         const last = focusable[focusable.length - 1];
@@ -212,6 +225,7 @@
           nowCollapsed ? 'Expand sidebar' : 'Collapse sidebar');
         sidebarCollapse.setAttribute('title',
           nowCollapsed ? 'Expand sidebar' : 'Collapse sidebar');
+        sidebarCollapse.setAttribute('aria-expanded', String(!nowCollapsed));
       });
     }
 
@@ -225,6 +239,7 @@
           const opening = !li.classList.contains('is-open');
           li.classList.toggle('is-open', opening);
           btn.setAttribute('aria-expanded', opening ? 'true' : 'false');
+          btn.setAttribute('aria-label', (opening ? 'Collapse ' : 'Expand ') + btn.dataset.label);
         });
       });
     }
@@ -240,7 +255,8 @@
           const storageKey = 'opda.sidebar.' + sectionKey + '.' + groupName;
           try {
             const saved = localStorage.getItem(storageKey);
-            if (saved === 'closed') det.open = false;
+            if (det.dataset.active === 'true') det.open = true;
+            else if (saved === 'closed') det.open = false;
             else if (saved === 'open') det.open = true;
             // else: leave the SSR default (open) in place
           } catch (e) { /* localStorage may be blocked */ }
@@ -309,13 +325,21 @@
       if (!existingViewport) viewport.appendChild(table);
 
       function syncOverflow() {
-        const overflowing = viewport.scrollWidth > viewport.clientWidth + 1;
+        // Measure the table's intrinsic width independently of the current
+        // overflow class. Otherwise the desktop `width: 100%` rule can make
+        // the first resize callback disagree with the pre-stylesheet pass.
+        const inlineWidth = table.style.width;
+        table.style.width = 'max-content';
+        const contentWidth = table.getBoundingClientRect().width;
+        table.style.width = inlineWidth;
+        const overflowing = contentWidth > viewport.clientWidth + 1;
         region.classList.toggle('is-overflowing', overflowing);
         viewport.tabIndex = overflowing ? 0 : -1;
         hint.hidden = !overflowing;
       }
 
       requestAnimationFrame(syncOverflow);
+      document.fonts?.ready.then(syncOverflow);
       if ('ResizeObserver' in window) new ResizeObserver(syncOverflow).observe(viewport);
     }
 
@@ -378,10 +402,10 @@
 
     const body = document.querySelector('.app-body');
     const railQuery = window.matchMedia('(min-width: 1281px)');
-    let collapsed = !railQuery.matches;
+    let collapsed = false;
     try {
       const stored = localStorage.getItem('opda-toc-collapsed');
-      if (stored === '1' || stored === '0') collapsed = stored === '1';
+      if (railQuery.matches && (stored === '1' || stored === '0')) collapsed = stored === '1';
     } catch (e) {}
 
     function syncTocState(persist) {
@@ -401,6 +425,7 @@
         body.appendChild(toc);
         body.classList.add('with-toc');
       } else {
+        collapsed = false;
         article.insertBefore(toc, article.firstChild);
         body?.classList.remove('with-toc', 'toc-collapsed');
       }

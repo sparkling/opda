@@ -1,0 +1,38 @@
+---
+import Layout from '@/layouts/Layout.astro';
+import PageMeta from '@/components/PageMeta.astro';
+import AuthorityPanel from '@/components/ia/AuthorityPanel.astro';
+import GatewayCard from '@/components/ia/GatewayCard.astro';
+import JourneyNav from '@/components/ia/JourneyNav.astro';
+---
+
+<Layout title="Ontologies and semantic modelling" description="The canonical SPDTF 2.0 ontology journey: business meaning, context ownership, evidence, standards and projections.">
+  <PageMeta category="SPDTF 2.0 Development" variant="brand" updated="Development method · not an adopted standard" />
+  <h1>Ontologies and semantic modelling</h1>
+  <p class="lead">
+    This is the canonical journey through the SPDTF 2.0 development method. It starts
+    with business meaning, keeps bounded-context ownership visible, and ends with tested
+    projections without presenting any candidate as an adopted standard.
+  </p>
+  <AuthorityPanel destination="spdtf-2" />
+  <JourneyNav />
+
+  <h2 id="start">Start with the question</h2>
+  <p>
+    JSON Schema describes where a value belongs in one exchange. Ontology modelling asks
+    what a thing means, how it is identified, and how it relates to other things across
+    organisations and professional contexts. Working groups review plain-language
+    definitions and evidence; technical representations sit beneath that agreement.
+  </p>
+
+  <h2 id="pages">The journey</h2>
+  <div class="card-grid">
+    <GatewayCard href="/spdtf-2/ontologies/why-ontologies" title="Why ontologies" description="What ontology modelling adds beyond a document schema, and what it does not claim." />
+    <GatewayCard href="/spdtf-2/ontologies/semantic-package" title="Six-part semantic package" description="The six distinct outputs that stay aligned: glossary, dictionary, taxonomies, controlled vocabularies, resources and relationships." />
+    <GatewayCard href="/spdtf-2/ontologies/bounded-contexts" title="Bounded contexts and common boundary" description="Local meaning remains owned by each context; Interoperability handles only the small exchange boundary." />
+    <GatewayCard href="/spdtf-2/ontologies/coverage" title="Coverage crosswalk" description="Four lenses and 11 workshop themes remain distinct from eight formal ontology concerns." />
+    <GatewayCard href="/spdtf-2/ontologies/standards" title="Standards, vocabularies and frameworks" description="A bounded profile records targets, candidates, references, mechanisms, owners and re-open triggers." />
+    <GatewayCard href="/spdtf-2/ontologies/evidence-and-mappings" title="Evidence, provenance and mappings" description="See how attributed evidence becomes a context-owned candidate and how five mapping meanings differ." />
+    <GatewayCard href="/spdtf-2/ontologies/validation" title="Validation and generated projections" description="Separate deterministic conformance checks, semantic review, governance lifecycle and delivery views." />
+  </div>
+</Layout>

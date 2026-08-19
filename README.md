@@ -46,20 +46,21 @@ Note: a ~500 MB `source/` directory of cloned upstream repos, transcripts, and r
 ## Local development
 
 ```bash
-# install Astro deps
-npm install
+# install the same locked dependencies used by CI
+corepack enable
+pnpm install --frozen-lockfile
 
 # serve over Astro's dev server (port 4321)
-npm run dev
+pnpm run dev
 
 # OR serve docs/ directly via Python (port 8000) — no build needed
 ./serve.sh
 
 # build → dist/
-npm run build
+pnpm run build
 
 # preview the built dist/
-npm run preview
+pnpm run preview
 ```
 
 ## Deploy

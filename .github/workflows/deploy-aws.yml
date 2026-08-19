@@ -131,6 +131,13 @@ jobs:
       - name: Design module facade drift gate
         run: pnpm run check:design-system
 
+      # These repository/documentation contracts run for both pull requests and
+      # production pushes. Keep them before any AWS credential configuration so
+      # a stale ADR index or ontology reference cannot reach the release path.
+      # Use the existing Make targets to avoid duplicating their implementations.
+      - name: ADR and ontology documentation gates
+        run: make check-adr ci-ontology-doc
+
       # Build-time GRLC API's own deps (express, js-yaml).
       - run: npm --prefix src/api install --no-audit --no-fund
 
@@ -156,6 +163,12 @@ jobs:
       # from their byte-pinned public resource bundles, without network access.
       - name: Strict generated schema-page drift gate
         run: pnpm run check:schema-drift
+
+      - name: Information-architecture preservation gate
+        run: pnpm run check:ia-preservation
+
+      - name: Information-architecture Markdown and HTML parity gate
+        run: pnpm run check:spdtf-ia
 
       - name: Install Chromium for release browser gates
         run: pnpm exec playwright install --with-deps chromium
@@ -197,7 +210,15 @@ jobs:
           SITE_BUCKET=$(aws cloudformation describe-stacks --region eu-west-2 \
             --stack-name opda-site \
             --query "Stacks[0].Outputs[?OutputKey=='SiteBucketName'].OutputValue" --output text)
-          aws s3 sync dist/ "s3://$SITE_BUCKET" --delete
+          # These ignored ontology artefacts are preserved, manifest-audited S3
+          # objects. Keep them outside --delete until a governed reproducible
+          # generator can supply byte-verified replacements in the release bundle.
+          aws s3 sync dist/ "s3://$SITE_BUCKET" --delete \
+            --exclude "ontology/artefacts/*" \
+            --exclude "ontology/tools/ontospy/*" \
+            --exclude "ontology/tools/pylode/*" \
+            --exclude "ontology/tools/shaclplay/*" \
+            --exclude "ontology/tools/widoco/*"
 
       - name: Invalidate CloudFront
         if: github.event_name != 'pull_request'

@@ -1,15 +1,22 @@
 ---
+import { IA_STATUS_REGISTRY_VERSION, getRouteStatus } from '@/lib/site-ia.mjs';
 const title = 'OPDA Knowledge Base';
 const description =
-  'Evidence-led strategy, governance, semantic models and implementation guidance for connected UK property data.';
+  'Follow the continuation from PDTF 1.0 into SPDTF 2.0 development through evidence, governance, working groups and implementation.';
+const routeStatus = getRouteStatus('/');
 ---
 <!doctype html>
-<html lang="en">
+<html lang="en" data-ia-status-version={IA_STATUS_REGISTRY_VERSION} data-work-area={routeStatus.workArea} data-authority={routeStatus.authority} data-maturity={routeStatus.maturity} data-content-version={routeStatus.version} data-provenance={routeStatus.provenance}>
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>{title}</title>
   <meta name="description" content={description} />
+  <meta name="opda:work-area" content={routeStatus.workArea} />
+  <meta name="opda:authority" content={routeStatus.authority} />
+  <meta name="opda:maturity" content={routeStatus.maturity} />
+  <meta name="opda:version" content={routeStatus.version} />
+  <meta name="opda:provenance" content={routeStatus.provenance} />
   <meta property="og:title" content={title} />
   <meta property="og:description" content={description} />
   <meta name="twitter:card" content="summary" />
@@ -49,42 +56,41 @@ const description =
   <main id="main-content" tabindex="-1">
     <section class="public-hero" aria-labelledby="public-title">
       <div class="public-hero__inner">
-        <p class="eyebrow">Connected property data</p>
+        <p class="eyebrow">PDTF 1.0 → SPDTF 2.0 development</p>
         <h1 id="public-title">One shared language for property data.</h1>
         <p>
-          OPDA is connecting the evidence, governance, semantic models and
-          implementation guidance needed to make property information easier to
-          trust and exchange.
+          OPDA carries the published PDTF 1.0 implementation forward into
+          SPDTF 2.0 development: a domain-led, evidence-up programme for
+          property information that people and systems can trust and exchange.
         </p>
         <div class="public-hero__actions">
           <a class="btn" href="/home">Enter the knowledge base</a>
-          <a class="btn btn--outline-dark" href="https://openpropdata.org.uk/" rel="noopener">
-            Visit the association website
-          </a>
+          <a class="btn btn--outline-dark" href="/programme">Understand the continuation</a>
         </div>
       </div>
     </section>
     <dl class="public-status" aria-label="Knowledge base status and provenance">
-      <div><dt>Content</dt><dd>Working knowledge base</dd></div>
+      <div><dt>Continuation</dt><dd>PDTF 1.0 → SPDTF 2.0 development</dd></div>
       <div><dt>Design</dt><dd>OPDA system 1.0</dd></div>
       <div><dt>Source</dt><dd>OPDA Q3 2026 brand guide</dd></div>
     </dl>
     <section class="public-overview" aria-labelledby="inside-title">
       <header>
         <p class="overline">Inside the knowledge base</p>
-        <h2 id="inside-title">Trace the work from intent to implementation</h2>
+        <h2 id="inside-title">Trace the continuation from evidence to implementation</h2>
       </header>
       <div class="public-overview__grid">
-        <article><span>01</span><h3>Strategy</h3><p>The programme, policy context and roadmap.</p></article>
-        <article><span>02</span><h3>Governance</h3><p>Authority, evidence, lifecycle and conformance.</p></article>
-        <article><span>03</span><h3>Model</h3><p>Shared concepts, relationships, schemas and constraints.</p></article>
-        <article><span>04</span><h3>Implementation</h3><p>Guidance for building, validating and linking data.</p></article>
+        <article><span>01</span><h3>Understand the programme</h3><p>See why the work continues and how it fits the wider Smart Data initiative.</p></article>
+        <article><span>02</span><h3>SPDTF 2.0 Development</h3><p>Follow the ontology-led method and the working groups that own domain meaning.</p></article>
+        <article><span>03</span><h3>Use PDTF 1.0</h3><p>Find the published schema implementation and its status-labelled derived artefacts.</p></article>
+        <article><span>04</span><h3>Trace authority and evidence</h3><p>Check governance, decisions, sources, maturity and provenance before reuse.</p></article>
       </div>
     </section>
   </main>
   <footer class="public-footer">
     <img src="/ui/brand/opda-wordmark-white.svg" alt="Open Property Data Association" width="149" height="42" />
     <span>Property data that people and systems can understand together.</span>
+    <a href="https://openpropdata.org.uk/" rel="noopener">Visit the association website</a>
   </footer>
   <script is:inline src="/ui/client.js"></script>
 </body>

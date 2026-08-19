@@ -1,0 +1,30 @@
+---
+interface Props { slug: string; }
+const { slug } = Astro.props;
+const base = `/spdtf-2/working-groups/${slug}`;
+const current = Astro.url.pathname.replace(/\/+$/u, '');
+const pages = [
+  [base, 'Workspace'],
+  [`${base}/evidence`, 'Evidence'],
+  [`${base}/questions`, 'Questions'],
+  [`${base}/review`, 'Review'],
+];
+---
+
+<nav class="workspace-nav" aria-label="Working-group workspace">
+  <p class="overline">Workspace records</p>
+  <ul>
+    {pages.map(([href, label]) => (
+      <li><a href={href} aria-current={current === href ? 'page' : undefined}>{label}</a></li>
+    ))}
+  </ul>
+</nav>
+
+<style>
+  .workspace-nav { margin: var(--space-5) 0; border-block: 1px solid var(--color-border); }
+  .workspace-nav .overline { margin: 0; padding: var(--space-3) 0 0; }
+  .workspace-nav ul { display: flex; flex-wrap: wrap; gap: var(--space-2); margin: 0; padding: var(--space-3) 0; list-style: none; }
+  .workspace-nav a { display: inline-flex; align-items: center; min-block-size: 44px; padding: var(--space-2) var(--space-4); border: 1px solid var(--color-border); border-radius: 2px; color: var(--color-text); text-decoration: none; }
+  .workspace-nav a:hover, .workspace-nav a[aria-current='page'] { border-color: var(--color-link); background: var(--color-surface-alt); color: var(--color-link); }
+  @media (forced-colors: active) { .workspace-nav a[aria-current='page'] { border-color: Highlight; } }
+</style>

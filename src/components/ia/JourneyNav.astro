@@ -1,0 +1,38 @@
+---
+const pages = [
+  ['', 'Overview'],
+  ['why-ontologies', 'Why ontologies'],
+  ['semantic-package', 'Six-part semantic package'],
+  ['bounded-contexts', 'Bounded contexts and common boundary'],
+  ['coverage', 'Coverage crosswalk'],
+  ['standards', 'Standards, vocabularies and frameworks'],
+  ['evidence-and-mappings', 'Evidence, provenance and mappings'],
+  ['validation', 'Validation, conformance and projections'],
+];
+const current = Astro.url.pathname.split('/').filter(Boolean).at(-1);
+---
+
+<nav class="ia-journey" aria-label="Ontology journey">
+  <p class="overline">Ontologies and semantic modelling</p>
+  <ol>
+    {pages.map(([slug, label], index) => (
+      <li>
+        <a href={slug ? `/spdtf-2/ontologies/${slug}` : '/spdtf-2/ontologies'} aria-current={current === (slug || 'ontologies') ? 'page' : undefined}>
+          <span>{String(index + 1).padStart(2, '0')}</span>{label}
+        </a>
+      </li>
+    ))}
+  </ol>
+</nav>
+
+<style>
+  .ia-journey { container-type: inline-size; margin: var(--space-5) 0 var(--space-7); padding: var(--space-5) var(--space-6); border: 1px solid var(--color-border); border-radius: 0; background: var(--color-surface-alt); }
+  .ia-journey .overline { margin: 0 0 var(--space-4); }
+  .ia-journey ol { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 14rem), 1fr)); gap: var(--space-2) var(--space-4); margin: 0; padding: 0; list-style: none; }
+  .ia-journey a { display: block; min-block-size: 44px; padding: var(--space-3) var(--space-4); border-radius: 0; color: inherit; font: var(--text-sm) / 1.5 var(--font-sans); text-decoration: none; }
+  .ia-journey a:hover, .ia-journey a[aria-current='page'] { background: var(--color-surface-card); color: var(--color-link); }
+  .ia-journey a:focus-visible { outline: 2px solid var(--color-focus); outline-offset: 2px; box-shadow: 0 0 0 4px var(--color-focus-contrast); }
+  .ia-journey a span { display: inline-block; width: var(--space-7); color: var(--color-text-muted); font: 700 var(--text-xs) / 1.3 var(--font-mono); }
+  @media (prefers-reduced-motion: reduce) { .ia-journey * { transition: none !important; } }
+  @media (forced-colors: active) { .ia-journey { border-color: CanvasText; background: Canvas; } .ia-journey a:hover, .ia-journey a[aria-current='page'] { outline: 1px solid Highlight; } }
+</style>
