@@ -1,7 +1,11 @@
 import assert from 'node:assert/strict';
 import { createHash } from 'node:crypto';
-import { access, readFile, readdir } from 'node:fs/promises';
+import { access, mkdtemp, readFile, readdir, rm, utimes, writeFile } from 'node:fs/promises';
+import { tmpdir } from 'node:os';
+import path from 'node:path';
 import test from 'node:test';
+
+import { assetVersion } from '../src/lib/asset-version.mjs';
 
 const root = new URL('../', import.meta.url);
 const file = (path) => new URL(path, root);
@@ -198,10 +202,30 @@ test('the design facade versions every imported module from one graph hash', asy
   assert.match(script, /design-system import escapes public\/ui/u);
 });
 
+test('public asset versions are content-derived, not timestamp-derived', async () => {
+  const directory = await mkdtemp(path.join(tmpdir(), 'opda-asset-version-'));
+  const fixture = path.join(directory, 'client.js');
+  try {
+    await writeFile(fixture, 'export const version = 1;\n');
+    const first = assetVersion('/client.js', directory);
+    await utimes(fixture, new Date('2001-01-01T00:00:00Z'), new Date('2001-01-01T00:00:00Z'));
+    assert.equal(assetVersion('/client.js', directory), first, 'mtime alone must not alter rendered asset URLs');
+    await writeFile(fixture, 'export const version = 1;\n');
+    assert.equal(assetVersion('/client.js', directory), first, 'a clean rebuild with identical bytes must preserve rendered asset URLs');
+    await writeFile(fixture, 'export const version = 2;\n');
+    assert.notEqual(assetVersion('/client.js', directory), first, 'changed bytes must alter rendered asset URLs');
+    assert.throws(() => assetVersion('/../outside.js', directory), /stay within the public directory/u);
+  } finally {
+    await rm(directory, { recursive: true, force: true });
+  }
+});
+
 test('interactive shell dependencies are pinned and bundled locally', async () => {
   const layout = await readFile(file('src/layouts/Layout.astro'), 'utf8');
   const packageSource = JSON.parse(await readFile(file('package.json'), 'utf8'));
   assert.match(layout, /import '@tailwindplus\/elements'/u);
+  assert.match(layout, /import \{ assetVersion \} from '@\/lib\/asset-version\.mjs'/u);
+  assert.doesNotMatch(layout, /mtimeMs|statSync/u);
   assert.doesNotMatch(layout, /cdn\.jsdelivr\.net|@tailwindplus\/elements@1/u);
   assert.equal(packageSource.dependencies['@tailwindplus/elements'], '1.0.22');
 });
