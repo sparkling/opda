@@ -160,6 +160,9 @@ jobs:
       - name: Information-architecture preservation gate
         run: pnpm run check:ia-preservation
 
+      - name: Information-architecture Markdown and HTML parity gate
+        run: pnpm run check:spdtf-ia
+
       - name: Install Chromium for release browser gates
         run: pnpm exec playwright install --with-deps chromium
 

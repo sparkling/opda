@@ -1,18 +1,20 @@
 ---
 status: accepted
 date: 2026-08-18
-updated: 2026-08-18
+updated: 2026-08-19
 tags: [website, information-architecture, pdtf-1-0, spdtf-2-0, ontology, semantic-modelling, standards, migration, governance]
 supersedes: []
+amends: [ADR-0002, ADR-0041, ADR-0059, ADR-0062]
 depends-on: [ADR-0002, ADR-0039, ADR-0041, ADR-0059, ADR-0062, ADR-0063, ADR-0064, ADR-0066, ADR-0067, ADR-0073]
 implements: [docs/spdtf-2-0-information-architecture.md]
 ---
 
 # Organise the site around SPDTF 2.0 and PDTF 1.0
 
-> Update 2026-08-18: the user accepted this decision and authorised implementation
-> in a separate feature worktree. Acceptance changes no production site; the ADR
-> becomes Implemented only after the migration and release gates pass.
+> Update 2026-08-19: the user accepted this decision and authorised implementation
+> in a separate feature worktree. The feature branch now contains the coherent
+> implementation candidate. No production publication has occurred; the ADR becomes
+> Implemented only after the final migration and release gates pass.
 
 ## Context and Problem Statement
 
@@ -46,8 +48,8 @@ standard has been identified. OPDA work is recognised as market activity and evi
 not as delegated government authority.
 
 ADR-0064 requires a follow-on decision for the coherent information architecture,
-status model, migration plan and release gate. It remains the current governing
-decision until this proposal is accepted and implemented.
+status model, migration plan and release gate. It remains operative until this
+accepted decision passes its implementation gates and is marked Implemented.
 
 ## Decision Drivers
 
@@ -68,7 +70,7 @@ decision until this proposal is accepted and implemented.
   implementation and resources tree.
 - **Keep the thirteen-section navigation.** Add work-area and status banners to the
   current structure.
-- **Use an asymmetric task-and-authority architecture (proposed).** Separate the two
+- **Use an asymmetric task-and-authority architecture (chosen).** Separate the two
   bodies of work while sharing Programme, Governance and Resources, and expose a
   direct Working groups task path.
 
@@ -133,10 +135,10 @@ The complete hierarchy, route placement, page contract and migration gates are
 defined in
 [`docs/spdtf-2-0-information-architecture.md`](../spdtf-2-0-information-architecture.md).
 
-If accepted, this ADR supersedes only the **top-level navigation and content-owner
-placement clauses** of ADR-0002, ADR-0041, ADR-0059 and ADR-0062. Their stable routes,
+This ADR amends only the **top-level navigation and content-owner placement clauses**
+of ADR-0002, ADR-0041, ADR-0059 and ADR-0062. Their stable routes,
 ontology-generation rules, mapping provenance, Smart Data source treatment and other
-technical decisions remain. Acceptance changes only those placement clauses.
+technical decisions remain. It does not supersede those ADRs as a whole.
 
 ### Consequences
 
@@ -160,7 +162,9 @@ This ADR is Accepted for implementation on the isolated `feat/spdtf-2-ia` branch
 authorises the navigation and content-ownership change described here, but no
 publication or deployment.
 
-Implementation requires:
+The branch contains the route/status registry, canonical landings and workspaces,
+search facets, runtime journeys, and exact preservation manifests. Release remains
+gated by:
 
 - a disposition for every route, generated family, bundled artefact, published source
   object and compatibility alias in the current-site IA inventory;
@@ -212,8 +216,10 @@ Bounded cross-examination used Fable at high and medium effort.
 
 The final OpenAI ballot accepted the original core proposal three to zero. Its 98/100
 Devil’s Advocate and Fable results predate the ontology expansion and are retained only
-as scoped history. A fresh fail-closed review of the expanded ontology, preservation,
-Markdown/HTML parity and accessibility scope scored 100/100 with no hard failures.
+as scoped history. A prior fail-closed review of the expanded ontology and
+preservation design scored 100/100. That result is historical evidence, not sign-off
+for this integrated implementation. The current HEAD must score at least 98/100 with
+no hard failures.
 
 Held dissent: Fable would order PDTF 1.0 before SPDTF 2.0 Development because
 implementation is the majority task today. Navigation task testing must decide the
@@ -221,7 +227,7 @@ final order before implementation.
 
 ## More Information
 
-- [Proposed SPDTF 2.0 information architecture](../spdtf-2-0-information-architecture.md)
+- [SPDTF 2.0 information architecture](../spdtf-2-0-information-architecture.md)
 - [Current site information architecture](../current-site-information-architecture.md)
 - [ADR-0039 — linked data as the standards foundation](./ADR-0039-linked-data-model-as-pdtf-standards-foundation.md)
 - [ADR-0063 — Domain-led bounded-context working groups](./ADR-0063-domain-led-bounded-context-working-groups.md)

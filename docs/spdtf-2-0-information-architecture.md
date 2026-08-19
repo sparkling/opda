@@ -1,7 +1,7 @@
-# Proposed SPDTF 2.0 information architecture
+# SPDTF 2.0 information architecture
 
-Status: **proposed for review**<br>
-Date: 2026-08-18<br>
+Status: **implemented on `feat/spdtf-2-ia`; final review and publication pending**<br>
+Date: 2026-08-19<br>
 Decision record: [ADR-0074](./adr/ADR-0074-organise-site-around-spdtf-2-0-and-pdtf-1-0.md)<br>
 Review artefact: [HTML presentation](./spdtf-2-0-information-architecture.html)
 
@@ -18,7 +18,9 @@ Reorganise the documentation around six global destinations:
 
 This is an asymmetric continuation structure. It distinguishes PDTF 1.0 from SPDTF 2.0 work in development, while governance, participation and source resources remain shared services. It avoids mirrored sites with competing definitions of authority.
 
-The proposal changes no live navigation or route. It defines the information architecture and the gates that a later coherent implementation must pass.
+The feature branch implements the navigation, hierarchy, status model and preservation
+gates as one coherent change. It does not by itself publish or deploy the production
+site; existing stable routes remain valid throughout the change.
 
 ## Terminology and authority
 
@@ -43,9 +45,9 @@ The programme is continuing from one materially different modelling approach to 
 
 PDTF 1.0 is not discarded. Its dictionary, glossary, documentation, ontology and mappings are attributed semantic evidence. Its JSON Schemas are especially useful for compatibility, constraints, coverage and migration, but should not determine SPDTF 2.0 identities or relationships merely because their data has already been encoded in a tree structure.
 
-## Evidence for this proposal
+## Evidence and implementation proof
 
-The proposal is grounded in:
+The architecture is grounded in:
 
 - the [current-site route inventory](./current-site-information-architecture.md), which accounts for 2,552 canonical pages and 3,436 routable HTML URLs;
 - the working-group presentation, especially its “evolution, not replacement”, evidence-to-candidate loop, bounded-context and human-review material;
@@ -53,6 +55,24 @@ The proposal is grounded in:
 - [ADR-0064](./adr/ADR-0064-modelling-website-revamp-before-strategy-publication.md), which requires a coherent follow-on IA and preserves the existing implementation pending migration;
 - [ADR-0066](./adr/ADR-0066-property-pack-451-seed-scope-and-greenfield-ontology.md) and [ADR-0067](./adr/ADR-0067-first-principles-property-pack-ontology-by-bounded-context.md), which distinguish source scope, machine proposals and human semantic authority;
 - the accepted council protocol in ADR-0067 and the project’s current OPDA design contract.
+
+The implementation is made auditable by:
+
+- an executable route, ownership and status contract in `src/lib/site-ia.mjs`;
+- a frozen before/after route manifest covering 3,436 baseline routes and every
+  retained fragment, plus classified records for the new routes;
+- exact path, size and SHA-256 manifests for source records, council records,
+  ontology artefacts, deployed data, UI assets, images, ontology tools and the
+  immutable `/v2/**` seed family;
+- end-to-end journeys for authentication, comments, source viewing/download and
+  working-group submissions; and
+- fail-closed build, route, accessibility, responsive, keyboard, visual and
+  information-preservation gates before deployment credentials are available.
+
+The migration does not delete a current route or source family. Intentional wording
+changes have equivalence receipts; unchanged high-risk artefact families remain
+byte-identified. The release gate rejects an unclassified route, a lost legacy
+fragment, a changed frozen-family checksum, or any new route beneath `/v2/**`.
 
 ## How DBT Smart Data fits
 
@@ -170,14 +190,16 @@ The home page should expose six task shortcuts without adding global destination
 
 “Working groups” is not a second content owner. It links to the exact canonical landing inside SPDTF 2.0 Development. Candidate, evidence, question and disposition records exist once.
 
-If accepted, this navigation amends only the top-level placement clauses in ADR-0002,
-ADR-0041, ADR-0059 and ADR-0062. Their stable-route, generation, traceability and
-provenance decisions survive. While ADR-0074 is Proposed, current navigation remains.
+ADR-0074 amends only the top-level placement clauses in ADR-0002, ADR-0041, ADR-0059
+and ADR-0062. Their stable-route, generation, traceability and provenance decisions
+survive. ADR-0074 is Accepted; this branch implements the amended navigation without
+publishing it until the release gates and a separately authorised deployment pass.
 
-Home is provided by the wordmark. Search, glossary, design system, account and
-feedback controls are utilities rather than primary destinations.
+Home is reached through the wordmark. Programme is the home task gateway's content
+owner and may therefore be shown as current there. Search, glossary, design system,
+account and feedback controls are utilities rather than primary destinations.
 
-## Proposed hierarchy
+## Implemented hierarchy
 
 ```text
 Home /
@@ -284,9 +306,9 @@ Working-group home
 Groups that are not convened must say so. Registration or a machine-generated page
 does not confer membership, consensus or standards authority.
 
-## Current-to-proposed placement
+## Current-to-implemented placement
 
-| Current global section | Proposed owner | Treatment |
+| Current global section | Canonical owner | Implemented treatment |
 |---|---|---|
 | Strategy | Programme | Use SPDTF in current prose; retain URLs initially. |
 | Governance | Governance | Keep one cross-programme authority tree. |
@@ -304,9 +326,9 @@ does not confer membership, consensus or standards authority.
 
 ### Standalone and generated surfaces
 
-| Current surface | Proposed treatment |
+| Current surface | Implemented treatment |
 |---|---|
-| `/` and `/home` | One future task gateway; retain both until a separate canonical/redirect decision. |
+| `/` and `/home` | Programme-owned entry and task gateways; retain both until a separate canonical/redirect decision. |
 | `/glossary` | Resources utility with work-area and source facets. |
 | `/design-system` | Utility/footer link, outside standards authority. |
 | `/working-groups/join/**` | Working groups participation path. |
@@ -420,23 +442,25 @@ moving thousands of generated pages.
 - A PDTF 1.0 to SPDTF 2.0 link must state whether the relationship is evidence,
   corroboration, compatibility, comparison, projection or supersession.
 
-## Implementation sequence for a later decision
+## Implementation record
 
-1. Create the canonical taxonomy, status registry and migration manifest schema.
-2. Add the new landing pages and task paths without moving existing content.
-3. Apply inherited work-area/status metadata to every route-family generator.
-4. Build one standard working-group workspace and its review records.
-5. Reframe the Property Pack seed and add forward links.
-6. Replace the global navigation, breadcrumbs, search facets and home tasks as one
-   coherent release.
-7. Run route, accessibility, content-authority and task-finding gates.
-8. Introduce redirects only for approved, tested semantic equivalents.
+1. The canonical taxonomy, status registry and migration-manifest schema are executable.
+2. New landing pages and task paths were added without removing existing content.
+3. Work-area/status metadata is resolved centrally for every classified route family.
+4. All eight working groups use one truthful pre-convening workspace contract, with
+   empty candidate/output registers rather than fabricated decisions.
+5. The Property Pack seed is reframed in place and its 690-route family is frozen.
+6. Global navigation, breadcrumbs, search facets and home tasks change together.
+7. Route, accessibility, content-authority, task-finding and runtime-continuity gates
+   run before release.
+8. No redirect is introduced without a semantic-equivalence receipt and test.
 
-This proposal authorises none of those implementation changes by itself.
+This implementation record authorises no publication by itself. Deployment remains a
+separate, explicit and fail-closed operation.
 
 ## Acceptance and release gates
 
-The later implementation is not complete unless all of these pass:
+The implementation is not releasable unless all of these pass:
 
 - Every entry in the current-site inventory has an explicit migration disposition.
 - Source objects, council records, ontology artefacts, data/support assets and runtime
@@ -471,8 +495,9 @@ A hierarchical specialised Ruflo council used Raft consensus, independent priors
 a non-voting chair. OpenAI information-architecture and standards seats ran at high
 effort; the OpenAI Devil’s Advocate ran at xhigh; Anthropic Fable reviewed experience
 at maximum/high/medium effort. The earlier 98/100 result covered the core IA only.
-The expanded ontology and no-loss scope passed a fresh fail-closed review at 100/100,
-with no hard failures or deductions.
+The expanded ontology and no-loss design previously passed a scoped 100/100 review.
+The integrated implementation must receive a fresh current-HEAD score of at least
+98/100 with no hard failures before ADR-0074 can move to Implemented.
 
 ### Held dissent
 

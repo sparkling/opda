@@ -194,6 +194,7 @@ check-links-external:	## Live external-URL 200 sweep over /ontology + /pdtf (ADR
 
 .PHONY: ci
 ci: test test-schema check-schema-drift check-design-system check-ia-preservation check-adr ci-ontology ci-ontology-doc ci-ontology-graph	## Everything CI runs that is checkable locally (JS + ontology gates + doc-drift)
+	pnpm run check:spdtf-ia
 	@echo "✓ all local CI gates passed"
 
 ##@ Deploy
