@@ -178,11 +178,31 @@ test('every working group exposes one truthful workspace contract', () => {
   assert.ok(SEMANTIC_PACKAGE_MANIFEST.projections.length >= 6);
   for (const slug of WORKSPACE_SLUGS) {
     const record = getWorkspaceRecord(slug);
+    assert.equal(record.charter.status, 'draft scope record — pre-convening');
+    assert.ok(record.charter.scopeSource);
+    assert.ok(record.charter.exclusions.length >= 3);
+    assert.equal(record.decisionEligible, false);
+    assert.equal(record.decisionOccurred, false);
+    assert.equal(record.decisionOwner, null);
+    assert.match(record.decisionAuthority, /No person or role may decide/u);
+    assert.equal(record.participation.interestRoute, '/working-groups/join');
+    assert.equal(record.participation.meetingRoute, null);
+    assert.equal(record.meetings.length, 0);
     assert.equal(record.coverageReceipt.length, 8);
     assert.ok(record.coverageReceipt.every(({ disposition }) => disposition === null));
     assert.ok(record.evidence.length > 0);
+    assert.ok(record.evidence.every((entry) => (
+      entry.sourceType && entry.recordedDate && entry.version
+      && entry.submitter && entry.permission && entry.sensitivity
+    )));
     assert.ok(record.competencyQuestions.length > 0);
+    assert.deepEqual(record.outputRegister.map(({ output }) => output), SEMANTIC_PACKAGE_MANIFEST.outputs);
+    assert.ok(record.outputRegister.every(({ status }) => status === 'not started — no group record'));
     assert.equal(record.candidate, null);
+    assert.equal(record.candidateVersions.length, 0);
+    assert.equal(record.changeHistory.length, 0);
+    assert.equal(record.sessionRecords.length, 0);
+    assert.equal(record.technicalExports.length, 0);
     assert.equal(record.manifestVersion, SEMANTIC_PACKAGE_MANIFEST.version);
   }
 });

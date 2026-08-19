@@ -25,9 +25,15 @@ if (!workspace) throw new Error('Working group has no workspace record');
   <h2 id="inputs">Attributed inputs</h2>
   <table>
     <caption>Inputs registered for later participant assessment</caption>
-    <thead><tr><th scope="col">Record</th><th scope="col">Source</th><th scope="col">Status</th></tr></thead>
+    <thead><tr><th scope="col">Record</th><th scope="col">Source and type</th><th scope="col">Receipt</th><th scope="col">Permission and sensitivity</th><th scope="col">Status</th></tr></thead>
     <tbody>{workspace.evidence.map((record) => (
-      <tr><th scope="row"><code>{record.id}</code></th><td><a href={record.href}>{record.href}</a></td><td>{record.status}</td></tr>
+      <tr>
+        <th scope="row"><code>{record.id}</code></th>
+        <td><a href={record.href}>{record.href}</a><br />{record.sourceType}</td>
+        <td>{record.recordedDate}<br />{record.version}<br />{record.submitter}</td>
+        <td>{record.permission}<br />{record.sensitivity}</td>
+        <td>{record.status}</td>
+      </tr>
     ))}</tbody>
   </table>
 
@@ -40,4 +46,3 @@ if (!workspace) throw new Error('Working group has no workspace record');
   </ul>
   <p><a href={`/spdtf-2/working-groups/${group.slug}/questions`}>Continue to competency questions →</a></p>
 </Layout>
-

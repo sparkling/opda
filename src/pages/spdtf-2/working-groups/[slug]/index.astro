@@ -46,6 +46,21 @@ if (!workspace) throw new Error('Working group has no workspace record');
     across context boundaries.
   </p>
 
+  <h3 id="charter">Draft charter record</h3>
+  <dl>
+    <dt>Charter status</dt><dd>{workspace.charter.status}</dd>
+    <dt>Scope source</dt><dd><a href={workspace.charter.scopeSource}>{workspace.charter.scopeSource}</a></dd>
+    <dt>Decision eligible</dt><dd>No</dd>
+    <dt>Decision occurred</dt><dd>No</dd>
+    <dt>Decision authority</dt><dd>{workspace.decisionAuthority}</dd>
+  </dl>
+  <p><strong>Explicit exclusions</strong></p>
+  <ul>{workspace.charter.exclusions.map((exclusion) => <li>{exclusion}</li>)}</ul>
+
+  <h3 id="participation">Participation and meetings</h3>
+  <p>{workspace.participation.status} <a href={workspace.participation.interestRoute}>Register an expression of interest</a>.</p>
+  <p><strong>Meeting register:</strong> No meetings or sessions are recorded.</p>
+
   <h2 id="workspace">Shared workspace shape</h2>
   <ul>
     <li>charter, scope, exclusions, competency questions and decision owner;</li>
@@ -76,6 +91,19 @@ if (!workspace) throw new Error('Working group has no workspace record');
     <code>{SEMANTIC_PACKAGE_MANIFEST.version}</code>. No candidate, candidate diff or
     feedback disposition has been recorded for this pre-convening workspace.
   </p>
+  <table>
+    <caption>{group.name}: six-output register</caption>
+    <thead><tr><th scope="col">Semantic output</th><th scope="col">Recorded state</th></tr></thead>
+    <tbody>{workspace.outputRegister.map((entry) => <tr><th scope="row">{entry.output}</th><td>{entry.status}</td></tr>)}</tbody>
+  </table>
+
+  <h3 id="empty-registers">Explicit empty registers</h3>
+  <ul>
+    <li>Candidate versions: none recorded.</li>
+    <li>Change history: none recorded.</li>
+    <li>Session records: none recorded.</li>
+    <li>Technical exports: none recorded.</li>
+  </ul>
 
   <h2 id="next">Related development paths</h2>
   <div class="card-grid">

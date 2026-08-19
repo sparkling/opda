@@ -40,14 +40,31 @@ if (!workspace) throw new Error('Working group has no workspace record');
 
   <h2 id="candidate">Candidate and feedback status</h2>
   <dl>
-    <dt>Decision owner</dt><dd>{workspace.decisionOwner}</dd>
+    <dt>Decision eligible</dt><dd>{workspace.decisionEligible ? 'Yes' : 'No'}</dd>
+    <dt>Decision occurred</dt><dd>{workspace.decisionOccurred ? 'Yes' : 'No'}</dd>
+    <dt>Decision owner</dt><dd>{workspace.decisionOwner ?? 'None recorded'}</dd>
+    <dt>Decision authority</dt><dd>{workspace.decisionAuthority}</dd>
     <dt>Candidate version</dt><dd>No candidate recorded</dd>
     <dt>Immutable candidate diff</dt><dd>Not applicable until a candidate exists</dd>
     <dt>Feedback dispositions</dt><dd>No feedback dispositions recorded</dd>
     <dt>Semantic-package manifest</dt><dd><a href={SEMANTIC_PACKAGE_MANIFEST.canonicalSource}><code>{SEMANTIC_PACKAGE_MANIFEST.version}</code></a></dd>
   </dl>
 
-  <h2 id="action">Review action</h2>
-  <p>Participants can <a href="/working-groups/join">register their interest</a>. A review action becomes available only after the group is convened, the evidence-handling rules are confirmed and an accountable decision owner is recorded.</p>
-</Layout>
+  <h2 id="registers">Output and history registers</h2>
+  <table>
+    <caption>Six semantic outputs before convening</caption>
+    <thead><tr><th scope="col">Output</th><th scope="col">Status</th></tr></thead>
+    <tbody>{workspace.outputRegister.map((entry) => <tr><th scope="row">{entry.output}</th><td>{entry.status}</td></tr>)}</tbody>
+  </table>
+  <ul>
+    <li>Meetings: none recorded.</li>
+    <li>Candidate versions: none recorded.</li>
+    <li>Changes and sessions: none recorded.</li>
+    <li>Technical exports: none recorded.</li>
+  </ul>
 
+  <h2 id="action">Review action</h2>
+  <p>{workspace.challengeAction.status} Participants can <a href={workspace.challengeAction.href}>challenge an input or question by email</a>, or <a href="/working-groups/join">register their interest</a>.</p>
+  <p><strong>Privacy boundary:</strong> {workspace.challengeAction.privacyBoundary}</p>
+  <p>Formal accept/reject disposition remains unavailable until the group is convened, the evidence-handling rules are confirmed and an accountable decision owner is recorded.</p>
+</Layout>

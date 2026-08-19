@@ -89,6 +89,26 @@ const questions = Object.freeze({
   ],
 });
 
+const charterExclusions = Object.freeze([
+  'No candidate, definition or coverage disposition may be approved before the group is convened.',
+  'The workspace cannot make cross-programme governance, statutory or government decisions.',
+  'Meaning outside the group remit stays with the owning context or the Interoperability Working Group.',
+]);
+
+function evidenceRecord(slug, href, index) {
+  return Object.freeze({
+    id: `${slug}-input-${index + 1}`,
+    href,
+    sourceType: href.startsWith('/v2/') ? 'machine-generated development input' : 'maintained OPDA documentation route',
+    recordedDate: '2026-08-19',
+    version: 'route view at workspace contract 1.0',
+    submitter: 'OPDA documentation team',
+    permission: 'Public OPDA route reference; linked source terms remain controlling',
+    sensitivity: 'Public route only; linked records retain their own classification',
+    status: 'attributed development input — no group review recorded',
+  });
+}
+
 export function getWorkspaceRecord(slug) {
   const inputPaths = workspaceInputs[slug];
   if (!inputPaths) return null;
@@ -98,23 +118,46 @@ export function getWorkspaceRecord(slug) {
     manifestVersion: SEMANTIC_PACKAGE_MANIFEST.version,
     workspaceVersion: '0.1.0-pre-convening',
     status: 'scope defined; working group not confirmed as convened',
-    decisionOwner: 'To be recorded when the group is convened',
-    evidence: Object.freeze(inputPaths.map((href, index) => Object.freeze({
-      id: `${slug}-input-${index + 1}`,
-      href,
-      status: 'attributed development input — no group review recorded',
-    }))),
+    charter: Object.freeze({
+      status: 'draft scope record — pre-convening',
+      scopeSource: `/spdtf-2/working-groups/${slug}`,
+      exclusions: charterExclusions,
+    }),
+    decisionOwner: null,
+    decisionEligible: false,
+    decisionOccurred: false,
+    decisionAuthority: 'No person or role may decide until a convened charter names an accountable decision owner.',
+    participation: Object.freeze({
+      interestRoute: '/working-groups/join',
+      meetingRoute: null,
+      status: 'Expression of interest is available; no participant roster or meeting route is recorded.',
+    }),
+    meetings: Object.freeze([]),
+    evidence: Object.freeze(inputPaths.map((href, index) => evidenceRecord(slug, href, index))),
     competencyQuestions: Object.freeze(questions[slug]),
+    outputRegister: Object.freeze(SEMANTIC_PACKAGE_MANIFEST.outputs.map((output) => Object.freeze({
+      output,
+      status: 'not started — no group record',
+    }))),
     coverageReceipt: Object.freeze(FORMAL_CONCERNS.map((concern) => Object.freeze({
       concern,
       disposition: null,
       status: 'not assessed — group decision required',
     }))),
     candidate: null,
+    candidateVersions: Object.freeze([]),
     candidateDiff: null,
     feedbackDispositions: Object.freeze([]),
+    changeHistory: Object.freeze([]),
+    sessionRecords: Object.freeze([]),
+    technicalExports: Object.freeze([]),
+    challengeAction: Object.freeze({
+      available: true,
+      href: `mailto:smartdata@openpropdata.org.uk?subject=${encodeURIComponent(`SPDTF 2.0 workspace challenge: ${slug}`)}`,
+      status: 'Evidence and question challenges are accepted; formal candidate disposition is disabled.',
+      privacyBoundary: 'Identify the page and question only. Do not email confidential, personal, customer or transaction data before OPDA confirms a protected intake route.',
+    }),
   });
 }
 
 export const WORKSPACE_SLUGS = Object.freeze(Object.keys(workspaceInputs));
-
