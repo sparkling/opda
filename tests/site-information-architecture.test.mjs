@@ -82,6 +82,20 @@ test('specific route ownership overrides broad legacy families deterministically
   assert.equal(getActiveDestination('/engagement/transcripts'), 'resources');
   assert.equal(getRouteDisposition('/modelling/property-pack').owner, 'spdtf-2');
   assert.equal(getRouteDisposition('/modelling/adr/adr-0074').owner, 'governance');
+  for (const path of [
+    '/spdtf-2/working-groups/estate-agency',
+    '/working-groups/join',
+    '/presentation/working-group-kickoff',
+    '/engagement/transcripts',
+    '/engagement/meetings-decisions',
+    '/engagement/working-groups',
+  ]) {
+    assert.equal(
+      getRouteDisposition(path).owner,
+      getContentOwner(path),
+      `${path} has contradictory navigation and migration ownership`,
+    );
+  }
 });
 
 test('every current header section has one retained global owner', () => {
@@ -144,7 +158,12 @@ test('the migration ledger preserves every audited high-risk information family'
 
 test('the versioned route-status registry protects derived and pre-candidate authority', () => {
   assert.match(IA_STATUS_REGISTRY_VERSION, /^\d{4}-\d{2}-\d{2}$/u);
-  assert.match(getRouteStatus('/ontology/classes').maturity, /Route-specific/u);
+  assert.equal(getRouteStatus('/ontology/classes').maturity, 'Draft semantic corpus — under review');
+  assert.equal(getRouteStatus('/pdtf/Seller').maturity, 'Draft semantic corpus — under review');
+  assert.match(getRouteStatus('/pdtf/Seller').authority, /not part of the published JSON Schema/u);
+  assert.match(getRouteStatus('/mapping').authority, /verification evidence/u);
+  assert.match(getRouteStatus('/modelling').maturity, /Mixed-maturity/u);
+  assert.match(getRouteStatus('/adoption').authority, /does not establish SPDTF 2\.0 adoption/u);
   assert.match(getRouteStatus('/v2/contexts/estate-agency').authority, /Machine-generated/u);
   assert.match(getRouteStatus('/spdtf-2/working-groups/estate-agency').version, /no candidate/u);
   const layout = readFileSync(new URL('../src/layouts/Layout.astro', import.meta.url), 'utf8');
