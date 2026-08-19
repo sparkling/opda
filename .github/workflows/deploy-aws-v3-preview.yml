@@ -1,0 +1,213 @@
+name: Publish exact SHA to AWS /v3 preview
+run-name: v3 preview · ${{ inputs.source_sha }}
+
+on:
+  workflow_dispatch:
+    inputs:
+      source_sha:
+        description: Exact 40-character commit SHA to build and publish
+        required: true
+        type: string
+      prefix:
+        description: Isolated AWS preview prefix
+        required: true
+        default: v3
+        type: choice
+        options:
+          - v3
+
+permissions:
+  contents: read
+
+jobs:
+  build-preview:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - name: Validate immutable publication inputs
+        env:
+          REQUESTED_SHA: ${{ inputs.source_sha }}
+          REQUESTED_PREFIX: ${{ inputs.prefix }}
+        run: |
+          [[ "$REQUESTED_SHA" =~ ^[a-f0-9]{40}$ ]] || { echo 'source_sha must be an exact lowercase 40-character SHA' >&2; exit 1; }
+          [[ "$REQUESTED_PREFIX" == 'v3' ]] || { echo 'only the isolated v3 prefix is permitted' >&2; exit 1; }
+
+      - uses: actions/checkout@v6
+        with:
+          ref: ${{ inputs.source_sha }}
+          persist-credentials: false
+
+      - name: Prove the checked-out source revision
+        env:
+          REQUESTED_SHA: ${{ inputs.source_sha }}
+        run: test "$(git rev-parse HEAD)" = "$REQUESTED_SHA"
+
+      - uses: pnpm/action-setup@v6
+        with:
+          version: 10
+
+      - uses: actions/setup-node@v6
+        with:
+          node-version: 22
+          cache: pnpm
+
+      - uses: actions/setup-java@v5
+        with:
+          distribution: temurin
+          java-version: 21
+
+      - name: Cache Apache Jena Fuseki dist
+        uses: actions/cache@v6
+        with:
+          path: .fuseki
+          key: fuseki-6.1.0
+
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.11'
+
+      - name: Cache Apache Jena dist
+        uses: actions/cache@v6
+        with:
+          path: .jena
+          key: jena-6.1.0
+
+      - name: Install opda-gen
+        working-directory: tools/opda-gen
+        run: pip install -e .[dev] jinja2==3.1.6
+
+      - name: Provision Apache Jena semantic toolchain
+        run: python -c "from opda_gen.jena_shacl import resolve_jena_shacl; print(resolve_jena_shacl())"
+
+      - run: pnpm install --frozen-lockfile
+      - run: npm --prefix src/api install --no-audit --no-fund
+
+      - name: Pre-build design and documentation gates
+        run: |
+          pnpm run check:design-system
+          make check-adr ci-ontology-doc
+
+      - name: Build the exact static release candidate
+        run: npm run build:data
+
+      - name: Unit, schema and information-architecture gates
+        run: |
+          pnpm test
+          pnpm run test:schema
+          pnpm run check:schema-drift
+          pnpm run check:ia-preservation
+          pnpm run check:spdtf-ia
+
+      - name: Install Chromium for release browser gates
+        run: pnpm exec playwright install --with-deps chromium
+
+      - name: Route, browser and accessibility gates
+        run: |
+          pnpm run check:routes
+          pnpm run test:e2e
+
+      - name: Generated model, ontology coverage and link gates
+        run: |
+          git diff --exit-code -- src/data/ontology-model.json public/data/ontology-graph-elements.json
+          (cd tools/opda-gen && opda-gen ci-object-property-coverage --strict --ontology-dir ../../source/03-standards/ontology)
+          node scripts/check-links.mjs
+
+      - name: Build and self-verify the isolated /v3 artifact
+        env:
+          PREVIEW_SOURCE_SHA: ${{ inputs.source_sha }}
+        run: node scripts/build-prefixed-preview.mjs --input dist --output dist-preview/v3 --prefix /v3
+
+      - name: Upload immutable preview candidate
+        id: candidate
+        uses: actions/upload-artifact@v6
+        with:
+          name: opda-v3-${{ inputs.source_sha }}
+          path: dist-preview/
+          if-no-files-found: error
+          retention-days: 7
+
+  publish-preview:
+    needs: build-preview
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      id-token: write
+    steps:
+      - name: Check out the trusted verifier from the workflow revision
+        uses: actions/checkout@v6
+        with:
+          ref: ${{ github.sha }}
+          path: trusted
+          persist-credentials: false
+
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.11'
+
+      - name: Download the sealed build artifact
+        uses: actions/download-artifact@v7
+        with:
+          name: opda-v3-${{ inputs.source_sha }}
+          path: dist-preview
+
+      - name: Independently verify the candidate before credentials exist
+        run: >-
+          python trusted/.github/scripts/verify-v3-artifact.py
+          --root dist-preview/v3
+          --receipt dist-preview/preview-receipt.json
+          --prefix v3
+          --source-sha '${{ inputs.source_sha }}'
+
+      - name: Assume the main-only deploy role through GitHub OIDC
+        uses: aws-actions/configure-aws-credentials@v6
+        with:
+          role-to-assume: ${{ vars.OPDA_SITE_DEPLOY_ROLE_ARN }}
+          aws-region: eu-west-2
+
+      - name: Publish only the /v3 bucket prefix
+        run: |
+          SITE_BUCKET=$(aws cloudformation describe-stacks --region eu-west-2 \
+            --stack-name opda-site \
+            --query "Stacks[0].Outputs[?OutputKey=='SiteBucketName'].OutputValue" --output text)
+          test -n "$SITE_BUCKET"
+          aws s3 sync dist-preview/v3/ "s3://$SITE_BUCKET/v3/" --delete --only-show-errors
+          echo "SITE_BUCKET=$SITE_BUCKET" >> "$GITHUB_ENV"
+
+      - name: Read back and verify every published byte
+        run: |
+          mkdir remote-v3
+          aws s3 sync "s3://$SITE_BUCKET/v3/" remote-v3/ --only-show-errors
+          python trusted/.github/scripts/verify-v3-artifact.py \
+            --root remote-v3 \
+            --receipt dist-preview/preview-receipt.json \
+            --prefix v3 \
+            --source-sha '${{ inputs.source_sha }}'
+
+      - name: Invalidate and wait for the isolated CloudFront path
+        run: |
+          DISTRIBUTION_ID=$(aws cloudformation describe-stacks --region eu-west-2 \
+            --stack-name opda-site \
+            --query "Stacks[0].Outputs[?OutputKey=='DistributionId'].OutputValue" --output text)
+          INVALIDATION_ID=$(aws cloudfront create-invalidation \
+            --distribution-id "$DISTRIBUTION_ID" \
+            --paths '/v3/*' \
+            --query 'Invalidation.Id' --output text)
+          aws cloudfront wait invalidation-completed \
+            --distribution-id "$DISTRIBUTION_ID" \
+            --id "$INVALIDATION_ID"
+
+      - name: Verify the live edge gate and write the publication receipt
+        env:
+          SOURCE_SHA: ${{ inputs.source_sha }}
+        run: |
+          STATUS=$(curl --silent --show-error --output /dev/null --write-out '%{http_code}' https://opda.org.uk/v3/)
+          [[ "$STATUS" == '302' ]] || { echo "expected the member gate at /v3/, received HTTP $STATUS" >&2; exit 1; }
+          {
+            echo '## AWS /v3 preview published'
+            echo
+            echo "- Exact source: \`$SOURCE_SHA\`"
+            echo '- URL: https://opda.org.uk/v3/'
+            echo '- Scope: `s3://…/v3/` only; production root and `/v2/**` were not synchronized.'
+            echo '- Proof: independent pre-credential verification, full S3 read-back, CloudFront invalidation completed.'
+          } >> "$GITHUB_STEP_SUMMARY"
