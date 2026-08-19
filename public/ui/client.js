@@ -59,7 +59,7 @@
     // Match the CSS compact-header boundary. The six global destinations must
     // remain fully discoverable on intermediate desktop/tablet widths; a
     // clipped horizontal row is not an acceptable navigation state.
-    const mobileQuery = window.matchMedia('(max-width: 80rem)');
+    const mobileQuery = window.matchMedia('(max-width: 86rem)');
 
     function setOpen(open, restoreFocus) {
       const shouldOpen = mobileQuery.matches && open;
