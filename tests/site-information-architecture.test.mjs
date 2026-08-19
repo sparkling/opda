@@ -1,5 +1,6 @@
 import assert from 'node:assert/strict';
 import { spawnSync } from 'node:child_process';
+import { readFileSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 import test from 'node:test';
 
@@ -11,14 +12,30 @@ import {
   DESTINATION_SHORTCUTS,
   GLOBAL_DESTINATIONS,
   IA_STATUS_FIELDS,
+  IA_STATUS_REGISTRY_VERSION,
   PRESERVATION_LEDGER,
   ROUTE_DISPOSITION_LEDGER,
   ROUTE_FAMILY_OWNERS,
   findForbiddenIaLabels,
   getContentOwner,
   getActiveDestination,
+  getRouteDisposition,
+  getRouteStatus,
   validateIaContract,
 } from '../src/lib/site-ia.mjs';
+import { searchEntries } from '../src/lib/site-search.mjs';
+import {
+  ALLOWED_DISPOSITIONS,
+  FORMAL_CONCERNS,
+  SEMANTIC_PACKAGE_MANIFEST,
+  WORKSPACE_SLUGS,
+  getWorkspaceRecord,
+} from '../src/lib/spdtf-workspace.mjs';
+import {
+  STANDARDS_MECHANISMS,
+  STANDARDS_PROFILE,
+  validateStandardsProfile,
+} from '../src/lib/spdtf-standards-profile.mjs';
 
 const expectedDestinations = [
   ['programme', 'Programme', '/programme'],
@@ -54,6 +71,17 @@ test('working groups is a shortcut into the canonical SPDTF 2.0 workspace', () =
     target: '/spdtf-2/working-groups', contentOwner: 'spdtf-2',
   });
   assert.equal(getActiveDestination('/working-groups/join'), 'working-groups');
+});
+
+test('specific route ownership overrides broad legacy families deterministically', () => {
+  assert.equal(getActiveDestination('/modelling/property-pack'), 'spdtf-2');
+  assert.equal(getActiveDestination('/modelling/adr/adr-0074'), 'governance');
+  assert.equal(getActiveDestination('/modelling/odr/odr-0001'), 'governance');
+  assert.equal(getActiveDestination('/engagement/meetings-decisions'), 'governance');
+  assert.equal(getActiveDestination('/engagement/working-groups'), 'programme');
+  assert.equal(getActiveDestination('/engagement/transcripts'), 'resources');
+  assert.equal(getRouteDisposition('/modelling/property-pack').owner, 'spdtf-2');
+  assert.equal(getRouteDisposition('/modelling/adr/adr-0074').owner, 'governance');
 });
 
 test('every current header section has one retained global owner', () => {
@@ -93,6 +121,9 @@ test('every audited route family has a deterministic owner and disposition', () 
     assert.notEqual(entry.disposition, 'retire', `${path} is marked retire`);
   }
   assert.ok(ROUTE_DISPOSITION_LEDGER.every(({ preservedAt, statusSource }) => preservedAt && statusSource));
+  assert.ok(ROUTE_DISPOSITION_LEDGER.every(({ consumers, endpoints, crossWorkArea, checksumPolicy, search }) => (
+    consumers.length && endpoints.length && crossWorkArea.length && checksumPolicy && search.workArea
+  )));
 });
 
 test('the migration ledger preserves every audited high-risk information family', () => {
@@ -103,12 +134,60 @@ test('the migration ledger preserves every audited high-risk information family'
   ]) assert.ok(paths.includes(required), `${required} is missing from the preservation ledger`);
 
   assert.ok(PRESERVATION_LEDGER.every(({ disposition }) => disposition !== 'retire'));
-  assert.ok(PRESERVATION_LEDGER.every(({ consumers, verification }) => consumers.length && verification));
+  assert.ok(PRESERVATION_LEDGER.every(({ consumers, verification, checksumSource }) => consumers.length && verification && checksumSource));
   const v2 = PRESERVATION_LEDGER.find(({ currentPath }) => currentPath === '/v2/**');
   assert.deepEqual(
     { owner: v2.owner, preservedAt: v2.preservedAt, disposition: v2.disposition },
     { owner: 'spdtf-2', preservedAt: '/v2/**', disposition: 'reframe-equivalent' },
   );
+});
+
+test('the versioned route-status registry protects derived and pre-candidate authority', () => {
+  assert.match(IA_STATUS_REGISTRY_VERSION, /^\d{4}-\d{2}-\d{2}$/u);
+  assert.match(getRouteStatus('/ontology/classes').maturity, /Route-specific/u);
+  assert.match(getRouteStatus('/v2/contexts/estate-agency').authority, /Machine-generated/u);
+  assert.match(getRouteStatus('/spdtf-2/working-groups/estate-agency').version, /no candidate/u);
+  const layout = readFileSync(new URL('../src/layouts/Layout.astro', import.meta.url), 'utf8');
+  for (const field of IA_STATUS_FIELDS) assert.match(layout, new RegExp(`routeStatus\\.${field}`, 'u'));
+});
+
+test('every working group exposes one truthful workspace contract', () => {
+  assert.equal(WORKSPACE_SLUGS.length, 8);
+  assert.equal(FORMAL_CONCERNS.length, 8);
+  assert.deepEqual(ALLOWED_DISPOSITIONS, ['model here', 'reuse shared', 'boundary contribution', 'not applicable']);
+  assert.equal(SEMANTIC_PACKAGE_MANIFEST.outputs.length, 6);
+  assert.ok(SEMANTIC_PACKAGE_MANIFEST.projections.length >= 6);
+  for (const slug of WORKSPACE_SLUGS) {
+    const record = getWorkspaceRecord(slug);
+    assert.equal(record.coverageReceipt.length, 8);
+    assert.ok(record.coverageReceipt.every(({ disposition }) => disposition === null));
+    assert.ok(record.evidence.length > 0);
+    assert.ok(record.competencyQuestions.length > 0);
+    assert.equal(record.candidate, null);
+    assert.equal(record.manifestVersion, SEMANTIC_PACKAGE_MANIFEST.version);
+  }
+});
+
+test('standards profile is item-granular and uses only the four accepted mechanisms', () => {
+  assert.equal(validateStandardsProfile(), true);
+  assert.deepEqual(STANDARDS_MECHANISMS, ['reuse', 'reference', 'map', 'mint']);
+  assert.ok(STANDARDS_PROFILE.length >= 20);
+  assert.equal(new Set(STANDARDS_PROFILE.map(({ name }) => name)).size, STANDARDS_PROFILE.length);
+  assert.ok(STANDARDS_PROFILE.every(({ mechanism }) => STANDARDS_MECHANISMS.includes(mechanism)));
+});
+
+test('historical PDTF search alias returns labelled current and historical work', () => {
+  const results = searchEntries('PDTF');
+  assert.ok(results.some(({ url, historicalName }) => url === '/pdtf-1' && historicalName));
+  assert.ok(results.some(({ url, historicalName }) => url === '/spdtf-2' && !historicalName));
+});
+
+test('preservation is a local and deployment gate', () => {
+  const makefile = readFileSync(new URL('../Makefile', import.meta.url), 'utf8');
+  const workflow = readFileSync(new URL('../.github/workflows/deploy-aws.yml', import.meta.url), 'utf8');
+  assert.match(makefile, /ci-browser: build check-ia-preservation check-routes test-e2e/u);
+  assert.match(makefile, /ci: .*check-ia-preservation/u);
+  assert.match(workflow, /Information-architecture preservation gate[\s\S]*pnpm run check:ia-preservation/u);
 });
 
 test('preservation checker validates clean and strict CLI boundaries', () => {

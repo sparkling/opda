@@ -90,6 +90,58 @@ test('canonical development routes expose the complete five-field status contrac
   clean();
 });
 
+test('all Layout pages expose versioned route status metadata', async ({ page }) => {
+  const clean = watchRuntime(page);
+  for (const [route, expected] of [
+    ['/ontology/classes', 'PDTF 1.0-derived'],
+    ['/v2/contexts/estate-agency', '0.1.0-draft seed'],
+    ['/spdtf-2/working-groups/estate-agency', 'no candidate version'],
+  ]) {
+    await visit(page, route);
+    await expect(page.locator('html')).toHaveAttribute('data-content-version', new RegExp(expected, 'iu'));
+    await expect(page.locator('meta[name="opda:authority"]')).toHaveCount(1);
+  }
+  clean();
+});
+
+test('participant reaches evidence, questions and review from one canonical workspace', async ({ page }) => {
+  const clean = watchRuntime(page);
+  await visit(page, '/spdtf-2/working-groups/estate-agency');
+  await expect(page.locator('nav[aria-label="Breadcrumb"]')).toHaveCount(1);
+  const workspace = page.locator('nav[aria-label="Working-group workspace"]');
+  await expect(workspace.getByRole('link')).toHaveCount(4);
+  for (const label of ['Evidence', 'Questions', 'Review']) {
+    await workspace.getByRole('link', { name: label, exact: true }).click();
+    await expect(page).toHaveURL(new RegExp(`/estate-agency/${label.toLowerCase()}$`, 'u'));
+    await page.goBack();
+  }
+  clean();
+});
+
+test('PDTF alias search labels historical and continuation results with authority', async ({ page }) => {
+  const clean = watchRuntime(page);
+  await visit(page, '/search?q=PDTF');
+  const results = page.locator('.search-result:not([hidden])');
+  await expect(results.filter({ hasText: 'PDTF 1.0' }).first()).toContainText('historical name');
+  await expect(results.filter({ hasText: 'SPDTF 2.0 Development' })).toHaveCount(1);
+  expect(await results.count()).toBeGreaterThan(1);
+  await expect(results.locator('dt', { hasText: 'Authority' }).first()).toBeVisible();
+  clean();
+});
+
+test('wide standards table gains only one conditional keyboard scroll region', async ({ page }) => {
+  const clean = watchRuntime(page);
+  await visit(page, '/spdtf-2/ontologies/standards');
+  await expect(page.locator('.responsive-table .responsive-table')).toHaveCount(0);
+  const viewports = page.locator('.responsive-table__viewport');
+  await expect(viewports).toHaveCount(2);
+  for (const viewport of await viewports.all()) {
+    const overflow = await viewport.evaluate((node) => node.scrollWidth > node.clientWidth + 1);
+    await expect(viewport).toHaveAttribute('tabindex', overflow ? '0' : '-1');
+  }
+  clean();
+});
+
 test('legacy routes remain reachable without redirecting', async ({ page }) => {
   const clean = watchRuntime(page);
   for (const route of ['/strategy/strategy-overview', '/v2/validation', '/pdtf/Seller', '/working-groups/join']) {
