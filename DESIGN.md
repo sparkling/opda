@@ -220,11 +220,13 @@ or nearest section heading, includes a visible horizontal-scroll hint only while
 table overflows, and makes the viewport keyboard-focusable only in that state. Pages
 must reflow at 320px and 400% zoom without page-level horizontal scrolling.
 
-Below 768px the global site navigation is a non-modal disclosure anchored to the
-64px header. Its button owns `aria-controls` and `aria-expanded`; the closed panel is
-both hidden and inert. Escape and link activation close it, and Escape returns focus
-to the trigger. This is distinct from the below-960px section navigation, which is a
-modal off-canvas dialog with background inertness and focus containment.
+At 1376px (86rem) and below, the six-destination global site navigation is a
+non-modal disclosure anchored to the 64px header. Above that boundary every primary
+destination must fit without clipping or hidden horizontal overflow. The disclosure
+button owns `aria-controls` and `aria-expanded`; the closed panel is both hidden and
+inert. Escape and link activation close it, and Escape returns focus to the trigger.
+This is distinct from the below-960px section navigation, which is a modal off-canvas
+dialog with background inertness and focus containment.
 
 In forced-colour mode, system colours replace authored fills. Current/selected
 states retain a border or outline as well as text, status and callout roles retain
