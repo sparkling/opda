@@ -193,9 +193,8 @@ a:visited { text-decoration-color: currentColor; }
 }
 
 /* The six-destination global nav needs a disclosure before the desktop row
-   becomes narrower than its content. Keeping this boundary at 1280px avoids
-   silently clipping the last destination on compact desktop/tablet widths. The
-   86rem boundary leaves a safety margin before the row returns at wider sizes. */
+   becomes narrower than its content. The 86rem boundary includes a safety
+   margin above the measured fit threshold on both supported platforms. */
 @media (max-width: 86rem) {
   .app-header {
     height: var(--header-height);
