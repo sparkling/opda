@@ -123,7 +123,7 @@ test('PDTF alias search labels historical and continuation results with authorit
   await visit(page, '/search?q=PDTF');
   const results = page.locator('.search-result:not([hidden])');
   await expect(results.filter({ hasText: 'PDTF 1.0' }).first()).toContainText('historical name');
-  await expect(results.filter({ hasText: 'SPDTF 2.0 Development' })).toHaveCount(1);
+  await expect(results.getByRole('link', { name: 'SPDTF 2.0 Development', exact: true })).toHaveCount(1);
   expect(await results.count()).toBeGreaterThan(1);
   await expect(results.locator('dt', { hasText: 'Authority' }).first()).toBeVisible();
   clean();
