@@ -40,7 +40,7 @@ test('aria-current follows canonical and legacy route ownership', async ({ page 
     ['/governance', 'Governance'],
     ['/resources', 'Resources'],
     ['/strategy/strategy-overview', 'Programme'],
-    ['/v2/validation', 'SPDTF 2.0 Development'],
+    ['/spdtf-2/property-pack/validation', 'SPDTF 2.0 Development'],
     ['/ontology/classes', 'PDTF 1.0'],
     ['/library/resources', 'Resources'],
   ];
@@ -84,7 +84,7 @@ test('left navigation follows route ownership with one active link', async ({ pa
   await page.setViewportSize({ width: 1440, height: 1000 });
   for (const [route, section, label] of [
     ['/strategy/project-roadmap', 'programme', 'Project roadmap'],
-    ['/v2/validation', 'spdtf-2', 'Validation evidence'],
+    ['/spdtf-2/property-pack/validation', 'spdtf-2', 'Validation evidence'],
     ['/spdtf-2/working-groups/estate-agency/evidence', 'working-groups', 'Evidence'],
     ['/ontology/classes', 'pdtf-1', 'Classes'],
     ['/engagement/meetings-decisions', 'governance', 'Meetings & decisions'],
@@ -187,12 +187,33 @@ test('page navigation exposes headings and a single previous-next sequence', asy
   clean();
 });
 
-test('retained V2 seed is owned by SPDTF development, not a top-level V2 destination', async ({ page }) => {
+test('Property Pack ontology is owned by SPDTF development', async ({ page }) => {
   const clean = watchRuntime(page);
-  await visit(page, '/v2/validation');
+  await visit(page, '/spdtf-2/property-pack/validation');
   await expect(page.locator('nav[aria-label="Primary"] a[aria-current="page"]'))
     .toHaveText('SPDTF 2.0 Development');
   expect(await page.locator('nav[aria-label="Primary"] a').allTextContents()).not.toContain('V2');
+  const local = page.locator('#section-navigation');
+  await expect(local.locator('a[href="/spdtf-2/property-pack"]')).toHaveText('Property Pack ontology');
+  await expect(local.locator('a[aria-current="page"]')).toHaveText('Validation evidence');
+  await expect(local.locator('a[href="/spdtf-2/property-pack"]')
+    .locator('xpath=ancestor::li[1]')).toHaveClass(/is-open/u);
+  clean();
+});
+
+test('Property Pack detail pages expose their full canonical ancestry', async ({ page }) => {
+  const clean = watchRuntime(page);
+  await visit(page, '/spdtf-2/property-pack/resources/common/Property');
+  const crumbs = page.locator('nav[aria-label="Breadcrumb"]');
+  await expect(crumbs.locator('a, [aria-current="page"]')).toHaveText([
+    'SPDTF 2.0 Development', 'Property Pack ontology', 'Ontology resources', 'Common boundary', 'Property',
+  ]);
+  expect(await crumbs.locator('a').evaluateAll((links) => links.map((link) => link.getAttribute('href')))).toEqual([
+    '/spdtf-2', '/spdtf-2/property-pack', '/spdtf-2/property-pack/resources',
+    '/spdtf-2/property-pack/contexts/common',
+  ]);
+  await expect(page.locator('#section-navigation a[aria-current="page"]')).toHaveCount(1);
+  await expect(page.locator('[aria-label="Property Pack lifecycle status"] dt')).toHaveCount(6);
   clean();
 });
 
@@ -228,7 +249,7 @@ test('all Layout pages expose versioned route status metadata', async ({ page })
   const clean = watchRuntime(page);
   for (const [route, expected] of [
     ['/ontology/classes', 'PDTF 1.0-derived'],
-    ['/v2/contexts/estate-agency', '0.1.0-draft seed'],
+    ['/spdtf-2/property-pack/contexts/estate-agency', '0.1.0-draft candidate cut'],
     ['/spdtf-2/working-groups/estate-agency', 'no candidate version'],
   ]) {
     await visit(page, route);
@@ -256,7 +277,7 @@ test('PDTF alias search labels historical and continuation results with authorit
   const clean = watchRuntime(page);
   await visit(page, '/search?q=PDTF');
   const results = page.locator('.search-result:not([hidden])');
-  await expect(results.filter({ hasText: 'PDTF 1.0' }).first()).toContainText('historical name');
+  await expect(results.filter({ has: page.locator('a[href="/pdtf-1"]') })).toContainText('historical name');
   await expect(results.getByRole('link', { name: 'SPDTF 2.0 Development', exact: true })).toHaveCount(1);
   expect(await results.count()).toBeGreaterThan(1);
   await expect(results.locator('dt', { hasText: 'Authority' }).first()).toBeVisible();
@@ -276,12 +297,40 @@ test('wide standards table gains only one conditional keyboard scroll region', a
   clean();
 });
 
-test('legacy routes remain reachable without redirecting', async ({ page }) => {
+test('retained routes remain reachable without redirecting', async ({ page }) => {
   const clean = watchRuntime(page);
-  for (const route of ['/strategy/strategy-overview', '/v2/validation', '/pdtf/Seller', '/working-groups/join']) {
+  for (const route of ['/strategy/strategy-overview', '/pdtf/Seller', '/working-groups/join']) {
     await visit(page, route);
     await expect(page).toHaveURL(new RegExp(`${route.replaceAll('/', '\\/')}(?:[?#].*)?$`));
   }
+  clean();
+});
+
+test('retired Property Pack routes return 404 without redirecting', async ({ page }) => {
+  for (const route of [
+    '/v2', '/v2/validation', '/v2/resources/common/Property', '/modelling/property-pack',
+  ]) {
+    const response = await page.goto(route, { waitUntil: 'domcontentloaded' });
+    expect(response?.status(), route).toBe(404);
+    await expect(page).toHaveURL(new RegExp(`${route.replaceAll('/', '\\/')}$`, 'u'));
+  }
+});
+
+test('Property Pack source catalogue retains its 451-item interaction', async ({ page }) => {
+  const clean = watchRuntime(page);
+  await visit(page, '/spdtf-2/property-pack/definition-and-scope');
+  expect(await page.locator('#property-pack-rows').evaluate((node) => JSON.parse(node.textContent).length)).toBe(451);
+  await expect(page.locator('#property-pack-browser tbody tr')).toHaveCount(25);
+  const search = page.locator('#property-pack-browser input[type="search"]');
+  await search.fill('UPRN');
+  await expect(page.locator('#property-pack-browser tbody tr')).not.toHaveCount(25);
+  await search.fill('');
+  const first = page.locator('#property-pack-browser [data-property-id]').first();
+  await first.click();
+  await expect(page.locator('#property-detail')).toBeVisible();
+  await expect(page.locator('#property-detail-title')).not.toBeEmpty();
+  await page.locator('#property-detail-close').click();
+  await expect(page.locator('#property-detail')).toBeHidden();
   clean();
 });
 

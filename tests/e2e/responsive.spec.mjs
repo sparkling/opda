@@ -142,10 +142,10 @@ test('text flows to its outer content container without nested max-widths', asyn
   clean();
 });
 
-test('V2 candidate status reflows inside the available article track', async ({ page }) => {
+test('Property Pack candidate status reflows inside the available article track', async ({ page }) => {
   const clean = watchRuntime(page);
   await page.setViewportSize({ width: 1281, height: 900 });
-  await visit(page, '/v2/validation');
+  await visit(page, '/spdtf-2/property-pack/validation');
   await assertNoBodyOverflow(page);
   const containment = await page.locator('.v2-candidate-banner, .v2-candidate-banner > *')
     .evaluateAll((elements) => {
