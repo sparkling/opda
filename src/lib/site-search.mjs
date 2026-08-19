@@ -5,6 +5,10 @@ const entry = (title, url, summary, aliases = [], historicalName = false) => Obj
 export const SITE_SEARCH_ENTRIES = Object.freeze([
   entry('Programme', '/programme', 'Purpose, continuation, roadmap and UK Smart Data context', ['PDTF', 'SPDTF']),
   entry('SPDTF 2.0 Development', '/spdtf-2', 'Current domain-led, evidence-up semantic modelling work', ['PDTF', 'ontology']),
+  entry('Property Pack ontology', '/spdtf-2/property-pack', 'Accelerated SPDTF 2.0 component awaiting Technical Working Group determination', ['Property Pack', 'PDTF', 'ontology']),
+  entry('Property Pack definition and scope', '/spdtf-2/property-pack/definition-and-scope', 'Interactive catalogue of all 451 required source items and candidate dispositions', ['Property Pack', 'data dictionary']),
+  entry('PDTF 1.0 to Property Pack lineage', '/spdtf-2/property-pack/pdtf-1-lineage', 'Schema coverage and the incomplete ontology semantic crosswalk', ['Property Pack', 'PDTF', 'crosswalk']),
+  entry('Property Pack technical determination', '/spdtf-2/property-pack/technical-working-group-determination', 'End-of-September 2026 Technical Working Group milestone and pending decision record', ['Property Pack', 'Technical Working Group']),
   entry('Working groups', '/spdtf-2/working-groups', 'Canonical participant workspaces and review routes', ['PDTF', 'participants']),
   entry('Candidate register', '/spdtf-2/candidates', 'Status of context-owned candidates, owners and immutable diffs', ['PDTF']),
   entry('Open questions and changes', '/spdtf-2/questions', 'Competency questions grouped by semantic owner', ['PDTF']),
@@ -31,4 +35,3 @@ export function searchEntries(query) {
   return SITE_SEARCH_ENTRIES.filter((record) => [record.title, record.summary, ...record.aliases]
     .some((value) => value.toLocaleLowerCase('en-GB').includes(needle)));
 }
-

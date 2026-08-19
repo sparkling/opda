@@ -50,7 +50,7 @@ export const HEADER_ORDER = [
   'engagement',
   'modelling',
   'model',
-  'v2',
+  'property-pack',
   'ontology',
   'mapping',
   'schema',
@@ -298,40 +298,45 @@ export const SECTIONS: Record<string, Section> = {
     ],
   },
 
-  v2: {
-    key: 'v2',
-    title: 'SPDTF 2.0 development input',
+  'property-pack': {
+    key: 'property-pack',
+    title: 'Property Pack ontology',
     summary:
-      'The machine-proposed Property Pack ontology candidate: contextual boundaries, complete model atlas, resource reference, data dictionary, vocabularies, SHACL constraints, source coverage and technical assurance.',
+      'The accelerated SPDTF 2.0 Property Pack ontology candidate, its 451-item definition, PDTF 1.0 lineage, model, technical determination and later review path.',
     groups: [
       { heading: 'Overview', items: [
-        { url: '/v2', title: 'Candidate overview' },
-        { url: '/v2/comparison', title: 'PDTF 1.0 and Property Pack seed compared' },
+        { url: '/spdtf-2/property-pack', title: 'Property Pack ontology' },
+        { url: '/spdtf-2/property-pack/definition-and-scope', title: 'Definition and 451-item scope' },
+        { url: '/spdtf-2/property-pack/pdtf-1-lineage', title: 'PDTF 1.0 lineage' },
       ]},
       { heading: 'Model atlas', items: [
-        { url: '/v2/model', title: 'Complete model' },
-        { url: '/v2/contexts', title: 'Context overview' },
-        { url: '/v2/contexts/common', title: 'Common boundary' },
-        { url: '/v2/contexts/conveyancing', title: 'Conveyancing' },
-        { url: '/v2/contexts/estate-agency', title: 'Estate agency' },
-        { url: '/v2/contexts/finance-and-banking', title: 'Finance and banking' },
-        { url: '/v2/contexts/property-data-services', title: 'Property data services' },
-        { url: '/v2/contexts/property-technology', title: 'Property technology' },
-        { url: '/v2/contexts/surveying-and-valuation', title: 'Surveying and valuation' },
-        { url: '/v2/contexts/dbt-smart-data', title: 'DBT Smart Data' },
+        { url: '/spdtf-2/property-pack/model', title: 'Complete model' },
+        { url: '/spdtf-2/property-pack/contexts', title: 'Context overview' },
+        { url: '/spdtf-2/property-pack/contexts/common', title: 'Common boundary' },
+        { url: '/spdtf-2/property-pack/contexts/conveyancing', title: 'Conveyancing' },
+        { url: '/spdtf-2/property-pack/contexts/estate-agency', title: 'Estate agency' },
+        { url: '/spdtf-2/property-pack/contexts/finance-and-banking', title: 'Finance and banking' },
+        { url: '/spdtf-2/property-pack/contexts/property-data-services', title: 'Property data services' },
+        { url: '/spdtf-2/property-pack/contexts/property-technology', title: 'Property technology' },
+        { url: '/spdtf-2/property-pack/contexts/surveying-and-valuation', title: 'Surveying and valuation' },
+        { url: '/spdtf-2/property-pack/contexts/dbt-smart-data', title: 'DBT Smart Data candidate semantic context' },
       ]},
       { heading: 'Meaning & constraints', items: [
-        { url: '/v2/resources', title: 'Ontology resources' },
-        { url: '/v2/relationships', title: 'Relationships' },
-        { url: '/v2/data-dictionary', title: 'Data dictionary' },
-        { url: '/v2/vocabularies', title: 'Controlled vocabularies' },
-        { url: '/v2/shapes', title: 'SHACL shapes' },
+        { url: '/spdtf-2/property-pack/resources', title: 'Ontology resources' },
+        { url: '/spdtf-2/property-pack/relationships', title: 'Relationships' },
+        { url: '/spdtf-2/property-pack/data-dictionary', title: 'Data dictionary' },
+        { url: '/spdtf-2/property-pack/vocabularies', title: 'Controlled vocabularies' },
+        { url: '/spdtf-2/property-pack/shapes', title: 'SHACL shapes' },
       ]},
       { heading: 'Evidence & assurance', items: [
-        { url: '/v2/coverage', title: 'Source coverage' },
-        { url: '/v2/standards', title: 'Standards profile' },
-        { url: '/v2/validation', title: 'Validation evidence' },
-        { url: '/v2/artefacts', title: 'Generated artefacts' },
+        { url: '/spdtf-2/property-pack/coverage', title: 'Candidate source coverage' },
+        { url: '/spdtf-2/property-pack/standards', title: 'Standards profile' },
+        { url: '/spdtf-2/property-pack/validation', title: 'Validation evidence' },
+        { url: '/spdtf-2/property-pack/artefacts', title: 'Generated artefacts' },
+      ]},
+      { heading: 'Governance & lifecycle', items: [
+        { url: '/spdtf-2/property-pack/technical-working-group-determination', title: 'Technical Working Group determination' },
+        { url: '/spdtf-2/property-pack/review-and-releases', title: 'Later review and releases' },
       ]},
     ],
   },
@@ -636,12 +641,12 @@ export function findPage(path: string):
       }
     }
   }
-  // Generated detail routes (for example /v2/resources/{context}/{term}) are
+  // Generated detail routes (for example Property Pack resources/{context}/{term}) are
   // intentionally absent from the sidebar taxonomy. They still belong to the
   // section and need its header/sidebar shell; their page layout supplies the
   // deeper, record-specific breadcrumb.
   const sectionKey = norm.split('/').filter(Boolean)[0];
-  if (sectionKey === 'v2') return { section: SECTIONS.v2 };
+  if (norm.startsWith('/spdtf-2/property-pack/')) return { section: SECTIONS['property-pack'] };
   return null;
 }
 

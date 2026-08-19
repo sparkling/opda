@@ -1,0 +1,77 @@
+---
+import PropertyPackContents from '@/components/property-pack/PropertyPackContents.astro';
+import PropertyPackFilter from '@/components/property-pack/PropertyPackFilter.astro';
+import PropertyPackPage from '@/components/property-pack/PropertyPackPage.astro';
+import {
+  contexts,
+  contextById,
+  coverage,
+  dataPointRoute,
+} from '@/lib/property-pack-model.mjs';
+
+const contextOptions = contexts.map((context) => ({ value: context.id, label: context.label }));
+const workPackages = [...new Set(coverage.map((item) => item.work_package))].sort();
+const workPackageOptions = workPackages.map((value) => ({
+  value,
+  label: value.replaceAll('-', ' ').replace(/\b\w/g, (letter) => letter.toUpperCase()),
+}));
+---
+<PropertyPackPage
+  title="Data dictionary"
+  description="Complete 451-row Property Pack source dictionary and its trace into the machine-generated pre-draft."
+  category="Meaning & constraints"
+  crumbs={[{ label: 'Data dictionary' }]}
+>
+  <h1>Data dictionary</h1>
+  <p class="lead">
+    All 451 normalized Property Pack data points, preserving their source path and
+    source-derived constraints while showing how each point is interpreted by the
+    candidate model.
+  </p>
+
+  <div class="callout callout--note">
+    <p class="callout__label">Two layers, kept distinct</p>
+    <p>Source constraints describe the input catalogue. Generated SHACL constraints describe candidate RDF validation. A source rule is not silently promoted into SHACL.</p>
+  </div>
+
+  <PropertyPackContents items={[
+    { id: 'register', label: '451 data points' },
+    { id: 'interpretation', label: 'How the projection works' },
+  ]} />
+
+  <h2 id="register">451 data points</h2>
+  <PropertyPackFilter
+    targetId="v2-data-dictionary"
+    placeholder="Search labels, paths, identifiers and definitions…"
+    contextOptions={contextOptions}
+    kindOptions={workPackageOptions}
+    kindLabel="Work package"
+  />
+  <div class="v2-table-wrap" id="v2-data-dictionary">
+    <table>
+      <thead><tr><th>Data point</th><th>Semantic home</th><th>Source path</th><th>Requiredness</th><th>Candidate constructs</th></tr></thead>
+      <tbody>
+        {coverage.map((item) => (
+          <tr
+            data-search={`${item.preferred_label} ${item.item_id} ${item.source_path} ${item.candidate_definition}`.toLocaleLowerCase()}
+            data-context={item.semantic_home}
+            data-kind={item.work_package}
+          >
+            <td><a href={dataPointRoute(item)}><strong>{item.preferred_label}</strong></a><br/><code>{item.item_id}</code></td>
+            <td><a href={`/spdtf-2/property-pack/contexts/${item.semantic_home}`}>{contextById.get(item.semantic_home)?.label}</a></td>
+            <td><code>{item.source_path}</code></td>
+            <td>{item.source_constraints.requiredness}<br/><small>{item.source_constraints.min_count ?? 0}..{item.source_constraints.max_count ?? '*'}</small></td>
+            <td>{item.construct_keys.length}</td>
+          </tr>
+        ))}
+      </tbody>
+    </table>
+  </div>
+
+  <h2 id="interpretation">How the projection works</h2>
+  <div class="v2-note-grid">
+    <section><h3>Source identity</h3><p>The stable <code>pp-…</code> identifier, source path and source constraints describe a normalized item in the 451-point Property Pack catalogue.</p></section>
+    <section><h3>Semantic home</h3><p>Every source item is assigned to one context. This is candidate modelling, not a claim that its original document used bounded-context terminology.</p></section>
+    <section><h3>Construct closure</h3><p>Every item reaches at least one ontology resource. Some source questions consolidate into a typed record, its relationship, attributes and controlled concepts.</p></section>
+  </div>
+</PropertyPackPage>

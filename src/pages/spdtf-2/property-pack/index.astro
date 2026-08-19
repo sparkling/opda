@@ -1,0 +1,127 @@
+---
+import GraphDiagram from '@/components/GraphDiagram.astro';
+import PropertyPackContents from '@/components/property-pack/PropertyPackContents.astro';
+import PropertyPackDiagramLegend from '@/components/property-pack/PropertyPackDiagramLegend.astro';
+import PropertyPackPage from '@/components/property-pack/PropertyPackPage.astro';
+import {
+  boundaryDiagram,
+  candidateManifest,
+  contexts,
+  contextRoute,
+  contextStats,
+  counts,
+} from '@/lib/property-pack-model.mjs';
+---
+<PropertyPackPage
+  title="Property Pack ontology candidate"
+  description="The machine-generated Property Pack ontology candidate: an accelerated, non-normative component of SPDTF 2.0 awaiting Technical Working Group determination."
+>
+  <h1>Property Pack ontology</h1>
+
+  <p class="lead">
+    The Property Pack is the standardised bundle of information needed to support a
+    property transaction. This ontology candidate models that bundle as a defined part
+    of SPDTF 2.0, spanning several semantic contexts rather than pretending it is one
+    universal business domain.
+  </p>
+
+  <div class="callout callout--key">
+    <p class="callout__label">Accelerated determination</p>
+    <p>
+      <strong>The Technical Working Group must determine this candidate by the end of
+      September 2026.</strong> The current <code>{candidateManifest.candidate_version}</code>
+      model remains <code>{candidateManifest.candidate_status}</code>. Later domain,
+      scheme and Interoperability working-group review may propose controlled changes;
+      none of those reviews or an external authority decision has yet occurred.
+    </p>
+  </div>
+
+  <PropertyPackContents items={[
+    { id: 'what-it-is', label: 'What a Property Pack is' },
+    { id: 'headline-counts', label: 'Candidate at a glance' },
+    { id: 'boundaries', label: 'Contextual boundaries' },
+    { id: 'reference', label: 'Explore the reference' },
+    { id: 'scope', label: 'Scope and authority' },
+  ]} />
+
+  <h2 id="what-it-is">What a Property Pack is</h2>
+  <p>
+    It is an exchange and delivery profile: a governed set of information that travels
+    with a property transaction and draws on conveyancing, estate agency, finance,
+    property-data services, property technology, surveying and shared identifiers. The
+    451 required source items define the current coverage boundary; they do not prescribe
+    451 RDF properties or reproduce the structure of a JSON document.
+  </p>
+
+  <h2 id="headline-counts">Candidate at a glance</h2>
+  <div class="v2-metrics">
+    <div class="v2-metric"><strong>{counts.sourceItems}</strong><span>required source data points, each traced to the candidate</span></div>
+    <div class="v2-metric"><strong>{counts.resources}</strong><span>OWL resources: {counts.classes} classes and {counts.objectProperties + counts.datatypeProperties} properties</span></div>
+    <div class="v2-metric"><strong>{counts.schemes}</strong><span>controlled-vocabulary schemes with {counts.concepts} curated concepts</span></div>
+    <div class="v2-metric"><strong>{counts.shapes}</strong><span>SHACL node shapes carrying {counts.constraints} property constraints</span></div>
+    <div class="v2-metric"><strong>{contexts.length}</strong><span>semantic homes: six bounded contexts, one common boundary and one scheme context</span></div>
+    <div class="v2-metric"><strong>{counts.topicConcepts}</strong><span>source-topic concepts for consolidated Property Pack questions</span></div>
+  </div>
+
+  <h2 id="boundaries">Contextual boundaries</h2>
+  <p>
+    Every ontology resource has one semantic home. The dashed lines below mean only that
+    each context interoperates through the Common boundary. They do not assert reviewed
+    cross-domain mappings, control or inheritance. Cross-domain mappings remain
+    <strong>awaiting working-group evidence</strong>.
+  </p>
+  <PropertyPackDiagramLegend variant="boundary" />
+  <GraphDiagram
+    source={boundaryDiagram()}
+    minHeight="560px"
+    caption="Declared context architecture: six bounded contexts, the DBT Smart Data scheme context, and the deliberately small Common boundary. Click a node to open its context page."
+  />
+
+  <div class="v2-card-grid">
+    {contexts.map((context) => {
+      const stats = contextStats(context.id);
+      return (
+        <a class="v2-card" href={contextRoute(context)}>
+          <span class={`pill ${context.kind === 'common-boundary' ? 'pill--brand' : context.kind === 'scheme-context' ? 'pill--warn' : 'pill--info'}`}>
+            {context.kind === 'bounded-context' ? 'Bounded context' : context.kind === 'common-boundary' ? 'Common boundary' : 'Scheme context'}
+          </span>
+          <h3>{context.label}</h3>
+          <p>{context.definition}</p>
+          <p class="v2-card__meta">{stats.resources} resources · {stats.sourceItems} source data points</p>
+        </a>
+      );
+    })}
+  </div>
+
+  <h2 id="reference">Explore the reference</h2>
+  <div class="v2-card-grid">
+    <a class="v2-card" href="/spdtf-2/property-pack/definition-and-scope"><span class="pill pill--brand">451 items</span><h3>Definition and scope</h3><p>Inspect every required source item, constraint, semantic home, candidate disposition and evidence trace.</p></a>
+    <a class="v2-card" href="/spdtf-2/property-pack/pdtf-1-lineage"><span class="pill pill--brand">Lineage</span><h3>PDTF 1.0 lineage</h3><p>Separate proven schema coverage from the incomplete semantic crosswalk to the ontology extracted from PDTF 1.0.</p></a>
+    <a class="v2-card" href="/spdtf-2/property-pack/model"><span class="pill pill--brand">Atlas</span><h3>Complete model</h3><p>All 159 candidate resources and 229 asserted structural links, with a synchronized text representation.</p></a>
+    <a class="v2-card" href="/spdtf-2/property-pack/resources"><span class="pill pill--info">OWL</span><h3>Ontology resources</h3><p>Human definitions, technical identifiers, semantic homes, domains, ranges, constraints and evidence traces.</p></a>
+    <a class="v2-card" href="/spdtf-2/property-pack/data-dictionary"><span class="pill pill--info">451 items</span><h3>Data dictionary</h3><p>The exact Property Pack source scope, source constraints and candidate-model disposition for every item.</p></a>
+    <a class="v2-card" href="/spdtf-2/property-pack/vocabularies"><span class="pill pill--info">SKOS</span><h3>Controlled vocabularies</h3><p>Fourteen curated value schemes plus the distinct source-topic concept layer.</p></a>
+    <a class="v2-card" href="/spdtf-2/property-pack/shapes"><span class="pill pill--info">SHACL</span><h3>Validation shapes</h3><p>Forty-five target-class shapes and every emitted datatype, class, count and pattern constraint.</p></a>
+    <a class="v2-card" href="/spdtf-2/property-pack/coverage"><span class="pill pill--success">Traceable</span><h3>Source coverage</h3><p>How all 451 source items reach candidate constructs without importing the legacy ontology.</p></a>
+    <a class="v2-card" href="/spdtf-2/property-pack/standards"><span class="pill pill--warn">Exact claims</span><h3>Standards profile</h3><p>RDF 1.2 Basic, SPARQL 1.2 and SHACL 1.2 targets, with explicit non-claims.</p></a>
+    <a class="v2-card" href="/spdtf-2/property-pack/validation"><span class="pill pill--success">Evidence</span><h3>Technical validation</h3><p>Parser, SHACL probe, competency-query and deterministic-regeneration results.</p></a>
+    <a class="v2-card" href="/spdtf-2/property-pack/technical-working-group-determination"><span class="pill pill--warn">Pending</span><h3>Technical determination</h3><p>Review remit, deadline, evidence, questions and the decision record that must be completed before any determination is claimed.</p></a>
+    <a class="v2-card" href="/spdtf-2/property-pack/review-and-releases"><span class="pill pill--info">Later</span><h3>Review and releases</h3><p>How later domain review, controlled change and immutable versions follow the accelerated technical determination.</p></a>
+  </div>
+
+  <h2 id="scope">Scope and authority</h2>
+  <div class="v2-note-grid">
+    <section>
+      <h3>Closed business-data scope</h3>
+      <p>Exactly the 451 workbook rows marked Required. Supporting ontology constructs make the data meaningful but do not enlarge that business-data scope.</p>
+    </section>
+    <section>
+      <h3>Greenfield semantics</h3>
+      <p>PDTF 1.0 contains the Property Pack source definition and its extracted ontology should contain corresponding meaning. This candidate imports neither topology; the item-level semantic crosswalk remains incomplete.</p>
+    </section>
+    <section>
+      <h3>Human authority</h3>
+      <p>AI drafted the candidate. The Technical Working Group makes the accelerated initial determination; later working groups may review and propose versioned changes. Government use does not itself grant OPDA external authority.</p>
+    </section>
+  </div>
+</PropertyPackPage>

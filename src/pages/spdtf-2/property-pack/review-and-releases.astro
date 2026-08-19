@@ -1,0 +1,67 @@
+---
+import PropertyPackPage from '@/components/property-pack/PropertyPackPage.astro';
+import PropertyPackContents from '@/components/property-pack/PropertyPackContents.astro';
+import { candidateManifest } from '@/lib/property-pack-model.mjs';
+---
+<PropertyPackPage
+  title="Later review and releases"
+  description="How later working-group review, controlled change and immutable versions follow the accelerated Property Pack technical determination."
+  category="Review and versioning"
+  crumbs={[{ label: 'Later review and releases' }]}
+>
+  <h1>Later review and releases</h1>
+  <p class="lead">
+    The September Technical Working Group milestone is the first determination, not the
+    end of semantic review. Relevant domain, scheme and Interoperability working groups
+    can subsequently review the meanings they own and propose controlled, traceable changes.
+  </p>
+
+  <div class="callout callout--note">
+    <p class="callout__label">Current state</p>
+    <p>
+      Candidate <code>{candidateManifest.candidate_version}</code> is not determined or
+      released. No later working-group review, implementation release or external
+      authority decision is recorded.
+    </p>
+  </div>
+
+  <PropertyPackContents items={[
+    { id: 'sequence', label: 'Review sequence' },
+    { id: 'change-control', label: 'Controlled change' },
+    { id: 'version-contract', label: 'Version contract' },
+    { id: 'claims', label: 'Claims that remain separate' },
+  ]} />
+
+  <h2 id="sequence">Review sequence</h2>
+  <ol>
+    <li>Record the Technical Working Group determination against an immutable candidate digest.</li>
+    <li>Identify the ontology areas owned or consumed by each later working group.</li>
+    <li>Collect evidence, questions and proposed dispositions without rewriting the determined baseline.</li>
+    <li>Assess cross-context and implementation impact through Governance and Interoperability.</li>
+    <li>Publish an explicit new candidate or release only after its own authority gate passes.</li>
+  </ol>
+
+  <h2 id="change-control">Controlled change</h2>
+  <p>
+    A later proposal must identify the affected source items and ontology constructs,
+    cite evidence, name the semantic owner, state compatibility impact and record its
+    disposition. Accepted changes create a new version; they do not edit the evidence
+    used for the September determination in place.
+  </p>
+
+  <h2 id="version-contract">Version contract</h2>
+  <dl class="v2-facts">
+    <div><dt>Current source cut</dt><dd><code>{candidateManifest.candidate_version}</code> under <code>source/03-standards/ontology-candidates/property-pack/0.1/</code></dd></div>
+    <div><dt>Determined version</dt><dd>Not yet assigned</dd></div>
+    <div><dt>Later revision</dt><dd>Must receive a distinct identifier, change record and validation receipt</dd></div>
+    <div><dt>Compatibility</dt><dd>Must be assessed explicitly; no silent replacement of PDTF 1.0 contracts</dd></div>
+  </dl>
+
+  <h2 id="claims">Claims that remain separate</h2>
+  <ul>
+    <li>Technical checks passing does not mean semantic agreement.</li>
+    <li>A Technical Working Group determination does not mean every domain group has reviewed the model.</li>
+    <li>A determined ontology component is not automatically an implementation release or adopted SPDTF 2.0 standard.</li>
+    <li>Use in government-scheme work does not itself grant OPDA statutory or delegated authority.</li>
+  </ul>
+</PropertyPackPage>

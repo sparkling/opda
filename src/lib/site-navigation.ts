@@ -56,6 +56,52 @@ const ontologyJourney: Item = {
   ],
 };
 
+const propertyPackBase = '/spdtf-2/property-pack';
+const propertyPackJourney: Item = {
+  url: propertyPackBase,
+  title: 'Property Pack ontology',
+  children: [
+    { url: `${propertyPackBase}/definition-and-scope`, title: 'Definition and 451-item scope' },
+    { url: `${propertyPackBase}/pdtf-1-lineage`, title: 'PDTF 1.0 lineage' },
+    {
+      url: `${propertyPackBase}/model`,
+      title: 'Current ontology model',
+      children: [
+        {
+          url: `${propertyPackBase}/contexts`,
+          title: 'Semantic contexts',
+          children: [
+            { url: `${propertyPackBase}/contexts/common`, title: 'Common boundary' },
+            { url: `${propertyPackBase}/contexts/conveyancing`, title: 'Conveyancing' },
+            { url: `${propertyPackBase}/contexts/estate-agency`, title: 'Estate agency' },
+            { url: `${propertyPackBase}/contexts/finance-and-banking`, title: 'Finance and banking' },
+            { url: `${propertyPackBase}/contexts/property-data-services`, title: 'Property data services' },
+            { url: `${propertyPackBase}/contexts/property-technology`, title: 'Property technology' },
+            { url: `${propertyPackBase}/contexts/surveying-and-valuation`, title: 'Surveying and valuation' },
+            { url: `${propertyPackBase}/contexts/dbt-smart-data`, title: 'DBT Smart Data candidate context' },
+          ],
+        },
+        { url: `${propertyPackBase}/resources`, title: 'Ontology resources' },
+        { url: `${propertyPackBase}/relationships`, title: 'Relationships' },
+        { url: `${propertyPackBase}/data-dictionary`, title: 'Data dictionary' },
+        { url: `${propertyPackBase}/vocabularies`, title: 'Controlled vocabularies' },
+        { url: `${propertyPackBase}/shapes`, title: 'SHACL shapes' },
+      ],
+    },
+    {
+      url: `${propertyPackBase}/coverage`,
+      title: 'Candidate source coverage',
+      children: [
+        { url: `${propertyPackBase}/standards`, title: 'Standards profile' },
+        { url: `${propertyPackBase}/validation`, title: 'Validation evidence' },
+        { url: `${propertyPackBase}/artefacts`, title: 'Generated artefacts' },
+      ],
+    },
+    { url: `${propertyPackBase}/technical-working-group-determination`, title: 'Technical Working Group determination' },
+    { url: `${propertyPackBase}/review-and-releases`, title: 'Later review and releases' },
+  ],
+};
+
 const workingGroupItems: Item[] = WORKING_GROUPS.map((group) => {
   const url = `/spdtf-2/working-groups/${group.slug}`;
   return {
@@ -100,7 +146,7 @@ const navigationSections: Record<DestinationKey, Section> = {
   'spdtf-2': {
     key: 'spdtf-2',
     title: 'SPDTF 2.0 Development',
-    summary: 'Current evidence-up modelling, semantic method, candidates and development inputs.',
+    summary: 'Current evidence-up modelling, ontology method, the Property Pack component and wider candidates.',
     groups: [
       { heading: 'Overview', items: [
         { url: '/spdtf-2', title: 'Development overview' },
@@ -109,10 +155,7 @@ const navigationSections: Record<DestinationKey, Section> = {
         { url: '/spdtf-2/outputs', title: 'Outputs and validation' },
       ] },
       { heading: 'Semantic modelling', items: [ontologyJourney] },
-      { heading: 'Development input', items: [
-        ...ownedSectionItems('v2', 'spdtf-2'),
-        { url: '/modelling/property-pack', title: 'Property Pack extraction' },
-      ] },
+      { heading: 'Property Pack ontology', items: [propertyPackJourney] },
     ],
   },
   'working-groups': {

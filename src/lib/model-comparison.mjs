@@ -1,14 +1,14 @@
 /**
- * Evidence-backed comparison view model for the current ontology and V2.
+ * Evidence-backed comparison view model for the current ontology and Property Pack.
  *
- * This is deliberately separate from `v2-model.mjs`: the candidate module must
+ * This is deliberately separate from `property-pack-model.mjs`: the candidate module must
  * remain isolated from the current corpus, while this report is explicitly a
  * cross-corpus analytical view.
  */
 import { readdirSync, readFileSync } from 'node:fs';
 import path from 'node:path';
 
-import { contexts, counts as candidateCounts, resources as candidateResources } from './v2-model.mjs';
+import { contexts, counts as candidateCounts, resources as candidateResources } from './property-pack-model.mjs';
 
 const ROOT = process.cwd();
 const CURRENT_MODEL = path.resolve(ROOT, 'src/data/ontology-model.json');
@@ -95,14 +95,14 @@ const evidence = {
   currentSchema: { label: 'Current schema reference', href: '/schema' },
   currentMapping: { label: 'Current RML mapping', href: '/mapping' },
   currentProfiles: { label: 'Current overlay profiles', href: '/ontology/profiles' },
-  v2Overview: { label: 'V2 candidate overview', href: '/v2' },
-  v2Contexts: { label: 'V2 contextual boundaries', href: '/v2/contexts' },
-  v2Coverage: { label: 'V2 source coverage', href: '/v2/coverage' },
-  v2Resources: { label: 'V2 ontology resources', href: '/v2/resources' },
-  v2Shapes: { label: 'V2 SHACL shapes', href: '/v2/shapes' },
-  v2Vocabularies: { label: 'V2 controlled vocabularies', href: '/v2/vocabularies' },
-  v2Standards: { label: 'V2 standards profile', href: '/v2/standards' },
-  v2Validation: { label: 'V2 validation evidence', href: '/v2/validation' },
+  v2Overview: { label: 'Property Pack candidate overview', href: '/spdtf-2/property-pack' },
+  v2Contexts: { label: 'Property Pack contextual boundaries', href: '/spdtf-2/property-pack/contexts' },
+  v2Coverage: { label: 'Property Pack source coverage', href: '/spdtf-2/property-pack/coverage' },
+  v2Resources: { label: 'Property Pack ontology resources', href: '/spdtf-2/property-pack/resources' },
+  v2Shapes: { label: 'Property Pack SHACL shapes', href: '/spdtf-2/property-pack/shapes' },
+  v2Vocabularies: { label: 'Property Pack controlled vocabularies', href: '/spdtf-2/property-pack/vocabularies' },
+  v2Standards: { label: 'Property Pack standards profile', href: '/spdtf-2/property-pack/standards' },
+  v2Validation: { label: 'Property Pack validation evidence', href: '/spdtf-2/property-pack/validation' },
   scopeDecision: { label: 'ADR-0066 · closed Property Pack scope', href: '/modelling/adr/adr-0066' },
   architectureDecision: { label: 'ADR-0067 · context-owned candidate', href: '/modelling/adr/adr-0067' },
 };
@@ -113,7 +113,7 @@ export const comparisonDimensions = Object.freeze([
     label: 'Starting question',
     v1: 'How can the established PDTF JSON schemas, glossaries and form overlays be expressed and checked as linked data?',
     v2: 'What semantic model is needed to represent the 451 required Property Pack data points correctly?',
-    implication: 'V2 changes the modelling premise. It is not a mechanical refresh of V1.',
+    implication: 'Property Pack changes the modelling premise. It is not a mechanical refresh of V1.',
     evidence: [evidence.currentSchema, evidence.scopeDecision],
   },
   {
@@ -121,7 +121,7 @@ export const comparisonDimensions = Object.freeze([
     label: 'Business-data scope',
     v1: 'Broad PDTF v3 baseline spanning the transaction schema and form overlays.',
     v2: 'Closed initial scope of exactly 451 workbook rows marked Required.',
-    implication: 'V2 has complete trace coverage of its 451-item seed, not complete coverage of the broader V1/PDTF scope.',
+    implication: 'Property Pack has complete source-to-candidate trace coverage for its 451-item scope, not complete coverage of the broader V1/PDTF scope.',
     evidence: [evidence.currentSchema, evidence.v2Coverage],
   },
   {
@@ -137,7 +137,7 @@ export const comparisonDimensions = Object.freeze([
     label: 'Architecture',
     v1: 'One PDTF namespace organised into seven concern modules: foundation, property, agent, transaction, claim, governance and descriptive.',
     v2: 'A separate candidate namespace with six bounded contexts, a deliberately small Common boundary and a DBT Smart Data scheme context.',
-    implication: 'V1 modules and V2 semantic homes are different organising concepts, even though both are graph models.',
+    implication: 'V1 modules and Property Pack semantic homes are different organising concepts, even though both are graph models.',
     evidence: [evidence.current, evidence.v2Contexts],
   },
   {
@@ -145,7 +145,7 @@ export const comparisonDimensions = Object.freeze([
     label: 'Context ownership',
     v1: 'Industry contexts are perspectives derived across the shared model and overlay profiles.',
     v2: 'Every OPDA-defined resource and every source item has exactly one proposed semantic home.',
-    implication: 'V2 makes domain accountability explicit while preserving differences between contexts.',
+    implication: 'Property Pack makes domain accountability explicit while preserving differences between contexts.',
     evidence: [evidence.currentProfiles, evidence.architectureDecision],
   },
   {
@@ -153,7 +153,7 @@ export const comparisonDimensions = Object.freeze([
     label: 'From fields to meaning',
     v1: 'The published index is property-heavy: 41 classes, 75 object properties and 205 datatype properties.',
     v2: 'The candidate consolidates repeated source paths into 53 classes, 77 object properties and 29 datatype properties.',
-    implication: 'V2 leans more heavily on resources and relationships, but the count change is not a quality score because the scopes differ.',
+    implication: 'Property Pack leans more heavily on resources and relationships, but the count change is not a quality score because the scopes differ.',
     evidence: [evidence.current, evidence.v2Resources],
   },
   {
@@ -169,7 +169,7 @@ export const comparisonDimensions = Object.freeze([
     label: 'Controlled vocabularies',
     v1: 'The indexed corpus contains 48 SKOS schemes and 319 concepts across the broader schema-derived scope.',
     v2: 'Fourteen value schemes contain 85 curated concepts; a separate source-topic layer contains 413 concepts.',
-    implication: 'V2 separates values used in data from topics used to organise source questions.',
+    implication: 'Property Pack separates values used in data from topics used to organise source questions.',
     evidence: [evidence.current, evidence.v2Vocabularies],
   },
   {
@@ -185,7 +185,7 @@ export const comparisonDimensions = Object.freeze([
     label: 'Traceability',
     v1: 'Term-level provenance and RML connect ontology resources back to their schema locations.',
     v2: 'Stable Property Pack item IDs trace all 451 source points to candidate constructs, with direct and structural evidence distinguished.',
-    implication: 'V2 strengthens source-versus-proposal separation; it does not yet provide a sanctioned V1-to-V2 migration map.',
+    implication: 'Property Pack strengthens source-versus-proposal separation; it does not yet provide a sanctioned V1-to-Property Pack migration map.',
     evidence: [evidence.currentMapping, evidence.v2Coverage],
   },
   {
@@ -193,7 +193,7 @@ export const comparisonDimensions = Object.freeze([
     label: 'Outputs and compatibility',
     v1: 'OWL, SKOS, SHACL, RML, overlays, exemplars and dereferenceable documentation support the established JSON-schema ecosystem.',
     v2: 'OWL, SKOS, SHACL, glossary, dictionary, coverage and validation artefacts form the current candidate package. JSON Schema and form projections are later outputs.',
-    implication: 'Existing implementers should not replace current schemas with V2. Compatibility work requires an explicit migration decision.',
+    implication: 'Existing implementers should not replace current schemas with Property Pack. Compatibility work requires an explicit migration decision.',
     evidence: [evidence.currentMapping, evidence.v2Standards],
   },
   {
@@ -201,7 +201,7 @@ export const comparisonDimensions = Object.freeze([
     label: 'Authority and status',
     v1: 'Published PDTF 1.0 implementation and canonical reference for its corpus, while the site still marks the derived model draft and under review.',
     v2: 'Public review candidate: 0.1.0-draft, machine-proposed and non-normative. Human review and recorded disposition remain required.',
-    implication: 'Publication makes V2 reviewable; it does not approve it or replace V1.',
+    implication: 'Publication makes Property Pack reviewable; it does not approve it or replace V1.',
     evidence: [evidence.current, evidence.v2Overview, evidence.v2Validation],
   },
 ]);
@@ -209,7 +209,7 @@ export const comparisonDimensions = Object.freeze([
 export const continuityPoints = Object.freeze([
   'V1 remains useful implementation, provenance, mapping and migration evidence.',
   'The linked-data standards family continues: RDF, RDFS, OWL, SKOS, SHACL, Dublin Core and provenance vocabularies.',
-  'Existing definitions and design decisions can support a V2 decision when they are cited and reviewed.',
+  'Existing definitions and design decisions can support a Property Pack decision when they are cited and reviewed.',
   'The build, validation and documentation lessons from V1 are reused without silently importing its semantic structure.',
 ]);
 

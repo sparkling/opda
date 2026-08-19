@@ -240,7 +240,7 @@ test('every Astro page belongs to an explicit visual route family', async () => 
     const source = await readFile(file(path), 'utf8');
     const owned = source.includes("@/layouts/Layout.astro")
       || source.includes("@/layouts/PublicWorkingGroupLayout.astro")
-      || source.includes("@/components/v2/V2Page.astro")
+      || source.includes("@/components/property-pack/PropertyPackPage.astro")
       || standalone.has(path);
     assert.ok(owned, `${path} has no declared visual route-family owner`);
   }

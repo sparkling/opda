@@ -44,12 +44,12 @@ export const ALLOWED_DISPOSITIONS = Object.freeze([
 ]);
 
 const workspaceInputs = Object.freeze({
-  'finance-and-banking': ['/v2/contexts/finance-and-banking', '/programme'],
-  conveyancing: ['/v2/contexts/conveyancing', '/pdtf-1'],
-  'estate-agency': ['/v2/contexts/estate-agency', '/pdtf-1'],
-  'surveying-and-valuation': ['/v2/contexts/surveying-and-valuation', '/pdtf-1'],
-  'property-data-services': ['/v2/contexts/property-data-services', '/resources'],
-  'property-technology': ['/v2/contexts/property-technology', '/pdtf-1'],
+  'finance-and-banking': ['/spdtf-2/property-pack/contexts/finance-and-banking', '/programme'],
+  conveyancing: ['/spdtf-2/property-pack/contexts/conveyancing', '/pdtf-1'],
+  'estate-agency': ['/spdtf-2/property-pack/contexts/estate-agency', '/pdtf-1'],
+  'surveying-and-valuation': ['/spdtf-2/property-pack/contexts/surveying-and-valuation', '/pdtf-1'],
+  'property-data-services': ['/spdtf-2/property-pack/contexts/property-data-services', '/resources'],
+  'property-technology': ['/spdtf-2/property-pack/contexts/property-technology', '/pdtf-1'],
   'dbt-smart-data': ['/dbt-smart-data', '/programme'],
   interoperability: ['/spdtf-2/ontologies/bounded-contexts', '/spdtf-2/ontologies/evidence-and-mappings'],
 });
@@ -99,13 +99,13 @@ function evidenceRecord(slug, href, index) {
   return Object.freeze({
     id: `${slug}-input-${index + 1}`,
     href,
-    sourceType: href.startsWith('/v2/') ? 'machine-generated development input' : 'maintained OPDA documentation route',
+    sourceType: href.startsWith('/spdtf-2/property-pack/') ? 'machine-generated Property Pack ontology candidate' : 'maintained OPDA documentation route',
     recordedDate: '2026-08-19',
     version: 'route view at workspace contract 1.0',
     submitter: 'OPDA documentation team',
     permission: 'Public OPDA route reference; linked source terms remain controlling',
     sensitivity: 'Public route only; linked records retain their own classification',
-    status: 'attributed development input — no group review recorded',
+    status: 'attributed candidate evidence — no group review recorded',
   });
 }
 

@@ -2,7 +2,7 @@
  * Executable information-architecture contract for the SPDTF website.
  *
  * Global destinations describe reader tasks and authority. They deliberately do
- * do not replace the existing SECTIONS route taxonomy. site-navigation.ts
+ * not replace the existing SECTIONS route taxonomy. site-navigation.ts
  * composes those stable routes into current sidebars and page sequences.
  */
 
@@ -33,7 +33,6 @@ export const ROUTE_FAMILY_OWNERS = Object.freeze({
   strategy: 'programme',
   'dbt-smart-data': 'programme',
   'spdtf-2': 'spdtf-2',
-  v2: 'spdtf-2',
   'working-groups': 'working-groups',
   engagement: 'resources',
   presentation: 'working-groups',
@@ -60,7 +59,6 @@ export const ROUTE_OWNER_OVERRIDES = Object.freeze([
   { pattern: /^\/$/u, owner: 'programme' },
   { pattern: /^\/home$/u, owner: 'programme' },
   { pattern: /^\/(?:search|design-system|404)$/u, owner: 'resources' },
-  { pattern: /^\/modelling\/property-pack(?:\/|$)/u, owner: 'spdtf-2' },
   { pattern: /^\/modelling\/(?:adr|odr)(?:\/|$)/u, owner: 'governance' },
   { pattern: /^\/engagement\/meetings-decisions(?:\/|$)/u, owner: 'governance' },
   { pattern: /^\/engagement\/working-groups(?:\/|$)/u, owner: 'programme' },
@@ -142,28 +140,18 @@ const PDTF_ADOPTION_STATUS = Object.freeze({
 /** Route-level exceptions prevent a parent label from overstating child authority. */
 export const ROUTE_STATUS_OVERRIDES = Object.freeze([
   {
-    pattern: /^\/modelling\/property-pack(?:\/|$)/u,
+    pattern: /^\/spdtf-2\/property-pack(?:\/|$)/u,
     status: {
-      workArea: 'SPDTF 2.0 development input',
-      authority: 'Machine-generated Property Pack seed; no working-group approval recorded',
-      maturity: 'Non-normative pre-draft',
-      version: '0.1.0-draft seed',
-      provenance: 'PDTF 1.0 evidence and Property Pack source coverage',
+      workArea: 'SPDTF 2.0 · Property Pack ontology',
+      authority: 'Machine-generated candidate; Technical Working Group determination pending',
+      maturity: 'Non-normative candidate under accelerated technical review',
+      version: '0.1.0-draft candidate cut',
+      provenance: 'Property Pack definition, attributed PDTF 1.0 evidence and generated semantic model',
     },
   },
   {
     pattern: /^\/modelling\/(?:adr|odr)(?:\/|$)/u,
     status: AUTHORITY_BY_DESTINATION.governance,
-  },
-  {
-    pattern: /^\/v2(?:\/|$)/u,
-    status: {
-      workArea: 'SPDTF 2.0 development input',
-      authority: 'Machine-generated Property Pack seed; no working-group approval recorded',
-      maturity: 'Non-normative pre-draft',
-      version: '0.1.0-draft seed',
-      provenance: 'PDTF 1.0 evidence and Property Pack source coverage',
-    },
   },
   {
     pattern: /^\/(?:pdtf|ontology|model|manual)(?:\/|$)/u,
@@ -262,12 +250,12 @@ export const PRESERVATION_LEDGER = Object.freeze([
     disposition: 'regenerate-equivalently',
   },
   {
-    currentPath: '/v2/**',
-    kind: 'SPDTF 2.0 development input',
+    currentPath: 'former /v2/** and /modelling/property-pack',
+    kind: 'Property Pack route migration',
     owner: 'spdtf-2',
-    preservedAt: '/v2/**',
-    consumers: ['candidate register', 'immutable seed references', 'legacy links'],
-    verification: 'stable route/representation identity and reframe-equivalent context; no duplicate seed',
+    preservedAt: '/spdtf-2/property-pack/**',
+    consumers: ['Technical Working Group review', 'candidate register', 'source catalogue', 'ontology reference'],
+    verification: 'old-to-new route, information-block, fragment and comment-identity receipts; old paths absent',
     checksumSource: 'source/03-standards/ontology-candidates/property-pack/0.1/candidate-manifest.json',
     disposition: 'reframe-equivalent',
   },
@@ -345,7 +333,6 @@ export const ROUTE_DISPOSITION_LEDGER = Object.freeze([
     ['engagement', 'resources', 'reframe'],
     ['modelling', 'pdtf-1', 'reframe'],
     ['model', 'pdtf-1', 'reframe'],
-    ['v2', 'spdtf-2', 'reframe'],
     ['ontology', 'pdtf-1', 'reframe'],
     ['mapping', 'pdtf-1', 'reframe'],
     ['schema', 'pdtf-1', 'reframe'],
@@ -366,7 +353,7 @@ export const ROUTE_DISPOSITION_LEDGER = Object.freeze([
     ['/working-groups/join/**', 'spdtf-2', 'keep'],
     ['/engagement/meetings-decisions/**', 'governance', 'reframe'],
     ['/engagement/working-groups/**', 'programme', 'reframe'],
-    ['/modelling/property-pack', 'spdtf-2', 'reframe'],
+    ['/spdtf-2/property-pack/**', 'spdtf-2', 'reframe'],
     ['/ontology/datatypes', 'pdtf-1', 'keep'],
     ['/ontology/namespaces', 'pdtf-1', 'keep'],
     ['/resource', 'resources', 'keep'],
@@ -385,11 +372,6 @@ export const ROUTE_DISPOSITION_LEDGER = Object.freeze([
     ['/ontology/exemplar/**', 'pdtf-1', 'keep'],
     ['/ontology/profile/**', 'pdtf-1', 'keep'],
     ['/pdtf/**', 'pdtf-1', 'keep'],
-    ['/v2/contexts/**', 'spdtf-2', 'reframe'],
-    ['/v2/data-dictionary/**', 'spdtf-2', 'reframe'],
-    ['/v2/resources/**', 'spdtf-2', 'reframe'],
-    ['/v2/shapes/**', 'spdtf-2', 'reframe'],
-    ['/v2/vocabularies/**', 'spdtf-2', 'reframe'],
     ['/ontology/artefacts/**', 'pdtf-1', 'keep'],
     ['/ontology/tools/**', 'pdtf-1', 'keep'],
     ['/data/**', 'resources', 'keep'],

@@ -1,0 +1,36 @@
+---
+import PropertyPackContents from '@/components/property-pack/PropertyPackContents.astro';
+import PropertyPackPage from '@/components/property-pack/PropertyPackPage.astro';
+import { validationReport } from '@/lib/property-pack-model.mjs';
+
+const passCount = validationReport.checks.filter((check) => check.state === 'pass').length;
+---
+<PropertyPackPage
+  title="Validation evidence"
+  description="All 56 machine validation checks, tool versions, standards assurance boundaries and checked-tree digest for the Property Pack ontology candidate."
+  category="Evidence & assurance"
+  crumbs={[{ label: 'Validation evidence' }]}
+>
+  <h1>Validation evidence</h1>
+  <p class="lead">All {validationReport.checks.length} recorded technical checks passed against the exact generated tree identified below. This is reproducibility evidence, not semantic approval.</p>
+
+  <PropertyPackContents items={[
+    { id: 'result', label: 'Technical result' },
+    { id: 'tooling', label: 'Tooling and standards assurance' },
+    { id: 'checks', label: 'Complete check register' },
+  ]} />
+
+  <h2 id="result">Technical result</h2>
+  <div class="v2-metrics">
+    <div class="v2-metric"><strong>{passCount}/{validationReport.checks.length}</strong><span>checks passed</span></div>
+    <div class="v2-metric"><strong>{validationReport.source_item_count}</strong><span>source items checked</span></div>
+    <div class="v2-metric"><strong>{validationReport.status}</strong><span>machine validation status</span></div>
+  </div>
+  <dl class="v2-facts"><div><dt>Candidate</dt><dd><code>{validationReport.candidate_id}</code></dd></div><div><dt>Report schema</dt><dd><code>{validationReport.schema_version}</code></dd></div><div><dt>Checked-tree digest</dt><dd><code>{validationReport.checked_tree_digest}</code></dd></div></dl>
+
+  <h2 id="tooling">Tooling and standards assurance</h2>
+  <dl class="v2-facts">{Object.entries(validationReport.tooling).map(([key, value]) => <div><dt>{key.toUpperCase()}</dt><dd>{value}</dd></div>)}{Object.entries(validationReport.standards_assurance).map(([key, value]) => <div><dt>{key.replaceAll('_', ' ')}</dt><dd>{value}</dd></div>)}</dl>
+
+  <h2 id="checks">Complete check register ({validationReport.checks.length})</h2>
+  <div class="v2-table-wrap"><table><thead><tr><th>State</th><th>Check</th><th>Recorded detail</th></tr></thead><tbody>{validationReport.checks.map((check) => <tr><td><span class={check.state === 'pass' ? 'pill pill--success' : 'pill pill--warn'}>{check.state}</span></td><td><code>{check.name}</code></td><td>{check.detail}</td></tr>)}</tbody></table></div>
+</PropertyPackPage>
