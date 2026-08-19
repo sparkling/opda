@@ -197,7 +197,10 @@ jobs:
           SITE_BUCKET=$(aws cloudformation describe-stacks --region eu-west-2 \
             --stack-name opda-site \
             --query "Stacks[0].Outputs[?OutputKey=='SiteBucketName'].OutputValue" --output text)
-          aws s3 sync dist/ "s3://$SITE_BUCKET" --delete
+          # /v3 is an independently verified preview owned by the manual-only
+          # preview workflow; a production-root sync must never delete it.
+          aws s3 sync dist/ "s3://$SITE_BUCKET" --delete \
+            --exclude "v3/*"
 
       - name: Invalidate CloudFront
         if: github.event_name != 'pull_request'
