@@ -308,6 +308,69 @@ test('dense prose tables become labelled keyboard-scrollable regions', async () 
   assert.match(tables, /\.prose > table/u, 'no-JavaScript containment fallback is required');
 });
 
+test('text inherits its outer layout width instead of stacking nested measures', async () => {
+  const [
+    design,
+    content,
+    components,
+    publicEntry,
+    workingGroupLayout,
+    campaign,
+    campaignSections,
+    join,
+    privacy,
+    ontologyGraph,
+    workshopDeck,
+    workshopScenes,
+    presentation,
+  ] = await Promise.all([
+    readFile(file('DESIGN.md'), 'utf8'),
+    readFile(file('public/ui/design/content.css'), 'utf8'),
+    readFile(file('public/ui/design/components.css'), 'utf8'),
+    readFile(file('public/ui/design/public.css'), 'utf8'),
+    readFile(file('src/layouts/PublicWorkingGroupLayout.astro'), 'utf8'),
+    readFile(file('src/styles/working-group-campaign.css'), 'utf8'),
+    readFile(file('src/styles/working-group-campaign-sections.css'), 'utf8'),
+    readFile(file('src/styles/working-group-join.css'), 'utf8'),
+    readFile(file('src/styles/working-group-privacy.css'), 'utf8'),
+    readFile(file('src/pages/ontology/graph.astro'), 'utf8'),
+    readFile(file('src/styles/presentations/workshop-deck.css'), 'utf8'),
+    readFile(file('src/styles/presentations/workshop-scenes.css'), 'utf8'),
+    readFile(file('docs/design-system-site/styles.css'), 'utf8'),
+  ]);
+
+  assert.match(design, /The outer layout container is the sole owner of content measure/u);
+  assert.match(content, /\.prose\s*\{[^}]*max-width:\s*var\(--content-reading\)/su);
+  assert.match(content, /\.prose\.wide\s*\{[^}]*max-width:\s*var\(--content-max\)/su);
+
+  const contentWithoutOuterMeasures = content
+    .replace(/\.prose\s*\{[^}]*\}/su, '')
+    .replace(/\.prose\.wide\s*\{[^}]*\}/su, '');
+  const maxWidthDeclaration = /(?:^\s*|[;{]\s*)max-width\s*:/mu;
+  assert.doesNotMatch(contentWithoutOuterMeasures, maxWidthDeclaration, 'content descendants must not own a second measure');
+
+  for (const [path, source] of [
+    ['public/ui/design/components.css', components],
+    ['public/ui/design/public.css', publicEntry],
+    ['src/layouts/PublicWorkingGroupLayout.astro', workingGroupLayout],
+    ['src/styles/working-group-campaign.css', campaign],
+    ['src/styles/working-group-campaign-sections.css', campaignSections],
+    ['src/styles/working-group-join.css', join],
+    ['src/styles/working-group-privacy.css', privacy],
+    ['src/pages/ontology/graph.astro', ontologyGraph],
+    ['src/styles/presentations/workshop-deck.css', workshopDeck],
+  ]) {
+    assert.doesNotMatch(source, maxWidthDeclaration, `${path} contains a nested max-width`);
+  }
+
+  for (const selector of ['scene--hero \\.lede', 'profile-lede', 'closing-line']) {
+    assert.doesNotMatch(workshopScenes, new RegExp(`\\.${selector}\\s*\\{[^}]*max-width\\s*:`, 'su'));
+  }
+  for (const selector of ['p', '\\.chapter-hero h1', '\\.chapter-hero \\.lede']) {
+    assert.doesNotMatch(presentation, new RegExp(`(?:^|\\n)${selector}\\s*\\{[^}]*max-width\\s*:`, 'su'));
+  }
+});
+
 test('the adversarial conformance blockers remain closed', async () => {
   const [rootPage, homePage, base, content, components, navigation, print] = await Promise.all([
     readFile(file('src/pages/index.astro'), 'utf8'),

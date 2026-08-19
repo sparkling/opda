@@ -11,7 +11,6 @@
 }
 
 .wg-privacy__summary p {
-  max-width: 66ch;
   margin: 0;
   color: var(--color-text-strong);
   font: var(--lead);
@@ -29,7 +28,7 @@
 .wg-privacy__contents li { margin-bottom: var(--space-2); break-inside: avoid; }
 .wg-privacy article > section { padding-block: var(--space-7); border-top: 1px solid var(--color-border); }
 .wg-privacy article p,
-.wg-privacy article li { max-width: 72ch; line-height: var(--leading-normal); }
+.wg-privacy article li { line-height: var(--leading-normal); }
 .wg-privacy article ul { padding-left: var(--space-6); }
 .wg-privacy .wg-updated { color: var(--color-text-muted); font-size: var(--text-sm); }
 

@@ -183,8 +183,13 @@ Self-host the three families with `font-display: swap`:
 | Overline | DM Sans 700 | 12/16, +0.08em | same |
 | Code | Roboto Mono 400 | 14/22 | 14/22 |
 
-Prose measure is 66ch. Figures and tables may break out. Tables and statistics use
-`font-variant-numeric: tabular-nums`. Do not introduce arbitrary type sizes.
+The outer layout container is the sole owner of content measure. The explicit narrow
+prose variant is 66ch; the standard documentation article uses the available content
+track up to the 1280px page maximum. Headings, leads, paragraphs, lists, quotations,
+callouts, cards and section copy fill their parent and must not add another `max-width`.
+Figures, tables, diagrams, media and intrinsically sized controls retain their own
+containment rules. Tables and statistics use `font-variant-numeric: tabular-nums`.
+Do not introduce arbitrary type sizes.
 Fallback fonts are loading and resilience fallbacks only. They must preserve the
 same display/body/mono roles, remain readable while web fonts swap, and must not
 reintroduce the superseded Fraunces/Inter prototype system as a live alternative.
@@ -209,7 +214,9 @@ The page grid has 12 columns, a 1280px maximum, 24px gutters and 32px desktop /
 16px mobile margins.
 
 At 1200px and above, the documentation shell is a 280px left navigation rail,
-flexible content with a 760px reading column, and an optional 240px on-page rail.
+a flexible content track, and an optional 240px on-page rail. The content track is
+the width authority: descendants do not stack narrower character or pixel measures.
+An explicitly requested narrow prose route may use the 66ch variant.
 Below 1200px the on-page rail becomes an in-content disclosure. Below 960px the
 left navigation is an off-canvas dialog with focus containment, Escape and focus
 return. At 640px cards, toolbars and component state boards become one column.

@@ -15,8 +15,8 @@ button:focus-visible, a:focus-visible, input:focus-visible { outline: none; box-
 .title-row { display: grid; grid-template-columns: minmax(0, 1fr) minmax(16rem, .85fr); gap: 1.5rem; align-items: end; }
 .eyebrow, .status, .context-label, .profile-role span, .profile-site span { color: var(--deck-accent); font: 700 var(--text-xs) / 1.3 var(--deck-mono); letter-spacing: var(--tracking-meta); text-transform: uppercase; }
 h1, h2, h3, p { margin-top: 0; }
-h1 { max-width: 16ch; margin-bottom: 1.25rem; color: var(--deck-text-strong); font: 600 clamp(2.4rem, 6vw, 5.6rem) / .98 var(--deck-display); letter-spacing: var(--tracking-display); }
-h2 { max-width: 28ch; margin-bottom: .7rem; color: var(--deck-text-strong); font: 700 clamp(1.8rem, 3.4vw, 3.65rem) / 1.08 var(--deck-sans); letter-spacing: var(--tracking-tight); }
+h1 { margin-bottom: 1.25rem; color: var(--deck-text-strong); font: 600 clamp(2.4rem, 6vw, 5.6rem) / .98 var(--deck-display); letter-spacing: var(--tracking-display); }
+h2 { margin-bottom: .7rem; color: var(--deck-text-strong); font: 700 clamp(1.8rem, 3.4vw, 3.65rem) / 1.08 var(--deck-sans); letter-spacing: var(--tracking-tight); }
 h3 { color: var(--deck-text-strong); font: 700 clamp(1rem, 1.35vw, 1.35rem) / 1.25 var(--deck-sans); }
 h1 em, h2 em, h3 em, .profile-copy em { color: var(--deck-accent); font-style: normal; }
 .lede { margin-bottom: 0; color: var(--deck-muted); font: 400 clamp(1.05rem, 1.7vw, 1.4rem) / 1.5 var(--deck-sans); }

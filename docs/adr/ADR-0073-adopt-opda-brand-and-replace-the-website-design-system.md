@@ -1,7 +1,7 @@
 ---
 status: implemented
 date: 2026-08-16
-updated: 2026-08-16
+updated: 2026-08-19
 tags: [design-system, brand, website, accessibility, css, governance, presentation]
 supersedes: [ADR-0025]
 depends-on: [ADR-0064]
@@ -71,6 +71,12 @@ The canonical repository assets are:
 
 Adopt the Q3 2026 guide and supplied vectors for this application and complete them
 through the derived OPDA web system specified in `DESIGN.md`.
+
+On 19 August 2026 the implemented layout contract was clarified after rendered-page
+review: each composition has one outer width authority. Nested text measures were
+removed from prose descendants, heroes, cards, callouts, campaign pages and the
+presentation; tables, diagrams, media and controls retain bounded sizing where their
+interaction requires it.
 
 ### Brand conflict resolution
 

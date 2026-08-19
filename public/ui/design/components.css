@@ -34,7 +34,6 @@
   text-transform: uppercase;
 }
 .home-hero h1 {
-  max-width: 12ch;
   margin: 0;
   color: var(--brand-white);
   font: var(--display);
@@ -49,7 +48,6 @@
   background: var(--brand-yellow);
 }
 .home-hero .lede {
-  max-width: 52ch;
   margin: var(--space-6) 0 0;
   color: var(--on-dark-muted);
   font: var(--lead);
@@ -89,7 +87,6 @@
   font: 600 var(--text-3xl) / 1 var(--font-mono);
 }
 .home-hero__index span {
-  max-width: 22ch;
   margin-top: var(--space-3);
   color: var(--neutral-400);
   font: 500 var(--text-sm) / 1.5 var(--font-sans);
@@ -127,7 +124,6 @@
   padding: var(--space-10) var(--space-7);
 }
 .home-section__head {
-  max-width: 48rem;
   margin-bottom: var(--space-7);
 }
 .home-section__head .overline {
@@ -138,7 +134,7 @@
   text-transform: uppercase;
 }
 .home-section__head h2 { margin: 0; font: var(--h2); color: var(--color-text-strong); }
-.home-section__head p { margin: var(--space-3) 0 0; max-width: 60ch; color: var(--color-text-muted); }
+.home-section__head p { margin: var(--space-3) 0 0; color: var(--color-text-muted); }
 
 .home-sections {
   display: grid;
@@ -254,8 +250,8 @@
   background: var(--brand-off-white);
 }
 .hero::before { content: none; }
-.hero h1 { max-width: 22ch; margin: 0 0 var(--space-3); font: var(--display); }
-.hero p { max-width: 60ch; margin: 0; color: var(--color-text-muted); font: var(--lead); }
+.hero h1 { margin: 0 0 var(--space-3); font: var(--display); }
+.hero p { margin: 0; color: var(--color-text-muted); font: var(--lead); }
 .hero .pill { margin-bottom: var(--space-3); }
 
 @media (max-width: 75rem) {

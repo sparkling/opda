@@ -12,7 +12,6 @@
 
 .wg-campaign-hero .wg-eyebrow { color: var(--on-dark-muted); }
 .wg-campaign-hero h1 {
-  max-width: 12ch;
   margin: 0;
   color: var(--brand-white);
   font: var(--display);
@@ -28,7 +27,7 @@
   background: var(--brand-yellow);
 }
 .wg-campaign-hero h1 em { color: inherit; font-style: normal; }
-.wg-campaign-hero .wg-lead { max-width: 54ch; color: var(--on-dark-muted); }
+.wg-campaign-hero .wg-lead { color: var(--on-dark-muted); }
 
 .wg-hero-actions { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-4); margin-top: var(--space-7); }
 .wg-btn--large { min-height: var(--target-min); padding-inline: var(--space-5); font-size: var(--text-base); }
@@ -132,8 +131,8 @@
   background: var(--color-surface-alt);
 }
 .wg-story__steps article > span { margin-bottom: var(--space-3); color: var(--color-text-muted); font: 700 var(--text-xs) / 1 var(--font-sans); letter-spacing: var(--tracking-meta); text-transform: uppercase; }
-.wg-story__steps h3 { max-width: 22ch; margin: 0; color: var(--color-text-strong); font: var(--h3); }
-.wg-story__steps article p { max-width: 46ch; margin: var(--space-4) 0 0; color: var(--color-text-muted); font: var(--lead); }
+.wg-story__steps h3 { margin: 0; color: var(--color-text-strong); font: var(--h3); }
+.wg-story__steps article p { margin: var(--space-4) 0 0; color: var(--color-text-muted); font: var(--lead); }
 
 .wg-context-section { padding-top: var(--space-12); }
 .wg-context-map { position: relative; }
