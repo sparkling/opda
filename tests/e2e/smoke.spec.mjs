@@ -165,3 +165,42 @@ test('schema tables stay readable inside their mobile overflow region', async ({
   }
   clean();
 });
+
+test('mobile interactive targets meet the 44px minimum', async ({ page }) => {
+  const clean = watchRuntime(page);
+  await page.setViewportSize({ width: 375, height: 900 });
+
+  await visit(page, '/schema/legal-estate/ownership/leasehold/lease-legal/building-safety');
+  for (const selector of ['#objects-search', '#filter-overlay-btn', '#objects-config-btn']) {
+    const size = await page.locator(selector).evaluate((element) => {
+      const rect = element.getBoundingClientRect();
+      return { width: rect.width, height: rect.height };
+    });
+    expect(size.height, `${selector} height`).toBeGreaterThanOrEqual(44);
+    if (selector !== '#objects-search') expect(size.width, `${selector} width`).toBeGreaterThanOrEqual(44);
+  }
+
+  await visit(page, '/presentation/working-group-kickoff');
+  for (const selector of ['[data-testid="prev-slide"]', '[data-testid="fullscreen-toggle"]', '[data-testid="next-slide"]']) {
+    const size = await page.locator(selector).evaluate((element) => {
+      const rect = element.getBoundingClientRect();
+      return { width: rect.width, height: rect.height };
+    });
+    expect(size.width, `${selector} width`).toBeGreaterThanOrEqual(44);
+    expect(size.height, `${selector} height`).toBeGreaterThanOrEqual(44);
+  }
+
+  await visit(page, '/ontology/graph');
+  await expect(page.locator('.og-tab').first()).toBeVisible();
+  const graphTabHeight = await page.locator('.og-tab').first().evaluate((element) => element.getBoundingClientRect().height);
+  expect(graphTabHeight, 'graph engine tab height').toBeGreaterThanOrEqual(44);
+
+  await visit(page, '/');
+  const enterSize = await page.locator('.public-header__signin').evaluate((element) => {
+    const rect = element.getBoundingClientRect();
+    return { width: rect.width, height: rect.height };
+  });
+  expect(enterSize.width, 'public Enter link width').toBeGreaterThanOrEqual(44);
+  expect(enterSize.height, 'public Enter link height').toBeGreaterThanOrEqual(44);
+  clean();
+});

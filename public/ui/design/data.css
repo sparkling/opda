@@ -53,11 +53,11 @@
   .db-toolbar--with-heading .db-search-group { max-width: none; }
   .db-toolbar--with-heading .db-inline-count { justify-self: start; }
 }
-/* Object-model header layout is now Tailwind utilities — see
-   aggregate-page.html.j2. The .objects-header class remains as a marker
-   so the post-header h3 spacing rule can target the following section. */
+/* Object-model header layout is now Tailwind utilities; .objects-header remains a marker. */
 .objects-header + h3 { margin-top: var(--space-3); }
 .objects-header + .object-block { margin-top: var(--space-3); }
+#objects-search, .schema-toolbar__search { min-height: var(--target-min); }
+#filter-overlay-btn, #objects-config-btn, .schema-toolbar__control { min-width: var(--target-min); min-height: var(--target-min); }
 .db-field {
   display: flex;
   flex-direction: column;
