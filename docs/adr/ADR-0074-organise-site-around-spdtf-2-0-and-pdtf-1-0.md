@@ -1,5 +1,5 @@
 ---
-status: accepted
+status: implemented
 date: 2026-08-18
 updated: 2026-08-19
 tags: [website, information-architecture, pdtf-1-0, spdtf-2-0, ontology, semantic-modelling, standards, migration, governance]
@@ -12,9 +12,10 @@ implements: [docs/spdtf-2-0-information-architecture.md]
 # Organise the site around SPDTF 2.0 and PDTF 1.0
 
 > Update 2026-08-19: the user accepted this decision and authorised implementation
-> in a separate feature worktree. The feature branch now contains the coherent
-> implementation candidate. No production publication has occurred; the ADR becomes
-> Implemented only after the final migration and release gates pass.
+> in a separate feature worktree. The migration and release gates passed at audited
+> evidence baseline `24f9fb4ca8405343dc13d2d4b7119a30e1b883d7`, so this ADR is
+> Implemented. This status does not mean published or deployed, and the redesigned
+> root information architecture remains outside the frozen `/v2/**` route family.
 
 ## Context and Problem Statement
 
@@ -48,8 +49,8 @@ standard has been identified. OPDA work is recognised as market activity and evi
 not as delegated government authority.
 
 ADR-0064 requires a follow-on decision for the coherent information architecture,
-status model, migration plan and release gate. It remains operative until this
-accepted decision passes its implementation gates and is marked Implemented.
+status model, migration plan and release gate. This implementation satisfies that
+follow-on requirement; ADR-0064's unrelated decisions remain operative.
 
 ## Decision Drivers
 
@@ -76,7 +77,7 @@ accepted decision passes its implementation gates and is marked Implemented.
 
 ## Decision Outcome
 
-Accepted: adopt six global destinations:
+Implemented: adopt six global destinations:
 
 1. Programme.
 2. SPDTF 2.0 Development.
@@ -158,13 +159,13 @@ technical decisions remain. It does not supersede those ADRs as a whole.
 
 ### Confirmation
 
-This ADR is Accepted for implementation on the isolated `feat/spdtf-2-ia` branch. It
-authorises the navigation and content-ownership change described here, but no
+This ADR is Implemented on the isolated `feat/spdtf-2-ia` branch. The audited
+implementation baseline is `24f9fb4ca8405343dc13d2d4b7119a30e1b883d7`; the
+status-change commit is a later governance-only change. Neither commit authorises
 publication or deployment.
 
 The branch contains the route/status registry, canonical landings and workspaces,
-search facets, runtime journeys, and exact preservation manifests. Release remains
-gated by:
+search facets, runtime journeys, and exact preservation manifests. It satisfies:
 
 - a disposition for every route, generated family, bundled artefact, published source
   object and compatibility alias in the current-site IA inventory;
@@ -183,8 +184,29 @@ gated by:
   unit and build gates;
 - a coherent release rather than piecemeal changes.
 
-ADR-0064 remains operative until those conditions are completed and this ADR is marked
-Implemented.
+The schema-v5 preservation receipt accounts for 562,664 baseline information-block
+occurrences: 561,743 exact, 868 source/hash-bound semantic reframes and 53
+provenance-bound superseded navigation copies. Its eight exact families are the source
+archive, council Markdown, ontology artefacts, deployed data, UI assets, image assets,
+ontology tools and the 690-route `/v2/**` atomic seed. The checker rejects a new route
+beneath `/v2/**`.
+
+At the evidence baseline, `make ci-browser` passed the 2,604-page Astro data build,
+3,485/3,485 HTML preservation check, 3,485-HTML/5,284-file crawl with zero unresolved
+or unlinked outputs, and 84/84 Playwright tests. The different counts are deliberate:
+Astro reports pages it renders, the preservation/crawl includes copied static HTML,
+and the emitted-file count also includes non-HTML assets. `make ci` passed 140/140
+unit tests, 5/5 schema tests, zero schema drift, 74 ADR records, and every ontology,
+documentation, graph and IA-parity gate. Two consecutive production data builds kept
+content-addressed asset tokens and strict preservation stable.
+
+Fable and Claude Sonnet each scored the implementation 98/100 with zero blockers; the
+OpenAI Devil's Advocate scored it 100/100 with zero blockers. A native subscription
+Claude–Codex deliberation then returned `accepted` with publication authority withheld.
+These reviews corroborate the executable gates; they do not replace them.
+
+ADR-0064's follow-on IA requirement is complete. Its unrelated decisions remain
+operative.
 
 ## Rules
 
@@ -214,12 +236,11 @@ Independent native-model priors came from OpenAI `gpt-5.6-terra` at high effort,
 OpenAI `gpt-5.6-sol` at xhigh effort, and Anthropic `claude-fable-5` at maximum effort.
 Bounded cross-examination used Fable at high and medium effort.
 
-The final OpenAI ballot accepted the original core proposal three to zero. Its 98/100
-Devil’s Advocate and Fable results predate the ontology expansion and are retained only
-as scoped history. A prior fail-closed review of the expanded ontology and
-preservation design scored 100/100. That result is historical evidence, not sign-off
-for this integrated implementation. The current HEAD must score at least 98/100 with
-no hard failures.
+The final OpenAI ballot accepted the original core proposal three to zero. Its earlier
+98/100 results and a scoped 100/100 ontology review remain historical evidence only.
+For the integrated implementation, Anthropic Fable and Claude Sonnet scored 98/100,
+the OpenAI Devil's Advocate scored 100/100, and the native Claude–Codex deliberation
+accepted the transition; every review reported zero hard failures.
 
 Held dissent: Fable would order PDTF 1.0 before SPDTF 2.0 Development because
 implementation is the majority task today. Navigation task testing must decide the

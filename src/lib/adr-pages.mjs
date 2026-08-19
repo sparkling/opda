@@ -96,5 +96,5 @@ export const ADR_REGISTRY = [
   { id: "adr-0071", number: "0071", title: "Recruit later bounded-context groups through a coordinated public campaign", status: "accepted", date: "2026-08-14" },
   { id: "adr-0072", number: "0072", title: "Operate a scheduled, harnessed working-group inbox agent", status: "accepted", date: "2026-08-15" },
   { id: "adr-0073", number: "0073", title: "Adopt the OPDA brand and replace the website design system", status: "implemented", date: "2026-08-16" },
-  { id: "adr-0074", number: "0074", title: "Organise the site around SPDTF 2.0 and PDTF 1.0", status: "accepted", date: "2026-08-18" },
+  { id: "adr-0074", number: "0074", title: "Organise the site around SPDTF 2.0 and PDTF 1.0", status: "implemented", date: "2026-08-18" },
 ];

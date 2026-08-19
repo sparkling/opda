@@ -40,6 +40,40 @@ function replaceKnown(source, before, after, label = before) {
   throw new Error(`HTML template marker not found: ${label}`);
 }
 
+function compactEmbeddedStyles(source) {
+  return source.replace(/<style>([\s\S]*?)<\/style>/gu, (_match, css) => (
+    `<style>${css.replace(/\n\s*/gu, ' ').trim()}</style>`
+  ));
+}
+
+function compactGeneratedHtml(source) {
+  const preserved = [];
+  const compact = source
+    .replace(/<pre\b[\s\S]*?<\/pre>/gu, (block) => {
+      const marker = `OPDA_PRESERVED_PRE_${preserved.length}`;
+      preserved.push(block);
+      return marker;
+    })
+    .replace(/\n\s*/gu, ' ')
+    .trim();
+  return preserved.reduce(
+    (output, block, index) => output.replace(`OPDA_PRESERVED_PRE_${index}`, block),
+    compact,
+  );
+}
+
+function ensureSkipLink(source) {
+  const rule = '.skip-link{position:fixed;inset-block-start:.5rem;inset-inline-start:.5rem;z-index:1000;padding:.75rem 1rem;background:var(--amber);color:var(--ink);font-weight:700;transform:translateY(-120%)}.skip-link:focus{transform:none;outline:3px solid var(--deep);outline-offset:2px}';
+  let output = source;
+  if (!output.includes('.skip-link{')) {
+    output = replaceKnown(output, '<style>', `<style>${rule}`, 'embedded stylesheet');
+  }
+  if (!output.includes('class="skip-link"')) {
+    output = replaceKnown(output, '<body>', '<body><a class="skip-link" href="#main">Skip to main content</a>', 'document body');
+  }
+  return output;
+}
+
 function renderMarkdown(markdown) {
   const source = markdown.replace(/^# .+\n+/u, '');
   const renderer = new marked.Renderer();
@@ -77,12 +111,13 @@ function buildHtml(template, markdown) {
   const toc = `<nav class="toc" id="toc" aria-label="On this page"><strong>Contents</strong>${headings
     .map(({ id, text }) => `<a href="#${id}">${text}</a>`)
     .join('')}</nav>`;
-  const main = `<main class="content" id="main">${body}<p class="print-note">Companion review artefact synchronized with <code>docs/spdtf-2-0-information-architecture.md</code>. No external resources are loaded; publication remains a separate release operation.</p></main>`;
+  const main = `<main class="content" id="main" tabindex="-1">${body}<p class="print-note">Companion review artefact synchronized with <code>docs/spdtf-2-0-information-architecture.md</code>. No external resources are loaded; publication remains a separate release operation.</p></main>`;
 
   let output = template;
   output = output.replace(/<nav class="toc" id="toc" aria-label="On this page">[\s\S]*?<\/nav><\/aside>/u, `${toc}</aside>`);
-  output = output.replace(/<main class="content" id="main">[\s\S]*?<\/main>(?=<\/div><footer)/u, main);
+  output = output.replace(/<main class="content" id="main"(?: tabindex="-1")?>[\s\S]*?<\/main>(?=<\/div><footer)/u, main);
   output = replaceKnown(output, '<title>Proposed SPDTF 2.0 information architecture · OPDA</title>', '<title>SPDTF 2.0 information architecture · OPDA</title>', 'document title');
+  output = replaceKnown(output, 'Information architecture review · 18 August 2026', 'Information architecture · 19 August 2026', 'header date');
   output = replaceKnown(output, 'content="Proposed information architecture for the continuation from PDTF 1.0 into SPDTF 2.0 development."', 'content="Implemented information architecture for the continuation from PDTF 1.0 into SPDTF 2.0 development."', 'meta description');
   output = replaceKnown(output, '<p class="eyebrow">Proposed · no live-site change</p>', '<p class="eyebrow">Implemented on feature branch · publication pending</p>', 'hero status');
   output = replaceKnown(output, 'aria-label="Proposal summary"', 'aria-label="Implementation summary"', 'summary label');
@@ -90,7 +125,7 @@ function buildHtml(template, markdown) {
   output = output.replaceAll('#proposed-hierarchy', '#implemented-hierarchy');
   output = output.replaceAll('#current-to-proposed-placement', '#current-to-implemented-placement');
   output = replaceKnown(output, '<strong>OPDA · Proposed SPDTF 2.0 information architecture</strong>', '<strong>OPDA · SPDTF 2.0 information architecture</strong>', 'footer title');
-  return output;
+  return compactGeneratedHtml(compactEmbeddedStyles(ensureSkipLink(output)));
 }
 
 const [markdown, currentHtml] = await Promise.all([

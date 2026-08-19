@@ -1,6 +1,6 @@
 # SPDTF 2.0 information architecture
 
-Status: **implemented on `feat/spdtf-2-ia`; final review and publication pending**<br>
+Status: **implemented on `feat/spdtf-2-ia`; publication pending**<br>
 Date: 2026-08-19<br>
 Decision record: [ADR-0074](./adr/ADR-0074-organise-site-around-spdtf-2-0-and-pdtf-1-0.md)<br>
 Review artefact: [HTML presentation](./spdtf-2-0-information-architecture.html)
@@ -18,9 +18,7 @@ Reorganise the documentation around six global destinations:
 
 This is an asymmetric continuation structure. It distinguishes PDTF 1.0 from SPDTF 2.0 work in development, while governance, participation and source resources remain shared services. It avoids mirrored sites with competing definitions of authority.
 
-The feature branch implements the navigation, hierarchy, status model and preservation
-gates as one coherent change. It does not by itself publish or deploy the production
-site; existing stable routes remain valid throughout the change.
+The feature branch implements the navigation, hierarchy, status model and preservation gates as one coherent change. It does not by itself publish or deploy the production site; existing stable routes remain valid throughout the change.
 
 ## Terminology and authority
 
@@ -59,20 +57,16 @@ The architecture is grounded in:
 The implementation is made auditable by:
 
 - an executable route, ownership and status contract in `src/lib/site-ia.mjs`;
-- a frozen before/after route manifest covering 3,436 baseline routes and every
-  retained fragment, plus classified records for the new routes;
-- exact path, size and SHA-256 manifests for source records, council records,
-  ontology artefacts, deployed data, UI assets, images, ontology tools and the
-  immutable `/v2/**` seed family;
+- a frozen before/after route manifest covering 3,436 baseline routes and every retained fragment, plus classified records for 49 new routes;
+- exact path, size and SHA-256 manifests for the eight families: source archive, council Markdown, ontology artefacts, deployed data, UI assets, image assets, ontology tools and the immutable 690-route `/v2/**` seed;
 - end-to-end journeys for authentication, comments, source viewing/download and
   working-group submissions; and
 - fail-closed build, route, accessibility, responsive, keyboard, visual and
   information-preservation gates before deployment credentials are available.
 
-The migration does not delete a current route or source family. Intentional wording
-changes have equivalence receipts; unchanged high-risk artefact families remain
-byte-identified. The release gate rejects an unclassified route, a lost legacy
-fragment, a changed frozen-family checksum, or any new route beneath `/v2/**`.
+The migration does not delete a current route or source family. Preservation schema v5 accounts for all 562,664 baseline information-block occurrences: 561,743 exact, 868 source/hash-bound semantic reframes and 53 provenance-bound superseded navigation copies. Unchanged high-risk artefact families remain byte-identified. The release gate rejects an unclassified route, a lost legacy fragment, a changed frozen-family checksum, or any new route beneath `/v2/**` (`scripts/check-ia-preservation.mjs`).
+
+The build counts describe different surfaces: Astro reports 2,604 pages it renders; preservation and the crawler see 3,485 HTML files after copied/generated static HTML is included; the crawler's 5,284 emitted files also include non-HTML data and support assets. All three denominators are therefore expected and independently gated.
 
 ## How DBT Smart Data fits
 
@@ -190,14 +184,9 @@ The home page should expose six task shortcuts without adding global destination
 
 “Working groups” is not a second content owner. It links to the exact canonical landing inside SPDTF 2.0 Development. Candidate, evidence, question and disposition records exist once.
 
-ADR-0074 amends only the top-level placement clauses in ADR-0002, ADR-0041, ADR-0059
-and ADR-0062. Their stable-route, generation, traceability and provenance decisions
-survive. ADR-0074 is Accepted; this branch implements the amended navigation without
-publishing it until the release gates and a separately authorised deployment pass.
+ADR-0074 amends only the top-level placement clauses in ADR-0002, ADR-0041, ADR-0059 and ADR-0062. Their stable-route, generation, traceability and provenance decisions survive. ADR-0074 is Implemented; this branch implements the amended navigation without publishing it until the release gates and a separately authorised deployment pass.
 
-Home is reached through the wordmark. Programme is the home task gateway's content
-owner and may therefore be shown as current there. Search, glossary, design system,
-account and feedback controls are utilities rather than primary destinations.
+Home is reached through the wordmark. Programme is the home task gateway's content owner and may therefore be shown as current there. Search, glossary, design system, account and feedback controls are utilities rather than primary destinations.
 
 ## Implemented hierarchy
 
@@ -348,21 +337,15 @@ does not confer membership, consensus or standards authority.
 
 ## The V2/Property Pack seed
 
-Retire “V2” as a reader-facing information-architecture label. That technical path
-name does not express authority, maturity or its relationship to SPDTF 2.0.
+Retire “V2” as a reader-facing information-architecture label. That technical path name does not express authority, maturity or its relationship to SPDTF 2.0.
 
 Use this full statement on the current corpus:
 
-> **SPDTF 2.0 development input · Machine-generated Property Pack pre-draft ·
-> Non-normative · No working-group review or approval recorded**
+> **SPDTF 2.0 development input · Machine-generated Property Pack pre-draft · Non-normative · No working-group review or approval recorded**
 
-The seed is more than raw evidence: it is a structured, immutable and reviewable
-pre-draft artefact. It may inform the first evidence-up work orders, but it must not
-be called the SPDTF 2.0 ontology, a working-group candidate, an approved SPDTF model
-or a replacement contract.
+The seed is more than raw evidence: it is a structured, immutable and reviewable pre-draft artefact. It may inform the first evidence-up work orders, but it must not be called the SPDTF 2.0 ontology, a working-group candidate, an approved SPDTF model or a replacement contract.
 
-Keep `/v2/**` stable. Add contextual and forward links before considering any
-canonical move.
+Keep `/v2/**` stable. Add contextual and forward links before considering any canonical move.
 
 ## Candidate-review page contract
 
@@ -382,8 +365,7 @@ Every substantive SPDTF 2.0 development page should expose, in this order:
 10. **History and receipts** — sessions, competency questions, standards-profile
     version, coverage receipt, immutable diff, validation scope and artefacts.
 
-Status must be readable in text, print and assistive technology. Colour or badges
-may reinforce the words but never carry authority alone.
+Status must be readable in text, print and assistive technology. Colour or badges may reinforce the words but never carry authority alone.
 
 ## Canonical status and provenance model
 
@@ -447,16 +429,13 @@ moving thousands of generated pages.
 1. The canonical taxonomy, status registry and migration-manifest schema are executable.
 2. New landing pages and task paths were added without removing existing content.
 3. Work-area/status metadata is resolved centrally for every classified route family.
-4. All eight working groups use one truthful pre-convening workspace contract, with
-   empty candidate/output registers rather than fabricated decisions.
+4. All eight working groups use one truthful pre-convening workspace contract, with empty candidate/output registers rather than fabricated decisions.
 5. The Property Pack seed is reframed in place and its 690-route family is frozen.
 6. Global navigation, breadcrumbs, search facets and home tasks change together.
-7. Route, accessibility, content-authority, task-finding and runtime-continuity gates
-   run before release.
+7. Route, accessibility, content-authority, task-finding and runtime-continuity gates run before release.
 8. No redirect is introduced without a semantic-equivalence receipt and test.
 
-This implementation record authorises no publication by itself. Deployment remains a
-separate, explicit and fail-closed operation.
+This implementation record authorises no publication by itself. Deployment remains a separate, explicit and fail-closed operation.
 
 ## Acceptance and release gates
 
@@ -491,19 +470,13 @@ The implementation is not releasable unless all of these pass:
 
 ## Council record
 
-A hierarchical specialised Ruflo council used Raft consensus, independent priors and
-a non-voting chair. OpenAI information-architecture and standards seats ran at high
-effort; the OpenAI Devil’s Advocate ran at xhigh; Anthropic Fable reviewed experience
-at maximum/high/medium effort. The earlier 98/100 result covered the core IA only.
-The expanded ontology and no-loss design previously passed a scoped 100/100 review.
-The integrated implementation must receive a fresh current-HEAD score of at least
-98/100 with no hard failures before ADR-0074 can move to Implemented.
+A hierarchical specialised Ruflo council used Raft consensus, independent priors and a non-voting chair. OpenAI information-architecture and standards seats ran at high effort; the OpenAI Devil’s Advocate ran at xhigh; Anthropic Fable reviewed experience at maximum/high/medium effort. At audited evidence baseline `24f9fb4ca8405343dc13d2d4b7119a30e1b883d7`, Fable and Claude Sonnet each scored the integrated implementation 98/100, and the OpenAI Devil’s Advocate scored it 100/100; all reported zero hard failures. A native subscription Claude–Codex deliberation then returned `accepted`, explicitly withholding publication and deployment authority.
+
+The executable evidence was `make ci-browser` (data build; 3,485/3,485 preserved HTML; zero unresolved/unlinked outputs; 84/84 Playwright) and `make ci` (140/140 unit tests; 5/5 schema tests; zero drift; 74 ADRs; all ontology, documentation, graph and IA-parity gates). Two consecutive data builds kept content-derived asset versions and strict preservation stable.
 
 ### Held dissent
 
-- Fable would place PDTF 1.0 before SPDTF 2.0 Development in the navigation
-  because implementation is the majority task today. The chosen order is
-  programme-first; task testing must validate it before implementation.
+- Fable would place PDTF 1.0 before SPDTF 2.0 Development in the navigation because implementation is the majority task today. The chosen order remains programme-first; task testing validated direct implementer access within two interactions.
 - The information architect prefers describing the seed as a structured pre-draft
   candidate rather than “evidence” alone. The full label therefore says SPDTF 2.0
   development input and machine-generated pre-draft, and the body records its

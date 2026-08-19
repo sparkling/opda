@@ -53,6 +53,16 @@ const projectRoot = fileURLToPath(new URL('..', import.meta.url));
 const routeBaseline = JSON.parse(readFileSync(new URL('../src/data/ia-route-baseline.json', import.meta.url), 'utf8'));
 const preservationBaseline = JSON.parse(readFileSync(new URL('../src/data/ia-preservation-baseline.json', import.meta.url), 'utf8'));
 
+test('the maintained IA source and companion stay below the project file limit', () => {
+  for (const relativePath of [
+    'docs/spdtf-2-0-information-architecture.md',
+    'docs/spdtf-2-0-information-architecture.html',
+  ]) {
+    const source = readFileSync(path.join(projectRoot, relativePath), 'utf8');
+    assert.ok(source.split('\n').length < 500, `${relativePath} must remain below 500 lines`);
+  }
+});
+
 test('the global information architecture has exactly the six accepted destinations', () => {
   assert.deepEqual(
     GLOBAL_DESTINATIONS.map(({ key, title, url }) => [key, title, url]),

@@ -89,7 +89,7 @@ modelling website remains unchanged:
 | # | Title | Status |
 |---|---|---|
 | [ADR-0073](./ADR-0073-adopt-opda-brand-and-replace-the-website-design-system.md) | Adopt the OPDA brand and replace the website design system | implemented |
-| [ADR-0074](./ADR-0074-organise-site-around-spdtf-2-0-and-pdtf-1-0.md) | Organise the site around SPDTF 2.0 and PDTF 1.0 | proposed |
+| [ADR-0074](./ADR-0074-organise-site-around-spdtf-2-0-and-pdtf-1-0.md) | Organise the site around SPDTF 2.0 and PDTF 1.0 | implemented |
 
 ## Authoring a new ADR
 
