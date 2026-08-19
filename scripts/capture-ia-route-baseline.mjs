@@ -71,5 +71,5 @@ const manifest = {
   externalPrefixes,
   routes,
 };
-writeFileSync(output, `${JSON.stringify(manifest, null, 2)}\n`);
+writeFileSync(output, `${JSON.stringify(manifest)}\n`);
 console.log(`captured ${routes.length} HTML routes (${manifest.externalRetainCount} externally retained)`);
