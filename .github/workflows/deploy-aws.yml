@@ -157,6 +157,9 @@ jobs:
       - name: Strict generated schema-page drift gate
         run: pnpm run check:schema-drift
 
+      - name: Information-architecture preservation gate
+        run: pnpm run check:ia-preservation
+
       - name: Install Chromium for release browser gates
         run: pnpm exec playwright install --with-deps chromium
 
@@ -197,7 +200,15 @@ jobs:
           SITE_BUCKET=$(aws cloudformation describe-stacks --region eu-west-2 \
             --stack-name opda-site \
             --query "Stacks[0].Outputs[?OutputKey=='SiteBucketName'].OutputValue" --output text)
-          aws s3 sync dist/ "s3://$SITE_BUCKET" --delete
+          # The four third-party ontology render trees are deliberately ignored,
+          # heavyweight generated assets. Preserve their frozen, manifest-audited
+          # S3 objects until a separately governed reproducible generator replaces
+          # them; --delete must never erase these deep-linked PDTF 1.0 references.
+          aws s3 sync dist/ "s3://$SITE_BUCKET" --delete \
+            --exclude "ontology/tools/ontospy/*" \
+            --exclude "ontology/tools/pylode/*" \
+            --exclude "ontology/tools/shaclplay/*" \
+            --exclude "ontology/tools/widoco/*"
 
       - name: Invalidate CloudFront
         if: github.event_name != 'pull_request'
