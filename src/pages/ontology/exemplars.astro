@@ -15,12 +15,10 @@ import Layout from '@/layouts/Layout.astro';
 import PageMeta from '@/components/PageMeta.astro';
 import fs from 'node:fs';
 import path from 'node:path';
+import { isExpectedOntologyAsset } from '@/lib/ontology-publication-assets';
 
 const EX = path.resolve(process.cwd(), 'source/03-standards/ontology/exemplars');
-const PUB = path.resolve(process.cwd(), 'public/ontology');
-function exists(rel: string): boolean {
-  try { return fs.existsSync(path.join(PUB, rel)); } catch { return false; }
-}
+const exists = isExpectedOntologyAsset;
 
 // Hard-case one-liners + the consuming ODR session, from the exemplars README
 // (ODR-0004 §8a citation discipline: each exemplar named by its hard case).

@@ -8,13 +8,9 @@
 import Layout from '@/layouts/Layout.astro';
 import PageMeta from '@/components/PageMeta.astro';
 import { model } from '@/lib/ontology-model';
-import fs from 'node:fs';
-import path from 'node:path';
+import { isExpectedOntologyAsset } from '@/lib/ontology-publication-assets';
 
-const PUB = path.resolve(process.cwd(), 'public/ontology');
-function exists(rel: string): boolean {
-  try { return fs.existsSync(path.join(PUB, rel)); } catch { return false; }
-}
+const exists = isExpectedOntologyAsset;
 const names = (refs: { localName: string }[]) => refs.map((r) => r.localName).join(', ');
 
 const objectProps = Object.values(model.objectProperties).sort((a, b) => a.localName.localeCompare(b.localName));

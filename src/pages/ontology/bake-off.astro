@@ -8,22 +8,18 @@
  * home. Per ADR-0041 (rev-3 M2) every tool renders the full ontology so each
  * rendering can be inspected personally before settling the per-layer pick.
  *
- * `href` resolves only once the sibling generation step has produced output
- * under public/ontology/tools/. Hrefs point at explicit index.html files (the
- * Astro dev server does NOT resolve directory → index.html; only a static host
- * does — explicit files work on both). The filled M6 scoring is staged in
- * public/ontology/tools/COMPARISON.md.
+ * `live` is derived from the committed IA preservation inventory. That
+ * inventory is the publication contract for generated and ignored assets, so
+ * clean CI can render the same links as a generation workspace. Hrefs point
+ * at explicit index.html files (the Astro dev server does NOT resolve
+ * directory → index.html; only a static host does — explicit files work on
+ * both). The filled M6 scoring is staged in public/ontology/tools/COMPARISON.md.
  */
 import Layout from '@/layouts/Layout.astro';
 import PageMeta from '@/components/PageMeta.astro';
-import fs from 'node:fs';
-import path from 'node:path';
+import { isExpectedOntologyAsset } from '@/lib/ontology-publication-assets';
 
-const PUB = path.resolve(process.cwd(), 'public/ontology');
-
-function exists(rel: string): boolean {
-  try { return fs.existsSync(path.join(PUB, rel)); } catch { return false; }
-}
+const exists = isExpectedOntologyAsset;
 
 // Bake-off tool catalogue (ADR-0041 §Amendments — the all-tools mandate).
 const TOOLS = [
@@ -36,8 +32,8 @@ const TOOLS = [
   { id: 'custom',   name: 'custom opda-gen + LLM', layer: 'profiles · exemplars · three-graph · governance · known-issues', note: 'The OPDA-specific layers no off-the-shelf tool covers — our script + LLM prose. This is the adopted composition.', href: '/ontology/tools/custom/index.html', live: exists('tools/custom/index.html'), embed: true },
 ];
 
-// M6 rubric scorecard. If public/ontology/tools/COMPARISON.md exists, the
-// operator's scoring is staged there; otherwise render the empty rubric.
+// M6 rubric scorecard. The IA inventory records whether the publication
+// retains COMPARISON.md; it is not inferred from the local clean checkout.
 const comparisonStaged = exists('tools/COMPARISON.md');
 const RUBRIC_COLS = ['OWL terms', 'SKOS', 'SHACL', 'Overlay profiles + gap', 'Exemplars',
   'Three-graph', 'Governance / lineage', 'Known-issues', 'Fidelity', 'Integration cost'];
@@ -102,14 +98,15 @@ const RUBRIC_COLS = ['OWL terms', 'SKOS', 'SHACL', 'Overlay profiles + gap', 'Ex
     <strong>Skosmos</strong> needs a live SPARQL runtime, so it is not embedded in the static
     build (B2 resolved): run it from localhost alongside the build-time Fuseki (the
     <code>make serve-data</code> pattern) and browse it at the link above; the contract is the
-    same as <code>make serve-data</code> today — the link resolves only with the local stack running.
+    same as <code>make serve-data</code> today — the static schemes fallback is
+    published, while the live browser requires the local stack running.
   </p>
 
   <h2 id="embeds">Embedded renderings</h2>
   <p>
     Each embeddable tool's output is inlined below for side-by-side inspection (expand a panel
-    to load its iframe). Panels resolve as the generation step populates
-    <code>public/ontology/tools/</code>.
+    to load its iframe). Panel availability follows the retained IA inventory;
+    generated files may not exist in a clean checkout but are retained by publication.
   </p>
   {TOOLS.filter((t) => t.embed).some((t) => t.live) ? (
     TOOLS.filter((t) => t.embed && t.live).map((t) => (
@@ -122,8 +119,8 @@ const RUBRIC_COLS = ['OWL terms', 'SKOS', 'SHACL', 'Overlay profiles + gap', 'Ex
   ) : (
     <p class="callout callout--note">
       <span class="callout__label">Pending generation</span>
-      The embeddable renderings stage under <code>public/ontology/tools/</code> as the
-      generation step runs; until then the catalogue above carries the per-tool notes.
+      No embeddable rendering is listed in the retained IA inventory; the
+      catalogue above carries the per-tool notes until publication evidence is added.
     </p>
   )}
 
