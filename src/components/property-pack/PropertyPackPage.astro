@@ -1,6 +1,5 @@
 ---
 import Layout from '@/layouts/Layout.astro';
-import PageMeta from '@/components/PageMeta.astro';
 import {
   candidateManifest,
   propertyPackLifecycleStatus,
@@ -23,7 +22,6 @@ interface Props {
 const {
   title,
   description,
-  category = 'SPDTF 2.0 · Property Pack ontology',
   crumbs = [],
 } = Astro.props;
 const isPropertyPackRoot = Astro.url.pathname.replace(/\/+$/u, '') === '/spdtf-2/property-pack';
@@ -51,12 +49,6 @@ const technicalState = validationReport.status === 'pass'
         </>
       ))}
     </nav>
-
-    <PageMeta
-      category={category}
-      variant="warn"
-      updated={`${candidateManifest.candidate_version} · ${candidateManifest.candidate_status}`}
-    />
 
     <details class="v2-candidate-banner">
       <summary>

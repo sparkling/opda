@@ -276,7 +276,8 @@ states, plus loading/error/success where asynchronous work occurs and dark parit
 - **Inputs/selects:** 2px radius, 1px strong-neutral border, explicit label and help;
   error adds danger border, icon and message.
 - **Tabs:** semantic tablist, arrow-key operation and yellow-underlined selection.
-- **Breadcrumbs:** ordered navigation with a non-linked current item.
+- **Breadcrumbs:** ordered navigation with a non-linked current item. Use DM Sans
+  500 at the base 16px role with a 24px line-height; links have a 44px target.
 - **Status badge:** icon, complete text label and tint; never a bare dot.
 - **Provenance chip:** Roboto Mono source and timestamp; links to evidence when
   available.

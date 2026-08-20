@@ -257,6 +257,17 @@ test('reader pages delegate local contents navigation to the shared right rail',
   assert.match(client, /toc\.setAttribute\('aria-label', 'On this page'\)/u);
 });
 
+test('breadcrumbs use the documented base-size navigation role', async () => {
+  const [contract, navigation, propertyPack] = await Promise.all([
+    readFile(file('DESIGN.md'), 'utf8'),
+    readFile(file('public/ui/design/navigation.css'), 'utf8'),
+    readFile(file('src/styles/property-pack.css'), 'utf8'),
+  ]);
+  assert.match(contract, /Breadcrumbs:[\s\S]*base 16px role with a 24px line-height/u);
+  assert.match(navigation, /\.breadcrumbs\s*\{[^}]*font:\s*500 var\(--text-base\) \/ 1\.5 var\(--font-sans\)/su);
+  assert.match(propertyPack, /\.v2-breadcrumbs\s*\{[^}]*font:\s*500 var\(--text-base\) \/ 1\.5 var\(--font-sans\)/su);
+});
+
 test('the adopted motion contract excludes parallax and long campaign motion', async () => {
   const paths = [
     'src/pages/working-groups/join/index.astro',
