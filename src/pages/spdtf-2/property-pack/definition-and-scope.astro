@@ -6,6 +6,7 @@ import candidateSummary from '../../../../source/03-standards/ontology-candidate
 import candidateCoverage from '../../../../source/03-standards/ontology-candidates/property-pack/0.1/projections/coverage.json';
 import contextMap from '../../../../source/03-standards/ontology-candidates/property-pack/0.1/projections/context-map.json';
 import candidateValidation from '../../../../source/03-standards/ontology-candidates/property-pack/0.1/validation/report.json';
+import { contextRoute } from '@/lib/property-pack-model.mjs';
 
 const candidateById = new Map(candidateCoverage.map((entry) => [entry.item_id, entry]));
 
@@ -73,12 +74,12 @@ const safeDetails = JSON.stringify(details).replace(/</g, '\\u003c');
   </p>
   <div class="context-grid">
     {contextMap.contexts.map((context) => (
-      <article class:list={{ 'context-card': true, 'context-card--common': context.id === contextMap.common_boundary }}>
+      <a href={contextRoute(context)} class:list={{ 'context-card': true, 'context-card--common': context.id === contextMap.common_boundary }}>
         <p class="eyebrow">{context.kind.replace('-', ' ')}</p>
         <h3>{context.label}</h3>
         <p>{context.definition}</p>
         <p><strong>{context.source_item_count}</strong> source data point{context.source_item_count === 1 ? '' : 's'}</p>
-      </article>
+      </a>
     ))}
   </div>
   <p class="muted">
@@ -88,14 +89,14 @@ const safeDetails = JSON.stringify(details).replace(/</g, '\\u003c');
 
   <h2 id="candidate-artefacts">Candidate artefacts</h2>
   <p>All views are generated from the maintained TOML model and the closed 451-item evidence catalogue.</p>
-  <ul class="artifact-links">
-    <li><a class="resource-link" href="/resource?path=source/03-standards/ontology-candidates/property-pack/0.1/projections/business-glossary.json">Business glossary</a></li>
-    <li><a class="resource-link" href="/resource?path=source/03-standards/ontology-candidates/property-pack/0.1/projections/data-dictionary.json">Data dictionary</a></li>
-    <li><a class="resource-link" href="/resource?path=source/03-standards/ontology-candidates/property-pack/0.1/projections/controlled-vocabularies.json">Controlled vocabularies</a></li>
-    <li><a class="resource-link" href="/resource?path=source/03-standards/ontology-candidates/property-pack/0.1/projections/context-map.json">Context map</a></li>
-    <li><a class="resource-link" href="/resource?path=source/03-standards/ontology-candidates/property-pack/0.1/candidate-manifest.json">Candidate manifest</a></li>
-    <li><a class="resource-link" href="/resource?path=source/03-standards/ontology-candidates/property-pack/0.1/validation/report.json">Validation receipt</a></li>
-  </ul>
+  <div class="v2-card-grid">
+    <a class="v2-card" href="/resource?path=source/03-standards/ontology-candidates/property-pack/0.1/projections/business-glossary.json"><h3>Business glossary</h3><p>Generated candidate terms and definitions.</p></a>
+    <a class="v2-card" href="/resource?path=source/03-standards/ontology-candidates/property-pack/0.1/projections/data-dictionary.json"><h3>Data dictionary</h3><p>Generated candidate data definitions and constraints.</p></a>
+    <a class="v2-card" href="/resource?path=source/03-standards/ontology-candidates/property-pack/0.1/projections/controlled-vocabularies.json"><h3>Controlled vocabularies</h3><p>Candidate schemes and controlled values.</p></a>
+    <a class="v2-card" href="/resource?path=source/03-standards/ontology-candidates/property-pack/0.1/projections/context-map.json"><h3>Context map</h3><p>Declared semantic-home boundaries.</p></a>
+    <a class="v2-card" href="/resource?path=source/03-standards/ontology-candidates/property-pack/0.1/candidate-manifest.json"><h3>Candidate manifest</h3><p>Version, scope and source cut details.</p></a>
+    <a class="v2-card" href="/resource?path=source/03-standards/ontology-candidates/property-pack/0.1/validation/report.json"><h3>Validation receipt</h3><p>Deterministic validation evidence.</p></a>
+  </div>
 
   <h2 id="how-to-read">How to read this baseline</h2>
   <div class="baseline-explanation">
@@ -280,11 +281,12 @@ const safeDetails = JSON.stringify(details).replace(/</g, '\\u003c');
     .baseline-explanation article { border-left: 4px solid var(--brand-yellow); padding: var(--space-2) var(--space-5); }
     .baseline-explanation h3 { margin-top: 0; }
     .context-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr)); gap: var(--space-5); margin: var(--space-5) 0; }
-    .context-card { border: 1px solid var(--color-border); border-radius: 0; padding: var(--space-5); background: var(--color-surface-card); }
+    .context-card { display: block; border: 1px solid var(--color-border); border-radius: 0; padding: var(--space-5); background: var(--color-surface-card); color: inherit; text-decoration: none; }
+    .context-card:hover { border-color: var(--color-data-1); color: inherit; }
+    .context-card:focus-visible { border-color: var(--color-data-1); }
     .context-card--common { border-color: var(--color-border-strong); border-left: 4px solid var(--brand-yellow); }
     .context-card h3 { margin: var(--space-2) 0 var(--space-3); }
     .context-card p:last-child { margin-bottom: 0; }
-    .artifact-links { display: grid; grid-template-columns: repeat(auto-fit, minmax(14rem, 1fr)); gap: var(--space-3) var(--space-5); }
     .download-line { display: flex; flex-wrap: wrap; gap: var(--space-3); align-items: center; }
     .property-detail { margin: var(--space-7) 0; padding: clamp(var(--space-5), 3vw, var(--space-7)); border: 1px solid var(--color-border-strong); border-left: 4px solid var(--brand-yellow); border-radius: 0; background: var(--color-surface-card); scroll-margin-top: 5rem; }
     .property-detail__header { display: flex; justify-content: space-between; gap: var(--space-5); align-items: start; }

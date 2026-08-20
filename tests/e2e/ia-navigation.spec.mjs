@@ -132,6 +132,11 @@ test('category pages remain links beside independent disclosure controls', async
   await expect(toggle).toHaveAttribute('aria-expanded', 'false');
   await expect(page.locator(`#${controls}`)).toBeHidden();
 
+  const otherCategory = page.locator('.nav-group[data-group="Property Pack ontology"]');
+  await otherCategory.locator('.nav-group-toggle').click();
+  await expect(otherCategory).toHaveClass(/is-open/u);
+  await expect(category).not.toHaveClass(/is-open/u);
+
   await link.focus();
   await page.keyboard.press('Enter');
   await expect(page).toHaveURL(/\/spdtf-2\/ontologies$/u);
@@ -141,6 +146,18 @@ test('category pages remain links beside independent disclosure controls', async
     .toHaveText('Semantic modelling');
   await expect(page.locator('nav.page-footer a').last())
     .toHaveAttribute('href', '/spdtf-2/ontologies/why-ontologies');
+  clean();
+});
+
+test('Property Pack definition cards link to their canonical views', async ({ page }) => {
+  const clean = watchRuntime(page);
+  await visit(page, '/spdtf-2/property-pack/definition-and-scope');
+  const contextCards = page.locator('.context-grid > a.context-card');
+  await expect(contextCards).toHaveCount(8);
+  await expect(contextCards.first()).toHaveAttribute('href', /\/spdtf-2\/property-pack\/contexts\//u);
+  const artefactCards = page.locator('#candidate-artefacts + p + .v2-card-grid > a.v2-card');
+  await expect(artefactCards).toHaveCount(6);
+  await expect(artefactCards.first()).toHaveAttribute('href', /\/resource\?path=source\/03-standards\/ontology-candidates/u);
   clean();
 });
 

@@ -53,7 +53,7 @@ function containsActive(item: Item): boolean {
         const isActivePage = normalizeUrl(group.url) === activePath;
         const containsActivePage = isActivePage || group.items.some(containsActive);
         const hasChildren = group.items.length > 0;
-        const defaultOpen = hasChildren && (group.heading === 'Overview' || containsActivePage);
+        const defaultOpen = hasChildren && containsActivePage;
         const childrenId = `section-nav-group-${section.key}-${group.url}`
           .replace(/[^a-z0-9]+/giu, '-').replace(/^-|-$/gu, '');
         return (
