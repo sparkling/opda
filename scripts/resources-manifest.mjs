@@ -33,7 +33,7 @@ const OUT_FILE = path.join(REPO_ROOT, 'src', 'data', 'resources-manifest.json');
 // ── Real content resource types we publish & want individually linkable ────
 const ALLOWED_EXT = new Set([
   'pdf', 'docx', 'doc', 'pptx', 'ppt', 'xlsx', 'xls', 'csv',
-  'md', 'ttl', 'json', 'html', 'txt', 'vtt', 'srt',
+  'md', 'ttl', 'rq', 'json', 'html', 'txt', 'vtt', 'srt',
   'mp4', 'mov', 'png', 'jpg', 'jpeg', 'webp', 'svg', 'eml', 'msg',
 ]);
 
@@ -94,6 +94,10 @@ function isExcluded(rel, base, segments) {
   // in the same spirit as the named junk below.)
   if (segments.includes('.git') || segments.includes('node_modules')) return true;
 
+  // Mailing-list exports and delivery ledgers are operational records, not
+  // public archive material. They may contain personal contact details.
+  if (rel.startsWith('_inbox/finance-banking-working-group/') || rel.startsWith('_inbox/technology-working-group/')) return true;
+
   // Dotfiles (basename starting with ".") — includes .DS_Store, .drive-upload.log, etc.
   if (base.startsWith('.')) return true;
 
@@ -123,7 +127,7 @@ function walk(absDir, relDir, out) {
     if (!entry.isFile()) continue;
 
     const ext = path.extname(entry.name).slice(1).toLowerCase();
-    if (!ALLOWED_EXT.has(ext)) continue;
+    if (!ALLOWED_EXT.has(ext) && entry.name.toUpperCase() !== 'LICENSE' && rel !== '03-standards/schemas/index.js') continue;
 
     const segments = rel.split('/');
     if (isExcluded(rel, entry.name, segments)) continue;
@@ -131,7 +135,7 @@ function walk(absDir, relDir, out) {
     out.push({
       path: `source/${rel}`,
       name: entry.name,
-      ext,
+      ext: ext || entry.name.toLowerCase(),
       sizeBytes: fs.statSync(abs).size,
       // Top-level files (single segment) have no subdir → "" → "Archive root".
       category: categoryFor(segments.length > 1 ? segments[0] : ''),

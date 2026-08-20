@@ -471,7 +471,7 @@ if (Array.isArray(resources)) {
   const paths = resources.map((entry) => entry?.path);
   if (resources.length !== sourceContract?.indexedCount || new Set(paths).size !== paths.length
     || paths.some((entry) => typeof entry !== 'string' || !entry.startsWith('source/'))) {
-    fail('committed public source index differs from its exact 790-record contract');
+    fail(`committed public source index differs from its exact ${sourceContract?.indexedCount ?? 'unknown'}-record contract`);
   }
 }
 const council = readJson('src/data/council-manifest.json');

@@ -206,8 +206,8 @@ export const PRESERVATION_LEDGER = Object.freeze([
   {
     currentPath: '/resources/** and /resource?path=source/**',
     kind: 'source-records',
-    expectedCount: 1620, // exact archive; 790 allowlisted public entries are independently checked below
-    indexedCount: 790,
+    expectedCount: 1620, // exact archive; 848 allowlisted public entries are independently checked below
+    indexedCount: 848,
     owner: 'resources',
     preservedAt: '/resources/**',
     consumers: ['resource viewer', 'source citations', 'downloads'],

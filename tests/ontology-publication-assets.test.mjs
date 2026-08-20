@@ -1,12 +1,14 @@
 import assert from 'node:assert/strict';
 import {
-  mkdirSync, mkdtempSync, rmSync, writeFileSync,
+  mkdirSync, mkdtempSync, readFileSync, rmSync, writeFileSync,
 } from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
 import { spawnSync } from 'node:child_process';
 import { fileURLToPath } from 'node:url';
 import test from 'node:test';
+
+import { checkResourceLinkCoverage } from '../scripts/check-resource-link-coverage.mjs';
 
 import {
   deriveExpectedOntologyAssets,
@@ -17,6 +19,33 @@ import {
 } from '../src/lib/ontology-publication-assets.ts';
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
+
+test('built source-resource links require a manifest receipt and local archive file', () => {
+  const fixture = mkdtempSync(path.join(os.tmpdir(), 'opda-resource-links-'));
+  const dist = path.join(fixture, 'dist');
+  const source = path.join(fixture, 'source');
+  const manifest = path.join(fixture, 'resources-manifest.json');
+  try {
+    mkdirSync(dist, { recursive: true });
+    mkdirSync(path.join(source, 'docs'), { recursive: true });
+    writeFileSync(path.join(dist, 'index.html'), '<a href="/resource?path=source/docs/example.rq">Example</a>');
+    writeFileSync(path.join(source, 'docs/example.rq'), 'ASK {}');
+    writeFileSync(manifest, JSON.stringify([{ path: 'source/docs/example.rq' }]));
+    assert.deepEqual(checkResourceLinkCoverage({ distDir: dist, sourceDir: source, manifestPath: manifest }), {
+      linkedResourceCount: 1, verifiedSourceArchive: true,
+    });
+    writeFileSync(manifest, '[]');
+    assert.throws(() => checkResourceLinkCoverage({ distDir: dist, sourceDir: source, manifestPath: manifest }), /not in resources manifest/u);
+  } finally {
+    rmSync(fixture, { recursive: true, force: true });
+  }
+});
+
+test('the resource index encodes query values without treating literal plus signs as spaces', () => {
+  const source = readFileSync(path.join(ROOT, 'src/pages/library/resources.astro'), 'utf8');
+  assert.match(source, /encodeURIComponent\(e\.path\)/u);
+  assert.doesNotMatch(source, /encodeURI\(e\.path\)/u);
+});
 
 test('expected ontology assets come from the retained IA family inventories', () => {
   const paths = expectedOntologyAssetPaths();

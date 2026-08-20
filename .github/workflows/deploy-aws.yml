@@ -176,6 +176,9 @@ jobs:
       - name: Built-route asset and application-navigation crawl
         run: pnpm run check:routes
 
+      - name: Source-resource publication receipts
+        run: pnpm run check:resource-links
+
       - name: Browser, axe, keyboard and responsive gates
         run: pnpm run test:e2e
 

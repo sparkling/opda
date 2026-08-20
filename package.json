@@ -35,6 +35,7 @@
     "test:a11y": "playwright test --config=playwright.config.mjs tests/e2e/accessibility.spec.mjs",
     "test:visual": "playwright test --config=playwright.config.mjs tests/e2e/visual.spec.mjs",
     "check:routes": "node scripts/crawl-routes.mjs",
+    "check:resource-links": "node scripts/check-resource-link-coverage.mjs",
     "check:ia-preservation": "node scripts/check-ia-preservation.mjs",
     "docs:spdtf-ia": "node scripts/generate-spdtf-ia-html.mjs",
     "check:spdtf-ia": "node scripts/generate-spdtf-ia-html.mjs --check",

@@ -2457,6 +2457,13 @@
     "category": "Research"
   },
   {
+    "path": "source/03-standards/api/LICENSE",
+    "name": "LICENSE",
+    "ext": "license",
+    "sizeBytes": 1086,
+    "category": "Standards"
+  },
+  {
     "path": "source/03-standards/api/pdtf-api-1.1.0.json",
     "name": "pdtf-api-1.1.0.json",
     "ext": "json",
@@ -2468,6 +2475,384 @@
     "name": "README.md",
     "ext": "md",
     "sizeBytes": 811,
+    "category": "Standards"
+  },
+  {
+    "path": "source/03-standards/ontology-candidates/property-pack/0.1/candidate-manifest.json",
+    "name": "candidate-manifest.json",
+    "ext": "json",
+    "sizeBytes": 12177,
+    "category": "Standards"
+  },
+  {
+    "path": "source/03-standards/ontology-candidates/property-pack/0.1/candidate-summary.json",
+    "name": "candidate-summary.json",
+    "ext": "json",
+    "sizeBytes": 583,
+    "category": "Standards"
+  },
+  {
+    "path": "source/03-standards/ontology-candidates/property-pack/0.1/ontology/common.ttl",
+    "name": "common.ttl",
+    "ext": "ttl",
+    "sizeBytes": 2725,
+    "category": "Standards"
+  },
+  {
+    "path": "source/03-standards/ontology-candidates/property-pack/0.1/ontology/context-map.ttl",
+    "name": "context-map.ttl",
+    "ext": "ttl",
+    "sizeBytes": 4650,
+    "category": "Standards"
+  },
+  {
+    "path": "source/03-standards/ontology-candidates/property-pack/0.1/ontology/conveyancing-01.ttl",
+    "name": "conveyancing-01.ttl",
+    "ext": "ttl",
+    "sizeBytes": 18038,
+    "category": "Standards"
+  },
+  {
+    "path": "source/03-standards/ontology-candidates/property-pack/0.1/ontology/conveyancing-02.ttl",
+    "name": "conveyancing-02.ttl",
+    "ext": "ttl",
+    "sizeBytes": 13698,
+    "category": "Standards"
+  },
+  {
+    "path": "source/03-standards/ontology-candidates/property-pack/0.1/ontology/dbt-smart-data.ttl",
+    "name": "dbt-smart-data.ttl",
+    "ext": "ttl",
+    "sizeBytes": 3309,
+    "category": "Standards"
+  },
+  {
+    "path": "source/03-standards/ontology-candidates/property-pack/0.1/ontology/estate-agency.ttl",
+    "name": "estate-agency.ttl",
+    "ext": "ttl",
+    "sizeBytes": 11271,
+    "category": "Standards"
+  },
+  {
+    "path": "source/03-standards/ontology-candidates/property-pack/0.1/ontology/finance-and-banking.ttl",
+    "name": "finance-and-banking.ttl",
+    "ext": "ttl",
+    "sizeBytes": 7251,
+    "category": "Standards"
+  },
+  {
+    "path": "source/03-standards/ontology-candidates/property-pack/0.1/ontology/property-data-services-01.ttl",
+    "name": "property-data-services-01.ttl",
+    "ext": "ttl",
+    "sizeBytes": 20592,
+    "category": "Standards"
+  },
+  {
+    "path": "source/03-standards/ontology-candidates/property-pack/0.1/ontology/property-data-services-02.ttl",
+    "name": "property-data-services-02.ttl",
+    "ext": "ttl",
+    "sizeBytes": 11324,
+    "category": "Standards"
+  },
+  {
+    "path": "source/03-standards/ontology-candidates/property-pack/0.1/ontology/property-technology.ttl",
+    "name": "property-technology.ttl",
+    "ext": "ttl",
+    "sizeBytes": 7319,
+    "category": "Standards"
+  },
+  {
+    "path": "source/03-standards/ontology-candidates/property-pack/0.1/ontology/surveying-and-valuation.ttl",
+    "name": "surveying-and-valuation.ttl",
+    "ext": "ttl",
+    "sizeBytes": 10402,
+    "category": "Standards"
+  },
+  {
+    "path": "source/03-standards/ontology-candidates/property-pack/0.1/projections/business-glossary.json",
+    "name": "business-glossary.json",
+    "ext": "json",
+    "sizeBytes": 214868,
+    "category": "Standards"
+  },
+  {
+    "path": "source/03-standards/ontology-candidates/property-pack/0.1/projections/context-map.json",
+    "name": "context-map.json",
+    "ext": "json",
+    "sizeBytes": 3400,
+    "category": "Standards"
+  },
+  {
+    "path": "source/03-standards/ontology-candidates/property-pack/0.1/projections/controlled-vocabularies.json",
+    "name": "controlled-vocabularies.json",
+    "ext": "json",
+    "sizeBytes": 16028,
+    "category": "Standards"
+  },
+  {
+    "path": "source/03-standards/ontology-candidates/property-pack/0.1/projections/coverage.json",
+    "name": "coverage.json",
+    "ext": "json",
+    "sizeBytes": 930289,
+    "category": "Standards"
+  },
+  {
+    "path": "source/03-standards/ontology-candidates/property-pack/0.1/projections/data-dictionary.json",
+    "name": "data-dictionary.json",
+    "ext": "json",
+    "sizeBytes": 548767,
+    "category": "Standards"
+  },
+  {
+    "path": "source/03-standards/ontology-candidates/property-pack/0.1/projections/resource-register.json",
+    "name": "resource-register.json",
+    "ext": "json",
+    "sizeBytes": 214868,
+    "category": "Standards"
+  },
+  {
+    "path": "source/03-standards/ontology-candidates/property-pack/0.1/projections/shapes.json",
+    "name": "shapes.json",
+    "ext": "json",
+    "sizeBytes": 49666,
+    "category": "Standards"
+  },
+  {
+    "path": "source/03-standards/ontology-candidates/property-pack/0.1/shapes/common.ttl",
+    "name": "common.ttl",
+    "ext": "ttl",
+    "sizeBytes": 1568,
+    "category": "Standards"
+  },
+  {
+    "path": "source/03-standards/ontology-candidates/property-pack/0.1/shapes/conveyancing.ttl",
+    "name": "conveyancing.ttl",
+    "ext": "ttl",
+    "sizeBytes": 9066,
+    "category": "Standards"
+  },
+  {
+    "path": "source/03-standards/ontology-candidates/property-pack/0.1/shapes/dbt-smart-data.ttl",
+    "name": "dbt-smart-data.ttl",
+    "ext": "ttl",
+    "sizeBytes": 1598,
+    "category": "Standards"
+  },
+  {
+    "path": "source/03-standards/ontology-candidates/property-pack/0.1/shapes/estate-agency.ttl",
+    "name": "estate-agency.ttl",
+    "ext": "ttl",
+    "sizeBytes": 4588,
+    "category": "Standards"
+  },
+  {
+    "path": "source/03-standards/ontology-candidates/property-pack/0.1/shapes/finance-and-banking.ttl",
+    "name": "finance-and-banking.ttl",
+    "ext": "ttl",
+    "sizeBytes": 3259,
+    "category": "Standards"
+  },
+  {
+    "path": "source/03-standards/ontology-candidates/property-pack/0.1/shapes/property-data-services.ttl",
+    "name": "property-data-services.ttl",
+    "ext": "ttl",
+    "sizeBytes": 10867,
+    "category": "Standards"
+  },
+  {
+    "path": "source/03-standards/ontology-candidates/property-pack/0.1/shapes/property-technology.ttl",
+    "name": "property-technology.ttl",
+    "ext": "ttl",
+    "sizeBytes": 3453,
+    "category": "Standards"
+  },
+  {
+    "path": "source/03-standards/ontology-candidates/property-pack/0.1/shapes/surveying-and-valuation.ttl",
+    "name": "surveying-and-valuation.ttl",
+    "ext": "ttl",
+    "sizeBytes": 3659,
+    "category": "Standards"
+  },
+  {
+    "path": "source/03-standards/ontology-candidates/property-pack/0.1/standards-profile.json",
+    "name": "standards-profile.json",
+    "ext": "json",
+    "sizeBytes": 1121,
+    "category": "Standards"
+  },
+  {
+    "path": "source/03-standards/ontology-candidates/property-pack/0.1/validation/competency/address-separation.rq",
+    "name": "address-separation.rq",
+    "ext": "rq",
+    "sizeBytes": 492,
+    "category": "Standards"
+  },
+  {
+    "path": "source/03-standards/ontology-candidates/property-pack/0.1/validation/competency/fixture-consolidation.rq",
+    "name": "fixture-consolidation.rq",
+    "ext": "rq",
+    "sizeBytes": 529,
+    "category": "Standards"
+  },
+  {
+    "path": "source/03-standards/ontology-candidates/property-pack/0.1/validation/competency/no-same-as.rq",
+    "name": "no-same-as.rq",
+    "ext": "rq",
+    "sizeBytes": 424,
+    "category": "Standards"
+  },
+  {
+    "path": "source/03-standards/ontology-candidates/property-pack/0.1/validation/competency/property-identity.rq",
+    "name": "property-identity.rq",
+    "ext": "rq",
+    "sizeBytes": 492,
+    "category": "Standards"
+  },
+  {
+    "path": "source/03-standards/ontology-candidates/property-pack/0.1/validation/fixtures/invalid-property.ttl",
+    "name": "invalid-property.ttl",
+    "ext": "ttl",
+    "sizeBytes": 1332,
+    "category": "Standards"
+  },
+  {
+    "path": "source/03-standards/ontology-candidates/property-pack/0.1/validation/fixtures/valid-property.ttl",
+    "name": "valid-property.ttl",
+    "ext": "ttl",
+    "sizeBytes": 1361,
+    "category": "Standards"
+  },
+  {
+    "path": "source/03-standards/ontology-candidates/property-pack/0.1/validation/report.json",
+    "name": "report.json",
+    "ext": "json",
+    "sizeBytes": 9379,
+    "category": "Standards"
+  },
+  {
+    "path": "source/03-standards/ontology-candidates/property-pack/0.1/vocabularies/common-controlled.ttl",
+    "name": "common-controlled.ttl",
+    "ext": "ttl",
+    "sizeBytes": 3394,
+    "category": "Standards"
+  },
+  {
+    "path": "source/03-standards/ontology-candidates/property-pack/0.1/vocabularies/conveyancing-controlled.ttl",
+    "name": "conveyancing-controlled.ttl",
+    "ext": "ttl",
+    "sizeBytes": 9996,
+    "category": "Standards"
+  },
+  {
+    "path": "source/03-standards/ontology-candidates/property-pack/0.1/vocabularies/estate-agency-controlled.ttl",
+    "name": "estate-agency-controlled.ttl",
+    "ext": "ttl",
+    "sizeBytes": 6068,
+    "category": "Standards"
+  },
+  {
+    "path": "source/03-standards/ontology-candidates/property-pack/0.1/vocabularies/property-data-services-controlled.ttl",
+    "name": "property-data-services-controlled.ttl",
+    "ext": "ttl",
+    "sizeBytes": 9741,
+    "category": "Standards"
+  },
+  {
+    "path": "source/03-standards/ontology-candidates/property-pack/0.1/vocabularies/property-technology-controlled.ttl",
+    "name": "property-technology-controlled.ttl",
+    "ext": "ttl",
+    "sizeBytes": 3295,
+    "category": "Standards"
+  },
+  {
+    "path": "source/03-standards/ontology-candidates/property-pack/0.1/vocabularies/surveying-and-valuation-controlled.ttl",
+    "name": "surveying-and-valuation-controlled.ttl",
+    "ext": "ttl",
+    "sizeBytes": 7349,
+    "category": "Standards"
+  },
+  {
+    "path": "source/03-standards/ontology-candidates/property-pack/0.1/vocabularies/topics/conveyancing-01.ttl",
+    "name": "conveyancing-01.ttl",
+    "ext": "ttl",
+    "sizeBytes": 27131,
+    "category": "Standards"
+  },
+  {
+    "path": "source/03-standards/ontology-candidates/property-pack/0.1/vocabularies/topics/conveyancing-02.ttl",
+    "name": "conveyancing-02.ttl",
+    "ext": "ttl",
+    "sizeBytes": 27335,
+    "category": "Standards"
+  },
+  {
+    "path": "source/03-standards/ontology-candidates/property-pack/0.1/vocabularies/topics/conveyancing-03.ttl",
+    "name": "conveyancing-03.ttl",
+    "ext": "ttl",
+    "sizeBytes": 27031,
+    "category": "Standards"
+  },
+  {
+    "path": "source/03-standards/ontology-candidates/property-pack/0.1/vocabularies/topics/conveyancing-04.ttl",
+    "name": "conveyancing-04.ttl",
+    "ext": "ttl",
+    "sizeBytes": 9477,
+    "category": "Standards"
+  },
+  {
+    "path": "source/03-standards/ontology-candidates/property-pack/0.1/vocabularies/topics/estate-agency-01.ttl",
+    "name": "estate-agency-01.ttl",
+    "ext": "ttl",
+    "sizeBytes": 2862,
+    "category": "Standards"
+  },
+  {
+    "path": "source/03-standards/ontology-candidates/property-pack/0.1/vocabularies/topics/finance-and-banking-01.ttl",
+    "name": "finance-and-banking-01.ttl",
+    "ext": "ttl",
+    "sizeBytes": 4807,
+    "category": "Standards"
+  },
+  {
+    "path": "source/03-standards/ontology-candidates/property-pack/0.1/vocabularies/topics/property-data-services-01.ttl",
+    "name": "property-data-services-01.ttl",
+    "ext": "ttl",
+    "sizeBytes": 29206,
+    "category": "Standards"
+  },
+  {
+    "path": "source/03-standards/ontology-candidates/property-pack/0.1/vocabularies/topics/property-data-services-02.ttl",
+    "name": "property-data-services-02.ttl",
+    "ext": "ttl",
+    "sizeBytes": 28944,
+    "category": "Standards"
+  },
+  {
+    "path": "source/03-standards/ontology-candidates/property-pack/0.1/vocabularies/topics/property-data-services-03.ttl",
+    "name": "property-data-services-03.ttl",
+    "ext": "ttl",
+    "sizeBytes": 28902,
+    "category": "Standards"
+  },
+  {
+    "path": "source/03-standards/ontology-candidates/property-pack/0.1/vocabularies/topics/property-data-services-04.ttl",
+    "name": "property-data-services-04.ttl",
+    "ext": "ttl",
+    "sizeBytes": 14251,
+    "category": "Standards"
+  },
+  {
+    "path": "source/03-standards/ontology-candidates/property-pack/0.1/vocabularies/topics/property-technology-01.ttl",
+    "name": "property-technology-01.ttl",
+    "ext": "ttl",
+    "sizeBytes": 4328,
+    "category": "Standards"
+  },
+  {
+    "path": "source/03-standards/ontology-candidates/property-pack/0.1/vocabularies/topics/surveying-and-valuation-01.ttl",
+    "name": "surveying-and-valuation-01.ttl",
+    "ext": "ttl",
+    "sizeBytes": 13276,
     "category": "Standards"
   },
   {
@@ -3374,6 +3759,20 @@
     "category": "Standards"
   },
   {
+    "path": "source/03-standards/schemas/index.js",
+    "name": "index.js",
+    "ext": "js",
+    "sizeBytes": 17265,
+    "category": "Standards"
+  },
+  {
+    "path": "source/03-standards/schemas/LICENSE",
+    "name": "LICENSE",
+    "ext": "license",
+    "sizeBytes": 1086,
+    "category": "Standards"
+  },
+  {
     "path": "source/03-standards/schemas/package.json",
     "name": "package.json",
     "ext": "json",
@@ -4099,6 +4498,13 @@
     "name": "navigation.html",
     "ext": "html",
     "sizeBytes": 595,
+    "category": "Standards"
+  },
+  {
+    "path": "source/03-standards/trust-framework/LICENSE",
+    "name": "LICENSE",
+    "ext": "license",
+    "sizeBytes": 1086,
     "category": "Standards"
   },
   {

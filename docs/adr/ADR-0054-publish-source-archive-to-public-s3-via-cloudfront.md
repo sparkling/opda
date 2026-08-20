@@ -70,6 +70,16 @@ Concretely:
 * `source/…` links on the **live** site resolve through the resource viewer (the prod `source/… → /resources/…` rewrite is in effect).
 * The `opda-resources` bucket is **absent from the gated default behaviour** — it is only reachable via the dedicated public `/resources/*` behaviour, and the bucket itself is not directly listable (OAC).
 
+### Release safeguards
+
+Before a site release, `pnpm run check:resource-links` inspects the built HTML and
+requires every `/resource?path=source/…` target to have a committed
+`resources-manifest.json` receipt. When the local archive is present, it also requires
+the source file itself. This catches a new citation before it can reach a release
+without a publishable object. It does not prove the remote mirror is current: after a
+source change, the authorised maintainer must still run `make publish-resources` and
+confirm a representative public `/resources/*` URL.
+
 ## More Information
 
 * Builds on **ADR-0038** (AWS hosting + the Lambda@Edge auth gate). This decision adds a *second, deliberately ungated* CloudFront behaviour alongside the gated default that ADR-0038 established — hence the light `depends-on: [ADR-0038]` edge: the distribution/gate topology this extends is defined there.

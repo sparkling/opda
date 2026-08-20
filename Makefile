@@ -188,6 +188,10 @@ ci-ontology-graph:	## Graph-element drift gate (ADR-0043): re-derive ontology-gr
 check-links:	## Link-validation sweep (ADR-0044 Phase 8): no dangling/orphan links on /ontology + /pdtf (needs `make build-data` first)
 	node scripts/check-links.mjs
 
+.PHONY: check-resource-links
+check-resource-links:	## Verify built source-resource links have local archive and public-manifest receipts (needs `make build-data` first)
+	pnpm run check:resource-links
+
 .PHONY: check-links-external
 check-links-external:	## Live external-URL 200 sweep over /ontology + /pdtf (ADR-0044 Phase 8; report-only, opt-in, needs `make build-data` first)
 	node scripts/check-external-links.mjs
