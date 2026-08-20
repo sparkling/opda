@@ -56,8 +56,6 @@ interface Props {
   hideComments?: boolean;
   /** Optional class added to the main region for page-level compositions. */
   mainClass?: string;
-  /** Optional class added to the shell grid for page-level compositions. */
-  bodyClass?: string;
 }
 
 const {
@@ -71,7 +69,6 @@ const {
   hideFooter = false,
   hideComments = false,
   mainClass = '',
-  bodyClass = '',
 } = Astro.props;
 
 const fullTitle = /knowledge base/i.test(title)
@@ -145,7 +142,7 @@ const searchAliases = routeDisposition?.search?.historicalAliases ?? [];
   <a class="skip-link" href="#main-content">Skip to main content</a>
   <div id="app">
     <Header showSidebar={showSidebar} />
-    <div class={`app-body${showSidebar ? '' : ' no-sidebar'}${bodyClass ? ` ${bodyClass}` : ''}`}>
+    <div class={`app-body${showSidebar ? '' : ' no-sidebar'}`}>
       {showSidebar && <Sidebar />}
       <main class={`app-main${mainClass ? ` ${mainClass}` : ''}`} id="main-content" tabindex="-1">
         {!hideBreadcrumbs && <Breadcrumbs currentPageTitle={title} />}

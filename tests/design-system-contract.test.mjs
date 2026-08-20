@@ -100,9 +100,10 @@ test('tokens encode the supplied identity and derived accessible roles', async (
   for (const token of [
     '--font-display', '--font-sans', '--font-mono', '--color-focus',
     '--color-status-success', '--color-status-warning', '--color-status-danger',
-    '--color-data-1', '--target-min', '--content-reading', '--motion-standard',
+    '--color-data-1', '--target-min', '--content-max', '--motion-standard',
     '--color-text-placeholder', '--on-dark-muted', '--text-caption',
   ]) assert.ok(source.includes(token), `missing derived token ${token}`);
+  assert.match(source, /--content-max:\s*100rem/u);
   assert.match(source, /Roboto Slab/u);
   assert.match(source, /DM Sans/u);
 });
@@ -362,12 +363,11 @@ test('text inherits its outer layout width instead of stacking nested measures',
   ]);
 
   assert.match(design, /The outer layout container is the sole owner of content measure/u);
-  assert.match(content, /\.prose\s*\{[^}]*max-width:\s*var\(--content-reading\)/su);
-  assert.match(content, /\.prose\.wide\s*\{[^}]*max-width:\s*var\(--content-max\)/su);
+  assert.match(design, /Every documentation\s+article uses the available content track up to a 1600px maximum/u);
+  assert.match(content, /\.prose\s*\{[^}]*max-width:\s*var\(--content-max\)/su);
 
   const contentWithoutOuterMeasures = content
-    .replace(/\.prose\s*\{[^}]*\}/su, '')
-    .replace(/\.prose\.wide\s*\{[^}]*\}/su, '');
+    .replace(/\.prose\s*\{[^}]*\}/su, '');
   const maxWidthDeclaration = /(?:^\s*|[;{]\s*)max-width\s*:/mu;
   assert.doesNotMatch(contentWithoutOuterMeasures, maxWidthDeclaration, 'content descendants must not own a second measure');
 

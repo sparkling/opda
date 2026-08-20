@@ -5,14 +5,6 @@
   overflow-wrap: anywhere;
 }
 
-/* Keep both rails alongside the 1600px lineage comparison on ultra-wide screens. */
-.app-body.property-pack-page--full-width-layout.with-toc {
-  max-width: calc(1600px + var(--sidebar-width) + 15rem);
-  margin-inline: auto;
-}
-
-.prose.property-pack-page--full-width { max-width: 1600px; }
-
 .v2-doc > *,
 .v2-candidate-banner > *,
 .v2-candidate-banner__content > *,

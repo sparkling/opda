@@ -1,7 +1,7 @@
 ---
 status: implemented
 date: 2026-08-16
-updated: 2026-08-19
+updated: 2026-08-20
 tags: [design-system, brand, website, accessibility, css, governance, presentation]
 supersedes: [ADR-0025]
 depends-on: [ADR-0064]
@@ -77,6 +77,10 @@ review: each composition has one outer width authority. Nested text measures wer
 removed from prose descendants, heroes, cards, callouts, campaign pages and the
 presentation; tables, diagrams, media and controls retain bounded sizing where their
 interaction requires it.
+
+On 20 August 2026 the shared documentation track was set to a single 1600px maximum.
+The former narrow 66ch prose measure and page-specific width exceptions were removed,
+so every page uses the same outer content-width authority.
 
 ### Brand conflict resolution
 

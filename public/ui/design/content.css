@@ -6,7 +6,7 @@
 .prose {
   min-width: 0;
   width: 100%;
-  max-width: var(--content-reading);
+  max-width: var(--content-max);
   margin: 0 auto;
   background: transparent;
   padding: var(--space-6) 0 var(--space-12);
@@ -18,17 +18,13 @@
    trailing padding — the comments are the natural visual terminator. */
 .prose:has(+ .comments-section) { padding-bottom: var(--space-8); }
 html { scroll-padding-top: calc(var(--header-height) + 1rem); }
-/* Wide track: overview pages, schema browsers, dictionary tables, Mermaid.
-   This is the default documentation track. Width is set once here rather
-   than repeated on paragraphs, lists, leads, quotes or component copy. */
-.prose.wide { max-width: var(--content-max); }
-/* Inside narrow .prose, let load-bearing wide elements (data-browser,
-   diagrams, multi-column tables) break out to the wider track via the
-   .full-bleed escape hatch. */
+/* The documentation content track is set once here rather than repeated on
+   paragraphs, lists, leads, quotes or component copy. Load-bearing elements
+   fill that same track. */
 .prose .full-bleed,
 .prose > .data-browser,
 .prose > .diagram {
-  width: min(100%, var(--content-max));
+  width: 100%;
 }
 .prose > * + * { margin-top: var(--space-4); }
 .prose > h2 + *, .prose > h3 + *, .prose > h1 + * { margin-top: var(--space-3); }

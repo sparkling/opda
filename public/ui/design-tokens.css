@@ -206,8 +206,7 @@
   --header-height: 4rem;
   --sidebar-width: 17.5rem;
   --toc-width: 15rem;
-  --content-max: 80rem;
-  --content-reading: 66ch;
+  --content-max: 100rem;
   --duration-fast: 120ms;
   --duration-normal: 160ms;
   --motion-standard: 160ms;
