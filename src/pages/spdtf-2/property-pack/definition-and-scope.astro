@@ -287,8 +287,8 @@ const safeDetails = JSON.stringify(details).replace(/</g, '\\u003c');
     .context-card--common { border-color: var(--color-border-strong); border-left: 4px solid var(--brand-yellow); }
     .context-card h3 { margin: var(--space-2) 0 var(--space-3); }
     .context-card p:last-child { margin-bottom: 0; }
-    .prose .download-line { display: flex; flex-wrap: wrap; gap: var(--space-3); align-items: center; margin: var(--space-7) 0 0; }
-    .prose .download-line + .data-browser { margin-top: var(--space-2); }
+    :global(.prose) > .download-line { display: flex; flex-wrap: wrap; gap: var(--space-3); align-items: center; margin: var(--space-7) 0 0; }
+    :global(.prose) > .download-line + .data-browser { margin-top: var(--space-2); }
     .property-detail { margin: var(--space-7) 0; padding: clamp(var(--space-5), 3vw, var(--space-7)); border: 1px solid var(--color-border-strong); border-left: 4px solid var(--brand-yellow); border-radius: 0; background: var(--color-surface-card); scroll-margin-top: 5rem; }
     .property-detail__header { display: flex; justify-content: space-between; gap: var(--space-5); align-items: start; }
     .property-detail__header h2 { margin-top: 0; }
