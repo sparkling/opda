@@ -1,7 +1,6 @@
 ---
 import Layout from '@/layouts/Layout.astro';
 import PageMeta from '@/components/PageMeta.astro';
-import AuthorityPanel from '@/components/ia/AuthorityPanel.astro';
 import GatewayCard from '@/components/ia/GatewayCard.astro';
 import WorkspaceNav from '@/components/ia/WorkspaceNav.astro';
 import { WORKING_GROUPS, getWorkingGroup } from '@/components/ia/working-groups';
@@ -29,7 +28,6 @@ if (!workspace) throw new Error('Working group has no workspace record');
   <h1>{group.name}</h1>
   <p class="lead">{group.scope}</p>
 
-  <AuthorityPanel destination="working-groups" />
   <WorkspaceNav slug={group.slug} />
 
   <div class="callout callout--key">

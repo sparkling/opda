@@ -1,6 +1,13 @@
 import assert from 'node:assert/strict';
 import { spawnSync } from 'node:child_process';
-import { mkdtempSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
+import {
+  existsSync,
+  mkdtempSync,
+  readFileSync,
+  readdirSync,
+  rmSync,
+  writeFileSync,
+} from 'node:fs';
 import { tmpdir } from 'node:os';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -57,6 +64,11 @@ const preservationScript = fileURLToPath(new URL('../scripts/check-ia-preservati
 const projectRoot = fileURLToPath(new URL('..', import.meta.url));
 const routeBaseline = JSON.parse(readFileSync(new URL('../src/data/ia-route-baseline.json', import.meta.url), 'utf8'));
 const preservationBaseline = JSON.parse(readFileSync(new URL('../src/data/ia-preservation-baseline.json', import.meta.url), 'utf8'));
+
+const filesBelow = (directory) => readdirSync(directory, { withFileTypes: true }).flatMap((entry) => {
+  const entryPath = path.join(directory, entry.name);
+  return entry.isDirectory() ? filesBelow(entryPath) : [entryPath];
+});
 
 test('the maintained IA source and companion stay below the project file limit', () => {
   for (const relativePath of [
@@ -196,6 +208,19 @@ test('each destination has the complete five-field authority contract', () => {
     assert.deepEqual(Object.keys(AUTHORITY_BY_DESTINATION[key]), IA_STATUS_FIELDS);
     for (const field of IA_STATUS_FIELDS) assert.ok(AUTHORITY_BY_DESTINATION[key][field]);
   }
+});
+
+test('reader pages keep authority metadata without rendering an authority status panel', () => {
+  const panelPath = path.join(projectRoot, 'src/components/ia/AuthorityPanel.astro');
+  assert.equal(existsSync(panelPath), false, 'the removed visual panel component must not remain');
+
+  for (const pagePath of filesBelow(path.join(projectRoot, 'src/pages')).filter((file) => file.endsWith('.astro'))) {
+    const source = readFileSync(pagePath, 'utf8');
+    assert.doesNotMatch(source, /AuthorityPanel|class=["'{]ia-authority|data-ia-status=/u, pagePath);
+  }
+
+  const layout = readFileSync(path.join(projectRoot, 'src/layouts/Layout.astro'), 'utf8');
+  for (const field of IA_STATUS_FIELDS) assert.match(layout, new RegExp(`routeStatus\\.${field}`, 'u'));
 });
 
 test('every audited route family has a deterministic owner and disposition', () => {

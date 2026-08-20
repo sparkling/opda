@@ -64,14 +64,12 @@ test('section rails, page navigation and content stay inside the shared containe
       };
       const main = bounds(document.querySelector('.app-main'));
       const prose = bounds(document.querySelector('.prose'));
-      const children = Array.from(document.querySelectorAll('.prose > :is(.ia-authority, .card-grid, .responsive-table, pre)'))
+      const children = Array.from(document.querySelectorAll('.prose > :is(.card-grid, .responsive-table, pre)'))
         .map((element) => ({ selector: element.className || element.tagName, ...bounds(element) }));
-      const authorityWidths = Array.from(document.querySelectorAll('.ia-authority__field'))
-        .map((element) => element.getBoundingClientRect().width);
       const heading = document.querySelector('h2[id]');
       const anchor = heading?.querySelector('.heading-anchor');
       return {
-        main, prose, children, authorityWidths,
+        main, prose, children,
         anchorPosition: anchor ? getComputedStyle(anchor).position : null,
         anchorInsideHeading: Boolean(anchor && heading
           && anchor.getBoundingClientRect().top >= heading.getBoundingClientRect().top - 1
@@ -84,7 +82,6 @@ test('section rails, page navigation and content stay inside the shared containe
       expect(child.left, `${child.selector} left at ${width}px`).toBeGreaterThanOrEqual(containment.prose.left - 1);
       expect(child.right, `${child.selector} right at ${width}px`).toBeLessThanOrEqual(containment.prose.right + 1);
     }
-    expect(Math.min(...containment.authorityWidths)).toBeGreaterThanOrEqual(width === 320 ? 200 : 160);
     expect(containment.anchorPosition).toBe('absolute');
     expect(containment.anchorInsideHeading).toBe(true);
 

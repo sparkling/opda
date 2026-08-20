@@ -1,7 +1,6 @@
 ---
 import Layout from '@/layouts/Layout.astro';
 import PageMeta from '@/components/PageMeta.astro';
-import AuthorityPanel from '@/components/ia/AuthorityPanel.astro';
 import { WORKING_GROUPS } from '@/components/ia/working-groups';
 import { getWorkspaceRecord } from '@/lib/spdtf-workspace.mjs';
 ---
@@ -10,7 +9,6 @@ import { getWorkspaceRecord } from '@/lib/spdtf-workspace.mjs';
   <PageMeta category="Open questions" variant="warn" updated="Initial prompts · participant challenge required" />
   <h1>Open questions and changes</h1>
   <p class="lead">These are initial competency questions, not approved requirements. Each question is owned and reviewed in one canonical group workspace.</p>
-  <AuthorityPanel destination="spdtf-2" />
   {WORKING_GROUPS.map((group) => {
     const workspace = getWorkspaceRecord(group.slug);
     return (
@@ -22,4 +20,3 @@ import { getWorkspaceRecord } from '@/lib/spdtf-workspace.mjs';
     );
   })}
 </Layout>
-

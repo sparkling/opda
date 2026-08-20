@@ -1,7 +1,6 @@
 ---
 import Layout from '@/layouts/Layout.astro';
 import PageMeta from '@/components/PageMeta.astro';
-import AuthorityPanel from '@/components/ia/AuthorityPanel.astro';
 import { SEMANTIC_PACKAGE_MANIFEST } from '@/lib/spdtf-workspace.mjs';
 ---
 
@@ -9,8 +8,6 @@ import { SEMANTIC_PACKAGE_MANIFEST } from '@/lib/spdtf-workspace.mjs';
   <PageMeta category="Generated outputs" variant="warn" updated="Workspace contract · no released SPDTF 2.0 package" />
   <h1>Generated outputs and validation evidence</h1>
   <p class="lead">This register prevents a generated representation from becoming an independent source of meaning.</p>
-  <AuthorityPanel destination="spdtf-2" />
-
   <h2 id="manifest">Canonical package manifest</h2>
   <dl>
     <dt>Identifier</dt><dd><code>{SEMANTIC_PACKAGE_MANIFEST.id}</code></dd>
@@ -28,4 +25,3 @@ import { SEMANTIC_PACKAGE_MANIFEST } from '@/lib/spdtf-workspace.mjs';
   <p>{SEMANTIC_PACKAGE_MANIFEST.synchronizationRule}</p>
   <p>Parser, SHACL or generator success proves only the encoded checks. It does not prove business truth or semantic approval.</p>
 </Layout>
-

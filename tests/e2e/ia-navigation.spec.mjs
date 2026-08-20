@@ -217,30 +217,54 @@ test('Property Pack detail pages expose their full canonical ancestry', async ({
   clean();
 });
 
-test('gateway pages expose the complete five-field status contract', async ({ page }) => {
+test('reader pages omit the authority box while retaining route-status metadata', async ({ page }) => {
   const clean = watchRuntime(page);
-  for (const route of primary.map(({ url }) => url)) {
+  const attributes = {
+    workArea: 'data-work-area',
+    authority: 'data-authority',
+    maturity: 'data-maturity',
+    version: 'data-content-version',
+    provenance: 'data-provenance',
+  };
+  const metas = {
+    workArea: 'opda:work-area',
+    authority: 'opda:authority',
+    maturity: 'opda:maturity',
+    version: 'opda:version',
+    provenance: 'opda:provenance',
+  };
+  for (const route of [
+    ...primary.map(({ url }) => url),
+    '/spdtf-2/ontologies',
+    '/spdtf-2/working-groups/estate-agency',
+    '/spdtf-2/working-groups/estate-agency/review',
+  ]) {
     await visit(page, route);
-    const status = page.locator('[data-ia-status]').first();
-    await expect(status).toBeVisible();
+    await expect(page.locator('.ia-authority, [data-ia-status], [aria-label="Authority and status"]')).toHaveCount(0);
     for (const field of IA_STATUS_FIELDS) {
-      await expect(status.locator(`[data-ia-field="${field}"]`)).toHaveCount(1);
-      await expect(status.locator(`[data-ia-field="${field}"]`)).not.toBeEmpty();
+      await expect(page.locator('html')).toHaveAttribute(attributes[field], /\S/u);
+      await expect(page.locator(`meta[name="${metas[field]}"]`)).toHaveAttribute('content', /\S/u);
     }
   }
   clean();
 });
 
-test('canonical development routes expose the complete five-field status contract', async ({ page }) => {
+test('candidate and feedback status uses the shared responsive definition-list pattern', async ({ page }) => {
   const clean = watchRuntime(page);
-  for (const route of ['/spdtf-2/ontologies', '/spdtf-2/working-groups/estate-agency']) {
-    await visit(page, route);
-    const status = page.locator('[data-ia-status]').first();
+  for (const width of [320, 1440]) {
+    await page.setViewportSize({ width, height: 1000 });
+    await visit(page, '/spdtf-2/working-groups/estate-agency/review');
+    const status = page.locator('#candidate + .status-definition-list');
     await expect(status).toBeVisible();
-    for (const field of IA_STATUS_FIELDS) {
-      await expect(status.locator(`[data-ia-field="${field}"]`)).toHaveCount(1);
-      await expect(status.locator(`[data-ia-field="${field}"]`)).not.toBeEmpty();
-    }
+    await expect(status.locator(':scope > div')).toHaveCount(8);
+    await assertNoBodyOverflow(page);
+    const geometry = await status.evaluate((element) => {
+      const parent = element.parentElement.getBoundingClientRect();
+      const self = element.getBoundingClientRect();
+      return { parentWidth: parent.width, width: self.width, left: self.left, parentLeft: parent.left };
+    });
+    expect(Math.abs(geometry.width - geometry.parentWidth)).toBeLessThanOrEqual(1);
+    expect(Math.abs(geometry.left - geometry.parentLeft)).toBeLessThanOrEqual(1);
   }
   clean();
 });
