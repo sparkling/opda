@@ -325,6 +325,7 @@ test('dense prose tables become labelled keyboard-scrollable regions', async () 
   ]);
   assert.match(client, /function enhanceResponsiveTables/u);
   assert.match(client, /responsive-table__viewport/u);
+  assert.match(tables, /responsive-table__viewport > table > caption/u);
   assert.match(client, /Scroll horizontally to view all columns/u);
   assert.match(client, /setAttribute\('role', 'region'\)/u);
   assert.match(tables, /\.responsive-table__viewport:focus-visible/u);

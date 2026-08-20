@@ -60,7 +60,7 @@ function category(heading: string, url: string, items: Item[] = []): NavigationG
 
 const ontologyJourney: Item = {
   url: '/spdtf-2/ontologies',
-  title: 'Ontologies and semantic modelling',
+  title: 'Semantic modelling',
   children: [
     {
       url: '/spdtf-2/ontologies/why-ontologies',
@@ -183,7 +183,7 @@ const navigationSections: Record<DestinationKey, NavigationSection> = {
         { url: '/spdtf-2/outputs', title: 'Outputs and validation' },
       ]),
       category('Property Pack ontology', propertyPackJourney.url, propertyPackJourney.children),
-      category('Semantic modelling', ontologyJourney.url, ontologyJourney.children),
+      category(ontologyJourney.title, ontologyJourney.url, ontologyJourney.children),
     ],
   },
   'working-groups': {

@@ -93,7 +93,7 @@ const GD_SHELL_HTML = `
   </div>
   <div class="gd-box">
     <div class="gd-view-mermaid">
-      <div class="diagram-viewport" style="cursor:grab;min-height:340px">
+      <div class="diagram-viewport" style="cursor:grab">
         <div class="diagram-canvas">
           <p class="diagram-loading" role="status" aria-live="polite">Loading diagram…</p>
           <pre class="gd-mermaid" aria-hidden="true"></pre>

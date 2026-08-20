@@ -93,6 +93,12 @@ export const STANDARDS_PROFILE = Object.freeze([
   item('DOLCE', 'No edition selected', 'Historical comparison for foundational distinctions', 'No SPDTF 2.0 disposition, import or conformance claim', 'reference', 'historical PDTF 1.0 reference only', 'Ontology facilitators', 'PDTF 1.0 methodology evidence', 'A new competency question justifies a separately reviewed comparison'),
 ]);
 
+export function standardAnchor(record) {
+  return `standard-${record.name.toLocaleLowerCase('en-GB')
+    .replace(/[^a-z0-9]+/gu, '-')
+    .replace(/^-|-$/gu, '')}`;
+}
+
 export function validateStandardsProfile() {
   const required = [
     'name', 'versionBoundary', 'purpose', 'conformance', 'mechanism', 'status',
@@ -101,6 +107,7 @@ export function validateStandardsProfile() {
     'candidateSnapshot', 'profileSource', 'lastChecked',
   ];
   if (new Set(STANDARDS_PROFILE.map(({ name }) => name)).size !== STANDARDS_PROFILE.length) throw new Error('Standards profile names must be unique');
+  if (new Set(STANDARDS_PROFILE.map(standardAnchor)).size !== STANDARDS_PROFILE.length) throw new Error('Standards profile anchors must be unique');
   for (const record of STANDARDS_PROFILE) {
     if (required.some((field) => !record[field])) throw new Error(`Incomplete standards record: ${record.name}`);
     if (!STANDARDS_MECHANISMS.includes(record.mechanism)) throw new Error(`Invalid standards mechanism: ${record.mechanism}`);

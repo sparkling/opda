@@ -12,13 +12,16 @@ const { showSidebar = false } = Astro.props;
 ---
 <header class="app-header">
   <a href="/" class="brand-link" aria-label="Open Property Data Association knowledge base home">
-    <img
-      class="brand-wordmark"
-      src="/ui/brand/opda-wordmark-white.svg"
-      alt="Open Property Data Association"
-      width="149"
-      height="42"
-    />
+    <picture>
+      <source media="(forced-colors: active)" srcset="/ui/brand/opda-wordmark-dark.svg" />
+      <img
+        class="brand-wordmark"
+        src="/ui/brand/opda-wordmark-white.svg"
+        alt="Open Property Data Association"
+        width="149"
+        height="42"
+      />
+    </picture>
   </a>
 
   <button

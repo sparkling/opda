@@ -5,6 +5,7 @@ import Diagram from '@/components/Diagram.astro';
 import {
   STANDARDS_PROFILE,
   STANDARDS_PROFILE_VERSION,
+  standardAnchor,
   validateStandardsProfile,
 } from '@/lib/spdtf-standards-profile.mjs';
 validateStandardsProfile();
@@ -117,7 +118,6 @@ flowchart TB
     <article class="card"><h3><code>reuse</code></h3><p>Use exact externally governed vocabulary terms, datatypes or classes in the candidate.</p><p><strong>Evidence:</strong> version, term list, licence and governance fit, and feature tests.</p></article>
     <article class="card"><h3><code>reference</code></h3><p>Use a data-model, syntax, query, specification or method as an implementation or design contract without adopting its vocabulary as SPDTF meaning.</p><p><strong>Evidence:</strong> question addressed, edition and explicit non-conformance boundary.</p></article>
     <article class="card"><h3><code>map</code></h3><p>Keep local meaning and record a qualified relation to another term.</p><p><strong>Evidence:</strong> mapping strength, justification, owner, confidence and review.</p></article>
-    <article class="card"><h3><code>mint</code></h3><p>Create an SPDTF term when no governed reuse fits.</p><p><strong>Evidence:</strong> namespace authority, semantic owner, evidence and non-reuse rationale.</p></article>
   </div>
 
   <h2 id="upper-ontology">Upper ontologies and design methods</h2>
@@ -136,7 +136,7 @@ flowchart TB
   </p>
   <div class="card-grid standards-profile-grid">
     {STANDARDS_PROFILE.map((record) => <article class="card">
-      <h3><a href={record.source}>{record.name}</a></h3>
+      <h3 id={standardAnchor(record)}><a href={record.source}>{record.name}</a></h3>
       <dl>
         <dt>Latest checked publication</dt><dd>{record.specificationMaturity} · {record.exactSnapshot}</dd>
         <dt>Selected profile boundary</dt><dd><a href={record.profileSource}>{record.versionBoundary}</a></dd>

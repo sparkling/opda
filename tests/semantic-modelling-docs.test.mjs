@@ -8,6 +8,7 @@ import { searchEntries } from '../src/lib/site-search.mjs';
 import {
   STANDARDS_PROFILE,
   STANDARDS_PROFILE_VERSION,
+  standardAnchor,
   validateStandardsProfile,
 } from '../src/lib/spdtf-standards-profile.mjs';
 import { SEMANTIC_PACKAGE_MANIFEST } from '../src/lib/spdtf-workspace.mjs';
@@ -84,6 +85,7 @@ test('standards records separate specification maturity, governance status and a
   for (const record of STANDARDS_PROFILE) {
     for (const field of required) assert.ok(record[field], `${record.name} lacks ${field}`);
     assert.match(record.source, /^https?:\/\//u, `${record.name} must cite a primary source URL`);
+    assert.match(standardAnchor(record), /^standard-[a-z0-9-]+$/u, `${record.name} needs a stable in-page anchor`);
   }
   const byName = Object.fromEntries(STANDARDS_PROFILE.map((record) => [record.name, record]));
   assert.deepEqual(
@@ -123,6 +125,17 @@ test('search exposes every semantic-modelling route and no legacy journey label'
   for (const term of ['SKOS', 'OWL', 'RDF', 'SPARQL', 'upper ontology']) {
     assert.ok(searchEntries(term).some(({ url }) => url.startsWith('/spdtf-2/ontologies')), `${term} is not discoverable`);
   }
+  for (const term of ['bounded context', 'context map', 'taxonomy']) {
+    assert.ok(searchEntries(term).some(({ url }) => url === '/spdtf-2/ontologies/bounded-contexts'), `${term} is not discoverable`);
+  }
+});
+
+test('standards register keeps headings addressable and definition-list labels readable', () => {
+  const source = textOf('standards');
+  const tables = readFileSync(path.join(root, 'public/ui/design/tables.css'), 'utf8');
+  assert.match(source, /id=\{standardAnchor\(record\)\}/u);
+  assert.match(tables, /\.standards-profile-grid \.card dt/u);
+  assert.match(tables, /text-transform:\s*uppercase/u);
 });
 
 test('the diagram component and renderer preserve authored names and descriptions', () => {
