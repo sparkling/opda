@@ -62,6 +62,19 @@ test('case-sensitive LeaseTerm HTML and Turtle outputs are distinct and typed', 
   }
 });
 
+test('case-insensitive release output reports the required filesystem boundary', (t) => {
+  const root = fixtureRoot();
+  try {
+    if (hasExactPair(root)) return t.skip('fixture filesystem is case-sensitive');
+    assert.throws(
+      () => inspectLeaseTermCaseCollision(root),
+      /case-sensitive filesystem is required/u,
+    );
+  } finally {
+    rmSync(root, { recursive: true, force: true });
+  }
+});
+
 test('collision receipt binds the historical record and recovered addition', (t) => {
   const root = fixtureRoot();
   try {
@@ -92,7 +105,10 @@ test('collision inspection fails when either exact case-sensitive output is abse
   const root = fixtureRoot();
   try {
     rmSync(path.join(root, 'dist', LEASE_TERM_CASE_COLLISION.recoveredTtlFile));
-    assert.throws(() => inspectLeaseTermCaseCollision(root), /missing exact path/u);
+    assert.throws(
+      () => inspectLeaseTermCaseCollision(root),
+      /(?:missing exact path|case-sensitive filesystem is required)/u,
+    );
   } finally {
     rmSync(root, { recursive: true, force: true });
   }

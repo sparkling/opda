@@ -4,6 +4,8 @@ import { existsSync, readdirSync, readFileSync, statSync } from 'node:fs';
 import { join, relative, resolve, sep } from 'node:path';
 import { parse } from 'parse5';
 
+import { isExpectedOntologyAssetUrl } from '../src/lib/ontology-publication-assets.ts';
+
 const DIST = resolve(process.cwd(), process.env.DIST_DIR || 'dist');
 if (!existsSync(DIST)) {
   console.error('[routes] dist/ not found — run `make build` or `make build-data` first.');
@@ -145,7 +147,9 @@ for (const file of html) {
     if (url.origin !== 'https://opda.invalid' || isRuntime(url.pathname)) continue;
     const target = targetFile(url.pathname);
     if (!target) {
-      if (!documentaryHref) failures.push(`${page} → ${raw}`);
+      if (!documentaryHref && !isExpectedOntologyAssetUrl(url.pathname)) {
+        failures.push(`${page} → ${raw}`);
+      }
     }
     else {
       seenTargets.add(target);

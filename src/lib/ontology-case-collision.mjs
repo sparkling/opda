@@ -1,4 +1,6 @@
-import { readFileSync, readdirSync, statSync } from 'node:fs';
+import {
+  existsSync, readFileSync, readdirSync, statSync,
+} from 'node:fs';
 import path from 'node:path';
 
 import {
@@ -43,7 +45,13 @@ function exactFile(root, relative) {
 
 function requiredFile(root, relative) {
   const file = exactFile(root, path.join('dist', relative));
-  if (!file) throw new Error(`case-collision output is missing exact path: dist/${relative}`);
+  if (!file) {
+    const loosePath = path.join(root, 'dist', relative);
+    if (existsSync(loosePath)) {
+      throw new Error(`case-sensitive filesystem is required for exact release path: dist/${relative}`);
+    }
+    throw new Error(`case-collision output is missing exact path: dist/${relative}`);
+  }
   return file;
 }
 

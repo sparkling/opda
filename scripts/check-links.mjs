@@ -19,7 +19,9 @@
 import { readdirSync, readFileSync, existsSync, statSync } from 'node:fs';
 import { join, resolve } from 'node:path';
 
-const DIST = resolve(process.cwd(), 'dist');
+import { isExpectedOntologyAssetUrl } from '../src/lib/ontology-publication-assets.ts';
+
+const DIST = resolve(process.cwd(), process.env.DIST_DIR || 'dist');
 if (!existsSync(DIST)) {
   console.error('[links] dist/ not found — run `make build-data` first.');
   process.exit(1);
@@ -49,6 +51,7 @@ const pageUrl = (file) =>
 
 function resolvesTo(linkPath) {
   const p = decodeURIComponent(linkPath.replace(/[?#].*$/, ''));
+  if (isExpectedOntologyAssetUrl(p)) return true;
   if (p === '' || p === '/') return existsSync(join(DIST, 'index.html'));
   const base = join(DIST, p.replace(/^\//, ''));
   try {

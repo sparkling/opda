@@ -68,3 +68,14 @@ export function expectedOntologyAssetPaths(): string[] {
 export function isExpectedOntologyAsset(value: unknown): boolean {
   return EXPECTED_ONTOLOGY_ASSETS.has(validateOntologyAssetPath(value));
 }
+
+/** Resolve a public URL pathname only when it names a retained manifest object. */
+export function isExpectedOntologyAssetUrl(value: unknown): boolean {
+  if (typeof value !== 'string' || !value.startsWith('/ontology/')
+    || value.includes('?') || value.includes('#') || value.includes('\\')) return false;
+  let decoded: string;
+  try { decoded = decodeURIComponent(value); } catch { return false; }
+  const logicalPath = decoded.slice('/ontology/'.length);
+  if (!logicalPath.startsWith('tools/') && !logicalPath.startsWith('artefacts/')) return false;
+  try { return isExpectedOntologyAsset(logicalPath); } catch { return false; }
+}
