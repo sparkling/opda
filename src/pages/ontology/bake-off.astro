@@ -98,15 +98,14 @@ const RUBRIC_COLS = ['OWL terms', 'SKOS', 'SHACL', 'Overlay profiles + gap', 'Ex
     <strong>Skosmos</strong> needs a live SPARQL runtime, so it is not embedded in the static
     build (B2 resolved): run it from localhost alongside the build-time Fuseki (the
     <code>make serve-data</code> pattern) and browse it at the link above; the contract is the
-    same as <code>make serve-data</code> today — the static schemes fallback is
-    published, while the live browser requires the local stack running.
+    same as <code>make serve-data</code> today — the link resolves only with the local stack running.
   </p>
 
   <h2 id="embeds">Embedded renderings</h2>
   <p>
     Each embeddable tool's output is inlined below for side-by-side inspection (expand a panel
-    to load its iframe). Panel availability follows the retained IA inventory;
-    generated files may not exist in a clean checkout but are retained by publication.
+    to load its iframe). Panels resolve as the generation step populates
+    <code>public/ontology/tools/</code>.
   </p>
   {TOOLS.filter((t) => t.embed).some((t) => t.live) ? (
     TOOLS.filter((t) => t.embed && t.live).map((t) => (
@@ -119,8 +118,8 @@ const RUBRIC_COLS = ['OWL terms', 'SKOS', 'SHACL', 'Overlay profiles + gap', 'Ex
   ) : (
     <p class="callout callout--note">
       <span class="callout__label">Pending generation</span>
-      No embeddable rendering is listed in the retained IA inventory; the
-      catalogue above carries the per-tool notes until publication evidence is added.
+      The embeddable renderings stage under <code>public/ontology/tools/</code> as the
+      generation step runs; until then the catalogue above carries the per-tool notes.
     </p>
   )}
 
