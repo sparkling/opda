@@ -198,7 +198,7 @@ test('the migration ledger preserves every audited high-risk information family'
 test('the frozen preservation proof resolves content, ownership and exact family checksums', () => {
   assert.equal(routeBaseline.schemaVersion, 6);
   assert.equal(routeBaseline.routeCount, 3436);
-  assert.equal(routeBaseline.addedRouteCount, 53);
+  assert.equal(routeBaseline.addedRouteCount, 56);
   assert.equal(routeBaseline.routes.length, routeBaseline.routeCount);
   assert.equal(routeBaseline.addedRoutes.length, routeBaseline.addedRouteCount);
   const requiredRouteFields = [
