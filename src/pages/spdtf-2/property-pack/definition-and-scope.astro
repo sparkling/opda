@@ -293,8 +293,8 @@ const safeDetails = JSON.stringify(details).replace(/</g, '\\u003c');
     .context-card h3 { margin: var(--space-3) 0; }
     .context-card p:last-child { margin-bottom: 0; }
     .context-card__count { flex: 0 0 auto; min-width: 2rem; min-height: 2rem; justify-content: center; font-family: var(--font-mono); font-variant-numeric: tabular-nums; letter-spacing: 0; }
-    :global(.prose) > .download-line { display: flex; flex-wrap: wrap; gap: var(--space-3); align-items: center; margin: var(--space-7) 0 0; }
-    :global(.prose) > .download-line + .data-browser { margin-top: var(--space-2); }
+    :global(.prose) .download-line { display: flex; flex-wrap: wrap; gap: var(--space-3); align-items: center; margin: var(--space-7) 0 0; }
+    :global(.prose) .download-line + .data-browser { margin-top: var(--space-2); }
     .property-detail { margin: var(--space-7) 0; padding: clamp(var(--space-5), 3vw, var(--space-7)); border: 1px solid var(--color-border-strong); border-left: 4px solid var(--brand-yellow); border-radius: 0; background: var(--color-surface-card); scroll-margin-top: 5rem; }
     .property-detail__header { display: flex; justify-content: space-between; gap: var(--space-5); align-items: start; }
     .property-detail__header h2 { margin-top: 0; }
