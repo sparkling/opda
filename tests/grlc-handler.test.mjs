@@ -34,3 +34,54 @@ test('entity detail assembly is stable when SPARQL result rows arrive in a diffe
     ['PersonShape', 'Z constraint'],
   ]);
 });
+
+test('duplicate bindings retain the historical published first-wins values', () => {
+  const duplicateRows = [
+    binding('core', {
+      uri: 'https://opda.org.uk/pdtf/Organisation',
+      localName: 'Organisation',
+      label: 'Organisation',
+      module: 'agent',
+      summary: 'Corporate or unincorporated organisation.',
+    }),
+    binding('core', {
+      uri: 'https://opda.org.uk/pdtf/Organisation',
+      localName: 'Organisation',
+      label: 'Organisation',
+      module: 'agent',
+      summary: 'No DPV class-level PII baseline for opda:Organisation.',
+    }),
+    binding('relationship', {
+      predLocalName: 'plays',
+      targetLocalName: 'Role',
+    }),
+    binding('relationship', {
+      predLocalName: 'plays',
+      targetLocalName: 'RoleMixin',
+    }),
+    binding('relationship', { predLocalName: 'playedBy', targetLocalName: 'Person' }),
+    binding('relationship', { predLocalName: 'playedBy', targetLocalName: 'Organisation' }),
+    binding('relationship', { predLocalName: 'founds', targetLocalName: 'Role' }),
+    binding('relationship', { predLocalName: 'founds', targetLocalName: 'RoleMixin' }),
+    binding('relationship', { predLocalName: 'concerns', targetLocalName: 'RegisteredTitle' }),
+    binding('relationship', { predLocalName: 'concerns', targetLocalName: 'LegalEstate' }),
+    binding('relationship', { predLocalName: 'hasParticipant', targetLocalName: 'Seller' }),
+    binding('relationship', { predLocalName: 'hasParticipant', targetLocalName: 'Buyer' }),
+  ];
+  const params = { tier: 'concept', module: 'agent', localName: 'Organisation' };
+
+  for (const rowsInArrivalOrder of [duplicateRows, [...duplicateRows].reverse()]) {
+    const detail = assembleEntityDetail(rowsInArrivalOrder, params);
+    assert.equal(detail.summary, 'No DPV class-level PII baseline for opda:Organisation.');
+    assert.deepEqual(
+      Object.fromEntries(detail.relationships.map(({ predicate, target }) => [predicate, target])),
+      {
+        concerns: 'LegalEstate',
+        founds: 'RoleMixin',
+        hasParticipant: 'Buyer',
+        playedBy: 'Organisation',
+        plays: 'RoleMixin',
+      },
+    );
+  }
+});

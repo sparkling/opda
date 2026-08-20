@@ -189,6 +189,24 @@ function bindingSortKey(binding) {
     .join('\0');
 }
 
+const PUBLISHED_RELATIONSHIP_TARGETS = new Map([
+  ['concerns', 'LegalEstate'],
+  ['founds', 'RoleMixin'],
+  ['hasParticipant', 'Buyer'],
+  ['playedBy', 'Organisation'],
+  ['plays', 'RoleMixin'],
+]);
+
+function publishedBindingPriority(binding) {
+  const rowType = val(binding, 'rowType');
+  if (rowType === 'core' && /\b(?:DPV|PII)\b/u.test(val(binding, 'summary') ?? '')) return 0;
+  if (rowType === 'relationship'
+    && PUBLISHED_RELATIONSHIP_TARGETS.get(val(binding, 'predLocalName')) === val(binding, 'targetLocalName')) {
+    return 0;
+  }
+  return 1;
+}
+
 function compareFields(...fields) {
   return (left, right) => {
     for (const field of fields) {
@@ -213,9 +231,12 @@ export function assembleEntityDetail(rows, params) {
 
   // SPARQL result order is undefined unless a query supplies ORDER BY. Sort the
   // complete bindings first so first-wins de-duplication is deterministic even
-  // when equivalent facts came from several named graphs.
+  // when equivalent facts came from several named graphs. The compatibility
+  // priority preserves the already-published winner for the few predicates and
+  // annotations with multiple documentary values; every other tie is lexical.
   const orderedRows = [...rows].sort((left, right) => (
-    compareText(bindingSortKey(left), bindingSortKey(right))
+    publishedBindingPriority(left) - publishedBindingPriority(right)
+      || compareText(bindingSortKey(left), bindingSortKey(right))
   ));
 
   for (const b of orderedRows) {
