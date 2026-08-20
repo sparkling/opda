@@ -41,7 +41,10 @@ test('canonical IA tables and group pages reflow at 320 CSS px', async ({ page }
   const clean = watchRuntime(page);
   await page.setViewportSize({ width: 320, height: 900 });
   for (const path of [
+    '/spdtf-2/ontologies/why-ontologies',
+    '/spdtf-2/ontologies/modelling-method',
     '/spdtf-2/ontologies/standards',
+    '/spdtf-2/ontologies/validation',
     '/spdtf-2/working-groups/estate-agency',
   ]) {
     await visit(page, path);
@@ -98,7 +101,7 @@ test('section rails, page navigation and content stay inside the shared containe
   await page.setViewportSize({ width: 1281, height: 1000 });
   await visit(page, '/spdtf-2/ontologies');
   await assertNoBodyOverflow(page);
-  const journey = await page.locator('.ia-journey').evaluate((node) => {
+  const gateway = await page.locator('.card-grid').first().evaluate((node) => {
     const container = node.getBoundingClientRect();
     const links = Array.from(node.querySelectorAll('a')).map((link) => link.getBoundingClientRect());
     return {
@@ -106,9 +109,9 @@ test('section rails, page navigation and content stay inside the shared containe
       links: links.map((rect) => ({ left: rect.left, right: rect.right, width: rect.width })),
     };
   });
-  for (const link of journey.links) {
-    expect(link.left).toBeGreaterThanOrEqual(journey.container.left - 1);
-    expect(link.right).toBeLessThanOrEqual(journey.container.right + 1);
+  for (const link of gateway.links) {
+    expect(link.left).toBeGreaterThanOrEqual(gateway.container.left - 1);
+    expect(link.right).toBeLessThanOrEqual(gateway.container.right + 1);
     expect(link.width).toBeGreaterThanOrEqual(180);
   }
   clean();

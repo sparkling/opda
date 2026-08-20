@@ -167,17 +167,27 @@ export function createMermaidView(opts: MermaidViewOpts): MermaidView {
   }
 
   function makeSvgFocusable(svg: SVGSVGElement) {
-    const id = `gd-svg-title-${++svgA11yId}`;
-    const title = document.createElementNS('http://www.w3.org/2000/svg', 'title');
-    title.id = id;
-    title.textContent = 'Interactive diagram';
-    svg.prepend(title);
+    const sequence = ++svgA11yId;
+    let title = svg.querySelector(':scope > title');
+    if (!title) {
+      title = document.createElementNS('http://www.w3.org/2000/svg', 'title');
+      const caption = captionId ? document.getElementById(captionId)?.textContent ?? '' : '';
+      title.textContent = caption
+        .replace(/^\s*Figure\s+\d+\.\s*/iu, '')
+        .replace(/\s*Keyboard:.*$/iu, '')
+        .trim() || 'Diagram';
+      svg.prepend(title);
+    }
+    if (!title.id) title.id = `gd-svg-title-${sequence}`;
+    const description = svg.querySelector(':scope > desc');
+    if (description && !description.id) description.id = `gd-svg-desc-${sequence}`;
     svg.setAttribute('role', 'group');
     svg.setAttribute('tabindex', '0');
     svg.setAttribute('focusable', 'true');
-    svg.setAttribute('aria-labelledby', id);
+    svg.setAttribute('aria-labelledby', title.id);
     svg.setAttribute('aria-keyshortcuts', 'ArrowLeft ArrowRight ArrowUp ArrowDown + - 0');
-    if (captionId) svg.setAttribute('aria-describedby', captionId);
+    const describedBy = [description?.id, captionId].filter(Boolean).join(' ');
+    if (describedBy) svg.setAttribute('aria-describedby', describedBy);
     svg.addEventListener('keydown', handleSvgKeydown);
   }
 

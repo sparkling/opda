@@ -1,54 +1,126 @@
 ---
 import Layout from '@/layouts/Layout.astro';
 import PageMeta from '@/components/PageMeta.astro';
-import JourneyNav from '@/components/ia/JourneyNav.astro';
+import Diagram from '@/components/Diagram.astro';
 ---
 
-<Layout title="Validation, conformance and generated projections" description="How SPDTF 2.0 separates deterministic checks, semantic review, lifecycle records and generated delivery views.">
-  <PageMeta category="Ontology journey" variant="brand" updated="SPDTF 2.0 development · assurance and projections" />
-  <h1>Validation, conformance, lifecycle and generated projections</h1>
+<Layout title="Validation, review and projections" description="How SPDTF 2.0 separates open-world ontology meaning, SHACL checks, conformance evidence, human semantic review, governance and generated projections.">
+  <PageMeta category="How we model SPDTF 2.0" variant="brand" updated="Validation scope · technical success is not semantic approval" />
+  <h1>Validation, review and generated projections</h1>
   <p class="lead">
-    Validation makes encoded checks visible. Conformance states which features and tests
-    were exercised. Neither one is semantic approval: practitioners review meaning and
-    governance records any promotion.
+    Validation makes encoded expectations testable. Conformance states which exact
+    features and probes were exercised. Neither one approves meaning: practitioners
+    review the candidate and recorded governance controls any promotion.
   </p>
-  <JourneyNav />
 
-  <h2 id="separate">Keep the decisions separate</h2>
+  <h2 id="open-closed">Open-world meaning and closed-world checks</h2>
+  <p>
+    RDF/RDFS/OWL use an open-world model: absence of a statement does not normally make
+    the statement false. This is useful when knowledge arrives from many sources. SHACL
+    applies a declared validation lens to a supplied data graph: for a particular
+    delivery, it can require a value, datatype, class, count or pattern.
+  </p>
+  <Diagram size="large" caption="One data statement participates in two different regimes. RDFS and OWL describe semantic implications in an open world; SHACL tests declared delivery expectations against a chosen data graph. Neither branch establishes factual truth.">
+flowchart LR
+  accTitle: Open-world ontology meaning compared with SHACL validation
+  accDescr: A supplied RDF data graph feeds an ontology semantics branch for implications and a SHACL branch for declared checks; both produce bounded evidence rather than business approval.
+  Data["Supplied RDF data graph"]:::data
+  Meaning["RDFS and OWL semantics"]:::service
+  Inference["Declared implications"]:::infra
+  Shapes["SHACL shapes graph"]:::security
+  Report["Validation report"]:::process
+  Truth["No factual truth or approval claim"]:::warning
+  Data --> Meaning
+  Meaning --> Inference
+  Data --> Shapes
+  Shapes --> Report
+  Inference -.-> Truth
+  Report -.-> Truth
+  </Diagram>
+  <p>
+    RDFS domain and range are semantic statements and may infer types; they are not
+    mandatory-form fields. SHACL property shapes encode delivery expectations. Copying
+    one mechanically into the other can change meaning and is not allowed without a
+    reviewed rule.
+  </p>
+
+  <h2 id="automated">What automated checks can establish</h2>
   <table>
     <caption>Different checks answer different questions</caption>
-    <thead><tr><th scope="col">Layer</th><th scope="col">Question</th><th scope="col">Evidence</th></tr></thead>
+    <thead><tr><th scope="col">Check</th><th scope="col">Can establish</th><th scope="col">Cannot establish</th></tr></thead>
     <tbody>
-      <tr><th scope="row">Semantic review</th><td>Does this definition, relationship or boundary match the group’s domain meaning?</td><td>Participant evidence, examples, questions, review comments and disposition.</td></tr>
-      <tr><th scope="row">Deterministic validation</th><td>Does the candidate satisfy the encoded structural, provenance, coverage and constraint checks?</td><td>Fail-closed reports, SHACL scope, parser results and reproducible receipts.</td></tr>
-      <tr><th scope="row">Conformance</th><td>Which exact standards features and profiles were tested?</td><td>Version, feature declaration, test suite and known non-claims.</td></tr>
-      <tr><th scope="row">Governance promotion</th><td>Who may make the decision, and was it recorded?</td><td>Decision record, authority, lifecycle state and immutable release identifier.</td></tr>
+      <tr><th scope="row">Parser</th><td>Files use supported syntax and can be loaded.</td><td>Terms express correct or useful meaning.</td></tr>
+      <tr><th scope="row">Graph invariants</th><td>Identifiers, imports, provenance fields and package rules meet declared tests.</td><td>The source evidence is true or authoritative.</td></tr>
+      <tr><th scope="row">SHACL</th><td>The supplied data graph conforms to the declared shapes and feature subset.</td><td>The business rule is universally correct.</td></tr>
+      <tr><th scope="row">Competency query</th><td>The candidate can answer the encoded structural question on test data.</td><td>The answer represents practitioner consensus.</td></tr>
+      <tr><th scope="row">Projection comparison</th><td>A generated output preserves declared structures and examples.</td><td>Every consumer will interpret it correctly.</td></tr>
     </tbody>
   </table>
-
-  <h2 id="lifecycle">Candidate lifecycle</h2>
   <p>
-    The current vocabulary ceiling is <strong>first working-group draft — non-normative</strong>
-    until a separately accepted governance decision defines later promotion states. A
-    candidate can be revised, deferred or returned for evidence without being described
-    as an adopted standard.
+    Tests include positive examples that must conform and negative examples that must
+    fail for the expected reason. A report is fail-closed: missing tools, unrecognised
+    features or incomplete receipts are not silently counted as success.
   </p>
-  <ol>
-    <li>Publish a readable candidate with sources, questions, status and change history.</li>
-    <li>Run the declared validation and conformance checks; record their exact scope.</li>
-    <li>Review feedback and record accepted, needs evidence, deferred or not accepted dispositions.</li>
-    <li>Preserve the immutable diff and receipts; only recorded human authority can promote a release.</li>
-  </ol>
+
+  <h2 id="conformance">Bounded conformance claims</h2>
+  <p>
+    Property Pack 0.1 declares RDF 1.2 Basic-compatible Turtle, a bounded RDFS/OWL
+    vocabulary surface, SKOS, a tested SHACL 1.2 Core subset and portable SPARQL basic
+    graph-pattern ASK queries. It does not claim full RDF 1.2, OWL-profile reasoning,
+    SHACL Union, SHACL-AF, SHACL-SPARQL or general SPARQL 1.2 conformance.
+  </p>
+  <p>
+    Every candidate version records specification snapshot, engine versions, enabled
+    features, test corpus, results and known nonclaims. Updating an evolving Working
+    Draft is a governed change that reruns the probes; a page must not silently relabel
+    an older pinned snapshot as “latest”.
+  </p>
+
+  <h2 id="authority">Semantic review and governance promotion</h2>
+  <Diagram size="large" caption="Technical evidence accumulates before semantic review. Practitioners decide whether the meaning fits their domain; a separately authorised governance record controls promotion. Proposed lifecycle stages remain visibly proposed.">
+flowchart LR
+  accTitle: Technical checks semantic review and governance authority
+  accDescr: Syntax, graph, SHACL and competency checks produce technical evidence; practitioners review meaning; governance may record a lifecycle decision but automated tools cannot promote the candidate.
+  Syntax["Syntax and graph checks"]:::data
+  Constraints["SHACL and query checks"]:::process
+  Evidence["Bounded technical evidence"]:::info
+  Review["Practitioner semantic review"]:::user
+  Decision["Authorised governance record"]:::security
+  Release["Versioned candidate or release"]:::service
+  Syntax --> Evidence
+  Constraints --> Evidence
+  Evidence --> Review
+  Review --> Decision
+  Decision --> Release
+  Review -.->|revise or seek evidence| Constraints
+  </Diagram>
+  <p>
+    The current SPDTF-wide lifecycle described in ADR-0068 remains <strong>Proposed</strong>.
+    Outside the separately accepted accelerated Property Pack sequence, do not label a
+    candidate as adopted, ratified or released unless a later accepted decision names the
+    authority and records the act.
+  </p>
 
   <h2 id="projections">Generated projections</h2>
   <p>
-    A governed semantic package may produce RDF/OWL/SKOS, SHACL constraints, JSON Schema,
-    JSON-LD contexts, forms, APIs, website pages, PDF and Markdown. These are tested
-    projections for different consumers, not independent specifications. An optional
-    transformation runtime is an implementation service, not a source of meaning.
+    A governed semantic package may generate RDF/OWL/SKOS, SHACL constraints, JSON
+    Schema, JSON-LD contexts, forms, APIs, website pages, PDF and Markdown. Each projection
+    names its source package, generator, transformation boundary and tests. A downstream
+    edit cannot silently redefine the maintained model.
   </p>
+  <table>
+    <caption>Projection assurance questions</caption>
+    <thead><tr><th scope="col">Question</th><th scope="col">Required evidence</th></tr></thead>
+    <tbody>
+      <tr><th scope="row">Which package produced it?</th><td>Immutable package identifier and content digest.</td></tr>
+      <tr><th scope="row">Which information can the target represent?</th><td>Explicit loss, flattening and unsupported-feature statement.</td></tr>
+      <tr><th scope="row">How was it generated?</th><td>Versioned deterministic generator and configuration.</td></tr>
+      <tr><th scope="row">How was it checked?</th><td>Positive/negative fixtures, round-trip or semantic-diff receipt where appropriate.</td></tr>
+      <tr><th scope="row">Who reviewed its fitness?</th><td>Named consumer/use case and human review record.</td></tr>
+    </tbody>
+  </table>
   <p>
-    <a href="/spdtf-2">Return to SPDTF 2.0 Development</a> ·
-    <a href="/pdtf-1">Compare with the retained PDTF 1.0 implementation</a>
+    <a href="/spdtf-2/ontologies">Return to semantic modelling</a> ·
+    <a href="/spdtf-2/property-pack/validation">Inspect Property Pack validation evidence</a>
   </p>
 </Layout>

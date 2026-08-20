@@ -1,74 +1,137 @@
 ---
 import Layout from '@/layouts/Layout.astro';
 import PageMeta from '@/components/PageMeta.astro';
-import JourneyNav from '@/components/ia/JourneyNav.astro';
+import Diagram from '@/components/Diagram.astro';
 import {
   STANDARDS_PROFILE,
   STANDARDS_PROFILE_VERSION,
   validateStandardsProfile,
 } from '@/lib/spdtf-standards-profile.mjs';
 validateStandardsProfile();
+const implemented = STANDARDS_PROFILE.filter(({ implementationStatus }) => implementationStatus.startsWith('used'));
 ---
 
-<Layout title="Standards, vocabularies and frameworks" description="The bounded SPDTF 2.0 standards profile: targets, candidates, mechanisms, owners and evidence.">
-  <PageMeta category="Ontology journey" variant="brand" updated="Profile for development review · not an adoption register" />
+<Layout title="Standards profile" description="What the Property Pack candidate actually uses, what SPDTF has accepted as a bounded target, and which standards or methods remain candidates or deferred.">
+  <PageMeta category="How we model SPDTF 2.0" variant="brand" updated={`Standards profile ${STANDARDS_PROFILE_VERSION} · checked 20 August 2026`} />
   <h1>Standards, vocabularies and modelling frameworks</h1>
   <p class="lead">
-    This is a development profile, not a claim that every listed technology is adopted
-    by SPDTF. Each candidate records its purpose, exact version and conformance level,
-    mechanism, status, owner, evidence or decision, and re-open trigger.
+    This development profile separates three independent facts: the maturity of an
+    external specification, the status of an OPDA decision, and whether a candidate
+    actually emits or tests the technology. “Listed” never means “adopted.”
   </p>
-  <JourneyNav />
 
-  <h2 id="profile">Bounded profile</h2>
+  <h2 id="implemented">What is implemented now</h2>
+  <p>
+    Property Pack 0.1 is the only current SPDTF 2.0 implementation example. It uses a
+    deliberately small surface: RDF 1.2 Basic-compatible Turtle, RDFS and bounded OWL
+    vocabulary, XML Schema datatypes, SKOS, a tested SHACL 1.2 Core subset, four portable
+    SPARQL ASK queries and limited Dublin Core Terms. It remains machine-proposed.
+  </p>
   <table>
-    <caption>Standards-profile register {STANDARDS_PROFILE_VERSION}: one bounded record per item</caption>
-    <thead><tr><th scope="col">Standard or method</th><th scope="col">Exact version / boundary</th><th scope="col">Purpose</th><th scope="col">Conformance boundary</th><th scope="col">Mechanism</th><th scope="col">Status</th><th scope="col">Owner</th><th scope="col">Evidence / decision</th><th scope="col">Re-open trigger</th></tr></thead>
+    <caption>Technologies materially used by Property Pack 0.1</caption>
+    <thead><tr><th scope="col">Technology</th><th scope="col">Implementation fact</th><th scope="col">Important non-claim</th></tr></thead>
     <tbody>
-      {STANDARDS_PROFILE.map((record) => <tr>
-        <th scope="row">{record.name}</th>
-        <td>{record.versionBoundary}</td>
-        <td>{record.purpose}</td>
+      {implemented.map((record) => <tr>
+        <th scope="row"><a href={record.source}>{record.name}</a></th>
+        <td>{record.implementationEvidence}</td>
         <td>{record.conformance}</td>
-        <td><code>{record.mechanism}</code></td>
-        <td>{record.status}</td>
-        <td>{record.owner}</td>
-        <td>{record.evidence}</td>
-        <td>{record.reopenTrigger}</td>
       </tr>)}
     </tbody>
   </table>
+  <p>
+    PROV-O has a declared prefix but no term use; that is not adoption. There is no
+    current Property Pack use of DCAT, DQV, OWL-Time, DPV, ODRL, SSSOM, FIBO,
+    GeoSPARQL, Schema.org, Verifiable Credentials, DID, ORG, gUFO or DASH. Cross-context
+    mappings remain empty while they await working-group evidence.
+  </p>
 
-  <h2 id="record">Required profile record</h2>
+  <h2 id="stack">How the implemented stack fits together</h2>
+  <Diagram size="large" caption="The current candidate stack separates graph structure and meaning, governed concepts, use-specific constraints, competency queries and metadata. Consumer projections sit downstream and do not become semantic authorities.">
+flowchart TB
+  accTitle: Property Pack zero point one implemented standards stack
+  accDescr: RDF Basic forms the graph substrate; RDFS and OWL express meaning; SKOS manages concepts; SHACL checks declared expectations; SPARQL asks competency questions; Dublin Core supplies limited metadata; projections are downstream.
+  RDF["RDF 1.2 Basic and Turtle"]:::infra
+  OWL["RDFS and bounded OWL 2"]:::service
+  SKOS["SKOS concept schemes"]:::data
+  SHACL["SHACL 1.2 Core subset"]:::security
+  SPARQL["Portable SPARQL ASK subset"]:::process
+  DCT["Dublin Core Terms metadata"]:::external
+  Projection["Tested consumer projections"]:::user
+  RDF --> OWL
+  OWL --> SKOS
+  SKOS --> SHACL
+  SHACL --> SPARQL
+  DCT -.-> OWL
+  SPARQL --> Projection
+  </Diagram>
+
+  <h2 id="maturity">Specification maturity is not OPDA adoption</h2>
+  <p>
+    As checked on 20 August 2026, RDF 1.2 Concepts is a W3C Candidate Recommendation
+    Snapshot. RDF 1.2 Turtle, RDFS 1.2, SHACL 1.2 Core and SPARQL 1.2 Query are Working
+    Drafts. OWL 2 and SKOS are W3C Recommendations. Exact candidate snapshots remain
+    pinned for reproducibility until a deliberate update reruns feature probes.
+  </p>
   <table>
-    <caption>Fields required for every standards-profile item</caption>
-    <thead><tr><th scope="col">Field</th><th scope="col">Example question</th></tr></thead>
+    <caption>Three status axes that must be read together</caption>
+    <thead><tr><th scope="col">Axis</th><th scope="col">Question</th><th scope="col">Examples</th></tr></thead>
     <tbody>
-      <tr><th scope="row">Purpose</th><td>What business or technical need does this item address?</td></tr>
-      <tr><th scope="row">Exact version and conformance level</th><td>Which specification and bounded feature set are being used?</td></tr>
-      <tr><th scope="row">Mechanism</th><td>Is the relationship to the item <code>reuse</code>, <code>reference</code>, <code>map</code> or <code>mint</code>?</td></tr>
-      <tr><th scope="row">Decision status</th><td>Is it a target, candidate, reference, deferred item or retained legacy mechanism?</td></tr>
-      <tr><th scope="row">Owner</th><td>Which working group or governance body is accountable?</td></tr>
-      <tr><th scope="row">Evidence or decision</th><td>Which source, competency question, ADR or review supports the record?</td></tr>
-      <tr><th scope="row">Re-open trigger</th><td>What new evidence, feature need or boundary decision would revisit it?</td></tr>
+      <tr><th scope="row">Specification maturity</th><td>What does the owning standards body call this exact snapshot?</td><td>Recommendation, Candidate Recommendation, Working Draft, Note, community report.</td></tr>
+      <tr><th scope="row">OPDA governance status</th><td>What has SPDTF decided about it?</td><td>Accepted bounded target, candidate, conditional, deferred, blocked or historical.</td></tr>
+      <tr><th scope="row">Implementation status</th><td>What terms or features does this candidate actually use and test?</td><td>Used and tested, used without a separate conformance receipt, prefix only, or not used.</td></tr>
     </tbody>
   </table>
 
-  <h2 id="projections">Projections are not standards mechanisms</h2>
+  <h2 id="mechanisms">Reuse, reference, map and mint</h2>
+  <table>
+    <caption>Only four relationship mechanisms are allowed in the profile</caption>
+    <thead><tr><th scope="col">Mechanism</th><th scope="col">Meaning</th><th scope="col">Minimum evidence</th></tr></thead>
+    <tbody>
+      <tr><th scope="row"><code>reuse</code></th><td>Use exact external terms in the candidate.</td><td>Version, term list, licence/governance fit and feature tests.</td></tr>
+      <tr><th scope="row"><code>reference</code></th><td>Use a specification or method as design evidence without importing it.</td><td>Question addressed, edition and explicit non-conformance boundary.</td></tr>
+      <tr><th scope="row"><code>map</code></th><td>Keep local meaning and record a qualified relation to another term.</td><td>Mapping strength, justification, owner, confidence and review.</td></tr>
+      <tr><th scope="row"><code>mint</code></th><td>Create an SPDTF term when no governed reuse fits.</td><td>Namespace authority, semantic owner, evidence and non-reuse rationale.</td></tr>
+    </tbody>
+  </table>
+
+  <h2 id="upper-ontology">Upper ontologies and design methods</h2>
   <p>
-    JSON Schema, JSON-LD, forms, APIs, website pages, PDF and Markdown are generated
-    projections. Their relationship to the semantic package is recorded in the
-    <a href="/spdtf-2/outputs">outputs register</a>; it is not a fifth standards-profile
-    mechanism. The only allowed mechanisms here are <code>reuse</code>,
-    <code>reference</code>, <code>map</code> and <code>mint</code>.
+    UFO and OntoClean are method candidates, not adopted dependencies. gUFO is a separate
+    OWL implementation and is not imported or used. DOLCE is PDTF 1.0 historical
+    comparison evidence. See the <a href="/spdtf-2/ontologies/modelling-rules#upper">upper-ontology decision boundary</a>
+    before interpreting any of these rows.
   </p>
 
-  <h2 id="non-claims">Non-claims</h2>
+  <h2 id="register">Detailed standards register</h2>
   <p>
-    A reference to FIBO, GeoSPARQL, Schema.org or another framework is not wholesale
-    adoption. A target is not a conformance result. An accepted modelling target is not
-    an adopted SPDTF standard. The profile remains subordinate to human review and the
-    governance record.
+    Every record names an exact boundary, current external maturity, actual implementation,
+    OPDA governance status, mechanism, owner, evidence and re-open trigger. The source
+    link is the primary specification or method source, not a search result.
   </p>
-  <p><a href="/spdtf-2/ontologies/evidence-and-mappings">Next: evidence, provenance and qualified mappings →</a></p>
+  <div class="card-grid standards-profile-grid">
+    {STANDARDS_PROFILE.map((record) => <article class="card">
+      <h3><a href={record.source}>{record.name}</a></h3>
+      <dl>
+        <dt>Current specification</dt><dd>{record.specificationMaturity} · {record.exactSnapshot}</dd>
+        <dt>Candidate pin</dt><dd>{record.candidateSnapshot}</dd>
+        <dt>Implementation</dt><dd>{record.implementationStatus}. {record.implementationEvidence}</dd>
+        <dt>Governance</dt><dd>{record.governanceStatus}</dd>
+        <dt>Purpose</dt><dd>{record.purpose}</dd>
+        <dt>Feature boundary</dt><dd>{record.conformance}</dd>
+        <dt>Mechanism</dt><dd><code>{record.mechanism}</code></dd>
+        <dt>Owner</dt><dd>{record.owner}</dd>
+        <dt>Decision evidence</dt><dd>{record.evidence}</dd>
+        <dt>Re-open trigger</dt><dd>{record.reopenTrigger}</dd>
+        <dt>Last checked</dt><dd>{record.lastChecked}</dd>
+      </dl>
+    </article>)}
+  </div>
+
+  <h2 id="projections">Projections are not profile mechanisms</h2>
+  <p>
+    JSON Schema, JSON-LD, forms, APIs, website pages, PDF and Markdown are generated
+    projections. Their package version and validation belong in the
+    <a href="/spdtf-2/outputs">outputs register</a>; “projection” is not a fifth standards
+    relationship mechanism.
+  </p>
 </Layout>

@@ -289,8 +289,10 @@ states, plus loading/error/success where asynchronous work occurs and dark parit
   optional off-white zebra rows; interactive rows are at least 44px.
 - **Code/schema block:** deep ink, Roboto Mono, accessible syntax colour, language
   label and copy action.
-- **Diagram frame:** white surface, 1px border and numbered caption; pan/zoom controls
-  remain keyboard-operable.
+- **Diagram frame:** white surface, 1px border and numbered caption; every diagram
+  has an authored accessible title, description and prose equivalent. Overview
+  diagrams stay within nine nodes and twelve arrows; split denser subjects into
+  overview and detail views. Pan/zoom controls remain keyboard-operable.
 - **Feedback states:** skeleton, labelled loading, empty-state explanation, error
   recovery and non-obscuring toast.
 

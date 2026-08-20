@@ -1,62 +1,116 @@
 ---
 import Layout from '@/layouts/Layout.astro';
 import PageMeta from '@/components/PageMeta.astro';
-import JourneyNav from '@/components/ia/JourneyNav.astro';
+import Diagram from '@/components/Diagram.astro';
 ---
 
-<Layout title="Bounded contexts and common boundary" description="How SPDTF 2.0 working groups retain local meaning and agree a small interoperability boundary.">
-  <PageMeta category="Ontology journey" variant="brand" updated="SPDTF 2.0 development · context ownership" />
+<Layout title="Contexts and common boundary" description="How SPDTF 2.0 assigns semantic homes, preserves local meaning, defines a small common boundary and treats the Property Pack as a cross-context profile.">
+  <PageMeta category="How we model SPDTF 2.0" variant="brand" updated="Context ownership · common boundary · Property Pack profile" />
   <h1>Bounded contexts and the common boundary</h1>
   <p class="lead">
-    A bounded context is the boundary within which a particular model and language are
-    meaningful. SPDTF 2.0 starts with context-owned evidence, then makes the agreements
-    between contexts explicit instead of forcing one universal definition too early.
+    A bounded context is the boundary within which a model and its language have a
+    particular meaning. SPDTF keeps context ownership visible and makes cross-context
+    agreements explicit instead of forcing one universal definition too early.
   </p>
-  <JourneyNav />
 
-  <h2 id="contexts">Context ownership</h2>
+  <h2 id="contexts">Property contexts and scheme context</h2>
   <table>
-    <caption>Initial working-group contexts</caption>
-    <thead><tr><th scope="col">Context</th><th scope="col">Illustrative scope</th></tr></thead>
+    <caption>Initial property-domain contexts and the separate scheme-design lens</caption>
+    <thead><tr><th scope="col">Context</th><th scope="col">Illustrative scope</th><th scope="col">Type</th></tr></thead>
     <tbody>
-      <tr><th scope="row">Finance and Banking</th><td>Mortgage journey, lending decisions, parties, evidence, risk and finance-data exchange.</td></tr>
-      <tr><th scope="row">Conveyancing</th><td>Instruction, legal transfer, enquiries, searches, exchange and completion.</td></tr>
-      <tr><th scope="row">Estate Agency</th><td>Marketing, listings, material information, viewings, offers and seller information.</td></tr>
-      <tr><th scope="row">Surveying and Valuation</th><td>Inspection, condition, valuation, professional evidence and property risk.</td></tr>
-      <tr><th scope="row">Property Data Services</th><td>Registries, searches, authoritative sources, provenance, currency and reuse.</td></tr>
-      <tr><th scope="row">Property Technology</th><td>Platforms, workflow, integration, APIs, implementation and operational feedback.</td></tr>
-      <tr><th scope="row">DBT Smart Data</th><td>OPDA-internal scheme context for participants, roles, trust, consent, authorisation, accreditation, liability and cross-sector alignment.</td></tr>
+      <tr><th scope="row">Finance and Banking</th><td>Mortgage journey, lending decisions, parties, evidence, risk and finance-data exchange.</td><td>Property-domain context</td></tr>
+      <tr><th scope="row">Conveyancing</th><td>Instruction, legal transfer, enquiries, searches, exchange and completion.</td><td>Property-domain context</td></tr>
+      <tr><th scope="row">Estate Agency</th><td>Marketing, listings, material information, viewings, offers and seller information.</td><td>Property-domain context</td></tr>
+      <tr><th scope="row">Surveying and Valuation</th><td>Inspection, condition, valuation, professional evidence and property risk.</td><td>Property-domain context</td></tr>
+      <tr><th scope="row">Property Data Services</th><td>Registries, searches, authoritative sources, provenance, currency and reuse.</td><td>Property-domain context</td></tr>
+      <tr><th scope="row">Property Technology</th><td>Platforms, workflow, integration, APIs, implementation and operational feedback.</td><td>Property-domain context</td></tr>
+      <tr><th scope="row">DBT Smart Data</th><td>Participants, roles, trust, consent, authorisation, accreditation, liability and cross-sector alignment.</td><td>OPDA-internal scheme-design context; not a government group or property-domain context</td></tr>
     </tbody>
   </table>
+
+  <h2 id="homes">One semantic home, many consumers</h2>
   <p>
-    The DBT Smart Data group is not asserted to be another property bounded context and
-    is not a government-established group. It supplies scheme-level questions without
-    redefining meanings owned by the property groups.
+    Each SPDTF resource has one semantic home: the context accountable for its definition
+    and substantive change. Other contexts may consume it, add local relationships or map
+    to a related local term. Consumption does not transfer ownership.
+  </p>
+  <Diagram size="large" caption="Representative contexts retain local meaning. Interoperability owns only the small common boundary and qualified mappings. The Property Pack selects across contexts as a delivery profile; it does not become another universal domain model.">
+flowchart LR
+  accTitle: Context-owned models common boundary and Property Pack profile
+  accDescr: Four representative property contexts contribute requirements to an interoperability boundary; the Property Pack profile selects reviewed meanings across them while the DBT scheme context remains separate.
+  Agency["Estate agency"]:::user
+  Conveyancing["Conveyancing"]:::security
+  Finance["Finance and banking"]:::data
+  Surveying["Surveying and valuation"]:::infra
+  Interop["Interoperability"]:::process
+  Common["Small common boundary"]:::service
+  Pack["Property Pack profile"]:::external
+  Scheme["DBT scheme-design context"]:::xsection
+  Agency --> Interop
+  Conveyancing --> Interop
+  Finance --> Interop
+  Surveying --> Interop
+  Interop --> Common
+  Agency --> Pack
+  Conveyancing --> Pack
+  Common --> Pack
+  Scheme -.-> Interop
+  </Diagram>
+
+  <h2 id="semantic-home">Semantic home decision</h2>
+  <p>
+    The home is chosen from the business meaning, not from whichever spreadsheet first
+    supplied a field. Reuse an external resource when its governance and meaning fit;
+    otherwise identify the context that owns the distinction. Put something in the
+    common boundary only when several contexts require one stable exchange agreement.
+  </p>
+  <Diagram size="large" caption="The decision starts with a reviewed meaning. Suitable governed external terms are reused; otherwise a domain context owns the term. Only a genuine multi-context exchange agreement enters the common boundary.">
+flowchart TB
+  accTitle: How an SPDTF resource receives a semantic home
+  accDescr: A reviewed meaning is checked against governed external terms, then assigned to a domain owner; shared exchange needs may contribute a bounded common term, otherwise contexts use a qualified mapping.
+  Meaning["Reviewed business meaning"]:::user
+  External{"Suitable governed external term?"}:::external
+  Reuse["Reuse with exact profile"]:::success
+  Owner["Assign one domain owner"]:::process
+  Shared{"Stable multi-context agreement needed?"}:::security
+  Common["Contribute to common boundary"]:::service
+  Mapping["Keep local terms and qualify mapping"]:::data
+  Meaning --> External
+  External -->|yes| Reuse
+  External -->|no| Owner
+  Owner --> Shared
+  Shared -->|yes| Common
+  Shared -->|no| Mapping
+  </Diagram>
+
+  <h2 id="same-label">Same label does not guarantee same meaning</h2>
+  <p>
+    “Property”, “client”, “instruction” or “completion” may have legitimate local senses.
+    If two contexts mean the same identifiable thing, reuse one resource. If they mean
+    different things, mint context-owned resources and record a justified mapping where
+    useful. Do not use <code>owl:sameAs</code> as a convenience; it asserts identity more
+    strongly than most cross-context comparisons support.
   </p>
 
-  <h2 id="interoperability">The small common boundary</h2>
+  <h2 id="common">The small common boundary</h2>
   <p>
-    The Interoperability Working Group is a peer of the domain groups. It owns only what
-    is genuinely needed for exchange across boundaries:
-  </p>
-  <ul>
-    <li>a deliberately small common boundary ontology;</li>
-    <li>a context map showing where meanings originate and which group owns a decision;</li>
-    <li>qualified mappings between related local terms, vocabularies and taxonomies;</li>
-    <li>shared identifier, provenance, versioning and change conventions where needed.</li>
-  </ul>
-  <p>
-    A concept belongs in the common boundary because multiple contexts need a stable
-    exchange agreement, not because centralisation is convenient. A boundary agreement is
-    not a redesign of a domain model.
+    Interoperability is a peer of the domain groups. It owns the context map, qualified
+    cross-context mappings, shared identifier/provenance/version conventions and only the
+    small set of meanings that genuinely require a common exchange contract. A boundary
+    agreement is not permission to redesign a domain model centrally.
   </p>
 
-  <h2 id="evidence">Evidence becomes a candidate</h2>
+  <h2 id="property-pack">The Property Pack is a cross-context profile</h2>
   <p>
-    Participants bring language, rules, examples, documents and scenarios. Facilitators
-    separate context-owned evidence from cross-context questions. Candidates keep the
-    source, open questions, review evidence and disposition that explain how a meaning
-    was proposed.
+    A Property Pack is a standardised bundle of property information for a transaction.
+    Its ontology is a profile spanning several semantic contexts: it selects the meanings,
+    values and constraints required for that delivery. It is not itself a bounded context,
+    and its 451 source items do not imply 451 ontology properties.
   </p>
-  <p><a href="/spdtf-2/ontologies/coverage">Next: coverage crosswalk →</a></p>
+  <p>
+    The current <a href="/spdtf-2/property-pack">Property Pack ontology candidate</a>
+    proposes semantic homes by machine. The Technical Working Group will determine the
+    accelerated component; later domain review may propose governed changes. That sequence
+    must remain visible in every interpretation of the candidate.
+  </p>
 </Layout>

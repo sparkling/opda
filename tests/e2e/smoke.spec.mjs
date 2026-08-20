@@ -79,6 +79,50 @@ test('mobile section drawer returns focus on Escape', async ({ page }) => {
   clean();
 });
 
+test('semantic modelling exposes linked audience branches and one active page', async ({ page }) => {
+  const clean = watchRuntime(page);
+  await visit(page, '/spdtf-2/ontologies/standards');
+  const navigation = page.locator('#section-navigation');
+  const method = navigation.locator('.tree-folder:has(> .tree-folder-row > a[href="/spdtf-2/ontologies/modelling-method"])');
+  const teaching = navigation.locator('.tree-folder:has(> .tree-folder-row > a[href="/spdtf-2/ontologies/why-ontologies"])');
+  await expect(method).toHaveClass(/is-open/u);
+  await expect(method.locator(':scope > .tree-folder-row > a'))
+    .toHaveText('How we model SPDTF 2.0');
+  await expect(method.locator(':scope > .tree-folder-row > button'))
+    .toHaveAttribute('aria-expanded', 'true');
+  await expect(teaching).not.toHaveClass(/is-open/u);
+  await expect(navigation.locator('a[aria-current="page"]')).toHaveCount(1);
+  await expect(navigation.locator('a[aria-current="page"]'))
+    .toHaveAttribute('href', '/spdtf-2/ontologies/standards');
+  clean();
+});
+
+test('semantic teaching diagrams retain authored accessible names and captions', async ({ page }) => {
+  const clean = watchRuntime(page);
+  await page.setViewportSize({ width: 1440, height: 1000 });
+  await visit(page, '/spdtf-2/ontologies/why-ontologies');
+  const figure = page.locator('.graph-diagram-wrapper').first();
+  await figure.scrollIntoViewIfNeeded();
+  const svg = figure.locator('.gd-mermaid svg');
+  await expect(svg).toBeVisible();
+  const accessibility = await svg.evaluate((node) => {
+    const titleId = node.getAttribute('aria-labelledby');
+    const describedBy = (node.getAttribute('aria-describedby') || '').split(/\s+/u).filter(Boolean);
+    return {
+      title: titleId ? document.getElementById(titleId)?.textContent?.trim() : '',
+      descriptions: describedBy.map((id) => document.getElementById(id)?.textContent?.trim()),
+    };
+  });
+  expect(accessibility.title).toBe('Document tree compared with a connected meaning graph');
+  expect(accessibility.descriptions.filter(Boolean).length).toBeGreaterThanOrEqual(2);
+  await expect(figure.locator('figcaption')).toContainText('A document tree');
+  await page.locator('#theme-toggle').click();
+  await expect(page.locator('html')).toHaveAttribute('data-theme', 'dark');
+  await expect(svg).toBeVisible();
+  await assertNoBodyOverflow(page);
+  clean();
+});
+
 test('mobile primary navigation is an inert disclosure with Escape return', async ({ page }) => {
   const clean = watchRuntime(page);
   await page.setViewportSize({ width: 375, height: 812 });

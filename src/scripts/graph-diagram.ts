@@ -120,10 +120,11 @@ export function adoptBareMermaid() {
     if (!source) return;
     const shell = document.createElement('figure');
     shell.className = 'graph-diagram-wrapper';
+    const figure = el.closest('figure');
+    if (figure?.classList.contains('diagram')) shell.classList.add(...figure.classList);
     shell.innerHTML = GD_SHELL_HTML;
     (shell.querySelector('.gd-mermaid') as HTMLElement).textContent = source;
     // Preserve a caption sibling if the diagram sits in a <figure>.
-    const figure = el.closest('figure');
     const cap = figure?.querySelector('figcaption');
     if (cap) { const nextCaption = document.createElement('figcaption'); nextCaption.className = 'gd-caption'; nextCaption.innerHTML = cap.innerHTML; shell.appendChild(nextCaption); }
     (figure || el).replaceWith(shell);

@@ -1,18 +1,18 @@
 ---
 import Layout from '@/layouts/Layout.astro';
 import PageMeta from '@/components/PageMeta.astro';
-import JourneyNav from '@/components/ia/JourneyNav.astro';
+import Diagram from '@/components/Diagram.astro';
 import { SEMANTIC_PACKAGE_MANIFEST } from '@/lib/spdtf-workspace.mjs';
 ---
 
-<Layout title="Six-part semantic package" description="The six distinct semantic outputs that each SPDTF 2.0 working group keeps aligned.">
-  <PageMeta category="Ontology journey" variant="brand" updated="SPDTF 2.0 development · semantic package" />
+<Layout title="Six-part semantic package" description="How the business glossary, data dictionary, taxonomies, controlled vocabularies, resources and relationships form one synchronized SPDTF 2.0 package.">
+  <PageMeta category="How we model SPDTF 2.0" variant="brand" updated="Versioned semantic package · six distinct outputs" />
   <h1>The six-part semantic package</h1>
   <p class="lead">
-    Each group agrees six related kinds of content. Together they make one reviewable
-    semantic package; they are not one taxonomy and they are not six competing standards.
+    Each group reviews six related kinds of content. Together they form one versioned
+    agreement about meaning. They are not one taxonomy, six separate standards, or six
+    files that may drift independently.
   </p>
-  <JourneyNav />
 
   <div class="callout callout--key">
     <p class="callout__label">Versioned package contract</p>
@@ -21,37 +21,99 @@ import { SEMANTIC_PACKAGE_MANIFEST } from '@/lib/spdtf-workspace.mjs';
   </div>
 
   <h2 id="outputs">Six distinct outputs</h2>
+  <Diagram size="large" caption="Six reviewable outputs surround one versioned semantic package. Updating a meaning in one output triggers alignment checks across the other five; none is allowed to become a competing authority.">
+flowchart TB
+  accTitle: The six synchronized outputs of an SPDTF semantic package
+  accDescr: One versioned package connects the business glossary, data dictionary, taxonomies, controlled vocabularies, resources and relationships.
+  Package["Versioned semantic package"]:::process
+  Glossary["Business glossary"]:::user
+  Dictionary["Data dictionary"]:::data
+  Taxonomy["Taxonomies"]:::service
+  Vocabulary["Controlled vocabularies"]:::service
+  Resources["Resources"]:::infra
+  Relationships["Relationships"]:::security
+  Glossary --> Package
+  Dictionary --> Package
+  Taxonomy --> Package
+  Vocabulary --> Package
+  Resources --> Package
+  Relationships --> Package
+  </Diagram>
   <table>
     <caption>What each output helps a participant review</caption>
     <thead><tr><th scope="col">Output</th><th scope="col">Question it answers</th><th scope="col">Typical review material</th></tr></thead>
     <tbody>
       <tr><th scope="row">Business glossary</th><td>What do practitioners mean by each term?</td><td>Definitions, examples, scope notes, synonyms and ownership.</td></tr>
       <tr><th scope="row">Data dictionary</th><td>What data is recorded, with what expectations?</td><td>Elements, definitions, value expectations, provenance and stewardship.</td></tr>
-      <tr><th scope="row">Taxonomies</th><td>How are concepts organised into broader and narrower meanings?</td><td>Hierarchical organisations of domain concepts.</td></tr>
-      <tr><th scope="row">Controlled vocabularies</th><td>Which governed labels, codes and values may be used?</td><td>Terms, definitions, codes, value sets and release status.</td></tr>
-      <tr><th scope="row">Resources</th><td>What identifiable things and concepts need stable meaning?</td><td>Resources, identifiers, descriptions and provenance.</td></tr>
-      <tr><th scope="row">Relationships</th><td>How do those resources connect, participate and constrain one another?</td><td>Roles, links, cardinality and business constraints.</td></tr>
+      <tr><th scope="row">Taxonomies</th><td>How are concepts organised into broader and narrower meanings?</td><td>Reviewed hierarchical organisations of domain concepts.</td></tr>
+      <tr><th scope="row">Controlled vocabularies</th><td>Which governed labels, codes and values may be used?</td><td>Concepts, definitions, codes, schemes and release status.</td></tr>
+      <tr><th scope="row">Resources</th><td>What identifiable things and concepts need stable meaning?</td><td>Classes, identifiers, descriptions, semantic homes and provenance.</td></tr>
+      <tr><th scope="row">Relationships</th><td>How do resources connect or participate?</td><td>Named links, roles, qualification, scope and business interpretation.</td></tr>
     </tbody>
   </table>
 
-  <h2 id="how-used">How the package is used</h2>
-  <ol>
-    <li>Practitioners review plain-language definitions and examples.</li>
-    <li>Facilitators align terms, values, resources and relationships with evidence and competency questions.</li>
-    <li>The package is represented in an ontology and relevant constraints.</li>
-    <li>Tested generators publish RDF, JSON Schema, forms, APIs and human-readable pages as projections.</li>
-  </ol>
+  <h2 id="worked">One concept across all six outputs</h2>
   <p>
-    RDF/OWL, SKOS, SHACL, JSON Schema, forms and documentation are aligned
-    representations or projections of the agreement, not independent sources of meaning.
+    Consider the idea of a <em>legal title</em>. The glossary explains the term in
+    practitioner language. The data dictionary connects recorded title identifiers and
+    source fields to that meaning. A taxonomy may place title-related concepts within a
+    reviewed subject structure. A controlled vocabulary may govern title status values.
+    The resource model identifies <em>Legal title</em> as a kind of thing. Relationships
+    connect it to a property, holder and source evidence.
   </p>
-  <p><a href="/spdtf-2/outputs">Inspect the manifest and projection-status register</a>.</p>
+  <table>
+    <caption>Example alignment record for legal title</caption>
+    <thead><tr><th scope="col">Output</th><th scope="col">Example record</th><th scope="col">Alignment check</th></tr></thead>
+    <tbody>
+      <tr><th scope="row">Glossary</th><td>Definition, included/excluded cases, source and owner.</td><td>Does the definition match the resource and relationship use?</td></tr>
+      <tr><th scope="row">Dictionary</th><td>Title number, title status and recorded source elements.</td><td>Does every element describe the intended concept or relationship?</td></tr>
+      <tr><th scope="row">Taxonomy</th><td>Reviewed subject placement for title information.</td><td>Is broader/narrower structure being confused with class inheritance?</td></tr>
+      <tr><th scope="row">Vocabulary</th><td>Governed title-status concepts and codes.</td><td>Is each value a SKOS concept rather than a class?</td></tr>
+      <tr><th scope="row">Resource</th><td>Stable identifier and class description for Legal title.</td><td>Are identity and semantic home explicit?</td></tr>
+      <tr><th scope="row">Relationship</th><td>registered over Property; evidenced by Source record.</td><td>Are direction, role and qualification correct?</td></tr>
+    </tbody>
+  </table>
 
-  <h2 id="review">Review boundary</h2>
+  <h2 id="synchronisation">Synchronisation and ownership</h2>
   <p>
-    A group can review its six outputs without editing RDF or JSON Schema syntax. Open
-    questions, evidence requests and feedback dispositions remain visible beside the
-    candidate version. Interoperability reviews the parts that cross context boundaries.
+    The package manifest names the maintained source for each output, its semantic owner,
+    candidate version and derivation. A change to a definition, identifier, value scheme
+    or relationship produces an explicit package diff and reruns affected checks. A web
+    page cannot be edited into a different meaning from the downloadable artefact.
   </p>
-  <p><a href="/spdtf-2/ontologies/bounded-contexts">Next: bounded contexts and the common boundary →</a></p>
+  <ul>
+    <li>The owning working group decides local meaning and records evidence.</li>
+    <li>Interoperability reviews common-boundary terms and cross-context mappings.</li>
+    <li>Vocabulary stewards control concept-scheme versions and code stability.</li>
+    <li>Validation maintainers encode only rules supported by reviewed requirements.</li>
+    <li>Governance controls lifecycle labels and any promotion decision.</li>
+  </ul>
+
+  <h2 id="representations">Representations and projections</h2>
+  <p>
+    RDF/OWL represents resources and relationships; SKOS represents controlled concepts
+    and taxonomies; SHACL represents declared data expectations. JSON Schema, JSON-LD,
+    forms, APIs, web pages, PDF and Markdown are consumer projections. A projection must
+    cite its package version, generator and validation receipt.
+  </p>
+  <Diagram size="large" caption="One maintained semantic package is encoded in aligned graph artefacts and then transformed into consumer projections. The arrows are derivations, not transfers of semantic authority.">
+flowchart LR
+  accTitle: Semantic package representations and delivery projections
+  accDescr: A governed package produces RDF and OWL, SKOS and SHACL artefacts; tested generators then produce schemas, forms and APIs, and human-readable documentation.
+  Package["Governed semantic package"]:::process
+  OWL["RDF / RDFS / OWL"]:::service
+  SKOS["SKOS schemes"]:::data
+  SHACL["SHACL shapes"]:::security
+  Schema["JSON and JSON-LD"]:::infra
+  Interface["Forms and APIs"]:::user
+  Docs["Web, PDF and Markdown"]:::external
+  Package --> OWL
+  Package --> SKOS
+  Package --> SHACL
+  OWL --> Schema
+  SKOS --> Interface
+  SHACL --> Interface
+  Package --> Docs
+  </Diagram>
+  <p><a href="/spdtf-2/outputs">Inspect the package and projection-status register</a>.</p>
 </Layout>

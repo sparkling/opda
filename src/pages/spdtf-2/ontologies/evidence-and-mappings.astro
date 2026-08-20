@@ -1,52 +1,99 @@
 ---
 import Layout from '@/layouts/Layout.astro';
 import PageMeta from '@/components/PageMeta.astro';
-import JourneyNav from '@/components/ia/JourneyNav.astro';
+import Diagram from '@/components/Diagram.astro';
 ---
 
-<Layout title="Evidence, provenance and qualified mappings" description="How SPDTF 2.0 turns attributed evidence into context-owned candidates and distinguishes five mapping meanings.">
-  <PageMeta category="Ontology journey" variant="brand" updated="SPDTF 2.0 development · evidence and traceability" />
+<Layout title="Evidence, provenance and qualified mappings" description="How attributed evidence and competency questions become traceable SPDTF candidates, and why five different mapping meanings remain qualified.">
+  <PageMeta category="How we model SPDTF 2.0" variant="brand" updated="Evidence and traceability · mapping labels are qualified" />
   <h1>Evidence, provenance and qualified mappings</h1>
   <p class="lead">
-    Evidence becomes a context-owned candidate through attribution, competency questions,
-    review and a recorded disposition. The word “mapping” is always qualified because
-    different records connect different things for different purposes.
+    Every important candidate meaning should be traceable to a question, evidence,
+    proposal, review and disposition. “Mapping” is always qualified because different
+    records connect different objects and carry different authority.
   </p>
-  <JourneyNav />
 
-  <h2 id="loop">From evidence to a governed output</h2>
-  <ol>
-    <li>Attribute the participant, external, PDTF 1.0 or machine source and its handling status.</li>
-    <li>Frame a question, scope and context owner; keep uncertainty and counterexamples visible.</li>
-    <li>Draft glossary, dictionary, taxonomies, controlled vocabularies, resources and relationships.</li>
-    <li>Record coverage, provenance, constraints, candidate changes and open questions.</li>
-    <li>Invite review, record the disposition and preserve an immutable candidate cut.</li>
-  </ol>
+  <h2 id="questions">Competency questions organise evidence</h2>
   <p>
-    AI may extract, compare and draft. It cannot select the authority, approve a meaning
-    or promote a candidate. Source data, derived evidence, machine proposals and human
-    approvals remain distinguishable in the receipt.
+    Evidence is collected to answer a scoped business question, not simply because a file
+    exists. A good competency question identifies the context, expected result and why the
+    answer matters. Evidence may support, contradict or leave the question unresolved.
+  </p>
+  <table>
+    <caption>Example question-to-evidence record</caption>
+    <thead><tr><th scope="col">Field</th><th scope="col">Example</th></tr></thead>
+    <tbody>
+      <tr><th scope="row">Question</th><td>Which source supports the legal title associated with this property?</td></tr>
+      <tr><th scope="row">Context owner</th><td>Conveyancing, with a Property Data Services source dependency.</td></tr>
+      <tr><th scope="row">Evidence</th><td>Participant scenario, title record, source metadata and PDTF 1.0 comparison.</td></tr>
+      <tr><th scope="row">Candidate impact</th><td>Legal title resource, property relationship and source-evidence relationship.</td></tr>
+      <tr><th scope="row">Open issue</th><td>Whether the source identifies the title assertion or only supplies a document.</td></tr>
+      <tr><th scope="row">Test</th><td>A competency query can retrieve the property, title and attributed source.</td></tr>
+    </tbody>
+  </table>
+
+  <h2 id="traceability">Traceability from source to version</h2>
+  <Diagram size="large" caption="A traceability receipt binds an attributed source to the question it informs, the exact candidate construct, its review and disposition, and the immutable version that includes the decision.">
+flowchart LR
+  accTitle: Evidence traceability receipt for a semantic candidate
+  accDescr: An attributed source supports a competency question, which links to an exact candidate construct, review record, disposition and immutable candidate version.
+  Source["Attributed source"]:::external
+  Question["Competency question"]:::user
+  Construct["Candidate construct"]:::process
+  Review["Review and dissent"]:::user
+  Disposition["Recorded disposition"]:::security
+  Version["Immutable candidate version"]:::service
+  Source --> Question
+  Question --> Construct
+  Construct --> Review
+  Review --> Disposition
+  Disposition --> Version
+  </Diagram>
+  <p>
+    Machine extraction is recorded as a derivation, not as the source authority. If
+    evidence conflicts, preserve the competing claims and ask the owner to dispose them.
+    Do not manufacture consensus or collapse a source document, its claim and the
+    real-world thing it describes into one resource.
   </p>
 
   <h2 id="mapping">Five qualified mapping meanings</h2>
   <table>
-    <caption>Do not collapse these records under an unqualified “mapping” label</caption>
+    <caption>These records must not share an unqualified “mapping” label</caption>
     <thead><tr><th scope="col">Qualified meaning</th><th scope="col">What it connects</th><th scope="col">Standing</th></tr></thead>
     <tbody>
       <tr><th scope="row">PDTF 1.0 RML schema–ontology verification</th><td>Published schema structures and the PDTF 1.0-derived ontology.</td><td>Retained implementation and traceability evidence.</td></tr>
-      <tr><th scope="row">Planned legacy JSON-LD contexts</th><td>Legacy JSON property names and ontology terms for compatibility views.</td><td>Planned or retained migration work; not new semantic authority.</td></tr>
-      <tr><th scope="row">SPDTF 2.0 cross-context semantic mappings</th><td>Related but non-identical meanings at bounded-context boundaries.</td><td>Candidate agreements owned by Interoperability and reviewed by the affected groups.</td></tr>
-      <tr><th scope="row">Property Pack source-item coverage links</th><td>Required source items and candidate constructs.</td><td>Coverage evidence only; <strong>not RML or R2RML</strong>.</td></tr>
-      <tr><th scope="row">Optional deployment transformation runtime</th><td>Operational transformations between representations where a deployment needs one.</td><td>Optional implementation service; it cannot decide semantic meaning.</td></tr>
+      <tr><th scope="row">Legacy JSON-LD context mapping</th><td>Legacy JSON property names and ontology terms for compatibility views.</td><td>Planned or retained migration work; not new semantic authority.</td></tr>
+      <tr><th scope="row">SPDTF 2.0 cross-context semantic mapping</th><td>Related but non-identical meanings at bounded-context boundaries.</td><td>Candidate agreement owned by Interoperability and reviewed by affected groups.</td></tr>
+      <tr><th scope="row">Property Pack source-item coverage link</th><td>One of 451 required source items and one or more candidate constructs.</td><td>Coverage evidence only; <strong>not RML or R2RML</strong>.</td></tr>
+      <tr><th scope="row">Deployment transformation runtime</th><td>Operational representations where a deployment needs a transform.</td><td>Optional implementation service; cannot decide semantic meaning.</td></tr>
     </tbody>
   </table>
 
-  <h2 id="receipts">Evidence receipt</h2>
+  <h2 id="strength">Mapping strength and identity</h2>
   <p>
-    A candidate receipt should let an auditor identify the source, context owner, question,
-    proposed change, affected output, review record, disposition, standards-profile
-    version and validation scope. A link from PDTF 1.0 to SPDTF 2.0 must say whether it
-    is evidence, corroboration, compatibility, comparison, projection or supersession.
+    A mapping record names its relation, direction, purpose, justification, confidence,
+    owner, source/target versions and review status. Exact identity is rare. Use
+    <code>owl:sameAs</code> only when two identifiers denote the same thing in every
+    relevant interpretation. SKOS mapping relations can express close, exact, broad,
+    narrow or related concept correspondences, but their use also requires evidence.
   </p>
-  <p><a href="/spdtf-2/ontologies/validation">Next: validation, conformance and generated projections →</a></p>
+  <table>
+    <caption>Choose sharing before mapping only when meaning is genuinely common</caption>
+    <thead><tr><th scope="col">Situation</th><th scope="col">Preferred treatment</th></tr></thead>
+    <tbody>
+      <tr><th scope="row">A governed external term exactly fits</th><td>Reuse the pinned term-level profile.</td></tr>
+      <tr><th scope="row">Several contexts require one stable exchange meaning</th><td>Contribute a reviewed term to the small common boundary.</td></tr>
+      <tr><th scope="row">Contexts retain different but related meanings</th><td>Keep both semantic homes and record a qualified mapping.</td></tr>
+      <tr><th scope="row">Only a source field corresponds to a candidate construct</th><td>Record a coverage link, not an ontology identity mapping.</td></tr>
+    </tbody>
+  </table>
+
+  <h2 id="receipt">Evidence receipt</h2>
+  <p>
+    A candidate receipt identifies source, version, permission, sensitivity, context
+    owner, question, proposed change, affected semantic outputs, review record,
+    disposition, standards-profile version and validation scope. A PDTF 1.0 link must say
+    whether it is evidence, corroboration, compatibility, comparison or supersession.
+  </p>
+  <p><a href="/spdtf-2/ontologies/validation">Next: validation, review and projections →</a></p>
 </Layout>

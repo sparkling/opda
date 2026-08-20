@@ -1,7 +1,7 @@
 ---
 /**
- * Mermaid diagram block — wraps the diagram source plus an optional caption
- * and applies the size variant CSS class.
+ * Mermaid diagram figure — wraps the source and its visible caption so the
+ * shared interactive renderer can preserve one accessible figure boundary.
  *
  *   <Diagram size="medium" caption="Two pathways, two authorities.">
  *     flowchart LR
@@ -19,9 +19,9 @@ interface Props {
 const { size, caption } = Astro.props;
 const cls = ['diagram', size && `diagram--${size}`].filter(Boolean).join(' ');
 ---
-<div class={cls}>
+<figure class={cls}>
   <div class="mermaid">
     <slot />
   </div>
-  {caption && <div class="diagram-caption" set:html={caption} />}
-</div>
+  {caption && <figcaption class="diagram-caption" set:html={caption} />}
+</figure>
