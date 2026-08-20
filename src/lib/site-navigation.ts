@@ -62,13 +62,26 @@ const ontologyJourney: Item = {
   url: '/spdtf-2/ontologies',
   title: 'Ontologies and semantic modelling',
   children: [
-    { url: '/spdtf-2/ontologies/why-ontologies', title: 'Why ontologies' },
-    { url: '/spdtf-2/ontologies/semantic-package', title: 'Six-part semantic package' },
-    { url: '/spdtf-2/ontologies/bounded-contexts', title: 'Bounded contexts' },
-    { url: '/spdtf-2/ontologies/coverage', title: 'Coverage crosswalk' },
-    { url: '/spdtf-2/ontologies/standards', title: 'Standards and vocabularies' },
-    { url: '/spdtf-2/ontologies/evidence-and-mappings', title: 'Evidence and mappings' },
-    { url: '/spdtf-2/ontologies/validation', title: 'Validation and projections' },
+    {
+      url: '/spdtf-2/ontologies/why-ontologies',
+      title: 'Understand ontologies',
+      children: [
+        { url: '/spdtf-2/ontologies/reading-the-model', title: 'How to read the model' },
+      ],
+    },
+    {
+      url: '/spdtf-2/ontologies/modelling-method',
+      title: 'How we model SPDTF 2.0',
+      children: [
+        { url: '/spdtf-2/ontologies/semantic-package', title: 'Six-part semantic package' },
+        { url: '/spdtf-2/ontologies/bounded-contexts', title: 'Contexts and common boundary' },
+        { url: '/spdtf-2/ontologies/modelling-rules', title: 'Modelling rules and lenses' },
+        { url: '/spdtf-2/ontologies/coverage', title: 'Coverage checklist' },
+        { url: '/spdtf-2/ontologies/standards', title: 'Standards profile' },
+        { url: '/spdtf-2/ontologies/evidence-and-mappings', title: 'Evidence and mappings' },
+        { url: '/spdtf-2/ontologies/validation', title: 'Validation and projections' },
+      ],
+    },
   ],
 };
 

@@ -45,6 +45,15 @@ implements: [docs/spdtf-2-0-information-architecture.md]
 > pages. The landing no longer appears as a duplicate child, but remains in breadcrumb
 > and previous/next sequences. Existing substantive overview routes remain available;
 > this interaction change does not delete or reclassify their content.
+>
+> Update 2026-08-20 — semantic-modelling depth: the implemented branch now has two
+> linked audience paths: Understand ontologies, including a model-reading guide; and
+> How we model SPDTF 2.0, including the evidence-up method and explicit modelling
+> rules. The repeated in-page journey widget is removed in favour of the shared left
+> navigation, page contents and previous/next sequence. Standards pages distinguish
+> specification maturity, OPDA governance status and actual candidate use. This
+> implements the semantic-documentation portion of ADR-0075 without promoting that
+> still-Accepted decision or the Proposed ADR-0065/0068 workflows.
 
 ## Context and Problem Statement
 
@@ -130,9 +139,10 @@ maturity, version and provenance. Interoperability is a peer of domain working g
 within SPDTF 2.0 development and links to Governance for its decision rights.
 
 SPDTF 2.0 Development contains one canonical **Ontologies and semantic modelling**
-branch: Why ontologies; How we use them and the six-part semantic package; Bounded
-contexts and common boundary; Coverage; Standards and vocabularies; Evidence,
-provenance and mappings; Validation, conformance, lifecycle and generated projections.
+branch with two audience paths. **Understand ontologies** explains why ontologies are
+used and how to read the model. **How we model SPDTF 2.0** documents the evidence-up
+method, six-part semantic package, context boundary, modelling rules, coverage,
+standards, evidence and mappings, validation and projections.
 
 The branch distinguishes three taxonomies:
 
@@ -201,8 +211,8 @@ search facets, runtime journeys, and exact preservation manifests. It satisfies:
 - checksum/consumer preservation ledgers for sources, council records, ontology/data
   artefacts, support assets and runtime authentication, comments and submissions;
 - one canonical working-group URL family under SPDTF 2.0 Development;
-- one canonical Ontologies and semantic modelling branch with the exact six/eleven/eight
-  distinction and four category dispositions;
+- one canonical two-audience Ontologies and semantic modelling branch with the exact
+  six/eleven/eight distinction and four category dispositions;
 - a status-controlled standards profile and unambiguous mapping vocabulary;
 - a versioned semantic-package manifest, competency questions, coverage receipts and
   immutable candidate diffs so projections cannot become independent meaning sources;

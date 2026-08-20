@@ -1,7 +1,7 @@
 ---
 status: accepted
 date: 2026-08-19
-updated: 2026-08-19
+updated: 2026-08-20
 tags: [information-architecture, property-pack, pdtf-1-0, spdtf-2-0, ontology, technical-working-group, governance, government, provenance]
 supersedes: []
 amends: [ADR-0066, ADR-0067, ADR-0074]
@@ -10,6 +10,13 @@ implements: [src/pages/spdtf-2/property-pack, src/lib/site-navigation.ts, src/li
 ---
 
 # Treat the Property Pack ontology as an accelerated SPDTF 2.0 component
+
+> Update 2026-08-20: the semantic-documentation portion is implemented as two linked
+> audience paths. Understand ontologies teaches the concepts and how to read the model;
+> How we model SPDTF 2.0 documents the evidence-up method, semantic package, contexts,
+> modelling rules, standards, evidence, validation and coverage. This partial
+> implementation does not change this ADR's Accepted status or make Proposed
+> ADR-0065/0068 lifecycle policy operative.
 
 ## Context and Problem Statement
 
@@ -99,14 +106,15 @@ SPDTF 2.0 Development
 │   ├── Technical Working Group determination
 │   ├── Versions, validation and artefacts
 │   └── Later domain-working-group review
-├── Ontology architecture and method
-│   ├── Why ontologies
-│   ├── Evidence-up modelling
-│   ├── Semantic package
-│   ├── Bounded contexts and common boundary
-│   ├── Standards and reuse
-│   ├── Evidence, provenance and qualified mappings
-│   └── Validation and projections
+├── Ontologies and semantic modelling
+│   ├── Understand ontologies
+│   │   └── How to read the model
+│   └── How we model SPDTF 2.0
+│       ├── Evidence-up modelling
+│       ├── Semantic package and context boundaries
+│       ├── Modelling rules and upper-ontology lenses
+│       ├── Standards, evidence and qualified mappings
+│       └── Coverage, validation and projections
 └── Wider SPDTF 2.0 ontology development
     ├── Domain and scheme working groups
     ├── Interoperability Working Group

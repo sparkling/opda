@@ -62,13 +62,15 @@ test('the left section navigation implements all six destinations from one regis
   ));
   assert.deepEqual(Object.fromEntries(Object.entries(SECTION_NAVIGATION).map(([key, section]) => [
     key, section.groups.flatMap(flattenGroup).length,
-  ])), { programme: 18, 'spdtf-2': 36, 'working-groups': 33, 'pdtf-1': 195, governance: 137, resources: 12 });
+  ])), { programme: 18, 'spdtf-2': 39, 'working-groups': 33, 'pdtf-1': 195, governance: 137, resources: 12 });
   for (const url of new Set(legacyUrls)) {
     assert.equal(compositeUrls.filter((candidate) => candidate === url).length, 1, `${url} must appear once`);
   }
   for (const required of [
     '/programme', '/spdtf-2', '/spdtf-2/candidates', '/spdtf-2/questions', '/spdtf-2/outputs',
     '/spdtf-2/ontologies', '/spdtf-2/property-pack',
+    '/spdtf-2/ontologies/reading-the-model', '/spdtf-2/ontologies/modelling-method',
+    '/spdtf-2/ontologies/modelling-rules',
     '/spdtf-2/property-pack/definition-and-scope',
     '/spdtf-2/property-pack/technical-working-group-determination',
     '/spdtf-2/property-pack/review-and-releases', '/pdtf-1', '/ontology/datatypes',
@@ -115,4 +117,33 @@ test('authority overrides and generated-route aliases resolve one terminal navig
     const match = findNavigationPage(route);
     assert.equal(match?.trail.at(-1)?.url ?? match?.group.url, active);
   }
+});
+
+test('semantic modelling exposes two nested audience journeys with linked parents', () => {
+  const group = SECTION_NAVIGATION['spdtf-2'].groups.find(({ heading }) => heading === 'Semantic modelling');
+  assert.ok(group);
+  assert.deepEqual(group.items.map(({ title, url }) => [title, url]), [
+    ['Understand ontologies', '/spdtf-2/ontologies/why-ontologies'],
+    ['How we model SPDTF 2.0', '/spdtf-2/ontologies/modelling-method'],
+  ]);
+  assert.deepEqual(group.items[0].children.map(({ url }) => url), [
+    '/spdtf-2/ontologies/reading-the-model',
+  ]);
+  assert.deepEqual(group.items[1].children.map(({ url }) => url), [
+    '/spdtf-2/ontologies/semantic-package',
+    '/spdtf-2/ontologies/bounded-contexts',
+    '/spdtf-2/ontologies/modelling-rules',
+    '/spdtf-2/ontologies/coverage',
+    '/spdtf-2/ontologies/standards',
+    '/spdtf-2/ontologies/evidence-and-mappings',
+    '/spdtf-2/ontologies/validation',
+  ]);
+  assert.deepEqual(findNavigationPage('/spdtf-2/ontologies/reading-the-model').trail.map(({ url }) => url), [
+    '/spdtf-2/ontologies/why-ontologies',
+    '/spdtf-2/ontologies/reading-the-model',
+  ]);
+  assert.equal(getNavigationPrevNext('/spdtf-2/ontologies/why-ontologies').next?.url,
+    '/spdtf-2/ontologies/reading-the-model');
+  assert.equal(getNavigationPrevNext('/spdtf-2/ontologies/modelling-method').next?.url,
+    '/spdtf-2/ontologies/semantic-package');
 });
