@@ -336,6 +336,7 @@ test('text inherits its outer layout width instead of stacking nested measures',
     design,
     content,
     shell,
+    navigation,
     components,
     publicEntry,
     workingGroupLayout,
@@ -351,6 +352,7 @@ test('text inherits its outer layout width instead of stacking nested measures',
     readFile(file('DESIGN.md'), 'utf8'),
     readFile(file('public/ui/design/content.css'), 'utf8'),
     readFile(file('public/ui/design/shell.css'), 'utf8'),
+    readFile(file('public/ui/design/navigation.css'), 'utf8'),
     readFile(file('public/ui/design/components.css'), 'utf8'),
     readFile(file('public/ui/design/public.css'), 'utf8'),
     readFile(file('src/layouts/PublicWorkingGroupLayout.astro'), 'utf8'),
@@ -369,6 +371,8 @@ test('text inherits its outer layout width instead of stacking nested measures',
   assert.match(content, /\.prose\s*\{[^}]*max-width:\s*var\(--content-max\)/su);
   assert.match(shell, /\.comments-section\s*\{[^}]*max-width:\s*var\(--content-max\)/su);
   assert.match(shell, /\.comments-section\s*\{[^}]*margin:\s*var\(--space-8\) auto 0/su);
+  assert.match(navigation, /\.page-footer\s*\{[^}]*max-width:\s*var\(--content-max\)/su);
+  assert.match(navigation, /\.page-footer\s*\{[^}]*border:\s*1px solid var\(--color-border\)/su);
 
   const contentWithoutOuterMeasures = content
     .replace(/\.prose\s*\{[^}]*\}/su, '');
