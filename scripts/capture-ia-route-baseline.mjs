@@ -5,24 +5,24 @@ import { existsSync, readFileSync, writeFileSync } from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import {
-  fileInventory,
-  filesUnder,
-  fragmentContract,
-  generatedFamily,
-  informationContract,
-  linkedInformationBlocks,
-  blockInventory,
-  equivalenceReceipt,
-  routeFromFile,
-  sha256,
+  blockInventory, equivalenceReceipt, existingRetiredPropertyPackOutputs,
+  fileInventory, filesUnder, fragmentContract, generatedFamily, indexFileFromRoute,
+  informationContract, isRetiredPropertyPackRoute, linkedInformationBlocks,
+  nonInformationBlocksDigest,
+  propertyPackMigrationReceipt, routeFromFile, semanticBlocksDigest, sha256,
 } from './lib/ia-preservation-contract.mjs';
+import {
+  PRIOR_IA_ROUTE_MANIFEST, composePriorFamilyReceipt, composePriorManifestReceipt,
+  loadPriorIaFamilyManifest, loadPriorIaRouteManifest, missingPhysicalRecordsDigest,
+  priorRouteRecordDigest, verifyBaselineRootCommit,
+} from './lib/ia-prior-manifest-contract.mjs';
 import {
   IA_STATUS_REGISTRY_VERSION,
   getContentOwner,
   getRouteDisposition,
   getRouteStatus,
 } from '../src/lib/site-ia.mjs';
-
+import { PROPERTY_PACK_ROUTE_MIGRATION, getPropertyPackReplacementRoute } from '../src/lib/property-pack-routes.mjs';
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const args = new Map(process.argv.slice(2).map((arg) => {
   const offset = arg.indexOf('=');
@@ -39,7 +39,6 @@ for (const [label, value] of [['baseline', baselineRoot], ['accepted', acceptedR
     throw new Error(`${label} root must be an existing absolute path`);
   }
 }
-
 const output = path.join(ROOT, 'src/data/ia-route-baseline.json');
 const familyOutput = path.join(ROOT, 'src/data/ia-preservation-baseline.json');
 const semanticLedgerPath = path.join(ROOT, 'src/data/ia-semantic-reframe-ledger.json');
@@ -50,7 +49,6 @@ const externalPrefixes = [
   'ontology/tools/shaclplay/',
   'ontology/tools/widoco/',
 ];
-
 const semanticLedger = JSON.parse(readFileSync(semanticLedgerPath, 'utf8'));
 const SEMANTIC_CLASSES = new Set([
   'terminology-and-scope-reframe',
@@ -71,6 +69,7 @@ const NAVIGATION_CANONICAL_EQUIVALENTS = Object.freeze({
   '/implementation': ['/pdtf-1'],
   '/library': ['/resources'],
   '/engagement': ['/resources', '/spdtf-2/working-groups'],
+  '/v2': ['/spdtf-2/property-pack'],
 });
 if (semanticLedger.schemaVersion !== 1 || semanticLedger.baselineCommit !== commit(baselineRoot)
   || !Array.isArray(semanticLedger.entries)) {
@@ -112,18 +111,15 @@ for (const entry of semanticLedger.entries) {
   }
   semanticReframes.set(entry.sourceBlockSha256, entry);
 }
-
 function commit(root) {
   return execFileSync('git', ['rev-parse', 'HEAD'], { cwd: root, encoding: 'utf8' }).trim();
 }
-
 function htmlFiles(root) {
   const dist = path.join(root, 'dist');
   return filesUnder(dist)
     .filter((file) => file.endsWith('.html'))
     .map((file) => path.relative(dist, file).split(path.sep).join('/'));
 }
-
 function routeMetadata(route) {
   const disposition = getRouteDisposition(route);
   if (!disposition) throw new Error(`route has no migration disposition: ${route}`);
@@ -145,59 +141,51 @@ function routeMetadata(route) {
     endpoints: disposition.endpoints,
   };
 }
-
+function acceptedRouteFor(route) {
+  return getPropertyPackReplacementRoute(route) ?? route;
+}
 function reframeEvidence(route) {
   if (route === '/' || route === '/home') return 'Task-gateway recomposition; every former destination route remains classified and reachable';
-  if (route === '/v2' || route.startsWith('/v2/')) return 'Atomic Property Pack seed retained; authority terminology corrected and the 690-file seed family frozen';
+  if (route === '/v2' || route.startsWith('/v2/')) return 'The 690-page Property Pack technical cut moves atomically to its canonical SPDTF 2.0 route family';
   if (route === '/dbt-smart-data' || route.startsWith('/dbt-smart-data/')) return 'Authority and continuation terminology corrected without removing the source analysis';
   if (route === '/mapping' || route.startsWith('/mapping/')) return 'Legacy RML verification distinguished from SPDTF 2.0 semantic mapping';
   if (route === '/modelling' || route.startsWith('/modelling/')) return 'PDTF 1.0 historical modelling scope and child maturity made explicit';
   return 'ADR-0074 route disposition plus exact before/after information and fragment checksums';
 }
-
 function localRouteFromHref(href) {
   if (typeof href !== 'string' || !href.startsWith('/')) return null;
   const pathname = href.split(/[?#]/u, 1)[0];
   return pathname.length > 1 ? pathname.replace(/\/+$/u, '') : '/';
 }
-
 function navigationResolution(entry, route) {
   const resolution = entry.navigationDestinations?.find(({ sourceRoute }) => sourceRoute === route);
   if (!resolution) throw new Error(`navigation-copy supersession has no source-route resolution: ${route}#${entry.sourceBlockSha256}`);
-  const policy = resolution.destinationRoute === resolution.originalDestinationRoute
+  const destinationRoute = acceptedRouteFor(resolution.destinationRoute);
+  const policy = destinationRoute === resolution.originalDestinationRoute
     ? 'same-retained-route'
-    : NAVIGATION_CANONICAL_EQUIVALENTS[resolution.originalDestinationRoute]?.includes(resolution.destinationRoute)
+    : NAVIGATION_CANONICAL_EQUIVALENTS[resolution.originalDestinationRoute]?.includes(destinationRoute)
       ? 'canonical-equivalent'
       : null;
   if (!policy) {
     throw new Error(`navigation-copy supersession has no canonical destination proof: ${route}#${entry.sourceBlockSha256}`);
   }
-  return { ...resolution, destinationPolicy: policy };
+  return { ...resolution, destinationRoute, destinationPolicy: policy };
 }
-
-/**
- * The route ledger is deliberately explicit rather than a global text search.
- * New entries must name every current route which is allowed to satisfy a
- * baseline block. Keeping the source route in the list records that it remains
- * the canonical replacement even when its wording has been reframed.
- */
 const RETENTION_TARGETS = Object.freeze({
   '/': ['/', '/spdtf-2'],
   '/home': ['/home', '/spdtf-2'],
 });
-
 function retentionTargets(route, before) {
   const targets = [
-    ...(RETENTION_TARGETS[route] ?? [route]),
+    ...(RETENTION_TARGETS[route] ?? [acceptedRouteFor(route)]),
     ...blockInventory(before.blockHashes).records
       .map(({ hash }) => {
         const resolution = semanticReframes.get(hash);
-        return resolution?.replacementRoute
-          ?? (resolution?.classification === NON_INFORMATION_CLASS
-            ? resolution.navigationDestinations.some(({ sourceRoute }) => sourceRoute === route)
-              ? navigationResolution(resolution, route).destinationRoute
-              : null
-            : null);
+        if (resolution?.replacementRoute) return acceptedRouteFor(resolution.replacementRoute);
+        return resolution?.classification === NON_INFORMATION_CLASS
+          && resolution.navigationDestinations.some(({ sourceRoute }) => sourceRoute === route)
+          ? navigationResolution(resolution, route).destinationRoute
+          : null;
       })
       .filter(Boolean),
   ];
@@ -210,7 +198,6 @@ function retentionTargets(route, before) {
   }
   return uniqueTargets;
 }
-
 function baselineLinkEvidence(html) {
   const evidence = new Map();
   for (const { hash, containingLink } of linkedInformationBlocks(html)) {
@@ -219,7 +206,6 @@ function baselineLinkEvidence(html) {
   }
   return evidence;
 }
-
 /**
  * Capture a multiplicity-aware receipt. Exact blocks may be satisfied at a
  * declared replacement route. Every non-exact block resolves through the
@@ -258,7 +244,9 @@ function captureRetentionReceipt(route, before, acceptedContracts, sourceLinks) 
       const navigation = semantic?.classification === NON_INFORMATION_CLASS
         ? navigationResolution(semantic, route)
         : null;
-      const targetRoute = semantic?.replacementRoute ?? navigation?.destinationRoute;
+      const targetRoute = semantic?.replacementRoute
+        ? acceptedRouteFor(semantic.replacementRoute)
+        : navigation?.destinationRoute;
       if (!semantic || !targetEvidence.some(({ route: target }) => target === targetRoute)) {
         throw new Error(`no concrete retention resolution is declared for ${route}#${hash}`);
       }
@@ -293,11 +281,11 @@ function captureRetentionReceipt(route, before, acceptedContracts, sourceLinks) 
         sourceTag: semantic.sourceTag,
         sourceText: semantic.sourceText,
         occurrences: remaining,
-        replacementRoute: semantic.replacementRoute,
+        replacementRoute: targetRoute,
         replacementBlockSha256: semantic.replacementBlockSha256,
         replacementTag: semantic.replacementTag,
         replacementText: semantic.replacementText,
-        replacementContentSha256: targetEvidence.find(({ route: target }) => target === semantic.replacementRoute).acceptedContentSha256,
+        replacementContentSha256: targetEvidence.find(({ route: target }) => target === targetRoute).acceptedContentSha256,
         classification: semantic.classification,
         reviewNote: semantic.reviewNote,
       });
@@ -305,33 +293,8 @@ function captureRetentionReceipt(route, before, acceptedContracts, sourceLinks) 
   }
   const semanticReframeBlockCount = semanticReframeBlocks.reduce((total, { occurrences }) => total + occurrences, 0);
   const nonInformationBlockCount = nonInformationBlocks.reduce((total, { occurrences }) => total + occurrences, 0);
-  const semanticReframeBlocksSha256 = sha256(semanticReframeBlocks.map((entry) => [
-    entry.sourceBlockSha256,
-    entry.sourceTag,
-    entry.sourceText,
-    entry.occurrences,
-    entry.replacementRoute,
-    entry.replacementBlockSha256,
-    entry.replacementTag,
-    entry.replacementText,
-    entry.replacementContentSha256,
-    entry.classification,
-    entry.reviewNote,
-  ].join('\0')).join('\n'));
-  const nonInformationBlocksSha256 = sha256(nonInformationBlocks.map((entry) => [
-    entry.sourceBlockSha256,
-    entry.sourceTag,
-    entry.sourceText,
-    entry.occurrences,
-    entry.classification,
-    entry.originalDestinationRoute,
-    entry.destinationRoute,
-    entry.destinationPolicy,
-    entry.sourceEvidence,
-    entry.baselineLinkHref ?? '',
-    entry.destinationContentSha256,
-    entry.supersessionReason,
-  ].join('\0')).join('\n'));
+  const semanticReframeBlocksSha256 = semanticBlocksDigest(semanticReframeBlocks);
+  const nonInformationBlocksSha256 = nonInformationBlocksDigest(nonInformationBlocks);
   return {
     policy: 'explicit-route-block-retention-v1',
     baselineBlockCount: before.blockCount,
@@ -346,68 +309,115 @@ function captureRetentionReceipt(route, before, acceptedContracts, sourceLinks) 
     nonInformationBlocksSha256,
   };
 }
-
 const baselineCommit = commit(baselineRoot);
 const acceptedCommit = commit(acceptedRoot);
-const baselineFiles = htmlFiles(baselineRoot);
+verifyBaselineRootCommit(baselineRoot);
+const { manifest: priorManifest } = loadPriorIaRouteManifest(ROOT);
+if (priorManifest.baselineCommit !== baselineCommit) throw new Error('prior manifest baseline commit changed');
+const priorByFile = new Map(priorManifest.routes.map((record) => [record.file, record]));
+const physicalBaselineFiles = htmlFiles(baselineRoot);
+const physicalBaselineSet = new Set(physicalBaselineFiles);
+const missingPhysicalRecords = priorManifest.routes.filter(({ file }) => !physicalBaselineSet.has(file));
+const unexpectedPhysicalFiles = physicalBaselineFiles.filter((file) => !priorByFile.has(file));
+if (missingPhysicalRecords.length !== PRIOR_IA_ROUTE_MANIFEST.missingPhysicalRouteCount
+  || missingPhysicalRecordsDigest(missingPhysicalRecords) !== PRIOR_IA_ROUTE_MANIFEST.missingPhysicalRecordsSha256
+  || unexpectedPhysicalFiles.length) {
+  throw new Error('physical plus manifest-retained baseline does not reconstruct the frozen route cut');
+}
+const manifestRetainedRecords = priorManifest.routes.filter((prior) => {
+  if (!physicalBaselineSet.has(prior.file)) return true;
+  const html = readFileSync(path.join(baselineRoot, 'dist', prior.file), 'utf8');
+  return blockInventory(informationContract(html).blockHashes).sha256
+    !== prior.equivalenceReceipt.baselineBlockInventorySha256;
+});
+if (manifestRetainedRecords.length !== PRIOR_IA_ROUTE_MANIFEST.manifestRetainedRouteCount) {
+  throw new Error('manifest-retained information cut differs from the pinned prior evidence');
+}
+const manifestRetainedFiles = new Set(manifestRetainedRecords.map(({ file }) => file));
+const baselineFiles = priorManifest.routes.map(({ file }) => file).sort();
 const acceptedFiles = htmlFiles(acceptedRoot);
-const acceptedSet = new Set(acceptedFiles);
-const baselineSet = new Set(baselineFiles);
+if (PROPERTY_PACK_ROUTE_MIGRATION.redirects !== false
+  || getPropertyPackReplacementRoute('/api/v2/comments') !== null) {
+  throw new Error('Property Pack migration must remove old content routes without affecting /api/v2');
+}
+const retiredOutputs = acceptedFiles.filter((file) => isRetiredPropertyPackRoute(routeFromFile(file)));
+if (retiredOutputs.length) throw new Error(`accepted tree emits ${retiredOutputs.length} retired Property Pack routes`);
+const retiredTrees = existingRetiredPropertyPackOutputs(path.join(acceptedRoot, 'dist'), PROPERTY_PACK_ROUTE_MIGRATION);
+if (retiredTrees.length) throw new Error(`accepted tree retains retired Property Pack output: ${retiredTrees.join(', ')}`);
 const acceptedContracts = new Map(acceptedFiles.map((file) => {
   const route = routeFromFile(file);
   return [route, informationContract(readFileSync(path.join(acceptedRoot, 'dist', file), 'utf8'))];
 }));
-
 const routes = baselineFiles.map((file) => {
-  const route = routeFromFile(file);
-  const mode = externalPrefixes.some((prefix) => file.startsWith(prefix)) ? 'external-retain' : 'bundle';
-  const beforeHtml = readFileSync(path.join(baselineRoot, 'dist', file), 'utf8');
-  const acceptedPath = path.join(acceptedRoot, 'dist', file);
-  if (!existsSync(acceptedPath) && mode === 'bundle') throw new Error(`accepted bundle omits ${file}`);
-  const afterHtml = existsSync(acceptedPath) ? readFileSync(acceptedPath, 'utf8') : beforeHtml;
+  const baselineRoute = routeFromFile(file);
+  const acceptedRoute = acceptedRouteFor(baselineRoute);
+  const acceptedFile = acceptedRoute === baselineRoute ? file : indexFileFromRoute(acceptedRoute);
+  const acceptedPath = path.join(acceptedRoot, 'dist', acceptedFile);
+  const priorRecord = priorByFile.get(file);
+  const baselinePath = path.join(baselineRoot, 'dist', file);
+  const missingPhysical = !existsSync(baselinePath);
+  const manifestRetained = manifestRetainedFiles.has(file);
+  const mode = missingPhysical ? 'external-retain'
+    : priorRecord?.kind ?? (externalPrefixes.some((prefix) => file.startsWith(prefix)) ? 'external-retain' : 'bundle');
+  if (!existsSync(acceptedPath) && mode === 'bundle') throw new Error(`accepted bundle omits ${acceptedFile}`);
+  const beforeHtml = manifestRetained ? readFileSync(acceptedPath, 'utf8') : readFileSync(baselinePath, 'utf8');
   const beforeContent = informationContract(beforeHtml);
+  const priorInventory = priorRecord?.equivalenceReceipt?.baselineBlockInventorySha256;
+  if (manifestRetained && (!priorRecord || (missingPhysical
+    ? sha256(beforeHtml) !== priorRecord.baselineRawSha256
+      || priorRecord.baselineRawSha256 !== priorRecord.acceptedRawSha256
+    : beforeContent.contentSha256 !== priorRecord.baselineContentSha256
+      || blockInventory(beforeContent.blockHashes).sha256 !== priorInventory))) {
+    throw new Error(`manifest-retained baseline evidence is not unchanged: ${baselineRoute}`);
+  }
+  const afterHtml = existsSync(acceptedPath) ? readFileSync(acceptedPath, 'utf8') : beforeHtml;
   const afterContent = informationContract(afterHtml);
   const beforeFragments = fragmentContract(beforeHtml);
   const afterFragments = fragmentContract(afterHtml);
   return {
-    route,
-    file,
+    baselineRoute,
+    baselineFile: file,
+    acceptedRoute,
+    acceptedFile,
     kind: mode,
-    generatedFamily: generatedFamily(route),
+    baselineGeneratedFamily: generatedFamily(baselineRoute),
+    acceptedGeneratedFamily: generatedFamily(acceptedRoute),
     baselineCommit,
     acceptedCommit,
-    baselineRawSha256: sha256(beforeHtml),
+    ...(manifestRetained ? { baselineEvidence: {
+      policy: missingPhysical ? 'prior-schema-v5-byte-identity-v1' : 'prior-schema-v5-information-identity-v1',
+      sourceRecordSha256: priorRouteRecordDigest(priorRecord),
+      sourceKind: priorRecord.kind,
+    } } : {}),
+    baselineRawSha256: manifestRetained ? priorRecord.baselineRawSha256 : sha256(beforeHtml),
     acceptedRawSha256: sha256(afterHtml),
-    baselineContentSha256: beforeContent.contentSha256,
+    baselineContentSha256: manifestRetained ? priorRecord.baselineContentSha256 : beforeContent.contentSha256,
     acceptedContentSha256: afterContent.contentSha256,
     acceptedBlockInventorySha256: blockInventory(afterContent.blockHashes).sha256,
-    baselineFragmentSha256: beforeFragments.fragmentSha256,
+    baselineFragmentSha256: manifestRetained ? priorRecord.baselineFragmentSha256 : beforeFragments.fragmentSha256,
     acceptedFragmentSha256: afterFragments.fragmentSha256,
-    baselineFragmentCount: beforeFragments.fragmentCount,
+    baselineFragmentCount: manifestRetained ? priorRecord.baselineFragmentCount : beforeFragments.fragmentCount,
     acceptedFragmentCount: afterFragments.fragmentCount,
-    baselineFragments: beforeFragments.fragments,
+    baselineFragments: manifestRetained ? priorRecord.baselineFragments : beforeFragments.fragments,
     acceptedFragments: afterFragments.fragments,
-    ...routeMetadata(route),
-    equivalenceReceipt: equivalenceReceipt(beforeContent, afterContent, reframeEvidence(route)),
-    retentionReceipt: captureRetentionReceipt(route, beforeContent, acceptedContracts, baselineLinkEvidence(beforeHtml)),
+    ...routeMetadata(acceptedRoute),
+    equivalenceReceipt: equivalenceReceipt(beforeContent, afterContent, reframeEvidence(baselineRoute)),
+    retentionReceipt: captureRetentionReceipt(baselineRoute, beforeContent, acceptedContracts, baselineLinkEvidence(beforeHtml)),
   };
 });
-
+const mappedAcceptedFiles = new Set(routes.map(({ acceptedFile }) => acceptedFile));
 const addedRoutes = acceptedFiles
-  .filter((file) => !baselineSet.has(file))
+  .filter((file) => !mappedAcceptedFiles.has(file))
   .map((file) => {
-    const route = routeFromFile(file);
-    if (route === '/v2' || route.startsWith('/v2/')) {
-      throw new Error(`new route violates the frozen /v2 atomic family: ${route}`);
-    }
+    const acceptedRoute = routeFromFile(file);
     const html = readFileSync(path.join(acceptedRoot, 'dist', file), 'utf8');
     const content = informationContract(html);
     const fragments = fragmentContract(html);
     return {
-      route,
-      file,
+      acceptedRoute,
+      acceptedFile: file,
       kind: 'new-authority-route',
-      generatedFamily: generatedFamily(route),
+      acceptedGeneratedFamily: generatedFamily(acceptedRoute),
       introducedBy: acceptedCommit,
       acceptedRawSha256: sha256(html),
       acceptedContentSha256: content.contentSha256,
@@ -415,13 +425,12 @@ const addedRoutes = acceptedFiles
       acceptedFragmentSha256: fragments.fragmentSha256,
       acceptedFragmentCount: fragments.fragmentCount,
       acceptedFragments: fragments.fragments,
-      ...routeMetadata(route),
+      ...routeMetadata(acceptedRoute),
     };
   });
-
-const missingAccepted = baselineFiles.filter((file) => !acceptedSet.has(file));
-const missingBundle = missingAccepted.filter((file) => !externalPrefixes.some((prefix) => file.startsWith(prefix)));
-if (missingBundle.length) throw new Error(`accepted tree omits ${missingBundle.length} bundled routes`);
+const propertyPackMigration = propertyPackMigrationReceipt(
+  routes, addedRoutes, PROPERTY_PACK_ROUTE_MIGRATION, getPropertyPackReplacementRoute,
+);
 const usedSemanticReframes = new Set(routes.flatMap(({ retentionReceipt }) => (
   [
     ...retentionReceipt.semanticReframeBlocks,
@@ -432,20 +441,21 @@ if (usedSemanticReframes.size !== semanticReframes.size
   || [...semanticReframes.keys()].some((hash) => !usedSemanticReframes.has(hash))) {
   throw new Error('semantic reframe ledger contains unused or unaccounted source blocks');
 }
-
 const routeManifest = {
-  schemaVersion: 5,
+  schemaVersion: 6,
   baselineCommit,
   acceptedCommit,
   routeCount: routes.length,
   addedRouteCount: addedRoutes.length,
   externalRetainCount: routes.filter(({ kind }) => kind === 'external-retain').length,
   externalPrefixes,
-  frozenFamilies: ['/v2/**'],
+  priorManifestReceipt: composePriorManifestReceipt(
+    routes.filter(({ baselineEvidence }) => baselineEvidence), missingPhysicalRecords,
+  ),
+  propertyPackMigration,
   routes,
   addedRoutes,
 };
-
 const familySpecs = [
   { id: 'source-archive', path: 'source', policy: 'byte-identical', owner: 'resources', dataOwner: 'resources', ciMode: 'manifest-only-in-ci', consumers: ['resource viewer', 'source citations', 'downloads'], endpoints: ['/resources/**', '/resource?path=source/**'], journeyTests: ['resource-open-download'] },
   { id: 'council-markdown', path: 'docs/ontology/odr/council', policy: 'regenerate-equivalent', owner: 'governance', dataOwner: 'resources', ciMode: 'verify-current', consumers: ['decision records', 'raw session evidence'], endpoints: ['/council/**'], journeyTests: ['route-crawl'] },
@@ -454,19 +464,24 @@ const familySpecs = [
   { id: 'ui-assets', path: 'public/ui', policy: 'reframe-equivalent', owner: 'resources', dataOwner: 'resources', ciMode: 'verify-current', consumers: ['all rendered route families'], endpoints: ['/ui/**'], journeyTests: ['visual-regression', 'accessibility'] },
   { id: 'image-assets', path: 'public/images', policy: 'byte-identical', owner: 'resources', dataOwner: 'resources', ciMode: 'verify-current', consumers: ['branded pages'], endpoints: ['/images/**'], journeyTests: ['visual-regression'] },
   { id: 'ontology-tools', path: 'public/ontology/tools', policy: 'byte-identical', owner: 'pdtf-1', dataOwner: 'pdtf-1', ciMode: 'manifest-only-in-ci', consumers: ['linked-data implementers', 'technical citations'], endpoints: ['/ontology/tools/**'], journeyTests: ['route-crawl'] },
-  { id: 'v2-atomic-seed', path: 'dist/v2', policy: 'reframe-equivalent', owner: 'spdtf-2', dataOwner: 'spdtf-2', ciMode: 'verify-current', consumers: ['candidate register', 'seed references', 'legacy links'], endpoints: ['/v2/**'], journeyTests: ['route-crawl', 'ia-navigation'] },
+  { id: 'property-pack-canonical', baselinePath: 'dist/v2', acceptedPath: 'dist/spdtf-2/property-pack', policy: 'reframe-equivalent', owner: 'spdtf-2', dataOwner: 'spdtf-2', ciMode: 'verify-current', consumers: ['Technical Working Group review', 'candidate register', 'ontology reference'], endpoints: ['/spdtf-2/property-pack/**'], journeyTests: ['route-crawl', 'ia-navigation'], technicalMappedRouteCount: 690, canonicalContentRouteCount: 691, lifecyclePageCount: 2 },
 ];
-const families = familySpecs.map(({ path: familyPath, ...spec }) => ({
-  ...spec,
-  baselinePath: familyPath,
-  acceptedPath: familyPath,
-  baseline: fileInventory(baselineRoot, familyPath),
-  accepted: fileInventory(acceptedRoot, familyPath),
-}));
+const { manifest: priorFamilyManifest } = loadPriorIaFamilyManifest(ROOT);
+const priorFamilies = new Map(priorFamilyManifest.families.map((family) => [family.id, family]));
+const families = familySpecs.map(({ path: familyPath, baselinePath = familyPath, acceptedPath = familyPath, ...spec }) => {
+  const sourceFamilyId = spec.id === 'property-pack-canonical' ? 'v2-atomic-seed' : spec.id;
+  const prior = priorFamilies.get(sourceFamilyId);
+  if (!prior) throw new Error(`prior family evidence is missing: ${sourceFamilyId}`);
+  return { ...spec, baselinePath, acceptedPath, baseline: prior.baseline,
+    baselineEvidence: { policy: 'prior-schema-v1-family-v1', sourceFamilyId,
+      sourceFamilySha256: sha256(JSON.stringify(prior)) },
+    accepted: fileInventory(acceptedRoot, acceptedPath) };
+});
 const familyManifest = {
   schemaVersion: 1,
   baselineCommit,
   acceptedCommit,
+  priorManifestReceipt: composePriorFamilyReceipt(families),
   families,
   runtimeJourneys: [
     { id: 'auth-endpoint-and-return', test: 'tests/e2e/runtime-continuity.spec.mjs', endpoint: '/api/auth/**' },
@@ -475,7 +490,6 @@ const familyManifest = {
     { id: 'working-group-submit', test: 'tests/e2e/runtime-continuity.spec.mjs', endpoint: '/api/working-group-interest' },
   ],
 };
-
 writeFileSync(output, `${JSON.stringify(routeManifest)}\n`);
 writeFileSync(familyOutput, `${JSON.stringify(familyManifest)}\n`);
 console.log(`captured ${routes.length} baseline routes, ${addedRoutes.length} classified additions`);

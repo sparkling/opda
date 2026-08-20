@@ -4,96 +4,54 @@ import { existsSync, readFileSync, statSync } from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import {
-  fileInventory,
-  filesUnder,
-  fragmentContract,
-  informationContract,
-  linkedInformationBlocks,
-  blockInventory,
-  routeFromFile,
-  sha256,
+  blockInventory, existingRetiredPropertyPackOutputs, fileInventory, filesUnder, fragmentContract,
+  informationContract, inventoryDigest, isRetiredPropertyPackRoute, linkedInformationBlocks,
+  nonInformationBlocksDigest,
+  parsePreservationArgs, propertyPackMigrationReceipt, routeFromFile, semanticBlocksDigest, sha256,
 } from './lib/ia-preservation-contract.mjs';
 import {
-  IA_STATUS_REGISTRY_VERSION,
-  PRESERVATION_LEDGER,
-  ROUTE_DISPOSITION_LEDGER,
-  getContentOwner,
-  getRouteDisposition,
-  getRouteStatus,
-  validateIaContract,
+  loadPriorIaFamilyManifest, loadPriorIaRouteManifest, manifestRetainedRecordMatches,
+  priorFamilyMatches, validatePriorFamilyReceipt, validatePriorManifestReceipt,
+  verifyBaselineRootCommit,
+} from './lib/ia-prior-manifest-contract.mjs';
+import {
+  IA_STATUS_REGISTRY_VERSION, PRESERVATION_LEDGER, ROUTE_DISPOSITION_LEDGER,
+  getContentOwner, getRouteDisposition, getRouteStatus, validateIaContract,
 } from '../src/lib/site-ia.mjs';
-
+import { PROPERTY_PACK_ROUTE_MIGRATION, getPropertyPackReplacementRoute } from '../src/lib/property-pack-routes.mjs';
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const EXPECTED_FAMILY_COUNTS = Object.freeze({
-  'source-archive': 1620,
-  'council-markdown': 261,
-  'ontology-artefacts': 27,
-  'deployed-data': 46,
-  'ui-assets': 53,
-  'image-assets': 5,
-  'ontology-tools': 837,
-  'v2-atomic-seed': 690,
+  'source-archive': { baseline: 1620 },
+  'council-markdown': { baseline: 261 },
+  'ontology-artefacts': { baseline: 27 },
+  'deployed-data': { baseline: 46 },
+  'ui-assets': { baseline: 53 },
+  'image-assets': { baseline: 5 },
+  'ontology-tools': { baseline: 837 },
+  'property-pack-canonical': { baseline: 690, accepted: 693 },
 });
 const HASH = /^[a-f0-9]{64}$/u;
 const failures = [];
 const notes = [];
 const fail = (message) => failures.push(message);
-
-function parseArgs(args) {
-  let strict = false;
-  let manifestOnly = false;
-  let baselineRoot = null;
-  let routeManifestPath = null;
-  for (const arg of args) {
-    if (arg === '--strict') {
-      if (strict) throw new Error('duplicate --strict flag');
-      strict = true;
-    } else if (arg === '--manifest-only') {
-      if (manifestOnly) throw new Error('duplicate --manifest-only flag');
-      manifestOnly = true;
-    } else if (arg.startsWith('--baseline-root=')) {
-      if (baselineRoot) throw new Error('duplicate --baseline-root flag');
-      baselineRoot = arg.slice('--baseline-root='.length);
-      if (!baselineRoot || !path.isAbsolute(baselineRoot)) throw new Error('--baseline-root must contain a non-empty absolute path');
-    } else if (arg.startsWith('--route-manifest=')) {
-      if (routeManifestPath) throw new Error('duplicate --route-manifest flag');
-      routeManifestPath = arg.slice('--route-manifest='.length);
-      if (!routeManifestPath || !path.isAbsolute(routeManifestPath)) throw new Error('--route-manifest must contain a non-empty absolute path');
-    } else if (arg === '--baseline-root' || arg.startsWith('--baseline-root')) {
-      throw new Error('malformed --baseline-root flag; use --baseline-root=/absolute/path');
-    } else throw new Error(`unknown argument: ${arg}`);
-  }
-  if (strict && !baselineRoot) throw new Error('--strict requires --baseline-root=/absolute/path');
-  if (strict && manifestOnly) throw new Error('--strict and --manifest-only are mutually exclusive');
-  return { strict, manifestOnly, baselineRoot, routeManifestPath };
-}
-
 let options;
-try { options = parseArgs(process.argv.slice(2)); }
+try { options = parsePreservationArgs(process.argv.slice(2)); }
 catch (error) {
   console.error(`FAIL usage: ${error.message}`);
   process.exit(2);
 }
-
 function readJson(relative) {
   const file = path.isAbsolute(relative) ? relative : path.join(ROOT, relative);
   try { return JSON.parse(readFileSync(file, 'utf8')); }
   catch (error) { fail(`${relative}: invalid or unreadable JSON (${error.message})`); return null; }
 }
-
 function safeRelative(value) {
   return typeof value === 'string' && value.length > 0 && !path.isAbsolute(value)
     && !value.split('/').includes('..');
 }
-
 function statusId(route) {
   return `${IA_STATUS_REGISTRY_VERSION}:${sha256(JSON.stringify(getRouteStatus(route))).slice(0, 16)}`;
 }
-
-function inventoryDigest(records) {
-  return sha256(records.map((record) => `${record.path}\0${record.size}\0${record.sha256}`).join('\n'));
-}
-
 function validateInventory(label, inventory) {
   if (!inventory || inventory.count !== inventory.records?.length || !HASH.test(inventory.treeSha256 ?? '')) {
     fail(`${label} has an invalid inventory shape`);
@@ -110,7 +68,6 @@ function validateInventory(label, inventory) {
   }
   if (inventoryDigest(inventory.records) !== inventory.treeSha256) fail(`${label} tree checksum is inconsistent`);
 }
-
 function compareInventory(label, root, relative, expected) {
   const actual = fileInventory(root, relative);
   if (actual.count !== expected.count || actual.treeSha256 !== expected.treeSha256) {
@@ -119,57 +76,55 @@ function compareInventory(label, root, relative, expected) {
   }
   if (JSON.stringify(actual.records) !== JSON.stringify(expected.records)) fail(`${label} per-file manifest differs`);
 }
-
-function validateRouteMetadata(record) {
+function validateRouteMetadata(record, baselineRecord) {
   const required = [
-    'route', 'file', 'kind', 'generatedFamily', 'contentOwner', 'governanceOwner',
+    'acceptedRoute', 'acceptedFile', 'kind', 'acceptedGeneratedFamily', 'contentOwner', 'governanceOwner',
     'statusId', 'searchFacet', 'preservedDestination',
   ];
   if (required.some((field) => typeof record[field] !== 'string' || !record[field])) {
-    fail(`route record is incomplete: ${record.file ?? '(missing file)'}`);
+    fail(`route record is incomplete: ${record.acceptedFile ?? '(missing file)'}`);
     return;
   }
-  if (!safeRelative(record.file) || !record.route.startsWith('/') || !record.consumers?.length
+  if ((baselineRecord && (!record.baselineRoute?.startsWith('/') || !safeRelative(record.baselineFile)
+      || typeof record.baselineGeneratedFamily !== 'string' || !record.baselineGeneratedFamily))
+    || !safeRelative(record.acceptedFile) || !record.acceptedRoute.startsWith('/') || !record.consumers?.length
     || !record.endpoints?.length || !record.crossWorkArea?.length) {
-    fail(`route record has unsafe or incomplete contracts: ${record.file}`);
+    fail(`route record has unsafe or incomplete contracts: ${record.acceptedFile}`);
     return;
   }
-  const disposition = getRouteDisposition(record.route);
-  const owner = getContentOwner(record.route);
+  const disposition = getRouteDisposition(record.acceptedRoute);
+  const owner = getContentOwner(record.acceptedRoute);
   if (!disposition || disposition.owner !== record.contentOwner || owner !== record.contentOwner) {
-    fail(`route owner/disposition drift: ${record.route}`);
+    fail(`route owner/disposition drift: ${record.acceptedRoute}`);
   }
-  if (record.statusId !== statusId(record.route)) fail(`route status registry drift: ${record.route}`);
-  if (record.searchFacet !== disposition?.search.workArea) fail(`route search facet drift: ${record.route}`);
+  if (record.statusId !== statusId(record.acceptedRoute)) fail(`route status registry drift: ${record.acceptedRoute}`);
+  if (record.searchFacet !== disposition?.search.workArea) fail(`route search facet drift: ${record.acceptedRoute}`);
 }
-
 function verifyAcceptedRoute(record, file) {
   const html = readFileSync(file, 'utf8');
   const content = informationContract(html);
   const fragments = fragmentContract(html);
-  if (sha256(html) !== record.acceptedRawSha256) fail(`accepted HTML checksum changed: ${record.route}`);
-  if (content.contentSha256 !== record.acceptedContentSha256) fail(`accepted information checksum changed: ${record.route}`);
+  if (sha256(html) !== record.acceptedRawSha256) fail(`accepted HTML checksum changed: ${record.acceptedRoute}`);
+  if (content.contentSha256 !== record.acceptedContentSha256) fail(`accepted information checksum changed: ${record.acceptedRoute}`);
   if (blockInventory(content.blockHashes).sha256 !== record.acceptedBlockInventorySha256) {
-    fail(`accepted information-block inventory changed: ${record.route}`);
+    fail(`accepted information-block inventory changed: ${record.acceptedRoute}`);
   }
   if (fragments.fragmentSha256 !== record.acceptedFragmentSha256
-    || fragments.fragmentCount !== record.acceptedFragmentCount) fail(`accepted fragment contract changed: ${record.route}`);
+    || fragments.fragmentCount !== record.acceptedFragmentCount) fail(`accepted fragment contract changed: ${record.acceptedRoute}`);
   return content;
 }
-
 function verifyBaselineRoute(record, file) {
   const html = readFileSync(file, 'utf8');
   const content = informationContract(html);
   const fragments = fragmentContract(html);
-  if (sha256(html) !== record.baselineRawSha256) fail(`baseline HTML checksum changed: ${record.route}`);
-  if (content.contentSha256 !== record.baselineContentSha256) fail(`baseline information checksum changed: ${record.route}`);
+  if (sha256(html) !== record.baselineRawSha256) fail(`baseline HTML checksum changed: ${record.baselineRoute}`);
+  if (content.contentSha256 !== record.baselineContentSha256) fail(`baseline information checksum changed: ${record.baselineRoute}`);
   if (blockInventory(content.blockHashes).sha256 !== record.equivalenceReceipt?.baselineBlockInventorySha256) {
-    fail(`baseline information-block inventory changed: ${record.route}`);
+    fail(`baseline information-block inventory changed: ${record.baselineRoute}`);
   }
   if (fragments.fragmentSha256 !== record.baselineFragmentSha256
-    || fragments.fragmentCount !== record.baselineFragmentCount) fail(`baseline fragment contract changed: ${record.route}`);
+    || fragments.fragmentCount !== record.baselineFragmentCount) fail(`baseline fragment contract changed: ${record.baselineRoute}`);
 }
-
 const SEMANTIC_CLASSES = new Set([
   'terminology-and-scope-reframe',
   'authority-and-label-reframe',
@@ -184,54 +139,19 @@ const NAVIGATION_CANONICAL_EQUIVALENTS = Object.freeze({
   '/implementation': ['/pdtf-1'],
   '/library': ['/resources'],
   '/engagement': ['/resources', '/spdtf-2/working-groups'],
+  '/v2': ['/spdtf-2/property-pack'],
 });
-
 function localRouteFromHref(href) {
   if (typeof href !== 'string' || !href.startsWith('/')) return null;
   const pathname = href.split(/[?#]/u, 1)[0];
   return pathname.length > 1 ? pathname.replace(/\/+$/u, '') : '/';
 }
-
 function validNavigationDestination(entry) {
   return (entry.destinationPolicy === 'same-retained-route'
     && entry.destinationRoute === entry.originalDestinationRoute)
     || (entry.destinationPolicy === 'canonical-equivalent'
       && NAVIGATION_CANONICAL_EQUIVALENTS[entry.originalDestinationRoute]?.includes(entry.destinationRoute));
 }
-
-function semanticBlocksDigest(blocks) {
-  return sha256(blocks.map((entry) => [
-    entry.sourceBlockSha256,
-    entry.sourceTag,
-    entry.sourceText,
-    entry.occurrences,
-    entry.replacementRoute,
-    entry.replacementBlockSha256,
-    entry.replacementTag,
-    entry.replacementText,
-    entry.replacementContentSha256,
-    entry.classification,
-    entry.reviewNote,
-  ].join('\0')).join('\n'));
-}
-
-function nonInformationBlocksDigest(blocks) {
-  return sha256(blocks.map((entry) => [
-    entry.sourceBlockSha256,
-    entry.sourceTag,
-    entry.sourceText,
-    entry.occurrences,
-    entry.classification,
-    entry.originalDestinationRoute,
-    entry.destinationRoute,
-    entry.destinationPolicy,
-    entry.sourceEvidence,
-    entry.baselineLinkHref ?? '',
-    entry.destinationContentSha256,
-    entry.supersessionReason,
-  ].join('\0')).join('\n'));
-}
-
 /**
  * A route receipt is the fail-closed answer to content moving during a
  * reframe. It only trusts declared routes and exact, committed content hashes;
@@ -252,7 +172,7 @@ function validateRetentionReceipt(record, classifiedByRoute) {
     || !Number.isSafeInteger(receipt.nonInformationBlockCount) || receipt.nonInformationBlockCount < 0
     || !HASH.test(receipt.semanticReframeBlocksSha256 ?? '')
     || !HASH.test(receipt.nonInformationBlocksSha256 ?? '')) {
-    fail(`route lacks an explicit block-retention receipt: ${record.route}`);
+    fail(`route lacks an explicit block-retention receipt: ${record.baselineRoute}`);
     return;
   }
   const targetRoutes = new Set();
@@ -263,7 +183,7 @@ function validateRetentionReceipt(record, classifiedByRoute) {
       || !HASH.test(target.acceptedBlockInventorySha256 ?? '')
       || target.acceptedContentSha256 !== classified.acceptedContentSha256
       || target.acceptedBlockInventorySha256 !== classified.acceptedBlockInventorySha256) {
-      fail(`retention target evidence is invalid: ${record.route} -> ${target?.route ?? '(missing route)'}`);
+      fail(`retention target evidence is invalid: ${record.baselineRoute} -> ${target?.route ?? '(missing route)'}`);
       continue;
     }
     targetRoutes.add(target.route);
@@ -285,7 +205,7 @@ function validateRetentionReceipt(record, classifiedByRoute) {
       || sha256(`${entry.replacementTag}\0${entry.replacementText}`) !== entry.replacementBlockSha256
       || !entry.reviewNote.includes(entry.sourceText)
       || !entry.reviewNote.includes(entry.replacementText)) {
-      fail(`semantic reframe block is incomplete or unbound: ${record.route}`);
+      fail(`semantic reframe block is incomplete or unbound: ${record.baselineRoute}`);
       continue;
     }
     resolutions.add(key);
@@ -293,7 +213,7 @@ function validateRetentionReceipt(record, classifiedByRoute) {
   }
   if (semanticCount !== receipt.semanticReframeBlockCount
     || semanticBlocksDigest(receipt.semanticReframeBlocks) !== receipt.semanticReframeBlocksSha256) {
-    fail(`semantic reframe block receipt checksum is inconsistent: ${record.route}`);
+    fail(`semantic reframe block receipt checksum is inconsistent: ${record.baselineRoute}`);
   }
   const nonInformation = new Set();
   let nonInformationCount = 0;
@@ -311,8 +231,9 @@ function validateRetentionReceipt(record, classifiedByRoute) {
         : entry.baselineLinkHref !== null)
       || typeof entry.supersessionReason !== 'string' || !entry.supersessionReason.includes(entry.sourceText)
       || !entry.supersessionReason.includes(entry.originalDestinationRoute)
-      || !entry.supersessionReason.includes(entry.destinationRoute)) {
-      fail(`non-information supersession is incomplete or unbound: ${record.route}`);
+      || (!entry.supersessionReason.includes(entry.destinationRoute)
+        && !getPropertyPackReplacementRoute(entry.originalDestinationRoute))) {
+      fail(`non-information supersession is incomplete or unbound: ${record.baselineRoute}`);
       continue;
     }
     nonInformation.add(entry.sourceBlockSha256);
@@ -320,13 +241,12 @@ function validateRetentionReceipt(record, classifiedByRoute) {
   }
   if (nonInformationCount !== receipt.nonInformationBlockCount
     || nonInformationBlocksDigest(receipt.nonInformationBlocks) !== receipt.nonInformationBlocksSha256) {
-    fail(`non-information supersession receipt checksum is inconsistent: ${record.route}`);
+    fail(`non-information supersession receipt checksum is inconsistent: ${record.baselineRoute}`);
   }
   if (receipt.exactRetainedBlocks + receipt.semanticReframeBlockCount + receipt.nonInformationBlockCount !== receipt.baselineBlockCount) {
-    fail(`baseline information blocks are not fully accounted for: ${record.route}`);
+    fail(`baseline information blocks are not fully accounted for: ${record.baselineRoute}`);
   }
 }
-
 function verifyBaselineNavigationEvidence(record, html) {
   const sourceLinks = new Map();
   for (const { hash, containingLink } of linkedInformationBlocks(html)) {
@@ -340,94 +260,145 @@ function verifyBaselineNavigationEvidence(record, html) {
       ? hrefs.size === 1 && actualHref === entry.baselineLinkHref
         && localRouteFromHref(actualHref) === entry.originalDestinationRoute
       : hrefs.size === 1 && actualHref === null;
-    if (!supported) fail(`baseline navigation provenance changed or is ambiguous: ${record.route}#${entry.sourceBlockSha256}`);
+    if (!supported) fail(`baseline navigation provenance changed or is ambiguous: ${record.baselineRoute}#${entry.sourceBlockSha256}`);
   }
 }
-
 validateIaContract();
 if (ROUTE_DISPOSITION_LEDGER.some(({ disposition }) => disposition === 'retire')) fail('route disposition ledger contains a retire entry');
-
 const routeManifest = readJson(options.routeManifestPath ?? 'src/data/ia-route-baseline.json');
 const familyManifest = readJson('src/data/ia-preservation-baseline.json');
 if (routeManifest) {
-  if (routeManifest.schemaVersion !== 5 || routeManifest.routeCount !== routeManifest.routes?.length
+  if (routeManifest.schemaVersion !== 6 || routeManifest.routeCount !== routeManifest.routes?.length
     || routeManifest.addedRouteCount !== routeManifest.addedRoutes?.length) fail('route manifest has an invalid schema or count');
-  const all = [...(routeManifest.routes ?? []), ...(routeManifest.addedRoutes ?? [])];
-  const files = new Set();
-  const routes = new Set();
+  const baselineRecords = routeManifest.routes ?? [];
+  const addedRecords = routeManifest.addedRoutes ?? [];
+  const all = [...baselineRecords, ...addedRecords];
+  const acceptedFiles = new Set();
+  const acceptedRoutes = new Set();
+  const baselineFiles = new Set();
+  const baselineRoutes = new Set();
+  const baselineRecordSet = new Set(baselineRecords);
+  const manifestRetained = baselineRecords.filter(({ baselineEvidence }) => baselineEvidence);
+  const priorReceipt = routeManifest.priorManifestReceipt;
+  try { validatePriorManifestReceipt(priorReceipt, manifestRetained); }
+  catch (error) { fail(error.message); }
+  let priorByRoute = new Map();
+  try {
+    const { manifest: prior } = loadPriorIaRouteManifest(ROOT);
+    priorByRoute = new Map((prior.routes ?? []).map((record) => [record.route, record]));
+  } catch (error) { fail(`prior IA manifest Git evidence is unavailable: ${error.message}`); }
+  for (const record of manifestRetained) {
+    if (!manifestRetainedRecordMatches(record, priorByRoute.get(record.baselineRoute))) {
+      fail(`baseline route lacks exact prior-manifest evidence: ${record.baselineRoute}`);
+    }
+  }
   for (const record of all) {
-    validateRouteMetadata(record);
-    if (files.has(record.file) || routes.has(record.route)) fail(`duplicate classified route: ${record.route}`);
-    files.add(record.file);
-    routes.add(record.route);
+    const isBaseline = baselineRecordSet.has(record);
+    validateRouteMetadata(record, isBaseline);
+    if (acceptedFiles.has(record.acceptedFile) || acceptedRoutes.has(record.acceptedRoute)) {
+      fail(`duplicate accepted route: ${record.acceptedRoute}`);
+    }
+    acceptedFiles.add(record.acceptedFile);
+    acceptedRoutes.add(record.acceptedRoute);
+    if (isBaseline) {
+      if (baselineFiles.has(record.baselineFile) || baselineRoutes.has(record.baselineRoute)) {
+        fail(`duplicate baseline route: ${record.baselineRoute}`);
+      }
+      baselineFiles.add(record.baselineFile);
+      baselineRoutes.add(record.baselineRoute);
+      if (safeRelative(record.baselineFile) && routeFromFile(record.baselineFile) !== record.baselineRoute) {
+        fail(`baseline route/file mismatch: ${record.baselineRoute}`);
+      }
+    }
+    if (safeRelative(record.acceptedFile) && routeFromFile(record.acceptedFile) !== record.acceptedRoute) {
+      fail(`accepted route/file mismatch: ${record.acceptedRoute}`);
+    }
     for (const field of ['acceptedRawSha256', 'acceptedContentSha256', 'acceptedBlockInventorySha256', 'acceptedFragmentSha256']) {
-      if (!HASH.test(record[field] ?? '')) fail(`${record.route} has invalid ${field}`);
+      if (!HASH.test(record[field] ?? '')) fail(`${record.acceptedRoute} has invalid ${field}`);
     }
     if (record.acceptedFragmentCount !== record.acceptedFragments?.length
       || sha256((record.acceptedFragments ?? []).join('\n')) !== record.acceptedFragmentSha256) {
-      fail(`${record.route} has an inconsistent accepted fragment inventory`);
+      fail(`${record.acceptedRoute} has an inconsistent accepted fragment inventory`);
     }
   }
-  const classifiedByRoute = new Map(all.map((record) => [record.route, record]));
-  for (const record of routeManifest.routes ?? []) {
+  const classifiedByRoute = new Map(all.map((record) => [record.acceptedRoute, record]));
+  for (const record of baselineRecords) {
     for (const field of ['baselineRawSha256', 'baselineContentSha256', 'baselineFragmentSha256']) {
-      if (!HASH.test(record[field] ?? '')) fail(`${record.route} has invalid ${field}`);
+      if (!HASH.test(record[field] ?? '')) fail(`${record.baselineRoute} has invalid ${field}`);
     }
     if (record.baselineFragmentCount !== record.baselineFragments?.length
       || sha256((record.baselineFragments ?? []).join('\n')) !== record.baselineFragmentSha256) {
-      fail(`${record.route} has an inconsistent baseline fragment inventory`);
+      fail(`${record.baselineRoute} has an inconsistent baseline fragment inventory`);
     }
     const receipt = record.equivalenceReceipt;
     if (!receipt || !['byte-normalized-equivalent', 'reviewed-reframe-equivalent'].includes(receipt.policy)
       || !receipt.reviewEvidence || !Number.isFinite(receipt.retentionRatio)
       || !HASH.test(receipt.baselineBlockInventorySha256 ?? '')
-      || !HASH.test(receipt.acceptedBlockInventorySha256 ?? '')) fail(`route lacks an exact equivalence receipt: ${record.route}`);
+      || !HASH.test(receipt.acceptedBlockInventorySha256 ?? '')) fail(`route lacks an exact equivalence receipt: ${record.baselineRoute}`);
     validateRetentionReceipt(record, classifiedByRoute);
     const acceptedFragments = new Set(record.acceptedFragments ?? []);
     for (const fragment of record.baselineFragments ?? []) {
-      if (!acceptedFragments.has(fragment)) fail(`deep-linked fragment was not preserved: ${record.route}#${fragment}`);
+      if (!acceptedFragments.has(fragment)) fail(`deep-linked fragment was not preserved: ${record.baselineRoute}#${fragment}`);
     }
   }
-  for (const record of routeManifest.addedRoutes ?? []) {
-    if (record.route === '/v2' || record.route.startsWith('/v2/')) fail(`frozen /v2 family contains new route ${record.route}`);
+  try {
+    const actual = propertyPackMigrationReceipt(
+      baselineRecords, addedRecords, PROPERTY_PACK_ROUTE_MIGRATION, getPropertyPackReplacementRoute,
+    );
+    if (JSON.stringify(actual) !== JSON.stringify(routeManifest.propertyPackMigration)) {
+      fail('Property Pack migration receipt is inconsistent');
+    }
+  } catch (error) { fail(`Property Pack migration contract failed: ${error.message}`); }
+  if (PROPERTY_PACK_ROUTE_MIGRATION.redirects !== false
+    || getPropertyPackReplacementRoute('/api/v2/comments') !== null) {
+    fail('Property Pack migration affects redirects or /api/v2');
   }
-
   const workflow = readFileSync(path.join(ROOT, '.github/workflows/deploy-aws.yml'), 'utf8');
   for (const prefix of routeManifest.externalPrefixes ?? []) {
     if (!workflow.includes(`--exclude "${prefix}*"`)) fail(`deployment does not protect externally retained ${prefix}`);
   }
   if (!workflow.includes('--exclude "ontology/artefacts/*"')) fail('deployment does not protect frozen ontology artefacts');
-
   if (!options.manifestOnly) {
     const dist = path.join(ROOT, 'dist');
     if (!existsSync(dist) || !statSync(dist).isDirectory()) fail('built dist/ is required for the release preservation gate');
     else {
+      for (const output of existingRetiredPropertyPackOutputs(dist, PROPERTY_PACK_ROUTE_MIGRATION)) {
+        fail(`retired Property Pack output still exists: ${path.relative(dist, output)}`);
+      }
       const currentFiles = filesUnder(dist).filter((file) => file.endsWith('.html'))
         .map((file) => path.relative(dist, file).split(path.sep).join('/'));
-      for (const file of currentFiles) if (!files.has(file)) fail(`unclassified built route: ${routeFromFile(file)}`);
+      for (const file of currentFiles) {
+        const route = routeFromFile(file);
+        if (isRetiredPropertyPackRoute(route)) fail(`retired Property Pack output still exists: ${route}`);
+        if (!acceptedFiles.has(file)) fail(`unclassified built route: ${route}`);
+      }
       const acceptedBlockHashes = new Map();
       for (const record of all) {
-        const current = path.join(dist, record.file);
+        if (!safeRelative(record.acceptedFile)) continue;
+        const current = path.join(dist, record.acceptedFile);
         if (!existsSync(current)) {
-          if (record.kind !== 'external-retain') fail(`classified bundled route is missing: ${record.route}`);
-        } else acceptedBlockHashes.set(record.route, new Set(verifyAcceptedRoute(record, current).blockHashes));
+          if (record.kind !== 'external-retain') fail(`classified bundled route is missing: ${record.acceptedRoute}`);
+        } else acceptedBlockHashes.set(record.acceptedRoute, new Set(verifyAcceptedRoute(record, current).blockHashes));
       }
-      for (const record of routeManifest.routes ?? []) {
+      for (const record of baselineRecords) {
         for (const semantic of record.retentionReceipt?.semanticReframeBlocks ?? []) {
           if (!acceptedBlockHashes.get(semantic.replacementRoute)?.has(semantic.replacementBlockSha256)) {
-            fail(`semantic replacement block is absent from accepted route: ${record.route} -> ${semantic.replacementRoute}`);
+            fail(`semantic replacement block is absent from accepted route: ${record.baselineRoute} -> ${semantic.replacementRoute}`);
           }
         }
       }
       notes.push(`accepted routes: ${currentFiles.length}/${all.length} built HTML records verified`);
     }
   }
-
   if (options.strict) {
+    try { verifyBaselineRootCommit(options.baselineRoot); }
+    catch (error) { fail(error.message); }
     if (!existsSync(options.baselineRoot) || !statSync(options.baselineRoot).isDirectory()) fail(`baseline root is not a directory: ${options.baselineRoot}`);
-    else for (const record of routeManifest.routes ?? []) {
-      const baselineFile = path.join(options.baselineRoot, 'dist', record.file);
-      if (!existsSync(baselineFile)) fail(`baseline route is missing: ${record.route}`);
+    else for (const record of baselineRecords) {
+      if (!safeRelative(record.baselineFile)) continue;
+      if (record.baselineEvidence) continue;
+      const baselineFile = path.join(options.baselineRoot, 'dist', record.baselineFile);
+      if (!existsSync(baselineFile)) fail(`baseline route is missing: ${record.baselineRoute}`);
       else {
         verifyBaselineRoute(record, baselineFile);
         verifyBaselineNavigationEvidence(record, readFileSync(baselineFile, 'utf8'));
@@ -436,9 +407,15 @@ if (routeManifest) {
     notes.push(`baseline routes: ${routeManifest.routeCount} before-state records verified`);
   }
 }
-
 if (familyManifest) {
   if (familyManifest.schemaVersion !== 1 || !Array.isArray(familyManifest.families)) fail('family manifest has an invalid schema');
+  try { validatePriorFamilyReceipt(familyManifest.priorManifestReceipt, familyManifest.families); }
+  catch (error) { fail(error.message); }
+  let priorFamilies = new Map();
+  try {
+    const { manifest } = loadPriorIaFamilyManifest(ROOT);
+    priorFamilies = new Map(manifest.families.map((family) => [family.id, family]));
+  } catch (error) { fail(`prior IA family Git evidence is unavailable: ${error.message}`); }
   const seen = new Set();
   for (const family of familyManifest.families ?? []) {
     if (seen.has(family.id)) fail(`duplicate preservation family: ${family.id}`);
@@ -449,15 +426,27 @@ if (familyManifest) {
     }
     validateInventory(`${family.id} baseline`, family.baseline);
     validateInventory(`${family.id} accepted`, family.accepted);
-    if (family.baseline?.count !== EXPECTED_FAMILY_COUNTS[family.id]) fail(`${family.id} baseline count is not the frozen exact count`);
+    const expectedCounts = EXPECTED_FAMILY_COUNTS[family.id];
+    if (family.baseline?.count !== expectedCounts?.baseline) fail(`${family.id} baseline count is not the frozen exact count`);
+    if (expectedCounts?.accepted !== undefined && family.accepted?.count !== expectedCounts.accepted) {
+      fail(`${family.id} accepted count is not the canonical exact count`);
+    }
+    if (family.id === 'property-pack-canonical'
+      && (family.technicalMappedRouteCount !== 690 || family.canonicalContentRouteCount !== 691
+        || family.lifecyclePageCount !== 2 || family.baselinePath !== 'dist/v2'
+        || family.acceptedPath !== 'dist/spdtf-2/property-pack')) {
+      fail('Property Pack family does not declare the 690 → 691 + 2 migration cut');
+    }
     if (family.policy === 'byte-identical' && family.baseline?.treeSha256 !== family.accepted?.treeSha256) {
       fail(`${family.id} violates byte-identical policy`);
     }
     if (!options.manifestOnly && family.ciMode === 'verify-current') {
       compareInventory(`${family.id} accepted tree`, ROOT, family.acceptedPath, family.accepted);
     }
+    if (!priorFamilyMatches(family, priorFamilies.get(family.baselineEvidence?.sourceFamilyId))) {
+      fail(`${family.id} baseline differs from prior family evidence`);
+    }
     if (options.strict) {
-      compareInventory(`${family.id} baseline tree`, options.baselineRoot, family.baselinePath, family.baseline);
       compareInventory(`${family.id} accepted tree`, ROOT, family.acceptedPath, family.accepted);
     }
   }
@@ -468,7 +457,6 @@ if (familyManifest) {
     }
   }
 }
-
 const resources = readJson('src/data/resources-manifest.json');
 if (Array.isArray(resources)) {
   const sourceContract = PRESERVATION_LEDGER.find(({ kind }) => kind === 'source-records');
@@ -478,7 +466,6 @@ if (Array.isArray(resources)) {
     fail('committed public source index differs from its exact 790-record contract');
   }
 }
-
 const council = readJson('src/data/council-manifest.json');
 if (Array.isArray(council)) {
   const markdown = council.filter((entry) => entry?.type === 'file' && entry?.ext === 'md');
@@ -486,10 +473,8 @@ if (Array.isArray(council)) {
     fail('council manifest differs from its exact 261-Markdown contract');
   }
 }
-
 const viewer = readFileSync(path.join(ROOT, 'src/pages/resource.astro'), 'utf8');
 for (const marker of ['source/', '/resources/', 'council-manifest', 'path=']) if (!viewer.includes(marker)) fail(`source viewer contract is missing ${marker}`);
-
 if (failures.length) {
   for (const message of failures) console.error(`FAIL ${message}`);
   process.exitCode = 1;

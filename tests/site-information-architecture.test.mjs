@@ -44,7 +44,6 @@ import {
   STANDARDS_PROFILE,
   validateStandardsProfile,
 } from '../src/lib/spdtf-standards-profile.mjs';
-
 const expectedDestinations = [
   ['programme', 'Programme', '/programme'],
   ['spdtf-2', 'SPDTF 2.0 Development', '/spdtf-2'],
@@ -239,12 +238,13 @@ test('the migration ledger preserves every audited high-risk information family'
 });
 
 test('the frozen preservation proof resolves content, ownership and exact family checksums', () => {
-  assert.equal(routeBaseline.schemaVersion, 5);
+  assert.equal(routeBaseline.schemaVersion, 6);
   assert.equal(routeBaseline.routeCount, 3436);
-  assert.equal(routeBaseline.addedRouteCount, 49);
+  assert.equal(routeBaseline.addedRouteCount, 52);
   assert.equal(routeBaseline.routes.length, routeBaseline.routeCount);
   assert.equal(routeBaseline.addedRoutes.length, routeBaseline.addedRouteCount);
   const requiredRouteFields = [
+    'baselineRoute', 'baselineFile', 'acceptedRoute', 'acceptedFile',
     'baselineContentSha256', 'acceptedContentSha256', 'acceptedBlockInventorySha256', 'baselineFragmentSha256',
     'acceptedFragmentSha256', 'contentOwner', 'governanceOwner', 'statusId',
     'baselineFragments', 'acceptedFragments', 'searchFacet', 'crossWorkArea',
@@ -284,7 +284,9 @@ test('the frozen preservation proof resolves content, ownership and exact family
   assert.ok(routeBaseline.routes.every(({ baselineFragments, acceptedFragments }) => (
     baselineFragments.every((fragment) => acceptedFragments.includes(fragment))
   )));
-  assert.ok(routeBaseline.addedRoutes.every(({ route }) => route !== '/v2' && !route.startsWith('/v2/')));
+  assert.ok(routeBaseline.addedRoutes.every(({ acceptedRoute }) => (
+    acceptedRoute !== '/v2' && !acceptedRoute.startsWith('/v2/')
+  )));
 
   assert.equal(preservationBaseline.schemaVersion, 1);
   const counts = Object.fromEntries(preservationBaseline.families.map(({ id, baseline }) => [id, baseline.count]));
@@ -296,7 +298,7 @@ test('the frozen preservation proof resolves content, ownership and exact family
     'ui-assets': 53,
     'image-assets': 5,
     'ontology-tools': 837,
-    'v2-atomic-seed': 690,
+    'property-pack-canonical': 690,
   });
   assert.ok(preservationBaseline.families.every((family) => (
     family.owner && family.dataOwner && family.consumers.length
@@ -377,6 +379,7 @@ test('preservation is a local and deployment gate', () => {
   const workflow = readFileSync(new URL('../.github/workflows/deploy-aws.yml', import.meta.url), 'utf8');
   assert.match(makefile, /ci-browser: build-data check-ia-preservation check-routes test-e2e/u);
   assert.match(makefile, /ci: .*check-ia-preservation/u);
+  assert.match(workflow, /actions\/checkout@v6[\s\S]*?fetch-depth: 0/u);
   assert.match(workflow, /Information-architecture preservation gate[\s\S]*pnpm run check:ia-preservation/u);
 });
 

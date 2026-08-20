@@ -21,6 +21,57 @@ export function sha256(value) {
   return createHash('sha256').update(value).digest('hex');
 }
 
+export function parsePreservationArgs(args) {
+  let strict = false;
+  let manifestOnly = false;
+  let baselineRoot = null;
+  let routeManifestPath = null;
+  for (const arg of args) {
+    if (arg === '--strict') {
+      if (strict) throw new Error('duplicate --strict flag');
+      strict = true;
+    } else if (arg === '--manifest-only') {
+      if (manifestOnly) throw new Error('duplicate --manifest-only flag');
+      manifestOnly = true;
+    } else if (arg.startsWith('--baseline-root=')) {
+      if (baselineRoot) throw new Error('duplicate --baseline-root flag');
+      baselineRoot = arg.slice('--baseline-root='.length);
+      if (!baselineRoot || !path.isAbsolute(baselineRoot)) throw new Error('--baseline-root must contain a non-empty absolute path');
+    } else if (arg.startsWith('--route-manifest=')) {
+      if (routeManifestPath) throw new Error('duplicate --route-manifest flag');
+      routeManifestPath = arg.slice('--route-manifest='.length);
+      if (!routeManifestPath || !path.isAbsolute(routeManifestPath)) throw new Error('--route-manifest must contain a non-empty absolute path');
+    } else if (arg === '--baseline-root' || arg.startsWith('--baseline-root')) {
+      throw new Error('malformed --baseline-root flag; use --baseline-root=/absolute/path');
+    } else throw new Error(`unknown argument: ${arg}`);
+  }
+  if (strict && !baselineRoot) throw new Error('--strict requires --baseline-root=/absolute/path');
+  if (strict && manifestOnly) throw new Error('--strict and --manifest-only are mutually exclusive');
+  return { strict, manifestOnly, baselineRoot, routeManifestPath };
+}
+
+export function inventoryDigest(records) {
+  return sha256(records.map((record) => `${record.path}\0${record.size}\0${record.sha256}`).join('\n'));
+}
+
+export function semanticBlocksDigest(blocks) {
+  return sha256(blocks.map((entry) => [
+    entry.sourceBlockSha256, entry.sourceTag, entry.sourceText, entry.occurrences,
+    entry.replacementRoute, entry.replacementBlockSha256, entry.replacementTag,
+    entry.replacementText, entry.replacementContentSha256, entry.classification,
+    entry.reviewNote,
+  ].join('\0')).join('\n'));
+}
+
+export function nonInformationBlocksDigest(blocks) {
+  return sha256(blocks.map((entry) => [
+    entry.sourceBlockSha256, entry.sourceTag, entry.sourceText, entry.occurrences,
+    entry.classification, entry.originalDestinationRoute, entry.destinationRoute,
+    entry.destinationPolicy, entry.sourceEvidence, entry.baselineLinkHref ?? '',
+    entry.destinationContentSha256, entry.supersessionReason,
+  ].join('\0')).join('\n'));
+}
+
 export function filesUnder(root, relative = '', { includeHidden = true } = {}) {
   const base = path.join(root, relative);
   if (!existsSync(base)) return [];
@@ -197,6 +248,77 @@ export function routeFromFile(file) {
   if (file === 'index.html') return '/';
   if (file.endsWith('/index.html')) return `/${file.slice(0, -'/index.html'.length)}`;
   return `/${file.replace(/\.html$/u, '')}`;
+}
+
+export function indexFileFromRoute(route) {
+  if (route === '/') return 'index.html';
+  if (typeof route !== 'string' || !route.startsWith('/') || route.includes('?') || route.includes('#')) {
+    throw new Error(`cannot derive an index file from route: ${route}`);
+  }
+  return `${route.slice(1)}/index.html`;
+}
+
+export function isRetiredPropertyPackRoute(route) {
+  return route === '/v2' || route.startsWith('/v2/') || route === '/modelling/property-pack';
+}
+
+export function existingRetiredPropertyPackOutputs(distRoot, migration) {
+  return migration.retiredRoots
+    .map((route) => path.join(distRoot, route.slice(1)))
+    .filter(existsSync);
+}
+
+/**
+ * Build and validate the fail-closed old-to-canonical Property Pack cut. The
+ * caller supplies the IA registry's replacement function so this receipt
+ * cannot silently diverge from the public routing contract.
+ */
+export function propertyPackMigrationReceipt(records, addedRecords, migration, replacementRoute) {
+  const technical = records.filter(({ baselineRoute }) => (
+    baselineRoute === '/v2' || baselineRoute?.startsWith('/v2/')
+  ));
+  const catalogue = records.filter(({ baselineRoute }) => baselineRoute === '/modelling/property-pack');
+  for (const record of records) {
+    const replacement = replacementRoute(record.baselineRoute);
+    const expectedRoute = replacement ?? record.baselineRoute;
+    const expectedFile = replacement ? indexFileFromRoute(replacement) : record.baselineFile;
+    if (record.acceptedRoute !== expectedRoute || record.acceptedFile !== expectedFile) {
+      throw new Error(`undeclared route move: ${record.baselineRoute} -> ${record.acceptedRoute}`);
+    }
+  }
+  if (technical.length !== migration.technicalRouteCount
+    || catalogue.length !== migration.movedCatalogueRouteCount) {
+    throw new Error(`Property Pack mapped cut must be ${migration.technicalRouteCount} technical + ${migration.movedCatalogueRouteCount} catalogue routes`);
+  }
+  const canonicalRecords = records.filter(({ acceptedRoute }) => (
+    acceptedRoute === migration.canonicalRoot || acceptedRoute?.startsWith(`${migration.canonicalRoot}/`)
+  ));
+  const lifecycle = addedRecords.filter(({ acceptedRoute }) => acceptedRoute?.startsWith(`${migration.canonicalRoot}/`));
+  const allCanonical = [...canonicalRecords, ...lifecycle];
+  if (canonicalRecords.length !== migration.technicalRouteCount + migration.movedCatalogueRouteCount
+    || lifecycle.length !== migration.lifecycleAdditionCount
+    || allCanonical.length !== migration.technicalRouteCount + migration.movedCatalogueRouteCount + migration.lifecycleAdditionCount) {
+    throw new Error('Property Pack canonical family must be 691 migrated content routes plus 2 lifecycle pages');
+  }
+  if (new Set(allCanonical.map(({ acceptedRoute }) => acceptedRoute)).size !== allCanonical.length
+    || new Set(allCanonical.map(({ acceptedFile }) => acceptedFile)).size !== allCanonical.length) {
+    throw new Error('Property Pack canonical routes and files must be unique');
+  }
+  if (allCanonical.some(({ acceptedRoute }) => isRetiredPropertyPackRoute(acceptedRoute))) {
+    throw new Error('Property Pack accepted records must not retain a retired route');
+  }
+  return {
+    policy: 'canonical-move-without-redirects-v1',
+    baselineTechnicalRouteCount: technical.length,
+    baselineCatalogueRouteCount: catalogue.length,
+    canonicalContentRouteCount: canonicalRecords.length,
+    lifecyclePageCount: lifecycle.length,
+    acceptedFamilyRouteCount: allCanonical.length,
+    redirects: migration.redirects,
+    retiredRoutes: ['/v2/**', '/modelling/property-pack'],
+    canonicalRoot: migration.canonicalRoot,
+    lifecycleRoutes: lifecycle.map(({ acceptedRoute }) => acceptedRoute).sort(),
+  };
 }
 
 export function generatedFamily(route) {
