@@ -17,12 +17,14 @@ interface Props {
   description: string;
   category?: string;
   crumbs?: Crumb[];
+  fullWidth?: boolean;
 }
 
 const {
   title,
   description,
   crumbs = [],
+  fullWidth = false,
 } = Astro.props;
 const isPropertyPackRoot = Astro.url.pathname.replace(/\/+$/u, '') === '/spdtf-2/property-pack';
 const technicalState = validationReport.status === 'pass'
@@ -33,7 +35,7 @@ const technicalState = validationReport.status === 'pass'
   title={`${title} · Property Pack ontology · SPDTF 2.0`}
   description={description}
   hideBreadcrumbs={true}
-  proseClass="prose wide"
+  proseClass={fullWidth ? 'prose wide property-pack-page--full-width' : 'prose wide'}
 >
   <div class="v2-doc">
     <nav class="v2-breadcrumbs" aria-label="Breadcrumb">

@@ -5,6 +5,9 @@
   overflow-wrap: anywhere;
 }
 
+/* The lineage comparison needs the full article track for paired evidence. */
+.prose.property-pack-page--full-width { max-width: none; }
+
 .v2-doc > *,
 .v2-candidate-banner > *,
 .v2-candidate-banner__content > *,
