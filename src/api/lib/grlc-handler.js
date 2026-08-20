@@ -177,7 +177,29 @@ function createDetailHandler(config) {
  *   'constraint'   → constraintMessage, constraintSeverity, shapeName
  *   'source'       → dctSourceUri
  */
-function assembleEntityDetail(rows, params) {
+const compareText = (left, right) => {
+  const a = String(left ?? '');
+  const b = String(right ?? '');
+  return a === b ? 0 : a < b ? -1 : 1;
+};
+
+function bindingSortKey(binding) {
+  return Object.keys(binding).sort(compareText)
+    .map((key) => `${key}\0${binding[key]?.value ?? ''}`)
+    .join('\0');
+}
+
+function compareFields(...fields) {
+  return (left, right) => {
+    for (const field of fields) {
+      const order = compareText(left[field], right[field]);
+      if (order) return order;
+    }
+    return 0;
+  };
+}
+
+export function assembleEntityDetail(rows, params) {
   const { tier, module, localName } = params;
   let core = null;
   const attributes = [];
@@ -189,7 +211,14 @@ function assembleEntityDetail(rows, params) {
   const seenConstraints = new Set();
   const seenSources = new Set();
 
-  for (const b of rows) {
+  // SPARQL result order is undefined unless a query supplies ORDER BY. Sort the
+  // complete bindings first so first-wins de-duplication is deterministic even
+  // when equivalent facts came from several named graphs.
+  const orderedRows = [...rows].sort((left, right) => (
+    compareText(bindingSortKey(left), bindingSortKey(right))
+  ));
+
+  for (const b of orderedRows) {
     const rowType = val(b, 'rowType');
 
     if (rowType === 'core' && !core) {
@@ -255,6 +284,11 @@ function assembleEntityDetail(rows, params) {
   }
 
   if (!core) return null;
+
+  dctSources.sort(compareText);
+  attributes.sort(compareFields('localName', 'label', 'type', 'cardinality'));
+  relationships.sort(compareFields('predicate', 'target', 'inverse', 'cardinality'));
+  constraints.sort(compareFields('shape', 'message', 'severity'));
 
   return {
     ...core,
