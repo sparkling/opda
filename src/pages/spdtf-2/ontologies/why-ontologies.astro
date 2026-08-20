@@ -34,7 +34,7 @@ import Diagram from '@/components/Diagram.astro';
       <tr><th scope="row">Business glossary</th><td>What does this term mean to practitioners?</td><td>Supplies labels, definitions, examples and ownership.</td></tr>
       <tr><th scope="row">Data dictionary</th><td>What data is recorded and with what expectations?</td><td>Connects data elements to the things and meanings they describe.</td></tr>
       <tr><th scope="row">Taxonomy</th><td>How are concepts organised more broadly or narrowly?</td><td>One governed structure within the wider semantic package.</td></tr>
-      <tr><th scope="row">JSON Schema</th><td>What is the allowed structure of this JSON exchange?</td><td>A tested delivery projection; it does not own the meaning.</td></tr>
+      <tr><th scope="row">JSON Schema</th><td>What is the allowed structure of this JSON exchange?</td><td>A possible tested delivery projection when generated; it does not own the meaning.</td></tr>
       <tr><th scope="row">Database schema</th><td>How does one application store and constrain its records?</td><td>An implementation design that can map to ontology meanings.</td></tr>
     </tbody>
   </table>
@@ -89,21 +89,23 @@ flowchart LR
   <p>
     Read the graph below as sentences: a property <em>has address</em> an identified
     address; a legal title <em>is registered over</em> the property; and a source record
-    <em>supports</em> the title assertion. The edge names carry meaning.
+    <em>supports</em> a separate assertion about that title. The edge names carry meaning.
   </p>
-  <Diagram size="medium" caption="A five-node example of identifiable things and named relationships. Literal fields such as an address line stay as values on the relevant resource rather than becoming free-standing topology nodes.">
+  <Diagram size="medium" caption="A six-node example of identifiable things, a claim and named relationships. Literal fields such as an address line stay as values on the relevant resource rather than becoming free-standing topology nodes.">
 flowchart LR
-  accTitle: A property connected to address title and evidence
-  accDescr: A property links to an identified address and legal title; a source record supports the title assertion and a transaction concerns the property.
+  accTitle: A property connected to address title claim and evidence
+  accDescr: A property links to an identified address and legal title; a source record supports a separate claim about the title and a transaction concerns the property.
   Transaction["Transaction"]:::process
   Property["Property"]:::service
   Address["Address"]:::infra
   Title["Legal title"]:::security
+  Claim["Title assertion"]:::data
   Source["Source record"]:::external
   Transaction -->|concerns| Property
   Property -->|has address| Address
   Title -->|registered over| Property
-  Source -->|supports| Title
+  Claim -->|describes| Title
+  Source -->|supports| Claim
   </Diagram>
 
   <h2 id="limits">What an ontology cannot establish</h2>

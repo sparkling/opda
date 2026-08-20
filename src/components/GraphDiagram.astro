@@ -22,7 +22,7 @@ const { source, caption, minHeight } = Astro.props;
 const configJson = JSON.stringify({ mode: 'static', source: source ?? '' }).replace(/</g, '\\u003c');
 ---
 
-<figure class="graph-diagram-wrapper">
+<figure class="graph-diagram-wrapper" data-node-interaction="interactive">
   <script type="application/json" class="gd-config" set:html={configJson} />
 
   <div class="gd-actionbar">

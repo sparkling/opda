@@ -431,7 +431,7 @@ test('graph and data tools preserve keyboard and semantic state contracts', asyn
     readFile(file('src/styles/graph-diagram.css'), 'utf8'),
     readFile(file('public/ui/data-browser.js'), 'utf8'),
   ]);
-  assert.match(component, /<figure class="graph-diagram-wrapper">/u);
+  assert.match(component, /<figure class="graph-diagram-wrapper" data-node-interaction="interactive">/u);
   assert.match(component, /<figcaption class="gd-caption"/u);
   assert.match(graph, /Figure \$\{number\}/u);
   assert.match(graph, /setAttribute\('role', 'dialog'\)/u);

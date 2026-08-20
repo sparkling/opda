@@ -182,8 +182,8 @@ const navigationSections: Record<DestinationKey, NavigationSection> = {
         { url: '/spdtf-2/questions', title: 'Open questions and changes' },
         { url: '/spdtf-2/outputs', title: 'Outputs and validation' },
       ]),
-      category('Semantic modelling', ontologyJourney.url, ontologyJourney.children),
       category('Property Pack ontology', propertyPackJourney.url, propertyPackJourney.children),
+      category('Semantic modelling', ontologyJourney.url, ontologyJourney.children),
     ],
   },
   'working-groups': {

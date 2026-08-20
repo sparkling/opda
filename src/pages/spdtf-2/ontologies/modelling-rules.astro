@@ -29,37 +29,44 @@ import Diagram from '@/components/Diagram.astro';
   </ul>
 
   <h2 id="construct">Class, value or relationship?</h2>
-  <Diagram size="large" caption="A compact modelling decision. Stable kinds of identifiable things become classes; governed choices become SKOS concepts; simple values remain literals; relationships are qualified when the link itself carries business information.">
+  <Diagram size="large" caption="A reviewed meaning can call for a reusable kind, an identified instance, a governed choice, a simple value or a relationship. A relationship becomes its own resource only when the link carries business information such as dates, roles or evidence.">
 flowchart TB
   accTitle: Choosing a class concept literal or qualified relationship
-  accDescr: The decision starts with business identity, distinguishes independently identifiable things from governed choices and simple values, and qualifies relationships that carry evidence or lifecycle information.
+  accDescr: A reviewed meaning is classified as a reusable kind, identified resource, governed concept, typed literal or relationship; relationships are direct unless the link itself carries evidence or lifecycle information.
   Meaning["Reviewed business meaning"]:::user
-  Thing{"Independently identifiable thing?"}:::process
-  Class["OWL class or resource"]:::service
-  Choice{"Governed choice or code?"}:::data
+  Construct["What construct does it require?"]:::process
+  Class["OWL class: reusable kind"]:::service
+  Resource["Identified resource: instance"]:::external
   Concept["SKOS concept"]:::success
   Value["Typed literal value"]:::infra
-  Link{"Does a link carry dates roles or evidence?"}:::security
+  Link["Does the relationship carry its own information?"]:::security
+  Direct["Direct object property"]:::data
   Qualified["Qualified relationship resource"]:::external
-  Meaning --> Thing
-  Thing -->|yes| Class
-  Thing -->|no| Choice
-  Choice -->|yes| Concept
-  Choice -->|no| Value
-  Class --> Link
+  Meaning --> Construct
+  Construct -->|reusable kind| Class
+  Construct -->|identified instance| Resource
+  Construct -->|governed choice| Concept
+  Construct -->|simple value| Value
+  Construct -->|relationship| Link
   Link -->|yes| Qualified
+  Link -->|no| Direct
   </Diagram>
   <table>
     <caption>Construct selection guardrails</caption>
     <thead><tr><th scope="col">Construct</th><th scope="col">Use when</th><th scope="col">Avoid when</th></tr></thead>
     <tbody>
-      <tr><th scope="row">OWL class</th><td>Instances share an essential kind and need independent identity.</td><td>The item is only a code, status or convenient grouping.</td></tr>
+      <tr><th scope="row">OWL class</th><td>Instances share a reviewed kind or contextual role with defined membership.</td><td>The item is only a code, status or convenient grouping.</td></tr>
       <tr><th scope="row">SKOS concept</th><td>A governed value or subject concept needs labels, codes and scheme membership.</td><td>Instances have their own lifecycle and relationships.</td></tr>
       <tr><th scope="row">Datatype property</th><td>A resource has a simple typed value.</td><td>The value needs its own provenance, reuse or relationships.</td></tr>
       <tr><th scope="row">Object property</th><td>A direct named relationship is sufficient.</td><td>The participation needs role, dates, evidence or status.</td></tr>
       <tr><th scope="row">Qualified relationship</th><td>The link is a business record in its own right.</td><td>A simple direct edge completely expresses the meaning.</td></tr>
     </tbody>
   </table>
+  <p>
+    Class membership does not imply that every class is an essential kind. A role such
+    as buyer can be an anti-rigid class whose membership depends on a transaction. The
+    model records the role and its context without confusing it with the person’s identity.
+  </p>
 
   <h2 id="reuse">Reuse, reference, map or mint</h2>
   <p>

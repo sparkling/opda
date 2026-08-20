@@ -21,6 +21,7 @@ export interface MermaidViewOpts {
   canvas: HTMLElement;
   pre: HTMLElement;
   captionId?: string;
+  interactiveNodes?: boolean;
   getLightSource: () => string;
 }
 export interface MermaidView {
@@ -105,7 +106,7 @@ function injectClassDefs(src: string, dark: boolean): string {
 }
 
 export function createMermaidView(opts: MermaidViewOpts): MermaidView {
-  const { wrapper, viewport, canvas, pre, captionId } = opts;
+  const { wrapper, viewport, canvas, pre, captionId, interactiveNodes = false } = opts;
 
   let scale = 1, panX = 0, panY = 0;
   const MIN = 0.1, MAX = 5, ZOOM_BTN = 1.2;
@@ -181,7 +182,7 @@ export function createMermaidView(opts: MermaidViewOpts): MermaidView {
     if (!title.id) title.id = `gd-svg-title-${sequence}`;
     const description = svg.querySelector(':scope > desc');
     if (description && !description.id) description.id = `gd-svg-desc-${sequence}`;
-    svg.setAttribute('role', 'group');
+    svg.setAttribute('role', interactiveNodes ? 'group' : 'img');
     svg.setAttribute('tabindex', '0');
     svg.setAttribute('focusable', 'true');
     svg.setAttribute('aria-labelledby', title.id);
@@ -195,7 +196,7 @@ export function createMermaidView(opts: MermaidViewOpts): MermaidView {
     const lightSource = opts.getLightSource();
     if (!lightSource) return;
     const seq = ++renderSeq;   // this render's ticket; a later render() bumps it
-    loadDiagramLinks();  // manifest for click-navigation (cached; ready by click time)
+    if (interactiveNodes) loadDiagramLinks();
     loadMermaid().then((mermaid) => {
       if (seq !== renderSeq) return;                 // superseded before we started
       const dark = isDark();
@@ -281,6 +282,7 @@ export function createMermaidView(opts: MermaidViewOpts): MermaidView {
     while ((cm = cre.exec(lightSource)) !== null) urls[cm[1]] = cm[2];
     const isER = (svg.getAttribute('class') || '') === 'erDiagram';
     function navTarget(nodeEl: Element): string | null {
+      if (!interactiveNodes) return null;
       const direct = urls[nameOf(nodeEl)];
       if (direct) return direct;
       const manifest = (window as any).__diagramLinks as Record<string, string> | undefined;
@@ -362,6 +364,7 @@ export function createMermaidView(opts: MermaidViewOpts): MermaidView {
   }
 
   function initControls() {
+    if (!interactiveNodes) wrapper.querySelector('[data-diagram-action="toggle-mode"]')?.remove();
     wrapper.querySelectorAll('[data-diagram-action]').forEach((btn) => {
       btn.addEventListener('click', () => {
         const a = btn.getAttribute('data-diagram-action');

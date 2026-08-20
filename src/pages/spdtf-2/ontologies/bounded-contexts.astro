@@ -30,9 +30,10 @@ import Diagram from '@/components/Diagram.astro';
 
   <h2 id="homes">One semantic home, many consumers</h2>
   <p>
-    Each SPDTF resource has one semantic home: the context accountable for its definition
-    and substantive change. Other contexts may consume it, add local relationships or map
-    to a related local term. Consumption does not transfer ownership.
+    Each OPDA-defined SPDTF resource has one semantic home: the context accountable for
+    its definition and substantive change. An externally governed resource keeps its
+    external home; OPDA records the contexts that consume it. Consumption does not
+    transfer ownership.
   </p>
   <Diagram size="large" caption="Representative contexts retain local meaning. Interoperability owns only the small common boundary and qualified mappings. The Property Pack selects across contexts as a delivery profile; it does not become another universal domain model.">
 flowchart LR
@@ -69,10 +70,10 @@ flowchart TB
   accTitle: How an SPDTF resource receives a semantic home
   accDescr: A reviewed meaning is checked against governed external terms, then assigned to a domain owner; shared exchange needs may contribute a bounded common term, otherwise contexts use a qualified mapping.
   Meaning["Reviewed business meaning"]:::user
-  External{"Suitable governed external term?"}:::external
+  External["Suitable governed external term?"]:::external
   Reuse["Reuse with exact profile"]:::success
   Owner["Assign one domain owner"]:::process
-  Shared{"Stable multi-context agreement needed?"}:::security
+  Shared["Stable multi-context agreement needed?"]:::security
   Common["Contribute to common boundary"]:::service
   Mapping["Keep local terms and qualify mapping"]:::data
   Meaning --> External
@@ -94,10 +95,11 @@ flowchart TB
 
   <h2 id="common">The small common boundary</h2>
   <p>
-    Interoperability is a peer of the domain groups. It owns the context map, qualified
-    cross-context mappings, shared identifier/provenance/version conventions and only the
-    small set of meanings that genuinely require a common exchange contract. A boundary
-    agreement is not permission to redesign a domain model centrally.
+    ADR-0067 assigns Interoperability responsibility as a peer of the domain groups; this
+    wording does not claim that the group is already convened. Its remit is the context
+    map, qualified cross-context mappings, shared identifier/provenance/version conventions
+    and only the small set of meanings that genuinely require a common exchange contract.
+    A boundary agreement is not permission to redesign a domain model centrally.
   </p>
 
   <h2 id="property-pack">The Property Pack is a cross-context profile</h2>
@@ -111,6 +113,8 @@ flowchart TB
     The current <a href="/spdtf-2/property-pack">Property Pack ontology candidate</a>
     proposes semantic homes by machine. The Technical Working Group will determine the
     accelerated component; later domain review may propose governed changes. That sequence
-    must remain visible in every interpretation of the candidate.
+    must remain visible in every interpretation of the candidate. The Technical Working
+    Group is not the Property Technology bounded-context group listed above; its exact
+    delegated remit and decision record belong to Property Pack governance.
   </p>
 </Layout>

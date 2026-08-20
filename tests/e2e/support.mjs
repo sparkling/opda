@@ -1,15 +1,25 @@
 import assert from 'node:assert/strict';
 
+export const SEMANTIC_MODELLING_ROUTES = [
+  '/spdtf-2/ontologies',
+  '/spdtf-2/ontologies/why-ontologies',
+  '/spdtf-2/ontologies/reading-the-model',
+  '/spdtf-2/ontologies/modelling-method',
+  '/spdtf-2/ontologies/semantic-package',
+  '/spdtf-2/ontologies/bounded-contexts',
+  '/spdtf-2/ontologies/modelling-rules',
+  '/spdtf-2/ontologies/coverage',
+  '/spdtf-2/ontologies/standards',
+  '/spdtf-2/ontologies/evidence-and-mappings',
+  '/spdtf-2/ontologies/validation',
+];
+
 export const ROUTES = [
   '/',
   '/home',
   '/programme',
   '/spdtf-2',
-  '/spdtf-2/ontologies',
-  '/spdtf-2/ontologies/why-ontologies',
-  '/spdtf-2/ontologies/modelling-method',
-  '/spdtf-2/ontologies/standards',
-  '/spdtf-2/ontologies/validation',
+  ...SEMANTIC_MODELLING_ROUTES,
   '/spdtf-2/working-groups/estate-agency',
   '/spdtf-2/working-groups/estate-agency/review',
   '/spdtf-2/candidates',
@@ -82,17 +92,22 @@ export async function settleVisualState(page) {
   await page.waitForLoadState('load');
   await page.evaluate(() => document.fonts?.ready);
 
-  // GraphDiagram boots lazily near the viewport. A screenshot must observe the
-  // completed SVG, not race the loading placeholder or fallback-font layout.
-  await page.waitForFunction(() => [...document.querySelectorAll('.graph-diagram-wrapper')]
-    .filter((wrapper) => {
-      const rect = wrapper.getBoundingClientRect();
-      return rect.width > 0 && rect.top < window.innerHeight + 300 && rect.bottom > -300;
-    })
-    .every((wrapper) => (
-      !wrapper.querySelector('.diagram-loading')
-      && Boolean(wrapper.querySelector('.gd-mermaid svg, .gd-empty, .diagram-fallback'))
-    )), undefined, { timeout: 15_000 });
+  // GraphDiagram boots lazily near the viewport. Visit every visible diagram
+  // before a full-page screenshot so the receipt cannot race between a loading
+  // placeholder and its completed SVG.
+  const wrappers = page.locator('.graph-diagram-wrapper');
+  for (let index = 0; index < await wrappers.count(); index += 1) {
+    const wrapper = wrappers.nth(index);
+    if (!await wrapper.isVisible()) continue;
+    await wrapper.scrollIntoViewIfNeeded();
+    await page.waitForFunction((position) => {
+      const current = document.querySelectorAll('.graph-diagram-wrapper')[position];
+      return current
+        && !current.querySelector('.diagram-loading')
+        && Boolean(current.querySelector('.gd-mermaid svg, .gd-empty, .diagram-fallback'));
+    }, index, { timeout: 15_000 });
+  }
+  await page.evaluate(() => window.scrollTo(0, 0));
 
   await page.evaluate(() => new Promise((resolve) => {
     requestAnimationFrame(() => requestAnimationFrame(resolve));

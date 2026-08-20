@@ -95,7 +95,7 @@ test('category landing pages remain in breadcrumbs and exact page sequences', ()
     assert.equal(getNavigationPrevNext(firstChild).prev?.url, category);
   }
   assert.equal(getNavigationPrevNext('/programme').next?.url, '/strategy');
-  assert.equal(getNavigationPrevNext('/spdtf-2/ontologies').prev?.url, '/spdtf-2/outputs');
+  assert.equal(getNavigationPrevNext('/spdtf-2/ontologies').prev?.url, '/spdtf-2/property-pack/review-and-releases');
   assert.deepEqual(getNavigationPrevNext('/spdtf-2/property-pack/resources/common/generated-term'), {});
 });
 

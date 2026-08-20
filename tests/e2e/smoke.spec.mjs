@@ -1,5 +1,10 @@
 import { test, expect } from '@playwright/test';
-import { assertNoBodyOverflow, visit, watchRuntime } from './support.mjs';
+import {
+  assertNoBodyOverflow,
+  SEMANTIC_MODELLING_ROUTES,
+  visit,
+  watchRuntime,
+} from './support.mjs';
 
 test('shell theme toggle persists across navigation', async ({ page }) => {
   const clean = watchRuntime(page);
@@ -97,29 +102,85 @@ test('semantic modelling exposes linked audience branches and one active page', 
   clean();
 });
 
-test('semantic teaching diagrams retain authored accessible names and captions', async ({ page }) => {
+test('every semantic teaching diagram is named, described, captioned and keyboard-operable', async ({ page }) => {
   const clean = watchRuntime(page);
-  await page.setViewportSize({ width: 1440, height: 1000 });
-  await visit(page, '/spdtf-2/ontologies/why-ontologies');
-  const figure = page.locator('.graph-diagram-wrapper').first();
-  await figure.scrollIntoViewIfNeeded();
-  const svg = figure.locator('.gd-mermaid svg');
-  await expect(svg).toBeVisible();
-  const accessibility = await svg.evaluate((node) => {
-    const titleId = node.getAttribute('aria-labelledby');
-    const describedBy = (node.getAttribute('aria-describedby') || '').split(/\s+/u).filter(Boolean);
-    return {
-      title: titleId ? document.getElementById(titleId)?.textContent?.trim() : '',
-      descriptions: describedBy.map((id) => document.getElementById(id)?.textContent?.trim()),
-    };
-  });
-  expect(accessibility.title).toBe('Document tree compared with a connected meaning graph');
-  expect(accessibility.descriptions.filter(Boolean).length).toBeGreaterThanOrEqual(2);
-  await expect(figure.locator('figcaption')).toContainText('A document tree');
-  await page.locator('#theme-toggle').click();
-  await expect(page.locator('html')).toHaveAttribute('data-theme', 'dark');
-  await expect(svg).toBeVisible();
-  await assertNoBodyOverflow(page);
+  await page.setViewportSize({ width: 320, height: 900 });
+  let diagramCount = 0;
+
+  for (const path of SEMANTIC_MODELLING_ROUTES) {
+    await visit(page, path);
+    const figures = page.locator('.graph-diagram-wrapper');
+    const count = await figures.count();
+    diagramCount += count;
+
+    for (let index = 0; index < count; index += 1) {
+      const figure = figures.nth(index);
+      await figure.scrollIntoViewIfNeeded();
+      const svg = figure.locator('.gd-mermaid svg');
+      await expect(svg).toBeVisible();
+      await expect(svg).toHaveAttribute('role', 'img');
+      await expect(svg).toHaveAttribute('tabindex', '0');
+
+      const accessibility = await svg.evaluate((node) => {
+        const title = node.querySelector(':scope > title');
+        const description = node.querySelector(':scope > desc');
+        const labelledBy = node.getAttribute('aria-labelledby');
+        const describedBy = (node.getAttribute('aria-describedby') || '').split(/\s+/u).filter(Boolean);
+        const directTags = [...node.children].slice(0, 2).map((child) => child.tagName.toLowerCase());
+        return {
+          directTags,
+          titleId: title?.id,
+          titleText: title?.textContent?.trim(),
+          descriptionId: description?.id,
+          descriptionText: description?.textContent?.trim(),
+          labelledBy,
+          describedBy,
+        };
+      });
+      expect(accessibility.directTags).toEqual(['title', 'desc']);
+      expect(accessibility.titleText?.length).toBeGreaterThan(10);
+      expect(accessibility.descriptionText?.length).toBeGreaterThan(30);
+      expect(accessibility.labelledBy).toBe(accessibility.titleId);
+      expect(accessibility.describedBy).toContain(accessibility.descriptionId);
+
+      const caption = figure.locator('figcaption');
+      await expect(caption).toBeVisible();
+      const captionId = await caption.getAttribute('id');
+      expect(captionId).toBeTruthy();
+      expect(accessibility.describedBy).toContain(captionId);
+
+      await svg.focus();
+      const canvas = figure.locator('.diagram-canvas');
+      const before = await canvas.evaluate((node) => getComputedStyle(node).transform);
+      await page.keyboard.press('ArrowRight');
+      const after = await canvas.evaluate((node) => getComputedStyle(node).transform);
+      expect(after).not.toBe(before);
+    }
+    await assertNoBodyOverflow(page);
+  }
+
+  expect(diagramCount).toBeGreaterThanOrEqual(10);
+  clean();
+});
+
+test('semantic diagrams retain visible structure in forced colours', async ({ page }) => {
+  const clean = watchRuntime(page);
+  await page.emulateMedia({ forcedColors: 'active' });
+  await page.setViewportSize({ width: 390, height: 900 });
+
+  for (const path of SEMANTIC_MODELLING_ROUTES) {
+    await visit(page, path);
+    const figures = page.locator('.graph-diagram-wrapper');
+    for (let index = 0; index < await figures.count(); index += 1) {
+      const figure = figures.nth(index);
+      await figure.scrollIntoViewIfNeeded();
+      const svg = figure.locator('.gd-mermaid svg');
+      await expect(svg).toBeVisible();
+      await expect(svg.locator('g.node')).not.toHaveCount(0);
+      await expect(figure.locator('.diagram-toolbar')).toBeVisible();
+    }
+    await assertNoBodyOverflow(page);
+  }
   clean();
 });
 

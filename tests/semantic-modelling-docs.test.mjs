@@ -5,7 +5,12 @@ import { fileURLToPath } from 'node:url';
 import test from 'node:test';
 
 import { searchEntries } from '../src/lib/site-search.mjs';
-import { STANDARDS_PROFILE, validateStandardsProfile } from '../src/lib/spdtf-standards-profile.mjs';
+import {
+  STANDARDS_PROFILE,
+  STANDARDS_PROFILE_VERSION,
+  validateStandardsProfile,
+} from '../src/lib/spdtf-standards-profile.mjs';
+import { SEMANTIC_PACKAGE_MANIFEST } from '../src/lib/spdtf-workspace.mjs';
 
 const root = fileURLToPath(new URL('..', import.meta.url));
 const ontologyDir = path.join(root, 'src/pages/spdtf-2/ontologies');
@@ -29,7 +34,7 @@ test('semantic modelling has complete teaching and implementation routes without
 
   const required = {
     'why-ontologies': ['What an ontology is', 'A document tree and a meaning graph', 'What an ontology cannot establish'],
-    'reading-the-model': ['Identifiers and resources', 'Classes, properties and values', 'Shapes and provenance'],
+    'reading-the-model': ['Identifiers and resources', 'Classes, properties and values', 'Shapes and provenance', 'Follow one Property Pack construct'],
     'modelling-method': ['Authority of this method', 'Competency questions', 'Evidence-up modelling cycle'],
     'semantic-package': ['Six distinct outputs', 'One concept across all six outputs', 'Synchronisation and ownership'],
     'bounded-contexts': ['Semantic home', 'small common boundary', 'Property Pack'],
@@ -43,6 +48,11 @@ test('semantic modelling has complete teaching and implementation routes without
     const source = textOf(name);
     for (const heading of headings) assert.match(source, new RegExp(heading, 'iu'), `${name} lacks ${heading}`);
   }
+  assert.match(textOf('modelling-method'), /Untrusted evidence and isolated work orders/iu);
+  assert.match(textOf('modelling-method'), /content digest[\s\S]+source span[\s\S]+taint/iu);
+  assert.doesNotMatch(textOf('modelling-method'), /record accepted for this draft, needs evidence/iu);
+  assert.match(textOf('semantic-package'), /does not yet[\s\S]+source, semantic owner, candidate version and derivation/iu);
+  assert.match(textOf('validation'), /does not yet publish a complete machine-readable[\s\S]+feature/iu);
 });
 
 test('Mermaid teaching diagrams are captioned, accessible and kept within the diagram-design complexity budget', () => {
@@ -69,7 +79,7 @@ test('standards records separate specification maturity, governance status and a
   assert.equal(validateStandardsProfile(), true);
   const required = [
     'implementationStatus', 'governanceStatus', 'specificationMaturity',
-    'exactSnapshot', 'source', 'implementationEvidence', 'candidateSnapshot', 'lastChecked',
+    'exactSnapshot', 'source', 'implementationEvidence', 'candidateSnapshot', 'profileSource', 'lastChecked',
   ];
   for (const record of STANDARDS_PROFILE) {
     for (const field of required) assert.ok(record[field], `${record.name} lacks ${field}`);
@@ -83,8 +93,8 @@ test('standards records separate specification maturity, governance status and a
       'used and tested in Property Pack 0.1', 'used and tested in Property Pack 0.1',
       'used in Property Pack 0.1',
       'used in Property Pack 0.1', 'used in Property Pack 0.1',
-      'used in Property Pack 0.1', 'used and tested in Property Pack 0.1',
-      'used and tested in Property Pack 0.1', 'used in Property Pack 0.1',
+      'used in Property Pack 0.1', 'used and exercised in Property Pack 0.1',
+      'used and ARQ-tested in Property Pack 0.1', 'used in Property Pack 0.1',
     ],
   );
   assert.equal(byName['RDF 1.2 Basic'].specificationMaturity, 'W3C Candidate Recommendation Snapshot');
@@ -93,15 +103,26 @@ test('standards records separate specification maturity, governance status and a
   assert.equal(byName['UFO'].governanceStatus, 'method candidate — not adopted');
   assert.equal(byName['gUFO'].implementationStatus, 'not used or imported');
   assert.equal(byName['OntoClean'].governanceStatus, 'method candidate — not adopted');
+  for (const name of ['RDFS 1.2', 'OWL 2', 'XML Schema datatypes', 'SKOS', 'SHACL 1.2 Core', 'Dublin Core Terms']) {
+    assert.equal(byName[name].mechanism, 'reuse', `${name} emits exact external vocabulary terms`);
+  }
+  for (const name of ['RDF 1.2 Basic', 'RDF 1.2 Turtle', 'SPARQL 1.2']) {
+    assert.equal(byName[name].mechanism, 'reference', `${name} is an implementation-language contract`);
+  }
+  assert.equal(SEMANTIC_PACKAGE_MANIFEST.standardsProfileVersion, STANDARDS_PROFILE_VERSION);
 });
 
 test('search exposes every semantic-modelling route and no legacy journey label', () => {
   const ontologyEntries = searchEntries('ontology').map(({ url }) => url);
+  assert.ok(ontologyEntries.includes('/spdtf-2/ontologies'), 'semantic-modelling landing is absent from search');
   for (const name of pages.filter((name) => name !== 'index')) {
     assert.ok(ontologyEntries.includes(`/spdtf-2/ontologies/${name}`), `${name} is absent from search`);
   }
   const all = searchEntries('');
   assert.equal(new Set(all.map(({ url }) => url)).size, all.length);
+  for (const term of ['SKOS', 'OWL', 'RDF', 'SPARQL', 'upper ontology']) {
+    assert.ok(searchEntries(term).some(({ url }) => url.startsWith('/spdtf-2/ontologies')), `${term} is not discoverable`);
+  }
 });
 
 test('the diagram component and renderer preserve authored names and descriptions', () => {
@@ -109,9 +130,11 @@ test('the diagram component and renderer preserve authored names and description
   const renderer = readFileSync(path.join(root, 'src/scripts/graph-diagram-mermaid.ts'), 'utf8');
   const design = readFileSync(path.join(root, 'DESIGN.md'), 'utf8');
   assert.match(component, /<figure class=\{cls\}>/u);
+  assert.match(component, /data-node-interaction="static"/u);
   assert.match(component, /<figcaption class="diagram-caption"/u);
   assert.match(renderer, /querySelector\(':scope > title'/u);
   assert.match(renderer, /querySelector\(':scope > desc'/u);
+  assert.match(renderer, /interactiveNodes \? 'group' : 'img'/u);
   assert.doesNotMatch(renderer, /title\.textContent = 'Interactive diagram'/u);
   assert.match(design, /authored accessible title, description and prose equivalent/u);
   assert.match(design, /nine nodes and twelve arrows/u);

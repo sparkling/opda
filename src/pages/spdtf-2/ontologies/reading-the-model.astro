@@ -44,7 +44,7 @@ import Diagram from '@/components/Diagram.astro';
     imply what kind of thing its subject and object are. They are not form-validation
     rules. SHACL shapes express the validation expectations for a declared use.
   </p>
-  <Diagram size="large" caption="The same example seen through the main modelling constructs. The diagram shows resources and object relationships; literal values, vocabulary choices, constraints and provenance remain attached records rather than topology nodes.">
+  <Diagram size="large" caption="The same example seen through the main modelling constructs. Class-to-class and class-to-concept links form the business topology. Literal values stay in detail tables; the SKOS choice, SHACL constraint, provenance evidence and candidate version are shown as attached record nodes to explain their roles.">
 flowchart LR
   accTitle: The building blocks of an SPDTF ontology record
   accDescr: A property class connects to address and title classes; a value scheme supplies a status concept, SHACL describes expectations, and provenance records support the candidate.
@@ -75,17 +75,23 @@ flowchart LR
     <caption>Choose the construct that matches the business meaning</caption>
     <thead><tr><th scope="col">Question</th><th scope="col">Likely construct</th><th scope="col">Example</th></tr></thead>
     <tbody>
-      <tr><th scope="row">Is this a kind of independently identifiable thing?</th><td>OWL class</td><td>Property, organisation, legal title</td></tr>
+      <tr><th scope="row">Is this a reviewed kind whose instances share the same intended meaning?</th><td>OWL class</td><td>Property, organisation, legal title, or a context-dependent role</td></tr>
       <tr><th scope="row">Is this one governed choice from a value set?</th><td>SKOS concept</td><td>Listing status, tenure category</td></tr>
       <tr><th scope="row">Is this text, a date or a number?</th><td>Datatype property and literal</td><td>Display address, date recorded</td></tr>
       <tr><th scope="row">Does the relationship itself need evidence, dates or roles?</th><td>Qualified relationship resource</td><td>A party acting in a role for a transaction</td></tr>
     </tbody>
   </table>
+  <p>
+    Instance identity and class selection are separate decisions. A person or property
+    may have stable identity, while a role such as buyer is anti-rigid and applies only
+    in a context; that role can still be represented as an OWL class when the reviewed
+    model needs to classify participation.
+  </p>
 
   <h2 id="shapes-provenance">Shapes and provenance</h2>
   <p>
     An ontology can say that a property may have an address without claiming that every
-    incomplete graph is wrong. SHACL supplies a use-specific, closed validation lens: for
+    incomplete graph is wrong. SHACL supplies a use-specific, bounded validation lens: for
     a Property Pack delivery, a shape might require at least one value, a particular
     datatype or membership of a governed concept scheme. A passing report means the data
     met those encoded checks—not that the underlying statement is true.
@@ -95,6 +101,25 @@ flowchart LR
     which version introduced it, and what review or disposition followed. A prefix or
     source link is not enough: the receipt must identify the actual evidence and its role.
   </p>
+
+  <h2 id="property-pack-walkthrough">Follow one Property Pack construct through the artefacts</h2>
+  <p>
+    The current machine-proposed Property Pack uses <code>common:Property</code> and
+    <code>common:uprn</code> as a concrete worked example. Read the rows together: no
+    single file contains the complete agreement, and passing the query or shape does not
+    approve the proposed definition or identity criterion.
+  </p>
+  <table>
+    <caption>Property and UPRN across the current Property Pack 0.1 candidate</caption>
+    <thead><tr><th scope="col">Layer</th><th scope="col">What the candidate records</th><th scope="col">Evidence</th></tr></thead>
+    <tbody>
+      <tr><th scope="row">RDF/OWL meaning</th><td><code>common:Property</code> is an OWL class with a proposed definition and identity criterion; <code>common:uprn</code> is an XSD-string datatype property.</td><td><a href="/resource?path=source/03-standards/ontology-candidates/property-pack/0.1/ontology/common.ttl">Common ontology</a></td></tr>
+      <tr><th scope="row">Semantic home</th><td>Both terms point to the deliberately small <code>common</code> boundary. The proposal remains subject to review.</td><td><a href="/spdtf-2/property-pack/contexts/common">Common-boundary view</a></td></tr>
+      <tr><th scope="row">SKOS value pattern</th><td>The separate response-status scheme demonstrates how governed choices such as Yes, No and Not known remain SKOS concepts rather than subclasses of Property.</td><td><a href="/resource?path=source/03-standards/ontology-candidates/property-pack/0.1/vocabularies/common-controlled.ttl">Common controlled vocabulary</a></td></tr>
+      <tr><th scope="row">SHACL expectation</th><td>The Property node shape requires exactly one string UPRN matching digits for this delivery profile.</td><td><a href="/resource?path=source/03-standards/ontology-candidates/property-pack/0.1/shapes/common.ttl">Common shapes graph</a></td></tr>
+      <tr><th scope="row">Competency query</th><td>An ASK query checks that Property exists as a class and that UPRN has the expected domain and range.</td><td><a href="/resource?path=source/03-standards/ontology-candidates/property-pack/0.1/validation/competency/property-identity.rq">Property identity query</a></td></tr>
+    </tbody>
+  </table>
 
   <h2 id="read-pages">How to read model pages on this site</h2>
   <ol>

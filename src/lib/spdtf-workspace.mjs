@@ -4,7 +4,7 @@ export const SEMANTIC_PACKAGE_MANIFEST = Object.freeze({
   version: '1.0.0',
   status: 'workspace contract — no domain candidate approved',
   authority: 'Accepted IA; domain meaning remains subject to working-group review',
-  standardsProfileVersion: '0.1-development',
+  standardsProfileVersion: '0.2-development',
   canonicalSource: '/spdtf-2/ontologies/semantic-package',
   outputs: Object.freeze([
     'Business glossary',

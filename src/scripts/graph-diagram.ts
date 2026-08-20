@@ -68,8 +68,8 @@ function readPreSource(pre: HTMLElement): string {
 // ── Global adoption of bare `.mermaid` divs ──────────────────────────────────
 // Every diagram the remark plugin, <Diagram>, or an inline page emits is a bare
 // `<div class="mermaid">SOURCE</div>`. Wrap each in the island shell so the whole
-// site's diagrams get pan/zoom/fullscreen + Navigate + click-nav, retiring
-// client.js's CDN renderer. The shell markup mirrors GraphDiagram.astro.
+// site's diagrams get pan/zoom/fullscreen. Bare diagrams are static teaching
+// images; only explicit GraphDiagram components opt into node navigation.
 const GD_ICON = {
   search: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607z" /></svg>',
   navigate: '<svg class="gd-icon" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M13.5 6H5.25A2.25 2.25 0 003 8.25v10.5A2.25 2.25 0 005.25 21h10.5A2.25 2.25 0 0018 18.75V10.5m-10.5 6L21 3m0 0h-5.25M21 3v5.25" /></svg>',
@@ -120,6 +120,9 @@ export function adoptBareMermaid() {
     if (!source) return;
     const shell = document.createElement('figure');
     shell.className = 'graph-diagram-wrapper';
+    shell.dataset.nodeInteraction = /(?:^|\n)\s*erDiagram\b/iu.test(source)
+      ? 'interactive'
+      : (el.getAttribute('data-node-interaction') || 'static');
     const figure = el.closest('figure');
     if (figure?.classList.contains('diagram')) shell.classList.add(...figure.classList);
     shell.innerHTML = GD_SHELL_HTML;
@@ -141,6 +144,7 @@ function setupWrapper(wrapper: HTMLElement) {
   const pre = wrapper.querySelector('.gd-mermaid') as HTMLElement | null;
   if (!viewport || !canvas || !pre) return;
   const captionId = ensureAccessibleFrame(wrapper);
+  const interactiveNodes = wrapper.dataset.nodeInteraction === 'interactive';
   wrapper.setAttribute('aria-busy', 'true');
 
   // Source: the `source` prop (config.source), else the inline slot the
@@ -210,7 +214,7 @@ function setupWrapper(wrapper: HTMLElement) {
   }
 
   function boot() {
-    mermaidView = createMermaidView({ wrapper, viewport, canvas, pre, captionId, getLightSource: () => lightSource });
+    mermaidView = createMermaidView({ wrapper, viewport, canvas, pre, captionId, interactiveNodes, getLightSource: () => lightSource });
     wrapper.querySelectorAll('[data-diagram-action="fullscreen"]').forEach((b) => b.addEventListener('click', toggleFullscreen));
     setFullscreenControlState(false);
     document.addEventListener('keydown', handleFullscreenKeydown);

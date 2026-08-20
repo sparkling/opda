@@ -48,7 +48,7 @@ import Diagram from '@/components/Diagram.astro';
     <li>Which rule is a business expectation for a delivery rather than a universal truth?</li>
   </ul>
   <p>
-    Each question has a context owner, evidence, expected answer pattern and review state.
+    Each governed question must record a context owner, evidence, expected answer pattern and review state.
     A query can later test whether the candidate structure supports the question, but a
     successful query does not prove that the proposed answer is correct business policy.
   </p>
@@ -78,7 +78,7 @@ flowchart LR
     <li><strong>Encode:</strong> represent the candidate with the declared RDF/OWL, SKOS and SHACL feature boundary.</li>
     <li><strong>Check:</strong> run parsing, constraint, coverage and competency-query tests with reproducible receipts.</li>
     <li><strong>Review:</strong> publish readable definitions, diagrams, evidence and open questions to the relevant practitioners.</li>
-    <li><strong>Dispose:</strong> record accepted for this draft, needs evidence, revise, defer or not accepted; preserve the immutable diff.</li>
+    <li><strong>Record a review outcome:</strong> acceptable for this draft, needs evidence, revise, defer or not accepted; preserve the immutable diff. These review outcomes are not the four formal coverage dispositions.</li>
   </ol>
 
   <h2 id="evidence">Evidence hierarchy and uncertainty</h2>
@@ -100,6 +100,21 @@ flowchart LR
       <tr><th scope="row">Candidate impact</th><td>Links evidence to the exact term, relationship, constraint or open question.</td></tr>
     </tbody>
   </table>
+
+  <h2 id="untrusted-evidence">Untrusted evidence and isolated work orders</h2>
+  <p>
+    ADR-0067 treats every uploaded file, email, transcript, standard, spreadsheet,
+    schema and legacy artefact as untrusted data. Supplier identity does not turn
+    document text into an instruction. A bounded work order keeps evidence separate
+    from controls and lets people review what entered the candidate.
+  </p>
+  <ul>
+    <li>Record source identity, media type, content digest, cited source span, permission, sensitivity and resource limits.</li>
+    <li>Delimit evidence as data; quarantine secrets, prohibited personal data, instruction-like content, unsafe archives and unresolved licensing.</li>
+    <li>Carry provenance and taint labels into every derivative instead of silently obeying or discarding a finding.</li>
+    <li>Bind each work order to allowed read and write graphs, retained concerns, questions, route, budget, expected outputs, checks and a human decision owner.</li>
+    <li>Write only an isolated candidate delta. Tools and agents cannot edit an accepted corpus, common boundary, evaluator, policy or release.</li>
+  </ul>
 
   <h2 id="responsibilities">Human and machine responsibilities</h2>
   <table>

@@ -20,20 +20,22 @@ import Diagram from '@/components/Diagram.astro';
     applies a declared validation lens to a supplied data graph: for a particular
     delivery, it can require a value, datatype, class, count or pattern.
   </p>
-  <Diagram size="large" caption="One data statement participates in two different regimes. RDFS and OWL describe semantic implications in an open world; SHACL tests declared delivery expectations against a chosen data graph. Neither branch establishes factual truth.">
+  <Diagram size="large" caption="One data graph participates in two different regimes. RDFS and OWL describe semantic implications in an open world. A separate SHACL shapes graph and the data graph enter a validator together. Neither branch establishes factual truth.">
 flowchart LR
   accTitle: Open-world ontology meaning compared with SHACL validation
-  accDescr: A supplied RDF data graph feeds an ontology semantics branch for implications and a SHACL branch for declared checks; both produce bounded evidence rather than business approval.
+  accDescr: A supplied RDF data graph feeds an ontology semantics branch; separately, that data graph and a SHACL shapes graph both enter a validator which creates a report. Both branches produce bounded evidence rather than business approval.
   Data["Supplied RDF data graph"]:::data
   Meaning["RDFS and OWL semantics"]:::service
   Inference["Declared implications"]:::infra
   Shapes["SHACL shapes graph"]:::security
+  Validator["SHACL validator"]:::process
   Report["Validation report"]:::process
   Truth["No factual truth or approval claim"]:::warning
   Data --> Meaning
   Meaning --> Inference
-  Data --> Shapes
-  Shapes --> Report
+  Data --> Validator
+  Shapes --> Validator
+  Validator --> Report
   Inference -.-> Truth
   Report -.-> Truth
   </Diagram>
@@ -51,29 +53,35 @@ flowchart LR
     <tbody>
       <tr><th scope="row">Parser</th><td>Files use supported syntax and can be loaded.</td><td>Terms express correct or useful meaning.</td></tr>
       <tr><th scope="row">Graph invariants</th><td>Identifiers, imports, provenance fields and package rules meet declared tests.</td><td>The source evidence is true or authoritative.</td></tr>
-      <tr><th scope="row">SHACL</th><td>The supplied data graph conforms to the declared shapes and feature subset.</td><td>The business rule is universally correct.</td></tr>
+      <tr><th scope="row">SHACL</th><td>Jena reports whether the supplied fixture conforms to the supplied shapes graph.</td><td>Every emitted feature is independently covered, or the business rule is universally correct.</td></tr>
       <tr><th scope="row">Competency query</th><td>The candidate can answer the encoded structural question on test data.</td><td>The answer represents practitioner consensus.</td></tr>
       <tr><th scope="row">Projection comparison</th><td>A generated output preserves declared structures and examples.</td><td>Every consumer will interpret it correctly.</td></tr>
     </tbody>
   </table>
   <p>
-    Tests include positive examples that must conform and negative examples that must
-    fail for the expected reason. A report is fail-closed: missing tools, unrecognised
-    features or incomplete receipts are not silently counted as success.
+    Property Pack 0.1 runs its complete shapes graph against one conforming fixture and
+    one deliberately non-conforming fixture. That proves the recorded end-to-end cases,
+    not a positive and negative probe for every emitted SHACL feature. Missing tools do
+    fail the current run. Rejecting unrecognised vocabulary and incomplete feature
+    receipts is an intended future gate; the current validator does not yet implement
+    that allow-list, so it must not be claimed as evidence.
   </p>
 
   <h2 id="conformance">Bounded conformance claims</h2>
   <p>
     Property Pack 0.1 declares RDF 1.2 Basic-compatible Turtle, a bounded RDFS/OWL
-    vocabulary surface, SKOS, a tested SHACL 1.2 Core subset and portable SPARQL basic
-    graph-pattern ASK queries. It does not claim full RDF 1.2, OWL-profile reasoning,
+    vocabulary surface, SKOS, an exercised SHACL 1.2 Core surface and an ASK/basic-graph-pattern
+    design subset tested in ARQ 6.1.0. It does not claim cross-engine SPARQL portability,
+    full RDF 1.2, OWL-profile reasoning,
     SHACL Union, SHACL-AF, SHACL-SPARQL or general SPARQL 1.2 conformance.
   </p>
   <p>
-    Every candidate version records specification snapshot, engine versions, enabled
-    features, test corpus, results and known nonclaims. Updating an evolving Working
-    Draft is a governed change that reruns the probes; a page must not silently relabel
-    an older pinned snapshot as “latest”.
+    Property Pack 0.1 records specification snapshots, engine versions, a test corpus,
+    results and known nonclaims. It does not yet publish a complete machine-readable
+    inventory of every enabled RDFS, OWL, SKOS, XSD and SHACL feature. That inventory is
+    a requirement for a stronger conformance claim. Updating an evolving Working Draft
+    is a governed change that reruns the probes; a page must not silently relabel an
+    older pinned snapshot as “latest”.
   </p>
 
   <h2 id="authority">Semantic review and governance promotion</h2>

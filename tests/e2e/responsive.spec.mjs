@@ -1,5 +1,10 @@
 import { test, expect } from '@playwright/test';
-import { assertNoBodyOverflow, visit, watchRuntime } from './support.mjs';
+import {
+  assertNoBodyOverflow,
+  SEMANTIC_MODELLING_ROUTES,
+  visit,
+  watchRuntime,
+} from './support.mjs';
 
 for (const { width, label } of [
   { width: 320, label: '320 CSS px (1280px at 400% zoom equivalent)' },
@@ -40,13 +45,7 @@ test('forced colours preserve visible focus and labelled controls', async ({ pag
 test('canonical IA tables and group pages reflow at 320 CSS px', async ({ page }) => {
   const clean = watchRuntime(page);
   await page.setViewportSize({ width: 320, height: 900 });
-  for (const path of [
-    '/spdtf-2/ontologies/why-ontologies',
-    '/spdtf-2/ontologies/modelling-method',
-    '/spdtf-2/ontologies/standards',
-    '/spdtf-2/ontologies/validation',
-    '/spdtf-2/working-groups/estate-agency',
-  ]) {
+  for (const path of [...SEMANTIC_MODELLING_ROUTES, '/spdtf-2/working-groups/estate-agency']) {
     await visit(page, path);
     await assertNoBodyOverflow(page);
   }

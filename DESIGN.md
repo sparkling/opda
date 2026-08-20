@@ -292,7 +292,9 @@ states, plus loading/error/success where asynchronous work occurs and dark parit
 - **Diagram frame:** white surface, 1px border and numbered caption; every diagram
   has an authored accessible title, description and prose equivalent. Overview
   diagrams stay within nine nodes and twelve arrows; split denser subjects into
-  overview and detail views. Pan/zoom controls remain keyboard-operable.
+  overview and detail views. Static teaching SVGs use image semantics and never
+  infer links from labels. Explicitly interactive model SVGs use composite semantics
+  with named node links. Pan/zoom controls remain keyboard-operable.
 - **Feedback states:** skeleton, labelled loading, empty-state explanation, error
   recovery and non-obscuring toast.
 

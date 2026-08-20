@@ -20,7 +20,7 @@ const { size, caption } = Astro.props;
 const cls = ['diagram', size && `diagram--${size}`].filter(Boolean).join(' ');
 ---
 <figure class={cls}>
-  <div class="mermaid">
+  <div class="mermaid" data-node-interaction="static">
     <slot />
   </div>
   {caption && <figcaption class="diagram-caption" set:html={caption} />}
