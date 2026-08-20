@@ -11,9 +11,17 @@ import { WORKING_GROUPS } from '../components/ia/working-groups.ts';
 type DestinationKey = 'programme' | 'spdtf-2' | 'working-groups' | 'pdtf-1' | 'governance' | 'resources';
 
 export interface NavigationMatch {
-  section: Section;
-  group: Group;
+  section: NavigationSection;
+  group: NavigationGroup;
   trail: Item[];
+}
+
+export interface NavigationGroup extends Group {
+  url: string;
+}
+
+export interface NavigationSection extends Omit<Section, 'groups'> {
+  groups: NavigationGroup[];
 }
 
 function ownedItem(item: Item, owner: DestinationKey): Item[] {
@@ -40,6 +48,14 @@ function ownedGroupItems(sectionKey: string, heading: string, owner: Destination
   const group = SECTIONS[sectionKey]?.groups.find((candidate) => candidate.heading === heading);
   if (!group) throw new Error(`Unknown navigation group: ${sectionKey}/${heading}`);
   return group.items.flatMap((item) => ownedItem(item, owner));
+}
+
+function category(heading: string, url: string, items: Item[] = []): NavigationGroup {
+  const landing = normalizeUrl(url);
+  const children = items.flatMap((item) => (
+    normalizeUrl(item.url) === landing ? item.children ?? [] : [item]
+  ));
+  return { heading, url, items: children };
 }
 
 const ontologyJourney: Item = {
@@ -131,16 +147,16 @@ const pdtfOntologyItems = insertAfter(
   { url: '/ontology/namespaces', title: 'Namespaces' },
 );
 
-const navigationSections: Record<DestinationKey, Section> = {
+const navigationSections: Record<DestinationKey, NavigationSection> = {
   programme: {
     key: 'programme',
     title: 'Programme',
     summary: 'Programme purpose, continuation, policy context and direction.',
     groups: [
-      { heading: 'Overview', items: [{ url: '/programme', title: 'Programme overview' }] },
-      { heading: 'Strategy', items: ownedSectionItems('strategy', 'programme') },
-      { heading: 'DBT Smart Data', items: ownedSectionItems('dbt-smart-data', 'programme') },
-      { heading: 'Programme activity', items: ownedSectionItems('engagement', 'programme') },
+      category('Overview', '/programme'),
+      category('Strategy', '/strategy', ownedSectionItems('strategy', 'programme')),
+      category('DBT Smart Data', '/dbt-smart-data', ownedSectionItems('dbt-smart-data', 'programme')),
+      category('Programme activity', '/engagement/working-groups', ownedSectionItems('engagement', 'programme')),
     ],
   },
   'spdtf-2': {
@@ -148,14 +164,13 @@ const navigationSections: Record<DestinationKey, Section> = {
     title: 'SPDTF 2.0 Development',
     summary: 'Current evidence-up modelling, ontology method, the Property Pack component and wider candidates.',
     groups: [
-      { heading: 'Overview', items: [
-        { url: '/spdtf-2', title: 'Development overview' },
+      category('Overview', '/spdtf-2', [
         { url: '/spdtf-2/candidates', title: 'Candidate register' },
         { url: '/spdtf-2/questions', title: 'Open questions and changes' },
         { url: '/spdtf-2/outputs', title: 'Outputs and validation' },
-      ] },
-      { heading: 'Semantic modelling', items: [ontologyJourney] },
-      { heading: 'Property Pack ontology', items: [propertyPackJourney] },
+      ]),
+      category('Semantic modelling', ontologyJourney.url, ontologyJourney.children),
+      category('Property Pack ontology', propertyPackJourney.url, propertyPackJourney.children),
     ],
   },
   'working-groups': {
@@ -163,10 +178,7 @@ const navigationSections: Record<DestinationKey, Section> = {
     title: 'Working groups',
     summary: 'The canonical SPDTF 2.0 participant workspaces and review routes.',
     groups: [
-      { heading: 'Overview', items: [
-        { url: '/spdtf-2/working-groups', title: 'Working-group overview' },
-      ] },
-      { heading: 'Group workspaces', items: workingGroupItems },
+      category('Group workspaces', '/spdtf-2/working-groups', workingGroupItems),
     ],
   },
   'pdtf-1': {
@@ -174,14 +186,14 @@ const navigationSections: Record<DestinationKey, Section> = {
     title: 'PDTF 1.0',
     summary: 'The published schema implementation and status-labelled derived artefacts.',
     groups: [
-      { heading: 'Overview', items: [{ url: '/pdtf-1', title: 'PDTF 1.0 overview' }] },
-      { heading: 'Modelling records', items: ownedSectionItems('modelling', 'pdtf-1') },
-      { heading: 'Model views', items: ownedSectionItems('model', 'pdtf-1') },
-      { heading: 'Ontology reference', items: pdtfOntologyItems },
-      { heading: 'Qualified mappings', items: ownedSectionItems('mapping', 'pdtf-1') },
-      { heading: 'Schemas and overlays', items: ownedSectionItems('schema', 'pdtf-1') },
-      { heading: 'Implementation', items: ownedSectionItems('implementation', 'pdtf-1') },
-      { heading: 'Adoption evidence', items: ownedSectionItems('adoption', 'pdtf-1') },
+      category('Overview', '/pdtf-1'),
+      category('Modelling records', '/modelling', ownedSectionItems('modelling', 'pdtf-1')),
+      category('Model views', '/model', ownedSectionItems('model', 'pdtf-1')),
+      category('Ontology reference', '/ontology', pdtfOntologyItems),
+      category('Qualified mappings', '/mapping', ownedSectionItems('mapping', 'pdtf-1')),
+      category('Schemas and overlays', '/schema', ownedSectionItems('schema', 'pdtf-1')),
+      category('Implementation', '/implementation', ownedSectionItems('implementation', 'pdtf-1')),
+      category('Adoption evidence', '/adoption', ownedSectionItems('adoption', 'pdtf-1')),
     ],
   },
   governance: {
@@ -189,10 +201,10 @@ const navigationSections: Record<DestinationKey, Section> = {
     title: 'Governance',
     summary: 'Decision rights, standards lifecycle, status and recorded decisions.',
     groups: [
-      { heading: 'Governance framework', items: ownedSectionItems('governance', 'governance') },
-      { heading: 'Architecture decisions', items: ownedGroupItems('modelling', 'ADR corpus', 'governance') },
-      { heading: 'Ontology decisions', items: ownedGroupItems('modelling', 'ODR corpus', 'governance') },
-      { heading: 'Programme decisions', items: ownedSectionItems('engagement', 'governance') },
+      category('Governance framework', '/governance', ownedSectionItems('governance', 'governance')),
+      category('Architecture decisions', '/modelling/adr', ownedGroupItems('modelling', 'ADR corpus', 'governance')),
+      category('Ontology decisions', '/modelling/odr', ownedGroupItems('modelling', 'ODR corpus', 'governance')),
+      category('Programme decisions', '/engagement/meetings-decisions', ownedSectionItems('engagement', 'governance')),
     ],
   },
   resources: {
@@ -200,12 +212,10 @@ const navigationSections: Record<DestinationKey, Section> = {
     title: 'Resources',
     summary: 'Source records, programme evidence, terminology and reader utilities.',
     groups: [
-      { heading: 'Overview', items: [{ url: '/resources', title: 'Resources overview' }] },
-      { heading: 'Library', items: ownedSectionItems('library', 'resources') },
-      { heading: 'Engagement records', items: ownedSectionItems('engagement', 'resources') },
-      { heading: 'Find and inspect', items: [
-        { url: '/glossary', title: 'Glossary' },
-      ] },
+      category('Overview', '/resources'),
+      category('Library', '/library', ownedSectionItems('library', 'resources')),
+      category('Engagement records', '/engagement', ownedSectionItems('engagement', 'resources')),
+      category('Find and inspect', '/glossary'),
     ],
   },
 };
@@ -228,7 +238,7 @@ const ACTIVE_ROUTE_ALIASES = [
   { pattern: /^\/pdtf\//u, target: '/ontology/glossary' },
 ];
 
-export function getNavigationSection(path: string): Section | null {
+export function getNavigationSection(path: string): NavigationSection | null {
   const normalized = normalizeUrl(path);
   if (STANDALONE_SURFACES.some((pattern) => pattern.test(normalized))) return null;
   const key = getActiveDestination(path) as DestinationKey | null;
@@ -258,12 +268,14 @@ export function findNavigationPage(path: string): NavigationMatch | null {
   const matchPath = ACTIVE_ROUTE_ALIASES.find(({ pattern }) => pattern.test(normalized))?.target ?? normalized;
   let best: NavigationMatch | null = null;
   for (const group of section.groups) {
+    const groupPath = normalizeUrl(group.url);
+    if (groupPath === matchPath) return { section, group, trail: [] };
     const trail = findTrail(group.items, matchPath);
-    if (!trail) continue;
-    const match = { section, group, trail };
-    const terminal = normalizeUrl(trail.at(-1)?.url ?? '/');
+    const match = { section, group, trail: trail ?? [] };
+    const terminal = normalizeUrl(trail?.at(-1)?.url ?? group.url);
+    if (!trail && !matchPath.startsWith(`${groupPath}/`)) continue;
     if (terminal === matchPath) return match;
-    const bestTerminal = normalizeUrl(best?.trail.at(-1)?.url ?? '/');
+    const bestTerminal = normalizeUrl(best?.trail.at(-1)?.url ?? best?.group.url ?? '/');
     if (!best || terminal.length > bestTerminal.length) best = match;
   }
   return best;
@@ -277,7 +289,10 @@ export function getNavigationPrevNext(path: string): { prev?: Item; next?: Item 
   const section = getNavigationSection(path);
   if (!section) return {};
   const seen = new Set<string>();
-  const items = section.groups.flatMap((group) => flattenItems(group.items)).filter((item) => {
+  const items = section.groups.flatMap((group) => [
+    { url: group.url, title: group.heading },
+    ...flattenItems(group.items),
+  ]).filter((item) => {
     const url = normalizeUrl(item.url);
     if (seen.has(url)) return false;
     seen.add(url);
@@ -298,7 +313,10 @@ export function validateSectionNavigation(): true {
   if (JSON.stringify(keys) !== JSON.stringify(expected)) throw new Error('Section navigation must follow the six global destinations');
   for (const destination of GLOBAL_DESTINATIONS) {
     const section = SECTION_NAVIGATION[destination.key as DestinationKey];
-    const urls = section.groups.flatMap((group) => flattenItems(group.items).map((item) => normalizeUrl(item.url)));
+    const urls = section.groups.flatMap((group) => [
+      normalizeUrl(group.url),
+      ...flattenItems(group.items).map((item) => normalizeUrl(item.url)),
+    ]);
     if (!urls.includes(destination.url)) throw new Error(`${destination.title} has no section landing link`);
     if (new Set(urls).size !== urls.length) throw new Error(`${destination.title} has duplicate section links`);
     for (const url of urls) {

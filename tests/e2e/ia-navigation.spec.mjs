@@ -57,12 +57,12 @@ test('left section navigation covers every canonical destination', async ({ page
   const clean = watchRuntime(page);
   await page.setViewportSize({ width: 1440, height: 1000 });
   for (const [route, section, label] of [
-    ['/programme', 'programme', 'Programme overview'],
-    ['/spdtf-2', 'spdtf-2', 'Development overview'],
-    ['/spdtf-2/working-groups', 'working-groups', 'Working-group overview'],
-    ['/pdtf-1', 'pdtf-1', 'PDTF 1.0 overview'],
-    ['/governance', 'governance', 'Section overview'],
-    ['/resources', 'resources', 'Resources overview'],
+    ['/programme', 'programme', 'Overview'],
+    ['/spdtf-2', 'spdtf-2', 'Overview'],
+    ['/spdtf-2/working-groups', 'working-groups', 'Group workspaces'],
+    ['/pdtf-1', 'pdtf-1', 'Overview'],
+    ['/governance', 'governance', 'Governance framework'],
+    ['/resources', 'resources', 'Overview'],
   ]) {
     await visit(page, route);
     const sidebar = page.locator('#app-sidebar');
@@ -73,7 +73,8 @@ test('left section navigation covers every canonical destination', async ({ page
     const active = navigation.locator('a[aria-current="page"]');
     await expect(active).toHaveCount(1);
     await expect(active).toHaveText(label);
-    await expect(active.locator('xpath=ancestor::details[1]')).toHaveAttribute('open', '');
+    await expect(active).toHaveClass(/nav-group-link/u);
+    await expect(navigation.locator(`a[href="${route}"]`)).toHaveCount(1);
     await expect(sidebar.locator('#sidebar-collapse')).toHaveAttribute('aria-controls', 'section-navigation');
   }
   clean();
@@ -87,7 +88,7 @@ test('left navigation follows route ownership with one active link', async ({ pa
     ['/spdtf-2/property-pack/validation', 'spdtf-2', 'Validation evidence'],
     ['/spdtf-2/working-groups/estate-agency/evidence', 'working-groups', 'Evidence'],
     ['/ontology/classes', 'pdtf-1', 'Classes'],
-    ['/engagement/meetings-decisions', 'governance', 'Meetings & decisions'],
+    ['/engagement/meetings-decisions', 'governance', 'Programme decisions'],
     ['/engagement/transcripts', 'resources', 'Transcripts index'],
   ]) {
     await visit(page, route);
@@ -101,7 +102,7 @@ test('left navigation follows route ownership with one active link', async ({ pa
   await visit(page, '/ontology/classes');
   await page.evaluate(() => localStorage.setItem('opda.sidebar.pdtf-1.Ontology reference', 'closed'));
   await page.reload();
-  await expect(page.locator('#section-navigation details[data-active="true"]')).toHaveAttribute('open', '');
+  await expect(page.locator('#section-navigation .nav-group[data-active="true"]')).toHaveClass(/is-open/u);
   await page.evaluate(() => localStorage.setItem('opda-sidebar-collapsed', '1'));
   await page.reload();
   await expect(page.locator('.app-body')).toHaveClass(/sidebar-collapsed/u);
@@ -110,27 +111,36 @@ test('left navigation follows route ownership with one active link', async ({ pa
   clean();
 });
 
-test('folder pages remain links beside independent disclosure controls', async ({ page }) => {
+test('category pages remain links beside independent disclosure controls', async ({ page }) => {
   const clean = watchRuntime(page);
   await page.setViewportSize({ width: 1440, height: 1000 });
   await visit(page, '/spdtf-2/ontologies/standards');
-  const folder = page.locator('.tree-folder', { has: page.locator('a[href="/spdtf-2/ontologies"]') }).first();
-  const link = folder.locator('a[href="/spdtf-2/ontologies"]');
-  const toggle = folder.locator(':scope > .tree-folder-row > .tree-toggle');
+  const category = page.locator('.nav-group[data-group="Semantic modelling"]');
+  const link = category.locator('.nav-group-link[href="/spdtf-2/ontologies"]');
+  const toggle = category.locator('.nav-group-toggle');
   await expect(link).toBeVisible();
+  expect(await category.locator(':scope > .nav-group-row > button, :scope > .nav-group-row > a')
+    .evaluateAll((nodes) => nodes.map(({ tagName }) => tagName))).toEqual(['BUTTON', 'A']);
   await expect(toggle).toHaveAttribute('aria-expanded', 'true');
   const controls = await toggle.getAttribute('aria-controls');
   expect(controls).toBeTruthy();
   await expect(page.locator(`#${controls}`)).toBeVisible();
-  await toggle.click();
+  const before = page.url();
+  await toggle.focus();
+  await page.keyboard.press('Space');
+  expect(page.url()).toBe(before);
   await expect(toggle).toHaveAttribute('aria-expanded', 'false');
   await expect(page.locator(`#${controls}`)).toBeHidden();
 
-  await visit(page, '/spdtf-2/ontologies');
-  const activeFolder = page.locator('.tree-folder.is-active-page', {
-    has: page.locator('a[aria-current="page"][href="/spdtf-2/ontologies"]'),
-  });
-  await expect(activeFolder).toHaveCount(1);
+  await link.focus();
+  await page.keyboard.press('Enter');
+  await expect(page).toHaveURL(/\/spdtf-2\/ontologies$/u);
+  await expect(page.locator('.nav-group-row.is-active-page a[aria-current="page"]'))
+    .toHaveAttribute('href', '/spdtf-2/ontologies');
+  await expect(page.locator('nav[aria-label="Breadcrumb"] [aria-current="page"]'))
+    .toHaveText('Semantic modelling');
+  await expect(page.locator('nav.page-footer a').last())
+    .toHaveAttribute('href', '/spdtf-2/ontologies/why-ontologies');
   clean();
 });
 
@@ -149,7 +159,7 @@ test('nested navigation follows one consistent indentation ladder', async ({ pag
     const rootLeaf = link('/spdtf-2');
     const rootFolder = link('/spdtf-2/ontologies');
     const childLeaf = link('/spdtf-2/ontologies/why-ontologies');
-    const toggle = rootFolder?.parentElement?.querySelector('.tree-toggle');
+    const toggle = rootFolder?.parentElement?.querySelector('.nav-group-toggle');
     return {
       rootLeaf: textLeft(rootLeaf),
       rootFolder: textLeft(rootFolder),
@@ -197,7 +207,7 @@ test('Property Pack ontology is owned by SPDTF development', async ({ page }) =>
   await expect(local.locator('a[href="/spdtf-2/property-pack"]')).toHaveText('Property Pack ontology');
   await expect(local.locator('a[aria-current="page"]')).toHaveText('Validation evidence');
   await expect(local.locator('a[href="/spdtf-2/property-pack"]')
-    .locator('xpath=ancestor::li[1]')).toHaveClass(/is-open/u);
+    .locator('xpath=ancestor::section[1]')).toHaveClass(/is-open/u);
   clean();
 });
 
@@ -212,7 +222,13 @@ test('Property Pack detail pages expose their full canonical ancestry', async ({
     '/spdtf-2', '/spdtf-2/property-pack', '/spdtf-2/property-pack/resources',
     '/spdtf-2/property-pack/contexts/common',
   ]);
-  await expect(page.locator('#section-navigation a[aria-current="page"]')).toHaveCount(1);
+  const local = page.locator('#section-navigation');
+  await expect(local.locator('a[aria-current="page"]')).toHaveCount(1);
+  await expect(local.locator('.nav-group[data-group="Property Pack ontology"]')).toHaveClass(/is-open/u);
+  await expect(local.locator('.tree-folder:has(> .tree-folder-row > a[href="/spdtf-2/property-pack/model"])'))
+    .toHaveClass(/is-open/u);
+  await expect(local.locator('.tree-folder:has(> .tree-folder-row > a[href="/spdtf-2/property-pack/coverage"])'))
+    .not.toHaveClass(/is-open/u);
   await expect(page.locator('[aria-label="Property Pack lifecycle status"] dt')).toHaveCount(6);
   clean();
 });

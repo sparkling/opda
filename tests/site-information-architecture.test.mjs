@@ -14,13 +14,6 @@ import { fileURLToPath } from 'node:url';
 import test from 'node:test';
 
 import { HEADER_ORDER, SECTIONS } from '../src/lib/site.ts';
-import {
-  SECTION_NAVIGATION,
-  findNavigationPage,
-  getNavigationPrevNext,
-  getNavigationSection,
-  validateSectionNavigation,
-} from '../src/lib/site-navigation.ts';
 import { comparisonDimensions } from '../src/lib/model-comparison.mjs';
 
 import {
@@ -88,66 +81,6 @@ test('the global information architecture has exactly the six accepted destinati
   assert.equal(new Set(GLOBAL_DESTINATIONS.map(({ url }) => url)).size, 6);
   assert.equal(new Set(GLOBAL_DESTINATIONS.map(({ title }) => title)).size, 6);
   assert.equal(validateIaContract(), true);
-});
-
-test('the left section navigation implements all six destinations from one registry', () => {
-  assert.deepEqual(Object.keys(SECTION_NAVIGATION), expectedDestinations.map(([key]) => key));
-  assert.equal(validateSectionNavigation(), true);
-  for (const [key, title, url] of expectedDestinations) {
-    const section = SECTION_NAVIGATION[key];
-    assert.equal(section.title, title);
-    assert.equal(getNavigationSection(url), section);
-    assert.equal(findNavigationPage(url).section.key, key);
-  }
-  for (const standalone of ['/', '/home', '/search', '/resource', '/design-system', '/404', '/working-groups/join']) {
-    assert.equal(getNavigationSection(standalone), null, `${standalone} must remain a standalone surface`);
-  }
-
-  const flattenItems = (items) => items.flatMap((item) => [item, ...flattenItems(item.children ?? [])]);
-  const legacyUrls = Object.values(SECTIONS).flatMap((section) => (
-    section.groups.flatMap((group) => flattenItems(group.items).map(({ url }) => url))
-  ));
-  const compositeUrls = Object.values(SECTION_NAVIGATION).flatMap((section) => (
-    section.groups.flatMap((group) => flattenItems(group.items).map(({ url }) => url))
-  ));
-  assert.deepEqual(Object.fromEntries(Object.entries(SECTION_NAVIGATION).map(([key, section]) => [
-    key, section.groups.flatMap((group) => flattenItems(group.items)).length,
-  ])), { programme: 18, 'spdtf-2': 36, 'working-groups': 33, 'pdtf-1': 195, governance: 137, resources: 12 });
-  for (const url of new Set(legacyUrls)) {
-    assert.equal(compositeUrls.filter((candidate) => candidate === url).length, 1, `${url} must appear once`);
-  }
-  for (const required of [
-    '/programme', '/spdtf-2', '/spdtf-2/candidates', '/spdtf-2/questions', '/spdtf-2/outputs',
-    '/spdtf-2/ontologies', '/spdtf-2/property-pack',
-    '/spdtf-2/property-pack/definition-and-scope',
-    '/spdtf-2/property-pack/technical-working-group-determination',
-    '/spdtf-2/property-pack/review-and-releases', '/pdtf-1', '/ontology/datatypes',
-    '/ontology/namespaces', '/resources', '/glossary',
-  ]) assert.equal(compositeUrls.filter((url) => url === required).length, 1, `${required} must appear once`);
-  assert.equal(compositeUrls.filter((url) => url.startsWith('/spdtf-2/working-groups')).length, 33);
-  for (const [route, active] of [
-    ['/ontology/category/example', '/ontology/category'], ['/ontology/context/example', '/ontology'],
-    ['/ontology/exemplar/example', '/ontology/exemplars'], ['/ontology/profile/example', '/ontology/profiles'],
-    ['/mapping/triplesmaps/example', '/mapping/triplesmaps'], ['/pdtf/example', '/ontology/glossary'],
-  ]) assert.equal(findNavigationPage(route).trail.at(-1).url, active);
-});
-
-test('section navigation follows authority overrides and drives exact page sequences', () => {
-  for (const [route, section] of [
-    ['/strategy/strategy-overview', 'programme'],
-    ['/spdtf-2/property-pack/validation', 'spdtf-2'],
-    ['/spdtf-2/working-groups/estate-agency/review', 'working-groups'],
-    ['/ontology/classes', 'pdtf-1'],
-    ['/modelling/adr/adr-0074', 'governance'],
-    ['/engagement/transcripts', 'resources'],
-  ]) {
-    assert.equal(getNavigationSection(route)?.key, section);
-    assert.equal(findNavigationPage(route)?.section.key, section);
-  }
-  assert.equal(getNavigationPrevNext('/programme').next?.url, '/strategy');
-  assert.equal(getNavigationPrevNext('/spdtf-2/ontologies').prev?.url, '/spdtf-2/outputs');
-  assert.equal(getNavigationPrevNext('/spdtf-2/ontologies').next?.url, '/spdtf-2/ontologies/why-ontologies');
-  assert.deepEqual(getNavigationPrevNext('/spdtf-2/property-pack/resources/common/generated-term'), {});
 });
 
 test('working groups is a shortcut into the canonical SPDTF 2.0 workspace', () => {

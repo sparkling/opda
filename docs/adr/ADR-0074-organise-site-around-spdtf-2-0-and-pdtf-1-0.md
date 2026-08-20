@@ -1,7 +1,7 @@
 ---
 status: implemented
 date: 2026-08-18
-updated: 2026-08-19
+updated: 2026-08-20
 tags: [website, information-architecture, pdtf-1-0, spdtf-2-0, ontology, semantic-modelling, standards, migration, governance]
 supersedes: []
 amends: [ADR-0002, ADR-0041, ADR-0059, ADR-0062]
@@ -39,6 +39,12 @@ implements: [docs/spdtf-2-0-information-architecture.md]
 > routes for `/v2/**` and `/modelling/property-pack`. ADR-0075 supersedes this ADR's
 > stable-route clauses only for those Property Pack routes. Atomic information,
 > fragment and feedback-thread preservation remain release gates.
+>
+> Update 2026-08-20 — local navigation categories: each left-rail category heading
+> is now its canonical landing-page link, with a separate disclosure button for child
+> pages. The landing no longer appears as a duplicate child, but remains in breadcrumb
+> and previous/next sequences. Existing substantive overview routes remain available;
+> this interaction change does not delete or reclassify their content.
 
 ## Context and Problem Statement
 

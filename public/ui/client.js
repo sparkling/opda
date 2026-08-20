@@ -27,7 +27,6 @@
 (function () {
   'use strict';
 
-  // ── Theme toggle ─────────────────────────────────────────────────────────
   function bindThemeToggle() {
     const btn = document.getElementById('theme-toggle');
     if (!btn) return;
@@ -50,7 +49,6 @@
     });
   }
 
-  // ── Primary navigation disclosure ────────────────────────────────────────
   function bindPrimaryNavigation() {
     const header = document.querySelector('.app-header');
     const panel = document.getElementById('global-nav-panel');
@@ -89,7 +87,6 @@
     mobileQuery.addEventListener('change', function () { setOpen(false, false); });
   }
 
-  // ── Sidebar interactions ─────────────────────────────────────────────────
   function bindSidebar() {
     const appBody = document.querySelector('.app-body');
     const aside = document.getElementById('app-sidebar');
@@ -215,7 +212,6 @@
       mobileQuery.addEventListener('change', function () { setDrawer(false, false); });
     }
 
-    // Desktop sidebar collapse
     if (sidebarCollapse && appBody) {
       sidebarCollapse.addEventListener('click', function () {
         const nowCollapsed = !appBody.classList.contains('sidebar-collapsed');
@@ -229,7 +225,6 @@
       });
     }
 
-    // Tree folder expand/collapse
     if (aside) {
       aside.querySelectorAll('.tree-toggle').forEach(function (btn) {
         btn.addEventListener('click', function (e) {
@@ -244,24 +239,29 @@
       });
     }
 
-    // Nav-group <details> persistence — remember per-section group open/closed state
     if (aside) {
-      const nav = aside.querySelector('.sidebar-nav');
-      const sectionKey = nav && nav.getAttribute('data-section');
+      const sectionKey = aside.querySelector('.sidebar-nav')?.getAttribute('data-section');
       if (sectionKey) {
-        aside.querySelectorAll('details.nav-group').forEach(function (det) {
-          const groupName = det.getAttribute('data-group');
-          if (!groupName) return;
+        aside.querySelectorAll('.nav-group').forEach(function (group) {
+          const groupName = group.getAttribute('data-group');
+          const button = group.querySelector(':scope > .nav-group-row > .nav-group-toggle');
+          if (!groupName || !button) return;
           const storageKey = 'opda.sidebar.' + sectionKey + '.' + groupName;
+          const setGroup = function (open) {
+            group.classList.toggle('is-open', open);
+            button.setAttribute('aria-expanded', String(open));
+            button.setAttribute('aria-label', (open ? 'Collapse ' : 'Expand ') + button.dataset.label);
+          };
           try {
             const saved = localStorage.getItem(storageKey);
-            if (det.dataset.active === 'true') det.open = true;
-            else if (saved === 'closed') det.open = false;
-            else if (saved === 'open') det.open = true;
-            // else: leave the SSR default (open) in place
-          } catch (e) { /* localStorage may be blocked */ }
-          det.addEventListener('toggle', function () {
-            try { localStorage.setItem(storageKey, det.open ? 'open' : 'closed'); } catch (e) { /* ignore */ }
+            if (group.dataset.active === 'true') setGroup(true);
+            else if (saved === 'closed') setGroup(false);
+            else if (saved === 'open') setGroup(true);
+          } catch (e) {}
+          button.addEventListener('click', function () {
+            const open = !group.classList.contains('is-open');
+            setGroup(open);
+            try { localStorage.setItem(storageKey, open ? 'open' : 'closed'); } catch (e) {}
           });
         });
       }

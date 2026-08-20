@@ -15,7 +15,8 @@ import SidebarItem from './SidebarItem.astro';
 const path = normalizeUrl(Astro.url.pathname);
 const section = getNavigationSection(path);
 const sectionKey = section?.key ?? null;
-const activePath = normalizeUrl(findNavigationPage(path)?.trail.at(-1)?.url ?? '');
+const match = findNavigationPage(path);
+const activePath = normalizeUrl(match?.trail.at(-1)?.url ?? match?.group.url ?? '');
 
 function containsActive(item: Item): boolean {
   const itemPath = normalizeUrl(item.url);
@@ -49,22 +50,47 @@ function containsActive(item: Item): boolean {
     >
       <p class="sidebar-section-title">{section.title}</p>
       {section.groups.map(group => {
-        const containsActivePage = group.items.some(containsActive);
-        const defaultOpen = group.heading === 'Overview' || containsActivePage;
+        const isActivePage = normalizeUrl(group.url) === activePath;
+        const containsActivePage = isActivePage || group.items.some(containsActive);
+        const hasChildren = group.items.length > 0;
+        const defaultOpen = hasChildren && (group.heading === 'Overview' || containsActivePage);
+        const childrenId = `section-nav-group-${section.key}-${group.url}`
+          .replace(/[^a-z0-9]+/giu, '-').replace(/^-|-$/gu, '');
         return (
-          <details class="nav-group" open={defaultOpen} data-group={group.heading} data-active={containsActivePage ? 'true' : undefined}>
-            <summary>
-              <svg class="nav-group-caret" viewBox="0 0 24 24" fill="none"
-                   stroke="currentColor" stroke-width="2.25" stroke-linecap="round"
-                   stroke-linejoin="round" aria-hidden="true">
-                <polyline points="9 18 15 12 9 6"/>
-              </svg>
-              <span class="nav-group-label">{group.heading}</span>
-            </summary>
-            <ul class="tree">
-              {group.items.map(item => <SidebarItem item={item} activePath={activePath} containsActive={containsActive} />)}
-            </ul>
-          </details>
+          <section
+            class={`nav-group${defaultOpen ? ' is-open' : ''}`}
+            data-group={group.heading}
+            data-active={containsActivePage ? 'true' : undefined}
+          >
+            <div class={`nav-group-row${isActivePage ? ' is-active-page' : ''}`}>
+              {hasChildren ? (
+                <button
+                  type="button"
+                  class="nav-group-toggle"
+                  aria-expanded={defaultOpen ? 'true' : 'false'}
+                  aria-controls={childrenId}
+                  aria-label={`${defaultOpen ? 'Collapse' : 'Expand'} ${group.heading}`}
+                  data-label={group.heading}
+                >
+                  <svg class="nav-group-caret" viewBox="0 0 24 24" fill="none"
+                       stroke="currentColor" stroke-width="2.25" stroke-linecap="round"
+                       stroke-linejoin="round" aria-hidden="true">
+                    <polyline points="9 18 15 12 9 6"/>
+                  </svg>
+                </button>
+              ) : <span class="nav-group-spacer" aria-hidden="true"></span>}
+              <a
+                class={`nav-group-link${isActivePage ? ' active' : ''}`}
+                href={group.url}
+                aria-current={isActivePage ? 'page' : undefined}
+              >{group.heading}</a>
+            </div>
+            {hasChildren && (
+              <ul class="tree nav-group-items" id={childrenId}>
+                {group.items.map(item => <SidebarItem item={item} activePath={activePath} containsActive={containsActive} />)}
+              </ul>
+            )}
+          </section>
         );
       })}
     </nav>

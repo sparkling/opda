@@ -87,15 +87,11 @@
 }
 .sidebar-nav { padding: 0 var(--space-5); }
 .nav-group + .nav-group { margin-top: var(--space-5); }
-/* Tighten the stack when adjacent groups are both collapsed —
-   collapsed groups are just a summary line, so the default
-   inter-group margin feels airy. Keep the comfortable gap when
-   either neighbour is open (the open one's tree has visual weight). */
-.app-sidebar details.nav-group:not([open]) + details.nav-group:not([open]) {
+.app-sidebar .nav-group:not(.is-open) + .nav-group:not(.is-open) {
   margin-top: var(--space-1);
 }
-.app-sidebar details.nav-group[open] + details.nav-group:not([open]),
-.app-sidebar details.nav-group:not([open]) + details.nav-group[open] {
+.app-sidebar .nav-group.is-open + .nav-group:not(.is-open),
+.app-sidebar .nav-group:not(.is-open) + .nav-group.is-open {
   margin-top: var(--space-3);
 }
 .nav-subgroup + .nav-subgroup { margin-top: var(--space-3); }
@@ -109,27 +105,39 @@
   padding-top: var(--space-1);
 }
 
-/* Collapsible nav-group — <details>/<summary> with caret. The summary
-   inherits the h3 styling above; the caret rotates on open. */
-.app-sidebar details.nav-group { padding: 0; }
-.app-sidebar details.nav-group > summary {
+.app-sidebar .nav-group { padding: 0; }
+.app-sidebar .nav-group-row {
+  display: grid;
+  grid-template-columns: var(--target-min) minmax(0, 1fr);
+  align-items: stretch;
+  min-width: 0;
+  margin: 0 var(--space-3) var(--space-2);
+  border-radius: var(--radius-md);
+}
+.app-sidebar .nav-group-toggle,
+.app-sidebar .nav-group-spacer {
+  width: var(--target-min);
   min-height: var(--target-min);
   display: flex;
   align-items: center;
-  gap: 0.25rem;
+  justify-content: center;
+}
+.app-sidebar .nav-group-toggle {
+  padding: 0;
+  border: 0;
+  border-radius: var(--radius-md);
+  background: transparent;
+  cursor: pointer;
+}
+.app-sidebar a.nav-group-link {
   font: 700 var(--text-xs) / 1.4 var(--font-sans);
   text-transform: uppercase;
   letter-spacing: var(--tracking-meta);
   color: var(--color-text-muted);
-  margin: 0 var(--space-3) var(--space-2);
-  padding: var(--space-2) 0;
-  cursor: pointer;
-  user-select: none;
-  list-style: none;
+  padding-inline: 0 var(--space-2);
 }
-.app-sidebar details.nav-group > summary::-webkit-details-marker { display: none; }
-.app-sidebar details.nav-group > summary::marker { content: ''; }
-.app-sidebar details.nav-group > summary:hover { color: var(--color-text); }
+.app-sidebar .nav-group-toggle:hover,
+.app-sidebar a.nav-group-link:hover { color: var(--color-text); }
 .app-sidebar .nav-group-caret {
   width: 0.6rem;
   height: 0.6rem;
@@ -137,14 +145,30 @@
   transition: transform var(--duration-normal) var(--ease),
               color var(--duration-fast) var(--ease);
   color: var(--color-text-muted);
-  vertical-align: -0.1em;
 }
-.app-sidebar details.nav-group[open] > summary > .nav-group-caret {
+.app-sidebar .nav-group.is-open > .nav-group-row .nav-group-caret {
   transform: rotate(90deg);
   color: var(--color-action-selected);
 }
-.app-sidebar details.nav-group > summary:hover > .nav-group-caret {
+.app-sidebar .nav-group-toggle:hover > .nav-group-caret {
   color: var(--color-text);
+}
+.app-sidebar .nav-group-items { display: none; }
+.app-sidebar .nav-group.is-open > .nav-group-items {
+  display: block;
+  margin-inline-start: var(--space-5);
+  border-inline-start: 1px solid var(--color-border);
+}
+.app-sidebar .nav-group-row.is-active-page {
+  background: var(--neutral-100);
+  box-shadow: inset 4px 0 0 var(--brand-yellow);
+}
+.app-sidebar .nav-group-row.is-active-page > a.active {
+  background: transparent;
+  box-shadow: none;
+}
+:root[data-theme="dark"] .app-sidebar .nav-group-row.is-active-page {
+  background: var(--color-surface-dark-tint);
 }
 
 /* ── Comments (Artalk) ─────────────────────────────────────────────── */

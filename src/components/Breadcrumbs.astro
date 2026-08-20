@@ -34,8 +34,13 @@ if (destinationLanding && destination) {
   }
 
   if (found) {
-    if (found.group.heading !== 'Overview') {
-      breadcrumbs.push({ label: found.group.heading });
+    const groupPath = normalizeUrl(found.group.url);
+    const groupIsDestination = groupPath === normalizeUrl(destination?.url ?? '');
+    const groupIsCurrent = groupPath === path;
+    if (!groupIsDestination) {
+      breadcrumbs.push(groupIsCurrent
+        ? { label: found.group.heading, current: true }
+        : { label: found.group.heading, href: found.group.url });
     }
     found.trail.forEach((item, index) => {
       const exact = normalizeUrl(item.url) === path;
@@ -45,6 +50,9 @@ if (destinationLanding && destination) {
         : { label: item.title, href: item.url });
       if (last && !exact) breadcrumbs.push({ label: currentPageTitle, current: true });
     });
+    if (!found.trail.length && !groupIsCurrent) {
+      breadcrumbs.push({ label: currentPageTitle, current: true });
+    }
   } else if (destination) {
     breadcrumbs.push({ label: currentPageTitle, current: true });
   } else {

@@ -1,7 +1,7 @@
 # SPDTF 2.0 information architecture
 
 Status: **implemented on `main`; Property Pack consolidation in progress; publication pending**<br>
-Date: 2026-08-19<br>
+Date: 2026-08-20<br>
 Decision record: [ADR-0074](./adr/ADR-0074-organise-site-around-spdtf-2-0-and-pdtf-1-0.md)<br>
 Review artefact: [HTML presentation](./spdtf-2-0-information-architecture.html)
 
@@ -192,7 +192,7 @@ The home page should expose six task shortcuts without adding global destination
 
 ADR-0074 amends only the top-level placement clauses in ADR-0002, ADR-0041, ADR-0059 and ADR-0062. Their generation, traceability and provenance decisions survive. ADR-0074 is Implemented on `main`; ADR-0075 governs the authorised Property Pack consolidation described below, without authorising publication.
 
-Home is reached through the wordmark. Programme is the home task gateway's content owner and may therefore be shown as current there. Search, glossary, design system, account and feedback controls are utilities rather than primary destinations.
+Home is reached through the wordmark. Programme is the home task gateway's content owner and may therefore be shown as current there. Search, glossary, design system, account and feedback controls are utilities rather than primary destinations. In every left rail, each category heading is the category's canonical page link; a separate 44px disclosure controls its children, the landing is not repeated as a child, and the category page remains in breadcrumbs and the previous/next sequence.
 
 ## Implemented hierarchy
 

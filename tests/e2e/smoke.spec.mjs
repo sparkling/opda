@@ -47,7 +47,7 @@ test('desktop sidebar and nested tree controls work', async ({ page }) => {
 test('mobile section drawer returns focus on Escape', async ({ page }) => {
   const clean = watchRuntime(page);
   await page.setViewportSize({ width: 375, height: 812 });
-  await visit(page, '/strategy/strategy-overview');
+  await visit(page, '/spdtf-2/ontologies/standards');
   const opener = page.locator('#menu-toggle');
   const sidebar = page.locator('#app-sidebar');
   await opener.click();
@@ -59,10 +59,23 @@ test('mobile section drawer returns focus on Escape', async ({ page }) => {
   await expect(first).toBeFocused();
   await page.keyboard.press('Shift+Tab');
   await expect(last).toBeFocused();
+  const category = sidebar.locator('.nav-group[data-group="Semantic modelling"]');
+  const toggle = category.locator('.nav-group-toggle');
+  const categoryLink = category.locator('a[href="/spdtf-2/ontologies"]');
+  const before = page.url();
+  await toggle.click();
+  expect(page.url()).toBe(before);
+  await expect(toggle).toHaveAttribute('aria-expanded', 'false');
+  await toggle.click();
   await page.keyboard.press('Escape');
   await expect(sidebar).not.toHaveClass(/open/);
   await expect(opener).toHaveAttribute('aria-expanded', 'false');
   await expect(opener).toBeFocused();
+  await opener.click();
+  await categoryLink.click();
+  await expect(page).toHaveURL(/\/spdtf-2\/ontologies$/u);
+  await expect(sidebar).not.toHaveClass(/open/);
+  await assertNoBodyOverflow(page);
   clean();
 });
 
