@@ -5,8 +5,8 @@
   overflow-wrap: anywhere;
 }
 
-/* The lineage comparison needs the full article track for paired evidence. */
-.prose.property-pack-page--full-width { max-width: none; }
+/* The lineage comparison needs room for paired evidence without becoming unbounded. */
+.prose.property-pack-page--full-width { max-width: 1800px; }
 
 .v2-doc > *,
 .v2-candidate-banner > *,
