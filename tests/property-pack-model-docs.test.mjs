@@ -91,6 +91,15 @@ test('lineage name-match views explain their limited evidence', async () => {
   assert.match(page, /does\s*<strong>not<\/strong> establish/u);
   assert.match(page, /reclassification questions/u);
   assert.match(page, /Property Pack candidate<\/span>/u);
+  assert.equal((page.match(/class="v2-name-matrix__name"/gu) ?? []).length, 2);
+  assert.match(page, /kindLabel\(item\.v1Kind\)/u);
+});
+
+test('semantic-home count pills retain their complete information text', async () => {
+  const page = await readFile(new URL('../src/pages/spdtf-2/property-pack/definition-and-scope.astro', import.meta.url), 'utf8');
+  assert.match(page, /<p\s+class="pill pill--info context-card__count"/u);
+  assert.match(page, /source data point\$\{context\.source_item_count === 1 \? '' : 's'\}/u);
+  assert.doesNotMatch(page, /<span class="pill pill--info context-card__count"/u);
 });
 
 test('candidate artefacts are a six-link desktop grid', async () => {

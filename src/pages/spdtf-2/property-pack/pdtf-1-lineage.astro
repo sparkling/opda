@@ -187,7 +187,9 @@ const readerText = (value) => String(value)
       </div>
       {sameKindLexicalMatches.map((item) => (
         <div class="v2-name-matrix__row" role="row">
-          <code role="cell" data-label="Local name">{item.localName}</code>
+          <p class="v2-name-matrix__name" role="cell" data-label="Local name">
+            <code>{item.localName}</code><span class="sr-only">{` ${kindLabel(item.v1Kind)}`}</span>
+          </p>
           <span role="cell" data-label="PDTF 1.0">{kindLabel(item.v1Kind)}</span>
           <span role="cell" data-label="Property Pack candidate">{kindLabel(item.v2Kind)}</span>
         </div>
@@ -215,7 +217,9 @@ const readerText = (value) => String(value)
       </div>
       {changedKindLexicalMatches.map((item) => (
         <div class="v2-name-matrix__row" role="row">
-          <code role="cell" data-label="Local name">{item.localName}</code>
+          <p class="v2-name-matrix__name" role="cell" data-label="Local name">
+            <code>{item.localName}</code><span class="sr-only">{` ${kindLabel(item.v1Kind)}`}</span>
+          </p>
           <span role="cell" data-label="PDTF 1.0">{kindLabel(item.v1Kind)}</span>
           <span role="cell" data-label="Property Pack candidate">{kindLabel(item.v2Kind)}</span>
         </div>

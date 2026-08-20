@@ -78,7 +78,12 @@ const safeDetails = JSON.stringify(details).replace(/</g, '\\u003c');
       <a href={contextRoute(context)} class:list={{ 'context-card': true, 'context-card--common': context.id === contextMap.common_boundary }}>
         <div class="context-card__meta">
           <p class="eyebrow">{context.kind.replace('-', ' ')}</p>
-          <span class="pill pill--info context-card__count" aria-label={`${context.source_item_count} source data points`}>{context.source_item_count}</span>
+          <p
+            class="pill pill--info context-card__count"
+            aria-label={`${context.source_item_count} source data point${context.source_item_count === 1 ? '' : 's'}`}
+          >
+            <span aria-hidden="true">{context.source_item_count}</span><span class="sr-only" aria-hidden="true">{` source data point${context.source_item_count === 1 ? '' : 's'}`}</span>
+          </p>
         </div>
         <h3>{context.label}</h3>
         <p>{context.definition}</p>

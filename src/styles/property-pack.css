@@ -370,6 +370,7 @@ a.v2-card:focus-visible { border-color: var(--color-data-1); }
 .v2-name-matrix__row > * + * { border-left: 1px solid var(--color-border); }
 .v2-name-matrix__row { border-top: 1px solid var(--color-border); }
 .v2-name-matrix__row span { color: var(--color-text-muted); }
+.v2-name-matrix__name { margin: 0; }
 
 .v2-check-list,
 .v2-limit-list { padding: 0; list-style: none; }
@@ -386,7 +387,7 @@ a.v2-card:focus-visible { border-color: var(--color-data-1); }
   .v2-compare__head { display: none; }
   .v2-name-matrix__head { display: none; }
   .v2-name-matrix__row { grid-template-columns: 1fr 1fr; }
-  .v2-name-matrix__row code { grid-column: 1 / -1; background: var(--color-surface-alt); }
+  .v2-name-matrix__name { grid-column: 1 / -1; background: var(--color-surface-alt); }
   .v2-name-matrix__row > * + * { border-left: 0; }
   .v2-name-matrix__row span + span { border-left: 1px solid var(--color-border); }
   .v2-name-matrix__row span::before {
