@@ -57,7 +57,7 @@ The architecture is grounded in:
 The implementation is made auditable by:
 
 - an executable route, ownership and status contract in `src/lib/site-ia.mjs`;
-- a frozen before/after route manifest covering 3,436 baseline routes and every retained fragment, plus classified records for 52 new routes;
+- a frozen before/after route manifest covering 3,436 baseline routes and every retained fragment, plus classified records for 53 new routes;
 - exact path, size and SHA-256 manifests for high-risk source, council, ontology,
   data, UI, image, tool and Property Pack route families;
 - end-to-end journeys for authentication, comments, source viewing/download and
@@ -72,7 +72,7 @@ route, information block and fragment to its declared replacement and asserts th
 two obsolete route families are absent. Unchanged high-risk artefact families remain
 byte-identified (`scripts/check-ia-preservation.mjs`).
 
-The build counts describe different surfaces: Astro reports 2,607 pages it renders; preservation and the crawler see 3,488 HTML files after copied/generated static HTML is included; the crawler's 5,287 emitted files also include non-HTML data and support assets. All three denominators are therefore expected and independently gated.
+The build counts describe different surfaces: Astro reports 2,607 pages it renders; preservation and the crawler see 3,489 HTML files after copied/generated static HTML is included; the crawler's 5,289 emitted files also include non-HTML data and support assets. All three denominators are therefore expected and independently gated.
 
 ## How DBT Smart Data fits
 
