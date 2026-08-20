@@ -380,6 +380,7 @@ test('preservation is a local and deployment gate', () => {
   assert.match(makefile, /ci-browser: build-data check-ia-preservation check-routes test-e2e/u);
   assert.match(makefile, /ci: .*check-ia-preservation/u);
   assert.match(workflow, /actions\/checkout@v6[\s\S]*?fetch-depth: 0/u);
+  assert.doesNotMatch(workflow, /pnpm\/action-setup@v6\s+with:\s+version:/u);
   assert.match(workflow, /Information-architecture preservation gate[\s\S]*pnpm run check:ia-preservation/u);
 });
 
