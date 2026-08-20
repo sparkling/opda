@@ -14,6 +14,7 @@ import {
   PROPERTY_PACK_ROUTE_MIGRATION,
   getPropertyPackReplacementRoute,
 } from '../src/lib/property-pack-routes.mjs';
+import { getDeclaredRouteReplacement } from '../src/lib/site-route-migrations.mjs';
 
 const routeBaseline = JSON.parse(readFileSync(
   new URL('../src/data/ia-route-baseline.json', import.meta.url), 'utf8',
@@ -130,7 +131,7 @@ test('schema-v6 receipts compose the complete prior IA evidence without shrinkin
 test('Property Pack migration rejects malformed and non-bijective mappings', () => {
   const records = structuredClone(routeBaseline.routes);
   const addedRoutes = structuredClone(routeBaseline.addedRoutes);
-  const originalReplacement = getPropertyPackReplacementRoute;
+  const originalReplacement = getDeclaredRouteReplacement;
   assert.throws(() => propertyPackMigrationReceipt(
     records, addedRoutes, PROPERTY_PACK_ROUTE_MIGRATION,
     (route) => route === '/v2/comparison'

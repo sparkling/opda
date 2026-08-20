@@ -20,6 +20,7 @@ import {
 } from '../src/lib/site-ia.mjs';
 import { PROPERTY_PACK_ROUTE_MIGRATION, getPropertyPackReplacementRoute } from '../src/lib/property-pack-routes.mjs';
 import { validateLeaseTermCaseCollisionReceipt } from '../src/lib/ontology-case-collision.mjs';
+import { getDeclaredRouteReplacement } from '../src/lib/site-route-migrations.mjs';
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const EXPECTED_FAMILY_COUNTS = Object.freeze({
   'source-archive': { baseline: 1620 },
@@ -344,7 +345,7 @@ if (routeManifest) {
   }
   try {
     const actual = propertyPackMigrationReceipt(
-      baselineRecords, addedRecords, PROPERTY_PACK_ROUTE_MIGRATION, getPropertyPackReplacementRoute,
+      baselineRecords, addedRecords, PROPERTY_PACK_ROUTE_MIGRATION, getDeclaredRouteReplacement,
     );
     if (JSON.stringify(actual) !== JSON.stringify(routeManifest.propertyPackMigration)) {
       fail('Property Pack migration receipt is inconsistent');

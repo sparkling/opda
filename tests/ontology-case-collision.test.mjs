@@ -11,6 +11,10 @@ import {
   inspectLeaseTermCaseCollision,
   validateLeaseTermCaseCollisionReceipt,
 } from '../src/lib/ontology-case-collision.mjs';
+import {
+  getAcceptedRoute,
+  getDeclaredRouteReplacement,
+} from '../src/lib/site-route-migrations.mjs';
 
 function fixtureRoot() {
   const root = mkdtempSync(path.join(path.dirname(fileURLToPath(import.meta.url)), '.case-collision-'));
@@ -35,6 +39,9 @@ test('the LeaseTerm collision maps the historical masked route to leaseTerm', ()
   assert.equal(acceptedLeaseTermRoute('/pdtf/LeaseTerm'), '/pdtf/leaseTerm');
   assert.equal(acceptedLeaseTermRoute('/pdtf/leaseTerm'), '/pdtf/leaseTerm');
   assert.equal(acceptedLeaseTermRoute('/pdtf/Property'), '/pdtf/Property');
+  assert.equal(getAcceptedRoute('/v2/comparison'), '/spdtf-2/property-pack/pdtf-1-lineage');
+  assert.equal(getDeclaredRouteReplacement('/pdtf/LeaseTerm'), '/pdtf/leaseTerm');
+  assert.equal(getDeclaredRouteReplacement('/pdtf/Property'), null);
 });
 
 function hasExactPair(root) {
