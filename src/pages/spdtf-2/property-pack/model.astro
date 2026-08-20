@@ -18,35 +18,40 @@ import {
 
 const rows = structuralRows();
 const domainless = resources.filter((resource) => resource.kind === 'object-property' && !resource.domain);
+const classIris = new Set(resources.filter((resource) => resource.kind === 'class').map((resource) => resource.iri));
+const drawableObjectProperties = resources.filter((resource) =>
+  resource.kind === 'object-property' && classIris.has(resource.domain) && classIris.has(resource.range)
+);
 function targetLabel(row) {
   return row.target?.label ?? compactIri(row.targetIri);
 }
 ---
 <PropertyPackPage
   title="Complete model"
-  description="The complete model atlas for the accelerated SPDTF 2.0 Property Pack ontology candidate: all 159 OWL resources, 229 asserted structural links and a synchronized structured text representation."
+  description="The complete model atlas for the accelerated SPDTF 2.0 Property Pack ontology candidate: a class-centred Mermaid projection and synchronized structured reference for all 159 OWL resources."
   category="Model atlas"
   crumbs={[{ label: 'Complete model' }]}
 >
   <h1>Complete model</h1>
   <p class="lead">
-    An exploratory, whole-candidate view of all {counts.resources} OWL resources and
-    {counts.subclassEdges + counts.domainEdges + counts.rangeEdges} asserted subclass,
-    domain and range links, grouped by semantic home.
+    This atlas documents all {counts.resources} OWL resources. Its Mermaid view follows the
+    PDTF 1.0 class-diagram convention: classes are nodes and object properties directly
+    connect class to class. Datatype and coded-value properties remain in the structured
+    reference instead of becoming graph nodes.
   </p>
 
   <div class="callout callout--warn">
-    <p class="callout__label">Use the atlas before the wall-sized graph</p>
+    <p class="callout__label">Class-centred model view</p>
     <p>
-      The diagram is complete but necessarily dense. Use fullscreen, pan/zoom and Explore
-      mode for topology; use the context pages and structured tables for precise reading.
-      No source row, SKOS instance or generator metadata is drawn as an ontology-resource node.
+      The diagram does not turn RDF properties, datatypes or the words “domain” and “range”
+      into model nodes. Use fullscreen, pan/zoom and Explore mode for topology; use the
+      structured tables for the complete resource-level reference and unresolved domains.
     </p>
   </div>
 
   <PropertyPackContents items={[
     { id: 'composition', label: 'Model composition' },
-    { id: 'diagram', label: 'Complete Mermaid model' },
+    { id: 'diagram', label: 'Mermaid class relationship model' },
     { id: 'atlas', label: 'Context atlas' },
     { id: 'resources', label: 'Complete resource list' },
     { id: 'edges', label: 'Complete structured relationship view' },
@@ -63,12 +68,12 @@ function targetLabel(row) {
     <div class="v2-metric"><strong>{counts.rangeEdges}</strong><span>asserted ranges or datatypes</span></div>
   </div>
 
-  <h2 id="diagram">Complete Mermaid model</h2>
+  <h2 id="diagram">Mermaid class relationship model</h2>
   <PropertyPackDiagramLegend />
   <GraphDiagram
     source={completeModelDiagram()}
     minHeight="920px"
-    caption="Complete ontology-term topology: 159 local candidate resources plus eight referenced standard terms and 229 asserted structural links. Click a local node for its reference page."
+    caption={`${counts.classes} candidate classes with ${drawableObjectProperties.length} direct class-to-class object-property relationships and ${counts.subclassEdges} subclass relationships. Datatype, coded-value and domainless properties remain in the structured reference rather than being drawn as topology. Click a class node for its reference page.`}
   />
 
   <h2 id="atlas">Context atlas</h2>

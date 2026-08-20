@@ -13,10 +13,12 @@ import {
   boundaryDiagram,
   completeModelDiagram,
   contextDiagram,
+  contextDiagramProjection,
   contexts,
   counts,
   coverage,
   dataPointRoute,
+  diagramCounts,
   resourceRoute,
   resourceByIri,
   resources,
@@ -120,16 +122,41 @@ test('stable detail routes are unique and identifier-based', () => {
   assert.ok(generatedRoutes.every((route) => !route.startsWith('/v2') && route !== '/modelling/property-pack'));
 });
 
-test('complete Mermaid contains every term and every asserted structural edge', () => {
+test('complete Mermaid uses the PDTF 1.0 class-backbone projection', () => {
   const source = completeModelDiagram();
   assert.match(source, /^---\nconfig:\n  layout: elk\n---\nflowchart LR/m);
   assert.match(source, /accTitle: Complete Property Pack candidate model/);
   assert.match(source, /accDescr:/);
   assert.doesNotMatch(source, /\\n/);
-  assert.equal((source.match(/^    term_\d+\["/gm) ?? []).length, 167);
-  assert.equal((source.match(/^  term_\d+ -->\|/gm) ?? []).length, 229);
-  assert.equal((source.match(/^  click term_\d+ /gm) ?? []).length, 159);
-  for (const resource of resources) assert.ok(source.includes(`"${resourceRoute(resource)}"`));
+  assert.deepEqual(diagramCounts, {
+    classNodes: 53,
+    objectPropertyEdges: 30,
+    subclassEdges: 23,
+    omittedDatatypeProperties: 29,
+    omittedCodedOrExternalProperties: 41,
+    omittedDomainlessObjectProperties: 6,
+  });
+
+  const classes = resources.filter((resource) => resource.kind === 'class');
+  const properties = resources.filter((resource) =>
+    resource.kind === 'object-property'
+    && resourceByIri.get(resource.domain)?.kind === 'class'
+    && resourceByIri.get(resource.range)?.kind === 'class'
+  );
+  const edges = [...source.matchAll(/^  (term_\d+)\s+(-->|-\.->)\|"([^"]+)"\|\s+(term_\d+)$/gm)];
+  const objectLabels = edges.filter((edge) => edge[3] !== 'isA').map((edge) => edge[3]).sort();
+  const subclassEdges = edges.filter((edge) => edge[3] === 'isA');
+
+  assert.equal((source.match(/^    term_\d+\["/gm) ?? []).length, 53);
+  assert.equal((source.match(/^  click term_\d+ /gm) ?? []).length, 53);
+  assert.deepEqual(objectLabels, properties.map((property) => property.label).sort());
+  assert.equal(subclassEdges.length, 23);
+  assert.doesNotMatch(source, /\|"(?:domain|range)"\|/);
+  assert.doesNotMatch(source, /xsd:|skos:Concept|dcterms:PhysicalResource/);
+  for (const resource of classes) assert.ok(source.includes(`"${resourceRoute(resource)}"`));
+  for (const resource of resources.filter((resource) => resource.kind !== 'class')) {
+    assert.ok(!source.includes(`"${resourceRoute(resource)}"`));
+  }
 });
 
 test('context diagrams and boundary map preserve semantic-home distinctions', () => {
@@ -139,36 +166,24 @@ test('context diagrams and boundary map preserve semantic-home distinctions', ()
   assert.match(boundary, /Common boundary/);
   for (const context of contexts) {
     const source = contextDiagram(context.id);
-    const owned = resources.filter((resource) => resource.semantic_home === context.id);
-    const ownedIris = new Set(owned.map((resource) => resource.iri));
-    const incidentForeignProperties = resources.filter((resource) =>
-      resource.semantic_home !== context.id
-      && resource.kind !== 'class'
-      && (ownedIris.has(resource.domain) || ownedIris.has(resource.range))
-    );
-    const carriers = [...owned, ...incidentForeignProperties];
-    const linkedNeighbours = new Set(carriers.flatMap((resource) => [
-      resource.domain, resource.range, resource.subclass_of,
-    ]).filter((iri) => iri && resourceByIri.has(iri)));
-    const displayed = new Set([
-      ...carriers.map((resource) => resource.iri),
-      ...linkedNeighbours,
-    ]);
+    const projection = contextDiagramProjection(context.id);
     const clickRoutes = [...source.matchAll(/^  click term_\d+ "([^"]+)"$/gm)]
       .map((match) => match[1]);
-    const expectedRoutes = resources
-      .filter((resource) => displayed.has(resource.iri))
-      .map(resourceRoute);
+    const expectedRoutes = projection.displayedResources.map(resourceRoute);
     assert.deepEqual(new Set(clickRoutes), new Set(expectedRoutes));
     assert.equal(clickRoutes.length, new Set(clickRoutes).size);
     assert.match(source, /accTitle:/);
-    assert.match(source, /accDescr:.*incoming and outgoing properties/i);
+    assert.match(source, /accDescr:.*class-to-class object properties/i);
+    assert.doesNotMatch(source, /\|"(?:domain|range)"\|/);
+    assert.doesNotMatch(source, /xsd:|skos:Concept|dcterms:PhysicalResource/);
 
     const nodeIds = [...source.matchAll(/^    (term_\d+)\["/gm)].map((match) => match[1]);
     assert.equal(nodeIds.length, new Set(nodeIds).size);
-    const edges = [...source.matchAll(/^  (term_\d+)\s+(-->|-\.->)\|"(subclass of|domain|range)"\|\s+(term_\d+)$/gm)]
-      .map((match) => match.slice(1).join('|'));
-    assert.equal(edges.length, new Set(edges).size);
+    assert.equal(nodeIds.length, projection.displayedResources.length);
+    const edges = [...source.matchAll(/^  (term_\d+)\s+(-->|-\.->)\|"([^"]+)"\|\s+(term_\d+)$/gm)];
+    const objectLabels = edges.filter((edge) => edge[3] !== 'isA').map((edge) => edge[3]).sort();
+    assert.deepEqual(objectLabels, projection.relationshipProperties.map((property) => property.label).sort());
+    assert.equal(edges.filter((edge) => edge[3] === 'isA').length, projection.subclassSources.length);
   }
 });
 
@@ -191,29 +206,27 @@ test('context diagrams show the same cross-boundary relationship from both seman
   const commonPropertyId = nodeIdForRoute(common, resourceRoute(property));
   const commonRelationshipId = nodeIdForRoute(common, resourceRoute(relationship));
   const commonTitleId = nodeIdForRoute(common, resourceRoute(title));
-  assert.ok(commonPropertyId && commonRelationshipId && commonTitleId);
+  assert.ok(commonPropertyId && commonTitleId);
+  assert.equal(commonRelationshipId, undefined);
   assert.match(nodeDefinition(common, commonPropertyId), /:::user$/);
-  assert.match(nodeDefinition(common, commonRelationshipId), /Object property · Conveyancing<\/small>.*:::xsection$/);
   assert.match(nodeDefinition(common, commonTitleId), /Class · Conveyancing<\/small>.*:::xsection$/);
-  assert.ok(common.includes(`  ${commonPropertyId} -.->|"domain"| ${commonRelationshipId}`));
-  assert.ok(common.includes(`  ${commonRelationshipId} -.->|"range"| ${commonTitleId}`));
+  assert.ok(common.includes(`  ${commonPropertyId} -.->|"has registered title"| ${commonTitleId}`));
 
   const conveyancing = contextDiagram('conveyancing');
   const conveyancingPropertyId = nodeIdForRoute(conveyancing, resourceRoute(property));
   const conveyancingRelationshipId = nodeIdForRoute(conveyancing, resourceRoute(relationship));
   const conveyancingTitleId = nodeIdForRoute(conveyancing, resourceRoute(title));
-  assert.ok(conveyancingPropertyId && conveyancingRelationshipId && conveyancingTitleId);
+  assert.ok(conveyancingPropertyId && conveyancingTitleId);
+  assert.equal(conveyancingRelationshipId, undefined);
   assert.match(nodeDefinition(conveyancing, conveyancingPropertyId), /Class · Common boundary<\/small>.*:::xsection$/);
-  assert.match(nodeDefinition(conveyancing, conveyancingRelationshipId), /:::process$/);
   assert.match(nodeDefinition(conveyancing, conveyancingTitleId), /:::user$/);
-  assert.ok(conveyancing.includes(`  ${conveyancingPropertyId} -.->|"domain"| ${conveyancingRelationshipId}`));
-  assert.ok(conveyancing.includes(`  ${conveyancingRelationshipId} -->|"range"| ${conveyancingTitleId}`));
+  assert.ok(conveyancing.includes(`  ${conveyancingPropertyId} -.->|"has registered title"| ${conveyancingTitleId}`));
 });
 
-test('standard references remain distinct from resources owned by another context', () => {
+test('attribute-like and external value targets are omitted from class topology', () => {
   const source = contextDiagram('conveyancing');
-  assert.match(source, /\["xsd:string"\]:::external/);
-  assert.doesNotMatch(source, /xsd:string.*:::xsection/);
-  assert.match(source, /subgraph cross_context_refs\["Resources owned by other semantic homes"\]/);
-  assert.match(source, /subgraph standard_refs\["Referenced standards"\]/);
+  assert.doesNotMatch(source, /xsd:string|skos:Concept|dcterms:PhysicalResource/);
+  assert.doesNotMatch(source, /Datatype property|Object property/);
+  assert.match(source, /subgraph cross_context_refs\["Classes owned by other semantic homes"\]/);
+  assert.doesNotMatch(source, /subgraph standard_refs/);
 });

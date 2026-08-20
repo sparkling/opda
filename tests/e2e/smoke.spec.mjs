@@ -114,6 +114,36 @@ test('representative diagrams and data tables render', async ({ page }) => {
   clean();
 });
 
+test('Property Pack diagrams use the PDTF 1.0 class-backbone convention', async ({ page }) => {
+  const clean = watchRuntime(page);
+  const routes = [
+    ['/spdtf-2/property-pack/model', 53],
+    ['/spdtf-2/property-pack/contexts/common', 21],
+    ['/spdtf-2/property-pack/contexts/conveyancing', 21],
+    ['/spdtf-2/property-pack/contexts/dbt-smart-data', 1],
+  ];
+  let conveyancingGraphText = '';
+
+  for (const [path, nodeCount] of routes) {
+    await visit(page, path);
+    const diagram = page.locator('.graph-diagram-wrapper').first();
+    await diagram.scrollIntoViewIfNeeded();
+    const svg = diagram.locator('.gd-mermaid svg');
+    await expect(svg).toBeVisible();
+    await expect(svg.locator('g.node')).toHaveCount(nodeCount);
+    const graphText = await svg.textContent();
+    expect(graphText).not.toMatch(/\b(?:domain|range)\b/iu);
+    expect(graphText).not.toMatch(/Datatype property|Object property|xsd:|skos:Concept/iu);
+    if (path.endsWith('/contexts/conveyancing')) conveyancingGraphText = graphText ?? '';
+  }
+
+  expect(conveyancingGraphText).toMatch(/Property/iu);
+  expect(conveyancingGraphText).toMatch(/Registered Title/iu);
+  expect(conveyancingGraphText).toMatch(/has registered title/iu);
+  expect(conveyancingGraphText).toMatch(/isA/u);
+  clean();
+});
+
 test('Mermaid source stays hidden while an off-screen diagram loads', async ({ page }) => {
   const clean = watchRuntime(page);
   await page.setViewportSize({ width: 390, height: 844 });

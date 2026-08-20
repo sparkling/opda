@@ -14,21 +14,16 @@ const { variant = 'model' } = Astro.props;
     </>
   ) : variant === 'context' ? (
     <>
-      <span><i class="v2-swatch v2-swatch--class"></i>Class</span>
-      <span><i class="v2-swatch v2-swatch--object"></i>Object property</span>
-      <span><i class="v2-swatch v2-swatch--datatype"></i>Datatype property</span>
-      <span><i class="v2-swatch v2-swatch--cross-context"></i>Different semantic home</span>
-      <span><i class="v2-swatch v2-swatch--external"></i>Referenced standard term</span>
-      <span><i class="v2-line v2-line--solid"></i>Within-home OWL structure</span>
-      <span><i class="v2-line v2-line--dashed"></i>Cross-boundary OWL structure</span>
+      <span><i class="v2-swatch v2-swatch--class"></i>Class in this semantic home</span>
+      <span><i class="v2-swatch v2-swatch--cross-context"></i>Class owned by another semantic home</span>
+      <span><i class="v2-line v2-line--solid"></i>Object-property relationship within this home</span>
+      <span><i class="v2-line v2-line--dashed"></i>Cross-boundary relationship or subclass</span>
     </>
   ) : (
     <>
       <span><i class="v2-swatch v2-swatch--class"></i>Class</span>
-      <span><i class="v2-swatch v2-swatch--object"></i>Object property</span>
-      <span><i class="v2-swatch v2-swatch--datatype"></i>Datatype property</span>
-      <span><i class="v2-swatch v2-swatch--external"></i>Referenced term</span>
-      <span><i class="v2-line v2-line--solid"></i>Asserted OWL structure</span>
+      <span><i class="v2-line v2-line--solid"></i>Object property, labelled on the relationship</span>
+      <span><i class="v2-line v2-line--dashed"></i>Subclass relationship</span>
     </>
   )}
 </div>
