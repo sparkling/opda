@@ -163,16 +163,6 @@ const ONTOSPY = { href: '/ontology/tools/ontospy/index.html', live: exists('tool
     incoming and outgoing connections, attributes, governing shapes and provenance.
   </p>
 
-  <nav class="callout callout--note" aria-label="On this page">
-    <p class="callout__label">On this page</p>
-    <ul>
-      {data.map((g) => (
-        <li><a href={`#${g.ctx}`}>{g.heading}</a> — {g.classes.length} classes</li>
-      ))}
-      <li><a href="#by-category">By UFO meta-category</a> — {cats.length} categories</li>
-      <li><a href="#reference">Comparison renderings</a> — pyLODE &amp; WIDOCO</li>
-    </ul>
-  </nav>
 
   <p class="muted">
     Each section opens with its <strong>class diagram</strong> (same conventions as the

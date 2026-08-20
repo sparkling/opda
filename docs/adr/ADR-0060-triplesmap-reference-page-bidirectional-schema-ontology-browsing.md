@@ -72,7 +72,7 @@ entries," which conflates the two — this ADR also corrects that.
   currently 3 items); a 4th nav entry fits that group's shape better than
   6, and the existing `/ontology`/`/schema`/`/modelling` pages already
   establish the convention of one page with multiple `<h2>` sections and
-  an "On this page" TOC for related content at this scale.
+  shared right-hand page navigation for related content at this scale.
 * **Option C — Parse the raw `.rml.ttl` text directly in Astro
   frontmatter (regex over the file), no generated JSON artefact.**
   Rejected: 158 nested Turtle blocks with bracket/quote-containing

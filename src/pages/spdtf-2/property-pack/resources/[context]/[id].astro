@@ -1,5 +1,4 @@
 ---
-import PropertyPackContents from '@/components/property-pack/PropertyPackContents.astro';
 import PropertyPackPage from '@/components/property-pack/PropertyPackPage.astro';
 import {
   compactIri,
@@ -50,13 +49,6 @@ const range = resource.range ? resourceByIri.get(resource.range) : undefined;
   <h1>{resource.label}</h1>
   <p class="lead">{resource.definition}</p>
 
-  <PropertyPackContents items={[
-    { id: 'identity', label: 'Identity and meaning' },
-    { id: 'structure', label: 'Model structure' },
-    { id: 'constraints', label: 'Constraints and shapes' },
-    { id: 'vocabularies', label: 'Controlled vocabularies' },
-    { id: 'evidence', label: 'Source evidence' },
-  ]} />
 
   <h2 id="identity">Identity and meaning</h2>
   <dl class="v2-facts">

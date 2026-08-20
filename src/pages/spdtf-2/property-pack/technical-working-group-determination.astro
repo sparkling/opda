@@ -1,6 +1,5 @@
 ---
 import PropertyPackPage from '@/components/property-pack/PropertyPackPage.astro';
-import PropertyPackContents from '@/components/property-pack/PropertyPackContents.astro';
 import { candidateManifest } from '@/lib/property-pack-model.mjs';
 ---
 <PropertyPackPage
@@ -26,12 +25,6 @@ import { candidateManifest } from '@/lib/property-pack-model.mjs';
     </p>
   </div>
 
-  <PropertyPackContents items={[
-    { id: 'milestone', label: 'Milestone and boundary' },
-    { id: 'evidence', label: 'Evidence set' },
-    { id: 'questions', label: 'Review questions' },
-    { id: 'decision-record', label: 'Decision record requirements' },
-  ]} />
 
   <h2 id="milestone">Milestone and boundary</h2>
   <dl class="v2-facts">

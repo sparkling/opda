@@ -144,6 +144,21 @@ test('Property Pack diagrams use the PDTF 1.0 class-backbone convention', async 
   clean();
 });
 
+test('reader pages use only the shared right-rail page navigation', async ({ page }) => {
+  const clean = watchRuntime(page);
+  await page.setViewportSize({ width: 1440, height: 1000 });
+
+  for (const path of ['/mapping', '/ontology/classes', '/spdtf-2/property-pack/model']) {
+    await visit(page, path);
+    await expect(page.locator('main nav').filter({ hasText: 'On this page' })).toHaveCount(0);
+    await expect(page.locator('aside.toc[aria-label="On this page"]')).toBeVisible();
+  }
+
+  await visit(page, '/working-groups/join/privacy');
+  await expect(page.locator('nav').filter({ hasText: 'On this page' })).toHaveCount(0);
+  clean();
+});
+
 test('Mermaid source stays hidden while an off-screen diagram loads', async ({ page }) => {
   const clean = watchRuntime(page);
   await page.setViewportSize({ width: 390, height: 844 });

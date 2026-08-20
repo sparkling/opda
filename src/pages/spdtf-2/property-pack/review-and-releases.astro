@@ -1,6 +1,5 @@
 ---
 import PropertyPackPage from '@/components/property-pack/PropertyPackPage.astro';
-import PropertyPackContents from '@/components/property-pack/PropertyPackContents.astro';
 import { candidateManifest } from '@/lib/property-pack-model.mjs';
 ---
 <PropertyPackPage
@@ -25,12 +24,6 @@ import { candidateManifest } from '@/lib/property-pack-model.mjs';
     </p>
   </div>
 
-  <PropertyPackContents items={[
-    { id: 'sequence', label: 'Review sequence' },
-    { id: 'change-control', label: 'Controlled change' },
-    { id: 'version-contract', label: 'Version contract' },
-    { id: 'claims', label: 'Claims that remain separate' },
-  ]} />
 
   <h2 id="sequence">Review sequence</h2>
   <ol>

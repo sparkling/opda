@@ -1,5 +1,4 @@
 ---
-import PropertyPackContents from '@/components/property-pack/PropertyPackContents.astro';
 import PropertyPackFilter from '@/components/property-pack/PropertyPackFilter.astro';
 import PropertyPackPage from '@/components/property-pack/PropertyPackPage.astro';
 import {
@@ -27,10 +26,6 @@ const contextOptions = contexts.map((context) => ({ value: context.id, label: co
     the implementation-tested Core subset recorded in the standards profile.
   </p>
 
-  <PropertyPackContents items={[
-    { id: 'register', label: 'Shape register' },
-    { id: 'scope', label: 'Constraint scope' },
-  ]} />
 
   <h2 id="register">Shape register</h2>
   <PropertyPackFilter

@@ -1,5 +1,4 @@
 ---
-import PropertyPackContents from '@/components/property-pack/PropertyPackContents.astro';
 import PropertyPackPage from '@/components/property-pack/PropertyPackPage.astro';
 import { standardsProfile } from '@/lib/property-pack-model.mjs';
 
@@ -31,11 +30,6 @@ const targetLabels = {
   <h1>Standards profile</h1>
   <p class="lead">The candidate records both what it targets and what it does not yet claim. This avoids turning an implementation compatibility result into an unsupported conformance claim.</p>
 
-  <PropertyPackContents items={[
-    { id: 'claims', label: 'Profile claims' },
-    { id: 'references', label: 'Normative and informative targets' },
-    { id: 'limits', label: 'Assurance boundary' },
-  ]} />
 
   <h2 id="claims">Profile claims</h2>
   <dl class="v2-facts">{Object.entries(standardsProfile.claims).map(([key, value]) => <div><dt>{claimLabels[key] ?? key}</dt><dd>{value}</dd></div>)}</dl>

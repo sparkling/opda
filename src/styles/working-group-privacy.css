@@ -16,27 +16,12 @@
   font: var(--lead);
 }
 
-.wg-privacy__contents {
-  margin: var(--space-8) 0;
-  padding: var(--space-5);
-  border: 1px solid var(--color-border);
-  border-radius: 0;
-  background: var(--color-surface-alt);
-}
-.wg-privacy__contents h2 { margin: 0 0 var(--space-3); font: var(--h3); }
-.wg-privacy__contents ol { columns: 2; margin: 0; padding-left: var(--space-5); }
-.wg-privacy__contents li { margin-bottom: var(--space-2); break-inside: avoid; }
 .wg-privacy article > section { padding-block: var(--space-7); border-top: 1px solid var(--color-border); }
 .wg-privacy article p,
 .wg-privacy article li { line-height: var(--leading-normal); }
 .wg-privacy article ul { padding-left: var(--space-6); }
 .wg-privacy .wg-updated { color: var(--color-text-muted); font-size: var(--text-sm); }
 
-@media (max-width: 44rem) {
-  .wg-privacy__contents ol { columns: 1; }
-}
-
 @media (forced-colors: active) {
-  .wg-privacy__summary,
-  .wg-privacy__contents { border-color: CanvasText; background: Canvas; color: CanvasText; }
+  .wg-privacy__summary { border-color: CanvasText; background: Canvas; color: CanvasText; }
 }

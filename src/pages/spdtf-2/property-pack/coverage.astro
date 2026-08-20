@@ -1,5 +1,4 @@
 ---
-import PropertyPackContents from '@/components/property-pack/PropertyPackContents.astro';
 import PropertyPackPage from '@/components/property-pack/PropertyPackPage.astro';
 import {
   contextStats,
@@ -34,14 +33,6 @@ const reviewItems = coverage.filter((item) => item.disposition !== 'consolidate'
     not working-group approval of the interpretation.
   </p>
 
-  <PropertyPackContents items={[
-    { id: 'closure', label: 'Coverage closure' },
-    { id: 'contexts', label: 'Coverage by context' },
-    { id: 'work-packages', label: 'Coverage by work package' },
-    { id: 'dispositions', label: 'Modelling dispositions' },
-    { id: 'review-items', label: 'Split and challenge items' },
-    { id: 'trace', label: 'Complete trace register' },
-  ]} />
 
   <h2 id="closure">Coverage closure</h2>
   <div class="v2-metrics">

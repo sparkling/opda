@@ -1,6 +1,5 @@
 ---
 import GraphDiagram from '@/components/GraphDiagram.astro';
-import PropertyPackContents from '@/components/property-pack/PropertyPackContents.astro';
 import PropertyPackDiagramLegend from '@/components/property-pack/PropertyPackDiagramLegend.astro';
 import PropertyPackPage from '@/components/property-pack/PropertyPackPage.astro';
 import {
@@ -49,14 +48,6 @@ function targetLabel(row) {
     </p>
   </div>
 
-  <PropertyPackContents items={[
-    { id: 'composition', label: 'Model composition' },
-    { id: 'diagram', label: 'Mermaid class relationship model' },
-    { id: 'atlas', label: 'Context atlas' },
-    { id: 'resources', label: 'Complete resource list' },
-    { id: 'edges', label: 'Complete structured relationship view' },
-    { id: 'unresolved-domains', label: 'Domain not yet specified' },
-  ]} />
 
   <h2 id="composition">Model composition</h2>
   <div class="v2-metrics">

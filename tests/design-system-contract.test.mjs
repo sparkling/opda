@@ -246,6 +246,17 @@ test('every Astro page belongs to an explicit visual route family', async () => 
   }
 });
 
+test('reader pages delegate local contents navigation to the shared right rail', async () => {
+  const sources = await filesWithExtension('src', '.astro');
+  for (const path of sources) {
+    const source = await readFile(file(path), 'utf8');
+    assert.doesNotMatch(source, /On this page|PropertyPackContents/u, `${path} duplicates the shared page navigation`);
+  }
+
+  const client = await readFile(file('public/ui/client.js'), 'utf8');
+  assert.match(client, /toc\.setAttribute\('aria-label', 'On this page'\)/u);
+});
+
 test('the adopted motion contract excludes parallax and long campaign motion', async () => {
   const paths = [
     'src/pages/working-groups/join/index.astro',

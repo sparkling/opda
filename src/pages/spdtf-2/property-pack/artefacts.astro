@@ -1,5 +1,4 @@
 ---
-import PropertyPackContents from '@/components/property-pack/PropertyPackContents.astro';
 import PropertyPackPage from '@/components/property-pack/PropertyPackPage.astro';
 import { candidateManifest, candidateSummary } from '@/lib/property-pack-model.mjs';
 
@@ -32,11 +31,6 @@ function formatBytes(bytes) {
   <h1>Generated artefacts</h1>
   <p class="lead">The candidate is a 54-file review package: one manifest plus 53 payloads. Every payload records its byte size and SHA-256 digest in the manifest.</p>
 
-  <PropertyPackContents items={[
-    { id: 'identity', label: 'Package identity' },
-    { id: 'files', label: 'Complete file register' },
-    { id: 'packaging', label: 'Packaging rules' },
-  ]} />
 
   <h2 id="identity">Package identity</h2>
   <dl class="v2-facts">

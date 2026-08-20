@@ -54,9 +54,6 @@
 .property-pack-status dt { color: var(--color-text-strong); font-weight: 700; }
 .property-pack-status dd { margin: var(--space-1) 0 0; font-size: var(--text-caption); line-height: 1.45; }
 
-.v2-contents ul { margin-bottom: 0; columns: 2; column-gap: var(--space-7); }
-.v2-contents li { break-inside: avoid; }
-
 .v2-metrics {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(9.5rem, 1fr));
@@ -368,7 +365,6 @@ a.v2-card:focus-visible { border-color: var(--color-data-1); }
 
 @media (max-width: 44rem) {
   .v2-filter { grid-template-columns: 1fr; }
-  .v2-contents ul { columns: 1; }
   .v2-facts > div { grid-template-columns: 1fr; gap: var(--space-1); }
 }
 

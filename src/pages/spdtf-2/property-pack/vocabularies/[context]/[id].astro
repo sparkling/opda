@@ -1,5 +1,4 @@
 ---
-import PropertyPackContents from '@/components/property-pack/PropertyPackContents.astro';
 import PropertyPackPage from '@/components/property-pack/PropertyPackPage.astro';
 import {
   contextById,
@@ -33,11 +32,6 @@ const sourceItems = scheme.source_item_ids.map((id) => coverageById.get(id)).fil
   <h1>{scheme.label}</h1>
   <p class="lead">{scheme.definition}</p>
 
-  <PropertyPackContents items={[
-    { id: 'identity', label: 'Scheme identity' },
-    { id: 'concepts', label: `Concepts (${scheme.concepts.length})` },
-    { id: 'evidence', label: `Source evidence (${sourceItems.length})` },
-  ]} />
 
   <h2 id="identity">Scheme identity</h2>
   <dl class="v2-facts">

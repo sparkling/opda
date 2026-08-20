@@ -1,5 +1,4 @@
 ---
-import PropertyPackContents from '@/components/property-pack/PropertyPackContents.astro';
 import PropertyPackPage from '@/components/property-pack/PropertyPackPage.astro';
 import requiredProperties from '@/data/property-pack/required-properties.json';
 import provenanceIndex from '../../../../source/03-standards/rml/provenance-index.json';
@@ -65,17 +64,6 @@ const readerText = (value) => String(value)
     component—not an adoption, release or replacement claim.
   </p>
 
-  <PropertyPackContents items={[
-    { id: 'bottom-line', label: 'Bottom line' },
-    { id: 'crosswalk-status', label: 'Crosswalk status' },
-    { id: 'scale', label: 'Quantitative snapshot' },
-    { id: 'comparison', label: 'Side-by-side comparison' },
-    { id: 'semantic-deltas', label: 'Concrete semantic differences' },
-    { id: 'continuity', label: 'What carries forward' },
-    { id: 'implications', label: 'What this means in practice' },
-    { id: 'limits', label: 'What the comparison does not prove' },
-    { id: 'evidence', label: 'Evidence and method' },
-  ]} />
 
   <h2 id="scale">Quantitative snapshot</h2>
   <div class="callout callout--warn">

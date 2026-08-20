@@ -1,5 +1,4 @@
 ---
-import PropertyPackContents from '@/components/property-pack/PropertyPackContents.astro';
 import PropertyPackPage from '@/components/property-pack/PropertyPackPage.astro';
 import {
   compactIri,
@@ -49,13 +48,6 @@ const constraintRows = [
   <h1>{item.preferred_label}</h1>
   <p class="lead">{item.candidate_definition}</p>
 
-  <PropertyPackContents items={[
-    { id: 'source', label: 'Source identity' },
-    { id: 'source-constraints', label: 'Source constraints' },
-    { id: 'candidate', label: 'Candidate interpretation' },
-    { id: 'constructs', label: 'Ontology constructs' },
-    { id: 'evidence', label: 'Evidence trace' },
-  ]} />
 
   <h2 id="source">Source identity</h2>
   <dl class="v2-facts">

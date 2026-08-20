@@ -1,5 +1,4 @@
 ---
-import PropertyPackContents from '@/components/property-pack/PropertyPackContents.astro';
 import PropertyPackPage from '@/components/property-pack/PropertyPackPage.astro';
 import { validationReport } from '@/lib/property-pack-model.mjs';
 
@@ -14,11 +13,6 @@ const passCount = validationReport.checks.filter((check) => check.state === 'pas
   <h1>Validation evidence</h1>
   <p class="lead">All {validationReport.checks.length} recorded technical checks passed against the exact generated tree identified below. This is reproducibility evidence, not semantic approval.</p>
 
-  <PropertyPackContents items={[
-    { id: 'result', label: 'Technical result' },
-    { id: 'tooling', label: 'Tooling and standards assurance' },
-    { id: 'checks', label: 'Complete check register' },
-  ]} />
 
   <h2 id="result">Technical result</h2>
   <div class="v2-metrics">

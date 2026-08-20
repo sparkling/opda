@@ -1,6 +1,5 @@
 ---
 import GraphDiagram from '@/components/GraphDiagram.astro';
-import PropertyPackContents from '@/components/property-pack/PropertyPackContents.astro';
 import PropertyPackDiagramLegend from '@/components/property-pack/PropertyPackDiagramLegend.astro';
 import PropertyPackPage from '@/components/property-pack/PropertyPackPage.astro';
 import {
@@ -25,11 +24,6 @@ import {
     genuinely needed for exchange across several domains.
   </p>
 
-  <PropertyPackContents items={[
-    { id: 'map', label: 'Boundary map' },
-    { id: 'homes', label: 'Semantic-home register' },
-    { id: 'rules', label: 'Interpretation rules' },
-  ]} />
 
   <h2 id="map">Boundary map</h2>
   <PropertyPackDiagramLegend variant="boundary" />

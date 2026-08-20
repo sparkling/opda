@@ -1,5 +1,4 @@
 ---
-import PropertyPackContents from '@/components/property-pack/PropertyPackContents.astro';
 import PropertyPackFilter from '@/components/property-pack/PropertyPackFilter.astro';
 import PropertyPackPage from '@/components/property-pack/PropertyPackPage.astro';
 import {
@@ -34,10 +33,6 @@ const workPackageOptions = workPackages.map((value) => ({
     <p>Source constraints describe the input catalogue. Generated SHACL constraints describe candidate RDF validation. A source rule is not silently promoted into SHACL.</p>
   </div>
 
-  <PropertyPackContents items={[
-    { id: 'register', label: '451 data points' },
-    { id: 'interpretation', label: 'How the projection works' },
-  ]} />
 
   <h2 id="register">451 data points</h2>
   <PropertyPackFilter
