@@ -80,7 +80,7 @@ interaction requires it.
 
 On 20 August 2026 the shared documentation track was set to a single 1600px maximum.
 The former narrow 66ch prose measure and page-specific width exceptions were removed,
-so every page uses the same outer content-width authority.
+so every page uses the same outer content-width authority, including comments.
 
 ### Brand conflict resolution
 

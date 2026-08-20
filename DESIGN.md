@@ -216,6 +216,7 @@ The page grid has 12 columns, a 1600px maximum, 24px gutters and 32px desktop /
 At 1200px and above, the documentation shell is a 280px left navigation rail,
 a flexible content track, and an optional 240px on-page rail. The content track is
 the width authority: descendants do not stack narrower character or pixel measures.
+The comments section uses the same centred 1600px content track.
 Below 1200px the on-page rail becomes an in-content disclosure. Below 960px the
 left navigation is an off-canvas dialog with focus containment, Escape and focus
 return. At 640px cards, toolbars and component state boards become one column.

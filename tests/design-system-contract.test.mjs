@@ -335,6 +335,7 @@ test('text inherits its outer layout width instead of stacking nested measures',
   const [
     design,
     content,
+    shell,
     components,
     publicEntry,
     workingGroupLayout,
@@ -349,6 +350,7 @@ test('text inherits its outer layout width instead of stacking nested measures',
   ] = await Promise.all([
     readFile(file('DESIGN.md'), 'utf8'),
     readFile(file('public/ui/design/content.css'), 'utf8'),
+    readFile(file('public/ui/design/shell.css'), 'utf8'),
     readFile(file('public/ui/design/components.css'), 'utf8'),
     readFile(file('public/ui/design/public.css'), 'utf8'),
     readFile(file('src/layouts/PublicWorkingGroupLayout.astro'), 'utf8'),
@@ -365,6 +367,8 @@ test('text inherits its outer layout width instead of stacking nested measures',
   assert.match(design, /The outer layout container is the sole owner of content measure/u);
   assert.match(design, /Every documentation\s+article uses the available content track up to a 1600px maximum/u);
   assert.match(content, /\.prose\s*\{[^}]*max-width:\s*var\(--content-max\)/su);
+  assert.match(shell, /\.comments-section\s*\{[^}]*max-width:\s*var\(--content-max\)/su);
+  assert.match(shell, /\.comments-section\s*\{[^}]*margin:\s*var\(--space-8\) auto 0/su);
 
   const contentWithoutOuterMeasures = content
     .replace(/\.prose\s*\{[^}]*\}/su, '');
