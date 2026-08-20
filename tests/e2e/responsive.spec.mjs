@@ -143,8 +143,9 @@ test('Property Pack candidate status reflows inside the available article track'
   const clean = watchRuntime(page);
   await page.setViewportSize({ width: 1281, height: 900 });
   await visit(page, '/spdtf-2/property-pack/validation');
+  await page.locator('.v2-candidate-banner > summary').click();
   await assertNoBodyOverflow(page);
-  const containment = await page.locator('.v2-candidate-banner, .v2-candidate-banner > *')
+  const containment = await page.locator('.v2-candidate-banner, .v2-candidate-banner > summary, .v2-candidate-banner__content, .v2-candidate-banner__content > *')
     .evaluateAll((elements) => {
       const article = document.querySelector('main > .prose').getBoundingClientRect();
       return {

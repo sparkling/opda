@@ -58,32 +58,35 @@ const technicalState = validationReport.status === 'pass'
       updated={`${candidateManifest.candidate_version} · ${candidateManifest.candidate_status}`}
     />
 
-    <aside class="v2-candidate-banner" aria-label="Candidate status">
-      <div>
+    <details class="v2-candidate-banner">
+      <summary>
         <span class="pill pill--warn">Machine-proposed</span>
         <strong>{candidateManifest.candidate_version}</strong>
         <span>{candidateManifest.publication_status.replaceAll('-', ' ')}</span>
+        <span class="v2-candidate-banner__label">Candidate status and evidence</span>
+      </summary>
+      <div class="v2-candidate-banner__content">
+        <p>
+          <strong>Property Pack ontology candidate · accelerated SPDTF 2.0 component ·
+          machine-generated · non-normative.</strong> The Technical Working Group
+          determination is pending, later domain review has not occurred, and AI has no
+          decision authority. This candidate is neither the whole SPDTF 2.0 ontology nor
+          an approved exchange contract.
+        </p>
+        <p>
+          <strong>{technicalState}.</strong> This records machine checks, not semantic approval.
+          <a href="/spdtf-2/property-pack/validation"> Review the evidence</a>.
+        </p>
+        <dl class="property-pack-status" aria-label="Property Pack lifecycle status">
+          <div><dt>Source definition</dt><dd>{propertyPackLifecycleStatus.sourceDefinition}</dd></div>
+          <div><dt>Ontology candidate</dt><dd>{propertyPackLifecycleStatus.ontologyCandidate}</dd></div>
+          <div><dt>Technical determination</dt><dd>{propertyPackLifecycleStatus.technicalDetermination}</dd></div>
+          <div><dt>Later domain review</dt><dd>{propertyPackLifecycleStatus.laterDomainReview}</dd></div>
+          <div><dt>Implementation or release</dt><dd>{propertyPackLifecycleStatus.implementationRelease}</dd></div>
+          <div><dt>External use or authority</dt><dd>{propertyPackLifecycleStatus.externalAuthority}</dd></div>
+        </dl>
       </div>
-      <p>
-        <strong>Property Pack ontology candidate · accelerated SPDTF 2.0 component ·
-        machine-generated · non-normative.</strong> The Technical Working Group
-        determination is pending, later domain review has not occurred, and AI has no
-        decision authority. This candidate is neither the whole SPDTF 2.0 ontology nor
-        an approved exchange contract.
-      </p>
-      <p>
-        <strong>{technicalState}.</strong> This records machine checks, not semantic approval.
-        <a href="/spdtf-2/property-pack/validation"> Review the evidence</a>.
-      </p>
-      <dl class="property-pack-status" aria-label="Property Pack lifecycle status">
-        <div><dt>Source definition</dt><dd>{propertyPackLifecycleStatus.sourceDefinition}</dd></div>
-        <div><dt>Ontology candidate</dt><dd>{propertyPackLifecycleStatus.ontologyCandidate}</dd></div>
-        <div><dt>Technical determination</dt><dd>{propertyPackLifecycleStatus.technicalDetermination}</dd></div>
-        <div><dt>Later domain review</dt><dd>{propertyPackLifecycleStatus.laterDomainReview}</dd></div>
-        <div><dt>Implementation or release</dt><dd>{propertyPackLifecycleStatus.implementationRelease}</dd></div>
-        <div><dt>External use or authority</dt><dd>{propertyPackLifecycleStatus.externalAuthority}</dd></div>
-      </dl>
-    </aside>
+    </details>
 
     <slot />
   </div>

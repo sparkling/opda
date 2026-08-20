@@ -7,6 +7,7 @@
 
 .v2-doc > *,
 .v2-candidate-banner > *,
+.v2-candidate-banner__content > *,
 .v2-card-grid > *,
 .v2-note-grid > * { min-width: 0; }
 
@@ -20,25 +21,38 @@
 }
 
 .v2-candidate-banner {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(min(100%, 14rem), 1fr));
-  gap: var(--v2-gap);
-  align-items: start;
   margin: var(--space-5) 0 var(--space-7);
-  padding: var(--space-5);
   border: 1px solid var(--color-status-warning);
   border-left: 3px solid var(--color-status-warning);
   background: var(--color-status-warning-surface);
 }
 
-.v2-candidate-banner > div {
+.v2-candidate-banner > summary {
   display: flex;
   flex-wrap: wrap;
   gap: var(--space-2) var(--space-3);
   align-items: center;
+  min-height: var(--target-min);
+  padding: var(--space-4) var(--space-5);
+  color: var(--color-text-strong);
+  cursor: pointer;
+  list-style: none;
 }
 
-.v2-candidate-banner p { margin: 0; font-size: var(--text-sm); line-height: 1.5; }
+.v2-candidate-banner > summary::-webkit-details-marker { display: none; }
+.v2-candidate-banner > summary::before { content: '+'; font: 700 var(--text-xl) / 1 var(--font-mono); }
+.v2-candidate-banner[open] > summary::before { content: '−'; }
+.v2-candidate-banner > summary:focus-visible { outline: 3px solid var(--focus-outer); outline-offset: -3px; }
+.v2-candidate-banner__label { margin-left: auto; color: var(--color-text-muted); font-size: var(--text-caption); }
+
+.v2-candidate-banner__content {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 14rem), 1fr));
+  gap: var(--v2-gap);
+  padding: 0 var(--space-5) var(--space-5);
+}
+
+.v2-candidate-banner__content p { margin: 0; font-size: var(--text-sm); line-height: 1.5; }
 .v2-candidate-banner strong { color: var(--color-text-strong); font-family: var(--font-mono); }
 
 .property-pack-status {
@@ -186,6 +200,9 @@ a.v2-card:focus-visible { border-color: var(--color-data-1); }
 
 .v2-facts dt { font-weight: 700; color: var(--color-text-strong); }
 .v2-facts dd { margin: 0; overflow-wrap: anywhere; }
+
+.property-pack-return-action { margin: var(--space-5) 0 var(--space-7); }
+.property-pack-return-action .btn { justify-content: center; min-width: min(100%, 20rem); }
 
 .v2-code-block {
   max-height: 20rem;

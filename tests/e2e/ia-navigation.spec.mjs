@@ -230,6 +230,25 @@ test('Property Pack detail pages expose their full canonical ancestry', async ({
   await expect(local.locator('.tree-folder:has(> .tree-folder-row > a[href="/spdtf-2/property-pack/coverage"])'))
     .not.toHaveClass(/is-open/u);
   await expect(page.locator('[aria-label="Property Pack lifecycle status"] dt')).toHaveCount(6);
+  const returnToResources = page.locator('a.btn[href="/spdtf-2/property-pack/resources"]');
+  await expect(returnToResources).toHaveText('Back to ontology resources');
+  await expect(returnToResources).toBeVisible();
+  await returnToResources.click();
+  await expect(page).toHaveURL(/\/spdtf-2\/property-pack\/resources\/?$/u);
+  clean();
+});
+
+test('Property Pack candidate status is collapsed until requested', async ({ page }) => {
+  const clean = watchRuntime(page);
+  await visit(page, '/spdtf-2/property-pack/resources/common/Property');
+  const candidateStatus = page.locator('details.v2-candidate-banner');
+  await expect(candidateStatus).not.toHaveAttribute('open', '');
+  await expect(candidateStatus.locator('summary')).toContainText('Machine-proposed');
+  await expect(candidateStatus.locator('[aria-label="Property Pack lifecycle status"]')).not.toBeVisible();
+  await candidateStatus.locator('summary').click();
+  await expect(candidateStatus).toHaveAttribute('open', '');
+  await expect(candidateStatus.locator('[aria-label="Property Pack lifecycle status"] dt')).toHaveCount(6);
+  await expect(candidateStatus.locator('[aria-label="Property Pack lifecycle status"]')).toBeVisible();
   clean();
 });
 
