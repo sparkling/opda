@@ -166,22 +166,62 @@ const readerText = (value) => String(value)
     </section>
   </div>
 
-  <h3>Exact-name overlap with the same resource kind</h3>
-  <ul class="v2-term-list" aria-label="Exact-name lexical matches">
-    {sameKindLexicalMatches.map((item) => (
-      <li><code>{item.localName}</code><span>{kindLabel(item.v2Kind)}</span></li>
-    ))}
-  </ul>
-
-  <h3>Same name, different resource kind</h3>
-  <div class="v2-kind-change-grid">
-    {changedKindLexicalMatches.map((item) => (
-      <div>
-        <code>{item.localName}</code>
-        <span>{kindLabel(item.v1Kind)} <span aria-hidden="true">→</span> {kindLabel(item.v2Kind)}</span>
+  <section class="v2-name-comparison" aria-labelledby="same-kind-name-matches">
+    <h3 id="same-kind-name-matches">Exact local-name matches with the same resource kind</h3>
+    <p>
+      This is a mechanical identifier check: each row uses the same local name in both
+      models and is classified at the same broad level, such as a class or an object
+      property. It identifies a useful starting point for crosswalk review; it does
+      <strong>not</strong> establish that the definitions, identity rules, relationships or
+      constraints mean the same thing.
+    </p>
+    <p class="v2-name-comparison__summary">
+      <strong>{sameKindLexicalMatches.length} names to review.</strong> Compare the meaning and
+      evidence behind each pair before treating it as continuity.
+    </p>
+    <div class="v2-name-matrix" role="table" aria-label="Exact local-name matches with the same resource kind">
+      <div class="v2-name-matrix__head" role="row">
+        <span role="columnheader">Local name</span>
+        <span role="columnheader">PDTF 1.0</span>
+        <span role="columnheader">Property Pack candidate</span>
       </div>
-    ))}
-  </div>
+      {sameKindLexicalMatches.map((item) => (
+        <div class="v2-name-matrix__row" role="row">
+          <code role="cell" data-label="Local name">{item.localName}</code>
+          <span role="cell" data-label="PDTF 1.0">{kindLabel(item.v1Kind)}</span>
+          <span role="cell" data-label="Property Pack candidate">{kindLabel(item.v2Kind)}</span>
+        </div>
+      ))}
+    </div>
+  </section>
+
+  <section class="v2-name-comparison" aria-labelledby="reclassified-name-matches">
+    <h3 id="reclassified-name-matches">Exact local-name matches that were reclassified</h3>
+    <p>
+      These names also occur in both models, but their broad resource kind has changed.
+      For example, a term may be a class in one model and a property in the other. This
+      is a clear signal not to infer a mapping from spelling alone: the modelling role
+      has already changed and needs an explicit decision.
+    </p>
+    <p class="v2-name-comparison__summary">
+      <strong>{changedKindLexicalMatches.length} reclassification questions.</strong> Each row
+      needs a decision on whether the two uses are related, distinct or simply coincidental.
+    </p>
+    <div class="v2-name-matrix" role="table" aria-label="Exact local-name matches with different resource kinds">
+      <div class="v2-name-matrix__head" role="row">
+        <span role="columnheader">Local name</span>
+        <span role="columnheader">PDTF 1.0</span>
+        <span role="columnheader">Property Pack candidate</span>
+      </div>
+      {changedKindLexicalMatches.map((item) => (
+        <div class="v2-name-matrix__row" role="row">
+          <code role="cell" data-label="Local name">{item.localName}</code>
+          <span role="cell" data-label="PDTF 1.0">{kindLabel(item.v1Kind)}</span>
+          <span role="cell" data-label="Property Pack candidate">{kindLabel(item.v2Kind)}</span>
+        </div>
+      ))}
+    </div>
+  </section>
 
   <div class="callout callout--warn">
     <p class="callout__label">A substantive identity question remains open</p>

@@ -99,6 +99,8 @@
   margin: var(--space-5) 0 var(--space-7);
 }
 
+.v2-card-grid--artefacts { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+
 .v2-card {
   display: flex;
   flex-direction: column;
@@ -113,6 +115,11 @@
 a.v2-card:hover { border-color: var(--color-data-1); color: inherit; }
 a.v2-card:focus-visible { border-color: var(--color-data-1); }
 .v2-card h3 { margin: 0; color: var(--color-text-strong); }
+.v2-card__action {
+  margin-top: auto;
+  color: var(--color-link);
+  font: 700 var(--text-caption) / 1.3 var(--font-sans);
+}
 .v2-card p { margin: 0; color: var(--color-text-muted); }
 .v2-card .pill { align-self: flex-start; }
 .v2-card__meta { margin-top: auto; padding-top: var(--space-2); font-size: var(--text-caption); }
@@ -331,35 +338,38 @@ a.v2-card:focus-visible { border-color: var(--color-data-1); }
 .v2-compare__implication strong { color: var(--color-text-strong); }
 .v2-compare__evidence { padding: var(--space-3) var(--space-4); color: var(--color-text-muted); font-size: var(--text-caption); }
 
-.v2-term-list {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(11rem, 1fr));
-  gap: var(--space-2);
-  padding: 0;
-  list-style: none;
+.v2-name-comparison { margin-top: var(--space-7); }
+.v2-name-comparison__summary {
+  margin-top: var(--space-3);
+  color: var(--color-text-muted);
 }
 
-.v2-term-list li,
-.v2-kind-change-grid > div {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-between;
-  gap: var(--space-2);
-  padding: var(--space-3);
+.v2-name-matrix {
+  margin-top: var(--space-4);
   border: 1px solid var(--color-border);
-  border-radius: var(--radius-sm);
   background: var(--color-surface-card);
 }
 
-.v2-term-list span,
-.v2-kind-change-grid span { color: var(--color-text-muted); font-size: var(--text-caption); }
-
-.v2-kind-change-grid {
+.v2-name-matrix__head,
+.v2-name-matrix__row {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(17rem, 1fr));
-  gap: var(--space-2);
-  margin-bottom: var(--space-6);
+  grid-template-columns: minmax(12rem, 1fr) minmax(9rem, .7fr) minmax(12rem, 1fr);
 }
+
+.v2-name-matrix__head {
+  background: var(--color-surface-alt);
+  color: var(--color-text-strong);
+  font: 700 var(--text-caption) / 1.3 var(--font-sans);
+  letter-spacing: var(--tracking-meta);
+  text-transform: uppercase;
+}
+
+.v2-name-matrix__head span,
+.v2-name-matrix__row > * { padding: var(--space-3) var(--space-4); }
+.v2-name-matrix__head span + span,
+.v2-name-matrix__row > * + * { border-left: 1px solid var(--color-border); }
+.v2-name-matrix__row { border-top: 1px solid var(--color-border); }
+.v2-name-matrix__row span { color: var(--color-text-muted); }
 
 .v2-check-list,
 .v2-limit-list { padding: 0; list-style: none; }
@@ -372,7 +382,20 @@ a.v2-card:focus-visible { border-color: var(--color-data-1); }
 
 @media (max-width: 58rem) {
   .v2-snapshot-grid { grid-template-columns: 1fr; }
+  .v2-card-grid--artefacts { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .v2-compare__head { display: none; }
+  .v2-name-matrix__head { display: none; }
+  .v2-name-matrix__row { grid-template-columns: 1fr 1fr; }
+  .v2-name-matrix__row code { grid-column: 1 / -1; background: var(--color-surface-alt); }
+  .v2-name-matrix__row > * + * { border-left: 0; }
+  .v2-name-matrix__row span + span { border-left: 1px solid var(--color-border); }
+  .v2-name-matrix__row span::before {
+    display: block;
+    margin-bottom: var(--space-1);
+    color: var(--color-text-strong);
+    content: attr(data-label);
+    font: 700 var(--text-caption) / 1.3 var(--font-sans);
+  }
   .v2-compare__row { grid-template-columns: 1fr; }
   .v2-compare__dimension { background: var(--color-surface-alt); }
   .v2-compare__cell { border-top: 1px solid var(--color-border); border-left: 0; }
@@ -389,6 +412,7 @@ a.v2-card:focus-visible { border-color: var(--color-data-1); }
 }
 
 @media (max-width: 44rem) {
+  .v2-card-grid--artefacts { grid-template-columns: 1fr; }
   .v2-filter { grid-template-columns: 1fr; }
   .v2-facts > div { grid-template-columns: 1fr; gap: var(--space-1); }
   .property-pack-resource-title .btn { flex-basis: 100%; }

@@ -1,4 +1,5 @@
 import assert from 'node:assert/strict';
+import { readFile } from 'node:fs/promises';
 import test from 'node:test';
 
 import {
@@ -82,6 +83,22 @@ test('lexical overlap is measured without asserting semantic equivalence', () =>
     changedKindLexicalMatches.map((item) => item.localName),
     ['applicationType', 'councilTaxBand', 'designationType', 'leaseTerm'],
   );
+});
+
+test('lineage name-match views explain their limited evidence', async () => {
+  const page = await readFile(new URL('../src/pages/spdtf-2/property-pack/pdtf-1-lineage.astro', import.meta.url), 'utf8');
+  assert.match(page, /mechanical identifier check/u);
+  assert.match(page, /does\s*<strong>not<\/strong> establish/u);
+  assert.match(page, /reclassification questions/u);
+  assert.match(page, /Property Pack candidate<\/span>/u);
+});
+
+test('candidate artefacts are a six-link desktop grid', async () => {
+  const page = await readFile(new URL('../src/pages/spdtf-2/property-pack/definition-and-scope.astro', import.meta.url), 'utf8');
+  const styles = await readFile(new URL('../src/styles/property-pack.css', import.meta.url), 'utf8');
+  assert.match(page, /class="v2-card-grid v2-card-grid--artefacts"/u);
+  assert.equal((page.match(/Open artefact/g) ?? []).length, 6);
+  assert.match(styles, /\.v2-card-grid--artefacts\s*\{\s*grid-template-columns:\s*repeat\(3, minmax\(0, 1fr\)\)/su);
 });
 
 test('Property Pack documentation model has exact candidate coverage', () => {
