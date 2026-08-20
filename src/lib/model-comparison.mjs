@@ -45,6 +45,8 @@ export const v1Counts = Object.freeze({
   objectProperties: requiredCount(current, 'objectProperties'),
   datatypeProperties: requiredCount(current, 'datatypeProperties'),
   shapes: requiredCount(current, 'shapes'),
+  constraints: Object.values(currentModel.shapes)
+    .reduce((total, shape) => total + (shape.constraints?.length ?? 0), 0),
   schemes: requiredCount(current, 'schemes'),
   concepts: requiredCount(current, 'concepts'),
   domainModules: domainModules.length,

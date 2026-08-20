@@ -35,6 +35,7 @@ test('PDTF 1.0 and Property Pack comparison uses generated model projections', (
     objectProperties: 75,
     datatypeProperties: 205,
     shapes: 402,
+    constraints: 66,
     schemes: 48,
     concepts: 319,
     domainModules: 7,
