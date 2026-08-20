@@ -23,6 +23,7 @@ import {
   getRouteStatus,
 } from '../src/lib/site-ia.mjs';
 import { PROPERTY_PACK_ROUTE_MIGRATION, getPropertyPackReplacementRoute } from '../src/lib/property-pack-routes.mjs';
+import { acceptedLeaseTermRoute, composeLeaseTermCaseCollisionReceipt } from '../src/lib/ontology-case-collision.mjs';
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const args = new Map(process.argv.slice(2).map((arg) => {
   const offset = arg.indexOf('=');
@@ -142,7 +143,7 @@ function routeMetadata(route) {
   };
 }
 function acceptedRouteFor(route) {
-  return getPropertyPackReplacementRoute(route) ?? route;
+  return getPropertyPackReplacementRoute(route) ?? acceptedLeaseTermRoute(route);
 }
 function reframeEvidence(route) {
   if (route === '/' || route === '/home') return 'Task-gateway recomposition; every former destination route remains classified and reachable';
@@ -453,6 +454,7 @@ const routeManifest = {
     routes.filter(({ baselineEvidence }) => baselineEvidence), missingPhysicalRecords,
   ),
   propertyPackMigration,
+  leaseTermCaseCollision: composeLeaseTermCaseCollisionReceipt(acceptedRoot, routes, addedRoutes),
   routes,
   addedRoutes,
 };

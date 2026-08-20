@@ -19,6 +19,7 @@ import {
   getContentOwner, getRouteDisposition, getRouteStatus, validateIaContract,
 } from '../src/lib/site-ia.mjs';
 import { PROPERTY_PACK_ROUTE_MIGRATION, getPropertyPackReplacementRoute } from '../src/lib/property-pack-routes.mjs';
+import { validateLeaseTermCaseCollisionReceipt } from '../src/lib/ontology-case-collision.mjs';
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const EXPECTED_FAMILY_COUNTS = Object.freeze({
   'source-archive': { baseline: 1620 },
@@ -349,6 +350,12 @@ if (routeManifest) {
       fail('Property Pack migration receipt is inconsistent');
     }
   } catch (error) { fail(`Property Pack migration contract failed: ${error.message}`); }
+  try {
+    validateLeaseTermCaseCollisionReceipt(
+      options.manifestOnly ? null : ROOT,
+      routeManifest.leaseTermCaseCollision, baselineRecords, addedRecords,
+    );
+  } catch (error) { fail(`LeaseTerm case-collision migration contract failed: ${error.message}`); }
   if (PROPERTY_PACK_ROUTE_MIGRATION.redirects !== false
     || getPropertyPackReplacementRoute('/api/v2/comments') !== null) {
     fail('Property Pack migration affects redirects or /api/v2');
