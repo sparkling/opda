@@ -46,11 +46,11 @@ const range = resource.range ? resourceByIri.get(resource.range) : undefined;
     { label: resource.label },
   ]}
 >
-  <h1>{resource.label}</h1>
+  <div class="property-pack-resource-title">
+    <h1>{resource.label}</h1>
+    <a class="btn" href="/spdtf-2/property-pack/resources">All resources</a>
+  </div>
   <p class="lead">{resource.definition}</p>
-  <p class="property-pack-return-action">
-    <a class="btn" href="/spdtf-2/property-pack/resources">Back to ontology resources</a>
-  </p>
 
 
   <h2 id="identity">Identity and meaning</h2>

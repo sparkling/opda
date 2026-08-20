@@ -231,8 +231,14 @@ test('Property Pack detail pages expose their full canonical ancestry', async ({
     .not.toHaveClass(/is-open/u);
   await expect(page.locator('[aria-label="Property Pack lifecycle status"] dt')).toHaveCount(6);
   const returnToResources = page.locator('a.btn[href="/spdtf-2/property-pack/resources"]');
-  await expect(returnToResources).toHaveText('Back to ontology resources');
+  await expect(returnToResources).toHaveText('All resources');
   await expect(returnToResources).toBeVisible();
+  const [heading, action] = await Promise.all([
+    page.locator('.property-pack-resource-title h1').boundingBox(),
+    returnToResources.boundingBox(),
+  ]);
+  expect(action.y).toBeLessThanOrEqual(heading.y + heading.height);
+  expect(action.x).toBeGreaterThan(heading.x);
   await returnToResources.click();
   await expect(page).toHaveURL(/\/spdtf-2\/property-pack\/resources\/?$/u);
   clean();

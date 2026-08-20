@@ -201,8 +201,16 @@ a.v2-card:focus-visible { border-color: var(--color-data-1); }
 .v2-facts dt { font-weight: 700; color: var(--color-text-strong); }
 .v2-facts dd { margin: 0; overflow-wrap: anywhere; }
 
-.property-pack-return-action { margin: var(--space-5) 0 var(--space-7); }
-.property-pack-return-action .btn { justify-content: center; min-width: min(100%, 20rem); }
+.property-pack-resource-title {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-3);
+  align-items: center;
+  justify-content: space-between;
+}
+
+.property-pack-resource-title h1 { margin: 0; }
+.property-pack-resource-title .btn { flex: 0 0 auto; }
 
 .v2-code-block {
   max-height: 20rem;
@@ -383,6 +391,7 @@ a.v2-card:focus-visible { border-color: var(--color-data-1); }
 @media (max-width: 44rem) {
   .v2-filter { grid-template-columns: 1fr; }
   .v2-facts > div { grid-template-columns: 1fr; gap: var(--space-1); }
+  .property-pack-resource-title .btn { flex-basis: 100%; }
 }
 
 @media (forced-colors: active) {
