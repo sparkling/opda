@@ -21,6 +21,7 @@
 .wg-privacy article li { line-height: var(--leading-normal); }
 .wg-privacy article ul { padding-left: var(--space-6); }
 .wg-privacy .wg-updated { color: var(--color-text-muted); font-size: var(--text-sm); }
+.wg-fragment-alias { display: block; block-size: 0; scroll-margin-top: var(--space-8); }
 
 @media (forced-colors: active) {
   .wg-privacy__summary { border-color: CanvasText; background: Canvas; color: CanvasText; }
