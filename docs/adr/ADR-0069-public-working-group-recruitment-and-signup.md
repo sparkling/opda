@@ -1,7 +1,7 @@
 ---
 status: accepted
 date: 2026-08-12
-updated: 2026-08-14
+updated: 2026-08-21
 tags: [engagement, recruitment, working-groups, linkedin, trade-bodies, professional-bodies, signup, privacy, security, aws]
 supersedes: []
 depends-on: [ADR-0038, ADR-0040, ADR-0063, ADR-0065]
@@ -10,6 +10,10 @@ implements: [ADR-0065]
 
 # Recruit later bounded-context working groups through a public campaign and simple sign-up
 
+> **Change note — 2026-08-21:** The shared application header now carries a persistent
+> “Join a working group” action to the unchanged canonical signup route. This adds a
+> discovery path only; form scope, review, storage and access boundaries are unchanged.
+>
 > **Change note — 2026-08-14:** ADR-0071 now records the campaign operating plan, including
 > LinkedIn publishing, selective trade-body outreach, sequencing and measures. This ADR remains
 > the authority for campaign scope, the public signup experience, storage and review boundaries.

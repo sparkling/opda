@@ -350,15 +350,14 @@
 
 .db-table thead th {
   position: sticky; top: 0; z-index: 1;
-  background: var(--color-surface-tint);
-  color: var(--color-text-strong);
+  background: var(--color-table-header-surface);
+  color: var(--color-table-header-text);
   font: 700 var(--text-sm) / 1.4 var(--font-sans);
   letter-spacing: 0;
   text-align: left;
   padding: 0.55rem 0.85rem;
   white-space: nowrap;
 }
-:root[data-theme="dark"] .db-table thead th { background: var(--color-surface-dark-tint); }
 .db-table thead th.sortable { padding: 0; user-select: none; }
 .db-sort-button {
   width: 100%;
@@ -387,17 +386,16 @@
   outline-offset: -2px;
   box-shadow: inset 0 0 0 2px var(--color-focus-contrast);
 }
-.db-table thead th .sort-indicator { display: inline-block; margin-left: 0.35em; color: var(--color-text-muted); }
+.db-table thead th .sort-indicator { display: inline-block; margin-left: 0.35em; color: var(--color-table-header-text); }
 .db-table thead th.sort-asc  .sort-indicator,
-.db-table thead th.sort-desc .sort-indicator { color: var(--color-link); }
+.db-table thead th.sort-desc .sort-indicator { color: var(--brand-yellow); }
 .db-table tbody td {
   padding: 0.55rem 0.85rem;
   vertical-align: top;
   color: var(--color-text);
   font: 400 var(--text-sm) / 1.45 var(--font-sans);
 }
-.db-table tbody tr:nth-child(2n) td { background: var(--color-surface-tint); }
-:root[data-theme="dark"] .db-table tbody tr:nth-child(2n) td { background: var(--color-surface-dark-raised); }
+.db-table tbody tr:nth-child(2n) td { background: var(--color-table-stripe-surface); }
 .db-table code {
   font: 400 var(--text-caption) / 1.4 var(--font-mono);
   padding: 1px 5px;

@@ -187,6 +187,8 @@ The outer layout container is the sole owner of content measure. Every documenta
 article uses the available content track up to a 1600px maximum. Headings, leads,
 paragraphs, lists, quotations, callouts, cards and section copy fill their parent and
 must not add another `max-width`.
+Lists have a small tokenised gap above and below, separating them from both their
+introductory copy and the content that follows.
 Figures, tables, diagrams, media and intrinsically sized controls retain their own
 containment rules. Tables and statistics use `font-variant-numeric: tabular-nums`.
 Do not introduce arbitrary type sizes.
@@ -279,6 +281,11 @@ states, plus loading/error/success where asynchronous work occurs and dark parit
 - **Tabs:** semantic tablist, arrow-key operation and yellow-underlined selection.
 - **Breadcrumbs:** ordered navigation with a non-linked current item. Use DM Sans
   500 at the base 16px role with a 24px line-height; links have a 44px target.
+- **Header action:** one yellow primary action may sit at the utility end of the
+  application header; it uses a short verb-led label and remains available in the
+  compact navigation disclosure.
+- **Header utilities:** familiar single-purpose destinations may use 20px icons in
+  44px targets, with an accessible name and tooltip; icons never replace the CTA label.
 - **Sidebar disclosure:** linked folder rows in a task-oriented hierarchy use a quiet
   tinted surface, structural border and bold label so they are distinct from leaf
   links. A separate 44px disclosure button expands each branch; its label opens the page.
@@ -288,8 +295,13 @@ states, plus loading/error/success where asynchronous work occurs and dark parit
 - **Callout:** note/success/warning/danger with 3px semantic rule, icon and heading.
 - **Card:** square, bordered and content-led; linked cards receive a whole-card focus
   treatment without nesting controls.
-- **Table:** sticky header, `aria-sort`, visible sort arrow, tabular numerals and
-  optional off-white zebra rows; interactive rows are at least 44px.
+- **Table:** sticky header, `aria-sort`, visible sort arrow and tabular numerals;
+  column headers, row headers and zebra rows use three distinct semantic surfaces,
+  while interactive rows are at least 44px. Row headers use a restrained
+  yellow-tinted surface to distinguish the identifying column from neutral zebra
+  rows; this tint communicates structure, not status or selection. Two or more repeated records with a
+  consistent label and explanation belong in a semantic two-column table, not a
+  styled list; ordinary bullets, steps and navigation remain lists.
 - **Code/schema block:** deep ink, Roboto Mono, accessible syntax colour, language
   label and copy action.
 - **Diagram frame:** white surface, 1px border and numbered caption; every diagram

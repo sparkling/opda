@@ -19,13 +19,29 @@
 }
 
 .prose th {
-  background: var(--color-surface-tint);
   color: var(--color-text-strong);
   font: 700 var(--text-sm) / 1.4 var(--font-sans);
   letter-spacing: 0;
 }
 
-.prose tbody tr:nth-child(2n) { background: var(--color-surface-tint); }
+.prose thead th {
+  background: var(--color-table-header-surface);
+  color: var(--color-table-header-text);
+  border-bottom: 1px solid var(--color-border-strong);
+}
+
+.prose tbody > tr + tr > :is(th, td) {
+  border-top: 1px solid var(--color-border);
+}
+
+.prose tbody th[scope="row"] {
+  background: var(--color-table-row-header-surface);
+  border-inline-end: 1px solid var(--color-border-strong);
+}
+
+.prose tbody tr:nth-child(2n) > td {
+  background: var(--color-table-stripe-surface);
+}
 .prose table.ext-table { width: auto; table-layout: fixed; }
 
 /* No-JavaScript fallback: contain wide direct-child tables within the article. */

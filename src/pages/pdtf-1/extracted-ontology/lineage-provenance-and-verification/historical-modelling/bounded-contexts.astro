@@ -357,26 +357,23 @@ JSON Schema + OpenAPI + VC + DID
         bounded contexts that PDTF will likely need to accommodate:
       </p>
 
-      <ul>
-        <li><strong>Lettings / private rented sector</strong> — same actors but different
-        legal/regulatory frame; tenant-fees, deposit protection, EICR/gas safety, RoPA.
-        Hinted at by the existing NTS Lettings v1.0 overlay.</li>
-        <li><strong>New-build / off-plan</strong> — different conveyancing patterns,
-        warranties (NHBC), stage payments, build defects.</li>
-        <li><strong>Leasehold &amp; commonhold management</strong> — service-charge,
-        major works, RTM. LPE1 covers part; full leasehold lifecycle is broader.</li>
-        <li><strong>Probate / executor sales</strong> — title transfers without willing
-        sellers; grant-of-probate workflows.</li>
-        <li><strong>Commercial property</strong> — different forms (CPSE.1 etc.),
-        different statutory rules. Probably out of scope for PDTF v1.</li>
-        <li><strong>Auction</strong> — short timelines, different contract structures.</li>
-        <li><strong>Insurance</strong> — buildings + contents at completion; potential
-        future context.</li>
-        <li><strong>Utilities &amp; energy</strong> — meter readings, supplier
-        switching, EPC currency.</li>
-        <li><strong>Tax</strong> — SDLT calculation and submission; council tax band
-        confirmation.</li>
-      </ul>
+      <table>
+        <caption>Potential extensions to the PDTF model</caption>
+        <thead>
+          <tr><th scope="col">Potential context</th><th scope="col">Why the model needs to extend</th></tr>
+        </thead>
+        <tbody>
+          <tr><th scope="row">Lettings / private rented sector</th><td>Same actors but different legal and regulatory frame; tenant fees, deposit protection, EICR, gas safety and RoPA. Hinted at by the existing NTS Lettings v1.0 overlay.</td></tr>
+          <tr><th scope="row">New-build / off-plan</th><td>Different conveyancing patterns, warranties such as NHBC, stage payments and build defects.</td></tr>
+          <tr><th scope="row">Leasehold &amp; commonhold management</th><td>Service charges, major works and right-to-manage. LPE1 covers part; the full leasehold lifecycle is broader.</td></tr>
+          <tr><th scope="row">Probate / executor sales</th><td>Title transfers without willing sellers and grant-of-probate workflows.</td></tr>
+          <tr><th scope="row">Commercial property</th><td>Different forms, such as CPSE.1, and different statutory rules. Probably out of scope for PDTF 1.0.</td></tr>
+          <tr><th scope="row">Auction</th><td>Short timelines and different contract structures.</td></tr>
+          <tr><th scope="row">Insurance</th><td>Buildings and contents cover at completion; a potential future context.</td></tr>
+          <tr><th scope="row">Utilities &amp; energy</th><td>Meter readings, supplier switching and EPC currency.</td></tr>
+          <tr><th scope="row">Tax</th><td>SDLT calculation and submission, and council tax band confirmation.</td></tr>
+        </tbody>
+      </table>
 
       <p>
         Each future extension would be a new overlay (preserving the base
@@ -386,33 +383,17 @@ JSON Schema + OpenAPI + VC + DID
 
       <h2 id="implications">Implications for the linked-data work</h2>
 
-      <ul>
-        <li>
-          <strong>Ontology design</strong> — bind the contexts via a shared upper
-          ontology (Transaction, Property, Participant, Claim, Document) and use SKOS
-          schemes per context for vocabulary that's context-specific (e.g.
-          "instruction" means different things to a lender vs a conveyancer).
-        </li>
-        <li>
-          <strong>JSON-LD contexts</strong> — one per overlay. Each maps the
-          context-specific JSON property names to RDF terms in the shared ontology,
-          with explicit <code>@context</code> rules per overlay.
-        </li>
-        <li>
-          <strong>SHACL shapes</strong> — define per-overlay validation that reflects
-          each context's stewardship rules. The conformist overlays (HMLR, NTS, W3C)
-          have shape definitions effectively dictated by their upstream contexts.
-        </li>
-        <li>
-          <strong>Glossary structure</strong> — three-tier: shared kernel terms
-          (apply across all contexts), context-specific terms (qualified by context),
-          deprecated / superseded terms (with their replacement context).
-        </li>
-        <li>
-          <strong>Governance per context</strong> — under ToIP Layer 4, each industry
-          context probably warrants its own working-group equivalent (this echoes
-          DPMSG's existing Comms / Policy / Technical / Regulator / Engagement
-          structure, though that's organised functionally not by industry).
-        </li>
-      </ul>
+      <table>
+        <caption>Linked-data implementation implications</caption>
+        <thead>
+          <tr><th scope="col">Linked-data area</th><th scope="col">Implementation implication</th></tr>
+        </thead>
+        <tbody>
+          <tr><th scope="row">Ontology design</th><td>Bind the contexts via a shared upper ontology (Transaction, Property, Participant, Claim and Document) and use SKOS schemes per context for context-specific vocabulary. For example, “instruction” means different things to a lender and a conveyancer.</td></tr>
+          <tr><th scope="row">JSON-LD contexts</th><td>Use one per overlay. Each maps context-specific JSON property names to RDF terms in the shared ontology, with explicit <code>@context</code> rules per overlay.</td></tr>
+          <tr><th scope="row">SHACL shapes</th><td>Define per-overlay validation that reflects each context's stewardship rules. The conformist overlays (HMLR, NTS and W3C) have shape definitions effectively dictated by their upstream contexts.</td></tr>
+          <tr><th scope="row">Glossary structure</th><td>Use three tiers: shared-kernel terms that apply across all contexts; context-specific terms qualified by context; and deprecated or superseded terms with their replacement context.</td></tr>
+          <tr><th scope="row">Governance per context</th><td>Under ToIP Layer 4, each industry context probably warrants its own working-group equivalent. This echoes DPMSG's existing Comms, Policy, Technical, Regulator and Engagement structure, although that is organised functionally rather than by industry.</td></tr>
+        </tbody>
+      </table>
 </Layout>

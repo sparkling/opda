@@ -1,7 +1,7 @@
 ---
 status: implemented
 date: 2026-08-16
-updated: 2026-08-20
+updated: 2026-08-21
 tags: [design-system, brand, website, accessibility, css, governance, presentation]
 supersedes: [ADR-0025]
 depends-on: [ADR-0064]
@@ -82,6 +82,12 @@ On 20 August 2026 the shared documentation track was set to a single 1600px maxi
 The former narrow 66ch prose measure and page-specific width exceptions were removed,
 so every page uses the same outer content-width authority, including comments and
 previous/next navigation.
+
+On 21 August 2026 the shared prose rhythm and table hierarchy were clarified after
+rendered-page review: lists receive tokenised separation above and below, while
+column headers, row headers and zebra rows use three distinct semantic surfaces in
+both colour themes. Row headers use a restrained brand-yellow tint so the identifying
+column cannot collapse visually into a neutral zebra row.
 
 ### Brand conflict resolution
 

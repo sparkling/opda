@@ -10,6 +10,8 @@ const paths = {
   campaignCss: new URL('../src/styles/working-group-campaign.css', import.meta.url),
   campaignResponsiveCss: new URL('../src/styles/working-group-campaign-responsive.css', import.meta.url),
   campaignSectionsCss: new URL('../src/styles/working-group-campaign-sections.css', import.meta.url),
+  header: new URL('../src/components/Header.astro', import.meta.url),
+  baseCss: new URL('../public/ui/design/base.css', import.meta.url),
 };
 
 const expectedGroups = [
@@ -53,6 +55,21 @@ test('public sign-up form exposes only the accepted working-group and contributi
   assert.match(source, /name="website"/u);
   assert.match(source, /name="startedAt"/u);
   assert.match(source, /data-privacy-notice-version=\{privacyNoticeVersion\}/u);
+});
+
+test('global header promotes the canonical working-group sign-up route', async () => {
+  const [header, baseCss] = await Promise.all([
+    readFile(paths.header, 'utf8'),
+    readFile(paths.baseCss, 'utf8'),
+  ]);
+
+  assert.match(header, /<a href="\/working-groups\/join" class="header-cta">Join a working group<\/a>/u);
+  assert.match(header, /<a href="\/search" class="header-icon-link" aria-label="Search" title="Search">[\s\S]*?<svg[\s\S]*?aria-hidden="true"/u);
+  assert.match(header, /class="header-icon-link"[\s\S]*?aria-label="GitHub"\s+title="GitHub"[\s\S]*?<svg[\s\S]*?aria-hidden="true"/u);
+  assert.doesNotMatch(header, />Search<\/a>|>GitHub<\/a>/u);
+  assert.match(baseCss, /\.app-header \.header-nav a\.header-icon-link\s*\{[^}]*width:\s*var\(--target-min\)[^}]*justify-content:\s*center/su);
+  assert.match(baseCss, /\.app-header \.header-nav a\.header-cta\s*\{[^}]*background:\s*var\(--brand-yellow\)[^}]*color:\s*var\(--brand-ink\)/su);
+  assert.match(baseCss, /@media \(max-width: 86rem\)\s*\{[\s\S]*\.app-header \.global-nav-panel \.header-nav\s*\{[^}]*grid-column:\s*1 \/ -1/su);
 });
 
 test('registration script sends the fixed allowlisted payload to the same-origin endpoint', async () => {

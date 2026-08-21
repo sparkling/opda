@@ -41,15 +41,18 @@
 }
 .glossary-table tbody tr:last-child td { border-bottom: 0; }
 .glossary-table th {
-  background: var(--color-surface-tint);
-  color: var(--color-text-strong);
+  background: var(--color-table-header-surface);
+  color: var(--color-table-header-text);
   font: 600 var(--text-xs) / 1.4 var(--font-sans);
   text-transform: uppercase;
   letter-spacing: var(--tracking-meta);
 }
-:root[data-theme="dark"] .glossary-table th { background: var(--color-surface-dark-tint); }
-.glossary-table tbody tr:nth-child(2n) { background: var(--color-surface-tint); }
-:root[data-theme="dark"] .glossary-table tbody tr:nth-child(2n) { background: var(--color-surface-dark-raised); }
+:root[data-theme="dark"] .glossary-table th {
+  background: var(--color-table-header-surface);
+  color: var(--color-table-header-text);
+}
+.glossary-table tbody tr:nth-child(2n) { background: var(--color-table-stripe-surface); }
+:root[data-theme="dark"] .glossary-table tbody tr:nth-child(2n) { background: var(--color-table-stripe-surface); }
 .glossary-table td:first-child {
   font: 600 var(--text-sm) / 1.4 var(--font-mono);
   color: var(--color-link);
