@@ -174,6 +174,16 @@ export default defineConfig({
   integrations: [reportGenerator(), diagramLinksGenerator(), councilGenerator(), sitemap({
     filter: (page) => !/\/(404|resource)\/?$/.test(page),
   })],
+  // The ADR, ODR and generated manual collections exceed Vite's safe
+  // single-module size in development. Astro's chunked store keeps each
+  // virtual module below 1 MiB, so getCollection() cannot silently fall back
+  // to an empty store after an import-analysis failure.
+  experimental: {
+    collectionStorage: {
+      type: 'chunked',
+      chunkSize: 1024 * 1024,
+    },
+  },
   // No sharp installed; pass PNG/JPG through without optimisation.
   // Manual content collection renders PNG images from docs/manual/ diagrams/;
   // pre-existing site pages also triggered this. ADR-0016.
