@@ -14,6 +14,17 @@ export const SEMANTIC_MODELLING_ROUTES = [
   '/spdtf-2/ontologies/validation',
 ];
 
+export const PDTF_ONTOLOGY_CATEGORY_ROUTES = [
+  '/ontology',
+  '/ontology/lineage-and-verification',
+  '/ontology/concepts-and-architecture',
+  '/ontology/contexts',
+  '/ontology/terms-and-model-resources',
+  '/ontology/validation-and-examples',
+  '/ontology/trust-and-governance',
+  '/ontology/use-and-tooling',
+];
+
 export const ROUTES = [
   '/',
   '/home',
@@ -26,6 +37,7 @@ export const ROUTES = [
   '/spdtf-2/outputs',
   '/pdtf-1',
   '/pdtf-1/original-standard',
+  ...PDTF_ONTOLOGY_CATEGORY_ROUTES,
   '/governance',
   '/resources',
   '/search?q=PDTF',
@@ -40,6 +52,9 @@ export const ROUTES = [
   '/schema/legal-estate/ownership/leasehold/lease-legal/building-safety',
   '/ontology/graph',
   '/ontology/classes',
+  '/ontology/context/agent',
+  '/model/concept/agent/buyer',
+  '/mapping/coverage',
   '/pdtf/Seller',
   '/spdtf-2/property-pack',
   '/spdtf-2/property-pack/definition-and-scope',

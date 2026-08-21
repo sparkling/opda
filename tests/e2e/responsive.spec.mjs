@@ -1,6 +1,7 @@
 import { test, expect } from '@playwright/test';
 import {
   assertNoBodyOverflow,
+  PDTF_ONTOLOGY_CATEGORY_ROUTES,
   SEMANTIC_MODELLING_ROUTES,
   visit,
   watchRuntime,
@@ -45,7 +46,11 @@ test('forced colours preserve visible focus and labelled controls', async ({ pag
 test('canonical IA tables and group pages reflow at 320 CSS px', async ({ page }) => {
   const clean = watchRuntime(page);
   await page.setViewportSize({ width: 320, height: 900 });
-  for (const path of [...SEMANTIC_MODELLING_ROUTES, '/spdtf-2/working-groups/estate-agency']) {
+  for (const path of [
+    ...SEMANTIC_MODELLING_ROUTES,
+    ...PDTF_ONTOLOGY_CATEGORY_ROUTES,
+    '/spdtf-2/working-groups/estate-agency',
+  ]) {
     await visit(page, path);
     await assertNoBodyOverflow(page);
   }

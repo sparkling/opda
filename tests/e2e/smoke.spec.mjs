@@ -86,6 +86,38 @@ test('mobile section drawer returns focus on Escape', async ({ page }) => {
   clean();
 });
 
+test('mobile PDTF ontology hierarchy keeps folder labels linked and keyboard ordered', async ({ page }) => {
+  const clean = watchRuntime(page);
+  await page.setViewportSize({ width: 320, height: 900 });
+  await visit(page, '/ontology/classes');
+  const opener = page.locator('#menu-toggle');
+  const sidebar = page.locator('#app-sidebar');
+  await opener.click();
+
+  const branch = sidebar.locator('.tree-folder:has(> .tree-folder-row > a[href="/ontology/terms-and-model-resources"])');
+  const toggle = branch.locator(':scope > .tree-folder-row > .tree-toggle');
+  const link = branch.locator(':scope > .tree-folder-row > .tree-folder-link');
+  await expect(branch).toHaveClass(/is-open/u);
+  await expect(toggle).toHaveAttribute('aria-expanded', 'true');
+  const targets = await Promise.all([toggle, link].map((locator) => locator.boundingBox()));
+  for (const target of targets) expect(target.height).toBeGreaterThanOrEqual(44);
+
+  await toggle.focus();
+  await page.keyboard.press('Tab');
+  await expect(link).toBeFocused();
+  const before = page.url();
+  await toggle.focus();
+  await page.keyboard.press('Space');
+  expect(page.url()).toBe(before);
+  await expect(toggle).toHaveAttribute('aria-expanded', 'false');
+  await assertNoBodyOverflow(page);
+
+  await page.keyboard.press('Escape');
+  await expect(sidebar).not.toHaveClass(/open/u);
+  await expect(opener).toBeFocused();
+  clean();
+});
+
 test('semantic modelling exposes linked audience branches and one active page', async ({ page }) => {
   const clean = watchRuntime(page);
   await visit(page, '/spdtf-2/ontologies/standards');

@@ -18,9 +18,11 @@ implements: [src/pages/spdtf-2/property-pack, src/lib/site-navigation.ts, src/li
 > implementation does not change this ADR's Accepted status or make Proposed
 > ADR-0065/0068 lifecycle policy operative.
 >
-> Update 2026-08-21: the two-part PDTF 1.0 hierarchy is implemented. Linked
-> Original standard and canonical `/ontology` category pages now organise every
-> existing technical route without moving it or changing its page-level status.
+> Update 2026-08-21: the two-part PDTF 1.0 hierarchy is implemented. The canonical
+> `/ontology` branch now uses linked task-category pages, nested model tiers and a
+> context index to organise every existing technical route without moving it or
+> changing page-level status. Expandable labels remain links; separate controls
+> disclose their children.
 
 ## Context and Problem Statement
 
@@ -136,10 +138,15 @@ PDTF 1.0
 │   ├── Implementation guidance
 │   └── Adoption evidence
 └── Extracted PDTF 1.0 ontology
-    ├── Ontology and model reference
-    ├── Qualified mappings and provenance
-    ├── Known limitations
-    └── Property Pack coverage crosswalk
+    ├── Lineage, provenance and verification
+    │   ├── Historical modelling record
+    │   └── Independent schema-to-ontology verification
+    ├── Model views by audience and nested implementation tiers
+    ├── Concepts and architecture, including ontology contexts
+    ├── Terms and model resources
+    ├── Validation and examples
+    ├── Trust, governance and limitations
+    └── Use and tooling
 ```
 
 ### Property Pack route and version contract

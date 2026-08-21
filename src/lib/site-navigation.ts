@@ -144,12 +144,6 @@ const workingGroupItems: Item[] = WORKING_GROUPS.map((group) => {
   };
 });
 
-function insertAfter(items: Item[], afterUrl: string, item: Item): Item[] {
-  const index = items.findIndex((candidate) => normalizeUrl(candidate.url) === afterUrl);
-  if (index < 0) throw new Error(`Cannot position navigation item after ${afterUrl}`);
-  return [...items.slice(0, index + 1), item, ...items.slice(index + 1)];
-}
-
 function sectionJourney(
   sectionKey: string,
   owner: DestinationKey,
@@ -167,33 +161,122 @@ function sectionJourney(
   };
 }
 
+function linkedGroupJourney(
+  sectionKey: string,
+  heading: string,
+  owner: DestinationKey,
+  url: string,
+  title: string,
+): Item {
+  const landing = normalizeUrl(url);
+  const items = ownedGroupItems(sectionKey, heading, owner);
+  const parent = items.find((item) => normalizeUrl(item.url) === landing);
+  if (!parent) throw new Error(`Navigation group ${sectionKey}/${heading} has no landing ${url}`);
+  const children = items.filter((item) => normalizeUrl(item.url) !== landing);
+  return {
+    ...parent,
+    title,
+    children: [...(parent.children ?? []), ...children],
+  };
+}
+
+function requiredItem(items: Item[], url: string, title?: string): Item {
+  const path = normalizeUrl(url);
+  const item = items.find((candidate) => normalizeUrl(candidate.url) === path);
+  if (!item) throw new Error(`Required navigation item is missing: ${url}`);
+  return title ? { ...item, title } : item;
+}
+
 const pdtfSchemaJourney = sectionJourney('schema', 'pdtf-1', 'JSON Schemas and overlays', {
   append: [{ url: '/modelling/overlays', title: 'Schema overlays' }],
 });
 const pdtfImplementationJourney = sectionJourney('implementation', 'pdtf-1', 'Implementation guidance');
 const pdtfAdoptionJourney = sectionJourney('adoption', 'pdtf-1', 'Adoption evidence');
-const pdtfModellingJourney = sectionJourney('modelling', 'pdtf-1', 'How it was derived', {
+const pdtfModellingJourney = sectionJourney('modelling', 'pdtf-1', 'Historical modelling record', {
   exclude: ['/modelling/overlays', '/modelling/data-dictionary', '/modelling/business-glossary'],
 });
-const pdtfModelJourney = sectionJourney('model', 'pdtf-1', 'Model views');
-
-const pdtfOntologyItems = insertAfter(
-  ownedSectionItems('ontology', 'pdtf-1').filter(({ url }) => normalizeUrl(url) !== '/ontology'),
-  '/ontology/properties',
-  { url: '/ontology/datatypes', title: 'Datatypes' },
-);
-const pdtfOntologyChildren = insertAfter(
-  pdtfOntologyItems,
-  '/ontology/known-issues',
-  { url: '/ontology/namespaces', title: 'Namespaces' },
-);
-const pdtfOntologyJourney: Item = {
-  url: '/ontology',
-  title: 'Ontology reference',
-  children: pdtfOntologyChildren,
+const pdtfMappingJourney = sectionJourney('mapping', 'pdtf-1', 'Schema-to-ontology verification');
+const pdtfModelOverviewItems = ownedGroupItems('model', 'Overview', 'pdtf-1');
+const pdtfModelJourney: Item = {
+  url: '/model',
+  title: 'Model views by audience',
+  children: [
+    requiredItem(pdtfModelOverviewItems, '/model/information-architecture'),
+    linkedGroupJourney('model', 'Concept tier — for SMEs', 'pdtf-1', '/model/concept', 'Concept model'),
+    linkedGroupJourney('model', 'Logical tier — for engineers', 'pdtf-1', '/model/logical', 'Logical model'),
+    linkedGroupJourney('model', 'Physical — ontology', 'pdtf-1', '/model/physical-ontology', 'Ontology implementation'),
+    linkedGroupJourney('model', 'Physical — deployment', 'pdtf-1', '/model/physical-database', 'Deployment topology'),
+    linkedGroupJourney('model', 'Physical — relational', 'pdtf-1', '/model/physical-relational', 'Relational projection'),
+    requiredItem(pdtfModelOverviewItems, '/model/validation-report'),
+  ],
 };
 
-const pdtfMappingJourney = sectionJourney('mapping', 'pdtf-1', 'Schema-to-ontology verification');
+const pdtfOntologyItems = [
+  ...ownedSectionItems('ontology', 'pdtf-1').filter(({ url }) => normalizeUrl(url) !== '/ontology'),
+  { url: '/ontology/datatypes', title: 'Datatypes' },
+  { url: '/ontology/namespaces', title: 'Namespaces' },
+];
+const ontologyItem = (url: string, title?: string): Item => requiredItem(pdtfOntologyItems, url, title);
+const pdtfLineageJourney: Item = {
+  url: '/ontology/lineage-and-verification',
+  title: 'Lineage, provenance and verification',
+  children: [
+    pdtfModellingJourney,
+    pdtfMappingJourney,
+    ontologyItem('/ontology/provenance', 'Decision provenance'),
+  ],
+};
+const pdtfConceptsJourney: Item = {
+  url: '/ontology/concepts-and-architecture',
+  title: 'Concepts and architecture',
+  children: [
+    ontologyItem('/ontology/foundation'),
+    ontologyItem('/ontology/identity'),
+    { url: '/ontology/contexts', title: 'Ontology contexts' },
+    ontologyItem('/ontology/foundational-ontology'),
+    ontologyItem('/ontology/modelling-frameworks'),
+  ],
+};
+const pdtfTermsJourney: Item = {
+  url: '/ontology/terms-and-model-resources',
+  title: 'Terms and model resources',
+  children: [
+    ontologyItem('/ontology/graph'),
+    ontologyItem('/ontology/classes'),
+    ontologyItem('/ontology/category'),
+    ontologyItem('/ontology/properties'),
+    ontologyItem('/ontology/datatypes'),
+    ontologyItem('/ontology/vocabularies'),
+    ontologyItem('/ontology/glossary'),
+  ],
+};
+const pdtfValidationJourney: Item = {
+  url: '/ontology/validation-and-examples',
+  title: 'Validation and examples',
+  children: [
+    ontologyItem('/ontology/shapes'),
+    ontologyItem('/ontology/profiles'),
+    ontologyItem('/ontology/exemplars'),
+  ],
+};
+const pdtfTrustJourney: Item = {
+  url: '/ontology/trust-and-governance',
+  title: 'Trust, governance and limitations',
+  children: [
+    ontologyItem('/ontology/claims'),
+    ontologyItem('/ontology/governance'),
+    ontologyItem('/ontology/known-issues'),
+  ],
+};
+const pdtfUseJourney: Item = {
+  url: '/ontology/use-and-tooling',
+  title: 'Use and tooling',
+  children: [
+    ontologyItem('/ontology/usage'),
+    ontologyItem('/ontology/namespaces'),
+    ontologyItem('/ontology/bake-off'),
+  ],
+};
 
 const navigationSections: Record<DestinationKey, NavigationSection> = {
   programme: {
@@ -243,10 +326,13 @@ const navigationSections: Record<DestinationKey, NavigationSection> = {
         pdtfAdoptionJourney,
       ]),
       category('Extracted ontology', '/ontology', [
-        pdtfModellingJourney,
+        pdtfLineageJourney,
         pdtfModelJourney,
-        pdtfOntologyJourney,
-        pdtfMappingJourney,
+        pdtfConceptsJourney,
+        pdtfTermsJourney,
+        pdtfValidationJourney,
+        pdtfTrustJourney,
+        pdtfUseJourney,
       ]),
     ],
   },
@@ -285,7 +371,7 @@ const STANDALONE_SURFACES = [
 
 const ACTIVE_ROUTE_ALIASES = [
   { pattern: /^\/ontology\/category\//u, target: '/ontology/category' },
-  { pattern: /^\/ontology\/context\//u, target: '/ontology' },
+  { pattern: /^\/ontology\/context\//u, target: '/ontology/contexts' },
   { pattern: /^\/ontology\/exemplar\//u, target: '/ontology/exemplars' },
   { pattern: /^\/ontology\/profile\//u, target: '/ontology/profiles' },
   { pattern: /^\/mapping\/triplesmaps\//u, target: '/mapping/triplesmaps' },

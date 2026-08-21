@@ -222,7 +222,7 @@ export const SECTIONS: Record<string, Section> = {
     key: 'model',
     title: 'Model',
     summary:
-      'Four-tier presentation of the OPDA ontology model — concept narrative for SMEs, logical entity-relationship view for engineers, physical deployment topology for triplestore operators, and physical-ontology Turtle for ontology engineers.',
+      'Five linked presentations of the PDTF 1.0-derived ontology model: concept narrative, logical relationships, ontology implementation, deployment topology and relational projection.',
     groups: [
       {
         heading: 'Overview',
@@ -345,7 +345,7 @@ export const SECTIONS: Record<string, Section> = {
     key: 'ontology',
     title: 'Ontology',
     summary:
-      'The published, authoritative reference of the OPDA PDTF ontology — generated from the committed TTL corpus and guarded by the doc-drift CI gate. The canonical specification to link people to: term reference, SHACL shapes, SKOS schemes, overlay profiles, exemplars, governance/provenance, and the known-issues register.',
+      'The draft semantic reference extracted from PDTF 1.0 evidence — generated from the committed TTL corpus and guarded by the doc-drift CI gate. It documents terms, SHACL shapes, SKOS schemes, overlay profiles, exemplars, governance, provenance and known limitations; it is not an approved SPDTF 2.0 ontology.',
     groups: [
       { heading: 'Overview', items: [
         { url: '/ontology', title: 'Section overview' },

@@ -54,11 +54,12 @@ function containsActive(item: Item): boolean {
         const containsActivePage = isActivePage || group.items.some(containsActive);
         const hasChildren = group.items.length > 0;
         const defaultOpen = hasChildren && containsActivePage;
+        const emphasizeFolders = section.key === 'pdtf-1' && group.url === '/ontology';
         const childrenId = `section-nav-group-${section.key}-${group.url}`
           .replace(/[^a-z0-9]+/giu, '-').replace(/^-|-$/gu, '');
         return (
           <section
-            class={`nav-group${defaultOpen ? ' is-open' : ''}`}
+            class={`nav-group${emphasizeFolders ? ' has-emphasized-folders' : ''}${defaultOpen ? ' is-open' : ''}`}
             data-group={group.heading}
             data-active={containsActivePage ? 'true' : undefined}
           >
@@ -87,7 +88,14 @@ function containsActive(item: Item): boolean {
             </div>
             {hasChildren && (
               <ul class="tree nav-group-items" id={childrenId}>
-                {group.items.map(item => <SidebarItem item={item} activePath={activePath} containsActive={containsActive} />)}
+                {group.items.map(item => (
+                  <SidebarItem
+                    item={item}
+                    activePath={activePath}
+                    containsActive={containsActive}
+                    emphasized={emphasizeFolders}
+                  />
+                ))}
               </ul>
             )}
           </section>

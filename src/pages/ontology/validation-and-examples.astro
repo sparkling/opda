@@ -1,0 +1,58 @@
+---
+import Layout from '@/layouts/Layout.astro';
+import PageMeta from '@/components/PageMeta.astro';
+import GatewayCard from '@/components/ia/GatewayCard.astro';
+---
+
+<Layout
+  title="Validation and examples"
+  description="Understand the SHACL constraint layer, overlay profiles, gap register, diagnostic exemplars and validation evidence for the PDTF 1.0-derived ontology."
+>
+  <PageMeta category="PDTF 1.0 · extracted ontology" variant="brand" updated="Draft · under review" />
+  <h1>Validation and examples</h1>
+  <p class="lead">
+    This category connects the ontology’s constraint layer to concrete diagnostic data. It
+    explains what SHACL checks, how form-specific profiles constrain one shared class model,
+    which source leaves remain recorded as gaps, and how exemplar graphs demonstrate expected
+    conformance and failure behaviour.
+  </p>
+
+  <div class="callout callout--warn">
+    <p class="callout__label">PDTF 1.0-derived draft</p>
+    <p>
+      Passing the documented checks shows conformance to tested rules in the draft corpus. It
+      does not approve the semantic model, prove source data true, or establish an SPDTF 2.0
+      standard. Known limits and validator requirements remain part of the result.
+    </p>
+  </div>
+
+  <h2 id="layers">How the validation evidence fits together</h2>
+  <ol>
+    <li><strong>Base shapes</strong> express graph constraints separately from OWL class semantics.</li>
+    <li><strong>Overlay profiles</strong> select form-specific constraints and record uncovered source leaves in the gap register.</li>
+    <li><strong>Diagnostic exemplars</strong> pair instance graphs with expected reports for hard cases and negative tests.</li>
+    <li><strong>Validation reports</strong> summarise generated-page and corpus checks without turning technical success into semantic approval.</li>
+  </ol>
+
+  <h2 id="inspect">Inspect constraints and evidence</h2>
+  <div class="card-grid">
+    <GatewayCard href="/ontology/shapes" title="SHACL shapes" eyebrow="Constraint reference" description="Browse base node shapes, severity levels and SHACL-AF rules generated from the committed shapes graph." />
+    <GatewayCard href="/ontology/profiles" title="Overlay profiles and gaps" eyebrow="Form-specific constraints" description="Inspect each overlay profile, bound versus thin status, source instrument and the explicit gap register." />
+    <GatewayCard href="/ontology/exemplars" title="Diagnostic exemplars" eyebrow="Worked data" description="Review conformant and non-conformant instance graphs paired with their expected SHACL reports and hard-case rationale." />
+    <GatewayCard href="/model/validation-report" title="Model validation report" eyebrow="Generated assurance" description="See coverage and validation results for the generated model presentation and its underlying ontology corpus." />
+  </div>
+
+  <h2 id="interpret">Interpret results carefully</h2>
+  <table>
+    <thead><tr><th scope="col">A green check can show…</th><th scope="col">It cannot show…</th></tr></thead>
+    <tbody>
+      <tr><td>The input parsed and satisfied the tested SHACL configuration.</td><td>That every relevant business rule has been encoded.</td></tr>
+      <tr><td>A generated page agrees with the committed source used by its drift gate.</td><td>That the source definition has been approved by SPDTF 2.0 participants.</td></tr>
+      <tr><td>An exemplar produced its recorded expected report.</td><td>That arbitrary real-world data or untested inference regimes behave identically.</td></tr>
+    </tbody>
+  </table>
+  <p>
+    Before relying on a result, review the <a href="/ontology/known-issues">known issues and validator caveats</a>
+    and use the exact validation recipe on <a href="/ontology/usage#validation">Consume the ontology</a>.
+  </p>
+</Layout>

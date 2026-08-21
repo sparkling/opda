@@ -279,6 +279,9 @@ states, plus loading/error/success where asynchronous work occurs and dark parit
 - **Tabs:** semantic tablist, arrow-key operation and yellow-underlined selection.
 - **Breadcrumbs:** ordered navigation with a non-linked current item. Use DM Sans
   500 at the base 16px role with a 24px line-height; links have a 44px target.
+- **Sidebar disclosure:** linked folder rows in a task-oriented hierarchy use a quiet
+  tinted surface, structural border and bold label so they are distinct from leaf
+  links. A separate 44px disclosure button expands each branch; its label opens the page.
 - **Status badge:** icon, complete text label and tint; never a bare dot.
 - **Provenance chip:** Roboto Mono source and timestamp; links to evidence when
   available.

@@ -4,7 +4,6 @@ Status: **implemented on `main`; Property Pack consolidation in progress; public
 Date: 2026-08-20<br>
 Decision record: [ADR-0074](./adr/ADR-0074-organise-site-around-spdtf-2-0-and-pdtf-1-0.md)<br>
 Review artefact: [HTML presentation](./spdtf-2-0-information-architecture.html)
-
 ## Executive decision
 
 Reorganise the documentation around six global destinations:
@@ -19,7 +18,6 @@ Reorganise the documentation around six global destinations:
 This is an asymmetric continuation structure. It distinguishes PDTF 1.0 from SPDTF 2.0 work in development, while governance, participation and source resources remain shared services. It avoids mirrored sites with competing definitions of authority.
 
 The site implements the navigation, hierarchy, status model and preservation gates as one coherent system. It does not by itself publish or deploy the production site. ADR-0075 authorises one deliberate route break: the obsolete Property Pack paths move without redirects to one canonical SPDTF 2.0 family.
-
 ## Terminology and authority
 
 - **SPDTF** means **Smart Property Data Trust Framework**. It is the current name of the programme and standardisation process.
@@ -29,7 +27,6 @@ The site implements the navigation, hierarchy, status model and preservation gat
 - **The Property Pack ontology** is a machine-generated, non-normative component of SPDTF 2.0. The Technical Working Group determination is pending; later domain-group review remains a separate status. It is not merely an external development input and it is not the whole SPDTF 2.0 ontology.
 
 ## Why the structure must change
-
 The current header presents thirteen peer sections. It mixes programme context, governance, policy, the published implementation, a machine-generated seed and historical resources. A reader cannot reliably infer which material is operative, proposed, historical or under review.
 
 The programme is continuing from one materially different modelling approach to another:
@@ -57,7 +54,7 @@ The architecture is grounded in:
 The implementation is made auditable by:
 
 - an executable route, ownership and status contract in `src/lib/site-ia.mjs`;
-- a frozen before/after route manifest covering 3,436 baseline routes and every retained fragment, plus classified records for 53 new routes;
+- a frozen before/after route manifest covering 3,436 baseline routes and every retained fragment, plus classified records for 64 new routes;
 - exact path, size and SHA-256 manifests for high-risk source, council, ontology,
   data, UI, image, tool and Property Pack route families;
 - end-to-end journeys for authentication, comments, source viewing/download and
@@ -251,10 +248,13 @@ Home /
 │   │   ├── Implementation guidance
 │   │   └── Adoption evidence
 │   └── Extracted ontology /ontology
-│       ├── Derivation records /modelling
-│       ├── Model views /model
-│       ├── Ontology reference pages /ontology/**
-│       └── Qualified schema-to-ontology verification /mapping
+│       ├── Lineage, provenance and verification → historical modelling /modelling; independent RML verification /mapping; decision provenance
+│       ├── Model views by audience /model → information architecture; concept; logical; ontology, deployment and relational implementations; validation
+│       ├── Concepts and architecture → foundations; identity; PDTF 1.0-derived contexts; modelling frameworks
+│       ├── Terms and model resources → graph; classes; categories; properties; datatypes; vocabularies; glossary
+│       ├── Validation and examples → SHACL shapes; profiles; exemplars
+│       ├── Trust, governance and limitations → claims; PII/governance; known issues
+│       └── Use and tooling → consumption; namespaces; tool evidence
 ├── Governance /governance
 │   ├── Authority and decision rights
 │   ├── Canonical status and provenance registry

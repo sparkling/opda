@@ -43,8 +43,10 @@ implements: [docs/spdtf-2-0-information-architecture.md]
 > Update 2026-08-20 — local navigation categories: each left-rail category heading
 > is now its canonical landing-page link, with a separate disclosure button for child
 > pages. The landing no longer appears as a duplicate child, but remains in breadcrumb
-> and previous/next sequences. Existing substantive overview routes remain available;
-> this interaction change does not delete or reclassify their content.
+> and previous/next sequences. The PDTF 1.0 extracted-ontology branch further groups
+> lineage, audience views, architecture, terms, validation, trust and tooling beneath
+> substantive linked landings; nested model tiers retain their real overview pages.
+> Existing routes remain available and keep their authority and status.
 >
 > Update 2026-08-20 — semantic-modelling depth: the implemented branch now has two
 > linked audience paths: Understand ontologies, including a model-reading guide; and

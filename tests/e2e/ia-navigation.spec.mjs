@@ -125,12 +125,60 @@ test('PDTF 1.0 navigation separates the original standard from the extracted ont
   await expect(navigation.locator('a[aria-current="page"]')).toHaveText('Classes');
   await expect(navigation.locator('.nav-group[data-group="Extracted ontology"]')).toHaveClass(/is-open/u);
   await expect(navigation.locator('.nav-group[data-group="Original standard"]')).not.toHaveClass(/is-open/u);
+  const taskCategories = navigation.locator('.nav-group[data-group="Extracted ontology"] .tree-folder.is-task-category');
+  await expect(taskCategories).toHaveCount(7);
+  await expect(taskCategories.filter({ has: page.locator('a[href="/ontology/terms-and-model-resources"]') }))
+    .toHaveClass(/is-open/u);
+  await expect(taskCategories.filter({ has: page.locator('a[href="/ontology/validation-and-examples"]') }))
+    .not.toHaveClass(/is-open/u);
+  const categoryStyle = await navigation.locator('a[href="/ontology/terms-and-model-resources"]')
+    .evaluate((link) => {
+      const row = link.parentElement;
+      const leaf = document.querySelector('#section-navigation a[href="/ontology/properties"]');
+      const rowStyle = getComputedStyle(row);
+      return {
+        background: rowStyle.backgroundColor,
+        border: rowStyle.borderTopStyle,
+        categoryWeight: getComputedStyle(link).fontWeight,
+        leafWeight: getComputedStyle(leaf).fontWeight,
+      };
+    });
+  expect(categoryStyle.background).not.toBe('rgba(0, 0, 0, 0)');
+  expect(categoryStyle.border).toBe('solid');
+  expect(Number(categoryStyle.categoryWeight)).toBeGreaterThan(Number(categoryStyle.leafWeight));
+  const nestedFolderStyle = await navigation.locator('a[href="/mapping"]')
+    .evaluate((link) => ({
+      background: getComputedStyle(link.parentElement).backgroundColor,
+      weight: getComputedStyle(link).fontWeight,
+    }));
+  expect(nestedFolderStyle.background).not.toBe('rgba(0, 0, 0, 0)');
+  expect(Number(nestedFolderStyle.weight)).toBeGreaterThan(Number(categoryStyle.leafWeight));
+  const disclosureContract = await navigation.locator('.nav-group[data-group="Extracted ontology"] .tree-folder')
+    .evaluateAll((folders) => folders.map((folder) => {
+      const row = folder.querySelector(':scope > .tree-folder-row');
+      const controls = row.querySelector('button').getAttribute('aria-controls');
+      return {
+        controls,
+        tags: [...row.children].map(({ tagName }) => tagName),
+        buttonName: row.querySelector('button').getAttribute('aria-label'),
+        linkText: row.querySelector('a').textContent.trim(),
+        targetCount: document.querySelectorAll(`#${CSS.escape(controls)}`).length,
+      };
+    }));
+  expect(new Set(disclosureContract.map(({ controls }) => controls)).size)
+    .toBe(disclosureContract.length);
+  for (const record of disclosureContract) {
+    expect(record.tags).toEqual(['BUTTON', 'A']);
+    expect(record.buttonName).toMatch(/^(?:Expand|Collapse) /u);
+    expect(record.buttonName).toContain(record.linkText);
+    expect(record.targetCount).toBe(1);
+  }
   for (const id of [
     'schema', 'implementation', 'adoption', 'modelling', 'model', 'ontology', 'mapping',
   ]) await expect(page.locator(`#section-nav-group-pdtf-1-${id}`)).toHaveCount(1);
 
   await expect(page.locator('nav[aria-label="Breadcrumb"] li')).toHaveText([
-    /PDTF 1\.0/u, /Extracted ontology/u, /Classes/u,
+    /PDTF 1\.0/u, /Extracted ontology/u, /Terms and model resources/u, /Classes/u,
   ]);
 
   await visit(page, '/schema/legal-estate');
@@ -142,7 +190,26 @@ test('PDTF 1.0 navigation separates the original standard from the extracted ont
   await expect(page.locator('h1')).toHaveText('PDTF 1.0-derived ontology reference');
   await expect(page.locator('nav[aria-label="Breadcrumb"] [aria-current="page"]'))
     .toHaveText('Extracted ontology');
-  await expect(page.locator('nav.page-footer a').last()).toHaveAttribute('href', '/modelling');
+  expect(await page.locator('#explore + p + .card-grid > a').evaluateAll((cards) => (
+    cards.map((card) => card.getAttribute('href'))
+  ))).toEqual([
+    '/ontology/lineage-and-verification', '/model', '/ontology/concepts-and-architecture',
+    '/ontology/terms-and-model-resources', '/ontology/validation-and-examples',
+    '/ontology/trust-and-governance', '/ontology/use-and-tooling',
+  ]);
+  await expect(page.locator('nav.page-footer a').last())
+    .toHaveAttribute('href', '/ontology/lineage-and-verification');
+
+  for (const [route, label] of [
+    ['/model', 'Model views by audience'],
+    ['/ontology/trust-and-governance', 'Trust, governance and limitations'],
+    ['/ontology/use-and-tooling', 'Use and tooling'],
+  ]) {
+    await visit(page, route);
+    await expect(page.locator('h1')).toHaveText(label);
+    await expect(page.locator('nav[aria-label="Breadcrumb"] [aria-current="page"]')).toHaveText(label);
+    await expect(page.locator('#section-navigation a[aria-current="page"]')).toHaveText(label);
+  }
   clean();
 });
 

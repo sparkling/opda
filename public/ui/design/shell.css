@@ -327,6 +327,23 @@
   min-width: 0;
   border-radius: var(--radius-md);
 }
+.app-sidebar .nav-group.has-emphasized-folders .tree-folder > .tree-folder-row {
+  margin-block: var(--space-2);
+  border: 1px solid var(--color-border);
+  background: var(--color-surface-tint);
+}
+.app-sidebar .nav-group.has-emphasized-folders .tree-folder > .tree-folder-row > .tree-folder-link {
+  font-weight: 700;
+  color: var(--color-text-strong);
+}
+.app-sidebar .nav-group.has-emphasized-folders .tree-folder > .tree-folder-row > .tree-toggle {
+  height: auto;
+  border-inline-end: 1px solid var(--color-border);
+  border-radius: 0;
+}
+.app-sidebar .nav-group.has-emphasized-folders .tree-folder.is-open > .tree-folder-row {
+  border-color: var(--color-border-strong);
+}
 .app-sidebar .tree-toggle {
   display: flex;
   align-items: center;

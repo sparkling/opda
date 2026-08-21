@@ -13,9 +13,10 @@ interface Props {
   item: Item;
   activePath: string;
   containsActive: (item: Item) => boolean;
+  emphasized?: boolean;
 }
 
-const { item, activePath, containsActive } = Astro.props;
+const { item, activePath, containsActive, emphasized = false } = Astro.props;
 const isLeaf = !item.children;
 const itemPath = normalizeUrl(item.url);
 const isActive = itemPath === activePath;
@@ -35,7 +36,7 @@ const childrenId = legacyPdtfGroupId
     >{item.title}</a>
   </li>
 ) : (
-  <li class={`tree-folder${isOpen ? ' is-open' : ''}${isActive ? ' is-active-page' : ''}`}>
+  <li class={`tree-folder${emphasized ? ' is-task-category' : ''}${isOpen ? ' is-open' : ''}${isActive ? ' is-active-page' : ''}`}>
     <div class="tree-folder-row">
       <button
         type="button"

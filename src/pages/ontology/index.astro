@@ -15,6 +15,7 @@
  */
 import Layout from '@/layouts/Layout.astro';
 import PageMeta from '@/components/PageMeta.astro';
+import GatewayCard from '@/components/ia/GatewayCard.astro';
 import fs from 'node:fs';
 import path from 'node:path';
 
@@ -137,102 +138,17 @@ const counts = {
   </p>
 
   <h2 id="explore">Explore the reference</h2>
-  <p>Each card leads into a layer of the reference — the formal layers, the OPDA-specific layers, and the governance / consumer layers.</p>
-
-  <h3>Conceptual &amp; formal layers</h3>
+  <p>
+    Choose the task that brought you here. Each category page explains its scope and
+    authority boundary before linking to the detailed generated and hand-authored views.
+  </p>
   <div class="card-grid">
-    <a class="card" href="/ontology/foundation">
-      <div class="pill pill--brand">Foundations</div>
-      <h3>Foundations</h3>
-      <p>The three-graph separation, the UFO / OntoClean frame, and the <code>dct:source</code> contract that grounds every term (ODR-0004).</p>
-    </a>
-    <a class="card" href="/ontology/identity">
-      <div class="pill pill--info">Identity</div>
-      <h3>Identity</h3>
-      <p>Property / LegalEstate / RegisteredTitle — three Kinds, three identity criteria. UPRN is a Quality, never the identity criterion (ODR-0005).</p>
-    </a>
-    <a class="card" href="/ontology/classes">
-      <div class="pill pill--info">Classes</div>
-      <h3>Classes (OWL)</h3>
-      <p>The {counts.classes} OWL classes — Substance Kinds, Roles, RoleMixins and Relators — and how they map to UFO stereotypes.</p>
-    </a>
-    <a class="card" href="/ontology/category">
-      <div class="pill pill--info">UFO categories</div>
-      <h3>UFO categories</h3>
-      <p>The OWL classes grouped by their UFO foundational meta-category, from the inert <code>opda:ufoCategory</code> facet — UFO-informed, not UFO-grounded.</p>
-    </a>
-    <a class="card" href="/ontology/properties">
-      <div class="pill pill--info">Properties</div>
-      <h3>Properties (OWL)</h3>
-      <p>The {counts.objectProps} object + {counts.dataProps} datatype properties, with their domains, ranges and provenance.</p>
-    </a>
-    <a class="card" href="/ontology/vocabularies">
-      <div class="pill pill--info">Vocabularies</div>
-      <h3>Vocabularies (SKOS)</h3>
-      <p>The {counts.schemes} SKOS concept schemes / {counts.concepts} coded concepts — the controlled values, browseable inline.</p>
-    </a>
-    <a class="card" href="/ontology/shapes">
-      <div class="pill pill--info">Shapes</div>
-      <h3>Shapes (SHACL)</h3>
-      <p>The {counts.shapes} base node-shapes — the validation contract. "A form IS its SHACL overlay" (ODR-0010).</p>
-    </a>
-    <a class="card" href="/ontology/graph">
-      <div class="pill pill--brand">Graph</div>
-      <h3>Interactive graph</h3>
-      <p>The whole ontology as a node-link graph — the OWL class backbone with the SKOS layer one toggle away. Zoom, filter by module, focus a neighbourhood (ADR-0043).</p>
-    </a>
-  </div>
-
-  <h3>OPDA-specific layers</h3>
-  <div class="card-grid">
-    <a class="card" href="/ontology/profiles">
-      <div class="pill pill--info">Profiles</div>
-      <h3>Overlay profiles &amp; gap register</h3>
-      <p>The {counts.profiles} per-form profiles — most thin by design, binding Category-G leaves and GAP-registering the rest.</p>
-    </a>
-    <a class="card" href="/ontology/exemplars">
-      <div class="pill pill--info">Exemplars</div>
-      <h3>Round-trip exemplars</h3>
-      <p>The {counts.exemplars} worked instance graphs, each paired with an expected SHACL report — the data contract no OWL tool renders.</p>
-    </a>
-    <a class="card" href="/ontology/claims">
-      <div class="pill pill--info">Claims</div>
-      <h3>Claims, evidence &amp; provenance</h3>
-      <p>PROV-O-backed claims with three truth-makers — derivation, signature, assurance (ODR-0009).</p>
-    </a>
-    <a class="card" href="/mapping">
-      <div class="pill pill--brand">Mapping</div>
-      <h3>RML mapping</h3>
-      <p>466/469 domain-module resources (99.4%) independently traced to their PDTF schema origin — a second, bidirectional check alongside <code>dct:source</code>.</p>
-    </a>
-  </div>
-
-  <h3>Governance &amp; consumer layers</h3>
-  <div class="card-grid">
-    <a class="card" href="/modelling/odr">
-      <div class="pill pill--brand">Governance</div>
-      <h3>Governance corpus</h3>
-      <p>The full ODR / ADR decision corpus that governs every layer of the ontology.</p>
-    </a>
-    <a class="card" href="/ontology/provenance">
-      <div class="pill pill--brand">Provenance</div>
-      <h3>Decision provenance</h3>
-      <p>How the ontology was built and ratified — the term-level sources, the ODR/ADR/council lineage, retirement and reconciliation.</p>
-    </a>
-    <a class="card" href="/ontology/known-issues">
-      <div class="pill pill--warn">Known issues</div>
-      <h3>Known issues</h3>
-      <p>The dated, machine-cross-referenced register of caveats — none a model defect (EPC cross-trip, thin profiles, the ruleset rename).</p>
-    </a>
-    <a class="card" href="/ontology/usage">
-      <div class="pill pill--info">Consume</div>
-      <h3>Consume the ontology</h3>
-      <p>The machine guide — prefix map, runnable SPARQL, content negotiation, the pyshacl <code>advanced=True</code> recipe, and TTL downloads.</p>
-    </a>
-    <a class="card" href="/ontology/bake-off">
-      <div class="pill pill--brand">Bake-off</div>
-      <h3>Tool bake-off &amp; scorecard</h3>
-      <p>Every documentation tool runs the full corpus; the renderings are embedded and scored per layer against the M6 rubric.</p>
-    </a>
+    <GatewayCard href="/ontology/lineage-and-verification" title="Lineage, provenance and verification" eyebrow="Trace and check" description="Follow sources and decisions, review the historical modelling record, and inspect the independent RML schema–ontology verification bridge." />
+    <GatewayCard href="/model" title="Model views by audience" eyebrow="Choose a view" description="Move from information architecture through concept and logical views to ontology, deployment and relational implementations." />
+    <GatewayCard href="/ontology/concepts-and-architecture" title="Concepts and architecture" eyebrow="Understand the model" description="Study identity, classification, context modules, foundational commitments and the bounded use of modelling frameworks." />
+    <GatewayCard href="/ontology/terms-and-model-resources" title="Terms and model resources" eyebrow="Find a resource" description={`Browse the graph, ${counts.classes} classes, ${counts.objectProps + counts.dataProps} properties, datatypes, vocabularies and the A–Z term index.`} />
+    <GatewayCard href="/ontology/validation-and-examples" title="Validation and examples" eyebrow="Test the model" description={`Inspect ${counts.shapes} SHACL node shapes, ${counts.profiles} overlay profiles and ${counts.exemplars} diagnostic exemplars.`} />
+    <GatewayCard href="/ontology/trust-and-governance" title="Trust, governance and limitations" eyebrow="Interpret authority" description="Separate claims, evidence, PII and semantic governance, then review the limitations and known-issues register." />
+    <GatewayCard href="/ontology/use-and-tooling" title="Use and tooling" eyebrow="Consume the corpus" description="Bind namespaces, download and query the Turtle corpus, reproduce validation and compare supplementary tool renderings." />
   </div>
 </Layout>

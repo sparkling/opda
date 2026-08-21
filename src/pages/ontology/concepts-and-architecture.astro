@@ -1,0 +1,58 @@
+---
+import Layout from '@/layouts/Layout.astro';
+import PageMeta from '@/components/PageMeta.astro';
+import GatewayCard from '@/components/ia/GatewayCard.astro';
+---
+
+<Layout
+  title="Concepts and architecture"
+  description="Understand the conceptual commitments, identity doctrine, modelling lenses, graph separation and audience views of the PDTF 1.0-derived ontology."
+>
+  <PageMeta category="PDTF 1.0 · extracted ontology" variant="brand" updated="Draft · under review" />
+  <h1>Concepts and architecture</h1>
+  <p class="lead">
+    Start here when the question is why the ontology is shaped as it is rather than where
+    to find one term. This category explains identity, classification and dependence; the
+    separation of class, validation and annotation graphs; the modelling lenses used to
+    test those choices; and the reader-specific views generated from the same corpus.
+  </p>
+
+  <div class="callout callout--warn">
+    <p class="callout__label">PDTF 1.0-derived draft</p>
+    <p>
+      These pages explain the architecture of a draft ontology extracted from PDTF 1.0.
+      They are not an approved SPDTF 2.0 conceptual model. SPDTF 2.0 domain meaning remains
+      subject to its evidence-up working-group and governance process.
+    </p>
+  </div>
+
+  <h2 id="questions">Questions this category answers</h2>
+  <table>
+    <thead><tr><th scope="col">Question</th><th scope="col">Architectural concern</th></tr></thead>
+    <tbody>
+      <tr><th scope="row">What kind of thing is this?</th><td>UFO-informed categories and the distinction between Kinds, Roles, Relators, Qualities and information objects.</td></tr>
+      <tr><th scope="row">What makes it the same thing over time?</th><td>Identity criteria, with identifiers such as UPRN treated as contingent qualities rather than identity itself.</td></tr>
+      <tr><th scope="row">What is inferred and what is checked?</th><td>Three-graph separation and the governed boundary between open-world semantics, SHACL validation and annotations.</td></tr>
+      <tr><th scope="row">How should I read the model?</th><td>Concept, logical, deployment, ontology and relational views for different audiences and tasks.</td></tr>
+    </tbody>
+  </table>
+
+  <h2 id="explore">Explore the architecture</h2>
+  <div class="card-grid">
+    <GatewayCard href="/ontology/foundation" title="Foundations and architecture" eyebrow="Core commitments" description="Read the UFO legend, three-graph separation, context frame and inference-versus-validation boundary." />
+    <GatewayCard href="/ontology/identity" title="Identity and classification" eyebrow="Identity doctrine" description="Understand identity criteria, anti-rigid roles, facets and why an identifier is not the identity of its bearer." />
+    <GatewayCard href="/ontology/foundational-ontology" title="Foundational ontology critique" eyebrow="Limits of the lens" description="See exactly how UFO and OntoClean inform the model, where their use stops, and which claims the corpus does not make." />
+    <GatewayCard href="/ontology/modelling-frameworks" title="Modelling frameworks" eyebrow="Compared approaches" description="Review the upper-ontology and modelling frameworks assessed for the extracted corpus and the recorded rationale for their bounded use." />
+    <GatewayCard href="/ontology/graph" title="Interactive graph" eyebrow="Visual exploration" description="Inspect the class and relationship backbone as a filterable graph, then follow resources into their detailed reference pages." />
+    <GatewayCard href="/model" title="Model views by audience" eyebrow="Reader views" description="Choose a concept, logical, deployment, physical-ontology or relational presentation of the same underlying semantic corpus." />
+  </div>
+
+  <h2 id="one-model">One corpus, several views</h2>
+  <p>
+    The conceptual pages, interactive graph and model tiers are presentations of one
+    committed corpus; they do not create parallel specifications. Use the conceptual pages
+    to interpret modelling commitments, then use the <a href="/ontology/terms-and-model-resources">term and model-resource indexes</a>
+    for exact identifiers and the <a href="/ontology/validation-and-examples">validation and example pages</a>
+    for executable constraints and diagnostic cases.
+  </p>
+</Layout>
