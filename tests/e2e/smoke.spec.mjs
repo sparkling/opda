@@ -1,6 +1,7 @@
 import { test, expect } from '@playwright/test';
 import {
   assertNoBodyOverflow,
+  PDTF1_ROUTES,
   SEMANTIC_MODELLING_ROUTES,
   visit,
   watchRuntime,
@@ -41,7 +42,7 @@ test('desktop sidebar and nested tree controls work', async ({ page }) => {
   await page.locator('#sidebar-collapse').click();
   await expect(body).not.toHaveClass(/sidebar-collapsed/);
 
-  await visit(page, '/schema');
+  await visit(page, `${PDTF1_ROUTES.original}/schema`);
   const activeTrigger = page.locator('.tree-toggle[data-label="JSON Schemas and overlays"]');
   const unrelatedTrigger = page.locator('.tree-toggle[data-label="Implementation guidance"]');
   await expect(activeTrigger).toHaveAttribute('aria-expanded', 'true');
@@ -89,12 +90,12 @@ test('mobile section drawer returns focus on Escape', async ({ page }) => {
 test('mobile PDTF ontology hierarchy keeps folder labels linked and keyboard ordered', async ({ page }) => {
   const clean = watchRuntime(page);
   await page.setViewportSize({ width: 320, height: 900 });
-  await visit(page, '/ontology/classes');
+  await visit(page, `${PDTF1_ROUTES.terms}/classes`);
   const opener = page.locator('#menu-toggle');
   const sidebar = page.locator('#app-sidebar');
   await opener.click();
 
-  const branch = sidebar.locator('.tree-folder:has(> .tree-folder-row > a[href="/ontology/terms-and-model-resources"])');
+  const branch = sidebar.locator(`.tree-folder:has(> .tree-folder-row > a[href="${PDTF1_ROUTES.terms}"])`);
   const toggle = branch.locator(':scope > .tree-folder-row > .tree-toggle');
   const link = branch.locator(':scope > .tree-folder-row > .tree-folder-link');
   await expect(branch).toHaveClass(/is-open/u);
@@ -238,13 +239,16 @@ test('mobile primary navigation is an inert disclosure with Escape return', asyn
 
 test('representative diagrams and data tables render', async ({ page }) => {
   const clean = watchRuntime(page);
-  for (const path of ['/modelling/data-dictionary', '/governance/data-stewardship']) {
+  for (const path of [`${PDTF1_ROUTES.original}/data-dictionary`, '/governance/data-stewardship']) {
     await visit(page, path);
     const diagramSource = page.locator('.gd-mermaid').first();
     await diagramSource.scrollIntoViewIfNeeded();
     await expect(diagramSource.locator('svg')).toBeVisible();
   }
-  for (const path of ['/modelling/data-dictionary', '/modelling/business-glossary']) {
+  for (const path of [
+    `${PDTF1_ROUTES.original}/data-dictionary`,
+    `${PDTF1_ROUTES.original}/business-glossary`,
+  ]) {
     await visit(page, path);
     const table = page.locator('main table').first();
     await expect(table).toBeVisible();
@@ -287,7 +291,7 @@ test('reader pages use only the shared right-rail page navigation', async ({ pag
   const clean = watchRuntime(page);
   await page.setViewportSize({ width: 1440, height: 1000 });
 
-  for (const path of ['/mapping', '/ontology/classes', '/spdtf-2/property-pack/model']) {
+  for (const path of [PDTF1_ROUTES.schemaVerification, `${PDTF1_ROUTES.terms}/classes`, '/spdtf-2/property-pack/model']) {
     await visit(page, path);
     await expect(page.locator('main nav').filter({ hasText: 'On this page' })).toHaveCount(0);
     await expect(page.locator('aside.toc[aria-label="On this page"]')).toBeVisible();
@@ -326,7 +330,7 @@ test('mobile shell has no body overflow', async ({ page }) => {
 test('wide technical tables use a labelled keyboard overflow region', async ({ page }) => {
   const clean = watchRuntime(page);
   await page.setViewportSize({ width: 320, height: 900 });
-  await visit(page, '/ontology/classes');
+  await visit(page, `${PDTF1_ROUTES.terms}/classes`);
   const region = page.locator('.responsive-table').first();
   const viewport = region.locator('.responsive-table__viewport');
   await expect(region).toBeVisible();
@@ -341,7 +345,7 @@ test('schema tables stay readable inside their mobile overflow region', async ({
   const clean = watchRuntime(page);
   for (const width of [320, 390]) {
     await page.setViewportSize({ width, height: 900 });
-    await visit(page, '/schema/legal-estate/ownership/leasehold/lease-legal/building-safety');
+    await visit(page, `${PDTF1_ROUTES.original}/schema/legal-estate/ownership/leasehold/lease-legal/building-safety`);
 
     const region = page.locator('.responsive-table:has(table.db-table)').first();
     const viewport = region.locator('.responsive-table__viewport');
@@ -367,7 +371,7 @@ test('mobile interactive targets meet the 44px minimum', async ({ page }) => {
   const clean = watchRuntime(page);
   await page.setViewportSize({ width: 375, height: 900 });
 
-  await visit(page, '/schema/legal-estate/ownership/leasehold/lease-legal/building-safety');
+  await visit(page, `${PDTF1_ROUTES.original}/schema/legal-estate/ownership/leasehold/lease-legal/building-safety`);
   for (const selector of ['#objects-search', '#filter-overlay-btn', '#objects-config-btn']) {
     const size = await page.locator(selector).evaluate((element) => {
       const rect = element.getBoundingClientRect();
@@ -415,7 +419,7 @@ test('mobile interactive targets meet the 44px minimum', async ({ page }) => {
     expect(size.height, 'review view button height').toBeGreaterThanOrEqual(44);
   }
 
-  await visit(page, '/ontology/graph');
+  await visit(page, `${PDTF1_ROUTES.terms}/graph`);
   await expect(page.locator('.og-tab').first()).toBeVisible();
   const graphTabHeight = await page.locator('.og-tab').first().evaluate((element) => element.getBoundingClientRect().height);
   expect(graphTabHeight, 'graph engine tab height').toBeGreaterThanOrEqual(44);

@@ -1,9 +1,15 @@
 import iaPreservationManifest from '../data/ia-preservation-baseline.json' with { type: 'json' };
 
+export const ONTOLOGY_ASSET_CLASSES = Object.freeze({
+  artefacts: 'ontology-serialization',
+  tools: 'tool-rendering',
+} as const);
+
 const RETAINED_FAMILIES = Object.freeze([
-  { id: 'ontology-artefacts', prefix: 'artefacts/' },
-  { id: 'ontology-tools', prefix: 'tools/' },
+  { id: 'ontology-artefacts', prefix: 'artefacts/', assetClass: ONTOLOGY_ASSET_CLASSES.artefacts },
+  { id: 'ontology-tools', prefix: 'tools/', assetClass: ONTOLOGY_ASSET_CLASSES.tools },
 ]);
+const PUBLIC_ASSET_ROOT = '/pdtf-1/extracted-ontology/use-and-tooling/';
 
 /**
  * Validate the logical path used by an ontology page to refer to a published
@@ -22,6 +28,14 @@ export function validateOntologyAssetPath(value: unknown): string {
     throw new TypeError(`invalid logical ontology asset path: ${value}`);
   }
   return value;
+}
+
+/** Classify provenance independently of the shared use-and-tooling URL folder. */
+export function classifyOntologyAsset(value: unknown): typeof ONTOLOGY_ASSET_CLASSES[keyof typeof ONTOLOGY_ASSET_CLASSES] {
+  const logicalPath = validateOntologyAssetPath(value);
+  const family = RETAINED_FAMILIES.find(({ prefix }) => logicalPath.startsWith(prefix));
+  if (!family) throw new TypeError(`invalid logical ontology asset path: ${logicalPath}`);
+  return family.assetClass;
 }
 
 function familyFor(manifest: any, id: string): any {
@@ -71,11 +85,11 @@ export function isExpectedOntologyAsset(value: unknown): boolean {
 
 /** Resolve a public URL pathname only when it names a retained manifest object. */
 export function isExpectedOntologyAssetUrl(value: unknown): boolean {
-  if (typeof value !== 'string' || !value.startsWith('/ontology/')
+  if (typeof value !== 'string' || !value.startsWith(PUBLIC_ASSET_ROOT)
     || value.includes('?') || value.includes('#') || value.includes('\\')) return false;
   let decoded: string;
   try { decoded = decodeURIComponent(value); } catch { return false; }
-  const logicalPath = decoded.slice('/ontology/'.length);
+  const logicalPath = decoded.slice(PUBLIC_ASSET_ROOT.length);
   if (!logicalPath.startsWith('tools/') && !logicalPath.startsWith('artefacts/')) return false;
   try { return isExpectedOntologyAsset(logicalPath); } catch { return false; }
 }

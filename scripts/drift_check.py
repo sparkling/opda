@@ -25,7 +25,8 @@ ROOT = Path(__file__).resolve().parent.parent
 BUILD = ROOT / "_build"
 CONTENT_DIR = ROOT / "source/_content/schema"
 EXAMPLES_DIR = ROOT / "source/_examples"
-OUT_PAGES = ROOT / "src/pages/schema"
+SCHEMA_PAGE_ROOT = Path("src/pages/pdtf-1/original-standard/schema")
+OUT_PAGES = ROOT / SCHEMA_PAGE_ROOT
 
 # These are checked before reading any build artefact. The canonical dictionary
 # and upstream PDTF schema are gitignored inputs, while the remaining files
@@ -67,7 +68,7 @@ def missing_required_inputs(root: Path = ROOT) -> list[Path]:
 
 def generated_page_files(root: Path = ROOT) -> list[Path]:
     """Return every generated Astro page, preserving nested relative paths."""
-    pages_root = root / "src/pages/schema"
+    pages_root = root / SCHEMA_PAGE_ROOT
     return sorted(path for path in pages_root.rglob("*.astro") if path.is_file())
 
 
@@ -139,7 +140,10 @@ def check_reproducibility():
     """Invariant #9 — second build produces identical HTML."""
     pages_a = generated_page_files()
     if not pages_a:
-        errors.append("#9 reproducibility: no generated pages found under src/pages/schema")
+        errors.append(
+            "#9 reproducibility: no generated pages found under "
+            f"{SCHEMA_PAGE_ROOT.as_posix()}"
+        )
         return
     hashes_a = {
         p.relative_to(ROOT).as_posix(): hashlib.sha256(p.read_bytes()).hexdigest()

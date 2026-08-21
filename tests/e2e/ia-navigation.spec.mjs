@@ -1,12 +1,10 @@
 import { test, expect } from '@playwright/test';
-import {
-  GLOBAL_DESTINATIONS,
-  IA_STATUS_FIELDS,
-  findForbiddenIaLabels,
-} from '../../src/lib/site-ia.mjs';
+import { GLOBAL_DESTINATIONS, IA_STATUS_FIELDS, findForbiddenIaLabels } from '../../src/lib/site-ia.mjs';
+import { PDTF1_ROUTES } from '../../src/lib/pdtf1-routes.mjs';
 import { assertNoBodyOverflow, visit, watchRuntime } from './support.mjs';
 
 const primary = GLOBAL_DESTINATIONS.map(({ title, url }) => ({ title, url }));
+const pdtfClasses = `${PDTF1_ROUTES.terms}/classes`;
 
 test('primary navigation exposes exactly six ordered destinations', async ({ page }) => {
   const clean = watchRuntime(page);
@@ -29,7 +27,7 @@ test('public entry stays abbreviated while the knowledge home carries six paths'
   clean();
 });
 
-test('aria-current follows canonical and legacy route ownership', async ({ page }) => {
+test('aria-current follows canonical route ownership', async ({ page }) => {
   const clean = watchRuntime(page);
   const cases = [
     ['/programme', 'Programme'],
@@ -41,7 +39,7 @@ test('aria-current follows canonical and legacy route ownership', async ({ page 
     ['/resources', 'Resources'],
     ['/strategy/strategy-overview', 'Programme'],
     ['/spdtf-2/property-pack/validation', 'SPDTF 2.0 Development'],
-    ['/ontology/classes', 'PDTF 1.0'],
+    [pdtfClasses, 'PDTF 1.0'],
     ['/library/resources', 'Resources'],
   ];
   for (const [route, label] of cases) {
@@ -87,7 +85,7 @@ test('left navigation follows route ownership with one active link', async ({ pa
     ['/strategy/project-roadmap', 'programme', 'Project roadmap'],
     ['/spdtf-2/property-pack/validation', 'spdtf-2', 'Validation evidence'],
     ['/spdtf-2/working-groups/estate-agency/evidence', 'working-groups', 'Evidence'],
-    ['/ontology/classes', 'pdtf-1', 'Classes'],
+    [pdtfClasses, 'pdtf-1', 'Classes'],
     ['/engagement/meetings-decisions', 'governance', 'Programme decisions'],
     ['/engagement/transcripts', 'resources', 'Transcripts index'],
   ]) {
@@ -99,7 +97,7 @@ test('left navigation follows route ownership with one active link', async ({ pa
     await expect(active).toHaveText(label);
   }
 
-  await visit(page, '/ontology/classes');
+  await visit(page, pdtfClasses);
   await page.evaluate(() => localStorage.setItem('opda.sidebar.pdtf-1.Extracted ontology', 'closed'));
   await page.reload();
   await expect(page.locator('#section-navigation .nav-group[data-active="true"]')).toHaveClass(/is-open/u);
@@ -114,7 +112,7 @@ test('left navigation follows route ownership with one active link', async ({ pa
 test('PDTF 1.0 navigation separates the original standard from the extracted ontology', async ({ page }) => {
   const clean = watchRuntime(page);
   await page.setViewportSize({ width: 1440, height: 1000 });
-  await visit(page, '/ontology/classes');
+  await visit(page, pdtfClasses);
 
   const navigation = page.locator('#section-navigation[data-section="pdtf-1"]');
   const groups = navigation.locator(':scope > .nav-group');
@@ -127,14 +125,14 @@ test('PDTF 1.0 navigation separates the original standard from the extracted ont
   await expect(navigation.locator('.nav-group[data-group="Original standard"]')).not.toHaveClass(/is-open/u);
   const taskCategories = navigation.locator('.nav-group[data-group="Extracted ontology"] .tree-folder.is-task-category');
   await expect(taskCategories).toHaveCount(7);
-  await expect(taskCategories.filter({ has: page.locator('a[href="/ontology/terms-and-model-resources"]') }))
+  await expect(taskCategories.filter({ has: page.locator(`a[href="${PDTF1_ROUTES.terms}"]`) }))
     .toHaveClass(/is-open/u);
-  await expect(taskCategories.filter({ has: page.locator('a[href="/ontology/validation-and-examples"]') }))
+  await expect(taskCategories.filter({ has: page.locator(`a[href="${PDTF1_ROUTES.validation}"]`) }))
     .not.toHaveClass(/is-open/u);
-  const categoryStyle = await navigation.locator('a[href="/ontology/terms-and-model-resources"]')
-    .evaluate((link) => {
+  const categoryStyle = await navigation.locator(`a[href="${PDTF1_ROUTES.terms}"]`)
+    .evaluate((link, leafUrl) => {
       const row = link.parentElement;
-      const leaf = document.querySelector('#section-navigation a[href="/ontology/properties"]');
+      const leaf = document.querySelector(`#section-navigation a[href="${leafUrl}"]`);
       const rowStyle = getComputedStyle(row);
       return {
         background: rowStyle.backgroundColor,
@@ -142,11 +140,11 @@ test('PDTF 1.0 navigation separates the original standard from the extracted ont
         categoryWeight: getComputedStyle(link).fontWeight,
         leafWeight: getComputedStyle(leaf).fontWeight,
       };
-    });
+    }, `${PDTF1_ROUTES.terms}/properties`);
   expect(categoryStyle.background).not.toBe('rgba(0, 0, 0, 0)');
   expect(categoryStyle.border).toBe('solid');
   expect(Number(categoryStyle.categoryWeight)).toBeGreaterThan(Number(categoryStyle.leafWeight));
-  const nestedFolderStyle = await navigation.locator('a[href="/mapping"]')
+  const nestedFolderStyle = await navigation.locator(`a[href="${PDTF1_ROUTES.schemaVerification}"]`)
     .evaluate((link) => ({
       background: getComputedStyle(link.parentElement).backgroundColor,
       weight: getComputedStyle(link).fontWeight,
@@ -181,29 +179,28 @@ test('PDTF 1.0 navigation separates the original standard from the extracted ont
     /PDTF 1\.0/u, /Extracted ontology/u, /Terms and model resources/u, /Classes/u,
   ]);
 
-  await visit(page, '/schema/legal-estate');
+  await visit(page, `${PDTF1_ROUTES.original}/schema/legal-estate`);
   await expect(navigation.locator('.nav-group[data-group="Original standard"]')).toHaveClass(/is-open/u);
   await expect(navigation.locator('.nav-group[data-group="Extracted ontology"]')).not.toHaveClass(/is-open/u);
   await expect(navigation.locator('a[aria-current="page"]')).toHaveCount(1);
 
-  await navigation.locator('a[href="/ontology"]').click();
+  await navigation.locator(`a[href="${PDTF1_ROUTES.extracted}"]`).click();
   await expect(page.locator('h1')).toHaveText('PDTF 1.0-derived ontology reference');
   await expect(page.locator('nav[aria-label="Breadcrumb"] [aria-current="page"]'))
     .toHaveText('Extracted ontology');
   expect(await page.locator('#explore + p + .card-grid > a').evaluateAll((cards) => (
     cards.map((card) => card.getAttribute('href'))
   ))).toEqual([
-    '/ontology/lineage-and-verification', '/model', '/ontology/concepts-and-architecture',
-    '/ontology/terms-and-model-resources', '/ontology/validation-and-examples',
-    '/ontology/trust-and-governance', '/ontology/use-and-tooling',
+    PDTF1_ROUTES.lineage, PDTF1_ROUTES.modelViews, PDTF1_ROUTES.concepts,
+    PDTF1_ROUTES.terms, PDTF1_ROUTES.validation, PDTF1_ROUTES.trust, PDTF1_ROUTES.use,
   ]);
   await expect(page.locator('nav.page-footer a').last())
-    .toHaveAttribute('href', '/ontology/lineage-and-verification');
+    .toHaveAttribute('href', PDTF1_ROUTES.lineage);
 
   for (const [route, label] of [
-    ['/model', 'Model views by audience'],
-    ['/ontology/trust-and-governance', 'Trust, governance and limitations'],
-    ['/ontology/use-and-tooling', 'Use and tooling'],
+    [PDTF1_ROUTES.modelViews, 'Model views by audience'],
+    [PDTF1_ROUTES.trust, 'Trust, governance and limitations'],
+    [PDTF1_ROUTES.use, 'Use and tooling'],
   ]) {
     await visit(page, route);
     await expect(page.locator('h1')).toHaveText(label);
@@ -432,7 +429,7 @@ test('candidate and feedback status uses the shared responsive definition-list p
 test('all Layout pages expose versioned route status metadata', async ({ page }) => {
   const clean = watchRuntime(page);
   for (const [route, expected] of [
-    ['/ontology/classes', 'PDTF 1.0-derived'],
+    [pdtfClasses, 'PDTF 1.0-derived'],
     ['/spdtf-2/property-pack/contexts/estate-agency', '0.1.0-draft candidate cut'],
     ['/spdtf-2/working-groups/estate-agency', 'no candidate version'],
   ]) {
@@ -479,25 +476,6 @@ test('each wide standards table gains one conditional keyboard scroll region', a
     await expect(viewport).toHaveAttribute('tabindex', overflow ? '0' : '-1');
   }
   clean();
-});
-
-test('retained routes remain reachable without redirecting', async ({ page }) => {
-  const clean = watchRuntime(page);
-  for (const route of ['/strategy/strategy-overview', '/pdtf/Seller', '/working-groups/join']) {
-    await visit(page, route);
-    await expect(page).toHaveURL(new RegExp(`${route.replaceAll('/', '\\/')}(?:[?#].*)?$`));
-  }
-  clean();
-});
-
-test('retired Property Pack routes return 404 without redirecting', async ({ page }) => {
-  for (const route of [
-    '/v2', '/v2/validation', '/v2/resources/common/Property', '/modelling/property-pack',
-  ]) {
-    const response = await page.goto(route, { waitUntil: 'domcontentloaded' });
-    expect(response?.status(), route).toBe(404);
-    await expect(page).toHaveURL(new RegExp(`${route.replaceAll('/', '\\/')}$`, 'u'));
-  }
 });
 
 test('Property Pack source catalogue retains its 451-item interaction', async ({ page }) => {

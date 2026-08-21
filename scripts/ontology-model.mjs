@@ -301,7 +301,7 @@ async function main() {
   // Merge SHACL-derived subject/object classes into the object properties'
   // domain/range (Council session-047 / ADR-0048): the relationship-layer edges
   // pinned in SHACL (founds/mediates/playedBy/hasParticipant/hasAddress) become
-  // visible as class→class edges on /ontology/classes + the graph, without
+  // visible as class→class edges in the extracted ontology's classes view + graph, without
   // re-introducing the OWL domain/range entailment the council avoided. Only
   // affects object properties (datatype shapes don't match these patterns).
   for (const r of shaclSubjRows) objProps.get(r.p)?.domain.add(r.cls);

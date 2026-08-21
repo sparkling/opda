@@ -1,8 +1,8 @@
 # SPDTF 2.0 information architecture
 
-Status: **implemented on `main`; Property Pack consolidation in progress; publication pending**<br>
-Date: 2026-08-20<br>
-Decision record: [ADR-0074](./adr/ADR-0074-organise-site-around-spdtf-2-0-and-pdtf-1-0.md)<br>
+Status: **implemented on `main`; route consolidations in progress; publication pending**<br>
+Date: 2026-08-21<br>
+Decision records: [ADR-0074](./adr/ADR-0074-organise-site-around-spdtf-2-0-and-pdtf-1-0.md) · [ADR-0076](./adr/ADR-0076-consolidate-pdtf-1-0-documentation-under-hierarchy-reflecting-routes.md)<br>
 Review artefact: [HTML presentation](./spdtf-2-0-information-architecture.html)
 ## Executive decision
 
@@ -17,7 +17,7 @@ Reorganise the documentation around six global destinations:
 
 This is an asymmetric continuation structure. It distinguishes PDTF 1.0 from SPDTF 2.0 work in development, while governance, participation and source resources remain shared services. It avoids mirrored sites with competing definitions of authority.
 
-The site implements the navigation, hierarchy, status model and preservation gates as one coherent system. It does not by itself publish or deploy the production site. ADR-0075 authorises one deliberate route break: the obsolete Property Pack paths move without redirects to one canonical SPDTF 2.0 family.
+The site implements the navigation, hierarchy, status model and preservation gates as one coherent system. It does not by itself publish or deploy the production site. ADR-0075 authorises the no-redirect Property Pack move; ADR-0076 authorises the no-redirect PDTF 1.0 documentation consolidation while preserving `/pdtf/**` identifiers.
 ## Terminology and authority
 
 - **SPDTF** means **Smart Property Data Trust Framework**. It is the current name of the programme and standardisation process.
@@ -62,12 +62,7 @@ The implementation is made auditable by:
 - fail-closed build, route, accessibility, responsive, keyboard, visual and
   information-preservation gates before deployment credentials are available.
 
-The general migration retains current routes. The operator made one explicit exception:
-the 690-page Property Pack technical corpus and the separate 451-item catalogue move
-to `/spdtf-2/property-pack/**` with no redirects. A move-aware receipt binds each old
-route, information block and fragment to its declared replacement and asserts that the
-two obsolete route families are absent. Unchanged high-risk artefact families remain
-byte-identified (`scripts/check-ia-preservation.mjs`).
+Two explicit exceptions replace the earlier retain-by-default route policy. The Property Pack corpus moves to `/spdtf-2/property-pack/**`; PDTF-owned documentation moves beneath `/pdtf-1/**`. Neither move emits redirects. Move-aware receipts bind every old route, information block and fragment to its declared replacement. The published `/pdtf/**` RDF identifiers are not documentation aliases and remain exact.
 
 The build counts describe different surfaces: Astro reports 2,607 pages it renders; preservation and the crawler see 3,489 HTML files after copied/generated static HTML is included; the crawler's 5,289 emitted files also include non-HTML data and support assets. All three denominators are therefore expected and independently gated.
 
@@ -242,19 +237,19 @@ Home /
 ├── PDTF 1.0 /pdtf-1
 │   ├── Overview, limitations and continuation
 │   ├── Original standard /pdtf-1/original-standard
-│   │   ├── JSON Schemas and overlays /schema
-│   │   ├── Data dictionary /modelling/data-dictionary
-│   │   ├── Business glossary /modelling/business-glossary
-│   │   ├── Implementation guidance
-│   │   └── Adoption evidence
-│   └── Extracted ontology /ontology
-│       ├── Lineage, provenance and verification → historical modelling /modelling; independent RML verification /mapping; decision provenance
-│       ├── Model views by audience /model → information architecture; concept; logical; ontology, deployment and relational implementations; validation
-│       ├── Concepts and architecture → foundations; identity; PDTF 1.0-derived contexts; modelling frameworks
-│       ├── Terms and model resources → graph; classes; categories; properties; datatypes; vocabularies; glossary
-│       ├── Validation and examples → SHACL shapes; profiles; exemplars
-│       ├── Trust, governance and limitations → claims; PII/governance; known issues
-│       └── Use and tooling → consumption; namespaces; tool evidence
+│   │   ├── JSON Schemas and overlays /pdtf-1/original-standard/schema
+│   │   ├── Data dictionary /pdtf-1/original-standard/data-dictionary
+│   │   ├── Business glossary /pdtf-1/original-standard/business-glossary
+│   │   ├── Implementation guidance /pdtf-1/original-standard/implementation
+│   │   └── Adoption evidence /pdtf-1/original-standard/adoption
+│   └── Extracted ontology /pdtf-1/extracted-ontology
+│       ├── Lineage, provenance and verification /pdtf-1/extracted-ontology/lineage-provenance-and-verification
+│       ├── Model views by audience /pdtf-1/extracted-ontology/model-views-by-audience
+│       ├── Concepts and architecture /pdtf-1/extracted-ontology/concepts-and-architecture
+│       ├── Terms and model resources /pdtf-1/extracted-ontology/terms-and-model-resources
+│       ├── Validation and examples /pdtf-1/extracted-ontology/validation-and-examples
+│       ├── Trust, governance and limitations /pdtf-1/extracted-ontology/trust-governance-and-limitations
+│       └── Use and tooling /pdtf-1/extracted-ontology/use-and-tooling
 ├── Governance /governance
 │   ├── Authority and decision rights
 │   ├── Canonical status and provenance registry
@@ -314,14 +309,14 @@ does not confer membership, consensus or standards authority.
 | Governance | Governance | Keep one cross-programme authority tree. |
 | DBT Smart Data | Programme; cross-link Governance, Resources and the OPDA-internal scheme-design group | Treat government policy as external context. Do not imply that the internal group is a designated property scheme body or that SPDTF is government-approved. |
 | Engagement | Working groups for live actions; Resources for records | Keep DPMSG and OPDA groups explicitly distinct. |
-| Modelling | PDTF 1.0 material | Keep the schema-derived method in PDTF 1.0; re-author reusable lessons into SPDTF 2.0 with provenance. Facet current ADR/ODR records into SPDTF 2.0 Development or Governance. |
-| Model | PDTF 1.0 | Label every tier and child artefact with its own PDTF 1.0 maturity; use as evidence, not inherited SPDTF 2.0 authority. |
+| Modelling | PDTF 1.0 material | Move PDTF-owned historical method pages under extracted-ontology lineage; keep ADR/ODR routes Governance-owned. Re-author reusable lessons into SPDTF 2.0 with provenance. |
+| Model | PDTF 1.0 | Move the complete model-view family beneath extracted ontology; retain each tier and child artefact's own maturity. |
 | V2 Property Pack corpus | SPDTF 2.0 → Property Pack ontology | Move the complete 690-page technical family to `/spdtf-2/property-pack/**`; remove `/v2/**` without redirects. |
-| Ontology | PDTF 1.0 | Describe as the PDTF 1.0-derived ontology and preserve route-level draft/review status. Re-assess its methods and alignments rather than inheriting them. |
-| Mapping | PDTF 1.0; cross-link SPDTF 2.0 | Keep RML and JSON-LD work as qualified traceability/migration evidence; do not confuse it with cross-context semantic mapping or coverage links. |
-| Schema | PDTF 1.0 | Keep directly findable for implementers; treat future schemas as tested projections of governed SPDTF 2.0 meaning. |
-| Implementation | PDTF 1.0 | Reachable within two interactions from every primary landing. |
-| Adoption | PDTF 1.0 | Existing implementation evidence, not evidence that SPDTF 2.0 is adopted. |
+| Ontology | PDTF 1.0 | Move the reader reference beneath `/pdtf-1/extracted-ontology`; preserve route-level status and the separate `/pdtf/**` identifier namespace. |
+| Mapping | PDTF 1.0; cross-link SPDTF 2.0 | Move beneath qualified lineage/verification while retaining its independent bridge role; do not confuse RML with JSON-LD, semantic mapping or coverage links. |
+| Schema | PDTF 1.0 | Move beneath `/pdtf-1/original-standard`; keep directly findable and treat future schemas as governed projections. |
+| Implementation | PDTF 1.0 | Move beneath the original-standard branch and remain reachable within two interactions. |
+| Adoption | PDTF 1.0 | Move as explicitly labelled evidence; it neither becomes normative nor proves SPDTF 2.0 adoption. |
 | Library | Resources | Separate source records from internal working material by provenance. |
 
 ### Standalone and generated surfaces
@@ -336,8 +331,8 @@ does not confer membership, consensus or standards authority.
 | `/modelling/property-pack` | Move the complete interactive source catalogue to `/spdtf-2/property-pack/definition-and-scope`; remove the old route without a redirect. |
 | `/modelling/adr/**`, `/modelling/odr/**` | Preserve URLs; assign navigation/search ownership per record work area. |
 | `/pdtf/**` and `.ttl` | Preserve stable identifiers and label their PDTF 1.0 or historical naming context. |
-| `/ontology/tools/**` | Preserve as PDTF 1.0 technical renderings. |
-| `/ontology/artefacts/**` (27 files) | Preserve the complete PDTF 1.0 machine-readable corpus and its internal links, not only the HTML source index. |
+| `/ontology/tools/**` | Move atomically to `/pdtf-1/extracted-ontology/use-and-tooling/tools/**`; preserve the complete technical-rendering inventory. |
+| `/ontology/artefacts/**` (27 files) | Move atomically to `/pdtf-1/extracted-ontology/use-and-tooling/artefacts/**`; preserve bytes, internal links and per-file authority. |
 | `/council/**` and its manifest (261 Markdown files) | Governance owns decision/status context; Resources owns raw evidence. Preserve paths, deterministic generation and rewritten links. |
 | `/resources/**` and `/resource?path=source/**` (1,620 source records) | Resources source registry: preserve logical paths, checksums, open/download behaviour, provenance, rights and the production origin contract. |
 | `/data/**` (46 build outputs) | Preserve paths or regenerate deterministically; record each output's semantic owner, checksum and consumers. |
@@ -405,8 +400,9 @@ operational.
 
 ## Route and migration contract
 
-Navigation is normally a view over stable content addresses. This authorised exception
-moves only the complete Property Pack family and catalogue, with explicit receipts.
+Navigation is normally a view over stable content addresses. ADR-0075 and ADR-0076
+authorise two bounded no-redirect moves with explicit receipts: the Property Pack
+family and all PDTF-owned reader documentation. RDF identifiers remain outside them.
 
 ### Required sequence
 
@@ -430,9 +426,9 @@ moves only the complete Property Pack family and catalogue, with explicit receip
 
 ### Non-negotiable URL rules
 
-- Preserve `/pdtf/**` identifiers and their representations unless a separate
-  identifier-governance decision authorises change.
+- Preserve `/pdtf/**` identifiers and representations exactly; they are not old documentation routes or compatibility aliases.
 - Apply the exact Property Pack mapping above atomically; emit no compatibility route.
+- Apply ADR-0076's owner-based PDTF 1.0 route map atomically; emit no old documentation route, `/manual/**` alias, redirect or duplicate canonical page.
 - Treat each generated route family as an atomic unit and preserve logical comment identity.
 - Do not duplicate content under new paths to make the hierarchy look symmetrical.
 - Search for “PDTF” must find relevant SPDTF material while labelling historical
@@ -444,14 +440,15 @@ moves only the complete Property Pack family and catalogue, with explicit receip
 
 1. The canonical taxonomy, status registry and migration-manifest schema are executable.
 2. New landing pages and task paths must preserve existing information; authorised
-   obsolete Property Pack URLs are removed without redirects.
+   obsolete Property Pack and PDTF 1.0 documentation URLs are removed without redirects.
 3. Work-area/status metadata is resolved centrally for every classified route family.
 4. All eight working groups use one truthful pre-convening workspace contract, with empty candidate/output registers rather than fabricated decisions.
 5. The 690 technical Property Pack routes must move atomically beneath the canonical
    branch; the 451-item catalogue is folded into it and lifecycle pages are added.
 6. Global navigation, breadcrumbs, search facets and home tasks change together.
-7. Route, accessibility, content-authority, task-finding and runtime-continuity gates run before release.
-8. No redirect is introduced without a semantic-equivalence receipt and test.
+7. The PDTF receipt classifies 1,489 moved documentation/alias routes, 1,090 unchanged `/pdtf` identifier-family pages and two unchanged `/pdtf-1` landings with no residue.
+8. Route, accessibility, content-authority, task-finding and runtime-continuity gates run before release.
+9. No redirect is introduced without a semantic-equivalence receipt and test.
 
 This implementation record authorises no publication by itself. Deployment remains a separate, explicit and fail-closed operation.
 
@@ -476,8 +473,9 @@ The implementation is not releasable unless all of these pass:
   knowing RDF vocabulary.
 - A current implementer can reach schema and validation guidance within two interactions and without entering anything labelled “archive”.
 - A governance reviewer can identify who may decide and whether a decision occurred.
-- Every route is retained, redirected with semantic proof, or covered by an explicitly
-  authorised move receipt; every retained or moved fragment resolves at its destination.
+- Every route is retained or covered by an explicitly authorised move/retirement
+  receipt; every retained or moved fragment resolves at its destination, and every
+  retired PDTF documentation route is absent without a redirect.
 - Search results expose work area and authority and treat PDTF as a historical alias.
 - No page equates technical validation with semantic approval.
 - Interoperability remains a peer of domain groups and has one canonical home in

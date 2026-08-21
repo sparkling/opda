@@ -278,7 +278,7 @@ export function propertyPackMigrationReceipt(records, addedRecords, migration, r
     baselineRoute === '/v2' || baselineRoute?.startsWith('/v2/')
   ));
   const catalogue = records.filter(({ baselineRoute }) => baselineRoute === '/modelling/property-pack');
-  for (const record of records) {
+  for (const record of [...technical, ...catalogue]) {
     const replacement = replacementRoute(record.baselineRoute);
     const expectedRoute = replacement ?? record.baselineRoute;
     const expectedFile = replacement ? indexFileFromRoute(replacement) : record.baselineFile;
@@ -321,9 +321,163 @@ export function propertyPackMigrationReceipt(records, addedRecords, migration, r
   };
 }
 
+function acceptedSourceRecords(manifest) {
+  return [...(manifest?.routes ?? []), ...(manifest?.addedRoutes ?? [])];
+}
+
+function routeWithin(route, root) {
+  return route === root || route?.startsWith(`${root}/`);
+}
+
+function routeSetDigest(values) {
+  return sha256([...values].sort().join('\n'));
+}
+
+function recordEvidenceMatches(source, accepted) {
+  return ['acceptedContentSha256', 'acceptedBlockInventorySha256', 'acceptedFragmentSha256',
+    'acceptedFragmentCount'].every((field) => source[field] === accepted[field])
+    && JSON.stringify(source.acceptedFragments) === JSON.stringify(accepted.acceptedFragments);
+}
+
+/** Bind every zero-information `/manual/**` alias to the frozen pre-cut record. */
+export function composePdtf1RetiredAliases(sourceManifest, replacementRoute) {
+  return acceptedSourceRecords(sourceManifest)
+    .filter(({ acceptedRoute }) => routeWithin(acceptedRoute, '/manual'))
+    .map((source) => {
+      const canonicalRoute = replacementRoute(source.acceptedRoute);
+      if (!canonicalRoute || source.equivalenceReceipt?.acceptedBlocks !== 0
+        || source.acceptedFragmentCount !== 0 || source.acceptedFragments?.length !== 0) {
+        throw new Error(`PDTF 1.0 retired alias is not a zero-information redirect: ${source.acceptedRoute}`);
+      }
+      return {
+        policy: 'retired-zero-information-alias-v1',
+        sourceRoute: source.acceptedRoute,
+        sourceFile: source.acceptedFile,
+        sourceRecordSha256: sha256(JSON.stringify(source)),
+        canonicalRoute,
+        redirects: false,
+      };
+    })
+    .sort((left, right) => left.sourceRoute.localeCompare(right.sourceRoute));
+}
+
+/** Return old PDTF documentation files that a no-redirect release still emits. */
+export function existingRetiredPdtf1Outputs(distRoot, sourceManifest, replacementRoute) {
+  return acceptedSourceRecords(sourceManifest)
+    .filter(({ acceptedRoute }) => routeWithin(acceptedRoute, '/manual')
+      || (!routeWithin(acceptedRoute, '/pdtf') && replacementRoute(acceptedRoute)))
+    .map(({ acceptedFile }) => path.join(distRoot, acceptedFile))
+    .filter(existsSync);
+}
+
+/**
+ * Prove the complete PDTF 1.0 cut against the pinned last accepted route set.
+ * Moved and stable routes retain their information and fragment inventories;
+ * retired aliases are represented only by explicit zero-information receipts.
+ */
+export function pdtf1MigrationReceipt({
+  records, addedRecords, retiredAliases, migration, replacementRoute, sourceManifest,
+}) {
+  const source = acceptedSourceRecords(sourceManifest);
+  const accepted = [...records, ...addedRecords];
+  const byRoute = new Map(accepted.map((record) => [record.acceptedRoute, record]));
+  if (source.length !== migration.sourceRouteCount || accepted.length !== migration.acceptedSiteRouteCount
+    || byRoute.size !== accepted.length
+    || new Set(accepted.map(({ acceptedFile }) => acceptedFile)).size !== accepted.length) {
+    throw new Error('PDTF 1.0 source or accepted route inventory has an invalid count or duplicate');
+  }
+  const retiredByRoute = new Map(retiredAliases.map((entry) => [entry.sourceRoute, entry]));
+  if (retiredByRoute.size !== retiredAliases.length) throw new Error('PDTF 1.0 retired aliases are not unique');
+  const moved = [];
+  const stable = [];
+  const accounted = new Set();
+  for (const sourceRecord of source) {
+    const sourceRoute = sourceRecord.acceptedRoute;
+    if (routeWithin(sourceRoute, '/manual')) {
+      const expected = composePdtf1RetiredAliases({ routes: [sourceRecord] }, replacementRoute)[0];
+      if (JSON.stringify(retiredByRoute.get(sourceRoute)) !== JSON.stringify(expected)
+        || byRoute.has(sourceRoute) || !byRoute.has(expected.canonicalRoute)) {
+        throw new Error(`PDTF 1.0 retired alias contract is inconsistent: ${sourceRoute}`);
+      }
+      continue;
+    }
+    const isStable = routeWithin(sourceRoute, migration.stableIdentifierRoot);
+    const replacement = isStable ? null : replacementRoute(sourceRoute);
+    const targetRoute = replacement ?? sourceRoute;
+    const target = byRoute.get(targetRoute);
+    if (!target || accounted.has(targetRoute) || (replacement && byRoute.has(sourceRoute))) {
+      throw new Error(`PDTF 1.0 route is missing, duplicated, or retained at its old URL: ${sourceRoute}`);
+    }
+    accounted.add(targetRoute);
+    if (replacement || isStable) {
+      if (!recordEvidenceMatches(sourceRecord, target)) {
+        throw new Error(`PDTF 1.0 information or fragments changed without evidence: ${sourceRoute}`);
+      }
+      (replacement ? moved : stable).push({ source: sourceRecord, target });
+    } else if (target.acceptedFile !== sourceRecord.acceptedFile) {
+      throw new Error(`undeclared non-PDTF route move: ${sourceRoute}`);
+    }
+  }
+  if (accounted.size !== accepted.length || retiredAliases.length !== migration.retiredAliasRouteCount) {
+    throw new Error('PDTF 1.0 accepted or retired records are not completely accounted for');
+  }
+  const movedBaseline = moved.filter(({ source: record }) => sourceManifest.routes.includes(record));
+  const movedAdded = moved.filter(({ source: record }) => sourceManifest.addedRoutes.includes(record));
+  const familyCounts = Object.fromEntries(Object.keys(migration.movedFamilyRouteCounts).map((family) => [
+    family, moved.filter(({ source: { acceptedRoute } }) => acceptedRoute === `/${family}`
+      || acceptedRoute.startsWith(`/${family}/`)).length,
+  ]));
+  const generatedTools = moved.filter(({ source: record, target }) => (
+    record.acceptedGeneratedFamily === 'ontology/tools'
+      && target.acceptedGeneratedFamily === 'ontology/tools'
+  ));
+  const artefactIndexes = moved.filter(({ source: { acceptedRoute } }) => (
+    routeWithin(acceptedRoute, '/ontology/artefacts')
+  ));
+  const canonical = accepted.filter(({ acceptedRoute }) => routeWithin(acceptedRoute, migration.canonicalRoot));
+  if (moved.length !== migration.movedCanonicalRouteCount
+    || movedBaseline.length !== migration.movedBaselineRouteCount
+    || movedAdded.length !== migration.movedAddedRouteCount
+    || stable.length !== migration.stableIdentifierRouteCount
+    || generatedTools.length !== migration.generatedToolRouteCount
+    || artefactIndexes.length !== migration.ontologyArtefactHtmlRouteCount
+    || canonical.length !== migration.canonicalFamilyRouteCount
+    || JSON.stringify(familyCounts) !== JSON.stringify(migration.movedFamilyRouteCounts)
+    || migration.redirects !== false) {
+    throw new Error('PDTF 1.0 migration counts differ from the reviewed cut');
+  }
+  return {
+    policy: 'canonical-move-with-retired-aliases-v1',
+    sourceRouteCount: source.length,
+    movedCanonicalRouteCount: moved.length,
+    movedBaselineRouteCount: movedBaseline.length,
+    movedAddedRouteCount: movedAdded.length,
+    movedFamilyRouteCounts: familyCounts,
+    retiredAliasRouteCount: retiredAliases.length,
+    stableIdentifierRouteCount: stable.length,
+    generatedToolRouteCount: generatedTools.length,
+    ontologyArtefactHtmlRouteCount: artefactIndexes.length,
+    canonicalFamilyRouteCount: canonical.length,
+    acceptedSiteRouteCount: accepted.length,
+    movedRoutePairsSha256: routeSetDigest(moved.map(({ source: before, target: after }) => (
+      `${before.acceptedRoute}\0${after.acceptedRoute}\0${before.acceptedFile}\0${after.acceptedFile}`
+    ))),
+    retiredAliasesSha256: routeSetDigest(retiredAliases.map(({ sourceRoute, canonicalRoute }) => (
+      `${sourceRoute}\0${canonicalRoute}`
+    ))),
+    stableIdentifierRoutesSha256: routeSetDigest(stable.map(({ source: record }) => record.acceptedRoute)),
+    redirects: false,
+    canonicalRoot: migration.canonicalRoot,
+    stableIdentifierRoot: migration.stableIdentifierRoot,
+  };
+}
+
 export function generatedFamily(route) {
   const parts = route.split('/').filter(Boolean);
   if (!parts.length) return 'root';
   if (parts[0] === 'ontology' && parts[1] === 'tools') return 'ontology/tools';
+  if (parts.slice(0, 5).join('/') === 'pdtf-1/extracted-ontology/use-and-tooling/tools') {
+    return 'ontology/tools';
+  }
   return parts[0];
 }

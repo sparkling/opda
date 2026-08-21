@@ -23,6 +23,13 @@ implements: [src/pages/spdtf-2/property-pack, src/lib/site-navigation.ts, src/li
 > context index to organise every existing technical route without moving it or
 > changing page-level status. Expandable labels remain links; separate controls
 > disclose their children.
+>
+> Update 2026-08-21 — hierarchy-reflecting PDTF 1.0 routes: [ADR-0076](./ADR-0076-consolidate-pdtf-1-0-documentation-under-hierarchy-reflecting-routes.md)
+> retains this two-part model but moves its reader documentation beneath
+> `/pdtf-1/original-standard/**` and `/pdtf-1/extracted-ontology/**`. The earlier
+> no-move statement above remains historical implementation provenance; it no longer
+> governs routing. Old documentation routes are removed without redirects, while the
+> canonical `/pdtf/**` RDF identifier paths and representation contract remain exact.
 
 ## Context and Problem Statement
 

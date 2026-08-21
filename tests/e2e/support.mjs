@@ -1,4 +1,7 @@
 import assert from 'node:assert/strict';
+import { PDTF1_ROUTES } from '../../src/lib/pdtf1-routes.mjs';
+
+export { PDTF1_ROUTES };
 
 export const SEMANTIC_MODELLING_ROUTES = [
   '/spdtf-2/ontologies',
@@ -15,14 +18,14 @@ export const SEMANTIC_MODELLING_ROUTES = [
 ];
 
 export const PDTF_ONTOLOGY_CATEGORY_ROUTES = [
-  '/ontology',
-  '/ontology/lineage-and-verification',
-  '/ontology/concepts-and-architecture',
-  '/ontology/contexts',
-  '/ontology/terms-and-model-resources',
-  '/ontology/validation-and-examples',
-  '/ontology/trust-and-governance',
-  '/ontology/use-and-tooling',
+  PDTF1_ROUTES.extracted,
+  PDTF1_ROUTES.lineage,
+  PDTF1_ROUTES.concepts,
+  `${PDTF1_ROUTES.concepts}/contexts`,
+  PDTF1_ROUTES.terms,
+  PDTF1_ROUTES.validation,
+  PDTF1_ROUTES.trust,
+  PDTF1_ROUTES.use,
 ];
 
 export const ROUTES = [
@@ -35,8 +38,8 @@ export const ROUTES = [
   '/spdtf-2/working-groups/estate-agency/review',
   '/spdtf-2/candidates',
   '/spdtf-2/outputs',
-  '/pdtf-1',
-  '/pdtf-1/original-standard',
+  PDTF1_ROUTES.root,
+  PDTF1_ROUTES.original,
   ...PDTF_ONTOLOGY_CATEGORY_ROUTES,
   '/governance',
   '/resources',
@@ -45,16 +48,16 @@ export const ROUTES = [
   '/strategy/strategy-overview',
   '/governance/data-security',
   '/governance/data-stewardship',
-  '/modelling/data-dictionary',
-  '/modelling/business-glossary',
-  '/modelling/overlays',
-  '/schema',
-  '/schema/legal-estate/ownership/leasehold/lease-legal/building-safety',
-  '/ontology/graph',
-  '/ontology/classes',
-  '/ontology/context/agent',
-  '/model/concept/agent/buyer',
-  '/mapping/coverage',
+  `${PDTF1_ROUTES.original}/data-dictionary`,
+  `${PDTF1_ROUTES.original}/business-glossary`,
+  `${PDTF1_ROUTES.original}/schema/overlays`,
+  `${PDTF1_ROUTES.original}/schema`,
+  `${PDTF1_ROUTES.original}/schema/legal-estate/ownership/leasehold/lease-legal/building-safety`,
+  `${PDTF1_ROUTES.terms}/graph`,
+  `${PDTF1_ROUTES.terms}/classes`,
+  `${PDTF1_ROUTES.concepts}/contexts/agent`,
+  `${PDTF1_ROUTES.modelViews}/concept/agent/buyer`,
+  `${PDTF1_ROUTES.schemaVerification}/coverage`,
   '/pdtf/Seller',
   '/spdtf-2/property-pack',
   '/spdtf-2/property-pack/definition-and-scope',

@@ -19,7 +19,7 @@ export const IA_STATUS_FIELDS = Object.freeze([
   'workArea', 'authority', 'maturity', 'version', 'provenance',
 ]);
 
-export const IA_STATUS_REGISTRY_VERSION = '2026-08-19';
+export const IA_STATUS_REGISTRY_VERSION = '2026-08-21';
 
 export const DESTINATION_SHORTCUTS = Object.freeze({
   'working-groups': Object.freeze({
@@ -150,6 +150,22 @@ export const ROUTE_STATUS_OVERRIDES = Object.freeze([
     },
   },
   {
+    pattern: /^\/pdtf-1\/extracted-ontology\/lineage-provenance-and-verification\/historical-modelling(?:\/|$)/u,
+    status: PDTF_METHOD_STATUS,
+  },
+  {
+    pattern: /^\/pdtf-1\/extracted-ontology\/lineage-provenance-and-verification\/schema-to-ontology-verification(?:\/|$)/u,
+    status: PDTF_MAPPING_STATUS,
+  },
+  {
+    pattern: /^\/pdtf-1\/original-standard\/adoption(?:\/|$)/u,
+    status: PDTF_ADOPTION_STATUS,
+  },
+  {
+    pattern: /^\/pdtf-1\/extracted-ontology(?:\/|$)/u,
+    status: PDTF_DERIVED_DRAFT_STATUS,
+  },
+  {
     pattern: /^\/spdtf-2\/property-pack(?:\/|$)/u,
     status: {
       workArea: 'SPDTF 2.0 · Property Pack ontology',
@@ -164,20 +180,8 @@ export const ROUTE_STATUS_OVERRIDES = Object.freeze([
     status: AUTHORITY_BY_DESTINATION.governance,
   },
   {
-    pattern: /^\/(?:pdtf|ontology|model|manual)(?:\/|$)/u,
+    pattern: /^\/pdtf(?:\/|$)/u,
     status: PDTF_DERIVED_DRAFT_STATUS,
-  },
-  {
-    pattern: /^\/mapping(?:\/|$)/u,
-    status: PDTF_MAPPING_STATUS,
-  },
-  {
-    pattern: /^\/modelling(?:\/|$)/u,
-    status: PDTF_METHOD_STATUS,
-  },
-  {
-    pattern: /^\/adoption(?:\/|$)/u,
-    status: PDTF_ADOPTION_STATUS,
   },
   {
     pattern: /^\/spdtf-2\/working-groups(?:\/|$)/u,
@@ -237,14 +241,14 @@ export const PRESERVATION_LEDGER = Object.freeze([
     disposition: 'regenerate-equivalently',
   },
   {
-    currentPath: '/ontology/artefacts/**',
+    currentPath: '/pdtf-1/extracted-ontology/use-and-tooling/artefacts/**',
     kind: 'machine-representations',
     expectedCount: 27,
     owner: 'pdtf-1',
-    preservedAt: '/ontology/artefacts/**',
+    preservedAt: '/pdtf-1/extracted-ontology/use-and-tooling/artefacts/**',
     consumers: ['ontology downloads', 'technical references'],
     verification: 'path and byte/checksum identity',
-    checksumSource: 'public/ontology/artefacts',
+    checksumSource: 'public/pdtf-1/extracted-ontology/use-and-tooling/artefacts',
     disposition: 'preserve',
   },
   {
@@ -270,13 +274,13 @@ export const PRESERVATION_LEDGER = Object.freeze([
     disposition: 'reframe-equivalent',
   },
   {
-    currentPath: '/pdtf/**, /ontology/tools/** and generated semantic routes',
+    currentPath: '/pdtf/** and canonical PDTF 1.0 generated semantic routes',
     kind: 'stable-technical-identifiers',
     owner: 'pdtf-1',
-    preservedAt: 'current stable paths',
+    preservedAt: '/pdtf/** and /pdtf-1/extracted-ontology/use-and-tooling/**',
     consumers: ['linked-data clients', 'implementers', 'search and citations'],
     verification: 'route, representation and fragment crawl',
-    checksumSource: 'dist/pdtf and dist/ontology/tools',
+    checksumSource: 'dist/pdtf and dist/pdtf-1/extracted-ontology/use-and-tooling',
     disposition: 'preserve',
   },
   {
@@ -341,14 +345,6 @@ export const ROUTE_DISPOSITION_LEDGER = Object.freeze([
     ['governance', 'governance', 'keep'],
     ['dbt-smart-data', 'programme', 'reframe'],
     ['engagement', 'resources', 'reframe'],
-    ['modelling', 'pdtf-1', 'reframe'],
-    ['model', 'pdtf-1', 'reframe'],
-    ['ontology', 'pdtf-1', 'reframe'],
-    ['mapping', 'pdtf-1', 'reframe'],
-    ['schema', 'pdtf-1', 'reframe'],
-    ['implementation', 'pdtf-1', 'reframe'],
-    ['adoption', 'pdtf-1', 'reframe'],
-    ['manual', 'pdtf-1', 'keep'],
     ['resources', 'resources', 'reframe'],
     ['library', 'resources', 'reframe'],
   ].map(([path, owner, disposition]) => routeDisposition(`/${path}/**`, owner, disposition)),
@@ -364,26 +360,13 @@ export const ROUTE_DISPOSITION_LEDGER = Object.freeze([
     ['/engagement/meetings-decisions/**', 'governance', 'reframe'],
     ['/engagement/working-groups/**', 'programme', 'reframe'],
     ['/spdtf-2/property-pack/**', 'spdtf-2', 'reframe'],
-    ['/ontology/datatypes', 'pdtf-1', 'keep'],
-    ['/ontology/namespaces', 'pdtf-1', 'keep'],
     ['/resource', 'resources', 'keep'],
     ['/404', 'resources', 'keep'],
-    ['/mapping/triplesmaps/**', 'pdtf-1', 'keep'],
-    ['/model/information-architecture/**', 'pdtf-1', 'keep'],
-    ['/model/concept/**', 'pdtf-1', 'keep'],
-    ['/model/logical/**', 'pdtf-1', 'keep'],
-    ['/model/physical-database/**', 'pdtf-1', 'keep'],
-    ['/model/physical-ontology/**', 'pdtf-1', 'keep'],
-    ['/model/physical-relational/**', 'pdtf-1', 'keep'],
     ['/modelling/adr/**', 'governance', 'reframe'],
     ['/modelling/odr/**', 'governance', 'reframe'],
-    ['/ontology/category/**', 'pdtf-1', 'keep'],
-    ['/ontology/context/**', 'pdtf-1', 'keep'],
-    ['/ontology/exemplar/**', 'pdtf-1', 'keep'],
-    ['/ontology/profile/**', 'pdtf-1', 'keep'],
     ['/pdtf/**', 'pdtf-1', 'keep'],
-    ['/ontology/artefacts/**', 'pdtf-1', 'keep'],
-    ['/ontology/tools/**', 'pdtf-1', 'keep'],
+    ['/pdtf-1/extracted-ontology/use-and-tooling/artefacts/**', 'pdtf-1', 'keep'],
+    ['/pdtf-1/extracted-ontology/use-and-tooling/tools/**', 'pdtf-1', 'keep'],
     ['/data/**', 'resources', 'keep'],
     ['/ui/**', 'resources', 'keep'],
     ['/images/**', 'resources', 'keep'],

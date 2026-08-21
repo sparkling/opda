@@ -25,11 +25,11 @@ export const IA_SPECS = [
 
 /** IA-spec .md filenames → Astro route, for rewriting intra-IA cross-links. */
 export const IA_LINK_MAP = {
-  'README.md':               '/model/information-architecture/overview',
-  'concept-model-ia.md':     '/model/information-architecture/concept-model',
-  'logical-model-ia.md':     '/model/information-architecture/logical-model',
-  'physical-database-ia.md': '/model/information-architecture/physical-database',
-  'physical-ontology-ia.md': '/model/information-architecture/physical-ontology',
+  'README.md':               '/pdtf-1/extracted-ontology/model-views-by-audience/information-architecture/overview',
+  'concept-model-ia.md':     '/pdtf-1/extracted-ontology/model-views-by-audience/information-architecture/concept-model',
+  'logical-model-ia.md':     '/pdtf-1/extracted-ontology/model-views-by-audience/information-architecture/logical-model',
+  'physical-database-ia.md': '/pdtf-1/extracted-ontology/model-views-by-audience/information-architecture/physical-database',
+  'physical-ontology-ia.md': '/pdtf-1/extracted-ontology/model-views-by-audience/information-architecture/physical-ontology',
 };
 
 /** All generator jobs: {src, out, group}. IA fragments are prefixed `ia-`. */

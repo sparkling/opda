@@ -57,9 +57,9 @@
     }
   ],
   "crossTier": {
-    "concept": "/manual/concept/property/property",
-    "logical": "/manual/logical/property/property",
+    "concept": "/pdtf-1/extracted-ontology/model-views-by-audience/concept/property/property",
+    "logical": "/pdtf-1/extracted-ontology/model-views-by-audience/logical/property/property",
     "physicalDatabase": null,
-    "physicalOntology": "/manual/physical-ontology/property/classes#Property"
+    "physicalOntology": "/pdtf-1/extracted-ontology/model-views-by-audience/physical-ontology/property/classes#Property"
   }
 }

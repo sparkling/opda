@@ -173,7 +173,7 @@ ci-ontology:	## All opda-gen CI gates (byte-identity, three-graph, dup, profile,
 	@echo "✓ all ontology CI gates passed"
 
 .PHONY: ci-ontology-doc
-ci-ontology-doc:	## Doc-drift gate (ADR-0041): the custom /ontology reference must match the committed corpus
+ci-ontology-doc:	## Doc-drift gate (ADR-0041): the extracted-ontology reference must match the committed corpus
 	node scripts/ci-ontology-doc-drift.mjs
 
 .PHONY: ci-ontology-model
@@ -185,7 +185,7 @@ ci-ontology-graph:	## Graph-element drift gate (ADR-0043): re-derive ontology-gr
 	node scripts/ontology-graph.mjs --check
 
 .PHONY: check-links
-check-links:	## Link-validation sweep (ADR-0044 Phase 8): no dangling/orphan links on /ontology + /pdtf (needs `make build-data` first)
+check-links:	## Link-validation sweep (ADR-0044 Phase 8): no dangling/orphan links on extracted ontology + /pdtf (needs `make build-data` first)
 	node scripts/check-links.mjs
 
 .PHONY: check-resource-links
@@ -193,7 +193,7 @@ check-resource-links:	## Verify built source-resource links have local archive a
 	pnpm run check:resource-links
 
 .PHONY: check-links-external
-check-links-external:	## Live external-URL 200 sweep over /ontology + /pdtf (ADR-0044 Phase 8; report-only, opt-in, needs `make build-data` first)
+check-links-external:	## Live external-URL sweep over extracted ontology + /pdtf (ADR-0044 Phase 8; report-only, opt-in, needs `make build-data` first)
 	node scripts/check-external-links.mjs
 
 .PHONY: ci

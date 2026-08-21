@@ -25,6 +25,18 @@ export const PRIOR_IA_FAMILY_MANIFEST = Object.freeze({
   schemaVersion: 1,
   familyCount: 8,
 });
+export const PDTF1_SOURCE_ROUTE_MANIFEST = Object.freeze({
+  commit: 'ad17818e2e95b75663e7ca648e91e8a60cf27bd8',
+  path: 'src/data/ia-route-baseline.json',
+  blob: '815b4f5438054610a30bd7fd8621cd47d90b58d3',
+  sha256: '77d2c7b96f77a6ece9f54f3857fed62d07078391416d768d3f6bb6f6f3d553a5',
+  schemaVersion: 6,
+  baselineCommit: PRIOR_IA_ROUTE_MANIFEST.baselineCommit,
+  acceptedCommit: '4d4942b2bba05a9bdefc5d615adca7b15f971f20',
+  routeCount: 3436,
+  addedRouteCount: 64,
+  acceptedRouteCount: 3500,
+});
 
 const gitOptions = (root) => ({
   cwd: root, encoding: 'utf8', maxBuffer: 64 * 1024 * 1024,
@@ -69,6 +81,29 @@ export function loadPriorIaFamilyManifest(root) {
   if (result.manifest.schemaVersion !== PRIOR_IA_FAMILY_MANIFEST.schemaVersion
     || result.manifest.families?.length !== PRIOR_IA_FAMILY_MANIFEST.familyCount) {
     throw new Error('prior IA family manifest does not match its frozen contract');
+  }
+  return result;
+}
+
+/** Load the last accepted route cut before PDTF 1.0 documentation URLs moved. */
+export function loadPdtf1SourceRouteManifest(root) {
+  requireAncestor(root, PDTF1_SOURCE_ROUTE_MANIFEST.commit, git(root, ['rev-parse', 'HEAD']));
+  const result = loadPinnedManifest(root, PDTF1_SOURCE_ROUTE_MANIFEST);
+  const { manifest } = result;
+  const routes = manifest.routes ?? [];
+  const additions = manifest.addedRoutes ?? [];
+  const all = [...routes, ...additions];
+  if (manifest.schemaVersion !== PDTF1_SOURCE_ROUTE_MANIFEST.schemaVersion
+    || manifest.baselineCommit !== PDTF1_SOURCE_ROUTE_MANIFEST.baselineCommit
+    || manifest.acceptedCommit !== PDTF1_SOURCE_ROUTE_MANIFEST.acceptedCommit
+    || manifest.routeCount !== PDTF1_SOURCE_ROUTE_MANIFEST.routeCount
+    || routes.length !== manifest.routeCount
+    || manifest.addedRouteCount !== PDTF1_SOURCE_ROUTE_MANIFEST.addedRouteCount
+    || additions.length !== manifest.addedRouteCount
+    || all.length !== PDTF1_SOURCE_ROUTE_MANIFEST.acceptedRouteCount
+    || new Set(all.map(({ acceptedRoute }) => acceptedRoute)).size !== all.length
+    || new Set(all.map(({ acceptedFile }) => acceptedFile)).size !== all.length) {
+    throw new Error('PDTF 1.0 source route manifest does not match its frozen contract');
   }
   return result;
 }

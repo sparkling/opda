@@ -197,3 +197,15 @@ sentence, not a restructure) for disambiguation.
   independent, bidirectional provenance check alongside `dct:source`).
 * [ADR-0002](./ADR-0002-folder-hierarchy-and-slug-taxonomy.md) — the slug
   taxonomy the new `/mapping/*` routes follow.
+
+## Amendments
+
+### 2026-08-21 — ADR-0076 route-hosting amendment
+
+[ADR-0076](./ADR-0076-consolidate-pdtf-1-0-documentation-under-hierarchy-reflecting-routes.md)
+replaces the standalone `/mapping/**` hosting path with the qualified
+`/pdtf-1/extracted-ontology/lineage-provenance-and-verification/schema-to-ontology-verification/**`
+family and removes the old routes without redirects. This is a navigation placement,
+not a reversal of the semantic boundary decided here: RML remains an independent,
+bidirectional verification bridge between the original schema and extracted ontology,
+distinct from legacy JSON-LD contexts and never executable ETL or semantic approval.

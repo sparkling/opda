@@ -6,6 +6,7 @@
  */
 import type { Item } from '@/lib/site';
 import { normalizeUrl } from '@/lib/site';
+import { getPdtf1LegacyCommentKey, PDTF1_ROUTES } from '@/lib/pdtf1-routes.mjs';
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import Self from './SidebarItem.astro';
 
@@ -21,11 +22,17 @@ const isLeaf = !item.children;
 const itemPath = normalizeUrl(item.url);
 const isActive = itemPath === activePath;
 const isOpen = !isLeaf && containsActive(item);
-const legacyPdtfGroupId = new Map([
-  '/schema', '/implementation', '/adoption', '/modelling', '/model', '/mapping',
-].map((url) => [url, `section-nav-group-pdtf-1-${url.slice(1)}`])).get(itemPath);
+const legacyPdtfGroupId = new Map<string, string>([
+  [`${PDTF1_ROUTES.original}/schema`, 'section-nav-group-pdtf-1-schema'],
+  [`${PDTF1_ROUTES.original}/implementation`, 'section-nav-group-pdtf-1-implementation'],
+  [`${PDTF1_ROUTES.original}/adoption`, 'section-nav-group-pdtf-1-adoption'],
+  [PDTF1_ROUTES.historicalModelling, 'section-nav-group-pdtf-1-modelling'],
+  [PDTF1_ROUTES.modelViews, 'section-nav-group-pdtf-1-model'],
+  [PDTF1_ROUTES.schemaVerification, 'section-nav-group-pdtf-1-mapping'],
+]).get(itemPath);
+const stableIdPath = getPdtf1LegacyCommentKey(itemPath);
 const childrenId = legacyPdtfGroupId
-  ?? `section-nav-${itemPath.replace(/[^a-z0-9]+/giu, '-').replace(/^-|-$/gu, '')}`;
+  ?? `section-nav-${stableIdPath.replace(/[^a-z0-9]+/giu, '-').replace(/^-|-$/gu, '')}`;
 ---
 {isLeaf ? (
   <li class="tree-leaf">

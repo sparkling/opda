@@ -4,13 +4,16 @@ import { existsSync, readFileSync, statSync } from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import {
-  blockInventory, existingRetiredPropertyPackOutputs, fileInventory, filesUnder, fragmentContract,
+  blockInventory, existingRetiredPdtf1Outputs, existingRetiredPropertyPackOutputs,
+  fileInventory, filesUnder, fragmentContract,
   informationContract, inventoryDigest, isRetiredPropertyPackRoute, linkedInformationBlocks,
   nonInformationBlocksDigest,
-  parsePreservationArgs, propertyPackMigrationReceipt, routeFromFile, semanticBlocksDigest, sha256,
+  parsePreservationArgs, pdtf1MigrationReceipt, propertyPackMigrationReceipt,
+  routeFromFile, semanticBlocksDigest, sha256,
 } from './lib/ia-preservation-contract.mjs';
 import {
-  loadPriorIaFamilyManifest, loadPriorIaRouteManifest, manifestRetainedRecordMatches,
+  loadPdtf1SourceRouteManifest, loadPriorIaFamilyManifest, loadPriorIaRouteManifest,
+  manifestRetainedRecordMatches,
   priorFamilyMatches, validatePriorFamilyReceipt, validatePriorManifestReceipt,
   verifyBaselineRootCommit,
 } from './lib/ia-prior-manifest-contract.mjs';
@@ -19,17 +22,20 @@ import {
   getContentOwner, getRouteDisposition, getRouteStatus, validateIaContract,
 } from '../src/lib/site-ia.mjs';
 import { PROPERTY_PACK_ROUTE_MIGRATION, getPropertyPackReplacementRoute } from '../src/lib/property-pack-routes.mjs';
+import {
+  PDTF1_ROUTE_MIGRATION, isRetiredPdtf1DocumentationRoute,
+} from '../src/lib/pdtf1-routes.mjs';
 import { validateLeaseTermCaseCollisionReceipt } from '../src/lib/ontology-case-collision.mjs';
 import { getDeclaredRouteReplacement } from '../src/lib/site-route-migrations.mjs';
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const EXPECTED_FAMILY_COUNTS = Object.freeze({
   'source-archive': { baseline: 1620 },
   'council-markdown': { baseline: 261 },
-  'ontology-artefacts': { baseline: 27 },
+  'ontology-artefacts': { baseline: 27, accepted: 27 },
   'deployed-data': { baseline: 46 },
   'ui-assets': { baseline: 53 },
   'image-assets': { baseline: 5 },
-  'ontology-tools': { baseline: 837 },
+  'ontology-tools': { baseline: 837, accepted: 837 },
   'property-pack-canonical': { baseline: 690, accepted: 693 },
 });
 const HASH = /^[a-f0-9]{64}$/u;
@@ -234,7 +240,7 @@ function validateRetentionReceipt(record, classifiedByRoute) {
       || typeof entry.supersessionReason !== 'string' || !entry.supersessionReason.includes(entry.sourceText)
       || !entry.supersessionReason.includes(entry.originalDestinationRoute)
       || (!entry.supersessionReason.includes(entry.destinationRoute)
-        && !getPropertyPackReplacementRoute(entry.originalDestinationRoute))) {
+        && getDeclaredRouteReplacement(entry.originalDestinationRoute) !== entry.destinationRoute)) {
       fail(`non-information supersession is incomplete or unbound: ${record.baselineRoute}`);
       continue;
     }
@@ -269,11 +275,23 @@ validateIaContract();
 if (ROUTE_DISPOSITION_LEDGER.some(({ disposition }) => disposition === 'retire')) fail('route disposition ledger contains a retire entry');
 const routeManifest = readJson(options.routeManifestPath ?? 'src/data/ia-route-baseline.json');
 const familyManifest = readJson('src/data/ia-preservation-baseline.json');
+let pdtf1SourceManifest = null;
+try { ({ manifest: pdtf1SourceManifest } = loadPdtf1SourceRouteManifest(ROOT)); }
+catch (error) { fail(`PDTF 1.0 source-route Git evidence is unavailable: ${error.message}`); }
+let hasPdtf1CutReceipt = false;
 if (routeManifest) {
-  if (routeManifest.schemaVersion !== 6 || routeManifest.routeCount !== routeManifest.routes?.length
-    || routeManifest.addedRouteCount !== routeManifest.addedRoutes?.length) fail('route manifest has an invalid schema or count');
+  hasPdtf1CutReceipt = routeManifest.schemaVersion === 7;
+  const validLegacy = routeManifest.schemaVersion === 6
+    && routeManifest.retiredRoutes === undefined && routeManifest.retiredRouteCount === undefined;
+  const validCut = hasPdtf1CutReceipt
+    && routeManifest.retiredRouteCount === routeManifest.retiredRoutes?.length;
+  if ((!validLegacy && !validCut) || routeManifest.routeCount !== routeManifest.routes?.length
+    || routeManifest.addedRouteCount !== routeManifest.addedRoutes?.length) {
+    fail('route manifest has an invalid schema or count');
+  }
   const baselineRecords = routeManifest.routes ?? [];
   const addedRecords = routeManifest.addedRoutes ?? [];
+  const retiredRecords = routeManifest.retiredRoutes ?? [];
   const all = [...baselineRecords, ...addedRecords];
   const acceptedFiles = new Set();
   const acceptedRoutes = new Set();
@@ -351,6 +369,21 @@ if (routeManifest) {
       fail('Property Pack migration receipt is inconsistent');
     }
   } catch (error) { fail(`Property Pack migration contract failed: ${error.message}`); }
+  if (hasPdtf1CutReceipt && pdtf1SourceManifest) {
+    try {
+      const actual = pdtf1MigrationReceipt({
+        records: baselineRecords,
+        addedRecords,
+        retiredAliases: retiredRecords,
+        migration: PDTF1_ROUTE_MIGRATION,
+        replacementRoute: getDeclaredRouteReplacement,
+        sourceManifest: pdtf1SourceManifest,
+      });
+      if (JSON.stringify(actual) !== JSON.stringify(routeManifest.pdtf1Migration)) {
+        fail('PDTF 1.0 migration receipt is inconsistent');
+      }
+    } catch (error) { fail(`PDTF 1.0 migration contract failed: ${error.message}`); }
+  }
   try {
     validateLeaseTermCaseCollisionReceipt(
       options.manifestOnly ? null : ROOT,
@@ -362,10 +395,22 @@ if (routeManifest) {
     fail('Property Pack migration affects redirects or /api/v2');
   }
   const workflow = readFileSync(path.join(ROOT, '.github/workflows/deploy-aws.yml'), 'utf8');
-  for (const prefix of routeManifest.externalPrefixes ?? []) {
+  const retainedPdtfPrefixes = [
+    'pdtf-1/extracted-ontology/use-and-tooling/tools/ontospy/',
+    'pdtf-1/extracted-ontology/use-and-tooling/tools/pylode/',
+    'pdtf-1/extracted-ontology/use-and-tooling/tools/shaclplay/',
+    'pdtf-1/extracted-ontology/use-and-tooling/tools/widoco/',
+  ];
+  for (const prefix of retainedPdtfPrefixes) {
     if (!workflow.includes(`--exclude "${prefix}*"`)) fail(`deployment does not protect externally retained ${prefix}`);
   }
-  if (!workflow.includes('--exclude "ontology/artefacts/*"')) fail('deployment does not protect frozen ontology artefacts');
+  if (!workflow.includes('--exclude "pdtf-1/extracted-ontology/use-and-tooling/artefacts/*"')) {
+    fail('deployment does not protect frozen ontology artefacts at their canonical path');
+  }
+  for (const oldPrefix of ['ontology/artefacts/', 'ontology/tools/ontospy/', 'ontology/tools/pylode/',
+    'ontology/tools/shaclplay/', 'ontology/tools/widoco/']) {
+    if (workflow.includes(`--exclude "${oldPrefix}*"`)) fail(`deployment still protects retired ${oldPrefix}`);
+  }
   if (!options.manifestOnly) {
     const dist = path.join(ROOT, 'dist');
     if (!existsSync(dist) || !statSync(dist).isDirectory()) fail('built dist/ is required for the release preservation gate');
@@ -373,11 +418,19 @@ if (routeManifest) {
       for (const output of existingRetiredPropertyPackOutputs(dist, PROPERTY_PACK_ROUTE_MIGRATION)) {
         fail(`retired Property Pack output still exists: ${path.relative(dist, output)}`);
       }
+      if (hasPdtf1CutReceipt && pdtf1SourceManifest) {
+        for (const output of existingRetiredPdtf1Outputs(
+          dist, pdtf1SourceManifest, getDeclaredRouteReplacement,
+        )) fail(`retired PDTF 1.0 output still exists: ${path.relative(dist, output)}`);
+      }
       const currentFiles = filesUnder(dist).filter((file) => file.endsWith('.html'))
         .map((file) => path.relative(dist, file).split(path.sep).join('/'));
       for (const file of currentFiles) {
         const route = routeFromFile(file);
         if (isRetiredPropertyPackRoute(route)) fail(`retired Property Pack output still exists: ${route}`);
+        if (hasPdtf1CutReceipt && isRetiredPdtf1DocumentationRoute(route)) {
+          fail(`retired PDTF 1.0 output still exists: ${route}`);
+        }
         if (!acceptedFiles.has(file)) fail(`unclassified built route: ${route}`);
       }
       const acceptedBlockHashes = new Map();
@@ -445,8 +498,26 @@ if (familyManifest) {
         || family.acceptedPath !== 'dist/spdtf-2/property-pack')) {
       fail('Property Pack family does not declare the 690 → 691 + 2 migration cut');
     }
+    const movedFamilyPath = family.id === 'ontology-tools'
+      ? 'public/pdtf-1/extracted-ontology/use-and-tooling/tools'
+      : family.id === 'ontology-artefacts'
+        ? 'public/pdtf-1/extracted-ontology/use-and-tooling/artefacts' : null;
+    if (hasPdtf1CutReceipt && movedFamilyPath
+      && (family.baselinePath !== `public/ontology/${family.id.slice('ontology-'.length)}`
+        || family.acceptedPath !== movedFamilyPath
+        || family.assetClass !== (family.id === 'ontology-tools' ? 'tool-rendering' : 'ontology-serialization'))) {
+      fail(`${family.id} does not declare its exact PDTF 1.0 asset move`);
+    }
     if (family.policy === 'byte-identical' && family.baseline?.treeSha256 !== family.accepted?.treeSha256) {
       fail(`${family.id} violates byte-identical policy`);
+    }
+    if (hasPdtf1CutReceipt && movedFamilyPath && !options.manifestOnly) {
+      const retiredRoot = path.join(ROOT, family.baselinePath.replace(/^public\//u, 'dist/'));
+      for (const record of family.baseline.records) {
+        if (existsSync(path.join(retiredRoot, record.path))) {
+          fail(`${family.id} still emits retired asset ${record.path}`);
+        }
+      }
     }
     if (!options.manifestOnly && family.ciMode === 'verify-current') {
       compareInventory(`${family.id} accepted tree`, ROOT, family.acceptedPath, family.accepted);

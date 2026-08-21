@@ -54,20 +54,28 @@ const isRuntime = (path) => runtimePrefixes.some((prefix) => path === prefix || 
 // documentary repository links that are verified by focused doc/ontology
 // gates. Their pages and local assets are still crawled here; only unresolved
 // hrefs and fragments inside those documentary projections are delegated.
-const bundlePrefixes = ['/ontology/tools/', '/ontology/artefacts/'];
+const bundlePrefixes = [
+  '/pdtf-1/extracted-ontology/use-and-tooling/tools/',
+  '/pdtf-1/extracted-ontology/use-and-tooling/artefacts/',
+];
 const isBundle = (path) => bundlePrefixes.some((prefix) => path.startsWith(prefix));
 // Ontospy's vendored Bootswatch source tree includes upstream theme demo HTML
 // whose relative examples were never part of the generated OPDA documentation.
 // Exclude those fixtures only; actual Ontospy/artefact pages and every emitted
 // CSS, script, image and font resource remain in the crawl.
-const vendorFixturePrefixes = ['/ontology/tools/ontospy/static/libs/'];
+const vendorFixturePrefixes = [
+  '/pdtf-1/extracted-ontology/use-and-tooling/tools/ontospy/static/libs/',
+];
 const isVendorFixture = (path) => vendorFixturePrefixes.some((prefix) => path.startsWith(prefix));
 // Generated reference projections retain links to their repository source
 // graph (ADRs, ODRs, TTL, Markdown and code). Those are verified by their
 // existing focused doc/ontology gates; this crawl still checks every emitted
 // script/style/image on those pages and application navigation everywhere else.
 const sourceProjectionPrefixes = [
-  '/model/', '/modelling/adr/', '/modelling/odr/', '/mapping/', '/ontology/context/',
+  '/modelling/adr/', '/modelling/odr/',
+  '/pdtf-1/extracted-ontology/model-views-by-audience/',
+  '/pdtf-1/extracted-ontology/lineage-provenance-and-verification/schema-to-ontology-verification/',
+  '/pdtf-1/extracted-ontology/concepts-and-architecture/contexts/',
 ];
 const isSourceProjection = (path) => sourceProjectionPrefixes
   .some((prefix) => path.startsWith(prefix));

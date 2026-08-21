@@ -1,13 +1,13 @@
 import { test, expect } from '@playwright/test';
-import { settleVisualState, visit, watchRuntime } from './support.mjs';
+import { PDTF1_ROUTES, settleVisualState, visit, watchRuntime } from './support.mjs';
 
 const routeFamilies = [
   ['public-entry', '/'],
   ['knowledge-home', '/home'],
   ['prose', '/strategy/strategy-overview'],
   ['property-pack', '/spdtf-2/property-pack'],
-  ['schema', '/schema/legal-estate/ownership/leasehold/lease-legal/building-safety'],
-  ['diagram', '/ontology/graph'],
+  ['schema', `${PDTF1_ROUTES.original}/schema/legal-estate/ownership/leasehold/lease-legal/building-safety`],
+  ['diagram', `${PDTF1_ROUTES.terms}/graph`],
   ['working-group', '/working-groups/join'],
   ['presentation', '/presentation/working-group-kickoff'],
   ['design-system', '/design-system'],

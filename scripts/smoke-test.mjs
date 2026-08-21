@@ -29,6 +29,7 @@
  */
 
 const BASE_URL = process.env.BASE_URL || 'http://localhost:4321';
+const PDTF1_ORIGINAL = '/pdtf-1/original-standard';
 
 let test, expect;
 try {
@@ -99,9 +100,9 @@ test.describe('OPDA KB smoke tests', () => {
     // TODO: replace with real page paths once known. These are representative
     // probes; failure means Mermaid did not hydrate (no <svg> emitted).
     const probes = [
-      '/modelling/data-dictionary',
+      `${PDTF1_ORIGINAL}/data-dictionary`,
       '/governance/data-stewardship',
-      '/schema/overlays',
+      `${PDTF1_ORIGINAL}/schema/overlays`,
     ];
     for (const path of probes) {
       await page.goto(`${BASE_URL}${path}`);
@@ -115,8 +116,8 @@ test.describe('OPDA KB smoke tests', () => {
   test('data tables render on data dictionary and business glossary', async ({ page }) => {
     // TODO: confirm table selector — likely a <table> inside the page main content.
     const pages = [
-      '/modelling/data-dictionary',
-      '/modelling/business-glossary',
+      `${PDTF1_ORIGINAL}/data-dictionary`,
+      `${PDTF1_ORIGINAL}/business-glossary`,
     ];
     for (const path of pages) {
       await page.goto(`${BASE_URL}${path}`);

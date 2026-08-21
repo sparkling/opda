@@ -26,6 +26,20 @@ drift = load_script("drift_check", ROOT / "scripts/drift_check.py")
 
 
 class SchemaReproducibilityTests(unittest.TestCase):
+    def test_schema_generator_uses_the_hierarchical_route_and_source_root(self):
+        self.assertEqual(
+            generator.SCHEMA_ROUTE_ROOT,
+            "/pdtf-1/original-standard/schema",
+        )
+        self.assertEqual(
+            generator.OUT_PAGES,
+            ROOT / "src/pages/pdtf-1/original-standard/schema",
+        )
+        self.assertEqual(
+            generator.page_url("38b"),
+            "/pdtf-1/original-standard/schema/legal-estate/title/oc-summary",
+        )
+
     def test_source_date_epoch_is_repeatable_and_utc(self):
         first = generator.deterministic_generated_on("1704067200")
         second = generator.deterministic_generated_on("1704067200")
@@ -47,13 +61,34 @@ class SchemaReproducibilityTests(unittest.TestCase):
     def test_generated_page_coverage_includes_nested_schema_paths_only(self):
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory)
-            nested = root / "src/pages/schema/legal-estate/title/page.astro"
+            nested = (
+                root
+                / "src/pages/pdtf-1/original-standard/schema/legal-estate/title/page.astro"
+            )
             nested.parent.mkdir(parents=True)
             nested.write_text("<!-- generated -->")
-            wrong = root / "src/pages/pages/old.html"
-            wrong.parent.mkdir(parents=True)
-            wrong.write_text("<!-- obsolete location -->")
+            retired = root / "src/pages/schema/legal-estate/title/page.astro"
+            retired.parent.mkdir(parents=True)
+            retired.write_text("<!-- retired route; must not be inspected -->")
             self.assertEqual(drift.generated_page_files(root), [nested])
+
+    def test_dama_mapping_has_no_retired_pdtf_documentation_roots(self):
+        mapping = generator.load_dama_ka()
+        retired_paths = (
+            "src/pages/adoption/",
+            "src/pages/implementation/",
+            "src/pages/modelling/",
+            "src/pages/schema/",
+        )
+        self.assertFalse(
+            [path for path in mapping if path.startswith(retired_paths)],
+            "DAMA records must follow the canonical PDTF 1.0 page hierarchy",
+        )
+        schema_page = (
+            "src/pages/pdtf-1/original-standard/schema/"
+            "built-form/built-form-form.astro"
+        )
+        self.assertIn(schema_page, mapping)
 
     def test_missing_gitignored_inputs_are_unavailable(self):
         with tempfile.TemporaryDirectory() as directory:

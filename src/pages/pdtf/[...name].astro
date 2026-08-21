@@ -5,8 +5,8 @@
  * `https://opda.org.uk/pdtf/Property` resolves to a real web page.
  *
  * Serves every opda: resource: classes, object + datatype properties, SHACL
- * shapes, SKOS concepts and schemes. (Bounded contexts live at
- * /ontology/context.) Phase 6 adds the `.ttl` alternate. Pure SSG — getStaticPaths
+ * shapes, SKOS concepts and schemes. (PDTF 1.0-derived contexts live in the
+ * extracted-ontology concepts-and-architecture branch.) Phase 6 adds the `.ttl` alternate. Pure SSG — getStaticPaths
  * reads the committed model JSON; no runtime query.
  */
 import fs from 'node:fs';
@@ -22,7 +22,7 @@ import { allResources } from '@/lib/ontology-model';
 // Bidirectional linking (operator request, 2026-07-06): every class/property
 // this route serves also shows whether — and where — it's used in the RML
 // mapping (ADR-0060), reading the same committed triplesmap-index.json the
-// /mapping/triplesmaps pages use. Built once, module scope, for every page.
+// /pdtf-1/extracted-ontology/lineage-provenance-and-verification/schema-to-ontology-verification/triplesmaps pages use. Built once, module scope, for every page.
 function loadMappingUsage(): Record<string, string[]> {
   const idxPath = path.resolve(process.cwd(), 'source/03-standards/rml/triplesmap-index.json');
   const idx = JSON.parse(fs.readFileSync(idxPath, 'utf8'));

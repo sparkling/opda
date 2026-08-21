@@ -19,6 +19,25 @@ export const PDTF1_ROUTE_MIGRATION = Object.freeze({
   retiredRoots: Object.freeze([
     '/schema', '/implementation', '/adoption', '/model', '/ontology', '/mapping', '/manual',
   ]),
+  sourceRouteCount: 3500,
+  movedCanonicalRouteCount: 1262,
+  movedBaselineRouteCount: 1255,
+  movedAddedRouteCount: 7,
+  movedFamilyRouteCounts: Object.freeze({
+    adoption: 6,
+    implementation: 6,
+    mapping: 163,
+    model: 227,
+    modelling: 10,
+    ontology: 746,
+    schema: 104,
+  }),
+  retiredAliasRouteCount: 227,
+  stableIdentifierRouteCount: 1090,
+  generatedToolRouteCount: 652,
+  ontologyArtefactHtmlRouteCount: 1,
+  canonicalFamilyRouteCount: 1264,
+  acceptedSiteRouteCount: 3273,
   redirects: false,
   stableIdentifierRoot: '/pdtf',
 });
@@ -31,6 +50,18 @@ function normalizePath(value) {
 function replacePrefix(path, source, target) {
   if (path === source) return target;
   return path.startsWith(`${source}/`) ? `${target}${path.slice(source.length)}` : null;
+}
+
+/** `/manual/**` was a zero-information redirect family and is not reminted. */
+export function isRetiredPdtf1ManualAlias(value) {
+  const path = normalizePath(value);
+  return path === '/manual' || path.startsWith('/manual/');
+}
+
+/** `/pdtf/**` is the stable, dereferenceable ontology identifier namespace. */
+export function isStablePdtfIdentifierRoute(value) {
+  const path = normalizePath(value);
+  return path === '/pdtf' || path.startsWith('/pdtf/');
 }
 
 const exactRoutes = new Map([
@@ -101,6 +132,25 @@ export function getPdtf1ReplacementRoute(value) {
   return null;
 }
 
+/** True only for documentation URLs removed by this cut, never `/pdtf/**`. */
+export function isRetiredPdtf1DocumentationRoute(value) {
+  return !isStablePdtfIdentifierRoute(value)
+    && (isRetiredPdtf1ManualAlias(value) || getPdtf1ReplacementRoute(value) !== null);
+}
+
+/** Preserve the physical filename of moved static ontology HTML outputs. */
+export function getPdtf1ReplacementFile(value) {
+  const file = String(value || '').replace(/^\/+|\/+$/gu, '');
+  for (const [source, target] of [
+    ['ontology/tools', `${PDTF1_ROUTES.use.slice(1)}/tools`],
+    ['ontology/artefacts', `${PDTF1_ROUTES.use.slice(1)}/artefacts`],
+  ]) {
+    if (file === source) return target;
+    if (file.startsWith(`${source}/`)) return `${target}${file.slice(source.length)}`;
+  }
+  return null;
+}
+
 /** Preserve current comment threads while the old reader URL itself returns 404. */
 export function getPdtf1LegacyCommentKey(value) {
   const path = normalizePath(value);
@@ -110,6 +160,7 @@ export function getPdtf1LegacyCommentKey(value) {
   for (const [legacy, canonical] of prefixRoutes
     .filter(([source]) => source !== '/manual')
     .sort(([, left], [, right]) => right.length - left.length)) {
+    if (path === canonical) return legacy;
     if (path.startsWith(`${canonical}/`)) return `${legacy}${path.slice(canonical.length)}`;
   }
   return path;

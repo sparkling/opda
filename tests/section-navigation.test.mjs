@@ -1,7 +1,8 @@
 import assert from 'node:assert/strict';
 import test from 'node:test';
 
-import { SECTIONS, normalizeUrl } from '../src/lib/site.ts';
+import { SECTIONS, findPage, normalizeUrl } from '../src/lib/site.ts';
+import { PDTF1_ROUTES } from '../src/lib/pdtf1-routes.mjs';
 import { SITE_SEARCH_ENTRIES } from '../src/lib/site-search.mjs';
 import {
   SECTION_NAVIGATION,
@@ -19,6 +20,10 @@ const expectedDestinations = [
   ['governance', 'Governance', '/governance'],
   ['resources', 'Resources', '/resources'],
 ];
+
+const originalSchema = `${PDTF1_ROUTES.original}/schema`;
+const originalImplementation = `${PDTF1_ROUTES.original}/implementation`;
+const originalAdoption = `${PDTF1_ROUTES.original}/adoption`;
 
 const flattenItems = (items) => items.flatMap((item) => [item, ...flattenItems(item.children ?? [])]);
 const flattenGroup = (group) => [
@@ -54,6 +59,12 @@ test('the left section navigation implements all six destinations from one regis
   for (const standalone of ['/', '/home', '/search', '/resource', '/design-system', '/404', '/working-groups/join']) {
     assert.equal(getNavigationSection(standalone), null, `${standalone} must remain a standalone surface`);
   }
+  for (const retired of [
+    '/schema', '/implementation', '/adoption', '/modelling', '/mapping', '/model', '/ontology', '/manual',
+  ]) {
+    assert.equal(getNavigationSection(retired), null, `${retired} must not remain a navigation surface`);
+    assert.equal(findPage(retired), null, `${retired} must not remain in the canonical page registry`);
+  }
 
   const legacyUrls = Object.values(SECTIONS).flatMap((section) => (
     section.groups.flatMap((group) => flattenItems(group.items).map(({ url }) => url))
@@ -63,7 +74,7 @@ test('the left section navigation implements all six destinations from one regis
   ));
   assert.deepEqual(Object.fromEntries(Object.entries(SECTION_NAVIGATION).map(([key, section]) => [
     key, section.groups.flatMap(flattenGroup).length,
-  ])), { programme: 18, 'spdtf-2': 39, 'working-groups': 33, 'pdtf-1': 203, governance: 137, resources: 12 });
+  ])), { programme: 18, 'spdtf-2': 39, 'working-groups': 33, 'pdtf-1': 203, governance: 138, resources: 12 });
   for (const url of new Set(legacyUrls)) {
     assert.equal(compositeUrls.filter((candidate) => candidate === url).length, 1, `${url} must appear once`);
   }
@@ -75,11 +86,11 @@ test('the left section navigation implements all six destinations from one regis
     '/spdtf-2/property-pack/definition-and-scope',
     '/spdtf-2/property-pack/technical-working-group-determination',
     '/spdtf-2/property-pack/review-and-releases', '/pdtf-1',
-    '/pdtf-1/original-standard', '/ontology/datatypes',
-    '/ontology/namespaces', '/ontology/lineage-and-verification',
-    '/ontology/concepts-and-architecture', '/ontology/contexts',
-    '/ontology/terms-and-model-resources', '/ontology/validation-and-examples',
-    '/ontology/trust-and-governance', '/ontology/use-and-tooling',
+    PDTF1_ROUTES.original, `${PDTF1_ROUTES.terms}/datatypes`,
+    `${PDTF1_ROUTES.use}/namespaces`, PDTF1_ROUTES.lineage,
+    PDTF1_ROUTES.concepts, `${PDTF1_ROUTES.concepts}/contexts`,
+    PDTF1_ROUTES.terms, PDTF1_ROUTES.validation,
+    PDTF1_ROUTES.trust, PDTF1_ROUTES.use,
     '/resources', '/glossary',
   ]) assert.equal(compositeUrls.filter((url) => url === required).length, 1, `${required} must appear once`);
   assert.equal(compositeUrls.filter((url) => url.startsWith('/spdtf-2/working-groups')).length, 33);
@@ -91,8 +102,8 @@ test('category landing pages remain in breadcrumbs and exact page sequences', ()
     ['spdtf-2', 'Semantic modelling', '/spdtf-2/ontologies', '/spdtf-2/ontologies/why-ontologies'],
     ['spdtf-2', 'Property Pack ontology', '/spdtf-2/property-pack', '/spdtf-2/property-pack/definition-and-scope'],
     ['working-groups', 'Group workspaces', '/spdtf-2/working-groups', '/spdtf-2/working-groups/finance-and-banking'],
-    ['pdtf-1', 'Original standard', '/pdtf-1/original-standard', '/schema'],
-    ['pdtf-1', 'Extracted ontology', '/ontology', '/ontology/lineage-and-verification'],
+    ['pdtf-1', 'Original standard', PDTF1_ROUTES.original, originalSchema],
+    ['pdtf-1', 'Extracted ontology', PDTF1_ROUTES.extracted, PDTF1_ROUTES.lineage],
     ['governance', 'Governance framework', '/governance', '/governance/uk-initiative'],
     ['resources', 'Library', '/library', '/library/library-overview'],
   ]) {
@@ -108,58 +119,67 @@ test('category landing pages remain in breadcrumbs and exact page sequences', ()
 
 test('PDTF 1.0 exposes the original standard and extracted ontology as two nested journeys', () => {
   const section = SECTION_NAVIGATION['pdtf-1'];
+  const canonicalUrls = section.groups.flatMap(flattenGroup).map(({ url }) => url);
+  assert.equal(canonicalUrls.length, 203);
+  assert.ok(canonicalUrls.every((url) => url === PDTF1_ROUTES.root
+    || url.startsWith(`${PDTF1_ROUTES.root}/`)));
   assert.deepEqual(section.groups.map(({ heading, url }) => [heading, url]), [
-    ['Overview', '/pdtf-1'],
-    ['Original standard', '/pdtf-1/original-standard'],
-    ['Extracted ontology', '/ontology'],
+    ['Overview', PDTF1_ROUTES.root],
+    ['Original standard', PDTF1_ROUTES.original],
+    ['Extracted ontology', PDTF1_ROUTES.extracted],
   ]);
 
   const original = section.groups[1];
   assert.deepEqual(original.items.map(({ title, url }) => [title, url]), [
-    ['JSON Schemas and overlays', '/schema'],
-    ['Data dictionary', '/modelling/data-dictionary'],
-    ['Business glossary', '/modelling/business-glossary'],
-    ['Implementation guidance', '/implementation'],
-    ['Adoption evidence', '/adoption'],
+    ['JSON Schemas and overlays', originalSchema],
+    ['Data dictionary', `${PDTF1_ROUTES.original}/data-dictionary`],
+    ['Business glossary', `${PDTF1_ROUTES.original}/business-glossary`],
+    ['Implementation guidance', originalImplementation],
+    ['Adoption evidence', originalAdoption],
   ]);
-  assert.ok(flattenItems(original.items).some(({ url }) => url === '/schema/legal-estate'));
-  assert.ok(flattenItems(original.items).some(({ url }) => url === '/implementation/validation'));
+  assert.ok(flattenItems(original.items).some(({ url }) => url === `${originalSchema}/legal-estate`));
+  assert.ok(flattenItems(original.items).some(({ url }) => url === `${originalImplementation}/validation`));
 
   const extracted = section.groups[2];
   assert.deepEqual(extracted.items.map(({ title, url }) => [title, url]), [
-    ['Lineage, provenance and verification', '/ontology/lineage-and-verification'],
-    ['Model views by audience', '/model'],
-    ['Concepts and architecture', '/ontology/concepts-and-architecture'],
-    ['Terms and model resources', '/ontology/terms-and-model-resources'],
-    ['Validation and examples', '/ontology/validation-and-examples'],
-    ['Trust, governance and limitations', '/ontology/trust-and-governance'],
-    ['Use and tooling', '/ontology/use-and-tooling'],
+    ['Lineage, provenance and verification', PDTF1_ROUTES.lineage],
+    ['Model views by audience', PDTF1_ROUTES.modelViews],
+    ['Concepts and architecture', PDTF1_ROUTES.concepts],
+    ['Terms and model resources', PDTF1_ROUTES.terms],
+    ['Validation and examples', PDTF1_ROUTES.validation],
+    ['Trust, governance and limitations', PDTF1_ROUTES.trust],
+    ['Use and tooling', PDTF1_ROUTES.use],
   ]);
 
   const lineage = extracted.items[0];
   assert.deepEqual(lineage.children.map(({ title, url }) => [title, url]), [
-    ['Historical modelling record', '/modelling'],
-    ['Schema-to-ontology verification', '/mapping'],
-    ['Decision provenance', '/ontology/provenance'],
+    ['Historical modelling record', PDTF1_ROUTES.historicalModelling],
+    ['Schema-to-ontology verification', PDTF1_ROUTES.schemaVerification],
+    ['Decision provenance', `${PDTF1_ROUTES.lineage}/decision-provenance`],
   ]);
-  assert.ok(lineage.children[0].children.some(({ url }) => url === '/modelling/standards-stack'));
-  assert.ok(lineage.children[1].children.some(({ url }) => url === '/mapping/coverage'));
+  assert.ok(lineage.children[0].children
+    .some(({ url }) => url === `${PDTF1_ROUTES.historicalModelling}/standards-stack`));
+  assert.ok(lineage.children[1].children
+    .some(({ url }) => url === `${PDTF1_ROUTES.schemaVerification}/coverage`));
 
   const modelViews = extracted.items[1];
   assert.deepEqual(modelViews.children.map(({ title, url }) => [title, url]), [
-    ['Information architecture', '/model/information-architecture'],
-    ['Concept model', '/model/concept'],
-    ['Logical model', '/model/logical'],
-    ['Ontology implementation', '/model/physical-ontology'],
-    ['Deployment topology', '/model/physical-database'],
-    ['Relational projection', '/model/physical-relational'],
-    ['Validation report', '/model/validation-report'],
+    ['Information architecture', `${PDTF1_ROUTES.modelViews}/information-architecture`],
+    ['Concept model', `${PDTF1_ROUTES.modelViews}/concept`],
+    ['Logical model', `${PDTF1_ROUTES.modelViews}/logical`],
+    ['Ontology implementation', `${PDTF1_ROUTES.modelViews}/physical-ontology`],
+    ['Deployment topology', `${PDTF1_ROUTES.modelViews}/physical-database`],
+    ['Relational projection', `${PDTF1_ROUTES.modelViews}/physical-relational`],
+    ['Validation report', `${PDTF1_ROUTES.modelViews}/validation-report`],
   ]);
-  assert.ok(modelViews.children.find(({ url }) => url === '/model/logical')
-    .children.some(({ url }) => url === '/model/logical/property'));
+  assert.ok(modelViews.children.find(({ url }) => url === `${PDTF1_ROUTES.modelViews}/logical`)
+    .children.some(({ url }) => url === `${PDTF1_ROUTES.modelViews}/logical/property`));
   for (const [url, childCount] of [
-    ['/model/concept', 7], ['/model/logical', 7], ['/model/physical-ontology', 6],
-    ['/model/physical-database', 6], ['/model/physical-relational', 7],
+    [`${PDTF1_ROUTES.modelViews}/concept`, 7],
+    [`${PDTF1_ROUTES.modelViews}/logical`, 7],
+    [`${PDTF1_ROUTES.modelViews}/physical-ontology`, 6],
+    [`${PDTF1_ROUTES.modelViews}/physical-database`, 6],
+    [`${PDTF1_ROUTES.modelViews}/physical-relational`, 7],
   ]) {
     const tier = modelViews.children.find((item) => item.url === url);
     assert.equal(tier.children.length, childCount, `${url} must retain its complete tier`);
@@ -167,45 +187,53 @@ test('PDTF 1.0 exposes the original standard and extracted ontology as two neste
   }
 
   assert.deepEqual(extracted.items[2].children.map(({ url }) => url), [
-    '/ontology/foundation', '/ontology/identity', '/ontology/contexts',
-    '/ontology/foundational-ontology', '/ontology/modelling-frameworks',
+    `${PDTF1_ROUTES.concepts}/foundation`, `${PDTF1_ROUTES.concepts}/identity`,
+    `${PDTF1_ROUTES.concepts}/contexts`, `${PDTF1_ROUTES.concepts}/foundational-ontology`,
+    `${PDTF1_ROUTES.concepts}/modelling-frameworks`,
   ]);
   assert.deepEqual(extracted.items[3].children.map(({ url }) => url), [
-    '/ontology/graph', '/ontology/classes', '/ontology/category', '/ontology/properties',
-    '/ontology/datatypes', '/ontology/vocabularies', '/ontology/glossary',
+    `${PDTF1_ROUTES.terms}/graph`, `${PDTF1_ROUTES.terms}/classes`,
+    `${PDTF1_ROUTES.terms}/categories`, `${PDTF1_ROUTES.terms}/properties`,
+    `${PDTF1_ROUTES.terms}/datatypes`, `${PDTF1_ROUTES.terms}/vocabularies`,
+    `${PDTF1_ROUTES.terms}/glossary`,
   ]);
   assert.deepEqual(extracted.items[4].children.map(({ url }) => url), [
-    '/ontology/shapes', '/ontology/profiles', '/ontology/exemplars',
+    `${PDTF1_ROUTES.validation}/shapes`, `${PDTF1_ROUTES.validation}/profiles`,
+    `${PDTF1_ROUTES.validation}/exemplars`,
   ]);
   assert.deepEqual(extracted.items[5].children.map(({ url }) => url), [
-    '/ontology/claims', '/ontology/governance', '/ontology/known-issues',
+    `${PDTF1_ROUTES.trust}/claims`, `${PDTF1_ROUTES.trust}/governance`,
+    `${PDTF1_ROUTES.trust}/known-issues`,
   ]);
   assert.deepEqual(extracted.items[6].children.map(({ url }) => url), [
-    '/ontology/usage', '/ontology/namespaces', '/ontology/bake-off',
+    `${PDTF1_ROUTES.use}/usage`, `${PDTF1_ROUTES.use}/namespaces`,
+    `${PDTF1_ROUTES.use}/bake-off`,
   ]);
-  assert.ok(flattenItems(extracted.items).some(({ url }) => url === '/ontology/classes'));
-  assert.ok(flattenItems(extracted.items).some(({ url }) => url === '/mapping/coverage'));
+  assert.ok(flattenItems(extracted.items).some(({ url }) => url === `${PDTF1_ROUTES.terms}/classes`));
+  assert.ok(flattenItems(extracted.items)
+    .some(({ url }) => url === `${PDTF1_ROUTES.schemaVerification}/coverage`));
 
   assert.deepEqual(
-    findNavigationPage('/ontology/classes').trail.map(({ url }) => url),
-    ['/ontology/terms-and-model-resources', '/ontology/classes'],
+    findNavigationPage(`${PDTF1_ROUTES.terms}/classes`).trail.map(({ url }) => url),
+    [PDTF1_ROUTES.terms, `${PDTF1_ROUTES.terms}/classes`],
   );
   assert.deepEqual(
-    findNavigationPage('/mapping/coverage').trail.map(({ url }) => url),
-    ['/ontology/lineage-and-verification', '/mapping', '/mapping/coverage'],
+    findNavigationPage(`${PDTF1_ROUTES.schemaVerification}/coverage`).trail.map(({ url }) => url),
+    [PDTF1_ROUTES.lineage, PDTF1_ROUTES.schemaVerification, `${PDTF1_ROUTES.schemaVerification}/coverage`],
   );
   assert.deepEqual(
-    findNavigationPage('/model/logical/property').trail.map(({ url }) => url),
-    ['/model', '/model/logical', '/model/logical/property'],
+    findNavigationPage(`${PDTF1_ROUTES.modelViews}/logical/property`).trail.map(({ url }) => url),
+    [PDTF1_ROUTES.modelViews, `${PDTF1_ROUTES.modelViews}/logical`, `${PDTF1_ROUTES.modelViews}/logical/property`],
   );
 
-  assert.equal(getNavigationPrevNext('/pdtf-1').next?.url, '/pdtf-1/original-standard');
-  assert.equal(getNavigationPrevNext('/pdtf-1/original-standard').next?.url, '/schema');
-  assert.equal(getNavigationPrevNext('/adoption/hmlr-llc').next?.url, '/ontology');
-  assert.equal(getNavigationPrevNext('/ontology').next?.url, '/ontology/lineage-and-verification');
-  assert.equal(getNavigationPrevNext('/model/validation-report').next?.url, '/ontology/concepts-and-architecture');
-  assert.equal(getNavigationPrevNext('/ontology/use-and-tooling').next?.url, '/ontology/usage');
-  assert.equal(getNavigationPrevNext('/ontology/bake-off').next, undefined);
+  assert.equal(getNavigationPrevNext(PDTF1_ROUTES.root).next?.url, PDTF1_ROUTES.original);
+  assert.equal(getNavigationPrevNext(PDTF1_ROUTES.original).next?.url, originalSchema);
+  assert.equal(getNavigationPrevNext(`${originalAdoption}/hmlr-llc`).next?.url, PDTF1_ROUTES.extracted);
+  assert.equal(getNavigationPrevNext(PDTF1_ROUTES.extracted).next?.url, PDTF1_ROUTES.lineage);
+  assert.equal(getNavigationPrevNext(`${PDTF1_ROUTES.modelViews}/validation-report`).next?.url,
+    PDTF1_ROUTES.concepts);
+  assert.equal(getNavigationPrevNext(PDTF1_ROUTES.use).next?.url, `${PDTF1_ROUTES.use}/usage`);
+  assert.equal(getNavigationPrevNext(`${PDTF1_ROUTES.use}/bake-off`).next, undefined);
 });
 
 test('authority overrides and generated-route aliases resolve one terminal navigation page', () => {
@@ -213,15 +241,18 @@ test('authority overrides and generated-route aliases resolve one terminal navig
     ['/strategy/strategy-overview', 'programme'],
     ['/spdtf-2/property-pack/validation', 'spdtf-2'],
     ['/spdtf-2/working-groups/estate-agency/review', 'working-groups'],
-    ['/ontology/classes', 'pdtf-1'],
+    [`${PDTF1_ROUTES.terms}/classes`, 'pdtf-1'],
     ['/modelling/adr/adr-0074', 'governance'],
     ['/engagement/transcripts', 'resources'],
   ]) assert.equal(findNavigationPage(route)?.section.key, section);
 
   for (const [route, active] of [
-    ['/ontology/category/example', '/ontology/category'], ['/ontology/context/example', '/ontology/contexts'],
-    ['/ontology/exemplar/example', '/ontology/exemplars'], ['/ontology/profile/example', '/ontology/profiles'],
-    ['/mapping/triplesmaps/example', '/mapping/triplesmaps'], ['/pdtf/example', '/ontology/glossary'],
+    [`${PDTF1_ROUTES.terms}/categories/example`, `${PDTF1_ROUTES.terms}/categories`],
+    [`${PDTF1_ROUTES.concepts}/contexts/example`, `${PDTF1_ROUTES.concepts}/contexts`],
+    [`${PDTF1_ROUTES.validation}/exemplars/example`, `${PDTF1_ROUTES.validation}/exemplars`],
+    [`${PDTF1_ROUTES.validation}/profiles/example`, `${PDTF1_ROUTES.validation}/profiles`],
+    [`${PDTF1_ROUTES.schemaVerification}/triplesmaps/example`, `${PDTF1_ROUTES.schemaVerification}/triplesmaps`],
+    ['/pdtf/example', `${PDTF1_ROUTES.terms}/glossary`],
   ]) {
     const match = findNavigationPage(route);
     assert.equal(match?.trail.at(-1)?.url ?? match?.group.url, active);
@@ -231,10 +262,9 @@ test('authority overrides and generated-route aliases resolve one terminal navig
 test('every new extracted-ontology category landing is searchable', () => {
   const searchable = new Set(SITE_SEARCH_ENTRIES.map(({ url }) => url));
   for (const url of [
-    '/ontology/lineage-and-verification', '/ontology/concepts-and-architecture',
-    '/ontology/contexts', '/ontology/terms-and-model-resources',
-    '/ontology/validation-and-examples', '/ontology/trust-and-governance',
-    '/ontology/use-and-tooling',
+    PDTF1_ROUTES.lineage, PDTF1_ROUTES.concepts,
+    `${PDTF1_ROUTES.concepts}/contexts`, PDTF1_ROUTES.terms,
+    PDTF1_ROUTES.validation, PDTF1_ROUTES.trust, PDTF1_ROUTES.use,
   ]) assert.ok(searchable.has(url), `${url} must be in the reader search registry`);
 });
 

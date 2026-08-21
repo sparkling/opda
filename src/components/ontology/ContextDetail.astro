@@ -1,8 +1,8 @@
 ---
 /**
- * ADR-0044 Phase 3 — bounded-context detail body (/ontology/context/{id}).
+ * ADR-0044 Phase 3 — bounded-context detail body (/pdtf-1/extracted-ontology/concepts-and-architecture/contexts/{id}).
  * The 7 canonical DDD bounded contexts are graph-derived module groupings (not
- * minted opda: term IRIs), so they live under /ontology/context, listing their
+ * minted opda: term IRIs), so they live under /pdtf-1/extracted-ontology/concepts-and-architecture/contexts, listing their
  * member classes / properties / shapes / schemes, each linked to its /pdtf page.
  */
 import type { ContextEntry } from '@/lib/ontology-model';
@@ -19,9 +19,9 @@ const groups = [
 const total = groups.reduce((n, g) => n + g.items.length, 0);
 ---
 <nav class="term-nav" aria-label="Breadcrumb">
-  <a href="/ontology">Ontology</a>
+  <a href="/pdtf-1/extracted-ontology">Ontology</a>
   <span class="sep" aria-hidden="true">›</span>
-  <a href="/ontology/classes">Browse the model</a>
+  <a href="/pdtf-1/extracted-ontology/terms-and-model-resources/classes">Browse the model</a>
   <span class="sep" aria-hidden="true">›</span>
   <span aria-current="page">{context.localName} context</span>
 </nav>

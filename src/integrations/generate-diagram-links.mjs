@@ -89,7 +89,7 @@ function buildLinks(ids) {
     const tier = deriveTier(id);
     if (!tier) continue;
     const slug = deriveSlug(id, tier);
-    const route = slug ? `/model/${tier}/${slug}` : `/model/${tier}`;
+    const route = slug ? `/pdtf-1/extracted-ontology/model-views-by-audience/${tier}/${slug}` : `/pdtf-1/extracted-ontology/model-views-by-audience/${tier}`;
     const stem = slug.split('/').pop() ?? slug;
     if (!stem) continue;
 

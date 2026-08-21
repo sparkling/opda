@@ -32,6 +32,7 @@ import {
   validateIaContract,
 } from '../src/lib/site-ia.mjs';
 import { searchEntries } from '../src/lib/site-search.mjs';
+import { getDeclaredRouteReplacement } from '../src/lib/site-route-migrations.mjs';
 import {
   ALLOWED_DISPOSITIONS,
   FORMAL_CONCERNS,
@@ -141,6 +142,9 @@ test('each destination has the complete five-field authority contract', () => {
     assert.deepEqual(Object.keys(AUTHORITY_BY_DESTINATION[key]), IA_STATUS_FIELDS);
     for (const field of IA_STATUS_FIELDS) assert.ok(AUTHORITY_BY_DESTINATION[key][field]);
   }
+  assert.equal(getRouteStatus('/pdtf-1/extracted-ontology/terms-and-model-resources/classes').version, 'PDTF 1.0-derived draft');
+  assert.match(getRouteStatus('/pdtf-1/extracted-ontology/lineage-provenance-and-verification/schema-to-ontology-verification').authority, /verification evidence/u);
+  assert.match(getRouteStatus('/pdtf-1/original-standard/adoption').authority, /implementation evidence/u);
 });
 
 test('reader pages keep authority metadata without rendering an authority status panel', () => {
@@ -161,17 +165,21 @@ test('every audited route family has a deterministic owner and disposition', () 
   for (const path of [
     '/programme/**', '/spdtf-2/**', '/spdtf-2/working-groups/**', '/pdtf-1/**',
     '/resources/**', '/strategy/**', '/governance/**',
-    '/dbt-smart-data/**', '/engagement/**', '/modelling/**', '/model/**',
-    '/ontology/**', '/mapping/**', '/schema/**', '/implementation/**', '/adoption/**',
+    '/dbt-smart-data/**', '/engagement/**',
     '/library/**', '/', '/home', '/glossary', '/design-system', '/resource', '/404',
-    '/spdtf-2/property-pack/**', '/pdtf/**', '/ontology/artefacts/**', '/ontology/tools/**', '/data/**', '/ui/**',
+    '/spdtf-2/property-pack/**', '/pdtf/**',
+    '/pdtf-1/extracted-ontology/use-and-tooling/artefacts/**',
+    '/pdtf-1/extracted-ontology/use-and-tooling/tools/**', '/data/**', '/ui/**',
     '/images/**', '/council/**',
-    '/manual/**', '/presentations/**',
+    '/presentations/**', '/modelling/adr/**', '/modelling/odr/**',
   ]) {
     const entry = entries.get(path);
     assert.ok(entry, `${path} has no disposition`);
     assert.ok(entry.owner, `${path} has no owner`);
     assert.notEqual(entry.disposition, 'retire', `${path} is marked retire`);
+  }
+  for (const retired of ['/schema/**', '/ontology/**', '/model/**', '/mapping/**', '/manual/**']) {
+    assert.equal(getRouteDisposition(retired), null, `${retired} remains in the live disposition registry`);
   }
   assert.ok(ROUTE_DISPOSITION_LEDGER.every(({ preservedAt, statusSource }) => preservedAt && statusSource));
   assert.ok(ROUTE_DISPOSITION_LEDGER.every(({ consumers, endpoints, crossWorkArea, checksumPolicy, search }) => (
@@ -182,7 +190,7 @@ test('every audited route family has a deterministic owner and disposition', () 
 test('the migration ledger preserves every audited high-risk information family', () => {
   const paths = PRESERVATION_LEDGER.map(({ currentPath }) => currentPath).join('\n');
   for (const required of [
-    '/resources/**', '/council/**', '/ontology/artefacts/**', '/data/**',
+    '/resources/**', '/council/**', '/pdtf-1/extracted-ontology/use-and-tooling/artefacts/**', '/data/**',
     '/pdtf/**', 'former /v2/** and /modelling/property-pack', 'authentication', '/ui/**',
   ]) assert.ok(paths.includes(required), `${required} is missing from the preservation ledger`);
 
@@ -196,9 +204,28 @@ test('the migration ledger preserves every audited high-risk information family'
 });
 
 test('the frozen preservation proof resolves content, ownership and exact family checksums', () => {
-  assert.equal(routeBaseline.schemaVersion, 6);
-  assert.equal(routeBaseline.routeCount, 3436);
+  assert.ok([6, 7].includes(routeBaseline.schemaVersion));
+  assert.equal(routeBaseline.routeCount, routeBaseline.schemaVersion === 7 ? 3209 : 3436);
   assert.equal(routeBaseline.addedRouteCount, 64);
+  if (routeBaseline.schemaVersion === 7) {
+    assert.equal(routeBaseline.retiredRouteCount, 227);
+    assert.equal(routeBaseline.retiredRoutes.length, 227);
+    assert.deepEqual({
+      moved: routeBaseline.pdtf1Migration.movedCanonicalRouteCount,
+      movedBaseline: routeBaseline.pdtf1Migration.movedBaselineRouteCount,
+      movedAdded: routeBaseline.pdtf1Migration.movedAddedRouteCount,
+      retired: routeBaseline.pdtf1Migration.retiredAliasRouteCount,
+      stableIdentifiers: routeBaseline.pdtf1Migration.stableIdentifierRouteCount,
+      generatedTools: routeBaseline.pdtf1Migration.generatedToolRouteCount,
+      artefactIndexes: routeBaseline.pdtf1Migration.ontologyArtefactHtmlRouteCount,
+      canonicalFamily: routeBaseline.pdtf1Migration.canonicalFamilyRouteCount,
+      acceptedSite: routeBaseline.pdtf1Migration.acceptedSiteRouteCount,
+    }, {
+      moved: 1262, movedBaseline: 1255, movedAdded: 7, retired: 227,
+      stableIdentifiers: 1090, generatedTools: 652, artefactIndexes: 1,
+      canonicalFamily: 1264, acceptedSite: 3273,
+    });
+  }
   assert.equal(routeBaseline.routes.length, routeBaseline.routeCount);
   assert.equal(routeBaseline.addedRoutes.length, routeBaseline.addedRouteCount);
   const acceptedRecords = [...routeBaseline.routes, ...routeBaseline.addedRoutes];
@@ -247,7 +274,8 @@ test('the frozen preservation proof resolves content, ownership and exact family
       && entry.sourceText && entry.originalDestinationRoute && entry.destinationPolicy
       && ['containing-link', 'declared-original-destination'].includes(entry.sourceEvidence)
       && entry.supersessionReason.includes(entry.originalDestinationRoute)
-      && entry.supersessionReason.includes(entry.destinationRoute)
+      && (entry.supersessionReason.includes(entry.destinationRoute)
+        || getDeclaredRouteReplacement(entry.originalDestinationRoute) === entry.destinationRoute)
     ))
   )));
   assert.ok(routeBaseline.routes.every(({ baselineFragments, acceptedFragments }) => (
@@ -275,17 +303,30 @@ test('the frozen preservation proof resolves content, ownership and exact family
     && family.baseline.records.length === family.baseline.count
     && family.accepted.records.length === family.accepted.count
   )));
+  if (routeBaseline.schemaVersion === 7) {
+    const tools = preservationBaseline.families.find(({ id }) => id === 'ontology-tools');
+    const artefacts = preservationBaseline.families.find(({ id }) => id === 'ontology-artefacts');
+    assert.deepEqual({
+      tools: [tools.assetClass, tools.baselinePath, tools.acceptedPath, tools.accepted.count],
+      artefacts: [artefacts.assetClass, artefacts.baselinePath, artefacts.acceptedPath, artefacts.accepted.count],
+    }, {
+      tools: ['tool-rendering', 'public/ontology/tools',
+        'public/pdtf-1/extracted-ontology/use-and-tooling/tools', 837],
+      artefacts: ['ontology-serialization', 'public/ontology/artefacts',
+        'public/pdtf-1/extracted-ontology/use-and-tooling/artefacts', 27],
+    });
+  }
   assert.equal(preservationBaseline.runtimeJourneys.length, 4);
 });
 
 test('the versioned route-status registry protects derived and pre-candidate authority', () => {
   assert.match(IA_STATUS_REGISTRY_VERSION, /^\d{4}-\d{2}-\d{2}$/u);
-  assert.equal(getRouteStatus('/ontology/classes').maturity, 'Draft semantic corpus — under review');
+  assert.equal(getRouteStatus('/pdtf-1/extracted-ontology/terms-and-model-resources/classes').maturity, 'Draft semantic corpus — under review');
   assert.equal(getRouteStatus('/pdtf/Seller').maturity, 'Draft semantic corpus — under review');
   assert.match(getRouteStatus('/pdtf/Seller').authority, /not part of the published JSON Schema/u);
-  assert.match(getRouteStatus('/mapping').authority, /verification evidence/u);
-  assert.match(getRouteStatus('/modelling').maturity, /Mixed-maturity/u);
-  assert.match(getRouteStatus('/adoption').authority, /does not establish SPDTF 2\.0 adoption/u);
+  assert.match(getRouteStatus('/pdtf-1/extracted-ontology/lineage-provenance-and-verification/schema-to-ontology-verification').authority, /verification evidence/u);
+  assert.match(getRouteStatus('/pdtf-1/extracted-ontology/lineage-provenance-and-verification/historical-modelling').maturity, /Mixed-maturity/u);
+  assert.match(getRouteStatus('/pdtf-1/original-standard/adoption').authority, /does not establish SPDTF 2\.0 adoption/u);
   assert.match(getRouteStatus('/pdtf-1/original-standard').maturity, /Published schema implementation/u);
   assert.match(getRouteStatus('/spdtf-2/property-pack/contexts/estate-agency').authority, /Machine-generated/u);
   assert.match(getRouteStatus('/spdtf-2/working-groups/estate-agency').version, /no candidate/u);

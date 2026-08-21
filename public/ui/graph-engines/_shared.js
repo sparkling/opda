@@ -1,7 +1,7 @@
 /*
  * Ontology graph engines — shared registry + helpers (ADR-0043 / ADR-0047).
  *
- * The /ontology/graph page is a multi-engine "bake-off": every scored graph
+ * The PDTF 1.0 ontology graph page is a multi-engine "bake-off": every scored graph
  * library renders the SAME committed model (/data/ontology-graph-elements.json)
  * in its own tab, so the ADR-0043 Cytoscape pick can be judged in situ against
  * the alternatives. Each engine is an independent module under

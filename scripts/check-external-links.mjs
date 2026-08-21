@@ -11,7 +11,7 @@
  * SCOPE / EXIT CODE — this is a maintenance/audit tool, NOT a deploy gate.
  * External sites flap, so the DEFAULT mode is REPORT-ONLY (always exit 0).
  * Failures are grouped by whether the referencing page is on the ADR-0044
- * surface (/ontology + /pdtf, excluding /ontology/tools + /ontology/artefacts)
+ * surface (the extracted ontology + /pdtf, excluding retained tool/artefact bundles)
  * vs elsewhere. Flags:
  *   --strict   exit 1 if any URL referenced from the ADR-0044 surface fails.
  *   --all      check ALL external URLs (default: still checks all, but only the
@@ -60,8 +60,9 @@ const SKIP = [
 // the SPARQL-driven pages, excluding the ADR-0041 third-party tool renderings
 // and the committed artefact bundles.
 const isOnto = (u) =>
-  (u.startsWith('/ontology') || u.startsWith('/pdtf')) &&
-  !u.startsWith('/ontology/tools') && !u.startsWith('/ontology/artefacts');
+  (u.startsWith('/pdtf-1/extracted-ontology') || u === '/pdtf' || u.startsWith('/pdtf/')) &&
+  !u.startsWith('/pdtf-1/extracted-ontology/use-and-tooling/tools') &&
+  !u.startsWith('/pdtf-1/extracted-ontology/use-and-tooling/artefacts');
 
 function* htmlFiles(dir) {
   for (const e of readdirSync(dir, { withFileTypes: true })) {

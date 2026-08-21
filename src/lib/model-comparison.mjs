@@ -92,11 +92,11 @@ export const changedKindLexicalMatches = Object.freeze(
 );
 
 const evidence = {
-  current: { label: 'Current ontology reference', href: '/ontology' },
-  currentProvenance: { label: 'Current ontology provenance', href: '/ontology/provenance' },
-  currentSchema: { label: 'Current schema reference', href: '/schema' },
-  currentMapping: { label: 'Current RML mapping', href: '/mapping' },
-  currentProfiles: { label: 'Current overlay profiles', href: '/ontology/profiles' },
+  current: { label: 'Current ontology reference', href: '/pdtf-1/extracted-ontology' },
+  currentProvenance: { label: 'Current ontology provenance', href: '/pdtf-1/extracted-ontology/lineage-provenance-and-verification/decision-provenance' },
+  currentSchema: { label: 'Current schema reference', href: '/pdtf-1/original-standard/schema' },
+  currentMapping: { label: 'Current RML mapping', href: '/pdtf-1/extracted-ontology/lineage-provenance-and-verification/schema-to-ontology-verification' },
+  currentProfiles: { label: 'Current overlay profiles', href: '/pdtf-1/extracted-ontology/validation-and-examples/profiles' },
   v2Overview: { label: 'Property Pack candidate overview', href: '/spdtf-2/property-pack' },
   v2Contexts: { label: 'Property Pack contextual boundaries', href: '/spdtf-2/property-pack/contexts' },
   v2Coverage: { label: 'Property Pack source coverage', href: '/spdtf-2/property-pack/coverage' },

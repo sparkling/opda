@@ -142,7 +142,7 @@
         } catch (e) {
           console.warn('[OPDA] graphviz (dot) render failed', e);
           fail('Graphviz could not render this graph (CDN blocked or wasm error). ' +
-            'Try the Cytoscape or D3 tabs — the typed indexes under /ontology are the non-interactive equivalent.');
+            'Try the Cytoscape or D3 tabs — the typed indexes in the extracted ontology are the non-interactive equivalent.');
         }
       }
 

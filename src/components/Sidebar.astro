@@ -10,6 +10,7 @@
 import type { Item } from '@/lib/site';
 import { normalizeUrl } from '@/lib/site';
 import { findNavigationPage, getNavigationSection } from '@/lib/site-navigation';
+import { PDTF1_ROUTES } from '@/lib/pdtf1-routes.mjs';
 import SidebarItem from './SidebarItem.astro';
 
 const path = normalizeUrl(Astro.url.pathname);
@@ -54,8 +55,11 @@ function containsActive(item: Item): boolean {
         const containsActivePage = isActivePage || group.items.some(containsActive);
         const hasChildren = group.items.length > 0;
         const defaultOpen = hasChildren && containsActivePage;
-        const emphasizeFolders = section.key === 'pdtf-1' && group.url === '/ontology';
-        const childrenId = `section-nav-group-${section.key}-${group.url}`
+        const emphasizeFolders = section.key === 'pdtf-1' && group.url === PDTF1_ROUTES.extracted;
+        const legacyGroupId = section.key === 'pdtf-1' && group.url === PDTF1_ROUTES.extracted
+          ? 'section-nav-group-pdtf-1-ontology'
+          : null;
+        const childrenId = legacyGroupId ?? `section-nav-group-${section.key}-${group.url}`
           .replace(/[^a-z0-9]+/giu, '-').replace(/^-|-$/gu, '');
         return (
           <section

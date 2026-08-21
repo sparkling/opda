@@ -1,0 +1,16 @@
+---
+/**
+ * Realises ADR-0016 per ADR-0015; render mechanism per ADR-0021 §"Separate task".
+ * Serves the generator-produced static HTML for the 4-tier validation report.
+ *
+ * The HTML fragment is generated from docs/manual/VALIDATION-REPORT.md by the
+ * `opda-report-generator` Astro integration (src/integrations/generate-report-html.mjs)
+ * at build/dev start, written to src/generated/. This page serves that output
+ * directly — the report generator generates the static HTML, the page serves it.
+ */
+import Layout from '@/layouts/Layout.astro';
+import reportHtml from '../../../../generated/validation-report.html?raw';
+---
+<Layout title="Manual — validation report">
+  <Fragment set:html={reportHtml} />
+</Layout>

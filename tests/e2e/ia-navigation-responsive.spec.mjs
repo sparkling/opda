@@ -1,5 +1,6 @@
 import { test, expect } from '@playwright/test';
 import { GLOBAL_DESTINATIONS } from '../../src/lib/site-ia.mjs';
+import { PDTF1_ROUTES } from '../../src/lib/pdtf1-routes.mjs';
 import { assertNoBodyOverflow, visit, watchRuntime } from './support.mjs';
 
 const primary = GLOBAL_DESTINATIONS.map(({ title, url }) => ({ title, url }));
@@ -107,7 +108,7 @@ test('current implementers reach schema and validation guidance within two inter
   expect((await implementationLinks.allTextContents()).join('\n')).not.toMatch(/archive/iu);
 
   await schemasLink.click();
-  await expect(page).toHaveURL(/\/schema$/u);
+  await expect(page).toHaveURL(new RegExp(`${PDTF1_ROUTES.original}/schema$`, 'u'));
   expect((await page.locator('a').allTextContents()).join('\n')).not.toMatch(/archive/iu);
 
   await page.goto('/pdtf-1');
@@ -115,7 +116,7 @@ test('current implementers reach schema and validation guidance within two inter
     name: 'Implementation guidance',
     exact: true,
   }).click();
-  await expect(page).toHaveURL(/\/implementation$/u);
+  await expect(page).toHaveURL(new RegExp(`${PDTF1_ROUTES.original}/implementation$`, 'u'));
   await expect(page.getByRole('link', { name: 'Validation', exact: true })).toBeVisible();
   expect((await page.locator('a').allTextContents()).join('\n')).not.toMatch(/archive/iu);
   clean();

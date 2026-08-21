@@ -56,6 +56,13 @@ implements: [docs/spdtf-2-0-information-architecture.md]
 > specification maturity, OPDA governance status and actual candidate use. This
 > implements the semantic-documentation portion of ADR-0075 without promoting that
 > still-Accepted decision or the Proposed ADR-0065/0068 workflows.
+>
+> Update 2026-08-21 — PDTF 1.0 route consolidation: [ADR-0076](./ADR-0076-consolidate-pdtf-1-0-documentation-under-hierarchy-reflecting-routes.md)
+> supersedes this ADR's stable-route clauses for PDTF-owned reader documentation. Those
+> pages move beneath `/pdtf-1/**`; their old routes and the `/manual/**` aliases are
+> removed without redirects. Atomic information, fragment, status and feedback-thread
+> preservation remain release gates. `/pdtf/**` is not a compatibility family: it
+> remains the unchanged RDF identifier and dereferenceability namespace.
 
 ## Context and Problem Statement
 

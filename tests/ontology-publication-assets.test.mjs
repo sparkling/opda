@@ -11,6 +11,8 @@ import test from 'node:test';
 import { checkResourceLinkCoverage } from '../scripts/check-resource-link-coverage.mjs';
 
 import {
+  ONTOLOGY_ASSET_CLASSES,
+  classifyOntologyAsset,
   deriveExpectedOntologyAssets,
   expectedOntologyAssetPaths,
   isExpectedOntologyAsset,
@@ -74,15 +76,24 @@ test('ontology asset paths are validated at the logical boundary', () => {
   }
   assert.equal(validateOntologyAssetPath('tools/pylode/index.html'), 'tools/pylode/index.html');
   assert.equal(validateOntologyAssetPath('artefacts/source/index.html'), 'artefacts/source/index.html');
+  assert.deepEqual(ONTOLOGY_ASSET_CLASSES, {
+    artefacts: 'ontology-serialization',
+    tools: 'tool-rendering',
+  });
+  assert.equal(classifyOntologyAsset('artefacts/opda-merged.ttl'), 'ontology-serialization');
+  assert.equal(classifyOntologyAsset('tools/pylode/index.html'), 'tool-rendering');
 });
 
 test('published ontology URLs resolve only through the retained manifest', () => {
-  assert.equal(isExpectedOntologyAssetUrl('/ontology/tools/pylode/index.html'), true);
-  assert.equal(isExpectedOntologyAssetUrl('/ontology/artefacts/source/index.html'), true);
-  assert.equal(isExpectedOntologyAssetUrl('/ontology/tools/not-in-the-manifest/index.html'), false);
-  assert.equal(isExpectedOntologyAssetUrl('/ontology/classes'), false);
+  const root = '/pdtf-1/extracted-ontology/use-and-tooling';
+  assert.equal(isExpectedOntologyAssetUrl(`${root}/tools/pylode/index.html`), true);
+  assert.equal(isExpectedOntologyAssetUrl(`${root}/artefacts/source/index.html`), true);
+  assert.equal(isExpectedOntologyAssetUrl(`${root}/tools/not-in-the-manifest/index.html`), false);
+  assert.equal(isExpectedOntologyAssetUrl('/pdtf-1/extracted-ontology/terms-and-model-resources/classes'), false);
+  assert.equal(isExpectedOntologyAssetUrl('/ontology/tools/pylode/index.html'), false);
+  assert.equal(isExpectedOntologyAssetUrl('/ontology/artefacts/source/index.html'), false);
   assert.equal(isExpectedOntologyAssetUrl('/api/v2/ontology/tools/pylode/index.html'), false);
-  assert.equal(isExpectedOntologyAssetUrl('/ontology/tools/%2e%2e/artefacts/source/index.html'), false);
+  assert.equal(isExpectedOntologyAssetUrl(`${root}/tools/%2e%2e/artefacts/source/index.html`), false);
 });
 
 test('family-manifest derivation fails closed for missing retained inventories', () => {
@@ -115,11 +126,13 @@ test('family-manifest derivation fails closed for missing retained inventories',
 test('ontology pages use manifest availability rather than local filesystem probes', async () => {
   const fs = await import('node:fs/promises');
   const pages = [
-    'bake-off', 'classes', 'exemplars', 'profiles',
-    'properties', 'shapes', 'usage', 'vocabularies',
+    'use-and-tooling/bake-off', 'terms-and-model-resources/classes',
+    'validation-and-examples/exemplars/index', 'validation-and-examples/profiles/index',
+    'terms-and-model-resources/properties', 'validation-and-examples/shapes',
+    'use-and-tooling/usage', 'terms-and-model-resources/vocabularies',
   ];
   for (const page of pages) {
-    const source = await fs.readFile(new URL(`../src/pages/ontology/${page}.astro`, import.meta.url), 'utf8');
+    const source = await fs.readFile(new URL(`../src/pages/pdtf-1/extracted-ontology/${page}.astro`, import.meta.url), 'utf8');
     assert.match(source, /ontology-publication-assets/u, `${page} must use the shared availability helper`);
     assert.doesNotMatch(source, /path\.resolve\(process\.cwd\(\), ['"]public\/ontology/u,
       `${page} must not derive generated-asset availability from the local filesystem`);
@@ -130,11 +143,12 @@ test('ontology pages use manifest availability rather than local filesystem prob
 
 test('release crawlers accept only manifest-backed assets retained outside clean dist', () => {
   const dist = mkdtempSync(path.join(os.tmpdir(), 'opda-retained-assets-'));
-  const ontology = path.join(dist, 'ontology');
+  const ontology = path.join(dist, 'pdtf-1/extracted-ontology');
   mkdirSync(ontology, { recursive: true });
-  writeFileSync(path.join(dist, 'index.html'), '<a href="/ontology">Ontology</a>');
+  writeFileSync(path.join(dist, 'index.html'), '<a href="/pdtf-1/extracted-ontology">Ontology</a>');
   const page = path.join(ontology, 'index.html');
-  writeFileSync(page, '<a href="/ontology/tools/pylode/index.html">Published tool</a>');
+  const tools = '/pdtf-1/extracted-ontology/use-and-tooling/tools';
+  writeFileSync(page, `<a href="${tools}/pylode/index.html">Published tool</a>`);
 
   const run = (script) => spawnSync(process.execPath, [path.join(ROOT, script)], {
     cwd: ROOT,
@@ -148,7 +162,7 @@ test('release crawlers accept only manifest-backed assets retained outside clean
       assert.equal(result.status, 0, `${script} rejected a retained asset:\n${result.stdout}${result.stderr}`);
     }
 
-    writeFileSync(page, '<script src="/ontology/tools/not-in-the-manifest/missing.js"></script>');
+    writeFileSync(page, `<script src="${tools}/not-in-the-manifest/missing.js"></script>`);
     for (const script of ['scripts/crawl-routes.mjs', 'scripts/check-links.mjs']) {
       const result = run(script);
       assert.notEqual(result.status, 0, `${script} accepted an unmanifested missing asset`);

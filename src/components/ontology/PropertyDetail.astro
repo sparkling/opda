@@ -24,7 +24,7 @@ const card = (min: string | null, max: string | null) =>
   definition={prop.definition}
   comment={prop.comment}
   context={prop.module}
-  indexUrl="/ontology/properties"
+  indexUrl="/pdtf-1/extracted-ontology/terms-and-model-resources/properties"
   indexLabel="Properties"
 />
 
@@ -78,11 +78,11 @@ const card = (min: string | null, max: string | null) =>
   <section class="term-section">
     <h2>Used in the RML mapping <span class="muted">· {mappingUsage.length}</span></h2>
     <p class="term-hint">
-      TriplesMap(s) that populate this property (<a href="/mapping/triplesmaps">ADR-0060</a> —
+      TriplesMap(s) that populate this property (<a href="/pdtf-1/extracted-ontology/lineage-provenance-and-verification/schema-to-ontology-verification/triplesmaps">ADR-0060</a> —
       the RML mapping's own bidirectional trace to the PDTF JSON Schema).
     </p>
     <ul class="chip-list">
-      {mappingUsage.map((tmId) => <li><a href={`/mapping/triplesmaps/${tmId}`}><code>#{tmId}</code></a></li>)}
+      {mappingUsage.map((tmId) => <li><a href={`/pdtf-1/extracted-ontology/lineage-provenance-and-verification/schema-to-ontology-verification/triplesmaps/${tmId}`}><code>#{tmId}</code></a></li>)}
     </ul>
   </section>
 )}

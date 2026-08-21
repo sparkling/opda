@@ -89,9 +89,9 @@ Returns full structured data for a single entity. Tier is one of `concept`, `log
     }
   ],
   "crossTier": {
-    "concept": "/manual/concept/property/Property",
-    "logical": "/manual/logical/property/Property",
-    "physicalOntology": "/manual/physical-ontology/property/classes#Property",
+    "concept": "/pdtf-1/extracted-ontology/model-views-by-audience/concept/property/Property",
+    "logical": "/pdtf-1/extracted-ontology/model-views-by-audience/logical/property/Property",
+    "physicalOntology": "/pdtf-1/extracted-ontology/model-views-by-audience/physical-ontology/property/classes#Property",
     "physicalDatabase": null
   }
 }

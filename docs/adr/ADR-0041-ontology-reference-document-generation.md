@@ -145,3 +145,13 @@ Closes every remaining open finding from the adversarial review, folding in Coun
 All adversarial-review findings (B1–B3, M1–M6, hygiene) are now dispositioned.
 
 - **2026-06-16 — RATIFIED (operator).** Status `proposed` → `accepted`. The hybrid generated-reference-in-hand-authored-shell + the consuming doc-drift CI gate are implemented and live (`scripts/gen-ontology-custom.mjs` + `scripts/ci-ontology-doc-drift.mjs`, the `make ci-ontology-doc` gate); Peroni's re-open trigger (generated body + gate that consumes it) is satisfied.
+
+### 2026-08-21 — ADR-0076 route-hosting amendment
+
+[ADR-0076](./ADR-0076-consolidate-pdtf-1-0-documentation-under-hierarchy-reflecting-routes.md)
+moves the reader-facing reference from `/ontology/**` to the linked categories beneath
+`/pdtf-1/extracted-ontology/**`, without redirects. This replaces only this ADR's
+hosting and old-route stability clauses. The woven-reference model, generation and
+doc-drift gates, soundness rules, provenance and known-issues contract remain binding.
+Canonical resource pages and Turtle representations remain at the unchanged
+`/pdtf/**` RDF identifiers.

@@ -3,7 +3,7 @@
  * Doc-drift CI gate (ADR-0041 §Confirmation / B1).
  *
  * The custom `opda-gen` documentation output is the one PRE-generated, committed
- * artefact in the /ontology composition (the live-count Astro pages regenerate at
+ * artefact in the extracted-ontology composition (the live-count Astro pages regenerate at
  * every `astro build`, so they cannot drift; the third-party tool renderings are
  * version-pinned). This gate enforces byte-identity over the custom layer: it
  * regenerates the custom output from the committed TTL corpus and fails if the
@@ -15,7 +15,7 @@
  */
 import { execSync } from 'node:child_process';
 
-const TRACKED = 'public/ontology/tools/custom/index.html';
+const TRACKED = 'public/pdtf-1/extracted-ontology/use-and-tooling/tools/custom/index.html';
 
 function sh(cmd) { return execSync(cmd, { stdio: ['ignore', 'pipe', 'pipe'] }).toString(); }
 

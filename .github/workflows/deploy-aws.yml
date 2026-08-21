@@ -196,7 +196,7 @@ jobs:
         run: opda-gen ci-object-property-coverage --strict --ontology-dir ../../source/03-standards/ontology
 
       # ADR-0044 Phase 8 — link-validation sweep over the built site: no dangling
-      # internal links or orphan pages on the /ontology + /pdtf surface.
+      # internal links or orphan pages on the extracted-ontology + /pdtf surface.
       - name: Ontology link-validation sweep (ADR-0044)
         run: node scripts/check-links.mjs
 
@@ -213,15 +213,22 @@ jobs:
           SITE_BUCKET=$(aws cloudformation describe-stacks --region eu-west-2 \
             --stack-name opda-site \
             --query "Stacks[0].Outputs[?OutputKey=='SiteBucketName'].OutputValue" --output text)
-          # These ignored ontology artefacts are preserved, manifest-audited S3
-          # objects. Keep them outside --delete until a governed reproducible
-          # generator can supply byte-verified replacements in the release bundle.
+          # Move the manifest-audited, ignored ontology bundles into the canonical
+          # PDTF 1.0 hierarchy before --delete retires their former URLs.
+          aws s3 sync "s3://$SITE_BUCKET/ontology/artefacts/" \
+            "s3://$SITE_BUCKET/pdtf-1/extracted-ontology/use-and-tooling/artefacts/"
+          for TOOL in ontospy pylode shaclplay widoco; do
+            aws s3 sync "s3://$SITE_BUCKET/ontology/tools/$TOOL/" \
+              "s3://$SITE_BUCKET/pdtf-1/extracted-ontology/use-and-tooling/tools/$TOOL/"
+          done
+          # Keep the canonical copies outside --delete until a governed,
+          # reproducible generator supplies them in the release bundle.
           aws s3 sync dist/ "s3://$SITE_BUCKET" --delete \
-            --exclude "ontology/artefacts/*" \
-            --exclude "ontology/tools/ontospy/*" \
-            --exclude "ontology/tools/pylode/*" \
-            --exclude "ontology/tools/shaclplay/*" \
-            --exclude "ontology/tools/widoco/*"
+            --exclude "pdtf-1/extracted-ontology/use-and-tooling/artefacts/*" \
+            --exclude "pdtf-1/extracted-ontology/use-and-tooling/tools/ontospy/*" \
+            --exclude "pdtf-1/extracted-ontology/use-and-tooling/tools/pylode/*" \
+            --exclude "pdtf-1/extracted-ontology/use-and-tooling/tools/shaclplay/*" \
+            --exclude "pdtf-1/extracted-ontology/use-and-tooling/tools/widoco/*"
 
       - name: Invalidate CloudFront
         if: github.event_name != 'pull_request'

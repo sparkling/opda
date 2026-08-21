@@ -1,6 +1,7 @@
 import { test, expect } from '@playwright/test';
 import {
   assertNoBodyOverflow,
+  PDTF1_ROUTES,
   PDTF_ONTOLOGY_CATEGORY_ROUTES,
   SEMANTIC_MODELLING_ROUTES,
   visit,
@@ -14,7 +15,7 @@ for (const { width, label } of [
   test(`reflows at ${label}`, async ({ page }) => {
     const clean = watchRuntime(page);
     await page.setViewportSize({ width, height: 900 });
-    await visit(page, '/schema/legal-estate/ownership/leasehold/lease-legal/building-safety');
+    await visit(page, `${PDTF1_ROUTES.original}/schema/legal-estate/ownership/leasehold/lease-legal/building-safety`);
     await assertNoBodyOverflow(page);
     clean();
   });
@@ -130,7 +131,7 @@ test('text flows to its outer content container without nested max-widths', asyn
     ['/home', ['.home-hero h1', '.home-hero .lede', '.home-hero__index span', '.home-section__head', '.home-section__head > p:last-child']],
     ['/working-groups/join', ['.wg-campaign-hero h1', '.wg-campaign-hero .wg-lead', '.wg-section__heading p']],
     ['/working-groups/join/privacy', ['.wg-privacy__summary p', '.wg-privacy article p', '.wg-privacy article li']],
-    ['/ontology/graph', ['.term-comment', '.og-external']],
+    [`${PDTF1_ROUTES.terms}/graph`, ['.term-comment', '.og-external']],
   ];
 
   for (const [route, selectors] of cases) {

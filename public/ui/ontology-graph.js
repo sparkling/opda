@@ -166,7 +166,7 @@
       active = { id: id, handle: handle || {} };
     } catch (err) {
       console.warn('[OPDA] engine ' + id + ' failed:', err);
-      status('Could not load ' + engine.label + ' (CDN blocked?). Try another tab — the typed indexes under /ontology are the non-interactive equivalent.');
+      status('Could not load ' + engine.label + ' (CDN blocked?). Try another tab — the typed indexes in the extracted ontology are the non-interactive equivalent.');
     }
   }
 

@@ -25,8 +25,12 @@ const TEXT_EXTENSIONS = new Set([
 ]);
 const SHARED_ROOT_PREFIXES = ['/_auth', '/api', '/comments'];
 const DOCUMENTARY_PROJECTION_PREFIXES = [
-  'mapping/', 'model/', 'modelling/adr/', 'modelling/odr/', 'ontology/artefacts/',
-  'ontology/context/', 'ontology/tools/',
+  'modelling/adr/', 'modelling/odr/',
+  'pdtf-1/extracted-ontology/lineage-provenance-and-verification/schema-to-ontology-verification/',
+  'pdtf-1/extracted-ontology/model-views-by-audience/',
+  'pdtf-1/extracted-ontology/concepts-and-architecture/contexts/',
+  'pdtf-1/extracted-ontology/use-and-tooling/artefacts/',
+  'pdtf-1/extracted-ontology/use-and-tooling/tools/',
 ];
 
 const sha256 = (value) => createHash('sha256').update(value).digest('hex');

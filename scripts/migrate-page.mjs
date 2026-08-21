@@ -19,6 +19,7 @@
  */
 import fs from 'node:fs';
 import path from 'node:path';
+import { getPdtf1ReplacementRoute } from '../src/lib/pdtf1-routes.mjs';
 
 // Old filename -> new URL. Built from src/lib/site.ts SECTIONS data.
 const URL_MAP = {
@@ -227,7 +228,8 @@ function transform(content) {
       const basename = oldUrl.replace(/^.*\//, '');
       const mapped = URL_MAP[basename];
       if (!mapped) return match; // Unknown URL — leave as-is.
-      return `href="${mapped}${suffix || ''}"`;
+      const canonical = getPdtf1ReplacementRoute(mapped) || mapped;
+      return `href="${canonical}${suffix || ''}"`;
     },
   );
 

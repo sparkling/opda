@@ -1,7 +1,7 @@
 ---
 /**
  * ADR-0044 — shared header for a canonical ontology term page (/pdtf/{id}).
- * Back-nav into the /ontology section, a kind + bounded-context badge, the
+ * Back-nav into the /pdtf-1/extracted-ontology section, a kind + bounded-context badge, the
  * label, the dereferenceable IRI (selectable), and the term's meaning.
  *
  * Meaning cascade (ADR-0049 decision-4 / ODR-0042): `definition`
@@ -31,7 +31,7 @@ const def = definition?.trim() || '';
 const hint = comment?.trim() && comment.trim() !== def ? comment.trim() : '';
 ---
 <nav class="term-nav" aria-label="Breadcrumb">
-  <a href="/ontology">Ontology</a>
+  <a href="/pdtf-1/extracted-ontology">Ontology</a>
   <span class="sep" aria-hidden="true">›</span>
   <a href={indexUrl}>{indexLabel}</a>
   <span class="sep" aria-hidden="true">›</span>

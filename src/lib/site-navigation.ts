@@ -1,11 +1,12 @@
 /**
  * Reader-facing section navigation for the six-destination information
- * architecture. Stable legacy routes remain defined in site.ts; this module
- * composes them by current task and authority without moving those routes.
+ * architecture. Content-source groupings remain defined in site.ts; this
+ * module composes their canonical routes by current task and authority.
  */
 import type { Group, Item, Section } from './site.ts';
 import { SECTIONS, normalizeUrl } from './site.ts';
 import { GLOBAL_DESTINATIONS, getActiveDestination } from './site-ia.mjs';
+import { isRetiredPdtf1DocumentationRoute, PDTF1_ROUTES } from './pdtf1-routes.mjs';
 import { WORKING_GROUPS } from '../components/ia/working-groups.ts';
 
 type DestinationKey = 'programme' | 'spdtf-2' | 'working-groups' | 'pdtf-1' | 'governance' | 'resources';
@@ -148,9 +149,9 @@ function sectionJourney(
   sectionKey: string,
   owner: DestinationKey,
   title: string,
-  options: { exclude?: string[]; append?: Item[] } = {},
+  options: { url?: string; exclude?: string[]; append?: Item[] } = {},
 ): Item {
-  const url = `/${sectionKey}`;
+  const url = options.url ?? `/${sectionKey}`;
   const excluded = new Set((options.exclude ?? []).map(normalizeUrl));
   const children = ownedSectionItems(sectionKey, owner)
     .filter((item) => normalizeUrl(item.url) !== url && !excluded.has(normalizeUrl(item.url)));
@@ -188,93 +189,111 @@ function requiredItem(items: Item[], url: string, title?: string): Item {
 }
 
 const pdtfSchemaJourney = sectionJourney('schema', 'pdtf-1', 'JSON Schemas and overlays', {
-  append: [{ url: '/modelling/overlays', title: 'Schema overlays' }],
+  url: `${PDTF1_ROUTES.original}/schema`,
+  append: [{ url: `${PDTF1_ROUTES.original}/schema/overlays`, title: 'Schema overlays' }],
 });
-const pdtfImplementationJourney = sectionJourney('implementation', 'pdtf-1', 'Implementation guidance');
-const pdtfAdoptionJourney = sectionJourney('adoption', 'pdtf-1', 'Adoption evidence');
+const pdtfImplementationJourney = sectionJourney('implementation', 'pdtf-1', 'Implementation guidance', {
+  url: `${PDTF1_ROUTES.original}/implementation`,
+});
+const pdtfAdoptionJourney = sectionJourney('adoption', 'pdtf-1', 'Adoption evidence', {
+  url: `${PDTF1_ROUTES.original}/adoption`,
+});
 const pdtfModellingJourney = sectionJourney('modelling', 'pdtf-1', 'Historical modelling record', {
-  exclude: ['/modelling/overlays', '/modelling/data-dictionary', '/modelling/business-glossary'],
+  url: PDTF1_ROUTES.historicalModelling,
+  exclude: [
+    `${PDTF1_ROUTES.original}/schema/overlays`,
+    `${PDTF1_ROUTES.original}/data-dictionary`,
+    `${PDTF1_ROUTES.original}/business-glossary`,
+  ],
 });
-const pdtfMappingJourney = sectionJourney('mapping', 'pdtf-1', 'Schema-to-ontology verification');
+const pdtfMappingJourney = sectionJourney('mapping', 'pdtf-1', 'Schema-to-ontology verification', {
+  url: PDTF1_ROUTES.schemaVerification,
+});
 const pdtfModelOverviewItems = ownedGroupItems('model', 'Overview', 'pdtf-1');
 const pdtfModelJourney: Item = {
-  url: '/model',
+  url: PDTF1_ROUTES.modelViews,
   title: 'Model views by audience',
   children: [
-    requiredItem(pdtfModelOverviewItems, '/model/information-architecture'),
-    linkedGroupJourney('model', 'Concept tier — for SMEs', 'pdtf-1', '/model/concept', 'Concept model'),
-    linkedGroupJourney('model', 'Logical tier — for engineers', 'pdtf-1', '/model/logical', 'Logical model'),
-    linkedGroupJourney('model', 'Physical — ontology', 'pdtf-1', '/model/physical-ontology', 'Ontology implementation'),
-    linkedGroupJourney('model', 'Physical — deployment', 'pdtf-1', '/model/physical-database', 'Deployment topology'),
-    linkedGroupJourney('model', 'Physical — relational', 'pdtf-1', '/model/physical-relational', 'Relational projection'),
-    requiredItem(pdtfModelOverviewItems, '/model/validation-report'),
+    requiredItem(pdtfModelOverviewItems, `${PDTF1_ROUTES.modelViews}/information-architecture`),
+    linkedGroupJourney('model', 'Concept tier — for SMEs', 'pdtf-1',
+      `${PDTF1_ROUTES.modelViews}/concept`, 'Concept model'),
+    linkedGroupJourney('model', 'Logical tier — for engineers', 'pdtf-1',
+      `${PDTF1_ROUTES.modelViews}/logical`, 'Logical model'),
+    linkedGroupJourney('model', 'Physical — ontology', 'pdtf-1',
+      `${PDTF1_ROUTES.modelViews}/physical-ontology`, 'Ontology implementation'),
+    linkedGroupJourney('model', 'Physical — deployment', 'pdtf-1',
+      `${PDTF1_ROUTES.modelViews}/physical-database`, 'Deployment topology'),
+    linkedGroupJourney('model', 'Physical — relational', 'pdtf-1',
+      `${PDTF1_ROUTES.modelViews}/physical-relational`, 'Relational projection'),
+    requiredItem(pdtfModelOverviewItems, `${PDTF1_ROUTES.modelViews}/validation-report`),
   ],
 };
 
 const pdtfOntologyItems = [
-  ...ownedSectionItems('ontology', 'pdtf-1').filter(({ url }) => normalizeUrl(url) !== '/ontology'),
-  { url: '/ontology/datatypes', title: 'Datatypes' },
-  { url: '/ontology/namespaces', title: 'Namespaces' },
+  ...ownedSectionItems('ontology', 'pdtf-1')
+    .filter(({ url }) => normalizeUrl(url) !== PDTF1_ROUTES.extracted),
+  { url: `${PDTF1_ROUTES.terms}/datatypes`, title: 'Datatypes' },
+  { url: `${PDTF1_ROUTES.use}/namespaces`, title: 'Namespaces' },
 ];
 const ontologyItem = (url: string, title?: string): Item => requiredItem(pdtfOntologyItems, url, title);
 const pdtfLineageJourney: Item = {
-  url: '/ontology/lineage-and-verification',
+  url: PDTF1_ROUTES.lineage,
   title: 'Lineage, provenance and verification',
   children: [
     pdtfModellingJourney,
     pdtfMappingJourney,
-    ontologyItem('/ontology/provenance', 'Decision provenance'),
+    ontologyItem(`${PDTF1_ROUTES.lineage}/decision-provenance`, 'Decision provenance'),
   ],
 };
 const pdtfConceptsJourney: Item = {
-  url: '/ontology/concepts-and-architecture',
+  url: PDTF1_ROUTES.concepts,
   title: 'Concepts and architecture',
   children: [
-    ontologyItem('/ontology/foundation'),
-    ontologyItem('/ontology/identity'),
-    { url: '/ontology/contexts', title: 'Ontology contexts' },
-    ontologyItem('/ontology/foundational-ontology'),
-    ontologyItem('/ontology/modelling-frameworks'),
+    ontologyItem(`${PDTF1_ROUTES.concepts}/foundation`),
+    ontologyItem(`${PDTF1_ROUTES.concepts}/identity`),
+    { url: `${PDTF1_ROUTES.concepts}/contexts`, title: 'Ontology contexts' },
+    ontologyItem(`${PDTF1_ROUTES.concepts}/foundational-ontology`),
+    ontologyItem(`${PDTF1_ROUTES.concepts}/modelling-frameworks`),
   ],
 };
 const pdtfTermsJourney: Item = {
-  url: '/ontology/terms-and-model-resources',
+  url: PDTF1_ROUTES.terms,
   title: 'Terms and model resources',
   children: [
-    ontologyItem('/ontology/graph'),
-    ontologyItem('/ontology/classes'),
-    ontologyItem('/ontology/category'),
-    ontologyItem('/ontology/properties'),
-    ontologyItem('/ontology/datatypes'),
-    ontologyItem('/ontology/vocabularies'),
-    ontologyItem('/ontology/glossary'),
+    ontologyItem(`${PDTF1_ROUTES.terms}/graph`),
+    ontologyItem(`${PDTF1_ROUTES.terms}/classes`),
+    ontologyItem(`${PDTF1_ROUTES.terms}/categories`),
+    ontologyItem(`${PDTF1_ROUTES.terms}/properties`),
+    ontologyItem(`${PDTF1_ROUTES.terms}/datatypes`),
+    ontologyItem(`${PDTF1_ROUTES.terms}/vocabularies`),
+    ontologyItem(`${PDTF1_ROUTES.terms}/glossary`),
   ],
 };
 const pdtfValidationJourney: Item = {
-  url: '/ontology/validation-and-examples',
+  url: PDTF1_ROUTES.validation,
   title: 'Validation and examples',
   children: [
-    ontologyItem('/ontology/shapes'),
-    ontologyItem('/ontology/profiles'),
-    ontologyItem('/ontology/exemplars'),
+    ontologyItem(`${PDTF1_ROUTES.validation}/shapes`),
+    ontologyItem(`${PDTF1_ROUTES.validation}/profiles`),
+    ontologyItem(`${PDTF1_ROUTES.validation}/exemplars`),
   ],
 };
 const pdtfTrustJourney: Item = {
-  url: '/ontology/trust-and-governance',
+  url: PDTF1_ROUTES.trust,
   title: 'Trust, governance and limitations',
   children: [
-    ontologyItem('/ontology/claims'),
-    ontologyItem('/ontology/governance'),
-    ontologyItem('/ontology/known-issues'),
+    ontologyItem(`${PDTF1_ROUTES.trust}/claims`),
+    ontologyItem(`${PDTF1_ROUTES.trust}/governance`),
+    ontologyItem(`${PDTF1_ROUTES.trust}/known-issues`),
   ],
 };
 const pdtfUseJourney: Item = {
-  url: '/ontology/use-and-tooling',
+  url: PDTF1_ROUTES.use,
   title: 'Use and tooling',
   children: [
-    ontologyItem('/ontology/usage'),
-    ontologyItem('/ontology/namespaces'),
-    ontologyItem('/ontology/bake-off'),
+    ontologyItem(`${PDTF1_ROUTES.use}/usage`),
+    ontologyItem(`${PDTF1_ROUTES.use}/namespaces`),
+    ontologyItem(`${PDTF1_ROUTES.use}/bake-off`),
   ],
 };
 
@@ -317,15 +336,15 @@ const navigationSections: Record<DestinationKey, NavigationSection> = {
     title: 'PDTF 1.0',
     summary: 'The published schema implementation and status-labelled derived artefacts.',
     groups: [
-      category('Overview', '/pdtf-1'),
-      category('Original standard', '/pdtf-1/original-standard', [
+      category('Overview', PDTF1_ROUTES.root),
+      category('Original standard', PDTF1_ROUTES.original, [
         pdtfSchemaJourney,
-        { url: '/modelling/data-dictionary', title: 'Data dictionary' },
-        { url: '/modelling/business-glossary', title: 'Business glossary' },
+        { url: `${PDTF1_ROUTES.original}/data-dictionary`, title: 'Data dictionary' },
+        { url: `${PDTF1_ROUTES.original}/business-glossary`, title: 'Business glossary' },
         pdtfImplementationJourney,
         pdtfAdoptionJourney,
       ]),
-      category('Extracted ontology', '/ontology', [
+      category('Extracted ontology', PDTF1_ROUTES.extracted, [
         pdtfLineageJourney,
         pdtfModelJourney,
         pdtfConceptsJourney,
@@ -370,17 +389,18 @@ const STANDALONE_SURFACES = [
 ];
 
 const ACTIVE_ROUTE_ALIASES = [
-  { pattern: /^\/ontology\/category\//u, target: '/ontology/category' },
-  { pattern: /^\/ontology\/context\//u, target: '/ontology/contexts' },
-  { pattern: /^\/ontology\/exemplar\//u, target: '/ontology/exemplars' },
-  { pattern: /^\/ontology\/profile\//u, target: '/ontology/profiles' },
-  { pattern: /^\/mapping\/triplesmaps\//u, target: '/mapping/triplesmaps' },
-  { pattern: /^\/pdtf\//u, target: '/ontology/glossary' },
+  { prefix: `${PDTF1_ROUTES.terms}/categories/`, target: `${PDTF1_ROUTES.terms}/categories` },
+  { prefix: `${PDTF1_ROUTES.concepts}/contexts/`, target: `${PDTF1_ROUTES.concepts}/contexts` },
+  { prefix: `${PDTF1_ROUTES.validation}/exemplars/`, target: `${PDTF1_ROUTES.validation}/exemplars` },
+  { prefix: `${PDTF1_ROUTES.validation}/profiles/`, target: `${PDTF1_ROUTES.validation}/profiles` },
+  { prefix: `${PDTF1_ROUTES.schemaVerification}/triplesmaps/`, target: `${PDTF1_ROUTES.schemaVerification}/triplesmaps` },
+  { prefix: '/pdtf/', target: `${PDTF1_ROUTES.terms}/glossary` },
 ];
 
 export function getNavigationSection(path: string): NavigationSection | null {
   const normalized = normalizeUrl(path);
   if (STANDALONE_SURFACES.some((pattern) => pattern.test(normalized))) return null;
+  if (isRetiredPdtf1DocumentationRoute(normalized)) return null;
   const key = getActiveDestination(path) as DestinationKey | null;
   return key ? SECTION_NAVIGATION[key] ?? null : null;
 }
@@ -405,7 +425,7 @@ export function findNavigationPage(path: string): NavigationMatch | null {
   const section = getNavigationSection(path);
   if (!section) return null;
   const normalized = normalizeUrl(path);
-  const matchPath = ACTIVE_ROUTE_ALIASES.find(({ pattern }) => pattern.test(normalized))?.target ?? normalized;
+  const matchPath = ACTIVE_ROUTE_ALIASES.find(({ prefix }) => normalized.startsWith(prefix))?.target ?? normalized;
   let best: NavigationMatch | null = null;
   for (const group of section.groups) {
     const groupPath = normalizeUrl(group.url);

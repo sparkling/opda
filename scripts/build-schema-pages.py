@@ -6,7 +6,7 @@ Pipeline steps:
   2. classify   — joins leaves.json + provenance-map.yaml -> classified.json
   3. assign     — joins classified.json + theme-map.yaml -> page-leaves.json
   4. bind       — joins page-leaves.json + _examples/*.json -> page-leaves.examples.json
-  5. render     — sidecar md + aggregate-page.html.j2 -> docs/pages/<slot>-*.html
+  5. render     — sidecar md + aggregate-page.html.j2 -> canonical Astro pages
   6. index      — emits docs/data/schema-index.json
   7. drift      — validates invariants
 
@@ -41,7 +41,9 @@ THEME_MAP = ROOT / "source/00-deliverables/semantic-models/theme-map.yaml"
 CONTENT_DIR = ROOT / "source/_content/schema"
 EXAMPLES_DIR = ROOT / "source/_examples"
 TEMPLATES = ROOT / "scripts/templates"
-OUT_PAGES = ROOT / "src/pages/schema"
+SCHEMA_ROUTE_ROOT = "/pdtf-1/original-standard/schema"
+SCHEMA_PAGE_ROOT = Path("src/pages/pdtf-1/original-standard/schema")
+OUT_PAGES = ROOT / SCHEMA_PAGE_ROOT
 LEAVES_JSON = BUILD / "leaves.json"
 PROPERTIES_JS = ROOT / "public/data/properties.js"
 DAMA_KA_MAPPING = ROOT / "scripts/dama-ka-mapping.json"
@@ -201,13 +203,14 @@ PAGE_FILES = {
 def page_url(slot: str) -> str:
     """The real Astro route for a page slot — converts a PAGE_FILES file path
     ("legal-estate/title/oc-summary/index.astro") into the URL Astro serves it
-    at ("/schema/legal-estate/title/oc-summary"), per astro.config.mjs's
+    at ("/pdtf-1/original-standard/schema/legal-estate/title/oc-summary"),
+    per astro.config.mjs's
     format:'directory' + trailingSlash:'never' convention. Cross-page hrefs
     (breadcrumb ancestors, "Contains ->" children links) must use this, not
     the raw PAGE_FILES value — a real file path is not a real URL."""
     rel = PAGE_FILES[slot].rsplit(".", 1)[0]
     rel = re.sub(r"(^|/)index$", "", rel)
-    return "/schema" + (f"/{rel}" if rel else "")
+    return SCHEMA_ROUTE_ROOT + (f"/{rel}" if rel else "")
 
 
 # IA-defined page ids (must match docs/ui/site.js SECTIONS.schema.groups[*].items[*].id
@@ -708,7 +711,7 @@ def render_page(slot: str, leaves_for_page: list[dict],
     # has somewhere to live. Previously these were silently folded into
     # sections_cfg[0]'s bucket (e.g. "Address"), which misrepresented that
     # section's actual contents — a design critique caught this directly on
-    # /schema/property, where "Address" opened with Transaction and Property
+    # the Property page, where "Address" opened with Transaction and Property
     # Pack object blocks that have nothing to do with address.
     _ANCESTOR = "__ancestor__"
 
@@ -810,7 +813,7 @@ def render_page(slot: str, leaves_for_page: list[dict],
             # namespace as object anchors (obj.id|lower) — theme-map.yaml
             # section ids are short conceptual words ("chain", "transaction")
             # that can collide with an object's own derived id, producing two
-            # elements sharing one HTML id (confirmed: /schema/chain-milestones
+            # elements sharing one HTML id (confirmed on the chain-milestones page,
             # had both <h3 id="chain"> and an object's <h4 id="chain">).
             "id":      f"sec-{sec['id']}",
             "title":   sec["title"],
@@ -880,7 +883,9 @@ def render_page(slot: str, leaves_for_page: list[dict],
             "title": page_cfg["title"],
             "voice": page_cfg.get("voice", "reference-prose-with-opinion"),
             "generated_on": generated_on or deterministic_generated_on(),
-            "dama_ka": (dama_ka or {}).get(f"src/pages/schema/{PAGE_FILES[slot]}", {}).get("kas") or [],
+            "dama_ka": (dama_ka or {}).get(
+                f"{SCHEMA_PAGE_ROOT.as_posix()}/{PAGE_FILES[slot]}", {}
+            ).get("kas") or [],
         },
         "regions": regions,
         "sections": sections,
