@@ -299,9 +299,7 @@ test('shared navigation exposes visible focus, state and 44px targets', async ()
   assert.match(shell, /\.tree-leaf > a\s*\{[^}]*padding-inline-start:\s*calc\(var\(--target-min\) \+ var\(--space-3\)\)/su);
   assert.match(shell, /\.tree-folder\.is-open > \.tree-children\s*\{[^}]*margin-inline-start:\s*var\(--space-5\)[^}]*border-inline-start:/su);
   assert.match(shell, /\.tree-folder\.is-active-page > \.tree-folder-row\s*\{/u);
-  assert.match(shell, /\.nav-group\.has-emphasized-folders \.tree-folder > \.tree-folder-row\s*\{[^}]*border:[^}]*background:\s*var\(--color-surface-tint\)/su);
-  assert.match(shell, /\.nav-group\.has-emphasized-folders \.tree-folder > \.tree-folder-row > \.tree-folder-link\s*\{[^}]*font-weight:\s*700/su);
-  assert.match(shell, /\.nav-group\.has-emphasized-folders \.tree-folder > \.tree-folder-row > \.tree-toggle\s*\{[^}]*height:\s*auto/su);
+  assert.doesNotMatch(shell, /\.nav-group\.has-emphasized-folders/u);
   assert.doesNotMatch(shell, /\.tree-children \.tree-children \.tree-leaf/u);
   assert.match(toc, /\.toc a\s*\{[^}]*min-height:\s*var\(--target-min\)/su);
   assert.match(client, /aside\.inert = mobileQuery\.matches && !shouldOpen/u);
