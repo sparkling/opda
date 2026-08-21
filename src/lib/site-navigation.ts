@@ -7,6 +7,10 @@ import type { Group, Item, Section } from './site.ts';
 import { SECTIONS, normalizeUrl } from './site.ts';
 import { GLOBAL_DESTINATIONS, getActiveDestination } from './site-ia.mjs';
 import { isRetiredPdtf1DocumentationRoute, PDTF1_ROUTES } from './pdtf1-routes.mjs';
+import {
+  GOVERNANCE_FRAMEWORK_ITEMS,
+  WORKING_GROUP_MEMBER_GUIDE_ITEMS,
+} from './section-navigation-journeys.ts';
 import { WORKING_GROUPS } from '../components/ia/working-groups.ts';
 
 type DestinationKey = 'programme' | 'spdtf-2' | 'working-groups' | 'pdtf-1' | 'governance' | 'resources';
@@ -328,6 +332,7 @@ const navigationSections: Record<DestinationKey, NavigationSection> = {
     title: 'Working groups',
     summary: 'The canonical SPDTF 2.0 participant workspaces and review routes.',
     groups: [
+      category('Member guide', '/spdtf-2/working-groups/member-guide', WORKING_GROUP_MEMBER_GUIDE_ITEMS),
       category('Group workspaces', '/spdtf-2/working-groups', workingGroupItems),
     ],
   },
@@ -360,7 +365,7 @@ const navigationSections: Record<DestinationKey, NavigationSection> = {
     title: 'Governance',
     summary: 'Decision rights, standards lifecycle, status and recorded decisions.',
     groups: [
-      category('Governance framework', '/governance', ownedSectionItems('governance', 'governance')),
+      category('Governance framework', '/governance', GOVERNANCE_FRAMEWORK_ITEMS),
       category('Architecture decisions', '/modelling/adr'),
       category('Ontology decisions', '/modelling/odr'),
       category('Programme decisions', '/engagement/meetings-decisions', ownedSectionItems('engagement', 'governance')),

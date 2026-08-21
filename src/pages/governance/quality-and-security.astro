@@ -1,0 +1,35 @@
+---
+import Layout from '@/layouts/Layout.astro';
+import PageMeta from '@/components/PageMeta.astro';
+import GatewayCard from '@/components/ia/GatewayCard.astro';
+
+const pages = [
+  {
+    href: '/governance/data-quality', eyebrow: 'Quality', title: 'Data quality framework',
+    description: 'Six dimensions and measurement guidance for data-quality evidence.',
+  },
+  {
+    href: '/governance/data-security', eyebrow: 'Security', title: 'Data security framework',
+    description: 'Controls for onboarding, keys, signatures, revocation and audit evidence.',
+  },
+];
+---
+
+<Layout title="Quality and security" description="Draft data-quality and data-security framework records used in OPDA assurance work.">
+  <PageMeta category="Governance framework" variant="brand" updated="Draft-framework navigation guide · 21 August 2026" />
+  <h1>Quality and security</h1>
+  <p class="lead">
+    These cross-cutting records describe quality measurement and security controls.
+    They are draft framework material with their own evidence and gates, not a claim that
+    every participant or release has already been assessed.
+  </p>
+  <div class="card-grid">
+    {pages.map((page) => <GatewayCard {...page} />)}
+  </div>
+  <h2 id="relationship">Related, but independently evidenced</h2>
+  <p>
+    Quality asks whether data is fit for its stated purpose. Security asks whether
+    identities, keys, signatures, revocation and audit controls protect exchange. Both
+    contribute to assurance, but passing one does not prove the other.
+  </p>
+</Layout>

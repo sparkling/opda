@@ -184,6 +184,16 @@ export const ROUTE_STATUS_OVERRIDES = Object.freeze([
     status: PDTF_DERIVED_DRAFT_STATUS,
   },
   {
+    pattern: /^\/spdtf-2\/working-groups\/member-guide(?:\/|$)/u,
+    status: {
+      workArea: 'SPDTF 2.0 participation',
+      authority: 'Operational guidance derived from accepted participation and workspace decisions; group-specific invitations and charters control access',
+      maturity: 'Current member guidance; proposed modelling and lifecycle rules are labelled',
+      version: 'Member guide 2026-08-21',
+      provenance: 'Accepted ADR-0063, ADR-0069, ADR-0070 and ADR-0072; proposed ADR-0065 and ADR-0068 where identified',
+    },
+  },
+  {
     pattern: /^\/spdtf-2\/working-groups(?:\/|$)/u,
     status: {
       workArea: 'SPDTF 2.0 development',

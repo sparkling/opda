@@ -1,0 +1,38 @@
+---
+import Layout from '@/layouts/Layout.astro';
+import PageMeta from '@/components/PageMeta.astro';
+import GatewayCard from '@/components/ia/GatewayCard.astro';
+
+const pages = [
+  ['/governance/standards-lifecycle', 'Proposed', 'Standards lifecycle', 'The proposed path from evidence and candidates to review and ratification.'],
+  ['/governance/change-management', 'Change', 'Change management', 'Constitutional change and the current technical schema-change procedure.'],
+  ['/governance/lifecycle-versioning', 'Versions', 'Release versioning and retirement', 'Current version domains and policy still to be settled.'],
+  ['/governance/conformance-scheme', 'Assurance', 'Conformance and certification', 'Current self-certification and planned technical conformance.'],
+  ['/governance/accreditation-directory', 'Directory', 'Accreditation Directory', 'The documented maturity and assurance view for participating firms.'],
+  ['/governance/risk-liability', 'Risk', 'Risk and liability', 'Current constitutional and licence position plus unresolved operational questions.'],
+  ['/governance/deferred-work', 'Register', 'Deferred work register', 'Work deliberately deferred, with its owner and re-entry condition.'],
+  ['/governance/council', 'Evidence', 'Council sessions', 'Deliberation records and adoption evidence from ontology council sessions.'],
+] as const;
+---
+
+<Layout title="OPDA rules" description="Current, draft and proposed OPDA procedures, assurance records and decision evidence.">
+  <PageMeta category="Governance framework" variant="brand" updated="Mixed-status navigation guide · 21 August 2026" />
+  <h1>OPDA rules</h1>
+  <p class="lead">
+    This is a navigation guide to constitutional rules, current procedures, drafts,
+    proposals and supporting records. A child page keeps its own status: being listed
+    here does not make a proposed rule operative.
+  </p>
+  <div class="card-grid">
+    {pages.map(([href, eyebrow, title, description]) => (
+      <GatewayCard href={href} eyebrow={eyebrow} title={title} description={description} />
+    ))}
+  </div>
+  <h2 id="status">Check status before relying on a rule</h2>
+  <p>
+    In particular, the end-to-end standards lifecycle is recorded in proposed
+    ADR-0068. Current constitutional and technical procedures continue to apply until
+    an authorised decision adopts or replaces them. Draft policy, evidence records and
+    implemented procedures must not be treated as interchangeable.
+  </p>
+</Layout>

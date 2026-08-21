@@ -1,8 +1,10 @@
 import assert from 'node:assert/strict';
+import { readFile } from 'node:fs/promises';
 import test from 'node:test';
 
 import { SECTIONS, findPage, normalizeUrl } from '../src/lib/site.ts';
 import { PDTF1_ROUTES } from '../src/lib/pdtf1-routes.mjs';
+import { getRouteStatus } from '../src/lib/site-ia.mjs';
 import { SITE_SEARCH_ENTRIES } from '../src/lib/site-search.mjs';
 import {
   SECTION_NAVIGATION,
@@ -74,7 +76,7 @@ test('the left section navigation implements all six destinations from one regis
   ));
   assert.deepEqual(Object.fromEntries(Object.entries(SECTION_NAVIGATION).map(([key, section]) => [
     key, section.groups.flatMap(flattenGroup).length,
-  ])), { programme: 18, 'spdtf-2': 39, 'working-groups': 33, 'pdtf-1': 203, governance: 26, resources: 12 });
+  ])), { programme: 18, 'spdtf-2': 39, 'working-groups': 39, 'pdtf-1': 203, governance: 31, resources: 12 });
   const decisionDetail = /^\/modelling\/(?:adr|odr)\/[^/]+$/u;
   for (const url of new Set(legacyUrls.filter((url) => !decisionDetail.test(url)))) {
     assert.equal(compositeUrls.filter((candidate) => candidate === url).length, 1, `${url} must appear once`);
@@ -89,6 +91,9 @@ test('the left section navigation implements all six destinations from one regis
     '/spdtf-2/property-pack/definition-and-scope',
     '/spdtf-2/property-pack/technical-working-group-determination',
     '/spdtf-2/property-pack/review-and-releases', '/pdtf-1',
+    '/spdtf-2/working-groups/member-guide',
+    '/spdtf-2/working-groups/member-guide/teams-and-discussions',
+    '/spdtf-2/working-groups/member-guide/source-material-and-sharepoint',
     PDTF1_ROUTES.original, `${PDTF1_ROUTES.terms}/datatypes`,
     `${PDTF1_ROUTES.use}/namespaces`, PDTF1_ROUTES.lineage,
     PDTF1_ROUTES.concepts, `${PDTF1_ROUTES.concepts}/contexts`,
@@ -96,7 +101,100 @@ test('the left section navigation implements all six destinations from one regis
     PDTF1_ROUTES.trust, PDTF1_ROUTES.use,
     '/resources', '/glossary',
   ]) assert.equal(compositeUrls.filter((url) => url === required).length, 1, `${required} must appear once`);
-  assert.equal(compositeUrls.filter((url) => url.startsWith('/spdtf-2/working-groups')).length, 33);
+  assert.equal(compositeUrls.filter((url) => url.startsWith('/spdtf-2/working-groups')).length, 39);
+});
+
+test('Governance framework follows six linked task branches without losing a legacy page', () => {
+  const framework = SECTION_NAVIGATION.governance.groups
+    .find(({ heading }) => heading === 'Governance framework');
+  assert.ok(framework);
+  const expected = [
+    ['/governance/uk-initiative', [
+      '/governance/legislation', '/governance/departments', '/governance/steering-forums',
+    ]],
+    ['/governance/opda-organisation', [
+      '/governance/opda-members', '/governance/sandbox',
+    ]],
+    ['/governance/standards-landscape', [
+      '/governance/toip-governance', '/governance/strategic-alignment',
+    ]],
+    ['/governance/opda-rules', [
+      '/governance/standards-lifecycle', '/governance/change-management',
+      '/governance/lifecycle-versioning', '/governance/conformance-scheme',
+      '/governance/accreditation-directory', '/governance/risk-liability',
+      '/governance/deferred-work', '/governance/council',
+    ]],
+    ['/governance/operating-model', [
+      '/governance/data-stewardship', '/governance/meetings-and-feedback',
+      '/governance/stakeholder-engagement', '/governance/overlay-attachments',
+    ]],
+    ['/governance/quality-and-security', [
+      '/governance/data-quality', '/governance/data-security',
+    ]],
+  ];
+  assert.deepEqual(framework.items.map(({ url, children }) => [
+    url, children?.map((child) => child.url) ?? [],
+  ]), expected);
+  assert.equal(flattenGroup(framework).length, 28);
+
+  const legacy = SECTIONS.governance.groups
+    .flatMap(({ items }) => flattenItems(items).map(({ url }) => normalizeUrl(url)));
+  const nested = flattenGroup(framework).map(({ url }) => normalizeUrl(url));
+  for (const url of new Set(legacy)) {
+    assert.equal(nested.filter((candidate) => candidate === url).length, 1, `${url} must remain once`);
+  }
+  for (const parent of expected.map(([url]) => url)) {
+    assert.ok(SITE_SEARCH_ENTRIES.some(({ url }) => url === parent), `${parent} must be searchable`);
+  }
+});
+
+test('new Governance gateways are substantive linked pages rather than synthetic folders', async () => {
+  const gateways = [
+    ['opda-organisation', ['opda-members', 'sandbox']],
+    ['standards-landscape', ['toip-governance', 'strategic-alignment']],
+    ['opda-rules', ['standards-lifecycle', 'change-management', 'lifecycle-versioning',
+      'conformance-scheme', 'accreditation-directory', 'risk-liability', 'deferred-work', 'council']],
+    ['operating-model', ['data-stewardship', 'meetings-and-feedback', 'stakeholder-engagement', 'overlay-attachments']],
+    ['quality-and-security', ['data-quality', 'data-security']],
+  ];
+  for (const [slug, children] of gateways) {
+    const source = await readFile(new URL(`../src/pages/governance/${slug}.astro`, import.meta.url), 'utf8');
+    assert.match(source, /<h1>[^<]+<\/h1>/u);
+    assert.match(source, /<p class="lead">/u);
+    for (const child of children) assert.match(source, new RegExp(`\/governance\/${child}`, 'u'));
+  }
+});
+
+test('Working groups starts with a member guide and preserves all eight workspaces', () => {
+  const section = SECTION_NAVIGATION['working-groups'];
+  assert.deepEqual(section.groups.map(({ heading, url }) => [heading, url]), [
+    ['Member guide', '/spdtf-2/working-groups/member-guide'],
+    ['Group workspaces', '/spdtf-2/working-groups'],
+  ]);
+  const guide = section.groups[0];
+  assert.deepEqual(guide.items.map(({ title, url }) => [title, url]), [
+    ['Getting started', '/spdtf-2/working-groups/member-guide/getting-started'],
+    ['Teams and discussions', '/spdtf-2/working-groups/member-guide/teams-and-discussions'],
+    ['Source material and SharePoint', '/spdtf-2/working-groups/member-guide/source-material-and-sharepoint'],
+    ['Meetings and records', '/spdtf-2/working-groups/member-guide/meetings-and-records'],
+    ['Model review and decisions', '/spdtf-2/working-groups/member-guide/model-review-and-decisions'],
+  ]);
+  for (const child of guide.items) {
+    assert.deepEqual(findNavigationPage(child.url)?.trail.map(({ url }) => url), [child.url]);
+    assert.ok(SITE_SEARCH_ENTRIES.some(({ url }) => url === child.url), `${child.url} must be searchable`);
+  }
+  const guideStatus = getRouteStatus('/spdtf-2/working-groups/member-guide/teams-and-discussions');
+  assert.equal(guideStatus.maturity, 'Current member guidance; proposed modelling and lifecycle rules are labelled');
+  assert.doesNotMatch(guideStatus.authority, /Workspace scope only/iu);
+  const workspaces = section.groups[1];
+  assert.equal(workspaces.items.length, 8);
+  assert.ok(workspaces.items.every(({ children }) => children?.map(({ title }) => title).join('|')
+    === 'Evidence|Questions|Review'));
+  assert.equal(flattenGroup(workspaces).length, 33);
+  for (const standalone of ['/working-groups/join', '/working-groups/join/privacy']) {
+    assert.equal(getNavigationSection(standalone), null);
+    assert.deepEqual(getNavigationPrevNext(standalone), {});
+  }
 });
 
 test('Governance decision categories expose only their corpus indexes', () => {
@@ -122,11 +220,24 @@ test('Governance decision categories expose only their corpus indexes', () => {
   }
 });
 
+test('contextual rail highlighting never claims an index is the current detail page', async () => {
+  const [sidebar, item] = await Promise.all([
+    readFile(new URL('../src/components/Sidebar.astro', import.meta.url), 'utf8'),
+    readFile(new URL('../src/components/SidebarItem.astro', import.meta.url), 'utf8'),
+  ]);
+  assert.match(sidebar, /const isActivePage = isActiveLocation && activePath === path/u);
+  assert.match(sidebar, /nav-group-link\$\{isActiveLocation \? ' active' : ''\}/u);
+  assert.match(sidebar, /aria-current=\{isActivePage \? 'page' : undefined\}/u);
+  assert.match(item, /const isCurrentPage = isActive && itemPath === currentPath/u);
+  assert.equal((item.match(/aria-current=\{isCurrentPage \? 'page' : undefined\}/gu) ?? []).length, 2);
+});
+
 test('category landing pages remain in breadcrumbs and exact page sequences', () => {
   for (const [sectionKey, heading, category, firstChild] of [
     ['programme', 'Strategy', '/strategy', '/strategy/strategy-overview'],
     ['spdtf-2', 'Semantic modelling', '/spdtf-2/ontologies', '/spdtf-2/ontologies/why-ontologies'],
     ['spdtf-2', 'Property Pack ontology', '/spdtf-2/property-pack', '/spdtf-2/property-pack/definition-and-scope'],
+    ['working-groups', 'Member guide', '/spdtf-2/working-groups/member-guide', '/spdtf-2/working-groups/member-guide/getting-started'],
     ['working-groups', 'Group workspaces', '/spdtf-2/working-groups', '/spdtf-2/working-groups/finance-and-banking'],
     ['pdtf-1', 'Original standard', PDTF1_ROUTES.original, originalSchema],
     ['pdtf-1', 'Extracted ontology', PDTF1_ROUTES.extracted, PDTF1_ROUTES.lineage],

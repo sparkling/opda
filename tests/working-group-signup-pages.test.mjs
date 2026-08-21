@@ -12,7 +12,22 @@ const paths = {
   campaignSectionsCss: new URL('../src/styles/working-group-campaign-sections.css', import.meta.url),
   header: new URL('../src/components/Header.astro', import.meta.url),
   baseCss: new URL('../public/ui/design/base.css', import.meta.url),
+  memberGuide: new URL('../src/pages/spdtf-2/working-groups/member-guide/index.astro', import.meta.url),
+  gettingStarted: new URL('../src/pages/spdtf-2/working-groups/member-guide/getting-started.astro', import.meta.url),
+  teamsAndDiscussions: new URL('../src/pages/spdtf-2/working-groups/member-guide/teams-and-discussions.astro', import.meta.url),
+  sourceMaterial: new URL('../src/pages/spdtf-2/working-groups/member-guide/source-material-and-sharepoint.astro', import.meta.url),
+  meetingsAndRecords: new URL('../src/pages/spdtf-2/working-groups/member-guide/meetings-and-records.astro', import.meta.url),
+  modelReview: new URL('../src/pages/spdtf-2/working-groups/member-guide/model-review-and-decisions.astro', import.meta.url),
 };
+
+const memberGuidePaths = [
+  paths.memberGuide,
+  paths.gettingStarted,
+  paths.teamsAndDiscussions,
+  paths.sourceMaterial,
+  paths.meetingsAndRecords,
+  paths.modelReview,
+];
 
 const expectedGroups = [
   'finance-and-banking',
@@ -150,4 +165,61 @@ test('privacy page publishes the current notice and operational boundaries', asy
     assert.match(source, new RegExp(text, 'u'));
   }
   assert.doesNotMatch(source, /Cloudflare|Turnstile|turnstile|Postmark|email-verification/u);
+});
+
+test('working-group member guide covers the complete participation journey', async () => {
+  const [landing, ...children] = await Promise.all(memberGuidePaths.map((path) => readFile(path, 'utf8')));
+  for (const slug of [
+    'getting-started', 'teams-and-discussions', 'source-material-and-sharepoint',
+    'meetings-and-records', 'model-review-and-decisions',
+  ]) assert.match(landing, new RegExp(`href=["']\/spdtf-2\/working-groups\/member-guide\/${slug}["']`, 'u'));
+
+  const corpus = [landing, ...children].join('\n').replace(/\s+/gu, ' ');
+  for (const boundary of [
+    'expression of interest',
+    'does not confer membership',
+    'Team roster',
+    'private Microsoft Team',
+    'thread-first',
+    'one clear issue per thread',
+    'Team-connected Shared Documents',
+    'separate SharePoint source-intake',
+    'private organisation folder',
+    'company-domain account',
+    'generic-provider account',
+    'smartdata@openpropdata.org.uk',
+    'website comments',
+    'not a decision record',
+    'Audio and video files are not accepted',
+    'Personal, customer or live property-transaction data',
+    'approved company-domain identity',
+    'live SharePoint membership',
+    'at most 50 MiB',
+    'Larger or unknown files require manual review',
+    'Technology Working Group',
+    'Property Technology',
+    'Finance and Banking',
+    'planned',
+    'AI has no decision authority',
+    'ADR-0068 remains proposed',
+  ]) assert.match(corpus, new RegExp(boundary, 'iu'), `Missing member guidance: ${boundary}`);
+
+  for (const privateOperationalDetail of [
+    /teams\.cloud\.microsoft/iu,
+    /sharepoint\.com\/sites/iu,
+    /groupId=/iu,
+    /inviteRedeemUrl/iu,
+    /[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}/iu,
+  ]) assert.doesNotMatch(corpus, privateOperationalDetail);
+});
+
+test('member guidance distinguishes implemented infrastructure from modelling authority', async () => {
+  const corpus = (await Promise.all(memberGuidePaths.map((path) => readFile(path, 'utf8'))))
+    .join('\n').replace(/\s+/gu, ' ');
+  assert.match(corpus, /Finance and Banking[^.]*implemented/isu);
+  assert.match(corpus, /Technology Working Group[^.]*implemented/isu);
+  assert.match(corpus, /Technology Working Group is not a ninth modelling context/iu);
+  assert.match(corpus, /other seven[^.]*planned/isu);
+  assert.match(corpus, /workspace infrastructure[^.]*does not mean[^.]*convened/isu);
+  assert.match(corpus, /ADR-0065 remains proposed/iu);
 });

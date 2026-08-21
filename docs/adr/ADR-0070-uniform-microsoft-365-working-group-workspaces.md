@@ -1,7 +1,7 @@
 ---
 status: accepted
 date: 2026-08-14
-updated: 2026-08-15
+updated: 2026-08-21
 tags: [working-groups, microsoft-365, teams, sharepoint, evidence-intake, access-control, technology-review]
 supersedes: []
 depends-on: [ADR-0063, ADR-0065, ADR-0067, ADR-0068]
@@ -9,6 +9,13 @@ implements: [ADR-0063, ADR-0065]
 ---
 
 # Operate OPDA working groups through a uniform Microsoft 365 workspace pattern
+
+> **Change note — 21 August 2026:** The documentation site now provides one
+> public member-guide branch covering access, Teams discussions, isolated SharePoint
+> intake, meetings and model review. It publishes the common operating pattern without
+> exposing private workspace identifiers, rosters, redemption links or organisation
+> folders. The guide labels ADR-0065 and ADR-0068 as proposed and grants no access or
+> decision authority.
 
 ## Context and Problem Statement
 
@@ -288,6 +295,8 @@ For each implementation, confirmation requires:
   personal data in the repository.
 - the scheduled inbox agent passes the ADR-0072 content, authority, plan and postcondition gates
   before it changes membership, stores evidence or sends a success reply.
+- the public member guide distinguishes implemented infrastructure from group convening and
+  accepted workspace rules from proposed modelling or ratification processes.
 
 ## More Information
 

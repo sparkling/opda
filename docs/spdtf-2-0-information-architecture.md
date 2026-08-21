@@ -216,21 +216,11 @@ Home /
 │   │       ├── Coverage crosswalk; standards, evidence and qualified mappings
 │   │       └── Validation, review and generated projections
 │   ├── Working groups /spdtf-2/working-groups
-│   │   ├── Finance and Banking
-│   │   ├── Conveyancing
-│   │   ├── Estate Agency
-│   │   ├── Surveying and Valuation
-│   │   ├── Property Data Services
-│   │   ├── Property Technology
-│   │   └── DBT Smart Data scheme-design group
-│   │       └── OPDA-internal; no government status
-│   ├── Interoperability working group
-│   │   ├── Remit and membership
-│   │   ├── Context map
-│   │   ├── Small common boundary
-│   │   ├── Cross-context mappings
-│   │   ├── Shared conventions
-│   │   └── Programme coverage matrix
+│   │   ├── Member guide: access; Teams; SharePoint evidence; meetings; model review
+│   │   └── Group workspaces
+│   │       ├── Six property contexts
+│   │       ├── DBT Smart Data scheme-design group — OPDA-internal; no government status
+│   │       └── Interoperability — peer owner of boundaries, mappings and shared conventions
 │   ├── Candidate register
 │   ├── Open questions and changes
 │   └── Generated outputs and validation evidence
@@ -251,15 +241,14 @@ Home /
 │       ├── Trust, governance and limitations /pdtf-1/extracted-ontology/trust-governance-and-limitations
 │       └── Use and tooling /pdtf-1/extracted-ontology/use-and-tooling
 ├── Governance /governance
-│   ├── Authority and decision rights
-│   ├── Canonical status and provenance registry
-│   ├── Standards lifecycle [proposed until separately accepted]
-│   ├── Change, versioning and deprecation
-│   ├── Assurance, conformance and validation
-│   ├── Data stewardship, security, privacy and risk
-│   ├── External statutory and prospective-scheme constraints
-│   ├── Decisions, issues and feedback disposition
-│   └── ADR and ODR registers, faceted by work area
+│   ├── UK initiative context
+│   ├── OPDA organisation
+│   ├── Standards landscape
+│   ├── OPDA rules — current, draft and proposed status retained per page
+│   ├── Operating Model
+│   ├── Quality and security
+│   ├── Architecture and ontology decision indexes
+│   └── Programme decisions
 └── Resources /resources
     ├── Source registry
     ├── Participant resources
@@ -278,6 +267,10 @@ liability, data-sharing obligations and cross-sector alignment. It is not a
 government-established group and cannot confer statutory status. Interoperability
 is a peer of the domain working groups, not a child of one group. Its SPDTF 2.0 work
 lives in one place; Governance defines its decision rights.
+
+The member guide is operational guidance, not a second standards process. It states
+which Microsoft workspaces are implemented, keeps private links and rosters out of the
+public site, and labels the ADR-0065 modelling method and ADR-0068 lifecycle as proposed.
 
 ## Standard working-group workspace
 

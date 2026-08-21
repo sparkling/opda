@@ -1,0 +1,72 @@
+---
+import Layout from '@/layouts/Layout.astro';
+import PageMeta from '@/components/PageMeta.astro';
+---
+
+<Layout
+  title="Teams and working-group discussions"
+  description="How members use Teams channels, threads, website comments and email without fragmenting the working record."
+>
+  <PageMeta category="Working groups · Member guide" variant="brand" updated="Discussion guidance · 21 August 2026" />
+  <h1>Teams and discussions</h1>
+  <p class="lead">
+    An implemented working group uses a private Microsoft Team as its discussion hub.
+    The aim is a durable, understandable record: choose the right surface, keep related
+    replies together and separate discussion from formal authority.
+  </p>
+
+  <h2 id="surfaces">Use each surface for its intended job</h2>
+  <table>
+    <thead><tr><th>Surface</th><th>Use it for</th><th>Do not use it for</th></tr></thead>
+    <tbody>
+      <tr><td>Teams</td><td>Group discussion, questions, evidence requests and candidate review.</td><td>Restricted source files or silent decision-making.</td></tr>
+      <tr><td>SharePoint intake</td><td>Authorised source material in a private organisation folder.</td><td>General discussion or files intended for the whole Team.</td></tr>
+      <tr><td>Website comments</td><td>Signed-in, page-specific feedback on a published candidate or explanation.</td><td>A vote, approval or standalone decision record.</td></tr>
+      <tr><td>Email</td><td>Invitations, colleague requests, access support and a screened attachment fallback.</td><td>A mailing list or parallel discussion channel.</td></tr>
+    </tbody>
+  </table>
+
+  <h2 id="channels">The common channel pattern</h2>
+  <ul>
+    <li><strong>General</strong> provides orientation, the channel directory and, where appropriate, official notices.</li>
+    <li><strong>Common Topics and Coordination</strong> holds questions that span the group or several contexts.</li>
+    <li><strong>Discussion channels</strong> hold subjects within a stable area of the group's scope.</li>
+    <li><strong>Announcements</strong> may be retained as an owner-led notice channel where it adds value.</li>
+  </ul>
+  <p>
+    Channel names vary with the group's scope. Use the most specific suitable channel;
+    use Common Topics and Coordination when a subject crosses boundaries.
+  </p>
+
+  <h2 id="threads">Use a thread-first discussion pattern</h2>
+  <ol>
+    <li>Search or scan the channel for an existing thread about the subject.</li>
+    <li>Reply beneath the original post when it covers the same question.</li>
+    <li>Start a new post only for a distinct ambiguity, conflict, evidence gap, correction or model issue.</li>
+    <li>Give the post a clear subject and keep one clear issue per thread.</li>
+    <li>Link to the relevant candidate page, question or evidence record when one exists.</li>
+  </ol>
+  <p>
+    Do not create a Teams post merely to announce an upload. Put interpretation and
+    provenance in the source folder's README; start a discussion only when the material
+    raises a question for the group.
+  </p>
+
+  <h2 id="comments">Website comments are contextual feedback</h2>
+  <p>
+    Signed-in authorised OPDA accounts can comment on pages that expose the comment
+    component. Website comments make feedback easy to find beside the material under
+    review. A website comment is not a decision record, consensus call or authority
+    grant. Material feedback must be connected to the maintained question, candidate
+    or disposition record before it changes the model.
+  </p>
+
+  <h2 id="conduct">Keep discussions safe and useful</h2>
+  <ul>
+    <li>Explain the business situation, rule, example or counterexample behind a view.</li>
+    <li>Distinguish fact, organisational practice, proposal and personal judgement.</li>
+    <li>Do not paste personal, customer, live transaction, secret or restricted source material into a channel.</li>
+    <li>Do not discuss prohibited competitive information such as pricing, customer strategy or market allocation.</li>
+    <li>Declare affiliation or a material interest when it affects the issue being discussed.</li>
+  </ul>
+</Layout>

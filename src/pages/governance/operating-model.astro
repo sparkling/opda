@@ -1,0 +1,44 @@
+---
+import Layout from '@/layouts/Layout.astro';
+import PageMeta from '@/components/PageMeta.astro';
+import GatewayCard from '@/components/ia/GatewayCard.astro';
+
+const pages = [
+  {
+    href: '/governance/data-stewardship', eyebrow: 'Decision rights', title: 'Data stewardship',
+    description: 'Who owns domain meaning, shared boundaries, technical checks and later promotion.',
+  },
+  {
+    href: '/governance/meetings-and-feedback', eyebrow: 'Working record', title: 'Meetings and feedback',
+    description: 'How meetings, asynchronous discussion, review and durable records fit together.',
+  },
+  {
+    href: '/governance/stakeholder-engagement', eyebrow: 'Participation', title: 'Stakeholder engagement',
+    description: 'How members, invited participants, public bodies and the public can contribute.',
+  },
+  {
+    href: '/governance/overlay-attachments', eyebrow: 'Information handling', title: 'Overlay attachments',
+    description: 'The emerging handling policy for files attached to PDTF overlay records.',
+  },
+];
+---
+
+<Layout title="Operating Model" description="The people, decision rights, engagement and information-handling records used to run the framework.">
+  <PageMeta category="Governance framework" variant="brand" updated="Mixed-status navigation guide · 21 August 2026" />
+  <h1>Operating Model</h1>
+  <p class="lead">
+    The Operating Model branch explains how the framework runs: who is accountable,
+    how people participate, how discussion becomes a durable record and how supporting
+    material is handled. The four records have different maturity and must be read on
+    their own terms.
+  </p>
+  <div class="card-grid">
+    {pages.map((page) => <GatewayCard {...page} />)}
+  </div>
+  <h2 id="scope">A coordination view, not a new authority</h2>
+  <p>
+    This gateway groups operational concerns without making one child page the owner of
+    the others. Proposed decision-rights and lifecycle material remains proposed; current
+    practice and constitutional authority are identified on the relevant pages.
+  </p>
+</Layout>

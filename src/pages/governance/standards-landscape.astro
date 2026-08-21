@@ -1,0 +1,35 @@
+---
+import Layout from '@/layouts/Layout.astro';
+import PageMeta from '@/components/PageMeta.astro';
+import GatewayCard from '@/components/ia/GatewayCard.astro';
+
+const pages = [
+  {
+    href: '/governance/toip-governance', eyebrow: 'Trust framework', title: 'ToIP governance model',
+    description: 'How the four-layer Trust over IP model relates to OPDA artefacts and governance.',
+  },
+  {
+    href: '/governance/strategic-alignment', eyebrow: 'Strategy', title: 'Strategic alignment',
+    description: 'The external policy, trust and data strategies against which OPDA records alignment.',
+  },
+];
+---
+
+<Layout title="Standards landscape" description="External trust-framework and strategic references used to frame OPDA governance.">
+  <PageMeta category="Governance framework" variant="brand" updated="Navigation guide · 21 August 2026" />
+  <h1>Standards landscape</h1>
+  <p class="lead">
+    These pages explain the external frameworks and strategies that inform OPDA's
+    direction. Alignment is evidence and context; it does not imply endorsement or make
+    an external framework an OPDA rule.
+  </p>
+  <div class="card-grid">
+    {pages.map((page) => <GatewayCard {...page} />)}
+  </div>
+  <h2 id="how-to-read">How to read this branch</h2>
+  <p>
+    Use the ToIP page for the trust-framework governance pattern and the strategic
+    alignment page for the wider policy and standards landscape. Follow each page's
+    citations and status language rather than inheriting authority from this gateway.
+  </p>
+</Layout>

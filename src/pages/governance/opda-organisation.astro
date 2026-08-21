@@ -1,0 +1,34 @@
+---
+import Layout from '@/layouts/Layout.astro';
+import PageMeta from '@/components/PageMeta.astro';
+import GatewayCard from '@/components/ia/GatewayCard.astro';
+
+const pages = [
+  {
+    href: '/governance/opda-members', eyebrow: 'Organisation', title: 'OPDA member firms',
+    description: 'The founding coalition, association members and sector coverage represented by OPDA.',
+  },
+  {
+    href: '/governance/sandbox', eyebrow: 'Delivery', title: 'Trust Framework Sandbox',
+    description: 'The operational proving ground delivered with the CLC and Raidiam.',
+  },
+];
+---
+
+<Layout title="OPDA organisation" description="OPDA's membership and the Trust Framework Sandbox used to test delivery.">
+  <PageMeta category="Governance framework" variant="brand" updated="Navigation guide · 21 August 2026" />
+  <h1>OPDA organisation</h1>
+  <p class="lead">
+    This branch separates the organisation that convenes the work from the Sandbox used
+    to test delivery. Each child page retains its own evidence, maturity and authority.
+  </p>
+  <div class="card-grid">
+    {pages.map((page) => <GatewayCard {...page} />)}
+  </div>
+  <h2 id="distinction">Organisation and delivery are different</h2>
+  <p>
+    Membership explains who OPDA brings together. The Sandbox supplies operational
+    evidence about the trust framework. Participation in either does not silently grant
+    authority over a separate SPDTF model or governance decision.
+  </p>
+</Layout>

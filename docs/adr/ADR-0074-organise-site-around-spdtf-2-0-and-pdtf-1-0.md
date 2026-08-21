@@ -68,6 +68,14 @@ implements: [docs/spdtf-2-0-information-architecture.md]
 > ADR index and once to the ODR index. Individual decision records remain canonical
 > pages reached from those indexes, but no longer expand the left rail or
 > participate in its previous/next sequence.
+>
+> Update 2026-08-21 — Governance and working-group guidance: the Governance rail now
+> mirrors the six substantive clusters on its landing page through linked gateways,
+> while retaining every existing child route and its own status. Working groups now
+> exposes a separate member guide for access, Teams, SharePoint evidence, meetings and
+> model review before the eight workspaces. Recruitment remains a standalone public
+> route, and the guide does not expose private operational links or promote proposed
+> ADR-0065/0068 rules. This note makes no publication claim.
 
 ## Context and Problem Statement
 

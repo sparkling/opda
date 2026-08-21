@@ -1,0 +1,65 @@
+---
+import Layout from '@/layouts/Layout.astro';
+import PageMeta from '@/components/PageMeta.astro';
+---
+
+<Layout
+  title="Working-group meetings and records"
+  description="How members prepare for meetings, contribute asynchronously and keep useful, consented records."
+>
+  <PageMeta category="Working groups · Member guide" variant="brand" updated="Meeting guidance · 21 August 2026" />
+  <h1>Meetings and records</h1>
+  <p class="lead">
+    Meetings concentrate discussion; they do not replace the persistent working record.
+    Members should be able to prepare beforehand, contribute without attending live and
+    inspect what happened afterwards.
+  </p>
+
+  <h2 id="before">Before a meeting</h2>
+  <ul>
+    <li>Read the agenda, candidate version, questions and evidence references named in the notice.</li>
+    <li>Add a Teams reply or website comment early when clarification would help everyone prepare.</li>
+    <li>Declare relevant affiliation, conflicts or material interests.</li>
+    <li>Do not circulate a private meeting link or invitation beyond the approved group.</li>
+    <li>Tell the organiser about accessibility needs or if asynchronous participation is required.</li>
+  </ul>
+
+  <h2 id="during">What meetings should focus on</h2>
+  <p>
+    Useful meeting time is spent on scope, evidence, contested meaning, examples,
+    counterexamples, open questions and review of visible candidate changes. Formal
+    modelling can happen between meetings; participants are not expected to edit RDF,
+    OWL, SKOS or SHACL in the session.
+  </p>
+
+  <h2 id="recording">Recording and transcription</h2>
+  <ul>
+    <li>Recording or transcription must be announced and follow the agreed consent, access and retention conditions.</li>
+    <li>A transcript should record its date, context and speakers where known.</li>
+    <li>Sensitive or restricted discussion must not be copied into a public review surface.</li>
+    <li>Audio and video files are not accepted as source-intake submissions; provide an authorised transcript instead.</li>
+  </ul>
+
+  <h2 id="after">After a meeting</h2>
+  <ol>
+    <li>Publish or circulate the permitted notes, transcript and action record.</li>
+    <li>Link each substantive point to the relevant persistent question or review thread.</li>
+    <li>State whether a point is evidence, a proposal, an unresolved issue or an agreed action.</li>
+    <li>Give people who could not attend a clear asynchronous route and deadline for feedback.</li>
+    <li>Carry only reviewed and recorded outcomes into the next candidate.</li>
+  </ol>
+
+  <h2 id="authority">Meeting attendance is not authority</h2>
+  <p>
+    Attendance, silence, reactions and message volume do not by themselves establish
+    consensus. ADR-0068 proposes a canonical issue record, asynchronous confirmation,
+    consensus calls and ratification stages, but ADR-0068 remains proposed. Until OPDA
+    adopts that lifecycle, pages must not present its exact thresholds or time windows as
+    operative rules.
+  </p>
+  <p>
+    The safe working principle is narrower: a decision discussed live should be posted
+    with its rationale and affected candidate so absent members can inspect it, and no
+    meeting-only statement should silently change the model.
+  </p>
+</Layout>

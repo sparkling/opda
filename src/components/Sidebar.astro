@@ -51,8 +51,9 @@ function containsActive(item: Item): boolean {
     >
       <p class="sidebar-section-title">{section.title}</p>
       {section.groups.map(group => {
-        const isActivePage = normalizeUrl(group.url) === activePath;
-        const containsActivePage = isActivePage || group.items.some(containsActive);
+        const isActiveLocation = normalizeUrl(group.url) === activePath;
+        const isActivePage = isActiveLocation && activePath === path;
+        const containsActivePage = isActiveLocation || group.items.some(containsActive);
         const hasChildren = group.items.length > 0;
         const defaultOpen = hasChildren && containsActivePage;
         const emphasizeFolders = section.key === 'pdtf-1' && group.url === PDTF1_ROUTES.extracted;
@@ -85,7 +86,7 @@ function containsActive(item: Item): boolean {
                 </button>
               ) : <span class="nav-group-spacer" aria-hidden="true"></span>}
               <a
-                class={`nav-group-link${isActivePage ? ' active' : ''}`}
+                class={`nav-group-link${isActiveLocation ? ' active' : ''}`}
                 href={group.url}
                 aria-current={isActivePage ? 'page' : undefined}
               >{group.heading}</a>
@@ -96,6 +97,7 @@ function containsActive(item: Item): boolean {
                   <SidebarItem
                     item={item}
                     activePath={activePath}
+                    currentPath={path}
                     containsActive={containsActive}
                     emphasized={emphasizeFolders}
                   />
