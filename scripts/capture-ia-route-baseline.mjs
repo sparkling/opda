@@ -18,7 +18,7 @@ import {
   PRIOR_IA_ROUTE_MANIFEST,
   composePriorFamilyReceipt, composePriorManifestReceipt,
   loadPdtf1SourceRouteManifest, loadPriorIaFamilyManifest, loadPriorIaRouteManifest,
-  manifestRetainedRecordMatches,
+  manifestRetainedSourceRecordMatches,
   missingPhysicalRecordsDigest,
   priorRouteRecordDigest, verifyBaselineRootCommit, verifyPdtf1SourceRootCommit,
 } from './lib/ia-prior-manifest-contract.mjs';
@@ -187,7 +187,7 @@ const routes = baselineFiles.filter((file) => !isRetiredPdtf1ManualAlias(routeFr
   const sourceRecord = manifestRetained ? pdtf1SourceByBaselineFile.get(file) : null;
   const sourcePath = sourceRecord ? path.join(sourceRoot, 'dist', sourceRecord.acceptedFile) : null;
   if (manifestRetained && (!sourceRecord || !sourcePath || !existsSync(sourcePath)
-    || !manifestRetainedRecordMatches(sourceRecord, priorRecord))) {
+    || !manifestRetainedSourceRecordMatches(sourceRecord, priorRecord))) {
     throw new Error(`manifest-retained source evidence is unavailable: ${baselineRoute}`);
   }
   const beforeHtml = manifestRetained ? readFileSync(sourcePath, 'utf8') : readFileSync(baselinePath, 'utf8');
@@ -287,20 +287,29 @@ for (const acceptedRecord of [...routes, ...addedRoutes]) {
     || JSON.stringify(sourceFragments.fragments) !== JSON.stringify(sourceRecord.acceptedFragments)) {
     throw new Error(`PDTF 1.0 source page differs from its frozen manifest: ${sourceRecord.acceptedRoute}`);
   }
+  const sourceInventory = blockInventory(sourceContent.blockHashes);
+  const sourceReceipt = captureRetentionReceipt(
+    sourceRecord.acceptedRoute, sourceContent, acceptedContracts, baselineLinkEvidence(sourceHtml),
+    { exactTargetRoute: acceptedRecord.acceptedRoute, includeAllocation: true },
+  );
   acceptedRecord.pdtf1SourceRetentionReceipt = {
-    ...captureRetentionReceipt(
-      sourceRecord.acceptedRoute, sourceContent, acceptedContracts, baselineLinkEvidence(sourceHtml),
-    ),
+    ...sourceReceipt,
     policy: 'explicit-pdtf1-source-block-retention-v1',
     sourceRoute: sourceRecord.acceptedRoute,
     sourceFile: sourceRecord.acceptedFile,
     sourceRecordSha256: sha256(JSON.stringify(sourceRecord)),
     sourceContentSha256: sourceRecord.acceptedContentSha256,
     sourceBlockInventorySha256: sourceRecord.acceptedBlockInventorySha256,
+    sourceBlockInventoryRecords: sourceInventory.records,
     sourceFragmentSha256: sourceRecord.acceptedFragmentSha256,
     sourceFragmentCount: sourceRecord.acceptedFragmentCount,
     sourceFragments: sourceRecord.acceptedFragments,
     acceptedRoute: acceptedRecord.acceptedRoute,
+    exactTargetRoute: acceptedRecord.acceptedRoute,
+    targetBlockInventories: sourceReceipt.targetEvidence.map(({ route: targetRoute }) => {
+      const inventory = blockInventory(acceptedContracts.get(targetRoute).blockHashes);
+      return { route: targetRoute, sha256: inventory.sha256, records: inventory.records };
+    }),
   };
 }
 const propertyPackMigration = propertyPackMigrationReceipt(
@@ -321,10 +330,13 @@ const usedSemanticReframes = new Set([...routes, ...addedRoutes].flatMap((record
     .flatMap((receipt) => [
       ...receipt.semanticReframeBlocks,
       ...receipt.nonInformationBlocks,
-    ].map(({ sourceBlockSha256 }) => sourceBlockSha256))
+    ].map(({ sourceRoute, sourceBlockSha256 }) => `${sourceRoute}\0${sourceBlockSha256}`))
 )));
-if (usedSemanticReframes.size !== semanticReframes.size
-  || [...semanticReframes.keys()].some((hash) => !usedSemanticReframes.has(hash))) {
+const declaredSemanticReframes = new Set([...semanticReframes.values()].flatMap((entry) => (
+  entry.sourceRoutes.map((sourceRoute) => `${sourceRoute}\0${entry.sourceBlockSha256}`)
+)));
+if (usedSemanticReframes.size !== declaredSemanticReframes.size
+  || [...declaredSemanticReframes].some((pair) => !usedSemanticReframes.has(pair))) {
   throw new Error('semantic reframe ledger contains unused or unaccounted source blocks');
 }
 const routeManifest = {

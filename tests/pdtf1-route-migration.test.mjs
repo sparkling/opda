@@ -10,7 +10,12 @@ import {
   semanticBlocksDigest,
   sha256,
 } from '../scripts/lib/ia-preservation-contract.mjs';
-import { loadPdtf1SourceRouteManifest } from '../scripts/lib/ia-prior-manifest-contract.mjs';
+import {
+  loadPdtf1SourceRouteManifest,
+  loadPriorIaRouteManifest,
+  manifestRetainedBaselineProjectionMatches,
+  manifestRetainedSourceRecordMatches,
+} from '../scripts/lib/ia-prior-manifest-contract.mjs';
 import {
   PDTF1_ROUTE_MIGRATION,
   PDTF1_ROUTES,
@@ -26,9 +31,8 @@ import {
   getLegacyCommentKey,
 } from '../src/lib/site-route-migrations.mjs';
 
-const { manifest: sourceManifest } = loadPdtf1SourceRouteManifest(
-  new URL('..', import.meta.url).pathname,
-);
+const projectRoot = new URL('..', import.meta.url).pathname;
+const { manifest: sourceManifest } = loadPdtf1SourceRouteManifest(projectRoot);
 
 test('PDTF 1.0 documentation routes move beneath their full reader hierarchy', () => {
   assert.deepEqual(PDTF1_ROUTE_MIGRATION, {
@@ -52,6 +56,12 @@ test('PDTF 1.0 documentation routes move beneath their full reader hierarchy', (
     generatedToolRouteCount: 652,
     ontologyArtefactHtmlRouteCount: 1,
     canonicalFamilyRouteCount: 1264,
+    sourceReframeRouteCount: 3,
+    sourceReframeTotalBlockCount: 354,
+    sourceReframeExactBlockCount: 347,
+    sourceReframeSemanticBlockCount: 7,
+    sourceReframeNonInformationBlockCount: 0,
+    sourceReframeRoutesSha256: '201b26d42fa6abec654a4a7b01b4a77da1a29cf886aa94bc7c98d46bdc81fc0f',
     postSourceAdditionRouteCount: 1,
     acceptedSiteRouteCount: 3274,
     redirects: false,
@@ -146,11 +156,20 @@ test('the complete PDTF migration receipt is bijective and preserves information
     },
   ];
   const retiredAliases = composePdtf1RetiredAliases(sourceManifest, getDeclaredRouteReplacement);
+  const exactMigration = {
+    ...PDTF1_ROUTE_MIGRATION,
+    sourceReframeRouteCount: 0,
+    sourceReframeTotalBlockCount: 0,
+    sourceReframeExactBlockCount: 0,
+    sourceReframeSemanticBlockCount: 0,
+    sourceReframeNonInformationBlockCount: 0,
+    sourceReframeRoutesSha256: sha256(''),
+  };
   const receipt = pdtf1MigrationReceipt({
     records,
     addedRecords,
     retiredAliases,
-    migration: PDTF1_ROUTE_MIGRATION,
+    migration: exactMigration,
     replacementRoute: getDeclaredRouteReplacement,
     sourceManifest,
   });
@@ -166,6 +185,12 @@ test('the complete PDTF migration receipt is bijective and preserves information
     generatedToolRouteCount: 652,
     ontologyArtefactHtmlRouteCount: 1,
     canonicalFamilyRouteCount: 1264,
+    sourceReframeRouteCount: 0,
+    sourceReframeTotalBlockCount: 0,
+    sourceReframeExactBlockCount: 0,
+    sourceReframeSemanticBlockCount: 0,
+    sourceReframeNonInformationBlockCount: 0,
+    sourceReframeRoutesSha256: sha256(''),
     postSourceAdditionRouteCount: 1,
     acceptedSiteRouteCount: 3274,
     movedRoutePairsSha256: '1b6e16602c4c42f28d7ef02a7cb7a9eabac95312982af9f7a5dbf39b5957f518',
@@ -183,7 +208,7 @@ test('the complete PDTF migration receipt is bijective and preserves information
   const changed = fragmentLoss.find(({ baselineRoute }) => baselineRoute === '/ontology/classes');
   changed.acceptedFragmentSha256 = '0'.repeat(64);
   assert.throws(() => pdtf1MigrationReceipt({
-    records: fragmentLoss, addedRecords, retiredAliases, migration: PDTF1_ROUTE_MIGRATION,
+    records: fragmentLoss, addedRecords, retiredAliases, migration: exactMigration,
     replacementRoute: getDeclaredRouteReplacement, sourceManifest,
   }), /information or fragments changed/u);
 
@@ -222,7 +247,7 @@ test('the complete PDTF migration receipt is bijective and preserves information
     nonInformationBlocksSha256: nonInformationBlocksDigest([]),
   };
   assert.throws(() => pdtf1MigrationReceipt({
-    records: forgedExact, addedRecords, retiredAliases, migration: PDTF1_ROUTE_MIGRATION,
+    records: forgedExact, addedRecords, retiredAliases, migration: exactMigration,
     replacementRoute: getDeclaredRouteReplacement, sourceManifest,
   }), /information or fragments changed/u);
 
@@ -230,11 +255,11 @@ test('the complete PDTF migration receipt is bijective and preserves information
   const stableTarget = forgedStable.find(({ acceptedRoute }) => acceptedRoute === '/pdtf/Property');
   stableTarget.pdtf1SourceRetentionReceipt = { policy: 'forged' };
   assert.throws(() => pdtf1MigrationReceipt({
-    records: forgedStable, addedRecords, retiredAliases, migration: PDTF1_ROUTE_MIGRATION,
+    records: forgedStable, addedRecords, retiredAliases, migration: exactMigration,
     replacementRoute: getDeclaredRouteReplacement, sourceManifest,
   }), /information or fragments changed/u);
   assert.throws(() => pdtf1MigrationReceipt({
-    records, addedRecords, retiredAliases: retiredAliases.slice(1), migration: PDTF1_ROUTE_MIGRATION,
+    records, addedRecords, retiredAliases: retiredAliases.slice(1), migration: exactMigration,
     replacementRoute: getDeclaredRouteReplacement, sourceManifest,
   }), /retired alias contract/u);
 });
@@ -253,11 +278,26 @@ test('preservation capture reads manifest-retained pages from the frozen pre-mig
   const capture = readFileSync(new URL('../scripts/capture-ia-route-baseline.mjs', import.meta.url), 'utf8');
   assert.match(capture, /args\.get\('--source-root'\)/u);
   assert.match(capture, /verifyPdtf1SourceRootCommit\(sourceRoot\)/u);
-  assert.match(capture, /manifestRetainedRecordMatches\(sourceRecord, priorRecord\)/u);
+  assert.match(capture, /manifestRetainedSourceRecordMatches\(sourceRecord, priorRecord\)/u);
   assert.match(capture, /readFileSync\(sourcePath, 'utf8'\)/u);
   assert.doesNotMatch(
     capture,
     /const beforeHtml = manifestRetained \? readFileSync\(acceptedPath/u,
     'current accepted pages must never masquerade as frozen pre-migration evidence',
   );
+});
+
+test('a final migration receipt cannot excuse drift in the frozen source cut', () => {
+  const prior = loadPriorIaRouteManifest(projectRoot).manifest.routes
+    .find(({ route }) => route === '/ontology/bake-off');
+  const source = [...sourceManifest.routes, ...sourceManifest.addedRoutes]
+    .find(({ acceptedRoute }) => acceptedRoute === '/ontology/bake-off');
+  assert.equal(manifestRetainedBaselineProjectionMatches(source, prior), true);
+  assert.equal(manifestRetainedSourceRecordMatches(source, prior), true);
+
+  const forged = structuredClone(source);
+  forged.acceptedContentSha256 = '1'.repeat(64);
+  forged.pdtf1SourceRetentionReceipt = { policy: 'forged-final-receipt' };
+  assert.equal(manifestRetainedBaselineProjectionMatches(forged, prior), true);
+  assert.equal(manifestRetainedSourceRecordMatches(forged, prior), false);
 });

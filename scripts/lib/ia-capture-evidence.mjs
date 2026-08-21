@@ -127,7 +127,7 @@ export function createCaptureEvidence({ semanticLedgerPath, baselineCommit }) {
     return unique;
   }
 
-  function captureRetentionReceipt(route, before, acceptedContracts, sourceLinks) {
+  function captureRetentionReceipt(route, before, acceptedContracts, sourceLinks, options = {}) {
     const targets = retentionTargets(route, before);
     const available = new Map();
     const targetEvidence = targets.map((targetRoute) => {
@@ -144,15 +144,25 @@ export function createCaptureEvidence({ semanticLedgerPath, baselineCommit }) {
     });
     const semanticReframeBlocks = [];
     const nonInformationBlocks = [];
+    const exactRetainedBlockRecords = [];
+    const exactTargets = options.exactTargetRoute
+      ? targetEvidence.filter(({ route: targetRoute }) => targetRoute === options.exactTargetRoute)
+      : targetEvidence;
+    if (options.exactTargetRoute && exactTargets.length !== 1) {
+      throw new Error(`exact retention target is absent or duplicated: ${route} -> ${options.exactTargetRoute}`);
+    }
     let exactRetainedBlocks = 0;
     for (const { hash, count } of blockInventory(before.blockHashes).records) {
       let remaining = count;
-      for (const { route: targetRoute } of targetEvidence) {
+      for (const { route: targetRoute } of exactTargets) {
         const target = available.get(targetRoute);
         const matched = Math.min(remaining, target.get(hash) ?? 0);
         exactRetainedBlocks += matched;
         remaining -= matched;
-        if (matched) target.set(hash, (target.get(hash) ?? 0) - matched);
+        if (matched) {
+          target.set(hash, (target.get(hash) ?? 0) - matched);
+          exactRetainedBlockRecords.push({ hash, count: matched, targetRoute });
+        }
         if (!remaining) break;
       }
       if (!remaining) continue;
@@ -162,7 +172,7 @@ export function createCaptureEvidence({ semanticLedgerPath, baselineCommit }) {
       const targetRoute = semantic?.replacementRoute
         ? getAcceptedRoute(semantic.replacementRoute) : navigation?.destinationRoute;
       const target = targetEvidence.find(({ route: candidate }) => candidate === targetRoute);
-      if (!semantic || !target) {
+      if (!semantic || !semantic.sourceRoutes.includes(route) || !target) {
         throw new Error(`no concrete retention resolution is declared for ${route}#${hash}`);
       }
       if (semantic.classification === NON_INFORMATION_CLASS) {
@@ -176,7 +186,8 @@ export function createCaptureEvidence({ semanticLedgerPath, baselineCommit }) {
           throw new Error(`declared destination conflicts with baseline link evidence: ${route}#${hash}`);
         }
         nonInformationBlocks.push({
-          sourceBlockSha256: hash, sourceTag: semantic.sourceTag, sourceText: semantic.sourceText,
+          sourceRoute: route, sourceBlockSha256: hash,
+          sourceTag: semantic.sourceTag, sourceText: semantic.sourceText,
           occurrences: remaining, classification: semantic.classification,
           originalDestinationRoute: navigation.originalDestinationRoute,
           destinationRoute: navigation.destinationRoute, destinationPolicy: navigation.destinationPolicy,
@@ -187,8 +198,17 @@ export function createCaptureEvidence({ semanticLedgerPath, baselineCommit }) {
           supersessionReason: navigation.supersessionReason,
         });
       } else {
+        const replacementInventory = available.get(targetRoute);
+        if ((replacementInventory.get(semantic.replacementBlockSha256) ?? 0) < remaining) {
+          throw new Error(`semantic replacement multiplicity is insufficient: ${route}#${hash}`);
+        }
+        replacementInventory.set(
+          semantic.replacementBlockSha256,
+          replacementInventory.get(semantic.replacementBlockSha256) - remaining,
+        );
         semanticReframeBlocks.push({
-          sourceBlockSha256: hash, sourceTag: semantic.sourceTag, sourceText: semantic.sourceText,
+          sourceRoute: route, sourceBlockSha256: hash,
+          sourceTag: semantic.sourceTag, sourceText: semantic.sourceText,
           occurrences: remaining, replacementRoute: targetRoute,
           replacementBlockSha256: semantic.replacementBlockSha256,
           replacementTag: semantic.replacementTag, replacementText: semantic.replacementText,
@@ -205,7 +225,9 @@ export function createCaptureEvidence({ semanticLedgerPath, baselineCommit }) {
       policy: 'explicit-route-block-retention-v1',
       baselineBlockCount: before.blockCount,
       baselineBlockInventorySha256: blockInventory(before.blockHashes).sha256,
-      targetEvidence, exactRetainedBlocks, semanticReframeBlockCount, semanticReframeBlocks,
+      targetEvidence, exactRetainedBlocks,
+      ...(options.includeAllocation ? { exactRetainedBlockRecords } : {}),
+      semanticReframeBlockCount, semanticReframeBlocks,
       semanticReframeBlocksSha256: semanticBlocksDigest(semanticReframeBlocks),
       nonInformationBlockCount, nonInformationBlocks,
       nonInformationBlocksSha256: nonInformationBlocksDigest(nonInformationBlocks),

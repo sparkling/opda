@@ -39,6 +39,7 @@ export function retentionReceiptFailures(record, classifiedByRoute, options = {}
   const baselineBlockInventorySha256 = options.baselineBlockInventorySha256
     ?? record.equivalenceReceipt?.baselineBlockInventorySha256;
   const label = options.label ?? record.baselineRoute;
+  const sourceRoute = options.sourceRoute ?? record.baselineRoute;
   if (!receipt || receipt.policy !== policy || receipt.baselineBlockCount !== baselineBlockCount
     || receipt.baselineBlockInventorySha256 !== baselineBlockInventorySha256
     || !Array.isArray(receipt.targetEvidence) || !receipt.targetEvidence.length
@@ -64,9 +65,10 @@ export function retentionReceiptFailures(record, classifiedByRoute, options = {}
   const resolutions = new Set();
   let semanticCount = 0;
   for (const entry of receipt.semanticReframeBlocks) {
-    const key = `${entry?.sourceBlockSha256}\0${entry?.replacementRoute}\0${entry?.replacementBlockSha256}`;
+    const key = `${entry?.sourceRoute}\0${entry?.sourceBlockSha256}\0${entry?.replacementRoute}\0${entry?.replacementBlockSha256}`;
     const target = classifiedByRoute.get(entry?.replacementRoute);
-    if (!HASH.test(entry?.sourceBlockSha256 ?? '') || !HASH.test(entry?.replacementBlockSha256 ?? '')
+    if (entry?.sourceRoute !== sourceRoute
+      || !HASH.test(entry?.sourceBlockSha256 ?? '') || !HASH.test(entry?.replacementBlockSha256 ?? '')
       || !Number.isSafeInteger(entry?.occurrences) || entry.occurrences < 1
       || resolutions.has(key) || !targetRoutes.has(entry.replacementRoute)
       || entry.replacementContentSha256 !== target?.acceptedContentSha256
@@ -91,7 +93,8 @@ export function retentionReceiptFailures(record, classifiedByRoute, options = {}
   let nonInformationCount = 0;
   for (const entry of receipt.nonInformationBlocks) {
     const target = classifiedByRoute.get(entry?.destinationRoute);
-    if (!HASH.test(entry?.sourceBlockSha256 ?? '') || !Number.isSafeInteger(entry?.occurrences)
+    if (entry?.sourceRoute !== sourceRoute
+      || !HASH.test(entry?.sourceBlockSha256 ?? '') || !Number.isSafeInteger(entry?.occurrences)
       || entry.occurrences < 1 || nonInformation.has(entry.sourceBlockSha256)
       || entry.classification !== NON_INFORMATION_CLASS || !target
       || entry.destinationContentSha256 !== target.acceptedContentSha256

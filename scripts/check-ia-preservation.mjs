@@ -15,7 +15,7 @@ import {
 } from './lib/ia-retention-validator.mjs';
 import {
   loadPdtf1SourceRouteManifest, loadPriorIaFamilyManifest, loadPriorIaRouteManifest,
-  manifestRetainedRecordMatches,
+  manifestRetainedBaselineProjectionMatches,
   priorFamilyMatches, validatePriorFamilyReceipt, validatePriorManifestReceipt,
   verifyBaselineRootCommit,
 } from './lib/ia-prior-manifest-contract.mjs';
@@ -174,7 +174,7 @@ if (routeManifest) {
     priorByRoute = new Map((prior.routes ?? []).map((record) => [record.route, record]));
   } catch (error) { fail(`prior IA manifest Git evidence is unavailable: ${error.message}`); }
   for (const record of manifestRetained) {
-    if (!manifestRetainedRecordMatches(record, priorByRoute.get(record.baselineRoute))) {
+    if (!manifestRetainedBaselineProjectionMatches(record, priorByRoute.get(record.baselineRoute))) {
       fail(`baseline route lacks exact prior-manifest evidence: ${record.baselineRoute}`);
     }
   }
@@ -270,6 +270,7 @@ if (routeManifest) {
         policy: 'explicit-pdtf1-source-block-retention-v1',
         baselineBlockCount: source.equivalenceReceipt?.acceptedBlocks,
         baselineBlockInventorySha256: source.acceptedBlockInventorySha256,
+        sourceRoute: source.acceptedRoute,
         label: `PDTF 1.0 source ${source.acceptedRoute}`,
       }).forEach(fail);
     }

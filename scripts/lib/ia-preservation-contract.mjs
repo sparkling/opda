@@ -1,10 +1,8 @@
 import { existsSync, readFileSync, readdirSync, statSync } from 'node:fs';
 import path from 'node:path';
 import { parse } from 'parse5';
-import {
-  generatedFamily, nonInformationBlocksDigest, pdtf1SourceEvidenceMatches,
-  semanticBlocksDigest, sha256,
-} from './ia-preservation-primitives.mjs';
+import { generatedFamily, nonInformationBlocksDigest, pdtf1SourceEvidenceMatches,
+  semanticBlocksDigest, sha256 } from './ia-preservation-primitives.mjs';
 
 export {
   generatedFamily, nonInformationBlocksDigest, semanticBlocksDigest, sha256,
@@ -318,10 +316,6 @@ function routeSetDigest(values) {
   return sha256([...values].sort().join('\n'));
 }
 
-function recordEvidenceMatches(source, accepted) {
-  return pdtf1SourceEvidenceMatches(source, accepted);
-}
-
 /** Bind every zero-information `/manual/**` alias to the frozen pre-cut record. */
 export function composePdtf1RetiredAliases(sourceManifest, replacementRoute) {
   return acceptedSourceRecords(sourceManifest)
@@ -393,7 +387,12 @@ export function pdtf1MigrationReceipt({
     }
     accounted.add(targetRoute);
     if (replacement || isStable) {
-      if (!recordEvidenceMatches(sourceRecord, target)) {
+      const stableExact = isStable
+        && target.pdtf1SourceRetentionReceipt === undefined
+        && sourceRecord.acceptedContentSha256 === target.acceptedContentSha256
+        && sourceRecord.acceptedBlockInventorySha256 === target.acceptedBlockInventorySha256;
+      if ((isStable ? !stableExact || !pdtf1SourceEvidenceMatches(sourceRecord, target)
+        : !pdtf1SourceEvidenceMatches(sourceRecord, target))) {
         throw new Error(`PDTF 1.0 information or fragments changed without evidence: ${sourceRoute}`);
       }
       (replacement ? moved : stable).push({ source: sourceRecord, target });
@@ -422,6 +421,23 @@ export function pdtf1MigrationReceipt({
   const artefactIndexes = moved.filter(({ source: { acceptedRoute } }) => (
     routeWithin(acceptedRoute, '/ontology/artefacts')
   ));
+  const sourceReframes = moved.filter(({ target }) => target.pdtf1SourceRetentionReceipt);
+  const sourceReframeTotalBlockCount = sourceReframes.reduce((total, { target }) => (
+    total + target.pdtf1SourceRetentionReceipt.baselineBlockCount
+  ), 0);
+  const sourceReframeExactBlockCount = sourceReframes.reduce((total, { target }) => (
+    total + target.pdtf1SourceRetentionReceipt.exactRetainedBlocks
+  ), 0);
+  const sourceReframeSemanticBlockCount = sourceReframes.reduce((total, { target }) => (
+    total + target.pdtf1SourceRetentionReceipt.semanticReframeBlockCount
+  ), 0);
+  const sourceReframeNonInformationBlockCount = sourceReframes.reduce((total, { target }) => (
+    total + target.pdtf1SourceRetentionReceipt.nonInformationBlockCount
+  ), 0);
+  const sourceReframeRoutesSha256 = routeSetDigest(sourceReframes.map(({ source: before, target: after }) => (
+    [before.acceptedRoute, after.acceptedRoute,
+      before.acceptedContentSha256, after.acceptedContentSha256].join('\0')
+  )));
   const canonical = accepted.filter(({ acceptedRoute }) => routeWithin(acceptedRoute, migration.canonicalRoot));
   if (moved.length !== migration.movedCanonicalRouteCount
     || movedBaseline.length !== migration.movedBaselineRouteCount
@@ -430,6 +446,12 @@ export function pdtf1MigrationReceipt({
     || generatedTools.length !== migration.generatedToolRouteCount
     || artefactIndexes.length !== migration.ontologyArtefactHtmlRouteCount
     || canonical.length !== migration.canonicalFamilyRouteCount
+    || sourceReframes.length !== migration.sourceReframeRouteCount
+    || sourceReframeTotalBlockCount !== migration.sourceReframeTotalBlockCount
+    || sourceReframeExactBlockCount !== migration.sourceReframeExactBlockCount
+    || sourceReframeSemanticBlockCount !== migration.sourceReframeSemanticBlockCount
+    || sourceReframeNonInformationBlockCount !== migration.sourceReframeNonInformationBlockCount
+    || sourceReframeRoutesSha256 !== migration.sourceReframeRoutesSha256
     || JSON.stringify(familyCounts) !== JSON.stringify(migration.movedFamilyRouteCounts)
     || migration.redirects !== false) {
     throw new Error(`PDTF 1.0 migration counts differ from the reviewed cut: ${JSON.stringify({
@@ -455,6 +477,12 @@ export function pdtf1MigrationReceipt({
     generatedToolRouteCount: generatedTools.length,
     ontologyArtefactHtmlRouteCount: artefactIndexes.length,
     canonicalFamilyRouteCount: canonical.length,
+    sourceReframeRouteCount: sourceReframes.length,
+    sourceReframeTotalBlockCount,
+    sourceReframeExactBlockCount,
+    sourceReframeSemanticBlockCount,
+    sourceReframeNonInformationBlockCount,
+    sourceReframeRoutesSha256,
     postSourceAdditionRouteCount: postSourceAdditions.length,
     acceptedSiteRouteCount: accepted.length,
     movedRoutePairsSha256: routeSetDigest(moved.map(({ source: before, target: after }) => (

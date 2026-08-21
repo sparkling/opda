@@ -176,9 +176,9 @@ export function validatePriorManifestReceipt(receipt, records) {
   }
 }
 
-export function manifestRetainedRecordMatches(record, prior) {
+export function manifestRetainedBaselineProjectionMatches(record, prior) {
   const evidence = record.baselineEvidence;
-  const projectionMatches = priorRouteRecordDigest(prior) === evidence?.sourceRecordSha256
+  return priorRouteRecordDigest(prior) === evidence?.sourceRecordSha256
     && record.baselineRoute === prior?.route && record.baselineFile === prior?.file
     && evidence.sourceKind === prior?.kind && record.baselineCommit === prior?.baselineCommit
     && record.baselineGeneratedFamily === prior?.generatedFamily
@@ -189,14 +189,21 @@ export function manifestRetainedRecordMatches(record, prior) {
     && JSON.stringify(record.baselineFragments) === JSON.stringify(prior?.baselineFragments)
     && record.equivalenceReceipt?.baselineBlockInventorySha256
       === prior?.equivalenceReceipt?.baselineBlockInventorySha256;
-  if (!projectionMatches) return false;
+}
+
+/**
+ * Attest the frozen pre-migration source cut independently of any later move
+ * receipt. A final accepted receipt must never excuse drift in this source.
+ */
+export function manifestRetainedSourceRecordMatches(record, prior) {
+  if (!manifestRetainedBaselineProjectionMatches(record, prior)) return false;
+  const evidence = record.baselineEvidence;
   if (evidence.policy === 'prior-schema-v5-byte-identity-v1') {
     return record.acceptedRawSha256 === record.baselineRawSha256;
   }
   if (evidence.policy !== 'prior-schema-v5-information-identity-v1') return false;
-  const acceptedMatchesBaseline = record.acceptedContentSha256 === record.baselineContentSha256
+  return record.acceptedContentSha256 === record.baselineContentSha256
     && record.acceptedBlockInventorySha256 === prior.equivalenceReceipt.baselineBlockInventorySha256;
-  return acceptedMatchesBaseline || record.pdtf1SourceRetentionReceipt !== undefined;
 }
 
 function retainedFamiliesDigest(families) {
