@@ -335,9 +335,13 @@ const usedSemanticReframes = new Set([...routes, ...addedRoutes].flatMap((record
 const declaredSemanticReframes = new Set([...semanticReframes.values()].flatMap((entry) => (
   entry.sourceRoutes.map((sourceRoute) => `${sourceRoute}\0${entry.sourceBlockSha256}`)
 )));
-if (usedSemanticReframes.size !== declaredSemanticReframes.size
-  || [...declaredSemanticReframes].some((pair) => !usedSemanticReframes.has(pair))) {
-  throw new Error('semantic reframe ledger contains unused or unaccounted source blocks');
+const unusedSemanticReframes = [...declaredSemanticReframes]
+  .filter((pair) => !usedSemanticReframes.has(pair));
+const undeclaredSemanticReframes = [...usedSemanticReframes]
+  .filter((pair) => !declaredSemanticReframes.has(pair));
+if (unusedSemanticReframes.length || undeclaredSemanticReframes.length) {
+  const summarize = (pairs) => pairs.slice(0, 8).map((pair) => pair.replace('\0', '#')).join(', ');
+  throw new Error(`semantic reframe ledger mismatch; unused: ${summarize(unusedSemanticReframes) || 'none'}; undeclared: ${summarize(undeclaredSemanticReframes) || 'none'}`);
 }
 const routeManifest = {
   schemaVersion: 7,
