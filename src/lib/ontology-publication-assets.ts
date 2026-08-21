@@ -43,7 +43,11 @@ function familyFor(manifest: any, id: string): any {
     throw new Error('IA preservation manifest has an invalid family contract');
   }
   const family = manifest.families.find((candidate: any) => candidate?.id === id);
-  if (!family || family.policy !== 'byte-identical' || family.ciMode !== 'manifest-only-in-ci'
+  const retainedPolicy = family?.policy === 'byte-identical'
+    || (id === 'ontology-tools' && family?.policy === 'reframe-equivalent'
+      && family?.reframeReceipt?.policy === 'closed-file-reframe-v1'
+      && family.reframeReceipt.reframedFileCount === 4);
+  if (!family || !retainedPolicy || family.ciMode !== 'manifest-only-in-ci'
     || !Array.isArray(family.accepted?.records)) {
     throw new Error(`IA preservation manifest is missing retained family ${id}`);
   }

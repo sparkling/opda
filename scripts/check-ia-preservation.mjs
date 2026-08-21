@@ -6,17 +6,20 @@ import { fileURLToPath } from 'node:url';
 import {
   blockInventory, existingRetiredPdtf1Outputs, existingRetiredPropertyPackOutputs,
   fileInventory, filesUnder, fragmentContract,
-  informationContract, inventoryDigest, isRetiredPropertyPackRoute, linkedInformationBlocks,
-  nonInformationBlocksDigest,
+  informationContract, inventoryDigest, isRetiredPropertyPackRoute,
   parsePreservationArgs, pdtf1MigrationReceipt, propertyPackMigrationReceipt,
-  routeFromFile, semanticBlocksDigest, sha256,
+  routeFromFile, sha256,
 } from './lib/ia-preservation-contract.mjs';
+import {
+  baselineNavigationEvidenceFailures, retentionReceiptFailures,
+} from './lib/ia-retention-validator.mjs';
 import {
   loadPdtf1SourceRouteManifest, loadPriorIaFamilyManifest, loadPriorIaRouteManifest,
   manifestRetainedRecordMatches,
   priorFamilyMatches, validatePriorFamilyReceipt, validatePriorManifestReceipt,
   verifyBaselineRootCommit,
 } from './lib/ia-prior-manifest-contract.mjs';
+import { composePdtf1ToolReframeReceipt } from './lib/pdtf1-tool-reframes.mjs';
 import {
   IA_STATUS_REGISTRY_VERSION, PRESERVATION_LEDGER, ROUTE_DISPOSITION_LEDGER,
   getContentOwner, getRouteDisposition, getRouteStatus, validateIaContract,
@@ -24,6 +27,7 @@ import {
 import { PROPERTY_PACK_ROUTE_MIGRATION, getPropertyPackReplacementRoute } from '../src/lib/property-pack-routes.mjs';
 import {
   PDTF1_ROUTE_MIGRATION, isRetiredPdtf1DocumentationRoute,
+  isRetiredPdtf1ManualAlias, isStablePdtfIdentifierRoute,
 } from '../src/lib/pdtf1-routes.mjs';
 import { validateLeaseTermCaseCollisionReceipt } from '../src/lib/ontology-case-collision.mjs';
 import { getDeclaredRouteReplacement } from '../src/lib/site-route-migrations.mjs';
@@ -133,144 +137,6 @@ function verifyBaselineRoute(record, file) {
   if (fragments.fragmentSha256 !== record.baselineFragmentSha256
     || fragments.fragmentCount !== record.baselineFragmentCount) fail(`baseline fragment contract changed: ${record.baselineRoute}`);
 }
-const SEMANTIC_CLASSES = new Set([
-  'terminology-and-scope-reframe',
-  'authority-and-label-reframe',
-  'decision-status-update',
-  'scope-and-maturity-clarification',
-]);
-const NON_INFORMATION_CLASS = 'superseded-navigation-copy';
-const NAVIGATION_EVIDENCE = new Set(['containing-link', 'declared-original-destination']);
-const NAVIGATION_CANONICAL_EQUIVALENTS = Object.freeze({
-  '/strategy': ['/programme'],
-  '/model': ['/pdtf-1'],
-  '/implementation': ['/pdtf-1'],
-  '/library': ['/resources'],
-  '/engagement': ['/resources', '/spdtf-2/working-groups'],
-  '/v2': ['/spdtf-2/property-pack'],
-});
-function localRouteFromHref(href) {
-  if (typeof href !== 'string' || !href.startsWith('/')) return null;
-  const pathname = href.split(/[?#]/u, 1)[0];
-  return pathname.length > 1 ? pathname.replace(/\/+$/u, '') : '/';
-}
-function validNavigationDestination(entry) {
-  return (entry.destinationPolicy === 'same-retained-route'
-    && entry.destinationRoute === entry.originalDestinationRoute)
-    || (entry.destinationPolicy === 'canonical-equivalent'
-      && NAVIGATION_CANONICAL_EQUIVALENTS[entry.originalDestinationRoute]?.includes(entry.destinationRoute));
-}
-/**
- * A route receipt is the fail-closed answer to content moving during a
- * reframe. It only trusts declared routes and exact, committed content hashes;
- * it never searches the whole site for similar text. Non-exact wording must be
- * bound block-by-block to one concrete replacement block in the committed
- * semantic-reframe ledger.
- */
-function validateRetentionReceipt(record, classifiedByRoute) {
-  const receipt = record.retentionReceipt;
-  if (!receipt || receipt.policy !== 'explicit-route-block-retention-v1'
-    || receipt.baselineBlockCount !== record.equivalenceReceipt?.baselineBlocks
-    || !HASH.test(receipt.baselineBlockInventorySha256 ?? '')
-    || !Array.isArray(receipt.targetEvidence) || !receipt.targetEvidence.length
-    || !Array.isArray(receipt.semanticReframeBlocks)
-    || !Array.isArray(receipt.nonInformationBlocks)
-    || !Number.isSafeInteger(receipt.exactRetainedBlocks) || receipt.exactRetainedBlocks < 0
-    || !Number.isSafeInteger(receipt.semanticReframeBlockCount) || receipt.semanticReframeBlockCount < 0
-    || !Number.isSafeInteger(receipt.nonInformationBlockCount) || receipt.nonInformationBlockCount < 0
-    || !HASH.test(receipt.semanticReframeBlocksSha256 ?? '')
-    || !HASH.test(receipt.nonInformationBlocksSha256 ?? '')) {
-    fail(`route lacks an explicit block-retention receipt: ${record.baselineRoute}`);
-    return;
-  }
-  const targetRoutes = new Set();
-  for (const target of receipt.targetEvidence) {
-    const classified = classifiedByRoute.get(target?.route);
-    if (!classified || targetRoutes.has(target.route)
-      || !HASH.test(target.acceptedContentSha256 ?? '')
-      || !HASH.test(target.acceptedBlockInventorySha256 ?? '')
-      || target.acceptedContentSha256 !== classified.acceptedContentSha256
-      || target.acceptedBlockInventorySha256 !== classified.acceptedBlockInventorySha256) {
-      fail(`retention target evidence is invalid: ${record.baselineRoute} -> ${target?.route ?? '(missing route)'}`);
-      continue;
-    }
-    targetRoutes.add(target.route);
-  }
-  const resolutions = new Set();
-  let semanticCount = 0;
-  for (const entry of receipt.semanticReframeBlocks) {
-    const key = `${entry?.sourceBlockSha256}\0${entry?.replacementRoute}\0${entry?.replacementBlockSha256}`;
-    const target = classifiedByRoute.get(entry?.replacementRoute);
-    if (!HASH.test(entry?.sourceBlockSha256 ?? '') || !HASH.test(entry?.replacementBlockSha256 ?? '')
-      || !Number.isSafeInteger(entry?.occurrences) || entry.occurrences < 1
-      || resolutions.has(key) || !targetRoutes.has(entry.replacementRoute)
-      || entry.replacementContentSha256 !== target?.acceptedContentSha256
-      || !SEMANTIC_CLASSES.has(entry.classification)
-      || typeof entry.reviewNote !== 'string' || !entry.reviewNote.trim()
-      || typeof entry.sourceTag !== 'string' || typeof entry.replacementTag !== 'string'
-      || typeof entry.sourceText !== 'string' || typeof entry.replacementText !== 'string'
-      || sha256(`${entry.sourceTag}\0${entry.sourceText}`) !== entry.sourceBlockSha256
-      || sha256(`${entry.replacementTag}\0${entry.replacementText}`) !== entry.replacementBlockSha256
-      || !entry.reviewNote.includes(entry.sourceText)
-      || !entry.reviewNote.includes(entry.replacementText)) {
-      fail(`semantic reframe block is incomplete or unbound: ${record.baselineRoute}`);
-      continue;
-    }
-    resolutions.add(key);
-    semanticCount += entry.occurrences;
-  }
-  if (semanticCount !== receipt.semanticReframeBlockCount
-    || semanticBlocksDigest(receipt.semanticReframeBlocks) !== receipt.semanticReframeBlocksSha256) {
-    fail(`semantic reframe block receipt checksum is inconsistent: ${record.baselineRoute}`);
-  }
-  const nonInformation = new Set();
-  let nonInformationCount = 0;
-  for (const entry of receipt.nonInformationBlocks) {
-    const target = classifiedByRoute.get(entry?.destinationRoute);
-    if (!HASH.test(entry?.sourceBlockSha256 ?? '') || !Number.isSafeInteger(entry?.occurrences) || entry.occurrences < 1
-      || nonInformation.has(entry.sourceBlockSha256) || entry.classification !== NON_INFORMATION_CLASS
-      || !target || entry.destinationContentSha256 !== target.acceptedContentSha256
-      || typeof entry.sourceTag !== 'string' || typeof entry.sourceText !== 'string'
-      || sha256(`${entry.sourceTag}\0${entry.sourceText}`) !== entry.sourceBlockSha256
-      || !entry.originalDestinationRoute?.startsWith('/') || !entry.destinationRoute?.startsWith('/')
-      || !validNavigationDestination(entry) || !NAVIGATION_EVIDENCE.has(entry.sourceEvidence)
-      || (entry.sourceEvidence === 'containing-link'
-        ? localRouteFromHref(entry.baselineLinkHref) !== entry.originalDestinationRoute
-        : entry.baselineLinkHref !== null)
-      || typeof entry.supersessionReason !== 'string' || !entry.supersessionReason.includes(entry.sourceText)
-      || !entry.supersessionReason.includes(entry.originalDestinationRoute)
-      || (!entry.supersessionReason.includes(entry.destinationRoute)
-        && getDeclaredRouteReplacement(entry.originalDestinationRoute) !== entry.destinationRoute)) {
-      fail(`non-information supersession is incomplete or unbound: ${record.baselineRoute}`);
-      continue;
-    }
-    nonInformation.add(entry.sourceBlockSha256);
-    nonInformationCount += entry.occurrences;
-  }
-  if (nonInformationCount !== receipt.nonInformationBlockCount
-    || nonInformationBlocksDigest(receipt.nonInformationBlocks) !== receipt.nonInformationBlocksSha256) {
-    fail(`non-information supersession receipt checksum is inconsistent: ${record.baselineRoute}`);
-  }
-  if (receipt.exactRetainedBlocks + receipt.semanticReframeBlockCount + receipt.nonInformationBlockCount !== receipt.baselineBlockCount) {
-    fail(`baseline information blocks are not fully accounted for: ${record.baselineRoute}`);
-  }
-}
-function verifyBaselineNavigationEvidence(record, html) {
-  const sourceLinks = new Map();
-  for (const { hash, containingLink } of linkedInformationBlocks(html)) {
-    if (!sourceLinks.has(hash)) sourceLinks.set(hash, new Set());
-    sourceLinks.get(hash).add(containingLink || null);
-  }
-  for (const entry of record.retentionReceipt?.nonInformationBlocks ?? []) {
-    const hrefs = sourceLinks.get(entry.sourceBlockSha256) ?? new Set();
-    const actualHref = hrefs.values().next().value;
-    const supported = entry.sourceEvidence === 'containing-link'
-      ? hrefs.size === 1 && actualHref === entry.baselineLinkHref
-        && localRouteFromHref(actualHref) === entry.originalDestinationRoute
-      : hrefs.size === 1 && actualHref === null;
-    if (!supported) fail(`baseline navigation provenance changed or is ambiguous: ${record.baselineRoute}#${entry.sourceBlockSha256}`);
-  }
-}
 validateIaContract();
 if (ROUTE_DISPOSITION_LEDGER.some(({ disposition }) => disposition === 'retire')) fail('route disposition ledger contains a retire entry');
 const routeManifest = readJson(options.routeManifestPath ?? 'src/data/ia-route-baseline.json');
@@ -355,7 +221,7 @@ if (routeManifest) {
       || !receipt.reviewEvidence || !Number.isFinite(receipt.retentionRatio)
       || !HASH.test(receipt.baselineBlockInventorySha256 ?? '')
       || !HASH.test(receipt.acceptedBlockInventorySha256 ?? '')) fail(`route lacks an exact equivalence receipt: ${record.baselineRoute}`);
-    validateRetentionReceipt(record, classifiedByRoute);
+    retentionReceiptFailures(record, classifiedByRoute).forEach(fail);
     const acceptedFragments = new Set(record.acceptedFragments ?? []);
     for (const fragment of record.baselineFragments ?? []) {
       if (!acceptedFragments.has(fragment)) fail(`deep-linked fragment was not preserved: ${record.baselineRoute}#${fragment}`);
@@ -383,6 +249,35 @@ if (routeManifest) {
         fail('PDTF 1.0 migration receipt is inconsistent');
       }
     } catch (error) { fail(`PDTF 1.0 migration contract failed: ${error.message}`); }
+    const sourceReceiptTargets = new Set();
+    for (const source of [...pdtf1SourceManifest.routes, ...pdtf1SourceManifest.addedRoutes]) {
+      if (isRetiredPdtf1ManualAlias(source.acceptedRoute)) continue;
+      const targetRoute = isStablePdtfIdentifierRoute(source.acceptedRoute)
+        ? source.acceptedRoute : getDeclaredRouteReplacement(source.acceptedRoute);
+      if (!targetRoute) continue;
+      const target = classifiedByRoute.get(targetRoute);
+      const needsReceipt = source.acceptedContentSha256 !== target?.acceptedContentSha256
+        || source.acceptedBlockInventorySha256 !== target?.acceptedBlockInventorySha256;
+      if (!needsReceipt) {
+        if (target?.pdtf1SourceRetentionReceipt) {
+          fail(`PDTF 1.0 source receipt is unnecessary: ${source.acceptedRoute}`);
+        }
+        continue;
+      }
+      sourceReceiptTargets.add(targetRoute);
+      retentionReceiptFailures(target, classifiedByRoute, {
+        receipt: target?.pdtf1SourceRetentionReceipt,
+        policy: 'explicit-pdtf1-source-block-retention-v1',
+        baselineBlockCount: source.equivalenceReceipt?.acceptedBlocks,
+        baselineBlockInventorySha256: source.acceptedBlockInventorySha256,
+        label: `PDTF 1.0 source ${source.acceptedRoute}`,
+      }).forEach(fail);
+    }
+    for (const record of all) {
+      if (record.pdtf1SourceRetentionReceipt && !sourceReceiptTargets.has(record.acceptedRoute)) {
+        fail(`PDTF 1.0 source receipt is orphaned: ${record.acceptedRoute}`);
+      }
+    }
   }
   try {
     validateLeaseTermCaseCollisionReceipt(
@@ -442,9 +337,18 @@ if (routeManifest) {
         } else acceptedBlockHashes.set(record.acceptedRoute, new Set(verifyAcceptedRoute(record, current).blockHashes));
       }
       for (const record of baselineRecords) {
-        for (const semantic of record.retentionReceipt?.semanticReframeBlocks ?? []) {
+        for (const receipt of [record.retentionReceipt, record.pdtf1SourceRetentionReceipt]) {
+          for (const semantic of receipt?.semanticReframeBlocks ?? []) {
+            if (!acceptedBlockHashes.get(semantic.replacementRoute)?.has(semantic.replacementBlockSha256)) {
+              fail(`semantic replacement block is absent from accepted route: ${record.baselineRoute} -> ${semantic.replacementRoute}`);
+            }
+          }
+        }
+      }
+      for (const record of addedRecords) {
+        for (const semantic of record.pdtf1SourceRetentionReceipt?.semanticReframeBlocks ?? []) {
           if (!acceptedBlockHashes.get(semantic.replacementRoute)?.has(semantic.replacementBlockSha256)) {
-            fail(`semantic replacement block is absent from accepted route: ${record.baselineRoute} -> ${semantic.replacementRoute}`);
+            fail(`PDTF 1.0 source replacement block is absent: ${record.acceptedRoute} -> ${semantic.replacementRoute}`);
           }
         }
       }
@@ -462,7 +366,7 @@ if (routeManifest) {
       if (!existsSync(baselineFile)) fail(`baseline route is missing: ${record.baselineRoute}`);
       else {
         verifyBaselineRoute(record, baselineFile);
-        verifyBaselineNavigationEvidence(record, readFileSync(baselineFile, 'utf8'));
+        baselineNavigationEvidenceFailures(record, readFileSync(baselineFile, 'utf8')).forEach(fail);
       }
     }
     notes.push(`baseline routes: ${routeManifest.routeCount} before-state records verified`);
@@ -507,6 +411,15 @@ if (familyManifest) {
         || family.acceptedPath !== movedFamilyPath
         || family.assetClass !== (family.id === 'ontology-tools' ? 'tool-rendering' : 'ontology-serialization'))) {
       fail(`${family.id} does not declare its exact PDTF 1.0 asset move`);
+    }
+    if (hasPdtf1CutReceipt && family.id === 'ontology-tools') {
+      try {
+        const receipt = composePdtf1ToolReframeReceipt(family.baseline, family.accepted);
+        if (family.policy !== 'reframe-equivalent'
+          || JSON.stringify(receipt) !== JSON.stringify(family.reframeReceipt)) {
+          fail('ontology-tools reviewed file-reframe receipt is inconsistent');
+        }
+      } catch (error) { fail(error.message); }
     }
     if (family.policy === 'byte-identical' && family.baseline?.treeSha256 !== family.accepted?.treeSha256) {
       fail(`${family.id} violates byte-identical policy`);

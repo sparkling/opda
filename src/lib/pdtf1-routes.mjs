@@ -37,7 +37,8 @@ export const PDTF1_ROUTE_MIGRATION = Object.freeze({
   generatedToolRouteCount: 652,
   ontologyArtefactHtmlRouteCount: 1,
   canonicalFamilyRouteCount: 1264,
-  acceptedSiteRouteCount: 3273,
+  postSourceAdditionRouteCount: 1,
+  acceptedSiteRouteCount: 3274,
   redirects: false,
   stableIdentifierRoot: '/pdtf',
 });

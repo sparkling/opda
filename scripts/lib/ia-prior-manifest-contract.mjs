@@ -114,6 +114,13 @@ export function verifyBaselineRootCommit(root) {
   }
 }
 
+/** Verify the built source cut used when historical pages were manifest-retained. */
+export function verifyPdtf1SourceRootCommit(root) {
+  if (git(root, ['rev-parse', 'HEAD']) !== PDTF1_SOURCE_ROUTE_MANIFEST.acceptedCommit) {
+    throw new Error('PDTF 1.0 source root is not the frozen pre-migration accepted commit');
+  }
+}
+
 export function priorRouteRecordDigest(record) {
   return sha256(JSON.stringify(record));
 }
@@ -186,9 +193,10 @@ export function manifestRetainedRecordMatches(record, prior) {
   if (evidence.policy === 'prior-schema-v5-byte-identity-v1') {
     return record.acceptedRawSha256 === record.baselineRawSha256;
   }
-  return evidence.policy === 'prior-schema-v5-information-identity-v1'
-    && record.acceptedContentSha256 === record.baselineContentSha256
+  if (evidence.policy !== 'prior-schema-v5-information-identity-v1') return false;
+  const acceptedMatchesBaseline = record.acceptedContentSha256 === record.baselineContentSha256
     && record.acceptedBlockInventorySha256 === prior.equivalenceReceipt.baselineBlockInventorySha256;
+  return acceptedMatchesBaseline || record.pdtf1SourceRetentionReceipt !== undefined;
 }
 
 function retainedFamiliesDigest(families) {

@@ -1,7 +1,14 @@
-import { createHash } from 'node:crypto';
 import { existsSync, readFileSync, readdirSync, statSync } from 'node:fs';
 import path from 'node:path';
 import { parse } from 'parse5';
+import {
+  generatedFamily, nonInformationBlocksDigest, pdtf1SourceEvidenceMatches,
+  semanticBlocksDigest, sha256,
+} from './ia-preservation-primitives.mjs';
+
+export {
+  generatedFamily, nonInformationBlocksDigest, semanticBlocksDigest, sha256,
+} from './ia-preservation-primitives.mjs';
 
 const SHELL_IDS = new Set([
   'app', 'app-sidebar', 'global-nav-panel', 'global-nav-toggle', 'main-content',
@@ -16,10 +23,6 @@ const IGNORED_CLASSES = [
   'breadcrumbs', 'comments-section', 'heading-anchor', 'ia-authority',
   'page-nav', 'workspace-nav',
 ];
-
-export function sha256(value) {
-  return createHash('sha256').update(value).digest('hex');
-}
 
 export function parsePreservationArgs(args) {
   let strict = false;
@@ -52,24 +55,6 @@ export function parsePreservationArgs(args) {
 
 export function inventoryDigest(records) {
   return sha256(records.map((record) => `${record.path}\0${record.size}\0${record.sha256}`).join('\n'));
-}
-
-export function semanticBlocksDigest(blocks) {
-  return sha256(blocks.map((entry) => [
-    entry.sourceBlockSha256, entry.sourceTag, entry.sourceText, entry.occurrences,
-    entry.replacementRoute, entry.replacementBlockSha256, entry.replacementTag,
-    entry.replacementText, entry.replacementContentSha256, entry.classification,
-    entry.reviewNote,
-  ].join('\0')).join('\n'));
-}
-
-export function nonInformationBlocksDigest(blocks) {
-  return sha256(blocks.map((entry) => [
-    entry.sourceBlockSha256, entry.sourceTag, entry.sourceText, entry.occurrences,
-    entry.classification, entry.originalDestinationRoute, entry.destinationRoute,
-    entry.destinationPolicy, entry.sourceEvidence, entry.baselineLinkHref ?? '',
-    entry.destinationContentSha256, entry.supersessionReason,
-  ].join('\0')).join('\n'));
 }
 
 export function filesUnder(root, relative = '', { includeHidden = true } = {}) {
@@ -334,9 +319,7 @@ function routeSetDigest(values) {
 }
 
 function recordEvidenceMatches(source, accepted) {
-  return ['acceptedContentSha256', 'acceptedBlockInventorySha256', 'acceptedFragmentSha256',
-    'acceptedFragmentCount'].every((field) => source[field] === accepted[field])
-    && JSON.stringify(source.acceptedFragments) === JSON.stringify(accepted.acceptedFragments);
+  return pdtf1SourceEvidenceMatches(source, accepted);
 }
 
 /** Bind every zero-information `/manual/**` alias to the frozen pre-cut record. */
@@ -418,7 +401,12 @@ export function pdtf1MigrationReceipt({
       throw new Error(`undeclared non-PDTF route move: ${sourceRoute}`);
     }
   }
-  if (accounted.size !== accepted.length || retiredAliases.length !== migration.retiredAliasRouteCount) {
+  const postSourceAdditions = accepted.filter(({ acceptedRoute }) => !accounted.has(acceptedRoute));
+  if (postSourceAdditions.length !== migration.postSourceAdditionRouteCount
+    || postSourceAdditions.some(({ kind, introducedBy }) => (
+      kind !== 'new-authority-route' || typeof introducedBy !== 'string' || !introducedBy
+    ))
+    || retiredAliases.length !== migration.retiredAliasRouteCount) {
     throw new Error('PDTF 1.0 accepted or retired records are not completely accounted for');
   }
   const movedBaseline = moved.filter(({ source: record }) => sourceManifest.routes.includes(record));
@@ -444,7 +432,16 @@ export function pdtf1MigrationReceipt({
     || canonical.length !== migration.canonicalFamilyRouteCount
     || JSON.stringify(familyCounts) !== JSON.stringify(migration.movedFamilyRouteCounts)
     || migration.redirects !== false) {
-    throw new Error('PDTF 1.0 migration counts differ from the reviewed cut');
+    throw new Error(`PDTF 1.0 migration counts differ from the reviewed cut: ${JSON.stringify({
+      moved: moved.length,
+      movedBaseline: movedBaseline.length,
+      movedAdded: movedAdded.length,
+      stable: stable.length,
+      generatedTools: generatedTools.length,
+      artefactIndexes: artefactIndexes.length,
+      canonical: canonical.length,
+      familyCounts,
+    })}`);
   }
   return {
     policy: 'canonical-move-with-retired-aliases-v1',
@@ -458,6 +455,7 @@ export function pdtf1MigrationReceipt({
     generatedToolRouteCount: generatedTools.length,
     ontologyArtefactHtmlRouteCount: artefactIndexes.length,
     canonicalFamilyRouteCount: canonical.length,
+    postSourceAdditionRouteCount: postSourceAdditions.length,
     acceptedSiteRouteCount: accepted.length,
     movedRoutePairsSha256: routeSetDigest(moved.map(({ source: before, target: after }) => (
       `${before.acceptedRoute}\0${after.acceptedRoute}\0${before.acceptedFile}\0${after.acceptedFile}`
@@ -470,14 +468,4 @@ export function pdtf1MigrationReceipt({
     canonicalRoot: migration.canonicalRoot,
     stableIdentifierRoot: migration.stableIdentifierRoot,
   };
-}
-
-export function generatedFamily(route) {
-  const parts = route.split('/').filter(Boolean);
-  if (!parts.length) return 'root';
-  if (parts[0] === 'ontology' && parts[1] === 'tools') return 'ontology/tools';
-  if (parts.slice(0, 5).join('/') === 'pdtf-1/extracted-ontology/use-and-tooling/tools') {
-    return 'ontology/tools';
-  }
-  return parts[0];
 }

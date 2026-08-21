@@ -4,8 +4,13 @@ import test from 'node:test';
 
 import {
   composePdtf1RetiredAliases,
+  generatedFamily,
+  nonInformationBlocksDigest,
   pdtf1MigrationReceipt,
+  semanticBlocksDigest,
+  sha256,
 } from '../scripts/lib/ia-preservation-contract.mjs';
+import { loadPdtf1SourceRouteManifest } from '../scripts/lib/ia-prior-manifest-contract.mjs';
 import {
   PDTF1_ROUTE_MIGRATION,
   PDTF1_ROUTES,
@@ -21,9 +26,9 @@ import {
   getLegacyCommentKey,
 } from '../src/lib/site-route-migrations.mjs';
 
-const sourceManifest = JSON.parse(readFileSync(
-  new URL('../src/data/ia-route-baseline.json', import.meta.url), 'utf8',
-));
+const { manifest: sourceManifest } = loadPdtf1SourceRouteManifest(
+  new URL('..', import.meta.url).pathname,
+);
 
 test('PDTF 1.0 documentation routes move beneath their full reader hierarchy', () => {
   assert.deepEqual(PDTF1_ROUTE_MIGRATION, {
@@ -47,7 +52,8 @@ test('PDTF 1.0 documentation routes move beneath their full reader hierarchy', (
     generatedToolRouteCount: 652,
     ontologyArtefactHtmlRouteCount: 1,
     canonicalFamilyRouteCount: 1264,
-    acceptedSiteRouteCount: 3273,
+    postSourceAdditionRouteCount: 1,
+    acceptedSiteRouteCount: 3274,
     redirects: false,
     stableIdentifierRoot: '/pdtf',
   });
@@ -66,6 +72,7 @@ test('PDTF 1.0 documentation routes move beneath their full reader hierarchy', (
     assert.equal(getPdtf1ReplacementRoute(before), after);
     assert.equal(getPdtf1LegacyCommentKey(after), before);
   }
+  assert.equal(generatedFamily(`${PDTF1_ROUTES.use}/tools/widoco/index.html`), 'ontology/tools');
 });
 
 test('PDTF term IRIs and governance-owned decisions are not compatibility routes', () => {
@@ -129,7 +136,15 @@ test('the complete PDTF migration receipt is bijective and preserves information
   const records = sourceManifest.routes
     .filter(({ acceptedRoute }) => !isRetiredPdtf1ManualAlias(acceptedRoute))
     .map(project);
-  const addedRecords = sourceManifest.addedRoutes.map(project);
+  const addedRecords = [
+    ...sourceManifest.addedRoutes.map(project),
+    {
+      acceptedRoute: '/modelling/adr/adr-0076',
+      acceptedFile: 'modelling/adr/adr-0076.html',
+      kind: 'new-authority-route',
+      introducedBy: 'test-accepted-commit',
+    },
+  ];
   const retiredAliases = composePdtf1RetiredAliases(sourceManifest, getDeclaredRouteReplacement);
   const receipt = pdtf1MigrationReceipt({
     records,
@@ -151,7 +166,8 @@ test('the complete PDTF migration receipt is bijective and preserves information
     generatedToolRouteCount: 652,
     ontologyArtefactHtmlRouteCount: 1,
     canonicalFamilyRouteCount: 1264,
-    acceptedSiteRouteCount: 3273,
+    postSourceAdditionRouteCount: 1,
+    acceptedSiteRouteCount: 3274,
     movedRoutePairsSha256: '1b6e16602c4c42f28d7ef02a7cb7a9eabac95312982af9f7a5dbf39b5957f518',
     retiredAliasesSha256: '69937654bff444ca07418b3ba9fe7d08df4e1e58b014cf55aceff09729a2369b',
     stableIdentifierRoutesSha256: 'cf2e83c5290fe5b5b2fe2f5b25e31d2d8f53d8be90cd533e5e43de8ff30a88be',
@@ -170,6 +186,53 @@ test('the complete PDTF migration receipt is bijective and preserves information
     records: fragmentLoss, addedRecords, retiredAliases, migration: PDTF1_ROUTE_MIGRATION,
     replacementRoute: getDeclaredRouteReplacement, sourceManifest,
   }), /information or fragments changed/u);
+
+  const sourceBakeOff = [...sourceManifest.routes, ...sourceManifest.addedRoutes]
+    .find(({ acceptedRoute }) => acceptedRoute === '/ontology/bake-off');
+  const forgedExact = structuredClone(records);
+  const forgedTarget = forgedExact.find(({ acceptedRoute }) => (
+    acceptedRoute === getDeclaredRouteReplacement(sourceBakeOff.acceptedRoute)
+  ));
+  forgedTarget.acceptedContentSha256 = '1'.repeat(64);
+  forgedTarget.acceptedBlockInventorySha256 = '2'.repeat(64);
+  forgedTarget.pdtf1SourceRetentionReceipt = {
+    policy: 'explicit-pdtf1-source-block-retention-v1',
+    sourceRoute: sourceBakeOff.acceptedRoute,
+    sourceFile: sourceBakeOff.acceptedFile,
+    sourceRecordSha256: sha256(JSON.stringify(sourceBakeOff)),
+    sourceContentSha256: sourceBakeOff.acceptedContentSha256,
+    sourceBlockInventorySha256: sourceBakeOff.acceptedBlockInventorySha256,
+    sourceFragmentSha256: sourceBakeOff.acceptedFragmentSha256,
+    sourceFragmentCount: sourceBakeOff.acceptedFragmentCount,
+    sourceFragments: sourceBakeOff.acceptedFragments,
+    acceptedRoute: forgedTarget.acceptedRoute,
+    baselineBlockCount: sourceBakeOff.equivalenceReceipt.acceptedBlocks,
+    baselineBlockInventorySha256: sourceBakeOff.acceptedBlockInventorySha256,
+    targetEvidence: [{
+      route: forgedTarget.acceptedRoute,
+      acceptedContentSha256: forgedTarget.acceptedContentSha256,
+      acceptedBlockInventorySha256: forgedTarget.acceptedBlockInventorySha256,
+    }],
+    exactRetainedBlocks: sourceBakeOff.equivalenceReceipt.acceptedBlocks,
+    semanticReframeBlockCount: 0,
+    semanticReframeBlocks: [],
+    semanticReframeBlocksSha256: semanticBlocksDigest([]),
+    nonInformationBlockCount: 0,
+    nonInformationBlocks: [],
+    nonInformationBlocksSha256: nonInformationBlocksDigest([]),
+  };
+  assert.throws(() => pdtf1MigrationReceipt({
+    records: forgedExact, addedRecords, retiredAliases, migration: PDTF1_ROUTE_MIGRATION,
+    replacementRoute: getDeclaredRouteReplacement, sourceManifest,
+  }), /information or fragments changed/u);
+
+  const forgedStable = structuredClone(records);
+  const stableTarget = forgedStable.find(({ acceptedRoute }) => acceptedRoute === '/pdtf/Property');
+  stableTarget.pdtf1SourceRetentionReceipt = { policy: 'forged' };
+  assert.throws(() => pdtf1MigrationReceipt({
+    records: forgedStable, addedRecords, retiredAliases, migration: PDTF1_ROUTE_MIGRATION,
+    replacementRoute: getDeclaredRouteReplacement, sourceManifest,
+  }), /information or fragments changed/u);
   assert.throws(() => pdtf1MigrationReceipt({
     records, addedRecords, retiredAliases: retiredAliases.slice(1), migration: PDTF1_ROUTE_MIGRATION,
     replacementRoute: getDeclaredRouteReplacement, sourceManifest,
@@ -184,4 +247,17 @@ test('composed comment identities retain Property Pack and PDTF threads', () => 
   const comments = readFileSync(new URL('../src/components/Comments.astro', import.meta.url), 'utf8');
   assert.match(comments, /getLegacyCommentKey/u);
   assert.doesNotMatch(comments, /getPropertyPackLegacyCommentKey/u);
+});
+
+test('preservation capture reads manifest-retained pages from the frozen pre-migration cut', () => {
+  const capture = readFileSync(new URL('../scripts/capture-ia-route-baseline.mjs', import.meta.url), 'utf8');
+  assert.match(capture, /args\.get\('--source-root'\)/u);
+  assert.match(capture, /verifyPdtf1SourceRootCommit\(sourceRoot\)/u);
+  assert.match(capture, /manifestRetainedRecordMatches\(sourceRecord, priorRecord\)/u);
+  assert.match(capture, /readFileSync\(sourcePath, 'utf8'\)/u);
+  assert.doesNotMatch(
+    capture,
+    /const beforeHtml = manifestRetained \? readFileSync\(acceptedPath/u,
+    'current accepted pages must never masquerade as frozen pre-migration evidence',
+  );
 });

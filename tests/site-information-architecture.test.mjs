@@ -206,7 +206,7 @@ test('the migration ledger preserves every audited high-risk information family'
 test('the frozen preservation proof resolves content, ownership and exact family checksums', () => {
   assert.ok([6, 7].includes(routeBaseline.schemaVersion));
   assert.equal(routeBaseline.routeCount, routeBaseline.schemaVersion === 7 ? 3209 : 3436);
-  assert.equal(routeBaseline.addedRouteCount, 64);
+  assert.equal(routeBaseline.addedRouteCount, routeBaseline.schemaVersion === 7 ? 65 : 64);
   if (routeBaseline.schemaVersion === 7) {
     assert.equal(routeBaseline.retiredRouteCount, 227);
     assert.equal(routeBaseline.retiredRoutes.length, 227);
@@ -219,11 +219,12 @@ test('the frozen preservation proof resolves content, ownership and exact family
       generatedTools: routeBaseline.pdtf1Migration.generatedToolRouteCount,
       artefactIndexes: routeBaseline.pdtf1Migration.ontologyArtefactHtmlRouteCount,
       canonicalFamily: routeBaseline.pdtf1Migration.canonicalFamilyRouteCount,
+      postSourceAdditions: routeBaseline.pdtf1Migration.postSourceAdditionRouteCount,
       acceptedSite: routeBaseline.pdtf1Migration.acceptedSiteRouteCount,
     }, {
       moved: 1262, movedBaseline: 1255, movedAdded: 7, retired: 227,
       stableIdentifiers: 1090, generatedTools: 652, artefactIndexes: 1,
-      canonicalFamily: 1264, acceptedSite: 3273,
+      canonicalFamily: 1264, postSourceAdditions: 1, acceptedSite: 3274,
     });
   }
   assert.equal(routeBaseline.routes.length, routeBaseline.routeCount);
