@@ -248,6 +248,22 @@ test('category pages remain links beside independent disclosure controls', async
   clean();
 });
 
+test('dark active category renders one amber stripe', async ({ page }) => {
+  const clean = watchRuntime(page);
+  await page.setViewportSize({ width: 1440, height: 1000 });
+  await visit(page, '/spdtf-2/working-groups');
+  await page.locator('#theme-toggle').click();
+  await expect(page.locator('html')).toHaveAttribute('data-theme', 'dark');
+
+  const row = page.locator('.nav-group-row.is-active-page');
+  const link = row.locator('a.active');
+  await expect(row).toBeVisible();
+  await expect(link).toBeVisible();
+  expect(await row.evaluate((element) => getComputedStyle(element).boxShadow)).not.toBe('none');
+  expect(await link.evaluate((element) => getComputedStyle(element).boxShadow)).toBe('none');
+  clean();
+});
+
 test('Property Pack definition cards link to their canonical views', async ({ page }) => {
   const clean = watchRuntime(page);
   await visit(page, '/spdtf-2/property-pack/definition-and-scope');

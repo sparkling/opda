@@ -436,6 +436,11 @@
 :root[data-theme="dark"] .app-sidebar .tree-folder.is-active-page > .tree-folder-row {
   background: var(--color-surface-dark-tint);
 }
+:root[data-theme="dark"] .app-sidebar .nav-group-row.is-active-page > a.active,
+:root[data-theme="dark"] .app-sidebar .tree-folder.is-active-page > .tree-folder-row > a.active {
+  background: transparent;
+  box-shadow: none;
+}
 
 .app-main {
   min-width: 0;
