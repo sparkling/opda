@@ -55,7 +55,7 @@ const card = (min: string | null, max: string | null) =>
 {prop.constraints.length > 0 && (
   <section class="term-section">
     <h2>Constraining SHACL shapes <span class="muted">· {prop.constraints.length}</span></h2>
-    <div class="table-wrap" role="region" aria-label="Constraining SHACL shapes table" tabindex="0">
+    <div class="table-wrap">
       <table>
         <thead><tr><th>Shape</th><th>Type</th><th>Card.</th><th>Severity</th><th>Message</th></tr></thead>
         <tbody>
@@ -113,7 +113,9 @@ const card = (min: string | null, max: string | null) =>
     color: var(--color-text-muted);
   }
   .term-dl dd { margin: 0; color: var(--color-text); }
-  .table-wrap { overflow-x: auto; margin: var(--space-3) 0; }
+  .table-wrap { overflow-x: visible; margin: var(--space-3) 0; }
+  .table-wrap table { width: 100%; max-width: 100%; min-width: 0; table-layout: fixed; }
+  .table-wrap :is(th, td) { overflow-wrap: anywhere; word-break: normal; white-space: normal; }
   .muted { color: var(--color-text-muted); }
   .chip-list { list-style: none; padding: 0; margin: 0; display: flex; flex-wrap: wrap; gap: var(--space-2); }
   .chip-list code {

@@ -327,41 +327,41 @@ test('mobile shell has no body overflow', async ({ page }) => {
   clean();
 });
 
-test('wide technical tables use a labelled keyboard overflow region', async ({ page }) => {
+test('wide technical tables wrap inside the mobile content track', async ({ page }) => {
   const clean = watchRuntime(page);
   await page.setViewportSize({ width: 320, height: 900 });
   await visit(page, `${PDTF1_ROUTES.terms}/classes`);
-  const region = page.locator('.responsive-table').first();
-  const viewport = region.locator('.responsive-table__viewport');
-  await expect(region).toBeVisible();
-  await expect(region.locator('.responsive-table__label')).toContainText('Scroll horizontally');
-  await expect(viewport).toHaveAttribute('role', 'region');
-  await expect(viewport).toHaveAttribute('tabindex', '0');
+  const table = page.locator('main table').first();
+  await expect(table).toBeVisible();
+  await expect(table.locator('th').first()).toHaveCSS('white-space', 'normal');
+  const dimensions = await table.evaluate((node) => ({
+    table: node.getBoundingClientRect().width,
+    parent: node.parentElement?.getBoundingClientRect().width || 0,
+  }));
+  expect(dimensions.table).toBeLessThanOrEqual(dimensions.parent + 1);
   await assertNoBodyOverflow(page);
   clean();
 });
 
-test('schema tables stay readable inside their mobile overflow region', async ({ page }) => {
+test('schema tables wrap instead of creating a mobile horizontal scrollbar', async ({ page }) => {
   const clean = watchRuntime(page);
   for (const width of [320, 390]) {
     await page.setViewportSize({ width, height: 900 });
     await visit(page, `${PDTF1_ROUTES.original}/schema/legal-estate/ownership/leasehold/lease-legal/building-safety`);
 
-    const region = page.locator('.responsive-table:has(table.db-table)').first();
-    const viewport = region.locator('.responsive-table__viewport');
+    const viewport = page.locator('.db-table-wrap').first();
     const table = viewport.locator('table.db-table').first();
-    await expect(table).toHaveCSS('min-width', '960px');
-    await expect(viewport).toHaveAttribute('role', 'region');
-    await expect(viewport).toHaveAttribute('tabindex', '0');
-    await expect(region.locator('.responsive-table__hint')).toContainText('Scroll horizontally');
+    await expect(table).toHaveCSS('min-width', '0px');
+    await expect(table).toHaveCSS('table-layout', 'fixed');
+    await expect(table.locator('th').first()).toHaveCSS('white-space', 'normal');
 
     const dimensions = await viewport.evaluate((node) => ({
       viewport: node.clientWidth,
       scroll: node.scrollWidth,
       table: node.querySelector('table')?.getBoundingClientRect().width || 0,
     }));
-    expect(dimensions.scroll).toBeGreaterThan(dimensions.viewport);
-    expect(dimensions.table).toBeGreaterThanOrEqual(960);
+    expect(dimensions.scroll).toBeLessThanOrEqual(dimensions.viewport + 1);
+    expect(dimensions.table).toBeLessThanOrEqual(dimensions.viewport + 1);
     await assertNoBodyOverflow(page);
   }
   clean();

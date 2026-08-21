@@ -480,20 +480,6 @@ test('PDTF alias search labels historical and continuation results with authorit
   await expect(results.locator('dt', { hasText: 'Authority' }).first()).toBeVisible();
   clean();
 });
-
-test('each wide standards table gains one conditional keyboard scroll region', async ({ page }) => {
-  const clean = watchRuntime(page);
-  await visit(page, '/spdtf-2/ontologies/standards');
-  await expect(page.locator('.responsive-table .responsive-table')).toHaveCount(0);
-  const viewports = page.locator('.responsive-table__viewport');
-  await expect(viewports).toHaveCount(3);
-  for (const viewport of await viewports.all()) {
-    const overflow = await viewport.evaluate((node) => node.scrollWidth > node.clientWidth + 1);
-    await expect(viewport).toHaveAttribute('tabindex', overflow ? '0' : '-1');
-  }
-  clean();
-});
-
 test('Property Pack source catalogue retains its 451-item interaction', async ({ page }) => {
   const clean = watchRuntime(page);
   await visit(page, '/spdtf-2/property-pack/definition-and-scope');

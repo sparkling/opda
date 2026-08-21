@@ -90,7 +90,7 @@ const crossTierLinks: TierEntry[] = [
   {entityData.relationships.length > 0 && (
     <section class="entity-section">
       <h2 class="entity-section__heading">Relationships</h2>
-      <div class="attribute-table-wrap" role="region" aria-label="Relationships table" tabindex="0">
+      <div class="attribute-table-wrap">
         <table class="attribute-table">
           <thead>
             <tr>
@@ -209,34 +209,41 @@ const crossTierLinks: TierEntry[] = [
 
   /* Inline relationship table — reuse attribute-table styles from AttributeTable.astro */
   .attribute-table-wrap {
-    overflow-x: auto;
+    overflow-x: visible;
     margin: var(--space-4) 0;
   }
 
   .attribute-table {
     width: 100%;
+    max-width: 100%;
+    min-width: 0;
+    table-layout: fixed;
     border-collapse: collapse;
     font: 400 var(--text-sm) / var(--leading-normal) var(--font-sans);
     color: var(--color-text);
   }
 
   .attribute-table th {
-    background: var(--color-surface-tint);
+    background: var(--color-table-header-surface);
     font-weight: 600;
     font-size: var(--text-xs);
     letter-spacing: var(--tracking-meta);
     text-transform: uppercase;
-    color: var(--color-text-muted);
+    color: var(--color-table-header-text);
     padding: var(--space-2) var(--space-3);
     border-bottom: 1px solid var(--color-border-strong);
     text-align: left;
-    white-space: nowrap;
+    overflow-wrap: anywhere;
+    white-space: normal;
   }
 
   .attribute-table td {
     padding: var(--space-2) var(--space-3);
     border-bottom: 1px solid var(--color-border);
     vertical-align: top;
+    overflow-wrap: anywhere;
+    word-break: normal;
+    white-space: normal;
   }
 
   .attribute-table code {

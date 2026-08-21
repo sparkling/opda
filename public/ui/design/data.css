@@ -303,9 +303,7 @@
 .db-summary strong { color: var(--color-text-strong); font-weight: 600; }
 .db-table-wrap {
   max-width: 100%;
-  overflow-x: auto;
-  overscroll-behavior-inline: contain;
-  scrollbar-gutter: stable;
+  overflow-x: visible;
   background: var(--color-surface);
   border: 1px solid var(--color-border);
   border-bottom: 0;
@@ -315,21 +313,22 @@
 .prose .db-table,
 .db-table {
   width: 100%;
+  max-width: 100%;
+  min-width: 0;
+  table-layout: fixed;
   border-collapse: separate;
   border-spacing: 0;
   font-size: var(--text-sm);
   margin: 0;
 }
-.db-table.db-table--fixed { table-layout: fixed; }
-.db-table.db-table--fixed td,
-.db-table.db-table--fixed th { overflow-wrap: anywhere; word-break: break-word; }
+.db-table :is(th, td) {
+  min-width: 0;
+  overflow-wrap: anywhere;
+  word-break: normal;
+  white-space: normal;
+}
 .db-table.db-table--fixed td code {
   display: inline-block; max-width: 100%; overflow-wrap: anywhere; word-break: normal; white-space: normal;
-}
-@media (max-width: 47.99rem) {
-  .prose .db-table-wrap.full-bleed > .db-table {
-    min-width: 60rem;
-  }
 }
 .db-table th.align-right,  .db-table td.align-right  { text-align: right; }
 .db-table th.align-center, .db-table td.align-center { text-align: center; }
@@ -344,9 +343,9 @@
   color: var(--color-text-muted);
   font-size: var(--text-xs);
   font-variant-numeric: tabular-nums;
-  white-space: nowrap;
+  white-space: normal;
 }
-.db-table .db-cell--truncate { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.db-table .db-cell--truncate { overflow: visible; text-overflow: clip; white-space: normal; }
 
 .db-table thead th {
   position: sticky; top: 0; z-index: 1;
@@ -356,13 +355,14 @@
   letter-spacing: 0;
   text-align: left;
   padding: 0.55rem 0.85rem;
-  white-space: nowrap;
+  white-space: normal;
 }
 .db-table thead th.sortable { padding: 0; user-select: none; }
 .db-sort-button {
   width: 100%;
   min-height: var(--target-min);
   display: inline-flex;
+  flex-wrap: wrap;
   align-items: center;
   justify-content: space-between;
   gap: var(--space-2);

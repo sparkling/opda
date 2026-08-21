@@ -121,7 +121,7 @@ or status meaning alone. Dark ink on yellow is approximately 9.3:1.
 
 | Role | Light | Dark |
 |---|---:|---:|
-| Column header | `#6C5BD4` | `#6C5BD4` |
+| Column header | `#2C273B` | `#3A3550` |
 | First body column | `#F4F0E4` | `#302C26` |
 | Zebra row, columns 2+ | `#F9F9F9` | `#231F2F` |
 
@@ -129,8 +129,8 @@ First-column cells use regular weight. These surfaces are structural roles rathe
 than status colours, and their borders and table semantics retain the distinction
 when custom colours are unavailable.
 
-Column headers use white on the existing data-violet (`5.14:1`), avoiding a stark
-near-black block while retaining AA contrast for text of every supported size.
+Light-theme column headers use white on deep brand ink (`14.38:1`); dark mode
+uses the corresponding dark surface tint.
 
 ### Links and focus
 
@@ -239,11 +239,13 @@ Below 1200px the on-page rail becomes an in-content disclosure. Below 960px the
 left navigation is an off-canvas dialog with focus containment, Escape and focus
 return. At 640px cards, toolbars and component state boards become one column.
 
-Genuinely two-dimensional tables use a labelled horizontal overflow region; primary
-controls and row identity stay visible. The region label comes from the table caption
-or nearest section heading, includes a visible horizontal-scroll hint only while the
-table overflows, and makes the viewport keyboard-focusable only in that state. Pages
-must reflow at 320px and 400% zoom without page-level horizontal scrolling.
+Tables fit the available content track rather than creating a horizontal scrollbar.
+Column headings and body cells wrap normally; long identifiers, paths, IRIs and hashes
+use `overflow-wrap: anywhere`. Visible caption bars are omitted; a semantic caption may
+remain visually hidden for assistive technology while the nearest section heading gives
+visible context. Tables retain scoped headers, row identity and sorting semantics at every
+width. Pages must reflow at 320px and 400% zoom without page-level or table-level
+horizontal scrolling.
 
 At 1376px (86rem) and below, the six-destination global site navigation is a
 non-modal disclosure anchored to the 64px header. Above that boundary every primary

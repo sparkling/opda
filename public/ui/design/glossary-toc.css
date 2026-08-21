@@ -23,6 +23,9 @@
 }
 .glossary-table {
   width: 100%;
+  max-width: 100%;
+  min-width: 0;
+  table-layout: fixed;
   border-collapse: separate;
   border-spacing: 0;
   margin: var(--space-5) 0;
@@ -38,6 +41,9 @@
   padding: var(--space-3) var(--space-4);
   border-bottom: 1px solid var(--color-border);
   vertical-align: top;
+  overflow-wrap: anywhere;
+  word-break: normal;
+  white-space: normal;
 }
 .glossary-table tbody tr:last-child td { border-bottom: 0; }
 .glossary-table th {
@@ -57,7 +63,7 @@
   border-inline-end: 1px solid var(--color-border-strong);
   font: 400 var(--text-sm) / 1.4 var(--font-mono);
   color: var(--color-link);
-  white-space: nowrap;
+  white-space: normal;
 }
 .glossary-table tr.is-hidden { display: none; }
 

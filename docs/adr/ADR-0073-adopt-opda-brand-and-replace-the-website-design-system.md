@@ -5,7 +5,7 @@ updated: 2026-08-21
 tags: [design-system, brand, website, accessibility, css, governance, presentation]
 supersedes: [ADR-0025]
 depends-on: [ADR-0064]
-implements: [DESIGN.md, public/ui, src/layouts/Layout.astro, src/layouts/PublicWorkingGroupLayout.astro, src/components/Header.astro, src/pages/index.astro, src/pages/home.astro, src/pages/design-system.astro, src/styles/v2.css, src/styles/presentations, docs/design-system-site, playwright.config.mjs, tests/e2e, scripts/crawl-routes.mjs, scripts/check-schema-reproducibility.mjs, .github/workflows/deploy-aws.yml]
+implements: [DESIGN.md, public/ui, src/layouts/Layout.astro, src/layouts/PublicWorkingGroupLayout.astro, src/components/Header.astro, src/pages/index.astro, src/pages/home.astro, src/pages/design-system.astro, src/styles/property-pack.css, src/styles/presentations, docs/design-system-site, playwright.config.mjs, tests/e2e, scripts/crawl-routes.mjs, scripts/check-schema-reproducibility.mjs, .github/workflows/deploy-aws.yml]
 ---
 
 # Adopt the OPDA brand and replace the website design system
@@ -88,8 +88,12 @@ rendered-page review: lists receive tokenised separation above and below, while
 column headers, first-column body cells and zebra rows use three distinct semantic
 surfaces in both colour themes. Every first-column body cell uses regular weight on a
 quiet warm-neutral tint; neutral zebra striping begins at column two. The column
-header uses the existing `color-data-1` violet with white text rather than a
-near-black or newly invented surface; dark mode uses the same data-component role.
+header uses deep brand ink with white text in light mode and the corresponding
+dark surface tint in dark mode. The responsive table contract was also changed
+from intrinsic-width scrolling to wrap-first columns.
+Shared tables now fit their content track, wrap ordinary and technical cell content,
+and do not add focusable horizontal-scroll viewports. Visible caption bars are
+removed while semantic captions remain visually hidden for assistive technology.
 
 ### Brand conflict resolution
 
@@ -129,9 +133,9 @@ revisited with tests; it is not a claim that the design system cannot change.
 All interactive targets are at least 44 by 44 CSS pixels. Focus is visible and is
 not encoded by yellow alone. Status uses text and, where helpful, icon or pattern in
 addition to colour. Normal text and controls meet AA contrast. Pages reflow at
-320 CSS pixels and 400% zoom; tables provide labelled overflow when genuinely
-two-dimensional. Motion has a no-motion equivalent. Keyboard, forced-colour and
-screen-reader behaviour are release gates, not recommendations.
+320 CSS pixels and 400% zoom; table columns wrap within the content track without
+horizontal scrolling. Motion has a no-motion equivalent. Keyboard, forced-colour
+and screen-reader behaviour are release gates, not recommendations.
 
 ### Scope and publication boundary
 
@@ -171,7 +175,7 @@ application or mutation of any other production site.
 
 - Contract tests verify official asset geometry, supplied palette values, derived
   token roles, presentation coverage and removal of obsolete lock language.
-- `make test` passes all 117 JavaScript contract and behaviour tests.
+- `make test` passes the JavaScript contract and behaviour suite.
 - The CI-equivalent `make build-data` emits 2,554 pages successfully.
 - The emitted-site crawl resolves all internal application assets and navigation
   across 3,435 HTML documents and 5,234 emitted files, with zero unresolved

@@ -319,20 +319,6 @@ test('shared navigation exposes visible focus, state and 44px targets', async ()
   assert.match(base, /@media \(max-width: 86rem\) \{[\s\S]*\.global-nav-toggle \{ display: inline-flex; \}/u);
 });
 
-test('dense prose tables become labelled keyboard-scrollable regions', async () => {
-  const [client, tables] = await Promise.all([
-    readFile(file('public/ui/client.js'), 'utf8'),
-    readFile(file('public/ui/design/tables.css'), 'utf8'),
-  ]);
-  assert.match(client, /function enhanceResponsiveTables/u);
-  assert.match(client, /responsive-table__viewport/u);
-  assert.match(tables, /responsive-table__viewport > table > caption/u);
-  assert.match(client, /Scroll horizontally to view all columns/u);
-  assert.match(client, /setAttribute\('role', 'region'\)/u);
-  assert.match(tables, /\.responsive-table__viewport:focus-visible/u);
-  assert.match(tables, /\.prose > table/u, 'no-JavaScript containment fallback is required');
-});
-
 test('text inherits its outer layout width instead of stacking nested measures', async () => {
   const [
     design,

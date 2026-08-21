@@ -39,7 +39,7 @@ const localOf = (uri: string) => uri.replace(/^.*[/#]/, '');
 {shape.constraints.length > 0 && (
   <section class="term-section">
     <h2>Constraints <span class="muted">· {shape.constraints.length}</span></h2>
-    <div class="table-wrap" role="region" aria-label="Constraints table" tabindex="0">
+    <div class="table-wrap">
       <table>
         <thead><tr><th>Path</th><th>Type</th><th>Card.</th><th>Severity</th><th>Message</th></tr></thead>
         <tbody>
@@ -69,6 +69,8 @@ const localOf = (uri: string) => uri.replace(/^.*[/#]/, '');
   .term-dl { display: grid; grid-template-columns: max-content 1fr; gap: var(--space-2) var(--space-4); margin: 0; }
   .term-dl dt { font: 600 var(--text-xs) / 1.4 var(--font-sans); letter-spacing: var(--tracking-meta); text-transform: uppercase; color: var(--color-text-muted); }
   .term-dl dd { margin: 0; color: var(--color-text); }
-  .table-wrap { overflow-x: auto; margin: var(--space-3) 0; }
+  .table-wrap { overflow-x: visible; margin: var(--space-3) 0; }
+  .table-wrap table { width: 100%; max-width: 100%; min-width: 0; table-layout: fixed; }
+  .table-wrap :is(th, td) { overflow-wrap: anywhere; word-break: normal; white-space: normal; }
   .muted { color: var(--color-text-muted); }
 </style>

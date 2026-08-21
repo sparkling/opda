@@ -180,7 +180,7 @@ const ONTOSPY = { href: '/pdtf-1/extracted-ontology/use-and-tooling/tools/ontosp
         <tbody>
           {g.classes.map((c) => (
             <tr>
-              <td style="white-space: nowrap"><a href={`/pdtf/${c.id}`}>{c.label || c.localName}</a></td>
+              <td><a href={`/pdtf/${c.id}`}>{c.label || c.localName}</a></td>
               <td>{c.comment || <span class="muted">—</span>}</td>
             </tr>
           ))}

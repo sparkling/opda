@@ -1,7 +1,10 @@
-/* OPDA responsive table pattern — labelled, keyboard-scrollable and sharp. */
+/* OPDA table pattern — wrap-first, full-width and sharp. */
 
 .prose table {
   width: 100%;
+  max-width: 100%;
+  min-width: 0;
+  table-layout: fixed;
   border-collapse: separate;
   border-spacing: 0;
   margin: var(--space-5) 0;
@@ -13,9 +16,27 @@
 
 .prose th,
 .prose td {
+  min-width: 0;
   padding: var(--space-3) var(--space-4);
   text-align: left;
   vertical-align: top;
+  overflow-wrap: anywhere;
+  word-break: normal;
+  white-space: normal;
+}
+
+/* Keep semantic captions for assistive technology without adding a visual
+   label bar above every table. Section headings provide the visible context. */
+table > caption {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+  border: 0;
 }
 
 .prose th {
@@ -43,72 +64,13 @@
 .prose tbody tr:nth-child(2n) > td:not(:first-child) {
   background: var(--color-table-stripe-surface);
 }
-.prose table.ext-table { width: auto; table-layout: fixed; }
+.prose table.ext-table { width: 100%; table-layout: fixed; }
 
-/* No-JavaScript fallback: contain wide direct-child tables within the article. */
+/* Direct-child tables retain table semantics and fit the article without scrolling. */
 .prose > table {
-  display: block;
-  max-width: 100%;
-  overflow-x: auto;
-}
-
-.responsive-table {
-  max-width: 100%;
-  margin: var(--space-5) 0;
-  border-top: 4px solid var(--brand-yellow);
-}
-
-.responsive-table__label {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-between;
-  gap: var(--space-2) var(--space-4);
-  margin: 0;
-  padding: var(--space-3) var(--space-4);
-  border: 1px solid var(--color-border);
-  border-bottom: 0;
-  background: var(--color-surface-alt);
-  color: var(--color-text-strong);
-  font: 700 var(--text-caption) / 1.4 var(--font-sans);
-}
-
-.responsive-table__hint {
-  color: var(--color-text-muted);
-  font-weight: 400;
-}
-
-.responsive-table__viewport {
-  max-width: 100%;
-  overflow-x: auto;
-  overscroll-behavior-inline: contain;
-  scrollbar-gutter: stable;
-}
-
-.responsive-table__viewport:focus-visible {
-  outline: 2px solid var(--color-focus);
-  outline-offset: 2px;
-  box-shadow: 0 0 0 2px var(--color-focus-contrast);
-}
-
-.responsive-table__viewport > table {
   display: table;
-  min-width: 100%;
-  width: max-content;
-  max-width: none;
-  margin: 0;
-}
-
-/* The generated label replaces the visible caption only after JavaScript has
-   built the scroll region. The caption stays available to assistive tech. */
-.responsive-table__viewport > table > caption {
-  position: absolute;
-  width: 1px;
-  height: 1px;
-  padding: 0;
-  margin: -1px;
-  overflow: hidden;
-  clip-path: inset(50%);
-  white-space: nowrap;
+  max-width: 100%;
+  overflow: visible;
 }
 
 .standards-profile-grid .card > dl {
@@ -126,27 +88,3 @@
 }
 
 .standards-profile-grid .card dd { margin: 0; overflow-wrap: anywhere; }
-
-@media (min-width: 48rem) {
-  .responsive-table:not(.is-overflowing) {
-    border-top: 0;
-  }
-
-  .responsive-table:not(.is-overflowing) .responsive-table__label {
-    display: none;
-  }
-
-  .responsive-table:not(.is-overflowing) .responsive-table__viewport {
-    overflow-x: visible;
-  }
-
-  .responsive-table:not(.is-overflowing) .responsive-table__viewport > table {
-    width: 100%;
-  }
-}
-
-@media print {
-  .responsive-table { border-top: 0; }
-  .responsive-table__label { display: none; }
-  .responsive-table__viewport { overflow: visible; }
-}

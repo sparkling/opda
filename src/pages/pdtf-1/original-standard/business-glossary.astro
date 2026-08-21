@@ -197,12 +197,12 @@ SKOS · 554 concepts`"]:::data
             if(row.source==='Glossary'){
               var p=Array.isArray(row.provenance)?row.provenance:[];
               if(!p.length) return '<span class="muted tiny">—</span>';
-              return '<div style="white-space:nowrap">'+p.map(function(s){
+              return '<div>'+p.map(function(s){
                 return esc(PROVENANCE_NAMES[s]||s);
               }).join('<br>')+'</div>';
             }
             if(!Array.isArray(v)||!v.length) return '<span class="muted tiny">base only</span>';
-            return '<div style="white-space:nowrap">'+v.map(function(s){
+            return '<div>'+v.map(function(s){
               var name=OVERLAY_NAMES[s]||s;
               return esc(name)+' <span class="muted tiny">('+esc(s)+')</span>';
             }).join('<br>')+'</div>';

@@ -72,7 +72,7 @@ test('section rails, page navigation and content stay inside the shared containe
       };
       const main = bounds(document.querySelector('.app-main'));
       const prose = bounds(document.querySelector('.prose'));
-      const children = Array.from(document.querySelectorAll('.prose > :is(.card-grid, .responsive-table, pre)'))
+      const children = Array.from(document.querySelectorAll('.prose > :is(.card-grid, table, .db-table-wrap, .v2-table-wrap, pre)'))
         .map((element) => ({ selector: element.className || element.tagName, ...bounds(element) }));
       const heading = document.querySelector('h2[id]');
       const anchor = heading?.querySelector('.heading-anchor');

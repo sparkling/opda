@@ -26,7 +26,7 @@ const sorted = [...members].sort((a, b) => a.notation.localeCompare(b.notation))
 ---
 
 {sorted.length > 0 && (
-  <div class="scheme-members-table-wrap" role="region" aria-label="Scheme members table" tabindex="0">
+  <div class="scheme-members-table-wrap">
     <table class="scheme-members-table">
       <thead>
         <tr>
@@ -52,34 +52,41 @@ const sorted = [...members].sort((a, b) => a.notation.localeCompare(b.notation))
 
 <style>
   .scheme-members-table-wrap {
-    overflow-x: auto;
+    overflow-x: visible;
     margin: var(--space-4) 0;
   }
 
   .scheme-members-table {
     width: 100%;
+    max-width: 100%;
+    min-width: 0;
+    table-layout: fixed;
     border-collapse: collapse;
     font: 400 var(--text-sm) / var(--leading-normal) var(--font-sans);
     color: var(--color-text);
   }
 
   .scheme-members-table th {
-    background: var(--color-surface-tint);
+    background: var(--color-table-header-surface);
     font-weight: 600;
     font-size: var(--text-xs);
     letter-spacing: var(--tracking-meta);
     text-transform: uppercase;
-    color: var(--color-text-muted);
+    color: var(--color-table-header-text);
     padding: var(--space-2) var(--space-3);
     border-bottom: 1px solid var(--color-border-strong);
     text-align: left;
-    white-space: nowrap;
+    overflow-wrap: anywhere;
+    white-space: normal;
   }
 
   .scheme-members-table td {
     padding: var(--space-2) var(--space-3);
     border-bottom: 1px solid var(--color-border);
     vertical-align: top;
+    overflow-wrap: anywhere;
+    word-break: normal;
+    white-space: normal;
   }
 
   .scheme-members-table__notation {

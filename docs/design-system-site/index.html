@@ -227,7 +227,7 @@
           </figure>
         </div>
 
-        <div class="table-frame" tabindex="0" aria-label="Example standards table, horizontally scrollable">
+        <div class="table-frame">
           <table>
             <caption>Example standards-status pattern</caption>
             <thead><tr><th scope="col" aria-sort="ascending">Term ↑</th><th scope="col">Context</th><th scope="col">Status</th><th scope="col">Source</th></tr></thead>
@@ -241,7 +241,7 @@
 
         <div class="data-patterns">
           <article><h3>Filter state</h3><p>Search, filters, result count and reset form one labelled toolbar. Applied filters remain visible and removable.</p></article>
-          <article><h3>Table state</h3><p>Data-violet column headings, regular-weight warm-neutral first-column cells and neutral zebra rows stay distinct without competing. Every table highlights its first body column; zebra striping begins at column two. Repeated label-and-explanation records use two columns. Sort controls use arrows and <code>aria-sort</code>, numeric cells use tabular figures, and controls remain 44px.</p></article>
+          <article><h3>Table state</h3><p>Deep-ink column headings, regular-weight warm-neutral first-column cells and neutral zebra rows stay distinct. Visible caption bars are omitted. Every table highlights its first body column; zebra striping begins at column two. Repeated label-and-explanation records use two columns. Sort controls use arrows and <code>aria-sort</code>, numeric cells use tabular figures, and controls remain 44px.</p></article>
           <article><h3>Outcome state</h3><p>Loading, empty, error and success announce changes without moving keyboard focus.</p></article>
         </div>
       </div>
@@ -288,7 +288,7 @@
           <li><span>✓</span> Status always has an icon and complete text label.</li>
           <li><span>✓</span> Forced-colour and reduced-motion equivalents.</li>
           <li><span>✓</span> Labels, captions and alt/decorative decisions are explicit.</li>
-          <li><span>✓</span> Tables use captions, header scope, labelled overflow and <code>aria-sort</code>.</li>
+          <li><span>✓</span> Tables use hidden semantic captions, header scope, wrapped columns and <code>aria-sort</code>.</li>
         </ul>
       </div>
     </section>

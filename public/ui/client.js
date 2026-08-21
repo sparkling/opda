@@ -15,7 +15,6 @@
  *   • Mobile menu toggle
  *   • TOC rendering + IntersectionObserver active-section tracking
  *   • Heading-anchor injection
- *   • Labelled responsive-table regions for dense technical tables
  *
  * Mermaid rendering (lazy load, theme integration, pan/zoom/fullscreen,
  * diagram-links click-navigation, mis-render correction) was RETIRED from here
@@ -298,79 +297,6 @@
     });
   }
 
-  // ── Responsive tables ────────────────────────────────────────────────────
-  function enhanceResponsiveTables() {
-    const article = document.querySelector('.prose');
-    if (!article) return;
-    const headings = Array.from(article.querySelectorAll('h1, h2, h3, h4'));
-
-    function enhanceTable(table, existingViewport, index) {
-      if (table.closest('.responsive-table, [data-table-scroll]')) return;
-
-      const caption = table.querySelector('caption');
-      let heading = null;
-      headings.forEach(function (candidate) {
-        if (candidate.compareDocumentPosition(table) & Node.DOCUMENT_POSITION_FOLLOWING) {
-          heading = candidate;
-        }
-      });
-      const sourceLabel = caption?.textContent || heading?.textContent || `Table ${index + 1}`;
-      const label = sourceLabel.replace(/\s*#\s*$/u, '').trim();
-      const labelId = `responsive-table-label-${index + 1}`;
-
-      const region = document.createElement('section');
-      region.className = 'responsive-table';
-
-      const visibleLabel = document.createElement('p');
-      visibleLabel.className = 'responsive-table__label';
-      visibleLabel.id = labelId;
-      const title = document.createElement('span');
-      title.textContent = label;
-      const hint = document.createElement('span');
-      hint.className = 'responsive-table__hint';
-      hint.textContent = 'Scroll horizontally to view all columns';
-      visibleLabel.append(title, hint);
-
-      const viewport = existingViewport || document.createElement('div');
-      viewport.classList.add('responsive-table__viewport');
-      viewport.setAttribute('role', 'region');
-      viewport.setAttribute('aria-labelledby', labelId);
-
-      const insertionPoint = existingViewport || table;
-      insertionPoint.parentNode.insertBefore(region, insertionPoint);
-      region.append(visibleLabel, viewport);
-      if (!existingViewport) viewport.appendChild(table);
-
-      function syncOverflow() {
-        // Measure the table's intrinsic width independently of the current
-        // overflow class. Otherwise the desktop `width: 100%` rule can make
-        // the first resize callback disagree with the pre-stylesheet pass.
-        const inlineWidth = table.style.width;
-        table.style.width = 'max-content';
-        const contentWidth = table.getBoundingClientRect().width;
-        table.style.width = inlineWidth;
-        const overflowing = contentWidth > viewport.clientWidth + 1;
-        region.classList.toggle('is-overflowing', overflowing);
-        viewport.tabIndex = overflowing ? 0 : -1;
-        hint.hidden = !overflowing;
-      }
-
-      requestAnimationFrame(syncOverflow);
-      document.fonts?.ready.then(syncOverflow);
-      if ('ResizeObserver' in window) new ResizeObserver(syncOverflow).observe(viewport);
-    }
-
-    let index = 0;
-    article.querySelectorAll('.db-table-wrap').forEach(function (viewport) {
-      const table = viewport.querySelector('table.db-table');
-      if (table) enhanceTable(table, viewport, index++);
-    });
-    article.querySelectorAll('table:not(.db-table)').forEach(function (table) {
-      if (table.closest('.db-table-wrap')) return;
-      enhanceTable(table, null, index++);
-    });
-  }
-
   // ── TOC widget ──────────────────────────────────────────────────────────
   function renderToc() {
     const article = document.querySelector('.prose');
@@ -484,7 +410,6 @@
     bindSidebar();
     renderToc();
     enhanceHeadings();
-    enhanceResponsiveTables();
     // Mermaid diagrams are rendered by the GraphDiagram island (adopted from the
     // bare .mermaid divs in src/layouts/Layout.astro); client.js's mermaid path
     // is retired.

@@ -140,8 +140,8 @@ const tokenSample = `:root {
   <div class="data-palette" aria-label="Ordered categorical data colours">
     {dataColours.map((colour, index) => <span style={`--data:${colour}`}><b>{index + 1}</b><code>{colour}</code></span>)}
   </div>
-  <p>Colour is reinforced by order, labels and markers. Tables use captions, scoped headers, visible sorting and labelled horizontal overflow. Data-violet column headers, regular-weight warm-neutral first-column body cells and neutral zebra rows keep the three structural roles distinct without competing. Every table highlights its first body column, and zebra striping begins at column two. Repeated label-and-explanation records use a two-column table; ordinary bullets and steps remain lists.</p>
-  <div class="table-region" tabindex="0" aria-label="Example standards table, horizontally scrollable">
+  <p>Colour is reinforced by order, labels and markers. Tables use scoped headers, visible sorting, visually hidden semantic captions and columns that wrap within the content track. Deep-ink column headers, regular-weight warm-neutral first-column body cells and neutral zebra rows keep the three structural roles distinct. Every table highlights its first body column, and zebra striping begins at column two. Repeated label-and-explanation records use a two-column table; ordinary bullets and steps remain lists.</p>
+  <div class="table-region">
     <table>
       <caption>Standards-status pattern</caption>
       <thead><tr><th scope="col" aria-sort="ascending">Term ↑</th><th scope="col">Context</th><th scope="col">Status</th><th scope="col">Source</th></tr></thead>
@@ -215,8 +215,9 @@ const tokenSample = `:root {
     .data-palette span { min-height: 6rem; padding: var(--space-3); display: flex; flex-direction: column; justify-content: space-between; color: var(--brand-white); background: var(--data); }
     .data-palette span:nth-child(2) { color: var(--brand-night); }
     .data-palette code { padding: 0; border-radius: 0; color: inherit; background: transparent; font-size: var(--text-xs); }
-    .table-region { overflow-x: auto; }
-    .table-region table { min-width: 42rem; }
+    .table-region { overflow-x: visible; }
+    .table-region table { width: 100%; max-width: 100%; min-width: 0; table-layout: fixed; }
+    .table-region :is(th, td) { overflow-wrap: anywhere; word-break: normal; white-space: normal; }
     .gate-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); border: 1px solid var(--color-border); }
     .gate-grid article { min-height: 8rem; padding: var(--space-5); border-right: 1px solid var(--color-border); }
     .gate-grid strong { display: block; color: var(--color-text-strong); font: 700 var(--text-2xl)/1.2 var(--font-sans); }

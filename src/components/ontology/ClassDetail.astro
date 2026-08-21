@@ -38,7 +38,7 @@ const { cls, mappingUsage = [] } = Astro.props;
 {cls.attributes.length > 0 && (
   <section class="term-section">
     <h2>Datatype attributes <span class="muted">· {cls.attributes.length}</span></h2>
-    <div class="table-wrap" role="region" aria-label="Datatype attributes table" tabindex="0">
+    <div class="table-wrap">
       <table>
         <thead><tr><th>Property</th><th>Type</th><th>Description</th></tr></thead>
         <tbody>
@@ -58,7 +58,7 @@ const { cls, mappingUsage = [] } = Astro.props;
 {cls.outgoing.length > 0 && (
   <section class="term-section">
     <h2>Outgoing connections <span class="muted">· {cls.outgoing.length}</span></h2>
-    <div class="table-wrap" role="region" aria-label="Outgoing connections table" tabindex="0">
+    <div class="table-wrap">
       <table>
         <thead><tr><th>Predicate</th><th>Target</th><th>Inverse</th></tr></thead>
         <tbody>
@@ -83,7 +83,7 @@ const { cls, mappingUsage = [] } = Astro.props;
   <section class="term-section">
     <h2>Incoming connections <span class="muted">· {cls.incoming.length}</span></h2>
     <p class="term-hint">Object properties whose range is this class — what points at it.</p>
-    <div class="table-wrap" role="region" aria-label="Incoming connections table" tabindex="0">
+    <div class="table-wrap">
       <table>
         <thead><tr><th>Predicate</th><th>From (domain)</th><th>Inverse</th></tr></thead>
         <tbody>
@@ -163,7 +163,9 @@ const { cls, mappingUsage = [] } = Astro.props;
     border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
     margin: 0;
   }
-  .table-wrap { overflow-x: auto; margin: var(--space-3) 0; }
+  .table-wrap { overflow-x: visible; margin: var(--space-3) 0; }
+  .table-wrap table { width: 100%; max-width: 100%; min-width: 0; table-layout: fixed; }
+  .table-wrap :is(th, td) { overflow-wrap: anywhere; word-break: normal; white-space: normal; }
   .muted { color: var(--color-text-muted); }
   .chip-list {
     list-style: none; padding: 0; margin: 0;

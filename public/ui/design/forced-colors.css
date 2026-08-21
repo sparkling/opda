@@ -24,7 +24,7 @@
   }
 
   :where(.pill, .callout, .status-card, .evidence-card, .home-card,
-    .responsive-table, .db-table-wrap, .diagram, .graph-diagram-wrapper) {
+    .db-table-wrap, .diagram, .graph-diagram-wrapper) {
     border: 1px solid CanvasText;
     forced-color-adjust: auto;
   }
@@ -43,6 +43,4 @@
     outline-offset: 2px;
   }
 
-  .responsive-table { border-top: 4px solid Highlight; }
-  .responsive-table__viewport { scrollbar-color: ButtonText Canvas; }
 }
