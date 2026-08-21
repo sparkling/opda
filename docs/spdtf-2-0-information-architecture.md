@@ -474,8 +474,7 @@ The implementation is not releasable unless all of these pass:
   manifest; no representation becomes an independent source of meaning.
 - A participant can reach their group, evidence, questions and review action without
   knowing RDF vocabulary.
-- A current implementer can reach schema and validation guidance within two
-  interactions and without entering anything labelled “archive”.
+- A current implementer can reach schema and validation guidance within two interactions and without entering anything labelled “archive”.
 - A governance reviewer can identify who may decide and whether a decision occurred.
 - Every route is retained, redirected with semantic proof, or covered by an explicitly
   authorised move receipt; every retained or moved fragment resolves at its destination.
