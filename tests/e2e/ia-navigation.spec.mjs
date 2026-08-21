@@ -100,7 +100,7 @@ test('left navigation follows route ownership with one active link', async ({ pa
   }
 
   await visit(page, '/ontology/classes');
-  await page.evaluate(() => localStorage.setItem('opda.sidebar.pdtf-1.Ontology reference', 'closed'));
+  await page.evaluate(() => localStorage.setItem('opda.sidebar.pdtf-1.Extracted ontology', 'closed'));
   await page.reload();
   await expect(page.locator('#section-navigation .nav-group[data-active="true"]')).toHaveClass(/is-open/u);
   await page.evaluate(() => localStorage.setItem('opda-sidebar-collapsed', '1'));
@@ -108,6 +108,41 @@ test('left navigation follows route ownership with one active link', async ({ pa
   await expect(page.locator('.app-body')).toHaveClass(/sidebar-collapsed/u);
   await expect(page.locator('#sidebar-collapse')).toHaveAttribute('aria-expanded', 'false');
   await expect(page.locator('#sidebar-collapse')).toHaveAttribute('aria-label', 'Expand sidebar');
+  clean();
+});
+
+test('PDTF 1.0 navigation separates the original standard from the extracted ontology', async ({ page }) => {
+  const clean = watchRuntime(page);
+  await page.setViewportSize({ width: 1440, height: 1000 });
+  await visit(page, '/ontology/classes');
+
+  const navigation = page.locator('#section-navigation[data-section="pdtf-1"]');
+  const groups = navigation.locator(':scope > .nav-group');
+  await expect(groups).toHaveCount(3);
+  await expect(groups.locator('.nav-group-link')).toHaveText([
+    'Overview', 'Original standard', 'Extracted ontology',
+  ]);
+  await expect(navigation.locator('a[aria-current="page"]')).toHaveText('Classes');
+  await expect(navigation.locator('.nav-group[data-group="Extracted ontology"]')).toHaveClass(/is-open/u);
+  await expect(navigation.locator('.nav-group[data-group="Original standard"]')).not.toHaveClass(/is-open/u);
+  for (const id of [
+    'schema', 'implementation', 'adoption', 'modelling', 'model', 'ontology', 'mapping',
+  ]) await expect(page.locator(`#section-nav-group-pdtf-1-${id}`)).toHaveCount(1);
+
+  await expect(page.locator('nav[aria-label="Breadcrumb"] li')).toHaveText([
+    /PDTF 1\.0/u, /Extracted ontology/u, /Classes/u,
+  ]);
+
+  await visit(page, '/schema/legal-estate');
+  await expect(navigation.locator('.nav-group[data-group="Original standard"]')).toHaveClass(/is-open/u);
+  await expect(navigation.locator('.nav-group[data-group="Extracted ontology"]')).not.toHaveClass(/is-open/u);
+  await expect(navigation.locator('a[aria-current="page"]')).toHaveCount(1);
+
+  await navigation.locator('a[href="/ontology"]').click();
+  await expect(page.locator('h1')).toHaveText('PDTF 1.0-derived ontology reference');
+  await expect(page.locator('nav[aria-label="Breadcrumb"] [aria-current="page"]'))
+    .toHaveText('Extracted ontology');
+  await expect(page.locator('nav.page-footer a').last()).toHaveAttribute('href', '/modelling');
   clean();
 });
 

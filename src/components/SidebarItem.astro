@@ -20,7 +20,11 @@ const isLeaf = !item.children;
 const itemPath = normalizeUrl(item.url);
 const isActive = itemPath === activePath;
 const isOpen = !isLeaf && containsActive(item);
-const childrenId = `section-nav-${itemPath.replace(/[^a-z0-9]+/giu, '-').replace(/^-|-$/gu, '')}`;
+const legacyPdtfGroupId = new Map([
+  '/schema', '/implementation', '/adoption', '/modelling', '/model', '/mapping',
+].map((url) => [url, `section-nav-group-pdtf-1-${url.slice(1)}`])).get(itemPath);
+const childrenId = legacyPdtfGroupId
+  ?? `section-nav-${itemPath.replace(/[^a-z0-9]+/giu, '-').replace(/^-|-$/gu, '')}`;
 ---
 {isLeaf ? (
   <li class="tree-leaf">

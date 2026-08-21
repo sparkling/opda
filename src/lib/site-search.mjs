@@ -25,6 +25,7 @@ export const SITE_SEARCH_ENTRIES = Object.freeze([
   entry('Evidence and qualified mappings', '/spdtf-2/ontologies/evidence-and-mappings', 'Competency questions, provenance, traceability and five distinct mapping meanings', ['ontology']),
   entry('Validation, review and projections', '/spdtf-2/ontologies/validation', 'SHACL, competency queries, semantic review, governance and generated outputs', ['ontology']),
   entry('PDTF 1.0', '/pdtf-1', 'Published schema implementation and status-labelled derived artefacts', ['PDTF'], true),
+  entry('Original PDTF 1.0 standard', '/pdtf-1/original-standard', 'JSON Schemas, overlays, data dictionary, business glossary, implementation and adoption evidence', ['PDTF', 'JSON Schema', 'data dictionary', 'business glossary'], true),
   entry('PDTF 1.0 modelling material', '/modelling', 'Previous schema-led modelling documentation', ['PDTF'], true),
   entry('PDTF 1.0-derived model', '/model', 'Structured views derived from the published implementation', ['PDTF'], true),
   entry('PDTF 1.0-derived ontology', '/ontology', 'Draft semantic corpus derived from PDTF 1.0 evidence', ['PDTF'], true),

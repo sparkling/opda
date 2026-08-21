@@ -275,6 +275,7 @@ test('the versioned route-status registry protects derived and pre-candidate aut
   assert.match(getRouteStatus('/mapping').authority, /verification evidence/u);
   assert.match(getRouteStatus('/modelling').maturity, /Mixed-maturity/u);
   assert.match(getRouteStatus('/adoption').authority, /does not establish SPDTF 2\.0 adoption/u);
+  assert.match(getRouteStatus('/pdtf-1/original-standard').maturity, /Published schema implementation/u);
   assert.match(getRouteStatus('/spdtf-2/property-pack/contexts/estate-agency').authority, /Machine-generated/u);
   assert.match(getRouteStatus('/spdtf-2/working-groups/estate-agency').version, /no candidate/u);
   const layout = readFileSync(new URL('../src/layouts/Layout.astro', import.meta.url), 'utf8');
@@ -329,6 +330,7 @@ test('standards profile is item-granular and uses only the four accepted mechani
 test('historical PDTF search alias returns labelled current and historical work', () => {
   const results = searchEntries('PDTF');
   assert.ok(results.some(({ url, historicalName }) => url === '/pdtf-1' && historicalName));
+  assert.ok(results.some(({ url, historicalName }) => url === '/pdtf-1/original-standard' && historicalName));
   assert.ok(results.some(({ url, historicalName }) => url === '/spdtf-2' && !historicalName));
 });
 

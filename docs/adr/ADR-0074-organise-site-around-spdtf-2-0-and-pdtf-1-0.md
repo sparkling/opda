@@ -1,7 +1,7 @@
 ---
 status: implemented
 date: 2026-08-18
-updated: 2026-08-20
+updated: 2026-08-21
 tags: [website, information-architecture, pdtf-1-0, spdtf-2-0, ontology, semantic-modelling, standards, migration, governance]
 supersedes: []
 amends: [ADR-0002, ADR-0041, ADR-0059, ADR-0062]
@@ -26,13 +26,13 @@ implements: [docs/spdtf-2-0-information-architecture.md]
 > preserve the reading width. Status remains Implemented; this note makes no new
 > deployment claim.
 >
-> Update 2026-08-19 — accepted correction pending implementation: ADR-0075 now
+> Update 2026-08-21 — accepted correction, partially implemented: ADR-0075 now
 > treats `/v2/**` as the Property Pack ontology component of SPDTF 2.0, replaces the
 > generic Development input branch with a canonical Property Pack workstream, exposes
 > PDTF 1.0 as original standard plus extracted ontology, and records a Technical
-> Working Group determination followed by later domain review. This ADR still records
-> the currently implemented site; the amended hierarchy is Accepted but not yet
-> implemented.
+> Working Group determination followed by later domain review. The Property Pack route
+> consolidation and two-part PDTF 1.0 navigation are implemented; ADR-0075 remains
+> Accepted while its governance and complete lineage gates remain open.
 >
 > Update 2026-08-19 — route-continuity exception: the operator subsequently chose one
 > canonical `/spdtf-2/property-pack/**` family and explicitly declined compatibility

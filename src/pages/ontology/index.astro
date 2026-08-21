@@ -1,7 +1,7 @@
 ---
 /**
- * /ontology — the lean landing / overview for the published OPDA PDTF ontology
- * reference (ADR-0041).
+ * /ontology — the landing for the draft ontology extracted from PDTF 1.0 and
+ * its woven technical reference (ADR-0041).
  *
  * The combination principle: the /ontology section is one woven reference made
  * of off-the-shelf tool renderings (where they win), custom opda-gen scripts
@@ -72,6 +72,13 @@ const counts = {
     corpus; it does not make the draft an approved standard or the SPDTF 2.0 ontology.
   </p>
   <p>SPDTF 2.0 Development reuses this corpus as attributed evidence. Start with <a href="/spdtf-2/ontologies/why-ontologies">why ontologies</a> and the current domain-led method.</p>
+  <p>
+    This is the second of the <a href="/pdtf-1">two PDTF 1.0 parts</a>. The
+    <a href="/schema">original JSON standard</a> is its source and implementation
+    ancestor; this extracted ontology remains a separately status-labelled draft.
+    The <a href="/spdtf-2/property-pack/pdtf-1-lineage">Property Pack lineage</a>
+    records what is proven and what still needs a semantic crosswalk.
+  </p>
 
 
   <h2 id="combination">The combination principle</h2>
@@ -134,17 +141,17 @@ const counts = {
 
   <h3>Conceptual &amp; formal layers</h3>
   <div class="card-grid">
-    <a class="card" href="/modelling/odr/odr-0004">
+    <a class="card" href="/ontology/foundation">
       <div class="pill pill--brand">Foundations</div>
       <h3>Foundations</h3>
       <p>The three-graph separation, the UFO / OntoClean frame, and the <code>dct:source</code> contract that grounds every term (ODR-0004).</p>
     </a>
-    <a class="card" href="/modelling/odr/odr-0005">
+    <a class="card" href="/ontology/identity">
       <div class="pill pill--info">Identity</div>
       <h3>Identity</h3>
       <p>Property / LegalEstate / RegisteredTitle — three Kinds, three identity criteria. UPRN is a Quality, never the identity criterion (ODR-0005).</p>
     </a>
-    <a class="card" href="/modelling/ontology">
+    <a class="card" href="/ontology/classes">
       <div class="pill pill--info">Classes</div>
       <h3>Classes (OWL)</h3>
       <p>The {counts.classes} OWL classes — Substance Kinds, Roles, RoleMixins and Relators — and how they map to UFO stereotypes.</p>
@@ -154,17 +161,17 @@ const counts = {
       <h3>UFO categories</h3>
       <p>The OWL classes grouped by their UFO foundational meta-category, from the inert <code>opda:ufoCategory</code> facet — UFO-informed, not UFO-grounded.</p>
     </a>
-    <a class="card" href="/modelling/ontology">
+    <a class="card" href="/ontology/properties">
       <div class="pill pill--info">Properties</div>
       <h3>Properties (OWL)</h3>
       <p>The {counts.objectProps} object + {counts.dataProps} datatype properties, with their domains, ranges and provenance.</p>
     </a>
-    <a class="card" href="/modelling/business-glossary">
+    <a class="card" href="/ontology/vocabularies">
       <div class="pill pill--info">Vocabularies</div>
       <h3>Vocabularies (SKOS)</h3>
       <p>The {counts.schemes} SKOS concept schemes / {counts.concepts} coded concepts — the controlled values, browseable inline.</p>
     </a>
-    <a class="card" href="/modelling/shacl-shapes">
+    <a class="card" href="/ontology/shapes">
       <div class="pill pill--info">Shapes</div>
       <h3>Shapes (SHACL)</h3>
       <p>The {counts.shapes} base node-shapes — the validation contract. "A form IS its SHACL overlay" (ODR-0010).</p>
@@ -178,17 +185,17 @@ const counts = {
 
   <h3>OPDA-specific layers</h3>
   <div class="card-grid">
-    <a class="card" href="/ontology/known-issues#thin">
+    <a class="card" href="/ontology/profiles">
       <div class="pill pill--info">Profiles</div>
       <h3>Overlay profiles &amp; gap register</h3>
       <p>The {counts.profiles} per-form profiles — most thin by design, binding Category-G leaves and GAP-registering the rest.</p>
     </a>
-    <a class="card" href="/ontology/bake-off#bottom-line">
+    <a class="card" href="/ontology/exemplars">
       <div class="pill pill--info">Exemplars</div>
       <h3>Round-trip exemplars</h3>
       <p>The {counts.exemplars} worked instance graphs, each paired with an expected SHACL report — the data contract no OWL tool renders.</p>
     </a>
-    <a class="card" href="/modelling/odr/odr-0009">
+    <a class="card" href="/ontology/claims">
       <div class="pill pill--info">Claims</div>
       <h3>Claims, evidence &amp; provenance</h3>
       <p>PROV-O-backed claims with three truth-makers — derivation, signature, assurance (ODR-0009).</p>

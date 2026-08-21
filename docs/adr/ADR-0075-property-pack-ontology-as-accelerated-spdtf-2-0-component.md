@@ -1,7 +1,7 @@
 ---
 status: accepted
 date: 2026-08-19
-updated: 2026-08-20
+updated: 2026-08-21
 tags: [information-architecture, property-pack, pdtf-1-0, spdtf-2-0, ontology, technical-working-group, governance, government, provenance]
 supersedes: []
 amends: [ADR-0066, ADR-0067, ADR-0074]
@@ -17,6 +17,10 @@ implements: [src/pages/spdtf-2/property-pack, src/lib/site-navigation.ts, src/li
 > modelling rules, standards, evidence, validation and coverage. This partial
 > implementation does not change this ADR's Accepted status or make Proposed
 > ADR-0065/0068 lifecycle policy operative.
+>
+> Update 2026-08-21: the two-part PDTF 1.0 hierarchy is implemented. Linked
+> Original standard and canonical `/ontology` category pages now organise every
+> existing technical route without moving it or changing its page-level status.
 
 ## Context and Problem Statement
 
@@ -242,7 +246,7 @@ information-retention receipts, navigation, status and browser gates all pass.
 Implementation requires all of the following:
 
 - one canonical Property Pack hub and one unambiguous nested navigation branch;
-- the two-part PDTF 1.0 navigation;
+- the implemented two-part PDTF 1.0 navigation;
 - a machine-readable 451-row lineage crosswalk;
 - a recorded Technical Working Group governance contract and September deadline;
 - independent status fields for determination, later review, release and external

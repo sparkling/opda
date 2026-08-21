@@ -94,16 +94,27 @@ test('current implementers reach schema and validation guidance within two inter
   await page.locator('nav[aria-label="Primary"] a', { hasText: 'PDTF 1.0' }).click();
   await expect(page).toHaveURL(/\/pdtf-1$/u);
   const implementationLinks = page.locator('main a');
-  await expect(implementationLinks.filter({ hasText: 'Schemas and overlays' })).toBeVisible();
-  await expect(implementationLinks.filter({ hasText: 'Implementation guidance' })).toBeVisible();
+  const schemasLink = page.getByRole('main').getByRole('link', {
+    name: 'Schemas and overlays',
+    exact: true,
+  });
+  const implementationLink = page.getByRole('main').getByRole('link', {
+    name: 'Implementation guidance',
+    exact: true,
+  });
+  await expect(schemasLink).toBeVisible();
+  await expect(implementationLink).toBeVisible();
   expect((await implementationLinks.allTextContents()).join('\n')).not.toMatch(/archive/iu);
 
-  await implementationLinks.filter({ hasText: 'Schemas and overlays' }).click();
+  await schemasLink.click();
   await expect(page).toHaveURL(/\/schema$/u);
   expect((await page.locator('a').allTextContents()).join('\n')).not.toMatch(/archive/iu);
 
   await page.goto('/pdtf-1');
-  await page.locator('main a', { hasText: 'Implementation guidance' }).click();
+  await page.getByRole('main').getByRole('link', {
+    name: 'Implementation guidance',
+    exact: true,
+  }).click();
   await expect(page).toHaveURL(/\/implementation$/u);
   await expect(page.getByRole('link', { name: 'Validation', exact: true })).toBeVisible();
   expect((await page.locator('a').allTextContents()).join('\n')).not.toMatch(/archive/iu);

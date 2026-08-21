@@ -150,15 +150,50 @@ function insertAfter(items: Item[], afterUrl: string, item: Item): Item[] {
   return [...items.slice(0, index + 1), item, ...items.slice(index + 1)];
 }
 
+function sectionJourney(
+  sectionKey: string,
+  owner: DestinationKey,
+  title: string,
+  options: { exclude?: string[]; append?: Item[] } = {},
+): Item {
+  const url = `/${sectionKey}`;
+  const excluded = new Set((options.exclude ?? []).map(normalizeUrl));
+  const children = ownedSectionItems(sectionKey, owner)
+    .filter((item) => normalizeUrl(item.url) !== url && !excluded.has(normalizeUrl(item.url)));
+  return {
+    url,
+    title,
+    children: [...children, ...(options.append ?? [])],
+  };
+}
+
+const pdtfSchemaJourney = sectionJourney('schema', 'pdtf-1', 'JSON Schemas and overlays', {
+  append: [{ url: '/modelling/overlays', title: 'Schema overlays' }],
+});
+const pdtfImplementationJourney = sectionJourney('implementation', 'pdtf-1', 'Implementation guidance');
+const pdtfAdoptionJourney = sectionJourney('adoption', 'pdtf-1', 'Adoption evidence');
+const pdtfModellingJourney = sectionJourney('modelling', 'pdtf-1', 'How it was derived', {
+  exclude: ['/modelling/overlays', '/modelling/data-dictionary', '/modelling/business-glossary'],
+});
+const pdtfModelJourney = sectionJourney('model', 'pdtf-1', 'Model views');
+
 const pdtfOntologyItems = insertAfter(
-  insertAfter(
-    ownedSectionItems('ontology', 'pdtf-1'),
-    '/ontology/properties',
-    { url: '/ontology/datatypes', title: 'Datatypes' },
-  ),
+  ownedSectionItems('ontology', 'pdtf-1').filter(({ url }) => normalizeUrl(url) !== '/ontology'),
+  '/ontology/properties',
+  { url: '/ontology/datatypes', title: 'Datatypes' },
+);
+const pdtfOntologyChildren = insertAfter(
+  pdtfOntologyItems,
   '/ontology/known-issues',
   { url: '/ontology/namespaces', title: 'Namespaces' },
 );
+const pdtfOntologyJourney: Item = {
+  url: '/ontology',
+  title: 'Ontology reference',
+  children: pdtfOntologyChildren,
+};
+
+const pdtfMappingJourney = sectionJourney('mapping', 'pdtf-1', 'Schema-to-ontology verification');
 
 const navigationSections: Record<DestinationKey, NavigationSection> = {
   programme: {
@@ -200,13 +235,19 @@ const navigationSections: Record<DestinationKey, NavigationSection> = {
     summary: 'The published schema implementation and status-labelled derived artefacts.',
     groups: [
       category('Overview', '/pdtf-1'),
-      category('Modelling records', '/modelling', ownedSectionItems('modelling', 'pdtf-1')),
-      category('Model views', '/model', ownedSectionItems('model', 'pdtf-1')),
-      category('Ontology reference', '/ontology', pdtfOntologyItems),
-      category('Qualified mappings', '/mapping', ownedSectionItems('mapping', 'pdtf-1')),
-      category('Schemas and overlays', '/schema', ownedSectionItems('schema', 'pdtf-1')),
-      category('Implementation', '/implementation', ownedSectionItems('implementation', 'pdtf-1')),
-      category('Adoption evidence', '/adoption', ownedSectionItems('adoption', 'pdtf-1')),
+      category('Original standard', '/pdtf-1/original-standard', [
+        pdtfSchemaJourney,
+        { url: '/modelling/data-dictionary', title: 'Data dictionary' },
+        { url: '/modelling/business-glossary', title: 'Business glossary' },
+        pdtfImplementationJourney,
+        pdtfAdoptionJourney,
+      ]),
+      category('Extracted ontology', '/ontology', [
+        pdtfModellingJourney,
+        pdtfModelJourney,
+        pdtfOntologyJourney,
+        pdtfMappingJourney,
+      ]),
     ],
   },
   governance: {

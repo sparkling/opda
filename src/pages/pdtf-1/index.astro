@@ -26,15 +26,16 @@ import GatewayCard from '@/components/ia/GatewayCard.astro';
     </p>
   </div>
 
-  <h2 id="contents">Published implementation and derived views</h2>
+  <h2 id="contents">Two parts of PDTF 1.0</h2>
   <div class="card-grid">
-    <GatewayCard href="/schema" title="Schemas and overlays" eyebrow="Implementation" description="The published JSON Schema composition and overlay views used by implementers." />
-    <GatewayCard href="/implementation" title="Implementation guidance" eyebrow="Implementation" description="Quickstart, validation and developer guidance for using the published schema implementation." />
-    <GatewayCard href="/model" title="Model views" eyebrow="Derived artefact" description="Logical, physical and concept views with their own status and provenance." />
-    <GatewayCard href="/ontology" title="PDTF 1.0-derived ontology" eyebrow="Derived artefact" description="The ontology and technical renderings derived from the existing corpus; not SPDTF 2.0 authority." />
-    <GatewayCard href="/mapping" title="Qualified mappings" eyebrow="Derived artefact" description="RML schema–ontology verification and related migration evidence, labelled by meaning." />
-    <GatewayCard href="/adoption" title="Adoption evidence" eyebrow="Evidence" description="Member implementations, pilots and ecosystem evidence for the published implementation." />
+    <GatewayCard href="/pdtf-1/original-standard" title="Original standard" eyebrow="Part one" description="JSON Schemas and overlays, data dictionary, business glossary, implementation guidance and adoption evidence." />
+    <GatewayCard href="/ontology" title="Extracted PDTF 1.0 ontology" eyebrow="Part two" description="The ontology derived from those artefacts, with model views, qualified mappings, provenance and known limitations." />
   </div>
+
+  <p>
+    Implementers can go directly to the <a href="/schema">Schemas and overlays</a> or
+    <a href="/implementation">Implementation guidance</a>.
+  </p>
 
   <h2 id="continuation">Continuation into SPDTF 2.0</h2>
   <p>

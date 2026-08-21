@@ -62,7 +62,7 @@ test('the left section navigation implements all six destinations from one regis
   ));
   assert.deepEqual(Object.fromEntries(Object.entries(SECTION_NAVIGATION).map(([key, section]) => [
     key, section.groups.flatMap(flattenGroup).length,
-  ])), { programme: 18, 'spdtf-2': 39, 'working-groups': 33, 'pdtf-1': 195, governance: 137, resources: 12 });
+  ])), { programme: 18, 'spdtf-2': 39, 'working-groups': 33, 'pdtf-1': 196, governance: 137, resources: 12 });
   for (const url of new Set(legacyUrls)) {
     assert.equal(compositeUrls.filter((candidate) => candidate === url).length, 1, `${url} must appear once`);
   }
@@ -73,7 +73,8 @@ test('the left section navigation implements all six destinations from one regis
     '/spdtf-2/ontologies/modelling-rules',
     '/spdtf-2/property-pack/definition-and-scope',
     '/spdtf-2/property-pack/technical-working-group-determination',
-    '/spdtf-2/property-pack/review-and-releases', '/pdtf-1', '/ontology/datatypes',
+    '/spdtf-2/property-pack/review-and-releases', '/pdtf-1',
+    '/pdtf-1/original-standard', '/ontology/datatypes',
     '/ontology/namespaces', '/resources', '/glossary',
   ]) assert.equal(compositeUrls.filter((url) => url === required).length, 1, `${required} must appear once`);
   assert.equal(compositeUrls.filter((url) => url.startsWith('/spdtf-2/working-groups')).length, 33);
@@ -85,7 +86,8 @@ test('category landing pages remain in breadcrumbs and exact page sequences', ()
     ['spdtf-2', 'Semantic modelling', '/spdtf-2/ontologies', '/spdtf-2/ontologies/why-ontologies'],
     ['spdtf-2', 'Property Pack ontology', '/spdtf-2/property-pack', '/spdtf-2/property-pack/definition-and-scope'],
     ['working-groups', 'Group workspaces', '/spdtf-2/working-groups', '/spdtf-2/working-groups/finance-and-banking'],
-    ['pdtf-1', 'Ontology reference', '/ontology', '/ontology/foundation'],
+    ['pdtf-1', 'Original standard', '/pdtf-1/original-standard', '/schema'],
+    ['pdtf-1', 'Extracted ontology', '/ontology', '/modelling'],
     ['governance', 'Governance framework', '/governance', '/governance/uk-initiative'],
     ['resources', 'Library', '/library', '/library/library-overview'],
   ]) {
@@ -97,6 +99,46 @@ test('category landing pages remain in breadcrumbs and exact page sequences', ()
   assert.equal(getNavigationPrevNext('/programme').next?.url, '/strategy');
   assert.equal(getNavigationPrevNext('/spdtf-2/ontologies').prev?.url, '/spdtf-2/property-pack/review-and-releases');
   assert.deepEqual(getNavigationPrevNext('/spdtf-2/property-pack/resources/common/generated-term'), {});
+});
+
+test('PDTF 1.0 exposes the original standard and extracted ontology as two nested journeys', () => {
+  const section = SECTION_NAVIGATION['pdtf-1'];
+  assert.deepEqual(section.groups.map(({ heading, url }) => [heading, url]), [
+    ['Overview', '/pdtf-1'],
+    ['Original standard', '/pdtf-1/original-standard'],
+    ['Extracted ontology', '/ontology'],
+  ]);
+
+  const original = section.groups[1];
+  assert.deepEqual(original.items.map(({ title, url }) => [title, url]), [
+    ['JSON Schemas and overlays', '/schema'],
+    ['Data dictionary', '/modelling/data-dictionary'],
+    ['Business glossary', '/modelling/business-glossary'],
+    ['Implementation guidance', '/implementation'],
+    ['Adoption evidence', '/adoption'],
+  ]);
+  assert.ok(flattenItems(original.items).some(({ url }) => url === '/schema/legal-estate'));
+  assert.ok(flattenItems(original.items).some(({ url }) => url === '/implementation/validation'));
+
+  const extracted = section.groups[2];
+  assert.deepEqual(extracted.items.slice(0, 2).map(({ title, url }) => [title, url]), [
+    ['How it was derived', '/modelling'],
+    ['Model views', '/model'],
+  ]);
+  assert.equal(extracted.items.at(-1).url, '/mapping');
+  assert.ok(flattenItems(extracted.items).some(({ url }) => url === '/ontology/classes'));
+  assert.ok(flattenItems(extracted.items).some(({ url }) => url === '/mapping/coverage'));
+
+  assert.deepEqual(
+    findNavigationPage('/ontology/classes').trail.map(({ url }) => url),
+    ['/ontology/classes'],
+  );
+
+  assert.equal(getNavigationPrevNext('/pdtf-1').next?.url, '/pdtf-1/original-standard');
+  assert.equal(getNavigationPrevNext('/pdtf-1/original-standard').next?.url, '/schema');
+  assert.equal(getNavigationPrevNext('/adoption/hmlr-llc').next?.url, '/ontology');
+  assert.equal(getNavigationPrevNext('/ontology').next?.url, '/modelling');
+  assert.equal(getNavigationPrevNext('/mapping/validate').next, undefined);
 });
 
 test('authority overrides and generated-route aliases resolve one terminal navigation page', () => {

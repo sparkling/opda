@@ -140,6 +140,16 @@ const PDTF_ADOPTION_STATUS = Object.freeze({
 /** Route-level exceptions prevent a parent label from overstating child authority. */
 export const ROUTE_STATUS_OVERRIDES = Object.freeze([
   {
+    pattern: /^\/pdtf-1\/original-standard$/u,
+    status: {
+      workArea: 'PDTF 1.0',
+      authority: 'Gateway to the published JSON Schema implementation and status-labelled supporting records',
+      maturity: 'Published schema implementation; supporting artefacts vary',
+      version: 'PDTF 1.0',
+      provenance: 'Committed schemas, overlays, dictionaries, glossary and attributed implementation evidence',
+    },
+  },
+  {
     pattern: /^\/spdtf-2\/property-pack(?:\/|$)/u,
     status: {
       workArea: 'SPDTF 2.0 · Property Pack ontology',

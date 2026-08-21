@@ -25,6 +25,7 @@ export const ROUTES = [
   '/spdtf-2/candidates',
   '/spdtf-2/outputs',
   '/pdtf-1',
+  '/pdtf-1/original-standard',
   '/governance',
   '/resources',
   '/search?q=PDTF',

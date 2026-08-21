@@ -42,10 +42,12 @@ test('desktop sidebar and nested tree controls work', async ({ page }) => {
   await expect(body).not.toHaveClass(/sidebar-collapsed/);
 
   await visit(page, '/schema');
-  const trigger = page.locator('.tree-folder .tree-toggle').first();
-  await expect(trigger).toHaveAttribute('aria-expanded', 'false');
-  await trigger.click();
-  await expect(trigger).toHaveAttribute('aria-expanded', 'true');
+  const activeTrigger = page.locator('.tree-toggle[data-label="JSON Schemas and overlays"]');
+  const unrelatedTrigger = page.locator('.tree-toggle[data-label="Implementation guidance"]');
+  await expect(activeTrigger).toHaveAttribute('aria-expanded', 'true');
+  await expect(unrelatedTrigger).toHaveAttribute('aria-expanded', 'false');
+  await unrelatedTrigger.click();
+  await expect(unrelatedTrigger).toHaveAttribute('aria-expanded', 'true');
   clean();
 });
 
