@@ -145,6 +145,9 @@ html { scroll-padding-top: calc(var(--header-height) + 1rem); }
   background: var(--color-code-inline-surface);
   color: var(--color-code-inline);
 }
+.prose code.standalone-identifier, code.standalone-identifier {
+  font: 400 var(--text-sm) / 1.4 var(--font-mono); background: transparent; padding: 0; border-radius: 0; color: var(--color-text-muted); overflow-wrap: anywhere; word-break: normal; white-space: normal;
+}
 
 .resource-link {
   text-decoration: none;

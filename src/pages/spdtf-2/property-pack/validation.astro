@@ -20,7 +20,7 @@ const passCount = validationReport.checks.filter((check) => check.state === 'pas
     <div class="v2-metric"><strong>{validationReport.source_item_count}</strong><span>source items checked</span></div>
     <div class="v2-metric"><strong>{validationReport.status}</strong><span>machine validation status</span></div>
   </div>
-  <dl class="v2-facts"><div><dt>Candidate</dt><dd><code>{validationReport.candidate_id}</code></dd></div><div><dt>Report schema</dt><dd><code>{validationReport.schema_version}</code></dd></div><div><dt>Checked-tree digest</dt><dd><code>{validationReport.checked_tree_digest}</code></dd></div></dl>
+  <dl class="v2-facts"><div><dt>Candidate</dt><dd><code class="standalone-identifier">{validationReport.candidate_id}</code></dd></div><div><dt>Report schema</dt><dd><code>{validationReport.schema_version}</code></dd></div><div><dt>Checked-tree digest</dt><dd><code class="standalone-identifier">{validationReport.checked_tree_digest}</code></dd></div></dl>
 
   <h2 id="tooling">Tooling and standards assurance</h2>
   <dl class="v2-facts">{Object.entries(validationReport.tooling).map(([key, value]) => <div><dt>{key.toUpperCase()}</dt><dd>{value}</dd></div>)}{Object.entries(validationReport.standards_assurance).map(([key, value]) => <div><dt>{key.replaceAll('_', ' ')}</dt><dd>{value}</dd></div>)}</dl>

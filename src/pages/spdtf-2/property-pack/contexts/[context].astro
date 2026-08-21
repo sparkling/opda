@@ -111,7 +111,7 @@ function semanticHomeLabel(row) {
             <tbody>
               {selected.map((resource) => (
                 <tr>
-                  <td><a href={resourceRoute(resource)}><strong>{resource.label}</strong></a><br/><code>{resource.key}</code></td>
+                  <td><a href={resourceRoute(resource)}><strong>{resource.label}</strong></a><br/><code class="standalone-identifier">{resource.key}</code></td>
                   <td>{resource.definition}</td>
                   <td>{resource.domain ? (resourceByIri.get(resource.domain)?.label ?? compactIri(resource.domain)) : <span class="v2-domain-missing">Not specified</span>}</td>
                   <td>{resource.range ? (resourceByIri.get(resource.range)?.label ?? compactIri(resource.range)) : '—'}</td>
@@ -135,7 +135,7 @@ function semanticHomeLabel(row) {
           <tr>
             <td>{row.edgeKind === 'subclass' ? <a href={resourceRoute(row.source)}>{row.source.label}</a> : row.source ? <a href={resourceRoute(row.source)}>{row.source.label}</a> : <span class="v2-domain-missing">Domain not specified</span>}</td>
             <td>{row.edgeKind === 'subclass' ? 'subclass of' : <a href={resourceRoute(row.relationship)}>{row.relationship.label}</a>}</td>
-            <td>{row.target ? <a href={resourceRoute(row.target)}>{targetLabel(row)}</a> : <code>{targetLabel(row)}</code>}</td>
+            <td>{row.target ? <a href={resourceRoute(row.target)}>{targetLabel(row)}</a> : <code class="standalone-identifier">{targetLabel(row)}</code>}</td>
             <td>{row.edgeKind === 'subclass' ? 'Class hierarchy' : kindLabels[row.edgeKind]}</td>
             <td>{semanticHomeLabel(row)}</td>
           </tr>

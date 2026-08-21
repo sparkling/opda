@@ -92,7 +92,10 @@ header uses deep brand ink with white text in light mode and the corresponding
 dark surface tint in dark mode. The responsive table contract was also changed
 from intrinsic-width scrolling to wrap-first columns.
 Shared tables now fit their content track, wrap ordinary and technical cell content,
-and do not add focusable horizontal-scroll viewports. Visible caption bars are
+and do not add focusable horizontal-scroll viewports. They use automatic table layout so
+column proportions follow their content rather than an equal-width allocation. Standalone
+URI, IRI, URN and CURIE identifiers use unboxed monospace text while ordinary inline code
+retains its code surface. Visible caption bars are
 removed while semantic captions remain visually hidden for assistive technology.
 
 ### Brand conflict resolution

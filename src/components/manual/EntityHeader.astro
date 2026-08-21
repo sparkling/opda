@@ -35,7 +35,7 @@ const tierLabel: Record<string, string> = {
   <h1 class="entity-header__title">{title}</h1>
   {entityUri && (
     <div class="entity-header__uri">
-      <code class="entity-header__uri-code">{entityUri}</code>
+      <code class="entity-header__uri-code standalone-identifier">{entityUri}</code>
     </div>
   )}
 </div>
@@ -103,10 +103,13 @@ const tierLabel: Record<string, string> = {
   }
 
   .entity-header__uri-code {
-    font: 400 var(--text-sm) / 1 var(--font-mono);
+    font: 400 var(--text-sm) / 1.4 var(--font-mono);
     color: var(--color-text-muted);
-    background: var(--color-surface-tint);
-    padding: 0.15em var(--space-2);
-    border-radius: var(--radius-sm);
+    background: transparent;
+    padding: 0;
+    border-radius: 0;
+    overflow-wrap: anywhere;
+    word-break: normal;
+    white-space: normal;
   }
 </style>

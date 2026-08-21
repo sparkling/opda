@@ -36,8 +36,8 @@ const target = resourceByIri.get(shape.target_class);
 
   <h2 id="identity">Shape identity</h2>
   <dl class="v2-facts">
-    <div><dt>Shape IRI</dt><dd><code>{shape.iri}</code></dd></div>
-    <div><dt>Target class</dt><dd>{target ? <a href={resourceRoute(target)}>{target.label}</a> : <code>{compactIri(shape.target_class)}</code>}</dd></div>
+    <div><dt>Shape IRI</dt><dd><code class="standalone-identifier">{shape.iri}</code></dd></div>
+    <div><dt>Target class</dt><dd>{target ? <a href={resourceRoute(target)}>{target.label}</a> : <code class="standalone-identifier">{compactIri(shape.target_class)}</code>}</dd></div>
     <div><dt>Semantic home</dt><dd><a href={`/spdtf-2/property-pack/contexts/${shape.semantic_home}`}>{context?.label}</a></dd></div>
     <div><dt>Candidate status</dt><dd>{shape.candidate_status.replaceAll('-', ' ')}</dd></div>
   </dl>
@@ -46,7 +46,7 @@ const target = resourceByIri.get(shape.target_class);
   <div class="v2-table-wrap">
     <table>
       <thead><tr><th>Path</th><th>Kind</th><th>Cardinality</th><th>Value constraint</th><th>Pattern</th></tr></thead>
-      <tbody>{shape.properties.map((property) => { const path = resourceByIri.get(property.path_iri); const value = property.datatype ? compactIri(property.datatype) : property.class ? compactIri(property.class) : 'Not constrained'; return <tr><td>{path ? <a href={resourceRoute(path)}><strong>{property.label}</strong><br/><code>{property.path_key}</code></a> : <code>{property.path_key}</code>}</td><td>{property.kind.replaceAll('-', ' ')}</td><td>{property.min_count ?? 0}..{property.max_count ?? '*'}</td><td><code>{value}</code></td><td><code>{property.pattern || '—'}</code></td></tr>; })}</tbody>
+      <tbody>{shape.properties.map((property) => { const path = resourceByIri.get(property.path_iri); const value = property.datatype ? compactIri(property.datatype) : property.class ? compactIri(property.class) : 'Not constrained'; return <tr><td>{path ? <a href={resourceRoute(path)}><strong>{property.label}</strong><br/><code class="standalone-identifier">{property.path_key}</code></a> : <code class="standalone-identifier">{property.path_key}</code>}</td><td>{property.kind.replaceAll('-', ' ')}</td><td>{property.min_count ?? 0}..{property.max_count ?? '*'}</td><td><code class="standalone-identifier">{value}</code></td><td><code>{property.pattern || '—'}</code></td></tr>; })}</tbody>
     </table>
   </div>
 </PropertyPackPage>

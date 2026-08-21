@@ -315,7 +315,7 @@
   width: 100%;
   max-width: 100%;
   min-width: 0;
-  table-layout: fixed;
+  table-layout: auto;
   border-collapse: separate;
   border-spacing: 0;
   font-size: var(--text-sm);
@@ -323,10 +323,12 @@
 }
 .db-table :is(th, td) {
   min-width: 0;
+  width: auto !important;
   overflow-wrap: anywhere;
   word-break: normal;
   white-space: normal;
 }
+.db-table col { width: auto !important; }
 .db-table.db-table--fixed td code {
   display: inline-block; max-width: 100%; overflow-wrap: anywhere; word-break: normal; white-space: normal;
 }
@@ -334,8 +336,7 @@
 .db-table th.align-center, .db-table td.align-center { text-align: center; }
 .db-table th.align-left,   .db-table td.align-left   { text-align: left; }
 /* Overlays column — descriptive name per line + the short key in muted
-   text in parens after. One overlay per line; the cell wraps naturally
-   even with table-layout: fixed. */
+   text in parens after. One overlay per line; the cell wraps naturally. */
 .db-table td.overlay-cell { line-height: 1.4; vertical-align: top; }
 .db-table .overlay-line { display: block; padding: 1px 0; }
 .db-table .overlay-line + .overlay-line { margin-top: 0.15em; }
@@ -399,10 +400,8 @@
 .db-table tbody tr:nth-child(2n) td:not(:first-child) { background: var(--color-table-stripe-surface); }
 .db-table code {
   font: 400 var(--text-caption) / 1.4 var(--font-mono);
-  padding: 1px 5px;
-  border-radius: 3px;
-  background: var(--color-code-inline-surface);
-  color: var(--color-code-inline);
+  background: transparent; padding: 0; border-radius: 0; color: inherit;
+  overflow-wrap: anywhere; word-break: normal; white-space: normal;
 }
 .db-table .pill { font-size: var(--text-xs); padding: 1px 8px; }
 .required-marker {

@@ -42,7 +42,7 @@ import {
           const stats = contextStats(context.id);
           return (
             <tr>
-              <td><a href={contextRoute(context)}><strong>{context.id === 'dbt-smart-data' ? 'DBT Smart Data candidate semantic context' : context.label}</strong></a><br/><code>{context.id}</code></td>
+              <td><a href={contextRoute(context)}><strong>{context.id === 'dbt-smart-data' ? 'DBT Smart Data candidate semantic context' : context.label}</strong></a><br/><code class="standalone-identifier">{context.id}</code></td>
               <td>{contextKindLabels[context.kind]}</td>
               <td>{context.definition}</td>
               <td>{stats.resources}</td>

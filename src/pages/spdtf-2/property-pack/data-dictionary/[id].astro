@@ -51,12 +51,12 @@ const constraintRows = [
 
   <h2 id="source">Source identity</h2>
   <dl class="v2-facts">
-    <div><dt>Stable item ID</dt><dd><code>{item.item_id}</code></dd></div>
-    <div><dt>Source path</dt><dd><code>{item.source_path}</code></dd></div>
+    <div><dt>Stable item ID</dt><dd><code class="standalone-identifier">{item.item_id}</code></dd></div>
+    <div><dt>Source path</dt><dd><code class="standalone-identifier">{item.source_path}</code></dd></div>
     <div><dt>Source label</dt><dd>{item.preferred_label}</dd></div>
     <div><dt>Work package</dt><dd>{item.work_package.replaceAll('-', ' ')}</dd></div>
     <div><dt>Definition status</dt><dd>{item.definition_status.replaceAll('-', ' ')}</dd></div>
-    {dictionary?.topic_iri && <div><dt>Topic concept</dt><dd><code>{dictionary.topic_iri}</code></dd></div>}
+    {dictionary?.topic_iri && <div><dt>Topic concept</dt><dd><code class="standalone-identifier">{dictionary.topic_iri}</code></dd></div>}
   </dl>
 
   <h2 id="source-constraints">Source constraints</h2>
@@ -69,7 +69,7 @@ const constraintRows = [
   <h2 id="candidate">Candidate interpretation</h2>
   <dl class="v2-facts">
     <div><dt>Semantic home</dt><dd><a href={`/spdtf-2/property-pack/contexts/${item.semantic_home}`}>{context?.label}</a></dd></div>
-    <div><dt>Modelling rule</dt><dd><code>{item.rule_id}</code></dd></div>
+    <div><dt>Modelling rule</dt><dd><code class="standalone-identifier">{item.rule_id}</code></dd></div>
     <div><dt>Disposition</dt><dd>{item.disposition}</dd></div>
     <div><dt>Candidate roles</dt><dd>{item.roles.join(' · ')}</dd></div>
     <div><dt>Rationale</dt><dd>{item.rationale}</dd></div>
@@ -81,13 +81,13 @@ const constraintRows = [
   <ul>
     {constructs.map(({ iri, resource }, index) => (
       <li>
-        {resource ? <a href={resourceRoute(resource)}>{resource.label}</a> : <code>{compactIri(iri)}</code>}
-        {' '}<code>{item.construct_keys[index] ?? resource?.key ?? compactIri(iri)}</code>
+        {resource ? <a href={resourceRoute(resource)}>{resource.label}</a> : <code class="standalone-identifier">{compactIri(iri)}</code>}
+        {' '}<code class="standalone-identifier">{item.construct_keys[index] ?? resource?.key ?? compactIri(iri)}</code>
       </li>
     ))}
   </ul>
-  {scheme ? <p>Controlled vocabulary: <a href={vocabularyRoute(scheme)}>{scheme.label}</a>.</p> : item.vocabulary_ref ? <p>Vocabulary reference: <code>{compactIri(item.vocabulary_ref)}</code>.</p> : <p>No controlled vocabulary is assigned.</p>}
+  {scheme ? <p>Controlled vocabulary: <a href={vocabularyRoute(scheme)}>{scheme.label}</a>.</p> : item.vocabulary_ref ? <p>Vocabulary reference: <code class="standalone-identifier">{compactIri(item.vocabulary_ref)}</code>.</p> : <p>No controlled vocabulary is assigned.</p>}
 
   <h2 id="evidence">Evidence trace</h2>
-  <ul>{item.evidence.map((evidence) => <li><code>{evidence}</code></li>)}</ul>
+  <ul>{item.evidence.map((evidence) => <li><code class="standalone-identifier">{evidence}</code></li>)}</ul>
 </PropertyPackPage>

@@ -52,9 +52,9 @@ const workPackageOptions = workPackages.map((value) => ({
             data-context={item.semantic_home}
             data-kind={item.work_package}
           >
-            <td><a href={dataPointRoute(item)}><strong>{item.preferred_label}</strong></a><br/><code>{item.item_id}</code></td>
+            <td><a href={dataPointRoute(item)}><strong>{item.preferred_label}</strong></a><br/><code class="standalone-identifier">{item.item_id}</code></td>
             <td><a href={`/spdtf-2/property-pack/contexts/${item.semantic_home}`}>{contextById.get(item.semantic_home)?.label}</a></td>
-            <td><code>{item.source_path}</code></td>
+            <td><code class="standalone-identifier">{item.source_path}</code></td>
             <td>{item.source_constraints.requiredness}<br/><small>{item.source_constraints.min_count ?? 0}..{item.source_constraints.max_count ?? '*'}</small></td>
             <td>{item.construct_keys.length}</td>
           </tr>

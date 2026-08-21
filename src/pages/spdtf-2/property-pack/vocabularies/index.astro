@@ -42,7 +42,7 @@ const contextOptions = contexts.map((context) => ({ value: context.id, label: co
             data-context={scheme.semantic_home}
             data-kind=""
           >
-            <td><a href={vocabularyRoute(scheme)}><strong>{scheme.label}</strong></a><br/><code>{scheme.key}</code></td>
+            <td><a href={vocabularyRoute(scheme)}><strong>{scheme.label}</strong></a><br/><code class="standalone-identifier">{scheme.key}</code></td>
             <td><a href={`/spdtf-2/property-pack/contexts/${scheme.semantic_home}`}>{contextById.get(scheme.semantic_home)?.label}</a></td>
             <td>{scheme.definition}</td>
             <td>{scheme.concepts.length}</td>

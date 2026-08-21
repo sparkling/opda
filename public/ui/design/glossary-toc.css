@@ -25,7 +25,7 @@
   width: 100%;
   max-width: 100%;
   min-width: 0;
-  table-layout: fixed;
+  table-layout: auto;
   border-collapse: separate;
   border-spacing: 0;
   margin: var(--space-5) 0;
@@ -37,6 +37,7 @@
 }
 .glossary-table th,
 .glossary-table td {
+  width: auto !important;
   text-align: left;
   padding: var(--space-3) var(--space-4);
   border-bottom: 1px solid var(--color-border);
@@ -45,6 +46,7 @@
   word-break: normal;
   white-space: normal;
 }
+.glossary-table col { width: auto !important; }
 .glossary-table tbody tr:last-child td { border-bottom: 0; }
 .glossary-table th {
   background: var(--color-table-header-surface);

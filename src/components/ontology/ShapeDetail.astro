@@ -45,8 +45,8 @@ const localOf = (uri: string) => uri.replace(/^.*[/#]/, '');
         <tbody>
           {shape.constraints.map((c) => (
             <tr>
-              <td>{isOpda(c.path) && hasResource(idOf(c.path)) ? <a href={`/pdtf/${idOf(c.path)}`}><code>{c.pathLocal}</code></a> : <code>{c.pathLocal}</code>}</td>
-              <td>{c.datatype ? <code>{c.datatype}</code> : c.class ? <code>{localOf(c.class)}</code> : <span class="muted">—</span>}</td>
+              <td>{isOpda(c.path) && hasResource(idOf(c.path)) ? <a href={`/pdtf/${idOf(c.path)}`}><code class="standalone-identifier">{c.pathLocal}</code></a> : <code class="standalone-identifier">{c.pathLocal}</code>}</td>
+              <td>{c.datatype ? <code class="standalone-identifier">{c.datatype}</code> : c.class ? <code class="standalone-identifier">{localOf(c.class)}</code> : <span class="muted">—</span>}</td>
               <td>{card(c.minCount, c.maxCount)}</td>
               <td>{c.severity ?? <span class="muted">—</span>}</td>
               <td>{c.message || <span class="muted">—</span>}</td>
@@ -70,7 +70,7 @@ const localOf = (uri: string) => uri.replace(/^.*[/#]/, '');
   .term-dl dt { font: 600 var(--text-xs) / 1.4 var(--font-sans); letter-spacing: var(--tracking-meta); text-transform: uppercase; color: var(--color-text-muted); }
   .term-dl dd { margin: 0; color: var(--color-text); }
   .table-wrap { overflow-x: visible; margin: var(--space-3) 0; }
-  .table-wrap table { width: 100%; max-width: 100%; min-width: 0; table-layout: fixed; }
+  .table-wrap table { width: 100%; max-width: 100%; min-width: 0; table-layout: auto; }
   .table-wrap :is(th, td) { overflow-wrap: anywhere; word-break: normal; white-space: normal; }
   .muted { color: var(--color-text-muted); }
 </style>

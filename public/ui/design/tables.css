@@ -4,7 +4,7 @@
   width: 100%;
   max-width: 100%;
   min-width: 0;
-  table-layout: fixed;
+  table-layout: auto;
   border-collapse: separate;
   border-spacing: 0;
   margin: var(--space-5) 0;
@@ -17,6 +17,7 @@
 .prose th,
 .prose td {
   min-width: 0;
+  width: auto !important;
   padding: var(--space-3) var(--space-4);
   text-align: left;
   vertical-align: top;
@@ -24,6 +25,8 @@
   word-break: normal;
   white-space: normal;
 }
+
+.prose table col { width: auto !important; }
 
 /* Keep semantic captions for assistive technology without adding a visual
    label bar above every table. Section headings provide the visible context. */
@@ -64,7 +67,7 @@ table > caption {
 .prose tbody tr:nth-child(2n) > td:not(:first-child) {
   background: var(--color-table-stripe-surface);
 }
-.prose table.ext-table { width: 100%; table-layout: fixed; }
+.prose table.ext-table { width: 100%; table-layout: auto; }
 
 /* Direct-child tables retain table semantics and fit the article without scrolling. */
 .prose > table {

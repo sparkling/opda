@@ -222,10 +222,7 @@
     const summary = el('div', { class: 'db-summary' });
     root.appendChild(summary);
     const tableWrap = el('div', { class: 'db-table-wrap' });
-    const anyWidth = columns.some(c => c.width);
-    const table = el('table', { class: 'db-table' + (anyWidth ? ' db-table--fixed' : '') });
-    const colgroup = el('colgroup');
-    table.appendChild(colgroup);
+    const table = el('table', { class: 'db-table' });
     const thead = el('thead');
     const headerRow = el('tr');
     thead.appendChild(headerRow);
@@ -287,14 +284,6 @@
     }
     function renderHeader() {
       const cols = visibleCols();
-      colgroup.innerHTML = '';
-      if (anyWidth) {
-        cols.forEach(col => {
-          const c = el('col');
-          if (col.width) c.style.width = col.width;
-          colgroup.appendChild(c);
-        });
-      }
       headerRow.innerHTML = '';
       cols.forEach(col => {
         const th = el('th', {

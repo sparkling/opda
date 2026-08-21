@@ -232,12 +232,14 @@
             <caption>Example standards-status pattern</caption>
             <thead><tr><th scope="col" aria-sort="ascending">Term ↑</th><th scope="col">Context</th><th scope="col">Status</th><th scope="col">Source</th></tr></thead>
             <tbody>
-              <tr><th scope="row"><code>Property</code></th><td>Common boundary</td><td><span class="badge badge--success">✓ Current</span></td><td><span class="source-chip">Corpus · 2026-08-16</span></td></tr>
-              <tr><th scope="row"><code>RegisteredTitle</code></th><td>Conveyancing</td><td><span class="badge badge--warning">◇ Candidate</span></td><td><span class="source-chip">PP-451 · review</span></td></tr>
-              <tr><th scope="row"><code>EnergyCertificate</code></th><td>Surveying</td><td><span class="badge badge--info">i Evidence</span></td><td><span class="source-chip">BASPI · observed</span></td></tr>
+              <tr><th scope="row"><code class="standalone-identifier">Property</code></th><td>Common boundary</td><td><span class="badge badge--success">✓ Current</span></td><td><span class="source-chip">Corpus · 2026-08-16</span></td></tr>
+              <tr><th scope="row"><code class="standalone-identifier">RegisteredTitle</code></th><td>Conveyancing</td><td><span class="badge badge--warning">◇ Candidate</span></td><td><span class="source-chip">PP-451 · review</span></td></tr>
+              <tr><th scope="row"><code class="standalone-identifier">EnergyCertificate</code></th><td>Surveying</td><td><span class="badge badge--info">i Evidence</span></td><td><span class="source-chip">BASPI · observed</span></td></tr>
             </tbody>
           </table>
         </div>
+
+        <p>Tables use automatic, content-proportional columns. Standalone identifiers use unboxed monospace text, for example <code class="standalone-identifier">urn:opda:example:Property</code>; ordinary inline code such as <code>aria-sort</code> retains its quiet code surface.</p>
 
         <div class="data-patterns">
           <article><h3>Filter state</h3><p>Search, filters, result count and reset form one labelled toolbar. Applied filters remain visible and removable.</p></article>

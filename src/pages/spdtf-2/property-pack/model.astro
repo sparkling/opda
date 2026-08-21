@@ -86,7 +86,7 @@ function targetLabel(row) {
     <div class="v2-table-wrap">
       <table>
         <thead><tr><th>Human label</th><th>Kind</th><th>Semantic home</th><th>Definition</th></tr></thead>
-        <tbody>{resources.map((resource) => <tr><td><a href={resourceRoute(resource)}><strong>{resource.label}</strong></a><br/><code>{resource.key}</code></td><td>{kindLabels[resource.kind]}</td><td>{resource.semantic_home}</td><td>{resource.definition}</td></tr>)}</tbody>
+        <tbody>{resources.map((resource) => <tr><td><a href={resourceRoute(resource)}><strong>{resource.label}</strong></a><br/><code class="standalone-identifier">{resource.key}</code></td><td>{kindLabels[resource.kind]}</td><td>{resource.semantic_home}</td><td>{resource.definition}</td></tr>)}</tbody>
       </table>
     </div>
   </details>
@@ -103,7 +103,7 @@ function targetLabel(row) {
             <tr>
               <td>{row.edgeKind === 'subclass' ? <a href={resourceRoute(row.source)}>{row.source.label}</a> : row.source ? <a href={resourceRoute(row.source)}>{row.source.label}</a> : <span class="v2-domain-missing">Domain not specified</span>}</td>
               <td>{row.edgeKind === 'subclass' ? 'subclass of' : <a href={resourceRoute(row.relationship)}>{row.relationship.label}</a>}</td>
-              <td>{row.target ? <a href={resourceRoute(row.target)}>{targetLabel(row)}</a> : <code>{targetLabel(row)}</code>}</td>
+              <td>{row.target ? <a href={resourceRoute(row.target)}>{targetLabel(row)}</a> : <code class="standalone-identifier">{targetLabel(row)}</code>}</td>
               <td>{row.edgeKind === 'subclass' ? 'Class hierarchy' : kindLabels[row.edgeKind]}</td>
             </tr>
           ))}
@@ -116,7 +116,7 @@ function targetLabel(row) {
   <p>These six object properties have an asserted range but no asserted domain. The reference exposes that gap and does not infer or guess one.</p>
   <div class="v2-table-wrap">
     <table><thead><tr><th>Property</th><th>Range</th><th>Semantic home</th></tr></thead><tbody>
-      {domainless.map((resource) => <tr><td><a href={resourceRoute(resource)}>{resource.label}</a><br/><code>{resource.key}</code></td><td>{compactIri(resource.range)}</td><td>{resource.semantic_home}</td></tr>)}
+      {domainless.map((resource) => <tr><td><a href={resourceRoute(resource)}>{resource.label}</a><br/><code class="standalone-identifier">{resource.key}</code></td><td><code class="standalone-identifier">{compactIri(resource.range)}</code></td><td>{resource.semantic_home}</td></tr>)}
     </tbody></table>
   </div>
 </PropertyPackPage>

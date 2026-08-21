@@ -40,7 +40,7 @@ function endpoint(iri) {
   <div class="v2-table-wrap" id="v2-object-properties">
     <table>
       <thead><tr><th>Domain</th><th>Object property</th><th>Range</th><th>Semantic home</th></tr></thead>
-      <tbody>{objectProperties.map((property) => { const domain = endpoint(property.domain); const range = endpoint(property.range); return <tr data-search={`${property.label} ${property.key} ${domain?.label ?? ''} ${range?.label ?? compactIri(property.range)}`.toLocaleLowerCase()} data-context={property.semantic_home} data-kind=""><td>{domain ? <a href={resourceRoute(domain)}>{domain.label}</a> : <span class="v2-domain-missing">Not specified</span>}</td><td><a href={resourceRoute(property)}><strong>{property.label}</strong></a><br/><code>{property.key}</code></td><td>{range ? <a href={resourceRoute(range)}>{range.label}</a> : <code>{compactIri(property.range)}</code>}</td><td><a href={`/spdtf-2/property-pack/contexts/${property.semantic_home}`}>{contextById.get(property.semantic_home)?.label}</a></td></tr>; })}</tbody>
+      <tbody>{objectProperties.map((property) => { const domain = endpoint(property.domain); const range = endpoint(property.range); return <tr data-search={`${property.label} ${property.key} ${domain?.label ?? ''} ${range?.label ?? compactIri(property.range)}`.toLocaleLowerCase()} data-context={property.semantic_home} data-kind=""><td>{domain ? <a href={resourceRoute(domain)}>{domain.label}</a> : <span class="v2-domain-missing">Not specified</span>}</td><td><a href={resourceRoute(property)}><strong>{property.label}</strong></a><br/><code class="standalone-identifier">{property.key}</code></td><td>{range ? <a href={resourceRoute(range)}>{range.label}</a> : <code class="standalone-identifier">{compactIri(property.range)}</code>}</td><td><a href={`/spdtf-2/property-pack/contexts/${property.semantic_home}`}>{contextById.get(property.semantic_home)?.label}</a></td></tr>; })}</tbody>
     </table>
   </div>
 
@@ -53,7 +53,7 @@ function endpoint(iri) {
   <div class="v2-table-wrap" id="v2-datatype-properties">
     <table>
       <thead><tr><th>Domain</th><th>Datatype property</th><th>Datatype</th><th>Semantic home</th></tr></thead>
-      <tbody>{datatypeProperties.map((property) => { const domain = endpoint(property.domain); return <tr data-search={`${property.label} ${property.key} ${domain?.label ?? ''} ${compactIri(property.range)}`.toLocaleLowerCase()} data-context={property.semantic_home} data-kind=""><td>{domain ? <a href={resourceRoute(domain)}>{domain.label}</a> : <span class="v2-domain-missing">Not specified</span>}</td><td><a href={resourceRoute(property)}><strong>{property.label}</strong></a><br/><code>{property.key}</code></td><td><code>{compactIri(property.range)}</code></td><td><a href={`/spdtf-2/property-pack/contexts/${property.semantic_home}`}>{contextById.get(property.semantic_home)?.label}</a></td></tr>; })}</tbody>
+      <tbody>{datatypeProperties.map((property) => { const domain = endpoint(property.domain); return <tr data-search={`${property.label} ${property.key} ${domain?.label ?? ''} ${compactIri(property.range)}`.toLocaleLowerCase()} data-context={property.semantic_home} data-kind=""><td>{domain ? <a href={resourceRoute(domain)}>{domain.label}</a> : <span class="v2-domain-missing">Not specified</span>}</td><td><a href={resourceRoute(property)}><strong>{property.label}</strong></a><br/><code class="standalone-identifier">{property.key}</code></td><td><code class="standalone-identifier">{compactIri(property.range)}</code></td><td><a href={`/spdtf-2/property-pack/contexts/${property.semantic_home}`}>{contextById.get(property.semantic_home)?.label}</a></td></tr>; })}</tbody>
     </table>
   </div>
 
@@ -61,7 +61,7 @@ function endpoint(iri) {
   <div class="v2-table-wrap">
     <table>
       <thead><tr><th>Subclass</th><th>Superclass</th><th>Semantic home</th></tr></thead>
-      <tbody>{subclasses.map((resource) => { const parent = endpoint(resource.subclass_of); return <tr><td><a href={resourceRoute(resource)}>{resource.label}</a></td><td>{parent ? <a href={resourceRoute(parent)}>{parent.label}</a> : <code>{compactIri(resource.subclass_of)}</code>}</td><td><a href={`/spdtf-2/property-pack/contexts/${resource.semantic_home}`}>{contextById.get(resource.semantic_home)?.label}</a></td></tr>; })}</tbody>
+      <tbody>{subclasses.map((resource) => { const parent = endpoint(resource.subclass_of); return <tr><td><a href={resourceRoute(resource)}>{resource.label}</a></td><td>{parent ? <a href={resourceRoute(parent)}>{parent.label}</a> : <code class="standalone-identifier">{compactIri(resource.subclass_of)}</code>}</td><td><a href={`/spdtf-2/property-pack/contexts/${resource.semantic_home}`}>{contextById.get(resource.semantic_home)?.label}</a></td></tr>; })}</tbody>
     </table>
   </div>
 

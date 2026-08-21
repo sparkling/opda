@@ -61,8 +61,8 @@ const card = (min: string | null, max: string | null) =>
         <tbody>
           {prop.constraints.map((c) => (
             <tr>
-              <td>{c.shape ? <a href={`/pdtf/${c.shape}`}><code>{c.shape.replace(/^shape\//, '')}</code></a> : <span class="muted">—</span>}</td>
-              <td>{c.datatype ? <code>{c.datatype}</code> : c.class ? <code>{c.class}</code> : <span class="muted">—</span>}</td>
+              <td>{c.shape ? <a href={`/pdtf/${c.shape}`}><code class="standalone-identifier">{c.shape.replace(/^shape\//, '')}</code></a> : <span class="muted">—</span>}</td>
+              <td>{c.datatype ? <code class="standalone-identifier">{c.datatype}</code> : c.class ? <code class="standalone-identifier">{c.class}</code> : <span class="muted">—</span>}</td>
               <td>{card(c.minCount, c.maxCount)}</td>
               <td>{c.severity ?? <span class="muted">—</span>}</td>
               <td>{c.message || <span class="muted">—</span>}</td>
@@ -114,7 +114,7 @@ const card = (min: string | null, max: string | null) =>
   }
   .term-dl dd { margin: 0; color: var(--color-text); }
   .table-wrap { overflow-x: visible; margin: var(--space-3) 0; }
-  .table-wrap table { width: 100%; max-width: 100%; min-width: 0; table-layout: fixed; }
+  .table-wrap table { width: 100%; max-width: 100%; min-width: 0; table-layout: auto; }
   .table-wrap :is(th, td) { overflow-wrap: anywhere; word-break: normal; white-space: normal; }
   .muted { color: var(--color-text-muted); }
   .chip-list { list-style: none; padding: 0; margin: 0; display: flex; flex-wrap: wrap; gap: var(--space-2); }

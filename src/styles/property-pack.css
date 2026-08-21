@@ -131,10 +131,11 @@ a.v2-card:focus-visible { border-color: var(--color-data-1); }
   border: 1px solid var(--color-border);
 }
 
-.v2-table-wrap table { width: 100%; max-width: 100%; min-width: 0; margin: 0; table-layout: fixed; border: 0; }
-.v2-table-wrap :is(th, td) { min-width: 0; overflow-wrap: anywhere; word-break: normal; white-space: normal; }
+.v2-table-wrap table { width: 100%; max-width: 100%; min-width: 0; margin: 0; table-layout: auto; border: 0; }
+.v2-table-wrap :is(th, td) { min-width: 0; width: auto !important; overflow-wrap: anywhere; word-break: normal; white-space: normal; }
+.v2-table-wrap col { width: auto !important; }
 .v2-table-wrap td { vertical-align: top; }
-.v2-table-wrap code { overflow-wrap: anywhere; }
+.v2-table-wrap code { overflow-wrap: anywhere; word-break: normal; white-space: normal; }
 
 .v2-filter {
   display: grid;

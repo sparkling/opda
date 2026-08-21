@@ -45,7 +45,7 @@ const kindOptions = Object.entries(kindLabels).map(([value, label]) => ({ value,
             data-context={resource.semantic_home}
             data-kind={resource.kind}
           >
-            <td><a href={resourceRoute(resource)}><strong>{resource.label}</strong></a><br/><code>{resource.key}</code></td>
+            <td><a href={resourceRoute(resource)}><strong>{resource.label}</strong></a><br/><code class="standalone-identifier">{resource.key}</code></td>
             <td>{kindLabels[resource.kind]}</td>
             <td><a href={`/spdtf-2/property-pack/contexts/${resource.semantic_home}`}>{contextById.get(resource.semantic_home)?.label}</a></td>
             <td>{resource.definition}</td>

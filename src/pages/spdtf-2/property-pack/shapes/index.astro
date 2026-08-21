@@ -39,7 +39,7 @@ const contextOptions = contexts.map((context) => ({ value: context.id, label: co
       <tbody>
         {shapes.map((shape) => {
           const target = resourceByIri.get(shape.target_class);
-          return <tr data-search={`${shape.target_label} ${shape.target_key} ${shape.iri}`.toLocaleLowerCase()} data-context={shape.semantic_home} data-kind=""><td><a href={shapeRoute(shape)}><strong>{shape.target_label}</strong></a>{target && <><br/><a href={resourceRoute(target)}><code>{shape.target_key}</code></a></>}</td><td><a href={`/spdtf-2/property-pack/contexts/${shape.semantic_home}`}>{contextById.get(shape.semantic_home)?.label}</a></td><td><code>{shape.iri}</code></td><td>{shape.properties.length}</td></tr>;
+          return <tr data-search={`${shape.target_label} ${shape.target_key} ${shape.iri}`.toLocaleLowerCase()} data-context={shape.semantic_home} data-kind=""><td><a href={shapeRoute(shape)}><strong>{shape.target_label}</strong></a>{target && <><br/><a href={resourceRoute(target)}><code class="standalone-identifier">{shape.target_key}</code></a></>}</td><td><a href={`/spdtf-2/property-pack/contexts/${shape.semantic_home}`}>{contextById.get(shape.semantic_home)?.label}</a></td><td><code class="standalone-identifier">{shape.iri}</code></td><td>{shape.properties.length}</td></tr>;
         })}
       </tbody>
     </table>

@@ -34,11 +34,11 @@ function formatBytes(bytes) {
 
   <h2 id="identity">Package identity</h2>
   <dl class="v2-facts">
-    <div><dt>Candidate ID</dt><dd><code>{candidateManifest.candidate_id}</code></dd></div>
+    <div><dt>Candidate ID</dt><dd><code class="standalone-identifier">{candidateManifest.candidate_id}</code></dd></div>
     <div><dt>Version</dt><dd><code>{candidateManifest.candidate_version}</code></dd></div>
-    <div><dt>Base IRI</dt><dd><code>{candidateManifest.base_iri}</code></dd></div>
+    <div><dt>Base IRI</dt><dd><code class="standalone-identifier">{candidateManifest.base_iri}</code></dd></div>
     <div><dt>Publication status</dt><dd>{candidateManifest.publication_status.replaceAll('-', ' ')}</dd></div>
-    <div><dt>Tree digest</dt><dd><code>{candidateManifest.tree_digest}</code></dd></div>
+    <div><dt>Tree digest</dt><dd><code class="standalone-identifier">{candidateManifest.tree_digest}</code></dd></div>
     <div><dt>Ontology resources</dt><dd>{candidateSummary.ontology_resource_count}</dd></div>
   </dl>
   <p>{candidateManifest.authority_note}</p>
@@ -47,7 +47,7 @@ function formatBytes(bytes) {
   {families.map(([label, family]) => (
     <section>
       <h3>{label} ({family.length})</h3>
-      <div class="v2-table-wrap"><table><thead><tr><th>Path</th><th>Size</th><th>SHA-256</th></tr></thead><tbody>{family.map((file) => <tr><td><a href={resourceUrl(file.path)}><code>{file.path}</code></a></td><td>{formatBytes(file.bytes)}</td><td><code>{file.sha256 ?? '—'}</code></td></tr>)}</tbody></table></div>
+      <div class="v2-table-wrap"><table><thead><tr><th>Path</th><th>Size</th><th>SHA-256</th></tr></thead><tbody>{family.map((file) => <tr><td><a href={resourceUrl(file.path)}><code class="standalone-identifier">{file.path}</code></a></td><td>{formatBytes(file.bytes)}</td><td><code class="standalone-identifier">{file.sha256 ?? '—'}</code></td></tr>)}</tbody></table></div>
     </section>
   ))}
 

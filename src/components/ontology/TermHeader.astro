@@ -46,7 +46,7 @@ const hint = comment?.trim() && comment.trim() !== def ? comment.trim() : '';
       : <span class="term-context">{context}</span>)}
   </p>
   <h1>{label}</h1>
-  <p class="term-iri"><code>{iri}</code>{ttlHref && <a class="term-ttl" href={ttlHref}>Turtle ↓</a>}</p>
+  <p class="term-iri"><code class="standalone-identifier">{iri}</code>{ttlHref && <a class="term-ttl" href={ttlHref}>Turtle ↓</a>}</p>
   {def && <p class="term-definition">{def}</p>}
   {hint && <p class="term-comment">{hint}</p>}
 </header>
@@ -79,7 +79,12 @@ const hint = comment?.trim() && comment.trim() !== def ? comment.trim() : '';
   .term-iri code {
     font: 400 var(--text-sm) / 1.4 var(--font-mono);
     color: var(--color-text-muted);
-    word-break: break-all;
+    background: transparent;
+    padding: 0;
+    border-radius: 0;
+    overflow-wrap: anywhere;
+    word-break: normal;
+    white-space: normal;
   }
   .term-ttl {
     margin-left: var(--space-3);

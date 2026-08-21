@@ -55,8 +55,8 @@ const range = resource.range ? resourceByIri.get(resource.range) : undefined;
 
   <h2 id="identity">Identity and meaning</h2>
   <dl class="v2-facts">
-    <div><dt>Identifier</dt><dd><code>{resource.key}</code></dd></div>
-    <div><dt>IRI</dt><dd><code>{resource.iri}</code></dd></div>
+    <div><dt>Identifier</dt><dd><code class="standalone-identifier">{resource.key}</code></dd></div>
+    <div><dt>IRI</dt><dd><code class="standalone-identifier">{resource.iri}</code></dd></div>
     <div><dt>Kind</dt><dd>{kindLabels[resource.kind]}</dd></div>
     <div><dt>Semantic home</dt><dd><a href={`/spdtf-2/property-pack/contexts/${resource.semantic_home}`}>{context?.label}</a></dd></div>
     <div><dt>Candidate status</dt><dd>{resource.candidate_status.replaceAll('-', ' ')}</dd></div>
@@ -65,9 +65,9 @@ const range = resource.range ? resourceByIri.get(resource.range) : undefined;
 
   <h2 id="structure">Model structure</h2>
   <dl class="v2-facts">
-    {resource.kind === 'class' && <div><dt>Superclass</dt><dd>{parent ? <a href={resourceRoute(parent)}>{parent.label}</a> : resource.subclass_of ? <code>{compactIri(resource.subclass_of)}</code> : 'Not specified'}</dd></div>}
-    {resource.kind !== 'class' && <div><dt>Domain</dt><dd>{domain ? <a href={resourceRoute(domain)}>{domain.label}</a> : resource.domain ? <code>{compactIri(resource.domain)}</code> : 'Not specified'}</dd></div>}
-    {resource.kind !== 'class' && <div><dt>Range</dt><dd>{range ? <a href={resourceRoute(range)}>{range.label}</a> : resource.range ? <code>{compactIri(resource.range)}</code> : 'Not specified'}</dd></div>}
+    {resource.kind === 'class' && <div><dt>Superclass</dt><dd>{parent ? <a href={resourceRoute(parent)}>{parent.label}</a> : resource.subclass_of ? <code class="standalone-identifier">{compactIri(resource.subclass_of)}</code> : 'Not specified'}</dd></div>}
+    {resource.kind !== 'class' && <div><dt>Domain</dt><dd>{domain ? <a href={resourceRoute(domain)}>{domain.label}</a> : resource.domain ? <code class="standalone-identifier">{compactIri(resource.domain)}</code> : 'Not specified'}</dd></div>}
+    {resource.kind !== 'class' && <div><dt>Range</dt><dd>{range ? <a href={resourceRoute(range)}>{range.label}</a> : resource.range ? <code class="standalone-identifier">{compactIri(resource.range)}</code> : 'Not specified'}</dd></div>}
     <div><dt>Subclasses</dt><dd>{subclasses.length ? subclasses.map((item, index) => <>{index > 0 && ', '}<a href={resourceRoute(item)}>{item.label}</a></>) : 'None asserted'}</dd></div>
     <div><dt>Properties with this domain</dt><dd>{domainProperties.length ? domainProperties.map((item, index) => <>{index > 0 && ', '}<a href={resourceRoute(item)}>{item.label}</a></>) : 'None asserted'}</dd></div>
     <div><dt>Properties with this range</dt><dd>{rangeProperties.length ? rangeProperties.map((item, index) => <>{index > 0 && ', '}<a href={resourceRoute(item)}>{item.label}</a></>) : 'None asserted'}</dd></div>
@@ -78,7 +78,7 @@ const range = resource.range ? resourceByIri.get(resource.range) : undefined;
     <dl class="v2-facts">
       <div><dt>Minimum count</dt><dd>{resource.constraints.min_count ?? 'Not constrained'}</dd></div>
       <div><dt>Maximum count</dt><dd>{resource.constraints.max_count ?? 'Not constrained'}</dd></div>
-      <div><dt>Datatype</dt><dd><code>{compactIri(resource.constraints.datatype) || 'Not applicable'}</code></dd></div>
+      <div><dt>Datatype</dt><dd><code class="standalone-identifier">{compactIri(resource.constraints.datatype) || 'Not applicable'}</code></dd></div>
       <div><dt>Pattern</dt><dd><code>{resource.constraints.pattern || 'Not constrained'}</code></dd></div>
     </dl>
   )}
@@ -94,7 +94,7 @@ const range = resource.range ? resourceByIri.get(resource.range) : undefined;
   {direct.length ? (
     <details open={direct.length <= 12}>
       <summary>{direct.length} direct source trace{direct.length === 1 ? '' : 's'}</summary>
-      <ul>{direct.map((item) => <li><a href={dataPointRoute(item)}>{item.preferred_label}</a> <code>{item.item_id}</code></li>)}</ul>
+      <ul>{direct.map((item) => <li><a href={dataPointRoute(item)}>{item.preferred_label}</a> <code class="standalone-identifier">{item.item_id}</code></li>)}</ul>
     </details>
   ) : (
     <div class="callout callout--warn"><p class="callout__label">No direct source trace</p><p>This organising class is supported structurally through the directly evidenced resources beneath it. It must not be presented as source wording.</p></div>
@@ -102,7 +102,7 @@ const range = resource.range ? resourceByIri.get(resource.range) : undefined;
   {structural.length > 0 && (
     <details open={structural.length <= 12}>
       <summary>{structural.length} structural source trace{structural.length === 1 ? '' : 's'}</summary>
-      <ul>{structural.map((item) => <li><a href={dataPointRoute(item)}>{item.preferred_label}</a> <code>{item.item_id}</code></li>)}</ul>
+      <ul>{structural.map((item) => <li><a href={dataPointRoute(item)}>{item.preferred_label}</a> <code class="standalone-identifier">{item.item_id}</code></li>)}</ul>
     </details>
   )}
 </PropertyPackPage>

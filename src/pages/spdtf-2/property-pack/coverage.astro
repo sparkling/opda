@@ -59,6 +59,6 @@ const reviewItems = coverage.filter((item) => item.disposition !== 'consolidate'
   <h2 id="trace">Complete trace register</h2>
   <details>
     <summary>Show all {coverage.length} source-to-construct traces</summary>
-    <div class="v2-table-wrap"><table><thead><tr><th>Source data point</th><th>Semantic home</th><th>Candidate constructs</th></tr></thead><tbody>{coverage.map((item) => <tr><td><a href={dataPointRoute(item)}>{item.preferred_label}</a><br/><code>{item.item_id}</code></td><td>{item.semantic_home}</td><td><ul>{item.construct_refs.map((iri) => { const resource = resourceByIri.get(iri); return <li>{resource ? <a href={resourceRoute(resource)}>{resource.label}</a> : <code>{iri}</code>}</li>; })}</ul></td></tr>)}</tbody></table></div>
+    <div class="v2-table-wrap"><table><thead><tr><th>Source data point</th><th>Semantic home</th><th>Candidate constructs</th></tr></thead><tbody>{coverage.map((item) => <tr><td><a href={dataPointRoute(item)}>{item.preferred_label}</a><br/><code class="standalone-identifier">{item.item_id}</code></td><td>{item.semantic_home}</td><td><ul>{item.construct_refs.map((iri) => { const resource = resourceByIri.get(iri); return <li>{resource ? <a href={resourceRoute(resource)}>{resource.label}</a> : <code class="standalone-identifier">{iri}</code>}</li>; })}</ul></td></tr>)}</tbody></table></div>
   </details>
 </PropertyPackPage>
