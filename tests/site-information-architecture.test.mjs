@@ -198,9 +198,20 @@ test('the migration ledger preserves every audited high-risk information family'
 test('the frozen preservation proof resolves content, ownership and exact family checksums', () => {
   assert.equal(routeBaseline.schemaVersion, 6);
   assert.equal(routeBaseline.routeCount, 3436);
-  assert.equal(routeBaseline.addedRouteCount, 57);
+  assert.equal(routeBaseline.addedRouteCount, 64);
   assert.equal(routeBaseline.routes.length, routeBaseline.routeCount);
   assert.equal(routeBaseline.addedRoutes.length, routeBaseline.addedRouteCount);
+  const acceptedRecords = [...routeBaseline.routes, ...routeBaseline.addedRoutes];
+  for (const id of [
+    'schema', 'implementation', 'adoption', 'modelling', 'model', 'ontology', 'mapping',
+  ]) {
+    const fragment = `section-nav-group-pdtf-1-${id}`;
+    assert.equal(
+      acceptedRecords.filter(({ acceptedFragments }) => acceptedFragments.includes(fragment)).length,
+      1701,
+      `${fragment} must remain on every PDTF 1.0 page`,
+    );
+  }
   const requiredRouteFields = [
     'baselineRoute', 'baselineFile', 'acceptedRoute', 'acceptedFile',
     'baselineContentSha256', 'acceptedContentSha256', 'acceptedBlockInventorySha256', 'baselineFragmentSha256',
