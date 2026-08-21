@@ -361,8 +361,8 @@ const navigationSections: Record<DestinationKey, NavigationSection> = {
     summary: 'Decision rights, standards lifecycle, status and recorded decisions.',
     groups: [
       category('Governance framework', '/governance', ownedSectionItems('governance', 'governance')),
-      category('Architecture decisions', '/modelling/adr', ownedGroupItems('modelling', 'ADR corpus', 'governance')),
-      category('Ontology decisions', '/modelling/odr', ownedGroupItems('modelling', 'ODR corpus', 'governance')),
+      category('Architecture decisions', '/modelling/adr'),
+      category('Ontology decisions', '/modelling/odr'),
       category('Programme decisions', '/engagement/meetings-decisions', ownedSectionItems('engagement', 'governance')),
     ],
   },

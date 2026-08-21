@@ -63,6 +63,11 @@ implements: [docs/spdtf-2-0-information-architecture.md]
 > removed without redirects. Atomic information, fragment, status and feedback-thread
 > preservation remain release gates. `/pdtf/**` is not a compatibility family: it
 > remains the unchanged RDF identifier and dereferenceability namespace.
+>
+> Update 2026-08-21 — decision-corpus navigation: Governance now links once to the
+> ADR index and once to the ODR index. Individual decision records remain canonical
+> pages reached from those indexes, but no longer expand the left rail or
+> participate in its previous/next sequence.
 
 ## Context and Problem Statement
 

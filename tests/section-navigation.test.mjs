@@ -74,10 +74,13 @@ test('the left section navigation implements all six destinations from one regis
   ));
   assert.deepEqual(Object.fromEntries(Object.entries(SECTION_NAVIGATION).map(([key, section]) => [
     key, section.groups.flatMap(flattenGroup).length,
-  ])), { programme: 18, 'spdtf-2': 39, 'working-groups': 33, 'pdtf-1': 203, governance: 138, resources: 12 });
-  for (const url of new Set(legacyUrls)) {
+  ])), { programme: 18, 'spdtf-2': 39, 'working-groups': 33, 'pdtf-1': 203, governance: 26, resources: 12 });
+  const decisionDetail = /^\/modelling\/(?:adr|odr)\/[^/]+$/u;
+  for (const url of new Set(legacyUrls.filter((url) => !decisionDetail.test(url)))) {
     assert.equal(compositeUrls.filter((candidate) => candidate === url).length, 1, `${url} must appear once`);
   }
+  assert.ok(legacyUrls.filter((url) => decisionDetail.test(url)).length > 0);
+  assert.ok(compositeUrls.every((url) => !decisionDetail.test(url)), 'decision details stay off the left rail');
   for (const required of [
     '/programme', '/spdtf-2', '/spdtf-2/candidates', '/spdtf-2/questions', '/spdtf-2/outputs',
     '/spdtf-2/ontologies', '/spdtf-2/property-pack',
@@ -94,6 +97,29 @@ test('the left section navigation implements all six destinations from one regis
     '/resources', '/glossary',
   ]) assert.equal(compositeUrls.filter((url) => url === required).length, 1, `${required} must appear once`);
   assert.equal(compositeUrls.filter((url) => url.startsWith('/spdtf-2/working-groups')).length, 33);
+});
+
+test('Governance decision categories expose only their corpus indexes', () => {
+  const governance = SECTION_NAVIGATION.governance;
+  for (const [heading, url] of [
+    ['Architecture decisions', '/modelling/adr'],
+    ['Ontology decisions', '/modelling/odr'],
+  ]) {
+    const group = governance.groups.find((candidate) => candidate.heading === heading);
+    assert.equal(group?.url, url);
+    assert.deepEqual(group?.items, []);
+  }
+
+  const detailRoutes = SECTIONS.modelling.groups
+    .filter(({ heading }) => heading === 'ADR corpus' || heading === 'ODR corpus')
+    .flatMap(({ items }) => items.slice(1).map(({ url }) => url));
+  assert.ok(detailRoutes.length > 0);
+  for (const route of detailRoutes) {
+    const match = findNavigationPage(route);
+    assert.equal(match?.section.key, 'governance');
+    assert.equal(match?.trail.length, 0);
+    assert.deepEqual(getNavigationPrevNext(route), {});
+  }
 });
 
 test('category landing pages remain in breadcrumbs and exact page sequences', () => {
