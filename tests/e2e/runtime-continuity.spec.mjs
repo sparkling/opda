@@ -25,13 +25,14 @@ test.describe('runtime continuity boundaries', () => {
     });
 
     await visit(page, '/programme');
+    const appOrigin = new URL(page.url()).origin;
     await exposeCompactHeaderControls(page);
     const login = page.locator('#auth-login-btn');
     await expect(login).toBeVisible();
     await login.click();
     await expect(page).toHaveURL(/\/_auth\/login\?return=%2Fprogramme$/u);
     expect(loginRequests).toEqual([
-      'http://127.0.0.1:4321/_auth/login?return=%2Fprogramme',
+      `${appOrigin}/_auth/login?return=%2Fprogramme`,
     ]);
     clean();
   });
@@ -51,6 +52,7 @@ test.describe('runtime continuity boundaries', () => {
     });
 
     await visit(page, '/programme');
+    const appOrigin = new URL(page.url()).origin;
     await exposeCompactHeaderControls(page);
     await expect(page.locator('#auth-user-menu')).toBeVisible();
     await page.locator('#auth-user-trigger').click();
@@ -58,7 +60,7 @@ test.describe('runtime continuity boundaries', () => {
     await expect(page.locator('#auth-user-full')).toHaveText('member@example.test');
     await page.locator('#auth-logout-btn').click();
     await expect(page).toHaveURL(/\/_auth\/logout$/u);
-    expect(logoutRequests).toEqual(['http://127.0.0.1:4321/_auth/logout']);
+    expect(logoutRequests).toEqual([`${appOrigin}/_auth/logout`]);
     clean();
   });
 
