@@ -109,7 +109,7 @@
   --color-action-subtle-hover: var(--neutral-200);
   --color-action-selected: var(--color-status-info);
   --color-action-selected-surface: var(--color-status-info-surface);
-  --color-table-header-surface: var(--brand-ink);
+  --color-table-header-surface: var(--neutral-600);
   --color-table-header-text: var(--brand-white);
   --color-table-row-header-surface: #f4f0e4;
   --color-table-stripe-surface: var(--color-surface-alt);

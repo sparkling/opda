@@ -303,7 +303,7 @@ code { font-family: 'Roboto Mono', monospace; }
 table { width: 100%; min-width: 42rem; border-collapse: collapse; font-size: 0.875rem; }
 caption { padding: 1rem; text-align: left; font-weight: 700; }
 th, td { min-height: 2.75rem; padding: 0.75rem 1rem; text-align: left; border-top: 1px solid var(--neutral-200); }
-thead th { color: var(--white); background: var(--ink); }
+thead th { color: var(--white); background: var(--neutral-600); }
 tbody tr > :first-child { background: var(--table-row-header); border-right: 1px solid var(--neutral-300); font-weight: 400; }
 tbody tr:nth-child(even) > td:not(:first-child) { background: var(--off-white); }
 .source-chip { color: var(--neutral-600); background: var(--off-white); font-family: 'Roboto Mono', monospace; font-weight: 500; }

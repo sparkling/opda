@@ -121,13 +121,16 @@ or status meaning alone. Dark ink on yellow is approximately 9.3:1.
 
 | Role | Light | Dark |
 |---|---:|---:|
-| Column header | `#2C273B` | `#3A3550` |
+| Column header | `#625D72` | `#3A3550` |
 | First body column | `#F4F0E4` | `#302C26` |
 | Zebra row, columns 2+ | `#F9F9F9` | `#231F2F` |
 
 First-column cells use regular weight. These surfaces are structural roles rather
 than status colours, and their borders and table semantics retain the distinction
 when custom colours are unavailable.
+
+Light-theme column headers use white on violet-grey (`6.31:1`), avoiding a stark
+near-black block while retaining AA contrast for text of every supported size.
 
 ### Links and focus
 
