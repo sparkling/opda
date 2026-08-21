@@ -212,6 +212,9 @@ implementation baseline is `24f9fb4ca8405343dc13d2d4b7119a30e1b883d7`; the
 status-change commit is a later governance-only change. Neither commit authorises
 publication or deployment.
 
+Human approval was required before acceptance; implementation then required the
+complete migration and release gates listed below.
+
 The branch contains the route/status registry, canonical landings and workspaces,
 search facets, runtime journeys, and exact preservation manifests. It satisfies:
 
