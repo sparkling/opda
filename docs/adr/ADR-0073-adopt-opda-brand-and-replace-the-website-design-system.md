@@ -87,9 +87,9 @@ On 21 August 2026 the shared prose rhythm and table hierarchy were clarified aft
 rendered-page review: lists receive tokenised separation above and below, while
 column headers, first-column body cells and zebra rows use three distinct semantic
 surfaces in both colour themes. Every first-column body cell uses regular weight on a
-quiet warm-neutral tint; neutral zebra striping begins at column two. The light-theme
-column header uses the softer violet-grey `neutral-600` surface with white text rather
-than the near-black brand ink surface.
+quiet warm-neutral tint; neutral zebra striping begins at column two. The column
+header uses the existing `color-data-1` violet with white text rather than a
+near-black or newly invented surface; dark mode uses the same data-component role.
 
 ### Brand conflict resolution
 

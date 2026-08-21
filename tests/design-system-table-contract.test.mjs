@@ -25,7 +25,7 @@ test('all tables separate column headers, first-column cells, and zebra rows', a
   }
   assert.match(tokens, /--color-table-row-header-surface:\s*#f4f0e4/u);
   assert.match(tokens, /\[data-theme='dark'\][\s\S]*--color-table-row-header-surface:\s*#302c26/u);
-  assert.match(tokens, /--color-table-header-surface:\s*var\(--neutral-600\)/u);
+  assert.equal([...tokens.matchAll(/--color-table-header-surface:\s*var\(--color-data-1\)/gu)].length, 2);
   assert.match(
     tokens,
     /\[data-theme='dark'\][\s\S]*--color-table-header-surface:[\s\S]*--color-table-row-header-surface:[\s\S]*--color-table-stripe-surface:/u,
@@ -46,7 +46,7 @@ test('all tables separate column headers, first-column cells, and zebra rows', a
   assert.match(design, /column headers, first-column body cells and zebra rows use three distinct semantic/u);
   assert.match(design, /Every body-row first cell uses\s+regular body weight on a quiet warm-neutral surface/u);
   assert.match(design, /\| First body column \| `#F4F0E4` \| `#302C26` \|/u);
-  assert.match(design, /\| Column header \| `#625D72` \| `#3A3550` \|/u);
+  assert.match(design, /\| Column header \| `#6C5BD4` \| `#6C5BD4` \|/u);
   assert.match(design, /Two or more repeated records with a\s+consistent label and explanation belong in a semantic two-column table/u);
 });
 
