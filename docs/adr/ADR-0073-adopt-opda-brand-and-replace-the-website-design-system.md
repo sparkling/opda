@@ -85,9 +85,9 @@ previous/next navigation.
 
 On 21 August 2026 the shared prose rhythm and table hierarchy were clarified after
 rendered-page review: lists receive tokenised separation above and below, while
-column headers, row headers and zebra rows use three distinct semantic surfaces in
-both colour themes. Row headers use a restrained brand-yellow tint so the identifying
-column cannot collapse visually into a neutral zebra row.
+column headers, first-column body cells and zebra rows use three distinct semantic
+surfaces in both colour themes. Every first-column body cell uses regular weight on a
+quiet warm-neutral tint; neutral zebra striping begins at column two.
 
 ### Brand conflict resolution
 

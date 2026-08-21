@@ -395,7 +395,8 @@
   color: var(--color-text);
   font: 400 var(--text-sm) / 1.45 var(--font-sans);
 }
-.db-table tbody tr:nth-child(2n) td { background: var(--color-table-stripe-surface); }
+.db-table tbody td:first-child { background: var(--color-table-row-header-surface); border-inline-end: 1px solid var(--color-border-strong); }
+.db-table tbody tr:nth-child(2n) td:not(:first-child) { background: var(--color-table-stripe-surface); }
 .db-table code {
   font: 400 var(--text-caption) / 1.4 var(--font-mono);
   padding: 1px 5px;

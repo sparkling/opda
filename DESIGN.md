@@ -117,6 +117,18 @@ or status meaning alone. Dark ink on yellow is approximately 9.3:1.
 | `neutral-600` | `#625D72` | light-mode secondary text |
 | `neutral-700` | `#4A4558` | strong secondary ink |
 
+### Table surfaces
+
+| Role | Light | Dark |
+|---|---:|---:|
+| Column header | `#2C273B` | `#3A3550` |
+| First body column | `#F4F0E4` | `#302C26` |
+| Zebra row, columns 2+ | `#F9F9F9` | `#231F2F` |
+
+First-column cells use regular weight. These surfaces are structural roles rather
+than status colours, and their borders and table semantics retain the distinction
+when custom colours are unavailable.
+
 ### Links and focus
 
 Links are `#5B51D8`; hover is `#4A41BE`; visited is `#6D3E91`. Prose links are
@@ -296,10 +308,10 @@ states, plus loading/error/success where asynchronous work occurs and dark parit
 - **Card:** square, bordered and content-led; linked cards receive a whole-card focus
   treatment without nesting controls.
 - **Table:** sticky header, `aria-sort`, visible sort arrow and tabular numerals;
-  column headers, row headers and zebra rows use three distinct semantic surfaces,
-  while interactive rows are at least 44px. Row headers use a restrained
-  yellow-tinted surface to distinguish the identifying column from neutral zebra
-  rows; this tint communicates structure, not status or selection. Two or more repeated records with a
+  column headers, first-column body cells and zebra rows use three distinct semantic
+  surfaces, while interactive rows are at least 44px. Every body-row first cell uses
+  regular body weight on a quiet warm-neutral surface; zebra striping starts at column
+  two. This tint communicates structure, not status or selection. Two or more repeated records with a
   consistent label and explanation belong in a semantic two-column table, not a
   styled list; ordinary bullets, steps and navigation remain lists.
 - **Code/schema block:** deep ink, Roboto Mono, accessible syntax colour, language

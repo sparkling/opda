@@ -24,7 +24,7 @@
   --ink: #2c273b;
   --yellow: #fec92b;
   --yellow-active: #fac238;
-  --yellow-soft: #fff3c4;
+  --table-row-header: #f4f0e4;
   --white: #fff;
   --off-white: #f9f9f9;
   --neutral-100: #f1f0f4;
@@ -304,8 +304,8 @@ table { width: 100%; min-width: 42rem; border-collapse: collapse; font-size: 0.8
 caption { padding: 1rem; text-align: left; font-weight: 700; }
 th, td { min-height: 2.75rem; padding: 0.75rem 1rem; text-align: left; border-top: 1px solid var(--neutral-200); }
 thead th { color: var(--white); background: var(--ink); }
-tbody th[scope='row'] { background: var(--yellow-soft); border-right: 1px solid var(--neutral-300); }
-tbody tr:nth-child(even) > td { background: var(--off-white); }
+tbody tr > :first-child { background: var(--table-row-header); border-right: 1px solid var(--neutral-300); font-weight: 400; }
+tbody tr:nth-child(even) > td:not(:first-child) { background: var(--off-white); }
 .source-chip { color: var(--neutral-600); background: var(--off-white); font-family: 'Roboto Mono', monospace; font-weight: 500; }
 .motion-demo { margin-top: 1.5rem; padding: 2rem; border: 1px solid var(--neutral-200); }
 .motion-demo span { display: block; width: 5rem; height: 4px; background: var(--yellow); transition: transform 160ms cubic-bezier(0.2, 0, 0, 1); }

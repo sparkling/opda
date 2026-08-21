@@ -51,10 +51,11 @@
   background: var(--color-table-header-surface);
   color: var(--color-table-header-text);
 }
-.glossary-table tbody tr:nth-child(2n) { background: var(--color-table-stripe-surface); }
-:root[data-theme="dark"] .glossary-table tbody tr:nth-child(2n) { background: var(--color-table-stripe-surface); }
+.glossary-table tbody tr:nth-child(2n) > td:not(:first-child) { background: var(--color-table-stripe-surface); }
 .glossary-table td:first-child {
-  font: 600 var(--text-sm) / 1.4 var(--font-mono);
+  background: var(--color-table-row-header-surface);
+  border-inline-end: 1px solid var(--color-border-strong);
+  font: 400 var(--text-sm) / 1.4 var(--font-mono);
   color: var(--color-link);
   white-space: nowrap;
 }
