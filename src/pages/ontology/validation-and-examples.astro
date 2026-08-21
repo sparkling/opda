@@ -36,9 +36,9 @@ import GatewayCard from '@/components/ia/GatewayCard.astro';
 
   <h2 id="inspect">Inspect constraints and evidence</h2>
   <div class="card-grid">
-    <GatewayCard href="/ontology/shapes" title="SHACL shapes" eyebrow="Constraint reference" description="Browse base node shapes, severity levels and SHACL-AF rules generated from the committed shapes graph." />
-    <GatewayCard href="/ontology/profiles" title="Overlay profiles and gaps" eyebrow="Form-specific constraints" description="Inspect each overlay profile, bound versus thin status, source instrument and the explicit gap register." />
-    <GatewayCard href="/ontology/exemplars" title="Diagnostic exemplars" eyebrow="Worked data" description="Review conformant and non-conformant instance graphs paired with their expected SHACL reports and hard-case rationale." />
+    <GatewayCard href="/ontology/shapes" title="SHACL shapes" eyebrow="Constraint reference" description="Browse all 408 base node shapes, severity levels and SHACL-AF rules in the committed validation graph—the source of the historical rule that a form is its SHACL overlay." />
+    <GatewayCard href="/ontology/profiles" title="Overlay profiles and gaps" eyebrow="Form-specific constraints" description="Inspect all 31 per-form profiles, most intentionally thin: they bind Category-G leaves and record the rest in the explicit gap register." />
+    <GatewayCard href="/ontology/exemplars" title="Diagnostic exemplars" eyebrow="Worked data" description="Review all 17 worked instance graphs, each paired with an expected SHACL report, including conformant, non-conformant and hard-case examples." />
     <GatewayCard href="/model/validation-report" title="Model validation report" eyebrow="Generated assurance" description="See coverage and validation results for the generated model presentation and its underlying ontology corpus." />
   </div>
 
