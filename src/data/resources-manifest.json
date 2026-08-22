@@ -17,7 +17,7 @@
     "path": "source/README.md",
     "name": "README.md",
     "ext": "md",
-    "sizeBytes": 5828,
+    "sizeBytes": 5880,
     "category": "Archive root"
   },
   {
@@ -80,7 +80,7 @@
     "path": "source/_content/schema/48-evidence-documents-declarations.md",
     "name": "48-evidence-documents-declarations.md",
     "ext": "md",
-    "sizeBytes": 4874,
+    "sizeBytes": 5050,
     "category": "Content (working)"
   },
   {
@@ -150,7 +150,7 @@
     "path": "source/00-deliverables/semantic-models/README.md",
     "name": "README.md",
     "ext": "md",
-    "sizeBytes": 3264,
+    "sizeBytes": 3399,
     "category": "Deliverables"
   },
   {
@@ -3041,7 +3041,7 @@
     "path": "source/03-standards/ontology/exemplars/README.md",
     "name": "README.md",
     "ext": "md",
-    "sizeBytes": 8012,
+    "sizeBytes": 8373,
     "category": "Standards"
   },
   {
@@ -3608,14 +3608,14 @@
     "path": "source/03-standards/rml/CONTRACT.md",
     "name": "CONTRACT.md",
     "ext": "md",
-    "sizeBytes": 4891,
+    "sizeBytes": 5048,
     "category": "Standards"
   },
   {
     "path": "source/03-standards/rml/gap-register.md",
     "name": "gap-register.md",
     "ext": "md",
-    "sizeBytes": 18371,
+    "sizeBytes": 18388,
     "category": "Standards"
   },
   {
@@ -3643,7 +3643,7 @@
     "path": "source/03-standards/rml/ONTOLOGY-COVERAGE.md",
     "name": "ONTOLOGY-COVERAGE.md",
     "ext": "md",
-    "sizeBytes": 7225,
+    "sizeBytes": 7232,
     "category": "Standards"
   },
   {
@@ -3671,7 +3671,7 @@
     "path": "source/03-standards/rml/README.md",
     "name": "README.md",
     "ext": "md",
-    "sizeBytes": 14817,
+    "sizeBytes": 15014,
     "category": "Standards"
   },
   {
@@ -3720,7 +3720,7 @@
     "path": "source/03-standards/rml/testdata/MANIFEST.md",
     "name": "MANIFEST.md",
     "ext": "md",
-    "sizeBytes": 6487,
+    "sizeBytes": 6494,
     "category": "Standards"
   },
   {

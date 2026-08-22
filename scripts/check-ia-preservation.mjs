@@ -440,7 +440,7 @@ if (familyManifest) {
       fail(`${family.id} does not declare its exact PDTF schema asset move`);
     }
     if (hasPdtf1CutReceipt && family.id === 'ontology-tools') validateReviewedReframe(family, composePdtf1ToolReframeReceipt);
-    if (hasSchemaToSchemeReceipt && family.id === 'source-archive') validateReviewedReframe(family, composeSourceArchiveReframeReceipt);
+    if (family.id === 'source-archive' && family.policy === 'reframe-equivalent') validateReviewedReframe(family, composeSourceArchiveReframeReceipt);
     if (family.policy === 'byte-identical' && family.baseline?.treeSha256 !== family.accepted?.treeSha256) {
       fail(`${family.id} violates byte-identical policy`);
     }
