@@ -13,6 +13,7 @@ dist-preview/
 # The deployed site only needs dist/. See README.
 # Leading slash anchors to repo root so public/data/resources/source/ is still tracked.
 /source/*
+!/source/README.md
 # Schema-pipeline inputs and design docs we author + ship
 !/source/_content/
 !/source/_examples/
@@ -24,6 +25,7 @@ dist-preview/
 /source/00-deliverables/*
 !/source/00-deliverables/semantic-models/
 /source/00-deliverables/semantic-models/*
+!/source/00-deliverables/semantic-models/README.md
 !/source/00-deliverables/semantic-models/provenance-map.yaml
 !/source/00-deliverables/semantic-models/theme-map.yaml
 # OPDA ontology — parent-repo path per ODR-0004 §8a (peer to nested schemas/ sub-repo).

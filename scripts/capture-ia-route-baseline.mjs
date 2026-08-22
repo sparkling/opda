@@ -15,6 +15,7 @@ import {
 import { createCaptureEvidence } from './lib/ia-capture-evidence.mjs';
 import { composePdtfSchemaFragmentMigrationReceipt } from './lib/pdtf-schema-fragment-migration.mjs';
 import { composePdtf1ToolReframeReceipt } from './lib/pdtf1-tool-reframes.mjs';
+import { composeSourceArchiveReframeReceipt } from './lib/source-archive-reframes.mjs';
 import { composeSchemaToSchemeRouteReceipt } from './lib/schema-to-scheme-route-contract.mjs';
 import {
   PRIOR_IA_ROUTE_MANIFEST,
@@ -393,7 +394,7 @@ const routeManifest = {
   retiredRoutes,
 };
 const familySpecs = [
-  { id: 'source-archive', path: 'source', policy: 'byte-identical', owner: 'resources', dataOwner: 'resources', ciMode: 'manifest-only-in-ci', consumers: ['resource viewer', 'source citations', 'downloads'], endpoints: ['/resources/**', '/resource?path=source/**'], journeyTests: ['resource-open-download'] },
+  { id: 'source-archive', path: 'source', policy: 'reframe-equivalent', owner: 'resources', dataOwner: 'resources', ciMode: 'manifest-only-in-ci', consumers: ['resource viewer', 'source citations', 'downloads'], endpoints: ['/resources/**', '/resource?path=source/**'], journeyTests: ['resource-open-download'] },
   { id: 'council-markdown', path: 'docs/ontology/odr/council', policy: 'regenerate-equivalent', owner: 'governance', dataOwner: 'resources', ciMode: 'verify-current', consumers: ['decision records', 'raw session evidence'], endpoints: ['/council/**'], journeyTests: ['route-crawl'] },
   { id: 'ontology-artefacts', assetClass: 'ontology-serialization', baselinePath: 'public/ontology/artefacts', acceptedPath: 'public/pdtf-schema/schema-derived-ontology/use-and-tooling/artefacts', policy: 'byte-identical', owner: 'pdtf-schema', dataOwner: 'pdtf-schema', ciMode: 'manifest-only-in-ci', consumers: ['ontology downloads', 'technical references'], endpoints: ['/pdtf-schema/schema-derived-ontology/use-and-tooling/artefacts/**'], journeyTests: ['route-crawl'] },
   { id: 'deployed-data', path: 'dist/data', policy: 'regenerate-equivalent', owner: 'resources', dataOwner: 'resources', ciMode: 'verify-current', consumers: ['generated pages', 'client-side data views', 'validation'], endpoints: ['/data/**'], journeyTests: ['route-crawl'] },
@@ -414,6 +415,8 @@ const families = familySpecs.map(({ path: familyPath, baselinePath = familyPath,
     accepted: fileInventory(acceptedRoot, acceptedPath) };
   if (family.id === 'ontology-tools') {
     family.reframeReceipt = composePdtf1ToolReframeReceipt(family.baseline, family.accepted);
+  } else if (family.id === 'source-archive') {
+    family.reframeReceipt = composeSourceArchiveReframeReceipt(family.baseline, family.accepted);
   }
   return family;
 });

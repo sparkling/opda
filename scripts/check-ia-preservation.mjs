@@ -17,6 +17,7 @@ import {
   manifestRetainedBaselineProjectionMatches, priorFamilyMatches, validatePriorFamilyReceipt, validatePriorManifestReceipt, verifyBaselineRootCommit,
 } from './lib/ia-prior-manifest-contract.mjs';
 import { composePdtf1ToolReframeReceipt } from './lib/pdtf1-tool-reframes.mjs';
+import { composeSourceArchiveReframeReceipt } from './lib/source-archive-reframes.mjs';
 import { validatePdtfSchemaFragmentMigrationReceipt } from './lib/pdtf-schema-fragment-migration.mjs';
 import {
   IA_STATUS_REGISTRY_VERSION, PRESERVATION_LEDGER, ROUTE_DISPOSITION_LEDGER, getContentOwner,
@@ -40,6 +41,11 @@ const HASH = /^[a-f0-9]{64}$/u;
 const failures = [];
 const notes = [];
 const fail = (message) => failures.push(message);
+function validateReviewedReframe(family, compose) {
+  try { const receipt = compose(family.baseline, family.accepted);
+    if (family.policy !== 'reframe-equivalent' || JSON.stringify(receipt) !== JSON.stringify(family.reframeReceipt)) fail(`${family.id} reviewed file-reframe receipt is inconsistent`); }
+  catch (error) { fail(error.message); }
+}
 let options;
 try { options = parsePreservationArgs(process.argv.slice(2)); }
 catch (error) {
@@ -433,15 +439,8 @@ if (familyManifest) {
         || family.assetClass !== (family.id === 'ontology-tools' ? 'tool-rendering' : 'ontology-serialization'))) {
       fail(`${family.id} does not declare its exact PDTF schema asset move`);
     }
-    if (hasPdtf1CutReceipt && family.id === 'ontology-tools') {
-      try {
-        const receipt = composePdtf1ToolReframeReceipt(family.baseline, family.accepted);
-        if (family.policy !== 'reframe-equivalent'
-          || JSON.stringify(receipt) !== JSON.stringify(family.reframeReceipt)) {
-          fail('ontology-tools reviewed file-reframe receipt is inconsistent');
-        }
-      } catch (error) { fail(error.message); }
-    }
+    if (hasPdtf1CutReceipt && family.id === 'ontology-tools') validateReviewedReframe(family, composePdtf1ToolReframeReceipt);
+    if (hasSchemaToSchemeReceipt && family.id === 'source-archive') validateReviewedReframe(family, composeSourceArchiveReframeReceipt);
     if (family.policy === 'byte-identical' && family.baseline?.treeSha256 !== family.accepted?.treeSha256) {
       fail(`${family.id} violates byte-identical policy`);
     }

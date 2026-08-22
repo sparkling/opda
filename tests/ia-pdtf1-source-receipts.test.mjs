@@ -10,6 +10,8 @@ import {
   pdtf1SourceEvidenceMatches,
   semanticBlocksDigest,
 } from '../scripts/lib/ia-preservation-primitives.mjs';
+import { fileInventory } from '../scripts/lib/ia-preservation-contract.mjs';
+import { composeSourceArchiveReframeReceipt } from '../scripts/lib/source-archive-reframes.mjs';
 
 const projectRoot = fileURLToPath(new URL('..', import.meta.url));
 const checker = fileURLToPath(new URL('../scripts/check-ia-preservation.mjs', import.meta.url));
@@ -41,6 +43,30 @@ function movedReceipt() {
 }
 
 test('PDTF source and tool reframes are a closed, hash-bound set', () => {
+  const sourceArchive = families.families.find(({ id }) => id === 'source-archive');
+  const currentSourceArchive = fileInventory(projectRoot, 'source');
+  const sourceReceipt = composeSourceArchiveReframeReceipt(
+    sourceArchive.baseline, currentSourceArchive,
+  );
+  assert.deepEqual({
+    exact: sourceReceipt.byteIdenticalFileCount,
+    reframed: sourceReceipt.reframedFileCount,
+    files: sourceReceipt.reframedFiles.map(({ path: file }) => file),
+  }, {
+    exact: 1611,
+    reframed: 9,
+    files: [
+      '00-deliverables/semantic-models/README.md',
+      '03-standards/ontology/exemplars/README.md',
+      '03-standards/rml/CONTRACT.md',
+      '03-standards/rml/ONTOLOGY-COVERAGE.md',
+      '03-standards/rml/README.md',
+      '03-standards/rml/gap-register.md',
+      '03-standards/rml/testdata/MANIFEST.md',
+      'README.md',
+      '_content/schema/48-evidence-documents-declarations.md',
+    ],
+  });
   const tools = families.families.find(({ id }) => id === 'ontology-tools');
   assert.deepEqual({
     policy: tools.policy,
