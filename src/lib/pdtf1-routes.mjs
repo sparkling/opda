@@ -39,17 +39,58 @@ export const PDTF1_ROUTE_MIGRATION = Object.freeze({
   generatedToolRouteCount: 652,
   ontologyArtefactHtmlRouteCount: 1,
   canonicalFamilyRouteCount: 1264,
-  sourceReframeRouteCount: 3,
-  sourceReframeTotalBlockCount: 354,
-  sourceReframeExactBlockCount: 347,
-  sourceReframeSemanticBlockCount: 7,
+  sourceReframeRouteCount: 47,
+  sourceReframeTotalBlockCount: 6251,
+  sourceReframeExactBlockCount: 6132,
+  sourceReframeSemanticBlockCount: 119,
   sourceReframeNonInformationBlockCount: 0,
-  sourceReframeRoutesSha256: '201b26d42fa6abec654a4a7b01b4a77da1a29cf886aa94bc7c98d46bdc81fc0f',
+  sourceReframeRoutesSha256: '021f6ab746f1210bea1819266d7102a1a1e63707fb9609416a202a2228116a5c',
   postSourceAdditionRouteCount: 1,
   acceptedSiteRouteCount: 3274,
   redirects: false,
   stableIdentifierRoot: '/pdtf',
 });
+
+/**
+ * Fragment identifiers that changed with the Chair-authorised schema-to-scheme
+ * route cut. These are explicit replacements, not compatibility aliases: old
+ * documentation URLs still return 404 and the live DOM emits only the new IDs.
+ */
+export const PDTF_SCHEMA_FRAGMENT_REPLACEMENTS = Object.freeze([
+  ['-current-scheme-definitive--2026-06-02', '-current-identifier-scheme-definitive--amended-2026-08-22'],
+  ['dbt-smart-data-top-level-section--track-the-guidebook-and-the-pdtf-overlap-it-creates', 'dbt-smart-data-implications-for-spdtf-and-pdtf-schema-lineage'],
+  ['domain-led-bounded-context-working-groups-for-the-next-modelling-phase', 'domain-led-bounded-context-working-groups-for-spdtf-development'],
+  ['legacy', 'identifiers'],
+  ['linked-data-model-as-the-foundation-and-direction-of-pdtf-standards-development', 'linked-data-model-as-the-foundation-and-direction-of-spdtf-development'],
+  ['organise-the-site-around-spdtf-20-and-pdtf-10', 'organise-the-site-around-spdtf-and-the-pdtf-schema'],
+  ['use-the-standard', 'use-the-schema'],
+  ['section-nav-group-pdtf-1-adoption', 'section-nav-group-pdtf-schema-usage'],
+  ['section-nav-group-pdtf-1-implementation', 'section-nav-group-pdtf-schema-implementation'],
+  ['section-nav-group-pdtf-1-mapping', 'section-nav-group-pdtf-schema-mapping'],
+  ['section-nav-group-pdtf-1-model', 'section-nav-group-pdtf-schema-model'],
+  ['section-nav-group-pdtf-1-modelling', 'section-nav-group-pdtf-schema-modelling'],
+  ['section-nav-group-pdtf-1-ontology', 'section-nav-group-pdtf-schema-schema-derived-ontology'],
+  ['section-nav-group-pdtf-1-pdtf-1-original-standard', 'section-nav-group-pdtf-schema-schema-and-supporting-material'],
+  ['section-nav-group-pdtf-1-schema', 'section-nav-group-pdtf-schema-schema'],
+  ['section-nav-ontology-concepts-and-architecture', 'section-nav-pdtf-schema-schema-derived-ontology-concepts-and-architecture'],
+  ['section-nav-ontology-lineage-and-verification', 'section-nav-pdtf-schema-schema-derived-ontology-lineage-provenance-and-verification'],
+  ['section-nav-ontology-terms-and-model-resources', 'section-nav-pdtf-schema-schema-derived-ontology-terms-and-model-resources'],
+  ['section-nav-ontology-trust-and-governance', 'section-nav-pdtf-schema-schema-derived-ontology-trust-governance-and-limitations'],
+  ['section-nav-ontology-use-and-tooling', 'section-nav-pdtf-schema-schema-derived-ontology-use-and-tooling'],
+  ['section-nav-ontology-validation-and-examples', 'section-nav-pdtf-schema-schema-derived-ontology-validation-and-examples'],
+].map((entry) => Object.freeze(entry)));
+
+const fragmentReplacements = new Map(PDTF_SCHEMA_FRAGMENT_REPLACEMENTS);
+
+export function getPdtfSchemaFragmentReplacement(fragment) {
+  return fragmentReplacements.get(String(fragment)) ?? null;
+}
+
+export function fragmentsPreservedByPdtfSchemaMigration(sourceFragments, acceptedFragments) {
+  const accepted = new Set(acceptedFragments ?? []);
+  return (sourceFragments ?? []).every((fragment) => accepted.has(fragment)
+    || accepted.has(getPdtfSchemaFragmentReplacement(fragment)));
+}
 
 function normalizePath(value) {
   const pathname = String(value || '/').split(/[?#]/u, 1)[0] || '/';

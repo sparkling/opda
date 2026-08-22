@@ -17,26 +17,24 @@ import {
   manifestRetainedBaselineProjectionMatches, priorFamilyMatches, validatePriorFamilyReceipt, validatePriorManifestReceipt, verifyBaselineRootCommit,
 } from './lib/ia-prior-manifest-contract.mjs';
 import { composePdtf1ToolReframeReceipt } from './lib/pdtf1-tool-reframes.mjs';
+import { validatePdtfSchemaFragmentMigrationReceipt } from './lib/pdtf-schema-fragment-migration.mjs';
 import {
-  IA_STATUS_REGISTRY_VERSION, PRESERVATION_LEDGER, ROUTE_DISPOSITION_LEDGER,
-  getContentOwner, getRouteDisposition, getRouteStatus, validateIaContract,
+  IA_STATUS_REGISTRY_VERSION, PRESERVATION_LEDGER, ROUTE_DISPOSITION_LEDGER, getContentOwner,
+  getRouteDisposition, getRouteStatus, validateIaContract,
 } from '../src/lib/site-ia.mjs';
 import { PROPERTY_PACK_ROUTE_MIGRATION, getPropertyPackReplacementRoute } from '../src/lib/property-pack-routes.mjs';
 import {
-  PDTF1_ROUTE_MIGRATION, getPdtf1ReplacementRoute, isRetiredPdtf1DocumentationRoute,
+  PDTF1_ROUTE_MIGRATION, fragmentsPreservedByPdtfSchemaMigration, getPdtf1ReplacementRoute,
+  isRetiredPdtf1DocumentationRoute,
   isRetiredPdtf1ManualAlias, isStablePdtfIdentifierRoute } from '../src/lib/pdtf1-routes.mjs';
 import { validateLeaseTermCaseCollisionReceipt } from '../src/lib/ontology-case-collision.mjs';
 import { getDeclaredRouteReplacement } from '../src/lib/site-route-migrations.mjs';
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const EXPECTED_FAMILY_COUNTS = Object.freeze({
-  'source-archive': { baseline: 1620 },
-  'council-markdown': { baseline: 261 },
-  'ontology-artefacts': { baseline: 27, accepted: 27 },
-  'deployed-data': { baseline: 46 },
-  'ui-assets': { baseline: 53 },
-  'image-assets': { baseline: 5 },
-  'ontology-tools': { baseline: 837, accepted: 837 },
-  'property-pack-canonical': { baseline: 690, accepted: 693 },
+  'source-archive': { baseline: 1620 }, 'council-markdown': { baseline: 261 },
+  'ontology-artefacts': { baseline: 27, accepted: 27 }, 'deployed-data': { baseline: 46 },
+  'ui-assets': { baseline: 53 }, 'image-assets': { baseline: 5 },
+  'ontology-tools': { baseline: 837, accepted: 837 }, 'property-pack-canonical': { baseline: 690, accepted: 693 },
 });
 const HASH = /^[a-f0-9]{64}$/u;
 const failures = [];
@@ -164,10 +162,8 @@ if (routeManifest) {
   const addedRecords = routeManifest.addedRoutes ?? [];
   const retiredRecords = routeManifest.retiredRoutes ?? [];
   const all = [...baselineRecords, ...addedRecords];
-  const acceptedFiles = new Set();
-  const acceptedRoutes = new Set();
-  const baselineFiles = new Set();
-  const baselineRoutes = new Set();
+  const acceptedFiles = new Set(); const acceptedRoutes = new Set();
+  const baselineFiles = new Set(); const baselineRoutes = new Set();
   const baselineRecordSet = new Set(baselineRecords);
   const manifestRetained = baselineRecords.filter(({ baselineEvidence }) => baselineEvidence);
   const priorReceipt = routeManifest.priorManifestReceipt;
@@ -227,15 +223,11 @@ if (routeManifest) {
       || !HASH.test(receipt.baselineBlockInventorySha256 ?? '')
       || !HASH.test(receipt.acceptedBlockInventorySha256 ?? '')) fail(`route lacks an exact equivalence receipt: ${record.baselineRoute}`);
     retentionReceiptFailures(record, classifiedByRoute).forEach(fail);
-    const acceptedFragments = new Set(record.acceptedFragments ?? []);
-    for (const fragment of record.baselineFragments ?? []) {
-      if (!acceptedFragments.has(fragment)) fail(`deep-linked fragment was not preserved: ${record.baselineRoute}#${fragment}`);
-    }
+    if (!fragmentsPreservedByPdtfSchemaMigration(record.baselineFragments, record.acceptedFragments)) fail(`deep-linked fragments were not preserved: ${record.baselineRoute}`);
   }
   try {
-    const actual = propertyPackMigrationReceipt(
-      baselineRecords, addedRecords, PROPERTY_PACK_ROUTE_MIGRATION, getDeclaredRouteReplacement,
-    );
+    const actual = propertyPackMigrationReceipt(baselineRecords, addedRecords,
+      PROPERTY_PACK_ROUTE_MIGRATION, getDeclaredRouteReplacement);
     if (JSON.stringify(actual) !== JSON.stringify(routeManifest.propertyPackMigration)) {
       fail('Property Pack migration receipt is inconsistent');
     }
@@ -284,6 +276,14 @@ if (routeManifest) {
         fail(`PDTF schema source receipt is orphaned: ${record.acceptedRoute}`);
       }
     }
+  }
+  if (hasSchemaToSchemeReceipt && pdtf1SourceManifest) {
+    try {
+      validatePdtfSchemaFragmentMigrationReceipt(
+        routeManifest.pdtfSchemaFragmentMigration, baselineRecords, addedRecords,
+        [...pdtf1SourceManifest.routes, ...pdtf1SourceManifest.addedRoutes],
+      );
+    } catch (error) { fail(`PDTF schema fragment migration contract failed: ${error.message}`); }
   }
   if (hasSchemaToSchemeReceipt && schemaToSchemeSourceManifest) {
     try {

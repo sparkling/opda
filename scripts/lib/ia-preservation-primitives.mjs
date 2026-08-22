@@ -1,4 +1,5 @@
 import { createHash } from 'node:crypto';
+import { fragmentsPreservedByPdtfSchemaMigration } from '../../src/lib/pdtf1-routes.mjs';
 
 export function sha256(value) {
   return createHash('sha256').update(value).digest('hex');
@@ -20,11 +21,6 @@ export function nonInformationBlocksDigest(blocks) {
     entry.destinationPolicy, entry.sourceEvidence, entry.baselineLinkHref ?? '',
     entry.destinationContentSha256, entry.supersessionReason,
   ].join('\0')).join('\n'));
-}
-
-function sourceFragmentsArePreserved(source, accepted) {
-  const acceptedFragments = new Set(accepted.acceptedFragments ?? []);
-  return (source.acceptedFragments ?? []).every((fragment) => acceptedFragments.has(fragment));
 }
 
 function inventoryMap(records, expectedSha256) {
@@ -118,7 +114,9 @@ function sourceRetentionReceiptMatches(source, accepted) {
 export function pdtf1SourceEvidenceMatches(source, accepted) {
   if (accepted.acceptedFragmentCount !== accepted.acceptedFragments?.length
     || sha256((accepted.acceptedFragments ?? []).join('\n')) !== accepted.acceptedFragmentSha256
-    || !sourceFragmentsArePreserved(source, accepted)) return false;
+    || !fragmentsPreservedByPdtfSchemaMigration(
+      source.acceptedFragments, accepted.acceptedFragments,
+    )) return false;
   const informationMatches = source.acceptedContentSha256 === accepted.acceptedContentSha256
     && source.acceptedBlockInventorySha256 === accepted.acceptedBlockInventorySha256;
   return informationMatches

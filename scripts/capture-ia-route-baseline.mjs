@@ -13,6 +13,7 @@ import {
   sha256,
 } from './lib/ia-preservation-contract.mjs';
 import { createCaptureEvidence } from './lib/ia-capture-evidence.mjs';
+import { composePdtfSchemaFragmentMigrationReceipt } from './lib/pdtf-schema-fragment-migration.mjs';
 import { composePdtf1ToolReframeReceipt } from './lib/pdtf1-tool-reframes.mjs';
 import { composeSchemaToSchemeRouteReceipt } from './lib/schema-to-scheme-route-contract.mjs';
 import {
@@ -33,10 +34,12 @@ import {
 } from '../src/lib/site-ia.mjs';
 import { PROPERTY_PACK_ROUTE_MIGRATION, getPropertyPackReplacementRoute } from '../src/lib/property-pack-routes.mjs';
 import {
-  PDTF1_ROUTE_MIGRATION, getPdtf1ReplacementRoute,
+  PDTF1_ROUTE_MIGRATION, fragmentsPreservedByPdtfSchemaMigration, getPdtf1ReplacementRoute,
   isRetiredPdtf1ManualAlias, isStablePdtfIdentifierRoute,
 } from '../src/lib/pdtf1-routes.mjs';
-import { composeLeaseTermCaseCollisionReceipt } from '../src/lib/ontology-case-collision.mjs';
+import {
+  LEASE_TERM_CASE_COLLISION, composeLeaseTermCaseCollisionReceipt,
+} from '../src/lib/ontology-case-collision.mjs';
 import {
   getAcceptedRoute, getAcceptedRouteFile, getDeclaredRouteReplacement,
 } from '../src/lib/site-route-migrations.mjs';
@@ -244,7 +247,10 @@ const routes = baselineFiles.filter((file) => !isRetiredPdtf1ManualAlias(routeFr
     acceptedFragments: afterFragments.fragments,
     ...routeMetadata(acceptedRoute),
     equivalenceReceipt: equivalenceReceipt(beforeContent, afterContent, reframeEvidence(baselineRoute)),
-    retentionReceipt: captureRetentionReceipt(baselineRoute, beforeContent, acceptedContracts, baselineLinkEvidence(beforeHtml)),
+    retentionReceipt: captureRetentionReceipt(
+      baselineRoute, beforeContent, acceptedContracts, baselineLinkEvidence(beforeHtml),
+      { includeAllocation: baselineRoute === LEASE_TERM_CASE_COLLISION.classRoute },
+    ),
   };
 });
 const mappedAcceptedFiles = new Set(routes.map(({ acceptedFile }) => acceptedFile));
@@ -273,8 +279,9 @@ const addedRoutes = acceptedFiles
 for (const acceptedRecord of [...routes, ...addedRoutes]) {
   const sourceRecord = pdtf1SourceByAcceptedRoute.get(acceptedRecord.acceptedRoute);
   if (!sourceRecord) continue;
-  const acceptedFragments = new Set(acceptedRecord.acceptedFragments);
-  if (sourceRecord.acceptedFragments.some((fragment) => !acceptedFragments.has(fragment))) {
+  if (!fragmentsPreservedByPdtfSchemaMigration(
+    sourceRecord.acceptedFragments, acceptedRecord.acceptedFragments,
+  )) {
     throw new Error(`PDTF schema source fragment is absent after the canonical move: ${sourceRecord.acceptedRoute}`);
   }
   const exactInformation = sourceRecord.acceptedContentSha256 === acceptedRecord.acceptedContentSha256
@@ -332,6 +339,11 @@ const pdtf1Migration = pdtf1MigrationReceipt({
   replacementRoute: getPdtf1ReplacementRoute,
   sourceManifest: pdtf1SourceManifest,
 });
+const pdtfSchemaFragmentMigration = composePdtfSchemaFragmentMigrationReceipt({
+  records: routes,
+  addedRecords: addedRoutes,
+  sourceRecords: [...pdtf1SourceManifest.routes, ...pdtf1SourceManifest.addedRoutes],
+});
 const schemaToSchemeMigration = composeSchemaToSchemeRouteReceipt({
   records: routes,
   addedRecords: addedRoutes,
@@ -373,6 +385,7 @@ const routeManifest = {
   ),
   propertyPackMigration,
   pdtf1Migration,
+  pdtfSchemaFragmentMigration,
   schemaToSchemeMigration,
   leaseTermCaseCollision: composeLeaseTermCaseCollisionReceipt(acceptedRoot, routes, addedRoutes),
   routes,

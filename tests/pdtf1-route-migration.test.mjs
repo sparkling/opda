@@ -11,6 +11,7 @@ import {
   sha256,
 } from '../scripts/lib/ia-preservation-contract.mjs';
 import { composeSchemaToSchemeRouteReceipt } from '../scripts/lib/schema-to-scheme-route-contract.mjs';
+import { composePdtfSchemaFragmentMigrationReceipt } from '../scripts/lib/pdtf-schema-fragment-migration.mjs';
 import {
   SCHEMA_TO_SCHEME_SOURCE_ROUTE_MANIFEST,
   loadPdtf1SourceRouteManifest,
@@ -22,8 +23,11 @@ import {
 import {
   PDTF1_ROUTE_MIGRATION,
   PDTF1_ROUTES,
+  PDTF_SCHEMA_FRAGMENT_REPLACEMENTS,
+  fragmentsPreservedByPdtfSchemaMigration,
   getPdtf1LegacyCommentKey,
   getPdtf1ReplacementRoute,
+  getPdtfSchemaFragmentReplacement,
   isRetiredPdtf1DocumentationRoute,
   isRetiredPdtf1ManualAlias,
   isStablePdtfIdentifierRoute,
@@ -65,12 +69,12 @@ test('PDTF schema documentation routes move beneath their full reader hierarchy'
     generatedToolRouteCount: 652,
     ontologyArtefactHtmlRouteCount: 1,
     canonicalFamilyRouteCount: 1264,
-    sourceReframeRouteCount: 3,
-    sourceReframeTotalBlockCount: 354,
-    sourceReframeExactBlockCount: 347,
-    sourceReframeSemanticBlockCount: 7,
+    sourceReframeRouteCount: 47,
+    sourceReframeTotalBlockCount: 6251,
+    sourceReframeExactBlockCount: 6132,
+    sourceReframeSemanticBlockCount: 119,
     sourceReframeNonInformationBlockCount: 0,
-    sourceReframeRoutesSha256: '201b26d42fa6abec654a4a7b01b4a77da1a29cf886aa94bc7c98d46bdc81fc0f',
+    sourceReframeRoutesSha256: '021f6ab746f1210bea1819266d7102a1a1e63707fb9609416a202a2228116a5c',
     postSourceAdditionRouteCount: 1,
     acceptedSiteRouteCount: 3274,
     redirects: false,
@@ -96,6 +100,79 @@ test('PDTF schema documentation routes move beneath their full reader hierarchy'
   }
   assert.equal(generatedFamily(`${PDTF1_ROUTES.use}/tools/widoco/index.html`), 'ontology/tools');
   assert.equal(getPdtf1ReplacementRoute(PDTF1_ROUTES.root), null);
+});
+
+test('renamed PDTF schema fragments have one explicit canonical replacement', () => {
+  const expected = new Map([
+    ['-current-scheme-definitive--2026-06-02', '-current-identifier-scheme-definitive--amended-2026-08-22'],
+    ['dbt-smart-data-top-level-section--track-the-guidebook-and-the-pdtf-overlap-it-creates', 'dbt-smart-data-implications-for-spdtf-and-pdtf-schema-lineage'],
+    ['domain-led-bounded-context-working-groups-for-the-next-modelling-phase', 'domain-led-bounded-context-working-groups-for-spdtf-development'],
+    ['legacy', 'identifiers'],
+    ['linked-data-model-as-the-foundation-and-direction-of-pdtf-standards-development', 'linked-data-model-as-the-foundation-and-direction-of-spdtf-development'],
+    ['organise-the-site-around-spdtf-20-and-pdtf-10', 'organise-the-site-around-spdtf-and-the-pdtf-schema'],
+    ['use-the-standard', 'use-the-schema'],
+    ['section-nav-group-pdtf-1-adoption', 'section-nav-group-pdtf-schema-usage'],
+    ['section-nav-group-pdtf-1-implementation', 'section-nav-group-pdtf-schema-implementation'],
+    ['section-nav-group-pdtf-1-mapping', 'section-nav-group-pdtf-schema-mapping'],
+    ['section-nav-group-pdtf-1-model', 'section-nav-group-pdtf-schema-model'],
+    ['section-nav-group-pdtf-1-modelling', 'section-nav-group-pdtf-schema-modelling'],
+    ['section-nav-group-pdtf-1-ontology', 'section-nav-group-pdtf-schema-schema-derived-ontology'],
+    ['section-nav-group-pdtf-1-pdtf-1-original-standard', 'section-nav-group-pdtf-schema-schema-and-supporting-material'],
+    ['section-nav-group-pdtf-1-schema', 'section-nav-group-pdtf-schema-schema'],
+    ['section-nav-ontology-concepts-and-architecture', 'section-nav-pdtf-schema-schema-derived-ontology-concepts-and-architecture'],
+    ['section-nav-ontology-lineage-and-verification', 'section-nav-pdtf-schema-schema-derived-ontology-lineage-provenance-and-verification'],
+    ['section-nav-ontology-terms-and-model-resources', 'section-nav-pdtf-schema-schema-derived-ontology-terms-and-model-resources'],
+    ['section-nav-ontology-trust-and-governance', 'section-nav-pdtf-schema-schema-derived-ontology-trust-governance-and-limitations'],
+    ['section-nav-ontology-use-and-tooling', 'section-nav-pdtf-schema-schema-derived-ontology-use-and-tooling'],
+    ['section-nav-ontology-validation-and-examples', 'section-nav-pdtf-schema-schema-derived-ontology-validation-and-examples'],
+  ]);
+
+  assert.deepEqual(new Map(PDTF_SCHEMA_FRAGMENT_REPLACEMENTS), expected);
+  assert.equal(new Set(expected.values()).size, expected.size);
+  assert.ok([...expected.values()].every((fragment) => !fragment.includes('pdtf-1')));
+  for (const [source, accepted] of expected) {
+    assert.equal(getPdtfSchemaFragmentReplacement(source), accepted);
+    assert.equal(fragmentsPreservedByPdtfSchemaMigration([source], [accepted]), true);
+    assert.equal(fragmentsPreservedByPdtfSchemaMigration([source], []), false);
+  }
+  assert.equal(getPdtfSchemaFragmentReplacement('unrelated-fragment'), null);
+  assert.equal(fragmentsPreservedByPdtfSchemaMigration(
+    ['unchanged-fragment'], ['unchanged-fragment'],
+  ), true);
+
+  const sourceFragments = [...expected.keys()];
+  const acceptedFragments = [...expected.values()];
+  const receipt = composePdtfSchemaFragmentMigrationReceipt({
+    records: [{
+      baselineRoute: '/old', acceptedRoute: '/pdtf-schema',
+      baselineFragments: sourceFragments, acceptedFragments,
+    }],
+    addedRecords: [],
+    sourceRecords: [{ acceptedRoute: '/source', acceptedFragments: sourceFragments }],
+    sourceTargetRoute: () => '/pdtf-schema',
+  });
+  assert.deepEqual({
+    policy: receipt.policy,
+    mappings: receipt.mappingCount,
+    baselineRoutes: receipt.baselineRouteCount,
+    sourceRoutes: receipt.sourceRouteCount,
+    baselineOccurrences: receipt.baselineMigratedFragmentCount,
+    sourceOccurrences: receipt.sourceMigratedFragmentCount,
+  }, {
+    policy: 'explicit-schema-to-scheme-fragment-replacement-v1',
+    mappings: 21,
+    baselineRoutes: 1,
+    sourceRoutes: 1,
+    baselineOccurrences: 21,
+    sourceOccurrences: 21,
+  });
+  assert.throws(() => composePdtfSchemaFragmentMigrationReceipt({
+    records: [{
+      baselineRoute: '/old', acceptedRoute: '/pdtf-schema',
+      baselineFragments: ['undeclared'], acceptedFragments: [],
+    }],
+    addedRecords: [], sourceRecords: [], sourceTargetRoute: () => null,
+  }), /no declared replacement/u);
 });
 
 test('the frozen intermediate route cut composes into schema-to-scheme routes', () => {

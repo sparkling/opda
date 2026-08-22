@@ -11,6 +11,8 @@ import {
   stableLeaseTermRoute,
   validateLeaseTermCaseCollisionReceipt,
 } from '../src/lib/ontology-case-collision.mjs';
+import { createCaptureEvidence } from '../scripts/lib/ia-capture-evidence.mjs';
+import { informationContract } from '../scripts/lib/ia-preservation-contract.mjs';
 import {
   getAcceptedRoute,
   getDeclaredRouteReplacement,
@@ -44,6 +46,48 @@ test('the case-sensitive resource pair keeps both public identifiers exact', () 
   assert.equal(getAcceptedRoute('/pdtf/leaseTerm'), '/pdtf/leaseTerm');
   assert.equal(getDeclaredRouteReplacement('/pdtf/LeaseTerm'), null);
   assert.equal(getDeclaredRouteReplacement('/pdtf/Property'), null);
+});
+
+test('the frozen mis-cased property evidence is retained at the lowercase identifier', () => {
+  const root = mkdtempSync(path.join(path.dirname(fileURLToPath(import.meta.url)), '.case-evidence-'));
+  try {
+    const ledger = path.join(root, 'ledger.json');
+    writeFileSync(ledger, JSON.stringify({
+      schemaVersion: 1,
+      baselineCommit: 'b'.repeat(40),
+      entries: [],
+    }));
+    const { captureRetentionReceipt } = createCaptureEvidence({
+      semanticLedgerPath: ledger,
+      baselineCommit: 'b'.repeat(40),
+    });
+    const property = informationContract(
+      '<main><h1>lease term</h1><p>Object property linking an estate to its term.</p></main>',
+    );
+    const leaseClass = informationContract(
+      '<main><h1>Lease Term</h1><p>Class representing a bounded lease interval.</p></main>',
+    );
+    const accepted = new Map([
+      [LEASE_TERM_CASE_COLLISION.classRoute, leaseClass],
+      [LEASE_TERM_CASE_COLLISION.propertyRoute, property],
+    ]);
+    const receipt = captureRetentionReceipt(
+      LEASE_TERM_CASE_COLLISION.classRoute, property, accepted, new Map(),
+      { includeAllocation: true },
+    );
+    assert.deepEqual(
+      receipt.targetEvidence.map(({ route }) => route),
+      [LEASE_TERM_CASE_COLLISION.classRoute, LEASE_TERM_CASE_COLLISION.propertyRoute],
+    );
+    assert.equal(receipt.exactRetainedBlocks, 2);
+    assert.deepEqual(
+      receipt.exactRetainedBlockRecords.map(({ targetRoute }) => targetRoute),
+      [LEASE_TERM_CASE_COLLISION.propertyRoute, LEASE_TERM_CASE_COLLISION.propertyRoute],
+    );
+    assert.equal(receipt.semanticReframeBlockCount, 0);
+  } finally {
+    rmSync(root, { recursive: true, force: true });
+  }
 });
 
 function hasExactPair(root) {

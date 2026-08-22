@@ -7,6 +7,7 @@ import {
 import {
   getAcceptedRoute, getDeclaredRouteReplacement,
 } from '../../src/lib/site-route-migrations.mjs';
+import { LEASE_TERM_CASE_COLLISION } from '../../src/lib/ontology-case-collision.mjs';
 
 const HASH = /^[a-f0-9]{64}$/u;
 const SEMANTIC_CLASSES = new Set([
@@ -30,6 +31,13 @@ const NAVIGATION_CANONICAL_EQUIVALENTS = Object.freeze({
 const RETENTION_TARGETS = Object.freeze({
   '/': ['/', '/spdtf'],
   '/home': ['/home', '/spdtf'],
+  // The frozen case-insensitive cut emitted the lowercase object property's
+  // information at the uppercase path. Both identifiers now remain stable;
+  // the old information follows the property while the class keeps its route.
+  [LEASE_TERM_CASE_COLLISION.classRoute]: [
+    LEASE_TERM_CASE_COLLISION.classRoute,
+    LEASE_TERM_CASE_COLLISION.propertyRoute,
+  ],
 });
 
 function localRouteFromHref(href) {
