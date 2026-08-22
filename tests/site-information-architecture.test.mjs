@@ -33,6 +33,7 @@ import {
 } from '../src/lib/site-ia.mjs';
 import { searchEntries } from '../src/lib/site-search.mjs';
 import { getDeclaredRouteReplacement } from '../src/lib/site-route-migrations.mjs';
+import { fragmentsPreservedByPdtfSchemaMigration } from '../src/lib/pdtf1-routes.mjs';
 import {
   ALLOWED_DISPOSITIONS,
   FORMAL_CONCERNS,
@@ -204,36 +205,35 @@ test('the migration ledger preserves every audited high-risk information family'
 });
 
 test('the frozen preservation proof resolves content, ownership and exact family checksums', () => {
-  assert.ok([6, 7].includes(routeBaseline.schemaVersion));
-  assert.equal(routeBaseline.routeCount, routeBaseline.schemaVersion === 7 ? 3209 : 3436);
-  assert.equal(routeBaseline.addedRouteCount, routeBaseline.schemaVersion === 7 ? 65 : 64);
-  if (routeBaseline.schemaVersion === 7) {
-    assert.equal(routeBaseline.retiredRouteCount, 227);
-    assert.equal(routeBaseline.retiredRoutes.length, 227);
-    assert.deepEqual({
-      moved: routeBaseline.pdtf1Migration.movedCanonicalRouteCount,
-      movedBaseline: routeBaseline.pdtf1Migration.movedBaselineRouteCount,
-      movedAdded: routeBaseline.pdtf1Migration.movedAddedRouteCount,
-      retired: routeBaseline.pdtf1Migration.retiredAliasRouteCount,
-      stableIdentifiers: routeBaseline.pdtf1Migration.stableIdentifierRouteCount,
-      generatedTools: routeBaseline.pdtf1Migration.generatedToolRouteCount,
-      artefactIndexes: routeBaseline.pdtf1Migration.ontologyArtefactHtmlRouteCount,
-      canonicalFamily: routeBaseline.pdtf1Migration.canonicalFamilyRouteCount,
-      postSourceAdditions: routeBaseline.pdtf1Migration.postSourceAdditionRouteCount,
-      acceptedSite: routeBaseline.pdtf1Migration.acceptedSiteRouteCount,
-    }, {
-      moved: 1262, movedBaseline: 1255, movedAdded: 7, retired: 227,
-      stableIdentifiers: 1090, generatedTools: 652, artefactIndexes: 1,
-      canonicalFamily: 1264, postSourceAdditions: 1, acceptedSite: 3274,
-    });
-  }
+  assert.equal(routeBaseline.schemaVersion, 8);
+  assert.equal(routeBaseline.routeCount, 3209);
+  assert.equal(routeBaseline.addedRouteCount, 76);
+  assert.equal(routeBaseline.retiredRouteCount, 227);
+  assert.equal(routeBaseline.retiredRoutes.length, 227);
+  assert.deepEqual({
+    moved: routeBaseline.pdtf1Migration.movedCanonicalRouteCount,
+    movedBaseline: routeBaseline.pdtf1Migration.movedBaselineRouteCount,
+    movedAdded: routeBaseline.pdtf1Migration.movedAddedRouteCount,
+    retired: routeBaseline.pdtf1Migration.retiredAliasRouteCount,
+    stableIdentifiers: routeBaseline.pdtf1Migration.stableIdentifierRouteCount,
+    canonicalFamily: routeBaseline.pdtf1Migration.canonicalFamilyRouteCount,
+    outOfScope: routeBaseline.pdtf1Migration.outOfScopeSourceRouteCount,
+  }, {
+    moved: 1264, movedBaseline: 1255, movedAdded: 9, retired: 227,
+    stableIdentifiers: 1090, canonicalFamily: 1264, outOfScope: 919,
+  });
+  assert.deepEqual({ mappings: routeBaseline.pdtfSchemaFragmentMigration.mappingCount,
+    baseline: routeBaseline.pdtfSchemaFragmentMigration.baselineMigratedFragmentCount,
+    source: routeBaseline.pdtfSchemaFragmentMigration.sourceMigratedFragmentCount,
+  }, { mappings: 66, baseline: 5, source: 69182 });
   assert.equal(routeBaseline.routes.length, routeBaseline.routeCount);
   assert.equal(routeBaseline.addedRoutes.length, routeBaseline.addedRouteCount);
   const acceptedRecords = [...routeBaseline.routes, ...routeBaseline.addedRoutes];
   for (const id of [
     'schema', 'implementation', 'adoption', 'modelling', 'model', 'ontology', 'mapping',
   ]) {
-    const fragment = `section-nav-group-pdtf-schema-${id === 'adoption' ? 'usage' : id}`;
+    const suffix = { adoption: 'usage', ontology: 'schema-derived-ontology' }[id] ?? id;
+    const fragment = `section-nav-group-pdtf-schema-${suffix}`;
     assert.equal(
       acceptedRecords.filter(({ acceptedFragments }) => acceptedFragments.includes(fragment)).length,
       1701,
@@ -280,7 +280,7 @@ test('the frozen preservation proof resolves content, ownership and exact family
     ))
   )));
   assert.ok(routeBaseline.routes.every(({ baselineFragments, acceptedFragments }) => (
-    baselineFragments.every((fragment) => acceptedFragments.includes(fragment))
+    fragmentsPreservedByPdtfSchemaMigration(baselineFragments, acceptedFragments)
   )));
   assert.ok(routeBaseline.addedRoutes.every(({ acceptedRoute }) => (
     acceptedRoute !== '/v2' && !acceptedRoute.startsWith('/v2/')
@@ -304,19 +304,17 @@ test('the frozen preservation proof resolves content, ownership and exact family
     && family.baseline.records.length === family.baseline.count
     && family.accepted.records.length === family.accepted.count
   )));
-  if (routeBaseline.schemaVersion === 7) {
-    const tools = preservationBaseline.families.find(({ id }) => id === 'ontology-tools');
-    const artefacts = preservationBaseline.families.find(({ id }) => id === 'ontology-artefacts');
-    assert.deepEqual({
-      tools: [tools.assetClass, tools.baselinePath, tools.acceptedPath, tools.accepted.count],
-      artefacts: [artefacts.assetClass, artefacts.baselinePath, artefacts.acceptedPath, artefacts.accepted.count],
-    }, {
-      tools: ['tool-rendering', 'public/ontology/tools',
-        'public/pdtf-schema/schema-derived-ontology/use-and-tooling/tools', 837],
-      artefacts: ['ontology-serialization', 'public/ontology/artefacts',
-        'public/pdtf-schema/schema-derived-ontology/use-and-tooling/artefacts', 27],
-    });
-  }
+  const tools = preservationBaseline.families.find(({ id }) => id === 'ontology-tools');
+  const artefacts = preservationBaseline.families.find(({ id }) => id === 'ontology-artefacts');
+  assert.deepEqual({
+    tools: [tools.assetClass, tools.baselinePath, tools.acceptedPath, tools.accepted.count],
+    artefacts: [artefacts.assetClass, artefacts.baselinePath, artefacts.acceptedPath, artefacts.accepted.count],
+  }, {
+    tools: ['tool-rendering', 'public/ontology/tools',
+      'public/pdtf-schema/schema-derived-ontology/use-and-tooling/tools', 837],
+    artefacts: ['ontology-serialization', 'public/ontology/artefacts',
+      'public/pdtf-schema/schema-derived-ontology/use-and-tooling/artefacts', 27],
+  });
   assert.equal(preservationBaseline.runtimeJourneys.length, 4);
 });
 

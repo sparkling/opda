@@ -115,7 +115,10 @@ export function createCaptureEvidence({ semanticLedgerPath, baselineCommit }) {
     if (!policy) {
       throw new Error(`navigation-copy supersession has no canonical destination proof: ${route}#${entry.sourceBlockSha256}`);
     }
-    return { ...resolution, destinationRoute, destinationPolicy: policy };
+    const supersessionReason = destinationRoute === resolution.destinationRoute
+      ? resolution.supersessionReason
+      : `${resolution.supersessionReason} The composed canonical destination is "${destinationRoute}".`;
+    return { ...resolution, destinationRoute, destinationPolicy: policy, supersessionReason };
   }
 
   function retentionTargets(route, before) {

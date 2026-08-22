@@ -38,8 +38,7 @@ const EXPECTED_FAMILY_COUNTS = Object.freeze({
   'ontology-tools': { baseline: 837, accepted: 837 }, 'property-pack-canonical': { baseline: 690, accepted: 693 },
 });
 const HASH = /^[a-f0-9]{64}$/u;
-const failures = [];
-const notes = [];
+const failures = []; const notes = [];
 const fail = (message) => failures.push(message);
 function validateReviewedReframe(family, compose) {
   try { const receipt = compose(family.baseline, family.accepted);
@@ -268,10 +267,12 @@ if (routeManifest) {
         continue;
       }
       sourceReceiptTargets.add(targetRoute);
+      const sourceBlockCount = source.equivalenceReceipt?.acceptedBlocks
+        ?? target?.pdtf1SourceRetentionReceipt?.sourceBlockInventoryRecords?.reduce((sum, { count }) => sum + count, 0);
       retentionReceiptFailures(target, classifiedByRoute, {
         receipt: target?.pdtf1SourceRetentionReceipt,
         policy: 'explicit-pdtf1-source-block-retention-v1',
-        baselineBlockCount: source.equivalenceReceipt?.acceptedBlocks,
+        baselineBlockCount: sourceBlockCount,
         baselineBlockInventorySha256: source.acceptedBlockInventorySha256,
         sourceRoute: source.acceptedRoute,
         label: `PDTF schema source ${source.acceptedRoute}`,

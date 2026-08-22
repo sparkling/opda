@@ -141,10 +141,11 @@ test('PDTF source and tool reframes are a closed, hash-bound set', () => {
   });
   const sourceReceipts = [...routes.routes, ...routes.addedRoutes]
     .filter(({ pdtf1SourceRetentionReceipt }) => pdtf1SourceRetentionReceipt);
-  assert.equal(sourceReceipts.length, 3);
-  assert.deepEqual(sourceReceipts.map(({ pdtf1SourceRetentionReceipt: receipt }) => (
-    receipt.sourceRoute
-  )).sort(), ['/ontology/bake-off', '/ontology/provenance', '/ontology/tools/custom']);
+  assert.equal(sourceReceipts.length, 47);
+  assert.ok(sourceReceipts.every((record) => {
+    const source = sourceByRoute.get(record.pdtf1SourceRetentionReceipt.sourceRoute);
+    return source && pdtf1SourceEvidenceMatches(source, record);
+  }));
   assert.deepEqual({
     routes: routes.pdtf1Migration.sourceReframeRouteCount,
     blocks: routes.pdtf1Migration.sourceReframeTotalBlockCount,
@@ -153,8 +154,8 @@ test('PDTF source and tool reframes are a closed, hash-bound set', () => {
     nonInformation: routes.pdtf1Migration.sourceReframeNonInformationBlockCount,
     digest: routes.pdtf1Migration.sourceReframeRoutesSha256,
   }, {
-    routes: 3, blocks: 354, exact: 347, semantic: 7, nonInformation: 0,
-    digest: '201b26d42fa6abec654a4a7b01b4a77da1a29cf886aa94bc7c98d46bdc81fc0f',
+    routes: 47, blocks: 6251, exact: 6132, semantic: 119, nonInformation: 0,
+    digest: '021f6ab746f1210bea1819266d7102a1a1e63707fb9609416a202a2228116a5c',
   });
 });
 
