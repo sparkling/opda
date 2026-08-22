@@ -11,6 +11,7 @@ import {
   semanticBlocksDigest,
   sha256,
 } from '../scripts/lib/ia-preservation-primitives.mjs';
+import { createCaptureEvidence } from '../scripts/lib/ia-capture-evidence.mjs';
 import {
   PDTF1_TOOL_REFRAMES, composePdtf1ToolReframeReceipt,
 } from '../scripts/lib/pdtf1-tool-reframes.mjs';
@@ -20,6 +21,10 @@ import {
 
 const projectRoot = fileURLToPath(new URL('..', import.meta.url));
 const checker = fileURLToPath(new URL('../scripts/check-ia-preservation.mjs', import.meta.url));
+const semanticLedgerPath = fileURLToPath(new URL(
+  '../src/data/ia-semantic-reframe-ledger.json', import.meta.url,
+));
+const semanticLedger = JSON.parse(readFileSync(semanticLedgerPath, 'utf8'));
 const routes = JSON.parse(readFileSync(
   new URL('../src/data/ia-route-baseline.json', import.meta.url), 'utf8',
 ));
@@ -182,6 +187,38 @@ test('closed file reframes reject size-only drift in reviewed and untouched reco
   ), /outside the reviewed file set/u);
 });
 
+test('visible source inventory size changes are path and byte bound', () => {
+  const expected = [
+    ['1cf69d5a33d964690dd4c311550828d532d43d6b4acbbd22d2fa097c5f401128',
+      'source/_content/schema/48-evidence-documents-declarations.md', '4,874→5,050'],
+    ['57135c1685782b2b70a53d00f16516b614fc5d3d2c59a81aafaf7ec2aaeaa1ce',
+      'source/00-deliverables/semantic-models/README.md', '3,264→3,399'],
+    ['8548fc0a5da56b3efacedc1df88cff905a74461d13ce936d6bac328f422f977c',
+      'source/03-standards/rml/README.md', '14,817→15,014'],
+    ['ddd225658cf607b5d82c1e8ea6cd95481feee4428bb215546a4fa8823aff7086',
+      'source/03-standards/ontology/exemplars/README.md', '8,012→8,373'],
+    ['ecb297ca5d23a0694d91824ea61981b0d0650aadfe3775f1ae1faa2717699df6',
+      'source/03-standards/rml/CONTRACT.md', '4,891→5,048'],
+  ];
+  const entries = semanticLedger.entries.filter(({ classification }) => (
+    classification === 'source-inventory-metadata-refresh'
+  ));
+  assert.deepEqual(entries.map(({ sourceBlockSha256 }) => sourceBlockSha256), (
+    expected.map(([hash]) => hash)
+  ));
+  const evidence = createCaptureEvidence({
+    semanticLedgerPath,
+    baselineCommit: semanticLedger.baselineCommit,
+  });
+  for (const [hash, sourcePath, byteTransition] of expected) {
+    const entry = evidence.semanticReframes.get(hash);
+    assert.equal(entry.sourceRoute, '/library/resources');
+    assert.equal(entry.replacementRoute, '/library/resources');
+    assert.ok(entry.reviewNote.includes(sourcePath));
+    assert.ok(entry.reviewNote.includes(`${byteTransition} bytes`));
+  }
+});
+
 test('preservation checker rejects a forged PDTF source-retention receipt', () => {
   const directory = mkdtempSync(path.join(tmpdir(), 'opda-ia-preservation-'));
   const fixture = path.join(directory, 'route-baseline.json');
@@ -263,6 +300,15 @@ test('source evidence validates semantic replacements on more than one declared 
   receipt.semanticReframeBlocksSha256 = semanticBlocksDigest(receipt.semanticReframeBlocks);
 
   assert.equal(pdtf1SourceEvidenceMatches(source, candidate), true);
+});
+
+test('source evidence derives the block count for an added source route', () => {
+  const { source, accepted } = movedReceipt();
+  const addedSource = structuredClone(source);
+  const candidate = structuredClone(accepted);
+  delete addedSource.equivalenceReceipt;
+  candidate.pdtf1SourceRetentionReceipt.sourceRecordSha256 = sha256(JSON.stringify(addedSource));
+  assert.equal(pdtf1SourceEvidenceMatches(addedSource, candidate), true);
 });
 
 test('stable PDTF identifier pages reject an unnecessary source receipt', () => {

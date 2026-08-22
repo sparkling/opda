@@ -228,6 +228,9 @@ test('contextual rail highlighting never claims an index is the current detail p
   assert.match(sidebar, /const isActivePage = isActiveLocation && activePath === path/u);
   assert.match(sidebar, /nav-group-link\$\{isActiveLocation \? ' active' : ''\}/u);
   assert.match(sidebar, /aria-current=\{isActivePage \? 'page' : undefined\}/u);
+  assert.match(sidebar, /'\/modelling\/adr', 'section-nav-governance-modelling-adr'/u);
+  assert.match(sidebar, /'\/modelling\/odr', 'section-nav-governance-modelling-odr'/u);
+  assert.match(sidebar, /id=\{leafGroupId\}/u);
   assert.match(item, /const isCurrentPage = isActive && itemPath === currentPath/u);
   assert.equal((item.match(/aria-current=\{isCurrentPage \? 'page' : undefined\}/gu) ?? []).length, 2);
 });

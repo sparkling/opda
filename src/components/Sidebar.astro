@@ -65,6 +65,10 @@ function containsActive(item: Item): boolean {
           : null;
         const childrenId = namedGroupId ?? `section-nav-group-${section.key}-${group.url}`
           .replace(/[^a-z0-9]+/giu, '-').replace(/^-|-$/gu, '');
+        const leafGroupId = hasChildren ? undefined : new Map([
+          ['/modelling/adr', 'section-nav-governance-modelling-adr'],
+          ['/modelling/odr', 'section-nav-governance-modelling-odr'],
+        ]).get(group.url);
         return (
           <section
             class={`nav-group${emphasizeFolders ? ' has-emphasized-folders' : ''}${defaultOpen ? ' is-open' : ''}`}
@@ -89,6 +93,7 @@ function containsActive(item: Item): boolean {
                 </button>
               ) : <span class="nav-group-spacer" aria-hidden="true"></span>}
               <a
+                id={leafGroupId}
                 class={`nav-group-link${isActiveLocation ? ' active' : ''}`}
                 href={group.url}
                 aria-current={isActivePage ? 'page' : undefined}

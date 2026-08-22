@@ -76,6 +76,8 @@ function sourceRetentionReceiptMatches(source, accepted) {
   const sourceInventory = inventoryMap(
     receipt?.sourceBlockInventoryRecords, source.acceptedBlockInventorySha256,
   );
+  const sourceBlockCount = sourceInventory
+    ? [...sourceInventory.values()].reduce((total, count) => total + count, 0) : null;
   const targets = targetInventoryState(receipt);
   const acceptedTarget = targets?.evidenceByRoute.get(accepted.acceptedRoute);
   const structural = receipt?.policy === 'explicit-pdtf1-source-block-retention-v1'
@@ -91,7 +93,7 @@ function sourceRetentionReceiptMatches(source, accepted) {
     && receipt.acceptedRoute === accepted.acceptedRoute
     && receipt.exactTargetRoute === accepted.acceptedRoute
     && targets
-    && receipt.baselineBlockCount === source.equivalenceReceipt?.acceptedBlocks
+    && receipt.baselineBlockCount === (source.equivalenceReceipt?.acceptedBlocks ?? sourceBlockCount)
     && receipt.baselineBlockInventorySha256 === source.acceptedBlockInventorySha256
     && receipt.exactRetainedBlocks + receipt.semanticReframeBlockCount
       + receipt.nonInformationBlockCount === receipt.baselineBlockCount

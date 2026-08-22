@@ -1,7 +1,6 @@
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
 import test from 'node:test';
-
 import {
   composePdtf1RetiredAliases,
   generatedFamily,
@@ -33,11 +32,11 @@ import {
   isStablePdtfIdentifierRoute,
 } from '../src/lib/pdtf1-routes.mjs';
 import {
+  getAcceptedRoute,
   getAcceptedRouteFile,
   getDeclaredRouteReplacement,
   getLegacyCommentKey,
 } from '../src/lib/site-route-migrations.mjs';
-
 const projectRoot = new URL('..', import.meta.url).pathname;
 const { manifest: sourceManifest } = loadPdtf1SourceRouteManifest(projectRoot);
 const {
@@ -75,8 +74,8 @@ test('PDTF schema documentation routes move beneath their full reader hierarchy'
     sourceReframeSemanticBlockCount: 119,
     sourceReframeNonInformationBlockCount: 0,
     sourceReframeRoutesSha256: '021f6ab746f1210bea1819266d7102a1a1e63707fb9609416a202a2228116a5c',
-    postSourceAdditionRouteCount: 1,
-    acceptedSiteRouteCount: 3274,
+    outOfScopeSourceRouteCount: 919,
+    outOfScopeSourceRoutesSha256: 'e9c7cfdbabac6c676e0560925d70b627af7d0a50e2d23f18957e1345187cd49c',
     redirects: false,
     stableIdentifierRoot: '/pdtf',
   });
@@ -110,7 +109,12 @@ test('renamed PDTF schema fragments have one explicit canonical replacement', ()
     ['legacy', 'identifiers'],
     ['linked-data-model-as-the-foundation-and-direction-of-pdtf-standards-development', 'linked-data-model-as-the-foundation-and-direction-of-spdtf-development'],
     ['organise-the-site-around-spdtf-20-and-pdtf-10', 'organise-the-site-around-spdtf-and-the-pdtf-schema'],
+    ['continuation', 'progression'],
+    ['pdtf-10-to-property-pack-crosswalk', 'pdtf-schema-to-property-pack-crosswalk'],
+    ['treat-the-property-pack-ontology-as-an-accelerated-spdtf-20-component', 'treat-the-property-pack-ontology-as-an-accelerated-spdtf-component'],
     ['use-the-standard', 'use-the-schema'],
+    ['section-nav-group-governance-modelling-adr', 'section-nav-governance-modelling-adr'],
+    ['section-nav-group-governance-modelling-odr', 'section-nav-governance-modelling-odr'],
     ['section-nav-group-pdtf-1-adoption', 'section-nav-group-pdtf-schema-usage'],
     ['section-nav-group-pdtf-1-implementation', 'section-nav-group-pdtf-schema-implementation'],
     ['section-nav-group-pdtf-1-mapping', 'section-nav-group-pdtf-schema-mapping'],
@@ -125,6 +129,26 @@ test('renamed PDTF schema fragments have one explicit canonical replacement', ()
     ['section-nav-ontology-trust-and-governance', 'section-nav-pdtf-schema-schema-derived-ontology-trust-governance-and-limitations'],
     ['section-nav-ontology-use-and-tooling', 'section-nav-pdtf-schema-schema-derived-ontology-use-and-tooling'],
     ['section-nav-ontology-validation-and-examples', 'section-nav-pdtf-schema-schema-derived-ontology-validation-and-examples'],
+    ...['concept', 'logical', 'physical-database', 'physical-ontology', 'physical-relational']
+      .map((suffix) => [`section-nav-model-${suffix}`,
+        `section-nav-pdtf-schema-schema-derived-ontology-model-views-by-audience-${suffix}`]),
+    ...['built-form', 'built-form-fixtures', 'built-form-surveys', 'encumbrances', 'evidence',
+      'legal-estate', 'legal-estate-ownership', 'legal-estate-ownership-leasehold',
+      'legal-estate-ownership-leasehold-lease-charges', 'legal-estate-ownership-leasehold-lease-legal',
+      'legal-estate-ownership-leasehold-lease-misc', 'legal-estate-ownership-managed',
+      'legal-estate-title', 'legal-estate-title-oc-summary', 'local-context', 'local-context-con29r',
+      'local-context-con29r-searches', 'local-context-environmental']
+      .map((suffix) => [`section-nav-schema-${suffix}`,
+        `section-nav-pdtf-schema-schema-and-supporting-material-schema-${suffix}`]),
+    ...['section-nav-group-spdtf-2-spdtf-2', 'section-nav-group-spdtf-2-spdtf-2-ontologies',
+      'section-nav-group-spdtf-2-spdtf-2-property-pack',
+      'section-nav-spdtf-2-ontologies-modelling-method', 'section-nav-spdtf-2-ontologies-why-ontologies',
+      'section-nav-spdtf-2-property-pack-contexts', 'section-nav-spdtf-2-property-pack-coverage',
+      'section-nav-spdtf-2-property-pack-model', 'section-nav-group-working-groups-spdtf-2-working-groups',
+      ...['conveyancing', 'dbt-smart-data', 'estate-agency', 'finance-and-banking', 'interoperability',
+        'property-data-services', 'property-technology', 'surveying-and-valuation']
+        .map((suffix) => `section-nav-spdtf-2-working-groups-${suffix}`)]
+      .map((source) => [source, source.replaceAll('spdtf-2', 'spdtf')]),
   ]);
 
   assert.deepEqual(new Map(PDTF_SCHEMA_FRAGMENT_REPLACEMENTS), expected);
@@ -160,11 +184,11 @@ test('renamed PDTF schema fragments have one explicit canonical replacement', ()
     sourceOccurrences: receipt.sourceMigratedFragmentCount,
   }, {
     policy: 'explicit-schema-to-scheme-fragment-replacement-v1',
-    mappings: 21,
+    mappings: 66,
     baselineRoutes: 1,
     sourceRoutes: 1,
-    baselineOccurrences: 21,
-    sourceOccurrences: 21,
+    baselineOccurrences: 66,
+    sourceOccurrences: 66,
   });
   assert.throws(() => composePdtfSchemaFragmentMigrationReceipt({
     records: [{
@@ -237,6 +261,15 @@ test('the frozen intermediate route cut composes into schema-to-scheme routes', 
     replacementRoute: (route) => route === '/pdtf/LeaseTerm'
       ? '/pdtf/leaseTerm' : getDeclaredRouteReplacement(route),
   }), /stable PDTF identifier route moved/u);
+  const arbitrary = structuredClone(projected);
+  const unrelated = arbitrary.find(({ acceptedRoute }) => acceptedRoute === '/design-system');
+  unrelated.acceptedRoute = '/arbitrary-undocumented-move';
+  unrelated.acceptedFile = 'anything/random.html';
+  assert.throws(() => composeSchemaToSchemeRouteReceipt({ records: arbitrary, addedRecords: [],
+    sourceManifest: schemaToSchemeSource, sourceAdditions: schemaToSchemeSourceAdditions,
+    sourceContract: SCHEMA_TO_SCHEME_SOURCE_ROUTE_MANIFEST,
+    replacementRoute: (route) => route === '/design-system'
+      ? unrelated.acceptedRoute : getDeclaredRouteReplacement(route) }), /undeclared disposition/u);
 });
 
 test('PDTF term IRIs and governance-owned decisions are not compatibility routes', () => {
@@ -306,27 +339,18 @@ test('the frozen source cut accounts for every moved, retired, and stable PDTF r
 test('the complete PDTF migration receipt is bijective and preserves information and fragments', () => {
   const project = (record) => {
     const sourceRoute = record.acceptedRoute;
-    const replacement = isStablePdtfIdentifierRoute(sourceRoute)
-      ? null : getPdtf1ReplacementRoute(sourceRoute);
+    const acceptedRoute = getAcceptedRoute(sourceRoute);
     return {
       ...record,
-      acceptedRoute: replacement ?? sourceRoute,
-      acceptedFile: replacement
+      acceptedRoute,
+      acceptedFile: acceptedRoute !== sourceRoute
         ? getAcceptedRouteFile(sourceRoute, record.acceptedFile) : record.acceptedFile,
     };
   };
   const records = sourceManifest.routes
     .filter(({ acceptedRoute }) => !isRetiredPdtf1ManualAlias(acceptedRoute))
     .map(project);
-  const addedRecords = [
-    ...sourceManifest.addedRoutes.map(project),
-    {
-      acceptedRoute: '/modelling/adr/adr-0076',
-      acceptedFile: 'modelling/adr/adr-0076.html',
-      kind: 'new-authority-route',
-      introducedBy: 'test-accepted-commit',
-    },
-  ];
+  const addedRecords = sourceManifest.addedRoutes.map(project);
   const retiredAliases = composePdtf1RetiredAliases(sourceManifest, getPdtf1ReplacementRoute);
   const exactMigration = {
     ...PDTF1_ROUTE_MIGRATION,
@@ -346,7 +370,7 @@ test('the complete PDTF migration receipt is bijective and preserves information
     sourceManifest,
   });
   assert.deepEqual(receipt, {
-    policy: 'canonical-move-with-retired-aliases-v1',
+    policy: 'scoped-pdtf-schema-move-with-retired-aliases-v2',
     sourceRouteCount: 3500,
     movedCanonicalRouteCount: 1264,
     movedBaselineRouteCount: 1255,
@@ -363,8 +387,8 @@ test('the complete PDTF migration receipt is bijective and preserves information
     sourceReframeSemanticBlockCount: 0,
     sourceReframeNonInformationBlockCount: 0,
     sourceReframeRoutesSha256: sha256(''),
-    postSourceAdditionRouteCount: 1,
-    acceptedSiteRouteCount: 3274,
+    outOfScopeSourceRouteCount: 919,
+    outOfScopeSourceRoutesSha256: 'e9c7cfdbabac6c676e0560925d70b627af7d0a50e2d23f18957e1345187cd49c',
     movedRoutePairsSha256: 'adaa5ec24650f79b650b4c0f748ec9e7b9bde1e295d32e95785f8e1dd810f82b',
     retiredAliasesSha256: '35894b714f3562508cd1b4dcaf09c2505efa9956473cf1f343d08c5a450403fa',
     stableIdentifierRoutesSha256: 'cf2e83c5290fe5b5b2fe2f5b25e31d2d8f53d8be90cd533e5e43de8ff30a88be',

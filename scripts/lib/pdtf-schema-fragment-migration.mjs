@@ -11,16 +11,17 @@ function sha256(value) {
 
 function migrationUsage(pairs, label) {
   const counts = new Map(PDTF_SCHEMA_FRAGMENT_REPLACEMENTS.map(([source]) => [source, 0]));
+  const replacements = new Map(PDTF_SCHEMA_FRAGMENT_REPLACEMENTS);
   for (const { sourceRoute, sourceFragments, acceptedFragments } of pairs) {
     const accepted = new Set(acceptedFragments ?? []);
     for (const fragment of sourceFragments ?? []) {
       if (accepted.has(fragment)) continue;
-      const replacement = PDTF_SCHEMA_FRAGMENT_REPLACEMENTS
-        .find(([source]) => source === fragment)?.[1];
-      if (!replacement || !accepted.has(replacement)) {
+      const replacement = replacements.get(fragment);
+      if (replacement && accepted.has(replacement)) {
+        counts.set(fragment, counts.get(fragment) + 1);
+      } else {
         throw new Error(`${label} fragment has no declared replacement: ${sourceRoute}#${fragment}`);
       }
-      counts.set(fragment, counts.get(fragment) + 1);
     }
   }
   return counts;

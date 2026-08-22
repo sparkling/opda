@@ -7,6 +7,7 @@ const HASH = /^[a-f0-9]{64}$/u;
 const SEMANTIC_CLASSES = new Set([
   'terminology-and-scope-reframe', 'authority-and-label-reframe',
   'decision-status-update', 'scope-and-maturity-clarification',
+  'source-inventory-metadata-refresh',
 ]);
 const NON_INFORMATION_CLASS = 'superseded-navigation-copy';
 const NAVIGATION_EVIDENCE = new Set(['containing-link', 'declared-original-destination']);

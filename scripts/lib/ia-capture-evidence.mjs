@@ -15,6 +15,7 @@ const SEMANTIC_CLASSES = new Set([
   'authority-and-label-reframe',
   'decision-status-update',
   'scope-and-maturity-clarification',
+  'source-inventory-metadata-refresh',
 ]);
 const NON_INFORMATION_CLASS = 'superseded-navigation-copy';
 const NAVIGATION_EVIDENCE = new Set(['containing-link', 'declared-original-destination']);
