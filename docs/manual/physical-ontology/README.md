@@ -47,11 +47,11 @@ Per ADR-0011 (module TBox emission) + ADR-0010 (SKOS vocabulary emission) + ADR-
 8. `opda-<module>-annotations.ttl` × 6 — DPV co-annotations
 9. `profiles/baspi5.ttl` — BASPI5 overlay profile (imports `<https://opda.org.uk/pdtf/harness/release/1.0.0/>` + `<https://opda.org.uk/pdtf/scheme/>`)
 
-Profiles are loaded after the base ontology + shapes; they compose without modifying upstream graphs.
+[Profiles](./profiles/README.md) are loaded after the base ontology + shapes; they compose without modifying upstream graphs.
 
 ## See also: Modelling section
 
-The [Ontology (OWL)](/modelling/ontology), [SHACL shapes](/modelling/shacl-shapes), and [Concept taxonomy (SKOS)](/modelling/concept-taxonomy) pages in the Modelling section describe the design intent and authoring approach for the artefacts documented in this tier. This tier is the generator-emitted realisation (verbatim Turtle from source TTLs); those pages are the editorial framing and design rationale.
+The historical [Ontology (OWL)](/pdtf-schema/schema-derived-ontology/lineage-provenance-and-verification/historical-modelling/ontology), [SHACL shapes](/pdtf-schema/schema-derived-ontology/lineage-provenance-and-verification/historical-modelling/shacl-shapes), and [Concept taxonomy (SKOS)](/pdtf-schema/schema-derived-ontology/lineage-provenance-and-verification/historical-modelling/concept-taxonomy) pages describe the design intent and authoring approach for the artefacts documented in this tier. This tier is the generator-emitted realisation (verbatim Turtle from source TTLs); those pages preserve the editorial framing and design rationale.
 
 ## Tier overview
 
@@ -201,7 +201,7 @@ Machine-derivable index of every minted term in OPDA's emitted ontology.
 | `opda:RoleMixin` | [foundation/classes.md#opdarolemixin](./foundation/classes.md#opdarolemixin) | UFO RoleMixin meta-class |
 | `opda:ValidationContext` | [foundation/classes.md#opdavalidationcontext](./foundation/classes.md#opdavalidationcontext) | Substance Kind (informational) |
 
-#### Property (7)
+#### [Property](./property/README.md) (7)
 
 | Class | File |
 |---|---|
@@ -213,7 +213,7 @@ Machine-derivable index of every minted term in OPDA's emitted ontology.
 | `opda:RegisteredTitle` | [property/classes.md#opdaregisteredtitle](./property/classes.md#opdaregisteredtitle) |
 | `opda:UPRNSuccessionEvent` | [property/classes.md#opdauprnsuccessionevent](./property/classes.md#opdauprnsuccessionevent) |
 
-#### Agent (7)
+#### [Agent](./agent/README.md) (7)
 
 | Class | File |
 |---|---|
@@ -225,7 +225,7 @@ Machine-derivable index of every minted term in OPDA's emitted ontology.
 | `opda:Proprietorship` | [agent/classes.md#opdaproprietorship](./agent/classes.md#opdaproprietorship) |
 | `opda:Seller` | [agent/classes.md#opdaseller](./agent/classes.md#opdaseller) |
 
-#### Transaction (3)
+#### [Transaction](./transaction/README.md) (3)
 
 | Class | File |
 |---|---|
@@ -233,7 +233,7 @@ Machine-derivable index of every minted term in OPDA's emitted ontology.
 | `opda:Transaction` | [transaction/classes.md#opdatransaction](./transaction/classes.md#opdatransaction) |
 | `opda:TransactionChain` | [transaction/classes.md#opdatransactionchain](./transaction/classes.md#opdatransactionchain) |
 
-#### Claim (10)
+#### [Claim](./claim/README.md) (10)
 
 | Class | File |
 |---|---|
@@ -249,7 +249,7 @@ Machine-derivable index of every minted term in OPDA's emitted ontology.
 | `opda:Vouch` | [claim/classes.md#opdavouch](./claim/classes.md#opdavouch) |
 | `opda:VouchEvidence` | [claim/classes.md#opdavouchevidence](./claim/classes.md#opdavouchevidence) |
 
-#### Descriptive (5)
+#### [Descriptive](./descriptive/README.md) (5)
 
 | Class | File |
 |---|---|
@@ -259,7 +259,7 @@ Machine-derivable index of every minted term in OPDA's emitted ontology.
 | `opda:Survey` | [descriptive/classes.md#opdasurvey](./descriptive/classes.md#opdasurvey) |
 | `opda:Valuation` | [descriptive/classes.md#opdavaluation](./descriptive/classes.md#opdavaluation) |
 
-#### Governance (2)
+#### [Governance](./governance/README.md) (2)
 
 | Class | File |
 |---|---|
@@ -400,7 +400,7 @@ Physical-Ontology consolidates per-class blocks into one `classes.md` per module
 - [ADR-0012 — SHACL + DPV annotation emission](/modelling/adr/adr-0012)
 - [ADR-0013 — Overlay profile emission](/modelling/adr/adr-0013)
 - [ADR-0014 — BASPI5 round-trip MVP harness](/modelling/adr/adr-0014)
-- [ODR-0004 — PDTF ontology foundation](/modelling/odr/odr-0004) (3a three-graph separation)
+- [ODR-0004 — schema-derived ontology foundation](/modelling/odr/odr-0004) (3a three-graph separation)
 - [ODR-0010 — Overlay profile mechanism](/modelling/odr/odr-0010) (three-rule interface contract)
 - [ODR-0011 — Enumeration vocabularies](/modelling/odr/odr-0011) (7-category UFO framework)
 - [ODR-0013 — SHACL validation and severity](/modelling/odr/odr-0013) (4-tier severity framework)

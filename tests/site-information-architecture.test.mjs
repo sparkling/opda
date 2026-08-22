@@ -47,9 +47,9 @@ import {
 } from '../src/lib/spdtf-standards-profile.mjs';
 const expectedDestinations = [
   ['programme', 'Programme', '/programme'],
-  ['spdtf-2', 'SPDTF 2.0 Development', '/spdtf-2'],
-  ['working-groups', 'Working groups', '/spdtf-2/working-groups'],
-  ['pdtf-1', 'PDTF 1.0', '/pdtf-1'],
+  ['spdtf', 'SPDTF', '/spdtf'],
+  ['working-groups', 'Working groups', '/spdtf/working-groups'],
+  ['pdtf-schema', 'PDTF schema', '/pdtf-schema'],
   ['governance', 'Governance', '/governance'],
   ['resources', 'Resources', '/resources'],
 ];
@@ -66,8 +66,8 @@ const filesBelow = (directory) => readdirSync(directory, { withFileTypes: true }
 
 test('the maintained IA source and companion stay below the project file limit', () => {
   for (const relativePath of [
-    'docs/spdtf-2-0-information-architecture.md',
-    'docs/spdtf-2-0-information-architecture.html',
+    'docs/spdtf-information-architecture.md',
+    'docs/spdtf-information-architecture.html',
   ]) {
     const source = readFileSync(path.join(projectRoot, relativePath), 'utf8');
     assert.ok(source.split('\n').length < 500, `${relativePath} must remain below 500 lines`);
@@ -84,31 +84,31 @@ test('the global information architecture has exactly the six accepted destinati
   assert.equal(validateIaContract(), true);
 });
 
-test('working groups is a shortcut into the canonical SPDTF 2.0 workspace', () => {
+test('working groups is a shortcut into the canonical SPDTF workspace', () => {
   const workingGroups = GLOBAL_DESTINATIONS.find(({ key }) => key === 'working-groups');
-  assert.equal(workingGroups.url, '/spdtf-2/working-groups');
-  assert.equal(getActiveDestination('/spdtf-2/working-groups'), 'working-groups');
-  assert.equal(getActiveDestination('/spdtf-2/working-groups/estate-agency'), 'working-groups');
-  assert.equal(getActiveDestination('/spdtf-2/working-groups/?view=records'), 'working-groups');
-  assert.equal(getActiveDestination('/spdtf-2/ontology'), 'spdtf-2');
-  assert.equal(getContentOwner('/spdtf-2/working-groups/estate-agency'), 'spdtf-2');
+  assert.equal(workingGroups.url, '/spdtf/working-groups');
+  assert.equal(getActiveDestination('/spdtf/working-groups'), 'working-groups');
+  assert.equal(getActiveDestination('/spdtf/working-groups/estate-agency'), 'working-groups');
+  assert.equal(getActiveDestination('/spdtf/working-groups/?view=records'), 'working-groups');
+  assert.equal(getActiveDestination('/spdtf/ontology'), 'spdtf');
+  assert.equal(getContentOwner('/spdtf/working-groups/estate-agency'), 'spdtf');
   assert.deepEqual(DESTINATION_SHORTCUTS['working-groups'], {
-    target: '/spdtf-2/working-groups', contentOwner: 'spdtf-2',
+    target: '/spdtf/working-groups', contentOwner: 'spdtf',
   });
   assert.equal(getActiveDestination('/working-groups/join'), 'working-groups');
 });
 
 test('specific route ownership overrides broad legacy families deterministically', () => {
-  assert.equal(getActiveDestination('/spdtf-2/property-pack'), 'spdtf-2');
+  assert.equal(getActiveDestination('/spdtf/property-pack'), 'spdtf');
   assert.equal(getActiveDestination('/modelling/adr/adr-0074'), 'governance');
   assert.equal(getActiveDestination('/modelling/odr/odr-0001'), 'governance');
   assert.equal(getActiveDestination('/engagement/meetings-decisions'), 'governance');
   assert.equal(getActiveDestination('/engagement/working-groups'), 'programme');
   assert.equal(getActiveDestination('/engagement/transcripts'), 'resources');
-  assert.equal(getRouteDisposition('/spdtf-2/property-pack').owner, 'spdtf-2');
+  assert.equal(getRouteDisposition('/spdtf/property-pack').owner, 'spdtf');
   assert.equal(getRouteDisposition('/modelling/adr/adr-0074').owner, 'governance');
   for (const path of [
-    '/spdtf-2/working-groups/estate-agency',
+    '/spdtf/working-groups/estate-agency',
     '/working-groups/join',
     '/presentation/working-group-kickoff',
     '/engagement/transcripts',
@@ -130,10 +130,10 @@ test('every current section has one retained global owner', () => {
     const landing = section.groups[0]?.items[0]?.url;
     assert.ok(getActiveDestination(landing), `${sectionKey} has no global owner`);
   }
-  assert.equal(getActiveDestination('/spdtf-2/property-pack/contexts/estate-agency'), 'spdtf-2');
-  assert.equal(getActiveDestination('/ontology/classes'), 'pdtf-1');
-  assert.equal(getActiveDestination('/manual/concept/agent/buyer'), 'pdtf-1');
-  assert.equal(getContentOwner('/presentations/finance-banking-kickoff'), 'spdtf-2');
+  assert.equal(getActiveDestination('/spdtf/property-pack/contexts/estate-agency'), 'spdtf');
+  assert.equal(getActiveDestination('/ontology/classes'), 'pdtf-schema');
+  assert.equal(getActiveDestination('/manual/concept/agent/buyer'), 'pdtf-schema');
+  assert.equal(getContentOwner('/presentations/finance-banking-kickoff'), 'spdtf');
   assert.equal(getActiveDestination('/library/resources'), 'resources');
 });
 
@@ -142,9 +142,9 @@ test('each destination has the complete five-field authority contract', () => {
     assert.deepEqual(Object.keys(AUTHORITY_BY_DESTINATION[key]), IA_STATUS_FIELDS);
     for (const field of IA_STATUS_FIELDS) assert.ok(AUTHORITY_BY_DESTINATION[key][field]);
   }
-  assert.equal(getRouteStatus('/pdtf-1/extracted-ontology/terms-and-model-resources/classes').version, 'PDTF 1.0-derived draft');
-  assert.match(getRouteStatus('/pdtf-1/extracted-ontology/lineage-provenance-and-verification/schema-to-ontology-verification').authority, /verification evidence/u);
-  assert.match(getRouteStatus('/pdtf-1/original-standard/adoption').authority, /implementation evidence/u);
+  assert.equal(getRouteStatus('/pdtf-schema/schema-derived-ontology/terms-and-model-resources/classes').version, 'schema-derived draft');
+  assert.match(getRouteStatus('/pdtf-schema/schema-derived-ontology/lineage-provenance-and-verification/schema-to-ontology-verification').authority, /verification evidence/u);
+  assert.match(getRouteStatus('/pdtf-schema/schema-and-supporting-material/adoption').authority, /implementation evidence/u);
 });
 
 test('reader pages keep authority metadata without rendering an authority status panel', () => {
@@ -163,13 +163,13 @@ test('reader pages keep authority metadata without rendering an authority status
 test('every audited route family has a deterministic owner and disposition', () => {
   const entries = new Map(ROUTE_DISPOSITION_LEDGER.map((entry) => [entry.currentPath, entry]));
   for (const path of [
-    '/programme/**', '/spdtf-2/**', '/spdtf-2/working-groups/**', '/pdtf-1/**',
+    '/programme/**', '/spdtf/**', '/spdtf/working-groups/**', '/pdtf-schema/**',
     '/resources/**', '/strategy/**', '/governance/**',
     '/dbt-smart-data/**', '/engagement/**',
     '/library/**', '/', '/home', '/glossary', '/design-system', '/resource', '/404',
-    '/spdtf-2/property-pack/**', '/pdtf/**',
-    '/pdtf-1/extracted-ontology/use-and-tooling/artefacts/**',
-    '/pdtf-1/extracted-ontology/use-and-tooling/tools/**', '/data/**', '/ui/**',
+    '/spdtf/property-pack/**', '/pdtf/**',
+    '/pdtf-schema/schema-derived-ontology/use-and-tooling/artefacts/**',
+    '/pdtf-schema/schema-derived-ontology/use-and-tooling/tools/**', '/data/**', '/ui/**',
     '/images/**', '/council/**',
     '/presentations/**', '/modelling/adr/**', '/modelling/odr/**',
   ]) {
@@ -190,7 +190,7 @@ test('every audited route family has a deterministic owner and disposition', () 
 test('the migration ledger preserves every audited high-risk information family', () => {
   const paths = PRESERVATION_LEDGER.map(({ currentPath }) => currentPath).join('\n');
   for (const required of [
-    '/resources/**', '/council/**', '/pdtf-1/extracted-ontology/use-and-tooling/artefacts/**', '/data/**',
+    '/resources/**', '/council/**', '/pdtf-schema/schema-derived-ontology/use-and-tooling/artefacts/**', '/data/**',
     '/pdtf/**', 'former /v2/** and /modelling/property-pack', 'authentication', '/ui/**',
   ]) assert.ok(paths.includes(required), `${required} is missing from the preservation ledger`);
 
@@ -199,7 +199,7 @@ test('the migration ledger preserves every audited high-risk information family'
   const propertyPack = PRESERVATION_LEDGER.find(({ currentPath }) => currentPath === 'former /v2/** and /modelling/property-pack');
   assert.deepEqual(
     { owner: propertyPack.owner, preservedAt: propertyPack.preservedAt, disposition: propertyPack.disposition },
-    { owner: 'spdtf-2', preservedAt: '/spdtf-2/property-pack/**', disposition: 'reframe-equivalent' },
+    { owner: 'spdtf', preservedAt: '/spdtf/property-pack/**', disposition: 'reframe-equivalent' },
   );
 });
 
@@ -233,11 +233,11 @@ test('the frozen preservation proof resolves content, ownership and exact family
   for (const id of [
     'schema', 'implementation', 'adoption', 'modelling', 'model', 'ontology', 'mapping',
   ]) {
-    const fragment = `section-nav-group-pdtf-1-${id}`;
+    const fragment = `section-nav-group-pdtf-schema-${id === 'adoption' ? 'usage' : id}`;
     assert.equal(
       acceptedRecords.filter(({ acceptedFragments }) => acceptedFragments.includes(fragment)).length,
       1701,
-      `${fragment} must remain on every PDTF 1.0 page`,
+      `${fragment} must remain on every PDTF schema page`,
     );
   }
   const requiredRouteFields = [
@@ -312,9 +312,9 @@ test('the frozen preservation proof resolves content, ownership and exact family
       artefacts: [artefacts.assetClass, artefacts.baselinePath, artefacts.acceptedPath, artefacts.accepted.count],
     }, {
       tools: ['tool-rendering', 'public/ontology/tools',
-        'public/pdtf-1/extracted-ontology/use-and-tooling/tools', 837],
+        'public/pdtf-schema/schema-derived-ontology/use-and-tooling/tools', 837],
       artefacts: ['ontology-serialization', 'public/ontology/artefacts',
-        'public/pdtf-1/extracted-ontology/use-and-tooling/artefacts', 27],
+        'public/pdtf-schema/schema-derived-ontology/use-and-tooling/artefacts', 27],
     });
   }
   assert.equal(preservationBaseline.runtimeJourneys.length, 4);
@@ -322,15 +322,15 @@ test('the frozen preservation proof resolves content, ownership and exact family
 
 test('the versioned route-status registry protects derived and pre-candidate authority', () => {
   assert.match(IA_STATUS_REGISTRY_VERSION, /^\d{4}-\d{2}-\d{2}$/u);
-  assert.equal(getRouteStatus('/pdtf-1/extracted-ontology/terms-and-model-resources/classes').maturity, 'Draft semantic corpus — under review');
+  assert.equal(getRouteStatus('/pdtf-schema/schema-derived-ontology/terms-and-model-resources/classes').maturity, 'Draft semantic corpus — under review');
   assert.equal(getRouteStatus('/pdtf/Seller').maturity, 'Draft semantic corpus — under review');
-  assert.match(getRouteStatus('/pdtf/Seller').authority, /not part of the published JSON Schema/u);
-  assert.match(getRouteStatus('/pdtf-1/extracted-ontology/lineage-provenance-and-verification/schema-to-ontology-verification').authority, /verification evidence/u);
-  assert.match(getRouteStatus('/pdtf-1/extracted-ontology/lineage-provenance-and-verification/historical-modelling').maturity, /Mixed-maturity/u);
-  assert.match(getRouteStatus('/pdtf-1/original-standard/adoption').authority, /does not establish SPDTF 2\.0 adoption/u);
-  assert.match(getRouteStatus('/pdtf-1/original-standard').maturity, /Published schema implementation/u);
-  assert.match(getRouteStatus('/spdtf-2/property-pack/contexts/estate-agency').authority, /Machine-generated/u);
-  assert.match(getRouteStatus('/spdtf-2/working-groups/estate-agency').version, /no candidate/u);
+  assert.match(getRouteStatus('/pdtf/Seller').authority, /not an endorsed scheme/u);
+  assert.match(getRouteStatus('/pdtf-schema/schema-derived-ontology/lineage-provenance-and-verification/schema-to-ontology-verification').authority, /verification evidence/u);
+  assert.match(getRouteStatus('/pdtf-schema/schema-derived-ontology/lineage-provenance-and-verification/historical-modelling').maturity, /Mixed-maturity/u);
+  assert.match(getRouteStatus('/pdtf-schema/schema-and-supporting-material/adoption').authority, /does not establish SPDTF adoption/u);
+  assert.match(getRouteStatus('/pdtf-schema/schema-and-supporting-material').maturity, /Existing schema implementation/u);
+  assert.match(getRouteStatus('/spdtf/property-pack/contexts/estate-agency').authority, /Machine-generated/u);
+  assert.match(getRouteStatus('/spdtf/working-groups/estate-agency').version, /no candidate/u);
   const layout = readFileSync(new URL('../src/layouts/Layout.astro', import.meta.url), 'utf8');
   for (const field of IA_STATUS_FIELDS) assert.match(layout, new RegExp(`routeStatus\\.${field}`, 'u'));
 });
@@ -380,11 +380,13 @@ test('standards profile is item-granular and uses only the four accepted mechani
   assert.ok(STANDARDS_PROFILE.every(({ mechanism }) => STANDARDS_MECHANISMS.includes(mechanism)));
 });
 
-test('historical PDTF search alias returns labelled current and historical work', () => {
+test('PDTF search distinguishes the schema, derived evidence and SPDTF work', () => {
   const results = searchEntries('PDTF');
-  assert.ok(results.some(({ url, historicalName }) => url === '/pdtf-1' && historicalName));
-  assert.ok(results.some(({ url, historicalName }) => url === '/pdtf-1/original-standard' && historicalName));
-  assert.ok(results.some(({ url, historicalName }) => url === '/spdtf-2' && !historicalName));
+  assert.ok(results.some(({ url, facet }) => url === '/pdtf-schema' && facet === 'PDTF schema'));
+  assert.ok(results.some(({ url, facet }) => (
+    url === '/pdtf-schema/schema-derived-ontology' && facet === 'Schema-derived ontology'
+  )));
+  assert.ok(results.some(({ url, facet }) => url === '/spdtf' && facet === 'SPDTF'));
 });
 
 test('preservation is a local and deployment gate', () => {
@@ -491,7 +493,7 @@ test('preservation checker rejects invalid navigation-copy provenance evidence',
 test('reader-facing IA vocabulary rejects stale labels but exempts immutable records', () => {
   assert.equal(findForbiddenIaLabels('Develop SPDTF · Property Pack V2').length, 2);
   assert.deepEqual(findForbiddenIaLabels('Published baseline from Phase 1/2', { historical: true }), []);
-  assert.deepEqual(findForbiddenIaLabels('SPDTF 2.0 Property Pack ontology candidate'), []);
+  assert.deepEqual(findForbiddenIaLabels('SPDTF Property Pack ontology candidate'), []);
   assert.equal(SECTIONS['property-pack'].title, 'Property Pack ontology');
   assert.equal(SECTIONS['property-pack'].groups[0].items[1].title, 'Definition and 451-item scope');
   assert.deepEqual(findForbiddenIaLabels(JSON.stringify(comparisonDimensions)), []);

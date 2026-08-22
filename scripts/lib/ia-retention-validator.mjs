@@ -11,9 +11,9 @@ const SEMANTIC_CLASSES = new Set([
 const NON_INFORMATION_CLASS = 'superseded-navigation-copy';
 const NAVIGATION_EVIDENCE = new Set(['containing-link', 'declared-original-destination']);
 const NAVIGATION_CANONICAL_EQUIVALENTS = Object.freeze({
-  '/strategy': ['/programme'], '/model': ['/pdtf-1'], '/implementation': ['/pdtf-1'],
-  '/library': ['/resources'], '/engagement': ['/resources', '/spdtf-2/working-groups'],
-  '/v2': ['/spdtf-2/property-pack'],
+  '/strategy': ['/programme'], '/model': ['/pdtf-schema'], '/implementation': ['/pdtf-schema'],
+  '/library': ['/resources'], '/engagement': ['/resources', '/spdtf/working-groups'],
+  '/v2': ['/spdtf/property-pack'],
 });
 
 function localRouteFromHref(href) {
@@ -33,13 +33,13 @@ function validNavigationDestination(entry) {
 /** Return every structural or source/hash-binding defect in one retention receipt. */
 export function retentionReceiptFailures(record, classifiedByRoute, options = {}) {
   const failures = [];
-  const receipt = options.receipt ?? record.retentionReceipt;
+  const receipt = options.receipt ?? record?.retentionReceipt;
   const policy = options.policy ?? 'explicit-route-block-retention-v1';
-  const baselineBlockCount = options.baselineBlockCount ?? record.equivalenceReceipt?.baselineBlocks;
+  const baselineBlockCount = options.baselineBlockCount ?? record?.equivalenceReceipt?.baselineBlocks;
   const baselineBlockInventorySha256 = options.baselineBlockInventorySha256
-    ?? record.equivalenceReceipt?.baselineBlockInventorySha256;
-  const label = options.label ?? record.baselineRoute;
-  const sourceRoute = options.sourceRoute ?? record.baselineRoute;
+    ?? record?.equivalenceReceipt?.baselineBlockInventorySha256;
+  const label = options.label ?? record?.baselineRoute ?? '(missing route)';
+  const sourceRoute = options.sourceRoute ?? record?.baselineRoute;
   if (!receipt || receipt.policy !== policy || receipt.baselineBlockCount !== baselineBlockCount
     || receipt.baselineBlockInventorySha256 !== baselineBlockInventorySha256
     || !Array.isArray(receipt.targetEvidence) || !receipt.targetEvidence.length

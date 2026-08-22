@@ -133,5 +133,8 @@ export function generatedFamily(route) {
   if (parts.slice(0, 4).join('/') === 'pdtf-1/extracted-ontology/use-and-tooling/tools') {
     return 'ontology/tools';
   }
+  if (parts.slice(0, 4).join('/') === 'pdtf-schema/schema-derived-ontology/use-and-tooling/tools') {
+    return 'ontology/tools';
+  }
   return parts[0];
 }

@@ -5,10 +5,12 @@
 > Builds on [`_research-synthesis.md`](./_research-synthesis.md), [`_external-research.md`](./_external-research.md),
 > and [`_fact-sheet.md`](./_fact-sheet.md). Every structural claim here is verified against the
 > **emitted Turtle** in `source/03-standards/ontology/`, not just against the prose ODRs.
+> This is a draft technical artefact derived from the PDTF schema, not an OPDA-endorsed
+> scheme. It provides modelling evidence for collaborative SPDTF development.
 
 ## TL;DR
 
-- The ontology is **one flat term namespace** (`opda: → https://opda.org.uk/pdtf/`) split into **six editorial module files by ontological *concern*** — not by JSON page, not by industry form. Each module is its own `owl:Ontology` graph that `owl:imports <https://opda.org.uk/pdtf/>`; the file split is for human stewardship, the namespace stays flat so one concept is never scattered across many prefixes. ✅
+- The schema-derived ontology is **one flat term namespace** (`opda: → https://opda.org.uk/pdtf/`) split into **six editorial module files by ontological *concern*** — not by JSON page, not by industry form. Each module is its own `owl:Ontology` graph that `owl:imports <https://opda.org.uk/pdtf/>`; the file split is for human stewardship, the namespace stays flat so one concept is never scattered across many prefixes. ✅
 - **The identity crux (ODR-0005)** is the flagship win: PDTF's single implicit "property" — a UPRN floating across four leaf paths with zero schema-level joins — becomes **three classes with distinct DOLCE/UFO identity criteria** (`opda:Property`, `opda:LegalEstate`, `opda:RegisteredTitle`). UPRN is demoted to a *contingent* identifier; `owl:sameAs` is forbidden; uniqueness is SHACL/DASH-checkable. ✅
 - People and organisations are **rigid Kinds** (`opda:Person`, `opda:Organisation`) that *play* **anti-rigid roles** (`opda:Seller`/`opda:Buyer` as RoleMixins, `opda:Proprietor`/`opda:Conveyancer` as Roles), founded by a `opda:Transaction` **Relator**. Roles are never keyed and never subclassed onto their bearers. ✅
 - The descriptive layer was **deliberately collapsed**: of ~1,493 annotated base leaves, only **~181 (~12%)** are genuine descriptive concepts; ~88% are form-ergonomics (`yesNo` recurs ~1,135× in source; the emitted `YesNoScheme` carries the note "Used by ~276 BASPI5 discriminator questions"). The AI did **not** transliterate 1:1 — it binned A–G and minted ~5 patterns + ~56 SKOS schemes instead of ~900 form-slot IRIs. ✅
@@ -19,7 +21,7 @@
 
 ## 1. Why partition by ontological concern, not by JSON page
 
-PDTF v3 is delivered as JSON Schema organised by **form and payload** — `propertyPack`, `verifiedClaims`, `chain`, plus a dozen statutory-form overlays (BASPI5, TA6/7/10, NTS2, LPE1, CON29R/DW, LLC1, FME1, PIQ). That partition answers "what does this form transport?" It is the **wrong altitude** for a TBox, which must answer "what *kinds of thing* exist and what makes each the same one over time?"
+The PDTF schema v3 is organised by **form and payload** — `propertyPack`, `verifiedClaims`, `chain`, plus a dozen statutory-form overlays (BASPI5, TA6/7/10, NTS2, LPE1, CON29R/DW, LLC1, FME1, PIQ). That partition answers "what does this form transport?" It is the **wrong altitude** for a TBox, which must answer "what *kinds of thing* exist and what makes each the same one over time?"
 
 So the ontology re-partitions along **ontological concern** — a FIBO-style modular method reconciled with UFO layering ([ODR-0004](../ontology/odr/ODR-0004-pdtf-ontology-foundation.md)). There are **six module files**:
 
@@ -51,7 +53,7 @@ Every minted term — in any module — is `opda:Something` under `https://opda.
 
 ### The defect
 
-PDTF v3 **has no `Property` class.** The thing every transaction is *about* is reconstructed at read time from scattered surfaces with **zero schema-level joins**. UPRN — the obvious join key — appears in **four** leaf paths and is never reconciled:
+The PDTF schema v3 **has no `Property` class.** The thing every transaction is *about* is reconstructed at read time from scattered surfaces with **zero schema-level joins**. UPRN — the obvious join key — appears in **four** leaf paths and is never reconciled:
 
 - `propertyPack.uprn`
 - `energyEfficiency.certificate.uprn`
@@ -128,7 +130,7 @@ Three structural pieces hang off it:
 
 - **`opda:Milestone`** — lifecycle milestones as `prov:Activity`. Hybrid PROV-O typing (S007 Q2): *instant* milestones (instruction, offerAccepted, exchange) carry `prov:atTime`; *interval* milestones (completion-process, registration-process) carry `prov:startedAtTime` + `prov:endedAtTime`. Each may pair with a `prov:Plan` carrying `opda:plannedAtTime`, so an `opda:MilestoneVarianceRule` materialises expected-vs-actual variance into the validation report (`sh:Info` under 14 days, `sh:Warning` over).
 - **`opda:TransactionChain`** — modelled two ways on purpose (S007 Q4), because both shapes appear in real chain queries: a recursive `opda:dependsOnTransaction` predicate *and* an `opda:chainMembers` aggregate, with a `sh:maxInclusive 7` chain-length cap from CLC data. Chain status is *derived* (any-blocked → chain-blocked).
-- **Status / participant lifecycle** — drawn from SKOS schemes (e.g. a `ParticipantStatusScheme`: Proposed/Invited/Active/Removed — note PDTF v3.4 itself replaced `isRemoved` with `participantStatus`, which the ontology mirrors as a controlled vocabulary rather than a boolean).
+- **Status / participant lifecycle** — drawn from SKOS schemes (e.g. a `ParticipantStatusScheme`: Proposed/Invited/Active/Removed — note the PDTF schema v3.4 replaced `isRemoved` with `participantStatus`, which the ontology mirrors as a controlled vocabulary rather than a boolean).
 
 Note the deliberate **dual-typing seam**: a `opda:LeaseExtensionEvent` is both a property-lifecycle event (it mutates a `LeaseTerm`) and may co-type as a `opda:Transaction` — "the dual typing reflects the property-lifecycle vs relator perspectives on the same event." The ontology lets one node wear both hats rather than forcing a false choice. ✅
 
@@ -136,7 +138,7 @@ Note the deliberate **dual-typing seam**: a `opda:LeaseExtensionEvent` is both a
 
 ## 4. Claims, evidence & provenance (ODR-0009) — PROV-O backbone + eIDAS envelope
 
-PDTF carries its assurance story in a **separate envelope** — `pdtf-verified-claims.json`, an OIDC4IDA / eIDAS-shaped structure. This is the seam where PDTF "stops being a property-data form and becomes a *Trust* Framework," and an opaque-JSON envelope cannot participate in the W3C VC / DID ecosystem the business glossary already names. (Standards depth — the full eIDAS/OIDC4IDA mapping — lives in **KB doc 03**; this section gives the model shape.)
+The PDTF schema carries assurance data in a **separate envelope** — `pdtf-verified-claims.json`, an OIDC4IDA / eIDAS-shaped structure. This is the seam between property-data forms and Trust Framework material, and an opaque JSON envelope cannot participate directly in the W3C VC / DID ecosystem the business glossary already names. (Standards depth — the full eIDAS/OIDC4IDA mapping — lives in **KB doc 03**; this section gives the candidate model shape.)
 
 The decision: a **PROV-O backbone (~80% of the envelope, native) plus a thin assurance layer** for the residue PROV-O cannot express. Canonically:
 
@@ -170,7 +172,7 @@ The agent module applies the same Kind-vs-Role discipline to people and organisa
 
 - **Bearers are rigid Kinds.** `opda:Person` (DOLCE Endurant/Agent, FIBO-style multi-identifier IC over name-change / gender-recognition / death) and `opda:Organisation` (`rdfs:subClassOf org:Organization` per S006 Q6 9-1; FIBO LegalEntity multi-identifier pattern over merger / demerger / dissolution). FOAF was evaluated and ruled out in favour of `prov:Agent` + W3C Org + `dct:` + `opda:`.
 - **Roles are anti-rigid and externally founded.** `opda:Seller` and `opda:Buyer` are **RoleMixins** (cross-sortal — borne by Person *or* Organisation, founded by the `opda:Transaction` Relator); `opda:Proprietor` is a **Role** (sortal — borne by Person, founded by a `opda:Proprietorship` Relator). A Role **never** supplies its own identity and is **never keyed** — it borrows identity from its bearer (the ODR-0005 anti-pattern, reused here).
-- **The capacity/authority split** is the closest thing to authorisation logic, and it is a genuine modelling insight: PDTF collapses *asserted* and *evidenced* authority into free text; the ontology separates them across the sales/conveyancing seam:
+- **The capacity/authority split** is the closest thing to authorisation logic, and it is a useful modelling candidate: the PDTF schema collapses *asserted* and *evidenced* authority into free text; the schema-derived ontology separates them across the sales/conveyancing seam:
 
 ```turtle
 opda:hasAssertedCapacity                                          # sales-side: a SKOS-typed claim
@@ -258,7 +260,7 @@ The `YesNoScheme` is the form-ergonomics collapse made visible in one place — 
 
 ## 8. Bounded contexts & DDD (ODR-0019 / ODR-0020) — a form IS a DCAP
 
-The UK transaction is modelled as DDD **bounded contexts**, with PDTF as their **Published Language**. Two representation questions were settled 7-0 across two council rounds:
+The UK transaction is modelled as DDD **bounded contexts**, using the PDTF schema's existing exchange vocabulary as source evidence. Two representation questions were settled internally 7-0 across two council rounds:
 
 1. **Contexts are a SKOS scheme, never a namespace.** Because a single entity (`opda:Address`) belongs to *many* contexts and an IRI inhabits exactly one namespace string, per-context namespaces would force duplication or the forbidden `owl:sameAs`. So the six industry contexts ship as a `skos:ConceptScheme` (anti-rigid, perspectival — *not* `owl:Class`):
 
@@ -280,7 +282,7 @@ The six emitted contexts are **EstateAgency** (baspi5/nts2), **Conveyancing** (t
 
 2. **Membership is a derived, on-demand query — never materialised.** The overlay a payload arrives through *is* its context, so `term → context` is derived from the SHACL profiles (the single source of truth), never hand-authored. The final S022 decision goes further: **no `opda:servesContext` / `opda:overlaysContext` / `opda:definedInContext` predicates are emitted at all** — membership is computed when asked. A bespoke `opda:definedInContext` predicate was minted and then **retired** when the council found it reinvented `rdfs:isDefinedBy` + `dct:source` + `dct:subject`.
 
-This yields the initiative's sharpest conceptual reframing, recorded in [[opda-odr-format-vs-skills]]'s lineage and the synthesis: **a PDTF form *is* a DCMI Application Profile (DCAP)** — its SHACL overlay shapes are its Description Set Profile, and the data dictionary is a DCTAP. Homonyms (e.g. *charge*: `opda:LegalCharge` vs `opda:LocalLandCharge`) are disambiguated by **distinct local names in the one namespace** under an identity-criterion test — never by a distinct namespace, and never with `owl:sameAs`. ✅
+This yields the initiative's sharpest conceptual reframing, recorded in [[opda-odr-format-vs-skills]]'s lineage and the synthesis: **a PDTF schema form can be represented as a DCMI Application Profile (DCAP)** — its SHACL overlay shapes form a Description Set Profile, and the data dictionary can be expressed as a DCTAP. Homonyms (e.g. *charge*: `opda:LegalCharge` vs `opda:LocalLandCharge`) are disambiguated by **distinct local names in the one namespace** under an identity-criterion test — never by a distinct namespace, and never with `owl:sameAs`. ✅ technical artefact
 
 ---
 
@@ -324,12 +326,12 @@ Together these are the generator inputs the forward vision turns into JSON Schem
 
 *(Audience: mixed senior decision-makers + data/technical leads, immediately after the v3.6 approval — "data schema feedback & next steps.")*
 
-- **"JSON Schema names slots; it cannot say what has identity."** PDTF v3's single implicit property is a UPRN floating across four fields with **zero joins**. We split it into three precisely-distinguished things (physical property, legal estate, registry record), each with a stated identity criterion — and the split is *checkable* (duplicate-UPRN fires a SHACL violation; a missing UPRN degrades gracefully; the new-build case the JSON schema cannot express now has a coherent answer). This is the foundation under "fixing the data foundations."
+- **"JSON Schema names slots; it cannot say what has identity."** The PDTF schema v3's single implicit property is a UPRN floating across four fields with **zero joins**. The candidate model splits it into three precisely distinguished things (physical property, legal estate, registry record), each with a stated identity criterion. That split is checkable and ready for SPDTF working-group review.
 - **The AI did not transliterate — it exercised restraint.** Of ~1,493 annotated leaves, ~88% are form-ergonomics (`yesNo` recurs ~1,135×). We collapsed them into ~5 reusable patterns + ~56 controlled vocabularies + ~2 classes instead of ~900 throwaway IRIs — and ratified that collapse behind three enforceable gates (path-aware binning, leaf-path provenance, round-trip-by-test). The expensive human-WG operation shrank ~80%.
 - **Each statutory form is a DCMI Application Profile.** BASPI5, TA6, CON29, LPE1 become **SHACL overlay profiles** over **one** governed model; the data dictionary is a DCTAP. "PDFs → APIs" and "consent-based APIs" both want one machine-validated model that every system can dereference — that is exactly what this is.
 - **Trust is modelled, not asserted.** Claims ride a PROV-O backbone with an eIDAS assurance layer; evidence is a *role a document plays* (value-keyed SHACL, not a class hierarchy); a seller's *asserted capacity* is cleanly separated from *evidenced authority* (probate, power of attorney). This is the substrate the lenders/gov constituency cares about — and the on-ramp to W3C Verifiable Credentials.
 - **Honest roadmap, not gaps.** Two things we say plainly: machine-readable **authorisation policies (ODRL)** are adopted-but-deferred (we built the role/authority *substrate*, zero `odrl:` triples yet); and **OWL reasoning is real but shallow today** (flat hierarchy — only RDFS subclass entailment fires). Both are phased, defensible, and recorded.
-- **Governed and reproducible.** ~40 classes / 226 datatype-properties / 90 SHACL shapes, every term tracing via `dct:source` to a schema leaf, glossary row, ODR section or regulator; emitted by a deterministic generator under a byte-identity CI gate; adjudicated by ~28 citable Ontology Decision Records and ~37 AI-council sessions with a human directing authority. This is a standard the ecosystem can extend, not a slide-deck model.
+- **Governed as technical evidence and reproducible.** ~40 classes / 226 datatype-properties / 90 SHACL shapes, every term tracing via `dct:source` to a schema leaf, glossary row, ODR section or regulator; emitted by a deterministic generator under a byte-identity CI gate; adjudicated in ~28 internal Ontology Decision Records and ~37 AI-council sessions. This is an inspectable candidate model for SPDTF working groups, not a ratified standard.
 
 ---
 

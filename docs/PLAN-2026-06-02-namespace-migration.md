@@ -1,14 +1,19 @@
 # Migration Plan — `w3id.org/opda/#…` → `opda.org.uk/pdtf/…` (ADR-0006 frozen scheme)
 
-**Author:** Henrik (with Claude). **Date:** 2026-06-02. **Status:** plan ratified, not yet executed.
-**Implements:** the frozen namespace scheme in [ADR-0006](./adr/ADR-0006-w3id-opda-ontology-namespace.md) (definitive block) + Council session-037.
+**Author:** Henrik (with Claude). **Date:** 2026-06-02. **Status at the time:** internally approved technical plan, not yet executed.
+**Implements:** the identifier scheme specified in [ADR-0006](./adr/ADR-0006-w3id-opda-ontology-namespace.md) (definitive block) + internal Council session-037.
 **Prereq context:** [HANDOVER-2026-06-02](./HANDOVER-2026-06-02-jena-toolchain-pyshacl-retire-and-url-scheme.md) §"What's open" item 1.
+
+> Historical implementation plan. Here, `accepted`, `approved`, `Council` and
+> `directing authority` describe the internal schema-derived-ontology project. They do
+> not imply OPDA or industry endorsement; the resulting draft artefact is evidence for
+> the collaborative development of SPDTF.
 
 > This is a **structural kind-namespace split, not a find-replace.** Terms, shapes, SKOS schemes, named graphs, and physical/governance artefacts each land in a *different* sub-namespace. A blanket string-swap of `w3id.org/opda` → `opda.org.uk/pdtf` is **wrong** (it keeps the hash, keeps per-module IRIs, and merges kinds that must split). The surface was mapped by four scoped agents; their corrected findings are folded in below.
 
 ---
 
-## 1. Canonical target scheme (governs)
+## 1. Target identifier scheme
 
 Base **`https://opda.org.uk/`** · slash · **no hash** · no version-in-IRI · flat term namespace.
 `@prefix opda: <https://opda.org.uk/pdtf/> .`
@@ -29,17 +34,17 @@ Base **`https://opda.org.uk/`** · slash · **no hash** · no version-in-IRI · 
 | instance / test data | `…/pdtf/harness/data/…` | translators |
 | release snapshot | `…/pdtf/harness/release/1.0.0/` | `release_iri()` |
 
-**Standard vs physical (Baker's placement test, one-directional):** core `/pdtf/` + `/pdtf/scheme/` + `/pdtf/shape/` + `/pdtf/graph/` are the **logical** standard; `/pdtf/harness/` holds **physical** artefacts + governance. Nothing in core may *depend on* `/pdtf/harness/` (see ruling #2 — `dct:source` citations are comments, not dependencies).
+**Logical model vs physical harness (Baker's placement test, one-directional):** core `/pdtf/` + `/pdtf/scheme/` + `/pdtf/shape/` + `/pdtf/graph/` hold the **logical draft model**; `/pdtf/harness/` holds **physical** artefacts + internal governance records. Nothing in core may *depend on* `/pdtf/harness/` (see ruling #2 — `dct:source` citations are comments, not dependencies).
 
 ### Do NOT touch (external / out-of-scope)
 `trust.propdata.org.uk/vocab/` · `dpv`, `dpv/pd` · all W3C (`rdf rdfs owl shacl skos vann prov time xsd`) · `creativecommons.org` · FCA/ICO/HMLR regulator citations · `www.basp.uk/forms/*` (external form publisher) · `urn:opda:exemplar:*` (internal URN).
 
 ---
 
-## 2. Decision record (directing-authority rulings, 2026-06-02)
+## 2. Internal technical decision record (2026-06-02)
 
 1. **`/scheme/` disambiguation (blanket).** All SKOS concept schemes move under `…/pdtf/scheme/`; concepts nest beneath. This frees the flat term namespace so property `opda:role` (`…/pdtf/role`) no longer collides with the `role` scheme (`…/pdtf/scheme/role`), and pre-empts every other latent scheme-vs-term clash. **Supersedes the ADR-0006 definitive-block scheme/concept row** → ADR-0006 amendment required. `scheme` joins the collision-guard reserved list.
-2. **`dct:source` is a comment, not a dependency.** Implementers of the standard will not hold the ODRs and are never required to resolve them, so a `dct:source` → harness ODR/ADR/dd is a citation, not a core→harness dependency — **keep all ~50, migrate the strings.** The one genuine violation — `opda:consumesFrom`'s `rdfs:isDefinedBy → ODR-0020` (a definitional pointer to a physical location) — is **fixed**: repoint `rdfs:isDefinedBy` to the core ontology `…/pdtf/` (per session-022's "isDefinedBy → owning module" rule) and demote the ODR-0020 reference to `dct:source`.
+2. **`dct:source` is a comment, not a dependency.** Consumers of the draft ontology will not hold the ODRs and are never required to resolve them, so a `dct:source` → harness ODR/ADR/dd is a citation, not a core→harness dependency — **keep all ~50, migrate the strings.** The one genuine violation — `opda:consumesFrom`'s `rdfs:isDefinedBy → ODR-0020` (a definitional pointer to a physical location) — is **fixed**: repoint `rdfs:isDefinedBy` to the core ontology `…/pdtf/` (per session-022's "isDefinedBy → owning module" rule) and demote the ODR-0020 reference to `dct:source`.
 3. **Logical grouping ≠ physical document.** A named graph is a logical grouping → `/pdtf/graph/`. Physical documents → `/pdtf/harness/` only. There are **no document IRIs in core** — the per-module annotation/shape *document* IRIs are removed (they were conflating serialised files with logical graphs).
 4. **No `forms` family.** `_SCHEMA_LEAF_AUTHORITY = https://w3id.org/opda/forms` is **dead** (0 occurrences in the emitted corpus; referenced only by `schema_leaf_sources()`, which no emitter imports). The real schema-leaf-path `dct:source` target that lands is the **data-dictionary** IRI (575× — already in scope). The constant's string is updated for base-consistency only and flagged as dead; **no `/pdtf/harness/forms` segment is created.**
 

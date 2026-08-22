@@ -92,4 +92,4 @@ A single merged graph would force every consumer to filter at load time, defeati
 
 - [ADR-0013 — Overlay profile emission](/modelling/adr/adr-0013) §"Module pluralism".
 - [ADR-0012 — SHACL + DPV annotation emission](/modelling/adr/adr-0012) §"Annotation reference-not-import".
-- [ODR-0004 — PDTF ontology foundation](/modelling/odr/odr-0004) §3a five-part separation contract.
+- [ODR-0004 — schema-derived ontology foundation](/modelling/odr/odr-0004) §3a five-part separation contract.

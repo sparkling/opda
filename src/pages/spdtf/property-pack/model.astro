@@ -1,0 +1,122 @@
+---
+import GraphDiagram from '@/components/GraphDiagram.astro';
+import PropertyPackDiagramLegend from '@/components/property-pack/PropertyPackDiagramLegend.astro';
+import PropertyPackPage from '@/components/property-pack/PropertyPackPage.astro';
+import {
+  compactIri,
+  completeModelDiagram,
+  contexts,
+  contextRoute,
+  contextStats,
+  counts,
+  kindLabels,
+  resourceRoute,
+  resources,
+  structuralRows,
+} from '@/lib/property-pack-model.mjs';
+
+const rows = structuralRows();
+const domainless = resources.filter((resource) => resource.kind === 'object-property' && !resource.domain);
+const classIris = new Set(resources.filter((resource) => resource.kind === 'class').map((resource) => resource.iri));
+const drawableObjectProperties = resources.filter((resource) =>
+  resource.kind === 'object-property' && classIris.has(resource.domain) && classIris.has(resource.range)
+);
+function targetLabel(row) {
+  return row.target?.label ?? compactIri(row.targetIri);
+}
+---
+<PropertyPackPage
+  title="Complete model"
+  description="The complete model atlas for the accelerated SPDTF Property Pack ontology candidate: a class-centred Mermaid projection and synchronized structured reference for all 159 OWL resources."
+  category="Model atlas"
+  crumbs={[{ label: 'Complete model' }]}
+>
+  <h1>Complete model</h1>
+  <p class="lead">
+    This atlas documents all {counts.resources} OWL resources. Its Mermaid view follows the
+    schema-derived ontology's class-diagram convention: classes are nodes and object properties directly
+    connect class to class. Datatype and coded-value properties remain in the structured
+    reference instead of becoming graph nodes.
+  </p>
+
+  <div class="callout callout--warn">
+    <p class="callout__label">Class-centred model view</p>
+    <p>
+      The diagram does not turn RDF properties, datatypes or the words “domain” and “range”
+      into model nodes. Use fullscreen, pan/zoom and Explore mode for topology; use the
+      structured tables for the complete resource-level reference and unresolved domains.
+    </p>
+  </div>
+
+
+  <h2 id="composition">Model composition</h2>
+  <div class="v2-metrics">
+    <div class="v2-metric"><strong>{counts.classes}</strong><span>classes</span></div>
+    <div class="v2-metric"><strong>{counts.objectProperties}</strong><span>object properties</span></div>
+    <div class="v2-metric"><strong>{counts.datatypeProperties}</strong><span>datatype properties</span></div>
+    <div class="v2-metric"><strong>{counts.subclassEdges}</strong><span>subclass links</span></div>
+    <div class="v2-metric"><strong>{counts.domainEdges}</strong><span>asserted domains</span></div>
+    <div class="v2-metric"><strong>{counts.rangeEdges}</strong><span>asserted ranges or datatypes</span></div>
+  </div>
+
+  <h2 id="diagram">Mermaid class relationship model</h2>
+  <PropertyPackDiagramLegend />
+  <GraphDiagram
+    source={completeModelDiagram()}
+    minHeight="920px"
+    caption={`${counts.classes} candidate classes with ${drawableObjectProperties.length} direct class-to-class object-property relationships and ${counts.subclassEdges} subclass relationships. Datatype, coded-value and domainless properties remain in the structured reference rather than being drawn as topology. Click a class node for its reference page.`}
+  />
+
+  <h2 id="atlas">Context atlas</h2>
+  <div class="v2-table-wrap">
+    <table>
+      <thead><tr><th>Semantic home</th><th>Classes</th><th>Object properties</th><th>Datatype properties</th><th>Source data points</th></tr></thead>
+      <tbody>
+        {contexts.map((context) => {
+          const stats = contextStats(context.id);
+          return <tr><td><a href={contextRoute(context)}><strong>{context.label}</strong></a></td><td>{stats.classes}</td><td>{stats.objectProperties}</td><td>{stats.datatypeProperties}</td><td>{stats.sourceItems}</td></tr>;
+        })}
+      </tbody>
+    </table>
+  </div>
+
+  <h2 id="resources">Complete resource list</h2>
+  <details>
+    <summary>Show all {resources.length} OWL resources</summary>
+    <div class="v2-table-wrap">
+      <table>
+        <thead><tr><th>Human label</th><th>Kind</th><th>Semantic home</th><th>Definition</th></tr></thead>
+        <tbody>{resources.map((resource) => <tr><td><a href={resourceRoute(resource)}><strong>{resource.label}</strong></a><br/><code class="standalone-identifier">{resource.key}</code></td><td>{kindLabels[resource.kind]}</td><td>{resource.semantic_home}</td><td>{resource.definition}</td></tr>)}</tbody>
+      </table>
+    </div>
+  </details>
+
+  <h2 id="edges">Complete structured relationship view</h2>
+  <p>This server-rendered table carries the same OWL structure as the diagram and remains available without JavaScript.</p>
+  <details>
+    <summary>Show all {rows.length} class/property rows</summary>
+    <div class="v2-table-wrap">
+      <table>
+        <thead><tr><th>Source / domain</th><th>Relationship</th><th>Target / range</th><th>Kind</th></tr></thead>
+        <tbody>
+          {rows.map((row) => (
+            <tr>
+              <td>{row.edgeKind === 'subclass' ? <a href={resourceRoute(row.source)}>{row.source.label}</a> : row.source ? <a href={resourceRoute(row.source)}>{row.source.label}</a> : <span class="v2-domain-missing">Domain not specified</span>}</td>
+              <td>{row.edgeKind === 'subclass' ? 'subclass of' : <a href={resourceRoute(row.relationship)}>{row.relationship.label}</a>}</td>
+              <td>{row.target ? <a href={resourceRoute(row.target)}>{targetLabel(row)}</a> : <code class="standalone-identifier">{targetLabel(row)}</code>}</td>
+              <td>{row.edgeKind === 'subclass' ? 'Class hierarchy' : kindLabels[row.edgeKind]}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+  </details>
+
+  <h2 id="unresolved-domains">Domain not yet specified</h2>
+  <p>These six object properties have an asserted range but no asserted domain. The reference exposes that gap and does not infer or guess one.</p>
+  <div class="v2-table-wrap">
+    <table><thead><tr><th>Property</th><th>Range</th><th>Semantic home</th></tr></thead><tbody>
+      {domainless.map((resource) => <tr><td><a href={resourceRoute(resource)}>{resource.label}</a><br/><code class="standalone-identifier">{resource.key}</code></td><td><code class="standalone-identifier">{compactIri(resource.range)}</code></td><td>{resource.semantic_home}</td></tr>)}
+    </tbody></table>
+  </div>
+</PropertyPackPage>

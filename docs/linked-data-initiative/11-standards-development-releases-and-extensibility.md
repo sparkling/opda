@@ -1,8 +1,8 @@
-# Standards Development, Releases, Modules & Extensibility
+# Schema-derived artefact lifecycle and evidence for SPDTF
 
 > Part of the OPDA Linked-Data Initiative knowledgebase. Legend: ✅ built · 🟡 partial · 🔵 planned.
 
-This document covers how OPDA **governs and evolves** the PDTF standard *using the linked-data model itself*. It is the operational answer to the project owner's forward requirement — *"we will use this linked-data model to drive our governance and standards development, releases, modules, extensibility."* The model is not a static deliverable; it is the substrate on which change is proposed, deliberated, recorded, versioned, released, and extended, with an audit trail at every step.
+This document records how the internal technical project versioned and evolved the draft ontology derived from the PDTF schema, and how those mechanisms could inform **SPDTF**. The ontology is separate from the PDTF schema and is not an OPDA-endorsed scheme. The project owner's quoted forward requirement remains a proposal; SPDTF working groups must collaboratively decide which governance, release, module and extensibility mechanisms to adopt.
 
 For the *methodology* of the AI Linked-Data Council (how a session runs, who the panellists are, the directing-authority override) see KB doc 06; for the *generator and CI pipeline* (byte-identity, three-graph, the deterministic emitter) see KB docs 07/08. This document is about the **governance lifecycle that those mechanisms serve**.
 
@@ -10,11 +10,11 @@ For the *methodology* of the AI Linked-Data Council (how a session runs, who the
 
 ## TL;DR
 
-- **Change mechanism ✅** — the standard evolves through **ODRs** (Ontology Decision Records, `docs/ontology/odr/`) for modelling decisions and **ADRs** (`docs/adr/`) for engineering. Each is fed by an **AI-council session** with recorded votes (`N-M-K` for/against/abstain), a mandatory Devil's Advocate, and citations to real authorities — then routed to a real-world ratification flow (Working Group → Modelling Sub-Committee → AGM). 28 ODRs, ~37 council sessions, full provenance.
+- **Technical change mechanism ✅** — the schema-derived artefact evolves through **ODRs** for modelling decisions and **ADRs** for engineering. AI-council sessions record votes, dissent and citations, creating traceable technical proposals. They do not record OPDA, working-group or industry ratification. 28 ODRs, ~37 sessions, full technical provenance.
 - **Release management ✅** — the ontology is at **v1.0.0**, carried by `owl:versionInfo` + `owl:versionIRI` → a dated release snapshot under `…/pdtf/harness/release/1.0.0/` (the DPV practice). No version in any term IRI. Releases are **reproducible**: the byte-identity CI gate proves a regeneration is identical to the committed corpus (cross-ref KB doc 07/08).
 - **Modularity ✅** — six **concern-modules** (`property`, `agent`, `transaction`, `claim`, `descriptive`, `governance`), each `owl:imports` one flat base ontology. Modular = independently evolvable + composable; the file split is editorial (no per-module URL segment).
 - **Extensibility ✅ (the key mechanism, ODR-0010)** — statutory forms (BASPI5, TA6/7/10, NTS2, LPE1, CON29, LLC1, FME1…) are layered as **SHACL overlay profiles** over the base **without forking it**. **31 profiles** ship in `source/03-standards/ontology/profiles/`. A new form or a regional/jurisdictional variant is *a new profile*, not a base change.
-- **Conformance ✅** — a SHACL profile **is** a machine-checkable conformance contract: a dataset/system conforms to "BASPI5" iff it validates against `baspi5.ttl`. The standard becomes testable, not merely documentary.
+- **Technical validation ✅** — a SHACL profile is a machine-checkable contract for the candidate model: a dataset validates against `baspi5.ttl` or it does not. That result does not by itself establish SPDTF conformance.
 - **Interface contract + change discipline ✅** — a CI gate enforces 3 rules on every profile (`sh:in` semantics · `sh:Violation` floor · no-identity-override). Deprecation follows a SHACL-AF lifecycle pattern (ODR-0017); the deferred-work register (ADR-0005) is the canonical backlog; published `/pdtf/` URIs are never demoted (backward-compatibility discipline, cross-ref KB doc 08).
 
 ---
@@ -23,14 +23,14 @@ For the *methodology* of the AI Linked-Data Council (how a session runs, who the
 
 ### 1.1 ODRs as the formal change mechanism
 
-The standard does not change by edit; it changes by **decision record**. The corpus splits cleanly (DCAP discipline, ODR-0001):
+The schema-derived artefact does not change by undocumented edit; it changes through **technical decision records**. The corpus splits cleanly (DCAP discipline, ODR-0001):
 
 - **Modelling decisions → ODRs** in `docs/ontology/odr/`. A `kind: pattern` ODR must state (a) the UFO/DOLCE meta-category, (b) the identity criterion over named hard cases, and (c) the artefact realisation in Turtle. This is what stops "the AI just made something up" — every modelling move is justified against formal-ontology theory and a concrete emitted artefact.
 - **Engineering decisions → ADRs** in `docs/adr/`. Generator behaviour, emission mechanics, namespace/hosting, CI gates.
 
 Each ODR carries machine-checkable frontmatter (`status`, `date`, `kind`, `council`, `depends-on`, `implements`, `supersedes`) linted by the `odr-review` skill against the project DCAP profile. The `depends-on`/`implements` edges make the decision corpus a **graph** — e.g. ODR-0010 (overlay mechanism) `implements:` ODR-0003 (programme) and ODR-0017 (SHACL-AF pattern), and is depended-on by ODRs 0004/0005/0006/0007/0009/0011/0013. A change anywhere has a traceable blast radius.
 
-### 1.2 The AI-council process feeding real-world ratification
+### 1.2 The AI-council process producing technical proposals
 
 A proposed change is **scoped, deliberated, recorded, and emitted** along this path:
 
@@ -45,13 +45,13 @@ proposition
   → route disposition to real-world ratification
 ```
 
-The council produces a **proposal**, not a ratified standard. Real-world authority runs:
+The council produces a **technical proposal**, not a ratified standard. The historic workflow proposed the following real-world handoff, but the record does not prove that it occurred:
 
 > **Council verdict** → **OPDA Working Group** → **Modelling Sub-Committee** → **AGM ratification** (`docs/ontology/odr/council/adoption.md`).
 
 A human **directing authority** can override the council on greenfield grounds ("AI proposes, human disposes") — e.g. the council recommended hash URIs 5-2 in session-037; the authority kept slash (ADR-0006). The override is itself recorded, so the audit trail survives the disagreement.
 
-The net effect on standards development: **the standard evolves with an audit trail** — every term, shape, and vocabulary value traces (via `dct:source`) to a data-dictionary leaf, glossary row, ODR section, or regulator, and every contested modelling move traces to a dated council session with recorded votes and dissent. This is the governance story KB doc 06 details; here the point is that *the model is the thing being governed, and the records are themselves data* (sessions are indexed in AgentDB per ADR-0027 for recall before convening).
+The net effect for the technical artefact is an audit trail: every term, shape and vocabulary value traces via `dct:source` to a schema leaf, glossary row, ODR section or regulator, and every contested modelling move traces to a dated AI-council session. SPDTF may reuse this evidence without inheriting its decisions or status.
 
 ---
 
@@ -92,11 +92,11 @@ The `1.0.0` is a SemVer string and the generator stamps its own version (`opda-g
 
 ### 2.3 Relationship to the PDTF JSON-Schema cadence
 
-PDTF's JSON Schema (`github.com/Property-Data-Trust-Framework/schemas`) releases on its own cadence — **v3.6 up for approval this workshop (Fri 2026-06-05)**, including updated TA-form alignment; recent line: v3.4 (`participantStatus`), v3.5 (NTS extensions, milestones, draft survey/valuation). The ontology's relationship to that cadence:
+The PDTF schema (`github.com/Property-Data-Trust-Framework/schemas`) releases on its own cadence — **v3.6 up for approval this workshop (Fri 2026-06-05)**, including updated TA-form alignment; recent line: v3.4 (`participantStatus`), v3.5 (NTS extensions, milestones, draft survey/valuation). The schema-derived ontology's relationship to that cadence:
 
-- The JSON Schema is the **authoritative input**; the ontology re-expresses it. The generator's input is the **data dictionary** distilled from the schema (1,557 leaves) plus the business glossary — so a schema release flows in through a regenerate, not a hand-edit.
+- The PDTF schema is the **derivation source**; the draft ontology re-expresses it. The generator's input is the data dictionary distilled from the schema (1,557 leaves) plus the business glossary, so a schema release flows through regeneration rather than hand-editing.
 - The two version lines are **decoupled but linked**: ontology v1.0.0 currently tracks the v3.x line with BASPI v5 support. A schema bump (e.g. v3.6's TA-form alignment) becomes a *minor* ontology release if it is additive — new leaves bind to new SKOS concepts / profile shapes — without disturbing existing `/pdtf/` URIs.
-- Because the standard is now machine-readable, schema-vs-ontology drift is itself **testable** — the BASPI5 round-trip harness (ADR-0014) proves a real statutory form still goes JSON → ontology → validated RDF → JSON after a change.
+- Because the derivation is machine-readable, schema-vs-ontology drift is **testable** — the BASPI5 round-trip harness (ADR-0014) checks that a real form still goes JSON → ontology → validated RDF → JSON after a change.
 
 ### 2.4 Reproducible releases via the byte-identity gate
 
@@ -135,7 +135,7 @@ This is the centre of the "drive extensibility from the model" requirement.
 
 ### 4.1 Forms as SHACL profiles over the base — without forking
 
-PDTF is a base transaction plus a family of **form overlays** (BASPI5, TA6/7/10, NTS2/NTSL2, PIQ, CON29R/DW, LLC1, OC1, LPE1, FME1, RDS, SR24…) composed at runtime by the schema's deep-merge. A naïve OWL re-expression would mint a class per form (`baspi:PropertyPack`, `ta6:PropertyPack`) — **rejected unanimously** in council (session-001 Q3/Q5): that nesting is *form ergonomics, not ontology*, and would let a form **declare** rather than **constrain**, multiplying near-duplicate classes and inviting identity drift.
+The PDTF schema contains a base transaction plus a family of **form overlays** (BASPI5, TA6/7/10, NTS2/NTSL2, PIQ, CON29R/DW, LLC1, OC1, LPE1, FME1, RDS, SR24…) composed at runtime by its deep-merge. A naïve OWL re-expression would mint a class per form (`baspi:PropertyPack`, `ta6:PropertyPack`) — rejected in the internal council (session-001 Q3/Q5): that nesting is *form ergonomics, not ontology*, and would let a form **declare** rather than **constrain**, multiplying near-duplicate classes and inviting identity drift.
 
 The adopted mechanism (ODR-0010): **each form is a named, dereferenceable SHACL profile graph over a fixed, open-world TBox.** A form *is* its SHACL overlay; the shapes **constrain, they do not declare**. The base class model never forks. **31 profiles** ship under `source/03-standards/ontology/profiles/`:
 
@@ -194,7 +194,7 @@ The sharpest construct is the `sellersCapacity` discriminated union — the `one
                              sh:message "B1.3.2-3: PR/PoA/Other capacity requires sellersCapacityDetails + attachments." ] ] ) .
 ```
 
-This is exactly the gap PDTF collapsed into free text — *asserted* capacity (`opda:hasAssertedCapacity`) is separated from *evidenced* authority (`opda:hasEvidencedAuthority → opda:Claim`, e.g. probate / power of attorney), and the profile makes the obligation machine-checkable. The non-conformant exemplar (a Seller acting as Attorney with no evidenced authority) reports a violation that traces `sh:sourceShape` → `dct:source` → `…/forms/baspi5#B1.3.2`. That round-trip — JSON → profile → validated transaction → re-rendered BASPI form — is the **programme's MVP gate** (ODR-0003 termination signal 1, demonstrated by `ci-baspi5-roundtrip`).
+This is exactly the gap the PDTF schema collapsed into free text — *asserted* capacity (`opda:hasAssertedCapacity`) is separated from *evidenced* authority (`opda:hasEvidencedAuthority → opda:Claim`, e.g. probate / power of attorney), and the candidate profile makes the obligation machine-checkable. The non-conformant exemplar (a Seller acting as Attorney with no evidenced authority) reports a violation that traces `sh:sourceShape` → `dct:source` → `…/forms/baspi5#B1.3.2`. That round-trip — JSON → profile → validated transaction → re-rendered BASPI form — was the technical programme's MVP gate (ODR-0003 termination signal 1, demonstrated by `ci-baspi5-roundtrip`).
 
 ### 4.4 Thin vs full profiles, and overlay enumeration ✅/🟡
 
@@ -294,7 +294,7 @@ The cardinal rule (ADR-0006 namespace scheme, cross-ref KB doc 08): **never demo
 | **modules** | six independently-evolvable, composable concern-modules over one flat base |
 | **extensibility** | 31 SHACL overlay profiles layer statutory forms (and future regional variants) over the base **without forking**; a new form is a new profile; the interface contract + conformance are CI-enforced |
 
-The linked-data model is not documentation *about* the standard — it **is** the standard, in a form that can be governed, versioned, released, modularised, extended, and conformance-tested by machine.
+The schema-derived model is technical evidence *for* SPDTF, not the scheme itself. It demonstrates mechanisms that can be governed, versioned, released, modularised, extended and machine-tested if the collaborative process adopts them.
 
 ---
 
@@ -303,7 +303,7 @@ The linked-data model is not documentation *about* the standard — it **is** th
 | Capability | Status | Evidence |
 |---|---|---|
 | ODR/ADR change mechanism (28 ODRs; DCAP frontmatter; `odr-review` lint) | ✅ | `docs/ontology/odr/`, `docs/adr/`, ODR-0001 |
-| AI-council → WG → Sub-Committee → AGM ratification flow | ✅ | `…/odr/council/adoption.md`, ODR-0001, ODR-0003 |
+| AI-council technical proposal and documented handoff design | ✅ internal record | `…/odr/council/adoption.md`, ODR-0001, ODR-0003 |
 | Ontology at v1.0.0 (`owl:versionInfo` + `owl:versionIRI`; CC0; no version-in-IRI) | ✅ | `foundation.ttl`, ADR-0006 |
 | Per-module + per-profile `owl:versionIRI` release snapshots | ✅ | module headers; `baspi5.ttl` header |
 | Populated multi-release historical archive under `…/harness/release/<v>/` | 🟡 | one release line today; IRI scheme + discipline in place |
@@ -327,11 +327,11 @@ The linked-data model is not documentation *about* the standard — it **is** th
 
 *(audience = mixed senior decision-makers + data/technical leads)*
 
-- **"We govern the standard with the standard."** Every change to the PDTF model is a decision record (ODR/ADR) with a recorded-vote AI-council session behind it, routed to your real ratification flow (Working Group → Modelling Sub-Committee → AGM). The standard now evolves with a full audit trail — every field traces to its data-dictionary origin and the decision that shaped it.
+- **"Make scheme decisions traceable."** The schema-derived model demonstrates ODR/ADR records, AI-council deliberation and field-level provenance. SPDTF can adopt those mechanisms through its real working-group governance without treating the internal record as prior ratification.
 - **Forms are extensions, not forks.** BASPI, TA6/7/10, CON29, LPE1, LLC1, FME1 — **31 statutory forms** are layered as SHACL profiles *over one shared base ontology*, never copying or forking it. Adding a new form, or a Scotland/Wales variant, is a new profile — and a CI gate guarantees a form can never break a property's identity or invent a value.
 - **Conformance is now testable.** "Does this transaction satisfy BASPI5?" is answered by a validator, not a reading of the spec. A non-conformant case (e.g. a power-of-attorney seller with no evidenced authority) is rejected with a pointer to the exact form question. This is the substrate under *consent-based APIs* and *PDFs→APIs*.
 - **Releases are versioned and reproducible.** The ontology is v1.0.0 with permanent, un-versioned term URIs and dated release snapshots; a byte-identity CI gate proves every release is exactly what the generator produces — no drift, no manual edits. It tracks the JSON-Schema cadence (v3.6) without disturbing published identifiers.
-- **Change is disciplined.** Concepts are deprecated, never deleted (old records stay valid and resolvable; new use of a retired value is blocked) — and a single deferred-work register with named owners and explicit triggers is the canonical backlog, so the standard doesn't accrete speculative machinery.
+- **Change can be disciplined.** The candidate lifecycle deprecates concepts rather than deleting them and uses a deferred-work register with named owners and explicit triggers. SPDTF governance can validate and adopt that pattern.
 - **Honest edges (phased, not gaps):** the multi-release *archive* and full SemVer history accrete as we ship beyond 1.0.0; the new-form `ProfileSpec` path is generalised but BASPI5 keeps its bespoke builder by design; no non-England&Wales profile is authored *yet* — the mechanism is ready for the first one.
 
 ---

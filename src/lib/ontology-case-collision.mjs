@@ -13,25 +13,24 @@ import {
  * The ontology contains two real, case-sensitive resources whose local names
  * differ only by case.  They are not aliases: LeaseTerm is a class and
  * leaseTerm is an object property.  macOS's default filesystem cannot hold
- * both generated paths, so the old preservation manifest recorded the class
- * route while its bytes were the property route.
+ * both generated paths, so an earlier preservation cut masked the distinction.
+ * The release contract now requires both resources to remain independently
+ * addressable on a case-sensitive filesystem.
  */
 export const LEASE_TERM_CASE_COLLISION = Object.freeze({
-  policy: 'case-collision-recovered-route-v1',
-  sourceRoute: '/pdtf/LeaseTerm',
-  acceptedRoute: '/pdtf/leaseTerm',
-  recoveredRoute: '/pdtf/LeaseTerm',
-  acceptedFile: 'pdtf/leaseTerm/index.html',
-  recoveredFile: 'pdtf/LeaseTerm/index.html',
-  acceptedTtlFile: 'pdtf/leaseTerm.ttl',
-  recoveredTtlFile: 'pdtf/LeaseTerm.ttl',
-  acceptedIri: 'https://opda.org.uk/pdtf/leaseTerm',
-  recoveredIri: 'https://opda.org.uk/pdtf/LeaseTerm',
+  policy: 'case-sensitive-stable-resource-pair-v2',
+  propertyRoute: '/pdtf/leaseTerm',
+  classRoute: '/pdtf/LeaseTerm',
+  propertyFile: 'pdtf/leaseTerm/index.html',
+  classFile: 'pdtf/LeaseTerm/index.html',
+  propertyTtlFile: 'pdtf/leaseTerm.ttl',
+  classTtlFile: 'pdtf/LeaseTerm.ttl',
+  propertyIri: 'https://opda.org.uk/pdtf/leaseTerm',
+  classIri: 'https://opda.org.uk/pdtf/LeaseTerm',
 });
 
-export function acceptedLeaseTermRoute(route) {
-  return route === LEASE_TERM_CASE_COLLISION.sourceRoute
-    ? LEASE_TERM_CASE_COLLISION.acceptedRoute : route;
+export function stableLeaseTermRoute(route) {
+  return route;
 }
 
 function exactFile(root, relative) {
@@ -68,45 +67,45 @@ function primaryType(turtle, iri) {
 /** Validate both case-sensitive HTML and Turtle representations in an output root. */
 export function inspectLeaseTermCaseCollision(root) {
   const files = Object.fromEntries(Object.entries({
-    acceptedHtml: LEASE_TERM_CASE_COLLISION.acceptedFile,
-    recoveredHtml: LEASE_TERM_CASE_COLLISION.recoveredFile,
-    acceptedTtl: LEASE_TERM_CASE_COLLISION.acceptedTtlFile,
-    recoveredTtl: LEASE_TERM_CASE_COLLISION.recoveredTtlFile,
+    propertyHtml: LEASE_TERM_CASE_COLLISION.propertyFile,
+    classHtml: LEASE_TERM_CASE_COLLISION.classFile,
+    propertyTtl: LEASE_TERM_CASE_COLLISION.propertyTtlFile,
+    classTtl: LEASE_TERM_CASE_COLLISION.classTtlFile,
   }).map(([key, relative]) => [key, requiredFile(root, relative)]));
-  const acceptedHtml = readFileSync(files.acceptedHtml, 'utf8');
-  const recoveredHtml = readFileSync(files.recoveredHtml, 'utf8');
-  const acceptedTtl = readFileSync(files.acceptedTtl, 'utf8');
-  const recoveredTtl = readFileSync(files.recoveredTtl, 'utf8');
-  const acceptedContent = informationContract(acceptedHtml);
-  const recoveredContent = informationContract(recoveredHtml);
-  const acceptedRawSha256 = sha256(acceptedHtml);
-  const recoveredRawSha256 = sha256(recoveredHtml);
-  if (heading(acceptedHtml).toLowerCase() !== 'lease term') {
+  const propertyHtml = readFileSync(files.propertyHtml, 'utf8');
+  const classHtml = readFileSync(files.classHtml, 'utf8');
+  const propertyTtl = readFileSync(files.propertyTtl, 'utf8');
+  const classTtl = readFileSync(files.classTtl, 'utf8');
+  const propertyContent = informationContract(propertyHtml);
+  const classContent = informationContract(classHtml);
+  const propertyRawSha256 = sha256(propertyHtml);
+  const classRawSha256 = sha256(classHtml);
+  if (heading(propertyHtml).toLowerCase() !== 'lease term') {
     throw new Error('case-collision lowercase route is not the leaseTerm property page');
   }
-  if (heading(recoveredHtml) !== 'Lease Term') {
+  if (heading(classHtml) !== 'Lease Term') {
     throw new Error('case-collision uppercase route is not the LeaseTerm class page');
   }
-  if (primaryType(acceptedTtl, LEASE_TERM_CASE_COLLISION.acceptedIri) !== 'ObjectProperty') {
+  if (primaryType(propertyTtl, LEASE_TERM_CASE_COLLISION.propertyIri) !== 'ObjectProperty') {
     throw new Error('case-collision lowercase Turtle does not identify leaseTerm');
   }
-  if (primaryType(recoveredTtl, LEASE_TERM_CASE_COLLISION.recoveredIri) !== 'Class') {
+  if (primaryType(classTtl, LEASE_TERM_CASE_COLLISION.classIri) !== 'Class') {
     throw new Error('case-collision uppercase Turtle does not identify LeaseTerm');
   }
-  if (acceptedRawSha256 === recoveredRawSha256
-    || acceptedContent.contentSha256 === recoveredContent.contentSha256) {
+  if (propertyRawSha256 === classRawSha256
+    || propertyContent.contentSha256 === classContent.contentSha256) {
     throw new Error('case-collision resources unexpectedly share one HTML representation');
   }
   return {
     policy: LEASE_TERM_CASE_COLLISION.policy,
-    acceptedRawSha256,
-    acceptedContentSha256: acceptedContent.contentSha256,
-    acceptedBlockInventorySha256: blockInventory(acceptedContent.blockHashes).sha256,
-    recoveredRawSha256,
-    recoveredContentSha256: recoveredContent.contentSha256,
-    recoveredBlockInventorySha256: blockInventory(recoveredContent.blockHashes).sha256,
-    acceptedTtlSha256: sha256(acceptedTtl),
-    recoveredTtlSha256: sha256(recoveredTtl),
+    propertyRawSha256,
+    propertyContentSha256: propertyContent.contentSha256,
+    propertyBlockInventorySha256: blockInventory(propertyContent.blockHashes).sha256,
+    classRawSha256,
+    classContentSha256: classContent.contentSha256,
+    classBlockInventorySha256: blockInventory(classContent.blockHashes).sha256,
+    propertyTtlSha256: sha256(propertyTtl),
+    classTtlSha256: sha256(classTtl),
   };
 }
 
@@ -114,68 +113,59 @@ function routeRecord(records, route, field = 'acceptedRoute') {
   return records.find((record) => record[field] === route);
 }
 
-/** Compose the fail-closed manifest receipt for the historical masked pair. */
+function stableRecord(records, route, file) {
+  const record = routeRecord(records, route);
+  if (!record || record.acceptedFile !== file
+    || (record.baselineRoute && record.baselineRoute !== route)) {
+    throw new Error(`case-sensitive stable resource is not retained at ${route}`);
+  }
+  return record;
+}
+
+function recordDigest(record) {
+  return sha256(JSON.stringify({
+    ...(record.baselineRoute ? { baselineRoute: record.baselineRoute } : {}),
+    ...(record.baselineFile ? { baselineFile: record.baselineFile } : {}),
+    acceptedRoute: record.acceptedRoute,
+    acceptedFile: record.acceptedFile,
+    acceptedRawSha256: record.acceptedRawSha256,
+  }));
+}
+
+/** Compose the fail-closed manifest receipt for the two stable resources. */
 export function composeLeaseTermCaseCollisionReceipt(root, routes, addedRoutes) {
   const evidence = inspectLeaseTermCaseCollision(root);
-  const mapped = routeRecord(routes, LEASE_TERM_CASE_COLLISION.acceptedRoute);
-  const recovered = routeRecord(addedRoutes, LEASE_TERM_CASE_COLLISION.recoveredRoute);
-  if (!mapped || mapped.baselineRoute !== LEASE_TERM_CASE_COLLISION.sourceRoute
-    || mapped.acceptedFile !== LEASE_TERM_CASE_COLLISION.acceptedFile) {
-    throw new Error('case-collision historical route was not mapped to leaseTerm');
-  }
-  if (!recovered || recovered.kind !== 'new-authority-route'
-    || recovered.acceptedFile !== LEASE_TERM_CASE_COLLISION.recoveredFile) {
-    throw new Error('case-collision recovered LeaseTerm route was not classified as an addition');
-  }
+  const records = [...routes, ...addedRoutes];
+  const property = stableRecord(records, LEASE_TERM_CASE_COLLISION.propertyRoute,
+    LEASE_TERM_CASE_COLLISION.propertyFile);
+  const leaseClass = stableRecord(records, LEASE_TERM_CASE_COLLISION.classRoute,
+    LEASE_TERM_CASE_COLLISION.classFile);
   return {
     ...LEASE_TERM_CASE_COLLISION,
-    sourceRecordSha256: sha256(JSON.stringify({
-      baselineRoute: mapped.baselineRoute, baselineFile: mapped.baselineFile,
-      baselineRawSha256: mapped.baselineRawSha256,
-    })),
-    acceptedRecordSha256: sha256(JSON.stringify({
-      acceptedRoute: mapped.acceptedRoute, acceptedFile: mapped.acceptedFile,
-      acceptedRawSha256: mapped.acceptedRawSha256,
-    })),
-    recoveredRecordSha256: sha256(JSON.stringify({
-      acceptedRoute: recovered.acceptedRoute, acceptedFile: recovered.acceptedFile,
-      acceptedRawSha256: recovered.acceptedRawSha256,
-    })),
+    propertyRecordSha256: recordDigest(property),
+    classRecordSha256: recordDigest(leaseClass),
     ...evidence,
   };
 }
 
 export function validateLeaseTermCaseCollisionReceipt(root, receipt, routes, addedRoutes) {
-  const mapped = routeRecord(routes, LEASE_TERM_CASE_COLLISION.acceptedRoute);
-  const recovered = routeRecord(addedRoutes, LEASE_TERM_CASE_COLLISION.recoveredRoute);
-  if (!mapped || mapped.baselineRoute !== LEASE_TERM_CASE_COLLISION.sourceRoute
-    || mapped.acceptedFile !== LEASE_TERM_CASE_COLLISION.acceptedFile
-    || !recovered || recovered.kind !== 'new-authority-route'
-    || recovered.acceptedFile !== LEASE_TERM_CASE_COLLISION.recoveredFile) {
-    throw new Error('LeaseTerm case-collision route records are inconsistent');
-  }
+  const records = [...routes, ...addedRoutes];
+  const property = stableRecord(records, LEASE_TERM_CASE_COLLISION.propertyRoute,
+    LEASE_TERM_CASE_COLLISION.propertyFile);
+  const leaseClass = stableRecord(records, LEASE_TERM_CASE_COLLISION.classRoute,
+    LEASE_TERM_CASE_COLLISION.classFile);
   const recordHashes = {
-    sourceRecordSha256: sha256(JSON.stringify({
-      baselineRoute: mapped.baselineRoute, baselineFile: mapped.baselineFile,
-      baselineRawSha256: mapped.baselineRawSha256,
-    })),
-    acceptedRecordSha256: sha256(JSON.stringify({
-      acceptedRoute: mapped.acceptedRoute, acceptedFile: mapped.acceptedFile,
-      acceptedRawSha256: mapped.acceptedRawSha256,
-    })),
-    recoveredRecordSha256: sha256(JSON.stringify({
-      acceptedRoute: recovered.acceptedRoute, acceptedFile: recovered.acceptedFile,
-      acceptedRawSha256: recovered.acceptedRawSha256,
-    })),
+    propertyRecordSha256: recordDigest(property),
+    classRecordSha256: recordDigest(leaseClass),
   };
   const expected = { ...LEASE_TERM_CASE_COLLISION, ...recordHashes };
   if (!receipt || Object.entries(expected).some(([key, value]) => receipt[key] !== value)) {
-    throw new Error('LeaseTerm case-collision migration receipt is inconsistent');
+    throw new Error('LeaseTerm case-sensitive stable-resource receipt is inconsistent');
   }
   for (const key of [
-    'acceptedRawSha256', 'acceptedContentSha256', 'acceptedBlockInventorySha256',
-    'recoveredRawSha256', 'recoveredContentSha256', 'recoveredBlockInventorySha256',
-    'acceptedTtlSha256', 'recoveredTtlSha256',
+    'propertyRawSha256', 'propertyContentSha256', 'propertyBlockInventorySha256',
+    'classRawSha256', 'classContentSha256', 'classBlockInventorySha256',
+    'propertyTtlSha256', 'classTtlSha256',
   ]) {
     if (!/^[a-f0-9]{64}$/u.test(receipt[key] ?? '')) {
       throw new Error(`LeaseTerm case-collision receipt has invalid ${key}`);
@@ -184,7 +174,7 @@ export function validateLeaseTermCaseCollisionReceipt(root, receipt, routes, add
   if (root) {
     const actual = composeLeaseTermCaseCollisionReceipt(root, routes, addedRoutes);
     if (JSON.stringify(actual) !== JSON.stringify(receipt)) {
-      throw new Error('LeaseTerm case-collision migration receipt is inconsistent');
+      throw new Error('LeaseTerm case-sensitive stable-resource receipt is inconsistent');
     }
   }
   return true;

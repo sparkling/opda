@@ -1,9 +1,12 @@
-# OPDA RML mapping — PDTF v3 JSON → OPDA RDF
+# OPDA RML mapping — PDTF schema v3 JSON → schema-derived RDF
 
-An [RML](https://rml.io) mapping that consumes a **PDTF v3 transaction instance**
+An [RML](https://rml.io) mapping that consumes a **PDTF schema v3 transaction instance**
 (`@pdtf/schemas` v3, e.g. `source/03-standards/schemas/src/examples/v3/exampleTransaction.json`)
-and materialises **RDF conforming to the OPDA ontology**, validating with **0 `sh:Violation`**
+and materialises **RDF conforming to the draft schema-derived ontology**, validating with **0 `sh:Violation`**
 against `public/ontology/artefacts/opda-shapes-merged.ttl`.
+
+This mapping verifies a technical derivation from the PDTF schema; it does not make the
+derived ontology part of that schema or confer SPDTF scheme status.
 
 RML always runs *source → RDF*. This mapping is the **inverse of the `dct:source`
 provenance** that `opda-gen` minted (see "Provenance mirror" below).

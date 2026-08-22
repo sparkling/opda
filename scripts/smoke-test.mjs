@@ -29,7 +29,7 @@
  */
 
 const BASE_URL = process.env.BASE_URL || 'http://localhost:4321';
-const PDTF1_ORIGINAL = '/pdtf-1/original-standard';
+const PDTF1_ORIGINAL = '/pdtf-schema/schema-and-supporting-material';
 
 let test, expect;
 try {

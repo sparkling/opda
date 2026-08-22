@@ -12,7 +12,7 @@ then this tier is for you. Identity Criterion (IC) is the load-bearing concept: 
 
 ## See also: Modelling section
 
-The [Bounded contexts (DDD)](/modelling/bounded-contexts) and [Business glossary](/modelling/business-glossary) pages in the Modelling section are complementary editorial registers: the bounded-contexts page explains the DDD framing and industry context map that motivates this module structure; the business-glossary page is the pre-ontology SKOS seed (54 OPDA business terms + 500 schema-derived concepts) from which this tier's entity definitions grew.
+The [Bounded contexts (DDD)](/pdtf-schema/schema-derived-ontology/lineage-provenance-and-verification/historical-modelling/bounded-contexts) and [Business glossary](/pdtf-schema/schema-and-supporting-material/business-glossary) pages are complementary records: the bounded-contexts page explains the historical DDD framing and industry context map that motivated this module structure; the business glossary is supporting material from which this tier's entity definitions grew.
 
 ## Reading order
 

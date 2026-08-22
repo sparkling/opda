@@ -8,9 +8,9 @@
 
 export const GLOBAL_DESTINATIONS = Object.freeze([
   { key: 'programme', title: 'Programme', url: '/programme' },
-  { key: 'spdtf-2', title: 'SPDTF 2.0 Development', url: '/spdtf-2' },
-  { key: 'working-groups', title: 'Working groups', url: '/spdtf-2/working-groups' },
-  { key: 'pdtf-1', title: 'PDTF 1.0', url: '/pdtf-1' },
+  { key: 'spdtf', title: 'SPDTF', url: '/spdtf' },
+  { key: 'working-groups', title: 'Working groups', url: '/spdtf/working-groups' },
+  { key: 'pdtf-schema', title: 'PDTF schema', url: '/pdtf-schema' },
   { key: 'governance', title: 'Governance', url: '/governance' },
   { key: 'resources', title: 'Resources', url: '/resources' },
 ]);
@@ -19,12 +19,12 @@ export const IA_STATUS_FIELDS = Object.freeze([
   'workArea', 'authority', 'maturity', 'version', 'provenance',
 ]);
 
-export const IA_STATUS_REGISTRY_VERSION = '2026-08-21';
+export const IA_STATUS_REGISTRY_VERSION = '2026-08-22';
 
 export const DESTINATION_SHORTCUTS = Object.freeze({
   'working-groups': Object.freeze({
-    target: '/spdtf-2/working-groups',
-    contentOwner: 'spdtf-2',
+    target: '/spdtf/working-groups',
+    contentOwner: 'spdtf',
   }),
 });
 
@@ -32,21 +32,21 @@ export const ROUTE_FAMILY_OWNERS = Object.freeze({
   programme: 'programme',
   strategy: 'programme',
   'dbt-smart-data': 'programme',
-  'spdtf-2': 'spdtf-2',
+  'spdtf': 'spdtf',
   'working-groups': 'working-groups',
   engagement: 'resources',
   presentation: 'working-groups',
-  presentations: 'spdtf-2',
-  'pdtf-1': 'pdtf-1',
-  pdtf: 'pdtf-1',
-  modelling: 'pdtf-1',
-  model: 'pdtf-1',
-  ontology: 'pdtf-1',
-  mapping: 'pdtf-1',
-  schema: 'pdtf-1',
-  implementation: 'pdtf-1',
-  adoption: 'pdtf-1',
-  manual: 'pdtf-1',
+  presentations: 'spdtf',
+  'pdtf-schema': 'pdtf-schema',
+  pdtf: 'pdtf-schema',
+  modelling: 'pdtf-schema',
+  model: 'pdtf-schema',
+  ontology: 'pdtf-schema',
+  mapping: 'pdtf-schema',
+  schema: 'pdtf-schema',
+  implementation: 'pdtf-schema',
+  adoption: 'pdtf-schema',
+  manual: 'pdtf-schema',
   governance: 'governance',
   council: 'governance',
   resources: 'resources',
@@ -72,26 +72,26 @@ export const AUTHORITY_BY_DESTINATION = Object.freeze({
     version: 'Current programme view',
     provenance: 'OPDA records and attributed external sources',
   },
-  'spdtf-2': {
-    workArea: 'SPDTF 2.0 development',
+  'spdtf': {
+    workArea: 'SPDTF',
     authority: 'Human working groups own domain meaning; governance controls promotion',
     maturity: 'In development — not an adopted standard',
     version: 'Context-owned candidates vary',
-    provenance: 'Participant evidence, recognised sources and attributed PDTF 1.0 evidence',
+    provenance: 'Participant evidence, recognised sources and attributed PDTF schema evidence',
   },
   'working-groups': {
-    workArea: 'SPDTF 2.0 development',
+    workArea: 'SPDTF',
     authority: 'Each group charter identifies its decision owner',
     maturity: 'Participation and candidate review',
     version: 'Candidate-specific',
     provenance: 'Participant-supplied and facilitator-maintained records',
   },
-  'pdtf-1': {
-    workArea: 'PDTF 1.0',
-    authority: 'Published schema implementation; each derived child keeps its own status',
-    maturity: 'Published implementation with mixed-maturity derived artefacts',
-    version: 'PDTF 1.0',
-    provenance: 'Committed schemas, dictionaries, documents and derived semantic corpus',
+  'pdtf-schema': {
+    workArea: 'PDTF schema',
+    authority: 'Existing Digital Property Pack schema; supporting and derived artefacts keep their own status',
+    maturity: 'Existing schema with mixed-maturity supporting and derived artefacts',
+    version: 'PDTF schema v3.5.0',
+    provenance: 'Committed JSON Schemas, overlays, dictionary, glossary and separately derived semantic corpus',
   },
   governance: {
     workArea: 'Cross-programme',
@@ -110,69 +110,69 @@ export const AUTHORITY_BY_DESTINATION = Object.freeze({
 });
 
 const PDTF_DERIVED_DRAFT_STATUS = Object.freeze({
-  workArea: 'PDTF 1.0',
-  authority: 'Derived semantic artefact; not part of the published JSON Schema implementation',
+  workArea: 'PDTF schema',
+  authority: 'Semantic artefact derived from the PDTF schema; not an endorsed scheme',
   maturity: 'Draft semantic corpus — under review',
-  version: 'PDTF 1.0-derived draft',
-  provenance: 'Published schemas, dictionaries, documents and recorded derivations',
+  version: 'schema-derived draft',
+  provenance: 'PDTF schema, dictionary, glossary, documents and recorded derivations',
 });
 
 const PDTF_METHOD_STATUS = Object.freeze({
   ...PDTF_DERIVED_DRAFT_STATUS,
-  authority: 'Historical PDTF 1.0 modelling record; page-level decisions retain their recorded status',
+  authority: 'Historical PDTF schema modelling record; page-level decisions retain their recorded status',
   maturity: 'Mixed-maturity method and working records',
 });
 
 const PDTF_MAPPING_STATUS = Object.freeze({
   ...PDTF_DERIVED_DRAFT_STATUS,
-  authority: 'PDTF 1.0 schema-to-ontology verification evidence; not an SPDTF 2.0 semantic mapping',
+  authority: 'PDTF schema-to-ontology verification evidence; not an SPDTF semantic mapping',
   maturity: 'Implemented verification evidence for a draft semantic corpus',
 });
 
 const PDTF_ADOPTION_STATUS = Object.freeze({
-  workArea: 'PDTF 1.0',
-  authority: 'Attributed implementation evidence; it does not establish SPDTF 2.0 adoption',
+  workArea: 'PDTF schema',
+  authority: 'Attributed implementation evidence; it does not establish SPDTF adoption',
   maturity: 'Evidence record — source-specific',
-  version: 'PDTF 1.0 evidence',
+  version: 'PDTF schema evidence',
   provenance: 'Attributed member, pilot, registry and programme sources',
 });
 
 /** Route-level exceptions prevent a parent label from overstating child authority. */
 export const ROUTE_STATUS_OVERRIDES = Object.freeze([
   {
-    pattern: /^\/pdtf-1\/original-standard$/u,
+    pattern: /^\/pdtf-schema\/schema-and-supporting-material$/u,
     status: {
-      workArea: 'PDTF 1.0',
-      authority: 'Gateway to the published JSON Schema implementation and status-labelled supporting records',
-      maturity: 'Published schema implementation; supporting artefacts vary',
-      version: 'PDTF 1.0',
+      workArea: 'PDTF schema',
+      authority: 'Gateway to the existing Digital Property Pack JSON Schema and status-labelled supporting records',
+      maturity: 'Existing schema implementation; supporting artefacts vary',
+      version: 'PDTF schema v3.5.0',
       provenance: 'Committed schemas, overlays, dictionaries, glossary and attributed implementation evidence',
     },
   },
   {
-    pattern: /^\/pdtf-1\/extracted-ontology\/lineage-provenance-and-verification\/historical-modelling(?:\/|$)/u,
+    pattern: /^\/pdtf-schema\/schema-derived-ontology\/lineage-provenance-and-verification\/historical-modelling(?:\/|$)/u,
     status: PDTF_METHOD_STATUS,
   },
   {
-    pattern: /^\/pdtf-1\/extracted-ontology\/lineage-provenance-and-verification\/schema-to-ontology-verification(?:\/|$)/u,
+    pattern: /^\/pdtf-schema\/schema-derived-ontology\/lineage-provenance-and-verification\/schema-to-ontology-verification(?:\/|$)/u,
     status: PDTF_MAPPING_STATUS,
   },
   {
-    pattern: /^\/pdtf-1\/original-standard\/adoption(?:\/|$)/u,
+    pattern: /^\/pdtf-schema\/schema-and-supporting-material\/adoption(?:\/|$)/u,
     status: PDTF_ADOPTION_STATUS,
   },
   {
-    pattern: /^\/pdtf-1\/extracted-ontology(?:\/|$)/u,
+    pattern: /^\/pdtf-schema\/schema-derived-ontology(?:\/|$)/u,
     status: PDTF_DERIVED_DRAFT_STATUS,
   },
   {
-    pattern: /^\/spdtf-2\/property-pack(?:\/|$)/u,
+    pattern: /^\/spdtf\/property-pack(?:\/|$)/u,
     status: {
-      workArea: 'SPDTF 2.0 · Property Pack ontology',
+      workArea: 'SPDTF · Property Pack ontology',
       authority: 'Machine-generated candidate; Technical Working Group determination pending',
       maturity: 'Non-normative candidate under accelerated technical review',
       version: '0.1.0-draft candidate cut',
-      provenance: 'Property Pack definition, attributed PDTF 1.0 evidence and generated semantic model',
+      provenance: 'Property Pack definition, attributed PDTF schema evidence and generated semantic model',
     },
   },
   {
@@ -184,9 +184,9 @@ export const ROUTE_STATUS_OVERRIDES = Object.freeze([
     status: PDTF_DERIVED_DRAFT_STATUS,
   },
   {
-    pattern: /^\/spdtf-2\/working-groups\/member-guide(?:\/|$)/u,
+    pattern: /^\/spdtf\/working-groups\/member-guide(?:\/|$)/u,
     status: {
-      workArea: 'SPDTF 2.0 participation',
+      workArea: 'SPDTF participation',
       authority: 'Operational guidance derived from accepted participation and workspace decisions; group-specific invitations and charters control access',
       maturity: 'Current member guidance; proposed modelling and lifecycle rules are labelled',
       version: 'Member guide 2026-08-21',
@@ -194,9 +194,9 @@ export const ROUTE_STATUS_OVERRIDES = Object.freeze([
     },
   },
   {
-    pattern: /^\/spdtf-2\/working-groups(?:\/|$)/u,
+    pattern: /^\/spdtf\/working-groups(?:\/|$)/u,
     status: {
-      workArea: 'SPDTF 2.0 development',
+      workArea: 'SPDTF',
       authority: 'Workspace scope only; a convened group and its recorded decision owner govern domain meaning',
       maturity: 'Scope defined; convening status unconfirmed',
       version: 'Workspace contract 1.0; no candidate version',
@@ -206,7 +206,7 @@ export const ROUTE_STATUS_OVERRIDES = Object.freeze([
   {
     pattern: /^\/presentations?(?:\/|$)/u,
     status: {
-      workArea: 'SPDTF 2.0 development',
+      workArea: 'SPDTF',
       authority: 'Facilitation material; participant review and governance records control decisions',
       maturity: 'Workshop presentation — not a candidate or standard',
       version: 'Presentation-specific',
@@ -216,7 +216,7 @@ export const ROUTE_STATUS_OVERRIDES = Object.freeze([
   {
     pattern: /^\/working-groups\/join(?:\/|$)/u,
     status: {
-      workArea: 'SPDTF 2.0 development',
+      workArea: 'SPDTF',
       authority: 'Expression-of-interest route; registration does not confer membership or decision rights',
       maturity: 'Recruitment and privacy information',
       version: 'Form-specific',
@@ -251,14 +251,14 @@ export const PRESERVATION_LEDGER = Object.freeze([
     disposition: 'regenerate-equivalently',
   },
   {
-    currentPath: '/pdtf-1/extracted-ontology/use-and-tooling/artefacts/**',
+    currentPath: '/pdtf-schema/schema-derived-ontology/use-and-tooling/artefacts/**',
     kind: 'machine-representations',
     expectedCount: 27,
-    owner: 'pdtf-1',
-    preservedAt: '/pdtf-1/extracted-ontology/use-and-tooling/artefacts/**',
+    owner: 'pdtf-schema',
+    preservedAt: '/pdtf-schema/schema-derived-ontology/use-and-tooling/artefacts/**',
     consumers: ['ontology downloads', 'technical references'],
     verification: 'path and byte/checksum identity',
-    checksumSource: 'public/pdtf-1/extracted-ontology/use-and-tooling/artefacts',
+    checksumSource: 'public/pdtf-schema/schema-derived-ontology/use-and-tooling/artefacts',
     disposition: 'preserve',
   },
   {
@@ -276,21 +276,21 @@ export const PRESERVATION_LEDGER = Object.freeze([
   {
     currentPath: 'former /v2/** and /modelling/property-pack',
     kind: 'Property Pack route migration',
-    owner: 'spdtf-2',
-    preservedAt: '/spdtf-2/property-pack/**',
+    owner: 'spdtf',
+    preservedAt: '/spdtf/property-pack/**',
     consumers: ['Technical Working Group review', 'candidate register', 'source catalogue', 'ontology reference'],
     verification: 'old-to-new route, information-block, fragment and comment-identity receipts; old paths absent',
     checksumSource: 'source/03-standards/ontology-candidates/property-pack/0.1/candidate-manifest.json',
     disposition: 'reframe-equivalent',
   },
   {
-    currentPath: '/pdtf/** and canonical PDTF 1.0 generated semantic routes',
+    currentPath: '/pdtf/** and canonical PDTF schema generated semantic routes',
     kind: 'stable-technical-identifiers',
-    owner: 'pdtf-1',
-    preservedAt: '/pdtf/** and /pdtf-1/extracted-ontology/use-and-tooling/**',
+    owner: 'pdtf-schema',
+    preservedAt: '/pdtf/** and /pdtf-schema/schema-derived-ontology/use-and-tooling/**',
     consumers: ['linked-data clients', 'implementers', 'search and citations'],
     verification: 'route, representation and fragment crawl',
-    checksumSource: 'dist/pdtf and dist/pdtf-1/extracted-ontology/use-and-tooling',
+    checksumSource: 'dist/pdtf and dist/pdtf-schema/schema-derived-ontology/use-and-tooling',
     disposition: 'preserve',
   },
   {
@@ -321,10 +321,10 @@ export const PRESERVATION_LEDGER = Object.freeze([
  * one generated record must not silently omit its siblings or representation.
  */
 function routeDisposition(currentPath, owner, disposition, preservedAt = currentPath) {
-  const related = owner === 'spdtf-2'
-    ? ['pdtf-1:evidence', 'governance:authority', 'resources:provenance']
-    : owner === 'pdtf-1'
-      ? ['spdtf-2:input-or-comparison', 'governance:status']
+  const related = owner === 'spdtf'
+    ? ['pdtf-schema:evidence', 'governance:authority', 'resources:provenance']
+    : owner === 'pdtf-schema'
+      ? ['spdtf:input-or-comparison', 'governance:status']
       : [`${owner}:canonical-owner`];
   return Object.freeze({
     currentPath,
@@ -339,7 +339,7 @@ function routeDisposition(currentPath, owner, disposition, preservedAt = current
     checksumPolicy: disposition === 'redirect' ? 'semantic-equivalence receipt' : 'route crawl and content manifest',
     search: Object.freeze({
       workArea: AUTHORITY_BY_DESTINATION[owner].workArea,
-      historicalAliases: owner === 'spdtf-2' ? ['PDTF'] : [],
+      historicalAliases: owner === 'spdtf' ? ['PDTF'] : [],
     }),
   });
 }
@@ -347,10 +347,10 @@ function routeDisposition(currentPath, owner, disposition, preservedAt = current
 export const ROUTE_DISPOSITION_LEDGER = Object.freeze([
   ...[
     ['programme', 'programme', 'reframe'],
-    ['spdtf-2', 'spdtf-2', 'reframe'],
-    ['working-groups', 'spdtf-2', 'reframe'],
-    ['presentations', 'spdtf-2', 'reframe'],
-    ['pdtf-1', 'pdtf-1', 'reframe'],
+    ['spdtf', 'spdtf', 'reframe'],
+    ['working-groups', 'spdtf', 'reframe'],
+    ['presentations', 'spdtf', 'reframe'],
+    ['pdtf-schema', 'pdtf-schema', 'reframe'],
     ['strategy', 'programme', 'reframe'],
     ['governance', 'governance', 'keep'],
     ['dbt-smart-data', 'programme', 'reframe'],
@@ -360,23 +360,23 @@ export const ROUTE_DISPOSITION_LEDGER = Object.freeze([
   ].map(([path, owner, disposition]) => routeDisposition(`/${path}/**`, owner, disposition)),
   ...[
     ['/', 'programme', 'reframe'],
-    ['/spdtf-2/working-groups/**', 'spdtf-2', 'reframe'],
+    ['/spdtf/working-groups/**', 'spdtf', 'reframe'],
     ['/home', 'programme', 'reframe'],
     ['/glossary', 'resources', 'reframe'],
     ['/search', 'resources', 'keep'],
     ['/design-system', 'resources', 'keep'],
-    ['/presentation/**', 'spdtf-2', 'reframe'],
-    ['/working-groups/join/**', 'spdtf-2', 'keep'],
+    ['/presentation/**', 'spdtf', 'reframe'],
+    ['/working-groups/join/**', 'spdtf', 'keep'],
     ['/engagement/meetings-decisions/**', 'governance', 'reframe'],
     ['/engagement/working-groups/**', 'programme', 'reframe'],
-    ['/spdtf-2/property-pack/**', 'spdtf-2', 'reframe'],
+    ['/spdtf/property-pack/**', 'spdtf', 'reframe'],
     ['/resource', 'resources', 'keep'],
     ['/404', 'resources', 'keep'],
     ['/modelling/adr/**', 'governance', 'reframe'],
     ['/modelling/odr/**', 'governance', 'reframe'],
-    ['/pdtf/**', 'pdtf-1', 'keep'],
-    ['/pdtf-1/extracted-ontology/use-and-tooling/artefacts/**', 'pdtf-1', 'keep'],
-    ['/pdtf-1/extracted-ontology/use-and-tooling/tools/**', 'pdtf-1', 'keep'],
+    ['/pdtf/**', 'pdtf-schema', 'keep'],
+    ['/pdtf-schema/schema-derived-ontology/use-and-tooling/artefacts/**', 'pdtf-schema', 'keep'],
+    ['/pdtf-schema/schema-derived-ontology/use-and-tooling/tools/**', 'pdtf-schema', 'keep'],
     ['/data/**', 'resources', 'keep'],
     ['/ui/**', 'resources', 'keep'],
     ['/images/**', 'resources', 'keep'],
@@ -391,15 +391,15 @@ export function normalizeIaPath(path) {
 
 export function getActiveDestination(path) {
   const normalized = normalizeIaPath(path);
-  if (normalized === '/spdtf-2/working-groups'
-    || normalized.startsWith('/spdtf-2/working-groups/')) return 'working-groups';
+  if (normalized === '/spdtf/working-groups'
+    || normalized.startsWith('/spdtf/working-groups/')) return 'working-groups';
   const override = ROUTE_OWNER_OVERRIDES.find(({ pattern }) => pattern.test(normalized));
   if (override) return override.owner;
   const segment = normalized.split('/').filter(Boolean)[0];
   return segment ? ROUTE_FAMILY_OWNERS[segment] ?? null : null;
 }
 
-/** Content ownership remains SPDTF 2.0 for the working-groups shortcut family. */
+/** Content ownership remains SPDTF for the working-groups shortcut family. */
 export function getContentOwner(path) {
   const active = getActiveDestination(path);
   return DESTINATION_SHORTCUTS[active]?.contentOwner ?? active;

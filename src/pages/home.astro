@@ -2,14 +2,14 @@
 import Layout from '@/layouts/Layout.astro';
 
 const pathways = [
-  { number: '01', className: 'development', href: '/spdtf-2', title: 'Review developing SPDTF work',
-    description: 'Follow the domain-led, evidence-up method and review SPDTF 2.0 work in development.',
+  { number: '01', className: 'development', href: '/spdtf', title: 'Review SPDTF',
+    description: 'Follow the domain-led, evidence-up method for the first collaboratively authored SPDTF scheme draft.',
     topics: ['Development method', 'Semantic modelling', 'Interoperability'] },
-  { number: '02', className: 'working-groups', href: '/spdtf-2/working-groups', title: 'Join or visit a working group',
+  { number: '02', className: 'working-groups', href: '/spdtf/working-groups', title: 'Join or visit a working group',
     description: 'Find the group workspace, contribution routes and recorded questions, evidence and dispositions.',
     topics: ['Group charters', 'Participation', 'Review records'] },
-  { number: '03', className: 'pdtf-1', href: '/pdtf-1', title: 'Implement PDTF 1.0',
-    description: 'Use the published PDTF 1.0 schemas, validation guidance and derived implementation material.',
+  { number: '03', className: 'pdtf-schema', href: '/pdtf-schema', title: 'Implement the PDTF schema',
+    description: 'Use the existing Digital Property Pack schema, its dictionary and glossary, and find the schema-derived ontology as separate evidence.',
     topics: ['Schemas', 'Validation', 'Implementation guidance'] },
   { number: '04', className: 'governance', href: '/governance', title: 'Check authority and maturity',
     description: 'See who may decide, what has been reviewed and how lifecycle and status are recorded.',
@@ -17,9 +17,9 @@ const pathways = [
   { number: '05', className: 'resources', href: '/resources', title: 'Find a term, source or decision',
     description: 'Trace definitions, source records and decisions with their provenance and context.',
     topics: ['Glossary and dictionary', 'Source registry', 'ADR and ODR records'] },
-  { number: '06', className: 'programme', href: '/programme', title: 'Understand the continuation from PDTF 1.0 into SPDTF 2.0',
-    description: 'Understand what carries forward from the published implementation and what changes in development.',
-    topics: ['Programme context', 'PDTF 1.0 evidence', 'SPDTF 2.0 direction'] },
+  { number: '06', className: 'programme', href: '/programme', title: 'Understand the progression from schema to scheme',
+    description: 'See how the existing schema and its separately derived ontology inform the collaboratively authored SPDTF scheme draft.',
+    topics: ['Programme context', 'PDTF schema', 'SPDTF scheme'] },
 ];
 ---
 <Layout
@@ -39,17 +39,17 @@ const pathways = [
           <p class="eyebrow">Open Property Data Association</p>
           <h1 id="home-title">One shared language for property data.</h1>
           <p class="lede">
-            Follow the continuation from PDTF 1.0 into SPDTF 2.0 development,
-            from attributed evidence and governance to practical implementation.
+            Follow the progression from the existing Digital Property Pack schema
+            to the first collaboratively authored SPDTF scheme draft.
           </p>
           <div class="home-hero__actions">
-            <a class="btn" href="/spdtf-2">Review developing SPDTF work</a>
-            <a class="btn btn--outline-dark" href="/pdtf-1">Implement PDTF 1.0</a>
+            <a class="btn" href="/spdtf">Review SPDTF</a>
+            <a class="btn btn--outline-dark" href="/pdtf-schema">Implement the PDTF schema</a>
           </div>
         </div>
         <div class="home-hero__index" aria-hidden="true">
           <strong>01</strong>
-          <span>PDTF 1.0 remains findable while SPDTF 2.0 develops through evidence and review.</span>
+          <span>The PDTF schema supports existing implementations; its separately derived ontology is qualified evidence for SPDTF.</span>
         </div>
       </div>
     </section>
@@ -92,14 +92,14 @@ const pathways = [
         <div class="home-status__grid">
           <article class="home-status__item">
             <span class="pill pill--success">✓ Published implementation</span>
-            <strong>PDTF 1.0</strong>
-            <p>The published schema implementation and derived semantic corpus, with each artefact retaining its own status.</p>
-            <span class="provenance-chip">Work area · PDTF 1.0</span>
+            <strong>PDTF schema</strong>
+            <p>The existing Digital Property Pack schema, dictionary and glossary. Its schema-derived ontology is separate evidence with its own status.</p>
+            <span class="provenance-chip">Work area · PDTF schema</span>
           </article>
           <article class="home-status__item">
             <span class="pill pill--warn">◇ Review candidate</span>
             <strong>Property Pack ontology candidate</strong>
-            <p>An accelerated SPDTF 2.0 component: machine-generated and non-normative, with Technical Working Group determination and later domain review still pending.</p>
+            <p>An accelerated SPDTF component: machine-generated and non-normative, with Technical Working Group determination and later domain review still pending.</p>
             <span class="provenance-chip">Status · no approval recorded</span>
           </article>
           <article class="home-status__item">

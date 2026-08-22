@@ -1,0 +1,82 @@
+---
+import Layout from '@/layouts/Layout.astro';
+import PageMeta from '@/components/PageMeta.astro';
+import Diagram from '@/components/Diagram.astro';
+---
+<Layout
+  title="SHACL shapes"
+  description="Validation rules expressed as SHACL — generated programmatically from JSON Schema constraints, with manual additions for cross-property business rules."
+>
+<PageMeta category="Business Data Knowledge" variant="info" updated="Stub · Updated 2026-05-14" damaKa={["Data Modeling & Design", "Data Quality Management"]} />
+
+      <h1>SHACL shapes</h1>
+      <p class="lead">Validation rules expressed as SHACL — generated programmatically from JSON Schema constraints, with manual additions for cross-property business rules.</p>
+
+      <div class="callout callout--note">
+        <div class="callout__label">See also: Ontology manual — Physical-Ontology tier</div>
+        <p>
+          The Ontology manual's Physical-Ontology tier covers the generator-emitted SHACL work:
+          <a href="/pdtf-schema/schema-derived-ontology/model-views-by-audience/physical-ontology/severity-tiers">Severity tiers</a> (Cat 1–4 classification
+          for shape violations) and <a href="/pdtf-schema/schema-derived-ontology/model-views-by-audience/physical-ontology/shacl-af-rules">SHACL-AF rules</a>
+          (derived-attribute and succession rules using the SPARQL extension). These are the realised
+          output; this page describes the generation approach and business-rule authoring model.
+        </p>
+      </div>
+
+      <div class="callout callout--note">
+        <div class="callout__label">Status</div>
+        <p>This is a stub for upcoming work. The structure below is what we plan to populate; existing artefacts in <code>source/</code> that feed it are cited inline.</p>
+      </div>
+
+      
+      <h2 id="whyShacl">Why SHACL alongside JSON Schema?</h2>
+      <p>
+        JSON Schema validates JSON documents. SHACL validates RDF graphs. The SPDTF (Smart Property Data Trust Framework) is built on W3C VC, which is fundamentally graph-shaped. Both tools serve different audiences:
+      </p>
+      <ul>
+        <li><strong>JSON Schema</strong> — used by validators in client/server code (AJV etc.) at API boundaries</li>
+        <li><strong>SHACL</strong> — used when claims are aggregated into a transaction graph and need cross-claim validation</li>
+      </ul>
+
+      <h2 id="generation">Generation pipeline</h2>
+      <Diagram caption="Mechanical translation of JSON Schema constraints + hand-authored cross-property rules.">
+flowchart LR
+  JS["`JSON Schema v3
++ overlays`"]:::external
+  ONT[Ontology .ttl]:::external
+  GEN["`Translator
+schema → SHACL`"]:::process
+  HAND["`Hand-authored
+business rules`"]:::external
+  SHAPES["`SHACL .ttl
+per overlay`"]:::security
+
+  JS --> GEN
+  ONT --> GEN
+  GEN --> SHAPES
+  HAND --> SHAPES
+</Diagram>
+
+      <h2 id="autoTranslatable">What translates mechanically</h2>
+      <p>Most JSON Schema constraints have direct SHACL equivalents:</p>
+      <table>
+        <thead><tr><th>JSON Schema</th><th>SHACL</th></tr></thead>
+        <tbody>
+          <tr><td><code>required</code></td><td><code>sh:minCount 1</code></td></tr>
+          <tr><td><code>type</code></td><td><code>sh:datatype</code> / <code>sh:nodeKind</code></td></tr>
+          <tr><td><code>enum</code></td><td><code>sh:in</code></td></tr>
+          <tr><td><code>pattern</code></td><td><code>sh:pattern</code></td></tr>
+          <tr><td><code>minimum</code> / <code>maximum</code></td><td><code>sh:minInclusive</code> / <code>sh:maxInclusive</code></td></tr>
+          <tr><td><code>minLength</code> / <code>maxLength</code></td><td><code>sh:minLength</code> / <code>sh:maxLength</code></td></tr>
+        </tbody>
+      </table>
+
+      <h2 id="handAuthored">What needs hand-authoring</h2>
+      <ul>
+        <li>Cross-property dependencies (e.g. <em>if tenure = leasehold, then groundRent is required</em>)</li>
+        <li>Cross-claim rules (e.g. <em>BASPI v5 disclosure and TA6 answer must be consistent</em>)</li>
+        <li>Claim-provenance rules (e.g. <em>title information must be issued by HMLR</em>)</li>
+      </ul>
+
+      <p>Target folder: <a class="resource-link" href="/library/resources#cat-deliverables"><code>source/00-deliverables/semantic-models/shapes/</code></a>.</p>
+</Layout>

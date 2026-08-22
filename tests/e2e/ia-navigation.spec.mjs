@@ -31,15 +31,15 @@ test('aria-current follows canonical route ownership', async ({ page }) => {
   const clean = watchRuntime(page);
   const cases = [
     ['/programme', 'Programme'],
-    ['/spdtf-2', 'SPDTF 2.0 Development'],
-    ['/spdtf-2/working-groups', 'Working groups'],
-    ['/spdtf-2/working-groups/estate-agency', 'Working groups'],
-    ['/pdtf-1', 'PDTF 1.0'],
+    ['/spdtf', 'SPDTF'],
+    ['/spdtf/working-groups', 'Working groups'],
+    ['/spdtf/working-groups/estate-agency', 'Working groups'],
+    ['/pdtf-schema', 'PDTF schema'],
     ['/governance', 'Governance'],
     ['/resources', 'Resources'],
     ['/strategy/strategy-overview', 'Programme'],
-    ['/spdtf-2/property-pack/validation', 'SPDTF 2.0 Development'],
-    [pdtfClasses, 'PDTF 1.0'],
+    ['/spdtf/property-pack/validation', 'SPDTF'],
+    [pdtfClasses, 'PDTF schema'],
     ['/library/resources', 'Resources'],
   ];
   for (const [route, label] of cases) {
@@ -56,9 +56,9 @@ test('left section navigation covers every canonical destination', async ({ page
   await page.setViewportSize({ width: 1440, height: 1000 });
   for (const [route, section, label] of [
     ['/programme', 'programme', 'Overview'],
-    ['/spdtf-2', 'spdtf-2', 'Overview'],
-    ['/spdtf-2/working-groups', 'working-groups', 'Group workspaces'],
-    ['/pdtf-1', 'pdtf-1', 'Overview'],
+    ['/spdtf', 'spdtf', 'Overview'],
+    ['/spdtf/working-groups', 'working-groups', 'Group workspaces'],
+    ['/pdtf-schema', 'pdtf-schema', 'Overview'],
     ['/governance', 'governance', 'Governance framework'],
     ['/resources', 'resources', 'Overview'],
   ]) {
@@ -83,9 +83,9 @@ test('left navigation follows route ownership with one active link', async ({ pa
   await page.setViewportSize({ width: 1440, height: 1000 });
   for (const [route, section, label] of [
     ['/strategy/project-roadmap', 'programme', 'Project roadmap'],
-    ['/spdtf-2/property-pack/validation', 'spdtf-2', 'Validation evidence'],
-    ['/spdtf-2/working-groups/estate-agency/evidence', 'working-groups', 'Evidence'],
-    [pdtfClasses, 'pdtf-1', 'Classes'],
+    ['/spdtf/property-pack/validation', 'spdtf', 'Validation evidence'],
+    ['/spdtf/working-groups/estate-agency/evidence', 'working-groups', 'Evidence'],
+    [pdtfClasses, 'pdtf-schema', 'Classes'],
     ['/engagement/meetings-decisions', 'governance', 'Programme decisions'],
     ['/engagement/transcripts', 'resources', 'Transcripts index'],
   ]) {
@@ -98,7 +98,7 @@ test('left navigation follows route ownership with one active link', async ({ pa
   }
 
   await visit(page, pdtfClasses);
-  await page.evaluate(() => localStorage.setItem('opda.sidebar.pdtf-1.Extracted ontology', 'closed'));
+  await page.evaluate(() => localStorage.setItem('opda.sidebar.pdtf-1.Schema-derived ontology', 'closed'));
   await page.reload();
   await expect(page.locator('#section-navigation .nav-group[data-active="true"]')).toHaveClass(/is-open/u);
   await page.evaluate(() => localStorage.setItem('opda-sidebar-collapsed', '1'));
@@ -109,21 +109,21 @@ test('left navigation follows route ownership with one active link', async ({ pa
   clean();
 });
 
-test('PDTF 1.0 navigation separates the original standard from the extracted ontology', async ({ page }) => {
+test('PDTF schema navigation separates supporting material from the schema-derived ontology', async ({ page }) => {
   const clean = watchRuntime(page);
   await page.setViewportSize({ width: 1440, height: 1000 });
   await visit(page, pdtfClasses);
 
-  const navigation = page.locator('#section-navigation[data-section="pdtf-1"]');
+  const navigation = page.locator('#section-navigation[data-section="pdtf-schema"]');
   const groups = navigation.locator(':scope > .nav-group');
   await expect(groups).toHaveCount(3);
   await expect(groups.locator('.nav-group-link')).toHaveText([
-    'Overview', 'Original standard', 'Extracted ontology',
+    'Overview', 'Schema and supporting material', 'Schema-derived ontology',
   ]);
   await expect(navigation.locator('a[aria-current="page"]')).toHaveText('Classes');
-  await expect(navigation.locator('.nav-group[data-group="Extracted ontology"]')).toHaveClass(/is-open/u);
-  await expect(navigation.locator('.nav-group[data-group="Original standard"]')).not.toHaveClass(/is-open/u);
-  const taskCategories = navigation.locator('.nav-group[data-group="Extracted ontology"] .tree-folder.is-task-category');
+  await expect(navigation.locator('.nav-group[data-group="Schema-derived ontology"]')).toHaveClass(/is-open/u);
+  await expect(navigation.locator('.nav-group[data-group="Schema and supporting material"]')).not.toHaveClass(/is-open/u);
+  const taskCategories = navigation.locator('.nav-group[data-group="Schema-derived ontology"] .tree-folder.is-task-category');
   await expect(taskCategories).toHaveCount(7);
   await expect(taskCategories.filter({ has: page.locator(`a[href="${PDTF1_ROUTES.terms}"]`) }))
     .toHaveClass(/is-open/u);
@@ -151,7 +151,7 @@ test('PDTF 1.0 navigation separates the original standard from the extracted ont
     }));
   expect(nestedFolderStyle.background).not.toBe('rgba(0, 0, 0, 0)');
   expect(Number(nestedFolderStyle.weight)).toBeGreaterThan(Number(categoryStyle.leafWeight));
-  const disclosureContract = await navigation.locator('.nav-group[data-group="Extracted ontology"] .tree-folder')
+  const disclosureContract = await navigation.locator('.nav-group[data-group="Schema-derived ontology"] .tree-folder')
     .evaluateAll((folders) => folders.map((folder) => {
       const row = folder.querySelector(':scope > .tree-folder-row');
       const controls = row.querySelector('button').getAttribute('aria-controls');
@@ -173,21 +173,21 @@ test('PDTF 1.0 navigation separates the original standard from the extracted ont
   }
   for (const id of [
     'schema', 'implementation', 'adoption', 'modelling', 'model', 'ontology', 'mapping',
-  ]) await expect(page.locator(`#section-nav-group-pdtf-1-${id}`)).toHaveCount(1);
+  ]) await expect(page.locator(`#section-nav-group-pdtf-schema-${id === 'adoption' ? 'usage' : id}`)).toHaveCount(1);
 
   await expect(page.locator('nav[aria-label="Breadcrumb"] li')).toHaveText([
-    /PDTF 1\.0/u, /Extracted ontology/u, /Terms and model resources/u, /Classes/u,
+    /PDTF schema/u, /Schema-derived ontology/u, /Terms and model resources/u, /Classes/u,
   ]);
 
   await visit(page, `${PDTF1_ROUTES.original}/schema/legal-estate`);
-  await expect(navigation.locator('.nav-group[data-group="Original standard"]')).toHaveClass(/is-open/u);
-  await expect(navigation.locator('.nav-group[data-group="Extracted ontology"]')).not.toHaveClass(/is-open/u);
+  await expect(navigation.locator('.nav-group[data-group="Schema and supporting material"]')).toHaveClass(/is-open/u);
+  await expect(navigation.locator('.nav-group[data-group="Schema-derived ontology"]')).not.toHaveClass(/is-open/u);
   await expect(navigation.locator('a[aria-current="page"]')).toHaveCount(1);
 
   await navigation.locator(`a[href="${PDTF1_ROUTES.extracted}"]`).click();
-  await expect(page.locator('h1')).toHaveText('PDTF 1.0-derived ontology reference');
+  await expect(page.locator('h1')).toHaveText('schema-derived ontology reference');
   await expect(page.locator('nav[aria-label="Breadcrumb"] [aria-current="page"]'))
-    .toHaveText('Extracted ontology');
+    .toHaveText('Schema-derived ontology');
   expect(await page.locator('#explore + p + .card-grid > a').evaluateAll((cards) => (
     cards.map((card) => card.getAttribute('href'))
   ))).toEqual([
@@ -213,9 +213,9 @@ test('PDTF 1.0 navigation separates the original standard from the extracted ont
 test('category pages remain links beside independent disclosure controls', async ({ page }) => {
   const clean = watchRuntime(page);
   await page.setViewportSize({ width: 1440, height: 1000 });
-  await visit(page, '/spdtf-2/ontologies/standards');
+  await visit(page, '/spdtf/ontologies/standards');
   const category = page.locator('.nav-group[data-group="Semantic modelling"]');
-  const link = category.locator('.nav-group-link[href="/spdtf-2/ontologies"]');
+  const link = category.locator('.nav-group-link[href="/spdtf/ontologies"]');
   const toggle = category.locator('.nav-group-toggle');
   await expect(link).toBeVisible();
   expect(await category.locator(':scope > .nav-group-row > button, :scope > .nav-group-row > a')
@@ -238,20 +238,20 @@ test('category pages remain links beside independent disclosure controls', async
 
   await link.focus();
   await page.keyboard.press('Enter');
-  await expect(page).toHaveURL(/\/spdtf-2\/ontologies$/u);
+  await expect(page).toHaveURL(/\/spdtf\/ontologies$/u);
   await expect(page.locator('.nav-group-row.is-active-page a[aria-current="page"]'))
-    .toHaveAttribute('href', '/spdtf-2/ontologies');
+    .toHaveAttribute('href', '/spdtf/ontologies');
   await expect(page.locator('nav[aria-label="Breadcrumb"] [aria-current="page"]'))
     .toHaveText('Semantic modelling');
   await expect(page.locator('nav.page-footer a').last())
-    .toHaveAttribute('href', '/spdtf-2/ontologies/why-ontologies');
+    .toHaveAttribute('href', '/spdtf/ontologies/why-ontologies');
   clean();
 });
 
 test('dark active category renders one amber stripe', async ({ page }) => {
   const clean = watchRuntime(page);
   await page.setViewportSize({ width: 1440, height: 1000 });
-  await visit(page, '/spdtf-2/working-groups');
+  await visit(page, '/spdtf/working-groups');
   await page.locator('#theme-toggle').click();
   await expect(page.locator('html')).toHaveAttribute('data-theme', 'dark');
 
@@ -266,10 +266,10 @@ test('dark active category renders one amber stripe', async ({ page }) => {
 
 test('Property Pack definition cards link to their canonical views', async ({ page }) => {
   const clean = watchRuntime(page);
-  await visit(page, '/spdtf-2/property-pack/definition-and-scope');
+  await visit(page, '/spdtf/property-pack/definition-and-scope');
   const contextCards = page.locator('.context-grid > a.context-card');
   await expect(contextCards).toHaveCount(8);
-  await expect(contextCards.first()).toHaveAttribute('href', /\/spdtf-2\/property-pack\/contexts\//u);
+  await expect(contextCards.first()).toHaveAttribute('href', /\/spdtf\/property-pack\/contexts\//u);
   const artefactCards = page.locator('#candidate-artefacts + p + .v2-card-grid > a.v2-card');
   await expect(artefactCards).toHaveCount(6);
   await expect(artefactCards.first()).toHaveAttribute('href', /\/resource\?path=source\/03-standards\/ontology-candidates/u);
@@ -279,7 +279,7 @@ test('Property Pack definition cards link to their canonical views', async ({ pa
 test('nested navigation follows one consistent indentation ladder', async ({ page }) => {
   const clean = watchRuntime(page);
   await page.setViewportSize({ width: 1440, height: 1000 });
-  await visit(page, '/spdtf-2/ontologies/standards');
+  await visit(page, '/spdtf/ontologies/standards');
 
   const geometry = await page.evaluate(() => {
     const link = (href) => document.querySelector(`#section-navigation a[href="${href}"]`);
@@ -288,9 +288,9 @@ test('nested navigation follows one consistent indentation ladder', async ({ pag
       range.selectNodeContents(element);
       return range.getBoundingClientRect().left;
     };
-    const rootLeaf = link('/spdtf-2');
-    const rootFolder = link('/spdtf-2/ontologies');
-    const childLeaf = link('/spdtf-2/ontologies/why-ontologies');
+    const rootLeaf = link('/spdtf');
+    const rootFolder = link('/spdtf/ontologies');
+    const childLeaf = link('/spdtf/ontologies/why-ontologies');
     const toggle = rootFolder?.parentElement?.querySelector('.nav-group-toggle');
     return {
       rootLeaf: textLeft(rootLeaf),
@@ -331,38 +331,38 @@ test('page navigation exposes headings and a single previous-next sequence', asy
 
 test('Property Pack ontology is owned by SPDTF development', async ({ page }) => {
   const clean = watchRuntime(page);
-  await visit(page, '/spdtf-2/property-pack/validation');
+  await visit(page, '/spdtf/property-pack/validation');
   await expect(page.locator('nav[aria-label="Primary"] a[aria-current="page"]'))
-    .toHaveText('SPDTF 2.0 Development');
+    .toHaveText('SPDTF');
   expect(await page.locator('nav[aria-label="Primary"] a').allTextContents()).not.toContain('V2');
   const local = page.locator('#section-navigation');
-  await expect(local.locator('a[href="/spdtf-2/property-pack"]')).toHaveText('Property Pack ontology');
+  await expect(local.locator('a[href="/spdtf/property-pack"]')).toHaveText('Property Pack ontology');
   await expect(local.locator('a[aria-current="page"]')).toHaveText('Validation evidence');
-  await expect(local.locator('a[href="/spdtf-2/property-pack"]')
+  await expect(local.locator('a[href="/spdtf/property-pack"]')
     .locator('xpath=ancestor::section[1]')).toHaveClass(/is-open/u);
   clean();
 });
 
 test('Property Pack detail pages expose their full canonical ancestry', async ({ page }) => {
   const clean = watchRuntime(page);
-  await visit(page, '/spdtf-2/property-pack/resources/common/Property');
+  await visit(page, '/spdtf/property-pack/resources/common/Property');
   const crumbs = page.locator('nav[aria-label="Breadcrumb"]');
   await expect(crumbs.locator('a, [aria-current="page"]')).toHaveText([
-    'SPDTF 2.0 Development', 'Property Pack ontology', 'Ontology resources', 'Common boundary', 'Property',
+    'SPDTF', 'Property Pack ontology', 'Ontology resources', 'Common boundary', 'Property',
   ]);
   expect(await crumbs.locator('a').evaluateAll((links) => links.map((link) => link.getAttribute('href')))).toEqual([
-    '/spdtf-2', '/spdtf-2/property-pack', '/spdtf-2/property-pack/resources',
-    '/spdtf-2/property-pack/contexts/common',
+    '/spdtf', '/spdtf/property-pack', '/spdtf/property-pack/resources',
+    '/spdtf/property-pack/contexts/common',
   ]);
   const local = page.locator('#section-navigation');
   await expect(local.locator('a[aria-current="page"]')).toHaveCount(1);
   await expect(local.locator('.nav-group[data-group="Property Pack ontology"]')).toHaveClass(/is-open/u);
-  await expect(local.locator('.tree-folder:has(> .tree-folder-row > a[href="/spdtf-2/property-pack/model"])'))
+  await expect(local.locator('.tree-folder:has(> .tree-folder-row > a[href="/spdtf/property-pack/model"])'))
     .toHaveClass(/is-open/u);
-  await expect(local.locator('.tree-folder:has(> .tree-folder-row > a[href="/spdtf-2/property-pack/coverage"])'))
+  await expect(local.locator('.tree-folder:has(> .tree-folder-row > a[href="/spdtf/property-pack/coverage"])'))
     .not.toHaveClass(/is-open/u);
   await expect(page.locator('[aria-label="Property Pack lifecycle status"] dt')).toHaveCount(6);
-  const returnToResources = page.locator('a.btn[href="/spdtf-2/property-pack/resources"]');
+  const returnToResources = page.locator('a.btn[href="/spdtf/property-pack/resources"]');
   await expect(returnToResources).toHaveText('All resources');
   await expect(returnToResources).toBeVisible();
   const [heading, action] = await Promise.all([
@@ -372,13 +372,13 @@ test('Property Pack detail pages expose their full canonical ancestry', async ({
   expect(action.y).toBeLessThanOrEqual(heading.y + heading.height);
   expect(action.x).toBeGreaterThan(heading.x);
   await returnToResources.click();
-  await expect(page).toHaveURL(/\/spdtf-2\/property-pack\/resources\/?$/u);
+  await expect(page).toHaveURL(/\/spdtf\/property-pack\/resources\/?$/u);
   clean();
 });
 
 test('Property Pack candidate status is collapsed until requested', async ({ page }) => {
   const clean = watchRuntime(page);
-  await visit(page, '/spdtf-2/property-pack/resources/common/Property');
+  await visit(page, '/spdtf/property-pack/resources/common/Property');
   const candidateStatus = page.locator('details.v2-candidate-banner');
   await expect(candidateStatus).not.toHaveAttribute('open', '');
   await expect(candidateStatus.locator('summary')).toContainText('Machine-proposed');
@@ -408,9 +408,9 @@ test('reader pages omit the authority box while retaining route-status metadata'
   };
   for (const route of [
     ...primary.map(({ url }) => url),
-    '/spdtf-2/ontologies',
-    '/spdtf-2/working-groups/estate-agency',
-    '/spdtf-2/working-groups/estate-agency/review',
+    '/spdtf/ontologies',
+    '/spdtf/working-groups/estate-agency',
+    '/spdtf/working-groups/estate-agency/review',
   ]) {
     await visit(page, route);
     await expect(page.locator('.ia-authority, [data-ia-status], [aria-label="Authority and status"]')).toHaveCount(0);
@@ -426,7 +426,7 @@ test('candidate and feedback status uses the shared responsive definition-list p
   const clean = watchRuntime(page);
   for (const width of [320, 1440]) {
     await page.setViewportSize({ width, height: 1000 });
-    await visit(page, '/spdtf-2/working-groups/estate-agency/review');
+    await visit(page, '/spdtf/working-groups/estate-agency/review');
     const status = page.locator('#candidate + .status-definition-list');
     await expect(status).toBeVisible();
     await expect(status.locator(':scope > div')).toHaveCount(8);
@@ -445,9 +445,9 @@ test('candidate and feedback status uses the shared responsive definition-list p
 test('all Layout pages expose versioned route status metadata', async ({ page }) => {
   const clean = watchRuntime(page);
   for (const [route, expected] of [
-    [pdtfClasses, 'PDTF 1.0-derived'],
-    ['/spdtf-2/property-pack/contexts/estate-agency', '0.1.0-draft candidate cut'],
-    ['/spdtf-2/working-groups/estate-agency', 'no candidate version'],
+    [pdtfClasses, 'schema-derived'],
+    ['/spdtf/property-pack/contexts/estate-agency', '0.1.0-draft candidate cut'],
+    ['/spdtf/working-groups/estate-agency', 'no candidate version'],
   ]) {
     await visit(page, route);
     await expect(page.locator('html')).toHaveAttribute('data-content-version', new RegExp(expected, 'iu'));
@@ -458,7 +458,7 @@ test('all Layout pages expose versioned route status metadata', async ({ page })
 
 test('participant reaches evidence, questions and review from one canonical workspace', async ({ page }) => {
   const clean = watchRuntime(page);
-  await visit(page, '/spdtf-2/working-groups/estate-agency');
+  await visit(page, '/spdtf/working-groups/estate-agency');
   await expect(page.locator('nav[aria-label="Breadcrumb"]')).toHaveCount(1);
   const workspace = page.locator('nav[aria-label="Working-group workspace"]');
   await expect(workspace.getByRole('link')).toHaveCount(4);
@@ -474,15 +474,15 @@ test('PDTF alias search labels historical and continuation results with authorit
   const clean = watchRuntime(page);
   await visit(page, '/search?q=PDTF');
   const results = page.locator('.search-result:not([hidden])');
-  await expect(results.filter({ has: page.locator('a[href="/pdtf-1"]') })).toContainText('historical name');
-  await expect(results.getByRole('link', { name: 'SPDTF 2.0 Development', exact: true })).toHaveCount(1);
+  await expect(results.filter({ has: page.locator('a[href="/pdtf-schema"]') })).toContainText('historical name');
+  await expect(results.getByRole('link', { name: 'SPDTF', exact: true })).toHaveCount(1);
   expect(await results.count()).toBeGreaterThan(1);
   await expect(results.locator('dt', { hasText: 'Authority' }).first()).toBeVisible();
   clean();
 });
 test('Property Pack source catalogue retains its 451-item interaction', async ({ page }) => {
   const clean = watchRuntime(page);
-  await visit(page, '/spdtf-2/property-pack/definition-and-scope');
+  await visit(page, '/spdtf/property-pack/definition-and-scope');
   expect(await page.locator('#property-pack-rows').evaluate((node) => JSON.parse(node.textContent).length)).toBe(451);
   await expect(page.locator('#property-pack-browser tbody tr')).toHaveCount(25);
   const search = page.locator('#property-pack-browser input[type="search"]');

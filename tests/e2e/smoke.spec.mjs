@@ -55,7 +55,7 @@ test('desktop sidebar and nested tree controls work', async ({ page }) => {
 test('mobile section drawer returns focus on Escape', async ({ page }) => {
   const clean = watchRuntime(page);
   await page.setViewportSize({ width: 375, height: 812 });
-  await visit(page, '/spdtf-2/ontologies/standards');
+  await visit(page, '/spdtf/ontologies/standards');
   const opener = page.locator('#menu-toggle');
   const sidebar = page.locator('#app-sidebar');
   await opener.click();
@@ -69,7 +69,7 @@ test('mobile section drawer returns focus on Escape', async ({ page }) => {
   await expect(last).toBeFocused();
   const category = sidebar.locator('.nav-group[data-group="Semantic modelling"]');
   const toggle = category.locator('.nav-group-toggle');
-  const categoryLink = category.locator('a[href="/spdtf-2/ontologies"]');
+  const categoryLink = category.locator('a[href="/spdtf/ontologies"]');
   const before = page.url();
   await toggle.click();
   expect(page.url()).toBe(before);
@@ -81,7 +81,7 @@ test('mobile section drawer returns focus on Escape', async ({ page }) => {
   await expect(opener).toBeFocused();
   await opener.click();
   await categoryLink.click();
-  await expect(page).toHaveURL(/\/spdtf-2\/ontologies$/u);
+  await expect(page).toHaveURL(/\/spdtf\/ontologies$/u);
   await expect(sidebar).not.toHaveClass(/open/);
   await assertNoBodyOverflow(page);
   clean();
@@ -121,19 +121,19 @@ test('mobile PDTF ontology hierarchy keeps folder labels linked and keyboard ord
 
 test('semantic modelling exposes linked audience branches and one active page', async ({ page }) => {
   const clean = watchRuntime(page);
-  await visit(page, '/spdtf-2/ontologies/standards');
+  await visit(page, '/spdtf/ontologies/standards');
   const navigation = page.locator('#section-navigation');
-  const method = navigation.locator('.tree-folder:has(> .tree-folder-row > a[href="/spdtf-2/ontologies/modelling-method"])');
-  const teaching = navigation.locator('.tree-folder:has(> .tree-folder-row > a[href="/spdtf-2/ontologies/why-ontologies"])');
+  const method = navigation.locator('.tree-folder:has(> .tree-folder-row > a[href="/spdtf/ontologies/modelling-method"])');
+  const teaching = navigation.locator('.tree-folder:has(> .tree-folder-row > a[href="/spdtf/ontologies/why-ontologies"])');
   await expect(method).toHaveClass(/is-open/u);
   await expect(method.locator(':scope > .tree-folder-row > a'))
-    .toHaveText('How we model SPDTF 2.0');
+    .toHaveText('How we model SPDTF');
   await expect(method.locator(':scope > .tree-folder-row > button'))
     .toHaveAttribute('aria-expanded', 'true');
   await expect(teaching).not.toHaveClass(/is-open/u);
   await expect(navigation.locator('a[aria-current="page"]')).toHaveCount(1);
   await expect(navigation.locator('a[aria-current="page"]'))
-    .toHaveAttribute('href', '/spdtf-2/ontologies/standards');
+    .toHaveAttribute('href', '/spdtf/ontologies/standards');
   clean();
 });
 
@@ -257,13 +257,13 @@ test('representative diagrams and data tables render', async ({ page }) => {
   clean();
 });
 
-test('Property Pack diagrams use the PDTF 1.0 class-backbone convention', async ({ page }) => {
+test('Property Pack diagrams use the PDTF schema class-backbone convention', async ({ page }) => {
   const clean = watchRuntime(page);
   const routes = [
-    ['/spdtf-2/property-pack/model', 53],
-    ['/spdtf-2/property-pack/contexts/common', 21],
-    ['/spdtf-2/property-pack/contexts/conveyancing', 21],
-    ['/spdtf-2/property-pack/contexts/dbt-smart-data', 1],
+    ['/spdtf/property-pack/model', 53],
+    ['/spdtf/property-pack/contexts/common', 21],
+    ['/spdtf/property-pack/contexts/conveyancing', 21],
+    ['/spdtf/property-pack/contexts/dbt-smart-data', 1],
   ];
   let conveyancingGraphText = '';
 
@@ -291,7 +291,7 @@ test('reader pages use only the shared right-rail page navigation', async ({ pag
   const clean = watchRuntime(page);
   await page.setViewportSize({ width: 1440, height: 1000 });
 
-  for (const path of [PDTF1_ROUTES.schemaVerification, `${PDTF1_ROUTES.terms}/classes`, '/spdtf-2/property-pack/model']) {
+  for (const path of [PDTF1_ROUTES.schemaVerification, `${PDTF1_ROUTES.terms}/classes`, '/spdtf/property-pack/model']) {
     await visit(page, path);
     await expect(page.locator('main nav').filter({ hasText: 'On this page' })).toHaveCount(0);
     await expect(page.locator('aside.toc[aria-label="On this page"]')).toBeVisible();

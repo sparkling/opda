@@ -104,11 +104,11 @@ docs/manual/_export/
 # The composition pages (src/pages/ontology/), the M6 COMPARISON.md, and the lightweight
 # tool READMEs / skosmos schemes list ARE tracked; the generated HTML render trees + the
 # copied TTL artefacts are regenerated on demand and not committed.
-public/pdtf-1/extracted-ontology/use-and-tooling/tools/ontospy/
-public/pdtf-1/extracted-ontology/use-and-tooling/tools/widoco/
-public/pdtf-1/extracted-ontology/use-and-tooling/tools/pylode/
-public/pdtf-1/extracted-ontology/use-and-tooling/tools/shaclplay/
-public/pdtf-1/extracted-ontology/use-and-tooling/artefacts/
+public/pdtf-schema/schema-derived-ontology/use-and-tooling/tools/ontospy/
+public/pdtf-schema/schema-derived-ontology/use-and-tooling/tools/widoco/
+public/pdtf-schema/schema-derived-ontology/use-and-tooling/tools/pylode/
+public/pdtf-schema/schema-derived-ontology/use-and-tooling/tools/shaclplay/
+public/pdtf-schema/schema-derived-ontology/use-and-tooling/artefacts/
 
 # Agent tooling artefacts (ruflo + claude-flow + swarm + ruvector)
 # .claude/ is tracked — curated config + ruflo-init resources (agents, commands,

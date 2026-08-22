@@ -2,6 +2,8 @@
 
 > Quick-reference for slide-building. All figures verified against the repo in the first
 > research pass. Legend: ✅ built · 🟡 partial · 🔵 planned.
+> Counts below describe the separate draft ontology derived from the PDTF schema. They
+> do not describe an endorsed scheme; "adopted" means internal technical selection.
 
 ## Headline numbers
 

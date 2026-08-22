@@ -1,12 +1,12 @@
 ---
-title: OPDA ontology — manual
+title: Schema-derived ontology — manual
 status: generated
 date: 2026-05-28
 ---
 
-# OPDA ontology — manual
+# Schema-derived ontology — manual
 
-Four-tier presentation of the OPDA ontology model. Each tier targets a distinct audience and presents the same underlying data model at a different level of abstraction. The tiers are linked by stable per-entity URIs so a reader can traverse from business narrative to deployed Turtle without losing the thread.
+Four-tier presentation of the draft ontology derived from the PDTF schema corpus. Each tier targets a distinct audience and presents the same underlying data model at a different level of abstraction. The tiers are linked by stable per-entity URIs so a reader can traverse from business narrative to deployed Turtle without losing the thread. This technical artefact is separate from the PDTF schema and is not an OPDA-endorsed scheme; it is evidence to revisit during SPDTF development.
 
 This manual is generated from the 24 emitted TTL files at `source/03-standards/ontology/` per the information-architecture blueprint at [`docs/information-architecture/`](../information-architecture/). The blueprint specifies *how* each tier is laid out; this manual is the populated output.
 
@@ -60,7 +60,7 @@ The ODR corpus (`docs/ontology/odr/`) is **not** a content source — only a lin
 
 - **IA blueprint:** [`docs/information-architecture/`](../information-architecture/) — accepted 2026-05-28
 - **Generation date:** 2026-05-28
-- **Ontology version:** `opda-gen-1.0.0` (programme retired 2026-05-28 per [ODR-0003 §"Programme retirement criterion"](/modelling/odr/odr-0003))
+- **Schema-derived ontology version:** `opda-gen-1.0.0` (technical programme closed 2026-05-28 per [ODR-0003 §"Programme retirement criterion"](/modelling/odr/odr-0003))
 - **Validation status:** PASS-WITH-FOLLOW-UPS (all 4 items closed inline at commit `b93deb2`); see [`VALIDATION-REPORT.md`](./VALIDATION-REPORT.md)
 - **Worker commits:** `6328d03` (Concept) · `0c3619d` (Logical) · `fbf8d85` (Physical-DB) · `4c16c58` (Physical-Ontology) · `b93deb2` (remediation)
 

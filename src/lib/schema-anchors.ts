@@ -1,5 +1,5 @@
 /**
- * Leaf-path -> {url, anchor} lookup over the committed /pdtf-1/original-standard/schema/*.astro pages
+ * Leaf-path -> {url, anchor} lookup over the committed /pdtf-schema/schema-and-supporting-material/schema/*.astro pages
  * (2026-07-06 — replaces an earlier data-dictionary ?q= search-based link,
  * which was too imprecise for domain-less/shared properties: the dictionary
  * indexes ONE canonical example path per property name, not every real
@@ -7,7 +7,7 @@
  * occurrence entirely — confirmed directly with opda:documentDate, which
  * has two genuinely different real occurrences in the schema).
  *
- * The /pdtf-1/original-standard/schema pages themselves are generated (scripts/build-schema-pages.py)
+ * The /pdtf-schema/schema-and-supporting-material/schema pages themselves are generated (scripts/build-schema-pages.py)
  * from theme-map.yaml + provenance-map.yaml, but their OUTPUT is committed —
  * every leaf row already carries `data-leaf-path="{full.dotted.path}"`, and
  * every containing object already carries a real `id="..."` anchor. Scanning
@@ -19,8 +19,8 @@
 import fs from 'node:fs';
 import path from 'node:path';
 
-const SCHEMA_ROUTE = '/pdtf-1/original-standard/schema';
-const SCHEMA_DIR = path.resolve(process.cwd(), 'src/pages/pdtf-1/original-standard/schema');
+const SCHEMA_ROUTE = '/pdtf-schema/schema-and-supporting-material/schema';
+const SCHEMA_DIR = path.resolve(process.cwd(), 'src/pages/pdtf-schema/schema-and-supporting-material/schema');
 
 function walkAstroFiles(dir: string): string[] {
   const out: string[] = [];

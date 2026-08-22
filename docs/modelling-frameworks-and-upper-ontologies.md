@@ -1,6 +1,6 @@
 # Foundational Ontology & Modelling Frameworks in OPDA — What We Built, Why, and the Benefits
 
-> How the OPDA PDTF ontology actually uses a foundational ontology and a conceptual-modelling framework: the decisions we took, the architecture we deployed, and what it buys us. The one-line summary: **OPDA is UFO-*informed*, never UFO-*grounded*.** We use the Unified Foundational Ontology (UFO) and OntoClean as a **design-time decision procedure**, and ship only pragmatic SHACL + SKOS + plain RDF that stands on its own — carrying the foundational commitment as an **inert, honestly-disclosed, CI-quarantined provenance record**.
+> How the draft ontology derived from the PDTF schema corpus uses a foundational ontology and a conceptual-modelling framework: the technical decisions taken, the implemented architecture, and what it offers as evidence for SPDTF development. This schema-derived ontology is separate from the PDTF schema and is not an OPDA-endorsed scheme. The one-line summary: **the model is UFO-*informed*, never UFO-*grounded*.** It uses the Unified Foundational Ontology (UFO) and OntoClean as a **design-time decision procedure**, and emits pragmatic SHACL + SKOS + plain RDF that stands on its own — carrying the foundational commitment as an **inert, honestly disclosed, CI-quarantined provenance record**.
 
 This document is a reference for *our* implementation. It is grounded in the decisions recorded in [ODR-0030](ontology/odr/ODR-0030-foundational-ontology-choice.md) (the foundational-ontology choice), [ODR-0031](ontology/odr/ODR-0031-ufocategory-upper-ontology-representation.md) (how `opda:ufoCategory` is represented), [ODR-0027](ontology/odr/ODR-0027-classification-roles-inheritance-skos-doctrine.md) (classification-over-inheritance), [ODR-0029](ontology/odr/ODR-0029-inference-validation-boundary-and-entailment-regime-disposition.md) (the entailment regime), [ODR-0004](ontology/odr/ODR-0004-pdtf-ontology-foundation.md) §3a (three-graph separation), and [ADR-0034](adr/ADR-0034-gufo-property-typing-pass.md) / [ADR-0044](adr/ADR-0044-ontology-as-web-pages-dereferenceable-entity-detail-pages.md) / [ADR-0045](adr/ADR-0045-ufocategory-quarantine-restoration-gufo-scheme-sixth-gate.md) (the engineering).
 
@@ -24,7 +24,7 @@ flowchart TB
     classDef q fill:#FFF9C4,stroke:#F9A825,stroke-width:2px,color:#F57F17
     classDef note fill:#ECEFF1,stroke:#455A64,stroke-width:2px,color:#263238
 
-    Q["Should the standard rest on<br/>a foundational ontology at all?"]:::q
+    Q["Should the schema-derived model use<br/>a foundational ontology at all?"]:::q
 
     Q --> A["RETAIN UFO as a design-time lens<br/>scoped to the Relator / Role / RoleMixin spine"]:::chosen
     Q --> B["DEEPEN to OntoUML / full UFO import"]:::rejected
@@ -205,7 +205,7 @@ Worked outcomes from the corpus that this cascade produced: `tenureKind` (+R, �
 
 ## 6. The honesty doctrine — informed, not grounded
 
-The one credibility risk a working data standard cannot afford is overclaiming a guarantee the architecture does not provide. We pre-empt it with explicit honesty dispositions ([ODR-0030](ontology/odr/ODR-0030-foundational-ontology-choice.md) Rule 7), and they are **machine-readable**, not just prose.
+The one credibility risk a draft technical model cannot afford is overclaiming a guarantee the architecture does not provide. We pre-empt it with explicit honesty dispositions ([ODR-0030](ontology/odr/ODR-0030-foundational-ontology-choice.md) Rule 7), and they are **machine-readable**, not just prose.
 
 ```mermaid
 ---
@@ -237,7 +237,7 @@ flowchart TB
     A --> H3
 ```
 
-Three disclosures ride on the inert layer: we publish **"UFO-informed", not "UFO-grounded with guarantees"**; a machine-readable `skos:scopeNote` on `opda:ufoCategory` discloses that the quality categories descend from **DOLCE's** Quality/Quale/Region apparatus (WonderWeb D18, 2003), not pure UFO; and we flag **UFO-C** (the social/intentional/legal layer) as least-mature wherever the standard leans on it. The gated gUFO `rdf:type` typing pass ([ADR-0034](adr/ADR-0034-gufo-property-typing-pass.md)) and the IAO information-artefact crosswalk (ODR-0030 Rule 4, adopt-now) follow the same reference-not-import, annotation-graph, never-reasoned discipline.
+Three disclosures ride on the inert layer: we publish **"UFO-informed", not "UFO-grounded with guarantees"**; a machine-readable `skos:scopeNote` on `opda:ufoCategory` discloses that the quality categories descend from **DOLCE's** Quality/Quale/Region apparatus (WonderWeb D18, 2003), not pure UFO; and we flag **UFO-C** (the social/intentional/legal layer) as least-mature wherever the schema-derived model leans on it. The gated gUFO `rdf:type` typing pass ([ADR-0034](adr/ADR-0034-gufo-property-typing-pass.md)) and the IAO information-artefact crosswalk (ODR-0030 Rule 4, adopt-now) follow the same reference-not-import, annotation-graph, never-reasoned discipline.
 
 ---
 
@@ -282,7 +282,7 @@ This is why every term carries a `dct:source` and every non-trivial choice is tr
 |---|---|
 | **Zero runtime cost / risk** | The foundational layer is inert (annotation-graph-only, `owl:AnnotationProperty`); deleting it changes zero inferences, validations, or emitted bytes. No contested metaphysics ever reaches a consumer's reasoner. |
 | **Reversibility** | Because UFO is a lens, not a dependency, the "drop the vocabulary" exit (Devil's Advocate's held position) stays cheap. The OntoClean *judgement* survives the UFO *vocabulary* if it is ever retired. |
-| **Honesty / no overclaim** | "UFO-informed, not UFO-grounded", the DOLCE-lineage disclosure, and the UFO-C maturity flag are machine-readable and CI-checkable — the standard never claims a guarantee it does not perform. |
+| **Honesty / no overclaim** | "UFO-informed, not UFO-grounded", the DOLCE-lineage disclosure, and the UFO-C maturity flag are machine-readable and CI-checkable — the schema-derived model does not claim a guarantee it cannot perform. |
 | **Auditability** | The category tag, its OntoClean definition, and its gUFO alignment are queryable structured data; the decisions behind them are citable council/ODR/ADR records. |
 | **Decidability + soundness** | A small, sound RDFS-Plus core is reasoned; everything undecidable (UFO's modal/mereological constraints) is validated in SHACL — exactly what the gUFO authors' OWL-2-DL result mandates. |
 | **Governable vocabularies** | Classification-over-inheritance keeps kind-axes as flat, `sh:in`-governed SKOS facets instead of brittle subclass trees; promotion to a class is a checkable OntoClean test, not taste. |

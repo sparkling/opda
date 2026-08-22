@@ -1,6 +1,11 @@
-# Outstanding Work & Modelling Register — OPDA Ontology Programme
+# Outstanding Work & Modelling Register — schema-derived ontology project
 
-This is the accurate standing register of everything left in the OPDA ontology programme, grounded in the ODR/ADR corpus. It supersedes a deleted Council record (the mistaken "schema-accommodation scope" session) which wrongly recast the corpus's deliberate consumer-driven/YAGNI deferrals as "wait for a future PDTF schema version" gates.
+This is the historical standing register of work in the internal schema-derived ontology project, grounded in its ODR/ADR corpus. It supersedes a deleted Council record (the mistaken "schema-accommodation scope" session) which wrongly recast the corpus's deliberate consumer-driven/YAGNI deferrals as "wait for a future PDTF schema version" gates.
+
+> Authority note: statuses, votes, Council decisions, `ratified` language and the
+> `directing authority` in this register are internal technical-project records. They do
+> not show OPDA or industry endorsement. The artefact is separate from the existing PDTF
+> schema and is evidence to revisit through SPDTF's collaborative working groups.
 
 Dated 2026-05-31. The deferrals below are **councilled, consumer-driven discipline** over a fixed `opda:` TBox (overlays are SHACL-only form-profiles per [ODR-0010](../ontology/odr/ODR-0010-overlay-profile-mechanism.md); class-per-overlay was rejected unanimously at S001) — they are **not** future-data gates.
 
@@ -35,7 +40,7 @@ Dated 2026-05-31. The deferrals below are **councilled, consumer-driven discipli
 ## D. Decisions recorded this cleanup (2026-05-31)
 
 - **The mistaken "schema-accommodation scope" council record was reverted.** It mischaracterised the deferrals in §A as schema-evolution gates; the record was deleted and its ripple edits expunged across ODR-0003, ODR-0008, ODR-0016, ODR-0023, ODR-0024, ADR-0005, ADR-0034.
-- **WG-gate removal retained.** This is a greenfield first-cut data model with no Working Group; the directing authority + Linked Data Council are the ratifying bodies. The `proposed`→`accepted` flips and the "greenfield, no WG" reframings stand (directing-authority-directed).
+- **Historic internal WG-gate removal retained in the technical record.** The project treated the directing authority + Linked Data Council as its internal decision makers. Its `proposed`→`accepted` flips do not confer OPDA or SPDTF status; collaborative SPDTF governance supersedes that framing for scheme decisions.
 - **ADR-0034 / gUFO typing retained, re-grounded.** The gated gUFO `rdf:type gufo:Quality` pass over the 5 uncontested Quale-in-Region Property leaves (annotation graph only, [ODR-0010](../ontology/odr/ODR-0010-overlay-profile-mechanism.md) §Q7a) stands — executed as the dedicated work-item that [session-029](../ontology/odr/council/session-029-r2-ufo-axis-load-bearing.md) Q5 (6–0–0) envisioned, logged at [ADR-0005](../adr/ADR-0005-deferred-work-register.md) §G25. It is **decoupled** from the reverted record and re-grounded purely on session-029 Q5 + §G25.
 - **CI fixes retained.** BASPI5 G19 real-`baspi5Ref` correction (`A1.1.5`), G3 sanctioned-shared-ref reconciliation (`_SCHEMA_SANCTIONED_SHARED_REFS`), and the data-dictionary-absent test-skip in `test_leaf_categoriser.py`. Recorded in [ADR-0005](../adr/ADR-0005-deferred-work-register.md) §G (per §G1 — no silent reconciliation).
 

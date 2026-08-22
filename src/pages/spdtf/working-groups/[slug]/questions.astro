@@ -1,0 +1,35 @@
+---
+import Layout from '@/layouts/Layout.astro';
+import PageMeta from '@/components/PageMeta.astro';
+import WorkspaceNav from '@/components/ia/WorkspaceNav.astro';
+import { WORKING_GROUPS, getWorkingGroup } from '@/components/ia/working-groups';
+import { getWorkspaceRecord } from '@/lib/spdtf-workspace.mjs';
+
+export function getStaticPaths() {
+  return WORKING_GROUPS.map((group) => ({ params: { slug: group.slug }, props: { group } }));
+}
+const { group } = Astro.props;
+if (!group || !getWorkingGroup(group.slug)) throw new Error('Unknown SPDTF working-group route');
+const workspace = getWorkspaceRecord(group.slug);
+if (!workspace) throw new Error('Working group has no workspace record');
+---
+
+<Layout title={`${group.name} competency questions`} description={`Initial plain-language questions for the ${group.name} SPDTF workspace.`}>
+  <PageMeta category="Working-group questions" variant="warn" updated="Initial questions · participant challenge required" />
+  <h1>{group.name}: competency questions</h1>
+  <p class="lead">Questions state what the model must be able to explain. They are review prompts, not approved requirements or machine-test results.</p>
+  <WorkspaceNav slug={group.slug} />
+
+  <h2 id="questions">Initial questions</h2>
+  <ol>{workspace.competencyQuestions.map((question) => <li>{question}</li>)}</ol>
+
+  <h2 id="review">How a question matures</h2>
+  <ol>
+    <li>A participant supplies a use case, example and attributable evidence.</li>
+    <li>The group confirms scope, language and the decision owner.</li>
+    <li>A candidate answer cites the relevant semantic-package version.</li>
+    <li>Reviewers accept, request evidence, defer or reject the proposed answer.</li>
+    <li>Deterministic tests check only the encoded part; they do not confer semantic approval.</li>
+  </ol>
+  <p><a href={`/spdtf/working-groups/${group.slug}/review`}>Continue to coverage and review →</a></p>
+</Layout>

@@ -1,33 +1,37 @@
-# Namespace, versioning & publishing — the identity contract of the standard
+# Namespace, versioning & publishing — the schema-derived resource contract
 
 > Part of the OPDA Linked-Data Initiative knowledgebase. Legend: ✅ built · 🟡 partial · 🔵 planned.
+>
+> This document records identifiers for a draft ontology derived from the PDTF schema.
+> The preserved `/pdtf/**` resource IRIs do not make that ontology part of the schema or
+> an OPDA-endorsed scheme; they are technical identifiers, not SPDTF scheme authority.
 
 ## TL;DR
 
-- **Domain = organisation, path = standard.** `https://opda.org.uk/` is OPDA; `…/pdtf/` is the Property Data Trust Framework ontology. `@prefix opda: <https://opda.org.uk/pdtf/>`. A future second standard would be `…/<other>/` — no term-space collision. ✅
+- **Domain = organisation, path = stable resource family.** `https://opda.org.uk/` is OPDA; `…/pdtf/` is the preserved namespace for schema-derived RDF resources. `@prefix opda: <https://opda.org.uk/pdtf/>`. A different resource family can use `…/<other>/` without collision. ✅
 - **Slash, not hash; no version in any IRI; one flat term namespace.** The six TTL modules are *editorial file splits*, never URL segments — a term is `…/pdtf/Property`, full stop. ✅ (The AI council actually voted 5-2 to revert to **hash** at session-037; the directing authority kept **slash** — a deliberate control-vs-simplicity trade, see §3.)
 - **Kind sub-segments are the single source of truth in [`namespaces.py`](../../tools/opda-gen/src/opda_gen/namespaces.py).** Terms `/pdtf/…`, SKOS `/pdtf/scheme/…`, SHACL nodes `/pdtf/shape/…`, profiles `/pdtf/shape/profiles/…`, graphs `/pdtf/graph/…`, and **all physical/governance apparatus** under `/pdtf/harness/…`. A **flatten-collision guard** enforces the boundary. ✅
-- **`/pdtf/` (normative) vs `/harness/` (physical) is a one-directional boundary:** nothing in core `/pdtf/` may depend on `/harness/`. Placement is decided by **Baker's binding procedure** (council session-037 Q5, 7-0-0). ✅
+- **`/pdtf/` (semantic resources) vs `/harness/` (physical apparatus) is a one-directional boundary:** nothing in core `/pdtf/` may depend on `/harness/`. Placement follows **Baker's binding procedure** (internal council session-037 Q5, 7-0-0). ✅
 - **Versioning lives in the triples, not the URL.** Term IRIs are unversioned forever; `owl:versionInfo "1.0.0"` + `owl:versionIRI` point to a dated **release snapshot** under `…/pdtf/harness/release/1.0.0/`. This is the DPV practice. ✅ The ontology version (1.0.0) is **independent** of the PDTF JSON-schema semver (v3.6).
 - **OPDA serves RDF from its own domain.** Resolution migrated `w3id.org/opda/#` (hash) → `w3id.org/opda/pdtf/` (slash) → `opda.org.uk/pdtf/` (own domain) — trading the W3C-PICG persistence guarantee for full DNS/hosting control, which is exactly what makes per-term slash dereferencing tractable. ✅
 
 ---
 
-## 1. The org-vs-standard split — why the domain is OPDA and the path is PDTF
+## 1. The organisation-vs-resource split
 
-The first decision is *what the base IRI names*. OPDA chose a two-level shape that separates the **organisation** (the durable steward) from the **standard** (the artefact being published):
+The first decision is *what the base IRI names*. The technical project chose a two-level shape that separates the **organisation** from the **schema-derived resource family**:
 
 | Level | IRI | What it is |
 |---|---|---|
 | Organisation | `https://opda.org.uk/` | OPDA — the Open Property Data Association; the stewardship/redirect unit |
-| Standard | `https://opda.org.uk/pdtf/` | The Property Data Trust Framework ontology; the thing a consumer cites *as* "the PDTF standard" |
+| Schema-derived resource namespace | `https://opda.org.uk/pdtf/` | Stable identifiers for the draft RDF/OWL/SHACL/SKOS artefact derived from the PDTF schema |
 
 ```turtle
 @prefix opda: <https://opda.org.uk/pdtf/> .
 # opda:Property → https://opda.org.uk/pdtf/Property
 ```
 
-This mirrors DCMI's own `purl.org/dc/ → /dc/terms/` two-level shape (Baker, session-037 Q1, **7-0-0 FOR, DA withdrawn**). The payoff is forward-extensibility without collision: if OPDA later publishes a *second* standard, it takes its own path segment — `https://opda.org.uk/<other>/` — and the two term spaces never overlap. The alternative the council rejected, `w3id.org/pdtf/` (standard-at-the-root), would repeat the `trust.propdata.org.uk` programme-namespace-coupling defect that session-004 had already thrown out: it solders the standard's identity to a single programme name.
+This mirrors DCMI's own `purl.org/dc/ → /dc/terms/` two-level shape (Baker, session-037 Q1, **7-0-0 FOR, DA withdrawn**). The payoff is forward-extensibility without collision: another OPDA resource family can take its own path segment — `https://opda.org.uk/<other>/` — without colliding with these identifiers. The internal council rejected `w3id.org/pdtf/` because it coupled resource identity to one external programme namespace.
 
 `namespaces.py` encodes this split as the base every other IRI is derived from:
 
@@ -122,16 +126,16 @@ def assert_no_segment_collision(local_names):
 
 Note the discipline boundary (ADR-0006 As-built + the 2026-06-02 handover): SKOS **instances** (`skos:ConceptScheme` + `skos:Concept`) move to `/scheme/`, but `owl:Class`-typed `*Scheme` classes — `SpecialCategoryScheme`, `BoundedContextScheme` — are *terms* and **stay in the flat term namespace**. The split is by RDF kind, not by name.
 
-### The `/pdtf/` (normative) vs `/harness/` (physical) boundary
+### The `/pdtf/` (semantic resource) vs `/harness/` (physical) boundary
 
-The deepest structural decision is the line between **the standard** and **everything used to build, govern, and exercise the standard**:
+The deepest structural decision is the line between **the schema-derived semantic resources** and **everything used to build, review, and exercise them**:
 
-- **`/pdtf/…`** (incl. `/scheme/`, `/shape/`, `/graph/`) holds *only* the abstract published **standard entities** — the classes, properties, controlled vocabularies, and the SHACL shape nodes co-located with their `sh:targetClass`. These are what a consumer cites, versions, and deprecates *as* the PDTF standard.
-- **`/pdtf/harness/…`** holds the **physical apparatus and governance/build machinery**: the data-dictionary's concrete PDTF data-field entries, exemplar/test data, release snapshots, and the ODR/ADR decision-record anchors. The data-dictionary is *not* a standard entity — its entries are the physical PDTF data fields, so they live in the harness.
+- **`/pdtf/…`** (incl. `/scheme/`, `/shape/`, `/graph/`) holds the abstract schema-derived resources — classes, properties, controlled vocabularies and SHACL shape nodes. Consumers may cite these technical identifiers without implying scheme endorsement.
+- **`/pdtf/harness/…`** holds the **physical apparatus and review/build machinery**: concrete data-dictionary entries, exemplar/test data, release snapshots and ODR/ADR anchors. The dictionary remains part of the PDTF schema's supporting material; its harness IRIs are provenance anchors rather than scheme entities.
 
 **Baker's binding placement procedure** (session-037 Q5, **7-0-0, DA fully withdrew** — the session's most durable artefact, forced into existence by Davis's "standing tribunal with no decision procedure" attack):
 
-1. **Placement test** — *"would a consumer cite / version / deprecate this AS part of the normative standard?"* Yes → `/pdtf/`; No → `/harness/`.
+1. **Placement test** — *"is this a stable semantic resource that a consumer needs to cite, version or deprecate?"* Yes → `/pdtf/`; No → `/harness/`.
 2. **Ambiguity fallback** — default to `/harness/` (the re-classifiable side); promote to `/pdtf/` **only by council**; **never demote a published `/pdtf/` URI** (DCMI never-reassign rule).
 3. **One-directional dependency** — nothing in `/pdtf/` may `rdfs:isDefinedBy` or otherwise depend on `/harness/`.
 
@@ -194,11 +198,11 @@ This is what makes the flat-namespace reopening trigger real: the *terms* are fl
 
 The two version numbers describe **different artefacts** and move on **different clocks**:
 
-| | PDTF JSON Schema | OPDA PDTF ontology |
+| | PDTF schema | Draft schema-derived ontology |
 |---|---|---|
-| Artefact | The source standard (`pdtf-transaction.json`, ~37,224 lines, Draft-07) + form overlays | The re-expressed RDF/OWL/SHACL/SKOS vocabulary emitted by `opda-gen` |
+| Artefact | The existing schema package (`pdtf-transaction.json`, ~37,224 lines, Draft-07) + form overlays | The separate RDF/OWL/SHACL/SKOS vocabulary emitted by `opda-gen` |
 | Current version | **v3.6** (the version under approval at the 2026-06-05 workshop) | **1.0.0** |
-| Owner / cadence | The PDTF schemas repo (`github.com/Property-Data-Trust-Framework/schemas`), semver, frequent point releases (v3.2→v3.6 over months) | OPDA Linked Data Council, dated release snapshots; first formal release |
+| Owner / cadence | The PDTF schemas repo (`github.com/Property-Data-Trust-Framework/schemas`), semver, frequent point releases (v3.2→v3.6 over months) | Internal technical project, dated artefact snapshots; no scheme authority implied |
 
 The relationship is **derivation, not lockstep**: the ontology's `1.0.0` is *its own* first release of the modelling, generated *from* a pinned snapshot of the JSON schema (and its data-dictionary distillation), not a mirror of the source's `3.6`. A new source-schema point release (say v3.7) does **not** force an ontology version bump; it triggers a re-run of the generator, and the ontology re-versions only when *its* modelling changes. Conversely the ontology can iterate (1.0.0 → 1.1.0) against a *frozen* source schema as modelling decisions land. Per-form profiles carry their own semver again (BASPI5 profile `0.1.0`) tracking the maturity of that overlay independently of both the core ontology and the source form. This decoupling is the point of versioning-at-the-artefact-level: each layer (source schema · ontology · per-form profile) versions on its own clock, and none of those numbers ever leaks into a term IRI.
 
@@ -250,8 +254,8 @@ How RDF is actually served today (cross-references the publishing/serving facet)
 
 ## Talking points for the quarterly tech review
 
-- **"The domain is who we are; the path is what we publish."** `https://opda.org.uk/pdtf/` cleanly separates OPDA-the-organisation from PDTF-the-standard — so a future second standard slots in beside it without ever colliding term spaces. This is the same shape DCMI uses for Dublin Core.
-- **"Identity is permanent; versions live in the data, not the URL."** A term like `…/pdtf/Property` never changes and never carries a version number; the release (1.0.0) is a *dated snapshot* the ontology header points at. That means downstream consumers can pin to a fixed release **and** dereference a stable term — the two things a standard must offer to be safe to build on.
+- **"The domain is who we are; the path identifies a technical resource family."** `https://opda.org.uk/pdtf/` separates OPDA-the-organisation from the preserved schema-derived RDF identifiers. This is the same two-level shape DCMI uses for Dublin Core, without claiming scheme status.
+- **"Identity is stable; versions live in the data, not the URL."** A term like `…/pdtf/Property` stays stable and carries no version number; release `1.0.0` is a dated snapshot referenced by the ontology header. Downstream consumers can therefore pin a technical artefact and still dereference stable resources.
 - **"The ontology version is independent of the schema version."** Ontology `1.0.0` is derived *from* — not locked to — PDTF JSON Schema `v3.6`. A new schema point-release re-runs the generator; the ontology re-versions only when the *modelling* changes. Each layer (source schema · ontology · per-form profile) has its own clock.
 - **"Even the AI council didn't get a free pass."** The Linked Data Council voted 5-2 to switch the URIs to a hash scheme; the directing authority overrode them and kept slash — *because* we then moved onto our own domain, which gives us the per-term resolution control that makes slash worthwhile. The dissent and its reversal-trigger are recorded. This is "AI proposes, human disposes" working exactly as designed.
 - **"We traded a persistence guarantee for control — with eyes open."** Moving off `w3id.org` onto `opda.org.uk` means we own DNS and hosting (and can serve RDF directly), at the cost of the W3C-PICG guarantee that survives org changes. The escape hatch — a PICG redirect *in front of* our domain — is documented and ready if organisational continuity ever becomes a concern.
@@ -267,4 +271,4 @@ How RDF is actually served today (cross-references the publishing/serving facet)
 - `source/03-standards/ontology/opda-agent.ttl`, `opda-vocabularies.ttl`, `profiles/*.ttl` — live IRI examples (term `opda:role`, scheme `…/scheme/role/Buyer`, shape nodes, profile `…/shape/profiles/baspi5`, per-module/per-profile version IRIs).
 - [`docs/HANDOVER-2026-06-02-namespace-migration-executed.md`](../../docs/HANDOVER-2026-06-02-namespace-migration-executed.md) — the executed migration (15 commits, CI green, DNS/resolution notes).
 - [`docs/ontology/odr/council/session-037-url-scheme.md`](../../docs/ontology/odr/council/session-037-url-scheme.md) — the Full Council session: Q1 split, Q2 hash-vs-slash (5-2), Q3 versioning, Q4 flat, Q5 `/harness/` placement procedure, Q6 data-dictionary, Q7 `/shacl/` rejection, Q8 profiles.
-- Builds on [`_research-synthesis.md`](./_research-synthesis.md) §5, [`_fact-sheet.md`](./_fact-sheet.md), [`_external-research.md`](./_external-research.md) (PDTF v3.6 / workshop context).
+- Builds on [`_research-synthesis.md`](./_research-synthesis.md) §5, [`_fact-sheet.md`](./_fact-sheet.md), [`_external-research.md`](./_external-research.md) (PDTF schema v3.6 / workshop context).

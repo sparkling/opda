@@ -1,6 +1,6 @@
 # OPDA Physical-Database Tier
 
-This is the **Physical-Database tier** view of OPDA's ontology — written for triplestore operators, SPARQL endpoint consumers, downstream ontology integrators, devops engineers running the deployment, and JSON-LD client developers. It describes the **deployed/served form** of the ontology: which named graphs hold which TTLs, what load order produces a coherent graph, how derived consumer profiles compose, and how HTTP requests to `https://opda.org.uk/pdtf/<resource>` resolve to TTL / JSON-LD / RDF/XML representations.
+This is the **Physical-Database tier** view of the draft ontology derived from the PDTF schema — written for triplestore operators, SPARQL endpoint consumers, downstream ontology integrators, devops engineers running the deployment, and JSON-LD client developers. It describes the **deployed/served form** of that separate technical artefact: which named graphs hold which TTLs, what load order produces a coherent graph, how derived consumer profiles compose, and how HTTP requests to `https://opda.org.uk/pdtf/<resource>` resolve to TTL / JSON-LD / RDF/XML representations. It is evidence for SPDTF development, not an endorsed scheme.
 
 If you have ever asked questions like:
 
@@ -12,13 +12,13 @@ If you have ever asked questions like:
 
 then this tier is for you. It is operational, not deliberative — the Physical-Ontology tier owns the source TTLs; this tier owns the deployment.
 
-OPDA's ontology deploys as **24 source TTLs** (foundation + vocabularies + six module-TBoxes + six module-shapes + six module-annotations + meta-shapes + meta-annotations) plus **one overlay profile** (BASPI5). The deployment exposes these as named graphs under the persistent `https://opda.org.uk/pdtf/*` namespace via the W3C PICG redirect ratified by [ADR-0006](/modelling/adr/adr-0006).
+The draft schema-derived ontology deploys as **24 source TTLs** (foundation + vocabularies + six module-TBoxes + six module-shapes + six module-annotations + meta-shapes + meta-annotations) plus **one overlay profile** (BASPI5). The deployment exposes these as named graphs under the persistent `https://opda.org.uk/pdtf/*` namespace via the W3C PICG redirect specified by internal [ADR-0006](/modelling/adr/adr-0006).
 
 A build-step composer ([ADR-0013](/modelling/adr/adr-0013)) projects the 24 source TTLs into **three derived consumer profiles** — `opda-validation.ttl`, `opda-ui.ttl`, `opda-inference.ttl` — and the deployment serves each via HTTP content negotiation.
 
 ## See also: Modelling section
 
-The [PDTF overlays](/modelling/overlays) and [JSON-LD mappings](/modelling/jsonld-mappings) pages in the Modelling section cover the schema-layer artefacts that correspond to what is deployed here. The PDTF overlays page catalogues the 34 JSON Schema overlay files whose per-overlay ontology profiles are deployed as named graphs from this tier. The JSON-LD mappings page covers the authoring of the `@context` files that underpin the content-negotiation responses this tier serves.
+The [PDTF schema overlays](/pdtf-schema/schema-and-supporting-material/schema/overlays) and [historical JSON-LD mappings](/pdtf-schema/schema-derived-ontology/lineage-provenance-and-verification/historical-modelling/jsonld-mappings) cover the source artefacts that correspond to what is deployed here. The overlays page catalogues the 34 JSON Schema overlay files whose per-overlay ontology profiles are deployed as named graphs from this tier. The JSON-LD page records the earlier authoring approach for the `@context` files that underpin the content-negotiation responses this tier serves.
 
 ## Reading order
 
@@ -278,7 +278,7 @@ Three CI gates protect the deployment from drift. See [operations/](./operations
 - **Business narrative — Identity Criterion, Hard Cases** — see [Concept tier](../concept/).
 - **Typed attributes, cardinalities, ER diagrams** — see [Logical tier](../logical/).
 - **OWL / SHACL / SKOS Turtle source-tree layout, per-class blocks** — see [Physical-Ontology tier](../physical-ontology/).
-- **PDTF JSON Schemas** at `source/03-standards/schemas/` — those were upstream Council programme input, NOT deployment output. They are documented in the nested schemas repo and are deliberately out of scope for the four-tier documentation here.
+- **PDTF schema corpus** at `source/03-standards/schemas/` — it was upstream input to the internal technical project, NOT deployment output. It is documented in the nested schemas repo and is deliberately out of scope for the four-tier documentation here.
 
 ## Provenance
 

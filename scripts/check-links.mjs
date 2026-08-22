@@ -7,7 +7,7 @@
  * (foo → foo/index.html), file-format (foo.html), or a static file (foo.ttl,
  * /ui/*.css, …).
  *
- * BLOCKING scope = the ADR-0044 surface (the extracted ontology + /pdtf): a dangling link
+ * BLOCKING scope = the ADR-0044 surface (the schema-derived ontology + /pdtf): a dangling link
  * from one of those pages, a broken link *to* one of them, or an orphan among
  * them fails the gate (exit 1). Links to genuinely non-static runtime routes
  * (Lambda@Edge auth, the resource viewer) are allow-listed. Dangling/orphans
@@ -35,9 +35,9 @@ const isAllowed = (p) => ALLOW.some((a) => p.startsWith(a));
 // artefact bundles below the nested use-and-tooling branch — version-pinned HTML
 // with their own internal relative-link navigation, not native pages.
 const isOnto = (u) =>
-  (u.startsWith('/pdtf-1/extracted-ontology') || u === '/pdtf' || u.startsWith('/pdtf/')) &&
-  !u.startsWith('/pdtf-1/extracted-ontology/use-and-tooling/tools') &&
-  !u.startsWith('/pdtf-1/extracted-ontology/use-and-tooling/artefacts');
+  (u.startsWith('/pdtf-schema/schema-derived-ontology') || u === '/pdtf' || u.startsWith('/pdtf/')) &&
+  !u.startsWith('/pdtf-schema/schema-derived-ontology/use-and-tooling/tools') &&
+  !u.startsWith('/pdtf-schema/schema-derived-ontology/use-and-tooling/artefacts');
 
 function* htmlFiles(dir) {
   for (const e of readdirSync(dir, { withFileTypes: true })) {
@@ -100,10 +100,10 @@ console.log(`[links] off-scope (reported, not blocked): ${otherDangling.length} 
 console.log(`[links] ADR-0044 surface: ${ontoDangling.length} dangling · ${ontoOrphans.length} orphan`);
 
 if (ontoDangling.length || ontoOrphans.length) {
-  console.error(`\n[links] FAIL — broken links on the ADR-0044 (extracted ontology · /pdtf) surface:`);
+  console.error(`\n[links] FAIL — broken links on the ADR-0044 (schema-derived ontology · /pdtf) surface:`);
   for (const d of ontoDangling.slice(0, 80)) console.error(`  dangling: ${d.page}  →  ${d.link}`);
   for (const o of ontoOrphans.slice(0, 80)) console.error(`  orphan:   ${o}`);
   process.exit(1);
 }
-console.log(`\n[links] PASS — the extracted ontology + /pdtf surface has no dangling links and no orphan pages.`);
+console.log(`\n[links] PASS — the schema-derived ontology + /pdtf surface has no dangling links and no orphan pages.`);
 process.exit(0);

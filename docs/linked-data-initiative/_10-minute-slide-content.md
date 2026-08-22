@@ -4,14 +4,14 @@ Audience: mixed senior decision-makers, data leads, and technical leads across O
 membership. Assume limited prior knowledge of linked data. Lead with benefits, not
 semantic-web terminology.
 
-## Slide 1 — From document standard to data standard
+## Slide 1 — From schema to scheme
 
-- OPDA has an opportunity to move PDTF from a document-format standard to a true data
-  standard.
-- The proposal is not to replace PDTF, but to give it a stronger, machine-readable
-  foundation.
-- That foundation is a governed linked-data model that can drive standards, APIs,
-  validation, and AI.
+- The existing PDTF schema is a JSON Schema package with a dictionary, glossary,
+  overlays and implementation material.
+- SPDTF is the first scheme draft being authored collaboratively across OPDA's
+  stakeholders; it is not a numbered successor to an endorsed earlier scheme.
+- A separate ontology derived from the PDTF schema provides technical evidence that the
+  SPDTF working groups can adopt, revise or reject.
 - Speaker note: open with the business outcome, not the technology.
 
 ## Slide 2 — Why change what we have today
@@ -79,7 +79,8 @@ semantic-web terminology.
 
 ## Slide 8 — The strategic direction
 
-- The linked-data model should become the foundation for PDTF standards development.
+- The schema-derived ontology should be evaluated as one evidence source for SPDTF
+  development, with adoption decisions made through the working groups.
 - SHACL should be the machine-checkable conformance contract.
 - From that model, OPDA can progressively generate downstream artefacts such as
   schemas, APIs, documentation, and other implementation assets.
@@ -96,7 +97,8 @@ semantic-web terminology.
 
 ## Slide 10 — The takeaway
 
-- This is an evolution of PDTF, not a fork away from it.
+- This is a progression from the existing PDTF schema to the collaboratively authored
+  SPDTF scheme.
 - The value is not "more technology" — it is clearer meaning, stronger interoperability,
   and better foundations for automation and AI.
 - Other complex sectors already use this kind of semantic foundation; OPDA can apply the
@@ -105,5 +107,5 @@ semantic-web terminology.
 
 ## References
 
-- Direction-setting ADR: `docs/adr/ADR-0039-linked-data-model-as-pdtf-standards-foundation.md`
+- Direction-setting ADR: `docs/adr/ADR-0039-linked-data-model-as-spdtf-foundation.md`
 - Gamma deck source: `docs/linked-data-initiative/_gamma-deck.md`

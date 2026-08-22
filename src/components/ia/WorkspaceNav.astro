@@ -1,7 +1,7 @@
 ---
 interface Props { slug: string; }
 const { slug } = Astro.props;
-const base = `/spdtf-2/working-groups/${slug}`;
+const base = `/spdtf/working-groups/${slug}`;
 const current = Astro.url.pathname.replace(/\/+$/u, '');
 const pages = [
   [base, 'Workspace'],

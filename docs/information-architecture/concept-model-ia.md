@@ -9,7 +9,7 @@ implements: []
 
 # IA spec — Concept-tier presentation
 
-This document specifies how the **Concept-tier presentation** of OPDA's ontology model is laid out. It is a *blueprint*: the actual Concept-tier docs that follow this spec are a separate deliverable.
+This document specifies how the **Concept-tier presentation** of the draft ontology derived from the PDTF schema is laid out. It is a *blueprint*: the actual Concept-tier docs that follow this spec are a separate deliverable. The ontology is a separate technical artefact and evidence for SPDTF, not an endorsed scheme.
 
 ## Audience
 
@@ -44,7 +44,7 @@ Every entity file is structured as follows. Section order is fixed; section pres
 4. **`## Hard cases`** — 2–5 named hard cases the Identity Criterion must handle. Hard cases are where naive intuition breaks; they earn the IC its keep. List with bold name + one-sentence explanation each.
 5. **`## Identity Criterion`** — what makes two records refer to the same entity instance. Stated in business language; cross-references the Logical tier for typed details via `[Logical tier →](../logical/<module>/<entity>.md)`.
 6. **`## Related Kinds`** — bullet list of entities elsewhere in the model that this one connects to. Each bullet links to the related entity's Concept-tier file.
-7. **`## Source ODR`** — link to the ratifying Council session ODR file in `docs/ontology/odr/`. Provides traceability back to the modelling decision.
+7. **`## Source ODR`** — link to the supporting technical ODR file in `docs/ontology/odr/`. Provides traceability back to the internal modelling decision.
 
 Optional sections (where they help):
 - **`## Cross-tier links`** — explicit links to the Logical, Physical-DB, and Physical-Ontology presentations of the same entity. If omitted, those links are derived from the entity's URI per the cross-tier traceability convention below.
@@ -125,7 +125,7 @@ Concept-tier files generate mechanically from the source TTLs. The A9 per-kind d
 | Hard cases | "Hard cases:" enumeration within `rdfs:comment @en` |
 | Identity Criterion | "IC:" clause within `rdfs:comment @en` |
 | Related Kinds | derived from `rdfs:domain` / `rdfs:range` triples + foreign-key `opda:ObjectProperty` references |
-| Source ODR link | `dct:source` URI (resolves to the ratifying ODR anchor; used as a link target only — the ODR text itself is **not** read) |
+| Source ODR link | `dct:source` URI (resolves to the supporting technical ODR anchor; used as a link target only — the ODR text itself is **not** read) |
 | UFO category context (footnote-only) | `skos:scopeNote @en` |
 
-The generator walks each `opda-<module>.ttl`, paraphrases the `rdfs:comment` from technical voice into business voice (the only manual review step), and emits one Markdown file per `owl:Class`. **The ODR corpus is not a source** — it is the audit trail behind the modelling decisions; the TTL embeds the outcome via A9. The PDTF JSON Schemas are upstream Council input, not a source for documentation.
+The generator walks each `opda-<module>.ttl`, paraphrases the `rdfs:comment` from technical voice into business voice (the only manual review step), and emits one Markdown file per `owl:Class`. **The ODR corpus is not a source** — it is the audit trail behind the modelling decisions; the TTL embeds the outcome via A9. The PDTF schema corpus is upstream input to the internal technical project, not a source for documentation.

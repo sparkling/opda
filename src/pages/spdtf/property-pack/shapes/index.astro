@@ -1,0 +1,50 @@
+---
+import PropertyPackFilter from '@/components/property-pack/PropertyPackFilter.astro';
+import PropertyPackPage from '@/components/property-pack/PropertyPackPage.astro';
+import {
+  contexts,
+  contextById,
+  counts,
+  resourceByIri,
+  resourceRoute,
+  shapeRoute,
+  shapes,
+} from '@/lib/property-pack-model.mjs';
+
+const contextOptions = contexts.map((context) => ({ value: context.id, label: context.label }));
+---
+<PropertyPackPage
+  title="SHACL shapes"
+  description="Complete reference for all 45 SHACL node shapes and 100 property constraints in the Property Pack ontology candidate."
+  category="Meaning & constraints"
+  crumbs={[{ label: 'SHACL shapes' }]}
+>
+  <h1>SHACL shapes</h1>
+  <p class="lead">
+    The generated validation layer contains {counts.shapes} node shapes and
+    {counts.constraints} property constraints. It targets SHACL 1.2 Core while using
+    the implementation-tested Core subset recorded in the standards profile.
+  </p>
+
+
+  <h2 id="register">Shape register</h2>
+  <PropertyPackFilter
+    targetId="v2-shape-register"
+    placeholder="Search targets and identifiers…"
+    contextOptions={contextOptions}
+  />
+  <div class="v2-table-wrap" id="v2-shape-register">
+    <table>
+      <thead><tr><th>Target class</th><th>Semantic home</th><th>Shape IRI</th><th>Property constraints</th></tr></thead>
+      <tbody>
+        {shapes.map((shape) => {
+          const target = resourceByIri.get(shape.target_class);
+          return <tr data-search={`${shape.target_label} ${shape.target_key} ${shape.iri}`.toLocaleLowerCase()} data-context={shape.semantic_home} data-kind=""><td><a href={shapeRoute(shape)}><strong>{shape.target_label}</strong></a>{target && <><br/><a href={resourceRoute(target)}><code class="standalone-identifier">{shape.target_key}</code></a></>}</td><td><a href={`/spdtf/property-pack/contexts/${shape.semantic_home}`}>{contextById.get(shape.semantic_home)?.label}</a></td><td><code class="standalone-identifier">{shape.iri}</code></td><td>{shape.properties.length}</td></tr>;
+        })}
+      </tbody>
+    </table>
+  </div>
+
+  <h2 id="scope">Constraint scope</h2>
+  <div class="callout callout--note"><p class="callout__label">Candidate RDF validation</p><p>These constraints validate candidate RDF graphs. The Property Pack source catalogue has its own source-derived requiredness, cardinality and value metadata in the <a href="/spdtf/property-pack/data-dictionary">data dictionary</a>; the two layers remain explicit.</p></div>
+</PropertyPackPage>

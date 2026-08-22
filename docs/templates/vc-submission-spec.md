@@ -9,6 +9,10 @@ last_updated: "2026-05-19"
 
 # Member-firm VC submission spec — draft
 
+> This unadopted technical scaffold is not part of the PDTF schema or an endorsed
+> scheme. Its internal ADR decisions require validation through the appropriate SPDTF
+> and OPDA governance before implementation.
+
 ## Context
 
 [ADR-0005](../adr/ADR-0005-deferred-work-register.md) register item C2 carves out the member-firm tooling for minting and submitting the quarterly Verifiable Credentials that the C1 build pipeline (`scripts/build-accreditation-directory.mjs`) consumes. C1 is the aggregator; C2 is what firms run on their side to produce its inputs.
@@ -28,7 +32,7 @@ Fields the intake validator MUST find:
 
 | Field | Source | Notes |
 |---|---|---|
-| `@context` | W3C VC v2 base + OPDA accreditation context | **Decided:** `https://opda.org.uk/pdtf/harness/accreditation/v1` — accreditation is PDTF governance apparatus, so it lives in the `/pdtf/harness/` namespace (not a term, not a separate standard). Host the context at that URL. |
+| `@context` | W3C VC v2 base + OPDA accreditation context | **Internal proposal:** `https://opda.org.uk/pdtf/harness/accreditation/v1` places accreditation in the draft ontology's technical harness rather than its term namespace. The URL requires governance approval before publication. |
 | `type` | `["VerifiableCredential", "AccreditationStatement"]` | The `AccreditationStatement` type is OPDA's; defined in the OPDA context. |
 | `issuer` | did:web DID of the issuing firm | Must resolve via the Trust Registry per `source/03-standards/trust-framework/docs/governance.md` §B. |
 | `validFrom` | ISO 8601 timestamp at submission | Per VC 2.0 (`issuanceDate` is deprecated in favour of `validFrom`). |
@@ -64,13 +68,13 @@ Two proof families are W3C-compliant; both are in use across the VC ecosystem:
 1. **JSON Web Signature (JWS)** via [`vc-jose-cose`](https://www.w3.org/TR/vc-jose-cose/) — the credential is serialised as a JWT or SD-JWT. Tooling-rich; widely supported.
 2. **Linked Data Proofs** via [VC Data Integrity](https://www.w3.org/TR/vc-data-integrity/) — proof block embedded directly in the JSON-LD document. Preserves the linked-data graph for downstream reasoning.
 
-**Decided:** the Accreditation Directory mandates **Data Integrity** (Linked Data Proofs) — it preserves the JSON-LD semantics the rest of the PDTF stack relies on, and a single mandated type keeps the validator surface single. JWS is not accepted at intake (revisit only if a concrete interop need arises).
+**Internal proposal:** the Accreditation Directory mandates **Data Integrity** (Linked Data Proofs) — it preserves the JSON-LD semantics the draft linked-data stack relies on, and a single mandated type keeps the validator surface single. JWS is not accepted at intake (revisit only if a concrete interop need arises).
 
 Key material:
 
 - Issuer key is the did:web key advertised by the firm's DID document.
 - Signature is verified at intake against the Trust Registry's current state for that DID (active, not revoked).
-- Key rotation follows the existing PDTF did:web rotation pattern — no new mechanism needed.
+- Key rotation would follow the draft did:web rotation pattern — no new mechanism is proposed here.
 
 ## Submission interface
 
@@ -109,11 +113,12 @@ Two failure modes need clear paths:
 
 Resubmission window: **Decided** — 7 days from notification, capped at the publish-day cutoff, whichever is earlier.
 
-## Decisions (directing-authority, pre-WG)
+## Internal proposals pending collaborative governance
 
-Greenfield build — these are decided directly now, not gated on a WG (overridable later):
+These were recorded as pre-working-group technical decisions. Treat them as proposals,
+not OPDA or SPDTF decisions:
 
-1. **JSON-LD context URL.** `https://opda.org.uk/pdtf/harness/accreditation/v1` — accreditation is PDTF governance apparatus, so it sits in the `/pdtf/harness/` namespace (not a term, not a separate standard). OPDA hosts it; versioned `v1`, `v2`, … on a breaking-change bump (old URLs keep serving), per the [content-negotiation versioning rule](../manual/physical-database/content-negotiation/jsonld-context.md#versioning).
+1. **JSON-LD context URL.** The candidate `https://opda.org.uk/pdtf/harness/accreditation/v1` sits in the draft ontology's technical harness rather than its term namespace. Hosting and versioning require governance approval; the proposed rule is documented in the [content-negotiation versioning note](../manual/physical-database/content-negotiation/jsonld-context.md#versioning).
 2. **Proof type mandate.** **Data Integrity** (Linked Data Proofs) only — preserves JSON-LD semantics; single type keeps the validator surface single.
 3. **Submission interface for first publish.** **Direct PR / commit**; CLI helper later; web form Phase 5+.
 4. **Capability-key governance.** The canonical allowlist **is** the published capability-bundle key set; new keys are added by batching into the quarter-end refresh (not ad-hoc mid-quarter). Unknown keys at intake are warned-and-included (§"Validation rules" rule 7).

@@ -10,9 +10,12 @@ import {
   semanticBlocksDigest,
   sha256,
 } from '../scripts/lib/ia-preservation-contract.mjs';
+import { composeSchemaToSchemeRouteReceipt } from '../scripts/lib/schema-to-scheme-route-contract.mjs';
 import {
+  SCHEMA_TO_SCHEME_SOURCE_ROUTE_MANIFEST,
   loadPdtf1SourceRouteManifest,
   loadPriorIaRouteManifest,
+  loadSchemaToSchemeSourceRouteManifest,
   manifestRetainedBaselineProjectionMatches,
   manifestRetainedSourceRecordMatches,
 } from '../scripts/lib/ia-prior-manifest-contract.mjs';
@@ -33,15 +36,20 @@ import {
 
 const projectRoot = new URL('..', import.meta.url).pathname;
 const { manifest: sourceManifest } = loadPdtf1SourceRouteManifest(projectRoot);
+const {
+  manifest: schemaToSchemeSource,
+  supplementalRoutes: schemaToSchemeSourceAdditions,
+} = loadSchemaToSchemeSourceRouteManifest(projectRoot);
 
-test('PDTF 1.0 documentation routes move beneath their full reader hierarchy', () => {
+test('PDTF schema documentation routes move beneath their full reader hierarchy', () => {
   assert.deepEqual(PDTF1_ROUTE_MIGRATION, {
-    canonicalRoot: '/pdtf-1',
+    canonicalRoot: '/pdtf-schema',
+    intermediateRoot: '/pdtf-1',
     retiredRoots: ['/schema', '/implementation', '/adoption', '/model', '/ontology', '/mapping', '/manual'],
     sourceRouteCount: 3500,
-    movedCanonicalRouteCount: 1262,
+    movedCanonicalRouteCount: 1264,
     movedBaselineRouteCount: 1255,
-    movedAddedRouteCount: 7,
+    movedAddedRouteCount: 9,
     movedFamilyRouteCounts: {
       adoption: 6,
       implementation: 6,
@@ -49,6 +57,7 @@ test('PDTF 1.0 documentation routes move beneath their full reader hierarchy', (
       model: 227,
       modelling: 10,
       ontology: 746,
+      'pdtf-1': 2,
       schema: 104,
     },
     retiredAliasRouteCount: 227,
@@ -67,7 +76,10 @@ test('PDTF 1.0 documentation routes move beneath their full reader hierarchy', (
     redirects: false,
     stableIdentifierRoot: '/pdtf',
   });
-  for (const [before, after] of [
+  for (const [before, after, commentKey = before] of [
+    ['/pdtf-1', PDTF1_ROUTES.root],
+    ['/pdtf-1/original-standard/data-dictionary', `${PDTF1_ROUTES.original}/data-dictionary`, '/modelling/data-dictionary'],
+    ['/pdtf-1/extracted-ontology/use-and-tooling', PDTF1_ROUTES.use],
     ['/schema/legal-estate/title', `${PDTF1_ROUTES.original}/schema/legal-estate/title`],
     ['/modelling/data-dictionary', `${PDTF1_ROUTES.original}/data-dictionary`],
     ['/modelling/overlays', `${PDTF1_ROUTES.original}/schema/overlays`],
@@ -80,17 +92,85 @@ test('PDTF 1.0 documentation routes move beneath their full reader hierarchy', (
     ['/ontology/tools/widoco/index.html', `${PDTF1_ROUTES.use}/tools/widoco/index.html`],
   ]) {
     assert.equal(getPdtf1ReplacementRoute(before), after);
-    assert.equal(getPdtf1LegacyCommentKey(after), before);
+    assert.equal(getPdtf1LegacyCommentKey(after), commentKey);
   }
   assert.equal(generatedFamily(`${PDTF1_ROUTES.use}/tools/widoco/index.html`), 'ontology/tools');
+  assert.equal(getPdtf1ReplacementRoute(PDTF1_ROUTES.root), null);
+});
+
+test('the frozen intermediate route cut composes into schema-to-scheme routes', () => {
+  const projected = [
+    ...schemaToSchemeSource.routes,
+    ...schemaToSchemeSource.addedRoutes,
+    ...schemaToSchemeSourceAdditions,
+  ]
+    .map((record) => {
+      const acceptedRoute = getDeclaredRouteReplacement(record.acceptedRoute) ?? record.acceptedRoute;
+      return {
+        ...record,
+        acceptedRoute,
+        acceptedFile: getAcceptedRouteFile(record.acceptedRoute, record.acceptedFile),
+      };
+    });
+  const receipt = composeSchemaToSchemeRouteReceipt({
+    records: projected,
+    addedRecords: [],
+    sourceManifest: schemaToSchemeSource,
+    sourceAdditions: schemaToSchemeSourceAdditions,
+    sourceContract: SCHEMA_TO_SCHEME_SOURCE_ROUTE_MANIFEST,
+    replacementRoute: getDeclaredRouteReplacement,
+  });
+
+  assert.deepEqual(receipt, {
+    policy: 'schema-to-scheme-route-composition-v1',
+    sourceCommit: '3a52e644c57d2b4eed33d78e3a10810cc7a29171',
+    sourcePath: 'src/data/ia-route-baseline.json',
+    sourceBlob: 'c114dcc4d91706d122492e5bb57fa01cab5c74c6',
+    sourceSha256: 'fa51038160b4921916aa22d365e420e9e641613509f3cf052c96d34f6316dee2',
+    sourceSupplementalRoutesSha256: '9ad56c09d1057762cd959b64c9ca614dad3b949a1ec96a2edd3143ee59241ab1',
+    sourceManifestRouteCount: 3274,
+    sourceSupplementalRouteCount: 6,
+    sourceRouteCount: 3280,
+    movedRouteCount: 2011,
+    pdtfSchemaRouteCount: 1264,
+    spdtfRouteCount: 747,
+    propertyPackRouteCount: 693,
+    pdtfIdentifierRouteCount: 1090,
+    retainedRouteCount: 1269,
+    postSourceAdditionRouteCount: 0,
+    acceptedSiteRouteCount: 3280,
+    routePairsSha256: '76f64dd380bd1d044a74d17c40ad4651dfda63857bda1b8fdd1820fc874bd93a',
+    pdtfIdentifierRoutesSha256: 'cf2e83c5290fe5b5b2fe2f5b25e31d2d8f53d8be90cd533e5e43de8ff30a88be',
+    postSourceAdditionRoutesSha256: sha256(''),
+    redirects: false,
+  });
+  assert.ok(projected.every(({ acceptedRoute }) => (
+    acceptedRoute !== '/pdtf-1' && !acceptedRoute.startsWith('/pdtf-1/')
+      && acceptedRoute !== '/spdtf-2' && !acceptedRoute.startsWith('/spdtf-2/')
+  )));
+  assert.ok(schemaToSchemeSource.routes
+    .filter(({ acceptedRoute }) => isStablePdtfIdentifierRoute(acceptedRoute))
+    .every(({ acceptedRoute }) => projected.some((record) => record.acceptedRoute === acceptedRoute)));
+  assert.throws(() => composeSchemaToSchemeRouteReceipt({
+    records: projected,
+    addedRecords: [],
+    sourceManifest: schemaToSchemeSource,
+    sourceAdditions: schemaToSchemeSourceAdditions,
+    sourceContract: SCHEMA_TO_SCHEME_SOURCE_ROUTE_MANIFEST,
+    replacementRoute: (route) => route === '/pdtf/LeaseTerm'
+      ? '/pdtf/leaseTerm' : getDeclaredRouteReplacement(route),
+  }), /stable PDTF identifier route moved/u);
 });
 
 test('PDTF term IRIs and governance-owned decisions are not compatibility routes', () => {
   for (const route of [
-    '/pdtf/Property', '/pdtf/Property.ttl',
+    '/pdtf/Property', '/pdtf/Property.ttl', '/pdtf/LeaseTerm', '/pdtf/leaseTerm',
     '/modelling/adr/adr-0075', '/modelling/odr/odr-0035',
     '/api/v2/sso/exchange', '/schemas/v2/example',
-  ]) assert.equal(getPdtf1ReplacementRoute(route), null, route);
+  ]) {
+    assert.equal(getPdtf1ReplacementRoute(route), null, route);
+    assert.equal(getDeclaredRouteReplacement(route), null, route);
+  }
 });
 
 test('retired manual aliases map to the model hierarchy but never own comment identity', () => {
@@ -111,19 +191,34 @@ test('the frozen source cut accounts for every moved, retired, and stable PDTF r
       && getPdtf1ReplacementRoute(acceptedRoute)
   ));
   assert.equal(source.length, 3500);
-  assert.equal(moved.length, 1262);
+  assert.equal(moved.length, 1264);
   assert.equal(moved.filter((record) => baselineSet.has(record)).length, 1255);
-  assert.equal(moved.filter((record) => !baselineSet.has(record)).length, 7);
+  assert.equal(moved.filter((record) => !baselineSet.has(record)).length, 9);
   assert.equal(manual.length, 227);
   assert.equal(stable.length, 1090);
   assert.ok(manual.every((record) => record.equivalenceReceipt.acceptedBlocks === 0
     && record.acceptedFragmentCount === 0 && record.acceptedFragments.length === 0));
-  assert.ok(stable.every(({ acceptedRoute }) => getPdtf1ReplacementRoute(acceptedRoute) === null));
+  assert.ok(stable.every(({ acceptedRoute }) => (
+    getPdtf1ReplacementRoute(acceptedRoute) === null
+      && getDeclaredRouteReplacement(acceptedRoute) === null
+  )));
   const targets = moved.map(({ acceptedRoute }) => getPdtf1ReplacementRoute(acceptedRoute));
-  assert.equal(new Set(targets).size, 1262);
-  assert.ok(targets.every((route) => route.startsWith('/pdtf-1/')));
+  assert.equal(new Set(targets).size, 1264);
+  assert.ok(targets.every((route) => (
+    route === '/pdtf-schema' || route.startsWith('/pdtf-schema/')
+  )));
+  const intermediateCommentKeys = new Map([
+    ['/ontology/concepts-and-architecture', '/pdtf-1/extracted-ontology/concepts-and-architecture'],
+    ['/ontology/contexts', '/pdtf-1/extracted-ontology/concepts-and-architecture/contexts'],
+    ['/ontology/lineage-and-verification', '/pdtf-1/extracted-ontology/lineage-provenance-and-verification'],
+    ['/ontology/terms-and-model-resources', '/pdtf-1/extracted-ontology/terms-and-model-resources'],
+    ['/ontology/trust-and-governance', '/pdtf-1/extracted-ontology/trust-governance-and-limitations'],
+    ['/ontology/use-and-tooling', '/pdtf-1/extracted-ontology/use-and-tooling'],
+    ['/ontology/validation-and-examples', '/pdtf-1/extracted-ontology/validation-and-examples'],
+  ]);
   assert.ok(moved.every(({ acceptedRoute }) => (
-    getPdtf1LegacyCommentKey(getPdtf1ReplacementRoute(acceptedRoute)) === acceptedRoute
+    getPdtf1LegacyCommentKey(getPdtf1ReplacementRoute(acceptedRoute))
+      === (intermediateCommentKeys.get(acceptedRoute) ?? acceptedRoute)
   )));
   assert.equal(isRetiredPdtf1DocumentationRoute('/ontology/classes'), true);
   assert.equal(isRetiredPdtf1DocumentationRoute('/manual/logical/property'), true);
@@ -135,7 +230,7 @@ test('the complete PDTF migration receipt is bijective and preserves information
   const project = (record) => {
     const sourceRoute = record.acceptedRoute;
     const replacement = isStablePdtfIdentifierRoute(sourceRoute)
-      ? null : getDeclaredRouteReplacement(sourceRoute);
+      ? null : getPdtf1ReplacementRoute(sourceRoute);
     return {
       ...record,
       acceptedRoute: replacement ?? sourceRoute,
@@ -155,7 +250,7 @@ test('the complete PDTF migration receipt is bijective and preserves information
       introducedBy: 'test-accepted-commit',
     },
   ];
-  const retiredAliases = composePdtf1RetiredAliases(sourceManifest, getDeclaredRouteReplacement);
+  const retiredAliases = composePdtf1RetiredAliases(sourceManifest, getPdtf1ReplacementRoute);
   const exactMigration = {
     ...PDTF1_ROUTE_MIGRATION,
     sourceReframeRouteCount: 0,
@@ -170,15 +265,15 @@ test('the complete PDTF migration receipt is bijective and preserves information
     addedRecords,
     retiredAliases,
     migration: exactMigration,
-    replacementRoute: getDeclaredRouteReplacement,
+    replacementRoute: getPdtf1ReplacementRoute,
     sourceManifest,
   });
   assert.deepEqual(receipt, {
     policy: 'canonical-move-with-retired-aliases-v1',
     sourceRouteCount: 3500,
-    movedCanonicalRouteCount: 1262,
+    movedCanonicalRouteCount: 1264,
     movedBaselineRouteCount: 1255,
-    movedAddedRouteCount: 7,
+    movedAddedRouteCount: 9,
     movedFamilyRouteCounts: PDTF1_ROUTE_MIGRATION.movedFamilyRouteCounts,
     retiredAliasRouteCount: 227,
     stableIdentifierRouteCount: 1090,
@@ -193,11 +288,11 @@ test('the complete PDTF migration receipt is bijective and preserves information
     sourceReframeRoutesSha256: sha256(''),
     postSourceAdditionRouteCount: 1,
     acceptedSiteRouteCount: 3274,
-    movedRoutePairsSha256: '1b6e16602c4c42f28d7ef02a7cb7a9eabac95312982af9f7a5dbf39b5957f518',
-    retiredAliasesSha256: '69937654bff444ca07418b3ba9fe7d08df4e1e58b014cf55aceff09729a2369b',
+    movedRoutePairsSha256: 'adaa5ec24650f79b650b4c0f748ec9e7b9bde1e295d32e95785f8e1dd810f82b',
+    retiredAliasesSha256: '35894b714f3562508cd1b4dcaf09c2505efa9956473cf1f343d08c5a450403fa',
     stableIdentifierRoutesSha256: 'cf2e83c5290fe5b5b2fe2f5b25e31d2d8f53d8be90cd533e5e43de8ff30a88be',
     redirects: false,
-    canonicalRoot: '/pdtf-1',
+    canonicalRoot: '/pdtf-schema',
     stableIdentifierRoot: '/pdtf',
   });
   assert.equal(getAcceptedRouteFile(
@@ -209,14 +304,14 @@ test('the complete PDTF migration receipt is bijective and preserves information
   changed.acceptedFragmentSha256 = '0'.repeat(64);
   assert.throws(() => pdtf1MigrationReceipt({
     records: fragmentLoss, addedRecords, retiredAliases, migration: exactMigration,
-    replacementRoute: getDeclaredRouteReplacement, sourceManifest,
+    replacementRoute: getPdtf1ReplacementRoute, sourceManifest,
   }), /information or fragments changed/u);
 
   const sourceBakeOff = [...sourceManifest.routes, ...sourceManifest.addedRoutes]
     .find(({ acceptedRoute }) => acceptedRoute === '/ontology/bake-off');
   const forgedExact = structuredClone(records);
   const forgedTarget = forgedExact.find(({ acceptedRoute }) => (
-    acceptedRoute === getDeclaredRouteReplacement(sourceBakeOff.acceptedRoute)
+    acceptedRoute === getPdtf1ReplacementRoute(sourceBakeOff.acceptedRoute)
   ));
   forgedTarget.acceptedContentSha256 = '1'.repeat(64);
   forgedTarget.acceptedBlockInventorySha256 = '2'.repeat(64);
@@ -248,7 +343,7 @@ test('the complete PDTF migration receipt is bijective and preserves information
   };
   assert.throws(() => pdtf1MigrationReceipt({
     records: forgedExact, addedRecords, retiredAliases, migration: exactMigration,
-    replacementRoute: getDeclaredRouteReplacement, sourceManifest,
+    replacementRoute: getPdtf1ReplacementRoute, sourceManifest,
   }), /information or fragments changed/u);
 
   const forgedStable = structuredClone(records);
@@ -256,16 +351,16 @@ test('the complete PDTF migration receipt is bijective and preserves information
   stableTarget.pdtf1SourceRetentionReceipt = { policy: 'forged' };
   assert.throws(() => pdtf1MigrationReceipt({
     records: forgedStable, addedRecords, retiredAliases, migration: exactMigration,
-    replacementRoute: getDeclaredRouteReplacement, sourceManifest,
+    replacementRoute: getPdtf1ReplacementRoute, sourceManifest,
   }), /information or fragments changed/u);
   assert.throws(() => pdtf1MigrationReceipt({
     records, addedRecords, retiredAliases: retiredAliases.slice(1), migration: exactMigration,
-    replacementRoute: getDeclaredRouteReplacement, sourceManifest,
+    replacementRoute: getPdtf1ReplacementRoute, sourceManifest,
   }), /retired alias contract/u);
 });
 
 test('composed comment identities retain Property Pack and PDTF threads', () => {
-  assert.equal(getLegacyCommentKey('/spdtf-2/property-pack/pdtf-1-lineage'), '/v2/comparison');
+  assert.equal(getLegacyCommentKey('/spdtf/property-pack/pdtf-schema-lineage'), '/v2/comparison');
   assert.equal(getLegacyCommentKey(`${PDTF1_ROUTES.modelViews}/logical/property`), '/model/logical/property');
   assert.equal(getLegacyCommentKey(PDTF1_ROUTES.schemaVerification), '/mapping');
   assert.equal(getLegacyCommentKey('/pdtf/Property'), '/pdtf/Property');

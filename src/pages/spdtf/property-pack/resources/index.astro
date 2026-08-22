@@ -1,0 +1,74 @@
+---
+import PropertyPackFilter from '@/components/property-pack/PropertyPackFilter.astro';
+import PropertyPackPage from '@/components/property-pack/PropertyPackPage.astro';
+import {
+  contexts,
+  contextById,
+  kindLabels,
+  resourceRoute,
+  resources,
+} from '@/lib/property-pack-model.mjs';
+
+const contextOptions = contexts.map((context) => ({ value: context.id, label: context.label }));
+const kindOptions = Object.entries(kindLabels).map(([value, label]) => ({ value, label }));
+---
+<PropertyPackPage
+  title="Ontology resources"
+  description="Complete reference for all 159 classes, object properties and datatype properties in the machine-generated Property Pack pre-draft."
+  category="Meaning & constraints"
+  crumbs={[{ label: 'Ontology resources' }]}
+>
+  <h1>Ontology resources</h1>
+  <p class="lead">
+    The complete human-readable register of the candidate’s 159 OWL resources. Each
+    resource has one semantic home and a trace to the Property Pack source data points
+    that motivated it directly or structurally.
+  </p>
+
+
+  <h2 id="register">Resource register</h2>
+  <PropertyPackFilter
+    targetId="v2-resource-register"
+    placeholder="Search labels, identifiers and definitions…"
+    contextOptions={contextOptions}
+    kindOptions={kindOptions}
+  />
+  <div class="v2-table-wrap" id="v2-resource-register">
+    <table>
+      <thead>
+        <tr><th>Resource</th><th>Kind</th><th>Semantic home</th><th>Definition</th><th>Source traces</th></tr>
+      </thead>
+      <tbody>
+        {resources.map((resource) => (
+          <tr
+            data-search={`${resource.label} ${resource.key} ${resource.definition}`.toLocaleLowerCase()}
+            data-context={resource.semantic_home}
+            data-kind={resource.kind}
+          >
+            <td><a href={resourceRoute(resource)}><strong>{resource.label}</strong></a><br/><code class="standalone-identifier">{resource.key}</code></td>
+            <td>{kindLabels[resource.kind]}</td>
+            <td><a href={`/spdtf/property-pack/contexts/${resource.semantic_home}`}>{contextById.get(resource.semantic_home)?.label}</a></td>
+            <td>{resource.definition}</td>
+            <td>{resource.direct_source_item_ids.length} direct · {resource.structural_source_item_ids.length} structural</td>
+          </tr>
+        ))}
+      </tbody>
+    </table>
+  </div>
+
+  <h2 id="reading">How to read the register</h2>
+  <div class="v2-note-grid">
+    <section>
+      <h3>Semantic home</h3>
+      <p>Every resource belongs to exactly one bounded, common or scheme context. A context owns its internal meaning; the common boundary is deliberately exceptional and small.</p>
+    </section>
+    <section>
+      <h3>Direct and structural traces</h3>
+      <p>Direct traces motivated the term itself. Structural traces reach an organising superclass through its descendants. They are shown separately so inherited evidence is never mistaken for direct evidence.</p>
+    </section>
+    <section>
+      <h3>Candidate definitions</h3>
+      <p>Definitions are machine-proposed modelling statements for working-group review. They do not replace the original source wording shown in the data dictionary.</p>
+    </section>
+  </div>
+</PropertyPackPage>

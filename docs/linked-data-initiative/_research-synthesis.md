@@ -1,16 +1,18 @@
-# Verified research synthesis — the OPDA / PDTF linked-data ontology initiative
+# Verified research synthesis — the PDTF-schema-derived ontology initiative
 
 > Seed/backbone document. Produced by a first verified research pass that read the ODR
 > corpus, the implementation ADRs, the emitted Turtle (`source/03-standards/ontology/`)
 > and the generator code (`tools/opda-gen/`), cross-checking prose claims against the
 > emitted artefacts. Facet docs build on this — do not contradict it without evidence.
 
-**One-line frame.** OPDA took the PDTF v3 JSON Schemas and, via an AI-assisted "Linked
-Data Council" methodology, built a formal, machine-reasonable, SHACL-validated OWL/RDF
-ontology that re-expresses the entire UK residential-property-transaction data model —
+**One-line frame.** The project took the PDTF schema v3 corpus and, via an AI-assisted
+"Linked Data Council" methodology, built a formal, machine-reasonable, SHACL-validated
+OWL/RDF ontology that re-expresses the residential-property-transaction data model —
 its data dictionary, its governance/privacy layer, and its agent/role (RBAC-style) layer
 — in a multitude of W3C and community linked-data standards, emitted deterministically by
-a byte-identity-gated generator and served from a live triplestore.
+a byte-identity-gated generator and served from a live triplestore. This schema-derived
+ontology is a separate draft technical artefact, not part of the PDTF schema and not an
+OPDA-endorsed scheme. It is evidence for collaborative SPDTF development.
 
 **Build-status caveat.** `tools/opda-gen/README.md` is stale ("Phase 2"); the *actual*
 emitted TTL and generator code show the pipeline is built and CI-green at **version
@@ -64,7 +66,7 @@ modelling (appear as `skos:scopeNote`/`rdfs:comment` citations and, via gUFO, as
 
 ## 2. What's modelled
 
-### (a) PDTF data models
+### (a) PDTF schema data models
 Source: **`pdtf-transaction.json`** (37,224 lines, JSON Schema Draft-07) + 10+ deep-merge
 form overlays (BASPI, TA6/7/10, NTS, LPE1, CON29R/DW, LLC1, FME1) + the **`verifiedClaims`**
 OIDC4IDA/eIDAS envelope. The generator's authoritative *input* is the **data dictionary**
@@ -77,7 +79,7 @@ not by JSON page. Six emitted modules, each `owl:imports` the one flat ontology:
 (Person/Organisation Kinds; Seller/Buyer/Proprietor/Conveyancer roles), `opda-transaction.ttl`,
 `opda-claim.ttl` (PROV-O), `opda-descriptive.ttl`, `opda-governance.ttl`.
 
-**Flagship modelling win (ODR-0005, "the identity crux"):** PDTF's JSON conflated the
+**Flagship modelling candidate (ODR-0005, "the identity crux"):** the PDTF schema's JSON conflated the
 *physical property*, the *legal estate*, and the *registered title* into one implicit
 entity with no identity criterion (UPRN in 4 leaf paths, zero joins). The ontology splits
 this into **3 classes** with distinct DOLCE/UFO identity criteria, treats **UPRN as a
@@ -94,7 +96,7 @@ form-ergonomics/repeated micro-structure (e.g. `yesNo` × 1,135) — the ODR-002
 (`opda:EstateAgencyContext`, `ConveyancingContext`, …) tags entities via
 `dct:subject`/`opda:servesContext`. Late reversal (session-022): the bespoke
 `opda:definedInContext` predicate was retired as reinventing `rdfs:isDefinedBy` +
-`dct:source` + `dct:subject` — a PDTF form **IS a** DCMI Application Profile (DCAP); its
+`dct:source` + `dct:subject` — a PDTF schema form can be represented as a DCMI Application Profile (DCAP); its
 SHACL shapes are its Description Set Profile; the data dictionary is a DCTAP.
 
 ### (b) Governance
@@ -215,8 +217,10 @@ The genuinely novel part and the strongest "technical direction" story.
 
 ## 5. Namespace / publishing
 
-- **Org-vs-standard split:** domain = organisation, path = standard. Org `https://opda.org.uk/`;
-  PDTF standard at **`https://opda.org.uk/pdtf/`** (`@prefix opda: <https://opda.org.uk/pdtf/>`).
+- **Organisation vs technical identifier space:** OPDA uses `https://opda.org.uk/` for the
+  organisation and preserves **`https://opda.org.uk/pdtf/`** for schema-derived RDF resources
+  (`@prefix opda: <https://opda.org.uk/pdtf/>`). The path is a stable identifier namespace; it
+  does not identify an endorsed PDTF scheme.
 - **Slash, not hash; no version-in-IRI; flat term namespace** (6 modules are editorial file
   splits, not URL segments). *Council recommended hash (session-037); directing authority
   kept slash.*
@@ -245,11 +249,11 @@ source schema 37,224 lines / 1,557 leaves / 935 annotated · glossary 54 terms.
 
 ## 7. Narrative arc (for a mixed senior + technical audience)
 
-> The Property Data Trust Framework already defines, in JSON Schema, what a UK residential
+> The PDTF schema already defines, in JSON Schema, what a UK residential
 > property transaction's data looks like — but JSON Schema only names slots and shapes; it
 > cannot say *which things have stable identity*, *how a seller's asserted authority differs
 > from evidenced authority*, or *which fields carry special-category personal data*, and it
-> cannot be reasoned over or validated outside the apps that hand-code it. We took PDTF v3 —
+> cannot be reasoned over or validated outside the apps that hand-code it. The project took the PDTF schema v3 —
 > 37,000 lines, 1,557 fields, a dozen statutory form overlays (BASPI, TA6, CON29, LPE1…) —
 > and re-expressed it as a formal, machine-readable ontology on the full W3C linked-data
 > stack: RDF/OWL for the model, SHACL for the validation contract, SKOS for the controlled
@@ -268,10 +272,10 @@ source schema 37,224 lines / 1,557 leaves / 935 annotated · glossary 54 terms.
 > Turtle under a byte-identity CI gate, Apache Jena validates it with SHACL and materialises
 > OWL-RL inferences, and a BASPI5 round-trip harness proves a real statutory form can go
 > JSON → ontology → validated RDF → JSON with every field traceable to its data-dictionary
-> origin. The result is a governed, versioned, publishable semantic standard (resolving at
-> `https://opda.org.uk/pdtf/`) that the wider ecosystem — lenders, conveyancers, estate
-> agents, proptech, HM Land Registry — can dereference, validate against, and extend, with a
-> clear forward path to W3C Verifiable Credentials and machine-readable consent (ODRL).
+> origin. The result is a governed, versioned schema-derived technical artefact (with resources
+> under `https://opda.org.uk/pdtf/`) that the wider ecosystem can inspect and test. SPDTF's
+> collaborative governance must decide what to adopt, revise or reject before any part becomes
+> scheme material.
 
 ## Two things to flag so we don't over-claim
 1. **RBAC/authorisation** is a *role + authority-evidence* model (UFO + SKOS + SHACL), **not**

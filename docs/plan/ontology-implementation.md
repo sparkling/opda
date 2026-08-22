@@ -1,14 +1,19 @@
 # ADR Programme — Ontology Implementation (JSON Schemas → Turtle)
 
-> **Anchor:** [ODR-0003 — PDTF → Ontology: Programme & Work Breakdown](../ontology/odr/ODR-0003-pdtf-ontology-programme.md). The Council programme (ODR corpus) ratifies the *modelling decisions*; this ADR programme (ADR corpus) realises those decisions as engineering artefacts — Turtle files, generator code, SHACL shapes, CI hooks. DCAP boundary: ontology-modelling decisions are ODRs; schema-encoding decisions are ADRs.
+> **Authority note:** This is the historical engineering plan for the draft ontology
+> derived from the PDTF schema. "Accepted" and "ratified" below describe internal
+> technical records, not OPDA or industry endorsement. The artefact is separate from the
+> PDTF schema and provides evidence for collaborative SPDTF development.
+
+> **Anchor:** [ODR-0003 — schema-to-ontology programme and work breakdown](../ontology/odr/ODR-0003-pdtf-ontology-programme.md). The internal Council programme records *modelling decisions*; this ADR programme realises those decisions as engineering artefacts — Turtle files, generator code, SHACL shapes, CI hooks. DCAP boundary: ontology-modelling decisions are ODRs; schema-encoding decisions are ADRs.
 >
 > **Sister plan:** [Council follow-up sessions](./council-followup-sessions.md) — operationalised the 14-session ODR ratification programme. This plan operationalises the seven-ADR implementation programme that follows.
 
 ## 1. Scope and method
 
-**What this plan does.** Specifies the engineering work to convert OPDA's source artefacts (JSON Schemas; data dictionary; business glossary) into the Council-ratified ontology (Turtle), per the ratified ODR corpus (ODR-0001 through ODR-0018). The output is a deployment-survivable ontology: per-module .ttl files emitted by a deterministic generator, SHACL shapes graph with severity tiers, DPV annotation graph, per-overlay profile shapes, diagnostic exemplar harness, and a BASPI5 round-trip MVP demonstration.
+**What this plan does.** Specifies the engineering work to derive a draft ontology (Turtle) from the PDTF schema, data dictionary and business glossary, following the internally accepted ODR corpus (ODR-0001 through ODR-0018). The output is a technically deployable artefact: per-module .ttl files emitted by a deterministic generator, SHACL shapes, DPV annotations, overlay profiles, diagnostic exemplars and a BASPI5 round-trip demonstration.
 
-**What this plan does NOT do.** Re-deliberate any modelling decision. Every modelling rule applied here is already ratified in the ODR corpus; engineering applies it. If a genuinely novel modelling decision surfaces during implementation, it lands as a new Council session (ODR amendment cycle), not as an ADR amendment.
+**What this plan does NOT do.** Confer OPDA or scheme authority. It implements the modelling rules accepted within the internal ODR corpus. A novel modelling question returns to that technical review cycle; SPDTF adoption remains a separate collaborative decision.
 
 | This ADR programme (engineering) | Sibling ODR programme (modelling) |
 |---|---|
@@ -25,8 +30,8 @@ This ADR programme **bootstraps the implementation** from ADR-0006 (namespace in
 
 | Input | Path | Scale | Authoritative role |
 |---|---|---|---|
-| **PDTF v3 base schema** | `source/03-standards/schemas/pdtf-transaction.json` | 1,557 unique leaves | Structure + types |
-| **PDTF v3 overlay schemas** | `source/03-standards/schemas/<form>/*.json` (BASPI, TA6, NTS, LPE1, etc.) | 8,458 path entries across 10+ overlays | Per-form cardinality + enum variation |
+| **PDTF schema v3 base** | `source/03-standards/schemas/pdtf-transaction.json` | 1,557 unique leaves | Structure + types |
+| **PDTF schema v3 overlays** | `source/03-standards/schemas/<form>/*.json` (BASPI, TA6, NTS, LPE1, etc.) | 8,458 path entries across 10+ overlays | Per-form cardinality + enum variation |
 | **Data dictionary (markdown)** | `source/00-deliverables/semantic-models/data-dictionary.md` | 935 annotated leaves | `rdfs:comment` source; per-leaf range/cardinality |
 | **Data dictionary (canonical JSON)** | `source/00-deliverables/semantic-models/data-dictionary-canonical.json` | 1,557 leaves; 16 canonical schemas | Generator machine input |
 | **Business glossary (Turtle)** | `source/00-deliverables/semantic-models/business-glossary.ttl` | 54 trust-framework terms | `rdfs:label` + `skos:prefLabel` + `skos:definition` source |
@@ -281,7 +286,7 @@ A FAIL on any check blocks `accepted` status. The implementing worker amends; va
 
 If a validation check surfaces a genuine ODR ambiguity (the ratified `## Rules` text underspecifies the engineering decision OR two ODRs cite the same concern with conflicting framings), the engineer routes the ambiguity to an Author-only Council session per [ODR-0001 §Self-amendment process](../ontology/odr/ODR-0001-linked-data-council-methodology.md) — **NOT** a silent ADR-side interpretation.
 
-Engineering does not re-deliberate. Ambiguity discovery triggers Council; Council ratifies an amendment; engineering re-runs with the amended `## Rules`. This is the structural anti-drift mechanism the Council programme expects (per [ODR-0003 §"Status discipline"](../ontology/odr/ODR-0003-pdtf-ontology-programme.md)).
+Engineering does not re-deliberate. In this internal technical workflow, ambiguity discovery triggers Council review, the record is amended, and engineering re-runs with the amended `## Rules`. This is an anti-drift mechanism for the draft artefact, not a substitute for SPDTF working-group decisions (per [ODR-0003 §"Status discipline"](../ontology/odr/ODR-0003-pdtf-ontology-programme.md)).
 
 ### 9.5 Validation directory convention
 

@@ -242,7 +242,8 @@ export function indexFileFromRoute(route) {
 }
 
 export function isRetiredPropertyPackRoute(route) {
-  return route === '/v2' || route.startsWith('/v2/') || route === '/modelling/property-pack';
+  return route === '/v2' || route.startsWith('/v2/') || route === '/modelling/property-pack'
+    || route === '/spdtf-2/property-pack' || route.startsWith('/spdtf-2/property-pack/');
 }
 
 export function existingRetiredPropertyPackOutputs(distRoot, migration) {
@@ -307,7 +308,6 @@ export function propertyPackMigrationReceipt(records, addedRecords, migration, r
 function acceptedSourceRecords(manifest) {
   return [...(manifest?.routes ?? []), ...(manifest?.addedRoutes ?? [])];
 }
-
 function routeWithin(route, root) {
   return route === root || route?.startsWith(`${root}/`);
 }
@@ -324,7 +324,7 @@ export function composePdtf1RetiredAliases(sourceManifest, replacementRoute) {
       const canonicalRoute = replacementRoute(source.acceptedRoute);
       if (!canonicalRoute || source.equivalenceReceipt?.acceptedBlocks !== 0
         || source.acceptedFragmentCount !== 0 || source.acceptedFragments?.length !== 0) {
-        throw new Error(`PDTF 1.0 retired alias is not a zero-information redirect: ${source.acceptedRoute}`);
+        throw new Error(`PDTF schema retired alias is not a zero-information redirect: ${source.acceptedRoute}`);
       }
       return {
         policy: 'retired-zero-information-alias-v1',
@@ -348,7 +348,7 @@ export function existingRetiredPdtf1Outputs(distRoot, sourceManifest, replacemen
 }
 
 /**
- * Prove the complete PDTF 1.0 cut against the pinned last accepted route set.
+ * Prove the complete PDTF schema source cut against the pinned accepted set.
  * Moved and stable routes retain their information and fragment inventories;
  * retired aliases are represented only by explicit zero-information receipts.
  */
@@ -361,10 +361,10 @@ export function pdtf1MigrationReceipt({
   if (source.length !== migration.sourceRouteCount || accepted.length !== migration.acceptedSiteRouteCount
     || byRoute.size !== accepted.length
     || new Set(accepted.map(({ acceptedFile }) => acceptedFile)).size !== accepted.length) {
-    throw new Error('PDTF 1.0 source or accepted route inventory has an invalid count or duplicate');
+    throw new Error('PDTF schema source or accepted route inventory has an invalid count or duplicate');
   }
   const retiredByRoute = new Map(retiredAliases.map((entry) => [entry.sourceRoute, entry]));
-  if (retiredByRoute.size !== retiredAliases.length) throw new Error('PDTF 1.0 retired aliases are not unique');
+  if (retiredByRoute.size !== retiredAliases.length) throw new Error('PDTF schema retired aliases are not unique');
   const moved = [];
   const stable = [];
   const accounted = new Set();
@@ -374,7 +374,7 @@ export function pdtf1MigrationReceipt({
       const expected = composePdtf1RetiredAliases({ routes: [sourceRecord] }, replacementRoute)[0];
       if (JSON.stringify(retiredByRoute.get(sourceRoute)) !== JSON.stringify(expected)
         || byRoute.has(sourceRoute) || !byRoute.has(expected.canonicalRoute)) {
-        throw new Error(`PDTF 1.0 retired alias contract is inconsistent: ${sourceRoute}`);
+        throw new Error(`PDTF schema retired alias contract is inconsistent: ${sourceRoute}`);
       }
       continue;
     }
@@ -383,7 +383,7 @@ export function pdtf1MigrationReceipt({
     const targetRoute = replacement ?? sourceRoute;
     const target = byRoute.get(targetRoute);
     if (!target || accounted.has(targetRoute) || (replacement && byRoute.has(sourceRoute))) {
-      throw new Error(`PDTF 1.0 route is missing, duplicated, or retained at its old URL: ${sourceRoute}`);
+      throw new Error(`PDTF schema source route is missing, duplicated, or retained at its old URL: ${sourceRoute}`);
     }
     accounted.add(targetRoute);
     if (replacement || isStable) {
@@ -393,7 +393,7 @@ export function pdtf1MigrationReceipt({
         && sourceRecord.acceptedBlockInventorySha256 === target.acceptedBlockInventorySha256;
       if ((isStable ? !stableExact || !pdtf1SourceEvidenceMatches(sourceRecord, target)
         : !pdtf1SourceEvidenceMatches(sourceRecord, target))) {
-        throw new Error(`PDTF 1.0 information or fragments changed without evidence: ${sourceRoute}`);
+        throw new Error(`PDTF schema source information or fragments changed without evidence: ${sourceRoute}`);
       }
       (replacement ? moved : stable).push({ source: sourceRecord, target });
     } else if (target.acceptedFile !== sourceRecord.acceptedFile) {
@@ -406,7 +406,7 @@ export function pdtf1MigrationReceipt({
       kind !== 'new-authority-route' || typeof introducedBy !== 'string' || !introducedBy
     ))
     || retiredAliases.length !== migration.retiredAliasRouteCount) {
-    throw new Error('PDTF 1.0 accepted or retired records are not completely accounted for');
+    throw new Error('PDTF schema source accepted or retired records are not completely accounted for');
   }
   const movedBaseline = moved.filter(({ source: record }) => sourceManifest.routes.includes(record));
   const movedAdded = moved.filter(({ source: record }) => sourceManifest.addedRoutes.includes(record));
@@ -454,7 +454,7 @@ export function pdtf1MigrationReceipt({
     || sourceReframeRoutesSha256 !== migration.sourceReframeRoutesSha256
     || JSON.stringify(familyCounts) !== JSON.stringify(migration.movedFamilyRouteCounts)
     || migration.redirects !== false) {
-    throw new Error(`PDTF 1.0 migration counts differ from the reviewed cut: ${JSON.stringify({
+    throw new Error(`PDTF schema source migration counts differ from the reviewed cut: ${JSON.stringify({
       moved: moved.length,
       movedBaseline: movedBaseline.length,
       movedAdded: movedAdded.length,

@@ -23,7 +23,7 @@ Eleven OWL classes emitted by `opda-gen` into `opda-claim.ttl`.
 ### opda:assuranceLevel — REMOVED
 
 Removed 2026-07-05 (RML gap-closing session): confirmed zero basis anywhere
-in the PDTF v3 schema family (no field ever carries an eIDAS Level of
+in the PDTF schema v3 family (no field ever carries an eIDAS Level of
 Assurance value). No longer part of the active ontology. See ODR-0009's
 own removal amendment for the governance record.
 

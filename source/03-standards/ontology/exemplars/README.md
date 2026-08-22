@@ -1,4 +1,8 @@
-# OPDA Ontology — Diagnostic Exemplars
+# Schema-derived ontology — diagnostic exemplars
+
+These exemplars test a draft technical artefact derived from the PDTF schema. References
+to Council decisions below mean the internal AI-assisted modelling process; they do not
+record OPDA or industry endorsement and do not make the artefact an SPDTF scheme.
 
 Harness for the **diagnostic exemplar policy** ratified by
 [ODR-0004 §8a](../../../../docs/ontology/odr/ODR-0004-pdtf-ontology-foundation.md).
@@ -19,7 +23,7 @@ documentation). Small files (≤ ~50 lines) per Davis's BBC test-suite disciplin
 
 ## Current canonical set
 
-### Input to S005 — Property & Land Identity Crux ✅ (closed 2026-05-27)
+### Input to S005 — Property & Land Identity Crux ✅ (technical review closed 2026-05-27)
 
 | Exemplar | Hard case it isolates |
 |---|---|
@@ -89,8 +93,9 @@ flagged for a follow-up WG ratification.
 
 The TBox the exemplars instantiate against (`opda:Property`,
 `opda:RegisteredTitle`, `opda:identifiesSameProperty`, `opda:uprn`, etc.) is
-**Council-ratified** through Sessions 005/006/007/009/010/011/012/013/015 (all
-moved `status: accepted` 2026-05-27 via the namespace-block clearance). The
+**accepted within the internal technical record** through Sessions
+005/006/007/009/010/011/012/013/015 (all moved `status: accepted` 2026-05-27 via
+the namespace-block clearance). This status is not OPDA scheme ratification. The
 generator's first emission of `foundation.ttl` + module `.ttl` files is the
 remaining engineering milestone before the TBox is *deployment-survivable*.
 Names follow ODR-0005's ratified 3-class commitment plus the layer-segregated

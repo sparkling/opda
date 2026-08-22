@@ -13,14 +13,14 @@ regions:
     metadata that gives every assertion a provenance trail.
   why_this_exists: |
     The other pages USE evidence; this page MODELS it. A reader who arrives
-    here is asking "how does PDTF make a fact verifiable?" — and the
-    answer is the Verifiable Credential envelope plus the declaration
-    metadata plus the attachment hash. None of those answers belongs on
-    a domain page; all of them belong here.
-  pull_quote: "Every signed assertion in PDTF is a Verifiable Credential — this page is where the envelope itself becomes the subject."
+    here is asking "how did the separate trust-framework material propose
+    making a fact verifiable?" — and the answer is the Verifiable Credential
+    envelope plus the declaration metadata plus the attachment hash. None of
+    those answers belongs on a domain page; all of them belong here.
+  pull_quote: "In the separate trust-framework material, every signed assertion is a Verifiable Credential — this page is where the envelope itself becomes the subject."
   gap_notes: |
-    Today PDTF mixes embedded JSON-LD evidence with attached PDF/binary
-    evidence at the leaf level. A unified evidence model (JSON-LD always,
+    The legacy evidence model mixes embedded JSON-LD evidence with attached
+    PDF/binary evidence at the leaf level. A unified evidence model (JSON-LD always,
     PDFs as attachments WITH a JSON-LD wrapper) would let SHACL validate
     the trust chain end-to-end. Section 3 of the trust framework v2 spec
     plans this; this page reflects the v1 model as-built.
@@ -54,7 +54,8 @@ regions:
     Internal mechanics: a Verifiable Credential pairs an issuer with one or
     more claims about subjects, signs the bundle with a cryptographic proof,
     and optionally evidences external documents via attachments with
-    content hashes. The whole thing is the unit of trust in PDTF v2.
+    content hashes. Together they form the unit of trust described by the
+    separately published trust-framework material.
   diagrams:
     - type: sequence
       source: |
@@ -62,15 +63,15 @@ regions:
           autonumber
           participant Seller
           participant Issuer as Issuer<br/>(HMLR · EPB · LA)
-          participant PDTF as PDTF-compliant<br/>platform
+          participant Platform as Trust-framework<br/>platform
           participant Buyer
           participant Verifier as Buyer's<br/>conveyancer
 
-          Seller->>PDTF: request title / EPC / search
-          PDTF->>Issuer: forward request (DID-authenticated)
-          Issuer-->>PDTF: signed Verifiable Credential
-          PDTF->>PDTF: store credential + hash attachments
-          PDTF-->>Seller: credential available
+          Seller->>Platform: request title / EPC / search
+          Platform->>Issuer: forward request (DID-authenticated)
+          Issuer-->>Platform: signed Verifiable Credential
+          Platform->>Platform: store credential + hash attachments
+          Platform-->>Seller: credential available
           Seller->>Buyer: share credential reference
           Buyer->>Verifier: forward credential
           Verifier->>Issuer: resolve issuer DID

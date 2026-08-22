@@ -6,10 +6,10 @@ import { getRouteStatus } from '@/lib/site-ia.mjs';
 const results = SITE_SEARCH_ENTRIES.map((entry) => ({ ...entry, status: getRouteStatus(entry.url) }));
 ---
 
-<Layout title="Search" description="Search the OPDA documentation by task, work area and historical name." hideComments>
+<Layout title="Search" description="Search the OPDA documentation by task, work area and authority." hideComments>
   <PageMeta category="Utility" variant="brand" updated="IA registry search" />
   <h1>Search the documentation</h1>
-  <p class="lead">Results always show work area and authority. “PDTF” is a historical alias that finds both PDTF 1.0 material and relevant SPDTF continuation pages.</p>
+  <p class="lead">Results always show work area and authority. Searches for “PDTF” find the PDTF schema, its separately labelled derived evidence, and SPDTF pages that cite those sources.</p>
   <label for="site-search"><strong>Search by task, topic or name</strong></label>
   <input id="site-search" type="search" autocomplete="off" placeholder="Try PDTF, ontology, mapping or governance" />
   <p id="search-summary" role="status" aria-live="polite">{results.length} indexed destinations</p>
@@ -19,7 +19,7 @@ const results = SITE_SEARCH_ENTRIES.map((entry) => ({ ...entry, status: getRoute
         class="card search-result"
         data-search-text={[record.title, record.summary, ...record.aliases].join(' ').toLocaleLowerCase('en-GB')}
       >
-        <p class="overline">{record.status.workArea}{record.historicalName ? ' · historical name' : ''}</p>
+        <p class="overline">{record.facet}</p>
         <h2><a href={record.url}>{record.title}</a></h2>
         <p>{record.summary}</p>
         <dl>
@@ -67,4 +67,3 @@ const results = SITE_SEARCH_ENTRIES.map((entry) => ({ ...entry, status: getRoute
   .search-result dt { font-weight: 700; }
   .search-result dd { margin: 0; }
 </style>
-

@@ -9,7 +9,7 @@ implements: []
 
 # IA spec — Logical-tier presentation
 
-This document specifies how the **Logical-tier presentation** of OPDA's ontology model is laid out. It is a *blueprint*: the actual Logical-tier docs that follow this spec are a separate deliverable.
+This document specifies how the **Logical-tier presentation** of the draft ontology derived from the PDTF schema is laid out. It is a *blueprint*: the actual Logical-tier docs that follow this spec are a separate deliverable. The ontology is a separate technical artefact and evidence for SPDTF, not an endorsed scheme.
 
 ## Audience
 
@@ -67,7 +67,7 @@ docs/manual/logical/
    |---|---|---|---|
    | `<name>` | `<source attrs/rels>` | <one-line> | `Info` / `Warning` |
 8. **`## ER diagram`** — Mermaid `erDiagram` block showing the entity + its directly-related entities + cardinalities. Per-module ER diagrams live in `docs/manual/logical/diagrams/<module>-er.mmd` and may be referenced rather than inlined.
-9. **`## Source ODR + ADR`** — links to the ratifying ODR and any implementation ADR (typically ADR-0011 for module entities).
+9. **`## Source ODR + ADR`** — links to the supporting technical ODR and any implementation ADR (typically ADR-0011 for module entities).
 
 ## Per-enumeration section shape (mandatory)
 
@@ -172,6 +172,6 @@ Logical-tier files generate mechanically from the source TTLs only:
 - `source/03-standards/ontology/opda-<module>-shapes.ttl` — cardinalities (`sh:minCount` / `sh:maxCount` → `cardinality` column); identity-key column (Cat 1 IdentityKey shapes flag attributes as identity-bearing); constraint rows (each shape with severity tier); derived-attribute rows (each `sh:rule` SHACL-AF rule)
 - `source/03-standards/ontology/opda-vocabularies.ttl` — enumeration member tables + per-scheme metadata (`opda:ufoCategory`, `dct:source`, `opda:hasSteward`)
 
-**The ODR corpus is not a source** — it is the modelling-decision audit trail; the A9 per-kind discipline embedded the IC + hard cases + UFO citation directly in the TTL's `rdfs:comment` + `skos:scopeNote` (per [ADR-0007 §"A9 per-kind discipline output"](../adr/ADR-0007-ontology-generator-specification.md)). The PDTF JSON Schemas are upstream input to the Council programme, not a source for this tier.
+**The ODR corpus is not a source** — it is the modelling-decision audit trail; the A9 per-kind discipline embedded the IC + hard cases + UFO citation directly in the TTL's `rdfs:comment` + `skos:scopeNote` (per [ADR-0007 §"A9 per-kind discipline output"](../adr/ADR-0007-ontology-generator-specification.md)). The PDTF schema corpus is upstream input to the internal technical project, not a source for this tier.
 
 Generation produces a complete first draft from the TTLs alone; manual review tightens platform-independent naming + constraint-prose voice.

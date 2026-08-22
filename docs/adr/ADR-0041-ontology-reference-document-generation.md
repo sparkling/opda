@@ -1,6 +1,7 @@
 ---
 status: accepted
 date: 2026-06-14
+updated: 2026-08-22
 tags: [documentation, ontology, generator, ci-gate, multi-page, bake-off, ontology-section, council-038]
 supersedes: []
 depends-on: [ODR-0004, ODR-0005, ODR-0025, ODR-0026, ODR-0027, ODR-0028, ODR-0029, ADR-0002, ADR-0006, ADR-0007, ADR-0029]
@@ -11,7 +12,7 @@ implements: []
 
 ## Context and Problem Statement
 
-The OPDA PDTF ontology is complete enough to document for external consumers (the descriptive layer closed — ODR-0028; the programme retired — ODR-0003). We need a standalone HTML reference covering every aspect: the foundation and six bounded-context modules (~58 OWL classes, 30 object + 226 datatype properties), ~50 SKOS schemes / ~318 concepts, ~58 SHACL shapes, 31 overlay profiles, 17 round-trip exemplars, the OWL-RL inference regime, the three-graph separation, the DPV/PROV-O governance layer, and the ODR/ADR/council provenance.
+The ontology derived from the PDTF schema is complete enough to document for external consumers (the descriptive layer closed — ODR-0028; the programme retired — ODR-0003). We need a standalone HTML reference covering every aspect: the foundation and six bounded-context modules (~58 OWL classes, 30 object + 226 datatype properties), ~50 SKOS schemes / ~318 concepts, ~58 SHACL shapes, 31 overlay profiles, 17 round-trip exemplars, the OWL-RL inference regime, the three-graph separation, the DPV/PROV-O governance layer, and the ODR/ADR/council provenance.
 
 The hazard: the ontology is generator-emitted and anti-drift by doctrine — every TTL is `DO NOT HAND-EDIT`, byte-identity-gated (ODR-0004 §6a / `make verify-ontology`), `dct:source`-stamped, `owl:versionIRI`-pinned. A hand-authored "every aspect" page would, by construction, have none of those properties and would drift from the corpus on the first commit, with no gate to catch it. Council **session-038** was convened to produce the section outline and validate it sound + complete; it ruled the naive hand-authored monolith out and the hybrid below in.
 
@@ -148,10 +149,19 @@ All adversarial-review findings (B1–B3, M1–M6, hygiene) are now dispositione
 
 ### 2026-08-21 — ADR-0076 route-hosting amendment
 
-[ADR-0076](./ADR-0076-consolidate-pdtf-1-0-documentation-under-hierarchy-reflecting-routes.md)
+[ADR-0076](./ADR-0076-consolidate-pdtf-schema-documentation-under-hierarchy-reflecting-routes.md)
 moves the reader-facing reference from `/ontology/**` to the linked categories beneath
-`/pdtf-1/extracted-ontology/**`, without redirects. This replaces only this ADR's
+`/pdtf-schema/schema-derived-ontology/**`, without redirects. This replaces only this ADR's
 hosting and old-route stability clauses. The woven-reference model, generation and
 doc-drift gates, soundness rules, provenance and known-issues contract remain binding.
 Canonical resource pages and Turtle representations remain at the unchanged
 `/pdtf/**` RDF identifiers.
+
+### 2026-08-22 — Schema-to-scheme authority correction
+
+The documented corpus is the **schema-derived ontology**: a technical artefact extracted
+from the PDTF schema and supporting material. Its completeness, publication and generation
+discipline do not make it an OPDA-endorsed predecessor scheme or confer authority on SPDTF.
+SPDTF is the first collaboratively authored scheme draft. This amendment changes naming
+and reader placement only; the generation, provenance, validation and stable `/pdtf/**`
+identifier contracts remain exact.

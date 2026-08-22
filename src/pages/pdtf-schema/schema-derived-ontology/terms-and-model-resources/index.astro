@@ -1,0 +1,60 @@
+---
+import Layout from '@/layouts/Layout.astro';
+import PageMeta from '@/components/PageMeta.astro';
+import GatewayCard from '@/components/ia/GatewayCard.astro';
+---
+
+<Layout
+  title="Terms and model resources"
+  description="Find the classes, properties, datatypes, UFO categories, SKOS vocabularies and dereferenceable resource pages in the schema-derived ontology."
+>
+  <PageMeta category="PDTF schema · schema-derived ontology" variant="brand" updated="Draft · under review" />
+  <h1>Terms and model resources</h1>
+  <p class="lead">
+    Use these indexes when you know the kind of resource you need or want to resolve an
+    ontology identifier. They separate classes, relationships, literal value spaces and
+    controlled vocabularies so that a coded value is not mistaken for a class and a SHACL
+    constraint is not mistaken for an OWL statement.
+  </p>
+
+  <div class="callout callout--warn">
+    <p class="callout__label">schema-derived draft</p>
+    <p>
+      The terms indexed here belong to the committed schema-derived draft corpus. Stable
+      identifiers and reproducible pages do not make the corpus an approved SPDTF ontology.
+      Every detail page retains its recorded definition, provenance and maturity.
+    </p>
+  </div>
+
+  <h2 id="choose">Choose the right index</h2>
+  <table>
+    <thead><tr><th scope="col">If you need…</th><th scope="col">Use…</th><th scope="col">Why</th></tr></thead>
+    <tbody>
+      <tr><th scope="row">A kind of thing</th><td><a href="/pdtf-schema/schema-derived-ontology/terms-and-model-resources/classes">Classes</a></td><td>OWL classes carry identity and classification commitments.</td></tr>
+      <tr><th scope="row">A relationship or literal field</th><td><a href="/pdtf-schema/schema-derived-ontology/terms-and-model-resources/properties">Properties</a></td><td>Object and datatype properties show subjects, objects, ranges and constraints.</td></tr>
+      <tr><th scope="row">A literal value space</th><td><a href="/pdtf-schema/schema-derived-ontology/terms-and-model-resources/datatypes">Datatypes</a></td><td>Datatypes describe lexical values such as strings, dates and numbers.</td></tr>
+      <tr><th scope="row">A governed coded value</th><td><a href="/pdtf-schema/schema-derived-ontology/terms-and-model-resources/vocabularies">Vocabularies</a></td><td>SKOS schemes carry enumerations and controlled concepts outside class trees.</td></tr>
+      <tr><th scope="row">A known name without its kind</th><td><a href="/pdtf-schema/schema-derived-ontology/terms-and-model-resources/glossary">Index and glossary</a></td><td>The A–Z index spans all model-resource kinds and links to canonical detail pages.</td></tr>
+    </tbody>
+  </table>
+
+  <h2 id="browse">Browse model resources</h2>
+  <div class="card-grid">
+    <GatewayCard href="/pdtf-schema/schema-derived-ontology/terms-and-model-resources/graph" title="Interactive graph" eyebrow="Relationship overview" description="Explore the OWL class backbone by module and neighbourhood before opening exact resource pages." />
+    <GatewayCard href="/pdtf-schema/schema-derived-ontology/terms-and-model-resources/classes" title="Classes" eyebrow="OWL resources" description="Browse all 41 OWL classes—Substance Kinds, Roles, RoleMixins and Relators—by module, with definitions, diagrams, relationships, UFO stereotypes and canonical links." />
+    <GatewayCard href="/pdtf-schema/schema-derived-ontology/terms-and-model-resources/categories" title="UFO categories" eyebrow="Classification facet" description="Inspect the inert opda:ufoCategory documentary facet and the OWL classes grouped under each UFO-informed category; the corpus is UFO-informed, not UFO-grounded." />
+    <GatewayCard href="/pdtf-schema/schema-derived-ontology/terms-and-model-resources/properties" title="Properties" eyebrow="Relationships and values" description="Find all 73 object and 203 datatype properties with their domains, ranges, constraints, inverses and source provenance." />
+    <GatewayCard href="/pdtf-schema/schema-derived-ontology/terms-and-model-resources/datatypes" title="Datatypes" eyebrow="Literal value spaces" description="See every literal datatype used by the corpus and the datatype properties that range over it." />
+    <GatewayCard href="/pdtf-schema/schema-derived-ontology/terms-and-model-resources/vocabularies" title="Controlled vocabularies" eyebrow="SKOS resources" description="Browse the 46 SKOS concept schemes and 304 coded concepts without turning controlled values into OWL subclasses." />
+    <GatewayCard href="/pdtf-schema/schema-derived-ontology/terms-and-model-resources/glossary" title="Index and glossary" eyebrow="A–Z discovery" description="Search across classes, properties, shapes, concepts and schemes, then open each resource at its dereferenceable /pdtf page." />
+  </div>
+
+  <h2 id="detail-pages">Canonical detail pages</h2>
+  <p>
+    Index entries resolve to stable <code>/pdtf/**</code> pages containing the resource identity,
+    definition, relationships, constraints and source citations. Those pages are the detailed
+    rendering of this draft corpus; the indexes above remain the task-oriented ways to discover
+    them. For architectural interpretation, return to
+    <a href="/pdtf-schema/schema-derived-ontology/concepts-and-architecture">Concepts and architecture</a>.
+  </p>
+</Layout>

@@ -1,0 +1,93 @@
+---
+import PropertyPackPage from '@/components/property-pack/PropertyPackPage.astro';
+import {
+  compactIri,
+  contextById,
+  coverage,
+  dictionaryById,
+  resourceByIri,
+  resourceRoute,
+  vocabularyByIri,
+  vocabularyRoute,
+} from '@/lib/property-pack-model.mjs';
+
+export function getStaticPaths() {
+  return coverage.map((item) => ({ params: { id: item.item_id }, props: { item } }));
+}
+
+const { item } = Astro.props;
+const dictionary = dictionaryById.get(item.item_id);
+const context = contextById.get(item.semantic_home);
+const constructs = item.construct_refs.map((iri) => ({ iri, resource: resourceByIri.get(iri) }));
+const scheme = item.vocabulary_ref ? vocabularyByIri.get(item.vocabulary_ref) : undefined;
+const constraints = item.source_constraints;
+const constraintRows = [
+  ['Requiredness', constraints.requiredness],
+  ['Cardinality', `${constraints.min_count ?? 0}..${constraints.max_count ?? '*'}`],
+  ['Occurrence scope', constraints.occurrence_scope],
+  ['Datatype', constraints.datatype],
+  ['Format', constraints.format],
+  ['Pattern', constraints.pattern],
+  ['Minimum', constraints.minimum],
+  ['Maximum', constraints.maximum],
+  ['Minimum length', constraints.min_length],
+  ['Maximum length', constraints.max_length],
+  ['Repeatable context', String(constraints.repeatable_context)],
+].filter(([, value]) => value !== '' && value != null);
+---
+<PropertyPackPage
+  title={item.preferred_label}
+  description={`Property Pack source data point ${item.item_id}: ${item.candidate_definition}`}
+  category="Source data point"
+  crumbs={[
+    { label: 'Data dictionary', href: '/spdtf/property-pack/data-dictionary' },
+    { label: context?.label ?? item.semantic_home, href: `/spdtf/property-pack/contexts/${item.semantic_home}` },
+    { label: item.preferred_label },
+  ]}
+>
+  <h1>{item.preferred_label}</h1>
+  <p class="lead">{item.candidate_definition}</p>
+
+
+  <h2 id="source">Source identity</h2>
+  <dl class="v2-facts">
+    <div><dt>Stable item ID</dt><dd><code class="standalone-identifier">{item.item_id}</code></dd></div>
+    <div><dt>Source path</dt><dd><code class="standalone-identifier">{item.source_path}</code></dd></div>
+    <div><dt>Source label</dt><dd>{item.preferred_label}</dd></div>
+    <div><dt>Work package</dt><dd>{item.work_package.replaceAll('-', ' ')}</dd></div>
+    <div><dt>Definition status</dt><dd>{item.definition_status.replaceAll('-', ' ')}</dd></div>
+    {dictionary?.topic_iri && <div><dt>Topic concept</dt><dd><code class="standalone-identifier">{dictionary.topic_iri}</code></dd></div>}
+  </dl>
+
+  <h2 id="source-constraints">Source constraints</h2>
+  <div class="callout callout--note"><p class="callout__label">Input catalogue semantics</p><p>These rules came from the normalized Property Pack source. They are documented separately from the candidate SHACL shapes.</p></div>
+  <dl class="v2-facts">
+    {constraintRows.map(([label, value]) => <div><dt>{label}</dt><dd><code>{value}</code></dd></div>)}
+    <div><dt>Permitted values</dt><dd>{constraints.permitted_values.length ? constraints.permitted_values.join(' · ') : 'None stated'}</dd></div>
+  </dl>
+
+  <h2 id="candidate">Candidate interpretation</h2>
+  <dl class="v2-facts">
+    <div><dt>Semantic home</dt><dd><a href={`/spdtf/property-pack/contexts/${item.semantic_home}`}>{context?.label}</a></dd></div>
+    <div><dt>Modelling rule</dt><dd><code class="standalone-identifier">{item.rule_id}</code></dd></div>
+    <div><dt>Disposition</dt><dd>{item.disposition}</dd></div>
+    <div><dt>Candidate roles</dt><dd>{item.roles.join(' · ')}</dd></div>
+    <div><dt>Rationale</dt><dd>{item.rationale}</dd></div>
+    <div><dt>Candidate status</dt><dd>{item.candidate_status.replaceAll('-', ' ')}</dd></div>
+    <div><dt>Consuming contexts</dt><dd>{item.consuming_contexts.length ? item.consuming_contexts.join(' · ') : 'None proposed'}</dd></div>
+  </dl>
+
+  <h2 id="constructs">Ontology constructs</h2>
+  <ul>
+    {constructs.map(({ iri, resource }, index) => (
+      <li>
+        {resource ? <a href={resourceRoute(resource)}>{resource.label}</a> : <code class="standalone-identifier">{compactIri(iri)}</code>}
+        {' '}<code class="standalone-identifier">{item.construct_keys[index] ?? resource?.key ?? compactIri(iri)}</code>
+      </li>
+    ))}
+  </ul>
+  {scheme ? <p>Controlled vocabulary: <a href={vocabularyRoute(scheme)}>{scheme.label}</a>.</p> : item.vocabulary_ref ? <p>Vocabulary reference: <code class="standalone-identifier">{compactIri(item.vocabulary_ref)}</code>.</p> : <p>No controlled vocabulary is assigned.</p>}
+
+  <h2 id="evidence">Evidence trace</h2>
+  <ul>{item.evidence.map((evidence) => <li><code class="standalone-identifier">{evidence}</code></li>)}</ul>
+</PropertyPackPage>

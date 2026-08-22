@@ -7,13 +7,13 @@ depends-on: []
 implements: []
 ---
 
-# OPDA ontology-model documentation — information architecture
+# Schema-derived ontology documentation — information architecture
 
-This directory specifies **how** OPDA's ontology model is documented. The ontology model itself (the 24 emitted TTL files at `source/03-standards/ontology/`, the 23 SKOS schemes, the 40 minted classes, the BASPI5 profile) lives elsewhere; the artefacts under this directory specify the *structure* of the docs that describe it.
+This directory specifies **how** the draft ontology derived from the PDTF schema corpus is documented. The model itself (the 24 emitted TTL files at `source/03-standards/ontology/`, the 23 SKOS schemes, the 40 minted classes, the BASPI5 profile) lives elsewhere; the artefacts under this directory specify the *structure* of the docs that describe it. It is a separate technical artefact, not part of the PDTF schema or an endorsed scheme, and serves as evidence for SPDTF development.
 
 ## Four documentation outputs
 
-OPDA's ontology model is documented as four tiers. Each tier has its own audience, its own conventions, and its own IA spec in this directory.
+The schema-derived ontology is documented as four tiers. Each tier has its own audience, its own conventions, and its own IA spec in this directory.
 
 | Tier | Audience | What it shows | IA spec |
 |---|---|---|---|

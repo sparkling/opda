@@ -1,9 +1,12 @@
 # RML Mapping — build contract (shared across swarm agents)
 
-**Goal:** an RML mapping that consumes **PDTF JSON instances** (conforming to
-`@pdtf/schemas` v3) and produces **RDF conforming to the OPDA ontology**, validating
+**Goal:** an RML mapping that consumes **PDTF schema JSON instances** (conforming to
+`@pdtf/schemas` v3) and produces **RDF conforming to the draft schema-derived ontology**, validating
 against the emitted SHACL shapes. RML always runs *source → RDF*; this mapping captures
 the ontology↔schema correspondence that `opda-gen` minted.
+
+This is a technical verification contract. It does not make the derived ontology part of
+the PDTF schema or an OPDA-endorsed scheme.
 
 ## Ground-truth inputs (read-only — never edit these)
 - Merged ontology (TBox): `public/ontology/artefacts/opda-merged.ttl` (40 classes, 221 datatype props, 30 object props)

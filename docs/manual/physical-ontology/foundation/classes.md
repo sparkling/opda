@@ -54,7 +54,7 @@ None.
 
 #### Source ODR + ADR
 
-- [ODR-0004 §8a — PDTF ontology foundation](/modelling/odr/odr-0004)
+- [ODR-0004 §8a — schema-derived ontology foundation](/modelling/odr/odr-0004)
 - [ADR-0009 — Foundation TBox emission](/modelling/adr/adr-0009)
 
 ### opda:GeneratorRun

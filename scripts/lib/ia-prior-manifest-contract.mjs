@@ -37,6 +37,36 @@ export const PDTF1_SOURCE_ROUTE_MANIFEST = Object.freeze({
   addedRouteCount: 64,
   acceptedRouteCount: 3500,
 });
+export const SCHEMA_TO_SCHEME_SOURCE_ROUTE_ADDITIONS = Object.freeze([
+  ['/spdtf-2/working-groups/member-guide', 'spdtf-2/working-groups/member-guide/index.html', 'src/pages/spdtf-2/working-groups/member-guide/index.astro', 'c1d0168a17068d1b05e71fe8a188f5956987b094'],
+  ['/spdtf-2/working-groups/member-guide/getting-started', 'spdtf-2/working-groups/member-guide/getting-started/index.html', 'src/pages/spdtf-2/working-groups/member-guide/getting-started.astro', '968fe95c9a94d85cfe26de8e388c6c5735d2a577'],
+  ['/spdtf-2/working-groups/member-guide/meetings-and-records', 'spdtf-2/working-groups/member-guide/meetings-and-records/index.html', 'src/pages/spdtf-2/working-groups/member-guide/meetings-and-records.astro', '4b9eab6a25bc9719b0b01923f3c48069117f20fa'],
+  ['/spdtf-2/working-groups/member-guide/model-review-and-decisions', 'spdtf-2/working-groups/member-guide/model-review-and-decisions/index.html', 'src/pages/spdtf-2/working-groups/member-guide/model-review-and-decisions.astro', 'dc484578fae524400dc78df26e7dc012ad47558c'],
+  ['/spdtf-2/working-groups/member-guide/source-material-and-sharepoint', 'spdtf-2/working-groups/member-guide/source-material-and-sharepoint/index.html', 'src/pages/spdtf-2/working-groups/member-guide/source-material-and-sharepoint.astro', 'cd3d94e41a2c64cd0c2b0f8835521a01d3af3043'],
+  ['/spdtf-2/working-groups/member-guide/teams-and-discussions', 'spdtf-2/working-groups/member-guide/teams-and-discussions/index.html', 'src/pages/spdtf-2/working-groups/member-guide/teams-and-discussions.astro', '3822167b31ad496fd37a02e89c2084f85e01d5ac'],
+].map(([acceptedRoute, acceptedFile, sourceFile, sourceBlob]) => Object.freeze({
+  acceptedRoute, acceptedFile, sourceFile, sourceBlob,
+})));
+export const SCHEMA_TO_SCHEME_SOURCE_ROUTE_MANIFEST = Object.freeze({
+  commit: '3a52e644c57d2b4eed33d78e3a10810cc7a29171',
+  path: 'src/data/ia-route-baseline.json',
+  blob: 'c114dcc4d91706d122492e5bb57fa01cab5c74c6',
+  sha256: 'fa51038160b4921916aa22d365e420e9e641613509f3cf052c96d34f6316dee2',
+  schemaVersion: 7,
+  baselineCommit: PRIOR_IA_ROUTE_MANIFEST.baselineCommit,
+  acceptedCommit: '08c39c898883352339dc1ea001e2992611700faf',
+  routeCount: 3209,
+  addedRouteCount: 65,
+  retiredRouteCount: 227,
+  manifestAcceptedRouteCount: 3274,
+  supplementalRouteCount: 6,
+  supplementalRoutesSha256: '9ad56c09d1057762cd959b64c9ca614dad3b949a1ec96a2edd3143ee59241ab1',
+  acceptedRouteCount: 3280,
+  pdtfSchemaSourceRouteCount: 1264,
+  spdtfSourceRouteCount: 747,
+  pdtfIdentifierRouteCount: 1090,
+  propertyPackSourceRouteCount: 693,
+});
 
 const gitOptions = (root) => ({
   cwd: root, encoding: 'utf8', maxBuffer: 64 * 1024 * 1024,
@@ -85,7 +115,7 @@ export function loadPriorIaFamilyManifest(root) {
   return result;
 }
 
-/** Load the last accepted route cut before PDTF 1.0 documentation URLs moved. */
+/** Load the accepted cut before the PDTF schema documentation URLs moved. */
 export function loadPdtf1SourceRouteManifest(root) {
   requireAncestor(root, PDTF1_SOURCE_ROUTE_MANIFEST.commit, git(root, ['rev-parse', 'HEAD']));
   const result = loadPinnedManifest(root, PDTF1_SOURCE_ROUTE_MANIFEST);
@@ -103,9 +133,62 @@ export function loadPdtf1SourceRouteManifest(root) {
     || all.length !== PDTF1_SOURCE_ROUTE_MANIFEST.acceptedRouteCount
     || new Set(all.map(({ acceptedRoute }) => acceptedRoute)).size !== all.length
     || new Set(all.map(({ acceptedFile }) => acceptedFile)).size !== all.length) {
-    throw new Error('PDTF 1.0 source route manifest does not match its frozen contract');
+    throw new Error('PDTF schema source route manifest does not match its frozen contract');
   }
   return result;
+}
+
+function routeWithin(route, root) {
+  return route === root || route?.startsWith(`${root}/`);
+}
+
+/** Load the immutable reader-route cut immediately before schema-to-scheme renaming. */
+export function loadSchemaToSchemeSourceRouteManifest(root) {
+  requireAncestor(root, SCHEMA_TO_SCHEME_SOURCE_ROUTE_MANIFEST.commit, git(root, ['rev-parse', 'HEAD']));
+  const result = loadPinnedManifest(root, SCHEMA_TO_SCHEME_SOURCE_ROUTE_MANIFEST);
+  const { manifest } = result;
+  const routes = manifest.routes ?? [];
+  const additions = manifest.addedRoutes ?? [];
+  const retired = manifest.retiredRoutes ?? [];
+  const all = [...routes, ...additions];
+  const countWithin = (routeRoot) => all.filter(({ acceptedRoute }) => (
+    routeWithin(acceptedRoute, routeRoot)
+  )).length;
+  const supplemental = SCHEMA_TO_SCHEME_SOURCE_ROUTE_ADDITIONS;
+  const supplementalDigest = sha256(supplemental.map((record) => [
+    record.acceptedRoute, record.acceptedFile, record.sourceFile, record.sourceBlob,
+  ].join('\0')).sort().join('\n'));
+  const supplementalInvalid = supplemental.some((record) => (
+    git(root, ['rev-parse', `${SCHEMA_TO_SCHEME_SOURCE_ROUTE_MANIFEST.commit}:${record.sourceFile}`])
+      !== record.sourceBlob
+  ));
+  if (manifest.schemaVersion !== SCHEMA_TO_SCHEME_SOURCE_ROUTE_MANIFEST.schemaVersion
+    || manifest.baselineCommit !== SCHEMA_TO_SCHEME_SOURCE_ROUTE_MANIFEST.baselineCommit
+    || manifest.acceptedCommit !== SCHEMA_TO_SCHEME_SOURCE_ROUTE_MANIFEST.acceptedCommit
+    || manifest.routeCount !== SCHEMA_TO_SCHEME_SOURCE_ROUTE_MANIFEST.routeCount
+    || routes.length !== manifest.routeCount
+    || manifest.addedRouteCount !== SCHEMA_TO_SCHEME_SOURCE_ROUTE_MANIFEST.addedRouteCount
+    || additions.length !== manifest.addedRouteCount
+    || manifest.retiredRouteCount !== SCHEMA_TO_SCHEME_SOURCE_ROUTE_MANIFEST.retiredRouteCount
+    || retired.length !== manifest.retiredRouteCount
+    || all.length !== SCHEMA_TO_SCHEME_SOURCE_ROUTE_MANIFEST.manifestAcceptedRouteCount
+    || new Set(all.map(({ acceptedRoute }) => acceptedRoute)).size !== all.length
+    || new Set(all.map(({ acceptedFile }) => acceptedFile)).size !== all.length
+    || countWithin('/pdtf-1') !== SCHEMA_TO_SCHEME_SOURCE_ROUTE_MANIFEST.pdtfSchemaSourceRouteCount
+    || countWithin('/spdtf-2') + supplemental.length
+      !== SCHEMA_TO_SCHEME_SOURCE_ROUTE_MANIFEST.spdtfSourceRouteCount
+    || countWithin('/pdtf') !== SCHEMA_TO_SCHEME_SOURCE_ROUTE_MANIFEST.pdtfIdentifierRouteCount
+    || countWithin('/spdtf-2/property-pack')
+      !== SCHEMA_TO_SCHEME_SOURCE_ROUTE_MANIFEST.propertyPackSourceRouteCount
+    || supplemental.length !== SCHEMA_TO_SCHEME_SOURCE_ROUTE_MANIFEST.supplementalRouteCount
+    || supplementalDigest !== SCHEMA_TO_SCHEME_SOURCE_ROUTE_MANIFEST.supplementalRoutesSha256
+    || supplementalInvalid
+    || supplemental.some(({ acceptedRoute, acceptedFile }) => (
+      all.some((record) => record.acceptedRoute === acceptedRoute || record.acceptedFile === acceptedFile)
+    ))) {
+    throw new Error('schema-to-scheme source route manifest does not match its frozen contract');
+  }
+  return { ...result, supplementalRoutes: supplemental };
 }
 
 export function verifyBaselineRootCommit(root) {
@@ -117,7 +200,7 @@ export function verifyBaselineRootCommit(root) {
 /** Verify the built source cut used when historical pages were manifest-retained. */
 export function verifyPdtf1SourceRootCommit(root) {
   if (git(root, ['rev-parse', 'HEAD']) !== PDTF1_SOURCE_ROUTE_MANIFEST.acceptedCommit) {
-    throw new Error('PDTF 1.0 source root is not the frozen pre-migration accepted commit');
+    throw new Error('PDTF schema source root is not the frozen pre-migration accepted commit');
   }
 }
 

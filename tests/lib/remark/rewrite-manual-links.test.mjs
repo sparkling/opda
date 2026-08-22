@@ -10,7 +10,7 @@ import { createJiti } from 'jiti';
 import { unified } from 'unified';
 import remarkParse from 'remark-parse';
 
-const MODEL_ROOT = '/pdtf-1/extracted-ontology/model-views-by-audience';
+const MODEL_ROOT = '/pdtf-schema/schema-derived-ontology/model-views-by-audience';
 
 const jiti = createJiti(import.meta.url, { moduleCache: false });
 const { remarkRewriteManualLinks, toManualRoute } = await jiti.import(

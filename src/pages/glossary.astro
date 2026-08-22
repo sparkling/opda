@@ -23,7 +23,7 @@ import Layout from '@/layouts/Layout.astro';
       <table class="glossary-table">
         <thead><tr><th>Term</th><th>Full name</th><th>Role</th></tr></thead>
         <tbody>
-          <tr><td class="term">OPDA</td><td>Open Property Data Association</td><td>UK industry body for digital property data; owns PDTF.</td></tr>
+          <tr><td class="term">OPDA</td><td>Open Property Data Association</td><td>UK industry body for digital property data; publishes the PDTF schema and leads the collaborative SPDTF programme.</td></tr>
           <tr><td class="term">DPMSG</td><td>Digital Property Market Steering Group</td><td>Formed 1 Aug 2023 by HMLR. 13 founding members. Central convening body.</td></tr>
           <tr><td class="term">HBSG</td><td>Home Buying and Selling Group</td><td>Industry coordination body chaired by Kate Faulkner OBE. Custodian of BASPI. (DPMSG roadmap PDF renders as "HBSC" — same body.)</td></tr>
           <tr><td class="term">NTS</td><td>National Trading Standards</td><td>UK trading standards body.</td></tr>
@@ -69,16 +69,16 @@ import Layout from '@/layouts/Layout.astro';
       <table class="glossary-table">
         <thead><tr><th>Term</th><th>Full name</th><th>Role</th></tr></thead>
         <tbody>
-          <tr><td class="term">PDTF</td><td>Property Data Trust Framework</td><td>OPDA's umbrella standard — JSON Schemas + OpenAPI + Trust Framework spec.</td></tr>
-          <tr><td class="term">ToIP</td><td>Trust Over IP Foundation</td><td>Linux Foundation project. 4-layer governance model PDTF follows.</td></tr>
+          <tr><td class="term">PDTF schema</td><td>Property Data Trust Framework schema</td><td>The existing Digital Property Pack schema: JSON Schema, overlays, data dictionary and business glossary. The ontology extracted from these sources is separate, schema-derived evidence.</td></tr>
+          <tr><td class="term">ToIP</td><td>Trust Over IP Foundation</td><td>Linux Foundation project whose four-layer governance model informs OPDA's separate governance work.</td></tr>
           <tr><td class="term">DVSTF</td><td>Digital Verification Services Trust Framework</td><td>UK government trust framework for digital verification services (the rename of the former DIATF). DSIT-owned.</td></tr>
           <tr><td class="term">IDP</td><td>Identity Provider (plural IDPs)</td><td>Entity that authenticates users and issues identity claims/credentials. In OPDA context, typically a DVSTF-certified Identity Provider.</td></tr>
-          <tr><td class="term">SPDTF</td><td>Smart Property Data Trust Framework</td><td>The Smart Property evolution of the Property Data Trust Framework (formerly referred to as the versioned "v2.0" spec). Consistent with the Smart Property Data Trust Framework Sandbox naming.</td></tr>
-          <tr><td class="term">VC</td><td>Verifiable Credentials</td><td>W3C data model for cryptographically verifiable claims. SPDTF is VC-based.</td></tr>
-          <tr><td class="term">DID</td><td>Decentralized Identifier</td><td>W3C standard for self-sovereign identifiers. Explored for PDTF participants on the legacy <code>propdata.org.uk</code> site, but <strong>not an OPDA / MHCLG / DPMSG-ratified approach</strong> — still to be tested and certified against the emerging Smart Data Guidebook and DSIT Digital Verification Services.</td></tr>
+          <tr><td class="term">SPDTF</td><td>Smart Property Data Trust Framework</td><td>The first property scheme draft being authored collaboratively across industry and stakeholders. The PDTF schema and its separate schema-derived ontology are evidence inputs to that work.</td></tr>
+          <tr><td class="term">VC</td><td>Verifiable Credentials</td><td>W3C data model for cryptographically verifiable claims, used in existing OPDA semantic and trust-framework evidence for SPDTF review.</td></tr>
+          <tr><td class="term">DID</td><td>Decentralized Identifier</td><td>W3C standard for self-sovereign identifiers. Explored in legacy supporting material on <code>propdata.org.uk</code>, but <strong>not an OPDA / MHCLG / DPMSG-ratified approach</strong> — still to be tested and certified against the emerging Smart Data Guidebook and DSIT Digital Verification Services.</td></tr>
           <tr><td class="term">VCDM</td><td>Verifiable Credentials Data Model</td><td>W3C VC spec, versions 1.1 and 2.0 archived locally.</td></tr>
           <tr><td class="term">DIDComm</td><td>DID Communication</td><td>Secure-messaging protocol used between DID-identified parties. Like DID, an exploratory approach inherited from <code>propdata.org.uk</code> — not yet OPDA/MHCLG/DPMSG-ratified.</td></tr>
-          <tr><td class="term">OIDC</td><td>OpenID Connect</td><td>Identity layer over OAuth 2.0. Used in PDTF Auth pattern.</td></tr>
+          <tr><td class="term">OIDC</td><td>OpenID Connect</td><td>Identity layer over OAuth 2.0. Used in separate PDTF-schema-era authentication material.</td></tr>
           <tr><td class="term">FAPI</td><td>Financial-grade API</td><td>OpenID Foundation profile of OAuth 2.0 used by Open Banking and adopted as a baseline for high-assurance API authorisation.</td></tr>
           <tr><td class="term">DCAM</td><td>Data Management Capability Assessment Model</td><td>EDM Council framework. <strong>Not</strong> the framework OPDA has chosen (ToIP is).</td></tr>
           <tr><td class="term">DAMA-DMBOK</td><td>Data Management Body of Knowledge</td><td>Broader data management reference. Component-level usable.</td></tr>
@@ -89,7 +89,7 @@ import Layout from '@/layouts/Layout.astro';
           <tr><td class="term">SHACL</td><td>Shapes Constraint Language</td><td>W3C standard for validating RDF graphs.</td></tr>
           <tr><td class="term">DCAT</td><td>Data Catalog Vocabulary</td><td>W3C vocabulary for describing datasets.</td></tr>
           <tr><td class="term">RDF</td><td>Resource Description Framework</td><td>W3C foundational data model for the semantic web.</td></tr>
-          <tr><td class="term">JSON-LD</td><td>JSON for Linked Data</td><td>RDF serialisation in JSON. PDTF's bridge from JSON Schema to RDF.</td></tr>
+          <tr><td class="term">JSON-LD</td><td>JSON for Linked Data</td><td>RDF serialisation in JSON. Used in the separate ontology work that projects PDTF schema concepts into RDF.</td></tr>
         </tbody>
       </table>
 
@@ -127,7 +127,7 @@ import Layout from '@/layouts/Layout.astro';
         </tbody>
       </table>
 
-      <h2 id="concepts">Concepts (PDTF-internal)</h2>
+      <h2 id="concepts">OPDA programme concepts</h2>
 
       <table class="glossary-table">
         <thead><tr><th>Term</th><th>Definition</th></tr></thead>
@@ -136,7 +136,7 @@ import Layout from '@/layouts/Layout.astro';
           <tr><td class="term">Verified Claim</td><td>A data assertion with attached provenance — who said it, when, with what evidence.</td></tr>
           <tr><td class="term">Overlay</td><td>An optional extension to the base PDTF transaction schema (e.g. <a class="resource-link" href="/resource?path=source/03-standards/schemas/src/schemas/v3/overlays/baspi5.json" title="source/03-standards/schemas/src/schemas/v3/overlays/baspi5.json"><code>baspi5.json</code></a>).</td></tr>
           <tr><td class="term">Property Pack</td><td>The bundle of standardised property data that accompanies a transaction. HBSG initiative.</td></tr>
-          <tr><td class="term">Accreditation</td><td>OPDA's scheme for certifying members as trusted PDTF participants.</td></tr>
+          <tr><td class="term">Accreditation</td><td>OPDA's separate scheme for assessing participating organisations; it is not part of the PDTF schema.</td></tr>
           <tr><td class="term">Trust Registry</td><td>Authoritative list of who is authorised to do what within a trust framework.</td></tr>
         </tbody>
       </table>

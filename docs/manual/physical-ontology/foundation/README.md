@@ -176,7 +176,7 @@ owl:imports <https://opda.org.uk/pdtf/harness/release/1.0.0/>, <https://opda.org
 - [ADR-0009 — Foundation TBox emission](/modelling/adr/adr-0009)
 - [ADR-0011 — Module TBox emission](/modelling/adr/adr-0011)
 - [ADR-0014 — BASPI5 round-trip MVP harness](/modelling/adr/adr-0014) (G14)
-- [ODR-0004 — PDTF ontology foundation](/modelling/odr/odr-0004)
+- [ODR-0004 — schema-derived ontology foundation](/modelling/odr/odr-0004)
 - [ODR-0010 — Overlay profile mechanism](/modelling/odr/odr-0010) (ValidationContext)
 - [ODR-0011 — Enumeration vocabularies](/modelling/odr/odr-0011) (UFO meta-classes)
 - [ODR-0012 §Q5 — Special-category PII](/modelling/odr/odr-0012)

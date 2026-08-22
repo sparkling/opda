@@ -15,24 +15,27 @@ const PAGES = [
   'gap-register.astro',
 ].map(file => join(ROOT.pathname, 'src/pages/dbt-smart-data', file));
 
-const barePdtf = /\bPDTF\b(?!\s+1\.0\b)/;
+const barePdtf = /\bPDTF\b(?!\s+schema\b)/;
 const explicitlyLabelledSourceWording = /source (?:document|wording)|exact (?:source wording|ODR-0009 wording)/i;
 
-test('DBT Smart Data pages qualify PDTF 1.0 and SPDTF 2.0 Development terminology', async () => {
+test('DBT Smart Data pages distinguish the PDTF schema, derived evidence and SPDTF', async () => {
   for (const file of PAGES) {
     const source = await readFile(file, 'utf8');
     const name = basename(file);
 
-    if (!source.includes('PDTF 1.0')) {
-      throw new Error(`${name} must identify PDTF 1.0 when discussing the published baseline`);
+    if (!source.includes('PDTF schema')) {
+      throw new Error(`${name} must identify PDTF schema when discussing the published baseline`);
     }
-    if (!source.includes('SPDTF 2.0 Development')) {
-      throw new Error(`${name} must identify SPDTF 2.0 Development for future work`);
+    if (!source.includes('SPDTF')) {
+      throw new Error(`${name} must identify SPDTF for collaborative scheme work`);
+    }
+    if (source.includes('SPDTF Development')) {
+      throw new Error(`${name} must use SPDTF as the proper name and describe development in prose`);
     }
 
     for (const [index, line] of source.split('\n').entries()) {
       if (barePdtf.test(line) && !explicitlyLabelledSourceWording.test(line)) {
-        throw new Error(`${name}:${index + 1} contains unqualified PDTF; use PDTF 1.0 or explicitly label source wording`);
+        throw new Error(`${name}:${index + 1} contains unqualified PDTF; use PDTF schema or explicitly label source wording`);
       }
     }
   }

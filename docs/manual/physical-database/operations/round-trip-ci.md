@@ -227,4 +227,4 @@ The expected-report TTL serialiser became non-deterministic, or a fresh pyshacl 
 - [ADR-0013 — Overlay profile emission](/modelling/adr/adr-0013) §"Three-rule interface contract — CI enforcement".
 - [ADR-0014 — BASPI5 round-trip MVP harness](/modelling/adr/adr-0014) §"CI integration" + §Confirmation #3..#5.
 - [ODR-0010 — Overlay profile mechanism](../../../ontology/odr/) §Q6 (no-identity-override) + §Q7 (BASPI5 MVP gate).
-- [ODR-0003 — PDTF ontology programme](../../../ontology/odr/) §"Programme retirement criterion" condition (i).
+- [ODR-0003 — schema-derived ontology programme](../../../ontology/odr/) §"Programme retirement criterion" condition (i).

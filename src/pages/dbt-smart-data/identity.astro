@@ -7,7 +7,7 @@ const DOCX = `${BASE}/SMART DATA GUIDEBOOK_Chapter 1 Digital Identity Roles and 
 ---
 <Layout
   title="Ch.1 — Identity, roles & trust"
-  description="Smart Data Guidebook Chapter 1 (DRAFT V7): Minimum Viable Identity, the role catalogue, the six-stage scheme lifecycle, credential types and trust registries — and where its role model collides with the PDTF 1.0 baseline and raises SPDTF 2.0 Development questions."
+  description="Smart Data Guidebook Chapter 1 (DRAFT V7): Minimum Viable Identity, the role catalogue, the six-stage scheme lifecycle, credential types and trust registries — and the questions it raises for SPDTF when compared with the PDTF schema and separate schema-derived ontology."
 >
 <PageMeta category="The Guidebook" updated="Summarises DRAFT V7 · 10 May 2026" damaKa={["Data Governance", "Reference & Master Data"]} />
 
@@ -16,8 +16,9 @@ const DOCX = `${BASE}/SMART DATA GUIDEBOOK_Chapter 1 Digital Identity Roles and 
   <p class="lead">
     "The first mile of every scheme and the anchor for consent, authorisation and interoperability."
     Chapter 1 is on its <strong>seventh draft</strong> — the most worked-over document in the
-    Guidebook — and it has the <strong>deepest overlap with PDTF 1.0</strong>, because the published PDTF 1.0 corpus already
-    models participants, roles, DIDs, verifiable credentials and a trust registry — though
+    Guidebook — and it has the <strong>deepest overlap with existing OPDA evidence</strong>. The
+    PDTF schema provides the Digital Property Pack structure; the separate ontology extracted
+    from it models participants, roles, DIDs, verifiable credentials and a trust registry — though
     <strong>not</strong> assurance levels, which were removed from the corpus in July 2026.
   </p>
 
@@ -67,10 +68,11 @@ const DOCX = `${BASE}/SMART DATA GUIDEBOOK_Chapter 1 Digital Identity Roles and 
   </table>
 
   <div class="callout callout--key">
-    <div class="callout__label">These are not PDTF 1.0's roles — and that is the point</div>
+    <div class="callout__label">These are not the existing model's transaction roles — and that is the point</div>
     <p>
-      PDTF 1.0's roles are <strong>transaction roles</strong> (Seller, Buyer, Conveyancer, Estate Agent,
-      Lender, Surveyor). DBT's are <strong>infrastructure roles</strong>. They are orthogonal axes,
+      The PDTF schema and its derived ontology represent <strong>transaction roles</strong> (Seller,
+      Buyer, Conveyancer, Estate Agent, Lender, Surveyor). DBT's are <strong>infrastructure roles</strong>.
+      They are orthogonal axes,
       not competing lists — a conveyancer is simultaneously a data holder, an ATP, a relying party
       <em>and</em> an issuer depending on the flow. Full analysis:
       <a href="/dbt-smart-data/pdtf-overlap#roles">the role-model collision</a>.
@@ -106,11 +108,12 @@ const DOCX = `${BASE}/SMART DATA GUIDEBOOK_Chapter 1 Digital Identity Roles and 
   <div class="callout callout--note">
     <div class="callout__label">The CBOM is OPDA's open goal</div>
     <p>
-      PDTF 1.0 has <em>most</em> ingredients — VC types, issuers, a Bitstring Status List. The one it
-      lacks is the <strong>assurance type</strong> per credential (<code>opda:assuranceLevel</code>
+      The schema-derived ontology has <em>most</em> ingredients — VC types, issuers and a Bitstring
+      Status List. It lacks the <strong>assurance type</strong> per credential (<code>opda:assuranceLevel</code>
       was removed on 2026-07-05 per ODR-0009 — <a href="/dbt-smart-data/gap-register#sd13">gap SD13</a>).
-      Close that in SPDTF 2.0 Development, and a <strong>PDTF 1.0-compatible CBOM projection</strong> becomes the cheapest, highest-visibility
-      way to show a property Smart Data scheme could be built on the published baseline, should one be established.
+      Address that through SPDTF governance, and a <strong>CBOM projection compatible with the PDTF schema</strong>
+      becomes a visible way to show how the existing schema could inform a property Smart Data scheme,
+      should one be established.
     </p>
   </div>
 
@@ -127,30 +130,30 @@ const DOCX = `${BASE}/SMART DATA GUIDEBOOK_Chapter 1 Digital Identity Roles and 
     <li>Failure to maintain revocation or suspension information — "relying on stale trust signals is a systemic risk".</li>
   </ol>
 
-  <h2 id="pdtf">What this means for SPDTF 2.0 Development</h2>
+  <h2 id="pdtf">What this could mean for SPDTF</h2>
 
   <p>Full table on <a href="/dbt-smart-data/pdtf-overlap#asks-ch1">the overlap page</a>. The load-bearing findings:</p>
 
   <ul>
-    <li><strong>Power of Attorney, deputyship and executors must be "verifiable delegation credentials".</strong> Chapter 1 names PoA as a mechanism used across finance, energy <em>and property</em>. PDTF 1.0 has no delegation model at all; SPDTF 2.0 Development must decide whether and how to model it, and property is the delegation-heavy sector (<a href="/dbt-smart-data/gap-register#ranked">gap SD5</a>).</li>
-    <li><strong>Selective disclosure is unsupported</strong> — the PDTF 1.0 Ed25519 proof suite cannot do it. The Guidebook's ask is <em>conditional</em>; <em>our own</em> published claim that we already support it is not (<a href="/dbt-smart-data/gap-register#sd8">gap SD8</a>).</li>
-    <li><strong>The consent gap is the strategic exposure.</strong> Stage 3/4 presupposes a machine-readable consent object that data holders must <em>not</em> re-interpret. PDTF 1.0 cannot emit one; whether SPDTF 2.0 Development should model it is an open question. Every other sector has an answer; property has nothing named.</li>
+    <li><strong>Power of Attorney, deputyship and executors must be "verifiable delegation credentials".</strong> Chapter 1 names PoA as a mechanism used across finance, energy <em>and property</em>. Neither the PDTF schema nor its derived ontology has a delegation model; SPDTF participants must decide whether and how to model it, and property is the delegation-heavy sector (<a href="/dbt-smart-data/gap-register#ranked">gap SD5</a>).</li>
+    <li><strong>Selective disclosure is unsupported</strong> — the Ed25519 proof suite published alongside the PDTF schema cannot provide it. The Guidebook's ask is <em>conditional</em>; <em>our own</em> published claim that we already support it was not (<a href="/dbt-smart-data/gap-register#sd8">gap SD8</a>).</li>
+    <li><strong>The consent gap is the strategic exposure.</strong> Stage 3/4 presupposes a machine-readable consent object that data holders must <em>not</em> re-interpret. Neither the PDTF schema nor the schema-derived ontology can emit one; whether SPDTF should model it is an open question. Every other sector has an answer; property has nothing named.</li>
     <li><strong>Guardrail 5 is an unbounded demand.</strong> Read literally it invites a future editor to require property schemes to adopt data-holder/ATP terminology <em>in place of</em> Seller/Buyer/Conveyancer. DBT has promised a cross-reference table; <strong>OPDA should supply the property column rather than have it drafted for us.</strong></li>
-    <li><strong>"Schemes should rely on DVS certification, not accredit identity providers themselves"</strong> cuts against the PDTF 1.0 KYC/KYB issuer onboarding. The reconciliation: PDTF 1.0's issuers are not <em>identity</em> providers, they are <strong>issuers of facts about properties</strong> — and DVS has no certification route for "issuer of a fact about a building". Nobody certifies HM Land Registry as an ASP. <em>Say this plainly and early, or risk being told the accreditation function is redundant when it demonstrably is not.</em></li>
+    <li><strong>"Schemes should rely on DVS certification, not accredit identity providers themselves"</strong> cuts against KYC/KYB issuer onboarding in the separate trust-framework material produced alongside the PDTF schema. The reconciliation: its issuers are not <em>identity</em> providers, they are <strong>issuers of facts about properties</strong> — and DVS has no certification route for "issuer of a fact about a building". Nobody certifies HM Land Registry as an ASP. <em>Say this plainly and early, or risk being told the accreditation function is redundant when it demonstrably is not.</em></li>
   </ul>
 
   <h2 id="caveats">Caveats on this draft</h2>
 
   <ul>
-    <li><strong>It cannot decide what the standard is.</strong> One passage calls the bare "PDTF" (source wording) a peer of Open Banking and DVS; another calls it "a sandbox environment rather than operating as a statutory or mandated framework". Push for consistent framing — the sandbox sentence describes a <em>pilot deployment</em>, not PDTF 1.0.</li>
+    <li><strong>It cannot decide what the standard is.</strong> One passage calls the bare "PDTF" (source wording) a peer of Open Banking and DVS; another calls it "a sandbox environment rather than operating as a statutory or mandated framework". Push for consistent framing — the sandbox sentence describes a <em>pilot deployment</em>, not the PDTF schema.</li>
     <li><strong>The property section is stale.</strong> It says Open Property aligns to <strong>DIATF</strong> patterns — while the same chapter states DIATF has been superseded by the statutory DVS Trust Framework.</li>
     <li><strong>Almost everything is deferred</strong> — diagrams, the cross-reference table, conformance detail, role allocation. <strong>The 17 model clauses are the live surface</strong>: they are the only text concrete enough to become scheme regulation.</li>
   </ul>
 
   <h2 id="related">Related</h2>
   <ul>
-    <li><a href="/dbt-smart-data/pdtf-overlap#roles">The role-model collision</a> and <a href="/dbt-smart-data/pdtf-overlap#assurance">why PDTF 1.0 has no assurance-level vocabulary</a></li>
-    <li><a href="/governance/data-security">PDTF 1.0 data security framework</a> — DID key management, signature verification, revocation</li>
+    <li><a href="/dbt-smart-data/pdtf-overlap#roles">The role-model collision</a> and <a href="/dbt-smart-data/pdtf-overlap#assurance">why the schema-derived ontology has no assurance-level vocabulary</a></li>
+    <li><a href="/governance/data-security">Data security framework produced alongside the PDTF schema</a> — separate supporting material on DID key management, signature verification and revocation</li>
     <li><a href="/dbt-smart-data/user-lifecycle">Ch.3 — User lifecycle</a> — where the consent gap is worked out in full</li>
   </ul>
 </Layout>

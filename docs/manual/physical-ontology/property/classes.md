@@ -246,7 +246,7 @@ None directly at TBox level (identity-key shape lives at `opda:LegalEstate` per 
 ### opda:UPRNSuccessionEvent — REMOVED
 
 Removed 2026-07-05 (RML gap-closing session): confirmed zero basis anywhere
-in the PDTF v3 schema family (UPRN succession is cross-transaction history,
+in the PDTF schema v3 family (UPRN succession is cross-transaction history,
 which a single transaction instance cannot carry). No longer part of the
 active ontology. See ODR-0005's own removal amendment for the governance
 record.

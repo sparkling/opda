@@ -12,7 +12,7 @@ const pdfCount = files.filter(f => f.ext === 'pdf').length;
 ---
 <Layout
   title="DBT Smart Data"
-  description="DBT's cross-sector Smart Data Guidebook — Preamble and Chapters 1–5 — and the analysis of which future SPDTF 2.0 Development capabilities its asks may require, using PDTF 1.0 as the published baseline."
+  description="DBT's cross-sector Smart Data Guidebook — Preamble and Chapters 1–5 — and the questions it raises for SPDTF, using the PDTF schema and the separate schema-derived ontology as evidence."
 >
 <PageMeta category="Section overview" variant="brand" updated="Updated 2026-07-13" damaKa={["Data Governance"]} />
 
@@ -24,8 +24,8 @@ const pdfCount = files.filter(f => f.ext === 'pdf').length;
     every UK Smart Data scheme (open banking, open energy, <em>property</em>) is expected to
     operate under the <a href="/governance/legislation">Data (Use and Access) Act 2025</a>.
     This section tracks each document as DBT circulates it, and — the reason the section
-    exists — works out <a href="/dbt-smart-data/pdtf-overlap">which of its asks SPDTF 2.0 Development may need to
-    be able to encode</a>.
+    exists — works out <a href="/dbt-smart-data/pdtf-overlap">which of its asks the SPDTF scheme draft may
+    need to address</a>.
   </p>
 
 
@@ -83,8 +83,9 @@ const pdfCount = files.filter(f => f.ext === 'pdf').length;
   </table>
 
   <p>
-    <strong>PDTF 1.0 has a published JSON Schema implementation.</strong> Conflating the two either overstates OPDA's
-    obligations (implying SPDTF 2.0 Development must ship a security stack) or understates them (implying consent
+    <strong>The PDTF schema is the existing Digital Property Pack schema.</strong> SPDTF is a scheme,
+    so conflating a data standard with a scheme operator either overstates OPDA's obligations
+    (implying SPDTF must ship a security stack) or understates them (implying consent
     is "just UX, not our problem"). Both readings are wrong. Holding the two apart, ask by ask,
     is what <a href="/dbt-smart-data/pdtf-overlap">the overlap analysis</a> does — and it is the
     only thing in this section that DBT has not already written for us.
@@ -94,15 +95,17 @@ const pdfCount = files.filter(f => f.ext === 'pdf').length;
     <div class="callout__label">Smart Data and SPDTF are two different initiatives</div>
     <p>
       <strong>DBT's Smart Data</strong> is a cross-sector government programme under the Data (Use
-      and Access) Act. <strong>SPDTF</strong> is OPDA's property data standards programme; <strong>PDTF 1.0</strong>
-      is its published schema baseline. They are not two views of one thing, and <strong>SPDTF is not bound by the Guidebook</strong> — it does not
+      and Access) Act. <strong>The PDTF schema</strong> is the existing Digital Property Pack
+      schema. <strong>SPDTF</strong> is the first property scheme draft being authored collaboratively
+      across industry and stakeholders. They are not two views of one thing, and <strong>SPDTF is not bound by the Guidebook</strong> — it does not
       "conform" to it and cannot "fail" it.
     </p>
     <p style="margin-bottom: 0;">
       The relationship is <em>conditional</em>: <strong>if and when property becomes a designated
-      Smart Data scheme</strong>, SPDTF 2.0 Development would need to decide how to model certain things the Guidebook
-      assumes, using PDTF 1.0 as evidence. So everything in this section is framed as <em>capability</em> — "PDTF 1.0 cannot
-      currently say X" — and never as non-compliance. Read the
+      Smart Data scheme</strong>, SPDTF participants would need to decide how to address certain things
+      the Guidebook assumes, using the PDTF schema and its separately derived ontology as evidence.
+      Everything in this section is therefore framed as a <em>capability question</em>, never as
+      non-compliance. Read the
       <a href="/dbt-smart-data/gap-register">gap register</a> in that light.
     </p>
   </div>
@@ -135,7 +138,7 @@ const pdfCount = files.filter(f => f.ext === 'pdf').length;
     </thead>
     <tbody>
       <tr><td><a href="/dbt-smart-data/preamble">Preamble — Introductory principles and good practice</a></td><td>V5</td><td>10 principles · 8 risk categories</td></tr>
-      <tr><td><a href="/dbt-smart-data/identity">Ch.1 — Digital Identity, Roles and Trust Frameworks</a></td><td>V7</td><td>Deepest PDTF 1.0 overlap</td></tr>
+      <tr><td><a href="/dbt-smart-data/identity">Ch.1 — Digital Identity, Roles and Trust Frameworks</a></td><td>V7</td><td>Deepest overlap with existing OPDA evidence</td></tr>
       <tr><td><a href="/dbt-smart-data/governance-compliance">Ch.2 — Governance, Compliance and Legal Framework</a></td><td>V5</td><td>+ liability scoping paper</td></tr>
       <tr><td><a href="/dbt-smart-data/user-lifecycle">Ch.3 — User Lifecycle and Experience</a></td><td>V1</td><td>+ Which? consumer response</td></tr>
       <tr><td><a href="/dbt-smart-data/stewardship-privacy-ethics">Ch.4 — Data Stewardship, Privacy and Ethics</a></td><td>V2</td><td>Richest modelling obligations</td></tr>
@@ -171,13 +174,13 @@ const pdfCount = files.filter(f => f.ext === 'pdf').length;
   <div class="card-grid">
     <a class="card" href="/dbt-smart-data/pdtf-overlap">
       <div class="pill pill--brand">Start here</div>
-      <h3>What the Guidebook asks SPDTF 2.0 Development</h3>
+      <h3>What the Guidebook could mean for SPDTF</h3>
       <p>The layer separation applied ask by ask across all six documents — including where an ask creates <em>no</em> data-modelling obligation at all.</p>
     </a>
     <a class="card" href="/dbt-smart-data/gap-register">
       <div class="pill pill--warn">Gaps</div>
       <h3>Gap register</h3>
-      <p>What PDTF 1.0 cannot currently encode, and what SPDTF 2.0 Development may need to model; each claim is checked against the committed TTL corpus.</p>
+      <p>What the PDTF schema and separate schema-derived ontology do not currently encode, and what SPDTF may need to model; ontology claims are checked against the committed TTL corpus.</p>
     </a>
     <a class="card" href="/dbt-smart-data/preamble">
       <div class="pill pill--info">Guidebook</div>
@@ -187,7 +190,7 @@ const pdfCount = files.filter(f => f.ext === 'pdf').length;
     <a class="card" href="/dbt-smart-data/identity">
       <div class="pill pill--info">Guidebook</div>
       <h3>Ch.1 — Identity, roles &amp; trust</h3>
-      <p>Minimum Viable Identity, the six-stage lifecycle, trust registries, and the role-model collision with PDTF 1.0.</p>
+      <p>Minimum Viable Identity, the six-stage lifecycle, trust registries, and the role-model collision with the PDTF schema and its derived ontology.</p>
     </a>
     <a class="card" href="/dbt-smart-data/governance-compliance">
       <div class="pill pill--info">Guidebook</div>
@@ -214,7 +217,7 @@ const pdfCount = files.filter(f => f.ext === 'pdf').length;
   <h2 id="related">Related</h2>
   <ul>
     <li><a href="/governance/departments#dbt">Departments &amp; bodies — DBT</a> — DBT's other Smart Data workstreams (Council, Roadmap, Challenge).</li>
-    <li><a href="/governance/data-security">Data security framework</a> — the PDTF 1.0-era <em>published</em> security controls. Chapter 5 sits alongside this, not above it.</li>
+    <li><a href="/governance/data-security">Data security framework</a> — separately published security controls produced alongside the PDTF schema. Chapter 5 sits alongside this, not above it.</li>
     <li><a href="/governance/legislation">Legislation &amp; policy</a> — the Data (Use and Access) Act 2025.</li>
     <li><a href="/engagement/meetings-decisions#sdGuidebook">Meetings &amp; decisions</a> — the Guidebook working sessions.</li>
   </ul>

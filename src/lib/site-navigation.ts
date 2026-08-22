@@ -13,7 +13,7 @@ import {
 } from './section-navigation-journeys.ts';
 import { WORKING_GROUPS } from '../components/ia/working-groups.ts';
 
-type DestinationKey = 'programme' | 'spdtf-2' | 'working-groups' | 'pdtf-1' | 'governance' | 'resources';
+type DestinationKey = 'programme' | 'spdtf' | 'working-groups' | 'pdtf-schema' | 'governance' | 'resources';
 
 export interface NavigationMatch {
   section: NavigationSection;
@@ -64,39 +64,39 @@ function category(heading: string, url: string, items: Item[] = []): NavigationG
 }
 
 const ontologyJourney: Item = {
-  url: '/spdtf-2/ontologies',
+  url: '/spdtf/ontologies',
   title: 'Semantic modelling',
   children: [
     {
-      url: '/spdtf-2/ontologies/why-ontologies',
+      url: '/spdtf/ontologies/why-ontologies',
       title: 'Understand ontologies',
       children: [
-        { url: '/spdtf-2/ontologies/reading-the-model', title: 'How to read the model' },
+        { url: '/spdtf/ontologies/reading-the-model', title: 'How to read the model' },
       ],
     },
     {
-      url: '/spdtf-2/ontologies/modelling-method',
-      title: 'How we model SPDTF 2.0',
+      url: '/spdtf/ontologies/modelling-method',
+      title: 'How we model SPDTF',
       children: [
-        { url: '/spdtf-2/ontologies/semantic-package', title: 'Six-part semantic package' },
-        { url: '/spdtf-2/ontologies/bounded-contexts', title: 'Contexts and common boundary' },
-        { url: '/spdtf-2/ontologies/modelling-rules', title: 'Modelling rules and lenses' },
-        { url: '/spdtf-2/ontologies/coverage', title: 'Coverage checklist' },
-        { url: '/spdtf-2/ontologies/standards', title: 'Standards profile' },
-        { url: '/spdtf-2/ontologies/evidence-and-mappings', title: 'Evidence and mappings' },
-        { url: '/spdtf-2/ontologies/validation', title: 'Validation and projections' },
+        { url: '/spdtf/ontologies/semantic-package', title: 'Six-part semantic package' },
+        { url: '/spdtf/ontologies/bounded-contexts', title: 'Contexts and common boundary' },
+        { url: '/spdtf/ontologies/modelling-rules', title: 'Modelling rules and lenses' },
+        { url: '/spdtf/ontologies/coverage', title: 'Coverage checklist' },
+        { url: '/spdtf/ontologies/standards', title: 'Standards profile' },
+        { url: '/spdtf/ontologies/evidence-and-mappings', title: 'Evidence and mappings' },
+        { url: '/spdtf/ontologies/validation', title: 'Validation and projections' },
       ],
     },
   ],
 };
 
-const propertyPackBase = '/spdtf-2/property-pack';
+const propertyPackBase = '/spdtf/property-pack';
 const propertyPackJourney: Item = {
   url: propertyPackBase,
   title: 'Property Pack ontology',
   children: [
     { url: `${propertyPackBase}/definition-and-scope`, title: 'Definition and 451-item scope' },
-    { url: `${propertyPackBase}/pdtf-1-lineage`, title: 'PDTF 1.0 lineage' },
+    { url: `${propertyPackBase}/pdtf-schema-lineage`, title: 'PDTF schema lineage' },
     {
       url: `${propertyPackBase}/model`,
       title: 'Current ontology model',
@@ -137,7 +137,7 @@ const propertyPackJourney: Item = {
 };
 
 const workingGroupItems: Item[] = WORKING_GROUPS.map((group) => {
-  const url = `/spdtf-2/working-groups/${group.slug}`;
+  const url = `/spdtf/working-groups/${group.slug}`;
   return {
     url,
     title: group.name,
@@ -192,17 +192,17 @@ function requiredItem(items: Item[], url: string, title?: string): Item {
   return title ? { ...item, title } : item;
 }
 
-const pdtfSchemaJourney = sectionJourney('schema', 'pdtf-1', 'JSON Schemas and overlays', {
+const pdtfSchemaJourney = sectionJourney('schema', 'pdtf-schema', 'JSON Schemas and overlays', {
   url: `${PDTF1_ROUTES.original}/schema`,
   append: [{ url: `${PDTF1_ROUTES.original}/schema/overlays`, title: 'Schema overlays' }],
 });
-const pdtfImplementationJourney = sectionJourney('implementation', 'pdtf-1', 'Implementation guidance', {
+const pdtfImplementationJourney = sectionJourney('implementation', 'pdtf-schema', 'Implementation guidance', {
   url: `${PDTF1_ROUTES.original}/implementation`,
 });
-const pdtfAdoptionJourney = sectionJourney('adoption', 'pdtf-1', 'Adoption evidence', {
+const pdtfAdoptionJourney = sectionJourney('adoption', 'pdtf-schema', 'Adoption evidence', {
   url: `${PDTF1_ROUTES.original}/adoption`,
 });
-const pdtfModellingJourney = sectionJourney('modelling', 'pdtf-1', 'Historical modelling record', {
+const pdtfModellingJourney = sectionJourney('modelling', 'pdtf-schema', 'Historical modelling record', {
   url: PDTF1_ROUTES.historicalModelling,
   exclude: [
     `${PDTF1_ROUTES.original}/schema/overlays`,
@@ -210,31 +210,31 @@ const pdtfModellingJourney = sectionJourney('modelling', 'pdtf-1', 'Historical m
     `${PDTF1_ROUTES.original}/business-glossary`,
   ],
 });
-const pdtfMappingJourney = sectionJourney('mapping', 'pdtf-1', 'Schema-to-ontology verification', {
+const pdtfMappingJourney = sectionJourney('mapping', 'pdtf-schema', 'Schema-to-ontology verification', {
   url: PDTF1_ROUTES.schemaVerification,
 });
-const pdtfModelOverviewItems = ownedGroupItems('model', 'Overview', 'pdtf-1');
+const pdtfModelOverviewItems = ownedGroupItems('model', 'Overview', 'pdtf-schema');
 const pdtfModelJourney: Item = {
   url: PDTF1_ROUTES.modelViews,
   title: 'Model views by audience',
   children: [
     requiredItem(pdtfModelOverviewItems, `${PDTF1_ROUTES.modelViews}/information-architecture`),
-    linkedGroupJourney('model', 'Concept tier — for SMEs', 'pdtf-1',
+    linkedGroupJourney('model', 'Concept tier — for SMEs', 'pdtf-schema',
       `${PDTF1_ROUTES.modelViews}/concept`, 'Concept model'),
-    linkedGroupJourney('model', 'Logical tier — for engineers', 'pdtf-1',
+    linkedGroupJourney('model', 'Logical tier — for engineers', 'pdtf-schema',
       `${PDTF1_ROUTES.modelViews}/logical`, 'Logical model'),
-    linkedGroupJourney('model', 'Physical — ontology', 'pdtf-1',
+    linkedGroupJourney('model', 'Physical — ontology', 'pdtf-schema',
       `${PDTF1_ROUTES.modelViews}/physical-ontology`, 'Ontology implementation'),
-    linkedGroupJourney('model', 'Physical — deployment', 'pdtf-1',
+    linkedGroupJourney('model', 'Physical — deployment', 'pdtf-schema',
       `${PDTF1_ROUTES.modelViews}/physical-database`, 'Deployment topology'),
-    linkedGroupJourney('model', 'Physical — relational', 'pdtf-1',
+    linkedGroupJourney('model', 'Physical — relational', 'pdtf-schema',
       `${PDTF1_ROUTES.modelViews}/physical-relational`, 'Relational projection'),
     requiredItem(pdtfModelOverviewItems, `${PDTF1_ROUTES.modelViews}/validation-report`),
   ],
 };
 
 const pdtfOntologyItems = [
-  ...ownedSectionItems('ontology', 'pdtf-1')
+  ...ownedSectionItems('ontology', 'pdtf-schema')
     .filter(({ url }) => normalizeUrl(url) !== PDTF1_ROUTES.extracted),
   { url: `${PDTF1_ROUTES.terms}/datatypes`, title: 'Datatypes' },
   { url: `${PDTF1_ROUTES.use}/namespaces`, title: 'Namespaces' },
@@ -313,15 +313,15 @@ const navigationSections: Record<DestinationKey, NavigationSection> = {
       category('Programme activity', '/engagement/working-groups', ownedSectionItems('engagement', 'programme')),
     ],
   },
-  'spdtf-2': {
-    key: 'spdtf-2',
-    title: 'SPDTF 2.0 Development',
+  'spdtf': {
+    key: 'spdtf',
+    title: 'SPDTF',
     summary: 'Current evidence-up modelling, ontology method, the Property Pack component and wider candidates.',
     groups: [
-      category('Overview', '/spdtf-2', [
-        { url: '/spdtf-2/candidates', title: 'Candidate register' },
-        { url: '/spdtf-2/questions', title: 'Open questions and changes' },
-        { url: '/spdtf-2/outputs', title: 'Outputs and validation' },
+      category('Overview', '/spdtf', [
+        { url: '/spdtf/candidates', title: 'Candidate register' },
+        { url: '/spdtf/questions', title: 'Open questions and changes' },
+        { url: '/spdtf/outputs', title: 'Outputs and validation' },
       ]),
       category('Property Pack ontology', propertyPackJourney.url, propertyPackJourney.children),
       category(ontologyJourney.title, ontologyJourney.url, ontologyJourney.children),
@@ -330,26 +330,26 @@ const navigationSections: Record<DestinationKey, NavigationSection> = {
   'working-groups': {
     key: 'working-groups',
     title: 'Working groups',
-    summary: 'The canonical SPDTF 2.0 participant workspaces and review routes.',
+    summary: 'The canonical SPDTF participant workspaces and review routes.',
     groups: [
-      category('Member guide', '/spdtf-2/working-groups/member-guide', WORKING_GROUP_MEMBER_GUIDE_ITEMS),
-      category('Group workspaces', '/spdtf-2/working-groups', workingGroupItems),
+      category('Member guide', '/spdtf/working-groups/member-guide', WORKING_GROUP_MEMBER_GUIDE_ITEMS),
+      category('Group workspaces', '/spdtf/working-groups', workingGroupItems),
     ],
   },
-  'pdtf-1': {
-    key: 'pdtf-1',
-    title: 'PDTF 1.0',
+  'pdtf-schema': {
+    key: 'pdtf-schema',
+    title: 'PDTF schema',
     summary: 'The published schema implementation and status-labelled derived artefacts.',
     groups: [
       category('Overview', PDTF1_ROUTES.root),
-      category('Original standard', PDTF1_ROUTES.original, [
+      category('Schema and supporting material', PDTF1_ROUTES.original, [
         pdtfSchemaJourney,
         { url: `${PDTF1_ROUTES.original}/data-dictionary`, title: 'Data dictionary' },
         { url: `${PDTF1_ROUTES.original}/business-glossary`, title: 'Business glossary' },
         pdtfImplementationJourney,
-        pdtfAdoptionJourney,
+        { ...pdtfAdoptionJourney, title: 'Usage and implementation evidence' },
       ]),
-      category('Extracted ontology', PDTF1_ROUTES.extracted, [
+      category('Schema-derived ontology', PDTF1_ROUTES.extracted, [
         pdtfLineageJourney,
         pdtfModelJourney,
         pdtfConceptsJourney,

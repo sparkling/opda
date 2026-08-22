@@ -1,6 +1,7 @@
 ---
 status: accepted
 date: 2026-05-27
+updated: 2026-08-22
 kind: architecture
 tags: [vocabulary, catalogue]
 scope: []
@@ -164,7 +165,7 @@ Listed explicitly so future modellers know the question has been asked and the a
 |---|---|---|---|
 | **schema.org** | `schema` | Overlaps SKOS, Dublin Core, DCAT in confusing ways; no benefit inside the ontology core. H&M Council Session 371 deferred adoption (1-3-5 vote) | A concrete open-web publication use case materialises (e.g. JSON-LD embedding for SEO of OPDA documents). Even then, scope to publication outputs, not the ontology source |
 | **DCAT-AP / DCAT-AP EU** | `dcatap` | Adds EU-government catalogue profile constraints that may not match OPDA's UK-property-data scope. H&M S371 deferred (3-3-3 deadlock) | OPDA actually needs to publish to data.europa.eu or a UK government open-data portal that requires it |
-| **FIBO** | `fibo` | Financial Industry Business Ontology — large surface area; not used in H&M `src/`. Property-transaction finance touches FIBO but PDTF v2 does not depend on it | A property-transaction-finance modelling task arises that would otherwise require reinventing FIBO concepts |
+| **FIBO** | `fibo` | Financial Industry Business Ontology — large surface area; not used in H&M `src/`. Property-transaction finance touches FIBO but the ontology derived from the PDTF schema does not depend on it | A property-transaction-finance modelling task arises that would otherwise require reinventing FIBO concepts |
 | **SOSA/SSN, QUDT, GeoSPARQL** | (various) | Sensor, units-of-measurement, and geospatial vocabularies. Not in H&M `src/`. Plausibly relevant to OPDA (energy-performance sensors, EPC ratings with units, property-location geometry) but no current consumer | A pipeline producing the corresponding data starts (e.g. EPC/MEES ingestion, plot-boundary linked data) |
 | **FOAF** | `foaf` | Person/Agent modelling — superseded by `prov:Agent` + Dublin Core for our purposes. Not in H&M `src/`. Session 001 Q2 briefly reopened this; **ruled out** (programme decision — see References) | Not adopted (decided). The Kind-layer choice — W3C Org ontology vs bespoke `opda:`, `prov:Agent` for provenance only — is settled in [ODR-0006](./ODR-0006-agents-and-roles.md) |
 | **BBO (BPMN-Based Ontology)** | `bbo` | Process modelling — no current property-transaction workflow-publishing target. **Out for this programme** per Session 001 Q2 (unanimous). | A concrete workflow-publishing use case materialises. |
@@ -235,6 +236,7 @@ This catalogue is governed in place: amendments to tiering or rationale are reco
 
 | Date | Source | Row(s) affected | What changed |
 |---|---|---|---|
+| 2026-08-22 | OPDA Chair authority correction | FIBO rationale terminology | Clarified that the catalogue describes the schema-derived ontology. The PDTF schema and its derived ontology are attributed technical inputs, not an endorsed predecessor scheme; SPDTF is the first collaboratively authored scheme draft. Vocabulary disposition, historical council evidence and stable `/pdtf/**` identifiers are unchanged. |
 | 2026-05-20 | [Council Session 001](./council/session-001-pdtf-schema-to-ontology.md) Q2 | OWL-Time | Promoted to actively-adopted Conditional (was Conditional-deferred; PDTF brief had excluded it). Reason: PROV-O instants without OWL-Time intervals is incoherent for proprietorship / lease / claim-validity intervals (Guizzardi/Gandon). Vote ≈6-3 over "await a concrete consumer" dissent (Allemang/Davis). |
 | 2026-05-20 | Session 001 Q2 | DCAT 3 | Confirmed Conditional (Davis wanted Core; Baker held Conditional). Reason: ontology-as-published-dataset + reference data; near-zero marginal cost over `dct:`. Not Core — no catalogue-publishing task this round. |
 | 2026-05-20 | Session 001 Q2 | SSSOM / SEMAPV | Deferred for internal overlay refs; use `dct:source` to form-question IRIs in the interim. SSSOM earns its place mapping to *external* vocabularies (FIBO, INSPIRE, HMLR RDF). **Cagle dissent recorded (≈5-4).** Re-open trigger (per Session 014's owner role): external mapping work activates SSSOM. |
@@ -269,4 +271,3 @@ This catalogue is governed in place: amendments to tiering or rationale are reco
 - Conditional-tier gating is honour-system until SHACL gates are written; the follow-up is tracked in `docs/governance/deferred-work`.
 - The Defer tier is reviewable on a schedule (annual, or whenever a triggering use case arises). Promotion/demotion is recorded in `### Change log` above, attributed to the Council session that authored the change.
 - The amendment-ODR pattern is retired: changes to this catalogue land as new rows in `### Change log`, not in a parallel record.
-

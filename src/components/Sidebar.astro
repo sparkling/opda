@@ -56,11 +56,11 @@ function containsActive(item: Item): boolean {
         const containsActivePage = isActiveLocation || group.items.some(containsActive);
         const hasChildren = group.items.length > 0;
         const defaultOpen = hasChildren && containsActivePage;
-        const emphasizeFolders = section.key === 'pdtf-1' && group.url === PDTF1_ROUTES.extracted;
-        const legacyGroupId = section.key === 'pdtf-1' && group.url === PDTF1_ROUTES.extracted
-          ? 'section-nav-group-pdtf-1-ontology'
+        const emphasizeFolders = section.key === 'pdtf-schema' && group.url === PDTF1_ROUTES.extracted;
+        const namedGroupId = section.key === 'pdtf-schema' && group.url === PDTF1_ROUTES.extracted
+          ? 'section-nav-group-pdtf-schema-ontology'
           : null;
-        const childrenId = legacyGroupId ?? `section-nav-group-${section.key}-${group.url}`
+        const childrenId = namedGroupId ?? `section-nav-group-${section.key}-${group.url}`
           .replace(/[^a-z0-9]+/giu, '-').replace(/^-|-$/gu, '');
         return (
           <section

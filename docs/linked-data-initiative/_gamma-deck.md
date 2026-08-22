@@ -1,6 +1,6 @@
 <!--
 GAMMA DECK — paste-ready source
-OPDA quarterly tech review · the linked-data evolution of PDTF · 5 June 2026
+OPDA quarterly tech review · evidence for the schema-to-scheme progression · 5 June 2026
 
 WHY THIS FILE: the Gamma MCP connector was disconnected when this was generated
 (reconnect returned "Server not found"), so this is the manual import path. The
@@ -16,7 +16,7 @@ HOW TO IMPORT INTO GAMMA:
      ✅ Built / 🟡 Partial / 🔵 Planned labels must NOT be altered or invented.
   5. Pick a clean, professional theme → Generate.
 
-  Title to set: "From document to data: the linked-data evolution of PDTF"
+  Title to set: "From schema to scheme: linked-data evidence for SPDTF"
 
   (When the Gamma MCP reconnects, just say "try Gamma again" and I'll generate it
   automatically from this same content.)
@@ -24,11 +24,11 @@ HOW TO IMPORT INTO GAMMA:
 
 ════ COPY BELOW ════
 
-# From document to data: the linked-data evolution of PDTF
+# From schema to scheme: linked-data evidence for SPDTF
 
 OPDA quarterly tech review · 5 June 2026 · Henrik Pettersen
 
-We've turned the PDTF property-data standard from JSON Schema into a formal, machine-readable, governed semantic model — built with AI, validated and reproducible — and we propose making that model the single source of truth for the standard.
+The existing PDTF schema has been used to generate a formal, machine-readable semantic model. It is a separate draft technical artefact—not an endorsed scheme—and provides evidence for the collaboratively authored SPDTF scheme draft.
 
 ---
 
@@ -41,17 +41,17 @@ JSON Schema describes a document's shape — not its meaning.
 - No **governance/privacy** classification, no **validation beyond structure**, no **machine reasoning**
 - The cost: integration friction, fall-throughs, fraud risk
 
-PDTF today: ~37,000 lines of JSON Schema (v3.x) + a dozen statutory form overlays.
+The PDTF schema today: ~37,000 lines of JSON Schema (v3.x) + a dozen statutory form overlays.
 
 ---
 
-# What we're building
+# What the schema-derived model contributes
 
 A shared, machine-readable foundation for property data.
 
-- One governed model for **identity, meaning, provenance, privacy, roles and validation**
-- A foundation that can make standards, forms, APIs and AI more consistent
-- Built as an evolution of PDTF — not a parallel standard
+- Candidate modelling for **identity, meaning, provenance, privacy, roles and validation**
+- Technical evidence that can make SPDTF, forms, APIs and AI more consistent
+- A derivation from the PDTF schema—not part of that schema and not an endorsed scheme
 
 ---
 
@@ -70,7 +70,7 @@ The flagship modelling win.
 People are Kinds that *play* roles — founded by the transaction.
 
 - Buyer, Seller, Conveyancer… modelled as anti-rigid roles, not subclasses
-- A clean seam between **asserted capacity** and **evidenced authority** (probate, power of attorney) — PDTF collapsed this into free text
+- A clean seam between **asserted capacity** and **evidenced authority** (probate, power of attorney) — the PDTF schema collapsed this into free text
 - Enforced by SHACL (a regulated capacity must carry evidenced authority)
 
 🟡 role + authority substrate built · 🔵 machine-readable permission policies (ODRL) next
@@ -87,7 +87,7 @@ GDPR-grade privacy, in the model.
 
 ---
 
-# How we built it: the AI Council
+# How the technical evidence was built: the AI Council
 
 An AI "Linked Data Council" — rigour, not hand-waving.
 
@@ -95,11 +95,11 @@ An AI "Linked Data Council" — rigour, not hand-waving.
 - Mandatory **Devil's Advocate**, recorded **votes**, citations verified
 - A human **"directing authority" can override** (and did — kept slash URIs against a 5-2 vote)
 
-28 decision records (ODRs) · ~37 sessions. AI proposes, human disposes — with an audit trail.
+28 decision records (ODRs) · ~37 sessions. These are internal technical records with an audit trail, not OPDA or industry ratification.
 
 ---
 
-# Why you can trust it
+# Why the evidence is auditable
 
 Deterministic, validated, reproducible.
 
@@ -107,13 +107,13 @@ Deterministic, validated, reproducible.
 - **8 CI gates**; SHACL 1.2 validation + OWL-RL inference via **Apache Jena**
 - A **BASPI5 round-trip**: a real statutory form goes JSON → ontology → validated RDF → JSON, every field traceable to its source
 
-Proves fidelity AND continuity with existing PDTF.
+Tests technical traceability to the existing PDTF schema; it does not prove scheme adoption.
 
 ---
 
-# The vision: one model, every artefact
+# The SPDTF opportunity: governed meaning, many artefacts
 
-Make the model the single source of truth.
+Let collaborative SPDTF decisions determine the governed source of meaning.
 
 From the model, generate → **JSON Schema · APIs · code · DB schema/DDL · forms · UI/UX · docs**.
 
@@ -129,7 +129,7 @@ Linked data makes AI more capable — and we'll ship it.
 
 - The governed model = grounding, provenance, machine-actionable governance for AI
 - 🔵 **APIs + locally-installable MCP servers** for member firms (data sovereignty)
-- 🔵 **Embeddings + vectors** for semantic search over the standard
+- 🔵 **Embeddings + vectors** for semantic search over governed SPDTF material
 
 ---
 
@@ -144,8 +144,8 @@ Linked data makes AI more capable — and we'll ship it.
 
 # The takeaway
 
-- This is an evolution of PDTF, not a fork away from it
+- This is a progression from the PDTF schema to the collaboratively authored SPDTF scheme
 - The value is clearer meaning, stronger interoperability, and better foundations for automation and AI
 - Other complex sectors already use this kind of semantic foundation — OPDA can apply the same discipline to property data
 
-From a document standard to a data standard.
+From schema to scheme.

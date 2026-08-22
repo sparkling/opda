@@ -1,0 +1,89 @@
+---
+import Layout from '@/layouts/Layout.astro';
+import PageMeta from '@/components/PageMeta.astro';
+import GatewayCard from '@/components/ia/GatewayCard.astro';
+---
+
+<Layout
+  title="Lineage, provenance and verification"
+  description="Trace how the schema-derived ontology was sourced and decided, inspect its historical modelling record, and independently verify its correspondence with the PDTF JSON Schema."
+>
+  <PageMeta category="PDTF schema · schema-derived ontology" variant="brand" updated="Draft · under review" />
+  <h1>Lineage, provenance and verification</h1>
+  <p class="lead">
+    Use this category to follow the schema-derived ontology back to its PDTF schema sources,
+    understand the recorded modelling path, and inspect the separate checks that test the
+    schema–ontology correspondence. These are related forms of traceability, but they are
+    not interchangeable.
+  </p>
+
+  <div class="callout callout--warn">
+    <p class="callout__label">schema-derived draft</p>
+    <p>
+      This category documents a draft semantic corpus derived from PDTF schema. It is not an
+      approved SPDTF ontology. Each source, decision, historical record and verification
+      artefact keeps the maturity and authority stated on its own page.
+    </p>
+  </div>
+
+  <h2 id="three-traces">Three different traces</h2>
+  <table>
+    <caption>What each trace establishes and what it does not</caption>
+    <thead>
+      <tr><th scope="col">Trace</th><th scope="col">Question answered</th><th scope="col">Boundary</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <th scope="row">Source and decision provenance</th>
+        <td>Where did a term come from, and which ODR, ADR or council record governed the modelling choice?</td>
+        <td>A citation records lineage; it does not prove complete schema coverage.</td>
+      </tr>
+      <tr>
+        <th scope="row">Historical modelling record</th>
+        <td>Which standards, bounded contexts, taxonomy, OWL, SHACL and JSON-LD approaches were explored?</td>
+        <td>The record contains mixed-maturity work and explicitly retained stubs.</td>
+      </tr>
+      <tr>
+        <th scope="row">RML verification bridge</th>
+        <td>Do cited schema locations and ontology terms resolve in both directions?</td>
+        <td><strong>RML is an independent bidirectional verification bridge, not a derivation step or runtime ETL pipeline.</strong></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h2 id="follow">Follow the evidence</h2>
+  <div class="card-grid">
+    <GatewayCard
+      href="/pdtf-schema/schema-derived-ontology/lineage-provenance-and-verification/decision-provenance"
+      title="Decision provenance"
+      eyebrow="Source and decisions"
+      description="Use the full ODR, ADR and council corpus to trace term-level dct:source citations, the decisions governing every layer, retirement and reconciliation."
+    />
+    <GatewayCard
+      href="/pdtf-schema/schema-derived-ontology/lineage-provenance-and-verification/historical-modelling"
+      title="Historical modelling record"
+      eyebrow="Recorded method"
+      description="Review the standards stack, bounded-context work and retained taxonomy, OWL, SHACL and JSON-LD design records with their original maturity labels."
+    />
+    <GatewayCard
+      href="/pdtf-schema/schema-derived-ontology/lineage-provenance-and-verification/schema-to-ontology-verification"
+      title="RML schema–ontology verification"
+      eyebrow="Independent check"
+      description="Inspect the machine-checked bidirectional bridge: 466 of 469 domain-module resources (99.4%) traced to PDTF schema origins as an independent check alongside dct:source."
+    />
+    <GatewayCard
+      href="/pdtf-schema/schema-and-supporting-material"
+      title="PDTF schema and supporting material"
+      eyebrow="Source corpus"
+      description="Return to the JSON Schemas, overlays, dictionary, glossary and implementation material from which the semantic corpus was derived."
+    />
+  </div>
+
+  <h2 id="reading-order">A defensible reading order</h2>
+  <ol>
+    <li>Start with provenance to identify the stated source and governing decision.</li>
+    <li>Use the historical record to understand why a modelling approach was proposed or retained.</li>
+    <li>Use the RML coverage and validation pages to test correspondence independently.</li>
+    <li>Carry forward the page-level status; traceability does not promote a draft artefact.</li>
+  </ol>
+</Layout>

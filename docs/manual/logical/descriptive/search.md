@@ -11,7 +11,7 @@ title: Search
 
 ## Summary
 
-Local-authority or environmental search result (CON29R, LLC1, etc.). [Substance Kind (informational); UFO Substance Kind / PROV-O Entity]. Class-promoted per S008 Q4 three-criterion test (local-authority issuance chain; distinct lifecycle: ordered / returned / superseded; not a flat datatype bag). Covers CON29R / LLC1 / environmental / flood / coal-mining searches per PDTF v3 `propertyPack.localSearches`.
+Local-authority or environmental search result (CON29R, LLC1, etc.). [Substance Kind (informational); UFO Substance Kind / PROV-O Entity]. Class-promoted per S008 Q4 three-criterion test (local-authority issuance chain; distinct lifecycle: ordered / returned / superseded; not a flat datatype bag). Covers CON29R / LLC1 / environmental / flood / coal-mining searches per the PDTF schema v3 `propertyPack.localSearches`.
 [Concept tier →](../../concept/descriptive/search.md)
 
 ## Attributes

@@ -6,41 +6,41 @@ import GatewayCard from '@/components/ia/GatewayCard.astro';
 
 <Layout
   title="Programme"
-  description="The Smart Property Data Trust Framework programme: its purpose, continuation, policy context and current direction."
+  description="The Smart Property Data Trust Framework programme: its purpose, schema-to-scheme progression, policy context and current direction."
 >
   <PageMeta category="Programme" variant="brand" updated="Current programme view · 2026-08-18" />
   <h1>Programme</h1>
   <p class="lead">
-    The Smart Property Data Trust Framework (SPDTF) is an OPDA-led standards programme
-    for trusted, connected property data. This page explains the continuation from the
-    published PDTF 1.0 implementation into SPDTF 2.0 development.
+    The PDTF schema is the existing Digital Property Pack schema. SPDTF is the first
+    scheme draft authored collaboratively across the property industry and its stakeholders.
+    This page explains the progression from schema to scheme.
   </p>
 
   <div class="callout callout--key">
     <p class="callout__label">The short version</p>
     <p>
-      <strong>SPDTF 2.0 is in development, not adopted.</strong> PDTF 1.0 remains the
-      published schema implementation and its derived corpus. Its individual ontology,
-      model and mapping artefacts retain their own maturity; no replacement has been
-      authorised by this programme view.
+      <strong>SPDTF is in development, not adopted.</strong> The PDTF schema remains the
+      existing Digital Property Pack schema. The ontology extracted from it is a separate,
+      schema-derived evidence source, not part of the PDTF schema and not an approved SPDTF draft.
     </p>
   </div>
 
-  <h2 id="continuation">A continuation, not a reset</h2>
+  <h2 id="progression">From schema to scheme</h2>
   <p>
-    PDTF 1.0 provides schemas, overlays, dictionaries, documentation and implementation
-    evidence. SPDTF 2.0 development uses that material as attributed evidence alongside
-    participant evidence, recognised sources and competency questions. Domain working
-    groups then test meaning in bounded contexts before governance can promote any
-    candidate.
+    The PDTF schema provides JSON Schemas, overlays, a data dictionary, a business glossary
+    and implementation evidence. A separate ontology was extracted from those materials to
+    make their concepts, relationships and constraints inspectable. SPDTF development uses
+    both bodies of evidence alongside participant evidence, recognised sources and competency
+    questions. Domain working groups test meaning in bounded contexts before governance can
+    promote any candidate into the collaboratively authored scheme draft.
   </p>
   <table>
-    <caption>How the two bodies of work relate</caption>
-    <thead><tr><th scope="col">PDTF 1.0</th><th scope="col">SPDTF 2.0 development</th></tr></thead>
+    <caption>How the three bodies of work relate</caption>
+    <thead><tr><th scope="col">PDTF schema</th><th scope="col">Schema-derived ontology</th><th scope="col">SPDTF</th></tr></thead>
     <tbody>
-      <tr><td>Published schema implementation plus derived artefacts.</td><td>Evidence-up modelling and reviewable candidates.</td></tr>
-      <tr><td>Useful compatibility, constraint, coverage and migration evidence.</td><td>Human working groups own domain meaning; governance controls promotion.</td></tr>
-      <tr><td>Each child artefact keeps its own status.</td><td>Not a release, ratification or replacement standard.</td></tr>
+      <tr><td>The existing Digital Property Pack JSON Schema, overlays, dictionary and glossary.</td><td>A separate extraction that exposes concepts, relationships, constraints and provenance for review.</td><td>The first scheme draft authored collaboratively across industry and stakeholders.</td></tr>
+      <tr><td>Provides implementation, compatibility and migration evidence.</td><td>Provides semantic and coverage evidence; it does not acquire the schema's authority.</td><td>Uses both evidence sets alongside participant sources and working-group decisions.</td></tr>
+      <tr><td>Remains available for existing implementations.</td><td>Keeps its own maturity and provenance labels.</td><td>Working groups own domain meaning; governance controls candidate promotion.</td></tr>
     </tbody>
   </table>
 
@@ -60,9 +60,9 @@ import GatewayCard from '@/components/ia/GatewayCard.astro';
 
   <h2 id="start">Choose a starting point</h2>
   <div class="card-grid">
-    <GatewayCard href="/spdtf-2" title="SPDTF 2.0 Development" eyebrow="Develop" description="Follow the evidence-up method, ontologies journey, candidates and generated projections." />
-    <GatewayCard href="/spdtf-2/working-groups" title="Working groups" eyebrow="Participate" description="Join the single SPDTF 2.0 working-group family, including Interoperability." />
-    <GatewayCard href="/pdtf-1" title="PDTF 1.0" eyebrow="Implement" description="Find the published schema implementation and derived artefacts with their own status." />
+    <GatewayCard href="/spdtf" title="SPDTF" eyebrow="Develop" description="Follow the evidence-up method, ontology work, candidates and the first collaboratively authored scheme draft." />
+    <GatewayCard href="/spdtf/working-groups" title="Working groups" eyebrow="Participate" description="Join the single SPDTF working-group family, including Interoperability." />
+    <GatewayCard href="/pdtf-schema" title="PDTF schema" eyebrow="Implement" description="Find the existing Digital Property Pack schema, its supporting dictionary and glossary, and the separately labelled schema-derived ontology." />
     <GatewayCard href="/resources" title="Resources" eyebrow="Trace" description="Find attributed sources, programme records, standards references and historical material." />
   </div>
 </Layout>

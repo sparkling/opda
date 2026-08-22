@@ -50,7 +50,7 @@ test('canonical IA tables and group pages reflow at 320 CSS px', async ({ page }
   for (const path of [
     ...SEMANTIC_MODELLING_ROUTES,
     ...PDTF_ONTOLOGY_CATEGORY_ROUTES,
-    '/spdtf-2/working-groups/estate-agency',
+    '/spdtf/working-groups/estate-agency',
   ]) {
     await visit(page, path);
     await assertNoBodyOverflow(page);
@@ -104,7 +104,7 @@ test('section rails, page navigation and content stay inside the shared containe
   }
 
   await page.setViewportSize({ width: 1281, height: 1000 });
-  await visit(page, '/spdtf-2/ontologies');
+  await visit(page, '/spdtf/ontologies');
   await assertNoBodyOverflow(page);
   const gateway = await page.locator('.card-grid').first().evaluate((node) => {
     const container = node.getBoundingClientRect();
@@ -150,7 +150,7 @@ test('text flows to its outer content container without nested max-widths', asyn
 test('Property Pack candidate status reflows inside the available article track', async ({ page }) => {
   const clean = watchRuntime(page);
   await page.setViewportSize({ width: 1281, height: 900 });
-  await visit(page, '/spdtf-2/property-pack/validation');
+  await visit(page, '/spdtf/property-pack/validation');
   await page.locator('.v2-candidate-banner > summary').click();
   await assertNoBodyOverflow(page);
   const containment = await page.locator('.v2-candidate-banner, .v2-candidate-banner > summary, .v2-candidate-banner__content, .v2-candidate-banner__content > *')

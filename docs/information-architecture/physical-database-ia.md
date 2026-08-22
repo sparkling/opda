@@ -9,7 +9,7 @@ implements: []
 
 # IA spec — Physical-tier presentation (deployment / database)
 
-This document specifies how the **Physical-tier (deployment / database) presentation** of OPDA's ontology is laid out. It is a *blueprint*: the actual Physical-DB-tier docs that follow this spec are a separate deliverable.
+This document specifies how the **Physical-tier (deployment / database) presentation** of the draft ontology derived from the PDTF schema is laid out. It is a *blueprint*: the actual Physical-DB-tier docs that follow this spec are a separate deliverable. The ontology is a separate technical artefact and evidence for SPDTF, not an endorsed scheme.
 
 ## What "physical database" means for OPDA
 
@@ -143,7 +143,7 @@ Each file: what the gate enforces, the command, the expected output, what a fail
 - Business-language narrative — see [`concept-model-ia.md`](./concept-model-ia.md).
 - Platform-independent typed attributes — see [`logical-model-ia.md`](./logical-model-ia.md).
 - OWL / SHACL / SKOS / Turtle syntax of the source files — see [`physical-ontology-ia.md`](./physical-ontology-ia.md).
-- The PDTF JSON Schemas (`source/03-standards/schemas/`) — they are upstream Council programme input, not deployment output. They have their own documentation in the schemas nested repo.
+- The PDTF schema corpus (`source/03-standards/schemas/`) — it is upstream input to the internal technical project, not deployment output. It has its own documentation in the nested schemas repo.
 
 ## Worked-template excerpt (one consumer profile, schematic)
 

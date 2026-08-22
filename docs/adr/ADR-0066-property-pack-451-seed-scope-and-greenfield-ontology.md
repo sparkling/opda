@@ -1,18 +1,18 @@
 ---
 status: accepted
 date: 2026-08-03
-updated: 2026-08-19
+updated: 2026-08-22
 tags: [ontology, property-pack, greenfield, provenance, toml, generation, semantic-modelling]
 supersedes: []
 depends-on: [ADR-0039]
-implements: [scripts/property_pack_catalogue.py, scripts/property_pack_candidate.py, src/data/property-pack, source/03-standards/ontology-candidates/property-pack/0.1, src/pages/spdtf-2/property-pack]
+implements: [scripts/property_pack_catalogue.py, scripts/property_pack_candidate.py, src/data/property-pack, source/03-standards/ontology-candidates/property-pack/0.1, src/pages/spdtf/property-pack]
 ---
 
 # The 451 required Property Pack data points are the closed seed scope for a greenfield ontology
 
 ## Context and Problem Statement
 
-The first OPDA ontology was generated from the existing JSON schemas and their form overlays.
+The schema-derived OPDA ontology was generated from the PDTF schema and its form overlays.
 That work proved the linked-data toolchain, but its semantic foundation inherited the source
 tree's weaknesses: uneven domain engagement, form-driven additions, weak definitions, accidental
 identity decisions, and a tendency to treat nested fields as if the nesting already described
@@ -24,9 +24,9 @@ rows marked `Required`. Maria Harris described the intended core as “principal
 These items give the work a closed coverage boundary without dictating the ontology structure.
 
 The evidence is not semantically complete. Of the 451 rows, 283 are conditionally required, 133
-traverse arrays, and 240 have no workbook description. The local v3.5 schema corroborates every
-path and source datatype, but it is part of the legacy design and is not authority for the new
-model's resources, relationships, attributes, identities or bounded-context ownership.
+traverse arrays, and 240 have no workbook description. The PDTF schema v3.5 corpus corroborates
+every path and source datatype, but it is part of the inherited design and is not authority for
+the new model's resources, relationships, attributes, identities or bounded-context ownership.
 
 ## Decision Drivers
 
@@ -38,7 +38,7 @@ model's resources, relationships, attributes, identities or bounded-context owne
 - Keep one maintained source and generate the JSON and web views deterministically.
 - Retain the ontology-led direction of ADR-0039 while withdrawing full-schema round-trip as an
   acceptance condition for the greenfield model.
-- Keep the current published ontology intact until a separately governed migration is ready.
+- Keep the published schema-derived ontology intact until a separately governed migration is ready.
 
 ## Considered Options
 
@@ -62,7 +62,7 @@ controlled vocabularies, constraints and bounded-context ownership open to expli
 Build a new, greenfield ontology whose closed initial business-data scope is exactly the 451 rows
 marked `Required` in the authoritative Property Pack workbook.
 
-The previous ontology, full PDTF schema, optional fields and form overlays do **not** seed semantic
+The previous schema-derived ontology, full PDTF schema, optional fields and form overlays do **not** seed semantic
 assertions in this model. They may be consulted for attributed audit, comparison and migration
 analysis, but may not silently add a source field, term, restriction or vocabulary.
 
@@ -98,7 +98,7 @@ The enriched TOML catalogue is the single maintained source:
 Each TOML record must distinguish:
 
 1. workbook source facts;
-2. attributed legacy-schema corroboration;
+2. attributed PDTF schema corroboration;
 3. machine-drafted labels and definitions;
 4. unresolved or human-approved modelling decisions;
 5. provenance, confidence, review and approval state.
@@ -160,8 +160,8 @@ mappings, and recorded human approval is still required before a semantic releas
   governed and is not authorised by this ADR.
 - Bad, because the initial catalogue contains unresolved model roles and low-confidence drafted
   definitions; substantial domain review is still required.
-- Bad, because the greenfield model will not initially round-trip the full legacy PDTF schema.
-- Bad, because the old published ontology and new candidate model must coexist until migration is
+- Bad, because the greenfield model will not initially round-trip the full PDTF schema.
+- Bad, because the published schema-derived ontology and new candidate model must coexist until migration is
   explicitly approved.
 
 ## Implementation Status
@@ -170,7 +170,7 @@ mappings, and recorded human approval is still required before a semantic releas
 |---|---|---|
 | Extract and reconcile the 451-row baseline | Complete | [Validation report](../../src/data/property-pack/validation-report.json) |
 | TOML single source and deterministic JSON | Complete | [`property_pack_catalogue.py`](../../scripts/property_pack_catalogue.py) |
-| Searchable local working view | Complete | `/spdtf-2/property-pack/definition-and-scope` |
+| Searchable local working view | Complete | `/spdtf/property-pack/definition-and-scope` |
 | Domain/context ownership candidates | Generated; human review pending | All 451 items have one proposed semantic home; common contains one source item |
 | Resource/relationship/attribute classification | Generated; human review pending | Every item reaches one or more of 159 traced candidate resources |
 | Vocabulary rationalisation and definition review | Generated; human review pending | 14 candidate SKOS schemes; definitions remain machine-proposed |
@@ -180,7 +180,7 @@ mappings, and recorded human approval is still required before a semantic releas
 ## Evidence and Related Decisions
 
 - [451-item evidence validation](../research/property-pack-451-evidence-validation.md)
-- [ADR-0039 — Linked-data model as the foundation](./ADR-0039-linked-data-model-as-pdtf-standards-foundation.md)
+- [ADR-0039 — Linked-data model as the SPDTF foundation](./ADR-0039-linked-data-model-as-spdtf-foundation.md)
 
 ## Amendments
 
@@ -192,18 +192,24 @@ mappings, and recorded human approval is still required before a semantic releas
   context-owned SHACL shapes and a fail-closed deterministic validation receipt. All semantic
   dispositions remain machine proposals pending human review.
 - **2026-08-04 — Public review authorised.** The operator authorised publication of the isolated
-  candidate under the V2 review section. Publication makes the candidate reviewable; it does not
-  approve its semantics or replace the current ontology.
-- **2026-08-19 — SPDTF 2.0 lineage and review sequence clarified by ADR-0075.** The `/v2/**`
-  corpus is the Property Pack ontology within SPDTF 2.0, not an external development input. The
-  original PDTF 1.0 schema contains the complete 451-item source scope and its extracted ontology
+  candidate under the Property Pack review section. Publication makes the candidate reviewable; it does not
+  approve its semantics or replace the schema-derived ontology.
+- **2026-08-19 — SPDTF lineage and review sequence clarified by ADR-0075.** The `/v2/**`
+  corpus is the Property Pack ontology within SPDTF, not an external development input. The
+  PDTF schema contains the complete 451-item source scope and its schema-derived ontology
   is expected to contain corresponding semantic coverage, but a maintained item-to-ontology
   crosswalk must verify that expectation. The Technical Working Group makes the accelerated
   September determination; wider domain-group review and controlled revision follow later.
 - **2026-08-19 — Canonical route consolidation authorised.** The 451-item browser and
-  all source-scope evidence move to `/spdtf-2/property-pack/definition-and-scope`;
+  all source-scope evidence move to `/spdtf/property-pack/definition-and-scope`;
   `/modelling/property-pack` is removed without a redirect under ADR-0075's explicit
   move-and-retention contract. The technical corpus follows ADR-0075's exact mapping:
-  old `/v2` maps to `/spdtf-2/property-pack`, old `/v2/comparison` maps to
-  `/spdtf-2/property-pack/pdtf-1-lineage`, and every other old `/v2/{suffix}` maps to
-  `/spdtf-2/property-pack/{suffix}`, with no redirects.
+  old `/v2` maps to `/spdtf/property-pack`, old `/v2/comparison` maps to
+  `/spdtf/property-pack/pdtf-schema-lineage`, and every other old `/v2/{suffix}` maps to
+  `/spdtf/property-pack/{suffix}`, with no redirects.
+- **2026-08-22 — Chair-authority terminology correction.** The Property Pack candidate
+  is an accelerated component of SPDTF, the first collaboratively authored scheme draft.
+  The existing input is the PDTF schema; its extracted ontology is a separately identified
+  schema-derived technical artefact. Neither is an OPDA-endorsed predecessor scheme.
+  The lineage and review sequence now describes schema to scheme, while source evidence
+  and stable `/pdtf/**` identifiers remain unchanged.

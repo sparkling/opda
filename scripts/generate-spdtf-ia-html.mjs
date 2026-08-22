@@ -4,8 +4,8 @@ import { readFile, writeFile } from 'node:fs/promises';
 import process from 'node:process';
 import { marked } from 'marked';
 
-const markdownPath = new URL('../docs/spdtf-2-0-information-architecture.md', import.meta.url);
-const htmlPath = new URL('../docs/spdtf-2-0-information-architecture.html', import.meta.url);
+const markdownPath = new URL('../docs/spdtf-information-architecture.md', import.meta.url);
+const htmlPath = new URL('../docs/spdtf-information-architecture.html', import.meta.url);
 const checkOnly = process.argv.includes('--check');
 
 function escapeAttribute(value) {
@@ -111,20 +111,76 @@ function buildHtml(template, markdown) {
   const toc = `<nav class="toc" id="toc" aria-label="On this page"><strong>Contents</strong>${headings
     .map(({ id, text }) => `<a href="#${id}">${text}</a>`)
     .join('')}</nav>`;
-  const main = `<main class="content" id="main" tabindex="-1">${body}<p class="print-note">Companion review artefact synchronized with <code>docs/spdtf-2-0-information-architecture.md</code>. No external resources are loaded; publication remains a separate release operation.</p></main>`;
+  const main = `<main class="content" id="main" tabindex="-1">${body}<p class="print-note">Companion review artefact synchronized with <code>docs/spdtf-information-architecture.md</code>. No external resources are loaded; publication remains a separate release operation.</p></main>`;
 
   let output = template;
   output = output.replace(/<nav class="toc" id="toc" aria-label="On this page">[\s\S]*?<\/nav><\/aside>/u, `${toc}</aside>`);
   output = output.replace(/<main class="content" id="main"(?: tabindex="-1")?>[\s\S]*?<\/main>(?=<\/div><footer)/u, main);
-  output = replaceKnown(output, '<title>Proposed SPDTF 2.0 information architecture · OPDA</title>', '<title>SPDTF 2.0 information architecture · OPDA</title>', 'document title');
+  output = replaceKnown(output, '<title>Proposed SPDTF information architecture · OPDA</title>', '<title>SPDTF information architecture · OPDA</title>', 'document title');
   output = replaceKnown(output, 'Information architecture review · 18 August 2026', 'Information architecture · 19 August 2026', 'header date');
-  output = replaceKnown(output, 'content="Proposed information architecture for the continuation from PDTF 1.0 into SPDTF 2.0 development."', 'content="Implemented information architecture for the continuation from PDTF 1.0 into SPDTF 2.0 development."', 'meta description');
+  output = output
+    .replace(
+      'content="Proposed information architecture for the continuation from PDTF schema into SPDTF development."',
+      'content="Proposed information architecture for the progression from the PDTF schema to the collaboratively authored SPDTF scheme draft."',
+    )
+    .replace(
+      'content="Implemented information architecture for the continuation from PDTF schema into SPDTF development."',
+      'content="Implemented information architecture for the progression from the PDTF schema to the collaboratively authored SPDTF scheme draft."',
+    );
+  output = replaceKnown(
+    output,
+    'content="Proposed information architecture for the progression from the PDTF schema to the collaboratively authored SPDTF scheme draft."',
+    'content="Implemented information architecture for the progression from the PDTF schema to the collaboratively authored SPDTF scheme draft."',
+    'meta description',
+  );
   output = replaceKnown(output, '<p class="eyebrow">Proposed · no live-site change</p>', '<p class="eyebrow">Implemented on feature branch · publication pending</p>', 'hero status');
   output = replaceKnown(output, 'aria-label="Proposal summary"', 'aria-label="Implementation summary"', 'summary label');
   output = replaceKnown(output, 'aria-label="Proposed global navigation"', 'aria-label="Implemented global navigation"', 'navigation label');
   output = output.replaceAll('#proposed-hierarchy', '#implemented-hierarchy');
   output = output.replaceAll('#current-to-proposed-placement', '#current-to-implemented-placement');
-  output = replaceKnown(output, '<strong>OPDA · Proposed SPDTF 2.0 information architecture</strong>', '<strong>OPDA · SPDTF 2.0 information architecture</strong>', 'footer title');
+  const shellCopy = [
+    [
+      'A task-led information architecture that preserves the PDTF schema implementation while making SPDTF development, review and authority explicit.',
+      'A task-led information architecture that distinguishes the PDTF schema from the collaborative development, review and authority of SPDTF.',
+    ],
+    [
+      'PDTF schema includes the published schema implementation and derived artefacts with their own status. SPDTF is work in development, not a released or adopted standard; no replacement or support decision is made here.',
+      'The PDTF schema is the published schema implementation. Its separately derived ontology is draft technical evidence, not part of the schema or an endorsed scheme. SPDTF is the first collaboratively authored scheme draft and remains in development.',
+    ],
+    ['<span>continuous programme</span>', '<span>schema-to-scheme programme</span>'],
+    ['>SPDTF Development</a>', '>SPDTF</a>'],
+    [
+      '<h2 id="overview-heading">Preserve continuity; make authority and maturity explicit</h2>',
+      '<h2 id="overview-heading">Show the schema-to-scheme progression and its authority boundaries</h2>',
+    ],
+    [
+      'Schema-led implementation plus derived ontology, model, mappings and guidance. Each child artefact keeps its own maturity and review status.',
+      'Published JSON Schema package, dictionary, glossary, overlays and implementation material. The separately derived ontology is evidence with its own draft status.',
+    ],
+    ['<h3>SPDTF Development</h3>', '<h3>SPDTF</h3>'],
+    ['Programme continuation diagram; scroll horizontally', 'Schema-to-scheme programme diagram; scroll horizontally'],
+    [
+      'How PDTF schema and other evidence inform SPDTF development',
+      'How the PDTF schema and separate evidence inform SPDTF',
+    ],
+    [
+      'Participant evidence, recognised sources, the PDTF schema semantic corpus and a machine-generated Property Pack pre-draft inform context-owned SPDTF ontology candidates. Human review produces a first working-group draft. One governance registry records authority throughout.',
+      'Participant evidence, recognised sources, the PDTF schema and a separately derived draft ontology inform SPDTF ontology candidates. The Property Pack ontology is an accelerated SPDTF component. Human review produces a first working-group draft, with authority recorded throughout.',
+    ],
+    ['<text x="135" y="224" text-anchor="middle">PDTF schema corpus</text>', '<text x="135" y="224" text-anchor="middle">PDTF schema</text>'],
+    ['<text class="small" x="135" y="246" text-anchor="middle">attributed evidence + compatibility</text>', '<text class="small" x="135" y="246" text-anchor="middle">source paths + compatibility evidence</text>'],
+    ['<text class="on-amber" x="410" y="221" text-anchor="middle">Property Pack input</text>', '<text class="on-amber" x="410" y="221" text-anchor="middle">Schema-derived ontology</text>'],
+    ['<text class="on-amber" x="410" y="243" text-anchor="middle">machine-generated pre-draft</text>', '<text class="on-amber" x="410" y="243" text-anchor="middle">separate draft technical evidence</text>'],
+    ['<text x="695" y="117" text-anchor="middle" font-weight="800">Context-owned ontologies</text>', '<text x="695" y="117" text-anchor="middle" font-weight="800">SPDTF ontology development</text>'],
+    ['<text class="small" x="695" y="198" text-anchor="middle">people decide meaning</text>', '<text class="small" x="695" y="198" text-anchor="middle">Property Pack is an accelerated component</text>'],
+    [
+      'PDTF schema contributes implementation evidence without silently controlling SPDTF meaning. The seed is a structured development input, not a working-group-approved model.',
+      'The PDTF schema and the separately derived draft ontology contribute attributed evidence without controlling SPDTF meaning. The Property Pack ontology is an accelerated SPDTF component pending its stated review and governance decisions.',
+    ],
+  ];
+  for (const [before, after] of shellCopy) output = replaceKnown(output, before, after);
+  output = replaceKnown(output, '<strong>OPDA · Proposed SPDTF information architecture</strong>', '<strong>OPDA · SPDTF information architecture</strong>', 'footer title');
+  output = output.replaceAll('./spdtf-0-information-architecture.md', './spdtf-information-architecture.md');
   return compactGeneratedHtml(compactEmbeddedStyles(ensureSkipLink(output)));
 }
 
@@ -143,5 +199,5 @@ if (checkOnly) {
   }
 } else {
   await writeFile(htmlPath, generated);
-  console.log('Generated docs/spdtf-2-0-information-architecture.html');
+  console.log('Generated docs/spdtf-information-architecture.html');
 }

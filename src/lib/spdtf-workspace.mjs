@@ -1,11 +1,16 @@
-/** Canonical, versioned workspace contract for SPDTF 2.0 Development. */
+/** Canonical, versioned workspace contract for SPDTF development. */
 export const SEMANTIC_PACKAGE_MANIFEST = Object.freeze({
-  id: 'https://opda.org.uk/spdtf-2/semantic-package/workspace-contract',
-  version: '1.0.0',
+  id: 'https://opda.org.uk/spdtf/semantic-package/workspace-contract',
+  version: '2026-08-22',
+  supersedes: Object.freeze({
+    id: 'https://opda.org.uk/spdtf-2/semantic-package/workspace-contract',
+    version: '1.0.0',
+    reason: 'Chair-authorised correction from an unendorsed versioned draft label to the first collaborative SPDTF scheme draft',
+  }),
   status: 'workspace contract — no domain candidate approved',
   authority: 'Accepted IA; domain meaning remains subject to working-group review',
   standardsProfileVersion: '0.2-development',
-  canonicalSource: '/spdtf-2/ontologies/semantic-package',
+  canonicalSource: '/spdtf/ontologies/semantic-package',
   outputs: Object.freeze([
     'Business glossary',
     'Data dictionary',
@@ -44,14 +49,14 @@ export const ALLOWED_DISPOSITIONS = Object.freeze([
 ]);
 
 const workspaceInputs = Object.freeze({
-  'finance-and-banking': ['/spdtf-2/property-pack/contexts/finance-and-banking', '/programme'],
-  conveyancing: ['/spdtf-2/property-pack/contexts/conveyancing', '/pdtf-1'],
-  'estate-agency': ['/spdtf-2/property-pack/contexts/estate-agency', '/pdtf-1'],
-  'surveying-and-valuation': ['/spdtf-2/property-pack/contexts/surveying-and-valuation', '/pdtf-1'],
-  'property-data-services': ['/spdtf-2/property-pack/contexts/property-data-services', '/resources'],
-  'property-technology': ['/spdtf-2/property-pack/contexts/property-technology', '/pdtf-1'],
+  'finance-and-banking': ['/spdtf/property-pack/contexts/finance-and-banking', '/programme'],
+  conveyancing: ['/spdtf/property-pack/contexts/conveyancing', '/pdtf-schema'],
+  'estate-agency': ['/spdtf/property-pack/contexts/estate-agency', '/pdtf-schema'],
+  'surveying-and-valuation': ['/spdtf/property-pack/contexts/surveying-and-valuation', '/pdtf-schema'],
+  'property-data-services': ['/spdtf/property-pack/contexts/property-data-services', '/resources'],
+  'property-technology': ['/spdtf/property-pack/contexts/property-technology', '/pdtf-schema'],
   'dbt-smart-data': ['/dbt-smart-data', '/programme'],
-  interoperability: ['/spdtf-2/ontologies/bounded-contexts', '/spdtf-2/ontologies/evidence-and-mappings'],
+  interoperability: ['/spdtf/ontologies/bounded-contexts', '/spdtf/ontologies/evidence-and-mappings'],
 });
 
 const questions = Object.freeze({
@@ -99,9 +104,9 @@ function evidenceRecord(slug, href, index) {
   return Object.freeze({
     id: `${slug}-input-${index + 1}`,
     href,
-    sourceType: href.startsWith('/spdtf-2/property-pack/') ? 'machine-generated Property Pack ontology candidate' : 'maintained OPDA documentation route',
+    sourceType: href.startsWith('/spdtf/property-pack/') ? 'machine-generated Property Pack ontology candidate' : 'maintained OPDA documentation route',
     recordedDate: '2026-08-19',
-    version: 'route view at workspace contract 1.0',
+    version: `route view at workspace contract ${SEMANTIC_PACKAGE_MANIFEST.version}`,
     submitter: 'OPDA documentation team',
     permission: 'Public OPDA route reference; linked source terms remain controlling',
     sensitivity: 'Public route only; linked records retain their own classification',
@@ -120,7 +125,7 @@ export function getWorkspaceRecord(slug) {
     status: 'scope defined; working group not confirmed as convened',
     charter: Object.freeze({
       status: 'draft scope record — pre-convening',
-      scopeSource: `/spdtf-2/working-groups/${slug}`,
+      scopeSource: `/spdtf/working-groups/${slug}`,
       exclusions: charterExclusions,
     }),
     decisionOwner: null,
@@ -153,7 +158,7 @@ export function getWorkspaceRecord(slug) {
     technicalExports: Object.freeze([]),
     challengeAction: Object.freeze({
       available: true,
-      href: `mailto:smartdata@openpropdata.org.uk?subject=${encodeURIComponent(`SPDTF 2.0 workspace challenge: ${slug}`)}`,
+      href: `mailto:smartdata@openpropdata.org.uk?subject=${encodeURIComponent(`SPDTF workspace challenge: ${slug}`)}`,
       status: 'Evidence and question challenges are accepted; formal candidate disposition is disabled.',
       privacyBoundary: 'Identify the page and question only. Do not email confidential, personal, customer or transaction data before OPDA confirms a protected intake route.',
     }),

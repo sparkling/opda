@@ -19,17 +19,17 @@ const NON_INFORMATION_CLASS = 'superseded-navigation-copy';
 const NAVIGATION_EVIDENCE = new Set(['containing-link', 'declared-original-destination']);
 const NAVIGATION_CANONICAL_EQUIVALENTS = Object.freeze({
   '/strategy': ['/programme'],
-  '/model': ['/pdtf-1'],
-  '/implementation': ['/pdtf-1'],
-  '/mapping': ['/pdtf-1/extracted-ontology/lineage-provenance-and-verification/schema-to-ontology-verification'],
-  '/adoption': ['/pdtf-1/original-standard/adoption'],
+  '/model': ['/pdtf-schema'],
+  '/implementation': ['/pdtf-schema'],
+  '/mapping': ['/pdtf-schema/schema-derived-ontology/lineage-provenance-and-verification/schema-to-ontology-verification'],
+  '/adoption': ['/pdtf-schema/schema-and-supporting-material/adoption'],
   '/library': ['/resources'],
-  '/engagement': ['/resources', '/spdtf-2/working-groups'],
-  '/v2': ['/spdtf-2/property-pack'],
+  '/engagement': ['/resources', '/spdtf/working-groups'],
+  '/v2': ['/spdtf/property-pack'],
 });
 const RETENTION_TARGETS = Object.freeze({
-  '/': ['/', '/spdtf-2'],
-  '/home': ['/home', '/spdtf-2'],
+  '/': ['/', '/spdtf'],
+  '/home': ['/home', '/spdtf'],
 });
 
 function localRouteFromHref(href) {

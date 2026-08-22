@@ -73,7 +73,7 @@ const canonicalPdtfItem = (item: Item): Item => ({
 });
 
 /**
- * The section keys remain useful content-source groupings, while every PDTF 1.0
+ * The section keys remain useful content-source groupings, while every PDTF schema
  * reader URL is projected into the canonical two-branch hierarchy. Governance
  * records under /modelling/adr and /modelling/odr are deliberately unchanged.
  */
@@ -127,7 +127,7 @@ export function findPage(path: string):
   // section and need its header/sidebar shell; their page layout supplies the
   // deeper, record-specific breadcrumb.
   const sectionKey = norm.split('/').filter(Boolean)[0];
-  if (norm.startsWith('/spdtf-2/property-pack/')) return { section: SECTIONS['property-pack'] };
+  if (norm.startsWith('/spdtf/property-pack/')) return { section: SECTIONS['property-pack'] };
   return null;
 }
 

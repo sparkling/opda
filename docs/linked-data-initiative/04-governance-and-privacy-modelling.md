@@ -1,6 +1,7 @@
 # Governance & Privacy Modelling
 
 > Part of the OPDA Linked-Data Initiative knowledgebase. Legend: ✅ built · 🟡 partial · 🔵 planned.
+> The model and its records are draft technical evidence derived from the PDTF schema, not evidence of OPDA or industry adoption of an SPDTF scheme.
 
 "Governance" in this initiative means two distinct things, and both are modelled:
 
@@ -8,10 +9,9 @@
   layer that types *which* classes carry personal data, of *what* category, under
   *which* lawful regime. This is a property *of the ontology* (a TBox fact), enforced by
   a SHACL sensitivity gate.
-- **(B) Project/decision governance, the meta layer** — the ODR/ADR/Council apparatus is
-  *itself* the governance model for how the standard evolves: an AI Council proposes, a
-  human directing authority disposes, and real-world OPDA bodies (Working Group →
-  Modelling Sub-Committee → AGM) ratify.
+- **(B) Project/decision governance, the meta layer** — the ODR/ADR/Council apparatus
+  records how the internal technical artefact evolved. It proposed a handoff to OPDA
+  bodies, but the repository does not prove that those bodies adopted its decisions.
 
 This document covers both, grounds every claim in the emitted Turtle, and then connects
 them to the initiative's forward requirement — that the linked-data model will *drive*
@@ -266,10 +266,9 @@ rarest, most damaging error must be the *loudest*. Missing-PII-annotation is a `
 are `sh:Info`. (Corpus severity mix overall: 287 `sh:Violation` / 28 `sh:Info` / ~4
 `sh:Warning` — see `_fact-sheet.md`.)
 
-### A.6 What PII the PDTF transaction actually carries
+### A.6 What PII the PDTF schema transaction carries
 
-The DPV layer is not theoretical — a PDTF transaction is dense with personal data. From the
-data dictionary and ODR-0012 §References, the PII-bearing leaves include: participant
+The DPV layer is not theoretical — a PDTF schema transaction is dense with personal data. From the data dictionary and ODR-0012 §References, the PII-bearing leaves include: participant
 `name` / `firstName` / `lastName` / `maidenName` / `title`; `dateOfBirth`; `address`;
 `email` / `emailAddress`; `telephone`; identity and `document_number` fields; occupier
 names (incl. `aged17OrOverNames`); and the special-category-adjacent `cautionOrConviction`
@@ -285,7 +284,7 @@ flowchart TD
     accTitle: DPV co-annotation placement and the sensitivity gate
     accDescr: PII-bearing Kinds receive dpv-pd category baselines in the annotation graph; variant refinements carry lawful-basis references; the SHACL gate flags missing annotations. DPV triples never enter the class or shapes graph.
 
-    DD["PDTF data dictionary<br/>(PII-bearing leaves)"]:::user
+    DD["PDTF schema data dictionary<br/>(PII-bearing leaves)"]:::user
 
     subgraph CG["Class graph (opda-*.ttl) — NO dpv:"]
         K["PII-bearing Kinds<br/>Person · Property · Address ·<br/>RegisteredTitle · Claim · EPCCertificate"]:::process
@@ -315,27 +314,23 @@ flowchart TD
 
 ## Part B — Project/decision governance (the meta layer)
 
-The second sense of "governance" is how the *standard itself* is governed. Here the
-ODR/ADR/Council apparatus **is** the governance model.
+The second sense of "governance" is how the draft technical artefact was managed. Here
+the ODR/ADR/Council apparatus is an internal evidence and decision-record model.
 
-### B.1 The authority handoff: AI proposes, OPDA disposes
+### B.1 The designed handoff: technical proposals to OPDA governance
 
-A Council verdict is a **proposal**, not a ratified decision. The real-world authority chain
-is documented verbatim in `council/adoption.md` §Real-world Governance Handoff (lines 37–45):
+A Council verdict is a **technical proposal**, not a ratified decision. The internal
+`council/adoption.md` proposes a process design, not evidence that adoption occurred:
 
-1. **OPDA Working Groups** — domain WGs (PDTF Schema WG, Trust Framework WG, AML WG) review
+1. **OPDA Working Groups** — domain groups would review
    Council proposals against operational reality and stakeholder concerns.
-2. **OPDA Modelling Sub-Committee** — a cross-WG body that ratifies linked-data modelling
-   proposals into *draft adopted* decisions.
-3. **OPDA AGM ratification** — the annual general meeting where adopted decisions receive
-   formal stakeholder endorsement.
+2. **OPDA Modelling Sub-Committee** — a cross-group body would consider modelling
+   proposals for draft adoption.
+3. **OPDA AGM** — formal stakeholder endorsement would remain a separate governance act.
 
-The status semantics follow this chain: "*Records produced by Council sessions remain
-`proposed` until the Sub-Committee draft-adopts them; `accepted` only after AGM
-ratification.*" (The greenfield exception: where the directing authority has lifted the
-namespace block on a record, the methodology may mark it `accepted` directly — see the
-project memory on greenfield/no-WG-gate. The two senses of `accepted` are reconciled in
-`adoption.md`.)
+The repository's historic status model described this chain, but its `accepted` value
+was also used for internal directing-authority decisions. It therefore means accepted
+within the technical record unless independent OPDA governance evidence says otherwise.
 
 On top of the committee chain sits the **directing-authority override**: the human owner
 can overrule the Council on greenfield grounds. Recorded cases include session-037 (Council
@@ -462,13 +457,13 @@ forms and APIs.)*
   next phase, because a lawful basis is a fact about a processing *act* and needs live
   instance data. This is exactly the substrate under OPDA's "mandatory consent-based APIs"
   vision.
-- **"The model wasn't hand-waved by AI — it was adjudicated and recorded."** Each modelling
+- **"The model wasn't hand-waved by AI — it was debated and recorded."** Each modelling
   decision is a citable record with a recorded vote and a named dissenting voice (an AI
   "Linked Data Council"), the deliberations are indexed for recall and provenance, and a
-  human directing authority can override. Nothing reaches "standard" without passing through
-  OPDA's own Working Group → Modelling Sub-Committee → AGM ratification chain.
-- **"This is how the standard governs itself going forward."** Because both the privacy
-  classification *and* the decision history live as queryable data, future standards work
+  human directing authority can override. These records remain technical proposals until
+  SPDTF's real working-group governance adopts them.
+- **"This can support scheme governance going forward."** Because both the privacy
+  classification *and* the decision history live as queryable data, future SPDTF work can
   inherits them — generated APIs and schemas carry the privacy typing forward, and every
   change is traceable to the deliberation that produced it.
 

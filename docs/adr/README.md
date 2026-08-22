@@ -30,10 +30,10 @@ Specifics:
   `depends-on`, `implements`. DACI fields (`decision-makers`,
   `consulted`, `informed`) are intentionally omitted —
   `git log --follow <file>` is the canonical authorship surface.
-- **Status enum**: `proposed | accepted | rejected | deprecated |
-  superseded by ADR-NNNN`. Lowercase exactly as listed. Implementation
-  status (shipped, in progress, paused) belongs in `### Confirmation`,
-  not the status line.
+- **Status enum**: `proposed | accepted | implemented | rejected | deprecated |
+  superseded by ADR-NNNN`. Lowercase exactly as listed. Use `implemented`
+  only when the decision's complete implementation and validation gates have passed;
+  partial delivery detail belongs in `### Confirmation`.
 - **Required body sections**: `## Context and Problem Statement`,
   `## Considered Options` (bullet list), `## Decision Outcome`
   containing `### Consequences` (flat `Good, because…` / `Bad,
@@ -50,7 +50,7 @@ with the next sequential number and canonical sections.
 
 | # | Title | Status |
 |---|---|---|
-| [ADR-0001](./ADR-0001-adopt-dcam-dmbok-elements.md) | Selective adoption of DCAM v3 and DAMA-DMBOK2 elements | proposed |
+| [ADR-0001](./ADR-0001-adopt-dcam-dmbok-elements.md) | Selective adoption of DCAM v3 and DAMA-DMBOK2 elements | accepted |
 | [ADR-0002](./ADR-0002-folder-hierarchy-and-slug-taxonomy.md) | Folder hierarchy and slug taxonomy | accepted · shipped 2026-05-18 |
 | [ADR-0003](./ADR-0003-idiomatic-astro-refactor.md) | Refactor to idiomatic Astro architecture | accepted · shipped 2026-05-18 |
 | [ADR-0004](./ADR-0004-accreditation-directory.md) | Accreditation Directory spec | proposed |
@@ -63,7 +63,7 @@ modelling website remains unchanged:
 
 | # | Title | Status |
 |---|---|---|
-| [ADR-0063](./ADR-0063-domain-led-bounded-context-working-groups.md) | Domain-led bounded-context working groups for the next modelling phase | accepted |
+| [ADR-0063](./ADR-0063-domain-led-bounded-context-working-groups.md) | Domain-led bounded-context working groups for SPDTF development | accepted |
 | [ADR-0064](./ADR-0064-modelling-website-revamp-before-strategy-publication.md) | Revamp the modelling website before publishing the new working-group approach | accepted |
 | [ADR-0065](./ADR-0065-ai-assisted-evidence-to-model-workflow.md) | AI-assisted evidence-to-model workflow with human-governed review | proposed |
 
@@ -74,7 +74,7 @@ modelling website remains unchanged:
 | [ADR-0066](./ADR-0066-property-pack-451-seed-scope-and-greenfield-ontology.md) | The 451 required Property Pack data points are the closed seed scope for a greenfield ontology | accepted |
 | [ADR-0067](./ADR-0067-first-principles-property-pack-ontology-by-bounded-context.md) | Model the Property Pack from first principles with bounded-context ownership | accepted |
 | [ADR-0068](./ADR-0068-govern-opda-standards-lifecycle.md) | Govern the OPDA standards lifecycle through human consensus and staged ratification | proposed |
-| [ADR-0075](./ADR-0075-property-pack-ontology-as-accelerated-spdtf-2-0-component.md) | Treat the Property Pack ontology as an accelerated SPDTF 2.0 component | accepted · implementation pending |
+| [ADR-0075](./ADR-0075-property-pack-ontology-as-accelerated-spdtf-component.md) | Treat the Property Pack ontology as an accelerated SPDTF component | accepted · implementation pending |
 
 ## August 2026 working-group operations and recruitment
 
@@ -90,8 +90,8 @@ modelling website remains unchanged:
 | # | Title | Status |
 |---|---|---|
 | [ADR-0073](./ADR-0073-adopt-opda-brand-and-replace-the-website-design-system.md) | Adopt the OPDA brand and replace the website design system | implemented |
-| [ADR-0074](./ADR-0074-organise-site-around-spdtf-2-0-and-pdtf-1-0.md) | Organise the site around SPDTF 2.0 and PDTF 1.0 | implemented |
-| [ADR-0076](./ADR-0076-consolidate-pdtf-1-0-documentation-under-hierarchy-reflecting-routes.md) | Consolidate PDTF 1.0 documentation under hierarchy-reflecting routes | accepted |
+| [ADR-0074](./ADR-0074-organise-site-around-spdtf-and-pdtf-schema.md) | Organise the site around SPDTF and the PDTF schema | implemented |
+| [ADR-0076](./ADR-0076-consolidate-pdtf-schema-documentation-under-hierarchy-reflecting-routes.md) | Consolidate PDTF schema documentation under hierarchy-reflecting routes | accepted |
 
 ## Authoring a new ADR
 
@@ -101,10 +101,16 @@ modelling website remains unchanged:
    `implements:` (frontmatter) and `## More Information` (human prose).
 3. Update this index.
 
-ADRs are immutable history. After ratification, edit them only to:
+ADRs are living decisions with auditable history. After ratification:
 
-- update the `status` frontmatter (e.g. when superseded);
-- record review outcomes in `## Amendments` or `## Vote and Dissent`;
-- fix typos or broken cross-references.
+- update `status`, `updated`, authority-bearing decision text and consequences when a
+  later authorised correction would otherwise leave the active decision contradictory;
+- record the reason, authority and preservation boundary in a dated `## Amendments`
+  entry;
+- preserve factual source provenance, stable identifiers, transcripts and original
+  technical evidence unless a separate decision explicitly changes them; and
+- fix typos and broken cross-references when discovered.
 
-Never rewrite the original analysis.
+Do not silently rewrite history. Keep the original decision's material context and
+considered options where they remain factual, use Git history for verbatim prior text,
+and make every substantive correction explicit in the record itself.

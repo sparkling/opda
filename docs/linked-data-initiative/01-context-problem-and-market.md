@@ -1,24 +1,26 @@
-# Context, Problem & Market — why OPDA is re-expressing PDTF as linked data
+# Context, Problem & Market — from the PDTF schema to SPDTF
 
 > Part of the OPDA Linked-Data Initiative knowledgebase. Legend: ✅ built · 🟡 partial · 🔵 planned.
 >
-> This is the **WHY** document. It establishes what the Property Data Trust Framework (PDTF)
-> is, where JSON Schema as a *standard* runs out of road, the UK policy and market forces
+> This is the **WHY** document. It establishes what the existing PDTF schema package is,
+> where JSON Schema runs out of road, the UK policy and market forces
 > that make this urgent now, and the membership feedback that the linked-data direction
 > answers. Sister documents cover the *what* (the ontology, the standards stack) and the
 > *how* (the generator, the AI council, the pipeline). Build on
 > [`_research-synthesis.md`](./_research-synthesis.md),
 > [`_external-research.md`](./_external-research.md) and [`_fact-sheet.md`](./_fact-sheet.md);
-> do not contradict them.
+> do not contradict them. The schema-derived ontology discussed here is a separate draft
+> technical artefact, not an OPDA-endorsed scheme. SPDTF is the first scheme draft being
+> authored collaboratively.
 
 ## TL;DR
 
-- **PDTF is the UK's open data standard for residential property transactions** — a ~37,224-line
-  JSON Schema (Draft-07) base model plus a dozen statutory-form overlays (BASPI, TA6/7/10, NTS,
+- **The PDTF schema is the existing technical package for residential property transactions** — a
+  ~37,224-line JSON Schema (Draft-07) base model plus a dozen statutory-form overlays (BASPI, TA6/7/10, NTS,
   LPE1, CON29R/DW, LLC1, FME1) and an OIDC4IDA/eIDAS `verifiedClaims` envelope. It is stewarded
   by OPDA / the Home Buying & Selling Council and published on GitHub under MIT licence
   (`Property-Data-Trust-Framework/schemas`, `/api`, `/trust-framework`).
-- **JSON Schema is a brilliant *validation* language but a weak *standard*.** It names slots,
+- **JSON Schema is a strong structural validation language but cannot define a whole scheme.** It names slots,
   shapes and required-ness, but cannot express stable identity, real-world semantics,
   governance/privacy classification, validation beyond structure, machine reasoning, or
   cross-system meaning. Every consumer re-hand-codes the meaning — and they do it differently.
@@ -31,8 +33,8 @@
   a "**from PDFs to APIs**" mandate. OPDA frames 2026 as "**from momentum to mandate**", backed by
   **£742,700** of government sandbox funding, targeting **~15-day** transactions (vs 3–6 months)
   and **~43%** fall-through/fraud reduction via consent-based APIs.
-- **The linked-data initiative is the technical substrate under that mandate** — one governed,
-  machine-validated, dereferenceable model that consent-based APIs are generated *from*, that
+- **The linked-data initiative contributes technical evidence for that mandate** — a governed,
+  machine-validated, dereferenceable model from which candidate implementation artefacts can be tested, that
   carries provenance for *trust*, and that classifies *privacy* at the type level. It is the
   answer to the membership's standing feedback: ambiguity, interoperability friction,
   extensibility pain, validation gaps, and maintenance burden.
@@ -46,12 +48,12 @@
 
 ---
 
-## 1. What PDTF is, and who stewards it
+## 1. What the PDTF schema is, and who stewards it
 
-### 1.1 The standard
+### 1.1 The existing schema package
 
-The **Property Data Trust Framework (PDTF)** is an open data standard for the digital exchange of
-UK residential-property-transaction data (England & Wales). Its canonical artefact is a single
+The **PDTF schema** is the existing open JSON schema package for exchanging UK
+residential-property-transaction data (England & Wales). Its canonical artefact is a single
 **JSON Schema** model, **`pdtf-transaction.json`** — **37,224 lines**, JSON Schema **Draft-07**
 (`source/03-standards/schemas/src/schemas/v3/pdtf-transaction.json`). The schema's own header
 self-describes as the "Open data schema for digital residential property data exchange".
@@ -72,12 +74,12 @@ statutory and trade forms a transaction touches. The overlay catalogue
 
 The `index.js` utility (`getTransactionSchema(schemaId, overlays)`) merges the base with the
 requested overlays via `deepmerge` with custom strategies and returns an AJV validator
-(`getValidator`). So PDTF-as-shipped is: **a base model + a merge engine + per-form overlays + a
+(`getValidator`). So the PDTF schema package as shipped is: **a base model + a merge engine + per-form overlays + a
 verified-claims validator**, published to npm as `@pdtf/schemas`.
 
 ### 1.2 The stewards
 
-PDTF is governed within the UK home-buying-and-selling reform ecosystem:
+The PDTF schema is maintained within the UK home-buying-and-selling reform ecosystem:
 
 - **OPDA — the Open Property Data Association** (`openpropdata.org.uk`) — the membership body that
   now stewards the framework and convenes the quarterly workshops. Chaired by **Maria Harris**.
@@ -99,7 +101,7 @@ The framework is developed in the open at **`github.com/Property-Data-Trust-Fram
 | `web`, `smart-data-challenge-2025`, `opda-shared-services` (Go), `opda-shared-infra` (HCL) | Website, the Moverly/OPDA DBT Smart Data Challenge entry, and shared platform infra. |
 
 The `schemas` repo and the `opda-shared-*` platform repos were **updated 2026-06-03**, i.e. the
-standard is actively maintained right up to the workshop.
+schema package is actively maintained right up to the workshop.
 
 > **Repo note.** In this knowledgebase, the PDTF upstream lives under
 > `source/03-standards/schemas/` (a nested git repo — see the project memory on nested repos). The
@@ -108,12 +110,12 @@ standard is actively maintained right up to the workshop.
 
 ---
 
-## 2. The limits of JSON Schema *as a standard*
+## 2. The limits of JSON Schema as industry semantics
 
 JSON Schema is excellent at what it was designed for: **validating the structure of a JSON
 document** — does this object have these keys, of these types, within these bounds, with these
 required. PDTF uses it well. The problem is not that PDTF used JSON Schema badly; it is that a
-**data-exchange standard for a whole industry needs to carry meaning that JSON Schema, by design,
+**industry-wide data-exchange scheme needs to carry meaning that JSON Schema, by design,
 cannot carry**. Below, each limit is stated, then grounded in a real PDTF example verified against
 `pdtf-transaction.json`.
 
@@ -300,11 +302,10 @@ From OPDA's "Connected Future for Property Data: Setting the 2026 Vision" and ro
   reduction in **fall-throughs / fraud**; genuine **consumer control** over what data is shared and
   with whom.
 
-The linked-data initiative is, in OPDA's own words, *"fixing the data foundations."* It is the
-technical answer that makes consent-based APIs governable, PDFs→APIs generable, and trust
-provable. This document's purpose at the workshop is to connect that **technical direction** to the
-**published strategic mandate** — so the membership reads the ontology not as a side-project but as
-the substrate the 2026 vision rests on.
+The linked-data initiative contributes to what OPDA describes as *"fixing the data foundations."*
+It provides testable technical evidence for consent-based APIs, PDFs→APIs and provenance. This
+document's purpose at the workshop is to connect that evidence to the published strategic mandate,
+without pre-empting the collaborative decisions that belong to SPDTF working groups.
 
 ---
 
@@ -359,11 +360,11 @@ the linked-data direction is the answer to — map one-to-one onto the JSON-Sche
 | **Validation** | Structure validates; business/legal rules don't (capacity-evidence in free text) | No rules beyond structure (2.3) | SHACL severity-tiered constraints; checkable legal rules |
 | **Maintenance burden** | Every minor version re-breaks downstream; overlay-merge churn | Hand-maintained, no provenance | Deterministic generator + byte-identity CI; `dct:source` traceability |
 
-This is the crux of the slot: **the linked-data initiative is not a competing standard — it is the
-governed meaning layer that makes the JSON standard the membership already uses stop costing them
-ambiguity, re-integration, and churn.** The JSON stays the wire format; the ontology becomes the
-single source of truth behind it, from which (🔵, roadmap) JSON Schemas, APIs, DDLs, forms and docs
-can in time be generated rather than hand-maintained.
+This is the crux of the slot: **the schema-derived ontology is not a competing scheme or an
+endorsed replacement for the PDTF schema.** It is technical evidence for a governed meaning layer
+that SPDTF working groups can assess. The existing JSON remains an implementation format; SPDTF
+governance must decide what becomes authoritative before downstream schemas, APIs, DDLs, forms or
+documentation are generated from it.
 
 ---
 
@@ -371,8 +372,8 @@ can in time be generated rather than hand-maintained.
 
 | Capability | Status | Evidence |
 |---|---|---|
-| PDTF v3 JSON-Schema model + overlays (the input) | ✅ (upstream) | `source/03-standards/schemas/src/schemas/v3/pdtf-transaction.json` (37,224 lines) |
-| Ontology re-expression (41 classes; Property/LegalEstate/RegisteredTitle split) | ✅ | `source/03-standards/ontology/opda-property.ttl`; ODR-0005 |
+| PDTF schema v3 model + overlays (the input) | ✅ (upstream) | `source/03-standards/schemas/src/schemas/v3/pdtf-transaction.json` (37,224 lines) |
+| Draft schema-derived ontology (41 classes; Property/LegalEstate/RegisteredTitle split) | ✅ technical artefact | `source/03-standards/ontology/opda-property.ttl`; ODR-0005 |
 | Capacity vs. evidenced-authority two-predicate split | ✅ | `opda-agent.ttl` (`opda:hasAssertedCapacity` / `opda:hasEvidencedAuthority`) |
 | SHACL validation contract (90 NodeShapes, severity tiers) | ✅ | `opda-*-shapes.ttl`; 31 overlay profiles in `profiles/` |
 | PII/governance typing via DPV (+ SHACL sensitivity gate) | 🟡 | `opda-governance.ttl`; ODR-0012 |
@@ -409,10 +410,9 @@ problem each constituency feels.)*
   round-trips a real statutory form: **BASPI5 goes JSON → ontology → validated RDF → JSON with
   every field traceable to its data-dictionary origin** (✅). Overlays (BASPI, TA6, CON29, LPE1)
   become validation profiles over one model, not a dozen divergent JSON trees.
-- **This is the substrate under the published mandate.** DMCC 2024 + Smart Data + Digital Property
+- **This is evidence for the published mandate.** DMCC 2024 + Smart Data + Digital Property
   Packs + the **£742,700 sandbox** all need machine-readable governance, stable identity and
-  provenance. The linked-data layer is exactly "**fixing the data foundations**" — it sits *above*
-  v3.6, not against it.
+  provenance. The linked-data layer can inform that work, subject to SPDTF's collaborative process.
 - **Be honest about the roadmap.** ✅ built: the ontology, SHACL validation, the deterministic
   generator under a byte-identity CI gate, the BASPI5 round-trip. 🔵 next: machine-readable consent
   policies (ODRL), deeper reasoning, and model-driven generation of schemas/APIs/code. The
@@ -430,7 +430,7 @@ problem each constituency feels.)*
 - `docs/linked-data-initiative/_fact-sheet.md` — verified key numbers, standards table, caveats.
 
 **Primary evidence cited:**
-- `source/03-standards/schemas/src/schemas/v3/pdtf-transaction.json` — the PDTF v3 base model
+- `source/03-standards/schemas/src/schemas/v3/pdtf-transaction.json` — the PDTF schema v3 base model
   (37,224 lines); UPRN at L437/L36650/L37094; `sellersCapacity`/`sellersCapacityDetails` at
   L298–L355.
 - `source/03-standards/schemas/CLAUDE.md` — overlay system, merge engine, npm `@pdtf/schemas`.

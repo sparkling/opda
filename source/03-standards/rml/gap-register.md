@@ -34,7 +34,7 @@
 > `docs/adr/ADR-0057-rml-mapping-implementation.md`'s Amendments for full
 > per-item reasoning.
 
-Audit of the claim that the PDTF v3 JSON → OPDA RDF mapping at
+Audit of the claim that the PDTF schema v3 JSON → schema-derived RDF mapping at
 `source/03-standards/rml/` is **"sound AND complete"**. Every finding below is backed
 by materialised triples and command output. I own only this file; I changed no
 mapping, harness, index, or test data.

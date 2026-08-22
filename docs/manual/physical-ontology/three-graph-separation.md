@@ -15,7 +15,7 @@ title: Three-graph separation
 
 Per [ODR-0004 §3a](/modelling/odr/odr-0004): every module emits **three files** (classes / shapes / annotations) with strict isolation between class declarations, SHACL shapes, and advisory annotations.
 
-This is not a stylistic preference — it is a model-theoretic discipline. Mixing the three graphs collapses Tarski-grade extensional semantics into the implementation soup that PDTF v3 (untyped JSON) cannot avoid.
+This is not a stylistic preference — it is a model-theoretic discipline. Mixing the three graphs collapses Tarski-grade extensional semantics into the implementation constraints that the PDTF schema v3's JSON representation cannot avoid.
 
 ## Three-graph separation overview
 
@@ -122,7 +122,7 @@ If any check returns `true`, the CI gate fails and the offending file is named i
 
 ## Source ADR + ODR
 
-- [ODR-0004 §3a — PDTF ontology foundation (three-graph separation)](/modelling/odr/odr-0004)
+- [ODR-0004 §3a — schema-derived ontology foundation (three-graph separation)](/modelling/odr/odr-0004)
 - [ADR-0011 — Module TBox emission](/modelling/adr/adr-0011)
 - [ADR-0012 — SHACL + DPV annotation emission](/modelling/adr/adr-0012)
 - [ODR-0018 — DPV co-annotation pattern (reference-not-import)](/modelling/odr/odr-0018)

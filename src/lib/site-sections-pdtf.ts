@@ -2,7 +2,7 @@ import { ODR_REGISTRY } from './odr-pages.mjs';
 import { ADR_REGISTRY } from './adr-pages.mjs';
 import type { Section } from './site.ts';
 
-/** Source-oriented PDTF 1.0 sections, canonicalized by the public site façade. */
+/** Source-oriented PDTF schema sections, canonicalized by the public site façade. */
 export const PDTF_SOURCE_SECTIONS: Record<string, Section> = {
   // Registry-driven corpora surface every accepted ODR and ADR automatically.
   modelling: {
@@ -50,7 +50,7 @@ export const PDTF_SOURCE_SECTIONS: Record<string, Section> = {
     key: 'model',
     title: 'Model',
     summary:
-      'Five linked presentations of the PDTF 1.0-derived ontology model: concept narrative, logical relationships, ontology implementation, deployment topology and relational projection.',
+      'Five linked presentations of the schema-derived ontology model: concept narrative, logical relationships, ontology implementation, deployment topology and relational projection.',
     groups: [
       {
         heading: 'Overview',
@@ -130,7 +130,7 @@ export const PDTF_SOURCE_SECTIONS: Record<string, Section> = {
     key: 'ontology',
     title: 'Ontology',
     summary:
-      'The draft semantic reference extracted from PDTF 1.0 evidence — generated from the committed TTL corpus and guarded by the doc-drift CI gate. It documents terms, SHACL shapes, SKOS schemes, overlay profiles, exemplars, governance, provenance and known limitations; it is not an approved SPDTF 2.0 ontology.',
+      'The draft semantic reference extracted from PDTF schema evidence — generated from the committed TTL corpus and guarded by the doc-drift CI gate. It documents terms, SHACL shapes, SKOS schemes, overlay profiles, exemplars, governance, provenance and known limitations; it is not an approved SPDTF ontology.',
     groups: [
       { heading: 'Overview', items: [
         { url: '/ontology', title: 'Section overview' },

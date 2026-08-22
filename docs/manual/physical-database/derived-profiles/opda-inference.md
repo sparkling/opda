@@ -74,4 +74,4 @@ flowchart LR
 ## Source ADR
 
 - [ADR-0013 — Overlay profile emission](/modelling/adr/adr-0013) §"Module pluralism".
-- [ODR-0004 — PDTF ontology foundation](/modelling/odr/odr-0004) §3a — three-graph separation invariant (classes / shapes / annotations); this profile takes only the classes column.
+- [ODR-0004 — schema-derived ontology foundation](/modelling/odr/odr-0004) §3a — three-graph separation invariant (classes / shapes / annotations); this profile takes only the classes column.

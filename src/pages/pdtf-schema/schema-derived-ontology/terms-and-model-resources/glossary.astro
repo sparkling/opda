@@ -1,0 +1,72 @@
+---
+/**
+ * /pdtf-schema/schema-derived-ontology/terms-and-model-resources/glossary — the full alphabetical index & glossary (ADR-0041 §16,
+ * ADR-0044 Phase 4). A single A–Z of every named OPDA resource — OWL classes,
+ * object/datatype properties, SKOS concepts and schemes — from the SPARQL-derived
+ * ontology model (no regex). Each entry links to its canonical, dereferenceable
+ * /pdtf page. (SHACL shapes have their own typed index at /ontology/shapes.)
+ */
+import Layout from '@/layouts/Layout.astro';
+import PageMeta from '@/components/PageMeta.astro';
+import { model } from '@/lib/ontology-model';
+
+type Term = { name: string; id: string; kind: string; def: string };
+
+const entries: Term[] = [
+  ...Object.values(model.classes).map((c) => ({ name: c.localName, id: c.id, kind: 'Class', def: c.comment })),
+  ...Object.values(model.objectProperties).map((p) => ({ name: p.localName, id: p.id, kind: 'Object property', def: p.comment })),
+  ...Object.values(model.datatypeProperties).map((p) => ({ name: p.localName, id: p.id, kind: 'Datatype property', def: p.comment })),
+  ...Object.values(model.concepts).map((c) => ({ name: c.prefLabel || c.localName, id: c.id, kind: 'SKOS concept', def: c.definition })),
+  ...Object.values(model.schemes).map((s) => ({ name: s.prefLabel || s.localName, id: s.id, kind: 'SKOS scheme', def: '' })),
+].sort((a, b) => a.name.toLowerCase().localeCompare(b.name.toLowerCase()));
+
+const bucketOf = (n: string) => {
+  const ch = (n[0] || '#').toUpperCase();
+  return /[A-Z]/.test(ch) ? ch : '#';
+};
+const LETTERS = ['#', ...'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('')];
+const byLetter = (L: string) => entries.filter((t) => bucketOf(t.name) === L);
+const liveLetters = LETTERS.filter((L) => byLetter(L).length > 0);
+const trunc = (s: string, n = 160) => (s.length > n ? s.slice(0, n).replace(/\s+\S*$/, '') + '…' : s);
+---
+<Layout
+  title="Index & glossary"
+  description="The full alphabetical A–Z index and glossary of every named OPDA PDTF resource — classes, object and datatype properties, SKOS concepts and schemes — each linking to its canonical dereferenceable /pdtf page."
+>
+<PageMeta category="Browse the model" variant="brand" updated="Draft · Updated 2026-06-15" />
+
+  <h1>Index &amp; glossary</h1>
+
+  <p class="lead">
+    Every named resource in the schema-derived ontology — <strong>{entries.length}</strong> entries (classes, object
+    and datatype properties, SKOS concepts and schemes) in one A–Z, from the SPARQL-derived
+    <a href="/pdtf-schema/schema-derived-ontology/lineage-provenance-and-verification/decision-provenance">ontology model</a>. <strong>Each entry links to its canonical page</strong>
+    at <code>/pdtf/{'{'}id{'}'}</code>. SHACL shapes have their own typed index at
+    <a href="/pdtf-schema/schema-derived-ontology/validation-and-examples/shapes">SHACL shapes</a>.
+  </p>
+
+  <nav class="callout callout--note" aria-label="Jump to letter">
+    <p class="callout__label">Jump to</p>
+    <p style="margin:0; line-height:2;">
+      {liveLetters.map((L) => (<Fragment><a href={`#letter-${L === '#' ? 'num' : L}`}>{L}</a>{' · '}</Fragment>))}
+    </p>
+  </nav>
+
+  {liveLetters.map((L) => (
+    <section>
+      <h2 id={`letter-${L === '#' ? 'num' : L}`}>{L}</h2>
+      <table>
+        <thead><tr><th>Term</th><th>Kind</th><th>Definition</th></tr></thead>
+        <tbody>
+          {byLetter(L).map((t) => (
+            <tr>
+              <td><a href={`/pdtf/${t.id}`}><code>{t.name}</code></a></td>
+              <td><span class="pill">{t.kind}</span></td>
+              <td>{t.def ? trunc(t.def) : <span class="muted">—</span>}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </section>
+  ))}
+</Layout>

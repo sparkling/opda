@@ -1,6 +1,6 @@
 # RML mapping — test-data suite (A2)
 
-PDTF v3 JSON fixtures for the `opda-pdtf` RML mapping (see `../CONTRACT.md`).
+PDTF schema v3 JSON fixtures for the `opda-pdtf` RML mapping (see `../CONTRACT.md`).
 Files 01–03 are the soundness/completeness corpus; file 04 is the negative
 (ontology-level) case.
 

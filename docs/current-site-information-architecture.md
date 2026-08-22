@@ -22,9 +22,11 @@ The inventory is derived from:
 
 The governing IA decisions are Accepted: ADR-0002 (semantic folder hierarchy), ADR-0003 (build-time Astro navigation), ADR-0016 (generated model/manual routes), ADR-0042 (`/manual` renamed to `/model`), ADR-0059 (Mapping placed between Ontology and Schema), ADR-0062 (DBT Smart Data section), and ADR-0064 (the separate V2 candidate surface, updated 2026-08-16).
 
-### Superseding Property Pack route decision
+### Superseding nomenclature and route decisions
 
-ADR-0075 replaces only the baseline Property Pack addresses. With no redirects, old `/v2` maps to `/spdtf-2/property-pack`; old `/v2/comparison` maps to `/spdtf-2/property-pack/pdtf-1-lineage`; every other old `/v2/{suffix}` maps to `/spdtf-2/property-pack/{suffix}`; and old `/modelling/property-pack` maps to `/spdtf-2/property-pack/definition-and-scope`. Information blocks, fragments and logical comment identity must survive at their declared replacements; neither old route family remains published.
+The Chair's 2026-08-22 correction withdraws numbered generation labels from the current site. **PDTF schema** names the existing Digital Property Pack schema and supporting material; **schema-derived ontology** names the separate draft semantic artefact; **SPDTF** names the first collaboratively authored scheme draft. The progression is schema to scheme, not one endorsed scheme version replacing another.
+
+ADR-0075 maps old `/v2` to `/spdtf/property-pack`; old `/v2/comparison` to `/spdtf/property-pack/pdtf-schema-lineage`; every other old `/v2/{suffix}` to `/spdtf/property-pack/{suffix}`; and old `/modelling/property-pack` to `/spdtf/property-pack/definition-and-scope`. ADR-0076 maps PDTF-owned reader documentation beneath `/pdtf-schema/**`, while the schema-derived ontology occupies its own branch. Intermediate `/spdtf-2/**` and `/pdtf-1/**` cuts are also retired. None of these retired reader routes emits a redirect; information blocks, fragments and logical comment identity survive through the declared migration receipts. Stable `/pdtf/**` RDF identifiers remain exact.
 
 ## Route totals
 

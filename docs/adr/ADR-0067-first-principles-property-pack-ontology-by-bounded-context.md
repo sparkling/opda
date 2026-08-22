@@ -1,11 +1,11 @@
 ---
 status: accepted
 date: 2026-08-03
-updated: 2026-08-19
+updated: 2026-08-22
 tags: [ontology, property-pack, greenfield, bounded-context, common-boundary, interoperability, governance, council, ai-assisted, model-routing, source-security, release, skos, shacl, provenance, authorisation]
 supersedes: []
 depends-on: [ADR-0039, ADR-0066]
-implements: [config/calibration/property-pack-v1.json, scripts/property-pack-calibration.mjs, scripts/property_pack_candidate.py, src/data/property-pack/candidate-model, source/03-standards/ontology-candidates/property-pack/0.1, src/pages/spdtf-2/property-pack]
+implements: [config/calibration/property-pack-v1.json, scripts/property-pack-calibration.mjs, scripts/property_pack_candidate.py, src/data/property-pack/candidate-model, source/03-standards/ontology-candidates/property-pack/0.1, src/pages/spdtf/property-pack]
 ---
 
 # Model the Property Pack from first principles with bounded-context ownership
@@ -107,8 +107,7 @@ reviews common-boundary terms and mappings without overriding local meaning; Tec
 applies change and conformance controls, with Compliance and Risk input for major or sensitive
 changes; and only the Executive Committee, Board or a recorded delegate may authorise promotion.
 
-The current PDTF governance SOP is the process baseline, not a complete release charter:
-its placeholders, working-group decision rules, conflicts, appeals and final release
+The governance SOP inherited with the PDTF schema material is a process input, not a complete release charter or evidence of an endorsed predecessor scheme; its placeholders, working-group decision rules, conflicts, appeals and final release
 delegation still require recorded approval. Until ratified, outputs remain non-normative
 candidates: AI agreement, informal consensus or validation cannot authorise release alone.
 
@@ -475,7 +474,7 @@ constraints; it does not pre-approve the resulting ontology terms.
 ## More Information
 
 - [ADR-0066 — the 451 required Property Pack data points as the greenfield seed scope](./ADR-0066-property-pack-451-seed-scope-and-greenfield-ontology.md)
-- [ADR-0039 — linked data as the standards foundation](./ADR-0039-linked-data-model-as-pdtf-standards-foundation.md)
+- [ADR-0039 — linked data as the SPDTF foundation](./ADR-0039-linked-data-model-as-spdtf-foundation.md)
 - [ADR-0063 — proposed domain-led bounded-context working groups](./ADR-0063-domain-led-bounded-context-working-groups.md)
 - [ADR-0065 — proposed AI-assisted evidence-to-model workflow](./ADR-0065-ai-assisted-evidence-to-model-workflow.md)
 - [OPDA Constitution](../../source/01-organisation/constitution-and-policies/OPDA%20Constitution%202026.pdf) and [Articles of Association](../../source/01-organisation/constitution-and-policies/Articles%20of%20Association%202026.pdf)
@@ -496,4 +495,5 @@ constraints; it does not pre-approve the resulting ontology terms.
 - **2026-08-04 — Governance excluded from ontology scope.** Category 6 remains an operational Builder and OPDA control; the ontology retains eight concerns and excludes six.
 - **2026-08-04 — Semantic standards target fixed.** Generate RDF 1.2, SPARQL 1.2 and SHACL 1.2 output with explicit conformance levels and fail-closed qualification; do not claim full RDF or SHACL Union support without feature evidence.
 - **2026-08-04 — Candidate implementation recorded.** Generated an isolated 451-item, context-owned review candidate and dual-provider calibration evidence. Deterministic candidate gates pass; route qualification and every semantic disposition remain pending human review.
-- **2026-08-19 — Accelerated determination and canonical route adopted through ADR-0075.** The current candidate is the Property Pack ontology component of SPDTF 2.0. The Technical Working Group reviews it as-is and makes the initial determination by the end of September 2026; prior review by every bounded-context group is not a prerequisite. Domain, scheme and Interoperability groups subsequently review the meanings they own and may propose controlled, versioned changes. The complete public corpus moves to `/spdtf-2/property-pack/**` without compatibility routes. This does not turn technical validation into semantic approval, conflate the Technical Working Group with Property Technology, or authorise an unrecorded release.
+- **2026-08-19 — Accelerated determination and canonical route adopted through ADR-0075.** The current candidate is the Property Pack ontology component of SPDTF. The Technical Working Group reviews it as-is and makes the initial determination by the end of September 2026; prior review by every bounded-context group is not a prerequisite. Domain, scheme and Interoperability groups subsequently review the meanings they own and may propose controlled, versioned changes. The complete public corpus moves to `/spdtf/property-pack/**` without compatibility routes. This does not turn technical validation into semantic approval, conflate the Technical Working Group with Property Technology, or authorise an unrecorded release.
+- **2026-08-22 — Chair-authority terminology correction.** SPDTF is the first collaboratively authored scheme draft, not a numbered successor to an endorsed predecessor. The PDTF schema and schema-derived ontology remain distinct, attributed evidence inputs. This decision governs an accelerated component within the schema-to-scheme continuation; stable `/pdtf/**` identifiers and historical technical evidence remain unchanged.

@@ -4,6 +4,10 @@
 >
 > **Sister precedent:** [Ontology implementation programme](./ontology-implementation.md) — same Queen/worker/validator pattern; same ADR-per-phase discipline; same retirement criterion shape. The implementing session should treat this plan as the analogue.
 
+> Historical implementation plan. Its `accepted`, `ratification`, `Council` and
+> `authority` language records internal technical-project status only, not OPDA or
+> industry endorsement of the separate schema-derived ontology.
+
 ## 1. Scope and method
 
 **What this plan does.** Sequences the implementation work that realises ADR-0015 as a working `/manual/` section on the Astro site. Each phase lands as one ADR with its own implementation report + independent validation report (mirroring the ontology programme's §9 discipline).
@@ -231,7 +235,7 @@ Phase 4 (ADR-0019) final per-page decisions, committed 2026-05-28:
 
 | Modelling page | Decision | Manual target | Notes |
 |---|---|---|---|
-| `/modelling/standards-stack` | **Keep standalone** | — | Pure PDTF-layer editorial; no TTL-emitted counterpart. |
+| `/modelling/standards-stack` | **Keep standalone** | — | Pure schema-layer editorial; no TTL-emitted counterpart. |
 | `/modelling/bounded-contexts` | **Cross-link** | `/manual/concept` | DDD framing ↔ seven-module structure. Bidirectional. |
 | `/modelling/overlays` | **Cross-link** | `/manual/physical-database/overlay-deployment/baspi5` | JSON Schema overlays (schema layer) vs ontology overlay profile (deployment layer) — different artefacts, same domain. Callout notes the distinction. |
 | `/modelling/data-dictionary` | **Cross-link** | `/manual/logical` | 1,538 schema-derived elements (broad/shallow) ↔ 41 ontology entities (deep/typed). Complementary levels; different audiences. Interactive data browser preserved. |

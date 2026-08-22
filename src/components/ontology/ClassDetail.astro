@@ -21,7 +21,7 @@ const { cls, mappingUsage = [] } = Astro.props;
   definition={cls.definition}
   comment={cls.comment}
   context={cls.context}
-  indexUrl="/pdtf-1/extracted-ontology/terms-and-model-resources/classes"
+  indexUrl="/pdtf-schema/schema-derived-ontology/terms-and-model-resources/classes"
   indexLabel="Classes"
 />
 
@@ -29,7 +29,7 @@ const { cls, mappingUsage = [] } = Astro.props;
   <section class="term-section">
     <h2>Classification</h2>
     {cls.ufoCategory && (
-      <p class="term-ufo">Classified under UFO meta-category <a href={`/pdtf-1/extracted-ontology/terms-and-model-resources/categories/${ufoSlug(cls.ufoCategory)}`}><strong>{cls.ufoCategory}</strong></a> <span class="muted">— a design-time classification (<a href="/pdtf-1/extracted-ontology/concepts-and-architecture/foundational-ontology">UFO-informed, not UFO-grounded</a>), not an entailed type</span></p>
+      <p class="term-ufo">Classified under UFO meta-category <a href={`/pdtf-schema/schema-derived-ontology/terms-and-model-resources/categories/${ufoSlug(cls.ufoCategory)}`}><strong>{cls.ufoCategory}</strong></a> <span class="muted">— a design-time classification (<a href="/pdtf-schema/schema-derived-ontology/concepts-and-architecture/foundational-ontology">UFO-informed, not UFO-grounded</a>), not an entailed type</span></p>
     )}
     {cls.scopeNote && <p class="term-scope">{cls.scopeNote}</p>}
   </section>
@@ -126,11 +126,11 @@ const { cls, mappingUsage = [] } = Astro.props;
   <section class="term-section">
     <h2>Used in the RML mapping <span class="muted">· {mappingUsage.length}</span></h2>
     <p class="term-hint">
-      TriplesMap(s) that assert this class (<a href="/pdtf-1/extracted-ontology/lineage-provenance-and-verification/schema-to-ontology-verification/triplesmaps">ADR-0060</a> — the
+      TriplesMap(s) that assert this class (<a href="/pdtf-schema/schema-derived-ontology/lineage-provenance-and-verification/schema-to-ontology-verification/triplesmaps">ADR-0060</a> — the
       RML mapping's own bidirectional trace to the PDTF JSON Schema).
     </p>
     <ul class="chip-list">
-      {mappingUsage.map((tmId) => <li><a href={`/pdtf-1/extracted-ontology/lineage-provenance-and-verification/schema-to-ontology-verification/triplesmaps/${tmId}`}><code>#{tmId}</code></a></li>)}
+      {mappingUsage.map((tmId) => <li><a href={`/pdtf-schema/schema-derived-ontology/lineage-provenance-and-verification/schema-to-ontology-verification/triplesmaps/${tmId}`}><code>#{tmId}</code></a></li>)}
     </ul>
   </section>
 )}

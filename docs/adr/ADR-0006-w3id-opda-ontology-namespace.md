@@ -2,6 +2,7 @@
 status: accepted
 date: 2026-05-27
 amended: 2026-06-02
+updated: 2026-08-22
 tags: [ontology, namespace, infrastructure, w3c, picg, deployment, pdtf, slash, harness, opda-org-uk]
 supersedes: []
 depends-on: [ODR-0004]
@@ -10,9 +11,9 @@ implements: []
 
 # Ontology namespace at w3id.org/opda/ via W3C PICG redirect
 
-> ## ✅ CURRENT SCHEME (definitive — 2026-06-02)
+> ## ✅ CURRENT IDENTIFIER SCHEME (definitive — amended 2026-08-22)
 >
-> This block is authoritative; it supersedes every amendment, council placement, and the body below wherever they differ. Base **`https://opda.org.uk/`**; the PDTF standard family lives under **`/pdtf/`** with role/kind sub-segments. **Slash, no hash, no version-in-IRI** (version via `owl:versionInfo` + `owl:versionIRI` → release snapshot). `@prefix opda: <https://opda.org.uk/pdtf/> .`
+> This block is authoritative; it supersedes every amendment, council placement, and the body below wherever they differ. Base **`https://opda.org.uk/`**; the stable identifier family for the **schema-derived ontology** lives under the historically minted **`/pdtf/`** path with role/kind sub-segments. That path preserves RDF identity and dereferenceability; it does **not** name or imply an OPDA-endorsed PDTF standard or scheme. **Slash, no hash, no version-in-IRI** (technical ontology-release information remains in `owl:versionInfo` + `owl:versionIRI` → release snapshot). `@prefix opda: <https://opda.org.uk/pdtf/> .`
 >
 > | Resource | IRI |
 > |---|---|
@@ -28,7 +29,7 @@ implements: []
 > | instance / test data | `…/pdtf/harness/data/…`, `…/pdtf/harness/data/exemplar/<stem>` |
 > | release snapshot | `…/pdtf/harness/release/1.0.0/` |
 >
-> **Directing-authority overrides of the council (greenfield):** everything nests under the `/pdtf/` family root; SHACL shapes get a **`/pdtf/shape/`** segment (overrides Q7's no-`/shacl/` — milder: under pdtf authority, an organisational sub-namespace not a separate standard); named graphs get **`/pdtf/graph/`**; SKOS schemes + concepts get a **`/pdtf/scheme/`** segment (ruling 2026-06-02 — disambiguates the scheme namespace from the flat term namespace, so a property `opda:role` at `…/pdtf/role` cannot collide with the `role` scheme at `…/pdtf/scheme/role`; applies to all schemes, not just colliding ones); **`/pdtf/harness/`** nests (was a sibling). **Profiles → `/pdtf/shape/profiles/` — treated as normative standard SHACL (resolves Q8 toward normative).** **Retained from the council:** slash, flat term namespace (no domain-module segments), no version segment, the standard-vs-physical distinction (now core+`scheme`+`shape`+`graph` vs `harness`), Baker's placement procedure, one-directional dependency (nothing in core `/pdtf/` depends on `/pdtf/harness/`).
+> **Directing-authority overrides of the council (greenfield):** everything nests under the `/pdtf/` identifier root; SHACL shapes get a **`/pdtf/shape/`** segment (overrides Q7's no-`/shacl/`; this is an organisational sub-namespace of the schema-derived ontology, not a separate standard); named graphs get **`/pdtf/graph/`**; SKOS schemes + concepts get a **`/pdtf/scheme/`** segment (ruling 2026-06-02 — disambiguates the scheme namespace from the flat term namespace, so a property `opda:role` at `…/pdtf/role` cannot collide with the `role` scheme at `…/pdtf/scheme/role`; applies to all schemes, not just colliding ones); **`/pdtf/harness/`** nests (was a sibling). Profiles remain at **`/pdtf/shape/profiles/`** as conformance shapes in that technical corpus; this placement does not make them normative SPDTF or evidence of OPDA endorsement. **Retained from the council:** slash, flat term namespace (no domain-module segments), no version segment, the technical-entity-vs-physical distinction (now core+`scheme`+`shape`+`graph` vs `harness`), Baker's placement procedure, one-directional dependency (nothing in core `/pdtf/` depends on `/pdtf/harness/`).
 >
 > **As-built (2026-06-02):** the migration is **implemented and green** — `opda_gen.namespaces` is the single source of truth (`OPDA`, `OPDA_SCHEME`, `OPDA_SHAPE`, `OPDA_GRAPH`, `OPDA_HARNESS` + `odr_ref`/`adr_ref`/`dd_entry`/`release_iri` helpers + a flatten-collision guard). Per-module ontology IRIs collapsed to `…/pdtf/graph/<module>` importing the one ontology `…/pdtf/`; per-module/per-profile `owl:versionIRI` → `…/pdtf/harness/release/…`. `dct:source` → harness ODR/ADR/dd retained as provenance comments (not core→harness dependencies; the one definitional `rdfs:isDefinedBy`→ODR on `opda:consumesFrom` repointed to the core ontology). `owl:Class`-typed `*Scheme` (e.g. `SpecialCategoryScheme`, `BoundedContextScheme`) stay in the term namespace; only `skos:ConceptScheme` instances move to `/pdtf/scheme/`. Verified: 345 pytest + 8 CI gates (incl. byte-identity) + 27 repo-root round-trip. See `docs/PLAN-2026-06-02-namespace-migration.md`.
 
@@ -211,3 +212,15 @@ CI test (deploy pipeline): byte-identity of regenerated TTL against committed so
 * **Hosting target**: `https://openpropdata.org.uk/ontology/` — see [ADR-0003](./ADR-0003-idiomatic-astro-refactor.md) for the Astro build pipeline that emits and serves the TTL artefacts.
 * **Reopening trigger** (inherited from ODR-0004 §Consequences): the hash decision is reversible only at high cost. The WG SHOULD record a concrete reopening criterion (suggested: any single ontology file exceeds 1,000 terms in active dereference traffic OR a named consumer requests per-term content negotiation).
 * **First cross-corpus ADR**. This ADR is the bootstrap of the ontology-implementation ADR programme referenced in [`docs/plan/council-followup-sessions.md`](../plan/council-followup-sessions.md) §1 ("Implementation is handled by a separate ADR programme"). Subsequent ADRs will realise additional ratified ODRs.
+
+## Amendments
+
+- **2026-08-22 — Chair-authority terminology correction without RDF reminting.**
+  Maria Harris, OPDA Chair, clarified that the inherited technical material was not an
+  OPDA-endorsed predecessor standard or scheme. The unchanged `/pdtf/**` IRIs are the
+  stable identifiers of the ontology derived from the PDTF schema. Their path text is
+  historical identity, not semantic authority and not an SPDTF generation or version.
+  The earlier “PDTF standard” and “normative standard” wording retained in the dated
+  2026-06-01/02 record is historical decision provenance; this amendment and the
+  current identifier-scheme block govern its present interpretation. No class,
+  property, concept, shape, graph or release IRI is changed.

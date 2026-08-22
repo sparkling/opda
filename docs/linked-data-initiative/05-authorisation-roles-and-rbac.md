@@ -1,11 +1,13 @@
 # Authorisation, roles & RBAC
 
 > Part of the OPDA Linked-Data Initiative knowledgebase. Legend: ✅ built · 🟡 partial · 🔵 planned.
+> This page documents candidate semantics in the separate schema-derived ontology. It
+> does not state an adopted SPDTF policy or conformance requirement.
 
 ## TL;DR
 
 - 🟡 **What "modelled authorisation (RBAC)" actually means here is a *role + capacity + authority-evidence substrate*, grounded in UFO** — not a permission-policy engine. People and organisations are rigid **Kinds**; being a *Seller*, *Buyer* or *Proprietor* is an anti-rigid **Role/RoleMixin** that the Kind *plays*, founded by a relator (the Transaction or the Proprietorship). A Seller is not a *kind of* Person. (`source/03-standards/ontology/opda-agent.ttl`, ODR-0006.)
-- ✅ **The genuine modelling win is the capacity-vs-authority split:** `opda:hasAssertedCapacity` (the sales-side *claim* — "I'm selling under power of attorney", SKOS-typed) is deliberately separated from `opda:hasEvidencedAuthority` (the conveyancing-side *proof* → an `opda:Claim` such as probate or a POA deed). PDTF collapsed both into one free-text enum; OPDA models the gap between asserted and evidenced authority as two predicates on two sides of the transaction.
+- ✅ **The candidate modelling win is the capacity-vs-authority split:** `opda:hasAssertedCapacity` (the sales-side *claim* — "I'm selling under power of attorney", SKOS-typed) is deliberately separated from `opda:hasEvidencedAuthority` (the conveyancing-side *proof* → an `opda:Claim` such as probate or a POA deed). The PDTF schema collapses both into one free-text enum; the schema-derived model represents the gap as two predicates on two sides of the transaction.
 - ✅ **Enforcement is SHACL, not policy triples.** The BASPI5 profile emits a Violation-severity `sh:xone` shape (`Baspi5_SellersCapacityShape`) that forces a Seller asserting a *regulated* capacity to carry an evidenced-authority link; an Info-severity SHACL-AF rule (`CapacityAuthorityMatchRule`) materialises an `unevidenced-capacity` flag wherever a capacity is asserted without backing evidence.
 - ✅ **Controlled vocabularies back the roles:** a SKOS `RoleScheme` (13 members from the BASPI5 `role` enum — Seller, Buyer, Estate Agent, Lender, Surveyor, both Conveyancers…), a `ParticipantStatusScheme` (Proposed / Invited / Active / Removed), a `SellersCapacityScheme` (6 capacities) and an `OwnerTypeScheme` (Private individual / Organisation).
 - 🔵 **There is no ODRL policy layer and no classic RBAC permission scheme in the emitted ontology — zero `odrl:` triples** (verified across the whole corpus; the only "permission" strings are *planning* permission). Machine-readable permission/consent policies (ODRL) are **adopted in the catalogue but deferred to Phase 2**, with three named activation triggers owned by ODR-0012 §Q4.
@@ -15,7 +17,7 @@
 
 ## 1. Why roles are not subclasses (the anti-rigidity discipline)
 
-PDTF v3 models everyone attached to a transaction as a flat `participants[]` array, discriminated by a `role` enum, with `name`, `address`, `organisation`, `dateOfBirth` and `email` hanging off each entry, and tells `privateIndividual` from `organization` only as two more enum values (ODR-0006 §Context). This is the participant twin of the implicit-Property defect (the identity crux of ODR-0005): identity-supplying things (a person, an organisation) are conflated with anti-rigid, externally-founded things (being a *seller*, a *buyer*, a *conveyancer*).
+The PDTF schema v3 models everyone attached to a transaction as a flat `participants[]` array, discriminated by a `role` enum, with `name`, `address`, `organisation`, `dateOfBirth` and `email` hanging off each entry, and tells `privateIndividual` from `organization` only as two more enum values (ODR-0006 §Context). This is the participant twin of the implicit-Property defect (the identity crux of ODR-0005): identity-supplying things (a person, an organisation) are conflated with anti-rigid, externally-founded things (being a *seller*, a *buyer*, a *conveyancer*).
 
 The fix is the UFO (Unified Foundational Ontology, Guizzardi) Kind / RoleMixin / Role layering. The discipline in one sentence: **put identity where identity actually lives (the person or the organisation), and make role-play anti-rigid and externally founded.** A `Seller` is not a *kind of* `Person` — a person is a seller only contingently, only in the context of a particular transaction, and stops being one when the transaction ends. Subclassing `Seller` under `Person` would assert the opposite (rigid, permanent, identity-defining membership) and is exactly the modelling error OPDA refuses.
 
@@ -62,7 +64,7 @@ The relationship between the two surfaces is deliberate and recorded on the `opd
 
 ### 2c. Participant lifecycle — `ParticipantStatusScheme`
 
-`opda-v:ParticipantStatusScheme` (`opda:ufoCategory "Phase label"` — a UFO intra-Kind *phase*, not a role) carries the four lifecycle phases that replaced PDTF's old `isRemoved` boolean (PDTF v3.4 `participantStatus`):
+`opda-v:ParticipantStatusScheme` (`opda:ufoCategory "Phase label"` — a UFO intra-Kind *phase*, not a role) carries the four lifecycle phases that replaced the PDTF schema's old `isRemoved` boolean (`participantStatus` in schema v3.4):
 
 > **Proposed** → **Invited** → **Active** → **Removed**
 

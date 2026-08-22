@@ -35,10 +35,10 @@ const aggLocalName = entityUri ? entityUri.split(/[/#:]/).pop() : null;
 if (aggLocalName && AGGREGATE_DOCS.has(aggLocalName)) return;
 
 const tiers = [
-  { key: 'concept', label: 'Concept', path: '/pdtf-1/extracted-ontology/model-views-by-audience/concept' },
-  { key: 'logical', label: 'Logical', path: '/pdtf-1/extracted-ontology/model-views-by-audience/logical' },
-  { key: 'physical-database', label: 'Physical — deployment', path: '/pdtf-1/extracted-ontology/model-views-by-audience/physical-database' },
-  { key: 'physical-ontology', label: 'Physical — ontology', path: '/pdtf-1/extracted-ontology/model-views-by-audience/physical-ontology' },
+  { key: 'concept', label: 'Concept', path: '/pdtf-schema/schema-derived-ontology/model-views-by-audience/concept' },
+  { key: 'logical', label: 'Logical', path: '/pdtf-schema/schema-derived-ontology/model-views-by-audience/logical' },
+  { key: 'physical-database', label: 'Physical — deployment', path: '/pdtf-schema/schema-derived-ontology/model-views-by-audience/physical-database' },
+  { key: 'physical-ontology', label: 'Physical — ontology', path: '/pdtf-schema/schema-derived-ontology/model-views-by-audience/physical-ontology' },
 ] as const;
 
 // Best-effort identity keys. `localName` is the camel/PascalCase URI local

@@ -7,8 +7,8 @@ import {
   comparisonDimensions,
   lexicalMatches,
   sameKindLexicalMatches,
-  v1Counts,
-  v2Counts,
+  schemaDerivedCounts,
+  propertyPackCounts,
 } from '../src/lib/model-comparison.mjs';
 import {
   boundaryDiagram,
@@ -29,8 +29,8 @@ import {
   vocabularyRoute,
 } from '../src/lib/property-pack-model.mjs';
 
-test('PDTF 1.0 and Property Pack comparison uses generated model projections', () => {
-  assert.deepEqual(v1Counts, {
+test('PDTF schema and Property Pack comparison uses generated model projections', () => {
+  assert.deepEqual(schemaDerivedCounts, {
     resources: 321,
     classes: 41,
     objectProperties: 75,
@@ -43,7 +43,7 @@ test('PDTF 1.0 and Property Pack comparison uses generated model projections', (
     overlayProfiles: 31,
     exemplars: 17,
   });
-  assert.deepEqual(v2Counts, {
+  assert.deepEqual(propertyPackCounts, {
     sourceItems: 451,
     resources: 159,
     classes: 53,
@@ -67,8 +67,8 @@ test('comparison dimensions are complete, unique and evidence-linked', () => {
   for (const dimension of comparisonDimensions) {
     assert.match(dimension.id, /^[a-z0-9-]+$/);
     assert.ok(dimension.label);
-    assert.ok(dimension.v1);
-    assert.ok(dimension.v2);
+    assert.ok(dimension.schemaDerived);
+    assert.ok(dimension.propertyPack);
     assert.ok(dimension.implication);
     assert.ok(dimension.evidence.length > 0);
     assert.ok(dimension.evidence.every((item) => item.label && item.href.startsWith('/')));
@@ -86,24 +86,24 @@ test('lexical overlap is measured without asserting semantic equivalence', () =>
 });
 
 test('lineage name-match views explain their limited evidence', async () => {
-  const page = await readFile(new URL('../src/pages/spdtf-2/property-pack/pdtf-1-lineage.astro', import.meta.url), 'utf8');
+  const page = await readFile(new URL('../src/pages/spdtf/property-pack/pdtf-schema-lineage.astro', import.meta.url), 'utf8');
   assert.match(page, /mechanical identifier check/u);
   assert.match(page, /does\s*<strong>not<\/strong> establish/u);
   assert.match(page, /reclassification questions/u);
   assert.match(page, /Property Pack candidate<\/span>/u);
   assert.equal((page.match(/class="v2-name-matrix__name"/gu) ?? []).length, 2);
-  assert.match(page, /kindLabel\(item\.v1Kind\)/u);
+  assert.match(page, /kindLabel\(item\.schemaDerivedKind\)/u);
 });
 
 test('semantic-home count pills retain their complete information text', async () => {
-  const page = await readFile(new URL('../src/pages/spdtf-2/property-pack/definition-and-scope.astro', import.meta.url), 'utf8');
+  const page = await readFile(new URL('../src/pages/spdtf/property-pack/definition-and-scope.astro', import.meta.url), 'utf8');
   assert.match(page, /<p\s+class="pill pill--info context-card__count"/u);
   assert.match(page, /source data point\$\{context\.source_item_count === 1 \? '' : 's'\}/u);
   assert.doesNotMatch(page, /<span class="pill pill--info context-card__count"/u);
 });
 
 test('candidate artefacts are a six-link desktop grid', async () => {
-  const page = await readFile(new URL('../src/pages/spdtf-2/property-pack/definition-and-scope.astro', import.meta.url), 'utf8');
+  const page = await readFile(new URL('../src/pages/spdtf/property-pack/definition-and-scope.astro', import.meta.url), 'utf8');
   const styles = await readFile(new URL('../src/styles/property-pack.css', import.meta.url), 'utf8');
   assert.match(page, /class="v2-card-grid v2-card-grid--artefacts"/u);
   assert.equal((page.match(/Open artefact/g) ?? []).length, 6);
@@ -139,17 +139,17 @@ test('stable detail routes are unique and identifier-based', () => {
   assert.equal(new Set(sourceRoutes).size, 451);
   assert.equal(new Set(schemeRoutes).size, 14);
   assert.equal(new Set(shapeRoutes).size, 45);
-  assert.ok(resourceRoutes.every((route) => /^\/spdtf-2\/property-pack\/resources\/[a-z-]+\/[A-Za-z0-9_-]+$/.test(route)));
-  assert.ok(sourceRoutes.every((route) => /^\/spdtf-2\/property-pack\/data-dictionary\/pp-[0-9a-f]{12}$/.test(route)));
-  assert.ok(shapeRoutes.every((route) => /^\/spdtf-2\/property-pack\/shapes\/[a-z-]+\/[A-Za-z0-9_-]+$/.test(route)));
-  assert.ok(schemeRoutes.every((route) => /^\/spdtf-2\/property-pack\/vocabularies\/[a-z-]+\/[A-Za-z0-9_-]+$/.test(route)));
+  assert.ok(resourceRoutes.every((route) => /^\/spdtf\/property-pack\/resources\/[a-z-]+\/[A-Za-z0-9_-]+$/.test(route)));
+  assert.ok(sourceRoutes.every((route) => /^\/spdtf\/property-pack\/data-dictionary\/pp-[0-9a-f]{12}$/.test(route)));
+  assert.ok(shapeRoutes.every((route) => /^\/spdtf\/property-pack\/shapes\/[a-z-]+\/[A-Za-z0-9_-]+$/.test(route)));
+  assert.ok(schemeRoutes.every((route) => /^\/spdtf\/property-pack\/vocabularies\/[a-z-]+\/[A-Za-z0-9_-]+$/.test(route)));
   const generatedRoutes = [...resourceRoutes, ...sourceRoutes, ...schemeRoutes, ...shapeRoutes];
   assert.equal(new Set(generatedRoutes).size, 669);
   assert.equal(new Set(generatedRoutes.map((route) => route.toLocaleLowerCase())).size, 669);
   assert.ok(generatedRoutes.every((route) => !route.startsWith('/v2') && route !== '/modelling/property-pack'));
 });
 
-test('complete Mermaid uses the PDTF 1.0 class-backbone projection', () => {
+test('complete Mermaid uses the PDTF schema class-backbone projection', () => {
   const source = completeModelDiagram();
   assert.match(source, /^---\nconfig:\n  layout: elk\n---\nflowchart LR/m);
   assert.match(source, /accTitle: Complete Property Pack candidate model/);

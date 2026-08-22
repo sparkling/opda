@@ -1,28 +1,30 @@
 ---
 status: accepted
 date: 2026-07-19
-updated: 2026-08-06
+updated: 2026-08-22
 tags: [strategy, ontology, bounded-context, working-groups, ddd, skos, shacl, interoperability, provenance, temporal, dpv, dcat]
 supersedes: []
 depends-on: [ADR-0026, ADR-0039, ODR-0019, ODR-0020]
 implements: []
 ---
 
-# Domain-led bounded-context working groups for the next modelling phase
+# Domain-led bounded-context working groups for SPDTF development
 
 ## Context and Problem Statement
 
-OPDA's first linked-data phase started with the existing PDTF JSON Schema standard and
-generated an ontology, mappings, glossary, dictionary, shapes and website views from
-that technical source. The current outputs are available through:
+OPDA's earlier linked-data work started with the existing PDTF schema and supporting
+dictionary, glossary and overlays, then generated a schema-derived ontology, mappings,
+shapes and website views from that technical source. The current outputs are available
+through:
 
 - `https://opda.org.uk/ontology`
 - `https://opda.org.uk/mapping`
 - `https://opda.org.uk/schema/`
 
-That phase proved that the existing standard can be traced into a linked-data
+That work proved that the existing schema can be traced into a linked-data
 representation. It also exposed a more important finding: a document schema is not a
-sufficient source of domain meaning.
+sufficient source of domain meaning, and neither the schema nor its derived ontology is
+an OPDA-endorsed predecessor scheme.
 
 The generated model has several diagnostic weaknesses:
 
@@ -34,11 +36,11 @@ The generated model has several diagnostic weaknesses:
 - the result risks becoming a single, centrally designed "cathedral" model whose scope
   is too broad for domain experts to review effectively.
 
-The existing ontology remains valuable as a diagnostic baseline, traceability
-artefact and source of requirements. The next phase does not discard it or "start
-again"; it changes how domain meaning becomes authoritative.
+The schema-derived ontology remains valuable as a diagnostic baseline, traceability
+artefact and source of requirements. SPDTF development does not discard it or "start
+again"; it changes how domain meaning becomes authoritative through collaboration.
 
-This ADR decides how the next models are to be developed and governed.
+This ADR decides how SPDTF models are to be developed and governed.
 
 Supporting evidence and the stakeholder case are recorded in
 [`docs/research/bounded-context-working-group-approach.md`](../research/bounded-context-working-group-approach.md).
@@ -48,7 +50,7 @@ Supporting evidence and the stakeholder case are recorded in
 - **Domain correctness** — meanings and relationships must be agreed by practitioners
   who make decisions in the domain.
 - **Balanced coverage** — each part of the property journey needs deliberate attention,
-  rather than inheriting the participation pattern of the existing schemas and forms.
+  rather than inheriting the participation pattern of the PDTF schema and forms.
 - **Bounded scope** — a group must be able to understand and review its model without
   taking responsibility for the whole property ecosystem.
 - **Bottom-up modelling** — domain meaning should be developed from practitioner
@@ -84,12 +86,13 @@ Supporting evidence and the stakeholder case are recorded in
 Chosen option: **Option C — domain-led bounded-context groups plus an Interoperability
 Working Group.**
 
-The next phase will not treat the current JSON Schemas, their overlays, or the generated
+SPDTF development will not treat the PDTF schema, its overlays, or the schema-derived
 ontology as the authority for domain meaning. They remain valuable evidence,
 traceability, implementation and migration inputs throughout the work. Each working
 group determines meaning through its agreed scope, use cases, practitioner language and
 reviewed evidence. This is a shift from one top-down, schema-derived model to
-bottom-up modelling within explicit bounded contexts, not a restart of the programme.
+bottom-up modelling within explicit bounded contexts: a schema-to-scheme continuation,
+not a numbered-version succession or a restart of the programme.
 
 ### 1. Working-group roster
 
@@ -240,7 +243,7 @@ Each group follows an iterative, evidence-led method:
    rules;
 9. refer genuine cross-context dependencies to the Interoperability Working Group;
 10. repeat until the group considers the model stable enough to publish as its
-    official first draft.
+    collaborative first draft.
 
 Most participants encounter data through schemas and electronic forms, which present a
 tree-shaped view. The ontology presents the connected business model as a graph. That
@@ -266,7 +269,7 @@ examples and business-language validation outcomes. The current OPDA website may
 shown as a demonstration of how models can be explored and discussed, but its current
 model must not be presented as the new Finance and Banking model.
 
-The first phase is resource-first: OPDA will ask participants for the standards,
+The first step is resource-first: OPDA will ask participants for the standards,
 schemas, forms, definitions, policies, examples and other material they already use.
 The modelling facilitator will use that evidence, with AI assistance, to produce and
 publish the first candidate model for review. The group will then improve successive
@@ -275,9 +278,10 @@ the ontology live in the kick-off meeting.
 
 ### 7. Relationship to existing decisions and artefacts
 
-This ADR does not rewrite historical records or delete the current generated corpus.
-ADR-0026, ADR-0039, ODR-0019 and ODR-0020 accurately record how the existing model and
-bounded-context scheme were derived and implemented.
+This ADR does not delete the current generated corpus. ADR-0026, ADR-0039, ODR-0019 and
+ODR-0020 retain the provenance of how the schema-derived model and bounded-context scheme
+were produced; their living authority statements must be read with their dated
+schema-to-scheme amendments.
 
 If this ADR is accepted, the next governance step is to identify and formally supersede
 or amend the normative claims in those records that make schemas, form overlays or the
@@ -346,7 +350,16 @@ ratified:
 - [Research — AI-assisted working-group method](../research/ai-assisted-working-group-method.md)
 - [Presentation plan — July 2026 Exec and Finance and Banking workshop](../plan/2026-07-exec-and-finance-banking-presentations.md)
 - [ADR-0064 — redesign the modelling website before publishing the new approach](./ADR-0064-modelling-website-revamp-before-strategy-publication.md)
-- [ADR-0039 — linked-data model as the PDTF standards foundation](./ADR-0039-linked-data-model-as-pdtf-standards-foundation.md)
+- [ADR-0039 — linked-data model as the SPDTF foundation](./ADR-0039-linked-data-model-as-spdtf-foundation.md)
 - [ADR-0026 — bounded-context scheme emission](./ADR-0026-bounded-context-scheme-emission.md)
 - [ODR-0019 — bounded-context representation](../ontology/odr/ODR-0019-bounded-context-representation.md)
 - [ODR-0020 — bounded-context scheme and mapping](../ontology/odr/ODR-0020-bounded-context-scheme-and-mapping.md)
+
+## Amendments
+
+- **2026-08-22 — Chair-authority terminology correction.** The existing input is the
+  PDTF schema and supporting material; its extracted ontology is a schema-derived
+  technical artefact. Neither is an OPDA-endorsed predecessor scheme. SPDTF is the first
+  collaboratively authored scheme draft, and this working-group method governs that
+  schema-to-scheme continuation. Historical derivation evidence and stable technical
+  identifiers remain unchanged.

@@ -6,7 +6,7 @@
  * `../../logical/property/property.md`) so it stays browsable as plain files
  * (the local HTML export, GitHub). Those links do NOT resolve as Astro routes,
  * so at build time every relative link that resolves inside `docs/manual/` is
- * rewritten to its `/pdtf-1/extracted-ontology/model-views-by-audience/<…>` route: extension stripped, `README` collapsed
+ * rewritten to its `/pdtf-schema/schema-derived-ontology/model-views-by-audience/<…>` route: extension stripped, `README` collapsed
  * to its directory (tier / module landing), `#anchors` preserved. Links that
  * resolve outside `docs/manual/` (e.g. into the ODR corpus) are left unchanged.
  *
@@ -32,7 +32,7 @@ function splitHash(url: string): [string, string | null] {
   return i === -1 ? [url, null] : [url.slice(0, i), url.slice(i + 1)];
 }
 
-/** Map an absolute source path under docs/manual/ to its `/pdtf-1/extracted-ontology/model-views-by-audience/<…>` route, else null. */
+/** Map an absolute source path under docs/manual/ to its `/pdtf-schema/schema-derived-ontology/model-views-by-audience/<…>` route, else null. */
 export function toManualRoute(absPath: string): string | null {
   const m = absPath.replace(/\\/g, '/').match(MANUAL_SEG_RE);
   if (!m) return null;
@@ -41,10 +41,10 @@ export function toManualRoute(absPath: string): string | null {
     .replace(/\.md$/, '')
     .replace(/(^|\/)readme$/, '') // README → its containing directory
     .replace(/\/$/, '');
-  return slug ? `/pdtf-1/extracted-ontology/model-views-by-audience/${slug}` : '/pdtf-1/extracted-ontology/model-views-by-audience';
+  return slug ? `/pdtf-schema/schema-derived-ontology/model-views-by-audience/${slug}` : '/pdtf-schema/schema-derived-ontology/model-views-by-audience';
 }
 
-/** Remark plugin: rewrite relative `.md` links into Astro `/pdtf-1/extracted-ontology/model-views-by-audience/…` routes. */
+/** Remark plugin: rewrite relative `.md` links into Astro `/pdtf-schema/schema-derived-ontology/model-views-by-audience/…` routes. */
 export function remarkRewriteManualLinks() {
   return function transformer(tree: Root, file: VFile): void {
     const filePath = file.path ?? (file as unknown as { history?: string[] }).history?.[0];

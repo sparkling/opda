@@ -24,24 +24,24 @@ const {
   description,
   crumbs = [],
 } = Astro.props;
-const isPropertyPackRoot = Astro.url.pathname.replace(/\/+$/u, '') === '/spdtf-2/property-pack';
+const isPropertyPackRoot = Astro.url.pathname.replace(/\/+$/u, '') === '/spdtf/property-pack';
 const technicalState = validationReport.status === 'pass'
   ? 'Technical candidate checks passed'
   : `Technical candidate checks: ${validationReport.status}`;
 ---
 <Layout
-  title={`${title} · Property Pack ontology · SPDTF 2.0`}
+  title={`${title} · Property Pack ontology · SPDTF`}
   description={description}
   hideBreadcrumbs={true}
   proseClass="prose wide"
 >
   <div class="v2-doc">
     <nav class="v2-breadcrumbs" aria-label="Breadcrumb">
-      <a href="/spdtf-2">SPDTF 2.0 Development</a>
+      <a href="/spdtf">SPDTF</a>
       <span aria-hidden="true">/</span>
       {isPropertyPackRoot
         ? <span aria-current="page">Property Pack ontology</span>
-        : <a href="/spdtf-2/property-pack">Property Pack ontology</a>}
+        : <a href="/spdtf/property-pack">Property Pack ontology</a>}
       {crumbs.map((crumb) => (
         <>
           <span aria-hidden="true">/</span>
@@ -59,15 +59,15 @@ const technicalState = validationReport.status === 'pass'
       </summary>
       <div class="v2-candidate-banner__content">
         <p>
-          <strong>Property Pack ontology candidate · accelerated SPDTF 2.0 component ·
+          <strong>Property Pack ontology candidate · accelerated SPDTF component ·
           machine-generated · non-normative.</strong> The Technical Working Group
           determination is pending, later domain review has not occurred, and AI has no
-          decision authority. This candidate is neither the whole SPDTF 2.0 ontology nor
+          decision authority. This candidate is neither the whole SPDTF ontology nor
           an approved exchange contract.
         </p>
         <p>
           <strong>{technicalState}.</strong> This records machine checks, not semantic approval.
-          <a href="/spdtf-2/property-pack/validation"> Review the evidence</a>.
+          <a href="/spdtf/property-pack/validation"> Review the evidence</a>.
         </p>
         <dl class="property-pack-status" aria-label="Property Pack lifecycle status">
           <div><dt>Source definition</dt><dd>{propertyPackLifecycleStatus.sourceDefinition}</dd></div>

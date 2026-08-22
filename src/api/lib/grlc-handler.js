@@ -342,9 +342,9 @@ function buildCrossTierLinks(localName, module) {
   const slug = pascalToKebab(localName);
   const mod = module.toLowerCase();
   return {
-    concept:          `/pdtf-1/extracted-ontology/model-views-by-audience/concept/${mod}/${slug}`,
-    logical:          `/pdtf-1/extracted-ontology/model-views-by-audience/logical/${mod}/${slug}`,
-    physicalOntology: `/pdtf-1/extracted-ontology/model-views-by-audience/physical-ontology/${mod}/classes#${localName}`,
+    concept:          `/pdtf-schema/schema-derived-ontology/model-views-by-audience/concept/${mod}/${slug}`,
+    logical:          `/pdtf-schema/schema-derived-ontology/model-views-by-audience/logical/${mod}/${slug}`,
+    physicalOntology: `/pdtf-schema/schema-derived-ontology/model-views-by-audience/physical-ontology/${mod}/classes#${localName}`,
     physicalDatabase: null,
   };
 }

@@ -92,8 +92,8 @@ test('current implementers reach schema and validation guidance within two inter
   await page.setViewportSize({ width: 1440, height: 900 });
   await visit(page, '/home');
 
-  await page.locator('nav[aria-label="Primary"] a', { hasText: 'PDTF 1.0' }).click();
-  await expect(page).toHaveURL(/\/pdtf-1$/u);
+  await page.locator('nav[aria-label="Primary"] a', { hasText: 'PDTF schema' }).click();
+  await expect(page).toHaveURL(/\/pdtf-schema$/u);
   const implementationLinks = page.locator('main a');
   const schemasLink = page.getByRole('main').getByRole('link', {
     name: 'Schemas and overlays',
@@ -111,7 +111,7 @@ test('current implementers reach schema and validation guidance within two inter
   await expect(page).toHaveURL(new RegExp(`${PDTF1_ROUTES.original}/schema$`, 'u'));
   expect((await page.locator('a').allTextContents()).join('\n')).not.toMatch(/archive/iu);
 
-  await page.goto('/pdtf-1');
+  await page.goto('/pdtf-schema');
   await page.getByRole('main').getByRole('link', {
     name: 'Implementation guidance',
     exact: true,

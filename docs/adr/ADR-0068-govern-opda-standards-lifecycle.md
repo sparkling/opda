@@ -385,7 +385,7 @@ No change to the current public ontology or website status is authorised by this
 - [Finance and Banking presentation participation slides](../../src/components/presentations/WorkshopParticipationSlides.astro)
 - [Finance and Banking presentation architecture slides](../../src/components/presentations/WorkshopArchitectureSlides.astro)
 - [Presentation content and session plan](../plan/2026-07-exec-and-finance-banking-presentations.md)
-- [ADR-0039 — linked-data standards direction](./ADR-0039-linked-data-model-as-pdtf-standards-foundation.md)
+- [ADR-0039 — linked-data standards direction for SPDTF](./ADR-0039-linked-data-model-as-spdtf-foundation.md)
 - [ADR-0066 — Property Pack seed scope](./ADR-0066-property-pack-451-seed-scope-and-greenfield-ontology.md)
 - [ADR-0067 — first-principles bounded-context modelling](./ADR-0067-first-principles-property-pack-ontology-by-bounded-context.md)
 - [OPDA Constitution 2026](../../source/01-organisation/constitution-and-policies/OPDA%20Constitution%202026.pdf)

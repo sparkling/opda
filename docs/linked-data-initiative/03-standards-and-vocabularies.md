@@ -1,4 +1,4 @@
-# Standards & vocabularies adopted
+# Standards and vocabularies used by the schema-derived ontology
 
 > Part of the OPDA Linked-Data Initiative knowledgebase. Legend: ✅ built · 🟡 partial · 🔵 planned.
 >
@@ -8,6 +8,8 @@
 > **adoption catalogue** ([ODR-0002](../../docs/ontology/odr/ODR-0002-ontology-language-adoption.md)).
 > Where the catalogue says one thing and the shipped TTL says another, the TTL wins and
 > the gap is flagged.
+> Here, "adopted" means selected within the internal technical artefact. It does not mean
+> adoption by OPDA, an SPDTF working group or the industry scheme.
 
 ## TL;DR
 
@@ -29,7 +31,7 @@ profiles, and the 34 diagnostic exemplars). This is the honest denominator for t
 
 | Prefix | Files declaring it | Namespace |
 |---|---:|---|
-| `opda:` | 89 | `https://opda.org.uk/pdtf/` (the minted ontology itself) |
+| `opda:` | 89 | `https://opda.org.uk/pdtf/` (the minted draft ontology namespace) |
 | `dct:` | 87 | `http://purl.org/dc/terms/` |
 | `rdf:` | 72 | `http://www.w3.org/1999/02/22-rdf-syntax-ns#` |
 | `xsd:` | 61 | `http://www.w3.org/2001/XMLSchema#` |

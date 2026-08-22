@@ -24,16 +24,16 @@ const itemPath = normalizeUrl(item.url);
 const isActive = itemPath === activePath;
 const isCurrentPage = isActive && itemPath === currentPath;
 const isOpen = !isLeaf && containsActive(item);
-const legacyPdtfGroupId = new Map<string, string>([
-  [`${PDTF1_ROUTES.original}/schema`, 'section-nav-group-pdtf-1-schema'],
-  [`${PDTF1_ROUTES.original}/implementation`, 'section-nav-group-pdtf-1-implementation'],
-  [`${PDTF1_ROUTES.original}/adoption`, 'section-nav-group-pdtf-1-adoption'],
-  [PDTF1_ROUTES.historicalModelling, 'section-nav-group-pdtf-1-modelling'],
-  [PDTF1_ROUTES.modelViews, 'section-nav-group-pdtf-1-model'],
-  [PDTF1_ROUTES.schemaVerification, 'section-nav-group-pdtf-1-mapping'],
+const namedPdtfGroupId = new Map<string, string>([
+  [`${PDTF1_ROUTES.original}/schema`, 'section-nav-group-pdtf-schema-schema'],
+  [`${PDTF1_ROUTES.original}/implementation`, 'section-nav-group-pdtf-schema-implementation'],
+  [`${PDTF1_ROUTES.original}/adoption`, 'section-nav-group-pdtf-schema-usage'],
+  [PDTF1_ROUTES.historicalModelling, 'section-nav-group-pdtf-schema-modelling'],
+  [PDTF1_ROUTES.modelViews, 'section-nav-group-pdtf-schema-model'],
+  [PDTF1_ROUTES.schemaVerification, 'section-nav-group-pdtf-schema-mapping'],
 ]).get(itemPath);
 const stableIdPath = getPdtf1LegacyCommentKey(itemPath);
-const childrenId = legacyPdtfGroupId
+const childrenId = namedPdtfGroupId
   ?? `section-nav-${stableIdPath.replace(/[^a-z0-9]+/giu, '-').replace(/^-|-$/gu, '')}`;
 ---
 {isLeaf ? (

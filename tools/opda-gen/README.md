@@ -1,6 +1,6 @@
 # opda-gen
 
-OPDA ontology generator. Realises [ADR-0007](../../docs/adr/ADR-0007-ontology-generator-specification.md) (deterministic emission specification) per [ADR-0008](../../docs/adr/ADR-0008-generator-implementation-infrastructure.md) (implementation infrastructure).
+Generator for OPDA's draft schema-derived ontology. It realises [ADR-0007](../../docs/adr/ADR-0007-ontology-generator-specification.md) (deterministic emission specification) per [ADR-0008](../../docs/adr/ADR-0008-generator-implementation-infrastructure.md) (implementation infrastructure). Its outputs are separate from the PDTF schema package and provide technical evidence for SPDTF development; they are not an endorsed scheme.
 
 ## Status
 
@@ -71,5 +71,5 @@ headers; missing source provenance fails the soundness check.
 
 - [ADR-0007 — Ontology generator specification](../../docs/adr/ADR-0007-ontology-generator-specification.md)
 - [ADR-0008 — Generator implementation infrastructure](../../docs/adr/ADR-0008-generator-implementation-infrastructure.md)
-- [ODR-0004 — PDTF ontology foundation](../../docs/ontology/odr/ODR-0004-pdtf-ontology-foundation.md)
+- [ODR-0004 — schema-derived ontology foundation](../../docs/ontology/odr/ODR-0004-pdtf-ontology-foundation.md)
 - [ADR programme plan](../../docs/plan/ontology-implementation.md)

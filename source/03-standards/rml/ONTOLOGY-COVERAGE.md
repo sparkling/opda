@@ -119,7 +119,7 @@ not an RML gap. Needs an ontology-side ruling per class, not a mapping fix.
 Pattern: most are `prov:Activity`/`prov:Entity`/`skos:ConceptScheme`
 subclasses with no data properties at all — consistent with being populated
 by SHACL-AF inference rules or by the ontology-generation harness itself
-(release/audit/exemplar metadata), not extracted from a PDTF transaction
+(release/audit/exemplar metadata), not extracted from a PDTF schema transaction
 instance. **Not independently verified** which mechanism populates each one —
 that would need per-class confirmation from the ontology owners. What IS
 verified: no PDTF JSON leaf that opda-gen bound a term to reaches these

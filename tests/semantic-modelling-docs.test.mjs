@@ -14,7 +14,7 @@ import {
 import { SEMANTIC_PACKAGE_MANIFEST } from '../src/lib/spdtf-workspace.mjs';
 
 const root = fileURLToPath(new URL('..', import.meta.url));
-const ontologyDir = path.join(root, 'src/pages/spdtf-2/ontologies');
+const ontologyDir = path.join(root, 'src/pages/spdtf/ontologies');
 const page = (name) => path.join(ontologyDir, `${name}.astro`);
 const pages = [
   'index', 'why-ontologies', 'reading-the-model', 'modelling-method',
@@ -116,17 +116,17 @@ test('standards records separate specification maturity, governance status and a
 
 test('search exposes every semantic-modelling route and no legacy journey label', () => {
   const ontologyEntries = searchEntries('ontology').map(({ url }) => url);
-  assert.ok(ontologyEntries.includes('/spdtf-2/ontologies'), 'semantic-modelling landing is absent from search');
+  assert.ok(ontologyEntries.includes('/spdtf/ontologies'), 'semantic-modelling landing is absent from search');
   for (const name of pages.filter((name) => name !== 'index')) {
-    assert.ok(ontologyEntries.includes(`/spdtf-2/ontologies/${name}`), `${name} is absent from search`);
+    assert.ok(ontologyEntries.includes(`/spdtf/ontologies/${name}`), `${name} is absent from search`);
   }
   const all = searchEntries('');
   assert.equal(new Set(all.map(({ url }) => url)).size, all.length);
   for (const term of ['SKOS', 'OWL', 'RDF', 'SPARQL', 'upper ontology']) {
-    assert.ok(searchEntries(term).some(({ url }) => url.startsWith('/spdtf-2/ontologies')), `${term} is not discoverable`);
+    assert.ok(searchEntries(term).some(({ url }) => url.startsWith('/spdtf/ontologies')), `${term} is not discoverable`);
   }
   for (const term of ['bounded context', 'context map', 'taxonomy']) {
-    assert.ok(searchEntries(term).some(({ url }) => url === '/spdtf-2/ontologies/bounded-contexts'), `${term} is not discoverable`);
+    assert.ok(searchEntries(term).some(({ url }) => url === '/spdtf/ontologies/bounded-contexts'), `${term} is not discoverable`);
   }
 });
 

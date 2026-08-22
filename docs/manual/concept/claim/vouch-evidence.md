@@ -33,7 +33,7 @@ A Vouch Evidence record is identified by its **(voucher agent, attestation date,
 - [Vouch](./vouch.md) — short-name alias used by worked examples
 - [Claim](./claim.md) — Claims supported by Vouch Evidence
 - [Verification Activity](./verification-activity.md) — verifies a Claim using Vouch Evidence
-- [Assurance Level](./assurance-level.md) — Vouch Evidence caps at eIDAS Low
+- [Assurance-level design history](/dbt-smart-data/pdtf-overlap#assurance) — explains why the earlier assurance-level vocabulary was removed
 
 ### Related-Kinds graph
 

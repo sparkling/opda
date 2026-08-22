@@ -9,7 +9,7 @@ implements: []
 
 # IA spec — Physical-tier presentation (ontology)
 
-This document specifies how the **Physical-tier (ontology) presentation** of OPDA's data model is laid out. It is a *blueprint*: the actual Physical-Ontology-tier docs that follow this spec are a separate deliverable.
+This document specifies how the **Physical-tier (ontology) presentation** of the draft ontology derived from the PDTF schema is laid out. It is a *blueprint*: the actual Physical-Ontology-tier docs that follow this spec are a separate deliverable. The ontology is a separate technical artefact and evidence for SPDTF, not an endorsed scheme.
 
 ## What "physical ontology" means for OPDA
 
@@ -76,11 +76,11 @@ docs/manual/physical-ontology/
    |---|---|---|
    | `dct:source` | `<...#section-Ya>` | <link to anchor> |
    | `skos:scopeNote @en` | "<UFO + DOLCE citation>" | Guizzardi 2005 / Masolo D18 |
-   | `rdfs:comment @en` | "<IC + hard cases>" | ratifying ODR |
+   | `rdfs:comment @en` | "<IC + hard cases>" | supporting technical ODR |
 4. **`#### Targeting shapes`** — list of `sh:NodeShape` IRIs that `sh:targetClass` this class (links to the per-shape sections).
 5. **`#### Subclass / equivalent-class relationships`** — list of `rdfs:subClassOf` / `owl:equivalentClass` triples + their semantic intent.
 6. **`#### Cross-tier links`** — links to Concept-tier narrative + Logical-tier attribute table + the Physical-DB tier's `README.md` (deployment overview). The Physical-DB tier is organised by deployment concern (named-graphs, derived-profiles, content-negotiation, overlay-deployment, operations) and has NO per-entity pages by design (per [`physical-database-ia.md`](./physical-database-ia.md)); the `[Physical-Database tier (deployment) →]` link is to the tier README, not to a per-entity page.
-7. **`#### Source ODR + ADR`** — ratifying Council session + implementation ADR.
+7. **`#### Source ODR + ADR`** — supporting internal technical record + implementation ADR.
 
 ## Per-shape section shape (mandatory)
 
@@ -89,7 +89,7 @@ docs/manual/physical-ontology/
 3. **`#### Severity tier`** — one of `sh:Violation` (with subcategory: identity-key / IC-breach / no-identity-override / special-category-PII / meta-shape-over-shape-graph), `sh:Warning`, or `sh:Info`.
 4. **`#### Target`** — `sh:targetClass` / `sh:targetObjectsOf` / `sh:sparql` target description.
 5. **`#### Validation behaviour`** — what pyshacl produces when this shape fires. Cross-link to the exemplar that demonstrates a positive fire (if any).
-6. **`#### Source ODR + ADR`** — typically [ADR-0012](../adr/ADR-0012-shacl-and-dpv-annotation-emission.md) + ratifying ODR.
+6. **`#### Source ODR + ADR`** — typically [ADR-0012](../adr/ADR-0012-shacl-and-dpv-annotation-emission.md) + supporting technical ODR.
 
 ## Per-SHACL-AF-rule section shape (mandatory)
 

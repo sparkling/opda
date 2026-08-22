@@ -1,6 +1,7 @@
 ---
 status: accepted
 date: 2026-07-05
+updated: 2026-08-22
 tags: [information-architecture, navigation, rml, mapping, ontology, schema, astro]
 supersedes: []
 depends-on: [ADR-0041, ADR-0057, ODR-0035]
@@ -15,7 +16,7 @@ The RML mapping — adopted as OPDA's independent, bidirectional schema-provenan
 verification mechanism by [ODR-0035](../ontology/odr/ODR-0035-rml-schema-provenance-verification.md)
 and engineered in [ADR-0057](./ADR-0057-rml-mapping-implementation.md) — is now
 substantively complete: 466 of 469 domain-module ontology resources are mapped to
-their PDTF v3 JSON Schema origin or removed for cause, and the 3 remaining are
+their PDTF schema v3 JSON origin or removed for cause, and the 3 remaining are
 upper-ontology structural connectives exempt by standing rule, not open content
 gaps (`source/03-standards/rml/build/final-gap.json`). Despite this maturity, the
 mapping has **no reader-facing presence anywhere on the website** — it exists only
@@ -202,10 +203,18 @@ sentence, not a restructure) for disambiguation.
 
 ### 2026-08-21 — ADR-0076 route-hosting amendment
 
-[ADR-0076](./ADR-0076-consolidate-pdtf-1-0-documentation-under-hierarchy-reflecting-routes.md)
+[ADR-0076](./ADR-0076-consolidate-pdtf-schema-documentation-under-hierarchy-reflecting-routes.md)
 replaces the standalone `/mapping/**` hosting path with the qualified
-`/pdtf-1/extracted-ontology/lineage-provenance-and-verification/schema-to-ontology-verification/**`
+`/pdtf-schema/schema-derived-ontology/lineage-provenance-and-verification/schema-to-ontology-verification/**`
 family and removes the old routes without redirects. This is a navigation placement,
 not a reversal of the semantic boundary decided here: RML remains an independent,
-bidirectional verification bridge between the original schema and extracted ontology,
+bidirectional verification bridge between the PDTF schema and schema-derived ontology,
 distinct from legacy JSON-LD contexts and never executable ETL or semantic approval.
+
+### 2026-08-22 — Schema-to-scheme authority correction
+
+The mapping verifies lineage between the **PDTF schema** and the separately identified
+**schema-derived ontology**. It does not establish that either artefact was an
+OPDA-endorsed predecessor scheme, and it does not confer authority on SPDTF. SPDTF is
+the first collaboratively authored scheme draft; the programme transition is schema to
+scheme. Mapping files and stable `/pdtf/**` identifiers retain their technical provenance.

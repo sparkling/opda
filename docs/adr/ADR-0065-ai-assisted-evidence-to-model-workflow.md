@@ -1,7 +1,7 @@
 ---
 status: proposed
 date: 2026-07-19
-updated: 2026-08-12
+updated: 2026-08-22
 tags: [ai, ontology, working-groups, evidence, governance, review, provenance, standards-development, human-governance]
 supersedes: []
 depends-on: [ADR-0027, ADR-0039, ADR-0063, ADR-0064, ODR-0001]
@@ -418,7 +418,7 @@ published on `opda.org.uk`.
 - [ADR-0064 — modelling website revamp before publication](./ADR-0064-modelling-website-revamp-before-strategy-publication.md)
 - [Research — AI-assisted working-group method](../research/ai-assisted-working-group-method.md)
 - [Presentation plan — July 2026 Exec and Finance and Banking workshop](../plan/2026-07-exec-and-finance-banking-presentations.md)
-- [ADR-0039 — linked-data model as the PDTF standards foundation](./ADR-0039-linked-data-model-as-pdtf-standards-foundation.md)
+- [ADR-0039 — linked-data model as the SPDTF foundation](./ADR-0039-linked-data-model-as-spdtf-foundation.md)
 - [ADR-0027 — council-session indexing in AgentDB](./ADR-0027-council-session-indexing-in-agentdb.md)
 - [ODR-0001 — Linked Data Council methodology](../ontology/odr/ODR-0001-linked-data-council-methodology.md)
 - [AI Linked Data Council methodology](../linked-data-initiative/06-ai-linked-data-council-methodology.md)

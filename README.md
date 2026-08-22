@@ -1,11 +1,11 @@
 # OPDA Knowledge Base
 
-Documentation hub for the **Open Property Data Association** semantic-modelling project — the linked-data evolution of the [Property Data Trust Framework (PDTF)](https://trust.propdata.org.uk).
+Documentation hub for the **Open Property Data Association** semantic-modelling project. It documents the existing [PDTF schema](https://trust.propdata.org.uk), the separate draft ontology derived from that schema corpus, and the progression from schema to the first collaboratively authored **SPDTF** scheme draft.
 
 Two workstreams:
 
 - **Governance** — UK initiative context (DPMSG, DMCC Act 2024, Smart Data scheme), Trust Over IP model, conformance, change management, lifecycle, risk.
-- **Modelling** — PDTF schemas + overlays, bounded contexts, data dictionary (8,458 properties), business glossary (554 SKOS concepts), ontology, SHACL, JSON-LD mappings.
+- **Modelling** — the PDTF schema package and overlays, its data dictionary and business glossary, plus the separate schema-derived ontology, SHACL constraints and JSON-LD mappings that provide evidence for SPDTF development.
 
 The site is a static HTML / vanilla JS / Mermaid build with two interactive data browsers (Properties and Entities) and a built-in resource viewer that opens any local schema or document through JSON Crack.
 

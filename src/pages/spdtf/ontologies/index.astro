@@ -1,0 +1,84 @@
+---
+import Layout from '@/layouts/Layout.astro';
+import PageMeta from '@/components/PageMeta.astro';
+import GatewayCard from '@/components/ia/GatewayCard.astro';
+import Diagram from '@/components/Diagram.astro';
+---
+
+<Layout title="Semantic modelling" description="Learn what ontologies are, why SPDTF uses them, and how the SPDTF ontology is modelled, reviewed and implemented.">
+  <PageMeta category="SPDTF" variant="brand" updated="Teaching and implementation guide · not an adopted standard" />
+  <h1>Semantic modelling</h1>
+  <p class="lead">
+    This section has two routes through the same work. One explains ontology modelling
+    in business language. The other documents the technical and governance choices used
+    to build SPDTF candidates. You do not need to understand RDF to review meaning.
+  </p>
+
+  <h2 id="choose">Choose your route</h2>
+  <div class="card-grid">
+    <GatewayCard href="/spdtf/ontologies/why-ontologies" title="Understand ontologies" description="A plain-language explanation of ontologies, graphs, classes, relationships, vocabularies, constraints and why SPDTF needs them." />
+    <GatewayCard href="/spdtf/ontologies/modelling-method" title="How we model SPDTF" description="The evidence-up method, semantic package, context ownership, modelling rules, standards profile, mappings, validation and projections." />
+  </div>
+
+  <h2 id="one-agreement">Two routes, one agreement</h2>
+  <p>
+    Participants and implementers see different representations, but neither route owns
+    a separate definition of the standard. Business review establishes intended meaning;
+    technical artefacts encode and test that reviewed candidate meaning.
+  </p>
+  <Diagram size="large" caption="The teaching and implementation routes meet at one governed candidate. Business review remains the authority for meaning; technical artefacts make that meaning testable and reusable.">
+flowchart LR
+  accTitle: Two routes into one governed semantic candidate
+  accDescr: Nontechnical learning leads to business review while technical documentation leads to encoded artefacts and checks; both meet at one governed candidate.
+  Learn["Understand ontologies"]:::user
+  Review["Review definitions and examples"]:::user
+  Method["Follow the modelling method"]:::process
+  Encode["Encode and test artefacts"]:::data
+  Candidate["One versioned candidate"]:::service
+  Decision["Recorded human disposition"]:::security
+  Projection["Tested delivery projections"]:::external
+  Learn --> Review
+  Method --> Encode
+  Review --> Candidate
+  Encode --> Candidate
+  Candidate --> Decision
+  Decision --> Projection
+  </Diagram>
+
+  <h2 id="documented">What this section documents</h2>
+  <table>
+    <caption>Scope and authority of the semantic-modelling documentation</caption>
+    <thead><tr><th scope="col">Topic</th><th scope="col">What you will find</th><th scope="col">Authority boundary</th></tr></thead>
+    <tbody>
+      <tr><th scope="row">Business meaning</th><td>Definitions, examples, identities, relationships and questions that practitioners can review.</td><td>Relevant working groups judge domain meaning.</td></tr>
+      <tr><th scope="row">Modelling method</th><td>Evidence intake, competency questions, candidate construction, review and traceability.</td><td>ADR-0063 is accepted; Property Pack practice is accepted in ADR-0067; wider lifecycle policy in ADR-0065/0068 remains proposed.</td></tr>
+      <tr><th scope="row">Technical implementation</th><td>RDF/RDFS/OWL, SKOS, SHACL, SPARQL, metadata and generated projections.</td><td>Each feature needs a version, bounded profile and test receipt.</td></tr>
+      <tr><th scope="row">Standards and methods</th><td>What the Property Pack candidate uses now, accepted targets, candidates, design lenses and deferred options.</td><td>A catalogue entry or reference is not adoption.</td></tr>
+      <tr><th scope="row">Validation</th><td>Parsing, constraints, competency queries, semantic review and governance promotion.</td><td>Automated success does not approve business meaning.</td></tr>
+    </tbody>
+  </table>
+
+  <h2 id="terms">A one-minute vocabulary</h2>
+  <dl>
+    <dt>Ontology</dt><dd>A shared, explicit model of the things that matter, their meanings, identities and relationships.</dd>
+    <dt>Resource</dt><dd>Anything identified in the graph: for example a property, title, address, organisation, role or governed concept.</dd>
+    <dt>Class</dt><dd>A category used to describe what kind of thing a resource is.</dd>
+    <dt>Property</dt><dd>A named relationship to another resource or a named value such as a date or text.</dd>
+    <dt>Concept scheme</dt><dd>A governed set of values or concepts expressed with SKOS.</dd>
+    <dt>Shape</dt><dd>A SHACL description of what a data graph is expected to contain for a particular use.</dd>
+    <dt>Projection</dt><dd>A generated schema, form, API, page or document for a particular consumer.</dd>
+  </dl>
+
+  <h2 id="example">The Property Pack is a worked component, not the whole ontology</h2>
+  <p>
+    The <a href="/spdtf/property-pack">Property Pack ontology</a> is the first accelerated
+    SPDTF component. Its current machine-proposed model demonstrates the technical
+    patterns described here and is awaiting a Technical Working Group determination.
+    It does not settle the wider ontology method by itself, and successful validation
+    does not turn it into an approved standard.
+  </p>
+  <div class="callout callout--key">
+    <p class="callout__label">Read status literally</p>
+    <p>“Used in Property Pack 0.1,” “accepted SPDTF target,” “candidate,” “method lens” and “adopted SPDTF release” are different statements. This section keeps them separate throughout.</p>
+  </div>
+</Layout>

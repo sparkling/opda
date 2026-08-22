@@ -36,9 +36,9 @@ test('Property Pack migration is an explicit bijection from the retired route fa
   assert.equal(new Set(mapped.map(({ acceptedRoute }) => acceptedRoute)).size, 691);
   assert.equal(new Set(mapped.map(({ acceptedFile }) => acceptedFile)).size, 691);
   assert.equal(mapped.find(({ baselineRoute }) => baselineRoute === '/v2/comparison').acceptedRoute,
-    '/spdtf-2/property-pack/pdtf-1-lineage');
+    '/spdtf/property-pack/pdtf-schema-lineage');
   assert.equal(mapped.find(({ baselineRoute }) => baselineRoute === '/modelling/property-pack').acceptedRoute,
-    '/spdtf-2/property-pack/definition-and-scope');
+    '/spdtf/property-pack/definition-and-scope');
 });
 
 test('Property Pack migration publishes one canonical 690 + 1 + 2 family', () => {
@@ -57,10 +57,10 @@ test('Property Pack migration publishes one canonical 690 + 1 + 2 family', () =>
     acceptedFamilyRouteCount: 693,
     redirects: false,
     retiredRoutes: ['/v2/**', '/modelling/property-pack'],
-    canonicalRoot: '/spdtf-2/property-pack',
+    canonicalRoot: '/spdtf/property-pack',
     lifecycleRoutes: [
-      '/spdtf-2/property-pack/review-and-releases',
-      '/spdtf-2/property-pack/technical-working-group-determination',
+      '/spdtf/property-pack/review-and-releases',
+      '/spdtf/property-pack/technical-working-group-determination',
     ],
   });
 
@@ -80,7 +80,34 @@ test('Property Pack migration publishes one canonical 690 + 1 + 2 family', () =>
     canonicalContent: 691,
     lifecycle: 2,
     baselinePath: 'dist/v2',
-    acceptedPath: 'dist/spdtf-2/property-pack',
+    acceptedPath: 'dist/spdtf/property-pack',
+  });
+});
+
+test('the final manifest carries the frozen schema-to-scheme route receipt', () => {
+  assert.equal(routeBaseline.schemaVersion, 8);
+  assert.deepEqual({
+    policy: routeBaseline.schemaToSchemeMigration?.policy,
+    sourceCommit: routeBaseline.schemaToSchemeMigration?.sourceCommit,
+    sourceSha256: routeBaseline.schemaToSchemeMigration?.sourceSha256,
+    sourceRouteCount: routeBaseline.schemaToSchemeMigration?.sourceRouteCount,
+    movedRouteCount: routeBaseline.schemaToSchemeMigration?.movedRouteCount,
+    pdtfSchemaRouteCount: routeBaseline.schemaToSchemeMigration?.pdtfSchemaRouteCount,
+    spdtfRouteCount: routeBaseline.schemaToSchemeMigration?.spdtfRouteCount,
+    propertyPackRouteCount: routeBaseline.schemaToSchemeMigration?.propertyPackRouteCount,
+    pdtfIdentifierRouteCount: routeBaseline.schemaToSchemeMigration?.pdtfIdentifierRouteCount,
+    redirects: routeBaseline.schemaToSchemeMigration?.redirects,
+  }, {
+    policy: 'schema-to-scheme-route-composition-v1',
+    sourceCommit: '3a52e644c57d2b4eed33d78e3a10810cc7a29171',
+    sourceSha256: 'fa51038160b4921916aa22d365e420e9e641613509f3cf052c96d34f6316dee2',
+    sourceRouteCount: 3280,
+    movedRouteCount: 2011,
+    pdtfSchemaRouteCount: 1264,
+    spdtfRouteCount: 747,
+    propertyPackRouteCount: 693,
+    pdtfIdentifierRouteCount: 1090,
+    redirects: false,
   });
 });
 
@@ -135,13 +162,13 @@ test('Property Pack migration rejects malformed and non-bijective mappings', () 
   assert.throws(() => propertyPackMigrationReceipt(
     records, addedRoutes, PROPERTY_PACK_ROUTE_MIGRATION,
     (route) => route === '/v2/comparison'
-      ? '/spdtf-2/property-pack/comparison'
+      ? '/spdtf/property-pack/comparison'
       : originalReplacement(route),
   ), /undeclared route move/u);
   const duplicateRecords = structuredClone(records);
   const comparison = duplicateRecords.find(({ baselineRoute }) => baselineRoute === '/v2/comparison');
   comparison.acceptedRoute = originalReplacement('/v2');
-  comparison.acceptedFile = 'spdtf-2/property-pack/index.html';
+  comparison.acceptedFile = 'spdtf/property-pack/index.html';
   assert.throws(() => propertyPackMigrationReceipt(
     duplicateRecords, addedRoutes, PROPERTY_PACK_ROUTE_MIGRATION,
     (route) => route === '/v2/comparison'

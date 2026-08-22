@@ -1,6 +1,7 @@
 ---
 status: accepted
 date: 2026-06-14
+updated: 2026-08-22
 tags: [ontology, information-architecture, ssg, sparql, dereferenceability, linked-data, detail-pages, shacl, skos, bounded-context, doc-drift-gate]
 supersedes: []
 depends-on: [ADR-0021, ADR-0041, ADR-0039, ADR-0043, ODR-0004]
@@ -11,7 +12,11 @@ implements: []
 
 ## Context and Problem Statement
 
-The `/ontology` section is the published, authoritative reference for the OPDA PDTF ontology. Today it is a set of **aggregate index pages** (`classes`, `properties`, `vocabularies`, `shapes`, …) that:
+The `/ontology` section is the published technical reference for the ontology derived
+from the PDTF schema. “Authoritative” here applies only to faithful representation of
+that committed technical corpus; it does not make the ontology an OPDA-endorsed
+predecessor scheme or give it authority over SPDTF. Today it is a set of **aggregate
+index pages** (`classes`, `properties`, `vocabularies`, `shapes`, …) that:
 
 - **parse the TTL with brittle regex** (`fs.readFileSync` + `split(/\n(?=opda:…/)` + `match(/rdfs:comment "…"/)`) — line-fragile, can't follow relationships, can't resolve blank nodes, and silently misses anything the regex doesn't anticipate; and
 - **defer all per-term detail to the embedded pyLODE/WIDOCO/Ontospy renderings** (the ADR-0041 "combination principle" — don't rebuild what the tools render).
@@ -146,7 +151,7 @@ A themed Astro page (reusing the design system + dark mode; the ADR-0043 Cytosca
 
 - **Builds on the SPARQL API + entity contract:** [ADR-0021] (`src/api/`, `src/lib/entity-api.ts`, `src/api/queries/*.rq`).
 - **Revises (per *Supersession scope*) the per-term-reference stance of:** [ADR-0041](ADR-0041-ontology-reference-document-generation.md) (the `/ontology` reference composition + doc-drift gate + bake-off).
-- **Dereferenceability target / publish location:** [ADR-0039](ADR-0039-linked-data-model-as-pdtf-standards-foundation.md) (the model published at `https://opda.org.uk/pdtf/`).
+- **Dereferenceability target / publish location:** [ADR-0039](ADR-0039-linked-data-model-as-spdtf-foundation.md) (the schema-derived model published at `https://opda.org.uk/pdtf/`).
 - **Shared build-time SPARQL extractor + on-page graph diagrams:** [ADR-0043](ADR-0043-ontology-graph-diagram-tooling.md) (Cytoscape neighbourhood views; one extraction feeds both).
 - **Anti-drift / byte-identity gate discipline:** ODR-0004 §6a (`make verify-ontology`).
 - **IRI scheme:** `opda:` = `https://opda.org.uk/pdtf/` (e.g. `…/pdtf/Property`); local-name uniqueness via the ADR-0006 kind-split.
@@ -171,3 +176,8 @@ A themed Astro page (reusing the design system + dark mode; the ADR-0043 Cytosca
 ## Amendments
 
 - **2026-06-15 — RATIFIED `proposed` → `accepted` (operator).** All eight phased-plan items are shipped and verified; operator decisions (a)/(b)/(c) are recorded above; the Phase-5c `opda:ufoCategory` breach was caught and cured (ODR-0031/ADR-0045) before ratification, and the model doc-drift gate is green. The **Phase-8 deferred sub-item — live external-URL 200-checking — is now also shipped** (`scripts/check-external-links.mjs`, `make check-links-external`; report-only/opt-in, not a deploy blocker). The complementary interactive-graph dependency (ADR-0043) landed in the same session (`/ontology/graph`). Ratified on the proven as-built surface.
+- **2026-08-22 — Chair-authority terminology correction.** The dereferenceable
+  `/pdtf/**` resources remain byte- and identity-stable as the technical reference for
+  the schema-derived ontology. Publication and technical-reference authority do not
+  imply that the inherited corpus was an OPDA-endorsed predecessor scheme, nor that it
+  determines the collaboratively authored SPDTF.

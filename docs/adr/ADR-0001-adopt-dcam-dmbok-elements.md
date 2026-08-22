@@ -1,6 +1,7 @@
 ---
 status: accepted
 date: 2026-05-18
+updated: 2026-08-22
 tags: [governance, vocabulary, accreditation, dcam, dmbok]
 supersedes: []
 depends-on: []
@@ -13,18 +14,18 @@ implements: []
 
 OPDA's governance and standards machinery has grown organically:
 
-- `governance.md` defines GA / Issuer / Holder / Verifier / TRO roles and the four operational functions (Coordination, Technical Review, Compliance & Risk, Engagement) — published as PDTF v2.
+- `governance.md` defines GA / Issuer / Holder / Verifier / TRO roles and the four operational functions (Coordination, Technical Review, Compliance & Risk, Engagement). It is inherited draft technical-scheme material, not evidence of an OPDA-endorsed predecessor scheme.
 - Pages 24, 25, 26 (commit `dfcdb08`) added Domain Data Stewards, a 12-seat Executive Committee, RACI, SLAs, decision log, and stakeholder engagement modes.
-- Pages 12–16 cover bounded contexts and the PDTF schemas (1,538 deduplicated data elements across the base transaction plus 16 canonical overlays).
+- Pages 12–16 cover bounded contexts and the PDTF schema corpus (1,538 deduplicated data elements across the base transaction plus 16 canonical overlays).
 - The Conformance Scheme (page 20) treats compliance as binary: a member firm is compliant against a release tag or it isn't.
 
 OPDA member firms operate inside organisations that already use industry-standard data management frameworks — most commonly **DAMA-DMBOK2** (DAMA International) and increasingly **DCAM v3** (EDM Council). These frameworks are the lingua franca for data management conversations with member firms' data offices, with regulators (FCA, ICO), and with the consumer-advocacy bodies OPDA is engaging.
 
-OPDA's framework has not been mapped to either standard. There is therefore no shared vocabulary when a member firm asks "where does PDTF compliance fit in our DCAM assessment?" or "which DAMA knowledge areas does OPDA address?". The handover dated 2026-05-18 already references DCAM-style stewardship as an aspiration; this ADR makes the alignment explicit and decides how far to take it.
+OPDA's framework has not been mapped to either standard. There is therefore no shared vocabulary when a member firm asks "where do the PDTF schema and the developing SPDTF scheme fit in our DCAM assessment?" or "which DAMA knowledge areas does OPDA address?". The handover dated 2026-05-18 already references DCAM-style stewardship as an aspiration; this ADR makes the alignment explicit and decides how far to take it.
 
 ## Decision Drivers
 
-1. **Shared vocabulary with member firms.** Most data offices speak DAMA / DCAM. Aligning lowers the translation cost when explaining PDTF.
+1. **Shared vocabulary with member firms.** Most data offices speak DAMA / DCAM. Aligning lowers the translation cost when explaining the transition from the PDTF schema to the SPDTF scheme.
 2. **Maturity-based accreditation.** Binary pass/fail loses signal. A maturity-scored model differentiates "first attempt" from "operationalised at scale".
 3. **Evidence-based conformance.** DCAM's artifact/evidence discipline pushes vague conformance claims toward auditability.
 4. **Filling known gaps.** Data Quality and Data Security are weakly addressed today; both frameworks have mature treatments worth borrowing.
@@ -67,7 +68,7 @@ The "DCAM v3-inspired" or "drawn from DCAM v3" attribution can appear on those p
 
 - **Owner:** Compliance & Risk WG (DQ dimensions map onto UK GDPR Art 5(1)(d) accuracy obligations). Technical WG provides schema hooks and per-overlay validation rules.
 - Adopt the six standard DQ dimensions: **accuracy, completeness, consistency, timeliness, uniqueness, validity**.
-- Define DQ measurement and reporting for each PDTF claim type at each Assurance Level.
+- Define DQ measurement and reporting for each applicable claim type represented by the PDTF schema or developed for SPDTF.
 - Extend the Conformance Scheme (`/governance/conformance-scheme`) so a member firm reports a DQ profile, not just a binary compliance flag.
 - New page at `/governance/data-quality` (placeholder slug — confirm with C&R WG at kick-off).
 
@@ -95,7 +96,7 @@ OPDA's existing Assurance Levels (AL1–AL4) describe *the claim*; the new capab
 
 *Worked example.* Firm X is AL3 + Process 4/6, Evidence 3/6 → high-assurance claims, mid-maturity operations. Firm Y is AL2 + Process 5/6, Evidence 5/6 → medium-assurance claims, mature operations. Both views are useful to a consumer or a regulator; collapsing them into one number loses signal.
 
-**Document-attachment policy for PDTF overlays** (promoted from Wave 3 — see §"Vote and Dissent" resolved #6):
+**Document-attachment policy for PDTF schema overlays** (promoted from Wave 3 — see §"Vote and Dissent" resolved #6):
 
 - Several v3 overlays carry unstructured attachments today (TA10 plans, EPCs, leasehold packs, photographs) without a published handling policy. Promoted ahead of broader Document & Content work because the artefacts are already in production overlays.
 - **Owner:** Technical WG (the overlays are theirs) with Compliance & Risk WG input on retention and consent.
@@ -107,8 +108,8 @@ OPDA's existing Assurance Levels (AL1–AL4) describe *the claim*; the new capab
 These come from the reassessment in §"More Information". Each is real OPDA work, but smaller in scope than Wave 2 and not requiring EC sign-off to begin scoping.
 
 - **GARP for OPDA's institutional records (DMBOK #7 — second strand).** Apply GARP principles (accountability, integrity, protection, compliance, availability, retention, disposition, transparency) to the OPDA source tree (markdown, transcripts, briefings, PDFs). Lighter than Wave 2's overlay-attachment policy — mostly a published handling policy plus retention defaults per `source/` subtree. The overlay-attachment strand was promoted to Wave 2 (§"Vote and Dissent" resolved #6).
-- **Storage & Operations guidance (DMBOK #4) — retention and disposal.** When the Trust Registry moves toward production, publish member-firm retention/disposal guidance for PDTF claims, anchored on UK GDPR retention requirements. Required for the consumer-trust narrative.
-- **AI/ML governance over PDTF data (DCAM Analytics sub-capabilities + Architecture sub-capabilities).** Watching brief on ICO and EU AI Act guidance. Bias/fairness considerations specific to property data are non-trivial (historical red-lining patterns embedded in transaction histories). Pick up when the first member firm publishes a PDTF-trained model and needs a published data-use basis.
+- **Storage & Operations guidance (DMBOK #4) — retention and disposal.** When the Trust Registry moves toward production, publish member-firm retention/disposal guidance for claims represented by the PDTF schema or future SPDTF releases, anchored on UK GDPR retention requirements. Required for the consumer-trust narrative.
+- **AI/ML governance over property data represented by the PDTF schema or SPDTF (DCAM Analytics sub-capabilities + Architecture sub-capabilities).** Watching brief on ICO and EU AI Act guidance. Bias/fairness considerations specific to property data are non-trivial (historical red-lining patterns embedded in transaction histories). Pick up when the first member firm publishes a model trained on those data and needs a published data-use basis.
 - **Data-product discipline for OPDA's meta-analytics outputs (DMBOK #9 carve-out).** Apply data-product discipline (lineage, release plan, versioning) to the Accreditation Directory, Standards Report, Consumer Survey, ecosystem dashboards. Extend `provenance-map.yaml` toward a lineage dictionary as new reports are produced.
 - **Annual EC review of Wave 3 items.** ~15-minute agenda item at one EC meeting per year (suggest the one nearest the AGM). Walk each Wave 3 item: has its trigger fired (promote to Wave 2)? Has the item rotted (close out)? Or does the watching brief continue? Belt-and-braces against event-driven triggers that never fire.
 
@@ -154,7 +155,7 @@ These come from the reassessment in §"More Information". Each is real OPDA work
 | Stakeholder engagement | Page 26 | New (draft) |
 | Schema architecture | Pages 12, 16, 30–34 | Established |
 | Data dictionary / business glossary | Pages 13, 14 | Established |
-| Trust registry & VC mechanics | `governance.md` §B, PDTF Spec | Established |
+| Trust registry & VC mechanics | `governance.md` §B, PDTF schema supporting material | Established |
 | Change management & SOP | `governance.md` §6, page 21 | Established |
 | Conformance scheme | Page 20 | Binary (pass/fail) |
 | Data quality framework | — | **Gap** |
@@ -173,7 +174,7 @@ EDM Council's Data Management Capability Assessment Model, current version v3. 3
 | 4 | Funding | Weak | Membership tiers exist; funding model for OPDA itself undocumented |
 | 5 | Organizational Collaboration | **Strong** | Page 26 — five engagement modes; DPMSG steering |
 | 6 | Governance | **Strong** | Pages 24–26 plus `governance.md` |
-| 7 | Architecture | **Strong** | PDTF schemas, overlays, bounded contexts, ontology |
+| 7 | Architecture | **Strong** | PDTF schema, overlays, bounded contexts, schema-derived ontology |
 | 8 | Business Data Knowledge | Partial-to-strong | Pages 13, 14; SKOS taxonomy planned |
 
 **DAMA-DMBOK2 — 11 knowledge areas**
@@ -186,7 +187,7 @@ EDM Council's Data Management Capability Assessment Model, current version v3. 3
 | 4 | Data Storage & Operations | Indirect | OPDA operates Trust Registry + KB infrastructure; should publish retention/disposal guidance. See "Reassessing the four boundaries". |
 | 5 | Data Security | Weak | VC crypto + did:web exist; no security framework |
 | 6 | Data Integration & Interoperability | **Strong** | W3C VC, JSON-LD, OID4VP |
-| 7 | Document & Content Management | Indirect-to-strong | Source tree is a CMS; PDTF overlays include attached documents (TA10 plans, EPCs, leasehold packs). See "Reassessing the four boundaries". |
+| 7 | Document & Content Management | Indirect-to-strong | Source tree is a CMS; PDTF schema overlays include attached documents (TA10 plans, EPCs, leasehold packs). See "Reassessing the four boundaries". |
 | 8 | Reference & Master Data | **Strong** | Bounded contexts treat HMLR / AVM as authorities |
 | 9 | Data Warehousing & BI | Mostly N/A | Carve-out for OPDA's meta-analytical outputs (Accreditation Directory, Standards Report). See "Reassessing the four boundaries". |
 | 10 | Metadata Management | **Strong** | SKOS, ontology, JSON-LD, data dictionary |
@@ -199,22 +200,22 @@ An initial draft of this ADR placed DCAM Analytics Management and DMBOK KAs #4 (
 #### DCAM Analytics Management — Adjacent
 
 - DCAM v3's eight named components do not include a standalone Analytics component (v2.x had one; v3 folded analytics-and-insights capabilities under Architecture and Business Data Knowledge).
-- PDTF data is a downstream training corpus. Member firms use PDTF claim history for AVMs, fraud scoring, comparable-sales analysis and market reports. Schema design choices (granularity of fields, time-series capture, comparable inclusions) materially shape what analytics is possible.
+- Data represented by the PDTF schema is a downstream training corpus. Member firms may use claim history for AVMs, fraud scoring, comparable-sales analysis and market reports. Schema design choices (granularity of fields, time-series capture, comparable inclusions) materially shape what analytics is possible.
 - AI/ML governance is becoming a regulatory expectation (ICO guidance, EU AI Act). The data OPDA standardises feeds into models that affect consumers (valuations, mortgage decisions, listing visibility).
 - Property data has well-documented equity hazards: historical red-lining patterns and pricing distortions can be embedded in transaction histories, then propagated by ML systems trained on them.
-- **Position:** Adjacent. OPDA does not operate analytics; it shapes the corpus. Watching brief on AI/ML data-use principles for PDTF claims, including bias/fairness considerations specific to property data. Pick up when the first member firm publishes a PDTF-trained model and a data-use basis is needed.
+- **Position:** Adjacent. OPDA does not operate analytics; it shapes the corpus. Watching brief on AI/ML data-use principles for claims represented by the PDTF schema or future SPDTF releases, including bias/fairness considerations specific to property data. Pick up when the first member firm publishes a model trained on those data and a data-use basis is needed.
 
 #### DMBOK Data Storage & Operations — Indirect
 
 - OPDA does not hold member firms' property data — correct.
 - OPDA *does* operate trust-registry infrastructure (DIDs, status lists, revocation logs) and the Knowledge Base itself. Both have DBA-style operational requirements: backup, key rotation, availability targets, capacity planning.
-- More importantly, OPDA should publish **retention and disposal guidance** for member firms holding PDTF claims. UK GDPR requires defined retention policies; "how long does a verified PDTF claim live in a member firm's database after the transaction completes?" is currently undefined. Consumers will ask this. So will the ICO.
+- More importantly, OPDA should publish **retention and disposal guidance** for member firms holding claims represented by the PDTF schema or SPDTF. UK GDPR requires defined retention policies; "how long does a verified claim live in a member firm's database after the transaction completes?" is currently undefined. Consumers will ask this. So will the ICO.
 - **Position:** Indirect. Not a major workstream now. Pick up when (a) the Trust Registry moves to a production-grade deployment and needs a documented SLA, or (b) the consumer-trust narrative needs an answer to "what happens to my data after my house sale?".
 
 #### DMBOK Document & Content Management — In scope
 
 - DMBOK Chapter 9 covers documents and information in "a range of unstructured media, especially documents needed to support legal and regulatory compliance".
-- PDTF v3 overlays embed document attachments throughout: TA10 fittings & contents, leasehold packs, EPCs, plans, photographs. The base `pdtf:Document` type carries unstructured payloads alongside structured claims.
+- PDTF schema v3 overlays embed document attachments throughout: TA10 fittings & contents, leasehold packs, EPCs, plans, photographs. The base `pdtf:Document` type carries unstructured payloads alongside structured claims.
 - The Knowledge Base source tree itself is a document and content management system: 200+ markdown files, PDFs of constitutional documents, `.vtt` meeting transcripts, briefings to government, member-firm communications.
 - **Generally Accepted Recordkeeping Principles (GARP)** — accountability, integrity, protection, compliance, availability, retention, disposition, transparency — overlap almost perfectly with OPDA's own published principles in `governance.md` §1.
 - **Position:** Should be IN scope. The earlier dismissal was wrong. Promote to Wave 3 with two strands: (1) GARP-based handling for OPDA's institutional records; (2) document-attachment policy for the overlays that carry unstructured payloads.
@@ -246,7 +247,7 @@ An initial draft of this ADR placed DCAM Analytics Management and DMBOK KAs #4 (
 
 **OPDA source files referenced**
 
-- `source/03-standards/trust-framework/docs/governance.md` — PDTF governance principles, roles, operational functions, 8-step SOP
+- `source/03-standards/trust-framework/docs/governance.md` — draft technical-scheme governance principles, roles, operational functions and 8-step SOP; retained as input, not proof of OPDA endorsement
 - `src/pages/governance/data-stewardship.astro` — Domain Data Stewards, EC 12-seat composition, RACI, voting
 - `src/pages/governance/meetings-and-feedback.astro` — cadence, SLAs, decision log, consultation windows
 - `src/pages/governance/stakeholder-engagement.astro` — five engagement modes
@@ -265,6 +266,7 @@ An initial draft of this ADR placed DCAM Analytics Management and DMBOK KAs #4 (
 
 - **2026-05-18 — Renumbered + relocated.** Previously `source/00-deliverables/governance/dcam-framework/0001-adoption-decision.md`. ADR numbering is now global across `docs/adr/`.
 - **2026-05-25 — Refactored to canonical MADR 4.x format.** Bullet-list metadata moved to YAML frontmatter; section names aligned to the MADR vocabulary; analysis tables, boundary reassessment, and review outcomes preserved in `## More Information` and `## Vote and Dissent` respectively. Filename gained the `ADR-` prefix per the `ruflo-adr` `adr-create` skill. Substance unchanged.
+- **2026-08-22 — Chair-authority terminology correction.** Earlier shorthand could imply that inherited draft technical-scheme material was an OPDA-endorsed predecessor standard. It was not. This living decision now distinguishes the existing PDTF schema and supporting artefacts from SPDTF, the first collaboratively authored scheme draft, and describes the programme direction as schema to scheme. Historical provenance and the stable `/pdtf/**` technical identifiers are unchanged.
 
 ## Vote and Dissent
 
@@ -277,7 +279,7 @@ The six open questions in the first draft of this ADR were walked through and de
 3. **Data Quality ownership.** *Resolved: Compliance & Risk WG owns the framework; Technical WG provides schema hooks and per-overlay validation rules.* DQ dimensions sit alongside UK GDPR Art 5(1)(d) accuracy obligations, which Compliance & Risk already covers.
 4. **Page numbering.** *Resolved: renumber the whole governance section as a separate exercise — subsequently retired by ADR-0002 + ADR-0003.* This ADR no longer specifies page numbers for new pages; numbers were dropped entirely. The pre-existing 14→30 chain break noted in the 2026-05-18 handover folded into the same migration.
 5. **Wave 3 triggering conditions.** *Resolved: both inline triggers and an annual EC review.* Inline triggers for responsiveness; annual review catches drift. See the "Annual EC review" item in Wave 3.
-6. **PDTF overlay attachment policy.** *Resolved: partial promotion.* The overlay-attachment strand moved to Wave 2 (artefacts are already in production overlays). The GARP-for-OPDA-records strand stays in Wave 3.
+6. **PDTF schema overlay attachment policy.** *Resolved: partial promotion.* The overlay-attachment strand moved to Wave 2 (artefacts are already in production overlays). The GARP-for-OPDA-records strand stays in Wave 3.
 
 ### Newly resolved during review (2026-05-18 second pass)
 

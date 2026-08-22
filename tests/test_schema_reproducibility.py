@@ -29,15 +29,15 @@ class SchemaReproducibilityTests(unittest.TestCase):
     def test_schema_generator_uses_the_hierarchical_route_and_source_root(self):
         self.assertEqual(
             generator.SCHEMA_ROUTE_ROOT,
-            "/pdtf-1/original-standard/schema",
+            "/pdtf-schema/schema-and-supporting-material/schema",
         )
         self.assertEqual(
             generator.OUT_PAGES,
-            ROOT / "src/pages/pdtf-1/original-standard/schema",
+            ROOT / "src/pages/pdtf-schema/schema-and-supporting-material/schema",
         )
         self.assertEqual(
             generator.page_url("38b"),
-            "/pdtf-1/original-standard/schema/legal-estate/title/oc-summary",
+            "/pdtf-schema/schema-and-supporting-material/schema/legal-estate/title/oc-summary",
         )
 
     def test_source_date_epoch_is_repeatable_and_utc(self):
@@ -63,7 +63,7 @@ class SchemaReproducibilityTests(unittest.TestCase):
             root = Path(directory)
             nested = (
                 root
-                / "src/pages/pdtf-1/original-standard/schema/legal-estate/title/page.astro"
+                / "src/pages/pdtf-schema/schema-and-supporting-material/schema/legal-estate/title/page.astro"
             )
             nested.parent.mkdir(parents=True)
             nested.write_text("<!-- generated -->")
@@ -82,10 +82,10 @@ class SchemaReproducibilityTests(unittest.TestCase):
         )
         self.assertFalse(
             [path for path in mapping if path.startswith(retired_paths)],
-            "DAMA records must follow the canonical PDTF 1.0 page hierarchy",
+            "DAMA records must follow the canonical PDTF schema page hierarchy",
         )
         schema_page = (
-            "src/pages/pdtf-1/original-standard/schema/"
+            "src/pages/pdtf-schema/schema-and-supporting-material/schema/"
             "built-form/built-form-form.astro"
         )
         self.assertIn(schema_page, mapping)

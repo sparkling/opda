@@ -88,7 +88,7 @@ test('preservation checker rejects a forged PDTF source-retention receipt', () =
       checker, '--manifest-only', `--route-manifest=${fixture}`,
     ], { cwd: projectRoot, encoding: 'utf8' });
     assert.notEqual(result.status, 0);
-    assert.match(`${result.stdout}${result.stderr}`, /PDTF 1\.0 migration|semantic reframe block/u);
+    assert.match(`${result.stdout}${result.stderr}`, /PDTF schema source migration|semantic reframe block/u);
   } finally {
     rmSync(directory, { recursive: true, force: true });
   }

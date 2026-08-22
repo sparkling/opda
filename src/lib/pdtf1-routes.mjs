@@ -1,28 +1,29 @@
-/** Canonical PDTF 1.0 documentation-route hierarchy. */
+/** Canonical PDTF schema documentation-route hierarchy. */
 export const PDTF1_ROUTES = Object.freeze({
-  root: '/pdtf-1',
-  original: '/pdtf-1/original-standard',
-  extracted: '/pdtf-1/extracted-ontology',
-  lineage: '/pdtf-1/extracted-ontology/lineage-provenance-and-verification',
-  historicalModelling: '/pdtf-1/extracted-ontology/lineage-provenance-and-verification/historical-modelling',
-  schemaVerification: '/pdtf-1/extracted-ontology/lineage-provenance-and-verification/schema-to-ontology-verification',
-  modelViews: '/pdtf-1/extracted-ontology/model-views-by-audience',
-  concepts: '/pdtf-1/extracted-ontology/concepts-and-architecture',
-  terms: '/pdtf-1/extracted-ontology/terms-and-model-resources',
-  validation: '/pdtf-1/extracted-ontology/validation-and-examples',
-  trust: '/pdtf-1/extracted-ontology/trust-governance-and-limitations',
-  use: '/pdtf-1/extracted-ontology/use-and-tooling',
+  root: '/pdtf-schema',
+  original: '/pdtf-schema/schema-and-supporting-material',
+  extracted: '/pdtf-schema/schema-derived-ontology',
+  lineage: '/pdtf-schema/schema-derived-ontology/lineage-provenance-and-verification',
+  historicalModelling: '/pdtf-schema/schema-derived-ontology/lineage-provenance-and-verification/historical-modelling',
+  schemaVerification: '/pdtf-schema/schema-derived-ontology/lineage-provenance-and-verification/schema-to-ontology-verification',
+  modelViews: '/pdtf-schema/schema-derived-ontology/model-views-by-audience',
+  concepts: '/pdtf-schema/schema-derived-ontology/concepts-and-architecture',
+  terms: '/pdtf-schema/schema-derived-ontology/terms-and-model-resources',
+  validation: '/pdtf-schema/schema-derived-ontology/validation-and-examples',
+  trust: '/pdtf-schema/schema-derived-ontology/trust-governance-and-limitations',
+  use: '/pdtf-schema/schema-derived-ontology/use-and-tooling',
 });
 
 export const PDTF1_ROUTE_MIGRATION = Object.freeze({
   canonicalRoot: PDTF1_ROUTES.root,
+  intermediateRoot: '/pdtf-1',
   retiredRoots: Object.freeze([
     '/schema', '/implementation', '/adoption', '/model', '/ontology', '/mapping', '/manual',
   ]),
   sourceRouteCount: 3500,
-  movedCanonicalRouteCount: 1262,
+  movedCanonicalRouteCount: 1264,
   movedBaselineRouteCount: 1255,
-  movedAddedRouteCount: 7,
+  movedAddedRouteCount: 9,
   movedFamilyRouteCounts: Object.freeze({
     adoption: 6,
     implementation: 6,
@@ -30,6 +31,7 @@ export const PDTF1_ROUTE_MIGRATION = Object.freeze({
     model: 227,
     modelling: 10,
     ontology: 746,
+    'pdtf-1': 2,
     schema: 104,
   }),
   retiredAliasRouteCount: 227,
@@ -127,9 +129,18 @@ const prefixRoutes = [
   ['/manual', PDTF1_ROUTES.modelViews],
 ].sort(([left], [right]) => right.length - left.length);
 
-/** Return the new canonical route for a retired PDTF 1.0 documentation URL. */
+/** Return the new canonical route for a retired PDTF schema documentation URL. */
 export function getPdtf1ReplacementRoute(value) {
   const path = normalizePath(value);
+  if (path === '/pdtf-1') return PDTF1_ROUTES.root;
+  if (path === '/pdtf-1/original-standard') return PDTF1_ROUTES.original;
+  if (path.startsWith('/pdtf-1/original-standard/')) {
+    return `${PDTF1_ROUTES.original}${path.slice('/pdtf-1/original-standard'.length)}`;
+  }
+  if (path === '/pdtf-1/extracted-ontology') return PDTF1_ROUTES.extracted;
+  if (path.startsWith('/pdtf-1/extracted-ontology/')) {
+    return `${PDTF1_ROUTES.extracted}${path.slice('/pdtf-1/extracted-ontology'.length)}`;
+  }
   const exact = exactRoutes.get(path);
   if (exact) return exact;
   for (const [source, target] of prefixRoutes) {
@@ -148,6 +159,15 @@ export function isRetiredPdtf1DocumentationRoute(value) {
 /** Preserve the physical filename of moved static ontology HTML outputs. */
 export function getPdtf1ReplacementFile(value) {
   const file = String(value || '').replace(/^\/+|\/+$/gu, '');
+  if (file === 'pdtf-1') return PDTF1_ROUTES.root.slice(1);
+  if (file === 'pdtf-1/original-standard') return PDTF1_ROUTES.original.slice(1);
+  if (file.startsWith('pdtf-1/original-standard/')) {
+    return `${PDTF1_ROUTES.original.slice(1)}${file.slice('pdtf-1/original-standard'.length)}`;
+  }
+  if (file === 'pdtf-1/extracted-ontology') return PDTF1_ROUTES.extracted.slice(1);
+  if (file.startsWith('pdtf-1/extracted-ontology/')) {
+    return `${PDTF1_ROUTES.extracted.slice(1)}${file.slice('pdtf-1/extracted-ontology'.length)}`;
+  }
   for (const [source, target] of [
     ['ontology/tools', `${PDTF1_ROUTES.use.slice(1)}/tools`],
     ['ontology/artefacts', `${PDTF1_ROUTES.use.slice(1)}/artefacts`],
@@ -161,6 +181,20 @@ export function getPdtf1ReplacementFile(value) {
 /** Preserve current comment threads while the old reader URL itself returns 404. */
 export function getPdtf1LegacyCommentKey(value) {
   const path = normalizePath(value);
+  if (path === PDTF1_ROUTES.root) return '/pdtf-1';
+  if (path === PDTF1_ROUTES.original) return '/pdtf-1/original-standard';
+  if (path === PDTF1_ROUTES.extracted) return '/ontology';
+  const intermediateOnly = new Map([
+    [PDTF1_ROUTES.lineage, '/pdtf-1/extracted-ontology/lineage-provenance-and-verification'],
+    [PDTF1_ROUTES.concepts, '/pdtf-1/extracted-ontology/concepts-and-architecture'],
+    [`${PDTF1_ROUTES.concepts}/contexts`, '/pdtf-1/extracted-ontology/concepts-and-architecture/contexts'],
+    [PDTF1_ROUTES.terms, '/pdtf-1/extracted-ontology/terms-and-model-resources'],
+    [PDTF1_ROUTES.validation, '/pdtf-1/extracted-ontology/validation-and-examples'],
+    [PDTF1_ROUTES.trust, '/pdtf-1/extracted-ontology/trust-governance-and-limitations'],
+    [PDTF1_ROUTES.use, '/pdtf-1/extracted-ontology/use-and-tooling'],
+  ]);
+  const intermediate = intermediateOnly.get(path);
+  if (intermediate) return intermediate;
   for (const [legacy, canonical] of exactRoutes) {
     if (path === canonical) return legacy;
   }

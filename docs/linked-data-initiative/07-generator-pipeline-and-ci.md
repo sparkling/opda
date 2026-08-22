@@ -1,4 +1,4 @@
-# Generator, Pipeline, Validation & CI — the engineering that makes the standard trustworthy
+# Generator, Pipeline, Validation & CI — making schema-derived evidence reproducible
 
 > Part of the OPDA Linked-Data Initiative knowledgebase. Legend: ✅ built · 🟡 partial · 🔵 planned.
 >
@@ -6,10 +6,12 @@
 > claim below was checked against the generator code, the CI gates, the emitted Turtle
 > corpus, and the GitHub workflows — not just the prose. Where a verified count or a
 > build-state differs from the seed fact-sheet, it is flagged inline.
+> The generated ontology is a separate draft artefact derived from the PDTF schema. These
+> controls establish reproducibility and traceability, not OPDA or industry endorsement.
 
 ## TL;DR
 
-- **The ontology is not hand-written — it is *emitted* deterministically** by `opda-gen`, a Python package (`tools/opda-gen/`) that reads the PDTF data dictionary + business glossary + parsed ODR rules and produces 24 canonical Turtle files. The same inputs always produce **byte-for-byte identical** output, and CI fails the build on a single byte of drift. ✅
+- **The schema-derived ontology is not hand-written — it is *emitted* deterministically** by `opda-gen`, a Python package that reads the PDTF schema's data dictionary, the business glossary and parsed ODR rules and produces 24 canonical Turtle files. The same inputs always produce **byte-for-byte identical** output, and CI fails the build on a single byte of drift. ✅
 - **OPDA owns the serialiser.** `rdflib` builds the graph in memory, but the final Turtle is written by a **custom canonical N-Triples→Turtle serialiser** (`serialiser/canonical.py`) — rdflib's own writer is bypassed so byte-identity is contractually OPDA's, not a hostage to rdflib's release cadence. Blank nodes are skolemised by SHA-256 of their content. ✅
 - **Three graphs, kept structurally separate** (classes / SHACL shapes / advisory annotations), enforced by a five-part CI gate: no `sh:*` in the annotation graph, no advisory hints in the shapes graph, every `sh:targetClass` resolves. ✅
 - **Apache Jena 6.1.0 is the sole RDF/SHACL/SPARQL toolchain** (ADR-0036/0037). pyshacl was *retired* — it silently skips SHACL 1.2 — and Jena's `shacl` CLI now validates the ontology and the 17 diagnostic exemplars (each paired with a byte-matched expected report). ✅
@@ -20,7 +22,7 @@
 
 ## 1. Why determinism is the whole game
 
-A standard you cannot **reproduce** is a standard you cannot **trust**. If two people regenerate the ontology from the same sources and get different bytes — different blank-node IDs, different triple order, a stray trailing space — then nobody can tell a *meaningful* change (a new class, a corrected datatype) from *noise*, and a reviewer cannot diff a pull request with confidence. Worse, hand-editing creeps in and the emitted artefact silently diverges from its declared inputs.
+A technical artefact you cannot **reproduce** is an artefact you cannot **audit**. If two people regenerate the ontology from the same sources and get different bytes — different blank-node IDs, different triple order, a stray trailing space — then nobody can tell a *meaningful* change (a new class, a corrected datatype) from *noise*, and a reviewer cannot diff a pull request with confidence. Worse, hand-editing creeps in and the emitted artefact silently diverges from its declared inputs.
 
 OPDA's answer is a chain of four interlocking guarantees, each enforced in CI:
 
@@ -202,7 +204,7 @@ Round-trip equivalence (input JSON ≡ output JSON after normalising array order
 2. **Exemplar regression layer** — each of the 17 exemplars validated, report byte-matched to its committed expected report.
 3. **`dct:source` traceability layer** — SPARQL proving every form question and every shape `sh:path` resolves back to a data-dictionary leaf.
 
-The in-tree gate `ci-baspi5-roundtrip` (`ci/baspi5_roundtrip_test.py`) asserts three concrete things on the two committed transaction exemplars: **(a)** the conformant transaction conforms with zero violations; **(b)** the non-conformant one — *a power-of-attorney seller with no evidenced authority* — trips a violation that **traces to form-question B1.3.2** via the `SellersCapacity` `sh:xone` (the asserted-vs-evidenced authority gap PDTF collapsed into free text, now mechanically caught); **(c)** every BASPI5 property shape carrying a form-question `dct:source` also carries a DASH render hint.
+The in-tree gate `ci-baspi5-roundtrip` (`ci/baspi5_roundtrip_test.py`) asserts three concrete things on the two committed transaction exemplars: **(a)** the conformant transaction conforms with zero violations; **(b)** the non-conformant one — *a power-of-attorney seller with no evidenced authority* — trips a violation that **traces to form-question B1.3.2** via the `SellersCapacity` `sh:xone` (the asserted-vs-evidenced authority gap the PDTF schema collapses into free text, now mechanically caught); **(c)** every BASPI5 property shape carrying a form-question `dct:source` also carries a DASH render hint.
 
 This is also the seed of **model-driven JSON generation** — the same machinery that regenerates BASPI5 JSON from validated RDF is what a future "PDFs → APIs" pipeline would generalise (cross-ref KB doc 09). A worked debugging note from the ADR's history shows the gates earning their keep: a Cat-4 SHACL shape from ADR-0012 was *over-firing* `sh:Violation` on every Person instance (7 of 15 exemplars); the round-trip harness surfaced it, and the fix (switch to a conditional SHACL-AF `sh:sparql` constraint) was caught and verified before merge.
 
@@ -261,7 +263,7 @@ Pulling the threads together — each guarantee answers a specific way a standar
 - **Jena 1.2 validation** answers *"is the validation contract actually enforced, or silently skipped?"* — actually enforced (the precise reason pyshacl was retired).
 - **BASPI5 round-trip** answers the hardest one: *"does this ontology actually, losslessly, re-express a real statutory form?"* — demonstrably yes, JSON → RDF → validated → JSON, every question traceable to its origin.
 
-That is the difference between a slide-deck model and a **governed, versioned, reproducible semantic standard** the wider ecosystem can dereference, validate against, and extend.
+That is the difference between a slide-deck model and a **versioned, reproducible technical artefact** the wider ecosystem can inspect, test and use as evidence during SPDTF development.
 
 ---
 
@@ -289,10 +291,10 @@ That is the difference between a slide-deck model and a **governed, versioned, r
 
 ## Talking points for the quarterly tech review (mixed senior + technical)
 
-- **"The standard regenerates itself, to the byte."** The ontology isn't maintained by hand — a generator emits it from the PDTF data dictionary, and CI fails the build on a *single byte* of drift. That is what makes it reviewable, reproducible, and trustworthy: a pull-request diff shows real change, never noise.
+- **"The schema-derived artefact regenerates to the byte."** The ontology isn't maintained by hand — a generator emits it from the PDTF schema's data dictionary, and CI fails the build on a *single byte* of drift. That makes the technical evidence reviewable and reproducible: a pull-request diff shows real change, never noise.
 - **"We own the part that guarantees reproducibility."** rdflib helps build the graph, but we wrote our own canonical serialiser and content-addressed blank-node scheme, so byte-identity is *our* contract, not a hostage to a third-party library's release cadence.
 - **"We validate against the spec we actually committed to."** We retired pyshacl and standardised on Apache Jena precisely because pyshacl *silently skips* SHACL 1.2 — a validator that quietly ignores your rules is worse than none. (Honest footnote if pressed: Jena is the validator/parser; the Python generator still uses rdflib internally to *build* graphs — the spec-conformant boundary is the validate/parse path.)
-- **"A real statutory form round-trips, losslessly, with full provenance."** BASPI5 goes JSON → ontology → validated RDF → JSON, and every form question traces back to a data-dictionary leaf — including the seller's *asserted-vs-evidenced authority* distinction that PDTF's JSON collapsed into free text. This is the seed of "PDFs → APIs."
+- **"A real statutory form round-trips, losslessly, with full provenance."** BASPI5 goes JSON → ontology → validated RDF → JSON, and every form question traces back to a data-dictionary leaf — including the seller's *asserted-vs-evidenced authority* distinction that the PDTF schema's JSON collapses into free text. This is evidence for "PDFs → APIs."
 - **"Eight automated gates guard every change; the same ones run on a laptop and in CI."** No CI-only magic — `make ci-ontology` reproduces the pipeline locally.
 - **Be candid about the roadmap (it's a strength, not a gap):** OWL reasoning is *real but shallow today* — only subclass entailment fires (~30 triples) because the model is intentionally flat so far; the inference gate is pre-wired to enforce inverse/transitive rules the moment such a property lands. And the derived consumer-profile composer is still a stub. Both are phased, and the CI scaffolding for them already exists.
 

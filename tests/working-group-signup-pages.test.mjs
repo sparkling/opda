@@ -12,12 +12,12 @@ const paths = {
   campaignSectionsCss: new URL('../src/styles/working-group-campaign-sections.css', import.meta.url),
   header: new URL('../src/components/Header.astro', import.meta.url),
   baseCss: new URL('../public/ui/design/base.css', import.meta.url),
-  memberGuide: new URL('../src/pages/spdtf-2/working-groups/member-guide/index.astro', import.meta.url),
-  gettingStarted: new URL('../src/pages/spdtf-2/working-groups/member-guide/getting-started.astro', import.meta.url),
-  teamsAndDiscussions: new URL('../src/pages/spdtf-2/working-groups/member-guide/teams-and-discussions.astro', import.meta.url),
-  sourceMaterial: new URL('../src/pages/spdtf-2/working-groups/member-guide/source-material-and-sharepoint.astro', import.meta.url),
-  meetingsAndRecords: new URL('../src/pages/spdtf-2/working-groups/member-guide/meetings-and-records.astro', import.meta.url),
-  modelReview: new URL('../src/pages/spdtf-2/working-groups/member-guide/model-review-and-decisions.astro', import.meta.url),
+  memberGuide: new URL('../src/pages/spdtf/working-groups/member-guide/index.astro', import.meta.url),
+  gettingStarted: new URL('../src/pages/spdtf/working-groups/member-guide/getting-started.astro', import.meta.url),
+  teamsAndDiscussions: new URL('../src/pages/spdtf/working-groups/member-guide/teams-and-discussions.astro', import.meta.url),
+  sourceMaterial: new URL('../src/pages/spdtf/working-groups/member-guide/source-material-and-sharepoint.astro', import.meta.url),
+  meetingsAndRecords: new URL('../src/pages/spdtf/working-groups/member-guide/meetings-and-records.astro', import.meta.url),
+  modelReview: new URL('../src/pages/spdtf/working-groups/member-guide/model-review-and-decisions.astro', import.meta.url),
 };
 
 const memberGuidePaths = [
@@ -172,7 +172,7 @@ test('working-group member guide covers the complete participation journey', asy
   for (const slug of [
     'getting-started', 'teams-and-discussions', 'source-material-and-sharepoint',
     'meetings-and-records', 'model-review-and-decisions',
-  ]) assert.match(landing, new RegExp(`href=["']\/spdtf-2\/working-groups\/member-guide\/${slug}["']`, 'u'));
+  ]) assert.match(landing, new RegExp(`href=["']\/spdtf\/working-groups\/member-guide\/${slug}["']`, 'u'));
 
   const corpus = [landing, ...children].join('\n').replace(/\s+/gu, ' ');
   for (const boundary of [

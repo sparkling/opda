@@ -1,20 +1,20 @@
 ---
 status: accepted
 date: 2026-07-19
-updated: 2026-08-19
+updated: 2026-08-22
 tags: [website, information-architecture, modelling, migration, bounded-context, publication]
 supersedes: []
 depends-on: [ADR-0041, ADR-0044, ADR-0063]
-implements: [src/pages/spdtf-2/property-pack]
+implements: [src/pages/spdtf/property-pack]
 ---
 
 # Revamp the modelling website before publishing the new working-group approach
 
 ## Context and Problem Statement
 
-The current OPDA website documents the model and standards implementation that exist
-today. Its ontology, mapping, schema, glossary, dictionary, shapes and bounded-context
-pages form a connected account of the schema-derived linked-data programme.
+The current OPDA website documents the technical material that exists today. Its PDTF
+schema, supporting glossary and dictionary, schema-derived ontology, mapping, shapes and
+bounded-context pages form a connected account of the earlier linked-data work.
 
 ADR-0063 proposes a materially different development method: develop domain-led models
 through bounded-context working groups, with a separate Interoperability Working Group
@@ -24,12 +24,13 @@ authorities and maturity levels in one navigation structure.
 
 That piecemeal approach would create a confused website:
 
-- some pages would describe the current schema-derived corpus as authoritative;
+- some pages would describe the PDTF schema or schema-derived ontology as authoritative
+  beyond its actual technical status;
 - other pages would describe it as a diagnostic baseline;
 - current overlay-derived bounded contexts would sit beside newly discovered domain
   boundaries;
-- users could not tell whether a term or diagram represented today's standard, a
-  proposal, or a working-group draft.
+- users could not tell whether a term or diagram represented the existing PDTF schema,
+  the schema-derived ontology, an SPDTF proposal, or a working-group draft.
 
 The new approach therefore needs an information-architecture and content redesign
 before it is published on the website.
@@ -39,7 +40,7 @@ Supporting rationale is in
 
 ## Decision Drivers
 
-- Preserve the website as an accurate account of the current implementation.
+- Preserve the website as an accurate account of the PDTF schema and schema-derived implementation.
 - Prevent current, proposed and draft models from being conflated.
 - Give the new domain models a coherent navigation, status and provenance system.
 - Make non-technical working-group review the primary interaction, not an appendix to
@@ -62,19 +63,19 @@ Supporting rationale is in
 
 Chosen option: **Option C — no piecemeal publication into the current model.**
 
-The existing website continues to document the current schema-derived implementation.
+The existing website continues to document the PDTF schema and schema-derived implementation.
 The new working-group strategy, draft domain models and research remain in ADRs,
 research notes and working artefacts until either a complete revamp is approved or an
-explicitly versioned and clearly labelled review section is authorised. ADR-0066 and
-the operator's 2026-08-04 publication instruction authorised the isolated V2 review
-section without replacing or rewriting the current pages.
+clearly labelled review section is authorised. ADR-0066 and the operator's 2026-08-04
+publication instruction authorised the isolated Property Pack review section without
+replacing or rewriting the existing PDTF schema pages.
 
 ### Revamp scope
 
 The follow-on website plan must resolve, as one coherent release:
 
-1. **Status and provenance** — visually distinguish current standard, diagnostic
-   baseline, working-group draft, reviewed proposal and adopted model.
+1. **Status and provenance** — visually distinguish the PDTF schema, schema-derived
+   diagnostic baseline, working-group draft, reviewed proposal and adopted model.
 2. **Model separation** — decide whether the current model is archived, versioned, or
    retained as a named baseline beside the new models.
 3. **Bounded-context navigation** — provide a consistent home for each context's
@@ -95,7 +96,7 @@ The follow-on website plan must resolve, as one coherent release:
    hub.
 8. **Review lifecycle** — show the source evidence, current draft, changes since the
    previous draft, unresolved questions, feedback disposition and candidate status,
-   including when a model becomes the official first draft. Later consensus,
+   including when a model becomes the collaborative first draft. Later consensus,
    resolution and adoption states remain subject to a separate governance decision.
 9. **Evidence capture** — support governed ingestion of documents, forms, diagrams,
    examples, meeting transcripts and online discussions, with consent, provenance,
@@ -114,12 +115,12 @@ The follow-on website plan must resolve, as one coherent release:
 
 The existing website may be demonstrated in working-group meetings to show the
 interaction patterns OPDA intends to use: graph diagrams, term pages, definitions,
-glossary and dictionary views. Presenters must state that the content is the current
+glossary and dictionary views. Presenters must state that the content is the
 schema-derived model and is being shown as a demonstration, not as the starting model
 the group is being asked to approve.
 
-No existing V1 page is to be updated merely to announce ADR-0063. New candidate work
-must remain isolated in a versioned, visibly non-normative review section until a
+No existing PDTF schema page is to be updated merely to announce ADR-0063. New candidate
+work must remain isolated in a visibly non-normative SPDTF review section until a
 separate migration decision authorises replacement of current pages.
 
 ### Consequences
@@ -135,7 +136,7 @@ separate migration decision authorises replacement of current pages.
 
 ### Confirmation
 
-- No existing V1 page is changed to present ADR-0063 before migration is approved.
+- No existing PDTF schema page is changed to present ADR-0063 before migration is approved.
 - A follow-on ADR defines the new information architecture, status model, migration
   plan, page inventory and release gate.
 - The redesign accounts for all six content outputs and the publication artefacts of
@@ -153,22 +154,28 @@ separate migration decision authorises replacement of current pages.
 
 ## Amendments
 
-- **2026-08-04 — Accepted with an isolated V2 review path.** The operator authorised
-  publication of the Property Pack candidate and V2 documentation as a separate,
+- **2026-08-04 — Accepted with an isolated Property Pack review path.** The operator authorised
+  publication of the Property Pack candidate and its documentation as a separate,
   clearly labelled review surface. This satisfies the anti-mixing intent of this ADR;
-  it does not authorise an in-place rewrite or replacement of current V1 pages.
+  it does not authorise an in-place rewrite or replacement of existing PDTF schema pages.
 - **2026-08-16 — Coherent visual-system replacement authorised.** The operator
   authorised ADR-0073 to replace the shared design system, website shell, home page
   and design-system reference coherently across opda.org.uk. This does not alter the
-  status or meaning of V1/V2 standards content, approve a modelling-content migration,
+  status or meaning of PDTF schema or SPDTF candidate content, approve a modelling-content migration,
   change the other production sites or authorise deployment.
 - **2026-08-19 — Property Pack route exception authorised by ADR-0075.** The operator
-  authorised a no-redirect move: old `/v2` maps to `/spdtf-2/property-pack`, old
-  `/v2/comparison` maps to `/spdtf-2/property-pack/pdtf-1-lineage`, every other old
-  `/v2/{suffix}` maps to `/spdtf-2/property-pack/{suffix}`, and old
-  `/modelling/property-pack` maps to `/spdtf-2/property-pack/definition-and-scope`.
+  authorised a no-redirect move: old `/v2` maps to `/spdtf/property-pack`, old
+  `/v2/comparison` maps to `/spdtf/property-pack/pdtf-schema-lineage`, every other old
+  `/v2/{suffix}` maps to `/spdtf/property-pack/{suffix}`, and old
+  `/modelling/property-pack` maps to `/spdtf/property-pack/definition-and-scope`.
   This narrowly amends the earlier URL-continuity rule; atomic content, fragment and
   comment-identity preservation remain mandatory.
+- **2026-08-22 — Chair-authority terminology correction.** The existing body of work is
+  the PDTF schema and its separately identified schema-derived ontology; it was not an
+  OPDA-endorsed predecessor scheme. SPDTF is the first collaboratively authored scheme
+  draft. The information architecture must present a schema-to-scheme continuation and
+  must not imply numbered-version succession. Historical route evidence and stable
+  `/pdtf/**` identifiers remain unchanged.
 
 ## More Information
 

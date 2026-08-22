@@ -7,6 +7,9 @@
 > that proves the pattern (AgentDB vector index, ReasoningBank, the grlc SPARQL→REST API)
 > is ✅/🟡; a *published, end-user* OPDA/PDTF MCP + embedding product is 🔵 — a roadmap, not
 > a shipped deliverable. This document is a credible engineering roadmap, not a pitch.
+> The knowledge graph discussed here is the separate draft schema-derived ontology. It is
+> not part of the PDTF schema or an endorsed scheme; SPDTF governance must decide what can
+> become an authoritative AI knowledge surface.
 
 ## TL;DR
 
@@ -27,11 +30,11 @@
   (vector embeddings + HNSW + semantic search) and ReasoningBank index the council/ODR
   deliberations for recall, provenance traversal, and learning (✅ ADR-0027). That is the
   proof-of-pattern for an end-user embedding product — but it indexes *the project's own
-  governance*, not yet a published PDTF concept index (🔵).
+  governance*, not yet a published schema-derived concept index (🔵).
 - **The OPDA MCP server is the keystone 🔵 deliverable.** A small server exposing tools like
   `lookup_term`, `validate_shacl`, `sparql_query`, `get_profile`, `trace_provenance` — installable
   locally so a lender or conveyancer keeps their data in-house — is the most direct way to make
-  the standard *actionable* inside the AI tools the whole industry is now adopting. It does not
+  governed SPDTF material *actionable* inside the AI tools the industry is adopting. It does not
   exist yet; the substrate it would wrap does.
 - **Strategic fit.** This is the technical answer to OPDA's published 2026 mandate —
   consent-based APIs, data sovereignty, "PDFs → APIs" — extended one step further: not just APIs
@@ -252,7 +255,7 @@ mechanisms (ADR-0027 §Mapping):
 
 This is **embeddings + vectors + HNSW + semantic search + provenance graph, working, today** — the
 precise stack §2.3 proposes for the *public concept index*. The difference is the *corpus*: AgentDB
-indexes the project's **own governance** (the council/ODR record), not yet the PDTF concept model
+indexes the project's **own governance** (the council/ODR record), not yet the schema-derived concept model
 exposed to end users. Promoting the pattern from "index our decisions" to "index the standard for
 the world" is a scoping/productisation step, not a research gamble.
 
@@ -280,7 +283,7 @@ This repository is *already developed through* an MCP server (`ruflo`, registere
 with deferred tools loaded via `ToolSearch`). The team therefore has first-hand operational
 experience of the exact delivery mechanism §2.2 proposes for end users — building *and consuming*
 MCP tools is established practice here, not a new bet. The novelty in §2.2 is the *server's
-content* (PDTF knowledge), not the protocol or the integration pattern.
+content* (schema-derived knowledge), not the protocol or the integration pattern.
 
 ---
 
@@ -289,7 +292,7 @@ content* (PDTF knowledge), not the protocol or the integration pattern.
 ```
                          ┌──────────────────────────────────────────┐
                          │  SOURCE OF TRUTH                          │
-                         │  OPDA/PDTF ontology (OWL/RDF/SHACL/SKOS)  │  ✅
+                         │  Schema-derived ontology (OWL/RDF/SHACL)  │  ✅
                          │  source/03-standards/ontology/*.ttl       │
                          │  emitted by opda-gen under byte-identity  │
                          └───────────────────┬──────────────────────┘
@@ -373,16 +376,16 @@ The initiative is the technical substrate for OPDA's published 2026 mandate
 | AgentDB provenance graph (session↔ODR causal edges) | ✅ | ADR-0027 mechanisms 2 |
 | ReasoningBank adaptive-learning layer | ✅ | ADR-0027 mechanism 3 (pays off only at scale) |
 | ruflo MCP toolset in active use (proves MCP build+consume) | ✅ | `CLAUDE.md` (registered, deferred tools) |
-| **OPDA/PDTF MCP server** (lookup/validate/sparql/profile/provenance tools) | 🔵 | substrate mostly ✅; server is unbuilt assembly |
+| **Schema-derived ontology MCP server** (lookup/validate/sparql/profile/provenance tools) | 🔵 | substrate mostly ✅; server is unbuilt assembly |
 | MCP server **locally installable** (data sovereignty) | 🔵 | design goal; not yet packaged |
-| **Embedding index of PDTF concepts/classes/shapes/ODRs** for public RAG | 🔵 | pattern ✅ (AgentDB on council corpus); PDTF-content index not built |
+| **Embedding index of schema-derived concepts/classes/shapes/ODRs** for public RAG | 🔵 | pattern ✅ (AgentDB on council corpus); public content index not built |
 
 ---
 
 ## Talking points for the quarterly tech review (mixed senior + technical)
 
-- **"AI is only as good as the context it's given — and we have built the best possible context for
-  PDTF."** A JSON Schema lets an AI *guess*; a governed ontology lets it *retrieve a definition,
+- **"AI is only as good as the context it's given — and we have built an inspectable candidate
+  context from the PDTF schema."** A JSON Schema lets an AI *guess*; a traceable draft ontology lets it *retrieve a definition,
   reason over structure, validate its own output, and cite its source.* That is the difference
   between a plausible answer and an auditable one — and in a regulated market, auditable is the
   only kind that counts.
@@ -391,7 +394,7 @@ The initiative is the technical substrate for OPDA's published 2026 mandate
   endpoint. We are not starting from zero.
 - **The embedding/RAG pattern is already proven *on our own corpus*.** AgentDB (vectors + HNSW +
   semantic search + a provenance graph) indexes the AI-Council deliberations today (ADR-0027). The
-  open work is pointing that same proven machinery at the *PDTF concepts* for end users — a
+  open work is pointing that same proven machinery at the *schema-derived concepts* for end users — a
   productisation step, not a research risk.
 - **The headline new build is a locally-installable OPDA MCP server.** It wraps the model as tools
   an AI agent can call — *look up a term, validate against SHACL, run a SPARQL query, fetch a form
@@ -399,12 +402,12 @@ The initiative is the technical substrate for OPDA's published 2026 mandate
   never leaves the building.** That is data sovereignty and consent-based access, applied to the AI
   layer the whole industry is adopting.
 - **Be honest about the split.** Most of the *end-user AI product* is roadmap (🔵). What's real
-  (✅/🟡) is the substrate it stands on — the governed model, the validation critic, the API engine,
+  (✅/🟡) is the substrate it stands on — the traceable draft model, the validation critic, the API engine,
   and the internal embedding/learning stack that proves the pattern. We are proposing to *assemble
   and expose* proven parts, not invent new ones.
 - **This is the AI-era answer to "fix the data foundations."** OPDA's mandate is consent-based APIs,
   data sovereignty, and PDFs→APIs. The linked-data model is that foundation; the MCP + embedding
-  layer is how the standard becomes *actionable inside the AI tools* lenders, conveyancers, and
+  layer is how governed SPDTF material could become *actionable inside the AI tools* lenders, conveyancers, and
   proptech are already deploying.
 
 ---

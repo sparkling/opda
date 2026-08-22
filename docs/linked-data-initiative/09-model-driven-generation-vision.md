@@ -1,18 +1,21 @@
-# Model-driven generation: the linked data as single source of truth
+# Model-driven generation: a candidate implementation pattern for SPDTF
 
 > Part of the OPDA Linked-Data Initiative knowledgebase. Legend: ✅ built · 🟡 partial · 🔵 planned.
 >
 > Builds on `_research-synthesis.md`, `_external-research.md`, `_fact-sheet.md`. Cross-refs
 > KB docs `07-generator-pipeline-and-ci.md`, `10-ai-value-and-developer-ecosystem.md`,
 > `11-standards-development-releases-and-extensibility.md`.
+> The current ontology is a draft artefact derived from the PDTF schema. Only the
+> collaborative SPDTF process can decide whether a future governed model becomes an
+> authoritative source for scheme outputs.
 
 ## TL;DR
 
-- **The core inversion.** Today the ontology is generated *from* the PDTF JSON Schema
+- **The candidate inversion.** Today the draft ontology is generated *from* the PDTF schema
   (`opda-gen` reads the data dictionary distilled from `pdtf-transaction.json`). The
-  forward direction is to flip the arrow: make the **linked-data model the source of
-  truth** and generate JSON Schema, APIs, code, DB schema/DDL, forms, UI and docs *from
-  it* — so one modelling change regenerates every downstream artefact with **no drift**. 🔵
+  proposed direction is to let collaboratively governed **SPDTF decisions** drive a
+  linked-data model and generate JSON Schema, APIs, code, DB schema/DDL, forms, UI and
+  docs from it—if the working groups validate that pattern. 🔵
 - **SHACL is the pivot.** The generation contract is not the OWL class graph (open-world,
   says what *can* be true) but the **SHACL shapes graph** (closed-world, says what a
   *conformant instance* must look like): cardinality, datatypes, value sets, node kinds,
@@ -50,7 +53,7 @@ pdtf-transaction.json (37,224 lines, Draft-07)
   → canonical Turtle (byte-identity CI gate)
 ```
 
-This was the right *first* move: PDTF already exists in JSON Schema, so the ontology had to
+This was the right *first* move: the PDTF schema already exists, so the ontology had to
 be reverse-engineered from it (see `02-linked-data-model-architecture.md`,
 `07-generator-pipeline-and-ci.md`). The generator literally loads the JSON schema as
 **input** — confirmed in `tools/opda-gen/src/opda_gen/emitters/profiles.py:40` ("Load
@@ -298,15 +301,15 @@ boundary).
 
 ---
 
-## 4. Governance / standards-development driven by the model
+## 4. SPDTF governance supported by the model
 
-The same inversion reframes how the *standard itself* is governed (full treatment in
+The same inversion could support how the *SPDTF scheme* is governed (full treatment in
 `11-standards-development-releases-and-extensibility.md`; the model-driven angle here):
 
 - **Releases as model artefacts.** A release is a *versioned snapshot of the model*, carried
   by `owl:versionInfo "1.0.0"` + `owl:versionIRI` → a dated snapshot under
   `…/pdtf/harness/release/1.0.0/` (✅, the DPV practice). Downstream artefacts (JSON Schema,
-  API, docs) are regenerated *per release* — so "PDTF v3.6" would be a model tag from which
+  API, docs) are regenerated *per release* — so a PDTF schema release such as v3.6 could be a model tag from which
   every representation is emitted, not a JSON file someone hand-edits while the docs lag. 🔵
   (for the multi-target emit) on top of ✅ (versioning scheme).
 - **Modules as model partitions.** The six ontology modules
@@ -321,7 +324,7 @@ The same inversion reframes how the *standard itself* is governed (full treatmen
   exist (`profiles/*.ttl`, ✅) — the extensibility substrate is built; the per-profile
   generators are the 🔵 layer.
 - **Conformance becomes machine-checkable.** Because the contract is SHACL, "does this
-  vendor's data conform to PDTF v3.6 / the BASPI5 profile?" is a `pyshacl`/Jena run, not a
+  vendor's data validate against the PDTF schema v3.6 / BASPI5 candidate profile?" is a `pyshacl`/Jena run, not a
   human review (✅ — this is exactly what the exemplar-regression + round-trip gates already
   do internally). Generated artefacts and the validator share one source, so a conformant
   document is conformant against *every* representation at once.

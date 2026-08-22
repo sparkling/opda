@@ -1,6 +1,6 @@
 import type { Section } from './site.ts';
 
-/** Site sections outside the PDTF 1.0 documentation source families. */
+/** Site sections outside the PDTF schema documentation source families. */
 export const CONTEXT_SOURCE_SECTIONS: Record<string, Section> = {
   strategy: {
     key: 'strategy',
@@ -123,41 +123,41 @@ export const CONTEXT_SOURCE_SECTIONS: Record<string, Section> = {
     key: 'property-pack',
     title: 'Property Pack ontology',
     summary:
-      'The accelerated SPDTF 2.0 Property Pack ontology candidate, its 451-item definition, PDTF 1.0 lineage, model, technical determination and later review path.',
+      'The accelerated SPDTF Property Pack ontology candidate, its 451-item definition, PDTF schema lineage, model, technical determination and later review path.',
     groups: [
       { heading: 'Overview', items: [
-        { url: '/spdtf-2/property-pack', title: 'Property Pack ontology' },
-        { url: '/spdtf-2/property-pack/definition-and-scope', title: 'Definition and 451-item scope' },
-        { url: '/spdtf-2/property-pack/pdtf-1-lineage', title: 'PDTF 1.0 lineage' },
+        { url: '/spdtf/property-pack', title: 'Property Pack ontology' },
+        { url: '/spdtf/property-pack/definition-and-scope', title: 'Definition and 451-item scope' },
+        { url: '/spdtf/property-pack/pdtf-schema-lineage', title: 'PDTF schema lineage' },
       ]},
       { heading: 'Model atlas', items: [
-        { url: '/spdtf-2/property-pack/model', title: 'Complete model' },
-        { url: '/spdtf-2/property-pack/contexts', title: 'Context overview' },
-        { url: '/spdtf-2/property-pack/contexts/common', title: 'Common boundary' },
-        { url: '/spdtf-2/property-pack/contexts/conveyancing', title: 'Conveyancing' },
-        { url: '/spdtf-2/property-pack/contexts/estate-agency', title: 'Estate agency' },
-        { url: '/spdtf-2/property-pack/contexts/finance-and-banking', title: 'Finance and banking' },
-        { url: '/spdtf-2/property-pack/contexts/property-data-services', title: 'Property data services' },
-        { url: '/spdtf-2/property-pack/contexts/property-technology', title: 'Property technology' },
-        { url: '/spdtf-2/property-pack/contexts/surveying-and-valuation', title: 'Surveying and valuation' },
-        { url: '/spdtf-2/property-pack/contexts/dbt-smart-data', title: 'DBT Smart Data candidate semantic context' },
+        { url: '/spdtf/property-pack/model', title: 'Complete model' },
+        { url: '/spdtf/property-pack/contexts', title: 'Context overview' },
+        { url: '/spdtf/property-pack/contexts/common', title: 'Common boundary' },
+        { url: '/spdtf/property-pack/contexts/conveyancing', title: 'Conveyancing' },
+        { url: '/spdtf/property-pack/contexts/estate-agency', title: 'Estate agency' },
+        { url: '/spdtf/property-pack/contexts/finance-and-banking', title: 'Finance and banking' },
+        { url: '/spdtf/property-pack/contexts/property-data-services', title: 'Property data services' },
+        { url: '/spdtf/property-pack/contexts/property-technology', title: 'Property technology' },
+        { url: '/spdtf/property-pack/contexts/surveying-and-valuation', title: 'Surveying and valuation' },
+        { url: '/spdtf/property-pack/contexts/dbt-smart-data', title: 'DBT Smart Data candidate semantic context' },
       ]},
       { heading: 'Meaning & constraints', items: [
-        { url: '/spdtf-2/property-pack/resources', title: 'Ontology resources' },
-        { url: '/spdtf-2/property-pack/relationships', title: 'Relationships' },
-        { url: '/spdtf-2/property-pack/data-dictionary', title: 'Data dictionary' },
-        { url: '/spdtf-2/property-pack/vocabularies', title: 'Controlled vocabularies' },
-        { url: '/spdtf-2/property-pack/shapes', title: 'SHACL shapes' },
+        { url: '/spdtf/property-pack/resources', title: 'Ontology resources' },
+        { url: '/spdtf/property-pack/relationships', title: 'Relationships' },
+        { url: '/spdtf/property-pack/data-dictionary', title: 'Data dictionary' },
+        { url: '/spdtf/property-pack/vocabularies', title: 'Controlled vocabularies' },
+        { url: '/spdtf/property-pack/shapes', title: 'SHACL shapes' },
       ]},
       { heading: 'Evidence & assurance', items: [
-        { url: '/spdtf-2/property-pack/coverage', title: 'Candidate source coverage' },
-        { url: '/spdtf-2/property-pack/standards', title: 'Standards profile' },
-        { url: '/spdtf-2/property-pack/validation', title: 'Validation evidence' },
-        { url: '/spdtf-2/property-pack/artefacts', title: 'Generated artefacts' },
+        { url: '/spdtf/property-pack/coverage', title: 'Candidate source coverage' },
+        { url: '/spdtf/property-pack/standards', title: 'Standards profile' },
+        { url: '/spdtf/property-pack/validation', title: 'Validation evidence' },
+        { url: '/spdtf/property-pack/artefacts', title: 'Generated artefacts' },
       ]},
       { heading: 'Governance & lifecycle', items: [
-        { url: '/spdtf-2/property-pack/technical-working-group-determination', title: 'Technical Working Group determination' },
-        { url: '/spdtf-2/property-pack/review-and-releases', title: 'Later review and releases' },
+        { url: '/spdtf/property-pack/technical-working-group-determination', title: 'Technical Working Group determination' },
+        { url: '/spdtf/property-pack/review-and-releases', title: 'Later review and releases' },
       ]},
     ],
   },

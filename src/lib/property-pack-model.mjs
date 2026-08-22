@@ -12,7 +12,7 @@ import path from 'node:path';
 export const CANDIDATE_ROOT = path.resolve(
   process.cwd(), 'source/03-standards/ontology-candidates/property-pack/0.1',
 );
-export const PROPERTY_PACK_ROUTE = '/spdtf-2/property-pack';
+export const PROPERTY_PACK_ROUTE = '/spdtf/property-pack';
 
 function readJson(relative) {
   return JSON.parse(readFileSync(path.join(CANDIDATE_ROOT, relative), 'utf8'));
@@ -34,7 +34,7 @@ export const propertyPackLifecycleStatus = Object.freeze({
   ontologyCandidate: `${candidateManifest.candidate_version} — machine-proposed and non-normative`,
   technicalDetermination: 'Pending — milestone: end of September 2026',
   laterDomainReview: 'Pending — follows the Technical Working Group determination',
-  implementationRelease: 'Not released or adopted as SPDTF 2.0',
+  implementationRelease: 'Not released or adopted as SPDTF',
   externalAuthority: 'No government approval or delegated authority recorded',
 });
 

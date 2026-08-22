@@ -1,12 +1,14 @@
-# PDTF Stakeholder Industries — Repo Cross-Reference
+# PDTF schema stakeholder industries — repo cross-reference
 
-> Research note: which industries the Property Data Trust Framework (PDTF) is meant to cover, and
-> which artefacts in this repo (JSON Schema, ontology, ADRs/ODRs, website pages) relate to each one.
+> Research note: which industries the existing PDTF schema package covers, and which artefacts in
+> this repo (JSON Schema, the separate schema-derived ontology, ADRs/ODRs and website pages) relate
+> to each one. The ontology evidence is a draft technical artefact, not part of the PDTF schema and
+> not an OPDA-endorsed scheme.
 
 ## Executive summary
 
-PDTF's authoritative stakeholder list is the `role` enum baked directly into the base schema
-(`pdtf-transaction.json`) — 12 roles spanning roughly seven industries: estate agency,
+The most concrete stakeholder evidence inside the PDTF schema is the `role` enum in the base
+schema (`pdtf-transaction.json`) — 12 roles spanning roughly seven industries: estate agency,
 conveyancing/legal, surveying, lending, local-authority/search, trading standards, and
 landlord/tenant. The repo's own governance chart independently corroborates this via the 13
 founding members of the government's Digital Property Market Steering Group (DPMSG).
@@ -25,7 +27,7 @@ Estate Agent, Buyer's Agent, Surveyor, Mortgage Broker, Lender, Landlord, Tenant
 
 - **Schema:** `source/03-standards/schemas/src/schemas/v3/overlays/piq.json` (Property Information
   Questionnaire — estate-agent-authored property info)
-- **Ontology:** `opda:EstateAgent` role class — `docs/ontology/odr/ODR-0006-agents-and-roles.md`;
+- **Schema-derived ontology:** `opda:EstateAgent` role class — `docs/ontology/odr/ODR-0006-agents-and-roles.md`;
   SHACL profile `source/03-standards/ontology/profiles/piq.ttl`
 - **ADR/ODR:** ODR-0006 (Agents & Roles); ADR-0028 / ADR-0031 / ADR-0032 (descriptive / Category-G
   emission — material info an agent captures)
@@ -42,7 +44,7 @@ Conveyancers (SLC), SRA, CILEX, CILEx Regulation
 - **Schemas:** `ta6.json`, `ta7.json` (leasehold), `ta10.json` (fittings & contents) — Law Society
   standard forms; `oc1.json` (requisitions on title); `legal-information.json`, `title-deed.json`,
   `freehold-information.json`, `leasehold-information.json` (v1 base schemas)
-- **Ontology:** `opda:Conveyancer` role; `opda-agent.ttl` capacity split
+- **Schema-derived ontology:** `opda:Conveyancer` role; `opda-agent.ttl` capacity split
   (`opda:hasAssertedCapacity` / `opda:hasEvidencedAuthority`); profiles `ta6.ttl`, `ta7.ttl`,
   `ta10.ttl`, `oc1.ttl`
 - **ADR/ODR:** ODR-0006; ODR-0009 (Claims, Evidence, Provenance — evidenced authority for
@@ -58,7 +60,7 @@ Conveyancers (SLC), SRA, CILEX, CILEx Regulation
 - **Schema:** `source/03-standards/schemas/src/schemas/v3/overlays/sr24.json` (Sustainability
   Report); the v3.5 changelog in `docs/linked-data-initiative/01-context-problem-and-market.md` §5
   notes "draft survey & valuation schemas" as roadmap
-- **Ontology:** `opda:Surveyor` role — ODR-0006; profile
+- **Schema-derived ontology:** `opda:Surveyor` role — ODR-0006; profile
   `source/03-standards/ontology/profiles/sr24.ttl`
 - **Website:** RICS appears in the DPMSG founding-members list,
   `src/pages/governance/uk-initiative.astro` (Tier 3)
@@ -72,7 +74,7 @@ members
 - **Schema:** `energy-performance-certificate.json` and title/legal schemas feed lender risk
   assessment (per `for-industry.astro` `#lenders` section: "verified valuation inputs — trusted
   EPC, searches, and title data")
-- **Ontology:** `opda:Lender` role — ODR-0006; governance layer `opda-governance.ttl`
+- **Schema-derived ontology:** `opda:Lender` role — ODR-0006; governance layer `opda-governance.ttl`
   (role-based access / visibility model referenced in the lender data-visibility matrix)
 - **ADR/ODR:** ODR-0012 (Data Governance Layer — role-based access, AML status visibility)
 - **Website:** `for-industry.astro` `#lenders` section (fraud reduction via cryptographic
@@ -87,7 +89,7 @@ Local Land Charges Programme
 - **Schemas:** `con29R.json` (local authority search), `con29DW.json` (drainage & water),
   `llc1.json` (local land charges), `lpe1.json` (leasehold enquiries), `fme1.json` (freehold
   management enquiries), plus `oc1.json`
-- **Ontology:** profiles `con29R.ttl`, `con29DW.ttl`, `llc1.ttl`, `lpe1.ttl`, `fme1.ttl`
+- **Schema-derived ontology:** profiles `con29R.ttl`, `con29DW.ttl`, `llc1.ttl`, `lpe1.ttl`, `fme1.ttl`
 - **ADR/ODR:** ODR-0022 (Descriptive Layer import strategy covers search-derived data);
   `source/03-standards/rml/` mapping directory (RML mappings from these overlay JSON leaves to RDF)
 - **Website:** `src/pages/governance/uk-initiative.astro` Tier 4 — "HMLR Local Land Charges
@@ -101,7 +103,7 @@ Local Land Charges Programme
 - **Schemas:** `nts.json` (2023), `nts2.json` (2025, material information), `ntsl.json` /
   `ntsl2.json` (leasehold variants), plus the `extensions/` sub-schemas (`as.json` asbestos,
   `jk.json` Japanese knotweed, `sb.json` subsidence, `hs.json` health & safety, etc.)
-- **Ontology:** profiles `nts2.ttl`, `ntsl2.ttl`, and the extension profiles (`as.ttl`, `dr.ttl`,
+- **Schema-derived ontology:** profiles `nts2.ttl`, `ntsl2.ttl`, and the extension profiles (`as.ttl`, `dr.ttl`,
   `jk.ttl`, `sb.ttl`, `hs.ttl`, `la.ttl`, `sf.ttl`, `mc.ttl`, `er.ttl`, `ma.ttl`, `tf.ttl`,
   `sl.ttl`, `hi.ttl`, `fd.ttl`, `oa.ttl`, `oc.ttl`)
 - **ADR/ODR:** ADR-0028 (Descriptive-layer walk / Home-pass emission); ADR-0030 (Category-based
@@ -115,12 +117,12 @@ Local Land Charges Programme
 (Tier 2 policy lead, Tier 3 hosts DPMSG, Tier 4 delivery)
 
 - **Schema:** `title-deed.json`, `freehold-information.json`, `leasehold-information.json`
-- **Ontology:** the headline `opda:Property` / `opda:LegalEstate` / `opda:RegisteredTitle` split —
+- **Schema-derived ontology:** the headline `opda:Property` / `opda:LegalEstate` / `opda:RegisteredTitle` split —
   `source/03-standards/ontology/opda-property.ttl`; `opda:hasRegisteredTitle` predicate
   (`opda-agent.ttl`)
 - **ADR/ODR:** ODR-0005 (Property & Land Identity Crux — the UPRN-joins-nothing defect,
-  HMLR-relevant); ADR-0006 (w3id namespace); ADR-0039 (linked-data model as PDTF standards
-  foundation)
+  HMLR-relevant); ADR-0006 (w3id namespace); ADR-0039 (schema-derived linked-data model as an
+  SPDTF foundation)
 
 ## 8. Landlord / Tenant (Lettings)
 

@@ -77,6 +77,6 @@ The three-graph gate is the ontology-engineering analogue of a "no `import * fro
 
 ## Source ODR + ADR
 
-- [ODR-0004 — PDTF ontology foundation](/modelling/odr/odr-0004) §3a — five-part separation contract.
+- [ODR-0004 — schema-derived ontology foundation](/modelling/odr/odr-0004) §3a — five-part separation contract.
 - [ADR-0009 — Foundation TTL emission](/modelling/adr/adr-0009) — initial three-graph gate activation.
 - [ADR-0012 — SHACL + DPV annotation emission](/modelling/adr/adr-0012) — extends the separation contract to per-module shape + annotation graphs.

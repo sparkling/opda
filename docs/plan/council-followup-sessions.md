@@ -1,5 +1,9 @@
 # Plan — Council Follow-up Sessions for ODR-0002 … ODR-0014
 
+> **Authority note:** This is a historical plan for internal AI-assisted technical
+> review of the schema-derived ontology. Its use of "ratify" and `accepted` described
+> project workflow, not OPDA, working-group or industry endorsement of a scheme.
+
 > **Anchor:** [ODR-0003 — PDTF → Ontology: Programme & Work Breakdown](../ontology/odr/ODR-0003-pdtf-ontology-programme.md). This plan operationalises the work-breakdown in ODR-0003 §"Work breakdown" by attaching one Council session to each stub it links.
 >
 > One Linked Data Council session per ODR. Each session is an independent swarm,
@@ -14,9 +18,9 @@
 
 ## 1. Scope and method
 
-**What this plan does.** Operationalises the **research and improvement of the OPDA ODR corpus** through Council sessions — convening expert panels to ratify and flesh out each ODR's `## Rules` (the linked-data design decisions: identity criteria, vocabulary tiering, modelling conventions, validation patterns, etc.). Each session produces (a) a transcript with named-expert positions and per-question vote tallies; (b) an amended ODR with `status: accepted`; (c) a track-record row in the adoption record. The output is an *improved set of ODRs*, not implementation artefacts.
+**What this plan does.** Operationalises research and improvement of the ODR corpus through internal AI-council sessions that review each ODR's `## Rules` (identity criteria, vocabulary tiering, modelling conventions and validation patterns). Each session produces a transcript, an amended ODR with an internal status and a track-record row. The output is technical evidence, not implementation artefacts or scheme adoption.
 
-**What this plan does NOT do.** It does NOT produce Turtle files, SHACL shape libraries, generator code, JSON-LD contexts, or any other implementation deliverable. **Implementation is handled by a separate ADR programme** — each accepted ODR will trigger one or more implementation ADRs (under `docs/adr/`) that specify how the ratified modelling decision is realised in code and serialisation. The ODR ratification done here *unblocks* implementation; the implementation itself is downstream.
+**What this plan does NOT do.** It does NOT produce Turtle files, SHACL shape libraries, generator code, JSON-LD contexts, or any other implementation deliverable. **Implementation is handled by a separate ADR programme** — each internally accepted ODR can trigger implementation ADRs that specify how its modelling proposal is realised in code and serialisation. This technical disposition unblocks implementation only; it does not confer OPDA or SPDTF authority.
 
 | This plan (Council sessions) | Separate ADR plan (implementation) |
 |---|---|
@@ -131,7 +135,7 @@ These dissents passed Council ratification with named falsifiable re-open condit
 |---|---|---|---|
 | 2-class with `RegisteredTitle ⊑ LegalEstate` (upgradeable) | Davis | S005 Q5 | Downstream sessions surface a case where 3-class is operationally net-negative against the BASPI5 round-trip. |
 | 2-class with commonhold-spawn-rule | Cagle | S005 Q5 | Commonhold exemplar surfaces → §6 spawn rule fires → ODR-0005a/0005b. |
-| Address-as-structured-datatype reverter | Allemang DA | S015 Q3 | 18 months / zero multi-Property-shared-Address cases from PDTF v3 AND no consumer query requires Address-as-resource graph identity beyond S015 Q1. |
+| Address-as-structured-datatype reverter | Allemang DA | S015 Q3 | 18 months / zero multi-Property-shared-Address cases from the PDTF schema v3 AND no consumer query requires Address-as-resource graph identity beyond S015 Q1. |
 | Q6 W3C Org Ontology depth | Allemang DA | S006 Q6 | 18 months / no consumer queries exercise Org Ontology machinery beyond class declaration → downgrade `rdfs:subClassOf` to `dct:source` reference. |
 | Q2 RoleMixin distinction (formally withdrawn but recorded) | Allemang DA | S006 Q2 | 18 months / no named consumer query distinguishes RoleMixin from parallel sortal Roles. |
 | Q7 OWL-Time scope-creep watch | Davis DA | S007 Q7 | Any proposed expansion beyond Core+Duration requires named consumer using the additional machinery. |
