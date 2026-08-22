@@ -69,6 +69,19 @@ function inventoryWithTrackedReframes(baseline, relative, declarations) {
   };
 }
 
+function inventoryWithSizeMutation(inventory, file) {
+  const records = inventory.records.map((record) => (
+    record.path === file ? { ...record, size: record.size + 1 } : record
+  ));
+  return {
+    count: records.length,
+    treeSha256: sha256(records.map((record) => (
+      `${record.path}\0${record.size}\0${record.sha256}`
+    )).join('\n')),
+    records,
+  };
+}
+
 test('PDTF source and tool reframes are a closed, hash-bound set', () => {
   const sourceArchive = families.families.find(({ id }) => id === 'source-archive');
   const currentSourceArchive = inventoryWithTrackedReframes(
@@ -138,6 +151,35 @@ test('PDTF source and tool reframes are a closed, hash-bound set', () => {
     routes: 3, blocks: 354, exact: 347, semantic: 7, nonInformation: 0,
     digest: '201b26d42fa6abec654a4a7b01b4a77da1a29cf886aa94bc7c98d46bdc81fc0f',
   });
+});
+
+test('closed file reframes reject size-only drift in reviewed and untouched records', () => {
+  const sourceArchive = families.families.find(({ id }) => id === 'source-archive');
+  const currentSourceArchive = inventoryWithTrackedReframes(
+    sourceArchive.baseline, 'source', SOURCE_ARCHIVE_REFRAMES,
+  );
+  assert.throws(() => composeSourceArchiveReframeReceipt(
+    sourceArchive.baseline,
+    inventoryWithSizeMutation(currentSourceArchive, 'README.md'),
+  ), /source archive reframe bytes changed/u);
+  assert.throws(() => composeSourceArchiveReframeReceipt(
+    sourceArchive.baseline,
+    inventoryWithSizeMutation(currentSourceArchive, '_content/schema/35-transaction-participants.md'),
+  ), /outside the reviewed authority-note set/u);
+
+  const tools = families.families.find(({ id }) => id === 'ontology-tools');
+  const currentTools = inventoryWithTrackedReframes(
+    tools.baseline, 'public/pdtf-schema/schema-derived-ontology/use-and-tooling/tools',
+    PDTF1_TOOL_REFRAMES,
+  );
+  assert.throws(() => composePdtf1ToolReframeReceipt(
+    tools.baseline,
+    inventoryWithSizeMutation(currentTools, 'COMPARISON.md'),
+  ), /tool reframe bytes changed/u);
+  assert.throws(() => composePdtf1ToolReframeReceipt(
+    tools.baseline,
+    inventoryWithSizeMutation(currentTools, 'lode/README.md'),
+  ), /outside the reviewed file set/u);
 });
 
 test('preservation checker rejects a forged PDTF source-retention receipt', () => {
