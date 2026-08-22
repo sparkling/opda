@@ -38,6 +38,11 @@ function inventoryMap(records, expectedSha256) {
   return new Map(records.map(({ hash, count }) => [hash, count]));
 }
 
+export function sourceBlockInventoryCount(records, expectedSha256) {
+  const inventory = inventoryMap(records, expectedSha256);
+  return inventory ? [...inventory.values()].reduce((total, count) => total + count, 0) : null;
+}
+
 function consume(inventory, hash, count) {
   if (!inventory || !Number.isSafeInteger(count) || count < 1 || (inventory.get(hash) ?? 0) < count) {
     return false;
@@ -76,8 +81,9 @@ function sourceRetentionReceiptMatches(source, accepted) {
   const sourceInventory = inventoryMap(
     receipt?.sourceBlockInventoryRecords, source.acceptedBlockInventorySha256,
   );
-  const sourceBlockCount = sourceInventory
-    ? [...sourceInventory.values()].reduce((total, count) => total + count, 0) : null;
+  const sourceBlockCount = sourceBlockInventoryCount(
+    receipt?.sourceBlockInventoryRecords, source.acceptedBlockInventorySha256,
+  );
   const targets = targetInventoryState(receipt);
   const acceptedTarget = targets?.evidenceByRoute.get(accepted.acceptedRoute);
   const structural = receipt?.policy === 'explicit-pdtf1-source-block-retention-v1'

@@ -146,6 +146,14 @@ test('PDTF source and tool reframes are a closed, hash-bound set', () => {
     const source = sourceByRoute.get(record.pdtf1SourceRetentionReceipt.sourceRoute);
     return source && pdtf1SourceEvidenceMatches(source, record);
   }));
+  const addedSourceRoutes = new Set(sourceManifest.addedRoutes.map(({ acceptedRoute }) => acceptedRoute));
+  assert.deepEqual(sourceReceipts.map(({ pdtf1SourceRetentionReceipt: receipt }) => receipt.sourceRoute)
+    .filter((route) => addedSourceRoutes.has(route)).sort(), [
+    '/ontology/concepts-and-architecture', '/ontology/contexts', '/ontology/lineage-and-verification',
+    '/ontology/terms-and-model-resources', '/ontology/trust-and-governance',
+    '/ontology/use-and-tooling', '/ontology/validation-and-examples',
+    '/pdtf-1', '/pdtf-1/original-standard',
+  ]);
   assert.deepEqual({
     routes: routes.pdtf1Migration.sourceReframeRouteCount,
     blocks: routes.pdtf1Migration.sourceReframeTotalBlockCount,

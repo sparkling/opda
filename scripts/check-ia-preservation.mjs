@@ -7,7 +7,7 @@ import {
   blockInventory, existingRetiredPdtf1Outputs, existingRetiredPropertyPackOutputs,
   fileInventory, filesUnder, fragmentContract, informationContract, inventoryDigest,
   isRetiredPropertyPackRoute, parsePreservationArgs, pdtf1MigrationReceipt,
-  propertyPackMigrationReceipt, routeFromFile, sha256,
+  propertyPackMigrationReceipt, routeFromFile, sha256, sourceBlockInventoryCount,
 } from './lib/ia-preservation-contract.mjs';
 import { baselineNavigationEvidenceFailures, retentionReceiptFailures } from './lib/ia-retention-validator.mjs';
 import { composeSchemaToSchemeRouteReceipt } from './lib/schema-to-scheme-route-contract.mjs';
@@ -268,7 +268,7 @@ if (routeManifest) {
       }
       sourceReceiptTargets.add(targetRoute);
       const sourceBlockCount = source.equivalenceReceipt?.acceptedBlocks
-        ?? target?.pdtf1SourceRetentionReceipt?.sourceBlockInventoryRecords?.reduce((sum, { count }) => sum + count, 0);
+        ?? sourceBlockInventoryCount(target?.pdtf1SourceRetentionReceipt?.sourceBlockInventoryRecords, source.acceptedBlockInventorySha256);
       retentionReceiptFailures(target, classifiedByRoute, {
         receipt: target?.pdtf1SourceRetentionReceipt,
         policy: 'explicit-pdtf1-source-block-retention-v1',

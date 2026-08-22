@@ -2,10 +2,10 @@ import { existsSync, readFileSync, readdirSync, statSync } from 'node:fs';
 import path from 'node:path';
 import { parse } from 'parse5';
 import { generatedFamily, nonInformationBlocksDigest, pdtf1SourceEvidenceMatches,
-  semanticBlocksDigest, sha256 } from './ia-preservation-primitives.mjs';
+  semanticBlocksDigest, sha256, sourceBlockInventoryCount } from './ia-preservation-primitives.mjs';
 
 export {
-  generatedFamily, nonInformationBlocksDigest, semanticBlocksDigest, sha256,
+  generatedFamily, nonInformationBlocksDigest, semanticBlocksDigest, sha256, sourceBlockInventoryCount,
 } from './ia-preservation-primitives.mjs';
 
 const SHELL_IDS = new Set([
