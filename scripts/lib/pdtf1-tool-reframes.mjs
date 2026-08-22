@@ -4,25 +4,25 @@ export const PDTF1_TOOL_REFRAMES = Object.freeze([
   Object.freeze({
     path: 'COMPARISON.md',
     baselineSha256: 'c4244d7c66a7712625ad829b83106cdd82e1c783963f2029cadb0947ed5a90f8',
-    acceptedSha256: '8948eee1199d3a3c8dd284edeafdc5d85a4421445d03f1b30c38588a2347d53d',
+    acceptedSha256: '1deabd7db3a7ec208758f6556cadc82375ac062c3316015f73f6410f76cf534f',
     reason: 'Names the canonical schema-derived ontology section instead of the retired /ontology route.',
   }),
   Object.freeze({
     path: 'custom/index.html',
     baselineSha256: '5c98ba1a4f2df4885bef72feeb2428d931bad86591af8be364880dc30238eb8a',
-    acceptedSha256: '3ded25085332765fd6fdefc85634a2d3b4f8c3242dcdc8d14eb39d947ebed994',
+    acceptedSha256: 'fdf34f187adf90b95fa16684249a3958737b089655031393b4a278732bc5fa87',
     reason: 'Clarifies retired route history and names the canonical schema-derived ontology composition.',
   }),
   Object.freeze({
     path: 'custom/README.md',
     baselineSha256: '265f2ac0737d5bcfdbbbfeff206c63e8ebce580c340434a6a35cf88f4ad69a71',
-    acceptedSha256: '07dca73f638691520897b65428d3f87cbbaded18ba7567b5269e67170cb67b32',
+    acceptedSha256: '89516e5807abaf1d8612cdb41413dc4b3513912f013f01fa89183d2cbfb3ab8d',
     reason: 'Replaces retired /ontology naming with the canonical schema-derived ontology hierarchy.',
   }),
   Object.freeze({
     path: 'skosmos/README.md',
     baselineSha256: '9f32e3ad9cbb6b18fd1dab737ef2070eec712448c1e7051236a169e4d8a3055f',
-    acceptedSha256: 'dc84356d856b186675815c6ddb222f36595016683424e16384e39eaac5cfd6d7',
+    acceptedSha256: 'be6c4709a406cd567957dc45b636f14f8802ad399e9349775e1dc001159495da',
     reason: 'Updates retired /ontology links to canonical schema-derived ontology terminology.',
   }),
 ]);

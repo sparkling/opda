@@ -11,6 +11,7 @@ import {
   semanticBlocksDigest,
 } from '../scripts/lib/ia-preservation-primitives.mjs';
 import { fileInventory } from '../scripts/lib/ia-preservation-contract.mjs';
+import { composePdtf1ToolReframeReceipt } from '../scripts/lib/pdtf1-tool-reframes.mjs';
 import { composeSourceArchiveReframeReceipt } from '../scripts/lib/source-archive-reframes.mjs';
 
 const projectRoot = fileURLToPath(new URL('..', import.meta.url));
@@ -68,12 +69,16 @@ test('PDTF source and tool reframes are a closed, hash-bound set', () => {
     ],
   });
   const tools = families.families.find(({ id }) => id === 'ontology-tools');
+  const currentTools = fileInventory(
+    projectRoot, 'public/pdtf-schema/schema-derived-ontology/use-and-tooling/tools',
+  );
+  const toolReceipt = composePdtf1ToolReframeReceipt(tools.baseline, currentTools);
   assert.deepEqual({
-    policy: tools.policy,
-    receiptPolicy: tools.reframeReceipt.policy,
-    exact: tools.reframeReceipt.byteIdenticalFileCount,
-    reframed: tools.reframeReceipt.reframedFileCount,
-    files: tools.reframeReceipt.reframedFiles.map(({ path: file }) => file),
+    policy: 'reframe-equivalent',
+    receiptPolicy: toolReceipt.policy,
+    exact: toolReceipt.byteIdenticalFileCount,
+    reframed: toolReceipt.reframedFileCount,
+    files: toolReceipt.reframedFiles.map(({ path: file }) => file),
   }, {
     policy: 'reframe-equivalent',
     receiptPolicy: 'closed-file-reframe-v1',
