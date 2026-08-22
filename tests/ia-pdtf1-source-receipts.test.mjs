@@ -140,6 +140,23 @@ test('source evidence rejects two semantic claims sharing one target occurrence'
   assert.equal(pdtf1SourceEvidenceMatches(source, candidate), false);
 });
 
+test('source evidence validates semantic replacements on more than one declared target', () => {
+  const { source, accepted } = movedReceipt();
+  const candidate = structuredClone(accepted);
+  const receipt = candidate.pdtf1SourceRetentionReceipt;
+  const secondaryRoute = '/secondary-schema-derived-target';
+  const secondaryEvidence = structuredClone(receipt.targetEvidence[0]);
+  const secondaryInventory = structuredClone(receipt.targetBlockInventories[0]);
+  secondaryEvidence.route = secondaryRoute;
+  secondaryInventory.route = secondaryRoute;
+  receipt.targetEvidence.push(secondaryEvidence);
+  receipt.targetBlockInventories.push(secondaryInventory);
+  receipt.semanticReframeBlocks[0].replacementRoute = secondaryRoute;
+  receipt.semanticReframeBlocksSha256 = semanticBlocksDigest(receipt.semanticReframeBlocks);
+
+  assert.equal(pdtf1SourceEvidenceMatches(source, candidate), true);
+});
+
 test('stable PDTF identifier pages reject an unnecessary source receipt', () => {
   const stableSource = sourceByRoute.get('/pdtf/Property');
   const stableAccepted = structuredClone(acceptedByRoute.get('/pdtf/Property'));

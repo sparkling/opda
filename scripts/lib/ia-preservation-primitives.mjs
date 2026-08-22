@@ -1,6 +1,8 @@
 import { createHash } from 'node:crypto';
 import { fragmentsPreservedByPdtfSchemaMigration } from '../../src/lib/pdtf1-routes.mjs';
 
+const HASH = /^[a-f0-9]{64}$/u;
+
 export function sha256(value) {
   return createHash('sha256').update(value).digest('hex');
 }
@@ -44,17 +46,38 @@ function consume(inventory, hash, count) {
   return true;
 }
 
+function targetInventoryState(receipt) {
+  if (!Array.isArray(receipt?.targetEvidence) || !receipt.targetEvidence.length
+    || !Array.isArray(receipt.targetBlockInventories)
+    || receipt.targetEvidence.length !== receipt.targetBlockInventories.length) return null;
+  const evidenceByRoute = new Map();
+  for (const evidence of receipt.targetEvidence) {
+    if (typeof evidence?.route !== 'string' || !evidence.route.startsWith('/')
+      || evidenceByRoute.has(evidence.route)
+      || !HASH.test(evidence.acceptedContentSha256 ?? '')
+      || !HASH.test(evidence.acceptedBlockInventorySha256 ?? '')) return null;
+    evidenceByRoute.set(evidence.route, evidence);
+  }
+  const inventoriesByRoute = new Map();
+  for (const record of receipt.targetBlockInventories) {
+    const evidence = evidenceByRoute.get(record?.route);
+    const inventory = evidence && record?.sha256 === evidence.acceptedBlockInventorySha256
+      ? inventoryMap(record.records, record.sha256) : null;
+    if (!inventory || inventoriesByRoute.has(record.route)) return null;
+    inventoriesByRoute.set(record.route, inventory);
+  }
+  return inventoriesByRoute.size === evidenceByRoute.size
+    ? { evidenceByRoute, inventoriesByRoute } : null;
+}
+
 function sourceRetentionReceiptMatches(source, accepted) {
   const receipt = accepted.pdtf1SourceRetentionReceipt;
-  const target = receipt?.targetEvidence?.find(({ route }) => route === accepted.acceptedRoute);
   const inventoryChanged = source.acceptedBlockInventorySha256 !== accepted.acceptedBlockInventorySha256;
   const sourceInventory = inventoryMap(
     receipt?.sourceBlockInventoryRecords, source.acceptedBlockInventorySha256,
   );
-  const targetInventoryRecord = receipt?.targetBlockInventories?.[0];
-  const targetInventory = inventoryMap(
-    targetInventoryRecord?.records, accepted.acceptedBlockInventorySha256,
-  );
+  const targets = targetInventoryState(receipt);
+  const acceptedTarget = targets?.evidenceByRoute.get(accepted.acceptedRoute);
   const structural = receipt?.policy === 'explicit-pdtf1-source-block-retention-v1'
     && receipt.sourceRoute === source.acceptedRoute
     && receipt.sourceFile === source.acceptedFile
@@ -67,10 +90,7 @@ function sourceRetentionReceiptMatches(source, accepted) {
     && JSON.stringify(receipt.sourceFragments) === JSON.stringify(source.acceptedFragments)
     && receipt.acceptedRoute === accepted.acceptedRoute
     && receipt.exactTargetRoute === accepted.acceptedRoute
-    && receipt.targetEvidence.length === 1 && receipt.targetBlockInventories.length === 1
-    && targetInventoryRecord.route === accepted.acceptedRoute
-    && targetInventoryRecord.sha256 === accepted.acceptedBlockInventorySha256
-    && targetInventory
+    && targets
     && receipt.baselineBlockCount === source.equivalenceReceipt?.acceptedBlocks
     && receipt.baselineBlockInventorySha256 === source.acceptedBlockInventorySha256
     && receipt.exactRetainedBlocks + receipt.semanticReframeBlockCount
@@ -78,14 +98,15 @@ function sourceRetentionReceiptMatches(source, accepted) {
     && (!inventoryChanged || receipt.semanticReframeBlockCount + receipt.nonInformationBlockCount > 0)
     && semanticBlocksDigest(receipt.semanticReframeBlocks ?? []) === receipt.semanticReframeBlocksSha256
     && nonInformationBlocksDigest(receipt.nonInformationBlocks ?? []) === receipt.nonInformationBlocksSha256
-    && target?.acceptedContentSha256 === accepted.acceptedContentSha256
-    && target?.acceptedBlockInventorySha256 === accepted.acceptedBlockInventorySha256;
+    && acceptedTarget?.acceptedContentSha256 === accepted.acceptedContentSha256
+    && acceptedTarget?.acceptedBlockInventorySha256 === accepted.acceptedBlockInventorySha256;
   if (!structural || !Array.isArray(receipt.exactRetainedBlockRecords)) return false;
   let exactCount = 0;
   const exactKeys = new Set();
   for (const entry of receipt.exactRetainedBlockRecords) {
     const key = `${entry?.hash}\0${entry?.targetRoute}`;
-    if (exactKeys.has(key) || entry?.targetRoute !== accepted.acceptedRoute
+    const targetInventory = targets.inventoriesByRoute.get(entry?.targetRoute);
+    if (exactKeys.has(key) || entry?.targetRoute !== receipt.exactTargetRoute
       || !consume(sourceInventory, entry?.hash, entry?.count)
       || !consume(targetInventory, entry?.hash, entry?.count)) return false;
     exactKeys.add(key);
@@ -93,8 +114,10 @@ function sourceRetentionReceiptMatches(source, accepted) {
   }
   let semanticCount = 0;
   for (const entry of receipt.semanticReframeBlocks) {
+    const targetEvidence = targets.evidenceByRoute.get(entry?.replacementRoute);
+    const targetInventory = targets.inventoriesByRoute.get(entry?.replacementRoute);
     if (entry?.sourceRoute !== source.acceptedRoute
-      || entry?.replacementRoute !== accepted.acceptedRoute
+      || entry?.replacementContentSha256 !== targetEvidence?.acceptedContentSha256
       || !consume(sourceInventory, entry?.sourceBlockSha256, entry?.occurrences)
       || !consume(targetInventory, entry?.replacementBlockSha256, entry?.occurrences)) return false;
     semanticCount += entry.occurrences;
