@@ -1,6 +1,13 @@
 /* Public entry and standalone error surfaces. */
 
-.public-site { min-height: 100vh; background: var(--color-surface); }
+.public-site {
+  min-height: 100vh;
+  min-height: 100svh;
+  display: flex;
+  flex-direction: column;
+  background: var(--color-surface);
+}
+.public-site > main { flex: 1 0 auto; }
 .public-header {
   min-height: var(--header-height);
   padding: 0 max(var(--space-6), calc((100% - var(--content-max)) / 2 + var(--space-7)));
@@ -35,12 +42,18 @@
 }
 .public-hero__inner {
   width: min(100%, var(--content-max));
-  min-height: min(42rem, calc(100vh - var(--header-height)));
+  min-height: min(42rem, 100svh);
   margin: 0 auto;
   padding: clamp(var(--space-10), 10vw, var(--space-12)) var(--space-7);
   display: flex;
   flex-direction: column;
   justify-content: center;
+}
+.public-hero__brand {
+  display: block;
+  width: clamp(5.5rem, 9vw, 8rem);
+  height: auto;
+  margin: 0 0 var(--space-7);
 }
 .public-hero .eyebrow,
 .public-overview .overline {
@@ -104,6 +117,7 @@
 }
 .public-footer {
   min-height: 8rem;
+  margin-top: auto;
   padding: var(--space-7) max(var(--space-6), calc((100% - var(--content-max)) / 2 + var(--space-7)));
   display: flex;
   align-items: center;
