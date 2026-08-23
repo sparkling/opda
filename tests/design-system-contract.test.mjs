@@ -290,10 +290,15 @@ test('the adopted motion contract excludes parallax and long campaign motion', a
     'src/styles/working-group-campaign-sections.css',
     'src/styles/working-group-campaign-responsive.css',
   ];
-  const source = (await Promise.all(paths.map((path) => readFile(file(path), 'utf8')))).join('\n');
+  const [source, publicEntry] = await Promise.all([
+    Promise.all(paths.map((path) => readFile(file(path), 'utf8'))).then((files) => files.join('\n')),
+    readFile(file('public/ui/design/public.css'), 'utf8'),
+  ]);
   assert.doesNotMatch(source, /parallax/iu);
   assert.doesNotMatch(source, /(?:transition|duration)[^;\n]*(?:[3-9]\d{2}|\d{4,})ms/iu);
   assert.doesNotMatch(source, /animation:[^;\n]*infinite/iu);
+  assert.doesNotMatch(publicEntry, /a\.card:is\(:hover, :focus-visible\)\s*\{[^}]*transform/su);
+  assert.match(publicEntry, /a\.card:active\s*\{[^}]*transform/su);
 });
 
 test('shared navigation exposes visible focus, state and 44px targets', async () => {
@@ -414,7 +419,7 @@ test('the adversarial conformance blockers remain closed', async () => {
   assert.doesNotMatch(rootPage, /<html[^>]+data-theme="light"/u);
   assert.match(rootPage, /URLSearchParams\(location\.search\)/u);
   assert.doesNotMatch(rootPage, /class="public-header"|id="theme-toggle"/u);
-  assert.match(rootPage, /class="public-hero__brand"[^>]+opda-icon-yellow\.svg/u);
+  assert.match(rootPage, /class="public-hero__brand"[^>]*>[\s\S]*opda-icon-yellow\.svg[\s\S]*Open Property Data Association/u);
   assert.match(rootPage, /class="btn btn--outline-dark"/u);
   assert.match(base, /color:\s*var\(--on-dark-muted\)/u);
   assert.doesNotMatch(base, /#d8d5df/iu);
