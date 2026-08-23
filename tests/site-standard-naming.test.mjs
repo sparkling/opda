@@ -97,6 +97,23 @@ test('public hierarchy uses schema and scheme names in labels and routes', () =>
   });
 });
 
+test('the public homepage mirrors the current task-and-authority structure', () => {
+  const homepage = readFileSync(path.join(ROOT, 'src/pages/index.astro'), 'utf8');
+
+  assert.match(homepage, /import \{[^}]*GLOBAL_DESTINATIONS[^}]*\} from '@\/lib\/site-ia\.mjs'/su);
+  assert.match(homepage, /GLOBAL_DESTINATIONS\.map\(\(destination\)/u);
+  for (const { key } of GLOBAL_DESTINATIONS) {
+    assert.match(homepage, new RegExp(`['"]?${key}['"]?\\s*:\\s*\\{`, 'u'));
+  }
+  assert.equal(homepage.match(/\baudience:/gu)?.length, GLOBAL_DESTINATIONS.length);
+  assert.equal(homepage.match(/\baction:/gu)?.length, GLOBAL_DESTINATIONS.length);
+  assert.match(homepage, /<nav class="public-overview" aria-labelledby="inside-title">/u);
+  assert.match(homepage, /<a class="card" href=\{destination\.url\}>/u);
+  assert.match(homepage, /SPDTF is in development/u);
+  assert.match(homepage, /Human working groups own domain meaning/u);
+  assert.doesNotMatch(homepage, /PDTF schema|Digital Property Pack|schema to scheme|schema → SPDTF/iu);
+});
+
 test('route moves retain comment identities without retaining public URLs', () => {
   assert.equal(getLegacyCommentKey('/spdtf'), '/spdtf-2');
   assert.equal(getLegacyCommentKey('/semantic-modelling/standards'), '/spdtf-2/ontologies/standards');

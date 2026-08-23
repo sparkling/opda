@@ -1,9 +1,52 @@
 ---
-import { IA_STATUS_REGISTRY_VERSION, getRouteStatus } from '@/lib/site-ia.mjs';
+import {
+  GLOBAL_DESTINATIONS,
+  IA_STATUS_REGISTRY_VERSION,
+  getRouteStatus,
+} from '@/lib/site-ia.mjs';
+
 const title = 'OPDA Knowledge Base';
 const description =
-  'Follow the progression from the existing Digital Property Pack schema to the first collaboratively authored SPDTF scheme draft.';
+  'Explore the OPDA programme, governance, semantic modelling, SPDTF development, working groups and evidence behind a shared language for property data.';
 const routeStatus = getRouteStatus('/');
+
+const destinationDetails = {
+  programme: {
+    audience: 'For programme leaders and new readers',
+    description: 'Understand the purpose, current direction, roadmap and policy context for a shared property-data scheme.',
+    action: 'Understand the programme',
+  },
+  governance: {
+    audience: 'For decision-makers and reviewers',
+    description: 'See who can decide, what is under review, and how authority, maturity and lifecycle are recorded.',
+    action: 'Check governance',
+  },
+  'semantic-modelling': {
+    audience: 'For domain experts and ontology learners',
+    description: 'Learn why ontologies are used, then follow the evidence-up method, contextual boundaries and mapping approach.',
+    action: 'Explore semantic modelling',
+  },
+  spdtf: {
+    audience: 'For implementers, stewards and interoperability leads',
+    description: 'Review collaborative work products, candidates, open questions, outputs and attributed third-party inputs.',
+    action: 'Review SPDTF development',
+  },
+  'working-groups': {
+    audience: 'For contributors and facilitators',
+    description: 'Find group scopes, member guidance, contribution routes and the workspaces where domain meaning is reviewed.',
+    action: 'Visit the working groups',
+  },
+  resources: {
+    audience: 'For researchers and auditors',
+    description: 'Trace terms, source records, standards, recordings and historical material with their provenance and maturity.',
+    action: 'Find evidence and resources',
+  },
+};
+
+const destinationCards = GLOBAL_DESTINATIONS.map((destination) => ({
+  ...destination,
+  ...destinationDetails[destination.key],
+}));
 ---
 <!doctype html>
 <html lang="en" data-ia-status-version={IA_STATUS_REGISTRY_VERSION} data-work-area={routeStatus.workArea} data-authority={routeStatus.authority} data-maturity={routeStatus.maturity} data-content-version={routeStatus.version} data-provenance={routeStatus.provenance}>
@@ -56,36 +99,44 @@ const routeStatus = getRouteStatus('/');
   <main id="main-content" tabindex="-1">
     <section class="public-hero" aria-labelledby="public-title">
       <div class="public-hero__inner">
-        <p class="eyebrow">PDTF schema → SPDTF scheme</p>
+        <p class="eyebrow">OPDA Knowledge Base</p>
         <h1 id="public-title">One shared language for property data.</h1>
         <p>
-          OPDA is progressing from the existing Digital Property Pack schema to
-          SPDTF: the first scheme draft authored collaboratively across the
-          property industry and its stakeholders.
+          This is the shared workspace for people shaping SPDTF: a property-data
+          scheme being developed collaboratively across industry and with stakeholders.
+          Understand the programme, follow how meaning and decisions are governed,
+          review the developing work, or take part.
         </p>
         <div class="public-hero__actions">
           <a class="btn" href="/home">Enter the knowledge base</a>
-          <a class="btn btn--outline-dark" href="/programme">Understand schema to scheme</a>
+          <a class="btn btn--outline-dark" href="/working-groups/join">Join a working group</a>
         </div>
       </div>
     </section>
-    <dl class="public-status" aria-label="Knowledge base status and provenance">
-      <div><dt>Progression</dt><dd>PDTF schema → SPDTF scheme</dd></div>
-      <div><dt>Design</dt><dd>OPDA system 1.0</dd></div>
-      <div><dt>Source</dt><dd>OPDA Q3 2026 brand guide</dd></div>
+    <dl class="public-status" aria-label="SPDTF programme status and authority">
+      <div><dt>Status</dt><dd>SPDTF is in development</dd></div>
+      <div><dt>Authority</dt><dd>Human working groups own domain meaning</dd></div>
+      <div><dt>Evidence</dt><dd>Sources, candidates and decisions stay distinct</dd></div>
     </dl>
-    <section class="public-overview" aria-labelledby="inside-title">
+    <nav class="public-overview" aria-labelledby="inside-title">
       <header>
-        <p class="overline">Inside the knowledge base</p>
-        <h2 id="inside-title">Trace the progression from evidence to implementation</h2>
+        <p class="overline">Choose your route</p>
+        <h2 id="inside-title">Start with the work you need to do</h2>
       </header>
-      <div class="public-overview__grid">
-        <article><span>01</span><h3>Understand the programme</h3><p>See how the existing schema informs a collaboratively authored scheme and how that work fits the wider Smart Data initiative.</p></article>
-        <article><span>02</span><h3>SPDTF</h3><p>Follow the ontology-led method and the working groups that own domain meaning.</p></article>
-        <article><span>03</span><h3>Use the PDTF schema</h3><p>Find the existing Digital Property Pack schema, with its dictionary and glossary; inspect the schema-derived ontology separately as evidence.</p></article>
-        <article><span>04</span><h3>Trace authority and evidence</h3><p>Check governance, decisions, sources, maturity and provenance before reuse.</p></article>
+      <div class="card-grid">
+        {destinationCards.map((destination) => (
+          <a class="card" href={destination.url}>
+            <span class="card__eyebrow">{destination.audience}</span>
+            <h3>{destination.title}</h3>
+            <p>{destination.description}</p>
+            <span class="card__action">
+              {destination.action}
+              <span aria-hidden="true">→</span>
+            </span>
+          </a>
+        ))}
       </div>
-    </section>
+    </nav>
   </main>
   <footer class="public-footer">
     <img src="/ui/brand/opda-wordmark-white.svg" alt="Open Property Data Association" width="149" height="42" />

@@ -153,14 +153,15 @@ The Semantic modelling standards page must record, for every item: purpose; exac
 | Governance reviewer | Determine authority, maturity, unresolved issues and decision history | Governance |
 | Researcher or auditor | Trace a claim from source through proposal, review and decision | Resources plus the record’s evidence panel |
 
-The home page should expose six task shortcuts that complement the global destinations:
+The public home page should mirror the six global destinations in their accepted order, expressed as audience-led tasks:
+- understand the programme purpose, direction, roadmap and policy context;
+- check governance, authority, maturity and lifecycle;
+- learn about ontologies or follow the SPDTF semantic-modelling method;
+- review developing SPDTF candidates, questions, outputs and attributed inputs;
+- join or visit a working group; and
+- trace a term, source, standard, recording or decision.
 
-- review developing SPDTF work;
-- join or visit a working group;
-- implement PDTF schema;
-- check authority and maturity;
-- find a term, source or decision;
-- understand ontologies and how SPDTF is modelled.
+Current implementers still reach the PDTF schema through **SPDTF Development → Third-party inputs**. It remains findable without becoming a peer homepage destination or SPDTF's organising story.
 
 ## Options considered
 
@@ -318,7 +319,8 @@ does not confer membership, consensus or standards authority.
 
 | Current surface | Implemented treatment |
 |---|---|
-| `/` and `/home` | Programme-owned entry and task gateways; retain both until a separate canonical/redirect decision. |
+| `/` | Public Programme-owned gateway: SPDTF purpose, visible status and six audience/task cards in the canonical global order. |
+| `/home` | Separate member task gateway; retain it until a canonical/redirect decision is made. |
 | `/glossary` | Resources utility with work-area and source facets. |
 | `/design-system` | Utility/footer link, outside standards authority. |
 | `/working-groups/join/**` | Working groups participation path. |
@@ -472,6 +474,7 @@ The implementation is not releasable unless all of these pass:
   knowing RDF vocabulary.
 - A current implementer can reach schema and validation guidance within two interactions and without entering anything labelled “archive”.
 - A governance reviewer can identify who may decide and whether a decision occurred.
+- The public root renders the six canonical destination labels and URLs in exact order, centres collaborative SPDTF purpose and status, and gives PDTF no standalone promotion.
 - Every route is retained or covered by an explicitly authorised move/retirement
   receipt; every retained or moved fragment resolves at its destination, and every
   retired `/spdtf/ontologies/**` or PDTF documentation route is absent without a redirect.

@@ -4,13 +4,21 @@ date: 2026-08-18
 updated: 2026-08-23
 tags: [website, information-architecture, pdtf-schema, spdtf, ontology, semantic-modelling, standards, migration, governance]
 supersedes: []
-amends: [ADR-0002, ADR-0041, ADR-0059, ADR-0062]
+amends: [ADR-0002, ADR-0041, ADR-0059, ADR-0062, ADR-0073]
 depends-on: [ADR-0002, ADR-0039, ADR-0041, ADR-0059, ADR-0062, ADR-0063, ADR-0064, ADR-0066, ADR-0067, ADR-0073]
-implements: [docs/spdtf-information-architecture.md]
+implements: [docs/spdtf-information-architecture.md, src/pages/index.astro]
 ---
 
 # Organise the site around SPDTF and the PDTF schema
 
+> Update 2026-08-23 — public-homepage alignment implemented: `/` now derives six
+> audience-led task cards from the accepted global-destination registry, in the same
+> order. Its hero centres collaborative SPDTF work and visible authority status; the
+> PDTF schema remains reachable only through SPDTF Development's attributed third-party
+> inputs rather than appearing in the hero, status strip, primary actions or peer
+> destinations, or becoming the homepage's organising story.
+> Publication and deployment remain separate, unauthorised actions.
+>
 > Update 2026-08-23 — accepted global-navigation and semantic-modelling correction:
 > the six destinations are Programme, Governance, Semantic modelling, SPDTF Development,
 > Working groups and Resources, in that order. `SPDTF Development` is the navigation
@@ -290,6 +298,9 @@ The 2026-08-23 correction additionally requires:
 
 - the exact global order Programme, Governance, Semantic modelling, SPDTF Development,
   Working groups and Resources;
+- the public root derives six audience/task cards with those exact labels and URLs from
+  the global registry, introduces SPDTF's collaborative purpose and in-development
+  authority, and gives the PDTF schema no hero, status, primary-action or peer position;
 - one canonical top-level `/semantic-modelling/**` reader family containing both audience
   paths, with no Semantic modelling branch beneath SPDTF Development;
 - exact-suffix preservation receipts from `/spdtf/ontologies` and

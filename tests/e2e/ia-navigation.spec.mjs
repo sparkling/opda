@@ -18,10 +18,13 @@ test('primary navigation exposes exactly six ordered destinations', async ({ pag
   clean();
 });
 
-test('public entry stays abbreviated while the knowledge home carries six paths', async ({ page }) => {
+test('public entry mirrors the six global destinations while the knowledge home carries six paths', async ({ page }) => {
   const clean = watchRuntime(page);
   await visit(page, '/');
-  await expect(page.locator('.public-overview article')).toHaveCount(4);
+  const publicDestinations = page.locator('.public-overview a.card');
+  await expect(publicDestinations).toHaveCount(6);
+  expect(await publicDestinations.evaluateAll((nodes) => nodes.map((node) => node.getAttribute('href'))))
+    .toEqual(primary.map(({ url }) => url));
   await visit(page, '/home');
   await expect(page.locator('.home-section-card')).toHaveCount(6);
   clean();

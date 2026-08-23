@@ -105,6 +105,13 @@ Linked cards remain one keyboard-focusable target with no nested controls; their
 grids auto-fit the content track and stack at narrow widths. The live design-system
 page and standalone review presentation carry the same specimen.
 
+On 23 August 2026 ADR-0074 replaced only the public-home editorial composition. The
+former schema-progression hero and four-part overview became an SPDTF-centred,
+six-destination audience directory sourced from the canonical IA registry. It reuses
+the implemented public shell and linked-card primitives, so this does not reopen the
+brand or component decision. Fresh homepage unit and release-gate evidence is required;
+the historical confirmation below does not validate this editorial revision.
+
 ### Brand conflict resolution
 
 The SVG-embedded colours (`#131224`, `#FEC82F`, `#FEC92B`, white) are immutable

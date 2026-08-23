@@ -271,9 +271,12 @@ is the first focusable element. The sidebar is `#F9F9F9`. The footer is deep ink
 with a 4px yellow top rule.
 
 `/` is the public entry: an intentionally abbreviated route with the official
-masthead, public hero, source/status strip, four-part knowledge-base overview and
-footer. It introduces the work and points to `/home`; it is not a second version of
-the full knowledge-base homepage.
+masthead, an SPDTF-centred hero, visible programme-status strip, six-destination
+audience/task directory and footer. The directory is sourced from the canonical
+global-navigation registry and uses the shared linked-card contract. It introduces
+the collaborative work and points to `/home`; it is not a second version of the full
+knowledge-base homepage. The PDTF schema is not a hero, status item, primary action
+or peer destination; it remains discoverable within SPDTF's attributed inputs.
 
 `/home` is the knowledge-base homepage. Its sequence is:
 
