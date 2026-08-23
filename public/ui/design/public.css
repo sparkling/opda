@@ -51,11 +51,11 @@
 }
 .public-hero__brand {
   display: flex;
-  align-items: center;
+  align-items: flex-end;
   gap: clamp(var(--space-5), 3vw, var(--space-8));
-  margin: 0 0 var(--space-7);
-  color: var(--brand-white);
-  font: 600 clamp(2rem, 4.2vw, 3.75rem) / 1.08 var(--font-display);
+  margin: 0 0 var(--space-10);
+  color: var(--brand-yellow);
+  font: 600 clamp(2.5rem, 5vw, 4.5rem) / 1 var(--font-display);
   letter-spacing: var(--tracking-display);
 }
 .public-hero__brand img { width: clamp(5.5rem, 9vw, 8rem); height: auto; flex: 0 0 auto; }
@@ -110,6 +110,10 @@
 .public-overview > header { margin-bottom: var(--space-7); }
 .public-overview .overline { color: var(--color-text-muted); }
 .public-overview h2 { margin: 0; font: var(--h2); }
+.public-overview .card-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+.public-overview .card__eyebrow { font-size: var(--text-sm); }
+.public-overview .card h3 { font: var(--h2); }
+.public-overview .card p { font: var(--lead); }
 .public-overview a.card {
   transition: transform var(--duration-fast) var(--ease),
     box-shadow var(--duration-fast) var(--ease),
@@ -158,6 +162,9 @@
 @media (max-width: 50rem) {
   .public-header__signin { font-size: var(--text-sm); }
 }
+@media (max-width: 64rem) {
+  .public-overview .card-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
 @media (max-width: 40rem) {
   .public-header { padding-inline: var(--space-5); gap: var(--space-2); }
   .public-header img { width: 8rem; }
@@ -167,6 +174,7 @@
   .public-hero__brand { align-items: flex-start; flex-direction: column; }
   .public-hero__inner,
   .public-overview { padding-inline: var(--space-5); }
+  .public-overview .card-grid { grid-template-columns: minmax(0, 1fr); }
   .public-hero__actions { flex-direction: column; }
   .public-hero__actions a { justify-content: center; }
 }
