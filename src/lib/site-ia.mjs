@@ -10,7 +10,6 @@ export const GLOBAL_DESTINATIONS = Object.freeze([
   { key: 'programme', title: 'Programme', url: '/programme' },
   { key: 'spdtf', title: 'SPDTF', url: '/spdtf' },
   { key: 'working-groups', title: 'Working groups', url: '/spdtf/working-groups' },
-  { key: 'pdtf-schema', title: 'PDTF schema', url: '/pdtf-schema' },
   { key: 'governance', title: 'Governance', url: '/governance' },
   { key: 'resources', title: 'Resources', url: '/resources' },
 ]);
@@ -19,7 +18,7 @@ export const IA_STATUS_FIELDS = Object.freeze([
   'workArea', 'authority', 'maturity', 'version', 'provenance',
 ]);
 
-export const IA_STATUS_REGISTRY_VERSION = '2026-08-22';
+export const IA_STATUS_REGISTRY_VERSION = '2026-08-23';
 
 export const DESTINATION_SHORTCUTS = Object.freeze({
   'working-groups': Object.freeze({
@@ -37,16 +36,15 @@ export const ROUTE_FAMILY_OWNERS = Object.freeze({
   engagement: 'resources',
   presentation: 'working-groups',
   presentations: 'spdtf',
-  'pdtf-schema': 'pdtf-schema',
-  pdtf: 'pdtf-schema',
-  modelling: 'pdtf-schema',
-  model: 'pdtf-schema',
-  ontology: 'pdtf-schema',
-  mapping: 'pdtf-schema',
-  schema: 'pdtf-schema',
-  implementation: 'pdtf-schema',
-  adoption: 'pdtf-schema',
-  manual: 'pdtf-schema',
+  pdtf: 'spdtf',
+  modelling: 'spdtf',
+  model: 'spdtf',
+  ontology: 'spdtf',
+  mapping: 'spdtf',
+  schema: 'spdtf',
+  implementation: 'spdtf',
+  adoption: 'spdtf',
+  manual: 'spdtf',
   governance: 'governance',
   council: 'governance',
   resources: 'resources',
@@ -86,13 +84,6 @@ export const AUTHORITY_BY_DESTINATION = Object.freeze({
     version: 'Candidate-specific',
     provenance: 'Participant-supplied and facilitator-maintained records',
   },
-  'pdtf-schema': {
-    workArea: 'PDTF schema',
-    authority: 'Existing Digital Property Pack schema; supporting and derived artefacts keep their own status',
-    maturity: 'Existing schema with mixed-maturity supporting and derived artefacts',
-    version: 'PDTF schema v3.5.0',
-    provenance: 'Committed JSON Schemas, overlays, dictionary, glossary and separately derived semantic corpus',
-  },
   governance: {
     workArea: 'Cross-programme',
     authority: 'Governance records define decision rights and lifecycle',
@@ -110,27 +101,27 @@ export const AUTHORITY_BY_DESTINATION = Object.freeze({
 });
 
 const PDTF_DERIVED_DRAFT_STATUS = Object.freeze({
-  workArea: 'PDTF schema',
-  authority: 'Semantic artefact derived from the PDTF schema; not an endorsed scheme',
+  workArea: 'SPDTF input · OPDA-derived evidence',
+  authority: 'OPDA-produced technical derivation of a third-party PDTF schema input; non-normative, not SPDTF or third-party authored',
   maturity: 'Draft semantic corpus — under review',
   version: 'schema-derived draft',
-  provenance: 'PDTF schema, dictionary, glossary, documents and recorded derivations',
+  provenance: 'OPDA generation from the attributed PDTF schema, dictionary, glossary, documents and recorded derivations',
 });
 
 const PDTF_METHOD_STATUS = Object.freeze({
   ...PDTF_DERIVED_DRAFT_STATUS,
-  authority: 'Historical PDTF schema modelling record; page-level decisions retain their recorded status',
+  authority: 'Historical modelling record for the OPDA-produced schema-derived ontology; page-level decisions retain their recorded status',
   maturity: 'Mixed-maturity method and working records',
 });
 
 const PDTF_MAPPING_STATUS = Object.freeze({
   ...PDTF_DERIVED_DRAFT_STATUS,
-  authority: 'PDTF schema-to-ontology verification evidence; not an SPDTF semantic mapping',
+  authority: 'OPDA-produced PDTF schema-to-ontology verification evidence; not an SPDTF semantic mapping',
   maturity: 'Implemented verification evidence for a draft semantic corpus',
 });
 
 const PDTF_ADOPTION_STATUS = Object.freeze({
-  workArea: 'PDTF schema',
+  workArea: 'SPDTF input · implementation evidence',
   authority: 'Attributed implementation evidence; it does not establish SPDTF adoption',
   maturity: 'Evidence record — source-specific',
   version: 'PDTF schema evidence',
@@ -140,29 +131,39 @@ const PDTF_ADOPTION_STATUS = Object.freeze({
 /** Route-level exceptions prevent a parent label from overstating child authority. */
 export const ROUTE_STATUS_OVERRIDES = Object.freeze([
   {
-    pattern: /^\/pdtf-schema\/schema-and-supporting-material$/u,
+    pattern: /^\/spdtf\/inputs$/u,
     status: {
-      workArea: 'PDTF schema',
-      authority: 'Gateway to the existing Digital Property Pack JSON Schema and status-labelled supporting records',
-      maturity: 'Existing schema implementation; supporting artefacts vary',
-      version: 'PDTF schema v3.5.0',
-      provenance: 'Committed schemas, overlays, dictionaries, glossary and attributed implementation evidence',
+      workArea: 'SPDTF inputs',
+      authority: 'Curated external inputs; inclusion informs review and does not confer SPDTF authority or adoption',
+      maturity: 'Source-specific inputs',
+      version: 'Source-specific',
+      provenance: 'Attributed external technical and policy sources',
     },
   },
   {
-    pattern: /^\/pdtf-schema\/schema-derived-ontology\/lineage-provenance-and-verification\/historical-modelling(?:\/|$)/u,
+    pattern: /^\/spdtf\/inputs\/pdtf-schema\/schema-derived-ontology\/lineage-provenance-and-verification\/historical-modelling(?:\/|$)/u,
     status: PDTF_METHOD_STATUS,
   },
   {
-    pattern: /^\/pdtf-schema\/schema-derived-ontology\/lineage-provenance-and-verification\/schema-to-ontology-verification(?:\/|$)/u,
+    pattern: /^\/spdtf\/inputs\/pdtf-schema\/schema-derived-ontology\/lineage-provenance-and-verification\/schema-to-ontology-verification(?:\/|$)/u,
     status: PDTF_MAPPING_STATUS,
   },
   {
-    pattern: /^\/pdtf-schema\/schema-and-supporting-material\/adoption(?:\/|$)/u,
+    pattern: /^\/spdtf\/inputs\/pdtf-schema\/schema-and-supporting-material\/adoption(?:\/|$)/u,
     status: PDTF_ADOPTION_STATUS,
   },
   {
-    pattern: /^\/pdtf-schema\/schema-derived-ontology(?:\/|$)/u,
+    pattern: /^\/spdtf\/inputs\/pdtf-schema(?:$|\/schema-and-supporting-material(?:\/|$))/u,
+    status: {
+      workArea: 'SPDTF input · PDTF schema',
+      authority: 'Third-party Digital Property Pack JSON Schema input; inclusion does not confer OPDA endorsement or SPDTF authority',
+      maturity: 'Existing schema implementation; supporting artefacts vary',
+      version: 'PDTF schema v3.5.0',
+      provenance: 'Attributed third-party schemas, overlays, dictionary and glossary; accompanying records retain their own provenance',
+    },
+  },
+  {
+    pattern: /^\/spdtf\/inputs\/pdtf-schema\/schema-derived-ontology(?:\/|$)/u,
     status: PDTF_DERIVED_DRAFT_STATUS,
   },
   {
@@ -251,14 +252,14 @@ export const PRESERVATION_LEDGER = Object.freeze([
     disposition: 'regenerate-equivalently',
   },
   {
-    currentPath: '/pdtf-schema/schema-derived-ontology/use-and-tooling/artefacts/**',
+    currentPath: '/spdtf/inputs/pdtf-schema/schema-derived-ontology/use-and-tooling/artefacts/**',
     kind: 'machine-representations',
     expectedCount: 27,
-    owner: 'pdtf-schema',
-    preservedAt: '/pdtf-schema/schema-derived-ontology/use-and-tooling/artefacts/**',
+    owner: 'spdtf',
+    preservedAt: '/spdtf/inputs/pdtf-schema/schema-derived-ontology/use-and-tooling/artefacts/**',
     consumers: ['ontology downloads', 'technical references'],
     verification: 'path and byte/checksum identity',
-    checksumSource: 'public/pdtf-schema/schema-derived-ontology/use-and-tooling/artefacts',
+    checksumSource: 'public/spdtf/inputs/pdtf-schema/schema-derived-ontology/use-and-tooling/artefacts',
     disposition: 'preserve',
   },
   {
@@ -286,11 +287,11 @@ export const PRESERVATION_LEDGER = Object.freeze([
   {
     currentPath: '/pdtf/** and canonical PDTF schema generated semantic routes',
     kind: 'stable-technical-identifiers',
-    owner: 'pdtf-schema',
-    preservedAt: '/pdtf/** and /pdtf-schema/schema-derived-ontology/use-and-tooling/**',
+    owner: 'spdtf',
+    preservedAt: '/pdtf/** and /spdtf/inputs/pdtf-schema/schema-derived-ontology/use-and-tooling/**',
     consumers: ['linked-data clients', 'implementers', 'search and citations'],
     verification: 'route, representation and fragment crawl',
-    checksumSource: 'dist/pdtf and dist/pdtf-schema/schema-derived-ontology/use-and-tooling',
+    checksumSource: 'dist/pdtf and dist/spdtf/inputs/pdtf-schema/schema-derived-ontology/use-and-tooling',
     disposition: 'preserve',
   },
   {
@@ -323,9 +324,7 @@ export const PRESERVATION_LEDGER = Object.freeze([
 function routeDisposition(currentPath, owner, disposition, preservedAt = currentPath) {
   const related = owner === 'spdtf'
     ? ['pdtf-schema:evidence', 'governance:authority', 'resources:provenance']
-    : owner === 'pdtf-schema'
-      ? ['spdtf:input-or-comparison', 'governance:status']
-      : [`${owner}:canonical-owner`];
+    : [`${owner}:canonical-owner`];
   return Object.freeze({
     currentPath,
     owner,
@@ -350,7 +349,6 @@ export const ROUTE_DISPOSITION_LEDGER = Object.freeze([
     ['spdtf', 'spdtf', 'reframe'],
     ['working-groups', 'spdtf', 'reframe'],
     ['presentations', 'spdtf', 'reframe'],
-    ['pdtf-schema', 'pdtf-schema', 'reframe'],
     ['strategy', 'programme', 'reframe'],
     ['governance', 'governance', 'keep'],
     ['dbt-smart-data', 'programme', 'reframe'],
@@ -361,6 +359,8 @@ export const ROUTE_DISPOSITION_LEDGER = Object.freeze([
   ...[
     ['/', 'programme', 'reframe'],
     ['/spdtf/working-groups/**', 'spdtf', 'reframe'],
+    ['/spdtf/inputs/**', 'spdtf', 'reframe'],
+    ['/spdtf/inputs/pdtf-schema/**', 'spdtf', 'reframe'],
     ['/home', 'programme', 'reframe'],
     ['/glossary', 'resources', 'reframe'],
     ['/search', 'resources', 'keep'],
@@ -374,9 +374,9 @@ export const ROUTE_DISPOSITION_LEDGER = Object.freeze([
     ['/404', 'resources', 'keep'],
     ['/modelling/adr/**', 'governance', 'reframe'],
     ['/modelling/odr/**', 'governance', 'reframe'],
-    ['/pdtf/**', 'pdtf-schema', 'keep'],
-    ['/pdtf-schema/schema-derived-ontology/use-and-tooling/artefacts/**', 'pdtf-schema', 'keep'],
-    ['/pdtf-schema/schema-derived-ontology/use-and-tooling/tools/**', 'pdtf-schema', 'keep'],
+    ['/pdtf/**', 'spdtf', 'keep'],
+    ['/spdtf/inputs/pdtf-schema/schema-derived-ontology/use-and-tooling/artefacts/**', 'spdtf', 'keep'],
+    ['/spdtf/inputs/pdtf-schema/schema-derived-ontology/use-and-tooling/tools/**', 'spdtf', 'keep'],
     ['/data/**', 'resources', 'keep'],
     ['/ui/**', 'resources', 'keep'],
     ['/images/**', 'resources', 'keep'],
@@ -445,7 +445,7 @@ export function findForbiddenIaLabels(text, { historical = false } = {}) {
 }
 
 export function validateIaContract() {
-  if (GLOBAL_DESTINATIONS.length !== 6) throw new Error('IA requires exactly six destinations');
+  if (GLOBAL_DESTINATIONS.length !== 5) throw new Error('IA requires exactly five global destinations');
   const keys = GLOBAL_DESTINATIONS.map(({ key }) => key);
   const labels = GLOBAL_DESTINATIONS.map(({ title }) => title);
   const urls = GLOBAL_DESTINATIONS.map(({ url }) => url);

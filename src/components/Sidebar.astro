@@ -56,12 +56,9 @@ function containsActive(item: Item): boolean {
         const containsActivePage = isActiveLocation || group.items.some(containsActive);
         const hasChildren = group.items.length > 0;
         const defaultOpen = hasChildren && containsActivePage;
-        const emphasizeFolders = section.key === 'pdtf-schema' && group.url === PDTF1_ROUTES.extracted;
-        const namedGroupId = section.key === 'pdtf-schema'
-          ? new Map([
-              [PDTF1_ROUTES.original, 'section-nav-group-pdtf-schema-schema-and-supporting-material'],
-              [PDTF1_ROUTES.extracted, 'section-nav-group-pdtf-schema-schema-derived-ontology'],
-            ]).get(group.url) ?? null
+        const emphasizeFolders = section.key === 'spdtf' && group.url === PDTF1_ROUTES.inputRoot;
+        const namedGroupId = group.url === PDTF1_ROUTES.inputRoot
+          ? 'section-nav-group-spdtf-inputs'
           : null;
         const childrenId = namedGroupId ?? `section-nav-group-${section.key}-${group.url}`
           .replace(/[^a-z0-9]+/giu, '-').replace(/^-|-$/gu, '');

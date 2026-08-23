@@ -205,7 +205,7 @@ sentence, not a restructure) for disambiguation.
 
 [ADR-0076](./ADR-0076-consolidate-pdtf-schema-documentation-under-hierarchy-reflecting-routes.md)
 replaces the standalone `/mapping/**` hosting path with the qualified
-`/pdtf-schema/schema-derived-ontology/lineage-provenance-and-verification/schema-to-ontology-verification/**`
+`/spdtf/inputs/pdtf-schema/schema-derived-ontology/lineage-provenance-and-verification/schema-to-ontology-verification/**`
 family and removes the old routes without redirects. This is a navigation placement,
 not a reversal of the semantic boundary decided here: RML remains an independent,
 bidirectional verification bridge between the PDTF schema and schema-derived ontology,

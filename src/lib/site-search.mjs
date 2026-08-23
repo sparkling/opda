@@ -1,8 +1,8 @@
 function facetFor(url) {
-  if (url === '/pdtf-schema' || url.startsWith('/pdtf-schema/schema-and-supporting-material')) {
+  if (url === '/spdtf/inputs/pdtf-schema' || url.startsWith('/spdtf/inputs/pdtf-schema/schema-and-supporting-material')) {
     return 'PDTF schema';
   }
-  if (url.startsWith('/pdtf-schema/schema-derived-ontology')) return 'Schema-derived ontology';
+  if (url.startsWith('/spdtf/inputs/pdtf-schema/schema-derived-ontology')) return 'Schema-derived ontology';
   if (url === '/spdtf' || url.startsWith('/spdtf/')) return 'SPDTF';
   return 'Cross-programme';
 }
@@ -37,24 +37,25 @@ export const SITE_SEARCH_ENTRIES = Object.freeze([
   entry('Modelling rules and lenses', '/spdtf/ontologies/modelling-rules', 'Identity, classes, values, relationships, reuse and candidate upper-ontology methods', ['ontology', 'upper ontology', 'UFO', 'gUFO', 'OntoClean']),
   entry('Coverage checklist', '/spdtf/ontologies/coverage', 'Six outputs, eleven workshop themes, eight formal concerns and four dispositions', ['PDTF', 'ontology']),
   entry('Standards profile', '/spdtf/ontologies/standards', 'Actual implementation, specification maturity, targets, candidates and deferred options', ['PDTF', 'ontology', 'RDF', 'RDFS', 'OWL', 'SKOS', 'SHACL', 'SPARQL', 'upper ontology']),
-  entry('Evidence and qualified mappings', '/spdtf/ontologies/evidence-and-mappings', 'Competency questions, provenance, traceability and five distinct mapping meanings', ['ontology']),
+  entry('Evidence and qualified mappings', '/spdtf/ontologies/evidence-and-mappings', 'Competency questions, provenance, Category 8 cross-context mapping, SKOS predicates and the deferred SSSOM candidate', ['ontology', 'ontology mapping', 'cross-context mapping', 'cross-domain mapping', 'SKOS mapping', 'SSSOM', 'SEMAPV', 'Category 8']),
   entry('Validation, review and projections', '/spdtf/ontologies/validation', 'SHACL, competency queries, semantic review, governance and generated outputs', ['ontology']),
-  entry('PDTF schema', '/pdtf-schema', 'Existing Digital Property Pack schema, supporting material and separately status-labelled derived evidence', ['PDTF']),
-  entry('PDTF schema and supporting material', '/pdtf-schema/schema-and-supporting-material', 'JSON Schemas, overlays, data dictionary, business glossary, implementation and usage evidence', ['PDTF', 'JSON Schema', 'data dictionary', 'business glossary']),
-  entry('Schema-derived ontology modelling material', '/pdtf-schema/schema-derived-ontology/lineage-provenance-and-verification/historical-modelling', 'Historical modelling documentation for the ontology derived from the PDTF schema', ['PDTF']),
-  entry('Model views by audience', '/pdtf-schema/schema-derived-ontology/model-views-by-audience', 'Schema-derived concept, logical, ontology, deployment and relational presentations', ['PDTF', 'derived model']),
-  entry('Schema-derived ontology', '/pdtf-schema/schema-derived-ontology', 'Draft semantic corpus derived from PDTF schema evidence', ['PDTF']),
-  entry('Lineage, provenance and verification', '/pdtf-schema/schema-derived-ontology/lineage-provenance-and-verification', 'How the schema-derived ontology was modelled, traced and checked against the schema', ['PDTF', 'RML', 'provenance']),
-  entry('Concepts and architecture', '/pdtf-schema/schema-derived-ontology/concepts-and-architecture', 'Identity, semantic contexts, foundations and modelling frameworks in the schema-derived ontology', ['PDTF', 'ontology contexts']),
-  entry('Schema-derived ontology contexts', '/pdtf-schema/schema-derived-ontology/concepts-and-architecture/contexts', 'Context modules in the draft ontology extracted from PDTF schema evidence', ['PDTF', 'bounded contexts']),
-  entry('Terms and model resources', '/pdtf-schema/schema-derived-ontology/terms-and-model-resources', 'Classes, properties, datatypes, vocabularies and the generated term reference', ['PDTF', 'ontology terms']),
-  entry('Validation and examples', '/pdtf-schema/schema-derived-ontology/validation-and-examples', 'SHACL shapes, overlay profiles and diagnostic exemplars for the schema-derived ontology', ['PDTF', 'SHACL']),
-  entry('Trust, governance and limitations', '/pdtf-schema/schema-derived-ontology/trust-governance-and-limitations', 'Claims, evidence, governance, PII and known limitations of the draft derived ontology', ['PDTF', 'ontology governance']),
-  entry('Use and tooling', '/pdtf-schema/schema-derived-ontology/use-and-tooling', 'Namespaces, consumption guidance and tool compatibility evidence', ['PDTF', 'ontology tools']),
-  entry('PDTF schema RML schema–ontology verification', '/pdtf-schema/schema-derived-ontology/lineage-provenance-and-verification/schema-to-ontology-verification', 'Bidirectional verification mapping between the schema and the derived ontology', ['PDTF', 'mapping']),
-  entry('PDTF schema JSON Schema', '/pdtf-schema/schema-and-supporting-material/schema', 'Published JSON Schema and overlay implementation', ['PDTF']),
-  entry('PDTF schema implementation guidance', '/pdtf-schema/schema-and-supporting-material/implementation', 'Implementation material for the existing schema', ['PDTF']),
-  entry('PDTF schema usage and implementation evidence', '/pdtf-schema/schema-and-supporting-material/adoption', 'Attributed implementation, pilot and usage records', ['PDTF']),
+  entry('Third-party inputs', '/spdtf/inputs', 'Sources considered as evidence, compatibility material or modelling input; inclusion does not imply adoption or authority', ['inputs', 'evidence']),
+  entry('PDTF schema', '/spdtf/inputs/pdtf-schema', 'Third-party Digital Property Pack schema input; inclusion does not confer OPDA endorsement or SPDTF authority', ['PDTF', 'third-party input']),
+  entry('PDTF schema and supporting material', '/spdtf/inputs/pdtf-schema/schema-and-supporting-material', 'Third-party JSON Schemas, overlays, data dictionary and business glossary, with separately attributed implementation and usage evidence', ['PDTF', 'JSON Schema', 'data dictionary', 'business glossary']),
+  entry('Schema-derived ontology modelling material', '/spdtf/inputs/pdtf-schema/schema-derived-ontology/lineage-provenance-and-verification/historical-modelling', 'Historical modelling documentation for the ontology derived from the PDTF schema', ['PDTF']),
+  entry('Model views by audience', '/spdtf/inputs/pdtf-schema/schema-derived-ontology/model-views-by-audience', 'Schema-derived concept, logical, ontology, deployment and relational presentations', ['PDTF', 'derived model']),
+  entry('Schema-derived ontology', '/spdtf/inputs/pdtf-schema/schema-derived-ontology', 'OPDA-produced non-normative technical derivation of the third-party PDTF schema input', ['PDTF', 'derived evidence']),
+  entry('Lineage, provenance and verification', '/spdtf/inputs/pdtf-schema/schema-derived-ontology/lineage-provenance-and-verification', 'How the schema-derived ontology was modelled, traced and checked against the schema', ['PDTF', 'RML', 'provenance']),
+  entry('Concepts and architecture', '/spdtf/inputs/pdtf-schema/schema-derived-ontology/concepts-and-architecture', 'Identity, semantic contexts, foundations and modelling frameworks in the schema-derived ontology', ['PDTF', 'ontology contexts']),
+  entry('Schema-derived ontology contexts', '/spdtf/inputs/pdtf-schema/schema-derived-ontology/concepts-and-architecture/contexts', 'Context modules in the draft ontology extracted from PDTF schema evidence', ['PDTF', 'bounded contexts']),
+  entry('Terms and model resources', '/spdtf/inputs/pdtf-schema/schema-derived-ontology/terms-and-model-resources', 'Classes, properties, datatypes, vocabularies and the generated term reference', ['PDTF', 'ontology terms']),
+  entry('Validation and examples', '/spdtf/inputs/pdtf-schema/schema-derived-ontology/validation-and-examples', 'SHACL shapes, overlay profiles and diagnostic exemplars for the schema-derived ontology', ['PDTF', 'SHACL']),
+  entry('Trust, governance and limitations', '/spdtf/inputs/pdtf-schema/schema-derived-ontology/trust-governance-and-limitations', 'Claims, evidence, governance, PII and known limitations of the draft derived ontology', ['PDTF', 'ontology governance']),
+  entry('Use and tooling', '/spdtf/inputs/pdtf-schema/schema-derived-ontology/use-and-tooling', 'Namespaces, consumption guidance and tool compatibility evidence', ['PDTF', 'ontology tools']),
+  entry('PDTF schema RML schema–ontology verification', '/spdtf/inputs/pdtf-schema/schema-derived-ontology/lineage-provenance-and-verification/schema-to-ontology-verification', 'Bidirectional verification mapping between the schema and the derived ontology', ['PDTF', 'mapping']),
+  entry('PDTF schema JSON Schema', '/spdtf/inputs/pdtf-schema/schema-and-supporting-material/schema', 'Published JSON Schema and overlay implementation', ['PDTF']),
+  entry('PDTF schema implementation guidance', '/spdtf/inputs/pdtf-schema/schema-and-supporting-material/implementation', 'Implementation material for the existing schema', ['PDTF']),
+  entry('PDTF schema usage and implementation evidence', '/spdtf/inputs/pdtf-schema/schema-and-supporting-material/adoption', 'Attributed implementation, pilot and usage records', ['PDTF']),
   entry('Governance', '/governance', 'Authority, status, lifecycle and decisions', ['PDTF', 'SPDTF']),
   entry('UK initiative context', '/governance/uk-initiative', 'Legislation, public bodies and steering arrangements around property-data reform', ['government', 'policy']),
   entry('OPDA organisation', '/governance/opda-organisation', 'Member firms and the Trust Framework Sandbox', ['governance', 'members']),

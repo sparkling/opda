@@ -10,24 +10,21 @@ import {
   propertyPackMigrationReceipt, routeFromFile, sha256, sourceBlockInventoryCount,
 } from './lib/ia-preservation-contract.mjs';
 import { baselineNavigationEvidenceFailures, retentionReceiptFailures } from './lib/ia-retention-validator.mjs';
+import { validatePdtfSchemaInputManifest } from './lib/pdtf-schema-input-route-contract.mjs';
 import { composeSchemaToSchemeRouteReceipt } from './lib/schema-to-scheme-route-contract.mjs';
-import {
-  SCHEMA_TO_SCHEME_SOURCE_ROUTE_MANIFEST, loadPdtf1SourceRouteManifest,
+import { SCHEMA_TO_SCHEME_SOURCE_ROUTE_MANIFEST, loadPdtf1SourceRouteManifest,
   loadPriorIaFamilyManifest, loadPriorIaRouteManifest, loadSchemaToSchemeSourceRouteManifest,
   manifestRetainedBaselineProjectionMatches, priorFamilyMatches, validatePriorFamilyReceipt, validatePriorManifestReceipt, verifyBaselineRootCommit,
 } from './lib/ia-prior-manifest-contract.mjs';
 import { composePdtf1ToolReframeReceipt } from './lib/pdtf1-tool-reframes.mjs';
 import { composeSourceArchiveReframeReceipt } from './lib/source-archive-reframes.mjs';
 import { validatePdtfSchemaFragmentMigrationReceipt } from './lib/pdtf-schema-fragment-migration.mjs';
-import {
-  IA_STATUS_REGISTRY_VERSION, PRESERVATION_LEDGER, ROUTE_DISPOSITION_LEDGER, getContentOwner,
-  getRouteDisposition, getRouteStatus, validateIaContract,
-} from '../src/lib/site-ia.mjs';
+import { IA_STATUS_REGISTRY_VERSION, PRESERVATION_LEDGER, ROUTE_DISPOSITION_LEDGER, getContentOwner,
+  getRouteDisposition, getRouteStatus, validateIaContract } from '../src/lib/site-ia.mjs';
 import { PROPERTY_PACK_ROUTE_MIGRATION, getPropertyPackReplacementRoute } from '../src/lib/property-pack-routes.mjs';
-import {
-  PDTF1_ROUTE_MIGRATION, fragmentsPreservedByPdtfSchemaMigration, getPdtf1ReplacementRoute,
-  isRetiredPdtf1DocumentationRoute,
-  isRetiredPdtf1ManualAlias, isStablePdtfIdentifierRoute } from '../src/lib/pdtf1-routes.mjs';
+import { PDTF1_ROUTE_MIGRATION, fragmentsPreservedByPdtfSchemaMigration, getPdtf1ReplacementRoute,
+  isRetiredPdtf1DocumentationRoute, isRetiredPdtf1ManualAlias,
+  isStablePdtfIdentifierRoute } from '../src/lib/pdtf1-routes.mjs';
 import { validateLeaseTermCaseCollisionReceipt } from '../src/lib/ontology-case-collision.mjs';
 import { getDeclaredRouteReplacement } from '../src/lib/site-route-migrations.mjs';
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
@@ -35,11 +32,10 @@ const EXPECTED_FAMILY_COUNTS = Object.freeze({
   'source-archive': { baseline: 1620 }, 'council-markdown': { baseline: 261 },
   'ontology-artefacts': { baseline: 27, accepted: 27 }, 'deployed-data': { baseline: 46 },
   'ui-assets': { baseline: 53 }, 'image-assets': { baseline: 5 },
-  'ontology-tools': { baseline: 837, accepted: 837 }, 'property-pack-canonical': { baseline: 690, accepted: 693 },
+  'ontology-tools': { baseline: 837, accepted: 837 }, 'property-pack-canonical': { baseline: 690, accepted: 702 },
 });
 const HASH = /^[a-f0-9]{64}$/u;
-const failures = []; const notes = [];
-const fail = (message) => failures.push(message);
+const failures = []; const notes = []; const fail = (message) => failures.push(message);
 function validateReviewedReframe(family, compose) {
   try { const receipt = compose(family.baseline, family.accepted);
     if (family.policy !== 'reframe-equivalent' || JSON.stringify(receipt) !== JSON.stringify(family.reframeReceipt)) fail(`${family.id} reviewed file-reframe receipt is inconsistent`); }
@@ -150,14 +146,14 @@ try {
     = loadSchemaToSchemeSourceRouteManifest(ROOT));
 }
 catch (error) { fail(`schema-to-scheme source-route Git evidence is unavailable: ${error.message}`); }
-let hasPdtf1CutReceipt = false;
-let hasSchemaToSchemeReceipt = false;
+let hasPdtf1CutReceipt = false; let hasSchemaToSchemeReceipt = false; let hasPdtfSchemaInputReceipt = false;
 if (routeManifest) {
   hasPdtf1CutReceipt = routeManifest.schemaVersion === 7 || routeManifest.schemaVersion === 8;
   hasSchemaToSchemeReceipt = routeManifest.schemaVersion === 8;
+  hasPdtfSchemaInputReceipt = routeManifest.schemaVersion === 9;
   const validLegacy = routeManifest.schemaVersion === 6
     && routeManifest.retiredRoutes === undefined && routeManifest.retiredRouteCount === undefined;
-  const validCut = hasPdtf1CutReceipt
+  const validCut = (hasPdtf1CutReceipt || hasPdtfSchemaInputReceipt)
     && routeManifest.retiredRouteCount === routeManifest.retiredRoutes?.length;
   if ((!validLegacy && !validCut) || routeManifest.routeCount !== routeManifest.routes?.length
     || routeManifest.addedRouteCount !== routeManifest.addedRoutes?.length) {
@@ -230,13 +226,12 @@ if (routeManifest) {
     retentionReceiptFailures(record, classifiedByRoute).forEach(fail);
     if (!fragmentsPreservedByPdtfSchemaMigration(record.baselineFragments, record.acceptedFragments)) fail(`deep-linked fragments were not preserved: ${record.baselineRoute}`);
   }
-  try {
-    const actual = propertyPackMigrationReceipt(baselineRecords, addedRecords,
-      PROPERTY_PACK_ROUTE_MIGRATION, getDeclaredRouteReplacement);
-    if (JSON.stringify(actual) !== JSON.stringify(routeManifest.propertyPackMigration)) {
-      fail('Property Pack migration receipt is inconsistent');
-    }
-  } catch (error) { fail(`Property Pack migration contract failed: ${error.message}`); }
+  if (!hasPdtfSchemaInputReceipt) {
+    try {
+      const actual = propertyPackMigrationReceipt(baselineRecords, addedRecords, PROPERTY_PACK_ROUTE_MIGRATION, getDeclaredRouteReplacement);
+      if (JSON.stringify(actual) !== JSON.stringify(routeManifest.propertyPackMigration)) fail('Property Pack migration receipt is inconsistent');
+    } catch (error) { fail(`Property Pack migration contract failed: ${error.message}`); }
+  }
   if (hasPdtf1CutReceipt && pdtf1SourceManifest) {
     try {
       const actual = pdtf1MigrationReceipt({
@@ -307,6 +302,10 @@ if (routeManifest) {
       }
     } catch (error) { fail(`schema-to-scheme route-composition contract failed: ${error.message}`); }
   }
+  if (hasPdtfSchemaInputReceipt) {
+    try { validatePdtfSchemaInputManifest(ROOT, routeManifest, baselineRecords, addedRecords); }
+    catch (error) { fail(`PDTF schema input migration contract failed: ${error.message}`); }
+  }
   try {
     validateLeaseTermCaseCollisionReceipt(
       options.manifestOnly ? null : ROOT,
@@ -319,15 +318,14 @@ if (routeManifest) {
   }
   const workflow = readFileSync(path.join(ROOT, '.github/workflows/deploy-aws.yml'), 'utf8');
   const retainedPdtfPrefixes = [
-    'pdtf-schema/schema-derived-ontology/use-and-tooling/tools/ontospy/',
-    'pdtf-schema/schema-derived-ontology/use-and-tooling/tools/pylode/',
-    'pdtf-schema/schema-derived-ontology/use-and-tooling/tools/shaclplay/',
-    'pdtf-schema/schema-derived-ontology/use-and-tooling/tools/widoco/',
+    'spdtf/inputs/pdtf-schema/schema-derived-ontology/use-and-tooling/tools/ontospy/', 'spdtf/inputs/pdtf-schema/schema-derived-ontology/use-and-tooling/tools/pylode/',
+    'spdtf/inputs/pdtf-schema/schema-derived-ontology/use-and-tooling/tools/shaclplay/',
+    'spdtf/inputs/pdtf-schema/schema-derived-ontology/use-and-tooling/tools/widoco/',
   ];
   for (const prefix of retainedPdtfPrefixes) {
     if (!workflow.includes(`--exclude "${prefix}*"`)) fail(`deployment does not protect externally retained ${prefix}`);
   }
-  if (!workflow.includes('--exclude "pdtf-schema/schema-derived-ontology/use-and-tooling/artefacts/*"')) {
+  if (!workflow.includes('--exclude "spdtf/inputs/pdtf-schema/schema-derived-ontology/use-and-tooling/artefacts/*"')) {
     fail('deployment does not protect frozen ontology artefacts at their canonical path');
   }
   for (const oldPrefix of ['ontology/artefacts/', 'ontology/tools/ontospy/', 'ontology/tools/pylode/',
@@ -426,26 +424,27 @@ if (familyManifest) {
     }
     if (family.id === 'property-pack-canonical'
       && (family.technicalMappedRouteCount !== 690 || family.canonicalContentRouteCount !== 691
-        || family.lifecyclePageCount !== 2 || family.baselinePath !== 'dist/v2'
-        || family.acceptedPath !== 'dist/spdtf/property-pack')) {
-      fail('Property Pack family does not declare the 690 → 691 + 2 migration cut');
+        || family.lifecyclePageCount !== 2 || family.postMigrationPageCount !== 9
+        || family.accepted?.count !== family.canonicalContentRouteCount + family.lifecyclePageCount
+          + family.postMigrationPageCount || family.baselinePath !== 'dist/v2' || family.acceptedPath !== 'dist/spdtf/property-pack')) {
+      fail('Property Pack family does not declare the frozen 690 → 691 + 2 cut plus 9 later work-package pages');
     }
     const movedFamilyPath = family.id === 'ontology-tools'
-      ? 'public/pdtf-schema/schema-derived-ontology/use-and-tooling/tools'
+      ? 'public/spdtf/inputs/pdtf-schema/schema-derived-ontology/use-and-tooling/tools'
       : family.id === 'ontology-artefacts'
-        ? 'public/pdtf-schema/schema-derived-ontology/use-and-tooling/artefacts' : null;
-    if (hasPdtf1CutReceipt && movedFamilyPath
+        ? 'public/spdtf/inputs/pdtf-schema/schema-derived-ontology/use-and-tooling/artefacts' : null;
+    if ((hasPdtf1CutReceipt || hasPdtfSchemaInputReceipt) && movedFamilyPath
       && (family.baselinePath !== `public/ontology/${family.id.slice('ontology-'.length)}`
         || family.acceptedPath !== movedFamilyPath
         || family.assetClass !== (family.id === 'ontology-tools' ? 'tool-rendering' : 'ontology-serialization'))) {
       fail(`${family.id} does not declare its exact PDTF schema asset move`);
     }
-    if (hasPdtf1CutReceipt && family.id === 'ontology-tools') validateReviewedReframe(family, composePdtf1ToolReframeReceipt);
+    if ((hasPdtf1CutReceipt || hasPdtfSchemaInputReceipt) && family.id === 'ontology-tools') validateReviewedReframe(family, composePdtf1ToolReframeReceipt);
     if (family.id === 'source-archive' && family.policy === 'reframe-equivalent') validateReviewedReframe(family, composeSourceArchiveReframeReceipt);
     if (family.policy === 'byte-identical' && family.baseline?.treeSha256 !== family.accepted?.treeSha256) {
       fail(`${family.id} violates byte-identical policy`);
     }
-    if (hasPdtf1CutReceipt && movedFamilyPath && !options.manifestOnly) {
+    if ((hasPdtf1CutReceipt || hasPdtfSchemaInputReceipt) && movedFamilyPath && !options.manifestOnly) {
       const retiredRoot = path.join(ROOT, family.baselinePath.replace(/^public\//u, 'dist/'));
       for (const record of family.baseline.records) {
         if (existsSync(path.join(retiredRoot, record.path))) {

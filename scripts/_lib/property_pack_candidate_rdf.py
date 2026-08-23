@@ -265,7 +265,7 @@ def semantic_projections(model: dict[str, Any], classification: dict[str, Any]) 
         "common_boundary": "common",
         "rule": "Each OPDA resource has one semantic home; common is exceptional and does not control internal domain meaning.",
         "contexts": [{**context, "source_item_count": context_counts[context["id"]]} for context in sorted(model["contexts"].values(), key=lambda item: item["id"])],
-        "connections": [{"from": context_id, "to": "common", "kind": "interoperates-through"} for context_id in sorted(model["contexts"]) if context_id != "common"],
+        "connections": [{"from": "common", "to": context_id, "kind": "supplies-shared-elements"} for context_id in sorted(model["contexts"]) if context_id != "common"],
         "cross_domain_mappings": [],
         "mapping_status": "awaiting working-group evidence",
     }

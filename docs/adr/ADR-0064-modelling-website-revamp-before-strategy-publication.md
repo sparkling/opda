@@ -165,7 +165,7 @@ separate migration decision authorises replacement of current pages.
   change the other production sites or authorise deployment.
 - **2026-08-19 — Property Pack route exception authorised by ADR-0075.** The operator
   authorised a no-redirect move: old `/v2` maps to `/spdtf/property-pack`, old
-  `/v2/comparison` maps to `/spdtf/property-pack/pdtf-schema-lineage`, every other old
+  `/v2/comparison` maps to `/spdtf/property-pack/spdtf/inputs/pdtf-schema-lineage`, every other old
   `/v2/{suffix}` maps to `/spdtf/property-pack/{suffix}`, and old
   `/modelling/property-pack` maps to `/spdtf/property-pack/definition-and-scope`.
   This narrowly amends the earlier URL-continuity rule; atomic content, fragment and

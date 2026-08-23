@@ -10,6 +10,30 @@ export const SOURCE_ARCHIVE_REFRAMES = Object.freeze([
     reason: 'Separates the schema-derived semantic models from an endorsed SPDTF scheme.',
   }),
   Object.freeze({
+    path: '03-standards/ontology-candidates/property-pack/0.1/candidate-manifest.json',
+    baselineSha256: '7019688aeadf4a5e04f71f3e9c31b5a0d60575569c5d7baff9e92b626f33142d',
+    acceptedSha256: '2e70a2737779433c2e9f34b23493dfdaa770396ebd36556b26aac79cca4225ce',
+    baselineSize: 12177,
+    acceptedSize: 12177,
+    reason: 'Binds the corrected context map, refreshed validation report, and resulting candidate-tree digest.',
+  }),
+  Object.freeze({
+    path: '03-standards/ontology-candidates/property-pack/0.1/projections/context-map.json',
+    baselineSha256: '1cd6997b2ec7387003498e470ad1ed83e0898ccc3a4bd28766aae1a7fe7b056c',
+    acceptedSha256: 'c9881d71008b40879dc393e2ff52df01e8ffcddb7943808ca7dd039ca610acea',
+    baselineSize: 3400,
+    acceptedSize: 3421,
+    reason: 'Corrects the false claim that every context interoperates through Common to the directional shared-element relationship.',
+  }),
+  Object.freeze({
+    path: '03-standards/ontology-candidates/property-pack/0.1/validation/report.json',
+    baselineSha256: '63c72a3ee1381929f5eb3d94d49cc63c213ea192b3149e17c042ffce63c29814',
+    acceptedSha256: '0000f4721a06154aa96453f411af28fdc2e1ac248e7fbc70c7817d5861731fb9',
+    baselineSize: 9379,
+    acceptedSize: 9379,
+    reason: 'Refreshes the checked-tree digest after the reviewed context-map semantics correction.',
+  }),
+  Object.freeze({
     path: '03-standards/ontology/exemplars/README.md',
     baselineSha256: 'eabd882f27bacda7c76cd17f5bcb6d9173f43123bbdd8403b4fff9c47b1d0ce2',
     acceptedSha256: '0edebee64ef96aaa82e1f8b80434d69c01eb300d3550824832b4367c5e028570',
@@ -75,7 +99,7 @@ export const SOURCE_ARCHIVE_REFRAMES = Object.freeze([
   }),
 ]);
 
-/** Prove that the source archive changed only in the nine reviewed authority notes. */
+/** Prove that the source archive changed only in the reviewed, hash-bound files. */
 export function composeSourceArchiveReframeReceipt(baseline, accepted) {
   const before = new Map(baseline.records.map((record) => [record.path, record]));
   const after = new Map(accepted.records.map((record) => [record.path, record]));
@@ -88,7 +112,7 @@ export function composeSourceArchiveReframeReceipt(baseline, accepted) {
   const declared = SOURCE_ARCHIVE_REFRAMES.map(({ path }) => path).sort();
   if (baseline.count !== accepted.count || before.size !== baseline.count
     || after.size !== accepted.count || JSON.stringify(changed) !== JSON.stringify(declared)) {
-    throw new Error('source archive changed outside the reviewed authority-note set');
+    throw new Error('source archive changed outside the reviewed source-reframe set');
   }
   const reframedFiles = SOURCE_ARCHIVE_REFRAMES.map((entry) => {
     const baselineRecord = before.get(entry.path);

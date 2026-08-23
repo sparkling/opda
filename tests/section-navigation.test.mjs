@@ -18,7 +18,6 @@ const expectedDestinations = [
   ['programme', 'Programme', '/programme'],
   ['spdtf', 'SPDTF', '/spdtf'],
   ['working-groups', 'Working groups', '/spdtf/working-groups'],
-  ['pdtf-schema', 'PDTF schema', '/pdtf-schema'],
   ['governance', 'Governance', '/governance'],
   ['resources', 'Resources', '/resources'],
 ];
@@ -50,7 +49,7 @@ test('category headings own canonical landing pages without duplicate landing ch
   }
 });
 
-test('the left section navigation implements all six destinations from one registry', () => {
+test('the left section navigation implements all five destinations from one registry', () => {
   assert.deepEqual(Object.keys(SECTION_NAVIGATION), expectedDestinations.map(([key]) => key));
   for (const [key, title, url] of expectedDestinations) {
     const section = SECTION_NAVIGATION[key];
@@ -76,7 +75,7 @@ test('the left section navigation implements all six destinations from one regis
   ));
   assert.deepEqual(Object.fromEntries(Object.entries(SECTION_NAVIGATION).map(([key, section]) => [
     key, section.groups.flatMap(flattenGroup).length,
-  ])), { programme: 18, 'spdtf': 39, 'working-groups': 39, 'pdtf-schema': 203, governance: 31, resources: 12 });
+  ])), { programme: 18, spdtf: 252, 'working-groups': 39, governance: 31, resources: 12 });
   const decisionDetail = /^\/modelling\/(?:adr|odr)\/[^/]+$/u;
   for (const url of new Set(legacyUrls.filter((url) => !decisionDetail.test(url)))) {
     assert.equal(compositeUrls.filter((candidate) => candidate === url).length, 1, `${url} must appear once`);
@@ -90,7 +89,7 @@ test('the left section navigation implements all six destinations from one regis
     '/spdtf/ontologies/modelling-rules',
     '/spdtf/property-pack/definition-and-scope',
     '/spdtf/property-pack/technical-working-group-determination',
-    '/spdtf/property-pack/review-and-releases', '/pdtf-schema',
+    '/spdtf/property-pack/review-and-releases', PDTF1_ROUTES.inputRoot, PDTF1_ROUTES.root,
     '/spdtf/working-groups/member-guide',
     '/spdtf/working-groups/member-guide/teams-and-discussions',
     '/spdtf/working-groups/member-guide/source-material-and-sharepoint',
@@ -242,8 +241,7 @@ test('category landing pages remain in breadcrumbs and exact page sequences', ()
     ['spdtf', 'Property Pack ontology', '/spdtf/property-pack', '/spdtf/property-pack/definition-and-scope'],
     ['working-groups', 'Member guide', '/spdtf/working-groups/member-guide', '/spdtf/working-groups/member-guide/getting-started'],
     ['working-groups', 'Group workspaces', '/spdtf/working-groups', '/spdtf/working-groups/finance-and-banking'],
-    ['pdtf-schema', 'Schema and supporting material', PDTF1_ROUTES.original, originalSchema],
-    ['pdtf-schema', 'Schema-derived ontology', PDTF1_ROUTES.extracted, PDTF1_ROUTES.lineage],
+    ['spdtf', 'Third-party inputs', PDTF1_ROUTES.inputRoot, PDTF1_ROUTES.root],
     ['governance', 'Governance framework', '/governance', '/governance/uk-initiative'],
     ['resources', 'Library', '/library', '/library/library-overview'],
   ]) {
@@ -257,31 +255,30 @@ test('category landing pages remain in breadcrumbs and exact page sequences', ()
   assert.deepEqual(getNavigationPrevNext('/spdtf/property-pack/resources/common/generated-term'), {});
 });
 
-test('PDTF schema exposes supporting material and the schema-derived ontology as separate journeys', () => {
-  const section = SECTION_NAVIGATION['pdtf-schema'];
-  const canonicalUrls = section.groups.flatMap(flattenGroup).map(({ url }) => url);
-  assert.equal(canonicalUrls.length, 203);
-  assert.ok(canonicalUrls.every((url) => url === PDTF1_ROUTES.root
+test('PDTF schema is a third-party input with separate supporting and derived journeys', () => {
+  const section = SECTION_NAVIGATION.spdtf;
+  const inputGroup = section.groups.find(({ heading }) => heading === 'Third-party inputs');
+  const canonicalUrls = flattenGroup(inputGroup).map(({ url }) => url);
+  assert.equal(canonicalUrls.length, 204);
+  assert.ok(canonicalUrls.every((url) => url === PDTF1_ROUTES.inputRoot || url === PDTF1_ROUTES.root
     || url.startsWith(`${PDTF1_ROUTES.root}/`)));
-  assert.deepEqual(section.groups.map(({ heading, url }) => [heading, url]), [
-    ['Overview', PDTF1_ROUTES.root],
-    ['Schema and supporting material', PDTF1_ROUTES.original],
-    ['Schema-derived ontology', PDTF1_ROUTES.extracted],
+  assert.deepEqual(inputGroup.items.map(({ title, url }) => [title, url]), [
+    ['PDTF schema', PDTF1_ROUTES.root],
   ]);
 
-  const original = section.groups[1];
-  assert.deepEqual(original.items.map(({ title, url }) => [title, url]), [
+  const input = inputGroup.items[0];
+  const [original, extracted] = input.children;
+  assert.deepEqual(original.children.map(({ title, url }) => [title, url]), [
     ['JSON Schemas and overlays', originalSchema],
     ['Data dictionary', `${PDTF1_ROUTES.original}/data-dictionary`],
     ['Business glossary', `${PDTF1_ROUTES.original}/business-glossary`],
     ['Implementation guidance', originalImplementation],
     ['Usage and implementation evidence', originalAdoption],
   ]);
-  assert.ok(flattenItems(original.items).some(({ url }) => url === `${originalSchema}/legal-estate`));
-  assert.ok(flattenItems(original.items).some(({ url }) => url === `${originalImplementation}/validation`));
+  assert.ok(flattenItems(original.children).some(({ url }) => url === `${originalSchema}/legal-estate`));
+  assert.ok(flattenItems(original.children).some(({ url }) => url === `${originalImplementation}/validation`));
 
-  const extracted = section.groups[2];
-  assert.deepEqual(extracted.items.map(({ title, url }) => [title, url]), [
+  assert.deepEqual(extracted.children.map(({ title, url }) => [title, url]), [
     ['Lineage, provenance and verification', PDTF1_ROUTES.lineage],
     ['Model views by audience', PDTF1_ROUTES.modelViews],
     ['Concepts and architecture', PDTF1_ROUTES.concepts],
@@ -291,7 +288,7 @@ test('PDTF schema exposes supporting material and the schema-derived ontology as
     ['Use and tooling', PDTF1_ROUTES.use],
   ]);
 
-  const lineage = extracted.items[0];
+  const lineage = extracted.children[0];
   assert.deepEqual(lineage.children.map(({ title, url }) => [title, url]), [
     ['Historical modelling record', PDTF1_ROUTES.historicalModelling],
     ['Schema-to-ontology verification', PDTF1_ROUTES.schemaVerification],
@@ -302,7 +299,7 @@ test('PDTF schema exposes supporting material and the schema-derived ontology as
   assert.ok(lineage.children[1].children
     .some(({ url }) => url === `${PDTF1_ROUTES.schemaVerification}/coverage`));
 
-  const modelViews = extracted.items[1];
+  const modelViews = extracted.children[1];
   assert.deepEqual(modelViews.children.map(({ title, url }) => [title, url]), [
     ['Information architecture', `${PDTF1_ROUTES.modelViews}/information-architecture`],
     ['Concept model', `${PDTF1_ROUTES.modelViews}/concept`],
@@ -326,44 +323,50 @@ test('PDTF schema exposes supporting material and the schema-derived ontology as
     assert.ok(tier.children.every((item) => item.url.startsWith(`${url}/`)));
   }
 
-  assert.deepEqual(extracted.items[2].children.map(({ url }) => url), [
+  assert.deepEqual(extracted.children[2].children.map(({ url }) => url), [
     `${PDTF1_ROUTES.concepts}/foundation`, `${PDTF1_ROUTES.concepts}/identity`,
     `${PDTF1_ROUTES.concepts}/contexts`, `${PDTF1_ROUTES.concepts}/foundational-ontology`,
     `${PDTF1_ROUTES.concepts}/modelling-frameworks`,
   ]);
-  assert.deepEqual(extracted.items[3].children.map(({ url }) => url), [
+  assert.deepEqual(extracted.children[3].children.map(({ url }) => url), [
     `${PDTF1_ROUTES.terms}/graph`, `${PDTF1_ROUTES.terms}/classes`,
     `${PDTF1_ROUTES.terms}/categories`, `${PDTF1_ROUTES.terms}/properties`,
     `${PDTF1_ROUTES.terms}/datatypes`, `${PDTF1_ROUTES.terms}/vocabularies`,
     `${PDTF1_ROUTES.terms}/glossary`,
   ]);
-  assert.deepEqual(extracted.items[4].children.map(({ url }) => url), [
+  assert.deepEqual(extracted.children[4].children.map(({ url }) => url), [
     `${PDTF1_ROUTES.validation}/shapes`, `${PDTF1_ROUTES.validation}/profiles`,
     `${PDTF1_ROUTES.validation}/exemplars`,
   ]);
-  assert.deepEqual(extracted.items[5].children.map(({ url }) => url), [
+  assert.deepEqual(extracted.children[5].children.map(({ url }) => url), [
     `${PDTF1_ROUTES.trust}/claims`, `${PDTF1_ROUTES.trust}/governance`,
     `${PDTF1_ROUTES.trust}/known-issues`,
   ]);
-  assert.deepEqual(extracted.items[6].children.map(({ url }) => url), [
+  assert.deepEqual(extracted.children[6].children.map(({ url }) => url), [
     `${PDTF1_ROUTES.use}/usage`, `${PDTF1_ROUTES.use}/namespaces`,
     `${PDTF1_ROUTES.use}/bake-off`,
   ]);
-  assert.ok(flattenItems(extracted.items).some(({ url }) => url === `${PDTF1_ROUTES.terms}/classes`));
-  assert.ok(flattenItems(extracted.items)
+  assert.ok(flattenItems(extracted.children).some(({ url }) => url === `${PDTF1_ROUTES.terms}/classes`));
+  assert.ok(flattenItems(extracted.children)
     .some(({ url }) => url === `${PDTF1_ROUTES.schemaVerification}/coverage`));
 
   assert.deepEqual(
     findNavigationPage(`${PDTF1_ROUTES.terms}/classes`).trail.map(({ url }) => url),
-    [PDTF1_ROUTES.terms, `${PDTF1_ROUTES.terms}/classes`],
+    [PDTF1_ROUTES.root, PDTF1_ROUTES.extracted, PDTF1_ROUTES.terms, `${PDTF1_ROUTES.terms}/classes`],
   );
   assert.deepEqual(
     findNavigationPage(`${PDTF1_ROUTES.schemaVerification}/coverage`).trail.map(({ url }) => url),
-    [PDTF1_ROUTES.lineage, PDTF1_ROUTES.schemaVerification, `${PDTF1_ROUTES.schemaVerification}/coverage`],
+    [
+      PDTF1_ROUTES.root, PDTF1_ROUTES.extracted, PDTF1_ROUTES.lineage,
+      PDTF1_ROUTES.schemaVerification, `${PDTF1_ROUTES.schemaVerification}/coverage`,
+    ],
   );
   assert.deepEqual(
     findNavigationPage(`${PDTF1_ROUTES.modelViews}/logical/property`).trail.map(({ url }) => url),
-    [PDTF1_ROUTES.modelViews, `${PDTF1_ROUTES.modelViews}/logical`, `${PDTF1_ROUTES.modelViews}/logical/property`],
+    [
+      PDTF1_ROUTES.root, PDTF1_ROUTES.extracted, PDTF1_ROUTES.modelViews,
+      `${PDTF1_ROUTES.modelViews}/logical`, `${PDTF1_ROUTES.modelViews}/logical/property`,
+    ],
   );
 
   assert.equal(getNavigationPrevNext(PDTF1_ROUTES.root).next?.url, PDTF1_ROUTES.original);
@@ -381,7 +384,7 @@ test('authority overrides and generated-route aliases resolve one terminal navig
     ['/strategy/strategy-overview', 'programme'],
     ['/spdtf/property-pack/validation', 'spdtf'],
     ['/spdtf/working-groups/estate-agency/review', 'working-groups'],
-    [`${PDTF1_ROUTES.terms}/classes`, 'pdtf-schema'],
+    [`${PDTF1_ROUTES.terms}/classes`, 'spdtf'],
     ['/modelling/adr/adr-0074', 'governance'],
     ['/engagement/transcripts', 'resources'],
   ]) assert.equal(findNavigationPage(route)?.section.key, section);
@@ -435,4 +438,26 @@ test('semantic modelling exposes two nested audience journeys with linked parent
     '/spdtf/ontologies/reading-the-model');
   assert.equal(getNavigationPrevNext('/spdtf/ontologies/modelling-method').next?.url,
     '/spdtf/ontologies/semantic-package');
+});
+
+test('Property Pack work-package coverage exposes all eight source-catalogue views', () => {
+  const propertyPack = SECTION_NAVIGATION.spdtf.groups
+    .find(({ heading }) => heading === 'Property Pack ontology');
+  const currentModel = propertyPack.items.find(({ url }) => url === '/spdtf/property-pack/model');
+  const workPackages = currentModel.children.find(({ url }) => url === '/spdtf/property-pack/work-packages');
+  assert.equal(workPackages.children.length, 8);
+  assert.ok(workPackages.children.every(({ url }) => url.startsWith('/spdtf/property-pack/work-packages/')));
+  assert.deepEqual(findNavigationPage('/spdtf/property-pack/work-packages/fixtures-fittings').trail
+    .map(({ url }) => url), [
+    '/spdtf/property-pack/model', '/spdtf/property-pack/work-packages',
+    '/spdtf/property-pack/work-packages/fixtures-fittings',
+  ]);
+});
+
+test('Property Pack navigation calls its semantic homes contextual boundaries', () => {
+  const propertyPack = SECTION_NAVIGATION.spdtf.groups
+    .find(({ heading }) => heading === 'Property Pack ontology');
+  const currentModel = propertyPack.items.find(({ url }) => url === '/spdtf/property-pack/model');
+  assert.equal(currentModel.children.find(({ url }) => url === '/spdtf/property-pack/contexts').title,
+    'Contextual boundaries');
 });

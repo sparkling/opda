@@ -1,22 +1,24 @@
 /** Canonical PDTF schema documentation-route hierarchy. */
 export const PDTF1_ROUTES = Object.freeze({
-  root: '/pdtf-schema',
-  original: '/pdtf-schema/schema-and-supporting-material',
-  extracted: '/pdtf-schema/schema-derived-ontology',
-  lineage: '/pdtf-schema/schema-derived-ontology/lineage-provenance-and-verification',
-  historicalModelling: '/pdtf-schema/schema-derived-ontology/lineage-provenance-and-verification/historical-modelling',
-  schemaVerification: '/pdtf-schema/schema-derived-ontology/lineage-provenance-and-verification/schema-to-ontology-verification',
-  modelViews: '/pdtf-schema/schema-derived-ontology/model-views-by-audience',
-  concepts: '/pdtf-schema/schema-derived-ontology/concepts-and-architecture',
-  terms: '/pdtf-schema/schema-derived-ontology/terms-and-model-resources',
-  validation: '/pdtf-schema/schema-derived-ontology/validation-and-examples',
-  trust: '/pdtf-schema/schema-derived-ontology/trust-governance-and-limitations',
-  use: '/pdtf-schema/schema-derived-ontology/use-and-tooling',
+  inputRoot: '/spdtf/inputs',
+  root: '/spdtf/inputs/pdtf-schema',
+  original: '/spdtf/inputs/pdtf-schema/schema-and-supporting-material',
+  extracted: '/spdtf/inputs/pdtf-schema/schema-derived-ontology',
+  lineage: '/spdtf/inputs/pdtf-schema/schema-derived-ontology/lineage-provenance-and-verification',
+  historicalModelling: '/spdtf/inputs/pdtf-schema/schema-derived-ontology/lineage-provenance-and-verification/historical-modelling',
+  schemaVerification: '/spdtf/inputs/pdtf-schema/schema-derived-ontology/lineage-provenance-and-verification/schema-to-ontology-verification',
+  modelViews: '/spdtf/inputs/pdtf-schema/schema-derived-ontology/model-views-by-audience',
+  concepts: '/spdtf/inputs/pdtf-schema/schema-derived-ontology/concepts-and-architecture',
+  terms: '/spdtf/inputs/pdtf-schema/schema-derived-ontology/terms-and-model-resources',
+  validation: '/spdtf/inputs/pdtf-schema/schema-derived-ontology/validation-and-examples',
+  trust: '/spdtf/inputs/pdtf-schema/schema-derived-ontology/trust-governance-and-limitations',
+  use: '/spdtf/inputs/pdtf-schema/schema-derived-ontology/use-and-tooling',
 });
 
 export const PDTF1_ROUTE_MIGRATION = Object.freeze({
   canonicalRoot: PDTF1_ROUTES.root,
   intermediateRoot: '/pdtf-1',
+  schemaToSchemeIntermediateRoot: '/pdtf-schema',
   retiredRoots: Object.freeze([
     '/schema', '/implementation', '/adoption', '/model', '/ontology', '/mapping', '/manual',
   ]),
@@ -144,6 +146,20 @@ function replacePrefix(path, source, target) {
   return path.startsWith(`${source}/`) ? `${target}${path.slice(source.length)}` : null;
 }
 
+const PDTF_SCHEMA_INTERMEDIATE_ROOT = '/pdtf-schema';
+
+/** Move only the former PDTF-schema documentation cut into SPDTF inputs. */
+export function getPdtfSchemaInputReplacementRoute(value) {
+  const path = normalizePath(value);
+  return replacePrefix(path, PDTF_SCHEMA_INTERMEDIATE_ROOT, PDTF1_ROUTES.root);
+}
+
+/** Reverse the current input cut for source-cut receipts and comment identity. */
+export function getPdtfSchemaInputSourceRoute(value) {
+  const path = normalizePath(value);
+  return replacePrefix(path, PDTF1_ROUTES.root, PDTF_SCHEMA_INTERMEDIATE_ROOT);
+}
+
 /** `/manual/**` was a zero-information redirect family and is not reminted. */
 export function isRetiredPdtf1ManualAlias(value) {
   const path = normalizePath(value);
@@ -215,6 +231,8 @@ const prefixRoutes = [
 /** Return the new canonical route for a retired PDTF schema documentation URL. */
 export function getPdtf1ReplacementRoute(value) {
   const path = normalizePath(value);
+  const currentInputRoute = getPdtfSchemaInputReplacementRoute(path);
+  if (currentInputRoute) return currentInputRoute;
   if (path === '/pdtf-1') return PDTF1_ROUTES.root;
   if (path === '/pdtf-1/original-standard') return PDTF1_ROUTES.original;
   if (path.startsWith('/pdtf-1/original-standard/')) {
@@ -233,6 +251,15 @@ export function getPdtf1ReplacementRoute(value) {
   return null;
 }
 
+/**
+ * Reconstruct the schema-v8 destination before the final input-hosting cut.
+ * This is intentionally separate from the current public route resolver.
+ */
+export function getPdtf1IntermediateReplacementRoute(value) {
+  const replacement = getPdtf1ReplacementRoute(value);
+  return replacement ? getPdtfSchemaInputSourceRoute(replacement) ?? replacement : null;
+}
+
 /** True only for documentation URLs removed by this cut, never `/pdtf/**`. */
 export function isRetiredPdtf1DocumentationRoute(value) {
   return !isStablePdtfIdentifierRoute(value)
@@ -242,6 +269,10 @@ export function isRetiredPdtf1DocumentationRoute(value) {
 /** Preserve the physical filename of moved static ontology HTML outputs. */
 export function getPdtf1ReplacementFile(value) {
   const file = String(value || '').replace(/^\/+|\/+$/gu, '');
+  if (file === 'pdtf-schema') return PDTF1_ROUTES.root.slice(1);
+  if (file.startsWith('pdtf-schema/')) {
+    return `${PDTF1_ROUTES.root.slice(1)}${file.slice('pdtf-schema'.length)}`;
+  }
   if (file === 'pdtf-1') return PDTF1_ROUTES.root.slice(1);
   if (file === 'pdtf-1/original-standard') return PDTF1_ROUTES.original.slice(1);
   if (file.startsWith('pdtf-1/original-standard/')) {
@@ -259,6 +290,14 @@ export function getPdtf1ReplacementFile(value) {
     if (file.startsWith(`${source}/`)) return `${target}${file.slice(source.length)}`;
   }
   return null;
+}
+
+/** Preserve the schema-v8 file projection before moving it below SPDTF inputs. */
+export function getPdtf1IntermediateReplacementFile(value) {
+  const replacement = getPdtf1ReplacementFile(value);
+  if (!replacement) return null;
+  const source = getPdtfSchemaInputSourceRoute(`/${replacement}`);
+  return source?.slice(1) ?? replacement;
 }
 
 /** Preserve current comment threads while the old reader URL itself returns 404. */
@@ -288,4 +327,12 @@ export function getPdtf1LegacyCommentKey(value) {
     if (path.startsWith(`${canonical}/`)) return `${legacy}${path.slice(canonical.length)}`;
   }
   return path;
+}
+
+/** Resolve comment identity for the schema-v8 route before the input-hosting cut. */
+export function getPdtfSchemaInputLegacyCommentKey(value) {
+  const intermediate = getPdtfSchemaInputSourceRoute(value);
+  if (!intermediate) return normalizePath(value);
+  const currentEquivalent = `${PDTF1_ROUTES.root}${intermediate.slice(PDTF_SCHEMA_INTERMEDIATE_ROOT.length)}`;
+  return getPdtf1LegacyCommentKey(currentEquivalent);
 }

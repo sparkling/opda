@@ -27,7 +27,32 @@ import {
   shapes,
   vocabularies,
   vocabularyRoute,
+  workPackageDiagram,
+  workPackageDiagramProjection,
+  workPackageRoute,
+  workPackages,
 } from '../src/lib/property-pack-model.mjs';
+
+test('Property Pack review lists use the shared prose rhythm and an in-measure marker', async () => {
+  const [page, styles] = await Promise.all([
+    readFile(new URL('../src/pages/spdtf/property-pack/coverage.astro', import.meta.url), 'utf8'),
+    readFile(new URL('../src/styles/property-pack.css', import.meta.url), 'utf8'),
+  ]);
+  assert.match(page, /<ul class="v2-review-list">/u);
+  assert.match(styles, /\.prose > \.v2-review-list\s*\{[^}]*margin-block:\s*var\(--space-5\)[^}]*padding-inline-start:\s*calc\(var\(--space-7\) \+ var\(--space-5\)\)/su);
+});
+
+test('complete trace register is server-rendered before interactive enhancement', async () => {
+  const page = await readFile(new URL('../src/pages/spdtf/property-pack/coverage.astro', import.meta.url), 'utf8');
+  assert.doesNotMatch(page, /<details>/u);
+  assert.match(page, /id="property-pack-trace-register"/u);
+  assert.match(page, /data-static-trace-register/u);
+  assert.match(page, /coverage\.map\(\(item\) => <tr>/u);
+  assert.match(page, /item\.semantic_home/u);
+  assert.match(page, /OPDA\.DataBrowser\.mount/u);
+  assert.match(page, /pageSize:\s*25/u);
+  assert.match(page, /searchKeys:\s*\['label', 'sourceId', 'semanticHome', 'workPackage', 'disposition'\]/u);
+});
 
 test('PDTF schema and Property Pack comparison uses generated model projections', () => {
   assert.deepEqual(schemaDerivedCounts, {
@@ -149,6 +174,42 @@ test('stable detail routes are unique and identifier-based', () => {
   assert.ok(generatedRoutes.every((route) => !route.startsWith('/v2') && route !== '/modelling/property-pack'));
 });
 
+test('work packages are source-catalogue views with class-only model diagrams', async () => {
+  assert.deepEqual(workPackages.map((item) => [item.id, item.items.length]), [
+    ['construction-services-energy', 74], ['evidence-declarations', 13],
+    ['fixtures-fittings', 109], ['property-identity-address', 3],
+    ['rights-restrictions-boundaries', 24], ['searches-notices-environment', 166],
+    ['titles-ownership', 51], ['transaction-occupiers-completion', 11],
+  ]);
+  assert.equal(new Set(workPackages.map((item) => workPackageRoute(item.id))).size, workPackages.length);
+  for (const workPackage of workPackages) {
+    const source = workPackageDiagram(workPackage.id);
+    const projection = workPackageDiagramProjection(workPackage.id);
+    assert.match(source, /^---\nconfig:\n  layout: elk\n---\nflowchart LR/m);
+    assert.doesNotMatch(source, /\|"(?:domain|range)"\|/);
+    assert.equal((source.match(/^  click term_\d+ /gm) ?? []).length, projection.displayedResources.length);
+    assert.equal((source.match(/^  term_\d+ -\.->\|"/gm) ?? []).length, projection.boundaryProperties.length);
+    assert.equal(projection.boundaryProperties.length,
+      projection.incomingProperties.length + projection.outgoingProperties.length);
+    const reached = new Set(projection.reachedClasses.map((resource) => resource.iri));
+    const attached = new Set(projection.attachedClasses.map((resource) => resource.iri));
+    assert.ok(projection.incomingProperties.every((property) =>
+      !reached.has(property.domain) && reached.has(property.range) && attached.has(property.domain)));
+    assert.ok(projection.outgoingProperties.every((property) =>
+      reached.has(property.domain) && !reached.has(property.range) && attached.has(property.range)));
+    for (const property of projection.boundaryProperties) {
+      assert.ok(source.includes(`-.->|"${property.label}"|`));
+    }
+  }
+  const index = await readFile(new URL('../src/pages/spdtf/property-pack/work-packages/index.astro', import.meta.url), 'utf8');
+  const detail = await readFile(new URL('../src/pages/spdtf/property-pack/work-packages/[workPackage].astro', import.meta.url), 'utf8');
+  assert.match(index, /not a semantic home, ontology module or working-group decision/u);
+  assert.match(detail, /Dotted lines show incoming and outgoing properties/u);
+  assert.match(detail, /variant="work-package"/u);
+  assert.match(detail, /graph\.incomingProperties\.length/u);
+  assert.match(detail, /graph\.outgoingProperties\.length/u);
+});
+
 test('complete Mermaid uses the PDTF schema class-backbone projection', () => {
   const source = completeModelDiagram();
   assert.match(source, /^---\nconfig:\n  layout: elk\n---\nflowchart LR/m);
@@ -188,7 +249,10 @@ test('complete Mermaid uses the PDTF schema class-backbone projection', () => {
 
 test('context diagrams and boundary map preserve semantic-home distinctions', () => {
   const boundary = boundaryDiagram();
-  assert.equal((boundary.match(/interoperates through/g) ?? []).length, 7);
+  assert.equal((boundary.match(/supplies shared elements/g) ?? []).length, 7);
+  assert.equal((boundary.match(/ctx_common -->\|"supplies shared elements"\| ctx_/g) ?? []).length, 7);
+  assert.doesNotMatch(boundary, /interoperates through/u);
+  assert.match(boundary, /do not represent cross-context mapping/u);
   assert.match(boundary, /Cross-sector scheme context/);
   assert.match(boundary, /Common boundary/);
   for (const context of contexts) {
@@ -212,6 +276,21 @@ test('context diagrams and boundary map preserve semantic-home distinctions', ()
     assert.deepEqual(objectLabels, projection.relationshipProperties.map((property) => property.label).sort());
     assert.equal(edges.filter((edge) => edge[3] === 'isA').length, projection.subclassSources.length);
   }
+});
+
+test('contextual-boundary register uses linked cards without losing table fields', async () => {
+  const page = await readFile(new URL('../src/pages/spdtf/property-pack/contexts/index.astro', import.meta.url), 'utf8');
+  assert.match(page, /<h2 id="homes">Contextual-boundary register<\/h2>/u);
+  assert.match(page, /class="v2-card v2-context-card"/u);
+  for (const field of ['OWL resources', 'Source data points', 'Shapes']) assert.match(page, new RegExp(field, 'u'));
+  assert.match(page, /contextKindLabels\[context\.kind\]/u);
+  assert.match(page, /context\.definition/u);
+  assert.match(page, /<h3>\{title\}<code class="standalone-identifier">\{context\.id\}<\/code><\/h3>/u);
+  for (const label of ['Semantic home', 'Kind', 'Definition']) {
+    assert.match(page, new RegExp(`<p class="v2-context-card__field-label">${label}<\\/p>`, 'u'));
+  }
+  assert.match(page, /<p class="pill pill--info">\{contextKindLabels\[context\.kind\]\}<\/p>/u);
+  assert.doesNotMatch(page, /<table>/u);
 });
 
 function nodeIdForRoute(source, route) {

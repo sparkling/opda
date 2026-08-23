@@ -216,19 +216,19 @@ jobs:
           # Move the manifest-audited, ignored ontology bundles into the canonical
           # PDTF schema hierarchy before --delete retires their former URLs.
           aws s3 sync "s3://$SITE_BUCKET/ontology/artefacts/" \
-            "s3://$SITE_BUCKET/pdtf-schema/schema-derived-ontology/use-and-tooling/artefacts/"
+            "s3://$SITE_BUCKET/spdtf/inputs/pdtf-schema/schema-derived-ontology/use-and-tooling/artefacts/"
           for TOOL in ontospy pylode shaclplay widoco; do
             aws s3 sync "s3://$SITE_BUCKET/ontology/tools/$TOOL/" \
-              "s3://$SITE_BUCKET/pdtf-schema/schema-derived-ontology/use-and-tooling/tools/$TOOL/"
+              "s3://$SITE_BUCKET/spdtf/inputs/pdtf-schema/schema-derived-ontology/use-and-tooling/tools/$TOOL/"
           done
           # Keep the canonical copies outside --delete until a governed,
           # reproducible generator supplies them in the release bundle.
           aws s3 sync dist/ "s3://$SITE_BUCKET" --delete \
-            --exclude "pdtf-schema/schema-derived-ontology/use-and-tooling/artefacts/*" \
-            --exclude "pdtf-schema/schema-derived-ontology/use-and-tooling/tools/ontospy/*" \
-            --exclude "pdtf-schema/schema-derived-ontology/use-and-tooling/tools/pylode/*" \
-            --exclude "pdtf-schema/schema-derived-ontology/use-and-tooling/tools/shaclplay/*" \
-            --exclude "pdtf-schema/schema-derived-ontology/use-and-tooling/tools/widoco/*"
+            --exclude "spdtf/inputs/pdtf-schema/schema-derived-ontology/use-and-tooling/artefacts/*" \
+            --exclude "spdtf/inputs/pdtf-schema/schema-derived-ontology/use-and-tooling/tools/ontospy/*" \
+            --exclude "spdtf/inputs/pdtf-schema/schema-derived-ontology/use-and-tooling/tools/pylode/*" \
+            --exclude "spdtf/inputs/pdtf-schema/schema-derived-ontology/use-and-tooling/tools/shaclplay/*" \
+            --exclude "spdtf/inputs/pdtf-schema/schema-derived-ontology/use-and-tooling/tools/widoco/*"
 
       - name: Invalidate CloudFront
         if: github.event_name != 'pull_request'

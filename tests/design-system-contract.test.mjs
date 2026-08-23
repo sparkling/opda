@@ -75,6 +75,19 @@ const contractFiles = [
 
 test('the replacement design system ships its normative contract and presentation', async () => {
   for (const path of contractFiles) await access(file(path));
+  const [design, components, live, presentation, presentationCss, decision] = await Promise.all([
+    readFile(file('DESIGN.md'), 'utf8'), readFile(file('public/ui/design/components.css'), 'utf8'),
+    readFile(file('src/pages/design-system.astro'), 'utf8'), readFile(file('docs/design-system-site/index.html'), 'utf8'),
+    readFile(file('docs/design-system-site/styles.css'), 'utf8'), readFile(file('docs/adr/ADR-0073-adopt-opda-brand-and-replace-the-website-design-system.md'), 'utf8'),
+  ]);
+  assert.match(design, /aligned fact rows support comparison/u);
+  assert.match(components, /\.card-grid\s*\{[^}]*repeat\(auto-fit,/su);
+  assert.match(components, /\.card__stats\s*\{[^}]*grid-template-columns:\s*repeat\(3,/su);
+  assert.match(components, /a\.card:focus-visible/u);
+  assert.match(live, /aria-label="Linked card pattern"/u);
+  assert.match(presentation, /content-card__stats/u);
+  assert.match(presentationCss, /\.content-card__stats/u);
+  assert.match(decision, /On 23 August 2026 the shared card contract was clarified/u);
 });
 
 test('official brand assets retain supplied geometry, bytes and presentation parity', async () => {
@@ -348,7 +361,7 @@ test('text inherits its outer layout width instead of stacking nested measures',
     readFile(file('src/styles/working-group-campaign-sections.css'), 'utf8'),
     readFile(file('src/styles/working-group-join.css'), 'utf8'),
     readFile(file('src/styles/working-group-privacy.css'), 'utf8'),
-    readFile(file('src/pages/pdtf-schema/schema-derived-ontology/terms-and-model-resources/graph.astro'), 'utf8'),
+    readFile(file('src/pages/spdtf/inputs/pdtf-schema/schema-derived-ontology/terms-and-model-resources/graph.astro'), 'utf8'),
     readFile(file('src/styles/presentations/workshop-deck.css'), 'utf8'),
     readFile(file('src/styles/presentations/workshop-scenes.css'), 'utf8'),
     readFile(file('docs/design-system-site/styles.css'), 'utf8'),

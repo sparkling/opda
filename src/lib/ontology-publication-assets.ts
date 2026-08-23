@@ -9,7 +9,7 @@ const RETAINED_FAMILIES = Object.freeze([
   { id: 'ontology-artefacts', prefix: 'artefacts/', assetClass: ONTOLOGY_ASSET_CLASSES.artefacts },
   { id: 'ontology-tools', prefix: 'tools/', assetClass: ONTOLOGY_ASSET_CLASSES.tools },
 ]);
-const PUBLIC_ASSET_ROOT = '/pdtf-schema/schema-derived-ontology/use-and-tooling/';
+const PUBLIC_ASSET_ROOT = '/spdtf/inputs/pdtf-schema/schema-derived-ontology/use-and-tooling/';
 
 /**
  * Validate the logical path used by an ontology page to refer to a published

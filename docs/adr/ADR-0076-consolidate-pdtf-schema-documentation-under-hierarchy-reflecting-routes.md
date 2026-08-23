@@ -1,7 +1,7 @@
 ---
-status: accepted
+status: superseded
 date: 2026-08-21
-updated: 2026-08-22
+updated: 2026-08-23
 tags: [website, information-architecture, pdtf-schema, routing, migration, ontology, authority, preservation]
 supersedes: []
 amends: [ADR-0002, ADR-0041, ADR-0042, ADR-0044, ADR-0059, ADR-0060, ADR-0074, ADR-0075]
@@ -213,6 +213,11 @@ does not authorise publication or deployment.
 - [SPDTF information architecture](../spdtf-information-architecture.md)
 
 ## Amendments
+
+- **2026-08-23 — Superseded by ADR-0077.** PDTF schema documentation is now nested under
+  `/spdtf/inputs/pdtf-schema/**` as a third-party input rather than held as a peer global
+  destination. This record remains the source-cut decision for its route, information and
+  identifier-preservation evidence.
 
 - **2026-08-22 — Chair-authority terminology correction.** Maria Harris, OPDA Chair,
   clarified that the inherited version-numbered draft technical scheme was not created

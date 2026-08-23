@@ -30,29 +30,33 @@ import {
   <GraphDiagram
     source={boundaryDiagram()}
     minHeight="580px"
-    caption="Declared architectural connections only. No cross-domain mappings have yet been accepted."
+    caption="The arrows show shared elements supplied by the Common boundary. Cross-context mappings are a separate SKOS concern and no such mappings have yet been accepted."
   />
 
-  <h2 id="homes">Semantic-home register</h2>
-  <div class="v2-table-wrap">
-    <table>
-      <thead><tr><th>Semantic home</th><th>Kind</th><th>Definition</th><th>OWL resources</th><th>Source data points</th><th>Shapes</th></tr></thead>
-      <tbody>
-        {contexts.map((context) => {
-          const stats = contextStats(context.id);
-          return (
-            <tr>
-              <td><a href={contextRoute(context)}><strong>{context.id === 'dbt-smart-data' ? 'DBT Smart Data candidate semantic context' : context.label}</strong></a><br/><code class="standalone-identifier">{context.id}</code></td>
-              <td>{contextKindLabels[context.kind]}</td>
-              <td>{context.definition}</td>
-              <td>{stats.resources}</td>
-              <td>{stats.sourceItems}</td>
-              <td>{stats.shapes}</td>
-            </tr>
-          );
-        })}
-      </tbody>
-    </table>
+  <h2 id="homes">Contextual-boundary register</h2>
+  <div class="v2-card-grid v2-context-card-grid">
+    {contexts.map((context) => {
+      const stats = contextStats(context.id);
+      const title = context.id === 'dbt-smart-data'
+        ? 'DBT Smart Data candidate semantic context'
+        : context.label;
+      return (
+        <a class="v2-card v2-context-card" href={contextRoute(context)} aria-label={`Open ${title}`}>
+          <p class="v2-context-card__field-label">Semantic home</p>
+          <h3>{title}<code class="standalone-identifier">{context.id}</code></h3>
+          <p class="v2-context-card__field-label">Kind</p>
+          <p class="pill pill--info">{contextKindLabels[context.kind]}</p>
+          <p class="v2-context-card__field-label">Definition</p>
+          <p>{context.definition}</p>
+          <dl class="v2-context-card__stats">
+            <div><dt>OWL resources</dt><dd>{stats.resources}</dd></div>
+            <div><dt>Source data points</dt><dd>{stats.sourceItems}</dd></div>
+            <div><dt>Shapes</dt><dd>{stats.shapes}</dd></div>
+          </dl>
+          <span class="v2-card__action" aria-hidden="true">Open boundary →</span>
+        </a>
+      );
+    })}
   </div>
 
   <h2 id="rules">Interpretation rules</h2>
@@ -70,8 +74,8 @@ import {
       <p>It is a machine-proposed semantic context for authorisation and controlled sharing—not the external DBT programme, an OPDA working-group decision or a property-domain bounded context.</p>
     </section>
     <section>
-      <h3>Mappings are not invented</h3>
-      <p>The cross-domain mapping register is empty. Its current status is <strong>{contextMap.mapping_status}</strong>.</p>
+      <h3>Mappings are a separate SKOS concern</h3>
+      <p>The boundary arrows are not mappings. A reviewed correspondence may use an appropriate SKOS mapping predicate when both endpoints are SKOS concepts. SSSOM is not selected for internal cross-context records; it can be reconsidered only after the named external-use-case, consumer and Council gates. The register is currently empty and its status is <strong>{contextMap.mapping_status}</strong>. <a href="/spdtf/ontologies/evidence-and-mappings#cross-context-mappings">Read the Category 8 mapping method</a>.</p>
     </section>
   </div>
 </PropertyPackPage>

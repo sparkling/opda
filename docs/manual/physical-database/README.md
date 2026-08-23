@@ -18,7 +18,7 @@ A build-step composer ([ADR-0013](/modelling/adr/adr-0013)) projects the 24 sour
 
 ## See also: Modelling section
 
-The [PDTF schema overlays](/pdtf-schema/schema-and-supporting-material/schema/overlays) and [historical JSON-LD mappings](/pdtf-schema/schema-derived-ontology/lineage-provenance-and-verification/historical-modelling/jsonld-mappings) cover the source artefacts that correspond to what is deployed here. The overlays page catalogues the 34 JSON Schema overlay files whose per-overlay ontology profiles are deployed as named graphs from this tier. The JSON-LD page records the earlier authoring approach for the `@context` files that underpin the content-negotiation responses this tier serves.
+The [PDTF schema overlays](/spdtf/inputs/pdtf-schema/schema-and-supporting-material/schema/overlays) and [historical JSON-LD mappings](/spdtf/inputs/pdtf-schema/schema-derived-ontology/lineage-provenance-and-verification/historical-modelling/jsonld-mappings) cover the source artefacts that correspond to what is deployed here. The overlays page catalogues the 34 JSON Schema overlay files whose per-overlay ontology profiles are deployed as named graphs from this tier. The JSON-LD page records the earlier authoring approach for the `@context` files that underpin the content-negotiation responses this tier serves.
 
 ## Reading order
 

@@ -1,6 +1,6 @@
 ---
 interface Props {
-  variant?: 'model' | 'boundary' | 'context';
+  variant?: 'model' | 'boundary' | 'context' | 'work-package';
 }
 const { variant = 'model' } = Astro.props;
 ---
@@ -10,7 +10,14 @@ const { variant = 'model' } = Astro.props;
       <span><i class="v2-swatch v2-swatch--common"></i>Common boundary</span>
       <span><i class="v2-swatch v2-swatch--bounded"></i>Bounded context</span>
       <span><i class="v2-swatch v2-swatch--scheme"></i>Scheme context</span>
-      <span><i class="v2-line v2-line--dashed"></i>Architectural connection</span>
+      <span><i class="v2-line v2-line--solid"></i>Shared elements supplied by the Common boundary</span>
+    </>
+  ) : variant === 'work-package' ? (
+    <>
+      <span><i class="v2-swatch v2-swatch--class"></i>Class reached by this work package</span>
+      <span><i class="v2-swatch v2-swatch--cross-context"></i>One-hop attached class</span>
+      <span><i class="v2-line v2-line--solid"></i>Object property within the work package</span>
+      <span><i class="v2-line v2-line--dashed"></i>Incoming or outgoing object property</span>
     </>
   ) : variant === 'context' ? (
     <>

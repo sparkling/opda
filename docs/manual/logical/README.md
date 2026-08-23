@@ -16,7 +16,7 @@ OPDA's Logical-tier inventory: 41 entities (including three short-name aliases u
 
 ## See also: Modelling section
 
-The [Data dictionary](/pdtf-schema/schema-and-supporting-material/data-dictionary) is the complementary schema-level register: 1,538 data elements (broad, schema-level, with suggested RDF URIs) sourced from the 16 canonical overlays and OPDA Glossary spreadsheets. This tier is the refined schema-derived ontology reference (41 entities, deep, generator-emitted); the data dictionary is source material from which it was derived.
+The [Data dictionary](/spdtf/inputs/pdtf-schema/schema-and-supporting-material/data-dictionary) is the complementary schema-level register: 1,538 data elements (broad, schema-level, with suggested RDF URIs) sourced from the 16 canonical overlays and OPDA Glossary spreadsheets. This tier is the refined schema-derived ontology reference (41 entities, deep, generator-emitted); the data dictionary is source material from which it was derived.
 
 ## Reading order
 

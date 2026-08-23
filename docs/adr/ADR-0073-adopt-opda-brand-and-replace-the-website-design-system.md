@@ -1,7 +1,7 @@
 ---
 status: implemented
 date: 2026-08-16
-updated: 2026-08-21
+updated: 2026-08-23
 tags: [design-system, brand, website, accessibility, css, governance, presentation]
 supersedes: [ADR-0025]
 depends-on: [ADR-0064]
@@ -97,6 +97,13 @@ column proportions follow their content rather than an equal-width allocation. S
 URI, IRI, URN and CURIE identifiers use unboxed monospace text while ordinary inline code
 retains its code surface. Visible caption bars are
 removed while semantic captions remain visually hidden for assistive technology.
+
+On 23 August 2026 the shared card contract was clarified after the Property Pack
+work-package review. Cards now use a quiet structural top rule, explicit content
+hierarchy, optional scope notes, aligned comparison facts and a distinct action row.
+Linked cards remain one keyboard-focusable target with no nested controls; their
+grids auto-fit the content track and stack at narrow widths. The live design-system
+page and standalone review presentation carry the same specimen.
 
 ### Brand conflict resolution
 

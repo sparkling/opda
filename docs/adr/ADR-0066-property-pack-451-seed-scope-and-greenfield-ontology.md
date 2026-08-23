@@ -205,7 +205,7 @@ mappings, and recorded human approval is still required before a semantic releas
   `/modelling/property-pack` is removed without a redirect under ADR-0075's explicit
   move-and-retention contract. The technical corpus follows ADR-0075's exact mapping:
   old `/v2` maps to `/spdtf/property-pack`, old `/v2/comparison` maps to
-  `/spdtf/property-pack/pdtf-schema-lineage`, and every other old `/v2/{suffix}` maps to
+  `/spdtf/property-pack/spdtf/inputs/pdtf-schema-lineage`, and every other old `/v2/{suffix}` maps to
   `/spdtf/property-pack/{suffix}`, with no redirects.
 - **2026-08-22 — Chair-authority terminology correction.** The Property Pack candidate
   is an accelerated component of SPDTF, the first collaboratively authored scheme draft.

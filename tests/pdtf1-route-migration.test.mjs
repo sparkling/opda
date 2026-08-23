@@ -25,6 +25,8 @@ import {
   PDTF_SCHEMA_FRAGMENT_REPLACEMENTS,
   fragmentsPreservedByPdtfSchemaMigration,
   getPdtf1LegacyCommentKey,
+  getPdtf1IntermediateReplacementFile,
+  getPdtf1IntermediateReplacementRoute,
   getPdtf1ReplacementRoute,
   getPdtfSchemaFragmentReplacement,
   isRetiredPdtf1DocumentationRoute,
@@ -36,6 +38,7 @@ import {
   getAcceptedRouteFile,
   getDeclaredRouteReplacement,
   getLegacyCommentKey,
+  getSpdtfReplacementRoute,
 } from '../src/lib/site-route-migrations.mjs';
 const projectRoot = new URL('..', import.meta.url).pathname;
 const { manifest: sourceManifest } = loadPdtf1SourceRouteManifest(projectRoot);
@@ -43,11 +46,14 @@ const {
   manifest: schemaToSchemeSource,
   supplementalRoutes: schemaToSchemeSourceAdditions,
 } = loadSchemaToSchemeSourceRouteManifest(projectRoot);
-
+function getSchemaToSchemeStageReplacement(route) {
+  return getPdtf1IntermediateReplacementRoute(route) ?? getSpdtfReplacementRoute(route);
+}
 test('PDTF schema documentation routes move beneath their full reader hierarchy', () => {
   assert.deepEqual(PDTF1_ROUTE_MIGRATION, {
-    canonicalRoot: '/pdtf-schema',
+    canonicalRoot: '/spdtf/inputs/pdtf-schema',
     intermediateRoot: '/pdtf-1',
+    schemaToSchemeIntermediateRoot: '/pdtf-schema',
     retiredRoots: ['/schema', '/implementation', '/adoption', '/model', '/ontology', '/mapping', '/manual'],
     sourceRouteCount: 3500,
     movedCanonicalRouteCount: 1264,
@@ -100,7 +106,6 @@ test('PDTF schema documentation routes move beneath their full reader hierarchy'
   assert.equal(generatedFamily(`${PDTF1_ROUTES.use}/tools/widoco/index.html`), 'ontology/tools');
   assert.equal(getPdtf1ReplacementRoute(PDTF1_ROUTES.root), null);
 });
-
 test('renamed PDTF schema fragments have one explicit canonical replacement', () => {
   const expected = new Map([
     ['-current-scheme-definitive--2026-06-02', '-current-identifier-scheme-definitive--amended-2026-08-22'],
@@ -150,7 +155,6 @@ test('renamed PDTF schema fragments have one explicit canonical replacement', ()
         .map((suffix) => `section-nav-spdtf-2-working-groups-${suffix}`)]
       .map((source) => [source, source.replaceAll('spdtf-2', 'spdtf')]),
   ]);
-
   assert.deepEqual(new Map(PDTF_SCHEMA_FRAGMENT_REPLACEMENTS), expected);
   assert.equal(new Set(expected.values()).size, expected.size);
   assert.ok([...expected.values()].every((fragment) => !fragment.includes('pdtf-1')));
@@ -163,7 +167,6 @@ test('renamed PDTF schema fragments have one explicit canonical replacement', ()
   assert.equal(fragmentsPreservedByPdtfSchemaMigration(
     ['unchanged-fragment'], ['unchanged-fragment'],
   ), true);
-
   const sourceFragments = [...expected.keys()];
   const acceptedFragments = [...expected.values()];
   const receipt = composePdtfSchemaFragmentMigrationReceipt({
@@ -198,7 +201,6 @@ test('renamed PDTF schema fragments have one explicit canonical replacement', ()
     addedRecords: [], sourceRecords: [], sourceTargetRoute: () => null,
   }), /no declared replacement/u);
 });
-
 test('the frozen intermediate route cut composes into schema-to-scheme routes', () => {
   const projected = [
     ...schemaToSchemeSource.routes,
@@ -206,11 +208,15 @@ test('the frozen intermediate route cut composes into schema-to-scheme routes', 
     ...schemaToSchemeSourceAdditions,
   ]
     .map((record) => {
-      const acceptedRoute = getDeclaredRouteReplacement(record.acceptedRoute) ?? record.acceptedRoute;
+      const acceptedRoute = getSchemaToSchemeStageReplacement(record.acceptedRoute)
+        ?? record.acceptedRoute;
       return {
         ...record,
         acceptedRoute,
-        acceptedFile: getAcceptedRouteFile(record.acceptedRoute, record.acceptedFile),
+        acceptedFile: getPdtf1IntermediateReplacementFile(record.acceptedFile)
+          ?? (getSpdtfReplacementRoute(record.acceptedRoute)
+            ? getAcceptedRouteFile(record.acceptedRoute, record.acceptedFile)
+            : record.acceptedFile),
       };
     });
   const receipt = composeSchemaToSchemeRouteReceipt({
@@ -219,9 +225,8 @@ test('the frozen intermediate route cut composes into schema-to-scheme routes', 
     sourceManifest: schemaToSchemeSource,
     sourceAdditions: schemaToSchemeSourceAdditions,
     sourceContract: SCHEMA_TO_SCHEME_SOURCE_ROUTE_MANIFEST,
-    replacementRoute: getDeclaredRouteReplacement,
+    replacementRoute: getSchemaToSchemeStageReplacement,
   });
-
   assert.deepEqual(receipt, {
     policy: 'schema-to-scheme-route-composition-v1',
     sourceCommit: '3a52e644c57d2b4eed33d78e3a10810cc7a29171',
@@ -240,7 +245,7 @@ test('the frozen intermediate route cut composes into schema-to-scheme routes', 
     retainedRouteCount: 1269,
     postSourceAdditionRouteCount: 0,
     acceptedSiteRouteCount: 3280,
-    routePairsSha256: '76f64dd380bd1d044a74d17c40ad4651dfda63857bda1b8fdd1820fc874bd93a',
+    routePairsSha256: '9d5516ecc618de698f250fd4c256b3ff6353e2887b895f5cb060dad01f6f96e5',
     pdtfIdentifierRoutesSha256: 'cf2e83c5290fe5b5b2fe2f5b25e31d2d8f53d8be90cd533e5e43de8ff30a88be',
     postSourceAdditionRoutesSha256: sha256(''),
     redirects: false,
@@ -259,7 +264,7 @@ test('the frozen intermediate route cut composes into schema-to-scheme routes', 
     sourceAdditions: schemaToSchemeSourceAdditions,
     sourceContract: SCHEMA_TO_SCHEME_SOURCE_ROUTE_MANIFEST,
     replacementRoute: (route) => route === '/pdtf/LeaseTerm'
-      ? '/pdtf/leaseTerm' : getDeclaredRouteReplacement(route),
+      ? '/pdtf/leaseTerm' : getSchemaToSchemeStageReplacement(route),
   }), /stable PDTF identifier route moved/u);
   const arbitrary = structuredClone(projected);
   const unrelated = arbitrary.find(({ acceptedRoute }) => acceptedRoute === '/design-system');
@@ -269,9 +274,8 @@ test('the frozen intermediate route cut composes into schema-to-scheme routes', 
     sourceManifest: schemaToSchemeSource, sourceAdditions: schemaToSchemeSourceAdditions,
     sourceContract: SCHEMA_TO_SCHEME_SOURCE_ROUTE_MANIFEST,
     replacementRoute: (route) => route === '/design-system'
-      ? unrelated.acceptedRoute : getDeclaredRouteReplacement(route) }), /undeclared disposition/u);
+      ? unrelated.acceptedRoute : getSchemaToSchemeStageReplacement(route) }), /undeclared disposition/u);
 });
-
 test('PDTF term IRIs and governance-owned decisions are not compatibility routes', () => {
   for (const route of [
     '/pdtf/Property', '/pdtf/Property.ttl', '/pdtf/LeaseTerm', '/pdtf/leaseTerm',
@@ -282,14 +286,12 @@ test('PDTF term IRIs and governance-owned decisions are not compatibility routes
     assert.equal(getDeclaredRouteReplacement(route), null, route);
   }
 });
-
 test('retired manual aliases map to the model hierarchy but never own comment identity', () => {
   const canonical = `${PDTF1_ROUTES.modelViews}/logical/property`;
   assert.equal(getPdtf1ReplacementRoute('/manual/logical/property'), canonical);
   assert.equal(getPdtf1ReplacementRoute('/model/logical/property'), canonical);
   assert.equal(getPdtf1LegacyCommentKey(canonical), '/model/logical/property');
 });
-
 test('the frozen source cut accounts for every moved, retired, and stable PDTF route', () => {
   const baselineSet = new Set(sourceManifest.routes);
   const source = [...sourceManifest.routes, ...sourceManifest.addedRoutes];
@@ -315,7 +317,7 @@ test('the frozen source cut accounts for every moved, retired, and stable PDTF r
   const targets = moved.map(({ acceptedRoute }) => getPdtf1ReplacementRoute(acceptedRoute));
   assert.equal(new Set(targets).size, 1264);
   assert.ok(targets.every((route) => (
-    route === '/pdtf-schema' || route.startsWith('/pdtf-schema/')
+    route === PDTF1_ROUTES.root || route.startsWith(`${PDTF1_ROUTES.root}/`)
   )));
   const intermediateCommentKeys = new Map([
     ['/ontology/concepts-and-architecture', '/pdtf-1/extracted-ontology/concepts-and-architecture'],
@@ -335,7 +337,6 @@ test('the frozen source cut accounts for every moved, retired, and stable PDTF r
   assert.equal(isRetiredPdtf1DocumentationRoute('/pdtf/Property'), false);
   assert.equal(isRetiredPdtf1DocumentationRoute('/modelling/adr/adr-0075'), false);
 });
-
 test('the complete PDTF migration receipt is bijective and preserves information and fragments', () => {
   const project = (record) => {
     const sourceRoute = record.acceptedRoute;
@@ -389,17 +390,16 @@ test('the complete PDTF migration receipt is bijective and preserves information
     sourceReframeRoutesSha256: sha256(''),
     outOfScopeSourceRouteCount: 919,
     outOfScopeSourceRoutesSha256: 'e9c7cfdbabac6c676e0560925d70b627af7d0a50e2d23f18957e1345187cd49c',
-    movedRoutePairsSha256: 'adaa5ec24650f79b650b4c0f748ec9e7b9bde1e295d32e95785f8e1dd810f82b',
-    retiredAliasesSha256: '35894b714f3562508cd1b4dcaf09c2505efa9956473cf1f343d08c5a450403fa',
+    movedRoutePairsSha256: '2206cfa93d24b19b439f5fff125375b6025afb85bb630117799b9a0bbd42386f',
+    retiredAliasesSha256: 'e7c087d12b527b19f0c6792d4d64119e7f25e2bf37b327174b8a472236e62619',
     stableIdentifierRoutesSha256: 'cf2e83c5290fe5b5b2fe2f5b25e31d2d8f53d8be90cd533e5e43de8ff30a88be',
     redirects: false,
-    canonicalRoot: '/pdtf-schema',
+    canonicalRoot: '/spdtf/inputs/pdtf-schema',
     stableIdentifierRoot: '/pdtf',
   });
   assert.equal(getAcceptedRouteFile(
     '/ontology/tools/skosmos/schemes', 'ontology/tools/skosmos/schemes.html',
   ), `${PDTF1_ROUTES.use.slice(1)}/tools/skosmos/schemes.html`);
-
   const fragmentLoss = structuredClone(records);
   const changed = fragmentLoss.find(({ baselineRoute }) => baselineRoute === '/ontology/classes');
   changed.acceptedFragmentSha256 = '0'.repeat(64);
@@ -407,7 +407,6 @@ test('the complete PDTF migration receipt is bijective and preserves information
     records: fragmentLoss, addedRecords, retiredAliases, migration: exactMigration,
     replacementRoute: getPdtf1ReplacementRoute, sourceManifest,
   }), /information or fragments changed/u);
-
   const sourceBakeOff = [...sourceManifest.routes, ...sourceManifest.addedRoutes]
     .find(({ acceptedRoute }) => acceptedRoute === '/ontology/bake-off');
   const forgedExact = structuredClone(records);
@@ -446,7 +445,6 @@ test('the complete PDTF migration receipt is bijective and preserves information
     records: forgedExact, addedRecords, retiredAliases, migration: exactMigration,
     replacementRoute: getPdtf1ReplacementRoute, sourceManifest,
   }), /information or fragments changed/u);
-
   const forgedStable = structuredClone(records);
   const stableTarget = forgedStable.find(({ acceptedRoute }) => acceptedRoute === '/pdtf/Property');
   stableTarget.pdtf1SourceRetentionReceipt = { policy: 'forged' };
@@ -459,7 +457,6 @@ test('the complete PDTF migration receipt is bijective and preserves information
     replacementRoute: getPdtf1ReplacementRoute, sourceManifest,
   }), /retired alias contract/u);
 });
-
 test('composed comment identities retain Property Pack and PDTF threads', () => {
   assert.equal(getLegacyCommentKey('/spdtf/property-pack/pdtf-schema-lineage'), '/v2/comparison');
   assert.equal(getLegacyCommentKey(`${PDTF1_ROUTES.modelViews}/logical/property`), '/model/logical/property');
@@ -469,7 +466,6 @@ test('composed comment identities retain Property Pack and PDTF threads', () => 
   assert.match(comments, /getLegacyCommentKey/u);
   assert.doesNotMatch(comments, /getPropertyPackLegacyCommentKey/u);
 });
-
 test('preservation capture reads manifest-retained pages from the frozen pre-migration cut', () => {
   const capture = readFileSync(new URL('../scripts/capture-ia-route-baseline.mjs', import.meta.url), 'utf8');
   assert.match(capture, /args\.get\('--source-root'\)/u);
@@ -482,7 +478,6 @@ test('preservation capture reads manifest-retained pages from the frozen pre-mig
     'current accepted pages must never masquerade as frozen pre-migration evidence',
   );
 });
-
 test('a final migration receipt cannot excuse drift in the frozen source cut', () => {
   const prior = loadPriorIaRouteManifest(projectRoot).manifest.routes
     .find(({ route }) => route === '/ontology/bake-off');
@@ -490,7 +485,6 @@ test('a final migration receipt cannot excuse drift in the frozen source cut', (
     .find(({ acceptedRoute }) => acceptedRoute === '/ontology/bake-off');
   assert.equal(manifestRetainedBaselineProjectionMatches(source, prior), true);
   assert.equal(manifestRetainedSourceRecordMatches(source, prior), true);
-
   const forged = structuredClone(source);
   forged.acceptedContentSha256 = '1'.repeat(64);
   forged.pdtf1SourceRetentionReceipt = { policy: 'forged-final-receipt' };

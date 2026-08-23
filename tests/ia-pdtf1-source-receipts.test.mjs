@@ -5,12 +5,19 @@ import { tmpdir } from 'node:os';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import test from 'node:test';
-import { loadPdtf1SourceRouteManifest } from '../scripts/lib/ia-prior-manifest-contract.mjs';
 import {
+  PDTF_SCHEMA_INPUT_SOURCE_ROUTE_MANIFEST,
+  loadPdtf1SourceRouteManifest, loadPdtfSchemaInputSourceRouteManifest,
+} from '../scripts/lib/ia-prior-manifest-contract.mjs';
+import {
+  generatedFamily,
   pdtf1SourceEvidenceMatches,
   semanticBlocksDigest,
   sha256,
 } from '../scripts/lib/ia-preservation-primitives.mjs';
+import {
+  PDTF_SCHEMA_INPUT_INFORMATION_REFRAMES, composePdtfSchemaInputMigrationReceipt,
+} from '../scripts/lib/pdtf-schema-input-route-contract.mjs';
 import { createCaptureEvidence } from '../scripts/lib/ia-capture-evidence.mjs';
 import {
   PDTF1_TOOL_REFRAMES, composePdtf1ToolReframeReceipt,
@@ -18,6 +25,9 @@ import {
 import {
   SOURCE_ARCHIVE_REFRAMES, composeSourceArchiveReframeReceipt,
 } from '../scripts/lib/source-archive-reframes.mjs';
+import {
+  getAcceptedRouteFile, getDeclaredRouteReplacement, getLegacyCommentKey,
+} from '../src/lib/site-route-migrations.mjs';
 
 const projectRoot = fileURLToPath(new URL('..', import.meta.url));
 const checker = fileURLToPath(new URL('../scripts/check-ia-preservation.mjs', import.meta.url));
@@ -25,9 +35,6 @@ const semanticLedgerPath = fileURLToPath(new URL(
   '../src/data/ia-semantic-reframe-ledger.json', import.meta.url,
 ));
 const semanticLedger = JSON.parse(readFileSync(semanticLedgerPath, 'utf8'));
-const routes = JSON.parse(readFileSync(
-  new URL('../src/data/ia-route-baseline.json', import.meta.url), 'utf8',
-));
 const families = JSON.parse(readFileSync(
   new URL('../src/data/ia-preservation-baseline.json', import.meta.url), 'utf8',
 ));
@@ -35,17 +42,18 @@ const resources = JSON.parse(readFileSync(
   new URL('../src/data/resources-manifest.json', import.meta.url), 'utf8',
 ));
 const sourceManifest = loadPdtf1SourceRouteManifest(projectRoot).manifest;
+const stagedManifest = loadPdtfSchemaInputSourceRouteManifest(projectRoot).manifest;
 const sourceByRoute = new Map(
   [...sourceManifest.routes, ...sourceManifest.addedRoutes]
     .map((record) => [record.acceptedRoute, record]),
 );
-const acceptedByRoute = new Map(
-  [...routes.routes, ...routes.addedRoutes]
+const stagedByRoute = new Map(
+  [...stagedManifest.routes, ...stagedManifest.addedRoutes]
     .map((record) => [record.acceptedRoute, record]),
 );
 
 function movedReceipt() {
-  const accepted = [...acceptedByRoute.values()]
+  const accepted = [...stagedByRoute.values()]
     .find(({ pdtf1SourceRetentionReceipt: receipt }) => (
       receipt?.semanticReframeBlocks?.length >= 3
     ));
@@ -106,10 +114,13 @@ test('PDTF source and tool reframes are a closed, hash-bound set', () => {
     reframed: sourceReceipt.reframedFileCount,
     files: sourceReceipt.reframedFiles.map(({ path: file }) => file),
   }, {
-    exact: 1611,
-    reframed: 9,
+    exact: 1608,
+    reframed: 12,
     files: [
       '00-deliverables/semantic-models/README.md',
+      '03-standards/ontology-candidates/property-pack/0.1/candidate-manifest.json',
+      '03-standards/ontology-candidates/property-pack/0.1/projections/context-map.json',
+      '03-standards/ontology-candidates/property-pack/0.1/validation/report.json',
       '03-standards/ontology/exemplars/README.md',
       '03-standards/rml/CONTRACT.md',
       '03-standards/rml/ONTOLOGY-COVERAGE.md',
@@ -122,7 +133,7 @@ test('PDTF source and tool reframes are a closed, hash-bound set', () => {
   });
   const tools = families.families.find(({ id }) => id === 'ontology-tools');
   const currentTools = inventoryWithTrackedReframes(
-    tools.baseline, 'public/pdtf-schema/schema-derived-ontology/use-and-tooling/tools',
+    tools.baseline, 'public/spdtf/inputs/pdtf-schema/schema-derived-ontology/use-and-tooling/tools',
     PDTF1_TOOL_REFRAMES,
   );
   const toolReceipt = composePdtf1ToolReframeReceipt(tools.baseline, currentTools);
@@ -139,7 +150,7 @@ test('PDTF source and tool reframes are a closed, hash-bound set', () => {
     reframed: 4,
     files: ['COMPARISON.md', 'custom/index.html', 'custom/README.md', 'skosmos/README.md'],
   });
-  const sourceReceipts = [...routes.routes, ...routes.addedRoutes]
+  const sourceReceipts = [...stagedManifest.routes, ...stagedManifest.addedRoutes]
     .filter(({ pdtf1SourceRetentionReceipt }) => pdtf1SourceRetentionReceipt);
   assert.equal(sourceReceipts.length, 47);
   assert.ok(sourceReceipts.every((record) => {
@@ -155,12 +166,12 @@ test('PDTF source and tool reframes are a closed, hash-bound set', () => {
     '/pdtf-1', '/pdtf-1/original-standard',
   ]);
   assert.deepEqual({
-    routes: routes.pdtf1Migration.sourceReframeRouteCount,
-    blocks: routes.pdtf1Migration.sourceReframeTotalBlockCount,
-    exact: routes.pdtf1Migration.sourceReframeExactBlockCount,
-    semantic: routes.pdtf1Migration.sourceReframeSemanticBlockCount,
-    nonInformation: routes.pdtf1Migration.sourceReframeNonInformationBlockCount,
-    digest: routes.pdtf1Migration.sourceReframeRoutesSha256,
+    routes: stagedManifest.pdtf1Migration.sourceReframeRouteCount,
+    blocks: stagedManifest.pdtf1Migration.sourceReframeTotalBlockCount,
+    exact: stagedManifest.pdtf1Migration.sourceReframeExactBlockCount,
+    semantic: stagedManifest.pdtf1Migration.sourceReframeSemanticBlockCount,
+    nonInformation: stagedManifest.pdtf1Migration.sourceReframeNonInformationBlockCount,
+    digest: stagedManifest.pdtf1Migration.sourceReframeRoutesSha256,
   }, {
     routes: 47, blocks: 6251, exact: 6132, semantic: 119, nonInformation: 0,
     digest: '021f6ab746f1210bea1819266d7102a1a1e63707fb9609416a202a2228116a5c',
@@ -179,11 +190,11 @@ test('closed file reframes reject size-only drift in reviewed and untouched reco
   assert.throws(() => composeSourceArchiveReframeReceipt(
     sourceArchive.baseline,
     inventoryWithSizeMutation(currentSourceArchive, '_content/schema/35-transaction-participants.md'),
-  ), /outside the reviewed authority-note set/u);
+  ), /outside the reviewed source-reframe set/u);
 
   const tools = families.families.find(({ id }) => id === 'ontology-tools');
   const currentTools = inventoryWithTrackedReframes(
-    tools.baseline, 'public/pdtf-schema/schema-derived-ontology/use-and-tooling/tools',
+    tools.baseline, 'public/spdtf/inputs/pdtf-schema/schema-derived-ontology/use-and-tooling/tools',
     PDTF1_TOOL_REFRAMES,
   );
   assert.throws(() => composePdtf1ToolReframeReceipt(
@@ -209,8 +220,9 @@ test('visible source inventory size changes are path and byte bound', () => {
     ['ecb297ca5d23a0694d91824ea61981b0d0650aadfe3775f1ae1faa2717699df6',
       'source/03-standards/rml/CONTRACT.md', '4,891→5,048'],
   ];
-  const entries = semanticLedger.entries.filter(({ classification }) => (
+  const entries = semanticLedger.entries.filter(({ classification, sourceRoute }) => (
     classification === 'source-inventory-metadata-refresh'
+      && sourceRoute === '/library/resources'
   ));
   assert.deepEqual(entries.map(({ sourceBlockSha256 }) => sourceBlockSha256), (
     expected.map(([hash]) => hash)
@@ -228,21 +240,47 @@ test('visible source inventory size changes are path and byte bound', () => {
   }
 });
 
-test('preservation checker rejects a forged PDTF source-retention receipt', () => {
+test('preservation checker rejects a forged PDTF schema input receipt', () => {
   const directory = mkdtempSync(path.join(tmpdir(), 'opda-ia-preservation-'));
   const fixture = path.join(directory, 'route-baseline.json');
   try {
-    const candidate = structuredClone(routes);
-    const sourceReceipt = [...candidate.routes, ...candidate.addedRoutes]
-      .map(({ pdtf1SourceRetentionReceipt }) => pdtf1SourceRetentionReceipt)
-      .find(Boolean);
-    sourceReceipt.semanticReframeBlocks[0].replacementBlockSha256 = '0'.repeat(64);
+    const candidate = structuredClone(stagedManifest);
+    const project = (record) => {
+      const acceptedRoute = getDeclaredRouteReplacement(record.acceptedRoute)
+        ?? record.acceptedRoute;
+      return {
+        ...record,
+        acceptedRoute,
+        acceptedFile: getAcceptedRouteFile(record.acceptedRoute, record.acceptedFile),
+        acceptedGeneratedFamily: generatedFamily(acceptedRoute),
+      };
+    };
+    candidate.schemaVersion = 9;
+    candidate.routes = candidate.routes.map(project);
+    candidate.addedRoutes = candidate.addedRoutes.map(project);
+    const byRoute = new Map([...candidate.routes, ...candidate.addedRoutes]
+      .map((record) => [record.acceptedRoute, record]));
+    for (const reframe of PDTF_SCHEMA_INPUT_INFORMATION_REFRAMES) {
+      const target = byRoute.get(reframe.targetRoute);
+      target.acceptedContentSha256 = reframe.targetContentSha256;
+      target.acceptedBlockInventorySha256 = reframe.targetBlockInventorySha256;
+    }
+    candidate.pdtfSchemaInputMigration = composePdtfSchemaInputMigrationReceipt({
+      records: candidate.routes,
+      addedRecords: candidate.addedRoutes,
+      sourceManifest: stagedManifest,
+      sourceContract: PDTF_SCHEMA_INPUT_SOURCE_ROUTE_MANIFEST,
+      replacementRoute: getDeclaredRouteReplacement,
+      replacementFile: getAcceptedRouteFile,
+      commentKey: getLegacyCommentKey,
+    });
+    candidate.pdtfSchemaInputMigration.commentKeyPairsSha256 = '0'.repeat(64);
     writeFileSync(fixture, JSON.stringify(candidate));
     const result = spawnSync(process.execPath, [
       checker, '--manifest-only', `--route-manifest=${fixture}`,
-    ], { cwd: projectRoot, encoding: 'utf8' });
+    ], { cwd: projectRoot, encoding: 'utf8', maxBuffer: 64 * 1024 * 1024 });
     assert.notEqual(result.status, 0);
-    assert.match(`${result.stdout}${result.stderr}`, /PDTF schema source migration|semantic reframe block/u);
+    assert.match(`${result.stdout}${result.stderr}`, /PDTF schema input migration contract/u);
   } finally {
     rmSync(directory, { recursive: true, force: true });
   }
@@ -322,7 +360,7 @@ test('source evidence derives the block count for an added source route', () => 
 
 test('stable PDTF identifier pages reject an unnecessary source receipt', () => {
   const stableSource = sourceByRoute.get('/pdtf/Property');
-  const stableAccepted = structuredClone(acceptedByRoute.get('/pdtf/Property'));
+  const stableAccepted = structuredClone(stagedByRoute.get('/pdtf/Property'));
   stableAccepted.pdtf1SourceRetentionReceipt = structuredClone(
     movedReceipt().accepted.pdtf1SourceRetentionReceipt,
   );

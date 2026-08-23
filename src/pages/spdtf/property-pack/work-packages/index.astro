@@ -1,0 +1,37 @@
+---
+import PropertyPackPage from '@/components/property-pack/PropertyPackPage.astro';
+import { contextById, workPackages, workPackageRoute } from '@/lib/property-pack-model.mjs';
+
+const titleCase = (value) => value.replace(/\b\w/gu, (letter) => letter.toUpperCase());
+---
+<PropertyPackPage
+  title="Work-package coverage"
+  description="Source work-package views of the candidate Property Pack model."
+  category="Evidence & assurance"
+  crumbs={[{ label: 'Work-package coverage' }]}
+>
+  <h1>Work-package coverage</h1>
+  <p class="lead">A work package groups related source data points for review. It is a practical source-catalogue lens, not a semantic home, ontology module or working-group decision.</p>
+
+  <div class="callout callout--note">
+    <p class="callout__label">How to use these views</p>
+    <p>Each page shows the source items in one work package, the candidate resources they reach, and a class-only Mermaid view of the directly connected model. Datatype and coded-value properties remain in the register so the diagram stays readable.</p>
+  </div>
+
+  <div class="card-grid work-package-card-grid">
+    {workPackages.map((workPackage, index) => (
+      <a class="card card--linked work-package-card" href={workPackageRoute(workPackage.id)}>
+        <span class="card__eyebrow">Work package {String(index + 1).padStart(2, '0')}</span>
+        <h2>{titleCase(workPackage.label)}</h2>
+        <p class="card__description">Review the source items and the candidate model resources reached by this catalogue slice.</p>
+        <p class="card__scope"><strong>Boundaries:</strong> {workPackage.semanticHomes.map((id) => contextById.get(id)?.label ?? id).join(', ')}</p>
+        <dl class="card__stats">
+          <div><dt>Source items</dt><dd>{workPackage.items.length}</dd></div>
+          <div><dt>Boundaries</dt><dd>{workPackage.semanticHomes.length}</dd></div>
+          <div><dt>Resources</dt><dd>{workPackage.resources.length}</dd></div>
+        </dl>
+        <span class="card__action" aria-hidden="true">Explore work package <span>→</span></span>
+      </a>
+    ))}
+  </div>
+</PropertyPackPage>

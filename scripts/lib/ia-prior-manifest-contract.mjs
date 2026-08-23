@@ -67,6 +67,32 @@ export const SCHEMA_TO_SCHEME_SOURCE_ROUTE_MANIFEST = Object.freeze({
   pdtfIdentifierRouteCount: 1090,
   propertyPackSourceRouteCount: 693,
 });
+export const PDTF_SCHEMA_INPUT_SOURCE_ROUTE_MANIFEST = Object.freeze({
+  commit: 'b827653b2c5b600120c36a2535b35b25da826902',
+  path: 'src/data/ia-route-baseline.json',
+  blob: '9f2a79f934ba8c885f960b17788bf2a0b07a96b9',
+  sha256: '3a75aa2889d64d9529ad554dee126888b9795ddd94318cc3188fe04a9b5d2732',
+  schemaVersion: 8,
+  baselineCommit: PRIOR_IA_ROUTE_MANIFEST.baselineCommit,
+  acceptedCommit: '2689f79920da57cb5bd6db0ed6165299b5c9b0d0',
+  routeCount: 3209,
+  addedRouteCount: 76,
+  retiredRouteCount: 227,
+  acceptedRouteCount: 3285,
+  pdtfSchemaRoot: '/pdtf-schema',
+  pdtfSchemaRouteCount: 1264,
+  pdtfSchemaBaselineRouteCount: 1255,
+  pdtfSchemaAddedRouteCount: 9,
+  retainedRouteCount: 2021,
+  pdtfIdentifierRouteCount: 1090,
+  generatedToolRouteCount: 652,
+  navigationFragmentIdCount: 37,
+  navigationFragmentOccurrenceCount: 22607,
+  navigationFragmentInventorySha256: '6a67a1671b894042c8a7325d09db682ed8397b4b4884499e4da7adedfa23ede9',
+  commentKeyCount: 1264,
+  commentKeyPairsSha256: '5d840155c49723947dc9ba271d078bb25255a04cd37473969372ac9971c85447',
+  historicalCommentKeysSha256: '34fcab218a3856c0d54f5ff5fe0d8ea610b536f16a98eb2a94b238ee66364fce',
+});
 
 const gitOptions = (root) => ({
   cwd: root, encoding: 'utf8', maxBuffer: 64 * 1024 * 1024,
@@ -189,6 +215,66 @@ export function loadSchemaToSchemeSourceRouteManifest(root) {
     throw new Error('schema-to-scheme source route manifest does not match its frozen contract');
   }
   return { ...result, supplementalRoutes: supplemental };
+}
+
+/** Load the immutable schema-v8 cut before PDTF schema became an SPDTF input. */
+export function loadPdtfSchemaInputSourceRouteManifest(root) {
+  const contract = PDTF_SCHEMA_INPUT_SOURCE_ROUTE_MANIFEST;
+  requireAncestor(root, contract.commit, git(root, ['rev-parse', 'HEAD']));
+  const result = loadPinnedManifest(root, contract);
+  const { manifest } = result;
+  const routes = manifest.routes ?? [];
+  const additions = manifest.addedRoutes ?? [];
+  const retired = manifest.retiredRoutes ?? [];
+  const all = [...routes, ...additions];
+  const within = (route, routeRoot) => route === routeRoot || route?.startsWith(`${routeRoot}/`);
+  const pdtfSchema = all.filter(({ acceptedRoute }) => within(
+    acceptedRoute, contract.pdtfSchemaRoot,
+  ));
+  const pdtfSchemaBaseline = routes.filter(({ acceptedRoute }) => within(
+    acceptedRoute, contract.pdtfSchemaRoot,
+  ));
+  const pdtfSchemaAdded = additions.filter(({ acceptedRoute }) => within(
+    acceptedRoute, contract.pdtfSchemaRoot,
+  ));
+  const stablePdtf = all.filter(({ acceptedRoute }) => within(acceptedRoute, '/pdtf'));
+  const navigationFragments = new Map();
+  for (const record of pdtfSchema) {
+    for (const fragment of record.acceptedFragments ?? []) {
+      if (!fragment.startsWith('section-nav-group-pdtf-schema-')
+        && !fragment.startsWith('section-nav-pdtf-schema-')) continue;
+      navigationFragments.set(fragment, (navigationFragments.get(fragment) ?? 0) + 1);
+    }
+  }
+  const navigationFragmentInventorySha256 = sha256([...navigationFragments]
+    .sort(([left], [right]) => left.localeCompare(right))
+    .map(([fragment, count]) => `${fragment}\0${count}`).join('\n'));
+  if (manifest.schemaVersion !== contract.schemaVersion
+    || manifest.baselineCommit !== contract.baselineCommit
+    || manifest.acceptedCommit !== contract.acceptedCommit
+    || manifest.routeCount !== contract.routeCount || routes.length !== contract.routeCount
+    || manifest.addedRouteCount !== contract.addedRouteCount
+    || additions.length !== contract.addedRouteCount
+    || manifest.retiredRouteCount !== contract.retiredRouteCount
+    || retired.length !== contract.retiredRouteCount
+    || all.length !== contract.acceptedRouteCount
+    || new Set(all.map(({ acceptedRoute }) => acceptedRoute)).size !== all.length
+    || new Set(all.map(({ acceptedFile }) => acceptedFile)).size !== all.length
+    || pdtfSchema.length !== contract.pdtfSchemaRouteCount
+    || pdtfSchemaBaseline.length !== contract.pdtfSchemaBaselineRouteCount
+    || pdtfSchemaAdded.length !== contract.pdtfSchemaAddedRouteCount
+    || all.length - pdtfSchema.length !== contract.retainedRouteCount
+    || stablePdtf.length !== contract.pdtfIdentifierRouteCount
+    || pdtfSchema.filter(({ acceptedGeneratedFamily }) => (
+      acceptedGeneratedFamily === 'ontology/tools'
+    )).length !== contract.generatedToolRouteCount
+    || navigationFragments.size !== contract.navigationFragmentIdCount
+    || [...navigationFragments.values()].reduce((sum, count) => sum + count, 0)
+      !== contract.navigationFragmentOccurrenceCount
+    || navigationFragmentInventorySha256 !== contract.navigationFragmentInventorySha256) {
+    throw new Error('PDTF schema input source manifest does not match its frozen contract');
+  }
+  return result;
 }
 
 export function verifyBaselineRootCommit(root) {

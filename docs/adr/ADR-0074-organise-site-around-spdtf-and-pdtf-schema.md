@@ -1,7 +1,7 @@
 ---
 status: implemented
 date: 2026-08-18
-updated: 2026-08-22
+updated: 2026-08-23
 tags: [website, information-architecture, pdtf-schema, spdtf, ontology, semantic-modelling, standards, migration, governance]
 supersedes: []
 amends: [ADR-0002, ADR-0041, ADR-0059, ADR-0062]
@@ -59,7 +59,7 @@ implements: [docs/spdtf-information-architecture.md]
 >
 > Update 2026-08-21 — PDTF schema route consolidation: [ADR-0076](./ADR-0076-consolidate-pdtf-schema-documentation-under-hierarchy-reflecting-routes.md)
 > supersedes this ADR's stable-route clauses for PDTF schema reader documentation. Those
-> pages move beneath `/pdtf-schema/**`; their old routes and the `/manual/**` aliases are
+> pages move beneath `/spdtf/inputs/pdtf-schema/**`; their old routes and the `/manual/**` aliases are
 > removed without redirects. Atomic information, fragment, status and feedback-thread
 > preservation remain release gates. `/pdtf/**` is not a compatibility family: it
 > remains the unchanged RDF identifier and dereferenceability namespace.
@@ -345,6 +345,10 @@ final order before implementation.
 
 ## Amendments
 
+- **2026-08-23 — PDTF schema is an SPDTF third-party input.** ADR-0077 removes the PDTF
+  schema from the global destination set and hosts it beneath `/spdtf/inputs`. Route
+  containment does not confer SPDTF authority, adoption or authorship.
+
 - **2026-08-22 — Chair-authority terminology correction.** Maria Harris, OPDA Chair,
   clarified that the inherited version-numbered draft technical scheme was not created
   collaboratively and was not endorsed by OPDA. The site architecture therefore
@@ -352,7 +356,7 @@ final order before implementation.
   **schema-derived ontology** as evidence and implementation inputs, and **SPDTF** as
   the first collaboratively authored scheme draft. The governing relationship is
   schema to scheme, not one numbered standard generation replacing another. Reader
-  routes move to `/pdtf-schema/**` and `/spdtf/**`; stable `/pdtf/**` RDF identifiers
+  routes move to `/spdtf/inputs/pdtf-schema/**` and `/spdtf/**`; stable `/pdtf/**` RDF identifiers
   and factual historical provenance remain unchanged.
 - **2026-08-22 — semantic-package contract remint.** The canonical workspace-contract
   identifier is now `https://opda.org.uk/spdtf/semantic-package/workspace-contract`,

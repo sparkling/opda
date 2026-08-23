@@ -36,7 +36,7 @@ export function buildDiagramLinks(ids: string[]): Record<string, string> {
     if (!tier) continue;
 
     const slug = deriveSlug(id, tier);
-    const route = slug ? `/pdtf-schema/schema-derived-ontology/model-views-by-audience/${tier}/${slug}` : `/pdtf-schema/schema-derived-ontology/model-views-by-audience/${tier}`;
+    const route = slug ? `/spdtf/inputs/pdtf-schema/schema-derived-ontology/model-views-by-audience/${tier}/${slug}` : `/spdtf/inputs/pdtf-schema/schema-derived-ontology/model-views-by-audience/${tier}`;
 
     // Normalised stem (last segment of the slug, or the slug itself)
     const stem = slug.split('/').pop() ?? slug;

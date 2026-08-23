@@ -4,9 +4,8 @@ import {
   blockInventory, linkedInformationBlocks, nonInformationBlocksDigest,
   semanticBlocksDigest, sha256,
 } from './ia-preservation-contract.mjs';
-import {
-  getAcceptedRoute, getDeclaredRouteReplacement,
-} from '../../src/lib/site-route-migrations.mjs';
+import { PDTF_SCHEMA_INPUT_INFORMATION_REFRAMES } from './pdtf-schema-input-route-contract.mjs';
+import { getAcceptedRoute } from '../../src/lib/site-route-migrations.mjs';
 import { LEASE_TERM_CASE_COLLISION } from '../../src/lib/ontology-case-collision.mjs';
 
 const HASH = /^[a-f0-9]{64}$/u;
@@ -14,6 +13,7 @@ const SEMANTIC_CLASSES = new Set([
   'terminology-and-scope-reframe',
   'authority-and-label-reframe',
   'decision-status-update',
+  'presentation-structure-reframe',
   'scope-and-maturity-clarification',
   'source-inventory-metadata-refresh',
 ]);
@@ -40,6 +40,20 @@ const RETENTION_TARGETS = Object.freeze({
     LEASE_TERM_CASE_COLLISION.propertyRoute,
   ],
 });
+const STAGED_INFORMATION_BLOCKS = new Map();
+for (const reframe of PDTF_SCHEMA_INPUT_INFORMATION_REFRAMES) {
+  for (const replacement of reframe.replacements) {
+    const sourceBlockSha256 = sha256(`${replacement.sourceTag}\0${replacement.sourceText}`);
+    if (STAGED_INFORMATION_BLOCKS.has(sourceBlockSha256)) {
+      throw new Error(`staged information block is duplicated: ${sourceBlockSha256}`);
+    }
+    STAGED_INFORMATION_BLOCKS.set(sourceBlockSha256, {
+      stageSourceRoute: reframe.sourceRoute, stageTargetRoute: reframe.targetRoute,
+      replacementBlockSha256: sha256(`${replacement.targetTag}\0${replacement.targetText}`),
+      replacementTag: replacement.targetTag, replacementText: replacement.targetText,
+    });
+  }
+}
 
 function localRouteFromHref(href) {
   if (typeof href !== 'string' || !href.startsWith('/')) return null;
@@ -109,8 +123,9 @@ export function createCaptureEvidence({ semanticLedgerPath, baselineCommit }) {
     const destinationRoute = getAcceptedRoute(resolution.destinationRoute);
     const policy = destinationRoute === resolution.originalDestinationRoute
       ? 'same-retained-route'
-      : getDeclaredRouteReplacement(resolution.originalDestinationRoute) === destinationRoute
-        || NAVIGATION_CANONICAL_EQUIVALENTS[resolution.originalDestinationRoute]?.includes(destinationRoute)
+      : getAcceptedRoute(resolution.originalDestinationRoute) === destinationRoute
+        || NAVIGATION_CANONICAL_EQUIVALENTS[resolution.originalDestinationRoute]
+          ?.some((equivalent) => getAcceptedRoute(equivalent) === destinationRoute)
         ? 'canonical-equivalent' : null;
     if (!policy) {
       throw new Error(`navigation-copy supersession has no canonical destination proof: ${route}#${entry.sourceBlockSha256}`);
@@ -119,6 +134,21 @@ export function createCaptureEvidence({ semanticLedgerPath, baselineCommit }) {
       ? resolution.supersessionReason
       : `${resolution.supersessionReason} The composed canonical destination is "${destinationRoute}".`;
     return { ...resolution, destinationRoute, destinationPolicy: policy, supersessionReason };
+  }
+
+  function semanticResolution(entry) {
+    const staged = STAGED_INFORMATION_BLOCKS.get(entry.replacementBlockSha256);
+    if (!staged) return { ...entry, replacementRoute: getAcceptedRoute(entry.replacementRoute) };
+    if (staged.stageSourceRoute !== entry.replacementRoute
+      || getAcceptedRoute(staged.stageTargetRoute) !== getAcceptedRoute(entry.replacementRoute)) {
+      throw new Error(`staged semantic replacement has no route-composition proof: ${entry.sourceBlockSha256}`);
+    }
+    return {
+      ...entry, replacementRoute: getAcceptedRoute(staged.stageTargetRoute),
+      replacementBlockSha256: staged.replacementBlockSha256,
+      replacementTag: staged.replacementTag, replacementText: staged.replacementText,
+      reviewNote: `${entry.reviewNote} Staged input-hosting reframe: ${entry.replacementText} → ${staged.replacementText}.`,
+    };
   }
 
   function retentionTargets(route, before) {
@@ -178,11 +208,12 @@ export function createCaptureEvidence({ semanticLedgerPath, baselineCommit }) {
         if (!remaining) break;
       }
       if (!remaining) continue;
-      const semantic = semanticReframes.get(hash);
+      const declaredSemantic = semanticReframes.get(hash);
+      const semantic = declaredSemantic?.classification === NON_INFORMATION_CLASS
+        ? declaredSemantic : declaredSemantic && semanticResolution(declaredSemantic);
       const navigation = semantic?.classification === NON_INFORMATION_CLASS
         ? navigationResolution(semantic, route) : null;
-      const targetRoute = semantic?.replacementRoute
-        ? getAcceptedRoute(semantic.replacementRoute) : navigation?.destinationRoute;
+      const targetRoute = semantic?.replacementRoute ?? navigation?.destinationRoute;
       const target = targetEvidence.find(({ route: candidate }) => candidate === targetRoute);
       if (!semantic || !semantic.sourceRoutes.includes(route) || !target) {
         throw new Error(`no concrete retention resolution is declared for ${route}#${hash}`);

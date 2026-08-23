@@ -176,7 +176,7 @@ test('standalone and tabular identifiers are unboxed while inline code remains d
     readFile(file('src/components/manual/EntityHeader.astro'), 'utf8'),
     readFile(file('src/components/ontology/PropertyDetail.astro'), 'utf8'),
     readFile(file('src/components/ontology/ShapeDetail.astro'), 'utf8'),
-    readFile(file('src/pages/pdtf-schema/schema-derived-ontology/validation-and-examples/profiles/[slug].astro'), 'utf8'),
+    readFile(file('src/pages/spdtf/inputs/pdtf-schema/schema-derived-ontology/validation-and-examples/profiles/[slug].astro'), 'utf8'),
     readFile(file('src/pages/spdtf/property-pack/artefacts.astro'), 'utf8'),
     readFile(file('src/pages/spdtf/property-pack/relationships.astro'), 'utf8'),
     readFile(file('src/pages/spdtf/property-pack/model.astro'), 'utf8'),
@@ -228,7 +228,7 @@ test('standalone and tabular identifiers are unboxed while inline code remains d
 
 test('repeated label-and-explanation records use semantic tables', async () => {
   const page = await readFile(
-    file('src/pages/pdtf-schema/schema-derived-ontology/lineage-provenance-and-verification/historical-modelling/bounded-contexts.astro'),
+    file('src/pages/spdtf/inputs/pdtf-schema/schema-derived-ontology/lineage-provenance-and-verification/historical-modelling/bounded-contexts.astro'),
     'utf8',
   );
   const extensionSection = page.match(/<h2 id="extensionAxes">[\s\S]*?(?=<h2 id="implications">)/u)?.[0] ?? '';

@@ -5,24 +5,23 @@ import { existsSync, readFileSync, writeFileSync } from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import {
-  blockInventory, composePdtf1RetiredAliases, equivalenceReceipt,
+  blockInventory, equivalenceReceipt,
   existingRetiredPdtf1Outputs, existingRetiredPropertyPackOutputs,
   fileInventory, filesUnder, fragmentContract, generatedFamily,
   informationContract, isRetiredPropertyPackRoute,
-  pdtf1MigrationReceipt, propertyPackMigrationReceipt, routeFromFile,
+  propertyPackMigrationReceipt, routeFromFile,
   sha256,
 } from './lib/ia-preservation-contract.mjs';
 import { createCaptureEvidence } from './lib/ia-capture-evidence.mjs';
-import { composePdtfSchemaFragmentMigrationReceipt } from './lib/pdtf-schema-fragment-migration.mjs';
 import { composePdtf1ToolReframeReceipt } from './lib/pdtf1-tool-reframes.mjs';
 import { composeSourceArchiveReframeReceipt } from './lib/source-archive-reframes.mjs';
-import { composeSchemaToSchemeRouteReceipt } from './lib/schema-to-scheme-route-contract.mjs';
+import { composePdtfSchemaInputMigrationReceipt } from './lib/pdtf-schema-input-route-contract.mjs';
 import {
+  PDTF_SCHEMA_INPUT_SOURCE_ROUTE_MANIFEST,
   PRIOR_IA_ROUTE_MANIFEST,
-  SCHEMA_TO_SCHEME_SOURCE_ROUTE_MANIFEST,
   composePriorFamilyReceipt, composePriorManifestReceipt,
+  loadPdtfSchemaInputSourceRouteManifest,
   loadPdtf1SourceRouteManifest, loadPriorIaFamilyManifest, loadPriorIaRouteManifest,
-  loadSchemaToSchemeSourceRouteManifest,
   manifestRetainedSourceRecordMatches,
   missingPhysicalRecordsDigest,
   priorRouteRecordDigest, verifyBaselineRootCommit, verifyPdtf1SourceRootCommit,
@@ -34,15 +33,12 @@ import {
   getRouteStatus,
 } from '../src/lib/site-ia.mjs';
 import { PROPERTY_PACK_ROUTE_MIGRATION, getPropertyPackReplacementRoute } from '../src/lib/property-pack-routes.mjs';
-import {
-  PDTF1_ROUTE_MIGRATION, fragmentsPreservedByPdtfSchemaMigration, getPdtf1ReplacementRoute,
-  isRetiredPdtf1ManualAlias, isStablePdtfIdentifierRoute,
-} from '../src/lib/pdtf1-routes.mjs';
+import { getPdtf1ReplacementRoute, isRetiredPdtf1ManualAlias } from '../src/lib/pdtf1-routes.mjs';
 import {
   LEASE_TERM_CASE_COLLISION, composeLeaseTermCaseCollisionReceipt,
 } from '../src/lib/ontology-case-collision.mjs';
 import {
-  getAcceptedRoute, getAcceptedRouteFile, getDeclaredRouteReplacement,
+  getAcceptedRoute, getAcceptedRouteFile, getDeclaredRouteReplacement, getLegacyCommentKey,
 } from '../src/lib/site-route-migrations.mjs';
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const args = new Map(process.argv.slice(2).map((arg) => {
@@ -67,10 +63,10 @@ const output = path.join(ROOT, 'src/data/ia-route-baseline.json');
 const familyOutput = path.join(ROOT, 'src/data/ia-preservation-baseline.json');
 const semanticLedgerPath = path.join(ROOT, 'src/data/ia-semantic-reframe-ledger.json');
 const externalPrefixes = [
-  'pdtf-schema/schema-derived-ontology/use-and-tooling/tools/ontospy/',
-  'pdtf-schema/schema-derived-ontology/use-and-tooling/tools/pylode/',
-  'pdtf-schema/schema-derived-ontology/use-and-tooling/tools/shaclplay/',
-  'pdtf-schema/schema-derived-ontology/use-and-tooling/tools/widoco/',
+  'spdtf/inputs/pdtf-schema/schema-derived-ontology/use-and-tooling/tools/ontospy/',
+  'spdtf/inputs/pdtf-schema/schema-derived-ontology/use-and-tooling/tools/pylode/',
+  'spdtf/inputs/pdtf-schema/schema-derived-ontology/use-and-tooling/tools/shaclplay/',
+  'spdtf/inputs/pdtf-schema/schema-derived-ontology/use-and-tooling/tools/widoco/',
 ];
 function commit(root) {
   return execFileSync('git', ['rev-parse', 'HEAD'], { cwd: root, encoding: 'utf8' }).trim();
@@ -122,10 +118,7 @@ verifyBaselineRootCommit(baselineRoot);
 verifyPdtf1SourceRootCommit(sourceRoot);
 const { manifest: priorManifest } = loadPriorIaRouteManifest(ROOT);
 const { manifest: pdtf1SourceManifest } = loadPdtf1SourceRouteManifest(ROOT);
-const {
-  manifest: schemaToSchemeSourceManifest,
-  supplementalRoutes: schemaToSchemeSourceAdditions,
-} = loadSchemaToSchemeSourceRouteManifest(ROOT);
+const { manifest: pdtfSchemaInputSourceManifest } = loadPdtfSchemaInputSourceRouteManifest(ROOT);
 if (priorManifest.baselineCommit !== baselineCommit) throw new Error('prior manifest baseline commit changed');
 const priorByFile = new Map(priorManifest.routes.map((record) => [record.file, record]));
 const pdtf1SourceByBaselineFile = new Map(
@@ -133,18 +126,6 @@ const pdtf1SourceByBaselineFile = new Map(
     .filter((record) => record.baselineFile)
     .map((record) => [record.baselineFile, record]),
 );
-const pdtf1SourceByAcceptedRoute = new Map();
-for (const sourceRecord of [...pdtf1SourceManifest.routes, ...pdtf1SourceManifest.addedRoutes]) {
-  const sourceRoute = sourceRecord.acceptedRoute;
-  if (isRetiredPdtf1ManualAlias(sourceRoute)) continue;
-  const replacement = isStablePdtfIdentifierRoute(sourceRoute)
-    ? sourceRoute : getPdtf1ReplacementRoute(sourceRoute);
-  if (!replacement) continue;
-  if (pdtf1SourceByAcceptedRoute.has(replacement)) {
-    throw new Error(`PDTF schema source routes do not map bijectively: ${replacement}`);
-  }
-  pdtf1SourceByAcceptedRoute.set(replacement, sourceRecord);
-}
 const physicalBaselineFiles = htmlFiles(baselineRoot);
 const physicalBaselineSet = new Set(physicalBaselineFiles);
 const missingPhysicalRecords = priorManifest.routes.filter(({ file }) => !physicalBaselineSet.has(file));
@@ -277,83 +258,25 @@ const addedRoutes = acceptedFiles
       ...routeMetadata(acceptedRoute),
     };
   });
-for (const acceptedRecord of [...routes, ...addedRoutes]) {
-  const sourceRecord = pdtf1SourceByAcceptedRoute.get(acceptedRecord.acceptedRoute);
-  if (!sourceRecord) continue;
-  if (!fragmentsPreservedByPdtfSchemaMigration(
-    sourceRecord.acceptedFragments, acceptedRecord.acceptedFragments,
-  )) {
-    throw new Error(`PDTF schema source fragment is absent after the canonical move: ${sourceRecord.acceptedRoute}`);
-  }
-  const exactInformation = sourceRecord.acceptedContentSha256 === acceptedRecord.acceptedContentSha256
-    && sourceRecord.acceptedBlockInventorySha256 === acceptedRecord.acceptedBlockInventorySha256;
-  if (exactInformation) continue;
-  const sourcePath = path.join(sourceRoot, 'dist', sourceRecord.acceptedFile);
-  if (!existsSync(sourcePath)) {
-    throw new Error(`PDTF schema source page is unavailable: ${sourceRecord.acceptedRoute}`);
-  }
-  const sourceHtml = readFileSync(sourcePath, 'utf8');
-  const sourceContent = informationContract(sourceHtml);
-  const sourceFragments = fragmentContract(sourceHtml);
-  if (sha256(sourceHtml) !== sourceRecord.acceptedRawSha256
-    || sourceContent.contentSha256 !== sourceRecord.acceptedContentSha256
-    || blockInventory(sourceContent.blockHashes).sha256 !== sourceRecord.acceptedBlockInventorySha256
-    || sourceFragments.fragmentSha256 !== sourceRecord.acceptedFragmentSha256
-    || sourceFragments.fragmentCount !== sourceRecord.acceptedFragmentCount
-    || JSON.stringify(sourceFragments.fragments) !== JSON.stringify(sourceRecord.acceptedFragments)) {
-    throw new Error(`PDTF schema source page differs from its frozen manifest: ${sourceRecord.acceptedRoute}`);
-  }
-  const sourceInventory = blockInventory(sourceContent.blockHashes);
-  const sourceReceipt = captureRetentionReceipt(
-    sourceRecord.acceptedRoute, sourceContent, acceptedContracts, baselineLinkEvidence(sourceHtml),
-    { exactTargetRoute: acceptedRecord.acceptedRoute, includeAllocation: true },
-  );
-  acceptedRecord.pdtf1SourceRetentionReceipt = {
-    ...sourceReceipt,
-    policy: 'explicit-pdtf1-source-block-retention-v1',
-    sourceRoute: sourceRecord.acceptedRoute,
-    sourceFile: sourceRecord.acceptedFile,
-    sourceRecordSha256: sha256(JSON.stringify(sourceRecord)),
-    sourceContentSha256: sourceRecord.acceptedContentSha256,
-    sourceBlockInventorySha256: sourceRecord.acceptedBlockInventorySha256,
-    sourceBlockInventoryRecords: sourceInventory.records,
-    sourceFragmentSha256: sourceRecord.acceptedFragmentSha256,
-    sourceFragmentCount: sourceRecord.acceptedFragmentCount,
-    sourceFragments: sourceRecord.acceptedFragments,
-    acceptedRoute: acceptedRecord.acceptedRoute,
-    exactTargetRoute: acceptedRecord.acceptedRoute,
-    targetBlockInventories: sourceReceipt.targetEvidence.map(({ route: targetRoute }) => {
-      const inventory = blockInventory(acceptedContracts.get(targetRoute).blockHashes);
-      return { route: targetRoute, sha256: inventory.sha256, records: inventory.records };
-    }),
-  };
-}
-const propertyPackMigration = propertyPackMigrationReceipt(
-  routes, addedRoutes, PROPERTY_PACK_ROUTE_MIGRATION, getDeclaredRouteReplacement,
-);
-const retiredRoutes = composePdtf1RetiredAliases(pdtf1SourceManifest, getPdtf1ReplacementRoute);
-const pdtf1Migration = pdtf1MigrationReceipt({
+const propertyPackMigration = pdtfSchemaInputSourceManifest.propertyPackMigration;
+const retiredRoutes = pdtfSchemaInputSourceManifest.retiredRoutes;
+const pdtf1Migration = pdtfSchemaInputSourceManifest.pdtf1Migration;
+const pdtfSchemaFragmentMigration = pdtfSchemaInputSourceManifest.pdtfSchemaFragmentMigration;
+const schemaToSchemeMigration = pdtfSchemaInputSourceManifest.schemaToSchemeMigration;
+const pdtfSchemaInputMigration = composePdtfSchemaInputMigrationReceipt({
   records: routes,
   addedRecords: addedRoutes,
-  retiredAliases: retiredRoutes,
-  migration: PDTF1_ROUTE_MIGRATION,
-  replacementRoute: getPdtf1ReplacementRoute,
-  sourceManifest: pdtf1SourceManifest,
-});
-const pdtfSchemaFragmentMigration = composePdtfSchemaFragmentMigrationReceipt({
-  records: routes,
-  addedRecords: addedRoutes,
-  sourceRecords: [...pdtf1SourceManifest.routes, ...pdtf1SourceManifest.addedRoutes],
-});
-const schemaToSchemeMigration = composeSchemaToSchemeRouteReceipt({
-  records: routes,
-  addedRecords: addedRoutes,
-  sourceManifest: schemaToSchemeSourceManifest,
-  sourceAdditions: schemaToSchemeSourceAdditions,
-  sourceContract: SCHEMA_TO_SCHEME_SOURCE_ROUTE_MANIFEST,
+  sourceManifest: pdtfSchemaInputSourceManifest,
+  sourceContract: PDTF_SCHEMA_INPUT_SOURCE_ROUTE_MANIFEST,
   replacementRoute: getDeclaredRouteReplacement,
+  replacementFile: getAcceptedRouteFile,
+  commentKey: getLegacyCommentKey,
 });
-const usedSemanticReframes = new Set([...routes, ...addedRoutes].flatMap((record) => (
+const frozenSourceRecords = [
+  ...pdtfSchemaInputSourceManifest.routes, ...pdtfSchemaInputSourceManifest.addedRoutes,
+];
+const usedSemanticReframes = new Set([...routes, ...addedRoutes, ...frozenSourceRecords]
+  .flatMap((record) => (
   [record.retentionReceipt, record.pdtf1SourceRetentionReceipt]
     .filter(Boolean)
     .flatMap((receipt) => [
@@ -373,7 +296,7 @@ if (unusedSemanticReframes.length || undeclaredSemanticReframes.length) {
   throw new Error(`semantic reframe ledger mismatch; unused: ${summarize(unusedSemanticReframes) || 'none'}; undeclared: ${summarize(undeclaredSemanticReframes) || 'none'}`);
 }
 const routeManifest = {
-  schemaVersion: 8,
+  schemaVersion: 9,
   baselineCommit,
   acceptedCommit,
   routeCount: routes.length,
@@ -388,6 +311,7 @@ const routeManifest = {
   pdtf1Migration,
   pdtfSchemaFragmentMigration,
   schemaToSchemeMigration,
+  pdtfSchemaInputMigration,
   leaseTermCaseCollision: composeLeaseTermCaseCollisionReceipt(acceptedRoot, routes, addedRoutes),
   routes,
   addedRoutes,
@@ -396,12 +320,12 @@ const routeManifest = {
 const familySpecs = [
   { id: 'source-archive', path: 'source', policy: 'reframe-equivalent', owner: 'resources', dataOwner: 'resources', ciMode: 'manifest-only-in-ci', consumers: ['resource viewer', 'source citations', 'downloads'], endpoints: ['/resources/**', '/resource?path=source/**'], journeyTests: ['resource-open-download'] },
   { id: 'council-markdown', path: 'docs/ontology/odr/council', policy: 'regenerate-equivalent', owner: 'governance', dataOwner: 'resources', ciMode: 'verify-current', consumers: ['decision records', 'raw session evidence'], endpoints: ['/council/**'], journeyTests: ['route-crawl'] },
-  { id: 'ontology-artefacts', assetClass: 'ontology-serialization', baselinePath: 'public/ontology/artefacts', acceptedPath: 'public/pdtf-schema/schema-derived-ontology/use-and-tooling/artefacts', policy: 'byte-identical', owner: 'pdtf-schema', dataOwner: 'pdtf-schema', ciMode: 'manifest-only-in-ci', consumers: ['ontology downloads', 'technical references'], endpoints: ['/pdtf-schema/schema-derived-ontology/use-and-tooling/artefacts/**'], journeyTests: ['route-crawl'] },
+  { id: 'ontology-artefacts', assetClass: 'ontology-serialization', baselinePath: 'public/ontology/artefacts', acceptedPath: 'public/spdtf/inputs/pdtf-schema/schema-derived-ontology/use-and-tooling/artefacts', policy: 'byte-identical', owner: 'pdtf-schema', dataOwner: 'pdtf-schema', ciMode: 'manifest-only-in-ci', consumers: ['ontology downloads', 'technical references'], endpoints: ['/spdtf/inputs/pdtf-schema/schema-derived-ontology/use-and-tooling/artefacts/**'], journeyTests: ['route-crawl'] },
   { id: 'deployed-data', path: 'dist/data', policy: 'regenerate-equivalent', owner: 'resources', dataOwner: 'resources', ciMode: 'verify-current', consumers: ['generated pages', 'client-side data views', 'validation'], endpoints: ['/data/**'], journeyTests: ['route-crawl'] },
   { id: 'ui-assets', path: 'public/ui', policy: 'reframe-equivalent', owner: 'resources', dataOwner: 'resources', ciMode: 'verify-current', consumers: ['all rendered route families'], endpoints: ['/ui/**'], journeyTests: ['visual-regression', 'accessibility'] },
   { id: 'image-assets', path: 'public/images', policy: 'byte-identical', owner: 'resources', dataOwner: 'resources', ciMode: 'verify-current', consumers: ['branded pages'], endpoints: ['/images/**'], journeyTests: ['visual-regression'] },
-  { id: 'ontology-tools', assetClass: 'tool-rendering', baselinePath: 'public/ontology/tools', acceptedPath: 'public/pdtf-schema/schema-derived-ontology/use-and-tooling/tools', policy: 'reframe-equivalent', owner: 'pdtf-schema', dataOwner: 'pdtf-schema', ciMode: 'manifest-only-in-ci', consumers: ['linked-data implementers', 'technical citations'], endpoints: ['/pdtf-schema/schema-derived-ontology/use-and-tooling/tools/**'], journeyTests: ['route-crawl'] },
-  { id: 'property-pack-canonical', baselinePath: 'dist/v2', acceptedPath: 'dist/spdtf/property-pack', policy: 'reframe-equivalent', owner: 'spdtf', dataOwner: 'spdtf', ciMode: 'verify-current', consumers: ['Technical Working Group review', 'candidate register', 'ontology reference'], endpoints: ['/spdtf/property-pack/**'], journeyTests: ['route-crawl', 'ia-navigation'], technicalMappedRouteCount: 690, canonicalContentRouteCount: 691, lifecyclePageCount: 2 },
+  { id: 'ontology-tools', assetClass: 'tool-rendering', baselinePath: 'public/ontology/tools', acceptedPath: 'public/spdtf/inputs/pdtf-schema/schema-derived-ontology/use-and-tooling/tools', policy: 'reframe-equivalent', owner: 'pdtf-schema', dataOwner: 'pdtf-schema', ciMode: 'manifest-only-in-ci', consumers: ['linked-data implementers', 'technical citations'], endpoints: ['/spdtf/inputs/pdtf-schema/schema-derived-ontology/use-and-tooling/tools/**'], journeyTests: ['route-crawl'] },
+  { id: 'property-pack-canonical', baselinePath: 'dist/v2', acceptedPath: 'dist/spdtf/property-pack', policy: 'reframe-equivalent', owner: 'spdtf', dataOwner: 'spdtf', ciMode: 'verify-current', consumers: ['Technical Working Group review', 'candidate register', 'ontology reference'], endpoints: ['/spdtf/property-pack/**'], journeyTests: ['route-crawl', 'ia-navigation'], technicalMappedRouteCount: 690, canonicalContentRouteCount: 691, lifecyclePageCount: 2, postMigrationPageCount: 9 },
 ];
 const { manifest: priorFamilyManifest } = loadPriorIaFamilyManifest(ROOT);
 const priorFamilies = new Map(priorFamilyManifest.families.map((family) => [family.id, family]));

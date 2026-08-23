@@ -2,39 +2,39 @@
   "common_boundary": "common",
   "connections": [
     {
-      "from": "conveyancing",
-      "kind": "interoperates-through",
-      "to": "common"
+      "from": "common",
+      "kind": "supplies-shared-elements",
+      "to": "conveyancing"
     },
     {
-      "from": "dbt-smart-data",
-      "kind": "interoperates-through",
-      "to": "common"
+      "from": "common",
+      "kind": "supplies-shared-elements",
+      "to": "dbt-smart-data"
     },
     {
-      "from": "estate-agency",
-      "kind": "interoperates-through",
-      "to": "common"
+      "from": "common",
+      "kind": "supplies-shared-elements",
+      "to": "estate-agency"
     },
     {
-      "from": "finance-and-banking",
-      "kind": "interoperates-through",
-      "to": "common"
+      "from": "common",
+      "kind": "supplies-shared-elements",
+      "to": "finance-and-banking"
     },
     {
-      "from": "property-data-services",
-      "kind": "interoperates-through",
-      "to": "common"
+      "from": "common",
+      "kind": "supplies-shared-elements",
+      "to": "property-data-services"
     },
     {
-      "from": "property-technology",
-      "kind": "interoperates-through",
-      "to": "common"
+      "from": "common",
+      "kind": "supplies-shared-elements",
+      "to": "property-technology"
     },
     {
-      "from": "surveying-and-valuation",
-      "kind": "interoperates-through",
-      "to": "common"
+      "from": "common",
+      "kind": "supplies-shared-elements",
+      "to": "surveying-and-valuation"
     }
   ],
   "contexts": [

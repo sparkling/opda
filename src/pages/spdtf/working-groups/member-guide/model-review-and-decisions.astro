@@ -40,6 +40,12 @@ import PageMeta from '@/components/PageMeta.astro';
     <li>Does it cross another context boundary, and if so, is the ownership and mapping explicit?</li>
     <li>Does the published change view explain what moved and why?</li>
   </ul>
+  <p>
+    Cross-boundary comparisons follow the
+    <a href="/spdtf/ontologies/evidence-and-mappings#cross-context-mappings">Category 8 mapping method</a>:
+    tools may suggest a candidate, but affected semantic owners and Interoperability decide
+    whether there is a mapping and which predicate the evidence supports.
+  </p>
 
   <h2 id="feedback">Make feedback actionable</h2>
   <p>When commenting, identify:</p>
@@ -60,7 +66,7 @@ import PageMeta from '@/components/PageMeta.astro';
     <thead><tr><th>Actor</th><th>Responsibility</th><th>Boundary</th></tr></thead>
     <tbody>
       <tr><td>Domain or scheme working group</td><td>Reviews meaning inside its stated scope.</td><td>Does not unilaterally redefine another context.</td></tr>
-      <tr><td>Interoperability Working Group</td><td>Reviews the common boundary, context map and cross-context mappings.</td><td>Does not redesign internal domain meaning.</td></tr>
+      <tr><td>Interoperability Working Group</td><td>Reviews the common boundary, context map and <a href="/spdtf/ontologies/evidence-and-mappings#cross-context-mappings">cross-context mappings</a>.</td><td>Does not redesign internal domain meaning.</td></tr>
       <tr><td>Technology Working Group</td><td>Supplies implementation, validation, compatibility and release-readiness evidence.</td><td>It is not a ninth modelling context and does not ratify a standard.</td></tr>
       <tr><td>Property Technology working group</td><td>Owns platforms, workflow, integrations and operational feedback in its bounded context.</td><td>It is not the cross-cutting Technology Working Group.</td></tr>
       <tr><td>Facilitators and AI</td><td>Extract, compare, draft, challenge and test proposals.</td><td>AI has no decision authority, membership or vote.</td></tr>

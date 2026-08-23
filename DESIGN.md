@@ -313,8 +313,11 @@ states, plus loading/error/success where asynchronous work occurs and dark parit
 - **Provenance chip:** Roboto Mono source and timestamp; links to evidence when
   available.
 - **Callout:** note/success/warning/danger with 3px semantic rule, icon and heading.
-- **Card:** square, bordered and content-led; linked cards receive a whole-card focus
-  treatment without nesting controls.
+- **Card:** square, bordered and content-led, with a quiet structural top rule and a
+  clear title, explanation and action hierarchy. Optional eyebrows, scope notes and
+  aligned fact rows support comparison without turning every card into a dashboard.
+  Linked cards use one whole-card target and focus treatment without nested controls;
+  grids auto-fit the content track and stack without clipping at narrow widths.
 - **Table:** sticky header, `aria-sort`, visible sort arrow and tabular numerals;
   column headers, first-column body cells and zebra rows use three distinct semantic
   surfaces, while interactive rows are at least 44px. Every body-row first cell uses

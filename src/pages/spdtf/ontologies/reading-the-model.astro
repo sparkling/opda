@@ -67,9 +67,10 @@ flowchart LR
   <p>
     A status such as “listed”, “under offer” or “withdrawn” is normally a governed
     <strong>SKOS concept</strong> in a concept scheme, not an OWL class. SKOS provides
-    preferred and alternative labels, definitions, codes, scheme membership and, where
-    justified, broader/narrower or mapping relationships. It does not turn every list
-    into a class hierarchy.
+    preferred and alternative labels, definitions, codes and scheme membership. Within a
+    scheme, broader/narrower can express taxonomy; across schemes, reviewed SKOS concepts
+    may use mapping predicates. Those predicates do not map OWL classes or properties.
+    See the <a href="/spdtf/ontologies/evidence-and-mappings#cross-context-mappings">Category 8 mapping guide</a>.
   </p>
   <table>
     <caption>Choose the construct that matches the business meaning</caption>

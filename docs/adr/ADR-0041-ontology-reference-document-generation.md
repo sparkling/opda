@@ -151,7 +151,7 @@ All adversarial-review findings (B1–B3, M1–M6, hygiene) are now dispositione
 
 [ADR-0076](./ADR-0076-consolidate-pdtf-schema-documentation-under-hierarchy-reflecting-routes.md)
 moves the reader-facing reference from `/ontology/**` to the linked categories beneath
-`/pdtf-schema/schema-derived-ontology/**`, without redirects. This replaces only this ADR's
+`/spdtf/inputs/pdtf-schema/schema-derived-ontology/**`, without redirects. This replaces only this ADR's
 hosting and old-route stability clauses. The woven-reference model, generation and
 doc-drift gates, soundness rules, provenance and known-issues contract remain binding.
 Canonical resource pages and Turtle representations remain at the unchanged

@@ -120,9 +120,43 @@ a.v2-card:focus-visible { border-color: var(--color-data-1); }
   color: var(--color-link);
   font: 700 var(--text-caption) / 1.3 var(--font-sans);
 }
-.v2-card p { margin: 0; color: var(--color-text-muted); }
+.v2-card p:not(.pill) { margin: 0; color: var(--color-text-muted); }
 .v2-card .pill { align-self: flex-start; }
 .v2-card__meta { margin-top: auto; padding-top: var(--space-2); font-size: var(--text-caption); }
+
+.v2-context-card-grid { grid-template-columns: repeat(auto-fit, minmax(min(100%, 22rem), 1fr)); }
+.v2-context-card h3 .standalone-identifier {
+  display: block;
+  margin-top: var(--space-2);
+  color: var(--color-text-muted);
+  font: 400 var(--text-caption) / 1.4 var(--font-mono);
+}
+.v2-context-card__field-label {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+.v2-context-card__stats {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: var(--space-2);
+  margin: auto 0 0;
+  padding-top: var(--space-3);
+  border-top: 1px solid var(--color-border);
+}
+.v2-context-card__stats div { min-width: 0; }
+.v2-context-card__stats dt { color: var(--color-text-muted); font-size: var(--text-caption); }
+.v2-context-card__stats dd {
+  margin: var(--space-1) 0 0;
+  color: var(--color-text-strong);
+  font: 700 var(--text-lg) / 1.2 var(--font-mono);
+  font-variant-numeric: tabular-nums;
+}
 
 .v2-table-wrap {
   width: 100%;
@@ -383,10 +417,10 @@ a.v2-card:focus-visible { border-color: var(--color-data-1); }
 .v2-limit-list li::before { content: '!'; color: var(--color-status-warning); }
 
 /* A long evidence list remains part of the article rhythm, not a flush utility
-   list. Its extra inset keeps the marker inside the paragraph measure. */
+   list. Both the marker and its text sit inside the paragraph measure. */
 .prose > .v2-review-list {
   margin-block: var(--space-5);
-  padding-inline-start: var(--space-7);
+  padding-inline-start: calc(var(--space-7) + var(--space-5));
 }
 
 @media (max-width: 58rem) {
@@ -425,6 +459,7 @@ a.v2-card:focus-visible { border-color: var(--color-data-1); }
   .v2-filter { grid-template-columns: 1fr; }
   .v2-facts > div { grid-template-columns: 1fr; gap: var(--space-1); }
   .property-pack-resource-title .btn { flex-basis: 100%; }
+  .v2-context-card__stats { grid-template-columns: 1fr; }
 }
 
 @media (forced-colors: active) {

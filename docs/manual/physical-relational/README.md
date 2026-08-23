@@ -13,7 +13,7 @@ The Logical tier's 41 entities and 23 SKOS enumeration schemes across seven modu
 ## See also
 
 - [Logical model](../logical/) — the platform-independent ER source this tier realises.
-- [Data dictionary](/pdtf-schema/schema-and-supporting-material/data-dictionary) — the schema-level element register in the PDTF schema supporting material.
+- [Data dictionary](/spdtf/inputs/pdtf-schema/schema-and-supporting-material/data-dictionary) — the schema-level element register in the PDTF schema supporting material.
 
 ## Mapping conventions
 

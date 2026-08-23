@@ -3,9 +3,11 @@ import {
   getPropertyPackReplacementRoute,
 } from './property-pack-routes.mjs';
 import {
+  getPdtf1IntermediateReplacementFile,
+  getPdtf1IntermediateReplacementRoute,
   getPdtf1LegacyCommentKey,
-  getPdtf1ReplacementFile,
-  getPdtf1ReplacementRoute,
+  getPdtfSchemaInputLegacyCommentKey,
+  getPdtfSchemaInputReplacementRoute,
 } from './pdtf1-routes.mjs';
 
 function normalizePath(value) {
@@ -22,10 +24,12 @@ export function getSpdtfReplacementRoute(value) {
 
 /** Resolve every explicitly authorised site-route move through one registry. */
 export function getAcceptedRoute(route) {
-  return getPropertyPackReplacementRoute(route)
-    ?? getSpdtfReplacementRoute(route)
-    ?? getPdtf1ReplacementRoute(route)
-    ?? route;
+  const propertyPack = getPropertyPackReplacementRoute(route);
+  if (propertyPack) return propertyPack;
+  const spdtf = getSpdtfReplacementRoute(route);
+  if (spdtf) return spdtf;
+  const pdtfIntermediate = getPdtf1IntermediateReplacementRoute(route);
+  return pdtfIntermediate ? getPdtfSchemaInputReplacementRoute(pdtfIntermediate) ?? pdtfIntermediate : route;
 }
 
 /** Return null for retained routes so undeclared moves remain fail-closed. */
@@ -38,7 +42,12 @@ export function getDeclaredRouteReplacement(route) {
 export function getAcceptedRouteFile(route, file) {
   const accepted = getAcceptedRoute(route);
   if (accepted === route) return file;
-  return getPdtf1ReplacementFile(file) ?? `${accepted.slice(1)}/index.html`;
+  const pdtfIntermediate = getPdtf1IntermediateReplacementFile(file);
+  if (pdtfIntermediate) {
+    const pdtfFile = getPdtfSchemaInputReplacementRoute(`/${pdtfIntermediate}`);
+    return pdtfFile?.slice(1) ?? pdtfIntermediate;
+  }
+  return `${accepted.slice(1)}/index.html`;
 }
 
 /** Compose retained Artalk identities across every canonical route cut. */
@@ -46,6 +55,8 @@ export function getLegacyCommentKey(route) {
   const path = normalizePath(route);
   const propertyPackKey = getPropertyPackLegacyCommentKey(path);
   if (propertyPackKey !== path) return propertyPackKey;
+  const pdtfInputKey = getPdtfSchemaInputLegacyCommentKey(path);
+  if (pdtfInputKey !== path) return pdtfInputKey;
   const pdtfKey = getPdtf1LegacyCommentKey(path);
   if (pdtfKey !== path) return pdtfKey;
   if (path === '/spdtf') return '/spdtf-2';

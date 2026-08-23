@@ -92,11 +92,11 @@ export const changedKindLexicalMatches = Object.freeze(
 );
 
 const evidence = {
-  current: { label: 'Schema-derived ontology reference', href: '/pdtf-schema/schema-derived-ontology' },
-  currentProvenance: { label: 'Schema-derived ontology provenance', href: '/pdtf-schema/schema-derived-ontology/lineage-provenance-and-verification/decision-provenance' },
-  currentSchema: { label: 'PDTF schema reference', href: '/pdtf-schema/schema-and-supporting-material/schema' },
-  currentMapping: { label: 'Schema-to-ontology RML mapping', href: '/pdtf-schema/schema-derived-ontology/lineage-provenance-and-verification/schema-to-ontology-verification' },
-  currentProfiles: { label: 'Schema-derived overlay profiles', href: '/pdtf-schema/schema-derived-ontology/validation-and-examples/profiles' },
+  current: { label: 'Schema-derived ontology reference', href: '/spdtf/inputs/pdtf-schema/schema-derived-ontology' },
+  currentProvenance: { label: 'Schema-derived ontology provenance', href: '/spdtf/inputs/pdtf-schema/schema-derived-ontology/lineage-provenance-and-verification/decision-provenance' },
+  currentSchema: { label: 'PDTF schema reference', href: '/spdtf/inputs/pdtf-schema/schema-and-supporting-material/schema' },
+  currentMapping: { label: 'Schema-to-ontology RML mapping', href: '/spdtf/inputs/pdtf-schema/schema-derived-ontology/lineage-provenance-and-verification/schema-to-ontology-verification' },
+  currentProfiles: { label: 'Schema-derived overlay profiles', href: '/spdtf/inputs/pdtf-schema/schema-derived-ontology/validation-and-examples/profiles' },
   v2Overview: { label: 'Property Pack candidate overview', href: '/spdtf/property-pack' },
   v2Contexts: { label: 'Property Pack contextual boundaries', href: '/spdtf/property-pack/contexts' },
   v2Coverage: { label: 'Property Pack source coverage', href: '/spdtf/property-pack/coverage' },

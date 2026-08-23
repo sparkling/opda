@@ -1,12 +1,13 @@
 import {
   linkedInformationBlocks, nonInformationBlocksDigest, semanticBlocksDigest, sha256,
 } from './ia-preservation-contract.mjs';
-import { getDeclaredRouteReplacement } from '../../src/lib/site-route-migrations.mjs';
+import { getAcceptedRoute } from '../../src/lib/site-route-migrations.mjs';
 
 const HASH = /^[a-f0-9]{64}$/u;
 const SEMANTIC_CLASSES = new Set([
   'terminology-and-scope-reframe', 'authority-and-label-reframe',
-  'decision-status-update', 'scope-and-maturity-clarification',
+  'decision-status-update', 'presentation-structure-reframe',
+  'scope-and-maturity-clarification',
   'source-inventory-metadata-refresh',
 ]);
 const NON_INFORMATION_CLASS = 'superseded-navigation-copy';
@@ -27,8 +28,9 @@ function validNavigationDestination(entry) {
   return (entry.destinationPolicy === 'same-retained-route'
     && entry.destinationRoute === entry.originalDestinationRoute)
     || (entry.destinationPolicy === 'canonical-equivalent'
-      && (getDeclaredRouteReplacement(entry.originalDestinationRoute) === entry.destinationRoute
-        || NAVIGATION_CANONICAL_EQUIVALENTS[entry.originalDestinationRoute]?.includes(entry.destinationRoute)));
+      && (getAcceptedRoute(entry.originalDestinationRoute) === entry.destinationRoute
+        || NAVIGATION_CANONICAL_EQUIVALENTS[entry.originalDestinationRoute]
+          ?.some((equivalent) => getAcceptedRoute(equivalent) === entry.destinationRoute)));
 }
 
 /** Return every structural or source/hash-binding defect in one retention receipt. */
@@ -109,7 +111,7 @@ export function retentionReceiptFailures(record, classifiedByRoute, options = {}
       || typeof entry.supersessionReason !== 'string' || !entry.supersessionReason.includes(entry.sourceText)
       || !entry.supersessionReason.includes(entry.originalDestinationRoute)
       || (!entry.supersessionReason.includes(entry.destinationRoute)
-        && getDeclaredRouteReplacement(entry.originalDestinationRoute) !== entry.destinationRoute)) {
+        && getAcceptedRoute(entry.originalDestinationRoute) !== entry.destinationRoute)) {
       failures.push(`non-information supersession is incomplete or unbound: ${label}`);
     } else {
       nonInformation.add(entry.sourceBlockSha256);

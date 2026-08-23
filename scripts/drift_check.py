@@ -25,7 +25,7 @@ ROOT = Path(__file__).resolve().parent.parent
 BUILD = ROOT / "_build"
 CONTENT_DIR = ROOT / "source/_content/schema"
 EXAMPLES_DIR = ROOT / "source/_examples"
-SCHEMA_PAGE_ROOT = Path("src/pages/pdtf-schema/schema-and-supporting-material/schema")
+SCHEMA_PAGE_ROOT = Path("src/pages/spdtf/inputs/pdtf-schema/schema-and-supporting-material/schema")
 OUT_PAGES = ROOT / SCHEMA_PAGE_ROOT
 
 # These are checked before reading any build artefact. The canonical dictionary

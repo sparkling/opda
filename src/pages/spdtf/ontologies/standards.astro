@@ -65,7 +65,9 @@ const implemented = STANDARDS_PROFILE.filter(({ implementationStatus }) => imple
     PROV-O has a declared prefix but no term use; that is not adoption. There is no
     current Property Pack use of DCAT, DQV, OWL-Time, DPV, ODRL, SSSOM, FIBO,
     GeoSPARQL, Schema.org, Verifiable Credentials, DID, ORG, gUFO or DASH. Cross-context
-    mappings remain empty while they await working-group evidence.
+    mappings remain empty while they await working-group evidence. The
+    <a href="/spdtf/ontologies/evidence-and-mappings#cross-context-mappings">Category 8 mapping guide</a>
+    explains why the accepted SKOS target and deferred SSSOM candidate are different status claims.
   </p>
 
   <h2 id="stack">How the implemented stack fits together</h2>
@@ -117,7 +119,7 @@ flowchart TB
   <div class="card-grid">
     <article class="card"><h3><code>reuse</code></h3><p>Use exact externally governed vocabulary terms, datatypes or classes in the candidate.</p><p><strong>Evidence:</strong> version, term list, licence and governance fit, and feature tests.</p></article>
     <article class="card"><h3><code>reference</code></h3><p>Use a data-model, syntax, query, specification or method as an implementation or design contract without adopting its vocabulary as SPDTF meaning.</p><p><strong>Evidence:</strong> question addressed, edition and explicit non-conformance boundary.</p></article>
-    <article class="card"><h3><code>map</code></h3><p>Keep local meaning and record a qualified relation to another term.</p><p><strong>Evidence:</strong> mapping strength, justification, owner, confidence and review.</p></article>
+    <article class="card"><h3><code>map</code></h3><p>Keep local meaning and record a qualified relation to another term.</p><p><strong>Evidence:</strong> mapping strength, justification, owner, confidence and review. <a href="/spdtf/ontologies/evidence-and-mappings#cross-context-mappings">Read the mapping contract</a>.</p></article>
   </div>
 
   <h2 id="upper-ontology">Upper ontologies and design methods</h2>

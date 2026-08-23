@@ -1,5 +1,5 @@
 /**
- * Reader-facing section navigation for the six-destination information
+ * Reader-facing section navigation for the five-destination information
  * architecture. Content-source groupings remain defined in site.ts; this
  * module composes their canonical routes by current task and authority.
  */
@@ -7,34 +7,31 @@ import type { Group, Item, Section } from './site.ts';
 import { SECTIONS, normalizeUrl } from './site.ts';
 import { GLOBAL_DESTINATIONS, getActiveDestination } from './site-ia.mjs';
 import { isRetiredPdtf1DocumentationRoute, PDTF1_ROUTES } from './pdtf1-routes.mjs';
+import { workPackageRoute, workPackages } from './property-pack-model.mjs';
 import {
   GOVERNANCE_FRAMEWORK_ITEMS,
   WORKING_GROUP_MEMBER_GUIDE_ITEMS,
 } from './section-navigation-journeys.ts';
 import { WORKING_GROUPS } from '../components/ia/working-groups.ts';
 
-type DestinationKey = 'programme' | 'spdtf' | 'working-groups' | 'pdtf-schema' | 'governance' | 'resources';
+type DestinationKey = 'programme' | 'spdtf' | 'working-groups' | 'governance' | 'resources';
 
 export interface NavigationMatch {
   section: NavigationSection;
   group: NavigationGroup;
   trail: Item[];
 }
-
 export interface NavigationGroup extends Group {
   url: string;
 }
-
 export interface NavigationSection extends Omit<Section, 'groups'> {
   groups: NavigationGroup[];
 }
-
 function ownedItem(item: Item, owner: DestinationKey): Item[] {
   const children = item.children?.flatMap((child) => ownedItem(child, owner)) ?? [];
   if (getActiveDestination(item.url) !== owner) return children;
   return [{ ...item, children: children.length ? children : undefined }];
 }
-
 function ownedSectionItems(sectionKey: string, owner: DestinationKey): Item[] {
   const section = SECTIONS[sectionKey];
   if (!section) throw new Error(`Unknown legacy section: ${sectionKey}`);
@@ -48,13 +45,11 @@ function ownedSectionItems(sectionKey: string, owner: DestinationKey): Item[] {
       return true;
     });
 }
-
 function ownedGroupItems(sectionKey: string, heading: string, owner: DestinationKey): Item[] {
   const group = SECTIONS[sectionKey]?.groups.find((candidate) => candidate.heading === heading);
   if (!group) throw new Error(`Unknown navigation group: ${sectionKey}/${heading}`);
   return group.items.flatMap((item) => ownedItem(item, owner));
 }
-
 function category(heading: string, url: string, items: Item[] = []): NavigationGroup {
   const landing = normalizeUrl(url);
   const children = items.flatMap((item) => (
@@ -62,7 +57,6 @@ function category(heading: string, url: string, items: Item[] = []): NavigationG
   ));
   return { heading, url, items: children };
 }
-
 const ontologyJourney: Item = {
   url: '/spdtf/ontologies',
   title: 'Semantic modelling',
@@ -89,8 +83,11 @@ const ontologyJourney: Item = {
     },
   ],
 };
-
 const propertyPackBase = '/spdtf/property-pack';
+const workPackageNavigationItems: Item[] = workPackages.map(({ id, label }) => ({
+  url: workPackageRoute(id),
+  title: label.replace(/\b\w/gu, (letter) => letter.toUpperCase()),
+}));
 const propertyPackJourney: Item = {
   url: propertyPackBase,
   title: 'Property Pack ontology',
@@ -103,7 +100,7 @@ const propertyPackJourney: Item = {
       children: [
         {
           url: `${propertyPackBase}/contexts`,
-          title: 'Semantic contexts',
+          title: 'Contextual boundaries',
           children: [
             { url: `${propertyPackBase}/contexts/common`, title: 'Common boundary' },
             { url: `${propertyPackBase}/contexts/conveyancing`, title: 'Conveyancing' },
@@ -114,6 +111,11 @@ const propertyPackJourney: Item = {
             { url: `${propertyPackBase}/contexts/surveying-and-valuation`, title: 'Surveying and valuation' },
             { url: `${propertyPackBase}/contexts/dbt-smart-data`, title: 'DBT Smart Data candidate context' },
           ],
+        },
+        {
+          url: `${propertyPackBase}/work-packages`,
+          title: 'Work-package coverage',
+          children: workPackageNavigationItems,
         },
         { url: `${propertyPackBase}/resources`, title: 'Ontology resources' },
         { url: `${propertyPackBase}/relationships`, title: 'Relationships' },
@@ -135,7 +137,6 @@ const propertyPackJourney: Item = {
     { url: `${propertyPackBase}/review-and-releases`, title: 'Later review and releases' },
   ],
 };
-
 const workingGroupItems: Item[] = WORKING_GROUPS.map((group) => {
   const url = `/spdtf/working-groups/${group.slug}`;
   return {
@@ -148,7 +149,6 @@ const workingGroupItems: Item[] = WORKING_GROUPS.map((group) => {
     ],
   };
 });
-
 function sectionJourney(
   sectionKey: string,
   owner: DestinationKey,
@@ -165,7 +165,6 @@ function sectionJourney(
     children: [...children, ...(options.append ?? [])],
   };
 }
-
 function linkedGroupJourney(
   sectionKey: string,
   heading: string,
@@ -192,17 +191,17 @@ function requiredItem(items: Item[], url: string, title?: string): Item {
   return title ? { ...item, title } : item;
 }
 
-const pdtfSchemaJourney = sectionJourney('schema', 'pdtf-schema', 'JSON Schemas and overlays', {
+const pdtfSchemaJourney = sectionJourney('schema', 'spdtf', 'JSON Schemas and overlays', {
   url: `${PDTF1_ROUTES.original}/schema`,
   append: [{ url: `${PDTF1_ROUTES.original}/schema/overlays`, title: 'Schema overlays' }],
 });
-const pdtfImplementationJourney = sectionJourney('implementation', 'pdtf-schema', 'Implementation guidance', {
+const pdtfImplementationJourney = sectionJourney('implementation', 'spdtf', 'Implementation guidance', {
   url: `${PDTF1_ROUTES.original}/implementation`,
 });
-const pdtfAdoptionJourney = sectionJourney('adoption', 'pdtf-schema', 'Adoption evidence', {
+const pdtfAdoptionJourney = sectionJourney('adoption', 'spdtf', 'Adoption evidence', {
   url: `${PDTF1_ROUTES.original}/adoption`,
 });
-const pdtfModellingJourney = sectionJourney('modelling', 'pdtf-schema', 'Historical modelling record', {
+const pdtfModellingJourney = sectionJourney('modelling', 'spdtf', 'Historical modelling record', {
   url: PDTF1_ROUTES.historicalModelling,
   exclude: [
     `${PDTF1_ROUTES.original}/schema/overlays`,
@@ -210,31 +209,31 @@ const pdtfModellingJourney = sectionJourney('modelling', 'pdtf-schema', 'Histori
     `${PDTF1_ROUTES.original}/business-glossary`,
   ],
 });
-const pdtfMappingJourney = sectionJourney('mapping', 'pdtf-schema', 'Schema-to-ontology verification', {
+const pdtfMappingJourney = sectionJourney('mapping', 'spdtf', 'Schema-to-ontology verification', {
   url: PDTF1_ROUTES.schemaVerification,
 });
-const pdtfModelOverviewItems = ownedGroupItems('model', 'Overview', 'pdtf-schema');
+const pdtfModelOverviewItems = ownedGroupItems('model', 'Overview', 'spdtf');
 const pdtfModelJourney: Item = {
   url: PDTF1_ROUTES.modelViews,
   title: 'Model views by audience',
   children: [
     requiredItem(pdtfModelOverviewItems, `${PDTF1_ROUTES.modelViews}/information-architecture`),
-    linkedGroupJourney('model', 'Concept tier — for SMEs', 'pdtf-schema',
+    linkedGroupJourney('model', 'Concept tier — for SMEs', 'spdtf',
       `${PDTF1_ROUTES.modelViews}/concept`, 'Concept model'),
-    linkedGroupJourney('model', 'Logical tier — for engineers', 'pdtf-schema',
+    linkedGroupJourney('model', 'Logical tier — for engineers', 'spdtf',
       `${PDTF1_ROUTES.modelViews}/logical`, 'Logical model'),
-    linkedGroupJourney('model', 'Physical — ontology', 'pdtf-schema',
+    linkedGroupJourney('model', 'Physical — ontology', 'spdtf',
       `${PDTF1_ROUTES.modelViews}/physical-ontology`, 'Ontology implementation'),
-    linkedGroupJourney('model', 'Physical — deployment', 'pdtf-schema',
+    linkedGroupJourney('model', 'Physical — deployment', 'spdtf',
       `${PDTF1_ROUTES.modelViews}/physical-database`, 'Deployment topology'),
-    linkedGroupJourney('model', 'Physical — relational', 'pdtf-schema',
+    linkedGroupJourney('model', 'Physical — relational', 'spdtf',
       `${PDTF1_ROUTES.modelViews}/physical-relational`, 'Relational projection'),
     requiredItem(pdtfModelOverviewItems, `${PDTF1_ROUTES.modelViews}/validation-report`),
   ],
 };
 
 const pdtfOntologyItems = [
-  ...ownedSectionItems('ontology', 'pdtf-schema')
+  ...ownedSectionItems('ontology', 'spdtf')
     .filter(({ url }) => normalizeUrl(url) !== PDTF1_ROUTES.extracted),
   { url: `${PDTF1_ROUTES.terms}/datatypes`, title: 'Datatypes' },
   { url: `${PDTF1_ROUTES.use}/namespaces`, title: 'Namespaces' },
@@ -301,6 +300,37 @@ const pdtfUseJourney: Item = {
   ],
 };
 
+const pdtfInputJourney: Item = {
+  url: PDTF1_ROUTES.root,
+  title: 'PDTF schema',
+  children: [
+    {
+      url: PDTF1_ROUTES.original,
+      title: 'Schema and supporting material',
+      children: [
+        pdtfSchemaJourney,
+        { url: `${PDTF1_ROUTES.original}/data-dictionary`, title: 'Data dictionary' },
+        { url: `${PDTF1_ROUTES.original}/business-glossary`, title: 'Business glossary' },
+        pdtfImplementationJourney,
+        { ...pdtfAdoptionJourney, title: 'Usage and implementation evidence' },
+      ],
+    },
+    {
+      url: PDTF1_ROUTES.extracted,
+      title: 'Schema-derived ontology',
+      children: [
+        pdtfLineageJourney,
+        pdtfModelJourney,
+        pdtfConceptsJourney,
+        pdtfTermsJourney,
+        pdtfValidationJourney,
+        pdtfTrustJourney,
+        pdtfUseJourney,
+      ],
+    },
+  ],
+};
+
 const navigationSections: Record<DestinationKey, NavigationSection> = {
   programme: {
     key: 'programme',
@@ -325,6 +355,7 @@ const navigationSections: Record<DestinationKey, NavigationSection> = {
       ]),
       category('Property Pack ontology', propertyPackJourney.url, propertyPackJourney.children),
       category(ontologyJourney.title, ontologyJourney.url, ontologyJourney.children),
+      category('Third-party inputs', PDTF1_ROUTES.inputRoot, [pdtfInputJourney]),
     ],
   },
   'working-groups': {
@@ -334,30 +365,6 @@ const navigationSections: Record<DestinationKey, NavigationSection> = {
     groups: [
       category('Member guide', '/spdtf/working-groups/member-guide', WORKING_GROUP_MEMBER_GUIDE_ITEMS),
       category('Group workspaces', '/spdtf/working-groups', workingGroupItems),
-    ],
-  },
-  'pdtf-schema': {
-    key: 'pdtf-schema',
-    title: 'PDTF schema',
-    summary: 'The published schema implementation and status-labelled derived artefacts.',
-    groups: [
-      category('Overview', PDTF1_ROUTES.root),
-      category('Schema and supporting material', PDTF1_ROUTES.original, [
-        pdtfSchemaJourney,
-        { url: `${PDTF1_ROUTES.original}/data-dictionary`, title: 'Data dictionary' },
-        { url: `${PDTF1_ROUTES.original}/business-glossary`, title: 'Business glossary' },
-        pdtfImplementationJourney,
-        { ...pdtfAdoptionJourney, title: 'Usage and implementation evidence' },
-      ]),
-      category('Schema-derived ontology', PDTF1_ROUTES.extracted, [
-        pdtfLineageJourney,
-        pdtfModelJourney,
-        pdtfConceptsJourney,
-        pdtfTermsJourney,
-        pdtfValidationJourney,
-        pdtfTrustJourney,
-        pdtfUseJourney,
-      ]),
     ],
   },
   governance: {
@@ -475,7 +482,7 @@ export function getNavigationPrevNext(path: string): { prev?: Item; next?: Item 
 export function validateSectionNavigation(): true {
   const keys = Object.keys(SECTION_NAVIGATION);
   const expected = GLOBAL_DESTINATIONS.map(({ key }) => key);
-  if (JSON.stringify(keys) !== JSON.stringify(expected)) throw new Error('Section navigation must follow the six global destinations');
+  if (JSON.stringify(keys) !== JSON.stringify(expected)) throw new Error('Section navigation must follow the global destinations');
   for (const destination of GLOBAL_DESTINATIONS) {
     const section = SECTION_NAVIGATION[destination.key as DestinationKey];
     const urls = section.groups.flatMap((group) => [

@@ -16,14 +16,14 @@ const workPackageOptions = workPackages.map((value) => ({
 }));
 ---
 <PropertyPackPage
-  title="Data dictionary"
-  description="Complete 451-row Property Pack source dictionary and its trace into the machine-generated pre-draft."
+  title="Source data dictionary"
+  description="Complete 451-row Property Pack source data dictionary and its trace into the machine-generated pre-draft."
   category="Meaning & constraints"
   crumbs={[{ label: 'Data dictionary' }]}
 >
-  <h1>Data dictionary</h1>
+  <h1>Source data dictionary</h1>
   <p class="lead">
-    All 451 normalized Property Pack data points, preserving their source path and
+    This is the complete source data dictionary: all 451 normalized Property Pack data points, preserving their source path and
     source-derived constraints while showing how each point is interpreted by the
     candidate model.
   </p>
@@ -32,6 +32,8 @@ const workPackageOptions = workPackages.map((value) => ({
     <p class="callout__label">Two layers, kept distinct</p>
     <p>Source constraints describe the input catalogue. Generated SHACL constraints describe candidate RDF validation. A source rule is not silently promoted into SHACL.</p>
   </div>
+
+  <p><a href="/spdtf/property-pack/coverage#trace">Browse the complete trace register</a> to compare the proposed treatment, semantic home and candidate constructs for every source item.</p>
 
 
   <h2 id="register">451 data points</h2>

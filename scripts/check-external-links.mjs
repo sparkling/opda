@@ -60,9 +60,9 @@ const SKIP = [
 // the SPARQL-driven pages, excluding the ADR-0041 third-party tool renderings
 // and the committed artefact bundles.
 const isOnto = (u) =>
-  (u.startsWith('/pdtf-schema/schema-derived-ontology') || u === '/pdtf' || u.startsWith('/pdtf/')) &&
-  !u.startsWith('/pdtf-schema/schema-derived-ontology/use-and-tooling/tools') &&
-  !u.startsWith('/pdtf-schema/schema-derived-ontology/use-and-tooling/artefacts');
+  (u.startsWith('/spdtf/inputs/pdtf-schema/schema-derived-ontology') || u === '/pdtf' || u.startsWith('/pdtf/')) &&
+  !u.startsWith('/spdtf/inputs/pdtf-schema/schema-derived-ontology/use-and-tooling/tools') &&
+  !u.startsWith('/spdtf/inputs/pdtf-schema/schema-derived-ontology/use-and-tooling/artefacts');
 
 function* htmlFiles(dir) {
   for (const e of readdirSync(dir, { withFileTypes: true })) {

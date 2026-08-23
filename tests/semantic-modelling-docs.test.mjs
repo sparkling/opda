@@ -42,7 +42,7 @@ test('semantic modelling has complete teaching and implementation routes without
     'modelling-rules': ['Identity before attributes', 'Class, value or relationship', 'Upper-ontology lenses'],
     coverage: ['Four lenses and eleven workshop themes', 'Eight formal ontology concerns', 'Four allowed dispositions'],
     standards: ['What is implemented now', 'Specification maturity', 'Detailed standards register'],
-    'evidence-and-mappings': ['Competency questions', 'Five qualified mapping meanings', 'Evidence receipt'],
+    'evidence-and-mappings': ['Competency questions', 'Five qualified mapping meanings', 'Category 8: cross-context mappings', 'SKOS says what; SSSOM can record why', 'Evidence receipt'],
     validation: ['Open-world meaning and closed-world checks', 'What automated checks can establish', 'Governance promotion'],
   };
   for (const [name, headings] of Object.entries(required)) {
@@ -54,6 +54,71 @@ test('semantic modelling has complete teaching and implementation routes without
   assert.doesNotMatch(textOf('modelling-method'), /record accepted for this draft, needs evidence/iu);
   assert.match(textOf('semantic-package'), /does not yet[\s\S]+source, semantic owner, candidate version and derivation/iu);
   assert.match(textOf('validation'), /does not yet publish a complete machine-readable[\s\S]+feature/iu);
+});
+
+test('Category 8 mapping guidance separates architecture, SKOS assertions and deferred SSSOM records', () => {
+  const source = textOf('evidence-and-mappings');
+  assert.match(source, /id="cross-context-mappings"/u);
+  assert.match(source, /context-map arrow[\s\S]+not[\s\S]+mapping assertion/iu);
+  assert.match(source, /machines?[\s\S]+suggest[\s\S]+must not[\s\S]+assert/iu);
+  assert.match(source, /skos:exactMatch[\s\S]+transitive/iu);
+  assert.match(source, /four core fields[\s\S]+subject_id[\s\S]+predicate_id[\s\S]+object_id[\s\S]+mapping_justification/iu);
+  assert.match(source, /explicitly typed[\s\S]+rdfs:Literal[\s\S]+omit its ID[\s\S]+label carries the literal/iu);
+  assert.match(source, /If that gate later selects SSSOM[\s\S]+profile[\s\S]+no such profile exists today/iu);
+  assert.match(source, /named\s+external-vocabulary mapping[\s\S]+named consumer[\s\S]+Council re-evaluation/iu);
+  assert.match(source, /not selected for internal cross-context records/iu);
+  assert.match(source, /no SSSOM version or profile[\s\S]+selected/iu);
+  assert.match(source, /no SKOS hierarchy or mapping predicates/iu);
+  assert.match(source, /both endpoints are SKOS concepts/iu);
+  assert.match(source, /exactMatch[\s\S]+subproperty[\s\S]+closeMatch/iu);
+  assert.match(source, /exactMatch[\s\S]+disjoint[\s\S]+broadMatch[\s\S]+relatedMatch[\s\S]+narrowMatch/iu);
+  assert.match(source, /relatedMatch[\s\S]+symmetric associative/iu);
+  assert.match(source, /href="\/modelling\/odr\/odr-0002"/u);
+  assert.match(source, /href="\/spdtf\/ontologies\/standards#standard-sssom"/u);
+  assert.doesNotMatch(source, /SSSOM (?:is|has been) (?:adopted|implemented)/iu);
+
+  const candidateRoot = path.join(root, 'source/03-standards/ontology-candidates/property-pack/0.1');
+  const contextMap = JSON.parse(readFileSync(path.join(candidateRoot, 'projections/context-map.json'), 'utf8'));
+  const manifest = JSON.parse(readFileSync(path.join(candidateRoot, 'candidate-manifest.json'), 'utf8'));
+  const turtle = manifest.files
+    .filter(({ path: relative }) => relative.endsWith('.ttl'))
+    .map(({ path: relative }) => readFileSync(path.join(candidateRoot, relative), 'utf8'))
+    .join('\n');
+  assert.deepEqual(contextMap.cross_domain_mappings, []);
+  assert.equal(manifest.candidate_status, 'machine-proposed');
+  assert.doesNotMatch(turtle, /\bskos:(?:broader|broaderTransitive|narrower|narrowerTransitive|related|exactMatch|closeMatch|broadMatch|narrowMatch|relatedMatch)\b/u);
+  assert.doesNotMatch(turtle, /\b(?:sssom|semapv):/iu);
+
+  const sssom = STANDARDS_PROFILE.find(({ name }) => name === 'SSSOM');
+  assert.equal(sssom?.implementationStatus, 'not used');
+  assert.equal(sssom?.governanceStatus, 'Deferred candidate');
+  assert.match(sssom?.versionBoundary ?? '', /no selected versions/iu);
+
+  const canonicalLink = /href="\/spdtf\/ontologies\/evidence-and-mappings#cross-context-mappings"/u;
+  const linkedPages = [
+    'src/pages/spdtf/ontologies/bounded-contexts.astro',
+    'src/pages/spdtf/ontologies/modelling-method.astro',
+    'src/pages/spdtf/ontologies/modelling-rules.astro',
+    'src/pages/spdtf/ontologies/coverage.astro',
+    'src/pages/spdtf/ontologies/standards.astro',
+    'src/pages/spdtf/ontologies/reading-the-model.astro',
+    'src/pages/spdtf/ontologies/semantic-package.astro',
+    'src/pages/spdtf/ontologies/why-ontologies.astro',
+    'src/pages/spdtf/property-pack/contexts/index.astro',
+    'src/pages/spdtf/property-pack/contexts/[context].astro',
+    'src/pages/spdtf/property-pack/index.astro',
+    'src/pages/spdtf/property-pack/relationships.astro',
+    'src/pages/spdtf/property-pack/definition-and-scope.astro',
+    'src/pages/spdtf/property-pack/pdtf-schema-lineage.astro',
+    'src/pages/spdtf/working-groups/member-guide/model-review-and-decisions.astro',
+    'src/pages/governance/data-stewardship.astro',
+    'src/pages/spdtf/inputs/pdtf-schema/schema-derived-ontology/lineage-provenance-and-verification/historical-modelling/concept-taxonomy.astro',
+    'src/pages/spdtf/inputs/pdtf-schema/schema-derived-ontology/lineage-provenance-and-verification/historical-modelling/jsonld-mappings.astro',
+  ];
+  for (const relative of linkedPages) {
+    const pageSource = readFileSync(path.join(root, relative), 'utf8');
+    assert.match(pageSource, canonicalLink, `${relative} does not link the canonical Category 8 guidance`);
+  }
 });
 
 test('Mermaid teaching diagrams are captioned, accessible and kept within the diagram-design complexity budget', () => {
@@ -122,7 +187,7 @@ test('search exposes every semantic-modelling route and no legacy journey label'
   }
   const all = searchEntries('');
   assert.equal(new Set(all.map(({ url }) => url)).size, all.length);
-  for (const term of ['SKOS', 'OWL', 'RDF', 'SPARQL', 'upper ontology']) {
+  for (const term of ['SKOS', 'SSSOM', 'ontology mapping', 'cross-context mapping', 'OWL', 'RDF', 'SPARQL', 'upper ontology']) {
     assert.ok(searchEntries(term).some(({ url }) => url.startsWith('/spdtf/ontologies')), `${term} is not discoverable`);
   }
   for (const term of ['bounded context', 'context map', 'taxonomy']) {

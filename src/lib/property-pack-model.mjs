@@ -94,6 +94,25 @@ export function dataPointRoute(item) {
   return `${PROPERTY_PACK_ROUTE}/data-dictionary/${item.item_id}`;
 }
 
+export function workPackageRoute(workPackage) {
+  return `${PROPERTY_PACK_ROUTE}/work-packages/${workPackage}`;
+}
+
+export const workPackages = Object.freeze([...new Set(coverage.map((item) => item.work_package))]
+  .sort()
+  .map((id) => {
+    const items = coverage.filter((item) => item.work_package === id);
+    const constructIris = new Set(items.flatMap((item) => item.construct_refs));
+    return Object.freeze({
+      id,
+      label: id.replaceAll('-', ' '),
+      items,
+      resources: resources.filter((resource) => constructIris.has(resource.iri)),
+      semanticHomes: [...new Set(items.map((item) => item.semantic_home))],
+    });
+  }));
+export const workPackageById = new Map(workPackages.map((workPackage) => [workPackage.id, workPackage]));
+
 export function vocabularyRoute(scheme) {
   return `${PROPERTY_PACK_ROUTE}/vocabularies/${scheme.semantic_home}/${localName(scheme.key)}`;
 }
@@ -271,7 +290,7 @@ export const diagramCounts = Object.freeze({
 export function boundaryDiagram() {
   const lines = diagramPreamble(
     'Candidate contextual boundaries',
-    'Seven declared contexts interoperate through a deliberately small common boundary. The lines are architectural connections, not reviewed cross-domain mappings or control relationships.',
+    'The Common boundary supplies a deliberately small set of shared elements to seven declared contexts. These arrows do not represent cross-context mapping, control relationships or working-group decisions.',
   );
   for (const context of contexts) {
     const style = context.kind === 'common-boundary'
@@ -282,7 +301,7 @@ export function boundaryDiagram() {
   for (const connection of contextMap.connections) {
     const from = connection.from.replaceAll('-', '_');
     const to = connection.to.replaceAll('-', '_');
-    lines.push(`  ctx_${from} -.->|"interoperates through"| ctx_${to}`);
+    lines.push(`  ctx_${from} -->|"supplies shared elements"| ctx_${to}`);
   }
   lines.push('');
   for (const context of contexts) {
@@ -371,6 +390,68 @@ export function contextDiagram(contextId) {
   }
   addObjectPropertyEdges(lines, relationshipProperties, nodeIds, contextId);
   addSubclassEdges(lines, subclassSources, nodeIds);
+  addClicks(lines, displayedResources, nodeIds);
+  return lines.join('\n');
+}
+
+/** A class-backbone view of the candidate constructs reached by one work package. */
+export function workPackageDiagramProjection(workPackageId) {
+  const workPackage = workPackageById.get(workPackageId);
+  if (!workPackage) throw new Error(`unknown work package: ${workPackageId}`);
+  const reachedClasses = workPackage.resources.filter((resource) => resource.kind === 'class');
+  const reachedIris = new Set(reachedClasses.map((resource) => resource.iri));
+  const candidateRelationships = drawableObjectProperties();
+  const relationships = candidateRelationships.filter((property) =>
+    reachedIris.has(property.domain) && reachedIris.has(property.range)
+  );
+  const incomingProperties = candidateRelationships.filter((property) =>
+    !reachedIris.has(property.domain) && reachedIris.has(property.range)
+  );
+  const outgoingProperties = candidateRelationships.filter((property) =>
+    reachedIris.has(property.domain) && !reachedIris.has(property.range)
+  );
+  const boundaryProperties = [...incomingProperties, ...outgoingProperties];
+  const displayedIris = new Set(reachedIris);
+  for (const property of [...relationships, ...boundaryProperties]) {
+    displayedIris.add(property.domain);
+    displayedIris.add(property.range);
+  }
+  const displayedResources = resources.filter((resource) =>
+    resource.kind === 'class' && displayedIris.has(resource.iri)
+  );
+  const attachedClasses = displayedResources.filter((resource) => !reachedIris.has(resource.iri));
+  return {
+    workPackage, reachedClasses, relationships, incomingProperties,
+    outgoingProperties, boundaryProperties, attachedClasses, displayedResources,
+  };
+}
+
+export function workPackageDiagram(workPackageId) {
+  const {
+    workPackage, reachedClasses, relationships, boundaryProperties,
+    attachedClasses, displayedResources,
+  } = workPackageDiagramProjection(workPackageId);
+  const nodeIds = new Map(displayedResources.map((resource, index) => [resource.iri, diagramNodeId(index)]));
+  const lines = diagramPreamble(
+    `${workPackage.label} candidate model`,
+    `Classes reached by the ${workPackage.label} source work package, their direct relationships, and one-hop classes attached by incoming or outgoing object properties. Dotted edges cross the work-package boundary. Datatype, coded-value, external-target and domainless properties remain in the structured reference.`,
+  );
+  for (const context of contexts) {
+    const selected = reachedClasses.filter((resource) => resource.semantic_home === context.id);
+    if (!selected.length) continue;
+    lines.push(`  subgraph work_package_${context.id.replaceAll('-', '_')}["${escapeHtml(context.label)}"]`);
+    addTermNodes(lines, selected, nodeIds);
+    lines.push('  end', '');
+  }
+  if (attachedClasses.length) {
+    lines.push('  subgraph work_package_attachments["Classes attached outside this work package"]');
+    addTermNodes(lines, attachedClasses, nodeIds);
+    lines.push('  end', '');
+  }
+  addObjectPropertyEdges(lines, relationships, nodeIds);
+  for (const property of boundaryProperties) {
+    lines.push(`  ${nodeIds.get(property.domain)} -.->|"${escapeHtml(property.label)}"| ${nodeIds.get(property.range)}`);
+  }
   addClicks(lines, displayedResources, nodeIds);
   return lines.join('\n');
 }

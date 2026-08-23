@@ -35,9 +35,9 @@ const isAllowed = (p) => ALLOW.some((a) => p.startsWith(a));
 // artefact bundles below the nested use-and-tooling branch — version-pinned HTML
 // with their own internal relative-link navigation, not native pages.
 const isOnto = (u) =>
-  (u.startsWith('/pdtf-schema/schema-derived-ontology') || u === '/pdtf' || u.startsWith('/pdtf/')) &&
-  !u.startsWith('/pdtf-schema/schema-derived-ontology/use-and-tooling/tools') &&
-  !u.startsWith('/pdtf-schema/schema-derived-ontology/use-and-tooling/artefacts');
+  (u.startsWith('/spdtf/inputs/pdtf-schema/schema-derived-ontology') || u === '/pdtf' || u.startsWith('/pdtf/')) &&
+  !u.startsWith('/spdtf/inputs/pdtf-schema/schema-derived-ontology/use-and-tooling/tools') &&
+  !u.startsWith('/spdtf/inputs/pdtf-schema/schema-derived-ontology/use-and-tooling/artefacts');
 
 function* htmlFiles(dir) {
   for (const e of readdirSync(dir, { withFileTypes: true })) {

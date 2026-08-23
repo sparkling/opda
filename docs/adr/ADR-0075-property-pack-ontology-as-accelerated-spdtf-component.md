@@ -26,7 +26,7 @@ implements: [src/pages/spdtf/property-pack, src/lib/site-navigation.ts, src/lib/
 >
 > Update 2026-08-21 — hierarchy-reflecting PDTF schema routes: [ADR-0076](./ADR-0076-consolidate-pdtf-schema-documentation-under-hierarchy-reflecting-routes.md)
 > retains this two-part model but moves its reader documentation beneath
-> `/pdtf-schema/schema-and-supporting-material/**` and `/pdtf-schema/schema-derived-ontology/**`. The earlier
+> `/spdtf/inputs/pdtf-schema/schema-and-supporting-material/**` and `/spdtf/inputs/pdtf-schema/schema-derived-ontology/**`. The earlier
 > no-move statement above remains historical implementation provenance; it no longer
 > governs routing. Old documentation routes are removed without redirects, while the
 > canonical `/pdtf/**` RDF identifier paths and representation contract remain exact.
@@ -294,5 +294,5 @@ No publication or deployment is authorised by this ADR.
   **schema-derived ontology**. **SPDTF** is the first collaboratively authored scheme
   draft. The Property Pack remains an accelerated SPDTF component, and its crosswalk
   now records schema path → schema-derived construct or gap → SPDTF construct. Reader
-  routes use `/spdtf/**` and `/pdtf-schema/**`; historical `/v2/**` source-route evidence
+  routes use `/spdtf/**` and `/spdtf/inputs/pdtf-schema/**`; historical `/v2/**` source-route evidence
   and stable `/pdtf/**` identifiers remain unchanged.

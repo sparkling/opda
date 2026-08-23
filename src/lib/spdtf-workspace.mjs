@@ -50,11 +50,11 @@ export const ALLOWED_DISPOSITIONS = Object.freeze([
 
 const workspaceInputs = Object.freeze({
   'finance-and-banking': ['/spdtf/property-pack/contexts/finance-and-banking', '/programme'],
-  conveyancing: ['/spdtf/property-pack/contexts/conveyancing', '/pdtf-schema'],
-  'estate-agency': ['/spdtf/property-pack/contexts/estate-agency', '/pdtf-schema'],
-  'surveying-and-valuation': ['/spdtf/property-pack/contexts/surveying-and-valuation', '/pdtf-schema'],
+  conveyancing: ['/spdtf/property-pack/contexts/conveyancing', '/spdtf/inputs/pdtf-schema'],
+  'estate-agency': ['/spdtf/property-pack/contexts/estate-agency', '/spdtf/inputs/pdtf-schema'],
+  'surveying-and-valuation': ['/spdtf/property-pack/contexts/surveying-and-valuation', '/spdtf/inputs/pdtf-schema'],
   'property-data-services': ['/spdtf/property-pack/contexts/property-data-services', '/resources'],
-  'property-technology': ['/spdtf/property-pack/contexts/property-technology', '/pdtf-schema'],
+  'property-technology': ['/spdtf/property-pack/contexts/property-technology', '/spdtf/inputs/pdtf-schema'],
   'dbt-smart-data': ['/dbt-smart-data', '/programme'],
   interoperability: ['/spdtf/ontologies/bounded-contexts', '/spdtf/ontologies/evidence-and-mappings'],
 });

@@ -90,8 +90,9 @@ modelling website remains unchanged:
 | # | Title | Status |
 |---|---|---|
 | [ADR-0073](./ADR-0073-adopt-opda-brand-and-replace-the-website-design-system.md) | Adopt the OPDA brand and replace the website design system | implemented |
-| [ADR-0074](./ADR-0074-organise-site-around-spdtf-and-pdtf-schema.md) | Organise the site around SPDTF and the PDTF schema | implemented |
-| [ADR-0076](./ADR-0076-consolidate-pdtf-schema-documentation-under-hierarchy-reflecting-routes.md) | Consolidate PDTF schema documentation under hierarchy-reflecting routes | accepted |
+| [ADR-0074](./ADR-0074-organise-site-around-spdtf-and-pdtf-schema.md) | Organise the site around SPDTF and the PDTF schema | implemented · amended |
+| [ADR-0076](./ADR-0076-consolidate-pdtf-schema-documentation-under-hierarchy-reflecting-routes.md) | Consolidate PDTF schema documentation under hierarchy-reflecting routes | superseded by ADR-0077 |
+| [ADR-0077](./ADR-0077-place-pdtf-schema-beneath-spdtf-as-third-party-input.md) | Place the PDTF schema beneath SPDTF as a third-party input | accepted · implementation pending |
 
 ## Authoring a new ADR
 

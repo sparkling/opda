@@ -10,8 +10,8 @@
  * score "None" on. The narrative prose is hand/LLM-authored inline.
  *
  * Emits:
- *   public/pdtf-schema/schema-derived-ontology/use-and-tooling/tools/custom/index.html
- *   public/pdtf-schema/schema-derived-ontology/use-and-tooling/artefacts/source/index.html
+ *   public/spdtf/inputs/pdtf-schema/schema-derived-ontology/use-and-tooling/tools/custom/index.html
+ *   public/spdtf/inputs/pdtf-schema/schema-derived-ontology/use-and-tooling/artefacts/source/index.html
  *
  * Run: node scripts/gen-ontology-custom.mjs
  */
@@ -24,7 +24,7 @@ const PROFILES = path.join(ONT, 'profiles');
 const EXEMPLARS = path.join(ONT, 'exemplars');
 const PUBLIC_ONTOLOGY = path.join(
   ROOT,
-  'public/pdtf-schema/schema-derived-ontology/use-and-tooling',
+  'public/spdtf/inputs/pdtf-schema/schema-derived-ontology/use-and-tooling',
 );
 const OUT_CUSTOM = path.join(PUBLIC_ONTOLOGY, 'tools/custom');
 const OUT_SRC = path.join(PUBLIC_ONTOLOGY, 'artefacts/source');
