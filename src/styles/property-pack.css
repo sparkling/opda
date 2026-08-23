@@ -382,6 +382,13 @@ a.v2-card:focus-visible { border-color: var(--color-data-1); }
 .v2-check-list li::before { content: '✓'; color: var(--color-status-success); }
 .v2-limit-list li::before { content: '!'; color: var(--color-status-warning); }
 
+/* A long evidence list remains part of the article rhythm, not a flush utility
+   list. Its extra inset keeps the marker inside the paragraph measure. */
+.prose > .v2-review-list {
+  margin-block: var(--space-5);
+  padding-inline-start: var(--space-7);
+}
+
 @media (max-width: 58rem) {
   .v2-snapshot-grid { grid-template-columns: 1fr; }
   .v2-card-grid--artefacts { grid-template-columns: repeat(2, minmax(0, 1fr)); }

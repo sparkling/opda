@@ -54,7 +54,7 @@ const reviewItems = coverage.filter((item) => item.disposition !== 'consolidate'
 
   <h2 id="review-items">Split and challenge items ({reviewItems.length})</h2>
   <p>These items are deliberately visible because the candidate does not treat consolidation as the right answer for every source row.</p>
-  <ul>{reviewItems.map((item) => <li><a href={dataPointRoute(item)}>{item.preferred_label}</a> — <strong>{item.disposition}</strong>: {item.rationale}</li>)}</ul>
+  <ul class="v2-review-list">{reviewItems.map((item) => <li><a href={dataPointRoute(item)}>{item.preferred_label}</a> — <strong>{item.disposition}</strong>: {item.rationale}</li>)}</ul>
 
   <h2 id="trace">Complete trace register</h2>
   <details>

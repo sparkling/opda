@@ -57,7 +57,7 @@ test('prose lists have explicit space above and below', async () => {
     readFile(file('DESIGN.md'), 'utf8'),
   ]);
 
-  assert.match(content, /\.prose > :is\(ul, ol\)\s*\{[^}]*margin-block:\s*var\(--space-5\)/su);
+  assert.match(content, /\.prose > :is\(ul, ol\)\s*\{[^}]*margin:\s*var\(--space-5\)\s+0/su);
   assert.match(design, /Lists have a small tokenised gap above and below/u);
 });
 
