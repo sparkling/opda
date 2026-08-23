@@ -1,0 +1,56 @@
+---
+import { GLOBAL_DESTINATION_CARDS } from '@/lib/site-ia.mjs';
+
+interface Card {
+  audience: string;
+  description: string;
+  title: string;
+  url: string;
+}
+
+interface Props {
+  cards?: readonly Card[];
+}
+
+const { cards = GLOBAL_DESTINATION_CARDS } = Astro.props;
+---
+
+<div class="card-grid destination-card-grid">
+  {cards.map((card) => (
+    <a class="card" href={card.url}>
+      <span class="card__eyebrow">{card.audience}</span>
+      <h3>{card.title}</h3>
+      <p>{card.description}</p>
+    </a>
+  ))}
+</div>
+
+<style>
+  .destination-card-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .destination-card-grid .card__eyebrow { font-size: var(--text-sm); }
+  .destination-card-grid .card h3 { font: var(--h2); }
+  .destination-card-grid .card p { font: var(--lead); }
+  .destination-card-grid a.card {
+    transition: transform var(--duration-fast) var(--ease),
+      box-shadow var(--duration-fast) var(--ease),
+      border-color var(--duration-fast) var(--ease),
+      background var(--duration-fast) var(--ease);
+  }
+  .destination-card-grid a.card:is(:hover, :focus-visible) { box-shadow: var(--shadow-md); }
+  .destination-card-grid a.card:active {
+    transform: translateY(0.125rem);
+    box-shadow: var(--shadow-sm);
+  }
+
+  @media (max-width: 64rem) {
+    .destination-card-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  }
+
+  @media (max-width: 40rem) {
+    .destination-card-grid { grid-template-columns: minmax(0, 1fr); }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .destination-card-grid a.card:active { transform: none; }
+  }
+</style>

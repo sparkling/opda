@@ -15,6 +15,38 @@ export const GLOBAL_DESTINATIONS = Object.freeze([
   { key: 'resources', title: 'Resources', url: '/resources' },
 ]);
 
+const DESTINATION_CARD_DETAILS = Object.freeze({
+  programme: {
+    audience: 'For programme leaders and new readers',
+    description: 'Understand the purpose, current direction, roadmap and policy context for a shared property-data scheme.',
+  },
+  governance: {
+    audience: 'For decision-makers and reviewers',
+    description: 'See who can decide, what is under review, and how authority, maturity and lifecycle are recorded.',
+  },
+  'semantic-modelling': {
+    audience: 'For domain experts and ontology learners',
+    description: 'Learn why ontologies are used, then follow the evidence-up method, contextual boundaries and mapping approach.',
+  },
+  spdtf: {
+    audience: 'For implementers, stewards and interoperability leads',
+    description: 'Review collaborative work products, candidates, open questions, outputs and attributed third-party inputs.',
+  },
+  'working-groups': {
+    audience: 'For contributors and facilitators',
+    description: 'Find group scopes, member guidance, contribution routes and the workspaces where domain meaning is reviewed.',
+  },
+  resources: {
+    audience: 'For researchers and auditors',
+    description: 'Trace terms, source records, standards, recordings and historical material with their provenance and maturity.',
+  },
+});
+
+export const GLOBAL_DESTINATION_CARDS = Object.freeze(GLOBAL_DESTINATIONS.map((destination) => Object.freeze({
+  ...destination,
+  ...DESTINATION_CARD_DETAILS[destination.key],
+})));
+
 export const IA_STATUS_FIELDS = Object.freeze([
   'workArea', 'authority', 'maturity', 'version', 'provenance',
 ]);
@@ -463,6 +495,9 @@ export function findForbiddenIaLabels(text, { historical = false } = {}) {
 
 export function validateIaContract() {
   if (GLOBAL_DESTINATIONS.length !== 6) throw new Error('IA requires exactly six global destinations');
+  if (GLOBAL_DESTINATION_CARDS.length !== GLOBAL_DESTINATIONS.length) {
+    throw new Error('Every global destination requires one shared destination card');
+  }
   const keys = GLOBAL_DESTINATIONS.map(({ key }) => key);
   const labels = GLOBAL_DESTINATIONS.map(({ title }) => title);
   const urls = GLOBAL_DESTINATIONS.map(({ url }) => url);
@@ -476,6 +511,13 @@ export function validateIaContract() {
     }
     if (IA_STATUS_FIELDS.some((field) => typeof metadata[field] !== 'string' || !metadata[field].trim())) {
       throw new Error(`IA metadata contains an empty field for ${destination.key}`);
+    }
+  }
+  for (const [index, card] of GLOBAL_DESTINATION_CARDS.entries()) {
+    const destination = GLOBAL_DESTINATIONS[index];
+    if (card.key !== destination.key || card.title !== destination.title || card.url !== destination.url
+      || !card.audience || !card.description) {
+      throw new Error(`Invalid shared destination card: ${destination.key}`);
     }
   }
   const destinationKeys = new Set(keys);

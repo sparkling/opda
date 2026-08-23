@@ -1,46 +1,15 @@
 ---
 import {
-  GLOBAL_DESTINATIONS,
   IA_STATUS_REGISTRY_VERSION,
   getRouteStatus,
 } from '@/lib/site-ia.mjs';
+import DestinationCards from '@/components/ia/DestinationCards.astro';
 
 const title = 'OPDA Knowledge Base';
 const description =
   'Explore the OPDA programme, governance, semantic modelling, SPDTF development, working groups and evidence behind a shared language for property data.';
 const routeStatus = getRouteStatus('/');
 
-const destinationDetails = {
-  programme: {
-    audience: 'For programme leaders and new readers',
-    description: 'Understand the purpose, current direction, roadmap and policy context for a shared property-data scheme.',
-  },
-  governance: {
-    audience: 'For decision-makers and reviewers',
-    description: 'See who can decide, what is under review, and how authority, maturity and lifecycle are recorded.',
-  },
-  'semantic-modelling': {
-    audience: 'For domain experts and ontology learners',
-    description: 'Learn why ontologies are used, then follow the evidence-up method, contextual boundaries and mapping approach.',
-  },
-  spdtf: {
-    audience: 'For implementers, stewards and interoperability leads',
-    description: 'Review collaborative work products, candidates, open questions, outputs and attributed third-party inputs.',
-  },
-  'working-groups': {
-    audience: 'For contributors and facilitators',
-    description: 'Find group scopes, member guidance, contribution routes and the workspaces where domain meaning is reviewed.',
-  },
-  resources: {
-    audience: 'For researchers and auditors',
-    description: 'Trace terms, source records, standards, recordings and historical material with their provenance and maturity.',
-  },
-};
-
-const destinationCards = GLOBAL_DESTINATIONS.map((destination) => ({
-  ...destination,
-  ...destinationDetails[destination.key],
-}));
 ---
 <!doctype html>
 <html lang="en" data-ia-status-version={IA_STATUS_REGISTRY_VERSION} data-work-area={routeStatus.workArea} data-authority={routeStatus.authority} data-maturity={routeStatus.maturity} data-content-version={routeStatus.version} data-provenance={routeStatus.provenance}>
@@ -89,7 +58,7 @@ const destinationCards = GLOBAL_DESTINATIONS.map((destination) => ({
           review the developing work, or take part.
         </p>
         <div class="public-hero__actions">
-          <a class="btn" href="#inside-title">Explore the knowledge base</a>
+          <a class="btn" href="/programme">Explore SPDF</a>
           <a class="btn btn--outline-dark" href="/working-groups/join">Join a working group</a>
         </div>
       </div>
@@ -104,15 +73,7 @@ const destinationCards = GLOBAL_DESTINATIONS.map((destination) => ({
         <p class="overline">Choose your route</p>
         <h2 id="inside-title">Explore the programme and how SPDTF is developed</h2>
       </header>
-      <div class="card-grid">
-        {destinationCards.map((destination) => (
-          <a class="card" href={destination.url}>
-            <span class="card__eyebrow">{destination.audience}</span>
-            <h3>{destination.title}</h3>
-            <p>{destination.description}</p>
-          </a>
-        ))}
-      </div>
+      <DestinationCards />
     </nav>
   </main>
   <footer class="public-footer">

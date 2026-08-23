@@ -377,6 +377,9 @@
 .app-sidebar .tree-leaf > a {
   padding-inline-start: calc(var(--target-min) + var(--space-3));
 }
+.app-sidebar .nav-group--leaf > .nav-group-leaf {
+  padding-inline-start: calc(var(--target-min) + var(--space-3));
+}
 
 .app-sidebar ul { list-style: none; padding: 0; margin: 0; }
 .app-sidebar li + li { margin-top: 1px; }

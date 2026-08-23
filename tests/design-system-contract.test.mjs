@@ -290,15 +290,15 @@ test('the adopted motion contract excludes parallax and long campaign motion', a
     'src/styles/working-group-campaign-sections.css',
     'src/styles/working-group-campaign-responsive.css',
   ];
-  const [source, publicEntry] = await Promise.all([
+  const [source, destinationCards] = await Promise.all([
     Promise.all(paths.map((path) => readFile(file(path), 'utf8'))).then((files) => files.join('\n')),
-    readFile(file('public/ui/design/public.css'), 'utf8'),
+    readFile(file('src/components/ia/DestinationCards.astro'), 'utf8'),
   ]);
   assert.doesNotMatch(source, /parallax/iu);
   assert.doesNotMatch(source, /(?:transition|duration)[^;\n]*(?:[3-9]\d{2}|\d{4,})ms/iu);
   assert.doesNotMatch(source, /animation:[^;\n]*infinite/iu);
-  assert.doesNotMatch(publicEntry, /a\.card:is\(:hover, :focus-visible\)\s*\{[^}]*transform/su);
-  assert.match(publicEntry, /a\.card:active\s*\{[^}]*transform/su);
+  assert.doesNotMatch(destinationCards, /a\.card:is\(:hover, :focus-visible\)\s*\{[^}]*transform/su);
+  assert.match(destinationCards, /a\.card:active\s*\{[^}]*transform/su);
 });
 
 test('shared navigation exposes visible focus, state and 44px targets', async () => {

@@ -68,12 +68,13 @@ function containsActive(item: Item): boolean {
         ]).get(group.url);
         return (
           <section
-            class={`nav-group${emphasizeFolders ? ' has-emphasized-folders' : ''}${defaultOpen ? ' is-open' : ''}`}
+            class={`nav-group${hasChildren ? '' : ' nav-group--leaf'}${emphasizeFolders ? ' has-emphasized-folders' : ''}${defaultOpen ? ' is-open' : ''}`}
             data-group={group.heading}
             data-active={containsActivePage ? 'true' : undefined}
           >
-            <div class={`nav-group-row${isActivePage ? ' is-active-page' : ''}`}>
-              {hasChildren ? (
+            {hasChildren ? (
+              <>
+                <div class={`nav-group-row${isActivePage ? ' is-active-page' : ''}`}>
                 <button
                   type="button"
                   class="nav-group-toggle"
@@ -88,26 +89,31 @@ function containsActive(item: Item): boolean {
                     <polyline points="9 18 15 12 9 6"/>
                   </svg>
                 </button>
-              ) : <span class="nav-group-spacer" aria-hidden="true"></span>}
+                  <a
+                    class={`nav-group-link${isActiveLocation ? ' active' : ''}`}
+                    href={group.url}
+                    aria-current={isActivePage ? 'page' : undefined}
+                  >{group.heading}</a>
+                </div>
+                <ul class="tree nav-group-items" id={childrenId}>
+                  {group.items.map(item => (
+                    <SidebarItem
+                      item={item}
+                      activePath={activePath}
+                      currentPath={path}
+                      containsActive={containsActive}
+                      emphasized={emphasizeFolders}
+                    />
+                  ))}
+                </ul>
+              </>
+            ) : (
               <a
                 id={leafGroupId}
-                class={`nav-group-link${isActiveLocation ? ' active' : ''}`}
+                class={`nav-group-leaf${isActiveLocation ? ' active' : ''}`}
                 href={group.url}
                 aria-current={isActivePage ? 'page' : undefined}
               >{group.heading}</a>
-            </div>
-            {hasChildren && (
-              <ul class="tree nav-group-items" id={childrenId}>
-                {group.items.map(item => (
-                  <SidebarItem
-                    item={item}
-                    activePath={activePath}
-                    currentPath={path}
-                    containsActive={containsActive}
-                    emphasized={emphasizeFolders}
-                  />
-                ))}
-              </ul>
             )}
           </section>
         );

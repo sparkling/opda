@@ -1,7 +1,22 @@
 ---
 import Layout from '@/layouts/Layout.astro';
 import PageMeta from '@/components/PageMeta.astro';
-import GatewayCard from '@/components/ia/GatewayCard.astro';
+import DestinationCards from '@/components/ia/DestinationCards.astro';
+import { SECTION_NAVIGATION } from '@/lib/site-navigation';
+
+const programmeSectionDescriptions: Record<string, string> = {
+  Strategy: 'Read the programme direction, roadmap and policy context that frame the work.',
+  'DBT Smart Data': 'Follow the government Smart Data context and OPDA’s related evidence and activity.',
+  'Programme activity': 'Find the programme’s working-group and engagement activity.',
+};
+const programmeNavigationCards = SECTION_NAVIGATION.programme.groups
+  .filter((group) => group.heading !== 'Overview')
+  .map((group) => ({
+    audience: 'Programme section',
+    description: programmeSectionDescriptions[group.heading] ?? SECTION_NAVIGATION.programme.summary,
+    title: group.heading,
+    url: group.url,
+  }));
 ---
 
 <Layout
@@ -59,10 +74,8 @@ import GatewayCard from '@/components/ia/GatewayCard.astro';
   </p>
 
   <h2 id="start">Choose a starting point</h2>
-  <div class="card-grid">
-    <GatewayCard href="/spdtf" title="SPDTF" eyebrow="Develop" description="Follow the evidence-up method, ontology work, candidates and the first collaboratively authored scheme draft." />
-    <GatewayCard href="/spdtf/working-groups" title="Working groups" eyebrow="Participate" description="Join the single SPDTF working-group family, including Interoperability." />
-    <GatewayCard href="/spdtf/inputs/pdtf-schema" title="PDTF schema" eyebrow="Implement" description="Find the existing Digital Property Pack schema, its supporting dictionary and glossary, and the separately labelled schema-derived ontology." />
-    <GatewayCard href="/resources" title="Resources" eyebrow="Trace" description="Find attributed sources, programme records, standards references and historical material." />
-  </div>
+  <DestinationCards />
+
+  <h2 id="programme-sections">Explore the programme</h2>
+  <DestinationCards cards={programmeNavigationCards} />
 </Layout>
