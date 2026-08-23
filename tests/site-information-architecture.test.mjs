@@ -205,9 +205,9 @@ test('the migration ledger preserves every audited high-risk information family'
 });
 
 test('the frozen preservation proof resolves content, ownership and exact family checksums', () => {
-  assert.equal(routeBaseline.schemaVersion, 8);
+  assert.equal(routeBaseline.schemaVersion, 9);
   assert.equal(routeBaseline.routeCount, 3209);
-  assert.equal(routeBaseline.addedRouteCount, 76);
+  assert.equal(routeBaseline.addedRouteCount, 87);
   assert.equal(routeBaseline.retiredRouteCount, 227);
   assert.equal(routeBaseline.retiredRoutes.length, 227);
   assert.deepEqual({
@@ -229,17 +229,21 @@ test('the frozen preservation proof resolves content, ownership and exact family
   assert.equal(routeBaseline.routes.length, routeBaseline.routeCount);
   assert.equal(routeBaseline.addedRoutes.length, routeBaseline.addedRouteCount);
   const acceptedRecords = [...routeBaseline.routes, ...routeBaseline.addedRoutes];
-  for (const id of [
-    'schema', 'implementation', 'adoption', 'modelling', 'model', 'ontology', 'mapping',
-  ]) {
-    const suffix = { adoption: 'usage', ontology: 'schema-derived-ontology' }[id] ?? id;
+  const pdtfInputNavPageCount = acceptedRecords.filter(({ acceptedFragments }) => (
+    acceptedFragments.includes('section-nav-group-spdtf-inputs')
+  )).length;
+  assert.ok(pdtfInputNavPageCount >= routeBaseline.pdtfSchemaInputMigration.movedRouteCount);
+  for (const suffix of ['schema', 'implementation', 'usage', 'modelling', 'model', 'mapping']) {
     const fragment = `section-nav-group-pdtf-schema-${suffix}`;
     assert.equal(
       acceptedRecords.filter(({ acceptedFragments }) => acceptedFragments.includes(fragment)).length,
-      1701,
-      `${fragment} must remain on every PDTF schema page`,
+      pdtfInputNavPageCount,
+      `${fragment} must remain wherever the PDTF schema input navigation is rendered`,
     );
   }
+  assert.equal(acceptedRecords.filter(({ acceptedFragments }) => (
+    acceptedFragments.includes('section-nav-spdtf-inputs-pdtf-schema-schema-derived-ontology')
+  )).length, pdtfInputNavPageCount);
   const requiredRouteFields = [
     'baselineRoute', 'baselineFile', 'acceptedRoute', 'acceptedFile',
     'baselineContentSha256', 'acceptedContentSha256', 'acceptedBlockInventorySha256', 'baselineFragmentSha256',
@@ -311,9 +315,9 @@ test('the frozen preservation proof resolves content, ownership and exact family
     artefacts: [artefacts.assetClass, artefacts.baselinePath, artefacts.acceptedPath, artefacts.accepted.count],
   }, {
     tools: ['tool-rendering', 'public/ontology/tools',
-      'public/pdtf-schema/schema-derived-ontology/use-and-tooling/tools', 837],
+      'public/spdtf/inputs/pdtf-schema/schema-derived-ontology/use-and-tooling/tools', 837],
     artefacts: ['ontology-serialization', 'public/ontology/artefacts',
-      'public/pdtf-schema/schema-derived-ontology/use-and-tooling/artefacts', 27],
+      'public/spdtf/inputs/pdtf-schema/schema-derived-ontology/use-and-tooling/artefacts', 27],
   });
   assert.equal(preservationBaseline.runtimeJourneys.length, 4);
 });

@@ -41,7 +41,7 @@ test('Property Pack migration is an explicit bijection from the retired route fa
     '/spdtf/property-pack/definition-and-scope');
 });
 
-test('Property Pack migration publishes one canonical 690 + 1 + 2 family', () => {
+test('Property Pack preserves the frozen 690 + 1 + 2 cut and classifies nine later pages', () => {
   const acceptedRoutes = new Set([
     ...routeBaseline.routes.map(({ acceptedRoute }) => acceptedRoute),
     ...routeBaseline.addedRoutes.map(({ acceptedRoute }) => acceptedRoute),
@@ -71,21 +71,23 @@ test('Property Pack migration publishes one canonical 690 + 1 + 2 family', () =>
     technicalMapped: family.technicalMappedRouteCount,
     canonicalContent: family.canonicalContentRouteCount,
     lifecycle: family.lifecyclePageCount,
+    laterPages: family.postMigrationPageCount,
     baselinePath: family.baselinePath,
     acceptedPath: family.acceptedPath,
   }, {
     baseline: 690,
-    accepted: 693,
+    accepted: 702,
     technicalMapped: 690,
     canonicalContent: 691,
     lifecycle: 2,
+    laterPages: 9,
     baselinePath: 'dist/v2',
     acceptedPath: 'dist/spdtf/property-pack',
   });
 });
 
 test('the final manifest carries the frozen schema-to-scheme route receipt', () => {
-  assert.equal(routeBaseline.schemaVersion, 8);
+  assert.equal(routeBaseline.schemaVersion, 9);
   assert.deepEqual({
     policy: routeBaseline.schemaToSchemeMigration?.policy,
     sourceCommit: routeBaseline.schemaToSchemeMigration?.sourceCommit,
@@ -158,9 +160,11 @@ test('schema-v6 receipts compose the complete prior IA evidence without shrinkin
 test('Property Pack migration rejects malformed and non-bijective mappings', () => {
   const records = structuredClone(routeBaseline.routes);
   const addedRoutes = structuredClone(routeBaseline.addedRoutes);
+  const lifecycleRoutes = new Set(routeBaseline.propertyPackMigration.lifecycleRoutes);
+  const frozenAddedRoutes = addedRoutes.filter(({ acceptedRoute }) => lifecycleRoutes.has(acceptedRoute));
   const originalReplacement = getDeclaredRouteReplacement;
   assert.throws(() => propertyPackMigrationReceipt(
-    records, addedRoutes, PROPERTY_PACK_ROUTE_MIGRATION,
+    records, frozenAddedRoutes, PROPERTY_PACK_ROUTE_MIGRATION,
     (route) => route === '/v2/comparison'
       ? '/spdtf/property-pack/comparison'
       : originalReplacement(route),
@@ -170,7 +174,7 @@ test('Property Pack migration rejects malformed and non-bijective mappings', () 
   comparison.acceptedRoute = originalReplacement('/v2');
   comparison.acceptedFile = 'spdtf/property-pack/index.html';
   assert.throws(() => propertyPackMigrationReceipt(
-    duplicateRecords, addedRoutes, PROPERTY_PACK_ROUTE_MIGRATION,
+    duplicateRecords, frozenAddedRoutes, PROPERTY_PACK_ROUTE_MIGRATION,
     (route) => route === '/v2/comparison'
       ? originalReplacement('/v2')
       : originalReplacement(route),
