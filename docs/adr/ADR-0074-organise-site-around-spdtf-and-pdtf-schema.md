@@ -1,5 +1,5 @@
 ---
-status: implemented
+status: accepted
 date: 2026-08-18
 updated: 2026-08-23
 tags: [website, information-architecture, pdtf-schema, spdtf, ontology, semantic-modelling, standards, migration, governance]
@@ -11,6 +11,18 @@ implements: [docs/spdtf-information-architecture.md]
 
 # Organise the site around SPDTF and the PDTF schema
 
+> Update 2026-08-23 — accepted global-navigation and semantic-modelling correction:
+> the six destinations are Programme, Governance, Semantic modelling, SPDTF Development,
+> Working groups and Resources, in that order. `SPDTF Development` is the navigation
+> label for `/spdtf`, not a renamed or adopted scheme. Semantic-modelling reader pages
+> move as one exact-suffix family from `/spdtf/ontologies` and
+> `/spdtf/ontologies/**` to `/semantic-modelling` and `/semantic-modelling/**`; the
+> former routes are retired without redirects, rewrite aliases or duplicate pages.
+> The PDTF schema remains a third-party SPDTF input beneath
+> `/spdtf/inputs/pdtf-schema/**`, and stable `/pdtf/**` RDF identifiers remain unchanged.
+> Implementation and local validation are in progress; this note authorises no
+> publication or deployment.
+>
 > Update 2026-08-19: the user accepted this decision and authorised implementation
 > in a separate feature worktree. The migration and release gates passed at audited
 > evidence baseline `24f9fb4ca8405343dc13d2d4b7119a30e1b883d7`, so this ADR is
@@ -126,7 +138,8 @@ follow-on requirement; ADR-0064's unrelated decisions remain operative.
 - Explain the ontology method in business language without conflating semantic meaning,
   validation, downstream projections or approval.
 - Make standards status, conformance scope and mapping type explicit.
-- Preserve stable routes and semantic identifiers before changing navigation paths.
+- Account for every reader route and preserve stable semantic identifiers before changing
+  navigation paths; a reader-route preservation receipt does not require a compatibility route.
 - Apply migration rules to complete generated route families, not individual pages.
 
 ## Considered Options
@@ -136,24 +149,26 @@ follow-on requirement; ADR-0064's unrelated decisions remain operative.
 - **Keep the thirteen-section navigation.** Add work-area and status banners to the
   current structure.
 - **Use an asymmetric task-and-authority architecture (chosen).** Separate the two
-  bodies of work while sharing Programme, Governance and Resources, and expose a
-  direct Working groups task path.
+  bodies of work while sharing Programme, Governance and Resources, and expose direct
+  Semantic modelling and Working groups task paths.
 
 ## Decision Outcome
 
-Implemented: adopt six global destinations:
+Accepted: adopt six global destinations, in this order:
 
 1. Programme.
-2. SPDTF.
-3. Working groups — a shortcut to the single canonical family within SPDTF development.
-4. PDTF schema.
-5. Governance.
+2. Governance.
+3. Semantic modelling.
+4. SPDTF Development.
+5. Working groups — a shortcut to the single canonical family within SPDTF Development.
 6. Resources.
 
-SPDTF is the current collaborative scheme draft in development, not an adopted standard.
-The PDTF schema area contains the existing schema, supporting material and separately
-identified schema-derived ontology, each with its own status. It must not be presented
-as an OPDA-endorsed predecessor scheme.
+`SPDTF Development` is the navigation label for `/spdtf`; it does not rename SPDTF,
+create a numbered generation or imply adoption. SPDTF is the current collaborative
+scheme draft in development, not an adopted standard. The PDTF schema input area beneath
+SPDTF Development contains the existing schema, supporting material and separately
+identified schema-derived ontology, each with its own status. It must not be presented as
+an OPDA-endorsed predecessor scheme.
 
 The existing `/v2/**` corpus is labelled **SPDTF Property Pack candidate —
 machine-generated pre-draft — non-normative — no working-group review or approval
@@ -164,11 +179,11 @@ Governance owns one versioned registry with separate fields for work area, autho
 maturity, version and provenance. Interoperability is a peer of domain working groups
 within SPDTF development and links to Governance for its decision rights.
 
-SPDTF contains one canonical **Ontologies and semantic modelling**
-branch with two audience paths. **Understand ontologies** explains why ontologies are
-used and how to read the model. **How we model SPDTF** documents the evidence-up
-method, six-part semantic package, context boundary, modelling rules, coverage,
-standards, evidence and mappings, validation and projections.
+**Semantic modelling** is one canonical peer global destination at
+`/semantic-modelling`, with two audience paths. **Understand ontologies** explains why
+ontologies are used and how to read the model. **How we model SPDTF** documents the
+evidence-up method, six-part semantic package, context boundary, modelling rules,
+coverage, standards, evidence and mappings, validation and projections.
 
 The branch distinguishes three taxonomies:
 
@@ -234,27 +249,31 @@ technical decisions remain. It does not supersede those ADRs as a whole.
 - Good, because the current route inventory becomes a deterministic migration ledger.
 - Bad, because six new labels will disrupt familiarity with the thirteen-item header.
 - Bad, because coherent status metadata must be applied across thousands of pages.
-- Neutral, because existing routes remain in place during the first implementation.
+- Neutral, because route continuity is decision-specific: semantic-modelling content and
+  feedback identity are preserved while the former reader routes intentionally disappear.
 
 ### Confirmation
 
-This ADR is Implemented on the isolated `feat/spdtf-2-ia` branch. The audited
-implementation baseline is `24f9fb4ca8405343dc13d2d4b7119a30e1b883d7`; the
-status-change commit is a later governance-only change. Neither commit authorises
-publication or deployment.
+The original information architecture was Implemented on the isolated
+`feat/spdtf-2-ia` branch. Its audited implementation baseline is
+`24f9fb4ca8405343dc13d2d4b7119a30e1b883d7`; the status-change commit is a later
+governance-only change. The 2026-08-23 global-navigation correction is Accepted and
+reopens implementation until its additional route and navigation gates pass. Neither
+the historical commits nor this correction authorises publication or deployment.
 
 Human approval was required before acceptance; implementation then required the
 complete migration and release gates listed below.
 
-The branch contains the route/status registry, canonical landings and workspaces,
-search facets, runtime journeys, and exact preservation manifests. It satisfies:
+The original branch contains the route/status registry, canonical landings and
+workspaces, search facets, runtime journeys, and exact preservation manifests. It
+satisfied the then-current gates for:
 
 - a disposition for every route, generated family, bundled artefact, published source
   object and compatibility alias in the current-site IA inventory;
 - checksum/consumer preservation ledgers for sources, council records, ontology/data
   artefacts, support assets and runtime authentication, comments and submissions;
 - one canonical working-group URL family under SPDTF;
-- one canonical two-audience Ontologies and semantic modelling branch with the exact
+- one canonical two-audience Ontologies and semantic modelling journey with the exact
   six/eleven/eight distinction and four category dispositions;
 - a status-controlled standards profile and unambiguous mapping vocabulary;
 - the revisioned semantic-package workspace contract at its canonical SPDTF identifier,
@@ -266,6 +285,18 @@ search facets, runtime journeys, and exact preservation manifests. It satisfies:
 - complete route, fragment, search, accessibility, responsive, keyboard, visual,
   unit and build gates;
 - a coherent release rather than piecemeal changes.
+
+The 2026-08-23 correction additionally requires:
+
+- the exact global order Programme, Governance, Semantic modelling, SPDTF Development,
+  Working groups and Resources;
+- one canonical top-level `/semantic-modelling/**` reader family containing both audience
+  paths, with no Semantic modelling branch beneath SPDTF Development;
+- exact-suffix preservation receipts from `/spdtf/ontologies` and
+  `/spdtf/ontologies/**`, while emitting no old route, redirect, rewrite alias or
+  duplicate page; and
+- unchanged placement and authority for `/spdtf/inputs/pdtf-schema/**`, with every
+  stable `/pdtf/**` RDF identifier and representation unchanged.
 
 The schema-v5 preservation receipt accounts for 562,664 baseline information-block
 occurrences: 561,743 exact, 868 source/hash-bound semantic reframes and 53
@@ -311,6 +342,10 @@ operative.
 - Do not use an unqualified “mapping” label.
 - Do not create duplicate governance, status, glossary or working-group records.
 - Do not redirect a route without a recorded semantic-equivalence decision and test.
+- Use `/semantic-modelling` and `/semantic-modelling/**` for semantic-modelling reader
+  pages. Do not emit, redirect, rewrite, alias or duplicate `/spdtf/ontologies` or
+  `/spdtf/ontologies/**`; migration receipts and retained feedback identity are not
+  compatibility routes.
 
 ## Vote and Dissent
 
@@ -325,9 +360,9 @@ For the integrated implementation, Anthropic Fable and Claude Sonnet scored 98/1
 the OpenAI Devil's Advocate scored 100/100, and the native Claude–Codex deliberation
 accepted the transition; every review reported zero hard failures.
 
-Held dissent: Fable would order the PDTF schema before SPDTF because
-implementation is the majority task today. Navigation task testing must decide the
-final order before implementation.
+Held historical dissent: Fable would have ordered the PDTF schema before SPDTF because
+implementation was the majority task. The 2026-08-23 operator decision resolves the
+global order and keeps the PDTF schema as a nested third-party input.
 
 ## More Information
 
@@ -344,6 +379,12 @@ final order before implementation.
 - [MHCLG — Home Buying and Selling Reform Roadmap](https://www.gov.uk/government/consultations/home-buying-and-selling-reform/outcome/home-buying-and-selling-reform-roadmap)
 
 ## Amendments
+
+- **2026-08-23 — Semantic modelling becomes a peer global destination.** The global
+  order is Programme, Governance, Semantic modelling, SPDTF Development, Working groups
+  and Resources. Semantic-modelling reader pages move to `/semantic-modelling/**` as a
+  clean route break with no old-route compatibility. The PDTF schema remains a nested
+  third-party SPDTF input, and stable `/pdtf/**` identifiers remain unchanged.
 
 - **2026-08-23 — PDTF schema is an SPDTF third-party input.** ADR-0077 removes the PDTF
   schema from the global destination set and hosts it beneath `/spdtf/inputs`. Route

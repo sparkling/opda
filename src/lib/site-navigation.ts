@@ -1,5 +1,5 @@
 /**
- * Reader-facing section navigation for the five-destination information
+ * Reader-facing section navigation for the six-destination information
  * architecture. Content-source groupings remain defined in site.ts; this
  * module composes their canonical routes by current task and authority.
  */
@@ -10,11 +10,13 @@ import { isRetiredPdtf1DocumentationRoute, PDTF1_ROUTES } from './pdtf1-routes.m
 import { workPackageRoute, workPackages } from './property-pack-model.mjs';
 import {
   GOVERNANCE_FRAMEWORK_ITEMS,
+  SEMANTIC_MODELLING_JOURNEYS,
   WORKING_GROUP_MEMBER_GUIDE_ITEMS,
 } from './section-navigation-journeys.ts';
 import { WORKING_GROUPS } from '../components/ia/working-groups.ts';
 
-type DestinationKey = 'programme' | 'spdtf' | 'working-groups' | 'governance' | 'resources';
+type DestinationKey = 'programme' | 'governance' | 'semantic-modelling' | 'spdtf'
+  | 'working-groups' | 'resources';
 
 export interface NavigationMatch {
   section: NavigationSection;
@@ -57,32 +59,6 @@ function category(heading: string, url: string, items: Item[] = []): NavigationG
   ));
   return { heading, url, items: children };
 }
-const ontologyJourney: Item = {
-  url: '/spdtf/ontologies',
-  title: 'Semantic modelling',
-  children: [
-    {
-      url: '/spdtf/ontologies/why-ontologies',
-      title: 'Understand ontologies',
-      children: [
-        { url: '/spdtf/ontologies/reading-the-model', title: 'How to read the model' },
-      ],
-    },
-    {
-      url: '/spdtf/ontologies/modelling-method',
-      title: 'How we model SPDTF',
-      children: [
-        { url: '/spdtf/ontologies/semantic-package', title: 'Six-part semantic package' },
-        { url: '/spdtf/ontologies/bounded-contexts', title: 'Contexts and common boundary' },
-        { url: '/spdtf/ontologies/modelling-rules', title: 'Modelling rules and lenses' },
-        { url: '/spdtf/ontologies/coverage', title: 'Coverage checklist' },
-        { url: '/spdtf/ontologies/standards', title: 'Standards profile' },
-        { url: '/spdtf/ontologies/evidence-and-mappings', title: 'Evidence and mappings' },
-        { url: '/spdtf/ontologies/validation', title: 'Validation and projections' },
-      ],
-    },
-  ],
-};
 const propertyPackBase = '/spdtf/property-pack';
 const workPackageNavigationItems: Item[] = workPackages.map(({ id, label }) => ({
   url: workPackageRoute(id),
@@ -343,9 +319,31 @@ const navigationSections: Record<DestinationKey, NavigationSection> = {
       category('Programme activity', '/engagement/working-groups', ownedSectionItems('engagement', 'programme')),
     ],
   },
+  governance: {
+    key: 'governance',
+    title: 'Governance',
+    summary: 'Decision rights, standards lifecycle, status and recorded decisions.',
+    groups: [
+      category('Governance framework', '/governance', GOVERNANCE_FRAMEWORK_ITEMS),
+      category('Architecture decisions', '/modelling/adr'),
+      category('Ontology decisions', '/modelling/odr'),
+      category('Programme decisions', '/engagement/meetings-decisions', ownedSectionItems('engagement', 'governance')),
+    ],
+  },
+  'semantic-modelling': {
+    key: 'semantic-modelling',
+    title: 'Semantic modelling',
+    summary: 'Plain-language ontology learning and the modelling method used for SPDTF.',
+    groups: [
+      category('Overview', '/semantic-modelling'),
+      ...SEMANTIC_MODELLING_JOURNEYS.map((journey) => category(
+        journey.title, journey.url, journey.children,
+      )),
+    ],
+  },
   'spdtf': {
     key: 'spdtf',
-    title: 'SPDTF',
+    title: 'SPDTF Development',
     summary: 'Current evidence-up modelling, ontology method, the Property Pack component and wider candidates.',
     groups: [
       category('Overview', '/spdtf', [
@@ -354,7 +352,6 @@ const navigationSections: Record<DestinationKey, NavigationSection> = {
         { url: '/spdtf/outputs', title: 'Outputs and validation' },
       ]),
       category('Property Pack ontology', propertyPackJourney.url, propertyPackJourney.children),
-      category(ontologyJourney.title, ontologyJourney.url, ontologyJourney.children),
       category('Third-party inputs', PDTF1_ROUTES.inputRoot, [pdtfInputJourney]),
     ],
   },
@@ -365,17 +362,6 @@ const navigationSections: Record<DestinationKey, NavigationSection> = {
     groups: [
       category('Member guide', '/spdtf/working-groups/member-guide', WORKING_GROUP_MEMBER_GUIDE_ITEMS),
       category('Group workspaces', '/spdtf/working-groups', workingGroupItems),
-    ],
-  },
-  governance: {
-    key: 'governance',
-    title: 'Governance',
-    summary: 'Decision rights, standards lifecycle, status and recorded decisions.',
-    groups: [
-      category('Governance framework', '/governance', GOVERNANCE_FRAMEWORK_ITEMS),
-      category('Architecture decisions', '/modelling/adr'),
-      category('Ontology decisions', '/modelling/odr'),
-      category('Programme decisions', '/engagement/meetings-decisions', ownedSectionItems('engagement', 'governance')),
     ],
   },
   resources: {

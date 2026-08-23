@@ -55,7 +55,7 @@ test('desktop sidebar and nested tree controls work', async ({ page }) => {
 test('mobile section drawer returns focus on Escape', async ({ page }) => {
   const clean = watchRuntime(page);
   await page.setViewportSize({ width: 375, height: 812 });
-  await visit(page, '/spdtf/ontologies/standards');
+  await visit(page, '/semantic-modelling/standards');
   const opener = page.locator('#menu-toggle');
   const sidebar = page.locator('#app-sidebar');
   await opener.click();
@@ -67,9 +67,9 @@ test('mobile section drawer returns focus on Escape', async ({ page }) => {
   await expect(first).toBeFocused();
   await page.keyboard.press('Shift+Tab');
   await expect(last).toBeFocused();
-  const category = sidebar.locator('.nav-group[data-group="Semantic modelling"]');
+  const category = sidebar.locator('.nav-group[data-group="Understand ontologies"]');
   const toggle = category.locator('.nav-group-toggle');
-  const categoryLink = category.locator('a[href="/spdtf/ontologies"]');
+  const categoryLink = category.locator('a[href="/semantic-modelling/why-ontologies"]');
   const before = page.url();
   await toggle.click();
   expect(page.url()).toBe(before);
@@ -81,7 +81,7 @@ test('mobile section drawer returns focus on Escape', async ({ page }) => {
   await expect(opener).toBeFocused();
   await opener.click();
   await categoryLink.click();
-  await expect(page).toHaveURL(/\/spdtf\/ontologies$/u);
+  await expect(page).toHaveURL(/\/semantic-modelling\/why-ontologies$/u);
   await expect(sidebar).not.toHaveClass(/open/);
   await assertNoBodyOverflow(page);
   clean();
@@ -121,19 +121,19 @@ test('mobile PDTF ontology hierarchy keeps folder labels linked and keyboard ord
 
 test('semantic modelling exposes linked audience branches and one active page', async ({ page }) => {
   const clean = watchRuntime(page);
-  await visit(page, '/spdtf/ontologies/standards');
+  await visit(page, '/semantic-modelling/standards');
   const navigation = page.locator('#section-navigation');
-  const method = navigation.locator('.tree-folder:has(> .tree-folder-row > a[href="/spdtf/ontologies/modelling-method"])');
-  const teaching = navigation.locator('.tree-folder:has(> .tree-folder-row > a[href="/spdtf/ontologies/why-ontologies"])');
-  await expect(method).toHaveClass(/is-open/u);
-  await expect(method.locator(':scope > .tree-folder-row > a'))
-    .toHaveText('How we model SPDTF');
-  await expect(method.locator(':scope > .tree-folder-row > button'))
+  const method = navigation.locator('.nav-group[data-group="How we model SPDTF"]');
+  const teaching = navigation.locator('.nav-group[data-group="Understand ontologies"]');
+  await expect(teaching).toHaveClass(/is-open/u);
+  await expect(teaching.locator(':scope > .nav-group-row > a'))
+    .toHaveText('Understand ontologies');
+  await expect(teaching.locator(':scope > .nav-group-row > button'))
     .toHaveAttribute('aria-expanded', 'true');
-  await expect(teaching).not.toHaveClass(/is-open/u);
+  await expect(method).not.toHaveClass(/is-open/u);
   await expect(navigation.locator('a[aria-current="page"]')).toHaveCount(1);
   await expect(navigation.locator('a[aria-current="page"]'))
-    .toHaveAttribute('href', '/spdtf/ontologies/standards');
+    .toHaveAttribute('href', '/semantic-modelling/standards');
   clean();
 });
 

@@ -1,5 +1,28 @@
 import type { Item } from './site.ts';
 
+export const SEMANTIC_MODELLING_JOURNEYS: Item[] = [
+  {
+    url: '/semantic-modelling/why-ontologies',
+    title: 'Understand ontologies',
+    children: [
+      { url: '/semantic-modelling/reading-the-model', title: 'How to read the model' },
+      { url: '/semantic-modelling/semantic-package', title: 'The semantic package' },
+      { url: '/semantic-modelling/bounded-contexts', title: 'Contexts and common boundary' },
+      { url: '/semantic-modelling/standards', title: 'Standards profile' },
+      { url: '/semantic-modelling/evidence-and-mappings', title: 'Evidence and mappings' },
+      { url: '/semantic-modelling/validation', title: 'Validation and projections' },
+    ],
+  },
+  {
+    url: '/semantic-modelling/modelling-method',
+    title: 'How we model SPDTF',
+    children: [
+      { url: '/semantic-modelling/modelling-rules', title: 'Modelling rules and lenses' },
+      { url: '/semantic-modelling/coverage', title: 'Coverage checklist' },
+    ],
+  },
+];
+
 export const GOVERNANCE_FRAMEWORK_ITEMS: Item[] = [
   {
     url: '/governance/uk-initiative',

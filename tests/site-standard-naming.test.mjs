@@ -70,9 +70,10 @@ test('public hierarchy uses schema and scheme names in labels and routes', () =>
     GLOBAL_DESTINATIONS.map(({ key, title, url }) => [key, title, url]),
     [
       ['programme', 'Programme', '/programme'],
-      ['spdtf', 'SPDTF', '/spdtf'],
-      ['working-groups', 'Working groups', '/spdtf/working-groups'],
       ['governance', 'Governance', '/governance'],
+      ['semantic-modelling', 'Semantic modelling', '/semantic-modelling'],
+      ['spdtf', 'SPDTF Development', '/spdtf'],
+      ['working-groups', 'Working groups', '/spdtf/working-groups'],
       ['resources', 'Resources', '/resources'],
     ],
   );
@@ -98,7 +99,7 @@ test('public hierarchy uses schema and scheme names in labels and routes', () =>
 
 test('route moves retain comment identities without retaining public URLs', () => {
   assert.equal(getLegacyCommentKey('/spdtf'), '/spdtf-2');
-  assert.equal(getLegacyCommentKey('/spdtf/ontologies/standards'), '/spdtf-2/ontologies/standards');
+  assert.equal(getLegacyCommentKey('/semantic-modelling/standards'), '/spdtf-2/ontologies/standards');
   assert.equal(getLegacyCommentKey('/spdtf/property-pack'), '/v2');
   assert.equal(getLegacyCommentKey('/spdtf/property-pack/pdtf-schema-lineage'), '/v2/comparison');
   assert.equal(getLegacyCommentKey('/spdtf/inputs/pdtf-schema'), '/pdtf-1');

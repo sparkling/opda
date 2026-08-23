@@ -24,7 +24,7 @@ test('mobile primary disclosure is keyboard-operable and 320px does not overflow
 
 test('compact primary disclosure keeps all six destinations discoverable through the safety boundary', async ({ page }) => {
   const clean = watchRuntime(page);
-  for (const width of [769, 1024, 1279, 1376]) {
+  for (const width of [769, 1024, 1279, 1376, 1440, 1472]) {
     await page.setViewportSize({ width, height: 900 });
     await visit(page, '/resources');
 
@@ -64,7 +64,7 @@ test('compact primary disclosure keeps all six destinations discoverable through
 
   // At the first width beyond the disclosure boundary, the row must have
   // enough intrinsic space for every destination, with no clipped glyphs.
-  await page.setViewportSize({ width: 1377, height: 900 });
+  await page.setViewportSize({ width: 1473, height: 900 });
   await visit(page, '/resources');
   const desktopNav = page.locator('nav[aria-label="Primary"]');
   await expect(page.locator('#global-nav-toggle')).toBeHidden();
@@ -81,19 +81,22 @@ test('compact primary disclosure keeps all six destinations discoverable through
   expect(desktopGeometry.scroll).toBeLessThanOrEqual(desktopGeometry.client + 1);
   for (const rect of desktopGeometry.links) {
     expect(rect.left, 'desktop left edge').toBeGreaterThanOrEqual(0);
-    expect(rect.right, 'desktop right edge').toBeLessThanOrEqual(1377);
+    expect(rect.right, 'desktop right edge').toBeLessThanOrEqual(1473);
   }
   await assertNoBodyOverflow(page);
   clean();
 });
 
-test('current implementers reach schema and validation guidance within two interactions', async ({ page }) => {
+test('current implementers reach nested third-party schema and validation guidance', async ({ page }) => {
   const clean = watchRuntime(page);
-  await page.setViewportSize({ width: 1440, height: 900 });
+  await page.setViewportSize({ width: 1536, height: 900 });
   await visit(page, '/home');
 
-  await page.locator('nav[aria-label="Primary"] a', { hasText: 'PDTF schema' }).click();
-  await expect(page).toHaveURL(/\/pdtf-schema$/u);
+  await page.locator('nav[aria-label="Primary"] a', { hasText: 'SPDTF Development' }).click();
+  await expect(page).toHaveURL(/\/spdtf$/u);
+  await page.getByRole('main').getByRole('link', { name: 'Third-party inputs', exact: true }).click();
+  await page.getByRole('main').getByRole('link', { name: 'PDTF schema', exact: true }).click();
+  await expect(page).toHaveURL(new RegExp(`${PDTF1_ROUTES.root}$`, 'u'));
   const implementationLinks = page.locator('main a');
   const schemasLink = page.getByRole('main').getByRole('link', {
     name: 'Schemas and overlays',
@@ -111,7 +114,7 @@ test('current implementers reach schema and validation guidance within two inter
   await expect(page).toHaveURL(new RegExp(`${PDTF1_ROUTES.original}/schema$`, 'u'));
   expect((await page.locator('a').allTextContents()).join('\n')).not.toMatch(/archive/iu);
 
-  await page.goto('/pdtf-schema');
+  await page.goto(PDTF1_ROUTES.root);
   await page.getByRole('main').getByRole('link', {
     name: 'Implementation guidance',
     exact: true,

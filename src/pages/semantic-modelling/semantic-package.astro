@@ -1,0 +1,134 @@
+---
+import Layout from '@/layouts/Layout.astro';
+import PageMeta from '@/components/PageMeta.astro';
+import Diagram from '@/components/Diagram.astro';
+import { SEMANTIC_PACKAGE_MANIFEST } from '@/lib/spdtf-workspace.mjs';
+---
+
+<Layout title="Six-part semantic package" description="How the business glossary, data dictionary, taxonomies, controlled vocabularies, resources and relationships form one synchronized SPDTF package.">
+  <PageMeta category="Understand ontologies" variant="brand" updated="Versioned semantic package · six distinct outputs" />
+  <h1>The six-part semantic package</h1>
+  <p class="lead">
+    Each group is expected to review six related kinds of content. Together they form one versioned
+    agreement about meaning. They are not one taxonomy, six separate standards, or six
+    files that may drift independently.
+  </p>
+
+  <div class="callout callout--key">
+    <p class="callout__label">Versioned package contract</p>
+    <p><code class="standalone-identifier">{SEMANTIC_PACKAGE_MANIFEST.id}</code> · version <code>{SEMANTIC_PACKAGE_MANIFEST.version}</code> · {SEMANTIC_PACKAGE_MANIFEST.status}.</p>
+    <p>{SEMANTIC_PACKAGE_MANIFEST.synchronizationRule}</p>
+  </div>
+
+  <h2 id="outputs">Six distinct outputs</h2>
+  <Diagram size="large" caption="Six reviewable outputs surround one versioned semantic package. Updating a meaning in one output triggers alignment checks across the other five; none is allowed to become a competing authority.">
+flowchart TB
+  accTitle: The six synchronized outputs of an SPDTF semantic package
+  accDescr: One versioned package connects the business glossary, data dictionary, taxonomies, controlled vocabularies, resources and relationships.
+  Package["Versioned semantic package"]:::process
+  Glossary["Business glossary"]:::user
+  Dictionary["Data dictionary"]:::data
+  Taxonomy["Taxonomies"]:::service
+  Vocabulary["Controlled vocabularies"]:::service
+  Resources["Resources"]:::infra
+  Relationships["Relationships"]:::security
+  Glossary --> Package
+  Dictionary --> Package
+  Taxonomy --> Package
+  Vocabulary --> Package
+  Resources --> Package
+  Relationships --> Package
+  </Diagram>
+  <table>
+    <caption>What each output helps a participant review</caption>
+    <thead><tr><th scope="col">Output</th><th scope="col">Question it answers</th><th scope="col">Typical review material</th></tr></thead>
+    <tbody>
+      <tr><th scope="row">Business glossary</th><td>What do practitioners mean by each term?</td><td>Definitions, examples, scope notes, synonyms and ownership.</td></tr>
+      <tr><th scope="row">Data dictionary</th><td>What data is recorded, with what expectations?</td><td>Elements, definitions, value expectations, provenance and stewardship.</td></tr>
+      <tr><th scope="row">Taxonomies</th><td>How are concepts organised into broader and narrower meanings?</td><td>Reviewed hierarchical organisations of domain concepts.</td></tr>
+      <tr><th scope="row">Controlled vocabularies</th><td>Which governed labels, codes and values may be used?</td><td>Concepts, definitions, codes, schemes and release status.</td></tr>
+      <tr><th scope="row">Resources</th><td>What identifiable things and concepts need stable meaning?</td><td>Classes, identifiers, descriptions, semantic homes and provenance.</td></tr>
+      <tr><th scope="row">Relationships</th><td>How do resources connect or participate?</td><td>Named links, roles, qualification, scope and business interpretation.</td></tr>
+    </tbody>
+  </table>
+
+  <h2 id="worked">One concept across all six outputs</h2>
+  <p>
+    Consider the current machine-proposed <em>Registered title</em> construct. The glossary explains the term in
+    practitioner language. The data dictionary connects recorded title identifiers and
+    source fields to that meaning. A taxonomy may place title-related concepts within a
+    reviewed subject structure. A controlled vocabulary may govern title status values.
+    The resource model identifies <code>conv:RegisteredTitle</code> as a candidate class.
+    The candidate relationship <code>conv:hasRegisteredTitle</code> connects a
+    <code>common:Property</code> to it; neither IRI is yet a governed SPDTF identifier.
+  </p>
+  <table>
+    <caption>Example alignment record for the Registered title candidate</caption>
+    <thead><tr><th scope="col">Output</th><th scope="col">Example record</th><th scope="col">Alignment check</th></tr></thead>
+    <tbody>
+      <tr><th scope="row">Glossary</th><td>Definition, included/excluded cases, source and owner.</td><td>Does the definition match the resource and relationship use?</td></tr>
+      <tr><th scope="row">Dictionary</th><td>Title number, title status and recorded source elements.</td><td>Does every element describe the intended concept or relationship?</td></tr>
+      <tr><th scope="row">Taxonomy</th><td>Reviewed subject placement for title information.</td><td>Is broader/narrower structure being confused with class inheritance?</td></tr>
+      <tr><th scope="row">Vocabulary</th><td>Governed title-status concepts and codes.</td><td>Is each value a SKOS concept rather than a class?</td></tr>
+      <tr><th scope="row">Resource</th><td>Isolated candidate IRI and class description for <code>conv:RegisteredTitle</code>.</td><td>Are identity, candidate status and semantic home explicit?</td></tr>
+      <tr><th scope="row">Relationship</th><td><code>common:Property conv:hasRegisteredTitle conv:RegisteredTitle</code>.</td><td>Are direction, role, evidence and qualification correct?</td></tr>
+    </tbody>
+  </table>
+
+  <h2 id="synchronisation">Synchronisation and ownership</h2>
+  <p>
+    The current workspace manifest names the six-output set, its canonical source route,
+    standards-profile version, projections and synchronisation rule. It does not yet
+    record a source, semantic owner, candidate version and derivation for each output;
+    working-group output registers are still marked not started. Those records, an
+    explicit package diff and rerun checks are required before a synchronized candidate
+    release can be claimed. A web page cannot become a separate source of meaning.
+  </p>
+  <ul>
+    <li>The owning working group decides local meaning and records evidence.</li>
+    <li>Interoperability reviews common-boundary terms and <a href="/semantic-modelling/evidence-and-mappings#cross-context-mappings">cross-context mappings</a>.</li>
+    <li>Vocabulary stewards control concept-scheme versions and code stability.</li>
+    <li>Validation maintainers encode only rules supported by reviewed requirements.</li>
+    <li>Governance controls lifecycle labels and any promotion decision.</li>
+  </ul>
+  <p>
+    A governed mapping set is an Interoperability attachment aligned with the Relationships
+    output, not a seventh semantic output. SSSOM is not selected for internal mapping
+    records and is not part of the current Property Pack package. A future, explicitly
+    scoped profile first requires a named external-vocabulary use case, consumer and
+    Council re-evaluation.
+  </p>
+
+  <h2 id="representations">Representations and projections</h2>
+  <p>
+    RDF/OWL represents resources and relationships; SKOS represents controlled concepts
+    and taxonomies; SHACL represents declared data expectations. Property Pack 0.1 currently
+    emits those graph artefacts plus JSON registers/model views, HTML documentation, ASK
+    queries and a validation report. JSON Schema, JSON-LD, forms, APIs, PDF and other
+    delivery views are possible future projections, not current outputs. A future projection
+    must cite its package version, generator and validation receipt.
+  </p>
+  <Diagram size="large" caption="This is the future derivation contract, not a list of current outputs. A governed semantic package would be encoded in aligned graph artefacts. Versioned generators would read the aligned set—not one artefact in isolation—to produce separately tested consumer projections. Dotted arrows indicate planned derivations, never transfers of semantic authority.">
+flowchart LR
+  accTitle: Future semantic package representations and delivery projections
+  accDescr: Under the future derivation contract, a governed package would produce aligned RDF and OWL, SKOS and SHACL artefacts; versioned generators would read that aligned set to produce schemas, interfaces and human-readable documentation.
+  Package["Future governed package"]:::process
+  OWL["RDF / RDFS / OWL"]:::service
+  SKOS["SKOS schemes"]:::data
+  SHACL["SHACL shapes"]:::security
+  Generator["Versioned projection generators"]:::process
+  Schema["JSON and JSON-LD"]:::infra
+  Interface["Forms and APIs"]:::user
+  Docs["Web, PDF and Markdown"]:::external
+  Package -.-> OWL
+  Package -.-> SKOS
+  Package -.-> SHACL
+  OWL -.-> Generator
+  SKOS -.-> Generator
+  SHACL -.-> Generator
+  Generator -.-> Schema
+  Generator -.-> Interface
+  Generator -.-> Docs
+  </Diagram>
+  <p><a href="/spdtf/outputs">Inspect the package and projection-status register</a>.</p>
+</Layout>

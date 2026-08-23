@@ -1,0 +1,147 @@
+---
+import Layout from '@/layouts/Layout.astro';
+import PageMeta from '@/components/PageMeta.astro';
+import Diagram from '@/components/Diagram.astro';
+---
+
+<Layout title="How we model SPDTF" description="The evidence-up semantic-modelling method: authority, competency questions, candidate construction, human review, traceability and versioning.">
+  <PageMeta category="How we model SPDTF" variant="brand" updated="Method documentation · authority varies by decision record" />
+  <h1>How we model SPDTF</h1>
+  <p class="lead">
+    SPDTF starts with practitioner questions and attributed evidence, not with a
+    preselected JSON tree. Facilitators turn that evidence into a reviewable semantic
+    package; automated tools encode and check it; people decide whether the meaning fits.
+  </p>
+
+  <h2 id="authority">Authority of this method</h2>
+  <p>
+    The method is assembled from decisions with different standing. This page labels the
+    boundary so an intended workflow is not mistaken for an adopted lifecycle.
+  </p>
+  <table>
+    <caption>Decision status behind the method</caption>
+    <thead><tr><th scope="col">Record</th><th scope="col">Standing</th><th scope="col">What may be stated now</th></tr></thead>
+    <tbody>
+      <tr><th scope="row"><a href="/modelling/adr/adr-0063">ADR-0063</a></th><td>Accepted</td><td>Domain-led bounded contexts, six semantic outputs, eight concerns, four dispositions and the evidence-led working sequence.</td></tr>
+      <tr><th scope="row"><a href="/modelling/adr/adr-0067">ADR-0067</a></th><td>Accepted for the Property Pack</td><td>First-principles Property Pack candidate architecture, context ownership, technical profile and deterministic checks.</td></tr>
+      <tr><th scope="row"><a href="/modelling/adr/adr-0065">ADR-0065</a></th><td>Proposed</td><td>Human-led, AI-assisted workflow is a proposed SPDTF-wide operating model, not current policy.</td></tr>
+      <tr><th scope="row"><a href="/modelling/adr/adr-0068">ADR-0068</a></th><td>Proposed</td><td>Candidate lifecycle and promotion stages remain proposed; no page may imply they are operative.</td></tr>
+    </tbody>
+  </table>
+  <div class="callout callout--key">
+    <p class="callout__label">Current ceiling</p>
+    <p>Outside the separately governed Property Pack determination, the safe lifecycle ceiling is a first working-group draft—non-normative—until accepted governance defines later promotion.</p>
+  </div>
+
+  <h2 id="questions">Competency questions before structures</h2>
+  <p>
+    A competency question is a business question the model should be able to answer. It
+    prevents modelling for its own sake and provides a testable reason for each important
+    distinction. Questions are written in practitioner language before terms are turned
+    into classes or properties.
+  </p>
+  <ul>
+    <li>Which property does this legal title apply to, and what source supports that link?</li>
+    <li>Which organisation supplied this fact, when was it recorded, and for what purpose?</li>
+    <li>Which meanings are local to conveyancing and which must cross into lending?</li>
+    <li>Which controlled value set governs the status, and which version was used?</li>
+    <li>Which rule is a business expectation for a delivery rather than a universal truth?</li>
+  </ul>
+  <p>
+    Each governed question must record a context owner, evidence, expected answer pattern and review state.
+    A query can later test whether the candidate structure supports the question, but a
+    successful query does not prove that the proposed answer is correct business policy.
+  </p>
+
+  <h2 id="cycle">Evidence-up modelling cycle</h2>
+  <Diagram size="large" caption="The accepted working sequence begins with scoped questions and attributed evidence. A candidate passes technical checks before human review, but only a recorded disposition changes its standing. Review may return the work for more evidence.">
+flowchart LR
+  accTitle: Evidence-up modelling cycle for SPDTF
+  accDescr: Scoped questions and attributed evidence lead to a semantic candidate, automated checks, human review and a recorded disposition, with feedback returning to the evidence stage.
+  Questions["Scope and competency questions"]:::user
+  Evidence["Attributed evidence"]:::external
+  Candidate["Semantic package candidate"]:::process
+  Checks["Declared automated checks"]:::data
+  Review["Practitioner review"]:::user
+  Disposition["Recorded disposition and version"]:::security
+  Questions --> Evidence
+  Evidence --> Candidate
+  Candidate --> Checks
+  Checks --> Review
+  Review --> Disposition
+  Review -.->|needs evidence or revision| Evidence
+  </Diagram>
+  <ol>
+    <li><strong>Scope:</strong> name the context, owner, business questions and out-of-scope concerns.</li>
+    <li><strong>Evidence:</strong> collect participant language, examples, counterexamples, documents, datasets and prior PDTF material with provenance.</li>
+    <li><strong>Candidate:</strong> align glossary, dictionary, taxonomies, vocabularies, resources and relationships.</li>
+    <li><strong>Encode:</strong> represent the candidate with the declared RDF/OWL, SKOS and SHACL feature boundary.</li>
+    <li><strong>Check:</strong> run parsing, constraint, coverage and competency-query tests with reproducible receipts.</li>
+    <li><strong>Review:</strong> publish readable definitions, diagrams, evidence and open questions to the relevant practitioners.</li>
+    <li><strong>Record a review outcome:</strong> acceptable for this draft, needs evidence, revise, defer or not accepted; preserve the immutable diff. These review outcomes are not the four formal coverage dispositions.</li>
+  </ol>
+
+  <h2 id="evidence">Evidence hierarchy and uncertainty</h2>
+  <p>
+    Evidence may come from participant sessions, operational documents, statutory or
+    authoritative sources, data dictionaries, examples, the PDTF schema corpus, external
+    standards or machine extraction. Its role must be recorded. Prior implementation is
+    useful evidence, but it cannot silently decide new meaning.
+  </p>
+  <table>
+    <caption>Evidence handling record</caption>
+    <thead><tr><th scope="col">Field</th><th scope="col">Purpose</th></tr></thead>
+    <tbody>
+      <tr><th scope="row">Source and version</th><td>Identifies exactly what was examined and when.</td></tr>
+      <tr><th scope="row">Source type</th><td>Distinguishes participant evidence, authority, implementation, research and machine-derived material.</td></tr>
+      <tr><th scope="row">Permission and sensitivity</th><td>Controls whether and how evidence can be retained or published.</td></tr>
+      <tr><th scope="row">Claim and confidence</th><td>Separates what the source says from the facilitator’s interpretation.</td></tr>
+      <tr><th scope="row">Counterexample or dissent</th><td>Preserves disagreement instead of averaging it away.</td></tr>
+      <tr><th scope="row">Candidate impact</th><td>Links evidence to the exact term, relationship, constraint or open question.</td></tr>
+    </tbody>
+  </table>
+
+  <h2 id="untrusted-evidence">Untrusted evidence and isolated work orders</h2>
+  <p>
+    ADR-0067 treats every uploaded file, email, transcript, standard, spreadsheet,
+    schema and legacy artefact as untrusted data. Supplier identity does not turn
+    document text into an instruction. A bounded work order keeps evidence separate
+    from controls and lets people review what entered the candidate.
+  </p>
+  <ul>
+    <li>Record source identity, media type, content digest, cited source span, permission, sensitivity and resource limits.</li>
+    <li>Delimit evidence as data; quarantine secrets, prohibited personal data, instruction-like content, unsafe archives and unresolved licensing.</li>
+    <li>Carry provenance and taint labels into every derivative instead of silently obeying or discarding a finding.</li>
+    <li>Bind each work order to allowed read and write graphs, retained concerns, questions, route, budget, expected outputs, checks and a human decision owner.</li>
+    <li>Write only an isolated candidate delta. Tools and agents cannot edit an accepted corpus, common boundary, evaluator, policy or release.</li>
+  </ul>
+
+  <h2 id="responsibilities">Human and machine responsibilities</h2>
+  <table>
+    <caption>Assistance does not transfer authority</caption>
+    <thead><tr><th scope="col">Activity</th><th scope="col">Tools may</th><th scope="col">People must</th></tr></thead>
+    <tbody>
+      <tr><th scope="row">Extraction</th><td>Find candidate terms, fields, examples and apparent relationships.</td><td>Confirm relevance, source interpretation and missing context.</td></tr>
+      <tr><th scope="row">Comparison</th><td>Detect duplicates, name collisions and possible external matches.</td><td>Decide identity, distinction, ownership and mapping strength.</td></tr>
+      <tr><th scope="row">Encoding</th><td>Generate deterministic RDF, SKOS, SHACL, queries and readable views.</td><td>Approve the bounded feature profile and review the result.</td></tr>
+      <tr><th scope="row">Validation</th><td>Run declared checks and produce reproducible reports.</td><td>Judge meaning, risk, exceptions and governance disposition.</td></tr>
+    </tbody>
+  </table>
+  <p>
+    For cross-context comparisons, use the
+    <a href="/semantic-modelling/evidence-and-mappings#cross-context-mappings">Category 8 mapping workflow</a>:
+    tools may suggest candidates, but people choose the predicate and approve the evidence record.
+  </p>
+
+  <h2 id="receipt">Candidate receipt and immutable cut</h2>
+  <p>
+    A reviewable cut needs a version identifier, semantic owner, source manifest,
+    competency questions, standards-profile version, six-output manifest, coverage
+    receipt, validation report, open questions, review record and change diff. Derived
+    web pages and schemas cite that package; they do not become new sources of meaning.
+  </p>
+  <p>
+    Continue with the <a href="/semantic-modelling/semantic-package">six-part semantic package</a>
+    or the detailed <a href="/semantic-modelling/modelling-rules">modelling rules and lenses</a>.
+  </p>
+</Layout>

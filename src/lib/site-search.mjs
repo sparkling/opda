@@ -3,7 +3,8 @@ function facetFor(url) {
     return 'PDTF schema';
   }
   if (url.startsWith('/spdtf/inputs/pdtf-schema/schema-derived-ontology')) return 'Schema-derived ontology';
-  if (url === '/spdtf' || url.startsWith('/spdtf/')) return 'SPDTF';
+  if (url === '/semantic-modelling' || url.startsWith('/semantic-modelling/')) return 'Semantic modelling';
+  if (url === '/spdtf' || url.startsWith('/spdtf/')) return 'SPDTF Development';
   return 'Cross-programme';
 }
 
@@ -13,7 +14,7 @@ const entry = (title, url, summary, aliases = []) => Object.freeze({
 
 export const SITE_SEARCH_ENTRIES = Object.freeze([
   entry('Programme', '/programme', 'Purpose, schema-to-scheme progression, roadmap and UK Smart Data context', ['PDTF', 'SPDTF']),
-  entry('SPDTF', '/spdtf', 'First collaboratively authored scheme draft, using domain-led and evidence-up semantic modelling', ['PDTF', 'ontology']),
+  entry('SPDTF Development', '/spdtf', 'First collaboratively authored scheme draft, using domain-led and evidence-up semantic modelling', ['SPDTF', 'PDTF', 'ontology']),
   entry('Property Pack ontology', '/spdtf/property-pack', 'Accelerated SPDTF component awaiting Technical Working Group determination', ['Property Pack', 'PDTF', 'ontology']),
   entry('Property Pack definition and scope', '/spdtf/property-pack/definition-and-scope', 'Interactive catalogue of all 451 required source items and candidate dispositions', ['Property Pack', 'data dictionary']),
   entry('PDTF schema to Property Pack lineage', '/spdtf/property-pack/pdtf-schema-lineage', 'Schema coverage and the incomplete ontology semantic crosswalk', ['Property Pack', 'PDTF', 'crosswalk']),
@@ -28,17 +29,17 @@ export const SITE_SEARCH_ENTRIES = Object.freeze([
   entry('Candidate register', '/spdtf/candidates', 'Status of context-owned candidates, owners and immutable diffs', ['PDTF']),
   entry('Open questions and changes', '/spdtf/questions', 'Competency questions grouped by semantic owner', ['PDTF']),
   entry('Outputs and validation evidence', '/spdtf/outputs', 'Versioned semantic package and projection status', ['PDTF']),
-  entry('Semantic modelling', '/spdtf/ontologies', 'Choose a plain-language ontology guide or the SPDTF implementation documentation', ['PDTF', 'ontology', 'ontologies and semantic modelling', 'RDF', 'OWL', 'SKOS', 'SHACL', 'SPARQL', 'upper ontology']),
-  entry('Understand ontologies', '/spdtf/ontologies/why-ontologies', 'What an ontology is and why SPDTF uses connected semantic modelling', ['PDTF', 'ontology']),
-  entry('How to read the model', '/spdtf/ontologies/reading-the-model', 'Identifiers, resources, classes, properties, values, shapes and provenance', ['ontology']),
-  entry('How we model SPDTF', '/spdtf/ontologies/modelling-method', 'Evidence-up modelling, competency questions, review and authority boundaries', ['PDTF', 'ontology', 'method']),
-  entry('Six-part semantic package', '/spdtf/ontologies/semantic-package', 'Glossary, dictionary, taxonomies, vocabularies, resources and relationships', ['PDTF', 'ontology', 'RDF', 'OWL', 'SKOS', 'SHACL']),
-  entry('Contexts and common boundary', '/spdtf/ontologies/bounded-contexts', 'Semantic homes, context ownership, interoperability and the Property Pack profile', ['ontology', 'bounded context', 'bounded contexts', 'context map', 'taxonomy', 'taxonomies']),
-  entry('Modelling rules and lenses', '/spdtf/ontologies/modelling-rules', 'Identity, classes, values, relationships, reuse and candidate upper-ontology methods', ['ontology', 'upper ontology', 'UFO', 'gUFO', 'OntoClean']),
-  entry('Coverage checklist', '/spdtf/ontologies/coverage', 'Six outputs, eleven workshop themes, eight formal concerns and four dispositions', ['PDTF', 'ontology']),
-  entry('Standards profile', '/spdtf/ontologies/standards', 'Actual implementation, specification maturity, targets, candidates and deferred options', ['PDTF', 'ontology', 'RDF', 'RDFS', 'OWL', 'SKOS', 'SHACL', 'SPARQL', 'upper ontology']),
-  entry('Evidence and qualified mappings', '/spdtf/ontologies/evidence-and-mappings', 'Competency questions, provenance, Category 8 cross-context mapping, SKOS predicates and the deferred SSSOM candidate', ['ontology', 'ontology mapping', 'cross-context mapping', 'cross-domain mapping', 'SKOS mapping', 'SSSOM', 'SEMAPV', 'Category 8']),
-  entry('Validation, review and projections', '/spdtf/ontologies/validation', 'SHACL, competency queries, semantic review, governance and generated outputs', ['ontology']),
+  entry('Semantic modelling', '/semantic-modelling', 'Choose a plain-language ontology guide or the SPDTF implementation documentation', ['PDTF', 'ontology', 'ontologies and semantic modelling', 'RDF', 'OWL', 'SKOS', 'SHACL', 'SPARQL', 'upper ontology']),
+  entry('Understand ontologies', '/semantic-modelling/why-ontologies', 'What an ontology is and why SPDTF uses connected semantic modelling', ['PDTF', 'ontology']),
+  entry('How to read the model', '/semantic-modelling/reading-the-model', 'Identifiers, resources, classes, properties, values, shapes and provenance', ['ontology']),
+  entry('How we model SPDTF', '/semantic-modelling/modelling-method', 'Evidence-up modelling, competency questions, review and authority boundaries', ['PDTF', 'ontology', 'method']),
+  entry('Six-part semantic package', '/semantic-modelling/semantic-package', 'Glossary, dictionary, taxonomies, vocabularies, resources and relationships', ['PDTF', 'ontology', 'RDF', 'OWL', 'SKOS', 'SHACL']),
+  entry('Contexts and common boundary', '/semantic-modelling/bounded-contexts', 'Semantic homes, context ownership, interoperability and the Property Pack profile', ['ontology', 'bounded context', 'bounded contexts', 'context map', 'taxonomy', 'taxonomies']),
+  entry('Modelling rules and lenses', '/semantic-modelling/modelling-rules', 'Identity, classes, values, relationships, reuse and candidate upper-ontology methods', ['ontology', 'upper ontology', 'UFO', 'gUFO', 'OntoClean']),
+  entry('Coverage checklist', '/semantic-modelling/coverage', 'Six outputs, eleven workshop themes, eight formal concerns and four dispositions', ['PDTF', 'ontology']),
+  entry('Standards profile', '/semantic-modelling/standards', 'Actual implementation, specification maturity, targets, candidates and deferred options', ['PDTF', 'ontology', 'RDF', 'RDFS', 'OWL', 'SKOS', 'SHACL', 'SPARQL', 'upper ontology']),
+  entry('Evidence and qualified mappings', '/semantic-modelling/evidence-and-mappings', 'Competency questions, provenance, Category 8 cross-context mapping, SKOS predicates and the deferred SSSOM candidate', ['ontology', 'ontology mapping', 'cross-context mapping', 'cross-domain mapping', 'SKOS mapping', 'SSSOM', 'SEMAPV', 'Category 8']),
+  entry('Validation, review and projections', '/semantic-modelling/validation', 'SHACL, competency queries, semantic review, governance and generated outputs', ['ontology']),
   entry('Third-party inputs', '/spdtf/inputs', 'Sources considered as evidence, compatibility material or modelling input; inclusion does not imply adoption or authority', ['inputs', 'evidence']),
   entry('PDTF schema', '/spdtf/inputs/pdtf-schema', 'Third-party Digital Property Pack schema input; inclusion does not confer OPDA endorsement or SPDTF authority', ['PDTF', 'third-party input']),
   entry('PDTF schema and supporting material', '/spdtf/inputs/pdtf-schema/schema-and-supporting-material', 'Third-party JSON Schemas, overlays, data dictionary and business glossary, with separately attributed implementation and usage evidence', ['PDTF', 'JSON Schema', 'data dictionary', 'business glossary']),

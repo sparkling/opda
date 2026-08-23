@@ -17,6 +17,7 @@ import {
 } from '../scripts/lib/ia-preservation-primitives.mjs';
 import {
   PDTF_SCHEMA_INPUT_INFORMATION_REFRAMES, composePdtfSchemaInputMigrationReceipt,
+  getPdtfSchemaInputReplacementFile,
 } from '../scripts/lib/pdtf-schema-input-route-contract.mjs';
 import { createCaptureEvidence } from '../scripts/lib/ia-capture-evidence.mjs';
 import {
@@ -25,9 +26,7 @@ import {
 import {
   SOURCE_ARCHIVE_REFRAMES, composeSourceArchiveReframeReceipt,
 } from '../scripts/lib/source-archive-reframes.mjs';
-import {
-  getAcceptedRouteFile, getDeclaredRouteReplacement, getLegacyCommentKey,
-} from '../src/lib/site-route-migrations.mjs';
+import { getPdtfSchemaInputReplacementRoute } from '../src/lib/pdtf1-routes.mjs';
 
 const projectRoot = fileURLToPath(new URL('..', import.meta.url));
 const checker = fileURLToPath(new URL('../scripts/check-ia-preservation.mjs', import.meta.url));
@@ -246,12 +245,12 @@ test('preservation checker rejects a forged PDTF schema input receipt', () => {
   try {
     const candidate = structuredClone(stagedManifest);
     const project = (record) => {
-      const acceptedRoute = getDeclaredRouteReplacement(record.acceptedRoute)
+      const acceptedRoute = getPdtfSchemaInputReplacementRoute(record.acceptedRoute)
         ?? record.acceptedRoute;
       return {
         ...record,
         acceptedRoute,
-        acceptedFile: getAcceptedRouteFile(record.acceptedRoute, record.acceptedFile),
+        acceptedFile: getPdtfSchemaInputReplacementFile(record.acceptedRoute, record.acceptedFile),
         acceptedGeneratedFamily: generatedFamily(acceptedRoute),
       };
     };
@@ -270,9 +269,6 @@ test('preservation checker rejects a forged PDTF schema input receipt', () => {
       addedRecords: candidate.addedRoutes,
       sourceManifest: stagedManifest,
       sourceContract: PDTF_SCHEMA_INPUT_SOURCE_ROUTE_MANIFEST,
-      replacementRoute: getDeclaredRouteReplacement,
-      replacementFile: getAcceptedRouteFile,
-      commentKey: getLegacyCommentKey,
     });
     candidate.pdtfSchemaInputMigration.commentKeyPairsSha256 = '0'.repeat(64);
     writeFileSync(fixture, JSON.stringify(candidate));

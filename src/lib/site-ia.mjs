@@ -8,9 +8,10 @@
 
 export const GLOBAL_DESTINATIONS = Object.freeze([
   { key: 'programme', title: 'Programme', url: '/programme' },
-  { key: 'spdtf', title: 'SPDTF', url: '/spdtf' },
-  { key: 'working-groups', title: 'Working groups', url: '/spdtf/working-groups' },
   { key: 'governance', title: 'Governance', url: '/governance' },
+  { key: 'semantic-modelling', title: 'Semantic modelling', url: '/semantic-modelling' },
+  { key: 'spdtf', title: 'SPDTF Development', url: '/spdtf' },
+  { key: 'working-groups', title: 'Working groups', url: '/spdtf/working-groups' },
   { key: 'resources', title: 'Resources', url: '/resources' },
 ]);
 
@@ -31,6 +32,7 @@ export const ROUTE_FAMILY_OWNERS = Object.freeze({
   programme: 'programme',
   strategy: 'programme',
   'dbt-smart-data': 'programme',
+  'semantic-modelling': 'semantic-modelling',
   'spdtf': 'spdtf',
   'working-groups': 'working-groups',
   engagement: 'resources',
@@ -69,6 +71,13 @@ export const AUTHORITY_BY_DESTINATION = Object.freeze({
     maturity: 'Maintained context',
     version: 'Current programme view',
     provenance: 'OPDA records and attributed external sources',
+  },
+  'semantic-modelling': {
+    workArea: 'SPDTF semantic modelling',
+    authority: 'Human working groups own domain meaning; governance controls promotion',
+    maturity: 'Teaching and implementation guidance for work in development',
+    version: 'Current modelling method and candidate-specific examples',
+    provenance: 'Accepted modelling decisions, participant evidence and attributed technical sources',
   },
   'spdtf': {
     workArea: 'SPDTF',
@@ -322,7 +331,7 @@ export const PRESERVATION_LEDGER = Object.freeze([
  * one generated record must not silently omit its siblings or representation.
  */
 function routeDisposition(currentPath, owner, disposition, preservedAt = currentPath) {
-  const related = owner === 'spdtf'
+  const related = owner === 'spdtf' || owner === 'semantic-modelling'
     ? ['pdtf-schema:evidence', 'governance:authority', 'resources:provenance']
     : [`${owner}:canonical-owner`];
   return Object.freeze({
@@ -346,6 +355,7 @@ function routeDisposition(currentPath, owner, disposition, preservedAt = current
 export const ROUTE_DISPOSITION_LEDGER = Object.freeze([
   ...[
     ['programme', 'programme', 'reframe'],
+    ['semantic-modelling', 'semantic-modelling', 'reframe'],
     ['spdtf', 'spdtf', 'reframe'],
     ['working-groups', 'spdtf', 'reframe'],
     ['presentations', 'spdtf', 'reframe'],
@@ -389,8 +399,13 @@ export function normalizeIaPath(path) {
   return pathname === '/' ? pathname : pathname.replace(/\/+$/u, '');
 }
 
+const RETIRED_ROUTE_PATTERNS = Object.freeze([
+  /^\/spdtf(?:-2)?\/ontologies(?:\/|$)/u,
+]);
+
 export function getActiveDestination(path) {
   const normalized = normalizeIaPath(path);
+  if (RETIRED_ROUTE_PATTERNS.some((pattern) => pattern.test(normalized))) return null;
   if (normalized === '/spdtf/working-groups'
     || normalized.startsWith('/spdtf/working-groups/')) return 'working-groups';
   const override = ROUTE_OWNER_OVERRIDES.find(({ pattern }) => pattern.test(normalized));
@@ -407,6 +422,7 @@ export function getContentOwner(path) {
 
 export function getRouteStatus(path) {
   const normalized = normalizeIaPath(path);
+  if (RETIRED_ROUTE_PATTERNS.some((pattern) => pattern.test(normalized))) return null;
   const override = ROUTE_STATUS_OVERRIDES.find(({ pattern }) => pattern.test(normalized));
   if (override) return override.status;
   const owner = getActiveDestination(normalized);
@@ -424,6 +440,7 @@ function ledgerPatternMatches(pattern, path) {
 }
 
 export function getRouteDisposition(path) {
+  if (RETIRED_ROUTE_PATTERNS.some((pattern) => pattern.test(normalizeIaPath(path)))) return null;
   const matches = ROUTE_DISPOSITION_LEDGER.filter((entry) => ledgerPatternMatches(entry.currentPath, path));
   return matches.sort((a, b) => b.currentPath.length - a.currentPath.length)[0] ?? null;
 }
@@ -445,7 +462,7 @@ export function findForbiddenIaLabels(text, { historical = false } = {}) {
 }
 
 export function validateIaContract() {
-  if (GLOBAL_DESTINATIONS.length !== 5) throw new Error('IA requires exactly five global destinations');
+  if (GLOBAL_DESTINATIONS.length !== 6) throw new Error('IA requires exactly six global destinations');
   const keys = GLOBAL_DESTINATIONS.map(({ key }) => key);
   const labels = GLOBAL_DESTINATIONS.map(({ title }) => title);
   const urls = GLOBAL_DESTINATIONS.map(({ url }) => url);

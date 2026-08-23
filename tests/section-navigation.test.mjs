@@ -16,9 +16,10 @@ import {
 
 const expectedDestinations = [
   ['programme', 'Programme', '/programme'],
-  ['spdtf', 'SPDTF', '/spdtf'],
-  ['working-groups', 'Working groups', '/spdtf/working-groups'],
   ['governance', 'Governance', '/governance'],
+  ['semantic-modelling', 'Semantic modelling', '/semantic-modelling'],
+  ['spdtf', 'SPDTF Development', '/spdtf'],
+  ['working-groups', 'Working groups', '/spdtf/working-groups'],
   ['resources', 'Resources', '/resources'],
 ];
 
@@ -49,7 +50,7 @@ test('category headings own canonical landing pages without duplicate landing ch
   }
 });
 
-test('the left section navigation implements all five destinations from one registry', () => {
+test('the left section navigation implements all six destinations from one registry', () => {
   assert.deepEqual(Object.keys(SECTION_NAVIGATION), expectedDestinations.map(([key]) => key));
   for (const [key, title, url] of expectedDestinations) {
     const section = SECTION_NAVIGATION[key];
@@ -66,6 +67,9 @@ test('the left section navigation implements all five destinations from one regi
     assert.equal(getNavigationSection(retired), null, `${retired} must not remain a navigation surface`);
     assert.equal(findPage(retired), null, `${retired} must not remain in the canonical page registry`);
   }
+  const retiredSemanticRoot = ['/spdtf', 'ontologies'].join('/');
+  assert.equal(getNavigationSection(retiredSemanticRoot), null);
+  assert.equal(findNavigationPage(`${retiredSemanticRoot}/standards`), null);
 
   const legacyUrls = Object.values(SECTIONS).flatMap((section) => (
     section.groups.flatMap((group) => flattenItems(group.items).map(({ url }) => url))
@@ -75,7 +79,14 @@ test('the left section navigation implements all five destinations from one regi
   ));
   assert.deepEqual(Object.fromEntries(Object.entries(SECTION_NAVIGATION).map(([key, section]) => [
     key, section.groups.flatMap(flattenGroup).length,
-  ])), { programme: 18, spdtf: 252, 'working-groups': 39, governance: 31, resources: 12 });
+  ])), {
+    programme: 18,
+    governance: 31,
+    'semantic-modelling': 11,
+    spdtf: 241,
+    'working-groups': 39,
+    resources: 12,
+  });
   const decisionDetail = /^\/modelling\/(?:adr|odr)\/[^/]+$/u;
   for (const url of new Set(legacyUrls.filter((url) => !decisionDetail.test(url)))) {
     assert.equal(compositeUrls.filter((candidate) => candidate === url).length, 1, `${url} must appear once`);
@@ -84,9 +95,9 @@ test('the left section navigation implements all five destinations from one regi
   assert.ok(compositeUrls.every((url) => !decisionDetail.test(url)), 'decision details stay off the left rail');
   for (const required of [
     '/programme', '/spdtf', '/spdtf/candidates', '/spdtf/questions', '/spdtf/outputs',
-    '/spdtf/ontologies', '/spdtf/property-pack',
-    '/spdtf/ontologies/reading-the-model', '/spdtf/ontologies/modelling-method',
-    '/spdtf/ontologies/modelling-rules',
+    '/semantic-modelling', '/spdtf/property-pack',
+    '/semantic-modelling/reading-the-model', '/semantic-modelling/modelling-method',
+    '/semantic-modelling/modelling-rules',
     '/spdtf/property-pack/definition-and-scope',
     '/spdtf/property-pack/technical-working-group-determination',
     '/spdtf/property-pack/review-and-releases', PDTF1_ROUTES.inputRoot, PDTF1_ROUTES.root,
@@ -237,7 +248,7 @@ test('contextual rail highlighting never claims an index is the current detail p
 test('category landing pages remain in breadcrumbs and exact page sequences', () => {
   for (const [sectionKey, heading, category, firstChild] of [
     ['programme', 'Strategy', '/strategy', '/strategy/strategy-overview'],
-    ['spdtf', 'Semantic modelling', '/spdtf/ontologies', '/spdtf/ontologies/why-ontologies'],
+    ['semantic-modelling', 'Understand ontologies', '/semantic-modelling/why-ontologies', '/semantic-modelling/reading-the-model'],
     ['spdtf', 'Property Pack ontology', '/spdtf/property-pack', '/spdtf/property-pack/definition-and-scope'],
     ['working-groups', 'Member guide', '/spdtf/working-groups/member-guide', '/spdtf/working-groups/member-guide/getting-started'],
     ['working-groups', 'Group workspaces', '/spdtf/working-groups', '/spdtf/working-groups/finance-and-banking'],
@@ -251,7 +262,8 @@ test('category landing pages remain in breadcrumbs and exact page sequences', ()
     assert.equal(getNavigationPrevNext(firstChild).prev?.url, category);
   }
   assert.equal(getNavigationPrevNext('/programme').next?.url, '/strategy');
-  assert.equal(getNavigationPrevNext('/spdtf/ontologies').prev?.url, '/spdtf/property-pack/review-and-releases');
+  assert.equal(getNavigationPrevNext('/semantic-modelling').next?.url, '/semantic-modelling/why-ontologies');
+  assert.equal(getNavigationPrevNext('/semantic-modelling').prev, undefined);
   assert.deepEqual(getNavigationPrevNext('/spdtf/property-pack/resources/common/generated-term'), {});
 });
 
@@ -412,32 +424,31 @@ test('every new extracted-ontology category landing is searchable', () => {
 });
 
 test('semantic modelling exposes two nested audience journeys with linked parents', () => {
-  const group = SECTION_NAVIGATION['spdtf'].groups.find(({ heading }) => heading === 'Semantic modelling');
-  assert.ok(group);
-  assert.deepEqual(group.items.map(({ title, url }) => [title, url]), [
-    ['Understand ontologies', '/spdtf/ontologies/why-ontologies'],
-    ['How we model SPDTF', '/spdtf/ontologies/modelling-method'],
+  const section = SECTION_NAVIGATION['semantic-modelling'];
+  const understand = section.groups.find(({ heading }) => heading === 'Understand ontologies');
+  const method = section.groups.find(({ heading }) => heading === 'How we model SPDTF');
+  assert.ok(understand);
+  assert.ok(method);
+  assert.equal(SECTION_NAVIGATION.spdtf.groups.some(({ heading }) => heading === 'Semantic modelling'), false);
+  assert.deepEqual(understand.items.map(({ url }) => url), [
+    '/semantic-modelling/reading-the-model',
+    '/semantic-modelling/semantic-package',
+    '/semantic-modelling/bounded-contexts',
+    '/semantic-modelling/standards',
+    '/semantic-modelling/evidence-and-mappings',
+    '/semantic-modelling/validation',
   ]);
-  assert.deepEqual(group.items[0].children.map(({ url }) => url), [
-    '/spdtf/ontologies/reading-the-model',
+  assert.deepEqual(method.items.map(({ url }) => url), [
+    '/semantic-modelling/modelling-rules',
+    '/semantic-modelling/coverage',
   ]);
-  assert.deepEqual(group.items[1].children.map(({ url }) => url), [
-    '/spdtf/ontologies/semantic-package',
-    '/spdtf/ontologies/bounded-contexts',
-    '/spdtf/ontologies/modelling-rules',
-    '/spdtf/ontologies/coverage',
-    '/spdtf/ontologies/standards',
-    '/spdtf/ontologies/evidence-and-mappings',
-    '/spdtf/ontologies/validation',
+  assert.deepEqual(findNavigationPage('/semantic-modelling/reading-the-model').trail.map(({ url }) => url), [
+    '/semantic-modelling/reading-the-model',
   ]);
-  assert.deepEqual(findNavigationPage('/spdtf/ontologies/reading-the-model').trail.map(({ url }) => url), [
-    '/spdtf/ontologies/why-ontologies',
-    '/spdtf/ontologies/reading-the-model',
-  ]);
-  assert.equal(getNavigationPrevNext('/spdtf/ontologies/why-ontologies').next?.url,
-    '/spdtf/ontologies/reading-the-model');
-  assert.equal(getNavigationPrevNext('/spdtf/ontologies/modelling-method').next?.url,
-    '/spdtf/ontologies/semantic-package');
+  assert.equal(getNavigationPrevNext('/semantic-modelling/why-ontologies').next?.url,
+    '/semantic-modelling/reading-the-model');
+  assert.equal(getNavigationPrevNext('/semantic-modelling/modelling-method').next?.url,
+    '/semantic-modelling/modelling-rules');
 });
 
 test('Property Pack work-package coverage exposes all eight source-catalogue views', () => {

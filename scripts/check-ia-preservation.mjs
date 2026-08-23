@@ -11,6 +11,7 @@ import {
 } from './lib/ia-preservation-contract.mjs';
 import { baselineNavigationEvidenceFailures, retentionReceiptFailures } from './lib/ia-retention-validator.mjs';
 import { validatePdtfSchemaInputManifest } from './lib/pdtf-schema-input-route-contract.mjs';
+import { SEMANTIC_MODELLING_ROUTE_MIGRATION, validateSemanticModellingManifest } from './lib/semantic-modelling-route-contract.mjs';
 import { composeSchemaToSchemeRouteReceipt } from './lib/schema-to-scheme-route-contract.mjs';
 import { SCHEMA_TO_SCHEME_SOURCE_ROUTE_MANIFEST, loadPdtf1SourceRouteManifest,
   loadPriorIaFamilyManifest, loadPriorIaRouteManifest, loadSchemaToSchemeSourceRouteManifest,
@@ -25,7 +26,7 @@ import { PROPERTY_PACK_ROUTE_MIGRATION, getPropertyPackReplacementRoute } from '
 import { PDTF1_ROUTE_MIGRATION, fragmentsPreservedByPdtfSchemaMigration, getPdtf1ReplacementRoute,
   isRetiredPdtf1DocumentationRoute, isRetiredPdtf1ManualAlias,
   isStablePdtfIdentifierRoute } from '../src/lib/pdtf1-routes.mjs';
-import { validateLeaseTermCaseCollisionReceipt } from '../src/lib/ontology-case-collision.mjs';
+import { inspectLeaseTermCaseCollision, validateLeaseTermCaseCollisionReceipt } from '../src/lib/ontology-case-collision.mjs';
 import { getDeclaredRouteReplacement } from '../src/lib/site-route-migrations.mjs';
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const EXPECTED_FAMILY_COUNTS = Object.freeze({
@@ -34,8 +35,8 @@ const EXPECTED_FAMILY_COUNTS = Object.freeze({
   'ui-assets': { baseline: 53 }, 'image-assets': { baseline: 5 },
   'ontology-tools': { baseline: 837, accepted: 837 }, 'property-pack-canonical': { baseline: 690, accepted: 702 },
 });
-const HASH = /^[a-f0-9]{64}$/u;
-const failures = []; const notes = []; const fail = (message) => failures.push(message);
+const HASH = /^[a-f0-9]{64}$/u; const failures = []; const notes = [];
+const fail = (message) => failures.push(message);
 function validateReviewedReframe(family, compose) {
   try { const receipt = compose(family.baseline, family.accepted);
     if (family.policy !== 'reframe-equivalent' || JSON.stringify(receipt) !== JSON.stringify(family.reframeReceipt)) fail(`${family.id} reviewed file-reframe receipt is inconsistent`); }
@@ -43,10 +44,7 @@ function validateReviewedReframe(family, compose) {
 }
 let options;
 try { options = parsePreservationArgs(process.argv.slice(2)); }
-catch (error) {
-  console.error(`FAIL usage: ${error.message}`);
-  process.exit(2);
-}
+catch (error) { console.error(`FAIL usage: ${error.message}`); process.exit(2); }
 function readJson(relative) {
   const file = path.isAbsolute(relative) ? relative : path.join(ROOT, relative);
   try { return JSON.parse(readFileSync(file, 'utf8')); }
@@ -56,13 +54,10 @@ function safeRelative(value) {
   return typeof value === 'string' && value.length > 0 && !path.isAbsolute(value)
     && !value.split('/').includes('..');
 }
-function statusId(route) {
-  return `${IA_STATUS_REGISTRY_VERSION}:${sha256(JSON.stringify(getRouteStatus(route))).slice(0, 16)}`;
-}
+function statusId(route) { return `${IA_STATUS_REGISTRY_VERSION}:${sha256(JSON.stringify(getRouteStatus(route))).slice(0, 16)}`; }
 function validateInventory(label, inventory) {
   if (!inventory || inventory.count !== inventory.records?.length || !HASH.test(inventory.treeSha256 ?? '')) {
-    fail(`${label} has an invalid inventory shape`);
-    return;
+    fail(`${label} has an invalid inventory shape`); return;
   }
   const seen = new Set();
   for (const record of inventory.records) {
@@ -78,8 +73,7 @@ function validateInventory(label, inventory) {
 function compareInventory(label, root, relative, expected) {
   const actual = fileInventory(root, relative);
   if (actual.count !== expected.count || actual.treeSha256 !== expected.treeSha256) {
-    fail(`${label} differs: expected ${expected.count}/${expected.treeSha256.slice(0, 12)}, got ${actual.count}/${actual.treeSha256.slice(0, 12)}`);
-    return;
+    fail(`${label} differs: expected ${expected.count}/${expected.treeSha256.slice(0, 12)}, got ${actual.count}/${actual.treeSha256.slice(0, 12)}`); return;
   }
   if (JSON.stringify(actual.records) !== JSON.stringify(expected.records)) fail(`${label} per-file manifest differs`);
 }
@@ -113,9 +107,7 @@ function verifyAcceptedRoute(record, file) {
   const fragments = fragmentContract(html);
   if (sha256(html) !== record.acceptedRawSha256) fail(`accepted HTML checksum changed: ${record.acceptedRoute}`);
   if (content.contentSha256 !== record.acceptedContentSha256) fail(`accepted information checksum changed: ${record.acceptedRoute}`);
-  if (blockInventory(content.blockHashes).sha256 !== record.acceptedBlockInventorySha256) {
-    fail(`accepted information-block inventory changed: ${record.acceptedRoute}`);
-  }
+  if (blockInventory(content.blockHashes).sha256 !== record.acceptedBlockInventorySha256) fail(`accepted information-block inventory changed: ${record.acceptedRoute}`);
   if (fragments.fragmentSha256 !== record.acceptedFragmentSha256
     || fragments.fragmentCount !== record.acceptedFragmentCount) fail(`accepted fragment contract changed: ${record.acceptedRoute}`);
   return content;
@@ -139,18 +131,19 @@ const familyManifest = readJson('src/data/ia-preservation-baseline.json');
 let pdtf1SourceManifest = null;
 try { ({ manifest: pdtf1SourceManifest } = loadPdtf1SourceRouteManifest(ROOT)); }
 catch (error) { fail(`PDTF schema source-route Git evidence is unavailable: ${error.message}`); }
-let schemaToSchemeSourceManifest = null;
-let schemaToSchemeSourceAdditions = [];
+let schemaToSchemeSourceManifest = null; let schemaToSchemeSourceAdditions = [];
 try {
   ({ manifest: schemaToSchemeSourceManifest, supplementalRoutes: schemaToSchemeSourceAdditions }
     = loadSchemaToSchemeSourceRouteManifest(ROOT));
 }
 catch (error) { fail(`schema-to-scheme source-route Git evidence is unavailable: ${error.message}`); }
-let hasPdtf1CutReceipt = false; let hasSchemaToSchemeReceipt = false; let hasPdtfSchemaInputReceipt = false;
+let hasPdtf1CutReceipt = false; let hasSchemaToSchemeReceipt = false;
+let hasPdtfSchemaInputReceipt = false; let hasSemanticModellingReceipt = false;
 if (routeManifest) {
   hasPdtf1CutReceipt = routeManifest.schemaVersion === 7 || routeManifest.schemaVersion === 8;
   hasSchemaToSchemeReceipt = routeManifest.schemaVersion === 8;
-  hasPdtfSchemaInputReceipt = routeManifest.schemaVersion === 9;
+  hasPdtfSchemaInputReceipt = routeManifest.schemaVersion === 9 || routeManifest.schemaVersion === 10;
+  hasSemanticModellingReceipt = routeManifest.schemaVersion === 10;
   const validLegacy = routeManifest.schemaVersion === 6
     && routeManifest.retiredRoutes === undefined && routeManifest.retiredRouteCount === undefined;
   const validCut = (hasPdtf1CutReceipt || hasPdtfSchemaInputReceipt)
@@ -302,15 +295,18 @@ if (routeManifest) {
       }
     } catch (error) { fail(`schema-to-scheme route-composition contract failed: ${error.message}`); }
   }
-  if (hasPdtfSchemaInputReceipt) {
+  if (routeManifest.schemaVersion === 9) {
     try { validatePdtfSchemaInputManifest(ROOT, routeManifest, baselineRecords, addedRecords); }
     catch (error) { fail(`PDTF schema input migration contract failed: ${error.message}`); }
   }
+  if (hasSemanticModellingReceipt) try {
+    validateSemanticModellingManifest(ROOT, routeManifest, baselineRecords, addedRecords);
+  } catch (error) { fail(`semantic-modelling migration contract failed: ${error.message}`); }
   try {
-    validateLeaseTermCaseCollisionReceipt(
-      options.manifestOnly ? null : ROOT,
-      routeManifest.leaseTermCaseCollision, baselineRecords, addedRecords,
-    );
+    if (hasSemanticModellingReceipt) {
+      if (!options.manifestOnly) inspectLeaseTermCaseCollision(ROOT);
+    } else validateLeaseTermCaseCollisionReceipt(options.manifestOnly ? null : ROOT,
+      routeManifest.leaseTermCaseCollision, baselineRecords, addedRecords);
   } catch (error) { fail(`LeaseTerm case-sensitive stable-resource contract failed: ${error.message}`); }
   if (PROPERTY_PACK_ROUTE_MIGRATION.redirects !== false
     || getPropertyPackReplacementRoute('/api/v2/comments') !== null) {
@@ -349,6 +345,11 @@ if (routeManifest) {
       for (const file of currentFiles) {
         const route = routeFromFile(file);
         if (isRetiredPropertyPackRoute(route)) fail(`retired Property Pack output still exists: ${route}`);
+        if (hasSemanticModellingReceipt
+          && (route === SEMANTIC_MODELLING_ROUTE_MIGRATION.sourceRoot
+            || route.startsWith(`${SEMANTIC_MODELLING_ROUTE_MIGRATION.sourceRoot}/`))) {
+          fail(`retired semantic-modelling output still exists: ${route}`);
+        }
         if (hasPdtf1CutReceipt && isRetiredPdtf1DocumentationRoute(route)) {
           fail(`retired PDTF schema output still exists: ${route}`);
         }

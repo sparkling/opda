@@ -14,7 +14,7 @@ import {
 import { SEMANTIC_PACKAGE_MANIFEST } from '../src/lib/spdtf-workspace.mjs';
 
 const root = fileURLToPath(new URL('..', import.meta.url));
-const ontologyDir = path.join(root, 'src/pages/spdtf/ontologies');
+const ontologyDir = path.join(root, 'src/pages/semantic-modelling');
 const page = (name) => path.join(ontologyDir, `${name}.astro`);
 const pages = [
   'index', 'why-ontologies', 'reading-the-model', 'modelling-method',
@@ -31,6 +31,23 @@ test('semantic modelling has complete teaching and implementation routes without
     const source = textOf(name);
     assert.ok(source.split('\n').length < 500, `${name} exceeds the project file limit`);
     assert.doesNotMatch(source, /JourneyNav/u, `${name} repeats the section navigation in page content`);
+  }
+
+  const pageCategories = {
+    index: 'Semantic modelling',
+    'why-ontologies': 'Understand ontologies',
+    'reading-the-model': 'Understand ontologies',
+    'semantic-package': 'Understand ontologies',
+    'bounded-contexts': 'Understand ontologies',
+    standards: 'Understand ontologies',
+    'evidence-and-mappings': 'Understand ontologies',
+    validation: 'Understand ontologies',
+    'modelling-method': 'How we model SPDTF',
+    'modelling-rules': 'How we model SPDTF',
+    coverage: 'How we model SPDTF',
+  };
+  for (const [name, category] of Object.entries(pageCategories)) {
+    assert.match(textOf(name), new RegExp(`<PageMeta category="${category}"`, 'u'));
   }
 
   const required = {
@@ -74,7 +91,7 @@ test('Category 8 mapping guidance separates architecture, SKOS assertions and de
   assert.match(source, /exactMatch[\s\S]+disjoint[\s\S]+broadMatch[\s\S]+relatedMatch[\s\S]+narrowMatch/iu);
   assert.match(source, /relatedMatch[\s\S]+symmetric associative/iu);
   assert.match(source, /href="\/modelling\/odr\/odr-0002"/u);
-  assert.match(source, /href="\/spdtf\/ontologies\/standards#standard-sssom"/u);
+  assert.match(source, /href="\/semantic-modelling\/standards#standard-sssom"/u);
   assert.doesNotMatch(source, /SSSOM (?:is|has been) (?:adopted|implemented)/iu);
 
   const candidateRoot = path.join(root, 'source/03-standards/ontology-candidates/property-pack/0.1');
@@ -94,16 +111,16 @@ test('Category 8 mapping guidance separates architecture, SKOS assertions and de
   assert.equal(sssom?.governanceStatus, 'Deferred candidate');
   assert.match(sssom?.versionBoundary ?? '', /no selected versions/iu);
 
-  const canonicalLink = /href="\/spdtf\/ontologies\/evidence-and-mappings#cross-context-mappings"/u;
+  const canonicalLink = /href="\/semantic-modelling\/evidence-and-mappings#cross-context-mappings"/u;
   const linkedPages = [
-    'src/pages/spdtf/ontologies/bounded-contexts.astro',
-    'src/pages/spdtf/ontologies/modelling-method.astro',
-    'src/pages/spdtf/ontologies/modelling-rules.astro',
-    'src/pages/spdtf/ontologies/coverage.astro',
-    'src/pages/spdtf/ontologies/standards.astro',
-    'src/pages/spdtf/ontologies/reading-the-model.astro',
-    'src/pages/spdtf/ontologies/semantic-package.astro',
-    'src/pages/spdtf/ontologies/why-ontologies.astro',
+    'src/pages/semantic-modelling/bounded-contexts.astro',
+    'src/pages/semantic-modelling/modelling-method.astro',
+    'src/pages/semantic-modelling/modelling-rules.astro',
+    'src/pages/semantic-modelling/coverage.astro',
+    'src/pages/semantic-modelling/standards.astro',
+    'src/pages/semantic-modelling/reading-the-model.astro',
+    'src/pages/semantic-modelling/semantic-package.astro',
+    'src/pages/semantic-modelling/why-ontologies.astro',
     'src/pages/spdtf/property-pack/contexts/index.astro',
     'src/pages/spdtf/property-pack/contexts/[context].astro',
     'src/pages/spdtf/property-pack/index.astro',
@@ -181,17 +198,17 @@ test('standards records separate specification maturity, governance status and a
 
 test('search exposes every semantic-modelling route and no legacy journey label', () => {
   const ontologyEntries = searchEntries('ontology').map(({ url }) => url);
-  assert.ok(ontologyEntries.includes('/spdtf/ontologies'), 'semantic-modelling landing is absent from search');
+  assert.ok(ontologyEntries.includes('/semantic-modelling'), 'semantic-modelling landing is absent from search');
   for (const name of pages.filter((name) => name !== 'index')) {
-    assert.ok(ontologyEntries.includes(`/spdtf/ontologies/${name}`), `${name} is absent from search`);
+    assert.ok(ontologyEntries.includes(`/semantic-modelling/${name}`), `${name} is absent from search`);
   }
   const all = searchEntries('');
   assert.equal(new Set(all.map(({ url }) => url)).size, all.length);
   for (const term of ['SKOS', 'SSSOM', 'ontology mapping', 'cross-context mapping', 'OWL', 'RDF', 'SPARQL', 'upper ontology']) {
-    assert.ok(searchEntries(term).some(({ url }) => url.startsWith('/spdtf/ontologies')), `${term} is not discoverable`);
+    assert.ok(searchEntries(term).some(({ url }) => url.startsWith('/semantic-modelling')), `${term} is not discoverable`);
   }
   for (const term of ['bounded context', 'context map', 'taxonomy']) {
-    assert.ok(searchEntries(term).some(({ url }) => url === '/spdtf/ontologies/bounded-contexts'), `${term} is not discoverable`);
+    assert.ok(searchEntries(term).some(({ url }) => url === '/semantic-modelling/bounded-contexts'), `${term} is not discoverable`);
   }
 });
 

@@ -3,8 +3,8 @@ import {
   PDTF_SCHEMA_INPUT_SOURCE_ROUTE_MANIFEST, loadPdtfSchemaInputSourceRouteManifest,
 } from './ia-prior-manifest-contract.mjs';
 import {
-  getAcceptedRouteFile, getDeclaredRouteReplacement, getLegacyCommentKey,
-} from '../../src/lib/site-route-migrations.mjs';
+  getPdtfSchemaInputLegacyCommentKey, getPdtfSchemaInputReplacementRoute,
+} from '../../src/lib/pdtf1-routes.mjs';
 
 export const PDTF_SCHEMA_INPUT_ROUTE_MIGRATION = Object.freeze({
   sourceRoot: '/pdtf-schema',
@@ -109,6 +109,11 @@ function expectedTargetFile(sourceFile, migration) {
     ? `${target}/${sourceFile.slice(source.length + 1)}` : null;
 }
 
+export function getPdtfSchemaInputReplacementFile(route, file) {
+  return getPdtfSchemaInputReplacementRoute(route)
+    ? expectedTargetFile(file, PDTF_SCHEMA_INPUT_ROUTE_MIGRATION) : file;
+}
+
 /**
  * Bind the schema-v8 reader cut to its new SPDTF-input routes. Historical
  * schema-to-scheme receipts remain frozen; this receipt proves only v8 -> v9.
@@ -119,9 +124,9 @@ export function composePdtfSchemaInputMigrationReceipt({
   sourceManifest,
   sourceContract,
   migration = PDTF_SCHEMA_INPUT_ROUTE_MIGRATION,
-  replacementRoute,
-  replacementFile,
-  commentKey,
+  replacementRoute = getPdtfSchemaInputReplacementRoute,
+  replacementFile = getPdtfSchemaInputReplacementFile,
+  commentKey = getPdtfSchemaInputLegacyCommentKey,
   informationReframes = PDTF_SCHEMA_INPUT_INFORMATION_REFRAMES,
 }) {
   const source = acceptedRecords(sourceManifest);
@@ -388,8 +393,5 @@ export function validatePdtfSchemaInputManifest(root, manifest, records, addedRe
   validatePdtfSchemaInputMigrationReceipt(manifest.pdtfSchemaInputMigration, {
     records, addedRecords, sourceManifest,
     sourceContract: PDTF_SCHEMA_INPUT_SOURCE_ROUTE_MANIFEST,
-    replacementRoute: getDeclaredRouteReplacement,
-    replacementFile: getAcceptedRouteFile,
-    commentKey: getLegacyCommentKey,
   });
 }

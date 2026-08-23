@@ -4,17 +4,17 @@ import { PDTF1_ROUTES } from '../../src/lib/pdtf1-routes.mjs';
 export { PDTF1_ROUTES };
 
 export const SEMANTIC_MODELLING_ROUTES = [
-  '/spdtf/ontologies',
-  '/spdtf/ontologies/why-ontologies',
-  '/spdtf/ontologies/reading-the-model',
-  '/spdtf/ontologies/modelling-method',
-  '/spdtf/ontologies/semantic-package',
-  '/spdtf/ontologies/bounded-contexts',
-  '/spdtf/ontologies/modelling-rules',
-  '/spdtf/ontologies/coverage',
-  '/spdtf/ontologies/standards',
-  '/spdtf/ontologies/evidence-and-mappings',
-  '/spdtf/ontologies/validation',
+  '/semantic-modelling',
+  '/semantic-modelling/why-ontologies',
+  '/semantic-modelling/reading-the-model',
+  '/semantic-modelling/modelling-method',
+  '/semantic-modelling/semantic-package',
+  '/semantic-modelling/bounded-contexts',
+  '/semantic-modelling/modelling-rules',
+  '/semantic-modelling/coverage',
+  '/semantic-modelling/standards',
+  '/semantic-modelling/evidence-and-mappings',
+  '/semantic-modelling/validation',
 ];
 
 export const PDTF_ONTOLOGY_CATEGORY_ROUTES = [

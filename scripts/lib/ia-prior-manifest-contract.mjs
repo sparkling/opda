@@ -93,6 +93,29 @@ export const PDTF_SCHEMA_INPUT_SOURCE_ROUTE_MANIFEST = Object.freeze({
   commentKeyPairsSha256: '5d840155c49723947dc9ba271d078bb25255a04cd37473969372ac9971c85447',
   historicalCommentKeysSha256: '34fcab218a3856c0d54f5ff5fe0d8ea610b536f16a98eb2a94b238ee66364fce',
 });
+export const SEMANTIC_MODELLING_SOURCE_ROUTE_MANIFEST = Object.freeze({
+  commit: '30b420160f931826ed1aef73a8a7a7f2aa1c54a1',
+  path: 'src/data/ia-route-baseline.json',
+  blob: '148354f8996459454ff56098fdf8634fc99c5554',
+  sha256: 'de975cdb2a028e6cf4287948a99667de16b20a0d19e3c80b825a3c28d9d66672',
+  schemaVersion: 9,
+  baselineCommit: PRIOR_IA_ROUTE_MANIFEST.baselineCommit,
+  acceptedCommit: '0f42f5ee923a79576fd31e0f186a23e67aa16548',
+  routeCount: 3209,
+  addedRouteCount: 87,
+  retiredRouteCount: 227,
+  acceptedRouteCount: 3296,
+  sourceRoot: '/spdtf/ontologies',
+  movedRouteCount: 11,
+  navigationFragmentIdCount: 48,
+  navigationFragmentOccurrenceCount: 528,
+  navigationFragmentInventorySha256: 'abee58f64b0cff6fbb2fac4525caeb96e88557ff085b5b731813f6e4921b0dd7',
+  navigationRoutePairsSha256: '94059c7dbb2ffa8c11c9d70bcc702dd57a34aebdadb193d50ed8c840410126b6',
+  authoredFragmentIdCount: 105,
+  authoredFragmentOccurrenceCount: 209,
+  authoredFragmentInventorySha256: 'cbc11b257fec34b450fd5b28974243a8b794b5b4989f65e9538f3eff3f8e17dd',
+  authoredRoutePairsSha256: 'eac8e3eadef88001321f1ee6bc588642568e1a751028bd6297d7ab055937de5c',
+});
 
 const gitOptions = (root) => ({
   cwd: root, encoding: 'utf8', maxBuffer: 64 * 1024 * 1024,
@@ -274,6 +297,53 @@ export function loadPdtfSchemaInputSourceRouteManifest(root) {
     || navigationFragmentInventorySha256 !== contract.navigationFragmentInventorySha256) {
     throw new Error('PDTF schema input source manifest does not match its frozen contract');
   }
+  return result;
+}
+
+/** Load the immutable schema-v9 cut before semantic modelling became a peer section. */
+export function loadSemanticModellingSourceRouteManifest(root) {
+  const contract = SEMANTIC_MODELLING_SOURCE_ROUTE_MANIFEST;
+  requireAncestor(root, contract.commit, git(root, ['rev-parse', 'HEAD']));
+  const result = loadPinnedManifest(root, contract);
+  const { manifest } = result;
+  const routes = manifest.routes ?? [];
+  const additions = manifest.addedRoutes ?? [];
+  const retired = manifest.retiredRoutes ?? [];
+  const all = [...routes, ...additions];
+  const moved = all.filter(({ acceptedRoute }) => routeWithin(acceptedRoute, contract.sourceRoot));
+  const navigation = new Map(); const navigationPairs = [];
+  const authored = new Map(); const authoredPairs = [];
+  for (const record of moved) for (const fragment of record.acceptedFragments ?? []) {
+    const isNavigation = fragment.startsWith('section-nav-');
+    const inventory = isNavigation ? navigation : authored;
+    const pairs = isNavigation ? navigationPairs : authoredPairs;
+    inventory.set(fragment, (inventory.get(fragment) ?? 0) + 1);
+    pairs.push(`${record.acceptedRoute}\0${fragment}`);
+  }
+  const inventoryDigest = (inventory) => sha256([...inventory]
+    .sort(([left], [right]) => left.localeCompare(right))
+    .map(([fragment, count]) => `${fragment}\0${count}`).join('\n'));
+  const pairsDigest = (pairs) => sha256([...pairs].sort().join('\n'));
+  const valid = manifest.schemaVersion === contract.schemaVersion
+    && manifest.baselineCommit === contract.baselineCommit
+    && manifest.acceptedCommit === contract.acceptedCommit
+    && manifest.routeCount === contract.routeCount && routes.length === contract.routeCount
+    && manifest.addedRouteCount === contract.addedRouteCount && additions.length === contract.addedRouteCount
+    && manifest.retiredRouteCount === contract.retiredRouteCount && retired.length === contract.retiredRouteCount
+    && all.length === contract.acceptedRouteCount
+    && new Set(all.map(({ acceptedRoute }) => acceptedRoute)).size === all.length
+    && new Set(all.map(({ acceptedFile }) => acceptedFile)).size === all.length
+    && moved.length === contract.movedRouteCount
+    && moved.every((record) => additions.includes(record))
+    && navigation.size === contract.navigationFragmentIdCount
+    && navigationPairs.length === contract.navigationFragmentOccurrenceCount
+    && inventoryDigest(navigation) === contract.navigationFragmentInventorySha256
+    && pairsDigest(navigationPairs) === contract.navigationRoutePairsSha256
+    && authored.size === contract.authoredFragmentIdCount
+    && authoredPairs.length === contract.authoredFragmentOccurrenceCount
+    && inventoryDigest(authored) === contract.authoredFragmentInventorySha256
+    && pairsDigest(authoredPairs) === contract.authoredRoutePairsSha256;
+  if (!valid) throw new Error('semantic-modelling source manifest does not match its frozen contract');
   return result;
 }
 

@@ -11,6 +11,15 @@ implements: [src/lib/pdtf1-routes.mjs, src/lib/site-navigation.ts, src/lib/site-
 
 # Place the PDTF schema beneath SPDTF as a third-party input
 
+> Update 2026-08-23 — global-navigation correction: the site has six destinations in
+> this order: Programme, Governance, Semantic modelling, SPDTF Development, Working
+> groups and Resources. This changes the destination count, order and navigation label
+> only. Semantic modelling is the canonical peer family at `/semantic-modelling/**`;
+> it does not appear beneath SPDTF Development, and `/spdtf/ontologies/**` is retired
+> without a redirect, rewrite alias or duplicate page. The PDTF schema remains a
+> source-specific third-party input beneath
+> `/spdtf/inputs/pdtf-schema/**`, and stable `/pdtf/**` RDF identifiers remain unchanged.
+
 ## Context and Problem Statement
 
 ADR-0076 gave PDTF schema documentation a separate top-level home. That placement makes
@@ -40,8 +49,13 @@ outside this editorial change.
 
 ## Decision Outcome
 
-SPDTF has five global destinations: Programme, SPDTF, Working groups, Governance and
-Resources. PDTF schema is nested inside SPDTF as a source-specific input:
+The site has six global destinations, in this order: Programme, Governance, Semantic
+modelling, SPDTF Development, Working groups and Resources. The PDTF schema remains
+nested inside SPDTF Development as a source-specific, third-party input:
+
+Semantic modelling owns the separate `/semantic-modelling/**` reader hierarchy. SPDTF
+Development has no Semantic modelling child branch, and `/spdtf/ontologies/**` is not
+emitted, redirected, rewritten, aliased or duplicated.
 
 ```text
 /spdtf
@@ -87,9 +101,10 @@ The receipt must prove all of the following:
 - every Artalk key composes through the intermediate PDTF-schema route before the generic
   SPDTF route resolver, so existing discussion threads are not reminted.
 
-The navigation owner of the new subtree is SPDTF, while its content-owner/status metadata
-remains third-party PDTF-schema input. A route prefix must not inherit working-group
-authority. Tool and artefact families keep their individual provenance and status.
+The navigation owner of the new subtree is the SPDTF Development destination, while its
+content-owner/status metadata remains third-party PDTF-schema input. A route prefix must
+not inherit working-group authority. Tool and artefact families keep their individual
+provenance and status.
 
 ## Consequences
 

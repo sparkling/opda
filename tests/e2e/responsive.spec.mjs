@@ -104,7 +104,7 @@ test('section rails, page navigation and content stay inside the shared containe
   }
 
   await page.setViewportSize({ width: 1281, height: 1000 });
-  await visit(page, '/spdtf/ontologies');
+  await visit(page, '/semantic-modelling');
   await assertNoBodyOverflow(page);
   const gateway = await page.locator('.card-grid').first().evaluate((node) => {
     const container = node.getBoundingClientRect();

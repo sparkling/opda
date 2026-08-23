@@ -15,13 +15,13 @@ import {
 import { createCaptureEvidence } from './lib/ia-capture-evidence.mjs';
 import { composePdtf1ToolReframeReceipt } from './lib/pdtf1-tool-reframes.mjs';
 import { composeSourceArchiveReframeReceipt } from './lib/source-archive-reframes.mjs';
-import { composePdtfSchemaInputMigrationReceipt } from './lib/pdtf-schema-input-route-contract.mjs';
+import { composeSemanticModellingMigrationReceipt } from './lib/semantic-modelling-route-contract.mjs';
 import {
-  PDTF_SCHEMA_INPUT_SOURCE_ROUTE_MANIFEST,
   PRIOR_IA_ROUTE_MANIFEST,
   composePriorFamilyReceipt, composePriorManifestReceipt,
   loadPdtfSchemaInputSourceRouteManifest,
   loadPdtf1SourceRouteManifest, loadPriorIaFamilyManifest, loadPriorIaRouteManifest,
+  loadSemanticModellingSourceRouteManifest,
   manifestRetainedSourceRecordMatches,
   missingPhysicalRecordsDigest,
   priorRouteRecordDigest, verifyBaselineRootCommit, verifyPdtf1SourceRootCommit,
@@ -35,10 +35,10 @@ import {
 import { PROPERTY_PACK_ROUTE_MIGRATION, getPropertyPackReplacementRoute } from '../src/lib/property-pack-routes.mjs';
 import { getPdtf1ReplacementRoute, isRetiredPdtf1ManualAlias } from '../src/lib/pdtf1-routes.mjs';
 import {
-  LEASE_TERM_CASE_COLLISION, composeLeaseTermCaseCollisionReceipt,
+  LEASE_TERM_CASE_COLLISION,
 } from '../src/lib/ontology-case-collision.mjs';
 import {
-  getAcceptedRoute, getAcceptedRouteFile, getDeclaredRouteReplacement, getLegacyCommentKey,
+  getAcceptedRoute, getAcceptedRouteFile,
 } from '../src/lib/site-route-migrations.mjs';
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const args = new Map(process.argv.slice(2).map((arg) => {
@@ -119,6 +119,7 @@ verifyPdtf1SourceRootCommit(sourceRoot);
 const { manifest: priorManifest } = loadPriorIaRouteManifest(ROOT);
 const { manifest: pdtf1SourceManifest } = loadPdtf1SourceRouteManifest(ROOT);
 const { manifest: pdtfSchemaInputSourceManifest } = loadPdtfSchemaInputSourceRouteManifest(ROOT);
+const { manifest: semanticModellingSourceManifest } = loadSemanticModellingSourceRouteManifest(ROOT);
 if (priorManifest.baselineCommit !== baselineCommit) throw new Error('prior manifest baseline commit changed');
 const priorByFile = new Map(priorManifest.routes.map((record) => [record.file, record]));
 const pdtf1SourceByBaselineFile = new Map(
@@ -258,19 +259,17 @@ const addedRoutes = acceptedFiles
       ...routeMetadata(acceptedRoute),
     };
   });
-const propertyPackMigration = pdtfSchemaInputSourceManifest.propertyPackMigration;
-const retiredRoutes = pdtfSchemaInputSourceManifest.retiredRoutes;
-const pdtf1Migration = pdtfSchemaInputSourceManifest.pdtf1Migration;
-const pdtfSchemaFragmentMigration = pdtfSchemaInputSourceManifest.pdtfSchemaFragmentMigration;
-const schemaToSchemeMigration = pdtfSchemaInputSourceManifest.schemaToSchemeMigration;
-const pdtfSchemaInputMigration = composePdtfSchemaInputMigrationReceipt({
+const propertyPackMigration = semanticModellingSourceManifest.propertyPackMigration;
+const retiredRoutes = semanticModellingSourceManifest.retiredRoutes;
+const pdtf1Migration = semanticModellingSourceManifest.pdtf1Migration;
+const pdtfSchemaFragmentMigration = semanticModellingSourceManifest.pdtfSchemaFragmentMigration;
+const schemaToSchemeMigration = semanticModellingSourceManifest.schemaToSchemeMigration;
+const pdtfSchemaInputMigration = semanticModellingSourceManifest.pdtfSchemaInputMigration;
+const leaseTermCaseCollision = semanticModellingSourceManifest.leaseTermCaseCollision;
+const semanticModellingMigration = composeSemanticModellingMigrationReceipt({
   records: routes,
   addedRecords: addedRoutes,
-  sourceManifest: pdtfSchemaInputSourceManifest,
-  sourceContract: PDTF_SCHEMA_INPUT_SOURCE_ROUTE_MANIFEST,
-  replacementRoute: getDeclaredRouteReplacement,
-  replacementFile: getAcceptedRouteFile,
-  commentKey: getLegacyCommentKey,
+  sourceManifest: semanticModellingSourceManifest,
 });
 const frozenSourceRecords = [
   ...pdtfSchemaInputSourceManifest.routes, ...pdtfSchemaInputSourceManifest.addedRoutes,
@@ -296,7 +295,7 @@ if (unusedSemanticReframes.length || undeclaredSemanticReframes.length) {
   throw new Error(`semantic reframe ledger mismatch; unused: ${summarize(unusedSemanticReframes) || 'none'}; undeclared: ${summarize(undeclaredSemanticReframes) || 'none'}`);
 }
 const routeManifest = {
-  schemaVersion: 9,
+  schemaVersion: 10,
   baselineCommit,
   acceptedCommit,
   routeCount: routes.length,
@@ -312,7 +311,8 @@ const routeManifest = {
   pdtfSchemaFragmentMigration,
   schemaToSchemeMigration,
   pdtfSchemaInputMigration,
-  leaseTermCaseCollision: composeLeaseTermCaseCollisionReceipt(acceptedRoot, routes, addedRoutes),
+  leaseTermCaseCollision,
+  semanticModellingMigration,
   routes,
   addedRoutes,
   retiredRoutes,

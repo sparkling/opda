@@ -38,6 +38,8 @@ import {
   getAcceptedRouteFile,
   getDeclaredRouteReplacement,
   getLegacyCommentKey,
+  getSpdtfSchemeReplacementFile,
+  getSpdtfSchemeReplacementRoute,
   getSpdtfReplacementRoute,
 } from '../src/lib/site-route-migrations.mjs';
 const projectRoot = new URL('..', import.meta.url).pathname;
@@ -47,7 +49,7 @@ const {
   supplementalRoutes: schemaToSchemeSourceAdditions,
 } = loadSchemaToSchemeSourceRouteManifest(projectRoot);
 function getSchemaToSchemeStageReplacement(route) {
-  return getPdtf1IntermediateReplacementRoute(route) ?? getSpdtfReplacementRoute(route);
+  return getPdtf1IntermediateReplacementRoute(route) ?? getSpdtfSchemeReplacementRoute(route);
 }
 test('PDTF schema documentation routes move beneath their full reader hierarchy', () => {
   assert.deepEqual(PDTF1_ROUTE_MIGRATION, {
@@ -214,8 +216,8 @@ test('the frozen intermediate route cut composes into schema-to-scheme routes', 
         ...record,
         acceptedRoute,
         acceptedFile: getPdtf1IntermediateReplacementFile(record.acceptedFile)
-          ?? (getSpdtfReplacementRoute(record.acceptedRoute)
-            ? getAcceptedRouteFile(record.acceptedRoute, record.acceptedFile)
+          ?? (getSpdtfSchemeReplacementRoute(record.acceptedRoute)
+            ? getSpdtfSchemeReplacementFile(record.acceptedRoute, record.acceptedFile)
             : record.acceptedFile),
       };
     });
