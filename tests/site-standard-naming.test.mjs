@@ -106,7 +106,8 @@ test('the public homepage mirrors the current task-and-authority structure', () 
     assert.match(homepage, new RegExp(`['"]?${key}['"]?\\s*:\\s*\\{`, 'u'));
   }
   assert.equal(homepage.match(/\baudience:/gu)?.length, GLOBAL_DESTINATIONS.length);
-  assert.equal(homepage.match(/\baction:/gu)?.length, GLOBAL_DESTINATIONS.length);
+  assert.doesNotMatch(homepage, /card__action/u);
+  assert.equal(existsSync(path.join(ROOT, 'src/pages/home.astro')), false);
   assert.match(homepage, /<nav class="public-overview" aria-labelledby="inside-title">/u);
   assert.match(homepage, /<a class="card" href=\{destination\.url\}>/u);
   assert.match(homepage, /SPDTF is in development/u);

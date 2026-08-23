@@ -14,32 +14,26 @@ const destinationDetails = {
   programme: {
     audience: 'For programme leaders and new readers',
     description: 'Understand the purpose, current direction, roadmap and policy context for a shared property-data scheme.',
-    action: 'Understand the programme',
   },
   governance: {
     audience: 'For decision-makers and reviewers',
     description: 'See who can decide, what is under review, and how authority, maturity and lifecycle are recorded.',
-    action: 'Check governance',
   },
   'semantic-modelling': {
     audience: 'For domain experts and ontology learners',
     description: 'Learn why ontologies are used, then follow the evidence-up method, contextual boundaries and mapping approach.',
-    action: 'Explore semantic modelling',
   },
   spdtf: {
     audience: 'For implementers, stewards and interoperability leads',
     description: 'Review collaborative work products, candidates, open questions, outputs and attributed third-party inputs.',
-    action: 'Review SPDTF development',
   },
   'working-groups': {
     audience: 'For contributors and facilitators',
     description: 'Find group scopes, member guidance, contribution routes and the workspaces where domain meaning is reviewed.',
-    action: 'Visit the working groups',
   },
   resources: {
     audience: 'For researchers and auditors',
     description: 'Trace terms, source records, standards, recordings and historical material with their provenance and maturity.',
-    action: 'Find evidence and resources',
   },
 };
 
@@ -91,9 +85,9 @@ const destinationCards = GLOBAL_DESTINATIONS.map((destination) => ({
         <path d="M20 14.5A8 8 0 0 1 9.5 4a8 8 0 1 0 10.5 10.5z"/>
       </svg>
     </button>
-    <a class="public-header__signin" href="/home">
-      <span class="public-header__signin-full">Members enter the knowledge base</span>
-      <span class="public-header__signin-short">Enter</span>
+    <a class="public-header__signin" href="/working-groups/join">
+      <span class="public-header__signin-full">Join a working group</span>
+      <span class="public-header__signin-short">Join</span>
     </a>
   </header>
   <main id="main-content" tabindex="-1">
@@ -108,7 +102,7 @@ const destinationCards = GLOBAL_DESTINATIONS.map((destination) => ({
           review the developing work, or take part.
         </p>
         <div class="public-hero__actions">
-          <a class="btn" href="/home">Enter the knowledge base</a>
+          <a class="btn" href="#inside-title">Explore the knowledge base</a>
           <a class="btn btn--outline-dark" href="/working-groups/join">Join a working group</a>
         </div>
       </div>
@@ -129,10 +123,6 @@ const destinationCards = GLOBAL_DESTINATIONS.map((destination) => ({
             <span class="card__eyebrow">{destination.audience}</span>
             <h3>{destination.title}</h3>
             <p>{destination.description}</p>
-            <span class="card__action">
-              {destination.action}
-              <span aria-hidden="true">→</span>
-            </span>
           </a>
         ))}
       </div>

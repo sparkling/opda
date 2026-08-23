@@ -403,9 +403,8 @@ test('text inherits its outer layout width instead of stacking nested measures',
 });
 
 test('the adversarial conformance blockers remain closed', async () => {
-  const [rootPage, homePage, base, content, components, navigation, print] = await Promise.all([
+  const [rootPage, base, content, components, navigation, print] = await Promise.all([
     readFile(file('src/pages/index.astro'), 'utf8'),
-    readFile(file('src/pages/home.astro'), 'utf8'),
     readFile(file('public/ui/design/base.css'), 'utf8'),
     readFile(file('public/ui/design/content.css'), 'utf8'),
     readFile(file('public/ui/design/components.css'), 'utf8'),
@@ -416,7 +415,6 @@ test('the adversarial conformance blockers remain closed', async () => {
   assert.match(rootPage, /URLSearchParams\(location\.search\)/u);
   assert.match(rootPage, /id="theme-toggle"/u);
   assert.match(rootPage, /class="btn btn--outline-dark"/u);
-  assert.match(homePage, /class="btn btn--outline-dark"/u);
   assert.match(base, /color:\s*var\(--on-dark-muted\)/u);
   assert.doesNotMatch(base, /#d8d5df/iu);
   assert.match(content, /\[data-theme="dark"\]\s+:where\(\.pill\)/u);

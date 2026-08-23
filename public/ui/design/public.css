@@ -92,6 +92,16 @@
 .public-overview > header { margin-bottom: var(--space-7); }
 .public-overview .overline { color: var(--color-text-muted); }
 .public-overview h2 { margin: 0; font: var(--h2); }
+.public-overview a.card {
+  transition: transform var(--duration-fast) var(--ease),
+    box-shadow var(--duration-fast) var(--ease),
+    border-color var(--duration-fast) var(--ease),
+    background var(--duration-fast) var(--ease);
+}
+.public-overview a.card:is(:hover, :focus-visible) {
+  transform: translateY(-0.25rem);
+  box-shadow: var(--shadow-md);
+}
 .public-footer {
   min-height: 8rem;
   padding: var(--space-7) max(var(--space-6), calc((100% - var(--content-max)) / 2 + var(--space-7)));
@@ -138,4 +148,8 @@
   .public-overview { padding-inline: var(--space-5); }
   .public-hero__actions { flex-direction: column; }
   .public-hero__actions a { justify-content: center; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .public-overview a.card:is(:hover, :focus-visible) { transform: none; }
 }
