@@ -29,15 +29,15 @@ class SchemaReproducibilityTests(unittest.TestCase):
     def test_schema_generator_uses_the_hierarchical_route_and_source_root(self):
         self.assertEqual(
             generator.SCHEMA_ROUTE_ROOT,
-            "/pdtf-schema/schema-and-supporting-material/schema",
+            "/spdtf/inputs/pdtf-schema/schema-and-supporting-material/schema",
         )
         self.assertEqual(
             generator.OUT_PAGES,
-            ROOT / "src/pages/pdtf-schema/schema-and-supporting-material/schema",
+            ROOT / "src/pages/spdtf/inputs/pdtf-schema/schema-and-supporting-material/schema",
         )
         self.assertEqual(
             generator.page_url("38b"),
-            "/pdtf-schema/schema-and-supporting-material/schema/legal-estate/title/oc-summary",
+            "/spdtf/inputs/pdtf-schema/schema-and-supporting-material/schema/legal-estate/title/oc-summary",
         )
 
     def test_source_date_epoch_is_repeatable_and_utc(self):
@@ -63,7 +63,7 @@ class SchemaReproducibilityTests(unittest.TestCase):
             root = Path(directory)
             nested = (
                 root
-                / "src/pages/pdtf-schema/schema-and-supporting-material/schema/legal-estate/title/page.astro"
+                / "src/pages/spdtf/inputs/pdtf-schema/schema-and-supporting-material/schema/legal-estate/title/page.astro"
             )
             nested.parent.mkdir(parents=True)
             nested.write_text("<!-- generated -->")
@@ -85,7 +85,7 @@ class SchemaReproducibilityTests(unittest.TestCase):
             "DAMA records must follow the canonical PDTF schema page hierarchy",
         )
         schema_page = (
-            "src/pages/pdtf-schema/schema-and-supporting-material/schema/"
+            "src/pages/spdtf/inputs/pdtf-schema/schema-and-supporting-material/schema/"
             "built-form/built-form-form.astro"
         )
         self.assertIn(schema_page, mapping)
