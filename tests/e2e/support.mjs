@@ -30,7 +30,6 @@ export const PDTF_ONTOLOGY_CATEGORY_ROUTES = [
 
 export const ROUTES = [
   '/',
-  '/home',
   '/programme',
   '/spdtf',
   ...SEMANTIC_MODELLING_ROUTES,

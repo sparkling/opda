@@ -1,8 +1,8 @@
 ---
 /**
- * ADR-0044 §Decisions(a) — the IRI *is* the page. Canonical, dereferenceable
- * per-resource page served at `/pdtf/{id}` (the path after the opda base), so
- * `https://opda.org.uk/pdtf/Property` resolves to a real web page.
+ * ADR-0044 per-resource representation pages. Most resources remain at
+ * `/pdtf/{id}`; the LeaseTerm class/property pair uses lowercase type-scoped
+ * routes so static output never depends on filesystem case sensitivity.
  *
  * Serves every opda: resource: classes, object + datatype properties, SHACL
  * shapes, SKOS concepts and schemes. (schema-derived contexts live in the
@@ -17,7 +17,7 @@ import PropertyDetail from '@/components/ontology/PropertyDetail.astro';
 import ShapeDetail from '@/components/ontology/ShapeDetail.astro';
 import ConceptDetail from '@/components/ontology/ConceptDetail.astro';
 import SchemeDetail from '@/components/ontology/SchemeDetail.astro';
-import { allResources } from '@/lib/ontology-model';
+import { allResources, pdtfSlug, pdtfTurtleUrl } from '@/lib/ontology-model';
 
 // Bidirectional linking (operator request, 2026-07-06): every class/property
 // this route serves also shows whether — and where — it's used in the RML
@@ -42,7 +42,7 @@ const MAPPING_USAGE = loadMappingUsage();
 
 export function getStaticPaths() {
   return allResources().map((r) => ({
-    params: { name: r.id },
+    params: { name: pdtfSlug(r.id) },
     props: { r },
   }));
 }
@@ -53,7 +53,7 @@ const description = ((r.comment ?? r.definition ?? '') as string).replace(/\s+/g
 const mappingUsage = MAPPING_USAGE[r.id] ?? [];
 ---
 <Layout title={title} description={description} hideComments={true}>
-  <link slot="head" rel="alternate" type="text/turtle" href={`/pdtf/${r.id}.ttl`} />
+  <link slot="head" rel="alternate" type="text/turtle" href={pdtfTurtleUrl(r.id)} />
   {r.entryKind === 'class' ? <ClassDetail cls={r} mappingUsage={mappingUsage} />
     : r.entryKind === 'property' ? <PropertyDetail prop={r} mappingUsage={mappingUsage} />
     : r.entryKind === 'shape' ? <ShapeDetail shape={r} />

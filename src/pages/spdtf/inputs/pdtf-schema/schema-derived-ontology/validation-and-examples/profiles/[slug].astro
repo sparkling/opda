@@ -7,7 +7,7 @@
  * the ratified session-034 outcome, surfaced as such.
  */
 import Layout from '@/layouts/Layout.astro';
-import { model } from '@/lib/ontology-model';
+import { model, pdtfUrl } from '@/lib/ontology-model';
 import fs from 'node:fs';
 import path from 'node:path';
 
@@ -57,7 +57,7 @@ const heldThin = slug === 'oc1' || slug === 'llc1';
       <p>The Category-G substantive attributes this profile binds as per-leaf <code>sh:path</code> shapes:</p>
       <ul class="chip-list">
         {leaves.map((ln) => (
-          <li>{isKnown(ln) ? <a href={`/pdtf/${ln}`}><code>{ln}</code></a> : <code>{ln}</code>}</li>
+          <li>{isKnown(ln) ? <a href={pdtfUrl(ln)}><code>{ln}</code></a> : <code>{ln}</code>}</li>
         ))}
       </ul>
     </section>

@@ -6,11 +6,17 @@
  * doc-drift gate + ADR-0043 graph sharing. It is read here AT BUILD TIME by the
  * `/pdtf` dereference route and the `/spdtf/inputs/pdtf-schema/schema-derived-ontology` typed indexes — no runtime query.
  *
- * Each resource is keyed by its id = the path after `https://opda.org.uk/pdtf/`
+ * Each resource is keyed by its id = the suffix after `https://opda.org.uk/pdtf/`
  * (e.g. `Property`, `annualCostOfPermit`, `shape/PropertyIdentityKeyShape`,
- * `scheme/TenureScheme`). That id is also the URL slug under `/pdtf/`.
+ * `scheme/TenureScheme`). Most ids are also the representation slug under
+ * `/pdtf/`; the LeaseTerm class/property pair uses lowercase type-scoped routes.
  */
 import modelJson from '@/data/ontology-model.json';
+import {
+  pdtfResourcePath,
+  pdtfResourceSlug,
+  pdtfResourceTurtlePath,
+} from './pdtf-resource-routes.mjs';
 
 export interface Ref {
   id: string;
@@ -164,11 +170,17 @@ export const model = modelJson as unknown as OntologyModel;
 /** The ontology base IRI — `https://opda.org.uk/pdtf/`. */
 export const NS = model.namespace;
 
-/** The full dereferenceable IRI for a model id. */
+/** The source-model IRI for a model id. */
 export const iri = (id: string): string => NS + id;
 
-/** The on-site canonical URL for a model id (ADR-0044 §Decisions a). */
-export const pdtfUrl = (id: string): string => `/pdtf/${id}`;
+/** The on-site canonical representation URL for a model id. */
+export const pdtfUrl = (id: string): string => pdtfResourcePath(id);
+
+/** The catch-all static route slug for a model id. */
+export const pdtfSlug = (id: string): string => pdtfResourceSlug(id);
+
+/** The Turtle alternate URL for a model id. */
+export const pdtfTurtleUrl = (id: string): string => pdtfResourceTurtlePath(id);
 
 /** A term (class or property) tagged with its kind, for the /pdtf dispatcher. */
 export type AnyTerm =
@@ -189,7 +201,7 @@ export function allTerms(): AnyTerm[] {
 
 /** The id (path after the opda base) of a full opda IRI; the IRI unchanged otherwise. */
 export const idOf = (uri: string): string => (uri && uri.startsWith(NS) ? uri.slice(NS.length) : uri);
-/** Whether a URI is a dereferenceable opda resource (so it can link to /pdtf). */
+/** Whether a URI identifies an OPDA model resource with an on-site representation. */
 export const isOpda = (uri: string): boolean => !!uri && uri.startsWith(NS);
 
 /** The 7 canonical bounded-context module ids (ADR-0044 Phase-1 refinement). */
@@ -222,11 +234,11 @@ export function allResources(): AnyResource[] {
   ];
 }
 
-/** Resource ids that have a dereferenceable `/pdtf/{id}` page. */
+/** Resource ids that have an emitted `/pdtf/**` representation page. */
 const RESOURCE_IDS = new Set(allResources().map((r) => r.id));
 
 /**
- * True when `id` resolves to an emitted `/pdtf/{id}` page. Guards links
+ * True when `id` resolves to an emitted `/pdtf/**` page. Guards links
  * against terms that exist as predicates but are NOT emitted as pages — e.g.
  * the inert annotation property `opda:ufoCategory`, quarantined to the
  * annotation graph (ODR-0031) and so absent from the reasoned-graph resource
@@ -283,7 +295,7 @@ const isNum = (v: string) => /^-?\d+$/.test(v);
 
 /**
  * Serialise one resource (by its model id) to a Turtle CBD + one-hop document —
- * the machine alternate served at /pdtf/{id}.ttl (operator decision c). Built
+ * the machine alternate served beside its HTML representation (operator decision c). Built
  * deterministically from the committed model so it matches the HTML page.
  * Returns null if the id is not a known resource.
  */

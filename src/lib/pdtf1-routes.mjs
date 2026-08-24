@@ -166,7 +166,7 @@ export function isRetiredPdtf1ManualAlias(value) {
   return path === '/manual' || path.startsWith('/manual/');
 }
 
-/** `/pdtf/**` is the stable, dereferenceable ontology identifier namespace. */
+/** `/pdtf/**` is the separately governed ontology identifier/representation family. */
 export function isStablePdtfIdentifierRoute(value) {
   const path = normalizePath(value);
   return path === '/pdtf' || path.startsWith('/pdtf/');

@@ -16,6 +16,7 @@ import { isSiteRouteRetired, validateSiteRouteRetirementManifest } from './lib/s
 import { composeSchemaToSchemeRouteReceipt } from './lib/schema-to-scheme-route-contract.mjs';
 import { SCHEMA_TO_SCHEME_SOURCE_ROUTE_MANIFEST, loadPdtf1SourceRouteManifest,
   loadPriorIaFamilyManifest, loadPriorIaRouteManifest, loadSchemaToSchemeSourceRouteManifest,
+  loadSiteRouteRetirementSourceRouteManifest,
   manifestRetainedBaselineProjectionMatches, priorFamilyMatches, validatePriorFamilyReceipt, validatePriorManifestReceipt, verifyBaselineRootCommit,
 } from './lib/ia-prior-manifest-contract.mjs';
 import { composePdtf1ToolReframeReceipt } from './lib/pdtf1-tool-reframes.mjs';
@@ -138,6 +139,11 @@ try {
     = loadSchemaToSchemeSourceRouteManifest(ROOT));
 }
 catch (error) { fail(`schema-to-scheme source-route Git evidence is unavailable: ${error.message}`); }
+let siteRouteRetirementSourceManifest = null;
+try {
+  ({ manifest: siteRouteRetirementSourceManifest }
+    = loadSiteRouteRetirementSourceRouteManifest(ROOT));
+} catch (error) { fail(`site-route retirement source Git evidence is unavailable: ${error.message}`); }
 let hasPdtf1CutReceipt = false; let hasSchemaToSchemeReceipt = false;
 let hasPdtfSchemaInputReceipt = false; let hasSemanticModellingReceipt = false;
 let hasSiteRouteRetirementReceipt = false;
@@ -311,11 +317,12 @@ if (routeManifest) {
     validateSiteRouteRetirementManifest(ROOT, routeManifest, baselineRecords, addedRecords);
   } catch (error) { fail(`site-route retirement contract failed: ${error.message}`); }
   try {
-    if (hasSemanticModellingReceipt) {
-      if (!options.manifestOnly) inspectLeaseTermCaseCollision(ROOT);
-    } else validateLeaseTermCaseCollisionReceipt(options.manifestOnly ? null : ROOT,
-      routeManifest.leaseTermCaseCollision, baselineRecords, addedRecords);
-  } catch (error) { fail(`LeaseTerm case-sensitive stable-resource contract failed: ${error.message}`); }
+    validateLeaseTermCaseCollisionReceipt(options.manifestOnly ? null : ROOT,
+      routeManifest.leaseTermCaseCollision, baselineRecords, addedRecords,
+      hasSiteRouteRetirementReceipt
+        ? siteRouteRetirementSourceManifest?.leaseTermCaseCollision : null);
+    if (!options.manifestOnly) inspectLeaseTermCaseCollision(ROOT);
+  } catch (error) { fail(`LeaseTerm type-scoped resource contract failed: ${error.message}`); }
   if (PROPERTY_PACK_ROUTE_MIGRATION.redirects !== false
     || getPropertyPackReplacementRoute('/api/v2/comments') !== null) {
     fail('Property Pack migration affects redirects or /api/v2');

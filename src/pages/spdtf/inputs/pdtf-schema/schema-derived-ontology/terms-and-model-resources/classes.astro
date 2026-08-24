@@ -4,14 +4,14 @@
  *
  * Reads the committed src/data/ontology-model.json (SPARQL-derived, ADR-0044
  * Phase 1 — no brittle regex), groups the classes by bounded-context module, and
- * links each to its canonical dereferenceable page at /pdtf/{LocalName}. The
+ * links each to its on-site representation page. The
  * pyLODE/WIDOCO/Ontospy renderings remain linked as comparison extras
  * (ADR-0044 §Supersession; the native /pdtf pages are now the per-term reference).
  */
 import Layout from '@/layouts/Layout.astro';
 import PageMeta from '@/components/PageMeta.astro';
 import GraphDiagram from '@/components/GraphDiagram.astro';
-import { model, ufoCategories } from '@/lib/ontology-model';
+import { model, pdtfUrl, ufoCategories } from '@/lib/ontology-model';
 import { isExpectedOntologyAsset } from '@/lib/ontology-publication-assets';
 
 const exists = isExpectedOntologyAsset;
@@ -136,7 +136,7 @@ function sectionDiagram(g: { heading: string; classes: any[] }): string {
   // GraphDiagram island parses these `click` directives for its Navigate mode.
   for (const [id, n] of nodes) {
     if (n.cls === 'upper') continue;
-    lines.push(`    click ${n.sid} "/pdtf/${id}"`);
+    lines.push(`    click ${n.sid} "${pdtfUrl(id)}"`);
   }
   return lines.join('\n');
 }
@@ -147,7 +147,7 @@ const ONTOSPY = { href: '/spdtf/inputs/pdtf-schema/schema-derived-ontology/use-a
 ---
 <Layout
   title="Classes"
-  description="Typed index of the OPDA OWL classes, grouped by bounded-context module with each class's rdfs:comment, read from the SPARQL-derived ontology model. Each class links to its canonical dereferenceable /pdtf page."
+  description="Typed index of the OPDA OWL classes, grouped by bounded-context module with each class's rdfs:comment, read from the SPARQL-derived ontology model. Each class links to its /pdtf representation page."
 >
 <PageMeta category="Browse the model" variant="brand" updated="Draft · Updated 2026-06-15" />
 
@@ -159,8 +159,10 @@ const ONTOSPY = { href: '/spdtf/inputs/pdtf-schema/schema-derived-ontology/use-a
     <a href="/spdtf/inputs/pdtf-schema/schema-derived-ontology/lineage-provenance-and-verification/decision-provenance">ontology model</a> (<a href="/modelling/adr/adr-0044">ADR-0044</a>). The classes are kept deliberately few and
     rigid (every type that merely <em>varies</em> is a coded SKOS value, not a subclass — see
     <a href="/spdtf/inputs/pdtf-schema/schema-derived-ontology/concepts-and-architecture/identity#doctrine">the classification doctrine</a>). <strong>Each class links to its own
-    page</strong> at <code>/pdtf/{'{'}LocalName{'}'}</code> — the canonical, dereferenceable reference with its
-    incoming and outgoing connections, attributes, governing shapes and provenance.
+    representation page</strong> with its incoming and outgoing connections, attributes,
+    governing shapes and provenance. Most use <code>/pdtf/{'{'}LocalName{'}'}</code>;
+    the Lease Term class uses <code>/pdtf/classes/lease-term</code> so it cannot collide
+    with the similarly named object property on a case-insensitive filesystem.
   </p>
 
 
@@ -180,7 +182,7 @@ const ONTOSPY = { href: '/spdtf/inputs/pdtf-schema/schema-derived-ontology/use-a
         <tbody>
           {g.classes.map((c) => (
             <tr>
-              <td><a href={`/pdtf/${c.id}`}>{c.label || c.localName}</a></td>
+              <td><a href={pdtfUrl(c.id)}>{c.label || c.localName}</a></td>
               <td>{c.comment || <span class="muted">—</span>}</td>
             </tr>
           ))}

@@ -38,16 +38,6 @@ const emitted = [...files(DIST)];
 const emittedSet = new Set(emitted.map((path) => resolve(path)));
 const html = emitted.filter((path) => path.endsWith('.html'));
 const routeFiles = html.filter((path) => path.endsWith(`${sep}index.html`) || path === join(DIST, 'index.html'));
-const ontologyModel = JSON.parse(readFileSync(resolve(process.cwd(), 'src/data/ontology-model.json'), 'utf8'));
-const ontologyResourceIds = new Set([
-  'classes', 'objectProperties', 'datatypeProperties', 'shapes', 'concepts', 'schemes',
-].flatMap((group) => Object.values(ontologyModel[group] || {}).map((resource) => resource.id)));
-const ontologyCaseGroups = new Map();
-for (const id of ontologyResourceIds) {
-  const folded = id.toLocaleLowerCase('en-GB');
-  ontologyCaseGroups.set(folded, [...(ontologyCaseGroups.get(folded) || []), id]);
-}
-const localCaseCollisions = new Set();
 const runtimePrefixes = ['/_auth', '/api', '/comments'];
 const isRuntime = (path) => runtimePrefixes.some((prefix) => path === prefix || path.startsWith(`${prefix}/`));
 // Generated source projections and vendored documentation bundles preserve
@@ -119,19 +109,6 @@ function targetFile(pathname) {
     const absolute = resolve(candidate);
     if (absolute === DIST || absolute.startsWith(`${DIST}${sep}`)) {
       if (emittedSet.has(absolute) && statSync(absolute).isFile()) return absolute;
-      // A case-insensitive development filesystem cannot emit both resources
-      // when their canonical ontology IDs differ only by case (for example,
-      // LeaseTerm and leaseTerm). Accept that local alias only when both exact
-      // IDs are declared in the ontology model. Linux CI remains fail-closed
-      // because the wrong-case path does not exist there.
-      const pdtfMatch = clean.match(/^\/pdtf\/(.+?)(?:\.ttl)?$/u);
-      const id = pdtfMatch?.[1];
-      const caseGroup = id && ontologyCaseGroups.get(id.toLocaleLowerCase('en-GB'));
-      if (id && ontologyResourceIds.has(id) && caseGroup?.some((other) => other !== id)
-        && existsSync(absolute) && statSync(absolute).isFile()) {
-        localCaseCollisions.add(`${id} ⇄ ${caseGroup.filter((other) => other !== id).join(', ')}`);
-        return absolute;
-      }
     }
   }
   return null;
@@ -198,9 +175,6 @@ const orphanRoutes = routeFiles
 console.log(`[routes] scanned ${html.length} HTML files and ${emitted.length} emitted files`);
 console.log(`[routes] unresolved internal resources: ${failures.length}`);
 console.log(`[routes] unlinked emitted routes: ${orphanRoutes.length}`);
-for (const collision of localCaseCollisions) {
-  console.warn(`  local case-insensitive alias: ${collision} (exact paths required in Linux CI)`);
-}
 for (const failure of failures.slice(0, 100)) console.error(`  broken: ${failure}`);
 for (const orphan of orphanRoutes.slice(0, 100)) console.error(`  orphan: ${orphan}`);
 if (failures.length || orphanRoutes.length) process.exit(1);

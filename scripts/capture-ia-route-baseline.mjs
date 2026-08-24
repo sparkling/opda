@@ -36,6 +36,7 @@ import {
 import { PROPERTY_PACK_ROUTE_MIGRATION, getPropertyPackReplacementRoute } from '../src/lib/property-pack-routes.mjs';
 import { getPdtf1ReplacementRoute, isRetiredPdtf1ManualAlias } from '../src/lib/pdtf1-routes.mjs';
 import {
+  composeLeaseTermCaseCollisionReceipt,
   LEASE_TERM_CASE_COLLISION,
 } from '../src/lib/ontology-case-collision.mjs';
 import {
@@ -236,7 +237,7 @@ const routes = baselineFiles.filter((file) => (
     equivalenceReceipt: equivalenceReceipt(beforeContent, afterContent, reframeEvidence(baselineRoute)),
     retentionReceipt: captureRetentionReceipt(
       baselineRoute, beforeContent, acceptedContracts, baselineLinkEvidence(beforeHtml),
-      { includeAllocation: baselineRoute === LEASE_TERM_CASE_COLLISION.classRoute },
+      { includeAllocation: baselineRoute === LEASE_TERM_CASE_COLLISION.legacyClassRoute },
     ),
   };
 });
@@ -269,11 +270,14 @@ const pdtf1Migration = semanticModellingSourceManifest.pdtf1Migration;
 const pdtfSchemaFragmentMigration = semanticModellingSourceManifest.pdtfSchemaFragmentMigration;
 const schemaToSchemeMigration = semanticModellingSourceManifest.schemaToSchemeMigration;
 const pdtfSchemaInputMigration = semanticModellingSourceManifest.pdtfSchemaInputMigration;
-const leaseTermCaseCollision = semanticModellingSourceManifest.leaseTermCaseCollision;
+const leaseTermCaseCollision = composeLeaseTermCaseCollisionReceipt(
+  acceptedRoot, routes, addedRoutes,
+  siteRouteRetirementSourceManifest.leaseTermCaseCollision,
+);
 const semanticModellingMigration = siteRouteRetirementSourceManifest.semanticModellingMigration;
 const siteRouteRetirements = composeSiteRouteRetirementReceipt({
   records: routes,
-  addedRecords,
+  addedRecords: addedRoutes,
   sourceManifest: siteRouteRetirementSourceManifest,
 });
 const frozenSourceRecords = [

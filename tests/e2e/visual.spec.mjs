@@ -2,8 +2,7 @@ import { test, expect } from '@playwright/test';
 import { PDTF1_ROUTES, settleVisualState, visit, watchRuntime } from './support.mjs';
 
 const routeFamilies = [
-  ['public-entry', '/'],
-  ['knowledge-home', '/home'],
+  ['knowledge-home', '/'],
   ['prose', '/strategy/strategy-overview'],
   ['property-pack', '/spdtf/property-pack'],
   ['schema', `${PDTF1_ROUTES.original}/schema/legal-estate/ownership/leasehold/lease-legal/building-safety`],

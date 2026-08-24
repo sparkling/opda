@@ -3,12 +3,12 @@
  * /spdtf/inputs/pdtf-schema/schema-derived-ontology/terms-and-model-resources/glossary — the full alphabetical index & glossary (ADR-0041 §16,
  * ADR-0044 Phase 4). A single A–Z of every named OPDA resource — OWL classes,
  * object/datatype properties, SKOS concepts and schemes — from the SPARQL-derived
- * ontology model (no regex). Each entry links to its canonical, dereferenceable
- * /pdtf page. (SHACL shapes have their own typed index at /ontology/shapes.)
+ * ontology model (no regex). Each entry links to its /pdtf representation page.
+ * (SHACL shapes have their own typed index at /ontology/shapes.)
  */
 import Layout from '@/layouts/Layout.astro';
 import PageMeta from '@/components/PageMeta.astro';
-import { model } from '@/lib/ontology-model';
+import { model, pdtfUrl } from '@/lib/ontology-model';
 
 type Term = { name: string; id: string; kind: string; def: string };
 
@@ -31,7 +31,7 @@ const trunc = (s: string, n = 160) => (s.length > n ? s.slice(0, n).replace(/\s+
 ---
 <Layout
   title="Index & glossary"
-  description="The full alphabetical A–Z index and glossary of every named OPDA PDTF resource — classes, object and datatype properties, SKOS concepts and schemes — each linking to its canonical dereferenceable /pdtf page."
+  description="The full alphabetical A–Z index and glossary of every named OPDA PDTF resource — classes, object and datatype properties, SKOS concepts and schemes — each linking to its /pdtf representation page."
 >
 <PageMeta category="Browse the model" variant="brand" updated="Draft · Updated 2026-06-15" />
 
@@ -40,8 +40,9 @@ const trunc = (s: string, n = 160) => (s.length > n ? s.slice(0, n).replace(/\s+
   <p class="lead">
     Every named resource in the schema-derived ontology — <strong>{entries.length}</strong> entries (classes, object
     and datatype properties, SKOS concepts and schemes) in one A–Z, from the SPARQL-derived
-    <a href="/spdtf/inputs/pdtf-schema/schema-derived-ontology/lineage-provenance-and-verification/decision-provenance">ontology model</a>. <strong>Each entry links to its canonical page</strong>
-    at <code>/pdtf/{'{'}id{'}'}</code>. SHACL shapes have their own typed index at
+    <a href="/spdtf/inputs/pdtf-schema/schema-derived-ontology/lineage-provenance-and-verification/decision-provenance">ontology model</a>. <strong>Each entry links to its representation page</strong>.
+    Most follow <code>/pdtf/{'{'}id{'}'}</code>; the Lease Term class and
+    <code>leaseTerm</code> property use lowercase, type-scoped paths. SHACL shapes have their own typed index at
     <a href="/spdtf/inputs/pdtf-schema/schema-derived-ontology/validation-and-examples/shapes">SHACL shapes</a>.
   </p>
 
@@ -60,7 +61,7 @@ const trunc = (s: string, n = 160) => (s.length > n ? s.slice(0, n).replace(/\s+
         <tbody>
           {byLetter(L).map((t) => (
             <tr>
-              <td><a href={`/pdtf/${t.id}`}><code>{t.name}</code></a></td>
+              <td><a href={pdtfUrl(t.id)}><code>{t.name}</code></a></td>
               <td><span class="pill">{t.kind}</span></td>
               <td>{t.def ? trunc(t.def) : <span class="muted">—</span>}</td>
             </tr>

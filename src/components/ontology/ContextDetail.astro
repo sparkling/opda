@@ -6,6 +6,7 @@
  * member classes / properties / shapes / schemes, each linked to its /pdtf page.
  */
 import type { ContextEntry } from '@/lib/ontology-model';
+import { pdtfUrl } from '@/lib/ontology-model';
 
 interface Props { context: ContextEntry; }
 const { context } = Astro.props;
@@ -29,13 +30,13 @@ const total = groups.reduce((n, g) => n + g.items.length, 0);
 <header class="term-header">
   <p class="term-kind"><span class="pill pill--brand">Bounded context</span></p>
   <h1>{context.localName}</h1>
-  <p class="term-comment">{total} resources in the <code>{context.localName}</code> bounded context (DDD module), each dereferenceable at its own <code>/pdtf</code> page.</p>
+  <p class="term-comment">{total} resources in the <code>{context.localName}</code> bounded context (DDD module), each linked to its own <code>/pdtf</code> representation page.</p>
 </header>
 
 {groups.map((g) => (
   <section class="term-section">
     <h2>{g.heading} <span class="muted">· {g.items.length}</span></h2>
-    <ul class="chip-list">{g.items.map((it) => <li><a href={`/pdtf/${it.id}`}><code>{it.localName}</code></a></li>)}</ul>
+    <ul class="chip-list">{g.items.map((it) => <li><a href={pdtfUrl(it.id)}><code>{it.localName}</code></a></li>)}</ul>
   </section>
 ))}
 

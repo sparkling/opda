@@ -105,10 +105,12 @@ export function composeSiteRouteRetirementReceipt({
   };
 }
 
-/** Validate only schema-v11 retirement evidence, preserving all prior receipts. */
+/** Validate schema-v11 retirement evidence and its authorised resource-route amendment. */
 export function validateSiteRouteRetirementManifest(root, manifest, records, addedRecords) {
   const { manifest: sourceManifest } = loadSiteRouteRetirementSourceRouteManifest(root);
-  for (const field of [...SEMANTIC_MODELLING_FROZEN_RECEIPT_FIELDS, 'semanticModellingMigration']) {
+  const frozenFields = SEMANTIC_MODELLING_FROZEN_RECEIPT_FIELDS
+    .filter((field) => field !== 'leaseTermCaseCollision');
+  for (const field of [...frozenFields, 'semanticModellingMigration']) {
     if (JSON.stringify(manifest[field]) !== JSON.stringify(sourceManifest[field])) {
       throw new Error(`schema-v10 ${field} receipt was rewritten by the site-route retirement cut`);
     }

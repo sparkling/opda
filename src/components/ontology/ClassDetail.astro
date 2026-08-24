@@ -6,7 +6,7 @@
  * shapes, SKOS schemes used by coded ranges, and dct:source provenance.
  */
 import type { ClassEntry } from '@/lib/ontology-model';
-import { iri, ufoSlug } from '@/lib/ontology-model';
+import { iri, pdtfUrl, ufoSlug } from '@/lib/ontology-model';
 import TermHeader from './TermHeader.astro';
 import RefLink from './RefLink.astro';
 
@@ -44,7 +44,7 @@ const { cls, mappingUsage = [] } = Astro.props;
         <tbody>
           {cls.attributes.map((a) => (
             <tr>
-              <td><a href={`/pdtf/${a.id}`}><code>{a.localName}</code></a></td>
+              <td><a href={pdtfUrl(a.id)}><code>{a.localName}</code></a></td>
               <td>{a.type ? <code>{a.type}</code> : <span class="muted">—</span>}</td>
               <td>{a.description || <span class="muted">—</span>}</td>
             </tr>
@@ -64,13 +64,13 @@ const { cls, mappingUsage = [] } = Astro.props;
         <tbody>
           {cls.outgoing.map((e) => (
             <tr>
-              <td><a href={`/pdtf/${e.predicate}`}><code>{e.predicateLocal}</code></a></td>
+              <td><a href={pdtfUrl(e.predicate)}><code>{e.predicateLocal}</code></a></td>
               <td>
                 {e.targets.length === 0 ? <span class="muted">—</span> : e.targets.map((t, i) => (
                   <Fragment>{i > 0 ? <span>, </span> : null}<RefLink id={t.id} localName={t.localName} kind={t.kind} /></Fragment>
                 ))}
               </td>
-              <td>{e.inverse ? <a href={`/pdtf/${e.inverse}`}><code>{e.inverse}</code></a> : <span class="muted">—</span>}</td>
+              <td>{e.inverse ? <a href={pdtfUrl(e.inverse)}><code>{e.inverse}</code></a> : <span class="muted">—</span>}</td>
             </tr>
           ))}
         </tbody>
@@ -89,13 +89,13 @@ const { cls, mappingUsage = [] } = Astro.props;
         <tbody>
           {cls.incoming.map((e) => (
             <tr>
-              <td><a href={`/pdtf/${e.predicate}`}><code>{e.predicateLocal}</code></a></td>
+              <td><a href={pdtfUrl(e.predicate)}><code>{e.predicateLocal}</code></a></td>
               <td>
                 {e.sources.length === 0 ? <span class="muted">any (unconstrained domain)</span> : e.sources.map((s, i) => (
                   <Fragment>{i > 0 ? <span>, </span> : null}<RefLink id={s.id} localName={s.localName} kind="class" /></Fragment>
                 ))}
               </td>
-              <td>{e.inverse ? <a href={`/pdtf/${e.inverse}`}><code>{e.inverse}</code></a> : <span class="muted">—</span>}</td>
+              <td>{e.inverse ? <a href={pdtfUrl(e.inverse)}><code>{e.inverse}</code></a> : <span class="muted">—</span>}</td>
             </tr>
           ))}
         </tbody>
@@ -108,7 +108,7 @@ const { cls, mappingUsage = [] } = Astro.props;
   <section class="term-section">
     <h2>Governing SHACL shapes <span class="muted">· {cls.shapes.length}</span></h2>
     <ul class="chip-list">
-      {cls.shapes.map((s) => <li><a href={`/pdtf/${s.id}`}><code>{s.localName}</code></a></li>)}
+      {cls.shapes.map((s) => <li><a href={pdtfUrl(s.id)}><code>{s.localName}</code></a></li>)}
     </ul>
   </section>
 )}
@@ -117,7 +117,7 @@ const { cls, mappingUsage = [] } = Astro.props;
   <section class="term-section">
     <h2>SKOS schemes used <span class="muted">· {cls.usesSchemes.length}</span></h2>
     <ul class="chip-list">
-      {cls.usesSchemes.map((s) => <li><a href={`/pdtf/${s.id}`}><code>{s.localName}</code></a></li>)}
+      {cls.usesSchemes.map((s) => <li><a href={pdtfUrl(s.id)}><code>{s.localName}</code></a></li>)}
     </ul>
   </section>
 )}

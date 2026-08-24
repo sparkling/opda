@@ -222,7 +222,7 @@ test('semantic diagrams retain visible structure in forced colours', async ({ pa
 test('mobile primary navigation is an inert disclosure with Escape return', async ({ page }) => {
   const clean = watchRuntime(page);
   await page.setViewportSize({ width: 375, height: 812 });
-  await visit(page, '/home');
+  await visit(page, '/programme');
   const opener = page.locator('#global-nav-toggle');
   const panel = page.locator('#global-nav-panel');
   await expect(panel).toBeHidden();

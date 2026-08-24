@@ -46,8 +46,11 @@ const EXT_NS = [
     The schema-derived ontology uses the stable <code>{BASE}</code> identifier namespace with a deliberate
     <strong>kind-split</strong> (<a href="/governance">ADR-0006</a>): each kind of resource — term, SKOS scheme,
     SHACL shape, named graph, governance record — lives in its own namespace segment so local names cannot
-    collide. This technical publication does not make the corpus an endorsed scheme. Every IRI below <strong>dereferences</strong> to a page (<a href="/modelling/adr/adr-0044">ADR-0044</a>): <code>{BASE}Property</code>
-    resolves to <a href="/pdtf/Property">/pdtf/Property</a>.
+    collide. This technical publication does not make the corpus an endorsed scheme.
+    Each model resource has an on-site representation page (<a href="/modelling/adr/adr-0044">ADR-0044</a>):
+    <code>{BASE}Property</code> resolves at <a href="/pdtf/Property">/pdtf/Property</a>.
+    The case-only <code>LeaseTerm</code>/<code>leaseTerm</code> pair instead uses
+    lowercase type-scoped representation paths.
   </p>
 
   <h2 id="opda">OPDA namespaces (the kind-split)</h2>
@@ -71,8 +74,9 @@ const EXT_NS = [
     A property such as <code>opda:role</code> at <code>{BASE}role</code> must not collide with the
     <em>Participant Role</em> concept scheme — so schemes resolve under <code>{BASE}scheme/</code> and their
     members under <code>{BASE}scheme/role/Buyer</code>; shapes under <code>{BASE}shape/</code>. The OWL term
-    namespace stays flat (classes PascalCase, properties camelCase), which keeps the dereferenceable
-    <code>/pdtf/{'{'}LocalName{'}'}</code> contract simple. The single source of truth is
+    namespace stays flat (classes PascalCase, properties camelCase). Representation
+    routes usually follow <code>/pdtf/{'{'}LocalName{'}'}</code>; the one class/property
+    pair that differs only by case uses type-scoped routes instead. The single source of truth is
     <code>tools/opda-gen/src/opda_gen/namespaces.py</code>; the GRLC API and this site both resolve against it
     (the pre-migration <code>w3id.org/opda/#</code> namespace is retired).
   </p>

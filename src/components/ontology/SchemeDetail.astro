@@ -5,7 +5,7 @@
  * its own /pdtf concept page.
  */
 import type { SchemeEntry } from '@/lib/ontology-model';
-import { iri } from '@/lib/ontology-model';
+import { iri, pdtfUrl } from '@/lib/ontology-model';
 import TermHeader from './TermHeader.astro';
 
 interface Props { scheme: SchemeEntry; }
@@ -25,7 +25,7 @@ const { scheme } = Astro.props;
 {scheme.topConcepts.length > 0 && (
   <section class="term-section">
     <h2>Top concepts <span class="muted">· {scheme.topConcepts.length}</span></h2>
-    <ul class="chip-list">{scheme.topConcepts.map((c) => <li><a href={`/pdtf/${c.id}`}><code>{c.localName}</code></a></li>)}</ul>
+    <ul class="chip-list">{scheme.topConcepts.map((c) => <li><a href={pdtfUrl(c.id)}><code>{c.localName}</code></a></li>)}</ul>
   </section>
 )}
 
@@ -33,7 +33,7 @@ const { scheme } = Astro.props;
   <h2>Concepts <span class="muted">· {scheme.concepts.length}</span></h2>
   {scheme.concepts.length === 0
     ? <p class="muted">No concepts in this scheme.</p>
-    : <ul class="chip-list">{scheme.concepts.map((c) => <li><a href={`/pdtf/${c.id}`}><code>{c.localName}</code></a></li>)}</ul>}
+    : <ul class="chip-list">{scheme.concepts.map((c) => <li><a href={pdtfUrl(c.id)}><code>{c.localName}</code></a></li>)}</ul>}
 </section>
 
 <style>

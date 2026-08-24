@@ -6,7 +6,7 @@
  * constraining SHACL shapes (resolved — no blank nodes), and dct:source.
  */
 import type { PropertyEntry } from '@/lib/ontology-model';
-import { iri } from '@/lib/ontology-model';
+import { iri, pdtfUrl } from '@/lib/ontology-model';
 import TermHeader from './TermHeader.astro';
 import RefLink from './RefLink.astro';
 
@@ -46,7 +46,7 @@ const card = (min: string | null, max: string | null) =>
     {prop.inverse && (
       <Fragment>
         <dt>Inverse</dt>
-        <dd><a href={`/pdtf/${prop.inverse.id}`}><code>{prop.inverse.localName}</code></a></dd>
+        <dd><a href={pdtfUrl(prop.inverse.id)}><code>{prop.inverse.localName}</code></a></dd>
       </Fragment>
     )}
   </dl>
@@ -61,7 +61,7 @@ const card = (min: string | null, max: string | null) =>
         <tbody>
           {prop.constraints.map((c) => (
             <tr>
-              <td>{c.shape ? <a href={`/pdtf/${c.shape}`}><code class="standalone-identifier">{c.shape.replace(/^shape\//, '')}</code></a> : <span class="muted">—</span>}</td>
+              <td>{c.shape ? <a href={pdtfUrl(c.shape)}><code class="standalone-identifier">{c.shape.replace(/^shape\//, '')}</code></a> : <span class="muted">—</span>}</td>
               <td>{c.datatype ? <code class="standalone-identifier">{c.datatype}</code> : c.class ? <code class="standalone-identifier">{c.class}</code> : <span class="muted">—</span>}</td>
               <td>{card(c.minCount, c.maxCount)}</td>
               <td>{c.severity ?? <span class="muted">—</span>}</td>

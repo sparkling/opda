@@ -27,15 +27,16 @@ const NAVIGATION_CANONICAL_EQUIVALENTS = Object.freeze({
   '/adoption': ['/pdtf-schema/schema-and-supporting-material/adoption'],
   '/library': ['/resources'],
   '/engagement': ['/resources', '/spdtf/working-groups'],
+  '/home': ['/'],
   '/v2': ['/spdtf/property-pack'],
 });
 const RETENTION_TARGETS = Object.freeze({
   '/': ['/', '/spdtf'],
   '/home': ['/home', '/spdtf'],
   // The frozen case-insensitive cut emitted the lowercase object property's
-  // information at the uppercase path. Both identifiers now remain stable;
-  // the old information follows the property while the class keeps its route.
-  [LEASE_TERM_CASE_COLLISION.classRoute]: [
+  // information at the former class path. Both blocks now resolve to separate,
+  // lowercase, type-scoped representation routes.
+  [LEASE_TERM_CASE_COLLISION.legacyClassRoute]: [
     LEASE_TERM_CASE_COLLISION.classRoute,
     LEASE_TERM_CASE_COLLISION.propertyRoute,
   ],
@@ -162,7 +163,9 @@ export function createCaptureEvidence({ semanticLedgerPath, baselineCommit }) {
           ? navigationResolution(resolution, route).destinationRoute : null;
       }).filter(Boolean),
     ];
-    const unique = [...new Set(targets)];
+    // `/home` is a retired duplicate landing. Baseline navigation that selected it
+    // is preserved by the sole root homepage, never by emitting a compatibility URL.
+    const unique = [...new Set(targets.map((target) => target === '/home' ? '/' : target))];
     if (!unique.length || unique.some((target) => typeof target !== 'string' || !target.startsWith('/'))) {
       throw new Error(`retention targets contain an invalid route: ${route}`);
     }

@@ -18,9 +18,11 @@ import {
   PDTF_SCHEMA_INPUT_INFORMATION_REFRAMES,
   PDTF_SCHEMA_INPUT_ROUTE_MIGRATION,
   composePdtfSchemaInputMigrationReceipt,
+  getPdtfSchemaInputReplacementFile,
 } from '../scripts/lib/pdtf-schema-input-route-contract.mjs';
+import { getPdtfSchemaInputReplacementRoute } from '../src/lib/pdtf1-routes.mjs';
 import {
-  getAcceptedRoute, getAcceptedRouteFile, getDeclaredRouteReplacement, getLegacyCommentKey,
+  getAcceptedRoute, getDeclaredRouteReplacement, getLegacyCommentKey,
 } from '../src/lib/site-route-migrations.mjs';
 
 const projectRoot = new URL('..', import.meta.url).pathname;
@@ -28,12 +30,12 @@ const sourceManifest = loadPdtfSchemaInputSourceRouteManifest(projectRoot).manif
 
 function projectSource() {
   const project = (record) => {
-    const acceptedRoute = getDeclaredRouteReplacement(record.acceptedRoute)
+    const acceptedRoute = getPdtfSchemaInputReplacementRoute(record.acceptedRoute)
       ?? record.acceptedRoute;
     return {
       ...structuredClone(record),
       acceptedRoute,
-      acceptedFile: getAcceptedRouteFile(record.acceptedRoute, record.acceptedFile),
+      acceptedFile: getPdtfSchemaInputReplacementFile(record.acceptedRoute, record.acceptedFile),
       acceptedGeneratedFamily: generatedFamily(acceptedRoute),
     };
   };
@@ -49,8 +51,8 @@ function compose(projection, overrides = {}) {
     sourceManifest,
     sourceContract: PDTF_SCHEMA_INPUT_SOURCE_ROUTE_MANIFEST,
     migration: PDTF_SCHEMA_INPUT_ROUTE_MIGRATION,
-    replacementRoute: getDeclaredRouteReplacement,
-    replacementFile: getAcceptedRouteFile,
+    replacementRoute: getPdtfSchemaInputReplacementRoute,
+    replacementFile: getPdtfSchemaInputReplacementFile,
     commentKey: getLegacyCommentKey,
     informationReframes: [],
     ...overrides,

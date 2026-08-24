@@ -278,15 +278,18 @@ test('the frozen intermediate route cut composes into schema-to-scheme routes', 
     replacementRoute: (route) => route === '/design-system'
       ? unrelated.acceptedRoute : getSchemaToSchemeStageReplacement(route) }), /undeclared disposition/u);
 });
-test('PDTF term IRIs and governance-owned decisions are not compatibility routes', () => {
+test('PDTF term IRIs are not documentation compatibility routes', () => {
   for (const route of [
     '/pdtf/Property', '/pdtf/Property.ttl', '/pdtf/LeaseTerm', '/pdtf/leaseTerm',
     '/modelling/adr/adr-0075', '/modelling/odr/odr-0035',
     '/api/v2/sso/exchange', '/schemas/v2/example',
   ]) {
     assert.equal(getPdtf1ReplacementRoute(route), null, route);
-    assert.equal(getDeclaredRouteReplacement(route), null, route);
   }
+  assert.equal(getDeclaredRouteReplacement('/pdtf/LeaseTerm'), '/pdtf/classes/lease-term');
+  assert.equal(getDeclaredRouteReplacement('/pdtf/leaseTerm'), '/pdtf/object-properties/lease-term');
+  assert.equal(getDeclaredRouteReplacement('/pdtf/Property'), null);
+  assert.equal(getDeclaredRouteReplacement('/modelling/adr/adr-0075'), null);
 });
 test('retired manual aliases map to the model hierarchy but never own comment identity', () => {
   const canonical = `${PDTF1_ROUTES.modelViews}/logical/property`;
@@ -314,7 +317,6 @@ test('the frozen source cut accounts for every moved, retired, and stable PDTF r
     && record.acceptedFragmentCount === 0 && record.acceptedFragments.length === 0));
   assert.ok(stable.every(({ acceptedRoute }) => (
     getPdtf1ReplacementRoute(acceptedRoute) === null
-      && getDeclaredRouteReplacement(acceptedRoute) === null
   )));
   const targets = moved.map(({ acceptedRoute }) => getPdtf1ReplacementRoute(acceptedRoute));
   assert.equal(new Set(targets).size, 1264);
@@ -342,7 +344,7 @@ test('the frozen source cut accounts for every moved, retired, and stable PDTF r
 test('the complete PDTF migration receipt is bijective and preserves information and fragments', () => {
   const project = (record) => {
     const sourceRoute = record.acceptedRoute;
-    const acceptedRoute = getAcceptedRoute(sourceRoute);
+    const acceptedRoute = getPdtf1ReplacementRoute(sourceRoute) ?? sourceRoute;
     return {
       ...record,
       acceptedRoute,

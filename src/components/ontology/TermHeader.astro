@@ -1,8 +1,8 @@
 ---
 /**
- * ADR-0044 — shared header for a canonical ontology term page (/pdtf/{id}).
+ * ADR-0044 — shared header for an ontology term representation page (/pdtf/**).
  * Back-nav into the /spdtf/inputs/pdtf-schema/schema-derived-ontology section, a kind + bounded-context badge, the
- * label, the dereferenceable IRI (selectable), and the term's meaning.
+ * label, the source-model IRI (selectable), and the term's meaning.
  *
  * Meaning cascade (ADR-0049 decision-4 / ODR-0042): `definition`
  * (skos:definition) is the PRIMARY meaning, rendered prominently; `comment`
@@ -11,7 +11,7 @@
  * via `comment`, which keeps that behaviour). A `comment` identical to the
  * `definition` is suppressed so the same sentence is never shown twice.
  */
-import { contextUrl, NS } from '@/lib/ontology-model';
+import { contextUrl, NS, pdtfTurtleUrl } from '@/lib/ontology-model';
 interface Props {
   kind: string;
   label: string;
@@ -25,7 +25,7 @@ interface Props {
 }
 const { kind, label, localName, iri, definition, comment, context, indexUrl, indexLabel } = Astro.props;
 const ctxHref = contextUrl(context);
-const ttlHref = iri.startsWith(NS) ? `/pdtf/${iri.slice(NS.length)}.ttl` : null;
+const ttlHref = iri.startsWith(NS) ? pdtfTurtleUrl(iri.slice(NS.length)) : null;
 const def = definition?.trim() || '';
 // Secondary hint: the rdfs:comment, unless it duplicates the definition.
 const hint = comment?.trim() && comment.trim() !== def ? comment.trim() : '';

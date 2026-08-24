@@ -1,15 +1,22 @@
 ---
-status: accepted
+status: implemented
 date: 2026-08-18
 updated: 2026-08-24
 tags: [website, information-architecture, pdtf-schema, spdtf, ontology, semantic-modelling, standards, migration, governance]
 supersedes: []
 amends: [ADR-0002, ADR-0041, ADR-0059, ADR-0062, ADR-0073]
 depends-on: [ADR-0002, ADR-0039, ADR-0041, ADR-0059, ADR-0062, ADR-0063, ADR-0064, ADR-0066, ADR-0067, ADR-0073]
-implements: [docs/spdtf-information-architecture.md, src/pages/index.astro]
+implements: [docs/spdtf-information-architecture.md, src/pages/index.astro, src/lib/pdtf-resource-routes.mjs]
 ---
 
 # Organise the site around SPDTF and the PDTF schema
+
+> Update 2026-08-24 — case-independent PDTF resource documents implemented: the
+> source-model identifiers `…/pdtf/LeaseTerm` and `…/pdtf/leaseTerm` remain distinct,
+> while their static HTML/Turtle representations use
+> `/pdtf/classes/lease-term{,.ttl}` and
+> `/pdtf/object-properties/lease-term{,.ttl}`. The former case-only routes are retired
+> without redirects or aliases, so builds and hosting do not depend on case sensitivity.
 
 > Update 2026-08-23 — public-homepage alignment implemented: `/` now derives six
 > audience-led task cards from the accepted global-destination registry, in the same
@@ -35,6 +42,7 @@ implements: [docs/spdtf-information-architecture.md, src/pages/index.astro]
 > former routes are retired without redirects, rewrite aliases or duplicate pages.
 > The PDTF schema remains a third-party SPDTF input beneath
 > `/spdtf/inputs/pdtf-schema/**`, and stable `/pdtf/**` RDF identifiers remain unchanged.
+> The Lease Term pair's representation-path exception is recorded above.
 > Implementation and local validation are in progress; this note authorises no
 > publication or deployment.
 >
@@ -89,7 +97,8 @@ implements: [docs/spdtf-information-architecture.md, src/pages/index.astro]
 > pages move beneath `/spdtf/inputs/pdtf-schema/**`; their old routes and the `/manual/**` aliases are
 > removed without redirects. Atomic information, fragment, status and feedback-thread
 > preservation remain release gates. `/pdtf/**` is not a compatibility family: it
-> remains the unchanged RDF identifier and dereferenceability namespace.
+> remains the RDF identifier and representation family, with only the explicit
+> Lease Term document-route exception recorded above.
 >
 > Update 2026-08-21 — decision-corpus navigation: Governance now links once to the
 > ADR index and once to the ODR index. Individual decision records remain canonical
@@ -314,7 +323,8 @@ The 2026-08-23 correction additionally requires:
   `/spdtf/ontologies/**`, while emitting no old route, redirect, rewrite alias or
   duplicate page; and
 - unchanged placement and authority for `/spdtf/inputs/pdtf-schema/**`, with every
-  stable `/pdtf/**` RDF identifier and representation unchanged.
+  stable `/pdtf/**` RDF identifier unchanged and the two Lease Term representation
+  moves explicitly receipted.
 
 The 2026-08-24 homepage-route consolidation additionally requires:
 
@@ -374,6 +384,9 @@ operative.
   pages. Do not emit, redirect, rewrite, alias or duplicate `/spdtf/ontologies` or
   `/spdtf/ontologies/**`; migration receipts and retained feedback identity are not
   compatibility routes.
+- Use `/pdtf/classes/lease-term{,.ttl}` for the Lease Term class representation and
+  `/pdtf/object-properties/lease-term{,.ttl}` for the `leaseTerm` property. Do not emit,
+  redirect, rewrite or alias the former case-only representation routes.
 
 ## Vote and Dissent
 
@@ -407,6 +420,11 @@ global order and keeps the PDTF schema as a nested third-party input.
 - [MHCLG — Home Buying and Selling Reform Roadmap](https://www.gov.uk/government/consultations/home-buying-and-selling-reform/outcome/home-buying-and-selling-reform-roadmap)
 
 ## Amendments
+
+- **2026-08-24 — case-independent Lease Term representation routes.** The two
+  source-model identifiers remain exact, but their static representation documents
+  move to lowercase type-scoped paths. The migration registry, generated links, crawl
+  and preservation receipt enforce the move and absence of old-route compatibility.
 
 - **2026-08-24 — one canonical homepage.** The root route is the sole OPDA Knowledge
   Base homepage. `/home` is retired as a duplicate route without backwards

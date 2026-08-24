@@ -8,7 +8,7 @@
  */
 import Layout from '@/layouts/Layout.astro';
 import PageMeta from '@/components/PageMeta.astro';
-import { model } from '@/lib/ontology-model';
+import { model, pdtfUrl } from '@/lib/ontology-model';
 import { isExpectedOntologyAsset } from '@/lib/ontology-publication-assets';
 
 const exists = isExpectedOntologyAsset;
@@ -68,7 +68,7 @@ const ONTOSPY = { href: '/spdtf/inputs/pdtf-schema/schema-derived-ontology/use-a
     <tbody>
       {schemes.map((s) => (
         <tr>
-          <td><a href={`/pdtf/${s.id}`}><code>{s.localName}</code></a>{s.prefLabel && s.prefLabel !== s.localName && <><br/><span class="muted">{s.prefLabel}</span></>}</td>
+          <td><a href={pdtfUrl(s.id)}><code>{s.localName}</code></a>{s.prefLabel && s.prefLabel !== s.localName && <><br/><span class="muted">{s.prefLabel}</span></>}</td>
           <td>{s.concepts.length}</td>
           <td>{s.definition || <span class="muted">—</span>}</td>
         </tr>

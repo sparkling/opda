@@ -4,10 +4,10 @@
  * Groups the OWL classes by their structured opda:ufoCategory facet (Substance
  * Kind / Relator / Role / RoleMixin / Event / Information Object / Quality /
  * Quality Value / Collective), read from the SPARQL-derived model. Each class
- * links to its canonical /pdtf page. Pure SSG.
+ * links to its /pdtf representation page. Pure SSG.
  */
 import Layout from '@/layouts/Layout.astro';
-import { ufoCategories } from '@/lib/ontology-model';
+import { pdtfUrl, ufoCategories } from '@/lib/ontology-model';
 
 export function getStaticPaths() {
   return ufoCategories().map((cat) => ({ params: { slug: cat.slug }, props: { cat } }));
@@ -17,7 +17,7 @@ const { cat } = Astro.props;
 ---
 <Layout
   title={`${cat.category} — UFO meta-category`}
-  description={`The OPDA ontology classes whose UFO foundational meta-category is ${cat.category}, grouped from the structured opda:ufoCategory facet. Each links to its dereferenceable /pdtf page.`}
+  description={`The OPDA ontology classes whose UFO foundational meta-category is ${cat.category}, grouped from the structured opda:ufoCategory facet. Each links to its /pdtf representation page.`}
   hideComments={true}
 >
   <nav class="term-nav" aria-label="Breadcrumb">
@@ -47,7 +47,7 @@ const { cat } = Astro.props;
       <tbody>
         {cat.classes.map((c) => (
           <tr>
-            <td><a href={`/pdtf/${c.id}`}><code>opda:{c.localName}</code></a></td>
+            <td><a href={pdtfUrl(c.id)}><code>opda:{c.localName}</code></a></td>
             <td>{c.comment || <span class="muted">—</span>}</td>
           </tr>
         ))}

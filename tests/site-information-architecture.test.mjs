@@ -276,8 +276,8 @@ test('the frozen preservation proof resolves content, ownership and exact family
       && entry.classification === 'superseded-navigation-copy'
       && entry.sourceText && entry.originalDestinationRoute && entry.destinationPolicy
       && ['containing-link', 'declared-original-destination'].includes(entry.sourceEvidence)
-      && entry.supersessionReason.includes(entry.originalDestinationRoute)
-      && (entry.supersessionReason.includes(entry.destinationRoute)
+      && entry.supersessionReason.includes(`"${entry.originalDestinationRoute}"`)
+      && (entry.supersessionReason.includes(`"${entry.destinationRoute}"`)
         || getDeclaredRouteReplacement(entry.originalDestinationRoute) === entry.destinationRoute)
     ))
   )));

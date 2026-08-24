@@ -9,6 +9,7 @@ import {
   getPdtfSchemaInputLegacyCommentKey,
   getPdtfSchemaInputReplacementRoute,
 } from './pdtf1-routes.mjs';
+import { getPdtfResourceReplacementRoute } from './pdtf-resource-routes.mjs';
 
 function normalizePath(value) {
   const pathname = String(value || '/').split(/[?#]/u, 1)[0] || '/';
@@ -50,6 +51,8 @@ export function getSemanticModellingReplacementRoute(value) {
 
 /** Resolve every explicitly authorised site-route move through one registry. */
 export function getAcceptedRoute(route) {
+  const pdtfResource = getPdtfResourceReplacementRoute(route);
+  if (pdtfResource) return pdtfResource;
   const propertyPack = getPropertyPackReplacementRoute(route);
   if (propertyPack) return propertyPack;
   const spdtf = getSpdtfReplacementRoute(route);
@@ -70,6 +73,9 @@ export function getDeclaredRouteReplacement(route) {
 export function getAcceptedRouteFile(route, file) {
   const accepted = getAcceptedRoute(route);
   if (accepted === route) return file;
+  if (getPdtfResourceReplacementRoute(route)) {
+    return accepted.endsWith('.ttl') ? accepted.slice(1) : `${accepted.slice(1)}/index.html`;
+  }
   const pdtfIntermediate = getPdtf1IntermediateReplacementFile(file);
   if (pdtfIntermediate) {
     const pdtfFile = getPdtfSchemaInputReplacementRoute(`/${pdtfIntermediate}`);

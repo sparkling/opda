@@ -1,7 +1,7 @@
 ---
 status: superseded
 date: 2026-08-21
-updated: 2026-08-23
+updated: 2026-08-24
 tags: [website, information-architecture, pdtf-schema, routing, migration, ontology, authority, preservation]
 supersedes: []
 amends: [ADR-0002, ADR-0041, ADR-0042, ADR-0044, ADR-0059, ADR-0060, ADR-0074, ADR-0075]
@@ -213,6 +213,14 @@ does not authorise publication or deployment.
 - [SPDTF information architecture](../spdtf-information-architecture.md)
 
 ## Amendments
+
+- **2026-08-24 — Case-sensitive route clause superseded.** The later implementation
+  no longer requires a case-sensitive release filesystem. As recorded in the
+  ADR-0044 and ADR-0077 amendments, the `LeaseTerm` class and `leaseTerm` object
+  property retain their source-model identifiers but their static representation
+  documents use distinct lowercase, type-scoped routes. This supersedes the
+  case-sensitive confirmation clause above; the historical source-cut evidence remains
+  unchanged.
 
 - **2026-08-23 — Superseded by ADR-0077.** PDTF schema documentation is now nested under
   `/spdtf/inputs/pdtf-schema/**` as a third-party input rather than held as a peer global

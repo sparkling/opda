@@ -1,6 +1,4 @@
-import {
-  existsSync, readFileSync, readdirSync, statSync,
-} from 'node:fs';
+import { existsSync, readFileSync } from 'node:fs';
 import path from 'node:path';
 
 import {
@@ -8,49 +6,26 @@ import {
   informationContract,
   sha256,
 } from '../../scripts/lib/ia-preservation-contract.mjs';
+import {
+  getPdtfResourceReplacementRoute,
+  LEASE_TERM_RESOURCE_ROUTES,
+} from './pdtf-resource-routes.mjs';
 
 /**
- * The ontology contains two real, case-sensitive resources whose local names
- * differ only by case.  They are not aliases: LeaseTerm is a class and
- * leaseTerm is an object property.  macOS's default filesystem cannot hold
- * both generated paths, so an earlier preservation cut masked the distinction.
- * The release contract now requires both resources to remain independently
- * addressable on a case-sensitive filesystem.
+ * The ontology contains two real resources whose local names differ only by
+ * case. They are not aliases: LeaseTerm is a class and leaseTerm is an object
+ * property. Their representation documents now use lowercase, type-scoped
+ * paths so every supported filesystem can emit both resources independently.
  */
-export const LEASE_TERM_CASE_COLLISION = Object.freeze({
-  policy: 'case-sensitive-stable-resource-pair-v2',
-  propertyRoute: '/pdtf/leaseTerm',
-  classRoute: '/pdtf/LeaseTerm',
-  propertyFile: 'pdtf/leaseTerm/index.html',
-  classFile: 'pdtf/LeaseTerm/index.html',
-  propertyTtlFile: 'pdtf/leaseTerm.ttl',
-  classTtlFile: 'pdtf/LeaseTerm.ttl',
-  propertyIri: 'https://opda.org.uk/pdtf/leaseTerm',
-  classIri: 'https://opda.org.uk/pdtf/LeaseTerm',
-});
+export const LEASE_TERM_CASE_COLLISION = LEASE_TERM_RESOURCE_ROUTES;
 
 export function stableLeaseTermRoute(route) {
-  return route;
-}
-
-function exactFile(root, relative) {
-  let current = root;
-  for (const segment of relative.split('/')) {
-    if (!readdirSync(current).includes(segment)) return null;
-    current = path.join(current, segment);
-  }
-  return statSync(current).isFile() ? current : null;
+  return getPdtfResourceReplacementRoute(route) ?? route;
 }
 
 function requiredFile(root, relative) {
-  const file = exactFile(root, path.join('dist', relative));
-  if (!file) {
-    const loosePath = path.join(root, 'dist', relative);
-    if (existsSync(loosePath)) {
-      throw new Error(`case-sensitive filesystem is required for exact release path: dist/${relative}`);
-    }
-    throw new Error(`case-collision output is missing exact path: dist/${relative}`);
-  }
+  const file = path.join(root, 'dist', relative);
+  if (!existsSync(file)) throw new Error(`type-scoped resource output is missing: dist/${relative}`);
   return file;
 }
 
@@ -64,8 +39,18 @@ function primaryType(turtle, iri) {
   return turtle.match(new RegExp(`^<${escaped}>\\s+a\\s+owl:(\\w+)\\b`, 'mu'))?.[1] ?? '';
 }
 
-/** Validate both case-sensitive HTML and Turtle representations in an output root. */
+/** Validate both type-scoped HTML and Turtle representations in an output root. */
 export function inspectLeaseTermCaseCollision(root) {
+  for (const relative of [
+    LEASE_TERM_CASE_COLLISION.legacyClassFile,
+    LEASE_TERM_CASE_COLLISION.legacyPropertyFile,
+    LEASE_TERM_CASE_COLLISION.legacyClassTtlFile,
+    LEASE_TERM_CASE_COLLISION.legacyPropertyTtlFile,
+  ]) {
+    if (existsSync(path.join(root, 'dist', relative))) {
+      throw new Error(`retired case-only resource output is still emitted: dist/${relative}`);
+    }
+  }
   const files = Object.fromEntries(Object.entries({
     propertyHtml: LEASE_TERM_CASE_COLLISION.propertyFile,
     classHtml: LEASE_TERM_CASE_COLLISION.classFile,
@@ -81,20 +66,20 @@ export function inspectLeaseTermCaseCollision(root) {
   const propertyRawSha256 = sha256(propertyHtml);
   const classRawSha256 = sha256(classHtml);
   if (heading(propertyHtml).toLowerCase() !== 'lease term') {
-    throw new Error('case-collision lowercase route is not the leaseTerm property page');
+    throw new Error('object-property route is not the leaseTerm property page');
   }
   if (heading(classHtml) !== 'Lease Term') {
-    throw new Error('case-collision uppercase route is not the LeaseTerm class page');
+    throw new Error('class route is not the LeaseTerm class page');
   }
   if (primaryType(propertyTtl, LEASE_TERM_CASE_COLLISION.propertyIri) !== 'ObjectProperty') {
-    throw new Error('case-collision lowercase Turtle does not identify leaseTerm');
+    throw new Error('object-property Turtle does not identify leaseTerm');
   }
   if (primaryType(classTtl, LEASE_TERM_CASE_COLLISION.classIri) !== 'Class') {
-    throw new Error('case-collision uppercase Turtle does not identify LeaseTerm');
+    throw new Error('class Turtle does not identify LeaseTerm');
   }
   if (propertyRawSha256 === classRawSha256
     || propertyContent.contentSha256 === classContent.contentSha256) {
-    throw new Error('case-collision resources unexpectedly share one HTML representation');
+    throw new Error('type-scoped resources unexpectedly share one HTML representation');
   }
   return {
     policy: LEASE_TERM_CASE_COLLISION.policy,
@@ -115,9 +100,12 @@ function routeRecord(records, route, field = 'acceptedRoute') {
 
 function stableRecord(records, route, file) {
   const record = routeRecord(records, route);
+  const expectedBaselineRoute = route === LEASE_TERM_CASE_COLLISION.classRoute
+    ? LEASE_TERM_CASE_COLLISION.legacyClassRoute
+    : LEASE_TERM_CASE_COLLISION.legacyPropertyRoute;
   if (!record || record.acceptedFile !== file
-    || (record.baselineRoute && record.baselineRoute !== route)) {
-    throw new Error(`case-sensitive stable resource is not retained at ${route}`);
+    || (record.baselineRoute && record.baselineRoute !== expectedBaselineRoute)) {
+    throw new Error(`type-scoped resource is not retained at ${route}`);
   }
   return record;
 }
@@ -132,8 +120,23 @@ function recordDigest(record) {
   }));
 }
 
-/** Compose the fail-closed manifest receipt for the two stable resources. */
-export function composeLeaseTermCaseCollisionReceipt(root, routes, addedRoutes) {
+function sourceReceiptLineage(sourceReceipt) {
+  if (!sourceReceipt) return {};
+  if (sourceReceipt.policy !== 'case-sensitive-stable-resource-pair-v2'
+    || sourceReceipt.classRoute !== LEASE_TERM_CASE_COLLISION.legacyClassRoute
+    || sourceReceipt.propertyRoute !== LEASE_TERM_CASE_COLLISION.legacyPropertyRoute
+    || sourceReceipt.classIri !== LEASE_TERM_CASE_COLLISION.classIri
+    || sourceReceipt.propertyIri !== LEASE_TERM_CASE_COLLISION.propertyIri) {
+    throw new Error('LeaseTerm source receipt does not describe the frozen case-only pair');
+  }
+  return {
+    sourcePolicy: sourceReceipt.policy,
+    sourceReceiptSha256: sha256(JSON.stringify(sourceReceipt)),
+  };
+}
+
+/** Compose the fail-closed manifest receipt for the two type-scoped resources. */
+export function composeLeaseTermCaseCollisionReceipt(root, routes, addedRoutes, sourceReceipt = null) {
   const evidence = inspectLeaseTermCaseCollision(root);
   const records = [...routes, ...addedRoutes];
   const property = stableRecord(records, LEASE_TERM_CASE_COLLISION.propertyRoute,
@@ -142,13 +145,16 @@ export function composeLeaseTermCaseCollisionReceipt(root, routes, addedRoutes) 
     LEASE_TERM_CASE_COLLISION.classFile);
   return {
     ...LEASE_TERM_CASE_COLLISION,
+    ...sourceReceiptLineage(sourceReceipt),
     propertyRecordSha256: recordDigest(property),
     classRecordSha256: recordDigest(leaseClass),
     ...evidence,
   };
 }
 
-export function validateLeaseTermCaseCollisionReceipt(root, receipt, routes, addedRoutes) {
+export function validateLeaseTermCaseCollisionReceipt(
+  root, receipt, routes, addedRoutes, sourceReceipt = null,
+) {
   const records = [...routes, ...addedRoutes];
   const property = stableRecord(records, LEASE_TERM_CASE_COLLISION.propertyRoute,
     LEASE_TERM_CASE_COLLISION.propertyFile);
@@ -158,9 +164,13 @@ export function validateLeaseTermCaseCollisionReceipt(root, receipt, routes, add
     propertyRecordSha256: recordDigest(property),
     classRecordSha256: recordDigest(leaseClass),
   };
-  const expected = { ...LEASE_TERM_CASE_COLLISION, ...recordHashes };
+  const expected = {
+    ...LEASE_TERM_CASE_COLLISION,
+    ...sourceReceiptLineage(sourceReceipt),
+    ...recordHashes,
+  };
   if (!receipt || Object.entries(expected).some(([key, value]) => receipt[key] !== value)) {
-    throw new Error('LeaseTerm case-sensitive stable-resource receipt is inconsistent');
+    throw new Error('LeaseTerm type-scoped resource receipt is inconsistent');
   }
   for (const key of [
     'propertyRawSha256', 'propertyContentSha256', 'propertyBlockInventorySha256',
@@ -168,13 +178,13 @@ export function validateLeaseTermCaseCollisionReceipt(root, receipt, routes, add
     'propertyTtlSha256', 'classTtlSha256',
   ]) {
     if (!/^[a-f0-9]{64}$/u.test(receipt[key] ?? '')) {
-      throw new Error(`LeaseTerm case-collision receipt has invalid ${key}`);
+      throw new Error(`LeaseTerm type-scoped resource receipt has invalid ${key}`);
     }
   }
   if (root) {
-    const actual = composeLeaseTermCaseCollisionReceipt(root, routes, addedRoutes);
+    const actual = composeLeaseTermCaseCollisionReceipt(root, routes, addedRoutes, sourceReceipt);
     if (JSON.stringify(actual) !== JSON.stringify(receipt)) {
-      throw new Error('LeaseTerm case-sensitive stable-resource receipt is inconsistent');
+      throw new Error('LeaseTerm type-scoped resource receipt is inconsistent');
     }
   }
   return true;

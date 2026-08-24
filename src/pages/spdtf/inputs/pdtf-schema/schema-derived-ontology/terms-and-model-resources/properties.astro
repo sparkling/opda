@@ -2,12 +2,12 @@
 /**
  * /spdtf/inputs/pdtf-schema/schema-derived-ontology/terms-and-model-resources/properties — typed index of object + datatype properties (ADR-0044
  * Phase 4). Reads the SPARQL-derived ontology model (no regex); every property
- * links to its canonical dereferenceable /pdtf page with full domain/range,
+ * links to its /pdtf representation page with full domain/range,
  * inverse, constraining shapes and provenance.
  */
 import Layout from '@/layouts/Layout.astro';
 import PageMeta from '@/components/PageMeta.astro';
-import { model } from '@/lib/ontology-model';
+import { model, pdtfUrl } from '@/lib/ontology-model';
 import { isExpectedOntologyAsset } from '@/lib/ontology-publication-assets';
 
 const exists = isExpectedOntologyAsset;
@@ -28,7 +28,7 @@ const WIDOCO = { href: '/spdtf/inputs/pdtf-schema/schema-derived-ontology/use-an
 ---
 <Layout
   title="Properties"
-  description="Typed index of the OPDA object and datatype properties — the ~30 object properties in full with domain/range, and the ~226 datatype properties grouped per module — from the SPARQL-derived ontology model. Each property links to its canonical /pdtf page."
+  description="Typed index of the OPDA object and datatype properties — the ~30 object properties in full with domain/range, and the ~226 datatype properties grouped per module — from the SPARQL-derived ontology model. Each property links to its /pdtf representation page."
 >
 <PageMeta category="Browse the model" variant="brand" updated="Draft · Updated 2026-06-15" />
 
@@ -38,8 +38,11 @@ const WIDOCO = { href: '/spdtf/inputs/pdtf-schema/schema-derived-ontology/use-an
     The OPDA ontology declares <strong>{objectProps.length} object properties</strong> (the relational
     backbone — what links to what) and <strong>{dataTotal} datatype properties</strong> (the literal-valued
     attributes), sourced from the SPARQL-extracted <a href="/spdtf/inputs/pdtf-schema/schema-derived-ontology/lineage-provenance-and-verification/decision-provenance">ontology model</a>.
-    <strong>Each property links to its own page</strong> at <code>/pdtf/{'{'}localName{'}'}</code> — with its
-    full domain/range, inverse, the SHACL shapes that constrain it, and <code>dct:source</code> provenance.
+    <strong>Each property links to its own representation page</strong> with its full
+    domain/range, inverse, constraining SHACL shapes and <code>dct:source</code> provenance.
+    Most use <code>/pdtf/{'{'}localName{'}'}</code>; the <code>leaseTerm</code> object
+    property uses <code>/pdtf/object-properties/lease-term</code> so its route remains
+    distinct from the Lease Term class without relying on letter case.
   </p>
 
   <div class="callout callout--note">
@@ -65,7 +68,7 @@ const WIDOCO = { href: '/spdtf/inputs/pdtf-schema/schema-derived-ontology/use-an
     <tbody>
       {objectProps.map((p) => (
         <tr>
-          <td><a href={`/pdtf/${p.id}`}><code>opda:{p.localName}</code></a></td>
+          <td><a href={pdtfUrl(p.id)}><code>opda:{p.localName}</code></a></td>
           <td>{p.subjects.length ? <code>{names(p.subjects)}</code> : <span class="muted">—</span>}</td>
           <td>{p.objects.length ? <code>{names(p.objects)}</code> : <span class="muted">—</span>}</td>
           <td>{p.module ?? <span class="muted">—</span>}</td>
@@ -88,7 +91,7 @@ const WIDOCO = { href: '/spdtf/inputs/pdtf-schema/schema-derived-ontology/use-an
         <tbody>
           {g.props.map((p) => (
             <tr>
-              <td><a href={`/pdtf/${p.id}`}><code>opda:{p.localName}</code></a></td>
+              <td><a href={pdtfUrl(p.id)}><code>opda:{p.localName}</code></a></td>
               <td>{p.objects.length ? <code>{names(p.objects)}</code> : <span class="muted">—</span>}</td>
               <td>{p.subjects.length ? <code>{names(p.subjects)}</code> : <span class="muted">—</span>}</td>
             </tr>

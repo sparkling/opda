@@ -90,9 +90,9 @@ test('compact primary disclosure keeps all six destinations discoverable through
 test('current implementers reach nested third-party schema and validation guidance', async ({ page }) => {
   const clean = watchRuntime(page);
   await page.setViewportSize({ width: 1536, height: 900 });
-  await visit(page, '/home');
+  await visit(page, '/');
 
-  await page.locator('nav[aria-label="Primary"] a', { hasText: 'SPDTF Development' }).click();
+  await page.locator('.public-overview a.card[href="/spdtf"]').click();
   await expect(page).toHaveURL(/\/spdtf$/u);
   await page.getByRole('main').getByRole('link', { name: 'Third-party inputs', exact: true }).click();
   await page.getByRole('main').getByRole('link', { name: 'PDTF schema', exact: true }).click();

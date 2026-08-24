@@ -19,7 +19,7 @@ const { context } = Astro.props;
 ---
 <Layout
   title={`${context.localName} — bounded context`}
-  description={`The OPDA ${context.localName} bounded context (DDD module): its classes, properties, SHACL shapes and SKOS schemes, each linked to its dereferenceable /pdtf page.`}
+  description={`The OPDA ${context.localName} bounded context (DDD module): its classes, properties, SHACL shapes and SKOS schemes, each linked to its /pdtf representation page.`}
   hideComments={true}
 >
   <ContextDetail context={context} />

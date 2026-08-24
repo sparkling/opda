@@ -1,5 +1,5 @@
 import assert from 'node:assert/strict';
-import { mkdirSync, mkdtempSync, readdirSync, rmSync, writeFileSync } from 'node:fs';
+import { mkdirSync, mkdtempSync, rmSync, writeFileSync } from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import test from 'node:test';
@@ -37,15 +37,21 @@ function fixtureRoot() {
   return root;
 }
 
-test('the case-sensitive resource pair keeps both public identifiers exact', () => {
-  assert.equal(stableLeaseTermRoute('/pdtf/LeaseTerm'), '/pdtf/LeaseTerm');
-  assert.equal(stableLeaseTermRoute('/pdtf/leaseTerm'), '/pdtf/leaseTerm');
+test('the LeaseTerm pair uses lowercase type-scoped routes without aliases', () => {
+  assert.equal(stableLeaseTermRoute('/pdtf/LeaseTerm'), '/pdtf/classes/lease-term');
+  assert.equal(stableLeaseTermRoute('/pdtf/leaseTerm'), '/pdtf/object-properties/lease-term');
   assert.equal(stableLeaseTermRoute('/pdtf/Property'), '/pdtf/Property');
   assert.equal(getAcceptedRoute('/v2/comparison'), '/spdtf/property-pack/pdtf-schema-lineage');
-  assert.equal(getAcceptedRoute('/pdtf/LeaseTerm'), '/pdtf/LeaseTerm');
-  assert.equal(getAcceptedRoute('/pdtf/leaseTerm'), '/pdtf/leaseTerm');
-  assert.equal(getDeclaredRouteReplacement('/pdtf/LeaseTerm'), null);
+  assert.equal(getAcceptedRoute('/pdtf/LeaseTerm'), '/pdtf/classes/lease-term');
+  assert.equal(getAcceptedRoute('/pdtf/leaseTerm'), '/pdtf/object-properties/lease-term');
+  assert.equal(getDeclaredRouteReplacement('/pdtf/LeaseTerm'), '/pdtf/classes/lease-term');
+  assert.equal(getDeclaredRouteReplacement('/pdtf/leaseTerm'), '/pdtf/object-properties/lease-term');
   assert.equal(getDeclaredRouteReplacement('/pdtf/Property'), null);
+  for (const route of [LEASE_TERM_CASE_COLLISION.classRoute, LEASE_TERM_CASE_COLLISION.propertyRoute]) {
+    assert.equal(route, route.toLowerCase());
+  }
+  assert.equal(LEASE_TERM_CASE_COLLISION.classRoute, '/pdtf/classes/lease-term');
+  assert.equal(LEASE_TERM_CASE_COLLISION.propertyRoute, '/pdtf/object-properties/lease-term');
 });
 
 test('the frozen mis-cased property evidence is retained at the lowercase identifier', () => {
@@ -72,7 +78,7 @@ test('the frozen mis-cased property evidence is retained at the lowercase identi
       [LEASE_TERM_CASE_COLLISION.propertyRoute, property],
     ]);
     const receipt = captureRetentionReceipt(
-      LEASE_TERM_CASE_COLLISION.classRoute, property, accepted, new Map(),
+      LEASE_TERM_CASE_COLLISION.legacyClassRoute, property, accepted, new Map(),
       { includeAllocation: true },
     );
     assert.deepEqual(
@@ -90,15 +96,9 @@ test('the frozen mis-cased property evidence is retained at the lowercase identi
   }
 });
 
-function hasExactPair(root) {
-  return readdirSync(path.join(root, 'dist', 'pdtf')).includes('LeaseTerm')
-    && readdirSync(path.join(root, 'dist', 'pdtf')).includes('leaseTerm');
-}
-
-test('case-sensitive LeaseTerm HTML and Turtle outputs are distinct and typed', (t) => {
+test('type-scoped LeaseTerm HTML and Turtle outputs are distinct and typed', () => {
   const root = fixtureRoot();
   try {
-    if (!hasExactPair(root)) return t.skip('case-insensitive local filesystem cannot hold both fixture paths');
     const evidence = inspectLeaseTermCaseCollision(root);
     assert.notEqual(evidence.propertyRawSha256, evidence.classRawSha256);
     assert.notEqual(evidence.propertyContentSha256, evidence.classContentSha256);
@@ -108,51 +108,66 @@ test('case-sensitive LeaseTerm HTML and Turtle outputs are distinct and typed', 
   }
 });
 
-test('case-insensitive release output reports the required filesystem boundary', (t) => {
+test('route receipt binds two distinct type-scoped resource records', () => {
   const root = fixtureRoot();
   try {
-    if (hasExactPair(root)) return t.skip('fixture filesystem is case-sensitive');
-    assert.throws(
-      () => inspectLeaseTermCaseCollision(root),
-      /case-sensitive filesystem is required/u,
+    const sourceReceipt = {
+      policy: 'case-sensitive-stable-resource-pair-v2',
+      classRoute: LEASE_TERM_CASE_COLLISION.legacyClassRoute,
+      propertyRoute: LEASE_TERM_CASE_COLLISION.legacyPropertyRoute,
+      classIri: LEASE_TERM_CASE_COLLISION.classIri,
+      propertyIri: LEASE_TERM_CASE_COLLISION.propertyIri,
+    };
+    const routes = [{
+      baselineRoute: '/pdtf/LeaseTerm', baselineFile: 'pdtf/LeaseTerm/index.html',
+      acceptedRoute: LEASE_TERM_CASE_COLLISION.classRoute,
+      acceptedFile: LEASE_TERM_CASE_COLLISION.classFile,
+      acceptedRawSha256: 'a'.repeat(64),
+    }];
+    const addedRoutes = [{
+      acceptedRoute: LEASE_TERM_CASE_COLLISION.propertyRoute,
+      acceptedFile: LEASE_TERM_CASE_COLLISION.propertyFile,
+      kind: 'new-authority-route',
+      acceptedRawSha256: 'b'.repeat(64),
+    }];
+    const receipt = composeLeaseTermCaseCollisionReceipt(root, routes, addedRoutes, sourceReceipt);
+    assert.equal(receipt.propertyRoute, '/pdtf/object-properties/lease-term');
+    assert.equal(receipt.classRoute, '/pdtf/classes/lease-term');
+    assert.equal(receipt.propertyFile, 'pdtf/object-properties/lease-term/index.html');
+    assert.equal(receipt.classFile, 'pdtf/classes/lease-term/index.html');
+    assert.equal(receipt.sourcePolicy, 'case-sensitive-stable-resource-pair-v2');
+    assert.match(receipt.sourceReceiptSha256, /^[a-f0-9]{64}$/u);
+    assert.equal(
+      validateLeaseTermCaseCollisionReceipt(null, receipt, routes, addedRoutes, sourceReceipt),
+      true,
     );
   } finally {
     rmSync(root, { recursive: true, force: true });
   }
 });
 
-test('collision receipt binds two distinct stable resource records', (t) => {
-  const root = fixtureRoot();
-  try {
-    if (!hasExactPair(root)) return t.skip('case-insensitive local filesystem cannot hold both fixture paths');
-    const routes = [{
-      baselineRoute: '/pdtf/LeaseTerm', baselineFile: 'pdtf/LeaseTerm/index.html',
-      acceptedRoute: '/pdtf/LeaseTerm', acceptedFile: 'pdtf/LeaseTerm/index.html',
-      acceptedRawSha256: 'a'.repeat(64),
-    }];
-    const addedRoutes = [{
-      acceptedRoute: '/pdtf/leaseTerm', acceptedFile: 'pdtf/leaseTerm/index.html',
-      kind: 'new-authority-route',
-      acceptedRawSha256: 'b'.repeat(64),
-    }];
-    const receipt = composeLeaseTermCaseCollisionReceipt(root, routes, addedRoutes);
-    assert.equal(receipt.propertyRoute, '/pdtf/leaseTerm');
-    assert.equal(receipt.classRoute, '/pdtf/LeaseTerm');
-    assert.equal(receipt.propertyFile, 'pdtf/leaseTerm/index.html');
-    assert.equal(receipt.classFile, 'pdtf/LeaseTerm/index.html');
-    assert.equal(validateLeaseTermCaseCollisionReceipt(null, receipt, routes, addedRoutes), true);
-  } finally {
-    rmSync(root, { recursive: true, force: true });
-  }
-});
-
-test('collision inspection fails when either exact case-sensitive output is absent', () => {
+test('route inspection fails when either type-scoped output is absent', () => {
   const root = fixtureRoot();
   try {
     rmSync(path.join(root, 'dist', LEASE_TERM_CASE_COLLISION.classTtlFile));
     assert.throws(
       () => inspectLeaseTermCaseCollision(root),
-      /(?:missing exact path|case-sensitive filesystem is required)/u,
+      /output is missing/u,
+    );
+  } finally {
+    rmSync(root, { recursive: true, force: true });
+  }
+});
+
+test('route inspection rejects any emitted case-only legacy representation', () => {
+  const root = fixtureRoot();
+  try {
+    const legacy = path.join(root, 'dist', LEASE_TERM_CASE_COLLISION.legacyClassTtlFile);
+    mkdirSync(path.dirname(legacy), { recursive: true });
+    writeFileSync(legacy, 'retired');
+    assert.throws(
+      () => inspectLeaseTermCaseCollision(root),
+      /retired case-only resource output is still emitted/u,
     );
   } finally {
     rmSync(root, { recursive: true, force: true });

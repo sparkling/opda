@@ -1,14 +1,22 @@
 ---
-status: accepted
+status: implemented
 date: 2026-06-14
-updated: 2026-08-22
+updated: 2026-08-24
 tags: [ontology, information-architecture, ssg, sparql, dereferenceability, linked-data, detail-pages, shacl, skos, bounded-context, doc-drift-gate]
 supersedes: []
 depends-on: [ADR-0021, ADR-0041, ADR-0039, ADR-0043, ODR-0004]
-implements: []
+implements: [src/lib/pdtf-resource-routes.mjs, "src/pages/pdtf/[...name].astro", "src/pages/pdtf/[...name].ttl.ts", src/components/ontology/]
 ---
 
 # Ontology as web pages — dereferenceable per-entity detail pages, SPARQL-driven SSG
+
+> Amendment 2026-08-24 — the `LeaseTerm` class and `leaseTerm` object property
+> cannot have portable static routes that differ only by case. Their source-model
+> IRIs remain recorded as distinct identifiers, while their HTML/Turtle representation
+> documents use `/pdtf/classes/lease-term{,.ttl}` and
+> `/pdtf/object-properties/lease-term{,.ttl}`. The former case-only document routes are
+> retired without aliases. This bounded exception supersedes statements below that every
+> representation path is identical to its IRI path.
 
 ## Context and Problem Statement
 
@@ -84,7 +92,7 @@ Canonical page per resource at the dereferenceable IRI; typed `/ontology/*` inde
 | **Namespace / prefix map** | `/ontology/namespaces` | 1 | The prefix table + the ADR-0006 kind-split collision-avoidance rationale, as a resolvable page (currently inlined). |
 | **Datatypes** | `/ontology/datatypes` | 1 | The `xsd:` + any custom datatypes the properties use, each with the properties that use it (a small reference, optional). |
 | **Entity index / sitemap** | `/ontology/index` (extend §16 glossary) + `sitemap` | 1 | A-Z index of every resource linking to its detail page; a machine sitemap of all dereferenceable IRIs. |
-| **Dereference route** | `/pdtf/[name]` (HTML) + `/pdtf/[name].ttl` (CBD) | ~720 | Makes every IRI resolve. **Pure SSG**: the bare IRI serves the HTML page, with `<link rel="alternate" type="text/turtle" href="{name}.ttl">` + download; the `.ttl` is a static Astro endpoint. True `Accept`-header conneg on the bare IRI is an **optional edge enhancement** (CloudFront/Lambda@Edge), not required. This **is** the "ontology as web pages" contract. |
+| **Resource representation route** | `/pdtf/[...name]` (HTML) + `/pdtf/[...name].ttl` (CBD) | ~720 | Pure SSG: each HTML page links to a static Turtle alternate. Most document paths match the source-model IRI path; the `LeaseTerm` class/property pair uses the type-scoped paths in the 2026-08-24 amendment. |
 
 ### What every detail page shows (common shell)
 
@@ -112,11 +120,17 @@ A themed Astro page (reusing the design system + dark mode; the ADR-0043 Cytosca
 * Bad, because per the operator's build-mode choice (§Decisions b) these pages **require the live Fuseki + GRLC stack** (`build:data`) — plain `make build` and a bare `astro dev` won't render them (they fall back to markdown), so local preview of the entity pages needs `make serve-data`.
 * Neutral, because dereferenceability is fully achievable in pure SSG via distinct URLs (HTML page + a static `.ttl` endpoint + `rel="alternate"`); true `Accept`-header content negotiation on the bare IRI is an *optional* edge enhancement (the deploy's CloudFront/Lambda@Edge), not a build-time requirement.
 * Neutral, because pyLODE/WIDOCO/Ontospy remain generated and embedded as extras (no work removed, just re-framed from "the reference" to "comparisons").
-* Neutral, because URL collisions are avoided by the ADR-0006 kind-split (local names are unique within `opda:`), so a flat `/pdtf/{LocalName}` is safe.
+* Neutral, because most term representations retain the flat `/pdtf/{LocalName}` form;
+  the one class/property pair whose names differ only by case uses lowercase,
+  type-scoped document paths so output is portable across filesystems.
 
 ### Confirmation
 
-* **Implementation status (2026-06-15): Phases 1–8 implemented + validated** (`make build-data` green; `status: proposed`, pending operator ratification). Every class / property / shape / concept / scheme resolves to a themed HTML page at `/pdtf/{id}` (+ the 7 bounded-context pages at `/ontology/context/{id}`), each with incoming **and** outgoing connections; the `/pdtf/{id}.ttl` Turtle alternate is riot-valid and carries `rel="alternate"`; the typed `/ontology/*` indexes link in with the brittle regex parsers retired; the model doc-drift gate (`make ci-ontology-model`) and the link-validation sweep (`make check-links`) are wired into the deploy CI. The UFO meta-category is now a structured `opda:ufoCategory` facet on the classes (no longer free-text), driving the `/ontology/category/{slug}` pages (Phase 5). **⚠ Correction (2026-06-15, [session-041](../ontology/odr/council/session-041-ufocategory-upper-ontology-representation.md)):** Phase 5c emitted the `opda:ufoCategory` declaration + tags into the **reasoned/classes** graph, breaching [ODR-0030](../ontology/odr/ODR-0030-foundational-ontology-choice.md) Rule 1 (annotation-graph-only). Corrected by [ADR-0045](ADR-0045-ufocategory-quarantine-restoration-gufo-scheme-sixth-gate.md) + [ODR-0031](../ontology/odr/ODR-0031-ufocategory-upper-ontology-representation.md) (retype `owl:AnnotationProperty`, relocate to `opda-annotations.ttl`, add a sixth three-graph gate).
+* **Implementation status:** Phases 1–8 are implemented and validated. Every class /
+  property / shape / concept / scheme has a themed HTML representation and adjacent
+  Turtle alternate, each with incoming **and** outgoing connections. Most remain at
+  `/pdtf/{id}{,.ttl}`; the Lease Term pair uses the type-scoped routes stated above.
+  The model doc-drift gate and link-validation sweep are wired into deploy CI.
 * Each ontology resource resolves to a page; `getStaticPaths` emits exactly one page per resource in `ontology-model.json` (counts asserted by a build check: pages == model entries).
 * **Incoming + outgoing** sections are present and correct on class/property pages (spot-checked against SPARQL: `opda:Property` shows `isVestedIn` outgoing **and** its inverse incoming).
 * IRIs dereference (pure SSG): a browser hitting `…/pdtf/Property` gets the HTML page; `…/pdtf/Property.ttl` returns the Turtle CBD; the page carries `<link rel="alternate" type="text/turtle">`. *(If the optional edge layer is enabled, `curl -H "Accept: text/turtle" …/pdtf/Property` returns the CBD directly.)*
@@ -167,13 +181,25 @@ A themed Astro page (reusing the design system + dark mode; the ADR-0043 Cytosca
 7. **Doc-drift gate — ✅ DONE.** `scripts/ci-ontology-model-drift.mjs` (`make ci-ontology-model`) regenerates + diffs the model; the deploy workflow enforces it with a `git diff` after `build:data`. PASS/FAIL both validated against live Fuseki.
 8. **Validate all links & fix all errors — ✅ DONE.** `scripts/check-links.mjs` (`make check-links`, wired into the deploy workflow) crawls `dist/`; the `/ontology` + `/pdtf` surface has **0 dangling links · 0 orphan pages** and all `.ttl` files are riot-valid. Off-scope site links (edge-auth, the resource viewer, `/manual` redirects) are reported, not blocked; live external-URL 200-checking is a separate rate-limited pass.
 
-### Decisions (operator, 2026-06-15)
+### Decisions (operator, 2026-06-15; route amendment 2026-08-24)
 
-* **(a) Canonical URL — the IRI *is* the page.** Each resource's canonical page is served at its own IRI path, `/pdtf/{LocalName}` (pure SSG, `build.format: 'file'` so the bare IRI resolves with no trailing-slash bounce; `.ttl` alternate alongside). The typed `/ontology/{type}/{slug}` lists are navigation that links in — not the canonical address. *(Truest Linked-Data dereferenceability.)*
+* **(a) Resource representation URL.** Each resource has one HTML representation and
+  an adjacent `.ttl` alternate. Most remain at their source-model IRI path,
+  `/pdtf/{LocalName}`. The `LeaseTerm` class and `leaseTerm` object property use
+  `/pdtf/classes/lease-term` and `/pdtf/object-properties/lease-term`, respectively,
+  because static publication must not rely on case-sensitive path resolution. Typed
+  model indexes are navigation, not duplicate detail pages.
 * **(b) Build data — start the triplestore each build.** The model is extracted from the **live build-time Fuseki + GRLC API** (`npm run build:data`), reusing the ADR-0021 stack — not pre-parsed from files via Comunica. Consequence: **`build:data` is required** to generate these pages; plain `make build` (no triplestore) will not produce them, and `astro dev` without the stack degrades to the existing markdown fallback (entity-api.ts). The query result is still materialised to a committed `ontology-model.json` so the doc-drift gate and the ADR-0043 graph share one artefact.
 * **(c) Turtle download depth — CBD + one hop.** Each resource's `.ttl` carries its Concise Bounded Description **plus one hop** (a little about its immediate neighbours) — richer for offline exploration, accepting larger files and some repetition across pages.
 
 ## Amendments
+
+- **2026-08-24 — Case-independent Lease Term representation routes.** The
+  `LeaseTerm` class and `leaseTerm` object property retain their exact source-model
+  identifiers in model data and Turtle subjects, but their generated representation
+  documents move to lowercase, type-scoped paths. The old case-only HTML and Turtle
+  routes are not emitted, redirected or aliased. Route generation, cross-links, crawl
+  validation and preservation receipts all use the explicit route registry.
 
 - **2026-06-15 — RATIFIED `proposed` → `accepted` (operator).** All eight phased-plan items are shipped and verified; operator decisions (a)/(b)/(c) are recorded above; the Phase-5c `opda:ufoCategory` breach was caught and cured (ODR-0031/ADR-0045) before ratification, and the model doc-drift gate is green. The **Phase-8 deferred sub-item — live external-URL 200-checking — is now also shipped** (`scripts/check-external-links.mjs`, `make check-links-external`; report-only/opt-in, not a deploy blocker). The complementary interactive-graph dependency (ADR-0043) landed in the same session (`/ontology/graph`). Ratified on the proven as-built surface.
 - **2026-08-22 — Chair-authority terminology correction.** The dereferenceable

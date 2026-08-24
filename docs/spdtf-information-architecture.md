@@ -15,7 +15,7 @@ Reorganise the documentation around six global destinations, in this order:
 5. **Working groups** — a direct shortcut into the SPDTF workspace
 6. **Resources**
 
-`SPDTF Development` is the global-navigation label for `/spdtf`; it does not rename SPDTF, create a numbered generation or imply adoption. Semantic modelling is a peer destination at `/semantic-modelling/**`, not a branch beneath SPDTF Development. This remains an asymmetric schema-to-scheme structure: the existing PDTF schema is a third-party input beneath SPDTF Development, its separately derived evidence retains a distinct draft status, and stable `/pdtf/**` RDF identifiers remain unchanged.
+`SPDTF Development` is the global-navigation label for `/spdtf`; it does not rename SPDTF, create a numbered generation or imply adoption. Semantic modelling is a peer destination at `/semantic-modelling/**`, not a branch beneath SPDTF Development. This remains an asymmetric schema-to-scheme structure: the existing PDTF schema is a third-party input beneath SPDTF Development, its separately derived evidence retains a distinct draft status, and stable `/pdtf/**` RDF identifiers remain unchanged. The `LeaseTerm` class and `leaseTerm` property representation documents use lowercase, type-scoped routes so publication does not depend on case sensitivity.
 
 The navigation, hierarchy, status model and preservation gates form one coherent system. Implementing that system does not by itself publish or deploy the production site. ADR-0075 authorises the no-redirect Property Pack move; ADR-0077 authorises the no-redirect PDTF-schema input move while preserving `/pdtf/**` identifiers.
 ## Terminology and authority
@@ -62,7 +62,7 @@ The implementation is made auditable by:
 - fail-closed build, route, accessibility, responsive, keyboard, visual and
   information-preservation gates before deployment credentials are available.
 
-Four explicit exceptions replace the earlier retain-by-default route policy. The Property Pack corpus moves to `/spdtf/property-pack/**`; PDTF-schema documentation moves beneath `/spdtf/inputs/pdtf-schema/**` as third-party input; semantic-modelling reader pages move from `/spdtf/ontologies/**` to `/semantic-modelling/**`; and the duplicate `/home` landing is retired in favour of `/`. None emits an old route or redirect. Move-aware receipts bind every moved route, information block and fragment to its declared replacement; the `/home` retirement receipt records its former role and the reachable root destinations. The published `/pdtf/**` RDF identifiers are not documentation aliases and remain exact.
+Five explicit exceptions replace the earlier retain-by-default route policy. The Property Pack corpus moves to `/spdtf/property-pack/**`; PDTF-schema documentation moves beneath `/spdtf/inputs/pdtf-schema/**` as third-party input; semantic-modelling reader pages move from `/spdtf/ontologies/**` to `/semantic-modelling/**`; the duplicate `/home` landing is retired in favour of `/`; and the case-only Lease Term representation pair moves to `/pdtf/classes/lease-term{,.ttl}` and `/pdtf/object-properties/lease-term{,.ttl}`. None emits an old route or redirect. Move-aware receipts bind every moved route, information block and fragment to its declared replacement; the `/home` retirement receipt records its former role and the reachable root destinations. The source-model RDF identifiers remain exact even where those two representation paths differ.
 
 The build counts describe different surfaces: Astro reports 2,607 pages it renders; preservation and the crawler see 3,489 HTML files after copied/generated static HTML is included; the crawler's 5,289 emitted files also include non-HTML data and support assets. All three denominators are therefore expected and independently gated.
 
@@ -328,7 +328,7 @@ does not confer membership, consensus or standards authority.
 | `/modelling/property-pack` | Move the complete interactive source catalogue to `/spdtf/property-pack/definition-and-scope`; remove the old route without a redirect. |
 | `/spdtf/ontologies/**` | Move the complete reader family by exact suffix to `/semantic-modelling/**`; remove every old route without a redirect, rewrite alias or duplicate page. |
 | `/modelling/adr/**`, `/modelling/odr/**` | Preserve URLs; assign navigation/search ownership per record work area. |
-| `/pdtf/**` and `.ttl` | Preserve stable identifiers and label their PDTF schema or historical naming context. |
+| `/pdtf/**` and `.ttl` | Preserve stable source-model identifiers. Keep representation paths except the `LeaseTerm`/`leaseTerm` pair, whose HTML/Turtle documents move to lowercase type-scoped routes without aliases. |
 | `/ontology/tools/**` | Move atomically to `/spdtf/inputs/pdtf-schema/schema-derived-ontology/use-and-tooling/tools/**`; preserve the complete technical-rendering inventory. |
 | `/ontology/artefacts/**` (27 files) | Move atomically to `/spdtf/inputs/pdtf-schema/schema-derived-ontology/use-and-tooling/artefacts/**`; preserve bytes, internal links and per-file authority. |
 | `/council/**` and its manifest (261 Markdown files) | Governance owns decision/status context; Resources owns raw evidence. Preserve paths, deterministic generation and rewritten links. |
@@ -399,10 +399,8 @@ operational.
 ## Route and migration contract
 
 Navigation is normally a view over stable content addresses. ADR-0074, ADR-0075 and
-ADR-0077 authorise three bounded no-redirect moves with explicit receipts: the
-semantic-modelling reader family, the Property Pack family and all PDTF-owned reader
-documentation. ADR-0074 also authorises retirement of the duplicate `/home` homepage
-without a compatibility route. RDF identifiers remain outside them.
+ADR-0077 authorise bounded no-redirect moves with explicit receipts: the semantic-modelling reader family, the Property Pack family, all PDTF-owned reader documentation and the two case-only Lease Term representation routes. ADR-0074 also authorises retirement of the duplicate `/home` homepage without a compatibility route.
+RDF source identifiers remain unchanged.
 
 ### Required sequence
 
@@ -426,7 +424,7 @@ without a compatibility route. RDF identifiers remain outside them.
 
 ### Non-negotiable URL rules
 
-- Preserve `/pdtf/**` identifiers and representations exactly; they are not old documentation routes or compatibility aliases.
+- Preserve `/pdtf/**` source identifiers exactly. Preserve representation paths except `/pdtf/LeaseTerm{,.ttl}` and `/pdtf/leaseTerm{,.ttl}`, which are replaced by `/pdtf/classes/lease-term{,.ttl}` and `/pdtf/object-properties/lease-term{,.ttl}` without aliases.
 - Move `/spdtf/ontologies` to `/semantic-modelling` and preserve every descendant suffix beneath `/semantic-modelling/**`; emit no old route, redirect, rewrite alias or duplicate page.
 - Apply the exact Property Pack mapping above atomically; emit no compatibility route.
 - Apply ADR-0077's owner-based PDTF schema route map atomically; emit no old documentation route, `/manual/**` alias, redirect or duplicate canonical page.
@@ -448,7 +446,7 @@ without a compatibility route. RDF identifiers remain outside them.
 5. The 690 technical Property Pack routes must move atomically beneath the canonical
    branch; the 451-item catalogue is folded into it and lifecycle pages are added.
 6. Global navigation, breadcrumbs, search facets and home tasks change together.
-7. The migration receipt composes the documentation cuts into `/semantic-modelling/**`, `/spdtf/inputs/pdtf-schema/**` and `/spdtf/**`, while keeping 1,090 `/pdtf/**` identifier-family pages unchanged.
+7. The migration receipt composes the documentation cuts into `/semantic-modelling/**`, `/spdtf/inputs/pdtf-schema/**` and `/spdtf/**`, while classifying the two Lease Term representation moves inside the `/pdtf/**` family.
 8. Route, accessibility, content-authority, task-finding and runtime-continuity gates run before release.
 9. No redirect is introduced without a semantic-equivalence receipt and test.
 

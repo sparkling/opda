@@ -1,19 +1,19 @@
 /**
- * ADR-0044 Phase 6 — the Turtle alternate of the dereferenceable IRI. A static
- * file endpoint: /pdtf/{id}.ttl returns the resource's CBD + one hop (operator
- * decision c), serialised from the committed model. Pure SSG — one file per
- * resource, written at build; no runtime server. The HTML page at /pdtf/{id}
- * carries <link rel="alternate" type="text/turtle" href="{id}.ttl">.
+ * ADR-0044 Phase 6 — a static Turtle alternate beside each HTML representation.
+ * It returns the resource's CBD + one hop (operator decision c), serialised from
+ * the committed model. Pure SSG — one file per resource, no runtime server.
  */
 import type { APIRoute } from 'astro';
-import { allResources, resourceTurtle } from '@/lib/ontology-model';
+import { allResources, pdtfSlug, resourceTurtle } from '@/lib/ontology-model';
+
+const RESOURCE_BY_ROUTE = new Map(allResources().map((resource) => [pdtfSlug(resource.id), resource.id]));
 
 export function getStaticPaths() {
-  return allResources().map((r) => ({ params: { name: r.id } }));
+  return allResources().map((r) => ({ params: { name: pdtfSlug(r.id) } }));
 }
 
 export const GET: APIRoute = ({ params }) => {
-  const ttl = resourceTurtle(params.name ?? '') ?? '';
+  const ttl = resourceTurtle(RESOURCE_BY_ROUTE.get(params.name ?? '') ?? '') ?? '';
   return new Response(ttl, {
     headers: { 'Content-Type': 'text/turtle; charset=utf-8' },
   });
