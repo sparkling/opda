@@ -89,7 +89,6 @@ export const ROUTE_FAMILY_OWNERS = Object.freeze({
 
 export const ROUTE_OWNER_OVERRIDES = Object.freeze([
   { pattern: /^\/$/u, owner: 'programme' },
-  { pattern: /^\/home$/u, owner: 'programme' },
   { pattern: /^\/(?:search|design-system|404)$/u, owner: 'resources' },
   { pattern: /^\/modelling\/(?:adr|odr)(?:\/|$)/u, owner: 'governance' },
   { pattern: /^\/engagement\/meetings-decisions(?:\/|$)/u, owner: 'governance' },
@@ -403,7 +402,6 @@ export const ROUTE_DISPOSITION_LEDGER = Object.freeze([
     ['/spdtf/working-groups/**', 'spdtf', 'reframe'],
     ['/spdtf/inputs/**', 'spdtf', 'reframe'],
     ['/spdtf/inputs/pdtf-schema/**', 'spdtf', 'reframe'],
-    ['/home', 'programme', 'reframe'],
     ['/glossary', 'resources', 'reframe'],
     ['/search', 'resources', 'keep'],
     ['/design-system', 'resources', 'keep'],
@@ -432,6 +430,7 @@ export function normalizeIaPath(path) {
 }
 
 const RETIRED_ROUTE_PATTERNS = Object.freeze([
+  /^\/home$/u,
   /^\/spdtf(?:-2)?\/ontologies(?:\/|$)/u,
 ]);
 

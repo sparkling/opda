@@ -162,7 +162,7 @@ test('every audited route family has a deterministic owner and disposition', () 
     '/spdtf/inputs/pdtf-schema/**',
     '/resources/**', '/strategy/**', '/governance/**',
     '/dbt-smart-data/**', '/engagement/**',
-    '/library/**', '/', '/home', '/glossary', '/design-system', '/resource', '/404',
+    '/library/**', '/', '/glossary', '/design-system', '/resource', '/404',
     '/spdtf/property-pack/**', '/pdtf/**',
     '/spdtf/inputs/pdtf-schema/schema-derived-ontology/use-and-tooling/artefacts/**',
     '/spdtf/inputs/pdtf-schema/schema-derived-ontology/use-and-tooling/tools/**', '/data/**', '/ui/**',
@@ -177,6 +177,9 @@ test('every audited route family has a deterministic owner and disposition', () 
   for (const retired of ['/pdtf-schema/**', '/schema/**', '/ontology/**', '/model/**', '/mapping/**', '/manual/**']) {
     assert.equal(getRouteDisposition(retired), null, `${retired} remains in the live disposition registry`);
   }
+  assert.equal(getRouteDisposition('/home'), null, '/home remains in the live disposition registry');
+  assert.equal(getActiveDestination('/home'), null, '/home remains in the destination registry');
+  assert.equal(getRouteStatus('/home'), null, '/home remains in the status registry');
   assert.ok(ROUTE_DISPOSITION_LEDGER.every(({ preservedAt, statusSource }) => preservedAt && statusSource));
   assert.ok(ROUTE_DISPOSITION_LEDGER.every(({ consumers, endpoints, crossWorkArea, checksumPolicy, search }) => (
     consumers.length && endpoints.length && crossWorkArea.length && checksumPolicy && search.workArea

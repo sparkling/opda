@@ -58,11 +58,11 @@ test('the left section navigation implements all six destinations from one regis
     assert.equal(getNavigationSection(url), section);
     assert.equal(findNavigationPage(url).section.key, key);
   }
-  for (const standalone of ['/', '/home', '/search', '/resource', '/design-system', '/404', '/working-groups/join']) {
+  for (const standalone of ['/', '/search', '/resource', '/design-system', '/404', '/working-groups/join']) {
     assert.equal(getNavigationSection(standalone), null, `${standalone} must remain a standalone surface`);
   }
   for (const retired of [
-    '/schema', '/implementation', '/adoption', '/modelling', '/mapping', '/model', '/ontology', '/manual',
+    '/home', '/schema', '/implementation', '/adoption', '/modelling', '/mapping', '/model', '/ontology', '/manual',
   ]) {
     assert.equal(getNavigationSection(retired), null, `${retired} must not remain a navigation surface`);
     assert.equal(findPage(retired), null, `${retired} must not remain in the canonical page registry`);
