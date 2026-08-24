@@ -253,7 +253,6 @@ test('every Astro page belongs to an explicit visual route family', async () => 
   for (const path of routes) {
     const source = await readFile(file(path), 'utf8');
     const owned = source.includes("@/layouts/Layout.astro")
-      || source.includes("@/layouts/PublicWorkingGroupLayout.astro")
       || source.includes("@/components/property-pack/PropertyPackPage.astro")
       || standalone.has(path);
     assert.ok(owned, `${path} has no declared visual route-family owner`);
@@ -345,7 +344,6 @@ test('text inherits its outer layout width instead of stacking nested measures',
     navigation,
     components,
     publicEntry,
-    workingGroupLayout,
     campaign,
     campaignSections,
     join,
@@ -361,7 +359,6 @@ test('text inherits its outer layout width instead of stacking nested measures',
     readFile(file('public/ui/design/navigation.css'), 'utf8'),
     readFile(file('public/ui/design/components.css'), 'utf8'),
     readFile(file('public/ui/design/public.css'), 'utf8'),
-    readFile(file('src/layouts/PublicWorkingGroupLayout.astro'), 'utf8'),
     readFile(file('src/styles/working-group-campaign.css'), 'utf8'),
     readFile(file('src/styles/working-group-campaign-sections.css'), 'utf8'),
     readFile(file('src/styles/working-group-join.css'), 'utf8'),
@@ -388,7 +385,6 @@ test('text inherits its outer layout width instead of stacking nested measures',
   for (const [path, source] of [
     ['public/ui/design/components.css', components],
     ['public/ui/design/public.css', publicEntry],
-    ['src/layouts/PublicWorkingGroupLayout.astro', workingGroupLayout],
     ['src/styles/working-group-campaign.css', campaign],
     ['src/styles/working-group-campaign-sections.css', campaignSections],
     ['src/styles/working-group-join.css', join],

@@ -235,3 +235,4 @@ if (document.readyState === 'loading') {
 } else {
   initWorkingGroupForm();
 }
+document.addEventListener('astro:page-load', initWorkingGroupForm);

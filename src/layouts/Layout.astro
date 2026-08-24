@@ -2,7 +2,7 @@
 /**
  * OPDA Knowledge Base — page shell.
  *
- * Composes Header + Sidebar + main content + PageFooter at build time.
+ * Composes Header + Sidebar + main content + PageFooter + SiteFooter at build time.
  * Derives section / active state / prev-next from Astro.url.pathname via
  * src/lib/site.ts. No runtime chrome injection; FOUC-free.
  *
@@ -22,6 +22,7 @@ import Header from '@/components/Header.astro';
 import Sidebar from '@/components/Sidebar.astro';
 import Breadcrumbs from '@/components/Breadcrumbs.astro';
 import PageFooter from '@/components/PageFooter.astro';
+import SiteFooter from '@/components/SiteFooter.astro';
 import Comments from '@/components/Comments.astro';
 import { getNavigationSection } from '@/lib/site-navigation';
 import { assetVersion } from '@/lib/asset-version.mjs';
@@ -157,6 +158,7 @@ const searchAliases = routeDisposition?.search?.historicalAliases ?? [];
         {!hideFooter && <PageFooter />}
       </main>
     </div>
+    <SiteFooter />
   </div>
 
   <script is:inline src={`/ui/client.js?v=${clientV}`}></script>

@@ -268,7 +268,9 @@ bounded with `ButtonText`, `CanvasText`, `FieldText` and `Highlight`.
 The header is 64px, `#131224`, and uses the official white wordmark. Navigation is
 DM Sans; the current item has a 4px amber underline and `aria-current`. A skip link
 is the first focusable element. The sidebar is `#F9F9F9`. The footer is deep ink
-with a 4px yellow top rule.
+with a 4px yellow top rule. `SiteFooter.astro` is the sole site-footer component:
+the root landing and every route using the shared `Layout` render that same component
+once, outside article content and navigation rails.
 
 `/` is the sole OPDA Knowledge Base homepage. It uses an SPDTF-centred hero, visible
 programme-status strip, six-destination audience/task directory and footer. The
@@ -398,12 +400,12 @@ Every live route belongs to one explicit visual family:
 
 | Family | Routes/pattern | Owner |
 |---|---|---|
-| Public entry | `/` | public entry styles and official wordmark |
-| Knowledge base | `/`, prose, governance and catalogue routes | root landing or shared `Layout` shell |
+| Public entry | `/` | public entry styles, official wordmark and shared `SiteFooter` |
+| Knowledge base | prose, governance and catalogue routes | shared `Layout` shell and `SiteFooter` |
 | Data and V2 | data browser, validation and V2 reference routes | shared tokens plus dense data patterns |
 | Schema/manual | generated schema, ontology and manual reference routes | shared shell plus labelled table/diagram patterns |
-| Working groups | join, privacy and campaign states | public working-group shell using shared tokens |
-| Presentation | working-group kickoff deck | isolated presentation composition using shared tokens |
+| Working groups | join, privacy and campaign states | shared `Layout` shell with campaign-specific content styles |
+| Presentation | working-group kickoff deck | isolated full-screen presentation composition using shared tokens; no site chrome |
 
 Release validation runs against the built artefact before any deployment: source
 contract tests, deterministic schema checks, a built-route asset and

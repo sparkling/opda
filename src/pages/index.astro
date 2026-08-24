@@ -4,6 +4,7 @@ import {
   getRouteStatus,
 } from '@/lib/site-ia.mjs';
 import DestinationCards from '@/components/ia/DestinationCards.astro';
+import SiteFooter from '@/components/SiteFooter.astro';
 
 const title = 'OPDA Knowledge Base';
 const description =
@@ -71,11 +72,7 @@ const routeStatus = getRouteStatus('/');
       <DestinationCards />
     </nav>
   </main>
-  <footer class="public-footer">
-    <img src="/ui/brand/opda-wordmark-white.svg" alt="Open Property Data Association" width="149" height="42" />
-    <span>Property data that people and systems can understand together.</span>
-    <a href="https://openpropdata.org.uk/" rel="noopener">Visit the association website</a>
-  </footer>
+  <SiteFooter />
   <script is:inline src="/ui/client.js"></script>
 </body>
 </html>

@@ -9,11 +9,14 @@ const pdtfClasses = `${PDTF1_ROUTES.terms}/classes`;
 test('primary navigation exposes exactly six ordered destinations', async ({ page }) => {
   const clean = watchRuntime(page);
   await visit(page, '/programme');
-  const links = page.locator('nav[aria-label="Primary"] a');
+  const links = page.locator('nav[aria-label="Primary"] a:not(.header-cta)');
+  const cta = page.locator('nav[aria-label="Primary"] a.header-cta');
   await expect(links).toHaveCount(6);
   await expect(links).toHaveText(primary.map(({ title }) => title));
   expect(await links.evaluateAll((nodes) => nodes.map((node) => node.getAttribute('href'))))
     .toEqual(primary.map(({ url }) => url));
+  await expect(cta).toHaveText('Join a working group');
+  await expect(cta).toHaveAttribute('href', '/working-groups/join');
   expect(findForbiddenIaLabels(await links.allTextContents().then((values) => values.join('\n')))).toEqual([]);
   clean();
 });

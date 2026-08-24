@@ -1,7 +1,7 @@
 ---
 status: accepted
 date: 2026-05-18
-updated: 2026-08-19
+updated: 2026-08-24
 tags: [astro, frontend, refactor, typescript]
 supersedes: []
 depends-on: [ADR-0002]
@@ -70,6 +70,7 @@ src/
     Sidebar.astro            # left rail; takes section + activePath props
     Breadcrumbs.astro        # derived from activePath
     PageFooter.astro         # prev/next derived from site.ts
+    SiteFooter.astro         # organisation-wide footer shared by site pages
     TOC.astro                # table of contents (client island)
     Diagram.astro            # already exists
     PageMeta.astro           # already exists
@@ -115,11 +116,12 @@ Conventional Astro folder roles:
 
 ### Component responsibilities
 
-- **`Layout.astro`** — top-level page chrome. Imports Header / Sidebar / Breadcrumbs / PageFooter. Looks up the current page in `site.ts` via `Astro.url.pathname`. Sets active state automatically. Renders full HTML at build time.
+- **`Layout.astro`** — top-level page chrome. Imports Header / Sidebar / Breadcrumbs / PageFooter / SiteFooter. Looks up the current page in `site.ts` via `Astro.url.pathname`. Sets active state automatically. Renders full HTML at build time.
 - **`Header.astro`** — global navigation. Takes `activeSection` prop derived from URL.
 - **`Sidebar.astro`** — section sidebar. Takes `section` and `activePath` props. Renders the section's groups with active-state highlighting.
 - **`Breadcrumbs.astro`** — section → group → page chain, derived from `activePath`.
 - **`PageFooter.astro`** — prev / next links derived from `site.ts` flattened ordering. No hand-coded chain.
+- **`SiteFooter.astro`** — the organisation-wide site footer rendered once below the application body. It is independent of the optional previous/next `PageFooter`.
 - **`TOC.astro`** — page-heading TOC. Loaded as a client island (`client:load` or `client:visible`) because it depends on the rendered DOM.
 
 ### Data layer — `src/lib/site.ts`
@@ -220,7 +222,7 @@ Shipped 2026-05-18 jointly with [ADR-0002](./ADR-0002-folder-hierarchy-and-slug-
 
 - `public/ui/site.js` no longer exists.
 - `src/lib/site.ts` is present with typed SECTIONS + helpers (`findPage`, `getPrevNext`, `getActiveSection`, `flatten`).
-- `src/layouts/Layout.astro` composes Header / Sidebar / Breadcrumbs / PageFooter at build time.
+- `src/layouts/Layout.astro` composes Header / Sidebar / Breadcrumbs / PageFooter / SiteFooter at build time.
 - `npm run build` produces the new structure cleanly.
 - Sample page (`src/pages/governance/data-stewardship.astro`) uses `<Layout title="...">` only — no `page=`, `section=`, or `PageFooter` props.
 
@@ -238,6 +240,7 @@ Shipped 2026-05-18 jointly with [ADR-0002](./ADR-0002-folder-hierarchy-and-slug-
 
 - **2026-05-18 — Renumbered + relocated.** Previously `source/00-deliverables/governance/information-architecture/0002-idiomatic-astro-refactor.md` (was numbered 0002 within its own folder). ADR numbering is now global across `docs/adr/`.
 - **2026-05-25 — Refactored to canonical MADR 4.x format.** Bullet-list metadata moved to YAML frontmatter; status changed from "IMPLEMENTED 2026-05-18" to `accepted` (the closest enum value) with the implementation date recorded in `### Confirmation`. Filename gained the `ADR-` prefix per the `ruflo-adr` `adr-create` skill. Substance unchanged.
+- **2026-08-24 — Clarified footer ownership.** `PageFooter` remains previous/next navigation; the shared `SiteFooter` now supplies the organisation footer to the root landing and every ordinary `Layout` route.
 
 ## Vote and Dissent
 

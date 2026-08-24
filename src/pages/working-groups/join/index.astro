@@ -1,11 +1,15 @@
 ---
-import PublicWorkingGroupLayout from '@/layouts/PublicWorkingGroupLayout.astro';
+import Layout from '@/layouts/Layout.astro';
 import '@/styles/working-group-join.css';
 import '@/styles/working-group-campaign.css';
 import '@/styles/working-group-campaign-responsive.css';
 import '@/styles/working-group-campaign-sections.css';
 
 const privacyNoticeVersion = '2026-08-13';
+const title = 'Join a working group';
+const description = 'Help shape the Smart Property Data Trust Framework so property information keeps its meaning across the whole journey.';
+const canonicalUrl = new URL(Astro.url.pathname, Astro.site ?? Astro.url.origin);
+const socialImageUrl = new URL('/images/working-group-recruitment-social.png', Astro.site ?? Astro.url.origin);
 
 const contexts = [
   ['finance-and-banking', 'Finance and Banking', 'Mortgage advice, lending decisions, security, affordability and the systems that support them.'],
@@ -25,12 +29,28 @@ const contributions = [
 ] as const;
 ---
 
-<PublicWorkingGroupLayout
-  title="Join a working group"
-  description="Help shape the Smart Property Data Trust Framework so property information keeps its meaning across the whole journey."
-  current="join"
-  socialImage="/images/working-group-recruitment-social.png"
+<Layout
+  title={title}
+  description={description}
+  hideSidebar={true}
+  hideBreadcrumbs={true}
+  hideFooter={true}
+  hideComments={true}
+  wrapArticle={false}
+  mainClass="working-group-main"
 >
+  <Fragment slot="head">
+    <link rel="canonical" href={canonicalUrl} />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content={`${title} · OPDA Knowledge Base`} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonicalUrl} />
+    <meta property="og:image" content={socialImageUrl} />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={`${title} · OPDA Knowledge Base`} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={socialImageUrl} />
+  </Fragment>
   <div class="wg-page">
     <section class="wg-campaign-hero" aria-labelledby="join-title">
       <div class="wg-campaign-hero__copy">
@@ -393,4 +413,4 @@ const contributions = [
     import '@/scripts/working-group-join';
     import '@/scripts/working-group-campaign';
   </script>
-</PublicWorkingGroupLayout>
+</Layout>

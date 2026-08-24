@@ -5,7 +5,7 @@ updated: 2026-08-24
 tags: [design-system, brand, website, accessibility, css, governance, presentation]
 supersedes: [ADR-0025]
 depends-on: [ADR-0064]
-implements: [DESIGN.md, public/ui, src/layouts/Layout.astro, src/layouts/PublicWorkingGroupLayout.astro, src/components/Header.astro, src/pages/index.astro, src/pages/design-system.astro, src/styles/property-pack.css, src/styles/presentations, docs/design-system-site, playwright.config.mjs, tests/e2e, scripts/crawl-routes.mjs, scripts/check-schema-reproducibility.mjs, .github/workflows/deploy-aws.yml]
+implements: [DESIGN.md, public/ui, src/layouts/Layout.astro, src/components/Header.astro, src/components/SiteFooter.astro, src/pages/index.astro, src/pages/design-system.astro, src/styles/property-pack.css, src/styles/presentations, docs/design-system-site, playwright.config.mjs, tests/e2e, scripts/crawl-routes.mjs, scripts/check-schema-reproducibility.mjs, .github/workflows/deploy-aws.yml]
 ---
 
 # Adopt the OPDA brand and replace the website design system
@@ -117,6 +117,13 @@ knowledge-base landing. The former `/home` page is retired without a redirect,
 rewrite, alias or duplicate route. The root therefore carries the full homepage
 composition described in `DESIGN.md`; this is an information-architecture route
 consolidation under ADR-0074, not a second visual-system decision.
+
+Later on 24 August 2026 the separate public working-group shell was retired. The
+join and privacy routes now use the same `Layout` and global `Header` as ordinary
+knowledge-base pages, with their campaign composition retained inside the common
+main region. A single `SiteFooter` component supplies the identical organisation
+footer to the root landing and every ordinary `Layout` route. The full-screen
+presentation remains an intentionally isolated, non-site-chrome experience.
 
 ### Brand conflict resolution
 

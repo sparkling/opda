@@ -31,7 +31,9 @@ test('compact primary disclosure keeps all six destinations discoverable through
     const header = page.locator('.app-header');
     const opener = page.locator('#global-nav-toggle');
     const panel = page.locator('#global-nav-panel');
-    const links = panel.locator('nav[aria-label="Primary"] a');
+    const allPrimaryLinks = panel.locator('nav[aria-label="Primary"] a');
+    const links = panel.locator('nav[aria-label="Primary"] a:not(.header-cta)');
+    const cta = panel.locator('nav[aria-label="Primary"] a.header-cta');
 
     await expect(opener).toBeVisible();
     await expect(panel).toBeHidden();
@@ -40,8 +42,10 @@ test('compact primary disclosure keeps all six destinations discoverable through
     await expect(panel).toBeVisible();
     await expect(links).toHaveCount(primary.length);
     await expect(links).toHaveText(primary.map(({ title }) => title));
+    await expect(cta).toHaveText('Join a working group');
+    await expect(cta).toHaveAttribute('href', '/working-groups/join');
 
-    const geometry = await links.evaluateAll((nodes) => nodes.map((node) => {
+    const geometry = await allPrimaryLinks.evaluateAll((nodes) => nodes.map((node) => {
       const rect = node.getBoundingClientRect();
       return { left: rect.left, right: rect.right, top: rect.top, bottom: rect.bottom };
     }));
@@ -67,9 +71,13 @@ test('compact primary disclosure keeps all six destinations discoverable through
   await page.setViewportSize({ width: 1537, height: 900 });
   await visit(page, '/resources');
   const desktopNav = page.locator('nav[aria-label="Primary"]');
+  const desktopDestinations = desktopNav.locator('a:not(.header-cta)');
+  const desktopCta = desktopNav.locator('a.header-cta');
   await expect(page.locator('#global-nav-toggle')).toBeHidden();
   await expect(desktopNav).toBeVisible();
-  await expect(desktopNav.locator('a')).toHaveCount(primary.length);
+  await expect(desktopDestinations).toHaveCount(primary.length);
+  await expect(desktopCta).toHaveText('Join a working group');
+  await expect(desktopCta).toHaveAttribute('href', '/working-groups/join');
   const desktopGeometry = await desktopNav.locator('a').evaluateAll((nodes) => ({
     links: nodes.map((node) => {
       const rect = node.getBoundingClientRect();

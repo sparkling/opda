@@ -1,14 +1,33 @@
 ---
-import PublicWorkingGroupLayout from '@/layouts/PublicWorkingGroupLayout.astro';
+import Layout from '@/layouts/Layout.astro';
 import '@/styles/working-group-join.css';
 import '@/styles/working-group-privacy.css';
+
+const title = 'Working-group privacy notice';
+const description = 'How OPDA uses personal information supplied through its public working-group expression-of-interest form.';
+const canonicalUrl = new URL(Astro.url.pathname, Astro.site ?? Astro.url.origin);
 ---
 
-<PublicWorkingGroupLayout
-  title="Working-group privacy notice"
-  description="How OPDA uses personal information supplied through its public working-group expression-of-interest form."
-  current="privacy"
+<Layout
+  title={title}
+  description={description}
+  hideSidebar={true}
+  hideBreadcrumbs={true}
+  hideFooter={true}
+  hideComments={true}
+  wrapArticle={false}
+  mainClass="working-group-main"
 >
+  <Fragment slot="head">
+    <link rel="canonical" href={canonicalUrl} />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content={`${title} · OPDA Knowledge Base`} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonicalUrl} />
+    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:title" content={`${title} · OPDA Knowledge Base`} />
+    <meta name="twitter:description" content={description} />
+  </Fragment>
   <div class="wg-page">
     <section class="wg-section wg-privacy" aria-labelledby="privacy-title">
       <p class="wg-eyebrow">Privacy notice · Version 2026-08-13</p>
@@ -127,4 +146,4 @@ import '@/styles/working-group-privacy.css';
       </article>
     </section>
   </div>
-</PublicWorkingGroupLayout>
+</Layout>

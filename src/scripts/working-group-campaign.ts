@@ -69,3 +69,4 @@ if (document.readyState === 'loading') {
 } else {
   initCampaignExperience();
 }
+document.addEventListener('astro:page-load', initCampaignExperience);

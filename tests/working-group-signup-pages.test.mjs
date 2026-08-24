@@ -5,6 +5,10 @@ import test from 'node:test';
 const paths = {
   join: new URL('../src/pages/working-groups/join/index.astro', import.meta.url),
   privacy: new URL('../src/pages/working-groups/join/privacy.astro', import.meta.url),
+  layout: new URL('../src/layouts/Layout.astro', import.meta.url),
+  siteFooter: new URL('../src/components/SiteFooter.astro', import.meta.url),
+  homepage: new URL('../src/pages/index.astro', import.meta.url),
+  propertyPackPage: new URL('../src/components/property-pack/PropertyPackPage.astro', import.meta.url),
   registration: new URL('../src/scripts/working-group-join.ts', import.meta.url),
   campaign: new URL('../src/scripts/working-group-campaign.ts', import.meta.url),
   campaignCss: new URL('../src/styles/working-group-campaign.css', import.meta.url),
@@ -92,6 +96,44 @@ test('global header promotes the canonical working-group sign-up route', async (
   assert.match(baseCss, /@media \(max-width: 96rem\)\s*\{[\s\S]*\.app-header \.global-nav-panel \.header-nav\s*\{[^}]*grid-column:\s*1 \/ -1/su);
 });
 
+test('working-group public routes use the shared application shell', async () => {
+  const [join, privacy, layout] = await Promise.all([
+    readFile(paths.join, 'utf8'),
+    readFile(paths.privacy, 'utf8'),
+    readFile(paths.layout, 'utf8'),
+  ]);
+
+  for (const source of [join, privacy]) {
+    assert.match(source, /import Layout from '@\/layouts\/Layout\.astro'/u);
+    assert.doesNotMatch(source, /PublicWorkingGroupLayout/u);
+    assert.match(source, /hideSidebar=\{true\}/u);
+    assert.match(source, /hideBreadcrumbs=\{true\}/u);
+    assert.match(source, /hideComments=\{true\}/u);
+    assert.match(source, /wrapArticle=\{false\}/u);
+  }
+  assert.match(layout, /<Header showSidebar=\{showSidebar\}/u);
+});
+
+test('one shared site footer covers public and knowledge-base page families', async () => {
+  const [footer, layout, homepage, propertyPackPage] = await Promise.all([
+    readFile(paths.siteFooter, 'utf8'),
+    readFile(paths.layout, 'utf8'),
+    readFile(paths.homepage, 'utf8'),
+    readFile(paths.propertyPackPage, 'utf8'),
+  ]);
+
+  assert.match(footer, /<footer class="public-footer">/u);
+  assert.match(footer, /opda-wordmark-white\.svg/u);
+  assert.match(footer, /Property data that people and systems can understand together\./u);
+  assert.match(footer, /Visit the association website/u);
+  for (const owner of [layout, homepage]) {
+    assert.match(owner, /import SiteFooter from '@\/components\/SiteFooter\.astro'/u);
+    assert.match(owner, /<SiteFooter\s*\/>/u);
+  }
+  assert.doesNotMatch(homepage, /<footer class="public-footer">/u);
+  assert.match(propertyPackPage, /import Layout from '@\/layouts\/Layout\.astro'/u);
+});
+
 test('registration script sends the fixed allowlisted payload to the same-origin endpoint', async () => {
   const source = await readFile(paths.registration, 'utf8');
   assert.deepEqual(extractSetValues(source, 'WORKING_GROUPS'), expectedGroups);
@@ -106,6 +148,7 @@ test('registration script sends the fixed allowlisted payload to the same-origin
   assert.match(source, /fetch\('\/api\/working-group-interest'/u);
   assert.match(source, /privacyNoticeVersion:\s*'2026-08-13'/u);
   assert.match(source, /Date\.now\(\)/u);
+  assert.match(source, /document\.addEventListener\('astro:page-load', initWorkingGroupForm\)/u);
 });
 
 test('campaign story progressively enhances a complete no-JS narrative', async () => {
@@ -140,6 +183,7 @@ test('campaign story progressively enhances a complete no-JS narrative', async (
   assert.match(script, /prefers-reduced-motion/u);
   assert.match(script, /typeof card\.animate === 'function'/u);
   assert.match(script, /classList\.add\('has-campaign-js'\)/u);
+  assert.match(script, /document\.addEventListener\('astro:page-load', initCampaignExperience\)/u);
   assert.doesNotMatch(script, /innerHTML/u);
   assert.doesNotMatch(sectionsCss, /^\[data-reveal\]\s*\{/mu);
   assert.match(sectionsCss, /\.has-campaign-js \[data-reveal\]/u);
