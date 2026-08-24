@@ -417,9 +417,10 @@ test('the adversarial conformance blockers remain closed', async () => {
     readFile(file('public/ui/design/print.css'), 'utf8'),
   ]);
   assert.doesNotMatch(rootPage, /<html[^>]+data-theme="light"/u);
+  assert.match(rootPage, /URLSearchParams\(location\.search\)/u);
   assert.doesNotMatch(rootPage, /class="public-header"|id="theme-toggle"/u);
-  assert.match(rootPage, /class="cs-wordmark"[^>]*>Open Property Data Association/u);
-  assert.match(rootPage, /class="cs-art"[\s\S]*src="\/coming-soon\.jpg"/u);
+  assert.match(rootPage, /class="public-hero__brand"[^>]*>[\s\S]*opda-icon-yellow\.svg[\s\S]*Open Property Data Association/u);
+  assert.match(rootPage, /class="btn btn--outline-dark"/u);
   assert.match(base, /color:\s*var\(--on-dark-muted\)/u);
   assert.doesNotMatch(base, /#d8d5df/iu);
   assert.match(content, /\[data-theme="dark"\]\s+:where\(\.pill\)/u);

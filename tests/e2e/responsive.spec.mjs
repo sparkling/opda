@@ -127,7 +127,8 @@ test('text flows to its outer content container without nested max-widths', asyn
   await page.setViewportSize({ width: 1440, height: 1000 });
   const cases = [
     ['/programme', ['.prose.wide > .lead', '.prose.wide > h2 + p', '.callout--key p:last-child']],
-    ['/', ['.cs-wordmark', '.cs-art']],
+    ['/', ['.public-hero h1', '.public-hero p:not(.eyebrow)', '.public-overview > header']],
+    ['/home', ['.home-hero h1', '.home-hero .lede', '.home-hero__index span', '.home-section__head', '.home-section__head > p:last-child']],
     ['/working-groups/join', ['.wg-campaign-hero h1', '.wg-campaign-hero .wg-lead', '.wg-section__heading p']],
     ['/working-groups/join/privacy', ['.wg-privacy__summary p', '.wg-privacy article p', '.wg-privacy article li']],
     [`${PDTF1_ROUTES.terms}/graph`, ['.term-comment', '.og-external']],
