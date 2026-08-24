@@ -179,7 +179,7 @@ test('PDTF schema navigation separates supporting material from the schema-deriv
   await expect(navigation.locator('a[aria-current="page"]')).toHaveCount(1);
 
   await navigation.locator(`a[href="${PDTF1_ROUTES.extracted}"]`).click();
-  await expect(page.locator('h1')).toHaveText('schema-derived ontology reference');
+  await expect(page.locator('h1')).toHaveText('Schema-derived ontology reference');
   await expect(page.locator('nav[aria-label="Breadcrumb"] [aria-current="page"]'))
     .toHaveText('Schema-derived ontology');
   expect(await page.locator('#explore + p + .card-grid > a').evaluateAll((cards) => (
