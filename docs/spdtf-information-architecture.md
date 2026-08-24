@@ -476,8 +476,8 @@ The implementation is not releasable unless all of these pass:
 - A current implementer can reach schema and validation guidance within two interactions and without entering anything labelled “archive”.
 - A governance reviewer can identify who may decide and whether a decision occurred.
 - The public root renders the six canonical destination labels and URLs in exact order, centres collaborative SPDTF purpose and status, and gives PDTF no standalone promotion.
-- The public root is the sole Knowledge Base homepage. `/home` is absent from the
-  built site, internal links, redirects and rewrites; its retirement receipt records
+- The public root is the sole Knowledge Base homepage. `/home` is absent from the built
+  site, internal links, redirects and rewrites; its retirement receipt records
   the former landing role and confirms that the six root destinations remain reachable.
 - Every route is retained or covered by an explicitly authorised move/retirement
   receipt; every retained or moved fragment resolves at its destination, and every
