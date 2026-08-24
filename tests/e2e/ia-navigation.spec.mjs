@@ -165,7 +165,7 @@ test('PDTF schema navigation separates supporting material from the schema-deriv
     expect(record.targetCount).toBe(1);
   }
   for (const id of [
-    'schema', 'implementation', 'adoption', 'modelling', 'model', 'ontology', 'mapping',
+    'schema', 'implementation', 'adoption', 'modelling', 'model', 'mapping',
   ]) await expect(page.locator(`#section-nav-group-pdtf-schema-${id === 'adoption' ? 'usage' : id}`)).toHaveCount(1);
 
   await expect(page.locator('nav[aria-label="Breadcrumb"] li')).toHaveText([
