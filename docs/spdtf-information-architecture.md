@@ -1,7 +1,7 @@
 # SPDTF information architecture
 
 Status: **implementation in progress on `main`; publication pending**<br>
-Date: 2026-08-23<br>
+Date: 2026-08-24<br>
 Decision records: [ADR-0074](./adr/ADR-0074-organise-site-around-spdtf-and-pdtf-schema.md) · [ADR-0077](./adr/ADR-0077-place-pdtf-schema-beneath-spdtf-as-third-party-input.md)<br>
 Review artefact: [HTML presentation](./spdtf-information-architecture.html)
 ## Executive decision
@@ -62,7 +62,7 @@ The implementation is made auditable by:
 - fail-closed build, route, accessibility, responsive, keyboard, visual and
   information-preservation gates before deployment credentials are available.
 
-Three explicit exceptions replace the earlier retain-by-default route policy. The Property Pack corpus moves to `/spdtf/property-pack/**`; PDTF-schema documentation moves beneath `/spdtf/inputs/pdtf-schema/**` as third-party input; and semantic-modelling reader pages move from `/spdtf/ontologies/**` to `/semantic-modelling/**`. None emits an old route or redirect. Move-aware receipts bind every old route, information block and fragment to its declared replacement. The published `/pdtf/**` RDF identifiers are not documentation aliases and remain exact.
+Four explicit exceptions replace the earlier retain-by-default route policy. The Property Pack corpus moves to `/spdtf/property-pack/**`; PDTF-schema documentation moves beneath `/spdtf/inputs/pdtf-schema/**` as third-party input; semantic-modelling reader pages move from `/spdtf/ontologies/**` to `/semantic-modelling/**`; and the duplicate `/home` landing is retired in favour of `/`. None emits an old route or redirect. Move-aware receipts bind every moved route, information block and fragment to its declared replacement; the `/home` retirement receipt records its former role and the reachable root destinations. The published `/pdtf/**` RDF identifiers are not documentation aliases and remain exact.
 
 The build counts describe different surfaces: Astro reports 2,607 pages it renders; preservation and the crawler see 3,489 HTML files after copied/generated static HTML is included; the crawler's 5,289 emitted files also include non-HTML data and support assets. All three denominators are therefore expected and independently gated.
 
@@ -320,7 +320,7 @@ does not confer membership, consensus or standards authority.
 | Current surface | Implemented treatment |
 |---|---|
 | `/` | Public Programme-owned gateway: SPDTF purpose, visible status and six audience/task cards in the canonical global order. |
-| `/home` | Separate member task gateway; retain it until a canonical/redirect decision is made. |
+| `/home` | Retire the duplicate homepage without a redirect, rewrite alias or duplicate page; update all internal homepage links to `/` and record its retirement receipt. |
 | `/glossary` | Resources utility with work-area and source facets. |
 | `/design-system` | Utility/footer link, outside standards authority. |
 | `/working-groups/join/**` | Working groups participation path. |
@@ -401,7 +401,8 @@ operational.
 Navigation is normally a view over stable content addresses. ADR-0074, ADR-0075 and
 ADR-0077 authorise three bounded no-redirect moves with explicit receipts: the
 semantic-modelling reader family, the Property Pack family and all PDTF-owned reader
-documentation. RDF identifiers remain outside them.
+documentation. ADR-0074 also authorises retirement of the duplicate `/home` homepage
+without a compatibility route. RDF identifiers remain outside them.
 
 ### Required sequence
 
@@ -475,6 +476,9 @@ The implementation is not releasable unless all of these pass:
 - A current implementer can reach schema and validation guidance within two interactions and without entering anything labelled “archive”.
 - A governance reviewer can identify who may decide and whether a decision occurred.
 - The public root renders the six canonical destination labels and URLs in exact order, centres collaborative SPDTF purpose and status, and gives PDTF no standalone promotion.
+- The public root is the sole Knowledge Base homepage. `/home` is absent from the
+  built site, internal links, redirects and rewrites; its retirement receipt records
+  the former landing role and confirms that the six root destinations remain reachable.
 - Every route is retained or covered by an explicitly authorised move/retirement
   receipt; every retained or moved fragment resolves at its destination, and every
   retired `/spdtf/ontologies/**` or PDTF documentation route is absent without a redirect.
@@ -487,12 +491,11 @@ The implementation is not releasable unless all of these pass:
 
 ## Council record
 
-The full multi-model council evidence, scores, gates and dissent are recorded in ADR-0074. Its 2026-08-23 amendment records the operator's global-navigation and semantic-modelling route correction. ADR-0075 records the later correction that Property Pack is an accelerated SPDTF ontology component; Working groups remains a shortcut to one owner. Neither review authorises publication.
+The full multi-model council evidence, scores, gates and dissent are recorded in ADR-0074. Its 2026-08-23 amendment records the operator's global-navigation and semantic-modelling route correction; its 2026-08-24 amendment records retirement of the duplicate `/home` landing in favour of the root homepage. ADR-0075 records the later correction that Property Pack is an accelerated SPDTF ontology component; Working groups remains a shortcut to one owner. Neither review authorises publication.
 
 ## Unresolved governance decisions
 
 1. PDTF schema support period and the future SPDTF IRI/namespace relationship to `/pdtf/**`.
 2. Promotion states above first working-group draft and their decision thresholds.
 3. Consent, access, confidentiality, moderation and durable feedback disposition.
-4. Whether `/` and `/home` should eventually become one canonical landing.
-5. Which candidate vocabularies and modelling frameworks the standards profile accepts, defers or excludes.
+4. Which candidate vocabularies and modelling frameworks the standards profile accepts, defers or excludes.

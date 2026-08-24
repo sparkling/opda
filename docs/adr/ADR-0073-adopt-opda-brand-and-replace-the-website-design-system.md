@@ -1,11 +1,11 @@
 ---
 status: implemented
 date: 2026-08-16
-updated: 2026-08-23
+updated: 2026-08-24
 tags: [design-system, brand, website, accessibility, css, governance, presentation]
 supersedes: [ADR-0025]
 depends-on: [ADR-0064]
-implements: [DESIGN.md, public/ui, src/layouts/Layout.astro, src/layouts/PublicWorkingGroupLayout.astro, src/components/Header.astro, src/pages/index.astro, src/pages/home.astro, src/pages/design-system.astro, src/styles/property-pack.css, src/styles/presentations, docs/design-system-site, playwright.config.mjs, tests/e2e, scripts/crawl-routes.mjs, scripts/check-schema-reproducibility.mjs, .github/workflows/deploy-aws.yml]
+implements: [DESIGN.md, public/ui, src/layouts/Layout.astro, src/layouts/PublicWorkingGroupLayout.astro, src/components/Header.astro, src/pages/index.astro, src/pages/design-system.astro, src/styles/property-pack.css, src/styles/presentations, docs/design-system-site, playwright.config.mjs, tests/e2e, scripts/crawl-routes.mjs, scripts/check-schema-reproducibility.mjs, .github/workflows/deploy-aws.yml]
 ---
 
 # Adopt the OPDA brand and replace the website design system
@@ -112,6 +112,12 @@ the implemented public shell and linked-card primitives, so this does not reopen
 brand or component decision. Fresh homepage unit and release-gate evidence is required;
 the historical confirmation below does not validate this editorial revision.
 
+On 24 August 2026 the operator chose the new root homepage as the sole public
+knowledge-base landing. The former `/home` page is retired without a redirect,
+rewrite, alias or duplicate route. The root therefore carries the full homepage
+composition described in `DESIGN.md`; this is an information-architecture route
+consolidation under ADR-0074, not a second visual-system decision.
+
 ### Brand conflict resolution
 
 The SVG-embedded colours (`#131224`, `#FEC82F`, `#FEC92B`, white) are immutable
@@ -158,8 +164,10 @@ and screen-reader behaviour are release gates, not recommendations.
 
 This decision changes only repository source for opda.org.uk. It does not change or
 deploy openpropdata.org.uk, smartpropdata.org.uk or any legacy PDTF site. It does
-not approve standards content, promote candidate models, alter URLs or authorise a
-production deployment. Existing status/provenance governance remains in force.
+not approve standards content, promote candidate models, alter stable standards or
+external URLs, or authorise a production deployment. The explicitly governed `/home`
+retirement under ADR-0074 is the bounded exception for the duplicate homepage route.
+Existing status/provenance governance remains in force.
 
 On 16 August 2026 the operator separately authorised public publication of the
 standalone design-system presentation through OpenAI Sites. That publication is a

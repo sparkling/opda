@@ -1,7 +1,7 @@
 ---
 status: accepted
 date: 2026-08-18
-updated: 2026-08-23
+updated: 2026-08-24
 tags: [website, information-architecture, pdtf-schema, spdtf, ontology, semantic-modelling, standards, migration, governance]
 supersedes: []
 amends: [ADR-0002, ADR-0041, ADR-0059, ADR-0062, ADR-0073]
@@ -18,6 +18,13 @@ implements: [docs/spdtf-information-architecture.md, src/pages/index.astro]
 > inputs rather than appearing in the hero, status strip, primary actions or peer
 > destinations, or becoming the homepage's organising story.
 > Publication and deployment remain separate, unauthorised actions.
+>
+> Update 2026-08-24 — duplicate-homepage retirement accepted: `/` is the sole OPDA
+> Knowledge Base homepage and carries the full audience-led landing composition. The
+> former `/home` route is retired without a redirect, rewrite alias or duplicate page;
+> internal links must use `/`. This is a bounded route consolidation: every destination
+> remains reachable from the root and the retirement receipt, route registry, crawl and
+> preservation gates must record the absence of `/home` before release.
 >
 > Update 2026-08-23 — accepted global-navigation and semantic-modelling correction:
 > the six destinations are Programme, Governance, Semantic modelling, SPDTF Development,
@@ -309,6 +316,14 @@ The 2026-08-23 correction additionally requires:
 - unchanged placement and authority for `/spdtf/inputs/pdtf-schema/**`, with every
   stable `/pdtf/**` RDF identifier and representation unchanged.
 
+The 2026-08-24 homepage-route consolidation additionally requires:
+
+- `/` to be the sole OPDA Knowledge Base homepage, with the full root landing
+  composition and all six canonical destination cards; and
+- `/home` to be classified as retired and absent from the emitted site, internal links,
+  rewrites and redirects, with a route-retirement receipt that records its former role
+  and confirms that every destination remains reachable from `/`.
+
 The schema-v5 preservation receipt accounts for 562,664 baseline information-block
 occurrences: 561,743 exact, 868 source/hash-bound semantic reframes and 53
 provenance-bound superseded navigation copies. Its eight exact families are the source
@@ -353,6 +368,8 @@ operative.
 - Do not use an unqualified “mapping” label.
 - Do not create duplicate governance, status, glossary or working-group records.
 - Do not redirect a route without a recorded semantic-equivalence decision and test.
+- Use `/` as the sole public Knowledge Base homepage. Do not emit, redirect, rewrite,
+  alias or duplicate `/home`; record its retirement in the migration evidence.
 - Use `/semantic-modelling` and `/semantic-modelling/**` for semantic-modelling reader
   pages. Do not emit, redirect, rewrite, alias or duplicate `/spdtf/ontologies` or
   `/spdtf/ontologies/**`; migration receipts and retained feedback identity are not
@@ -390,6 +407,10 @@ global order and keeps the PDTF schema as a nested third-party input.
 - [MHCLG — Home Buying and Selling Reform Roadmap](https://www.gov.uk/government/consultations/home-buying-and-selling-reform/outcome/home-buying-and-selling-reform-roadmap)
 
 ## Amendments
+
+- **2026-08-24 — one canonical homepage.** The root route is the sole OPDA Knowledge
+  Base homepage. `/home` is retired as a duplicate route without backwards
+  compatibility, while all six global destinations remain available from `/`.
 
 - **2026-08-23 — Semantic modelling becomes a peer global destination.** The global
   order is Programme, Governance, Semantic modelling, SPDTF Development, Working groups

@@ -270,25 +270,26 @@ DM Sans; the current item has a 4px amber underline and `aria-current`. A skip l
 is the first focusable element. The sidebar is `#F9F9F9`. The footer is deep ink
 with a 4px yellow top rule.
 
-`/` is the public entry: an intentionally abbreviated route with the official
-masthead, an SPDTF-centred hero, visible programme-status strip, six-destination
-audience/task directory and footer. The directory is sourced from the canonical
-global-navigation registry and uses the shared linked-card contract. It introduces
-the collaborative work and points to `/home`; it is not a second version of the full
-knowledge-base homepage. The PDTF schema is not a hero, status item, primary action
-or peer destination; it remains discoverable within SPDTF's attributed inputs.
+`/` is the sole OPDA Knowledge Base homepage. It uses an SPDTF-centred hero, visible
+programme-status strip, six-destination audience/task directory and footer. The
+directory is sourced from the canonical global-navigation registry and uses the shared
+linked-card contract. The root has no separate top navigation bar: the brand sits in
+the hero and the six destination cards provide the initial routes into the site. The
+PDTF schema is not a hero, status item, primary action or peer destination; it remains
+discoverable within SPDTF's attributed inputs.
 
-`/home` is the knowledge-base homepage. Its sequence is:
+Its sequence is:
 
 1. Flat deep-ink hero with the single permitted subtle gradient
    (`#131224` to `#231F2F`), a Slab headline of at most 12 words, amber underscore,
    one yellow primary action and one white-outline secondary action.
 2. Compact source/status strip in Roboto Mono.
-3. Sharp bordered entry cards into strategy, governance, modelling and
-   implementation, followed by the remaining knowledge sections.
-4. Standards-status excerpt with provenance chips.
-5. Documentary property/collaboration photo band once rights are recorded.
-6. Deep-ink footer.
+3. Six linked entry cards, in the accepted global-navigation order, for Programme,
+   Governance, Semantic modelling, SPDTF Development, Working groups and Resources.
+4. Deep-ink footer.
+
+`/home` is retired without a redirect, rewrite alias or duplicate page. All internal
+homepage links use `/`.
 
 No floating screenshots, generic illustration clutter or synthetic poster imagery.
 
@@ -398,7 +399,7 @@ Every live route belongs to one explicit visual family:
 | Family | Routes/pattern | Owner |
 |---|---|---|
 | Public entry | `/` | public entry styles and official wordmark |
-| Knowledge base | `/home`, prose, governance and catalogue routes | shared `Layout` shell |
+| Knowledge base | `/`, prose, governance and catalogue routes | root landing or shared `Layout` shell |
 | Data and V2 | data browser, validation and V2 reference routes | shared tokens plus dense data patterns |
 | Schema/manual | generated schema, ontology and manual reference routes | shared shell plus labelled table/diagram patterns |
 | Working groups | join, privacy and campaign states | public working-group shell using shared tokens |
