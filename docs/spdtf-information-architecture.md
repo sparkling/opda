@@ -484,10 +484,8 @@ The implementation is not releasable unless all of these pass:
   retired `/spdtf/ontologies/**` or PDTF documentation route is absent without a redirect.
 - Search results expose work area and authority and distinguish the PDTF schema from SPDTF records that cite it.
 - No page equates technical validation with semantic approval.
-- Interoperability remains a peer of domain groups and has one canonical home in
-  SPDTF.
-- The whole release passes the project’s route crawl, accessibility, responsive,
-  keyboard, visual-regression, unit and build gates.
+- Interoperability remains a peer of domain groups and has one canonical home in SPDTF.
+- The whole release passes the project’s route crawl, accessibility, responsive, keyboard, visual-regression, unit and build gates.
 
 ## Council record
 
