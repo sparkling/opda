@@ -1,86 +1,85 @@
 ---
-import {
-  IA_STATUS_REGISTRY_VERSION,
-  getRouteStatus,
-} from '@/lib/site-ia.mjs';
-import DestinationCards from '@/components/ia/DestinationCards.astro';
-
-const title = 'OPDA Knowledge Base';
+/** Public work-in-progress homepage — the sole `/` entry point. */
+const title = 'OPDA — Work in progress';
 const description =
-  'Explore the OPDA programme, governance, semantic modelling, SPDTF development, working groups and evidence behind a shared language for property data.';
-const routeStatus = getRouteStatus('/');
-
+  'The OPDA Knowledge Base is being prepared. Explore the programme while the public site is in progress.';
 ---
 <!doctype html>
-<html lang="en" data-ia-status-version={IA_STATUS_REGISTRY_VERSION} data-work-area={routeStatus.workArea} data-authority={routeStatus.authority} data-maturity={routeStatus.maturity} data-content-version={routeStatus.version} data-provenance={routeStatus.provenance}>
+<html lang="en">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>{title}</title>
   <meta name="description" content={description} />
-  <meta name="opda:work-area" content={routeStatus.workArea} />
-  <meta name="opda:authority" content={routeStatus.authority} />
-  <meta name="opda:maturity" content={routeStatus.maturity} />
-  <meta name="opda:version" content={routeStatus.version} />
-  <meta name="opda:provenance" content={routeStatus.provenance} />
   <meta property="og:title" content={title} />
   <meta property="og:description" content={description} />
-  <meta name="twitter:card" content="summary" />
-  <script is:inline>
-    (function () {
-      try {
-        var t = new URLSearchParams(location.search).get('theme');
-        if (t !== 'light' && t !== 'dark') t = localStorage.getItem('opda-theme');
-        if (t !== 'light' && t !== 'dark') t = 'light';
-        document.documentElement.setAttribute('data-theme', t);
-      } catch (e) {
-        document.documentElement.setAttribute('data-theme', 'light');
-      }
-    })();
-  </script>
-  <link rel="stylesheet" href="/ui/design-system.css" />
+  <meta property="og:image" content="/coming-soon.jpg" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <style is:global>
+    :root { color-scheme: dark; }
+    * { box-sizing: border-box; }
+    html, body { margin: 0; }
+    body {
+      min-height: 100vh;
+      font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+      background: radial-gradient(120% 120% at 50% 0%, #3a2a1e 0%, #1a1310 55%, #0d0a08 100%);
+      color: #f3e9dc;
+      text-align: center;
+      padding: clamp(1.5rem, 5vh, 3.5rem) clamp(1rem, 4vw, 3rem) clamp(2rem, 6vh, 4rem);
+    }
+    .cs-signin {
+      position: absolute;
+      top: clamp(1rem, 3vw, 1.75rem);
+      right: clamp(1.25rem, 4vw, 2.5rem);
+      font-size: clamp(0.8rem, 0.7rem + 0.4vw, 0.95rem);
+      font-weight: 600;
+      letter-spacing: 0.02em;
+      color: #d9c4a8;
+      text-decoration: none;
+      opacity: 0.85;
+    }
+    .cs-signin:hover { opacity: 1; color: #fff; }
+    .cs-wordmark {
+      display: block;
+      margin: 0 0 clamp(1rem, 3vh, 2rem);
+      font-weight: 800;
+      font-size: clamp(1.5rem, 1rem + 2vw, 2.5rem);
+      letter-spacing: 0.04em;
+      color: #f3e9dc;
+      text-decoration: none;
+    }
+    .cs-art {
+      display: block;
+      margin: 0 auto;
+      max-width: min(100%, 1500px);
+      max-height: 78vh;
+      width: auto;
+      height: auto;
+      border-radius: 14px;
+      box-shadow: 0 24px 60px -20px rgba(0, 0, 0, 0.7),
+                  0 0 0 1px rgba(255, 255, 255, 0.04);
+    }
+    .sr-only {
+      position: absolute;
+      width: 1px; height: 1px;
+      padding: 0; margin: -1px;
+      overflow: hidden;
+      clip: rect(0, 0, 0, 0);
+      white-space: nowrap; border: 0;
+    }
+  </style>
 </head>
-<body class="public-site">
-  <a class="skip-link" href="#main-content">Skip to main content</a>
-  <main id="main-content" tabindex="-1">
-    <section class="public-hero" aria-labelledby="public-title">
-      <div class="public-hero__inner">
-        <div class="public-hero__brand">
-          <img src="/ui/brand/opda-icon-yellow.svg" alt="" aria-hidden="true" width="84" height="100" />
-          <span>Open Property Data Association</span>
-        </div>
-        <p class="eyebrow">The OPDA Knowledge Base</p>
-        <h1 id="public-title">One shared language for property data.</h1>
-        <p>
-          This is the shared workspace for people shaping SPDTF: a property-data
-          scheme being developed collaboratively across industry and with stakeholders.
-          Understand the programme, follow how meaning and decisions are governed,
-          review the developing work, or take part.
-        </p>
-        <div class="public-hero__actions">
-          <a class="btn" href="/programme">Explore the Smart Property Data Trust Framework</a>
-          <a class="btn btn--outline-dark" href="/working-groups/join">Join a working group</a>
-        </div>
-      </div>
-    </section>
-    <dl class="public-status" aria-label="SPDTF programme status and authority">
-      <div><dt>Status</dt><dd>SPDTF is in development</dd></div>
-      <div><dt>Authority</dt><dd>Human working groups own domain meaning</dd></div>
-      <div><dt>Evidence</dt><dd>Sources, candidates and decisions stay distinct</dd></div>
-    </dl>
-    <nav class="public-overview" aria-labelledby="inside-title">
-      <header>
-        <p class="overline">Choose your route</p>
-        <h2 id="inside-title">Explore the programme and how SPDTF is developed</h2>
-      </header>
-      <DestinationCards />
-    </nav>
-  </main>
-  <footer class="public-footer">
-    <img src="/ui/brand/opda-wordmark-white.svg" alt="Open Property Data Association" width="149" height="42" />
-    <span>Property data that people and systems can understand together.</span>
-    <a href="https://openpropdata.org.uk/" rel="noopener">Visit the association website</a>
-  </footer>
-  <script is:inline src="/ui/client.js"></script>
+<body>
+  <h1 class="sr-only">Work in progress — the OPDA Knowledge Base is being prepared</h1>
+  <a class="cs-signin" href="/programme">Explore the Knowledge Base →</a>
+  <a class="cs-wordmark" href="/">Open Property Data Association</a>
+  <img
+    class="cs-art"
+    src="/coming-soon.jpg"
+    width="2400"
+    height="1339"
+    alt="A colony of cartoon beavers building a dam at sunset, beside a wooden sign reading ‘Coming soon — our new home is being built. Stay tuned for our grand opening.’"
+    fetchpriority="high"
+  />
 </body>
 </html>

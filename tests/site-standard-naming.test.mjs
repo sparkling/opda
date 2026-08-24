@@ -97,26 +97,21 @@ test('public hierarchy uses schema and scheme names in labels and routes', () =>
   });
 });
 
-test('the public and Programme pages share the current task-and-authority cards', () => {
+test('the public work-in-progress page points into the Programme task cards', () => {
   const homepage = readFileSync(path.join(ROOT, 'src/pages/index.astro'), 'utf8');
   const programme = readFileSync(path.join(ROOT, 'src/pages/programme/index.astro'), 'utf8');
 
-  assert.deepEqual(
-    GLOBAL_DESTINATION_CARDS.map(({ key, title, url }) => [key, title, url]),
-    GLOBAL_DESTINATIONS.map(({ key, title, url }) => [key, title, url]),
-  );
   assert.equal(GLOBAL_DESTINATION_CARDS.every(({ audience, description }) => audience && description), true);
   assert.doesNotMatch(homepage, /card__action/u);
   assert.equal(existsSync(path.join(ROOT, 'src/pages/home.astro')), false);
-  assert.match(homepage, /<nav class="public-overview" aria-labelledby="inside-title">/u);
-  assert.match(homepage, /<DestinationCards\s*\/>/u);
+  assert.match(homepage, /class="cs-art"/u);
+  assert.match(homepage, /src="\/coming-soon\.jpg"/u);
+  assert.match(homepage, /href="\/programme"/u);
+  assert.doesNotMatch(homepage, /href="\/home"/u);
   assert.match(programme, /<DestinationCards\s*\/>/u);
   assert.match(programme, /<DestinationCards cards=\{programmeNavigationCards\}\s*\/>/u);
   assert.match(programme, /\.filter\(\(group\) => group\.heading !== 'Overview'\)/u);
   assert.doesNotMatch(programme, /GatewayCard/u);
-  assert.match(homepage, /SPDTF is in development/u);
-  assert.match(homepage, /Human working groups own domain meaning/u);
-  assert.doesNotMatch(homepage, /PDTF schema|Digital Property Pack|schema to scheme|schema → SPDTF/iu);
 });
 
 test('route moves retain comment identities without retaining public URLs', () => {
