@@ -116,6 +116,19 @@ export const SEMANTIC_MODELLING_SOURCE_ROUTE_MANIFEST = Object.freeze({
   authoredFragmentInventorySha256: 'cbc11b257fec34b450fd5b28974243a8b794b5b4989f65e9538f3eff3f8e17dd',
   authoredRoutePairsSha256: 'eac8e3eadef88001321f1ee6bc588642568e1a751028bd6297d7ab055937de5c',
 });
+export const SITE_ROUTE_RETIREMENT_SOURCE_ROUTE_MANIFEST = Object.freeze({
+  commit: 'f1aa9d17c94b0ca177ae6c7e16e05976295217d6',
+  path: 'src/data/ia-route-baseline.json',
+  blob: '75d33f86743916dcbf1beca380b27e403414282e',
+  sha256: '4fbeed921d767c0283eec72a825ab41a6971c0e951311b4ae1634204b9cf6ecb',
+  schemaVersion: 10,
+  baselineCommit: PRIOR_IA_ROUTE_MANIFEST.baselineCommit,
+  acceptedCommit: '30b420160f931826ed1aef73a8a7a7f2aa1c54a1',
+  routeCount: 3209,
+  addedRouteCount: 87,
+  retiredRouteCount: 227,
+  acceptedRouteCount: 3296,
+});
 
 const gitOptions = (root) => ({
   cwd: root, encoding: 'utf8', maxBuffer: 64 * 1024 * 1024,
@@ -344,6 +357,32 @@ export function loadSemanticModellingSourceRouteManifest(root) {
     && inventoryDigest(authored) === contract.authoredFragmentInventorySha256
     && pairsDigest(authoredPairs) === contract.authoredRoutePairsSha256;
   if (!valid) throw new Error('semantic-modelling source manifest does not match its frozen contract');
+  return result;
+}
+
+/** Load the immutable schema-v10 cut before the duplicate /home route retired. */
+export function loadSiteRouteRetirementSourceRouteManifest(root) {
+  const contract = SITE_ROUTE_RETIREMENT_SOURCE_ROUTE_MANIFEST;
+  requireAncestor(root, contract.commit, git(root, ['rev-parse', 'HEAD']));
+  const result = loadPinnedManifest(root, contract);
+  const { manifest } = result;
+  const routes = manifest.routes ?? [];
+  const additions = manifest.addedRoutes ?? [];
+  const retired = manifest.retiredRoutes ?? [];
+  const all = [...routes, ...additions];
+  const home = all.filter(({ acceptedRoute }) => acceptedRoute === '/home');
+  const valid = manifest.schemaVersion === contract.schemaVersion
+    && manifest.baselineCommit === contract.baselineCommit
+    && manifest.acceptedCommit === contract.acceptedCommit
+    && manifest.routeCount === contract.routeCount && routes.length === contract.routeCount
+    && manifest.addedRouteCount === contract.addedRouteCount && additions.length === contract.addedRouteCount
+    && manifest.retiredRouteCount === contract.retiredRouteCount && retired.length === contract.retiredRouteCount
+    && all.length === contract.acceptedRouteCount
+    && new Set(all.map(({ acceptedRoute }) => acceptedRoute)).size === all.length
+    && new Set(all.map(({ acceptedFile }) => acceptedFile)).size === all.length
+    && home.length === 1 && home[0].acceptedFile === 'home/index.html'
+    && home[0].retentionReceipt?.policy === 'explicit-route-block-retention-v1';
+  if (!valid) throw new Error('site-route retirement source manifest does not match its frozen contract');
   return result;
 }
 

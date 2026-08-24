@@ -12,6 +12,7 @@ import {
 import { baselineNavigationEvidenceFailures, retentionReceiptFailures } from './lib/ia-retention-validator.mjs';
 import { validatePdtfSchemaInputManifest } from './lib/pdtf-schema-input-route-contract.mjs';
 import { SEMANTIC_MODELLING_ROUTE_MIGRATION, validateSemanticModellingManifest } from './lib/semantic-modelling-route-contract.mjs';
+import { isSiteRouteRetired, validateSiteRouteRetirementManifest } from './lib/site-route-retirement-contract.mjs';
 import { composeSchemaToSchemeRouteReceipt } from './lib/schema-to-scheme-route-contract.mjs';
 import { SCHEMA_TO_SCHEME_SOURCE_ROUTE_MANIFEST, loadPdtf1SourceRouteManifest,
   loadPriorIaFamilyManifest, loadPriorIaRouteManifest, loadSchemaToSchemeSourceRouteManifest,
@@ -139,11 +140,13 @@ try {
 catch (error) { fail(`schema-to-scheme source-route Git evidence is unavailable: ${error.message}`); }
 let hasPdtf1CutReceipt = false; let hasSchemaToSchemeReceipt = false;
 let hasPdtfSchemaInputReceipt = false; let hasSemanticModellingReceipt = false;
+let hasSiteRouteRetirementReceipt = false;
 if (routeManifest) {
   hasPdtf1CutReceipt = routeManifest.schemaVersion === 7 || routeManifest.schemaVersion === 8;
   hasSchemaToSchemeReceipt = routeManifest.schemaVersion === 8;
-  hasPdtfSchemaInputReceipt = routeManifest.schemaVersion === 9 || routeManifest.schemaVersion === 10;
-  hasSemanticModellingReceipt = routeManifest.schemaVersion === 10;
+  hasPdtfSchemaInputReceipt = routeManifest.schemaVersion === 9 || routeManifest.schemaVersion === 10 || routeManifest.schemaVersion === 11;
+  hasSemanticModellingReceipt = routeManifest.schemaVersion === 10 || routeManifest.schemaVersion === 11;
+  hasSiteRouteRetirementReceipt = routeManifest.schemaVersion === 11;
   const validLegacy = routeManifest.schemaVersion === 6
     && routeManifest.retiredRoutes === undefined && routeManifest.retiredRouteCount === undefined;
   const validCut = (hasPdtf1CutReceipt || hasPdtfSchemaInputReceipt)
@@ -175,7 +178,9 @@ if (routeManifest) {
   }
   for (const record of all) {
     const isBaseline = baselineRecordSet.has(record);
-    validateRouteMetadata(record, isBaseline);
+    const pendingSiteRetirement = routeManifest.schemaVersion === 10
+      && isSiteRouteRetired(record.acceptedRoute);
+    if (!pendingSiteRetirement) validateRouteMetadata(record, isBaseline);
     if (acceptedFiles.has(record.acceptedFile) || acceptedRoutes.has(record.acceptedRoute)) {
       fail(`duplicate accepted route: ${record.acceptedRoute}`);
     }
@@ -299,9 +304,12 @@ if (routeManifest) {
     try { validatePdtfSchemaInputManifest(ROOT, routeManifest, baselineRecords, addedRecords); }
     catch (error) { fail(`PDTF schema input migration contract failed: ${error.message}`); }
   }
-  if (hasSemanticModellingReceipt) try {
+  if (routeManifest.schemaVersion === 10) try {
     validateSemanticModellingManifest(ROOT, routeManifest, baselineRecords, addedRecords);
   } catch (error) { fail(`semantic-modelling migration contract failed: ${error.message}`); }
+  if (hasSiteRouteRetirementReceipt) try {
+    validateSiteRouteRetirementManifest(ROOT, routeManifest, baselineRecords, addedRecords);
+  } catch (error) { fail(`site-route retirement contract failed: ${error.message}`); }
   try {
     if (hasSemanticModellingReceipt) {
       if (!options.manifestOnly) inspectLeaseTermCaseCollision(ROOT);
@@ -349,6 +357,9 @@ if (routeManifest) {
           && (route === SEMANTIC_MODELLING_ROUTE_MIGRATION.sourceRoot
             || route.startsWith(`${SEMANTIC_MODELLING_ROUTE_MIGRATION.sourceRoot}/`))) {
           fail(`retired semantic-modelling output still exists: ${route}`);
+        }
+        if (hasSiteRouteRetirementReceipt && isSiteRouteRetired(route)) {
+          fail(`retired site output still exists: ${route}`);
         }
         if (hasPdtf1CutReceipt && isRetiredPdtf1DocumentationRoute(route)) {
           fail(`retired PDTF schema output still exists: ${route}`);

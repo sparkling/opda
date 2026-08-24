@@ -15,13 +15,14 @@ import {
 import { createCaptureEvidence } from './lib/ia-capture-evidence.mjs';
 import { composePdtf1ToolReframeReceipt } from './lib/pdtf1-tool-reframes.mjs';
 import { composeSourceArchiveReframeReceipt } from './lib/source-archive-reframes.mjs';
-import { composeSemanticModellingMigrationReceipt } from './lib/semantic-modelling-route-contract.mjs';
+import { composeSiteRouteRetirementReceipt, isSiteRouteRetired } from './lib/site-route-retirement-contract.mjs';
 import {
   PRIOR_IA_ROUTE_MANIFEST,
   composePriorFamilyReceipt, composePriorManifestReceipt,
   loadPdtfSchemaInputSourceRouteManifest,
   loadPdtf1SourceRouteManifest, loadPriorIaFamilyManifest, loadPriorIaRouteManifest,
   loadSemanticModellingSourceRouteManifest,
+  loadSiteRouteRetirementSourceRouteManifest,
   manifestRetainedSourceRecordMatches,
   missingPhysicalRecordsDigest,
   priorRouteRecordDigest, verifyBaselineRootCommit, verifyPdtf1SourceRootCommit,
@@ -120,6 +121,7 @@ const { manifest: priorManifest } = loadPriorIaRouteManifest(ROOT);
 const { manifest: pdtf1SourceManifest } = loadPdtf1SourceRouteManifest(ROOT);
 const { manifest: pdtfSchemaInputSourceManifest } = loadPdtfSchemaInputSourceRouteManifest(ROOT);
 const { manifest: semanticModellingSourceManifest } = loadSemanticModellingSourceRouteManifest(ROOT);
+const { manifest: siteRouteRetirementSourceManifest } = loadSiteRouteRetirementSourceRouteManifest(ROOT);
 if (priorManifest.baselineCommit !== baselineCommit) throw new Error('prior manifest baseline commit changed');
 const priorByFile = new Map(priorManifest.routes.map((record) => [record.file, record]));
 const pdtf1SourceByBaselineFile = new Map(
@@ -166,7 +168,9 @@ const acceptedContracts = new Map(acceptedFiles.map((file) => {
   const route = routeFromFile(file);
   return [route, informationContract(readFileSync(path.join(acceptedRoot, 'dist', file), 'utf8'))];
 }));
-const routes = baselineFiles.filter((file) => !isRetiredPdtf1ManualAlias(routeFromFile(file))).map((file) => {
+const routes = baselineFiles.filter((file) => (
+  !isRetiredPdtf1ManualAlias(routeFromFile(file)) && !isSiteRouteRetired(routeFromFile(file))
+)).map((file) => {
   const baselineRoute = routeFromFile(file);
   const acceptedRoute = acceptedRouteFor(baselineRoute);
   const acceptedFile = getAcceptedRouteFile(baselineRoute, file);
@@ -266,10 +270,11 @@ const pdtfSchemaFragmentMigration = semanticModellingSourceManifest.pdtfSchemaFr
 const schemaToSchemeMigration = semanticModellingSourceManifest.schemaToSchemeMigration;
 const pdtfSchemaInputMigration = semanticModellingSourceManifest.pdtfSchemaInputMigration;
 const leaseTermCaseCollision = semanticModellingSourceManifest.leaseTermCaseCollision;
-const semanticModellingMigration = composeSemanticModellingMigrationReceipt({
+const semanticModellingMigration = siteRouteRetirementSourceManifest.semanticModellingMigration;
+const siteRouteRetirements = composeSiteRouteRetirementReceipt({
   records: routes,
-  addedRecords: addedRoutes,
-  sourceManifest: semanticModellingSourceManifest,
+  addedRecords,
+  sourceManifest: siteRouteRetirementSourceManifest,
 });
 const frozenSourceRecords = [
   ...pdtfSchemaInputSourceManifest.routes, ...pdtfSchemaInputSourceManifest.addedRoutes,
@@ -295,7 +300,7 @@ if (unusedSemanticReframes.length || undeclaredSemanticReframes.length) {
   throw new Error(`semantic reframe ledger mismatch; unused: ${summarize(unusedSemanticReframes) || 'none'}; undeclared: ${summarize(undeclaredSemanticReframes) || 'none'}`);
 }
 const routeManifest = {
-  schemaVersion: 10,
+  schemaVersion: 11,
   baselineCommit,
   acceptedCommit,
   routeCount: routes.length,
@@ -313,6 +318,7 @@ const routeManifest = {
   pdtfSchemaInputMigration,
   leaseTermCaseCollision,
   semanticModellingMigration,
+  siteRouteRetirements,
   routes,
   addedRoutes,
   retiredRoutes,
