@@ -31,6 +31,7 @@ test('built source-resource links require a manifest receipt and local archive f
     mkdirSync(dist, { recursive: true });
     mkdirSync(path.join(source, 'docs'), { recursive: true });
     writeFileSync(path.join(dist, 'index.html'), '<a href="/resource?path=source/docs/example.rq">Example</a>');
+    writeFileSync(path.join(source, 'INVENTORY.md'), '# Complete source archive');
     writeFileSync(path.join(source, 'docs/example.rq'), 'ASK {}');
     writeFileSync(manifest, JSON.stringify([{ path: 'source/docs/example.rq' }]));
     assert.deepEqual(checkResourceLinkCoverage({ distDir: dist, sourceDir: source, manifestPath: manifest }), {
@@ -38,6 +39,15 @@ test('built source-resource links require a manifest receipt and local archive f
     });
     writeFileSync(manifest, '[]');
     assert.throws(() => checkResourceLinkCoverage({ distDir: dist, sourceDir: source, manifestPath: manifest }), /not in resources manifest/u);
+
+    writeFileSync(manifest, JSON.stringify([{ path: 'source/docs/example.rq' }]));
+    rmSync(path.join(source, 'docs/example.rq'));
+    assert.throws(() => checkResourceLinkCoverage({ distDir: dist, sourceDir: source, manifestPath: manifest }), /missing from local source archive/u);
+
+    rmSync(path.join(source, 'INVENTORY.md'));
+    assert.deepEqual(checkResourceLinkCoverage({ distDir: dist, sourceDir: source, manifestPath: manifest }), {
+      linkedResourceCount: 1, verifiedSourceArchive: false,
+    });
   } finally {
     rmSync(fixture, { recursive: true, force: true });
   }

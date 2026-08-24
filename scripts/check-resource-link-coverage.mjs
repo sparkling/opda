@@ -5,6 +5,7 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 const repoRoot = path.resolve(fileURLToPath(import.meta.url), '..', '..');
+const SOURCE_ARCHIVE_SENTINEL = 'INVENTORY.md';
 
 function htmlFiles(dir, files = []) {
   for (const entry of fs.readdirSync(dir, { withFileTypes: true })) {
@@ -42,8 +43,13 @@ export function checkResourceLinkCoverage({
   const published = new Set(manifest.map(({ path: resourcePath }) => resourcePath));
   const paths = new Set(htmlFiles(distDir).flatMap((file) => [...resourcePaths(fs.readFileSync(file, 'utf8'))]));
   const missingManifest = [...paths].filter((resourcePath) => !published.has(resourcePath));
-  const hasSource = fs.existsSync(sourceDir);
-  const missingSource = hasSource ? [...paths].filter((resourcePath) => !fs.existsSync(sourceFile(sourceDir, resourcePath))) : [];
+  // A clean checkout contains tracked source/ subtrees, but not the complete
+  // gitignored archive. Its ignored master inventory is the archive-completeness
+  // sentinel; only then is file-by-file local verification meaningful.
+  const hasSource = fs.existsSync(path.join(sourceDir, SOURCE_ARCHIVE_SENTINEL));
+  const missingSource = hasSource
+    ? [...paths].filter((resourcePath) => !fs.existsSync(sourceFile(sourceDir, resourcePath)))
+    : [];
   if (missingManifest.length || missingSource.length) {
     const messages = [];
     if (missingManifest.length) messages.push(`not in resources manifest:\n${missingManifest.map((p) => `  - ${p}`).join('\n')}`);
