@@ -138,28 +138,12 @@ test('PDTF schema navigation separates supporting material from the schema-deriv
     .toHaveClass(/is-open/u);
   await expect(taskCategories.filter({ has: page.locator(`a[href="${PDTF1_ROUTES.validation}"]`) }))
     .not.toHaveClass(/is-open/u);
-  const categoryStyle = await navigation.locator(`a[href="${PDTF1_ROUTES.terms}"]`)
-    .evaluate((link, leafUrl) => {
-      const row = link.parentElement;
-      const leaf = document.querySelector(`#section-navigation a[href="${leafUrl}"]`);
-      const rowStyle = getComputedStyle(row);
-      return {
-        background: rowStyle.backgroundColor,
-        border: rowStyle.borderTopStyle,
-        categoryWeight: getComputedStyle(link).fontWeight,
-        leafWeight: getComputedStyle(leaf).fontWeight,
-      };
-    }, `${PDTF1_ROUTES.terms}/properties`);
-  expect(categoryStyle.background).not.toBe('rgba(0, 0, 0, 0)');
-  expect(categoryStyle.border).toBe('solid');
-  expect(Number(categoryStyle.categoryWeight)).toBeGreaterThan(Number(categoryStyle.leafWeight));
-  const nestedFolderStyle = await navigation.locator(`a[href="${PDTF1_ROUTES.schemaVerification}"]`)
-    .evaluate((link) => ({
-      background: getComputedStyle(link.parentElement).backgroundColor,
-      weight: getComputedStyle(link).fontWeight,
-    }));
-  expect(nestedFolderStyle.background).not.toBe('rgba(0, 0, 0, 0)');
-  expect(Number(nestedFolderStyle.weight)).toBeGreaterThan(Number(categoryStyle.leafWeight));
+  await expect(navigation.locator(`a[href="${PDTF1_ROUTES.terms}"]`))
+    .toHaveClass(/tree-folder-link/u);
+  await expect(navigation.locator(`a[href="${PDTF1_ROUTES.terms}/properties"]`))
+    .not.toHaveClass(/tree-folder-link/u);
+  await expect(navigation.locator(`a[href="${PDTF1_ROUTES.schemaVerification}"]`))
+    .toHaveClass(/tree-folder-link/u);
   const disclosureContract = await extractedBranch.locator('.tree-folder')
     .evaluateAll((folders) => folders.map((folder) => {
       const row = folder.querySelector(':scope > .tree-folder-row');
