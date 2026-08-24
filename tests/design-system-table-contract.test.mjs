@@ -83,6 +83,11 @@ test('table variants use the wrap-first layout contract', async () => {
   assert.match(data, /\.db-table\s*\{[^}]*min-width:\s*0[^}]*table-layout:\s*auto/su);
   assert.doesNotMatch(data, /table-layout:\s*fixed/u);
   assert.match(data, /\.db-table :is\(th, td\)\s*\{[^}]*overflow-wrap:\s*anywhere[^}]*white-space:\s*normal/su);
+  assert.match(data, /\.db-sort-button\s*\{[^}]*min-width:\s*0[^}]*overflow-wrap:\s*anywhere[^}]*white-space:\s*normal/su);
+  assert.match(
+    data,
+    /@media \(max-width:\s*40rem\)\s*\{[\s\S]*\.db-table thead th,\s*\.db-table tbody td\s*\{[^}]*padding-inline:\s*var\(--space-1\)/su,
+  );
   assert.doesNotMatch(data, /min-width:\s*60rem/u);
   assert.doesNotMatch(data, /\.db-table-wrap\s*\{[^}]*overflow-x:\s*auto/su);
   assert.match(glossary, /\.glossary-table\s*\{[^}]*table-layout:\s*auto/su);

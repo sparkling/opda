@@ -124,9 +124,10 @@ test('PDTF schema navigation separates supporting material from the schema-deriv
   ]);
   await expect(navigation.locator('a[aria-current="page"]')).toHaveText('Classes');
   const inputsGroup = navigation.locator('.nav-group[data-group="Third-party inputs"]');
-  const pdtfBranch = inputsGroup.locator(`:scope > .nav-group-items > .tree-folder:has(> .tree-folder-row > a[href="${PDTF1_ROUTES.root}"])`);
-  const supportingBranch = pdtfBranch.locator(`:scope > .tree-children > .tree-folder:has(> .tree-folder-row > a[href="${PDTF1_ROUTES.original}"])`);
-  const extractedBranch = pdtfBranch.locator(`:scope > .tree-children > .tree-folder:has(> .tree-folder-row > a[href="${PDTF1_ROUTES.extracted}"])`);
+  const enclosingFolder = (link) => link.locator('xpath=ancestor::li[contains(concat(" ", normalize-space(@class), " "), " tree-folder ")][1]');
+  const pdtfBranch = enclosingFolder(inputsGroup.locator(`a[href="${PDTF1_ROUTES.root}"]`));
+  const supportingBranch = enclosingFolder(pdtfBranch.locator(`a[href="${PDTF1_ROUTES.original}"]`));
+  const extractedBranch = enclosingFolder(pdtfBranch.locator(`a[href="${PDTF1_ROUTES.extracted}"]`));
   await expect(inputsGroup).toHaveClass(/is-open/u);
   await expect(pdtfBranch).toHaveClass(/is-open/u);
   await expect(extractedBranch).toHaveClass(/is-open/u);
@@ -363,7 +364,8 @@ test('Property Pack detail pages expose their full canonical ancestry', async ({
     '/spdtf/property-pack/contexts/common',
   ]);
   const local = page.locator('#section-navigation');
-  await expect(local.locator('a[aria-current="page"]')).toHaveCount(1);
+  await expect(local.locator('a[aria-current="page"]')).toHaveCount(0);
+  await expect(local.locator('a[href="/spdtf/property-pack/resources"]')).toHaveClass(/active/u);
   await expect(local.locator('.nav-group[data-group="Property Pack ontology"]')).toHaveClass(/is-open/u);
   await expect(local.locator('.tree-folder:has(> .tree-folder-row > a[href="/spdtf/property-pack/model"])'))
     .toHaveClass(/is-open/u);

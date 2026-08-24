@@ -95,7 +95,10 @@ test('current implementers reach nested third-party schema and validation guidan
   await page.locator('.public-overview a.card[href="/spdtf"]').click();
   await expect(page).toHaveURL(/\/spdtf$/u);
   await page.locator('main a[href="/spdtf/inputs"]').click();
-  await page.locator(`main a[href="${PDTF1_ROUTES.root}"]`).click();
+  await page.getByRole('main').getByRole('link', {
+    name: 'Third-party input PDTF schema',
+    exact: true,
+  }).click();
   await expect(page).toHaveURL(new RegExp(`${PDTF1_ROUTES.root}$`, 'u'));
   const implementationLinks = page.locator('main a');
   const schemasLink = page.getByRole('main').getByRole('link', {

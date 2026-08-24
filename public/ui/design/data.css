@@ -1,9 +1,7 @@
 /* ─────────────────────────────────────────────────────────────
    DATA BROWSER
    ───────────────────────────────────────────────────────────── */
-.data-browser {
-  margin: var(--space-5) 0;
-}
+.data-browser { margin: var(--space-5) 0; }
 .db-toolbar {
   display: flex;
   flex-wrap: wrap;
@@ -360,8 +358,7 @@
 }
 .db-table thead th.sortable { padding: 0; user-select: none; }
 .db-sort-button {
-  width: 100%;
-  min-height: var(--target-min);
+  width: 100%; min-width: 0; min-height: var(--target-min);
   display: inline-flex;
   flex-wrap: wrap;
   align-items: center;
@@ -373,6 +370,7 @@
   color: inherit;
   font: inherit;
   text-align: inherit;
+  overflow-wrap: anywhere; white-space: normal;
   cursor: pointer;
   transition: background var(--duration-fast) var(--ease), color var(--duration-fast) var(--ease);
 }
@@ -425,6 +423,10 @@
   border-color: var(--color-border);
 }
 
+@media (max-width: 40rem) {
+  .db-table thead th, .db-table tbody td { padding-inline: var(--space-1); }
+  .db-sort-button { gap: var(--space-1); padding-inline: var(--space-1); }
+}
 .db-pagination {
   display: flex;
   align-items: center;
