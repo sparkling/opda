@@ -114,8 +114,8 @@ test('the public and Programme pages share the current task-and-authority cards'
   assert.match(programme, /<DestinationCards cards=\{programmeNavigationCards\}\s*\/>/u);
   assert.match(programme, /\.filter\(\(group\) => group\.heading !== 'Overview'\)/u);
   assert.doesNotMatch(programme, /GatewayCard/u);
-  assert.match(homepage, /SPDTF is in development/u);
-  assert.match(homepage, /Human working groups own domain meaning/u);
+  assert.doesNotMatch(homepage, /SPDTF is in development/u);
+  assert.doesNotMatch(homepage, /Human working groups own domain meaning/u);
   assert.doesNotMatch(homepage, /PDTF schema|Digital Property Pack|schema to scheme|schema → SPDTF/iu);
 });
 
