@@ -28,7 +28,7 @@ const WIDOCO = { href: '/spdtf/inputs/pdtf-schema/schema-derived-ontology/use-an
 ---
 <Layout
   title="Properties"
-  description="Typed index of the OPDA object and datatype properties — the ~30 object properties in full with domain/range, and the ~226 datatype properties grouped per module — from the SPARQL-derived ontology model. Each property links to its /pdtf representation page."
+  description="Typed index of the OPDA object and datatype properties — the ~30 object properties in full with domain/range, and the ~226 datatype properties grouped per module — from the SPARQL-derived ontology model. Each property links to its canonical /pdtf page."
 >
 <PageMeta category="Browse the model" variant="brand" updated="Draft · Updated 2026-06-15" />
 
@@ -38,12 +38,11 @@ const WIDOCO = { href: '/spdtf/inputs/pdtf-schema/schema-derived-ontology/use-an
     The OPDA ontology declares <strong>{objectProps.length} object properties</strong> (the relational
     backbone — what links to what) and <strong>{dataTotal} datatype properties</strong> (the literal-valued
     attributes), sourced from the SPARQL-extracted <a href="/spdtf/inputs/pdtf-schema/schema-derived-ontology/lineage-provenance-and-verification/decision-provenance">ontology model</a>.
-    <strong>Each property links to its own representation page</strong> with its full
-    domain/range, inverse, constraining SHACL shapes and <code>dct:source</code> provenance.
-    Most use <code>/pdtf/{'{'}localName{'}'}</code>; the <code>leaseTerm</code> object
-    property uses <code>/pdtf/object-properties/lease-term</code> so its route remains
-    distinct from the Lease Term class without relying on letter case.
+    <strong>Each property links to its own page</strong> at <code>/pdtf/{'{'}localName{'}'}</code> — with its
+    full domain/range, inverse, the SHACL shapes that constrain it, and <code>dct:source</code> provenance.
   </p>
+
+  <p class="muted">The <code>leaseTerm</code> object property is the case-independent exception: its representation is at <code>/pdtf/object-properties/lease-term</code>.</p>
 
   <div class="callout callout--note">
     <p class="callout__label">domain / range are informative, not enforced</p>

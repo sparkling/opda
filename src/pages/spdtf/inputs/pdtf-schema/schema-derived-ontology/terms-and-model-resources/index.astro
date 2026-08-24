@@ -6,7 +6,7 @@ import GatewayCard from '@/components/ia/GatewayCard.astro';
 
 <Layout
   title="Terms and model resources"
-  description="Find the classes, properties, datatypes, UFO categories, SKOS vocabularies and resource representation pages in the schema-derived ontology."
+  description="Find the classes, properties, datatypes, UFO categories, SKOS vocabularies and dereferenceable resource pages in the schema-derived ontology."
 >
   <PageMeta category="PDTF schema · schema-derived ontology" variant="brand" updated="Draft · under review" />
   <h1>Terms and model resources</h1>
@@ -46,10 +46,10 @@ import GatewayCard from '@/components/ia/GatewayCard.astro';
     <GatewayCard href="/spdtf/inputs/pdtf-schema/schema-derived-ontology/terms-and-model-resources/properties" title="Properties" eyebrow="Relationships and values" description="Find all 73 object and 203 datatype properties with their domains, ranges, constraints, inverses and source provenance." />
     <GatewayCard href="/spdtf/inputs/pdtf-schema/schema-derived-ontology/terms-and-model-resources/datatypes" title="Datatypes" eyebrow="Literal value spaces" description="See every literal datatype used by the corpus and the datatype properties that range over it." />
     <GatewayCard href="/spdtf/inputs/pdtf-schema/schema-derived-ontology/terms-and-model-resources/vocabularies" title="Controlled vocabularies" eyebrow="SKOS resources" description="Browse the 46 SKOS concept schemes and 304 coded concepts without turning controlled values into OWL subclasses." />
-    <GatewayCard href="/spdtf/inputs/pdtf-schema/schema-derived-ontology/terms-and-model-resources/glossary" title="Index and glossary" eyebrow="A–Z discovery" description="Search across classes, properties, shapes, concepts and schemes, then open each resource's /pdtf representation page." />
+    <GatewayCard href="/spdtf/inputs/pdtf-schema/schema-derived-ontology/terms-and-model-resources/glossary" title="Index and glossary" eyebrow="A–Z discovery" description="Search across classes, properties, shapes, concepts and schemes, then open each resource at its dereferenceable /pdtf page." />
   </div>
 
-  <h2 id="detail-pages">Resource detail pages</h2>
+  <h2 id="detail-pages">Canonical detail pages</h2>
   <p>
     Index entries resolve to stable <code>/pdtf/**</code> pages containing the resource identity,
     definition, relationships, constraints and source citations. Those pages are the detailed

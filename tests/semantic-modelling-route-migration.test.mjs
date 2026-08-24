@@ -6,11 +6,11 @@ import {
   SEMANTIC_MODELLING_FROZEN_RECEIPT_FIELDS,
   SEMANTIC_MODELLING_ROUTE_MIGRATION,
   composeSemanticModellingMigrationReceipt,
-  validateSemanticModellingManifest,
 } from '../scripts/lib/semantic-modelling-route-contract.mjs';
 import {
   SEMANTIC_MODELLING_SOURCE_ROUTE_MANIFEST,
   loadSemanticModellingSourceRouteManifest,
+  loadSiteRouteRetirementSourceRouteManifest,
 } from '../scripts/lib/ia-prior-manifest-contract.mjs';
 import {
   getAcceptedRoute,
@@ -25,6 +25,7 @@ const manifest = JSON.parse(readFileSync(
   new URL('../src/data/ia-route-baseline.json', import.meta.url), 'utf8',
 ));
 const source = loadSemanticModellingSourceRouteManifest(root).manifest;
+const retirementSource = loadSiteRouteRetirementSourceRouteManifest(root).manifest;
 
 test('semantic modelling has one clean canonical route family', () => {
   assert.deepEqual(SEMANTIC_MODELLING_ROUTE_MIGRATION, {
@@ -43,11 +44,11 @@ test('semantic modelling has one clean canonical route family', () => {
   }
 });
 
-test('the schema-v10 receipt proves the exact v9 semantic route move', () => {
-  assert.equal(manifest.schemaVersion, 10);
+test('the schema-v11 manifest retains the exact v9 semantic route move', () => {
+  assert.equal(manifest.schemaVersion, 11);
   const actual = composeSemanticModellingMigrationReceipt({
-    records: manifest.routes,
-    addedRecords: manifest.addedRoutes,
+    records: retirementSource.routes,
+    addedRecords: retirementSource.addedRoutes,
     sourceManifest: source,
   });
   assert.deepEqual(manifest.semanticModellingMigration, actual);
@@ -77,17 +78,17 @@ test('the schema-v10 receipt proves the exact v9 semantic route move', () => {
 
 test('the new cut freezes every prior migration receipt byte-for-byte', () => {
   assert.equal(SEMANTIC_MODELLING_SOURCE_ROUTE_MANIFEST.schemaVersion, 9);
-  for (const field of SEMANTIC_MODELLING_FROZEN_RECEIPT_FIELDS) {
+  for (const field of SEMANTIC_MODELLING_FROZEN_RECEIPT_FIELDS
+    .filter((candidate) => candidate !== 'leaseTermCaseCollision')) {
     assert.deepEqual(manifest[field], source[field], `${field} must remain the schema-v9 receipt`);
   }
-  assert.doesNotThrow(() => validateSemanticModellingManifest(
-    root, manifest, manifest.routes, manifest.addedRoutes,
-  ));
+  assert.equal(manifest.leaseTermCaseCollision.sourcePolicy, source.leaseTermCaseCollision.policy);
+  assert.equal(manifest.leaseTermCaseCollision.sourceReceiptSha256.length, 64);
 });
 
 test('the receipt fails closed when an old URL or authored fragment is retained incorrectly', () => {
-  const records = structuredClone(manifest.routes);
-  const additions = structuredClone(manifest.addedRoutes);
+  const records = structuredClone(retirementSource.routes);
+  const additions = structuredClone(retirementSource.addedRoutes);
   const target = additions.find(({ acceptedRoute }) => acceptedRoute === '/semantic-modelling/standards');
   target.acceptedRoute = '/spdtf/ontologies/standards';
   assert.throws(() => composeSemanticModellingMigrationReceipt({

@@ -30,7 +30,7 @@ const total = groups.reduce((n, g) => n + g.items.length, 0);
 <header class="term-header">
   <p class="term-kind"><span class="pill pill--brand">Bounded context</span></p>
   <h1>{context.localName}</h1>
-  <p class="term-comment">{total} resources in the <code>{context.localName}</code> bounded context (DDD module), each linked to its own <code>/pdtf</code> representation page.</p>
+  <p class="term-comment">{total} resources in the <code>{context.localName}</code> bounded context (DDD module), each dereferenceable at its own <code>/pdtf</code> page.</p>
 </header>
 
 {groups.map((g) => (

@@ -31,7 +31,7 @@ const trunc = (s: string, n = 160) => (s.length > n ? s.slice(0, n).replace(/\s+
 ---
 <Layout
   title="Index & glossary"
-  description="The full alphabetical A–Z index and glossary of every named OPDA PDTF resource — classes, object and datatype properties, SKOS concepts and schemes — each linking to its /pdtf representation page."
+  description="The full alphabetical A–Z index and glossary of every named OPDA PDTF resource — classes, object and datatype properties, SKOS concepts and schemes — each linking to its canonical dereferenceable /pdtf page."
 >
 <PageMeta category="Browse the model" variant="brand" updated="Draft · Updated 2026-06-15" />
 
@@ -40,11 +40,12 @@ const trunc = (s: string, n = 160) => (s.length > n ? s.slice(0, n).replace(/\s+
   <p class="lead">
     Every named resource in the schema-derived ontology — <strong>{entries.length}</strong> entries (classes, object
     and datatype properties, SKOS concepts and schemes) in one A–Z, from the SPARQL-derived
-    <a href="/spdtf/inputs/pdtf-schema/schema-derived-ontology/lineage-provenance-and-verification/decision-provenance">ontology model</a>. <strong>Each entry links to its representation page</strong>.
-    Most follow <code>/pdtf/{'{'}id{'}'}</code>; the Lease Term class and
-    <code>leaseTerm</code> property use lowercase, type-scoped paths. SHACL shapes have their own typed index at
+    <a href="/spdtf/inputs/pdtf-schema/schema-derived-ontology/lineage-provenance-and-verification/decision-provenance">ontology model</a>. <strong>Each entry links to its canonical page</strong>
+    at <code>/pdtf/{'{'}id{'}'}</code>. SHACL shapes have their own typed index at
     <a href="/spdtf/inputs/pdtf-schema/schema-derived-ontology/validation-and-examples/shapes">SHACL shapes</a>.
   </p>
+
+  <p class="muted">The Lease Term class and <code>leaseTerm</code> property are the case-independent exception and use distinct lowercase, type-scoped representation paths.</p>
 
   <nav class="callout callout--note" aria-label="Jump to letter">
     <p class="callout__label">Jump to</p>

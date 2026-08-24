@@ -15,6 +15,7 @@ const NAVIGATION_EVIDENCE = new Set(['containing-link', 'declared-original-desti
 const NAVIGATION_CANONICAL_EQUIVALENTS = Object.freeze({
   '/strategy': ['/programme'], '/model': ['/pdtf-schema'], '/implementation': ['/pdtf-schema'],
   '/library': ['/resources'], '/engagement': ['/resources', '/spdtf/working-groups'],
+  '/home': ['/'],
   '/v2': ['/spdtf/property-pack'],
 });
 

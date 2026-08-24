@@ -45,8 +45,8 @@ test('the duplicate home route has one explicit, non-redirect retirement', () =>
 
 test('the receipt fails closed if the retired output or its replacement is absent', () => {
   assert.throws(() => composeSiteRouteRetirementReceipt({
-    records: manifest.routes,
-    addedRecords: manifest.addedRoutes,
+    records: source.routes,
+    addedRecords: source.addedRoutes,
     sourceManifest: source,
   }), /missing or retained/u);
   assert.throws(() => composeSiteRouteRetirementReceipt({

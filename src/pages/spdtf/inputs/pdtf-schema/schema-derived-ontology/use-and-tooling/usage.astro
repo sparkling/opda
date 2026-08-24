@@ -33,7 +33,7 @@ const sourceIdx = exists('artefacts/source/index.html');
 
   <p class="lead">
     The practical guide for a machine consumer of the schema-derived ontology: which prefixes and
-    namespaces to bind, how to query the graph, how to open resource representations, how to validate
+    namespaces to bind, how to query the graph, how the IRIs dereference, how to validate
     your own data against the shapes, and where to download the Turtle. Everything here is
     against the committed corpus — the same TTLs the published reference is generated from.
   </p>
@@ -117,22 +117,19 @@ ORDER BY ?targetClass ?path</code></pre>
     <a href="/spdtf/inputs/pdtf-schema/schema-derived-ontology/use-and-tooling/bake-off">bake-off</a> page.
   </p>
 
-  <h2 id="deref">Resource identifiers &amp; representations</h2>
+  <h2 id="deref">Dereferenceability &amp; content negotiation</h2>
   <p>
     OPDA term IRIs are <strong>HTTPS, under a single registered authority</strong>
-    (<code>opda.org.uk/pdtf/…</code>). Each term has an HTML representation and a Turtle
-    alternate. Most representation paths match the term IRI path. The
-    <code>LeaseTerm</code> class and <code>leaseTerm</code> object property are the bounded
-    exception: their identifiers remain distinct in the source model, while their pages
-    use <code>/pdtf/classes/lease-term</code> and
-    <code>/pdtf/object-properties/lease-term</code>. This avoids a deployment contract that
-    depends on filesystem case sensitivity.
+    (<code>opda.org.uk/pdtf/…</code>), so they are designed to be dereferenceable: a term IRI
+    is a real, resolvable web address rather than an opaque identifier. The intended contract
+    is standard linked-data content negotiation —
   </p>
   <ul>
-    <li>each HTML page links to a static <code>.ttl</code> alternate containing the term's
-      concise description plus one hop; and</li>
-    <li>the page header shows the exact source-model IRI represented by that page.</li>
+    <li><code>Accept: text/turtle</code> (or <code>application/rdf+xml</code>,
+      <code>application/ld+json</code>) returns the machine description of the term;</li>
+    <li><code>Accept: text/html</code> returns the human-readable reference page.</li>
   </ul>
+  <p class="muted">The <code>LeaseTerm</code> class and <code>leaseTerm</code> property keep their exact source-model identifiers but use distinct lowercase, type-scoped static representation paths.</p>
   <p>
     Until the production endpoint serves negotiated representations, the authoritative
     machine artefacts are the committed Turtle bundles linked under

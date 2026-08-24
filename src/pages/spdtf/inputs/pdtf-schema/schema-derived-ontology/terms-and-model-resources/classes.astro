@@ -147,7 +147,7 @@ const ONTOSPY = { href: '/spdtf/inputs/pdtf-schema/schema-derived-ontology/use-a
 ---
 <Layout
   title="Classes"
-  description="Typed index of the OPDA OWL classes, grouped by bounded-context module with each class's rdfs:comment, read from the SPARQL-derived ontology model. Each class links to its /pdtf representation page."
+  description="Typed index of the OPDA OWL classes, grouped by bounded-context module with each class's rdfs:comment, read from the SPARQL-derived ontology model. Each class links to its canonical dereferenceable /pdtf page."
 >
 <PageMeta category="Browse the model" variant="brand" updated="Draft · Updated 2026-06-15" />
 
@@ -159,11 +159,11 @@ const ONTOSPY = { href: '/spdtf/inputs/pdtf-schema/schema-derived-ontology/use-a
     <a href="/spdtf/inputs/pdtf-schema/schema-derived-ontology/lineage-provenance-and-verification/decision-provenance">ontology model</a> (<a href="/modelling/adr/adr-0044">ADR-0044</a>). The classes are kept deliberately few and
     rigid (every type that merely <em>varies</em> is a coded SKOS value, not a subclass — see
     <a href="/spdtf/inputs/pdtf-schema/schema-derived-ontology/concepts-and-architecture/identity#doctrine">the classification doctrine</a>). <strong>Each class links to its own
-    representation page</strong> with its incoming and outgoing connections, attributes,
-    governing shapes and provenance. Most use <code>/pdtf/{'{'}LocalName{'}'}</code>;
-    the Lease Term class uses <code>/pdtf/classes/lease-term</code> so it cannot collide
-    with the similarly named object property on a case-insensitive filesystem.
+    page</strong> at <code>/pdtf/{'{'}LocalName{'}'}</code> — the canonical, dereferenceable reference with its
+    incoming and outgoing connections, attributes, governing shapes and provenance.
   </p>
+
+  <p class="muted">The Lease Term class is the case-independent exception: its representation is at <code>/pdtf/classes/lease-term</code>.</p>
 
 
   <p class="muted">

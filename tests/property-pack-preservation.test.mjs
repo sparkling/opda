@@ -87,7 +87,7 @@ test('Property Pack preserves the frozen 690 + 1 + 2 cut and classifies nine lat
 });
 
 test('the final manifest carries the frozen schema-to-scheme route receipt', () => {
-  assert.equal(routeBaseline.schemaVersion, 10);
+  assert.equal(routeBaseline.schemaVersion, 11);
   assert.deepEqual({
     policy: routeBaseline.schemaToSchemeMigration?.policy,
     sourceCommit: routeBaseline.schemaToSchemeMigration?.sourceCommit,

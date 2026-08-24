@@ -1,12 +1,12 @@
 ---
-status: implemented
+status: accepted
 date: 2026-08-23
 updated: 2026-08-24
 tags: [website, information-architecture, pdtf-schema, spdtf, third-party-input, routing, preservation]
 supersedes: [ADR-0076]
 amends: [ADR-0002, ADR-0039, ADR-0041, ADR-0042, ADR-0044, ADR-0059, ADR-0060, ADR-0063, ADR-0074, ADR-0075]
 depends-on: [ADR-0006, ADR-0074, ADR-0075, ADR-0076]
-implements: [src/lib/pdtf1-routes.mjs, src/lib/pdtf-resource-routes.mjs, src/lib/site-navigation.ts, src/lib/site-route-migrations.mjs]
+implements: [src/lib/pdtf1-routes.mjs, src/lib/site-navigation.ts, src/lib/site-route-migrations.mjs]
 ---
 
 # Place the PDTF schema beneath SPDTF as a third-party input
@@ -18,9 +18,7 @@ implements: [src/lib/pdtf1-routes.mjs, src/lib/pdtf-resource-routes.mjs, src/lib
 > it does not appear beneath SPDTF Development, and `/spdtf/ontologies/**` is retired
 > without a redirect, rewrite alias or duplicate page. The PDTF schema remains a
 > source-specific third-party input beneath
-> `/spdtf/inputs/pdtf-schema/**`. `/pdtf/**` RDF identifiers remain unchanged; the
-> Lease Term class/property representation documents use the case-independent paths
-> recorded in the 2026-08-24 amendment.
+> `/spdtf/inputs/pdtf-schema/**`, and stable `/pdtf/**` RDF identifiers remain unchanged.
 
 ## Context and Problem Statement
 
@@ -37,9 +35,8 @@ not an external input.
 
 The operator has again authorised a clean route break: former reader routes may disappear,
 without redirects, once their content, fragments, assets and feedback identities have been
-verified at their replacement routes. The `/pdtf/**` RDF identifier namespace is outside
-that editorial move; representation routing for its one case-only class/property pair is
-governed separately by ADR-0044's 2026-08-24 amendment.
+verified at their replacement routes. The stable `/pdtf/**` RDF identifier namespace is
+outside this editorial change.
 
 ## Considered Options
 
@@ -83,11 +80,9 @@ SPDTF working-group process, is not an OPDA-endorsed scheme and does not determi
 meaning. The schema-derived ontology landing must state its distinct draft, derived status.
 
 `/pdtf-schema/**` is retired with no redirect, rewrite alias or duplicate canonical page.
-`/spdtf/third-party-inputs/**` is not a public route. `/pdtf/**` identifiers remain
-stable. Most HTML and Turtle representation paths remain identical to those identifiers;
-the distinct `LeaseTerm` class and `leaseTerm` property use
-`/pdtf/classes/lease-term{,.ttl}` and
-`/pdtf/object-properties/lease-term{,.ttl}` so publication does not depend on case.
+`/spdtf/third-party-inputs/**` is not a public route. `/pdtf/**` HTML and Turtle
+representations remain exact stable identifiers, including the distinct `LeaseTerm` and
+`leaseTerm` resources.
 
 ### Route and information-preservation contract
 
@@ -99,8 +94,7 @@ The receipt must prove all of the following:
 - every `/pdtf-schema/**` reader route and physical output maps once to
   `/spdtf/inputs/pdtf-schema/**`, preserving the exact suffix and flat `*.html` filenames;
 - no old reader route is emitted and no redirect is created;
-- every `/pdtf/**` route and file remains exact unless it is one of the two explicitly
-  classified Lease Term representation moves;
+- every `/pdtf/**` route and file remains exact and is never classified as a move;
 - information blocks, authored anchors and generated-family inventories are retained or
   carry an explicit, hash-bound replacement receipt;
 - renamed navigation-shell fragments have a separate one-to-one fragment receipt; and
@@ -124,10 +118,10 @@ provenance and status.
 
 ## Confirmation
 
-This decision is implemented. Publication remains a separate operator action. The
-schema-v9 route receipt, full build, link/crawl, strict preservation and relevant
-navigation/authority checks must pass on a production build without any case-sensitive
-filesystem exception.
+This decision authorises local implementation and validation only. It does not authorise
+publication, deployment, source adoption or a working-group determination. It is complete
+only when the schema-v9 route receipt, full build, link/crawl, strict preservation and
+relevant navigation/authority checks pass on the final case-sensitive production build.
 
 ## More Information
 

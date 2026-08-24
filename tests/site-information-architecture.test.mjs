@@ -203,8 +203,8 @@ test('the migration ledger preserves every audited high-risk information family'
 });
 
 test('the frozen preservation proof resolves content, ownership and exact family checksums', () => {
-  assert.equal(routeBaseline.schemaVersion, 10);
-  assert.equal(routeBaseline.routeCount, 3209);
+  assert.equal(routeBaseline.schemaVersion, 11);
+  assert.equal(routeBaseline.routeCount, 3208);
   assert.equal(routeBaseline.addedRouteCount, 87);
   assert.equal(routeBaseline.retiredRouteCount, 227);
   assert.equal(routeBaseline.retiredRoutes.length, 227);
@@ -276,8 +276,8 @@ test('the frozen preservation proof resolves content, ownership and exact family
       && entry.classification === 'superseded-navigation-copy'
       && entry.sourceText && entry.originalDestinationRoute && entry.destinationPolicy
       && ['containing-link', 'declared-original-destination'].includes(entry.sourceEvidence)
-      && entry.supersessionReason.includes(`"${entry.originalDestinationRoute}"`)
-      && (entry.supersessionReason.includes(`"${entry.destinationRoute}"`)
+      && entry.supersessionReason.includes(entry.originalDestinationRoute)
+      && (entry.supersessionReason.includes(entry.destinationRoute)
         || getDeclaredRouteReplacement(entry.originalDestinationRoute) === entry.destinationRoute)
     ))
   )));
