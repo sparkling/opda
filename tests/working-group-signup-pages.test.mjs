@@ -78,12 +78,17 @@ test('global header promotes the canonical working-group sign-up route', async (
     readFile(paths.baseCss, 'utf8'),
   ]);
 
-  assert.match(header, /<a href="\/working-groups\/join" class="header-cta">Join a working group<\/a>/u);
+  const primaryStart = header.indexOf('<nav class="global-nav"');
+  const primaryEnd = header.indexOf('</nav>', primaryStart);
+  const utilitiesStart = header.indexOf('<nav class="header-nav"');
+  const cta = header.indexOf('<a href="/working-groups/join" class="header-cta">Join a working group</a>');
+  assert.ok(primaryStart >= 0 && cta > primaryStart && cta < primaryEnd);
+  assert.ok(primaryEnd < utilitiesStart);
   assert.match(header, /<a href="\/search" class="header-icon-link" aria-label="Search" title="Search">[\s\S]*?<svg[\s\S]*?aria-hidden="true"/u);
   assert.match(header, /class="header-icon-link"[\s\S]*?aria-label="GitHub"\s+title="GitHub"[\s\S]*?<svg[\s\S]*?aria-hidden="true"/u);
   assert.doesNotMatch(header, />Search<\/a>|>GitHub<\/a>/u);
   assert.match(baseCss, /\.app-header \.header-nav a\.header-icon-link\s*\{[^}]*width:\s*var\(--target-min\)[^}]*justify-content:\s*center/su);
-  assert.match(baseCss, /\.app-header \.header-nav a\.header-cta\s*\{[^}]*background:\s*var\(--brand-yellow\)[^}]*color:\s*var\(--brand-ink\)/su);
+  assert.match(baseCss, /\.app-header \.global-nav a\.header-cta\s*\{[^}]*justify-content:\s*flex-start[^}]*background:\s*var\(--brand-yellow\)[^}]*color:\s*var\(--brand-ink\)/su);
   assert.match(baseCss, /@media \(max-width: 96rem\)\s*\{[\s\S]*\.app-header \.global-nav-panel \.header-nav\s*\{[^}]*grid-column:\s*1 \/ -1/su);
 });
 
