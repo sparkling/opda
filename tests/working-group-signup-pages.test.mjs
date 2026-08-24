@@ -84,7 +84,7 @@ test('global header promotes the canonical working-group sign-up route', async (
   assert.doesNotMatch(header, />Search<\/a>|>GitHub<\/a>/u);
   assert.match(baseCss, /\.app-header \.header-nav a\.header-icon-link\s*\{[^}]*width:\s*var\(--target-min\)[^}]*justify-content:\s*center/su);
   assert.match(baseCss, /\.app-header \.header-nav a\.header-cta\s*\{[^}]*background:\s*var\(--brand-yellow\)[^}]*color:\s*var\(--brand-ink\)/su);
-  assert.match(baseCss, /@media \(max-width: 92rem\)\s*\{[\s\S]*\.app-header \.global-nav-panel \.header-nav\s*\{[^}]*grid-column:\s*1 \/ -1/su);
+  assert.match(baseCss, /@media \(max-width: 96rem\)\s*\{[\s\S]*\.app-header \.global-nav-panel \.header-nav\s*\{[^}]*grid-column:\s*1 \/ -1/su);
 });
 
 test('registration script sends the fixed allowlisted payload to the same-origin endpoint', async () => {

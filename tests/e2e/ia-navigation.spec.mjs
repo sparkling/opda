@@ -56,13 +56,13 @@ test('aria-current follows canonical route ownership', async ({ page }) => {
 test('left section navigation covers every canonical destination', async ({ page }) => {
   const clean = watchRuntime(page);
   await page.setViewportSize({ width: 1440, height: 1000 });
-  for (const [route, section, label] of [
-    ['/programme', 'programme', 'Overview'],
-    ['/governance', 'governance', 'Governance framework'],
-    ['/semantic-modelling', 'semantic-modelling', 'Overview'],
-    ['/spdtf', 'spdtf', 'Overview'],
-    ['/spdtf/working-groups', 'working-groups', 'Group workspaces'],
-    ['/resources', 'resources', 'Overview'],
+  for (const [route, section, label, linkClass] of [
+    ['/programme', 'programme', 'Overview', 'nav-group-leaf'],
+    ['/governance', 'governance', 'Governance framework', 'nav-group-link'],
+    ['/semantic-modelling', 'semantic-modelling', 'Overview', 'nav-group-leaf'],
+    ['/spdtf', 'spdtf', 'Overview', 'nav-group-link'],
+    ['/spdtf/working-groups', 'working-groups', 'Group workspaces', 'nav-group-link'],
+    ['/resources', 'resources', 'Overview', 'nav-group-leaf'],
   ]) {
     await visit(page, route);
     const sidebar = page.locator('#app-sidebar');
@@ -73,7 +73,7 @@ test('left section navigation covers every canonical destination', async ({ page
     const active = navigation.locator('a[aria-current="page"]');
     await expect(active).toHaveCount(1);
     await expect(active).toHaveText(label);
-    await expect(active).toHaveClass(/nav-group-link/u);
+    await expect(active).toHaveClass(new RegExp(linkClass, 'u'));
     await expect(navigation.locator(`a[href="${route}"]`)).toHaveCount(1);
     await expect(sidebar.locator('#sidebar-collapse')).toHaveAttribute('aria-controls', 'section-navigation');
   }
@@ -87,7 +87,7 @@ test('left navigation follows route ownership with one active link', async ({ pa
     ['/strategy/project-roadmap', 'programme', 'Project roadmap'],
     ['/spdtf/property-pack/validation', 'spdtf', 'Validation evidence'],
     ['/spdtf/working-groups/estate-agency/evidence', 'working-groups', 'Evidence'],
-    [pdtfClasses, 'pdtf-schema', 'Classes'],
+    [pdtfClasses, 'spdtf', 'Classes'],
     ['/engagement/meetings-decisions', 'governance', 'Programme decisions'],
     ['/engagement/transcripts', 'resources', 'Transcripts index'],
   ]) {
@@ -116,16 +116,22 @@ test('PDTF schema navigation separates supporting material from the schema-deriv
   await page.setViewportSize({ width: 1440, height: 1000 });
   await visit(page, pdtfClasses);
 
-  const navigation = page.locator('#section-navigation[data-section="pdtf-schema"]');
+  const navigation = page.locator('#section-navigation[data-section="spdtf"]');
   const groups = navigation.locator(':scope > .nav-group');
   await expect(groups).toHaveCount(3);
   await expect(groups.locator('.nav-group-link')).toHaveText([
-    'Overview', 'Schema and supporting material', 'Schema-derived ontology',
+    'Overview', 'Property Pack ontology', 'Third-party inputs',
   ]);
   await expect(navigation.locator('a[aria-current="page"]')).toHaveText('Classes');
-  await expect(navigation.locator('.nav-group[data-group="Schema-derived ontology"]')).toHaveClass(/is-open/u);
-  await expect(navigation.locator('.nav-group[data-group="Schema and supporting material"]')).not.toHaveClass(/is-open/u);
-  const taskCategories = navigation.locator('.nav-group[data-group="Schema-derived ontology"] .tree-folder.is-task-category');
+  const inputsGroup = navigation.locator('.nav-group[data-group="Third-party inputs"]');
+  const pdtfBranch = inputsGroup.locator(`:scope > .nav-group-items > .tree-folder:has(> .tree-folder-row > a[href="${PDTF1_ROUTES.root}"])`);
+  const supportingBranch = pdtfBranch.locator(`:scope > .tree-children > .tree-folder:has(> .tree-folder-row > a[href="${PDTF1_ROUTES.original}"])`);
+  const extractedBranch = pdtfBranch.locator(`:scope > .tree-children > .tree-folder:has(> .tree-folder-row > a[href="${PDTF1_ROUTES.extracted}"])`);
+  await expect(inputsGroup).toHaveClass(/is-open/u);
+  await expect(pdtfBranch).toHaveClass(/is-open/u);
+  await expect(extractedBranch).toHaveClass(/is-open/u);
+  await expect(supportingBranch).not.toHaveClass(/is-open/u);
+  const taskCategories = extractedBranch.locator(':scope > .tree-children > .tree-folder');
   await expect(taskCategories).toHaveCount(7);
   await expect(taskCategories.filter({ has: page.locator(`a[href="${PDTF1_ROUTES.terms}"]`) }))
     .toHaveClass(/is-open/u);
@@ -153,7 +159,7 @@ test('PDTF schema navigation separates supporting material from the schema-deriv
     }));
   expect(nestedFolderStyle.background).not.toBe('rgba(0, 0, 0, 0)');
   expect(Number(nestedFolderStyle.weight)).toBeGreaterThan(Number(categoryStyle.leafWeight));
-  const disclosureContract = await navigation.locator('.nav-group[data-group="Schema-derived ontology"] .tree-folder')
+  const disclosureContract = await extractedBranch.locator('.tree-folder')
     .evaluateAll((folders) => folders.map((folder) => {
       const row = folder.querySelector(':scope > .tree-folder-row');
       const controls = row.querySelector('button').getAttribute('aria-controls');
@@ -178,12 +184,13 @@ test('PDTF schema navigation separates supporting material from the schema-deriv
   ]) await expect(page.locator(`#section-nav-group-pdtf-schema-${id === 'adoption' ? 'usage' : id}`)).toHaveCount(1);
 
   await expect(page.locator('nav[aria-label="Breadcrumb"] li')).toHaveText([
-    /PDTF schema/u, /Schema-derived ontology/u, /Terms and model resources/u, /Classes/u,
+    /SPDTF Development/u, /Third-party inputs/u, /PDTF schema/u,
+    /Schema-derived ontology/u, /Terms and model resources/u, /Classes/u,
   ]);
 
   await visit(page, `${PDTF1_ROUTES.original}/schema/legal-estate`);
-  await expect(navigation.locator('.nav-group[data-group="Schema and supporting material"]')).toHaveClass(/is-open/u);
-  await expect(navigation.locator('.nav-group[data-group="Schema-derived ontology"]')).not.toHaveClass(/is-open/u);
+  await expect(supportingBranch).toHaveClass(/is-open/u);
+  await expect(extractedBranch).not.toHaveClass(/is-open/u);
   await expect(navigation.locator('a[aria-current="page"]')).toHaveCount(1);
 
   await navigation.locator(`a[href="${PDTF1_ROUTES.extracted}"]`).click();
@@ -253,8 +260,7 @@ test('category pages remain links beside independent disclosure controls', async
 test('dark active category renders one amber stripe', async ({ page }) => {
   const clean = watchRuntime(page);
   await page.setViewportSize({ width: 1440, height: 1000 });
-  await visit(page, '/spdtf/working-groups');
-  await page.locator('#theme-toggle').click();
+  await visit(page, '/spdtf/working-groups?theme=dark');
   await expect(page.locator('html')).toHaveAttribute('data-theme', 'dark');
 
   const row = page.locator('.nav-group-row.is-active-page');
@@ -316,7 +322,7 @@ test('page navigation exposes headings and a single previous-next sequence', asy
   const toc = page.locator('aside.toc[aria-label="On this page"]');
   await expect(toc).toBeVisible();
   expect(await toc.locator('a').evaluateAll((links) => links.map((link) => link.getAttribute('href'))))
-    .toEqual(['#continuation', '#policy', '#start']);
+    .toEqual(['#progression', '#policy', '#programme-sections', '#start']);
   const toggle = toc.locator('#toc-collapse');
   await expect(toggle).toHaveAttribute('aria-expanded', 'true');
   await toggle.click();
@@ -472,11 +478,14 @@ test('participant reaches evidence, questions and review from one canonical work
   clean();
 });
 
-test('PDTF alias search labels historical and continuation results with authority', async ({ page }) => {
+test('PDTF search uses canonical input routes and labels results with authority', async ({ page }) => {
   const clean = watchRuntime(page);
   await visit(page, '/search?q=PDTF');
   const results = page.locator('.search-result:not([hidden])');
-  await expect(results.filter({ has: page.locator('a[href="/pdtf-schema"]') })).toContainText('historical name');
+  const schemaResult = results.filter({ has: page.locator(`a[href="${PDTF1_ROUTES.root}"]`) });
+  await expect(schemaResult).toContainText('Third-party Digital Property Pack schema input');
+  await expect(schemaResult).toContainText('does not confer OPDA endorsement or SPDTF authority');
+  await expect(results.filter({ has: page.locator('a[href="/pdtf-schema"]') })).toHaveCount(0);
   await expect(results.getByRole('link', { name: 'SPDTF Development', exact: true })).toHaveCount(1);
   expect(await results.count()).toBeGreaterThan(1);
   await expect(results.locator('dt', { hasText: 'Authority' }).first()).toBeVisible();

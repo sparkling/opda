@@ -182,6 +182,17 @@ jobs:
       - name: Browser, axe, keyboard and responsive gates
         run: pnpm run test:e2e
 
+      - name: Upload browser failure evidence
+        if: failure()
+        uses: actions/upload-artifact@v7
+        with:
+          name: browser-failure-${{ github.sha }}-${{ github.run_attempt }}
+          path: |
+            test-results/
+            playwright-report/
+          if-no-files-found: error
+          retention-days: 7
+
       - name: Generated model and graph drift gate
         run: git diff --exit-code -- src/data/ontology-model.json public/data/ontology-graph-elements.json
 

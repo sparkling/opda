@@ -326,7 +326,7 @@ test('shared navigation exposes visible focus, state and 44px targets', async ()
   assert.match(client, /aria-pressed/u);
   assert.match(client, /bindPrimaryNavigation/u);
   assert.match(client, /panel\.inert/u);
-  assert.match(client, /matchMedia\('\(max-width: 92rem\)'\)/u);
+  assert.match(client, /matchMedia\('\(max-width: 96rem\)'\)/u);
   assert.match(client, /function placeToc/u);
   assert.match(header, /showSidebar &&/u);
   assert.match(header, /id="global-nav-toggle"/u);
@@ -334,7 +334,7 @@ test('shared navigation exposes visible focus, state and 44px targets', async ()
   assert.match(layout, /<Header showSidebar=\{showSidebar\}/u);
   assert.doesNotMatch(base, /--header-height:\s*6\.5rem/u);
   assert.doesNotMatch(toc, /@media[^}]+\.toc\s*\{\s*display:\s*none/su);
-  assert.match(base, /@media \(max-width: 92rem\) \{[\s\S]*\.global-nav-toggle \{ display: inline-flex; \}/u);
+  assert.match(base, /@media \(max-width: 96rem\) \{[\s\S]*\.global-nav-toggle \{ display: inline-flex; \}/u);
 });
 
 test('text inherits its outer layout width instead of stacking nested measures', async () => {

@@ -213,9 +213,9 @@ a:visited { text-decoration-color: currentColor; }
 }
 
 /* The six-destination global nav needs a disclosure before the desktop row
-   becomes narrower than its content. The 92rem boundary includes a safety
+   becomes narrower than its content. The 96rem boundary includes a safety
    margin above the measured fit threshold on both supported platforms. */
-@media (max-width: 92rem) {
+@media (max-width: 96rem) {
   .app-header {
     height: var(--header-height);
     padding-inline: var(--space-3);

@@ -9,10 +9,11 @@ import {
 
 test('shell theme toggle persists across navigation', async ({ page }) => {
   const clean = watchRuntime(page);
-  await visit(page, '/');
+  await visit(page, '/programme');
   const html = page.locator('html');
   const toggle = page.locator('#theme-toggle');
   await expect(html).toHaveAttribute('data-theme', 'light');
+  await page.locator('#global-nav-toggle').click();
   await toggle.click();
   await expect(html).toHaveAttribute('data-theme', 'dark');
   await expect(toggle).toHaveAttribute('aria-pressed', 'true');
@@ -352,7 +353,7 @@ test('schema tables wrap instead of creating a mobile horizontal scrollbar', asy
     const viewport = page.locator('.db-table-wrap').first();
     const table = viewport.locator('table.db-table').first();
     await expect(table).toHaveCSS('min-width', '0px');
-    await expect(table).toHaveCSS('table-layout', 'fixed');
+    await expect(table).toHaveCSS('table-layout', 'auto');
     await expect(table.locator('th').first()).toHaveCSS('white-space', 'normal');
 
     const dimensions = await viewport.evaluate((node) => ({
@@ -439,11 +440,11 @@ test('mobile interactive targets meet the 44px minimum', async ({ page }) => {
   await expect(page.locator('#ontology-graph')).toHaveAttribute('aria-labelledby', await tabs.nth(1).getAttribute('id'));
 
   await visit(page, '/');
-  const enterSize = await page.locator('.public-header__signin').evaluate((element) => {
+  const enterSize = await page.locator('.public-hero__actions a[href="/working-groups/join"]').evaluate((element) => {
     const rect = element.getBoundingClientRect();
     return { width: rect.width, height: rect.height };
   });
-  expect(enterSize.width, 'public Enter link width').toBeGreaterThanOrEqual(44);
-  expect(enterSize.height, 'public Enter link height').toBeGreaterThanOrEqual(44);
+  expect(enterSize.width, 'public working-group CTA width').toBeGreaterThanOrEqual(44);
+  expect(enterSize.height, 'public working-group CTA height').toBeGreaterThanOrEqual(44);
   clean();
 });

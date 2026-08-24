@@ -24,7 +24,7 @@ test('mobile primary disclosure is keyboard-operable and 320px does not overflow
 
 test('compact primary disclosure keeps all six destinations discoverable through the safety boundary', async ({ page }) => {
   const clean = watchRuntime(page);
-  for (const width of [769, 1024, 1279, 1376, 1440, 1472]) {
+  for (const width of [769, 1024, 1279, 1376, 1440, 1472, 1536]) {
     await page.setViewportSize({ width, height: 900 });
     await visit(page, '/resources');
 
@@ -64,7 +64,7 @@ test('compact primary disclosure keeps all six destinations discoverable through
 
   // At the first width beyond the disclosure boundary, the row must have
   // enough intrinsic space for every destination, with no clipped glyphs.
-  await page.setViewportSize({ width: 1473, height: 900 });
+  await page.setViewportSize({ width: 1537, height: 900 });
   await visit(page, '/resources');
   const desktopNav = page.locator('nav[aria-label="Primary"]');
   await expect(page.locator('#global-nav-toggle')).toBeHidden();
@@ -81,7 +81,7 @@ test('compact primary disclosure keeps all six destinations discoverable through
   expect(desktopGeometry.scroll).toBeLessThanOrEqual(desktopGeometry.client + 1);
   for (const rect of desktopGeometry.links) {
     expect(rect.left, 'desktop left edge').toBeGreaterThanOrEqual(0);
-    expect(rect.right, 'desktop right edge').toBeLessThanOrEqual(1473);
+    expect(rect.right, 'desktop right edge').toBeLessThanOrEqual(1537);
   }
   await assertNoBodyOverflow(page);
   clean();
@@ -94,8 +94,8 @@ test('current implementers reach nested third-party schema and validation guidan
 
   await page.locator('.public-overview a.card[href="/spdtf"]').click();
   await expect(page).toHaveURL(/\/spdtf$/u);
-  await page.getByRole('main').getByRole('link', { name: 'Third-party inputs', exact: true }).click();
-  await page.getByRole('main').getByRole('link', { name: 'PDTF schema', exact: true }).click();
+  await page.locator('main a[href="/spdtf/inputs"]').click();
+  await page.locator(`main a[href="${PDTF1_ROUTES.root}"]`).click();
   await expect(page).toHaveURL(new RegExp(`${PDTF1_ROUTES.root}$`, 'u'));
   const implementationLinks = page.locator('main a');
   const schemasLink = page.getByRole('main').getByRole('link', {

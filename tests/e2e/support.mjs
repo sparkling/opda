@@ -133,11 +133,29 @@ export async function settleVisualState(page) {
 }
 
 export async function assertNoBodyOverflow(page) {
-  const overflow = await page.evaluate(() => ({
-    documentWidth: document.documentElement.scrollWidth,
-    viewport: document.documentElement.clientWidth,
-    bodyWidth: document.body.scrollWidth,
-  }));
+  const overflow = await page.evaluate(() => {
+    const viewport = document.documentElement.clientWidth;
+    const offenders = [...document.body.querySelectorAll('*')]
+      .map((element) => {
+        const rect = element.getBoundingClientRect();
+        return {
+          element: `${element.tagName.toLowerCase()}${element.id ? `#${element.id}` : ''}${element.classList.length ? `.${[...element.classList].join('.')}` : ''}`,
+          left: Math.round(rect.left),
+          right: Math.round(rect.right),
+          width: Math.round(rect.width),
+          scrollWidth: element.scrollWidth,
+        };
+      })
+      .filter(({ left, right }) => left < -1 || right > viewport + 1)
+      .sort((a, b) => Math.max(b.right - viewport, -b.left) - Math.max(a.right - viewport, -a.left))
+      .slice(0, 12);
+    return {
+      documentWidth: document.documentElement.scrollWidth,
+      viewport,
+      bodyWidth: document.body.scrollWidth,
+      offenders,
+    };
+  });
   assert.ok(
     overflow.documentWidth <= overflow.viewport + 1,
     `body overflow: ${JSON.stringify(overflow)}`,
