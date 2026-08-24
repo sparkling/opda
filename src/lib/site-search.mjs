@@ -1,16 +1,28 @@
+import { GLOBAL_DESTINATIONS, getActiveDestination } from './site-ia.mjs';
+
+const destinationTitles = new Map(GLOBAL_DESTINATIONS.map(({ key, title }) => [key, title]));
+const destinationKeys = new Set(destinationTitles.keys());
+
 function facetFor(url) {
   if (url === '/spdtf/inputs/pdtf-schema' || url.startsWith('/spdtf/inputs/pdtf-schema/schema-and-supporting-material')) {
     return 'PDTF schema';
   }
   if (url.startsWith('/spdtf/inputs/pdtf-schema/schema-derived-ontology')) return 'Schema-derived ontology';
-  if (url === '/semantic-modelling' || url.startsWith('/semantic-modelling/')) return 'Semantic modelling';
-  if (url === '/spdtf' || url.startsWith('/spdtf/')) return 'SPDTF Development';
-  return 'Cross-programme';
+  return destinationTitles.get(getActiveDestination(url)) ?? 'Resources';
 }
 
-const entry = (title, url, summary, aliases = []) => Object.freeze({
-  title, url, summary, aliases: Object.freeze(aliases), facet: facetFor(url),
-});
+const entry = (title, url, summary, aliases = []) => {
+  const destination = getActiveDestination(url);
+  if (!destinationKeys.has(destination)) throw new Error(`Search entry has no canonical destination: ${url}`);
+  return Object.freeze({
+    title,
+    url,
+    summary,
+    aliases: Object.freeze(aliases),
+    facet: facetFor(url),
+    destination,
+  });
+};
 
 export const SITE_SEARCH_ENTRIES = Object.freeze([
   entry('Programme', '/programme', 'Purpose, schema-to-scheme progression, roadmap and UK Smart Data context', ['PDTF', 'SPDTF']),
@@ -67,9 +79,49 @@ export const SITE_SEARCH_ENTRIES = Object.freeze([
   entry('Resources', '/resources', 'Source registry, glossary and machine-readable manifests', ['PDTF', 'SPDTF']),
 ]);
 
-export function searchEntries(query) {
-  const needle = String(query ?? '').trim().toLocaleLowerCase('en-GB');
-  if (!needle) return SITE_SEARCH_ENTRIES;
-  return SITE_SEARCH_ENTRIES.filter((record) => [record.title, record.summary, ...record.aliases]
-    .some((value) => value.toLocaleLowerCase('en-GB').includes(needle)));
+function normalizeSearchText(value) {
+  return String(value ?? '')
+    .normalize('NFKD')
+    .toLocaleLowerCase('en-GB')
+    .replace(/[^\p{L}\p{N}]+/gu, ' ')
+    .trim();
+}
+
+function relevance(record, query) {
+  const phrase = normalizeSearchText(query);
+  if (!phrase) return 0;
+
+  const tokens = phrase.split(/\s+/u);
+  const title = normalizeSearchText(record.title);
+  const aliases = record.aliases.map(normalizeSearchText);
+  const summary = normalizeSearchText(record.summary);
+  const destination = normalizeSearchText(destinationTitles.get(record.destination));
+  const facet = normalizeSearchText(record.facet);
+  const url = normalizeSearchText(record.url);
+  const corpus = [title, ...aliases, summary, destination, facet, url].join(' ');
+  if (!tokens.every((token) => corpus.includes(token))) return null;
+
+  if (title === phrase) return 0;
+  if (title.startsWith(phrase)) return 10;
+  if (title.includes(phrase)) return 20;
+  if (aliases.some((alias) => alias === phrase)) return 30;
+  if (aliases.some((alias) => alias.startsWith(phrase))) return 40;
+
+  return 50 + tokens.reduce((score, token) => {
+    if (title.startsWith(token)) return score;
+    if (title.includes(token)) return score + 2;
+    if (aliases.some((alias) => alias.includes(token))) return score + 4;
+    if (facet.includes(token) || destination.includes(token)) return score + 6;
+    return score + 8;
+  }, 0);
+}
+
+export function searchEntries(query, destination = '') {
+  const selectedDestination = destinationKeys.has(destination) ? destination : '';
+  return SITE_SEARCH_ENTRIES
+    .map((record, index) => ({ record, index, score: relevance(record, query) }))
+    .filter(({ record, score }) => score !== null
+      && (!selectedDestination || record.destination === selectedDestination))
+    .sort((left, right) => left.score - right.score || left.index - right.index)
+    .map(({ record }) => record);
 }

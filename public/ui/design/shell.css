@@ -95,8 +95,7 @@
   margin-top: var(--space-3);
 }
 .nav-subgroup + .nav-subgroup { margin-top: var(--space-3); }
-.app-sidebar h3,
-.sidebar-section-title {
+.app-sidebar h3 {
   font: 700 var(--text-xs) / 1.4 var(--font-sans);
   text-transform: uppercase;
   letter-spacing: var(--tracking-meta);
@@ -431,7 +430,7 @@
 .app-main {
   min-width: 0;
   width: 100%;
-  padding: var(--space-8) clamp(var(--space-4), 2.25vw, var(--space-8));
+  padding: var(--space-8) var(--content-gutter);
   max-width: 100%;
   background: var(--color-surface);
 }
@@ -472,7 +471,7 @@
     visibility: visible;
     pointer-events: auto;
   }
-  .app-main { padding: var(--space-5) var(--space-5); }
+  .app-main { padding: var(--space-5) var(--content-gutter); }
   html.nav-open { overflow: hidden; }
 }
 

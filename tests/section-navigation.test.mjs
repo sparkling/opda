@@ -4,8 +4,8 @@ import test from 'node:test';
 
 import { SECTIONS, findPage, normalizeUrl } from '../src/lib/site.ts';
 import { PDTF1_ROUTES } from '../src/lib/pdtf1-routes.mjs';
-import { getRouteStatus } from '../src/lib/site-ia.mjs';
-import { SITE_SEARCH_ENTRIES } from '../src/lib/site-search.mjs';
+import { getActiveDestination, getRouteStatus } from '../src/lib/site-ia.mjs';
+import { SITE_SEARCH_ENTRIES, searchEntries } from '../src/lib/site-search.mjs';
 import {
   SECTION_NAVIGATION,
   findNavigationPage,
@@ -112,6 +112,30 @@ test('the left section navigation implements all six destinations from one regis
     '/resources', '/glossary',
   ]) assert.equal(compositeUrls.filter((url) => url === required).length, 1, `${required} must appear once`);
   assert.equal(compositeUrls.filter((url) => url.startsWith('/spdtf/working-groups')).length, 39);
+});
+
+test('site search uses canonical destinations and deterministic relevance', () => {
+  assert.equal(new Set(SITE_SEARCH_ENTRIES.map(({ url }) => url)).size, SITE_SEARCH_ENTRIES.length);
+  for (const record of SITE_SEARCH_ENTRIES) {
+    assert.equal(record.destination, getActiveDestination(record.url), `${record.url} has a stale destination`);
+  }
+
+  assert.deepEqual(searchEntries('').map(({ url }) => url), SITE_SEARCH_ENTRIES.map(({ url }) => url));
+  assert.equal(searchEntries('governance')[0]?.url, '/governance');
+  assert.equal(searchEntries('PDTF schema')[0]?.url, PDTF1_ROUTES.root);
+  assert.ok(searchEntries('semantic mapping')
+    .some(({ url }) => url === '/semantic-modelling/evidence-and-mappings'));
+
+  const governance = searchEntries('', 'governance');
+  assert.ok(governance.length > 1);
+  assert.ok(governance.every(({ destination }) => destination === 'governance'));
+
+  const distinctWorkAreas = new Set([
+    PDTF1_ROUTES.root,
+    PDTF1_ROUTES.extracted,
+    '/spdtf',
+  ].map((url) => getRouteStatus(url).workArea));
+  assert.equal(distinctWorkAreas.size, 3);
 });
 
 test('Governance framework follows six linked task branches without losing a legacy page', () => {

@@ -6,23 +6,27 @@
 import { GLOBAL_DESTINATIONS, getActiveDestination } from '@/lib/site-ia.mjs';
 import AuthButton from '@/components/AuthButton.astro';
 
-const activeDestination = getActiveDestination(Astro.url.pathname);
+const currentPath = Astro.url.pathname.replace(/\/+$/u, '') || '/';
+const isSearchPage = currentPath === '/search';
+const activeDestination = isSearchPage ? null : getActiveDestination(currentPath);
 interface Props { showSidebar?: boolean; }
 const { showSidebar = false } = Astro.props;
 ---
-<header class="app-header">
-  <a href="/" class="brand-link" aria-label="Open Property Data Association knowledge base home">
-    <picture>
-      <source media="(forced-colors: active)" srcset="/ui/brand/opda-wordmark-dark.svg" />
-      <img
-        class="brand-wordmark"
-        src="/ui/brand/opda-wordmark-white.svg"
-        alt="Open Property Data Association"
-        width="149"
-        height="42"
-      />
-    </picture>
-  </a>
+<header class={`app-header${showSidebar ? ' app-header--with-sidebar' : ''}`}>
+  <div class="brand-cell">
+    <a href="/" class="brand-link" aria-label="Open Property Data Association knowledge base home">
+      <picture>
+        <source media="(forced-colors: active)" srcset="/ui/brand/opda-wordmark-dark.svg" />
+        <img
+          class="brand-wordmark"
+          src="/ui/brand/opda-wordmark-white.svg"
+          alt="Open Property Data Association"
+          width="149"
+          height="42"
+        />
+      </picture>
+    </a>
+  </div>
 
   <button
     type="button"
@@ -50,7 +54,13 @@ const { showSidebar = false } = Astro.props;
     </nav>
 
     <nav class="header-nav" aria-label="Actions and utilities">
-      <a href="/search" class="header-icon-link" aria-label="Search" title="Search">
+      <a
+        href="/search"
+        class={`header-icon-link${isSearchPage ? ' active' : ''}`}
+        aria-label="Search"
+        aria-current={isSearchPage ? 'page' : undefined}
+        title="Search"
+      >
         <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true">
           <circle cx="11" cy="11" r="7" />
           <path d="m20 20-4-4" />

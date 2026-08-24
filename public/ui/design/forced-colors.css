@@ -19,12 +19,14 @@
   }
 
   :where(.btn[aria-pressed='true'], .btn[aria-current], .global-nav a[aria-current],
-    .sidebar-nav a[aria-current], .toc a[aria-current], .db-pagination button.current) {
+    .header-icon-link[aria-current], .sidebar-nav a[aria-current], .toc a[aria-current],
+    .db-pagination button.current) {
     border-bottom: 4px solid Highlight;
   }
 
   :where(.pill, .callout, .status-card, .evidence-card, .home-card,
-    .db-table-wrap, .diagram, .graph-diagram-wrapper) {
+    .db-table-wrap, .site-search-toolbar, .site-search-result,
+    .diagram, .graph-diagram-wrapper) {
     border: 1px solid CanvasText;
     forced-color-adjust: auto;
   }

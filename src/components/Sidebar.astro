@@ -49,7 +49,6 @@ function containsActive(item: Item): boolean {
       data-section={sectionKey}
       aria-label={`${section.title} section`}
     >
-      <p class="sidebar-section-title">{section.title}</p>
       {section.groups.map(group => {
         const isActiveLocation = normalizeUrl(group.url) === activePath;
         const isActivePage = isActiveLocation && activePath === path;

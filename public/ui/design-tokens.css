@@ -211,6 +211,7 @@
   --sidebar-width: 17.5rem;
   --toc-width: 15rem;
   --content-max: 100rem;
+  --content-gutter: clamp(var(--space-5), 2.25vw, var(--space-8));
   --duration-fast: 120ms;
   --duration-normal: 160ms;
   --motion-standard: 160ms;

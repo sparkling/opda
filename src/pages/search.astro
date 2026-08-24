@@ -2,68 +2,170 @@
 import Layout from '@/layouts/Layout.astro';
 import PageMeta from '@/components/PageMeta.astro';
 import { SITE_SEARCH_ENTRIES } from '@/lib/site-search.mjs';
-import { getRouteStatus } from '@/lib/site-ia.mjs';
-const results = SITE_SEARCH_ENTRIES.map((entry) => ({ ...entry, status: getRouteStatus(entry.url) }));
+import { GLOBAL_DESTINATIONS, getRouteStatus } from '@/lib/site-ia.mjs';
+
+const destinations = new Map(GLOBAL_DESTINATIONS.map(({ key, title }) => [key, title]));
+const results = SITE_SEARCH_ENTRIES.map((record) => ({
+  ...record,
+  destinationTitle: destinations.get(record.destination),
+  status: getRouteStatus(record.url),
+}));
 ---
 
 <Layout title="Search" description="Search the OPDA documentation by task, work area and authority." hideComments>
   <PageMeta category="Utility" variant="brand" updated="IA registry search" />
   <h1>Search the documentation</h1>
-  <p class="lead">Results always show work area and authority. Searches for “PDTF” find the PDTF schema, its separately labelled derived evidence, and SPDTF pages that cite those sources.</p>
-  <label for="site-search"><strong>Search by task, topic or name</strong></label>
-  <input id="site-search" type="search" autocomplete="off" placeholder="Try PDTF, ontology, mapping or governance" />
-  <p id="search-summary" role="status" aria-live="polite">{results.length} indexed destinations</p>
-  <div class="search-results" data-search-results>
+  <p class="lead">Search programme context, governance, semantic modelling, SPDTF development, working-group guidance and resources.</p>
+
+  <form class="db-toolbar site-search-toolbar" role="search" action="/search" method="get" data-site-search-form>
+    <div class="db-field db-field--grow">
+      <label for="site-search">Search by task, topic or name</label>
+      <input
+        class="db-input"
+        id="site-search"
+        name="q"
+        type="search"
+        autocomplete="off"
+        aria-describedby="site-search-help"
+        placeholder="Try governance, mapping or working groups"
+      />
+      <p class="site-search-help" id="site-search-help">Use one or more words. Results match titles, summaries and alternative terms.</p>
+    </div>
+    <div class="db-field site-search-destination">
+      <label for="site-search-destination">Destination</label>
+      <select class="db-select" id="site-search-destination" name="destination">
+        <option value="">All destinations</option>
+        {GLOBAL_DESTINATIONS.map(({ key, title }) => <option value={key}>{title}</option>)}
+      </select>
+    </div>
+    <button class="db-reset" type="button" data-search-reset>Clear search and filters</button>
+  </form>
+
+  <p id="search-summary" class="site-search-summary" role="status" aria-live="polite" aria-atomic="true">
+    {results.length} indexed destinations
+  </p>
+  <ol class="site-search-results" data-search-results>
     {results.map((record) => (
-      <article
-        class="card search-result"
-        data-search-text={[record.title, record.summary, ...record.aliases].join(' ').toLocaleLowerCase('en-GB')}
+      <li
+        class="search-result site-search-result"
+        data-search-url={record.url}
+        data-search-destination={record.destination}
       >
-        <p class="overline">{record.facet}</p>
-        <h2><a href={record.url}>{record.title}</a></h2>
-        <p>{record.summary}</p>
-        <dl>
+        <div class="site-search-result__content">
+          <p class="overline">
+            {record.destinationTitle}{record.facet !== record.destinationTitle && ` · ${record.facet}`}
+          </p>
+          <p class="site-search-result__title"><a href={record.url}>{record.title}</a></p>
+          <p class="site-search-result__summary">{record.summary}</p>
+        </div>
+        <dl class="site-search-result__metadata">
+          <dt>Work area</dt><dd>{record.status.workArea}</dd>
           <dt>Authority</dt><dd>{record.status.authority}</dd>
           <dt>Maturity</dt><dd>{record.status.maturity}</dd>
         </dl>
-      </article>
+      </li>
     ))}
+  </ol>
+  <div class="db-empty site-search-empty" data-no-results hidden>
+    <p data-no-results-message>No indexed destination matches this search.</p>
+    <button class="db-reset" type="button" data-search-reset>Clear search and filters</button>
   </div>
-  <p data-no-results hidden>No indexed destination matches this search.</p>
 
-  <script is:inline>
-    (function () {
-      var input = document.getElementById('site-search');
-      var summary = document.getElementById('search-summary');
-      var empty = document.querySelector('[data-no-results]');
-      var rows = Array.from(document.querySelectorAll('[data-search-text]'));
-      function apply() {
-        var query = input.value.trim().toLocaleLowerCase('en-GB');
-        var shown = 0;
-        rows.forEach(function (row) {
-          var match = !query || row.dataset.searchText.includes(query);
-          row.hidden = !match;
-          if (match) shown += 1;
-        });
-        empty.hidden = shown !== 0;
-        summary.textContent = shown + (shown === 1 ? ' result' : ' results');
-        var url = new URL(location.href);
-        query ? url.searchParams.set('q', input.value.trim()) : url.searchParams.delete('q');
-        history.replaceState(null, '', url);
+  <script>
+    import { searchEntries } from '@/lib/site-search.mjs';
+
+    function initialiseSiteSearch() {
+      const form = document.querySelector('[data-site-search-form]');
+      if (!(form instanceof HTMLFormElement) || form.dataset.searchBound === 'true') return;
+
+      const input = form.querySelector('#site-search');
+      const destination = form.querySelector('#site-search-destination');
+      const list = document.querySelector('[data-search-results]');
+      const summary = document.querySelector('#search-summary');
+      const empty = document.querySelector('[data-no-results]');
+      const emptyMessage = document.querySelector('[data-no-results-message]');
+      if (!(input instanceof HTMLInputElement)
+        || !(destination instanceof HTMLSelectElement)
+        || !(list instanceof HTMLOListElement)
+        || !(summary instanceof HTMLElement)
+        || !(empty instanceof HTMLElement)
+        || !(emptyMessage instanceof HTMLElement)) return;
+
+      const rows = new Map(Array.from(list.querySelectorAll('[data-search-url]')).map((row) => (
+        [row.getAttribute('data-search-url'), row]
+      )));
+
+      function resultDescription(count: number, query: string, destinationLabel: string) {
+        const noun = count === 1 ? 'result' : 'results';
+        if (query && destinationLabel) return `${count} ${noun} for “${query}” in ${destinationLabel}`;
+        if (query) return `${count} ${noun} for “${query}”`;
+        if (destinationLabel) return `${count} ${noun} in ${destinationLabel}`;
+        return `${count} indexed destinations`;
       }
-      input.value = new URL(location.href).searchParams.get('q') || '';
-      input.addEventListener('input', apply);
-      apply();
-    })();
+
+      function applySearch(updateUrl = true) {
+        const query = input.value.trim();
+        const destinationKey = destination.value;
+        const destinationLabel = destinationKey
+          ? destination.selectedOptions[0]?.textContent?.trim() ?? ''
+          : '';
+        const ranked = searchEntries(query, destinationKey);
+        const visibleUrls = new Set(ranked.map(({ url }) => url));
+
+        for (const record of ranked) {
+          const row = rows.get(record.url);
+          if (row instanceof HTMLElement) {
+            row.hidden = false;
+            list.append(row);
+          }
+        }
+        for (const [url, row] of rows) {
+          if (row instanceof HTMLElement && !visibleUrls.has(url)) row.hidden = true;
+        }
+
+        summary.textContent = resultDescription(ranked.length, query, destinationLabel);
+        empty.hidden = ranked.length !== 0;
+        emptyMessage.textContent = ranked.length === 0
+          ? `No results for “${query || 'all topics'}”${destinationLabel ? ` in ${destinationLabel}` : ''}.`
+          : '';
+
+        if (updateUrl) {
+          const url = new URL(location.href);
+          query ? url.searchParams.set('q', query) : url.searchParams.delete('q');
+          destinationKey
+            ? url.searchParams.set('destination', destinationKey)
+            : url.searchParams.delete('destination');
+          history.replaceState(null, '', url);
+        }
+      }
+
+      const parameters = new URL(location.href).searchParams;
+      input.value = parameters.get('q') ?? '';
+      const requestedDestination = parameters.get('destination') ?? '';
+      destination.value = Array.from(destination.options).some(({ value }) => value === requestedDestination)
+        ? requestedDestination
+        : '';
+
+      form.addEventListener('submit', (event) => {
+        event.preventDefault();
+        applySearch();
+      });
+      input.addEventListener('input', () => applySearch());
+      destination.addEventListener('change', () => applySearch());
+      document.querySelectorAll('[data-search-reset]').forEach((button) => {
+        button.addEventListener('click', () => {
+          input.value = '';
+          destination.value = '';
+          applySearch();
+          input.focus();
+        });
+      });
+
+      form.dataset.searchBound = 'true';
+      applySearch(false);
+    }
+
+    document.addEventListener('astro:page-load', initialiseSiteSearch);
+    initialiseSiteSearch();
   </script>
 </Layout>
-
-<style>
-  #site-search { width: 100%; min-height: 44px; margin: var(--space-3) 0; padding: var(--space-3) var(--space-4); border: 1px solid var(--color-border-strong); border-radius: 2px; background: var(--color-surface); color: var(--color-text); font: inherit; }
-  .search-results { display: grid; gap: var(--space-4); margin-block: var(--space-5); }
-  .search-result { margin: 0; }
-  .search-result h2 { margin-block: var(--space-2); font-family: var(--font-sans); font-size: var(--text-lg); }
-  .search-result dl { display: grid; grid-template-columns: max-content minmax(0, 1fr); gap: var(--space-2) var(--space-4); margin: 0; font-size: var(--text-sm); }
-  .search-result dt { font-weight: 700; }
-  .search-result dd { margin: 0; }
-</style>

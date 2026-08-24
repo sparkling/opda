@@ -250,7 +250,7 @@ visible context. Tables retain scoped headers, row identity and sorting semantic
 width. Pages must reflow at 320px and 400% zoom without page-level or table-level
 horizontal scrolling.
 
-At 1376px (86rem) and below, the six-destination global site navigation is a
+At 1536px (96rem) and below, the six-destination global site navigation is a
 non-modal disclosure anchored to the 64px header. Above that boundary every primary
 destination must fit without clipping or hidden horizontal overflow. The disclosure
 button owns `aria-controls` and `aria-expanded`; the closed panel is both hidden and
@@ -265,10 +265,14 @@ bounded with `ButtonText`, `CanvasText`, `FieldText` and `Highlight`.
 
 ## 8. Application shell and homepage
 
-The header is 64px, `#131224`, and uses the official white wordmark. Navigation is
-DM Sans; the current item has a 4px amber underline and `aria-current`. A skip link
-is the first focusable element. The sidebar is `#F9F9F9`. The footer is deep ink
-with a 4px yellow top rule. `SiteFooter.astro` is the sole site-footer component:
+The header is 64px, `#131224`, and uses the official white wordmark. In the expanded
+documentation shell, the wordmark is centred within the 280px navigation-rail cell
+and the first global-navigation label follows the same gutter and centred maximum-width
+axis as the main content. Navigation is DM Sans; the current item has a 4px amber
+underline and `aria-current`. A skip link is the first focusable element. The sidebar
+is `#F9F9F9`; its navigation landmark keeps the current section in its accessible name
+without repeating that section as a visible label above the links. The footer is deep
+ink with a 4px yellow top rule. `SiteFooter.astro` is the sole site-footer component:
 the root landing and every route using the shared `Layout` render that same component
 once, outside article content and navigation rails.
 
@@ -355,6 +359,14 @@ location, confidence and whether the statement is quoted, inferred or proposed.
 A data browser keeps search, filters, result count and reset action in one labelled
 toolbar. Applied filters remain visible as removable controls. Sorting, pagination,
 loading, empty and error states announce changes without moving keyboard focus.
+
+Site search uses the same labelled field, select and reset primitives without becoming
+a separate search platform. One query field and one canonical-destination filter write
+shareable URL parameters. Multi-word matches are ranked deterministically by title,
+alias and summary relevance, then shown in a compact ordered list. Every row names its
+canonical destination, work area, authority and maturity. Result counts and empty states
+are announced without moving focus; clearing search returns focus to the query field.
+The search lifecycle reinitialises after client-side page transitions.
 
 A governance decision distinguishes proposal, review, disposition and adopted
 outcome. Publication never implies ratification.

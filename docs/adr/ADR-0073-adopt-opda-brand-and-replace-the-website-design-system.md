@@ -1,7 +1,7 @@
 ---
 status: implemented
 date: 2026-08-16
-updated: 2026-08-24
+updated: 2026-08-25
 tags: [design-system, brand, website, accessibility, css, governance, presentation]
 supersedes: [ADR-0025]
 depends-on: [ADR-0064]
@@ -124,6 +124,14 @@ knowledge-base pages, with their campaign composition retained inside the common
 main region. A single `SiteFooter` component supplies the identical organisation
 footer to the root landing and every ordinary `Layout` route. The full-screen
 presentation remains an intentionally isolated, non-site-chrome experience.
+
+On 25 August 2026 the expanded documentation header was aligned to the shared content
+axis: its wordmark is centred over the navigation rail, its first destination follows
+the content gutter, and the left rail no longer repeats its accessible section name as
+visible copy. Site search now consumes canonical destination ownership, provides one
+destination filter, ranks multi-word matches, exposes authority metadata in compact
+rows, and reinitialises after client-side page transitions. The normative contract,
+tokens, shared components and tests were updated together.
 
 ### Brand conflict resolution
 

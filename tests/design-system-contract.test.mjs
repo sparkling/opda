@@ -114,7 +114,7 @@ test('tokens encode the supplied identity and derived accessible roles', async (
     '--font-display', '--font-sans', '--font-mono', '--color-focus',
     '--color-status-success', '--color-status-warning', '--color-status-danger',
     '--color-data-1', '--target-min', '--content-max', '--motion-standard',
-    '--color-text-placeholder', '--on-dark-muted', '--text-caption',
+    '--content-gutter', '--color-text-placeholder', '--on-dark-muted', '--text-caption',
   ]) assert.ok(source.includes(token), `missing derived token ${token}`);
   assert.match(source, /--content-max:\s*100rem/u);
   assert.match(source, /Roboto Slab/u);
@@ -301,14 +301,17 @@ test('the adopted motion contract excludes parallax and long campaign motion', a
 });
 
 test('shared navigation exposes visible focus, state and 44px targets', async () => {
-  const [contentSource, shell, toc, client, header, layout, base] = await Promise.all([
+  const [contentSource, shell, toc, client, header, sidebar, layout, base, search, components] = await Promise.all([
     readFile(file('public/ui/design/content.css'), 'utf8'),
     readFile(file('public/ui/design/shell.css'), 'utf8'),
     readFile(file('public/ui/design/glossary-toc.css'), 'utf8'),
     readFile(file('public/ui/client.js'), 'utf8'),
     readFile(file('src/components/Header.astro'), 'utf8'),
+    readFile(file('src/components/Sidebar.astro'), 'utf8'),
     readFile(file('src/layouts/Layout.astro'), 'utf8'),
     readFile(file('public/ui/design/base.css'), 'utf8'),
+    readFile(file('src/pages/search.astro'), 'utf8'),
+    readFile(file('public/ui/design/components.css'), 'utf8'),
   ]);
   assert.match(contentSource, /heading-anchor:focus-visible[^}]*opacity:\s*1/su);
   assert.match(contentSource, /\.heading-anchor\s*\{[^}]*width:\s*var\(--target-min\)[^}]*min-height:\s*var\(--target-min\)/su);
@@ -328,12 +331,27 @@ test('shared navigation exposes visible focus, state and 44px targets', async ()
   assert.match(client, /matchMedia\('\(max-width: 96rem\)'\)/u);
   assert.match(client, /function placeToc/u);
   assert.match(header, /showSidebar &&/u);
+  assert.match(header, /app-header--with-sidebar/u);
+  assert.match(header, /class="brand-cell"/u);
   assert.match(header, /id="global-nav-toggle"/u);
   assert.match(header, /id="global-nav-panel"/u);
+  assert.match(header, /aria-current=\{isSearchPage \? 'page' : undefined\}/u);
+  assert.match(sidebar, /aria-label=\{`\$\{section\.title\} section`\}/u);
+  assert.doesNotMatch(sidebar, /sidebar-section-title/u);
   assert.match(layout, /<Header showSidebar=\{showSidebar\}/u);
+  assert.match(shell, /\.app-main\s*\{[^}]*var\(--content-gutter\)/su);
+  assert.match(base, /\.app-header--with-sidebar \.brand-cell\s*\{[^}]*justify-content:\s*center/su);
+  assert.match(base, /\.app-header--with-sidebar \.global-nav\s*\{[^}]*max\(\s*var\(--content-gutter\)/su);
   assert.doesNotMatch(base, /--header-height:\s*6\.5rem/u);
   assert.doesNotMatch(toc, /@media[^}]+\.toc\s*\{\s*display:\s*none/su);
   assert.match(base, /@media \(max-width: 96rem\) \{[\s\S]*\.global-nav-toggle \{ display: inline-flex; \}/u);
+  assert.match(search, /<form[^>]+role="search"/u);
+  assert.match(search, /name="destination"/u);
+  assert.match(search, /import \{ searchEntries \} from '@\/lib\/site-search\.mjs'/u);
+  assert.match(search, /astro:page-load/u);
+  assert.match(search, /<ol class="site-search-results"/u);
+  assert.match(search, /<dt>Work area<\/dt>/u);
+  assert.match(components, /\.site-search-results\s*\{/u);
 });
 
 test('text inherits its outer layout width instead of stacking nested measures', async () => {
