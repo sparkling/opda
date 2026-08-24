@@ -1,7 +1,7 @@
 ---
-status: accepted
+status: implemented
 date: 2026-08-18
-updated: 2026-08-24
+updated: 2026-08-25
 tags: [website, information-architecture, pdtf-schema, spdtf, ontology, semantic-modelling, standards, migration, governance]
 supersedes: []
 amends: [ADR-0002, ADR-0041, ADR-0059, ADR-0062, ADR-0073]
@@ -35,8 +35,7 @@ implements: [docs/spdtf-information-architecture.md, src/pages/index.astro]
 > former routes are retired without redirects, rewrite aliases or duplicate pages.
 > The PDTF schema remains a third-party SPDTF input beneath
 > `/spdtf/inputs/pdtf-schema/**`, and stable `/pdtf/**` RDF identifiers remain unchanged.
-> Implementation and local validation are in progress; this note authorises no
-> publication or deployment.
+> Implemented in repository source; release and deployment remain separately gated.
 >
 > Update 2026-08-19: the user accepted this decision and authorised implementation
 > in a separate feature worktree. The migration and release gates passed at audited
@@ -272,9 +271,9 @@ technical decisions remain. It does not supersede those ADRs as a whole.
 The original information architecture was Implemented on the isolated
 `feat/spdtf-2-ia` branch. Its audited implementation baseline is
 `24f9fb4ca8405343dc13d2d4b7119a30e1b883d7`; the status-change commit is a later
-governance-only change. The 2026-08-23 global-navigation correction is Accepted and
-reopens implementation until its additional route and navigation gates pass. Neither
-the historical commits nor this correction authorises publication or deployment.
+governance-only change. The 2026-08-23 global-navigation correction is implemented in
+repository source; release and deployment remain separately gated. Neither the
+historical commits nor this correction authorises publication or deployment.
 
 Human approval was required before acceptance; implementation then required the
 complete migration and release gates listed below.
