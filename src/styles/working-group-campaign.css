@@ -4,7 +4,8 @@
   gap: clamp(var(--space-7), 6vw, var(--space-12));
   align-items: center;
   margin-top: var(--space-8);
-  padding: clamp(var(--space-8), 8vw, var(--space-12));
+  padding-block: clamp(var(--space-8), 8vw, var(--space-12));
+  padding-inline: 0;
   color: var(--brand-white);
   background: var(--brand-deep);
   border-bottom: 4px solid var(--brand-yellow);
@@ -135,7 +136,7 @@
 }
 
 @media (max-width: 48rem) {
-  .wg-campaign-hero { margin-top: var(--space-5); padding: var(--space-7) var(--space-5); }
+  .wg-campaign-hero { margin-top: var(--space-5); padding-block: var(--space-7); }
   .wg-domain-baseline,
   .wg-domain-grid { grid-template-columns: 1fr; }
   .wg-domain-baseline { gap: var(--space-2); }

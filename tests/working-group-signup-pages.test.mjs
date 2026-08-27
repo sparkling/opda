@@ -234,6 +234,9 @@ test('campaign styles remain split below the project file limit', async () => {
   ]);
   assert.doesNotMatch(campaign, /position:\s*sticky|min-height:\s*(?:20|28|32)rem/u);
   assert.doesNotMatch(sections, /calc\(50% - 50vw\)|position:\s*sticky/u);
+  assert.match(campaign, /\.wg-campaign-hero\s*\{[\s\S]*?padding-inline:\s*0/u);
+  assert.match(sections, /\.wg-model-story\s*\{[\s\S]*?padding-inline:\s*0/u);
+  assert.match(sections, /\.wg-trust\s*\{[\s\S]*?padding-inline:\s*0/u);
 });
 
 test('form errors are associated with every control and group', async () => {

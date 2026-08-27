@@ -1,6 +1,7 @@
 .wg-model-story {
   margin-inline: 0;
-  padding: clamp(var(--space-10), 10vw, 9rem) clamp(var(--space-5), 7vw, var(--space-10));
+  padding-block: clamp(var(--space-10), 10vw, 9rem);
+  padding-inline: 0;
   background: var(--brand-deep);
   border-block: 4px solid var(--brand-yellow);
   color: var(--brand-white);
@@ -65,9 +66,10 @@
   grid-template-columns: minmax(0, 0.95fr) minmax(22rem, 1.05fr);
   gap: clamp(var(--space-8), 8vw, var(--space-12));
   margin-block: var(--space-6);
-  padding: clamp(var(--space-7), 7vw, var(--space-10));
-  border: 1px solid var(--color-border);
-  border-left: 4px solid var(--brand-yellow);
+  padding-block: clamp(var(--space-7), 7vw, var(--space-10));
+  padding-inline: 0;
+  border-top: 4px solid var(--brand-yellow);
+  border-bottom: 1px solid var(--color-border);
   background: var(--color-surface-alt);
 }
 .wg-trust__content > p { margin: 0; color: var(--color-text); font: var(--lead); }
