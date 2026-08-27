@@ -106,6 +106,10 @@ The privacy notice moves with it to `/join/privacy`. The former
 removed without redirects, rewrites, aliases or duplicate pages. All repository
 links, campaign assets and calls to action must use the new canonical route.
 
+`https://opda.org.uk/accessibility` becomes the canonical accessibility statement
+for the public site. It is a separate public service page delivered with the
+standalone signup journey, not an additional signup route.
+
 The unchanged same-origin submission API remains
 `POST /api/working-group-interest`. Moving the public pages does not change the API,
 stored record, validation, retention, access or human-review boundary established
@@ -113,9 +117,9 @@ by ADR-0069.
 
 ### 2. Standalone shell
 
-The `/join` and `/join/privacy` routes do not use the Knowledge Base `Layout` or
-inherit its global header, section navigation, breadcrumb, table of contents,
-previous/next navigation or article wrapper.
+The `/join`, `/join/privacy` and `/accessibility` routes do not use the Knowledge
+Base `Layout` or inherit its global header, section navigation, breadcrumb, table of
+contents, previous/next navigation or article wrapper.
 
 The standalone route family supplies only the minimal orientation and escape routes
 required for a trustworthy public journey:
@@ -126,6 +130,12 @@ required for a trustworthy public journey:
 - a clear route from `/join/privacy` back to the registration page; and
 - a footer containing the privacy, accessibility and organisation links required
   for the public service.
+
+The `/accessibility` page states the accessibility target, the scope and method of
+testing, known limitations, how to request an alternative format, how to report a
+problem, the responsible contact and the statement's preparation and review dates.
+It distinguishes an accessibility target from independently verified conformance
+and does not claim compliance that has not been evidenced.
 
 This is not a separate brand or design system. The standalone shell consumes the
 official assets, semantic tokens, typography, controls, focus states and form
@@ -287,10 +297,12 @@ shell and narrative contract. It can move to implemented only when all of the
 following are true:
 
 - `/join` and `/join/privacy` are the only public page routes for the signup journey;
+- `/accessibility` exists as the canonical public accessibility statement and the
+  standalone footer links to it;
 - the former nested routes are absent without compatibility routing;
 - all internal campaign and header links use `/join`;
-- neither `/join` nor `/join/privacy` renders the Knowledge Base header, sidebar,
-  breadcrumb, table of contents or previous/next furniture;
+- `/join`, `/join/privacy` and `/accessibility` do not render the Knowledge Base
+  header, sidebar, breadcrumb, table of contents or previous/next furniture;
 - the official OPDA mark provides a clear route home, `/join/privacy` provides a clear
   route back to registration, and the campaign footer exposes the required privacy
   and accessibility links;
