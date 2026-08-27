@@ -272,7 +272,7 @@ a:visited { text-decoration-color: currentColor; }
     inset: 100% 0 auto;
     height: auto;
     max-height: calc(100vh - var(--header-height));
-    padding: var(--space-3);
+    padding: var(--space-3) var(--content-gutter);
     display: none;
     grid-template-columns: minmax(0, 1fr) auto auto;
     align-items: start;
@@ -312,6 +312,15 @@ a:visited { text-decoration-color: currentColor; }
   .global-nav-panel .auth-button { margin-left: 0; }
   .menu-toggle,
   .global-nav-toggle { margin-left: 0; }
+}
+
+/* Until the primary navigation returns to its desktop row, section pages
+   retain their left rail. Start the disclosed global navigation on the same
+   content column rather than at the viewport edge. */
+@media (min-width: 60.0625rem) and (max-width: 96rem) {
+  .app-header--with-sidebar .global-nav-panel {
+    padding-left: calc(var(--sidebar-width) + var(--content-gutter));
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {

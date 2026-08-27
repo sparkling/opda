@@ -345,6 +345,8 @@ test('shared navigation exposes visible focus, state and 44px targets', async ()
   assert.doesNotMatch(base, /--header-height:\s*6\.5rem/u);
   assert.doesNotMatch(toc, /@media[^}]+\.toc\s*\{\s*display:\s*none/su);
   assert.match(base, /@media \(max-width: 96rem\) \{[\s\S]*\.global-nav-toggle \{ display: inline-flex; \}/u);
+  assert.match(base, /@media \(max-width: 96rem\) \{[\s\S]*\.global-nav-panel\s*\{[^}]*padding:\s*var\(--space-3\) var\(--content-gutter\)/su);
+  assert.match(base, /@media \(min-width: 60\.0625rem\) and \(max-width: 96rem\) \{[\s\S]*\.app-header--with-sidebar \.global-nav-panel\s*\{[^}]*padding-left:\s*calc\(var\(--sidebar-width\) \+ var\(--content-gutter\)\)/su);
   assert.match(search, /<form[^>]+role="search"/u);
   assert.match(search, /name="destination"/u);
   assert.match(search, /import \{ searchEntries \} from '@\/lib\/site-search\.mjs'/u);
