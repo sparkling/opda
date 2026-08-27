@@ -88,11 +88,11 @@ Every post and outreach message links to:
 `https://opda.org.uk/working-groups/join`
 
 The public page is the campaign landing page as well as the form. It uses the OPDA design system
-to explain the programme proposition, human review and participation boundary before asking a
-visitor to register. A detailed, natural-height property-information comparison and brief,
-optional reveal effects follow the registration journey for readers who want the modelling
-context. The comparison has no pinned or scroll-driven state: every domain meaning is visible in
-the document. The enhanced form requires successful JavaScript initialisation; without it,
+to explain the programme proposition, human review, participation boundary, domain handoffs and
+modelling method before asking a visitor to register at the bottom of the page. Its detailed,
+natural-height property-information comparison uses brief, optional reveal effects. The
+comparison has no pinned or scroll-driven state: every domain meaning is visible in the document.
+The enhanced form requires successful JavaScript initialisation; without it,
 campaign and privacy content remain readable and a safe human-managed email registration
 alternative is provided.
 

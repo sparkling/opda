@@ -218,8 +218,9 @@ test('campaign presents the complete handoff narrative without scroll-driven the
   assert.match(responsiveCss, /prefers-reduced-motion/u);
   assert.doesNotMatch(page, /data-parallax-layer|data-story-step|data-handoff-stage/u);
   assert.match(page, /class="wg-domain-grid"/u);
-  assert.ok(page.indexOf('id="register"') < page.indexOf('class="wg-domain-grid"'));
-  assert.ok(page.indexOf('id="register"') < page.indexOf('id="how-it-works"'));
+  assert.ok(page.indexOf('id="register"') > page.indexOf('class="wg-domain-grid"'));
+  assert.ok(page.indexOf('id="register"') > page.indexOf('id="how-it-works"'));
+  assert.ok(page.indexOf('id="register"') > page.indexOf('class="wg-trust"'));
 });
 
 test('campaign styles remain split below the project file limit', async () => {

@@ -122,7 +122,7 @@ test('section rails, page navigation and content stay inside the shared containe
   clean();
 });
 
-test('working-group signup avoids dead-scroll breakpoints and reaches registration early', async ({ page }) => {
+test('working-group signup avoids dead-scroll breakpoints and ends with registration', async ({ page }) => {
   const clean = watchRuntime(page);
   for (const viewport of [
     { width: 1024, height: 768 },
@@ -136,9 +136,10 @@ test('working-group signup avoids dead-scroll breakpoints and reaches registrati
     const positions = await page.evaluate(() => ({
       register: document.querySelector('#register')?.getBoundingClientRect().top ?? Infinity,
       comparison: document.querySelector('.wg-context-section')?.getBoundingClientRect().top ?? -Infinity,
+      lastSectionId: [...document.querySelectorAll<HTMLElement>('.wg-page > section')].at(-1)?.id,
     }));
-    expect(positions.register).toBeLessThan(viewport.height * 3.25);
-    expect(positions.comparison).toBeGreaterThan(positions.register);
+    expect(positions.register).toBeGreaterThan(positions.comparison);
+    expect(positions.lastSectionId).toBe('register');
   }
   clean();
 });

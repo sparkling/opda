@@ -139,6 +139,131 @@ const contributions = [
       </ol>
     </section>
 
+    <section class="wg-section wg-context-section" aria-labelledby="handoffs-title">
+      <div class="wg-section__heading">
+        <div>
+          <p class="wg-eyebrow">The problem is in the handoffs</p>
+          <h2 id="handoffs-title">The same thing changes meaning as work moves on</h2>
+        </div>
+        <p>
+          Each group develops precise meaning for its own domain. These are different views of the
+          same property, not a single fixed sequence.
+        </p>
+      </div>
+      <div class="wg-domain-baseline">
+        <span>The property</span>
+        <strong>Home</strong>
+        <p>A place someone lives.</p>
+      </div>
+      <ol class="wg-domain-grid" data-reveal-group>
+        {contexts.map(([, label, scope, term, definition, heading, explanation], index) => (
+          <li data-reveal style={`--reveal-delay:${index * 60}ms`}>
+            <article class="wg-domain-card">
+              <p class="wg-domain-card__context">{String(index + 1).padStart(2, '0')} · {label}</p>
+              <h3>{term}</h3>
+              <p class="wg-domain-card__definition">{definition}</p>
+              <h4>{heading}</h4>
+              <p>{explanation}</p>
+              <p class="wg-domain-card__scope"><strong>Group scope:</strong> {scope}</p>
+            </article>
+          </li>
+        ))}
+      </ol>
+      <div class="wg-context-map__bridge">
+        <span>Interoperability</span>
+        <strong>Shared boundary · mappings · conventions</strong>
+        <p>
+          The Interoperability Working Group aligns a small common boundary and mappings between
+          domains without forcing one definition to fit every situation.
+        </p>
+      </div>
+    </section>
+
+    <section id="how-it-works" class="wg-model-story" aria-labelledby="model-title">
+      <div class="wg-model-story__intro">
+        <p class="wg-eyebrow">A faster, evidence-led way to build</p>
+        <h2 id="model-title">You bring the evidence.<br />We turn it into something everyone can use.</h2>
+        <p>
+          Source material, discussion and feedback feed an AI-assisted modelling process. AI speeds
+          up synthesis; people remain responsible for meaning, challenge and approval.
+        </p>
+      </div>
+      <ol class="wg-model-flow" data-reveal-group>
+        <li data-reveal>
+          <span class="wg-model-flow__icon" aria-hidden="true">≋</span>
+          <strong>Evidence</strong>
+          <p>Forms, schemas, glossaries, guidance, examples and lived expertise.</p>
+        </li>
+        <li data-reveal>
+          <span class="wg-model-flow__icon" aria-hidden="true">✦</span>
+          <strong>AI-assisted modelling</strong>
+          <p>Specialist agents compare sources, surface ambiguity and propose a candidate.</p>
+        </li>
+        <li data-reveal>
+          <span class="wg-model-flow__icon" aria-hidden="true">◎</span>
+          <strong>Human review</strong>
+          <p>Working groups challenge the meaning, supply evidence and resolve what is wrong.</p>
+        </li>
+        <li data-reveal>
+          <span class="wg-model-flow__icon" aria-hidden="true">↻</span>
+          <strong>Iterate</strong>
+          <p>Feedback returns to the model until the group has a stable candidate.</p>
+        </li>
+      </ol>
+
+      <div class="wg-output-ribbon" aria-labelledby="outputs-title">
+        <p class="wg-eyebrow">One governed source of meaning</p>
+        <h3 id="outputs-title">Familiar outputs for the tools people already use</h3>
+        <ul>
+          <li>Business glossary</li>
+          <li>Data dictionary</li>
+          <li>Taxonomies</li>
+          <li>Controlled vocabularies</li>
+          <li>JSON Schemas</li>
+          <li>Validation</li>
+          <li>Website and documents</li>
+          <li>Integration mappings</li>
+        </ul>
+      </div>
+    </section>
+
+    <section class="wg-section wg-why" aria-labelledby="why-title">
+      <div class="wg-why__statement">
+        <p class="wg-eyebrow">Why your participation matters</p>
+        <h2 id="why-title">A model cannot learn the exceptions nobody shares.</h2>
+        <p>
+          The standard will influence how property information is described, checked and exchanged.
+          It needs the language of daily work—not just the assumptions visible in existing schemas.
+        </p>
+        <a class="btn wg-btn--large" href="#register">Bring your perspective <span aria-hidden="true">↓</span></a>
+      </div>
+      <ul class="wg-why__reasons" data-reveal-group>
+        <li data-reveal><strong>Make meaning explicit</strong><span>Explain the terms, rules and edge cases only practitioners know.</span></li>
+        <li data-reveal><strong>Expose gaps early</strong><span>Challenge what is missing, misleading or too narrow before it becomes a standard.</span></li>
+        <li data-reveal><strong>Test practical outputs</strong><span>Check whether schemas, validation and mappings work with real systems and forms.</span></li>
+        <li data-reveal><strong>Represent affected people</strong><span>Bring consumer, accessibility, regulatory and public-interest experience into review.</span></li>
+      </ul>
+    </section>
+
+    <section class="wg-trust" aria-labelledby="trust-title">
+      <div>
+        <p class="wg-eyebrow">Clever technology. Clear human authority.</p>
+        <h2 id="trust-title">You do not need to understand ontologies or adopt AI.</h2>
+      </div>
+      <div class="wg-trust__content">
+        <p>
+          Participate in the language of your work. Share what you are authorised to share, discuss
+          candidates in plain English, and tell us what the model gets wrong.
+        </p>
+        <ul>
+          <li><strong>AI proposes;</strong> people review.</li>
+          <li><strong>Evidence shapes;</strong> source material is not automatically published.</li>
+          <li><strong>Working groups iterate;</strong> registration is not a vote or automatic access.</li>
+          <li><strong>People decide;</strong> no candidate becomes official through AI alone.</li>
+        </ul>
+      </div>
+    </section>
+
     <section id="register" class="wg-section wg-form-shell" aria-labelledby="register-title">
       <div class="wg-form-intro">
         <p class="wg-eyebrow">Register your interest</p>
@@ -292,131 +417,6 @@ const contributions = [
           about the relevant working group and send onboarding information separately.
         </p>
       </section>
-    </section>
-
-    <section class="wg-section wg-context-section" aria-labelledby="handoffs-title">
-      <div class="wg-section__heading">
-        <div>
-          <p class="wg-eyebrow">The problem is in the handoffs</p>
-          <h2 id="handoffs-title">The same thing changes meaning as work moves on</h2>
-        </div>
-        <p>
-          Each group develops precise meaning for its own domain. These are different views of the
-          same property, not a single fixed sequence.
-        </p>
-      </div>
-      <div class="wg-domain-baseline">
-        <span>The property</span>
-        <strong>Home</strong>
-        <p>A place someone lives.</p>
-      </div>
-      <ol class="wg-domain-grid" data-reveal-group>
-        {contexts.map(([, label, scope, term, definition, heading, explanation], index) => (
-          <li data-reveal style={`--reveal-delay:${index * 60}ms`}>
-            <article class="wg-domain-card">
-              <p class="wg-domain-card__context">{String(index + 1).padStart(2, '0')} · {label}</p>
-              <h3>{term}</h3>
-              <p class="wg-domain-card__definition">{definition}</p>
-              <h4>{heading}</h4>
-              <p>{explanation}</p>
-              <p class="wg-domain-card__scope"><strong>Group scope:</strong> {scope}</p>
-            </article>
-          </li>
-        ))}
-      </ol>
-      <div class="wg-context-map__bridge">
-        <span>Interoperability</span>
-        <strong>Shared boundary · mappings · conventions</strong>
-        <p>
-          The Interoperability Working Group aligns a small common boundary and mappings between
-          domains without forcing one definition to fit every situation.
-        </p>
-      </div>
-    </section>
-
-    <section id="how-it-works" class="wg-model-story" aria-labelledby="model-title">
-      <div class="wg-model-story__intro">
-        <p class="wg-eyebrow">A faster, evidence-led way to build</p>
-        <h2 id="model-title">You bring the evidence.<br />We turn it into something everyone can use.</h2>
-        <p>
-          Source material, discussion and feedback feed an AI-assisted modelling process. AI speeds
-          up synthesis; people remain responsible for meaning, challenge and approval.
-        </p>
-      </div>
-      <ol class="wg-model-flow" data-reveal-group>
-        <li data-reveal>
-          <span class="wg-model-flow__icon" aria-hidden="true">≋</span>
-          <strong>Evidence</strong>
-          <p>Forms, schemas, glossaries, guidance, examples and lived expertise.</p>
-        </li>
-        <li data-reveal>
-          <span class="wg-model-flow__icon" aria-hidden="true">✦</span>
-          <strong>AI-assisted modelling</strong>
-          <p>Specialist agents compare sources, surface ambiguity and propose a candidate.</p>
-        </li>
-        <li data-reveal>
-          <span class="wg-model-flow__icon" aria-hidden="true">◎</span>
-          <strong>Human review</strong>
-          <p>Working groups challenge the meaning, supply evidence and resolve what is wrong.</p>
-        </li>
-        <li data-reveal>
-          <span class="wg-model-flow__icon" aria-hidden="true">↻</span>
-          <strong>Iterate</strong>
-          <p>Feedback returns to the model until the group has a stable candidate.</p>
-        </li>
-      </ol>
-
-      <div class="wg-output-ribbon" aria-labelledby="outputs-title">
-        <p class="wg-eyebrow">One governed source of meaning</p>
-        <h3 id="outputs-title">Familiar outputs for the tools people already use</h3>
-        <ul>
-          <li>Business glossary</li>
-          <li>Data dictionary</li>
-          <li>Taxonomies</li>
-          <li>Controlled vocabularies</li>
-          <li>JSON Schemas</li>
-          <li>Validation</li>
-          <li>Website and documents</li>
-          <li>Integration mappings</li>
-        </ul>
-      </div>
-    </section>
-
-    <section class="wg-section wg-why" aria-labelledby="why-title">
-      <div class="wg-why__statement">
-        <p class="wg-eyebrow">Why your participation matters</p>
-        <h2 id="why-title">A model cannot learn the exceptions nobody shares.</h2>
-        <p>
-          The standard will influence how property information is described, checked and exchanged.
-          It needs the language of daily work—not just the assumptions visible in existing schemas.
-        </p>
-        <a class="btn wg-btn--large" href="#register">Bring your perspective <span aria-hidden="true">↑</span></a>
-      </div>
-      <ul class="wg-why__reasons" data-reveal-group>
-        <li data-reveal><strong>Make meaning explicit</strong><span>Explain the terms, rules and edge cases only practitioners know.</span></li>
-        <li data-reveal><strong>Expose gaps early</strong><span>Challenge what is missing, misleading or too narrow before it becomes a standard.</span></li>
-        <li data-reveal><strong>Test practical outputs</strong><span>Check whether schemas, validation and mappings work with real systems and forms.</span></li>
-        <li data-reveal><strong>Represent affected people</strong><span>Bring consumer, accessibility, regulatory and public-interest experience into review.</span></li>
-      </ul>
-    </section>
-
-    <section class="wg-trust" aria-labelledby="trust-title">
-      <div>
-        <p class="wg-eyebrow">Clever technology. Clear human authority.</p>
-        <h2 id="trust-title">You do not need to understand ontologies or adopt AI.</h2>
-      </div>
-      <div class="wg-trust__content">
-        <p>
-          Participate in the language of your work. Share what you are authorised to share, discuss
-          candidates in plain English, and tell us what the model gets wrong.
-        </p>
-        <ul>
-          <li><strong>AI proposes;</strong> people review.</li>
-          <li><strong>Evidence shapes;</strong> source material is not automatically published.</li>
-          <li><strong>Working groups iterate;</strong> registration is not a vote or automatic access.</li>
-          <li><strong>People decide;</strong> no candidate becomes official through AI alone.</li>
-        </ul>
-      </div>
     </section>
   </div>
   <script>
