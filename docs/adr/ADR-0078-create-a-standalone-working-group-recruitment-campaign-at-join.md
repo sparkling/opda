@@ -51,8 +51,8 @@ content, form, privacy and accessibility contract.
 - Preserve the campaign scope, promises and prohibited implications from ADR-0071.
 - Remain visibly OPDA and consume the governed design tokens from ADR-0073 without
   requiring every campaign composition to look like a documentation component.
-- Provide keyboard, no-JavaScript, reduced-motion, forced-colour and non-WebGL
-  equivalents for every material part of the journey.
+- Provide keyboard, reduced-motion, forced-colour and non-WebGL equivalents for
+  every material part of the journey.
 - Avoid scroll hijacking, pinned empty sequences, decorative parallax and a
   presentation-style requirement to click through the story.
 - Meet normal performance expectations despite any optional spatial rendering.
@@ -208,8 +208,9 @@ campaign's principal proposition and does not decide domain meaning or approval.
 ### 7. Registration and privacy
 
 The registration form remains at the bottom of the page and retains every field,
-choice, acknowledgement, validation rule, safe no-JavaScript behaviour and
-human-managed email alternative approved by ADR-0069.
+choice, acknowledgement and validation rule approved by ADR-0069. JavaScript is
+required for registration; this ADR does not require the campaign or form to operate
+when JavaScript is unavailable.
 
 The campaign may provide a persistent “Register your interest” control and carry a
 context selection into the form. It must not hide required information in an opaque
@@ -230,7 +231,7 @@ gates. A visual enhancement that materially damages loading, interaction, stabil
 reflow or battery use must be simplified or removed.
 
 The complete proposition, context explanations, participation process, trust
-boundary, privacy link and form remain usable when JavaScript, motion or WebGL is
+boundary, privacy link and form remain usable when motion is disabled or WebGL is
 unavailable.
 
 ## Consequences
@@ -283,7 +284,7 @@ following are true:
 - the contextual interaction preserves local ownership, outward common elements and
   separate dotted SKOS mappings;
 - every interactive context and form control is usable by keyboard, touch and pointer;
-- the complete page remains understandable with JavaScript, WebGL and motion disabled;
+- the complete page remains understandable with WebGL and motion disabled;
 - reduced-motion, forced-colour, 320 CSS-pixel reflow and 400% zoom checks pass;
 - the existing form fields, privacy acknowledgement, validation, API contract and
   human review behaviour remain unchanged;
@@ -296,8 +297,8 @@ following are true:
 
 - [ADR-0069](./ADR-0069-public-working-group-recruitment-and-signup.md) remains the
   authority for signup scope, form data, validation, privacy, storage, retention and
-  human review. On implementation, this ADR amends only its canonical public page
-  routes and presentation layer.
+  human review. On implementation, this ADR amends its canonical public page routes,
+  presentation layer and prior no-JavaScript requirement.
 - [ADR-0071](./ADR-0071-bounded-context-recruitment-campaign.md) remains the authority
   for campaign scope, recruitment channels, public promises and measures. On
   implementation, this ADR amends only its canonical signup URL and campaign-page
