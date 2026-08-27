@@ -113,16 +113,17 @@ by ADR-0069.
 
 ### 2. Standalone shell
 
-The `/join` route does not use the Knowledge Base `Layout` or inherit its global
-header, section navigation, breadcrumb, table of contents, previous/next navigation
-or article wrapper.
+The `/join` and `/join/privacy` routes do not use the Knowledge Base `Layout` or
+inherit its global header, section navigation, breadcrumb, table of contents,
+previous/next navigation or article wrapper.
 
-The campaign supplies only the minimal orientation and escape routes required for
-a trustworthy standalone page:
+The standalone route family supplies only the minimal orientation and escape routes
+required for a trustworthy public journey:
 
 - the official OPDA mark, linked to `/`;
 - a discreet way to return to the Knowledge Base;
-- a persistent but unobtrusive route to the registration form; and
+- a persistent but unobtrusive route to the registration form on `/join`;
+- a clear route from `/join/privacy` back to the registration page; and
 - a footer containing the privacy, accessibility and organisation links required
   for the public service.
 
@@ -277,10 +278,11 @@ following are true:
 - `/join` and `/join/privacy` are the only public page routes for the signup journey;
 - the former nested routes are absent without compatibility routing;
 - all internal campaign and header links use `/join`;
-- the page does not render Knowledge Base header, sidebar, breadcrumb, table of
-  contents or previous/next furniture;
-- the official OPDA mark provides a clear route home and the campaign footer exposes
-  the required privacy and accessibility links;
+- neither `/join` nor `/join/privacy` renders the Knowledge Base header, sidebar,
+  breadcrumb, table of contents or previous/next furniture;
+- the official OPDA mark provides a clear route home, `/join/privacy` provides a clear
+  route back to registration, and the campaign footer exposes the required privacy
+  and accessibility links;
 - the contextual interaction preserves local ownership, outward common elements and
   separate dotted SKOS mappings;
 - every interactive context and form control is usable by keyboard, touch and pointer;
