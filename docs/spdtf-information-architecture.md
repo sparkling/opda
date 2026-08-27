@@ -1,11 +1,9 @@
 # SPDTF information architecture
-
 Status: **implementation in progress on `main`; publication pending**<br>
 Date: 2026-08-27<br>
 Decision records: [ADR-0069](./adr/ADR-0069-public-working-group-recruitment-and-signup.md) · [ADR-0071](./adr/ADR-0071-bounded-context-recruitment-campaign.md) · [ADR-0074](./adr/ADR-0074-organise-site-around-spdtf-and-pdtf-schema.md) · [ADR-0077](./adr/ADR-0077-place-pdtf-schema-beneath-spdtf-as-third-party-input.md) · [ADR-0078](./adr/ADR-0078-create-a-standalone-working-group-recruitment-campaign-at-join.md) · [ADR-0079](./adr/ADR-0079-make-the-site-public-and-retire-the-edge-authentication-gate.md)<br>
 Review artefact: [HTML presentation](./spdtf-information-architecture.html)
 ## Executive decision
-
 Reorganise the documentation around six global destinations, in this order:
 
 1. **Programme**

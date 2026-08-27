@@ -8,6 +8,8 @@ import { SEMANTIC_MODELLING_FROZEN_RECEIPT_FIELDS } from './semantic-modelling-r
 
 export const SITE_ROUTE_RETIREMENTS = Object.freeze([
   Object.freeze({ sourceRoute: '/home', replacementRoute: '/' }),
+  Object.freeze({ sourceRoute: '/working-groups/join', replacementRoute: '/join' }),
+  Object.freeze({ sourceRoute: '/working-groups/join/privacy', replacementRoute: '/join/privacy' }),
 ]);
 
 const acceptedRecords = (manifest) => [
@@ -43,7 +45,8 @@ export function composeSiteRouteRetirementReceipt({
   }
   for (const { sourceRoute } of SITE_ROUTE_RETIREMENTS) {
     const sourceRecord = sourceByRoute.get(sourceRoute);
-    if (!sourceRecord || sourceRecord.acceptedFile !== 'home/index.html'
+    const expectedFile = `${sourceRoute.slice(1)}/index.html`;
+    if (!sourceRecord || sourceRecord.acceptedFile !== expectedFile
       || currentByRoute.has(sourceRoute)) {
       throw new Error(`site-route retirement is missing or retained: ${sourceRoute}`);
     }

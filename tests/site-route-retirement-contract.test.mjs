@@ -17,10 +17,17 @@ const manifest = JSON.parse(readFileSync(
 const source = loadSiteRouteRetirementSourceRouteManifest(root).manifest;
 const currentRoutes = manifest.routes.filter(({ acceptedRoute }) => acceptedRoute !== '/home');
 
-test('the duplicate home route has one explicit, non-redirect retirement', () => {
-  assert.deepEqual(SITE_ROUTE_RETIREMENTS, [{ sourceRoute: '/home', replacementRoute: '/' }]);
+test('retired standalone routes have explicit, non-redirect replacements', () => {
+  assert.deepEqual(SITE_ROUTE_RETIREMENTS, [
+    { sourceRoute: '/home', replacementRoute: '/' },
+    { sourceRoute: '/working-groups/join', replacementRoute: '/join' },
+    { sourceRoute: '/working-groups/join/privacy', replacementRoute: '/join/privacy' },
+  ]);
   assert.equal(isSiteRouteRetired('/home'), true);
+  assert.equal(isSiteRouteRetired('/working-groups/join'), true);
+  assert.equal(isSiteRouteRetired('/working-groups/join/privacy'), true);
   assert.equal(isSiteRouteRetired('/home/child'), false);
+  assert.equal(isSiteRouteRetired('/working-groups/join/child'), false);
   assert.equal(isSiteRouteRetired('/'), false);
   const receipt = composeSiteRouteRetirementReceipt({
     records: currentRoutes,
@@ -28,12 +35,16 @@ test('the duplicate home route has one explicit, non-redirect retirement', () =>
     sourceManifest: source,
   });
   assert.equal(receipt.policy, 'site-route-retirement-composition-v1');
-  assert.equal(receipt.retirementCount, 1);
+  assert.equal(receipt.retirementCount, 3);
   assert.equal(receipt.retiredOutputCount, 0);
   assert.equal(receipt.redirects, false);
   assert.deepEqual(receipt.retirements.map(({ sourceRoute, replacementRoute, redirects }) => (
     { sourceRoute, replacementRoute, redirects }
-  )), [{ sourceRoute: '/home', replacementRoute: '/', redirects: false }]);
+  )), [
+    { sourceRoute: '/home', replacementRoute: '/', redirects: false },
+    { sourceRoute: '/working-groups/join', replacementRoute: '/join', redirects: false },
+    { sourceRoute: '/working-groups/join/privacy', replacementRoute: '/join/privacy', redirects: false },
+  ]);
   assert.equal(receipt.retirements[0].informationRetention.baselineBlockCount, 50);
   assert.equal(receipt.retirements[0].informationRetention.exactRetainedBlocks, 9);
   const v11 = { ...manifest, schemaVersion: 11, routes: currentRoutes, routeCount: currentRoutes.length,
