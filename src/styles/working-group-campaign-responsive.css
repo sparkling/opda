@@ -1,0 +1,12 @@
+@media (max-width: 64rem) {
+  .wg-journey { width: 100%; }
+}
+
+@media (max-width: 48rem) {
+  .wg-hero-actions { flex-direction: column; align-items: stretch; }
+  .wg-hero-actions :is(.btn, .wg-text-link) { justify-content: center; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .wg-page * { animation: none !important; transition-duration: 0.01ms !important; }
+}

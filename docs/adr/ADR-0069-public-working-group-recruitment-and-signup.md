@@ -1,7 +1,7 @@
 ---
 status: accepted
 date: 2026-08-12
-updated: 2026-08-27
+updated: 2026-08-21
 tags: [engagement, recruitment, working-groups, linkedin, trade-bodies, professional-bodies, signup, privacy, security, aws]
 supersedes: []
 depends-on: [ADR-0038, ADR-0040, ADR-0063, ADR-0065]
@@ -10,13 +10,6 @@ implements: [ADR-0065]
 
 # Recruit later bounded-context working groups through a public campaign and simple sign-up
 
-> **Change note — 2026-08-27:** The public signup page was shortened from a long animated
-> campaign narrative to a four-part editorial journey: proposition, six-domain explanation,
-> participation boundary and form. The allowlisted fields, JSON endpoint, privacy version,
-> human review and separate onboarding are unchanged. The form remains a JavaScript client for
-> the JSON-only endpoint; no-JavaScript visitors now receive an explicit email alternative rather
-> than an inoperable silent submit.
->
 > **Change note — 2026-08-21:** The shared application header now carries a persistent
 > “Join a working group” action to the unchanged canonical signup route. This adds a
 > discovery path only; form scope, review, storage and access boundaries are unchanged.
@@ -213,8 +206,7 @@ This decision is confirmed when:
   failure;
 - DynamoDB is encrypted, on-demand, TTL-enabled and the Lambda can only write to its table;
 - no Teams or SharePoint access is provisioned by the public service;
-- keyboard and reduced-motion behaviour remains usable, the complete explanation remains readable
-  without JavaScript, and a no-JavaScript visitor receives a clear registration alternative;
+- keyboard, no-JavaScript and reduced-motion behavior remains usable;
 - `make test` and `make build-data` pass; and
 - infrastructure and static pages deploy through the existing CI-only AWS workflows.
 

@@ -1,6 +1,9 @@
 ---
 import Layout from '@/layouts/Layout.astro';
 import '@/styles/working-group-join.css';
+import '@/styles/working-group-campaign.css';
+import '@/styles/working-group-campaign-responsive.css';
+import '@/styles/working-group-campaign-sections.css';
 
 const privacyNoticeVersion = '2026-08-13';
 const title = 'Join a working group';
@@ -49,57 +52,210 @@ const contributions = [
     <meta name="twitter:image" content={socialImageUrl} />
   </Fragment>
   <div class="wg-page">
-    <section class="wg-hero" aria-labelledby="join-title">
-      <p class="wg-eyebrow">OPDA working groups · Smart Property Data Trust Framework</p>
-      <h1 id="join-title">Help property data keep its meaning.</h1>
-      <p class="wg-lead">
-        A home is a listing, a lending decision, a legal title, a valuation and a data record—often
-        all at once. OPDA working groups are agreeing the shared language that lets meaning travel
-        across those handoffs. Bring your domain expertise; no technical or AI knowledge is needed.
-      </p>
-      <div class="wg-hero-actions">
-        <a class="btn wg-btn--large" href="#register">Register your interest <span aria-hidden="true">↓</span></a>
-        <a class="wg-text-link" href="#how-it-works">See how the work happens</a>
+    <section class="wg-campaign-hero" aria-labelledby="join-title">
+      <div class="wg-campaign-hero__copy">
+        <p class="wg-eyebrow">Smart Property Data Trust Framework</p>
+        <h1 id="join-title">One property.<br /><em>Many meanings.</em><br />One connected journey.</h1>
+        <p class="wg-lead">
+          Property information crosses legal, commercial, professional and technical boundaries.
+          OPDA is bringing the people who understand those boundaries together to make the meaning
+          travel with the data.
+        </p>
+        <div class="wg-hero-actions">
+          <a class="btn wg-btn--large" href="#register">Register your interest <span aria-hidden="true">↓</span></a>
+          <a class="wg-text-link" href="#how-it-works">See how the work happens</a>
+        </div>
+      </div>
+
+      <div
+        class="wg-journey"
+        aria-label="A property record crossing six connected contexts"
+        style={`--context-angle:${360 / contexts.length}deg`}
+      >
+        <div class="wg-journey__property" aria-hidden="true">
+          <span class="wg-journey__roof"></span>
+          <span class="wg-journey__door"></span>
+        </div>
+        <div class="wg-journey__orbit" aria-hidden="true"></div>
+        <ol>
+          {contexts.map(([, label], index) => (
+            <li style={`--context-index:${index}`}><span>{String(index + 1).padStart(2, '0')}</span>{label}</li>
+          ))}
+        </ol>
+        <p>Meaning travels across every handoff.</p>
       </div>
     </section>
 
-    <section id="how-it-works" class="wg-section" aria-labelledby="contexts-title">
+    <aside class="wg-proof-strip" aria-label="How participation works">
+      <p><strong>Domain expertise in.</strong> Connected models, schemas and usable outputs out.</p>
+      <span>Human review at every iteration</span>
+      <span>No technical knowledge required</span>
+    </aside>
+
+    <section class="wg-story" aria-labelledby="handoffs-title" data-story>
+      <div class="wg-story__visual" aria-hidden="true">
+        <div class="wg-handoff-stage" data-handoff-stage>
+          <div class="wg-handoff-stage__property">
+            <span class="wg-handoff-stage__label">The property</span>
+            <strong data-handoff-term>Home</strong>
+            <small data-handoff-definition>A place someone lives.</small>
+          </div>
+          <div class="wg-handoff-stage__path"></div>
+          <div class="wg-handoff-stage__counter"><span data-story-index>01</span> / 06</div>
+        </div>
+      </div>
+      <div class="wg-story__steps">
+        <header>
+          <p class="wg-eyebrow">The problem is in the handoffs</p>
+          <h2 id="handoffs-title">The same thing changes meaning as work moves on</h2>
+        </header>
+        <article data-story-step data-term="Listing" data-definition="A place to market, price and negotiate." data-accent="primary">
+          <span>Estate Agency</span>
+          <h3>“Property” means something marketable</h3>
+          <p>Descriptions, asking price, tenure and readiness for sale shape the view.</p>
+        </article>
+        <article data-story-step data-term="Mortgage security" data-definition="An asset assessed for lending, affordability and risk." data-accent="primary">
+          <span>Finance and Banking</span>
+          <h3>Then it becomes security for lending</h3>
+          <p>Value, affordability, eligibility and risk determine how the property supports a mortgage.</p>
+        </article>
+        <article data-story-step data-term="Legal title" data-definition="Rights, restrictions and the asset being transferred." data-accent="primary">
+          <span>Conveyancing</span>
+          <h3>Then it becomes a legal interest</h3>
+          <p>Title, parties, searches, enquiries and completion need their own precise meaning.</p>
+        </article>
+        <article data-story-step data-term="Subject asset" data-definition="Condition, measurement and professional opinion." data-accent="primary">
+          <span>Surveying and Valuation</span>
+          <h3>Then an object of inspection and value</h3>
+          <p>The facts that matter shift again when condition, risk and valuation enter the journey.</p>
+        </article>
+        <article data-story-step data-term="Evidence" data-definition="Sourced information with provenance and assurance." data-accent="primary">
+          <span>Property Data Services</span>
+          <h3>Then a body of sourced evidence</h3>
+          <p>Coverage, provenance, quality and permissions determine whether information can be trusted.</p>
+        </article>
+        <article data-story-step data-term="Resource" data-definition="Structured meaning ready for products and integrations." data-accent="primary">
+          <span>Property Technology</span>
+          <h3>Then something systems must exchange</h3>
+          <p>Products need stable identifiers, schemas, validation and mappings to make the journey work.</p>
+        </article>
+      </div>
+    </section>
+
+    <section class="wg-section wg-context-section" aria-labelledby="contexts-title">
       <div class="wg-section__heading">
         <div>
-          <p class="wg-eyebrow">The work</p>
-          <h2 id="contexts-title">Six domains. One connected journey.</h2>
+          <p class="wg-eyebrow">Bounded contexts</p>
+          <h2 id="contexts-title">Keep each domain precise. Connect the boundaries.</h2>
         </div>
         <p>
-          Each group develops precise meaning for its own domain. The Interoperability Working
-          Group aligns a small shared boundary and mappings between them—without forcing one
-          definition to fit every situation.
+          Each group develops meaning for its own domain. The Interoperability Working Group aligns
+          a small common boundary and mappings between them—without forcing one definition to fit
+          every situation.
         </p>
       </div>
-      <ul class="wg-contexts">
-        {contexts.map(([, label, contextDescription], index) => (
-          <li>
-            <span class="wg-contexts__number">0{index + 1}</span>
-            <strong>{label}</strong><span>{contextDescription}</span>
-          </li>
-        ))}
-      </ul>
-      <div class="wg-method-note">
-        <h3>How candidates are made</h3>
-        <div class="wg-method-note__copy">
-          <p>
-            You supply evidence—glossaries, schemas, forms, guidance and lived experience.
-            AI-assisted modelling drafts candidate definitions; the group challenges, corrects and
-            approves them. People decide: nothing becomes part of the scheme through AI alone.
-          </p>
-          <p>
-            Approved meaning can then be published as business glossaries, data dictionaries,
-            taxonomies, JSON Schemas, validation rules and integration mappings.
-          </p>
+      <div class="wg-context-map" data-reveal-group>
+        <ul class="wg-contexts">
+          {contexts.map(([, label, description], index) => (
+            <li data-reveal style={`--reveal-delay:${index * 80}ms`}>
+              <span class="wg-contexts__number">0{index + 1}</span>
+              <strong>{label}</strong><span>{description}</span>
+            </li>
+          ))}
+        </ul>
+        <div class="wg-context-map__bridge">
+          <span>Interoperability</span>
+          <strong>Shared boundary · mappings · conventions</strong>
         </div>
       </div>
     </section>
 
-    <section class="wg-section wg-participation" aria-labelledby="process-title">
+    <section id="how-it-works" class="wg-model-story" aria-labelledby="model-title">
+      <div class="wg-model-story__intro">
+        <p class="wg-eyebrow">A faster, evidence-led way to build</p>
+        <h2 id="model-title">You bring the evidence.<br />We turn it into something everyone can use.</h2>
+        <p>
+          Source material, discussion and feedback feed an AI-assisted modelling process. AI speeds
+          up synthesis; people remain responsible for meaning, challenge and approval.
+        </p>
+      </div>
+      <ol class="wg-model-flow" data-reveal-group>
+        <li data-reveal>
+          <span class="wg-model-flow__icon" aria-hidden="true">≋</span>
+          <strong>Evidence</strong>
+          <p>Forms, schemas, glossaries, guidance, examples and lived expertise.</p>
+        </li>
+        <li data-reveal>
+          <span class="wg-model-flow__icon" aria-hidden="true">✦</span>
+          <strong>AI-assisted modelling</strong>
+          <p>Specialist agents compare sources, surface ambiguity and propose a candidate.</p>
+        </li>
+        <li data-reveal>
+          <span class="wg-model-flow__icon" aria-hidden="true">◎</span>
+          <strong>Human review</strong>
+          <p>Working groups challenge the meaning, supply evidence and resolve what is wrong.</p>
+        </li>
+        <li data-reveal>
+          <span class="wg-model-flow__icon" aria-hidden="true">↻</span>
+          <strong>Iterate</strong>
+          <p>Feedback returns to the model until the group has a stable candidate.</p>
+        </li>
+      </ol>
+
+      <div class="wg-output-ribbon" aria-labelledby="outputs-title">
+        <p class="wg-eyebrow">One governed source of meaning</p>
+        <h3 id="outputs-title">Familiar outputs for the tools people already use</h3>
+        <ul>
+          <li>Business glossary</li>
+          <li>Data dictionary</li>
+          <li>Taxonomies</li>
+          <li>Controlled vocabularies</li>
+          <li>JSON Schemas</li>
+          <li>Validation</li>
+          <li>Website and documents</li>
+          <li>Integration mappings</li>
+        </ul>
+      </div>
+    </section>
+
+    <section class="wg-section wg-why" aria-labelledby="why-title">
+      <div class="wg-why__statement">
+        <p class="wg-eyebrow">Why your participation matters</p>
+        <h2 id="why-title">A model cannot learn the exceptions nobody shares.</h2>
+        <p>
+          The standard will influence how property information is described, checked and exchanged.
+          It needs the language of daily work—not just the assumptions visible in existing schemas.
+        </p>
+        <a class="btn wg-btn--large" href="#register">Bring your perspective <span aria-hidden="true">↓</span></a>
+      </div>
+      <ul class="wg-why__reasons" data-reveal-group>
+        <li data-reveal><strong>Make meaning explicit</strong><span>Explain the terms, rules and edge cases only practitioners know.</span></li>
+        <li data-reveal><strong>Expose gaps early</strong><span>Challenge what is missing, misleading or too narrow before it becomes a standard.</span></li>
+        <li data-reveal><strong>Test practical outputs</strong><span>Check whether schemas, validation and mappings work with real systems and forms.</span></li>
+        <li data-reveal><strong>Represent affected people</strong><span>Bring consumer, accessibility, regulatory and public-interest experience into review.</span></li>
+      </ul>
+    </section>
+
+    <section class="wg-trust" aria-labelledby="trust-title">
+      <div>
+        <p class="wg-eyebrow">Clever technology. Clear human authority.</p>
+        <h2 id="trust-title">You do not need to understand ontologies or adopt AI.</h2>
+      </div>
+      <div class="wg-trust__content">
+        <p>
+          Participate in the language of your work. Share what you are authorised to share, discuss
+          candidates in plain English, and tell us what the model gets wrong.
+        </p>
+        <ul>
+          <li><strong>AI proposes;</strong> people review.</li>
+          <li><strong>Evidence shapes;</strong> source material is not automatically published.</li>
+          <li><strong>Working groups iterate;</strong> registration is not a vote or automatic access.</li>
+          <li><strong>People decide;</strong> no candidate becomes official through AI alone.</li>
+        </ul>
+      </div>
+    </section>
+
+    <section class="wg-section" aria-labelledby="process-title">
       <div class="wg-section__heading">
         <div>
           <p class="wg-eyebrow">Your next step</p>
@@ -115,11 +271,6 @@ const contributions = [
         <li><strong>OPDA reviews it</strong><span>A person reviews every expression of interest.</span></li>
         <li><strong>Onboarding follows</strong><span>If accepted, we send working-group access separately.</span></li>
       </ol>
-      <ul class="wg-governance-list">
-        <li>Registration does not create membership, access, voting rights or authority to represent your employer.</li>
-        <li>A person reviews every expression of interest; onboarding and working-group access are sent separately.</li>
-        <li>Share only material that you and your organisation are authorised to share.</li>
-      </ul>
     </section>
 
     <section id="register" class="wg-section wg-form-shell" aria-labelledby="register-title">
@@ -138,16 +289,6 @@ const contributions = [
             <a href="/working-groups/join/privacy">working-group privacy notice</a>.
           </p>
         </div>
-        <noscript>
-          <div class="callout callout--warning">
-            <div class="callout__label">JavaScript is needed to send this form</div>
-            <p>
-              You can still register by emailing
-              <a href="mailto:smartdata@openpropdata.org.uk">smartdata@openpropdata.org.uk</a>.
-              Do not send confidential, personal, customer or property-transaction information.
-            </p>
-          </div>
-        </noscript>
       </div>
 
       <form
@@ -167,28 +308,28 @@ const contributions = [
           <div class="wg-fields">
             <div class="wg-field">
               <label for="full-name">Full name <span class="wg-required">*</span></label>
-              <input id="full-name" name="fullName" type="text" autocomplete="name" minlength="2" maxlength="100" aria-describedby="full-name-error" required />
+              <input id="full-name" name="fullName" type="text" autocomplete="name" minlength="2" maxlength="100" required />
               <p id="full-name-error" class="wg-field-error"></p>
             </div>
             <div class="wg-field">
               <label for="email">Email address <span class="wg-required">*</span></label>
-              <input id="email" name="email" type="email" autocomplete="email" maxlength="254" inputmode="email" aria-describedby="email-error" required />
+              <input id="email" name="email" type="email" autocomplete="email" maxlength="254" inputmode="email" required />
               <p id="email-error" class="wg-field-error"></p>
             </div>
             <div class="wg-field">
               <label for="organisation">Organisation <span class="wg-required">*</span></label>
-              <input id="organisation" name="organisation" type="text" autocomplete="organization" minlength="2" maxlength="150" aria-describedby="organisation-error" required />
+              <input id="organisation" name="organisation" type="text" autocomplete="organization" minlength="2" maxlength="150" required />
               <p id="organisation-error" class="wg-field-error"></p>
             </div>
             <div class="wg-field">
               <label for="role">Role or area of expertise <span class="wg-required">*</span></label>
-              <input id="role" name="role" type="text" autocomplete="organization-title" minlength="2" maxlength="120" aria-describedby="role-error" required />
+              <input id="role" name="role" type="text" autocomplete="organization-title" minlength="2" maxlength="120" required />
               <p id="role-error" class="wg-field-error"></p>
             </div>
           </div>
         </fieldset>
 
-        <fieldset class="wg-form-section" data-group="workingGroups" aria-describedby="working-groups-error">
+        <fieldset class="wg-form-section" data-group="workingGroups">
           <legend>Which working groups interest you?</legend>
           <p>Select one or more, or choose “Not sure”. <span class="wg-required">*</span></p>
           <div class="wg-choice-grid">
@@ -206,7 +347,7 @@ const contributions = [
           <p id="working-groups-error" class="wg-field-error"></p>
         </fieldset>
 
-        <fieldset class="wg-form-section" data-group="contributions" aria-describedby="contributions-error">
+        <fieldset class="wg-form-section" data-group="contributions">
           <legend>How might you contribute?</legend>
           <p>Select one or more. <span class="wg-required">*</span></p>
           <div class="wg-choice-grid">
@@ -228,7 +369,7 @@ const contributions = [
           </p>
           <div class="wg-field">
             <label for="relevant-perspective">Relevant experience or perspective</label>
-            <textarea id="relevant-perspective" name="relevantPerspective" maxlength="600" aria-describedby="perspective-hint perspective-count relevant-perspective-error"></textarea>
+            <textarea id="relevant-perspective" name="relevantPerspective" maxlength="600" aria-describedby="perspective-hint perspective-count"></textarea>
             <span id="perspective-hint" class="wg-field-hint">Up to 600 characters. Do not paste evidence or links here.</span>
             <span id="perspective-count" class="wg-character-count" aria-live="polite">0 of 600 characters</span>
             <p id="relevant-perspective-error" class="wg-field-error"></p>
@@ -243,7 +384,7 @@ const contributions = [
         <input name="privacyNoticeVersion" type="hidden" value={privacyNoticeVersion} />
 
         <label class="wg-acknowledgement">
-          <input id="acknowledgement" name="acknowledgement" type="checkbox" value="true" aria-describedby="acknowledgement-error" required />
+          <input id="acknowledgement" name="acknowledgement" type="checkbox" value="true" required />
           <span>
             I understand this is an expression of interest, not automatic membership or access,
             and OPDA may contact me about the working groups I selected. <span class="wg-required">*</span>
@@ -270,5 +411,6 @@ const contributions = [
   </div>
   <script>
     import '@/scripts/working-group-join';
+    import '@/scripts/working-group-campaign';
   </script>
 </Layout>

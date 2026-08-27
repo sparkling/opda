@@ -1,7 +1,7 @@
 ---
 status: accepted
 date: 2026-08-14
-updated: 2026-08-27
+updated: 2026-08-16
 tags: [engagement, recruitment, linkedin, trade-bodies, working-groups, signup, campaign, measurement]
 supersedes: []
 depends-on: [ADR-0063, ADR-0065, ADR-0069]
@@ -9,12 +9,6 @@ implements: [ADR-0069]
 ---
 
 # Recruit later bounded-context groups through a coordinated public campaign
-
-> **Change note — 2026-08-27:** The canonical signup journey now uses a shorter, quiet editorial
-> composition in the shared OPDA shell. It retains the six-domain explanation, evidence-led and
-> human-authority proposition, expression-of-interest form and canonical anchors while removing
-> the animated scroll story and repeated campaign sections. Campaign scope and operating measures
-> are unchanged.
 
 ## Context and Problem Statement
 

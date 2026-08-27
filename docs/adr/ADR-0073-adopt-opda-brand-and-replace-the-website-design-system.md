@@ -1,7 +1,7 @@
 ---
 status: implemented
 date: 2026-08-16
-updated: 2026-08-27
+updated: 2026-08-25
 tags: [design-system, brand, website, accessibility, css, governance, presentation]
 supersedes: [ADR-0025]
 depends-on: [ADR-0064]
@@ -9,11 +9,6 @@ implements: [DESIGN.md, public/ui, src/layouts/Layout.astro, src/components/Head
 ---
 
 # Adopt the OPDA brand and replace the website design system
-
-> **Change note — 2026-08-27:** The working-group signup route now uses a quiet four-part
-> editorial composition within the implemented shared shell. Campaign-only dark bands,
-> scroll-story animation and repeated sections were retired; shared semantic tokens, form states,
-> dark mode, forced colours, reduced motion and the common footer remain the governing contract.
 
 ## Context and problem statement
 
