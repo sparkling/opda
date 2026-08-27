@@ -60,11 +60,24 @@ test('registration validation normalises valid input and rejects unknown, HTML a
     payload({ unexpected: 'field' }),
     payload({ fullName: '<b>Ada</b>' }),
     payload({ workingGroups: ['unknown'] }),
-    payload({ workingGroups: ['not-sure', 'conveyancing'] }),
+    payload({ workingGroups: ['not-sure'] }),
+    payload({ contributions: ['contribute-consumer-accessibility-regulatory-public-interest-experience'] }),
     payload({ relevantPerspective: 'hello\u0000world' }),
     payload({ privacyNoticeVersion: 'old' }),
   ]) {
     assert.equal(validateRegistration(invalid).ok, false);
+  }
+});
+
+test('registration accepts commercial and public-interest contributions independently or together', () => {
+  for (const contributions of [
+    ['represent-commercial-interests'],
+    ['represent-public-interests'],
+    ['represent-commercial-interests', 'represent-public-interests'],
+  ]) {
+    const result = validateRegistration(payload({ contributions }));
+    assert.equal(result.ok, true);
+    assert.deepEqual(result.value.contributions, contributions);
   }
 });
 

@@ -9,7 +9,6 @@ export const WORKING_GROUPS = new Set([
   'surveying-and-valuation',
   'property-data-services',
   'property-technology',
-  'not-sure',
 ]);
 
 export const CONTRIBUTIONS = new Set([
@@ -17,7 +16,8 @@ export const CONTRIBUTIONS = new Set([
   'explain-domain-language-and-rules',
   'review-model-candidates',
   'test-schemas-and-integrations',
-  'contribute-consumer-accessibility-regulatory-public-interest-experience',
+  'represent-commercial-interests',
+  'represent-public-interests',
 ]);
 
 const REGISTRATION_FIELDS = new Set([
@@ -86,9 +86,6 @@ export function validateRegistration(payload) {
   if (!organisation) errors.organisation = 'Enter your organisation.';
   if (!role) errors.role = 'Enter your role or area of expertise.';
   if (!workingGroups) errors.workingGroups = 'Select at least one working group.';
-  if (workingGroups?.includes('not-sure') && workingGroups.length > 1) {
-    errors.workingGroups = 'Select “Not sure” on its own, or choose specific groups.';
-  }
   if (!contributions) errors.contributions = 'Select at least one way to contribute.';
   if (relevantPerspective === null) errors.relevantPerspective = 'Use 600 characters or fewer and do not include HTML.';
   if (payload.acknowledgement !== true) errors.acknowledgement = 'Confirm that this is an expression of interest.';

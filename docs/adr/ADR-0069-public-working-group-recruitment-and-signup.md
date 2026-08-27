@@ -18,6 +18,11 @@ implements: [ADR-0065]
 > site-wide authentication gate instead of creating another route allowlist exception. The two
 > earlier join route families remain absent without compatibility routing.
 >
+> **Change note — 2026-08-27:** The form no longer offers an undecided working-group choice;
+> registrants select one or more of the six groups. The former combined cross-cutting contribution
+> option is split into independent commercial-interest and public-interest choices. The collection,
+> purpose, privacy notice, storage model and human-review boundary remain unchanged.
+>
 > **Change note — 2026-08-27:** An adversarial review replaced the oversized sticky
 > handoff sequence with a natural-height comparison that keeps every domain meaning, moved the
 > registration journey ahead of supporting modelling detail, and retained every approved field
@@ -147,7 +152,7 @@ The form collects only:
 - email address;
 - organisation;
 - role or area of expertise;
-- one or more of the six groups, or `Not sure — help me choose`;
+- one or more of the six groups;
 - one or more contribution preferences; and
 - an optional, length-limited note about relevant experience or perspective.
 

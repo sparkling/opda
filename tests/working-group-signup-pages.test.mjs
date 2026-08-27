@@ -45,7 +45,6 @@ const expectedGroups = [
   'surveying-and-valuation',
   'property-data-services',
   'property-technology',
-  'not-sure',
 ];
 
 const expectedContributions = [
@@ -53,7 +52,8 @@ const expectedContributions = [
   'explain-domain-language-and-rules',
   'review-model-candidates',
   'test-schemas-and-integrations',
-  'contribute-consumer-accessibility-regulatory-public-interest-experience',
+  'represent-commercial-interests',
+  'represent-public-interests',
 ];
 
 function extractObjectValues(source, constantName) {
@@ -73,9 +73,10 @@ test('public sign-up form exposes only the accepted working-group and contributi
     readFile(paths.form, 'utf8'),
     readFile(paths.campaignData, 'utf8'),
   ]);
-  assert.deepEqual(extractObjectValues(data, 'workingGroupContexts'), expectedGroups.slice(0, -1));
+  assert.deepEqual(extractObjectValues(data, 'workingGroupContexts'), expectedGroups);
   assert.deepEqual(extractObjectValues(data, 'contributionOptions'), expectedContributions);
-  assert.match(form, /name="workingGroups" value="not-sure"/u);
+  assert.doesNotMatch(form, /not-sure|Not sure|help me choose|data-exclusive/u);
+  assert.match(form, /<label for="email">Organisational email address <span class="wg-required">\*<\/span><\/label>/u);
   assert.doesNotMatch(form, /type=["'](?:file|tel|url)["']/u);
   assert.doesNotMatch(form, /name=["'](?:address|phone|socialProfile|evidence|materialInterest)["']/u);
   assert.doesNotMatch(form, /Turnstile|turnstile|cf-turnstile|PUBLIC_TURNSTILE/u);
@@ -183,6 +184,7 @@ test('registration script sends the fixed allowlisted payload to the same-origin
     readFile(paths.form, 'utf8'),
   ]);
   assert.deepEqual(extractSetValues(source, 'WORKING_GROUPS'), expectedGroups);
+  assert.deepEqual(extractSetValues(source, 'CONTRIBUTIONS'), expectedContributions);
   for (const field of [
     'fullName', 'email', 'organisation', 'role', 'workingGroups', 'contributions',
     'relevantPerspective', 'acknowledgement', 'privacyNoticeVersion',
@@ -237,8 +239,10 @@ test('campaign recruits industry experts through purpose, influence and clear ex
     'Bring authorised material',
     'Review plain-English drafts',
     'Test proposals against real work',
-    'Identify impacts and opportunities',
-    'commercial opportunities, consumer needs, accessibility requirements and regulatory duties',
+    'Represent commercial interests',
+    'Explain commercial needs, opportunities, costs and implementation impacts',
+    'Represent public interests',
+    'Bring consumer, accessibility, regulatory and wider public-interest perspectives',
     'You do not need data-modelling experience.',
     'AI may assist comparison and drafting; it cannot make a draft official.',
     'expectations before asking you to commit',
@@ -246,7 +250,7 @@ test('campaign recruits industry experts through purpose, influence and clear ex
     assert.match(corpus, new RegExp(phrase, 'iu'));
   }
   assert.doesNotMatch(page, /ontology|SKOS|semantic constellation|contextual lenses|common boundary|AI-assisted modelling/iu);
-  assert.doesNotMatch(corpus, /Contribute consumer, accessibility, regulatory or public-interest experience|Represent people and the public interest|technical model might otherwise miss/iu);
+  assert.doesNotMatch(corpus, /Contribute consumer, accessibility, regulatory or public-interest experience|Identify impacts and opportunities|Represent people and the public interest|technical model might otherwise miss|Not sure|help me choose/iu);
   assert.doesNotMatch(page, /data-parallax-layer|data-story-step|data-handoff-stage|data-reveal/u);
   assert.doesNotMatch(sectionsCss, /position:\s*sticky|data-reveal|wg-model-flow|wg-output-ribbon/u);
   assert.match(responsiveCss, /prefers-reduced-motion/u);

@@ -66,7 +66,7 @@ const { contexts, contributions, privacyNoticeVersion } = Astro.props;
           <p id="full-name-error" class="wg-field-error"></p>
         </div>
         <div class="wg-field">
-          <label for="email">Email address <span class="wg-required">*</span></label>
+          <label for="email">Organisational email address <span class="wg-required">*</span></label>
           <input id="email" name="email" type="email" autocomplete="email" maxlength="254" inputmode="email" aria-describedby="email-error" required />
           <p id="email-error" class="wg-field-error"></p>
         </div>
@@ -85,7 +85,7 @@ const { contexts, contributions, privacyNoticeVersion } = Astro.props;
 
     <fieldset class="wg-form-section" data-group="workingGroups" aria-describedby="working-groups-hint working-groups-error">
       <legend>Which working groups interest you?</legend>
-      <p id="working-groups-hint">Select one or more, or choose “Not sure”. <span class="wg-required">*</span></p>
+      <p id="working-groups-hint">Select one or more. <span class="wg-required">*</span></p>
       <div class="wg-choice-grid">
         {contexts.map((context) => (
           <label class="wg-choice">
@@ -93,10 +93,6 @@ const { contexts, contributions, privacyNoticeVersion } = Astro.props;
             <span><strong>{context.label}</strong><span>{context.scope}</span></span>
           </label>
         ))}
-        <label class="wg-choice wg-choice--wide">
-          <input id="working-group-not-sure" type="checkbox" name="workingGroups" value="not-sure" data-exclusive />
-          <span><strong>Not sure — help me choose</strong><span>OPDA can suggest the best fit when reviewing your registration.</span></span>
-        </label>
       </div>
       <p id="working-groups-error" class="wg-field-error"></p>
     </fieldset>

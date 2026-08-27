@@ -5,7 +5,6 @@ const WORKING_GROUPS = new Set([
   'surveying-and-valuation',
   'property-data-services',
   'property-technology',
-  'not-sure',
 ]);
 
 const CONTRIBUTIONS = new Set([
@@ -13,7 +12,8 @@ const CONTRIBUTIONS = new Set([
   'explain-domain-language-and-rules',
   'review-model-candidates',
   'test-schemas-and-integrations',
-  'contribute-consumer-accessibility-regulatory-public-interest-experience',
+  'represent-commercial-interests',
+  'represent-public-interests',
 ]);
 
 const CONTROL_CHARACTERS = /[\u0000-\u0008\u000b\u000c\u000e-\u001f\u007f]/u;
@@ -138,13 +138,9 @@ function initWorkingGroupForm(): void {
 
     const workingGroups = selected('workingGroups');
     const workingGroupControls = [...form.querySelectorAll<HTMLInputElement>('input[name="workingGroups"]')];
-    if (
-      workingGroups.length === 0 ||
-      workingGroups.some((value) => !WORKING_GROUPS.has(value)) ||
-      (workingGroups.includes('not-sure') && workingGroups.length > 1)
-    ) {
+    if (workingGroups.length === 0 || workingGroups.some((value) => !WORKING_GROUPS.has(value))) {
       workingGroupControls.forEach((control) => control.setAttribute('aria-invalid', 'true'));
-      addError(workingGroupControls[0] ?? null, 'working-groups-error', 'Select one or more working groups, or choose “Not sure”.');
+      addError(workingGroupControls[0] ?? null, 'working-groups-error', 'Select one or more working groups.');
     }
 
     const contributions = selected('contributions');
@@ -195,18 +191,6 @@ function initWorkingGroupForm(): void {
     if (relevantPerspective) payload.relevantPerspective = relevantPerspective;
     return payload;
   }
-
-  form.querySelectorAll<HTMLInputElement>('input[name="workingGroups"]').forEach((input) => {
-    input.addEventListener('change', () => {
-      const exclusive = form.querySelector<HTMLInputElement>('input[name="workingGroups"][data-exclusive]');
-      if (input === exclusive && input.checked) {
-        form.querySelectorAll<HTMLInputElement>('input[name="workingGroups"]:not([data-exclusive])')
-          .forEach((other) => { other.checked = false; });
-      } else if (input.checked && exclusive) {
-        exclusive.checked = false;
-      }
-    });
-  });
 
   perspective?.addEventListener('input', updateCharacterCount);
   updateCharacterCount();

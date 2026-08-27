@@ -8,10 +8,8 @@ function initCampaignExperience(): void {
       const value = link.dataset.contextRegister;
       if (!value) return;
       const checkbox = root.querySelector<HTMLInputElement>(`input[name="workingGroups"][value="${value}"]`);
-      const notSure = root.querySelector<HTMLInputElement>('input[name="workingGroups"][data-exclusive]');
       if (!checkbox) return;
       checkbox.checked = true;
-      if (notSure) notSure.checked = false;
       checkbox.dispatchEvent(new Event('change', { bubbles: true }));
     });
   });

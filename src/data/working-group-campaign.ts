@@ -65,8 +65,13 @@ export const contributionOptions: ContributionOption[] = [
     description: 'Check whether proposed guidance and data outputs work with familiar forms, services and systems.',
   },
   {
-    value: 'contribute-consumer-accessibility-regulatory-public-interest-experience',
-    label: 'Identify impacts and opportunities',
-    description: 'Explain how proposals could affect your organisation, customers or the wider public, including commercial opportunities, consumer needs, accessibility requirements and regulatory duties.',
+    value: 'represent-commercial-interests',
+    label: 'Represent commercial interests',
+    description: 'Explain commercial needs, opportunities, costs and implementation impacts for organisations operating across the property market.',
+  },
+  {
+    value: 'represent-public-interests',
+    label: 'Represent public interests',
+    description: 'Bring consumer, accessibility, regulatory and wider public-interest perspectives so proposals account for people, obligations and potential harms.',
   },
 ];
