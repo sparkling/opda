@@ -304,7 +304,7 @@ No floating screenshots, generic illustration clutter or synthetic poster imager
 Every interactive component provides default, hover, active, focus and disabled
 states, plus loading/error/success where asynchronous work occurs and dark parity.
 
-- **Buttons:** primary yellow/ink, outlined secondary, ghost, and danger red/white;
+- **Buttons:** primary yellow/black, outlined secondary, ghost, and danger red/white;
   minimum height 44px; pressed state translates inward by 1px.
 - **Inputs/selects:** 2px radius, 1px strong-neutral border, explicit label and help;
   error adds danger border, icon and message.

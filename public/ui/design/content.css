@@ -332,7 +332,7 @@ html { scroll-padding-top: calc(var(--header-height) + 1rem); }
   padding: 0.5rem 0.75rem;                                   /* Plus: px-3 py-2 */
   border-radius: var(--radius-md);
   background: var(--brand);
-  color: var(--brand-ink);
+  color: var(--color-action-primary-text);
   font: 600 var(--text-sm) / 1.4 var(--font-sans);
   min-height: var(--target-min);
   border: 1px solid var(--brand-yellow);
@@ -345,7 +345,7 @@ html { scroll-padding-top: calc(var(--header-height) + 1rem); }
 }
 .cta:hover, .btn:hover {
   background: var(--brand-strong);
-  color: var(--brand-ink);
+  color: var(--color-action-primary-text);
   text-decoration: none;
 }
 .cta:focus-visible, .btn:focus-visible {

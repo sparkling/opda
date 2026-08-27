@@ -115,6 +115,7 @@ test('tokens encode the supplied identity and derived accessible roles', async (
     '--color-status-success', '--color-status-warning', '--color-status-danger',
     '--color-data-1', '--target-min', '--content-max', '--motion-standard',
     '--content-gutter', '--color-text-placeholder', '--on-dark-muted', '--text-caption',
+    '--color-action-primary-text',
   ]) assert.ok(source.includes(token), `missing derived token ${token}`);
   assert.match(source, /--content-max:\s*100rem/u);
   assert.match(source, /Roboto Slab/u);
@@ -472,12 +473,18 @@ test('graph and data tools preserve keyboard and semantic state contracts', asyn
 });
 
 test('shared buttons expose the adopted interaction and outcome states', async () => {
-  const source = await readFile(file('public/ui/design/content.css'), 'utf8');
+  const [source, tokens] = await Promise.all([
+    readFile(file('public/ui/design/content.css'), 'utf8'),
+    readFile(file('public/ui/design-tokens.css'), 'utf8'),
+  ]);
   for (const state of [':hover', ':active', ':focus-visible', ':disabled', '[aria-busy="true"]']) {
     assert.ok(source.includes(state), `missing button state ${state}`);
   }
   assert.match(source, /\.btn--danger/u);
   assert.match(source, /\.btn--success/u);
+  assert.match(tokens, /--color-action-primary-text:\s*#000/u);
+  assert.match(source, /\.cta,\s*\.btn\s*\{[\s\S]*?color:\s*var\(--color-action-primary-text\)/u);
+  assert.match(source, /\.cta:hover,\s*\.btn:hover\s*\{[\s\S]*?color:\s*var\(--color-action-primary-text\)/u);
 });
 
 test('design-system source files remain reviewable', async () => {

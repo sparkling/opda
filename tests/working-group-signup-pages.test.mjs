@@ -113,12 +113,18 @@ test('working-group public routes use the shared wrapper within section navigati
     assert.doesNotMatch(source, /PublicWorkingGroupLayout/u);
     assert.doesNotMatch(source, /hideSidebar=/u);
     assert.match(source, /hideComments=\{true\}/u);
-    assert.doesNotMatch(source, /hideBreadcrumbs=\{true\}|hideFooter=\{true\}|wrapArticle=\{false\}|mainClass=/u);
+    assert.doesNotMatch(source, /hideFooter=\{true\}|wrapArticle=\{false\}/u);
   }
+  assert.match(join, /hideBreadcrumbs=\{true\}/u);
+  assert.doesNotMatch(privacy, /hideBreadcrumbs=\{true\}/u);
+  assert.match(join, /mainClass="app-main--working-group-join"/u);
+  assert.doesNotMatch(privacy, /mainClass=/u);
   assert.match(layout, /<Header showSidebar=\{showSidebar\}/u);
   assert.match(layout, /<article class=\{proseClass\}>/u);
   assert.doesNotMatch(joinCss, /\.app-main\.working-group-main/u);
   assert.match(joinCss, /\.wg-page\s*\{[^}]*width:\s*100%[^}]*margin:\s*0/su);
+  assert.match(joinCss, /\.app-main\.app-main--working-group-join\s*\{[^}]*padding-top:\s*0/su);
+  assert.match(joinCss, /\.app-main\.app-main--working-group-join\s*>\s*\.prose\s*\{[^}]*padding-top:\s*0/su);
 });
 
 test('former working-group sign-up paths have no page, redirect or rewrite', async () => {
@@ -249,6 +255,8 @@ test('campaign styles remain split below the project file limit', async () => {
   assert.doesNotMatch(campaign, /position:\s*sticky|min-height:\s*(?:20|28|32)rem/u);
   assert.doesNotMatch(sections, /calc\(50% - 50vw\)|position:\s*sticky/u);
   assert.match(campaign, /\.wg-campaign-hero\s*\{[\s\S]*?padding-inline:\s*0/u);
+  assert.match(campaign, /\.wg-campaign-hero\s*\{[\s\S]*?margin-top:\s*0/u);
+  assert.doesNotMatch(campaign, /\.wg-btn--large\s*\{[\s\S]*?color:\s*#000/u);
   assert.match(sections, /\.wg-model-story\s*\{[\s\S]*?padding-inline:\s*0/u);
   assert.match(sections, /\.wg-trust\s*\{[\s\S]*?padding-inline:\s*0/u);
 });

@@ -3,6 +3,9 @@
   margin: 0;
 }
 
+.app-main.app-main--working-group-join { padding-top: 0; }
+.app-main.app-main--working-group-join > .prose { padding-top: 0; }
+
 .wg-eyebrow {
   margin: 0 0 var(--space-3);
   color: var(--color-text-muted);

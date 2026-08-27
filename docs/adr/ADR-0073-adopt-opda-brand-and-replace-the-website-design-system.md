@@ -137,6 +137,10 @@ narrative is now a natural-height, two-column comparison that becomes one column
 small screens; its complete meaning remains visible without interaction. Optional
 reveal feedback still follows the shared motion and reduced-motion contract.
 
+Later on 27 August 2026 the primary-action token was made explicitly black on amber.
+The shared `.btn` and `.cta` primitives consume that token in their default and hover
+states; page-level campaign styles do not override it.
+
 On 25 August 2026 the expanded documentation header was aligned to the shared content
 axis: its wordmark is centred over the navigation rail, its first destination follows
 the content gutter, and the left rail no longer repeats its accessible section name as

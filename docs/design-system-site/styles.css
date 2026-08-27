@@ -22,6 +22,7 @@
   --deep: #131224;
   --night: #231f2f;
   --ink: #2c273b;
+  --button-primary-text: #000;
   --yellow: #fec92b;
   --yellow-active: #fac238;
   --table-row-header: #f4f0e4;
@@ -197,8 +198,8 @@ h3 { margin: 2rem 0 1rem; font-size: 1.375rem; line-height: 1.36; }
   cursor: pointer;
 }
 .button:hover, .button.is-hover { color: var(--ink); background: var(--neutral-100); text-decoration: none; }
-.button--primary { background: var(--yellow); border-color: var(--yellow); }
-.button--primary:hover, .button--primary.is-hover { background: var(--yellow-active); border-color: var(--yellow-active); }
+.button--primary { color: var(--button-primary-text); background: var(--yellow); border-color: var(--yellow); }
+.button--primary:hover, .button--primary.is-hover { color: var(--button-primary-text); background: var(--yellow-active); border-color: var(--yellow-active); }
 .button--dark { color: var(--white); background: transparent; border-color: var(--white); }
 .button--dark:hover { color: var(--white); background: rgb(255 255 255 / 8%); }
 .button--danger { color: var(--white); background: var(--danger); border-color: var(--danger); }
