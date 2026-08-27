@@ -4,7 +4,7 @@ date: 2026-08-27
 updated: 2026-08-27
 tags: [working-groups, recruitment, campaign, signup, design-system, accessibility, routing]
 supersedes: []
-depends-on: [ADR-0069, ADR-0071, ADR-0073]
+depends-on: [ADR-0038, ADR-0069, ADR-0071, ADR-0073]
 implements: []
 ---
 
@@ -55,7 +55,8 @@ content, form, privacy and accessibility contract.
   every material part of the journey.
 - Avoid scroll hijacking, pinned empty sequences, decorative parallax and a
   presentation-style requirement to click through the story.
-- Meet normal performance expectations despite any optional spatial rendering.
+- Meet explicit loading, responsiveness and stability thresholds despite any
+  optional spatial rendering.
 
 ## Considered options
 
@@ -106,6 +107,11 @@ The privacy notice moves with it to `/join/privacy`. The former
 removed without redirects, rewrites, aliases or duplicate pages. All repository
 links, campaign assets and calls to action must use the new canonical route.
 
+The route change includes the site navigation, route-migration registry, information-
+architecture baseline and every route- or path-pinned unit test. Updating those
+contracts records the new canonical hierarchy; it does not create compatibility
+routing for the former URLs.
+
 `https://opda.org.uk/accessibility` becomes the canonical accessibility statement
 for the public site. It is a separate public service page delivered with the
 standalone signup journey, not an additional signup route.
@@ -114,6 +120,12 @@ The unchanged same-origin submission API remains
 `POST /api/working-group-interest`. Moving the public pages does not change the API,
 stored record, validation, retention, access or human-review boundary established
 by ADR-0069.
+
+Public recruitment must not launch through another exception in the current
+authentication allowlist. Launch is sequenced after the separately governed removal
+of the site authentication gate, when anonymous access to `/join`, `/join/privacy`,
+`/accessibility` and the submission API can be verified directly. This ADR does not
+authorise an interim allowlist entry.
 
 ### 2. Standalone shell
 
@@ -144,8 +156,8 @@ must be added to the design-system documentation when implemented.
 
 ### 3. Narrative structure
 
-The campaign uses approximately five naturally flowing chapters rather than the
-current long card sequence or a slide deck:
+The campaign uses five naturally flowing chapters rather than the current long card
+sequence or a slide deck:
 
 1. **One property, many professional meanings.** A full-viewport opening explains
    the proposition and offers direct routes to participate or understand the work.
@@ -203,6 +215,9 @@ The campaign uses at most three recurring motion signatures:
 2. a restrained change of the contextual property label; and
 3. short section or process-line reveals.
 
+Every recurring animation must belong to one of these three signatures; a fourth
+recurring motion pattern fails the design review.
+
 Motion must respond to focus and touch as well as pointer input. It must stop when
 offscreen or when the document is hidden. Reduced-motion preferences receive the
 complete static state without delayed or hidden content.
@@ -248,9 +263,18 @@ The semantic HTML proposition, reassurance and primary action render before any
 optional visual enhancement. Spatial code and assets are lazy-loaded, paused when
 unused and excluded from the critical path.
 
-The implemented page is expected to meet the site's Core Web Vitals and release
-gates. A visual enhancement that materially damages loading, interaction, stability,
-reflow or battery use must be simplified or removed.
+The production-build performance receipt records the audit tool and version, device
+and network profile, and the median of at least three runs against `/join`. The mobile
+lab profile passes only with Largest Contentful Paint at or below 2.5 seconds,
+Cumulative Layout Shift at or below 0.1 and Total Blocking Time below 200 milliseconds.
+These are the published “good” thresholds for
+[Core Web Vitals](https://web.dev/articles/vitals) and the corresponding
+[lab responsiveness proxy](https://web.dev/articles/tbt).
+
+When sufficient production traffic exists, the 75th percentile must also meet LCP at
+or below 2.5 seconds, Interaction to Next Paint at or below 200 milliseconds and CLS
+at or below 0.1 on both mobile and desktop. An optional visual enhancement that causes
+a failed lab or field threshold is disabled until the threshold is restored.
 
 The complete proposition, context explanations, participation process, trust
 boundary, privacy link and form remain usable when motion is disabled or WebGL is
@@ -293,14 +317,21 @@ unavailable.
 ## Confirmation
 
 This ADR can move from proposed to accepted when the operator approves the route,
-shell and narrative contract. It can move to implemented only when all of the
-following are true:
+shell and narrative contract and ADR-0069, ADR-0071 and ADR-0073 are amended in the
+same decision change. It can move to implemented only when all of the following are
+true:
 
 - `/join` and `/join/privacy` are the only public page routes for the signup journey;
 - `/accessibility` exists as the canonical public accessibility statement and the
   standalone footer links to it;
+- the site authentication gate has been removed through its own accepted decision,
+  with no interim join-route allowlist exception, and anonymous access to all three
+  public pages and the submission API is verified;
 - the former nested routes are absent without compatibility routing;
 - all internal campaign and header links use `/join`;
+- site navigation, the route-migration registry, the information-architecture
+  baseline and all path-pinned signup, infrastructure, design-system and IA tests use
+  the new routes;
 - `/join`, `/join/privacy` and `/accessibility` do not render the Knowledge Base
   header, sidebar, breadcrumb, table of contents or previous/next furniture;
 - the official OPDA mark provides a clear route home, `/join/privacy` provides a clear
@@ -310,29 +341,38 @@ following are true:
   separate dotted SKOS mappings, with every unreviewed example labelled as illustrative
   rather than as an authorised SPDTF assertion;
 - every interactive context and form control is usable by keyboard, touch and pointer;
+- the page contains the five decided narrative chapters and no recurring motion
+  pattern outside the three named signatures;
 - the complete page remains understandable with WebGL and motion disabled;
 - reduced-motion, forced-colour, 320 CSS-pixel reflow and 400% zoom checks pass;
+- the recorded three-run mobile performance audit meets the LCP, CLS and TBT
+  thresholds in this decision;
 - the existing form fields, privacy acknowledgement, validation, API contract and
   human review behaviour remain unchanged;
 - unauthorised logos, quotations and endorsements are absent;
-- `make test` and `make build` pass; and
-- ADR-0069, ADR-0071, ADR-0073, `DESIGN.md` and the live design-system documentation
-  are reconciled with the implemented route and components in the same change.
+- `make test` and `make build-data` pass; and
+- `DESIGN.md` and the live design-system documentation are reconciled with the
+  implemented route and components in the same change.
 
 ## Relationship to other decisions
 
 - [ADR-0069](./ADR-0069-public-working-group-recruitment-and-signup.md) remains the
   authority for signup scope, form data, validation, privacy, storage, retention and
-  human review. On implementation, this ADR amends its canonical public page routes,
+  human review. On acceptance, this ADR amends its canonical public page routes,
   presentation layer and prior no-JavaScript requirement.
 - [ADR-0071](./ADR-0071-bounded-context-recruitment-campaign.md) remains the authority
   for campaign scope, recruitment channels, public promises and measures. On
-  implementation, this ADR amends only its canonical signup URL and campaign-page
+  acceptance, this ADR amends only its canonical signup URL and campaign-page
   composition.
 - [ADR-0073](./ADR-0073-adopt-opda-brand-and-replace-the-website-design-system.md)
   remains the authority for OPDA brand foundations, semantic tokens, controls and
-  accessibility. On implementation, it must record the standalone campaign as an
-  intentional shell exception and replace its stale description of the join route.
+  accessibility. On acceptance, it must record the standalone campaign as an
+  intentional shell exception and replace its stale description of the join route;
+  implementation then records the resulting components.
+- [ADR-0038](./ADR-0038-hosting-auth-and-comments-architecture-aws.md) remains the
+  authority for the current authentication gate. A separate accepted decision must
+  remove that gate before this campaign can launch; this ADR does not weaken it by
+  adding route exceptions.
 - The Finance and Banking presentation remains an isolated presentation surface and
   a source of tested narrative patterns. It is not the canonical recruitment page or
   a second design-system authority.
