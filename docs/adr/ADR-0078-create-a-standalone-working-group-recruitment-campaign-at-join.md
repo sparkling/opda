@@ -1,11 +1,11 @@
 ---
-status: proposed
+status: accepted
 date: 2026-08-27
 updated: 2026-08-27
 tags: [working-groups, recruitment, campaign, signup, design-system, accessibility, routing]
 supersedes: []
-depends-on: [ADR-0038, ADR-0069, ADR-0071, ADR-0073]
-implements: []
+depends-on: [ADR-0038, ADR-0069, ADR-0071, ADR-0073, ADR-0079]
+implements: [src/layouts/StandalonePublicLayout.astro, src/components/campaign, src/data/working-group-campaign.ts, src/pages/join, src/pages/accessibility.astro, src/styles/standalone-public.css]
 ---
 
 # Create a standalone working-group recruitment campaign at `/join`
@@ -94,8 +94,8 @@ campaign.
 
 Choose **Option C — create a standalone editorial campaign at `/join`**.
 
-This ADR is proposed. It records the intended route, composition and quality
-contract; it does not claim that the route exists or authorise publication.
+This ADR is accepted. It authorises the local route, composition and quality
+contract; it does not authorise publication.
 
 ### 1. Canonical route and route ownership
 
@@ -316,10 +316,10 @@ unavailable.
 
 ## Confirmation
 
-This ADR can move from proposed to accepted when the operator approves the route,
-shell and narrative contract and ADR-0069, ADR-0071 and ADR-0073 are amended in the
-same decision change. It can move to implemented only when all of the following are
-true:
+The operator accepted the route, shell and narrative contract by explicitly requesting
+its implementation on 27 August 2026. ADR-0069, ADR-0071 and ADR-0073 are amended in
+the same decision change. This ADR remains accepted, rather than implemented, until
+all of the following are true:
 
 - `/join` and `/join/privacy` are the only public page routes for the signup journey;
 - `/accessibility` exists as the canonical public accessibility statement and the
@@ -358,21 +358,18 @@ true:
 
 - [ADR-0069](./ADR-0069-public-working-group-recruitment-and-signup.md) remains the
   authority for signup scope, form data, validation, privacy, storage, retention and
-  human review. On acceptance, this ADR amends its canonical public page routes,
-  presentation layer and prior no-JavaScript requirement.
+  human review. This ADR amends its canonical public page routes, presentation layer
+  and prior no-JavaScript requirement.
 - [ADR-0071](./ADR-0071-bounded-context-recruitment-campaign.md) remains the authority
-  for campaign scope, recruitment channels, public promises and measures. On
-  acceptance, this ADR amends only its canonical signup URL and campaign-page
-  composition.
+  for campaign scope, recruitment channels, public promises and measures. This ADR
+  amends only its canonical signup URL and campaign-page composition.
 - [ADR-0073](./ADR-0073-adopt-opda-brand-and-replace-the-website-design-system.md)
   remains the authority for OPDA brand foundations, semantic tokens, controls and
-  accessibility. On acceptance, it must record the standalone campaign as an
-  intentional shell exception and replace its stale description of the join route;
-  implementation then records the resulting components.
-- [ADR-0038](./ADR-0038-hosting-auth-and-comments-architecture-aws.md) remains the
-  authority for the current authentication gate. A separate accepted decision must
-  remove that gate before this campaign can launch; this ADR does not weaken it by
-  adding route exceptions.
+  accessibility. It records the standalone campaign as an intentional shell exception
+  and the resulting components are documented in the design system.
+- [ADR-0079](./ADR-0079-make-the-site-public-and-retire-the-edge-authentication-gate.md)
+  removes the site authentication gate while preserving independent service boundaries;
+  this campaign does not add a route exception or interim allowlist.
 - The Finance and Banking presentation remains an isolated presentation surface and
   a source of tested narrative patterns. It is not the canonical recruitment page or
   a second design-system authority.

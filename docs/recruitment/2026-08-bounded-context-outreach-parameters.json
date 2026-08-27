@@ -1,6 +1,6 @@
 {
   "template": "bounded-context-trade-body-outreach-email",
-  "signup_url": "https://opda.org.uk/spdtf/working-groups/join",
+  "signup_url": "https://opda.org.uk/join",
   "contexts": {
     "conveyancing": {
       "context_name": "Conveyancing",

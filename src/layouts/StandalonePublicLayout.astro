@@ -1,0 +1,111 @@
+---
+import {
+  IA_STATUS_REGISTRY_VERSION,
+  getRouteStatus,
+} from '@/lib/site-ia.mjs';
+import '@/styles/standalone-public.css';
+
+interface Props {
+  title: string;
+  description: string;
+  bodyClass?: string;
+  socialImage?: string;
+}
+
+const {
+  title,
+  description,
+  bodyClass = '',
+  socialImage,
+} = Astro.props;
+const canonicalUrl = new URL(Astro.url.pathname, Astro.site ?? Astro.url.origin);
+const socialImageUrl = socialImage ? new URL(socialImage, canonicalUrl).href : undefined;
+const routeStatus = getRouteStatus(Astro.url.pathname) ?? {
+  workArea: 'Public participation',
+  authority: 'OPDA public service information',
+  maturity: 'Live service',
+  version: 'Current',
+  provenance: 'OPDA programme and service records',
+};
+const registrationUrl = Astro.url.pathname === '/join' ? '#register' : '/join#register';
+const pageTitle = `${title} · Open Property Data Association`;
+---
+<!doctype html>
+<html
+  lang="en"
+  data-ia-status-version={IA_STATUS_REGISTRY_VERSION}
+  data-work-area={routeStatus.workArea}
+  data-authority={routeStatus.authority}
+  data-maturity={routeStatus.maturity}
+  data-content-version={routeStatus.version}
+  data-provenance={routeStatus.provenance}
+>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{pageTitle}</title>
+    <meta name="description" content={description} />
+    <meta name="opda:work-area" content={routeStatus.workArea} />
+    <meta name="opda:authority" content={routeStatus.authority} />
+    <meta name="opda:maturity" content={routeStatus.maturity} />
+    <meta name="opda:version" content={routeStatus.version} />
+    <meta name="opda:provenance" content={routeStatus.provenance} />
+    <link rel="canonical" href={canonicalUrl} />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content={pageTitle} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonicalUrl} />
+    {socialImageUrl && <meta property="og:image" content={socialImageUrl} />}
+    <meta name="twitter:card" content={socialImage ? 'summary_large_image' : 'summary'} />
+    <meta name="twitter:title" content={pageTitle} />
+    <meta name="twitter:description" content={description} />
+    {socialImageUrl && <meta name="twitter:image" content={socialImageUrl} />}
+    <script is:inline>
+      (() => {
+        try {
+          const requested = new URLSearchParams(location.search).get('theme');
+          const stored = localStorage.getItem('opda-theme');
+          const theme = requested === 'light' || requested === 'dark' ? requested : stored;
+          document.documentElement.dataset.theme = theme === 'dark' ? 'dark' : 'light';
+        } catch {
+          document.documentElement.dataset.theme = 'light';
+        }
+      })();
+    </script>
+    <link rel="stylesheet" href="/ui/design-system.css" />
+    <slot name="head" />
+  </head>
+  <body class:list={['standalone-public', bodyClass]}>
+    <a class="skip-link" href="#main-content">Skip to main content</a>
+    <header class="campaign-masthead">
+      <a class="campaign-masthead__brand" href="/" aria-label="Open Property Data Association home">
+        <picture>
+          <source media="(forced-colors: active)" srcset="/ui/brand/opda-wordmark-dark.svg" />
+          <img src="/ui/brand/opda-wordmark-white.svg" alt="Open Property Data Association" width="149" height="42" />
+        </picture>
+      </a>
+      <nav class="campaign-masthead__nav" aria-label="Public service">
+        <a href="/programme">Knowledge base</a>
+        <a href="/join/privacy" aria-current={Astro.url.pathname === '/join/privacy' ? 'page' : undefined}>Privacy</a>
+        <a href="/accessibility" aria-current={Astro.url.pathname === '/accessibility' ? 'page' : undefined}>Accessibility</a>
+        <a class="btn campaign-masthead__cta" href={registrationUrl}>Register your interest</a>
+      </nav>
+    </header>
+    <main id="main-content" tabindex="-1">
+      <slot />
+    </main>
+    <footer class="campaign-footer">
+      <div class="campaign-footer__brand">
+        <img src="/ui/brand/opda-wordmark-white.svg" alt="Open Property Data Association" width="149" height="42" />
+        <p>Property data that people and systems can understand together.</p>
+      </div>
+      <nav aria-label="Public service footer">
+        <a href="/">OPDA home</a>
+        <a href="/programme">Knowledge base</a>
+        <a href="/join/privacy">Working-group privacy</a>
+        <a href="/accessibility">Accessibility</a>
+        <a href="https://openpropdata.org.uk/" rel="noopener">Association website</a>
+      </nav>
+    </footer>
+  </body>
+</html>

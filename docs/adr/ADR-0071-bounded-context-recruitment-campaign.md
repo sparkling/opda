@@ -85,16 +85,15 @@ of source material or a release date.
 
 Every post and outreach message links to:
 
-`https://opda.org.uk/spdtf/working-groups/join`
+`https://opda.org.uk/join`
 
 The public page is the campaign landing page as well as the form. It uses the OPDA design system
-to explain the programme proposition, human review, participation boundary, domain handoffs and
-modelling method before asking a visitor to register at the bottom of the page. Its detailed,
-natural-height property-information comparison uses brief, optional reveal effects. The
-comparison has no pinned or scroll-driven state: every domain meaning is visible in the document.
-The enhanced form requires successful JavaScript initialisation; without it,
-campaign and privacy content remain readable and a safe human-managed email registration
-alternative is provided.
+inside a minimal standalone public-service shell. Five natural chapters explain the programme
+proposition, human review, six contextual lenses, the evidence-to-candidate loop and trust
+boundary before asking a visitor to register at the bottom of the page. The contextual-lenses
+interaction has no pinned or scroll-driven state: every domain meaning is present in semantic
+HTML. The form requires successful JavaScript initialisation; campaign and privacy content remain
+readable before enhancement and the existing safe email alternative remains available.
 
 Registration is an expression of interest. It is stored in the AWS-hosted register decided by
 ADR-0069 and reviewed by a human. It does not automatically create an Entra guest, Team
@@ -175,8 +174,8 @@ domain expertise or campaign success. OPDA does not use tracking pixels in the t
 - Collect only the fields approved by ADR-0069 and show the privacy notice at collection.
 - Do not accept evidence files through the signup form or ingest recruitment data into modelling.
 - Keep candidate status, human authority and the difference between signup and acceptance clear.
-- Preserve keyboard access, responsive layout, no-JavaScript readability and reduced-motion
-  behavior on the campaign page.
+- Preserve keyboard access, responsive layout, pre-enhancement content readability and
+  reduced-motion behaviour on the campaign page.
 
 ### Consequences
 
@@ -209,6 +208,12 @@ to target contexts, collected fields, automated onboarding or data use require a
 
 ## Amendments
 
+- **2026-08-27 — standalone `/join` campaign.** ADR-0078 moves the canonical campaign to
+  `/join`, its privacy notice to `/join/privacy`, and adds `/accessibility`. These routes use a
+  minimal standalone public-service shell, while the complete approved form remains at the
+  bottom. The earlier join route families stay absent without redirects or rewrites. ADR-0079
+  removes the site authentication gate rather than adding a campaign allowlist exception.
+
 - **2026-08-27 — canonical Working groups route.** The campaign and privacy pages moved from
   `/working-groups/join/**` to `/spdtf/working-groups/join/**` so URL and left-navigation hierarchy
   match their Working groups owner. Former routes are absent without redirects, aliases or
@@ -217,9 +222,10 @@ to target contexts, collected fields, automated onboarding or data use require a
 - **2026-08-27 — adversarial campaign review.** The sticky handoff sequence was
   disproportionate to its information and created a dead-scroll band when its visual was hidden.
   It is replaced by a compact static comparison containing every prior term, definition, domain
-  scope and explanation. Registration now precedes the detailed domain comparison and supporting
+  scope and explanation. Registration precedes the detailed domain comparison and supporting
   modelling narrative. The campaign scope, selectable groups, collected fields and human decision
-  boundary are unchanged.
+  boundary are unchanged. ADR-0078 subsequently moves the form to the end of its five-chapter
+  standalone campaign.
 
 - **2026-08-16 — OPDA design-system adoption.** ADR-0073 removes parallax and
   constrains the remaining reveal feedback to the shared 120–200ms motion
@@ -230,6 +236,8 @@ to target contexts, collected fields, automated onboarding or data use require a
 - [ADR-0063 — domain-led bounded-context working groups](./ADR-0063-domain-led-bounded-context-working-groups.md)
 - [ADR-0065 — AI-assisted evidence-to-model workflow](./ADR-0065-ai-assisted-evidence-to-model-workflow.md)
 - [ADR-0069 — public working-group recruitment and signup](./ADR-0069-public-working-group-recruitment-and-signup.md)
+- [ADR-0078 — standalone working-group recruitment campaign](./ADR-0078-create-a-standalone-working-group-recruitment-campaign-at-join.md)
+- [ADR-0079 — public site and retired edge authentication gate](./ADR-0079-make-the-site-public-and-retire-the-edge-authentication-gate.md)
 - [Approved LinkedIn copy](../recruitment/2026-08-bounded-context-working-group-linkedin.md)
 - [Trade and professional body outreach register](../recruitment/2026-08-bounded-context-trade-body-outreach.md)
 - [Outreach parameter set](../recruitment/2026-08-bounded-context-outreach-parameters.json)

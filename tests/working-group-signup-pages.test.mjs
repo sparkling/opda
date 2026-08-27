@@ -4,8 +4,13 @@ import { readFile } from 'node:fs/promises';
 import test from 'node:test';
 
 const paths = {
-  join: new URL('../src/pages/spdtf/working-groups/join/index.astro', import.meta.url),
-  privacy: new URL('../src/pages/spdtf/working-groups/join/privacy.astro', import.meta.url),
+  join: new URL('../src/pages/join/index.astro', import.meta.url),
+  privacy: new URL('../src/pages/join/privacy.astro', import.meta.url),
+  accessibility: new URL('../src/pages/accessibility.astro', import.meta.url),
+  standaloneLayout: new URL('../src/layouts/StandalonePublicLayout.astro', import.meta.url),
+  form: new URL('../src/components/campaign/WorkingGroupInterestForm.astro', import.meta.url),
+  constellation: new URL('../src/components/campaign/SemanticConstellation.astro', import.meta.url),
+  campaignData: new URL('../src/data/working-group-campaign.ts', import.meta.url),
   layout: new URL('../src/layouts/Layout.astro', import.meta.url),
   siteFooter: new URL('../src/components/SiteFooter.astro', import.meta.url),
   homepage: new URL('../src/pages/index.astro', import.meta.url),
@@ -53,10 +58,10 @@ const expectedContributions = [
   'contribute-consumer-accessibility-regulatory-public-interest-experience',
 ];
 
-function extractTupleValues(source, constantName) {
-  const block = source.match(new RegExp(`const ${constantName} = \\[([\\s\\S]*?)\\n\\] as const;`, 'u'))?.[1];
-  assert.ok(block, `Expected ${constantName} tuple allowlist`);
-  return [...block.matchAll(/^\s*\[\s*['"]([^'"]+)['"],/gmu)].map((match) => match[1]);
+function extractObjectValues(source, constantName) {
+  const block = source.match(new RegExp(`export const ${constantName}:[^=]+ = \\[([\\s\\S]*?)\\n\\];`, 'u'))?.[1];
+  assert.ok(block, `Expected ${constantName} object allowlist`);
+  return [...block.matchAll(/^\s*value:\s*['"]([^'"]+)['"],/gmu)].map((match) => match[1]);
 }
 
 function extractSetValues(source, constantName) {
@@ -66,16 +71,19 @@ function extractSetValues(source, constantName) {
 }
 
 test('public sign-up form exposes only the accepted working-group and contribution values', async () => {
-  const source = await readFile(paths.join, 'utf8');
-  assert.deepEqual(extractTupleValues(source, 'contexts'), expectedGroups.slice(0, -1));
-  assert.deepEqual(extractTupleValues(source, 'contributions'), expectedContributions);
-  assert.match(source, /name="workingGroups" value="not-sure"/u);
-  assert.doesNotMatch(source, /type=["'](?:file|tel|url)["']/u);
-  assert.doesNotMatch(source, /name=["'](?:address|phone|socialProfile|evidence|materialInterest)["']/u);
-  assert.doesNotMatch(source, /Turnstile|turnstile|cf-turnstile|PUBLIC_TURNSTILE/u);
-  assert.match(source, /name="website"/u);
-  assert.match(source, /name="startedAt"/u);
-  assert.match(source, /data-privacy-notice-version=\{privacyNoticeVersion\}/u);
+  const [form, data] = await Promise.all([
+    readFile(paths.form, 'utf8'),
+    readFile(paths.campaignData, 'utf8'),
+  ]);
+  assert.deepEqual(extractObjectValues(data, 'workingGroupContexts'), expectedGroups.slice(0, -1));
+  assert.deepEqual(extractObjectValues(data, 'contributionOptions'), expectedContributions);
+  assert.match(form, /name="workingGroups" value="not-sure"/u);
+  assert.doesNotMatch(form, /type=["'](?:file|tel|url)["']/u);
+  assert.doesNotMatch(form, /name=["'](?:address|phone|socialProfile|evidence|materialInterest)["']/u);
+  assert.doesNotMatch(form, /Turnstile|turnstile|cf-turnstile|PUBLIC_TURNSTILE/u);
+  assert.match(form, /name="website"/u);
+  assert.match(form, /name="startedAt"/u);
+  assert.match(form, /data-privacy-notice-version=\{privacyNoticeVersion\}/u);
 });
 
 test('global header promotes the canonical working-group sign-up route', async () => {
@@ -90,7 +98,7 @@ test('global header promotes the canonical working-group sign-up route', async (
   const cta = header.indexOf('class="header-cta"');
   assert.ok(primaryStart >= 0 && cta > primaryStart && cta < primaryEnd);
   assert.ok(primaryEnd < utilitiesStart);
-  assert.match(header, /const joinHref = currentPath === '\/spdtf\/working-groups\/join' \? '#register' : '\/spdtf\/working-groups\/join'/u);
+  assert.match(header, /const joinHref = currentPath === '\/join' \? '#register' : '\/join'/u);
   assert.match(header, /<a href=\{joinHref\} class="header-cta">Join a working group<\/a>/u);
   assert.match(header, /href="\/search"[\s\S]*?class=\{`header-icon-link\$\{isSearchPage[\s\S]*?aria-label="Search"[\s\S]*?aria-current=\{isSearchPage \? 'page' : undefined\}[\s\S]*?title="Search"[\s\S]*?<svg[\s\S]*?aria-hidden="true"/u);
   assert.match(header, /class="header-icon-link"[\s\S]*?aria-label="GitHub"\s+title="GitHub"[\s\S]*?<svg[\s\S]*?aria-hidden="true"/u);
@@ -100,44 +108,56 @@ test('global header promotes the canonical working-group sign-up route', async (
   assert.match(baseCss, /@media \(max-width: 96rem\)\s*\{[\s\S]*\.app-header \.global-nav-panel \.header-nav\s*\{[^}]*grid-column:\s*1 \/ -1/su);
 });
 
-test('working-group public routes use the shared wrapper within section navigation', async () => {
-  const [join, privacy, layout, joinCss] = await Promise.all([
+test('public recruitment routes use the standalone shell without Knowledge Base furniture', async () => {
+  const [join, privacy, accessibility, standalone, layout, joinCss] = await Promise.all([
     readFile(paths.join, 'utf8'),
     readFile(paths.privacy, 'utf8'),
+    readFile(paths.accessibility, 'utf8'),
+    readFile(paths.standaloneLayout, 'utf8'),
     readFile(paths.layout, 'utf8'),
     readFile(paths.joinCss, 'utf8'),
   ]);
 
-  for (const source of [join, privacy]) {
-    assert.match(source, /import Layout from '@\/layouts\/Layout\.astro'/u);
-    assert.doesNotMatch(source, /PublicWorkingGroupLayout/u);
-    assert.doesNotMatch(source, /hideSidebar=/u);
-    assert.match(source, /hideComments=\{true\}/u);
-    assert.doesNotMatch(source, /hideFooter=\{true\}|wrapArticle=\{false\}/u);
+  for (const source of [join, privacy, accessibility]) {
+    assert.match(source, /import StandalonePublicLayout from '@\/layouts\/StandalonePublicLayout\.astro'/u);
+    assert.doesNotMatch(source, /import Layout from '@\/layouts\/Layout\.astro'/u);
   }
-  assert.match(join, /hideBreadcrumbs=\{true\}/u);
-  assert.doesNotMatch(privacy, /hideBreadcrumbs=\{true\}/u);
-  assert.match(join, /mainClass="app-main--working-group-join"/u);
-  assert.doesNotMatch(privacy, /mainClass=/u);
+  assert.match(join, /<SemanticConstellation contexts=\{workingGroupContexts\}\s*\/>/u);
+  assert.match(join, /<WorkingGroupInterestForm/u);
+  assert.match(privacy, /bodyClass="working-group-privacy"/u);
+  assert.match(accessibility, /bodyClass="accessibility-statement"/u);
+  assert.doesNotMatch(standalone, /@\/components\/(?:Header|Sidebar|Breadcrumbs|PageFooter|TOC)/u);
+  assert.match(standalone, /<header class="campaign-masthead">/u);
+  assert.match(standalone, /<footer class="campaign-footer">/u);
+  assert.match(standalone, /href="\/join\/privacy"/u);
+  assert.match(standalone, /href="\/accessibility"/u);
   assert.match(layout, /<Header showSidebar=\{showSidebar\}/u);
   assert.match(layout, /<article class=\{proseClass\}>/u);
-  assert.doesNotMatch(joinCss, /\.app-main\.working-group-main/u);
+  assert.doesNotMatch(joinCss, /\.app-main/u);
   assert.match(joinCss, /\.wg-page\s*\{[^}]*width:\s*100%[^}]*margin:\s*0/su);
-  assert.match(joinCss, /\.app-main\.app-main--working-group-join\s*\{[^}]*padding-top:\s*0/su);
-  assert.match(joinCss, /\.app-main\.app-main--working-group-join\s*>\s*\.prose\s*\{[^}]*padding-top:\s*0/su);
+  assert.match(joinCss, /\.wg-form-shell\s*\{[^}]*color-scheme:\s*light[^}]*--color-text:\s*var\(--brand-night\)/su);
 });
 
 test('former working-group sign-up paths have no page, redirect or rewrite', async () => {
-  assert.equal(existsSync(new URL('../src/pages/working-groups/join/index.astro', import.meta.url)), false);
-  assert.equal(existsSync(new URL('../src/pages/working-groups/join/privacy.astro', import.meta.url)), false);
-  const astroConfig = await readFile(new URL('../astro.config.mjs', import.meta.url), 'utf8');
-  assert.doesNotMatch(astroConfig, /working-groups\/join/u);
+  for (const retired of [
+    '../src/pages/working-groups/join/index.astro',
+    '../src/pages/working-groups/join/privacy.astro',
+    '../src/pages/spdtf/working-groups/join/index.astro',
+    '../src/pages/spdtf/working-groups/join/privacy.astro',
+  ]) assert.equal(existsSync(new URL(retired, import.meta.url)), false);
+  const [astroConfig, migrations] = await Promise.all([
+    readFile(new URL('../astro.config.mjs', import.meta.url), 'utf8'),
+    readFile(new URL('../src/lib/site-route-migrations.mjs', import.meta.url), 'utf8'),
+  ]);
+  assert.doesNotMatch(astroConfig, /(?:spdtf\/)?working-groups\/join/u);
+  assert.doesNotMatch(migrations, /(?:spdtf\/)?working-groups\/join|workingGroupJoin/u);
 });
 
-test('one shared site footer covers public and knowledge-base page families', async () => {
-  const [footer, layout, homepage, propertyPackPage] = await Promise.all([
+test('knowledge-base and standalone page families expose their required footer links', async () => {
+  const [footer, layout, standalone, homepage, propertyPackPage] = await Promise.all([
     readFile(paths.siteFooter, 'utf8'),
     readFile(paths.layout, 'utf8'),
+    readFile(paths.standaloneLayout, 'utf8'),
     readFile(paths.homepage, 'utf8'),
     readFile(paths.propertyPackPage, 'utf8'),
   ]);
@@ -145,6 +165,7 @@ test('one shared site footer covers public and knowledge-base page families', as
   assert.match(footer, /<footer class="public-footer">/u);
   assert.match(footer, /opda-wordmark-white\.svg/u);
   assert.match(footer, /Property data that people and systems can understand together\./u);
+  assert.match(footer, /href="\/accessibility"/u);
   assert.match(footer, /Visit the association website/u);
   for (const owner of [layout, homepage]) {
     assert.match(owner, /import SiteFooter from '@\/components\/SiteFooter\.astro'/u);
@@ -152,12 +173,13 @@ test('one shared site footer covers public and knowledge-base page families', as
   }
   assert.doesNotMatch(homepage, /<footer class="public-footer">/u);
   assert.match(propertyPackPage, /import Layout from '@\/layouts\/Layout\.astro'/u);
+  assert.match(standalone, /<footer class="campaign-footer">[\s\S]*href="\/join\/privacy"[\s\S]*href="\/accessibility"/u);
 });
 
 test('registration script sends the fixed allowlisted payload to the same-origin endpoint', async () => {
-  const [source, page] = await Promise.all([
+  const [source, form] = await Promise.all([
     readFile(paths.registration, 'utf8'),
-    readFile(paths.join, 'utf8'),
+    readFile(paths.form, 'utf8'),
   ]);
   assert.deepEqual(extractSetValues(source, 'WORKING_GROUPS'), expectedGroups);
   for (const field of [
@@ -172,9 +194,9 @@ test('registration script sends the fixed allowlisted payload to the same-origin
   assert.match(source, /privacyNoticeVersion:\s*'2026-08-13'/u);
   assert.match(source, /Date\.now\(\)/u);
   assert.match(source, /document\.addEventListener\('astro:page-load', initWorkingGroupForm\)/u);
-  assert.match(page, /method="post"[\s\S]*action="\/api\/working-group-interest"/u);
-  assert.match(page, /<noscript>[\s\S]*smartdata@openpropdata\.org\.uk[\s\S]*Do not include confidential, customer, property-transaction\s+or special-category information/u);
-  assert.match(page, /<button class="btn" type="submit" disabled>/u);
+  assert.match(form, /method="post"[\s\S]*action="\/api\/working-group-interest"/u);
+  assert.match(form, /<noscript>[\s\S]*smartdata@openpropdata\.org\.uk[\s\S]*Do not include confidential, customer, property-transaction\s+or\s+special-category information/u);
+  assert.match(form, /<button class="btn" type="submit" disabled>/u);
   assert.match(source, /submitButton\.disabled = false/u);
   assert.match(source, /new AbortController\(\)/u);
   assert.match(source, /signal:\s*controller\.signal/u);
@@ -184,17 +206,20 @@ test('registration script sends the fixed allowlisted payload to the same-origin
 });
 
 test('campaign presents the complete handoff narrative without scroll-driven theatre', async () => {
-  const [page, script, sectionsCss, responsiveCss] = await Promise.all([
+  const [page, constellation, data, form, script, sectionsCss, responsiveCss] = await Promise.all([
     readFile(paths.join, 'utf8'),
+    readFile(paths.constellation, 'utf8'),
+    readFile(paths.campaignData, 'utf8'),
+    readFile(paths.form, 'utf8'),
     readFile(paths.campaign, 'utf8'),
     readFile(paths.campaignSectionsCss, 'utf8'),
     readFile(paths.campaignResponsiveCss, 'utf8'),
   ]);
+  const corpus = [page, constellation, data, form].join('\n');
   for (const phrase of [
     'One property.',
-    'Many meanings.',
-    'One connected journey.',
-    'The problem is in the handoffs',
+    'Many professional meanings.',
+    'Interest is reviewed by people.',
     'Estate Agency',
     'Finance and Banking',
     'Conveyancing',
@@ -202,10 +227,10 @@ test('campaign presents the complete handoff narrative without scroll-driven the
     'Property Data Services',
     'Property Technology',
     'AI-assisted modelling',
-    'Human review',
-    'You do not need to understand ontologies or adopt AI',
+    'Human challenge',
+    'You do not need ontology expertise, graph tools, technical knowledge or AI experience.',
     'People decide;',
-    'no candidate becomes official through AI alone',
+    'AI alone cannot make a candidate official.',
     'Listing',
     'A place to market, price and negotiate.',
     'Mortgage security',
@@ -218,29 +243,30 @@ test('campaign presents the complete handoff narrative without scroll-driven the
     'Sourced information with provenance and assurance.',
     'Resource',
     'Structured meaning ready for products and integrations.',
-    'Keep each domain precise. Connect the boundaries.',
-    'The common boundary contains only shared elements.',
-    'connects context-specific concepts with SKOS mappings',
+    'The common boundary does not route every relationship.',
+    'Mappings connect concepts—not working groups',
+    'Illustrative comparison · not an approved SPDTF mapping',
+    'skos:closeMatch?',
   ]) {
-    assert.match(page, new RegExp(phrase, 'u'));
+    assert.match(corpus, new RegExp(phrase, 'u'));
   }
   assert.doesNotMatch(script, /parallax|requestAnimationFrame/iu);
   assert.match(script, /IntersectionObserver/u);
   assert.match(script, /prefers-reduced-motion/u);
   assert.match(script, /classList\.add\('has-campaign-js'\)/u);
+  assert.match(script, /classList\.add\('has-constellation-js'\)/u);
   assert.match(script, /document\.addEventListener\('astro:page-load', initCampaignExperience\)/u);
   assert.doesNotMatch(script, /data-story-step|data-handoff|\.animate\(|innerHTML/u);
   assert.doesNotMatch(sectionsCss, /^\[data-reveal\]\s*\{/mu);
   assert.match(sectionsCss, /\.has-campaign-js \[data-reveal\]/u);
   assert.match(responsiveCss, /prefers-reduced-motion/u);
   assert.doesNotMatch(page, /data-parallax-layer|data-story-step|data-handoff-stage/u);
-  assert.match(page, /<div class="wg-domain-grid" role="list"/u);
-  assert.match(page, /<article[\s\S]*?class="wg-domain-card"[\s\S]*?role="listitem"/u);
-  assert.doesNotMatch(page, /<(?:ol|ul) class="wg-domain-grid"/u);
-  assert.match(page, /<section id="contexts-title"[\s\S]*?aria-labelledby="handoffs-title"/u);
-  assert.ok(page.indexOf('id="register"') > page.indexOf('class="wg-domain-grid"'));
-  assert.ok(page.indexOf('id="register"') > page.indexOf('id="how-it-works"'));
-  assert.ok(page.indexOf('id="register"') > page.indexOf('class="wg-trust"'));
+  assert.match(constellation, /<button[\s\S]*data-context-trigger=\{context\.value\}/u);
+  assert.match(constellation, /data-context-panel=\{context\.value\}/u);
+  assert.doesNotMatch(constellation, /data-context-panel=\{context\.value\}[\s\S]{0,80}\shidden/u);
+  assert.ok(page.indexOf('<WorkingGroupInterestForm') > page.indexOf('class="wg-trust"'));
+  for (const chapter of ['01 ·', '02 ·', '03 ·', '04 ·']) assert.match(page, new RegExp(chapter, 'u'));
+  assert.match(form, /05 · Register your interest/u);
 });
 
 test('campaign styles remain split below the project file limit', async () => {
@@ -252,17 +278,17 @@ test('campaign styles remain split below the project file limit', async () => {
     readFile(paths.campaignCss, 'utf8'),
     readFile(paths.campaignSectionsCss, 'utf8'),
   ]);
-  assert.doesNotMatch(campaign, /position:\s*sticky|min-height:\s*(?:20|28|32)rem/u);
+  assert.doesNotMatch(campaign, /position:\s*sticky/u);
   assert.doesNotMatch(sections, /calc\(50% - 50vw\)|position:\s*sticky/u);
-  assert.match(campaign, /\.wg-campaign-hero\s*\{[\s\S]*?padding-inline:\s*0/u);
-  assert.match(campaign, /\.wg-campaign-hero\s*\{[\s\S]*?margin-top:\s*0/u);
+  assert.match(campaign, /\.wg-campaign-hero\s*\{[\s\S]*?min-height:\s*min\(54rem, calc\(100svh - 5rem\)\)/u);
+  assert.match(campaign, /\.wg-section\s*\{[\s\S]*?width:\s*min\(100%, var\(--campaign-max\)\)/u);
   assert.doesNotMatch(campaign, /\.wg-btn--large\s*\{[\s\S]*?color:\s*#000/u);
-  assert.match(sections, /\.wg-model-story\s*\{[\s\S]*?padding-inline:\s*0/u);
-  assert.match(sections, /\.wg-trust\s*\{[\s\S]*?padding-inline:\s*0/u);
+  assert.match(sections, /\.wg-model-story\s*\{[\s\S]*?background:/u);
+  assert.match(sections, /\.wg-trust\s*\{[\s\S]*?background:\s*var\(--brand-deep\)/u);
 });
 
 test('form errors are associated with every control and group', async () => {
-  const source = await readFile(paths.join, 'utf8');
+  const source = await readFile(paths.form, 'utf8');
   for (const [id, description] of [
     ['full-name', 'full-name-error'],
     ['email', 'email-error'],
@@ -275,8 +301,24 @@ test('form errors are associated with every control and group', async () => {
   assert.match(source, /id="relevant-perspective"[^>]*aria-describedby="perspective-hint perspective-count relevant-perspective-error"/u);
   assert.match(source, /data-group="workingGroups"[^>]*aria-describedby="working-groups-hint working-groups-error"/u);
   assert.match(source, /data-group="contributions"[^>]*aria-describedby="contributions-hint contributions-error"/u);
-  assert.match(source, /id=\{`working-group-\$\{value\}`\}/u);
-  assert.match(source, /id=\{`contribution-\$\{value\}`\}/u);
+  assert.match(source, /id=\{`working-group-\$\{context\.value\}`\}/u);
+  assert.match(source, /id=\{`contribution-\$\{contribution\.value\}`\}/u);
+});
+
+test('accessibility statement distinguishes its target from verified conformance', async () => {
+  const source = await readFile(paths.accessibility, 'utf8');
+  const content = source.replace(/\s+/gu, ' ');
+  for (const text of [
+    'Web Content Accessibility Guidelines version 2.2 at Level AA',
+    'It is not a claim that every covered page currently conforms',
+    'have not been independently certified as conformant',
+    'not yet completed a full manual or independent accessibility audit',
+    'Alternative formats and support',
+    'Report a problem',
+    'smartdata@openpropdata.org.uk',
+  ]) assert.match(content, new RegExp(text, 'u'));
+  assert.match(source, /<a href="\/join">\/join<\/a>/u);
+  assert.match(source, /<a href="\/join\/privacy">privacy notice<\/a>/u);
 });
 
 test('privacy page publishes the current notice and operational boundaries', async () => {

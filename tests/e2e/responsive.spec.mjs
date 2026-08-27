@@ -24,7 +24,7 @@ for (const { width, label } of [
 test('forced colours preserve visible focus and labelled controls', async ({ page }) => {
   const clean = watchRuntime(page);
   await page.emulateMedia({ forcedColors: 'active' });
-  await visit(page, '/spdtf/working-groups/join');
+  await visit(page, '/join');
   expect(await page.evaluate(() => matchMedia('(forced-colors: active)').matches)).toBe(true);
   await page.locator('a, button, input, select, textarea').first().focus();
   const focused = page.locator(':focus-visible');
@@ -129,7 +129,7 @@ test('working-group signup avoids dead-scroll breakpoints and ends with registra
     { width: 390, height: 844 },
   ]) {
     await page.setViewportSize(viewport);
-    await visit(page, '/spdtf/working-groups/join');
+    await visit(page, '/join');
     await assertNoBodyOverflow(page);
     await expect(page.locator('[data-story-step], [data-handoff-stage], .wg-story__visual')).toHaveCount(0);
 
@@ -150,8 +150,8 @@ test('text flows to its outer content container without nested max-widths', asyn
   const cases = [
     ['/programme', ['.prose.wide > .lead', '.prose.wide > h2 + p', '.callout--key p:last-child']],
     ['/', ['.public-hero h1', '.public-hero p:not(.eyebrow)', '.public-overview > header']],
-    ['/spdtf/working-groups/join', ['.wg-campaign-hero h1', '.wg-campaign-hero .wg-lead', '.wg-section__heading p']],
-    ['/spdtf/working-groups/join/privacy', ['.wg-privacy__summary p', '.wg-privacy article p', '.wg-privacy article li']],
+    ['/join', ['.wg-campaign-hero h1', '.wg-campaign-hero .wg-lead', '.wg-section__heading p']],
+    ['/join/privacy', ['.wg-privacy__summary p', '.wg-privacy article p', '.wg-privacy article li']],
     [`${PDTF1_ROUTES.terms}/graph`, ['.term-comment', '.og-external']],
   ];
 
@@ -195,7 +195,7 @@ test('Property Pack candidate status reflows inside the available article track'
 test('reduced motion disables non-essential motion', async ({ page }) => {
   const clean = watchRuntime(page);
   await page.emulateMedia({ reducedMotion: 'reduce' });
-  await visit(page, '/spdtf/working-groups/join');
+  await visit(page, '/join');
   expect(await page.evaluate(() => matchMedia('(prefers-reduced-motion: reduce)').matches)).toBe(true);
   const motion = await page.locator('*').evaluateAll((elements) => {
     const milliseconds = (value) => value.split(',').map((part) => {

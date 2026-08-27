@@ -1,0 +1,116 @@
+---
+import StandalonePublicLayout from '@/layouts/StandalonePublicLayout.astro';
+
+const title = 'Accessibility statement';
+const description = 'The accessibility target, current testing status, known limitations and contact routes for OPDA public services.';
+---
+<StandalonePublicLayout title={title} description={description} bodyClass="accessibility-statement">
+  <article class="public-statement" aria-labelledby="accessibility-title">
+    <header class="public-statement__header">
+      <p class="public-statement__eyebrow">Open Property Data Association</p>
+      <h1 id="accessibility-title">Accessibility statement</h1>
+      <p class="public-statement__lead">
+        We aim to make the OPDA public website conform to the Web Content Accessibility
+        Guidelines version 2.2 at Level AA.
+      </p>
+      <p class="public-statement__meta">
+        <span>Prepared 27 August 2026</span>
+        <span>Last reviewed 27 August 2026</span>
+      </p>
+    </header>
+
+    <section class="public-statement__content" aria-labelledby="scope-title">
+      <h2 id="scope-title">What this statement covers</h2>
+      <div>
+        <p>
+          This statement currently covers the public working-group service at
+          <a href="/join">/join</a>, its <a href="/join/privacy">privacy notice</a>, and this
+          accessibility page. It does not claim that every page in the OPDA Knowledge Base has
+          been assessed to the same scope.
+        </p>
+        <p>
+          WCAG 2.2 Level AA is our target. It is not a claim that every covered page currently
+          conforms, and these pages have not been independently certified as conformant.
+        </p>
+      </div>
+    </section>
+
+    <section class="public-statement__content" aria-labelledby="use-title">
+      <h2 id="use-title">Using the service</h2>
+      <div>
+        <p>We design the covered pages so people can:</p>
+        <ul>
+          <li>navigate and complete the registration form with a keyboard;</li>
+          <li>zoom and reflow content without losing information or controls;</li>
+          <li>use text alternatives and semantic HTML when visual diagrams are present;</li>
+          <li>read content with sufficient colour contrast and without relying on colour alone; and</li>
+          <li>disable non-essential motion through their device preferences.</li>
+        </ul>
+      </div>
+    </section>
+
+    <section class="public-statement__content" aria-labelledby="testing-title">
+      <h2 id="testing-title">How we assess accessibility</h2>
+      <div>
+        <p>
+          Our release checks include code-level accessibility assertions, keyboard review,
+          contrast checks, reduced-motion and forced-colour review, and reflow checks at 320 CSS
+          pixels and 400% zoom. Automated checks can identify only some accessibility problems
+          and do not prove full WCAG conformance.
+        </p>
+        <p>
+          We have not yet completed a full manual or independent accessibility audit of these
+          pages. Additional issues may exist. We will update this statement with the tested build,
+          routes, browsers, assistive technologies, tools and findings when that audit is complete.
+        </p>
+      </div>
+    </section>
+
+    <section class="public-statement__content" aria-labelledby="limitations-title">
+      <h2 id="limitations-title">Known limitations</h2>
+      <div>
+        <p>
+          The interactive contextual-lenses visual is new and has not yet completed a full manual
+          assistive-technology audit. All of its labels, explanations and relationships are also
+          provided as ordinary HTML, so the information does not depend on the visual rendering.
+        </p>
+        <p>
+          Because the broader Knowledge Base is outside the current testing scope, this statement
+          does not make a conformance claim for generated ontology documentation, diagrams or
+          historic material elsewhere on the site.
+        </p>
+      </div>
+    </section>
+
+    <section class="public-statement__content" aria-labelledby="formats-title">
+      <h2 id="formats-title">Alternative formats and support</h2>
+      <div>
+        <p>
+          If you need information from these pages in another format, or need help using the
+          working-group registration service, email
+          <a href="mailto:smartdata@openpropdata.org.uk">smartdata@openpropdata.org.uk</a>.
+          Tell us which page or information you need and the format or support that would help.
+        </p>
+        <p>
+          Do not include confidential, customer, property-transaction or special-category
+          information in your email.
+        </p>
+      </div>
+    </section>
+
+    <section class="public-statement__content" aria-labelledby="report-title">
+      <h2 id="report-title">Report a problem</h2>
+      <div>
+        <p>
+          Email <a href="mailto:smartdata@openpropdata.org.uk">smartdata@openpropdata.org.uk</a>
+          with the page address, what you were trying to do and what went wrong. You may include
+          your browser, device or assistive technology if you are comfortable doing so.
+        </p>
+        <p>
+          Open Property Data Association Ltd is responsible for this statement and the covered
+          public working-group service.
+        </p>
+      </div>
+    </section>
+  </article>
+</StandalonePublicLayout>

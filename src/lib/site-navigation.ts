@@ -360,9 +360,6 @@ const navigationSections: Record<DestinationKey, NavigationSection> = {
     title: 'Working groups',
     summary: 'The canonical SPDTF participant workspaces and review routes.',
     groups: [
-      category('Join a working group', '/spdtf/working-groups/join', [
-        { url: '/spdtf/working-groups/join/privacy', title: 'Privacy notice' },
-      ]),
       category('Member guide', '/spdtf/working-groups/member-guide', WORKING_GROUP_MEMBER_GUIDE_ITEMS),
       category('Group workspaces', '/spdtf/working-groups', workingGroupItems),
     ],
@@ -384,6 +381,8 @@ export const SECTION_NAVIGATION = Object.freeze(navigationSections);
 
 const STANDALONE_SURFACES = [
   /^\/$/u,
+  /^\/join(?:\/|$)/u,
+  /^\/accessibility$/u,
   /^\/(?:home|search|resource|design-system|404)$/u,
   /^\/presentation(?:s)?(?:\/|$)/u,
 ];

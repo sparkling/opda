@@ -299,6 +299,15 @@ homepage links use `/`.
 
 No floating screenshots, generic illustration clutter or synthetic poster imagery.
 
+`/join`, `/join/privacy` and `/accessibility` form one standalone public-service
+family. They use the official wordmark, tokens, type, buttons, fields, focus and
+status primitives without the Knowledge Base header, rail, breadcrumb, contents or
+previous/next furniture. Their minimal masthead offers home, Knowledge Base, privacy,
+accessibility and registration routes; their deep-ink footer repeats the public-
+service exits. The join campaign uses five natural chapters and ends with the full
+form on a light, black-text surface. It never uses parallax, pinned scrolling or
+interaction-gated meaning.
+
 ## 9. Components
 
 Every interactive component provides default, hover, active, focus and disabled
@@ -343,6 +352,12 @@ states, plus loading/error/success where asynchronous work occurs and dark parit
   overview and detail views. Static teaching SVGs use image semantics and never
   infer links from labels. Explicitly interactive model SVGs use composite semantics
   with named node links. Pan/zoom controls remain keyboard-operable.
+- **Semantic constellation:** progressive contextual-lens controls plus ordinary HTML
+  panels. Common elements point outward; separately labelled, dotted SKOS examples
+  connect concepts and never imply approved mappings or a common-boundary hub.
+- **Public statement:** dated, single-purpose privacy or accessibility content in a
+  consistent heading/content grid; targets and limitations are stated without
+  unevidenced compliance claims.
 - **Feedback states:** skeleton, labelled loading, empty-state explanation, error
   recovery and non-obscuring toast.
 
@@ -421,7 +436,8 @@ Every live route belongs to one explicit visual family:
 | Knowledge base | prose, governance and catalogue routes | shared `Layout` shell and `SiteFooter` |
 | Data and V2 | data browser, validation and V2 reference routes | shared tokens plus dense data patterns |
 | Schema/manual | generated schema, ontology and manual reference routes | shared shell plus labelled table/diagram patterns |
-| Working groups | join, privacy and campaign states | standard shared `Layout` wrapper and breadcrumb, no left section navigation, natural-height domain comparison and safely enhanced form |
+| Public service | `/join`, `/join/privacy`, `/accessibility` | minimal `StandalonePublicLayout`, five-chapter campaign, public statements and safely enhanced form |
+| Working groups | workspaces and member guidance | standard shared `Layout`, left section navigation and Knowledge Base footer |
 | Presentation | working-group kickoff deck | isolated full-screen presentation composition using shared tokens; no site chrome |
 
 Release validation runs against the built artefact before any deployment: source

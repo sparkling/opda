@@ -133,7 +133,7 @@ export function getWorkspaceRecord(slug) {
     decisionOccurred: false,
     decisionAuthority: 'No person or role may decide until a convened charter names an accountable decision owner.',
     participation: Object.freeze({
-      interestRoute: '/spdtf/working-groups/join',
+      interestRoute: '/join',
       meetingRoute: null,
       status: 'Expression of interest is available; no participant roster or meeting route is recorded.',
     }),

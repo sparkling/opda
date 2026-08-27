@@ -1,0 +1,164 @@
+---
+import SemanticConstellation from '@/components/campaign/SemanticConstellation.astro';
+import WorkingGroupInterestForm from '@/components/campaign/WorkingGroupInterestForm.astro';
+import { contributionOptions, workingGroupContexts } from '@/data/working-group-campaign';
+import StandalonePublicLayout from '@/layouts/StandalonePublicLayout.astro';
+import '@/styles/working-group-join.css';
+import '@/styles/working-group-campaign.css';
+import '@/styles/working-group-campaign-sections.css';
+import '@/styles/working-group-campaign-responsive.css';
+
+const privacyNoticeVersion = '2026-08-13';
+const title = 'Join an SPDTF working group';
+const description = 'Bring your professional experience to the people developing connected property-data models for the Smart Property Data Trust Framework.';
+---
+<StandalonePublicLayout
+  title={title}
+  description={description}
+  bodyClass="working-group-campaign"
+  socialImage="/images/working-group-recruitment-social.png"
+>
+  <div class="wg-page">
+    <section class="wg-campaign-hero" aria-labelledby="join-title">
+      <div class="wg-campaign-hero__copy">
+        <p class="wg-eyebrow">01 · Smart Property Data Trust Framework</p>
+        <h1 id="join-title">One property.<br /><em>Many professional meanings.</em></h1>
+        <p class="wg-lead">
+          Property information crosses legal, commercial, professional and technical boundaries.
+          OPDA is bringing together the people who understand those boundaries so useful meaning
+          can travel with the data.
+        </p>
+        <div class="wg-hero-actions">
+          <a class="btn wg-btn--large" href="#register">Register your interest <span aria-hidden="true">↓</span></a>
+          <a class="wg-text-link" href="#contexts">Explore the six perspectives</a>
+        </div>
+        <p class="wg-hero-note">
+          You do not need ontology expertise, graph tools, technical knowledge or AI experience.
+          Bring the language, rules and exceptions of your work.
+        </p>
+      </div>
+
+      <div class="wg-hero-journey" aria-labelledby="journey-title">
+        <p class="wg-eyebrow">What happens next</p>
+        <h2 id="journey-title">Interest is reviewed by people.</h2>
+        <ol class="wg-process">
+          <li><strong>Register interest</strong><span>Tell us where your experience is most relevant.</span></li>
+          <li><strong>OPDA reviews it</strong><span>A person reviews every expression of interest.</span></li>
+          <li><strong>Onboarding follows</strong><span>If accepted, access is sent separately.</span></li>
+        </ol>
+        <p>
+          Registration is not membership, a vote, automatic Microsoft access, standards authority
+          or permission to represent your employer.
+        </p>
+      </div>
+    </section>
+
+    <section id="contexts" class="wg-section wg-context-section" aria-labelledby="contexts-title">
+      <div class="wg-section__heading">
+        <div>
+          <p class="wg-eyebrow">02 · Contextual lenses</p>
+          <h2 id="contexts-title">How different professions describe the same property</h2>
+        </div>
+        <div>
+          <p>
+            These views overlap and recur; they are not a fixed transaction sequence. Each working
+            group is intended to develop and review meaning within its own domain.
+          </p>
+          <p class="wg-illustrative-note">
+            The labels and comparisons below explain the method. They are illustrative and are not
+            approved SPDTF definitions or mappings.
+          </p>
+        </div>
+      </div>
+      <SemanticConstellation contexts={workingGroupContexts} />
+    </section>
+
+    <section id="how-it-works" class="wg-model-story" aria-labelledby="model-title">
+      <div class="wg-model-story__intro">
+        <div>
+          <p class="wg-eyebrow">03 · How participation changes the model</p>
+          <h2 id="model-title">Evidence becomes a candidate. Challenge makes it better.</h2>
+        </div>
+        <p>
+          Authorised source material, discussion and feedback feed a human-directed,
+          AI-assisted modelling process. Tools accelerate comparison and drafting; people remain
+          responsible for meaning, judgement and approval.
+        </p>
+      </div>
+
+      <ol class="wg-model-flow" data-reveal-group>
+        <li data-reveal><span>01</span><strong>Evidence</strong><p>Forms, schemas, glossaries, guidance, examples and lived expertise.</p></li>
+        <li data-reveal><span>02</span><strong>Candidate</strong><p>Specialist tools compare sources, expose ambiguity and draft a reviewable model.</p></li>
+        <li data-reveal><span>03</span><strong>Human challenge</strong><p>Working groups test meaning, supply counterexamples and resolve what is wrong.</p></li>
+        <li data-reveal><span>04</span><strong>Revision</strong><p>Recorded feedback returns to the next candidate until the group is ready to decide.</p></li>
+      </ol>
+
+      <div class="wg-participation-grid">
+        <div>
+          <p class="wg-eyebrow">Ways to contribute</p>
+          <h3>Bring evidence, meaning, challenge and practical tests.</h3>
+        </div>
+        <ul>
+          {contributionOptions.map((option) => (
+            <li><strong>{option.label}</strong><span>{option.description}</span></li>
+          ))}
+        </ul>
+      </div>
+
+      <div class="wg-output-ribbon" aria-labelledby="outputs-title">
+        <p class="wg-eyebrow">One governed source of meaning</p>
+        <h3 id="outputs-title">Familiar outputs for the tools people already use</h3>
+        <ul>
+          <li>Business glossary</li><li>Data dictionary</li><li>Taxonomies</li>
+          <li>Controlled vocabularies</li><li>JSON Schemas</li><li>Validation</li>
+          <li>Website and documents</li><li>Integration mappings</li>
+        </ul>
+      </div>
+    </section>
+
+    <section class="wg-section wg-evidence" aria-labelledby="trust-title">
+      <div class="wg-evidence__statement">
+        <p class="wg-eyebrow">04 · Evidence and trust</p>
+        <h2 id="trust-title">A useful model includes the exceptions people actually encounter.</h2>
+        <p>
+          This work may influence how property information is described, checked and exchanged.
+          It needs the language of daily practice—not only assumptions visible in existing schemas.
+        </p>
+      </div>
+
+      <div class="wg-evidence__reasons">
+        <article><span>Meaning</span><h3>Make the rules explicit</h3><p>Explain terms, edge cases and context that only practitioners know.</p></article>
+        <article><span>Challenge</span><h3>Expose gaps early</h3><p>Identify what is missing, misleading or too narrow before a candidate progresses.</p></article>
+        <article><span>Practice</span><h3>Test useful outputs</h3><p>Check whether schemas, validation and mappings work with real systems and forms.</p></article>
+        <article><span>Public interest</span><h3>Represent affected people</h3><p>Bring consumer, accessibility, regulatory and public-interest experience into review.</p></article>
+      </div>
+
+      <div class="wg-trust">
+        <div>
+          <p class="wg-eyebrow">Clever technology · clear human authority</p>
+          <h3>You participate in the language of your work.</h3>
+          <p>
+            Share only what you and your organisation are authorised to share. Source material is
+            evidence for review; it is not automatically published.
+          </p>
+        </div>
+        <ul>
+          <li><strong>AI proposes;</strong> people review.</li>
+          <li><strong>Evidence shapes;</strong> candidate status remains visible.</li>
+          <li><strong>Working groups iterate;</strong> registration is not a decision right.</li>
+          <li><strong>People decide;</strong> AI alone cannot make a candidate official.</li>
+        </ul>
+      </div>
+    </section>
+
+    <WorkingGroupInterestForm
+      contexts={workingGroupContexts}
+      contributions={contributionOptions}
+      privacyNoticeVersion={privacyNoticeVersion}
+    />
+  </div>
+  <script>
+    import '@/scripts/working-group-join';
+    import '@/scripts/working-group-campaign';
+  </script>
+</StandalonePublicLayout>

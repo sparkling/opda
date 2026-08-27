@@ -254,6 +254,7 @@ test('every Astro page belongs to an explicit visual route family', async () => 
   for (const path of routes) {
     const source = await readFile(file(path), 'utf8');
     const owned = source.includes("@/layouts/Layout.astro")
+      || source.includes("@/layouts/StandalonePublicLayout.astro")
       || source.includes("@/components/property-pack/PropertyPackPage.astro")
       || standalone.has(path);
     assert.ok(owned, `${path} has no declared visual route-family owner`);
@@ -284,7 +285,7 @@ test('breadcrumbs use the documented base-size navigation role', async () => {
 
 test('the adopted motion contract excludes parallax and long campaign motion', async () => {
   const paths = [
-    'src/pages/spdtf/working-groups/join/index.astro',
+    'src/pages/join/index.astro',
     'src/scripts/working-group-campaign.ts',
     'src/styles/working-group-campaign.css',
     'src/styles/working-group-campaign-sections.css',

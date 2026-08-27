@@ -44,7 +44,7 @@ right.
 
 Interested? Register and select the area or areas where you can contribute:
 
-https://opda.org.uk/spdtf/working-groups/join
+https://opda.org.uk/join
 
 You bring the knowledge. OPDA makes it reviewable, reusable and ready to connect.
 

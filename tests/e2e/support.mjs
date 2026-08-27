@@ -62,8 +62,8 @@ export const ROUTES = [
   '/spdtf/property-pack/definition-and-scope',
   '/spdtf/property-pack/contexts/estate-agency',
   '/spdtf/property-pack/validation',
-  '/spdtf/working-groups/join',
-  '/spdtf/working-groups/join/privacy',
+  '/join',
+  '/join/privacy',
   '/presentation/working-group-kickoff',
 ];
 

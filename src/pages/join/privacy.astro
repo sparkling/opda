@@ -1,29 +1,14 @@
 ---
-import Layout from '@/layouts/Layout.astro';
+import StandalonePublicLayout from '@/layouts/StandalonePublicLayout.astro';
 import '@/styles/working-group-join.css';
 import '@/styles/working-group-privacy.css';
 
 const title = 'Working-group privacy notice';
 const description = 'How OPDA uses personal information supplied through its public working-group expression-of-interest form.';
-const canonicalUrl = new URL(Astro.url.pathname, Astro.site ?? Astro.url.origin);
 ---
 
-<Layout
-  title={title}
-  description={description}
-  hideComments={true}
->
-  <Fragment slot="head">
-    <link rel="canonical" href={canonicalUrl} />
-    <meta property="og:type" content="website" />
-    <meta property="og:title" content={`${title} · OPDA Knowledge Base`} />
-    <meta property="og:description" content={description} />
-    <meta property="og:url" content={canonicalUrl} />
-    <meta name="twitter:card" content="summary" />
-    <meta name="twitter:title" content={`${title} · OPDA Knowledge Base`} />
-    <meta name="twitter:description" content={description} />
-  </Fragment>
-  <div class="wg-page">
+<StandalonePublicLayout title={title} description={description} bodyClass="working-group-privacy">
+  <div class="wg-page public-statement">
     <section class="wg-section wg-privacy" aria-labelledby="privacy-title">
       <p class="wg-eyebrow">Privacy notice · Version 2026-08-13</p>
       <h1 id="privacy-title">Working-group expressions of interest</h1>
@@ -32,6 +17,7 @@ const canonicalUrl = new URL(Astro.url.pathname, Astro.site ?? Astro.url.origin)
         people who register interest in the Smart Property Data Trust Framework working groups.
       </p>
       <p class="wg-updated">Effective 13 August 2026</p>
+      <p><a href="/join#register">Return to working-group registration</a></p>
       <span id="contents-title" class="wg-fragment-alias" aria-hidden="true"></span>
 
       <div class="wg-privacy__summary">
@@ -141,4 +127,4 @@ const canonicalUrl = new URL(Astro.url.pathname, Astro.site ?? Astro.url.origin)
       </article>
     </section>
   </div>
-</Layout>
+</StandalonePublicLayout>

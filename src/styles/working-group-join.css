@@ -3,9 +3,6 @@
   margin: 0;
 }
 
-.app-main.app-main--working-group-join { padding-top: 0; }
-.app-main.app-main--working-group-join > .prose { padding-top: 0; }
-
 .wg-eyebrow {
   margin: 0 0 var(--space-3);
   color: var(--color-text-muted);
@@ -103,13 +100,23 @@
 }
 
 .wg-form-shell {
+  color-scheme: light;
+  --color-surface: var(--brand-white);
+  --color-surface-alt: var(--brand-off-white);
+  --color-text: var(--brand-night);
+  --color-text-strong: var(--brand-deep);
+  --color-text-muted: var(--neutral-600);
+  --color-border: var(--neutral-200);
+  --color-border-strong: var(--neutral-300);
   display: grid;
   grid-template-columns: minmax(0, 0.58fr) minmax(25rem, 1.42fr);
   gap: clamp(var(--space-7), 6vw, var(--space-12));
   align-items: start;
+  color: var(--color-text);
+  background: var(--color-surface-alt);
 }
 
-.wg-form-intro { grid-column: 1; grid-row: 1 / span 3; position: sticky; top: calc(var(--header-height) + var(--space-5)); }
+.wg-form-intro { grid-column: 1; grid-row: 1 / span 3; position: sticky; top: calc(5rem + var(--space-5)); }
 .wg-form-intro .callout { margin-top: var(--space-6); }
 .wg-form-availability,
 .wg-noscript,

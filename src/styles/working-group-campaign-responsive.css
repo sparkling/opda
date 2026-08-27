@@ -1,12 +1,87 @@
+@media (max-width: 72rem) {
+  .wg-campaign-hero { min-height: 0; grid-template-columns: 1fr; }
+  .wg-hero-journey { width: min(100%, 42rem); }
+  .constellation { grid-template-columns: 1fr; }
+  .constellation__stage { grid-row: auto; }
+  .constellation__panels { min-height: 0; }
+}
+
 @media (max-width: 64rem) {
-  .wg-journey { width: 100%; }
+  .wg-section__heading,
+  .wg-model-story__intro,
+  .wg-participation-grid,
+  .wg-evidence__statement,
+  .wg-trust { grid-template-columns: 1fr; }
+  .wg-model-flow { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .wg-model-flow::before { width: 50%; }
+  .wg-model-flow li:nth-child(2) { border-right: 0; }
+  .wg-model-flow li:nth-child(n + 3) { border-top: 1px solid var(--color-surface-dark-tint); }
+  .wg-evidence__statement .wg-eyebrow { grid-column: auto; margin-bottom: 0; }
+  .wg-evidence__reasons { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .wg-evidence__reasons article:nth-child(2) { border-right: 0; }
+  .wg-evidence__reasons article:nth-child(n + 3) { border-top: 1px solid var(--color-border); }
 }
 
 @media (max-width: 48rem) {
+  .wg-campaign-hero { background: var(--brand-deep); }
+  .wg-campaign-hero h1 { font-size: clamp(3rem, 15vw, 4.75rem); }
   .wg-hero-actions { flex-direction: column; align-items: stretch; }
   .wg-hero-actions :is(.btn, .wg-text-link) { justify-content: center; }
+  .constellation__stage { min-height: 31rem; }
+  .constellation__stage::before { inset: 15% 5%; }
+  .constellation__common { width: 11rem; min-height: 7rem; }
+  .constellation__orbit { width: 7.25rem; min-height: 4.75rem; padding: var(--space-2); }
+  .constellation__orbit small { font-size: 0.6875rem; }
+  .constellation__orbit strong { font-size: var(--text-xs); }
+  .constellation__controls { grid-template-columns: 1fr; }
+  .constellation__mapping { grid-template-columns: 1fr; }
+  .constellation__mapping-example { grid-template-columns: 1fr; }
+  .constellation__predicate { border: 1px dashed var(--brand-yellow); }
+  .wg-model-flow,
+  .wg-output-ribbon ul,
+  .wg-evidence__reasons { grid-template-columns: 1fr; }
+  .wg-model-flow::before { width: 100%; }
+  .wg-model-flow li { min-height: auto; border-right: 0; border-left: 1px solid var(--color-surface-dark-tint); border-bottom: 1px solid var(--color-surface-dark-tint); }
+  .wg-model-flow li:nth-child(n + 3) { border-top: 0; }
+  .wg-participation-grid li { grid-template-columns: 1fr; gap: var(--space-2); }
+  .wg-evidence__reasons article { border-right: 0; border-top: 1px solid var(--color-border); }
+  .wg-evidence__reasons article:first-child { border-top: 0; }
+}
+
+@media (max-width: 34rem) {
+  .constellation__stage { min-height: 28rem; }
+  .constellation__connections { display: none; }
+  .constellation__orbit--1,
+  .constellation__orbit--4 { left: 2%; }
+  .constellation__orbit--3,
+  .constellation__orbit--6 { right: 2%; }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .wg-page * { animation: none !important; transition-duration: 0.01ms !important; }
+  .wg-page * { scroll-behavior: auto !important; animation: none !important; transition: none !important; }
+  .has-campaign-js [data-reveal] { transform: none; opacity: 1; }
+}
+
+@media (forced-colors: active) {
+  .wg-campaign-hero,
+  .wg-hero-journey,
+  .wg-model-story,
+  .wg-model-flow li,
+  .wg-output-ribbon li,
+  .wg-trust,
+  .constellation__stage,
+  .constellation__common,
+  .constellation__orbit,
+  .constellation__mapping,
+  .constellation__mapping-example > span:not(.constellation__predicate) {
+    color: CanvasText;
+    background: Canvas;
+    border-color: CanvasText;
+  }
+  .wg-campaign-hero :is(h1, h2, p, a),
+  .wg-model-story :is(h2, h3, p, strong, li),
+  .wg-trust :is(h3, p, strong, li),
+  .constellation__stage :is(strong, small, span),
+  .constellation__mapping :is(h3, p) { color: CanvasText; }
+  .constellation__connections { display: none; }
 }

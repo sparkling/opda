@@ -10,6 +10,14 @@ implements: [ADR-0065]
 
 # Recruit later bounded-context working groups through a public campaign and simple sign-up
 
+> **Change note — 2026-08-27:** ADR-0078 moves the sole canonical signup journey to
+> `/join`, its privacy notice to `/join/privacy`, and adds `/accessibility`. All three use a
+> minimal standalone public-service shell rather than Knowledge Base furniture. The form remains
+> at the bottom, keeps the approved fields and same-origin API, and requires successful JavaScript
+> initialisation; the existing safe email alternative remains available. ADR-0079 removes the
+> site-wide authentication gate instead of creating another route allowlist exception. The two
+> earlier join route families remain absent without compatibility routing.
+>
 > **Change note — 2026-08-27:** An adversarial review replaced the oversized sticky
 > handoff sequence with a natural-height comparison that keeps every domain meaning, moved the
 > registration journey ahead of supporting modelling detail, and retained every approved field
@@ -115,10 +123,16 @@ The maintained outreach assets are:
 
 ### 2. Public sign-up experience
 
-The canonical public route moved from `/working-groups/join` to `/spdtf/working-groups/join`, with
-the privacy notice under the same new prefix. The former routes are removed without compatibility
-routing. Only the canonical route family and the unchanged same-origin submission API are public; ontology,
-evidence and existing knowledge-base routes remain protected.
+The sole canonical public route is `/join`, with the privacy notice at `/join/privacy` and the
+public accessibility statement at `/accessibility`. The former `/working-groups/join/**` and
+`/spdtf/working-groups/join/**` families are removed without compatibility routing. ADR-0079
+makes the site publicly readable as one distribution invariant; the unchanged same-origin
+submission API retains its own validation and capacity boundaries.
+
+The three public-service pages use a minimal standalone shell with the official OPDA mark,
+registration, privacy, accessibility, Knowledge Base and organisation links. They do not render
+the Knowledge Base header, section navigation, breadcrumb, table of contents, previous/next
+navigation or article wrapper.
 
 The page explains the six selectable domain groups, the kinds of contribution OPDA needs and the
 sequence:
@@ -179,7 +193,7 @@ requirement justifies them.
 
 ### 6. Privacy and retention
 
-The form links to `/spdtf/working-groups/join/privacy`, which names OPDA as controller, explains the
+The form links to `/join/privacy`, which names OPDA as controller, explains the
 recruitment and administration purposes, lists the information collected and AWS/Microsoft
 service relationships, states retention and provides `smartdata@openpropdata.org.uk` for rights
 requests.
@@ -213,16 +227,17 @@ This decision is confirmed when:
 - the campaign names only the five later contexts, while the form also accepts Finance and
   Banking, and links to the canonical public route;
 - trade-body outreach uses approved assets and never requests a member list;
-- anonymous visitors can access both canonical join/privacy routes while unrelated protected
-  routes still require authentication and both former URLs reach an unrewritten origin 404;
+- anonymous visitors can access `/join`, `/join/privacy`, `/accessibility` and the submission API
+  without an authentication redirect, while all four former join/privacy URLs reach an
+  unrewritten origin 404;
 - the service exposes one POST route and stores one validated record per accepted submission;
 - automated tests cover invalid fields, oversized bodies, honeypot/timing submissions and storage
   failure;
 - DynamoDB is encrypted, on-demand, TTL-enabled and the Lambda can only write to its table;
 - no Teams or SharePoint access is provisioned by the public service;
-- keyboard and reduced-motion behavior remains usable; without JavaScript, all explanatory and
-  privacy content remains readable, personal data cannot fall into a GET request, and a
-  human-managed email registration alternative is shown;
+- keyboard and reduced-motion behaviour remains usable; explanatory and privacy content remains
+  readable before enhancement, the form cannot fall back to a GET request, and successful
+  JavaScript initialisation enables the submit control;
 - `make test` and `make build-data` pass; and
 - infrastructure and static pages deploy through the existing CI-only AWS workflows.
 
@@ -250,8 +265,8 @@ This decision is confirmed when:
 
 ## More Information
 
-- [ADR-0038](./ADR-0038-hosting-auth-and-comments-architecture-aws.md) establishes the private S3,
-  CloudFront and Lambda@Edge architecture extended by this narrow public surface.
+- [ADR-0038](./ADR-0038-hosting-auth-and-comments-architecture-aws.md) establishes private S3
+  origins, CloudFront delivery and the independently authenticated comments service.
 - [ADR-0040](./ADR-0040-aws-hosting-ci-cd-pipeline.md) requires publication through GitHub Actions
   and AWS OIDC rather than operator credentials.
 - [ADR-0063](./ADR-0063-domain-led-bounded-context-working-groups.md) defines the working groups.
@@ -259,6 +274,10 @@ This decision is confirmed when:
   public recruitment and explicit sign-up.
 - [ADR-0071](./ADR-0071-bounded-context-recruitment-campaign.md) defines the coordinated campaign
   operating plan and links the maintained LinkedIn and trade-body assets.
+- [ADR-0078](./ADR-0078-create-a-standalone-working-group-recruitment-campaign-at-join.md) defines
+  the canonical route, standalone composition and campaign interaction contract.
+- [ADR-0079](./ADR-0079-make-the-site-public-and-retire-the-edge-authentication-gate.md) removes the
+  site authentication gate while preserving the registration API and comments boundaries.
 - [AWS HTTP API throttling](https://docs.aws.amazon.com/apigateway/latest/developerguide/http-api-throttling.html)
 - [DynamoDB encryption at rest](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/EncryptionAtRest.html)
 - [DynamoDB time to live](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/TTL.html)

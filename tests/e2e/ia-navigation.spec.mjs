@@ -16,7 +16,7 @@ test('primary navigation exposes exactly six ordered destinations', async ({ pag
   expect(await links.evaluateAll((nodes) => nodes.map((node) => node.getAttribute('href'))))
     .toEqual(primary.map(({ url }) => url));
   await expect(cta).toHaveText('Join a working group');
-  await expect(cta).toHaveAttribute('href', '/spdtf/working-groups/join');
+  await expect(cta).toHaveAttribute('href', '/join');
   expect(findForbiddenIaLabels(await links.allTextContents().then((values) => values.join('\n')))).toEqual([]);
   clean();
 });

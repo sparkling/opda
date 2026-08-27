@@ -5,7 +5,7 @@ updated: 2026-08-27
 tags: [design-system, brand, website, accessibility, css, governance, presentation]
 supersedes: [ADR-0025]
 depends-on: [ADR-0064]
-implements: [DESIGN.md, public/ui, src/layouts/Layout.astro, src/components/Header.astro, src/components/SiteFooter.astro, src/pages/index.astro, src/pages/design-system.astro, src/styles/property-pack.css, src/styles/presentations, docs/design-system-site, playwright.config.mjs, tests/e2e, scripts/crawl-routes.mjs, scripts/check-schema-reproducibility.mjs, .github/workflows/deploy-aws.yml]
+implements: [DESIGN.md, public/ui, src/layouts/Layout.astro, src/layouts/StandalonePublicLayout.astro, src/components/Header.astro, src/components/SiteFooter.astro, src/components/campaign, src/pages/index.astro, src/pages/join, src/pages/accessibility.astro, src/pages/design-system.astro, src/styles/property-pack.css, src/styles/presentations, docs/design-system-site, playwright.config.mjs, tests/e2e, scripts/crawl-routes.mjs, scripts/check-schema-reproducibility.mjs, .github/workflows/deploy-aws.yml]
 ---
 
 # Adopt the OPDA brand and replace the website design system
@@ -140,6 +140,14 @@ reveal feedback still follows the shared motion and reduced-motion contract.
 Later on 27 August 2026 the primary-action token was made explicitly black on amber.
 The shared `.btn` and `.cta` primitives consume that token in their default and hover
 states; page-level campaign styles do not override it.
+
+ADR-0078 subsequently establishes one intentional public-service shell exception for
+`/join`, `/join/privacy` and `/accessibility`. `StandalonePublicLayout.astro` consumes
+the same official assets, semantic tokens, typography, controls, focus states and form
+primitives as the Knowledge Base, but omits its global header, section navigation,
+breadcrumb, table of contents and previous/next sequence. The shell supplies a minimal
+masthead and footer; campaign-specific composition, semantic-constellation and public-
+statement patterns are documented in `DESIGN.md` and the live design-system projection.
 
 On 25 August 2026 the expanded documentation header was aligned to the shared content
 axis: its wordmark is centred over the navigation rail, its first destination follows

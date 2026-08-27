@@ -88,6 +88,8 @@ export const ROUTE_FAMILY_OWNERS = Object.freeze({
 
 export const ROUTE_OWNER_OVERRIDES = Object.freeze([
   { pattern: /^\/$/u, owner: 'programme' },
+  { pattern: /^\/join(?:\/|$)/u, owner: 'working-groups' },
+  { pattern: /^\/accessibility$/u, owner: 'resources' },
   { pattern: /^\/(?:search|design-system|404)$/u, owner: 'resources' },
   { pattern: /^\/modelling\/(?:adr|odr)(?:\/|$)/u, owner: 'governance' },
   { pattern: /^\/engagement\/meetings-decisions(?:\/|$)/u, owner: 'governance' },
@@ -224,13 +226,23 @@ export const ROUTE_STATUS_OVERRIDES = Object.freeze([
     status: PDTF_DERIVED_DRAFT_STATUS,
   },
   {
-    pattern: /^\/spdtf\/working-groups\/join(?:\/|$)/u,
+    pattern: /^\/join(?:\/|$)/u,
     status: {
       workArea: 'SPDTF participation',
       authority: 'Expression-of-interest route; registration does not confer membership or decision rights',
       maturity: 'Recruitment and privacy information',
       version: 'Form-specific',
       provenance: 'OPDA participation and privacy records',
+    },
+  },
+  {
+    pattern: /^\/accessibility$/u,
+    status: {
+      workArea: 'Cross-programme',
+      authority: 'OPDA accessibility statement and contact route; it does not confer standards authority',
+      maturity: 'Maintained public service statement',
+      version: 'Current accessibility statement',
+      provenance: 'OPDA service assessment and published accessibility commitments',
     },
   },
   {
@@ -404,7 +416,8 @@ export const ROUTE_DISPOSITION_LEDGER = Object.freeze([
     ['/search', 'resources', 'keep'],
     ['/design-system', 'resources', 'keep'],
     ['/presentation/**', 'spdtf', 'reframe'],
-    ['/spdtf/working-groups/join/**', 'spdtf', 'keep'],
+    ['/join/**', 'spdtf', 'keep'],
+    ['/accessibility', 'resources', 'keep'],
     ['/engagement/meetings-decisions/**', 'governance', 'reframe'],
     ['/engagement/working-groups/**', 'programme', 'reframe'],
     ['/spdtf/property-pack/**', 'spdtf', 'reframe'],
@@ -430,6 +443,7 @@ export function normalizeIaPath(path) {
 const RETIRED_ROUTE_PATTERNS = Object.freeze([
   /^\/home$/u,
   /^\/working-groups\/join(?:\/|$)/u,
+  /^\/spdtf\/working-groups\/join(?:\/|$)/u,
   /^\/spdtf(?:-2)?\/ontologies(?:\/|$)/u,
 ]);
 

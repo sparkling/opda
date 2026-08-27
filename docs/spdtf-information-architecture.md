@@ -2,7 +2,7 @@
 
 Status: **implementation in progress on `main`; publication pending**<br>
 Date: 2026-08-27<br>
-Decision records: [ADR-0069](./adr/ADR-0069-public-working-group-recruitment-and-signup.md) · [ADR-0071](./adr/ADR-0071-bounded-context-recruitment-campaign.md) · [ADR-0074](./adr/ADR-0074-organise-site-around-spdtf-and-pdtf-schema.md) · [ADR-0077](./adr/ADR-0077-place-pdtf-schema-beneath-spdtf-as-third-party-input.md)<br>
+Decision records: [ADR-0069](./adr/ADR-0069-public-working-group-recruitment-and-signup.md) · [ADR-0071](./adr/ADR-0071-bounded-context-recruitment-campaign.md) · [ADR-0074](./adr/ADR-0074-organise-site-around-spdtf-and-pdtf-schema.md) · [ADR-0077](./adr/ADR-0077-place-pdtf-schema-beneath-spdtf-as-third-party-input.md) · [ADR-0078](./adr/ADR-0078-create-a-standalone-working-group-recruitment-campaign-at-join.md) · [ADR-0079](./adr/ADR-0079-make-the-site-public-and-retire-the-edge-authentication-gate.md)<br>
 Review artefact: [HTML presentation](./spdtf-information-architecture.html)
 ## Executive decision
 
@@ -62,7 +62,7 @@ The implementation is made auditable by:
 - fail-closed build, route, accessibility, responsive, keyboard, visual and
   information-preservation gates before deployment credentials are available.
 
-Six explicit exceptions replace the earlier retain-by-default route policy. The Property Pack corpus moves to `/spdtf/property-pack/**`; PDTF-schema documentation moves beneath `/spdtf/inputs/pdtf-schema/**` as third-party input; semantic-modelling reader pages move from `/spdtf/ontologies/**` to `/semantic-modelling/**`; `/working-groups/join/**` moves to `/spdtf/working-groups/join/**`; the duplicate `/home` landing is retired in favour of `/`; and the case-only Lease Term representation pair moves to `/pdtf/classes/lease-term{,.ttl}` and `/pdtf/object-properties/lease-term{,.ttl}`. None emits an old route or redirect. Move-aware receipts bind every moved route, information block and fragment to its declared replacement; the `/home` retirement receipt records its former role and the reachable root destinations. The source-model RDF identifiers remain exact even where those two representation paths differ.
+Six explicit exceptions replace the earlier retain-by-default route policy. The Property Pack corpus moves to `/spdtf/property-pack/**`; PDTF-schema documentation moves beneath `/spdtf/inputs/pdtf-schema/**` as third-party input; semantic-modelling reader pages move from `/spdtf/ontologies/**` to `/semantic-modelling/**`; the recruitment journey moves to the standalone `/join/**` route family; the duplicate `/home` landing is retired in favour of `/`; and the case-only Lease Term representation pair moves to `/pdtf/classes/lease-term{,.ttl}` and `/pdtf/object-properties/lease-term{,.ttl}`. None emits an old route or redirect. Move-aware receipts bind every moved route, information block and fragment to its declared replacement; the `/home` retirement receipt records its former role and the reachable root destinations. The source-model RDF identifiers remain exact even where those two representation paths differ.
 
 The build counts describe different surfaces: Astro reports 2,607 pages it renders; preservation and the crawler see 3,489 HTML files after copied/generated static HTML is included; the crawler's 5,289 emitted files also include non-HTML data and support assets. All three denominators are therefore expected and independently gated.
 
@@ -247,13 +247,14 @@ Home /
 │   │           └── Use and tooling /spdtf/inputs/pdtf-schema/schema-derived-ontology/use-and-tooling
 │   └── Generated outputs and validation evidence
 ├── Working groups /spdtf/working-groups
-│   ├── Join a working group /spdtf/working-groups/join
-│   │   └── Privacy notice /spdtf/working-groups/join/privacy
 │   ├── Member guide: access; Teams; SharePoint evidence; meetings; model review
 │   └── Group workspaces
 │       ├── Six property contexts
 │       ├── DBT Smart Data scheme-design group — OPDA-internal; no government status
 │       └── Interoperability — peer owner of boundaries, mappings and shared conventions
+├── Join a working group /join — standalone public recruitment service
+│   └── Privacy notice /join/privacy
+├── Accessibility statement /accessibility — standalone public statement
 └── Resources /resources
     ├── Source registry
     ├── Participant resources
@@ -325,7 +326,8 @@ does not confer membership, consensus or standards authority.
 | `/home` | Retire the duplicate homepage without a redirect, rewrite alias or duplicate page; update all internal homepage links to `/` and record its retirement receipt. |
 | `/glossary` | Resources utility with work-area and source facets. |
 | `/design-system` | Utility/footer link, outside standards authority. |
-| `/working-groups/join/**` | Move to `/spdtf/working-groups/join/**` beneath Working groups; preserve join/privacy information and remove the old routes without redirects, rewrites, aliases or duplicate pages. |
+| `/working-groups/join/**` and `/spdtf/working-groups/join/**` | Replace both superseded route families with the standalone `/join/**` recruitment service; preserve join/privacy information and remove the former routes without redirects, rewrites, aliases or duplicate pages. |
+| `/accessibility` | Standalone public accessibility statement covering the public-site target, tested scope, known limitations and contact route without claiming verified conformance. |
 | `/presentation/working-group-kickoff` | Working-group orientation resource, not evidence or a decision. |
 | `/modelling/property-pack` | Move the complete interactive source catalogue to `/spdtf/property-pack/definition-and-scope`; remove the old route without a redirect. |
 | `/spdtf/ontologies/**` | Move the complete reader family by exact suffix to `/semantic-modelling/**`; remove every old route without a redirect, rewrite alias or duplicate page. |
@@ -428,7 +430,7 @@ RDF source identifiers remain unchanged.
 
 - Preserve `/pdtf/**` source identifiers exactly. Preserve representation paths except `/pdtf/LeaseTerm{,.ttl}` and `/pdtf/leaseTerm{,.ttl}`, which are replaced by `/pdtf/classes/lease-term{,.ttl}` and `/pdtf/object-properties/lease-term{,.ttl}` without aliases.
 - Move `/spdtf/ontologies` to `/semantic-modelling` and preserve every descendant suffix beneath `/semantic-modelling/**`; emit no old route, redirect, rewrite alias or duplicate page.
-- Move `/working-groups/join` and its privacy child by exact suffix to `/spdtf/working-groups/join/**`; emit no former route, redirect, rewrite alias or duplicate page.
+- Use `/join` and `/join/privacy` as the only recruitment routes; emit neither former `/working-groups/join/**` nor `/spdtf/working-groups/join/**` routes, redirects, rewrite aliases or duplicate pages.
 - Apply the exact Property Pack mapping above atomically; emit no compatibility route.
 - Apply ADR-0077's owner-based PDTF schema route map atomically; emit no old documentation route, `/manual/**` alias, redirect or duplicate canonical page.
 - Treat each generated route family as an atomic unit and preserve logical comment identity.
