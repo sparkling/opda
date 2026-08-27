@@ -133,11 +133,28 @@ a:visited { text-decoration-color: currentColor; }
   overflow-x: auto;
   scrollbar-width: none;
 }
+.app-header--with-sidebar {
+  --header-content-left-rail: var(--sidebar-width);
+  --header-content-right-rail: 0px;
+}
+
+/* Keep the header full-width. These variables model the body rails solely so
+   the first nav label can start on the article's left edge. */
+#app:has(> .app-body.sidebar-collapsed) .app-header--with-sidebar {
+  --header-content-left-rail: var(--target-min);
+}
+#app:has(> .app-body.with-toc) .app-header--with-sidebar {
+  --header-content-right-rail: var(--toc-width);
+}
+#app:has(> .app-body.with-toc.toc-collapsed) .app-header--with-sidebar {
+  --header-content-right-rail: var(--target-min);
+}
 .app-header--with-sidebar .global-nav {
   margin-left: calc(
+    var(--header-content-left-rail) - var(--sidebar-width) +
     max(
       var(--content-gutter),
-      calc((100vw - var(--sidebar-width) - var(--content-max)) / 2)
+      calc((100vw - var(--header-content-left-rail) - var(--header-content-right-rail) - var(--content-max)) / 2)
     ) - var(--space-4)
   );
 }

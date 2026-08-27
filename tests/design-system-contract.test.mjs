@@ -298,7 +298,7 @@ test('the adopted motion contract excludes parallax and long campaign motion', a
 });
 
 test('shared navigation exposes visible focus, state and 44px targets', async () => {
-  const [contentSource, shell, toc, client, header, sidebar, layout, base, search, components] = await Promise.all([
+  const [contentSource, shell, toc, client, header, sidebar, layout, base, navigation, search, components] = await Promise.all([
     readFile(file('public/ui/design/content.css'), 'utf8'),
     readFile(file('public/ui/design/shell.css'), 'utf8'),
     readFile(file('public/ui/design/glossary-toc.css'), 'utf8'),
@@ -307,6 +307,7 @@ test('shared navigation exposes visible focus, state and 44px targets', async ()
     readFile(file('src/components/Sidebar.astro'), 'utf8'),
     readFile(file('src/layouts/Layout.astro'), 'utf8'),
     readFile(file('public/ui/design/base.css'), 'utf8'),
+    readFile(file('public/ui/design/navigation.css'), 'utf8'),
     readFile(file('src/pages/search.astro'), 'utf8'),
     readFile(file('public/ui/design/components.css'), 'utf8'),
   ]);
@@ -338,7 +339,10 @@ test('shared navigation exposes visible focus, state and 44px targets', async ()
   assert.match(layout, /<Header showSidebar=\{showSidebar\}/u);
   assert.match(shell, /\.app-main\s*\{[^}]*var\(--content-gutter\)/su);
   assert.match(base, /\.app-header--with-sidebar \.brand-cell\s*\{[^}]*justify-content:\s*center/su);
-  assert.match(base, /\.app-header--with-sidebar \.global-nav\s*\{[^}]*max\(\s*var\(--content-gutter\)/su);
+  assert.match(base, /#app:has\(> \.app-body\.sidebar-collapsed\) \.app-header--with-sidebar\s*\{[^}]*--header-content-left-rail:\s*var\(--target-min\)/su);
+  assert.match(base, /#app:has\(> \.app-body\.with-toc\) \.app-header--with-sidebar\s*\{[^}]*--header-content-right-rail:\s*var\(--toc-width\)/su);
+  assert.match(base, /\.app-header--with-sidebar \.global-nav\s*\{[^}]*var\(--header-content-left-rail\)[^}]*var\(--header-content-right-rail\)/su);
+  assert.match(navigation, /\.breadcrumbs\s*\{[^}]*max-width:\s*var\(--content-max\)[^}]*margin:\s*0 auto var\(--space-6\)/su);
   assert.doesNotMatch(base, /--header-height:\s*6\.5rem/u);
   assert.doesNotMatch(toc, /@media[^}]+\.toc\s*\{\s*display:\s*none/su);
   assert.match(base, /@media \(max-width: 96rem\) \{[\s\S]*\.global-nav-toggle \{ display: inline-flex; \}/u);

@@ -2,7 +2,9 @@
    BREADCRUMBS
    ───────────────────────────────────────────────────────────── */
 .breadcrumbs {
-  margin: 0 0 var(--space-6);
+  width: 100%;
+  max-width: var(--content-max);
+  margin: 0 auto var(--space-6);
   color: var(--color-text-muted);
   font: 500 var(--text-base) / 1.5 var(--font-sans);
 }
