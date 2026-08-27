@@ -1,7 +1,7 @@
 ---
 status: accepted
 date: 2026-08-27
-updated: 2026-08-27
+updated: 2026-08-28
 tags: [working-groups, recruitment, campaign, signup, design-system, accessibility, routing]
 supersedes: []
 depends-on: [ADR-0038, ADR-0069, ADR-0071, ADR-0073, ADR-0079]
@@ -104,6 +104,15 @@ Amended on 27 August 2026: the public narrative is now SME-first, the semantic
 constellation is replaced by practical working-group cards, and the signup form
 follows the active light or dark theme without changing its service contract.
 
+Amended on 28 August 2026: the campaign leads with the practical reasons that
+commercial operators, professionals, technologists and public-interest contributors
+would take part. Government policy and the legislative pathway provide a bounded
+"why now" context: they make the window to influence emerging property arrangements
+credible, but they are not the campaign's sole proposition. The page must distinguish
+the Data (Use and Access) Act 2025's general Smart Data framework from prospective
+property-specific arrangements, and must continue to state that SPDTF is an industry
+programme in development—not a government-approved or adopted statutory scheme.
+
 ### 1. Canonical route and route ownership
 
 `https://opda.org.uk/join` becomes the sole public working-group recruitment and
@@ -163,20 +172,27 @@ must be added to the design-system documentation when implemented.
 
 ### 3. Narrative structure
 
-The campaign uses five naturally flowing chapters rather than the current long card
-sequence or a slide deck:
+The campaign uses seven naturally flowing chapters rather than a long card sequence
+or a slide deck:
 
-1. **Why the work matters.** The opening names the avoidable questions, checking and
-   integration work caused when meaning is unclear across professional handoffs.
-2. **The wider programme.** The page explains the 2030 direction, the intended
-   industry outcome and that SPDTF is still in development and not adopted.
-3. **Where experience matters.** Six plain working-group cards show who each group is
-   for, while a cross-cutting invitation welcomes consumer, accessibility,
+1. **The practical invitation.** The opening makes the case for shaping the
+   information, guidance and services that the visitor's sector may work with.
+2. **Why people participate.** A concise editorial grid names commercial viability,
+   workable professional practice, interoperable implementation and public-interest
+   safeguards as distinct, legitimate motivations.
+3. **Why now.** A compact policy chapter explains that government is pursuing
+   home-buying reform and wider Smart Data policy, while property-specific
+   arrangements remain prospective. It makes the opportunity to influence the
+   practical detail clear without implying a settled mandate.
+4. **Where experience matters.** Six plain working-group cards show who each group is
+   for, while a cross-cutting invitation welcomes commercial, consumer, accessibility,
    regulatory and public-interest perspectives.
-4. **What participation involves.** A short sequence explains authorised source
-   material, plain-English review, challenge and practical testing, followed by the
-   human-review and information-sharing boundaries.
-5. **Register your interest.** The complete form is the final, visually distinct
+5. **What participation can influence.** A short sequence explains how participants
+   define important realities, review proposals, challenge weak assumptions and test
+   practical results.
+6. **Boundaries and trust.** The page explains human review, authorised sharing and
+   the limits of participation and standards authority.
+7. **Register your interest.** The complete form is the final, visually distinct
    destination.
 
 The page states that participants do not need data-modelling or technical expertise.

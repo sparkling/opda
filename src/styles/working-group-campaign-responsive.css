@@ -10,15 +10,22 @@
   .wg-participation__intro,
   .wg-participation-grid,
   .wg-evidence__statement,
-  .wg-trust { grid-template-columns: 1fr; }
+  .wg-trust,
+  .wg-policy__inner { grid-template-columns: 1fr; }
   .wg-cross-cutting .wg-eyebrow,
   .wg-evidence__statement .wg-eyebrow { grid-column: auto; margin-bottom: 0; }
   .wg-participation-steps,
-  .wg-evidence__reasons { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .wg-evidence__reasons,
+  .wg-motivation-grid,
+  .wg-policy__markers { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .wg-participation-steps li:nth-child(2),
-  .wg-evidence__reasons article:nth-child(2) { border-right: 0; }
+  .wg-evidence__reasons article:nth-child(2),
+  .wg-motivation-grid article:nth-child(2),
+  .wg-policy__markers li:nth-child(2) { border-right: 0; }
   .wg-participation-steps li:nth-child(n + 3),
-  .wg-evidence__reasons article:nth-child(n + 3) { border-top: 1px solid var(--color-surface-dark-tint); }
+  .wg-evidence__reasons article:nth-child(n + 3),
+  .wg-motivation-grid article:nth-child(n + 3),
+  .wg-policy__markers li:nth-child(n + 3) { border-top: 1px solid var(--color-surface-dark-tint); }
 }
 
 @media (max-width: 48rem) {
@@ -26,16 +33,19 @@
   .wg-campaign-hero h1 { font-size: clamp(3rem, 15vw, 4.75rem); }
   .wg-hero-actions { flex-direction: column; align-items: stretch; }
   .wg-hero-actions :is(.btn, .wg-text-link) { justify-content: center; }
-  .wg-programme-grid,
+  .wg-motivation-grid,
   .wg-group-grid,
   .wg-participation-steps,
-  .wg-evidence__reasons { grid-template-columns: 1fr; }
-  .wg-programme-grid article,
+  .wg-evidence__reasons,
+  .wg-policy__markers { grid-template-columns: 1fr; }
+  .wg-motivation-grid article,
   .wg-participation-steps li,
-  .wg-evidence__reasons article { border-right: 0; border-top: 1px solid var(--color-border); }
-  .wg-programme-grid article:first-child,
+  .wg-evidence__reasons article,
+  .wg-policy__markers li { border-right: 0; border-top: 1px solid var(--color-border); }
+  .wg-motivation-grid article:first-child,
   .wg-participation-steps li:first-child,
-  .wg-evidence__reasons article:first-child { border-top: 0; }
+  .wg-evidence__reasons article:first-child,
+  .wg-policy__markers li:first-child { border-top: 0; }
   .wg-group-card { min-height: 0; }
   .wg-participation-grid li,
   .wg-commitment { grid-template-columns: 1fr; gap: var(--space-2); }

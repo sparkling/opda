@@ -218,11 +218,11 @@ test('campaign recruits industry experts through purpose, influence and clear ex
   ]);
   const corpus = [page, data, form].join('\n');
   for (const phrase of [
-    'Help property information',
-    'work better</em> across the industry',
-    'working towards an operational scheme by 2030',
+    'Help shape the information',
+    'work with.</em>',
+    'The direction of travel is clear. The practical detail is still open.',
     'SPDTF is in development',
-    'not yet adopted',
+    'not a government-approved or adopted statutory scheme',
     'professional judgement',
     'Interest is reviewed by people.',
     'Estate Agency',
@@ -231,24 +231,26 @@ test('campaign recruits industry experts through purpose, influence and clear ex
     'Surveying and Valuation',
     'Property Data Services',
     'Property Technology',
-    'repeated questions',
-    'manual checking',
-    'difficult integrations',
-    'Make your profession’s needs visible',
-    'Challenge assumptions before they are embedded',
-    'Bring authorised material',
-    'Review plain-English drafts',
-    'Test proposals against real work',
+    'commercial reality',
+    'Protect the operating reality',
+    'Make practice workable',
+    'Build for the systems people use',
+    'Design in trust and inclusion',
+    'Define what matters',
+    'Review the proposal',
+    'Test a practical result',
     'Represent commercial interests',
     'Explain commercial needs, opportunities, costs and implementation impacts',
     'Represent public interests',
     'Bring consumer, accessibility, regulatory and wider public-interest perspectives',
-    'You do not need data-modelling experience.',
+    'No data-modelling expertise is needed.',
     'AI may assist comparison and drafting; it cannot make a draft official.',
     'expectations before asking you to commit',
   ]) {
     assert.match(corpus, new RegExp(phrase, 'iu'));
   }
+  assert.match(corpus, /Data \(Use and\s+Access\) Act 2025/iu);
+  assert.match(corpus, /property-specific\s+arrangements remain prospective/iu);
   assert.doesNotMatch(page, /ontology|SKOS|semantic constellation|contextual lenses|common boundary|AI-assisted modelling/iu);
   assert.doesNotMatch(corpus, /Contribute consumer, accessibility, regulatory or public-interest experience|Identify impacts and opportunities|Represent people and the public interest|technical model might otherwise miss|Not sure|help me choose/iu);
   assert.doesNotMatch(page, /data-parallax-layer|data-story-step|data-handoff-stage|data-reveal/u);
@@ -276,6 +278,8 @@ test('campaign styles remain split below the project file limit', async () => {
   assert.doesNotMatch(campaign, /\.wg-btn--large\s*\{[\s\S]*?color:\s*#000/u);
   assert.match(sections, /\.wg-participation\s*\{[\s\S]*?background:/u);
   assert.match(sections, /\.wg-trust\s*\{[\s\S]*?background:\s*var\(--brand-deep\)/u);
+  assert.match(sections, /\.wg-policy\s*\{[\s\S]*?background:\s*var\(--brand-deep\)/u);
+  assert.match(sections, /\.wg-motivation-grid\s*\{[\s\S]*?grid-template-columns:\s*repeat\(4/u);
 });
 
 test('form errors are associated with every control and group', async () => {
