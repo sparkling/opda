@@ -1,6 +1,7 @@
 ---
 status: accepted
 date: 2026-06-06
+updated: 2026-08-27
 tags: [infrastructure, ci-cd, deployment, security]
 supersedes: []
 depends-on: [ADR-0021, ADR-0037]
@@ -8,6 +9,13 @@ implements: [ADR-0038]
 ---
 
 # AWS hosting CI/CD pipeline
+
+> **Amended 2026-08-27 by [ADR-0079](./ADR-0079-make-the-site-public-and-retire-the-edge-authentication-gate.md).**
+> GitHub OIDC, CI-only CloudFormation, the regional site packaging bucket and
+> Artalk single-writer deployment remain current. The Lambda@Edge packaging,
+> gate configuration and gate-version hand-off are retired. During removal, CI
+> deploys the ungated site distribution before reconciling `opda-edge` to its
+> certificate-only template; later runs retain that certificate/site ordering.
 
 ## Context and Problem Statement
 

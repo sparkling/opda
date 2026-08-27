@@ -1,8 +1,10 @@
 name: Infrastructure (CloudFormation)
 
 # Infra CI/CD per ADR-0040 §3: validates and deploys the CloudFormation stacks
-# in dependency order — regional artifacts → edge (us-east-1: ACM cert +
-# Lambda@Edge gate) → site (eu-west-2: everything else). Change-set based and
+# in dependency order — certificate discovery/bootstrap (us-east-1) → regional
+# artifacts + site (eu-west-2) → certificate-only edge reconciliation. The site
+# update comes before removal of the former Lambda@Edge resources so CloudFront
+# first drops every viewer-request association (ADR-0079). Change-set based and
 # idempotent (--no-fail-on-empty-changeset), so a run that touches only one
 # stack is a no-op for the others.
 #
@@ -12,10 +14,7 @@ name: Infrastructure (CloudFormation)
 # Auth: GitHub OIDC → opda-site-deploy role; no static AWS keys (ADR-0040 §1).
 # Repository configuration required:
 #   vars.OPDA_SITE_DEPLOY_ROLE_ARN — from the bootstrap stack outputs
-#   vars.OPDA_AUTH0_DOMAIN         — Auth0 tenant domain (IdP, retained)
-#   vars.OPDA_AUTH0_CLIENT_ID      — Auth0 SPA app (public, PKCE — no secret)
-# Gate allowlist: config/aws/members.txt (committed; one e-mail per line) —
-#   replaces the former vars.OPDA_MEMBER_EMAILS Actions variable.
+#   vars.OPDA_AUTH0_DOMAIN         — Auth0 tenant domain used by Artalk SSO
 
 on:
   push:
@@ -61,34 +60,27 @@ jobs:
               --template-body "file://$t" --query Description --output text
           done
 
-      # ---- us-east-1: artifacts bucket (Lambda packaging) ----
-      - name: Deploy artifacts stack (us-east-1)
+      # On an established installation, read the existing certificate without
+      # updating the old edge stack yet: its obsolete Lambda resources must not
+      # be deleted until the site distribution has removed their associations.
+      # On a clean installation, create the certificate-only stack first.
+      - name: Read or create certificate stack (us-east-1)
         run: |
-          aws cloudformation deploy --region us-east-1 \
-            --stack-name opda-artifacts \
-            --template-file config/aws/artifacts-stack.yaml \
-            --no-fail-on-empty-changeset
-
-      # ---- us-east-1: edge stack (ACM cert + Lambda@Edge gate) ----
-      - name: Package and deploy edge stack (us-east-1)
-        if: hashFiles('config/aws/edge-stack.yaml') != ''
-        run: |
-          ARTIFACTS_BUCKET=$(aws cloudformation describe-stacks --region us-east-1 \
-            --stack-name opda-artifacts \
-            --query "Stacks[0].Outputs[?OutputKey=='ArtifactsBucketName'].OutputValue" --output text)
-          HOSTED_ZONE_ID=$(aws cloudformation describe-stacks --region eu-west-2 \
-            --stack-name opda-bootstrap \
-            --query "Stacks[0].Outputs[?OutputKey=='HostedZoneId'].OutputValue" --output text)
-          aws cloudformation package --region us-east-1 \
-            --template-file config/aws/edge-stack.yaml \
-            --s3-bucket "$ARTIFACTS_BUCKET" \
-            --output-template-file /tmp/edge-packaged.yaml
-          aws cloudformation deploy --region us-east-1 \
+          if ! aws cloudformation describe-stacks --region us-east-1 \
+            --stack-name opda-edge >/dev/null 2>&1; then
+            HOSTED_ZONE_ID=$(aws cloudformation describe-stacks --region eu-west-2 \
+              --stack-name opda-bootstrap \
+              --query "Stacks[0].Outputs[?OutputKey=='HostedZoneId'].OutputValue" --output text)
+            aws cloudformation deploy --region us-east-1 \
+              --stack-name opda-edge \
+              --template-file config/aws/edge-stack.yaml \
+              --no-fail-on-empty-changeset \
+              --parameter-overrides HostedZoneId="$HOSTED_ZONE_ID"
+          fi
+          CERT_ARN=$(aws cloudformation describe-stacks --region us-east-1 \
             --stack-name opda-edge \
-            --template-file /tmp/edge-packaged.yaml \
-            --capabilities CAPABILITY_NAMED_IAM CAPABILITY_AUTO_EXPAND \
-            --no-fail-on-empty-changeset \
-            --parameter-overrides HostedZoneId="$HOSTED_ZONE_ID"
+            --query "Stacks[0].Outputs[?OutputKey=='CertificateArn'].OutputValue" --output text)
+          echo "OPDA_CERTIFICATE_ARN=$CERT_ARN" >> "$GITHUB_ENV"
 
       # ---- eu-west-2: artifacts bucket (site Lambda + nested template) ----
       - name: Deploy artifacts stack (eu-west-2)
@@ -98,24 +90,11 @@ jobs:
             --template-file config/aws/artifacts-stack.yaml \
             --no-fail-on-empty-changeset
 
-      # ---- eu-west-2: site stack (consumes edge stack ARNs as parameters —
+      # ---- eu-west-2: site stack (consumes the certificate ARN as a parameter;
       # CloudFormation exports do not cross regions, ADR-0040 §3) ----
       - name: Deploy site stack (eu-west-2)
-        # Guarded on the Auth0 SPA application being configured — the gate
-        # cannot run its PKCE flow against an empty client.
-        if: hashFiles('config/aws/site-stack.yaml') != '' && vars.OPDA_AUTH0_CLIENT_ID != ''
+        if: hashFiles('config/aws/site-stack.yaml') != ''
         run: |
-          CERT_ARN=$(aws cloudformation describe-stacks --region us-east-1 \
-            --stack-name opda-edge \
-            --query "Stacks[0].Outputs[?OutputKey=='CertificateArn'].OutputValue" --output text)
-          GATE_VERSION_ARN=$(aws cloudformation describe-stacks --region us-east-1 \
-            --stack-name opda-edge \
-            --query "Stacks[0].Outputs[?OutputKey=='GateFunctionVersionArn'].OutputValue" --output text)
-          # Gate allowlist is sourced from the committed config/aws/members.txt
-          # (one e-mail per line; '#' comments + blank lines ignored), joined
-          # comma-separated. Supersedes the OPDA_MEMBER_EMAILS Actions variable.
-          MEMBER_EMAILS=$(grep -vE '^[[:space:]]*#|^[[:space:]]*$' config/aws/members.txt | paste -sd, -)
-          if [ -z "$MEMBER_EMAILS" ]; then echo "config/aws/members.txt has no addresses — refusing to lock everyone out" >&2; exit 1; fi
           ARTIFACTS_BUCKET=$(aws cloudformation describe-stacks --region eu-west-2 \
             --stack-name opda-artifacts \
             --query "Stacks[0].Outputs[?OutputKey=='ArtifactsBucketName'].OutputValue" --output text)
@@ -129,11 +108,23 @@ jobs:
             --capabilities CAPABILITY_NAMED_IAM CAPABILITY_AUTO_EXPAND \
             --no-fail-on-empty-changeset \
             --parameter-overrides \
-              CertificateArn="$CERT_ARN" \
-              GateFunctionVersionArn="$GATE_VERSION_ARN" \
-              Auth0Domain="${{ vars.OPDA_AUTH0_DOMAIN }}" \
-              Auth0ClientId="${{ vars.OPDA_AUTH0_CLIENT_ID }}" \
-              MemberEmails="$MEMBER_EMAILS"
+              CertificateArn="$OPDA_CERTIFICATE_ARN"
+
+      # Reconcile the old edge stack only after CloudFront has deployed the site
+      # update without viewer-request Lambda associations. On the first retirement
+      # run AWS may need additional time to delete replicated Lambda@Edge versions;
+      # a retry is safe because the public-site change is already in the site stack.
+      - name: Reconcile certificate-only edge stack (us-east-1)
+        if: hashFiles('config/aws/edge-stack.yaml') != ''
+        run: |
+          HOSTED_ZONE_ID=$(aws cloudformation describe-stacks --region eu-west-2 \
+            --stack-name opda-bootstrap \
+            --query "Stacks[0].Outputs[?OutputKey=='HostedZoneId'].OutputValue" --output text)
+          aws cloudformation deploy --region us-east-1 \
+            --stack-name opda-edge \
+            --template-file config/aws/edge-stack.yaml \
+            --no-fail-on-empty-changeset \
+            --parameter-overrides HostedZoneId="$HOSTED_ZONE_ID"
 
       # ---- eu-west-2: comments stack (Artalk runtime; independent of edge/site) ----
       - name: Deploy comments stack (eu-west-2)

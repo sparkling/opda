@@ -1,24 +1,26 @@
 import assert from 'node:assert/strict';
-import { readFile } from 'node:fs/promises';
+import { access, readFile } from 'node:fs/promises';
 import test from 'node:test';
 
 const read = (path) => readFile(new URL(`../${path}`, import.meta.url), 'utf8');
 
-test('only the intended join route family is explicitly public', async () => {
-  const gate = await read('config/aws/edge-gate/index.mjs');
-  for (const route of [
-    '/spdtf/working-groups/join',
-    '/spdtf/working-groups/join/privacy',
-    '/working-groups/join',
-    '/working-groups/join/privacy',
-  ]) assert.match(gate, new RegExp(`PUBLIC_EXACT[\\s\\S]*'${route.replaceAll('/', '\\/')}'`, 'u'));
-  assert.match(gate, /PUBLIC_PREFIXES[^\n]*'\/ui\/'/u);
-  assert.match(gate, /PUBLIC_EXACT[\s\S]*'\/images\/working-group-recruitment-social\.png'/u);
-  assert.doesNotMatch(gate, /'\/spdtf\/working-groups\/'/u);
-  assert.doesNotMatch(gate, /PUBLIC_PREFIXES[^\n]*working-groups/u);
+test('the CloudFront site is public without a viewer-request authentication gate', async () => {
+  const [site, edge, workflow] = await Promise.all([
+    read('config/aws/site-stack.yaml'),
+    read('config/aws/edge-stack.yaml'),
+    read('.github/workflows/infra.yml'),
+  ]);
+
+  assert.doesNotMatch(site, /LambdaFunctionAssociations|GateFunctionVersionArn|GateConfigParameter|\/opda\/gate\/config/u);
+  assert.doesNotMatch(edge, /AWS::Serverless::Function|GateFunction(?:Role|VersionArn)?|CodeUri:\s*edge-gate\//u);
+  assert.doesNotMatch(workflow, /GateFunctionVersionArn|OPDA_AUTH0_CLIENT_ID|members\.txt|edge-packaged/u);
+  await assert.rejects(
+    access(new URL('../config/aws/edge-gate/index.mjs', import.meta.url)),
+    { code: 'ENOENT' },
+  );
 });
 
-test('the public API is same-origin, cache-disabled and bypasses the member gate', async () => {
+test('the public API remains same-origin and cache-disabled without the retired gate', async () => {
   const site = await read('config/aws/site-stack.yaml');
   assert.match(site, /Type: AWS::CloudFormation::Stack[\s\S]*TemplateURL: working-group-interest-stack\.yaml/u);
   assert.match(site, /Id: working-group-interest-api[\s\S]*OriginProtocolPolicy: https-only/u);

@@ -1,6 +1,7 @@
 ---
 status: accepted
 date: 2026-06-06
+updated: 2026-08-27
 tags: [infrastructure, hosting, auth, deployment, comments]
 supersedes: []
 depends-on: []
@@ -8,6 +9,14 @@ implements: []
 ---
 
 # Hosting, auth, and comments architecture (AWS)
+
+> **Amended 2026-08-27 by [ADR-0079](./ADR-0079-make-the-site-public-and-retire-the-edge-authentication-gate.md).**
+> The AWS static-hosting, private-S3/OAC, DNS, Artalk, SQLite/Litestream and
+> single-writer decisions remain accepted. The public-apex/gated-KB boundary,
+> Lambda@Edge OAuth/PKCE gate, gate-side member allowlist, SSM gate configuration
+> and gate deployment topology are superseded: the site is now public and the
+> `us-east-1` edge stack retains only the CloudFront ACM certificate. References
+> below describe the historical decision unless ADR-0079 states otherwise.
 
 ## Context and Problem Statement
 

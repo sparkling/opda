@@ -211,8 +211,8 @@ Resources:
             - { Name: ATK_DB_FILE, Value: /data/artalk.db }
             - { Name: ATK_TRUSTED_DOMAINS, Value: !Sub 'https://${DomainName}' }
             - { Name: ATK_SITE_DEFAULT, Value: OPDA }
-            # Comments are gated to allowlisted signed-in members; captcha is
-            # redundant and breaks the popup-free SSO flow (matches fly.toml).
+            # Comment actions require Artalk's signed-in SSO identity; captcha
+            # is redundant and breaks the popup-free SSO flow (matches fly.toml).
             - { Name: ATK_CAPTCHA_ENABLED, Value: 'false' }
             # The fork's SSO token exchange (ADR-0038: Artalk fork bullet).
             # The endpoint requires BOTH auth.enabled and auth.sso.enabled

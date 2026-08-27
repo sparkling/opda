@@ -1,8 +1,9 @@
 # Artifacts stack — opda.org.uk AWS hosting (ADR-0040)
 #
 # A private, regional S3 bucket used by `aws cloudformation package` to stage
-# Lambda deployment zips and nested templates. CI deploys one copy in
-# us-east-1 for Lambda@Edge and one in eu-west-2 for the site API.
+# Lambda deployment zips and nested templates. CI deploys it in eu-west-2 for
+# the site API. The former us-east-1 Lambda@Edge packaging path was retired by
+# ADR-0079.
 #
 # Deployed by CI before the stack it packages. It is an implementation detail:
 # CloudFormation still owns every deployed runtime resource.

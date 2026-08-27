@@ -1,28 +1,23 @@
-# Site stack — opda.org.uk AWS hosting (ADR-0038 / ADR-0040)
+# Site stack — opda.org.uk AWS hosting (ADR-0038 / ADR-0040 / ADR-0079)
 #
-# The eu-west-2 stack: everything except the two us-east-1 control-plane
-# exceptions (ACM cert + Lambda@Edge gate, which arrive as parameters from
-# the edge stack — exports do not cross regions).
+# The eu-west-2 stack: everything except the us-east-1 ACM certificate, which
+# arrives as a parameter from the edge stack (exports do not cross regions).
 #
-#   - SSM parameter /opda/gate/config — the edge gate's runtime config
-#     (Lambda@Edge has no environment variables, ADR-0038): the Auth0 tenant
-#     + SPA client the gate runs its PKCE flow against, and the member
-#     e-mail allowlist the gate enforces (Auth0 is retained as the IdP;
-#     there are no AWS-side auth resources)
-#   - Private S3 site bucket + CloudFront distribution (OAC), viewer-request
-#     gate on every behavior; /api/v2/* routed to the Artalk comments origin
+#   - Private S3 site bucket + public CloudFront distribution (OAC)
+#   - /api/v2/* routed to the Artalk comments origin
 #   - Route 53 apex alias records
 #
 # The Artalk runtime (VPC, ECS Fargate, ECR, Litestream bucket, the
 # comments-origin DNS updater) lives in the comments stack; this stack only
 # carries the CloudFront origin + behavior pointing at it.
 #
-# Deployed by CI (.github/workflows/infra.yml) AFTER the edge stack.
+# Deployed by CI (.github/workflows/infra.yml). During the ADR-0079 transition,
+# CI removes CloudFront's gate association before reconciling the certificate-only
+# edge stack, so Lambda@Edge replicas are no longer attached when deleted.
 AWSTemplateFormatVersion: '2010-09-09'
 Description: >-
   opda.org.uk site resources (eu-west-2): S3 + CloudFront, Route 53 records,
-  edge-gate Auth0 config and public working-group interest API
-  (ADR-0038/ADR-0040/ADR-0069).
+  public site and working-group interest API (ADR-0038/ADR-0040/ADR-0069/ADR-0079).
 
 Parameters:
   DomainName:
@@ -31,38 +26,8 @@ Parameters:
   CertificateArn:
     Type: String
     Description: ACM certificate ARN (us-east-1, from the opda-edge stack).
-  GateFunctionVersionArn:
-    Type: String
-    Description: Lambda@Edge gate VERSION ARN (from the opda-edge stack).
-  Auth0Domain:
-    Type: String
-    Description: Auth0 tenant domain the gate authenticates against (e.g. opda.eu.auth0.com).
-  Auth0ClientId:
-    Type: String
-    Description: Auth0 SPA application client ID (public, PKCE — no secret).
-  MemberEmails:
-    Type: String
-    Default: henrik@sparklingideas.co.uk
-    Description: >-
-      Comma-separated member e-mail allowlist, enforced by the edge gate
-      (ADR-0038: Auth0's shared dev keys authenticate any Google account, so
-      membership is a gate-side check). Sourced by the infra workflow from the
-      committed config/aws/members.txt (one e-mail per line) — edit that file to
-      change who has access.
 
 Resources:
-  # The edge gate's runtime config (read at cold start from eu-west-2;
-  # Lambda@Edge cannot carry environment variables — ADR-0038). Auth0 is the
-  # IdP (retained, ADR-0038 §Auth); the SPA client is public/PKCE so no
-  # secret appears here, and the member allowlist is enforced by the gate.
-  GateConfigParameter:
-    Type: AWS::SSM::Parameter
-    Properties:
-      Name: /opda/gate/config
-      Type: String
-      Value: !Sub |
-        {"domain":"${Auth0Domain}","clientId":"${Auth0ClientId}","members":"${MemberEmails}"}
-
   WorkingGroupInterestApplication:
     Type: AWS::CloudFormation::Stack
     Metadata:
@@ -106,8 +71,7 @@ Resources:
                 AWS:SourceArn: !Sub 'arn:aws:cloudfront::${AWS::AccountId}:distribution/${Distribution}'
 
   # Public resources bucket — fronted by the SAME distribution under
-  # /resources/* but, unlike the site, served WITHOUT the viewer-request gate
-  # (its behavior below carries no LambdaFunctionAssociations). Kept SEPARATE
+  # /resources/*. Kept SEPARATE
   # from SiteBucket on purpose: the deploy syncs dist/ → SiteBucket with
   # --delete, which would wipe any shared prefix. Still private to direct S3
   # access (PublicAccessBlock all-true); CloudFront reads it via OAC.
@@ -141,12 +105,11 @@ Resources:
                 AWS:SourceArn: !Sub 'arn:aws:cloudfront::${AWS::AccountId}:distribution/${Distribution}'
 
   # Artalk authenticates via the Authorization header and uses no cookies —
-  # and MUST NOT receive the viewer's cookie jar: the gate tokens plus any
-  # legacy cookies push the Cookie header past fasthttp's 4 KB request-header
-  # cap, and Artalk answers 431 before routing (root-caused 2026-06-06: the
+  # and MUST NOT receive the viewer's cookie jar: legacy cookies can push the
+  # Cookie header past fasthttp's 4 KB request-header cap, and Artalk answers
+  # 431 before routing (root-caused 2026-06-06: the
   # browser SSO exchange failed while a minimal-cookie curl succeeded). The
-  # gate still sees and validates cookies at viewer-request; the origin gets
-  # everything except them.
+  # origin therefore gets everything except cookies.
   CommentsOriginRequestPolicy:
     Type: AWS::CloudFront::OriginRequestPolicy
     Properties:
@@ -228,7 +191,7 @@ Resources:
             OriginAccessControlId: !Ref OriginAccessControl
             S3OriginConfig:
               OriginAccessIdentity: ''
-          # Public resources origin (served ungated under /resources/* below).
+          # Public resources origin (served under /resources/* below).
           - Id: resources-s3
             DomainName: !GetAtt ResourcesBucket.RegionalDomainName
             OriginAccessControlId: !Ref ResourcesOriginAccessControl
@@ -254,14 +217,10 @@ Resources:
           ViewerProtocolPolicy: redirect-to-https
           Compress: true
           CachePolicyId: 658327ea-f89d-4fab-a63d-7e88639e58f6   # Managed-CachingOptimized
-          LambdaFunctionAssociations:
-            - EventType: viewer-request
-              LambdaFunctionARN: !Ref GateFunctionVersionArn
         CacheBehaviors:
-          # Public static assets — NO gate (no LambdaFunctionAssociations), so
-          # /resources/* is reachable without authenticating. Long-TTL via the
+          # Public static assets. Long-TTL via the
           # same managed CachingOptimized policy the default behavior uses.
-          # Ordered ahead of the gated default behavior.
+          # Ordered ahead of the default behavior.
           - PathPattern: '/resources/*'
             TargetOriginId: resources-s3
             ViewerProtocolPolicy: redirect-to-https
@@ -279,9 +238,6 @@ Resources:
             AllowedMethods: [GET, HEAD, OPTIONS, PUT, POST, PATCH, DELETE]
             CachePolicyId: 4135ea2d-6df8-44a3-9df3-4b5a84be39ad     # Managed-CachingDisabled
             OriginRequestPolicyId: !Ref CommentsOriginRequestPolicy  # no cookies to Artalk
-            LambdaFunctionAssociations:
-              - EventType: viewer-request
-                LambdaFunctionARN: !Ref GateFunctionVersionArn
           # Public same-origin API. HTTP API exposes only the registration POST route;
           # CloudFront's POST-capable method set necessarily includes the
           # remaining verbs, which API Gateway rejects because no routes exist.
@@ -331,9 +287,6 @@ Outputs:
     Value: !Ref Distribution
   DistributionDomainName:
     Value: !GetAtt Distribution.DomainName
-  GateCallbackUrl:
-    Description: Must be listed in the Auth0 SPA application's allowed callback URLs.
-    Value: !Sub 'https://${DomainName}/_auth/callback'
   WorkingGroupInterestApiEndpoint:
     Description: Direct HTTP API endpoint for diagnostics; browsers use the same-origin CloudFront path.
     Value: !GetAtt WorkingGroupInterestApplication.Outputs.ApiEndpoint
