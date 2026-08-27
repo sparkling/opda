@@ -146,8 +146,14 @@ ADR-0078 subsequently establishes one intentional public-service shell exception
 the same official assets, semantic tokens, typography, controls, focus states and form
 primitives as the Knowledge Base, but omits its global header, section navigation,
 breadcrumb, table of contents and previous/next sequence. The shell supplies a minimal
-masthead and footer; campaign-specific composition, semantic-constellation and public-
+masthead and footer; campaign-specific composition, recruitment-group-card and public-
 statement patterns are documented in `DESIGN.md` and the live design-system projection.
+
+Later on 27 August 2026 an SME-focused review removed the semantic constellation and
+the evidence-to-candidate explainer from the public recruitment journey. The campaign
+now uses plain working-group cards, programme context and practical participation copy;
+ontology and mapping detail remains in the Knowledge Base. This is a content hierarchy
+change within the standalone shell and shared token contract, not a new visual system.
 
 On 25 August 2026 the expanded documentation header was aligned to the shared content
 axis: its wordmark is centred over the navigation rail, its first destination follows

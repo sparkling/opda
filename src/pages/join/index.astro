@@ -1,5 +1,4 @@
 ---
-import SemanticConstellation from '@/components/campaign/SemanticConstellation.astro';
 import WorkingGroupInterestForm from '@/components/campaign/WorkingGroupInterestForm.astro';
 import { contributionOptions, workingGroupContexts } from '@/data/working-group-campaign';
 import StandalonePublicLayout from '@/layouts/StandalonePublicLayout.astro';
@@ -10,7 +9,7 @@ import '@/styles/working-group-campaign-responsive.css';
 
 const privacyNoticeVersion = '2026-08-13';
 const title = 'Join an SPDTF working group';
-const description = 'Bring your professional experience to the people developing connected property-data models for the Smart Property Data Trust Framework.';
+const description = 'Bring your professional experience to the industry working groups helping to develop the Smart Property Data Trust Framework.';
 ---
 <StandalonePublicLayout
   title={title}
@@ -21,82 +20,122 @@ const description = 'Bring your professional experience to the people developing
   <div class="wg-page">
     <section class="wg-campaign-hero" aria-labelledby="join-title">
       <div class="wg-campaign-hero__copy">
-        <p class="wg-eyebrow">01 · Smart Property Data Trust Framework</p>
-        <h1 id="join-title">One property.<br /><em>Many professional meanings.</em></h1>
+        <p class="wg-eyebrow">Smart Property Data Trust Framework</p>
+        <h1 id="join-title">Help property information <em>work better</em> across the industry.</h1>
         <p class="wg-lead">
-          Property information crosses legal, commercial, professional and technical boundaries.
-          OPDA is bringing together the people who understand those boundaries so useful meaning
-          can travel with the data.
+          Repeated questions, manual checking and difficult integrations can start when property
+          information crosses between professions and its meaning is unclear. OPDA is bringing
+          practitioners together to help change that.
         </p>
         <div class="wg-hero-actions">
           <a class="btn wg-btn--large" href="#register">Register your interest <span aria-hidden="true">↓</span></a>
-          <a class="wg-text-link" href="#contexts">Explore the six perspectives</a>
+          <a class="wg-text-link" href="#why-spdtf">Why this matters</a>
         </div>
         <p class="wg-hero-note">
-          You do not need ontology expertise, graph tools, technical knowledge or AI experience.
-          Bring the language, rules and exceptions of your work.
+          You do not need data-modelling experience. Bring the language, rules, exceptions and
+          practical tests from your work.
         </p>
       </div>
 
-      <div class="wg-hero-journey" aria-labelledby="journey-title">
-        <p class="wg-eyebrow">What happens next</p>
-        <h2 id="journey-title">Interest is reviewed by people.</h2>
+      <div class="wg-hero-journey" aria-labelledby="influence-title">
+        <p class="wg-eyebrow">Why your experience matters</p>
+        <h2 id="influence-title">Professional judgement belongs at the start.</h2>
         <ol class="wg-process">
-          <li><strong>Register interest</strong><span>Tell us where your experience is most relevant.</span></li>
-          <li><strong>OPDA reviews it</strong><span>A person reviews every expression of interest.</span></li>
-          <li><strong>Onboarding follows</strong><span>If accepted, access is sent separately.</span></li>
+          <li><strong>Make your profession’s needs visible</strong><span>Explain what terms and rules mean in daily practice.</span></li>
+          <li><strong>Challenge assumptions before they are embedded</strong><span>Show us what is missing, misleading or impractical.</span></li>
+          <li><strong>Test the intended result</strong><span>Help ensure future guidance and data outputs support real work.</span></li>
         </ol>
-        <p>
-          Registration is not membership, a vote, automatic Microsoft access, standards authority
-          or permission to represent your employer.
-        </p>
       </div>
     </section>
 
-    <section id="contexts" class="wg-section wg-context-section" aria-labelledby="contexts-title">
+    <section id="why-spdtf" class="wg-section wg-programme" aria-labelledby="programme-title">
       <div class="wg-section__heading">
         <div>
-          <p class="wg-eyebrow">02 · Contextual lenses</p>
-          <h2 id="contexts-title">How different professions describe the same property</h2>
+          <p class="wg-eyebrow">The wider programme</p>
+          <h2 id="programme-title">A shared effort to improve property-data handoffs</h2>
         </div>
         <div>
           <p>
-            These views overlap and recur; they are not a fixed transaction sequence. Each working
-            group is intended to develop and review meaning within its own domain.
-          </p>
-          <p class="wg-illustrative-note">
-            The labels and comparisons below explain the method. They are illustrative and are not
-            approved SPDTF definitions or mappings.
+            OPDA is developing SPDTF with people from across the property industry and wider
+            stakeholders. SPDTF is in development and not yet adopted; the working groups will
+            test whether it reflects professional practice.
           </p>
         </div>
       </div>
-      <SemanticConstellation contexts={workingGroupContexts} />
+      <div class="wg-programme-grid">
+        <article>
+          <span>2030 direction</span>
+          <h3>An operational scheme</h3>
+          <p>The programme is working towards an operational scheme by 2030, in line with the UK Smart Data Strategy.</p>
+        </article>
+        <article>
+          <span>The problem</span>
+          <h3>Meaning is lost at handoffs</h3>
+          <p>Different organisations may use the same terms in different ways, creating repeated work, uncertainty and delay.</p>
+        </article>
+        <article>
+          <span>The intention</span>
+          <h3>Clearer, more reliable exchange</h3>
+          <p>SPDTF is intended to help information remain understandable, verifiable and appropriately shared across the journey.</p>
+        </article>
+      </div>
+      <p class="wg-programme-link"><a href="/strategy">Read about the programme strategy</a></p>
     </section>
 
-    <section id="how-it-works" class="wg-model-story" aria-labelledby="model-title">
-      <div class="wg-model-story__intro">
+    <section id="groups" class="wg-section wg-groups" aria-labelledby="groups-title">
+      <div class="wg-section__heading">
         <div>
-          <p class="wg-eyebrow">03 · How participation changes the model</p>
-          <h2 id="model-title">Evidence becomes a candidate. Challenge makes it better.</h2>
+          <p class="wg-eyebrow">Where you could contribute</p>
+          <h2 id="groups-title">Where your experience matters</h2>
+        </div>
+        <div>
+          <p>
+            The initial groups bring together people who understand distinct parts of the property
+            journey. Choose one or more, or register without choosing and OPDA will help identify
+            the best fit.
+          </p>
+        </div>
+      </div>
+      <div class="wg-group-grid">
+        {workingGroupContexts.map((context) => (
+          <article class="wg-group-card">
+            <h3>{context.label}</h3>
+            <p>{context.scope}</p>
+            <a href="#register" data-context-register={context.value}>I’m interested in {context.label}</a>
+          </article>
+        ))}
+      </div>
+      <aside class="wg-cross-cutting" aria-labelledby="cross-cutting-title">
+        <p class="wg-eyebrow">Experience that crosses every group</p>
+        <h3 id="cross-cutting-title">Consumer, accessibility, regulatory and public-interest perspectives are welcome.</h3>
+        <p>You do not need to fit neatly into one professional group to make a valuable contribution.</p>
+      </aside>
+    </section>
+
+    <section class="wg-participation" aria-labelledby="participation-title">
+      <div class="wg-participation__intro">
+        <div>
+          <p class="wg-eyebrow">What taking part can look like</p>
+          <h2 id="participation-title">Bring experience. Review a draft. Challenge what is wrong.</h2>
         </div>
         <p>
-          Authorised source material, discussion and feedback feed a human-directed,
-          AI-assisted modelling process. Tools accelerate comparison and drafting; people remain
-          responsible for meaning, judgement and approval.
+          The work will be presented in language practitioners can review. Technical teams can
+          turn agreed meaning into standards and tools; your role is to test whether the meaning
+          and result are right for your field.
         </p>
       </div>
 
-      <ol class="wg-model-flow" data-reveal-group>
-        <li data-reveal><span>01</span><strong>Evidence</strong><p>Forms, schemas, glossaries, guidance, examples and lived expertise.</p></li>
-        <li data-reveal><span>02</span><strong>Candidate</strong><p>Specialist tools compare sources, expose ambiguity and draft a reviewable model.</p></li>
-        <li data-reveal><span>03</span><strong>Human challenge</strong><p>Working groups test meaning, supply counterexamples and resolve what is wrong.</p></li>
-        <li data-reveal><span>04</span><strong>Revision</strong><p>Recorded feedback returns to the next candidate until the group is ready to decide.</p></li>
+      <ol class="wg-participation-steps">
+        <li><span>01</span><strong>Bring authorised material</strong><p>Share guidance, forms or examples you are entitled to share, or explain practice from experience.</p></li>
+        <li><span>02</span><strong>Review plain-English drafts</strong><p>Check proposed definitions, examples and questions against the language your profession uses.</p></li>
+        <li><span>03</span><strong>Challenge what does not work</strong><p>Identify missing rules, edge cases, unintended consequences and impractical assumptions.</p></li>
+        <li><span>04</span><strong>Test proposals against real work</strong><p>Tell us whether proposed guidance and data outputs make sense in familiar forms, services and systems.</p></li>
       </ol>
 
       <div class="wg-participation-grid">
         <div>
           <p class="wg-eyebrow">Ways to contribute</p>
-          <h3>Bring evidence, meaning, challenge and practical tests.</h3>
+          <h3>Your contribution can match your experience and availability.</h3>
         </div>
         <ul>
           {contributionOptions.map((option) => (
@@ -105,48 +144,46 @@ const description = 'Bring your professional experience to the people developing
         </ul>
       </div>
 
-      <div class="wg-output-ribbon" aria-labelledby="outputs-title">
-        <p class="wg-eyebrow">One governed source of meaning</p>
-        <h3 id="outputs-title">Familiar outputs for the tools people already use</h3>
-        <ul>
-          <li>Business glossary</li><li>Data dictionary</li><li>Taxonomies</li>
-          <li>Controlled vocabularies</li><li>JSON Schemas</li><li>Validation</li>
-          <li>Website and documents</li><li>Integration mappings</li>
-        </ul>
+      <div class="wg-commitment">
+        <strong>Before you commit</strong>
+        <p>
+          If your expression of interest is accepted, OPDA will confirm the group format, schedule
+          and expectations before asking you to commit. Registering now does not commit you to take part.
+        </p>
       </div>
     </section>
 
     <section class="wg-section wg-evidence" aria-labelledby="trust-title">
       <div class="wg-evidence__statement">
-        <p class="wg-eyebrow">04 · Evidence and trust</p>
-        <h2 id="trust-title">A useful model includes the exceptions people actually encounter.</h2>
+        <p class="wg-eyebrow">Why practitioners are essential</p>
+        <h2 id="trust-title">Your professional judgement is the contribution.</h2>
         <p>
-          This work may influence how property information is described, checked and exchanged.
-          It needs the language of daily practice—not only assumptions visible in existing schemas.
+          Existing documents show what has been recorded. Practitioners know why it matters,
+          where the exceptions are and what happens when a rule does not fit real work.
         </p>
       </div>
 
       <div class="wg-evidence__reasons">
-        <article><span>Meaning</span><h3>Make the rules explicit</h3><p>Explain terms, edge cases and context that only practitioners know.</p></article>
-        <article><span>Challenge</span><h3>Expose gaps early</h3><p>Identify what is missing, misleading or too narrow before a candidate progresses.</p></article>
-        <article><span>Practice</span><h3>Test useful outputs</h3><p>Check whether schemas, validation and mappings work with real systems and forms.</p></article>
-        <article><span>Public interest</span><h3>Represent affected people</h3><p>Bring consumer, accessibility, regulatory and public-interest experience into review.</p></article>
+        <article><span>Daily practice</span><h3>Explain real meaning</h3><p>Make language, rules and exceptions visible to people outside your field.</p></article>
+        <article><span>Early influence</span><h3>Challenge assumptions</h3><p>Identify gaps before proposals become harder to change.</p></article>
+        <article><span>Practical value</span><h3>Test what is useful</h3><p>Check whether the intended result can support familiar work and services.</p></article>
+        <article><span>Public interest</span><h3>Represent affected people</h3><p>Bring consumer, accessibility, regulatory and public-interest experience into the work.</p></article>
       </div>
 
       <div class="wg-trust">
         <div>
-          <p class="wg-eyebrow">Clever technology · clear human authority</p>
-          <h3>You participate in the language of your work.</h3>
+          <p class="wg-eyebrow">Clear boundaries</p>
+          <h3>Interest is reviewed by people.</h3>
           <p>
             Share only what you and your organisation are authorised to share. Source material is
-            evidence for review; it is not automatically published.
+            reviewed and is not automatically published.
           </p>
         </div>
         <ul>
-          <li><strong>AI proposes;</strong> people review.</li>
-          <li><strong>Evidence shapes;</strong> candidate status remains visible.</li>
-          <li><strong>Working groups iterate;</strong> registration is not a decision right.</li>
-          <li><strong>People decide;</strong> AI alone cannot make a candidate official.</li>
+          <li>SPDTF is in development; participation does not make it adopted or confer standards authority.</li>
+          <li>No data-modelling or technical knowledge is required.</li>
+          <li>AI may assist comparison and drafting; it cannot make a draft official.</li>
+          <li>Registration is an expression of interest, not membership, access, a vote or permission to represent your employer.</li>
         </ul>
       </div>
     </section>

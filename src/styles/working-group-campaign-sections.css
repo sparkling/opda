@@ -1,5 +1,17 @@
-.wg-model-story {
-  padding: clamp(var(--space-10), 9vw, 9rem) max(clamp(var(--space-5), 5vw, var(--space-10)), calc((100vw - var(--campaign-max)) / 2));
+.wg-programme-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  border-block: 1px solid var(--color-border);
+}
+
+.wg-programme-grid article { padding: var(--space-6); border-right: 1px solid var(--color-border); }
+.wg-programme-grid article:last-child { border-right: 0; }
+.wg-programme-grid span { color: var(--color-text-muted); font: 700 var(--text-xs) / 1.3 var(--font-sans); letter-spacing: var(--tracking-meta); text-transform: uppercase; }
+.wg-programme-grid h3 { margin: var(--space-5) 0 0; color: var(--color-text-strong); font: var(--h3); }
+.wg-programme-grid p { margin: var(--space-3) 0 0; color: var(--color-text-muted); line-height: 1.6; }
+
+.wg-participation {
+  padding: clamp(var(--space-10), 8vw, 8rem) max(clamp(var(--space-5), 5vw, var(--space-10)), calc((100vw - var(--campaign-max)) / 2));
   color: var(--brand-white);
   background:
     linear-gradient(90deg, transparent 0 49.9%, rgb(255 255 255 / 4%) 50% 50.1%, transparent 50.2%),
@@ -7,41 +19,38 @@
   border-block: 4px solid var(--brand-yellow);
 }
 
-.wg-model-story__intro {
+.wg-participation__intro {
   display: grid;
   grid-template-columns: minmax(0, 1.1fr) minmax(20rem, 0.9fr);
   gap: clamp(var(--space-8), 7vw, var(--space-12));
   align-items: end;
 }
 
-.wg-model-story .wg-eyebrow { color: var(--brand-yellow); }
-.wg-model-story h2 { margin: 0; color: var(--brand-white); font: 600 clamp(2.5rem, 5vw, 5.5rem) / 1.02 var(--font-display); letter-spacing: -0.025em; text-wrap: balance; }
-.wg-model-story__intro > p { margin: 0; color: var(--on-dark-muted); font: var(--lead); }
+.wg-participation .wg-eyebrow { color: var(--brand-yellow); }
+.wg-participation h2 { margin: 0; color: var(--brand-white); font: 600 clamp(2.5rem, 5vw, 5.25rem) / 1.02 var(--font-display); letter-spacing: -0.025em; text-wrap: balance; }
+.wg-participation__intro > p { margin: 0; color: var(--on-dark-muted); font: var(--lead); }
 
-.wg-model-flow {
-  position: relative;
+.wg-participation-steps {
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));
-  gap: 0;
-  margin: clamp(var(--space-10), 8vw, 7rem) 0 0;
+  margin: clamp(var(--space-9), 7vw, 6rem) 0 0;
   padding: 0;
   list-style: none;
   border-top: 1px solid var(--color-surface-dark-tint);
 }
 
-.wg-model-flow::before { content: ''; position: absolute; top: -2px; left: 0; width: 25%; height: 3px; background: var(--brand-yellow); }
-.wg-model-flow li { min-height: 17rem; padding: var(--space-6); border-right: 1px solid var(--color-surface-dark-tint); }
-.wg-model-flow li:first-child { border-left: 1px solid var(--color-surface-dark-tint); }
-.wg-model-flow li > span { display: block; margin-bottom: var(--space-7); color: var(--brand-yellow); font: 700 var(--text-sm) / 1 var(--font-mono); }
-.wg-model-flow strong { display: block; color: var(--brand-white); font: var(--h3); }
-.wg-model-flow p { margin: var(--space-4) 0 0; color: var(--on-dark-muted); font-size: var(--text-sm); line-height: 1.6; }
+.wg-participation-steps li { padding: var(--space-6); border-right: 1px solid var(--color-surface-dark-tint); }
+.wg-participation-steps li:first-child { border-left: 1px solid var(--color-surface-dark-tint); }
+.wg-participation-steps span { display: block; margin-bottom: var(--space-6); color: var(--brand-yellow); font: 700 var(--text-sm) / 1 var(--font-mono); }
+.wg-participation-steps strong { display: block; color: var(--brand-white); font: var(--h3); }
+.wg-participation-steps p { margin: var(--space-4) 0 0; color: var(--on-dark-muted); font-size: var(--text-sm); line-height: 1.6; }
 
 .wg-participation-grid {
   display: grid;
   grid-template-columns: minmax(0, 0.75fr) minmax(24rem, 1.25fr);
   gap: clamp(var(--space-8), 7vw, var(--space-12));
   align-items: start;
-  margin-top: clamp(var(--space-10), 9vw, 8rem);
+  margin-top: clamp(var(--space-10), 8vw, 7rem);
 }
 
 .wg-participation-grid h3 { margin: 0; color: var(--brand-white); font: 600 clamp(1.75rem, 3vw, 3rem) / 1.1 var(--font-display); }
@@ -50,41 +59,26 @@
 .wg-participation-grid strong { color: var(--brand-white); }
 .wg-participation-grid span { color: var(--on-dark-muted); font-size: var(--text-sm); line-height: 1.55; }
 
-.wg-output-ribbon { margin-top: clamp(var(--space-10), 8vw, 7rem); padding-top: var(--space-7); border-top: 1px solid var(--color-surface-dark-tint); }
-.wg-output-ribbon h3 { margin: 0; color: var(--brand-white); font: var(--h2); }
-.wg-output-ribbon ul { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 1px; margin: var(--space-7) 0 0; padding: 1px; list-style: none; background: var(--color-surface-dark-tint); }
-.wg-output-ribbon li { padding: var(--space-4); color: var(--brand-white); background: var(--brand-night); font-size: var(--text-sm); }
+.wg-commitment { display: grid; grid-template-columns: minmax(12rem, 0.75fr) minmax(0, 1.25fr); gap: var(--space-6); margin-top: var(--space-8); padding: var(--space-6); background: var(--brand-night); border-left: 4px solid var(--brand-yellow); }
+.wg-commitment strong { color: var(--brand-white); }
+.wg-commitment p { margin: 0; color: var(--on-dark-muted); }
 
-.wg-evidence { padding-bottom: clamp(var(--space-10), 9vw, 9rem); }
+.wg-evidence { padding-bottom: clamp(var(--space-10), 8vw, 8rem); }
 .wg-evidence__statement { display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(20rem, 0.9fr); gap: clamp(var(--space-8), 7vw, var(--space-12)); align-items: end; }
 .wg-evidence__statement .wg-eyebrow { grid-column: 1 / -1; margin-bottom: calc(var(--space-6) * -1); }
 .wg-evidence__statement > p:last-child { margin: 0; color: var(--color-text-muted); font: var(--lead); }
 
-.wg-evidence__reasons { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); margin-top: clamp(var(--space-10), 7vw, var(--space-12)); border-top: 1px solid var(--color-border); border-bottom: 1px solid var(--color-border); }
+.wg-evidence__reasons { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); margin-top: clamp(var(--space-9), 6vw, var(--space-11)); border-block: 1px solid var(--color-border); }
 .wg-evidence__reasons article { padding: var(--space-6); border-right: 1px solid var(--color-border); }
 .wg-evidence__reasons article:last-child { border-right: 0; }
 .wg-evidence__reasons span { color: var(--color-text-muted); font: 700 var(--text-xs) / 1.3 var(--font-sans); letter-spacing: var(--tracking-meta); text-transform: uppercase; }
 .wg-evidence__reasons h3 { margin: var(--space-6) 0 0; color: var(--color-text-strong); font: var(--h3); }
 .wg-evidence__reasons p { margin: var(--space-3) 0 0; color: var(--color-text-muted); line-height: 1.55; }
 
-.wg-trust {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(22rem, 1fr);
-  gap: clamp(var(--space-8), 7vw, var(--space-12));
-  margin-top: clamp(var(--space-10), 8vw, 7rem);
-  padding: clamp(var(--space-7), 6vw, var(--space-10));
-  color: var(--brand-white);
-  background: var(--brand-deep);
-  border-top: 4px solid var(--brand-yellow);
-}
-
+.wg-trust { display: grid; grid-template-columns: minmax(0, 1fr) minmax(22rem, 1fr); gap: clamp(var(--space-8), 7vw, var(--space-12)); margin-top: clamp(var(--space-10), 7vw, 6rem); padding: clamp(var(--space-7), 5vw, var(--space-10)); color: var(--brand-white); background: var(--brand-deep); border-top: 4px solid var(--brand-yellow); }
 .wg-trust .wg-eyebrow { color: var(--brand-yellow); }
 .wg-trust h3 { margin: 0; color: var(--brand-white); font: 600 clamp(1.75rem, 3vw, 3rem) / 1.1 var(--font-display); }
 .wg-trust p { margin: var(--space-5) 0 0; color: var(--on-dark-muted); }
 .wg-trust ul { margin: 0; padding: 0; list-style: none; }
 .wg-trust li { padding: var(--space-4) 0; color: var(--on-dark-muted); border-top: 1px solid var(--color-surface-dark-tint); }
 .wg-trust li:last-child { border-bottom: 1px solid var(--color-surface-dark-tint); }
-.wg-trust strong { color: var(--brand-white); }
-
-.has-campaign-js [data-reveal] { transform: translateY(1rem); opacity: 0.55; transition: transform var(--duration-normal) var(--ease), opacity var(--duration-normal) var(--ease); transition-delay: var(--reveal-delay, 0ms); }
-.has-campaign-js [data-reveal].is-revealed { transform: none; opacity: 1; }

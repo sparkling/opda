@@ -28,22 +28,25 @@ weight.
 
 The standalone Finance and Banking working-group presentation at
 `/presentation/working-group-kickoff` demonstrates a stronger editorial hierarchy:
-large display typography, one principal idea at a time, immediate reassurance,
-interactive contextual lenses, an explicit evidence-to-candidate loop and a clear
-working-group promise. It is a presentation, however, not a suitable public signup
-journey. Its 24-slide sequence, fixed viewport, presenter controls and deliberate
-empty space must not be copied into the campaign page.
+large display typography, one principal idea at a time, immediate reassurance and a
+clear working-group promise. It is a presentation, however, not a suitable public
+signup journey. Its technical modelling story, 24-slide sequence, fixed viewport,
+presenter controls and deliberate empty space must not be copied into the campaign
+page.
 
 OPDA therefore needs a standalone campaign surface that combines the
-presentation's narrative confidence with the existing signup page's complete
-content, form, privacy and accessibility contract.
+presentation's narrative confidence with the existing signup page's complete form,
+privacy and accessibility contract. Its recruitment story must start with the
+industry problem and the value of professional judgement, not with OPDA's modelling
+method.
 
 ## Decision drivers
 
 - Give public recruitment one short, memorable and trustworthy canonical URL.
 - Let the campaign use the full viewport without inheriting documentation chrome.
-- Explain contextual meaning visually without misrepresenting the common boundary
-  or cross-context mappings.
+- Recruit subject-matter experts and industry practitioners in familiar language.
+- Explain the wider programme, its 2030 direction and SPDTF's in-development status.
+- Make the value of professional judgement and practical participation explicit.
 - Keep the route focused on participation and human authority rather than on OPDA's
   tooling or the use of AI.
 - Preserve the approved form fields, validation, privacy notice, storage and human
@@ -51,8 +54,8 @@ content, form, privacy and accessibility contract.
 - Preserve the campaign scope, promises and prohibited implications from ADR-0071.
 - Remain visibly OPDA and consume the governed design tokens from ADR-0073 without
   requiring every campaign composition to look like a documentation component.
-- Provide keyboard, reduced-motion, forced-colour and non-WebGL equivalents for
-  every material part of the journey.
+- Provide keyboard, reduced-motion and forced-colour support for every material part
+  of the journey.
 - Avoid scroll hijacking, pinned empty sequences, decorative parallax and a
   presentation-style requirement to click through the story.
 - Meet explicit loading, responsiveness and stability thresholds despite any
@@ -96,6 +99,10 @@ Choose **Option C — create a standalone editorial campaign at `/join`**.
 
 This ADR is accepted. It authorises the local route, composition and quality
 contract; it does not authorise publication.
+
+Amended on 27 August 2026: the public narrative is now SME-first, the semantic
+constellation is replaced by practical working-group cards, and the signup form
+follows the active light or dark theme without changing its service contract.
 
 ### 1. Canonical route and route ownership
 
@@ -159,68 +166,42 @@ must be added to the design-system documentation when implemented.
 The campaign uses five naturally flowing chapters rather than the current long card
 sequence or a slide deck:
 
-1. **One property, many professional meanings.** A full-viewport opening explains
-   the proposition and offers direct routes to participate or understand the work.
-2. **Contextual lenses.** An interactive model shows how Finance and Banking,
-   Conveyancing, Estate Agency, Surveying and Valuation, Property Data Services and
-   Property Technology describe the same property for different purposes.
-3. **How participation changes the model.** A continuous evidence, candidate,
-   challenge and revision sequence shows what a contribution produces.
-4. **Evidence and trust.** Authorised real-world evidence and clearly labelled
-   illustrative examples substantiate the method and state the human decision boundary.
+1. **Why the work matters.** The opening names the avoidable questions, checking and
+   integration work caused when meaning is unclear across professional handoffs.
+2. **The wider programme.** The page explains the 2030 direction, the intended
+   industry outcome and that SPDTF is still in development and not adopted.
+3. **Where experience matters.** Six plain working-group cards show who each group is
+   for, while a cross-cutting invitation welcomes consumer, accessibility,
+   regulatory and public-interest perspectives.
+4. **What participation involves.** A short sequence explains authorised source
+   material, plain-English review, challenge and practical testing, followed by the
+   human-review and information-sharing boundaries.
 5. **Register your interest.** The complete form is the final, visually distinct
    destination.
 
-The page retains the approved reassurance that participants do not need ontology
-expertise, graph tools, technical knowledge or AI adoption. It must not promise
+The page states that participants do not need data-modelling or technical expertise.
+Ontology, graph, mapping and internal candidate-lifecycle detail belongs in the
+Knowledge Base, not in the primary recruitment narrative. The page must not promise
 automatic membership, Microsoft access, voting rights, accreditation, endorsement,
 publication or standards authority.
 
-### 4. Semantic-constellation interaction
+### 4. Working-group choices
 
-The signature visual is a progressively enhanced semantic constellation centred on
-one property and the six property-domain contexts.
-
-Selecting a context changes the contextual label, explanation and relevant
-working-group information. That selection may preselect the corresponding group in
+The six selectable working groups are presented as ordinary semantic cards using
+their public label and practical scope. Each card can carry its group selection to
 the registration form, but the form remains independently understandable and
-operable. The authoritative form controls remain ordinary HTML inputs.
+operable and its HTML inputs remain authoritative.
 
-The visual must represent the modelling method accurately:
-
-- each context owns its local domain meaning;
-- the common boundary contains only elements genuinely shared across contexts;
-- common elements flow outward from the common boundary to relevant contexts; and
-- cross-context concept mappings are a separate concern, shown between concept labels
-  with dotted SKOS mapping relationships rather than arrows implying that contexts
-  interoperate through the common boundary.
-
-The current reviewed cross-context mapping register is empty, but that does not block
-the visual. The campaign may use illustrative or candidate mapping relationships
-before they are authorised when each is unmistakably labelled as explanatory rather
-than as an approved SPDTF assertion. Illustrative relationships do not enter the
-governed mapping register or acquire standards status through publication on this page.
-
-All contextual labels, explanations and relationships must also exist in semantic
-HTML. A canvas, WebGL, Three.js or shader layer may enhance the scene only if a
-bounded prototype demonstrates that it communicates these relationships better than
-CSS and SVG. The technology is not mandated by this ADR. Any rendering layer is
-decorative to assistive technology and has a static SVG or CSS fallback.
+The campaign does not use invented domain definitions, candidate mappings, a common-
+boundary diagram or ontology terminology to explain the groups. Those details can be
+linked from the Knowledge Base for visitors who want them; they are not a prerequisite
+for deciding whether to participate.
 
 ### 5. Motion and interaction
 
-The campaign uses at most three recurring motion signatures:
-
-1. contextual response in the semantic constellation;
-2. a restrained change of the contextual property label; and
-3. short section or process-line reveals.
-
-Every recurring animation must belong to one of these three signatures; a fourth
-recurring motion pattern fails the design review.
-
-Motion must respond to focus and touch as well as pointer input. It must stop when
-offscreen or when the document is hidden. Reduced-motion preferences receive the
-complete static state without delayed or hidden content.
+The complete recruitment story is visible without client-side reveal logic. Motion
+is limited to existing design-system control feedback and must not delay or hide
+content. Reduced-motion preferences receive an equivalent static experience.
 
 The page must not use scroll hijacking, a custom cursor, autoplay background video,
 decorative parallax, pinned scrollytelling or viewport-height empty bands. Visitors
@@ -233,14 +214,9 @@ modelling outcomes only when their authority, wording and publication rights are
 recorded. It must not invent social proof or imply endorsement from a participant,
 trade body, government body or standards organisation.
 
-Illustrative worked examples and candidate mappings do not need prior authorisation.
-They must be labelled as illustrative, must not be attributed to an organisation or
-working group, and must not be described as accepted, reviewed or published SPDTF
-content.
-
-The public story centres the working groups and their human authority. AI may be
-described as a human-directed drafting accelerator where relevant, but it is not the
-campaign's principal proposition and does not decide domain meaning or approval.
+The public story centres the industry problem, the value of professional judgement
+and the working groups. AI is mentioned once as a bounded drafting aid; it is not the
+campaign's proposition and cannot make a draft official.
 
 ### 7. Registration and privacy
 
@@ -254,14 +230,14 @@ context selection into the form. It must not hide required information in an opa
 multi-step wizard, submit data before the visitor activates the form or change the
 meaning of registration.
 
-The form area may use a contrasting light surface when the resulting control,
-validation, focus and error states meet the design-system and WCAG contracts.
+The form area follows the active light or dark theme using semantic surface, text,
+border, focus and status tokens. Its control, validation, focus and error states must
+meet the design-system and WCAG contracts in both themes.
 
 ### 8. Performance and resilience
 
-The semantic HTML proposition, reassurance and primary action render before any
-optional visual enhancement. Spatial code and assets are lazy-loaded, paused when
-unused and excluded from the critical path.
+The semantic HTML proposition, reassurance and primary action render without an
+optional spatial or canvas dependency.
 
 The production-build performance receipt records the audit tool and version, device
 and network profile, and the median of at least three runs against `/join`. The mobile
@@ -276,9 +252,8 @@ or below 2.5 seconds, Interaction to Next Paint at or below 200 milliseconds and
 at or below 0.1 on both mobile and desktop. An optional visual enhancement that causes
 a failed lab or field threshold is disabled until the threshold is restored.
 
-The complete proposition, context explanations, participation process, trust
-boundary, privacy link and form remain usable when motion is disabled or WebGL is
-unavailable.
+The complete proposition, group explanations, participation process, trust boundary,
+privacy link and form remain usable when motion is disabled.
 
 ## Consequences
 
@@ -287,8 +262,8 @@ unavailable.
 - Public recruitment gains one short and memorable canonical URL.
 - The campaign can establish a stronger hierarchy without compromising the
   Knowledge Base shell used by standards and governance documentation.
-- The contextual model becomes an explanatory interaction rather than six repeated
-  cards.
+- The campaign speaks to practitioners in familiar language and keeps technical
+  modelling detail in the Knowledge Base.
 - The Finance and Banking presentation contributes proven language and interaction
   patterns without becoming the public funnel.
 - The existing form, privacy, storage and human decision boundary remain intact.
@@ -301,7 +276,6 @@ unavailable.
   layout.
 - Campaign-specific components require their own responsive, accessibility and
   performance testing.
-- Optional spatial rendering adds implementation and regression risk.
 - Removing the former route without a redirect will intentionally break any existing
   external links to it.
 
@@ -309,8 +283,8 @@ unavailable.
 
 - This decision does not change the six selectable property-domain groups, campaign
   target audiences, form fields, API, storage, retention or onboarding process.
-- It does not approve any quotation, logo, participant claim or model candidate as
-  SPDTF standards content. Illustrative campaign examples remain non-authoritative.
+- It does not approve any quotation, logo, participant claim or draft as SPDTF
+  standards content.
 - It does not authorise deployment, campaign publication, LinkedIn activity or
   trade-body outreach.
 
@@ -337,13 +311,10 @@ all of the following are true:
 - the official OPDA mark provides a clear route home, `/join/privacy` provides a clear
   route back to registration, and the campaign footer exposes the required privacy
   and accessibility links;
-- the contextual interaction preserves local ownership, outward common elements and
-  separate dotted SKOS mappings, with every unreviewed example labelled as illustrative
-  rather than as an authorised SPDTF assertion;
-- every interactive context and form control is usable by keyboard, touch and pointer;
-- the page contains the five decided narrative chapters and no recurring motion
-  pattern outside the three named signatures;
-- the complete page remains understandable with WebGL and motion disabled;
+- every working-group choice and form control is usable by keyboard, touch and pointer;
+- the page contains the five decided narrative chapters and no scroll-driven reveal
+  sequence;
+- the complete page remains understandable with motion disabled;
 - reduced-motion, forced-colour, 320 CSS-pixel reflow and 400% zoom checks pass;
 - the recorded three-run mobile performance audit meets the LCP, CLS and TBT
   thresholds in this decision;

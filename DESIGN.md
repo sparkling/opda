@@ -304,9 +304,11 @@ family. They use the official wordmark, tokens, type, buttons, fields, focus and
 status primitives without the Knowledge Base header, rail, breadcrumb, contents or
 previous/next furniture. Their minimal masthead offers home, Knowledge Base, privacy,
 accessibility and registration routes; their deep-ink footer repeats the public-
-service exits. The join campaign uses five natural chapters and ends with the full
-form on a light, black-text surface. It never uses parallax, pinned scrolling or
-interaction-gated meaning.
+service exits. The join campaign uses five natural chapters: the industry problem,
+the wider programme, where expertise matters, what participation involves and the
+full form on a theme-aware surface. Technical modelling detail stays in the
+Knowledge Base. The campaign never uses parallax, pinned scrolling, delayed reveals
+or interaction-gated meaning.
 
 ## 9. Components
 
@@ -352,9 +354,9 @@ states, plus loading/error/success where asynchronous work occurs and dark parit
   overview and detail views. Static teaching SVGs use image semantics and never
   infer links from labels. Explicitly interactive model SVGs use composite semantics
   with named node links. Pan/zoom controls remain keyboard-operable.
-- **Semantic constellation:** progressive contextual-lens controls plus ordinary HTML
-  panels. Common elements point outward; separately labelled, dotted SKOS examples
-  connect concepts and never imply approved mappings or a common-boundary hub.
+- **Recruitment group card:** plain label, practical scope and one action that carries
+  the selected group to the signup form. Use a three-column maximum, preserve ordinary
+  HTML reading order and do not use modelling terminology to explain audience choices.
 - **Public statement:** dated, single-purpose privacy or accessibility content in a
   consistent heading/content grid; targets and limitations are stated without
   unevidenced compliance claims.

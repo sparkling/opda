@@ -100,14 +100,6 @@
 }
 
 .wg-form-shell {
-  color-scheme: light;
-  --color-surface: var(--brand-white);
-  --color-surface-alt: var(--brand-off-white);
-  --color-text: var(--brand-night);
-  --color-text-strong: var(--brand-deep);
-  --color-text-muted: var(--neutral-600);
-  --color-border: var(--neutral-200);
-  --color-border-strong: var(--neutral-300);
   display: grid;
   grid-template-columns: minmax(0, 0.58fr) minmax(25rem, 1.42fr);
   gap: clamp(var(--space-7), 6vw, var(--space-12));
@@ -219,7 +211,7 @@
   width: 1.25rem;
   height: 1.25rem;
   margin: 0.1rem 0 0;
-  accent-color: var(--brand-ink);
+  accent-color: var(--brand-yellow);
 }
 .wg-choice strong { display: block; margin-bottom: var(--space-1); color: var(--color-text-strong); line-height: 1.35; }
 .wg-choice span span { display: block; color: var(--color-text-muted); font-size: var(--text-sm); line-height: 1.45; }

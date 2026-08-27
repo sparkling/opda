@@ -9,14 +9,12 @@ const paths = {
   accessibility: new URL('../src/pages/accessibility.astro', import.meta.url),
   standaloneLayout: new URL('../src/layouts/StandalonePublicLayout.astro', import.meta.url),
   form: new URL('../src/components/campaign/WorkingGroupInterestForm.astro', import.meta.url),
-  constellation: new URL('../src/components/campaign/SemanticConstellation.astro', import.meta.url),
   campaignData: new URL('../src/data/working-group-campaign.ts', import.meta.url),
   layout: new URL('../src/layouts/Layout.astro', import.meta.url),
   siteFooter: new URL('../src/components/SiteFooter.astro', import.meta.url),
   homepage: new URL('../src/pages/index.astro', import.meta.url),
   propertyPackPage: new URL('../src/components/property-pack/PropertyPackPage.astro', import.meta.url),
   registration: new URL('../src/scripts/working-group-join.ts', import.meta.url),
-  campaign: new URL('../src/scripts/working-group-campaign.ts', import.meta.url),
   campaignCss: new URL('../src/styles/working-group-campaign.css', import.meta.url),
   campaignResponsiveCss: new URL('../src/styles/working-group-campaign-responsive.css', import.meta.url),
   campaignSectionsCss: new URL('../src/styles/working-group-campaign-sections.css', import.meta.url),
@@ -122,7 +120,8 @@ test('public recruitment routes use the standalone shell without Knowledge Base 
     assert.match(source, /import StandalonePublicLayout from '@\/layouts\/StandalonePublicLayout\.astro'/u);
     assert.doesNotMatch(source, /import Layout from '@\/layouts\/Layout\.astro'/u);
   }
-  assert.match(join, /<SemanticConstellation contexts=\{workingGroupContexts\}\s*\/>/u);
+  assert.match(join, /workingGroupContexts\.map\(\(context\) =>/u);
+  assert.doesNotMatch(join, /SemanticConstellation|contextual lenses|skos:/iu);
   assert.match(join, /<WorkingGroupInterestForm/u);
   assert.match(privacy, /bodyClass="working-group-privacy"/u);
   assert.match(accessibility, /bodyClass="accessibility-statement"/u);
@@ -135,7 +134,9 @@ test('public recruitment routes use the standalone shell without Knowledge Base 
   assert.match(layout, /<article class=\{proseClass\}>/u);
   assert.doesNotMatch(joinCss, /\.app-main/u);
   assert.match(joinCss, /\.wg-page\s*\{[^}]*width:\s*100%[^}]*margin:\s*0/su);
-  assert.match(joinCss, /\.wg-form-shell\s*\{[^}]*color-scheme:\s*light[^}]*--color-text:\s*var\(--brand-night\)/su);
+  assert.doesNotMatch(joinCss, /\.wg-form-shell\s*\{[^}]*(?:color-scheme:\s*light|--color-(?:surface|text|border)):/su);
+  assert.match(joinCss, /\.wg-form-shell\s*\{[^}]*background:\s*var\(--color-surface-alt\)/su);
+  assert.match(joinCss, /\.wg-form\s*\{[^}]*background:\s*var\(--color-surface\)/su);
 });
 
 test('former working-group sign-up paths have no page, redirect or rewrite', async () => {
@@ -205,20 +206,22 @@ test('registration script sends the fixed allowlisted payload to the same-origin
   assert.match(source, /body\.ok === true[\s\S]*body\.state === 'received'/u);
 });
 
-test('campaign presents the complete handoff narrative without scroll-driven theatre', async () => {
-  const [page, constellation, data, form, script, sectionsCss, responsiveCss] = await Promise.all([
+test('campaign recruits industry experts through purpose, influence and clear expectations', async () => {
+  const [page, data, form, sectionsCss, responsiveCss] = await Promise.all([
     readFile(paths.join, 'utf8'),
-    readFile(paths.constellation, 'utf8'),
     readFile(paths.campaignData, 'utf8'),
     readFile(paths.form, 'utf8'),
-    readFile(paths.campaign, 'utf8'),
     readFile(paths.campaignSectionsCss, 'utf8'),
     readFile(paths.campaignResponsiveCss, 'utf8'),
   ]);
-  const corpus = [page, constellation, data, form].join('\n');
+  const corpus = [page, data, form].join('\n');
   for (const phrase of [
-    'One property.',
-    'Many professional meanings.',
+    'Help property information',
+    'work better</em> across the industry',
+    'working towards an operational scheme by 2030',
+    'SPDTF is in development',
+    'not yet adopted',
+    'professional judgement',
     'Interest is reviewed by people.',
     'Estate Agency',
     'Finance and Banking',
@@ -226,47 +229,28 @@ test('campaign presents the complete handoff narrative without scroll-driven the
     'Surveying and Valuation',
     'Property Data Services',
     'Property Technology',
-    'AI-assisted modelling',
-    'Human challenge',
-    'You do not need ontology expertise, graph tools, technical knowledge or AI experience.',
-    'People decide;',
-    'AI alone cannot make a candidate official.',
-    'Listing',
-    'A place to market, price and negotiate.',
-    'Mortgage security',
-    'An asset assessed for lending, affordability and risk.',
-    'Legal title',
-    'Rights, restrictions and the asset being transferred.',
-    'Subject asset',
-    'Condition, measurement and professional opinion.',
-    'Evidence',
-    'Sourced information with provenance and assurance.',
-    'Resource',
-    'Structured meaning ready for products and integrations.',
-    'The common boundary does not route every relationship.',
-    'Mappings connect concepts—not working groups',
-    'Illustrative comparison · not an approved SPDTF mapping',
-    'skos:closeMatch?',
+    'repeated questions',
+    'manual checking',
+    'difficult integrations',
+    'Make your profession’s needs visible',
+    'Challenge assumptions before they are embedded',
+    'Bring authorised material',
+    'Review plain-English drafts',
+    'Test proposals against real work',
+    'You do not need data-modelling experience.',
+    'AI may assist comparison and drafting; it cannot make a draft official.',
+    'expectations before asking you to commit',
   ]) {
-    assert.match(corpus, new RegExp(phrase, 'u'));
+    assert.match(corpus, new RegExp(phrase, 'iu'));
   }
-  assert.doesNotMatch(script, /parallax|requestAnimationFrame/iu);
-  assert.match(script, /IntersectionObserver/u);
-  assert.match(script, /prefers-reduced-motion/u);
-  assert.match(script, /classList\.add\('has-campaign-js'\)/u);
-  assert.match(script, /classList\.add\('has-constellation-js'\)/u);
-  assert.match(script, /document\.addEventListener\('astro:page-load', initCampaignExperience\)/u);
-  assert.doesNotMatch(script, /data-story-step|data-handoff|\.animate\(|innerHTML/u);
-  assert.doesNotMatch(sectionsCss, /^\[data-reveal\]\s*\{/mu);
-  assert.match(sectionsCss, /\.has-campaign-js \[data-reveal\]/u);
+  assert.doesNotMatch(page, /ontology|SKOS|semantic constellation|contextual lenses|common boundary|AI-assisted modelling/iu);
+  assert.doesNotMatch(page, /data-parallax-layer|data-story-step|data-handoff-stage|data-reveal/u);
+  assert.doesNotMatch(sectionsCss, /position:\s*sticky|data-reveal|wg-model-flow|wg-output-ribbon/u);
   assert.match(responsiveCss, /prefers-reduced-motion/u);
-  assert.doesNotMatch(page, /data-parallax-layer|data-story-step|data-handoff-stage/u);
-  assert.match(constellation, /<button[\s\S]*data-context-trigger=\{context\.value\}/u);
-  assert.match(constellation, /data-context-panel=\{context\.value\}/u);
-  assert.doesNotMatch(constellation, /data-context-panel=\{context\.value\}[\s\S]{0,80}\shidden/u);
+  assert.match(page, /data-context-register=\{context\.value\}/u);
   assert.ok(page.indexOf('<WorkingGroupInterestForm') > page.indexOf('class="wg-trust"'));
-  for (const chapter of ['01 ·', '02 ·', '03 ·', '04 ·']) assert.match(page, new RegExp(chapter, 'u'));
-  assert.match(form, /05 · Register your interest/u);
+  assert.doesNotMatch(page, /0[1-4] ·/u);
+  assert.doesNotMatch(form, /05 ·/u);
 });
 
 test('campaign styles remain split below the project file limit', async () => {
@@ -280,10 +264,10 @@ test('campaign styles remain split below the project file limit', async () => {
   ]);
   assert.doesNotMatch(campaign, /position:\s*sticky/u);
   assert.doesNotMatch(sections, /calc\(50% - 50vw\)|position:\s*sticky/u);
-  assert.match(campaign, /\.wg-campaign-hero\s*\{[\s\S]*?min-height:\s*min\(54rem, calc\(100svh - 5rem\)\)/u);
+  assert.match(campaign, /\.wg-campaign-hero\s*\{[\s\S]*?min-height:\s*min\(48rem, calc\(100svh - 5rem\)\)/u);
   assert.match(campaign, /\.wg-section\s*\{[\s\S]*?width:\s*min\(100%, var\(--campaign-max\)\)/u);
   assert.doesNotMatch(campaign, /\.wg-btn--large\s*\{[\s\S]*?color:\s*#000/u);
-  assert.match(sections, /\.wg-model-story\s*\{[\s\S]*?background:/u);
+  assert.match(sections, /\.wg-participation\s*\{[\s\S]*?background:/u);
   assert.match(sections, /\.wg-trust\s*\{[\s\S]*?background:\s*var\(--brand-deep\)/u);
 });
 
