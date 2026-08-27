@@ -66,7 +66,7 @@ export const contributionOptions: ContributionOption[] = [
   },
   {
     value: 'contribute-consumer-accessibility-regulatory-public-interest-experience',
-    label: 'Contribute consumer, accessibility, regulatory or public-interest experience',
-    description: 'Help identify exclusions, harms, obligations and needs that a technical model might otherwise miss.',
+    label: 'Identify impacts and opportunities',
+    description: 'Explain how proposals could affect your organisation, customers or the wider public, including commercial opportunities, consumer needs, accessibility requirements and regulatory duties.',
   },
 ];

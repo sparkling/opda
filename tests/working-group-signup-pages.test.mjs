@@ -237,6 +237,8 @@ test('campaign recruits industry experts through purpose, influence and clear ex
     'Bring authorised material',
     'Review plain-English drafts',
     'Test proposals against real work',
+    'Identify impacts and opportunities',
+    'commercial opportunities, consumer needs, accessibility requirements and regulatory duties',
     'You do not need data-modelling experience.',
     'AI may assist comparison and drafting; it cannot make a draft official.',
     'expectations before asking you to commit',
@@ -244,6 +246,7 @@ test('campaign recruits industry experts through purpose, influence and clear ex
     assert.match(corpus, new RegExp(phrase, 'iu'));
   }
   assert.doesNotMatch(page, /ontology|SKOS|semantic constellation|contextual lenses|common boundary|AI-assisted modelling/iu);
+  assert.doesNotMatch(corpus, /Contribute consumer, accessibility, regulatory or public-interest experience|Represent people and the public interest|technical model might otherwise miss/iu);
   assert.doesNotMatch(page, /data-parallax-layer|data-story-step|data-handoff-stage|data-reveal/u);
   assert.doesNotMatch(sectionsCss, /position:\s*sticky|data-reveal|wg-model-flow|wg-output-ribbon/u);
   assert.match(responsiveCss, /prefers-reduced-motion/u);
