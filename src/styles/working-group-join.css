@@ -7,6 +7,11 @@
   margin: 0 auto;
 }
 
+.wg-hero {
+  padding-block: clamp(var(--space-8), 7vw, var(--space-12));
+  border-bottom: 1px solid var(--color-border);
+}
+
 .wg-eyebrow {
   margin: 0 0 var(--space-3);
   color: var(--color-text-muted);
@@ -29,6 +34,27 @@
   color: var(--color-text-muted);
   font: var(--lead);
   text-wrap: pretty;
+}
+
+.wg-hero-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-4);
+  align-items: center;
+  margin-top: var(--space-6);
+}
+
+.wg-btn--large {
+  min-height: var(--target-min);
+  padding-inline: var(--space-5);
+}
+
+.wg-text-link {
+  display: inline-flex;
+  align-items: center;
+  min-height: var(--target-min);
+  color: var(--color-link);
+  font-weight: 600;
 }
 
 .wg-section { padding-block: clamp(var(--space-8), 7vw, var(--space-12)); }
@@ -93,6 +119,37 @@
   line-height: 1.5;
 }
 
+.wg-contexts .wg-contexts__number {
+  display: block;
+  margin-bottom: var(--space-4);
+  color: var(--color-text-muted);
+  font: 700 var(--text-sm) / 1 var(--font-mono);
+}
+
+.wg-method-note {
+  display: grid;
+  grid-template-columns: minmax(14rem, 0.55fr) minmax(0, 1.45fr);
+  gap: var(--space-6);
+  margin-top: var(--space-7);
+  padding: var(--space-6);
+  border-left: 4px solid var(--brand-yellow);
+  background: var(--color-surface-alt);
+}
+
+.wg-method-note h3 {
+  margin: 0;
+  color: var(--color-text-strong);
+  font: var(--h3);
+}
+
+.wg-method-note__copy p {
+  margin: 0;
+  color: var(--color-text-muted);
+  line-height: var(--leading-normal);
+}
+
+.wg-method-note__copy p + p { margin-top: var(--space-3); }
+
 .wg-process { grid-template-columns: repeat(3, minmax(0, 1fr)); counter-reset: process; }
 .wg-process li { counter-increment: process; }
 .wg-process li::before {
@@ -101,6 +158,20 @@
   margin-bottom: var(--space-4);
   color: var(--color-text-muted);
   font: 700 var(--text-sm) / 1 var(--font-mono);
+}
+
+.wg-governance-list {
+  margin: var(--space-6) 0 0;
+  padding: 0;
+  list-style: none;
+  border-top: 1px solid var(--color-border);
+}
+
+.wg-governance-list li {
+  padding-block: var(--space-4);
+  color: var(--color-text-muted);
+  line-height: var(--leading-normal);
+  border-bottom: 1px solid var(--color-border);
 }
 
 .wg-form-shell {
@@ -172,6 +243,7 @@
 .wg-field textarea { min-height: 8rem; resize: vertical; }
 .wg-field input[aria-invalid='true'],
 .wg-field textarea[aria-invalid='true'] { border-color: var(--color-status-danger); }
+.wg-field:focus-within label { color: var(--color-text-strong); }
 
 .wg-choice-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--space-3); }
 .wg-choice {
@@ -189,6 +261,11 @@
   cursor: pointer;
 }
 .wg-choice:hover { border-color: var(--color-border-strong); background: var(--color-surface-alt); }
+.wg-choice:focus-within {
+  border-color: var(--color-border-strong);
+  outline: 2px solid var(--color-focus);
+  outline-offset: 2px;
+}
 .wg-choice:has(input:checked) {
   border-color: var(--color-border-strong);
   background: var(--color-surface-alt);
@@ -207,7 +284,8 @@
 
 .wg-field-error,
 .wg-error-summary { color: var(--color-status-danger); }
-.wg-field-error { min-height: 1.25rem; margin: var(--space-2) 0 0; font-size: var(--text-sm); }
+.wg-field-error { margin: var(--space-2) 0 0; font-size: var(--text-sm); }
+.wg-field-error:empty { display: none; }
 .wg-character-count { display: block; margin-top: var(--space-2); color: var(--color-text-muted); font-size: var(--text-xs); text-align: right; }
 .wg-field .wg-field-hint { display: block; margin-block: var(--space-2) 0; }
 .wg-error-summary {
@@ -246,6 +324,7 @@
 @media (max-width: 64rem) {
   .wg-form-shell { grid-template-columns: 1fr; }
   .wg-form-intro { position: static; }
+  .wg-method-note { grid-template-columns: 1fr; }
 }
 
 @media (max-width: 44rem) {
@@ -257,6 +336,8 @@
   .wg-choice--wide,
   .wg-field--full { grid-column: auto; }
   .wg-form { padding-inline: var(--space-4); }
+  .wg-hero-actions { align-items: stretch; }
+  .wg-hero-actions > * { width: 100%; justify-content: center; }
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -265,7 +346,9 @@
 
 @media (forced-colors: active) {
   .wg-choice:has(input:checked),
+  .wg-choice:focus-within,
   .wg-error-summary,
   .wg-success { border-color: CanvasText; box-shadow: none; }
   .wg-choice:has(input:checked) { outline: 3px solid Highlight; outline-offset: -3px; }
+  .wg-choice:focus-within { outline-color: Highlight; }
 }

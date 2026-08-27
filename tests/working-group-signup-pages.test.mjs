@@ -10,10 +10,7 @@ const paths = {
   homepage: new URL('../src/pages/index.astro', import.meta.url),
   propertyPackPage: new URL('../src/components/property-pack/PropertyPackPage.astro', import.meta.url),
   registration: new URL('../src/scripts/working-group-join.ts', import.meta.url),
-  campaign: new URL('../src/scripts/working-group-campaign.ts', import.meta.url),
-  campaignCss: new URL('../src/styles/working-group-campaign.css', import.meta.url),
-  campaignResponsiveCss: new URL('../src/styles/working-group-campaign-responsive.css', import.meta.url),
-  campaignSectionsCss: new URL('../src/styles/working-group-campaign-sections.css', import.meta.url),
+  joinCss: new URL('../src/styles/working-group-join.css', import.meta.url),
   header: new URL('../src/components/Header.astro', import.meta.url),
   baseCss: new URL('../public/ui/design/base.css', import.meta.url),
   memberGuide: new URL('../src/pages/spdtf/working-groups/member-guide/index.astro', import.meta.url),
@@ -151,18 +148,14 @@ test('registration script sends the fixed allowlisted payload to the same-origin
   assert.match(source, /document\.addEventListener\('astro:page-load', initWorkingGroupForm\)/u);
 });
 
-test('campaign story progressively enhances a complete no-JS narrative', async () => {
-  const [page, script, sectionsCss, responsiveCss] = await Promise.all([
+test('signup journey stays compact, complete and usable without campaign theatre', async () => {
+  const [page, joinCss] = await Promise.all([
     readFile(paths.join, 'utf8'),
-    readFile(paths.campaign, 'utf8'),
-    readFile(paths.campaignSectionsCss, 'utf8'),
-    readFile(paths.campaignResponsiveCss, 'utf8'),
+    readFile(paths.joinCss, 'utf8'),
   ]);
   for (const phrase of [
-    'One property.',
-    'Many meanings.',
-    'One connected journey.',
-    'The problem is in the handoffs',
+    'Help property data keep its meaning.',
+    'Six domains. One connected journey.',
     'Estate Agency',
     'Finance and Banking',
     'Conveyancing',
@@ -170,30 +163,29 @@ test('campaign story progressively enhances a complete no-JS narrative', async (
     'Property Data Services',
     'Property Technology',
     'AI-assisted modelling',
-    'Human review',
-    'You do not need to understand ontologies or adopt AI',
-    'People decide;',
-    'no candidate becomes official through AI alone',
+    'no technical or AI knowledge is needed',
+    'People decide: nothing becomes part of the scheme through AI alone',
+    'Registration does not create membership, access, voting rights',
   ]) {
     assert.match(page, new RegExp(phrase, 'u'));
   }
-  assert.doesNotMatch(script, /parallax|requestAnimationFrame/iu);
-  assert.match(script, /duration: reducedMotion\.matches \? 0 : 160/u);
-  assert.match(script, /IntersectionObserver/u);
-  assert.match(script, /prefers-reduced-motion/u);
-  assert.match(script, /typeof card\.animate === 'function'/u);
-  assert.match(script, /classList\.add\('has-campaign-js'\)/u);
-  assert.match(script, /document\.addEventListener\('astro:page-load', initCampaignExperience\)/u);
-  assert.doesNotMatch(script, /innerHTML/u);
-  assert.doesNotMatch(sectionsCss, /^\[data-reveal\]\s*\{/mu);
-  assert.match(sectionsCss, /\.has-campaign-js \[data-reveal\]/u);
-  assert.match(responsiveCss, /prefers-reduced-motion/u);
-  assert.doesNotMatch(page, /data-parallax-layer/u);
-  assert.match(page, /data-story-step/u);
+  assert.doesNotMatch(page, /working-group-campaign|data-story|data-reveal|wg-journey|wg-proof-strip/u);
+  assert.match(page, /aria-describedby="full-name-error"/u);
+  assert.match(page, /aria-describedby="email-error"/u);
+  assert.match(page, /aria-describedby="organisation-error"/u);
+  assert.match(page, /aria-describedby="role-error"/u);
+  assert.match(page, /data-group="workingGroups" aria-describedby="working-groups-error"/u);
+  assert.match(page, /data-group="contributions" aria-describedby="contributions-error"/u);
+  assert.match(page, /aria-describedby="perspective-hint perspective-count relevant-perspective-error"/u);
+  assert.match(page, /aria-describedby="acknowledgement-error"/u);
+  assert.match(page, /<noscript>[\s\S]*JavaScript is needed to send this form[\s\S]*smartdata@openpropdata\.org\.uk/u);
+  assert.match(joinCss, /\.wg-choice:focus-within/u);
+  assert.match(joinCss, /@media \(prefers-reduced-motion: reduce\)/u);
+  assert.match(joinCss, /@media \(forced-colors: active\)/u);
 });
 
-test('campaign styles remain split below the project file limit', async () => {
-  for (const path of [paths.campaignCss, paths.campaignResponsiveCss, paths.campaignSectionsCss]) {
+test('signup page and its composition remain below the project file limit', async () => {
+  for (const path of [paths.join, paths.joinCss]) {
     const source = await readFile(path, 'utf8');
     assert.ok(source.split('\n').length < 500, `${path.pathname} must remain below 500 lines`);
   }
