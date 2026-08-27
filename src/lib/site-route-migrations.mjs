@@ -49,8 +49,19 @@ export function getSemanticModellingReplacementRoute(value) {
     : null;
 }
 
+/** Nest the public expression-of-interest journey under its owning section. */
+export function getWorkingGroupJoinReplacementRoute(value) {
+  const path = normalizePath(value);
+  if (path === '/working-groups/join') return '/spdtf/working-groups/join';
+  return path === '/working-groups/join/privacy'
+    ? '/spdtf/working-groups/join/privacy'
+    : null;
+}
+
 /** Resolve every explicitly authorised site-route move through one registry. */
 export function getAcceptedRoute(route) {
+  const workingGroupJoin = getWorkingGroupJoinReplacementRoute(route);
+  if (workingGroupJoin) return workingGroupJoin;
   const pdtfResource = getPdtfResourceReplacementRoute(route);
   if (pdtfResource) return pdtfResource;
   const propertyPack = getPropertyPackReplacementRoute(route);

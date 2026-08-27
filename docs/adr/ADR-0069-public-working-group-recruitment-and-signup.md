@@ -17,10 +17,11 @@ implements: [ADR-0065]
 > query-string submission, it exposes an email alternative, and client enhancement validates the
 > exact accepted response, times out stalled requests and associates errors with their controls.
 >
-> **Change note — 2026-08-27:** The canonical join and privacy routes now use the
-> standard shared `Layout` content wrapper, breadcrumb, global header and site footer while
-> remaining standalone surfaces without left-hand section navigation. Campaign information,
-> form fields, review boundaries and submission behaviour are unchanged.
+> **Change note — 2026-08-27:** The join journey moved from `/working-groups/join/**` to
+> `/spdtf/working-groups/join/**`, beneath its canonical Working groups owner. The old routes are
+> absent without redirects, rewrites, aliases or duplicate pages. Join and privacy now use the
+> shared `Layout`, breadcrumb, section navigation, global header and footer; the same-origin API,
+> campaign information, form fields, review boundaries and submission behaviour are unchanged.
 >
 > **Change note — 2026-08-21:** The shared application header now carries a persistent
 > “Join a working group” action to the unchanged canonical signup route. This adds a
@@ -114,8 +115,9 @@ The maintained outreach assets are:
 
 ### 2. Public sign-up experience
 
-The canonical public route is `/working-groups/join`, with the privacy notice under the same
-prefix. Only that route family and the same-origin submission API become public; ontology,
+The canonical public route moved from `/working-groups/join` to `/spdtf/working-groups/join`, with
+the privacy notice under the same new prefix. The former routes are removed without compatibility
+routing. Only the canonical route family and the unchanged same-origin submission API are public; ontology,
 evidence and existing knowledge-base routes remain protected.
 
 The page explains the six selectable domain groups, the kinds of contribution OPDA needs and the
@@ -177,7 +179,7 @@ requirement justifies them.
 
 ### 6. Privacy and retention
 
-The form links to `/working-groups/join/privacy`, which names OPDA as controller, explains the
+The form links to `/spdtf/working-groups/join/privacy`, which names OPDA as controller, explains the
 recruitment and administration purposes, lists the information collected and AWS/Microsoft
 service relationships, states retention and provides `smartdata@openpropdata.org.uk` for rights
 requests.
@@ -211,8 +213,8 @@ This decision is confirmed when:
 - the campaign names only the five later contexts, while the form also accepts Finance and
   Banking, and links to the canonical public route;
 - trade-body outreach uses approved assets and never requests a member list;
-- anonymous visitors can access the join and privacy routes while unrelated protected routes
-  still redirect to authentication;
+- anonymous visitors can access both canonical join/privacy routes while unrelated protected
+  routes still require authentication and both former URLs reach an unrewritten origin 404;
 - the service exposes one POST route and stores one validated record per accepted submission;
 - automated tests cover invalid fields, oversized bodies, honeypot/timing submissions and storage
   failure;

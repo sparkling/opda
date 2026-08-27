@@ -43,7 +43,7 @@ test('compact primary disclosure keeps all six destinations discoverable through
     await expect(links).toHaveCount(primary.length);
     await expect(links).toHaveText(primary.map(({ title }) => title));
     await expect(cta).toHaveText('Join a working group');
-    await expect(cta).toHaveAttribute('href', '/working-groups/join');
+    await expect(cta).toHaveAttribute('href', '/spdtf/working-groups/join');
 
     const geometry = await allPrimaryLinks.evaluateAll((nodes) => nodes.map((node) => {
       const rect = node.getBoundingClientRect();
@@ -77,7 +77,7 @@ test('compact primary disclosure keeps all six destinations discoverable through
   await expect(desktopNav).toBeVisible();
   await expect(desktopDestinations).toHaveCount(primary.length);
   await expect(desktopCta).toHaveText('Join a working group');
-  await expect(desktopCta).toHaveAttribute('href', '/working-groups/join');
+  await expect(desktopCta).toHaveAttribute('href', '/spdtf/working-groups/join');
   const desktopGeometry = await desktopNav.locator('a').evaluateAll((nodes) => ({
     links: nodes.map((node) => {
       const rect = node.getBoundingClientRect();

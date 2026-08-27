@@ -85,7 +85,7 @@ of source material or a release date.
 
 Every post and outreach message links to:
 
-`https://opda.org.uk/working-groups/join`
+`https://opda.org.uk/spdtf/working-groups/join`
 
 The public page is the campaign landing page as well as the form. It uses the OPDA design system
 to explain the programme proposition, human review, participation boundary, domain handoffs and
@@ -196,7 +196,8 @@ outreach is recorded as sent by this ADR.
 
 Before launch:
 
-- the signup and privacy routes must be publicly reachable and the submission path validated;
+- the canonical signup and privacy routes must be publicly reachable, the former routes absent
+  without redirects or rewrites, and the unchanged submission path validated;
 - all links and context labels in the campaign assets must resolve to the canonical page;
 - the five target contexts must match ADR-0063 and the public form allowlist;
 - the human review owner and response process must be ready;
@@ -207,6 +208,11 @@ After each wave, the campaign register records date, route, response and coverag
 to target contexts, collected fields, automated onboarding or data use require an ADR amendment.
 
 ## Amendments
+
+- **2026-08-27 — canonical Working groups route.** The campaign and privacy pages moved from
+  `/working-groups/join/**` to `/spdtf/working-groups/join/**` so URL and left-navigation hierarchy
+  match their Working groups owner. Former routes are absent without redirects, aliases or
+  rewrites. Campaign scope, form fields, register and `/api/working-group-interest` are unchanged.
 
 - **2026-08-27 — adversarial campaign review.** The sticky handoff sequence was
   disproportionate to its information and created a dead-scroll band when its visual was hidden.

@@ -115,8 +115,8 @@ test.describe('runtime continuity boundaries', () => {
       });
     });
 
-    await visit(page, '/working-groups/join');
-    const privacyLinks = page.locator('a[href="/working-groups/join/privacy"]');
+    await visit(page, '/spdtf/working-groups/join');
+    const privacyLinks = page.locator('a[href="/spdtf/working-groups/join/privacy"]');
     expect(await privacyLinks.count()).toBeGreaterThan(0);
     await page.locator('#full-name').fill('Test Participant');
     await page.locator('#email').fill('participant@example.test');
@@ -151,7 +151,7 @@ test.describe('runtime continuity boundaries', () => {
       body: JSON.stringify({ error: 'temporarily unavailable' }),
     }));
 
-    await visit(page, '/working-groups/join');
+    await visit(page, '/spdtf/working-groups/join');
     await page.locator('#full-name').fill('Test Participant');
     await page.locator('#email').fill('participant@example.test');
     await page.locator('#organisation').fill('Example Organisation');

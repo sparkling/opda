@@ -66,7 +66,6 @@ export const ROUTE_FAMILY_OWNERS = Object.freeze({
   'dbt-smart-data': 'programme',
   'semantic-modelling': 'semantic-modelling',
   'spdtf': 'spdtf',
-  'working-groups': 'working-groups',
   engagement: 'resources',
   presentation: 'working-groups',
   presentations: 'spdtf',
@@ -225,6 +224,16 @@ export const ROUTE_STATUS_OVERRIDES = Object.freeze([
     status: PDTF_DERIVED_DRAFT_STATUS,
   },
   {
+    pattern: /^\/spdtf\/working-groups\/join(?:\/|$)/u,
+    status: {
+      workArea: 'SPDTF participation',
+      authority: 'Expression-of-interest route; registration does not confer membership or decision rights',
+      maturity: 'Recruitment and privacy information',
+      version: 'Form-specific',
+      provenance: 'OPDA participation and privacy records',
+    },
+  },
+  {
     pattern: /^\/spdtf\/working-groups\/member-guide(?:\/|$)/u,
     status: {
       workArea: 'SPDTF participation',
@@ -252,16 +261,6 @@ export const ROUTE_STATUS_OVERRIDES = Object.freeze([
       maturity: 'Workshop presentation — not a candidate or standard',
       version: 'Presentation-specific',
       provenance: 'Accepted IA, attributed programme evidence and presentation source',
-    },
-  },
-  {
-    pattern: /^\/working-groups\/join(?:\/|$)/u,
-    status: {
-      workArea: 'SPDTF',
-      authority: 'Expression-of-interest route; registration does not confer membership or decision rights',
-      maturity: 'Recruitment and privacy information',
-      version: 'Form-specific',
-      provenance: 'OPDA participation and privacy records',
     },
   },
 ]);
@@ -388,7 +387,6 @@ export const ROUTE_DISPOSITION_LEDGER = Object.freeze([
     ['programme', 'programme', 'reframe'],
     ['semantic-modelling', 'semantic-modelling', 'reframe'],
     ['spdtf', 'spdtf', 'reframe'],
-    ['working-groups', 'spdtf', 'reframe'],
     ['presentations', 'spdtf', 'reframe'],
     ['strategy', 'programme', 'reframe'],
     ['governance', 'governance', 'keep'],
@@ -406,7 +404,7 @@ export const ROUTE_DISPOSITION_LEDGER = Object.freeze([
     ['/search', 'resources', 'keep'],
     ['/design-system', 'resources', 'keep'],
     ['/presentation/**', 'spdtf', 'reframe'],
-    ['/working-groups/join/**', 'spdtf', 'keep'],
+    ['/spdtf/working-groups/join/**', 'spdtf', 'keep'],
     ['/engagement/meetings-decisions/**', 'governance', 'reframe'],
     ['/engagement/working-groups/**', 'programme', 'reframe'],
     ['/spdtf/property-pack/**', 'spdtf', 'reframe'],
@@ -431,6 +429,7 @@ export function normalizeIaPath(path) {
 
 const RETIRED_ROUTE_PATTERNS = Object.freeze([
   /^\/home$/u,
+  /^\/working-groups\/join(?:\/|$)/u,
   /^\/spdtf(?:-2)?\/ontologies(?:\/|$)/u,
 ]);
 

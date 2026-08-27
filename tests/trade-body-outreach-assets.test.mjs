@@ -42,7 +42,7 @@ test('outreach templates use the same complete parameter contract', async () => 
 
   assert.deepEqual(placeholders(html), expectedPlaceholders);
   assert.deepEqual(placeholders(plain), expectedPlaceholders);
-  assert.equal(parameters.signup_url, 'https://opda.org.uk/working-groups/join');
+  assert.equal(parameters.signup_url, 'https://opda.org.uk/spdtf/working-groups/join');
   assert.deepEqual(Object.keys(parameters.contexts), expectedContexts);
 
   for (const context of Object.values(parameters.contexts)) {

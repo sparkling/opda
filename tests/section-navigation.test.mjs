@@ -58,7 +58,7 @@ test('the left section navigation implements all six destinations from one regis
     assert.equal(getNavigationSection(url), section);
     assert.equal(findNavigationPage(url).section.key, key);
   }
-  for (const standalone of ['/', '/search', '/resource', '/design-system', '/404', '/working-groups/join']) {
+  for (const standalone of ['/', '/search', '/resource', '/design-system', '/404']) {
     assert.equal(getNavigationSection(standalone), null, `${standalone} must remain a standalone surface`);
   }
   for (const retired of [
@@ -84,7 +84,7 @@ test('the left section navigation implements all six destinations from one regis
     governance: 31,
     'semantic-modelling': 11,
     spdtf: 241,
-    'working-groups': 39,
+    'working-groups': 41,
     resources: 12,
   });
   const decisionDetail = /^\/modelling\/(?:adr|odr)\/[^/]+$/u;
@@ -101,6 +101,7 @@ test('the left section navigation implements all six destinations from one regis
     '/spdtf/property-pack/definition-and-scope',
     '/spdtf/property-pack/technical-working-group-determination',
     '/spdtf/property-pack/review-and-releases', PDTF1_ROUTES.inputRoot, PDTF1_ROUTES.root,
+    '/spdtf/working-groups/join', '/spdtf/working-groups/join/privacy',
     '/spdtf/working-groups/member-guide',
     '/spdtf/working-groups/member-guide/teams-and-discussions',
     '/spdtf/working-groups/member-guide/source-material-and-sharepoint',
@@ -111,7 +112,7 @@ test('the left section navigation implements all six destinations from one regis
     PDTF1_ROUTES.trust, PDTF1_ROUTES.use,
     '/resources', '/glossary',
   ]) assert.equal(compositeUrls.filter((url) => url === required).length, 1, `${required} must appear once`);
-  assert.equal(compositeUrls.filter((url) => url.startsWith('/spdtf/working-groups')).length, 39);
+  assert.equal(compositeUrls.filter((url) => url.startsWith('/spdtf/working-groups')).length, 41);
 });
 
 test('site search uses canonical destinations and deterministic relevance', () => {
@@ -125,6 +126,11 @@ test('site search uses canonical destinations and deterministic relevance', () =
   assert.equal(searchEntries('PDTF schema')[0]?.url, PDTF1_ROUTES.root);
   assert.ok(searchEntries('semantic mapping')
     .some(({ url }) => url === '/semantic-modelling/evidence-and-mappings'));
+  assert.equal(searchEntries('join working group')[0]?.url, '/spdtf/working-groups/join');
+  assert.ok(SITE_SEARCH_ENTRIES.some(({ url, destination }) => (
+    url === '/spdtf/working-groups/join/privacy' && destination === 'working-groups'
+  )));
+  assert.ok(SITE_SEARCH_ENTRIES.every(({ url }) => !url.startsWith('/working-groups/join')));
 
   const governance = searchEntries('', 'governance');
   assert.ok(governance.length > 1);
@@ -199,13 +205,29 @@ test('new Governance gateways are substantive linked pages rather than synthetic
   }
 });
 
-test('Working groups starts with a member guide and preserves all eight workspaces', () => {
+test('Working groups exposes participation, member guidance and all eight workspaces', () => {
   const section = SECTION_NAVIGATION['working-groups'];
   assert.deepEqual(section.groups.map(({ heading, url }) => [heading, url]), [
+    ['Join a working group', '/spdtf/working-groups/join'],
     ['Member guide', '/spdtf/working-groups/member-guide'],
     ['Group workspaces', '/spdtf/working-groups'],
   ]);
-  const guide = section.groups[0];
+  const join = section.groups[0];
+  assert.deepEqual(join.items.map(({ title, url }) => [title, url]), [
+    ['Privacy notice', '/spdtf/working-groups/join/privacy'],
+  ]);
+  assert.equal(getNavigationSection(join.url), section);
+  assert.deepEqual(findNavigationPage(join.url)?.trail, []);
+  assert.deepEqual(
+    findNavigationPage('/spdtf/working-groups/join/privacy')?.trail.map(({ url }) => url),
+    ['/spdtf/working-groups/join/privacy'],
+  );
+  for (const route of [join.url, '/spdtf/working-groups/join/privacy']) {
+    const status = getRouteStatus(route);
+    assert.match(status.authority, /Expression-of-interest route/u);
+    assert.doesNotMatch(status.authority, /Workspace scope only/u);
+  }
+  const guide = section.groups[1];
   assert.deepEqual(guide.items.map(({ title, url }) => [title, url]), [
     ['Getting started', '/spdtf/working-groups/member-guide/getting-started'],
     ['Teams and discussions', '/spdtf/working-groups/member-guide/teams-and-discussions'],
@@ -220,15 +242,11 @@ test('Working groups starts with a member guide and preserves all eight workspac
   const guideStatus = getRouteStatus('/spdtf/working-groups/member-guide/teams-and-discussions');
   assert.equal(guideStatus.maturity, 'Current member guidance; proposed modelling and lifecycle rules are labelled');
   assert.doesNotMatch(guideStatus.authority, /Workspace scope only/iu);
-  const workspaces = section.groups[1];
+  const workspaces = section.groups[2];
   assert.equal(workspaces.items.length, 8);
   assert.ok(workspaces.items.every(({ children }) => children?.map(({ title }) => title).join('|')
     === 'Evidence|Questions|Review'));
   assert.equal(flattenGroup(workspaces).length, 33);
-  for (const standalone of ['/working-groups/join', '/working-groups/join/privacy']) {
-    assert.equal(getNavigationSection(standalone), null);
-    assert.deepEqual(getNavigationPrevNext(standalone), {});
-  }
 });
 
 test('Governance decision categories expose only their corpus indexes', () => {
@@ -276,6 +294,7 @@ test('category landing pages remain in breadcrumbs and exact page sequences', ()
     ['programme', 'Strategy', '/strategy', '/strategy/strategy-overview'],
     ['semantic-modelling', 'Understand ontologies', '/semantic-modelling/why-ontologies', '/semantic-modelling/reading-the-model'],
     ['spdtf', 'Property Pack ontology', '/spdtf/property-pack', '/spdtf/property-pack/definition-and-scope'],
+    ['working-groups', 'Join a working group', '/spdtf/working-groups/join', '/spdtf/working-groups/join/privacy'],
     ['working-groups', 'Member guide', '/spdtf/working-groups/member-guide', '/spdtf/working-groups/member-guide/getting-started'],
     ['working-groups', 'Group workspaces', '/spdtf/working-groups', '/spdtf/working-groups/finance-and-banking'],
     ['spdtf', 'Third-party inputs', PDTF1_ROUTES.inputRoot, PDTF1_ROUTES.root],

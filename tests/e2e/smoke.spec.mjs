@@ -298,7 +298,7 @@ test('reader pages use only the shared right-rail page navigation', async ({ pag
     await expect(page.locator('aside.toc[aria-label="On this page"]')).toBeVisible();
   }
 
-  await visit(page, '/working-groups/join/privacy');
+  await visit(page, '/spdtf/working-groups/join/privacy');
   await expect(page.locator('nav').filter({ hasText: 'On this page' })).toHaveCount(0);
   clean();
 });
@@ -440,7 +440,7 @@ test('mobile interactive targets meet the 44px minimum', async ({ page }) => {
   await expect(page.locator('#ontology-graph')).toHaveAttribute('aria-labelledby', await tabs.nth(1).getAttribute('id'));
 
   await visit(page, '/');
-  const enterSize = await page.locator('.public-hero__actions a[href="/working-groups/join"]').evaluate((element) => {
+  const enterSize = await page.locator('.public-hero__actions a[href="/spdtf/working-groups/join"]').evaluate((element) => {
     const rect = element.getBoundingClientRect();
     return { width: rect.width, height: rect.height };
   });

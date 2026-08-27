@@ -7,7 +7,7 @@ const routeFamilies = [
   ['property-pack', '/spdtf/property-pack'],
   ['schema', `${PDTF1_ROUTES.original}/schema/legal-estate/ownership/leasehold/lease-legal/building-safety`],
   ['diagram', `${PDTF1_ROUTES.terms}/graph`],
-  ['working-group', '/working-groups/join'],
+  ['working-group', '/spdtf/working-groups/join'],
   ['presentation', '/presentation/working-group-kickoff'],
   ['design-system', '/design-system'],
 ];

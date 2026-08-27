@@ -89,7 +89,22 @@ test('working groups is a shortcut into the canonical SPDTF workspace', () => {
   assert.deepEqual(DESTINATION_SHORTCUTS['working-groups'], {
     target: '/spdtf/working-groups', contentOwner: 'spdtf',
   });
-  assert.equal(getActiveDestination('/working-groups/join'), 'working-groups');
+  assert.equal(getActiveDestination('/spdtf/working-groups/join'), 'working-groups');
+  assert.equal(getActiveDestination('/working-groups/join'), null);
+  assert.equal(getActiveDestination('/working-groups/join/privacy'), null);
+  assert.equal(getRouteDisposition('/working-groups/join'), null);
+  assert.equal(getRouteDisposition('/working-groups/join/privacy'), null);
+  assert.equal(getRouteStatus('/working-groups/join'), null);
+  assert.equal(getRouteStatus('/working-groups/join/privacy'), null);
+  assert.equal(
+    getDeclaredRouteReplacement('/working-groups/join'),
+    '/spdtf/working-groups/join',
+  );
+  assert.equal(
+    getDeclaredRouteReplacement('/working-groups/join/privacy'),
+    '/spdtf/working-groups/join/privacy',
+  );
+  assert.equal(getDeclaredRouteReplacement('/working-groups/join/not-a-page'), null);
 });
 test('specific route ownership overrides broad legacy families deterministically', () => {
   const retiredSemanticRoot = ['/spdtf', 'ontologies'].join('/');
@@ -106,7 +121,7 @@ test('specific route ownership overrides broad legacy families deterministically
   assert.equal(getRouteDisposition('/modelling/adr/adr-0074').owner, 'governance');
   for (const path of [
     '/spdtf/working-groups/estate-agency',
-    '/working-groups/join',
+    '/spdtf/working-groups/join',
     '/presentation/working-group-kickoff',
     '/engagement/transcripts',
     '/engagement/meetings-decisions',
@@ -350,7 +365,7 @@ test('every working group exposes one truthful workspace contract', () => {
     assert.equal(record.decisionOccurred, false);
     assert.equal(record.decisionOwner, null);
     assert.match(record.decisionAuthority, /No person or role may decide/u);
-    assert.equal(record.participation.interestRoute, '/working-groups/join');
+    assert.equal(record.participation.interestRoute, '/spdtf/working-groups/join');
     assert.equal(record.participation.meetingRoute, null);
     assert.equal(record.meetings.length, 0);
     assert.equal(record.coverageReceipt.length, 8);

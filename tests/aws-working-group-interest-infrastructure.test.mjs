@@ -6,11 +6,16 @@ const read = (path) => readFile(new URL(`../${path}`, import.meta.url), 'utf8');
 
 test('only the intended join route family is explicitly public', async () => {
   const gate = await read('config/aws/edge-gate/index.mjs');
-  assert.match(gate, /PUBLIC_EXACT[\s\S]*'\/working-groups\/join'/u);
-  assert.match(gate, /PUBLIC_PREFIXES[^\n]*'\/working-groups\/join\/'/u);
+  for (const route of [
+    '/spdtf/working-groups/join',
+    '/spdtf/working-groups/join/privacy',
+    '/working-groups/join',
+    '/working-groups/join/privacy',
+  ]) assert.match(gate, new RegExp(`PUBLIC_EXACT[\\s\\S]*'${route.replaceAll('/', '\\/')}'`, 'u'));
   assert.match(gate, /PUBLIC_PREFIXES[^\n]*'\/ui\/'/u);
   assert.match(gate, /PUBLIC_EXACT[\s\S]*'\/images\/working-group-recruitment-social\.png'/u);
-  assert.doesNotMatch(gate, /'\/working-groups\/'/u);
+  assert.doesNotMatch(gate, /'\/spdtf\/working-groups\/'/u);
+  assert.doesNotMatch(gate, /PUBLIC_PREFIXES[^\n]*working-groups/u);
 });
 
 test('the public API is same-origin, cache-disabled and bypasses the member gate', async () => {

@@ -1,10 +1,11 @@
 import assert from 'node:assert/strict';
+import { existsSync } from 'node:fs';
 import { readFile } from 'node:fs/promises';
 import test from 'node:test';
 
 const paths = {
-  join: new URL('../src/pages/working-groups/join/index.astro', import.meta.url),
-  privacy: new URL('../src/pages/working-groups/join/privacy.astro', import.meta.url),
+  join: new URL('../src/pages/spdtf/working-groups/join/index.astro', import.meta.url),
+  privacy: new URL('../src/pages/spdtf/working-groups/join/privacy.astro', import.meta.url),
   layout: new URL('../src/layouts/Layout.astro', import.meta.url),
   siteFooter: new URL('../src/components/SiteFooter.astro', import.meta.url),
   homepage: new URL('../src/pages/index.astro', import.meta.url),
@@ -89,7 +90,7 @@ test('global header promotes the canonical working-group sign-up route', async (
   const cta = header.indexOf('class="header-cta"');
   assert.ok(primaryStart >= 0 && cta > primaryStart && cta < primaryEnd);
   assert.ok(primaryEnd < utilitiesStart);
-  assert.match(header, /const joinHref = currentPath === '\/working-groups\/join' \? '#register' : '\/working-groups\/join'/u);
+  assert.match(header, /const joinHref = currentPath === '\/spdtf\/working-groups\/join' \? '#register' : '\/spdtf\/working-groups\/join'/u);
   assert.match(header, /<a href=\{joinHref\} class="header-cta">Join a working group<\/a>/u);
   assert.match(header, /href="\/search"[\s\S]*?class=\{`header-icon-link\$\{isSearchPage[\s\S]*?aria-label="Search"[\s\S]*?aria-current=\{isSearchPage \? 'page' : undefined\}[\s\S]*?title="Search"[\s\S]*?<svg[\s\S]*?aria-hidden="true"/u);
   assert.match(header, /class="header-icon-link"[\s\S]*?aria-label="GitHub"\s+title="GitHub"[\s\S]*?<svg[\s\S]*?aria-hidden="true"/u);
@@ -99,7 +100,7 @@ test('global header promotes the canonical working-group sign-up route', async (
   assert.match(baseCss, /@media \(max-width: 96rem\)\s*\{[\s\S]*\.app-header \.global-nav-panel \.header-nav\s*\{[^}]*grid-column:\s*1 \/ -1/su);
 });
 
-test('working-group public routes use the standard shared wrapper without section navigation', async () => {
+test('working-group public routes use the shared wrapper within section navigation', async () => {
   const [join, privacy, layout, joinCss] = await Promise.all([
     readFile(paths.join, 'utf8'),
     readFile(paths.privacy, 'utf8'),
@@ -110,7 +111,7 @@ test('working-group public routes use the standard shared wrapper without sectio
   for (const source of [join, privacy]) {
     assert.match(source, /import Layout from '@\/layouts\/Layout\.astro'/u);
     assert.doesNotMatch(source, /PublicWorkingGroupLayout/u);
-    assert.match(source, /hideSidebar=\{true\}/u);
+    assert.doesNotMatch(source, /hideSidebar=/u);
     assert.match(source, /hideComments=\{true\}/u);
     assert.doesNotMatch(source, /hideBreadcrumbs=\{true\}|hideFooter=\{true\}|wrapArticle=\{false\}|mainClass=/u);
   }
@@ -118,6 +119,13 @@ test('working-group public routes use the standard shared wrapper without sectio
   assert.match(layout, /<article class=\{proseClass\}>/u);
   assert.doesNotMatch(joinCss, /\.app-main\.working-group-main/u);
   assert.match(joinCss, /\.wg-page\s*\{[^}]*width:\s*100%[^}]*margin:\s*0/su);
+});
+
+test('former working-group sign-up paths have no page, redirect or rewrite', async () => {
+  assert.equal(existsSync(new URL('../src/pages/working-groups/join/index.astro', import.meta.url)), false);
+  assert.equal(existsSync(new URL('../src/pages/working-groups/join/privacy.astro', import.meta.url)), false);
+  const astroConfig = await readFile(new URL('../astro.config.mjs', import.meta.url), 'utf8');
+  assert.doesNotMatch(astroConfig, /working-groups\/join/u);
 });
 
 test('one shared site footer covers public and knowledge-base page families', async () => {
@@ -204,6 +212,9 @@ test('campaign presents the complete handoff narrative without scroll-driven the
     'Sourced information with provenance and assurance.',
     'Resource',
     'Structured meaning ready for products and integrations.',
+    'Keep each domain precise. Connect the boundaries.',
+    'The common boundary contains only shared elements.',
+    'connects context-specific concepts with SKOS mappings',
   ]) {
     assert.match(page, new RegExp(phrase, 'u'));
   }
@@ -217,7 +228,10 @@ test('campaign presents the complete handoff narrative without scroll-driven the
   assert.match(sectionsCss, /\.has-campaign-js \[data-reveal\]/u);
   assert.match(responsiveCss, /prefers-reduced-motion/u);
   assert.doesNotMatch(page, /data-parallax-layer|data-story-step|data-handoff-stage/u);
-  assert.match(page, /class="wg-domain-grid"/u);
+  assert.match(page, /<div class="wg-domain-grid" role="list"/u);
+  assert.match(page, /<article[\s\S]*?class="wg-domain-card"[\s\S]*?role="listitem"/u);
+  assert.doesNotMatch(page, /<(?:ol|ul) class="wg-domain-grid"/u);
+  assert.match(page, /<section id="contexts-title"[\s\S]*?aria-labelledby="handoffs-title"/u);
   assert.ok(page.indexOf('id="register"') > page.indexOf('class="wg-domain-grid"'));
   assert.ok(page.indexOf('id="register"') > page.indexOf('id="how-it-works"'));
   assert.ok(page.indexOf('id="register"') > page.indexOf('class="wg-trust"'));

@@ -283,7 +283,7 @@ test('breadcrumbs use the documented base-size navigation role', async () => {
 
 test('the adopted motion contract excludes parallax and long campaign motion', async () => {
   const paths = [
-    'src/pages/working-groups/join/index.astro',
+    'src/pages/spdtf/working-groups/join/index.astro',
     'src/scripts/working-group-campaign.ts',
     'src/styles/working-group-campaign.css',
     'src/styles/working-group-campaign-sections.css',

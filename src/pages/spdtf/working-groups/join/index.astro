@@ -80,7 +80,6 @@ const contributions = [
 <Layout
   title={title}
   description={description}
-  hideSidebar={true}
   hideComments={true}
 >
   <Fragment slot="head">
@@ -139,7 +138,7 @@ const contributions = [
       </ol>
     </section>
 
-    <section class="wg-section wg-context-section" aria-labelledby="handoffs-title">
+    <section id="contexts-title" class="wg-section wg-context-section" aria-labelledby="handoffs-title">
       <div class="wg-section__heading">
         <div>
           <p class="wg-eyebrow">The problem is in the handoffs</p>
@@ -155,26 +154,30 @@ const contributions = [
         <strong>Home</strong>
         <p>A place someone lives.</p>
       </div>
-      <ol class="wg-domain-grid" data-reveal-group>
+      <div class="wg-domain-grid" role="list" data-reveal-group>
         {contexts.map(([, label, scope, term, definition, heading, explanation], index) => (
-          <li data-reveal style={`--reveal-delay:${index * 60}ms`}>
-            <article class="wg-domain-card">
-              <p class="wg-domain-card__context">{String(index + 1).padStart(2, '0')} · {label}</p>
-              <h3>{term}</h3>
-              <p class="wg-domain-card__definition">{definition}</p>
-              <h4>{heading}</h4>
-              <p>{explanation}</p>
-              <p class="wg-domain-card__scope"><strong>Group scope:</strong> {scope}</p>
-            </article>
-          </li>
+          <article
+            class="wg-domain-card"
+            role="listitem"
+            data-reveal
+            style={`--reveal-delay:${index * 60}ms`}
+          >
+            <p class="wg-domain-card__context">{String(index + 1).padStart(2, '0')} · {label}</p>
+            <h3>{term}</h3>
+            <p class="wg-domain-card__definition">{definition}</p>
+            <h4>{heading}</h4>
+            <p>{explanation}</p>
+            <p class="wg-domain-card__scope"><strong>Group scope:</strong> {scope}</p>
+          </article>
         ))}
-      </ol>
+      </div>
       <div class="wg-context-map__bridge">
-        <span>Interoperability</span>
-        <strong>Shared boundary · mappings · conventions</strong>
+        <span>Shared elements · SKOS mappings · conventions</span>
+        <h3>Keep each domain precise. Connect the boundaries.</h3>
         <p>
-          The Interoperability Working Group aligns a small common boundary and mappings between
-          domains without forcing one definition to fit every situation.
+          The common boundary contains only shared elements. The Interoperability Working Group
+          connects context-specific concepts with SKOS mappings, without forcing one definition
+          to fit every situation.
         </p>
       </div>
     </section>
@@ -277,7 +280,7 @@ const contributions = [
           <p>
             We use them only to review and administer your working-group interest. This is
             not newsletter or marketing consent. Read the
-            <a href="/working-groups/join/privacy">working-group privacy notice</a>.
+            <a href="/spdtf/working-groups/join/privacy">working-group privacy notice</a>.
           </p>
         </div>
       </div>
@@ -404,7 +407,7 @@ const contributions = [
 
         <div class="wg-form-actions">
           <button class="btn" type="submit" disabled>Register my interest</button>
-          <a class="btn btn--ghost" href="/working-groups/join/privacy">Read the privacy notice</a>
+          <a class="btn btn--ghost" href="/spdtf/working-groups/join/privacy">Read the privacy notice</a>
         </div>
         <p id="form-status" class="wg-form-status" aria-live="polite"></p>
       </form>

@@ -8,7 +8,7 @@ import AuthButton from '@/components/AuthButton.astro';
 
 const currentPath = Astro.url.pathname.replace(/\/+$/u, '') || '/';
 const isSearchPage = currentPath === '/search';
-const joinHref = currentPath === '/working-groups/join' ? '#register' : '/working-groups/join';
+const joinHref = currentPath === '/spdtf/working-groups/join' ? '#register' : '/spdtf/working-groups/join';
 const activeDestination = isSearchPage ? null : getActiveDestination(currentPath);
 interface Props { showSidebar?: boolean; }
 const { showSidebar = false } = Astro.props;
