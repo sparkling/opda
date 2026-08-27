@@ -144,8 +144,8 @@ current long card sequence or a slide deck:
    Property Technology describe the same property for different purposes.
 3. **How participation changes the model.** A continuous evidence, candidate,
    challenge and revision sequence shows what a contribution produces.
-4. **Evidence and trust.** Authorised examples, outputs and participant evidence
-   substantiate the claims and state the human decision boundary.
+4. **Evidence and trust.** Authorised real-world evidence and clearly labelled
+   illustrative examples substantiate the method and state the human decision boundary.
 5. **Register your interest.** The complete form is the final, visually distinct
    destination.
 
@@ -169,9 +169,15 @@ The visual must represent the modelling method accurately:
 - each context owns its local domain meaning;
 - the common boundary contains only elements genuinely shared across contexts;
 - common elements flow outward from the common boundary to relevant contexts; and
-- cross-context concept mappings are a separate concern, shown with dotted SKOS
-  mapping relationships rather than arrows implying that contexts interoperate
-  through the common boundary.
+- cross-context concept mappings are a separate concern, shown between concept labels
+  with dotted SKOS mapping relationships rather than arrows implying that contexts
+  interoperate through the common boundary.
+
+The current reviewed cross-context mapping register is empty, but that does not block
+the visual. The campaign may use illustrative or candidate mapping relationships
+before they are authorised when each is unmistakably labelled as explanatory rather
+than as an approved SPDTF assertion. Illustrative relationships do not enter the
+governed mapping register or acquire standards status through publication on this page.
 
 All contextual labels, explanations and relationships must also exist in semantic
 HTML. A canvas, WebGL, Three.js or shader layer may enhance the scene only if a
@@ -197,10 +203,15 @@ read by scrolling normally and may reach the form without completing an interact
 
 ### 6. Evidence and public claims
 
-The page may show participating organisations, quotations, modelling outcomes or
-worked examples only when their authority, wording and publication rights are
+The page may show participating organisations, quotations or claims about real
+modelling outcomes only when their authority, wording and publication rights are
 recorded. It must not invent social proof or imply endorsement from a participant,
 trade body, government body or standards organisation.
+
+Illustrative worked examples and candidate mappings do not need prior authorisation.
+They must be labelled as illustrative, must not be attributed to an organisation or
+working group, and must not be described as accepted, reviewed or published SPDTF
+content.
 
 The public story centres the working groups and their human authority. AI may be
 described as a human-directed drafting accelerator where relevant, but it is not the
@@ -264,8 +275,8 @@ unavailable.
 
 - This decision does not change the six selectable property-domain groups, campaign
   target audiences, form fields, API, storage, retention or onboarding process.
-- It does not approve any quotation, logo, participant claim or model candidate for
-  publication.
+- It does not approve any quotation, logo, participant claim or model candidate as
+  SPDTF standards content. Illustrative campaign examples remain non-authoritative.
 - It does not authorise deployment, campaign publication, LinkedIn activity or
   trade-body outreach.
 
@@ -284,7 +295,8 @@ following are true:
   route back to registration, and the campaign footer exposes the required privacy
   and accessibility links;
 - the contextual interaction preserves local ownership, outward common elements and
-  separate dotted SKOS mappings;
+  separate dotted SKOS mappings, with every unreviewed example labelled as illustrative
+  rather than as an authorised SPDTF assertion;
 - every interactive context and form control is usable by keyboard, touch and pointer;
 - the complete page remains understandable with WebGL and motion disabled;
 - reduced-motion, forced-colour, 320 CSS-pixel reflow and 400% zoom checks pass;
