@@ -26,9 +26,10 @@ const destinationLanding = Boolean(destination && path === normalizeUrl(destinat
 
 const breadcrumbs: Breadcrumb[] = [];
 
-if (destinationLanding && destination) {
-  breadcrumbs.push({ label: destination.title, current: true });
-} else {
+// A global destination's landing page already identifies itself in the
+// primary navigation and as the page heading. Do not add a third, standalone
+// section label between them and the content.
+if (!destinationLanding) {
   if (destination) {
     breadcrumbs.push({ label: destination.title, href: destination.url });
   }
