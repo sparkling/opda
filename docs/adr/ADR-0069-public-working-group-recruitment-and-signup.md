@@ -10,6 +10,13 @@ implements: [ADR-0065]
 
 # Recruit later bounded-context working groups through a public campaign and simple sign-up
 
+> **Change note — 2026-08-27:** An adversarial review replaced the oversized sticky
+> handoff sequence with a natural-height comparison that keeps every domain meaning, moved the
+> registration journey ahead of supporting modelling detail, and retained every approved field
+> and contribution option. The form now fails safely without JavaScript: it cannot fall back to a
+> query-string submission, it exposes an email alternative, and client enhancement validates the
+> exact accepted response, times out stalled requests and associates errors with their controls.
+>
 > **Change note — 2026-08-27:** The canonical join and privacy routes now use the
 > standard shared `Layout` content wrapper, breadcrumb, global header and site footer while
 > remaining standalone surfaces without left-hand section navigation. Campaign information,
@@ -211,7 +218,9 @@ This decision is confirmed when:
   failure;
 - DynamoDB is encrypted, on-demand, TTL-enabled and the Lambda can only write to its table;
 - no Teams or SharePoint access is provisioned by the public service;
-- keyboard, no-JavaScript and reduced-motion behavior remains usable;
+- keyboard and reduced-motion behavior remains usable; without JavaScript, all explanatory and
+  privacy content remains readable, personal data cannot fall into a GET request, and a
+  human-managed email registration alternative is shown;
 - `make test` and `make build-data` pass; and
 - infrastructure and static pages deploy through the existing CI-only AWS workflows.
 

@@ -18,6 +18,7 @@ const CONTRIBUTIONS = new Set([
 
 const CONTROL_CHARACTERS = /[\u0000-\u0008\u000b\u000c\u000e-\u001f\u007f]/u;
 const HTML_MARKUP = /[<>]/u;
+const SUBMISSION_TIMEOUT_MS = 15_000;
 
 type TextInput = HTMLInputElement | HTMLTextAreaElement;
 
@@ -35,10 +36,21 @@ interface RegistrationPayload {
   startedAt: number;
 }
 
+interface AcceptedResponse {
+  ok: true;
+  state: 'received';
+  message: string;
+}
+
+function isAcceptedResponse(value: unknown): value is AcceptedResponse {
+  if (!value || typeof value !== 'object' || Array.isArray(value)) return false;
+  const body = value as Record<string, unknown>;
+  return body.ok === true && body.state === 'received' && typeof body.message === 'string';
+}
+
 function initWorkingGroupForm(): void {
   const form = document.querySelector<HTMLFormElement>('#working-group-interest-form');
   if (!form || form.dataset.initialised === 'true') return;
-  form.dataset.initialised = 'true';
 
   const startedAt = form.querySelector<HTMLInputElement>('#started-at');
   const perspective = form.querySelector<HTMLTextAreaElement>('#relevant-perspective');
@@ -48,8 +60,13 @@ function initWorkingGroupForm(): void {
   const summary = form.querySelector<HTMLElement>('#form-errors');
   const summaryList = summary?.querySelector<HTMLUListElement>('ul');
   const success = document.querySelector<HTMLElement>('#registration-success');
+  const availability = document.querySelector<HTMLElement>('#form-availability');
 
-  if (startedAt) startedAt.value = String(Date.now());
+  if (!startedAt || !submitButton || !status || !summary || !summaryList || !success) return;
+  form.dataset.initialised = 'true';
+  startedAt.value = String(Date.now());
+  submitButton.disabled = false;
+  if (availability) availability.hidden = true;
 
   function selected(name: 'workingGroups' | 'contributions'): string[] {
     return [...form.querySelectorAll<HTMLInputElement>(`input[name="${name}"]:checked`)]
@@ -69,8 +86,8 @@ function initWorkingGroupForm(): void {
     form.querySelectorAll<HTMLElement>('[aria-invalid="true"]').forEach((node) => {
       node.removeAttribute('aria-invalid');
     });
-    if (summary) summary.hidden = true;
-    if (summaryList) summaryList.replaceChildren();
+    summary.hidden = true;
+    summaryList.replaceChildren();
   }
 
   function addError(control: Element | null, errorId: string, message: string): void {
@@ -78,18 +95,16 @@ function initWorkingGroupForm(): void {
     if (error) error.textContent = message;
     control?.setAttribute('aria-invalid', 'true');
 
-    if (summaryList) {
-      const item = document.createElement('li');
-      if (control instanceof HTMLElement && control.id) {
-        const link = document.createElement('a');
-        link.href = `#${control.id}`;
-        link.textContent = message;
-        item.append(link);
-      } else {
-        item.textContent = message;
-      }
-      summaryList.append(item);
+    const item = document.createElement('li');
+    if (control instanceof HTMLElement && control.id) {
+      const link = document.createElement('a');
+      link.href = `#${control.id}`;
+      link.textContent = message;
+      item.append(link);
+    } else {
+      item.textContent = message;
     }
+    summaryList.append(item);
   }
 
   function validateText(
@@ -122,19 +137,21 @@ function initWorkingGroupForm(): void {
     const role = validateText('#role', 'role-error', 'Role or area of expertise', 2, 120);
 
     const workingGroups = selected('workingGroups');
-    const workingGroupFieldset = form.querySelector<HTMLElement>('[data-group="workingGroups"]');
+    const workingGroupControls = [...form.querySelectorAll<HTMLInputElement>('input[name="workingGroups"]')];
     if (
       workingGroups.length === 0 ||
       workingGroups.some((value) => !WORKING_GROUPS.has(value)) ||
       (workingGroups.includes('not-sure') && workingGroups.length > 1)
     ) {
-      addError(workingGroupFieldset, 'working-groups-error', 'Select one or more working groups, or choose “Not sure”.');
+      workingGroupControls.forEach((control) => control.setAttribute('aria-invalid', 'true'));
+      addError(workingGroupControls[0] ?? null, 'working-groups-error', 'Select one or more working groups, or choose “Not sure”.');
     }
 
     const contributions = selected('contributions');
-    const contributionFieldset = form.querySelector<HTMLElement>('[data-group="contributions"]');
+    const contributionControls = [...form.querySelectorAll<HTMLInputElement>('input[name="contributions"]')];
     if (contributions.length === 0 || contributions.some((value) => !CONTRIBUTIONS.has(value))) {
-      addError(contributionFieldset, 'contributions-error', 'Select at least one way you might contribute.');
+      contributionControls.forEach((control) => control.setAttribute('aria-invalid', 'true'));
+      addError(contributionControls[0] ?? null, 'contributions-error', 'Select at least one way you might contribute.');
     }
 
     const relevantPerspective = perspective?.value.trim() ?? '';
@@ -155,11 +172,9 @@ function initWorkingGroupForm(): void {
     const website = form.querySelector<HTMLInputElement>('#website')?.value ?? '';
     const privacyNoticeVersion = form.dataset.privacyNoticeVersion;
 
-    if ((summaryList?.children.length ?? 0) > 0) {
-      if (summary) {
-        summary.hidden = false;
-        summary.focus();
-      }
+    if (summaryList.children.length > 0) {
+      summary.hidden = false;
+      summary.focus();
       return null;
     }
 
@@ -199,11 +214,14 @@ function initWorkingGroupForm(): void {
   form.addEventListener('submit', async (event) => {
     event.preventDefault();
     const payload = validate();
-    if (!payload || !submitButton) return;
+    if (!payload) return;
 
     submitButton.disabled = true;
     form.setAttribute('aria-busy', 'true');
-    if (status) status.textContent = 'Sending your registration…';
+    status.textContent = 'Sending your registration…';
+    const controller = new AbortController();
+    const timeoutId = window.setTimeout(() => controller.abort(), SUBMISSION_TIMEOUT_MS);
+    let accepted = false;
 
     try {
       const response = await fetch('/api/working-group-interest', {
@@ -211,21 +229,28 @@ function initWorkingGroupForm(): void {
         credentials: 'same-origin',
         headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
         body: JSON.stringify(payload),
+        signal: controller.signal,
       });
-      if (!response.ok) throw new Error(`Registration failed with status ${response.status}`);
+      const contentType = response.headers.get('content-type') ?? '';
+      if (response.status !== 201 || !/^application\/json(?:\s*;|$)/iu.test(contentType)) {
+        throw new Error('Unexpected registration response');
+      }
+      const body: unknown = await response.json();
+      if (!isAcceptedResponse(body)) throw new Error('Invalid registration response');
 
+      accepted = true;
       form.hidden = true;
-      if (success) {
-        success.hidden = false;
-        success.focus();
-      }
-    } catch {
-      if (status) {
-        status.textContent = 'We could not submit your registration. Please try again. If the problem continues, email smartdata@openpropdata.org.uk.';
-      }
-      submitButton.disabled = false;
+      success.hidden = false;
+      success.focus();
+    } catch (error) {
+      const timedOut = error instanceof DOMException && error.name === 'AbortError';
+      status.textContent = timedOut
+        ? 'The registration request timed out. Please try again.'
+        : 'We could not submit your registration. Please try again. If the problem continues, email smartdata@openpropdata.org.uk.';
     } finally {
+      window.clearTimeout(timeoutId);
       form.removeAttribute('aria-busy');
+      if (!accepted) submitButton.disabled = false;
     }
   });
 }

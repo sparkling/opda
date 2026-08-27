@@ -86,9 +86,11 @@ test('global header promotes the canonical working-group sign-up route', async (
   const primaryStart = header.indexOf('<nav class="global-nav"');
   const primaryEnd = header.indexOf('</nav>', primaryStart);
   const utilitiesStart = header.indexOf('<nav class="header-nav"');
-  const cta = header.indexOf('<a href="/working-groups/join" class="header-cta">Join a working group</a>');
+  const cta = header.indexOf('class="header-cta"');
   assert.ok(primaryStart >= 0 && cta > primaryStart && cta < primaryEnd);
   assert.ok(primaryEnd < utilitiesStart);
+  assert.match(header, /const joinHref = currentPath === '\/working-groups\/join' \? '#register' : '\/working-groups\/join'/u);
+  assert.match(header, /<a href=\{joinHref\} class="header-cta">Join a working group<\/a>/u);
   assert.match(header, /href="\/search"[\s\S]*?class=\{`header-icon-link\$\{isSearchPage[\s\S]*?aria-label="Search"[\s\S]*?aria-current=\{isSearchPage \? 'page' : undefined\}[\s\S]*?title="Search"[\s\S]*?<svg[\s\S]*?aria-hidden="true"/u);
   assert.match(header, /class="header-icon-link"[\s\S]*?aria-label="GitHub"\s+title="GitHub"[\s\S]*?<svg[\s\S]*?aria-hidden="true"/u);
   assert.doesNotMatch(header, />Search<\/a>|>GitHub<\/a>/u);
@@ -139,7 +141,10 @@ test('one shared site footer covers public and knowledge-base page families', as
 });
 
 test('registration script sends the fixed allowlisted payload to the same-origin endpoint', async () => {
-  const source = await readFile(paths.registration, 'utf8');
+  const [source, page] = await Promise.all([
+    readFile(paths.registration, 'utf8'),
+    readFile(paths.join, 'utf8'),
+  ]);
   assert.deepEqual(extractSetValues(source, 'WORKING_GROUPS'), expectedGroups);
   for (const field of [
     'fullName', 'email', 'organisation', 'role', 'workingGroups', 'contributions',
@@ -153,9 +158,18 @@ test('registration script sends the fixed allowlisted payload to the same-origin
   assert.match(source, /privacyNoticeVersion:\s*'2026-08-13'/u);
   assert.match(source, /Date\.now\(\)/u);
   assert.match(source, /document\.addEventListener\('astro:page-load', initWorkingGroupForm\)/u);
+  assert.match(page, /method="post"[\s\S]*action="\/api\/working-group-interest"/u);
+  assert.match(page, /<noscript>[\s\S]*smartdata@openpropdata\.org\.uk[\s\S]*Do not include confidential, customer, property-transaction\s+or special-category information/u);
+  assert.match(page, /<button class="btn" type="submit" disabled>/u);
+  assert.match(source, /submitButton\.disabled = false/u);
+  assert.match(source, /new AbortController\(\)/u);
+  assert.match(source, /signal:\s*controller\.signal/u);
+  assert.match(source, /window\.clearTimeout\(timeoutId\)/u);
+  assert.match(source, /response\.status !== 201/u);
+  assert.match(source, /body\.ok === true[\s\S]*body\.state === 'received'/u);
 });
 
-test('campaign story progressively enhances a complete no-JS narrative', async () => {
+test('campaign presents the complete handoff narrative without scroll-driven theatre', async () => {
   const [page, script, sectionsCss, responsiveCss] = await Promise.all([
     readFile(paths.join, 'utf8'),
     readFile(paths.campaign, 'utf8'),
@@ -178,22 +192,34 @@ test('campaign story progressively enhances a complete no-JS narrative', async (
     'You do not need to understand ontologies or adopt AI',
     'People decide;',
     'no candidate becomes official through AI alone',
+    'Listing',
+    'A place to market, price and negotiate.',
+    'Mortgage security',
+    'An asset assessed for lending, affordability and risk.',
+    'Legal title',
+    'Rights, restrictions and the asset being transferred.',
+    'Subject asset',
+    'Condition, measurement and professional opinion.',
+    'Evidence',
+    'Sourced information with provenance and assurance.',
+    'Resource',
+    'Structured meaning ready for products and integrations.',
   ]) {
     assert.match(page, new RegExp(phrase, 'u'));
   }
   assert.doesNotMatch(script, /parallax|requestAnimationFrame/iu);
-  assert.match(script, /duration: reducedMotion\.matches \? 0 : 160/u);
   assert.match(script, /IntersectionObserver/u);
   assert.match(script, /prefers-reduced-motion/u);
-  assert.match(script, /typeof card\.animate === 'function'/u);
   assert.match(script, /classList\.add\('has-campaign-js'\)/u);
   assert.match(script, /document\.addEventListener\('astro:page-load', initCampaignExperience\)/u);
-  assert.doesNotMatch(script, /innerHTML/u);
+  assert.doesNotMatch(script, /data-story-step|data-handoff|\.animate\(|innerHTML/u);
   assert.doesNotMatch(sectionsCss, /^\[data-reveal\]\s*\{/mu);
   assert.match(sectionsCss, /\.has-campaign-js \[data-reveal\]/u);
   assert.match(responsiveCss, /prefers-reduced-motion/u);
-  assert.doesNotMatch(page, /data-parallax-layer/u);
-  assert.match(page, /data-story-step/u);
+  assert.doesNotMatch(page, /data-parallax-layer|data-story-step|data-handoff-stage/u);
+  assert.match(page, /class="wg-domain-grid"/u);
+  assert.ok(page.indexOf('id="register"') < page.indexOf('class="wg-domain-grid"'));
+  assert.ok(page.indexOf('id="register"') < page.indexOf('id="how-it-works"'));
 });
 
 test('campaign styles remain split below the project file limit', async () => {
@@ -201,6 +227,30 @@ test('campaign styles remain split below the project file limit', async () => {
     const source = await readFile(path, 'utf8');
     assert.ok(source.split('\n').length < 500, `${path.pathname} must remain below 500 lines`);
   }
+  const [campaign, sections] = await Promise.all([
+    readFile(paths.campaignCss, 'utf8'),
+    readFile(paths.campaignSectionsCss, 'utf8'),
+  ]);
+  assert.doesNotMatch(campaign, /position:\s*sticky|min-height:\s*(?:20|28|32)rem/u);
+  assert.doesNotMatch(sections, /calc\(50% - 50vw\)|position:\s*sticky/u);
+});
+
+test('form errors are associated with every control and group', async () => {
+  const source = await readFile(paths.join, 'utf8');
+  for (const [id, description] of [
+    ['full-name', 'full-name-error'],
+    ['email', 'email-error'],
+    ['organisation', 'organisation-error'],
+    ['role', 'role-error'],
+    ['acknowledgement', 'acknowledgement-error'],
+  ]) {
+    assert.match(source, new RegExp(`id="${id}"[^>]*aria-describedby="${description}"`, 'u'));
+  }
+  assert.match(source, /id="relevant-perspective"[^>]*aria-describedby="perspective-hint perspective-count relevant-perspective-error"/u);
+  assert.match(source, /data-group="workingGroups"[^>]*aria-describedby="working-groups-hint working-groups-error"/u);
+  assert.match(source, /data-group="contributions"[^>]*aria-describedby="contributions-hint contributions-error"/u);
+  assert.match(source, /id=\{`working-group-\$\{value\}`\}/u);
+  assert.match(source, /id=\{`contribution-\$\{value\}`\}/u);
 });
 
 test('privacy page publishes the current notice and operational boundaries', async () => {

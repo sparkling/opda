@@ -387,6 +387,11 @@ only opacity or transform. There is no parallax, autoplay carousel, animated
 gradient or looping ambient movement. Reduced motion removes transforms and reduces
 non-essential transitions to effectively instant.
 
+Campaign handoff comparisons use ordinary document flow and natural-height cards.
+They never pin a visual while requiring readers to traverse forced-height panels.
+If optional reveal feedback is unavailable or reduced motion is requested, every
+term, definition, scope and explanation remains visible in its final position.
+
 ## 12. Standalone presentation
 
 The local presentation in `docs/design-system-site/` is a review artefact, not a
@@ -416,7 +421,7 @@ Every live route belongs to one explicit visual family:
 | Knowledge base | prose, governance and catalogue routes | shared `Layout` shell and `SiteFooter` |
 | Data and V2 | data browser, validation and V2 reference routes | shared tokens plus dense data patterns |
 | Schema/manual | generated schema, ontology and manual reference routes | shared shell plus labelled table/diagram patterns |
-| Working groups | join, privacy and campaign states | standard shared `Layout` wrapper and breadcrumb, no left section navigation, with campaign-specific content styles |
+| Working groups | join, privacy and campaign states | standard shared `Layout` wrapper and breadcrumb, no left section navigation, natural-height domain comparison and safely enhanced form |
 | Presentation | working-group kickoff deck | isolated full-screen presentation composition using shared tokens; no site chrome |
 
 Release validation runs against the built artefact before any deployment: source

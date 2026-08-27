@@ -122,6 +122,27 @@ test('section rails, page navigation and content stay inside the shared containe
   clean();
 });
 
+test('working-group signup avoids dead-scroll breakpoints and reaches registration early', async ({ page }) => {
+  const clean = watchRuntime(page);
+  for (const viewport of [
+    { width: 1024, height: 768 },
+    { width: 390, height: 844 },
+  ]) {
+    await page.setViewportSize(viewport);
+    await visit(page, '/working-groups/join');
+    await assertNoBodyOverflow(page);
+    await expect(page.locator('[data-story-step], [data-handoff-stage], .wg-story__visual')).toHaveCount(0);
+
+    const positions = await page.evaluate(() => ({
+      register: document.querySelector('#register')?.getBoundingClientRect().top ?? Infinity,
+      comparison: document.querySelector('.wg-context-section')?.getBoundingClientRect().top ?? -Infinity,
+    }));
+    expect(positions.register).toBeLessThan(viewport.height * 3.25);
+    expect(positions.comparison).toBeGreaterThan(positions.register);
+  }
+  clean();
+});
+
 test('text flows to its outer content container without nested max-widths', async ({ page }) => {
   const clean = watchRuntime(page);
   await page.setViewportSize({ width: 1440, height: 1000 });

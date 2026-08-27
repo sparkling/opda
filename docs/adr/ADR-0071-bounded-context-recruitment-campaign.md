@@ -1,7 +1,7 @@
 ---
 status: accepted
 date: 2026-08-14
-updated: 2026-08-16
+updated: 2026-08-27
 tags: [engagement, recruitment, linkedin, trade-bodies, working-groups, signup, campaign, measurement]
 supersedes: []
 depends-on: [ADR-0063, ADR-0065, ADR-0069]
@@ -87,10 +87,14 @@ Every post and outreach message links to:
 
 `https://opda.org.uk/working-groups/join`
 
-The public page is the campaign landing page as well as the form. It uses the OPDA design system,
-an accessible property-information handoff narrative and brief, optional reveal effects to explain
-the case before asking a visitor to register. The form and privacy controls remain usable without
-animation and with reduced motion.
+The public page is the campaign landing page as well as the form. It uses the OPDA design system
+to explain the programme proposition, human review and participation boundary before asking a
+visitor to register. A detailed, natural-height property-information comparison and brief,
+optional reveal effects follow the registration journey for readers who want the modelling
+context. The comparison has no pinned or scroll-driven state: every domain meaning is visible in
+the document. The enhanced form requires successful JavaScript initialisation; without it,
+campaign and privacy content remain readable and a safe human-managed email registration
+alternative is provided.
 
 Registration is an expression of interest. It is stored in the AWS-hosted register decided by
 ADR-0069 and reviewed by a human. It does not automatically create an Entra guest, Team
@@ -203,6 +207,13 @@ After each wave, the campaign register records date, route, response and coverag
 to target contexts, collected fields, automated onboarding or data use require an ADR amendment.
 
 ## Amendments
+
+- **2026-08-27 — adversarial campaign review.** The sticky handoff sequence was
+  disproportionate to its information and created a dead-scroll band when its visual was hidden.
+  It is replaced by a compact static comparison containing every prior term, definition, domain
+  scope and explanation. Registration now precedes the detailed domain comparison and supporting
+  modelling narrative. The campaign scope, selectable groups, collected fields and human decision
+  boundary are unchanged.
 
 - **2026-08-16 — OPDA design-system adoption.** ADR-0073 removes parallax and
   constrains the remaining reveal feedback to the shared 120–200ms motion

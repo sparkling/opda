@@ -104,7 +104,15 @@ test.describe('runtime continuity boundaries', () => {
     const submissions = [];
     await page.route('**/api/working-group-interest', async (route) => {
       submissions.push(JSON.parse(route.request().postData() || '{}'));
-      await route.fulfill({ status: 200, contentType: 'application/json', body: JSON.stringify({ ok: true }) });
+      await route.fulfill({
+        status: 201,
+        contentType: 'application/json',
+        body: JSON.stringify({
+          ok: true,
+          state: 'received',
+          message: 'Your expression of interest has been received.',
+        }),
+      });
     });
 
     await visit(page, '/working-groups/join');

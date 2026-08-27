@@ -131,6 +131,12 @@ breadcrumb from `Layout`; they remain registered standalone surfaces, so no left
 section navigation or previous/next sequence is introduced. All campaign and form
 content remains inside that shared wrapper.
 
+Later on 27 August 2026 an adversarial review removed the campaign's remaining
+scroll-driven story geometry and viewport-negative full-bleed margin. The handoff
+narrative is now a natural-height, two-column comparison that becomes one column on
+small screens; its complete meaning remains visible without interaction. Optional
+reveal feedback still follows the shared motion and reduced-motion contract.
+
 On 25 August 2026 the expanded documentation header was aligned to the shared content
 axis: its wordmark is centred over the navigation rail, its first destination follows
 the content gutter, and the left rail no longer repeats its accessible section name as

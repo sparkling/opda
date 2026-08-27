@@ -1,6 +1,6 @@
 .wg-model-story {
-  margin-inline: calc(50% - 50vw);
-  padding: clamp(var(--space-10), 10vw, 9rem) max(var(--space-5), calc((100vw - var(--content-max)) / 2));
+  margin-inline: 0;
+  padding: clamp(var(--space-10), 10vw, 9rem) clamp(var(--space-5), 7vw, var(--space-10));
   background: var(--brand-deep);
   border-block: 4px solid var(--brand-yellow);
   color: var(--brand-white);
@@ -52,7 +52,7 @@
 .wg-output-ribbon li { padding: var(--space-3); background: var(--brand-night); color: var(--brand-white); font-size: var(--text-sm); }
 
 .wg-why { display: grid; grid-template-columns: minmax(0, 0.95fr) minmax(22rem, 1.05fr); gap: clamp(var(--space-8), 8vw, var(--space-12)); }
-.wg-why__statement { align-self: start; position: sticky; top: calc(var(--header-height) + var(--space-5)); }
+.wg-why__statement { align-self: start; }
 .wg-why__statement > p:not(.wg-eyebrow) { margin: var(--space-6) 0; color: var(--color-text-muted); font: var(--lead); }
 .wg-why__reasons { margin: 0; padding: 0; list-style: none; }
 .wg-why__reasons li { display: grid; grid-template-columns: minmax(10rem, 0.7fr) minmax(0, 1.3fr); gap: var(--space-6); padding-block: var(--space-7); border-top: 1px solid var(--color-border); }

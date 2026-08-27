@@ -12,12 +12,60 @@ const canonicalUrl = new URL(Astro.url.pathname, Astro.site ?? Astro.url.origin)
 const socialImageUrl = new URL('/images/working-group-recruitment-social.png', Astro.site ?? Astro.url.origin);
 
 const contexts = [
-  ['finance-and-banking', 'Finance and Banking', 'Mortgage advice, lending decisions, security, affordability and the systems that support them.'],
-  ['conveyancing', 'Conveyancing', 'The legal transfer of property, including title, searches, enquiries and completion.'],
-  ['estate-agency', 'Estate Agency', 'Marketing, listing, negotiation and the progression of a sale.'],
-  ['surveying-and-valuation', 'Surveying and Valuation', 'Property condition, measurement, inspection, valuation and professional opinion.'],
-  ['property-data-services', 'Property Data Services', 'The sourcing, assurance, exchange and interpretation of property information.'],
-  ['property-technology', 'Property Technology', 'Products, platforms and integrations that support the property journey.'],
+  [
+    'finance-and-banking',
+    'Finance and Banking',
+    'Mortgage advice, lending decisions, security, affordability and the systems that support them.',
+    'Mortgage security',
+    'An asset assessed for lending, affordability and risk.',
+    'Property becomes security for lending',
+    'Value, affordability, eligibility and risk determine how the property supports a mortgage.',
+  ],
+  [
+    'conveyancing',
+    'Conveyancing',
+    'The legal transfer of property, including title, searches, enquiries and completion.',
+    'Legal title',
+    'Rights, restrictions and the asset being transferred.',
+    'Property becomes a legal interest',
+    'Title, parties, searches, enquiries and completion need their own precise meaning.',
+  ],
+  [
+    'estate-agency',
+    'Estate Agency',
+    'Marketing, listing, negotiation and the progression of a sale.',
+    'Listing',
+    'A place to market, price and negotiate.',
+    '“Property” means something marketable',
+    'Descriptions, asking price, tenure and readiness for sale shape the view.',
+  ],
+  [
+    'surveying-and-valuation',
+    'Surveying and Valuation',
+    'Property condition, measurement, inspection, valuation and professional opinion.',
+    'Subject asset',
+    'Condition, measurement and professional opinion.',
+    'Property becomes an object of inspection and value',
+    'The facts that matter shift again when condition, risk and valuation enter the journey.',
+  ],
+  [
+    'property-data-services',
+    'Property Data Services',
+    'The sourcing, assurance, exchange and interpretation of property information.',
+    'Evidence',
+    'Sourced information with provenance and assurance.',
+    'Property becomes a body of sourced evidence',
+    'Coverage, provenance, quality and permissions determine whether information can be trusted.',
+  ],
+  [
+    'property-technology',
+    'Property Technology',
+    'Products, platforms and integrations that support the property journey.',
+    'Resource',
+    'Structured meaning ready for products and integrations.',
+    'Property becomes something systems must exchange',
+    'Products need stable identifiers, schemas, validation and mappings to make the journey work.',
+  ],
 ] as const;
 
 const contributions = [
@@ -63,106 +111,226 @@ const contributions = [
         </div>
       </div>
 
-      <div
-        class="wg-journey"
-        aria-label="A property record crossing six connected contexts"
-        style={`--context-angle:${360 / contexts.length}deg`}
-      >
-        <div class="wg-journey__property" aria-hidden="true">
-          <span class="wg-journey__roof"></span>
-          <span class="wg-journey__door"></span>
-        </div>
-        <div class="wg-journey__orbit" aria-hidden="true"></div>
-        <ol>
-          {contexts.map(([, label], index) => (
-            <li style={`--context-index:${index}`}><span>{String(index + 1).padStart(2, '0')}</span>{label}</li>
-          ))}
-        </ol>
+      <aside class="wg-hero-summary" aria-label="How participation works">
         <p>Meaning travels across every handoff.</p>
-      </div>
+        <ul>
+          <li><strong>Domain expertise in.</strong> Connected models, schemas and usable outputs out.</li>
+          <li>Human review at every iteration</li>
+          <li>No technical knowledge required</li>
+        </ul>
+      </aside>
     </section>
 
-    <aside class="wg-proof-strip" aria-label="How participation works">
-      <p><strong>Domain expertise in.</strong> Connected models, schemas and usable outputs out.</p>
-      <span>Human review at every iteration</span>
-      <span>No technical knowledge required</span>
-    </aside>
-
-    <section class="wg-story" aria-labelledby="handoffs-title" data-story>
-      <div class="wg-story__visual" aria-hidden="true">
-        <div class="wg-handoff-stage" data-handoff-stage>
-          <div class="wg-handoff-stage__property">
-            <span class="wg-handoff-stage__label">The property</span>
-            <strong data-handoff-term>Home</strong>
-            <small data-handoff-definition>A place someone lives.</small>
-          </div>
-          <div class="wg-handoff-stage__path"></div>
-          <div class="wg-handoff-stage__counter"><span data-story-index>01</span> / 06</div>
-        </div>
-      </div>
-      <div class="wg-story__steps">
-        <header>
-          <p class="wg-eyebrow">The problem is in the handoffs</p>
-          <h2 id="handoffs-title">The same thing changes meaning as work moves on</h2>
-        </header>
-        <article data-story-step data-term="Listing" data-definition="A place to market, price and negotiate." data-accent="primary">
-          <span>Estate Agency</span>
-          <h3>“Property” means something marketable</h3>
-          <p>Descriptions, asking price, tenure and readiness for sale shape the view.</p>
-        </article>
-        <article data-story-step data-term="Mortgage security" data-definition="An asset assessed for lending, affordability and risk." data-accent="primary">
-          <span>Finance and Banking</span>
-          <h3>Then it becomes security for lending</h3>
-          <p>Value, affordability, eligibility and risk determine how the property supports a mortgage.</p>
-        </article>
-        <article data-story-step data-term="Legal title" data-definition="Rights, restrictions and the asset being transferred." data-accent="primary">
-          <span>Conveyancing</span>
-          <h3>Then it becomes a legal interest</h3>
-          <p>Title, parties, searches, enquiries and completion need their own precise meaning.</p>
-        </article>
-        <article data-story-step data-term="Subject asset" data-definition="Condition, measurement and professional opinion." data-accent="primary">
-          <span>Surveying and Valuation</span>
-          <h3>Then an object of inspection and value</h3>
-          <p>The facts that matter shift again when condition, risk and valuation enter the journey.</p>
-        </article>
-        <article data-story-step data-term="Evidence" data-definition="Sourced information with provenance and assurance." data-accent="primary">
-          <span>Property Data Services</span>
-          <h3>Then a body of sourced evidence</h3>
-          <p>Coverage, provenance, quality and permissions determine whether information can be trusted.</p>
-        </article>
-        <article data-story-step data-term="Resource" data-definition="Structured meaning ready for products and integrations." data-accent="primary">
-          <span>Property Technology</span>
-          <h3>Then something systems must exchange</h3>
-          <p>Products need stable identifiers, schemas, validation and mappings to make the journey work.</p>
-        </article>
-      </div>
-    </section>
-
-    <section class="wg-section wg-context-section" aria-labelledby="contexts-title">
+    <section class="wg-section" aria-labelledby="process-title">
       <div class="wg-section__heading">
         <div>
-          <p class="wg-eyebrow">Bounded contexts</p>
-          <h2 id="contexts-title">Keep each domain precise. Connect the boundaries.</h2>
+          <p class="wg-eyebrow">Your next step</p>
+          <h2 id="process-title">From interest to participation</h2>
         </div>
         <p>
-          Each group develops meaning for its own domain. The Interoperability Working Group aligns
-          a small common boundary and mappings between them—without forcing one definition to fit
-          every situation.
+          Registration is an expression of interest. It does not automatically create membership,
+          access, voting rights or authority to represent your employer.
         </p>
       </div>
-      <div class="wg-context-map" data-reveal-group>
-        <ul class="wg-contexts">
-          {contexts.map(([, label, description], index) => (
-            <li data-reveal style={`--reveal-delay:${index * 80}ms`}>
-              <span class="wg-contexts__number">0{index + 1}</span>
-              <strong>{label}</strong><span>{description}</span>
-            </li>
-          ))}
-        </ul>
-        <div class="wg-context-map__bridge">
-          <span>Interoperability</span>
-          <strong>Shared boundary · mappings · conventions</strong>
+      <ol class="wg-process">
+        <li><strong>Register interest</strong><span>Tell us where your experience is most relevant.</span></li>
+        <li><strong>OPDA reviews it</strong><span>A person reviews every expression of interest.</span></li>
+        <li><strong>Onboarding follows</strong><span>If accepted, we send working-group access separately.</span></li>
+      </ol>
+    </section>
+
+    <section id="register" class="wg-section wg-form-shell" aria-labelledby="register-title">
+      <div class="wg-form-intro">
+        <p class="wg-eyebrow">Register your interest</p>
+        <h2 id="register-title">Where can you help?</h2>
+        <p>
+          Choose one or more groups and the kinds of contribution you could make. The form usually
+          takes two or three minutes.
+        </p>
+        <div class="callout callout--note">
+          <div class="callout__label">How we use these details</div>
+          <p>
+            We use them only to review and administer your working-group interest. This is
+            not newsletter or marketing consent. Read the
+            <a href="/working-groups/join/privacy">working-group privacy notice</a>.
+          </p>
         </div>
+      </div>
+
+      <p id="form-availability" class="wg-form-availability">
+        Preparing secure online registration. If the form remains unavailable, email
+        <a href="mailto:smartdata@openpropdata.org.uk">smartdata@openpropdata.org.uk</a>.
+      </p>
+      <noscript>
+        <style>.wg-form { display: none !important; } .wg-form-availability { display: none !important; }</style>
+        <div class="callout callout--note wg-noscript">
+          <div class="callout__label">Register without JavaScript</div>
+          <p>
+            This form needs JavaScript to submit securely. You can instead email
+            <a href="mailto:smartdata@openpropdata.org.uk">smartdata@openpropdata.org.uk</a> to
+            register your interest. Do not include confidential, customer, property-transaction
+            or special-category information.
+          </p>
+        </div>
+      </noscript>
+
+      <form
+        id="working-group-interest-form"
+        class="wg-form"
+        method="post"
+        action="/api/working-group-interest"
+        novalidate
+        data-privacy-notice-version={privacyNoticeVersion}
+      >
+        <div id="form-errors" class="wg-error-summary" role="alert" tabindex="-1" hidden>
+          <h2>Check the information you entered</h2>
+          <ul></ul>
+        </div>
+
+        <fieldset class="wg-form-section">
+          <legend>About you</legend>
+          <p>Fields marked <span class="wg-required">*</span> are required.</p>
+          <div class="wg-fields">
+            <div class="wg-field">
+              <label for="full-name">Full name <span class="wg-required">*</span></label>
+              <input id="full-name" name="fullName" type="text" autocomplete="name" minlength="2" maxlength="100" aria-describedby="full-name-error" required />
+              <p id="full-name-error" class="wg-field-error"></p>
+            </div>
+            <div class="wg-field">
+              <label for="email">Email address <span class="wg-required">*</span></label>
+              <input id="email" name="email" type="email" autocomplete="email" maxlength="254" inputmode="email" aria-describedby="email-error" required />
+              <p id="email-error" class="wg-field-error"></p>
+            </div>
+            <div class="wg-field">
+              <label for="organisation">Organisation <span class="wg-required">*</span></label>
+              <input id="organisation" name="organisation" type="text" autocomplete="organization" minlength="2" maxlength="150" aria-describedby="organisation-error" required />
+              <p id="organisation-error" class="wg-field-error"></p>
+            </div>
+            <div class="wg-field">
+              <label for="role">Role or area of expertise <span class="wg-required">*</span></label>
+              <input id="role" name="role" type="text" autocomplete="organization-title" minlength="2" maxlength="120" aria-describedby="role-error" required />
+              <p id="role-error" class="wg-field-error"></p>
+            </div>
+          </div>
+        </fieldset>
+
+        <fieldset class="wg-form-section" data-group="workingGroups" aria-describedby="working-groups-hint working-groups-error">
+          <legend>Which working groups interest you?</legend>
+          <p id="working-groups-hint">Select one or more, or choose “Not sure”. <span class="wg-required">*</span></p>
+          <div class="wg-choice-grid">
+            {contexts.map(([value, label, description]) => (
+              <label class="wg-choice">
+                <input id={`working-group-${value}`} type="checkbox" name="workingGroups" value={value} />
+                <span><strong>{label}</strong><span>{description}</span></span>
+              </label>
+            ))}
+            <label class="wg-choice wg-choice--wide">
+              <input id="working-group-not-sure" type="checkbox" name="workingGroups" value="not-sure" data-exclusive />
+              <span><strong>Not sure — help me choose</strong><span>OPDA can suggest the best fit when reviewing your registration.</span></span>
+            </label>
+          </div>
+          <p id="working-groups-error" class="wg-field-error"></p>
+        </fieldset>
+
+        <fieldset class="wg-form-section" data-group="contributions" aria-describedby="contributions-hint contributions-error">
+          <legend>How might you contribute?</legend>
+          <p id="contributions-hint">Select one or more. <span class="wg-required">*</span></p>
+          <div class="wg-choice-grid">
+            {contributions.map(([value, label, description]) => (
+              <label class="wg-choice">
+                <input id={`contribution-${value}`} type="checkbox" name="contributions" value={value} />
+                <span><strong>{label}</strong><span>{description}</span></span>
+              </label>
+            ))}
+          </div>
+          <p id="contributions-error" class="wg-field-error"></p>
+        </fieldset>
+
+        <section class="wg-form-section" aria-labelledby="perspective-title">
+          <h2 id="perspective-title">Anything useful to know?</h2>
+          <p>
+            This is optional. Briefly describe relevant experience or perspective. Do not include
+            confidential, personal, customer, property-transaction or special-category information.
+          </p>
+          <div class="wg-field">
+            <label for="relevant-perspective">Relevant experience or perspective</label>
+            <textarea id="relevant-perspective" name="relevantPerspective" maxlength="600" aria-describedby="perspective-hint perspective-count relevant-perspective-error"></textarea>
+            <span id="perspective-hint" class="wg-field-hint">Up to 600 characters. Do not paste evidence or links here.</span>
+            <span id="perspective-count" class="wg-character-count" aria-live="polite">0 of 600 characters</span>
+            <p id="relevant-perspective-error" class="wg-field-error"></p>
+          </div>
+        </section>
+
+        <div class="wg-honeypot" aria-hidden="true">
+          <label for="website">Leave this field empty</label>
+          <input id="website" name="website" type="text" tabindex="-1" autocomplete="off" />
+        </div>
+        <input id="started-at" name="startedAt" type="hidden" />
+        <input name="privacyNoticeVersion" type="hidden" value={privacyNoticeVersion} />
+
+        <label class="wg-acknowledgement">
+          <input id="acknowledgement" name="acknowledgement" type="checkbox" value="true" aria-describedby="acknowledgement-error" required />
+          <span>
+            I understand this is an expression of interest, not automatic membership or access,
+            and OPDA may contact me about the working groups I selected. <span class="wg-required">*</span>
+          </span>
+        </label>
+        <p id="acknowledgement-error" class="wg-field-error"></p>
+
+        <div class="wg-form-actions">
+          <button class="btn" type="submit" disabled>Register my interest</button>
+          <a class="btn btn--ghost" href="/working-groups/join/privacy">Read the privacy notice</a>
+        </div>
+        <p id="form-status" class="wg-form-status" aria-live="polite"></p>
+      </form>
+
+      <section id="registration-success" class="wg-success" tabindex="-1" hidden>
+        <p class="wg-eyebrow">Registration received</p>
+        <h2>Thank you for registering</h2>
+        <p>
+          OPDA will review your expression of interest. If we can progress it, we will contact you
+          about the relevant working group and send onboarding information separately.
+        </p>
+      </section>
+    </section>
+
+    <section class="wg-section wg-context-section" aria-labelledby="handoffs-title">
+      <div class="wg-section__heading">
+        <div>
+          <p class="wg-eyebrow">The problem is in the handoffs</p>
+          <h2 id="handoffs-title">The same thing changes meaning as work moves on</h2>
+        </div>
+        <p>
+          Each group develops precise meaning for its own domain. These are different views of the
+          same property, not a single fixed sequence.
+        </p>
+      </div>
+      <div class="wg-domain-baseline">
+        <span>The property</span>
+        <strong>Home</strong>
+        <p>A place someone lives.</p>
+      </div>
+      <ol class="wg-domain-grid" data-reveal-group>
+        {contexts.map(([, label, scope, term, definition, heading, explanation], index) => (
+          <li data-reveal style={`--reveal-delay:${index * 60}ms`}>
+            <article class="wg-domain-card">
+              <p class="wg-domain-card__context">{String(index + 1).padStart(2, '0')} · {label}</p>
+              <h3>{term}</h3>
+              <p class="wg-domain-card__definition">{definition}</p>
+              <h4>{heading}</h4>
+              <p>{explanation}</p>
+              <p class="wg-domain-card__scope"><strong>Group scope:</strong> {scope}</p>
+            </article>
+          </li>
+        ))}
+      </ol>
+      <div class="wg-context-map__bridge">
+        <span>Interoperability</span>
+        <strong>Shared boundary · mappings · conventions</strong>
+        <p>
+          The Interoperability Working Group aligns a small common boundary and mappings between
+          domains without forcing one definition to fit every situation.
+        </p>
       </div>
     </section>
 
@@ -222,7 +390,7 @@ const contributions = [
           The standard will influence how property information is described, checked and exchanged.
           It needs the language of daily work—not just the assumptions visible in existing schemas.
         </p>
-        <a class="btn wg-btn--large" href="#register">Bring your perspective <span aria-hidden="true">↓</span></a>
+        <a class="btn wg-btn--large" href="#register">Bring your perspective <span aria-hidden="true">↑</span></a>
       </div>
       <ul class="wg-why__reasons" data-reveal-group>
         <li data-reveal><strong>Make meaning explicit</strong><span>Explain the terms, rules and edge cases only practitioners know.</span></li>
@@ -249,160 +417,6 @@ const contributions = [
           <li><strong>People decide;</strong> no candidate becomes official through AI alone.</li>
         </ul>
       </div>
-    </section>
-
-    <section class="wg-section" aria-labelledby="process-title">
-      <div class="wg-section__heading">
-        <div>
-          <p class="wg-eyebrow">Your next step</p>
-          <h2 id="process-title">From interest to participation</h2>
-        </div>
-        <p>
-          Registration is an expression of interest. It does not automatically create membership,
-          access, voting rights or authority to represent your employer.
-        </p>
-      </div>
-      <ol class="wg-process">
-        <li><strong>Register interest</strong><span>Tell us where your experience is most relevant.</span></li>
-        <li><strong>OPDA reviews it</strong><span>A person reviews every expression of interest.</span></li>
-        <li><strong>Onboarding follows</strong><span>If accepted, we send working-group access separately.</span></li>
-      </ol>
-    </section>
-
-    <section id="register" class="wg-section wg-form-shell" aria-labelledby="register-title">
-      <div class="wg-form-intro">
-        <p class="wg-eyebrow">Register your interest</p>
-        <h2 id="register-title">Where can you help?</h2>
-        <p>
-          Choose one or more groups and the kinds of contribution you could make. The form usually
-          takes two or three minutes.
-        </p>
-        <div class="callout callout--note">
-          <div class="callout__label">How we use these details</div>
-          <p>
-            We use them only to review and administer your working-group interest. This is
-            not newsletter or marketing consent. Read the
-            <a href="/working-groups/join/privacy">working-group privacy notice</a>.
-          </p>
-        </div>
-      </div>
-
-      <form
-        id="working-group-interest-form"
-        class="wg-form"
-        novalidate
-        data-privacy-notice-version={privacyNoticeVersion}
-      >
-        <div id="form-errors" class="wg-error-summary" role="alert" tabindex="-1" hidden>
-          <h2>Check the information you entered</h2>
-          <ul></ul>
-        </div>
-
-        <fieldset class="wg-form-section">
-          <legend>About you</legend>
-          <p>Fields marked <span class="wg-required">*</span> are required.</p>
-          <div class="wg-fields">
-            <div class="wg-field">
-              <label for="full-name">Full name <span class="wg-required">*</span></label>
-              <input id="full-name" name="fullName" type="text" autocomplete="name" minlength="2" maxlength="100" required />
-              <p id="full-name-error" class="wg-field-error"></p>
-            </div>
-            <div class="wg-field">
-              <label for="email">Email address <span class="wg-required">*</span></label>
-              <input id="email" name="email" type="email" autocomplete="email" maxlength="254" inputmode="email" required />
-              <p id="email-error" class="wg-field-error"></p>
-            </div>
-            <div class="wg-field">
-              <label for="organisation">Organisation <span class="wg-required">*</span></label>
-              <input id="organisation" name="organisation" type="text" autocomplete="organization" minlength="2" maxlength="150" required />
-              <p id="organisation-error" class="wg-field-error"></p>
-            </div>
-            <div class="wg-field">
-              <label for="role">Role or area of expertise <span class="wg-required">*</span></label>
-              <input id="role" name="role" type="text" autocomplete="organization-title" minlength="2" maxlength="120" required />
-              <p id="role-error" class="wg-field-error"></p>
-            </div>
-          </div>
-        </fieldset>
-
-        <fieldset class="wg-form-section" data-group="workingGroups">
-          <legend>Which working groups interest you?</legend>
-          <p>Select one or more, or choose “Not sure”. <span class="wg-required">*</span></p>
-          <div class="wg-choice-grid">
-            {contexts.map(([value, label, description]) => (
-              <label class="wg-choice">
-                <input type="checkbox" name="workingGroups" value={value} />
-                <span><strong>{label}</strong><span>{description}</span></span>
-              </label>
-            ))}
-            <label class="wg-choice wg-choice--wide">
-              <input type="checkbox" name="workingGroups" value="not-sure" data-exclusive />
-              <span><strong>Not sure — help me choose</strong><span>OPDA can suggest the best fit when reviewing your registration.</span></span>
-            </label>
-          </div>
-          <p id="working-groups-error" class="wg-field-error"></p>
-        </fieldset>
-
-        <fieldset class="wg-form-section" data-group="contributions">
-          <legend>How might you contribute?</legend>
-          <p>Select one or more. <span class="wg-required">*</span></p>
-          <div class="wg-choice-grid">
-            {contributions.map(([value, label, description]) => (
-              <label class="wg-choice">
-                <input type="checkbox" name="contributions" value={value} />
-                <span><strong>{label}</strong><span>{description}</span></span>
-              </label>
-            ))}
-          </div>
-          <p id="contributions-error" class="wg-field-error"></p>
-        </fieldset>
-
-        <section class="wg-form-section" aria-labelledby="perspective-title">
-          <h2 id="perspective-title">Anything useful to know?</h2>
-          <p>
-            This is optional. Briefly describe relevant experience or perspective. Do not include
-            confidential, personal, customer, property-transaction or special-category information.
-          </p>
-          <div class="wg-field">
-            <label for="relevant-perspective">Relevant experience or perspective</label>
-            <textarea id="relevant-perspective" name="relevantPerspective" maxlength="600" aria-describedby="perspective-hint perspective-count"></textarea>
-            <span id="perspective-hint" class="wg-field-hint">Up to 600 characters. Do not paste evidence or links here.</span>
-            <span id="perspective-count" class="wg-character-count" aria-live="polite">0 of 600 characters</span>
-            <p id="relevant-perspective-error" class="wg-field-error"></p>
-          </div>
-        </section>
-
-        <div class="wg-honeypot" aria-hidden="true">
-          <label for="website">Leave this field empty</label>
-          <input id="website" name="website" type="text" tabindex="-1" autocomplete="off" />
-        </div>
-        <input id="started-at" name="startedAt" type="hidden" />
-        <input name="privacyNoticeVersion" type="hidden" value={privacyNoticeVersion} />
-
-        <label class="wg-acknowledgement">
-          <input id="acknowledgement" name="acknowledgement" type="checkbox" value="true" required />
-          <span>
-            I understand this is an expression of interest, not automatic membership or access,
-            and OPDA may contact me about the working groups I selected. <span class="wg-required">*</span>
-          </span>
-        </label>
-        <p id="acknowledgement-error" class="wg-field-error"></p>
-
-        <div class="wg-form-actions">
-          <button class="btn" type="submit">Register my interest</button>
-          <a class="btn btn--ghost" href="/working-groups/join/privacy">Read the privacy notice</a>
-        </div>
-        <p id="form-status" class="wg-form-status" aria-live="polite"></p>
-      </form>
-
-      <section id="registration-success" class="wg-success" tabindex="-1" hidden>
-        <p class="wg-eyebrow">Registration received</p>
-        <h2>Thank you for registering</h2>
-        <p>
-          OPDA will review your expression of interest. If we can progress it, we will contact you
-          about the relevant working group and send onboarding information separately.
-        </p>
-      </section>
     </section>
   </div>
   <script>

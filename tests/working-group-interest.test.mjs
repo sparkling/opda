@@ -91,6 +91,11 @@ test('honeypot and implausible timing return success without storing data', asyn
     const deps = dependencies();
     const response = await createHandler(deps.values)(event('POST /api/working-group-interest', suspicious));
     assert.equal(response.statusCode, 201);
+    assert.deepEqual(JSON.parse(response.body), {
+      ok: true,
+      state: 'received',
+      message: 'Your expression of interest has been received.',
+    });
     assert.deepEqual(deps.calls, []);
   }
 });
@@ -99,7 +104,13 @@ test('a valid expression of interest is stored once and acknowledged', async () 
   const deps = dependencies();
   const response = await createHandler(deps.values)(event('POST /api/working-group-interest', payload()));
   assert.equal(response.statusCode, 201);
-  assert.equal(JSON.parse(response.body).state, 'received');
+  assert.deepEqual(JSON.parse(response.body), {
+    ok: true,
+    state: 'received',
+    message: 'Your expression of interest has been received.',
+  });
+  assert.match(response.headers['content-type'], /^application\/json/u);
+  assert.equal(response.headers['cache-control'], 'no-store');
   assert.equal(deps.calls.length, 1);
   assert.deepEqual(deps.calls[0], {
     registrationId: 'registration-id',
