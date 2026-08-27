@@ -1,7 +1,7 @@
 ---
 status: implemented
 date: 2026-08-16
-updated: 2026-08-25
+updated: 2026-08-27
 tags: [design-system, brand, website, accessibility, css, governance, presentation]
 supersedes: [ADR-0025]
 depends-on: [ADR-0064]
@@ -124,6 +124,12 @@ knowledge-base pages, with their campaign composition retained inside the common
 main region. A single `SiteFooter` component supplies the identical organisation
 footer to the root landing and every ordinary `Layout` route. The full-screen
 presentation remains an intentionally isolated, non-site-chrome experience.
+
+On 27 August 2026 the remaining working-group wrapper exception was removed. The
+join and privacy routes now inherit the standard main padding, article wrapper and
+breadcrumb from `Layout`; they remain registered standalone surfaces, so no left-hand
+section navigation or previous/next sequence is introduced. All campaign and form
+content remains inside that shared wrapper.
 
 On 25 August 2026 the expanded documentation header was aligned to the shared content
 axis: its wordmark is centred over the navigation rail, its first destination follows

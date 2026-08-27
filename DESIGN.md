@@ -416,7 +416,7 @@ Every live route belongs to one explicit visual family:
 | Knowledge base | prose, governance and catalogue routes | shared `Layout` shell and `SiteFooter` |
 | Data and V2 | data browser, validation and V2 reference routes | shared tokens plus dense data patterns |
 | Schema/manual | generated schema, ontology and manual reference routes | shared shell plus labelled table/diagram patterns |
-| Working groups | join, privacy and campaign states | shared `Layout` shell with campaign-specific content styles |
+| Working groups | join, privacy and campaign states | standard shared `Layout` wrapper and breadcrumb, no left section navigation, with campaign-specific content styles |
 | Presentation | working-group kickoff deck | isolated full-screen presentation composition using shared tokens; no site chrome |
 
 Release validation runs against the built artefact before any deployment: source

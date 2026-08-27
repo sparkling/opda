@@ -1,7 +1,7 @@
 ---
 status: accepted
 date: 2026-08-12
-updated: 2026-08-21
+updated: 2026-08-27
 tags: [engagement, recruitment, working-groups, linkedin, trade-bodies, professional-bodies, signup, privacy, security, aws]
 supersedes: []
 depends-on: [ADR-0038, ADR-0040, ADR-0063, ADR-0065]
@@ -10,6 +10,11 @@ implements: [ADR-0065]
 
 # Recruit later bounded-context working groups through a public campaign and simple sign-up
 
+> **Change note — 2026-08-27:** The canonical join and privacy routes now use the
+> standard shared `Layout` content wrapper, breadcrumb, global header and site footer while
+> remaining standalone surfaces without left-hand section navigation. Campaign information,
+> form fields, review boundaries and submission behaviour are unchanged.
+>
 > **Change note — 2026-08-21:** The shared application header now carries a persistent
 > “Join a working group” action to the unchanged canonical signup route. This adds a
 > discovery path only; form scope, review, storage and access boundaries are unchanged.

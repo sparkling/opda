@@ -14,6 +14,7 @@ const paths = {
   campaignCss: new URL('../src/styles/working-group-campaign.css', import.meta.url),
   campaignResponsiveCss: new URL('../src/styles/working-group-campaign-responsive.css', import.meta.url),
   campaignSectionsCss: new URL('../src/styles/working-group-campaign-sections.css', import.meta.url),
+  joinCss: new URL('../src/styles/working-group-join.css', import.meta.url),
   header: new URL('../src/components/Header.astro', import.meta.url),
   baseCss: new URL('../public/ui/design/base.css', import.meta.url),
   memberGuide: new URL('../src/pages/spdtf/working-groups/member-guide/index.astro', import.meta.url),
@@ -96,22 +97,25 @@ test('global header promotes the canonical working-group sign-up route', async (
   assert.match(baseCss, /@media \(max-width: 96rem\)\s*\{[\s\S]*\.app-header \.global-nav-panel \.header-nav\s*\{[^}]*grid-column:\s*1 \/ -1/su);
 });
 
-test('working-group public routes use the shared application shell', async () => {
-  const [join, privacy, layout] = await Promise.all([
+test('working-group public routes use the standard shared wrapper without section navigation', async () => {
+  const [join, privacy, layout, joinCss] = await Promise.all([
     readFile(paths.join, 'utf8'),
     readFile(paths.privacy, 'utf8'),
     readFile(paths.layout, 'utf8'),
+    readFile(paths.joinCss, 'utf8'),
   ]);
 
   for (const source of [join, privacy]) {
     assert.match(source, /import Layout from '@\/layouts\/Layout\.astro'/u);
     assert.doesNotMatch(source, /PublicWorkingGroupLayout/u);
     assert.match(source, /hideSidebar=\{true\}/u);
-    assert.match(source, /hideBreadcrumbs=\{true\}/u);
     assert.match(source, /hideComments=\{true\}/u);
-    assert.match(source, /wrapArticle=\{false\}/u);
+    assert.doesNotMatch(source, /hideBreadcrumbs=\{true\}|hideFooter=\{true\}|wrapArticle=\{false\}|mainClass=/u);
   }
   assert.match(layout, /<Header showSidebar=\{showSidebar\}/u);
+  assert.match(layout, /<article class=\{proseClass\}>/u);
+  assert.doesNotMatch(joinCss, /\.app-main\.working-group-main/u);
+  assert.match(joinCss, /\.wg-page\s*\{[^}]*width:\s*100%[^}]*margin:\s*0/su);
 });
 
 test('one shared site footer covers public and knowledge-base page families', async () => {

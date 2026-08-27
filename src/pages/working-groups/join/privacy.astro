@@ -12,11 +12,7 @@ const canonicalUrl = new URL(Astro.url.pathname, Astro.site ?? Astro.url.origin)
   title={title}
   description={description}
   hideSidebar={true}
-  hideBreadcrumbs={true}
-  hideFooter={true}
   hideComments={true}
-  wrapArticle={false}
-  mainClass="working-group-main"
 >
   <Fragment slot="head">
     <link rel="canonical" href={canonicalUrl} />
