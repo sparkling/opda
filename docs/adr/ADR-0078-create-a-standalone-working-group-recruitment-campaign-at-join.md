@@ -113,6 +113,10 @@ the Data (Use and Access) Act 2025's general Smart Data framework from prospecti
 property-specific arrangements, and must continue to state that SPDTF is an industry
 programme in development—not a government-approved or adopted statutory scheme.
 
+Refined on 28 August 2026: the hero's three-point influence panel uses a restrained
+three-column editorial layout with a single surrounding frame, readable type and no
+card-level visual competition or decorative empty space.
+
 ### 1. Canonical route and route ownership
 
 `https://opda.org.uk/join` becomes the sole public working-group recruitment and

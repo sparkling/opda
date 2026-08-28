@@ -276,6 +276,9 @@ test('campaign styles remain split below the project file limit', async () => {
   assert.match(campaign, /\.wg-campaign-hero\s*\{[\s\S]*?min-height:\s*min\(48rem, calc\(100svh - 5rem\)\)/u);
   assert.match(campaign, /\.wg-section\s*\{[\s\S]*?width:\s*min\(100%, var\(--campaign-max\)\)/u);
   assert.doesNotMatch(campaign, /\.wg-btn--large\s*\{[\s\S]*?color:\s*#000/u);
+  assert.match(campaign, /\.wg-hero-journey h2\s*\{[\s\S]*?clamp\(2rem, 3\.1vw, 3\.5rem\)/u);
+  assert.match(campaign, /\.wg-hero-journey \.wg-process\s*\{[\s\S]*?grid-template-columns:\s*repeat\(3, minmax\(0, 1fr\)\)/u);
+  assert.match(campaign, /\.wg-hero-journey \.wg-process li\s*\{[\s\S]*?background:\s*transparent;[\s\S]*?border:\s*0/u);
   assert.match(sections, /\.wg-participation\s*\{[\s\S]*?background:/u);
   assert.match(sections, /\.wg-trust\s*\{[\s\S]*?background:\s*var\(--brand-deep\)/u);
   assert.match(sections, /\.wg-policy\s*\{[\s\S]*?background:\s*var\(--brand-deep\)/u);

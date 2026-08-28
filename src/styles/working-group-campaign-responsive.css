@@ -35,6 +35,7 @@
   .wg-hero-actions :is(.btn, .wg-text-link) { justify-content: center; }
   .wg-motivation-grid,
   .wg-group-grid,
+  .wg-hero-journey .wg-process,
   .wg-participation-steps,
   .wg-evidence__reasons,
   .wg-policy__markers { grid-template-columns: 1fr; }

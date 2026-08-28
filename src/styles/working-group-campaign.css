@@ -108,19 +108,19 @@
 }
 
 .wg-hero-journey {
-  padding: clamp(var(--space-6), 4vw, var(--space-8));
+  padding: clamp(var(--space-6), 3vw, var(--space-7));
   background: rgb(35 31 47 / 84%);
   border: 1px solid var(--color-surface-dark-tint);
   border-top: 4px solid var(--brand-yellow);
   backdrop-filter: blur(18px);
 }
 
-.wg-hero-journey h2 { margin: 0; color: var(--brand-white); font: var(--h2); }
-.wg-process { margin: var(--space-6) 0 0; padding: 0; list-style: none; counter-reset: process; }
-.wg-process li { display: grid; grid-template-columns: 2.25rem 1fr; gap: 0 var(--space-4); padding: var(--space-4) 0; border-top: 1px solid var(--color-surface-dark-tint); counter-increment: process; }
-.wg-process li::before { content: counter(process, decimal-leading-zero); grid-row: 1 / span 2; color: var(--brand-yellow); font: 700 var(--text-sm) / 1.4 var(--font-mono); }
-.wg-process strong { color: var(--brand-white); }
-.wg-process span { color: var(--on-dark-muted); font-size: var(--text-sm); }
+.wg-hero-journey h2 { margin: 0; color: var(--brand-white); font: 600 clamp(2rem, 3.1vw, 3.5rem) / 1.05 var(--font-display); letter-spacing: var(--tracking-display); text-wrap: balance; }
+.wg-hero-journey .wg-process { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--space-5); margin: var(--space-6) 0 0; padding: 0; list-style: none; counter-reset: process; }
+.wg-hero-journey .wg-process li { min-width: 0; display: grid; grid-template-columns: 1fr; align-content: start; gap: var(--space-3); padding: 0; background: transparent; border: 0; counter-increment: process; }
+.wg-hero-journey .wg-process li::before { content: counter(process, decimal-leading-zero); color: var(--brand-yellow); font: 700 var(--text-sm) / 1.2 var(--font-mono); }
+.wg-hero-journey .wg-process strong { color: var(--brand-white); font: 600 clamp(1.125rem, 1.5vw, 1.5rem) / 1.22 var(--font-display); }
+.wg-hero-journey .wg-process span { color: var(--on-dark-muted); font-size: var(--text-sm); line-height: 1.55; }
 
 .wg-programme-link { margin: var(--space-7) 0 0; }
 
