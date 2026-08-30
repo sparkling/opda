@@ -167,7 +167,7 @@ than competing with the homepage's primary proposition.
   hero. A homepage modifier keeps the domain type compact and readable, adds measured row
   spacing, widens the desktop panel to limit wrapping, removes the register's final bottom
   rule, and translates the panel down for visible space above its top edge. On the desktop
-  two-column layout, the actions use compact padding, a modest gap and a single row; they
+  two-column layout, the actions use compact padding, a clear gap and a single row; they
   return to the standard wrapped treatment when the hero stacks. Detailed programme status
   remains on the linked SPDTF pages rather than being repeated in the marketing hero.
 
