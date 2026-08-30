@@ -301,7 +301,7 @@
 .status-comparison p:last-child { border-left-color: var(--deck-mint); }
 .status-comparison span { display: block; margin-bottom: 0.2rem; color: var(--deck-cream); font-weight: 600; }
 .website-preview { align-self: center; margin: 0; overflow: hidden; border: 1px solid var(--deck-line); border-radius: var(--deck-radius-md); background: var(--deck-forest-950); box-shadow: var(--deck-shadow); }
-.website-preview__viewport { max-height: clamp(24rem, 64vh, 36rem); overflow-y: scroll; overscroll-behavior: contain; scrollbar-color: var(--deck-lime) var(--deck-forest-950); scrollbar-gutter: stable; scrollbar-width: auto; }
+.website-preview__viewport { height: min(80vh, calc(100dvh - var(--deck-hud-height) - var(--deck-hud-height) - 3rem)); overflow-y: scroll; overscroll-behavior: contain; scrollbar-color: var(--deck-lime) var(--deck-forest-950); scrollbar-gutter: stable; scrollbar-width: auto; }
 .website-preview__viewport:focus-visible { outline: 2px solid var(--deck-lime); outline-offset: -2px; }
 .website-preview__viewport::-webkit-scrollbar { width: 1rem; }
 .website-preview__viewport::-webkit-scrollbar-track { border-left: 1px solid var(--deck-line); background: var(--deck-forest-950); }
