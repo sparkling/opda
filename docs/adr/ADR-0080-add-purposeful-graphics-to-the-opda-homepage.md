@@ -173,7 +173,9 @@ than competing with the homepage's primary proposition.
   two-column layout, the actions use compact padding, a generous gap and a single row;
   they return to the standard wrapped treatment when the hero stacks. Detailed programme
   status remains on the linked Smart Property Data Trust Framework pages rather than
-  being repeated in the marketing hero.
+  being repeated in the marketing hero. The method, featured presentation, route cards
+  and contribution section share the hero's responsive content frame, rather than adding
+  their own nested horizontal inset.
 
 ## More Information
 

@@ -122,6 +122,12 @@ const domains = [
     grid-template-columns: minmax(0, 1.05fr) minmax(36rem, 0.95fr);
     padding-top: var(--space-6);
   }
+  .home-content-surface {
+    --home-frame-gutter: max(
+      clamp(var(--space-5), 5vw, var(--space-10)),
+      calc((100vw - var(--content-max)) / 2)
+    );
+  }
   .home-campaign-hero__brand {
     min-width: 0;
     display: flex;
@@ -171,6 +177,15 @@ const domains = [
   .home-content-surface {
     color: var(--color-text);
     background: var(--color-surface);
+  }
+  .home-content-surface :global(.method-flow__inner),
+  .home-content-surface :global(.kickoff-feature__inner),
+  .home-content-surface :global(.public-overview),
+  .home-content-surface .public-join {
+    width: 100%;
+    max-width: none;
+    margin-inline: 0;
+    padding-inline: var(--home-frame-gutter);
   }
   .home-content-surface :global(.method-flow),
   .home-content-surface :global(.kickoff-feature) {
@@ -235,7 +250,11 @@ const domains = [
       margin-bottom: var(--space-8);
     }
     .home-campaign-hero__brand span { white-space: normal; }
-    .public-join { padding: 0 var(--space-5) var(--space-8); }
+    .home-content-surface :global(.method-flow__inner),
+    .home-content-surface :global(.kickoff-feature__inner),
+    .home-content-surface :global(.public-overview),
+    .home-content-surface .public-join { padding-inline: var(--space-5); }
+    .public-join { padding-block: 0 var(--space-8); }
     .public-join__inner { width: 100%; padding: var(--space-6); }
   }
 
