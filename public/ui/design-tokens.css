@@ -180,6 +180,7 @@
   --tracking-tight: -0.01em;
   --tracking-normal: 0;
   --tracking-meta: 0.08em;
+  --brand-heading: 600 clamp(2.25rem, 4vw, 4rem) / 1 var(--font-sans);
   --display: 600 2.75rem / 3.25rem var(--font-display);
   --h1: 600 2.25rem / 2.75rem var(--font-display);
   --h2: 700 1.75rem / 2.25rem var(--font-sans);

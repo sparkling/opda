@@ -191,6 +191,7 @@ Self-host the three families with `font-display: swap`:
 | H2 | DM Sans 700 | 28/36 | 28/36 |
 | H3 | DM Sans 700 | 22/30 | 22/30 |
 | H4 | DM Sans 600 | 18/26 | 18/26 |
+| Organisation heading | DM Sans 600 | 36–64/36–64 | 36/36 |
 | Lede | DM Sans 400 | 18/28 | 18/28 |
 | Body | DM Sans 400 | 16/26 | 16/26 |
 | Small/table | DM Sans 400 | 14/22 | 14/22 |
@@ -268,33 +269,28 @@ bounded with `ButtonText`, `CanvasText`, `FieldText` and `Highlight`.
 
 ## 8. Application shell and homepage
 
-The header is 64px, `#131224`, and uses the official white wordmark. In the expanded
-documentation shell, the wordmark is centred within the 280px navigation-rail cell
-and the first global-navigation label follows the same gutter and centred maximum-width
-axis as the main content. Navigation is DM Sans; the current item has a 4px amber
-underline and `aria-current`. A skip link is the first focusable element. The sidebar
-is `#F9F9F9`; its navigation landmark keeps the current section in its accessible name
-without repeating that section as a visible label above the links. The footer is deep
-ink with a 4px yellow top rule. `SiteFooter.astro` is the sole site-footer component:
-the root landing and every route using the shared `Layout` render that same component
-once, outside article content and navigation rails.
+The header is 64px, `#131224`, and uses the official white wordmark. In the expanded documentation
+shell, the wordmark is centred within the 280px navigation-rail cell and the first global-navigation
+label follows the main content gutter and centred maximum-width axis. Navigation is DM Sans; the
+current item has a 4px amber underline and `aria-current`. A skip link is the first focusable element.
+The `#F9F9F9` sidebar keeps the current section in its accessible name without repeating it visibly.
+The footer has a 4px yellow top rule. `SiteFooter.astro` renders once outside article content and
+navigation rails on the root landing and every route using the shared `Layout`.
 
-`/` is the sole OPDA Knowledge Base homepage. It uses an SPDTF-centred hero with
-integrated status facts, a static method figure, a featured working-group presentation,
-the six-destination audience/task directory, a participation action and the footer.
-The directory is sourced from the canonical global-navigation registry and uses the
-shared linked-card contract. The root has no separate top navigation bar: the brand
-sits in the hero and the directory provides the primary routes into the site. The PDTF
-schema is not a hero, status item, primary action or peer destination; it remains
-discoverable within SPDTF's attributed inputs.
+`/` is the sole OPDA Knowledge Base homepage. It uses an SPDTF-centred hero, a static method figure,
+a featured working-group presentation, the six-destination audience/task directory, a participation
+action and the footer. The directory comes from the canonical global-navigation registry and uses the
+shared linked-card contract. The root has no separate top navigation bar: the brand sits in the hero
+and the directory supplies the primary routes. The PDTF schema remains discoverable only within
+SPDTF's attributed inputs, not as a hero, status item, primary action or peer destination.
 
 Its sequence is:
 
-1. Split deep-ink hero using `/join`'s full-width campaign background and centred
-   92rem content grid, with the same static radial/diagonal treatment and panel
-   composition, the official brand line, a Slab headline of at most 12 words, three
-   actions and visible status facts.
-2. Static, accessible four-stage programme-method figure.
+1. Split deep-ink hero using `/join`'s full-width background, centred 92rem grid,
+   radial/diagonal treatment, panel composition, shared icon-and-name heading, short Slab headline,
+   three actions and working-group domain register.
+2. Static, accessible AI-assisted modelling loop with source material, a published candidate,
+   returning feedback and a consensus-gated draft-standard outcome.
 3. Prominent editorial link to the Finance and Banking working-group kick-off deck.
 4. Six linked entry cards, in the accepted order, for Programme, Governance, Semantic
    modelling, SPDTF Development, Working groups and Resources.
@@ -335,6 +331,8 @@ states, plus loading/error/success where asynchronous work occurs and dark parit
   compact navigation disclosure.
 - **Header utilities:** familiar single-purpose destinations may use 20px icons in
   44px targets, with an accessible name and tooltip; icons never replace the CTA label.
+- **Organisation heading:** the unchanged yellow icon plus the full organisation name in one
+  unbroken line of live DM Sans text; use strong ink on light and the inverse treatment on dark.
 - **Sidebar disclosure:** linked folder rows in a task-oriented hierarchy use a quiet
   tinted surface, structural border and bold label so they are distinct from leaf
   links. A separate 44px disclosure button expands each branch; its label opens the page.
@@ -362,6 +360,11 @@ states, plus loading/error/success where asynchronous work occurs and dark parit
   overview and detail views. Static teaching SVGs use image semantics and never
   infer links from labels. Explicitly interactive model SVGs use composite semantics
   with named node links. Pan/zoom controls remain keyboard-operable.
+- **Generated process infographic:** use a checked-in static SVG, not a client-side runtime,
+  when a stable public explanation needs specialist layout. Generate light and dark variants from
+  one source, embed the local font, reject external resources and retain equivalent semantic HTML.
+  Show a cycle as a cycle, keep conditional milestones outside it and distinguish AI assistance
+  from human decision authority.
 - **Recruitment group card:** plain label, practical scope and one action that carries
   the selected group to the signup form. Use a three-column maximum, preserve ordinary
   HTML reading order and do not use modelling terminology to explain audience choices.

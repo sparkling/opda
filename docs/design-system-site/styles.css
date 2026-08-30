@@ -244,6 +244,14 @@ code.standalone-identifier { padding: 0; border-radius: 0; color: var(--neutral-
 .asset--dark, .specimen--dark { color: var(--white); background: var(--deep); border-color: #3a3550; }
 .asset--icon img { max-width: 4rem; }
 .asset figcaption { align-self: end; font-size: 0.8125rem; }
+.brand-heading-board { display: grid; grid-template-columns: 1fr 1fr; border: 1px solid var(--neutral-200); }
+.brand-heading-sample { min-width: 0; padding: 2rem; }
+.brand-heading-sample + .brand-heading-sample { border-left: 1px solid var(--neutral-200); }
+.brand-heading-demo { min-width: 0; display: flex; align-items: flex-end; gap: 1rem; font: 600 clamp(1.5rem, 2.5vw, 2.25rem)/1.1 'DM Sans', sans-serif; letter-spacing: -0.018em; }
+.brand-heading-demo img { width: clamp(3rem, 5vw, 4.25rem); height: auto; flex: 0 0 auto; }
+.brand-heading-demo span { min-width: 0; white-space: nowrap; }
+.brand-heading-sample--light { color: var(--deep); background: var(--white); }
+.brand-heading-sample--dark { color: var(--yellow); background: var(--deep); }
 .rule-grid { margin-top: 1.5rem; }
 .rule-grid h3, .specimen h3, .data-patterns h3, .implementation-grid h3 { margin-top: 0; }
 .callout { margin-top: 1.5rem; padding: 1rem 1.25rem; border: 1px solid var(--neutral-200); border-left: 3px solid var(--info); background: var(--info-bg); }
@@ -367,6 +375,8 @@ tbody tr:nth-child(even) > td:not(:first-child) { background: var(--off-white); 
   .data-ramp-grid figure { border-right: 0; border-bottom: 1px solid var(--neutral-200); }
   .hero-actions { flex-direction: column; align-items: stretch; }
   .state-board { grid-template-columns: minmax(0, 1fr); }
+  .brand-heading-board { grid-template-columns: minmax(0, 1fr); }
+  .brand-heading-sample + .brand-heading-sample { border-left: 0; border-top: 1px solid var(--neutral-200); }
   .content-card__stats { grid-template-columns: minmax(0, 1fr); }
   .grayscale-specimen div { grid-template-columns: auto 1fr; }
   .governance-flow li { grid-template-columns: 1fr; }

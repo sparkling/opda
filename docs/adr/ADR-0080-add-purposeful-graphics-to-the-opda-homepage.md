@@ -2,11 +2,11 @@
 status: accepted
 date: 2026-08-30
 updated: 2026-08-30
-tags: [website, homepage, design-system, brand, accessibility, svg, presentation]
+tags: [website, homepage, design-system, brand, accessibility, svg, infographic, ai, presentation]
 supersedes: []
 amends: [ADR-0073, ADR-0074]
-depends-on: [ADR-0064, ADR-0073, ADR-0074, ADR-0078]
-implements: [DESIGN.md, src/pages/index.astro, src/components/home/MethodFlowFigure.astro, src/components/home/KickoffFeature.astro, src/styles/working-group-campaign.css, src/styles/working-group-campaign-responsive.css, tests/e2e/smoke.spec.mjs]
+depends-on: [ADR-0064, ADR-0065, ADR-0073, ADR-0074, ADR-0078]
+implements: [DESIGN.md, package.json, scripts/generate-home-method-infographic.mjs, public/images/home/method-loop-light.svg, public/images/home/method-loop-dark.svg, src/pages/index.astro, src/components/BrandHeading.astro, src/components/SiteFooter.astro, src/components/home/MethodFlowFigure.astro, src/components/home/KickoffFeature.astro, src/styles/working-group-campaign.css, src/styles/working-group-campaign-responsive.css, public/ui/design/public.css, tests/design-system-contract.test.mjs, tests/e2e/smoke.spec.mjs]
 ---
 
 # Add purposeful graphics to the OPDA homepage
@@ -59,11 +59,12 @@ programme facts, governance, routes, publication or deployment.
 
 The root homepage uses this editorial sequence:
 
-1. A split deep-ink hero with the official OPDA brand line, `/join`'s full-width
+1. A split deep-ink hero with the shared OPDA icon-and-name heading, `/join`'s full-width
    campaign background and centred 92rem content grid, the same panel composition,
    SPDTF, Programme and working-group actions, and a compact working-group domain register.
-2. A static four-stage figure showing evidence and expertise, working-group review,
-   a governed candidate, and shared property information.
+2. A static AI-assisted modelling loop showing source material, model extraction,
+   candidate publication and working-group review, with feedback returning to the
+   next pass and consensus leading to a draft standard.
 3. A prominent Finance and Banking kick-off feature linking directly to
    `/presentation/working-group-kickoff`.
 4. The unchanged canonical directory for Programme, Governance, Semantic modelling,
@@ -81,11 +82,22 @@ proposition, and adds a direct working-group action to the existing SPDTF and Pr
 actions. Its small hero label identifies the Smart Property Data Trust Framework. The
 right-hand panel lists the six working-group domains with short descriptions.
 
-The method figure is a static authored SVG with a title, description and visible prose
-equivalent. It has separate wide and stacked geometries so labels remain readable
-without horizontal scrolling. Connectors are axis-aligned, the governed-candidate
-stage is the only amber focal signal, and no information depends on animation or
-colour alone.
+The method figure follows the Finance and Banking working-group presentation and
+ADR-0065 rather than imposing an arbitrary stage count. Its repeating cycle contains
+the four parts shown in the presentation: people provide authorised material; AI
+extracts, compares and drafts; OPDA publishes a candidate model and ontology; and
+working-group members challenge and improve it. Feedback and new evidence begin the
+next modelling pass. A separate consensus exit leads to a stable working-group draft,
+which is explicitly not yet ratified or adopted.
+
+AntV Infographic is an offline layout and SVG-export dependency only. A standalone
+Node script generates checked-in light and dark assets from one canonical content
+source. The generated SVGs embed the local DM Sans font and reject remote resources;
+Astro serves them as inert images without hydration or a diagram runtime. Equivalent
+semantic HTML describes the complete process, and a compact prose treatment replaces
+the image where its text would become too small. The visible guardrail states that AI
+may extract, compare and draft while people decide what is true, resolve disagreement
+and approve status changes.
 
 The presentation feature is an editorial preview, not an embedded presentation. Its
 small, isolated poster treatment may use the restored deck's forest, cream and amber
@@ -109,8 +121,10 @@ than competing with the homepage's primary proposition.
   turns evidence into shared meaning.
 - Good, because the working-group presentation becomes a prominent editorial route
   without becoming a navigation peer or contaminating the shared design system.
-- Good, because static SVG and CSS geometry provide visual character without a new
-  client runtime or motion dependency.
+- Good, because generated static SVG and CSS composition provide visual character
+  without a client runtime or motion dependency.
+- Good, because the homepage now says plainly that AI accelerates extraction and
+  drafting while preserving human authority over meaning and status.
 - Good, because the hero now previews the domains that make the programme tangible.
 - Bad, because detailed authority and maturity status now sit behind the SPDTF route
   rather than appearing directly in the hero.
@@ -127,8 +141,12 @@ than competing with the homepage's primary proposition.
   homepage components named in `implements`.
 - `DESIGN.md`, ADR-0073 and ADR-0074 record the same homepage sequence, motif exception
   and integrated status treatment.
-- The official icon remains unchanged in the hero brand line; the presentation feature
+- The official icon remains unchanged in the shared icon-and-name heading; the presentation feature
   links to the existing local deck and imports none of its runtime assets.
+- The method figure's labels and authority boundary agree with the modelling loop and
+  AI limitations in the working-group presentation and ADR-0065.
+- `pnpm run homepage:infographic` regenerates both theme assets in a standalone process;
+  the rendered homepage loads no AntV JavaScript or external SVG resources.
 - Fable's read-only review of the initial composition found three material defects;
   those corrections to print colour, heading hierarchy, SVG naming and poster
   legibility remain. The later shared-hero amendment has not been re-reviewed by Fable.
@@ -175,7 +193,18 @@ than competing with the homepage's primary proposition.
   status remains on the linked Smart Property Data Trust Framework pages rather than
   being repeated in the marketing hero. The method, featured presentation, route cards
   and contribution section share the hero's responsive content frame, rather than adding
-  their own nested horizontal inset.
+  their own nested horizontal inset. The shared footer changes surface, text and wordmark
+  for the selected theme.
+- **2026-08-30 — share the organisation heading and strengthen the method figure.**
+  The hero now consumes the design system's icon-and-name heading instead of owning
+  its typography locally. The four repeated SVG boxes are replaced by a responsive
+  semantic infographic rather than retained as four assumed stages.
+- **2026-08-30 — derive the method from the working-group presentation.** The final
+  figure uses the presentation's resource, AI-assisted drafting, published-candidate
+  and human-review loop. Feedback returns to the next pass until consensus; only then
+  does a separate outcome identify the stable draft standard. AntV Infographic
+  generates theme-specific static SVGs offline, while semantic HTML, mobile prose,
+  local typography and explicit human-authority wording remain part of the page.
 
 ## More Information
 

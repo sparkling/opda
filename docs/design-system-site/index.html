@@ -116,6 +116,16 @@
           <figure class="asset asset--dark"><img src="./assets/opda-wordmark-white.svg" alt="OPDA white wordmark" /><figcaption>White wordmark · dark surfaces</figcaption></figure>
           <figure class="asset asset--icon"><img src="./assets/opda-icon-yellow.svg" alt="OPDA yellow icon" /><figcaption>Icon · dark or decorative context</figcaption></figure>
         </div>
+        <h3>Icon-and-name heading</h3>
+        <p>The official icon remains unchanged and decorative; the organisation name stays live, responsive DM Sans text on one line.</p>
+        <div class="brand-heading-board">
+          <div class="brand-heading-sample brand-heading-sample--light">
+            <div class="brand-heading-demo"><img src="./assets/opda-icon-yellow.svg" alt="" aria-hidden="true" /><span>Open Property Data Association</span></div>
+          </div>
+          <div class="brand-heading-sample brand-heading-sample--dark">
+            <div class="brand-heading-demo"><img src="./assets/opda-icon-yellow.svg" alt="" aria-hidden="true" /><span>Open Property Data Association</span></div>
+          </div>
+        </div>
         <div class="rule-grid">
           <article><h3>Preserve</h3><p>Geometry, proportions and embedded SVG values <code>#131224</code>, <code>#FEC82F</code> and <code>#FEC92B</code>.</p></article>
           <article><h3>Separate roles</h3><p>Logo-specific values stay inside the source assets; interface amber remains <code>#FEC92B</code>.</p></article>
@@ -180,6 +190,11 @@
             <a class="button button--primary" href="#accessibility">Review accessibility gates</a>
           </article>
           <article class="specimen">
+            <h3>Generated process infographic</h3>
+            <p>Generate stable public explanations as checked-in light and dark SVGs, with no client runtime or external resources.</p>
+            <p>Keep an equivalent semantic HTML sequence, show cycles as cycles, place conditional outcomes outside them and distinguish AI assistance from human decision authority.</p>
+          </article>
+          <article class="specimen">
             <h3>Tabs</h3>
             <div class="tabs" role="tablist" aria-label="Example views">
               <button id="tab-definition" role="tab" aria-selected="true" aria-controls="panel-definition">Definition</button>
@@ -210,6 +225,7 @@
           <pre id="token-code"><code>:root {
   --brand-deep: #131224;
   --brand-yellow: #fec92b;
+  --brand-heading: 600 clamp(2.25rem, 4vw, 4rem) / 1 var(--font-sans);
   --color-link: #5b51d8;
   --target-min: 2.75rem;
 }</code></pre>

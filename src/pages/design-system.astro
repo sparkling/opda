@@ -1,5 +1,6 @@
 ---
 import Layout from '@/layouts/Layout.astro';
+import BrandHeading from '@/components/BrandHeading.astro';
 
 const brandColours = [
   { name: 'Deep ink', value: '#131224', role: 'Header, hero, footer and code' },
@@ -15,6 +16,7 @@ const dataColours = ['#6C5BD4', '#C77F00', '#0E8478', '#A5317F', '#4E6E93', '#58
 const tokenSample = `:root {
   --brand-deep: #131224;
   --brand-yellow: #fec92b;
+  --brand-heading: 600 clamp(2.25rem, 4vw, 4rem) / 1 var(--font-sans);
   --color-link: #5b51d8;
   --target-min: 2.75rem;
 }`;
@@ -26,7 +28,7 @@ const tokenSample = `:root {
 >
   <div class="page-meta">
     <span class="pill pill--brand">Normative reference</span>
-    <span>Version 1.0 · 16 August 2026</span>
+    <span>Version 1.0 · updated 30 August 2026</span>
   </div>
 
   <h1>OPDA design system</h1>
@@ -75,6 +77,19 @@ const tokenSample = `:root {
   <div class="callout callout--key">
     <h3 class="callout__label"><span aria-hidden="true">◇</span> Asset rule</h3>
     <p>Use the supplied SVGs unchanged. Logo-specific fills stay inside the files; interface colours stay in tokens.</p>
+  </div>
+  <h3>Icon-and-name heading</h3>
+  <p>
+    Use the official icon with the organisation name as live text. The icon is
+    decorative; DM Sans supplies the unbroken name, which adapts to its surface and theme.
+  </p>
+  <div class="brand-heading-specimens">
+    <div class="brand-heading-specimen brand-heading-specimen--light">
+      <BrandHeading surface="light" />
+    </div>
+    <div class="brand-heading-specimen brand-heading-specimen--dark">
+      <BrandHeading surface="dark" />
+    </div>
   </div>
 
   <h2 id="colour">Colour</h2>
@@ -150,6 +165,15 @@ const tokenSample = `:root {
   <div class="callout callout--success"><h3 class="callout__label"><span aria-hidden="true">✓</span> Success</h3><p>The validation contract has passed.</p></div>
   <div class="callout callout--warn"><h3 class="callout__label"><span aria-hidden="true">◇</span> Warning</h3><p>This candidate has not been adopted.</p></div>
   <div class="callout callout--danger"><h3 class="callout__label"><span aria-hidden="true">!</span> Critical</h3><p>A required provenance field is missing.</p></div>
+  <div class="callout callout--note">
+    <h3 class="callout__label"><span aria-hidden="true">↻</span> Generated process infographic</h3>
+    <p>
+      Generate stable explanatory graphics as checked-in light and dark SVGs, with no
+      client runtime or external resources. Keep the complete process in semantic HTML,
+      show cycles as cycles, place conditional outcomes outside them and state AI
+      assistance separately from human decision authority.
+    </p>
+  </div>
 
   <h2 id="standalone-public">Standalone public-service family</h2>
   <p><code>/join</code>, <code>/join/privacy</code> and <code>/accessibility</code> use a minimal OPDA shell, not Knowledge Base furniture. They still consume the official assets, semantic tokens, typography, buttons, fields, focus treatment and footer rules from this system.</p>
@@ -221,6 +245,13 @@ const tokenSample = `:root {
     .brand-asset--light figcaption { color: var(--neutral-600); }
     .brand-asset--dark { color: var(--brand-white); background: var(--brand-deep); }
     .brand-asset--dark figcaption { color: var(--neutral-400); }
+    .brand-heading-specimens { display: grid; grid-template-columns: 1fr 1fr; border: 1px solid var(--color-border); }
+    .brand-heading-specimen { min-width: 0; padding: var(--space-7); }
+    .brand-heading-specimen + .brand-heading-specimen { border-left: 1px solid var(--color-border); }
+    .brand-heading-specimen :global(.brand-heading) { --brand-heading: 600 clamp(1.5rem, 2.5vw, 2.25rem) / 1.1 var(--font-sans); }
+    .brand-heading-specimen :global(.brand-heading__icon) { width: clamp(3rem, 5vw, 4.25rem); }
+    .brand-heading-specimen--light { background: var(--brand-white); }
+    .brand-heading-specimen--dark { background: var(--brand-deep); }
     .colour-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); border: 1px solid var(--color-border); }
     .colour-grid article { min-height: 13rem; padding: var(--space-5); display: flex; flex-direction: column; border-right: 1px solid var(--color-border); border-bottom: 1px solid var(--color-border); }
     .colour-grid i { height: 5rem; margin: calc(-1 * var(--space-5)) calc(-1 * var(--space-5)) var(--space-5); background: var(--sample); border-bottom: 1px solid var(--color-border); }
@@ -257,8 +288,9 @@ const tokenSample = `:root {
       .gate-grid { grid-template-columns: 1fr 1fr; }
     }
     @media (max-width: 40rem) {
-      .evidence-grid, .brand-assets, .colour-grid, .type-board, .component-board, .implementation-grid, .gate-grid { grid-template-columns: 1fr; }
+      .evidence-grid, .brand-assets, .brand-heading-specimens, .colour-grid, .type-board, .component-board, .implementation-grid, .gate-grid { grid-template-columns: 1fr; }
       .evidence-grid article, .brand-asset, .type-board article, .component-board article, .gate-grid article { border-right: 0; border-bottom: 1px solid var(--color-border); }
+      .brand-heading-specimen + .brand-heading-specimen { border-left: 0; border-top: 1px solid var(--color-border); }
     }
   </style>
 </Layout>

@@ -85,6 +85,9 @@ test('the replacement design system ships its normative contract and presentatio
   assert.match(components, /\.card__stats\s*\{[^}]*grid-template-columns:\s*repeat\(3,/su);
   assert.match(components, /a\.card:focus-visible/u);
   assert.match(live, /aria-label="Linked card pattern"/u);
+  for (const source of [live, presentation]) assert.match(source, /Icon-and-name heading/u);
+  assert.match(components + presentationCss, /brand-heading/u);
+  assert.match(components, /\.brand-heading__label\s*\{[^}]*white-space:\s*nowrap/su);
   assert.match(presentation, /content-card__stats/u);
   assert.match(presentationCss, /\.content-card__stats/u);
   assert.match(decision, /On 23 August 2026 the shared card contract was clarified/u);
@@ -420,8 +423,9 @@ test('text inherits its outer layout width instead of stacking nested measures',
 });
 
 test('the adversarial conformance blockers remain closed', async () => {
-  const [rootPage, base, content, components, navigation, print] = await Promise.all([
+  const [rootPage, brandHeading, base, content, components, navigation, print] = await Promise.all([
     readFile(file('src/pages/index.astro'), 'utf8'),
+    readFile(file('src/components/BrandHeading.astro'), 'utf8'),
     readFile(file('public/ui/design/base.css'), 'utf8'),
     readFile(file('public/ui/design/content.css'), 'utf8'),
     readFile(file('public/ui/design/components.css'), 'utf8'),
@@ -431,7 +435,8 @@ test('the adversarial conformance blockers remain closed', async () => {
   assert.doesNotMatch(rootPage, /<html[^>]+data-theme="light"/u);
   assert.match(rootPage, /URLSearchParams\(location\.search\)/u);
   assert.doesNotMatch(rootPage, /class="public-header"|id="theme-toggle"/u);
-  assert.match(rootPage, /class="public-hero__brand"[^>]*>[\s\S]*opda-icon-yellow\.svg[\s\S]*Open Property Data Association/u);
+  assert.match(rootPage, /<BrandHeading surface="dark" campaign\s*\/>/u);
+  assert.match(brandHeading, /opda-icon-yellow\.svg[\s\S]*alt=""[\s\S]*aria-hidden="true"[\s\S]*Open Property Data Association/u);
   assert.match(rootPage, /class="btn btn--outline-dark"/u);
   assert.match(base, /color:\s*var\(--on-dark-muted\)/u);
   assert.doesNotMatch(base, /#d8d5df/iu);

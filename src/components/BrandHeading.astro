@@ -1,0 +1,29 @@
+---
+interface Props {
+  surface?: 'auto' | 'light' | 'dark';
+  campaign?: boolean;
+  class?: string;
+}
+
+const { surface = 'auto', campaign = false, class: className } = Astro.props;
+---
+
+<div class:list={[
+  'brand-heading',
+  {
+    'brand-heading--on-light': surface === 'light',
+    'brand-heading--on-dark': surface === 'dark',
+    'brand-heading--campaign': campaign,
+  },
+  className,
+]}>
+  <img
+    class="brand-heading__icon"
+    src="/ui/brand/opda-icon-yellow.svg"
+    alt=""
+    aria-hidden="true"
+    width="84"
+    height="100"
+  />
+  <span class="brand-heading__label">Open Property Data Association</span>
+</div>

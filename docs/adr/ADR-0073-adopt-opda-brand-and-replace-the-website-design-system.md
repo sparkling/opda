@@ -5,7 +5,7 @@ updated: 2026-08-30
 tags: [design-system, brand, website, accessibility, css, governance, presentation]
 supersedes: [ADR-0025]
 depends-on: [ADR-0064]
-implements: [DESIGN.md, public/ui, src/layouts/Layout.astro, src/layouts/StandalonePublicLayout.astro, src/components/Header.astro, src/components/SiteFooter.astro, src/components/campaign, src/pages/index.astro, src/pages/join, src/pages/accessibility.astro, src/pages/design-system.astro, src/styles/property-pack.css, docs/design-system-site, playwright.config.mjs, tests/e2e, scripts/crawl-routes.mjs, scripts/check-schema-reproducibility.mjs, .github/workflows/deploy-aws.yml]
+implements: [DESIGN.md, public/ui, src/layouts/Layout.astro, src/layouts/StandalonePublicLayout.astro, src/components/BrandHeading.astro, src/components/Header.astro, src/components/SiteFooter.astro, src/components/campaign, src/pages/index.astro, src/pages/join, src/pages/accessibility.astro, src/pages/design-system.astro, src/styles/property-pack.css, docs/design-system-site, playwright.config.mjs, tests/e2e, scripts/crawl-routes.mjs, scripts/check-schema-reproducibility.mjs, .github/workflows/deploy-aws.yml]
 ---
 
 # Adopt the OPDA brand and replace the website design system
@@ -136,18 +136,25 @@ the separate `docs/design-system-site/` review artefact remains the presentation
 this design system.
 
 Later on 30 August 2026 ADR-0080 added a bounded graphical composition for `/`: a
-static official-icon backdrop, an accessible four-stage programme-flow figure and an
-editorial link to the restored Finance and Banking deck. Shared brand and accessibility
-authority, and the deck's isolated local visual system, remain unchanged. Publication
-is not authorised.
+static official-icon backdrop, an accessible AI-assisted modelling loop and an
+editorial link to the restored Finance and Banking deck. The loop follows the deck's
+resource, candidate and human-review method, with the consensus-gated draft outcome
+outside the repeating cycle. Shared brand and accessibility authority, and the deck's
+isolated local visual system, remain unchanged. Publication is not authorised.
 
 Later the same day, the operator amended ADR-0080 so the root hero reuses `/join`'s
 full-width static radial/diagonal background, centred 92rem content grid and panel
 composition. The final convergence uses the campaign's actual numbered-list structure,
 adds a direct working-group action and gives the content below the hero one continuous
 design-system surface. This replaces the root's decorative icon backdrop without
-changing its existing copy, official brand line, programme status, shared tokens or
+changing its shared icon-and-name heading, working-group domain register, tokens or
 publication boundary.
+
+The same amendment adds a shared icon-and-name organisation heading. It keeps the
+official yellow icon unchanged, presents the full name as live DM Sans text, and
+defines light, inverse, responsive, forced-colour and print treatments in the design
+system rather than in the homepage. The live reference and standalone review site
+carry matching light- and dark-surface specimens.
 
 On 27 August 2026 the remaining working-group wrapper exception was removed. The
 join and privacy routes now inherit the standard main padding, article wrapper and
