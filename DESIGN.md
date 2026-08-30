@@ -1,6 +1,6 @@
 # OPDA Design System
 
-Version 1.0 · adopted 16 August 2026 · scope: opda.org.uk application and its
+Version 1.1 · adopted 16 August 2026 · updated 30 August 2026 · scope: opda.org.uk application and its
 standalone design-system presentation.
 
 This is the normative human contract for OPDA's web interface. It supersedes the
@@ -279,28 +279,31 @@ ink with a 4px yellow top rule. `SiteFooter.astro` is the sole site-footer compo
 the root landing and every route using the shared `Layout` render that same component
 once, outside article content and navigation rails.
 
-`/` is the sole OPDA Knowledge Base homepage. It uses an SPDTF-centred hero, visible
-programme-status strip, six-destination audience/task directory and footer. The
-directory is sourced from the canonical global-navigation registry and uses the shared
-linked-card contract. The root has no separate top navigation bar: the brand sits in
-the hero and the six destination cards provide the initial routes into the site. The
-PDTF schema is not a hero, status item, primary action or peer destination; it remains
+`/` is the sole OPDA Knowledge Base homepage. It uses an SPDTF-centred hero with
+integrated status facts, a static method figure, a featured working-group presentation,
+the six-destination audience/task directory, a participation action and the footer.
+The directory is sourced from the canonical global-navigation registry and uses the
+shared linked-card contract. The root has no separate top navigation bar: the brand
+sits in the hero and the directory provides the primary routes into the site. The PDTF
+schema is not a hero, status item, primary action or peer destination; it remains
 discoverable within SPDTF's attributed inputs.
 
 Its sequence is:
 
-1. Flat deep-ink hero with the single permitted subtle gradient
-   (`#131224` to `#231F2F`), a Slab headline of at most 12 words, amber underscore,
-   one yellow primary action and one white-outline secondary action.
-2. Compact source/status strip in Roboto Mono.
-3. Six linked entry cards, in the accepted global-navigation order, for Programme,
-   Governance, Semantic modelling, SPDTF Development, Working groups and Resources.
-4. Deep-ink footer.
+1. Split deep-ink hero with the permitted subtle gradient, an unchanged official-icon
+   backdrop, a Slab headline of at most 12 words, two actions and visible status facts.
+2. Static, accessible four-stage programme-method figure.
+3. Prominent editorial link to the Finance and Banking working-group kick-off deck.
+4. Six linked entry cards, in the accepted order, for Programme, Governance, Semantic
+   modelling, SPDTF Development, Working groups and Resources.
+5. Bounded participation call to action.
+6. Deep-ink footer.
 
 `/home` is retired without a redirect, rewrite alias or duplicate page. All internal
 homepage links use `/`.
 
-No floating screenshots, generic illustration clutter or synthetic poster imagery.
+No floating screenshots, generic illustration clutter or synthetic imagery. The
+presentation feature is a bounded editorial tile, not a screenshot or embedded deck.
 
 `/join`, `/join/privacy` and `/accessibility` form one standalone public-service
 family. They use the official wordmark, tokens, type, buttons, fields, focus and
@@ -400,7 +403,10 @@ crop. Decorative partner marks receive an equivalent text list.
 
 Generative imagery is not used in the OPDA identity. The supplied AI poster is
 removed. The sole recurring decorative motif is a 4px amber rule used for headlines,
-active navigation and footer structure; it does not imitate or redraw the logo.
+active navigation and footer structure; it does not imitate or redraw the logo. On the
+root homepage only, the unchanged official icon may also appear as a low-contrast,
+cropped decorative backdrop. The method figure and presentation tile carry editorial
+meaning and are not recurring identity motifs.
 
 Motion lasts 120–200ms, uses ease-out for entry and ease-in for exit, and changes
 only opacity or transform. There is no parallax, autoplay carousel, animated
@@ -439,7 +445,7 @@ Every live route belongs to one explicit visual family:
 
 | Family | Routes/pattern | Owner |
 |---|---|---|
-| Public entry | `/` | public entry styles, official wordmark and shared `SiteFooter` |
+| Public entry | `/` | hero/status, method figure, presentation feature, canonical directory, join action and shared `SiteFooter` |
 | Knowledge base | prose, governance and catalogue routes | shared `Layout` shell and `SiteFooter` |
 | Data and V2 | data browser, validation and V2 reference routes | shared tokens plus dense data patterns |
 | Schema/manual | generated schema, ontology and manual reference routes | shared shell plus labelled table/diagram patterns |

@@ -84,6 +84,7 @@ modelling website remains unchanged:
 | [ADR-0070](./ADR-0070-uniform-microsoft-365-working-group-workspaces.md) | Operate OPDA working groups through a uniform Microsoft 365 workspace pattern | accepted |
 | [ADR-0071](./ADR-0071-bounded-context-recruitment-campaign.md) | Recruit later bounded-context groups through a coordinated public campaign | accepted |
 | [ADR-0072](./ADR-0072-scheduled-working-group-inbox-agent.md) | Operate a scheduled, harnessed working-group inbox agent | accepted |
+| [ADR-0078](./ADR-0078-create-a-standalone-working-group-recruitment-campaign-at-join.md) | Create a standalone working-group recruitment campaign at `/join` | accepted |
 
 ## August 2026 website architecture and design
 
@@ -93,6 +94,8 @@ modelling website remains unchanged:
 | [ADR-0074](./ADR-0074-organise-site-around-spdtf-and-pdtf-schema.md) | Organise the site around SPDTF and the PDTF schema | implemented · amended |
 | [ADR-0076](./ADR-0076-consolidate-pdtf-schema-documentation-under-hierarchy-reflecting-routes.md) | Consolidate PDTF schema documentation under hierarchy-reflecting routes | superseded by ADR-0077 |
 | [ADR-0077](./ADR-0077-place-pdtf-schema-beneath-spdtf-as-third-party-input.md) | Place the PDTF schema beneath SPDTF as a third-party input | accepted · implementation pending |
+| [ADR-0079](./ADR-0079-make-the-site-public-and-retire-the-edge-authentication-gate.md) | Make the site public and retire the edge authentication gate | accepted |
+| [ADR-0080](./ADR-0080-add-purposeful-graphics-to-the-opda-homepage.md) | Add purposeful graphics to the OPDA homepage | accepted · validation pending |
 
 ## Authoring a new ADR
 

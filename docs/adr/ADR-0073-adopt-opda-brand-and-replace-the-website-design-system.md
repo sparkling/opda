@@ -135,6 +135,12 @@ unfinished shared-site surface and removed its purpose-built composition. The de
 the separate `docs/design-system-site/` review artefact remains the presentation of
 this design system.
 
+Later on 30 August 2026 ADR-0080 added a bounded graphical composition for `/`: a
+static official-icon backdrop, an accessible four-stage programme-flow figure and an
+editorial link to the restored Finance and Banking deck. Shared brand and accessibility
+authority, and the deck's isolated local visual system, remain unchanged. Publication
+is not authorised.
+
 On 27 August 2026 the remaining working-group wrapper exception was removed. The
 join and privacy routes now inherit the standard main padding, article wrapper and
 breadcrumb from `Layout`; they remain registered standalone surfaces, so no left-hand

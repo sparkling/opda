@@ -1,7 +1,7 @@
 ---
 status: implemented
 date: 2026-08-18
-updated: 2026-08-25
+updated: 2026-08-30
 tags: [website, information-architecture, pdtf-schema, spdtf, ontology, semantic-modelling, standards, migration, governance]
 supersedes: []
 amends: [ADR-0002, ADR-0041, ADR-0059, ADR-0062, ADR-0073]
@@ -11,6 +11,12 @@ implements: [docs/spdtf-information-architecture.md, src/pages/index.astro]
 
 # Organise the site around SPDTF and the PDTF schema
 
+> Update 2026-08-30 — ADR-0080 amends only the root homepage's editorial
+> composition. It replaces the separate status strip with integrated visible status
+> facts while preserving the registry-derived six-card directory, exact destination
+> order and URLs, sole-root rule and the PDTF schema's nested third-party position.
+> Publication and deployment remain unauthorised.
+>
 > Update 2026-08-23 — public-homepage alignment implemented: `/` now derives six
 > audience-led task cards from the accepted global-destination registry, in the same
 > order. Its hero centres collaborative SPDTF work and visible authority status; the

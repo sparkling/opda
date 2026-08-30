@@ -4,6 +4,8 @@ import {
   getRouteStatus,
 } from '@/lib/site-ia.mjs';
 import DestinationCards from '@/components/ia/DestinationCards.astro';
+import KickoffFeature from '@/components/home/KickoffFeature.astro';
+import MethodFlowFigure from '@/components/home/MethodFlowFigure.astro';
 import SiteFooter from '@/components/SiteFooter.astro';
 
 const title = 'OPDA Knowledge Base';
@@ -44,26 +46,55 @@ const routeStatus = getRouteStatus('/');
 <body class="public-site">
   <a class="skip-link" href="#main-content">Skip to main content</a>
   <main id="main-content" tabindex="-1">
-    <section class="public-hero" aria-labelledby="public-title">
+    <section class="public-hero public-hero--split" aria-labelledby="public-title">
+      <img
+        class="public-hero__motif"
+        src="/ui/brand/opda-icon-yellow.svg"
+        alt=""
+        aria-hidden="true"
+        width="640"
+        height="760"
+      />
       <div class="public-hero__inner">
-        <div class="public-hero__brand">
-          <img src="/ui/brand/opda-icon-yellow.svg" alt="" aria-hidden="true" width="84" height="100" />
-          <span>Open Property Data Association</span>
+        <div class="public-hero__copy">
+          <div class="public-hero__brand">
+            <img src="/ui/brand/opda-icon-yellow.svg" alt="" aria-hidden="true" width="84" height="100" />
+            <span>Open Property Data Association</span>
+          </div>
+          <p class="eyebrow">The OPDA Knowledge Base</p>
+          <h1 id="public-title">A shared language for property data, drafted in the open.</h1>
+          <p class="public-hero__lede">
+            SPDTF — the Smart Property Data Trust Framework — is the first
+            collaboratively authored scheme draft. Working groups across industry are
+            agreeing what property information means, under open governance. It is in
+            development: not yet adopted, and not a government-approved standard.
+          </p>
+          <div class="public-hero__actions">
+            <a class="btn" href="/spdtf">Explore SPDTF development</a>
+            <a class="btn btn--outline-dark" href="/programme">Understand the programme</a>
+          </div>
         </div>
-        <p class="eyebrow">The OPDA Knowledge Base</p>
-        <h1 id="public-title">One shared language for property data.</h1>
-        <p>
-          This is the shared workspace for people shaping SPDTF: a property-data
-          scheme being developed collaboratively across industry and with stakeholders.
-          Understand the programme, follow how meaning and decisions are governed,
-          review the developing work, or take part.
-        </p>
-        <div class="public-hero__actions">
-          <a class="btn" href="/programme">Explore the Smart Property Data Trust Framework</a>
-          <a class="btn btn--outline-dark" href="/join">Join a working group</a>
-        </div>
+        <aside class="public-hero__status" aria-label="Programme status">
+          <h2>At a glance</h2>
+          <dl>
+            <div>
+              <dt>Work area</dt>
+              <dd>SPDTF</dd>
+            </div>
+            <div>
+              <dt>Maturity</dt>
+              <dd>In development — not an adopted standard</dd>
+            </div>
+            <div>
+              <dt>Authority</dt>
+              <dd>Working groups own meaning; governance controls promotion</dd>
+            </div>
+          </dl>
+        </aside>
       </div>
     </section>
+    <MethodFlowFigure />
+    <KickoffFeature />
     <nav class="public-overview" aria-labelledby="inside-title">
       <header>
         <p class="overline">Choose your route</p>
@@ -71,8 +102,160 @@ const routeStatus = getRouteStatus('/');
       </header>
       <DestinationCards />
     </nav>
+    <section class="public-join" aria-labelledby="join-title">
+      <div class="public-join__inner">
+        <p class="public-join__overline">Contribute</p>
+        <h2 id="join-title">Bring your expertise to the draft.</h2>
+        <p>
+          Working groups need people who know how property really transacts — agents,
+          lenders, conveyancers, surveyors and data specialists. No modelling background
+          is required.
+        </p>
+        <a class="btn" href="/join">Join a working group</a>
+      </div>
+    </section>
   </main>
   <SiteFooter />
   <script is:inline src="/ui/client.js"></script>
 </body>
 </html>
+
+<style>
+  .public-hero--split {
+    position: relative;
+    overflow: hidden;
+  }
+  .public-hero__motif {
+    position: absolute;
+    top: -8rem;
+    right: -10rem;
+    width: 56rem;
+    height: auto;
+    opacity: 0.06;
+    pointer-events: none;
+  }
+  .public-hero--split .public-hero__inner {
+    position: relative;
+    z-index: 1;
+    min-height: auto;
+    padding-block: clamp(var(--space-10), 8vw, var(--space-12));
+    display: grid;
+    grid-template-columns: minmax(0, 46rem) minmax(16rem, 22rem);
+    align-items: end;
+    justify-content: space-between;
+    gap: var(--space-10);
+  }
+  .public-hero__copy { min-width: 0; }
+  .public-hero--split .public-hero__brand {
+    align-items: flex-end;
+    gap: var(--space-5);
+    margin-bottom: var(--space-10);
+    font-size: clamp(2rem, 4vw, 3.5rem);
+  }
+  .public-hero--split .public-hero__brand img { width: clamp(4.5rem, 7vw, 6.5rem); }
+  .public-hero__status {
+    padding: var(--space-6) 0 var(--space-2) var(--space-7);
+    border-left: 1px solid var(--color-surface-dark-tint);
+  }
+  .public-hero__status h2 {
+    margin: 0 0 var(--space-5);
+    color: var(--brand-yellow);
+    font: 700 var(--text-xs) / 1.3 var(--font-sans);
+    letter-spacing: var(--tracking-meta);
+    text-transform: uppercase;
+  }
+  .public-hero__status dl { margin: 0; }
+  .public-hero__status dl > div {
+    padding: var(--space-4) 0;
+    border-top: 1px solid var(--color-surface-dark-tint);
+  }
+  .public-hero__status dt {
+    color: var(--on-dark-muted);
+    font: 700 var(--text-xs) / 1.3 var(--font-mono);
+    letter-spacing: var(--tracking-meta);
+    text-transform: uppercase;
+  }
+  .public-hero__status dd {
+    margin: var(--space-2) 0 0;
+    color: var(--brand-white);
+    font-size: var(--text-sm);
+  }
+
+  .public-join {
+    width: min(100%, var(--content-max));
+    margin: 0 auto;
+    padding: 0 var(--space-7) var(--space-10);
+    background: var(--color-surface);
+  }
+  .public-join__inner {
+    width: 100%;
+    padding: var(--space-8);
+    border: 1px solid var(--color-border);
+    border-top: 4px solid var(--brand-yellow);
+    background: var(--color-surface-card);
+  }
+  .public-join__overline {
+    margin: 0 0 var(--space-4);
+    color: var(--color-text-muted);
+    font: 700 var(--text-xs) / 1.3 var(--font-sans);
+    letter-spacing: var(--tracking-meta);
+    text-transform: uppercase;
+  }
+  .public-join h2 { margin: 0; font: var(--h2); }
+  .public-join__inner > p:not(.public-join__overline) {
+    margin: var(--space-4) 0 0;
+    color: var(--color-text-muted);
+    font: var(--lead);
+  }
+  .public-join .btn { margin-top: var(--space-6); }
+
+  @media (max-width: 64rem) {
+    .public-hero--split .public-hero__inner { grid-template-columns: minmax(0, 1fr); }
+    .public-hero__status {
+      padding: var(--space-7) 0 0;
+      border-top: 1px solid var(--color-surface-dark-tint);
+      border-left: 0;
+    }
+  }
+
+  @media (max-width: 40rem) {
+    .public-hero__motif { top: -2rem; right: -12rem; width: 32rem; }
+    .public-hero--split .public-hero__brand {
+      align-items: flex-start;
+      margin-bottom: var(--space-8);
+    }
+    .public-join { padding: 0 var(--space-5) var(--space-8); }
+    .public-join__inner { width: 100%; padding: var(--space-6); }
+  }
+
+  @media (forced-colors: active) {
+    .public-hero__motif { display: none; }
+    .public-hero__status,
+    .public-hero__status dl > div,
+    .public-join__inner { border-color: CanvasText; }
+  }
+
+  @media print {
+    .public-hero__motif { display: none; }
+    .public-hero--split {
+      color: black;
+      background: white;
+      border-bottom-color: black;
+    }
+    .public-hero--split h1,
+    .public-hero--split .eyebrow,
+    .public-hero--split .public-hero__brand span,
+    .public-hero--split .public-hero__lede,
+    .public-hero__status h2,
+    .public-hero__status dt,
+    .public-hero__status dd { color: black; }
+    .public-hero__status,
+    .public-hero__status dl > div { border-color: black; }
+    .public-hero__actions .btn {
+      color: black;
+      background: white;
+      border: 1px solid black;
+    }
+    .public-join__inner { break-inside: avoid; }
+  }
+</style>

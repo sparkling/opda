@@ -1,0 +1,141 @@
+<section class="kickoff-feature" aria-labelledby="kickoff-title">
+  <div class="kickoff-feature__inner">
+    <div class="kickoff-feature__copy">
+      <p class="kickoff-feature__overline">Featured presentation</p>
+      <h2 id="kickoff-title">Finance &amp; Banking working group — kick-off</h2>
+      <p>
+        A non-technical, interactive introduction for finance and banking participants:
+        why shared property data matters, how working groups agree meaning, and how to
+        take part in review. It runs full-screen in its own visual style, made for a
+        first session — no modelling background needed.
+      </p>
+      <a class="btn" href="/presentation/working-group-kickoff">Open the presentation</a>
+    </div>
+
+    <div class="kickoff-feature__poster" aria-hidden="true">
+      <div class="kickoff-feature__poster-frame">
+        <span>OPDA · Finance &amp; Banking</span>
+        <strong>Working Group<br />Kick-off</strong>
+        <small>Non-technical · Interactive · Full-screen</small>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .kickoff-feature {
+    position: relative;
+    overflow: hidden;
+    color: #f5f2e8;
+    background: #071d18;
+    border-bottom: 4px solid #ffbd59;
+  }
+  .kickoff-feature::after {
+    content: '';
+    position: absolute;
+    right: -8rem;
+    bottom: -12rem;
+    width: 30rem;
+    aspect-ratio: 1;
+    border: 1px solid rgb(255 189 89 / 24%);
+    transform: rotate(45deg);
+    pointer-events: none;
+  }
+  .kickoff-feature__inner {
+    position: relative;
+    z-index: 1;
+    width: min(100%, var(--content-max));
+    margin: 0 auto;
+    padding: var(--space-10) var(--space-7);
+    display: grid;
+    grid-template-columns: minmax(0, 1.08fr) minmax(0, 0.92fr);
+    align-items: center;
+    gap: var(--space-10);
+  }
+  .kickoff-feature__copy { min-width: 0; }
+  .kickoff-feature__overline {
+    margin: 0 0 var(--space-4);
+    color: #ffbd59;
+    font: 700 var(--text-xs) / 1.3 var(--font-sans);
+    letter-spacing: var(--tracking-meta);
+    text-transform: uppercase;
+  }
+  .kickoff-feature h2 {
+    margin: 0;
+    color: #f5f2e8;
+    font: var(--h2);
+  }
+  .kickoff-feature__copy > p:not(.kickoff-feature__overline) {
+    margin: var(--space-6) 0 0;
+    color: #c7cec4;
+    font: var(--lead);
+  }
+  .kickoff-feature .btn { margin-top: var(--space-7); }
+  .kickoff-feature__poster {
+    position: relative;
+    order: -1;
+    aspect-ratio: 16 / 9;
+    padding: var(--space-5);
+    border: 1px solid rgb(245 242 232 / 38%);
+    background:
+      linear-gradient(90deg, transparent 49.8%, rgb(245 242 232 / 10%) 50%, transparent 50.2%),
+      linear-gradient(0deg, transparent 49.8%, rgb(245 242 232 / 10%) 50%, transparent 50.2%),
+      #0b2b24;
+  }
+  .kickoff-feature__poster::before {
+    content: '';
+    position: absolute;
+    inset: var(--space-5) calc(-1 * var(--space-5)) calc(-1 * var(--space-5)) var(--space-5);
+    border: 1px solid #ffbd59;
+    pointer-events: none;
+  }
+  .kickoff-feature__poster-frame {
+    position: relative;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: clamp(var(--space-5), 3vw, var(--space-8));
+    border-top: 4px solid #ffbd59;
+  }
+  .kickoff-feature__poster span,
+  .kickoff-feature__poster small {
+    color: #c7cec4;
+    font: 700 clamp(0.6875rem, 1vw, var(--text-xs)) / 1.3 var(--font-mono);
+    letter-spacing: var(--tracking-meta);
+    text-transform: uppercase;
+  }
+  .kickoff-feature__poster strong {
+    color: #f5f2e8;
+    font: 600 clamp(1.75rem, 4.4vw, 4.8rem) / 0.98 var(--font-display);
+    letter-spacing: var(--tracking-display);
+  }
+
+  @media (max-width: 64rem) {
+    .kickoff-feature__inner { grid-template-columns: minmax(0, 1fr); }
+    .kickoff-feature__poster { order: 0; }
+  }
+
+  @media (max-width: 40rem) {
+    .kickoff-feature__inner { padding: var(--space-8) var(--space-5); gap: var(--space-8); }
+    .kickoff-feature__poster { padding: var(--space-3); }
+    .kickoff-feature__poster::before { inset: var(--space-3) calc(-1 * var(--space-3)) calc(-1 * var(--space-3)) var(--space-3); }
+    .kickoff-feature__poster strong { font-size: clamp(1.5rem, 9vw, 2.5rem); }
+  }
+
+  @media (forced-colors: active) {
+    .kickoff-feature,
+    .kickoff-feature__poster,
+    .kickoff-feature__poster::before { border-color: CanvasText; forced-color-adjust: auto; }
+    .kickoff-feature::after { display: none; }
+  }
+
+  @media print {
+    .kickoff-feature { color: black; background: white; border: 1px solid black; }
+    .kickoff-feature::after,
+    .kickoff-feature__poster { display: none; }
+    .kickoff-feature h2,
+    .kickoff-feature__copy > p:not(.kickoff-feature__overline),
+    .kickoff-feature__overline { color: black; }
+  }
+</style>
