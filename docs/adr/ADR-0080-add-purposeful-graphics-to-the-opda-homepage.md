@@ -151,8 +151,11 @@ it does not remove or weaken it.
   SPDTF and Programme actions. Below the hero, one design-system page surface replaces
   alternating section bands; bounded cards and graphics retain their own contrast.
 - **2026-08-30 — identify the framework in the hero label.** The small hero label now
-  reads `Smart Property Data Trust Framework`; the headline, body copy, status facts
-  and routing remain unchanged.
+  reads `Smart Property Data Trust Framework`; the headline, status facts and routing
+  remain unchanged.
+- **2026-08-30 — clarify the hero lede.** The hero lede now begins with the purpose of
+  property information sharing and the collaborative work behind it. It then makes the
+  draft's development status and lack of adoption or government approval explicit.
 
 ## More Information
 
