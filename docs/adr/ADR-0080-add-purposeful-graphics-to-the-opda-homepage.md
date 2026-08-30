@@ -37,7 +37,7 @@ programme facts, governance, routes, publication or deployment.
 - Give the restored Finance and Banking kick-off presentation a prominent route.
 - Explain the programme method to non-technical readers without ontology jargon.
 - Preserve the canonical six-destination order and the root's no-global-header rule.
-- Keep maturity, authority and non-adoption status visible in the first viewport.
+- Introduce the model's contextual boundaries without turning the hero into technical documentation.
 - Reuse official assets and shared tokens without redrawing the OPDA identity.
 - Meet keyboard, reflow, forced-colour, reduced-motion and print expectations.
 - Keep publication and deployment outside this local source decision.
@@ -61,7 +61,7 @@ The root homepage uses this editorial sequence:
 
 1. A split deep-ink hero with the official OPDA brand line, `/join`'s full-width
    campaign background and centred 92rem content grid, the same panel composition,
-   SPDTF, Programme and working-group actions, and integrated status facts.
+   SPDTF, Programme and working-group actions, and a compact contextual-boundary register.
 2. A static four-stage figure showing evidence and expertise, working-group review,
    a governed candidate, and shared property information.
 3. A prominent Finance and Banking kick-off feature linking directly to
@@ -73,12 +73,14 @@ The root homepage uses this editorial sequence:
 
 The root hero reuses the recruitment campaign's `.wg-campaign-hero` and
 `.wg-hero-journey` styles rather than approximating them. This keeps the radial/diagonal
-background effect, lower amber highlight, responsive breakpoints, numbered-list
-component and panel surface identical across the two routes. The shared padding
+background effect, lower amber highlight, responsive breakpoints and panel surface
+identical across the two routes. The shared padding
 calculation keeps the content grid within 92rem while the campaign background remains
-full width. The homepage retains its headline, body copy, brand line and programme-status
-facts, with a direct working-group action added to the existing SPDTF and Programme
-actions. Its small hero label identifies the Smart Property Data Trust Framework.
+full width. The homepage retains its headline and brand line, uses a concise active-voice
+proposition, and adds a direct working-group action to the existing SPDTF and Programme
+actions. Its small hero label identifies the Smart Property Data Trust Framework. The
+right-hand panel lists the six domain boundaries, the deliberately small Common boundary
+and the candidate DBT Smart Data scheme context with short descriptions.
 
 The method figure is a static authored SVG with a title, description and visible prose
 equivalent. It has separate wide and stacked geometries so labels remain readable
@@ -97,9 +99,10 @@ They use the shared OPDA spacing, type and semantic tokens, except for the bound
 deck-preview palette above. The redesign introduces no canvas, WebGL, Three.js,
 parallax, autoplay, animated gradient or ambient motion.
 
-The former separate programme-status strip is replaced by the hero's visible status
-facts. This resolves the design/source drift while retaining the status requirement;
-it does not remove or weaken it.
+The former separate programme-status strip and the later hero status panel are replaced
+by the contextual-boundary register. Detailed maturity, authority and adoption status
+remain available through the SPDTF Development action and governed route metadata rather
+than competing with the homepage's primary proposition.
 
 ### Consequences
 
@@ -109,7 +112,9 @@ it does not remove or weaken it.
   without becoming a navigation peer or contaminating the shared design system.
 - Good, because static SVG and CSS geometry provide visual character without a new
   client runtime or motion dependency.
-- Good, because authority and maturity stay explicit within the hero.
+- Good, because the hero now previews the domains that make the programme tangible.
+- Bad, because detailed authority and maturity status now sit behind the SPDTF route
+  rather than appearing directly in the hero.
 - Bad, because the homepage now has more authored composition and therefore needs
   responsive, accessibility, visual and print regression coverage.
 - Neutral, because the six canonical destinations, their order and their routes do
@@ -142,20 +147,23 @@ it does not remove or weaken it.
   direction, the root hero now reuses `/join`'s static background effect and two-column
   panel composition while retaining the homepage's existing content. Its full-width
   background contains a centred 92rem content grid through the shared campaign padding
-  rule. This replaces the initially accepted decorative icon backdrop. The visible
-  `Programme status` eyebrow occupies the same role as `/join`'s `What you can
-  contribute` eyebrow; it introduces no change to programme authority or maturity.
+  rule. This replaces the initially accepted decorative icon backdrop. The initial
+  `Programme status` eyebrow occupied the same role as `/join`'s `What you
+  can contribute` eyebrow; the later domains amendment below supersedes that panel.
 - **2026-08-30 — converge the hero and page surface.** The root now uses the campaign
   hero's actual structure and numbered-list component rather than legacy homepage
   classes that approximated them. A direct working-group action joins the existing
   SPDTF and Programme actions. Below the hero, one design-system page surface replaces
   alternating section bands; bounded cards and graphics retain their own contrast.
 - **2026-08-30 — identify the framework in the hero label.** The small hero label now
-  reads `Smart Property Data Trust Framework`; the headline, status facts and routing
-  remain unchanged.
-- **2026-08-30 — clarify the hero lede.** The hero lede now begins with the purpose of
-  property information sharing and the collaborative work behind it. It then makes the
-  draft's development status and lack of adoption or government approval explicit.
+  reads `Smart Property Data Trust Framework`; the headline and routing remain unchanged.
+  The later domains amendment below supersedes the status facts.
+- **2026-08-30 — sharpen the proposition and surface the domains.** The hero lede now
+  uses active voice to state that OPDA and organisations across the property industry
+  are developing SPDTF to improve property information sharing. The right-hand panel
+  replaces the status snapshot with all six domain boundaries, the Common boundary and
+  the candidate DBT Smart Data scheme context. Detailed programme status remains on the
+  linked SPDTF pages rather than being repeated in the marketing hero.
 
 ## More Information
 

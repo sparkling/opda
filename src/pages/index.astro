@@ -14,6 +14,16 @@ const title = 'OPDA Knowledge Base';
 const description =
   'Explore the OPDA programme, governance, semantic modelling, SPDTF development, working groups and evidence behind a shared language for property data.';
 const routeStatus = getRouteStatus('/');
+const domains = [
+  { name: 'Common boundary', description: 'Stable identity and meaning shared across domains.' },
+  { name: 'Conveyancing', description: 'Legal title, ownership, disclosure, completion and transfer.' },
+  { name: 'Estate agency', description: 'Marketing, pricing, letting, media and consumer disclosure.' },
+  { name: 'Finance and banking', description: 'Mortgages, repayment, insurance and financial obligations.' },
+  { name: 'Property data services', description: 'Searches, registers, certificates and utility records.' },
+  { name: 'Property technology', description: 'Digital property records, smart home capabilities and connectivity.' },
+  { name: 'Surveying and valuation', description: 'Construction, condition, alterations and installed features.' },
+  { name: 'DBT Smart Data candidate', description: 'Authorisation and controlled sharing across participating sectors.' },
+];
 
 ---
 <!doctype html>
@@ -57,11 +67,9 @@ const routeStatus = getRouteStatus('/');
         <p class="wg-eyebrow">Smart Property Data Trust Framework</p>
         <h1 id="public-title">A shared language for property data, <em>drafted in the open.</em></h1>
         <p class="wg-lead">
-          The Smart Property Data Trust Framework is the first collaborative draft for
-          how property information can be shared. Working groups from across the industry
-          are defining the language, evidence and rules that must work in practice. The
-          framework remains in development and is not an adopted standard or a government
-          approved scheme.
+          Together, OPDA and organisations across the property industry are developing
+          SPDTF to make property information easier to share, understand and trust
+          throughout every transaction.
         </p>
         <div class="wg-hero-actions">
           <a class="btn wg-btn--large" href="/spdtf">Explore SPDTF development</a>
@@ -70,14 +78,14 @@ const routeStatus = getRouteStatus('/');
         </div>
       </div>
 
-      <aside class="wg-hero-journey" aria-labelledby="public-status-title">
-        <p class="wg-eyebrow">Programme status</p>
-        <h2 id="public-status-title">At a glance</h2>
-        <ol class="wg-process">
-          <li><strong>Work area</strong><span>SPDTF</span></li>
-          <li><strong>Maturity</strong><span>In development — not an adopted standard</span></li>
-          <li><strong>Authority</strong><span>Working groups own meaning; governance controls promotion</span></li>
-        </ol>
+      <aside class="wg-hero-journey" aria-labelledby="public-domains-title">
+        <p class="wg-eyebrow">Contextual boundaries</p>
+        <h2 id="public-domains-title">Domains</h2>
+        <ul class="home-domain-list">
+          {domains.map((domain) => (
+            <li><strong>{domain.name}</strong><span>{domain.description}</span></li>
+          ))}
+        </ul>
       </aside>
     </section>
     <div class="home-content-surface">
@@ -132,6 +140,32 @@ const routeStatus = getRouteStatus('/');
   .home-campaign-hero .wg-campaign-hero__copy > .wg-eyebrow {
     font-size: clamp(1rem, 1.25vw, 1.25rem);
   }
+  .home-campaign-hero :global(.home-domain-list) {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0 var(--space-5);
+    margin: var(--space-6) 0 0;
+    padding: 0;
+    list-style: none;
+    border-bottom: 1px solid var(--color-surface-dark-tint);
+  }
+  .home-campaign-hero :global(.home-domain-list li) {
+    min-width: 0;
+    padding: var(--space-3) 0;
+    border-top: 1px solid var(--color-surface-dark-tint);
+  }
+  .home-campaign-hero :global(.home-domain-list strong) {
+    display: block;
+    color: var(--brand-white);
+    font: 600 var(--text-base) / 1.3 var(--font-display);
+  }
+  .home-campaign-hero :global(.home-domain-list span) {
+    display: block;
+    margin-top: var(--space-1);
+    color: var(--on-dark-muted);
+    font-size: var(--text-sm);
+    line-height: 1.4;
+  }
 
   .home-content-surface {
     color: var(--color-text);
@@ -184,13 +218,15 @@ const routeStatus = getRouteStatus('/');
       margin-bottom: var(--space-8);
     }
     .home-campaign-hero__brand span { white-space: normal; }
+    .home-campaign-hero :global(.home-domain-list) { grid-template-columns: 1fr; }
     .public-join { padding: 0 var(--space-5) var(--space-8); }
     .public-join__inner { width: 100%; padding: var(--space-6); }
   }
 
   @media (forced-colors: active) {
     .wg-hero-journey,
-    .wg-hero-journey .wg-process li,
+    .home-campaign-hero :global(.home-domain-list),
+    .home-campaign-hero :global(.home-domain-list li),
     .public-join__inner { border-color: CanvasText; }
   }
 
@@ -206,12 +242,11 @@ const routeStatus = getRouteStatus('/');
     .home-campaign-hero__brand,
     .home-campaign-hero .wg-lead,
     .home-campaign-hero .wg-hero-journey h2,
-    .home-campaign-hero .wg-process strong,
-    .home-campaign-hero .wg-process span,
-    .home-campaign-hero .wg-process li::before { color: black; }
+    .home-campaign-hero :global(.home-domain-list strong),
+    .home-campaign-hero :global(.home-domain-list span) { color: black; }
     .home-campaign-hero .wg-hero-journey,
-    .home-campaign-hero .wg-process,
-    .home-campaign-hero .wg-process li { border-color: black; }
+    .home-campaign-hero :global(.home-domain-list),
+    .home-campaign-hero :global(.home-domain-list li) { border-color: black; }
     .home-campaign-hero .wg-hero-actions .btn {
       color: black;
       background: white;
