@@ -243,7 +243,8 @@ test('campaign recruits industry experts through purpose, influence and clear ex
     'Explain commercial needs, opportunities, costs and implementation impacts',
     'Represent public interests',
     'Bring consumer, accessibility, regulatory and wider public-interest perspectives',
-    'No data-modelling expertise is needed.',
+    'No data expertise is required.',
+    'What matters is your first-hand understanding of how the property industry works.',
     'AI may assist comparison and drafting; it cannot make a draft official.',
     'expectations before asking you to commit',
   ]) {
