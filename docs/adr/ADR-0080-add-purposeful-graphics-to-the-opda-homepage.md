@@ -158,19 +158,21 @@ than competing with the homepage's primary proposition.
   reads `Smart Property Data Trust Framework`; the headline and routing remain unchanged.
   The later domains amendment below supersedes the status facts.
 - **2026-08-30 — sharpen the proposition and surface the domains.** The hero lede now
-  uses active voice to state that OPDA and organisations across the property industry
-  are developing SPDTF to improve property information sharing. The right-hand panel
-  replaces the status snapshot with the six working-group domains. The Common boundary
-  and candidate DBT Smart Data context are deliberately excluded because they are not
-  working groups. Its visible label is `Working Group`, and its single-column register
-  reuses the same numbered process structure and base visual language as the `/join`
-  hero. A homepage modifier keeps the domain type compact and readable, adds measured row
-  spacing, widens the desktop panel to limit wrapping, removes the register's final bottom
-  rule, and translates the panel down for visible space above its top edge. The hero uses
-  the shared site content width, so the panel's right edge aligns with the page margin at
-  every viewport. On the desktop two-column layout, the actions use compact padding, a
-  generous gap and a single row; they return to the standard wrapped treatment when the
-  hero stacks. Detailed programme status remains on the linked SPDTF pages rather than
+  uses active voice and the full names of the Open Property Data Association and Smart
+  Property Data Trust Framework, stating that industry organisations are developing the
+  framework to support the Government’s Smart Data programme and improve property
+  information sharing. The right-hand panel replaces the status snapshot with the six
+  working-group domains. The Common boundary and candidate DBT Smart Data context are
+  deliberately excluded because they are not working groups. Its visible label is
+  `Working Group`, and its single-column register reuses the same numbered process
+  structure and base visual language as the `/join` hero. A homepage modifier keeps the
+  domain type compact and readable, adds measured row spacing, widens the desktop panel
+  to limit wrapping, removes the register's final bottom rule, and translates the panel
+  down for visible space above its top edge. The hero uses the shared site content width,
+  so the panel's right edge aligns with the page margin at every viewport. On the desktop
+  two-column layout, the actions use compact padding, a generous gap and a single row;
+  they return to the standard wrapped treatment when the hero stacks. Detailed programme
+  status remains on the linked Smart Property Data Trust Framework pages rather than
   being repeated in the marketing hero.
 
 ## More Information
