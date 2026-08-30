@@ -76,8 +76,9 @@ The root hero reuses the recruitment campaign's `.wg-campaign-hero` and
 background effect, lower amber highlight, responsive breakpoints, numbered-list
 component and panel surface identical across the two routes. The shared padding
 calculation keeps the content grid within 92rem while the campaign background remains
-full width. The homepage retains its own words, brand line and programme-status facts,
-with a direct working-group action added to the existing SPDTF and Programme actions.
+full width. The homepage retains its headline, body copy, brand line and programme-status
+facts, with a direct working-group action added to the existing SPDTF and Programme
+actions. Its small hero label identifies the Smart Property Data Trust Framework.
 
 The method figure is a static authored SVG with a title, description and visible prose
 equivalent. It has separate wide and stacked geometries so labels remain readable
@@ -149,6 +150,9 @@ it does not remove or weaken it.
   classes that approximated them. A direct working-group action joins the existing
   SPDTF and Programme actions. Below the hero, one design-system page surface replaces
   alternating section bands; bounded cards and graphics retain their own contrast.
+- **2026-08-30 — identify the framework in the hero label.** The small hero label now
+  reads `Smart Property Data Trust Framework`; the headline, body copy, status facts
+  and routing remain unchanged.
 
 ## More Information
 
