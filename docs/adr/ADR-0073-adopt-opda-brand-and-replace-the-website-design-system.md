@@ -1,11 +1,11 @@
 ---
 status: implemented
 date: 2026-08-16
-updated: 2026-08-27
+updated: 2026-08-30
 tags: [design-system, brand, website, accessibility, css, governance, presentation]
 supersedes: [ADR-0025]
 depends-on: [ADR-0064]
-implements: [DESIGN.md, public/ui, src/layouts/Layout.astro, src/layouts/StandalonePublicLayout.astro, src/components/Header.astro, src/components/SiteFooter.astro, src/components/campaign, src/pages/index.astro, src/pages/join, src/pages/accessibility.astro, src/pages/design-system.astro, src/styles/property-pack.css, src/styles/presentations, docs/design-system-site, playwright.config.mjs, tests/e2e, scripts/crawl-routes.mjs, scripts/check-schema-reproducibility.mjs, .github/workflows/deploy-aws.yml]
+implements: [DESIGN.md, public/ui, src/layouts/Layout.astro, src/layouts/StandalonePublicLayout.astro, src/components/Header.astro, src/components/SiteFooter.astro, src/components/campaign, src/pages/index.astro, src/pages/join, src/pages/accessibility.astro, src/pages/design-system.astro, src/styles/property-pack.css, docs/design-system-site, playwright.config.mjs, tests/e2e, scripts/crawl-routes.mjs, scripts/check-schema-reproducibility.mjs, .github/workflows/deploy-aws.yml]
 ---
 
 # Adopt the OPDA brand and replace the website design system
@@ -73,10 +73,12 @@ Adopt the Q3 2026 guide and supplied vectors for this application and complete t
 through the derived OPDA web system specified in `DESIGN.md`.
 
 On 19 August 2026 the implemented layout contract was clarified after rendered-page
-review: each composition has one outer width authority. Nested text measures were
-removed from prose descendants, heroes, cards, callouts, campaign pages and the
-presentation; tables, diagrams, media and controls retain bounded sizing where their
-interaction requires it.
+review: each shared-site composition has one outer width authority. Nested text
+measures were removed from prose descendants, heroes, cards, callouts and campaign
+pages; tables, diagrams, media and controls retain bounded sizing where their
+interaction requires it. This rule does not govern the independently authored
+Finance and Banking working-group deck, whose slide compositions use deliberate local
+measures.
 
 On 20 August 2026 the shared documentation track was set to a single 1600px maximum.
 The former narrow 66ch prose measure and page-specific width exceptions were removed,
@@ -124,6 +126,14 @@ knowledge-base pages, with their campaign composition retained inside the common
 main region. A single `SiteFooter` component supplies the identical organisation
 footer to the root landing and every ordinary `Layout` route. The full-screen
 presentation remains an intentionally isolated, non-site-chrome experience.
+
+On 30 August 2026 the Finance and Banking working-group deck was restored directly
+from Git revision `3ef98fd`, the last completed version before the shared design-system
+rewrite. The rewrite had incorrectly treated that finished presentation as an
+unfinished shared-site surface and removed its purpose-built composition. The deck at
+`/presentation/working-group-kickoff` therefore owns its local visual tokens and layout;
+the separate `docs/design-system-site/` review artefact remains the presentation of
+this design system.
 
 On 27 August 2026 the remaining working-group wrapper exception was removed. The
 join and privacy routes now inherit the standard main padding, article wrapper and
@@ -188,8 +198,9 @@ The system has six ownership boundaries:
 `DESIGN.md` is the normative human contract. `public/ui/design-tokens.css` is its
 machine-readable token projection. `public/ui/design-system.css` is a small facade
 over reviewable modules in `public/ui/design/`. Astro components consume those
-files; neither the presentation site nor historical `design/` material is an
-independent source of truth.
+files; neither the design-system presentation in `docs/design-system-site/` nor
+historical `design/` material is an independent source of truth. The separate Finance
+and Banking working-group deck is outside this shared visual-system contract.
 
 Tailwind Preflight remains enabled for adopted TailwindPlus controls. The OPDA
 modules remain unlayered for the current cascade boundary and explicitly restore
@@ -242,6 +253,10 @@ application or mutation of any other production site.
   recorded; abstract brand geometry must carry the initial hero treatment.
 
 ## Confirmation
+
+The receipts below predate the 30 August restoration and do not validate the restored
+Finance and Banking deck. Its retained keyboard, responsive, accessibility and visual
+behaviour requires a fresh local validation receipt when testing is authorised.
 
 - Contract tests verify official asset geometry, supplied palette values, derived
   token roles, presentation coverage and removal of obsolete lock language.

@@ -4,12 +4,10 @@ import '../../styles/presentations/workshop-tokens.css';
 import '../../styles/presentations/workshop-deck.css';
 import '../../styles/presentations/workshop-scenes.css';
 import '../../styles/presentations/workshop-responsive.css';
-import { IA_STATUS_REGISTRY_VERSION, getRouteStatus } from '@/lib/site-ia.mjs';
-const routeStatus = getRouteStatus('/presentation/working-group-kickoff');
 ---
 
 <!doctype html>
-<html lang="en-GB" data-theme="dark" data-ia-status-version={IA_STATUS_REGISTRY_VERSION} data-work-area={routeStatus.workArea} data-authority={routeStatus.authority} data-maturity={routeStatus.maturity} data-content-version={routeStatus.version} data-provenance={routeStatus.provenance}>
+<html lang="en-GB">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -17,12 +15,7 @@ const routeStatus = getRouteStatus('/presentation/working-group-kickoff');
       name="description"
       content="OPDA Finance & Banking working group kick-off: a nontechnical, interactive introduction to shared data modelling, participation and review."
     />
-    <meta name="theme-color" content="#131224" />
-    <meta name="opda:work-area" content={routeStatus.workArea} />
-    <meta name="opda:authority" content={routeStatus.authority} />
-    <meta name="opda:maturity" content={routeStatus.maturity} />
-    <meta name="opda:version" content={routeStatus.version} />
-    <meta name="opda:provenance" content={routeStatus.provenance} />
+    <meta name="theme-color" content="#071d18" />
     <title>Finance & Banking Working Group — OPDA</title>
   </head>
   <body>

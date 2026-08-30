@@ -165,7 +165,6 @@ test('live shared surfaces no longer depend on the superseded visual language', 
     'public/ui/graph-engines/_shared.js',
     'public/ui/graph-engines/mermaid.js',
     'public/ui/graph-engines/mermaid-elk.js',
-    'src/styles/presentations/workshop-tokens.css',
   ];
   const legacy = /(?:Fraunces|JetBrains Mono|fontFamily:\s*['"]Inter|font-family:\s*['"]Inter|#CC785C|#FAF9F5|Cagle palette|Claude theme)/iu;
   for (const path of paths) assert.doesNotMatch(await readFile(file(path), 'utf8'), legacy, path);
@@ -375,8 +374,6 @@ test('text inherits its outer layout width instead of stacking nested measures',
     join,
     privacy,
     ontologyGraph,
-    workshopDeck,
-    workshopScenes,
     presentation,
   ] = await Promise.all([
     readFile(file('DESIGN.md'), 'utf8'),
@@ -390,8 +387,6 @@ test('text inherits its outer layout width instead of stacking nested measures',
     readFile(file('src/styles/working-group-join.css'), 'utf8'),
     readFile(file('src/styles/working-group-privacy.css'), 'utf8'),
     readFile(file('src/pages/spdtf/inputs/pdtf-schema/schema-derived-ontology/terms-and-model-resources/graph.astro'), 'utf8'),
-    readFile(file('src/styles/presentations/workshop-deck.css'), 'utf8'),
-    readFile(file('src/styles/presentations/workshop-scenes.css'), 'utf8'),
     readFile(file('docs/design-system-site/styles.css'), 'utf8'),
   ]);
 
@@ -416,13 +411,8 @@ test('text inherits its outer layout width instead of stacking nested measures',
     ['src/styles/working-group-join.css', join],
     ['src/styles/working-group-privacy.css', privacy],
     ['src/pages/ontology/graph.astro', ontologyGraph],
-    ['src/styles/presentations/workshop-deck.css', workshopDeck],
   ]) {
     assert.doesNotMatch(source, maxWidthDeclaration, `${path} contains a nested max-width`);
-  }
-
-  for (const selector of ['scene--hero \\.lede', 'profile-lede', 'closing-line']) {
-    assert.doesNotMatch(workshopScenes, new RegExp(`\\.${selector}\\s*\\{[^}]*max-width\\s*:`, 'su'));
   }
   for (const selector of ['p', '\\.chapter-hero h1', '\\.chapter-hero \\.lede']) {
     assert.doesNotMatch(presentation, new RegExp(`(?:^|\\n)${selector}\\s*\\{[^}]*max-width\\s*:`, 'su'));

@@ -202,6 +202,9 @@ The outer layout container is the sole owner of content measure. Every documenta
 article uses the available content track up to a 1600px maximum. Headings, leads,
 paragraphs, lists, quotations, callouts, cards and section copy fill their parent and
 must not add another `max-width`.
+This documentation rule does not apply to the independently authored full-screen
+Finance and Banking working-group deck, whose slide layouts use deliberate local
+measures.
 Lists have a small tokenised gap above and below, separating them from both their
 introductory copy and the content that follows.
 Figures, tables, diagrams, media and intrinsically sized controls retain their own
@@ -403,6 +406,8 @@ Motion lasts 120–200ms, uses ease-out for entry and ease-in for exit, and chan
 only opacity or transform. There is no parallax, autoplay carousel, animated
 gradient or looping ambient movement. Reduced motion removes transforms and reduces
 non-essential transitions to effectively instant.
+These shared-system motion rules do not replace the working-group deck's self-contained
+motion contract.
 
 Campaign handoff comparisons use ordinary document flow and natural-height cards.
 They never pin a visual while requiring readers to traverse forced-height panels.
@@ -440,7 +445,7 @@ Every live route belongs to one explicit visual family:
 | Schema/manual | generated schema, ontology and manual reference routes | shared shell plus labelled table/diagram patterns |
 | Public service | `/join`, `/join/privacy`, `/accessibility` | minimal `StandalonePublicLayout`, five-chapter campaign, public statements and safely enhanced form |
 | Working groups | workspaces and member guidance | standard shared `Layout`, left section navigation and Knowledge Base footer |
-| Presentation | working-group kickoff deck | isolated full-screen presentation composition using shared tokens; no site chrome |
+| Presentation | working-group kickoff deck | isolated, self-contained full-screen presentation using its original local visual tokens; no site chrome |
 
 Release validation runs against the built artefact before any deployment: source
 contract tests, deterministic schema checks, a built-route asset and
