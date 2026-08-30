@@ -141,6 +141,11 @@ editorial link to the restored Finance and Banking deck. Shared brand and access
 authority, and the deck's isolated local visual system, remain unchanged. Publication
 is not authorised.
 
+Later the same day, the operator amended ADR-0080 so the root hero reuses `/join`'s
+exact 92rem width, static radial/diagonal background and panel composition. This
+replaces the root's decorative icon backdrop without changing the official brand line,
+homepage copy, programme status, shared tokens or publication boundary.
+
 On 27 August 2026 the remaining working-group wrapper exception was removed. The
 join and privacy routes now inherit the standard main padding, article wrapper and
 breadcrumb from `Layout`; they remain registered standalone surfaces, so no left-hand

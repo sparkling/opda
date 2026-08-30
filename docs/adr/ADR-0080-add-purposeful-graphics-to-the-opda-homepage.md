@@ -6,7 +6,7 @@ tags: [website, homepage, design-system, brand, accessibility, svg, presentation
 supersedes: []
 amends: [ADR-0073, ADR-0074]
 depends-on: [ADR-0064, ADR-0073, ADR-0074, ADR-0078]
-implements: [DESIGN.md, src/pages/index.astro, src/components/home/MethodFlowFigure.astro, src/components/home/KickoffFeature.astro, tests/e2e/smoke.spec.mjs]
+implements: [DESIGN.md, src/pages/index.astro, src/components/home/MethodFlowFigure.astro, src/components/home/KickoffFeature.astro, src/styles/working-group-campaign.css, src/styles/working-group-campaign-responsive.css, tests/e2e/smoke.spec.mjs]
 ---
 
 # Add purposeful graphics to the OPDA homepage
@@ -59,8 +59,9 @@ programme facts, governance, routes, publication or deployment.
 
 The root homepage uses this editorial sequence:
 
-1. A split deep-ink hero with the official OPDA brand line, a low-contrast official
-   icon backdrop, primary SPDTF and Programme actions, and integrated status facts.
+1. A split deep-ink hero with the official OPDA brand line, the same static background,
+   92rem content width and panel composition as `/join`, primary SPDTF and Programme
+   actions, and integrated status facts.
 2. A static four-stage figure showing evidence and expertise, working-group review,
    a governed candidate, and shared property information.
 3. A prominent Finance and Banking kick-off feature linking directly to
@@ -70,10 +71,11 @@ The root homepage uses this editorial sequence:
 5. A bounded participation call to action linking to `/join`.
 6. The shared `SiteFooter`.
 
-The official yellow icon may appear once as an oversized, cropped background image in
-the hero. It remains byte-for-byte unchanged, decorative, hidden from assistive
-technology and absent in forced-colour and print modes. It is not a redraw or a new
-recurring identity motif.
+The root hero reuses the recruitment campaign's `.wg-campaign-hero` and
+`.wg-hero-journey` styles rather than approximating them. This keeps the radial/diagonal
+background effect, lower amber highlight, responsive breakpoints, page width and panel
+surface identical across the two routes. The homepage retains its own existing words,
+actions, brand line and programme-status facts.
 
 The method figure is a static authored SVG with a title, description and visible prose
 equivalent. It has separate wide and stacked geometries so labels remain readable
@@ -86,8 +88,9 @@ small, isolated poster treatment may use the restored deck's forest, cream and a
 palette inside `KickoffFeature.astro`; it does not import the deck's CSS, JavaScript,
 fonts, layout rules or browser chrome. The feature is not a seventh global destination.
 
-Homepage composition styles remain scoped to the root page and its two components.
-They consume the shared OPDA spacing, type and semantic tokens, except for the bounded
+Homepage-specific adaptations remain scoped to the root page and its two components;
+the hero deliberately consumes the shared recruitment-campaign rules named above.
+They use the shared OPDA spacing, type and semantic tokens, except for the bounded
 deck-preview palette above. The redesign introduces no canvas, WebGL, Three.js,
 parallax, autoplay, animated gradient or ambient motion.
 
@@ -117,16 +120,27 @@ it does not remove or weaken it.
   homepage components named in `implements`.
 - `DESIGN.md`, ADR-0073 and ADR-0074 record the same homepage sequence, motif exception
   and integrated status treatment.
-- The official icon is referenced as an unchanged decorative asset; the presentation
-  feature links to the existing local deck and imports none of its runtime assets.
-- Fable's read-only implementation review found three material defects; the source now
-  corrects mobile brand alignment, print colour fallbacks and section-heading hierarchy,
-  together with its SVG-name and poster-legibility refinements.
+- The official icon remains unchanged in the hero brand line; the presentation feature
+  links to the existing local deck and imports none of its runtime assets.
+- Fable's read-only review of the initial composition found three material defects;
+  those corrections to print colour, heading hierarchy, SVG naming and poster
+  legibility remain. The later shared-hero amendment has not been re-reviewed by Fable.
+- The local Astro development response returns the amended homepage with the shared
+  campaign width, background and responsive styles loaded; this is not a release gate.
 - Static source and rendered-page review may be recorded while this ADR is accepted.
 - At the operator's instruction, tests and builds have not been run for this change.
   The ADR must remain `accepted`, not `implemented`, until the relevant contract,
   responsive, accessibility, visual, print and build gates are authorised and pass.
 - Publication and deployment remain explicitly unauthorised.
+
+## Amendments
+
+- **2026-08-30 — align the root hero with the recruitment campaign.** At the operator's
+  direction, the root hero now reuses `/join`'s exact page width, static background
+  effect and two-column panel composition while retaining the homepage's existing
+  content. This replaces the initially accepted decorative icon backdrop. The visible
+  `Programme status` eyebrow occupies the same role as `/join`'s `What you can
+  contribute` eyebrow; it introduces no change to programme authority or maturity.
 
 ## More Information
 

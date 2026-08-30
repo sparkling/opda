@@ -290,8 +290,9 @@ discoverable within SPDTF's attributed inputs.
 
 Its sequence is:
 
-1. Split deep-ink hero with the permitted subtle gradient, an unchanged official-icon
-   backdrop, a Slab headline of at most 12 words, two actions and visible status facts.
+1. Split deep-ink hero using the same 92rem content width, static radial/diagonal
+   background treatment and panel composition as `/join`, with the official brand
+   line, a Slab headline of at most 12 words, two actions and visible status facts.
 2. Static, accessible four-stage programme-method figure.
 3. Prominent editorial link to the Finance and Banking working-group kick-off deck.
 4. Six linked entry cards, in the accepted order, for Programme, Governance, Semantic
@@ -403,10 +404,10 @@ crop. Decorative partner marks receive an equivalent text list.
 
 Generative imagery is not used in the OPDA identity. The supplied AI poster is
 removed. The sole recurring decorative motif is a 4px amber rule used for headlines,
-active navigation and footer structure; it does not imitate or redraw the logo. On the
-root homepage only, the unchanged official icon may also appear as a low-contrast,
-cropped decorative backdrop. The method figure and presentation tile carry editorial
-meaning and are not recurring identity motifs.
+active navigation and footer structure; it does not imitate or redraw the logo. The
+root homepage and `/join` intentionally share one static radial/diagonal campaign-hero
+background treatment. The method figure and presentation tile carry editorial meaning
+and are not recurring identity motifs.
 
 Motion lasts 120–200ms, uses ease-out for entry and ease-in for exit, and changes
 only opacity or transform. There is no parallax, autoplay carousel, animated
