@@ -316,9 +316,9 @@ interaction. It is not a transcription of the Gamma cards.
     optional runtime, with current/planned/optional status labels.
 14. **One completeness lens, eleven themes** — four information-rich outcome panels
     with selectable business questions.
-15. **The website becomes the working surface** — graph, definitions, glossary,
-    dictionary, schema, change history and discussion; current demonstration and future
-    candidate surfaces are clearly separated.
+15. **The website becomes the working surface** — a scrollable, full-page dark-mode
+    capture of the Conveyancing contextual boundary anchors the explanation of the
+    current demonstration and the future candidate surface.
 16. **First step: share what already exists** — source categories and examples.
 17. **Resources become the first model candidate** — source register and handling gate
     before Henrik-led, AI-assisted modelling, generated views and group review.

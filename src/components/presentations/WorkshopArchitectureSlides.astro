@@ -74,11 +74,12 @@ const { total } = Astro.props;
 
 <section class="slide" id="website" data-testid="slide" data-title="The website becomes the working surface" role="group" aria-roledescription="slide" aria-label={`17 of ${total}: The website becomes the working surface`}>
   <div class="scene split-scene split-scene--website">
-    <div><p class="eyebrow">Readable, reviewable candidates</p><h2>The website becomes the <em>working surface</em></h2><p class="scene-intro">Members review diagrams, terms, definitions, examples and changes—not source code.</p><div class="status-comparison"><p><span>Current demonstration</span>The present site documents the schema-derived model.</p><p><span>Future candidate surface</span>Versioned Finance and Banking drafts, open questions and page-level discussion.</p></div><a class="primary-action" href="/spdtf/inputs/pdtf-schema/schema-derived-ontology/terms-and-model-resources/classes" target="_blank" rel="noreferrer">Open current demonstration <span aria-hidden="true">↗</span></a></div>
-    <div class="review-browser" data-interaction="review-surface">
-      <div class="review-browser__bar"><i></i><i></i><i></i><span>opda.org.uk / finance-and-banking / candidate-0.1</span></div>
-      <div class="review-tabs" role="group" aria-label="Explore future review views"><button type="button" data-view="graph" aria-pressed="true">Graph</button><button type="button" data-view="term">Term</button><button type="button" data-view="glossary">Glossary</button><button type="button" data-view="dictionary">Dictionary</button><button type="button" data-view="schema">Schema</button><button type="button" data-view="changes">Changes</button><button type="button" data-view="discussion">Discussion</button></div>
-      <div class="review-browser__body"><span class="draft-badge">Working-group candidate · 0.1</span><output data-output="review-surface" role="status" aria-live="polite"><strong>Graph view</strong><small>Explore concepts and labelled relationships.</small></output><div class="review-meta"><span>3 open questions</span><span>8 sources</span><span>Updated after feedback</span></div></div>
-    </div>
+    <div><p class="eyebrow">Readable, reviewable candidates</p><h2>The website becomes the <em>working surface</em></h2><p class="scene-intro">Members review diagrams, terms, definitions, examples and changes—not source code.</p><div class="status-comparison"><p><span>See the model in context</span>The site presents the developing property-pack model through contextual boundaries, diagrams, definitions and source-linked detail.</p><p><span>Challenge a specific point</span>Working-group pages will connect open questions and discussion to the exact term, relationship or decision under review.</p><p><span>Follow each revision</span>Versioned Finance and Banking candidates will show what changed, why it changed and what still needs agreement.</p></div><a class="primary-action" href="/spdtf/property-pack/contexts/conveyancing" target="_blank" rel="noreferrer">Open current demonstration <span aria-hidden="true">↗</span></a></div>
+    <figure class="website-preview">
+      <div class="website-preview__viewport" tabindex="0" aria-label="Scrollable full-page preview of the Conveyancing contextual boundary page">
+        <img src="/images/presentations/spdtf-conveyancing-context-dark.png" alt="The full Conveyancing contextual boundary page on the OPDA website in dark mode." width="1440" height="12731" loading="eager" decoding="async" />
+      </div>
+      <figcaption>Conveyancing contextual boundary <span>Scroll to explore</span></figcaption>
+    </figure>
   </div>
 </section>

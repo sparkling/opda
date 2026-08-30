@@ -42,7 +42,6 @@ kbd { display: inline-block; min-width: 1.5rem; margin: 0 0.15rem; padding: 0.2r
   .interoperability-band { grid-template-columns: 1fr 1fr; }
   .dimension-grid { grid-template-columns: 1fr 1fr; }
   .dimension-grid article { min-height: auto; }
-  .review-browser__body { min-height: 16rem; }
   .intake-cycle { --intake-gap: 1.8rem; }
   .channel-map { grid-template-columns: 1fr 1fr; }
   .deck-context { display: none; }

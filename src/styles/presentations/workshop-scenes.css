@@ -212,8 +212,7 @@
 
 .concept-switch { display: flex; flex-wrap: wrap; justify-content: flex-end; gap: 0.4rem; }
 .concept-switch button,
-.context-controls button,
-.review-tabs button { padding: 0.55rem 0.7rem; border: 1px solid var(--deck-line); border-radius: var(--deck-radius-sm); background: transparent; color: var(--deck-cream-muted); cursor: pointer; }
+.context-controls button { padding: 0.55rem 0.7rem; border: 1px solid var(--deck-line); border-radius: var(--deck-radius-sm); background: transparent; color: var(--deck-cream-muted); cursor: pointer; }
 .concept-switch button:hover,
 .concept-switch button[aria-pressed='true'],
 .context-controls button:hover,
@@ -301,20 +300,15 @@
 .status-comparison p { margin: 0; padding: 0.75rem 0.9rem; border-left: 3px solid var(--deck-amber); background: var(--deck-panel); color: var(--deck-cream-muted); font-size: 0.82rem; line-height: 1.45; }
 .status-comparison p:last-child { border-left-color: var(--deck-mint); }
 .status-comparison span { display: block; margin-bottom: 0.2rem; color: var(--deck-cream); font-weight: 600; }
-.review-browser { overflow: hidden; border: 1px solid #d9d4c7; border-radius: var(--deck-radius-md); background: #f5f2e8; color: #19352e; box-shadow: var(--deck-shadow); }
-.review-browser__bar { display: flex; align-items: center; gap: 0.35rem; padding: 0.65rem; border-bottom: 1px solid #d9d4c7; background: #e7e2d6; }
-.review-browser__bar i { width: 0.55rem; aspect-ratio: 1; border-radius: 50%; background: #bd8d77; }
-.review-browser__bar span { margin-left: 0.5rem; font-family: var(--deck-mono); font-size: 0.58rem; }
-.review-tabs { display: flex; flex-wrap: wrap; gap: 0.3rem; padding: 0.55rem; border-bottom: 1px solid #d9d4c7; }
-.review-tabs button { padding: 0.4rem 0.5rem; border-color: #cec8bb; color: #47665e; font-size: 0.68rem; }
-.review-tabs button[aria-pressed='true'] { background: #19352e; color: #f5f2e8; }
-.review-browser__body { display: grid; align-content: center; gap: 1rem; min-height: clamp(17rem, 42vh, 26rem); padding: 1.5rem; background-image: radial-gradient(#c6c1b5 1px, transparent 1px); background-size: 1.1rem 1.1rem; }
-.draft-badge { justify-self: start; padding: 0.35rem 0.55rem; border-radius: 999px; background: #d7f48b; font-size: 0.65rem; }
-.review-browser output { display: grid; min-height: 7rem; padding: 1rem; border: 1px solid #9cb8ae; background: rgb(245 242 232 / 92%); }
-.review-browser output strong { font-family: var(--deck-serif); font-size: 1.65rem; }
-.review-browser output small { margin-top: 0.5rem; color: #47665e; }
-.review-meta { display: flex; flex-wrap: wrap; gap: 0.4rem; }
-.review-meta span { padding: 0.3rem 0.45rem; background: #e7e2d6; font-size: 0.65rem; }
+.website-preview { align-self: center; margin: 0; overflow: hidden; border: 1px solid var(--deck-line); border-radius: var(--deck-radius-md); background: var(--deck-forest-950); box-shadow: var(--deck-shadow); }
+.website-preview__viewport { max-height: clamp(24rem, 64vh, 36rem); overflow-y: scroll; overscroll-behavior: contain; scrollbar-color: var(--deck-lime) var(--deck-forest-950); scrollbar-gutter: stable; scrollbar-width: auto; }
+.website-preview__viewport:focus-visible { outline: 2px solid var(--deck-lime); outline-offset: -2px; }
+.website-preview__viewport::-webkit-scrollbar { width: 1rem; }
+.website-preview__viewport::-webkit-scrollbar-track { border-left: 1px solid var(--deck-line); background: var(--deck-forest-950); }
+.website-preview__viewport::-webkit-scrollbar-thumb { border: 0.2rem solid var(--deck-forest-950); border-radius: 999px; background: var(--deck-lime); }
+.website-preview img { display: block; width: 100%; max-width: 100%; height: auto; }
+.website-preview figcaption { display: flex; align-items: center; justify-content: space-between; gap: 1rem; padding: 0.65rem 0.8rem; border-top: 1px solid var(--deck-line); color: var(--deck-cream-muted); font-family: var(--deck-mono); font-size: 0.6rem; letter-spacing: 0.04em; text-transform: uppercase; }
+.website-preview figcaption span { color: var(--deck-lime); }
 
 .resource-cloud { display: flex; flex-wrap: wrap; align-content: center; justify-content: center; gap: clamp(0.55rem, 1vw, 0.9rem); min-height: clamp(14rem, 36vh, 22rem); margin-top: 1.1rem; padding: 1.2rem; border: 1px solid var(--deck-line); background: radial-gradient(circle at center, rgb(215 244 139 / 9%), transparent 67%); }
 .resource-cloud span { color: var(--deck-cream); font-family: var(--deck-serif); font-size: clamp(0.9rem, 1.25vw, 1.25rem); }

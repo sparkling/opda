@@ -409,17 +409,6 @@ test('mobile interactive targets meet the 44px minimum', async ({ page }) => {
     expect(size.height, 'completeness lens button height').toBeGreaterThanOrEqual(44);
   }
 
-  await page.evaluate(() => { location.hash = '#website'; });
-  await page.waitForTimeout(250);
-  for (const button of await page.locator('[data-interaction="review-surface"] button').all()) {
-    const size = await button.evaluate((element) => {
-      const rect = element.getBoundingClientRect();
-      return { width: rect.width, height: rect.height };
-    });
-    expect(size.width, 'review view button width').toBeGreaterThanOrEqual(44);
-    expect(size.height, 'review view button height').toBeGreaterThanOrEqual(44);
-  }
-
   await visit(page, `${PDTF1_ROUTES.terms}/graph`);
   await expect(page.locator('.og-tab').first()).toBeVisible();
   const graphTabHeight = await page.locator('.og-tab').first().evaluate((element) => element.getBoundingClientRect().height);

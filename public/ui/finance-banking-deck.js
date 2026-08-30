@@ -171,25 +171,6 @@ if (deck) {
     deck.querySelector('[data-output="property-lenses"]').textContent = messages[context];
   }
 
-  function setReviewView(view) {
-    const views = {
-      graph: ['Graph view', 'Explore concepts and labelled relationships.'],
-      term: ['Term page', 'Review a definition, examples, source and owner.'],
-      glossary: ['Business glossary', 'Browse agreed language without technical notation.'],
-      dictionary: ['Data dictionary', 'Inspect fields, values, provenance and implementation notes.'],
-      schema: ['Generated schema', 'See the tree-shaped exchange view derived through tested mappings.'],
-      changes: ['Change history', 'Compare versions and see what feedback changed.'],
-      discussion: ['Page discussion', 'Comment on a specific term or relationship in context.'],
-    };
-    const interaction = deck.querySelector('[data-interaction="review-surface"]');
-    interaction.querySelectorAll('button[data-view]').forEach((button) => button.setAttribute('aria-pressed', String(button.dataset.view === view)));
-    const output = deck.querySelector('[data-output="review-surface"]');
-    const strong = document.createElement('strong');
-    const small = document.createElement('small');
-    [strong.textContent, small.textContent] = views[view];
-    output.replaceChildren(strong, small);
-  }
-
   function handleAction(action) {
     if (action === 'next') goBy(1);
     if (action === 'prev') goBy(-1);
@@ -206,9 +187,6 @@ if (deck) {
 
     const contextButton = event.target.closest('[data-interaction="property-lenses"] button[data-context]');
     if (contextButton) setPropertyContext(contextButton.dataset.context);
-
-    const reviewButton = event.target.closest('[data-interaction="review-surface"] button[data-view]');
-    if (reviewButton) setReviewView(reviewButton.dataset.view);
 
     const target = event.target.closest('[data-slide-target]');
     if (target) {
