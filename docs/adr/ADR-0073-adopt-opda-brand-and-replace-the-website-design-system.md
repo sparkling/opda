@@ -142,9 +142,12 @@ authority, and the deck's isolated local visual system, remain unchanged. Public
 is not authorised.
 
 Later the same day, the operator amended ADR-0080 so the root hero reuses `/join`'s
-exact 92rem width, static radial/diagonal background and panel composition. This
-replaces the root's decorative icon backdrop without changing the official brand line,
-homepage copy, programme status, shared tokens or publication boundary.
+full-width static radial/diagonal background, centred 92rem content grid and panel
+composition. The final convergence uses the campaign's actual numbered-list structure,
+adds a direct working-group action and gives the content below the hero one continuous
+design-system surface. This replaces the root's decorative icon backdrop without
+changing its existing copy, official brand line, programme status, shared tokens or
+publication boundary.
 
 On 27 August 2026 the remaining working-group wrapper exception was removed. The
 join and privacy routes now inherit the standard main padding, article wrapper and

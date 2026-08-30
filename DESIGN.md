@@ -290,9 +290,10 @@ discoverable within SPDTF's attributed inputs.
 
 Its sequence is:
 
-1. Split deep-ink hero using the same 92rem content width, static radial/diagonal
-   background treatment and panel composition as `/join`, with the official brand
-   line, a Slab headline of at most 12 words, two actions and visible status facts.
+1. Split deep-ink hero using `/join`'s full-width campaign background and centred
+   92rem content grid, with the same static radial/diagonal treatment and panel
+   composition, the official brand line, a Slab headline of at most 12 words, three
+   actions and visible status facts.
 2. Static, accessible four-stage programme-method figure.
 3. Prominent editorial link to the Finance and Banking working-group kick-off deck.
 4. Six linked entry cards, in the accepted order, for Programme, Governance, Semantic

@@ -59,9 +59,9 @@ programme facts, governance, routes, publication or deployment.
 
 The root homepage uses this editorial sequence:
 
-1. A split deep-ink hero with the official OPDA brand line, the same static background,
-   92rem content width and panel composition as `/join`, primary SPDTF and Programme
-   actions, and integrated status facts.
+1. A split deep-ink hero with the official OPDA brand line, `/join`'s full-width
+   campaign background and centred 92rem content grid, the same panel composition,
+   SPDTF, Programme and working-group actions, and integrated status facts.
 2. A static four-stage figure showing evidence and expertise, working-group review,
    a governed candidate, and shared property information.
 3. A prominent Finance and Banking kick-off feature linking directly to
@@ -73,9 +73,11 @@ The root homepage uses this editorial sequence:
 
 The root hero reuses the recruitment campaign's `.wg-campaign-hero` and
 `.wg-hero-journey` styles rather than approximating them. This keeps the radial/diagonal
-background effect, lower amber highlight, responsive breakpoints, page width and panel
-surface identical across the two routes. The homepage retains its own existing words,
-actions, brand line and programme-status facts.
+background effect, lower amber highlight, responsive breakpoints, numbered-list
+component and panel surface identical across the two routes. The shared padding
+calculation keeps the content grid within 92rem while the campaign background remains
+full width. The homepage retains its own words, brand line and programme-status facts,
+with a direct working-group action added to the existing SPDTF and Programme actions.
 
 The method figure is a static authored SVG with a title, description and visible prose
 equivalent. It has separate wide and stacked geometries so labels remain readable
@@ -136,11 +138,17 @@ it does not remove or weaken it.
 ## Amendments
 
 - **2026-08-30 — align the root hero with the recruitment campaign.** At the operator's
-  direction, the root hero now reuses `/join`'s exact page width, static background
-  effect and two-column panel composition while retaining the homepage's existing
-  content. This replaces the initially accepted decorative icon backdrop. The visible
+  direction, the root hero now reuses `/join`'s static background effect and two-column
+  panel composition while retaining the homepage's existing content. Its full-width
+  background contains a centred 92rem content grid through the shared campaign padding
+  rule. This replaces the initially accepted decorative icon backdrop. The visible
   `Programme status` eyebrow occupies the same role as `/join`'s `What you can
   contribute` eyebrow; it introduces no change to programme authority or maturity.
+- **2026-08-30 — converge the hero and page surface.** The root now uses the campaign
+  hero's actual structure and numbered-list component rather than legacy homepage
+  classes that approximated them. A direct working-group action joins the existing
+  SPDTF and Programme actions. Below the hero, one design-system page surface replaces
+  alternating section bands; bounded cards and graphics retain their own contrast.
 
 ## More Information
 

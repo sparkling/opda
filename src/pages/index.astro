@@ -48,66 +48,60 @@ const routeStatus = getRouteStatus('/');
 <body class="public-site">
   <a class="skip-link" href="#main-content">Skip to main content</a>
   <main id="main-content" tabindex="-1">
-    <section class="public-hero wg-campaign-hero" aria-labelledby="public-title">
-      <div class="public-hero__copy wg-campaign-hero__copy">
-        <div class="public-hero__brand">
+    <section class="home-campaign-hero wg-campaign-hero" aria-labelledby="public-title">
+      <div class="wg-campaign-hero__copy">
+        <div class="home-campaign-hero__brand">
           <img src="/ui/brand/opda-icon-yellow.svg" alt="" aria-hidden="true" width="84" height="100" />
           <span>Open Property Data Association</span>
         </div>
-        <p class="eyebrow wg-eyebrow">The OPDA Knowledge Base</p>
+        <p class="wg-eyebrow">The OPDA Knowledge Base</p>
         <h1 id="public-title">A shared language for property data, <em>drafted in the open.</em></h1>
-        <p class="public-hero__lede wg-lead">
+        <p class="wg-lead">
           SPDTF — the Smart Property Data Trust Framework — is the first
           collaboratively authored scheme draft. Working groups across industry are
           agreeing what property information means, under open governance. It is in
           development: not yet adopted, and not a government-approved standard.
         </p>
-        <div class="public-hero__actions wg-hero-actions">
+        <div class="wg-hero-actions">
           <a class="btn wg-btn--large" href="/spdtf">Explore SPDTF development</a>
           <a class="btn btn--outline-dark wg-btn--large" href="/programme">Understand the programme</a>
+          <a class="btn btn--outline-dark wg-btn--large" href="/join">Join a working group</a>
         </div>
       </div>
 
-      <aside class="public-hero__status wg-hero-journey" aria-labelledby="public-status-title">
-        <p class="eyebrow wg-eyebrow">Programme status</p>
+      <aside class="wg-hero-journey" aria-labelledby="public-status-title">
+        <p class="wg-eyebrow">Programme status</p>
         <h2 id="public-status-title">At a glance</h2>
-        <dl class="public-hero__facts">
-          <div>
-            <dt>Work area</dt>
-            <dd>SPDTF</dd>
-          </div>
-          <div>
-            <dt>Maturity</dt>
-            <dd>In development — not an adopted standard</dd>
-          </div>
-          <div>
-            <dt>Authority</dt>
-            <dd>Working groups own meaning; governance controls promotion</dd>
-          </div>
-        </dl>
+        <ol class="wg-process">
+          <li><strong>Work area</strong><span>SPDTF</span></li>
+          <li><strong>Maturity</strong><span>In development — not an adopted standard</span></li>
+          <li><strong>Authority</strong><span>Working groups own meaning; governance controls promotion</span></li>
+        </ol>
       </aside>
     </section>
-    <MethodFlowFigure />
-    <KickoffFeature />
-    <nav class="public-overview" aria-labelledby="inside-title">
-      <header>
-        <p class="overline">Choose your route</p>
-        <h2 id="inside-title">Explore the programme and how SPDTF is developed</h2>
-      </header>
-      <DestinationCards />
-    </nav>
-    <section class="public-join" aria-labelledby="join-title">
-      <div class="public-join__inner">
-        <p class="public-join__overline">Contribute</p>
-        <h2 id="join-title">Bring your expertise to the draft.</h2>
-        <p>
-          Working groups need people who know how property really transacts — agents,
-          lenders, conveyancers, surveyors and data specialists. No modelling background
-          is required.
-        </p>
-        <a class="btn" href="/join">Join a working group</a>
-      </div>
-    </section>
+    <div class="home-content-surface">
+      <MethodFlowFigure />
+      <KickoffFeature />
+      <nav class="public-overview" aria-labelledby="inside-title">
+        <header>
+          <p class="overline">Choose your route</p>
+          <h2 id="inside-title">Explore the programme and how SPDTF is developed</h2>
+        </header>
+        <DestinationCards />
+      </nav>
+      <section class="public-join" aria-labelledby="join-title">
+        <div class="public-join__inner">
+          <p class="public-join__overline">Contribute</p>
+          <h2 id="join-title">Bring your expertise to the draft.</h2>
+          <p>
+            Working groups need people who know how property really transacts — agents,
+            lenders, conveyancers, surveyors and data specialists. No modelling background
+            is required.
+          </p>
+          <a class="btn" href="/join">Join a working group</a>
+        </div>
+      </section>
+    </div>
   </main>
   <SiteFooter />
   <script is:inline src="/ui/client.js"></script>
@@ -115,65 +109,39 @@ const routeStatus = getRouteStatus('/');
 </html>
 
 <style>
-  .public-hero.wg-campaign-hero { --campaign-max: 92rem; }
-  .public-hero__copy { min-width: 0; }
-  .public-hero.wg-campaign-hero .public-hero__brand {
+  .home-campaign-hero {
+    --campaign-max: 92rem;
+  }
+  .home-campaign-hero__brand {
+    min-width: 0;
+    display: flex;
     align-items: flex-end;
     gap: var(--space-5);
     margin: 0 0 var(--space-8);
+    color: var(--brand-yellow);
+    font-family: var(--font-display);
+    font-weight: 600;
     font-size: clamp(1.75rem, 3vw, 3rem);
+    line-height: 1;
+    letter-spacing: var(--tracking-display);
   }
-  .public-hero.wg-campaign-hero .public-hero__brand img { width: clamp(4rem, 6vw, 5.5rem); }
-  .public-hero.wg-campaign-hero h1::after { content: none; }
-  .public-hero.wg-campaign-hero h1 {
-    margin: 0;
-    color: var(--brand-white);
-    font: 600 clamp(3.1rem, 6.5vw, 7rem) / 0.96 var(--font-display);
-    letter-spacing: -0.035em;
-    text-wrap: balance;
+  .home-campaign-hero__brand img { width: clamp(4rem, 6vw, 5.5rem); height: auto; flex: 0 0 auto; }
+  .home-campaign-hero__brand span { min-width: 0; text-wrap: balance; }
+
+  .home-content-surface {
+    color: var(--color-text);
+    background: var(--color-surface);
   }
-  .public-hero.wg-campaign-hero h1 em {
-    color: var(--brand-yellow);
-    font-style: normal;
+  .home-content-surface :global(.method-flow),
+  .home-content-surface :global(.kickoff-feature) {
+    color: var(--color-text);
+    background: transparent;
+    border-bottom: 1px solid var(--color-border);
   }
-  .public-hero.wg-campaign-hero .wg-lead {
-    margin: var(--space-7) 0 0;
-    color: var(--on-dark-muted);
-    font: 400 clamp(1.125rem, 1.8vw, 1.5rem) / 1.55 var(--font-sans);
-  }
-  .public-hero.wg-campaign-hero .wg-hero-actions { margin-top: var(--space-7); }
-  .public-hero__facts {
-    display: grid;
-    margin: var(--space-6) 0 0;
-    padding: 0;
-    border-bottom: 1px solid var(--color-surface-dark-tint);
-    counter-reset: public-status;
-  }
-  .public-hero__facts > div {
-    min-width: 0;
-    display: grid;
-    grid-template-columns: 2.75rem minmax(0, 1fr);
-    gap: var(--space-1) var(--space-4);
-    align-items: start;
-    padding: var(--space-4) 0;
-    border-top: 1px solid var(--color-surface-dark-tint);
-    counter-increment: public-status;
-  }
-  .public-hero__facts > div::before {
-    content: counter(public-status, decimal-leading-zero);
-    grid-row: 1 / span 2;
-    color: var(--brand-yellow);
-    font: 700 var(--text-sm) / 1.35 var(--font-mono);
-  }
-  .public-hero__facts dt {
-    color: var(--brand-white);
-    font: 600 clamp(1.125rem, 1.45vw, 1.4rem) / 1.25 var(--font-display);
-  }
-  .public-hero__facts dd {
-    margin: 0;
-    color: var(--on-dark-muted);
-    font-size: var(--text-sm);
-    line-height: 1.55;
+  .home-content-surface :global(.kickoff-feature h2) { color: var(--color-text-strong); }
+  .home-content-surface :global(.kickoff-feature__overline),
+  .home-content-surface :global(.kickoff-feature__copy > p:not(.kickoff-feature__overline)) {
+    color: var(--color-text-muted);
   }
 
   .public-join {
@@ -205,8 +173,9 @@ const routeStatus = getRouteStatus('/');
   .public-join .btn { margin-top: var(--space-6); }
 
   @media (max-width: 40rem) {
-    .public-hero.wg-campaign-hero .public-hero__brand {
+    .home-campaign-hero__brand {
       align-items: flex-start;
+      flex-direction: column;
       margin-bottom: var(--space-8);
     }
     .public-join { padding: 0 var(--space-5) var(--space-8); }
@@ -214,30 +183,30 @@ const routeStatus = getRouteStatus('/');
   }
 
   @media (forced-colors: active) {
-    .public-hero__status,
-    .public-hero__facts > div,
+    .wg-hero-journey,
+    .wg-hero-journey .wg-process li,
     .public-join__inner { border-color: CanvasText; }
   }
 
   @media print {
-    .public-hero.wg-campaign-hero {
+    .home-campaign-hero {
       color: black;
       background: white;
       border-bottom-color: black;
     }
-    .public-hero.wg-campaign-hero h1,
-    .public-hero.wg-campaign-hero h1 em,
-    .public-hero.wg-campaign-hero .eyebrow,
-    .public-hero.wg-campaign-hero .public-hero__brand span,
-    .public-hero.wg-campaign-hero .public-hero__lede,
-    .public-hero__status h2,
-    .public-hero__facts dt,
-    .public-hero__facts dd,
-    .public-hero__facts > div::before { color: black; }
-    .public-hero__status,
-    .public-hero__facts,
-    .public-hero__facts > div { border-color: black; }
-    .public-hero__actions .btn {
+    .home-campaign-hero h1,
+    .home-campaign-hero h1 em,
+    .home-campaign-hero .wg-eyebrow,
+    .home-campaign-hero__brand,
+    .home-campaign-hero .wg-lead,
+    .home-campaign-hero .wg-hero-journey h2,
+    .home-campaign-hero .wg-process strong,
+    .home-campaign-hero .wg-process span,
+    .home-campaign-hero .wg-process li::before { color: black; }
+    .home-campaign-hero .wg-hero-journey,
+    .home-campaign-hero .wg-process,
+    .home-campaign-hero .wg-process li { border-color: black; }
+    .home-campaign-hero .wg-hero-actions .btn {
       color: black;
       background: white;
       border: 1px solid black;
