@@ -139,18 +139,19 @@ const domains = [
     font-size: clamp(1rem, 1.25vw, 1.25rem);
   }
   .home-campaign-hero .wg-hero-journey {
-    margin-top: var(--space-8);
+    margin-top: 0;
+    transform: translateY(clamp(2.5rem, 4vw, 4rem));
   }
-  .home-campaign-hero :global(.home-domain-process li) {
+  .home-campaign-hero .wg-hero-journey :global(.home-domain-process li) {
     row-gap: var(--space-2);
-    padding: var(--space-5) 0;
+    padding: var(--space-6) 0;
   }
-  .home-campaign-hero :global(.home-domain-process strong) {
-    font-size: clamp(1.25rem, 1.65vw, 1.65rem);
+  .home-campaign-hero .wg-hero-journey :global(.home-domain-process strong) {
+    font: 600 clamp(1.375rem, 1.8vw, 1.75rem) / 1.25 var(--font-display);
   }
-  .home-campaign-hero :global(.home-domain-process span) {
-    font-size: clamp(1rem, 1.15vw, 1.125rem);
-    line-height: 1.55;
+  .home-campaign-hero .wg-hero-journey :global(.home-domain-process span) {
+    font-size: clamp(1.125rem, 1.25vw, 1.25rem);
+    line-height: 1.6;
   }
   .home-content-surface {
     color: var(--color-text);
@@ -197,7 +198,7 @@ const domains = [
   .public-join .btn { margin-top: var(--space-6); }
 
   @media (max-width: 72rem) {
-    .home-campaign-hero .wg-hero-journey { margin-top: 0; }
+    .home-campaign-hero .wg-hero-journey { transform: none; }
   }
 
   @media (max-width: 40rem) {
