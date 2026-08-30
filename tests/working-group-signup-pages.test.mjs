@@ -254,6 +254,7 @@ test('campaign recruits industry experts through purpose, influence and clear ex
   assert.doesNotMatch(page, /ontology|SKOS|semantic constellation|contextual lenses|common boundary|AI-assisted modelling/iu);
   assert.doesNotMatch(corpus, /Contribute consumer, accessibility, regulatory or public-interest experience|Identify impacts and opportunities|Represent people and the public interest|technical model might otherwise miss|Not sure|help me choose/iu);
   assert.doesNotMatch(page, /data-parallax-layer|data-story-step|data-handoff-stage|data-reveal/u);
+  assert.doesNotMatch(page, />Why this matters<\/a>/u);
   assert.doesNotMatch(sectionsCss, /position:\s*sticky|data-reveal|wg-model-flow|wg-output-ribbon/u);
   assert.match(responsiveCss, /prefers-reduced-motion/u);
   assert.match(page, /data-context-register=\{context\.value\}/u);
@@ -274,11 +275,12 @@ test('campaign styles remain split below the project file limit', async () => {
   assert.doesNotMatch(campaign, /position:\s*sticky/u);
   assert.doesNotMatch(sections, /calc\(50% - 50vw\)|position:\s*sticky/u);
   assert.match(campaign, /\.wg-campaign-hero\s*\{[\s\S]*?min-height:\s*min\(48rem, calc\(100svh - 5rem\)\)/u);
-  assert.match(campaign, /\.wg-section\s*\{[\s\S]*?width:\s*min\(100%, var\(--campaign-max\)\)/u);
+  assert.match(campaign, /\.wg-section\s*\{[\s\S]*?width:\s*100%[\s\S]*?calc\(\(100vw - var\(--campaign-max\)\) \/ 2\)/u);
   assert.doesNotMatch(campaign, /\.wg-btn--large\s*\{[\s\S]*?color:\s*#000/u);
-  assert.match(campaign, /\.wg-hero-journey h2\s*\{[\s\S]*?clamp\(2rem, 3\.1vw, 3\.5rem\)/u);
-  assert.match(campaign, /\.wg-hero-journey \.wg-process\s*\{[\s\S]*?grid-template-columns:\s*repeat\(3, minmax\(0, 1fr\)\)/u);
-  assert.match(campaign, /\.wg-hero-journey \.wg-process li\s*\{[\s\S]*?background:\s*transparent;[\s\S]*?border:\s*0/u);
+  assert.match(campaign, /\.wg-hero-note\s*\{[\s\S]*?border-left:\s*4px solid var\(--brand-yellow\)[\s\S]*?font:\s*600/u);
+  assert.match(campaign, /\.wg-hero-journey h2\s*\{[\s\S]*?clamp\(1\.75rem, 2\.5vw, 2\.75rem\)/u);
+  assert.match(campaign, /\.wg-hero-journey \.wg-process\s*\{[\s\S]*?grid-template-columns:\s*1fr/u);
+  assert.match(campaign, /\.wg-hero-journey \.wg-process li\s*\{[\s\S]*?grid-template-columns:\s*2\.75rem minmax\(0, 1fr\)[\s\S]*?background:\s*transparent/u);
   assert.match(sections, /\.wg-participation\s*\{[\s\S]*?background:/u);
   assert.match(sections, /\.wg-trust\s*\{[\s\S]*?background:\s*var\(--brand-deep\)/u);
   assert.match(sections, /\.wg-policy\s*\{[\s\S]*?background:\s*var\(--brand-deep\)/u);

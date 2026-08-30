@@ -18,12 +18,12 @@
 }
 
 .wg-policy__inner {
-  width: min(100%, var(--campaign-max));
+  width: 100%;
   display: grid;
   grid-template-columns: minmax(0, 1.05fr) minmax(20rem, 0.95fr);
   gap: clamp(var(--space-8), 7vw, var(--space-12));
-  margin-inline: auto;
-  padding: clamp(var(--space-10), 7vw, 7rem) clamp(var(--space-5), 5vw, var(--space-10));
+  margin-inline: 0;
+  padding: clamp(var(--space-10), 7vw, 7rem) max(clamp(var(--space-5), 5vw, var(--space-10)), calc((100vw - var(--campaign-max)) / 2));
 }
 
 .wg-policy .wg-eyebrow { color: var(--brand-yellow); }
@@ -102,7 +102,7 @@
 .wg-commitment strong { color: var(--brand-white); }
 .wg-commitment p { margin: 0; color: var(--on-dark-muted); }
 
-.wg-evidence { padding-bottom: clamp(var(--space-10), 8vw, 8rem); }
+.wg-evidence { width: 100%; padding-inline: max(clamp(var(--space-5), 5vw, var(--space-10)), calc((100vw - var(--campaign-max)) / 2)); padding-bottom: clamp(var(--space-10), 8vw, 8rem); }
 .wg-evidence__statement { display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(20rem, 0.9fr); gap: clamp(var(--space-8), 7vw, var(--space-12)); align-items: end; }
 .wg-evidence__statement .wg-eyebrow { grid-column: 1 / -1; margin-bottom: calc(var(--space-6) * -1); }
 .wg-evidence__statement > p:last-child { margin: 0; color: var(--color-text-muted); font: var(--lead); }

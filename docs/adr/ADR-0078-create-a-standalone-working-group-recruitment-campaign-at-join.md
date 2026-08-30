@@ -1,7 +1,7 @@
 ---
 status: accepted
 date: 2026-08-27
-updated: 2026-08-28
+updated: 2026-08-30
 tags: [working-groups, recruitment, campaign, signup, design-system, accessibility, routing]
 supersedes: []
 depends-on: [ADR-0038, ADR-0069, ADR-0071, ADR-0073, ADR-0079]
@@ -113,9 +113,10 @@ the Data (Use and Access) Act 2025's general Smart Data framework from prospecti
 property-specific arrangements, and must continue to state that SPDTF is an industry
 programme in development—not a government-approved or adopted statutory scheme.
 
-Refined on 28 August 2026: the hero's three-point influence panel uses a restrained
-three-column editorial layout with a single surrounding frame, readable type and no
-card-level visual competition or decorative empty space.
+Refined on 30 August 2026: the hero retains its two-column campaign composition and
+presents its three influence points as a compact vertical sequence. The no-expertise
+message is primary reassurance rather than fine print, and every campaign section uses
+the hero's shared content axis.
 
 ### 1. Canonical route and route ownership
 
