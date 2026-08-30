@@ -37,7 +37,7 @@ programme facts, governance, routes, publication or deployment.
 - Give the restored Finance and Banking kick-off presentation a prominent route.
 - Explain the programme method to non-technical readers without ontology jargon.
 - Preserve the canonical six-destination order and the root's no-global-header rule.
-- Introduce the model's contextual boundaries without turning the hero into technical documentation.
+- Introduce the six working-group domains without turning the hero into technical documentation.
 - Reuse official assets and shared tokens without redrawing the OPDA identity.
 - Meet keyboard, reflow, forced-colour, reduced-motion and print expectations.
 - Keep publication and deployment outside this local source decision.
@@ -61,7 +61,7 @@ The root homepage uses this editorial sequence:
 
 1. A split deep-ink hero with the official OPDA brand line, `/join`'s full-width
    campaign background and centred 92rem content grid, the same panel composition,
-   SPDTF, Programme and working-group actions, and a compact contextual-boundary register.
+   SPDTF, Programme and working-group actions, and a compact working-group domain register.
 2. A static four-stage figure showing evidence and expertise, working-group review,
    a governed candidate, and shared property information.
 3. A prominent Finance and Banking kick-off feature linking directly to
@@ -73,14 +73,13 @@ The root homepage uses this editorial sequence:
 
 The root hero reuses the recruitment campaign's `.wg-campaign-hero` and
 `.wg-hero-journey` styles rather than approximating them. This keeps the radial/diagonal
-background effect, lower amber highlight, responsive breakpoints and panel surface
-identical across the two routes. The shared padding
+background effect, lower amber highlight, responsive breakpoints, numbered-list
+component and panel surface identical across the two routes. The shared padding
 calculation keeps the content grid within 92rem while the campaign background remains
 full width. The homepage retains its headline and brand line, uses a concise active-voice
 proposition, and adds a direct working-group action to the existing SPDTF and Programme
 actions. Its small hero label identifies the Smart Property Data Trust Framework. The
-right-hand panel lists the six domain boundaries, the deliberately small Common boundary
-and the candidate DBT Smart Data scheme context with short descriptions.
+right-hand panel lists the six working-group domains with short descriptions.
 
 The method figure is a static authored SVG with a title, description and visible prose
 equivalent. It has separate wide and stacked geometries so labels remain readable
@@ -100,7 +99,7 @@ deck-preview palette above. The redesign introduces no canvas, WebGL, Three.js,
 parallax, autoplay, animated gradient or ambient motion.
 
 The former separate programme-status strip and the later hero status panel are replaced
-by the contextual-boundary register. Detailed maturity, authority and adoption status
+by the working-group domain register. Detailed maturity, authority and adoption status
 remain available through the SPDTF Development action and governed route metadata rather
 than competing with the homepage's primary proposition.
 
@@ -161,9 +160,13 @@ than competing with the homepage's primary proposition.
 - **2026-08-30 — sharpen the proposition and surface the domains.** The hero lede now
   uses active voice to state that OPDA and organisations across the property industry
   are developing SPDTF to improve property information sharing. The right-hand panel
-  replaces the status snapshot with all six domain boundaries, the Common boundary and
-  the candidate DBT Smart Data scheme context. Detailed programme status remains on the
-  linked SPDTF pages rather than being repeated in the marketing hero.
+  replaces the status snapshot with the six working-group domains. The Common boundary
+  and candidate DBT Smart Data context are deliberately excluded because they are not
+  working groups. Its visible label is `Working Group`, and its single-column register
+  reuses the same numbered process structure and base visual language as the `/join`
+  hero. A homepage modifier increases the domain type and row spacing, while a desktop
+  top margin gives the panel more separation from the top of the hero. Detailed programme
+  status remains on the linked SPDTF pages rather than being repeated in the marketing hero.
 
 ## More Information
 
