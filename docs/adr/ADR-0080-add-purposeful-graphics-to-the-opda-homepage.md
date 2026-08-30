@@ -164,10 +164,12 @@ than competing with the homepage's primary proposition.
   and candidate DBT Smart Data context are deliberately excluded because they are not
   working groups. Its visible label is `Working Group`, and its single-column register
   reuses the same numbered process structure and base visual language as the `/join`
-  hero. A homepage modifier uses a stronger, local type rule to increase the domain names
-  and descriptions, expands their row spacing, and translates the panel down on desktop
-  for visible space above its top edge. Detailed programme status remains on the linked
-  SPDTF pages rather than being repeated in the marketing hero.
+  hero. A homepage modifier keeps the domain type compact and readable, adds measured row
+  spacing, widens the desktop panel to limit wrapping, removes the register's final bottom
+  rule, and translates the panel down for visible space above its top edge. On the desktop
+  two-column layout, the actions use compact padding and a single row; they return to the
+  standard wrapped treatment when the hero stacks. Detailed programme status remains on
+  the linked SPDTF pages rather than being repeated in the marketing hero.
 
 ## More Information
 

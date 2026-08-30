@@ -118,6 +118,7 @@ const domains = [
 <style>
   .home-campaign-hero {
     --campaign-max: 92rem;
+    grid-template-columns: minmax(0, 1.05fr) minmax(36rem, 0.95fr);
     padding-top: var(--space-6);
   }
   .home-campaign-hero__brand {
@@ -144,14 +145,27 @@ const domains = [
   }
   .home-campaign-hero .wg-hero-journey :global(.home-domain-process li) {
     row-gap: var(--space-2);
-    padding: var(--space-6) 0;
+    padding: var(--space-4) 0;
   }
   .home-campaign-hero .wg-hero-journey :global(.home-domain-process strong) {
-    font: 600 clamp(1.375rem, 1.8vw, 1.75rem) / 1.25 var(--font-display);
+    font: 600 clamp(1.125rem, 1.3vw, 1.3rem) / 1.25 var(--font-display);
   }
   .home-campaign-hero .wg-hero-journey :global(.home-domain-process span) {
-    font-size: clamp(1.125rem, 1.25vw, 1.25rem);
-    line-height: 1.6;
+    font-size: clamp(0.9375rem, 1vw, 1rem);
+    line-height: 1.55;
+  }
+  .home-campaign-hero .wg-hero-journey :global(.home-domain-process) {
+    border-bottom: 0;
+  }
+  .home-campaign-hero .wg-hero-actions {
+    flex-wrap: nowrap;
+    gap: var(--space-2);
+  }
+  .home-campaign-hero .wg-btn--large {
+    min-height: 3rem;
+    padding-inline: var(--space-4);
+    font-size: var(--text-sm);
+    white-space: nowrap;
   }
   .home-content-surface {
     color: var(--color-text);
@@ -198,7 +212,19 @@ const domains = [
   .public-join .btn { margin-top: var(--space-6); }
 
   @media (max-width: 72rem) {
+    .home-campaign-hero {
+      grid-template-columns: 1fr;
+    }
     .home-campaign-hero .wg-hero-journey { transform: none; }
+    .home-campaign-hero .wg-hero-actions {
+      flex-wrap: wrap;
+      gap: var(--space-4);
+    }
+    .home-campaign-hero .wg-btn--large {
+      min-height: 3.25rem;
+      padding-inline: var(--space-6);
+      font-size: var(--text-base);
+    }
   }
 
   @media (max-width: 40rem) {
