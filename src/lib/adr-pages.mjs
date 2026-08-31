@@ -21,7 +21,7 @@
  * @property {string} date    - ISO date string from frontmatter, or ''
  */
 
-/** All 77 ADRs in the corpus. Every ADR gets a live page. */
+/** All 80 ADRs in the corpus. Every ADR gets a live page. */
 export const ADR_REGISTRY = [
   { id: "adr-0001", number: "0001", title: "Selective adoption of DCAM v3 and DAMA-DMBOK2 elements", status: "accepted", date: "2026-05-18" },
   { id: "adr-0002", number: "0002", title: "Folder hierarchy and slug taxonomy", status: "accepted", date: "2026-05-18" },
@@ -100,4 +100,7 @@ export const ADR_REGISTRY = [
   { id: "adr-0075", number: "0075", title: "Treat the Property Pack ontology as an accelerated SPDTF component", status: "accepted", date: "2026-08-19" },
   { id: "adr-0076", number: "0076", title: "Consolidate PDTF schema documentation under hierarchy-reflecting routes", status: "superseded", date: "2026-08-21" },
   { id: "adr-0077", number: "0077", title: "Place the PDTF schema beneath SPDTF as a third-party input", status: "accepted", date: "2026-08-23" },
+  { id: "adr-0078", number: "0078", title: "Create a standalone working-group recruitment campaign at `/join`", status: "accepted", date: "2026-08-27" },
+  { id: "adr-0079", number: "0079", title: "Make the site public and retire the edge authentication gate", status: "accepted", date: "2026-08-27" },
+  { id: "adr-0080", number: "0080", title: "Add purposeful graphics to the OPDA homepage", status: "accepted", date: "2026-08-30" },
 ];
