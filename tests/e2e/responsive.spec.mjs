@@ -136,7 +136,7 @@ test('working-group signup avoids dead-scroll breakpoints and ends with registra
     const positions = await page.evaluate(() => ({
       register: document.querySelector('#register')?.getBoundingClientRect().top ?? Infinity,
       comparison: document.querySelector('.wg-context-section')?.getBoundingClientRect().top ?? -Infinity,
-      lastSectionId: [...document.querySelectorAll<HTMLElement>('.wg-page > section')].at(-1)?.id,
+      lastSectionId: Array.from(document.querySelectorAll('.wg-page > section')).at(-1)?.id,
     }));
     expect(positions.register).toBeGreaterThan(positions.comparison);
     expect(positions.lastSectionId).toBe('register');
@@ -149,7 +149,7 @@ test('text flows to its outer content container without nested max-widths', asyn
   await page.setViewportSize({ width: 1440, height: 1000 });
   const cases = [
     ['/programme', ['.prose.wide > .lead', '.prose.wide > h2 + p', '.callout--key p:last-child']],
-    ['/', ['.public-hero h1', '.public-hero p:not(.eyebrow)', '.public-overview > header']],
+    ['/', ['.home-campaign-hero h1', '.home-campaign-hero .wg-lead', '.public-overview > header']],
     ['/join', ['.wg-campaign-hero h1', '.wg-campaign-hero .wg-lead', '.wg-section__heading p']],
     ['/join/privacy', ['.wg-privacy__summary p', '.wg-privacy article p', '.wg-privacy article li']],
     [`${PDTF1_ROUTES.terms}/graph`, ['.term-comment', '.og-external']],

@@ -3,7 +3,7 @@ import { visit, watchRuntime } from './support.mjs';
 
 test('retained routes remain reachable without redirecting', async ({ page }) => {
   const clean = watchRuntime(page);
-  for (const route of ['/strategy/strategy-overview', '/pdtf/Seller', '/spdtf/working-groups/join']) {
+  for (const route of ['/strategy/strategy-overview', '/pdtf/Seller', '/join']) {
     await visit(page, route);
     await expect(page).toHaveURL(new RegExp(`${route.replaceAll('/', '\\/')}(?:[?#].*)?$`));
   }
@@ -21,7 +21,9 @@ test('retired Property Pack routes return 404 without redirecting', async ({ pag
 });
 
 test('retired working-group sign-up routes return 404 without redirecting', async ({ page }) => {
-  for (const route of ['/working-groups/join', '/working-groups/join/privacy']) {
+  for (const route of [
+    '/working-groups/join', '/working-groups/join/privacy', '/spdtf/working-groups/join',
+  ]) {
     const response = await page.goto(route, { waitUntil: 'domcontentloaded' });
     expect(response?.status(), route).toBe(404);
     await expect(page).toHaveURL(new RegExp(`${route.replaceAll('/', '\\/')}$`, 'u'));

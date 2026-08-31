@@ -383,7 +383,7 @@ test('mobile interactive targets meet the 44px minimum', async ({ page }) => {
   }
 
   await visit(page, '/presentation/working-group-kickoff');
-  for (const selector of ['[data-testid="prev-slide"]', '[data-testid="fullscreen-toggle"]', '[data-testid="next-slide"]']) {
+  for (const selector of ['[data-testid="prev-slide"]', '[data-testid="next-slide"]']) {
     const size = await page.locator(selector).evaluate((element) => {
       const rect = element.getBoundingClientRect();
       return { width: rect.width, height: rect.height };
@@ -391,6 +391,7 @@ test('mobile interactive targets meet the 44px minimum', async ({ page }) => {
     expect(size.width, `${selector} width`).toBeGreaterThanOrEqual(44);
     expect(size.height, `${selector} height`).toBeGreaterThanOrEqual(44);
   }
+  await expect(page.locator('[data-testid="fullscreen-toggle"]')).toBeHidden();
   const overviewSize = await page.locator('[data-testid="overview-toggle"]').evaluate((element) => {
     const rect = element.getBoundingClientRect();
     return { width: rect.width, height: rect.height };
