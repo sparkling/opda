@@ -276,6 +276,10 @@ silent replacements for primary evidence.
 ### Confirmation
 
 - The six core notebook names, purposes and audiences are accepted by the operator.
+- On 2026-08-31 the six empty core notebooks were created in the operator's personal
+  NotebookLM account through the dedicated `personal` CLI profile. The Codex MCP
+  launcher is configured to use the same active profile. No sources have yet been
+  uploaded and none of the notebooks has been shared.
 - The Property Pack ontology is described as an independent delivery and future SPDTF
   component, never as the complete SPDTF ontology.
 - The source-selection rules exclude source schemas and generated page-per-term
@@ -285,8 +289,8 @@ silent replacements for primary evidence.
   ADR-0065, ADR-0066, ADR-0067, ADR-0068, ADR-0070, ADR-0075 and ADR-0077 on
   2026-08-31.
 - Implementation remains incomplete until source manifests and bundles have been
-  reviewed, the six notebooks have been created, the selected sources have been
-  ingested successfully and sample outputs have been checked against their sources.
+  reviewed, the selected sources have been ingested successfully and sample outputs
+  have been checked against their sources.
 - Notebook creation and source upload are private workspace actions; this ADR does not
   authorise sharing notebooks or publishing generated artefacts.
 
