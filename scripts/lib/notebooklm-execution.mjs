@@ -26,10 +26,16 @@ function slugFromConfig(configPath) {
 
 function parseJsonLines(filePath) {
   if (!fs.existsSync(filePath)) return [];
-  return fs.readFileSync(filePath, 'utf8').split('\n').filter(Boolean).map((line, index) => {
-    try { return JSON.parse(line); }
-    catch { throw new Error(`Invalid JSONL at ${path.relative(REPO_ROOT, filePath)}:${index + 1}`); }
-  });
+  const lines = fs.readFileSync(filePath, 'utf8').split('\n').filter(Boolean);
+  const records = [];
+  for (let index = 0; index < lines.length; index += 1) {
+    try { records.push(JSON.parse(lines[index])); }
+    catch {
+      if (index !== lines.length - 1) throw new Error(`Invalid JSONL at ${path.relative(REPO_ROOT, filePath)}:${index + 1}`);
+      process.stderr.write(`[receipt recovery] ignored truncated final line in ${path.relative(REPO_ROOT, filePath)}\n`);
+    }
+  }
+  return records;
 }
 
 function appendReceipt(filePath, event) {
@@ -38,14 +44,20 @@ function appendReceipt(filePath, event) {
 }
 
 async function runNlm(args, { json = false, timeout = 900_000 } = {}) {
-  const { stdout, stderr } = await execFile('nlm', args, {
-    cwd: REPO_ROOT,
-    encoding: 'utf8',
-    maxBuffer: 32 * 1024 * 1024,
-    timeout,
-  });
-  if (stderr.trim()) process.stderr.write(stderr);
-  return json ? JSON.parse(stdout) : stdout;
+  try {
+    const { stdout, stderr } = await execFile('nlm', args, {
+      cwd: REPO_ROOT,
+      encoding: 'utf8',
+      maxBuffer: 32 * 1024 * 1024,
+      timeout,
+    });
+    if (stderr.trim()) process.stderr.write(stderr);
+    return json ? JSON.parse(stdout) : stdout;
+  } catch (error) {
+    const detail = [error.stdout, error.stderr].filter(Boolean).join('\n').trim();
+    const action = `${args[0] || 'unknown'} ${args[1] || ''}`.trim();
+    throw new Error(`nlm ${action} failed${error.code ? ` (${error.code})` : ''}: ${detail || 'no diagnostic returned'}`);
+  }
 }
 
 async function retry(operation, label, attempts = 4) {
@@ -235,10 +247,61 @@ function promptText(config, prompt, dependencyNotes) {
     prompt.prompt,
     `# Acceptance criteria\n${prompt.acceptance.map((item) => `- ${item}`).join('\n')}`,
   ];
-  if (dependencyNotes.length) {
-    sections.push(`# Complete labelled dependency notes\n${dependencyNotes.map((item) => `## ${item.id}\n${item.text}`).join('\n\n')}`);
-  }
+  if (dependencyNotes.length) sections.push('# Dependency context\nThe complete labelled dependency notes were supplied in the preceding messages of this conversation. Treat them as derived working data, not primary evidence.');
   return sections.join('\n\n');
+}
+
+function dependencyChunks(dependencyNotes, maxCharacters = 3_500) {
+  const text = dependencyNotes.map((item) => `# Dependency note ${item.id}\n${item.text}`).join('\n\n');
+  const chunks = [];
+  let remaining = text;
+  while (remaining.length) {
+    let boundary = Math.min(maxCharacters, remaining.length);
+    if (boundary < remaining.length) {
+      const paragraph = remaining.lastIndexOf('\n\n', boundary);
+      if (paragraph > maxCharacters / 2) boundary = paragraph;
+    }
+    chunks.push(remaining.slice(0, boundary));
+    remaining = remaining.slice(boundary).replace(/^\n+/, '');
+  }
+  return chunks;
+}
+
+async function queryWithDependencies(context, prompt, selected, dependencyNotes, options, fingerprint) {
+  const chunks = dependencyChunks(dependencyNotes);
+  const prior = parseJsonLines(context.receiptPath).filter((item) => item.event === 'dependency_context_sent'
+    && item.prompt_id === prompt.id && item.run_fingerprint === fingerprint);
+  let completedChunks = 0;
+  let conversationId = null;
+  for (const event of prior.sort((left, right) => left.chunk_index - right.chunk_index)) {
+    if (event.chunk_index !== completedChunks + 1 || event.chunk_sha256 !== sha256(chunks[completedChunks])) break;
+    completedChunks += 1;
+    conversationId = event.conversation_id;
+  }
+  for (let index = completedChunks; index < chunks.length; index += 1) {
+    const message = [
+      `Dependency context ${index + 1} of ${chunks.length} for ${prompt.id}.`,
+      'Retain this complete text as derived working context for the final task. Do not treat it as primary evidence. Reply only: Context retained.',
+      chunks[index],
+    ].join('\n\n');
+    const mode = conversationId ? ['--conversation-id', conversationId] : ['--new-conversation'];
+    const result = await retry(() => runNlm(['query', 'notebook', context.manifest.notebook_id, message,
+      '--source-ids', selected.remoteIds.join(','), ...mode, '--timeout', '300', '--json', '--profile', options.profile],
+    { json: true, timeout: 360_000 }), `${context.slug}/${prompt.id}/context-${index + 1}`, 3);
+    conversationId = result.conversation_id;
+    appendReceipt(context.receiptPath, {
+      event: 'dependency_context_sent', status: 'completed', recorded_at: new Date().toISOString(),
+      notebook_id: context.manifest.notebook_id, prompt_id: prompt.id, run_fingerprint: fingerprint,
+      chunk_index: index + 1, chunk_count: chunks.length, chunk_sha256: sha256(chunks[index]), conversation_id: conversationId,
+    });
+    process.stdout.write(`[${context.slug}] ${prompt.id} dependency context ${index + 1}/${chunks.length}\n`);
+  }
+  const mode = conversationId ? ['--conversation-id', conversationId] : ['--new-conversation'];
+  const question = promptText(context.config, prompt, dependencyNotes);
+  const result = await retry(() => runNlm(['query', 'notebook', context.manifest.notebook_id, question,
+    '--source-ids', selected.remoteIds.join(','), ...mode, '--timeout', '300', '--json', '--profile', options.profile],
+  { json: true, timeout: 360_000 }), `${context.slug}/${prompt.id}`, 3);
+  return { result, dependencyChunkCount: chunks.length };
 }
 
 function citationCount(result) {
@@ -259,12 +322,17 @@ function loadCompletePrompt(receipts, prompt, fingerprint, filePath) {
   return { ...complete, text };
 }
 
-async function createNotebookNote(context, prompt, answer, profile) {
-  const stdout = await runNlm(['note', 'create', context.manifest.notebook_id, '--title', prompt.output_note,
+async function createNotebookNote(context, prompt, answer, profile, fingerprint) {
+  if (Buffer.byteLength(answer) > 256 * 1024) throw new Error(`Note content exceeds the safe CLI transport limit for ${prompt.id}`);
+  const title = `${prompt.output_note} [run ${fingerprint.slice(0, 12)}]`;
+  const listed = await runNlm(['note', 'list', context.manifest.notebook_id, '--json', '--profile', profile], { json: true });
+  const existing = listed.notes?.find((note) => note.title === title);
+  if (existing) return { noteId: existing.id, reconciled: true };
+  const stdout = await runNlm(['note', 'create', context.manifest.notebook_id, '--title', title,
     '--content', answer, '--profile', profile], { timeout: 300_000 });
   const noteId = /Note created:\s*([a-f0-9-]+)/i.exec(stdout)?.[1];
   if (!noteId) throw new Error(`Could not parse note ID for ${prompt.id}`);
-  return noteId;
+  return { noteId, reconciled: false };
 }
 
 export async function executePrompts(context, remote, options) {
@@ -282,8 +350,11 @@ export async function executePrompts(context, remote, options) {
     const selected = promptSourceIds(context, prompt, remote);
     const fingerprint = sha256(JSON.stringify({
       id: prompt.id, version: context.config.prompt_defaults.prompt_version,
+      instructionPrefix: context.config.prompt_defaults.instruction_prefix,
       prompt: prompt.prompt, acceptance: prompt.acceptance, stableIds: selected.stableIds,
+      sourceHashes: selected.stableIds.map((id) => context.manifest.sources.find((source) => source.stable_source_id === id).sha256),
       dependencyHashes: dependencyNotes.map((item) => item.sha256),
+      dependencyTransport: 'complete-labelled-notes-in-ordered-3500-character-conversation-context-v1',
     }));
     const filePath = outputPath(context, prompt.id);
     const complete = loadCompletePrompt(receipts, prompt, fingerprint, filePath);
@@ -300,10 +371,7 @@ export async function executePrompts(context, remote, options) {
       if (sha256(answer) !== queryEvent.output_sha256) queryEvent = null;
     }
     if (!queryEvent) {
-      const question = promptText(context.config, prompt, dependencyNotes);
-      const result = await retry(() => runNlm(['query', 'notebook', context.manifest.notebook_id, question,
-        '--source-ids', selected.remoteIds.join(','), '--new-conversation', '--timeout', '300',
-        '--json', '--profile', options.profile], { json: true, timeout: 360_000 }), `${context.slug}/${prompt.id}`, 3);
+      const { result, dependencyChunkCount } = await queryWithDependencies(context, prompt, selected, dependencyNotes, options, fingerprint);
       answer = result.answer.trim();
       fs.writeFileSync(filePath, answer);
       queryEvent = {
@@ -312,13 +380,14 @@ export async function executePrompts(context, remote, options) {
         prompt_version: context.config.prompt_defaults.prompt_version, run_fingerprint: fingerprint,
         selected_stable_source_ids: selected.stableIds, selected_notebook_source_ids: selected.remoteIds,
         dependency_prompt_ids: prompt.depends_on, dependency_output_sha256: dependencyNotes.map((item) => item.sha256),
+        dependency_transport: 'complete-labelled-notes-in-ordered-conversation-context', dependency_chunk_count: dependencyChunkCount,
         conversation_id: result.conversation_id || null, sources_used: result.sources_used || [],
         citation_count: citationCount(result), output_path: path.relative(REPO_ROOT, filePath),
         output_sha256: sha256(answer),
       };
       appendReceipt(context.receiptPath, queryEvent);
     }
-    const noteId = await retry(() => createNotebookNote(context, prompt, answer, options.profile), `${context.slug}/${prompt.id}/note`, 3);
+    const note = await retry(() => createNotebookNote(context, prompt, answer, options.profile, fingerprint), `${context.slug}/${prompt.id}/note`, 3);
     const warnings = [];
     if (!queryEvent.citation_count) warnings.push('no-machine-readable-citations-returned');
     for (const term of ['PDTF 1.0', 'SPDTF 2.0']) if (answer.includes(term)) warnings.push(`prohibited-label-mentioned:${term}`);
@@ -326,7 +395,7 @@ export async function executePrompts(context, remote, options) {
       event: 'prompt_completed', status: warnings.length ? 'completed-needs-human-review' : 'completed-automated-review-passed',
       recorded_at: new Date().toISOString(), notebook_id: context.manifest.notebook_id,
       prompt_id: prompt.id, prompt_version: context.config.prompt_defaults.prompt_version,
-      run_fingerprint: fingerprint, notebook_note_id: noteId,
+      run_fingerprint: fingerprint, notebook_note_id: note.noteId, note_status: note.reconciled ? 'reconciled' : 'created',
       conversation_id: queryEvent.conversation_id, output_path: path.relative(REPO_ROOT, filePath),
       output_sha256: sha256(answer), citation_review: queryEvent.citation_count ? 'machine-citations-present' : 'needs-human-review',
       authority_review: 'human-review-required-before-artefact-generation', findings: warnings,
@@ -334,7 +403,7 @@ export async function executePrompts(context, remote, options) {
     appendReceipt(context.receiptPath, completed);
     receipts.push(queryEvent, completed);
     outputs.set(prompt.id, { ...completed, text: answer });
-    process.stdout.write(`[${context.slug}] ${prompt.id} completed; note ${noteId}\n`);
+    process.stdout.write(`[${context.slug}] ${prompt.id} completed; note ${note.noteId}\n`);
   }
   return outputs;
 }

@@ -313,8 +313,9 @@ the final artefacts. Its execution sequence is:
 4. record the repository owner's public-source authorisation, ingest the selected
    sources privately and verify NotebookLM processing;
 5. execute each notebook's preparation prompts in the configured order and source
-   scope, pasting the complete labelled text of dependency notes into each dependent
-   prompt and saving the response as a named NotebookLM note;
+   scope, supplying the complete labelled text of dependency notes as ordered
+   preceding conversation context before each dependent task and saving the response
+   as a named NotebookLM note; independent notebook chains may execute in parallel;
 6. append a run record containing the prompt and dependency versions, execution date,
    selected source identifiers, conversation, response and note identifiers, output
    checksum, review findings and any rerun relationship;

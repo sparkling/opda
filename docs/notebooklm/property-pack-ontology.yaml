@@ -70,12 +70,12 @@ guardrails:
 
 prompt_defaults:
   prompt_version: 1
-  note_carry_forward: paste-complete-labelled-dependency-notes-into-prompt
+  note_carry_forward: send-complete-labelled-dependency-notes-as-ordered-conversation-context
   instruction_prefix: >-
     Use only the selected notebook sources and cite every substantive claim. Treat
     source status, date, scope and implementation state as separate fields. Preserve
     conflicts instead of resolving them by inference. For any depends_on entry,
-    paste the complete prior note text into the prompt, labelled with its prompt ID;
+    use the complete prior note text supplied in preceding messages, labelled with its prompt ID;
     NotebookLM notes are not sources. Prior outputs remain working data, never primary
     evidence. Produce structured preparatory data only; do not create any publication artefact.
 
