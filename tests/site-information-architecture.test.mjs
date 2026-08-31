@@ -218,7 +218,7 @@ test('the migration ledger preserves every audited high-risk information family'
 test('the frozen preservation proof resolves content, ownership and exact family checksums', () => {
   assert.equal(routeBaseline.schemaVersion, 11);
   assert.equal(routeBaseline.routeCount, 3206);
-  assert.equal(routeBaseline.addedRouteCount, 92);
+  assert.equal(routeBaseline.addedRouteCount, 93);
   assert.equal(routeBaseline.retiredRouteCount, 227);
   assert.equal(routeBaseline.retiredRoutes.length, 227);
   assert.deepEqual({
@@ -330,6 +330,19 @@ test('the frozen preservation proof resolves content, ownership and exact family
     artefacts: ['ontology-serialization', 'public/ontology/artefacts',
       'public/spdtf/inputs/pdtf-schema/schema-derived-ontology/use-and-tooling/artefacts', 27],
   });
+  const images = preservationBaseline.families.find(({ id }) => id === 'image-assets');
+  const acceptedImages = new Map(images.accepted.records.map((record) => [record.path, record]));
+  assert.equal(images.policy, 'baseline-byte-identical');
+  assert.equal(images.baseline.count, 5);
+  assert.equal(images.accepted.count, 8);
+  for (const record of images.baseline.records) assert.deepEqual(acceptedImages.get(record.path), record);
+  assert.deepEqual(images.accepted.records
+    .filter(({ path: imagePath }) => !images.baseline.records.some((record) => record.path === imagePath))
+    .map(({ path: imagePath }) => imagePath), [
+    'home/method-loop-dark.avif',
+    'home/method-loop-light.avif',
+    'presentations/spdtf-conveyancing-context-dark.png',
+  ]);
   assert.equal(preservationBaseline.runtimeJourneys.length, 4);
 });
 

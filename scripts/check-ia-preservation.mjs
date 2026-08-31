@@ -34,7 +34,7 @@ const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const EXPECTED_FAMILY_COUNTS = Object.freeze({
   'source-archive': { baseline: 1620 }, 'council-markdown': { baseline: 261 },
   'ontology-artefacts': { baseline: 27, accepted: 27 }, 'deployed-data': { baseline: 46 },
-  'ui-assets': { baseline: 53 }, 'image-assets': { baseline: 5 },
+  'ui-assets': { baseline: 53 }, 'image-assets': { baseline: 5, accepted: 8 },
   'ontology-tools': { baseline: 837, accepted: 837 }, 'property-pack-canonical': { baseline: 690, accepted: 702 },
 });
 const HASH = /^[a-f0-9]{64}$/u; const failures = []; const notes = [];
@@ -71,6 +71,16 @@ function validateInventory(label, inventory) {
     seen.add(record.path);
   }
   if (inventoryDigest(inventory.records) !== inventory.treeSha256) fail(`${label} tree checksum is inconsistent`);
+}
+function validateBaselineByteIdentity(family) {
+  const accepted = new Map(family.accepted.records.map((record) => [record.path, record]));
+  for (const baselineRecord of family.baseline.records) {
+    const acceptedRecord = accepted.get(baselineRecord.path);
+    if (!acceptedRecord || acceptedRecord.size !== baselineRecord.size
+      || acceptedRecord.sha256 !== baselineRecord.sha256) {
+      fail(`${family.id} baseline asset changed or is missing: ${baselineRecord.path}`);
+    }
+  }
 }
 function compareInventory(label, root, relative, expected) {
   const actual = fileInventory(root, relative);
@@ -430,9 +440,12 @@ if (familyManifest) {
   for (const family of familyManifest.families ?? []) {
     if (seen.has(family.id)) fail(`duplicate preservation family: ${family.id}`);
     seen.add(family.id);
-    if (!['byte-identical', 'regenerate-equivalent', 'reframe-equivalent'].includes(family.policy)
+    if (!['byte-identical', 'baseline-byte-identical', 'regenerate-equivalent', 'reframe-equivalent'].includes(family.policy)
       || !family.owner || !family.dataOwner || !family.consumers?.length || !family.endpoints?.length || !family.journeyTests?.length) {
       fail(`incomplete preservation family contract: ${family.id}`);
+    }
+    if (family.policy === 'baseline-byte-identical' && family.id !== 'image-assets') {
+      fail('baseline-byte-identical policy is reserved for image-assets');
     }
     validateInventory(`${family.id} baseline`, family.baseline);
     validateInventory(`${family.id} accepted`, family.accepted);
@@ -463,6 +476,7 @@ if (familyManifest) {
     if (family.policy === 'byte-identical' && family.baseline?.treeSha256 !== family.accepted?.treeSha256) {
       fail(`${family.id} violates byte-identical policy`);
     }
+    if (family.policy === 'baseline-byte-identical') validateBaselineByteIdentity(family);
     if ((hasPdtf1CutReceipt || hasPdtfSchemaInputReceipt) && movedFamilyPath && !options.manifestOnly) {
       const retiredRoot = path.join(ROOT, family.baselinePath.replace(/^public\//u, 'dist/'));
       for (const record of family.baseline.records) {
