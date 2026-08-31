@@ -171,6 +171,31 @@ Resources:
           return request;
         }
 
+  # Astro's directory build emits /path/index.html while the public IA uses
+  # bare slugs such as /programme and /join. S3 origins do not apply
+  # DefaultRootObject below nested paths, so resolve clean document requests
+  # before the origin lookup while leaving explicit asset filenames unchanged.
+  CleanUrlRewriteFunction:
+    Type: AWS::CloudFront::Function
+    Properties:
+      Name: opda-clean-url-rewrite
+      AutoPublish: true
+      FunctionConfig:
+        Comment: Resolve bare and trailing-slash document URLs to index.html
+        Runtime: cloudfront-js-2.0
+      FunctionCode: |
+        function handler(event) {
+          var request = event.request;
+          var uri = request.uri;
+          var leaf = uri.substring(uri.lastIndexOf('/') + 1);
+          if (uri.charAt(uri.length - 1) === '/') {
+            request.uri = uri + 'index.html';
+          } else if (leaf.indexOf('.') === -1) {
+            request.uri = uri + '/index.html';
+          }
+          return request;
+        }
+
   Distribution:
     Type: AWS::CloudFront::Distribution
     Properties:
@@ -217,6 +242,9 @@ Resources:
           ViewerProtocolPolicy: redirect-to-https
           Compress: true
           CachePolicyId: 658327ea-f89d-4fab-a63d-7e88639e58f6   # Managed-CachingOptimized
+          FunctionAssociations:
+            - EventType: viewer-request
+              FunctionARN: !GetAtt CleanUrlRewriteFunction.FunctionARN
         CacheBehaviors:
           # Public static assets. Long-TTL via the
           # same managed CachingOptimized policy the default behavior uses.

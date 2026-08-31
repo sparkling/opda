@@ -20,6 +20,35 @@ test('the CloudFront site is public without a viewer-request authentication gate
   );
 });
 
+test('the static origin resolves Astro directory builds at clean public URLs', async () => {
+  const site = await read('config/aws/site-stack.yaml');
+  const rewrite = site.match(/CleanUrlRewriteFunction:[\s\S]*?(?=\n\s{2}Distribution:)/u)?.[0];
+  const defaultBehavior = site.match(/DefaultCacheBehavior:[\s\S]*?(?=\n\s{8}CacheBehaviors:)/u)?.[0];
+
+  assert.ok(rewrite, 'clean-URL CloudFront Function exists');
+  assert.match(rewrite, /Type: AWS::CloudFront::Function/u);
+  assert.match(rewrite, /Runtime: cloudfront-js-2\.0/u);
+  assert.match(rewrite, /uri\.charAt\(uri\.length - 1\) === '\/'[\s\S]*uri \+ 'index\.html'/u);
+  assert.match(rewrite, /leaf\.indexOf\('\.'\) === -1[\s\S]*uri \+ '\/index\.html'/u);
+  assert.ok(defaultBehavior, 'default static-site cache behavior exists');
+  assert.match(defaultBehavior, /EventType: viewer-request\n\s+FunctionARN: !GetAtt CleanUrlRewriteFunction\.FunctionARN/u);
+
+  const source = rewrite.match(/FunctionCode: \|\n([\s\S]*)$/u)?.[1]
+    .split('\n').map((line) => line.replace(/^ {8}/u, '')).join('\n');
+  assert.ok(source, 'clean-URL function source is extractable');
+  const handler = Function(`${source}\nreturn handler;`)();
+  for (const [uri, expected] of [
+    ['/', '/index.html'],
+    ['/join', '/join/index.html'],
+    ['/join/', '/join/index.html'],
+    ['/join/privacy', '/join/privacy/index.html'],
+    ['/robots.txt', '/robots.txt'],
+    ['/_astro/app.js', '/_astro/app.js'],
+  ]) {
+    assert.equal(handler({ request: { uri } }).uri, expected, uri);
+  }
+});
+
 test('the public API remains same-origin and cache-disabled without the retired gate', async () => {
   const site = await read('config/aws/site-stack.yaml');
   assert.match(site, /Type: AWS::CloudFormation::Stack[\s\S]*TemplateURL: working-group-interest-stack\.yaml/u);
