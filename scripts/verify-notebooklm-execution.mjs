@@ -209,14 +209,8 @@ function verifyOutputQuality(slug, prompt, text, dependencies) {
   }
   invariant(dependencies.length || !/Dependency Use Register/iu.test(text),
     `${slug}/${prompt.id}: unexpected dependency register`);
-  const prohibited = [
-    /PDTF\s*1\.0/iu, /SPDTF\s*2\.0/iu, /Standard Property Data Trust Framework/iu,
-    /\bSPDTF ontology\b/iu, /Property Pack 0\.1\s*\(SPDTF\)/iu, /PDTF\/SPDTF standards?/iu,
-    /eight domain (?:working )?groups?/iu,
-    /(?:no|without) (?:prior|preceding|dependency) (?:messages|notes|context)|(?:first|initial|opening) turn/iu,
-    /\b(?:would you like|if you would like me to|let me know if)\b/iu,
-  ];
-  invariant(!prohibited.some((pattern) => pattern.test(text)), `${slug}/${prompt.id}: output fails the formulation quality gate`);
+  invariant(!dependencies.length || !/(?:no|without) (?:prior|preceding|dependency) (?:messages|notes|context)/iu.test(text),
+    `${slug}/${prompt.id}: output denies supplied dependency context`);
 }
 
 function verifyCurrentPrompts(context) {

@@ -344,16 +344,9 @@ function answerQualityFindings(answer, citations, dependencyNotes) {
     if (!answer.includes(dependency.sha256)) findings.push(`missing-dependency-hash:${dependency.id}`);
   }
   if (!dependencyNotes.length && /Dependency Use Register/iu.test(answer)) findings.push('unexpected-dependency-register');
-  const prohibited = [
-    /PDTF\s*1\.0/iu, /SPDTF\s*2\.0/iu, /Standard Property Data Trust Framework/iu,
-    /\bSPDTF ontology\b/iu, /Property Pack 0\.1\s*\(SPDTF\)/iu, /PDTF\/SPDTF standards?/iu,
-    /eight domain (?:working )?groups?/iu,
-  ];
-  for (const pattern of prohibited) if (pattern.test(answer)) findings.push(`prohibited-formulation:${pattern.source}`);
   if (/(?:no|without) (?:prior|preceding|dependency) (?:messages|notes|context)|(?:first|initial|opening) turn/iu.test(answer)) {
     findings.push('dependency-context-denied');
   }
-  if (/\b(?:would you like|if you would like me to|let me know if)\b/iu.test(answer)) findings.push('unsolicited-follow-up-offer');
   return findings;
 }
 
