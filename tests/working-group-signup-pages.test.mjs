@@ -218,8 +218,8 @@ test('campaign recruits industry experts through purpose, influence and clear ex
   ]);
   const corpus = [page, data, form].join('\n');
   for (const phrase of [
-    'Help shape the information',
-    'work with.</em>',
+    'A first for property information sharing',
+    'property information sharing.</em>',
     'The direction of travel is clear. The practical detail is still open.',
     'SPDTF is in development',
     'not a government-approved or adopted statutory scheme',
@@ -245,6 +245,10 @@ test('campaign recruits industry experts through purpose, influence and clear ex
     'Bring consumer, accessibility, regulatory and wider public-interest perspectives',
     'No data expertise is required.',
     'What matters is your first-hand understanding of how the property industry works.',
+    'Help make the framework work in practice.',
+    'Share how your sector works',
+    'Challenge costly assumptions',
+    'Test proposals in practice',
     'AI may assist comparison and drafting; it cannot make a draft official.',
     'expectations before asking you to commit',
   ]) {
@@ -253,7 +257,7 @@ test('campaign recruits industry experts through purpose, influence and clear ex
   assert.match(corpus, /Data \(Use and\s+Access\) Act 2025/iu);
   assert.match(corpus, /property-specific\s+arrangements remain prospective/iu);
   assert.doesNotMatch(page, /ontology|SKOS|semantic constellation|contextual lenses|common boundary|AI-assisted modelling/iu);
-  assert.doesNotMatch(corpus, /Contribute consumer, accessibility, regulatory or public-interest experience|Identify impacts and opportunities|Represent people and the public interest|technical model might otherwise miss|Not sure|help me choose/iu);
+  assert.doesNotMatch(corpus, /Contribute consumer, accessibility, regulatory or public-interest experience|Identify impacts and opportunities|Represent people and the public interest|technical model might otherwise miss|Not sure|help me choose|property reform|operating reality belongs|Make the real work visible|data-modelling expertise is needed/iu);
   assert.doesNotMatch(page, /data-parallax-layer|data-story-step|data-handoff-stage|data-reveal/u);
   assert.doesNotMatch(page, />Why this matters<\/a>/u);
   assert.doesNotMatch(sectionsCss, /position:\s*sticky|data-reveal|wg-model-flow|wg-output-ribbon/u);
