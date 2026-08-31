@@ -1,5 +1,5 @@
 .wg-page {
-  --campaign-max: 92rem;
+  --campaign-max: var(--content-max);
   width: 100%;
   margin: 0;
   overflow: clip;
