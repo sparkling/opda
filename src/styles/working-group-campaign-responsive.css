@@ -1,6 +1,8 @@
 @media (max-width: 72rem) {
   .wg-campaign-hero { min-height: 0; grid-template-columns: 1fr; }
   .wg-hero-journey { width: min(100%, 44rem); }
+  .wg-hero-actions { flex-wrap: wrap; gap: var(--space-4); }
+  .wg-btn--large { min-height: 3.25rem; padding-inline: var(--space-6); font-size: var(--text-base); }
   .wg-group-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 }
 

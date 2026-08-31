@@ -70,6 +70,7 @@
 }
 
 .wg-campaign-hero .wg-eyebrow { color: var(--on-dark-muted); }
+.wg-campaign-hero__copy > .wg-eyebrow { font-size: clamp(1rem, 1.25vw, 1.25rem); }
 
 .wg-campaign-hero h1 {
   margin: 0;
@@ -89,13 +90,18 @@
 
 .wg-hero-actions {
   display: flex;
-  flex-wrap: wrap;
+  flex-wrap: nowrap;
   align-items: center;
-  gap: var(--space-4);
+  gap: var(--space-5);
   margin-top: var(--space-7);
 }
 
-.wg-btn--large { min-height: 3.25rem; padding-inline: var(--space-6); font-size: var(--text-base); }
+.wg-btn--large {
+  min-height: 3rem;
+  padding-inline: var(--space-4);
+  font-size: var(--text-sm);
+  white-space: nowrap;
+}
 .wg-hero-note {
   margin: var(--space-6) 0 0;
   padding: var(--space-3) 0 var(--space-3) var(--space-5);
