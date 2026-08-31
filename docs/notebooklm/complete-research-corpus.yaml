@@ -1,5 +1,5 @@
 notebooklm_config_version: 1
-config_status: ready-for-private-execution
+config_status: private-source-ingestion-complete
 last_updated: 2026-08-31
 governing_adr: ADR-0081
 
@@ -18,7 +18,7 @@ workspace:
   profile: personal
   sharing: private
   notebook_id_verification: {status: verified, profile: personal, verified_at: 2026-08-31}
-  source_ingestion_status: pending
+  source_ingestion_status: completed-and-verified
 
 dependencies:
   - id: six-approved-source-manifests
