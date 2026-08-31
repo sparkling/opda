@@ -12,15 +12,11 @@ import {
   REPO_ROOT,
   sha256,
 } from './lib/notebooklm-preparation.mjs';
+import { DEPENDENCY_TRANSPORT_VERSION, computePromptFingerprint } from './lib/notebooklm-execution.mjs';
 
 const RECEIPT_LINE_LIMIT = 500;
 const SOURCE_LIMIT = 500;
-const TRANSPORT_FINGERPRINT = 'complete-labelled-notes-in-ordered-3500-character-conversation-context-v1';
-const QUERY_TRANSPORT = 'complete-labelled-notes-in-ordered-conversation-context';
-const COMPLETION_STATUSES = new Set([
-  'completed-automated-review-passed',
-  'completed-needs-human-review',
-]);
+const COMPLETION_STATUS = 'completed-automated-review-passed';
 const SOURCE_STATUSES = new Set(['completed', 'reconciled']);
 const UUID_PATTERN = /^[a-f0-9]{8}-(?:[a-f0-9]{4}-){3}[a-f0-9]{12}$/iu;
 const SHA_PATTERN = /^[a-f0-9]{64}$/u;
@@ -108,21 +104,6 @@ function equalArrays(actual, expected, label) {
   invariant(isDeepStrictEqual(actual, expected), `${label} does not match the current execution contract`);
 }
 
-function dependencyChunks(dependencyNotes, maxCharacters = 3_500) {
-  let remaining = dependencyNotes.map((item) => `# Dependency note ${item.id}\n${item.text}`).join('\n\n');
-  const chunks = [];
-  while (remaining.length) {
-    let boundary = Math.min(maxCharacters, remaining.length);
-    if (boundary < remaining.length) {
-      const paragraph = remaining.lastIndexOf('\n\n', boundary);
-      if (paragraph > maxCharacters / 2) boundary = paragraph;
-    }
-    chunks.push(remaining.slice(0, boundary));
-    remaining = remaining.slice(boundary).replace(/^\n+/u, '');
-  }
-  return chunks;
-}
-
 function verifyManifest(configPath, config, manifest, expectedCount) {
   const slug = slugFromConfig(configPath);
   invariant(config.notebook?.id === manifest.notebook_id, `${slug}: config and manifest notebook IDs differ`);
@@ -165,7 +146,7 @@ function verifyManifest(configPath, config, manifest, expectedCount) {
 function latestSourceReceipts(records) {
   const latest = new Map();
   records.forEach((record, index) => {
-    if (record.event === 'source_ingested' || record.event === 'failed_source_removed') {
+    if (['source_ingested', 'failed_source_removed', 'superseded_source_removed'].includes(record.event)) {
       latest.set(record.stable_source_id, { ...record, receiptIndex: index });
     }
   });
@@ -221,32 +202,19 @@ function verifyPromptTopology(slug, config, manifest) {
   return { promptById, runOrder };
 }
 
-function expectedFingerprint(config, prompt, stableIds, sourceHashes, dependencyHashes) {
-  return sha256(JSON.stringify({
-    id: prompt.id,
-    version: config.prompt_defaults.prompt_version,
-    instructionPrefix: config.prompt_defaults.instruction_prefix,
-    prompt: prompt.prompt,
-    acceptance: prompt.acceptance,
-    stableIds,
-    sourceHashes,
-    dependencyHashes,
-    dependencyTransport: TRANSPORT_FINGERPRINT,
-  }));
-}
-
-function validateDependencyReceipts(slug, prompt, fingerprint, chunks, records) {
-  const current = records.filter((record) => record.event === 'dependency_context_sent'
-    && record.prompt_id === prompt.id && record.run_fingerprint === fingerprint);
-  invariant(current.length <= chunks.length, `${slug}/${prompt.id}: too many dependency chunks`);
-  current.forEach((record, index) => {
-    invariant(record.status === 'completed', `${slug}/${prompt.id}: dependency chunk is not completed`);
-    invariant(record.chunk_index === index + 1, `${slug}/${prompt.id}: dependency chunks are not a contiguous prefix`);
-    invariant(record.chunk_count === chunks.length, `${slug}/${prompt.id}: dependency chunk count differs`);
-    invariant(record.chunk_sha256 === sha256(chunks[index]), `${slug}/${prompt.id}: dependency chunk hash differs`);
-    invariant(UUID_PATTERN.test(record.conversation_id), `${slug}/${prompt.id}: invalid dependency conversation ID`);
-  });
-  return current;
+function verifyOutputQuality(slug, prompt, text, dependencies) {
+  for (const dependency of dependencies) {
+    invariant(text.includes(dependency.prompt_id), `${slug}/${prompt.id}: missing dependency ID ${dependency.prompt_id}`);
+    invariant(text.includes(dependency.output_sha256), `${slug}/${prompt.id}: missing dependency hash ${dependency.prompt_id}`);
+  }
+  const prohibited = [
+    /PDTF\s*1\.0/iu, /SPDTF\s*2\.0/iu, /Standard Property Data Trust Framework/iu,
+    /\bSPDTF ontology\b/iu, /Property Pack 0\.1\s*\(SPDTF\)/iu, /PDTF\/SPDTF standards?/iu,
+    /eight domain (?:working )?groups?/iu,
+    /(?:no|without) (?:prior|preceding|dependency) (?:messages|notes|context)|(?:first|initial|opening) turn/iu,
+    /\b(?:would you like|if you would like me to|let me know if)\b/iu,
+  ];
+  invariant(!prohibited.some((pattern) => pattern.test(text)), `${slug}/${prompt.id}: output fails the formulation quality gate`);
 }
 
 function verifyCurrentPrompts(context) {
@@ -255,6 +223,7 @@ function verifyCurrentPrompts(context) {
   const outputs = new Map();
   const pending = [];
   const noteIds = [];
+  const derivedSourceIds = [];
   for (const promptId of runOrder) {
     const prompt = promptById.get(promptId);
     const dependencies = prompt.depends_on.map((id) => outputs.get(id));
@@ -265,14 +234,11 @@ function verifyCurrentPrompts(context) {
     const stableIds = [...new Set(prompt.source_scope.flatMap((group) => manifest.group_source_ids[group]))];
     const sourceHashes = stableIds.map((id) => manifest.sources.find((source) => source.stable_source_id === id).sha256);
     const dependencyHashes = dependencies.map((item) => item.output_sha256);
-    const fingerprint = expectedFingerprint(config, prompt, stableIds, sourceHashes, dependencyHashes);
+    const fingerprint = computePromptFingerprint({ config, prompt, stableIds, sourceHashes, dependencyHashes });
     const queried = records.filter((record) => record.event === 'prompt_queried'
       && record.prompt_id === promptId && record.run_fingerprint === fingerprint);
     const completed = records.filter((record) => record.event === 'prompt_completed'
       && record.prompt_id === promptId && record.run_fingerprint === fingerprint);
-    const dependencyNotes = prompt.depends_on.map((id) => ({ id, text: outputs.get(id).text }));
-    const chunks = dependencyChunks(dependencyNotes);
-    const contextReceipts = validateDependencyReceipts(slug, prompt, fingerprint, chunks, records);
     invariant(queried.length <= 1, `${slug}/${promptId}: duplicate current query receipts`);
     invariant(completed.length <= 1, `${slug}/${promptId}: duplicate current completion receipts`);
     if (!queried.length && !completed.length) {
@@ -291,21 +257,23 @@ function verifyCurrentPrompts(context) {
       `${slug}/${promptId}: selected NotebookLM source IDs`);
     equalArrays(query.dependency_prompt_ids, prompt.depends_on, `${slug}/${promptId}: dependency prompt IDs`);
     equalArrays(query.dependency_output_sha256, dependencyHashes, `${slug}/${promptId}: dependency hashes`);
+    equalArrays(query.dependency_notebook_source_ids, dependencies.map((item) => item.notebook_derived_source_id),
+      `${slug}/${promptId}: dependency NotebookLM source IDs`);
     invariant(query.notebook_id === manifest.notebook_id, `${slug}/${promptId}: query notebook ID differs`);
     invariant(query.prompt_version === config.prompt_defaults.prompt_version, `${slug}/${promptId}: query prompt version differs`);
-    invariant(query.dependency_chunk_count === chunks.length, `${slug}/${promptId}: query dependency chunk count differs`);
-    invariant(query.dependency_transport === QUERY_TRANSPORT, `${slug}/${promptId}: query dependency transport differs`);
-    invariant(contextReceipts.length === chunks.length, `${slug}/${promptId}: query exists before all dependency chunks`);
+    invariant(query.dependency_transport === DEPENDENCY_TRANSPORT_VERSION,
+      `${slug}/${promptId}: query dependency transport differs`);
     invariant(query.output_path === expectedOutput, `${slug}/${promptId}: query output path differs`);
     invariant(query.output_sha256 === outputHash, `${slug}/${promptId}: query output hash differs`);
-    invariant(Number.isInteger(query.citation_count) && query.citation_count >= 0, `${slug}/${promptId}: invalid citation count`);
+    invariant(Number.isInteger(query.citation_count) && query.citation_count > 0, `${slug}/${promptId}: missing citations`);
     invariant(UUID_PATTERN.test(query.conversation_id), `${slug}/${promptId}: invalid query conversation ID`);
+    verifyOutputQuality(slug, prompt, text, dependencies);
     if (!completed.length) {
       pending.push(promptId);
       continue;
     }
     const completion = completed[0];
-    invariant(COMPLETION_STATUSES.has(completion.status), `${slug}/${promptId}: invalid completion status`);
+    invariant(completion.status === COMPLETION_STATUS, `${slug}/${promptId}: invalid completion status`);
     invariant(completion.notebook_id === manifest.notebook_id, `${slug}/${promptId}: completion notebook ID differs`);
     invariant(completion.prompt_version === config.prompt_defaults.prompt_version,
       `${slug}/${promptId}: completion prompt version differs`);
@@ -316,24 +284,28 @@ function verifyCurrentPrompts(context) {
     invariant(['created', 'reconciled'].includes(completion.note_status), `${slug}/${promptId}: invalid note status`);
     invariant(completion.authority_review === 'human-review-required-before-artefact-generation',
       `${slug}/${promptId}: authority review gate differs`);
-    invariant(Array.isArray(completion.findings), `${slug}/${promptId}: findings must be an array`);
-    const expectedFindings = [];
-    if (!query.citation_count) expectedFindings.push('no-machine-readable-citations-returned');
-    for (const term of ['PDTF 1.0', 'SPDTF 2.0']) {
-      if (text.includes(term)) expectedFindings.push(`prohibited-label-mentioned:${term}`);
-    }
-    equalArrays(completion.findings, expectedFindings, `${slug}/${promptId}: automated-review findings`);
-    invariant(completion.status === (expectedFindings.length
-      ? 'completed-needs-human-review' : 'completed-automated-review-passed'),
-    `${slug}/${promptId}: completion status does not match findings`);
-    invariant(completion.citation_review === (query.citation_count
-      ? 'machine-citations-present' : 'needs-human-review'),
-    `${slug}/${promptId}: citation review does not match the query`);
+    equalArrays(completion.findings, [], `${slug}/${promptId}: automated-review findings`);
+    invariant(completion.citation_review === 'machine-citations-present', `${slug}/${promptId}: citation review differs`);
+    invariant(completion.response_quality_review === 'passed', `${slug}/${promptId}: response quality review differs`);
+    const derived = records.filter((record) => record.event === 'derived_source_ingested'
+      && record.prompt_id === promptId && record.run_fingerprint === fingerprint
+      && record.output_sha256 === outputHash);
+    invariant(derived.length === 1, `${slug}/${promptId}: expected one current derived source receipt`);
+    const derivedReceipt = derived[0];
+    invariant(UUID_PATTERN.test(derivedReceipt.notebook_source_id), `${slug}/${promptId}: invalid derived source ID`);
+    invariant(completion.notebook_derived_source_id === derivedReceipt.notebook_source_id,
+      `${slug}/${promptId}: completion derived source ID differs`);
+    invariant(derivedReceipt.title === `[derived-preparation ${promptId} run ${fingerprint.slice(0, 12)}]`,
+      `${slug}/${promptId}: derived source title differs`);
+    const derivedContent = fs.readFileSync(safeRepoPath(derivedReceipt.source_path));
+    invariant(sha256(derivedContent) === derivedReceipt.content_sha256, `${slug}/${promptId}: derived source hash differs`);
     noteIds.push(completion.notebook_note_id);
-    outputs.set(promptId, { ...completion, text });
+    derivedSourceIds.push(derivedReceipt.notebook_source_id);
+    outputs.set(promptId, { ...completion, text, prompt_id: promptId });
   }
   unique(noteIds, `${slug}: current note IDs`);
-  return { completed: outputs.size, expected: runOrder.length, pending, noteIds };
+  unique(derivedSourceIds, `${slug}: current derived source IDs`);
+  return { completed: outputs.size, expected: runOrder.length, pending, noteIds, derivedSourceIds };
 }
 
 function verifyAggregate(aggregateConfig, aggregateManifest, coreContexts) {
@@ -422,6 +394,7 @@ function main() {
   verifyAggregate(aggregateContext.config, aggregateContext.manifest, coreContexts);
   const audits = coreContexts.map((context) => ({ context, promptAudit: verifyCurrentPrompts(context) }));
   unique(audits.flatMap(({ promptAudit }) => promptAudit.noteIds), 'Current NotebookLM note IDs');
+  unique(audits.flatMap(({ promptAudit }) => promptAudit.derivedSourceIds), 'Current NotebookLM derived source IDs');
   const notebooks = audits.map(({ context, promptAudit }) => ({
     slug: context.slug,
     sources: context.manifest.source_count,

@@ -1,5 +1,5 @@
 notebooklm_config_version: 1
-config_status: draft
+config_status: built-and-verified
 last_updated: 2026-08-31
 governing_adr: ADR-0081
 
@@ -12,7 +12,7 @@ bundle:
   output: docs/notebooklm/prepared/shared-facts-and-terminology.md
   manifest_output: docs/notebooklm/prepared/shared-facts-and-terminology.manifest.yaml
   build_status: built-and-verified
-  output_sha256: 119d396401f0fb4ae63a8e51d3a723de3d293099dc010c1f68ece97418f1aede
+  output_sha256: a438578be73bf2a4e949549ae9ab0f650a40670c99b90a43c745b589d5681d78
 
 dependencies:
   - id: preparation-builder
@@ -112,6 +112,7 @@ sources:
       - docs/adr/ADR-0070-uniform-microsoft-365-working-group-workspaces.md
       - docs/adr/ADR-0075-property-pack-ontology-as-accelerated-spdtf-component.md
       - docs/adr/ADR-0077-place-pdtf-schema-beneath-spdtf-as-third-party-input.md
+      - docs/adr/ADR-0081-organise-opda-evidence-into-purpose-specific-notebooklm-portfolios.md
     inclusion_reason: Establish accepted, proposed and historical relationships consistently.
     repository_tracking: tracked
     rights_and_data_classification: public-and-authorised-for-notebooklm

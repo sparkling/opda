@@ -390,14 +390,12 @@ export async function prepareSharedFacts(options) {
       maturity: resource.maturity, source_date: unit.source_date, sha256: unit.original_sha256,
     });
   }
-  const adrPath = 'docs/adr/ADR-0081-organise-opda-evidence-into-purpose-specific-notebooklm-portfolios.md';
-  const governingAdr = await readFile(safeRepoPath(adrPath), 'utf8');
   const content = [
     '# OPDA shared programme facts and terminology', '', `Updated: ${String(config.last_updated).slice(0, 10)}`, '',
     '## Canonical facts', '', ...config.canonical_facts.map((item) => `- **${item.subject}:** ${item.statement} Authority: ${item.authority}.`), '',
     '## Controlling guardrails', '', ...config.guardrails.map((item) => `- ${item}`), '',
     '## Known conflicts', '', ...config.known_conflicts.map((item) => `- **${item.id}:** ${item.issue} Disposition: ${item.disposition}.`),
-    '', '## Governing portfolio decision', '', governingAdr, '', '## Component source index', '',
+    '', '## Component source index', '',
     ...sourceIndex.map((item) => `- \`${item.source}\` — ${item.authority}; ${item.maturity}; source date ${item.source_date}.`), '',
   ].join('\n');
   const outputPath = safePreparedPath(config.bundle.output);

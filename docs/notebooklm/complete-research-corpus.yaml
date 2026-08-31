@@ -24,7 +24,7 @@ dependencies:
   - id: six-approved-source-manifests
     kind: generated-manifest-union
     target: docs/notebooklm/prepared/manifests/*.json
-    status: approved
+    status: built-and-verified
     required_before: source-ingestion
     blocking: false
   - id: repository-public-source-authorisation

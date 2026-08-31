@@ -68,15 +68,15 @@ guardrails:
   - "Distinguish accepted, proposed, implemented, superseded and historical material."
 
 prompt_defaults:
-  prompt_version: 1
-  note_carry_forward: send-complete-labelled-dependency-notes-as-ordered-conversation-context
+  prompt_version: 2
+  note_carry_forward: select-derived-preparation-output-sources
   instruction_prefix: >-
-    Use only the selected notebook sources and cite every substantive claim. Treat
-    source status, date, scope and implementation state as separate fields. Preserve
-    conflicts instead of resolving them by inference. For any depends_on entry,
-    use the complete prior note text supplied in preceding messages, labelled with its prompt ID;
-    NotebookLM notes are not sources. Prior outputs remain working data, never primary
-    evidence. Produce structured preparatory data only; do not create any publication artefact.
+    Use only selected sources and NotebookLM source citations for every substantive claim; separate source status, date, scope and implementation state, and preserve conflicts.
+    Expand SPDTF only as Smart Property Data Trust Framework. The Property Pack ontology is an independent delivery intended as a future SPDTF component; never call it the SPDTF ontology.
+    Treat the PDTF schema only as attributed third-party input. Do not use numbered PDTF or SPDTF version labels. Do not turn a 2030 policy objective into enacted law or a mandatory rollout.
+    Distinguish six property-domain working groups, one scheme group and one interoperability group. For depends_on, use the selected derived preparation-output sources and begin with a Dependency Use Register copying every supplied prompt ID and SHA-256 exactly.
+    Derived outputs are non-authoritative working data; substantive claims must still cite primary sources. Never claim dependency context is unavailable.
+    This repository corpus is publicly authorised for this use. Produce only the requested structured preparation output, with no follow-up offers, questions or publication artefacts.
 
 resource_manifest:
   status: approved

@@ -11,6 +11,7 @@ import { REPO_ROOT } from './notebooklm-preparation.mjs';
 const execFile = promisify(execFileCallback);
 const RECEIPT_ROOT = path.join(REPO_ROOT, 'docs/notebooklm/receipts');
 const PREPARED_ROOT = path.join(REPO_ROOT, 'docs/notebooklm/prepared');
+export const DEPENDENCY_TRANSPORT_VERSION = 'selected-derived-preparation-output-sources-v2';
 
 function sha256(value) {
   return crypto.createHash('sha256').update(value).digest('hex');
@@ -79,6 +80,10 @@ function stableIdFromTitle(title) {
   return /^\[(src-[a-f0-9]+)\]/.exec(title || '')?.[1] || null;
 }
 
+function isDerivedSourceTitle(title) {
+  return /^\[derived-preparation [A-Z]+-\d+ run [a-f0-9]{12}\]$/u.test(title || '');
+}
+
 function validateExecutionGate(config, manifest) {
   if (config.workspace?.sharing !== 'private') throw new Error('Notebook must remain private');
   if (config.resource_manifest?.status !== 'approved') throw new Error('Source manifest is not approved');
@@ -125,11 +130,15 @@ function sourceIdentityCandidates(context, remote, receiptByRemoteId) {
 }
 
 async function listRemoteSources(context, profile, { allowIncomplete = false } = {}) {
-  const receipts = parseJsonLines(context.receiptPath).filter((item) => item.event === 'source_ingested');
-  const receiptByRemoteId = new Map(receipts.map((item) => [item.notebook_source_id, item.stable_source_id]));
+  const receipts = parseJsonLines(context.receiptPath);
+  const receiptByRemoteId = new Map(receipts.filter((item) => item.event === 'source_ingested')
+    .map((item) => [item.notebook_source_id, item.stable_source_id]));
+  const derivedRemoteIds = new Set(receipts.filter((item) => item.event === 'derived_source_ingested')
+    .map((item) => item.notebook_source_id));
   const sources = await runNlm(['source', 'list', context.manifest.notebook_id, '--profile', profile, '--json'], { json: true });
   const map = new Map();
   for (const source of sources) {
+    if (derivedRemoteIds.has(source.id) || isDerivedSourceTitle(source.title)) continue;
     const candidates = sourceIdentityCandidates(context, source, receiptByRemoteId);
     if (candidates.length !== 1) throw new Error(`Unmanaged or ambiguous source in ${context.slug}: ${source.title}`);
     const stableId = candidates[0];
@@ -185,7 +194,16 @@ export async function ingestNotebook(context, options) {
   for (const [stableId, source] of remote) {
     const planned = context.manifest.sources.find((item) => item.stable_source_id === stableId);
     const receipt = receiptBySource.get(stableId);
-    if (receipt && receipt.sha256 !== planned.sha256) throw new Error(`Changed source already ingested: ${stableId}`);
+    if (receipt && receipt.sha256 !== planned.sha256) {
+      await runNlm(['source', 'delete', source.id, '--confirm', '--json', '--profile', options.profile], { json: true });
+      appendReceipt(context.receiptPath, {
+        event: 'superseded_source_removed', status: 'completed', recorded_at: new Date().toISOString(),
+        notebook_id: context.manifest.notebook_id, stable_source_id: stableId,
+        notebook_source_id: source.id, previous_sha256: receipt.sha256, replacement_sha256: planned.sha256,
+      });
+      remote.delete(stableId);
+      continue;
+    }
     if (!receipt) {
       appendReceipt(context.receiptPath, {
         event: 'source_ingested', status: 'reconciled', recorded_at: new Date().toISOString(),
@@ -240,6 +258,66 @@ function promptSourceIds(context, prompt, remote) {
   };
 }
 
+function derivedSourceTitle(prompt, fingerprint) {
+  return `[derived-preparation ${prompt.id} run ${fingerprint.slice(0, 12)}]`;
+}
+
+function derivedSourceDocument(prompt, fingerprint, answer) {
+  return [
+    `# Derived preparation output ${prompt.id}: ${prompt.title}`, '',
+    `- Prompt ID: ${prompt.id}`, `- Run fingerprint: ${fingerprint}`, `- Output SHA-256: ${sha256(answer)}`,
+    '- Authority: non-authoritative derived working data',
+    '- Use: dependency context only; substantive claims must remain grounded in selected primary sources', '',
+    '## Complete output', '', answer, '',
+  ].join('\n');
+}
+
+async function ensureDerivedSource(context, prompt, fingerprint, answer, profile) {
+  const title = derivedSourceTitle(prompt, fingerprint);
+  const sourceRoot = path.join(PREPARED_ROOT, 'derived', context.slug);
+  const filePath = path.join(sourceRoot, `${prompt.id.toLowerCase()}-${fingerprint.slice(0, 12)}.md`);
+  const content = derivedSourceDocument(prompt, fingerprint, answer);
+  fs.mkdirSync(sourceRoot, { recursive: true });
+  fs.writeFileSync(filePath, content);
+  let listed = await runNlm(['source', 'list', context.manifest.notebook_id, '--json', '--profile', profile], { json: true });
+  const prefix = `[derived-preparation ${prompt.id} run `;
+  for (const stale of listed.filter((source) => source.title?.startsWith(prefix) && source.title !== title)) {
+    await runNlm(['source', 'delete', stale.id, '--confirm', '--json', '--profile', profile], { json: true });
+    appendReceipt(context.receiptPath, {
+      event: 'superseded_derived_source_removed', status: 'completed', recorded_at: new Date().toISOString(),
+      notebook_id: context.manifest.notebook_id, prompt_id: prompt.id, notebook_source_id: stale.id, title: stale.title,
+    });
+  }
+  listed = listed.filter((source) => source.title === title);
+  if (listed.length > 1) throw new Error(`Duplicate derived sources for ${prompt.id} run ${fingerprint.slice(0, 12)}`);
+  if (listed[0]?.status !== 2) {
+    if (listed[0]) {
+      await runNlm(['source', 'delete', listed[0].id, '--confirm', '--json', '--profile', profile], { json: true });
+    }
+    listed = [];
+  }
+  let source = listed[0];
+  let status = 'reconciled';
+  if (!source) {
+    const result = await retry(() => runNlm(['source', 'add', context.manifest.notebook_id,
+      '--file', filePath, '--title', title, '--wait', '--wait-timeout', '600', '--json', '--profile', profile],
+    { json: true, timeout: 720_000 }), `${context.slug}/${prompt.id}/derived-source`, 3);
+    source = { id: result.source_id, status: 2, title };
+    status = 'completed';
+  }
+  const receipts = parseJsonLines(context.receiptPath);
+  const recorded = receipts.findLast((item) => item.event === 'derived_source_ingested'
+    && item.prompt_id === prompt.id && item.run_fingerprint === fingerprint
+    && item.notebook_source_id === source.id && item.output_sha256 === sha256(answer));
+  if (!recorded) appendReceipt(context.receiptPath, {
+    event: 'derived_source_ingested', status, recorded_at: new Date().toISOString(),
+    notebook_id: context.manifest.notebook_id, prompt_id: prompt.id, run_fingerprint: fingerprint,
+    notebook_source_id: source.id, title, output_sha256: sha256(answer), content_sha256: sha256(content),
+    source_path: path.relative(REPO_ROOT, filePath), authority: 'non-authoritative-derived-working-data',
+  });
+  return source.id;
+}
+
 function promptText(config, prompt, dependencyNotes) {
   const sections = [
     config.prompt_defaults.instruction_prefix,
@@ -247,61 +325,48 @@ function promptText(config, prompt, dependencyNotes) {
     prompt.prompt,
     `# Acceptance criteria\n${prompt.acceptance.map((item) => `- ${item}`).join('\n')}`,
   ];
-  if (dependencyNotes.length) sections.push('# Dependency context\nThe complete labelled dependency notes were supplied in the preceding messages of this conversation. Treat them as derived working data, not primary evidence.');
+  if (dependencyNotes.length) sections.push([
+    '# Required dependency use register',
+    'The selected sources include the complete derived outputs below. Start your response with a section titled "Dependency Use Register" and reproduce every row exactly:',
+    ...dependencyNotes.map((item) => `- ${item.id} — SHA-256: ${item.sha256}`),
+    'Use those sources as working context. Do not cite them as primary authority and do not claim they were unavailable.',
+  ].join('\n'));
   return sections.join('\n\n');
 }
 
-function dependencyChunks(dependencyNotes, maxCharacters = 3_500) {
-  const text = dependencyNotes.map((item) => `# Dependency note ${item.id}\n${item.text}`).join('\n\n');
-  const chunks = [];
-  let remaining = text;
-  while (remaining.length) {
-    let boundary = Math.min(maxCharacters, remaining.length);
-    if (boundary < remaining.length) {
-      const paragraph = remaining.lastIndexOf('\n\n', boundary);
-      if (paragraph > maxCharacters / 2) boundary = paragraph;
-    }
-    chunks.push(remaining.slice(0, boundary));
-    remaining = remaining.slice(boundary).replace(/^\n+/, '');
+function answerQualityFindings(answer, citations, dependencyNotes) {
+  const findings = [];
+  if (!answer.trim()) findings.push('empty-answer');
+  if (!citations) findings.push('no-machine-readable-citations-returned');
+  for (const dependency of dependencyNotes) {
+    if (!answer.includes(dependency.id)) findings.push(`missing-dependency-id:${dependency.id}`);
+    if (!answer.includes(dependency.sha256)) findings.push(`missing-dependency-hash:${dependency.id}`);
   }
-  return chunks;
+  const prohibited = [
+    /PDTF\s*1\.0/iu, /SPDTF\s*2\.0/iu, /Standard Property Data Trust Framework/iu,
+    /\bSPDTF ontology\b/iu, /Property Pack 0\.1\s*\(SPDTF\)/iu, /PDTF\/SPDTF standards?/iu,
+    /eight domain (?:working )?groups?/iu,
+  ];
+  for (const pattern of prohibited) if (pattern.test(answer)) findings.push(`prohibited-formulation:${pattern.source}`);
+  if (/(?:no|without) (?:prior|preceding|dependency) (?:messages|notes|context)|(?:first|initial|opening) turn/iu.test(answer)) {
+    findings.push('dependency-context-denied');
+  }
+  if (/\b(?:would you like|if you would like me to|let me know if)\b/iu.test(answer)) findings.push('unsolicited-follow-up-offer');
+  return findings;
 }
 
-async function queryWithDependencies(context, prompt, selected, dependencyNotes, options, fingerprint) {
-  const chunks = dependencyChunks(dependencyNotes);
-  const prior = parseJsonLines(context.receiptPath).filter((item) => item.event === 'dependency_context_sent'
-    && item.prompt_id === prompt.id && item.run_fingerprint === fingerprint);
-  let completedChunks = 0;
-  let conversationId = null;
-  for (const event of prior.sort((left, right) => left.chunk_index - right.chunk_index)) {
-    if (event.chunk_index !== completedChunks + 1 || event.chunk_sha256 !== sha256(chunks[completedChunks])) break;
-    completedChunks += 1;
-    conversationId = event.conversation_id;
-  }
-  for (let index = completedChunks; index < chunks.length; index += 1) {
-    const message = [
-      `Dependency context ${index + 1} of ${chunks.length} for ${prompt.id}.`,
-      'Retain this complete text as derived working context for the final task. Do not treat it as primary evidence. Reply only: Context retained.',
-      chunks[index],
-    ].join('\n\n');
-    const mode = conversationId ? ['--conversation-id', conversationId] : ['--new-conversation'];
-    const result = await retry(() => runNlm(['query', 'notebook', context.manifest.notebook_id, message,
-      '--source-ids', selected.remoteIds.join(','), ...mode, '--timeout', '300', '--json', '--profile', options.profile],
-    { json: true, timeout: 360_000 }), `${context.slug}/${prompt.id}/context-${index + 1}`, 3);
-    conversationId = result.conversation_id;
-    appendReceipt(context.receiptPath, {
-      event: 'dependency_context_sent', status: 'completed', recorded_at: new Date().toISOString(),
-      notebook_id: context.manifest.notebook_id, prompt_id: prompt.id, run_fingerprint: fingerprint,
-      chunk_index: index + 1, chunk_count: chunks.length, chunk_sha256: sha256(chunks[index]), conversation_id: conversationId,
-    });
-    process.stdout.write(`[${context.slug}] ${prompt.id} dependency context ${index + 1}/${chunks.length}\n`);
-  }
-  const mode = conversationId ? ['--conversation-id', conversationId] : ['--new-conversation'];
+async function queryWithDependencies(context, prompt, selected, dependencyNotes, options) {
+  const sourceIds = [...selected.remoteIds, ...dependencyNotes.map((item) => item.notebook_source_id)];
   const question = promptText(context.config, prompt, dependencyNotes);
-  const result = await retry(() => runNlm(['query', 'notebook', context.manifest.notebook_id, question,
-    '--source-ids', selected.remoteIds.join(','), ...mode, '--timeout', '300', '--json', '--profile', options.profile],
-  { json: true, timeout: 360_000 }), `${context.slug}/${prompt.id}`, 3);
-  return { result, dependencyChunkCount: chunks.length };
+  const result = await retry(async () => {
+    const response = await runNlm(['query', 'notebook', context.manifest.notebook_id, question,
+      '--source-ids', sourceIds.join(','), '--new-conversation', '--timeout', '300', '--json', '--profile', options.profile],
+    { json: true, timeout: 360_000 });
+    const findings = answerQualityFindings(response.answer || '', citationCount(response), dependencyNotes);
+    if (findings.length) throw new Error(`response quality gate failed: ${findings.join(', ')}`);
+    return response;
+  }, `${context.slug}/${prompt.id}`, 4);
+  return { result, dependencySourceIds: dependencyNotes.map((item) => item.notebook_source_id) };
 }
 
 function citationCount(result) {
@@ -311,6 +376,15 @@ function citationCount(result) {
 
 function outputPath(context, promptId) {
   return path.join(context.noteRoot, `${promptId.toLowerCase()}.md`);
+}
+
+export function computePromptFingerprint({ config, prompt, stableIds, sourceHashes, dependencyHashes }) {
+  return sha256(JSON.stringify({
+    id: prompt.id, version: config.prompt_defaults.prompt_version,
+    instructionPrefix: config.prompt_defaults.instruction_prefix,
+    prompt: prompt.prompt, acceptance: prompt.acceptance, stableIds, sourceHashes,
+    dependencyHashes, dependencyTransport: DEPENDENCY_TRANSPORT_VERSION,
+  }));
 }
 
 function loadCompletePrompt(receipts, prompt, fingerprint, filePath) {
@@ -345,21 +419,24 @@ export async function executePrompts(context, remote, options) {
     const dependencyNotes = prompt.depends_on.map((id) => {
       const dependency = outputs.get(id);
       if (!dependency) throw new Error(`${prompt.id} dependency is incomplete: ${id}`);
-      return { id, text: dependency.text, sha256: dependency.output_sha256 };
+      if (!dependency.notebook_derived_source_id) throw new Error(`${prompt.id} dependency source is incomplete: ${id}`);
+      return {
+        id, text: dependency.text, sha256: dependency.output_sha256,
+        notebook_source_id: dependency.notebook_derived_source_id,
+      };
     });
     const selected = promptSourceIds(context, prompt, remote);
-    const fingerprint = sha256(JSON.stringify({
-      id: prompt.id, version: context.config.prompt_defaults.prompt_version,
-      instructionPrefix: context.config.prompt_defaults.instruction_prefix,
-      prompt: prompt.prompt, acceptance: prompt.acceptance, stableIds: selected.stableIds,
-      sourceHashes: selected.stableIds.map((id) => context.manifest.sources.find((source) => source.stable_source_id === id).sha256),
+    const sourceHashes = selected.stableIds.map((id) => context.manifest.sources
+      .find((source) => source.stable_source_id === id).sha256);
+    const fingerprint = computePromptFingerprint({
+      config: context.config, prompt, stableIds: selected.stableIds, sourceHashes,
       dependencyHashes: dependencyNotes.map((item) => item.sha256),
-      dependencyTransport: 'complete-labelled-notes-in-ordered-3500-character-conversation-context-v1',
-    }));
+    });
     const filePath = outputPath(context, prompt.id);
     const complete = loadCompletePrompt(receipts, prompt, fingerprint, filePath);
     if (complete) {
-      outputs.set(prompt.id, complete);
+      const derivedSourceId = await ensureDerivedSource(context, prompt, fingerprint, complete.text, options.profile);
+      outputs.set(prompt.id, { ...complete, notebook_derived_source_id: derivedSourceId });
       process.stdout.write(`[${context.slug}] ${prompt.id} already completed\n`);
       continue;
     }
@@ -368,10 +445,11 @@ export async function executePrompts(context, remote, options) {
     let answer;
     if (queryEvent && fs.existsSync(filePath)) {
       answer = fs.readFileSync(filePath, 'utf8');
-      if (sha256(answer) !== queryEvent.output_sha256) queryEvent = null;
+      const findings = answerQualityFindings(answer, queryEvent.citation_count, dependencyNotes);
+      if (sha256(answer) !== queryEvent.output_sha256 || findings.length) queryEvent = null;
     }
     if (!queryEvent) {
-      const { result, dependencyChunkCount } = await queryWithDependencies(context, prompt, selected, dependencyNotes, options, fingerprint);
+      const { result, dependencySourceIds } = await queryWithDependencies(context, prompt, selected, dependencyNotes, options);
       answer = result.answer.trim();
       fs.writeFileSync(filePath, answer);
       queryEvent = {
@@ -380,7 +458,7 @@ export async function executePrompts(context, remote, options) {
         prompt_version: context.config.prompt_defaults.prompt_version, run_fingerprint: fingerprint,
         selected_stable_source_ids: selected.stableIds, selected_notebook_source_ids: selected.remoteIds,
         dependency_prompt_ids: prompt.depends_on, dependency_output_sha256: dependencyNotes.map((item) => item.sha256),
-        dependency_transport: 'complete-labelled-notes-in-ordered-conversation-context', dependency_chunk_count: dependencyChunkCount,
+        dependency_transport: DEPENDENCY_TRANSPORT_VERSION, dependency_notebook_source_ids: dependencySourceIds,
         conversation_id: result.conversation_id || null, sources_used: result.sources_used || [],
         citation_count: citationCount(result), output_path: path.relative(REPO_ROOT, filePath),
         output_sha256: sha256(answer),
@@ -388,21 +466,20 @@ export async function executePrompts(context, remote, options) {
       appendReceipt(context.receiptPath, queryEvent);
     }
     const note = await retry(() => createNotebookNote(context, prompt, answer, options.profile, fingerprint), `${context.slug}/${prompt.id}/note`, 3);
-    const warnings = [];
-    if (!queryEvent.citation_count) warnings.push('no-machine-readable-citations-returned');
-    for (const term of ['PDTF 1.0', 'SPDTF 2.0']) if (answer.includes(term)) warnings.push(`prohibited-label-mentioned:${term}`);
+    const derivedSourceId = await ensureDerivedSource(context, prompt, fingerprint, answer, options.profile);
     const completed = {
-      event: 'prompt_completed', status: warnings.length ? 'completed-needs-human-review' : 'completed-automated-review-passed',
+      event: 'prompt_completed', status: 'completed-automated-review-passed',
       recorded_at: new Date().toISOString(), notebook_id: context.manifest.notebook_id,
       prompt_id: prompt.id, prompt_version: context.config.prompt_defaults.prompt_version,
       run_fingerprint: fingerprint, notebook_note_id: note.noteId, note_status: note.reconciled ? 'reconciled' : 'created',
+      notebook_derived_source_id: derivedSourceId,
       conversation_id: queryEvent.conversation_id, output_path: path.relative(REPO_ROOT, filePath),
-      output_sha256: sha256(answer), citation_review: queryEvent.citation_count ? 'machine-citations-present' : 'needs-human-review',
-      authority_review: 'human-review-required-before-artefact-generation', findings: warnings,
+      output_sha256: sha256(answer), citation_review: 'machine-citations-present', response_quality_review: 'passed',
+      authority_review: 'human-review-required-before-artefact-generation', findings: [],
     };
     appendReceipt(context.receiptPath, completed);
     receipts.push(queryEvent, completed);
-    outputs.set(prompt.id, { ...completed, text: answer });
+    outputs.set(prompt.id, { ...completed, text: answer, notebook_derived_source_id: derivedSourceId });
     process.stdout.write(`[${context.slug}] ${prompt.id} completed; note ${note.noteId}\n`);
   }
   return outputs;
