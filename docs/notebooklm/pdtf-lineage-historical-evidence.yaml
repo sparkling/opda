@@ -1,5 +1,5 @@
 notebooklm_config_version: 1
-config_status: ready-for-private-execution
+config_status: preparation-complete-awaiting-human-review
 last_updated: 2026-08-31
 governing_adr: ADR-0081
 
@@ -27,7 +27,7 @@ workspace:
   sharing: private
   notebook_id_verification: {status: verified, profile: personal, verified_at: 2026-08-31}
   source_ingestion_status: completed-and-verified
-  preparation_prompt_status: pending
+  preparation_prompt_status: completed-and-automated-review-recorded
 
 dependencies:
   - id: shared-facts-pack
@@ -435,7 +435,7 @@ preparation_prompts:
     title: Assemble the artefact preparation pack
     source_scope: [pdtf-shared-facts, pdtf-derived-glossary-dictionary, pdtf-derived-ontology, pdtf-rml-traceability, pdtf-current-coverage-receipt, pdtf-adopted-odrs, pdtf-lineage-decisions, pdtf-lineage-site, pdtf-current-comparison-anchor]
     depends_on: [PDTF-02, PDTF-03, PDTF-04, PDTF-05, PDTF-06, PDTF-07, PDTF-08]
-    output_note: "PDTF-09 — Approved lineage evidence pack"
+    output_note: "PDTF-09 — Lineage evidence pack — human review pending"
     prompt: >-
       Assemble a format-neutral preparation pack containing canonical terminology,
       chronology, derivation chain, model inventory, audit corrections, retained and
@@ -448,26 +448,9 @@ preparation_prompts:
       - The pack is ready for separate artefact briefs.
 
 execution_and_review:
-  execution_log: []
+  execution_log: docs/notebooklm/receipts/pdtf-lineage-historical-evidence.jsonl
   run_order: [PDTF-01, PDTF-02, PDTF-03, PDTF-04, PDTF-05, PDTF-06, PDTF-07, PDTF-08, PDTF-09]
-  record_each_run:
-    - run_id
-    - prompt_id
-    - prompt_version
-    - executed_at
-    - selected_source_ids
-    - dependency_note_ids
-    - notebook_conversation_id
-    - notebook_response_id
-    - notebook_note_id
-    - output_sha256
-    - citation_review
-    - authority_review
-    - reviewer
-    - reviewed_at
-    - findings
-    - rerun_of
-    - status
+  record_each_run: [event, run_fingerprint, prompt_id, prompt_version, recorded_at, selected_stable_source_ids, selected_notebook_source_ids, dependency_prompt_ids, dependency_output_sha256, dependency_notebook_source_ids, dependency_transport, conversation_id, notebook_note_id, notebook_derived_source_id, output_path, output_sha256, citation_count, citation_review, response_quality_review, authority_review, findings, status]
   derived_output_policy: >-
     Prompt responses are derived historical and preparation notes, not evidence of
     endorsement or replacements for primary sources. They must retain citations and

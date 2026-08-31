@@ -1,5 +1,5 @@
 notebooklm_config_version: 1
-config_status: ready-for-private-execution
+config_status: preparation-complete-awaiting-human-review
 last_updated: 2026-08-31
 governing_adr: ADR-0081
 
@@ -26,7 +26,7 @@ workspace:
   sharing: private
   notebook_id_verification: {status: verified, profile: personal, verified_at: 2026-08-31}
   source_ingestion_status: completed-and-verified
-  preparation_prompt_status: pending
+  preparation_prompt_status: completed-and-automated-review-recorded
 
 dependencies:
   - id: shared-facts-pack
@@ -435,7 +435,7 @@ preparation_prompts:
     title: Assemble the artefact preparation pack
     source_scope: [wg-shared-facts, wg-member-guide-site, wg-review-surface, wg-recruitment-and-privacy, wg-kickoff-presentation, wg-operating-decisions, wg-operating-materials, wg-participation-method]
     depends_on: [WG-02, WG-03, WG-04, WG-05, WG-06, WG-07, WG-08]
-    output_note: "WG-09 — Approved participant evidence pack"
+    output_note: "WG-09 — Participant evidence pack — human review pending"
     prompt: >-
       Assemble a format-neutral preparation pack containing participation motives,
       contribution catalogue, participant journey, channel map, evidence-handling
@@ -448,26 +448,9 @@ preparation_prompts:
       - The output is preparation data, not a finished artefact.
 
 execution_and_review:
-  execution_log: []
+  execution_log: docs/notebooklm/receipts/working-group-participant-guide.jsonl
   run_order: [WG-01, WG-02, WG-03, WG-04, WG-05, WG-06, WG-07, WG-08, WG-09]
-  record_each_run:
-    - run_id
-    - prompt_id
-    - prompt_version
-    - executed_at
-    - selected_source_ids
-    - dependency_note_ids
-    - notebook_conversation_id
-    - notebook_response_id
-    - notebook_note_id
-    - output_sha256
-    - citation_review
-    - authority_review
-    - reviewer
-    - reviewed_at
-    - findings
-    - rerun_of
-    - status
+  record_each_run: [event, run_fingerprint, prompt_id, prompt_version, recorded_at, selected_stable_source_ids, selected_notebook_source_ids, dependency_prompt_ids, dependency_output_sha256, dependency_notebook_source_ids, dependency_transport, conversation_id, notebook_note_id, notebook_derived_source_id, output_path, output_sha256, citation_count, citation_review, response_quality_review, authority_review, findings, status]
   derived_output_policy: >-
     Prompt responses are derived preparation notes, not operating policy or participant
     commitments. They must retain citations and may not be re-ingested without a

@@ -15,6 +15,12 @@ implements:
   - docs/notebooklm/property-pack-ontology.yaml
   - docs/notebooklm/pdtf-lineage-historical-evidence.yaml
   - docs/notebooklm/complete-research-corpus.yaml
+  - docs/notebooklm/receipts/
+  - scripts/build-notebooklm-prepared-sources.mjs
+  - scripts/run-notebooklm-preparation.mjs
+  - scripts/verify-notebooklm-execution.mjs
+  - scripts/lib/notebooklm-preparation.mjs
+  - scripts/lib/notebooklm-execution.mjs
 ---
 
 # Organise OPDA evidence into purpose-specific NotebookLM portfolios
@@ -53,9 +59,9 @@ still be excluded, but source count alone is not a reason to combine material wh
 a notebook remains within its 500-source limit.
 
 This ADR decides the notebook information architecture, authority boundaries,
-source-selection and source-unit rules. It does not select the final source
-manifest for each notebook, upload material, generate public artefacts or authorise
-publication.
+source-selection and source-unit rules, and records the resulting private
+implementation. It does not approve the generated preparation notes, generate final
+artefacts or authorise sharing or publication.
 
 ## Decision Drivers
 
@@ -79,9 +85,10 @@ publication.
 
 ## Considered Options
 
-- **One repository-wide notebook.** Rejected because it exceeds a useful source
-  scope, mixes authority and audience, and makes duplicate or historic material
-  disproportionately influential.
+- **One repository-wide notebook as the only production workspace.** Rejected
+  because it mixes authority and audience and makes duplicate or historic material
+  disproportionately influential. A separate private aggregate was retained for
+  cross-portfolio discovery, not governed artefact production.
 - **Four notebooks matching the initial subjects.** Rejected because programme and
   standards governance require different narratives, while the proposed working-
   group notebook combines participant operations, technical modelling and formal
@@ -312,15 +319,16 @@ the final artefacts. Its execution sequence is:
    human sign-off;
 4. record the repository owner's public-source authorisation, ingest the selected
    sources privately and verify NotebookLM processing;
-5. execute each notebook's preparation prompts in the configured order and source
-   scope, supplying the complete labelled text of dependency notes as ordered
-   preceding conversation context before each dependent task and saving the response
-   as a named NotebookLM note; independent notebook chains may execute in parallel;
-6. append a run record containing the prompt and dependency versions, execution date,
-   selected source identifiers, conversation, response and note identifiers, output
-   checksum, review findings and any rerun relationship;
-7. review every preparation note for citations, source authority, maturity leakage,
-   unresolved contradictions and notebook-specific risks, then rerun affected prompts;
+5. execute each notebook's preparation prompts in configured order and source scope;
+   save each output as a named note and a clearly labelled, non-authoritative derived
+   source selected by dependent prompts; independent notebook chains may run in
+   parallel;
+6. append event-sourced JSONL receipts containing prompt and dependency versions,
+   stable and NotebookLM source identifiers, note and conversation identifiers,
+   output checksums, citation counts and review state;
+7. run the deterministic receipt and dependency verifier, then have a human review
+   every final preparation pack for source authority, maturity leakage, unresolved
+   contradictions and notebook-specific risks;
 8. mark the notebook ready for artefact generation only after a human reviewer accepts
    its final preparation pack; and
 9. begin artefact briefs and generation as a separate downstream step.
@@ -336,8 +344,40 @@ implementation of the preparation builder, and rights/data classification for th
 personal NotebookLM workspace. The repository owner subsequently confirmed that all
 repository material is public, duplicates material already available on public
 SharePoint sites and is authorised for NotebookLM upload. That decision closes the
-rights/data-classification control; the other implementation and review controls
-remain in force.
+rights/data-classification control. The milestone guardrails, preparation builder
+and dependency transport are implemented; human review of the final packs remains
+in force.
+
+### Implemented state
+
+The private preparation run completed on 2026-08-31:
+
+| Notebook | Primary sources | Preparation prompts |
+|---|---:|---:|
+| Programme, policy and history | 30 | 7 of 7 |
+| Standards governance | 51 | 8 of 8 |
+| Semantic modelling method | 45 | 8 of 8 |
+| Working-group participant guide | 62 | 9 of 9 |
+| Property Pack ontology | 82 | 9 of 9 |
+| PDTF lineage and historical evidence | 163 | 9 of 9 |
+
+The six core notebooks contain 433 scoped source placements. The private Complete
+Research Corpus contains 395 unique sources, leaving 105 sources below the configured
+500-source limit. The shared facts pack was rebuilt from the controlled source list
+with SHA-256 `a438578be73bf2a4e949549ae9ab0f650a40670c99b90a43c745b589d5681d78` and
+uploaded to every core notebook and the aggregate.
+
+All 50 version-2 preparation prompts completed. Dependency transport uses selected
+derived preparation sources, identified by prompt ID and output SHA-256, because the
+CLI does not preserve an in-memory conversation cache between processes. These
+sources are explicitly labelled non-authoritative working data. The strict verifier
+confirmed current prompt fingerprints, source and dependency identifiers, hashes,
+NotebookLM note IDs, citations and derived-source IDs for all 50 runs.
+
+Automated verification does not approve the semantic content. Each final note is
+labelled **human review pending**, and every artefact-generation gate remains blocked
+until a human accepts the corresponding preparation pack. All notebooks remain
+private; no sharing, publishing or deployment occurred.
 
 ### Consequences
 
@@ -354,12 +394,12 @@ remain in force.
   volume to dominate narrative notebooks.
 - Bad, because selected material and shared facts must be updated deliberately when
   authority, maturity or programme facts change.
-- Bad, because unsupported formats and rendered routes still require a missing
-  one-to-one conversion builder, manifests and integrity review before upload.
+- Bad, because unsupported formats and rendered routes require maintained one-to-one
+  conversion, manifests and integrity checks whenever their inputs change.
 - Bad, because prompt execution is non-deterministic and requires a retained run record,
   citation review and human approval before reuse.
-- Bad, because NotebookLM does not provide shared reasoning across notebooks; useful
-  cross-portfolio context must be repeated explicitly.
+- Bad, because cross-portfolio context must be repeated explicitly through the
+  controlled shared facts pack.
 - Neutral, because the source corpus remains authoritative in the repository; the
   notebooks are derived research and production workspaces.
 - Neutral, because this ADR authorises no public sharing, publication or deployment.
@@ -367,18 +407,16 @@ remain in force.
 ### Confirmation
 
 - The six core notebook names, purposes and audiences are accepted by the operator.
-- On 2026-08-31 the six empty core notebooks were created in the operator's personal
-  NotebookLM account through the dedicated `personal` CLI profile. The Codex MCP
-  launcher is configured to use the same active profile. No sources have yet been
-  uploaded and none of the notebooks has been shared.
+- On 2026-08-31 the six core notebooks were populated privately through the dedicated
+  `personal` CLI profile with 433 scoped source placements; none was shared.
 - The Property Pack ontology is described as an independent delivery and future SPDTF
   component, never as the complete SPDTF ontology.
 - The source-selection rules exclude source schemas and generated page-per-term
   documentation while retaining canonical ontology, glossary, dictionary, mapping,
   coverage and decision evidence.
-- Six draft notebook configurations and one centrally owned shared-facts configuration
-  now record candidate resources, exclusions, prompt sequences and execution gates.
-  They are plans for review, not evidence that ingestion or prompt execution occurred.
+- Six notebook configurations, one centrally owned shared-facts configuration and one
+  aggregate-corpus configuration record the ingested resources, prompt sequences,
+  receipts and remaining human approval gates.
 - The maturity statements above match the status and update dates of ADR-0063,
   ADR-0065, ADR-0066, ADR-0067, ADR-0068, ADR-0070, ADR-0075 and ADR-0077 on
   2026-08-31.
@@ -391,11 +429,10 @@ remain in force.
 - The operative subscription limit is 500 sources per notebook. Configured resource
   groups expand to discrete sources by default; documents are combined only after a
   manifest records a concrete capacity, format or inseparability reason.
-- Implementation remains incomplete until the preparation builder, source manifests
-  and conversions have been approved, selected sources have been ingested, every configured
-  preparation prompt has been executed and the resulting preparation packs have passed
-  citation, authority and contradiction review. Artefact generation follows as a
-  separately authorised downstream step.
+- The preparation builder, discrete source manifests, private ingestion and all 50
+  configured prompts are complete and machine-verified. Human authority,
+  contradiction and fitness review remains outstanding; artefact generation follows
+  as a separately authorised downstream step.
 - Notebook creation and source upload are private workspace actions; this ADR does not
   authorise sharing notebooks or publishing generated artefacts.
 
@@ -414,6 +451,12 @@ remain in force.
   Closed the rights/data-classification gate on the repository owner's authority,
   recorded the 500-source-per-notebook limit and replaced pre-emptive bundling with
   one-source-per-file, URL, transcript or rendered route by default.
+- **2026-08-31 — Implemented private source ingestion.** Built the controlled shared
+  facts pack and one-to-one source projections, populated all six core notebooks with
+  433 placements, and populated the private aggregate with 395 unique sources.
+- **2026-08-31 — Completed preparation prompts.** Executed and machine-verified all 50
+  prompts, recorded dependency-grounded outputs and receipts, and retained the human
+  review gate before any artefact generation.
 
 ## More Information
 
@@ -433,4 +476,6 @@ remain in force.
 - [Property Pack ontology notebook configuration](../notebooklm/property-pack-ontology.yaml)
 - [PDTF lineage and historical evidence notebook configuration](../notebooklm/pdtf-lineage-historical-evidence.yaml)
 - [Complete research corpus notebook configuration](../notebooklm/complete-research-corpus.yaml)
+- [NotebookLM preparation runner](../../scripts/run-notebooklm-preparation.mjs)
+- [NotebookLM execution verifier](../../scripts/verify-notebooklm-execution.mjs)
 - [NotebookLM source and usage limits](https://support.google.com/notebooklm/answer/16213268)

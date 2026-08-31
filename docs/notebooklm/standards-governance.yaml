@@ -1,5 +1,5 @@
 notebooklm_config_version: 1
-config_status: ready-for-private-execution
+config_status: preparation-complete-awaiting-human-review
 last_updated: 2026-08-31
 governing_adr: ADR-0081
 
@@ -26,7 +26,7 @@ workspace:
   sharing: private
   notebook_id_verification: {status: verified, profile: personal, verified_at: 2026-08-31}
   source_ingestion_status: completed-and-verified
-  preparation_prompt_status: pending
+  preparation_prompt_status: completed-and-automated-review-recorded
 
 dependencies:
   - id: shared-facts-pack
@@ -348,7 +348,7 @@ preparation_prompts:
     title: Assemble the artefact preparation pack
     source_scope: [sg-shared-facts, sg-operative-opda-governance, sg-accepted-decisions, sg-proposed-lifecycle, sg-governance-site, sg-government-guidance, sg-steering-evidence]
     depends_on: [SG-02, SG-03, SG-04, SG-05, SG-06, SG-07]
-    output_note: "SG-08 — Approved governance evidence pack"
+    output_note: "SG-08 — Governance evidence pack — human review pending"
     prompt: >-
       Assemble a format-neutral preparation pack containing the verified authority
       map, current-versus-proposed lifecycle, consultation evidence, assurance
@@ -361,26 +361,9 @@ preparation_prompts:
       - The output is preparation data, not an artefact.
 
 execution_and_review:
-  execution_log: []
+  execution_log: docs/notebooklm/receipts/standards-governance.jsonl
   run_order: [SG-01, SG-02, SG-03, SG-04, SG-05, SG-06, SG-07, SG-08]
-  record_each_run:
-    - run_id
-    - prompt_id
-    - prompt_version
-    - executed_at
-    - selected_source_ids
-    - dependency_note_ids
-    - notebook_conversation_id
-    - notebook_response_id
-    - notebook_note_id
-    - output_sha256
-    - citation_review
-    - authority_review
-    - reviewer
-    - reviewed_at
-    - findings
-    - rerun_of
-    - status
+  record_each_run: [event, run_fingerprint, prompt_id, prompt_version, recorded_at, selected_stable_source_ids, selected_notebook_source_ids, dependency_prompt_ids, dependency_output_sha256, dependency_notebook_source_ids, dependency_transport, conversation_id, notebook_note_id, notebook_derived_source_id, output_path, output_sha256, citation_count, citation_review, response_quality_review, authority_review, findings, status]
   derived_output_policy: >-
     Prompt responses are derived preparation notes, not governance decisions or
     authoritative sources. They must retain citations and may not be re-ingested

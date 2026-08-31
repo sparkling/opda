@@ -1,5 +1,5 @@
 notebooklm_config_version: 1
-config_status: ready-for-private-execution
+config_status: preparation-complete-awaiting-human-review
 last_updated: 2026-08-31
 governing_adr: ADR-0081
 
@@ -26,7 +26,7 @@ workspace:
   sharing: private
   notebook_id_verification: {status: verified, profile: personal, verified_at: 2026-08-31}
   source_ingestion_status: completed-and-verified
-  preparation_prompt_status: pending
+  preparation_prompt_status: completed-and-automated-review-recorded
 
 dependencies:
   - id: shared-facts-pack
@@ -387,7 +387,7 @@ preparation_prompts:
     title: Assemble the artefact preparation pack
     source_scope: [smm-shared-facts, smm-current-method-site, smm-method-research, smm-accepted-architecture, smm-proposed-workflow, smm-accepted-odr-method, smm-primary-standards, smm-property-pack-case-study]
     depends_on: [SMM-02, SMM-03, SMM-04, SMM-05, SMM-06, SMM-07]
-    output_note: "SMM-08 — Approved semantic modelling evidence pack"
+    output_note: "SMM-08 — Semantic modelling evidence pack — human review pending"
     prompt: >-
       Assemble a format-neutral preparation pack containing controlled terminology,
       method stages and status, human and AI responsibilities, semantic-package
@@ -400,26 +400,9 @@ preparation_prompts:
       - The pack is ready for separate artefact briefs.
 
 execution_and_review:
-  execution_log: []
+  execution_log: docs/notebooklm/receipts/semantic-modelling-method.jsonl
   run_order: [SMM-01, SMM-02, SMM-03, SMM-04, SMM-05, SMM-06, SMM-07, SMM-08]
-  record_each_run:
-    - run_id
-    - prompt_id
-    - prompt_version
-    - executed_at
-    - selected_source_ids
-    - dependency_note_ids
-    - notebook_conversation_id
-    - notebook_response_id
-    - notebook_note_id
-    - output_sha256
-    - citation_review
-    - authority_review
-    - reviewer
-    - reviewed_at
-    - findings
-    - rerun_of
-    - status
+  record_each_run: [event, run_fingerprint, prompt_id, prompt_version, recorded_at, selected_stable_source_ids, selected_notebook_source_ids, dependency_prompt_ids, dependency_output_sha256, dependency_notebook_source_ids, dependency_transport, conversation_id, notebook_note_id, notebook_derived_source_id, output_path, output_sha256, citation_count, citation_review, response_quality_review, authority_review, findings, status]
   derived_output_policy: >-
     Prompt responses are derived preparation notes, not modelling decisions or
     standards sources. They must retain citations and may not be re-ingested
