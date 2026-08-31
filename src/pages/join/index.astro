@@ -1,5 +1,6 @@
 ---
 import WorkingGroupInterestForm from '@/components/campaign/WorkingGroupInterestForm.astro';
+import BrandHeading from '@/components/BrandHeading.astro';
 import { contributionOptions, workingGroupContexts } from '@/data/working-group-campaign';
 import StandalonePublicLayout from '@/layouts/StandalonePublicLayout.astro';
 import '@/styles/working-group-join.css';
@@ -20,7 +21,10 @@ const description = 'Bring your professional experience to the industry working 
   <div class="wg-page">
     <section class="wg-campaign-hero" aria-labelledby="join-title">
       <div class="wg-campaign-hero__copy">
-        <p class="wg-eyebrow">A first for property information sharing</p>
+        <a class="wg-hero-brand-link" href="/" aria-label="Open Property Data Association home">
+          <BrandHeading surface="dark" campaign />
+        </a>
+        <p class="wg-eyebrow wg-eyebrow--hero">The property industry, working together</p>
         <h1 id="join-title">Help shape the future of <em>property information sharing.</em></h1>
         <p class="wg-lead">
           The way property information is prepared, checked and shared is changing. Bring the
@@ -227,4 +231,38 @@ const description = 'Bring your professional experience to the industry working 
     import '@/scripts/working-group-join';
     import '@/scripts/working-group-campaign';
   </script>
+  <script is:inline src="/ui/client.js"></script>
 </StandalonePublicLayout>
+
+<style>
+  :global(.working-group-campaign .campaign-masthead) {
+    position: absolute;
+    inset: 0 0 auto;
+    justify-content: flex-end;
+    background: transparent;
+    border-bottom: 0;
+  }
+
+  :global(.working-group-campaign .campaign-masthead__brand) { display: none; }
+  :global(.working-group-campaign .campaign-masthead__nav) { margin-left: auto; }
+
+  :global(.working-group-campaign .wg-campaign-hero) {
+    min-height: min(48rem, 100svh);
+    padding-top: max(clamp(var(--space-10), 8vw, 7rem), calc(5rem + var(--space-8)));
+  }
+
+  .wg-hero-brand-link {
+    display: inline-block;
+    color: inherit;
+    text-decoration: none;
+  }
+
+  .wg-hero-brand-link:hover {
+    color: inherit;
+    text-decoration: none;
+  }
+
+  .wg-eyebrow--hero {
+    font-size: clamp(var(--text-sm), 1.1vw, var(--text-base));
+  }
+</style>
