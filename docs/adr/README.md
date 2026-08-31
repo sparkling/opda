@@ -97,6 +97,12 @@ modelling website remains unchanged:
 | [ADR-0079](./ADR-0079-make-the-site-public-and-retire-the-edge-authentication-gate.md) | Make the site public and retire the edge authentication gate | accepted |
 | [ADR-0080](./ADR-0080-add-purposeful-graphics-to-the-opda-homepage.md) | Add purposeful graphics to the OPDA homepage | accepted · validation pending |
 
+## August 2026 NotebookLM knowledge architecture
+
+| # | Title | Status |
+|---|---|---|
+| [ADR-0081](./ADR-0081-organise-opda-evidence-into-purpose-specific-notebooklm-portfolios.md) | Organise OPDA evidence into purpose-specific NotebookLM portfolios | accepted · implementation pending |
+
 ## Authoring a new ADR
 
 1. Run `/ruflo-adr:adr-create "<short title>"` — the skill picks the
