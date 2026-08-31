@@ -41,17 +41,17 @@ dependencies:
     status: pending
     required_before: source-ingestion
     blocking: true
-  - id: data-protection-and-rights-clearance
-    kind: human-decision
-    target: every-resource-component
-    status: pending
+  - id: repository-public-source-authorisation
+    kind: operator-decision
+    target: repository-corpus
+    status: approved
     required_before: source-ingestion
-    blocking: true
-    decision_owner: OPDA data controller or authorised delegate
-    criteria: Every component is classified and approved for processing in the named personal NotebookLM workspace.
-    approved_by: null
-    approved_on: null
-  - id: preparation-builder-and-bundles
+    blocking: false
+    decision_owner: repository-owner
+    criteria: Every repository source is public and authorised for NotebookLM upload without privacy or rights deferral.
+    approved_by: repository-owner
+    approved_on: 2026-08-31
+  - id: preparation-builder-and-source-conversions
     kind: implementation-and-output
     target: scripts/build-notebooklm-prepared-sources.mjs
     status: missing
@@ -98,11 +98,14 @@ resource_manifest:
     - sha256
   availability_policy: >-
     Repository tracking is resolved per input with git ls-files, never inferred from
-    its top-level directory. Any absent local input fails closed. Every prepared bundle
-    requires a component manifest, checksum and declared reproducibility class.
-  prepared_bundle_contract:
+    its top-level directory. Any absent local input fails closed. Each file, URL,
+    transcript and rendered route remains a separate source by default.
+  prepared_source_contract:
     builder: scripts/build-notebooklm-prepared-sources.mjs
     builder_status: missing
+    notebook_source_limit: 500
+    default_source_unit: one-file-url-transcript-or-rendered-route
+    combination_policy: only-for-demonstrated-format-need-or-when-discrete-sources-exceed-500
     website_prerequisite: make build-data
     manifest_required: true
     output_sha256_required: true
@@ -112,14 +115,14 @@ resource_manifest:
   resources:
     - id: pph-shared-facts
       title: OPDA shared programme facts and terminology
-      kind: prepared-bundle-reference
+      kind: prepared-source-reference
       authority: mixed-with-explicit-attribution
       maturity: current
       ingestion: direct-after-central-build
       owner: docs/notebooklm/portfolio-shared-facts.yaml
       path: docs/notebooklm/prepared/shared-facts-and-terminology.md
       repository_tracking: derived-local-output
-      rights_and_data_classification: pending
+      rights_and_data_classification: public-and-authorised-for-notebooklm
       status: planned
 
     - id: pph-government-policy
@@ -127,7 +130,7 @@ resource_manifest:
       kind: source-set
       authority: uk-government
       maturity: published
-      ingestion: direct
+      ingestion: one-source-per-input-with-format-conversion-as-needed
       inputs:
         - source/08-external-references/uk-government/MHCLG-Home-Buying-and-Selling-Reform-Roadmap.pdf
         - source/08-external-references/uk-government/data_standards_for_smart_data.pdf
@@ -137,8 +140,8 @@ resource_manifest:
         - https://www.gov.uk/government/publications/smart-data-strategy
         - https://www.gov.uk/government/calls-for-evidence/smart-data-multi-sector-call-for-evidence
         - https://www.gov.uk/government/consultations/home-buying-and-selling-reform/outcome/home-buying-and-selling-reform-roadmap
-      repository_tracking: untracked-local-and-external
-      rights_and_data_classification: pending
+      repository_tracking: ignored-local-public-corpus-and-external
+      rights_and_data_classification: public-and-authorised-for-notebooklm
       status: candidate
 
     - id: pph-opda-policy
@@ -152,16 +155,16 @@ resource_manifest:
         - source/02-policy-and-positioning/briefings-to-government/OPDA Select Committee Inquiry Response.docx
         - source/02-policy-and-positioning/strategic-papers/DPMSG roadmap.pdf
         - source/02-policy-and-positioning/strategic-papers/DPMSG-Smart-Property-Data-Trust-v2.pdf
-      repository_tracking: untracked-local
-      rights_and_data_classification: pending
+      repository_tracking: ignored-local-public-corpus
+      rights_and_data_classification: public-and-authorised-for-notebooklm
       status: candidate
 
     - id: pph-programme-site
       title: Current programme and strategy website explanation
-      kind: prepared-bundle
+      kind: prepared-source-set
       authority: opda-public-explanation
       maturity: current
-      ingestion: render-built-routes-to-markdown
+      ingestion: render-each-built-route-to-markdown
       build_prerequisite: make build-data
       routes:
         - /programme/
@@ -179,10 +182,10 @@ resource_manifest:
         - src/pages/strategy/mhclg-roadmap.astro
         - src/pages/strategy/programme-phases.astro
         - src/pages/strategy/project-roadmap.astro
-      output: docs/notebooklm/prepared/programme-and-strategy-site.md
+      output_pattern: docs/notebooklm/prepared/programme-site/{source-id}.md
       transformation: {reproducibility: human-reviewed, human_signoff_by: null, human_signoff_on: null}
       repository_tracking: tracked
-      rights_and_data_classification: pending
+      rights_and_data_classification: public-and-authorised-for-notebooklm
       status: planned
 
     - id: pph-current-presentations
@@ -190,20 +193,20 @@ resource_manifest:
       kind: source-set
       authority: opda
       maturity: current-at-publication-date
-      ingestion: direct
+      ingestion: one-source-per-input-with-format-conversion-as-needed
       inputs:
         - source/05-engagement/presentations/OPDA overview 2026.pptx
         - source/05-engagement/presentations/Smart Data and Legislation.pptx
-      repository_tracking: untracked-local
-      rights_and_data_classification: pending
+      repository_tracking: ignored-local-public-corpus
+      rights_and_data_classification: public-and-authorised-for-notebooklm
       status: candidate
 
     - id: pph-decision-history
       title: Programme direction and lineage decisions (mixed status)
-      kind: prepared-bundle
+      kind: prepared-source-set
       authority: opda-decision-record
       maturity: mixed-status
-      ingestion: bundle-with-front-matter-preserved
+      ingestion: convert-each-document-preserving-front-matter
       inputs:
         - docs/adr/ADR-0039-linked-data-model-as-spdtf-foundation.md
         - docs/adr/ADR-0051-site-content-realignment-dvstf-spdtf-uk-initiative-mhclg.md
@@ -211,10 +214,10 @@ resource_manifest:
         - docs/adr/ADR-0063-domain-led-bounded-context-working-groups.md
         - docs/adr/ADR-0075-property-pack-ontology-as-accelerated-spdtf-component.md
         - docs/adr/ADR-0077-place-pdtf-schema-beneath-spdtf-as-third-party-input.md
-      output: docs/notebooklm/prepared/programme-decision-history.md
+      output_pattern: docs/notebooklm/prepared/programme-decisions/{source-id}.md
       transformation: {reproducibility: deterministic, human_signoff_by: null, human_signoff_on: null}
       repository_tracking: tracked
-      rights_and_data_classification: pending
+      rights_and_data_classification: public-and-authorised-for-notebooklm
       status: planned
 
     - id: pph-market-evidence
@@ -222,13 +225,13 @@ resource_manifest:
       kind: source-set
       authority: mixed-with-explicit-attribution
       maturity: published
-      ingestion: direct
+      ingestion: one-source-per-input-with-format-conversion-as-needed
       inputs:
         - source/02-policy-and-positioning/opda-reports/OPDA Report.pdf
         - source/02-policy-and-positioning/opda-reports/Santander Fixing the Broken Chain.pdf
         - source/05-engagement/consumer-campaign/2025/The Future of Homebuying Report_FINAL (COPY ONLY)_13.03.25.docx
-      repository_tracking: untracked-local
-      rights_and_data_classification: pending
+      repository_tracking: ignored-local-public-corpus
+      rights_and_data_classification: public-and-authorised-for-notebooklm
       status: candidate
 
   exclusions:

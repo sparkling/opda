@@ -41,17 +41,17 @@ dependencies:
     status: pending
     required_before: source-ingestion
     blocking: true
-  - id: data-protection-and-rights-clearance
-    kind: human-decision
-    target: every-resource-component
-    status: pending
+  - id: repository-public-source-authorisation
+    kind: operator-decision
+    target: repository-corpus
+    status: approved
     required_before: source-ingestion
-    blocking: true
-    decision_owner: OPDA data controller or authorised delegate
-    criteria: Every component is classified and approved for processing in the named personal NotebookLM workspace.
-    approved_by: null
-    approved_on: null
-  - id: preparation-builder-and-bundles
+    blocking: false
+    decision_owner: repository-owner
+    criteria: Every repository source is public and authorised for NotebookLM upload without privacy or rights deferral.
+    approved_by: repository-owner
+    approved_on: 2026-08-31
+  - id: preparation-builder-and-source-conversions
     kind: implementation-and-output
     target: scripts/build-notebooklm-prepared-sources.mjs
     status: missing
@@ -97,28 +97,31 @@ resource_manifest:
     - sha256
   availability_policy: >-
     Repository tracking is resolved per input with git ls-files, never inferred from
-    its top-level directory. Any absent local input fails closed. Every prepared bundle
-    requires a component manifest, checksum and declared reproducibility class.
-  prepared_bundle_contract:
+    its top-level directory. Any absent local input fails closed. Each file, URL,
+    transcript and rendered route remains a separate source by default.
+  prepared_source_contract:
     builder: scripts/build-notebooklm-prepared-sources.mjs
     builder_status: missing
+    notebook_source_limit: 500
+    default_source_unit: one-file-url-transcript-or-rendered-route
+    combination_policy: only-for-demonstrated-format-need-or-when-discrete-sources-exceed-500
     website_prerequisite: make build-data
     manifest_required: true
     output_sha256_required: true
   selection_rule: >-
     Prefer operative constitutional documents and accepted decisions. Include
-    proposed governance only with its status visible in the source title and bundle.
+    proposed governance only with its status visible in each source title.
   resources:
     - id: sg-shared-facts
       title: OPDA shared programme facts and terminology
-      kind: prepared-bundle-reference
+      kind: prepared-source-reference
       authority: mixed-with-explicit-attribution
       maturity: current
       ingestion: direct-after-central-build
       owner: docs/notebooklm/portfolio-shared-facts.yaml
       path: docs/notebooklm/prepared/shared-facts-and-terminology.md
       repository_tracking: derived-local-output
-      rights_and_data_classification: pending
+      rights_and_data_classification: public-and-authorised-for-notebooklm
       status: planned
 
     - id: sg-operative-opda-governance
@@ -133,16 +136,16 @@ resource_manifest:
         - source/01-organisation/constitution-and-policies/Code of Conduct 2026.pdf
         - source/01-organisation/constitution-and-policies/Competition Compliance Policy.docx
         - source/01-organisation/constitution-and-policies/Data and GDPR Policy.docx
-      repository_tracking: untracked-local
-      rights_and_data_classification: pending
+      repository_tracking: ignored-local-public-corpus
+      rights_and_data_classification: public-and-authorised-for-notebooklm
       status: candidate
 
     - id: sg-accepted-decisions
       title: Accepted standards and working-group governance decisions
-      kind: prepared-bundle
+      kind: prepared-source-set
       authority: opda-decision-record
       maturity: accepted
-      ingestion: bundle-with-front-matter-preserved
+      ingestion: convert-each-document-preserving-front-matter
       inputs:
         - docs/adr/ADR-0063-domain-led-bounded-context-working-groups.md
         - docs/adr/ADR-0066-property-pack-451-seed-scope-and-greenfield-ontology.md
@@ -150,45 +153,46 @@ resource_manifest:
         - docs/adr/ADR-0070-uniform-microsoft-365-working-group-workspaces.md
         - docs/adr/ADR-0075-property-pack-ontology-as-accelerated-spdtf-component.md
         - docs/adr/ADR-0077-place-pdtf-schema-beneath-spdtf-as-third-party-input.md
-      output: docs/notebooklm/prepared/accepted-governance-decisions.md
+      output_pattern: docs/notebooklm/prepared/governance-decisions/{source-id}.md
       transformation: {reproducibility: deterministic, human_signoff_by: null, human_signoff_on: null}
       repository_tracking: tracked
-      rights_and_data_classification: pending
+      rights_and_data_classification: public-and-authorised-for-notebooklm
       status: planned
 
     - id: sg-proposed-lifecycle
       title: Proposed standards lifecycle and AI workflow
-      kind: prepared-bundle
+      kind: prepared-source-set
       authority: opda-decision-record
       maturity: proposed
-      ingestion: bundle-with-status-banner
+      ingestion: convert-each-document-with-status-banner
       inputs:
         - docs/adr/ADR-0065-ai-assisted-evidence-to-model-workflow.md
         - docs/adr/ADR-0068-govern-opda-standards-lifecycle.md
         - docs/research/ai-assisted-working-group-method.md
-      output: docs/notebooklm/prepared/proposed-standards-lifecycle.md
+      output_pattern: docs/notebooklm/prepared/proposed-governance/{source-id}.md
       transformation: {reproducibility: deterministic, human_signoff_by: null, human_signoff_on: null}
       repository_tracking: tracked
-      rights_and_data_classification: pending
+      rights_and_data_classification: public-and-authorised-for-notebooklm
       status: planned
 
     - id: sg-governance-site
       title: Current governance website explanation
-      kind: prepared-bundle
+      kind: prepared-source-set
       authority: opda-public-explanation
       maturity: current-but-non-normative
-      ingestion: render-built-routes-to-markdown
+      ingestion: render-each-built-route-to-markdown
       build_prerequisite: make build-data
       route_glob: /governance/**
       route_exclusions:
         - /governance/council/
+        - /governance/smart-data-guidebook/
       source_definition_glob: src/pages/governance/*.astro
       source_definition_exclusions:
         - src/pages/governance/council.astro
-      output: docs/notebooklm/prepared/governance-site.md
+      output_pattern: docs/notebooklm/prepared/governance-site/{source-id}.md
       transformation: {reproducibility: human-reviewed, human_signoff_by: null, human_signoff_on: null}
       repository_tracking: tracked
-      rights_and_data_classification: pending
+      rights_and_data_classification: public-and-authorised-for-notebooklm
       status: planned
 
     - id: sg-government-guidance
@@ -202,22 +206,22 @@ resource_manifest:
         - source/02-policy-and-positioning/dbt-smart-data-guidebook/chapter-2/SMART DATA GUIDEBOOK_Chapter 2 Governance Compliance and Legal Framework_DRAFT_V5.pdf
         - source/02-policy-and-positioning/dbt-smart-data-guidebook/chapter-4/SMART DATA GUIDEBOOK_Chapter 4 Data Stewardship, Privacy and Ethics_V2.pdf
         - source/02-policy-and-positioning/dbt-smart-data-guidebook/chapter-5/SMART DATA GUIDEBOOK_Chapter 5 Security, Risk and Fraud Management_V1.pdf
-      repository_tracking: untracked-local
-      rights_and_data_classification: pending
+      repository_tracking: ignored-local-public-corpus
+      rights_and_data_classification: public-and-authorised-for-notebooklm
       status: candidate
 
     - id: sg-steering-evidence
       title: DPMSG Trust and Interoperability Steering Group evidence
-      kind: prepared-bundle
+      kind: prepared-source-set
       authority: steering-group-record
       maturity: historical-meeting-evidence
-      ingestion: transcribe-and-bundle-after-access-review
+      ingestion: convert-each-transcript-one-to-one
       input_glob: source/04-governance-bodies/steering-group/meetings/transcripts/*.vtt
-      output: docs/notebooklm/prepared/steering-group-meeting-evidence.md
+      output_pattern: docs/notebooklm/prepared/steering-meetings/{source-id}.md
       transformation: {reproducibility: human-reviewed, human_signoff_by: null, human_signoff_on: null}
-      repository_tracking: untracked-local
-      rights_and_data_classification: pending
-      status: candidate-requires-access-and-personal-data-review
+      repository_tracking: ignored-local-public-corpus
+      rights_and_data_classification: public-and-authorised-for-notebooklm
+      status: candidate
 
   exclusions:
     - pattern: source/03-standards/trust-framework/**
@@ -228,10 +232,6 @@ resource_manifest:
       reason: Raw AI-council material is not standards authority.
     - pattern: "**/_archive/**"
       reason: Superseded copies require an explicit historical justification.
-    - pattern: "**/*.eml"
-      reason: Email requires access, personal-data and relevance review before use.
-    - pattern: "**/*.msg"
-      reason: Message files require access, personal-data and relevance review before use.
 
 preparation_prompts:
   - id: SG-01

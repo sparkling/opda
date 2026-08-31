@@ -41,17 +41,17 @@ dependencies:
     status: pending
     required_before: source-ingestion
     blocking: true
-  - id: data-protection-and-rights-clearance
-    kind: human-decision
-    target: every-resource-component
-    status: pending
+  - id: repository-public-source-authorisation
+    kind: operator-decision
+    target: repository-corpus
+    status: approved
     required_before: source-ingestion
-    blocking: true
-    decision_owner: OPDA data controller or authorised delegate
-    criteria: Every component is classified and approved for processing in the named personal NotebookLM workspace.
-    approved_by: null
-    approved_on: null
-  - id: preparation-builder-and-bundles
+    blocking: false
+    decision_owner: repository-owner
+    criteria: Every repository source is public and authorised for NotebookLM upload without privacy or rights deferral.
+    approved_by: repository-owner
+    approved_on: 2026-08-31
+  - id: preparation-builder-and-source-conversions
     kind: implementation-and-output
     target: scripts/build-notebooklm-prepared-sources.mjs
     status: missing
@@ -98,11 +98,14 @@ resource_manifest:
     - sha256
   availability_policy: >-
     Repository tracking is resolved per input with git ls-files, never inferred from
-    its top-level directory. Any absent local input fails closed. Every prepared bundle
-    requires a component manifest, checksum and declared reproducibility class.
-  prepared_bundle_contract:
+    its top-level directory. Any absent local input fails closed. Each file, URL,
+    transcript and rendered route remains a separate source by default.
+  prepared_source_contract:
     builder: scripts/build-notebooklm-prepared-sources.mjs
     builder_status: missing
+    notebook_source_limit: 500
+    default_source_unit: one-file-url-transcript-or-rendered-route
+    combination_policy: only-for-demonstrated-format-need-or-when-discrete-sources-exceed-500
     website_prerequisite: make build-data
     manifest_required: true
     output_sha256_required: true
@@ -112,22 +115,22 @@ resource_manifest:
   resources:
     - id: wg-shared-facts
       title: OPDA shared programme facts and terminology
-      kind: prepared-bundle-reference
+      kind: prepared-source-reference
       authority: mixed-with-explicit-attribution
       maturity: current
       ingestion: direct-after-central-build
       owner: docs/notebooklm/portfolio-shared-facts.yaml
       path: docs/notebooklm/prepared/shared-facts-and-terminology.md
       repository_tracking: derived-local-output
-      rights_and_data_classification: pending
+      rights_and_data_classification: public-and-authorised-for-notebooklm
       status: planned
 
     - id: wg-member-guide-site
       title: Current working-group member guide
-      kind: prepared-bundle
+      kind: prepared-source-set
       authority: opda-public-explanation
       maturity: current-but-non-normative
-      ingestion: render-built-routes-to-markdown
+      ingestion: render-each-built-route-to-markdown
       build_prerequisite: make build-data
       route_glob: /spdtf/working-groups/member-guide/**
       additional_routes:
@@ -140,18 +143,18 @@ resource_manifest:
         - src/pages/spdtf/working-groups/member-guide/source-material-and-sharepoint.astro
         - src/pages/spdtf/working-groups/member-guide/meetings-and-records.astro
         - src/pages/spdtf/working-groups/member-guide/model-review-and-decisions.astro
-      output: docs/notebooklm/prepared/working-group-member-guide.md
+      output_pattern: docs/notebooklm/prepared/working-group-member-guide/{source-id}.md
       transformation: {reproducibility: human-reviewed, human_signoff_by: null, human_signoff_on: null}
       repository_tracking: tracked
-      rights_and_data_classification: pending
+      rights_and_data_classification: public-and-authorised-for-notebooklm
       status: planned
 
     - id: wg-review-surface
       title: Working-group evidence, questions and review surfaces
-      kind: prepared-bundle
+      kind: prepared-source-set
       authority: opda-public-explanation
       maturity: current-capability-description
-      ingestion: render-built-routes-to-markdown
+      ingestion: render-each-built-route-to-markdown
       build_prerequisite: make build-data
       route_globs:
         - /spdtf/working-groups/*/
@@ -163,18 +166,18 @@ resource_manifest:
         - src/pages/spdtf/working-groups/[slug]/evidence.astro
         - src/pages/spdtf/working-groups/[slug]/questions.astro
         - src/pages/spdtf/working-groups/[slug]/review.astro
-      output: docs/notebooklm/prepared/working-group-review-surface.md
+      output_pattern: docs/notebooklm/prepared/working-group-review/{source-id}.md
       transformation: {reproducibility: human-reviewed, human_signoff_by: null, human_signoff_on: null}
       repository_tracking: tracked
-      rights_and_data_classification: pending
+      rights_and_data_classification: public-and-authorised-for-notebooklm
       status: planned
 
     - id: wg-recruitment-and-privacy
       title: Public invitation, registration and privacy information
-      kind: prepared-bundle
+      kind: prepared-source-set
       authority: opda-public-explanation
       maturity: current
-      ingestion: render-built-routes-and-bundle-documents
+      ingestion: render-routes-and-convert-documents-one-to-one
       build_prerequisite: make build-data
       routes:
         - /join/
@@ -185,18 +188,18 @@ resource_manifest:
       inputs:
         - docs/recruitment/2026-08-bounded-context-trade-body-outreach.md
         - docs/recruitment/2026-08-bounded-context-working-group-linkedin.md
-      output: docs/notebooklm/prepared/working-group-recruitment-and-privacy.md
+      output_pattern: docs/notebooklm/prepared/working-group-recruitment/{source-id}.md
       transformation: {reproducibility: human-reviewed, human_signoff_by: null, human_signoff_on: null}
       repository_tracking: tracked
-      rights_and_data_classification: pending
+      rights_and_data_classification: public-and-authorised-for-notebooklm
       status: planned
 
     - id: wg-kickoff-presentation
       title: Generic working-group kick-off presentation content
-      kind: prepared-bundle
+      kind: prepared-source-set
       authority: opda-participant-explanation
       maturity: current-presentation
-      ingestion: render-built-route-to-markdown
+      ingestion: render-one-built-route-to-markdown
       build_prerequisite: make build-data
       route: /presentation/working-group-kickoff/
       source_definitions:
@@ -205,18 +208,18 @@ resource_manifest:
         - src/components/presentations/WorkshopOrientationSlides.astro
         - src/components/presentations/WorkshopArchitectureSlides.astro
         - src/components/presentations/WorkshopParticipationSlides.astro
-      output: docs/notebooklm/prepared/working-group-kickoff-presentation.md
+      output_pattern: docs/notebooklm/prepared/working-group-kickoff/{source-id}.md
       transformation: {reproducibility: human-reviewed, human_signoff_by: null, human_signoff_on: null}
       repository_tracking: tracked
-      rights_and_data_classification: pending
+      rights_and_data_classification: public-and-authorised-for-notebooklm
       status: planned
 
     - id: wg-operating-decisions
       title: Working-group structure, recruitment and workspace decisions
-      kind: prepared-bundle
+      kind: prepared-source-set
       authority: opda-decision-record
       maturity: mixed-status
-      ingestion: bundle-with-front-matter-preserved
+      ingestion: convert-each-document-preserving-front-matter
       inputs:
         - docs/adr/ADR-0063-domain-led-bounded-context-working-groups.md
         - docs/adr/ADR-0065-ai-assisted-evidence-to-model-workflow.md
@@ -226,26 +229,26 @@ resource_manifest:
         - docs/adr/ADR-0071-bounded-context-recruitment-campaign.md
         - docs/adr/ADR-0072-scheduled-working-group-inbox-agent.md
         - docs/adr/ADR-0078-create-a-standalone-working-group-recruitment-campaign-at-join.md
-      output: docs/notebooklm/prepared/working-group-operating-decisions.md
+      output_pattern: docs/notebooklm/prepared/working-group-decisions/{source-id}.md
       transformation: {reproducibility: deterministic, human_signoff_by: null, human_signoff_on: null}
       repository_tracking: tracked
-      rights_and_data_classification: pending
+      rights_and_data_classification: public-and-authorised-for-notebooklm
       status: planned
 
     - id: wg-canonical-status-data
-      title: Sanitised working-group roster and workspace status data
-      kind: prepared-bundle
+      title: Working-group roster and workspace status data
+      kind: prepared-source-set
       authority: opda-maintained-implementation-data
       maturity: current-at-build-date
-      ingestion: extract-sanitised-facts-to-markdown
+      ingestion: convert-each-source-to-supported-text
       inputs:
         - src/data/working-group-campaign.ts
         - src/components/ia/working-groups.ts
         - src/lib/spdtf-workspace.mjs
-      output: docs/notebooklm/prepared/working-group-status-data.md
+      output_pattern: docs/notebooklm/prepared/working-group-status/{source-id}.md
       transformation: {reproducibility: human-reviewed, human_signoff_by: null, human_signoff_on: null}
       repository_tracking: tracked
-      rights_and_data_classification: pending
+      rights_and_data_classification: public-and-authorised-for-notebooklm
       status: planned
 
     - id: wg-operating-materials
@@ -259,8 +262,8 @@ resource_manifest:
         - docs/templates/teams-channel-post-design-system.md
         - docs/templates/first-quarterly-publish-checklist.md
         - docs/templates/agm-adjacent-ec-wave3-agenda.md
-      repository_tracking: mixed-tracked-and-untracked-local
-      rights_and_data_classification: pending
+      repository_tracking: mixed-tracked-and-ignored-local-public-corpus
+      rights_and_data_classification: public-and-authorised-for-notebooklm
       status: candidate
 
     - id: wg-participation-method
@@ -268,12 +271,12 @@ resource_manifest:
       kind: source-set
       authority: opda-research
       maturity: mixed-accepted-and-proposed
-      ingestion: direct
+      ingestion: one-source-per-input-with-format-conversion-as-needed
       inputs:
         - docs/research/bounded-context-working-group-approach.md
         - docs/research/ai-assisted-working-group-method.md
       repository_tracking: tracked
-      rights_and_data_classification: pending
+      rights_and_data_classification: public-and-authorised-for-notebooklm
       status: candidate
 
   exclusions:
@@ -283,16 +286,6 @@ resource_manifest:
       reason: Detailed historical ontology implementation belongs in PDTF lineage.
     - pattern: source/03-standards/ontology-candidates/property-pack/**
       reason: Model detail belongs in the Property Pack notebook.
-    - pattern: source/_inbox/**
-      reason: Inbox material requires classification and access review before selection.
-    - pattern: "**/*participants*.xlsx"
-      reason: Participant lists may contain personal data and are unnecessary for guidance.
-    - pattern: "**/*.eml"
-      reason: Email requires access, personal-data and relevance review.
-    - pattern: "**/*.msg"
-      reason: Message files require access, personal-data and relevance review.
-    - pattern: docs/templates/*working-group-invitation*
-      reason: Invitation templates may contain private workspace URLs or operational identifiers.
 
 preparation_prompts:
   - id: WG-01

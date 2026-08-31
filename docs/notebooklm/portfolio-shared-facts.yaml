@@ -21,19 +21,20 @@ dependencies:
     status: missing
     required_before: bundle-build
     blocking: true
-  - id: data-protection-and-rights-clearance
-    kind: human-decision
-    target: every-source-component
-    status: pending
+  - id: repository-public-source-authorisation
+    kind: operator-decision
+    target: repository-corpus
+    status: approved
     required_before: bundle-build
-    blocking: true
-    decision_owner: OPDA data controller or authorised delegate
-    criteria: Every component is classified and approved for processing in the named personal NotebookLM workspace.
-    approved_by: null
-    approved_on: null
+    blocking: false
+    decision_owner: repository-owner
+    criteria: Every repository source is public and authorised for NotebookLM upload without privacy or rights deferral.
+    approved_by: repository-owner
+    approved_on: 2026-08-31
 
 guardrails:
   - "Build this bundle once; notebook configs reference it and must not redefine it."
+  - "This intentional synthesis is not a precedent for merging other notebook sources."
   - "Preserve the status, scope, date and authority of every component source."
   - "Include only cross-portfolio facts; detailed narrative and model content stay in their notebooks."
   - "Do not use PDTF 1.0 or SPDTF 2.0."
@@ -68,7 +69,7 @@ sources:
       - https://www.gov.uk/government/consultations/home-buying-and-selling-reform/outcome/home-buying-and-selling-reform-roadmap
     inclusion_reason: Ground the government programme, legislation context and dates.
     repository_tracking: external
-    rights_and_data_classification: pending
+    rights_and_data_classification: public-and-authorised-for-notebooklm
 
   - id: shared-programme-decisions
     title: OPDA programme, model and lineage decisions
@@ -87,7 +88,7 @@ sources:
       - docs/adr/ADR-0077-place-pdtf-schema-beneath-spdtf-as-third-party-input.md
     inclusion_reason: Establish accepted, proposed and historical relationships consistently.
     repository_tracking: tracked
-    rights_and_data_classification: pending
+    rights_and_data_classification: public-and-authorised-for-notebooklm
 
   - id: shared-opda-role
     title: OPDA identity and organisational role
@@ -97,8 +98,8 @@ sources:
       - source/01-organisation/constitution-and-policies/OPDA Constitution 2026.pdf
       - source/01-organisation/constitution-and-policies/Articles of Association 2026.pdf
     inclusion_reason: Ground OPDA's corporate identity without importing full governance detail.
-    repository_tracking: untracked-local
-    rights_and_data_classification: pending
+    repository_tracking: ignored-local-public-corpus
+    rights_and_data_classification: public-and-authorised-for-notebooklm
 
   - id: shared-current-workspace
     title: Current contextual-boundary and working-group names
@@ -109,7 +110,7 @@ sources:
       - src/components/ia/working-groups.ts
     inclusion_reason: Keep names and boundary types consistent across notebooks.
     repository_tracking: tracked
-    rights_and_data_classification: pending
+    rights_and_data_classification: public-and-authorised-for-notebooklm
 
 transformation:
   operation: extract-status-qualified-cross-portfolio-facts-to-markdown

@@ -41,17 +41,17 @@ dependencies:
     status: pending
     required_before: source-ingestion
     blocking: true
-  - id: data-protection-and-rights-clearance
-    kind: human-decision
-    target: every-resource-component
-    status: pending
+  - id: repository-public-source-authorisation
+    kind: operator-decision
+    target: repository-corpus
+    status: approved
     required_before: source-ingestion
-    blocking: true
-    decision_owner: OPDA data controller or authorised delegate
-    criteria: Every component is classified and approved for processing in the named personal NotebookLM workspace.
-    approved_by: null
-    approved_on: null
-  - id: preparation-builder-and-bundles
+    blocking: false
+    decision_owner: repository-owner
+    criteria: Every repository source is public and authorised for NotebookLM upload without privacy or rights deferral.
+    approved_by: repository-owner
+    approved_on: 2026-08-31
+  - id: preparation-builder-and-source-conversions
     kind: implementation-and-output
     target: scripts/build-notebooklm-prepared-sources.mjs
     status: missing
@@ -99,11 +99,14 @@ resource_manifest:
     - sha256
   availability_policy: >-
     Repository tracking is resolved per input with git ls-files, never inferred from
-    its top-level directory. Any absent local input fails closed. Every prepared bundle
-    requires a component manifest, checksum and declared reproducibility class.
-  prepared_bundle_contract:
+    its top-level directory. Any absent local input fails closed. Each file, URL,
+    transcript and rendered route remains a separate source by default.
+  prepared_source_contract:
     builder: scripts/build-notebooklm-prepared-sources.mjs
     builder_status: missing
+    notebook_source_limit: 500
+    default_source_unit: one-file-url-transcript-or-rendered-route
+    combination_policy: only-for-demonstrated-format-need-or-when-discrete-sources-exceed-500
     website_prerequisite: make build-data
     manifest_required: true
     output_sha256_required: true
@@ -113,32 +116,32 @@ resource_manifest:
   resources:
     - id: smm-shared-facts
       title: OPDA shared programme facts and terminology
-      kind: prepared-bundle-reference
+      kind: prepared-source-reference
       authority: mixed-with-explicit-attribution
       maturity: current
       ingestion: direct-after-central-build
       owner: docs/notebooklm/portfolio-shared-facts.yaml
       path: docs/notebooklm/prepared/shared-facts-and-terminology.md
       repository_tracking: derived-local-output
-      rights_and_data_classification: pending
+      rights_and_data_classification: public-and-authorised-for-notebooklm
       status: planned
 
     - id: smm-current-method-site
       title: Current semantic modelling website explanation
-      kind: prepared-bundle
+      kind: prepared-source-set
       authority: opda-public-explanation
       maturity: current-but-non-normative
-      ingestion: render-built-routes-to-markdown
+      ingestion: render-each-built-route-to-markdown
       build_prerequisite: make build-data
       route_glob: /semantic-modelling/**
       source_definition_glob: src/pages/semantic-modelling/*.astro
       supporting_inputs:
         - src/lib/spdtf-workspace.mjs
         - src/lib/spdtf-standards-profile.mjs
-      output: docs/notebooklm/prepared/semantic-modelling-site.md
+      output_pattern: docs/notebooklm/prepared/semantic-modelling-site/{source-id}.md
       transformation: {reproducibility: human-reviewed, human_signoff_by: null, human_signoff_on: null}
       repository_tracking: tracked
-      rights_and_data_classification: pending
+      rights_and_data_classification: public-and-authorised-for-notebooklm
       status: planned
 
     - id: smm-method-research
@@ -146,7 +149,7 @@ resource_manifest:
       kind: source-set
       authority: opda-research
       maturity: mixed-proposed-and-informative
-      ingestion: direct
+      ingestion: one-source-per-input-with-format-conversion-as-needed
       inputs:
         - docs/research/bounded-context-working-group-approach.md
         - docs/research/ai-assisted-working-group-method.md
@@ -157,48 +160,48 @@ resource_manifest:
         - docs/linked-data-initiative/06-ai-linked-data-council-methodology.md
         - docs/linked-data-initiative/09-model-driven-generation-vision.md
       repository_tracking: tracked
-      rights_and_data_classification: pending
+      rights_and_data_classification: public-and-authorised-for-notebooklm
       status: candidate
 
     - id: smm-accepted-architecture
       title: Accepted bounded-context and Property Pack modelling architecture
-      kind: prepared-bundle
+      kind: prepared-source-set
       authority: opda-decision-record
       maturity: accepted
-      ingestion: bundle-with-front-matter-preserved
+      ingestion: convert-each-document-preserving-front-matter
       inputs:
         - docs/adr/ADR-0063-domain-led-bounded-context-working-groups.md
         - docs/adr/ADR-0066-property-pack-451-seed-scope-and-greenfield-ontology.md
         - docs/adr/ADR-0067-first-principles-property-pack-ontology-by-bounded-context.md
         - docs/adr/ADR-0075-property-pack-ontology-as-accelerated-spdtf-component.md
-      output: docs/notebooklm/prepared/accepted-modelling-architecture.md
+      output_pattern: docs/notebooklm/prepared/modelling-architecture/{source-id}.md
       transformation: {reproducibility: deterministic, human_signoff_by: null, human_signoff_on: null}
       repository_tracking: tracked
-      rights_and_data_classification: pending
+      rights_and_data_classification: public-and-authorised-for-notebooklm
       status: planned
 
     - id: smm-proposed-workflow
       title: Proposed AI-assisted evidence-to-model workflow
-      kind: prepared-bundle
+      kind: prepared-source-set
       authority: opda-decision-record-and-research
       maturity: proposed
-      ingestion: bundle-with-status-banner
+      ingestion: convert-each-document-with-status-banner
       inputs:
         - docs/adr/ADR-0065-ai-assisted-evidence-to-model-workflow.md
         - docs/adr/ADR-0068-govern-opda-standards-lifecycle.md
         - docs/research/ai-assisted-working-group-method.md
-      output: docs/notebooklm/prepared/proposed-ai-assisted-workflow.md
+      output_pattern: docs/notebooklm/prepared/proposed-modelling-workflow/{source-id}.md
       transformation: {reproducibility: deterministic, human_signoff_by: null, human_signoff_on: null}
       repository_tracking: tracked
-      rights_and_data_classification: pending
+      rights_and_data_classification: public-and-authorised-for-notebooklm
       status: planned
 
     - id: smm-accepted-odr-method
       title: Accepted ontology decisions originating in the PDTF-derived programme
-      kind: prepared-bundle
+      kind: prepared-source-set
       authority: opda-technical-decision-record
       maturity: accepted
-      ingestion: bundle-with-front-matter-preserved
+      ingestion: convert-each-document-preserving-front-matter
       inputs:
         - docs/ontology/odr/ODR-0001-linked-data-council-methodology.md
         - docs/ontology/odr/ODR-0002-ontology-language-adoption.md
@@ -207,10 +210,10 @@ resource_manifest:
         - docs/ontology/odr/ODR-0019-bounded-context-representation.md
         - docs/ontology/odr/ODR-0020-bounded-context-scheme-and-mapping.md
         - docs/ontology/odr/ODR-0027-classification-roles-inheritance-skos-doctrine.md
-      output: docs/notebooklm/prepared/accepted-ontology-method-decisions.md
+      output_pattern: docs/notebooklm/prepared/ontology-method-decisions/{source-id}.md
       transformation: {reproducibility: deterministic, human_signoff_by: null, human_signoff_on: null}
       repository_tracking: tracked
-      rights_and_data_classification: pending
+      rights_and_data_classification: public-and-authorised-for-notebooklm
       status: planned
 
     - id: smm-primary-standards
@@ -227,15 +230,15 @@ resource_manifest:
         - https://www.w3.org/TR/prov-o/
         - https://mapping-commons.github.io/sssom/
       repository_tracking: external
-      rights_and_data_classification: pending
+      rights_and_data_classification: public-and-authorised-for-notebooklm
       status: candidate
 
     - id: smm-property-pack-case-study
       title: Property Pack modelling method case study
-      kind: prepared-bundle
+      kind: prepared-source-set
       authority: opda-current-delivery
       maturity: candidate-model
-      ingestion: bundle-selected-metadata
+      ingestion: convert-each-source-to-markdown
       inputs:
         - source/03-standards/ontology-candidates/property-pack/0.1/candidate-manifest.json
         - source/03-standards/ontology-candidates/property-pack/0.1/candidate-summary.json
@@ -243,10 +246,10 @@ resource_manifest:
         - source/03-standards/ontology-candidates/property-pack/0.1/projections/context-map.json
         - source/03-standards/ontology-candidates/property-pack/0.1/projections/coverage.json
         - source/03-standards/ontology-candidates/property-pack/0.1/validation/report.json
-      output: docs/notebooklm/prepared/property-pack-method-case-study.md
+      output_pattern: docs/notebooklm/prepared/property-pack-method-case/{source-id}.md
       transformation: {reproducibility: human-reviewed, human_signoff_by: null, human_signoff_on: null}
       repository_tracking: tracked
-      rights_and_data_classification: pending
+      rights_and_data_classification: public-and-authorised-for-notebooklm
       status: planned
 
   exclusions:

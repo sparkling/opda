@@ -44,15 +44,15 @@ of the future Smart Property Data Trust Framework. OPDA has not yet gathered the
 evidence or developed the additional contextual-boundary models needed to claim a
 broader SPDTF ontology.
 
-The raw source inventory and tracked documentation also exceed a sensible single-
-notebook corpus. Hundreds of ADRs and ODRs, generated page-per-term documentation,
-duplicate schema projections and alternative transcript formats would consume
-source capacity without adding distinct evidence. NotebookLM's subscription limits
-may change; the portfolio therefore treats the vendor limit as a ceiling rather
-than a target.
+The operator's NotebookLM plan permits **500 sources per notebook**. That capacity
+removes any need to merge documents pre-emptively. Individual files, public URLs,
+meeting transcripts and rendered website routes are easier to cite, replace and
+audit when they remain separate. Exact duplicates and out-of-scope projections may
+still be excluded, but source count alone is not a reason to combine material while
+a notebook remains within its 500-source limit.
 
 This ADR decides the notebook information architecture, authority boundaries,
-source-selection rules and bundling method. It does not select the final source
+source-selection and source-unit rules. It does not select the final source
 manifest for each notebook, upload material, generate public artefacts or authorise
 publication.
 
@@ -65,12 +65,12 @@ publication.
   future SPDTF component.
 - Prevent historic PDTF evidence from appearing to be an OPDA-endorsed predecessor
   standard or current SPDTF authority.
-- Preserve decision status, source authority, provenance, dates and dissent when
-  documents are bundled.
+- Preserve decision status, source authority, provenance, dates and dissent for
+  every independently ingested source.
 - Prefer canonical glossaries, dictionaries, ontologies and registers over hundreds
   of generated navigational projections.
-- Keep notebooks small enough to remain understandable and leave capacity for new
-  evidence and later working-group outputs.
+- Use the 500-source allowance deliberately without inventing a smaller target or
+  merging sources before a demonstrated capacity or compatibility need exists.
 - Support both non-technical communication artefacts and detailed technical review
   without forcing either audience through the other's corpus.
 - Make every notebook independently intelligible because notebooks do not inherit
@@ -155,9 +155,9 @@ decision record:
 - ADR-0077 keeps the PDTF schema as attributed third-party input rather than an
   endorsed predecessor scheme or authority for SPDTF meaning.
 - ADR-0039, ADR-0057, ADR-0062, ADR-0069, ADR-0071, ADR-0072 and ADR-0078 are
-  accepted; ADR-0051 remains proposed. Bundles that include them must preserve
+  accepted; ADR-0051 remains proposed. Resource groups that include them must preserve
   those individual statuses rather than acquire a collective status from the
-  bundle title.
+  resource-group label.
 
 Notebook instructions must prevent proposed policy from being paraphrased as current
 operative policy. Historic facts, current implementation, accepted direction and
@@ -233,30 +233,41 @@ It may include:
 The notebook must distinguish the third-party PDTF schema from OPDA's technical
 derivation and from SPDTF development.
 
-### Source merging and manifest rules
+### Source-unit, conversion and manifest rules
 
-The initial target is normally **8 to 30 curated ingested source units per core
-notebook**, not the subscription's maximum source allowance. A source unit may be a
-primary record or a manifest-backed bundle containing multiple records. Model and
-archive notebooks may exceed that range where primary records remain individually
-valuable, but they must retain growth capacity and avoid redundant projections.
+Each core notebook has a **500-source limit**. The default source unit is one
+repository file, one public URL, one meeting transcript or one rendered website
+route. Resource groups in the configuration organise prompt scope; they are not
+instructions to concatenate their members. There is no lower target range and no
+reserve percentage that justifies premature merging.
 
-Good candidates for reproducible or explicitly reviewed merging are:
+Keep sources discrete even when several records concern the same topic. In
+particular:
 
-- one Markdown source for each coherent website section;
-- one glossary or data dictionary per contextual boundary;
-- ADR bundles organised by governance topic and status;
-- ODR bundles organised by contextual boundary and modelling concern;
-- one transcript per meeting or presentation;
-- one historical chronology linked to its underlying evidence; and
-- one mapping register per boundary pair or mapping purpose.
+- ingest each ADR and ODR as its own source;
+- ingest one transcript per meeting or presentation;
+- render each selected website route to its own source;
+- ingest each external URL or downloaded publication separately;
+- convert unsupported JSON, YAML, TOML, Turtle, SPARQL, Astro or other formats
+  one-to-one into a supported textual source while retaining the original path and
+  checksum; and
+- keep glossaries, dictionaries, ontologies, mappings and validation reports
+  separate unless a source is already a single maintained document.
 
-Documents from different authorities must not be flattened into unattributed prose.
-Every merged source carries a machine-readable or plainly formatted manifest with:
+Combining sources is permitted only when the manifest demonstrates a concrete need:
+the selected discrete sources would exceed 500, NotebookLM cannot ingest a source
+even after one-to-one conversion, or the records are inseparable parts of one
+maintained work. The shared facts and terminology pack is the one initial intentional
+synthesis because its purpose is controlled cross-notebook consistency, not source-
+count reduction.
+
+Documents from different authorities must never be flattened into unattributed
+prose. Every converted source, and any exceptional combined source, carries a
+machine-readable or plainly formatted manifest with:
 
 - document title;
 - originating person or organisation;
-- original date and bundle date;
+- original date and conversion or combination date;
 - status and maturity;
 - original repository path or public URL;
 - the reason for inclusion;
@@ -264,14 +275,14 @@ Every merged source carries a machine-readable or plainly formatted manifest wit
 - a checksum or version identifier when the input is maintained in the repository.
 
 Each notebook will have a maintained source manifest recording inclusion, exclusion,
-deduplication, conversion and bundle membership. Generated summaries are outputs, not
-silent replacements for primary evidence.
+deduplication, one-to-one conversion and any exceptional combination. Generated
+summaries are outputs, not silent replacements for primary evidence.
 
 ### Notebook configurations and preparation-prompt pipeline
 
 Each core notebook has a version-controlled configuration that records its NotebookLM
 identifier, purpose, audiences, intended artefacts, authority guardrails, candidate
-resources, exclusions, missing dependencies, bundle outputs, ordered
+resources, exclusions, missing dependencies, prepared-source outputs, ordered
 preparation prompts, execution fields and artefact-generation gate:
 
 | Notebook | Configuration | Preparation prompts |
@@ -290,11 +301,11 @@ the final artefacts. Its execution sequence is:
    record or apply the findings;
 2. review and approve the candidate source manifest for each notebook;
 3. implement and approve the missing preparation builder, then build the shared facts
-   pack and every source bundle with component manifests and checksums; transformations
-   involving extraction, rendering or summarisation also require named human sign-off;
-4. complete a data-protection, confidentiality and rights determination for every
-   component before ingesting approved sources privately and verifying NotebookLM
-   processing;
+   pack and convert every unsupported source one-to-one with manifests and checksums;
+   transformations involving extraction, rendering or summarisation also require
+   named human sign-off;
+4. record the repository owner's public-source authorisation, ingest the selected
+   sources privately and verify NotebookLM processing;
 5. execute each notebook's preparation prompts in the configured order and source
    scope, pasting the complete labelled text of dependency notes into each dependent
    prompt and saving the response as a named NotebookLM note;
@@ -312,12 +323,14 @@ not silently replace primary evidence and may not be re-ingested as authoritativ
 sources. An artefact generator may consume only a preparation pack that has passed the
 configuration's gate, and must preserve its caveats and prohibited claims.
 
-The Opus adversarial review completed on 2026-08-31. It identified four controls that
-must remain blocked until separately completed: canonical treatment of unsupported
-milestone claims, dependency-note carry-forward, implementation of the preparation
-builder, and rights/data-protection clearance for the personal NotebookLM workspace.
-The configurations encode those gates; resolving the review does not itself satisfy
-them or authorise ingestion.
+The Opus adversarial review completed on 2026-08-31. It identified four controls:
+canonical treatment of unsupported milestone claims, dependency-note carry-forward,
+implementation of the preparation builder, and rights/data classification for the
+personal NotebookLM workspace. The repository owner subsequently confirmed that all
+repository material is public, duplicates material already available on public
+SharePoint sites and is authorised for NotebookLM upload. That decision closes the
+rights/data-classification control; the other implementation and review controls
+remain in force.
 
 ### Consequences
 
@@ -326,16 +339,16 @@ them or authorise ingestion.
 - Good, because the Property Pack ontology cannot be mistaken for a complete SPDTF
   ontology or for a direct translation of the source schema.
 - Good, because proposed governance and AI-assisted methods remain visibly proposed.
-- Good, because canonical dictionaries, glossaries and registers replace hundreds of
-  redundant page-level sources.
+- Good, because independently ingested sources preserve NotebookLM's source-level
+  citations, replacement boundaries and provenance.
 - Good, because a controlled facts pack keeps recurring programme statements
   consistent across otherwise independent notebooks.
 - Good, because a complete decision archive can remain available without allowing its
   volume to dominate narrative notebooks.
 - Bad, because selected material and shared facts must be updated deliberately when
   authority, maturity or programme facts change.
-- Bad, because source bundling requires a missing builder, manifests and human review
-  of judgement-based transformations before bulk upload.
+- Bad, because unsupported formats and rendered routes still require a missing
+  one-to-one conversion builder, manifests and review before upload.
 - Bad, because prompt execution is non-deterministic and requires a retained run record,
   citation review and human approval before reuse.
 - Bad, because NotebookLM does not provide shared reasoning across notebooks; useful
@@ -364,9 +377,15 @@ them or authorise ingestion.
   2026-08-31.
 - The Opus adversarial review has been completed and its accepted findings are encoded
   in this ADR and the notebook configurations.
-- Implementation remains incomplete until the preparation builder, rights and data-
-  protection clearances, source manifests and bundles have been approved, selected
-  sources have been ingested, every configured
+- On 2026-08-31 the repository owner confirmed that every repository source is public,
+  duplicates material already available on public SharePoint sites and is authorised
+  for NotebookLM upload. No configured source may be deferred on privacy,
+  confidentiality, personal-data or rights grounds.
+- The operative subscription limit is 500 sources per notebook. Configured resource
+  groups expand to discrete sources by default; documents are combined only after a
+  manifest records a concrete capacity, format or inseparability reason.
+- Implementation remains incomplete until the preparation builder, source manifests
+  and conversions have been approved, selected sources have been ingested, every configured
   preparation prompt has been executed and the resulting preparation packs have passed
   citation, authority and contradiction review. Artefact generation follows as a
   separately authorised downstream step.
@@ -383,7 +402,11 @@ them or authorise ingestion.
 - **2026-08-31 — Applied Opus adversarial review.** Removed the unsupported 2030
   canonical fact, added rights and builder gates, made dependency-note transport and
   append-only run evidence explicit, corrected decision maturity and repository-
-  tracking assumptions, and required human sign-off for judgement-based bundles.
+  tracking assumptions, and required human sign-off for judgement-based transformations.
+- **2026-08-31 — Recorded public-source authorisation and discrete-source policy.**
+  Closed the rights/data-classification gate on the repository owner's authority,
+  recorded the 500-source-per-notebook limit and replaced pre-emptive bundling with
+  one-source-per-file, URL, transcript or rendered route by default.
 
 ## More Information
 

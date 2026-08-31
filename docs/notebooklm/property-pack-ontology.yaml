@@ -42,17 +42,17 @@ dependencies:
     status: pending
     required_before: source-ingestion
     blocking: true
-  - id: data-protection-and-rights-clearance
-    kind: human-decision
-    target: every-resource-component
-    status: pending
+  - id: repository-public-source-authorisation
+    kind: operator-decision
+    target: repository-corpus
+    status: approved
     required_before: source-ingestion
-    blocking: true
-    decision_owner: OPDA data controller or authorised delegate
-    criteria: Every component is classified and approved for processing in the named personal NotebookLM workspace.
-    approved_by: null
-    approved_on: null
-  - id: preparation-builder-and-bundles
+    blocking: false
+    decision_owner: repository-owner
+    criteria: Every repository source is public and authorised for NotebookLM upload without privacy or rights deferral.
+    approved_by: repository-owner
+    approved_on: 2026-08-31
+  - id: preparation-builder-and-source-conversions
     kind: implementation-and-output
     target: scripts/build-notebooklm-prepared-sources.mjs
     status: missing
@@ -99,11 +99,14 @@ resource_manifest:
     - sha256
   availability_policy: >-
     Repository tracking is resolved per input with git ls-files, never inferred from
-    its top-level directory. Any absent local input fails closed. Every prepared bundle
-    requires a component manifest, checksum and declared reproducibility class.
-  prepared_bundle_contract:
+    its top-level directory. Any absent local input fails closed. Each file, URL,
+    transcript and rendered route remains a separate source by default.
+  prepared_source_contract:
     builder: scripts/build-notebooklm-prepared-sources.mjs
     builder_status: missing
+    notebook_source_limit: 500
+    default_source_unit: one-file-url-transcript-or-rendered-route
+    combination_policy: only-for-demonstrated-format-need-or-when-discrete-sources-exceed-500
     website_prerequisite: make build-data
     manifest_required: true
     output_sha256_required: true
@@ -113,14 +116,14 @@ resource_manifest:
   resources:
     - id: pp-shared-facts
       title: OPDA shared programme facts and terminology
-      kind: prepared-bundle-reference
+      kind: prepared-source-reference
       authority: mixed-with-explicit-attribution
       maturity: current
       ingestion: direct-after-central-build
       owner: docs/notebooklm/portfolio-shared-facts.yaml
       path: docs/notebooklm/prepared/shared-facts-and-terminology.md
       repository_tracking: derived-local-output
-      rights_and_data_classification: pending
+      rights_and_data_classification: public-and-authorised-for-notebooklm
       status: planned
 
     - id: pp-candidate-identity
@@ -128,13 +131,13 @@ resource_manifest:
       kind: source-set
       authority: opda-current-delivery
       maturity: machine-proposed-candidate
-      ingestion: direct
+      ingestion: one-source-per-input-with-format-conversion-as-needed
       inputs:
         - source/03-standards/ontology-candidates/property-pack/0.1/candidate-manifest.json
         - source/03-standards/ontology-candidates/property-pack/0.1/candidate-summary.json
         - source/03-standards/ontology-candidates/property-pack/0.1/standards-profile.json
       repository_tracking: tracked
-      rights_and_data_classification: pending
+      rights_and_data_classification: public-and-authorised-for-notebooklm
       status: candidate
 
     - id: pp-451-source-scope
@@ -142,44 +145,44 @@ resource_manifest:
       kind: source-set
       authority: opda-maintained-source
       maturity: accepted-seed-scope
-      ingestion: direct
+      ingestion: one-source-per-input-with-format-conversion-as-needed
       inputs:
         - src/data/property-pack/catalogue.toml
         - src/data/property-pack/validation-report.json
         - docs/research/property-pack-451-evidence-validation.md
       repository_tracking: tracked
-      rights_and_data_classification: pending
+      rights_and_data_classification: public-and-authorised-for-notebooklm
       status: candidate
 
     - id: pp-maintained-candidate-source
       title: Maintained Property Pack candidate source
-      kind: prepared-bundle
+      kind: prepared-source-set
       authority: opda-maintained-source
       maturity: machine-proposed-candidate
-      ingestion: bundle-toml-with-file-boundaries
+      ingestion: convert-each-toml-file-to-markdown
       inputs:
         - src/data/property-pack/candidate-model/manifest.toml
         - src/data/property-pack/candidate-model/vocabularies.toml
       input_globs:
         - src/data/property-pack/candidate-model/contexts/*.toml
         - src/data/property-pack/candidate-model/rules-*.toml
-      output: docs/notebooklm/prepared/property-pack-maintained-candidate-source.md
+      output_pattern: docs/notebooklm/prepared/property-pack-maintained/{source-id}.md
       transformation: {reproducibility: deterministic, human_signoff_by: null, human_signoff_on: null}
       repository_tracking: tracked
-      rights_and_data_classification: pending
+      rights_and_data_classification: public-and-authorised-for-notebooklm
       status: planned
 
     - id: pp-canonical-ontology
       title: Property Pack 0.1 canonical ontology graphs
-      kind: prepared-bundle
+      kind: prepared-source-set
       authority: opda-current-delivery
       maturity: machine-proposed-candidate
-      ingestion: concatenate-turtle-with-file-boundaries
+      ingestion: convert-each-turtle-file-to-markdown
       input_glob: source/03-standards/ontology-candidates/property-pack/0.1/ontology/*.ttl
-      output: docs/notebooklm/prepared/property-pack-0.1-ontology.ttl
+      output_pattern: docs/notebooklm/prepared/property-pack-ontology/{source-id}.md
       transformation: {reproducibility: deterministic, human_signoff_by: null, human_signoff_on: null}
       repository_tracking: tracked
-      rights_and_data_classification: pending
+      rights_and_data_classification: public-and-authorised-for-notebooklm
       status: planned
 
     - id: pp-glossary-dictionary
@@ -187,12 +190,12 @@ resource_manifest:
       kind: source-set
       authority: opda-current-delivery
       maturity: machine-proposed-candidate
-      ingestion: direct
+      ingestion: one-source-per-input-with-format-conversion-as-needed
       inputs:
         - source/03-standards/ontology-candidates/property-pack/0.1/projections/business-glossary.json
         - source/03-standards/ontology-candidates/property-pack/0.1/projections/data-dictionary.json
       repository_tracking: tracked
-      rights_and_data_classification: pending
+      rights_and_data_classification: public-and-authorised-for-notebooklm
       status: candidate
 
     - id: pp-contexts-relationships-vocabularies
@@ -200,7 +203,7 @@ resource_manifest:
       kind: source-set
       authority: opda-current-delivery
       maturity: machine-proposed-candidate
-      ingestion: direct
+      ingestion: one-source-per-input-with-format-conversion-as-needed
       inputs:
         - source/03-standards/ontology-candidates/property-pack/0.1/projections/context-map.json
         - source/03-standards/ontology-candidates/property-pack/0.1/projections/controlled-vocabularies.json
@@ -208,20 +211,20 @@ resource_manifest:
         - source/03-standards/ontology-candidates/property-pack/0.1/vocabularies/*.ttl
         - source/03-standards/ontology-candidates/property-pack/0.1/vocabularies/topics/*.ttl
       repository_tracking: tracked
-      rights_and_data_classification: pending
+      rights_and_data_classification: public-and-authorised-for-notebooklm
       status: candidate
 
     - id: pp-shapes
       title: Property Pack 0.1 SHACL shape graphs
-      kind: prepared-bundle
+      kind: prepared-source-set
       authority: opda-current-delivery
       maturity: machine-proposed-candidate
-      ingestion: concatenate-turtle-with-file-boundaries
+      ingestion: convert-each-turtle-file-to-markdown
       input_glob: source/03-standards/ontology-candidates/property-pack/0.1/shapes/*.ttl
-      output: docs/notebooklm/prepared/property-pack-0.1-shapes.ttl
+      output_pattern: docs/notebooklm/prepared/property-pack-shapes/{source-id}.md
       transformation: {reproducibility: deterministic, human_signoff_by: null, human_signoff_on: null}
       repository_tracking: tracked
-      rights_and_data_classification: pending
+      rights_and_data_classification: public-and-authorised-for-notebooklm
       status: planned
 
     - id: pp-coverage-validation
@@ -229,7 +232,7 @@ resource_manifest:
       kind: source-set
       authority: opda-current-delivery
       maturity: generated-verification-evidence
-      ingestion: direct
+      ingestion: one-source-per-input-with-format-conversion-as-needed
       inputs:
         - source/03-standards/ontology-candidates/property-pack/0.1/projections/coverage.json
         - source/03-standards/ontology-candidates/property-pack/0.1/projections/shapes.json
@@ -238,15 +241,15 @@ resource_manifest:
         - source/03-standards/ontology-candidates/property-pack/0.1/validation/competency/*.rq
         - source/03-standards/ontology-candidates/property-pack/0.1/validation/fixtures/*.ttl
       repository_tracking: tracked
-      rights_and_data_classification: pending
+      rights_and_data_classification: public-and-authorised-for-notebooklm
       status: candidate
 
     - id: pp-model-site
       title: Current Property Pack model explanation
-      kind: prepared-bundle
+      kind: prepared-source-set
       authority: opda-public-explanation
       maturity: current-but-non-normative
-      ingestion: render-built-routes-to-markdown
+      ingestion: render-each-built-route-to-markdown
       build_prerequisite: make build-data
       routes:
         - /spdtf/property-pack/
@@ -270,26 +273,26 @@ resource_manifest:
         - src/pages/spdtf/property-pack/standards.astro
         - src/pages/spdtf/property-pack/review-and-releases.astro
         - src/pages/spdtf/property-pack/technical-working-group-determination.astro
-      output: docs/notebooklm/prepared/property-pack-model-site.md
+      output_pattern: docs/notebooklm/prepared/property-pack-site/{source-id}.md
       transformation: {reproducibility: human-reviewed, human_signoff_by: null, human_signoff_on: null}
       repository_tracking: tracked
-      rights_and_data_classification: pending
+      rights_and_data_classification: public-and-authorised-for-notebooklm
       status: planned
 
     - id: pp-governing-decisions
       title: Property Pack scope, modelling and SPDTF relationship decisions
-      kind: prepared-bundle
+      kind: prepared-source-set
       authority: opda-decision-record
       maturity: accepted
-      ingestion: bundle-with-front-matter-preserved
+      ingestion: convert-each-document-preserving-front-matter
       inputs:
         - docs/adr/ADR-0066-property-pack-451-seed-scope-and-greenfield-ontology.md
         - docs/adr/ADR-0067-first-principles-property-pack-ontology-by-bounded-context.md
         - docs/adr/ADR-0075-property-pack-ontology-as-accelerated-spdtf-component.md
-      output: docs/notebooklm/prepared/property-pack-governing-decisions.md
+      output_pattern: docs/notebooklm/prepared/property-pack-decisions/{source-id}.md
       transformation: {reproducibility: deterministic, human_signoff_by: null, human_signoff_on: null}
       repository_tracking: tracked
-      rights_and_data_classification: pending
+      rights_and_data_classification: public-and-authorised-for-notebooklm
       status: planned
 
   known_missing_resources:
