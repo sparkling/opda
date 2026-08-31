@@ -89,7 +89,7 @@ const pageTitle = `${title} · Open Property Data Association`;
         <a href="/programme">Knowledge base</a>
         <a href="/join/privacy" aria-current={Astro.url.pathname === '/join/privacy' ? 'page' : undefined}>Privacy</a>
         <a href="/accessibility" aria-current={Astro.url.pathname === '/accessibility' ? 'page' : undefined}>Accessibility</a>
-        <a class="btn campaign-masthead__cta" href={registrationUrl}>Register your interest</a>
+        {!isJoinPage && <a class="btn campaign-masthead__cta" href={registrationUrl}>Register your interest</a>}
         {isJoinPage && (
           <button
             type="button"
