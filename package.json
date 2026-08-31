@@ -44,6 +44,7 @@
     "clean": "rm -rf dist .astro",
     "resources:manifest": "node scripts/resources-manifest.mjs",
     "notebooklm:prepare": "node scripts/build-notebooklm-prepared-sources.mjs",
+    "notebooklm:execute": "node scripts/run-notebooklm-preparation.mjs",
     "publish:resources": "bash scripts/publish-resources.sh",
     "deploy": "bash deploy.sh",
     "deploy:ci": "git push origin main"
