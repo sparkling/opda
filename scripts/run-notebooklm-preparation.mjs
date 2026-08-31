@@ -49,16 +49,23 @@ async function main() {
   if (options.help) { process.stdout.write(`${usage()}\n`); return; }
   const configPaths = options.configPaths.length ? options.configPaths : NOTEBOOK_CONFIG_PATHS;
   const results = Array(configPaths.length);
+  const failures = [];
   let cursor = 0;
   const workers = Array.from({ length: Math.min(options.notebookConcurrency, configPaths.length) }, async () => {
     while (cursor < configPaths.length) {
       const index = cursor;
       cursor += 1;
-      results[index] = await executeNotebook(configPaths[index], options);
+      try { results[index] = await executeNotebook(configPaths[index], options); }
+      catch (error) {
+        failures.push({ config: configPaths[index], error });
+        results[index] = { config: configPaths[index], status: 'failed', error: error.message };
+        process.stderr.write(`[${configPaths[index]}] failed; continuing independent notebook chains\n`);
+      }
     }
   });
   await Promise.all(workers);
-  process.stdout.write(`${JSON.stringify({ status: 'completed', notebooks: results }, null, 2)}\n`);
+  process.stdout.write(`${JSON.stringify({ status: failures.length ? 'completed-with-failures' : 'completed', notebooks: results }, null, 2)}\n`);
+  if (failures.length) throw new Error(failures.map(({ config, error }) => `${config}: ${error.message}`).join('\n'));
 }
 
 main().catch((error) => {
