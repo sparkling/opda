@@ -459,9 +459,12 @@ publication remain blocked. All notebooks remain private.
 - **2026-08-31 — Completed preparation prompts.** Executed and machine-verified all 50
   prompts, recorded dependency-grounded outputs and receipts, and retained the human
   review gate before homepage use or publication.
-- **2026-08-31 — Prepared targeted private video drafts.** Added primary legislation,
+- **2026-08-31 — Completed targeted private video drafts.** Added primary legislation,
   PDTF-era modelling pages and the post-release participant journey; executed three
-  additional prompts and authorised cinematic, explainer and short drafts for review.
+  additional prompts and generated nine private review videos: programme
+  `be4cf704`, `dc19d3fe`, `59790bf3`; semantic modelling `b493abed`, `7931f00a`,
+  `e313f77b`; and working-group participation `7700adfe`, `4d6a9c4f`, `08c49f5b`.
+  Homepage use, sharing and publication remain subject to human review.
 
 ## More Information
 
