@@ -25,7 +25,7 @@ workspace:
   profile: personal
   sharing: private
   notebook_id_verification: {status: verified, profile: personal, verified_at: 2026-08-31}
-  source_ingestion_status: pending
+  source_ingestion_status: completed-and-verified
   preparation_prompt_status: pending
 
 dependencies:
@@ -80,7 +80,7 @@ prompt_defaults:
 resource_manifest:
   status: approved
   review_required_before_ingestion: false
-  ingestion_log: []
+  ingestion_log: docs/notebooklm/receipts/standards-governance.jsonl
   required_metadata_before_ingestion:
     - stable_source_id
     - title
