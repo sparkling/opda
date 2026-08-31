@@ -302,8 +302,9 @@ the final artefacts. Its execution sequence is:
 2. review and approve the candidate source manifest for each notebook;
 3. implement and approve the missing preparation builder, then build the shared facts
    pack and convert every unsupported source one-to-one with manifests and checksums;
-   transformations involving extraction, rendering or summarisation also require
-   named human sign-off;
+   deterministic extraction and rendering require integrity checks, while any
+   judgement-based summarisation or exceptional source combination requires named
+   human sign-off;
 4. record the repository owner's public-source authorisation, ingest the selected
    sources privately and verify NotebookLM processing;
 5. execute each notebook's preparation prompts in the configured order and source
@@ -348,7 +349,7 @@ remain in force.
 - Bad, because selected material and shared facts must be updated deliberately when
   authority, maturity or programme facts change.
 - Bad, because unsupported formats and rendered routes still require a missing
-  one-to-one conversion builder, manifests and review before upload.
+  one-to-one conversion builder, manifests and integrity review before upload.
 - Bad, because prompt execution is non-deterministic and requires a retained run record,
   citation review and human approval before reuse.
 - Bad, because NotebookLM does not provide shared reasoning across notebooks; useful

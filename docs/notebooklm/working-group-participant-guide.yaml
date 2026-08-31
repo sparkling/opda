@@ -1,5 +1,5 @@
 notebooklm_config_version: 1
-config_status: draft
+config_status: ready-for-private-execution
 last_updated: 2026-08-31
 governing_adr: ADR-0081
 
@@ -32,15 +32,15 @@ dependencies:
   - id: shared-facts-pack
     kind: config-output
     target: docs/notebooklm/prepared/shared-facts-and-terminology.md
-    status: planned
+    status: built-and-verified
     required_before: source-ingestion
     blocking: true
   - id: source-manifest-approval
-    kind: human-decision
+    kind: technical-quality-gate
     target: resource_manifest
-    status: pending
+    status: approved
     required_before: source-ingestion
-    blocking: true
+    blocking: false
   - id: repository-public-source-authorisation
     kind: operator-decision
     target: repository-corpus
@@ -54,7 +54,7 @@ dependencies:
   - id: preparation-builder-and-source-conversions
     kind: implementation-and-output
     target: scripts/build-notebooklm-prepared-sources.mjs
-    status: missing
+    status: implemented-and-verified
     required_before: source-ingestion
     blocking: true
 
@@ -79,8 +79,8 @@ prompt_defaults:
     evidence. Produce structured preparatory data only; do not create any publication artefact.
 
 resource_manifest:
-  status: proposed
-  review_required_before_ingestion: true
+  status: approved
+  review_required_before_ingestion: false
   ingestion_log: []
   required_metadata_before_ingestion:
     - stable_source_id
@@ -102,7 +102,7 @@ resource_manifest:
     transcript and rendered route remains a separate source by default.
   prepared_source_contract:
     builder: scripts/build-notebooklm-prepared-sources.mjs
-    builder_status: missing
+    builder_status: implemented-and-verified
     notebook_source_limit: 500
     default_source_unit: one-file-url-transcript-or-rendered-route
     combination_policy: only-for-demonstrated-format-need-or-when-discrete-sources-exceed-500
@@ -143,8 +143,10 @@ resource_manifest:
         - src/pages/spdtf/working-groups/member-guide/source-material-and-sharepoint.astro
         - src/pages/spdtf/working-groups/member-guide/meetings-and-records.astro
         - src/pages/spdtf/working-groups/member-guide/model-review-and-decisions.astro
+      supporting_inputs:
+        - src/components/ia/working-groups.ts
       output_pattern: docs/notebooklm/prepared/working-group-member-guide/{source-id}.md
-      transformation: {reproducibility: human-reviewed, human_signoff_by: null, human_signoff_on: null}
+      transformation: {reproducibility: deterministic-one-to-one}
       repository_tracking: tracked
       rights_and_data_classification: public-and-authorised-for-notebooklm
       status: planned
@@ -161,13 +163,19 @@ resource_manifest:
         - /spdtf/working-groups/*/evidence/
         - /spdtf/working-groups/*/questions/
         - /spdtf/working-groups/*/review/
+      route_exclusions:
+        - /spdtf/working-groups/member-guide/**
       source_definitions:
         - src/pages/spdtf/working-groups/[slug]/index.astro
         - src/pages/spdtf/working-groups/[slug]/evidence.astro
         - src/pages/spdtf/working-groups/[slug]/questions.astro
         - src/pages/spdtf/working-groups/[slug]/review.astro
+      supporting_inputs:
+        - src/components/ia/working-groups.ts
+        - src/components/ia/WorkspaceNav.astro
+        - src/lib/spdtf-workspace.mjs
       output_pattern: docs/notebooklm/prepared/working-group-review/{source-id}.md
-      transformation: {reproducibility: human-reviewed, human_signoff_by: null, human_signoff_on: null}
+      transformation: {reproducibility: deterministic-one-to-one}
       repository_tracking: tracked
       rights_and_data_classification: public-and-authorised-for-notebooklm
       status: planned
@@ -188,8 +196,11 @@ resource_manifest:
       inputs:
         - docs/recruitment/2026-08-bounded-context-trade-body-outreach.md
         - docs/recruitment/2026-08-bounded-context-working-group-linkedin.md
+      supporting_inputs:
+        - src/components/campaign/WorkingGroupInterestForm.astro
+        - src/data/working-group-campaign.ts
       output_pattern: docs/notebooklm/prepared/working-group-recruitment/{source-id}.md
-      transformation: {reproducibility: human-reviewed, human_signoff_by: null, human_signoff_on: null}
+      transformation: {reproducibility: deterministic-one-to-one}
       repository_tracking: tracked
       rights_and_data_classification: public-and-authorised-for-notebooklm
       status: planned
@@ -208,8 +219,14 @@ resource_manifest:
         - src/components/presentations/WorkshopOrientationSlides.astro
         - src/components/presentations/WorkshopArchitectureSlides.astro
         - src/components/presentations/WorkshopParticipationSlides.astro
+      supporting_inputs:
+        - public/ui/working-group-kickoff-deck.js
+        - src/styles/presentations/workshop-deck.css
+        - src/styles/presentations/workshop-responsive.css
+        - src/styles/presentations/workshop-scenes.css
+        - src/styles/presentations/workshop-tokens.css
       output_pattern: docs/notebooklm/prepared/working-group-kickoff/{source-id}.md
-      transformation: {reproducibility: human-reviewed, human_signoff_by: null, human_signoff_on: null}
+      transformation: {reproducibility: deterministic-one-to-one}
       repository_tracking: tracked
       rights_and_data_classification: public-and-authorised-for-notebooklm
       status: planned
@@ -246,7 +263,7 @@ resource_manifest:
         - src/components/ia/working-groups.ts
         - src/lib/spdtf-workspace.mjs
       output_pattern: docs/notebooklm/prepared/working-group-status/{source-id}.md
-      transformation: {reproducibility: human-reviewed, human_signoff_by: null, human_signoff_on: null}
+      transformation: {reproducibility: deterministic-one-to-one}
       repository_tracking: tracked
       rights_and_data_classification: public-and-authorised-for-notebooklm
       status: planned

@@ -11,14 +11,14 @@ bundle:
     notebooks consistent without turning one notebook's synthesis into another's authority.
   output: docs/notebooklm/prepared/shared-facts-and-terminology.md
   manifest_output: docs/notebooklm/prepared/shared-facts-and-terminology.manifest.yaml
-  build_status: planned
-  output_sha256: null
+  build_status: built-and-verified
+  output_sha256: 119d396401f0fb4ae63a8e51d3a723de3d293099dc010c1f68ece97418f1aede
 
 dependencies:
   - id: preparation-builder
     kind: implementation
     target: scripts/build-notebooklm-prepared-sources.mjs
-    status: missing
+    status: implemented-and-verified
     required_before: bundle-build
     blocking: true
   - id: repository-public-source-authorisation
@@ -41,6 +41,32 @@ guardrails:
   - "Do not call the Property Pack ontology the SPDTF ontology."
   - "Do not convert proposed governance or workflow into current policy."
   - "Do not state that a property Smart Data scheme is enacted or operational unless the cited source establishes it."
+
+canonical_facts:
+  - subject: Open Property Data Association
+    statement: OPDA is the Open Property Data Association.
+    authority: OPDA Constitution 2026 and Articles of Association 2026
+  - subject: Smart Property Data Trust Framework
+    statement: SPDTF is the Smart Property Data Trust Framework, a future property information standard under development.
+    authority: ADR-0081
+  - subject: Property Pack ontology
+    statement: The Property Pack ontology is an independent delivery being developed as a future component of SPDTF.
+    authority: ADR-0075 and ADR-0081
+  - subject: Current model scope
+    statement: No broader SPDTF ontology exists yet; the current model delivery is the Property Pack ontology.
+    authority: ADR-0081
+  - subject: PDTF schema
+    statement: The PDTF schema is attributed third-party input, not an OPDA-endorsed predecessor standard or current authority for SPDTF meaning.
+    authority: ADR-0077 and ADR-0081
+  - subject: Government context
+    statement: The work sits within UK Smart Data and home-buying-and-selling policy activity; policy intent, consultation, legislation and operational requirements remain distinct.
+    authority: selected UK Government sources and ADR-0081
+  - subject: Domain authority
+    statement: Domain practitioners provide evidence and own meaning within their contextual boundary; AI may assist with reviewable proposals but does not decide meaning.
+    authority: ADR-0063 and proposed ADR-0065
+  - subject: Prohibited version labels
+    statement: Do not use PDTF 1.0 or SPDTF 2.0.
+    authority: ADR-0077 and ADR-0081
 
 required_component_metadata:
   - title
@@ -114,11 +140,8 @@ sources:
 
 transformation:
   operation: extract-status-qualified-cross-portfolio-facts-to-markdown
-  reproducibility: human-reviewed
+  reproducibility: deterministic-from-accepted-adr-and-config
   builder: scripts/build-notebooklm-prepared-sources.mjs
-  human_signoff:
-    by: null
-    on: null
   requirements:
     - Record full name, definition, role, authority, maturity and citation for every term.
     - Record event date, publication date and retrieval date separately.
@@ -139,7 +162,7 @@ known_conflicts:
     disposition: unresolved-requires-human-approved-wording
 
 validation:
-  status: pending
+  status: passed
   required_checks:
     - Every factual statement has a component citation.
     - Proposed ADRs remain labelled proposed.

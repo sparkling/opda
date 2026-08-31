@@ -43,6 +43,7 @@
     "check:schema-drift": "SOURCE_DATE_EPOCH=1783296000 node scripts/check-schema-reproducibility.mjs",
     "clean": "rm -rf dist .astro",
     "resources:manifest": "node scripts/resources-manifest.mjs",
+    "notebooklm:prepare": "node scripts/build-notebooklm-prepared-sources.mjs",
     "publish:resources": "bash scripts/publish-resources.sh",
     "deploy": "bash deploy.sh",
     "deploy:ci": "git push origin main"
@@ -64,6 +65,7 @@
     "@playwright/test": "1.62.1",
     "@tailwindcss/cli": "^4.3.2",
     "jiti": "^2.7.0",
+    "js-yaml": "^5.4.1",
     "marked": "^18.0.4",
     "parse5": "7.3.0",
     "remark-parse": "^11.0.0",
