@@ -124,7 +124,6 @@
 .wg-hero-journey .wg-process li::before { content: counter(process, decimal-leading-zero); grid-row: 1 / span 2; color: var(--brand-yellow); font: 700 var(--text-sm) / 1.35 var(--font-mono); }
 .wg-hero-journey .wg-process strong { color: var(--brand-white); font: 600 clamp(1.125rem, 1.45vw, 1.4rem) / 1.25 var(--font-display); }
 .wg-hero-journey .wg-process span { color: var(--on-dark-muted); font-size: var(--text-sm); line-height: 1.55; }
-.wg-hero-journey__note { margin: var(--space-5) 0 0; color: var(--on-dark-muted); font-size: var(--text-sm); line-height: 1.55; }
 
 .wg-programme-link { margin: var(--space-7) 0 0; }
 
