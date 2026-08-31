@@ -86,9 +86,9 @@ const pageTitle = `${title} · Open Property Data Association`;
         </picture>
       </a>
       <nav class="campaign-masthead__nav" aria-label="Public service">
-        <a href="/programme">Knowledge base</a>
-        <a href="/join/privacy" aria-current={Astro.url.pathname === '/join/privacy' ? 'page' : undefined}>Privacy</a>
-        <a href="/accessibility" aria-current={Astro.url.pathname === '/accessibility' ? 'page' : undefined}>Accessibility</a>
+        {!isJoinPage && <a href="/programme">Knowledge base</a>}
+        {!isJoinPage && <a href="/join/privacy" aria-current={Astro.url.pathname === '/join/privacy' ? 'page' : undefined}>Privacy</a>}
+        {!isJoinPage && <a href="/accessibility" aria-current={Astro.url.pathname === '/accessibility' ? 'page' : undefined}>Accessibility</a>}
         {!isJoinPage && <a class="btn campaign-masthead__cta" href={registrationUrl}>Register your interest</a>}
         {isJoinPage && (
           <button
