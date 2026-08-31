@@ -62,7 +62,7 @@ resource_manifest:
       - docs/notebooklm/prepared/manifests/pdtf-lineage-historical-evidence.json
     identity: stable_source_id
     duplicate_policy: retain-one-source-and-record-every-manifest-variant
-    expected_source_count: 395
+    expected_source_count: 398
     source_limit: 500
   exclusions_inherited_from_core_manifests:
     - PDTF and Property Pack source schemas

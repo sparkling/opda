@@ -144,6 +144,20 @@ resource_manifest:
       rights_and_data_classification: public-and-authorised-for-notebooklm
       status: candidate
 
+    - id: pph-smart-data-legislation
+      title: Primary Smart Data legislation and commencement evidence
+      kind: url-set
+      authority: uk-legislation-and-government
+      maturity: enacted-law-and-current-guidance-at-retrieval-date
+      ingestion: url-with-retrieval-date
+      urls:
+        - https://www.legislation.gov.uk/ukpga/2025/18/contents
+        - https://www.legislation.gov.uk/ukpga/2025/18/section/22
+        - https://www.gov.uk/guidance/data-use-and-access-act-2025-plans-for-commencement
+      repository_tracking: external
+      rights_and_data_classification: public-and-authorised-for-notebooklm
+      status: candidate
+
     - id: pph-opda-policy
       title: OPDA policy and strategic positioning
       kind: source-set
@@ -365,14 +379,50 @@ preparation_prompts:
       - Corrections from PPH-06 are incorporated or explicitly unresolved.
       - The pack is format-neutral and ready for separate artefact briefs.
 
+  - id: PPH-08
+    title: Prepare homepage programme artefact briefs
+    source_scope: [pph-shared-facts, pph-government-policy, pph-smart-data-legislation, pph-opda-policy, pph-programme-site, pph-current-presentations, pph-decision-history, pph-market-evidence]
+    depends_on: [PPH-02, PPH-03, PPH-04, PPH-05, PPH-06, PPH-07]
+    output_note: "PPH-08 — Homepage programme artefact briefs — human review pending"
+    prompt: >-
+      Prepare cited, format-neutral briefs for future homepage artefacts covering:
+      why the work exists; the programme and actor landscape; the legislative and
+      policy pathway; and key milestones and dates. First establish whether UK Smart
+      Data policy and the MHCLG Home Buying and Selling Reform programme are one
+      programme, separate strands or intersecting contexts. Map the evidenced roles
+      and relationships of government departments, public bodies, steering forums,
+      regulators, delivery partners, OPDA, SPDTF, the Property Pack ontology, the
+      sandbox and working groups without inventing hierarchy, membership, endorsement
+      or delegated authority. Distinguish the OPDA scheme-design group from DBT, the
+      Smart Data Council and DPMSG. Explain the evidenced legal sequence from primary
+      legislation and Royal Assent through commencement, feasibility, consultation,
+      any scheme-specific regulations, implementation and oversight; mark unsupported
+      or future stages unresolved and never ground a legal claim solely in OPDA material.
+      Separate observed market evidence, modelled benefits, policy rationale and OPDA
+      advocacy. Label each date completed, current, planned, conditional or aspirational,
+      preserve the 2030/2035 conflict, and provide supported facts, caveats, prohibited
+      formulations, citation sets and unresolved evidence needs. Do not create a final
+      script, layout, diagram, timeline or other artefact.
+    acceptance:
+      - Programme relationships and actor roles are dated, cited and not overstated.
+      - Enacted law, commencement, policy, consultation and property-specific rules remain distinct.
+      - Observed evidence, modelled benefits and advocacy are not conflated.
+      - Every milestone has a status and the 2030/2035 conflict remains visible.
+      - The output contains preparation briefs, not final artefacts.
+
 execution_and_review:
   execution_log: docs/notebooklm/receipts/programme-policy-history.jsonl
-  run_order: [PPH-01, PPH-02, PPH-03, PPH-04, PPH-05, PPH-06, PPH-07]
+  run_order: [PPH-01, PPH-02, PPH-03, PPH-04, PPH-05, PPH-06, PPH-07, PPH-08]
   record_each_run: [event, run_fingerprint, prompt_id, prompt_version, recorded_at, selected_stable_source_ids, selected_notebook_source_ids, dependency_prompt_ids, dependency_output_sha256, dependency_notebook_source_ids, dependency_transport, conversation_id, notebook_note_id, notebook_derived_source_id, output_path, output_sha256, citation_count, citation_review, response_quality_review, authority_review, findings, status]
   derived_output_policy: >-
     Prompt responses are derived preparation notes, not authoritative sources.
     They must retain citations, must not silently replace primary evidence and
     must not be re-ingested as sources without an explicit derived label.
+  private_draft_generation:
+    status: authorised-by-repository-owner
+    authorised_on: 2026-08-31
+    formats: [cinematic, explainer, short]
+    publication_status: blocked-pending-human-review
   artefact_generation_gate:
     status: blocked
     approval: {status: pending, approved_by: null, approved_on: null}

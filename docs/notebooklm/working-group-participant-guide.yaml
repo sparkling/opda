@@ -447,14 +447,42 @@ preparation_prompts:
       - Unsupported promises are removed or labelled unresolved.
       - The output is preparation data, not a finished artefact.
 
+  - id: WG-10
+    title: Close the participant journey through publication and maintenance
+    source_scope: [wg-shared-facts, wg-member-guide-site, wg-review-surface, wg-operating-decisions, wg-canonical-status-data, wg-participation-method]
+    depends_on: [WG-04, WG-05, WG-06, WG-09]
+    output_note: "WG-10 — Publication and post-release participant journey — human review pending"
+    prompt: >-
+      Extend the contributor journey from candidate review through issue disposition,
+      working-group decisions, public review, implementation evidence, ratification,
+      immutable release, post-release feedback, errata, change control, systematic
+      review, supersession and withdrawal. Use separate lanes for external contributors,
+      members, facilitators, chairs, editors, the Standards Secretariat, reviewers and
+      the Board or Executive Committee. At each stage record the action, channel and
+      system of record, accountable human, decision authority, evidence, access or
+      publication boundary, exit criterion, implementation state and route back into
+      iteration. Distinguish a website candidate, maturity transition and normative
+      release. Mark proposed or missing routes and do not invent an operative public
+      feedback channel. Finish with the corrections needed in WG-09; create no final artefact.
+    acceptance:
+      - Candidate publication, public review, ratification, release and maintenance are distinct.
+      - Participant actions remain separate from human decision authority.
+      - The feedback loop continues after release without invented channels or timings.
+      - Every claim is cited and current, proposed and missing states remain visible.
+
 execution_and_review:
   execution_log: docs/notebooklm/receipts/working-group-participant-guide.jsonl
-  run_order: [WG-01, WG-02, WG-03, WG-04, WG-05, WG-06, WG-07, WG-08, WG-09]
+  run_order: [WG-01, WG-02, WG-03, WG-04, WG-05, WG-06, WG-07, WG-08, WG-09, WG-10]
   record_each_run: [event, run_fingerprint, prompt_id, prompt_version, recorded_at, selected_stable_source_ids, selected_notebook_source_ids, dependency_prompt_ids, dependency_output_sha256, dependency_notebook_source_ids, dependency_transport, conversation_id, notebook_note_id, notebook_derived_source_id, output_path, output_sha256, citation_count, citation_review, response_quality_review, authority_review, findings, status]
   derived_output_policy: >-
     Prompt responses are derived preparation notes, not operating policy or participant
     commitments. They must retain citations and may not be re-ingested without a
     visible derived label and human approval.
+  private_draft_generation:
+    status: authorised-by-repository-owner
+    authorised_on: 2026-08-31
+    formats: [cinematic, explainer, short]
+    publication_status: blocked-pending-human-review
   artefact_generation_gate:
     status: blocked
     approval: {status: pending, approved_by: null, approved_on: null}

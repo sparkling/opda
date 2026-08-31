@@ -60,8 +60,9 @@ a notebook remains within its 500-source limit.
 
 This ADR decides the notebook information architecture, authority boundaries,
 source-selection and source-unit rules, and records the resulting private
-implementation. It does not approve the generated preparation notes, generate final
-artefacts or authorise sharing or publication.
+implementation. It does not approve generated preparation notes or authorise sharing
+or publication. Explicit owner instructions may authorise private draft generation;
+homepage use and publication remain separately gated.
 
 ## Decision Drivers
 
@@ -150,7 +151,7 @@ The following notebooks are permitted but are not part of the initial six:
 4. **Complete research corpus** — a private, deduplicated union of all sources
    approved for the six core notebooks. It supports cross-portfolio discovery but
    does not replace the core notebooks' authority, audience or prompt boundaries.
-   Its initial manifest contains 395 unique sources from 433 scoped placements.
+   Its current manifest contains 398 unique sources from 443 scoped placements.
 
 ### Authority and maturity rules
 
@@ -299,10 +300,10 @@ preparation prompts, execution fields and artefact-generation gate:
 
 | Notebook | Configuration | Preparation prompts |
 |---|---|---|
-| Programme, policy and history | [programme-policy-history.yaml](../notebooklm/programme-policy-history.yaml) | `PPH-01` to `PPH-07` |
+| Programme, policy and history | [programme-policy-history.yaml](../notebooklm/programme-policy-history.yaml) | `PPH-01` to `PPH-08` |
 | Standards governance | [standards-governance.yaml](../notebooklm/standards-governance.yaml) | `SG-01` to `SG-08` |
-| Semantic modelling method | [semantic-modelling-method.yaml](../notebooklm/semantic-modelling-method.yaml) | `SMM-01` to `SMM-08` |
-| Working-group participant guide | [working-group-participant-guide.yaml](../notebooklm/working-group-participant-guide.yaml) | `WG-01` to `WG-09` |
+| Semantic modelling method | [semantic-modelling-method.yaml](../notebooklm/semantic-modelling-method.yaml) | `SMM-01` to `SMM-09` |
+| Working-group participant guide | [working-group-participant-guide.yaml](../notebooklm/working-group-participant-guide.yaml) | `WG-01` to `WG-10` |
 | Property Pack ontology | [property-pack-ontology.yaml](../notebooklm/property-pack-ontology.yaml) | `PP-01` to `PP-09` |
 | PDTF lineage and historical evidence | [pdtf-lineage-historical-evidence.yaml](../notebooklm/pdtf-lineage-historical-evidence.yaml) | `PDTF-01` to `PDTF-09` |
 
@@ -329,14 +330,15 @@ the final artefacts. Its execution sequence is:
 7. run the deterministic receipt and dependency verifier, then have a human review
    every final preparation pack for source authority, maturity leakage, unresolved
    contradictions and notebook-specific risks;
-8. mark the notebook ready for artefact generation only after a human reviewer accepts
-   its final preparation pack; and
+8. require a human-reviewed pack for homepage or published artefacts; private review
+   drafts require separate, explicit owner authorisation; and
 9. begin artefact briefs and generation as a separate downstream step.
 
 Prompt outputs are derived working data. They must retain their source citations, may
 not silently replace primary evidence and may not be re-ingested as authoritative
-sources. An artefact generator may consume only a preparation pack that has passed the
-configuration's gate, and must preserve its caveats and prohibited claims.
+sources. Explicit owner authorisation may permit private draft generation from
+human-review-pending packs, but public or homepage use still requires the configuration
+gate. Every generated draft must preserve caveats and prohibited claims.
 
 The Opus adversarial review completed on 2026-08-31. It identified four controls:
 canonical treatment of unsupported milestone claims, dependency-note carry-forward,
@@ -354,30 +356,30 @@ The private preparation run completed on 2026-08-31:
 
 | Notebook | Primary sources | Preparation prompts |
 |---|---:|---:|
-| Programme, policy and history | 30 | 7 of 7 |
+| Programme, policy and history | 33 | 8 of 8 |
 | Standards governance | 51 | 8 of 8 |
-| Semantic modelling method | 45 | 8 of 8 |
-| Working-group participant guide | 62 | 9 of 9 |
+| Semantic modelling method | 52 | 9 of 9 |
+| Working-group participant guide | 62 | 10 of 10 |
 | Property Pack ontology | 82 | 9 of 9 |
 | PDTF lineage and historical evidence | 163 | 9 of 9 |
 
-The six core notebooks contain 433 scoped source placements. The private Complete
-Research Corpus contains 395 unique sources, leaving 105 sources below the configured
+The six core notebooks contain 443 scoped source placements. The private Complete
+Research Corpus contains 398 unique sources, leaving 102 sources below the configured
 500-source limit. The shared facts pack was rebuilt from the controlled source list
 with SHA-256 `a438578be73bf2a4e949549ae9ab0f650a40670c99b90a43c745b589d5681d78` and
 uploaded to every core notebook and the aggregate.
 
-All 50 version-2 preparation prompts completed. Dependency transport uses selected
+All 53 version-2 preparation prompts completed. Dependency transport uses selected
 derived preparation sources, identified by prompt ID and output SHA-256, because the
 CLI does not preserve an in-memory conversation cache between processes. These
 sources are explicitly labelled non-authoritative working data. The strict verifier
 confirmed current prompt fingerprints, source and dependency identifiers, hashes,
-NotebookLM note IDs, citations and derived-source IDs for all 50 runs.
+NotebookLM note IDs, citations and derived-source IDs for all 53 runs.
 
-Automated verification does not approve the semantic content. Each final note is
-labelled **human review pending**, and every artefact-generation gate remains blocked
-until a human accepts the corresponding preparation pack. All notebooks remain
-private; no sharing, publishing or deployment occurred.
+Automated verification does not approve the semantic content. Each final note remains
+labelled **human review pending**. The repository owner authorised the requested
+cinematic, explainer and short videos as private review drafts only; homepage use and
+publication remain blocked. All notebooks remain private.
 
 ### Consequences
 
@@ -408,7 +410,7 @@ private; no sharing, publishing or deployment occurred.
 
 - The six core notebook names, purposes and audiences are accepted by the operator.
 - On 2026-08-31 the six core notebooks were populated privately through the dedicated
-  `personal` CLI profile with 433 scoped source placements; none was shared.
+  `personal` CLI profile with 443 scoped source placements; none was shared.
 - The Property Pack ontology is described as an independent delivery and future SPDTF
   component, never as the complete SPDTF ontology.
 - The source-selection rules exclude source schemas and generated page-per-term
@@ -429,10 +431,10 @@ private; no sharing, publishing or deployment occurred.
 - The operative subscription limit is 500 sources per notebook. Configured resource
   groups expand to discrete sources by default; documents are combined only after a
   manifest records a concrete capacity, format or inseparability reason.
-- The preparation builder, discrete source manifests, private ingestion and all 50
+- The preparation builder, discrete source manifests, private ingestion and all 53
   configured prompts are complete and machine-verified. Human authority,
-  contradiction and fitness review remains outstanding; artefact generation follows
-  as a separately authorised downstream step.
+  contradiction and fitness review remains outstanding. Private draft generation was
+  separately authorised; homepage use and publication remain gated.
 - Notebook creation and source upload are private workspace actions; this ADR does not
   authorise sharing notebooks or publishing generated artefacts.
 
@@ -456,7 +458,10 @@ private; no sharing, publishing or deployment occurred.
   433 placements, and populated the private aggregate with 395 unique sources.
 - **2026-08-31 — Completed preparation prompts.** Executed and machine-verified all 50
   prompts, recorded dependency-grounded outputs and receipts, and retained the human
-  review gate before any artefact generation.
+  review gate before homepage use or publication.
+- **2026-08-31 — Prepared targeted private video drafts.** Added primary legislation,
+  PDTF-era modelling pages and the post-release participant journey; executed three
+  additional prompts and authorised cinematic, explainer and short drafts for review.
 
 ## More Information
 

@@ -144,6 +144,28 @@ resource_manifest:
       rights_and_data_classification: public-and-authorised-for-notebooklm
       status: planned
 
+    - id: smm-pdtf-historical-modelling-site
+      title: PDTF schema-era semantic-modelling website record
+      kind: prepared-source-set
+      authority: opda-public-explanation
+      maturity: mixed-historical-non-normative
+      ingestion: render-each-built-route-to-markdown
+      build_prerequisite: make build-data
+      routes:
+        - /spdtf/inputs/pdtf-schema/schema-derived-ontology/lineage-provenance-and-verification/historical-modelling/
+        - /spdtf/inputs/pdtf-schema/schema-derived-ontology/lineage-provenance-and-verification/historical-modelling/standards-stack/
+        - /spdtf/inputs/pdtf-schema/schema-derived-ontology/lineage-provenance-and-verification/historical-modelling/bounded-contexts/
+        - /spdtf/inputs/pdtf-schema/schema-derived-ontology/lineage-provenance-and-verification/historical-modelling/concept-taxonomy/
+        - /spdtf/inputs/pdtf-schema/schema-derived-ontology/lineage-provenance-and-verification/historical-modelling/ontology/
+        - /spdtf/inputs/pdtf-schema/schema-derived-ontology/lineage-provenance-and-verification/historical-modelling/shacl-shapes/
+        - /spdtf/inputs/pdtf-schema/schema-derived-ontology/lineage-provenance-and-verification/historical-modelling/jsonld-mappings/
+      source_definition_glob: src/pages/spdtf/inputs/pdtf-schema/schema-derived-ontology/lineage-provenance-and-verification/historical-modelling/*.astro
+      output_pattern: docs/notebooklm/prepared/semantic-pdtf-history/{source-id}.md
+      transformation: {reproducibility: deterministic-one-to-one}
+      repository_tracking: tracked
+      rights_and_data_classification: public-and-authorised-for-notebooklm
+      status: planned
+
     - id: smm-method-research
       title: OPDA method research and rationale
       kind: source-set
@@ -399,14 +421,41 @@ preparation_prompts:
       - Proposed workflow remains visibly proposed.
       - The pack is ready for separate artefact briefs.
 
+  - id: SMM-09
+    title: Reconcile the PDTF-era semantic-modelling record
+    source_scope: [smm-shared-facts, smm-pdtf-historical-modelling-site, smm-current-method-site, smm-accepted-architecture, smm-accepted-odr-method, smm-primary-standards]
+    depends_on: [SMM-08]
+    output_note: "SMM-09 — PDTF-era semantic-modelling evidence supplement — human review pending"
+    prompt: >-
+      Produce a cited, format-neutral supplement for future semantic-modelling
+      artefacts. Audit the seven PDTF schema-era website pages individually and
+      reconstruct their progression from glossary and data dictionary through
+      bounded contexts, controlled vocabularies and SKOS, OWL, SHACL and JSON-LD.
+      For each stage record its purpose, what existed, what was planned or a stub,
+      and what current work retained, reframed, challenged, superseded or left
+      unresolved. Give one plain-language example per stage. Keep historical learning
+      separate from current policy and implementation; give neither the PDTF schema
+      nor its derived ontology normative authority. End with artefact-safe claims,
+      prohibited claims, evidence gaps and a citation index. Do not create a final artefact.
+    acceptance:
+      - All seven historical routes are assessed individually.
+      - Implemented evidence is separated from plans and stubs.
+      - Historical and current methods are not conflated.
+      - Every reusable claim is cited and status-qualified.
+
 execution_and_review:
   execution_log: docs/notebooklm/receipts/semantic-modelling-method.jsonl
-  run_order: [SMM-01, SMM-02, SMM-03, SMM-04, SMM-05, SMM-06, SMM-07, SMM-08]
+  run_order: [SMM-01, SMM-02, SMM-03, SMM-04, SMM-05, SMM-06, SMM-07, SMM-08, SMM-09]
   record_each_run: [event, run_fingerprint, prompt_id, prompt_version, recorded_at, selected_stable_source_ids, selected_notebook_source_ids, dependency_prompt_ids, dependency_output_sha256, dependency_notebook_source_ids, dependency_transport, conversation_id, notebook_note_id, notebook_derived_source_id, output_path, output_sha256, citation_count, citation_review, response_quality_review, authority_review, findings, status]
   derived_output_policy: >-
     Prompt responses are derived preparation notes, not modelling decisions or
     standards sources. They must retain citations and may not be re-ingested
     without a visible derived label and human approval.
+  private_draft_generation:
+    status: authorised-by-repository-owner
+    authorised_on: 2026-08-31
+    formats: [cinematic, explainer, short]
+    publication_status: blocked-pending-human-review
   artefact_generation_gate:
     status: blocked
     approval: {status: pending, approved_by: null, approved_on: null}

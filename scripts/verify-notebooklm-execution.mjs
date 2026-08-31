@@ -23,19 +23,19 @@ const SHA_PATTERN = /^[a-f0-9]{64}$/u;
 const SOURCE_ID_PATTERN = /^src-[a-f0-9]{16}$/u;
 const AGGREGATE_CONFIG_PATH = 'docs/notebooklm/complete-research-corpus.yaml';
 const EXPECTED_SOURCE_COUNTS = new Map([
-  ['programme-policy-history', 30],
+  ['programme-policy-history', 33],
   ['standards-governance', 51],
-  ['semantic-modelling-method', 45],
+  ['semantic-modelling-method', 52],
   ['working-group-participant-guide', 62],
   ['property-pack-ontology', 82],
   ['pdtf-lineage-historical-evidence', 163],
-  ['complete-research-corpus', 395],
+  ['complete-research-corpus', 398],
 ]);
 const EXPECTED_PROMPT_COUNTS = new Map([
-  ['programme-policy-history', 7],
+  ['programme-policy-history', 8],
   ['standards-governance', 8],
-  ['semantic-modelling-method', 8],
-  ['working-group-participant-guide', 9],
+  ['semantic-modelling-method', 9],
+  ['working-group-participant-guide', 10],
   ['property-pack-ontology', 9],
   ['pdtf-lineage-historical-evidence', 9],
 ]);
@@ -318,9 +318,9 @@ function verifyAggregate(aggregateConfig, aggregateManifest, coreContexts) {
       variantsById.set(source.stable_source_id, variants);
     }
   }
-  invariant([...coreContexts].reduce((total, context) => total + context.manifest.source_count, 0) === 433,
-    'complete-research-corpus: core source placements must total 433');
-  invariant(variantsById.size === 395, 'complete-research-corpus: core union must contain 395 sources');
+  invariant([...coreContexts].reduce((total, context) => total + context.manifest.source_count, 0) === 443,
+    'complete-research-corpus: core source placements must total 443');
+  invariant(variantsById.size === 398, 'complete-research-corpus: core union must contain 398 sources');
   const expectedIds = [...variantsById.keys()].sort();
   equalArrays(aggregateManifest.sources.map((source) => source.stable_source_id), expectedIds,
     'complete-research-corpus: aggregate source order');
@@ -377,7 +377,7 @@ function usage() {
     'Verify local NotebookLM manifests, receipts and preparation outputs without network access.',
     '',
     'Usage: node scripts/verify-notebooklm-execution.mjs [options]',
-    '  --require-all-prompts  Fail unless all 50 current prompt fingerprints are complete',
+    '  --require-all-prompts  Fail unless all 53 current prompt fingerprints are complete',
     '  --json                 Print the verification summary as JSON',
   ].join('\n');
 }
@@ -399,7 +399,7 @@ function main() {
   }));
   const completedPrompts = notebooks.reduce((total, notebook) => total + notebook.prompts.completed, 0);
   const expectedPrompts = notebooks.reduce((total, notebook) => total + notebook.prompts.expected, 0);
-  invariant(expectedPrompts === 50, `Expected 50 configured prompts, found ${expectedPrompts}`);
+  invariant(expectedPrompts === 53, `Expected 53 configured prompts, found ${expectedPrompts}`);
   if (options.requireAllPrompts) {
     const pending = notebooks.flatMap((notebook) => notebook.prompts.pending.map((id) => `${notebook.slug}/${id}`));
     invariant(completedPrompts === expectedPrompts,
