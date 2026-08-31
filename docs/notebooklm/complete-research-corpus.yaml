@@ -1,0 +1,70 @@
+notebooklm_config_version: 1
+config_status: ready-for-private-execution
+last_updated: 2026-08-31
+governing_adr: ADR-0081
+
+notebook:
+  id: 08a59ab5-4852-4980-b1bc-97fffeeb9838
+  title: "OPDA — Complete Research Corpus"
+  portfolio: cross-portfolio-research-index
+  purpose: >-
+    Provide one private discovery notebook containing the deduplicated union of
+    every source approved for the six purpose-specific notebooks.
+  relationship_to_core_notebooks: >-
+    This notebook complements the six governed notebooks. It is useful for
+    cross-cutting exploration but does not replace their audience, authority or prompt boundaries.
+
+workspace:
+  profile: personal
+  sharing: private
+  notebook_id_verification: {status: verified, profile: personal, verified_at: 2026-08-31}
+  source_ingestion_status: pending
+
+dependencies:
+  - id: six-approved-source-manifests
+    kind: generated-manifest-union
+    target: docs/notebooklm/prepared/manifests/*.json
+    status: approved
+    required_before: source-ingestion
+    blocking: false
+  - id: repository-public-source-authorisation
+    kind: operator-decision
+    target: repository-corpus
+    status: approved
+    required_before: source-ingestion
+    blocking: false
+    approved_by: repository-owner
+    approved_on: 2026-08-31
+
+guardrails:
+  - "Use this notebook for discovery and cross-portfolio research, not as a substitute authority."
+  - "Preserve each source's authority, maturity, date and original notebook scopes."
+  - "Do not use the labels PDTF 1.0 or SPDTF 2.0."
+  - "Do not call the Property Pack ontology the SPDTF ontology."
+  - "Do not convert proposed governance or workflow into current policy."
+
+resource_manifest:
+  status: approved
+  review_required_before_ingestion: false
+  ingestion_log: docs/notebooklm/receipts/complete-research-corpus.jsonl
+  prepared_source_contract:
+    builder: scripts/build-notebooklm-complete-corpus.mjs
+    builder_status: implemented-and-verified
+    notebook_source_limit: 500
+    default_source_unit: one-file-url-transcript-or-rendered-route
+  union_policy:
+    inputs:
+      - docs/notebooklm/prepared/manifests/programme-policy-history.json
+      - docs/notebooklm/prepared/manifests/standards-governance.json
+      - docs/notebooklm/prepared/manifests/semantic-modelling-method.json
+      - docs/notebooklm/prepared/manifests/working-group-participant-guide.json
+      - docs/notebooklm/prepared/manifests/property-pack-ontology.json
+      - docs/notebooklm/prepared/manifests/pdtf-lineage-historical-evidence.json
+    identity: stable_source_id
+    duplicate_policy: retain-one-source-and-record-every-manifest-variant
+    expected_source_count: 395
+    source_limit: 500
+  exclusions_inherited_from_core_manifests:
+    - PDTF and Property Pack source schemas
+    - redundant generated page-per-class and page-per-property projections
+    - exact duplicate representations without distinct evidence

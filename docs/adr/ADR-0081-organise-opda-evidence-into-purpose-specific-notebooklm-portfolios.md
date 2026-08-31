@@ -14,6 +14,7 @@ implements:
   - docs/notebooklm/working-group-participant-guide.yaml
   - docs/notebooklm/property-pack-ontology.yaml
   - docs/notebooklm/pdtf-lineage-historical-evidence.yaml
+  - docs/notebooklm/complete-research-corpus.yaml
 ---
 
 # Organise OPDA evidence into purpose-specific NotebookLM portfolios
@@ -139,6 +140,10 @@ The following notebooks are permitted but are not part of the initial six:
    terminology, key diagrams and scripts used to create outward-facing artefacts.
    It receives curated outputs from authoritative notebooks and never becomes an
    alternative source of truth.
+4. **Complete research corpus** — a private, deduplicated union of all sources
+   approved for the six core notebooks. It supports cross-portfolio discovery but
+   does not replace the core notebooks' authority, audience or prompt boundaries.
+   Its initial manifest contains 395 unique sources from 433 scoped placements.
 
 ### Authority and maturity rules
 
@@ -426,4 +431,5 @@ remain in force.
 - [Working-group participant guide notebook configuration](../notebooklm/working-group-participant-guide.yaml)
 - [Property Pack ontology notebook configuration](../notebooklm/property-pack-ontology.yaml)
 - [PDTF lineage and historical evidence notebook configuration](../notebooklm/pdtf-lineage-historical-evidence.yaml)
+- [Complete research corpus notebook configuration](../notebooklm/complete-research-corpus.yaml)
 - [NotebookLM source and usage limits](https://support.google.com/notebooklm/answer/16213268)
