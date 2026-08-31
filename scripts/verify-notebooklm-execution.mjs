@@ -207,6 +207,8 @@ function verifyOutputQuality(slug, prompt, text, dependencies) {
     invariant(text.includes(dependency.prompt_id), `${slug}/${prompt.id}: missing dependency ID ${dependency.prompt_id}`);
     invariant(text.includes(dependency.output_sha256), `${slug}/${prompt.id}: missing dependency hash ${dependency.prompt_id}`);
   }
+  invariant(dependencies.length || !/Dependency Use Register/iu.test(text),
+    `${slug}/${prompt.id}: unexpected dependency register`);
   const prohibited = [
     /PDTF\s*1\.0/iu, /SPDTF\s*2\.0/iu, /Standard Property Data Trust Framework/iu,
     /\bSPDTF ontology\b/iu, /Property Pack 0\.1\s*\(SPDTF\)/iu, /PDTF\/SPDTF standards?/iu,

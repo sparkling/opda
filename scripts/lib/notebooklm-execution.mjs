@@ -11,7 +11,7 @@ import { REPO_ROOT } from './notebooklm-preparation.mjs';
 const execFile = promisify(execFileCallback);
 const RECEIPT_ROOT = path.join(REPO_ROOT, 'docs/notebooklm/receipts');
 const PREPARED_ROOT = path.join(REPO_ROOT, 'docs/notebooklm/prepared');
-export const DEPENDENCY_TRANSPORT_VERSION = 'selected-derived-preparation-output-sources-v2';
+export const DEPENDENCY_TRANSPORT_VERSION = 'selected-derived-preparation-output-sources-v3';
 
 function sha256(value) {
   return crypto.createHash('sha256').update(value).digest('hex');
@@ -331,6 +331,7 @@ function promptText(config, prompt, dependencyNotes) {
     ...dependencyNotes.map((item) => `- ${item.id} — SHA-256: ${item.sha256}`),
     'Use those sources as working context. Do not cite them as primary authority and do not claim they were unavailable.',
   ].join('\n'));
+  else sections.push('# Dependency context\nThis task has no dependencies. Do not create a Dependency Use Register.');
   return sections.join('\n\n');
 }
 
@@ -342,6 +343,7 @@ function answerQualityFindings(answer, citations, dependencyNotes) {
     if (!answer.includes(dependency.id)) findings.push(`missing-dependency-id:${dependency.id}`);
     if (!answer.includes(dependency.sha256)) findings.push(`missing-dependency-hash:${dependency.id}`);
   }
+  if (!dependencyNotes.length && /Dependency Use Register/iu.test(answer)) findings.push('unexpected-dependency-register');
   const prohibited = [
     /PDTF\s*1\.0/iu, /SPDTF\s*2\.0/iu, /Standard Property Data Trust Framework/iu,
     /\bSPDTF ontology\b/iu, /Property Pack 0\.1\s*\(SPDTF\)/iu, /PDTF\/SPDTF standards?/iu,
