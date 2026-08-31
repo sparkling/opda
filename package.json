@@ -16,7 +16,6 @@
     "jena:load": "node scripts/fuseki-load.mjs --clear",
     "ontology:model": "node scripts/ontology-model.mjs",
     "ontology:graph": "node scripts/ontology-graph.mjs",
-    "homepage:infographic": "node scripts/generate-home-method-infographic.mjs",
     "preview": "astro preview",
     "astro": "astro",
     "css": "node scripts/version-design-system.mjs && tailwindcss -i src/styles/global.css -o public/ui/tailwind.built.css --minify",
@@ -61,7 +60,6 @@
     "tailwindcss": "^4.3.2"
   },
   "devDependencies": {
-    "@antv/infographic": "0.2.20",
     "@axe-core/playwright": "4.11.0",
     "@playwright/test": "1.62.1",
     "@tailwindcss/cli": "^4.3.2",

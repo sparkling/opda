@@ -58,6 +58,24 @@ const domains = [
   <a class="skip-link" href="#main-content">Skip to main content</a>
   <main id="main-content" tabindex="-1">
     <section class="home-campaign-hero wg-campaign-hero" aria-labelledby="public-title">
+      <div class="home-theme-control">
+        <button
+          type="button"
+          class="theme-toggle"
+          id="theme-toggle"
+          aria-label="Switch to dark mode"
+          aria-pressed="false"
+          title="Switch to dark mode"
+        >
+          <svg class="theme-icon theme-icon--sun" viewBox="0 0 24 24" width="20" height="20" fill="currentColor" aria-hidden="true">
+            <path d="M12 4V2m0 20v-2m8-8h2M2 12h2m13.66-5.66l1.42-1.42M4.92 19.08l1.42-1.42m11.32 0l1.42 1.42M4.92 4.92l1.42 1.42M12 7a5 5 0 100 10 5 5 0 000-10z" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+          </svg>
+          <svg class="theme-icon theme-icon--moon" viewBox="0 0 24 24" width="20" height="20" fill="currentColor" aria-hidden="true">
+            <path d="M20 14.5A8 8 0 0 1 9.5 4a8 8 0 1 0 10.5 10.5z" />
+          </svg>
+        </button>
+      </div>
+
       <div class="wg-campaign-hero__copy">
         <BrandHeading surface="dark" campaign />
         <p class="wg-eyebrow">Smart Property Data Trust Framework</p>
@@ -119,6 +137,65 @@ const domains = [
     --campaign-max: var(--content-max);
     grid-template-columns: minmax(0, 1.05fr) minmax(36rem, 0.95fr);
     padding-top: var(--space-6);
+  }
+  .home-theme-control {
+    position: absolute;
+    z-index: 2;
+    top: var(--space-5);
+    right: max(
+      clamp(var(--space-5), 5vw, var(--space-10)),
+      calc((100vw - var(--campaign-max)) / 2)
+    );
+  }
+  .home-theme-control .theme-toggle { margin-left: 0; }
+  :global(:root[data-theme='light']) .home-campaign-hero {
+    color: var(--brand-deep);
+    background:
+      radial-gradient(circle at 15% 20%, rgb(91 81 216 / 12%), transparent 31rem),
+      linear-gradient(135deg, var(--brand-white) 0 62%, var(--neutral-100) 62% 100%);
+  }
+  :global(:root[data-theme='light']) .home-campaign-hero :global(.brand-heading--on-dark),
+  :global(:root[data-theme='light']) .home-campaign-hero h1,
+  :global(:root[data-theme='light']) .home-campaign-hero .wg-hero-journey h2,
+  :global(:root[data-theme='light']) .home-campaign-hero .wg-process strong {
+    color: var(--brand-deep);
+  }
+  :global(:root[data-theme='light']) .home-campaign-hero h1 em {
+    color: var(--color-link);
+  }
+  :global(:root[data-theme='light']) .home-campaign-hero .wg-eyebrow,
+  :global(:root[data-theme='light']) .home-campaign-hero .wg-lead,
+  :global(:root[data-theme='light']) .home-campaign-hero .wg-process span {
+    color: var(--color-text-muted);
+  }
+  :global(:root[data-theme='light']) .home-campaign-hero .wg-hero-journey {
+    background: rgb(255 255 255 / 88%);
+    border-color: var(--color-border);
+    border-top-color: var(--brand-yellow);
+    box-shadow: var(--shadow-sm);
+  }
+  :global(:root[data-theme='light']) .home-campaign-hero .wg-process li {
+    border-color: var(--color-border);
+  }
+  :global(:root[data-theme='light']) .home-campaign-hero .wg-process li::before {
+    color: var(--color-status-warning);
+  }
+  :global(:root[data-theme='light']) .home-campaign-hero .theme-toggle {
+    color: var(--brand-deep);
+    background: rgb(255 255 255 / 72%);
+    border-color: var(--color-border-strong);
+  }
+  :global(:root[data-theme='light']) .home-campaign-hero .theme-toggle:hover {
+    background: var(--neutral-100);
+  }
+  :global(:root[data-theme='light']) .home-campaign-hero .btn--outline-dark {
+    color: var(--brand-deep);
+    background: rgb(255 255 255 / 56%);
+    border-color: var(--brand-deep);
+  }
+  :global(:root[data-theme='light']) .home-campaign-hero .btn--outline-dark:hover {
+    color: var(--brand-deep);
+    background: var(--neutral-100);
   }
   .home-content-surface {
     --home-frame-gutter: max(
@@ -242,6 +319,7 @@ const domains = [
   }
 
   @media print {
+    .home-theme-control { display: none; }
     .home-campaign-hero {
       color: black;
       background: white;

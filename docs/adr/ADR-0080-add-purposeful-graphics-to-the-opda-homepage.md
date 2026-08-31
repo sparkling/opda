@@ -1,12 +1,12 @@
 ---
 status: accepted
 date: 2026-08-30
-updated: 2026-08-30
-tags: [website, homepage, design-system, brand, accessibility, svg, infographic, ai, presentation]
+updated: 2026-08-31
+tags: [website, homepage, design-system, brand, accessibility, avif, infographic, ai, presentation]
 supersedes: []
 amends: [ADR-0073, ADR-0074]
 depends-on: [ADR-0064, ADR-0065, ADR-0073, ADR-0074, ADR-0078]
-implements: [DESIGN.md, package.json, scripts/generate-home-method-infographic.mjs, public/images/home/method-loop-light.svg, public/images/home/method-loop-dark.svg, src/pages/index.astro, src/components/BrandHeading.astro, src/components/SiteFooter.astro, src/components/home/MethodFlowFigure.astro, src/components/home/KickoffFeature.astro, src/styles/working-group-campaign.css, src/styles/working-group-campaign-responsive.css, public/ui/design/public.css, tests/design-system-contract.test.mjs, tests/e2e/smoke.spec.mjs]
+implements: [DESIGN.md, public/images/home/method-loop-light.avif, public/images/home/method-loop-dark.avif, src/pages/index.astro, src/components/BrandHeading.astro, src/components/SiteFooter.astro, src/components/home/MethodFlowFigure.astro, src/components/home/KickoffFeature.astro, src/styles/working-group-campaign.css, src/styles/working-group-campaign-responsive.css, public/ui/design/public.css]
 ---
 
 # Add purposeful graphics to the OPDA homepage
@@ -90,14 +90,18 @@ working-group members challenge and improve it. Feedback and new evidence begin 
 next modelling pass. A separate consensus exit leads to a stable working-group draft,
 which is explicitly not yet ratified or adopted.
 
-AntV Infographic is an offline layout and SVG-export dependency only. A standalone
-Node script generates checked-in light and dark assets from one canonical content
-source. The generated SVGs embed the local DM Sans font and reject remote resources;
-Astro serves them as inert images without hydration or a diagram runtime. Equivalent
-semantic HTML describes the complete process, and a compact prose treatment replaces
-the image where its text would become too small. The visible guardrail states that AI
-may extract, compare and draft while people decide what is true, resolve disagreement
-and approve status changes.
+The checked-in light and dark method assets are a reviewed Gemini 3 Pro Image
+composition rather than a client-side diagram runtime. The two variants preserve the
+same words, geometry and transition directions while applying the OPDA light and dark
+palette. The title and closing authority statement are cropped from the raster because
+the page owns them as live heading and caption text. Both images are stored as compact
+2752 by 1216 AVIF assets; the component loads only the active wide-screen theme.
+The image is displayed within a centred 84rem maximum measure without changing or
+regenerating either source asset.
+Equivalent semantic HTML describes the complete process and becomes the visible
+treatment at narrow widths, in forced-colour mode and in print. The visible guardrail
+states that AI may extract, compare and draft while people decide what is true, resolve
+disagreement and approve status changes.
 
 The presentation feature is an editorial preview, not an embedded presentation. Its
 small, isolated poster treatment may use the restored deck's forest, cream and amber
@@ -121,8 +125,8 @@ than competing with the homepage's primary proposition.
   turns evidence into shared meaning.
 - Good, because the working-group presentation becomes a prominent editorial route
   without becoming a navigation peer or contaminating the shared design system.
-- Good, because generated static SVG and CSS composition provide visual character
-  without a client runtime or motion dependency.
+- Good, because compact static AVIF assets and CSS composition provide visual character
+  without a diagram runtime or motion dependency.
 - Good, because the homepage now says plainly that AI accelerates extraction and
   drafting while preserving human authority over meaning and status.
 - Good, because the hero now previews the domains that make the programme tangible.
@@ -145,8 +149,17 @@ than competing with the homepage's primary proposition.
   links to the existing local deck and imports none of its runtime assets.
 - The method figure's labels and authority boundary agree with the modelling loop and
   AI limitations in the working-group presentation and ADR-0065.
-- `pnpm run homepage:infographic` regenerates both theme assets in a standalone process;
-  the rendered homepage loads no AntV JavaScript or external SVG resources.
+- The two Gemini-generated AVIF assets contain identical wording, geometry and arrow
+  directions; the rendered homepage loads no image-generation or diagram runtime.
+- The light and dark assets were generated with `gemini-3-pro-image` on 31 August 2026,
+  recoloured through the same multi-turn interaction, visually reviewed, cropped to
+  defer heading and caption text to HTML, and encoded to AVIF without adding an OPDA
+  identity mark.
+- The generation instructions fixed the five-node source, preparation, publication,
+  review and draft flow; required revision to return from review to preparation and
+  consensus to exit toward the draft; prohibited wording or geometry changes; and
+  constrained the visual treatment to flat OPDA theme colours without shadows, glow,
+  texture, decoration or a reconstructed brand mark.
 - Fable's read-only review of the initial composition found three material defects;
   those corrections to print colour, heading hierarchy, SVG naming and poster
   legibility remain. The later shared-hero amendment has not been re-reviewed by Fable.
@@ -205,6 +218,22 @@ than competing with the homepage's primary proposition.
   does a separate outcome identify the stable draft standard. AntV Infographic
   generates theme-specific static SVGs offline, while semantic HTML, mobile prose,
   local typography and explicit human-authority wording remain part of the page.
+- **2026-08-31 — replace the provisional AntV export with reviewed Gemini variants.**
+  At the operator's direction, the method figure now uses separately generated OPDA
+  light and dark AVIF assets. Both retain the accepted process and exact transition
+  directions. The component fetches only the active theme above 64rem and uses the full
+  semantic ordered process at narrower widths, in forced colours and in print. The
+  former AntV generator, dependency and SVG exports are removed. This amendment changes
+  the rendering method, not the accepted content, authority boundary or page sequence.
+- **2026-08-31 — expose theme selection and reduce the method image measure.** The root
+  hero now places the existing design-system light/dark control in a separate overlay
+  layer at its top-right edge, outside the hero grid's layout flow.
+  The generated method image is centred at a maximum displayed width of 84rem; its
+  intrinsic dimensions and both reviewed Gemini assets remain unchanged.
+- **2026-08-31 — give the root hero full theme parity.** The campaign composition now
+  uses the design system's white and warm-neutral surfaces, ink text, violet emphasis
+  and light control states when light mode is selected. Dark mode retains the accepted
+  deep-ink treatment; content, geometry and routes do not change.
 
 ## More Information
 

@@ -434,10 +434,13 @@ test('the adversarial conformance blockers remain closed', async () => {
   ]);
   assert.doesNotMatch(rootPage, /<html[^>]+data-theme="light"/u);
   assert.match(rootPage, /URLSearchParams\(location\.search\)/u);
-  assert.doesNotMatch(rootPage, /class="public-header"|id="theme-toggle"/u);
+  assert.doesNotMatch(rootPage, /class="public-header"/u);
+  assert.match(rootPage, /class="home-theme-control"/u);
+  assert.match(rootPage, /id="theme-toggle"/u);
+  assert.match(rootPage, /:root\[data-theme='light'\][\s\S]+\.home-campaign-hero/u);
   assert.match(rootPage, /<BrandHeading surface="dark" campaign\s*\/>/u);
   assert.match(brandHeading, /opda-icon-yellow\.svg[\s\S]*alt=""[\s\S]*aria-hidden="true"[\s\S]*Open Property Data Association/u);
-  assert.match(rootPage, /class="btn btn--outline-dark"/u);
+  assert.match(rootPage, /class="btn btn--outline-dark\b/u);
   assert.match(base, /color:\s*var\(--on-dark-muted\)/u);
   assert.doesNotMatch(base, /#d8d5df/iu);
   assert.match(content, /\[data-theme="dark"\]\s+:where\(\.pill\)/u);

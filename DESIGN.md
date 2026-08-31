@@ -286,22 +286,22 @@ SPDTF's attributed inputs, not as a hero, status item, primary action or peer de
 
 Its sequence is:
 
-1. Split deep-ink hero using `/join`'s full-width background, centred 92rem grid,
-   radial/diagonal treatment, panel composition, shared icon-and-name heading, short Slab headline,
-   three actions and working-group domain register.
+1. Theme-aware split hero using `/join`'s full-width radial/diagonal composition, centred 92rem grid,
+   shared icon-and-name heading, short Slab headline, three actions and working-group domain register.
+   It uses deep ink in dark mode and white/warm-neutral surfaces in light mode without structural change.
 2. Static, accessible AI-assisted modelling loop with source material, a published candidate,
    returning feedback and a consensus-gated draft-standard outcome.
 3. Prominent editorial link to the Finance and Banking working-group kick-off deck.
 4. Six linked entry cards, in the accepted order, for Programme, Governance, Semantic
    modelling, SPDTF Development, Working groups and Resources.
 5. Bounded participation call to action.
-6. Deep-ink footer.
+6. Theme-aware shared footer.
 
 `/home` is retired without a redirect, rewrite alias or duplicate page. All internal
 homepage links use `/`.
 
-No floating screenshots, generic illustration clutter or synthetic imagery. The
-presentation feature is a bounded editorial tile, not a screenshot or embedded deck.
+No floating screenshots, generic illustration clutter or ungoverned synthetic imagery. The generated method
+infographic is the bounded exception defined below. The presentation feature is an editorial tile, not an embed.
 
 `/join`, `/join/privacy` and `/accessibility` form one standalone public-service
 family. They use the official wordmark, tokens, type, buttons, fields, focus and
@@ -360,11 +360,10 @@ states, plus loading/error/success where asynchronous work occurs and dark parit
   overview and detail views. Static teaching SVGs use image semantics and never
   infer links from labels. Explicitly interactive model SVGs use composite semantics
   with named node links. Pan/zoom controls remain keyboard-operable.
-- **Generated process infographic:** use a checked-in static SVG, not a client-side runtime,
-  when a stable public explanation needs specialist layout. Generate light and dark variants from
-  one source, embed the local font, reject external resources and retain equivalent semantic HTML.
-  Show a cycle as a cycle, keep conditional milestones outside it and distinguish AI assistance
-  from human decision authority.
+- **Generated process infographic:** use checked-in light and dark images, not a client-side runtime, when a stable public explanation needs specialist composition. Both variants preserve identical
+  wording, geometry and direction, use the theme palette, omit identity marks and retain equivalent semantic HTML. Record model and prompt provenance and human review; use an efficient web format. Load only the active
+  wide-screen theme, with semantic HTML at narrow widths, forced colours and print. Show cycles and conditional
+  exits accurately, and distinguish AI assistance from human decision authority.
 - **Recruitment group card:** plain label, practical scope and one action that carries
   the selected group to the signup form. Use a three-column maximum, preserve ordinary
   HTML reading order and do not use modelling terminology to explain audience choices.

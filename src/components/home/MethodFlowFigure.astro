@@ -2,70 +2,107 @@
   <div class="method-flow__inner">
     <header class="method-flow__header">
       <p class="method-flow__overline">The method</p>
-      <h2 id="method-title">People provide the knowledge. AI accelerates the modelling.</h2>
+      <h2 id="method-title">From evidence to shared meaning</h2>
       <p>
-        People bring source material and domain judgement. We use AI to turn that evidence
-        into a candidate model and ontology that working-group members can challenge and
-        improve. Each round of feedback starts another modelling pass. Once the group reaches
-        consensus, the agreed model becomes a draft standard.
+        Authorised source material establishes the evidence base. We publish a candidate model
+        for working-group members to examine, challenge and improve. Each review either returns
+        the model for revision or, once consensus is reached, moves it forward as a draft
+        standard.
       </p>
     </header>
 
-    <figure class="method-flow__figure" aria-labelledby="method-title method-caption">
-      <div class="method-flow__composition">
-        <div class="method-flow__loop">
+    <figure
+      class="method-flow__figure"
+      aria-labelledby="method-title"
+      aria-describedby="method-caption"
+    >
+      <div class="method-flow__graphic-wrap">
+        <img
+          class="method-flow__graphic"
+          data-method-theme-image
+          data-light-src="/images/home/method-loop-light.avif"
+          data-dark-src="/images/home/method-loop-dark.avif"
+          src="data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs="
+          width="2752"
+          height="1216"
+          alt=""
+          aria-hidden="true"
+          loading="lazy"
+          decoding="async"
+        />
+        <noscript>
           <img
-            class="method-flow__graphic method-flow__graphic--light"
-            src="/images/home/method-loop-light.svg"
-            width="1085"
-            height="601"
+            class="method-flow__graphic"
+            src="/images/home/method-loop-light.avif"
+            width="2752"
+            height="1216"
             alt=""
             aria-hidden="true"
             loading="lazy"
             decoding="async"
           />
-          <img
-            class="method-flow__graphic method-flow__graphic--dark"
-            src="/images/home/method-loop-dark.svg"
-            width="1085"
-            height="601"
-            alt=""
-            aria-hidden="true"
-            loading="lazy"
-            decoding="async"
-          />
-          <p class="method-flow__loop-label">
-            <strong>Feedback starts the next pass.</strong>
-            <span>Repeat until consensus.</span>
-          </p>
-        </div>
+        </noscript>
+        <script is:inline>
+          (() => {
+            const wrapper = document.currentScript?.closest('.method-flow__graphic-wrap');
+            const image = wrapper?.querySelector('[data-method-theme-image]');
+            if (!(image instanceof HTMLImageElement)) return;
 
-        <div class="method-flow__exit">
-          <span class="method-flow__exit-line" aria-hidden="true"></span>
-          <article class="method-flow__outcome">
-            <p>Consensus reached</p>
-            <h3>The agreed model becomes a draft standard.</h3>
-            <span>
-              This is a stable, reviewed working-group draft. It is not yet ratified or
-              adopted.
-            </span>
-          </article>
-        </div>
+            const wide = window.matchMedia('(min-width: 64.01rem)');
+            const forcedColours = window.matchMedia('(forced-colors: active)');
+            let request = 0;
+
+            const selectAsset = () => {
+              if (!wide.matches || forcedColours.matches) {
+                request += 1;
+                image.src = 'data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=';
+                return;
+              }
+
+              const theme = document.documentElement.dataset.theme === 'dark' ? 'dark' : 'light';
+              const source = theme === 'dark' ? image.dataset.darkSrc : image.dataset.lightSrc;
+              if (!source || image.getAttribute('src') === source) return;
+
+              const currentRequest = ++request;
+              const next = new Image();
+              next.decoding = 'async';
+              next.src = source;
+
+              const apply = () => {
+                if (currentRequest === request) image.src = source;
+              };
+
+              if (typeof next.decode === 'function') next.decode().then(apply, apply);
+              else {
+                next.onload = apply;
+                next.onerror = apply;
+              }
+            };
+
+            new MutationObserver(selectAsset).observe(document.documentElement, {
+              attributes: true,
+              attributeFilter: ['data-theme'],
+            });
+            wide.addEventListener('change', selectAsset);
+            forcedColours.addEventListener('change', selectAsset);
+            selectAsset();
+          })();
+        </script>
       </div>
 
       <ol class="method-flow__text-version">
-        <li>People provide source material that their organisations are authorised to share.</li>
-        <li>AI extracts a candidate model and ontology from that evidence.</li>
+        <li>People provide source material once, before the review cycle begins.</li>
+        <li>Assisted analysis prepares a candidate model and ontology from that evidence.</li>
         <li>OPDA publishes the candidate with its sources, changes and open questions.</li>
         <li>Working-group members discuss, challenge and improve the candidate.</li>
-        <li>Feedback and new evidence start the next AI-assisted modelling pass.</li>
-        <li>When the group reaches consensus, the agreed model becomes a draft standard.</li>
+        <li>Requested changes return the candidate to preparation for another pass.</li>
+        <li>Consensus exits the cycle and the agreed model becomes a draft standard.</li>
       </ol>
 
       <figcaption id="method-caption">
-        <strong>AI accelerates the work; people remain in control.</strong>
-        AI can extract, compare and draft. People decide what is true, resolve disagreement
-        and approve every change in status.
+        <strong>People remain responsible for meaning and decisions.</strong>
+        AI assists with extraction and comparison. Working-group members challenge the result,
+        resolve disagreements and decide whether it is ready to become a draft.
       </figcaption>
     </figure>
   </div>
@@ -115,15 +152,9 @@
     background: var(--color-surface-card);
   }
 
-  .method-flow__composition {
-    display: grid;
-    grid-template-columns: minmax(0, 3fr) minmax(19rem, 1fr);
-    align-items: center;
-    gap: var(--space-7);
-  }
-
-  .method-flow__loop {
-    position: relative;
+  .method-flow__graphic-wrap {
+    width: min(100%, 84rem);
+    margin-inline: auto;
     min-width: 0;
   }
 
@@ -131,85 +162,7 @@
     display: block;
     width: 100%;
     height: auto;
-  }
-
-  .method-flow__graphic--dark { display: none; }
-
-  :global(html[data-theme='dark']) .method-flow__graphic--light { display: none; }
-  :global(html[data-theme='dark']) .method-flow__graphic--dark { display: block; }
-
-  .method-flow__loop-label {
-    position: absolute;
-    top: 51%;
-    left: 50%;
-    width: min(15rem, 25%);
-    margin: 0;
-    color: var(--color-text-muted);
-    font-size: clamp(0.75rem, 1vw, var(--text-sm));
-    line-height: 1.45;
-    text-align: center;
-    transform: translate(-50%, -50%);
-  }
-
-  .method-flow__loop-label strong,
-  .method-flow__loop-label span { display: block; }
-
-  .method-flow__loop-label strong {
-    color: var(--color-text-strong);
-    font-weight: 700;
-  }
-
-  .method-flow__exit {
-    display: grid;
-    grid-template-columns: var(--space-7) minmax(0, 1fr);
-    align-items: center;
-  }
-
-  .method-flow__exit-line {
-    position: relative;
-    height: 2px;
-    background: var(--brand-yellow);
-  }
-
-  .method-flow__exit-line::after {
-    content: '';
-    position: absolute;
-    top: 50%;
-    right: 0;
-    width: 0.625rem;
-    height: 0.625rem;
-    border-top: 2px solid var(--brand-yellow);
-    border-right: 2px solid var(--brand-yellow);
-    transform: translateY(-50%) rotate(45deg);
-  }
-
-  .method-flow__outcome {
-    padding: var(--space-7);
-    color: var(--color-text-strong);
-    background: var(--color-surface-alt);
-    border: 1px solid var(--color-border-strong);
-    border-top: 4px solid var(--brand-yellow);
-  }
-
-  .method-flow__outcome > p {
-    margin: 0 0 var(--space-4);
-    color: var(--color-text-muted);
-    font: 700 var(--text-xs) / 1.3 var(--font-sans);
-    letter-spacing: var(--tracking-meta);
-    text-transform: uppercase;
-  }
-
-  .method-flow__outcome h3 {
-    margin: 0;
-    color: var(--color-text-strong);
-    font: var(--h3);
-    text-wrap: balance;
-  }
-
-  .method-flow__outcome > span {
-    display: block;
-    margin-top: var(--space-4);
-    color: var(--color-text-muted);
+    aspect-ratio: 2752 / 1216;
   }
 
   .method-flow__text-version {
@@ -240,39 +193,43 @@
     font-weight: 700;
   }
 
-  @media (max-width: 70rem) {
-    .method-flow__composition { grid-template-columns: minmax(0, 1fr); }
-    .method-flow__exit {
-      grid-template-columns: minmax(0, 1fr);
-      justify-items: center;
-    }
-    .method-flow__exit-line {
-      width: 2px;
-      height: var(--space-7);
-    }
-    .method-flow__exit-line::after {
-      top: auto;
-      right: auto;
-      bottom: 0;
-      left: 50%;
-      transform: translateX(-50%) rotate(135deg);
-    }
-    .method-flow__outcome { width: 100%; }
-  }
+  @media (max-width: 64rem), (forced-colors: active) {
+    .method-flow__graphic-wrap { display: none; }
 
-  @media (max-width: 48rem) {
-    .method-flow__graphic { display: none; }
-    :global(html[data-theme='dark']) .method-flow__graphic--dark { display: none; }
-    .method-flow__loop-label { display: none; }
-    .method-flow__loop::before {
-      content: 'People provide material → AI extracts the model and ontology → people review the candidate → feedback starts the next pass.';
-      display: block;
-      padding: var(--space-6);
-      color: var(--color-text-strong);
-      font: var(--lead);
-      background: var(--color-surface-alt);
-      border-left: 4px solid var(--color-data-1);
+    .method-flow__text-version {
+      position: static;
+      display: grid;
+      width: auto;
+      height: auto;
+      margin: 0;
+      padding: 0;
+      overflow: visible;
+      clip: auto;
+      clip-path: none;
+      white-space: normal;
+      border-block: 1px solid var(--color-border);
+      counter-reset: method-step;
     }
+
+    .method-flow__text-version li {
+      display: grid;
+      grid-template-columns: 3rem minmax(0, 1fr);
+      gap: var(--space-4);
+      align-items: start;
+      padding: var(--space-5) 0;
+      color: var(--color-text-strong);
+      line-height: 1.55;
+      counter-increment: method-step;
+    }
+
+    .method-flow__text-version li + li { border-top: 1px solid var(--color-border); }
+
+    .method-flow__text-version li::before {
+      content: counter(method-step, decimal-leading-zero);
+      color: var(--brand-yellow);
+      font: 700 var(--text-sm) / 1.55 var(--font-mono);
+    }
+
     .method-flow__figure figcaption { grid-template-columns: minmax(0, 1fr); }
   }
 
@@ -283,27 +240,29 @@
   }
 
   @media (forced-colors: active) {
-    .method-flow__figure,
-    .method-flow__outcome,
-    .method-flow__loop::before {
+    .method-flow__figure {
       color: CanvasText;
       background: Canvas;
       border-color: CanvasText;
     }
-    .method-flow__exit-line { background: CanvasText; }
-    .method-flow__exit-line::after { border-color: CanvasText; }
   }
 
   @media print {
     .method-flow { color: black; background: white; }
     .method-flow__header :is(h2, p),
-    .method-flow__figure figcaption,
-    .method-flow__outcome :is(h3, p, span),
-    .method-flow__loop-label,
-    .method-flow__loop-label strong { color: black; }
-    .method-flow__figure,
-    .method-flow__outcome { break-inside: avoid; border-color: black; background: white; }
-    .method-flow__graphic--light { display: block; }
-    .method-flow__graphic--dark { display: none; }
+    .method-flow__figure figcaption { color: black; }
+    .method-flow__figure { break-inside: avoid; border-color: black; background: white; }
+    .method-flow__graphic-wrap { display: none; }
+    .method-flow__text-version {
+      position: static;
+      width: auto;
+      height: auto;
+      margin: 0;
+      padding: 0 0 0 1.5rem;
+      overflow: visible;
+      clip: auto;
+      clip-path: none;
+      white-space: normal;
+    }
   }
 </style>
