@@ -1,0 +1,431 @@
+notebooklm_config_version: 1
+config_status: draft
+last_updated: 2026-08-31
+governing_adr: ADR-0081
+
+notebook:
+  id: b05a7a97-c892-4608-b578-c8ed79f16661
+  title: "OPDA — Semantic Modelling Method"
+  portfolio: programme-and-participation
+  purpose: >-
+    Explain the evidence-led modelling method, contextual boundaries, semantic
+    package, standards, mappings, validation, provenance and the controlled use of AI.
+  primary_audiences:
+    - modellers
+    - technical reviewers
+    - working-group facilitators
+    - interested participants
+  target_artefacts:
+    - semantic modelling method presentation
+    - evidence-to-model infographic
+    - method explainer video
+    - modelling principles and controls report
+
+workspace:
+  profile: personal
+  sharing: private
+  notebook_id_verification: {status: verified, profile: personal, verified_at: 2026-08-31}
+  source_ingestion_status: pending
+  preparation_prompt_status: pending
+
+dependencies:
+  - id: shared-facts-pack
+    kind: config-output
+    target: docs/notebooklm/prepared/shared-facts-and-terminology.md
+    status: planned
+    required_before: source-ingestion
+    blocking: true
+  - id: source-manifest-approval
+    kind: human-decision
+    target: resource_manifest
+    status: pending
+    required_before: source-ingestion
+    blocking: true
+  - id: data-protection-and-rights-clearance
+    kind: human-decision
+    target: every-resource-component
+    status: pending
+    required_before: source-ingestion
+    blocking: true
+    decision_owner: OPDA data controller or authorised delegate
+    criteria: Every component is classified and approved for processing in the named personal NotebookLM workspace.
+    approved_by: null
+    approved_on: null
+  - id: preparation-builder-and-bundles
+    kind: implementation-and-output
+    target: scripts/build-notebooklm-prepared-sources.mjs
+    status: missing
+    required_before: source-ingestion
+    blocking: true
+
+guardrails:
+  - "Domain practitioners supply evidence and decide meaning; AI produces reviewable proposals."
+  - "ADR-0065's AI-assisted workflow remains proposed and must not be described as fully operative policy."
+  - "Contextual boundaries own local meaning; the common boundary contains only genuinely shared elements."
+  - "Cross-context mapping and common-boundary reuse are different mechanisms."
+  - "Use SKOS mappings only for concepts where appropriate; do not imply that SKOS maps every RDF resource."
+  - "Do not claim an adopted SPDTF SSSOM profile unless a later accepted decision establishes one."
+  - "Preserve evidence provenance, uncertainty, dissent and model maturity in every synthesis."
+  - "Do not merge the eleven workshop-theme formulation with the eight formal-concern formulation; report both with their status and sources."
+
+prompt_defaults:
+  prompt_version: 1
+  note_carry_forward: paste-complete-labelled-dependency-notes-into-prompt
+  instruction_prefix: >-
+    Use only the selected notebook sources and cite every substantive claim. Treat
+    source status, date, scope and implementation state as separate fields. Preserve
+    conflicts instead of resolving them by inference. For any depends_on entry,
+    paste the complete prior note text into the prompt, labelled with its prompt ID;
+    NotebookLM notes are not sources. Prior outputs remain working data, never primary
+    evidence. Produce structured preparatory data only; do not create any publication artefact.
+
+resource_manifest:
+  status: proposed
+  review_required_before_ingestion: true
+  ingestion_log: []
+  required_metadata_before_ingestion:
+    - stable_source_id
+    - title
+    - originator
+    - source_date
+    - authority
+    - maturity
+    - repository_tracking
+    - rights_and_data_classification
+    - ingest_format
+    - size_bytes
+    - original_path_or_url
+    - inclusion_reason
+    - sha256
+  availability_policy: >-
+    Repository tracking is resolved per input with git ls-files, never inferred from
+    its top-level directory. Any absent local input fails closed. Every prepared bundle
+    requires a component manifest, checksum and declared reproducibility class.
+  prepared_bundle_contract:
+    builder: scripts/build-notebooklm-prepared-sources.mjs
+    builder_status: missing
+    website_prerequisite: make build-data
+    manifest_required: true
+    output_sha256_required: true
+  selection_rule: >-
+    Include method, standards and control evidence. Preserve each ontology decision's
+    front-matter status and origin; separate accepted architecture from proposed workflow.
+  resources:
+    - id: smm-shared-facts
+      title: OPDA shared programme facts and terminology
+      kind: prepared-bundle-reference
+      authority: mixed-with-explicit-attribution
+      maturity: current
+      ingestion: direct-after-central-build
+      owner: docs/notebooklm/portfolio-shared-facts.yaml
+      path: docs/notebooklm/prepared/shared-facts-and-terminology.md
+      repository_tracking: derived-local-output
+      rights_and_data_classification: pending
+      status: planned
+
+    - id: smm-current-method-site
+      title: Current semantic modelling website explanation
+      kind: prepared-bundle
+      authority: opda-public-explanation
+      maturity: current-but-non-normative
+      ingestion: render-built-routes-to-markdown
+      build_prerequisite: make build-data
+      route_glob: /semantic-modelling/**
+      source_definition_glob: src/pages/semantic-modelling/*.astro
+      supporting_inputs:
+        - src/lib/spdtf-workspace.mjs
+        - src/lib/spdtf-standards-profile.mjs
+      output: docs/notebooklm/prepared/semantic-modelling-site.md
+      transformation: {reproducibility: human-reviewed, human_signoff_by: null, human_signoff_on: null}
+      repository_tracking: tracked
+      rights_and_data_classification: pending
+      status: planned
+
+    - id: smm-method-research
+      title: OPDA method research and rationale
+      kind: source-set
+      authority: opda-research
+      maturity: mixed-proposed-and-informative
+      ingestion: direct
+      inputs:
+        - docs/research/bounded-context-working-group-approach.md
+        - docs/research/ai-assisted-working-group-method.md
+        - docs/linked-data-initiative/01-context-problem-and-market.md
+        - docs/linked-data-initiative/02-linked-data-model-architecture.md
+        - docs/linked-data-initiative/03-standards-and-vocabularies.md
+        - docs/linked-data-initiative/04-governance-and-privacy-modelling.md
+        - docs/linked-data-initiative/06-ai-linked-data-council-methodology.md
+        - docs/linked-data-initiative/09-model-driven-generation-vision.md
+      repository_tracking: tracked
+      rights_and_data_classification: pending
+      status: candidate
+
+    - id: smm-accepted-architecture
+      title: Accepted bounded-context and Property Pack modelling architecture
+      kind: prepared-bundle
+      authority: opda-decision-record
+      maturity: accepted
+      ingestion: bundle-with-front-matter-preserved
+      inputs:
+        - docs/adr/ADR-0063-domain-led-bounded-context-working-groups.md
+        - docs/adr/ADR-0066-property-pack-451-seed-scope-and-greenfield-ontology.md
+        - docs/adr/ADR-0067-first-principles-property-pack-ontology-by-bounded-context.md
+        - docs/adr/ADR-0075-property-pack-ontology-as-accelerated-spdtf-component.md
+      output: docs/notebooklm/prepared/accepted-modelling-architecture.md
+      transformation: {reproducibility: deterministic, human_signoff_by: null, human_signoff_on: null}
+      repository_tracking: tracked
+      rights_and_data_classification: pending
+      status: planned
+
+    - id: smm-proposed-workflow
+      title: Proposed AI-assisted evidence-to-model workflow
+      kind: prepared-bundle
+      authority: opda-decision-record-and-research
+      maturity: proposed
+      ingestion: bundle-with-status-banner
+      inputs:
+        - docs/adr/ADR-0065-ai-assisted-evidence-to-model-workflow.md
+        - docs/adr/ADR-0068-govern-opda-standards-lifecycle.md
+        - docs/research/ai-assisted-working-group-method.md
+      output: docs/notebooklm/prepared/proposed-ai-assisted-workflow.md
+      transformation: {reproducibility: deterministic, human_signoff_by: null, human_signoff_on: null}
+      repository_tracking: tracked
+      rights_and_data_classification: pending
+      status: planned
+
+    - id: smm-accepted-odr-method
+      title: Accepted ontology decisions originating in the PDTF-derived programme
+      kind: prepared-bundle
+      authority: opda-technical-decision-record
+      maturity: accepted
+      ingestion: bundle-with-front-matter-preserved
+      inputs:
+        - docs/ontology/odr/ODR-0001-linked-data-council-methodology.md
+        - docs/ontology/odr/ODR-0002-ontology-language-adoption.md
+        - docs/ontology/odr/ODR-0009-claims-evidence-provenance.md
+        - docs/ontology/odr/ODR-0013-shacl-validation-and-severity.md
+        - docs/ontology/odr/ODR-0019-bounded-context-representation.md
+        - docs/ontology/odr/ODR-0020-bounded-context-scheme-and-mapping.md
+        - docs/ontology/odr/ODR-0027-classification-roles-inheritance-skos-doctrine.md
+      output: docs/notebooklm/prepared/accepted-ontology-method-decisions.md
+      transformation: {reproducibility: deterministic, human_signoff_by: null, human_signoff_on: null}
+      repository_tracking: tracked
+      rights_and_data_classification: pending
+      status: planned
+
+    - id: smm-primary-standards
+      title: Primary semantic-web and mapping standards
+      kind: url-set
+      authority: standards-bodies
+      maturity: published-at-retrieval-date
+      ingestion: url-with-retrieval-date
+      urls:
+        - https://www.w3.org/TR/rdf12-concepts/
+        - https://www.w3.org/TR/owl2-overview/
+        - https://www.w3.org/TR/skos-reference/
+        - https://www.w3.org/TR/shacl/
+        - https://www.w3.org/TR/prov-o/
+        - https://mapping-commons.github.io/sssom/
+      repository_tracking: external
+      rights_and_data_classification: pending
+      status: candidate
+
+    - id: smm-property-pack-case-study
+      title: Property Pack modelling method case study
+      kind: prepared-bundle
+      authority: opda-current-delivery
+      maturity: candidate-model
+      ingestion: bundle-selected-metadata
+      inputs:
+        - source/03-standards/ontology-candidates/property-pack/0.1/candidate-manifest.json
+        - source/03-standards/ontology-candidates/property-pack/0.1/candidate-summary.json
+        - source/03-standards/ontology-candidates/property-pack/0.1/standards-profile.json
+        - source/03-standards/ontology-candidates/property-pack/0.1/projections/context-map.json
+        - source/03-standards/ontology-candidates/property-pack/0.1/projections/coverage.json
+        - source/03-standards/ontology-candidates/property-pack/0.1/validation/report.json
+      output: docs/notebooklm/prepared/property-pack-method-case-study.md
+      transformation: {reproducibility: human-reviewed, human_signoff_by: null, human_signoff_on: null}
+      repository_tracking: tracked
+      rights_and_data_classification: pending
+      status: planned
+
+  exclusions:
+    - pattern: source/03-standards/schemas/**
+      reason: Source schemas are excluded by ADR-0081.
+    - pattern: src/pages/spdtf/property-pack/data-dictionary/**
+      reason: Detailed model content belongs in the Property Pack notebook.
+    - pattern: src/pages/spdtf/inputs/pdtf-schema/schema-derived-ontology/model-views-by-audience/**
+      reason: Page-per-term and generated model views belong in PDTF lineage or are redundant.
+    - pattern: docs/ontology/odr/council/**
+      reason: Raw council transcripts are too voluminous and are not adopted method authority.
+    - pattern: "**/_archive/**"
+      reason: Superseded copies require an explicit methodological reason.
+
+  known_conflicts:
+    - id: smm-eleven-versus-eight
+      sources:
+        - docs/adr/ADR-0065-ai-assisted-evidence-to-model-workflow.md
+        - docs/adr/ADR-0063-domain-led-bounded-context-working-groups.md
+        - src/pages/semantic-modelling/coverage.astro
+      issue: >-
+        Proposed ADR-0065 calls eleven items ontology dimensions. Accepted ADR-0063
+        and the maintained guide distinguish eleven workshop themes from eight formal concerns.
+      disposition: preserve-for-human-resolution-after-SMM-01-and-SMM-04
+
+preparation_prompts:
+  - id: SMM-01
+    title: Audit method sources and authority
+    source_scope: [smm-shared-facts, smm-current-method-site, smm-method-research, smm-accepted-architecture, smm-proposed-workflow, smm-accepted-odr-method, smm-primary-standards, smm-property-pack-case-study]
+    depends_on: []
+    output_note: "SMM-01 — Method source and authority audit"
+    prompt: >-
+      Audit every source for issuer, date, authority, maturity and methodological
+      scope. Separate standards specifications, accepted OPDA architecture, proposed
+      workflow, explanatory research, accepted ontology decisions originating in the
+      PDTF-derived programme and current
+      Property Pack evidence. Identify contradictions and missing primary sources.
+      Cite every assessment.
+    acceptance:
+      - Accepted decisions are not demoted because of their programme of origin.
+      - Standards claims resolve to primary standards sources.
+      - Conflicts and evidence gaps are explicit.
+
+  - id: SMM-02
+    title: Define the controlled method vocabulary
+    source_scope: [smm-shared-facts, smm-current-method-site, smm-accepted-architecture, smm-proposed-workflow, smm-primary-standards]
+    depends_on: [SMM-01]
+    output_note: "SMM-02 — Controlled method vocabulary"
+    prompt: >-
+      Create a cited glossary for evidence, source, claim, candidate, contextual
+      boundary, common boundary, semantic package, ontology, taxonomy, controlled
+      vocabulary, mapping, validation, provenance, maturity, review and consensus.
+      Note terms whose definitions differ by source and do not silently harmonise them.
+    acceptance:
+      - Definitions include authority and maturity.
+      - Common-boundary reuse and cross-context mapping are separate.
+      - Candidate and approved output are not conflated.
+
+  - id: SMM-03
+    title: Map the evidence-to-model method and human controls
+    source_scope: [smm-method-research, smm-accepted-architecture, smm-proposed-workflow, smm-property-pack-case-study]
+    depends_on: [SMM-01, SMM-02]
+    output_note: "SMM-03 — Evidence-to-model stages and controls"
+    prompt: >-
+      Describe the evidence-to-model method as stages with inputs, human decisions,
+      AI or tool assistance, outputs, checks, iteration conditions and unresolved
+      governance. Mark each stage as accepted, implemented, proposed or illustrative.
+      Do not turn the proposed workflow into current policy or make AI the decision maker.
+    acceptance:
+      - Human and machine responsibilities are explicit.
+      - Source collection is distinguishable from the review-and-revision cycle.
+      - Maturity changes are not inferred.
+
+  - id: SMM-04
+    title: Crosswalk outputs, modelling lenses and publication formats
+    source_scope: [smm-current-method-site, smm-method-research, smm-accepted-architecture]
+    depends_on: [SMM-02, SMM-03]
+    output_note: "SMM-04 — Semantic package and coverage crosswalk"
+    prompt: >-
+      Build a crosswalk separating semantic content outputs, modelling or coverage
+      lenses, machine-readable representations, validation artefacts and audience
+      publication formats. For each item record its purpose, owner, authority,
+      dependencies and whether it is required, optional or illustrative. Cite each row.
+    acceptance:
+      - Content, lenses and presentation formats are not conflated.
+      - Governance is not incorrectly modelled as an ontology category.
+      - Ownership and status remain visible.
+
+  - id: SMM-05
+    title: Establish the standards applicability matrix
+    source_scope: [smm-current-method-site, smm-method-research, smm-accepted-odr-method, smm-primary-standards, smm-property-pack-case-study]
+    depends_on: [SMM-01, SMM-02]
+    output_note: "SMM-05 — Standards applicability and limits"
+    prompt: >-
+      For RDF, RDFS, OWL, SKOS, SSSOM, SHACL and PROV-O, state the problem each
+      standard addresses, its intended OPDA use, what it does not do, current
+      adoption status, profile gaps and one grounded example. Distinguish a cited
+      standards capability from an OPDA implementation decision.
+    acceptance:
+      - SKOS and SSSOM claims are narrowly scoped.
+      - Standards capability and OPDA adoption are separate.
+      - Each claim cites a primary specification and relevant OPDA evidence.
+
+  - id: SMM-06
+    title: Identify failure modes and safeguards
+    source_scope: [smm-method-research, smm-proposed-workflow, smm-accepted-odr-method, smm-property-pack-case-study]
+    depends_on: [SMM-03, SMM-04, SMM-05]
+    output_note: "SMM-06 — Method risks, tests and safeguards"
+    prompt: >-
+      Identify failure modes including source bias, hallucinated claims, premature
+      consensus, context collapse, false equivalence, lost provenance, incomplete
+      coverage, invalid constraints and implementation leakage. For each, record
+      detection evidence, preventive control, human review and unresolved risk.
+    acceptance:
+      - Risks include social, semantic and technical failure modes.
+      - Safeguards are evidenced rather than aspirational.
+      - Residual risks are explicit.
+
+  - id: SMM-07
+    title: Prepare practitioner-friendly explanations
+    source_scope: [smm-current-method-site, smm-method-research, smm-accepted-architecture, smm-property-pack-case-study]
+    depends_on: [SMM-02, SMM-03, SMM-04, SMM-05, SMM-06]
+    output_note: "SMM-07 — Plain-language explanations and examples"
+    prompt: >-
+      Produce a briefing matrix that explains the method to domain practitioners
+      without requiring ontology knowledge. Pair each technical concept with the
+      business question it answers, an evidenced example, what participants decide,
+      what tools do and an important limitation. Do not create finished artefact copy.
+    acceptance:
+      - Domain expertise remains the central contribution.
+      - Technical detail is accurate but subordinate to purpose.
+      - Examples are cited and limitations are retained.
+
+  - id: SMM-08
+    title: Assemble the artefact preparation pack
+    source_scope: [smm-shared-facts, smm-current-method-site, smm-method-research, smm-accepted-architecture, smm-proposed-workflow, smm-accepted-odr-method, smm-primary-standards, smm-property-pack-case-study]
+    depends_on: [SMM-02, SMM-03, SMM-04, SMM-05, SMM-06, SMM-07]
+    output_note: "SMM-08 — Approved semantic modelling evidence pack"
+    prompt: >-
+      Assemble a format-neutral preparation pack containing controlled terminology,
+      method stages and status, human and AI responsibilities, semantic-package
+      crosswalk, standards applicability, risks and safeguards, examples, open
+      questions, prohibited claims and a citation index. Do not generate slides,
+      scripts, audio, video or infographics.
+    acceptance:
+      - Every reusable claim is cited and status-qualified.
+      - Proposed workflow remains visibly proposed.
+      - The pack is ready for separate artefact briefs.
+
+execution_and_review:
+  execution_log: []
+  run_order: [SMM-01, SMM-02, SMM-03, SMM-04, SMM-05, SMM-06, SMM-07, SMM-08]
+  record_each_run:
+    - run_id
+    - prompt_id
+    - prompt_version
+    - executed_at
+    - selected_source_ids
+    - dependency_note_ids
+    - notebook_conversation_id
+    - notebook_response_id
+    - notebook_note_id
+    - output_sha256
+    - citation_review
+    - authority_review
+    - reviewer
+    - reviewed_at
+    - findings
+    - rerun_of
+    - status
+  derived_output_policy: >-
+    Prompt responses are derived preparation notes, not modelling decisions or
+    standards sources. They must retain citations and may not be re-ingested
+    without a visible derived label and human approval.
+  artefact_generation_gate:
+    status: blocked
+    approval: {status: pending, approved_by: null, approved_on: null}
+    unlock_when:
+      - All preparation prompts have completed in order.
+      - Every output note has passed citation, authority and status review.
+      - Method risks and unresolved governance are retained in the final pack.
+      - The gate approval records an approving human and date.

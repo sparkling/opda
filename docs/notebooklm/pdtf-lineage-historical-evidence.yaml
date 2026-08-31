@@ -1,0 +1,477 @@
+notebooklm_config_version: 1
+config_status: draft
+last_updated: 2026-08-31
+governing_adr: ADR-0081
+
+notebook:
+  id: 29e18c3c-721f-4a65-b2ed-b2b735dfc9f4
+  title: "OPDA — PDTF Lineage and Historical Evidence"
+  portfolio: models-and-evidence
+  purpose: >-
+    Explain the PDTF schema's historical role, the separate OPDA-derived ontology,
+    its traceability and lessons, and what was retained, challenged or superseded
+    without treating PDTF as an endorsed predecessor standard.
+  primary_audiences:
+    - migration teams
+    - technical historians
+    - auditors
+    - model and provenance reviewers
+  target_artefacts:
+    - PDTF lineage and lessons presentation
+    - schema-to-ontology provenance infographic
+    - development-history video
+    - migration and traceability briefing
+
+workspace:
+  profile: personal
+  sharing: private
+  notebook_id_verification: {status: verified, profile: personal, verified_at: 2026-08-31}
+  source_ingestion_status: pending
+  preparation_prompt_status: pending
+
+dependencies:
+  - id: shared-facts-pack
+    kind: config-output
+    target: docs/notebooklm/prepared/shared-facts-and-terminology.md
+    status: planned
+    required_before: source-ingestion
+    blocking: true
+  - id: source-manifest-approval
+    kind: human-decision
+    target: resource_manifest
+    status: pending
+    required_before: source-ingestion
+    blocking: true
+  - id: data-protection-and-rights-clearance
+    kind: human-decision
+    target: every-resource-component
+    status: pending
+    required_before: source-ingestion
+    blocking: true
+    decision_owner: OPDA data controller or authorised delegate
+    criteria: Every component is classified and approved for processing in the named personal NotebookLM workspace.
+    approved_by: null
+    approved_on: null
+  - id: preparation-builder-and-bundles
+    kind: implementation-and-output
+    target: scripts/build-notebooklm-prepared-sources.mjs
+    status: missing
+    required_before: source-ingestion
+    blocking: true
+
+guardrails:
+  - "Use PDTF schema, not PDTF 1.0."
+  - "The PDTF schema is attributed third-party input, not an OPDA-endorsed predecessor standard."
+  - "The schema-derived ontology is a separate OPDA technical derivation, not the PDTF schema itself."
+  - "Neither the PDTF schema nor its derived ontology is SPDTF or the Property Pack ontology."
+  - "Do not ingest the PDTF or Property Pack source schemas."
+  - "Preserve derivation provenance, audit corrections, limitations, dissent and decision dates."
+  - "Historical implementation success does not establish current domain authority."
+
+prompt_defaults:
+  prompt_version: 1
+  note_carry_forward: paste-complete-labelled-dependency-notes-into-prompt
+  instruction_prefix: >-
+    Use only the selected notebook sources and cite every substantive claim. Treat
+    source status, date, scope and implementation state as separate fields. Preserve
+    conflicts instead of resolving them by inference. For any depends_on entry,
+    paste the complete prior note text into the prompt, labelled with its prompt ID;
+    NotebookLM notes are not sources. Prior outputs remain working data, never primary
+    evidence. Produce structured preparatory data only; do not create any publication artefact.
+
+resource_manifest:
+  status: proposed
+  review_required_before_ingestion: true
+  ingestion_log: []
+  required_metadata_before_ingestion:
+    - stable_source_id
+    - title
+    - originator
+    - source_date
+    - authority
+    - maturity
+    - repository_tracking
+    - rights_and_data_classification
+    - ingest_format
+    - size_bytes
+    - original_path_or_url
+    - inclusion_reason
+    - sha256
+  availability_policy: >-
+    Repository tracking is resolved per input with git ls-files, never inferred from
+    its top-level directory. Any absent local input fails closed. Every prepared bundle
+    requires a component manifest, checksum and declared reproducibility class.
+  prepared_bundle_contract:
+    builder: scripts/build-notebooklm-prepared-sources.mjs
+    builder_status: missing
+    website_prerequisite: make build-data
+    manifest_required: true
+    output_sha256_required: true
+  selection_rule: >-
+    Include canonical derived artefacts, compact projections, traceability evidence
+    and adopted decision summaries. Exclude source schemas and generated page-per-term views.
+  resources:
+    - id: pdtf-shared-facts
+      title: OPDA shared programme facts and terminology
+      kind: prepared-bundle-reference
+      authority: mixed-with-explicit-attribution
+      maturity: current
+      ingestion: direct-after-central-build
+      owner: docs/notebooklm/portfolio-shared-facts.yaml
+      path: docs/notebooklm/prepared/shared-facts-and-terminology.md
+      repository_tracking: derived-local-output
+      rights_and_data_classification: pending
+      status: planned
+
+    - id: pdtf-derived-glossary-dictionary
+      title: Canonical PDTF schema-derived glossary and dictionary
+      kind: source-set
+      authority: opda-technical-derivation
+      maturity: historical-analysis-output
+      ingestion: direct
+      inputs:
+        - source/00-deliverables/semantic-models/README.md
+        - source/00-deliverables/semantic-models/business-glossary.md
+        - source/00-deliverables/semantic-models/data-dictionary-canonical.json
+        - source/00-deliverables/semantic-models/audit.json
+        - source/00-deliverables/semantic-models/provenance-map.yaml
+        - source/00-deliverables/semantic-models/theme-map.yaml
+      repository_tracking: mixed-tracked-and-untracked-local
+      rights_and_data_classification: pending
+      status: candidate
+
+    - id: pdtf-derived-ontology
+      title: Canonical OPDA-derived PDTF ontology graphs
+      kind: prepared-bundle
+      authority: opda-technical-derivation
+      maturity: historical-derived-model
+      ingestion: concatenate-turtle-with-file-boundaries
+      input_glob: source/03-standards/ontology/*.ttl
+      input_exclusions:
+        - source/03-standards/ontology/exemplars/**
+        - source/03-standards/ontology/profiles/**
+      output: docs/notebooklm/prepared/pdtf-derived-ontology.ttl
+      transformation: {reproducibility: deterministic, human_signoff_by: null, human_signoff_on: null}
+      repository_tracking: tracked
+      rights_and_data_classification: pending
+      status: planned
+
+    - id: pdtf-rml-traceability
+      title: Schema-to-ontology mapping, coverage and provenance evidence
+      kind: source-set
+      authority: opda-technical-derivation
+      maturity: implemented-historical-evidence
+      ingestion: direct
+      inputs:
+        - source/03-standards/rml/README.md
+        - source/03-standards/rml/CONTRACT.md
+        - source/03-standards/rml/provenance-index.json
+        - source/03-standards/rml/triplesmap-index.json
+        - source/03-standards/rml/mapping/opda-pdtf.rml.ttl
+      repository_tracking: tracked
+      rights_and_data_classification: pending
+      status: candidate
+
+    - id: pdtf-current-coverage-receipt
+      title: Current regenerated mapping coverage and provenance receipt
+      kind: prepared-bundle
+      authority: opda-generated-verification
+      maturity: point-in-time-receipt
+      ingestion: regenerate-summarise-and-bundle
+      inputs:
+        - source/03-standards/rml/build/final-gap.json
+        - source/03-standards/rml/build/dct-source-audit.json
+        - source/03-standards/rml/build/provenance-validation.json
+      output: docs/notebooklm/prepared/pdtf-current-mapping-coverage.md
+      regeneration_command: null
+      transformation: {reproducibility: human-reviewed, human_signoff_by: null, human_signoff_on: null}
+      repository_tracking: untracked-generated
+      rights_and_data_classification: pending
+      status: planned-requires-regeneration
+
+    - id: pdtf-adopted-odrs
+      title: Selected ontology lineage decisions
+      kind: prepared-bundle
+      authority: opda-technical-decision-record
+      maturity: historical-derived-model-decisions
+      ingestion: bundle-with-status-preserved
+      inputs:
+        - docs/ontology/odr/ODR-0003-pdtf-ontology-programme.md
+        - docs/ontology/odr/ODR-0004-pdtf-ontology-foundation.md
+        - docs/ontology/odr/ODR-0035-rml-schema-provenance-verification.md
+      output: docs/notebooklm/prepared/pdtf-derived-ontology-decisions.md
+      transformation: {reproducibility: deterministic, human_signoff_by: null, human_signoff_on: null}
+      repository_tracking: tracked
+      rights_and_data_classification: pending
+      status: planned
+
+    - id: pdtf-lineage-decisions
+      title: Decisions governing PDTF, Property Pack and SPDTF lineage
+      kind: prepared-bundle
+      authority: opda-decision-record
+      maturity: accepted
+      ingestion: bundle-with-front-matter-preserved
+      inputs:
+        - docs/adr/ADR-0039-linked-data-model-as-spdtf-foundation.md
+        - docs/adr/ADR-0057-rml-mapping-implementation.md
+        - docs/adr/ADR-0062-dbt-smart-data-implications-for-spdtf-and-pdtf-schema-lineage.md
+        - docs/adr/ADR-0063-domain-led-bounded-context-working-groups.md
+        - docs/adr/ADR-0066-property-pack-451-seed-scope-and-greenfield-ontology.md
+        - docs/adr/ADR-0067-first-principles-property-pack-ontology-by-bounded-context.md
+        - docs/adr/ADR-0075-property-pack-ontology-as-accelerated-spdtf-component.md
+        - docs/adr/ADR-0077-place-pdtf-schema-beneath-spdtf-as-third-party-input.md
+      output: docs/notebooklm/prepared/pdtf-property-pack-spdtf-lineage-decisions.md
+      transformation: {reproducibility: deterministic, human_signoff_by: null, human_signoff_on: null}
+      repository_tracking: tracked
+      rights_and_data_classification: pending
+      status: planned
+
+    - id: pdtf-lineage-site
+      title: Current PDTF-derived ontology and lineage explanation
+      kind: prepared-bundle
+      authority: opda-public-explanation
+      maturity: current-but-non-normative
+      ingestion: render-built-routes-to-markdown
+      build_prerequisite: make build-data
+      route_glob: /spdtf/inputs/pdtf-schema/schema-derived-ontology/**
+      route_exclusions:
+        - /spdtf/inputs/pdtf-schema/schema-derived-ontology/model-views-by-audience/concept/**
+        - /spdtf/inputs/pdtf-schema/schema-derived-ontology/model-views-by-audience/logical/**
+        - /spdtf/inputs/pdtf-schema/schema-derived-ontology/model-views-by-audience/physical-database/**
+        - /spdtf/inputs/pdtf-schema/schema-derived-ontology/model-views-by-audience/physical-ontology/**
+        - /spdtf/inputs/pdtf-schema/schema-derived-ontology/model-views-by-audience/physical-relational/**
+        - /spdtf/inputs/pdtf-schema/schema-derived-ontology/lineage-provenance-and-verification/schema-to-ontology-verification/triplesmaps/**
+      source_definition_glob: src/pages/spdtf/inputs/pdtf-schema/schema-derived-ontology/**/*.astro
+      source_definition_exclusions:
+        - src/pages/spdtf/inputs/pdtf-schema/schema-derived-ontology/model-views-by-audience/concept/**
+        - src/pages/spdtf/inputs/pdtf-schema/schema-derived-ontology/model-views-by-audience/logical/**
+        - src/pages/spdtf/inputs/pdtf-schema/schema-derived-ontology/model-views-by-audience/physical-database/**
+        - src/pages/spdtf/inputs/pdtf-schema/schema-derived-ontology/model-views-by-audience/physical-ontology/**
+        - src/pages/spdtf/inputs/pdtf-schema/schema-derived-ontology/model-views-by-audience/physical-relational/**
+        - src/pages/spdtf/inputs/pdtf-schema/schema-derived-ontology/lineage-provenance-and-verification/schema-to-ontology-verification/triplesmaps/[id].astro
+      output: docs/notebooklm/prepared/pdtf-derived-ontology-lineage-site.md
+      transformation: {reproducibility: human-reviewed, human_signoff_by: null, human_signoff_on: null}
+      repository_tracking: tracked
+      rights_and_data_classification: pending
+      status: planned
+
+    - id: pdtf-current-comparison-anchor
+      title: Current Property Pack candidate comparison anchor
+      kind: source-set
+      authority: opda-current-delivery
+      maturity: machine-proposed-candidate
+      ingestion: direct
+      inputs:
+        - source/03-standards/ontology-candidates/property-pack/0.1/candidate-manifest.json
+      repository_tracking: tracked
+      rights_and_data_classification: pending
+      status: candidate
+
+  known_missing_resources:
+    - id: pdtf-coverage-regeneration-command
+      title: Reproducible command for current PDTF mapping coverage receipts
+      status: missing
+      consequence: The current coverage receipt cannot be built or ingested until the command is identified and reviewed.
+
+  exclusions:
+    - pattern: source/03-standards/schemas/**
+      reason: PDTF source schemas are explicitly excluded by ADR-0081.
+    - pattern: src/pages/spdtf/inputs/pdtf-schema/schema-and-supporting-material/**
+      reason: Schema documentation is excluded; only derived ontology lineage is in scope.
+    - pattern: source/03-standards/trust-framework/**
+      reason: The unendorsed draft technical scheme is not the PDTF schema-derived ontology lineage corpus.
+    - pattern: source/03-standards/ontology-candidates/property-pack/**
+      reason: The independent Property Pack delivery has its own notebook.
+    - pattern: docs/ontology/odr/council/**
+      reason: Raw council sessions and persona outputs are too voluminous and do not replace adopted ODRs.
+    - pattern: docs/manual/**
+      reason: Generated manual projections duplicate canonical ontology and decision evidence.
+    - pattern: source/03-standards/rml/ONTOLOGY-COVERAGE.md
+      reason: The file declares itself superseded and contains stale denominators.
+    - pattern: source/03-standards/rml/gap-register.md
+      reason: The file declares itself superseded and contains stale denominators.
+    - pattern: source/03-standards/rml/SCHEMA-GENERATED-TERMS.md
+      reason: The point-in-time term inventory is not the current coverage receipt.
+    - pattern: source/03-standards/rml/build/**
+      reason: Raw build output may be consumed only by the regenerated receipt and must not be uploaded directly.
+    - pattern: source/03-standards/api/**
+      reason: API implementation is not lineage evidence for this notebook.
+    - pattern: src/pages/spdtf/inputs/pdtf-schema/schema-derived-ontology/model-views-by-audience/**/[...slug].astro
+      reason: Generated page-per-term views duplicate canonical artefacts.
+
+preparation_prompts:
+  - id: PDTF-01
+    title: Audit lineage sources, authority and versions
+    source_scope: [pdtf-shared-facts, pdtf-derived-glossary-dictionary, pdtf-derived-ontology, pdtf-rml-traceability, pdtf-current-coverage-receipt, pdtf-adopted-odrs, pdtf-lineage-decisions, pdtf-lineage-site, pdtf-current-comparison-anchor]
+    depends_on: []
+    output_note: "PDTF-01 — Lineage source and authority audit"
+    prompt: >-
+      Audit every source for issuer, date, version, authority, maturity, derivation
+      role, superseded or duplicate content and limits on use. Separate third-party
+      schema facts, OPDA-derived analysis, technical decisions, current OPDA lineage
+      policy and public explanation. Identify contradictions and cite every finding.
+    acceptance:
+      - Third-party input and OPDA derivation are separate.
+      - Current and historical decisions are status-qualified.
+      - Duplicates, conflicts and missing evidence are explicit.
+
+  - id: PDTF-02
+    title: Establish canonical lineage terminology
+    source_scope: [pdtf-shared-facts, pdtf-lineage-decisions, pdtf-lineage-site]
+    depends_on: [PDTF-01]
+    output_note: "PDTF-02 — Canonical PDTF lineage terminology"
+    prompt: >-
+      Create a cited terminology and relationship table for the PDTF schema, the
+      OPDA-derived PDTF ontology, the Property Pack ontology and SPDTF development.
+      Include origin, authority, status, purpose, relationship, prohibited labels
+      and common conflations. Do not use PDTF 1.0 or SPDTF 2.0.
+    acceptance:
+      - All four things remain distinct.
+      - The PDTF schema is attributed third-party input.
+      - Misleading formulations are explicit.
+
+  - id: PDTF-03
+    title: Build the evidence-backed lineage chronology
+    source_scope: [pdtf-derived-glossary-dictionary, pdtf-derived-ontology, pdtf-rml-traceability, pdtf-adopted-odrs, pdtf-lineage-decisions, pdtf-lineage-site]
+    depends_on: [PDTF-01, PDTF-02]
+    output_note: "PDTF-03 — PDTF derivation and programme chronology"
+    prompt: >-
+      Build a chronology from receipt or use of the PDTF schema evidence through
+      glossary and dictionary extraction, ontology derivation, mapping, validation,
+      audit corrections, modelling lessons, Property Pack separation and current
+      third-party-input positioning. Record date, actor, output, status and citation.
+    acceptance:
+      - Technical derivation and programme authority are distinct.
+      - Audit corrections and reversals are visible.
+      - Later policy is not projected backwards.
+
+  - id: PDTF-04
+    title: Explain the derivation chain and traceability evidence
+    source_scope: [pdtf-derived-glossary-dictionary, pdtf-derived-ontology, pdtf-rml-traceability, pdtf-current-coverage-receipt, pdtf-adopted-odrs]
+    depends_on: [PDTF-01, PDTF-03]
+    output_note: "PDTF-04 — Schema-derived ontology traceability chain"
+    prompt: >-
+      Describe how source fields were inventoried, deduplicated, mapped and emitted
+      into glossary, dictionary, ontology, shapes and validation views. For every
+      stage identify input, transformation, output, provenance evidence, test and
+      known limitation. Do not ingest or reproduce the source schemas themselves.
+    acceptance:
+      - Every stage cites implementation or decision evidence.
+      - Deduplication corrections are included.
+      - Traceability limits are explicit.
+
+  - id: PDTF-05
+    title: Inventory derived model content and limitations
+    source_scope: [pdtf-derived-glossary-dictionary, pdtf-derived-ontology, pdtf-rml-traceability, pdtf-current-coverage-receipt, pdtf-adopted-odrs, pdtf-lineage-site]
+    depends_on: [PDTF-01, PDTF-04]
+    output_note: "PDTF-05 — Derived model inventory and limitations"
+    prompt: >-
+      Inventory the derived model's modules, concepts, properties, vocabularies,
+      shapes, mappings, profiles and validation evidence. Audit every numeric claim
+      against its exact denominator and date; keep dictionary paths, unique leaf
+      names and mapped ontology resources distinct. For each view state what it
+      represents, source lineage, implementation status and known limitation. Avoid
+      treating generated breadth as domain endorsement.
+    acceptance:
+      - Content and authority are separate.
+      - Validation evidence is scoped precisely.
+      - Known issues and gaps remain visible.
+
+  - id: PDTF-06
+    title: Record what was retained, challenged or superseded
+    source_scope: [pdtf-derived-glossary-dictionary, pdtf-rml-traceability, pdtf-adopted-odrs, pdtf-lineage-decisions, pdtf-lineage-site]
+    depends_on: [PDTF-02, PDTF-03, PDTF-04, PDTF-05]
+    output_note: "PDTF-06 — Retained, challenged and superseded register"
+    prompt: >-
+      Build a register of PDTF-derived concepts, methods, evidence and assumptions
+      that later work retained, challenged, replaced, quarantined or left unresolved.
+      For each item record the original claim, later disposition, rationale, decision
+      authority, date, migration implication and citations. Do not infer a disposition.
+    acceptance:
+      - Every disposition has decision evidence.
+      - Undecided items remain unresolved.
+      - Technical reuse is not confused with endorsement.
+
+  - id: PDTF-07
+    title: Assess migration and mapping evidence
+    source_scope: [pdtf-rml-traceability, pdtf-current-coverage-receipt, pdtf-adopted-odrs, pdtf-lineage-decisions, pdtf-lineage-site, pdtf-current-comparison-anchor]
+    depends_on: [PDTF-04, PDTF-05, PDTF-06]
+    output_note: "PDTF-07 — Migration, mapping and verification evidence"
+    prompt: >-
+      Identify evidence relevant to migration from PDTF-shaped implementations,
+      including mapping coverage, provenance, generated terms, profiles, gaps,
+      compatibility tests and unresolved crosswalk work. State what each artefact
+      can support and what it cannot. Do not claim a complete PDTF-to-Property-Pack
+      or PDTF-to-SPDTF migration where no governed crosswalk exists. Specify the
+      fields and evidence required for the missing 451-item crosswalk without
+      manufacturing any mapping.
+    acceptance:
+      - Existing and missing mappings are separate.
+      - Coverage is not inflated into semantic equivalence.
+      - Implementer implications are cited.
+
+  - id: PDTF-08
+    title: Challenge the historical narrative
+    source_scope: [pdtf-shared-facts, pdtf-derived-glossary-dictionary, pdtf-derived-ontology, pdtf-rml-traceability, pdtf-current-coverage-receipt, pdtf-adopted-odrs, pdtf-lineage-decisions, pdtf-lineage-site, pdtf-current-comparison-anchor]
+    depends_on: [PDTF-03, PDTF-04, PDTF-05, PDTF-06, PDTF-07]
+    output_note: "PDTF-08 — Historical conflations, overclaims and evidence gaps"
+    prompt: >-
+      Act as a sceptical historian, auditor and migration reviewer. Identify
+      anachronisms, authority conflation, inflated coverage, unrecorded dispositions,
+      missing provenance, misleading continuity claims and places where current
+      terminology rewrites historical evidence. Propose sourced corrections or
+      record the need for more evidence.
+    acceptance:
+      - Findings name the conflicting sources and dates.
+      - Current terminology does not erase historical labels in quotations or records.
+      - Corrections preserve third-party attribution.
+
+  - id: PDTF-09
+    title: Assemble the artefact preparation pack
+    source_scope: [pdtf-shared-facts, pdtf-derived-glossary-dictionary, pdtf-derived-ontology, pdtf-rml-traceability, pdtf-current-coverage-receipt, pdtf-adopted-odrs, pdtf-lineage-decisions, pdtf-lineage-site, pdtf-current-comparison-anchor]
+    depends_on: [PDTF-02, PDTF-03, PDTF-04, PDTF-05, PDTF-06, PDTF-07, PDTF-08]
+    output_note: "PDTF-09 — Approved lineage evidence pack"
+    prompt: >-
+      Assemble a format-neutral preparation pack containing canonical terminology,
+      chronology, derivation chain, model inventory, audit corrections, retained and
+      challenged register, migration evidence, limitations, prohibited claims, open
+      questions and citation index. Do not generate a presentation, report,
+      infographic, audio or video.
+    acceptance:
+      - Every reusable claim is cited and status-qualified.
+      - Current policy, historical evidence and technical derivation remain separate.
+      - The pack is ready for separate artefact briefs.
+
+execution_and_review:
+  execution_log: []
+  run_order: [PDTF-01, PDTF-02, PDTF-03, PDTF-04, PDTF-05, PDTF-06, PDTF-07, PDTF-08, PDTF-09]
+  record_each_run:
+    - run_id
+    - prompt_id
+    - prompt_version
+    - executed_at
+    - selected_source_ids
+    - dependency_note_ids
+    - notebook_conversation_id
+    - notebook_response_id
+    - notebook_note_id
+    - output_sha256
+    - citation_review
+    - authority_review
+    - reviewer
+    - reviewed_at
+    - findings
+    - rerun_of
+    - status
+  derived_output_policy: >-
+    Prompt responses are derived historical and preparation notes, not evidence of
+    endorsement or replacements for primary sources. They must retain citations and
+    may not be re-ingested without a visible derived label and human approval.
+  artefact_generation_gate:
+    status: blocked
+    approval: {status: pending, approved_by: null, approved_on: null}
+    unlock_when:
+      - All preparation prompts have completed in order.
+      - Every output note has passed citation, lineage and authority review.
+      - Historical labels, current policy and unresolved mappings remain distinguishable.
+      - The gate approval records an approving human and date.

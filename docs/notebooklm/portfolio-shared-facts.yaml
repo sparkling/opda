@@ -1,0 +1,147 @@
+notebooklm_config_version: 1
+config_status: draft
+last_updated: 2026-08-31
+governing_adr: ADR-0081
+
+bundle:
+  id: shared-facts-and-terminology
+  title: OPDA shared programme facts and terminology
+  purpose: >-
+    Supply the minimum versioned cross-portfolio facts needed to keep all six
+    notebooks consistent without turning one notebook's synthesis into another's authority.
+  output: docs/notebooklm/prepared/shared-facts-and-terminology.md
+  manifest_output: docs/notebooklm/prepared/shared-facts-and-terminology.manifest.yaml
+  build_status: planned
+  output_sha256: null
+
+dependencies:
+  - id: preparation-builder
+    kind: implementation
+    target: scripts/build-notebooklm-prepared-sources.mjs
+    status: missing
+    required_before: bundle-build
+    blocking: true
+  - id: data-protection-and-rights-clearance
+    kind: human-decision
+    target: every-source-component
+    status: pending
+    required_before: bundle-build
+    blocking: true
+    decision_owner: OPDA data controller or authorised delegate
+    criteria: Every component is classified and approved for processing in the named personal NotebookLM workspace.
+    approved_by: null
+    approved_on: null
+
+guardrails:
+  - "Build this bundle once; notebook configs reference it and must not redefine it."
+  - "Preserve the status, scope, date and authority of every component source."
+  - "Include only cross-portfolio facts; detailed narrative and model content stay in their notebooks."
+  - "Do not use PDTF 1.0 or SPDTF 2.0."
+  - "Do not call the Property Pack ontology the SPDTF ontology."
+  - "Do not convert proposed governance or workflow into current policy."
+  - "Do not state that a property Smart Data scheme is enacted or operational unless the cited source establishes it."
+
+required_component_metadata:
+  - title
+  - originator
+  - source_date
+  - captured_or_updated_date
+  - authority
+  - maturity
+  - original_path_or_url
+  - inclusion_reason
+  - component_boundary
+  - repository_tracking
+  - rights_and_data_classification
+  - ingest_format
+  - size_bytes
+  - sha256
+
+sources:
+  - id: shared-government-policy
+    title: Current government Smart Data and property reform context
+    authority: uk-government
+    maturity: published-policy-and-open-evidence-gathering
+    urls:
+      - https://www.gov.uk/government/publications/smart-data-strategy
+      - https://www.gov.uk/government/calls-for-evidence/smart-data-multi-sector-call-for-evidence
+      - https://www.gov.uk/government/consultations/home-buying-and-selling-reform/outcome/home-buying-and-selling-reform-roadmap
+    inclusion_reason: Ground the government programme, legislation context and dates.
+    repository_tracking: external
+    rights_and_data_classification: pending
+
+  - id: shared-programme-decisions
+    title: OPDA programme, model and lineage decisions
+    authority: opda-decision-record
+    maturity: mixed-status-preserve-front-matter
+    inputs:
+      - docs/adr/ADR-0062-dbt-smart-data-implications-for-spdtf-and-pdtf-schema-lineage.md
+      - docs/adr/ADR-0063-domain-led-bounded-context-working-groups.md
+      - docs/adr/ADR-0065-ai-assisted-evidence-to-model-workflow.md
+      - docs/adr/ADR-0066-property-pack-451-seed-scope-and-greenfield-ontology.md
+      - docs/adr/ADR-0067-first-principles-property-pack-ontology-by-bounded-context.md
+      - docs/adr/ADR-0068-govern-opda-standards-lifecycle.md
+      - docs/adr/ADR-0069-public-working-group-recruitment-and-signup.md
+      - docs/adr/ADR-0070-uniform-microsoft-365-working-group-workspaces.md
+      - docs/adr/ADR-0075-property-pack-ontology-as-accelerated-spdtf-component.md
+      - docs/adr/ADR-0077-place-pdtf-schema-beneath-spdtf-as-third-party-input.md
+    inclusion_reason: Establish accepted, proposed and historical relationships consistently.
+    repository_tracking: tracked
+    rights_and_data_classification: pending
+
+  - id: shared-opda-role
+    title: OPDA identity and organisational role
+    authority: opda-corporate
+    maturity: operative-at-document-date
+    inputs:
+      - source/01-organisation/constitution-and-policies/OPDA Constitution 2026.pdf
+      - source/01-organisation/constitution-and-policies/Articles of Association 2026.pdf
+    inclusion_reason: Ground OPDA's corporate identity without importing full governance detail.
+    repository_tracking: untracked-local
+    rights_and_data_classification: pending
+
+  - id: shared-current-workspace
+    title: Current contextual-boundary and working-group names
+    authority: opda-maintained-implementation-data
+    maturity: current-at-build-date
+    inputs:
+      - src/lib/spdtf-workspace.mjs
+      - src/components/ia/working-groups.ts
+    inclusion_reason: Keep names and boundary types consistent across notebooks.
+    repository_tracking: tracked
+    rights_and_data_classification: pending
+
+transformation:
+  operation: extract-status-qualified-cross-portfolio-facts-to-markdown
+  reproducibility: human-reviewed
+  builder: scripts/build-notebooklm-prepared-sources.mjs
+  human_signoff:
+    by: null
+    on: null
+  requirements:
+    - Record full name, definition, role, authority, maturity and citation for every term.
+    - Record event date, publication date and retrieval date separately.
+    - Preserve contradictions in a dedicated section rather than choosing by recency alone.
+    - Include a prohibited-formulations table and an unresolved-facts table.
+    - Record 2030 and 2035 statements as separate sourced rows with distinct scope and status.
+    - Put the strategy-overview property-scheme deadline wording in the unresolved-facts table.
+    - Emit the component manifest and bundle checksum before ingestion.
+
+known_conflicts:
+  - id: shared-2030-property-scheme-claim
+    claim_source: src/pages/strategy/strategy-overview.astro
+    issue: >-
+      The OPDA page states that the property scheme must be operational by 2030.
+      The selected government sources instead require separate treatment of Smart
+      Data 2035, 2030 register-modernisation intent and proposals subject to later
+      legislation or consultation.
+    disposition: unresolved-requires-human-approved-wording
+
+validation:
+  status: pending
+  required_checks:
+    - Every factual statement has a component citation.
+    - Proposed ADRs remain labelled proposed.
+    - Property Pack, PDTF schema, PDTF-derived ontology and SPDTF remain distinct.
+    - Government intent, consultation, legislation and implemented requirements remain distinct.
+    - All six notebook configs reference this output path and this owner.

@@ -2,11 +2,18 @@
 status: accepted
 date: 2026-08-31
 updated: 2026-08-31
-tags: [notebooklm, knowledge-management, information-architecture, source-curation, property-pack, semantic-modelling, working-groups, governance, provenance]
+tags: [notebooklm, knowledge-management, information-architecture, source-curation, prompt-engineering, property-pack, semantic-modelling, working-groups, governance, provenance]
 supersedes: []
 amends: []
-depends-on: [ADR-0063, ADR-0065, ADR-0066, ADR-0067, ADR-0068, ADR-0070, ADR-0075, ADR-0077]
-implements: []
+depends-on: [ADR-0039, ADR-0051, ADR-0057, ADR-0062, ADR-0063, ADR-0065, ADR-0066, ADR-0067, ADR-0068, ADR-0069, ADR-0070, ADR-0071, ADR-0072, ADR-0075, ADR-0077, ADR-0078]
+implements:
+  - docs/notebooklm/portfolio-shared-facts.yaml
+  - docs/notebooklm/programme-policy-history.yaml
+  - docs/notebooklm/standards-governance.yaml
+  - docs/notebooklm/semantic-modelling-method.yaml
+  - docs/notebooklm/working-group-participant-guide.yaml
+  - docs/notebooklm/property-pack-ontology.yaml
+  - docs/notebooklm/pdtf-lineage-historical-evidence.yaml
 ---
 
 # Organise OPDA evidence into purpose-specific NotebookLM portfolios
@@ -95,9 +102,9 @@ justifies the boundary.
 
 | Notebook | Purpose | Primary audience |
 |---|---|---|
-| **Programme, policy and history** | Why the work exists; the Government's Smart Data programme; the 2030 objective; OPDA's role; roadmap; and development history | Executives, policymakers and new participants |
+| **Programme, policy and history** | Why the work exists; the Government's Smart Data programme; evidenced government milestones and their status; OPDA's role; roadmap; and development history | Executives, policymakers and new participants |
 | **Standards governance** | Authority, decision rights, maturity stages, working-group ownership, interoperability decisions, consultation, consensus, ratification and maintenance | Chairs, reviewers and programme leaders |
-| **Semantic modelling method** | Evidence-led modelling, AI-assisted extraction, contextual boundaries, common elements, SKOS and SSSOM mappings, validation, provenance and modelling rules | Modellers, technical reviewers and interested participants |
+| **Semantic modelling method** | Evidence-led modelling, AI-assisted extraction, contextual boundaries, common elements, SKOS mappings, the current SSSOM decision and non-adoption boundary, validation, provenance and modelling rules | Modellers, technical reviewers and interested participants |
 | **Working-group participant guide** | Why to participate; what members contribute; meetings; Teams; SharePoint; source submission; model review; feedback; iteration; and how decisions affect the model | Current and prospective participants |
 
 ### Models and evidence portfolio
@@ -147,6 +154,10 @@ decision record:
 - ADR-0068's standards lifecycle, consensus and ratification model remains proposed.
 - ADR-0077 keeps the PDTF schema as attributed third-party input rather than an
   endorsed predecessor scheme or authority for SPDTF meaning.
+- ADR-0039, ADR-0057, ADR-0062, ADR-0069, ADR-0071, ADR-0072 and ADR-0078 are
+  accepted; ADR-0051 remains proposed. Bundles that include them must preserve
+  those individual statuses rather than acquire a collective status from the
+  bundle title.
 
 Notebook instructions must prevent proposed policy from being paraphrased as current
 operative policy. Historic facts, current implementation, accepted direction and
@@ -159,15 +170,19 @@ cross-portfolio facts:
 
 - full names and roles of OPDA, SPDTF, the Property Pack ontology and the PDTF schema;
 - the relationship between the independent Property Pack delivery and future SPDTF;
-- programme purpose, government context and the 2030 objective;
+- programme purpose, government context, separately sourced milestone dates and
+  their legal or policy status;
 - current maturity and authority statements;
 - contextual-boundary and working-group names;
 - approved definitions for recurring programme terms; and
 - the pack version, production date and links to its authoritative sources.
 
-This controlled duplication makes each notebook self-contained. Narrative summaries
-or generated claims must not be copied between notebooks without their authority and
-status metadata.
+The pack is defined and built once by the
+[portfolio shared-facts configuration](../notebooklm/portfolio-shared-facts.yaml).
+Every notebook configuration references that one output; no notebook may redefine it
+from a different source set. This controlled duplication makes each notebook
+self-contained. Narrative summaries or generated claims must not be copied between
+notebooks without their authority and status metadata.
 
 ### Property Pack ontology source policy
 
@@ -179,7 +194,8 @@ The Property Pack ontology notebook includes:
   use makes that necessary;
 - contextual-boundary summaries and model diagrams;
 - incoming and outgoing relationship summaries;
-- mapping registers, including governed SKOS and SSSOM information;
+- the current mapping state, governed SKOS mappings when they exist, and the documented
+  SSSOM decision and non-adoption boundary;
 - coverage and traceability summaries;
 - validation and conformance reports;
 - selected ODRs explaining material modelling choices; and
@@ -219,12 +235,13 @@ derivation and from SPDTF development.
 
 ### Source merging and manifest rules
 
-The initial target is normally **30 to 120 curated sources per narrative notebook**,
-not the subscription's maximum source allowance. Model and archive notebooks may
-exceed that range where primary records remain individually valuable, but they must
-retain growth capacity and avoid redundant projections.
+The initial target is normally **8 to 30 curated ingested source units per core
+notebook**, not the subscription's maximum source allowance. A source unit may be a
+primary record or a manifest-backed bundle containing multiple records. Model and
+archive notebooks may exceed that range where primary records remain individually
+valuable, but they must retain growth capacity and avoid redundant projections.
 
-Good candidates for deterministic merging are:
+Good candidates for reproducible or explicitly reviewed merging are:
 
 - one Markdown source for each coherent website section;
 - one glossary or data dictionary per contextual boundary;
@@ -250,6 +267,58 @@ Each notebook will have a maintained source manifest recording inclusion, exclus
 deduplication, conversion and bundle membership. Generated summaries are outputs, not
 silent replacements for primary evidence.
 
+### Notebook configurations and preparation-prompt pipeline
+
+Each core notebook has a version-controlled configuration that records its NotebookLM
+identifier, purpose, audiences, intended artefacts, authority guardrails, candidate
+resources, exclusions, missing dependencies, bundle outputs, ordered
+preparation prompts, execution fields and artefact-generation gate:
+
+| Notebook | Configuration | Preparation prompts |
+|---|---|---|
+| Programme, policy and history | [programme-policy-history.yaml](../notebooklm/programme-policy-history.yaml) | `PPH-01` to `PPH-07` |
+| Standards governance | [standards-governance.yaml](../notebooklm/standards-governance.yaml) | `SG-01` to `SG-08` |
+| Semantic modelling method | [semantic-modelling-method.yaml](../notebooklm/semantic-modelling-method.yaml) | `SMM-01` to `SMM-08` |
+| Working-group participant guide | [working-group-participant-guide.yaml](../notebooklm/working-group-participant-guide.yaml) | `WG-01` to `WG-09` |
+| Property Pack ontology | [property-pack-ontology.yaml](../notebooklm/property-pack-ontology.yaml) | `PP-01` to `PP-09` |
+| PDTF lineage and historical evidence | [pdtf-lineage-historical-evidence.yaml](../notebooklm/pdtf-lineage-historical-evidence.yaml) | `PDTF-01` to `PDTF-09` |
+
+The prompt pipeline prepares grounded data for later production; it does not generate
+the final artefacts. Its execution sequence is:
+
+1. subject the completed ADR and configuration set to an adversarial Opus review and
+   record or apply the findings;
+2. review and approve the candidate source manifest for each notebook;
+3. implement and approve the missing preparation builder, then build the shared facts
+   pack and every source bundle with component manifests and checksums; transformations
+   involving extraction, rendering or summarisation also require named human sign-off;
+4. complete a data-protection, confidentiality and rights determination for every
+   component before ingesting approved sources privately and verifying NotebookLM
+   processing;
+5. execute each notebook's preparation prompts in the configured order and source
+   scope, pasting the complete labelled text of dependency notes into each dependent
+   prompt and saving the response as a named NotebookLM note;
+6. append a run record containing the prompt and dependency versions, execution date,
+   selected source identifiers, conversation, response and note identifiers, output
+   checksum, review findings and any rerun relationship;
+7. review every preparation note for citations, source authority, maturity leakage,
+   unresolved contradictions and notebook-specific risks, then rerun affected prompts;
+8. mark the notebook ready for artefact generation only after a human reviewer accepts
+   its final preparation pack; and
+9. begin artefact briefs and generation as a separate downstream step.
+
+Prompt outputs are derived working data. They must retain their source citations, may
+not silently replace primary evidence and may not be re-ingested as authoritative
+sources. An artefact generator may consume only a preparation pack that has passed the
+configuration's gate, and must preserve its caveats and prohibited claims.
+
+The Opus adversarial review completed on 2026-08-31. It identified four controls that
+must remain blocked until separately completed: canonical treatment of unsupported
+milestone claims, dependency-note carry-forward, implementation of the preparation
+builder, and rights/data-protection clearance for the personal NotebookLM workspace.
+The configurations encode those gates; resolving the review does not itself satisfy
+them or authorise ingestion.
+
 ### Consequences
 
 - Good, because artefacts can address a defined audience without importing the entire
@@ -265,8 +334,10 @@ silent replacements for primary evidence.
   volume to dominate narrative notebooks.
 - Bad, because selected material and shared facts must be updated deliberately when
   authority, maturity or programme facts change.
-- Bad, because source bundling requires deterministic generation and manifests before
-  bulk upload.
+- Bad, because source bundling requires a missing builder, manifests and human review
+  of judgement-based transformations before bulk upload.
+- Bad, because prompt execution is non-deterministic and requires a retained run record,
+  citation review and human approval before reuse.
 - Bad, because NotebookLM does not provide shared reasoning across notebooks; useful
   cross-portfolio context must be repeated explicitly.
 - Neutral, because the source corpus remains authoritative in the repository; the
@@ -285,14 +356,34 @@ silent replacements for primary evidence.
 - The source-selection rules exclude source schemas and generated page-per-term
   documentation while retaining canonical ontology, glossary, dictionary, mapping,
   coverage and decision evidence.
+- Six draft notebook configurations and one centrally owned shared-facts configuration
+  now record candidate resources, exclusions, prompt sequences and execution gates.
+  They are plans for review, not evidence that ingestion or prompt execution occurred.
 - The maturity statements above match the status and update dates of ADR-0063,
   ADR-0065, ADR-0066, ADR-0067, ADR-0068, ADR-0070, ADR-0075 and ADR-0077 on
   2026-08-31.
-- Implementation remains incomplete until source manifests and bundles have been
-  reviewed, the selected sources have been ingested successfully and sample outputs
-  have been checked against their sources.
+- The Opus adversarial review has been completed and its accepted findings are encoded
+  in this ADR and the notebook configurations.
+- Implementation remains incomplete until the preparation builder, rights and data-
+  protection clearances, source manifests and bundles have been approved, selected
+  sources have been ingested, every configured
+  preparation prompt has been executed and the resulting preparation packs have passed
+  citation, authority and contradiction review. Artefact generation follows as a
+  separately authorised downstream step.
 - Notebook creation and source upload are private workspace actions; this ADR does not
   authorise sharing notebooks or publishing generated artefacts.
+
+## Amendment History
+
+- **2026-08-31 — Configured source and preparation-prompt plans.** Added the centrally
+  owned shared facts pack, six notebook configuration manifests, ordered prompt
+  execution and review, and an explicit gate separating preparation from later
+  artefact generation; corrected the SSSOM description to its current non-adoption
+  boundary.
+- **2026-08-31 — Applied Opus adversarial review.** Removed the unsupported 2030
+  canonical fact, added rights and builder gates, made dependency-note transport and
+  append-only run evidence explicit, corrected decision maturity and repository-
+  tracking assumptions, and required human sign-off for judgement-based bundles.
 
 ## More Information
 
@@ -304,4 +395,11 @@ silent replacements for primary evidence.
 - [ADR-0070 — Uniform Microsoft 365 working-group workspaces](./ADR-0070-uniform-microsoft-365-working-group-workspaces.md)
 - [ADR-0075 — Property Pack ontology as an accelerated SPDTF component](./ADR-0075-property-pack-ontology-as-accelerated-spdtf-component.md)
 - [ADR-0077 — PDTF schema as a third-party input](./ADR-0077-place-pdtf-schema-beneath-spdtf-as-third-party-input.md)
+- [NotebookLM shared facts and terminology configuration](../notebooklm/portfolio-shared-facts.yaml)
+- [Programme, policy and history notebook configuration](../notebooklm/programme-policy-history.yaml)
+- [Standards governance notebook configuration](../notebooklm/standards-governance.yaml)
+- [Semantic modelling method notebook configuration](../notebooklm/semantic-modelling-method.yaml)
+- [Working-group participant guide notebook configuration](../notebooklm/working-group-participant-guide.yaml)
+- [Property Pack ontology notebook configuration](../notebooklm/property-pack-ontology.yaml)
+- [PDTF lineage and historical evidence notebook configuration](../notebooklm/pdtf-lineage-historical-evidence.yaml)
 - [NotebookLM source and usage limits](https://support.google.com/notebooklm/answer/16213268)

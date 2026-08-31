@@ -1,0 +1,397 @@
+notebooklm_config_version: 1
+config_status: draft
+last_updated: 2026-08-31
+governing_adr: ADR-0081
+
+notebook:
+  id: 5c2ab6f5-97d3-485c-b318-6a8aa7758a02
+  title: "OPDA — Programme, Policy and History"
+  portfolio: programme-and-participation
+  purpose: >-
+    Explain why the programme exists, its policy setting, OPDA's role, evidenced
+    government milestones and the history from earlier inputs to current SPDTF development.
+  primary_audiences:
+    - executives
+    - policymakers
+    - prospective participants
+    - readers new to the programme
+  target_artefacts:
+    - programme overview presentation
+    - programme and policy explainer video
+    - development-history timeline infographic
+    - executive briefing
+
+workspace:
+  profile: personal
+  sharing: private
+  notebook_id_verification: {status: verified, profile: personal, verified_at: 2026-08-31}
+  source_ingestion_status: pending
+  preparation_prompt_status: pending
+
+dependencies:
+  - id: shared-facts-pack
+    kind: config-output
+    target: docs/notebooklm/prepared/shared-facts-and-terminology.md
+    status: planned
+    required_before: source-ingestion
+    blocking: true
+  - id: source-manifest-approval
+    kind: human-decision
+    target: resource_manifest
+    status: pending
+    required_before: source-ingestion
+    blocking: true
+  - id: data-protection-and-rights-clearance
+    kind: human-decision
+    target: every-resource-component
+    status: pending
+    required_before: source-ingestion
+    blocking: true
+    decision_owner: OPDA data controller or authorised delegate
+    criteria: Every component is classified and approved for processing in the named personal NotebookLM workspace.
+    approved_by: null
+    approved_on: null
+  - id: preparation-builder-and-bundles
+    kind: implementation-and-output
+    target: scripts/build-notebooklm-prepared-sources.mjs
+    status: missing
+    required_before: source-ingestion
+    blocking: true
+
+guardrails:
+  - "Use Open Property Data Association and Smart Property Data Trust Framework on first reference."
+  - "Do not use the labels PDTF 1.0 or SPDTF 2.0."
+  - "The Property Pack ontology is an independent delivery intended to become a future SPDTF component."
+  - "Do not imply that a wider SPDTF ontology already exists."
+  - "Distinguish government policy, OPDA decisions, third-party evidence and future ambition."
+  - "Describe a 2030 legal or operational requirement only to the precision supported by a cited government source."
+  - "Distinguish accepted, proposed, implemented, superseded and historical material."
+
+prompt_defaults:
+  prompt_version: 1
+  note_carry_forward: paste-complete-labelled-dependency-notes-into-prompt
+  instruction_prefix: >-
+    Use only the selected notebook sources and cite every substantive claim. Treat
+    source status, date, scope and implementation state as separate fields. Preserve
+    conflicts instead of resolving them by inference. For any depends_on entry,
+    paste the complete prior note text into the prompt, labelled with its prompt ID;
+    NotebookLM notes are not sources. Prior outputs remain working data, never primary
+    evidence. Produce structured preparatory data only; do not create any publication artefact.
+
+resource_manifest:
+  status: proposed
+  review_required_before_ingestion: true
+  ingestion_log: []
+  required_metadata_before_ingestion:
+    - stable_source_id
+    - title
+    - originator
+    - source_date
+    - authority
+    - maturity
+    - repository_tracking
+    - rights_and_data_classification
+    - ingest_format
+    - size_bytes
+    - original_path_or_url
+    - inclusion_reason
+    - sha256
+  availability_policy: >-
+    Repository tracking is resolved per input with git ls-files, never inferred from
+    its top-level directory. Any absent local input fails closed. Every prepared bundle
+    requires a component manifest, checksum and declared reproducibility class.
+  prepared_bundle_contract:
+    builder: scripts/build-notebooklm-prepared-sources.mjs
+    builder_status: missing
+    website_prerequisite: make build-data
+    manifest_required: true
+    output_sha256_required: true
+  selection_rule: >-
+    Prefer final or latest authoritative versions. Retain earlier versions only
+    when they provide unique evidence needed for the historical account.
+  resources:
+    - id: pph-shared-facts
+      title: OPDA shared programme facts and terminology
+      kind: prepared-bundle-reference
+      authority: mixed-with-explicit-attribution
+      maturity: current
+      ingestion: direct-after-central-build
+      owner: docs/notebooklm/portfolio-shared-facts.yaml
+      path: docs/notebooklm/prepared/shared-facts-and-terminology.md
+      repository_tracking: derived-local-output
+      rights_and_data_classification: pending
+      status: planned
+
+    - id: pph-government-policy
+      title: Government policy and programme evidence
+      kind: source-set
+      authority: uk-government
+      maturity: published
+      ingestion: direct
+      inputs:
+        - source/08-external-references/uk-government/MHCLG-Home-Buying-and-Selling-Reform-Roadmap.pdf
+        - source/08-external-references/uk-government/data_standards_for_smart_data.pdf
+        - source/08-external-references/uk-government/understanding-the-costs-and-benefits-of-smart-data-use-cases-research-report.pdf
+        - source/08-external-references/uk-government/news/new-digital-property-market-steering-group-formed-to-drive-crucial-digital-transformation-in-the-land-and-property-market.html
+      urls:
+        - https://www.gov.uk/government/publications/smart-data-strategy
+        - https://www.gov.uk/government/calls-for-evidence/smart-data-multi-sector-call-for-evidence
+        - https://www.gov.uk/government/consultations/home-buying-and-selling-reform/outcome/home-buying-and-selling-reform-roadmap
+      repository_tracking: untracked-local-and-external
+      rights_and_data_classification: pending
+      status: candidate
+
+    - id: pph-opda-policy
+      title: OPDA policy and strategic positioning
+      kind: source-set
+      authority: opda
+      maturity: mixed
+      ingestion: direct-after-version-review
+      inputs:
+        - source/02-policy-and-positioning/briefings-to-government/OPDA Briefing Pack.pdf
+        - source/02-policy-and-positioning/briefings-to-government/OPDA Select Committee Inquiry Response.docx
+        - source/02-policy-and-positioning/strategic-papers/DPMSG roadmap.pdf
+        - source/02-policy-and-positioning/strategic-papers/DPMSG-Smart-Property-Data-Trust-v2.pdf
+      repository_tracking: untracked-local
+      rights_and_data_classification: pending
+      status: candidate
+
+    - id: pph-programme-site
+      title: Current programme and strategy website explanation
+      kind: prepared-bundle
+      authority: opda-public-explanation
+      maturity: current
+      ingestion: render-built-routes-to-markdown
+      build_prerequisite: make build-data
+      routes:
+        - /programme/
+        - /strategy/
+        - /strategy/strategy-overview/
+        - /strategy/industrial-strategy/
+        - /strategy/mhclg-roadmap/
+        - /strategy/programme-phases/
+        - /strategy/project-roadmap/
+      source_definitions:
+        - src/pages/programme/index.astro
+        - src/pages/strategy/index.astro
+        - src/pages/strategy/strategy-overview.astro
+        - src/pages/strategy/industrial-strategy.astro
+        - src/pages/strategy/mhclg-roadmap.astro
+        - src/pages/strategy/programme-phases.astro
+        - src/pages/strategy/project-roadmap.astro
+      output: docs/notebooklm/prepared/programme-and-strategy-site.md
+      transformation: {reproducibility: human-reviewed, human_signoff_by: null, human_signoff_on: null}
+      repository_tracking: tracked
+      rights_and_data_classification: pending
+      status: planned
+
+    - id: pph-current-presentations
+      title: Current OPDA programme presentations
+      kind: source-set
+      authority: opda
+      maturity: current-at-publication-date
+      ingestion: direct
+      inputs:
+        - source/05-engagement/presentations/OPDA overview 2026.pptx
+        - source/05-engagement/presentations/Smart Data and Legislation.pptx
+      repository_tracking: untracked-local
+      rights_and_data_classification: pending
+      status: candidate
+
+    - id: pph-decision-history
+      title: Programme direction and lineage decisions (mixed status)
+      kind: prepared-bundle
+      authority: opda-decision-record
+      maturity: mixed-status
+      ingestion: bundle-with-front-matter-preserved
+      inputs:
+        - docs/adr/ADR-0039-linked-data-model-as-spdtf-foundation.md
+        - docs/adr/ADR-0051-site-content-realignment-dvstf-spdtf-uk-initiative-mhclg.md
+        - docs/adr/ADR-0062-dbt-smart-data-implications-for-spdtf-and-pdtf-schema-lineage.md
+        - docs/adr/ADR-0063-domain-led-bounded-context-working-groups.md
+        - docs/adr/ADR-0075-property-pack-ontology-as-accelerated-spdtf-component.md
+        - docs/adr/ADR-0077-place-pdtf-schema-beneath-spdtf-as-third-party-input.md
+      output: docs/notebooklm/prepared/programme-decision-history.md
+      transformation: {reproducibility: deterministic, human_signoff_by: null, human_signoff_on: null}
+      repository_tracking: tracked
+      rights_and_data_classification: pending
+      status: planned
+
+    - id: pph-market-evidence
+      title: Evidence about the present property transaction problem
+      kind: source-set
+      authority: mixed-with-explicit-attribution
+      maturity: published
+      ingestion: direct
+      inputs:
+        - source/02-policy-and-positioning/opda-reports/OPDA Report.pdf
+        - source/02-policy-and-positioning/opda-reports/Santander Fixing the Broken Chain.pdf
+        - source/05-engagement/consumer-campaign/2025/The Future of Homebuying Report_FINAL (COPY ONLY)_13.03.25.docx
+      repository_tracking: untracked-local
+      rights_and_data_classification: pending
+      status: candidate
+
+  exclusions:
+    - pattern: source/03-standards/schemas/**
+      reason: Source schemas are excluded by ADR-0081.
+    - pattern: source/03-standards/ontology-candidates/property-pack/**
+      reason: Canonical model evidence belongs in the Property Pack notebook.
+    - pattern: docs/ontology/odr/**
+      reason: Detailed ontology decisions do not belong in the programme narrative.
+    - pattern: "**/_archive/**"
+      reason: Superseded copies require an explicit historical justification.
+    - pattern: "**/*DRAFT*"
+      reason: Drafts require a version comparison and an explicit reason for inclusion.
+
+  known_conflicts:
+    - id: pph-2030-property-scheme-claim
+      claim_source: src/pages/strategy/strategy-overview.astro
+      issue: >-
+        The page states a property-scheme operational deadline. The official Smart
+        Data Strategy, multi-sector call for evidence and Home Buying and Selling
+        Reform Roadmap must be compared before that statement is reused.
+      disposition: resolve-in-PPH-02-with-citations
+
+preparation_prompts:
+  - id: PPH-01
+    title: Audit source authority and fitness
+    source_scope: [pph-shared-facts, pph-government-policy, pph-opda-policy, pph-programme-site, pph-current-presentations, pph-decision-history, pph-market-evidence]
+    depends_on: []
+    output_note: "PPH-01 — Source authority and fitness audit"
+    prompt: >-
+      Build a source audit for this notebook. For every source, record author or
+      issuing body, publication date, authority, maturity, subject coverage,
+      superseded or duplicate versions, and any restriction on the claims it can
+      support. Identify conflicts and gaps; do not reconcile them silently. Cite
+      every assessment to the source.
+    acceptance:
+      - Every source is classified by authority and maturity.
+      - Duplicates, conflicts and missing evidence are explicit.
+      - Every conclusion has a NotebookLM citation.
+
+  - id: PPH-02
+    title: Establish canonical names, relationships and status
+    source_scope: [pph-shared-facts, pph-government-policy, pph-decision-history, pph-programme-site]
+    depends_on: [PPH-01]
+    output_note: "PPH-02 — Canonical programme facts and terminology"
+    prompt: >-
+      Produce a canonical facts table for OPDA, SPDTF, the Property Pack ontology,
+      the PDTF schema, the government programme and separately sourced 2030 and
+      2035 milestone claims. Include
+      full name, role, current status, relationship to the other items, prohibited
+      or misleading formulations, and citations. Do not invent a wider SPDTF
+      ontology or describe the PDTF schema as an endorsed predecessor standard.
+    acceptance:
+      - The Property Pack and SPDTF distinction is exact.
+      - Government and OPDA roles are not conflated.
+      - Misleading terminology is recorded explicitly.
+
+  - id: PPH-03
+    title: Build the government milestone evidence matrix
+    source_scope: [pph-government-policy, pph-opda-policy, pph-current-presentations]
+    depends_on: [PPH-01, PPH-02]
+    output_note: "PPH-03 — Policy, legislation and milestone evidence matrix"
+    prompt: >-
+      Extract the policy drivers, announced government actions, dates, responsible
+      bodies, legislative or regulatory mechanisms, and statements about 2030 or 2035.
+      Separate enacted requirements, published policy, planned action, OPDA
+      interpretation and aspiration. Quote sparingly and cite every row.
+    acceptance:
+      - Legal status is never inferred from policy language.
+      - Dates and responsible bodies are sourced.
+      - Uncertainty and disagreement remain visible.
+
+  - id: PPH-04
+    title: Construct an evidence-backed development chronology
+    source_scope: [pph-government-policy, pph-opda-policy, pph-current-presentations, pph-decision-history, pph-market-evidence]
+    depends_on: [PPH-01, PPH-02, PPH-03]
+    output_note: "PPH-04 — Programme and model development chronology"
+    prompt: >-
+      Create a chronological register of the programme's development. For each
+      event record date, actor, action, resulting status, significance and source.
+      Distinguish historical inputs, OPDA decisions, current work and future
+      milestones. Mark contested dates or interpretations instead of choosing one.
+    acceptance:
+      - Events are ordered and individually cited.
+      - Forecasts are not presented as completed events.
+      - PDTF, Property Pack and SPDTF stages remain distinct.
+
+  - id: PPH-05
+    title: Map audience questions to grounded answers
+    source_scope: [pph-government-policy, pph-opda-policy, pph-programme-site, pph-market-evidence]
+    depends_on: [PPH-02, PPH-03, PPH-04]
+    output_note: "PPH-05 — Audience questions and evidence"
+    prompt: >-
+      For executives, policymakers, industry participants and new readers, list
+      the questions each audience needs answered. Provide a concise grounded answer,
+      the supporting evidence, any caveat and the most suitable level of detail.
+      Do not write presentation slides or a video script.
+    acceptance:
+      - Each answer is tied to an audience need and citations.
+      - Caveats and unresolved questions are retained.
+      - The output is a briefing matrix, not an artefact.
+
+  - id: PPH-06
+    title: Challenge the emerging programme narrative
+    source_scope: [pph-shared-facts, pph-government-policy, pph-opda-policy, pph-decision-history, pph-market-evidence]
+    depends_on: [PPH-03, PPH-04, PPH-05]
+    output_note: "PPH-06 — Contradictions, overclaims and missing context"
+    prompt: >-
+      Act as a sceptical fact checker. Identify overclaims, causal leaps,
+      ambiguous dates, authority confusion, unsupported benefits, outdated labels
+      and important missing context in the prepared notes. For each issue propose
+      a sourced correction or state that more evidence is required.
+    acceptance:
+      - Challenges cover policy, history, authority and model status.
+      - Corrections are cited rather than stylistic guesses.
+      - Open evidence needs are preserved.
+
+  - id: PPH-07
+    title: Assemble the artefact preparation pack
+    source_scope: [pph-shared-facts, pph-government-policy, pph-opda-policy, pph-programme-site, pph-current-presentations, pph-decision-history, pph-market-evidence]
+    depends_on: [PPH-02, PPH-03, PPH-04, PPH-05, PPH-06]
+    output_note: "PPH-07 — Approved programme evidence pack"
+    prompt: >-
+      Assemble a structured preparation pack containing verified key facts,
+      chronology, policy drivers, audience questions, approved terminology,
+      useful examples, caveats, prohibited claims and a citation index. Resolve
+      only issues supported by evidence and carry all others into an open-questions
+      section. Do not create slides, scripts, audio, video or infographics.
+    acceptance:
+      - Every reusable claim has a citation.
+      - Corrections from PPH-06 are incorporated or explicitly unresolved.
+      - The pack is format-neutral and ready for separate artefact briefs.
+
+execution_and_review:
+  execution_log: []
+  run_order: [PPH-01, PPH-02, PPH-03, PPH-04, PPH-05, PPH-06, PPH-07]
+  record_each_run:
+    - run_id
+    - prompt_id
+    - prompt_version
+    - executed_at
+    - selected_source_ids
+    - dependency_note_ids
+    - notebook_conversation_id
+    - notebook_response_id
+    - notebook_note_id
+    - output_sha256
+    - citation_review
+    - authority_review
+    - reviewer
+    - reviewed_at
+    - findings
+    - rerun_of
+    - status
+  derived_output_policy: >-
+    Prompt responses are derived preparation notes, not authoritative sources.
+    They must retain citations, must not silently replace primary evidence and
+    must not be re-ingested as sources without an explicit derived label.
+  artefact_generation_gate:
+    status: blocked
+    approval: {status: pending, approved_by: null, approved_on: null}
+    unlock_when:
+      - All preparation prompts have completed in order.
+      - Every output note has passed citation and authority review.
+      - Contradictions and unresolved questions are carried into the final pack.
+      - The gate approval records an approving human and date.

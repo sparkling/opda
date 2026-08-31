@@ -1,0 +1,495 @@
+notebooklm_config_version: 1
+config_status: draft
+last_updated: 2026-08-31
+governing_adr: ADR-0081
+
+notebook:
+  id: 37f2184d-bbdc-47af-aa57-7e0461ff6a58
+  title: "OPDA — Property Pack Ontology"
+  portfolio: models-and-evidence
+  purpose: >-
+    Explain and interrogate the current independent Property Pack ontology delivery,
+    including its glossary, dictionary, contextual boundaries, relationships,
+    vocabularies, shapes, standards profile, coverage and validation evidence.
+  primary_audiences:
+    - domain experts
+    - implementers
+    - model reviewers
+    - interoperability specialists
+  target_artefacts:
+    - Property Pack model overview presentation
+    - contextual-boundary and relationship infographic
+    - model explainer video
+    - implementation and review briefing
+
+workspace:
+  profile: personal
+  sharing: private
+  notebook_id_verification: {status: verified, profile: personal, verified_at: 2026-08-31}
+  source_ingestion_status: pending
+  preparation_prompt_status: pending
+
+dependencies:
+  - id: shared-facts-pack
+    kind: config-output
+    target: docs/notebooklm/prepared/shared-facts-and-terminology.md
+    status: planned
+    required_before: source-ingestion
+    blocking: true
+  - id: source-manifest-approval
+    kind: human-decision
+    target: resource_manifest
+    status: pending
+    required_before: source-ingestion
+    blocking: true
+  - id: data-protection-and-rights-clearance
+    kind: human-decision
+    target: every-resource-component
+    status: pending
+    required_before: source-ingestion
+    blocking: true
+    decision_owner: OPDA data controller or authorised delegate
+    criteria: Every component is classified and approved for processing in the named personal NotebookLM workspace.
+    approved_by: null
+    approved_on: null
+  - id: preparation-builder-and-bundles
+    kind: implementation-and-output
+    target: scripts/build-notebooklm-prepared-sources.mjs
+    status: missing
+    required_before: source-ingestion
+    blocking: true
+
+guardrails:
+  - "The Property Pack ontology is an independent delivery intended to become a future SPDTF component."
+  - "Do not call it the SPDTF ontology or imply that a wider SPDTF ontology exists."
+  - "The current candidate is machine-proposed and is not a ratified standard."
+  - "The DBT Smart Data graph is a scheme-design context, not a seventh property bounded context or government working group."
+  - "The common boundary supplies shared elements to contexts; it is not a channel through which contexts interoperate."
+  - "The current context-map projection contains no governed cross-context mappings; do not invent SKOS or SSSOM records."
+  - "Preserve source lineage, model maturity, validation limits and missing working-group evidence."
+
+prompt_defaults:
+  prompt_version: 1
+  note_carry_forward: paste-complete-labelled-dependency-notes-into-prompt
+  instruction_prefix: >-
+    Use only the selected notebook sources and cite every substantive claim. Treat
+    source status, date, scope and implementation state as separate fields. Preserve
+    conflicts instead of resolving them by inference. For any depends_on entry,
+    paste the complete prior note text into the prompt, labelled with its prompt ID;
+    NotebookLM notes are not sources. Prior outputs remain working data, never primary
+    evidence. Produce structured preparatory data only; do not create any publication artefact.
+
+resource_manifest:
+  status: proposed
+  review_required_before_ingestion: true
+  ingestion_log: []
+  required_metadata_before_ingestion:
+    - stable_source_id
+    - title
+    - originator
+    - source_date
+    - authority
+    - maturity
+    - repository_tracking
+    - rights_and_data_classification
+    - ingest_format
+    - size_bytes
+    - original_path_or_url
+    - inclusion_reason
+    - sha256
+  availability_policy: >-
+    Repository tracking is resolved per input with git ls-files, never inferred from
+    its top-level directory. Any absent local input fails closed. Every prepared bundle
+    requires a component manifest, checksum and declared reproducibility class.
+  prepared_bundle_contract:
+    builder: scripts/build-notebooklm-prepared-sources.mjs
+    builder_status: missing
+    website_prerequisite: make build-data
+    manifest_required: true
+    output_sha256_required: true
+  selection_rule: >-
+    Use the versioned 0.1 candidate as the canonical model corpus. Prefer one
+    substantive projection for each view and exclude byte-identical or navigational duplicates.
+  resources:
+    - id: pp-shared-facts
+      title: OPDA shared programme facts and terminology
+      kind: prepared-bundle-reference
+      authority: mixed-with-explicit-attribution
+      maturity: current
+      ingestion: direct-after-central-build
+      owner: docs/notebooklm/portfolio-shared-facts.yaml
+      path: docs/notebooklm/prepared/shared-facts-and-terminology.md
+      repository_tracking: derived-local-output
+      rights_and_data_classification: pending
+      status: planned
+
+    - id: pp-candidate-identity
+      title: Property Pack 0.1 candidate identity and standards profile
+      kind: source-set
+      authority: opda-current-delivery
+      maturity: machine-proposed-candidate
+      ingestion: direct
+      inputs:
+        - source/03-standards/ontology-candidates/property-pack/0.1/candidate-manifest.json
+        - source/03-standards/ontology-candidates/property-pack/0.1/candidate-summary.json
+        - source/03-standards/ontology-candidates/property-pack/0.1/standards-profile.json
+      repository_tracking: tracked
+      rights_and_data_classification: pending
+      status: candidate
+
+    - id: pp-451-source-scope
+      title: Property Pack 451-item source scope and validation
+      kind: source-set
+      authority: opda-maintained-source
+      maturity: accepted-seed-scope
+      ingestion: direct
+      inputs:
+        - src/data/property-pack/catalogue.toml
+        - src/data/property-pack/validation-report.json
+        - docs/research/property-pack-451-evidence-validation.md
+      repository_tracking: tracked
+      rights_and_data_classification: pending
+      status: candidate
+
+    - id: pp-maintained-candidate-source
+      title: Maintained Property Pack candidate source
+      kind: prepared-bundle
+      authority: opda-maintained-source
+      maturity: machine-proposed-candidate
+      ingestion: bundle-toml-with-file-boundaries
+      inputs:
+        - src/data/property-pack/candidate-model/manifest.toml
+        - src/data/property-pack/candidate-model/vocabularies.toml
+      input_globs:
+        - src/data/property-pack/candidate-model/contexts/*.toml
+        - src/data/property-pack/candidate-model/rules-*.toml
+      output: docs/notebooklm/prepared/property-pack-maintained-candidate-source.md
+      transformation: {reproducibility: deterministic, human_signoff_by: null, human_signoff_on: null}
+      repository_tracking: tracked
+      rights_and_data_classification: pending
+      status: planned
+
+    - id: pp-canonical-ontology
+      title: Property Pack 0.1 canonical ontology graphs
+      kind: prepared-bundle
+      authority: opda-current-delivery
+      maturity: machine-proposed-candidate
+      ingestion: concatenate-turtle-with-file-boundaries
+      input_glob: source/03-standards/ontology-candidates/property-pack/0.1/ontology/*.ttl
+      output: docs/notebooklm/prepared/property-pack-0.1-ontology.ttl
+      transformation: {reproducibility: deterministic, human_signoff_by: null, human_signoff_on: null}
+      repository_tracking: tracked
+      rights_and_data_classification: pending
+      status: planned
+
+    - id: pp-glossary-dictionary
+      title: Property Pack business glossary and data dictionary
+      kind: source-set
+      authority: opda-current-delivery
+      maturity: machine-proposed-candidate
+      ingestion: direct
+      inputs:
+        - source/03-standards/ontology-candidates/property-pack/0.1/projections/business-glossary.json
+        - source/03-standards/ontology-candidates/property-pack/0.1/projections/data-dictionary.json
+      repository_tracking: tracked
+      rights_and_data_classification: pending
+      status: candidate
+
+    - id: pp-contexts-relationships-vocabularies
+      title: Context map, relationships and controlled vocabularies
+      kind: source-set
+      authority: opda-current-delivery
+      maturity: machine-proposed-candidate
+      ingestion: direct
+      inputs:
+        - source/03-standards/ontology-candidates/property-pack/0.1/projections/context-map.json
+        - source/03-standards/ontology-candidates/property-pack/0.1/projections/controlled-vocabularies.json
+      input_globs:
+        - source/03-standards/ontology-candidates/property-pack/0.1/vocabularies/*.ttl
+        - source/03-standards/ontology-candidates/property-pack/0.1/vocabularies/topics/*.ttl
+      repository_tracking: tracked
+      rights_and_data_classification: pending
+      status: candidate
+
+    - id: pp-shapes
+      title: Property Pack 0.1 SHACL shape graphs
+      kind: prepared-bundle
+      authority: opda-current-delivery
+      maturity: machine-proposed-candidate
+      ingestion: concatenate-turtle-with-file-boundaries
+      input_glob: source/03-standards/ontology-candidates/property-pack/0.1/shapes/*.ttl
+      output: docs/notebooklm/prepared/property-pack-0.1-shapes.ttl
+      transformation: {reproducibility: deterministic, human_signoff_by: null, human_signoff_on: null}
+      repository_tracking: tracked
+      rights_and_data_classification: pending
+      status: planned
+
+    - id: pp-coverage-validation
+      title: Property Pack coverage and validation evidence
+      kind: source-set
+      authority: opda-current-delivery
+      maturity: generated-verification-evidence
+      ingestion: direct
+      inputs:
+        - source/03-standards/ontology-candidates/property-pack/0.1/projections/coverage.json
+        - source/03-standards/ontology-candidates/property-pack/0.1/projections/shapes.json
+        - source/03-standards/ontology-candidates/property-pack/0.1/validation/report.json
+      input_globs:
+        - source/03-standards/ontology-candidates/property-pack/0.1/validation/competency/*.rq
+        - source/03-standards/ontology-candidates/property-pack/0.1/validation/fixtures/*.ttl
+      repository_tracking: tracked
+      rights_and_data_classification: pending
+      status: candidate
+
+    - id: pp-model-site
+      title: Current Property Pack model explanation
+      kind: prepared-bundle
+      authority: opda-public-explanation
+      maturity: current-but-non-normative
+      ingestion: render-built-routes-to-markdown
+      build_prerequisite: make build-data
+      routes:
+        - /spdtf/property-pack/
+        - /spdtf/property-pack/definition-and-scope/
+        - /spdtf/property-pack/model/
+        - /spdtf/property-pack/contexts/
+        - /spdtf/property-pack/relationships/
+        - /spdtf/property-pack/coverage/
+        - /spdtf/property-pack/validation/
+        - /spdtf/property-pack/standards/
+        - /spdtf/property-pack/review-and-releases/
+        - /spdtf/property-pack/technical-working-group-determination/
+      source_definitions:
+        - src/pages/spdtf/property-pack/index.astro
+        - src/pages/spdtf/property-pack/definition-and-scope.astro
+        - src/pages/spdtf/property-pack/model.astro
+        - src/pages/spdtf/property-pack/contexts/index.astro
+        - src/pages/spdtf/property-pack/relationships.astro
+        - src/pages/spdtf/property-pack/coverage.astro
+        - src/pages/spdtf/property-pack/validation.astro
+        - src/pages/spdtf/property-pack/standards.astro
+        - src/pages/spdtf/property-pack/review-and-releases.astro
+        - src/pages/spdtf/property-pack/technical-working-group-determination.astro
+      output: docs/notebooklm/prepared/property-pack-model-site.md
+      transformation: {reproducibility: human-reviewed, human_signoff_by: null, human_signoff_on: null}
+      repository_tracking: tracked
+      rights_and_data_classification: pending
+      status: planned
+
+    - id: pp-governing-decisions
+      title: Property Pack scope, modelling and SPDTF relationship decisions
+      kind: prepared-bundle
+      authority: opda-decision-record
+      maturity: accepted
+      ingestion: bundle-with-front-matter-preserved
+      inputs:
+        - docs/adr/ADR-0066-property-pack-451-seed-scope-and-greenfield-ontology.md
+        - docs/adr/ADR-0067-first-principles-property-pack-ontology-by-bounded-context.md
+        - docs/adr/ADR-0075-property-pack-ontology-as-accelerated-spdtf-component.md
+      output: docs/notebooklm/prepared/property-pack-governing-decisions.md
+      transformation: {reproducibility: deterministic, human_signoff_by: null, human_signoff_on: null}
+      repository_tracking: tracked
+      rights_and_data_classification: pending
+      status: planned
+
+  known_missing_resources:
+    - id: pp-451-crosswalk
+      title: Maintained 451-item schema-derived to Property Pack crosswalk
+      required_by: ADR-0075
+      status: missing
+      consequence: Traceability claims must identify this gap rather than imply complete disposition coverage.
+    - id: pp-governed-cross-context-mappings
+      title: Governed cross-context mapping register
+      status: awaiting-working-group-evidence
+      consequence: The current empty mapping set must not be presented as completed interoperability work.
+    - id: pp-technical-working-group-determination
+      title: Recorded Technical Working Group determination
+      required_by: ADR-0075
+      status: pending
+      consequence: Candidate publication and tests do not substitute for a human determination.
+
+  exclusions:
+    - pattern: source/03-standards/schemas/**
+      reason: Property Pack source schemas are explicitly excluded by ADR-0081.
+    - pattern: source/03-standards/ontology-candidates/property-pack/0.1/projections/resource-register.json
+      reason: It is byte-identical to business-glossary.json and adds no evidence.
+    - pattern: src/pages/spdtf/property-pack/resources/[context]/**
+      reason: Generated page-per-resource views duplicate canonical projections.
+    - pattern: src/pages/spdtf/property-pack/shapes/[context]/**
+      reason: Generated page views duplicate the canonical shape graphs and projection.
+    - pattern: src/pages/spdtf/property-pack/vocabularies/[context]/**
+      reason: Generated page views duplicate the canonical vocabulary projection.
+    - pattern: src/data/property-pack/properties/**
+      reason: Schema-derived seed rows are not the canonical ontology source.
+
+preparation_prompts:
+  - id: PP-01
+    title: Verify the canonical model corpus
+    source_scope: [pp-shared-facts, pp-451-source-scope, pp-maintained-candidate-source, pp-candidate-identity, pp-canonical-ontology, pp-glossary-dictionary, pp-contexts-relationships-vocabularies, pp-shapes, pp-coverage-validation, pp-model-site, pp-governing-decisions]
+    depends_on: []
+    output_note: "PP-01 — Canonical corpus and projection audit"
+    prompt: >-
+      Audit the candidate corpus and its projections. Record version, generated or
+      authored status, authority, graph or view represented, duplicate content,
+      internal inconsistencies, missing resources and limitations on use. Confirm
+      which sources are canonical for ontology, glossary, dictionary, contexts,
+      vocabularies, shapes, coverage and validation. Cite every finding.
+    acceptance:
+      - Canonical and explanatory sources are distinguished.
+      - Byte-identical and substantive duplicates are identified.
+      - Missing crosswalk and mapping evidence are explicit.
+
+  - id: PP-02
+    title: Establish model status, scope and boundaries
+    source_scope: [pp-shared-facts, pp-candidate-identity, pp-model-site, pp-governing-decisions]
+    depends_on: [PP-01]
+    output_note: "PP-02 — Property Pack status and scope facts"
+    prompt: >-
+      Produce a cited status and scope table covering the independent Property Pack
+      delivery, its future SPDTF relationship, candidate maturity, source evidence,
+      six property contextual boundaries, common boundary and DBT scheme-design
+      context. Record prohibited or misleading formulations.
+    acceptance:
+      - Property Pack is never called the complete SPDTF ontology.
+      - The common and DBT boundaries are described accurately.
+      - Candidate maturity is explicit.
+
+  - id: PP-03
+    title: Build the contextual-boundary model inventory
+    source_scope: [pp-451-source-scope, pp-maintained-candidate-source, pp-candidate-identity, pp-canonical-ontology, pp-glossary-dictionary, pp-contexts-relationships-vocabularies, pp-model-site]
+    depends_on: [PP-01, PP-02]
+    output_note: "PP-03 — Contextual-boundary model inventory"
+    prompt: >-
+      For each contextual boundary and the common graph, inventory concepts,
+      resources, properties, relationships, vocabularies, incoming and outgoing
+      references, shapes and stated scope. Distinguish counts or claims present in
+      source projections from interpretations. Cite every table and anomaly.
+    acceptance:
+      - Every boundary is represented once.
+      - Incoming and outgoing relationships are both covered.
+      - Empty, partial and unsupported areas are visible.
+
+  - id: PP-04
+    title: Cross-check glossary, dictionary and ontology meaning
+    source_scope: [pp-maintained-candidate-source, pp-canonical-ontology, pp-glossary-dictionary, pp-contexts-relationships-vocabularies]
+    depends_on: [PP-01, PP-03]
+    output_note: "PP-04 — Semantic projection consistency review"
+    prompt: >-
+      Cross-check terms across the business glossary, data dictionary, ontology and
+      vocabulary projection. Identify missing definitions, conflicting labels,
+      inconsistent domains or ranges, resource-property confusion, duplicate concepts
+      and context leakage. Do not repair the model; produce a cited review register.
+    acceptance:
+      - Findings name all affected sources and identifiers.
+      - Differences are not silently normalised.
+      - The output is a review register, not a rewritten model.
+
+  - id: PP-05
+    title: Assess shared elements and mapping readiness
+    source_scope: [pp-canonical-ontology, pp-contexts-relationships-vocabularies, pp-model-site, pp-governing-decisions]
+    depends_on: [PP-02, PP-03, PP-04]
+    output_note: "PP-05 — Common-boundary and mapping readiness"
+    prompt: >-
+      Identify what the sources place in the common boundary, which contexts reuse
+      those elements, and what cross-context relationships or mappings actually
+      exist. Record mapping questions that require domain evidence. Do not infer
+      equivalence, create SKOS predicates or propose SSSOM records where the register is empty.
+    acceptance:
+      - Common reuse and cross-context mapping are separate.
+      - Zero governed mappings is reported accurately.
+      - Required working-group decisions are explicit.
+
+  - id: PP-06
+    title: Evaluate constraints, validation and coverage
+    source_scope: [pp-451-source-scope, pp-maintained-candidate-source, pp-candidate-identity, pp-canonical-ontology, pp-shapes, pp-coverage-validation, pp-governing-decisions]
+    depends_on: [PP-01, PP-03, PP-04]
+    output_note: "PP-06 — Validation, coverage and traceability evidence"
+    prompt: >-
+      Build an evidence matrix of competency questions, SHACL constraints, fixtures,
+      validation results, standards claims, coverage claims and traceability. State
+      exactly what each check demonstrates and does not demonstrate. Include the
+      missing 451-item crosswalk and any untested or machine-proposed areas.
+    acceptance:
+      - Passing tests are not inflated into semantic correctness.
+      - Validation scope and processor evidence are explicit.
+      - Missing traceability is recorded.
+
+  - id: PP-07
+    title: Map audience questions to model evidence
+    source_scope: [pp-candidate-identity, pp-canonical-ontology, pp-glossary-dictionary, pp-contexts-relationships-vocabularies, pp-shapes, pp-coverage-validation, pp-model-site]
+    depends_on: [PP-02, PP-03, PP-04, PP-05, PP-06]
+    output_note: "PP-07 — Model audience questions and evidence"
+    prompt: >-
+      For domain experts, implementers, reviewers and interoperability specialists,
+      list the questions each audience needs answered. Provide a grounded answer,
+      supporting sources, caveat, relevant model view and open issue. Do not write
+      presentation slides, a report or a video script.
+    acceptance:
+      - Questions reflect each audience's actual use.
+      - Every answer is cited and maturity-qualified.
+      - Open issues remain visible.
+
+  - id: PP-08
+    title: Conduct an adversarial model review
+    source_scope: [pp-shared-facts, pp-451-source-scope, pp-maintained-candidate-source, pp-candidate-identity, pp-canonical-ontology, pp-glossary-dictionary, pp-contexts-relationships-vocabularies, pp-shapes, pp-coverage-validation, pp-model-site, pp-governing-decisions]
+    depends_on: [PP-04, PP-05, PP-06, PP-07]
+    output_note: "PP-08 — Model contradictions, overclaims and omissions"
+    prompt: >-
+      Act as a sceptical ontology, data-governance and implementation reviewer.
+      Identify unsupported semantics, hidden schema inheritance, context errors,
+      missing mappings, misleading coverage, validation overclaims, status leakage,
+      usability risks and questions requiring practitioner evidence. Cite each finding.
+    acceptance:
+      - Findings distinguish model defects, evidence gaps and governance decisions.
+      - No repair is asserted without evidence.
+      - Severity and affected sources are recorded.
+
+  - id: PP-09
+    title: Assemble the artefact preparation pack
+    source_scope: [pp-shared-facts, pp-451-source-scope, pp-maintained-candidate-source, pp-candidate-identity, pp-canonical-ontology, pp-glossary-dictionary, pp-contexts-relationships-vocabularies, pp-shapes, pp-coverage-validation, pp-model-site, pp-governing-decisions]
+    depends_on: [PP-02, PP-03, PP-04, PP-05, PP-06, PP-07, PP-08]
+    output_note: "PP-09 — Approved Property Pack evidence pack"
+    prompt: >-
+      Assemble a format-neutral preparation pack containing verified model status,
+      contextual-boundary inventory, glossary and dictionary facts, relationships,
+      vocabulary and mapping status, constraints, validation, coverage, audience
+      questions, caveats, open issues, prohibited claims and citation index. Do not
+      generate slides, scripts, audio, video or infographics.
+    acceptance:
+      - Every reusable claim is cited and maturity-qualified.
+      - Missing mappings and traceability remain explicit.
+      - The pack is ready for separate artefact briefs.
+
+execution_and_review:
+  execution_log: []
+  run_order: [PP-01, PP-02, PP-03, PP-04, PP-05, PP-06, PP-07, PP-08, PP-09]
+  record_each_run:
+    - run_id
+    - prompt_id
+    - prompt_version
+    - executed_at
+    - selected_source_ids
+    - dependency_note_ids
+    - notebook_conversation_id
+    - notebook_response_id
+    - notebook_note_id
+    - output_sha256
+    - citation_review
+    - authority_review
+    - reviewer
+    - reviewed_at
+    - findings
+    - rerun_of
+    - status
+  derived_output_policy: >-
+    Prompt responses are derived review and preparation notes, not model authority.
+    They must retain citations and may not be re-ingested as sources or applied to
+    the ontology without a separately governed decision and visible provenance.
+  artefact_generation_gate:
+    status: blocked
+    approval: {status: pending, approved_by: null, approved_on: null}
+    unlock_when:
+      - All preparation prompts have completed in order.
+      - Every output note has passed citation, model-status and technical review.
+      - Missing mappings, crosswalk and working-group evidence remain visible.
+      - The gate approval records an approving human and date.

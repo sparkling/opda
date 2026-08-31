@@ -1,0 +1,472 @@
+notebooklm_config_version: 1
+config_status: draft
+last_updated: 2026-08-31
+governing_adr: ADR-0081
+
+notebook:
+  id: d96c56b9-ba99-489f-aa29-51e820b4713d
+  title: "OPDA — Working-Group Participant Guide"
+  portfolio: programme-and-participation
+  purpose: >-
+    Prepare participant-facing information about why to join, what members contribute,
+    how groups work, how evidence is handled and how people review model candidates.
+  primary_audiences:
+    - prospective participants
+    - current working-group members
+    - chairs and facilitators
+    - domain and public-interest representatives
+  target_artefacts:
+    - participant induction presentation
+    - working-group onboarding video
+    - contribution journey infographic
+    - participant handbook and frequently asked questions
+
+workspace:
+  profile: personal
+  sharing: private
+  notebook_id_verification: {status: verified, profile: personal, verified_at: 2026-08-31}
+  source_ingestion_status: pending
+  preparation_prompt_status: pending
+
+dependencies:
+  - id: shared-facts-pack
+    kind: config-output
+    target: docs/notebooklm/prepared/shared-facts-and-terminology.md
+    status: planned
+    required_before: source-ingestion
+    blocking: true
+  - id: source-manifest-approval
+    kind: human-decision
+    target: resource_manifest
+    status: pending
+    required_before: source-ingestion
+    blocking: true
+  - id: data-protection-and-rights-clearance
+    kind: human-decision
+    target: every-resource-component
+    status: pending
+    required_before: source-ingestion
+    blocking: true
+    decision_owner: OPDA data controller or authorised delegate
+    criteria: Every component is classified and approved for processing in the named personal NotebookLM workspace.
+    approved_by: null
+    approved_on: null
+  - id: preparation-builder-and-bundles
+    kind: implementation-and-output
+    target: scripts/build-notebooklm-prepared-sources.mjs
+    status: missing
+    required_before: source-ingestion
+    blocking: true
+
+guardrails:
+  - "Write for industry and subject-matter experts, not ontology specialists."
+  - "Participants contribute practical evidence, judgement, exceptions and review."
+  - "Do not promise a meeting cadence, intake route, discussion feature or decision mechanism unless implemented evidence supports it."
+  - "Microsoft Teams is the discussion hub and SharePoint is the governed evidence store under ADR-0070."
+  - "AI may organise and draft proposals; people retain authority for meaning and decisions."
+  - "Do not describe the proposed standards lifecycle in ADR-0068 as operative."
+  - "Treat access, confidentiality, personal data, consent and publication as separate controls."
+
+prompt_defaults:
+  prompt_version: 1
+  note_carry_forward: paste-complete-labelled-dependency-notes-into-prompt
+  instruction_prefix: >-
+    Use only the selected notebook sources and cite every substantive claim. Treat
+    source status, date, scope and implementation state as separate fields. Preserve
+    conflicts instead of resolving them by inference. For any depends_on entry,
+    paste the complete prior note text into the prompt, labelled with its prompt ID;
+    NotebookLM notes are not sources. Prior outputs remain working data, never primary
+    evidence. Produce structured preparatory data only; do not create any publication artefact.
+
+resource_manifest:
+  status: proposed
+  review_required_before_ingestion: true
+  ingestion_log: []
+  required_metadata_before_ingestion:
+    - stable_source_id
+    - title
+    - originator
+    - source_date
+    - authority
+    - maturity
+    - repository_tracking
+    - rights_and_data_classification
+    - ingest_format
+    - size_bytes
+    - original_path_or_url
+    - inclusion_reason
+    - sha256
+  availability_policy: >-
+    Repository tracking is resolved per input with git ls-files, never inferred from
+    its top-level directory. Any absent local input fails closed. Every prepared bundle
+    requires a component manifest, checksum and declared reproducibility class.
+  prepared_bundle_contract:
+    builder: scripts/build-notebooklm-prepared-sources.mjs
+    builder_status: missing
+    website_prerequisite: make build-data
+    manifest_required: true
+    output_sha256_required: true
+  selection_rule: >-
+    Prefer current participant guidance and accepted operating decisions. Treat
+    recruitment copy as messaging evidence, not proof that an operating process exists.
+  resources:
+    - id: wg-shared-facts
+      title: OPDA shared programme facts and terminology
+      kind: prepared-bundle-reference
+      authority: mixed-with-explicit-attribution
+      maturity: current
+      ingestion: direct-after-central-build
+      owner: docs/notebooklm/portfolio-shared-facts.yaml
+      path: docs/notebooklm/prepared/shared-facts-and-terminology.md
+      repository_tracking: derived-local-output
+      rights_and_data_classification: pending
+      status: planned
+
+    - id: wg-member-guide-site
+      title: Current working-group member guide
+      kind: prepared-bundle
+      authority: opda-public-explanation
+      maturity: current-but-non-normative
+      ingestion: render-built-routes-to-markdown
+      build_prerequisite: make build-data
+      route_glob: /spdtf/working-groups/member-guide/**
+      additional_routes:
+        - /spdtf/working-groups/
+      source_definitions:
+        - src/pages/spdtf/working-groups/index.astro
+        - src/pages/spdtf/working-groups/member-guide/index.astro
+        - src/pages/spdtf/working-groups/member-guide/getting-started.astro
+        - src/pages/spdtf/working-groups/member-guide/teams-and-discussions.astro
+        - src/pages/spdtf/working-groups/member-guide/source-material-and-sharepoint.astro
+        - src/pages/spdtf/working-groups/member-guide/meetings-and-records.astro
+        - src/pages/spdtf/working-groups/member-guide/model-review-and-decisions.astro
+      output: docs/notebooklm/prepared/working-group-member-guide.md
+      transformation: {reproducibility: human-reviewed, human_signoff_by: null, human_signoff_on: null}
+      repository_tracking: tracked
+      rights_and_data_classification: pending
+      status: planned
+
+    - id: wg-review-surface
+      title: Working-group evidence, questions and review surfaces
+      kind: prepared-bundle
+      authority: opda-public-explanation
+      maturity: current-capability-description
+      ingestion: render-built-routes-to-markdown
+      build_prerequisite: make build-data
+      route_globs:
+        - /spdtf/working-groups/*/
+        - /spdtf/working-groups/*/evidence/
+        - /spdtf/working-groups/*/questions/
+        - /spdtf/working-groups/*/review/
+      source_definitions:
+        - src/pages/spdtf/working-groups/[slug]/index.astro
+        - src/pages/spdtf/working-groups/[slug]/evidence.astro
+        - src/pages/spdtf/working-groups/[slug]/questions.astro
+        - src/pages/spdtf/working-groups/[slug]/review.astro
+      output: docs/notebooklm/prepared/working-group-review-surface.md
+      transformation: {reproducibility: human-reviewed, human_signoff_by: null, human_signoff_on: null}
+      repository_tracking: tracked
+      rights_and_data_classification: pending
+      status: planned
+
+    - id: wg-recruitment-and-privacy
+      title: Public invitation, registration and privacy information
+      kind: prepared-bundle
+      authority: opda-public-explanation
+      maturity: current
+      ingestion: render-built-routes-and-bundle-documents
+      build_prerequisite: make build-data
+      routes:
+        - /join/
+        - /join/privacy/
+      source_definitions:
+        - src/pages/join/index.astro
+        - src/pages/join/privacy.astro
+      inputs:
+        - docs/recruitment/2026-08-bounded-context-trade-body-outreach.md
+        - docs/recruitment/2026-08-bounded-context-working-group-linkedin.md
+      output: docs/notebooklm/prepared/working-group-recruitment-and-privacy.md
+      transformation: {reproducibility: human-reviewed, human_signoff_by: null, human_signoff_on: null}
+      repository_tracking: tracked
+      rights_and_data_classification: pending
+      status: planned
+
+    - id: wg-kickoff-presentation
+      title: Generic working-group kick-off presentation content
+      kind: prepared-bundle
+      authority: opda-participant-explanation
+      maturity: current-presentation
+      ingestion: render-built-route-to-markdown
+      build_prerequisite: make build-data
+      route: /presentation/working-group-kickoff/
+      source_definitions:
+        - src/pages/presentation/working-group-kickoff.astro
+        - src/components/presentations/WorkshopDeck.astro
+        - src/components/presentations/WorkshopOrientationSlides.astro
+        - src/components/presentations/WorkshopArchitectureSlides.astro
+        - src/components/presentations/WorkshopParticipationSlides.astro
+      output: docs/notebooklm/prepared/working-group-kickoff-presentation.md
+      transformation: {reproducibility: human-reviewed, human_signoff_by: null, human_signoff_on: null}
+      repository_tracking: tracked
+      rights_and_data_classification: pending
+      status: planned
+
+    - id: wg-operating-decisions
+      title: Working-group structure, recruitment and workspace decisions
+      kind: prepared-bundle
+      authority: opda-decision-record
+      maturity: mixed-status
+      ingestion: bundle-with-front-matter-preserved
+      inputs:
+        - docs/adr/ADR-0063-domain-led-bounded-context-working-groups.md
+        - docs/adr/ADR-0065-ai-assisted-evidence-to-model-workflow.md
+        - docs/adr/ADR-0068-govern-opda-standards-lifecycle.md
+        - docs/adr/ADR-0069-public-working-group-recruitment-and-signup.md
+        - docs/adr/ADR-0070-uniform-microsoft-365-working-group-workspaces.md
+        - docs/adr/ADR-0071-bounded-context-recruitment-campaign.md
+        - docs/adr/ADR-0072-scheduled-working-group-inbox-agent.md
+        - docs/adr/ADR-0078-create-a-standalone-working-group-recruitment-campaign-at-join.md
+      output: docs/notebooklm/prepared/working-group-operating-decisions.md
+      transformation: {reproducibility: deterministic, human_signoff_by: null, human_signoff_on: null}
+      repository_tracking: tracked
+      rights_and_data_classification: pending
+      status: planned
+
+    - id: wg-canonical-status-data
+      title: Sanitised working-group roster and workspace status data
+      kind: prepared-bundle
+      authority: opda-maintained-implementation-data
+      maturity: current-at-build-date
+      ingestion: extract-sanitised-facts-to-markdown
+      inputs:
+        - src/data/working-group-campaign.ts
+        - src/components/ia/working-groups.ts
+        - src/lib/spdtf-workspace.mjs
+      output: docs/notebooklm/prepared/working-group-status-data.md
+      transformation: {reproducibility: human-reviewed, human_signoff_by: null, human_signoff_on: null}
+      repository_tracking: tracked
+      rights_and_data_classification: pending
+      status: planned
+
+    - id: wg-operating-materials
+      title: Working-group operating templates and project plan
+      kind: source-set
+      authority: opda-working-material
+      maturity: mixed
+      ingestion: direct-after-currentness-review
+      inputs:
+        - source/04-governance-bodies/working-groups/technical/Smart Property Data Trust Framework Project Plan.md
+        - docs/templates/teams-channel-post-design-system.md
+        - docs/templates/first-quarterly-publish-checklist.md
+        - docs/templates/agm-adjacent-ec-wave3-agenda.md
+      repository_tracking: mixed-tracked-and-untracked-local
+      rights_and_data_classification: pending
+      status: candidate
+
+    - id: wg-participation-method
+      title: Rationale for domain-led and AI-assisted participation
+      kind: source-set
+      authority: opda-research
+      maturity: mixed-accepted-and-proposed
+      ingestion: direct
+      inputs:
+        - docs/research/bounded-context-working-group-approach.md
+        - docs/research/ai-assisted-working-group-method.md
+      repository_tracking: tracked
+      rights_and_data_classification: pending
+      status: candidate
+
+  exclusions:
+    - pattern: source/03-standards/schemas/**
+      reason: Participants do not need the source schemas in this notebook.
+    - pattern: source/03-standards/ontology/**
+      reason: Detailed historical ontology implementation belongs in PDTF lineage.
+    - pattern: source/03-standards/ontology-candidates/property-pack/**
+      reason: Model detail belongs in the Property Pack notebook.
+    - pattern: source/_inbox/**
+      reason: Inbox material requires classification and access review before selection.
+    - pattern: "**/*participants*.xlsx"
+      reason: Participant lists may contain personal data and are unnecessary for guidance.
+    - pattern: "**/*.eml"
+      reason: Email requires access, personal-data and relevance review.
+    - pattern: "**/*.msg"
+      reason: Message files require access, personal-data and relevance review.
+    - pattern: docs/templates/*working-group-invitation*
+      reason: Invitation templates may contain private workspace URLs or operational identifiers.
+
+preparation_prompts:
+  - id: WG-01
+    title: Audit participant guidance and operating evidence
+    source_scope: [wg-shared-facts, wg-member-guide-site, wg-review-surface, wg-recruitment-and-privacy, wg-kickoff-presentation, wg-operating-decisions, wg-operating-materials, wg-participation-method]
+    depends_on: []
+    output_note: "WG-01 — Participant guidance source audit"
+    prompt: >-
+      Audit every source for issuer, date, authority, currentness, intended audience,
+      operational status and privacy or access constraints. Distinguish implemented
+      participant routes, accepted operating decisions, proposed workflow and
+      recruitment messaging. Identify contradictions and missing evidence; cite all findings.
+    acceptance:
+      - Implemented, accepted, proposed and promotional content are distinct.
+      - Personal-data and access risks are explicit.
+      - Every conclusion is cited.
+
+  - id: WG-02
+    title: Establish why different participants should contribute
+    source_scope: [wg-shared-facts, wg-recruitment-and-privacy, wg-kickoff-presentation, wg-participation-method]
+    depends_on: [WG-01]
+    output_note: "WG-02 — Participation motives and value evidence"
+    prompt: >-
+      Build an evidence matrix for why domain experts, commercial organisations,
+      public-interest representatives, regulators, implementers and affected groups
+      may want to participate. Record the contribution each can make, the influence
+      genuinely available, limits on that influence, expected benefit and citation.
+      Avoid generic marketing claims and do not promise an outcome.
+    acceptance:
+      - Commercial and public interests are both represented.
+      - Influence is described within evidenced governance limits.
+      - Benefits and caveats are cited.
+
+  - id: WG-03
+    title: Define participant contributions in plain language
+    source_scope: [wg-member-guide-site, wg-review-surface, wg-kickoff-presentation, wg-operating-decisions, wg-participation-method]
+    depends_on: [WG-01, WG-02]
+    output_note: "WG-03 — Contribution types and examples"
+    prompt: >-
+      Create a plain-language catalogue of useful contributions: sources, terminology,
+      scenarios, exceptions, rules, harms, commercial needs, public-interest needs,
+      implementation constraints, mappings and review comments. For each give an
+      example, where it is submitted, how it is handled and what it does not decide.
+    acceptance:
+      - Actions use parallel, comprehensible language.
+      - No ontology knowledge is assumed.
+      - Submission and decision authority are not conflated.
+
+  - id: WG-04
+    title: Map the participant journey and channels
+    source_scope: [wg-member-guide-site, wg-review-surface, wg-recruitment-and-privacy, wg-kickoff-presentation, wg-operating-decisions, wg-operating-materials]
+    depends_on: [WG-01, WG-03]
+    output_note: "WG-04 — Participant journey and channel map"
+    prompt: >-
+      Map the participant journey from registration through onboarding, meetings,
+      Teams discussion, SharePoint evidence submission, candidate review, feedback,
+      decision records and continued participation. For every step show the channel,
+      owner, expected action, evidence produced, access rule and whether it is
+      implemented, accepted, proposed or missing.
+    acceptance:
+      - Unsupported logistics are marked missing rather than invented.
+      - Teams and SharePoint roles follow accepted evidence.
+      - Access and record ownership are explicit.
+
+  - id: WG-05
+    title: Prepare evidence-handling and privacy guidance
+    source_scope: [wg-member-guide-site, wg-recruitment-and-privacy, wg-operating-decisions, wg-operating-materials]
+    depends_on: [WG-01, WG-04]
+    output_note: "WG-05 — Evidence handling, privacy and publication controls"
+    prompt: >-
+      Build a participant-facing control matrix for source classification, permissions,
+      personal data, confidential material, recording consent, retention, SharePoint
+      access, quotation, model provenance and public publication. Separate current
+      rules, proposed controls and unanswered questions. Do not advise participants
+      to submit restricted material where a handling route is unconfirmed.
+    acceptance:
+      - Access, processing and publication are separate controls.
+      - Unknown routes are marked unresolved.
+      - Every current rule is cited.
+
+  - id: WG-06
+    title: Explain review, iteration and the role of AI
+    source_scope: [wg-review-surface, wg-kickoff-presentation, wg-operating-decisions, wg-participation-method]
+    depends_on: [WG-03, WG-04, WG-05]
+    output_note: "WG-06 — Model review and AI responsibility matrix"
+    prompt: >-
+      Explain how participant evidence may be turned into a model candidate, how
+      participants review definitions, diagrams, examples, mappings and questions,
+      how comments are traced, and what happens in another iteration. Separate human
+      authority, facilitator work, AI assistance and automated checks. Mark proposed
+      stages and unresolved maturity decisions.
+    acceptance:
+      - AI never owns meaning or approval.
+      - Reviewable outputs are understandable without ontology expertise.
+      - Proposed lifecycle steps remain visibly proposed.
+
+  - id: WG-07
+    title: Build grounded participant questions and answers
+    source_scope: [wg-member-guide-site, wg-review-surface, wg-recruitment-and-privacy, wg-kickoff-presentation, wg-operating-decisions, wg-operating-materials, wg-participation-method]
+    depends_on: [WG-02, WG-03, WG-04, WG-05, WG-06]
+    output_note: "WG-07 — Participant questions, answers and evidence gaps"
+    prompt: >-
+      Produce a question-and-answer evidence matrix covering eligibility, time
+      commitment, commercial interests, public interests, accessibility, meeting
+      format, source submission, confidentiality, AI, model review, decision rights,
+      feedback and withdrawal. Give a cited answer where evidence exists and label
+      every unanswered question for programme resolution.
+    acceptance:
+      - Questions cover both prospective and active members.
+      - Unknown answers are not guessed.
+      - Answers are plain language and cited.
+
+  - id: WG-08
+    title: Challenge the participant experience
+    source_scope: [wg-shared-facts, wg-member-guide-site, wg-review-surface, wg-recruitment-and-privacy, wg-kickoff-presentation, wg-operating-decisions, wg-operating-materials, wg-participation-method]
+    depends_on: [WG-04, WG-05, WG-06, WG-07]
+    output_note: "WG-08 — Participant experience adversarial review"
+    prompt: >-
+      Act as a sceptical prospective participant from several viewpoints. Identify
+      unclear commitments, internal jargon, inaccessible assumptions, tokenistic
+      participation, hidden commercial or public-interest conflicts, unimplemented
+      promises, privacy risks and places where the process asks for expertise without
+      showing influence. Propose sourced corrections or explicit open questions.
+    acceptance:
+      - Findings distinguish content defects from missing programme decisions.
+      - Commercial, public-interest and accessibility perspectives are included.
+      - Corrections preserve governance truth.
+
+  - id: WG-09
+    title: Assemble the artefact preparation pack
+    source_scope: [wg-shared-facts, wg-member-guide-site, wg-review-surface, wg-recruitment-and-privacy, wg-kickoff-presentation, wg-operating-decisions, wg-operating-materials, wg-participation-method]
+    depends_on: [WG-02, WG-03, WG-04, WG-05, WG-06, WG-07, WG-08]
+    output_note: "WG-09 — Approved participant evidence pack"
+    prompt: >-
+      Assemble a format-neutral preparation pack containing participation motives,
+      contribution catalogue, participant journey, channel map, evidence-handling
+      controls, human and AI responsibilities, grounded questions and answers,
+      accessibility considerations, caveats, open decisions and citation index.
+      Do not generate a presentation, handbook, infographic, audio or video.
+    acceptance:
+      - Every reusable claim is cited and status-qualified.
+      - Unsupported promises are removed or labelled unresolved.
+      - The output is preparation data, not a finished artefact.
+
+execution_and_review:
+  execution_log: []
+  run_order: [WG-01, WG-02, WG-03, WG-04, WG-05, WG-06, WG-07, WG-08, WG-09]
+  record_each_run:
+    - run_id
+    - prompt_id
+    - prompt_version
+    - executed_at
+    - selected_source_ids
+    - dependency_note_ids
+    - notebook_conversation_id
+    - notebook_response_id
+    - notebook_note_id
+    - output_sha256
+    - citation_review
+    - authority_review
+    - reviewer
+    - reviewed_at
+    - findings
+    - rerun_of
+    - status
+  derived_output_policy: >-
+    Prompt responses are derived preparation notes, not operating policy or participant
+    commitments. They must retain citations and may not be re-ingested without a
+    visible derived label and human approval.
+  artefact_generation_gate:
+    status: blocked
+    approval: {status: pending, approved_by: null, approved_on: null}
+    unlock_when:
+      - All preparation prompts have completed in order.
+      - Every output note has passed citation, authority, privacy and accessibility review.
+      - Operational gaps and unresolved participant questions remain visible.
+      - The gate approval records an approving human and date.

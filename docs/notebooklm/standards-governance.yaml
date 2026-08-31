@@ -1,0 +1,395 @@
+notebooklm_config_version: 1
+config_status: draft
+last_updated: 2026-08-31
+governing_adr: ADR-0081
+
+notebook:
+  id: 7bed64c2-04a4-4da9-9f7f-37d30b5ea45a
+  title: "OPDA — Standards Governance"
+  portfolio: programme-and-participation
+  purpose: >-
+    Explain current authority, decision rights, maturity, consultation,
+    interoperability governance, conformance and the unresolved standards lifecycle.
+  primary_audiences:
+    - working-group chairs
+    - reviewers
+    - programme leaders
+    - governance and assurance specialists
+  target_artefacts:
+    - governance overview presentation
+    - decision-rights infographic
+    - standards lifecycle explainer video
+    - governance and assurance briefing
+
+workspace:
+  profile: personal
+  sharing: private
+  notebook_id_verification: {status: verified, profile: personal, verified_at: 2026-08-31}
+  source_ingestion_status: pending
+  preparation_prompt_status: pending
+
+dependencies:
+  - id: shared-facts-pack
+    kind: config-output
+    target: docs/notebooklm/prepared/shared-facts-and-terminology.md
+    status: planned
+    required_before: source-ingestion
+    blocking: true
+  - id: source-manifest-approval
+    kind: human-decision
+    target: resource_manifest
+    status: pending
+    required_before: source-ingestion
+    blocking: true
+  - id: data-protection-and-rights-clearance
+    kind: human-decision
+    target: every-resource-component
+    status: pending
+    required_before: source-ingestion
+    blocking: true
+    decision_owner: OPDA data controller or authorised delegate
+    criteria: Every component is classified and approved for processing in the named personal NotebookLM workspace.
+    approved_by: null
+    approved_on: null
+  - id: preparation-builder-and-bundles
+    kind: implementation-and-output
+    target: scripts/build-notebooklm-prepared-sources.mjs
+    status: missing
+    required_before: source-ingestion
+    blocking: true
+
+guardrails:
+  - "Treat accepted, proposed, implemented, superseded and historical decisions differently."
+  - "ADR-0068 is proposed; do not present its lifecycle or consensus model as operative."
+  - "A working group owns meaning within its scope; interoperability work does not override that authority."
+  - "Publication alone does not change the maturity or authority of a model candidate."
+  - "Do not infer that a governance body is constituted merely because an ADR defines its intended remit."
+  - "Attribute government, OPDA, steering-group and third-party statements separately."
+
+prompt_defaults:
+  prompt_version: 1
+  note_carry_forward: paste-complete-labelled-dependency-notes-into-prompt
+  instruction_prefix: >-
+    Use only the selected notebook sources and cite every substantive claim. Treat
+    source status, date, scope and implementation state as separate fields. Preserve
+    conflicts instead of resolving them by inference. For any depends_on entry,
+    paste the complete prior note text into the prompt, labelled with its prompt ID;
+    NotebookLM notes are not sources. Prior outputs remain working data, never primary
+    evidence. Produce structured preparatory data only; do not create any publication artefact.
+
+resource_manifest:
+  status: proposed
+  review_required_before_ingestion: true
+  ingestion_log: []
+  required_metadata_before_ingestion:
+    - stable_source_id
+    - title
+    - originator
+    - source_date
+    - authority
+    - maturity
+    - repository_tracking
+    - rights_and_data_classification
+    - ingest_format
+    - size_bytes
+    - original_path_or_url
+    - inclusion_reason
+    - sha256
+  availability_policy: >-
+    Repository tracking is resolved per input with git ls-files, never inferred from
+    its top-level directory. Any absent local input fails closed. Every prepared bundle
+    requires a component manifest, checksum and declared reproducibility class.
+  prepared_bundle_contract:
+    builder: scripts/build-notebooklm-prepared-sources.mjs
+    builder_status: missing
+    website_prerequisite: make build-data
+    manifest_required: true
+    output_sha256_required: true
+  selection_rule: >-
+    Prefer operative constitutional documents and accepted decisions. Include
+    proposed governance only with its status visible in the source title and bundle.
+  resources:
+    - id: sg-shared-facts
+      title: OPDA shared programme facts and terminology
+      kind: prepared-bundle-reference
+      authority: mixed-with-explicit-attribution
+      maturity: current
+      ingestion: direct-after-central-build
+      owner: docs/notebooklm/portfolio-shared-facts.yaml
+      path: docs/notebooklm/prepared/shared-facts-and-terminology.md
+      repository_tracking: derived-local-output
+      rights_and_data_classification: pending
+      status: planned
+
+    - id: sg-operative-opda-governance
+      title: OPDA constitutional and conduct framework
+      kind: source-set
+      authority: opda-corporate
+      maturity: operative-at-document-date
+      ingestion: direct-after-version-review
+      inputs:
+        - source/01-organisation/constitution-and-policies/Articles of Association 2026.pdf
+        - source/01-organisation/constitution-and-policies/OPDA Constitution 2026.pdf
+        - source/01-organisation/constitution-and-policies/Code of Conduct 2026.pdf
+        - source/01-organisation/constitution-and-policies/Competition Compliance Policy.docx
+        - source/01-organisation/constitution-and-policies/Data and GDPR Policy.docx
+      repository_tracking: untracked-local
+      rights_and_data_classification: pending
+      status: candidate
+
+    - id: sg-accepted-decisions
+      title: Accepted standards and working-group governance decisions
+      kind: prepared-bundle
+      authority: opda-decision-record
+      maturity: accepted
+      ingestion: bundle-with-front-matter-preserved
+      inputs:
+        - docs/adr/ADR-0063-domain-led-bounded-context-working-groups.md
+        - docs/adr/ADR-0066-property-pack-451-seed-scope-and-greenfield-ontology.md
+        - docs/adr/ADR-0067-first-principles-property-pack-ontology-by-bounded-context.md
+        - docs/adr/ADR-0070-uniform-microsoft-365-working-group-workspaces.md
+        - docs/adr/ADR-0075-property-pack-ontology-as-accelerated-spdtf-component.md
+        - docs/adr/ADR-0077-place-pdtf-schema-beneath-spdtf-as-third-party-input.md
+      output: docs/notebooklm/prepared/accepted-governance-decisions.md
+      transformation: {reproducibility: deterministic, human_signoff_by: null, human_signoff_on: null}
+      repository_tracking: tracked
+      rights_and_data_classification: pending
+      status: planned
+
+    - id: sg-proposed-lifecycle
+      title: Proposed standards lifecycle and AI workflow
+      kind: prepared-bundle
+      authority: opda-decision-record
+      maturity: proposed
+      ingestion: bundle-with-status-banner
+      inputs:
+        - docs/adr/ADR-0065-ai-assisted-evidence-to-model-workflow.md
+        - docs/adr/ADR-0068-govern-opda-standards-lifecycle.md
+        - docs/research/ai-assisted-working-group-method.md
+      output: docs/notebooklm/prepared/proposed-standards-lifecycle.md
+      transformation: {reproducibility: deterministic, human_signoff_by: null, human_signoff_on: null}
+      repository_tracking: tracked
+      rights_and_data_classification: pending
+      status: planned
+
+    - id: sg-governance-site
+      title: Current governance website explanation
+      kind: prepared-bundle
+      authority: opda-public-explanation
+      maturity: current-but-non-normative
+      ingestion: render-built-routes-to-markdown
+      build_prerequisite: make build-data
+      route_glob: /governance/**
+      route_exclusions:
+        - /governance/council/
+      source_definition_glob: src/pages/governance/*.astro
+      source_definition_exclusions:
+        - src/pages/governance/council.astro
+      output: docs/notebooklm/prepared/governance-site.md
+      transformation: {reproducibility: human-reviewed, human_signoff_by: null, human_signoff_on: null}
+      repository_tracking: tracked
+      rights_and_data_classification: pending
+      status: planned
+
+    - id: sg-government-guidance
+      title: Smart Data governance, compliance and legal guidance
+      kind: source-set
+      authority: government-working-draft
+      maturity: draft
+      ingestion: direct-latest-version-only
+      inputs:
+        - source/02-policy-and-positioning/dbt-smart-data-guidebook/preamble/SMART DATA GUIDEBOOK_Preamble_Introductory principles and good practice_DRAFT_V5.pdf
+        - source/02-policy-and-positioning/dbt-smart-data-guidebook/chapter-2/SMART DATA GUIDEBOOK_Chapter 2 Governance Compliance and Legal Framework_DRAFT_V5.pdf
+        - source/02-policy-and-positioning/dbt-smart-data-guidebook/chapter-4/SMART DATA GUIDEBOOK_Chapter 4 Data Stewardship, Privacy and Ethics_V2.pdf
+        - source/02-policy-and-positioning/dbt-smart-data-guidebook/chapter-5/SMART DATA GUIDEBOOK_Chapter 5 Security, Risk and Fraud Management_V1.pdf
+      repository_tracking: untracked-local
+      rights_and_data_classification: pending
+      status: candidate
+
+    - id: sg-steering-evidence
+      title: DPMSG Trust and Interoperability Steering Group evidence
+      kind: prepared-bundle
+      authority: steering-group-record
+      maturity: historical-meeting-evidence
+      ingestion: transcribe-and-bundle-after-access-review
+      input_glob: source/04-governance-bodies/steering-group/meetings/transcripts/*.vtt
+      output: docs/notebooklm/prepared/steering-group-meeting-evidence.md
+      transformation: {reproducibility: human-reviewed, human_signoff_by: null, human_signoff_on: null}
+      repository_tracking: untracked-local
+      rights_and_data_classification: pending
+      status: candidate-requires-access-and-personal-data-review
+
+  exclusions:
+    - pattern: source/03-standards/trust-framework/**
+      reason: Earlier technical governance belongs in PDTF lineage unless separately approved as current evidence.
+    - pattern: source/03-standards/schemas/**
+      reason: Source schemas are excluded by ADR-0081.
+    - pattern: docs/ontology/odr/council/**
+      reason: Raw AI-council material is not standards authority.
+    - pattern: "**/_archive/**"
+      reason: Superseded copies require an explicit historical justification.
+    - pattern: "**/*.eml"
+      reason: Email requires access, personal-data and relevance review before use.
+    - pattern: "**/*.msg"
+      reason: Message files require access, personal-data and relevance review before use.
+
+preparation_prompts:
+  - id: SG-01
+    title: Audit authority, status and applicability
+    source_scope: [sg-shared-facts, sg-operative-opda-governance, sg-accepted-decisions, sg-proposed-lifecycle, sg-governance-site, sg-government-guidance, sg-steering-evidence]
+    depends_on: []
+    output_note: "SG-01 — Governance source authority audit"
+    prompt: >-
+      Build a governance source audit. Record issuer, date, authority, decision
+      status, whether the source is operative or explanatory, scope, conflicts,
+      superseded versions and restrictions on use. Treat meeting evidence as
+      evidence of discussion rather than authority unless a source expressly
+      records a decision. Cite every classification.
+    acceptance:
+      - Operative, accepted, proposed and historical sources are distinct.
+      - Meeting discussion is not promoted into policy.
+      - Every assessment is cited.
+
+  - id: SG-02
+    title: Map bodies, roles and decision rights
+    source_scope: [sg-operative-opda-governance, sg-accepted-decisions, sg-governance-site, sg-steering-evidence]
+    depends_on: [SG-01]
+    output_note: "SG-02 — Bodies, roles and decision-rights matrix"
+    prompt: >-
+      Produce a matrix of bodies and roles, their evidenced remit, decisions they
+      may make, decisions they may not make, membership or representation rules,
+      current constitution status and sources. Mark intended structures that are
+      not evidenced as constituted. Preserve the distinction between domain
+      authority and cross-context interoperability.
+    acceptance:
+      - Every decision right has a cited source.
+      - Intended and operational bodies are distinguished.
+      - Gaps and overlaps are explicit.
+
+  - id: SG-03
+    title: Separate current governance from proposed lifecycle
+    source_scope: [sg-accepted-decisions, sg-proposed-lifecycle, sg-governance-site, sg-government-guidance]
+    depends_on: [SG-01, SG-02]
+    output_note: "SG-03 — Current and proposed lifecycle comparison"
+    prompt: >-
+      Compare what governance is accepted or implemented today with the lifecycle,
+      consensus, consultation, ratification, conformance and maintenance mechanisms
+      that remain proposed. Show the source and status for every stage. Do not
+      create a synthetic end-to-end process that is not yet authorised.
+    acceptance:
+      - ADR-0068 remains visibly proposed.
+      - Publication is not treated as a maturity transition.
+      - Missing approval mechanisms are recorded.
+
+  - id: SG-04
+    title: Build the consultation and decision evidence model
+    source_scope: [sg-operative-opda-governance, sg-accepted-decisions, sg-proposed-lifecycle, sg-government-guidance, sg-steering-evidence]
+    depends_on: [SG-02, SG-03]
+    output_note: "SG-04 — Consultation, dissent and decision evidence"
+    prompt: >-
+      Identify what evidence would be needed to demonstrate consultation,
+      participation, dissent, conflict management, decision rationale, approval,
+      versioning and later maintenance. Separate existing controls from proposed
+      controls and unresolved design questions. Cite the source for every existing
+      or proposed control.
+    acceptance:
+      - Dissent and unresolved objections remain visible.
+      - Evidence requirements are not confused with evidence already held.
+      - Current and proposed controls are separated.
+
+  - id: SG-05
+    title: Map assurance, accountability and conformance concerns
+    source_scope: [sg-operative-opda-governance, sg-accepted-decisions, sg-proposed-lifecycle, sg-government-guidance, sg-governance-site]
+    depends_on: [SG-02, SG-03]
+    output_note: "SG-05 — Assurance and accountability matrix"
+    prompt: >-
+      Build a matrix covering accountability, liability, competition compliance,
+      privacy, data stewardship, quality, security, conformance, accreditation and
+      change control. For each concern record the responsible authority if known,
+      current control, proposed control, evidence, gap and citation.
+    acceptance:
+      - Unknown ownership is not guessed.
+      - Corporate and standards governance remain distinguishable.
+      - Every claim is cited.
+
+  - id: SG-06
+    title: Test governance with decision scenarios
+    source_scope: [sg-accepted-decisions, sg-proposed-lifecycle, sg-governance-site, sg-government-guidance]
+    depends_on: [SG-02, SG-03, SG-04, SG-05]
+    output_note: "SG-06 — Governance scenarios and unresolved routes"
+    prompt: >-
+      Test the evidenced governance against realistic scenarios: a disputed domain
+      definition, a cross-context mapping disagreement, a security concern, a
+      breaking change, a failed conformance check and a request to advance maturity.
+      For each scenario show the authorised route, proposed route, missing decision
+      and required evidence. Do not invent an approval path.
+    acceptance:
+      - Each scenario distinguishes authorised and proposed handling.
+      - Missing routes are explicit.
+      - Domain and interoperability authority are respected.
+
+  - id: SG-07
+    title: Conduct an adversarial governance review
+    source_scope: [sg-shared-facts, sg-operative-opda-governance, sg-accepted-decisions, sg-proposed-lifecycle, sg-government-guidance, sg-steering-evidence]
+    depends_on: [SG-03, SG-04, SG-05, SG-06]
+    output_note: "SG-07 — Governance contradictions and overclaims"
+    prompt: >-
+      Act as an independent governance reviewer. Identify contradictions, circular
+      authority, status leakage, bodies presented as operational without evidence,
+      missing dissent routes, conflicts between corporate and standards governance,
+      and claims unsupported by primary sources. Propose sourced corrections or
+      record the need for a decision.
+    acceptance:
+      - Findings name the conflicting claims and sources.
+      - Proposed governance is never treated as operative.
+      - Required decisions are separated from editorial corrections.
+
+  - id: SG-08
+    title: Assemble the artefact preparation pack
+    source_scope: [sg-shared-facts, sg-operative-opda-governance, sg-accepted-decisions, sg-proposed-lifecycle, sg-governance-site, sg-government-guidance, sg-steering-evidence]
+    depends_on: [SG-02, SG-03, SG-04, SG-05, SG-06, SG-07]
+    output_note: "SG-08 — Approved governance evidence pack"
+    prompt: >-
+      Assemble a format-neutral preparation pack containing the verified authority
+      map, current-versus-proposed lifecycle, consultation evidence, assurance
+      matrix, scenarios, canonical terminology, caveats, open decisions and citation
+      index. Apply supported corrections from SG-07 and retain all unresolved issues.
+      Do not generate a presentation, report, infographic, audio or video.
+    acceptance:
+      - Every reusable governance claim has a citation and status.
+      - Unresolved authority and lifecycle questions remain visible.
+      - The output is preparation data, not an artefact.
+
+execution_and_review:
+  execution_log: []
+  run_order: [SG-01, SG-02, SG-03, SG-04, SG-05, SG-06, SG-07, SG-08]
+  record_each_run:
+    - run_id
+    - prompt_id
+    - prompt_version
+    - executed_at
+    - selected_source_ids
+    - dependency_note_ids
+    - notebook_conversation_id
+    - notebook_response_id
+    - notebook_note_id
+    - output_sha256
+    - citation_review
+    - authority_review
+    - reviewer
+    - reviewed_at
+    - findings
+    - rerun_of
+    - status
+  derived_output_policy: >-
+    Prompt responses are derived preparation notes, not governance decisions or
+    authoritative sources. They must retain citations and may not be re-ingested
+    without a visible derived label and human approval.
+  artefact_generation_gate:
+    status: blocked
+    approval: {status: pending, approved_by: null, approved_on: null}
+    unlock_when:
+      - All preparation prompts have completed in order.
+      - Every output note has passed citation, authority and status review.
+      - Proposed governance remains visibly proposed in the final pack.
+      - The gate approval records an approving human and date.
