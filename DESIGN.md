@@ -285,6 +285,9 @@ shared linked-card contract. The root has no separate top navigation bar: the br
 and the directory supplies the primary routes. The PDTF schema remains discoverable only within
 SPDTF's attributed inputs, not as a hero, status item, primary action or peer destination.
 
+Destination-card titles use the theme-aware interactive violet (`color-link`) so they remain visually
+distinct from their section heading while signalling that the whole card is a linked destination.
+
 Its sequence is:
 
 1. Theme-aware split hero using `/join`'s full-width radial/diagonal composition, centred 92rem grid,
