@@ -1,15 +1,42 @@
 ---
 status: accepted
 date: 2026-08-27
-updated: 2026-08-27
+updated: 2026-09-01
 tags: [infrastructure, hosting, authentication, cloudfront, lambda-edge, public-access]
 supersedes: []
 amends: [ADR-0038, ADR-0040, ADR-0054, ADR-0069]
 depends-on: [ADR-0038, ADR-0040, ADR-0069]
-implements: [config/aws/site-stack.yaml, config/aws/edge-stack.yaml, .github/workflows/infra.yml]
+implements: [config/aws/site-stack.yaml, config/aws/auth-session-stack.yaml, config/aws/auth-session/index.mjs, config/aws/edge-stack.yaml, .github/workflows/infra.yml]
 ---
 
 # Make the site public and retire the edge authentication gate
+
+## Amendment: restore explicit member sign-in without restoring a site gate
+
+On 2026-09-01 production verification found implementation drift. The header and
+comments client still used the accepted same-origin `/_auth/login`, `callback`,
+`me` and `logout` contract, but retiring the edge gate had also removed those
+endpoints. Clicking **Sign in** therefore reached the static origin and returned
+the site's 404 page.
+
+The site remains fully public. A regional Lambda and HTTP API now implement only
+the four `/_auth/*` session routes, and one cache-disabled CloudFront behavior
+routes that path prefix to the API. The service cannot match, inspect or redirect
+the default content behavior, `/api/v2/*`, `/resources/*` or the public
+working-group registration API. The former Lambda@Edge gate and SSM configuration
+remain retired; the `us-east-1` edge stack remains certificate-only.
+
+The session service uses Auth0 Authorization Code with PKCE, a nonce, and a
+high-entropy state value bound to short-lived `Secure`, `HttpOnly`, `SameSite=Lax`
+cookies. It accepts only local return paths, verifies the ID-token signature,
+issuer, audience, times, nonce and verified e-mail, and applies the authorised
+commenter allowlist before creating a session. `/me` exposes the Auth0 access
+token to same-origin client code only because the existing Artalk SSO bridge
+requires it. All session responses are non-cacheable.
+
+Auth0 domain, public client ID and commenter allowlist are CI-provided
+CloudFormation parameters. They authorise comments only and do not control who
+may read the site or register interest in a working group.
 
 ## Context and problem statement
 
@@ -35,8 +62,8 @@ container or persistence design.
 
 - Let people read the site and signup information before supplying identity data.
 - Remove the access boundary itself, not add another path allowlist exception.
-- Eliminate Lambda@Edge, gate SSM configuration and the member allowlist from the
-  deployed architecture.
+- Eliminate Lambda@Edge and gate SSM configuration from the site delivery path;
+  keep any member allowlist scoped to explicit authenticated comments.
 - Preserve private S3 origins, CloudFront TLS and caching, the public resources
   origin, the working-group interest API and Artalk's own authentication.
 - Remove replicated edge resources only after CloudFront no longer associates them.
@@ -82,9 +109,10 @@ CloudFront still requires its ACM certificate there. The `eu-west-2` artifacts
 bucket remains because the site stack still packages the nested working-group
 interest Lambda application.
 
-Auth0 remains an input to the independent comments stack. This ADR does not change
-Artalk SSO, API authorization, SQLite/Litestream persistence, the single-writer
-service invariant or comments-origin cookie stripping.
+Auth0 remains an input to the independent comments stack and the path-scoped
+session service. This ADR does not change Artalk SSO, API authorization,
+SQLite/Litestream persistence, the single-writer service invariant or
+comments-origin cookie stripping.
 
 ### Safe rollout order
 
@@ -120,6 +148,9 @@ stack before the site stack.
   retry after AWS completes replica retirement.
 - Existing Auth0 SPA callback configuration and the old `us-east-1` artifacts
   stack may require operator cleanup after the infrastructure change converges.
+- The explicit comments session adds a small regional Lambda and HTTP API, plus
+  an authorised-commenter configuration input, while public page delivery stays
+  static and independent of them.
 
 ### Neutral
 
@@ -134,8 +165,13 @@ stack before the site stack.
 - `config/aws/site-stack.yaml` contains no Lambda@Edge association, gate parameter
   or gate-specific Auth0/member input.
 - `config/aws/edge-stack.yaml` contains only the CloudFront ACM certificate.
+- `config/aws/site-stack.yaml` routes only `/_auth/*` to the regional session
+  API; the default and all other API/resource behaviors carry no auth function.
+- Anonymous `/_auth/me` returns cache-disabled JSON `401`, and
+  `/_auth/login?return=%2Fprogramme` redirects to the configured Auth0 tenant.
 - The infrastructure workflow deploys the ungated site before reconciling an
-  existing edge stack and passes Auth0 only to the comments stack.
+  existing edge stack and passes Auth0 inputs only to the comments stack and
+  the path-scoped session application.
 - Anonymous requests to representative site routes return content rather than an
   Auth0 redirect after deployment.
 - Authenticated Artalk actions and public working-group registration continue to

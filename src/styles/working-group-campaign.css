@@ -48,7 +48,8 @@
   min-height: min(48rem, calc(100svh - 5rem));
   display: grid;
   grid-template-columns: minmax(0, 1.16fr) minmax(22rem, 0.84fr);
-  gap: clamp(var(--space-8), 7vw, 8rem);
+  column-gap: clamp(var(--space-8), 7vw, 8rem);
+  row-gap: clamp(var(--space-8), 4vw, var(--space-10));
   align-items: center;
   padding: clamp(var(--space-10), 8vw, 7rem) max(clamp(var(--space-5), 5vw, var(--space-10)), calc((100vw - var(--campaign-max)) / 2));
   color: var(--brand-white);
@@ -57,6 +58,18 @@
     linear-gradient(135deg, var(--brand-deep) 0 62%, var(--brand-night) 62% 100%);
   border-bottom: 4px solid var(--brand-yellow);
 }
+
+.wg-campaign-hero__header {
+  min-width: 0;
+  grid-column: 1 / -1;
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: var(--space-5);
+}
+
+.wg-campaign-hero__header .brand-heading--campaign { margin-bottom: 0; }
+.wg-campaign-hero__header .theme-toggle { margin-left: auto; }
 
 .wg-campaign-hero--panel-aligned {
   grid-template-columns: minmax(0, 1.05fr) minmax(36rem, 0.95fr);
@@ -129,11 +142,14 @@
 }
 
 .wg-hero-journey h2 { margin: 0; color: var(--brand-white); font: 600 clamp(1.75rem, 2.5vw, 2.75rem) / 1.08 var(--font-display); letter-spacing: var(--tracking-display); text-wrap: balance; }
-.wg-hero-journey .wg-process { display: grid; grid-template-columns: 1fr; margin: var(--space-6) 0 0; padding: 0; list-style: none; counter-reset: process; border-bottom: 1px solid var(--color-surface-dark-tint); }
-.wg-hero-journey .wg-process li { min-width: 0; display: grid; grid-template-columns: 2.75rem minmax(0, 1fr); gap: var(--space-1) var(--space-4); align-items: start; padding: var(--space-4) 0; background: transparent; border: 0; border-top: 1px solid var(--color-surface-dark-tint); counter-increment: process; }
-.wg-hero-journey .wg-process li::before { content: counter(process, decimal-leading-zero); grid-row: 1 / span 2; color: var(--brand-yellow); font: 700 var(--text-sm) / 1.35 var(--font-mono); }
-.wg-hero-journey .wg-process strong { color: var(--brand-white); font: 600 clamp(1.125rem, 1.45vw, 1.4rem) / 1.25 var(--font-display); }
-.wg-hero-journey .wg-process span { color: var(--on-dark-muted); font-size: var(--text-sm); line-height: 1.55; }
+.wg-hero-journey > .wg-eyebrow { font-size: clamp(0.875rem, 1.05vw, 1rem); }
+.wg-hero-journey .wg-process { display: grid; grid-template-columns: 1fr; margin: var(--space-6) 0 0; padding: 0; list-style: none; border-bottom: 1px solid var(--color-surface-dark-tint); }
+.wg-hero-journey .wg-process li { min-width: 0; display: grid; grid-template-columns: 3.25rem minmax(0, 1fr); gap: var(--space-1) var(--space-4); align-items: start; padding: var(--space-4) 0; background: transparent; border: 0; border-top: 1px solid var(--color-surface-dark-tint); counter-increment: none; }
+.wg-hero-journey .wg-process li::before { content: none; }
+.wg-hero-journey .wg-process strong { color: var(--brand-white); font: 600 clamp(1.25rem, 1.55vw, 1.5rem) / 1.25 var(--font-display); }
+.wg-hero-journey .wg-process span { color: var(--on-dark-muted); font-size: clamp(1rem, 1.15vw, 1.125rem); line-height: 1.55; }
+.wg-hero-journey .wg-process .wg-process__icon { grid-row: 1 / span 2; display: grid; width: 2.75rem; height: 2.75rem; place-items: center; color: var(--brand-yellow); }
+.wg-process__icon svg { width: 2rem; height: 2rem; stroke-width: 1.8; }
 
 .wg-programme-link { margin: var(--space-7) 0 0; }
 

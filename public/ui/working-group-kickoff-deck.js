@@ -148,9 +148,9 @@ if (deck) {
   function setSyncConcept(concept) {
     const interaction = deck.querySelector('[data-interaction="view-sync"]');
     const messages = {
-      applicant: 'Applicant is a form section and JSON object, while the graph can connect that person to roles, evidence and decisions.',
-      mortgage: 'Mortgage is nested in this message, while the graph connects it directly to applicant, property, product and lifecycle facts.',
-      property: 'Property appears at one path in this JSON message, but the graph can connect it to valuation, title, survey and provenance contexts.',
+      organisation: 'Organisation is a form section and JSON object, while the graph can connect it to roles, submissions, evidence and responsibilities.',
+      submission: 'Submission is nested in this message, while the graph connects it directly to its provider, property, evidence and lifecycle facts.',
+      property: 'Property appears at one path in this JSON message, while the graph can connect it to finance, conveyancing, surveying, agency, data-service and technology contexts.',
       evidence: 'Evidence may be an attachment list in JSON, while the graph records what it supports, who supplied it and when it applied.',
     };
     interaction.querySelectorAll('button[data-concept]').forEach((button) => button.setAttribute('aria-pressed', String(button.dataset.concept === concept)));
@@ -160,11 +160,12 @@ if (deck) {
 
   function setPropertyContext(context) {
     const messages = {
-      finance: 'The asset offered as security for lending; valuation, tenure and risk matter.',
-      conveyancing: 'The legal estate or registered title being transferred; rights, restrictions and ownership matter.',
-      surveying: 'The physical asset inspected and valued; construction, condition and defects matter.',
-      agency: 'The home or interest being marketed; description, material information and status matter.',
-      services: 'The identified record assembled from authoritative sources; lineage, matching and currency matter.',
+      finance: 'An illustrative focus is the asset offered as security for lending, where valuation, tenure and risk may matter.',
+      conveyancing: 'An illustrative focus is the legal estate or registered title being transferred, where rights, restrictions and ownership may matter.',
+      surveying: 'An illustrative focus is the physical asset being inspected and valued, where construction, condition and defects may matter.',
+      agency: 'An illustrative focus is the home or interest being marketed, where description, material information and status may matter.',
+      services: 'An illustrative focus is the identified record assembled from authoritative sources, where lineage, matching and currency may matter.',
+      technology: 'An illustrative focus is property information handled by platforms and workflows, where identifiers, APIs, events and operational state may matter.',
     };
     const interaction = deck.querySelector('[data-interaction="property-lenses"]');
     interaction.querySelectorAll('button[data-context]').forEach((button) => button.setAttribute('aria-pressed', String(button.dataset.context === context)));

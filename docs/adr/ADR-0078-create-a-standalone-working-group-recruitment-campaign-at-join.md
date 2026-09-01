@@ -1,7 +1,7 @@
 ---
 status: accepted
 date: 2026-08-27
-updated: 2026-08-30
+updated: 2026-09-01
 tags: [working-groups, recruitment, campaign, signup, design-system, accessibility, routing]
 supersedes: []
 depends-on: [ADR-0038, ADR-0069, ADR-0071, ADR-0073, ADR-0079]
@@ -26,8 +26,8 @@ than a focused invitation to participate. Its long sequence of similarly styled
 cards also gives supporting explanation and the primary action comparable visual
 weight.
 
-The standalone Finance and Banking working-group presentation at
-`/presentation/working-group-kickoff` demonstrates a stronger editorial hierarchy:
+The standalone working-group presentation at `/presentation/working-group-kickoff`,
+first authored for Finance and Banking, demonstrates a stronger editorial hierarchy:
 large display typography, one principal idea at a time, immediate reassurance and a
 clear working-group promise. It is a presentation, however, not a suitable public
 signup journey. Its technical modelling story, 24-slide sequence, fixed viewport,
@@ -117,6 +117,18 @@ Refined on 30 August 2026: the hero retains its two-column campaign composition 
 presents its three influence points as a compact vertical sequence. The no-expertise
 message is primary reassurance rather than fine print, and every campaign section uses
 the hero's shared content axis.
+
+Amended on 31 August 2026: the canonical presentation was generalised for every domain
+working group while retaining its isolated visual-system boundary and established
+identity. The recruitment campaign may continue to draw on its tested narrative patterns,
+but neither surface becomes the other&rsquo;s content or design authority.
+
+Amended on 1 September 2026: `/join` now omits the standalone statement masthead and
+uses the same content-width hero header as the homepage, with its linked icon-and-name
+heading on the left and the design-system theme control on the right. The influence
+panel replaces ordinal markers with larger tree-shaken Lucide icons while its text
+remains the accessible source of meaning. Shared panel type, spacing and the gap below
+the organisation heading are governed by the campaign styles used on both routes.
 
 ### 1. Canonical route and route ownership
 
@@ -285,8 +297,8 @@ privacy link and form remain usable when motion is disabled.
   Knowledge Base shell used by standards and governance documentation.
 - The campaign speaks to practitioners in familiar language and keeps technical
   modelling detail in the Knowledge Base.
-- The Finance and Banking presentation contributes proven language and interaction
-  patterns without becoming the public funnel.
+- The working-group presentation contributes proven language and interaction patterns
+  without becoming the public funnel.
 - The existing form, privacy, storage and human decision boundary remain intact.
 - The design remains OPDA-specific while allowing a more ambitious campaign
   composition.
@@ -333,7 +345,7 @@ all of the following are true:
   route back to registration, and the campaign footer exposes the required privacy
   and accessibility links;
 - every working-group choice and form control is usable by keyboard, touch and pointer;
-- the page contains the five decided narrative chapters and no scroll-driven reveal
+- the page contains the seven decided narrative chapters and no scroll-driven reveal
   sequence;
 - the complete page remains understandable with motion disabled;
 - reduced-motion, forced-colour, 320 CSS-pixel reflow and 400% zoom checks pass;
@@ -362,6 +374,6 @@ all of the following are true:
 - [ADR-0079](./ADR-0079-make-the-site-public-and-retire-the-edge-authentication-gate.md)
   removes the site authentication gate while preserving independent service boundaries;
   this campaign does not add a route exception or interim allowlist.
-- The Finance and Banking presentation remains an isolated presentation surface and
+- The generic working-group presentation remains an isolated presentation surface and
   a source of tested narrative patterns. It is not the canonical recruitment page or
   a second design-system authority.

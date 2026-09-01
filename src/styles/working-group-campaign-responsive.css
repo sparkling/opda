@@ -66,6 +66,7 @@
   .wg-commitment,
   .wg-trust { color: CanvasText; background: Canvas; border-color: CanvasText; }
   .wg-campaign-hero :is(h1, h2, p, a),
+  .wg-process__icon,
   .wg-cross-cutting :is(h3, p),
   .wg-participation :is(h2, h3, p, strong, li),
   .wg-trust :is(h3, p, li) { color: CanvasText; }

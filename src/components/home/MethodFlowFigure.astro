@@ -1,9 +1,9 @@
 <section class="method-flow" aria-labelledby="method-title">
   <div class="method-flow__inner">
-    <header class="method-flow__header">
-      <p class="method-flow__overline">The method</p>
+    <header class="method-flow__header section-heading">
+      <p class="section-heading__eyebrow">The method</p>
       <h2 id="method-title">From evidence to shared meaning</h2>
-      <p>
+      <p class="section-heading__description">
         Authorised source material establishes the evidence base. We publish a candidate model
         for working-group members to examine, challenge and improve. Each review either returns
         the model for revision or, once consensus is reached, moves it forward as a draft
@@ -121,30 +121,6 @@
     padding: var(--space-10) var(--space-7);
   }
 
-  .method-flow__header {
-    margin-bottom: var(--space-7);
-  }
-
-  .method-flow__overline {
-    margin: 0 0 var(--space-4);
-    color: var(--color-text-muted);
-    font: 700 var(--text-xl) / 1.25 var(--font-sans);
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-  }
-
-  .method-flow__header h2 {
-    margin: 0;
-    color: var(--color-text-strong);
-    font: var(--h2);
-  }
-
-  .method-flow__header > p:last-child {
-    margin: var(--space-4) 0 0;
-    color: var(--color-text-muted);
-    font: var(--lead);
-  }
-
   .method-flow__figure {
     margin: 0;
     padding: var(--space-7);
@@ -236,7 +212,6 @@
   @media (max-width: 40rem) {
     .method-flow__inner { padding: var(--space-8) var(--space-5); }
     .method-flow__figure { padding: var(--space-5); }
-    .method-flow__overline { font-size: var(--text-lg); }
   }
 
   @media (forced-colors: active) {

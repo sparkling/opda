@@ -4,6 +4,7 @@
 # arrives as a parameter from the edge stack (exports do not cross regions).
 #
 #   - Private S3 site bucket + public CloudFront distribution (OAC)
+#   - /_auth/* routed to a regional, endpoint-only Auth0 session service
 #   - /api/v2/* routed to the Artalk comments origin
 #   - Route 53 apex alias records
 #
@@ -17,7 +18,8 @@
 AWSTemplateFormatVersion: '2010-09-09'
 Description: >-
   opda.org.uk site resources (eu-west-2): S3 + CloudFront, Route 53 records,
-  public site and working-group interest API (ADR-0038/ADR-0040/ADR-0069/ADR-0079).
+  public site, path-scoped auth session and working-group interest APIs
+  (ADR-0038/ADR-0040/ADR-0069/ADR-0079).
 
 Parameters:
   DomainName:
@@ -26,8 +28,34 @@ Parameters:
   CertificateArn:
     Type: String
     Description: ACM certificate ARN (us-east-1, from the opda-edge stack).
+  Auth0Domain:
+    Type: String
+    Description: Auth0 tenant hostname used by the explicit member sign-in surface.
+  Auth0ClientId:
+    Type: String
+    Description: Public Auth0 application client ID; OAuth uses PKCE and no secret.
+  MemberEmails:
+    Type: String
+    NoEcho: true
+    Description: Comma-separated e-mail allowlist for authenticated comments.
 
 Resources:
+  AuthSessionApplication:
+    Type: AWS::CloudFormation::Stack
+    Metadata:
+      cfn-lint:
+        config:
+          # A local nested-template URL is intentional: the infra workflow
+          # runs `aws cloudformation package` before deployment.
+          ignore_checks: [W3002]
+    Properties:
+      TemplateURL: auth-session-stack.yaml
+      Parameters:
+        DomainName: !Ref DomainName
+        Auth0Domain: !Ref Auth0Domain
+        Auth0ClientId: !Ref Auth0ClientId
+        MemberEmails: !Ref MemberEmails
+
   WorkingGroupInterestApplication:
     Type: AWS::CloudFormation::Stack
     Metadata:
@@ -131,6 +159,19 @@ Resources:
           Headers: [Content-Type]
         CookiesConfig: { CookieBehavior: none }
         QueryStringsConfig: { QueryStringBehavior: none }
+
+  # The explicit login flow needs its short-lived transaction/session cookies
+  # and OAuth query parameters. It receives no viewer headers (especially not
+  # Host), and its cache behavior below is disabled.
+  AuthSessionOriginRequestPolicy:
+    Type: AWS::CloudFront::OriginRequestPolicy
+    Properties:
+      OriginRequestPolicyConfig:
+        Name: opda-auth-session-cookies-and-query
+        Comment: Forward OAuth cookies and query strings only to /_auth/*
+        HeadersConfig: { HeaderBehavior: none }
+        CookiesConfig: { CookieBehavior: all }
+        QueryStringsConfig: { QueryStringBehavior: all }
 
   OriginAccessControl:
     Type: AWS::CloudFront::OriginAccessControl
@@ -237,6 +278,12 @@ Resources:
               HTTPSPort: 443
               OriginProtocolPolicy: https-only
               OriginSSLProtocols: [TLSv1.2]
+          - Id: auth-session-api
+            DomainName: !GetAtt AuthSessionApplication.Outputs.ApiOriginDomainName
+            CustomOriginConfig:
+              HTTPSPort: 443
+              OriginProtocolPolicy: https-only
+              OriginSSLProtocols: [TLSv1.2]
         DefaultCacheBehavior:
           TargetOriginId: site-s3
           ViewerProtocolPolicy: redirect-to-https
@@ -246,6 +293,15 @@ Resources:
             - EventType: viewer-request
               FunctionARN: !GetAtt CleanUrlRewriteFunction.FunctionARN
         CacheBehaviors:
+          # Explicit member sign-in only. This does not gate or inspect any
+          # public content path and cannot match the default site behavior.
+          - PathPattern: '/_auth/*'
+            TargetOriginId: auth-session-api
+            ViewerProtocolPolicy: redirect-to-https
+            AllowedMethods: [GET, HEAD, OPTIONS]
+            Compress: true
+            CachePolicyId: 4135ea2d-6df8-44a3-9df3-4b5a84be39ad     # Managed-CachingDisabled
+            OriginRequestPolicyId: !Ref AuthSessionOriginRequestPolicy
           # Public static assets. Long-TTL via the
           # same managed CachingOptimized policy the default behavior uses.
           # Ordered ahead of the default behavior.
@@ -318,6 +374,12 @@ Outputs:
   WorkingGroupInterestApiEndpoint:
     Description: Direct HTTP API endpoint for diagnostics; browsers use the same-origin CloudFront path.
     Value: !GetAtt WorkingGroupInterestApplication.Outputs.ApiEndpoint
+  AuthSessionApiEndpoint:
+    Description: Direct HTTP API endpoint for diagnostics; browsers use /_auth/* through CloudFront.
+    Value: !GetAtt AuthSessionApplication.Outputs.ApiEndpoint
+  AuthSessionCallbackUrl:
+    Description: Must be listed in the Auth0 application's allowed callback URLs.
+    Value: !Sub 'https://${DomainName}/_auth/callback'
   WorkingGroupInterestFunctionName:
     Value: !GetAtt WorkingGroupInterestApplication.Outputs.FunctionName
   WorkingGroupInterestRegistrationsTableName:

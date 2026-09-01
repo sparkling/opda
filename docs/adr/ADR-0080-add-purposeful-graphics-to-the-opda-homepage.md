@@ -1,7 +1,7 @@
 ---
 status: accepted
 date: 2026-08-30
-updated: 2026-08-31
+updated: 2026-09-01
 tags: [website, homepage, design-system, brand, accessibility, avif, infographic, ai, presentation]
 supersedes: []
 amends: [ADR-0073, ADR-0074]
@@ -16,8 +16,8 @@ implements: [DESIGN.md, public/images/home/method-loop-light.avif, public/images
 ADR-0073 established the OPDA ink-and-amber visual system and ADR-0074 made `/`
 the sole Knowledge Base homepage, organised around the six canonical destinations.
 The resulting page is accurate and direct, but its hero and destination cards do
-most of the visual work. It gives little prominence to the Finance and Banking
-working-group presentation and does not show, at a glance, how industry evidence
+most of the visual work. It gives little prominence to the working-group kick-off
+presentation and does not show, at a glance, how industry evidence
 becomes governed shared meaning.
 
 The design contract also drifted from the source. It still required a separate
@@ -34,7 +34,7 @@ programme facts, governance, routes, publication or deployment.
 ## Decision Drivers
 
 - Make the homepage more distinctive while keeping it fast, static and legible.
-- Give the restored Finance and Banking kick-off presentation a prominent route.
+- Give the working-group kick-off presentation a prominent route.
 - Explain the programme method to non-technical readers without ontology jargon.
 - Preserve the canonical six-destination order and the root's no-global-header rule.
 - Introduce the six working-group domains without turning the hero into technical documentation.
@@ -65,7 +65,7 @@ The root homepage uses this editorial sequence:
 2. A static AI-assisted modelling loop showing source material, model extraction,
    candidate publication and working-group review, with feedback returning to the
    next pass and consensus leading to a draft standard.
-3. A prominent Finance and Banking kick-off feature linking directly to
+3. A prominent working-group kick-off feature linking directly to
    `/presentation/working-group-kickoff`.
 4. The unchanged canonical directory for Programme, Governance, Semantic modelling,
    SPDTF Development, Working groups and Resources, in that order.
@@ -74,21 +74,23 @@ The root homepage uses this editorial sequence:
 
 The root hero reuses the recruitment campaign's `.wg-campaign-hero` and
 `.wg-hero-journey` styles rather than approximating them. This keeps the radial/diagonal
-background effect, lower amber highlight, responsive breakpoints, numbered-list
-component and panel surface identical across the two routes. The shared padding
+background effect, lower amber highlight, responsive breakpoints, semantic icon-list
+component and panel surface identical across the two routes. The adjacent text remains
+the accessible label and source of meaning. The shared padding
 calculation keeps the content grid within 92rem while the campaign background remains
 full width. The homepage retains its headline and brand line, uses a concise active-voice
 proposition, and adds a direct working-group action to the existing SPDTF and Programme
 actions. Its small hero label identifies the Smart Property Data Trust Framework. The
 right-hand panel lists the six working-group domains with short descriptions.
 
-The method figure follows the Finance and Banking working-group presentation and
-ADR-0065 rather than imposing an arbitrary stage count. Its repeating cycle contains
-the four parts shown in the presentation: people provide authorised material; AI
-extracts, compares and drafts; OPDA publishes a candidate model and ontology; and
-working-group members challenge and improve it. Feedback and new evidence begin the
-next modelling pass. A separate consensus exit leads to a stable working-group draft,
-which is explicitly not yet ratified or adopted.
+The method figure follows the working-group kick-off presentation and
+ADR-0065 rather than imposing an arbitrary stage count. People provide authorised
+material once as the initial evidence base. The repeating cycle then contains the three
+parts shown in the presentation: AI-assisted modelling extracts, compares and drafts;
+OPDA publishes a candidate model and ontology; and working-group members challenge and
+improve it. Feedback and new evidence begin the next modelling pass. A separate
+consensus exit leads to a stable working-group draft, which is explicitly not yet
+ratified or adopted.
 
 The checked-in light and dark method assets are a reviewed Gemini 3 Pro Image
 composition rather than a client-side diagram runtime. The two variants preserve the
@@ -104,7 +106,7 @@ states that AI may extract, compare and draft while people decide what is true, 
 disagreement and approve status changes.
 
 The presentation feature is an editorial preview, not an embedded presentation. Its
-small, isolated poster treatment may use the restored deck's forest, cream and amber
+small, isolated poster treatment may use the deck's forest, cream and amber
 palette inside `KickoffFeature.astro`; it does not import the deck's CSS, JavaScript,
 fonts, layout rules or browser chrome. The feature is not a seventh global destination.
 
@@ -145,8 +147,8 @@ than competing with the homepage's primary proposition.
   homepage components named in `implements`.
 - `DESIGN.md`, ADR-0073 and ADR-0074 record the same homepage sequence, motif exception
   and integrated status treatment.
-- The official icon remains unchanged in the shared icon-and-name heading; the presentation feature
-  links to the existing local deck and imports none of its runtime assets.
+- The official icon remains unchanged in the shared icon-and-name heading; the generic
+  presentation feature links to the existing local deck and imports none of its runtime assets.
 - The method figure's labels and authority boundary agree with the modelling loop and
   AI limitations in the working-group presentation and ADR-0065.
 - The two Gemini-generated AVIF assets contain identical wording, geometry and arrow
@@ -166,10 +168,11 @@ than competing with the homepage's primary proposition.
 - The local Astro development response returns the amended homepage with the shared
   campaign width, background and responsive styles loaded; this is not a release gate.
 - Static source and rendered-page review may be recorded while this ADR is accepted.
-- At the operator's instruction, tests and builds have not been run for this change.
-  The ADR must remain `accepted`, not `implemented`, until the relevant contract,
-  responsive, accessibility, visual, print and build gates are authorised and pass.
-- Publication and deployment remain explicitly unauthorised.
+- `make test` passes all 258 checks and the CI-equivalent `make build-data` produces
+  all 2,645 static pages after the 1 September campaign amendments. The ADR remains
+  `accepted`, not `implemented`, until its remaining responsive, accessibility,
+  visual and print confirmation work is complete.
+- Publication requires separate operator authority; this ADR does not grant it.
 
 ## Amendments
 
@@ -234,6 +237,26 @@ than competing with the homepage's primary proposition.
   uses the design system's white and warm-neutral surfaces, ink text, violet emphasis
   and light control states when light mode is selected. Dark mode retains the accepted
   deep-ink treatment; content, geometry and routes do not change.
+- **2026-08-31 — generalise the featured kick-off.** The canonical 24-slide deck and
+  homepage feature now introduce any of the six domain working groups. Finance and
+  Banking remains visible as one peer context, while the route, isolated visual-system
+  boundary, controls and homepage feature composition remain unchanged.
+- **2026-08-31 — give the presentation preview theme parity.** The homepage’s
+  CSS-built kick-off poster now uses the shared page surface in both themes, reserving
+  its theme variation for the poster itself; it remains an editorial preview rather
+  than an imported deck runtime or generated image asset.
+- **2026-08-31 — consolidate homepage section headings.** The method, presentation,
+  directory and participation sections now use the shared design-system section-heading
+  hierarchy rather than independently sized eyebrows and local heading spacing.
+- **2026-09-01 — replace ordinal markers with semantic icons.** The homepage domain
+  register and matching recruitment panel now use tree-shaken `@lucide/astro` icons
+  chosen for each domain or action. The adjacent text remains authoritative, and the
+  reinforcing icons stay hidden from assistive technology.
+- **2026-09-01 — align the campaign heading row.** This supersedes the 31 August
+  top-right overlay placement. Both public campaign heroes now place the shared
+  icon-and-name heading and theme control on one content-width row, with the control
+  aligned to the right edge and a shared responsive gap below. Panel icons, item text
+  and the homepage domain-row spacing use the same campaign component rules.
 
 ## More Information
 

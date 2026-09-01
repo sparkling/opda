@@ -78,37 +78,22 @@ const pageTitle = `${title} · Open Property Data Association`;
   </head>
   <body class:list={['standalone-public', bodyClass]}>
     <a class="skip-link" href="#main-content">Skip to main content</a>
-    <header class="campaign-masthead">
-      <a class="campaign-masthead__brand" href="/" aria-label="Open Property Data Association home">
-        <picture>
-          <source media="(forced-colors: active)" srcset="/ui/brand/opda-wordmark-dark.svg" />
-          <img src="/ui/brand/opda-wordmark-white.svg" alt="Open Property Data Association" width="149" height="42" />
-        </picture>
-      </a>
-      <nav class="campaign-masthead__nav" aria-label="Public service">
-        {!isJoinPage && <a href="/programme">Knowledge base</a>}
-        {!isJoinPage && <a href="/join/privacy" aria-current={Astro.url.pathname === '/join/privacy' ? 'page' : undefined}>Privacy</a>}
-        {!isJoinPage && <a href="/accessibility" aria-current={Astro.url.pathname === '/accessibility' ? 'page' : undefined}>Accessibility</a>}
-        {!isJoinPage && <a class="btn campaign-masthead__cta" href={registrationUrl}>Register your interest</a>}
-        {isJoinPage && (
-          <button
-            type="button"
-            class="theme-toggle"
-            id="theme-toggle"
-            aria-label="Switch to dark mode"
-            aria-pressed="false"
-            title="Switch to dark mode"
-          >
-            <svg class="theme-icon theme-icon--sun" viewBox="0 0 24 24" width="20" height="20" fill="currentColor" aria-hidden="true">
-              <path d="M12 4V2m0 20v-2m8-8h2M2 12h2m13.66-5.66l1.42-1.42M4.92 19.08l1.42-1.42m11.32 0l1.42 1.42M4.92 4.92l1.42 1.42M12 7a5 5 0 100 10 5 5 0 000-10z" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
-            </svg>
-            <svg class="theme-icon theme-icon--moon" viewBox="0 0 24 24" width="20" height="20" fill="currentColor" aria-hidden="true">
-              <path d="M20 14.5A8 8 0 0 1 9.5 4a8 8 0 1 0 10.5 10.5z" />
-            </svg>
-          </button>
-        )}
-      </nav>
-    </header>
+    {!isJoinPage && (
+      <header class="campaign-masthead">
+        <a class="campaign-masthead__brand" href="/" aria-label="Open Property Data Association home">
+          <picture>
+            <source media="(forced-colors: active)" srcset="/ui/brand/opda-wordmark-dark.svg" />
+            <img src="/ui/brand/opda-wordmark-white.svg" alt="Open Property Data Association" width="149" height="42" />
+          </picture>
+        </a>
+        <nav class="campaign-masthead__nav" aria-label="Public service">
+          <a href="/programme">Knowledge base</a>
+          <a href="/join/privacy" aria-current={Astro.url.pathname === '/join/privacy' ? 'page' : undefined}>Privacy</a>
+          <a href="/accessibility" aria-current={Astro.url.pathname === '/accessibility' ? 'page' : undefined}>Accessibility</a>
+          <a class="btn campaign-masthead__cta" href={registrationUrl}>Register your interest</a>
+        </nav>
+      </header>
+    )}
     <main id="main-content" tabindex="-1">
       <slot />
     </main>

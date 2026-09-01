@@ -1,6 +1,7 @@
 ---
 status: proposed
 date: 2026-08-03
+updated: 2026-08-31
 tags: [governance, standards-development, working-groups, consensus, ratification, public-review, interoperability, ai-assisted, provenance, conformance, ipr, maintenance]
 supersedes: []
 depends-on: [ADR-0039, ADR-0066, ADR-0067]
@@ -78,6 +79,11 @@ not claim conformity with any one of those processes; it adopts the controls pro
 
 Chosen option: **D — a proportionate staged lifecycle with human consensus and constitutional
 ratification**.
+
+On 31 August 2026 the canonical kick-off presentation was generalised from its first
+Finance and Banking application to all six domain working groups. That editorial
+change does not make this proposed lifecycle operative; the Finance and Banking
+session plan remains historical evidence of the original method.
 
 AI and editors may author candidates. Working groups determine whether domain proposals have
 earned consensus. The Interoperability Working Group determines common-boundary and cross-context
@@ -382,8 +388,8 @@ No change to the current public ontology or website status is authorised by this
 
 ### OPDA evidence and authority
 
-- [Finance and Banking presentation participation slides](../../src/components/presentations/WorkshopParticipationSlides.astro)
-- [Finance and Banking presentation architecture slides](../../src/components/presentations/WorkshopArchitectureSlides.astro)
+- [Working-group kick-off participation slides](../../src/components/presentations/WorkshopParticipationSlides.astro)
+- [Working-group kick-off architecture slides](../../src/components/presentations/WorkshopArchitectureSlides.astro)
 - [Presentation content and session plan](../plan/2026-07-exec-and-finance-banking-presentations.md)
 - [ADR-0039 — linked-data standards direction for SPDTF](./ADR-0039-linked-data-model-as-spdtf-foundation.md)
 - [ADR-0066 — Property Pack seed scope](./ADR-0066-property-pack-451-seed-scope-and-greenfield-ontology.md)

@@ -3,6 +3,7 @@ import WorkingGroupInterestForm from '@/components/campaign/WorkingGroupInterest
 import BrandHeading from '@/components/BrandHeading.astro';
 import { contributionOptions, workingGroupContexts } from '@/data/working-group-campaign';
 import StandalonePublicLayout from '@/layouts/StandalonePublicLayout.astro';
+import { BriefcaseBusiness, Route, SearchCheck } from '@lucide/astro';
 import '@/styles/working-group-join.css';
 import '@/styles/working-group-campaign.css';
 import '@/styles/working-group-campaign-sections.css';
@@ -20,10 +21,27 @@ const description = 'Bring your professional experience to the industry working 
 >
   <div class="wg-page">
     <section class="wg-campaign-hero wg-campaign-hero--panel-aligned" aria-labelledby="join-title">
-      <div class="wg-campaign-hero__copy">
+      <header class="wg-campaign-hero__header">
         <a class="wg-hero-brand-link" href="/" aria-label="Open Property Data Association home">
           <BrandHeading surface="dark" campaign />
         </a>
+        <button
+          type="button"
+          class="theme-toggle"
+          id="theme-toggle"
+          aria-label="Switch to dark mode"
+          aria-pressed="false"
+          title="Switch to dark mode"
+        >
+          <svg class="theme-icon theme-icon--sun" viewBox="0 0 24 24" width="20" height="20" fill="currentColor" aria-hidden="true">
+            <path d="M12 4V2m0 20v-2m8-8h2M2 12h2m13.66-5.66l1.42-1.42M4.92 19.08l1.42-1.42m11.32 0l1.42 1.42M4.92 4.92l1.42 1.42M12 7a5 5 0 100 10 5 5 0 000-10z" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+          </svg>
+          <svg class="theme-icon theme-icon--moon" viewBox="0 0 24 24" width="20" height="20" fill="currentColor" aria-hidden="true">
+            <path d="M20 14.5A8 8 0 0 1 9.5 4a8 8 0 1 0 10.5 10.5z" />
+          </svg>
+        </button>
+      </header>
+      <div class="wg-campaign-hero__copy">
         <p class="wg-eyebrow">The property industry, working together</p>
         <h1 id="join-title">Help shape the future of <em>property information sharing.</em></h1>
         <p class="wg-lead">
@@ -42,11 +60,11 @@ const description = 'Bring your professional experience to the industry working 
       <div class="wg-hero-journey" aria-labelledby="influence-title">
         <p class="wg-eyebrow">Why your voice matters now</p>
         <h2 id="influence-title">The standard needs your experience.</h2>
-        <ol class="wg-process">
-          <li><strong>Bring evidence from real work</strong><span>Show what happens beyond straightforward cases and ideal processes.</span></li>
-          <li><strong>Challenge assumptions before they harden</strong><span>Identify omissions, costs and unintended consequences while proposals can still improve.</span></li>
-          <li><strong>Influence the direction of the standard</strong><span>Help ensure its priorities and requirements reflect commercial reality, professional practice and public need.</span></li>
-        </ol>
+        <ul class="wg-process" role="list">
+          <li><span class="wg-process__icon" aria-hidden="true"><BriefcaseBusiness /></span><strong>Bring evidence from real work</strong><span>Show what happens beyond straightforward cases and ideal processes.</span></li>
+          <li><span class="wg-process__icon" aria-hidden="true"><SearchCheck /></span><strong>Challenge assumptions before they harden</strong><span>Identify omissions, costs and unintended consequences while proposals can still improve.</span></li>
+          <li><span class="wg-process__icon" aria-hidden="true"><Route /></span><strong>Influence the direction of the standard</strong><span>Help ensure its priorities and requirements reflect commercial reality, professional practice and public need.</span></li>
+        </ul>
       </div>
     </section>
 
@@ -235,17 +253,6 @@ const description = 'Bring your professional experience to the industry working 
 </StandalonePublicLayout>
 
 <style>
-  :global(.working-group-campaign .campaign-masthead) {
-    position: absolute;
-    inset: 0 0 auto;
-    justify-content: flex-end;
-    background: transparent;
-    border-bottom: 0;
-  }
-
-  :global(.working-group-campaign .campaign-masthead__brand) { display: none; }
-  :global(.working-group-campaign .campaign-masthead__nav) { margin-left: auto; }
-
   :global(.working-group-campaign .wg-campaign-hero) {
     min-height: min(48rem, 100svh);
     padding-top: var(--space-6);

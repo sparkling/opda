@@ -14,7 +14,9 @@ name: Infrastructure (CloudFormation)
 # Auth: GitHub OIDC → opda-site-deploy role; no static AWS keys (ADR-0040 §1).
 # Repository configuration required:
 #   vars.OPDA_SITE_DEPLOY_ROLE_ARN — from the bootstrap stack outputs
-#   vars.OPDA_AUTH0_DOMAIN         — Auth0 tenant domain used by Artalk SSO
+#   vars.OPDA_AUTH0_DOMAIN         — Auth0 tenant domain used by Artalk SSO and sign-in
+#   vars.OPDA_AUTH0_CLIENT_ID      — public Auth0 application ID used with PKCE
+#   vars.OPDA_MEMBER_EMAILS        — comma-separated authorised commenter e-mails
 
 on:
   push:
@@ -93,7 +95,11 @@ jobs:
       # ---- eu-west-2: site stack (consumes the certificate ARN as a parameter;
       # CloudFormation exports do not cross regions, ADR-0040 §3) ----
       - name: Deploy site stack (eu-west-2)
-        if: hashFiles('config/aws/site-stack.yaml') != ''
+        if: >-
+          hashFiles('config/aws/site-stack.yaml') != '' &&
+          vars.OPDA_AUTH0_DOMAIN != '' &&
+          vars.OPDA_AUTH0_CLIENT_ID != '' &&
+          vars.OPDA_MEMBER_EMAILS != ''
         run: |
           ARTIFACTS_BUCKET=$(aws cloudformation describe-stacks --region eu-west-2 \
             --stack-name opda-artifacts \
@@ -108,7 +114,10 @@ jobs:
             --capabilities CAPABILITY_NAMED_IAM CAPABILITY_AUTO_EXPAND \
             --no-fail-on-empty-changeset \
             --parameter-overrides \
-              CertificateArn="$OPDA_CERTIFICATE_ARN"
+              CertificateArn="$OPDA_CERTIFICATE_ARN" \
+              Auth0Domain="${{ vars.OPDA_AUTH0_DOMAIN }}" \
+              Auth0ClientId="${{ vars.OPDA_AUTH0_CLIENT_ID }}" \
+              MemberEmails="${{ vars.OPDA_MEMBER_EMAILS }}"
 
       # Reconcile the old edge stack only after CloudFront has deployed the site
       # update without viewer-request Lambda associations. On the first retirement

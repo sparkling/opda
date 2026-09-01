@@ -1,20 +1,17 @@
 ---
 interface Props { total: number; }
 const { total } = Astro.props;
-const recordingUrl =
-  'https://openpropertydataassociation-my.sharepoint.com/:v:/g/personal/contact_openpropdata_org_uk/IQCUqKVN-85BTKyTre7kRdD2AfMjmqinRiImko1lnqbQlAc';
 ---
 
-<section class="slide slide--welcome" id="welcome" data-testid="slide" data-title="A shared language for property finance data" data-active="true" role="group" aria-roledescription="slide" aria-label={`1 of ${total}: A shared language for property finance data`}>
+<section class="slide slide--welcome" id="welcome" data-testid="slide" data-title="A shared language for property information" data-active="true" role="group" aria-roledescription="slide" aria-label={`1 of ${total}: A shared language for property information`}>
   <div class="ambient-orbits" aria-hidden="true"><i></i><i></i><i></i></div>
   <div class="scene scene--hero">
-    <p class="eyebrow">Finance &amp; Banking working group</p>
-    <h1>A shared language for <em>property finance data</em></h1>
+    <p class="eyebrow">Working group kick-off</p>
+    <h1>A shared language for <em>property information</em></h1>
     <p class="lede">You bring the domain knowledge. OPDA turns it into a model the group can understand, challenge and improve.</p>
     <div class="reassurance-rail" aria-label="Participation reassurances"><span>No ontology skills</span><span>No graph tools</span><span>No AI adoption required</span></div>
     <div class="button-row hero-actions">
       <button class="primary-action" type="button" data-action="next">Begin <span aria-hidden="true">→</span></button>
-      <a class="secondary-action" href={recordingUrl} target="_blank" rel="noreferrer">Watch the recording <span aria-hidden="true">↗</span></a>
     </div>
   </div>
   <p class="corner-note">Questions are welcome throughout</p>
@@ -29,7 +26,7 @@ const recordingUrl =
       <h2>Henrik <em>Pettersen</em></h2>
       <div class="profile-facts" aria-label="Professional focus"><span>Ontologies · standards · working systems</span><span>Human judgement stays in control</span></div>
       <p class="profile-lede">I turn specialist knowledge into shared models, international standards and working systems. Today, agentic engineering helps me do that faster&mdash;without outsourcing judgement.</p>
-      <div class="profile-role"><span>For this working group</span><p>You bring the Finance and Banking knowledge. I turn your resources, discussions and feedback into reviewable model candidates, schemas and a website.</p></div>
+      <div class="profile-role"><span>For this working group</span><p>You bring knowledge of your field. I lead the modelling process that turns the group&rsquo;s resources, discussions and feedback into reviewable candidates and familiar outputs.</p></div>
       <a class="profile-site" href="https://sparklingideas.co.uk" target="_blank" rel="noreferrer"><span>Professional services</span><strong>sparklingideas.co.uk</strong><i aria-hidden="true">↗</i></a>
     </div>
     <div class="professional-summary" aria-label="Professional capability summary">
@@ -58,7 +55,7 @@ const recordingUrl =
         <div class="proposition-agentic">
           <span>Agentic engineering</span>
           <strong>Accelerates the whole loop</strong>
-          <small>Evidence in · challenged drafts out · people decide</small>
+          <small>Evidence in · challenged candidates out · people decide</small>
           <i aria-hidden="true"></i>
         </div>
       </div>
@@ -71,8 +68,8 @@ const recordingUrl =
     <p class="eyebrow">Working-group orientation</p>
     <h2>What this first meeting <em>is for</em></h2>
     <div class="promise-grid">
-      <article><span>01</span><h3>Set the context</h3><p>Why OPDA is convening the Finance and Banking group, the problem it addresses and how it fits the wider programme.</p></article>
-      <article><span>02</span><h3>Present the approach</h3><p>How existing work will inform domain-led modelling, with distinct contexts connected through interoperability.</p></article>
+      <article><span>01</span><h3>Set the context</h3><p>Why this working group exists, the problem it addresses and how it fits the wider programme.</p></article>
+      <article><span>02</span><h3>Present the approach</h3><p>How existing work informs domain-led modelling, with distinct contexts and explicit cross-context mappings.</p></article>
       <article><span>03</span><h3>Make the model accessible</h3><p>A plain-language introduction to data models and ontologies—and how familiar schemas and forms can be generated from them.</p></article>
       <article><span>04</span><h3>Show the path ahead</h3><p>How shared resources become published model candidates, and how the group will review and improve them.</p></article>
     </div>
@@ -82,15 +79,17 @@ const recordingUrl =
 
 <section class="slide" id="handoffs" data-testid="slide" data-title="Meaning changes across bounded contexts" role="group" aria-roledescription="slide" aria-label={`4 of ${total}: Meaning changes across bounded contexts`}>
   <div class="scene scene--wide">
-    <div class="title-row"><div><p class="eyebrow">Different domains, valid local meanings</p><h2>Meaning changes across <em>bounded contexts</em></h2></div><p class="scene-intro">A property does not need one universal definition. Each domain can describe what matters locally; explicit mappings carry information across the boundary.</p></div>
-    <div class="handoff-flow" data-interaction="handoffs" aria-label="Example OPDA bounded contexts exchanging property information">
-      <button type="button" data-detail="Estate Agency treats Property as something to market: listing, features, asking price, availability and buyer interest.">Estate<br />Agency</button><span aria-hidden="true">↔</span>
-      <button type="button" data-detail="Finance and Banking treats Property as mortgage security: eligibility, valuation basis, loan-to-value, risk and supporting evidence." aria-pressed="true">Finance &amp;<br />Banking</button><span aria-hidden="true">↔</span>
-      <button type="button" data-detail="Surveying and Valuation treats Property as a physical asset to inspect and value: condition, defects, measurements and market evidence.">Surveying &amp;<br />Valuation</button><span aria-hidden="true">↔</span>
-      <button type="button" data-detail="Conveyancing treats Property as a legal estate: title, tenure, rights, restrictions, obligations and parties.">Conveyancing</button><span aria-hidden="true">↔</span>
-      <button type="button" data-detail="Property Data Services treats Property as a resolved record across identifiers, authoritative sources, datasets and changes over time.">Property Data<br />Services</button>
+    <div class="title-row"><div><p class="eyebrow">Illustrative context lenses</p><h2>Meaning changes across <em>bounded contexts</em></h2></div><p class="scene-intro">A property does not need one universal definition. Each domain can describe what matters locally without flattening those meanings into one model.</p></div>
+    <div class="handoff-flow" data-interaction="handoffs" aria-label="Illustrative Property perspectives for the six OPDA bounded contexts">
+      <button type="button" data-detail="Conveyancing may need to describe Property as a legal estate: title, tenure, rights, restrictions, obligations and parties.">Conveyancing</button>
+      <button type="button" data-detail="Estate Agency may need to describe Property as something to market: listing, features, asking price, availability and buyer interest.">Estate<br />Agency</button>
+      <button type="button" data-detail="Finance and Banking may need to describe Property as mortgage security: eligibility, valuation basis, loan-to-value, risk and supporting evidence.">Finance &amp;<br />Banking</button>
+      <button type="button" data-detail="Property Data Services may need to describe Property as a resolved record across identifiers, authoritative sources, datasets and changes over time.">Property Data<br />Services</button>
+      <button type="button" data-detail="Property Technology may need to describe Property as information moving through platforms, APIs, integrations and operational workflows.">Property<br />Technology</button>
+      <button type="button" data-detail="Surveying and Valuation may need to describe Property as a physical asset to inspect and value: condition, defects, measurements and market evidence.">Surveying &amp;<br />Valuation</button>
     </div>
-    <output class="interaction-callout" data-output="handoffs" role="status" aria-live="polite">Finance and Banking treats Property as mortgage security: eligibility, valuation basis, loan-to-value, risk and supporting evidence.</output>
+    <output class="interaction-callout" data-output="handoffs" role="status" aria-live="polite">Select a context to see one possible focus for Property.</output>
+    <p class="handoff-mapping">These examples explain the approach; each group reviews and determines its own meaning. Formal cross-context mappings are reviewed separately.</p>
     <div class="metric-strip"><span>Local meaning</span><span>Clear boundaries</span><span>Explicit mappings</span><span>Shared identifiers</span><span>Traceable sources</span></div>
   </div>
 </section>
@@ -100,9 +99,9 @@ const recordingUrl =
     <p class="eyebrow">Continuity with a better source of meaning</p>
     <h2>Evolution, <em>not replacement</em></h2>
     <div class="continuity-grid">
-      <article><h3>What carries forward</h3><ul><li>JSON Schemas and examples</li><li>Schema-derived ontology and mappings</li><li>Glossary, dictionary and validation</li><li>Website and implementation experience</li></ul><p>Evidence, traceability, tests and compatibility inputs.</p></article>
-      <div class="method-shift" aria-label="Method shift"><span>Schema-led derivation</span><b aria-hidden="true">→</b><span>Domain-led, evidence-up modelling</span></div>
-      <article><h3>What changes</h3><ul><li>Practitioners become the authority for meaning</li><li>Each bounded context receives equal focus</li><li>Differences are mapped rather than flattened</li><li>Review happens through readable website drafts</li></ul><p>Bottom-up domain precision, held together by explicit interoperability.</p></article>
+      <article><h3>What carries forward</h3><ul><li>Schemas, forms and worked examples</li><li>Existing standards and vocabularies</li><li>Glossaries, dictionaries and validation</li><li>Website and implementation experience</li></ul><p>Evidence, traceability, tests and compatibility inputs.</p></article>
+      <div class="method-shift" aria-label="Method shift"><span>Existing evidence and practice</span><b aria-hidden="true">→</b><span>Domain-led, evidence-grounded modelling</span></div>
+      <article><h3>What changes</h3><ul><li>Domain groups review and agree local meaning</li><li>Each bounded context receives equal focus</li><li>Differences are mapped rather than flattened</li><li>Review happens through readable website candidates</li></ul><p>A recorded OPDA decision controls whether a candidate moves forward; interoperability aligns the boundaries.</p></article>
     </div>
   </div>
 </section>
@@ -111,10 +110,10 @@ const recordingUrl =
   <div class="scene split-scene split-scene--balanced">
     <div><p class="eyebrow">Start with the basics</p><h2>What is a <em>data model?</em></h2><blockquote class="definition">An agreed map of the important business things, what they mean, how they fit together and the rules that apply.</blockquote></div>
     <div class="model-anatomy" aria-label="Parts of a data model">
-      <article><span>Things</span><strong>Applicant · Mortgage · Property · Evidence</strong></article>
+      <article><span>Things</span><strong>Organisation · Submission · Property · Evidence</strong></article>
       <article><span>Meaning</span><strong>Clear definitions in this context</strong></article>
-      <article><span>Relationships</span><strong>Applicant applies for Mortgage</strong></article>
-      <article><span>Rules</span><strong>Evidence supports a dated assertion</strong></article>
+      <article><span>Relationships</span><strong>Organisation provides Submission</strong></article>
+      <article><span>Rules</span><strong>Evidence supports a dated statement</strong></article>
       <p>Before choosing a file format, agree what the information means.</p>
     </div>
   </div>
@@ -124,15 +123,15 @@ const recordingUrl =
   <div class="scene scene--wide">
     <div class="title-row"><div><p class="eyebrow">A familiar view</p><h2>Forms and schemas organise data as a <em>tree</em></h2></div><p class="scene-intro">A tree is excellent for one workflow, form or exchange contract: every item has a chosen place and path.</p></div>
     <div class="tree-lab">
-      <div class="form-mock" aria-label="Example mortgage application form"><h3>Mortgage application</h3><label>Applicant <span>Alex Morgan</span></label><label>Mortgage <span>Residential purchase</span></label><fieldset><legend>Property</legend><label>Address <span>14 Oak Road</span></label><label>Estimated value <span>£425,000</span></label></fieldset><label>Evidence <span>Payslip · June</span></label></div>
+      <div class="form-mock" aria-label="Example property information submission"><h3>Property information submission</h3><label>Organisation <span>Example Organisation</span></label><label>Submitted <span>31 August 2026</span></label><fieldset><legend>Property</legend><label>Address <span>14 Oak Road</span></label><label>Floor area <span>92 m²</span></label></fieldset><label>Evidence <span>Floor plan · 2026</span></label></div>
       <div class="transform-arrow"><span>one chosen shape</span><b aria-hidden="true">→</b></div>
       <pre class="json-tree" aria-label="Tree-shaped JSON example"><code><b>{`{`}</b>
-  <span>"applicant"</span>: {`{`} … {`}`},
-  <span>"mortgage"</span>: {`{`}
-    "purpose": "purchase",
+  <span>"organisation"</span>: {`{`} … {`}`},
+  <span>"submission"</span>: {`{`}
+    "submitted": "2026-08-31",
     <span>"property"</span>: {`{`}
       "address": "14 Oak Road",
-      "estimatedValue": 425000
+      "floorArea": 92
     {`}`}
   {`}`},
   <span>"evidence"</span>: [ … ]
@@ -145,9 +144,54 @@ const recordingUrl =
 <section class="slide" id="graph-view" data-testid="slide" data-title="An ontology connects knowledge as a graph" role="group" aria-roledescription="slide" aria-label={`8 of ${total}: An ontology connects knowledge as a graph`}>
   <div class="scene scene--wide">
     <div class="title-row"><div><p class="eyebrow">The connected view</p><h2>An ontology connects knowledge as a <em>graph</em></h2></div><p class="scene-intro">The same concepts can participate in several relationships without being trapped inside one document path.</p></div>
-    <div class="relation-graph" role="img" aria-label="Applicant applies for Mortgage, Mortgage is secured against Property, Evidence supports an assertion about Applicant">
-      <div class="relation-row"><span class="relation-node">Applicant</span><i><span>applies for</span></i><span class="relation-node relation-node--accent">Mortgage</span><i><span>is secured against</span></i><span class="relation-node">Property</span></div>
-      <div class="relation-branch"><span class="relation-node">Evidence</span><i><span>supports</span></i><span class="relation-node">Income assertion</span><i><span>is about</span></i><span class="relation-node">Applicant</span></div>
+    <div class="relation-graph">
+      <svg class="relation-graph__svg" viewBox="0 0 1200 410" role="img" aria-labelledby="relation-graph-title relation-graph-description">
+        <title id="relation-graph-title">A connected property-information graph</title>
+        <desc id="relation-graph-description">An organisation provides an information submission that describes one shared Property. Evidence supports a floor area statement about that same Property.</desc>
+        <defs>
+          <marker id="relation-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+            <path class="relation-arrow" d="M 0 0 L 10 5 L 0 10 z"></path>
+          </marker>
+        </defs>
+
+        <g class="relation-links" aria-hidden="true">
+          <path class="relation-link" d="M 280 81 H 334 V 130 H 385"></path>
+          <path class="relation-link" d="M 645 130 H 760 V 182 H 900"></path>
+          <path class="relation-link" d="M 340 325 H 410 V 304 H 480"></path>
+          <path class="relation-link" d="M 740 304 H 806 V 236 H 900"></path>
+        </g>
+
+        <g class="relation-labels" aria-hidden="true">
+          <g transform="translate(285 58)"><rect width="92" height="32" rx="16"></rect><text x="46" y="21">provides</text></g>
+          <g transform="translate(685 107)"><rect width="102" height="32" rx="16"></rect><text x="51" y="21">describes</text></g>
+          <g transform="translate(344 302)"><rect width="94" height="32" rx="16"></rect><text x="47" y="21">supports</text></g>
+          <g transform="translate(754 281)"><rect width="88" height="32" rx="16"></rect><text x="44" y="21">is about</text></g>
+        </g>
+
+        <g class="relation-nodes">
+          <g class="relation-node" transform="translate(40 40)">
+            <rect width="240" height="82" rx="16"></rect>
+            <text x="120" y="50">Organisation</text>
+          </g>
+          <g class="relation-node" transform="translate(385 82)">
+            <rect width="260" height="96" rx="16"></rect>
+            <text x="130" y="56">Information submission</text>
+          </g>
+          <g class="relation-node" transform="translate(120 284)">
+            <rect width="220" height="82" rx="16"></rect>
+            <text x="110" y="50">Evidence</text>
+          </g>
+          <g class="relation-node" transform="translate(480 256)">
+            <rect width="260" height="96" rx="16"></rect>
+            <text x="130" y="56">Floor area statement</text>
+          </g>
+          <g class="relation-node relation-node--focal" transform="translate(900 152)">
+            <rect width="250" height="112" rx="56"></rect>
+            <text class="relation-node__hint" x="125" y="39">ONE SHARED NODE</text>
+            <text x="125" y="76">Property</text>
+          </g>
+        </g>
+      </svg>
     </div>
     <div class="graph-questions"><span>What is it?</span><span>How is it related?</span><span>Who asserted it?</span><span>When was it true?</span><span>Which rule applies?</span></div>
     <p class="qualifier">The graph answers: “What does this mean, and how can it connect safely to other information?”</p>
@@ -156,26 +200,26 @@ const recordingUrl =
 
 <section class="slide" id="same-knowledge" data-testid="slide" data-title="Same knowledge, different views" role="group" aria-roledescription="slide" aria-label={`9 of ${total}: Same knowledge, different views`}>
   <div class="scene scene--wide">
-    <div class="title-row"><div><p class="eyebrow">Complementary, not competing</p><h2>Same knowledge, <em>different views</em></h2></div><div class="concept-switch" data-interaction="view-sync" role="group" aria-label="Highlight a concept"><button type="button" data-concept="applicant">Applicant</button><button type="button" data-concept="mortgage">Mortgage</button><button type="button" data-concept="property" aria-pressed="true">Property</button><button type="button" data-concept="evidence">Evidence</button></div></div>
+    <div class="title-row"><div><p class="eyebrow">Complementary, not competing</p><h2>Same knowledge, <em>different views</em></h2></div><div class="concept-switch" data-interaction="view-sync" role="group" aria-label="Highlight a concept"><button type="button" data-concept="organisation">Organisation</button><button type="button" data-concept="submission">Submission</button><button type="button" data-concept="property" aria-pressed="true">Property</button><button type="button" data-concept="evidence">Evidence</button></div></div>
     <div class="synchronised-views" data-sync-root>
-      <article><h3>Electronic form</h3><p data-concept="applicant">Applicant details</p><p data-concept="mortgage">Mortgage request</p><p data-concept="property" class="is-active">Property details</p><p data-concept="evidence">Supporting documents</p></article>
-      <article><h3>JSON tree</h3><code data-concept="applicant">$.applicant</code><code data-concept="mortgage">$.mortgage</code><code data-concept="property" class="is-active">$.mortgage.property</code><code data-concept="evidence">$.evidence[]</code></article>
-      <article><h3>Ontology graph</h3><div class="sync-nodes"><span data-concept="applicant">Applicant</span><span data-concept="mortgage">Mortgage</span><span data-concept="property" class="is-active">Property</span><span data-concept="evidence">Evidence</span></div></article>
+      <article><h3>Electronic form</h3><p data-concept="organisation">Organisation details</p><p data-concept="submission">Submission details</p><p data-concept="property" class="is-active">Property details</p><p data-concept="evidence">Supporting evidence</p></article>
+      <article><h3>JSON tree</h3><code data-concept="organisation">$.organisation</code><code data-concept="submission">$.submission</code><code data-concept="property" class="is-active">$.submission.property</code><code data-concept="evidence">$.evidence[]</code></article>
+      <article><h3>Ontology graph</h3><div class="sync-nodes"><span data-concept="organisation">Organisation</span><span data-concept="submission">Submission</span><span data-concept="property" class="is-active">Property</span><span data-concept="evidence">Evidence</span></div></article>
     </div>
-    <output class="interaction-callout" data-output="view-sync" role="status" aria-live="polite">Property appears at one path in this JSON message, but the graph can connect it to valuation, title, survey and provenance contexts.</output>
+    <output class="interaction-callout" data-output="view-sync" role="status" aria-live="polite">Property appears at one path in this JSON message, but the graph can connect it to valuation, title, survey, listing, platform and provenance contexts.</output>
   </div>
 </section>
 
-<section class="slide" id="familiar-outputs" data-testid="slide" data-title="You do not need to work with the graph" role="group" aria-roledescription="slide" aria-label={`10 of ${total}: You do not need to work with the graph`}>
+<section class="slide" id="familiar-outputs" data-testid="slide" data-title="You do not need to understand ontologies" role="group" aria-roledescription="slide" aria-label={`10 of ${total}: You do not need to understand ontologies`}>
   <div class="scene scene--wide">
     <p class="eyebrow">A governed source, familiar views</p>
-    <h2>You do not need to <em>work with the graph</em></h2>
+    <h2>You do not need to <em>understand ontologies</em></h2>
     <div class="publication-flow">
       <div class="review-input"><span>You review</span><strong>Definitions · examples · relationships · rules</strong></div>
-      <div class="semantic-core"><small>Governed meaning</small><strong>Ontology</strong><span>connected graph</span></div>
+      <div class="semantic-core"><small>Proposed meaning</small><strong>Candidate ontology</strong><span>connected graph</span></div>
       <div class="generator-layer"><span>Mappings</span><span>Generators</span><span>Templates</span><span>Tests</span></div>
       <div class="output-grid"><small>Familiar outputs</small><span>JSON Schemas</span><span>Forms &amp; APIs</span><span>Website</span><span>PDF &amp; Markdown</span><span>Validation</span><span>Integrations</span></div>
     </div>
-    <p class="qualifier qualifier--strong">The ontology supplies governed meaning. Tested transformations produce the useful formats.</p>
+    <p class="qualifier qualifier--strong">A candidate ontology makes proposed meaning explicit. Reviewed transformations produce familiar outputs.</p>
   </div>
 </section>

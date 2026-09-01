@@ -204,8 +204,7 @@ article uses the available content track up to a 1600px maximum. Headings, leads
 paragraphs, lists, quotations, callouts, cards and section copy fill their parent and
 must not add another `max-width`.
 This documentation rule does not apply to the independently authored full-screen
-Finance and Banking working-group deck, whose slide layouts use deliberate local
-measures.
+working-group kick-off deck, whose slide layouts use deliberate local measures.
 Lists have a small tokenised gap above and below, separating them from both their
 introductory copy and the content that follows.
 Figures, tables, diagrams, media and intrinsically sized controls retain their own
@@ -291,7 +290,7 @@ Its sequence is:
    It uses deep ink in dark mode and white/warm-neutral surfaces in light mode without structural change.
 2. Static, accessible AI-assisted modelling loop with source material, a published candidate,
    returning feedback and a consensus-gated draft-standard outcome.
-3. Prominent editorial link to the Finance and Banking working-group kick-off deck.
+3. Prominent editorial link to the working-group kick-off deck.
 4. Six linked entry cards, in the accepted order, for Programme, Governance, Semantic
    modelling, SPDTF Development, Working groups and Resources.
 5. Bounded participation call to action.
@@ -306,11 +305,11 @@ infographic is the bounded exception defined below. The presentation feature is 
 `/join`, `/join/privacy` and `/accessibility` form one standalone public-service
 family. They use the official wordmark, tokens, type, buttons, fields, focus and
 status primitives without the Knowledge Base header, rail, breadcrumb, contents or
-previous/next furniture. Their minimal masthead offers home, Knowledge Base, privacy,
-accessibility and registration routes; their deep-ink footer repeats the public-
-service exits. The join campaign uses five natural chapters: the industry problem,
-the wider programme, where expertise matters, what participation involves and the
-full form on a theme-aware surface. Technical modelling detail stays in the
+previous/next furniture. Public statements retain a minimal masthead; `/join` instead
+places the linked organisation heading and theme control on one content-width hero row.
+The deep-ink footer repeats the public-service exits. The join campaign uses seven
+natural chapters from the practical invitation and reasons to participate through
+programme context, contribution, trust and the full theme-aware form. Technical modelling detail stays in the
 Knowledge Base. The campaign never uses parallax, pinned scrolling, delayed reveals
 or interaction-gated meaning.
 
@@ -329,14 +328,15 @@ states, plus loading/error/success where asynchronous work occurs and dark parit
 - **Header action:** one yellow primary action may sit at the utility end of the
   application header; it uses a short verb-led label and remains available in the
   compact navigation disclosure.
-- **Header utilities:** familiar single-purpose destinations may use 20px icons in
-  44px targets, with an accessible name and tooltip; icons never replace the CTA label.
-- **Organisation heading:** the unchanged yellow icon plus the full organisation name in one
-  unbroken line of live DM Sans text; use strong ink on light and the inverse treatment on dark.
+- **Header utilities:** familiar single-purpose destinations may use 20px icons in 44px targets, with an accessible name and tooltip; icons never replace the CTA label.
+- **Organisation heading:** the unchanged yellow icon plus the full organisation name in one unbroken line of live DM Sans text; use strong ink on light and the inverse treatment on dark.
+- **Section heading:** a shared optional uppercase DM Sans eyebrow, display H2 and optional lead.
+  Use it for distinct subjects; do not recreate local eyebrow scales or heading spacing.
 - **Sidebar disclosure:** linked folder rows in a task-oriented hierarchy use a quiet
   tinted surface, structural border and bold label so they are distinct from leaf
   links. A separate 44px disclosure button expands each branch; its label opens the page.
 - **Status badge:** icon, complete text label and tint; never a bare dot.
+- **Campaign panel list:** use large, restrained semantic icons with an adjacent title and description; icons reinforce rather than replace text and are hidden from assistive technology.
 - **Provenance chip:** Roboto Mono source and timestamp; links to evidence when
   available.
 - **Callout:** note/success/warning/danger with 3px semantic rule, icon and heading.

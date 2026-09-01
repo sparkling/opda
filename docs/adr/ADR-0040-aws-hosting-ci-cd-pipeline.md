@@ -1,7 +1,7 @@
 ---
 status: accepted
 date: 2026-06-06
-updated: 2026-08-27
+updated: 2026-09-01
 tags: [infrastructure, ci-cd, deployment, security]
 supersedes: []
 depends-on: [ADR-0021, ADR-0037]
@@ -16,6 +16,13 @@ implements: [ADR-0038]
 > gate configuration and gate-version hand-off are retired. During removal, CI
 > deploys the ungated site distribution before reconciling `opda-edge` to its
 > certificate-only template; later runs retain that certificate/site ordering.
+>
+> **Amended 2026-09-01 by ADR-0079.** The regional site package now also carries
+> a nested, path-scoped Auth0 session Lambda and HTTP API. CI supplies the Auth0
+> domain, public PKCE client ID and authorised-commenter list to that nested
+> application when it deploys the site stack. No Lambda@Edge packaging or
+> function-version hand-off has returned, and ordinary site deploys remain
+> independent of authentication.
 
 ## Context and Problem Statement
 

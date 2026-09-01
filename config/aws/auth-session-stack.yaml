@@ -1,0 +1,141 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: >-
+  Path-scoped Auth0 OAuth session service for OPDA member comments. The public
+  site remains ungated; CloudFront routes only /_auth/* here (ADR-0038/ADR-0079).
+
+Parameters:
+  DomainName:
+    Type: String
+    Default: opda.org.uk
+  Auth0Domain:
+    Type: String
+    AllowedPattern: '^[A-Za-z0-9][A-Za-z0-9.-]*[A-Za-z0-9]$'
+    Description: Auth0 tenant hostname without a scheme or path.
+  Auth0ClientId:
+    Type: String
+    MinLength: 1
+    MaxLength: 256
+    Description: Public Auth0 application client ID; OAuth uses PKCE and no client secret.
+  MemberEmails:
+    Type: String
+    MinLength: 3
+    NoEcho: true
+    Description: Comma-separated lower- or mixed-case e-mail allowlist for member comments.
+
+Resources:
+  FunctionLogGroup:
+    Type: AWS::Logs::LogGroup
+    Properties:
+      LogGroupName: /aws/lambda/opda-auth-session
+      RetentionInDays: 30
+
+  FunctionRole:
+    Type: AWS::IAM::Role
+    Properties:
+      RoleName: opda-auth-session
+      AssumeRolePolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+          - Effect: Allow
+            Principal: { Service: lambda.amazonaws.com }
+            Action: sts:AssumeRole
+      Policies:
+        - PolicyName: auth-session-logs
+          PolicyDocument:
+            Version: '2012-10-17'
+            Statement:
+              - Effect: Allow
+                Action: [logs:CreateLogStream, logs:PutLogEvents]
+                Resource: !Sub 'arn:${AWS::Partition}:logs:${AWS::Region}:${AWS::AccountId}:log-group:/aws/lambda/opda-auth-session:*'
+
+  Function:
+    Type: AWS::Serverless::Function
+    DependsOn: FunctionLogGroup
+    Properties:
+      FunctionName: opda-auth-session
+      CodeUri: auth-session/
+      Handler: index.handler
+      Runtime: nodejs22.x
+      Architectures: [arm64]
+      MemorySize: 128
+      Timeout: 15
+      ReservedConcurrentExecutions: 5
+      Role: !GetAtt FunctionRole.Arn
+      Environment:
+        Variables:
+          AUTH0_DOMAIN: !Ref Auth0Domain
+          AUTH0_CLIENT_ID: !Ref Auth0ClientId
+          MEMBER_EMAILS: !Ref MemberEmails
+          SITE_ORIGIN: !Sub 'https://${DomainName}'
+
+  Api:
+    Type: AWS::ApiGatewayV2::Api
+    Properties:
+      Name: opda-auth-session
+      Description: Same-origin OAuth session endpoints for explicit OPDA member sign-in
+      ProtocolType: HTTP
+
+  Integration:
+    Type: AWS::ApiGatewayV2::Integration
+    Properties:
+      ApiId: !Ref Api
+      IntegrationType: AWS_PROXY
+      IntegrationUri: !GetAtt Function.Arn
+      PayloadFormatVersion: '2.0'
+      TimeoutInMillis: 15000
+
+  LoginRoute:
+    Type: AWS::ApiGatewayV2::Route
+    Properties:
+      ApiId: !Ref Api
+      RouteKey: GET /_auth/login
+      Target: !Sub 'integrations/${Integration}'
+
+  CallbackRoute:
+    Type: AWS::ApiGatewayV2::Route
+    Properties:
+      ApiId: !Ref Api
+      RouteKey: GET /_auth/callback
+      Target: !Sub 'integrations/${Integration}'
+
+  MeRoute:
+    Type: AWS::ApiGatewayV2::Route
+    Properties:
+      ApiId: !Ref Api
+      RouteKey: GET /_auth/me
+      Target: !Sub 'integrations/${Integration}'
+
+  LogoutRoute:
+    Type: AWS::ApiGatewayV2::Route
+    Properties:
+      ApiId: !Ref Api
+      RouteKey: GET /_auth/logout
+      Target: !Sub 'integrations/${Integration}'
+
+  Stage:
+    Type: AWS::ApiGatewayV2::Stage
+    Properties:
+      ApiId: !Ref Api
+      StageName: $default
+      AutoDeploy: true
+      DefaultRouteSettings:
+        DetailedMetricsEnabled: false
+        ThrottlingBurstLimit: 20
+        ThrottlingRateLimit: 10
+
+  InvokePermission:
+    Type: AWS::Lambda::Permission
+    Properties:
+      Action: lambda:InvokeFunction
+      FunctionName: !Ref Function
+      Principal: apigateway.amazonaws.com
+      SourceArn: !Sub 'arn:${AWS::Partition}:execute-api:${AWS::Region}:${AWS::AccountId}:${Api}/*/GET/_auth/*'
+
+Outputs:
+  ApiEndpoint:
+    Value: !GetAtt Api.ApiEndpoint
+  ApiOriginDomainName:
+    Value: !Sub '${Api}.execute-api.${AWS::Region}.${AWS::URLSuffix}'
+  FunctionName:
+    Value: !Ref Function

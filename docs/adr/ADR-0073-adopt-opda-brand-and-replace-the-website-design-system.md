@@ -1,7 +1,7 @@
 ---
 status: implemented
 date: 2026-08-16
-updated: 2026-08-30
+updated: 2026-08-31
 tags: [design-system, brand, website, accessibility, css, governance, presentation]
 supersedes: [ADR-0025]
 depends-on: [ADR-0064]
@@ -77,8 +77,7 @@ review: each shared-site composition has one outer width authority. Nested text
 measures were removed from prose descendants, heroes, cards, callouts and campaign
 pages; tables, diagrams, media and controls retain bounded sizing where their
 interaction requires it. This rule does not govern the independently authored
-Finance and Banking working-group deck, whose slide compositions use deliberate local
-measures.
+working-group kick-off deck, whose slide compositions use deliberate local measures.
 
 On 20 August 2026 the shared documentation track was set to a single 1600px maximum.
 The former narrow 66ch prose measure and page-specific width exceptions were removed,
@@ -135,9 +134,9 @@ unfinished shared-site surface and removed its purpose-built composition. The de
 the separate `docs/design-system-site/` review artefact remains the presentation of
 this design system.
 
-Later on 30 August 2026 ADR-0080 added a bounded graphical composition for `/`: a
+On 30 August 2026 ADR-0080 added a bounded graphical composition for `/`: a
 static official-icon backdrop, an accessible AI-assisted modelling loop and an
-editorial link to the restored Finance and Banking deck. The loop follows the deck's
+editorial link to the working-group kick-off deck. The loop follows the deck's
 resource, candidate and human-review method, with the consensus-gated draft outcome
 outside the repeating cycle. Shared brand and accessibility authority, and the deck's
 isolated local visual system, remain unchanged. Publication is not authorised.
@@ -155,6 +154,17 @@ official yellow icon unchanged, presents the full name as live DM Sans text, and
 defines light, inverse, responsive, forced-colour and print treatments in the design
 system rather than in the homepage. The live reference and standalone review site
 carry matching light- and dark-surface specimens.
+
+On 31 August 2026 the restored deck&rsquo;s session content was generalised for all six
+domain working groups. Its 24-slide structure, fragment identifiers, controls and
+Conveyancing demonstration remain. Finance and Banking is now one peer context rather
+than the deck&rsquo;s default; the original session plan and source material remain historical
+evidence. The deck retains its isolated visual-system boundary and established identity,
+with local composition changes made only where the generalised content requires them.
+
+Later on 31 August 2026, the deck&rsquo;s graph slide was redrawn as one connected
+network with one shared Property node, and its adjacent reassurance was clarified
+to say that participants do not need to understand ontologies.
 
 On 27 August 2026 the remaining working-group wrapper exception was removed. The
 join and privacy routes now inherit the standard main padding, article wrapper and
@@ -220,8 +230,8 @@ The system has six ownership boundaries:
 machine-readable token projection. `public/ui/design-system.css` is a small facade
 over reviewable modules in `public/ui/design/`. Astro components consume those
 files; neither the design-system presentation in `docs/design-system-site/` nor
-historical `design/` material is an independent source of truth. The separate Finance
-and Banking working-group deck is outside this shared visual-system contract.
+historical `design/` material is an independent source of truth. The separate
+working-group kick-off deck is outside this shared visual-system contract.
 
 Tailwind Preflight remains enabled for adopted TailwindPlus controls. The OPDA
 modules remain unlayered for the current cascade boundary and explicitly restore
@@ -276,7 +286,7 @@ application or mutation of any other production site.
 ## Confirmation
 
 The receipts below predate the 30 August restoration and do not validate the restored
-Finance and Banking deck. Its retained keyboard, responsive, accessibility and visual
+working-group deck. Its retained keyboard, responsive, accessibility and visual
 behaviour requires a fresh local validation receipt when testing is authorised.
 
 - Contract tests verify official asset geometry, supplied palette values, derived

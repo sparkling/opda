@@ -37,7 +37,7 @@ guardrails:
   - "This intentional synthesis is not a precedent for merging other notebook sources."
   - "Preserve the status, scope, date and authority of every component source."
   - "Include only cross-portfolio facts; detailed narrative and model content stay in their notebooks."
-  - "Do not use PDTF 1.0 or SPDTF 2.0."
+  - "Do not use PDTF with numbered versioning or SPDTF with numbered versioning."
   - "Do not call the Property Pack ontology the SPDTF ontology."
   - "Do not convert proposed governance or workflow into current policy."
   - "Do not state that a property Smart Data scheme is enacted or operational unless the cited source establishes it."
@@ -65,7 +65,7 @@ canonical_facts:
     statement: Domain practitioners provide evidence and own meaning within their contextual boundary; AI may assist with reviewable proposals but does not decide meaning.
     authority: ADR-0063 and proposed ADR-0065
   - subject: Prohibited version labels
-    statement: Do not use PDTF 1.0 or SPDTF 2.0.
+    statement: Do not use PDTF with numbered versioning or SPDTF with numbered versioning.
     authority: ADR-0077 and ADR-0081
 
 required_component_metadata:

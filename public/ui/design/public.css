@@ -49,8 +49,7 @@
   flex-direction: column;
   justify-content: center;
 }
-.public-hero .eyebrow,
-.public-overview .overline {
+.public-hero .eyebrow {
   margin: 0 0 var(--space-4);
   font: 700 var(--text-xs) / 1.3 var(--font-sans);
   letter-spacing: var(--tracking-meta);
@@ -96,9 +95,6 @@
   margin: 0 auto;
   padding: var(--space-10) var(--space-7);
 }
-.public-overview > header { margin-bottom: var(--space-7); }
-.public-overview .overline { color: var(--color-text-muted); }
-.public-overview h2 { margin: 0; font: var(--h2); }
 .public-footer {
   min-height: 8rem;
   margin-top: auto;

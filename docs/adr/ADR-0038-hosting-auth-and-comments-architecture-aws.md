@@ -1,7 +1,7 @@
 ---
 status: accepted
 date: 2026-06-06
-updated: 2026-08-27
+updated: 2026-09-01
 tags: [infrastructure, hosting, auth, deployment, comments]
 supersedes: []
 depends-on: []
@@ -17,6 +17,12 @@ implements: []
 > and gate deployment topology are superseded: the site is now public and the
 > `us-east-1` edge stack retains only the CloudFront ACM certificate. References
 > below describe the historical decision unless ADR-0079 states otherwise.
+>
+> **Amended again 2026-09-01 by ADR-0079.** The public-site decision is
+> unchanged. An endpoint-only regional session service now implements the four
+> `/_auth/*` routes required by explicit member sign-in and Artalk SSO. It is
+> routed by one CloudFront path behavior and is never associated with the
+> default public content behavior.
 
 ## Context and Problem Statement
 

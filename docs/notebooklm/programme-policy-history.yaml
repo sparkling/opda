@@ -60,7 +60,7 @@ dependencies:
 
 guardrails:
   - "Use Open Property Data Association and Smart Property Data Trust Framework on first reference."
-  - "Do not use the labels PDTF 1.0 or SPDTF 2.0."
+  - "Do not use the labels PDTF with numbered versioning or SPDTF with numbered versioning."
   - "The Property Pack ontology is an independent delivery intended to become a future SPDTF component."
   - "Do not imply that a wider SPDTF ontology already exists."
   - "Distinguish government policy, OPDA decisions, third-party evidence and future ambition."

@@ -100,11 +100,10 @@ kbd { display: inline-block; min-width: 1.5rem; margin: 0 0.15rem; padding: 0.2r
   .next-button { width: 2.75rem; padding: 0; font-size: 0; }
   .next-button span { font-size: 1rem; }
   .promise-grid,
+  .handoff-flow,
   .continuity-grid,
   .model-anatomy,
   .tree-lab,
-  .relation-row,
-  .relation-branch,
   .synchronised-views,
   .publication-flow,
   .context-lab,
@@ -124,13 +123,8 @@ kbd { display: inline-block; min-width: 1.5rem; margin: 0 0.15rem; padding: 0.2r
   .transform-arrow,
   .version-journey > i,
   .next-step-flow > b { transform: rotate(90deg); }
-  .relation-branch { width: 100%; margin: 0; }
-  .relation-row i,
-  .relation-branch i { min-height: 3rem; }
-  .relation-row i::before,
-  .relation-branch i::before { top: 0; right: auto; bottom: 0; left: 50%; width: 1px; height: auto; }
-  .relation-row i::after,
-  .relation-branch i::after { top: auto; right: auto; bottom: 0; left: 50%; clip-path: polygon(0 0, 100% 0, 50% 100%); transform: translate(-50%, 38%); }
+  .relation-graph { overflow-x: auto; }
+  .relation-graph__svg { min-width: 44rem; }
   .concept-switch { justify-content: flex-start; }
   .context-stage { display: grid; }
   .domain-group-grid { grid-template-columns: 1fr 1fr; }

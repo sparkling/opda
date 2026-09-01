@@ -218,7 +218,7 @@ test('campaign recruits industry experts through purpose, influence and clear ex
   ]);
   const corpus = [page, data, form].join('\n');
   for (const phrase of [
-    'A first for property information sharing',
+    'The property industry, working together',
     'property information sharing.</em>',
     'The direction of travel is clear. The practical detail is still open.',
     'SPDTF is in development',
@@ -245,10 +245,11 @@ test('campaign recruits industry experts through purpose, influence and clear ex
     'Bring consumer, accessibility, regulatory and wider public-interest perspectives',
     'No data expertise is required.',
     'What matters is your first-hand understanding of how the property industry works.',
-    'Help make the framework work in practice.',
-    'Share how your sector works',
-    'Challenge costly assumptions',
-    'Test proposals in practice',
+    'Why your voice matters now',
+    'The standard needs your experience.',
+    'Bring evidence from real work',
+    'Challenge assumptions before they harden',
+    'Influence the direction of the standard',
     'AI may assist comparison and drafting; it cannot make a draft official.',
     'expectations before asking you to commit',
   ]) {
@@ -285,7 +286,8 @@ test('campaign styles remain split below the project file limit', async () => {
   assert.match(campaign, /\.wg-hero-note\s*\{[\s\S]*?border-left:\s*4px solid var\(--brand-yellow\)[\s\S]*?font:\s*600/u);
   assert.match(campaign, /\.wg-hero-journey h2\s*\{[\s\S]*?clamp\(1\.75rem, 2\.5vw, 2\.75rem\)/u);
   assert.match(campaign, /\.wg-hero-journey \.wg-process\s*\{[\s\S]*?grid-template-columns:\s*1fr/u);
-  assert.match(campaign, /\.wg-hero-journey \.wg-process li\s*\{[\s\S]*?grid-template-columns:\s*2\.75rem minmax\(0, 1fr\)[\s\S]*?background:\s*transparent/u);
+  assert.match(campaign, /\.wg-hero-journey \.wg-process li\s*\{[\s\S]*?grid-template-columns:\s*3\.25rem minmax\(0, 1fr\)[\s\S]*?background:\s*transparent/u);
+  assert.match(campaign, /\.wg-process__icon svg\s*\{[\s\S]*?width:\s*2rem[\s\S]*?height:\s*2rem/u);
   assert.match(sections, /\.wg-participation\s*\{[\s\S]*?background:/u);
   assert.match(sections, /\.wg-trust\s*\{[\s\S]*?background:\s*var\(--brand-deep\)/u);
   assert.match(sections, /\.wg-policy\s*\{[\s\S]*?background:\s*var\(--brand-deep\)/u);

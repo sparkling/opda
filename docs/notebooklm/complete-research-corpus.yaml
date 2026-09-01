@@ -39,7 +39,7 @@ dependencies:
 guardrails:
   - "Use this notebook for discovery and cross-portfolio research, not as a substitute authority."
   - "Preserve each source's authority, maturity, date and original notebook scopes."
-  - "Do not use the labels PDTF 1.0 or SPDTF 2.0."
+  - "Do not use the labels PDTF with numbered versioning or SPDTF with numbered versioning."
   - "Do not call the Property Pack ontology the SPDTF ontology."
   - "Do not convert proposed governance or workflow into current policy."
 

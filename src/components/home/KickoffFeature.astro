@@ -1,20 +1,22 @@
 <section class="kickoff-feature" aria-labelledby="kickoff-title">
   <div class="kickoff-feature__inner">
     <div class="kickoff-feature__copy">
-      <p class="kickoff-feature__overline">Featured presentation</p>
-      <h2 id="kickoff-title">Finance &amp; Banking working group — kick-off</h2>
-      <p>
-        A non-technical, interactive introduction for finance and banking participants:
-        why shared property data matters, how working groups agree meaning, and how to
-        take part in review. It runs full-screen in its own visual style, made for a
-        first session — no modelling background needed.
+      <header class="section-heading">
+        <p class="section-heading__eyebrow">Featured presentation</p>
+        <h2 id="kickoff-title">Working group kick-off</h2>
+      </header>
+      <p class="kickoff-feature__description">
+        A non-technical, interactive introduction for people joining any OPDA domain
+        working group: why shared property information matters, how groups agree meaning,
+        and how to take part in review. It runs full-screen in its own visual style for a
+        first session; no modelling background is needed.
       </p>
       <a class="btn" href="/presentation/working-group-kickoff">Open the presentation</a>
     </div>
 
     <div class="kickoff-feature__poster" aria-hidden="true">
       <div class="kickoff-feature__poster-frame">
-        <span>OPDA · Finance &amp; Banking</span>
+        <span>OPDA · Domain working groups</span>
         <strong>Working Group<br />Kick-off</strong>
         <small>Non-technical · Interactive · Full-screen</small>
       </div>
@@ -24,11 +26,19 @@
 
 <style>
   .kickoff-feature {
+    --kickoff-surface: var(--color-surface);
+    --kickoff-surface-accent: var(--color-surface);
+    --kickoff-ink: var(--color-text-strong);
+    --kickoff-muted: var(--color-text-muted);
+    --kickoff-poster: var(--color-surface-alt);
+    --kickoff-grid: rgb(44 39 59 / 8%);
+    --kickoff-frame: var(--color-border-strong);
+    --kickoff-ornament: rgb(254 201 43 / 50%);
     position: relative;
     overflow: hidden;
-    color: #f5f2e8;
-    background: #071d18;
-    border-bottom: 4px solid #ffbd59;
+    color: var(--kickoff-ink);
+    background: linear-gradient(135deg, var(--kickoff-surface), var(--kickoff-surface-accent));
+    border-bottom: 4px solid var(--brand-yellow);
   }
   .kickoff-feature::after {
     content: '';
@@ -37,7 +47,7 @@
     bottom: -12rem;
     width: 30rem;
     aspect-ratio: 1;
-    border: 1px solid rgb(255 189 89 / 24%);
+    border: 1px solid var(--kickoff-ornament);
     transform: rotate(45deg);
     pointer-events: none;
   }
@@ -53,21 +63,11 @@
     gap: var(--space-10);
   }
   .kickoff-feature__copy { min-width: 0; }
-  .kickoff-feature__overline {
-    margin: 0 0 var(--space-4);
-    color: #ffbd59;
-    font: 700 var(--text-xs) / 1.3 var(--font-sans);
-    letter-spacing: var(--tracking-meta);
-    text-transform: uppercase;
-  }
-  .kickoff-feature h2 {
-    margin: 0;
-    color: #f5f2e8;
-    font: var(--h2);
-  }
-  .kickoff-feature__copy > p:not(.kickoff-feature__overline) {
+  .kickoff-feature .section-heading { margin-bottom: 0; }
+  .kickoff-feature .section-heading :is(h2, h3) { color: var(--kickoff-ink); }
+  .kickoff-feature__description {
     margin: var(--space-6) 0 0;
-    color: #c7cec4;
+    color: var(--kickoff-muted);
     font: var(--lead);
   }
   .kickoff-feature .btn { margin-top: var(--space-7); }
@@ -76,17 +76,17 @@
     order: -1;
     aspect-ratio: 16 / 9;
     padding: var(--space-5);
-    border: 1px solid rgb(245 242 232 / 38%);
+    border: 1px solid var(--kickoff-frame);
     background:
-      linear-gradient(90deg, transparent 49.8%, rgb(245 242 232 / 10%) 50%, transparent 50.2%),
-      linear-gradient(0deg, transparent 49.8%, rgb(245 242 232 / 10%) 50%, transparent 50.2%),
-      #0b2b24;
+      linear-gradient(90deg, transparent 49.8%, var(--kickoff-grid) 50%, transparent 50.2%),
+      linear-gradient(0deg, transparent 49.8%, var(--kickoff-grid) 50%, transparent 50.2%),
+      var(--kickoff-poster);
   }
   .kickoff-feature__poster::before {
     content: '';
     position: absolute;
     inset: var(--space-5) calc(-1 * var(--space-5)) calc(-1 * var(--space-5)) var(--space-5);
-    border: 1px solid #ffbd59;
+    border: 1px solid var(--brand-yellow);
     pointer-events: none;
   }
   .kickoff-feature__poster-frame {
@@ -96,20 +96,33 @@
     flex-direction: column;
     justify-content: space-between;
     padding: clamp(var(--space-5), 3vw, var(--space-8));
-    border-top: 4px solid #ffbd59;
+    border-top: 4px solid var(--brand-yellow);
   }
   .kickoff-feature__poster span,
   .kickoff-feature__poster small {
-    color: #c7cec4;
+    color: var(--kickoff-muted);
     font: 700 clamp(0.6875rem, 1vw, var(--text-xs)) / 1.3 var(--font-mono);
     letter-spacing: var(--tracking-meta);
     text-transform: uppercase;
   }
   .kickoff-feature__poster strong {
-    color: #f5f2e8;
+    color: var(--kickoff-ink);
     font: 600 clamp(1.75rem, 4.4vw, 4.8rem) / 0.98 var(--font-display);
     letter-spacing: var(--tracking-display);
   }
+
+  :global(:root[data-theme='dark']) .kickoff-feature {
+    --kickoff-surface: var(--color-surface);
+    --kickoff-surface-accent: var(--color-surface-alt);
+    --kickoff-ink: var(--color-text-strong);
+    --kickoff-muted: var(--color-text-muted);
+    --kickoff-poster: var(--color-surface-card);
+    --kickoff-grid: rgb(255 255 255 / 8%);
+    --kickoff-frame: var(--color-border);
+    --kickoff-ornament: rgb(254 201 43 / 34%);
+  }
+
+  :global(:root[data-theme='dark']) .kickoff-feature .section-heading__eyebrow { color: var(--brand-yellow); }
 
   @media (max-width: 64rem) {
     .kickoff-feature__inner { grid-template-columns: minmax(0, 1fr); }
@@ -134,8 +147,8 @@
     .kickoff-feature { color: black; background: white; border: 1px solid black; }
     .kickoff-feature::after,
     .kickoff-feature__poster { display: none; }
-    .kickoff-feature h2,
-    .kickoff-feature__copy > p:not(.kickoff-feature__overline),
-    .kickoff-feature__overline { color: black; }
+    .kickoff-feature .section-heading :is(h2, h3),
+    .kickoff-feature__description,
+    .kickoff-feature .section-heading__eyebrow { color: black; }
   }
 </style>

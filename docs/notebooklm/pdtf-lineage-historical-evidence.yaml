@@ -60,7 +60,7 @@ dependencies:
     blocking: true
 
 guardrails:
-  - "Use PDTF schema, not PDTF 1.0."
+  - "Use PDTF schema, not PDTF with numbered versioning."
   - "The PDTF schema is attributed third-party input, not an OPDA-endorsed predecessor standard."
   - "The schema-derived ontology is a separate OPDA technical derivation, not the PDTF schema itself."
   - "Neither the PDTF schema nor its derived ontology is SPDTF or the Property Pack ontology."
@@ -329,7 +329,7 @@ preparation_prompts:
       Create a cited terminology and relationship table for the PDTF schema, the
       OPDA-derived PDTF ontology, the Property Pack ontology and SPDTF development.
       Include origin, authority, status, purpose, relationship, prohibited labels
-      and common conflations. Do not use PDTF 1.0 or SPDTF 2.0.
+      and common conflations. Do not use PDTF with numbered versioning or SPDTF with numbered versioning.
     acceptance:
       - All four things remain distinct.
       - The PDTF schema is attributed third-party input.
