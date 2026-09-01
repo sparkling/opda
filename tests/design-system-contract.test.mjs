@@ -425,6 +425,8 @@ test('shared navigation exposes visible focus, state and 44px targets', async ()
   assert.match(components, /\.brand-lockup__icon\s*\{[^}]*width:\s*var\(--brand-lockup-icon-width\)/su);
   assert.match(components, /\.brand-lockup--mini\s*\{[^}]*font:\s*600 var\(--text-lg\) \/ 1 var\(--font-sans\)/su);
   assert.doesNotMatch(base, /\.app-header__title\s*\{[^}]*\bfont:/su);
+  assert.match(base, /\.app-header__title\s*\{[^}]*margin-block-end:\s*var\(--space-3\)/su);
+  assert.match(base, /@media \(max-width: 96rem\)[\s\S]*?\.app-header__title\s*\{[^}]*align-self:\s*center[^}]*margin-block-end:\s*0/su);
   assert.match(base, /\.app-header\s*\{[^}]*padding-block:\s*var\(--space-6\) 0;/su);
   assert.match(base, /\.global-nav-panel\s*\{[^}]*height:\s*var\(--target-min\)/su);
   assert.match(base, /\.app-header__framework\s*\{[^}]*padding:\s*var\(--space-4\) 0 var\(--space-3\)[^}]*font:\s*500 var\(--text-2xl\)/su);

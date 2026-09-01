@@ -284,7 +284,7 @@ destination tabs. The title, subheading and first global-navigation label follow
 maximum-width axis. The desktop utility controls sit 16px from the top and flush with the header's physical right
 edge; the working-group action finishes on the content track's right edge. The action and destination labels share
 a 44px target size inside one unshifted row whose divider retains the established position. There is no separate top-left logo cell in this
-shell. The masthead reserves twenty-four pixels above the title lock-up, which consumes the shared relative icon, gap, alignment and colour contract. The framework subheading uses an eight-pixel lower inset so that additional space does not move the navigation row or divider.
+shell. The mini title lock-up consumes the shared relative icon, gap, alignment and colour contract. Its eight-pixel lower margin places it higher in the end-aligned grid without moving the framework heading, navigation row or divider.
 Navigation is DM Sans; the current item has a 4px amber
 underline and `aria-current`. At 96rem and below, the header returns to its compact 64px disclosure
 pattern. A skip link is the first focusable element.
