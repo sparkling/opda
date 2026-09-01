@@ -7,15 +7,11 @@
 }
 .app-body > * { min-width: 0; }
 .app-body.no-sidebar { grid-template-columns: minmax(0, 1fr); }
-.app-body.with-toc { grid-template-columns: var(--sidebar-width) minmax(0, 1fr) 15rem; }
-.app-body.no-sidebar.with-toc { grid-template-columns: minmax(0, 1fr) 15rem; }
+.app-body.with-toc { grid-template-columns: var(--sidebar-width) minmax(0, 1fr) var(--toc-width); }
+.app-body.no-sidebar.with-toc { grid-template-columns: minmax(0, 1fr) var(--toc-width); }
 
-/* Collapsed rails — narrow strip showing only the expand-toggle button. */
-.app-body.sidebar-collapsed { grid-template-columns: var(--target-min) minmax(0, 1fr); }
-.app-body.sidebar-collapsed.with-toc { grid-template-columns: var(--target-min) minmax(0, 1fr) 15rem; }
-.app-body.sidebar-collapsed.with-toc.toc-collapsed { grid-template-columns: var(--target-min) minmax(0, 1fr) var(--target-min); }
-.app-body.with-toc.toc-collapsed { grid-template-columns: var(--sidebar-width) minmax(0, 1fr) var(--target-min); }
-.app-body.no-sidebar.with-toc.toc-collapsed { grid-template-columns: minmax(0, 1fr) var(--target-min); }
+/* Desktop rails retain their tracks while their menu content is collapsed, so
+   the article and header axes never move. */
 
 /* Toggle button common styles. Sits at the top of each rail. */
 .rail-collapse-toggle {
@@ -66,13 +62,15 @@
 /* When collapsed: hide nav content, centre the toggle on the rail,
    flip the chevron via rotate. */
 .app-body.sidebar-collapsed .sidebar-nav { display: none; }
-.app-body.sidebar-collapsed .app-sidebar { padding-left: 0; padding-right: 0; }
-.app-body.sidebar-collapsed .app-sidebar > .rail-collapse-toggle { margin: var(--space-4) auto var(--space-3); }
+.app-body.sidebar-collapsed .app-sidebar > .rail-collapse-toggle {
+  width: var(--target-min);
+  margin: var(--space-4) auto var(--space-3);
+  padding: 0;
+}
 .app-body.sidebar-collapsed .app-sidebar > .rail-collapse-toggle svg { transform: rotate(180deg); }
 
 .app-body.toc-collapsed .toc-title,
 .app-body.toc-collapsed .toc > ul { display: none; }
-.app-body.toc-collapsed .toc { padding-left: 0; padding-right: 0; }
 .app-body.toc-collapsed .toc > .rail-collapse-toggle { margin: var(--space-4) auto var(--space-3); }
 .app-body.toc-collapsed .toc > .rail-collapse-toggle svg { transform: rotate(180deg); }
 

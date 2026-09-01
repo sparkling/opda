@@ -218,6 +218,12 @@ linked Sparkling Ideas exits. The standalone join
 hero adds the existing transparent button variant for its OPDA return control; the
 full-screen working-group deck remains outside shared site furniture.
 
+Later on 1 September 2026, the documentation-shell rail contract was clarified: the section
+navigation and page-contents rail use the same fixed desktop width and alternate surface, with
+matching labelled collapse controls. Collapsing either rail hides its internal navigation without
+changing the article or global-navigation axes. This is a shared shell refinement; the mobile drawer
+and inline page-contents patterns remain unchanged.
+
 ### Brand conflict resolution
 
 The SVG-embedded colours (`#131224`, `#FEC82F`, `#FEC92B`, white) are immutable

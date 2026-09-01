@@ -314,7 +314,7 @@
     tocToggle.id = 'toc-collapse';
     tocToggle.setAttribute('aria-controls', 'toc-links');
     tocToggle.innerHTML =
-      '<span class="toc-toggle__label">On this page</span>' +
+      '<span class="rail-collapse-toggle__label toc-toggle__label">On this page</span>' +
       '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.25" ' +
       'stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">' +
         '<polyline points="9 18 15 12 9 6"/>' +

@@ -312,8 +312,8 @@ test('destination cards use the shared compact card-title scale', async () => {
     readFile(file('public/ui/design/components.css'), 'utf8'),
     readFile(file('src/components/ia/DestinationCards.astro'), 'utf8'),
   ]);
-  assert.match(contract, /Destination cards use the shared `h3` title scale/u);
-  assert.match(components, /\.destination-card-grid \.card h3\s*\{\s*font:\s*var\(--h3\);\s*\}/u);
+  assert.match(contract, /Destination-card titles use the theme-aware interactive violet/u);
+  assert.match(components, /\.destination-card-grid \.card h3\s*\{\s*color:\s*var\(--color-link\);\s*font:\s*var\(--h3\);\s*\}/u);
   assert.doesNotMatch(destinationCards, /\.destination-card-grid \.card h3\s*\{[^}]*var\(--h2\)/su);
 });
 
@@ -356,10 +356,14 @@ test('shared navigation exposes visible focus, state and 44px targets', async ()
   assert.match(header, /aria-current=\{isSearchPage \? 'page' : undefined\}/u);
   assert.match(sidebar, /aria-label=\{`\$\{section\.title\} section`\}/u);
   assert.doesNotMatch(sidebar, /sidebar-section-title/u);
+  assert.match(sidebar, /rail-collapse-toggle__label">In this section<\/span>/u);
+  assert.match(client, /rail-collapse-toggle__label toc-toggle__label">On this page/u);
   assert.match(layout, /<Header showSidebar=\{showSidebar\}/u);
   assert.match(shell, /\.app-main\s*\{[^}]*var\(--content-gutter\)/su);
+  assert.match(shell, /\.app-body\.with-toc\s*\{\s*grid-template-columns:\s*var\(--sidebar-width\) minmax\(0, 1fr\) var\(--toc-width\);/u);
   assert.match(base, /\.app-header--with-sidebar \.brand-cell\s*\{[^}]*justify-content:\s*center/su);
-  assert.match(base, /#app:has\(> \.app-body\.sidebar-collapsed\) \.app-header--with-sidebar\s*\{[^}]*--header-content-left-rail:\s*var\(--target-min\)/su);
+  assert.doesNotMatch(base, /#app:has\(> \.app-body\.sidebar-collapsed\) \.app-header--with-sidebar/u);
+  assert.doesNotMatch(base, /#app:has\(> \.app-body\.with-toc\.toc-collapsed\) \.app-header--with-sidebar/u);
   assert.match(base, /#app:has\(> \.app-body\.with-toc\) \.app-header--with-sidebar\s*\{[^}]*--header-content-right-rail:\s*var\(--toc-width\)/su);
   assert.match(base, /\.app-header--with-sidebar \.global-nav\s*\{[^}]*var\(--header-content-left-rail\)[^}]*var\(--header-content-right-rail\)/su);
   assert.match(navigation, /\.breadcrumbs\s*\{[^}]*max-width:\s*var\(--content-max\)[^}]*margin:\s*0 auto var\(--space-6\)/su);

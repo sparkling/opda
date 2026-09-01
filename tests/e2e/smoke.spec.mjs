@@ -35,13 +35,39 @@ test('skip link and keyboard focus are available', async ({ page }) => {
 
 test('desktop sidebar and nested tree controls work', async ({ page }) => {
   const clean = watchRuntime(page);
+  await page.setViewportSize({ width: 1440, height: 1000 });
   await visit(page, '/strategy/strategy-overview');
   const body = page.locator('.app-body');
+  const toc = page.locator('aside.toc');
   await expect(page.locator('#app-sidebar')).toBeVisible();
+  await expect(toc).toBeVisible();
+  await expect(page.locator('#sidebar-collapse .rail-collapse-toggle__label')).toHaveText('In this section');
+  const geometry = async () => page.evaluate(() => {
+    const rect = (selector) => document.querySelector(selector)?.getBoundingClientRect();
+    const sidebar = document.querySelector('.app-sidebar');
+    const tocRail = document.querySelector('.toc');
+    const mainRect = rect('.app-main');
+    return {
+      sidebarWidth: rect('.app-sidebar')?.width,
+      tocWidth: rect('.toc')?.width,
+      mainLeft: mainRect?.left,
+      mainRight: mainRect?.right,
+      sidebarSurface: sidebar ? getComputedStyle(sidebar).backgroundColor : null,
+      tocSurface: tocRail ? getComputedStyle(tocRail).backgroundColor : null,
+    };
+  });
+  const initial = await geometry();
+  expect(initial.sidebarWidth).toBeCloseTo(initial.tocWidth, 1);
+  expect(initial.sidebarSurface).toBe(initial.tocSurface);
   await page.locator('#sidebar-collapse').click();
   await expect(body).toHaveClass(/sidebar-collapsed/);
+  expect(await geometry()).toMatchObject({ mainLeft: initial.mainLeft, mainRight: initial.mainRight });
   await page.locator('#sidebar-collapse').click();
   await expect(body).not.toHaveClass(/sidebar-collapsed/);
+  await toc.locator('#toc-collapse').click();
+  await expect(body).toHaveClass(/toc-collapsed/);
+  expect(await geometry()).toMatchObject({ mainLeft: initial.mainLeft, mainRight: initial.mainRight });
+  await toc.locator('#toc-collapse').click();
 
   await visit(page, `${PDTF1_ROUTES.original}/schema`);
   const activeTrigger = page.locator('.tree-toggle[data-label="JSON Schemas and overlays"]');

@@ -278,6 +278,11 @@ navigation rails on the root landing, every route using the shared `Layout`, and
 public-service family. It carries privacy, accessibility and Association website exits,
 plus the linked Sparkling Ideas credit.
 
+At desktop rail widths, the section navigation and page-contents rail share one width and alternate
+surface. Their labelled collapse controls use the same treatment: “In this section” on the left and
+“On this page” on the right. Collapsing a rail hides its internal navigation only; it never changes
+the article or header axis.
+
 `/` is the sole OPDA Knowledge Base homepage. It uses an SPDTF-centred hero, a static method figure,
 a featured working-group presentation, the six-destination audience/task directory, a participation
 action and the footer. The directory comes from the canonical global-navigation registry and uses the
