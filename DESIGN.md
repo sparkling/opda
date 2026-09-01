@@ -279,9 +279,10 @@ public-service family. It carries privacy, accessibility and Association website
 plus the linked Sparkling Ideas credit.
 
 At desktop rail widths, the section navigation and page-contents rail share one width and alternate
-surface. Their labelled collapse controls use the same treatment: “In this section” on the left and
-“On this page” on the right. Collapsing a rail hides its internal navigation only; it never changes
-the article or header axis.
+surface. Their labelled collapse controls are rail utility headers, not navigation rows: “In this section”
+on the left and “On this page” on the right use the compact uppercase mono treatment and a quiet divider.
+Collapsing a rail reduces its visible surface to its expand control while retaining its grid track, so it
+never changes the article or header axis.
 
 `/` is the sole OPDA Knowledge Base homepage. It uses an SPDTF-centred hero, a static method figure,
 a featured working-group presentation, the six-destination audience/task directory, a participation
