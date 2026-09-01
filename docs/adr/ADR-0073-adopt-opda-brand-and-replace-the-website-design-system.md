@@ -213,8 +213,8 @@ The final desktop masthead refinement expands the header to 160px and adds delib
 framework subheading. A shared `.brand-lockup` primitive now owns icon scale (`0.89em`), icon-to-text gap
 (`0.45em`), baseline alignment and surface-aware colour, so the header no longer carries local corrections.
 The compact header remains 64px. The divider below the global tabs follows the content width, the first tab
-has no extra left inset, breadcrumbs regain balanced vertical spacing, and category pills no longer repeat
-breadcrumb context immediately before the page title.
+has no extra left inset, breadcrumbs regain balanced vertical spacing, and the pre-title metadata strip is
+suppressed entirely so the breadcrumb leads directly into the page title.
 
 On 1 September 2026 the diagram-frame contract was consolidated. `GraphDiagram.astro`
 and adopted bare Mermaid now consume one shared shell template and one bundled Mermaid

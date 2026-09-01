@@ -42,17 +42,11 @@
    PAGE META + PAGE FOOTER
    ───────────────────────────────────────────────────────────── */
 .page-meta {
-  font: 500 var(--text-xs) / 1.4 var(--font-sans);
-  color: var(--color-text-muted);
-  margin-bottom: var(--space-5);
-  display: flex;
-  gap: var(--space-3);
-  flex-wrap: wrap;
-  align-items: center;
-  letter-spacing: var(--tracking-meta);
-  text-transform: uppercase;
+  /* Legacy pages still emit this pre-title strip directly. Keep the shared
+     selector as a migration boundary, but never insert it between breadcrumb
+     context and the page heading. */
+  display: none;
 }
-.page-meta .pill { letter-spacing: 0.04em; }
 
 /* ─────────────────────────────────────────────────────────────
    PAGE FOOTER — Tailwind Plus pattern (Navigation.Pagination.Simple
