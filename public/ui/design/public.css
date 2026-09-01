@@ -138,7 +138,13 @@
   text-decoration: none;
   white-space: nowrap;
 }
-.public-footer__brand img { display: block; width: 1.25rem; height: auto; flex: 0 0 auto; }
+.public-footer__brand img {
+  display: block;
+  width: 1.25rem;
+  height: auto;
+  flex: 0 0 auto;
+  transform: translateY(-2px);
+}
 .public-footer a {
   min-height: var(--target-min);
   display: inline-flex;
