@@ -255,7 +255,7 @@ width. Pages must reflow at 320px and 400% zoom without page-level or table-leve
 horizontal scrolling.
 
 At 1536px (96rem) and below, the six-destination global site navigation is a
-non-modal disclosure anchored to the 64px header. Above that boundary every primary
+non-modal disclosure anchored to the compact 64px header. Above that boundary every primary
 destination must fit without clipping or hidden horizontal overflow. The disclosure
 button owns `aria-controls` and `aria-expanded`; the closed panel is both hidden and
 inert. Escape and link activation close it, and Escape returns focus to the trigger.
@@ -269,10 +269,12 @@ bounded with `ButtonText`, `CanvasText`, `FieldText` and `Highlight`.
 
 ## 8. Application shell and homepage
 
-The header is 64px, `#131224`, and uses the official white wordmark. In the expanded documentation
-shell, the wordmark is centred within the 280px navigation-rail cell and the first global-navigation
-label follows the main content gutter and centred maximum-width axis. Navigation is DM Sans; the
-current item has a 4px amber underline and `aria-current`. A skip link is the first focusable element.
+The desktop header is 112px, `#131224`, and has two rows: a linked “Open Property Data Association”
+title above the global destination tabs. The title and the first global-navigation label follow the main
+content gutter and centred maximum-width axis; the utility icons remain at the physical top right.
+There is no top-left logo mark in this shell. Navigation is DM Sans; the current item has a 4px amber
+underline and `aria-current`. At 96rem and below, the header returns to its compact 64px disclosure
+pattern. A skip link is the first focusable element.
 The `#F9F9F9` sidebar keeps the current section in its accessible name without repeating it visibly.
 The footer has a 4px yellow top rule. `SiteFooter.astro` renders once outside article content and
 navigation rails on the root landing, every route using the shared `Layout`, and the standalone

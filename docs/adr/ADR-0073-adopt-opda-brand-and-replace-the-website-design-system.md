@@ -197,12 +197,16 @@ ontology and mapping detail remains in the Knowledge Base. This is a content hie
 change within the standalone shell and shared token contract, not a new visual system.
 
 On 25 August 2026 the expanded documentation header was aligned to the shared content
-axis: its wordmark is centred over the navigation rail, its first destination follows
-the content gutter, and the left rail no longer repeats its accessible section name as
-visible copy. Site search now consumes canonical destination ownership, provides one
+axis: its first destination follows the content gutter, and the left rail no longer repeats
+its accessible section name as visible copy. Site search now consumes canonical destination ownership, provides one
 destination filter, ranks multi-word matches, exposes authority metadata in compact
 rows, and reinitialises after client-side page transitions. The normative contract,
 tokens, shared components and tests were updated together.
+
+On 1 September 2026 the desktop documentation header became a two-row composition. A linked
+“Open Property Data Association” title now sits above the horizontal global destination tabs,
+with utility controls anchored at the top right. The previous logo mark in the top-left header
+cell was removed; this does not alter either the left section rail or the right page-contents rail.
 
 On 1 September 2026 the diagram-frame contract was consolidated. `GraphDiagram.astro`
 and adopted bare Mermaid now consume one shared shell template and one bundled Mermaid

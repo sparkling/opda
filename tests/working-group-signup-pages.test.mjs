@@ -96,7 +96,7 @@ test('global header promotes the canonical working-group sign-up route', async (
   const utilitiesStart = header.indexOf('<nav class="header-nav"');
   const cta = header.indexOf('class="header-cta"');
   assert.ok(primaryStart >= 0 && cta > primaryStart && cta < primaryEnd);
-  assert.ok(primaryEnd < utilitiesStart);
+  assert.ok(utilitiesStart < primaryStart);
   assert.match(header, /const joinHref = currentPath === '\/join' \? '#register' : '\/join'/u);
   assert.match(header, /<a href=\{joinHref\} class="header-cta">Join a working group<\/a>/u);
   assert.match(header, /href="\/search"[\s\S]*?class=\{`header-icon-link\$\{isSearchPage[\s\S]*?aria-label="Search"[\s\S]*?aria-current=\{isSearchPage \? 'page' : undefined\}[\s\S]*?title="Search"[\s\S]*?<svg[\s\S]*?aria-hidden="true"/u);
@@ -104,7 +104,8 @@ test('global header promotes the canonical working-group sign-up route', async (
   assert.doesNotMatch(header, />Search<\/a>|>GitHub<\/a>/u);
   assert.match(baseCss, /\.app-header \.header-nav a\.header-icon-link\s*\{[^}]*width:\s*var\(--target-min\)[^}]*justify-content:\s*center/su);
   assert.match(baseCss, /\.app-header \.global-nav a\.header-cta\s*\{[^}]*justify-content:\s*flex-start[^}]*background:\s*var\(--brand-yellow\)[^}]*color:\s*var\(--brand-ink\)/su);
-  assert.match(baseCss, /@media \(max-width: 96rem\)\s*\{[\s\S]*\.app-header \.global-nav-panel \.header-nav\s*\{[^}]*grid-column:\s*1 \/ -1/su);
+  assert.match(baseCss, /\.app-header__utilities\s*\{[^}]*grid-area:\s*utilities/su);
+  assert.match(baseCss, /@media \(max-width: 96rem\)\s*\{[\s\S]*\.app-header\.primary-nav-open \.global-nav-panel\s*\{\s*display:\s*block;/su);
 });
 
 test('public recruitment routes use the standalone shell without Knowledge Base furniture', async () => {

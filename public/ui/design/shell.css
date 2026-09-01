@@ -452,7 +452,7 @@
 
 @media (max-width: 960px) {
   .menu-toggle { display: inline-flex; margin-left: auto; }
-  .app-header .header-nav { display: none; }
+  .app-header .header-nav { display: flex; }
   .app-header .global-nav { margin-left: var(--space-3); gap: 0; }
   .app-header .global-nav a { padding: var(--space-2) var(--space-3); font-size: var(--text-sm); }
   .app-body,
