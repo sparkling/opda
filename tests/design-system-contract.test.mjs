@@ -380,7 +380,9 @@ test('shared navigation exposes visible focus, state and 44px targets', async ()
   assert.match(base, /@media \(max-width: 96rem\) \{[\s\S]*\.global-nav-toggle \{ display: inline-flex; \}/u);
   assert.match(base, /@media \(max-width: 96rem\) \{[\s\S]*\.global-nav-panel\s*\{[^}]*padding:\s*var\(--space-3\) var\(--content-gutter\)/su);
   assert.match(base, /\.app-header__utilities\s*\{[^}]*grid-area:\s*utilities/su);
-  assert.match(base, /\.app-header__title-icon\s*\{[^}]*width:\s*1\.25rem/su);
+  assert.match(base, /\.app-header__title-icon\s*\{[^}]*width:\s*1\.5rem/su);
+  assert.match(base, /\.app-header__title\s*\{[^}]*align-items:\s*flex-end[^}]*font:\s*600 var\(--text-3xl\)/su);
+  assert.match(base, /\.app-header__framework\s*\{[^}]*padding-block:\s*var\(--space-3\)[^}]*font:\s*500 var\(--text-base\)/su);
   assert.match(base, /@media \(min-width: 60\.0625rem\) and \(max-width: 96rem\) \{[\s\S]*\.app-header--with-sidebar \.global-nav-panel\s*\{[^}]*padding-left:\s*calc\(var\(--header-content-left-rail\) \+ var\(--content-gutter\)\)/su);
   assert.match(search, /<form[^>]+role="search"/u);
   assert.match(search, /name="destination"/u);
