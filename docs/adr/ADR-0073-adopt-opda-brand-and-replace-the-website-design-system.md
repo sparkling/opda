@@ -1,7 +1,7 @@
 ---
 status: implemented
 date: 2026-08-16
-updated: 2026-09-01
+updated: 2026-09-02
 tags: [design-system, brand, website, accessibility, css, governance, presentation]
 supersedes: [ADR-0025]
 depends-on: [ADR-0064]
@@ -267,6 +267,7 @@ second visible enclosure. The global navigation row and divider retain their ori
 action remains fully visible and aligned with the destination labels; it returns to normal flow in the compact disclosure. Pages without navigable
 breadcrumb ancestors render no breadcrumb region and remove the article's duplicate upper inset. The desktop masthead reserves twenty-four pixels above the organisation title without increasing the header height; the framework subheading uses an eight-pixel lower inset instead.
 The working-group action uses the shared outlined-on-dark button component plus a shared inset-surface modifier. The modifier preserves the complete 44px target while leaving four pixels between its visible outline and the divider, without CTA-specific margin, translate or transform offsets; header CSS does not override the component's colour, border, typography, padding or interaction states.
+On 2 September 2026 the organisation lock-up became the smaller identifier above the larger framework heading. A shared mini lock-up variant sets one typography scale; the existing relative icon width and gap scale the complete component without header-specific image dimensions.
 
 ### Brand conflict resolution
 

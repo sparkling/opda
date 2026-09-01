@@ -278,8 +278,8 @@ bounded with `ButtonText`, `CanvasText`, `FieldText` and `Highlight`.
 
 ## 8. Application shell and homepage
 
-The desktop header is 160px, `#131224`, and has three rows: the primary linked “Open Property Data Association”
-title with a bottom-aligned yellow icon, the supporting “Smart Property Data Framework” subheading, then the global
+The desktop header is 160px, `#131224`, and has three rows: a linked mini “Open Property Data Association”
+lock-up with a bottom-aligned yellow icon, the larger “Smart Property Data Framework” heading, then the global
 destination tabs. The title, subheading and first global-navigation label follow the main content gutter and centred
 maximum-width axis. The desktop utility controls sit 16px from the top and flush with the header's physical right
 edge; the working-group action finishes on the content track's right edge. The action and destination labels share
@@ -377,6 +377,7 @@ states, plus loading/error/success where asynchronous work occurs and dark parit
   application header; it uses a short verb-led label, aligns to the content-right edge and shares the unshifted destination row. A shared inset-surface modifier preserves the complete 44px target while leaving four pixels between the visible outline and the divider. It returns to the normal flow in the compact navigation disclosure.
 - **Header utilities:** familiar single-purpose destinations may use 20px icons in 44px targets, with an accessible name and tooltip. On desktop the group has no trailing inset, ends on the header's physical right edge and retains 16px above it. The theme icon has no visible border or box; icons never replace the CTA label.
 - **Organisation heading:** the unchanged yellow icon plus the full organisation name in one unbroken line of live DM Sans text; use strong ink on light and the inverse treatment on dark.
+  The shared mini variant uses the large-text step; because its icon width and gap are relative units, the complete lock-up scales as one component.
 - **Section heading:** a shared optional uppercase DM Sans eyebrow, display H2 and optional lead.
   Use it for distinct subjects; do not recreate local eyebrow scales or heading spacing.
 - **Sidebar disclosure:** linked folder rows in a task-oriented hierarchy use a quiet

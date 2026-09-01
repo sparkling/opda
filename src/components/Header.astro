@@ -14,7 +14,7 @@ interface Props { showSidebar?: boolean; }
 const { showSidebar = false } = Astro.props;
 ---
 <header class={`app-header${showSidebar ? ' app-header--with-sidebar' : ''}`}>
-  <a href="/" class="app-header__title brand-lockup brand-lockup--on-dark">
+  <a href="/" class="app-header__title brand-lockup brand-lockup--mini brand-lockup--on-dark">
     <img class="app-header__title-icon brand-lockup__icon" src="/ui/brand/opda-icon-yellow.svg" alt="" aria-hidden="true" width="84" height="100" />
     <span class="brand-lockup__label">Open Property Data Association</span>
   </a>

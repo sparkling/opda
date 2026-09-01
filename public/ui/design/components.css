@@ -1,13 +1,11 @@
 /* Homepage, section hero and application-level compositions. */
 .app-main--home { padding: 0; }
 .home-page { background: var(--color-surface); }
-
 :root[data-theme="dark"] :is(.cta, .btn):is(:disabled, [aria-disabled="true"]) {
   background: var(--color-surface-inset);
   border-color: var(--color-border-strong);
   color: var(--color-text-disabled);
 }
-
 /* Shared icon-and-live-text lock-up. Icon scale and spacing are relative to
    the consuming text size; baseline alignment keeps the visible lower edges
    together without per-component offsets. */
@@ -30,6 +28,7 @@
   --brand-lockup-color: var(--brand-deep);
   --brand-lockup-hover-color: var(--brand-night);
 }
+.brand-lockup--mini { font: 600 var(--text-lg) / 1 var(--font-sans); }
 .brand-lockup:hover { color: var(--brand-lockup-hover-color); }
 .brand-lockup__icon {
   display: block;
