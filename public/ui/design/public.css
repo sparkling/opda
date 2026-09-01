@@ -116,6 +116,7 @@
 }
 .public-footer__links {
   grid-area: links;
+  margin-left: calc(0px - var(--public-footer-gutter));
   display: flex;
   flex-wrap: wrap;
   justify-content: flex-start;
