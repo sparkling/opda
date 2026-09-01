@@ -83,7 +83,7 @@ a:visited { text-decoration-color: currentColor; }
   align-content: end;
   align-items: center;
   height: var(--header-height);
-  padding-block: var(--space-5) 0;
+  padding-block: var(--space-6) 0;
   padding-inline-start:
     calc(
       var(--header-content-left-rail) +
@@ -118,7 +118,7 @@ a:visited { text-decoration-color: currentColor; }
   min-width: 0;
   align-self: start;
   margin: 0;
-  padding: var(--space-4) 0 var(--space-5);
+  padding: var(--space-4) 0 var(--space-3);
   color: var(--brand-white);
   font: 500 var(--text-2xl) / 1.1 var(--font-sans);
   letter-spacing: var(--tracking-display);

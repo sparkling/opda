@@ -96,11 +96,11 @@ test('global header promotes the canonical working-group sign-up route', async (
   const primaryStart = header.indexOf('<nav class="global-nav"');
   const primaryEnd = header.indexOf('</nav>', primaryStart);
   const utilitiesStart = header.indexOf('<nav class="header-nav"');
-  const cta = header.indexOf('class="header-cta btn btn--outline-dark"');
+  const cta = header.indexOf('class="header-cta btn btn--outline-dark btn--inset-end"');
   assert.ok(primaryStart >= 0 && cta > primaryStart && cta < primaryEnd);
   assert.ok(utilitiesStart < primaryStart);
   assert.match(header, /const joinHref = currentPath === '\/join' \? '#register' : '\/join'/u);
-  assert.match(header, /<a href=\{joinHref\} class="header-cta btn btn--outline-dark">Join a working group<\/a>/u);
+  assert.match(header, /<a href=\{joinHref\} class="header-cta btn btn--outline-dark btn--inset-end">Join a working group<\/a>/u);
   assert.match(header, /href="\/search"[\s\S]*?class=\{`header-icon-link\$\{isSearchPage[\s\S]*?aria-label="Search"[\s\S]*?aria-current=\{isSearchPage \? 'page' : undefined\}[\s\S]*?title="Search"[\s\S]*?<svg[\s\S]*?aria-hidden="true"/u);
   assert.match(header, /class="header-icon-link"[\s\S]*?aria-label="GitHub"\s+title="GitHub"[\s\S]*?<svg[\s\S]*?aria-hidden="true"/u);
   assert.doesNotMatch(header, />Search<\/a>|>GitHub<\/a>/u);
@@ -109,6 +109,8 @@ test('global header promotes the canonical working-group sign-up route', async (
   assert.doesNotMatch(baseCss, /a\.header-cta[^}]*\b(?:background|border(?:-color)?|color|font-weight):/su);
   assert.doesNotMatch(baseCss, /a\.header-cta[^}]*(?:translate|transform|margin-block):/su);
   assert.match(contentCss, /\.btn--outline-dark\s*\{[^}]*border-color:\s*var\(--brand-white\)[^}]*background:\s*transparent[^}]*color:\s*var\(--brand-white\)/su);
+  assert.match(contentCss, /\.btn--inset-end\s*\{[^}]*--button-surface-inset-start:\s*var\(--space-1\)[^}]*--button-surface-inset-end:\s*var\(--space-2\)[^}]*border-color:\s*transparent/su);
+  assert.match(contentCss, /\.btn--inset-end::before\s*\{[^}]*inset:\s*var\(--button-surface-inset-start\) 0 var\(--button-surface-inset-end\)[^}]*border:\s*1px solid currentColor/su);
   assert.match(baseCss, /@media \(max-width: 96rem\)[\s\S]*?\.global-nav a\.header-cta\s*\{[^}]*align-self:\s*center[^}]*\}/u);
   assert.match(baseCss, /\.app-header__utilities\s*\{[^}]*grid-area:\s*utilities/su);
   assert.match(baseCss, /@media \(max-width: 96rem\)\s*\{[\s\S]*\.app-header\.primary-nav-open \.global-nav-panel\s*\{\s*display:\s*block;/su);

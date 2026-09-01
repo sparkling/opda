@@ -411,6 +411,32 @@ html { scroll-padding-top: calc(var(--header-height) + 1rem); }
   background: rgb(255 255 255 / 8%);
   color: var(--brand-white);
 }
+/* Preserve the full 44px target while lifting only the visible button surface
+   away from a neighbouring block-end rule. */
+.btn--inset-end {
+  --button-surface-inset-start: var(--space-1);
+  --button-surface-inset-end: var(--space-2);
+  position: relative;
+  border-color: transparent;
+  background: transparent;
+}
+.btn--inset-end::before {
+  content: '';
+  position: absolute;
+  inset: var(--button-surface-inset-start) 0 var(--button-surface-inset-end);
+  border: 1px solid currentColor;
+  border-radius: inherit;
+  background: transparent;
+  pointer-events: none;
+  transition: background var(--duration-fast) var(--ease);
+}
+.btn--outline-dark.btn--inset-end:hover {
+  border-color: transparent;
+  background: transparent;
+}
+.btn--outline-dark.btn--inset-end:hover::before {
+  background: rgb(255 255 255 / 8%);
+}
 :root[data-theme="dark"] .btn--ghost {
   color: var(--color-text-strong);
   border-color: var(--neutral-400);
