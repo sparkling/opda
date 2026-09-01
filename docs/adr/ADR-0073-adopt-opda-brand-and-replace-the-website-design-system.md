@@ -219,6 +219,10 @@ suppressed entirely so the breadcrumb leads directly into the page title.
 ADR, ODR and verification pages no longer carry alternate breadcrumb markup or local breadcrumb CSS;
 qualified document titles may supply a concise `breadcrumbTitle`. In-content schema-object locations and
 resource-folder paths retain their distinct location semantics.
+Property Pack candidate status now uses a 44px information disclosure aligned with the page H1 rather than
+a full-width warning bar above it. Its non-modal flyout preserves the complete authority, validation and
+six-stage lifecycle record, uses the shared colour and focus tokens, closes with Escape or an explicit control,
+and returns focus after keyboard dismissal. The flyout title remains outside the generated page contents list.
 The documentation body now centres the complete content-and-rails shell at its combined maximum width.
 On wide viewports, surplus space therefore remains outside the shell rather than separating either
 navigation panel from the content it describes. Collapsed panels remain within their reserved rail tracks,

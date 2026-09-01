@@ -294,6 +294,11 @@ appears between the breadcrumbs and the H1; the breadcrumb leads directly into t
 qualified document titles supply a concise `breadcrumbTitle` but never their own breadcrumb markup or CSS.
 Schema-object locations and resource-folder paths remain separate in-content navigation with location,
 rather than page, semantics.
+Property Pack pages place their candidate-status information control on the H1 row, aligned to the content
+track's right edge. The 44px icon control opens a non-modal, tokenised flyout containing the complete candidate
+status, validation boundary and six-stage lifecycle record formerly shown in a full-width warning disclosure.
+It exposes expanded state, supports Escape, restores focus when dismissed from within and does not add its
+internal title to the page table of contents.
 The `#F9F9F9` sidebar keeps the current section in its accessible name without repeating it visibly.
 The footer has a 4px yellow top rule. `SiteFooter.astro` renders once outside article content and
 navigation rails on the root landing, every route using the shared `Layout`, and the standalone

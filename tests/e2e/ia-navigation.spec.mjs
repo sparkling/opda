@@ -374,17 +374,21 @@ test('Property Pack detail pages expose their full canonical ancestry', async ({
   clean();
 });
 
-test('Property Pack candidate status is collapsed until requested', async ({ page }) => {
+test('Property Pack candidate status opens from the title-row information control', async ({ page }) => {
   const clean = watchRuntime(page);
   await visit(page, '/spdtf/property-pack/resources/common/Property');
-  const candidateStatus = page.locator('details.v2-candidate-banner');
-  await expect(candidateStatus).not.toHaveAttribute('open', '');
-  await expect(candidateStatus.locator('summary')).toContainText('Machine-proposed');
-  await expect(candidateStatus.locator('[aria-label="Property Pack lifecycle status"]')).not.toBeVisible();
-  await candidateStatus.locator('summary').click();
-  await expect(candidateStatus).toHaveAttribute('open', '');
+  const trigger = page.getByRole('button', { name: 'View candidate status and evidence' });
+  const candidateStatus = page.locator('#property-pack-candidate-status');
+  await expect(trigger).toHaveAttribute('aria-expanded', 'false');
+  await expect(candidateStatus).toBeHidden();
+  await trigger.click();
+  await expect(trigger).toHaveAttribute('aria-expanded', 'true');
+  await expect(candidateStatus).toBeVisible();
+  await expect(candidateStatus).toContainText('Machine-proposed');
   await expect(candidateStatus.locator('[aria-label="Property Pack lifecycle status"] dt')).toHaveCount(6);
-  await expect(candidateStatus.locator('[aria-label="Property Pack lifecycle status"]')).toBeVisible();
+  await page.keyboard.press('Escape');
+  await expect(candidateStatus).toBeHidden();
+  await expect(trigger).toBeFocused();
   clean();
 });
 

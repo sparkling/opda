@@ -6,6 +6,7 @@ import {
   validationReport,
 } from '@/lib/property-pack-model.mjs';
 import '@/styles/property-pack.css';
+import '@/styles/property-pack-candidate-info.css';
 
 interface Crumb {
   label: string;
@@ -36,37 +37,89 @@ const technicalState = validationReport.status === 'pass'
   proseClass="prose wide"
 >
   <div class="v2-doc">
-    <details class="v2-candidate-banner">
-      <summary>
-        <span class="pill pill--warn">Machine-proposed</span>
-        <strong>{candidateManifest.candidate_version}</strong>
-        <span>{candidateManifest.publication_status.replaceAll('-', ' ')}</span>
-        <span class="v2-candidate-banner__label">Candidate status and evidence</span>
-      </summary>
-      <div class="v2-candidate-banner__content">
-        <p>
-          <strong>Property Pack ontology candidate · accelerated SPDTF component ·
-          machine-generated · non-normative.</strong> The Technical Working Group
-          determination is pending, later domain review has not occurred, and AI has no
-          decision authority. This candidate is neither the whole SPDTF ontology nor
-          an approved exchange contract.
-        </p>
-        <p>
-          <strong>{technicalState}.</strong> This records machine checks, not semantic approval.
-          <a href="/spdtf/property-pack/validation"> Review the evidence</a>.
-        </p>
-        <dl class="property-pack-status" aria-label="Property Pack lifecycle status">
-          <div><dt>Source definition</dt><dd>{propertyPackLifecycleStatus.sourceDefinition}</dd></div>
-          <div><dt>Ontology candidate</dt><dd>{propertyPackLifecycleStatus.ontologyCandidate}</dd></div>
-          <div><dt>Technical determination</dt><dd>{propertyPackLifecycleStatus.technicalDetermination}</dd></div>
-          <div><dt>Later domain review</dt><dd>{propertyPackLifecycleStatus.laterDomainReview}</dd></div>
-          <div><dt>Implementation or release</dt><dd>{propertyPackLifecycleStatus.implementationRelease}</dd></div>
-          <div><dt>External use or authority</dt><dd>{propertyPackLifecycleStatus.externalAuthority}</dd></div>
-        </dl>
-      </div>
-    </details>
+    <div class="v2-candidate-info" data-candidate-info>
+      <button
+        type="button"
+        class="v2-candidate-info__trigger"
+        aria-label="View candidate status and evidence"
+        aria-controls="property-pack-candidate-status"
+        aria-expanded="false"
+        data-candidate-info-trigger
+      >
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+          <circle cx="12" cy="12" r="9"></circle>
+          <path d="M12 11v6"></path>
+          <path d="M12 7.25h.01"></path>
+        </svg>
+      </button>
+
+      <aside
+        id="property-pack-candidate-status"
+        class="v2-candidate-flyout"
+        role="region"
+        aria-labelledby="property-pack-candidate-status-title"
+        data-candidate-info-panel
+        hidden
+      >
+        <header class="v2-candidate-flyout__header">
+          <div>
+            <p class="v2-candidate-flyout__eyebrow">Property Pack ontology</p>
+            <p
+              class="v2-candidate-flyout__title"
+              id="property-pack-candidate-status-title"
+              role="heading"
+              aria-level="2"
+            >
+              Candidate status and evidence
+            </p>
+          </div>
+          <button
+            type="button"
+            class="v2-candidate-flyout__close"
+            aria-label="Close candidate status and evidence"
+            data-candidate-info-close
+          >
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+              <path d="M6 6l12 12M18 6 6 18"></path>
+            </svg>
+          </button>
+        </header>
+
+        <div class="v2-candidate-flyout__state">
+          <span class="pill pill--warn">Machine-proposed</span>
+          <strong>{candidateManifest.candidate_version}</strong>
+          <span>{candidateManifest.publication_status.replaceAll('-', ' ')}</span>
+        </div>
+
+        <div class="v2-candidate-flyout__content">
+          <p>
+            <strong>Property Pack ontology candidate · accelerated SPDTF component ·
+            machine-generated · non-normative.</strong> The Technical Working Group
+            determination is pending, later domain review has not occurred, and AI has no
+            decision authority. This candidate is neither the whole SPDTF ontology nor
+            an approved exchange contract.
+          </p>
+          <p>
+            <strong>{technicalState}.</strong> This records machine checks, not semantic approval.
+            <a href="/spdtf/property-pack/validation"> Review the evidence</a>.
+          </p>
+          <dl class="property-pack-status" aria-label="Property Pack lifecycle status">
+            <div><dt>Source definition</dt><dd>{propertyPackLifecycleStatus.sourceDefinition}</dd></div>
+            <div><dt>Ontology candidate</dt><dd>{propertyPackLifecycleStatus.ontologyCandidate}</dd></div>
+            <div><dt>Technical determination</dt><dd>{propertyPackLifecycleStatus.technicalDetermination}</dd></div>
+            <div><dt>Later domain review</dt><dd>{propertyPackLifecycleStatus.laterDomainReview}</dd></div>
+            <div><dt>Implementation or release</dt><dd>{propertyPackLifecycleStatus.implementationRelease}</dd></div>
+            <div><dt>External use or authority</dt><dd>{propertyPackLifecycleStatus.externalAuthority}</dd></div>
+          </dl>
+        </div>
+      </aside>
+    </div>
 
     <slot />
   </div>
   <slot name="scripts" slot="scripts" />
 </Layout>
+
+<script>
+  import '@/scripts/property-pack-candidate-info';
+</script>

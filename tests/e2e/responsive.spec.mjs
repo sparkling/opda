@@ -168,13 +168,18 @@ test('text flows to its outer content container without nested max-widths', asyn
   clean();
 });
 
-test('Property Pack candidate status reflows inside the available article track', async ({ page }) => {
+test('Property Pack title action and candidate flyout stay inside the available article track', async ({ page }) => {
   const clean = watchRuntime(page);
   await page.setViewportSize({ width: 1281, height: 900 });
   await visit(page, '/spdtf/property-pack/validation');
-  await page.locator('.v2-candidate-banner > summary').click();
+  const trigger = page.getByRole('button', { name: 'View candidate status and evidence' });
+  const heading = page.getByRole('heading', { name: 'Validation evidence', level: 1 });
+  await trigger.click();
   await assertNoBodyOverflow(page);
-  const containment = await page.locator('.v2-candidate-banner, .v2-candidate-banner > summary, .v2-candidate-banner__content, .v2-candidate-banner__content > *')
+  const [headingBox, triggerBox] = await Promise.all([heading.boundingBox(), trigger.boundingBox()]);
+  expect(triggerBox.y).toBeLessThan(headingBox.y + headingBox.height);
+  expect(triggerBox.y + triggerBox.height).toBeGreaterThan(headingBox.y);
+  const containment = await page.locator('.v2-candidate-info__trigger, .v2-candidate-flyout, .v2-candidate-flyout__content > *')
     .evaluateAll((elements) => {
       const article = document.querySelector('main > .prose').getBoundingClientRect();
       return {
