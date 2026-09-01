@@ -290,6 +290,10 @@ pattern. A skip link is the first focusable element.
 The quiet divider below the global tabs spans the content track only, and the first tab has no additional
 left inset. Breadcrumbs have balanced spacing above and below. No metadata strip or repeated category
 appears between the breadcrumbs and the H1; the breadcrumb leads directly into the page title.
+`Layout.astro` renders `Breadcrumbs.astro` as the only page-level breadcrumb implementation. Wrappers with
+qualified document titles supply a concise `breadcrumbTitle` but never their own breadcrumb markup or CSS.
+Schema-object locations and resource-folder paths remain separate in-content navigation with location,
+rather than page, semantics.
 The `#F9F9F9` sidebar keeps the current section in its accessible name without repeating it visibly.
 The footer has a 4px yellow top rule. `SiteFooter.astro` renders once outside article content and
 navigation rails on the root landing, every route using the shared `Layout`, and the standalone

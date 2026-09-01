@@ -23,15 +23,10 @@ const clientV = '25';
 ---
 <Layout
   title="Ontology graph — interactive bake-off"
+  breadcrumbTitle="Interactive graph"
   description="The whole OPDA ontology as an interactive node-link graph, rendered by every graph engine in the ADR-0043/0047 bake-off — Cytoscape, D3, vis-network, force-graph, G6, Sigma, plus Mermaid and Graphviz. Switch tabs to compare them on the same SPARQL-derived model: zoom, filter, focus a term's neighbourhood."
   hideComments={true}
 >
-  <nav class="term-nav" aria-label="Breadcrumb">
-    <a href="/spdtf/inputs/pdtf-schema/schema-derived-ontology">Ontology</a>
-    <span class="sep" aria-hidden="true">›</span>
-    <span aria-current="page">Interactive graph</span>
-  </nav>
-
   <header class="term-header">
     <p class="term-kind"><span class="pill pill--brand">Interactive graph · engine bake-off</span></p>
     <h1>Ontology graph</h1>
@@ -117,8 +112,6 @@ const clientV = '25';
   </p>
 
   <style>
-    .term-nav { font: 500 var(--text-sm)/1.4 var(--font-sans); color: var(--color-text-muted); margin: 0 0 var(--space-4); display: flex; flex-wrap: wrap; gap: var(--space-2); align-items: center; }
-    .term-nav .sep { color: var(--color-border-strong); }
     .term-header { margin: 0 0 var(--space-5); }
     .term-kind { margin: 0 0 var(--space-2); }
     .term-comment { font: 400 var(--text-base)/var(--leading-relaxed) var(--font-sans); color: var(--color-text); margin: var(--space-3) 0 0; }

@@ -215,6 +215,10 @@ framework subheading. A shared `.brand-lockup` primitive now owns icon scale (`0
 The compact header remains 64px. The divider below the global tabs follows the content width, the first tab
 has no extra left inset, breadcrumbs regain balanced vertical spacing, and the pre-title metadata strip is
 suppressed entirely so the breadcrumb leads directly into the page title.
+`Layout.astro` now owns the sole page-level `Breadcrumbs.astro` renderer. Property Pack, ontology detail,
+ADR, ODR and verification pages no longer carry alternate breadcrumb markup or local breadcrumb CSS;
+qualified document titles may supply a concise `breadcrumbTitle`. In-content schema-object locations and
+resource-folder paths retain their distinct location semantics.
 The documentation body now centres the complete content-and-rails shell at its combined maximum width.
 On wide viewports, surplus space therefore remains outside the shell rather than separating either
 navigation panel from the content it describes. Collapsed panels remain within their reserved rail tracks,

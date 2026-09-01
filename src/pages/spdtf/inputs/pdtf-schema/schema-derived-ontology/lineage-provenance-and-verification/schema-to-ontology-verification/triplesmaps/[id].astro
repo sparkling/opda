@@ -76,15 +76,10 @@ const iteratorHref = hrefFrom(CONTAINER_INDEX[iteratorContainerPath(tm.iterator)
 ---
 <Layout
   title={`Mapping — #${tm.id}`}
+  breadcrumbTitle={`#${tm.id}`}
   description={`RML TriplesMap #${tm.id} — ${tm.classes.join(', ') || 'untyped node'}, iterator ${tm.iterator}.`}
 >
 <PageMeta category={tm.classes.join(', ') || 'Untyped node'} variant="info" updated="Updated 2026-07-06" />
-
-  <nav class="breadcrumb-override" aria-label="TriplesMap breadcrumb">
-    <a href="/spdtf/inputs/pdtf-schema/schema-derived-ontology/lineage-provenance-and-verification/schema-to-ontology-verification/triplesmaps">TriplesMaps reference</a>
-    <span aria-hidden="true"> / </span>
-    <span>#{tm.id}</span>
-  </nav>
 
   <h1><code>#{tm.id}</code></h1>
   <p class="lead">

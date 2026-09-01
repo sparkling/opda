@@ -17,17 +17,10 @@ const { cat } = Astro.props;
 ---
 <Layout
   title={`${cat.category} — UFO meta-category`}
+  breadcrumbTitle={cat.category}
   description={`The OPDA ontology classes whose UFO foundational meta-category is ${cat.category}, grouped from the structured opda:ufoCategory facet. Each links to its dereferenceable /pdtf page.`}
   hideComments={true}
 >
-  <nav class="term-nav" aria-label="Breadcrumb">
-    <a href="/spdtf/inputs/pdtf-schema/schema-derived-ontology">Ontology</a>
-    <span class="sep" aria-hidden="true">›</span>
-    <a href="/spdtf/inputs/pdtf-schema/schema-derived-ontology/terms-and-model-resources/categories">UFO categories</a>
-    <span class="sep" aria-hidden="true">›</span>
-    <span aria-current="page">{cat.category}</span>
-  </nav>
-
   <header class="term-header">
     <p class="term-kind"><span class="pill pill--brand">UFO meta-category</span></p>
     <h1>{cat.category}</h1>
@@ -64,8 +57,6 @@ const { cat } = Astro.props;
   </p>
 
   <style>
-    .term-nav { font: 500 var(--text-sm)/1.4 var(--font-sans); color: var(--color-text-muted); margin: 0 0 var(--space-4); display: flex; flex-wrap: wrap; gap: var(--space-2); align-items: center; }
-    .term-nav .sep { color: var(--color-border-strong); }
     .term-header { margin: 0 0 var(--space-6); }
     .term-kind { margin: 0 0 var(--space-2); }
     .term-comment { font: 400 var(--text-base)/var(--leading-relaxed) var(--font-sans); color: var(--color-text); margin: var(--space-3) 0 0; }

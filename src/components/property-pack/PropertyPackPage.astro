@@ -16,40 +16,26 @@ interface Props {
   title: string;
   description: string;
   category?: string;
+  /** Source-only hierarchy metadata; the shared breadcrumb renderer derives
+   * the visible trail from the canonical site navigation. */
   crumbs?: Crumb[];
 }
 
 const {
   title,
   description,
-  crumbs = [],
 } = Astro.props;
-const isPropertyPackRoot = Astro.url.pathname.replace(/\/+$/u, '') === '/spdtf/property-pack';
 const technicalState = validationReport.status === 'pass'
   ? 'Technical candidate checks passed'
   : `Technical candidate checks: ${validationReport.status}`;
 ---
 <Layout
   title={`${title} · Property Pack ontology · SPDTF`}
+  breadcrumbTitle={title}
   description={description}
-  hideBreadcrumbs={true}
   proseClass="prose wide"
 >
   <div class="v2-doc">
-    <nav class="v2-breadcrumbs" aria-label="Breadcrumb">
-      <a href="/spdtf">SPDTF Development</a>
-      <span aria-hidden="true">/</span>
-      {isPropertyPackRoot
-        ? <span aria-current="page">Property Pack ontology</span>
-        : <a href="/spdtf/property-pack">Property Pack ontology</a>}
-      {crumbs.map((crumb) => (
-        <>
-          <span aria-hidden="true">/</span>
-          {crumb.href ? <a href={crumb.href}>{crumb.label}</a> : <span aria-current="page">{crumb.label}</span>}
-        </>
-      ))}
-    </nav>
-
     <details class="v2-candidate-banner">
       <summary>
         <span class="pill pill--warn">Machine-proposed</span>

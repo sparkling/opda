@@ -277,14 +277,29 @@ test('reader pages delegate local contents navigation to the shared right rail',
 });
 
 test('breadcrumbs use the documented base-size navigation role', async () => {
-  const [contract, navigation, propertyPack] = await Promise.all([
+  const [contract, navigation, propertyPack, propertyPackPage, layout] = await Promise.all([
     readFile(file('DESIGN.md'), 'utf8'),
     readFile(file('public/ui/design/navigation.css'), 'utf8'),
     readFile(file('src/styles/property-pack.css'), 'utf8'),
+    readFile(file('src/components/property-pack/PropertyPackPage.astro'), 'utf8'),
+    readFile(file('src/layouts/Layout.astro'), 'utf8'),
   ]);
   assert.match(contract, /Breadcrumbs:[\s\S]*base 16px role with a 24px line-height/u);
   assert.match(navigation, /\.breadcrumbs\s*\{[^}]*font:\s*500 var\(--text-base\) \/ 1\.5 var\(--font-sans\)/su);
-  assert.match(propertyPack, /\.v2-breadcrumbs\s*\{[^}]*font:\s*500 var\(--text-base\) \/ 1\.5 var\(--font-sans\)/su);
+  assert.doesNotMatch(propertyPack, /\.v2-breadcrumbs/u);
+  assert.match(layout, /<Breadcrumbs currentPageTitle=\{breadcrumbTitle\} \/>/u);
+  assert.match(propertyPackPage, /breadcrumbTitle=\{title\}/u);
+  assert.doesNotMatch(propertyPackPage, /hideBreadcrumbs|<nav[^>]+aria-label="Breadcrumb"/u);
+
+  const sources = await filesWithExtension('src', '.astro');
+  for (const path of sources.filter((path) => path !== 'src/components/Breadcrumbs.astro')) {
+    const source = await readFile(file(path), 'utf8');
+    assert.doesNotMatch(
+      source,
+      /<nav[^>]+aria-label=(["'])[^"']*[Bb]readcrumb[^"']*\1/u,
+      `${path} duplicates the shared page breadcrumb`,
+    );
+  }
 });
 
 test('the adopted motion contract excludes parallax and long campaign motion', async () => {

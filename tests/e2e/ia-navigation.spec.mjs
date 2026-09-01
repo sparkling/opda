@@ -346,11 +346,10 @@ test('Property Pack detail pages expose their full canonical ancestry', async ({
   await visit(page, '/spdtf/property-pack/resources/common/Property');
   const crumbs = page.locator('nav[aria-label="Breadcrumb"]');
   await expect(crumbs.locator('a, [aria-current="page"]')).toHaveText([
-    'SPDTF Development', 'Property Pack ontology', 'Ontology resources', 'Common boundary', 'Property',
+    'SPDTF Development', 'Property Pack ontology', 'Current ontology model', 'Ontology resources', 'Property',
   ]);
   expect(await crumbs.locator('a').evaluateAll((links) => links.map((link) => link.getAttribute('href')))).toEqual([
-    '/spdtf', '/spdtf/property-pack', '/spdtf/property-pack/resources',
-    '/spdtf/property-pack/contexts/common',
+    '/spdtf', '/spdtf/property-pack', '/spdtf/property-pack/model', '/spdtf/property-pack/resources',
   ]);
   const local = page.locator('#section-navigation');
   await expect(local.locator('a[aria-current="page"]')).toHaveCount(0);

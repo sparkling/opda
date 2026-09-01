@@ -37,14 +37,10 @@ const status = odr.status || data.status || '';
 ---
 <Layout
   title={`ODR-${odr.number} — ${odr.title}`}
+  breadcrumbTitle={`ODR-${odr.number}`}
   description={`Ontology Decision Record ${odr.number}: ${odr.title} (${kind}, ${status})`}
   proseClass="prose wide odr-detail"
 >
-  <nav class="breadcrumb-override" aria-label="ODR breadcrumb">
-    <a href="/modelling/odr">ODR Corpus</a>
-    <span aria-hidden="true"> / </span>
-    <span>ODR-{odr.number}</span>
-  </nav>
   <div class="odr-meta">
     {kind && <span class={`pill ${KIND_PILL[kind] ?? 'pill--brand'}`}>{kind}</span>}
     {status && <span class={`pill ${STATUS_PILL[status] ?? ''}`}>{status}</span>}

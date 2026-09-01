@@ -12,7 +12,6 @@ import councilManifest from '@/data/council-manifest.json';
         <span id="res-mode-label" class="muted tiny">—</span>
       </div>
 
-      <div class="res-breadcrumb" id="res-breadcrumb">—</div>
       <h1 id="res-title">Loading…</h1>
 
       <dl class="res-meta">
@@ -341,7 +340,7 @@ import councilManifest from '@/data/council-manifest.json';
 
 <style is:global>
   .res-meta { display: grid; grid-template-columns: max-content 1fr; gap: var(--space-2) var(--space-4); margin: var(--space-3) 0 var(--space-5); padding: var(--space-3) var(--space-4); font-size: var(--text-sm); color: var(--color-text); background: var(--color-surface-alt); border: 1px solid var(--color-border); border-radius: 0; }
-  .res-meta dt, .res-breadcrumb, .res-folder-crumbs, .res-jsoncrack-status { color: var(--color-text-muted); }
+  .res-meta dt, .res-folder-crumbs, .res-jsoncrack-status { color: var(--color-text-muted); }
   .res-meta dt { font-weight: 600; margin: 0; } .res-meta dd { margin: 0; } .res-meta dd code { word-break: break-all; }
   .res-actions, .res-folder-head { display: flex; flex-wrap: wrap; gap: var(--space-3); } .res-actions { margin: 0 0 var(--space-4); } .res-folder-head { align-items: center; justify-content: space-between; margin-bottom: var(--space-3); }
   .res-actions a, .res-folder-up { display: inline-flex; align-items: center; min-height: var(--target-min); padding: var(--space-2) var(--space-4); font: 600 var(--text-sm)/1 var(--font-sans); text-decoration: none; color: var(--brand-ink); background: var(--brand-yellow); border: 1px solid var(--brand-yellow); border-radius: var(--radius-md); }
@@ -356,7 +355,7 @@ import councilManifest from '@/data/council-manifest.json';
   .res-json-modes button { min-height: var(--target-min); padding: var(--space-2) var(--space-4); color: var(--color-text); background: transparent; border: 0; border-right: 1px solid var(--color-border-strong); font: 600 var(--text-sm)/1 var(--font-sans); cursor: pointer; }
   .res-json-modes button:last-child { border-right: 0; } .res-json-modes button.active { color: var(--brand-ink); background: var(--brand-yellow); } .res-json-modes button:not(.active):hover { background: var(--color-action-subtle-hover); }
   .res-jsoncrack-status { padding: var(--space-3) var(--space-4); background: var(--color-surface-alt); border-bottom: 1px solid var(--color-border); font-size: var(--text-sm); }
-  .res-breadcrumb, .res-folder-crumbs { margin-bottom: var(--space-2); font-size: var(--text-sm); word-break: break-all; } .res-breadcrumb a, .res-breadcrumb span, .res-folder-crumbs a { color: inherit; } .res-breadcrumb a:hover, .res-folder-crumbs a:hover { color: var(--color-link-hover); } .res-breadcrumb .sep, .res-folder-crumbs .sep { margin: 0 var(--space-2); color: var(--color-text-muted); }
+  .res-folder-crumbs { margin-bottom: var(--space-2); font-size: var(--text-sm); word-break: break-all; } .res-folder-crumbs a { color: inherit; } .res-folder-crumbs a:hover { color: var(--color-link-hover); } .res-folder-crumbs .sep { margin: 0 var(--space-2); color: var(--color-text-muted); }
   .res-prose-wrap { overflow-x: visible; padding: var(--space-5) var(--space-6); background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 0; }
   .res-prose-wrap > :first-child { margin-top: 0; } .res-prose-wrap > :last-child { margin-bottom: 0; } .res-prose-wrap h1, .res-prose-wrap h2 { margin-top: var(--space-5); } .res-prose-wrap h3 { margin-top: var(--space-4); }
   .res-prose-wrap pre, .res-code-wrap pre { overflow: auto; font: var(--code); line-height: var(--leading-normal); } .res-prose-wrap pre { padding: var(--space-3) var(--space-4); background: var(--color-surface-alt); border: 1px solid var(--color-border); border-radius: 0; } .res-prose-wrap pre code, .res-code-wrap code { padding: 0; background: transparent; }

@@ -50,13 +50,7 @@ export function getStaticPaths() {
 
 const { slug, input, report, meta } = Astro.props;
 ---
-<Layout title={`${slug} — exemplar`} description={`Round-trip diagnostic exemplar ${slug}${meta ? ': ' + meta.hard : ''}`} hideComments={true}>
-  <nav class="term-nav" aria-label="Breadcrumb">
-    <a href="/spdtf/inputs/pdtf-schema/schema-derived-ontology">Ontology</a> <span class="sep" aria-hidden="true">›</span>
-    <a href="/spdtf/inputs/pdtf-schema/schema-derived-ontology/validation-and-examples/exemplars">Exemplars</a> <span class="sep" aria-hidden="true">›</span>
-    <span aria-current="page">{slug}</span>
-  </nav>
-
+<Layout title={`${slug} — exemplar`} breadcrumbTitle={slug} description={`Round-trip diagnostic exemplar ${slug}${meta ? ': ' + meta.hard : ''}`} hideComments={true}>
   <header class="term-header">
     <p class="term-kind">
       <span class="pill pill--brand">Exemplar</span>
@@ -87,8 +81,6 @@ const { slug, input, report, meta } = Astro.props;
   </p>
 
   <style>
-    .term-nav { font: 500 var(--text-sm)/1.4 var(--font-sans); color: var(--color-text-muted); margin: 0 0 var(--space-4); display: flex; flex-wrap: wrap; gap: var(--space-2); align-items: center; }
-    .term-nav .sep { color: var(--color-border-strong); }
     .term-header { margin: 0 0 var(--space-6); }
     .term-kind { display: flex; flex-wrap: wrap; gap: var(--space-2); align-items: center; margin: 0 0 var(--space-2); }
     .term-comment { font: 400 var(--text-base)/var(--leading-relaxed) var(--font-sans); color: var(--color-text); margin: var(--space-3) 0 0; }

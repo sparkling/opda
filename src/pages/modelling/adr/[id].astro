@@ -33,14 +33,10 @@ const status = adr.status || data.status || '';
 ---
 <Layout
   title={`ADR-${adr.number} — ${adr.title}`}
+  breadcrumbTitle={`ADR-${adr.number}`}
   description={`Architecture Decision Record ${adr.number}: ${adr.title} (${status})`}
   proseClass="prose wide odr-detail"
 >
-  <nav class="breadcrumb-override" aria-label="ADR breadcrumb">
-    <a href="/modelling/adr">ADR Corpus</a>
-    <span aria-hidden="true"> / </span>
-    <span>ADR-{adr.number}</span>
-  </nav>
   <div class="odr-meta">
     {status && <span class={`pill ${STATUS_PILL[status] ?? ''}`}>{status}</span>}
     {dateStr && <time datetime={dateStr}>{dateStr}</time>}

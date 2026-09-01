@@ -51,6 +51,8 @@ interface Props {
   hideSidebar?: boolean;
   /** Hide the breadcrumbs (e.g. on section roots). */
   hideBreadcrumbs?: boolean;
+  /** Plain current-page label when the document title contains qualifiers. */
+  breadcrumbTitle?: string;
   /** Hide the prev/next page footer. */
   hideFooter?: boolean;
   /** Hide the Artalk comments section (e.g. on /404, /design-system). */
@@ -67,6 +69,7 @@ const {
   wrapArticle = true,
   hideSidebar = false,
   hideBreadcrumbs = false,
+  breadcrumbTitle = title,
   hideFooter = false,
   hideComments = false,
   mainClass = '',
@@ -146,7 +149,7 @@ const searchAliases = routeDisposition?.search?.historicalAliases ?? [];
     <div class={`app-body${showSidebar ? '' : ' no-sidebar'}`}>
       {showSidebar && <Sidebar />}
       <main class={`app-main${mainClass ? ` ${mainClass}` : ''}`} id="main-content" tabindex="-1">
-        {!hideBreadcrumbs && <Breadcrumbs currentPageTitle={title} />}
+        {!hideBreadcrumbs && <Breadcrumbs currentPageTitle={breadcrumbTitle} />}
         {wrapArticle ? (
           <article class={proseClass}>
             <slot />
