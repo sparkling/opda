@@ -102,7 +102,7 @@ a:visited { text-decoration-color: currentColor; }
   align-self: end;
   display: inline-flex;
   align-items: baseline;
-  gap: var(--space-2);
+  gap: var(--space-3);
   color: var(--brand-yellow);
   font: 600 var(--text-3xl) / 1 var(--font-sans);
   letter-spacing: var(--tracking-display);
