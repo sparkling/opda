@@ -209,6 +209,9 @@ Data Framework” subheading sits above the horizontal global destination tabs. 
 at the top right; the previous standalone logo cell was removed. This does not alter either the left section rail
 or the right page-contents rail.
 
+The final desktop masthead refinement expands the header to 160px, gives the title lock-up a 32px icon and
+16px internal gap, and adds deliberate space around the framework subheading. The compact header remains 64px.
+
 On 1 September 2026 the diagram-frame contract was consolidated. `GraphDiagram.astro`
 and adopted bare Mermaid now consume one shared shell template and one bundled Mermaid
 renderer. Ontology sources may explicitly declare datatype-property, object-property

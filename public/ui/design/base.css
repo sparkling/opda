@@ -102,7 +102,7 @@ a:visited { text-decoration-color: currentColor; }
   align-self: end;
   display: inline-flex;
   align-items: baseline;
-  gap: var(--space-3);
+  gap: var(--space-5);
   color: var(--brand-yellow);
   font: 600 var(--text-3xl) / 1 var(--font-sans);
   letter-spacing: var(--tracking-display);
@@ -111,7 +111,7 @@ a:visited { text-decoration-color: currentColor; }
 }
 .app-header__title-icon {
   display: block;
-  width: 1.5rem;
+  width: 2rem;
   height: auto;
   flex: 0 0 auto;
 }
@@ -121,7 +121,7 @@ a:visited { text-decoration-color: currentColor; }
   min-width: 0;
   align-self: start;
   margin: 0;
-  padding-block: var(--space-3);
+  padding: var(--space-4) 0 var(--space-6);
   color: var(--brand-white);
   font: 500 var(--text-xl) / 1.1 var(--font-sans);
   letter-spacing: var(--tracking-display);
@@ -266,7 +266,7 @@ a:visited { text-decoration-color: currentColor; }
 :root[data-theme='dark'] .theme-icon--sun { display: block; }
 
 @media (min-width: 96.0625rem) {
-  :root { --header-height: 8rem; }
+  :root { --header-height: 10rem; }
 }
 
 /* The six-destination global nav needs a disclosure before the desktop row
