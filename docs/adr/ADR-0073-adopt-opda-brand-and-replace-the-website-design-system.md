@@ -217,7 +217,8 @@ has no extra left inset, breadcrumbs regain balanced vertical spacing, and the p
 suppressed entirely so the breadcrumb leads directly into the page title.
 The documentation body now centres the complete content-and-rails shell at its combined maximum width.
 On wide viewports, surplus space therefore remains outside the shell rather than separating either
-navigation panel from the content it describes; collapsed rail tokens continue to reduce the shell measure.
+navigation panel from the content it describes. Collapsed panels remain within their reserved rail tracks,
+so the shell measure, article geometry and header alignment do not change with disclosure state.
 
 On 1 September 2026 the diagram-frame contract was consolidated. `GraphDiagram.astro`
 and adopted bare Mermaid now consume one shared shell template and one bundled Mermaid
@@ -237,8 +238,8 @@ Later on 1 September 2026, the documentation-shell rail contract was clarified: 
 navigation and page-contents rail use the same 240px desktop width and alternate surface, with
 matching labelled utility bands. The bands use uppercase mono labels, structural dividers and double
 chevrons so they cannot be confused with selected navigation rows. Collapsing either rail creates a
-full-height 44px labelled spine and contracts its grid track, allowing the article to reflow into the
-released space while the global navigation follows the new content edge. The visible label supplies the accessible name and the state remains in
+full-height 44px labelled spine anchored to the content-facing edge of its reserved 240px track. The grid
+tracks and header offsets remain fixed, preventing the article from moving or resizing. The visible label supplies the accessible name and the state remains in
 `aria-expanded`. The mobile drawer and inline page-contents patterns retain their established geometry
 and disclosure behaviour.
 

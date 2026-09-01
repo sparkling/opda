@@ -42,8 +42,8 @@
 
 /* Centre the complete shell, not the article alone. Once the article reaches
    its maximum width, surplus viewport space remains outside the rails so both
-   navigation panels continue to hug the content track. Collapsed rail tokens
-   also reduce this outer measure, while sub-maximal layouts still reflow. */
+   navigation panels continue to hug the content track. Rail tracks retain
+   their full measure in either disclosure state. */
 
 /* Rail utility band. Its mono overline, full-bleed square geometry and double
    chevron keep shell chrome categorically distinct from navigation rows. */
@@ -93,14 +93,13 @@
 .rail-glyph { display: none; }
 #sidebar-collapse .rail-glyph--toward-start { display: block; }
 
-/* A collapsed rail becomes a labelled full-height spine. Its grid track
-   contracts with it so the article reflows into the released width. */
+/* A collapsed rail becomes a labelled full-height spine inside its reserved
+   track. The track never changes, so the article remains perfectly stable. */
 @media (min-width: 60.0625rem) {
-  .app-body.sidebar-collapsed { --shell-sidebar-track: var(--target-min); }
-  .app-body.toc-collapsed { --shell-toc-track: var(--target-min); }
   .app-body.sidebar-collapsed .sidebar-nav { display: none; }
   .app-body.sidebar-collapsed .app-sidebar {
     width: var(--target-min);
+    justify-self: end;
     overflow: hidden;
   }
   .app-body.sidebar-collapsed .app-sidebar > .rail-collapse-toggle {

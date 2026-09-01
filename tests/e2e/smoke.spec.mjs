@@ -50,6 +50,8 @@ test('desktop sidebar and nested tree controls work', async ({ page }) => {
     return {
       sidebarWidth: rect('.app-sidebar')?.width,
       tocWidth: rect('.toc')?.width,
+      sidebarRight: rect('.app-sidebar')?.right,
+      tocLeft: rect('.toc')?.left,
       mainLeft: mainRect?.left,
       mainRight: mainRect?.right,
       sidebarSurface: sidebar ? getComputedStyle(sidebar).backgroundColor : null,
@@ -62,16 +64,18 @@ test('desktop sidebar and nested tree controls work', async ({ page }) => {
   await page.locator('#sidebar-collapse').click();
   await expect(body).toHaveClass(/sidebar-collapsed/);
   const leftCollapsed = await geometry();
-  expect(leftCollapsed.mainLeft).toBeLessThan(initial.mainLeft);
-  expect(leftCollapsed.mainRight).toBe(initial.mainRight);
+  expect(leftCollapsed.mainLeft).toBeCloseTo(initial.mainLeft, 1);
+  expect(leftCollapsed.mainRight).toBeCloseTo(initial.mainRight, 1);
+  expect(leftCollapsed.sidebarRight).toBeCloseTo(initial.mainLeft, 1);
   expect(leftCollapsed.sidebarWidth).toBeCloseTo(44, 1);
   await page.locator('#sidebar-collapse').click();
   await expect(body).not.toHaveClass(/sidebar-collapsed/);
   await toc.locator('#toc-collapse').click();
   await expect(body).toHaveClass(/toc-collapsed/);
   const rightCollapsed = await geometry();
-  expect(rightCollapsed.mainLeft).toBe(initial.mainLeft);
-  expect(rightCollapsed.mainRight).toBeGreaterThan(initial.mainRight);
+  expect(rightCollapsed.mainLeft).toBeCloseTo(initial.mainLeft, 1);
+  expect(rightCollapsed.mainRight).toBeCloseTo(initial.mainRight, 1);
+  expect(rightCollapsed.tocLeft).toBeCloseTo(initial.mainRight, 1);
   expect(rightCollapsed.tocWidth).toBeCloseTo(44, 1);
   await toc.locator('#toc-collapse').click();
 

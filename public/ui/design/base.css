@@ -158,12 +158,6 @@ a:visited { text-decoration-color: currentColor; }
 #app:has(> .app-body.with-toc) .app-header--with-sidebar {
   --header-content-right-rail: var(--toc-width);
 }
-#app:has(> .app-body.sidebar-collapsed) .app-header--with-sidebar {
-  --header-content-left-rail: var(--target-min);
-}
-#app:has(> .app-body.with-toc.toc-collapsed) .app-header--with-sidebar {
-  --header-content-right-rail: var(--target-min);
-}
 .app-header .global-nav::-webkit-scrollbar { display: none; }
 .app-header .global-nav a {
   position: relative;

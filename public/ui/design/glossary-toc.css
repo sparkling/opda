@@ -129,7 +129,7 @@
   .toc.is-collapsed .rail-glyph--toward-start { display: block; }
   .app-body.toc-collapsed .toc {
     width: var(--target-min);
-    justify-self: end;
+    justify-self: start;
     overflow: hidden;
   }
   .app-body.toc-collapsed .toc > .toc-toggle {
