@@ -376,7 +376,7 @@ test('shared navigation exposes visible focus, state and 44px targets', async ()
   assert.match(header, /showSidebar &&/u);
   assert.match(header, /app-header--with-sidebar/u);
   assert.match(header, /class="app-header__title brand-lockup brand-lockup--mini brand-lockup--on-dark"[\s\S]*brand-lockup__icon[\s\S]*brand-lockup__label[\s\S]*Open Property Data Association/su);
-  assert.match(header, /class="app-header__framework">Smart Property Data Framework<\/p>/u);
+  assert.match(header, /<a href="\/" class="app-header__framework">Smart Property Data Framework<\/a>/u);
   assert.match(header, /class="app-header__utilities"/u);
   assert.doesNotMatch(header, /brand-cell|brand-wordmark/u);
   assert.match(header, /id="global-nav-toggle"/u);
@@ -429,7 +429,7 @@ test('shared navigation exposes visible focus, state and 44px targets', async ()
   assert.match(base, /@media \(max-width: 96rem\)[\s\S]*?\.app-header__title\s*\{[^}]*align-self:\s*center[^}]*margin-block-end:\s*0/su);
   assert.match(base, /\.app-header\s*\{[^}]*padding-block:\s*var\(--space-6\) 0;/su);
   assert.match(base, /\.global-nav-panel\s*\{[^}]*height:\s*var\(--target-min\)/su);
-  assert.match(base, /\.app-header__framework\s*\{[^}]*padding:\s*var\(--space-4\) 0 var\(--space-3\)[^}]*font:\s*500 var\(--text-2xl\)/su);
+  assert.match(base, /\.app-header__framework\s*\{[^}]*padding:\s*var\(--space-4\) 0 var\(--space-3\)[^}]*font:\s*500 var\(--text-2xl\)[^}]*text-decoration:\s*none/su);
   assert.match(base, /padding-inline-end:\s*calc\([^}]*var\(--header-content-right-rail\)[^}]*var\(--content-gutter\)/su);
   assert.match(base, /@media \(min-width: 96\.0625rem\) \{[\s\S]*?\.app-header \.global-nav a\.header-cta \{ margin-left:\s*auto; \}/u);
   assert.match(base, /\.app-header__utilities\s*\{[^}]*position:\s*absolute;[^}]*inset-block-start:\s*var\(--space-5\);[^}]*inset-inline-end:\s*0;[^}]*margin-inline-end:\s*0;[^}]*padding-inline-end:\s*0;/su);

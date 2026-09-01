@@ -7,6 +7,7 @@ import { GLOBAL_DESTINATIONS, getActiveDestination } from '@/lib/site-ia.mjs';
 import AuthButton from '@/components/AuthButton.astro';
 
 const currentPath = Astro.url.pathname.replace(/\/+$/u, '') || '/';
+const isHomePage = currentPath === '/';
 const isSearchPage = currentPath === '/search';
 const joinHref = currentPath === '/join' ? '#register' : '/join';
 const activeDestination = isSearchPage ? null : getActiveDestination(currentPath);
@@ -18,10 +19,13 @@ const { showSidebar = false } = Astro.props;
     <img class="app-header__title-icon brand-lockup__icon" src="/ui/brand/opda-icon-yellow.svg" alt="" aria-hidden="true" width="84" height="100" />
     <span class="brand-lockup__label">Open Property Data Association</span>
   </a>
-  <p class="app-header__framework">Smart Property Data Framework</p>
+  <a href="/" class="app-header__framework">Smart Property Data Framework</a>
 
   <div class="app-header__utilities">
     <nav class="header-nav" aria-label="Actions and utilities">
+      <a href="/" class={`header-icon-link${isHomePage ? ' active' : ''}`} aria-label="Home" aria-current={isHomePage ? 'page' : undefined} title="Home">
+        <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m3 11 9-8 9 8" /><path d="M5 10v10h14V10" /><path d="M9 20v-6h6v6" /></svg>
+      </a>
       <a href="/search" class={`header-icon-link${isSearchPage ? ' active' : ''}`} aria-label="Search" aria-current={isSearchPage ? 'page' : undefined} title="Search">
         <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7" /><path d="m20 20-4-4" /></svg>
       </a>

@@ -268,6 +268,7 @@ action remains fully visible and aligned with the destination labels; it returns
 breadcrumb ancestors render no breadcrumb region and remove the article's duplicate upper inset. The desktop masthead is 140px high: a 12px negative lower margin keeps the mini organisation lock-up fixed while the framework heading, navigation row, divider and page shell sit four pixels below the preceding iteration.
 The working-group action uses the shared outlined-on-dark button component plus a shared inset-surface modifier. The modifier preserves the complete 44px target while leaving four pixels between its visible outline and the divider, without CTA-specific margin, translate or transform offsets; header CSS does not override the component's colour, border, typography, padding or interaction states.
 On 2 September 2026 the organisation lock-up became the smaller identifier above the larger framework heading. A shared mini lock-up variant sets one typography scale; the existing relative icon width and gap scale the complete component without header-specific image dimensions.
+Both headings link to the site root, and the top-right utility group includes a labelled house icon as a third route home without adding another text action to the global destination row.
 
 ### Brand conflict resolution
 

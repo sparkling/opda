@@ -279,10 +279,11 @@ bounded with `ButtonText`, `CanvasText`, `FieldText` and `Highlight`.
 ## 8. Application shell and homepage
 
 The desktop header is 140px, `#131224`, and has three rows: a linked mini “Open Property Data Association”
-lock-up with a bottom-aligned yellow icon, the larger “Smart Property Data Framework” heading, then the global
+lock-up with a bottom-aligned yellow icon, the linked larger “Smart Property Data Framework” heading, then the global
 destination tabs. The title, subheading and first global-navigation label follow the main content gutter and centred
 maximum-width axis. The desktop utility controls sit 16px from the top and flush with the header's physical right
-edge; the working-group action finishes on the content track's right edge. The action and destination labels share
+edge. A house icon provides an additional labelled home action beside search; both header headings also link home.
+The working-group action finishes on the content track's right edge. The action and destination labels share
 a 44px target size inside one unshifted row whose divider retains the established position. There is no separate top-left logo cell in this
 shell. The mini title lock-up consumes the shared relative icon, gap, alignment and colour contract. The shorter desktop masthead and a 12px negative lower margin on the mini lock-up move the framework heading, navigation row, divider and page shell upward while retaining the mini lock-up's established position.
 Navigation is DM Sans; the current item has a 4px amber

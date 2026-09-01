@@ -122,6 +122,7 @@ a:visited { text-decoration-color: currentColor; }
   color: var(--brand-white);
   font: 500 var(--text-2xl) / 1.1 var(--font-sans);
   letter-spacing: var(--tracking-display);
+  text-decoration: none;
   white-space: nowrap;
 }
 .app-header__utilities {

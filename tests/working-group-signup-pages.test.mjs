@@ -101,6 +101,7 @@ test('global header promotes the canonical working-group sign-up route', async (
   assert.ok(utilitiesStart < primaryStart);
   assert.match(header, /const joinHref = currentPath === '\/join' \? '#register' : '\/join'/u);
   assert.match(header, /<a href=\{joinHref\} class="header-cta btn btn--outline-dark btn--inset-end">Join a working group<\/a>/u);
+  assert.match(header, /href="\/" class=\{`header-icon-link\$\{isHomePage[\s\S]*?aria-label="Home"[\s\S]*?aria-current=\{isHomePage \? 'page' : undefined\}[\s\S]*?title="Home"[\s\S]*?<svg[\s\S]*?aria-hidden="true"/u);
   assert.match(header, /href="\/search"[\s\S]*?class=\{`header-icon-link\$\{isSearchPage[\s\S]*?aria-label="Search"[\s\S]*?aria-current=\{isSearchPage \? 'page' : undefined\}[\s\S]*?title="Search"[\s\S]*?<svg[\s\S]*?aria-hidden="true"/u);
   assert.match(header, /class="header-icon-link"[\s\S]*?aria-label="GitHub"\s+title="GitHub"[\s\S]*?<svg[\s\S]*?aria-hidden="true"/u);
   assert.doesNotMatch(header, />Search<\/a>|>GitHub<\/a>/u);
