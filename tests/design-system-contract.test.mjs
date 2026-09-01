@@ -411,7 +411,7 @@ test('shared navigation exposes visible focus, state and 44px targets', async ()
   assert.match(base, /#app:has\(> \.app-body\.with-toc\) \.app-header--with-sidebar\s*\{[^}]*--header-content-right-rail:\s*var\(--toc-width\)/su);
   assert.match(base, /\.app-header\s*\{[^}]*--header-content-left-rail:[^}]*--header-content-right-rail:/su);
   assert.match(tokens, /--sidebar-width:\s*15rem;\s*--toc-width:\s*var\(--sidebar-width\);/u);
-  assert.match(navigation, /\.breadcrumbs\s*\{[^}]*max-width:\s*var\(--content-max\)[^}]*margin:\s*0 auto;[^}]*padding-block:\s*var\(--space-5\) calc\(var\(--space-2\) \+ var\(--space-1\)\)/su);
+  assert.match(navigation, /\.breadcrumbs\s*\{[^}]*max-width:\s*var\(--content-max\)[^}]*margin:\s*0 auto;[^}]*padding-block:\s*var\(--space-5\) var\(--space-1\)/su);
   assert.match(base, /@media \(min-width: 96\.0625rem\) \{\s*:root \{ --header-height:\s*10rem; \}/u);
   assert.doesNotMatch(toc, /@media[^}]+\.toc\s*\{\s*display:\s*none/su);
   assert.match(base, /@media \(max-width: 96rem\) \{[\s\S]*\.global-nav-toggle \{ display: inline-flex; \}/u);
