@@ -100,9 +100,9 @@
       </ol>
 
       <figcaption id="method-caption">
-        <strong>People remain responsible for meaning and decisions.</strong>
-        AI assists with extraction and comparison. Working-group members challenge the result,
-        resolve disagreements and decide whether it is ready to become a draft.
+        <p><strong>People remain responsible for meaning and decisions.</strong> AI assists with extraction
+          and comparison. Working-group members challenge the result, resolve disagreements and decide
+          whether it is ready to become a draft.</p>
       </figcaption>
     </figure>
   </div>
@@ -155,14 +155,13 @@
   }
 
   .method-flow__figure figcaption {
-    display: grid;
-    grid-template-columns: minmax(14rem, 0.75fr) minmax(0, 2fr);
-    gap: var(--space-6);
     margin-top: var(--space-7);
     padding: var(--space-5) 0 0;
     border-top: 1px solid var(--color-border);
     color: var(--color-text-muted);
   }
+
+  .method-flow__figure figcaption p { margin: 0; }
 
   .method-flow__figure figcaption strong {
     color: var(--color-text-strong);
@@ -205,8 +204,6 @@
       color: var(--brand-yellow);
       font: 700 var(--text-sm) / 1.55 var(--font-mono);
     }
-
-    .method-flow__figure figcaption { grid-template-columns: minmax(0, 1fr); }
   }
 
   @media (max-width: 40rem) {
