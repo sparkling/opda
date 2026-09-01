@@ -114,6 +114,7 @@
   text-align: right;
   color: var(--color-text-muted);
 }
+.public-footer__credit span { display: block; }
 .public-footer__links {
   grid-area: links;
   margin-left: calc(0px - var(--public-footer-gutter));
