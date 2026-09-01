@@ -8,6 +8,7 @@ import BrandHeading from '@/components/BrandHeading.astro';
 import KickoffFeature from '@/components/home/KickoffFeature.astro';
 import MethodFlowFigure from '@/components/home/MethodFlowFigure.astro';
 import SiteFooter from '@/components/SiteFooter.astro';
+import ThemeToggle from '@/components/ThemeToggle.astro';
 import { Database, HousePlug, Landmark, Megaphone, RulerDimensionLine, Scale } from '@lucide/astro';
 import '@/styles/working-group-campaign.css';
 import '@/styles/working-group-campaign-responsive.css';
@@ -61,21 +62,7 @@ const domains = [
     <section class="home-campaign-hero wg-campaign-hero wg-campaign-hero--panel-aligned" aria-labelledby="public-title">
       <header class="wg-campaign-hero__header">
         <BrandHeading surface="dark" campaign />
-        <button
-          type="button"
-          class="theme-toggle"
-          id="theme-toggle"
-          aria-label="Switch to dark mode"
-          aria-pressed="false"
-          title="Switch to dark mode"
-        >
-          <svg class="theme-icon theme-icon--sun" viewBox="0 0 24 24" width="20" height="20" fill="currentColor" aria-hidden="true">
-            <path d="M12 4V2m0 20v-2m8-8h2M2 12h2m13.66-5.66l1.42-1.42M4.92 19.08l1.42-1.42m11.32 0l1.42 1.42M4.92 4.92l1.42 1.42M12 7a5 5 0 100 10 5 5 0 000-10z" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
-          </svg>
-          <svg class="theme-icon theme-icon--moon" viewBox="0 0 24 24" width="20" height="20" fill="currentColor" aria-hidden="true">
-            <path d="M20 14.5A8 8 0 0 1 9.5 4a8 8 0 1 0 10.5 10.5z" />
-          </svg>
-        </button>
+        <ThemeToggle />
       </header>
 
       <div class="wg-campaign-hero__copy">
@@ -174,14 +161,6 @@ const domains = [
   }
   :global(:root[data-theme='light']) .home-campaign-hero .wg-process .wg-process__icon {
     color: var(--color-status-warning);
-  }
-  :global(:root[data-theme='light']) .home-campaign-hero .theme-toggle {
-    color: var(--brand-deep);
-    background: rgb(255 255 255 / 72%);
-    border-color: var(--color-border-strong);
-  }
-  :global(:root[data-theme='light']) .home-campaign-hero .theme-toggle:hover {
-    background: var(--neutral-100);
   }
   :global(:root[data-theme='light']) .home-campaign-hero .btn--outline-dark {
     color: var(--brand-deep);

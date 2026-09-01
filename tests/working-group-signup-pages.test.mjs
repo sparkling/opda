@@ -20,6 +20,7 @@ const paths = {
   campaignSectionsCss: new URL('../src/styles/working-group-campaign-sections.css', import.meta.url),
   joinCss: new URL('../src/styles/working-group-join.css', import.meta.url),
   header: new URL('../src/components/Header.astro', import.meta.url),
+  themeToggle: new URL('../src/components/ThemeToggle.astro', import.meta.url),
   baseCss: new URL('../public/ui/design/base.css', import.meta.url),
   contentCss: new URL('../public/ui/design/content.css', import.meta.url),
   memberGuide: new URL('../src/pages/spdtf/working-groups/member-guide/index.astro', import.meta.url),
@@ -87,8 +88,9 @@ test('public sign-up form exposes only the accepted working-group and contributi
 });
 
 test('global header promotes the canonical working-group sign-up route', async () => {
-  const [header, baseCss, contentCss] = await Promise.all([
+  const [header, themeToggle, baseCss, contentCss] = await Promise.all([
     readFile(paths.header, 'utf8'),
+    readFile(paths.themeToggle, 'utf8'),
     readFile(paths.baseCss, 'utf8'),
     readFile(paths.contentCss, 'utf8'),
   ]);
@@ -101,6 +103,8 @@ test('global header promotes the canonical working-group sign-up route', async (
   assert.ok(utilitiesStart < primaryStart);
   assert.match(header, /const joinHref = currentPath === '\/join' \? '#register' : '\/join'/u);
   assert.match(header, /<a href=\{joinHref\} class="header-cta btn btn--outline-dark btn--inset-end">Join a working group<\/a>/u);
+  assert.match(header, /<ThemeToggle\s*\/>/u);
+  assert.match(themeToggle, /class="theme-toggle"[\s\S]*aria-label="Switch to dark mode"[\s\S]*class="theme-icon theme-icon--sun"[\s\S]*class="theme-icon theme-icon--moon"/u);
   assert.match(header, /href="\/" class=\{`header-icon-link\$\{isHomePage[\s\S]*?aria-label="Home"[\s\S]*?aria-current=\{isHomePage \? 'page' : undefined\}[\s\S]*?title="Home"[\s\S]*?<svg[\s\S]*?aria-hidden="true"/u);
   assert.match(header, /href="\/search"[\s\S]*?class=\{`header-icon-link\$\{isSearchPage[\s\S]*?aria-label="Search"[\s\S]*?aria-current=\{isSearchPage \? 'page' : undefined\}[\s\S]*?title="Search"[\s\S]*?<svg[\s\S]*?aria-hidden="true"/u);
   assert.match(header, /class="header-icon-link"[\s\S]*?aria-label="GitHub"\s+title="GitHub"[\s\S]*?<svg[\s\S]*?aria-hidden="true"/u);

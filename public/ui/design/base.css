@@ -128,7 +128,7 @@ a:visited { text-decoration-color: currentColor; }
 .app-header__utilities {
   grid-area: utilities;
   position: absolute;
-  inset-block-start: var(--space-5);
+  inset-block-start: 0;
   inset-inline-end: 0;
   display: flex;
   align-items: center;
@@ -235,8 +235,7 @@ a:visited { text-decoration-color: currentColor; }
 }
 
 .global-nav-toggle,
-.menu-toggle,
-.theme-toggle {
+.menu-toggle {
   width: var(--target-min);
   height: var(--target-min);
   flex: 0 0 var(--target-min);
@@ -251,17 +250,25 @@ a:visited { text-decoration-color: currentColor; }
 }
 .global-nav-toggle,
 .menu-toggle { display: none; }
-.theme-toggle { display: inline-flex; margin-left: 0; }
-.app-header .theme-toggle {
+.theme-toggle {
+  width: var(--target-min);
+  height: var(--target-min);
+  flex: 0 0 var(--target-min);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  margin-left: 0;
+  padding: 0;
   border: 0;
   border-radius: 0;
+  color: currentColor;
   background: transparent;
+  cursor: pointer;
 }
-.app-header .theme-toggle:hover { background: transparent; }
 .app-header__utilities .auth-button { margin-left: 0; }
 .global-nav-toggle:hover,
-.menu-toggle:hover,
-.theme-toggle:hover { background: rgb(255 255 255 / 8%); }
+.menu-toggle:hover { background: rgb(255 255 255 / 8%); }
+.theme-toggle:hover { background: transparent; }
 .theme-icon { display: none; }
 :root[data-theme='light'] .theme-icon--moon,
 :root:not([data-theme='dark']) .theme-icon--moon { display: block; }

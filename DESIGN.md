@@ -281,7 +281,7 @@ bounded with `ButtonText`, `CanvasText`, `FieldText` and `Highlight`.
 The desktop header is 140px, `#131224`, and has three rows: a linked mini “Open Property Data Association”
 lock-up with a bottom-aligned yellow icon, the linked larger “Smart Property Data Framework” heading, then the global
 destination tabs. The title, subheading and first global-navigation label follow the main content gutter and centred
-maximum-width axis. The desktop utility controls sit 16px from the top and flush with the header's physical right
+maximum-width axis. The desktop utility controls sit one line above their former position, flush with the top and the header's physical right
 edge. A house icon provides an additional labelled home action beside search; both header headings also link home.
 The working-group action finishes on the content track's right edge. The action and destination labels share
 a 44px target size inside one unshifted row whose divider retains the established position. There is no separate top-left logo cell in this
@@ -289,6 +289,7 @@ shell. The mini title lock-up consumes the shared relative icon, gap, alignment 
 Navigation is DM Sans; the current item has a 4px amber
 underline and `aria-current`. At 96rem and below, the header returns to its compact 64px disclosure
 pattern. A skip link is the first focusable element.
+The light/dark control is one shared Astro component on the application shell, homepage and join page. Its 44px target is borderless, square and transparent in every context; it inherits the surrounding foreground colour while the shared theme state determines which icon is visible.
 The quiet divider below the global tabs spans the content track only, and the first tab has no additional
 left inset. Breadcrumbs have more space above than below and contain navigable ancestors only; a link-coloured chevron
 is optically aligned with the label baseline between them. The current page is named by the H1 rather than repeated as an unlinked terminal crumb. No metadata

@@ -377,6 +377,8 @@ test('shared navigation exposes visible focus, state and 44px targets', async ()
   assert.match(header, /app-header--with-sidebar/u);
   assert.match(header, /class="app-header__title brand-lockup brand-lockup--mini brand-lockup--on-dark"[\s\S]*brand-lockup__icon[\s\S]*brand-lockup__label[\s\S]*Open Property Data Association/su);
   assert.match(header, /<a href="\/" class="app-header__framework">Smart Property Data Framework<\/a>/u);
+  assert.match(header, /import ThemeToggle from '@\/components\/ThemeToggle\.astro'/u);
+  assert.match(header, /<ThemeToggle\s*\/>/u);
   assert.match(header, /class="app-header__utilities"/u);
   assert.doesNotMatch(header, /brand-cell|brand-wordmark/u);
   assert.match(header, /id="global-nav-toggle"/u);
@@ -432,8 +434,8 @@ test('shared navigation exposes visible focus, state and 44px targets', async ()
   assert.match(base, /\.app-header__framework\s*\{[^}]*padding:\s*var\(--space-4\) 0 var\(--space-3\)[^}]*font:\s*500 var\(--text-2xl\)[^}]*text-decoration:\s*none/su);
   assert.match(base, /padding-inline-end:\s*calc\([^}]*var\(--header-content-right-rail\)[^}]*var\(--content-gutter\)/su);
   assert.match(base, /@media \(min-width: 96\.0625rem\) \{[\s\S]*?\.app-header \.global-nav a\.header-cta \{ margin-left:\s*auto; \}/u);
-  assert.match(base, /\.app-header__utilities\s*\{[^}]*position:\s*absolute;[^}]*inset-block-start:\s*var\(--space-5\);[^}]*inset-inline-end:\s*0;[^}]*margin-inline-end:\s*0;[^}]*padding-inline-end:\s*0;/su);
-  assert.match(base, /\.app-header \.theme-toggle\s*\{[^}]*border:\s*0;[^}]*background:\s*transparent;/su);
+  assert.match(base, /\.app-header__utilities\s*\{[^}]*position:\s*absolute;[^}]*inset-block-start:\s*0;[^}]*inset-inline-end:\s*0;[^}]*margin-inline-end:\s*0;[^}]*padding-inline-end:\s*0;/su);
+  assert.match(base, /\.theme-toggle\s*\{[^}]*display:\s*inline-flex;[^}]*border:\s*0;[^}]*border-radius:\s*0;[^}]*color:\s*currentColor;[^}]*background:\s*transparent;/su);
   assert.match(base, /@media \(max-width: 96rem\) \{[\s\S]*?\.app-header__utilities\s*\{[^}]*position:\s*static;[^}]*inset:\s*auto;/u);
   assert.match(base, /\.global-nav-panel\s*\{[^}]*width:\s*min\([^}]*var\(--content-max\)[^}]*var\(--header-content-left-rail\)[^}]*var\(--header-content-right-rail\)/su);
   assert.match(base, /\.app-header \.global-nav > a:first-child\s*\{\s*padding-left:\s*0;/u);
@@ -508,9 +510,10 @@ test('text inherits its outer layout width instead of stacking nested measures',
 });
 
 test('the adversarial conformance blockers remain closed', async () => {
-  const [rootPage, brandHeading, base, content, components, navigation, print] = await Promise.all([
+  const [rootPage, brandHeading, themeToggle, base, content, components, navigation, print] = await Promise.all([
     readFile(file('src/pages/index.astro'), 'utf8'),
     readFile(file('src/components/BrandHeading.astro'), 'utf8'),
+    readFile(file('src/components/ThemeToggle.astro'), 'utf8'),
     readFile(file('public/ui/design/base.css'), 'utf8'),
     readFile(file('public/ui/design/content.css'), 'utf8'),
     readFile(file('public/ui/design/components.css'), 'utf8'),
@@ -520,8 +523,8 @@ test('the adversarial conformance blockers remain closed', async () => {
   assert.doesNotMatch(rootPage, /<html[^>]+data-theme="light"/u);
   assert.match(rootPage, /URLSearchParams\(location\.search\)/u);
   assert.doesNotMatch(rootPage, /class="public-header"/u);
-  assert.match(rootPage, /<header class="wg-campaign-hero__header">[\s\S]*id="theme-toggle"[\s\S]*<\/header>/u);
-  assert.match(rootPage, /id="theme-toggle"/u);
+  assert.match(rootPage, /<header class="wg-campaign-hero__header">[\s\S]*<ThemeToggle\s*\/>[\s\S]*<\/header>/u);
+  assert.match(themeToggle, /id = 'theme-toggle'/u);
   assert.match(rootPage, /:root\[data-theme='light'\][\s\S]+\.home-campaign-hero/u);
   assert.match(rootPage, /<BrandHeading surface="dark" campaign\s*\/>/u);
   assert.match(brandHeading, /opda-icon-yellow\.svg[\s\S]*alt=""[\s\S]*aria-hidden="true"[\s\S]*Open Property Data Association/u);
