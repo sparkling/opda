@@ -47,7 +47,7 @@
   position: relative;
   min-height: min(48rem, calc(100svh - 5rem));
   display: grid;
-  grid-template-columns: minmax(0, 1.1fr) minmax(22rem, 0.9fr);
+  grid-template-columns: minmax(0, 1.05fr) minmax(22rem, 0.95fr);
   column-gap: clamp(var(--space-8), 7vw, 8rem);
   row-gap: clamp(var(--space-8), 4vw, var(--space-10));
   align-items: center;
@@ -72,7 +72,7 @@
 .wg-campaign-hero__header .theme-toggle { margin-left: auto; }
 
 .wg-campaign-hero--panel-aligned {
-  grid-template-columns: minmax(0, 1fr) minmax(36rem, 1fr);
+  grid-template-columns: minmax(0, 0.95fr) minmax(36rem, 1.05fr);
   padding-top: var(--space-6);
 }
 
