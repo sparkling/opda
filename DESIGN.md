@@ -290,7 +290,7 @@ Navigation is DM Sans; the current item has a 4px amber
 underline and `aria-current`. At 96rem and below, the header returns to its compact 64px disclosure
 pattern. A skip link is the first focusable element.
 The quiet divider below the global tabs spans the content track only, and the first tab has no additional
-left inset. Breadcrumbs have more space above than below and contain navigable ancestors only; a strong chevron
+left inset. Breadcrumbs have more space above than below and contain navigable ancestors only; a link-coloured chevron
 separates them. The current page is named by the H1 rather than repeated as an unlinked terminal crumb. No metadata
 strip or repeated category appears between the breadcrumbs and the H1; the breadcrumb leads directly into the page title.
 When no navigable ancestor exists, no breadcrumb region is rendered and the article drops its redundant upper inset.
@@ -299,7 +299,7 @@ qualified document titles supply a concise `breadcrumbTitle` but never their own
 Schema-object locations and resource-folder paths remain separate in-content navigation with location,
 rather than page, semantics.
 Property Pack pages place their candidate-status information control on the H1 row, aligned to the content
-track's right edge. A borderless 44px target uses the shared Lucide `ClipboardList` icon to identify the structured candidate-status record and opens a
+track's right edge. A borderless 44px target combines the shared Lucide `MessageCircle` outline with an italic information glyph to identify explanatory candidate context and opens a
 non-modal, tokenised flyout containing the complete candidate
 status, validation boundary and six-stage lifecycle record formerly shown in a full-width warning disclosure.
 It exposes expanded state, supports Escape, restores focus when dismissed from within and does not add its
@@ -372,7 +372,7 @@ states, plus loading/error/success where asynchronous work occurs and dark parit
   error adds danger border, icon and message.
 - **Tabs:** semantic tablist, arrow-key operation and yellow-underlined selection.
 - **Breadcrumbs:** ordered links to navigable ancestors only; the H1 names the current page. Use DM Sans
-  500 at the base 16px role with a 24px line-height, 44px link targets and strong decorative chevrons.
+  500 at the base 16px role with a 24px line-height, 44px link targets and link-coloured decorative chevrons.
   They use a smaller lower inset to connect the hierarchy to the page title.
 - **Header action:** one yellow primary action may sit at the utility end of the
   application header; it uses a short verb-led label, aligns to the content-right edge and shares the

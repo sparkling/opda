@@ -40,6 +40,23 @@
   height: 1.8rem;
 }
 
+.v2-candidate-info__icon {
+  position: relative;
+  width: 1.8rem;
+  height: 1.8rem;
+  display: inline-grid;
+  place-items: center;
+  color: inherit;
+}
+
+.v2-candidate-info__glyph {
+  position: absolute;
+  inset: 50% auto auto 50%;
+  color: inherit;
+  font: italic 700 1rem / 1 Georgia, 'Times New Roman', serif;
+  transform: translate(-44%, -52%);
+}
+
 .v2-candidate-info__trigger:hover {
   color: var(--color-link-hover);
   background: transparent;

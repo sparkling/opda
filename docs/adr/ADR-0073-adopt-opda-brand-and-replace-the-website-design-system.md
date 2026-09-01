@@ -260,9 +260,9 @@ remain anchored to their content-facing edge and combine the shared 200ms and 12
 320ms disclosure; reduced-motion remains effectively instant. The framework subheading moves to the next shared
 type step. The desktop header utilities end flush with the physical right edge, sit 16px from the top and use a
 borderless theme control, while the 44px working-group action ends on the content-right axis. Page breadcrumbs retain
-linked ancestors only, use a stronger decorative chevron and reduce their lower inset because the adjacent H1 already
+linked ancestors only, bottom-align each complete item, use link-coloured decorative chevrons and reduce their lower inset because the adjacent H1 already
 identifies the current page. The Property Pack candidate control
-uses the shared Lucide `ClipboardList` mark in a borderless 44px target, avoiding a misleading approval symbol or a
+uses a shared Lucide `MessageCircle` outline with an italic information glyph in a borderless 44px target, avoiding a misleading approval symbol or a
 second visible enclosure. The global navigation row retains its original 44px geometry without additional clearance
 above the divider. Pages without navigable
 breadcrumb ancestors render no breadcrumb region and remove the article's duplicate upper inset.
