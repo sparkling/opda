@@ -347,6 +347,8 @@ states, plus loading/error/success where asynchronous work occurs and dark parit
   aligned fact rows support comparison without turning every card into a dashboard.
   Linked cards use one whole-card target and focus treatment without nested controls;
   grids auto-fit the content track and stack without clipping at narrow widths.
+  Destination cards use the shared `h3` title scale, even in their wider three-column
+  homepage and Programme grids.
 - **Table:** sticky header, `aria-sort`, visible sort arrow and tabular numerals;
   column headers, first-column body cells and zebra rows use three distinct semantic
   surfaces, while interactive rows are at least 44px. Every body-row first cell uses

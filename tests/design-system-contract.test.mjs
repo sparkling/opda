@@ -306,6 +306,17 @@ test('the adopted motion contract excludes parallax and long campaign motion', a
   assert.match(destinationCards, /a\.card:active\s*\{[^}]*transform/su);
 });
 
+test('destination cards use the shared compact card-title scale', async () => {
+  const [contract, components, destinationCards] = await Promise.all([
+    readFile(file('DESIGN.md'), 'utf8'),
+    readFile(file('public/ui/design/components.css'), 'utf8'),
+    readFile(file('src/components/ia/DestinationCards.astro'), 'utf8'),
+  ]);
+  assert.match(contract, /Destination cards use the shared `h3` title scale/u);
+  assert.match(components, /\.destination-card-grid \.card h3\s*\{\s*font:\s*var\(--h3\);\s*\}/u);
+  assert.doesNotMatch(destinationCards, /\.destination-card-grid \.card h3\s*\{[^}]*var\(--h2\)/su);
+});
+
 test('shared navigation exposes visible focus, state and 44px targets', async () => {
   const [contentSource, shell, toc, client, header, sidebar, layout, base, navigation, search, components] = await Promise.all([
     readFile(file('public/ui/design/content.css'), 'utf8'),
