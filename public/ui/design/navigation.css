@@ -4,10 +4,12 @@
 .breadcrumbs {
   width: 100%;
   max-width: var(--content-max);
-  margin: 0 auto var(--space-6);
+  margin: 0 auto;
   color: var(--color-text-muted);
   font: 500 var(--text-base) / 1.5 var(--font-sans);
 }
+.app-main:has(> .breadcrumbs) { padding-top: 0; }
+.app-main > .breadcrumbs + .prose { padding-top: 0; }
 .breadcrumbs__list {
   display: flex;
   align-items: center;

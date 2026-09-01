@@ -276,8 +276,8 @@ current item has a 4px amber underline and `aria-current`. A skip link is the fi
 The `#F9F9F9` sidebar keeps the current section in its accessible name without repeating it visibly.
 The footer has a 4px yellow top rule. `SiteFooter.astro` renders once outside article content and
 navigation rails on the root landing, every route using the shared `Layout`, and the standalone
-public-service family. It carries privacy, accessibility and Association website exits,
-plus the linked Sparkling Ideas credit.
+public-service family. It carries privacy and accessibility exits, a centred linked OPDA icon-and-name
+lock-up to the Association website, plus the linked Sparkling Ideas credit.
 
 At desktop rail widths, the section navigation and page-contents rail share one width and alternate
 surface. Their collapse controls are full-bleed utility bands, not navigation rows: “In this section” on
@@ -338,6 +338,7 @@ states, plus loading/error/success where asynchronous work occurs and dark parit
 - **Tabs:** semantic tablist, arrow-key operation and yellow-underlined selection.
 - **Breadcrumbs:** ordered navigation with a non-linked current item. Use DM Sans
   500 at the base 16px role with a 24px line-height; links have a 44px target.
+  They sit flush between the header and article without added outer spacing.
 - **Header action:** one yellow primary action may sit at the utility end of the
   application header; it uses a short verb-led label and remains available in the
   compact navigation disclosure.

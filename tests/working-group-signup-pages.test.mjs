@@ -170,7 +170,9 @@ test('knowledge-base and standalone page families expose their required footer l
   assert.doesNotMatch(footer, /Property data that people and systems can understand together\./u);
   assert.match(footer, /href="\/join\/privacy">Privacy<\/a>/u);
   assert.match(footer, /href="\/accessibility"/u);
-  assert.match(footer, /Association website/u);
+  assert.doesNotMatch(footer, /Association website/u);
+  assert.match(footer, /class="public-footer__brand" href="https:\/\/openpropdata\.org\.uk\/"/u);
+  assert.match(footer, /Open Property Data Association/u);
   assert.match(footer, /Developed by <a href="https:\/\/sparklingideas\.co\.uk\/">Sparkling Ideas<\/a> – your expert in semantic modelling and agentic engineering\n/u);
   for (const owner of [layout, homepage]) {
     assert.match(owner, /import SiteFooter from '@\/components\/SiteFooter\.astro'/u);
