@@ -134,7 +134,7 @@
 .public-footer__credit a {
   min-height: 0;
   display: inline;
-  font-weight: inherit;
+  font-weight: 700;
 }
 :root[data-theme='dark'] .public-footer__credit { color: var(--neutral-400); }
 :root[data-theme='dark'] .public-footer {
