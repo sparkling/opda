@@ -234,7 +234,7 @@ The page grid has 12 columns, a 1600px maximum, 24px gutters and 32px desktop /
 16px mobile margins.
 
 At 1200px and above, the documentation shell is a 280px left navigation rail,
-a flexible content track, and an optional 240px on-page rail. The content track is
+a flexible content track, and an optional 280px on-page rail. The content track is
 the width authority: descendants do not stack narrower character or pixel measures.
 The comments section and previous/next navigation use the same centred 1600px content
 track; previous/next navigation is enclosed by a 1px border.
@@ -279,10 +279,11 @@ public-service family. It carries privacy, accessibility and Association website
 plus the linked Sparkling Ideas credit.
 
 At desktop rail widths, the section navigation and page-contents rail share one width and alternate
-surface. Their labelled collapse controls are rail utility headers, not navigation rows: “In this section”
-on the left and “On this page” on the right use the compact uppercase mono treatment and a quiet divider.
-Collapsing a rail reduces its visible surface to its expand control while retaining its grid track, so it
-never changes the article or header axis.
+surface. Their collapse controls are full-bleed utility bands, not navigation rows: “In this section” on
+the left and “On this page” on the right use compact uppercase mono labels, quiet dividers and double
+chevrons. A collapsed rail becomes a full-height 44px labelled spine inside its retained grid track, so
+the visible rail contracts without moving the article or header axis. The visible label is the control's
+accessible name; no selected-page tint, amber marker or `aria-current` treatment is used.
 
 `/` is the sole OPDA Knowledge Base homepage. It uses an SPDTF-centred hero, a static method figure,
 a featured working-group presentation, the six-destination audience/task directory, a participation

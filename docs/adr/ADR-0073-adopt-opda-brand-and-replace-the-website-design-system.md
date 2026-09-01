@@ -220,10 +220,12 @@ full-screen working-group deck remains outside shared site furniture.
 
 Later on 1 September 2026, the documentation-shell rail contract was clarified: the section
 navigation and page-contents rail use the same fixed desktop width and alternate surface, with
-matching labelled collapse controls. Collapsing either rail hides its internal navigation without
-changing the article or global-navigation axes: the visible rail contracts to its expand control inside
-the retained grid track. This is a shared shell refinement; the mobile drawer and inline page-contents
-patterns remain unchanged.
+matching labelled utility bands. The bands use uppercase mono labels, structural dividers and double
+chevrons so they cannot be confused with selected navigation rows. Collapsing either rail creates a
+full-height 44px labelled spine inside the retained grid track, preserving the article and global-
+navigation axes. The visible label supplies the accessible name and the state remains in
+`aria-expanded`. The mobile drawer and inline page-contents patterns retain their established geometry
+and disclosure behaviour.
 
 ### Brand conflict resolution
 

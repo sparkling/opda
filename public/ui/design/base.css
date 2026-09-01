@@ -346,8 +346,7 @@ a:visited { text-decoration-color: currentColor; }
     .card-arrow,
     .nav-group-caret,
     .tree-caret,
-    .auth-button__chevron,
-    .rail-collapse-toggle svg
+    .auth-button__chevron
   ) { transform: none !important; }
 }
 

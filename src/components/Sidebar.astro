@@ -34,13 +34,18 @@ function containsActive(item: Item): boolean {
       id="sidebar-collapse"
       aria-controls="section-navigation"
       aria-expanded="true"
-      aria-label="Collapse sidebar"
-      title="Collapse sidebar"
     >
       <span class="rail-collapse-toggle__label">In this section</span>
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.25"
+      <svg class="rail-collapse-toggle__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.25"
            stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-        <polyline points="15 18 9 12 15 6"/>
+        <g class="rail-glyph rail-glyph--toward-start">
+          <polyline points="13 6 7 12 13 18"/>
+          <polyline points="19 6 13 12 19 18"/>
+        </g>
+        <g class="rail-glyph rail-glyph--toward-end">
+          <polyline points="5 6 11 12 5 18"/>
+          <polyline points="11 6 17 12 11 18"/>
+        </g>
       </svg>
     </button>
 

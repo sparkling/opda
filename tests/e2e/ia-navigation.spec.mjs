@@ -110,7 +110,8 @@ test('left navigation follows route ownership with one active link', async ({ pa
   await page.reload();
   await expect(page.locator('.app-body')).toHaveClass(/sidebar-collapsed/u);
   await expect(page.locator('#sidebar-collapse')).toHaveAttribute('aria-expanded', 'false');
-  await expect(page.locator('#sidebar-collapse')).toHaveAttribute('aria-label', 'Expand sidebar');
+  await expect(page.locator('#sidebar-collapse')).toHaveAccessibleName('In this section');
+  await expect(page.locator('#sidebar-collapse')).not.toHaveAttribute('aria-label', /.+/u);
   clean();
 });
 
@@ -312,6 +313,7 @@ test('page navigation exposes headings and a single previous-next sequence', asy
   expect(await toc.locator('a').evaluateAll((links) => links.map((link) => link.getAttribute('href'))))
     .toEqual(['#progression', '#policy', '#programme-sections', '#start']);
   const toggle = toc.locator('#toc-collapse');
+  await expect(toggle).toHaveAccessibleName('On this page');
   await expect(toggle).toHaveAttribute('aria-expanded', 'true');
   await toggle.click();
   await expect(toggle).toHaveAttribute('aria-expanded', 'false');

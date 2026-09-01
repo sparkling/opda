@@ -98,8 +98,6 @@
         if (localStorage.getItem('opda-sidebar-collapsed') === '1') {
           appBody.classList.add('sidebar-collapsed');
           sidebarCollapse?.setAttribute('aria-expanded', 'false');
-          sidebarCollapse?.setAttribute('aria-label', 'Expand sidebar');
-          sidebarCollapse?.setAttribute('title', 'Expand sidebar');
         }
         if (localStorage.getItem('opda-toc-collapsed') === '1') {
           appBody.classList.add('toc-collapsed');
@@ -146,8 +144,8 @@
           aside.setAttribute('aria-label', 'Section navigation');
           document.documentElement.classList.add('nav-open');
           if (sidebarCollapse) {
-            sidebarCollapse.setAttribute('aria-label', 'Close section navigation');
-            sidebarCollapse.setAttribute('title', 'Close section navigation');
+            sidebarCollapse.setAttribute('aria-expanded', 'true');
+            sidebarCollapse.setAttribute('aria-label', 'In this section — close navigation');
           }
           const first = aside.querySelector(focusableSelector);
           if (first) first.focus();
@@ -158,10 +156,9 @@
           document.documentElement.classList.remove('nav-open');
           if (sidebarCollapse) {
             const isCollapsed = appBody?.classList.contains('sidebar-collapsed') === true;
-            const collapseLabel = isCollapsed ? 'Expand sidebar' : 'Collapse sidebar';
             sidebarCollapse.setAttribute('aria-expanded', String(!isCollapsed));
-            sidebarCollapse.setAttribute('aria-label', collapseLabel);
-            sidebarCollapse.setAttribute('title', collapseLabel);
+            sidebarCollapse.removeAttribute('aria-label');
+            sidebarCollapse.removeAttribute('title');
           }
           if (restoreFocus !== false && returnFocus && typeof returnFocus.focus === 'function') returnFocus.focus();
           returnFocus = null;
@@ -216,10 +213,6 @@
         const nowCollapsed = !appBody.classList.contains('sidebar-collapsed');
         appBody.classList.toggle('sidebar-collapsed', nowCollapsed);
         try { localStorage.setItem('opda-sidebar-collapsed', nowCollapsed ? '1' : '0'); } catch (e) {}
-        sidebarCollapse.setAttribute('aria-label',
-          nowCollapsed ? 'Expand sidebar' : 'Collapse sidebar');
-        sidebarCollapse.setAttribute('title',
-          nowCollapsed ? 'Expand sidebar' : 'Collapse sidebar');
         sidebarCollapse.setAttribute('aria-expanded', String(!nowCollapsed));
       });
     }
@@ -315,9 +308,18 @@
     tocToggle.setAttribute('aria-controls', 'toc-links');
     tocToggle.innerHTML =
       '<span class="rail-collapse-toggle__label toc-toggle__label">On this page</span>' +
-      '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.25" ' +
+      '<svg class="rail-collapse-toggle__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.25" ' +
       'stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">' +
-        '<polyline points="9 18 15 12 9 6"/>' +
+        '<g class="rail-glyph rail-glyph--toward-start">' +
+          '<polyline points="13 6 7 12 13 18"/>' +
+          '<polyline points="19 6 13 12 19 18"/>' +
+        '</g>' +
+        '<g class="rail-glyph rail-glyph--toward-end">' +
+          '<polyline points="5 6 11 12 5 18"/>' +
+          '<polyline points="11 6 17 12 11 18"/>' +
+        '</g>' +
+        '<polyline class="rail-glyph rail-glyph--inline-closed" points="9 6 15 12 9 18"/>' +
+        '<polyline class="rail-glyph rail-glyph--inline-open" points="6 9 12 15 18 9"/>' +
       '</svg>';
     toc.appendChild(tocToggle);
 
@@ -356,8 +358,6 @@
       toc.classList.toggle('is-collapsed', collapsed);
       if (body) body.classList.toggle('toc-collapsed', railMode && collapsed);
       tocToggle.setAttribute('aria-expanded', String(!collapsed));
-      tocToggle.setAttribute('aria-label', collapsed ? 'Expand table of contents' : 'Collapse table of contents');
-      tocToggle.title = collapsed ? 'Expand table of contents' : 'Collapse table of contents';
       if (persist) {
         try { localStorage.setItem('opda-toc-collapsed', collapsed ? '1' : '0'); } catch (e) {}
       }

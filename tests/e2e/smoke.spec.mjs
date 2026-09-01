@@ -87,10 +87,13 @@ test('mobile section drawer returns focus on Escape', async ({ page }) => {
   const clean = watchRuntime(page);
   await page.setViewportSize({ width: 375, height: 812 });
   await visit(page, '/semantic-modelling/standards');
+  await page.evaluate(() => localStorage.setItem('opda-sidebar-collapsed', '1'));
+  await page.reload();
   const opener = page.locator('#menu-toggle');
   const sidebar = page.locator('#app-sidebar');
   await opener.click();
   await expect(sidebar).toHaveClass(/open/);
+  await expect(sidebar.locator('.sidebar-nav')).toBeVisible();
   await expect(sidebar).toHaveAttribute('role', 'dialog');
   await expect(opener).toHaveAttribute('aria-expanded', 'true');
   const first = sidebar.locator('a[href]:visible, button:visible, summary:visible').first();

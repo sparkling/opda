@@ -357,7 +357,11 @@ test('shared navigation exposes visible focus, state and 44px targets', async ()
   assert.match(sidebar, /aria-label=\{`\$\{section\.title\} section`\}/u);
   assert.doesNotMatch(sidebar, /sidebar-section-title/u);
   assert.match(sidebar, /rail-collapse-toggle__label">In this section<\/span>/u);
+  assert.doesNotMatch(sidebar, /id="sidebar-collapse"[^>]*aria-label=/su);
   assert.match(client, /rail-collapse-toggle__label toc-toggle__label">On this page/u);
+  assert.match(shell, /\.rail-collapse-toggle__label\s*\{[^}]*var\(--font-mono\)[^}]*text-transform:\s*uppercase/su);
+  assert.match(shell, /\.app-body\.sidebar-collapsed \.app-sidebar \.rail-collapse-toggle__label\s*\{[^}]*writing-mode:\s*vertical-rl/su);
+  assert.match(toc, /\.app-body\.toc-collapsed \.toc \.rail-collapse-toggle__label\s*\{[^}]*writing-mode:\s*vertical-rl/su);
   assert.match(layout, /<Header showSidebar=\{showSidebar\}/u);
   assert.match(shell, /\.app-main\s*\{[^}]*var\(--content-gutter\)/su);
   assert.match(shell, /\.app-body\.with-toc\s*\{\s*grid-template-columns:\s*var\(--sidebar-width\) minmax\(0, 1fr\) var\(--toc-width\);/u);
