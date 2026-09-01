@@ -291,7 +291,8 @@ test('breadcrumbs use the documented linked-ancestor navigation role', async () 
   assert.doesNotMatch(breadcrumb, /breadcrumb-current|aria-current="page"/u);
   assert.match(breadcrumb, /class="breadcrumb-sep"[\s\S]*aria-hidden="true"/u);
   assert.match(navigation, /\.breadcrumbs__list > li\s*\{[^}]*align-items:\s*flex-end;/su);
-  assert.match(navigation, /\.breadcrumb-sep\s*\{[^}]*color:\s*var\(--color-link\);/su);
+  assert.match(navigation, /\.breadcrumbs__list\s*\{[^}]*align-items:\s*flex-end;/su);
+  assert.match(navigation, /\.breadcrumb-sep\s*\{[^}]*align-self:\s*flex-end;[^}]*margin-block-end:\s*var\(--space-2\);[^}]*color:\s*var\(--color-link\);/su);
   assert.doesNotMatch(propertyPack, /\.v2-breadcrumbs/u);
   assert.match(layout, /<Breadcrumbs currentPageTitle=\{breadcrumbTitle\} \/>/u);
   assert.match(propertyPackPage, /breadcrumbTitle=\{title\}/u);

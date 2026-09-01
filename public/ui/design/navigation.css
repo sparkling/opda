@@ -14,7 +14,7 @@
 .app-main:not(:has(> .breadcrumbs)) > .prose { padding-top: 0; }
 .breadcrumbs__list {
   display: flex;
-  align-items: center;
+  align-items: flex-end;
   flex-wrap: wrap;
   gap: var(--space-2);
   list-style: none;
@@ -39,6 +39,8 @@
   width: 1rem;
   height: 1rem;
   flex: 0 0 auto;
+  align-self: flex-end;
+  margin-block-end: var(--space-2);
   color: var(--color-link);
 }
 

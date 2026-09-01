@@ -283,7 +283,7 @@ title with a bottom-aligned yellow icon, the supporting “Smart Property Data F
 destination tabs. The title, subheading and first global-navigation label follow the main content gutter and centred
 maximum-width axis. The desktop utility controls sit 16px from the top and flush with the header's physical right
 edge; the working-group action finishes on the content track's right edge. The action and destination labels share
-a 44px text-aligned row. There is no separate top-left logo cell in this
+a 44px target size, while the desktop action sits eight pixels above the destination row. There is no separate top-left logo cell in this
 shell. The title lock-up consumes the shared relative icon, gap, alignment and colour contract and gives the
 subheading its own vertical breathing room.
 Navigation is DM Sans; the current item has a 4px amber
@@ -291,7 +291,7 @@ underline and `aria-current`. At 96rem and below, the header returns to its comp
 pattern. A skip link is the first focusable element.
 The quiet divider below the global tabs spans the content track only, and the first tab has no additional
 left inset. Breadcrumbs have more space above than below and contain navigable ancestors only; a link-coloured chevron
-separates them. The current page is named by the H1 rather than repeated as an unlinked terminal crumb. No metadata
+is optically aligned with the label baseline between them. The current page is named by the H1 rather than repeated as an unlinked terminal crumb. No metadata
 strip or repeated category appears between the breadcrumbs and the H1; the breadcrumb leads directly into the page title.
 When no navigable ancestor exists, no breadcrumb region is rendered and the article drops its redundant upper inset.
 `Layout.astro` renders `Breadcrumbs.astro` as the only page-level breadcrumb implementation. Wrappers with
@@ -372,11 +372,11 @@ states, plus loading/error/success where asynchronous work occurs and dark parit
   error adds danger border, icon and message.
 - **Tabs:** semantic tablist, arrow-key operation and yellow-underlined selection.
 - **Breadcrumbs:** ordered links to navigable ancestors only; the H1 names the current page. Use DM Sans
-  500 at the base 16px role with a 24px line-height, 44px link targets and link-coloured decorative chevrons.
+  500 at the base 16px role with a 24px line-height, 44px link targets and link-coloured decorative chevrons aligned to the label baseline.
   They use a smaller lower inset to connect the hierarchy to the page title.
 - **Header action:** one yellow primary action may sit at the utility end of the
-  application header; it uses a short verb-led label, aligns to the content-right edge and shares the
-  destinations' 44px text-aligned row. It remains available in the compact navigation disclosure.
+  application header; it uses a short verb-led label, aligns to the content-right edge and sits eight pixels above
+  the desktop destination row while retaining its 44px target. It returns to the normal flow in the compact navigation disclosure.
 - **Header utilities:** familiar single-purpose destinations may use 20px icons in 44px targets, with an accessible name and tooltip. On desktop the group has no trailing inset, ends on the header's physical right edge and retains 16px above it. The theme icon has no visible border or box; icons never replace the CTA label.
 - **Organisation heading:** the unchanged yellow icon plus the full organisation name in one unbroken line of live DM Sans text; use strong ink on light and the inverse treatment on dark.
 - **Section heading:** a shared optional uppercase DM Sans eyebrow, display H2 and optional lead.

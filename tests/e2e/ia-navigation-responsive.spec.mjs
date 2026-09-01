@@ -89,7 +89,7 @@ test('compact primary disclosure keeps all six destinations discoverable through
   });
   expect(alignment.utilities.right).toBeCloseTo(1537, 1);
   expect(alignment.cta.right).toBeCloseTo(alignment.content.right, 1);
-  expect(alignment.cta.bottom).toBeCloseTo(alignment.firstDestination.bottom, 1);
+  expect(alignment.firstDestination.bottom - alignment.cta.bottom).toBeCloseTo(8, 1);
   const desktopGeometry = await desktopNav.locator('a').evaluateAll((nodes) => ({
     links: nodes.map((node) => {
       const rect = node.getBoundingClientRect();
