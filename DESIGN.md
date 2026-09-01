@@ -374,7 +374,7 @@ states, plus loading/error/success where asynchronous work occurs and dark parit
 - **Breadcrumbs:** ordered links to navigable ancestors only; the H1 names the current page. Use DM Sans
   500 at the base 16px role with a 24px line-height, 44px link targets and link-coloured decorative chevrons aligned to the label baseline.
   They use a smaller lower inset to connect the hierarchy to the page title.
-- **Header action:** one yellow primary action may sit at the utility end of the
+- **Header action:** one shared outlined secondary button may sit at the utility end of the
   application header; it uses a short verb-led label, aligns to the content-right edge and sits eight pixels above
   the desktop destination row while retaining its 44px target. It returns to the normal flow in the compact navigation disclosure.
 - **Header utilities:** familiar single-purpose destinations may use 20px icons in 44px targets, with an accessible name and tooltip. On desktop the group has no trailing inset, ends on the header's physical right edge and retains 16px above it. The theme icon has no visible border or box; icons never replace the CTA label.

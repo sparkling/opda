@@ -21,6 +21,7 @@ const paths = {
   joinCss: new URL('../src/styles/working-group-join.css', import.meta.url),
   header: new URL('../src/components/Header.astro', import.meta.url),
   baseCss: new URL('../public/ui/design/base.css', import.meta.url),
+  contentCss: new URL('../public/ui/design/content.css', import.meta.url),
   memberGuide: new URL('../src/pages/spdtf/working-groups/member-guide/index.astro', import.meta.url),
   gettingStarted: new URL('../src/pages/spdtf/working-groups/member-guide/getting-started.astro', import.meta.url),
   teamsAndDiscussions: new URL('../src/pages/spdtf/working-groups/member-guide/teams-and-discussions.astro', import.meta.url),
@@ -86,24 +87,27 @@ test('public sign-up form exposes only the accepted working-group and contributi
 });
 
 test('global header promotes the canonical working-group sign-up route', async () => {
-  const [header, baseCss] = await Promise.all([
+  const [header, baseCss, contentCss] = await Promise.all([
     readFile(paths.header, 'utf8'),
     readFile(paths.baseCss, 'utf8'),
+    readFile(paths.contentCss, 'utf8'),
   ]);
 
   const primaryStart = header.indexOf('<nav class="global-nav"');
   const primaryEnd = header.indexOf('</nav>', primaryStart);
   const utilitiesStart = header.indexOf('<nav class="header-nav"');
-  const cta = header.indexOf('class="header-cta"');
+  const cta = header.indexOf('class="header-cta btn btn--outline-dark"');
   assert.ok(primaryStart >= 0 && cta > primaryStart && cta < primaryEnd);
   assert.ok(utilitiesStart < primaryStart);
   assert.match(header, /const joinHref = currentPath === '\/join' \? '#register' : '\/join'/u);
-  assert.match(header, /<a href=\{joinHref\} class="header-cta">Join a working group<\/a>/u);
+  assert.match(header, /<a href=\{joinHref\} class="header-cta btn btn--outline-dark">Join a working group<\/a>/u);
   assert.match(header, /href="\/search"[\s\S]*?class=\{`header-icon-link\$\{isSearchPage[\s\S]*?aria-label="Search"[\s\S]*?aria-current=\{isSearchPage \? 'page' : undefined\}[\s\S]*?title="Search"[\s\S]*?<svg[\s\S]*?aria-hidden="true"/u);
   assert.match(header, /class="header-icon-link"[\s\S]*?aria-label="GitHub"\s+title="GitHub"[\s\S]*?<svg[\s\S]*?aria-hidden="true"/u);
   assert.doesNotMatch(header, />Search<\/a>|>GitHub<\/a>/u);
   assert.match(baseCss, /\.app-header \.header-nav a\.header-icon-link\s*\{[^}]*width:\s*var\(--target-min\)[^}]*justify-content:\s*center/su);
-  assert.match(baseCss, /\.app-header \.global-nav a\.header-cta\s*\{[^}]*translate:\s*0 calc\(-1 \* var\(--space-3\)\);[^}]*align-self:\s*center[^}]*justify-content:\s*flex-start[^}]*background:\s*var\(--brand-yellow\)[^}]*color:\s*var\(--brand-ink\)/su);
+  assert.match(baseCss, /\.app-header \.global-nav a\.header-cta\s*\{[^}]*translate:\s*0 calc\(-1 \* var\(--space-3\)\);[^}]*align-self:\s*center[^}]*justify-content:\s*flex-start[^}]*margin-left:\s*var\(--space-2\)[^}]*\}/su);
+  assert.doesNotMatch(baseCss, /a\.header-cta[^}]*\b(?:background|border(?:-color)?|color|font-weight):/su);
+  assert.match(contentCss, /\.btn--outline-dark\s*\{[^}]*border-color:\s*var\(--brand-white\)[^}]*background:\s*transparent[^}]*color:\s*var\(--brand-white\)/su);
   assert.match(baseCss, /@media \(max-width: 96rem\)[\s\S]*?\.global-nav a\.header-cta \{ translate:\s*none; \}/u);
   assert.match(baseCss, /\.app-header__utilities\s*\{[^}]*grid-area:\s*utilities/su);
   assert.match(baseCss, /@media \(max-width: 96rem\)\s*\{[\s\S]*\.app-header\.primary-nav-open \.global-nav-panel\s*\{\s*display:\s*block;/su);

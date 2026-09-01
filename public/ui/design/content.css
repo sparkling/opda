@@ -398,6 +398,19 @@ html { scroll-padding-top: calc(var(--header-height) + 1rem); }
   color: var(--brand-deep);
   border-color: var(--brand-deep);
 }
+.btn--outline-dark {
+  min-height: var(--target-min);
+  padding: 0 var(--space-5);
+  border-color: var(--brand-white);
+  background: transparent;
+  color: var(--brand-white);
+  font-weight: 700;
+}
+.btn--outline-dark:hover {
+  border-color: var(--brand-white);
+  background: rgb(255 255 255 / 8%);
+  color: var(--brand-white);
+}
 :root[data-theme="dark"] .btn--ghost {
   color: var(--color-text-strong);
   border-color: var(--neutral-400);

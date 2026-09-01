@@ -173,7 +173,7 @@ a:visited { text-decoration-color: currentColor; }
   --header-content-right-rail: var(--toc-width);
 }
 .app-header .global-nav::-webkit-scrollbar { display: none; }
-.app-header .global-nav a {
+.app-header .global-nav a:not(.btn) {
   position: relative;
   min-height: var(--target-min);
   display: inline-flex;
@@ -186,7 +186,7 @@ a:visited { text-decoration-color: currentColor; }
   transition: color var(--duration-fast) var(--ease),
     background var(--duration-fast) var(--ease);
 }
-.app-header .global-nav a:hover {
+.app-header .global-nav a:not(.btn):hover {
   color: var(--brand-white);
   background: rgb(255 255 255 / 7%);
 }
@@ -232,17 +232,7 @@ a:visited { text-decoration-color: currentColor; }
   align-self: center;
   justify-content: flex-start;
   margin-left: var(--space-2);
-  border: 1px solid var(--brand-yellow);
-  border-radius: var(--radius-sm);
-  background: var(--brand-yellow);
-  color: var(--brand-ink);
-  font-weight: 700;
 }
-.app-header .global-nav a.header-cta:hover {
-  color: var(--brand-ink);
-  background: var(--brand-yellow-active);
-}
-.app-header .global-nav a.header-cta:active { transform: translateY(1px); }
 
 .global-nav-toggle,
 .menu-toggle,
@@ -334,7 +324,7 @@ a:visited { text-decoration-color: currentColor; }
     margin-left: 0;
     gap: var(--space-1);
   }
-  .app-header .global-nav-panel .global-nav a {
+  .app-header .global-nav-panel .global-nav a:not(.btn) {
     min-width: 0;
     padding-inline: var(--space-3);
     white-space: normal;

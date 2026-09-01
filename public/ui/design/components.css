@@ -232,25 +232,6 @@ a.card:hover .card__action span { transform: translateX(3px); }
   gap: var(--space-4);
   margin-top: var(--space-7);
 }
-.home-hero__actions .btn--outline-dark,
-.public-hero__actions .btn--outline-dark,
-.wg-hero-actions .btn--outline-dark {
-  min-height: var(--target-min);
-  display: inline-flex;
-  align-items: center;
-  padding: 0 var(--space-5);
-  border: 1px solid var(--brand-white);
-  color: var(--brand-white);
-  background: transparent;
-  font-weight: 700;
-  text-decoration: none;
-}
-.home-hero__actions .btn--outline-dark:hover,
-.public-hero__actions .btn--outline-dark:hover,
-.wg-hero-actions .btn--outline-dark:hover {
-  color: var(--brand-white);
-  background: rgb(255 255 255 / 8%);
-}
 .home-hero__index {
   align-self: stretch;
   display: grid;

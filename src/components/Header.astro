@@ -53,7 +53,7 @@ const { showSidebar = false } = Astro.props;
       {GLOBAL_DESTINATIONS.map(destination => (
         <a href={destination.url} class={activeDestination === destination.key ? 'active' : undefined} aria-current={activeDestination === destination.key ? 'page' : undefined}>{destination.title}</a>
       ))}
-      <a href={joinHref} class="header-cta">Join a working group</a>
+      <a href={joinHref} class="header-cta btn btn--outline-dark">Join a working group</a>
     </nav>
   </div>
 </header>
