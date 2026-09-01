@@ -26,12 +26,12 @@ const entry = (title, url, summary, aliases = []) => {
 
 export const SITE_SEARCH_ENTRIES = Object.freeze([
   entry('Programme', '/programme', 'Purpose, schema-to-scheme progression, roadmap and UK Smart Data context', ['PDTF', 'SPDTF']),
-  entry('SPDTF Development', '/spdtf', 'First collaboratively authored scheme draft, using domain-led and evidence-up semantic modelling', ['SPDTF', 'PDTF', 'ontology']),
+  entry('Development', '/spdtf', 'First collaboratively authored scheme draft, using domain-led and evidence-up semantic modelling', ['SPDTF', 'PDTF', 'ontology']),
   entry('Property Pack ontology', '/spdtf/property-pack', 'Accelerated SPDTF component awaiting Technical Working Group determination', ['Property Pack', 'PDTF', 'ontology']),
   entry('Property Pack definition and scope', '/spdtf/property-pack/definition-and-scope', 'Interactive catalogue of all 451 required source items and candidate dispositions', ['Property Pack', 'data dictionary']),
   entry('PDTF schema to Property Pack lineage', '/spdtf/property-pack/pdtf-schema-lineage', 'Schema coverage and the incomplete ontology semantic crosswalk', ['Property Pack', 'PDTF', 'crosswalk']),
   entry('Property Pack technical determination', '/spdtf/property-pack/technical-working-group-determination', 'End-of-September 2026 Technical Working Group milestone and pending decision record', ['Property Pack', 'Technical Working Group']),
-  entry('Working groups', '/spdtf/working-groups', 'Canonical participant workspaces and review routes', ['PDTF', 'participants']),
+  entry('Groups', '/spdtf/working-groups', 'Canonical participant workspaces and review routes', ['PDTF', 'participants']),
   entry('Join a working group', '/join', 'Register an expression of interest in contributing domain knowledge to SPDTF working groups', ['participation', 'register', 'sign up']),
   entry('Working-group privacy notice', '/join/privacy', 'How OPDA uses personal information supplied through the working-group expression-of-interest form', ['privacy', 'registration']),
   entry('Working-group member guide', '/spdtf/working-groups/member-guide', 'How members join, discuss, share evidence, attend meetings and review models', ['Teams', 'SharePoint', 'participants']),
@@ -44,7 +44,7 @@ export const SITE_SEARCH_ENTRIES = Object.freeze([
   entry('Candidate register', '/spdtf/candidates', 'Status of context-owned candidates, owners and immutable diffs', ['PDTF']),
   entry('Open questions and changes', '/spdtf/questions', 'Competency questions grouped by semantic owner', ['PDTF']),
   entry('Outputs and validation evidence', '/spdtf/outputs', 'Versioned semantic package and projection status', ['PDTF']),
-  entry('Semantic modelling', '/semantic-modelling', 'Choose a plain-language ontology guide or the SPDTF implementation documentation', ['PDTF', 'ontology', 'ontologies and semantic modelling', 'RDF', 'OWL', 'SKOS', 'SHACL', 'SPARQL', 'upper ontology']),
+  entry('Modelling', '/semantic-modelling', 'Choose a plain-language ontology guide or the SPDTF implementation documentation', ['PDTF', 'ontology', 'ontologies and semantic modelling', 'RDF', 'OWL', 'SKOS', 'SHACL', 'SPARQL', 'upper ontology']),
   entry('Understand ontologies', '/semantic-modelling/why-ontologies', 'What an ontology is and why SPDTF uses connected semantic modelling', ['PDTF', 'ontology']),
   entry('How to read the model', '/semantic-modelling/reading-the-model', 'Identifiers, resources, classes, properties, values, shapes and provenance', ['ontology']),
   entry('How we model SPDTF', '/semantic-modelling/modelling-method', 'Evidence-up modelling, competency questions, review and authority boundaries', ['PDTF', 'ontology', 'method']),

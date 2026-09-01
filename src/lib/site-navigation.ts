@@ -332,7 +332,7 @@ const navigationSections: Record<DestinationKey, NavigationSection> = {
   },
   'semantic-modelling': {
     key: 'semantic-modelling',
-    title: 'Semantic modelling',
+    title: 'Modelling',
     summary: 'Plain-language ontology learning and the modelling method used for SPDTF.',
     groups: [
       category('Overview', '/semantic-modelling'),
@@ -343,7 +343,7 @@ const navigationSections: Record<DestinationKey, NavigationSection> = {
   },
   'spdtf': {
     key: 'spdtf',
-    title: 'SPDTF Development',
+    title: 'Development',
     summary: 'Current evidence-up modelling, ontology method, the Property Pack component and wider candidates.',
     groups: [
       category('Overview', '/spdtf', [
@@ -357,7 +357,7 @@ const navigationSections: Record<DestinationKey, NavigationSection> = {
   },
   'working-groups': {
     key: 'working-groups',
-    title: 'Working groups',
+    title: 'Groups',
     summary: 'The canonical SPDTF participant workspaces and review routes.',
     groups: [
       category('Member guide', '/spdtf/working-groups/member-guide', WORKING_GROUP_MEMBER_GUIDE_ITEMS),

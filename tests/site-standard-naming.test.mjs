@@ -71,9 +71,9 @@ test('public hierarchy uses schema and scheme names in labels and routes', () =>
     [
       ['programme', 'Programme', '/programme'],
       ['governance', 'Governance', '/governance'],
-      ['semantic-modelling', 'Semantic modelling', '/semantic-modelling'],
-      ['spdtf', 'SPDTF Development', '/spdtf'],
-      ['working-groups', 'Working groups', '/spdtf/working-groups'],
+      ['semantic-modelling', 'Modelling', '/semantic-modelling'],
+      ['spdtf', 'Development', '/spdtf'],
+      ['working-groups', 'Groups', '/spdtf/working-groups'],
       ['resources', 'Resources', '/resources'],
     ],
   );

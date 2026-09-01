@@ -8,12 +8,12 @@ Reorganise the documentation around six global destinations, in this order:
 
 1. **Programme**
 2. **Governance**
-3. **Semantic modelling**
-4. **SPDTF Development**
-5. **Working groups** — a direct shortcut into the SPDTF workspace
+3. **Modelling**
+4. **Development**
+5. **Groups** — a direct shortcut into the SPDTF workspace
 6. **Resources**
 
-`SPDTF Development` is the global-navigation label for `/spdtf`; it does not rename SPDTF, create a numbered generation or imply adoption. Semantic modelling is a peer destination at `/semantic-modelling/**`, not a branch beneath SPDTF Development. This remains an asymmetric schema-to-scheme structure: the existing PDTF schema is a third-party input beneath SPDTF Development, its separately derived evidence retains a distinct draft status, and stable `/pdtf/**` RDF identifiers remain unchanged. The `LeaseTerm` class and `leaseTerm` property representation documents use lowercase, type-scoped routes so publication does not depend on case sensitivity.
+`Development` is the global-navigation label for `/spdtf`; it does not rename SPDTF, create a numbered generation or imply adoption. Modelling is a peer destination at `/semantic-modelling/**`, not a branch beneath Development. This remains an asymmetric schema-to-scheme structure: the existing PDTF schema is a third-party input beneath Development, its separately derived evidence retains a distinct draft status, and stable `/pdtf/**` RDF identifiers remain unchanged. The `LeaseTerm` class and `leaseTerm` property representation documents use lowercase, type-scoped routes so publication does not depend on case sensitivity.
 
 The navigation, hierarchy, status model and preservation gates form one coherent system. Implementing that system does not by itself publish or deploy the production site. ADR-0075 authorises the no-redirect Property Pack move; ADR-0077 authorises the no-redirect PDTF-schema input move while preserving `/pdtf/**` identifiers.
 ## Terminology and authority
@@ -125,7 +125,7 @@ The presentation uses a separate, participant-facing completeness lens:
 
 ### Standards and modelling profile
 
-The Semantic modelling standards page must record, for every item: purpose; exact version and conformance level; `reuse`, `reference`, `map` or `mint` mechanism; decision status; owner; evidence/decision; and re-open trigger. It must begin with this bounded profile:
+The Modelling standards page must record, for every item: purpose; exact version and conformance level; `reuse`, `reference`, `map` or `mint` mechanism; decision status; owner; evidence/decision; and re-open trigger. It must begin with this bounded profile:
 
 | Profile role | Standards and technologies | Current standing |
 |---|---|---|
@@ -143,11 +143,11 @@ The Semantic modelling standards page must record, for every item: purpose; exac
 
 | Audience | Primary task | First destination |
 |---|---|---|
-| Reader learning about ontologies | Understand ontology purpose, terminology and how to read the model | Semantic modelling |
-| Working-group participant | Understand scope, contribute evidence, review meaning and see dispositions | Working groups |
-| Domain steward or facilitator | Manage evidence, questions, candidate versions and review records | SPDTF Development → Working groups |
-| Interoperability representative | Compare context meanings and agree boundaries or mappings | SPDTF Development → Interoperability |
-| Current implementer | Find the existing schemas, validation and implementation guidance | SPDTF Development → Third-party inputs |
+| Reader learning about ontologies | Understand ontology purpose, terminology and how to read the model | Modelling |
+| Working-group participant | Understand scope, contribute evidence, review meaning and see dispositions | Groups |
+| Domain steward or facilitator | Manage evidence, questions, candidate versions and review records | Development → Groups |
+| Interoperability representative | Compare context meanings and agree boundaries or mappings | Development → Interoperability |
+| Current implementer | Find the existing schemas, validation and implementation guidance | Development → Third-party inputs |
 | Governance reviewer | Determine authority, maturity, unresolved issues and decision history | Governance |
 | Researcher or auditor | Trace a claim from source through proposal, review and decision | Resources plus the record’s evidence panel |
 
@@ -159,7 +159,7 @@ The public home page should mirror the six global destinations in their accepted
 - join or visit a working group; and
 - trace a term, source, standard, recording or decision.
 
-Current implementers still reach the PDTF schema through **SPDTF Development → Third-party inputs**. It remains findable without becoming a peer homepage destination or SPDTF's organising story.
+Current implementers still reach the PDTF schema through **Development → Third-party inputs**. It remains findable without becoming a peer homepage destination or SPDTF's organising story.
 
 ## Options considered
 
@@ -175,12 +175,12 @@ Current implementers still reach the PDTF schema through **SPDTF Development →
 |---:|---|---|---|
 | 1 | Programme | Purpose, schema-to-scheme transition, roadmap and policy context | `/programme` |
 | 2 | Governance | One authority, status, lifecycle and decision system | `/governance` |
-| 3 | Semantic modelling | Plain-language ontology learning and the modelling method used for SPDTF | `/semantic-modelling` |
-| 4 | SPDTF Development | Collaborative scheme-development work products, candidates and inputs | `/spdtf` |
-| 5 | Working groups | Task shortcut to the single SPDTF working-group family | `/spdtf/working-groups` |
+| 3 | Modelling | Plain-language ontology learning and the modelling method used for SPDTF | `/semantic-modelling` |
+| 4 | Development | Collaborative scheme-development work products, candidates and inputs | `/spdtf` |
+| 5 | Groups | Task shortcut to the single SPDTF working-group family | `/spdtf/working-groups` |
 | 6 | Resources | Source registry, library, glossary and historical records | `/resources` |
 
-Semantic modelling is a peer reader destination and route family, but it acquires no independent standards authority: human working groups still own domain meaning and Governance controls promotion. “Working groups” is not a second content owner. It links to the exact canonical landing inside SPDTF Development. Candidate, evidence, question and disposition records exist once.
+Modelling is a peer reader destination and route family, but it acquires no independent standards authority: human working groups still own domain meaning and Governance controls promotion. “Groups” is not a second content owner. It links to the exact canonical landing inside Development. Candidate, evidence, question and disposition records exist once.
 
 ADR-0074 amends only the top-level placement clauses in ADR-0002, ADR-0041, ADR-0059 and ADR-0062. Their generation, traceability and provenance decisions survive. ADR-0074 is Accepted while this navigation correction is implemented and validated on `main`; ADR-0075 governs the authorised Property Pack consolidation described below, without authorising publication.
 
@@ -208,7 +208,7 @@ Home /
 │   ├── Quality and security
 │   ├── Architecture and ontology decision indexes
 │   └── Programme decisions
-├── Semantic modelling /semantic-modelling
+├── Modelling /semantic-modelling
 │   ├── Understand ontologies /semantic-modelling/why-ontologies
 │   │   ├── How to read the model
 │   │   ├── The semantic package and context boundaries
@@ -216,7 +216,7 @@ Home /
 │   └── How we model SPDTF /semantic-modelling/modelling-method
 │       ├── Modelling rules and lenses
 │       └── Coverage checklist
-├── SPDTF Development /spdtf
+├── Development /spdtf
 │   ├── Overview: the first collaborative scheme draft, its scope and status
 │   ├── Property Pack ontology /spdtf/property-pack
 │   │   ├── Definition and 451-item scope
@@ -244,7 +244,7 @@ Home /
 │   │           ├── Trust, governance and limitations /spdtf/inputs/pdtf-schema/schema-derived-ontology/trust-governance-and-limitations
 │   │           └── Use and tooling /spdtf/inputs/pdtf-schema/schema-derived-ontology/use-and-tooling
 │   └── Generated outputs and validation evidence
-├── Working groups /spdtf/working-groups
+├── Groups /spdtf/working-groups
 │   ├── Member guide: access; Teams; SharePoint evidence; meetings; model review
 │   └── Group workspaces
 │       ├── Six property contexts
@@ -305,8 +305,8 @@ does not confer membership, consensus or standards authority.
 | Strategy | Programme | Use SPDTF in current prose; retain URLs initially. |
 | Governance | Governance | Keep one cross-programme authority tree. |
 | DBT Smart Data | Programme; cross-link Governance, Resources and the OPDA-internal scheme-design group | Treat government policy as external context. Do not imply that the internal group is a designated property scheme body or that SPDTF is government-approved. |
-| Engagement | Working groups for live actions; Resources for records | Keep DPMSG and OPDA groups explicitly distinct. |
-| Modelling | Semantic modelling; schema-derived ontology evidence | Move historical method pages under schema-derived-ontology lineage; keep ADR/ODR routes Governance-owned. Re-author reusable lessons into the top-level Semantic modelling destination with provenance. |
+| Engagement | Groups for live actions; Resources for records | Keep DPMSG and OPDA groups explicitly distinct. |
+| Modelling | Modelling; schema-derived ontology evidence | Move historical method pages under schema-derived-ontology lineage; keep ADR/ODR routes Governance-owned. Re-author reusable lessons into the top-level Modelling destination with provenance. |
 | Model | Schema-derived ontology evidence | Move the complete model-view family beneath the derived ontology; retain each tier and child artefact's own maturity. |
 | V2 Property Pack corpus | SPDTF → Property Pack ontology | Move the complete 690-page technical family to `/spdtf/property-pack/**`; remove `/v2/**` without redirects. |
 | Ontology | PDTF schema | Move the reader reference beneath `/spdtf/inputs/pdtf-schema/schema-derived-ontology`; preserve route-level status and the separate `/pdtf/**` identifier namespace. |
@@ -401,7 +401,7 @@ operational.
 ## Route and migration contract
 
 Navigation is normally a view over stable content addresses. ADR-0069, ADR-0071, ADR-0074, ADR-0075 and
-ADR-0077 authorise bounded no-redirect moves with explicit receipts: the Working groups join/privacy journey, semantic-modelling reader family, Property Pack family, all PDTF-owned reader documentation and the two case-only Lease Term representation routes. ADR-0074 also authorises retirement of the duplicate `/home` homepage without a compatibility route.
+ADR-0077 authorise bounded no-redirect moves with explicit receipts: the Groups join/privacy journey, semantic-modelling reader family, Property Pack family, all PDTF-owned reader documentation and the two case-only Lease Term representation routes. ADR-0074 also authorises retirement of the duplicate `/home` homepage without a compatibility route.
 RDF source identifiers remain unchanged.
 
 ### Required sequence
@@ -461,7 +461,7 @@ The implementation is not releasable unless all of these pass:
 - Source objects, council records, ontology artefacts, data/support assets and runtime
   services have owners plus count, checksum, consumer, endpoint and journey parity checks.
 - Every generated page inherits work area, authority, maturity, version and provenance.
-- The Semantic modelling destination explains why ontologies, the evidence-to-release loop,
+- The Modelling destination explains why ontologies, the evidence-to-release loop,
   the six semantic outputs and the boundary between meaning and projections.
 - Every group exposes the exact eight formal concerns and four allowed dispositions;
   the separate four-lens/eleven-theme workshop crosswalk remains intact.
@@ -478,7 +478,7 @@ The implementation is not releasable unless all of these pass:
 - The public root is the sole Knowledge Base homepage. `/home` is absent from the built
   site, internal links, redirects and rewrites; its retirement receipt records
   the former landing role and confirms that the six root destinations remain reachable.
-- The canonical join and privacy routes resolve within Working groups navigation; both former URLs are absent from output, redirects and rewrites and return an unchanged 404.
+- The canonical join and privacy routes resolve within Groups navigation; both former URLs are absent from output, redirects and rewrites and return an unchanged 404.
 - Every route is retained or covered by an explicitly authorised move/retirement receipt;
   every retained or moved fragment resolves, and retired routes remain absent without redirects.
 - Search results expose work area and authority and distinguish the PDTF schema from SPDTF records that cite it.
@@ -488,7 +488,7 @@ The implementation is not releasable unless all of these pass:
 
 ## Council record
 
-The full multi-model council evidence, scores, gates and dissent are recorded in ADR-0074. Its 2026-08-23 amendment records the operator's global-navigation and semantic-modelling route correction; its 2026-08-24 amendment records retirement of the duplicate `/home` landing in favour of the root homepage. ADR-0075 records the later correction that Property Pack is an accelerated SPDTF ontology component; Working groups remains a shortcut to one owner. Neither review authorises publication.
+The full multi-model council evidence, scores, gates and dissent are recorded in ADR-0074. Its 2026-08-23 amendment records the operator's global-navigation and semantic-modelling route correction; its 2026-08-24 amendment records retirement of the duplicate `/home` landing in favour of the root homepage. ADR-0075 records the later correction that Property Pack is an accelerated SPDTF ontology component; Groups remains a shortcut to one owner. Neither review authorises publication.
 
 ## Unresolved governance decisions
 

@@ -9,9 +9,9 @@
 export const GLOBAL_DESTINATIONS = Object.freeze([
   { key: 'programme', title: 'Programme', url: '/programme' },
   { key: 'governance', title: 'Governance', url: '/governance' },
-  { key: 'semantic-modelling', title: 'Semantic modelling', url: '/semantic-modelling' },
-  { key: 'spdtf', title: 'SPDTF Development', url: '/spdtf' },
-  { key: 'working-groups', title: 'Working groups', url: '/spdtf/working-groups' },
+  { key: 'semantic-modelling', title: 'Modelling', url: '/semantic-modelling' },
+  { key: 'spdtf', title: 'Development', url: '/spdtf' },
+  { key: 'working-groups', title: 'Groups', url: '/spdtf/working-groups' },
   { key: 'resources', title: 'Resources', url: '/resources' },
 ]);
 

@@ -294,6 +294,7 @@ test('breadcrumbs use the documented linked-ancestor navigation role', async () 
   assert.match(layout, /<Breadcrumbs currentPageTitle=\{breadcrumbTitle\} \/>/u);
   assert.match(propertyPackPage, /breadcrumbTitle=\{title\}/u);
   assert.doesNotMatch(propertyPackPage, /hideBreadcrumbs|<nav[^>]+aria-label="Breadcrumb"/u);
+  assert.match(navigation, /\.app-main:not\(:has\(> \.breadcrumbs\)\) > \.prose \{ padding-top:\s*0; \}/u);
 
   const sources = await filesWithExtension('src', '.astro');
   for (const path of sources.filter((path) => path !== 'src/components/Breadcrumbs.astro')) {
@@ -422,7 +423,9 @@ test('shared navigation exposes visible focus, state and 44px targets', async ()
   assert.match(base, /\.app-header__framework\s*\{[^}]*padding:\s*var\(--space-4\) 0 var\(--space-6\)[^}]*font:\s*500 var\(--text-2xl\)/su);
   assert.match(base, /padding-inline-end:\s*calc\([^}]*var\(--header-content-right-rail\)[^}]*var\(--content-gutter\)/su);
   assert.match(base, /@media \(min-width: 96\.0625rem\) \{[\s\S]*?\.app-header \.global-nav a\.header-cta \{ margin-left:\s*auto; \}/u);
-  assert.match(base, /\.app-header__utilities\s*\{[^}]*margin-inline-end:\s*0;[^}]*padding-inline-end:\s*0;/su);
+  assert.match(base, /\.app-header__utilities\s*\{[^}]*position:\s*absolute;[^}]*inset-block-start:\s*var\(--space-5\);[^}]*inset-inline-end:\s*0;[^}]*margin-inline-end:\s*0;[^}]*padding-inline-end:\s*0;/su);
+  assert.match(base, /\.app-header \.theme-toggle\s*\{[^}]*border:\s*0;[^}]*background:\s*transparent;/su);
+  assert.match(base, /@media \(max-width: 96rem\) \{[\s\S]*?\.app-header__utilities\s*\{[^}]*position:\s*static;[^}]*inset:\s*auto;/u);
   assert.match(base, /\.global-nav-panel\s*\{[^}]*width:\s*min\([^}]*var\(--content-max\)[^}]*var\(--header-content-left-rail\)[^}]*var\(--header-content-right-rail\)/su);
   assert.match(base, /\.app-header \.global-nav > a:first-child\s*\{\s*padding-left:\s*0;/u);
   assert.doesNotMatch(pageMeta, /<span class=\{`pill/u);

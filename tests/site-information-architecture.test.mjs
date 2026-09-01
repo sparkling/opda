@@ -47,9 +47,9 @@ import {
 const expectedDestinations = [
   ['programme', 'Programme', '/programme'],
   ['governance', 'Governance', '/governance'],
-  ['semantic-modelling', 'Semantic modelling', '/semantic-modelling'],
-  ['spdtf', 'SPDTF Development', '/spdtf'],
-  ['working-groups', 'Working groups', '/spdtf/working-groups'],
+  ['semantic-modelling', 'Modelling', '/semantic-modelling'],
+  ['spdtf', 'Development', '/spdtf'],
+  ['working-groups', 'Groups', '/spdtf/working-groups'],
   ['resources', 'Resources', '/resources'],
 ];
 const preservationScript = fileURLToPath(new URL('../scripts/check-ia-preservation.mjs', import.meta.url));
@@ -414,7 +414,7 @@ test('PDTF search distinguishes the schema, derived evidence and SPDTF work', ()
   assert.ok(results.some(({ url, facet }) => (
     url === '/spdtf/inputs/pdtf-schema/schema-derived-ontology' && facet === 'Schema-derived ontology'
   )));
-  assert.ok(results.some(({ url, facet }) => url === '/spdtf' && facet === 'SPDTF Development'));
+  assert.ok(results.some(({ url, facet }) => url === '/spdtf' && facet === 'Development'));
   assert.ok(results.every(({ url }) => url !== '/pdtf-schema' && !url.startsWith('/pdtf-schema/')));
 });
 

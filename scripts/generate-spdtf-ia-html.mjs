@@ -114,9 +114,9 @@ function buildHtml(template, markdown) {
   const globalNavigation = '<nav class="proposed-nav" aria-label="Global navigation"><div class="inner">'
     + '<a href="/programme">Programme</a>'
     + '<a href="/governance">Governance</a>'
-    + '<a href="/semantic-modelling">Semantic modelling</a>'
-    + '<a href="/spdtf">SPDTF Development</a>'
-    + '<a href="/spdtf/working-groups">Working groups</a>'
+    + '<a href="/semantic-modelling">Modelling</a>'
+    + '<a href="/spdtf">Development</a>'
+    + '<a href="/spdtf/working-groups">Groups</a>'
     + '<a href="/resources">Resources</a>'
     + '</div></nav>';
   const main = `<main class="content" id="main" tabindex="-1">${body}<p class="print-note">Companion review artefact synchronized with <code>docs/spdtf-information-architecture.md</code>. No external resources are loaded; publication remains a separate release operation.</p></main>`;
@@ -141,12 +141,16 @@ function buildHtml(template, markdown) {
     )
     .replace(
       'content="Implemented information architecture for the progression from the PDTF schema to the collaboratively authored SPDTF scheme draft."',
+      'content="Information architecture for six global destinations, including top-level Modelling and Development with the PDTF schema as a third-party input."',
+    )
+    .replace(
       'content="Information architecture for six global destinations, including top-level Semantic modelling and SPDTF Development with the PDTF schema as a third-party input."',
+      'content="Information architecture for six global destinations, including top-level Modelling and Development with the PDTF schema as a third-party input."',
     );
   output = replaceKnown(
     output,
     'content="Proposed information architecture for the progression from the PDTF schema to the collaboratively authored SPDTF scheme draft."',
-    'content="Information architecture for six global destinations, including top-level Semantic modelling and SPDTF Development with the PDTF schema as a third-party input."',
+    'content="Information architecture for six global destinations, including top-level Modelling and Development with the PDTF schema as a third-party input."',
     'meta description',
   );
   output = output.replace('<p class="eyebrow">Proposed · no live-site change</p>', '<p class="eyebrow">Implementation in progress on main · publication pending</p>');

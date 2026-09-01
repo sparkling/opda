@@ -36,15 +36,15 @@ test('aria-current follows canonical route ownership', async ({ page }) => {
   const cases = [
     ['/programme', 'Programme'],
     ['/governance', 'Governance'],
-    ['/semantic-modelling', 'Semantic modelling'],
-    ['/semantic-modelling/standards', 'Semantic modelling'],
-    ['/spdtf', 'SPDTF Development'],
-    ['/spdtf/working-groups', 'Working groups'],
-    ['/spdtf/working-groups/estate-agency', 'Working groups'],
+    ['/semantic-modelling', 'Modelling'],
+    ['/semantic-modelling/standards', 'Modelling'],
+    ['/spdtf', 'Development'],
+    ['/spdtf/working-groups', 'Groups'],
+    ['/spdtf/working-groups/estate-agency', 'Groups'],
     ['/resources', 'Resources'],
     ['/strategy/strategy-overview', 'Programme'],
-    ['/spdtf/property-pack/validation', 'SPDTF Development'],
-    [pdtfClasses, 'SPDTF Development'],
+    ['/spdtf/property-pack/validation', 'Development'],
+    [pdtfClasses, 'Development'],
     ['/library/resources', 'Resources'],
   ];
   for (const [route, label] of cases) {
@@ -173,7 +173,7 @@ test('PDTF schema navigation separates supporting material from the schema-deriv
   ]) await expect(page.locator(`#section-nav-group-pdtf-schema-${id === 'adoption' ? 'usage' : id}`)).toHaveCount(1);
 
   await expect(page.locator('nav[aria-label="Breadcrumb"] li')).toHaveText([
-    /SPDTF Development/u, /Third-party inputs/u, /PDTF schema/u,
+    /Development/u, /Third-party inputs/u, /PDTF schema/u,
     /Schema-derived ontology/u, /Terms and model resources/u,
   ]);
 
@@ -332,7 +332,7 @@ test('Property Pack ontology is owned by SPDTF development', async ({ page }) =>
   const clean = watchRuntime(page);
   await visit(page, '/spdtf/property-pack/validation');
   await expect(page.locator('nav[aria-label="Primary"] a[aria-current="page"]'))
-    .toHaveText('SPDTF Development');
+    .toHaveText('Development');
   expect(await page.locator('nav[aria-label="Primary"] a').allTextContents()).not.toContain('V2');
   const local = page.locator('#section-navigation');
   await expect(local.locator('a[href="/spdtf/property-pack"]')).toHaveText('Property Pack ontology');
@@ -347,7 +347,7 @@ test('Property Pack detail pages expose their full canonical ancestry', async ({
   await visit(page, '/spdtf/property-pack/resources/common/Property');
   const crumbs = page.locator('nav[aria-label="Breadcrumb"]');
   await expect(crumbs.locator('a')).toHaveText([
-    'SPDTF Development', 'Property Pack ontology', 'Current ontology model', 'Ontology resources',
+    'Development', 'Property Pack ontology', 'Current ontology model', 'Ontology resources',
   ]);
   expect(await crumbs.locator('a').evaluateAll((links) => links.map((link) => link.getAttribute('href')))).toEqual([
     '/spdtf', '/spdtf/property-pack', '/spdtf/property-pack/model', '/spdtf/property-pack/resources',
@@ -481,7 +481,7 @@ test('PDTF search uses canonical input routes and labels results with authority'
   await expect(schemaResult).toContainText('Third-party Digital Property Pack schema input');
   await expect(schemaResult).toContainText('does not confer OPDA endorsement or SPDTF authority');
   await expect(results.filter({ has: page.locator('a[href="/pdtf-schema"]') })).toHaveCount(0);
-  await expect(results.getByRole('link', { name: 'SPDTF Development', exact: true })).toHaveCount(1);
+  await expect(results.getByRole('link', { name: 'Development', exact: true })).toHaveCount(1);
   expect(await results.count()).toBeGreaterThan(1);
   await expect(results.locator('dt', { hasText: 'Authority' }).first()).toBeVisible();
   clean();

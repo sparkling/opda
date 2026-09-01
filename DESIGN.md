@@ -281,8 +281,9 @@ bounded with `ButtonText`, `CanvasText`, `FieldText` and `Highlight`.
 The desktop header is 160px, `#131224`, and has three rows: the primary linked “Open Property Data Association”
 title with a bottom-aligned yellow icon, the supporting “Smart Property Data Framework” subheading, then the global
 destination tabs. The title, subheading and first global-navigation label follow the main content gutter and centred
-maximum-width axis. The utility controls and working-group action finish flush with the content track's right edge;
-the action and destination labels share a 44px text-aligned row that sits eight pixels above its divider. There is no separate top-left logo cell in this
+maximum-width axis. The desktop utility controls sit 16px from the top and flush with the header's physical right
+edge; the working-group action finishes on the content track's right edge. The action and destination labels share
+a 44px text-aligned row that sits eight pixels above its divider. There is no separate top-left logo cell in this
 shell. The title lock-up consumes the shared relative icon, gap, alignment and colour contract and gives the
 subheading its own vertical breathing room.
 Navigation is DM Sans; the current item has a 4px amber
@@ -292,12 +293,13 @@ The quiet divider below the global tabs spans the content track only, and the fi
 left inset. Breadcrumbs have more space above than below and contain navigable ancestors only; a strong chevron
 separates them. The current page is named by the H1 rather than repeated as an unlinked terminal crumb. No metadata
 strip or repeated category appears between the breadcrumbs and the H1; the breadcrumb leads directly into the page title.
+When no navigable ancestor exists, no breadcrumb region is rendered and the article drops its redundant upper inset.
 `Layout.astro` renders `Breadcrumbs.astro` as the only page-level breadcrumb implementation. Wrappers with
 qualified document titles supply a concise `breadcrumbTitle` but never their own breadcrumb markup or CSS.
 Schema-object locations and resource-folder paths remain separate in-content navigation with location,
 rather than page, semantics.
 Property Pack pages place their candidate-status information control on the H1 row, aligned to the content
-track's right edge. A borderless 44px target uses the shared Lucide `FileSearch` icon to identify status-and-evidence inspection and opens a
+track's right edge. A borderless 44px target uses the shared Lucide `FileClock` icon to identify a candidate record and its lifecycle and opens a
 non-modal, tokenised flyout containing the complete candidate
 status, validation boundary and six-stage lifecycle record formerly shown in a full-width warning disclosure.
 It exposes expanded state, supports Escape, restores focus when dismissed from within and does not add its
@@ -337,8 +339,8 @@ Its sequence is:
 2. Static, accessible AI-assisted modelling loop with source material, a published candidate,
    returning feedback and a consensus-gated draft-standard outcome.
 3. Prominent editorial link to the working-group kick-off deck.
-4. Six linked entry cards, in the accepted order, for Programme, Governance, Semantic
-   modelling, SPDTF Development, Working groups and Resources.
+4. Six linked entry cards, in the accepted order, for Programme, Governance,
+   Modelling, Development, Groups and Resources.
 5. Bounded participation call to action.
 6. Theme-aware shared footer.
 
@@ -375,7 +377,7 @@ states, plus loading/error/success where asynchronous work occurs and dark parit
 - **Header action:** one yellow primary action may sit at the utility end of the
   application header; it uses a short verb-led label, aligns to the content-right edge and shares the
   destinations' 44px text-aligned row above the divider. It remains available in the compact navigation disclosure.
-- **Header utilities:** familiar single-purpose destinations may use 20px icons in 44px targets, with an accessible name and tooltip. The group has no trailing inset and ends on the content-right edge; icons never replace the CTA label.
+- **Header utilities:** familiar single-purpose destinations may use 20px icons in 44px targets, with an accessible name and tooltip. On desktop the group has no trailing inset, ends on the header's physical right edge and retains 16px above it. The theme icon has no visible border or box; icons never replace the CTA label.
 - **Organisation heading:** the unchanged yellow icon plus the full organisation name in one unbroken line of live DM Sans text; use strong ink on light and the inverse treatment on dark.
 - **Section heading:** a shared optional uppercase DM Sans eyebrow, display H2 and optional lead.
   Use it for distinct subjects; do not recreate local eyebrow scales or heading spacing.
@@ -504,7 +506,7 @@ Every live route belongs to one explicit visual family:
 | Data and V2 | data browser, validation and V2 reference routes | shared tokens plus dense data patterns |
 | Schema/manual | generated schema, ontology and manual reference routes | shared shell plus labelled table/diagram patterns |
 | Public service | `/join`, `/join/privacy`, `/accessibility` | minimal `StandalonePublicLayout`, shared `SiteFooter`, five-chapter campaign, public statements and safely enhanced form |
-| Working groups | workspaces and member guidance | standard shared `Layout`, left section navigation and Knowledge Base footer |
+| Groups | workspaces and member guidance | standard shared `Layout`, left section navigation and Knowledge Base footer |
 | Presentation | working-group kickoff deck | isolated, self-contained full-screen presentation using its original local visual tokens; no site chrome |
 
 Release validation runs against the built artefact before any deployment: source

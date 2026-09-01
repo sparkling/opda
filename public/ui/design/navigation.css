@@ -11,6 +11,7 @@
 }
 .app-main:has(> .breadcrumbs) { padding-top: 0; }
 .app-main > .breadcrumbs + .prose { padding-top: 0; }
+.app-main:not(:has(> .breadcrumbs)) > .prose { padding-top: 0; }
 .breadcrumbs__list {
   display: flex;
   align-items: center;
