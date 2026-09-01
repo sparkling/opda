@@ -242,8 +242,10 @@ and the resulting outer space grows evenly.
 
 At 1200px and above, the documentation shell is a 240px left navigation rail,
 a flexible content track, and an optional 240px on-page rail. The two rails share one
-width token so they hug their navigation content without changing width between pages. The content track is
-the width authority: descendants do not stack narrower character or pixel measures.
+width token. The complete shell is centred at the combined maximum of the content and
+its visible rails, so surplus viewport space sits outside the navigation panels rather
+than between those panels and the content. The content track is the width authority:
+descendants do not stack narrower character or pixel measures.
 The comments section and previous/next navigation use the same centred 1600px content
 track; previous/next navigation is enclosed by a 1px border.
 Below 1200px the on-page rail becomes an in-content disclosure. Below 960px the

@@ -370,6 +370,8 @@ test('shared navigation exposes visible focus, state and 44px targets', async ()
   assert.match(layout, /<Header showSidebar=\{showSidebar\}/u);
   assert.match(shell, /\.app-main\s*\{[^}]*var\(--content-gutter\)/su);
   assert.match(shell, /\.app-body\.with-toc\s*\{\s*grid-template-columns:\s*var\(--shell-sidebar-track\) minmax\(0, 1fr\) var\(--shell-toc-track\);/u);
+  assert.match(shell, /\.app-body\.with-toc\s*\{[^}]*max-width:\s*calc\([^)]*var\(--content-max\)[^)]*var\(--shell-sidebar-track\)[^)]*var\(--shell-toc-track\)/su);
+  assert.match(shell, /\.app-body\s*\{[^}]*margin-inline:\s*auto;/su);
   assert.match(shell, /\.app-body\.sidebar-collapsed\s*\{\s*--shell-sidebar-track:\s*var\(--target-min\);/u);
   assert.match(shell, /\.app-body\.toc-collapsed\s*\{\s*--shell-toc-track:\s*var\(--target-min\);/u);
   assert.match(base, /#app:has\(> \.app-body\.sidebar-collapsed\) \.app-header--with-sidebar\s*\{[^}]*--header-content-left-rail:\s*var\(--target-min\)/su);

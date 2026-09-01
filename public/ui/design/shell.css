@@ -5,14 +5,45 @@
   display: grid;
   grid-template-columns: var(--shell-sidebar-track) minmax(0, 1fr);
   align-items: start;
+  width: 100%;
+  max-width: calc(
+    var(--content-max) +
+    var(--shell-sidebar-track) +
+    var(--content-gutter) +
+    var(--content-gutter)
+  );
+  margin-inline: auto;
   min-height: calc(100vh - var(--header-height));
 }
 .app-body > * { min-width: 0; }
-.app-body.no-sidebar { grid-template-columns: minmax(0, 1fr); }
-.app-body.with-toc { grid-template-columns: var(--shell-sidebar-track) minmax(0, 1fr) var(--shell-toc-track); }
-.app-body.no-sidebar.with-toc { grid-template-columns: minmax(0, 1fr) var(--shell-toc-track); }
+.app-body.no-sidebar {
+  grid-template-columns: minmax(0, 1fr);
+  max-width: calc(var(--content-max) + var(--content-gutter) + var(--content-gutter));
+}
+.app-body.with-toc {
+  grid-template-columns: var(--shell-sidebar-track) minmax(0, 1fr) var(--shell-toc-track);
+  max-width: calc(
+    var(--content-max) +
+    var(--shell-sidebar-track) +
+    var(--shell-toc-track) +
+    var(--content-gutter) +
+    var(--content-gutter)
+  );
+}
+.app-body.no-sidebar.with-toc {
+  grid-template-columns: minmax(0, 1fr) var(--shell-toc-track);
+  max-width: calc(
+    var(--content-max) +
+    var(--shell-toc-track) +
+    var(--content-gutter) +
+    var(--content-gutter)
+  );
+}
 
-/* Desktop rails release their unused width to the article when collapsed. */
+/* Centre the complete shell, not the article alone. Once the article reaches
+   its maximum width, surplus viewport space remains outside the rails so both
+   navigation panels continue to hug the content track. Collapsed rail tokens
+   also reduce this outer measure, while sub-maximal layouts still reflow. */
 
 /* Rail utility band. Its mono overline, full-bleed square geometry and double
    chevron keep shell chrome categorically distinct from navigation rows. */

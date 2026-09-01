@@ -215,6 +215,9 @@ framework subheading. A shared `.brand-lockup` primitive now owns icon scale (`0
 The compact header remains 64px. The divider below the global tabs follows the content width, the first tab
 has no extra left inset, breadcrumbs regain balanced vertical spacing, and the pre-title metadata strip is
 suppressed entirely so the breadcrumb leads directly into the page title.
+The documentation body now centres the complete content-and-rails shell at its combined maximum width.
+On wide viewports, surplus space therefore remains outside the shell rather than separating either
+navigation panel from the content it describes; collapsed rail tokens continue to reduce the shell measure.
 
 On 1 September 2026 the diagram-frame contract was consolidated. `GraphDiagram.astro`
 and adopted bare Mermaid now consume one shared shell template and one bundled Mermaid
