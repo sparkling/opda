@@ -101,7 +101,7 @@ a:visited { text-decoration-color: currentColor; }
   min-width: 0;
   align-self: end;
   display: inline-flex;
-  align-items: flex-end;
+  align-items: baseline;
   gap: var(--space-2);
   color: var(--brand-yellow);
   font: 600 var(--text-3xl) / 1 var(--font-sans);
@@ -123,7 +123,7 @@ a:visited { text-decoration-color: currentColor; }
   margin: 0;
   padding-block: var(--space-3);
   color: var(--brand-white);
-  font: 500 var(--text-base) / 1.1 var(--font-sans);
+  font: 500 var(--text-xl) / 1.1 var(--font-sans);
   letter-spacing: var(--tracking-display);
   white-space: nowrap;
 }
