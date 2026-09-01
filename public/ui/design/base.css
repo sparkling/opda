@@ -75,10 +75,11 @@ a:visited { text-decoration-color: currentColor; }
   z-index: 50;
   display: grid;
   grid-template-areas:
-    'title utilities'
+    'association utilities'
+    'title title'
     'navigation navigation';
   grid-template-columns: minmax(0, 1fr) auto;
-  grid-template-rows: minmax(0, 1fr) var(--target-min);
+  grid-template-rows: 1.5rem minmax(0, 1fr) var(--target-min);
   align-items: center;
   height: var(--header-height);
   padding: var(--space-3) var(--space-6) 0
@@ -94,17 +95,36 @@ a:visited { text-decoration-color: currentColor; }
   border-bottom: 1px solid var(--color-surface-dark-tint);
   box-shadow: var(--shadow-sm);
 }
-.app-header__title {
-  grid-area: title;
+.app-header__association {
+  grid-area: association;
   min-width: 0;
-  align-self: center;
+  align-self: end;
+  display: inline-flex;
+  align-items: flex-end;
+  gap: var(--space-1);
   color: var(--brand-yellow);
-  font: 600 var(--text-2xl) / 1 var(--font-sans);
+  font: 600 var(--text-xs) / 1 var(--font-sans);
   letter-spacing: var(--tracking-display);
   text-decoration: none;
   white-space: nowrap;
 }
-.app-header__title:hover { color: var(--brand-white); }
+.app-header__association-icon {
+  display: block;
+  width: 0.875rem;
+  height: auto;
+  flex: 0 0 auto;
+}
+.app-header__association:hover { color: var(--brand-white); }
+.app-header__title {
+  grid-area: title;
+  min-width: 0;
+  align-self: center;
+  margin: 0;
+  color: var(--brand-white);
+  font: 600 var(--text-3xl) / 1 var(--font-sans);
+  letter-spacing: var(--tracking-display);
+  white-space: nowrap;
+}
 .app-header__utilities {
   grid-area: utilities;
   display: flex;
@@ -244,7 +264,7 @@ a:visited { text-decoration-color: currentColor; }
 :root[data-theme='dark'] .theme-icon--sun { display: block; }
 
 @media (min-width: 96.0625rem) {
-  :root { --header-height: 7rem; }
+  :root { --header-height: 8rem; }
 }
 
 /* The six-destination global nav needs a disclosure before the desktop row
@@ -257,6 +277,7 @@ a:visited { text-decoration-color: currentColor; }
     padding: 0 var(--space-3);
     gap: var(--space-2);
   }
+  .app-header__association { display: none; }
   .app-header__title {
     flex: 1 1 auto;
     overflow: hidden;

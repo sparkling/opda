@@ -203,10 +203,11 @@ destination filter, ranks multi-word matches, exposes authority metadata in comp
 rows, and reinitialises after client-side page transitions. The normative contract,
 tokens, shared components and tests were updated together.
 
-On 1 September 2026 the desktop documentation header became a two-row composition. A linked
-“Open Property Data Association” title now sits above the horizontal global destination tabs,
-with utility controls anchored at the top right. The previous logo mark in the top-left header
-cell was removed; this does not alter either the left section rail or the right page-contents rail.
+On 1 September 2026 the desktop documentation header became a three-row composition. A compact
+linked “Open Property Data Association” identifier with a bottom-aligned yellow icon precedes the
+primary “Smart Property Data Framework” heading, which sits above the horizontal global destination
+tabs. Utility controls remain anchored at the top right; the previous standalone logo cell was removed.
+This does not alter either the left section rail or the right page-contents rail.
 
 On 1 September 2026 the diagram-frame contract was consolidated. `GraphDiagram.astro`
 and adopted bare Mermaid now consume one shared shell template and one bundled Mermaid
