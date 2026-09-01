@@ -88,6 +88,12 @@ wordmark horizontal, uncropped and at least 128 CSS pixels wide. The icon may be
 decorative motif but never substitutes for the named organisation where identity
 would otherwise be ambiguous.
 
+Icon-and-live-text identity uses the shared `.brand-lockup` primitive. Its icon width
+is `0.89em` and its icon-to-text gap is `0.45em`, so both scale with the consuming
+title rather than becoming independent pixel values. The icon is baseline-aligned
+with the live text. Dark-surface lock-ups use `brand-yellow`; light-surface lock-ups
+use `brand-deep`. Components must not add transforms or local colour overrides.
+
 ## 4. Colour system
 
 ### Supplied brand palette
@@ -234,8 +240,9 @@ The page grid has 12 columns and a 1600px maximum. Until that maximum is reached
 the content uses a 16px operational gutter; beyond it, the content track is centred
 and the resulting outer space grows evenly.
 
-At 1200px and above, the documentation shell is a 280px left navigation rail,
-a flexible content track, and an optional 280px on-page rail. The content track is
+At 1200px and above, the documentation shell is a 240px left navigation rail,
+a flexible content track, and an optional 240px on-page rail. The two rails share one
+width token so they hug their navigation content without changing width between pages. The content track is
 the width authority: descendants do not stack narrower character or pixel measures.
 The comments section and previous/next navigation use the same centred 1600px content
 track; previous/next navigation is enclosed by a 1px border.
@@ -273,10 +280,14 @@ The desktop header is 160px, `#131224`, and has three rows: the primary linked �
 title with a bottom-aligned yellow icon, the smaller “Smart Property Data Framework” subheading, then the global
 destination tabs. The title, subheading and first global-navigation label follow the main content gutter and centred
 maximum-width axis; the utility icons remain at the physical top right. There is no separate top-left logo cell in this
-shell. The title lock-up uses a 32px icon with a 16px gap and gives the subheading its own vertical breathing room.
+shell. The title lock-up consumes the shared relative icon, gap, alignment and colour contract and gives the
+subheading its own vertical breathing room.
 Navigation is DM Sans; the current item has a 4px amber
 underline and `aria-current`. At 96rem and below, the header returns to its compact 64px disclosure
 pattern. A skip link is the first focusable element.
+The quiet divider below the global tabs spans the content track only, and the first tab has no additional
+left inset. Breadcrumbs have balanced spacing above and below. Page metadata may retain dates, status or
+knowledge-area information, but it does not repeat the section as a category pill before the H1.
 The `#F9F9F9` sidebar keeps the current section in its accessible name without repeating it visibly.
 The footer has a 4px yellow top rule. `SiteFooter.astro` renders once outside article content and
 navigation rails on the root landing, every route using the shared `Layout`, and the standalone

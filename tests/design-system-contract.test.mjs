@@ -318,7 +318,7 @@ test('destination cards use the shared compact card-title scale', async () => {
 });
 
 test('shared navigation exposes visible focus, state and 44px targets', async () => {
-  const [contentSource, shell, toc, client, header, sidebar, layout, base, navigation, search, components] = await Promise.all([
+  const [contentSource, shell, toc, client, header, sidebar, layout, base, navigation, search, components, tokens, pageMeta] = await Promise.all([
     readFile(file('public/ui/design/content.css'), 'utf8'),
     readFile(file('public/ui/design/shell.css'), 'utf8'),
     readFile(file('public/ui/design/glossary-toc.css'), 'utf8'),
@@ -330,6 +330,8 @@ test('shared navigation exposes visible focus, state and 44px targets', async ()
     readFile(file('public/ui/design/navigation.css'), 'utf8'),
     readFile(file('src/pages/search.astro'), 'utf8'),
     readFile(file('public/ui/design/components.css'), 'utf8'),
+    readFile(file('public/ui/design-tokens.css'), 'utf8'),
+    readFile(file('src/components/PageMeta.astro'), 'utf8'),
   ]);
   assert.match(contentSource, /heading-anchor:focus-visible[^}]*opacity:\s*1/su);
   assert.match(contentSource, /\.heading-anchor\s*\{[^}]*width:\s*var\(--target-min\)[^}]*min-height:\s*var\(--target-min\)/su);
@@ -350,7 +352,7 @@ test('shared navigation exposes visible focus, state and 44px targets', async ()
   assert.match(client, /function placeToc/u);
   assert.match(header, /showSidebar &&/u);
   assert.match(header, /app-header--with-sidebar/u);
-  assert.match(header, /class="app-header__title"[\s\S]*app-header__title-icon[\s\S]*Open Property Data Association/su);
+  assert.match(header, /class="app-header__title brand-lockup brand-lockup--on-dark"[\s\S]*brand-lockup__icon[\s\S]*brand-lockup__label[\s\S]*Open Property Data Association/su);
   assert.match(header, /class="app-header__framework">Smart Property Data Framework<\/p>/u);
   assert.match(header, /class="app-header__utilities"/u);
   assert.doesNotMatch(header, /brand-cell|brand-wordmark/u);
@@ -374,15 +376,20 @@ test('shared navigation exposes visible focus, state and 44px targets', async ()
   assert.match(base, /#app:has\(> \.app-body\.with-toc\.toc-collapsed\) \.app-header--with-sidebar\s*\{[^}]*--header-content-right-rail:\s*var\(--target-min\)/su);
   assert.match(base, /#app:has\(> \.app-body\.with-toc\) \.app-header--with-sidebar\s*\{[^}]*--header-content-right-rail:\s*var\(--toc-width\)/su);
   assert.match(base, /\.app-header\s*\{[^}]*--header-content-left-rail:[^}]*--header-content-right-rail:/su);
-  assert.match(navigation, /\.breadcrumbs\s*\{[^}]*max-width:\s*var\(--content-max\)[^}]*margin:\s*0 auto/su);
+  assert.match(tokens, /--sidebar-width:\s*15rem;\s*--toc-width:\s*var\(--sidebar-width\);/u);
+  assert.match(navigation, /\.breadcrumbs\s*\{[^}]*max-width:\s*var\(--content-max\)[^}]*margin:\s*0 auto;[^}]*padding-block:\s*var\(--space-5\)/su);
   assert.match(base, /@media \(min-width: 96\.0625rem\) \{\s*:root \{ --header-height:\s*10rem; \}/u);
   assert.doesNotMatch(toc, /@media[^}]+\.toc\s*\{\s*display:\s*none/su);
   assert.match(base, /@media \(max-width: 96rem\) \{[\s\S]*\.global-nav-toggle \{ display: inline-flex; \}/u);
   assert.match(base, /@media \(max-width: 96rem\) \{[\s\S]*\.global-nav-panel\s*\{[^}]*padding:\s*var\(--space-3\) var\(--content-gutter\)/su);
   assert.match(base, /\.app-header__utilities\s*\{[^}]*grid-area:\s*utilities/su);
-  assert.match(base, /\.app-header__title-icon\s*\{[^}]*width:\s*2rem/su);
-  assert.match(base, /\.app-header__title\s*\{[^}]*align-items:\s*baseline[^}]*font:\s*600 var\(--text-3xl\)/su);
+  assert.match(components, /\.brand-lockup\s*\{[^}]*--brand-lockup-icon-width:\s*0\.89em;[^}]*--brand-lockup-gap:\s*0\.45em;[^}]*align-items:\s*baseline[^}]*gap:\s*var\(--brand-lockup-gap\)[^}]*color:\s*var\(--brand-lockup-color\)/su);
+  assert.match(components, /\.brand-lockup__icon\s*\{[^}]*width:\s*var\(--brand-lockup-icon-width\)/su);
+  assert.match(base, /\.app-header__title\s*\{[^}]*font:\s*600 var\(--text-3xl\)/su);
   assert.match(base, /\.app-header__framework\s*\{[^}]*padding:\s*var\(--space-4\) 0 var\(--space-6\)[^}]*font:\s*500 var\(--text-xl\)/su);
+  assert.match(base, /\.global-nav-panel\s*\{[^}]*width:\s*min\([^}]*var\(--content-max\)[^}]*var\(--header-content-left-rail\)[^}]*var\(--header-content-right-rail\)/su);
+  assert.match(base, /\.app-header \.global-nav > a:first-child\s*\{\s*padding-left:\s*0;/u);
+  assert.doesNotMatch(pageMeta, /<span class=\{`pill/u);
   assert.match(base, /@media \(min-width: 60\.0625rem\) and \(max-width: 96rem\) \{[\s\S]*\.app-header--with-sidebar \.global-nav-panel\s*\{[^}]*padding-left:\s*calc\(var\(--header-content-left-rail\) \+ var\(--content-gutter\)\)/su);
   assert.match(search, /<form[^>]+role="search"/u);
   assert.match(search, /name="destination"/u);

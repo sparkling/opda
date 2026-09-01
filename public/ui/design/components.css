@@ -8,6 +8,41 @@
   color: var(--color-text-disabled);
 }
 
+/* Shared icon-and-live-text lock-up. Icon scale and spacing are relative to
+   the consuming text size; baseline alignment keeps the visible lower edges
+   together without per-component offsets. */
+.brand-lockup {
+  --brand-lockup-icon-width: 0.89em;
+  --brand-lockup-gap: 0.45em;
+  --brand-lockup-color: currentColor;
+  --brand-lockup-hover-color: var(--brand-lockup-color);
+  display: inline-flex;
+  align-items: baseline;
+  gap: var(--brand-lockup-gap);
+  color: var(--brand-lockup-color);
+  text-decoration: none;
+}
+.brand-lockup--on-dark {
+  --brand-lockup-color: var(--brand-yellow);
+  --brand-lockup-hover-color: var(--brand-white);
+}
+.brand-lockup--on-light {
+  --brand-lockup-color: var(--brand-deep);
+  --brand-lockup-hover-color: var(--brand-night);
+}
+.brand-lockup:hover { color: var(--brand-lockup-hover-color); }
+.brand-lockup__icon {
+  display: block;
+  width: var(--brand-lockup-icon-width);
+  height: auto;
+  flex: 0 0 auto;
+}
+.brand-lockup__label {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
 /* Icon-and-name brand heading. The official icon stays decorative because the
    organisation name remains live text. */
 .brand-heading {
@@ -42,6 +77,8 @@
 }
 
 @media (forced-colors: active) {
+  .brand-lockup { color: CanvasText; }
+  .brand-lockup__icon { display: none; }
   .brand-heading { color: CanvasText; }
   .brand-heading__icon { display: none; }
 }

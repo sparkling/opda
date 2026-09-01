@@ -93,29 +93,17 @@ a:visited { text-decoration-color: currentColor; }
     );
   color: var(--brand-white);
   background: var(--brand-deep);
-  border-bottom: 1px solid var(--color-surface-dark-tint);
-  box-shadow: var(--shadow-sm);
+  border-bottom: 0;
+  box-shadow: none;
 }
 .app-header__title {
   grid-area: title;
   min-width: 0;
   align-self: end;
-  display: inline-flex;
-  align-items: baseline;
-  gap: var(--space-5);
-  color: var(--brand-yellow);
   font: 600 var(--text-3xl) / 1 var(--font-sans);
   letter-spacing: var(--tracking-display);
-  text-decoration: none;
   white-space: nowrap;
 }
-.app-header__title-icon {
-  display: block;
-  width: 2rem;
-  height: auto;
-  flex: 0 0 auto;
-}
-.app-header__title:hover { color: var(--brand-white); }
 .app-header__framework {
   grid-area: framework;
   min-width: 0;
@@ -137,9 +125,17 @@ a:visited { text-decoration-color: currentColor; }
 .global-nav-panel {
   grid-area: navigation;
   min-width: 0;
+  width: min(
+    var(--content-max),
+    calc(
+      100vw - var(--header-content-left-rail) - var(--header-content-right-rail) -
+      var(--content-gutter) - var(--content-gutter)
+    )
+  );
   height: var(--target-min);
   align-self: end;
   display: block;
+  border-bottom: 1px solid var(--color-surface-dark-tint);
 }
 .global-nav-panel[hidden] { display: none !important; }
 
@@ -194,6 +190,8 @@ a:visited { text-decoration-color: currentColor; }
   height: 4px;
   background: var(--brand-yellow);
 }
+.app-header .global-nav > a:first-child { padding-left: 0; }
+.app-header .global-nav > a:first-child.active::after { left: 0; }
 
 .app-header .header-nav {
   display: flex;
@@ -278,6 +276,8 @@ a:visited { text-decoration-color: currentColor; }
     height: var(--header-height);
     padding: 0 var(--space-3);
     gap: var(--space-2);
+    border-bottom: 1px solid var(--color-surface-dark-tint);
+    box-shadow: var(--shadow-sm);
   }
   .app-header__framework { display: none; }
   .app-header__title {
@@ -286,12 +286,12 @@ a:visited { text-decoration-color: currentColor; }
     font-size: var(--text-lg);
     text-overflow: ellipsis;
   }
-  .app-header__title-icon { width: 1rem; }
   .app-header__utilities { gap: var(--space-1); }
   .global-nav-toggle { display: inline-flex; }
   .global-nav-panel {
     position: absolute;
     inset: 100% 0 auto;
+    width: auto;
     height: auto;
     max-height: calc(100vh - var(--header-height));
     padding: var(--space-3) var(--content-gutter);

@@ -210,7 +210,7 @@
   --shadow-lg: var(--shadow-md);
   --target-min: 2.75rem;
   --header-height: 4rem;
-  --sidebar-width: 17.5rem;
+  --sidebar-width: 15rem;
   --toc-width: var(--sidebar-width);
   --content-max: 100rem;
   /* Keep the article close to its available track until its maximum width is

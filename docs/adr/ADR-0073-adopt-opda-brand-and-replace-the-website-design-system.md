@@ -209,8 +209,12 @@ Data Framework” subheading sits above the horizontal global destination tabs. 
 at the top right; the previous standalone logo cell was removed. This does not alter either the left section rail
 or the right page-contents rail.
 
-The final desktop masthead refinement expands the header to 160px, gives the title lock-up a 32px icon and
-16px internal gap, and adds deliberate space around the framework subheading. The compact header remains 64px.
+The final desktop masthead refinement expands the header to 160px and adds deliberate space around the
+framework subheading. A shared `.brand-lockup` primitive now owns icon scale (`0.89em`), icon-to-text gap
+(`0.45em`), baseline alignment and surface-aware colour, so the header no longer carries local corrections.
+The compact header remains 64px. The divider below the global tabs follows the content width, the first tab
+has no extra left inset, breadcrumbs regain balanced vertical spacing, and category pills no longer repeat
+breadcrumb context immediately before the page title.
 
 On 1 September 2026 the diagram-frame contract was consolidated. `GraphDiagram.astro`
 and adopted bare Mermaid now consume one shared shell template and one bundled Mermaid
@@ -227,7 +231,7 @@ hero adds the existing transparent button variant for its OPDA return control; t
 full-screen working-group deck remains outside shared site furniture.
 
 Later on 1 September 2026, the documentation-shell rail contract was clarified: the section
-navigation and page-contents rail use the same fixed desktop width and alternate surface, with
+navigation and page-contents rail use the same 240px desktop width and alternate surface, with
 matching labelled utility bands. The bands use uppercase mono labels, structural dividers and double
 chevrons so they cannot be confused with selected navigation rows. Collapsing either rail creates a
 full-height 44px labelled spine and contracts its grid track, allowing the article to reflow into the
