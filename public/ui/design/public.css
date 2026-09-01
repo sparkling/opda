@@ -112,6 +112,10 @@
   grid-area: credit;
   margin: 0 0 0 calc(0px - var(--public-footer-gutter));
   color: var(--color-text-muted);
+  text-align: center;
+}
+.public-footer__credit span {
+  display: block;
 }
 .public-footer__links {
   grid-area: links;
