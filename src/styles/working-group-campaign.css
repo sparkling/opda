@@ -72,7 +72,7 @@
 .wg-campaign-hero__header .theme-toggle { margin-left: auto; }
 
 .wg-campaign-hero--panel-aligned {
-  grid-template-columns: minmax(0, 0.95fr) minmax(38rem, 1.05fr);
+  grid-template-columns: minmax(0, 1.1fr) minmax(30rem, 0.9fr);
   padding-top: var(--space-6);
 }
 

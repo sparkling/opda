@@ -58,7 +58,7 @@ const domains = [
 <body class="public-site">
   <a class="skip-link" href="#main-content">Skip to main content</a>
   <main id="main-content" tabindex="-1">
-    <section class="home-campaign-hero wg-campaign-hero" aria-labelledby="public-title">
+    <section class="home-campaign-hero wg-campaign-hero wg-campaign-hero--panel-aligned" aria-labelledby="public-title">
       <header class="wg-campaign-hero__header">
         <BrandHeading surface="dark" campaign />
         <button
@@ -142,8 +142,6 @@ const domains = [
 <style>
   .home-campaign-hero {
     --campaign-max: var(--content-max);
-    grid-template-columns: minmax(0, 0.95fr) minmax(38rem, 1.05fr);
-    padding-top: var(--space-6);
   }
   :global(:root[data-theme='light']) .home-campaign-hero {
     color: var(--brand-deep);
@@ -199,10 +197,6 @@ const domains = [
       clamp(var(--space-5), 5vw, var(--space-10)),
       calc((100vw - var(--content-max)) / 2)
     );
-  }
-  .home-campaign-hero .wg-hero-journey {
-    margin-top: 0;
-    transform: translateY(clamp(2.5rem, 4vw, 4rem));
   }
   .home-campaign-hero .wg-hero-journey :global(.home-domain-process li) {
     row-gap: var(--space-2);
