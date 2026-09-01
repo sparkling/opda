@@ -109,7 +109,7 @@ a:visited { text-decoration-color: currentColor; }
   grid-area: title;
   min-width: 0;
   align-self: end;
-  margin-block-end: calc(-1 * var(--space-2));
+  margin-block-end: calc(-1 * var(--space-4));
   letter-spacing: var(--tracking-display);
   white-space: nowrap;
 }
@@ -267,7 +267,7 @@ a:visited { text-decoration-color: currentColor; }
 :root[data-theme='dark'] .theme-icon--sun { display: block; }
 
 @media (min-width: 96.0625rem) {
-  :root { --header-height: 9rem; }
+  :root { --header-height: 8.5rem; }
   .app-header .global-nav a.header-cta { margin-left: auto; }
 }
 
