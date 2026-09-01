@@ -11,6 +11,10 @@
 import Layout from '@/layouts/Layout.astro';
 import PageMeta from '@/components/PageMeta.astro';
 import GraphDiagram from '@/components/GraphDiagram.astro';
+import {
+  MERMAID_PROPERTY_LAYER_HEADER,
+  mermaidPropertyLayerCondition,
+} from '@/lib/mermaid-property-layers.mjs';
 import { model, pdtfUrl, ufoCategories } from '@/lib/ontology-model';
 import { isExpectedOntologyAsset } from '@/lib/ontology-publication-assets';
 
@@ -123,14 +127,18 @@ function sectionDiagram(g: { heading: string; classes: any[] }): string {
     '    nodePlacementStrategy: BRANDES_KOEPF', '---', 'flowchart LR',
     `    accTitle: ${g.heading} — class diagram`,
     `    accDescr: The classes of the ${g.heading} context, the object properties relating them (cross-context links dashed to a muted "(section)" node), and each class's rdfs:subClassOf hierarchy as a muted dotted "isA" edge to its super (external upper classes such as prov:Activity shown as muted nodes).`,
+    MERMAID_PROPERTY_LAYER_HEADER,
   ];
   for (const n of nodes.values()) lines.push(`    ${n.sid}["${n.label}"]:::${n.cls}`);
   for (const p of pairs.values()) {
     const label = p.preds.length === 1 ? p.preds[0] : p.preds.length > 1 ? `${p.preds.length} properties` : '';
     const arrow = p.xsec ? '-.->' : '-->';
-    lines.push(label ? `    ${p.s} ${arrow}|${label}| ${p.t}` : `    ${p.s} ${arrow} ${p.t}`);
+    const edge = label ? `    ${p.s} ${arrow}|${label}| ${p.t}` : `    ${p.s} ${arrow} ${p.t}`;
+    lines.push(...mermaidPropertyLayerCondition('object', edge));
   }
-  for (const p of isa) lines.push(`    ${p.s} -.->|isA| ${p.t}`);
+  for (const p of isa) {
+    lines.push(...mermaidPropertyLayerCondition('inheritance', `    ${p.s} -.->|isA| ${p.t}`));
+  }
   // Click-navigation: opda class nodes (:::user / :::xsection) open their /pdtf
   // page; external :::upper supers (prov:Activity …) have no opda page. The
   // GraphDiagram island parses these `click` directives for its Navigate mode.

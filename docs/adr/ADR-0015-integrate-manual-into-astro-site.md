@@ -1,6 +1,7 @@
 ---
 status: accepted
 date: 2026-05-28
+updated: 2026-09-01
 tags: [website, documentation, integration, content-collections, dark-mode, mermaid]
 supersedes: []
 depends-on: [ADR-0002, ADR-0003, ADR-0007, ADR-0011]
@@ -373,3 +374,11 @@ Phases 2 + 3 run in parallel after Phase 1; Phase 4 + 5 gate on the parallel pai
   - Per-overlay route templates for TA6 / NTS / LPE1 etc. (defer until those overlay profiles emit; ADR-0013 Phase-2/3 work).
   - JSON-LD HTTP content negotiation for `https://opda.org.uk/pdtf/<EntityLocalName>` URI dereference (separate deployment-layer work; the manual page is the HTML landing target for those redirects but the redirect setup itself is in ADR-0006).
   - Migrating the existing `src/pages/modelling/` content into content collections — owned by [ADR-0019](./ADR-0019-modelling-manual-handshake.md) per-page decision.
+
+## Amendment — shared Mermaid runtime (1 September 2026)
+
+The single-loader decision remains in force, but the implementation owner moved from
+`public/ui/client.js` to `src/scripts/graph-diagram-mermaid.ts`. `Layout.astro` adopts
+bare `.mermaid` output from `Diagram.astro`, Markdown and generated pages into the
+same GraphDiagram shell. Components and content remain source authors; none imports,
+initialises or renders Mermaid independently.

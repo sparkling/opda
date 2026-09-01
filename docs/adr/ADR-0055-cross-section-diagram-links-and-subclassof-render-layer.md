@@ -1,6 +1,7 @@
 ---
-status: proposed
+status: implemented
 date: 2026-06-30
+updated: 2026-09-01
 tags: [ontology, visualization, mermaid, class-diagram, cross-section, subclassof, accessibility, astro]
 supersedes: []
 depends-on: [ADR-0043, ADR-0044, ADR-0048, ODR-0027, ODR-0034]
@@ -17,7 +18,7 @@ The per-section class diagrams on `/ontology/classes` (`src/pages/ontology/class
 
 2. **`rdfs:subClassOf` is never drawn — and the model never extracts it.** The diagrams (and the interactive `/ontology/graph`, ADR-0047) draw only object-property edges. `ClassEntry` (`src/lib/ontology-model.ts`) has no `subClassOf` field and `scripts/ontology-model.mjs` issues no subClassOf query. Consequently **18 of 40 classes render as disconnected nodes** — most of them perdurant events (`rdfs:subClassOf prov:Activity`), Information Objects (`rdfs:subClassOf prov:Entity`), or `time:ProperInterval` — whose genuine connective tissue is *subsumption to an external upper class*, which the diagram hides. Council [session-051](../ontology/odr/council/session-051-relationship-residue-completion.md) Q6 ruled 7–0 that this is a **rendering** defect, not a modelling one.
 
-This ADR records the diagram engineering: the cross-section link change (shipped) and the `rdfs:subClassOf` render layer (decided, pending).
+This ADR records the diagram engineering: the cross-section link change and the `rdfs:subClassOf` render layer, both implemented.
 
 ## Decision Drivers
 
@@ -28,7 +29,7 @@ This ADR records the diagram engineering: the cross-section link change (shipped
 
 ## Considered Options
 
-* **Option A (chosen) — Bidirectional cross-section links with a dashed `:::xsection` node style (shipped), plus a muted/optional `rdfs:subClassOf` layer extracted into the model and rendered distinctly (pending).**
+* **Option A (chosen) — Bidirectional cross-section links with a dashed `:::xsection` node style, plus a muted/optional `rdfs:subClassOf` layer extracted into the model and rendered distinctly.**
 * **Option B — Mint object properties to "connect" the orphans.** Rejected by session-051 (Davis: "do not mint OWL to satisfy a renderer"); the orphans' relations are either PROV-native, value-slots, or RESIDUE-PENDING (ODR-0034).
 * **Option C — Leave the diagrams as-is and explain the orphans in prose.** Rejected: the disconnection misrepresents 18/40 classes at a glance.
 
@@ -42,10 +43,10 @@ Chosen option **A**, in two parts.
 
 **Verified:** `make build` (1635 pages, exit 0) emits 25 `:::xsection` nodes + 25 `(Section)` sublabels; `make test` 29/29; browser render of the Foundation section confirms the dashed "(Agents & roles)" `Proprietor`/`Person`/`Organisation` nodes via dashed `mediates`/`founds`/`plays`/`playedBy` connectors, no Mermaid parse errors. Effect: every **non-orphan** class now shows ≥1 edge in its own section (de-orphans the section-local-only classes — `EPCCertificate`, `MonetaryAmount`, `RoomDimension`, `Address`, …). The 18 *global* orphans (zero object-property edges anywhere) are unaffected — they are addressed by Part 2.
 
-### Part 2 — `rdfs:subClassOf` render layer (decided session-051 Q6, 7–0 FOR; pending)
+### Part 2 — `rdfs:subClassOf` render layer (implemented 2026-06-30; shared toggle completed 2026-09-01)
 
 1. **Extract `subClassOf` into the model.** Add a `SELECT ?c ?super` query to `scripts/ontology-model.mjs`; store per class a `superClasses: [{ id, localName, external: bool, ns }]` field (external = non-`opda:` super such as `prov:Activity`, `prov:Entity`, `time:ProperInterval`, `vcard:Address`, `org:Organization`, `skos:ConceptScheme`). Regenerate the committed `ontology-model.json` (needs `make serve-data`); the model-drift gate (`make ci-ontology-model`) re-pins it.
-2. **Render a distinct, muted, optional/toggleable hierarchy layer.** `isA` edges drawn separately from association edges (e.g. open-arrow `-.->|isA|` to a muted super-node, or a dedicated edge style), de-emphasised; external supers as a distinct node class. This groups the orphan events under `prov:Activity` and Information Objects under `prov:Entity` — resolving the bulk of the "18 disconnected" honestly. ODR-0027-consistent (depiction, not a subclass-tree commitment); documentary, never entailed.
+2. **Render a distinct, muted, toggleable hierarchy layer.** `isA` edges are drawn separately from association edges as dotted links to muted super-nodes; external supers use a distinct node class. This groups the orphan events under `prov:Activity` and Information Objects under `prov:Entity` — resolving the bulk of the "18 disconnected" honestly. ODR-0027-consistent (depiction, not a subclass-tree commitment); documentary, never entailed. The shared GraphDiagram toolbar now controls inheritance independently from object properties; its datatype-property control is disabled where this projection carries no datatype fields.
 3. **Residual orphans after Part 2** are the foundation scaffolding (`GeneratorRun`, `DiagnosticExemplar`, `ValidationContext` — intentionally standalone, ADR-0009) and the reference-not-import governance classes (`DPVMappingRecord`, `SpecialCategoryScheme`) — documented as intended, not defects.
 
 ### Consequences
@@ -57,7 +58,7 @@ Chosen option **A**, in two parts.
 
 ### Confirmation
 
-Part 1: `make build` + `make test` green; in-browser render verified (no console errors). Part 2 (on implementation): the model carries `superClasses`; `make ci-ontology-model` and `make ci-ontology-graph` re-pin clean; the diagrams render the muted `isA` layer with dark-mode parity; the orphan count drops to the documented residual (foundation scaffolding + reference-not-import governance).
+Part 1: `make build` + `make test` green; in-browser render verified (no console errors). Part 2 shipped in commit `d791b0c`: the model carries `superClasses`, committed projections were re-pinned and diagrams render the muted `isA` layer. On 1 September 2026 explicit source-layer markers made the object-property and inheritance layers independently toggleable through the shared viewer; unmarked diagrams remain unchanged.
 
 ## More Information
 

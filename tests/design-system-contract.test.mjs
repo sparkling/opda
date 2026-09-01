@@ -167,7 +167,6 @@ test('live shared surfaces no longer depend on the superseded visual language', 
     'src/lib/diagram-palette.ts',
     'public/ui/graph-engines/_shared.js',
     'public/ui/graph-engines/mermaid.js',
-    'public/ui/graph-engines/mermaid-elk.js',
   ];
   const legacy = /(?:Fraunces|JetBrains Mono|fontFamily:\s*['"]Inter|font-family:\s*['"]Inter|#CC785C|#FAF9F5|Cagle palette|Claude theme)/iu;
   for (const path of paths) assert.doesNotMatch(await readFile(file(path), 'utf8'), legacy, path);
@@ -194,14 +193,17 @@ test('live implementation consumes semantic tokens rather than legacy aliases', 
 
 test('Mermaid loading state hides raw source and exposes labelled outcomes', async () => {
   const component = await readFile(file('src/components/GraphDiagram.astro'), 'utf8');
+  const template = await readFile(file('src/lib/graph-diagram-shell.ts'), 'utf8');
   const shell = await readFile(file('src/scripts/graph-diagram.ts'), 'utf8');
   const renderer = await readFile(file('src/scripts/graph-diagram-mermaid.ts'), 'utf8');
   const styles = await readFile(file('src/styles/graph-diagram.css'), 'utf8');
 
-  assert.match(component, /class="diagram-loading" role="status" aria-live="polite"/u);
-  assert.match(component, /class="gd-mermaid" aria-hidden="true"/u);
-  assert.match(shell, /class="diagram-loading" role="status" aria-live="polite"/u);
-  assert.match(shell, /class="gd-mermaid" aria-hidden="true"/u);
+  assert.match(component, /graphDiagramShellHtml/u);
+  assert.doesNotMatch(component, /class="diagram-loading"|class="gd-actionbar"/u);
+  assert.match(shell, /graphDiagramShellHtml/u);
+  assert.doesNotMatch(shell, /const GD_SHELL_HTML|const GD_ICON/u);
+  assert.match(template, /class="diagram-loading" role="status" aria-live="polite"/u);
+  assert.match(template, /class="gd-mermaid" aria-hidden="true"/u);
   assert.match(styles, /\.graph-diagram-wrapper \.gd-mermaid:not\(\.gd-rendered\)[\s\S]*?opacity:\s*0;/u);
   assert.match(styles, /\.graph-diagram-wrapper \.gd-mermaid:not\(\.gd-rendered\)[\s\S]*?clip-path:\s*inset\(50%\);/u);
   assert.match(renderer, /pre\.classList\.add\('gd-rendered'\)/u);
@@ -449,15 +451,24 @@ test('the adversarial conformance blockers remain closed', async () => {
 });
 
 test('graph and data tools preserve keyboard and semantic state contracts', async () => {
-  const [component, graph, mermaid, graphCss, dataBrowser] = await Promise.all([
+  const [component, template, graph, mermaid, graphCss, dataBrowser] = await Promise.all([
     readFile(file('src/components/GraphDiagram.astro'), 'utf8'),
+    readFile(file('src/lib/graph-diagram-shell.ts'), 'utf8'),
     readFile(file('src/scripts/graph-diagram.ts'), 'utf8'),
     readFile(file('src/scripts/graph-diagram-mermaid.ts'), 'utf8'),
     readFile(file('src/styles/graph-diagram.css'), 'utf8'),
     readFile(file('public/ui/data-browser.js'), 'utf8'),
   ]);
-  assert.match(component, /<figure class="graph-diagram-wrapper" data-node-interaction="interactive">/u);
+  assert.match(component, /<figure\s+class="graph-diagram-wrapper"\s+data-node-interaction="interactive"/u);
   assert.match(component, /<figcaption class="gd-caption"/u);
+  assert.match(template, /role="group" aria-label="Property layers"/u);
+  for (const [key, label, pressed] of [
+    ['datatype', 'Datatype properties', 'false'],
+    ['object', 'Object properties', 'true'],
+    ['inheritance', 'Inheritance', 'true'],
+  ]) {
+    assert.match(template, new RegExp(`data-diagram-layer="${key}"[\\s\\S]*?aria-pressed="${pressed}"[\\s\\S]*?>${label}<`, 'u'));
+  }
   assert.match(graph, /Figure \$\{number\}/u);
   assert.match(graph, /setAttribute\('role', 'dialog'\)/u);
   assert.match(graph, /setAttribute\('aria-modal', 'true'\)/u);
@@ -469,6 +480,25 @@ test('graph and data tools preserve keyboard and semantic state contracts', asyn
   assert.match(dataBrowser, /class:\s*'db-sort-button'/u);
   assert.match(dataBrowser, /setAttribute\('aria-sort', 'ascending'\)/u);
   assert.match(dataBrowser, /aria-label': 'Choose visible columns'/u);
+});
+
+test('every live Mermaid path delegates to the single shared renderer', async () => {
+  const [renderer, adapter, redundantAdapter, page, classIndex] = await Promise.all([
+    readFile(file('src/scripts/graph-diagram-mermaid.ts'), 'utf8'),
+    readFile(file('public/ui/graph-engines/mermaid.js'), 'utf8'),
+    readFile(file('public/ui/graph-engines/mermaid-elk.js'), 'utf8').catch(() => ''),
+    readFile(file('src/pages/spdtf/inputs/pdtf-schema/schema-derived-ontology/terms-and-model-resources/graph.astro'), 'utf8'),
+    readFile(file('src/pages/spdtf/inputs/pdtf-schema/schema-derived-ontology/terms-and-model-resources/classes.astro'), 'utf8'),
+  ]);
+  assert.match(renderer, /import\('mermaid'\)/u);
+  assert.match(renderer, /mermaid\.initialize/u);
+  assert.match(renderer, /mermaid\.render/u);
+  assert.match(adapter, /OPDA\.adoptBareMermaid/u);
+  assert.doesNotMatch(adapter + redundantAdapter, /mermaid\.initialize|mermaid\.render|jsdelivr\.net\/npm\/mermaid/u);
+  assert.equal((page.match(/graph-engines\/mermaid(?:-elk)?\.js/gu) ?? []).length, 1);
+  assert.match(classIndex, /MERMAID_PROPERTY_LAYER_HEADER/u);
+  assert.match(classIndex, /mermaidPropertyLayerCondition\('object'/u);
+  assert.match(classIndex, /mermaidPropertyLayerCondition\('inheritance'/u);
 });
 
 test('shared buttons expose the adopted interaction and outcome states', async () => {

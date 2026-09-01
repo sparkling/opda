@@ -6,8 +6,9 @@
  * (/data/ontology-graph-elements.json, derived from the SPARQL model by
  * scripts/ontology-graph.mjs) in its own tab, so the ADR-0043 Cytoscape pick can
  * be judged in situ against the alternatives. Server-less: each engine
- * lazy-loads from the jsdelivr CDN client-side (the Mermaid pattern), so the
- * page is pure SSG. The orchestrator (public/ui/ontology-graph.js) owns the tab
+ * loads client-side, so the page remains pure SSG. Mermaid delegates to the
+ * site's bundled GraphDiagram runtime; the other comparison engines lazy-load
+ * from jsdelivr. The orchestrator (public/ui/ontology-graph.js) owns the tab
  * bar + shared chrome; each engine is a self-registering module under
  * public/ui/graph-engines/.
  */
@@ -18,7 +19,7 @@ const counts = model.counts;
 
 // Node fill encodes node TYPE (see _shared.js COLORS); the UFO facet is a filter,
 // not a colour. Bump clientV when the engine/orchestrator JS changes (cache-bust).
-const clientV = '24';
+const clientV = '25';
 ---
 <Layout
   title="Ontology graph — interactive bake-off"
@@ -190,7 +191,6 @@ const clientV = '24';
   <script slot="scripts" is:inline data-astro-rerun src={`/ui/graph-engines/g6.js?v=${clientV}`}></script>
   <script slot="scripts" is:inline data-astro-rerun src={`/ui/graph-engines/sigma.js?v=${clientV}`}></script>
   <script slot="scripts" is:inline data-astro-rerun src={`/ui/graph-engines/mermaid.js?v=${clientV}`}></script>
-  <script slot="scripts" is:inline data-astro-rerun src={`/ui/graph-engines/mermaid-elk.js?v=${clientV}`}></script>
   <script slot="scripts" is:inline data-astro-rerun src={`/ui/graph-engines/dot.js?v=${clientV}`}></script>
   <script slot="scripts" is:inline data-astro-rerun src={`/ui/ontology-graph.js?v=${clientV}`}></script>
   <script slot="scripts" is:inline data-astro-rerun>

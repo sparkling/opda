@@ -1,6 +1,7 @@
 ---
 status: accepted
 date: 2026-05-28
+updated: 2026-09-01
 tags: [website, diagrams, mermaid, navigation, ux]
 supersedes: []
 depends-on: [ADR-0015, ADR-0018, ADR-0021]
@@ -95,3 +96,11 @@ paths, so a node links only where a page actually exists (no dead links).
 * **Mermaid loader (reused):** `public/ui/client.js:228-269` — `securityLevel: 'loose'` (line 268) already enables native `click`; the header lists "ER diagram entity click navigation" as intended.
 * **Predecessors:** [ADR-0015](./ADR-0015-integrate-manual-into-astro-site.md) (mermaid integration), [ADR-0018](./ADR-0018-manual-remark-rehype-plugins.md) (mermaid unwrap + loader reuse).
 * **Mermaid `click` docs:** https://mermaid.js.org/syntax/flowchart.html#interaction (per-diagram-type interaction support).
+
+## Amendment — navigation runtime ownership (1 September 2026)
+
+The hybrid navigation decision remains unchanged. Native trusted `click` directives
+and the generated route manifest are now consumed by
+`src/scripts/graph-diagram-mermaid.ts`; it applies post-render navigation to ER and
+other supported nodes through the same GraphDiagram runtime. `public/ui/client.js`
+no longer owns a second Mermaid initialisation or post-render path.

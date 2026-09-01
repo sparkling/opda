@@ -1,6 +1,7 @@
 ---
 status: accepted
 date: 2026-05-28
+updated: 2026-09-01
 tags: [website, astro, remark, rehype, mermaid, build-pipeline]
 supersedes: []
 depends-on: [ADR-0015, ADR-0016]
@@ -78,3 +79,10 @@ Specific to this ADR:
 * **Existing mermaid loader (reused, not duplicated):** `public/ui/client.js:228-269`
 * **Diagramming skill (source of the `<details>` convention):** `~/.claude/skills/diagramming/SKILL.md` §"Post-Creation Export Workflow"
 * **Parallel ADR:** [ADR-0017](./ADR-0017-manual-component-library.md) — components; safe to run in parallel with this plumbing
+
+## Amendment — adopted output path (1 September 2026)
+
+The remark plugin still emits bare `<div class="mermaid">` source exactly as decided.
+The consumer is now `Layout.astro`'s `adoptBareMermaid()` path and the shared
+GraphDiagram renderer, not `public/ui/client.js`. This preserves the decision's
+one-loader, dark-mode and ELK requirements without changing the Markdown transform.

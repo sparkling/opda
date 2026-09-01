@@ -8,6 +8,16 @@
  */
 import { readFileSync } from 'node:fs';
 import path from 'node:path';
+import {
+  MERMAID_PROPERTY_LAYER_HEADER,
+  mermaidPropertyLayerCondition,
+} from './mermaid-property-layers.mjs';
+import {
+  diagramNodeId,
+  diagramPreamble,
+  escapeDiagramHtml as escapeHtml,
+  wrapDiagramLabel as wrapLabel,
+} from './property-pack-diagram-utils.mjs';
 
 export const CANDIDATE_ROOT = path.resolve(
   process.cwd(), 'source/03-standards/ontology-candidates/property-pack/0.1',
@@ -182,55 +192,37 @@ export function contextStats(contextId) {
   };
 }
 
-function escapeHtml(value) {
-  return String(value ?? '')
-    .replaceAll('&', '&amp;').replaceAll('<', '&lt;').replaceAll('>', '&gt;')
-    .replaceAll('"', '&quot;').replaceAll("'", '&#39;');
-}
-
-function wrapLabel(value, width = 26) {
-  const words = String(value).trim().split(/\s+/);
-  const lines = [];
-  let line = '';
-  for (const word of words) {
-    if (line && `${line} ${word}`.length > width) {
-      lines.push(line);
-      line = word;
-    } else {
-      line = line ? `${line} ${word}` : word;
-    }
-  }
-  if (line) lines.push(line);
-  return lines.map(escapeHtml).join('<br/>');
-}
-
-function diagramPreamble(title, description, direction = 'LR') {
-  return [
-    '---', 'config:', '  layout: elk', '---', `flowchart ${direction}`,
-    `  accTitle: ${title}`, `  accDescr: ${description}`, '',
-  ];
-}
-
-function diagramNodeId(index) {
-  return `term_${index}`;
-}
-
 function candidateClass(iri) {
   const resource = resourceByIri.get(iri);
   return resource?.kind === 'class' ? resource : undefined;
 }
 
-function addTermNodes(lines, selected, nodeIds, activeContextId = '') {
+function addTermNodes(lines, selected, nodeIds, activeContextId = '', datatypeProperties = null) {
   for (const resource of selected) {
     const foreign = activeContextId && resource.semantic_home !== activeContextId;
     const className = foreign ? 'xsection' : 'user';
     const home = contextById.get(resource.semantic_home)?.label ?? resource.semantic_home;
     const detail = foreign ? `Class · ${escapeHtml(home)}` : 'Class';
-    lines.push(`    ${nodeIds.get(resource.iri)}["${wrapLabel(resource.label)}<br/><small>${detail}</small>"]:::${className}`);
+    const nodeId = nodeIds.get(resource.iri);
+    const baseLabel = `${wrapLabel(resource.label)}<br/><small>${detail}</small>`;
+    const baseNode = `    ${nodeId}["${baseLabel}"]:::${className}`;
+    if (!datatypeProperties?.length) {
+      lines.push(baseNode);
+      continue;
+    }
+    const fields = datatypeProperties.filter((property) => property.domain === resource.iri);
+    const fieldHtml = fields.map((property) =>
+      `<span class='gd-datatype-property'>${escapeHtml(property.label)} : ${escapeHtml(compactIri(property.range))}</span>`
+    ).join('<br/>');
+    const enrichedNode = fields.length
+      ? `    ${nodeId}["${baseLabel}<br/><small class='gd-datatype-properties'>${fieldHtml}</small>"]:::${className}`
+      : baseNode;
+    lines.push(...mermaidPropertyLayerCondition('datatype', baseNode, 'unless'));
+    lines.push(...mermaidPropertyLayerCondition('datatype', enrichedNode));
   }
 }
 
-function addObjectPropertyEdges(lines, selected, nodeIds, activeContextId = '') {
+function addObjectPropertyEdges(lines, selected, nodeIds, activeContextId = '', layered = false) {
   for (const property of selected) {
     if (!nodeIds.has(property.domain) || !nodeIds.has(property.range)) continue;
     const arrow = (() => {
@@ -242,16 +234,16 @@ function addObjectPropertyEdges(lines, selected, nodeIds, activeContextId = '') 
         || range?.semantic_home !== activeContextId
         ? '-.->' : '-->';
     })();
-    lines.push(
-      `  ${nodeIds.get(property.domain)} ${arrow}|"${escapeHtml(property.label)}"| ${nodeIds.get(property.range)}`,
-    );
+    const edge = `  ${nodeIds.get(property.domain)} ${arrow}|"${escapeHtml(property.label)}"| ${nodeIds.get(property.range)}`;
+    lines.push(...(layered ? mermaidPropertyLayerCondition('object', edge) : [edge]));
   }
 }
 
-function addSubclassEdges(lines, selected, nodeIds) {
+function addSubclassEdges(lines, selected, nodeIds, layered = false) {
   for (const resource of selected) {
     if (resource.subclass_of && nodeIds.has(resource.subclass_of)) {
-      lines.push(`  ${nodeIds.get(resource.iri)} -.->|"isA"| ${nodeIds.get(resource.subclass_of)}`);
+      const edge = `  ${nodeIds.get(resource.iri)} -.->|"isA"| ${nodeIds.get(resource.subclass_of)}`;
+      lines.push(...(layered ? mermaidPropertyLayerCondition('inheritance', edge) : [edge]));
     }
   }
 }
@@ -275,7 +267,7 @@ export const diagramCounts = Object.freeze({
   classNodes: resources.filter((resource) => resource.kind === 'class').length,
   objectPropertyEdges: drawableObjectProperties().length,
   subclassEdges: resources.filter((resource) => resource.kind === 'class' && candidateClass(resource.subclass_of)).length,
-  omittedDatatypeProperties: resources.filter((resource) => resource.kind === 'datatype-property').length,
+  datatypeProperties: resources.filter((resource) => resource.kind === 'datatype-property').length,
   omittedCodedOrExternalProperties: resources.filter((resource) =>
     resource.kind === 'object-property'
     && resource.domain
@@ -313,19 +305,21 @@ export function boundaryDiagram() {
 export function completeModelDiagram() {
   const classes = resources.filter((resource) => resource.kind === 'class');
   const relationships = drawableObjectProperties();
+  const datatypeProperties = resources.filter((resource) => resource.kind === 'datatype-property');
   const nodeIds = new Map(classes.map((resource, index) => [resource.iri, diagramNodeId(index)]));
   const lines = diagramPreamble(
     'Complete Property Pack candidate model',
-    'All 53 candidate classes are grouped by semantic home. Thirty class-to-class object properties are direct labelled relationships and 23 subclass assertions are dotted isA links. Datatype, coded-value, external-target and domainless properties remain in the structured reference rather than becoming topology nodes.',
+    'All 53 candidate classes are grouped by semantic home. Thirty class-to-class object properties are direct labelled relationships and 23 subclass assertions are dotted isA links. Datatype properties are available as an optional class-detail layer; coded-value, external-target and domainless properties remain in the structured reference.',
   );
+  lines.push(MERMAID_PROPERTY_LAYER_HEADER, '');
   for (const context of contexts) {
     const selectedContext = classes.filter((resource) => resource.semantic_home === context.id);
     lines.push(`  subgraph context_${context.id.replaceAll('-', '_')}["${escapeHtml(context.label)}"]`);
-    addTermNodes(lines, selectedContext, nodeIds);
+    addTermNodes(lines, selectedContext, nodeIds, '', datatypeProperties);
     lines.push('  end', '');
   }
-  addObjectPropertyEdges(lines, relationships, nodeIds);
-  addSubclassEdges(lines, classes, nodeIds);
+  addObjectPropertyEdges(lines, relationships, nodeIds, '', true);
+  addSubclassEdges(lines, classes, nodeIds, true);
   addClicks(lines, classes, nodeIds);
   return lines.join('\n');
 }
@@ -356,6 +350,9 @@ export function contextDiagramProjection(contextId) {
   );
   const foreignResources = displayedResources.filter((resource) => resource.semantic_home !== contextId);
   const subclassSources = ownedClasses.filter((resource) => candidateClass(resource.subclass_of));
+  const datatypeProperties = owned.filter((resource) =>
+    resource.kind === 'datatype-property' && displayedIris.has(resource.domain)
+  );
   return {
     context,
     owned,
@@ -365,6 +362,7 @@ export function contextDiagramProjection(contextId) {
     subclassSources,
     displayedResources,
     foreignResources,
+    datatypeProperties,
     displayedNodeCount: displayedResources.length,
   };
 }
@@ -373,23 +371,24 @@ export function contextDiagram(contextId) {
   const projection = contextDiagramProjection(contextId);
   const {
     context, ownedClasses, relationshipProperties, subclassSources,
-    displayedResources, foreignResources,
+    displayedResources, foreignResources, datatypeProperties,
   } = projection;
   const nodeIds = new Map(displayedResources.map((resource, index) => [resource.iri, diagramNodeId(index)]));
   const lines = diagramPreamble(
     `${context.label} candidate model`,
-    `All ${ownedClasses.length} classes whose semantic home is ${context.label}, plus candidate classes connected by one-hop class-to-class object properties or subclass assertions. Cross-boundary relationships and foreign classes are dotted. Datatype, coded-value, external-target and domainless properties remain in the structured reference.`,
+    `All ${ownedClasses.length} classes whose semantic home is ${context.label}, plus candidate classes connected by one-hop class-to-class object properties or subclass assertions. Cross-boundary relationships and foreign classes are dotted. Datatype properties are available as an optional class-detail layer; coded-value, external-target and domainless properties remain in the structured reference.`,
   );
+  lines.push(MERMAID_PROPERTY_LAYER_HEADER, '');
   lines.push(`  subgraph local_context["${escapeHtml(context.label)} · semantic home"]`);
-  addTermNodes(lines, ownedClasses, nodeIds, contextId);
+  addTermNodes(lines, ownedClasses, nodeIds, contextId, datatypeProperties);
   lines.push('  end', '');
   if (foreignResources.length) {
     lines.push('  subgraph cross_context_refs["Classes owned by other semantic homes"]');
-    addTermNodes(lines, foreignResources, nodeIds, contextId);
+    addTermNodes(lines, foreignResources, nodeIds, contextId, datatypeProperties);
     lines.push('  end', '');
   }
-  addObjectPropertyEdges(lines, relationshipProperties, nodeIds, contextId);
-  addSubclassEdges(lines, subclassSources, nodeIds);
+  addObjectPropertyEdges(lines, relationshipProperties, nodeIds, contextId, true);
+  addSubclassEdges(lines, subclassSources, nodeIds, true);
   addClicks(lines, displayedResources, nodeIds);
   return lines.join('\n');
 }

@@ -32,6 +32,11 @@ import {
   workPackageRoute,
   workPackages,
 } from '../src/lib/property-pack-model.mjs';
+import {
+  DEFAULT_MERMAID_PROPERTY_LAYERS,
+  filterMermaidPropertyLayers,
+  mermaidPropertyLayerCapabilities,
+} from '../src/lib/mermaid-property-layers.mjs';
 
 test('Property Pack review lists use the shared prose rhythm and an in-measure marker', async () => {
   const [page, styles] = await Promise.all([
@@ -210,8 +215,12 @@ test('work packages are source-catalogue views with class-only model diagrams', 
   assert.match(detail, /graph\.outgoingProperties\.length/u);
 });
 
-test('complete Mermaid uses the PDTF schema class-backbone projection', () => {
-  const source = completeModelDiagram();
+test('complete Mermaid uses explicit, independently filterable property layers', () => {
+  const authored = completeModelDiagram();
+  const source = filterMermaidPropertyLayers(authored, DEFAULT_MERMAID_PROPERTY_LAYERS);
+  const withDatatypes = filterMermaidPropertyLayers(authored, {
+    datatype: true, object: true, inheritance: true,
+  });
   assert.match(source, /^---\nconfig:\n  layout: elk\n---\nflowchart LR/m);
   assert.match(source, /accTitle: Complete Property Pack candidate model/);
   assert.match(source, /accDescr:/);
@@ -220,7 +229,7 @@ test('complete Mermaid uses the PDTF schema class-backbone projection', () => {
     classNodes: 53,
     objectPropertyEdges: 30,
     subclassEdges: 23,
-    omittedDatatypeProperties: 29,
+    datatypeProperties: 29,
     omittedCodedOrExternalProperties: 41,
     omittedDomainlessObjectProperties: 6,
   });
@@ -239,6 +248,11 @@ test('complete Mermaid uses the PDTF schema class-backbone projection', () => {
   assert.equal((source.match(/^  click term_\d+ /gm) ?? []).length, 53);
   assert.deepEqual(objectLabels, properties.map((property) => property.label).sort());
   assert.equal(subclassEdges.length, 23);
+  assert.equal((withDatatypes.match(/class=['"]gd-datatype-property['"]/gu) ?? []).length, 29);
+  assert.doesNotMatch(source, /class=['"]gd-datatype-property['"]/u);
+  assert.deepEqual(mermaidPropertyLayerCapabilities(authored), {
+    enabled: true, datatype: true, object: true, inheritance: true,
+  });
   assert.doesNotMatch(source, /\|"(?:domain|range)"\|/);
   assert.doesNotMatch(source, /xsd:|skos:Concept|dcterms:PhysicalResource/);
   for (const resource of classes) assert.ok(source.includes(`"${resourceRoute(resource)}"`));
@@ -256,8 +270,14 @@ test('context diagrams and boundary map preserve semantic-home distinctions', ()
   assert.match(boundary, /Cross-sector scheme context/);
   assert.match(boundary, /Common boundary/);
   for (const context of contexts) {
-    const source = contextDiagram(context.id);
+    const authored = contextDiagram(context.id);
+    const source = filterMermaidPropertyLayers(authored, DEFAULT_MERMAID_PROPERTY_LAYERS);
     const projection = contextDiagramProjection(context.id);
+    assert.deepEqual(mermaidPropertyLayerCapabilities(authored), {
+      enabled: true, datatype: projection.datatypeProperties.length > 0,
+      object: projection.relationshipProperties.length > 0,
+      inheritance: projection.subclassSources.length > 0,
+    });
     const clickRoutes = [...source.matchAll(/^  click term_\d+ "([^"]+)"$/gm)]
       .map((match) => match[1]);
     const expectedRoutes = projection.displayedResources.map(resourceRoute);
@@ -330,7 +350,9 @@ test('context diagrams show the same cross-boundary relationship from both seman
 });
 
 test('attribute-like and external value targets are omitted from class topology', () => {
-  const source = contextDiagram('conveyancing');
+  const source = filterMermaidPropertyLayers(
+    contextDiagram('conveyancing'), DEFAULT_MERMAID_PROPERTY_LAYERS,
+  );
   assert.doesNotMatch(source, /xsd:string|skos:Concept|dcterms:PhysicalResource/);
   assert.doesNotMatch(source, /Datatype property|Object property/);
   assert.match(source, /subgraph cross_context_refs\["Classes owned by other semantic homes"\]/);

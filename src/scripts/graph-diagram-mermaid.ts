@@ -1,6 +1,6 @@
 // @ts-nocheck
 /**
- * GraphDiagram core renderer — ported from hm/semantic-app (ADR-0190), adapted
+ * GraphDiagram core renderer — ported from hm/semantic-app (upstream ADR-0190), adapted
  * for OPDA: the semantic status and categorical diagram palette is injected
  * rather than embedded per page, navigation
  * uses `click NODE "url"` directives the page emits, and re-render on theme

@@ -1,6 +1,7 @@
 ---
 status: accepted
 date: 2026-06-16
+updated: 2026-09-01
 tags: [ontology, visualization, graph-diagram, bake-off, cytoscape, d3, g6, sigma, vis-network, force-graph, mermaid, graphviz, astro, ci-gate]
 supersedes: []
 depends-on: [ADR-0043, ADR-0044, ADR-0041, ODR-0004]
@@ -15,7 +16,7 @@ implements: []
 
 The natural form is a **bake-off page**: every scored finalist rendering the **same** committed model (`/data/ontology-graph-elements.json` — 40 classes + 28 object properties as the OWL backbone, 49 schemes + 323 concepts behind a SKOS toggle) as a **switchable tab** on `/ontology/graph`. Whoever opens the page can flip between Cytoscape, D3, vis-network, force-graph, G6, Sigma, Mermaid and Graphviz on identical data, theme, and controls, and see for themselves.
 
-The same hard constraints as ADR-0043 apply: **server-less static site** (engines lazy-load from the jsdelivr CDN as ESM — no runtime server, no bundler step); **centralised theming** (the Cagle CSS dark-mode tokens, re-applied on the `data-theme` flip — engines must not ship a fixed palette); **one semantic colour encoding** (UFO meta-category as node fill, via the CVD-safe Okabe–Ito palette); and the model is the **already-committed, CI-gated** `elements.json` (no new build artefact, no new gate).
+The same hard constraints as ADR-0043 apply: **server-less static site** (no runtime server); **centralised theming** (the shared dark-mode tokens, re-applied on the `data-theme` flip — engines must not ship a fixed palette); **one semantic colour encoding** (UFO meta-category as node fill, via the CVD-safe Okabe–Ito palette); and the model is the **already-committed, CI-gated** `elements.json` (no new build artefact, no new gate).
 
 ## Decision Drivers
 
@@ -46,7 +47,7 @@ Chosen option: **A — the multi-engine tabbed bake-off**, because it is the onl
 | **force-graph** | `force-graph@1.51.4` | interactive | Vasturiano 2D canvas; accessor-based theming. |
 | **G6 (AntV)** | `@antv/g6@5.1.1` | interactive | Batteries-included; built-in light/dark themes + d3-force layout; heaviest bundle (lazy-loaded). |
 | **Sigma + Graphology** | `sigma@3.0.3` + `graphology@0.26.0` (+ forceatlas2 layout) | interactive | WebGL; most assembly (graph build + separate layout); headroom for far larger graphs. |
-| **Mermaid** | `mermaid@11` + `@mermaid-js/layout-elk` | diagram | Generated `flowchart LR` + ELK of the **OWL class backbone only** (Mermaid hairballs past ~40 nodes; SKOS omitted), authored via the `/diagramming` skill's linked-data + styling guides. |
+| **Mermaid** | bundled `mermaid@11` + `@mermaid-js/layout-elk` | diagram | Generated `flowchart LR` + ELK of the **OWL class backbone only** (Mermaid hairballs past ~40 nodes; SKOS omitted), rendered through the same GraphDiagram viewer as every other site Mermaid diagram. |
 | **Graphviz (DOT)** | `@hpcc-js/wasm` (Graphviz compiled to WASM) | diagram | Deterministic DOT generated from the model, rendered to SVG **in-browser** (no Graphviz binary in the build), per the `/diagramming` DOT guide. |
 
 **Comunica — investigated, not a tab.** The directing authority asked whether Comunica has built-in visualisation. **It does not** (web-verified 2026-06-16): Comunica is a SPARQL query engine; its browser tooling (the Comunica Web Client) renders results as tables / bindings / downloadable result serialisations only — never a node-link diagram. Comunica's role here is the *optional build-time* `SPARQL→{nodes,edges}` step (an alternative to the N3.js parse) that could *produce* `elements.json`; it is not an engine in the bake-off.
@@ -62,6 +63,15 @@ Chosen option: **A — the multi-engine tabbed bake-off**, because it is the onl
 * Bad, because eight client-side graph libraries are now referenced (each lazy-loaded only when its tab is opened, so no cost until used) — more moving parts than the single-engine page.
 * Bad, because the non-Cytoscape engines theme via **JS options, not CSS** — dark-mode re-theming re-pushes colour values per engine on the `data-theme` flip rather than swapping a stylesheet (handled in each adapter's `setTheme`).
 * Neutral, because the diagram tabs (Mermaid, Graphviz) show the **OWL backbone** primarily — they are representations of the model's shape, not the interactive whole-graph explorers.
+
+### Amendment — one Mermaid runtime (1 September 2026)
+
+The bake-off had drifted into two Mermaid tabs: the original adapter imported and
+rendered Mermaid independently, while a second “Mermaid (ELK)” adapter delegated to
+the site-wide viewer. The redundant tab and renderer were removed. The sole Mermaid
+adapter now authors source and calls `OPDA.adoptBareMermaid`; `GraphDiagram` owns the
+bundled Mermaid and ELK imports, palette, rendering, pan/zoom, fullscreen and theme
+changes. The other comparison engines retain their independent adapter runtimes.
 
 ### Confirmation
 

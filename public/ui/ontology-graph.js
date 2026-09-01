@@ -122,7 +122,7 @@
     if (n) n.textContent = engine && engine.note ? engine.note : '';
   }
 
-  // Both Mermaid tabs render an OWL-backbone-only diagram and can't add the
+  // The Mermaid tab renders an OWL-backbone-only diagram and can't add the
   // SKOS layer in place (hairballs past ~40 nodes) — disable + tooltip the
   // checkbox instead of leaving it clickable with no visible effect, which
   // read as broken rather than as an intentional per-engine limitation.

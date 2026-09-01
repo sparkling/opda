@@ -3,8 +3,7 @@
  *
  * The reference adapter. Cytoscape consumes our elements.json shape natively
  * ({ data: {...} } nodes/edges). Core + the fcose force layout and cytoscape-elk
- * (a real layered/hierarchical layout — the same ELK engine used for the
- * Mermaid tabs' erDiagram config) lazy-load from jsdelivr /+esm.
+ * (a real layered/hierarchical layout) lazy-load from jsdelivr /+esm.
  * cytoscape-dagre is avoided — its /+esm bundle still pulls the broken
  * dagre@0.8.5, unlike cytoscape-elk's actively-maintained elkjs@0.9.3
  * dependency. Styling comes from opts.colors / opts.theme so re-theming

@@ -35,16 +35,17 @@ function targetLabel(row) {
   <p class="lead">
     This atlas documents all {counts.resources} OWL resources. Its Mermaid view follows the
     schema-derived ontology's class-diagram convention: classes are nodes and object properties directly
-    connect class to class. Datatype and coded-value properties remain in the structured
-    reference instead of becoming graph nodes.
+    connect class to class. Datatype properties can be revealed inside their class nodes;
+    coded-value properties remain in the structured reference.
   </p>
 
   <div class="callout callout--warn">
     <p class="callout__label">Class-centred model view</p>
     <p>
       The diagram does not turn RDF properties, datatypes or the words “domain” and “range”
-      into model nodes. Use fullscreen, pan/zoom and Explore mode for topology; use the
-      structured tables for the complete resource-level reference and unresolved domains.
+      into model nodes. Use the three layer controls to show or hide datatype fields, object-property
+      relationships and inheritance links. Use the structured tables for the complete resource-level
+      reference, coded values and unresolved domains.
     </p>
   </div>
 
@@ -64,7 +65,7 @@ function targetLabel(row) {
   <GraphDiagram
     source={completeModelDiagram()}
     minHeight="920px"
-    caption={`${counts.classes} candidate classes with ${drawableObjectProperties.length} direct class-to-class object-property relationships and ${counts.subclassEdges} subclass relationships. Datatype, coded-value and domainless properties remain in the structured reference rather than being drawn as topology. Click a class node for its reference page.`}
+    caption={`${counts.classes} candidate classes with ${drawableObjectProperties.length} direct class-to-class object-property relationships, ${counts.subclassEdges} subclass relationships and ${counts.datatypeProperties} optional datatype fields. Coded-value and domainless properties remain in the structured reference. Click a class node for its reference page.`}
   />
 
   <h2 id="atlas">Context atlas</h2>

@@ -1,6 +1,6 @@
 # OPDA Design System
 
-Version 1.1 · adopted 16 August 2026 · updated 30 August 2026 · scope: opda.org.uk application and its
+Version 1.1 · adopted 16 August 2026 · updated 1 September 2026 · scope: opda.org.uk application and its
 standalone design-system presentation.
 
 This is the normative human contract for OPDA's web interface. It supersedes the
@@ -354,12 +354,12 @@ states, plus loading/error/success where asynchronous work occurs and dark parit
   styled list; ordinary bullets, steps and navigation remain lists.
 - **Code/schema block:** deep ink, Roboto Mono, accessible syntax colour, language
   label and copy action.
-- **Diagram frame:** white surface, 1px border and numbered caption; every diagram
-  has an authored accessible title, description and prose equivalent. Overview
-  diagrams stay within nine nodes and twelve arrows; split denser subjects into
-  overview and detail views. Static teaching SVGs use image semantics and never
-  infer links from labels. Explicitly interactive model SVGs use composite semantics
-  with named node links. Pan/zoom controls remain keyboard-operable.
+- **Diagram frame:** one shared GraphDiagram shell and Mermaid renderer own the white surface,
+  1px border, numbered caption, theme, pan/zoom and keyboard controls. Every diagram has an
+  authored accessible title, description and prose equivalent; overview diagrams stay within
+  nine nodes and twelve arrows. Static teaching SVGs never infer links or property kinds from labels. Ontology diagrams opt in through
+  explicit source metadata to datatype-property, object-property and inheritance filters; datatype
+  fields default hidden while object and inheritance links default visible. Other diagrams are unchanged.
 - **Generated process infographic:** use checked-in light and dark images, not a client-side runtime, when a stable public explanation needs specialist composition. Both variants preserve identical
   wording, geometry and direction, use the theme palette, omit identity marks and retain equivalent semantic HTML. Record model and prompt provenance and human review; use an efficient web format. Load only the active
   wide-screen theme, with semantic HTML at narrow widths, forced colours and print. Show cycles and conditional

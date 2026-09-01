@@ -1,7 +1,7 @@
 ---
 status: implemented
 date: 2026-08-16
-updated: 2026-08-31
+updated: 2026-09-01
 tags: [design-system, brand, website, accessibility, css, governance, presentation]
 supersedes: [ADR-0025]
 depends-on: [ADR-0064]
@@ -203,6 +203,13 @@ visible copy. Site search now consumes canonical destination ownership, provides
 destination filter, ranks multi-word matches, exposes authority metadata in compact
 rows, and reinitialises after client-side page transitions. The normative contract,
 tokens, shared components and tests were updated together.
+
+On 1 September 2026 the diagram-frame contract was consolidated. `GraphDiagram.astro`
+and adopted bare Mermaid now consume one shared shell template and one bundled Mermaid
+renderer. Ontology sources may explicitly declare datatype-property, object-property
+and inheritance layers; the shared toolbar then exposes three independent pressed-state
+controls with dark-mode, forced-colour, keyboard and unavailable-layer treatments.
+Ordinary Mermaid remains unchanged and receives no inferred semantic controls.
 
 ### Brand conflict resolution
 
