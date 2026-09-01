@@ -62,14 +62,16 @@ test('desktop sidebar and nested tree controls work', async ({ page }) => {
   await page.locator('#sidebar-collapse').click();
   await expect(body).toHaveClass(/sidebar-collapsed/);
   const leftCollapsed = await geometry();
-  expect(leftCollapsed).toMatchObject({ mainLeft: initial.mainLeft, mainRight: initial.mainRight });
+  expect(leftCollapsed.mainLeft).toBeLessThan(initial.mainLeft);
+  expect(leftCollapsed.mainRight).toBe(initial.mainRight);
   expect(leftCollapsed.sidebarWidth).toBeCloseTo(44, 1);
   await page.locator('#sidebar-collapse').click();
   await expect(body).not.toHaveClass(/sidebar-collapsed/);
   await toc.locator('#toc-collapse').click();
   await expect(body).toHaveClass(/toc-collapsed/);
   const rightCollapsed = await geometry();
-  expect(rightCollapsed).toMatchObject({ mainLeft: initial.mainLeft, mainRight: initial.mainRight });
+  expect(rightCollapsed.mainLeft).toBe(initial.mainLeft);
+  expect(rightCollapsed.mainRight).toBeGreaterThan(initial.mainRight);
   expect(rightCollapsed.tocWidth).toBeCloseTo(44, 1);
   await toc.locator('#toc-collapse').click();
 

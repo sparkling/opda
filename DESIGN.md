@@ -282,8 +282,8 @@ plus the linked Sparkling Ideas credit.
 At desktop rail widths, the section navigation and page-contents rail share one width and alternate
 surface. Their collapse controls are full-bleed utility bands, not navigation rows: “In this section” on
 the left and “On this page” on the right use compact uppercase mono labels, quiet dividers and double
-chevrons. A collapsed rail becomes a full-height 44px labelled spine inside its retained grid track, so
-the visible rail contracts without moving the article or header axis. The visible label is the control's
+chevrons. A collapsed rail becomes a full-height 44px labelled spine and its grid track contracts with it,
+so the article reflows into the released width and the header follows the new content edge. The visible label is the control's
 accessible name; no selected-page tint, amber marker or `aria-current` treatment is used.
 
 `/` is the sole OPDA Knowledge Base homepage. It uses an SPDTF-centred hero, a static method figure,

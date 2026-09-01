@@ -364,10 +364,12 @@ test('shared navigation exposes visible focus, state and 44px targets', async ()
   assert.match(toc, /\.app-body\.toc-collapsed \.toc \.rail-collapse-toggle__label\s*\{[^}]*writing-mode:\s*vertical-rl/su);
   assert.match(layout, /<Header showSidebar=\{showSidebar\}/u);
   assert.match(shell, /\.app-main\s*\{[^}]*var\(--content-gutter\)/su);
-  assert.match(shell, /\.app-body\.with-toc\s*\{\s*grid-template-columns:\s*var\(--sidebar-width\) minmax\(0, 1fr\) var\(--toc-width\);/u);
+  assert.match(shell, /\.app-body\.with-toc\s*\{\s*grid-template-columns:\s*var\(--shell-sidebar-track\) minmax\(0, 1fr\) var\(--shell-toc-track\);/u);
+  assert.match(shell, /\.app-body\.sidebar-collapsed\s*\{\s*--shell-sidebar-track:\s*var\(--target-min\);/u);
+  assert.match(shell, /\.app-body\.toc-collapsed\s*\{\s*--shell-toc-track:\s*var\(--target-min\);/u);
   assert.match(base, /\.app-header--with-sidebar \.brand-cell\s*\{[^}]*justify-content:\s*center/su);
-  assert.doesNotMatch(base, /#app:has\(> \.app-body\.sidebar-collapsed\) \.app-header--with-sidebar/u);
-  assert.doesNotMatch(base, /#app:has\(> \.app-body\.with-toc\.toc-collapsed\) \.app-header--with-sidebar/u);
+  assert.match(base, /#app:has\(> \.app-body\.sidebar-collapsed\) \.app-header--with-sidebar\s*\{[^}]*--header-content-left-rail:\s*var\(--target-min\)/su);
+  assert.match(base, /#app:has\(> \.app-body\.with-toc\.toc-collapsed\) \.app-header--with-sidebar\s*\{[^}]*--header-content-right-rail:\s*var\(--target-min\)/su);
   assert.match(base, /#app:has\(> \.app-body\.with-toc\) \.app-header--with-sidebar\s*\{[^}]*--header-content-right-rail:\s*var\(--toc-width\)/su);
   assert.match(base, /\.app-header--with-sidebar \.global-nav\s*\{[^}]*var\(--header-content-left-rail\)[^}]*var\(--header-content-right-rail\)/su);
   assert.match(navigation, /\.breadcrumbs\s*\{[^}]*max-width:\s*var\(--content-max\)[^}]*margin:\s*0 auto var\(--space-6\)/su);
@@ -375,7 +377,7 @@ test('shared navigation exposes visible focus, state and 44px targets', async ()
   assert.doesNotMatch(toc, /@media[^}]+\.toc\s*\{\s*display:\s*none/su);
   assert.match(base, /@media \(max-width: 96rem\) \{[\s\S]*\.global-nav-toggle \{ display: inline-flex; \}/u);
   assert.match(base, /@media \(max-width: 96rem\) \{[\s\S]*\.global-nav-panel\s*\{[^}]*padding:\s*var\(--space-3\) var\(--content-gutter\)/su);
-  assert.match(base, /@media \(min-width: 60\.0625rem\) and \(max-width: 96rem\) \{[\s\S]*\.app-header--with-sidebar \.global-nav-panel\s*\{[^}]*padding-left:\s*calc\(var\(--sidebar-width\) \+ var\(--content-gutter\)\)/su);
+  assert.match(base, /@media \(min-width: 60\.0625rem\) and \(max-width: 96rem\) \{[\s\S]*\.app-header--with-sidebar \.global-nav-panel\s*\{[^}]*padding-left:\s*calc\(var\(--header-content-left-rail\) \+ var\(--content-gutter\)\)/su);
   assert.match(search, /<form[^>]+role="search"/u);
   assert.match(search, /name="destination"/u);
   assert.match(search, /import \{ searchEntries \} from '@\/lib\/site-search\.mjs'/u);

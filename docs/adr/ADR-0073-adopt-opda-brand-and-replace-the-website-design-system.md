@@ -222,8 +222,8 @@ Later on 1 September 2026, the documentation-shell rail contract was clarified: 
 navigation and page-contents rail use the same fixed desktop width and alternate surface, with
 matching labelled utility bands. The bands use uppercase mono labels, structural dividers and double
 chevrons so they cannot be confused with selected navigation rows. Collapsing either rail creates a
-full-height 44px labelled spine inside the retained grid track, preserving the article and global-
-navigation axes. The visible label supplies the accessible name and the state remains in
+full-height 44px labelled spine and contracts its grid track, allowing the article to reflow into the
+released space while the global navigation follows the new content edge. The visible label supplies the accessible name and the state remains in
 `aria-expanded`. The mobile drawer and inline page-contents patterns retain their established geometry
 and disclosure behaviour.
 
