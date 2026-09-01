@@ -416,7 +416,7 @@ test('shared navigation exposes visible focus, state and 44px targets', async ()
   assert.match(tokens, /--sidebar-width:\s*15rem;\s*--toc-width:\s*var\(--sidebar-width\);/u);
   assert.match(navigation, /\.breadcrumbs\s*\{[^}]*max-width:\s*var\(--content-max\)[^}]*margin:\s*0 auto;[^}]*padding-block:\s*var\(--space-5\) 0/su);
   assert.match(navigation, /\.breadcrumbs a,[^}]*\.breadcrumb-current\s*\{[^}]*min-height:\s*var\(--target-min\);[^}]*align-items:\s*flex-end;/su);
-  assert.match(base, /@media \(min-width: 96\.0625rem\) \{\s*:root \{ --header-height:\s*11rem; \}/u);
+  assert.match(base, /@media \(min-width: 96\.0625rem\) \{\s*:root \{ --header-height:\s*10rem; \}/u);
   assert.doesNotMatch(toc, /@media[^}]+\.toc\s*\{\s*display:\s*none/su);
   assert.match(base, /@media \(max-width: 96rem\) \{[\s\S]*\.global-nav-toggle \{ display: inline-flex; \}/u);
   assert.match(base, /@media \(max-width: 96rem\) \{[\s\S]*\.global-nav-panel\s*\{[^}]*padding:\s*var\(--space-3\) var\(--content-gutter\)/su);
@@ -425,8 +425,8 @@ test('shared navigation exposes visible focus, state and 44px targets', async ()
   assert.match(components, /\.brand-lockup__icon\s*\{[^}]*width:\s*var\(--brand-lockup-icon-width\)/su);
   assert.match(base, /\.app-header__title\s*\{[^}]*font:\s*600 var\(--text-3xl\)/su);
   assert.match(base, /\.app-header\s*\{[^}]*padding-block:\s*var\(--space-5\) 0;/su);
-  assert.match(base, /\.global-nav-panel\s*\{[^}]*height:\s*calc\(var\(--target-min\) \+ var\(--space-3\) \+ 1px\);[^}]*padding-block-end:\s*var\(--space-3\)/su);
-  assert.match(base, /\.app-header__framework\s*\{[^}]*padding:\s*var\(--space-4\) 0 var\(--space-6\)[^}]*font:\s*500 var\(--text-2xl\)/su);
+  assert.match(base, /\.global-nav-panel\s*\{[^}]*height:\s*var\(--target-min\)/su);
+  assert.match(base, /\.app-header__framework\s*\{[^}]*padding:\s*var\(--space-4\) 0 var\(--space-5\)[^}]*font:\s*500 var\(--text-2xl\)/su);
   assert.match(base, /padding-inline-end:\s*calc\([^}]*var\(--header-content-right-rail\)[^}]*var\(--content-gutter\)/su);
   assert.match(base, /@media \(min-width: 96\.0625rem\) \{[\s\S]*?\.app-header \.global-nav a\.header-cta \{ margin-left:\s*auto; \}/u);
   assert.match(base, /\.app-header__utilities\s*\{[^}]*position:\s*absolute;[^}]*inset-block-start:\s*var\(--space-5\);[^}]*inset-inline-end:\s*0;[^}]*margin-inline-end:\s*0;[^}]*padding-inline-end:\s*0;/su);

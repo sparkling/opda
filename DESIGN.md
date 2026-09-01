@@ -278,14 +278,13 @@ bounded with `ButtonText`, `CanvasText`, `FieldText` and `Highlight`.
 
 ## 8. Application shell and homepage
 
-The desktop header is 176px, `#131224`, and has three rows: the primary linked “Open Property Data Association”
+The desktop header is 160px, `#131224`, and has three rows: the primary linked “Open Property Data Association”
 title with a bottom-aligned yellow icon, the supporting “Smart Property Data Framework” subheading, then the global
 destination tabs. The title, subheading and first global-navigation label follow the main content gutter and centred
 maximum-width axis. The desktop utility controls sit 16px from the top and flush with the header's physical right
 edge; the working-group action finishes on the content track's right edge. The action and destination labels share
-a 44px target size inside one unshifted row, with eight pixels of container padding between the complete row and its divider. There is no separate top-left logo cell in this
-shell. The masthead reserves sixteen pixels above the title lock-up, which consumes the shared relative icon, gap, alignment and colour contract and gives the
-subheading its own vertical breathing room.
+a 44px target size inside one unshifted row whose divider retains the established position. There is no separate top-left logo cell in this
+shell. The masthead reserves sixteen pixels above the title lock-up, which consumes the shared relative icon, gap, alignment and colour contract. The framework subheading uses a smaller lower inset so that additional space does not move the navigation row or divider.
 Navigation is DM Sans; the current item has a 4px amber
 underline and `aria-current`. At 96rem and below, the header returns to its compact 64px disclosure
 pattern. A skip link is the first focusable element.
@@ -375,7 +374,7 @@ states, plus loading/error/success where asynchronous work occurs and dark parit
   500 at the base 16px role with a 24px line-height, 44px link targets and link-coloured decorative chevrons aligned to the label baseline.
   They use a smaller lower inset to connect the hierarchy to the page title.
 - **Header action:** one shared outlined secondary button may sit at the utility end of the
-  application header; it uses a short verb-led label, aligns to the content-right edge and shares the destination row's padded container without a local vertical offset,
+  application header; it uses a short verb-led label, aligns to the content-right edge and shares the unshifted destination row without a local vertical offset,
   while retaining its 44px target. It returns to the normal flow in the compact navigation disclosure.
 - **Header utilities:** familiar single-purpose destinations may use 20px icons in 44px targets, with an accessible name and tooltip. On desktop the group has no trailing inset, ends on the header's physical right edge and retains 16px above it. The theme icon has no visible border or box; icons never replace the CTA label.
 - **Organisation heading:** the unchanged yellow icon plus the full organisation name in one unbroken line of live DM Sans text; use strong ink on light and the inverse treatment on dark.
