@@ -262,9 +262,9 @@ type step. The desktop header utilities end flush with the physical right edge, 
 borderless theme control, while the 44px working-group action ends on the content-right axis. Page breadcrumbs retain
 linked ancestors only, use a stronger decorative chevron and reduce their lower inset because the adjacent H1 already
 identifies the current page. The Property Pack candidate control
-uses the shared Lucide `FileClock` mark in a borderless 44px target, avoiding a misleading approval symbol or a
-second visible enclosure. The global navigation items and working-group action sit eight pixels above their divider,
-keeping their text aligned while preventing the yellow action from resting on the rule. Pages without navigable
+uses the shared Lucide `ClipboardList` mark in a borderless 44px target, avoiding a misleading approval symbol or a
+second visible enclosure. The global navigation row retains its original 44px geometry without additional clearance
+above the divider. Pages without navigable
 breadcrumb ancestors render no breadcrumb region and remove the article's duplicate upper inset.
 
 ### Brand conflict resolution

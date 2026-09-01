@@ -283,7 +283,7 @@ title with a bottom-aligned yellow icon, the supporting “Smart Property Data F
 destination tabs. The title, subheading and first global-navigation label follow the main content gutter and centred
 maximum-width axis. The desktop utility controls sit 16px from the top and flush with the header's physical right
 edge; the working-group action finishes on the content track's right edge. The action and destination labels share
-a 44px text-aligned row that sits eight pixels above its divider. There is no separate top-left logo cell in this
+a 44px text-aligned row. There is no separate top-left logo cell in this
 shell. The title lock-up consumes the shared relative icon, gap, alignment and colour contract and gives the
 subheading its own vertical breathing room.
 Navigation is DM Sans; the current item has a 4px amber
@@ -299,7 +299,7 @@ qualified document titles supply a concise `breadcrumbTitle` but never their own
 Schema-object locations and resource-folder paths remain separate in-content navigation with location,
 rather than page, semantics.
 Property Pack pages place their candidate-status information control on the H1 row, aligned to the content
-track's right edge. A borderless 44px target uses the shared Lucide `FileClock` icon to identify a candidate record and its lifecycle and opens a
+track's right edge. A borderless 44px target uses the shared Lucide `ClipboardList` icon to identify the structured candidate-status record and opens a
 non-modal, tokenised flyout containing the complete candidate
 status, validation boundary and six-stage lifecycle record formerly shown in a full-width warning disclosure.
 It exposes expanded state, supports Escape, restores focus when dismissed from within and does not add its
@@ -376,7 +376,7 @@ states, plus loading/error/success where asynchronous work occurs and dark parit
   They use a smaller lower inset to connect the hierarchy to the page title.
 - **Header action:** one yellow primary action may sit at the utility end of the
   application header; it uses a short verb-led label, aligns to the content-right edge and shares the
-  destinations' 44px text-aligned row above the divider. It remains available in the compact navigation disclosure.
+  destinations' 44px text-aligned row. It remains available in the compact navigation disclosure.
 - **Header utilities:** familiar single-purpose destinations may use 20px icons in 44px targets, with an accessible name and tooltip. On desktop the group has no trailing inset, ends on the header's physical right edge and retains 16px above it. The theme icon has no visible border or box; icons never replace the CTA label.
 - **Organisation heading:** the unchanged yellow icon plus the full organisation name in one unbroken line of live DM Sans text; use strong ink on light and the inverse treatment on dark.
 - **Section heading:** a shared optional uppercase DM Sans eyebrow, display H2 and optional lead.
