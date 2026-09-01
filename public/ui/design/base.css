@@ -102,7 +102,7 @@ a:visited { text-decoration-color: currentColor; }
   display: inline-flex;
   align-items: flex-end;
   gap: var(--space-2);
-  color: var(--brand-white);
+  color: var(--brand-yellow);
   font: 600 var(--text-2xl) / 1 var(--font-sans);
   letter-spacing: var(--tracking-display);
   text-decoration: none;
@@ -114,13 +114,13 @@ a:visited { text-decoration-color: currentColor; }
   height: auto;
   flex: 0 0 auto;
 }
-.app-header__title:hover { color: var(--brand-yellow); }
+.app-header__title:hover { color: var(--brand-white); }
 .app-header__framework {
   grid-area: framework;
   min-width: 0;
   align-self: end;
   margin: 0;
-  color: var(--brand-yellow);
+  color: var(--brand-white);
   font: 600 var(--text-lg) / 1 var(--font-sans);
   letter-spacing: var(--tracking-display);
   white-space: nowrap;
