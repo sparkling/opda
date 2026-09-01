@@ -131,14 +131,14 @@
   min-height: var(--target-min);
   display: inline-flex;
   align-items: center;
-  gap: var(--space-3);
+  gap: var(--space-2);
   color: var(--brand-deep);
-  font: 600 clamp(1.25rem, 1.65vw, 1.75rem) / 1 var(--font-sans);
+  font: 600 clamp(1rem, 1.2vw, 1.25rem) / 1 var(--font-sans);
   letter-spacing: var(--tracking-display);
   text-decoration: none;
   white-space: nowrap;
 }
-.public-footer__brand img { width: 1.75rem; height: auto; flex: 0 0 auto; }
+.public-footer__brand img { width: 1.25rem; height: auto; flex: 0 0 auto; }
 .public-footer a {
   min-height: var(--target-min);
   display: inline-flex;
