@@ -364,6 +364,8 @@ test('shared navigation exposes visible focus, state and 44px targets', async ()
   assert.match(sidebar, /rail-collapse-toggle__label">In this section<\/span>/u);
   assert.doesNotMatch(sidebar, /id="sidebar-collapse"[^>]*aria-label=/su);
   assert.match(client, /rail-collapse-toggle__label toc-toggle__label">On this page/u);
+  assert.match(client, /sectionNavigation\.inert = sidebarRailQuery\.matches &&/u);
+  assert.match(client, /ul\.inert = railMode && collapsed/u);
   assert.match(shell, /\.rail-collapse-toggle__label\s*\{[^}]*var\(--font-mono\)[^}]*text-transform:\s*uppercase/su);
   assert.match(shell, /\.app-body\.sidebar-collapsed \.app-sidebar \.rail-collapse-toggle__label\s*\{[^}]*writing-mode:\s*vertical-rl/su);
   assert.match(toc, /\.app-body\.toc-collapsed \.toc \.rail-collapse-toggle__label\s*\{[^}]*writing-mode:\s*vertical-rl/su);
@@ -376,6 +378,13 @@ test('shared navigation exposes visible focus, state and 44px targets', async ()
   assert.doesNotMatch(shell, /\.app-body\.toc-collapsed\s*\{[^}]*--shell-toc-track:/su);
   assert.match(shell, /\.app-body\.sidebar-collapsed \.app-sidebar\s*\{[^}]*width:\s*var\(--target-min\);[^}]*justify-self:\s*end;/su);
   assert.match(toc, /\.app-body\.toc-collapsed \.toc\s*\{[^}]*width:\s*var\(--target-min\);[^}]*justify-self:\s*start;/su);
+  assert.match(shell, /\.app-body\.sidebar-collapsed \.sidebar-nav\s*\{[^}]*opacity:\s*0;[^}]*transform:\s*translateX/su);
+  assert.match(toc, /\.toc\.is-collapsed > ul\s*\{[^}]*opacity:\s*0;[^}]*transform:\s*translateX/su);
+  assert.match(shell, /\.app-sidebar\s*\{[^}]*overflow-x:\s*hidden;[^}]*transition:\s*width var\(--duration-slow\)/su);
+  assert.match(toc, /\.toc\s*\{[^}]*overflow-x:\s*hidden;[^}]*transition:\s*width var\(--duration-slow\)/su);
+  assert.match(toc, /@media \(max-width: 1280px\)[\s\S]*\.toc\.is-collapsed > ul \{ display: none; \}/u);
+  assert.match(shell, /@media \(prefers-reduced-motion: reduce\)\s*\{[^}]*\.app-sidebar,[^}]*\.sidebar-nav/su);
+  assert.match(toc, /@media \(prefers-reduced-motion: reduce\)\s*\{[^}]*\.toc,[^}]*\.toc > ul/su);
   assert.doesNotMatch(base, /#app:has\(> \.app-body\.sidebar-collapsed\)/u);
   assert.doesNotMatch(base, /#app:has\(> \.app-body\.with-toc\.toc-collapsed\)/u);
   assert.match(base, /#app:has\(> \.app-body\.with-toc\) \.app-header--with-sidebar\s*\{[^}]*--header-content-right-rail:\s*var\(--toc-width\)/su);

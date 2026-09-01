@@ -91,6 +91,14 @@
     const aside = document.getElementById('app-sidebar');
     const menuToggle = document.getElementById('menu-toggle');
     const sidebarCollapse = document.getElementById('sidebar-collapse');
+    const sectionNavigation = document.getElementById('section-navigation');
+    const sidebarRailQuery = window.matchMedia('(min-width: 961px)');
+
+    function syncSidebarNavigationState() {
+      if (!sectionNavigation || !appBody) return;
+      sectionNavigation.inert = sidebarRailQuery.matches &&
+        appBody.classList.contains('sidebar-collapsed');
+    }
 
     // Restore persisted collapse states
     if (appBody) {
@@ -104,6 +112,8 @@
         }
       } catch (e) {}
     }
+    syncSidebarNavigationState();
+    sidebarRailQuery.addEventListener('change', syncSidebarNavigationState);
 
     // Mobile navigation drawer: labelled state, Escape, focus containment and
     // focus return. The semantic role applies only while the drawer is open.
@@ -214,6 +224,7 @@
         appBody.classList.toggle('sidebar-collapsed', nowCollapsed);
         try { localStorage.setItem('opda-sidebar-collapsed', nowCollapsed ? '1' : '0'); } catch (e) {}
         sidebarCollapse.setAttribute('aria-expanded', String(!nowCollapsed));
+        syncSidebarNavigationState();
       });
     }
 
@@ -358,6 +369,7 @@
       toc.classList.toggle('is-collapsed', collapsed);
       if (body) body.classList.toggle('toc-collapsed', railMode && collapsed);
       tocToggle.setAttribute('aria-expanded', String(!collapsed));
+      ul.inert = railMode && collapsed;
       if (persist) {
         try { localStorage.setItem('opda-toc-collapsed', collapsed ? '1' : '0'); } catch (e) {}
       }

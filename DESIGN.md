@@ -303,6 +303,8 @@ chevrons. A collapsed rail becomes a full-height 44px labelled spine anchored to
 of its reserved 240px track. The track and corresponding header offset
 remain fixed, so expanding or collapsing either rail never moves or resizes the middle content. The visible
 label is the control's accessible name; no selected-page tint, amber marker or `aria-current` treatment is used.
+Opening and closing ease the panel width while its links fade and move slightly towards the outside edge.
+The transition uses the shared 200ms motion token; reduced-motion mode makes it effectively instant.
 
 `/` is the sole OPDA Knowledge Base homepage. It uses an SPDTF-centred hero, a static method figure,
 a featured working-group presentation, the six-destination audience/task directory, a participation
@@ -446,8 +448,9 @@ root homepage and `/join` intentionally share one static radial/diagonal campaig
 background treatment. The method figure and presentation tile carry editorial meaning
 and are not recurring identity motifs.
 
-Motion lasts 120–200ms, uses ease-out for entry and ease-in for exit, and changes
-only opacity or transform. There is no parallax, autoplay carousel, animated
+Motion lasts 120–200ms, uses ease-out for entry and ease-in for exit, and normally changes
+only opacity or transform. Fixed-track navigation disclosures may animate their panel width because
+the reserved grid tracks prevent any surrounding layout movement. There is no parallax, autoplay carousel, animated
 gradient or looping ambient movement. Reduced motion removes transforms and reduces
 non-essential transitions to effectively instant.
 These shared-system motion rules do not replace the working-group deck's self-contained

@@ -79,13 +79,14 @@
   align-self: start;
   width: 100%;
   height: calc(100vh - var(--header-height));
+  overflow-x: hidden;
   overflow-y: auto;
   padding: 0;
   background: var(--color-surface-alt);
   border-left: 1px solid var(--color-border);
   font-size: var(--text-sm);
   scrollbar-width: thin;
-  transition: width var(--duration-normal) var(--ease);
+  transition: width var(--duration-slow) var(--ease);
 }
 .toc-title {
   font: 700 var(--text-xs) / 1.2 var(--font-mono);
@@ -93,7 +94,6 @@
   letter-spacing: var(--tracking-meta);
   color: var(--color-text-muted);
 }
-.toc.is-collapsed > ul { display: none; }
 .toc ul {
   list-style: none;
   margin: 0;
@@ -127,6 +127,21 @@
 @media (min-width: 1281px) {
   .toc:not(.is-collapsed) .rail-glyph--toward-end { display: block; }
   .toc.is-collapsed .rail-glyph--toward-start { display: block; }
+  .toc > ul {
+    opacity: 1;
+    transform: translateX(0);
+    visibility: visible;
+    transition: opacity var(--duration-slow) var(--ease),
+                transform var(--duration-slow) var(--ease),
+                visibility 0s linear 0s;
+  }
+  .toc.is-collapsed > ul {
+    opacity: 0;
+    transform: translateX(var(--space-4));
+    visibility: hidden;
+    pointer-events: none;
+    transition-delay: 0s, 0s, var(--duration-slow);
+  }
   .app-body.toc-collapsed .toc {
     width: var(--target-min);
     justify-self: start;
@@ -162,9 +177,19 @@
   .toc:not(.is-collapsed) .rail-glyph--inline-open { display: block; }
   .toc.is-collapsed .rail-glyph--inline-closed { display: block; }
   .toc.is-collapsed > .toc-toggle { border-bottom-color: transparent; }
+  .toc.is-collapsed > ul { display: none; }
   .toc > ul {
     max-height: 50vh;
     padding-top: var(--space-3);
     overflow-y: auto;
   }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .toc,
+  .toc > ul {
+    transition-duration: 0.01ms !important;
+    transition-delay: 0s !important;
+  }
+  .toc > ul { transform: none !important; }
 }

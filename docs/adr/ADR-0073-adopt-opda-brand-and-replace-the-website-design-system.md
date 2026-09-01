@@ -242,6 +242,10 @@ full-height 44px labelled spine anchored to the content-facing edge of its reser
 tracks and header offsets remain fixed, preventing the article from moving or resizing. The visible label supplies the accessible name and the state remains in
 `aria-expanded`. The mobile drawer and inline page-contents patterns retain their established geometry
 and disclosure behaviour.
+Desktop opening and closing animate the panel width while the menu content fades and translates slightly
+towards its outer edge. Menu links become inert as soon as closing begins, and horizontal clipping prevents
+transient overflow during either direction. The shared 200ms motion token governs both directions, and
+reduced-motion mode reduces the transition to an effectively instant state change.
 
 ### Brand conflict resolution
 
