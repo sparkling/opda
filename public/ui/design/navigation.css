@@ -5,7 +5,7 @@
   width: 100%;
   max-width: var(--content-max);
   margin: 0 auto;
-  padding-block: var(--space-5) var(--space-1);
+  padding-block: var(--space-5) 0;
   color: var(--color-text-muted);
   font: 500 var(--text-base) / 1.5 var(--font-sans);
 }
@@ -30,7 +30,7 @@
 .breadcrumbs .breadcrumb-current {
   min-height: var(--target-min);
   display: inline-flex;
-  align-items: center;
+  align-items: flex-end;
 }
 .breadcrumbs a {
   color: var(--color-link);
