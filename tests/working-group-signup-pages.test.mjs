@@ -105,10 +105,11 @@ test('global header promotes the canonical working-group sign-up route', async (
   assert.match(header, /class="header-icon-link"[\s\S]*?aria-label="GitHub"\s+title="GitHub"[\s\S]*?<svg[\s\S]*?aria-hidden="true"/u);
   assert.doesNotMatch(header, />Search<\/a>|>GitHub<\/a>/u);
   assert.match(baseCss, /\.app-header \.header-nav a\.header-icon-link\s*\{[^}]*width:\s*var\(--target-min\)[^}]*justify-content:\s*center/su);
-  assert.match(baseCss, /\.app-header \.global-nav a\.header-cta\s*\{[^}]*translate:\s*0 calc\(-1 \* var\(--space-3\)\);[^}]*align-self:\s*center[^}]*justify-content:\s*flex-start[^}]*margin-left:\s*var\(--space-2\)[^}]*\}/su);
+  assert.match(baseCss, /\.app-header \.global-nav a\.header-cta\s*\{[^}]*align-self:\s*flex-end[^}]*justify-content:\s*flex-start[^}]*margin-left:\s*var\(--space-2\)[^}]*margin-block-end:\s*var\(--space-3\)[^}]*\}/su);
   assert.doesNotMatch(baseCss, /a\.header-cta[^}]*\b(?:background|border(?:-color)?|color|font-weight):/su);
+  assert.doesNotMatch(baseCss, /a\.header-cta[^}]*(?:translate|transform):/su);
   assert.match(contentCss, /\.btn--outline-dark\s*\{[^}]*border-color:\s*var\(--brand-white\)[^}]*background:\s*transparent[^}]*color:\s*var\(--brand-white\)/su);
-  assert.match(baseCss, /@media \(max-width: 96rem\)[\s\S]*?\.global-nav a\.header-cta \{ translate:\s*none; \}/u);
+  assert.match(baseCss, /@media \(max-width: 96rem\)[\s\S]*?\.global-nav a\.header-cta\s*\{[^}]*align-self:\s*center[^}]*margin-block-end:\s*0[^}]*\}/u);
   assert.match(baseCss, /\.app-header__utilities\s*\{[^}]*grid-area:\s*utilities/su);
   assert.match(baseCss, /@media \(max-width: 96rem\)\s*\{[\s\S]*\.app-header\.primary-nav-open \.global-nav-panel\s*\{\s*display:\s*block;/su);
 });

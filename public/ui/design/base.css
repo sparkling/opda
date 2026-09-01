@@ -228,10 +228,10 @@ a:visited { text-decoration-color: currentColor; }
   box-shadow: inset 0 -4px 0 var(--brand-yellow);
 }
 .app-header .global-nav a.header-cta {
-  translate: 0 calc(-1 * var(--space-3));
-  align-self: center;
+  align-self: flex-end;
   justify-content: flex-start;
   margin-left: var(--space-2);
+  margin-block-end: var(--space-3);
 }
 
 .global-nav-toggle,
@@ -329,7 +329,10 @@ a:visited { text-decoration-color: currentColor; }
     padding-inline: var(--space-3);
     white-space: normal;
   }
-  .app-header .global-nav-panel .global-nav a.header-cta { translate: none; }
+  .app-header .global-nav-panel .global-nav a.header-cta {
+    align-self: center;
+    margin-block-end: 0;
+  }
   .menu-toggle,
   .global-nav-toggle { margin-left: 0; }
   .app-header__utilities .menu-toggle { margin-left: 0; }
@@ -355,7 +358,6 @@ a:visited { text-decoration-color: currentColor; }
   :where(
     .btn,
     .cta,
-    .header-cta,
     .auth-button__signin,
     .card-arrow,
     .nav-group-caret,

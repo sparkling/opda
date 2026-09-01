@@ -266,7 +266,7 @@ uses a shared Lucide `MessageCircle` outline with an italic information glyph in
 second visible enclosure. The global navigation row retains its original 44px geometry, while the desktop working-group
 action is raised eight pixels independently and returns to normal flow in the compact disclosure. Pages without navigable
 breadcrumb ancestors render no breadcrumb region and remove the article's duplicate upper inset.
-The working-group action uses the shared outlined-on-dark button component. Header CSS controls only its position; it does not override the component's colour, border, typography, padding or interaction states.
+The working-group action uses the shared outlined-on-dark button component. Header CSS controls only its position through layout margin, without translate or transform offsets; it does not override the component's colour, border, typography, padding or interaction states.
 
 ### Brand conflict resolution
 
