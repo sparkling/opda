@@ -167,7 +167,7 @@ test('knowledge-base and standalone page families expose their required footer l
 
   assert.match(footer, /<footer class="public-footer">/u);
   assert.doesNotMatch(footer, /opda-wordmark/u);
-  assert.match(footer, /Property data that people and systems can understand together\./u);
+  assert.doesNotMatch(footer, /Property data that people and systems can understand together\./u);
   assert.match(footer, /href="\/join\/privacy">Privacy<\/a>/u);
   assert.match(footer, /href="\/accessibility"/u);
   assert.match(footer, /Association website/u);
