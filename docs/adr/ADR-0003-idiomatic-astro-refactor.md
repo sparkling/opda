@@ -1,7 +1,7 @@
 ---
 status: accepted
 date: 2026-05-18
-updated: 2026-08-24
+updated: 2026-09-01
 tags: [astro, frontend, refactor, typescript]
 supersedes: []
 depends-on: [ADR-0002]
@@ -241,6 +241,7 @@ Shipped 2026-05-18 jointly with [ADR-0002](./ADR-0002-folder-hierarchy-and-slug-
 - **2026-05-18 — Renumbered + relocated.** Previously `source/00-deliverables/governance/information-architecture/0002-idiomatic-astro-refactor.md` (was numbered 0002 within its own folder). ADR numbering is now global across `docs/adr/`.
 - **2026-05-25 — Refactored to canonical MADR 4.x format.** Bullet-list metadata moved to YAML frontmatter; status changed from "IMPLEMENTED 2026-05-18" to `accepted` (the closest enum value) with the implementation date recorded in `### Confirmation`. Filename gained the `ADR-` prefix per the `ruflo-adr` `adr-create` skill. Substance unchanged.
 - **2026-08-24 — Clarified footer ownership.** `PageFooter` remains previous/next navigation; the shared `SiteFooter` now supplies the organisation footer to the root landing and every ordinary `Layout` route.
+- **2026-09-01 — Consolidated public footer ownership.** `SiteFooter` also serves the standalone public-service family, removing its duplicate campaign footer. The isolated full-screen presentation remains outside site chrome.
 
 ## Vote and Dissent
 

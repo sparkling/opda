@@ -128,9 +128,10 @@ test('public recruitment routes use the standalone shell without Knowledge Base 
   assert.match(accessibility, /bodyClass="accessibility-statement"/u);
   assert.doesNotMatch(standalone, /@\/components\/(?:Header|Sidebar|Breadcrumbs|PageFooter|TOC)/u);
   assert.match(standalone, /<header class="campaign-masthead">/u);
-  assert.match(standalone, /<footer class="campaign-footer">/u);
-  assert.match(standalone, /href="\/join\/privacy"/u);
-  assert.match(standalone, /href="\/accessibility"/u);
+  assert.match(standalone, /import SiteFooter from '@\/components\/SiteFooter\.astro'/u);
+  assert.match(standalone, /<SiteFooter\s*\/>/u);
+  assert.doesNotMatch(standalone, /campaign-footer/u);
+  assert.match(join, /class="btn btn--ghost wg-hero-opda" href="\/" aria-label="Open Property Data Association home">OPDA<\/a>/u);
   assert.match(layout, /<Header showSidebar=\{showSidebar\}/u);
   assert.match(layout, /<article class=\{proseClass\}>/u);
   assert.doesNotMatch(joinCss, /\.app-main/u);
@@ -167,15 +168,18 @@ test('knowledge-base and standalone page families expose their required footer l
   assert.match(footer, /<footer class="public-footer">/u);
   assert.match(footer, /opda-wordmark-white\.svg/u);
   assert.match(footer, /Property data that people and systems can understand together\./u);
+  assert.match(footer, /href="\/join\/privacy">Working-group privacy<\/a>/u);
   assert.match(footer, /href="\/accessibility"/u);
-  assert.match(footer, /Visit the association website/u);
+  assert.match(footer, /Association website/u);
+  assert.match(footer, /Developed by <a href="https:\/\/sparklingideas\.co\.uk\/">Sparkling Ideas<\/a> – your expert in semantic modelling and agentic engineering\./u);
   for (const owner of [layout, homepage]) {
     assert.match(owner, /import SiteFooter from '@\/components\/SiteFooter\.astro'/u);
     assert.match(owner, /<SiteFooter\s*\/>/u);
   }
   assert.doesNotMatch(homepage, /<footer class="public-footer">/u);
   assert.match(propertyPackPage, /import Layout from '@\/layouts\/Layout\.astro'/u);
-  assert.match(standalone, /<footer class="campaign-footer">[\s\S]*href="\/join\/privacy"[\s\S]*href="\/accessibility"/u);
+  assert.match(standalone, /import SiteFooter from '@\/components\/SiteFooter\.astro'/u);
+  assert.match(standalone, /<SiteFooter\s*\/>/u);
 });
 
 test('registration script sends the fixed allowlisted payload to the same-origin endpoint', async () => {

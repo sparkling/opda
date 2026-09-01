@@ -274,7 +274,9 @@ label follows the main content gutter and centred maximum-width axis. Navigation
 current item has a 4px amber underline and `aria-current`. A skip link is the first focusable element.
 The `#F9F9F9` sidebar keeps the current section in its accessible name without repeating it visibly.
 The footer has a 4px yellow top rule. `SiteFooter.astro` renders once outside article content and
-navigation rails on the root landing and every route using the shared `Layout`.
+navigation rails on the root landing, every route using the shared `Layout`, and the standalone
+public-service family. It carries working-group privacy, accessibility and Association website exits,
+plus the linked Sparkling Ideas credit.
 
 `/` is the sole OPDA Knowledge Base homepage. It uses an SPDTF-centred hero, a static method figure,
 a featured working-group presentation, the six-destination audience/task directory, a participation
@@ -306,8 +308,8 @@ infographic is the bounded exception defined below. The presentation feature is 
 family. They use the official wordmark, tokens, type, buttons, fields, focus and
 status primitives without the Knowledge Base header, rail, breadcrumb, contents or
 previous/next furniture. Public statements retain a minimal masthead; `/join` instead
-places the linked organisation heading and theme control on one content-width hero row.
-The deep-ink footer repeats the public-service exits. The join campaign uses seven
+places the linked organisation heading, transparent OPDA return control and theme control on one
+content-width hero row. The same shared footer repeats the public-service exits. The join campaign uses seven
 natural chapters from the practical invitation and reasons to participate through
 programme context, contribution, trust and the full theme-aware form. Technical modelling detail stays in the
 Knowledge Base. The campaign never uses parallax, pinned scrolling, delayed reveals
@@ -453,7 +455,7 @@ Every live route belongs to one explicit visual family:
 | Knowledge base | prose, governance and catalogue routes | shared `Layout` shell and `SiteFooter` |
 | Data and V2 | data browser, validation and V2 reference routes | shared tokens plus dense data patterns |
 | Schema/manual | generated schema, ontology and manual reference routes | shared shell plus labelled table/diagram patterns |
-| Public service | `/join`, `/join/privacy`, `/accessibility` | minimal `StandalonePublicLayout`, five-chapter campaign, public statements and safely enhanced form |
+| Public service | `/join`, `/join/privacy`, `/accessibility` | minimal `StandalonePublicLayout`, shared `SiteFooter`, five-chapter campaign, public statements and safely enhanced form |
 | Working groups | workspaces and member guidance | standard shared `Layout`, left section navigation and Knowledge Base footer |
 | Presentation | working-group kickoff deck | isolated, self-contained full-screen presentation using its original local visual tokens; no site chrome |
 

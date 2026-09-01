@@ -5,7 +5,7 @@ updated: 2026-09-01
 tags: [working-groups, recruitment, campaign, signup, design-system, accessibility, routing]
 supersedes: []
 depends-on: [ADR-0038, ADR-0069, ADR-0071, ADR-0073, ADR-0079]
-implements: [src/layouts/StandalonePublicLayout.astro, src/components/campaign, src/data/working-group-campaign.ts, src/pages/join, src/pages/accessibility.astro, src/styles/standalone-public.css]
+implements: [src/layouts/StandalonePublicLayout.astro, src/components/SiteFooter.astro, src/components/campaign, src/data/working-group-campaign.ts, src/pages/join, src/pages/accessibility.astro, src/styles/standalone-public.css]
 ---
 
 # Create a standalone working-group recruitment campaign at `/join`
@@ -186,6 +186,13 @@ This is not a separate brand or design system. The standalone shell consumes the
 official assets, semantic tokens, typography, controls, focus states and form
 primitives governed by ADR-0073. Campaign-specific spatial and editorial components
 must be added to the design-system documentation when implemented.
+
+On 1 September 2026 the standalone shell adopted the shared `SiteFooter` rather than
+maintaining a campaign-specific duplicate. It preserves the required privacy,
+accessibility and organisation exits while adding the linked delivery credit. The join
+hero also adds the design-system ghost button as a transparent OPDA return control beside
+the theme control; this retains the minimal public-service shell without introducing
+Knowledge Base furniture.
 
 ### 3. Narrative structure
 

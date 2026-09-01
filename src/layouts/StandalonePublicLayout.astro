@@ -3,6 +3,7 @@ import {
   IA_STATUS_REGISTRY_VERSION,
   getRouteStatus,
 } from '@/lib/site-ia.mjs';
+import SiteFooter from '@/components/SiteFooter.astro';
 import '@/styles/standalone-public.css';
 
 interface Props {
@@ -97,18 +98,6 @@ const pageTitle = `${title} · Open Property Data Association`;
     <main id="main-content" tabindex="-1">
       <slot />
     </main>
-    <footer class="campaign-footer">
-      <div class="campaign-footer__brand">
-        <img src="/ui/brand/opda-wordmark-white.svg" alt="Open Property Data Association" width="149" height="42" />
-        <p>Property data that people and systems can understand together.</p>
-      </div>
-      <nav aria-label="Public service footer">
-        <a href="/">OPDA home</a>
-        <a href="/programme">Knowledge base</a>
-        <a href="/join/privacy">Working-group privacy</a>
-        <a href="/accessibility">Accessibility</a>
-        <a href="https://openpropdata.org.uk/" rel="noopener">Association website</a>
-      </nav>
-    </footer>
+    <SiteFooter />
   </body>
 </html>
