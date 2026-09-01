@@ -96,15 +96,14 @@
   padding: var(--space-10) var(--space-7);
 }
 .public-footer {
-  min-height: 8rem;
   margin-top: auto;
-  padding: var(--space-7) max(var(--space-6), calc((100% - var(--content-max)) / 2 + var(--space-7)));
+  padding: var(--space-5) max(var(--space-6), calc((100% - var(--content-max)) / 2 + var(--space-7)));
   display: grid;
   grid-template-columns: minmax(14rem, 1fr) auto;
   grid-template-areas:
     'identity links'
     'credit credit';
-  gap: var(--space-5) var(--space-8);
+  gap: var(--space-3) var(--space-6);
   align-items: end;
   color: var(--color-text-muted);
   background: var(--color-surface-alt);
