@@ -263,10 +263,10 @@ borderless theme control, while the 44px working-group action ends on the conten
 linked ancestors only, bottom-align each complete item, optically align link-coloured decorative chevrons to the label baseline and reduce their lower inset because the adjacent H1 already
 identifies the current page. The Property Pack candidate control
 uses a shared Lucide `MessageCircle` outline with an italic information glyph in a borderless 44px target, avoiding a misleading approval symbol or a
-second visible enclosure. The global navigation row retains its original 44px geometry, while the desktop working-group
-action is raised eight pixels independently and returns to normal flow in the compact disclosure. Pages without navigable
-breadcrumb ancestors render no breadcrumb region and remove the article's duplicate upper inset.
-The working-group action uses the shared outlined-on-dark button component. Header CSS controls only its position through layout margin, without translate or transform offsets; it does not override the component's colour, border, typography, padding or interaction states.
+second visible enclosure. The global navigation row retains its original 44px geometry, with eight pixels of container padding before the divider so the working-group
+action remains fully visible and aligned with the destination labels; it returns to normal flow in the compact disclosure. Pages without navigable
+breadcrumb ancestors render no breadcrumb region and remove the article's duplicate upper inset. The desktop masthead reserves sixteen pixels above the organisation title.
+The working-group action uses the shared outlined-on-dark button component. The shared navigation container controls its vertical spacing, without CTA-specific margin, translate or transform offsets; header CSS does not override the component's colour, border, typography, padding or interaction states.
 
 ### Brand conflict resolution
 
