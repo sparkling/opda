@@ -416,7 +416,7 @@ test('shared navigation exposes visible focus, state and 44px targets', async ()
   assert.match(tokens, /--sidebar-width:\s*15rem;\s*--toc-width:\s*var\(--sidebar-width\);/u);
   assert.match(navigation, /\.breadcrumbs\s*\{[^}]*max-width:\s*var\(--content-max\)[^}]*margin:\s*0 auto;[^}]*padding-block:\s*var\(--space-5\) 0/su);
   assert.match(navigation, /\.breadcrumbs a,[^}]*\.breadcrumb-current\s*\{[^}]*min-height:\s*var\(--target-min\);[^}]*align-items:\s*flex-end;/su);
-  assert.match(base, /@media \(min-width: 96\.0625rem\) \{\s*:root \{ --header-height:\s*8\.5rem; \}/u);
+  assert.match(base, /@media \(min-width: 96\.0625rem\) \{\s*:root \{ --header-height:\s*8\.75rem; \}/u);
   assert.doesNotMatch(toc, /@media[^}]+\.toc\s*\{\s*display:\s*none/su);
   assert.match(base, /@media \(max-width: 96rem\) \{[\s\S]*\.global-nav-toggle \{ display: inline-flex; \}/u);
   assert.match(base, /@media \(max-width: 96rem\) \{[\s\S]*\.global-nav-panel\s*\{[^}]*padding:\s*var\(--space-3\) var\(--content-gutter\)/su);
@@ -425,7 +425,7 @@ test('shared navigation exposes visible focus, state and 44px targets', async ()
   assert.match(components, /\.brand-lockup__icon\s*\{[^}]*width:\s*var\(--brand-lockup-icon-width\)/su);
   assert.match(components, /\.brand-lockup--mini\s*\{[^}]*font:\s*600 var\(--text-lg\) \/ 1 var\(--font-sans\)/su);
   assert.doesNotMatch(base, /\.app-header__title\s*\{[^}]*\bfont:/su);
-  assert.match(base, /\.app-header__title\s*\{[^}]*margin-block-end:\s*calc\(-1 \* var\(--space-4\)\)/su);
+  assert.match(base, /\.app-header__title\s*\{[^}]*margin-block-end:\s*calc\(-1 \* var\(--space-3\)\)/su);
   assert.match(base, /@media \(max-width: 96rem\)[\s\S]*?\.app-header__title\s*\{[^}]*align-self:\s*center[^}]*margin-block-end:\s*0/su);
   assert.match(base, /\.app-header\s*\{[^}]*padding-block:\s*var\(--space-6\) 0;/su);
   assert.match(base, /\.global-nav-panel\s*\{[^}]*height:\s*var\(--target-min\)/su);
