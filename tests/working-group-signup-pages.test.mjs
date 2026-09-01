@@ -166,9 +166,9 @@ test('knowledge-base and standalone page families expose their required footer l
   ]);
 
   assert.match(footer, /<footer class="public-footer">/u);
-  assert.match(footer, /opda-wordmark-white\.svg/u);
+  assert.doesNotMatch(footer, /opda-wordmark/u);
   assert.match(footer, /Property data that people and systems can understand together\./u);
-  assert.match(footer, /href="\/join\/privacy">Working-group privacy<\/a>/u);
+  assert.match(footer, /href="\/join\/privacy">Privacy<\/a>/u);
   assert.match(footer, /href="\/accessibility"/u);
   assert.match(footer, /Association website/u);
   assert.match(footer, /Developed by <a href="https:\/\/sparklingideas\.co\.uk\/">Sparkling Ideas<\/a> – your expert in semantic modelling and agentic engineering\./u);

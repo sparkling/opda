@@ -275,7 +275,7 @@ current item has a 4px amber underline and `aria-current`. A skip link is the fi
 The `#F9F9F9` sidebar keeps the current section in its accessible name without repeating it visibly.
 The footer has a 4px yellow top rule. `SiteFooter.astro` renders once outside article content and
 navigation rails on the root landing, every route using the shared `Layout`, and the standalone
-public-service family. It carries working-group privacy, accessibility and Association website exits,
+public-service family. It carries privacy, accessibility and Association website exits,
 plus the linked Sparkling Ideas credit.
 
 `/` is the sole OPDA Knowledge Base homepage. It uses an SPDTF-centred hero, a static method figure,

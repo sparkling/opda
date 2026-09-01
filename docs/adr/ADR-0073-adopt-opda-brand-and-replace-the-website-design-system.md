@@ -213,8 +213,8 @@ Ordinary Mermaid remains unchanged and receives no inferred semantic controls.
 
 Later on 1 September 2026, `SiteFooter.astro` became the single organisation footer for
 the root landing, every `Layout` route and the standalone public-service family. It
-retains the theme-aware wordmark and signature rule while providing working-group privacy,
-accessibility, Association website and linked Sparkling Ideas exits. The standalone join
+retains the signature rule while providing privacy, accessibility, Association website and
+linked Sparkling Ideas exits. The standalone join
 hero adds the existing transparent button variant for its OPDA return control; the
 full-screen working-group deck remains outside shared site furniture.
 
