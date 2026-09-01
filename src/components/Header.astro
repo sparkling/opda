@@ -14,11 +14,11 @@ interface Props { showSidebar?: boolean; }
 const { showSidebar = false } = Astro.props;
 ---
 <header class={`app-header${showSidebar ? ' app-header--with-sidebar' : ''}`}>
-  <a href="/" class="app-header__association">
-    <img class="app-header__association-icon" src="/ui/brand/opda-icon-yellow.svg" alt="" aria-hidden="true" width="84" height="100" />
+  <a href="/" class="app-header__title">
+    <img class="app-header__title-icon" src="/ui/brand/opda-icon-yellow.svg" alt="" aria-hidden="true" width="84" height="100" />
     <span>Open Property Data Association</span>
   </a>
-  <p class="app-header__title">Smart Property Data Framework</p>
+  <p class="app-header__framework">Smart Property Data Framework</p>
 
   <div class="app-header__utilities">
     <nav class="header-nav" aria-label="Actions and utilities">

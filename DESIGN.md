@@ -269,11 +269,11 @@ bounded with `ButtonText`, `CanvasText`, `FieldText` and `Highlight`.
 
 ## 8. Application shell and homepage
 
-The desktop header is 128px, `#131224`, and has three rows: a compact linked “Open Property Data Association”
-identifier with a bottom-aligned yellow icon, the primary “Smart Property Data Framework” heading, then the
-global destination tabs. The identifier, heading and first global-navigation label follow the main content gutter
-and centred maximum-width axis; the utility icons remain at the physical top right. There is no separate top-left
-logo cell in this shell. Navigation is DM Sans; the current item has a 4px amber
+The desktop header is 128px, `#131224`, and has three rows: the primary linked “Open Property Data Association”
+title with a bottom-aligned yellow icon, the smaller “Smart Property Data Framework” subheading, then the global
+destination tabs. The title, subheading and first global-navigation label follow the main content gutter and centred
+maximum-width axis; the utility icons remain at the physical top right. There is no separate top-left logo cell in this
+shell. Navigation is DM Sans; the current item has a 4px amber
 underline and `aria-current`. At 96rem and below, the header returns to its compact 64px disclosure
 pattern. A skip link is the first focusable element.
 The `#F9F9F9` sidebar keeps the current section in its accessible name without repeating it visibly.

@@ -350,8 +350,8 @@ test('shared navigation exposes visible focus, state and 44px targets', async ()
   assert.match(client, /function placeToc/u);
   assert.match(header, /showSidebar &&/u);
   assert.match(header, /app-header--with-sidebar/u);
-  assert.match(header, /class="app-header__association"[\s\S]*app-header__association-icon[\s\S]*Open Property Data Association/su);
-  assert.match(header, /class="app-header__title">Smart Property Data Framework<\/p>/u);
+  assert.match(header, /class="app-header__title"[\s\S]*app-header__title-icon[\s\S]*Open Property Data Association/su);
+  assert.match(header, /class="app-header__framework">Smart Property Data Framework<\/p>/u);
   assert.match(header, /class="app-header__utilities"/u);
   assert.doesNotMatch(header, /brand-cell|brand-wordmark/u);
   assert.match(header, /id="global-nav-toggle"/u);
@@ -380,7 +380,7 @@ test('shared navigation exposes visible focus, state and 44px targets', async ()
   assert.match(base, /@media \(max-width: 96rem\) \{[\s\S]*\.global-nav-toggle \{ display: inline-flex; \}/u);
   assert.match(base, /@media \(max-width: 96rem\) \{[\s\S]*\.global-nav-panel\s*\{[^}]*padding:\s*var\(--space-3\) var\(--content-gutter\)/su);
   assert.match(base, /\.app-header__utilities\s*\{[^}]*grid-area:\s*utilities/su);
-  assert.match(base, /\.app-header__association-icon\s*\{[^}]*width:\s*0\.875rem/su);
+  assert.match(base, /\.app-header__title-icon\s*\{[^}]*width:\s*1\.25rem/su);
   assert.match(base, /@media \(min-width: 60\.0625rem\) and \(max-width: 96rem\) \{[\s\S]*\.app-header--with-sidebar \.global-nav-panel\s*\{[^}]*padding-left:\s*calc\(var\(--header-content-left-rail\) \+ var\(--content-gutter\)\)/su);
   assert.match(search, /<form[^>]+role="search"/u);
   assert.match(search, /name="destination"/u);

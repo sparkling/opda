@@ -75,8 +75,8 @@ a:visited { text-decoration-color: currentColor; }
   z-index: 50;
   display: grid;
   grid-template-areas:
-    'association utilities'
-    'title title'
+    'title utilities'
+    'framework framework'
     'navigation navigation';
   grid-template-columns: minmax(0, 1fr) auto;
   grid-template-rows: 1.5rem minmax(0, 1fr) var(--target-min);
@@ -95,33 +95,33 @@ a:visited { text-decoration-color: currentColor; }
   border-bottom: 1px solid var(--color-surface-dark-tint);
   box-shadow: var(--shadow-sm);
 }
-.app-header__association {
-  grid-area: association;
+.app-header__title {
+  grid-area: title;
   min-width: 0;
   align-self: end;
   display: inline-flex;
   align-items: flex-end;
-  gap: var(--space-1);
-  color: var(--brand-yellow);
-  font: 600 var(--text-xs) / 1 var(--font-sans);
+  gap: var(--space-2);
+  color: var(--brand-white);
+  font: 600 var(--text-2xl) / 1 var(--font-sans);
   letter-spacing: var(--tracking-display);
   text-decoration: none;
   white-space: nowrap;
 }
-.app-header__association-icon {
+.app-header__title-icon {
   display: block;
-  width: 0.875rem;
+  width: 1.25rem;
   height: auto;
   flex: 0 0 auto;
 }
-.app-header__association:hover { color: var(--brand-white); }
-.app-header__title {
-  grid-area: title;
+.app-header__title:hover { color: var(--brand-yellow); }
+.app-header__framework {
+  grid-area: framework;
   min-width: 0;
-  align-self: center;
+  align-self: end;
   margin: 0;
-  color: var(--brand-white);
-  font: 600 var(--text-3xl) / 1 var(--font-sans);
+  color: var(--brand-yellow);
+  font: 600 var(--text-lg) / 1 var(--font-sans);
   letter-spacing: var(--tracking-display);
   white-space: nowrap;
 }
@@ -277,13 +277,14 @@ a:visited { text-decoration-color: currentColor; }
     padding: 0 var(--space-3);
     gap: var(--space-2);
   }
-  .app-header__association { display: none; }
+  .app-header__framework { display: none; }
   .app-header__title {
     flex: 1 1 auto;
     overflow: hidden;
     font-size: var(--text-lg);
     text-overflow: ellipsis;
   }
+  .app-header__title-icon { width: 1rem; }
   .app-header__utilities { gap: var(--space-1); }
   .global-nav-toggle { display: inline-flex; }
   .global-nav-panel {
