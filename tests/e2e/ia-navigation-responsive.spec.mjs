@@ -78,6 +78,18 @@ test('compact primary disclosure keeps all six destinations discoverable through
   await expect(desktopDestinations).toHaveCount(primary.length);
   await expect(desktopCta).toHaveText('Join a working group');
   await expect(desktopCta).toHaveAttribute('href', '/join');
+  const alignment = await page.evaluate(() => {
+    const rect = (selector) => document.querySelector(selector)?.getBoundingClientRect();
+    return {
+      content: rect('.app-main > .prose'),
+      utilities: rect('.app-header__utilities'),
+      cta: rect('.global-nav .header-cta'),
+      firstDestination: rect('.global-nav a:not(.header-cta)'),
+    };
+  });
+  expect(alignment.utilities.right).toBeCloseTo(alignment.content.right, 1);
+  expect(alignment.cta.right).toBeCloseTo(alignment.content.right, 1);
+  expect(alignment.cta.bottom).toBeCloseTo(alignment.firstDestination.bottom, 1);
   const desktopGeometry = await desktopNav.locator('a').evaluateAll((nodes) => ({
     links: nodes.map((node) => {
       const rect = node.getBoundingClientRect();

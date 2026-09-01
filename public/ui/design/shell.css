@@ -2,6 +2,7 @@
 .app-body {
   --shell-sidebar-track: var(--sidebar-width);
   --shell-toc-track: var(--toc-width);
+  --rail-disclosure-duration: calc(var(--duration-slow) + var(--duration-fast));
   display: grid;
   grid-template-columns: var(--shell-sidebar-track) minmax(0, 1fr);
   align-items: start;
@@ -101,7 +102,7 @@
     transform: translateX(calc(-1 * var(--space-4)));
     visibility: hidden;
     pointer-events: none;
-    transition-delay: 0s, 0s, var(--duration-slow);
+    transition-delay: 0s, 0s, var(--rail-disclosure-duration);
   }
   .app-body.sidebar-collapsed .app-sidebar {
     width: var(--target-min);
@@ -128,6 +129,7 @@
 .app-sidebar {
   position: sticky;
   top: var(--header-height);
+  justify-self: end;
   width: 100%;
   height: calc(100vh - var(--header-height));
   overflow-x: hidden;
@@ -135,15 +137,15 @@
   padding: 0;
   background: var(--color-surface-alt);
   border-right: 1px solid var(--color-border);
-  transition: width var(--duration-slow) var(--ease);
+  transition: width var(--rail-disclosure-duration) var(--ease);
 }
 .sidebar-nav {
   padding: var(--space-4) var(--space-5) var(--space-7);
   opacity: 1;
   transform: translateX(0);
   visibility: visible;
-  transition: opacity var(--duration-slow) var(--ease),
-              transform var(--duration-slow) var(--ease),
+  transition: opacity var(--rail-disclosure-duration) var(--ease),
+              transform var(--rail-disclosure-duration) var(--ease),
               visibility 0s linear 0s;
 }
 .nav-group + .nav-group { margin-top: var(--space-5); }
@@ -518,7 +520,8 @@
     width: min(22rem, 92vw);
     height: calc(100vh - var(--header-height));
     transform: translateX(-100%);
-    transition: transform var(--duration-normal) var(--ease);
+    transition: transform var(--duration-normal) var(--ease),
+                visibility 0s linear var(--duration-normal);
     visibility: hidden;
     pointer-events: none;
     z-index: 40;
@@ -528,6 +531,7 @@
   }
   .app-sidebar.open {
     transform: translateX(0);
+    transition-delay: 0s, 0s;
     visibility: visible;
     pointer-events: auto;
   }

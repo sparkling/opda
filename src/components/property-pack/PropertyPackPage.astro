@@ -1,5 +1,6 @@
 ---
 import Layout from '@/layouts/Layout.astro';
+import { FileSearch } from '@lucide/astro';
 import {
   candidateManifest,
   propertyPackLifecycleStatus,
@@ -46,11 +47,7 @@ const technicalState = validationReport.status === 'pass'
         aria-expanded="false"
         data-candidate-info-trigger
       >
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
-          <circle cx="12" cy="12" r="9"></circle>
-          <path d="M12 11v6"></path>
-          <path d="M12 7.25h.01"></path>
-        </svg>
+        <FileSearch aria-hidden="true" />
       </button>
 
       <aside

@@ -23,13 +23,28 @@
   cursor: pointer;
 }
 
+.v2-candidate-info__trigger {
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+}
+
 .v2-candidate-info__trigger svg,
 .v2-candidate-flyout__close svg {
   width: 1.35rem;
   height: 1.35rem;
 }
 
-.v2-candidate-info__trigger:hover,
+.v2-candidate-info__trigger svg {
+  width: 1.8rem;
+  height: 1.8rem;
+}
+
+.v2-candidate-info__trigger:hover {
+  color: var(--color-link-hover);
+  background: transparent;
+}
+
 .v2-candidate-flyout__close:hover {
   border-color: var(--color-status-info);
   background: var(--color-status-info-surface);

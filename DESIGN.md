@@ -279,23 +279,26 @@ bounded with `ButtonText`, `CanvasText`, `FieldText` and `Highlight`.
 ## 8. Application shell and homepage
 
 The desktop header is 160px, `#131224`, and has three rows: the primary linked “Open Property Data Association”
-title with a bottom-aligned yellow icon, the smaller “Smart Property Data Framework” subheading, then the global
+title with a bottom-aligned yellow icon, the supporting “Smart Property Data Framework” subheading, then the global
 destination tabs. The title, subheading and first global-navigation label follow the main content gutter and centred
-maximum-width axis; the utility icons remain at the physical top right. There is no separate top-left logo cell in this
+maximum-width axis. The utility controls and working-group action finish flush with the content track's right edge;
+the action and destination labels share a 44px text-aligned row that sits eight pixels above its divider. There is no separate top-left logo cell in this
 shell. The title lock-up consumes the shared relative icon, gap, alignment and colour contract and gives the
 subheading its own vertical breathing room.
 Navigation is DM Sans; the current item has a 4px amber
 underline and `aria-current`. At 96rem and below, the header returns to its compact 64px disclosure
 pattern. A skip link is the first focusable element.
 The quiet divider below the global tabs spans the content track only, and the first tab has no additional
-left inset. Breadcrumbs have balanced spacing above and below. No metadata strip or repeated category
-appears between the breadcrumbs and the H1; the breadcrumb leads directly into the page title.
+left inset. Breadcrumbs have more space above than below and contain navigable ancestors only; a strong chevron
+separates them. The current page is named by the H1 rather than repeated as an unlinked terminal crumb. No metadata
+strip or repeated category appears between the breadcrumbs and the H1; the breadcrumb leads directly into the page title.
 `Layout.astro` renders `Breadcrumbs.astro` as the only page-level breadcrumb implementation. Wrappers with
 qualified document titles supply a concise `breadcrumbTitle` but never their own breadcrumb markup or CSS.
 Schema-object locations and resource-folder paths remain separate in-content navigation with location,
 rather than page, semantics.
 Property Pack pages place their candidate-status information control on the H1 row, aligned to the content
-track's right edge. The 44px icon control opens a non-modal, tokenised flyout containing the complete candidate
+track's right edge. A borderless 44px target uses the shared Lucide `FileSearch` icon to identify status-and-evidence inspection and opens a
+non-modal, tokenised flyout containing the complete candidate
 status, validation boundary and six-stage lifecycle record formerly shown in a full-width warning disclosure.
 It exposes expanded state, supports Escape, restores focus when dismissed from within and does not add its
 internal title to the page table of contents.
@@ -312,8 +315,9 @@ chevrons. A collapsed rail becomes a full-height 44px labelled spine anchored to
 of its reserved 240px track. The track and corresponding header offset
 remain fixed, so expanding or collapsing either rail never moves or resizes the middle content. The visible
 label is the control's accessible name; no selected-page tint, amber marker or `aria-current` treatment is used.
-Opening and closing ease the panel width while its links fade and move slightly towards the outside edge.
-The transition uses the shared 200ms motion token; reduced-motion mode makes it effectively instant.
+Opening and closing ease the panel width over a deliberate 320ms composite of shared motion tokens while its links
+fade and move slightly towards the outside edge. Stable inside-edge anchoring prevents either rail from snapping
+before the transition starts; reduced-motion mode makes it effectively instant.
 
 `/` is the sole OPDA Knowledge Base homepage. It uses an SPDTF-centred hero, a static method figure,
 a featured working-group presentation, the six-destination audience/task directory, a participation
@@ -365,13 +369,13 @@ states, plus loading/error/success where asynchronous work occurs and dark parit
 - **Inputs/selects:** 2px radius, 1px strong-neutral border, explicit label and help;
   error adds danger border, icon and message.
 - **Tabs:** semantic tablist, arrow-key operation and yellow-underlined selection.
-- **Breadcrumbs:** ordered navigation with a non-linked current item. Use DM Sans
-  500 at the base 16px role with a 24px line-height; links have a 44px target.
-  They sit flush between the header and article without added outer spacing.
+- **Breadcrumbs:** ordered links to navigable ancestors only; the H1 names the current page. Use DM Sans
+  500 at the base 16px role with a 24px line-height, 44px link targets and strong decorative chevrons.
+  They use a smaller lower inset to connect the hierarchy to the page title.
 - **Header action:** one yellow primary action may sit at the utility end of the
-  application header; it uses a short verb-led label and remains available in the
-  compact navigation disclosure.
-- **Header utilities:** familiar single-purpose destinations may use 20px icons in 44px targets, with an accessible name and tooltip; icons never replace the CTA label.
+  application header; it uses a short verb-led label, aligns to the content-right edge and shares the
+  destinations' 44px text-aligned row above the divider. It remains available in the compact navigation disclosure.
+- **Header utilities:** familiar single-purpose destinations may use 20px icons in 44px targets, with an accessible name and tooltip. The group has no trailing inset and ends on the content-right edge; icons never replace the CTA label.
 - **Organisation heading:** the unchanged yellow icon plus the full organisation name in one unbroken line of live DM Sans text; use strong ink on light and the inverse treatment on dark.
 - **Section heading:** a shared optional uppercase DM Sans eyebrow, display H2 and optional lead.
   Use it for distinct subjects; do not recreate local eyebrow scales or heading spacing.

@@ -174,7 +174,7 @@ test('PDTF schema navigation separates supporting material from the schema-deriv
 
   await expect(page.locator('nav[aria-label="Breadcrumb"] li')).toHaveText([
     /SPDTF Development/u, /Third-party inputs/u, /PDTF schema/u,
-    /Schema-derived ontology/u, /Terms and model resources/u, /Classes/u,
+    /Schema-derived ontology/u, /Terms and model resources/u,
   ]);
 
   await visit(page, `${PDTF1_ROUTES.original}/schema/legal-estate`);
@@ -184,8 +184,8 @@ test('PDTF schema navigation separates supporting material from the schema-deriv
 
   await navigation.locator(`a[href="${PDTF1_ROUTES.extracted}"]`).click();
   await expect(page.locator('h1')).toHaveText('Schema-derived ontology reference');
-  await expect(page.locator('nav[aria-label="Breadcrumb"] [aria-current="page"]'))
-    .toHaveText('Schema-derived ontology');
+  await expect(page.locator('nav[aria-label="Breadcrumb"] [aria-current="page"]')).toHaveCount(0);
+  await expect(page.locator('nav[aria-label="Breadcrumb"] a').last()).toHaveText('PDTF schema');
   expect(await page.locator('#explore + p + .card-grid > a').evaluateAll((cards) => (
     cards.map((card) => card.getAttribute('href'))
   ))).toEqual([
@@ -202,7 +202,8 @@ test('PDTF schema navigation separates supporting material from the schema-deriv
   ]) {
     await visit(page, route);
     await expect(page.locator('h1')).toHaveText(label);
-    await expect(page.locator('nav[aria-label="Breadcrumb"] [aria-current="page"]')).toHaveText(label);
+    await expect(page.locator('nav[aria-label="Breadcrumb"] [aria-current="page"]')).toHaveCount(0);
+    await expect(page.locator('nav[aria-label="Breadcrumb"]')).not.toContainText(label);
     await expect(page.locator('#section-navigation a[aria-current="page"]')).toHaveText(label);
   }
   clean();
@@ -239,8 +240,8 @@ test('category pages remain links beside independent disclosure controls', async
   await expect(page).toHaveURL(/\/semantic-modelling\/why-ontologies$/u);
   await expect(page.locator('.nav-group-row.is-active-page a[aria-current="page"]'))
     .toHaveAttribute('href', '/semantic-modelling/why-ontologies');
-  await expect(page.locator('nav[aria-label="Breadcrumb"] [aria-current="page"]'))
-    .toHaveText('Understand ontologies');
+  await expect(page.locator('nav[aria-label="Breadcrumb"] [aria-current="page"]')).toHaveCount(0);
+  await expect(page.locator('nav[aria-label="Breadcrumb"]')).not.toContainText('Understand ontologies');
   await expect(page.locator('nav.page-footer a').last())
     .toHaveAttribute('href', '/semantic-modelling/reading-the-model');
   clean();
@@ -345,8 +346,8 @@ test('Property Pack detail pages expose their full canonical ancestry', async ({
   const clean = watchRuntime(page);
   await visit(page, '/spdtf/property-pack/resources/common/Property');
   const crumbs = page.locator('nav[aria-label="Breadcrumb"]');
-  await expect(crumbs.locator('a, [aria-current="page"]')).toHaveText([
-    'SPDTF Development', 'Property Pack ontology', 'Current ontology model', 'Ontology resources', 'Property',
+  await expect(crumbs.locator('a')).toHaveText([
+    'SPDTF Development', 'Property Pack ontology', 'Current ontology model', 'Ontology resources',
   ]);
   expect(await crumbs.locator('a').evaluateAll((links) => links.map((link) => link.getAttribute('href')))).toEqual([
     '/spdtf', '/spdtf/property-pack', '/spdtf/property-pack/model', '/spdtf/property-pack/resources',

@@ -5,7 +5,7 @@
   width: 100%;
   max-width: var(--content-max);
   margin: 0 auto;
-  padding-block: var(--space-5);
+  padding-block: var(--space-5) var(--space-3);
   color: var(--color-text-muted);
   font: 500 var(--text-base) / 1.5 var(--font-sans);
 }
@@ -34,9 +34,12 @@
 .breadcrumbs a {
   color: var(--color-link);
 }
-.breadcrumb-sep { color: var(--color-text-muted); }
-.breadcrumb-group { color: var(--color-text-muted); }
-.breadcrumb-current { color: var(--color-text-strong); font-weight: 700; }
+.breadcrumb-sep {
+  width: 1rem;
+  height: 1rem;
+  flex: 0 0 auto;
+  color: var(--color-text-strong);
+}
 
 /* ─────────────────────────────────────────────────────────────
    PAGE META + PAGE FOOTER

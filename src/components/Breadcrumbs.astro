@@ -1,8 +1,7 @@
 ---
 /**
- * Breadcrumbs — global owner → Section → Group → Page chain. The existing
- * section/group/page chain remains the stable local navigation contract; the
- * global owner adds context only when it has a different label.
+ * Breadcrumbs — navigable global owner → section → group ancestors. The H1
+ * names the current page, so the trail deliberately omits a terminal duplicate.
  */
 import { normalizeUrl } from '@/lib/site';
 import { findNavigationPage } from '@/lib/site-navigation';
@@ -63,20 +62,24 @@ if (destinationLanding && destination) {
     breadcrumbs[breadcrumbs.length - 1] = { label: currentPageTitle, current: true };
   }
 }
+
+// The H1 names the current page. Breadcrumbs retain only navigable ancestors,
+// avoiding a duplicate, non-actionable terminal item immediately above it.
+const ancestors = breadcrumbs.slice(0, -1).filter(
+  (breadcrumb): breadcrumb is Breadcrumb & { href: string } => Boolean(breadcrumb.href),
+);
 ---
-{breadcrumbs.length > 0 && (
+{ancestors.length > 0 && (
   <nav class="breadcrumbs" aria-label="Breadcrumb">
     <ol class="breadcrumbs__list">
-      {breadcrumbs.map((breadcrumb, index) => (
+      {ancestors.map((breadcrumb, index) => (
         <li>
-          {index > 0 && <span class="breadcrumb-sep" aria-hidden="true">›</span>}
-          {breadcrumb.current ? (
-            <span class="breadcrumb-current" aria-current="page">{breadcrumb.label}</span>
-          ) : breadcrumb.href ? (
-            <a href={breadcrumb.href}>{breadcrumb.label}</a>
-          ) : (
-            <span class="breadcrumb-group">{breadcrumb.label}</span>
+          {index > 0 && (
+            <svg class="breadcrumb-sep" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true" focusable="false">
+              <path d="m7 4 6 6-6 6"></path>
+            </svg>
           )}
+          <a href={breadcrumb.href}>{breadcrumb.label}</a>
         </li>
       ))}
     </ol>

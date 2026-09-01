@@ -276,16 +276,20 @@ test('reader pages delegate local contents navigation to the shared right rail',
   assert.match(client, /toc\.setAttribute\('aria-label', 'On this page'\)/u);
 });
 
-test('breadcrumbs use the documented base-size navigation role', async () => {
-  const [contract, navigation, propertyPack, propertyPackPage, layout] = await Promise.all([
+test('breadcrumbs use the documented linked-ancestor navigation role', async () => {
+  const [contract, navigation, breadcrumb, propertyPack, propertyPackPage, layout] = await Promise.all([
     readFile(file('DESIGN.md'), 'utf8'),
     readFile(file('public/ui/design/navigation.css'), 'utf8'),
+    readFile(file('src/components/Breadcrumbs.astro'), 'utf8'),
     readFile(file('src/styles/property-pack.css'), 'utf8'),
     readFile(file('src/components/property-pack/PropertyPackPage.astro'), 'utf8'),
     readFile(file('src/layouts/Layout.astro'), 'utf8'),
   ]);
   assert.match(contract, /Breadcrumbs:[\s\S]*base 16px role with a 24px line-height/u);
   assert.match(navigation, /\.breadcrumbs\s*\{[^}]*font:\s*500 var\(--text-base\) \/ 1\.5 var\(--font-sans\)/su);
+  assert.match(breadcrumb, /const ancestors = breadcrumbs\.slice\(0, -1\)/u);
+  assert.doesNotMatch(breadcrumb, /breadcrumb-current|aria-current="page"/u);
+  assert.match(breadcrumb, /class="breadcrumb-sep"[\s\S]*aria-hidden="true"/u);
   assert.doesNotMatch(propertyPack, /\.v2-breadcrumbs/u);
   assert.match(layout, /<Breadcrumbs currentPageTitle=\{breadcrumbTitle\} \/>/u);
   assert.match(propertyPackPage, /breadcrumbTitle=\{title\}/u);
@@ -395,8 +399,9 @@ test('shared navigation exposes visible focus, state and 44px targets', async ()
   assert.match(toc, /\.app-body\.toc-collapsed \.toc\s*\{[^}]*width:\s*var\(--target-min\);[^}]*justify-self:\s*start;/su);
   assert.match(shell, /\.app-body\.sidebar-collapsed \.sidebar-nav\s*\{[^}]*opacity:\s*0;[^}]*transform:\s*translateX/su);
   assert.match(toc, /\.toc\.is-collapsed > ul\s*\{[^}]*opacity:\s*0;[^}]*transform:\s*translateX/su);
-  assert.match(shell, /\.app-sidebar\s*\{[^}]*overflow-x:\s*hidden;[^}]*transition:\s*width var\(--duration-slow\)/su);
-  assert.match(toc, /\.toc\s*\{[^}]*overflow-x:\s*hidden;[^}]*transition:\s*width var\(--duration-slow\)/su);
+  assert.match(shell, /\.app-body\s*\{[^}]*--rail-disclosure-duration:\s*calc\(var\(--duration-slow\) \+ var\(--duration-fast\)\)/su);
+  assert.match(shell, /\.app-sidebar\s*\{[^}]*justify-self:\s*end;[^}]*overflow-x:\s*hidden;[^}]*transition:\s*width var\(--rail-disclosure-duration\)/su);
+  assert.match(toc, /\.toc\s*\{[^}]*justify-self:\s*start;[^}]*overflow-x:\s*hidden;[^}]*transition:\s*width var\(--rail-disclosure-duration\)/su);
   assert.match(toc, /@media \(max-width: 1280px\)[\s\S]*\.toc\.is-collapsed > ul \{ display: none; \}/u);
   assert.match(shell, /@media \(prefers-reduced-motion: reduce\)\s*\{[^}]*\.app-sidebar,[^}]*\.sidebar-nav/su);
   assert.match(toc, /@media \(prefers-reduced-motion: reduce\)\s*\{[^}]*\.toc,[^}]*\.toc > ul/su);
@@ -405,7 +410,7 @@ test('shared navigation exposes visible focus, state and 44px targets', async ()
   assert.match(base, /#app:has\(> \.app-body\.with-toc\) \.app-header--with-sidebar\s*\{[^}]*--header-content-right-rail:\s*var\(--toc-width\)/su);
   assert.match(base, /\.app-header\s*\{[^}]*--header-content-left-rail:[^}]*--header-content-right-rail:/su);
   assert.match(tokens, /--sidebar-width:\s*15rem;\s*--toc-width:\s*var\(--sidebar-width\);/u);
-  assert.match(navigation, /\.breadcrumbs\s*\{[^}]*max-width:\s*var\(--content-max\)[^}]*margin:\s*0 auto;[^}]*padding-block:\s*var\(--space-5\)/su);
+  assert.match(navigation, /\.breadcrumbs\s*\{[^}]*max-width:\s*var\(--content-max\)[^}]*margin:\s*0 auto;[^}]*padding-block:\s*var\(--space-5\) var\(--space-3\)/su);
   assert.match(base, /@media \(min-width: 96\.0625rem\) \{\s*:root \{ --header-height:\s*10rem; \}/u);
   assert.doesNotMatch(toc, /@media[^}]+\.toc\s*\{\s*display:\s*none/su);
   assert.match(base, /@media \(max-width: 96rem\) \{[\s\S]*\.global-nav-toggle \{ display: inline-flex; \}/u);
@@ -414,7 +419,10 @@ test('shared navigation exposes visible focus, state and 44px targets', async ()
   assert.match(components, /\.brand-lockup\s*\{[^}]*--brand-lockup-icon-width:\s*0\.89em;[^}]*--brand-lockup-gap:\s*0\.45em;[^}]*align-items:\s*baseline[^}]*gap:\s*var\(--brand-lockup-gap\)[^}]*color:\s*var\(--brand-lockup-color\)/su);
   assert.match(components, /\.brand-lockup__icon\s*\{[^}]*width:\s*var\(--brand-lockup-icon-width\)/su);
   assert.match(base, /\.app-header__title\s*\{[^}]*font:\s*600 var\(--text-3xl\)/su);
-  assert.match(base, /\.app-header__framework\s*\{[^}]*padding:\s*var\(--space-4\) 0 var\(--space-6\)[^}]*font:\s*500 var\(--text-xl\)/su);
+  assert.match(base, /\.app-header__framework\s*\{[^}]*padding:\s*var\(--space-4\) 0 var\(--space-6\)[^}]*font:\s*500 var\(--text-2xl\)/su);
+  assert.match(base, /padding-inline-end:\s*calc\([^}]*var\(--header-content-right-rail\)[^}]*var\(--content-gutter\)/su);
+  assert.match(base, /@media \(min-width: 96\.0625rem\) \{[\s\S]*?\.app-header \.global-nav a\.header-cta \{ margin-left:\s*auto; \}/u);
+  assert.match(base, /\.app-header__utilities\s*\{[^}]*margin-inline-end:\s*0;[^}]*padding-inline-end:\s*0;/su);
   assert.match(base, /\.global-nav-panel\s*\{[^}]*width:\s*min\([^}]*var\(--content-max\)[^}]*var\(--header-content-left-rail\)[^}]*var\(--header-content-right-rail\)/su);
   assert.match(base, /\.app-header \.global-nav > a:first-child\s*\{\s*padding-left:\s*0;/u);
   assert.doesNotMatch(pageMeta, /<span class=\{`pill/u);

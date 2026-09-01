@@ -255,6 +255,16 @@ towards its outer edge. Menu links become inert as soon as closing begins, and h
 transient overflow during either direction. The shared 200ms motion token governs both directions, and
 reduced-motion mode reduces the transition to an effectively instant state change.
 
+A subsequent 1 September refinement supersedes the timing and breadcrumb details above. Both desktop rails
+remain anchored to their content-facing edge and combine the shared 200ms and 120ms tokens into a more legible
+320ms disclosure; reduced-motion remains effectively instant. The framework subheading moves to the next shared
+type step. Header utilities and the 44px working-group action end flush with the content-right axis, with no
+trailing utility inset. Page breadcrumbs retain linked ancestors only, use a stronger decorative chevron and reduce
+their lower inset because the adjacent H1 already identifies the current page. The Property Pack candidate control
+uses the shared Lucide `FileSearch` mark in a borderless 44px target, avoiding a misleading approval symbol or a
+second visible enclosure. The global navigation items and working-group action sit eight pixels above their divider,
+keeping their text aligned while preventing the yellow action from resting on the rule.
+
 ### Brand conflict resolution
 
 The SVG-embedded colours (`#131224`, `#FEC82F`, `#FEC92B`, white) are immutable

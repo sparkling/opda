@@ -77,6 +77,7 @@
   position: sticky;
   top: var(--header-height);
   align-self: start;
+  justify-self: start;
   width: 100%;
   height: calc(100vh - var(--header-height));
   overflow-x: hidden;
@@ -86,7 +87,7 @@
   border-left: 1px solid var(--color-border);
   font-size: var(--text-sm);
   scrollbar-width: thin;
-  transition: width var(--duration-slow) var(--ease);
+  transition: width var(--rail-disclosure-duration) var(--ease);
 }
 .toc-title {
   font: 700 var(--text-xs) / 1.2 var(--font-mono);
@@ -131,8 +132,8 @@
     opacity: 1;
     transform: translateX(0);
     visibility: visible;
-    transition: opacity var(--duration-slow) var(--ease),
-                transform var(--duration-slow) var(--ease),
+    transition: opacity var(--rail-disclosure-duration) var(--ease),
+                transform var(--rail-disclosure-duration) var(--ease),
                 visibility 0s linear 0s;
   }
   .toc.is-collapsed > ul {
@@ -140,7 +141,7 @@
     transform: translateX(var(--space-4));
     visibility: hidden;
     pointer-events: none;
-    transition-delay: 0s, 0s, var(--duration-slow);
+    transition-delay: 0s, 0s, var(--rail-disclosure-duration);
   }
   .app-body.toc-collapsed .toc {
     width: var(--target-min);
