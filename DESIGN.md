@@ -230,8 +230,9 @@ Elevation is border-first:
 
 ## 7. Layout and responsive behaviour
 
-The page grid has 12 columns, a 1600px maximum, 24px gutters and 32px desktop /
-16px mobile margins.
+The page grid has 12 columns and a 1600px maximum. Until that maximum is reached,
+the content uses a 16px operational gutter; beyond it, the content track is centred
+and the resulting outer space grows evenly.
 
 At 1200px and above, the documentation shell is a 280px left navigation rail,
 a flexible content track, and an optional 280px on-page rail. The content track is

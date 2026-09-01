@@ -213,7 +213,10 @@
   --sidebar-width: 17.5rem;
   --toc-width: var(--sidebar-width);
   --content-max: 100rem;
-  --content-gutter: clamp(var(--space-5), 2.25vw, var(--space-8));
+  /* Keep the article close to its available track until its maximum width is
+     reached. Beyond that point, the centred content measure supplies the
+     extra whitespace rather than widening the operational gutter. */
+  --content-gutter: var(--space-5);
   --duration-fast: 120ms;
   --duration-normal: 160ms;
   --motion-standard: 160ms;
