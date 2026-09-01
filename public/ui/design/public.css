@@ -137,13 +137,13 @@
   letter-spacing: var(--tracking-display);
   text-decoration: none;
   white-space: nowrap;
+  transform: translateY(-1rem);
 }
 .public-footer__brand img {
   display: block;
   width: 1.25rem;
   height: auto;
   flex: 0 0 auto;
-  transform: translateY(-2px);
 }
 .public-footer a {
   min-height: var(--target-min);
