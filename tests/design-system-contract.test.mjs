@@ -513,7 +513,10 @@ test('text inherits its outer layout width instead of stacking nested measures',
   assert.match(content, /\.prose:has\(~ \.comments-section\)\s*\{[^}]*padding-bottom:\s*0/su);
   assert.match(navigation, /\.page-footer\s*\{[^}]*max-width:\s*var\(--content-max\)/su);
   assert.match(navigation, /\.page-footer\s*\{[^}]*border:\s*1px solid var\(--color-border\)/su);
-  assert.match(navigation, /\.page-footer::before\s*\{[^}]*top:\s*calc\(-1 \* var\(--space-5\)\)[^}]*border-top:\s*1px solid var\(--color-border\)/su);
+  assert.match(content, /\.prose h2\s*\{[^}]*padding-top:\s*var\(--space-3\)[^}]*border-top:\s*1px solid var\(--color-border\)/su);
+  assert.match(navigation, /\.page-footer\s*\{[^}]*margin:\s*var\(--space-6\) auto 0/su);
+  assert.match(navigation, /\.page-footer::before\s*\{[^}]*top:\s*calc\(-1 \* var\(--space-4\)\)[^}]*border-top:\s*1px solid var\(--color-border\)/su);
+  assert.match(publicEntry, /\.public-footer\s*\{[^}]*font:\s*400 var\(--text-caption\) \/ 1\.4 var\(--font-sans\)/su);
 
   const contentWithoutOuterMeasures = content
     .replace(/\.prose\s*\{[^}]*\}/su, '');

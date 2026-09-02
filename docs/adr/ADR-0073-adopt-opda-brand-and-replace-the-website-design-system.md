@@ -245,9 +245,10 @@ The same refinement places previous/next navigation above the comments divider a
 removes stacked article-to-comments spacing. Articles with comments add no trailing
 padding; the comments section owns one `--space-5` gap before its divider.
 The previous/next bar also receives a separate full-track divider in its existing
-top gap, distinct from the bar's own border. Both surrounding dividers sit one
-`--space-5` from the bar. On 2 September 2026 all article, previous/next and
-comments dividers were normalised to 16px on each side of their rule.
+top gap, distinct from the bar's own border. On 2 September 2026 the comments
+divider was normalised to 16px on each side of its rule. The previous/next
+divider uses 12px on each side so the article's final line does not acquire an
+oversized trailing gap.
 
 Later on 1 September 2026, `SiteFooter.astro` became the single organisation footer for
 the root landing, every `Layout` route and the standalone public-service family. It
@@ -301,8 +302,9 @@ contract. Ordinary `.prose` articles and Property Pack `.v2-doc` pages now make
 each following direct block responsible for its block-start separation; preceding
 blocks carry no trailing external margin. This removes accumulated card-grid,
 table, diagram and callout spacing while allowing those components to occur
-anywhere in a section. Standard flow is 12px; an H2 divider owns 16px both
-before its rule and from the rule to its heading. Components retain
+anywhere in a section. Standard flow is 12px. An H2 divider owns 16px before
+its rule and 8px of CSS padding after it; the heading line box completes the
+optical 16px rule-to-letterform gap. Components retain
 only their internal spacing. ODR detail pages keep their intentionally distinct
 Markdown reading rhythm.
 

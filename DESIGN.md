@@ -197,9 +197,10 @@ Documentation flow has one owner. In ordinary `.prose` articles and Property Pac
 the preceding block owns no trailing external margin. This makes the gap stable
 whether the preceding element is prose, a list, a card grid, a table, a diagram,
 a callout or the final element in a section. The standard direct-child gap is
-12px; an H2 divider owns a symmetric 16px block-start gap before its rule and
-16px internal padding from its rule to its heading. H3 and H4 use their own
-documented block-start steps.
+12px. An H2 divider owns 16px before its rule and 8px of CSS padding after it;
+the heading line box completes the optical 16px rule-to-letterform gap. H3 and
+H4 use their own documented block-start steps. The previous/next divider uses
+12px on both sides, avoiding an oversized gap after an article's final line.
 Components may own internal layout spacing, but must not create separation from
 an unknown next sibling. ODR detail pages retain their separately scoped,
 Markdown-specific reading rhythm.
