@@ -22,6 +22,7 @@ const paths = {
   header: new URL('../src/components/Header.astro', import.meta.url),
   themeToggle: new URL('../src/components/ThemeToggle.astro', import.meta.url),
   baseCss: new URL('../public/ui/design/base.css', import.meta.url),
+  publicCss: new URL('../public/ui/design/public.css', import.meta.url),
   contentCss: new URL('../public/ui/design/content.css', import.meta.url),
   memberGuide: new URL('../src/pages/spdtf/working-groups/member-guide/index.astro', import.meta.url),
   gettingStarted: new URL('../src/pages/spdtf/working-groups/member-guide/getting-started.astro', import.meta.url),
@@ -171,12 +172,13 @@ test('former working-group sign-up paths have no page, redirect or rewrite', asy
 });
 
 test('knowledge-base and standalone page families expose their required footer links', async () => {
-  const [footer, layout, standalone, homepage, propertyPackPage] = await Promise.all([
+  const [footer, layout, standalone, homepage, propertyPackPage, publicCss] = await Promise.all([
     readFile(paths.siteFooter, 'utf8'),
     readFile(paths.layout, 'utf8'),
     readFile(paths.standaloneLayout, 'utf8'),
     readFile(paths.homepage, 'utf8'),
     readFile(paths.propertyPackPage, 'utf8'),
+    readFile(paths.publicCss, 'utf8'),
   ]);
 
   assert.match(footer, /<footer class="public-footer">/u);
@@ -187,7 +189,8 @@ test('knowledge-base and standalone page families expose their required footer l
   assert.doesNotMatch(footer, /Association website/u);
   assert.match(footer, /class="public-footer__brand" href="https:\/\/openpropdata\.org\.uk\/"/u);
   assert.match(footer, /Open Property Data Association/u);
-  assert.match(footer, /Developed by <a href="https:\/\/sparklingideas\.co\.uk\/">Sparkling Ideas<\/a> – your expert in semantic modelling and agentic engineering\n/u);
+  assert.match(footer, /Developed by <a href="https:\/\/sparklingideas\.co\.uk\/">Sparkling Ideas<\/a>/u);
+  assert.match(publicCss, /--public-footer-gutter:\s*max\(var\(--space-6\), calc\(\(100% - var\(--content-max\)\) \/ 2\)\)/u);
   for (const owner of [layout, homepage]) {
     assert.match(owner, /import SiteFooter from '@\/components\/SiteFooter\.astro'/u);
     assert.match(owner, /<SiteFooter\s*\/>/u);

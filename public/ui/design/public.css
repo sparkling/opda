@@ -96,7 +96,7 @@
   padding: var(--space-10) var(--space-7);
 }
 .public-footer {
-  --public-footer-gutter: max(var(--space-6), calc((100% - var(--content-max)) / 2 + var(--space-7)));
+  --public-footer-gutter: max(var(--space-6), calc((100% - var(--content-max)) / 2));
   margin-top: auto;
   padding: var(--space-6) var(--public-footer-gutter);
   display: grid;

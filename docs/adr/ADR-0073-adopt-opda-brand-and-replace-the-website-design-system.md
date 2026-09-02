@@ -241,6 +241,7 @@ retains the signature rule while providing privacy and accessibility exits, a ce
 lock-up to the Association website, and the linked Sparkling Ideas credit. The standalone join
 hero adds the existing transparent button variant for its OPDA return control; the
 full-screen working-group deck remains outside shared site furniture.
+The footer's left links and right credit align directly to the shared content edges, removing the former additional 32px inner gutter while retaining the minimum narrow-screen inset.
 
 Later on 1 September 2026, the documentation-shell rail contract was clarified: the section
 navigation and page-contents rail use the same 240px desktop width and alternate surface, with

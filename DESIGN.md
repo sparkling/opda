@@ -310,6 +310,7 @@ The footer has a 4px yellow top rule. `SiteFooter.astro` renders once outside ar
 navigation rails on the root landing, every route using the shared `Layout`, and the standalone
 public-service family. It carries privacy and accessibility exits, a centred linked OPDA icon-and-name
 lock-up to the Association website, plus the linked Sparkling Ideas credit.
+The first footer link and the right-aligned Sparkling Ideas credit sit directly on the shared content edges; the footer gutter adds no secondary inner inset at desktop widths.
 
 At desktop rail widths, the section navigation and page-contents rail share one width and alternate
 surface. Their collapse controls are full-bleed utility bands, not navigation rows: “In this section” on
