@@ -56,6 +56,7 @@ const contractFiles = [
   'public/ui/design-system.css',
   'public/ui/design/base.css',
   'public/ui/design/shell.css',
+  'public/ui/design/shell-support.css',
   'public/ui/design/content.css',
   'public/ui/design/tables.css',
   'public/ui/design/components.css',
@@ -430,7 +431,7 @@ test('shared navigation exposes visible focus, state and 44px targets', async ()
   assert.match(base, /\.app-header__title\s*\{[^}]*margin-block-end:\s*calc\(-1 \* var\(--space-3\)\)/su);
   assert.match(base, /@media \(max-width: 96rem\)[\s\S]*?\.app-header__title\s*\{[^}]*align-self:\s*center[^}]*margin-block-end:\s*0/su);
   assert.match(base, /\.app-header\s*\{[^}]*padding-block:\s*var\(--space-6\) 0;/su);
-  assert.match(base, /\.global-nav-panel\s*\{[^}]*height:\s*var\(--target-min\)/su);
+  assert.match(base, /\.global-nav-panel\s*\{[^}]*height:\s*calc\(var\(--target-min\) \+ var\(--space-4\)\)/su);
   assert.match(base, /\.app-header__framework\s*\{[^}]*padding:\s*var\(--space-4\) 0 var\(--space-3\)[^}]*font:\s*500 var\(--text-2xl\)[^}]*text-decoration:\s*none/su);
   assert.match(base, /padding-inline-end:\s*calc\([^}]*var\(--header-content-right-rail\)[^}]*var\(--content-gutter\)/su);
   assert.match(base, /@media \(min-width: 96\.0625rem\) \{[\s\S]*?\.app-header \.global-nav a\.header-cta \{ margin-left:\s*auto; \}/u);
@@ -456,6 +457,7 @@ test('text inherits its outer layout width instead of stacking nested measures',
     design,
     content,
     shell,
+    shellSupport,
     navigation,
     components,
     publicEntry,
@@ -468,6 +470,7 @@ test('text inherits its outer layout width instead of stacking nested measures',
     readFile(file('DESIGN.md'), 'utf8'),
     readFile(file('public/ui/design/content.css'), 'utf8'),
     readFile(file('public/ui/design/shell.css'), 'utf8'),
+    readFile(file('public/ui/design/shell-support.css'), 'utf8'),
     readFile(file('public/ui/design/navigation.css'), 'utf8'),
     readFile(file('public/ui/design/components.css'), 'utf8'),
     readFile(file('public/ui/design/public.css'), 'utf8'),
@@ -481,8 +484,8 @@ test('text inherits its outer layout width instead of stacking nested measures',
   assert.match(design, /The outer layout container is the sole owner of content measure/u);
   assert.match(design, /Every documentation\s+article uses the available content track up to a 1600px maximum/u);
   assert.match(content, /\.prose\s*\{[^}]*max-width:\s*var\(--content-max\)/su);
-  assert.match(shell, /\.comments-section\s*\{[^}]*max-width:\s*var\(--content-max\)/su);
-  assert.match(shell, /\.comments-section\s*\{[^}]*margin:\s*var\(--space-6\) auto 0/su);
+  assert.match(shellSupport, /\.comments-section\s*\{[^}]*max-width:\s*var\(--content-max\)/su);
+  assert.match(shellSupport, /\.comments-section\s*\{[^}]*margin:\s*var\(--space-6\) auto 0/su);
   assert.match(content, /\.prose:has\(~ \.comments-section\)\s*\{[^}]*padding-bottom:\s*0/su);
   assert.match(navigation, /\.page-footer\s*\{[^}]*max-width:\s*var\(--content-max\)/su);
   assert.match(navigation, /\.page-footer\s*\{[^}]*border:\s*1px solid var\(--color-border\)/su);

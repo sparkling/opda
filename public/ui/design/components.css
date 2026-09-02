@@ -491,7 +491,6 @@ a.card:hover .card__action span { transform: translateX(3px); }
 .site-search-empty { border-bottom: 1px solid var(--color-border); }
 .site-search-empty p { margin: 0 0 var(--space-4); }
 .site-search-empty .db-reset { align-self: center; }
-
 @media (max-width: 760px) {
   .site-search-toolbar { grid-template-columns: minmax(0, 1fr); }
   .site-search-toolbar > .db-reset { width: 100%; margin-top: 0; }

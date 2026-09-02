@@ -1,18 +1,15 @@
 # OPDA Design System
 
-Version 1.1 · adopted 16 August 2026 · updated 1 September 2026 · scope: opda.org.uk application and its
-standalone design-system presentation.
+Version 1.1 · adopted 16 August 2026 · updated 1 September 2026 · scope: opda.org.uk application and its standalone design-system presentation.
 
-This is the normative human contract for OPDA's web interface. It supersedes the
-earlier cream, terracotta and third-party-inspired system. ADR-0073 records the
-adoption decision; `public/ui/design-tokens.css` is the machine-readable token
-projection; `public/ui/design-system.css` imports the live implementation modules.
+This is the normative human contract for OPDA's web interface. It supersedes the earlier cream, terracotta and third-party-inspired system. ADR-0073
+records the adoption decision; `public/ui/design-tokens.css` is the machine-readable token projection; `public/ui/design-system.css` imports the live
+implementation modules.
 
 ## 1. Creative direction
 
-OPDA is an **ink-and-amber data publication**: sharp, bordered, photographic and
-light by default, with the confidence of a standards body and the precision of a
-technical reference.
+OPDA is an **ink-and-amber data publication**: sharp, bordered, photographic and light by default, with the confidence of a standards body and the
+precision of a technical reference.
 
 Five principles govern every surface:
 
@@ -27,17 +24,14 @@ Five principles govern every surface:
 5. **Access is part of authority.** Keyboard, contrast, reflow, forced colours and
    reduced motion are release requirements.
 
-For this exercise, the operator delegated visual-design authority for the
-derived layer to Fable 5 at maximum effort and adopted the resulting contract.
-That delegation does not give Fable standards, content, governance or
-publication authority.
+For this exercise, the operator delegated visual-design authority for the derived layer to Fable 5 at maximum effort and adopted the resulting
+contract. That delegation does not give Fable standards, content, governance or publication authority.
 
 ## 2. Evidence model
 
 ### Authoritative supplied evidence
 
-Ben Kansy's 23 July 2026 email supplied `OPDA Brand Guidelines Q3 2026.pdf` and
-`OPDA Vector Logos.zip`.
+Ben Kansy's 23 July 2026 email supplied `OPDA Brand Guidelines Q3 2026.pdf` and `OPDA Vector Logos.zip`.
 
 The guide defines:
 
@@ -49,24 +43,19 @@ The guide defines:
 - documentary collaboration and residential-property photography with dark
   overlays.
 
-The source SVGs define their own embedded colours and geometry. The repository
-copies and hashes are recorded in `public/ui/brand/manifest.json`.
+The source SVGs define their own embedded colours and geometry. The repository copies and hashes are recorded in `public/ui/brand/manifest.json`.
 
 ### Observed evidence
 
-openpropdata.org.uk demonstrates the purple/yellow direction, official mark and
-people/property photography, but applies the type system inconsistently and has
-accessibility defects. The current opda.org.uk app demonstrates content density and
-specialist controls. The legacy PDTF developer guide contributes useful guide/code/
-table structure. The proposed SmartPropData domain was unreachable when inspected.
-None of these observations overrides the supplied guide or vectors.
+openpropdata.org.uk demonstrates the purple/yellow direction, official mark and people/property photography, but applies the type system
+inconsistently and has accessibility defects. The current opda.org.uk app demonstrates content density and specialist controls. The legacy PDTF
+developer guide contributes useful guide/code/ table structure. The proposed SmartPropData domain was unreachable when inspected. None of these
+observations overrides the supplied guide or vectors.
 
 ### Derived decisions
 
-Everything below that the guide did not define—semantic colours, type scale,
-spacing, layout, states, data visualisation, responsive behaviour, accessibility,
-motion and governance—is a recorded design-system decision rather than invented
-brand evidence.
+Everything below that the guide did not define—semantic colours, type scale, spacing, layout, states, data visualisation, responsive behaviour,
+accessibility, motion and governance—is a recorded design-system decision rather than invented brand evidence.
 
 ## 3. Brand assets
 
@@ -78,21 +67,16 @@ Use only the supplied files:
 | White wordmark | `/ui/brand/opda-wordmark-white.svg` | dark ink |
 | Yellow icon | `/ui/brand/opda-icon-yellow.svg` | dark or decorative context |
 
-Asset colour conflict is resolved by scope: `#131224`, `#FEC82F` and `#FEC92B`
-inside the SVGs are logo-specific values; the guide values are interface tokens.
-Never override an official asset's fills, normalise it during build or reconstruct
-the mark. A changed source asset creates a new manifest version and hash.
+Asset colour conflict is resolved by scope: `#131224`, `#FEC82F` and `#FEC92B` inside the SVGs are logo-specific values; the guide values are
+interface tokens. Never override an official asset's fills, normalise it during build or reconstruct the mark. A changed source asset creates a new
+manifest version and hash.
 
-Provide clear space of at least the icon-stem width around the wordmark. Keep the
-wordmark horizontal, uncropped and at least 128 CSS pixels wide. The icon may be a
-decorative motif but never substitutes for the named organisation where identity
-would otherwise be ambiguous.
+Provide clear space of at least the icon-stem width around the wordmark. Keep the wordmark horizontal, uncropped and at least 128 CSS pixels wide. The
+icon may be a decorative motif but never substitutes for the named organisation where identity would otherwise be ambiguous.
 
-Icon-and-live-text identity uses the shared `.brand-lockup` primitive. Its icon width
-is `0.89em` and its icon-to-text gap is `0.45em`, so both scale with the consuming
-title rather than becoming independent pixel values. The icon is baseline-aligned
-with the live text. Dark-surface lock-ups use `brand-yellow`; light-surface lock-ups
-use `brand-deep`. Components must not add transforms or local colour overrides.
+Icon-and-live-text identity uses the shared `.brand-lockup` primitive. Its icon width is `0.89em` and its icon-to-text gap is `0.45em`, so both scale
+with the consuming title rather than becoming independent pixel values. The icon is baseline-aligned with the live text. Dark-surface lock-ups use
+`brand-yellow`; light-surface lock-ups use `brand-deep`. Components must not add transforms or local colour overrides.
 
 ## 4. Colour system
 
@@ -108,8 +92,8 @@ use `brand-deep`. Components must not add transforms or local colour overrides.
 | `surface-alternate` | `#F9F9F9` | zebra rows, sidebars and asides | `#231F2F` |
 | `brand-deep` | `#131224` | header, hero, footer, code and headings | `#FFFFFF` |
 
-Yellow on white is approximately 1.5:1 and cannot carry text, focus, icons, borders
-or status meaning alone. Dark ink on yellow is approximately 9.3:1.
+Yellow on white is approximately 1.5:1 and cannot carry text, focus, icons, borders or status meaning alone. Dark ink on yellow is approximately
+9.3:1.
 
 ### Derived neutral ramp
 
@@ -131,23 +115,18 @@ or status meaning alone. Dark ink on yellow is approximately 9.3:1.
 | First body column | `#F4F0E4` | `#302C26` |
 | Zebra row, columns 2+ | `#F9F9F9` | `#231F2F` |
 
-First-column cells use regular weight. These surfaces are structural roles rather
-than status colours, and their borders and table semantics retain the distinction
-when custom colours are unavailable.
+First-column cells use regular weight. These surfaces are structural roles rather than status colours, and their borders and table semantics retain
+the distinction when custom colours are unavailable.
 
-Light-theme column headers use white on deep brand ink (`14.38:1`); dark mode
-uses the corresponding dark surface tint.
+Light-theme column headers use white on deep brand ink (`14.38:1`); dark mode uses the corresponding dark surface tint.
 
 ### Links and focus
 
-Links are `#5B51D8`; hover is `#4A41BE`; visited is `#6D3E91`. Prose links are
-underlined. Focus on light uses a two-colour ring: 2px dark ink outside 2px yellow.
-On dark surfaces the yellow is outside and deep ink inside. Never suppress outline
-without this replacement.
+Links are `#5B51D8`; hover is `#4A41BE`; visited is `#6D3E91`. Prose links are underlined. Focus on light uses a two-colour ring: 2px dark ink outside
+2px yellow. On dark surfaces the yellow is outside and deep ink inside. Never suppress outline without this replacement.
 
-Placeholder text uses the dedicated accessible placeholder token: `#625D72` on
-light surfaces and `#A5A1B2` on dark surfaces. Disabled text and controls retain
-`#817C90`; do not reuse disabled styling for placeholders or helper text.
+Placeholder text uses the dedicated accessible placeholder token: `#625D72` on light surfaces and `#A5A1B2` on dark surfaces. Disabled text and
+controls retain `#817C90`; do not reuse disabled styling for placeholders or helper text.
 
 ### Semantic status
 
@@ -173,14 +152,13 @@ Categorical series use this order and retain direct labels, markers or pattern:
 7. rust `#C24E1A`
 8. other/mauve-grey `#6E6580`
 
-Sequential data runs `#F1F0F4` to `#2C273B`. Diverging data runs `#6C5BD4` to
-`#C77F00` through `#F1F0F4`. Charts must remain understandable in grayscale.
+Sequential data runs `#F1F0F4` to `#2C273B`. Diverging data runs `#6C5BD4` to `#C77F00` through `#F1F0F4`. Charts must remain understandable in
+grayscale.
 
 ### Dark mode
 
-Dark mode uses `#131224` base, `#231F2F` raised, `#3A3550` borders, `#F9F9F9`
-text, `#A5A1B2` secondary text and `#A9A0FF` links. Yellow is unchanged. Every
-component state must have a dark equivalent; light remains the default.
+Dark mode uses `#131224` base, `#231F2F` raised, `#3A3550` borders, `#F9F9F9` text, `#A5A1B2` secondary text and `#A9A0FF` links. Yellow is unchanged.
+Every component state must have a dark equivalent; light remains the default.
 
 ## 5. Typography
 
@@ -205,28 +183,20 @@ Self-host the three families with `font-display: swap`:
 | Overline | DM Sans 700 | 12/16, +0.08em | same |
 | Code | Roboto Mono 400 | 14/22 | 14/22 |
 
-The outer layout container is the sole owner of content measure. Every documentation
-article uses the available content track up to a 1600px maximum. Headings, leads,
-paragraphs, lists, quotations, callouts, cards and section copy fill their parent and
-must not add another `max-width`.
-This documentation rule does not apply to the independently authored full-screen
-working-group kick-off deck, whose slide layouts use deliberate local measures.
-Lists have a small tokenised gap above and below, separating them from both their
-introductory copy and the content that follows.
-Figures, tables, diagrams, media and intrinsically sized controls retain their own
-containment rules. Tables and statistics use `font-variant-numeric: tabular-nums`.
-Do not introduce arbitrary type sizes.
-Fallback fonts are loading and resilience fallbacks only. They must preserve the
-same display/body/mono roles, remain readable while web fonts swap, and must not
-reintroduce the superseded Fraunces/Inter prototype system as a live alternative.
+The outer layout container is the sole owner of content measure. Every documentation article uses the available content track up to a 1600px maximum.
+Headings, leads, paragraphs, lists, quotations, callouts, cards and section copy fill their parent and must not add another `max-width`. This
+documentation rule does not apply to the independently authored full-screen working-group kick-off deck, whose slide layouts use deliberate local
+measures. Lists have a small tokenised gap above and below, separating them from both their introductory copy and the content that follows. Figures,
+tables, diagrams, media and intrinsically sized controls retain their own containment rules. Tables and statistics use `font-variant-numeric:
+tabular-nums`. Do not introduce arbitrary type sizes. Fallback fonts are loading and resilience fallbacks only. They must preserve the same
+display/body/mono roles, remain readable while web fonts swap, and must not reintroduce the superseded Fraunces/Inter prototype system as a live
+alternative.
 
 ## 6. Space, shape and elevation
 
-Spacing tokens are 2, 4, 8, 12, 16, 24, 32, 48, 64 and 96px. Components align to
-the 4px base except optical type adjustments.
+Spacing tokens are 2, 4, 8, 12, 16, 24, 32, 48, 64 and 96px. Components align to the 4px base except optical type adjustments.
 
-Cards, tables, images and heroes use zero radius. Buttons, fields and badges use
-2px. Code blocks and dialogs may use 4px; 4px is the ceiling.
+Cards, tables, images and heroes use zero radius. Buttons, fields and badges use 2px. Code blocks and dialogs may use 4px; 4px is the ceiling.
 
 Elevation is border-first:
 
@@ -236,109 +206,83 @@ Elevation is border-first:
 
 ## 7. Layout and responsive behaviour
 
-The page grid has 12 columns and a 1600px maximum. Until that maximum is reached,
-the content uses a 16px operational gutter; beyond it, the content track is centred
-and the resulting outer space grows evenly.
+The page grid has 12 columns and a 1600px maximum. Until that maximum is reached, the content uses a 16px operational gutter; beyond it, the content
+track is centred and the resulting outer space grows evenly.
 
-At 1200px and above, the documentation shell is a 240px left navigation rail,
-a flexible content track, and an optional 240px on-page rail. The two rails share one
-width token. The complete shell is centred at the combined maximum of the content and
-its visible rails, so surplus viewport space sits outside the navigation panels rather
-than between those panels and the content. The content track is the width authority:
-descendants do not stack narrower character or pixel measures.
-The comments section and previous/next navigation use the same centred 1600px content
-track; previous/next navigation is enclosed by a 1px border.
-Below 1200px the on-page rail becomes an in-content disclosure. Below 960px the
-left navigation is an off-canvas dialog with focus containment, Escape and focus
-return. At 640px cards, toolbars and component state boards become one column.
+At 1200px and above, the documentation shell is a 240px left navigation rail, a flexible content track, and an optional 240px on-page rail. The two
+rails share one width token. The complete shell is centred at the combined maximum of the content and its visible rails, so surplus viewport space
+sits outside the navigation panels rather than between those panels and the content. The content track is the width authority: descendants do not
+stack narrower character or pixel measures. The comments section and previous/next navigation use the same centred 1600px content track; previous/next
+navigation is enclosed by a 1px border. Below 1200px the on-page rail becomes an in-content disclosure. Below 960px the left navigation is an
+off-canvas dialog with focus containment, Escape and focus return. At 640px cards, toolbars and component state boards become one column.
 
-Tables fit the available content track rather than creating a horizontal scrollbar.
-They use automatic table layout so column proportions follow their content instead of
-being allocated equally. Column headings and body cells wrap normally; long identifiers,
-paths, IRIs and hashes use `overflow-wrap: anywhere`. Standalone URI, IRI, URN and CURIE
-identifiers use unboxed monospace text; ordinary inline code retains its code surface.
-Visible caption bars are omitted; a semantic caption may
-remain visually hidden for assistive technology while the nearest section heading gives
-visible context. Tables retain scoped headers, row identity and sorting semantics at every
-width. Pages must reflow at 320px and 400% zoom without page-level or table-level
-horizontal scrolling.
+Tables fit the available content track rather than creating a horizontal scrollbar. They use automatic table layout so column proportions follow their
+content instead of being allocated equally. Column headings and body cells wrap normally; long identifiers, paths, IRIs and hashes use `overflow-wrap:
+anywhere`. Standalone URI, IRI, URN and CURIE identifiers use unboxed monospace text; ordinary inline code retains its code surface. Visible caption
+bars are omitted; a semantic caption may remain visually hidden for assistive technology while the nearest section heading gives visible context.
+Tables retain scoped headers, row identity and sorting semantics at every width. Pages must reflow at 320px and 400% zoom without page-level or
+table-level horizontal scrolling.
 
-At 1536px (96rem) and below, the six-destination global site navigation is a
-non-modal disclosure anchored to the compact 64px header. Above that boundary every primary
-destination must fit without clipping or hidden horizontal overflow. The disclosure
-button owns `aria-controls` and `aria-expanded`; the closed panel is both hidden and
-inert. Escape and link activation close it, and Escape returns focus to the trigger.
-This is distinct from the below-960px section navigation, which is a modal off-canvas
-dialog with background inertness and focus containment.
+At 1536px (96rem) and below, the six-destination global site navigation is a non-modal disclosure anchored to the compact 64px header. Above that
+boundary every primary destination must fit without clipping or hidden horizontal overflow. The disclosure button owns `aria-controls` and
+`aria-expanded`; the closed panel is both hidden and inert. Escape and link activation close it, and Escape returns focus to the trigger. This is
+distinct from the below-960px section navigation, which is a modal off-canvas dialog with background inertness and focus containment.
 
-In forced-colour mode, system colours replace authored fills. Current/selected
-states retain a border or outline as well as text, status and callout roles retain
-their labels and structural borders, and controls, tables and diagrams remain
-bounded with `ButtonText`, `CanvasText`, `FieldText` and `Highlight`.
+In forced-colour mode, system colours replace authored fills. Current/selected states retain a border or outline as well as text, status and callout
+roles retain their labels and structural borders, and controls, tables and diagrams remain bounded with `ButtonText`, `CanvasText`, `FieldText` and
+`Highlight`.
 
 ## 8. Application shell and homepage
 
-The desktop header is 140px, `#131224`, and has three rows: a linked mini “Open Property Data Association”
-lock-up with a bottom-aligned yellow icon, the linked larger “Smart Property Data Framework” heading, then the global
-destination tabs. The title, subheading and first global-navigation label follow the main content gutter and centred
-maximum-width axis. The desktop utility controls sit one line above their former position, flush with the top and the header's physical right
-edge. A house icon provides an additional labelled home action beside search; both header headings also link home.
-The yellow primary working-group action finishes on the content track's right edge. It uses the standard full-height 44px button with centred label text. The desktop navigation track is 60px high and ends at the unchanged divider; the button aligns to its top, leaving 16px of structural clearance below without clipping, transforms or an inset surface. Destination labels retain their 44px targets at the bottom of the same track. There is no separate top-left logo cell in this
-shell. The mini title lock-up consumes the shared relative icon, gap, alignment and colour contract. The shorter desktop masthead and a 12px negative lower margin on the mini lock-up move the framework heading, navigation row, divider and page shell upward while retaining the mini lock-up's established position.
-Navigation is DM Sans; the current item has a 4px amber
-underline and `aria-current`. At 96rem and below, the header returns to its compact 64px disclosure
-pattern. A skip link is the first focusable element.
-The light/dark control is one shared Astro component on the application shell, homepage and join page. Its 44px target is borderless, square and transparent in every context; it inherits the surrounding foreground colour while the shared theme state determines which icon is visible.
-The quiet divider below the global tabs spans the content track only, and the first tab has no additional
-left inset. Breadcrumbs have more space above than below and contain navigable ancestors only; a link-coloured chevron
-is optically aligned with the label baseline between them. The current page is named by the H1 rather than repeated as an unlinked terminal crumb. No metadata
-strip or repeated category appears between the breadcrumbs and the H1; the breadcrumb leads directly into the page title.
-When no navigable ancestor exists, no breadcrumb region is rendered and the article drops its redundant upper inset.
-`Layout.astro` renders `Breadcrumbs.astro` as the only page-level breadcrumb implementation. Wrappers with
-qualified document titles supply a concise `breadcrumbTitle` but never their own breadcrumb markup or CSS.
-Schema-object locations and resource-folder paths remain separate in-content navigation with location,
-rather than page, semantics.
-Property Pack pages place their candidate-status information control on the H1 row, aligned to the content
-track's right edge. A borderless 44px target combines the shared Lucide `MessageCircle` outline with an italic information glyph to identify explanatory candidate context and opens a
-non-modal, tokenised flyout containing the complete candidate
-status, validation boundary and six-stage lifecycle record formerly shown in a full-width warning disclosure.
-It exposes expanded state, supports Escape, restores focus when dismissed from within and does not add its
-internal title to the page table of contents.
-The `#F9F9F9` sidebar keeps the current section in its accessible name without repeating it visibly.
-The footer has a 4px yellow top rule. `SiteFooter.astro` renders once outside article content and
-navigation rails on the root landing, every route using the shared `Layout`, and the standalone
-public-service family. It carries privacy and accessibility exits, a centred linked OPDA icon-and-name
-lock-up to the Association website, plus the linked Sparkling Ideas credit.
-The left-aligned Sparkling Ideas credit and right-aligned footer links sit directly on the shared content edges; the centred OPDA lock-up remains on the page axis and the footer gutter adds no secondary inner inset at desktop widths.
-Privacy and Accessibility use the same muted colour and regular weight as plain
-footer text; organisation and delivery-credit emphasis remain distinct.
-Previous/next navigation follows the article and precedes the comments divider.
-It retains its bordered bar and adds a separate full-track divider in the existing
-gap above it. The bar sits one `--space-6` from both the upper divider and the
-comments divider below.
-When comments are present, the article adds no trailing padding and the comments
-section owns one `--space-6` gap before its divider, preventing stacked empty space.
+The desktop header is 140px, `#131224`, and has three rows: a linked mini “Open Property Data Association” lock-up with a bottom-aligned yellow icon,
+the linked larger “Smart Property Data Framework” heading, then the global destination tabs. The title, subheading and first global-navigation label
+follow the main content gutter and centred maximum-width axis. The desktop utility controls sit one line above their former position, flush with the
+top and the header's physical right edge. A house icon provides an additional labelled home action beside search; both header headings also link home.
+The yellow primary working-group action finishes on the content track's right edge. It uses the standard full-height 44px button with centred label
+text. The desktop navigation track is 60px high and ends at the unchanged divider; the button aligns to its top, leaving 16px of structural clearance
+below without clipping, transforms or an inset surface. Destination labels retain their 44px targets at the bottom of the same track. There is no
+separate top-left logo cell in this shell. The mini title lock-up consumes the shared relative icon, gap, alignment and colour contract. The shorter
+desktop masthead and a 12px negative lower margin on the mini lock-up move the framework heading, navigation row, divider and page shell upward while
+retaining the mini lock-up's established position. Navigation is DM Sans; the current item has a 4px amber underline and `aria-current`. At 96rem and
+below, the header returns to its compact 64px disclosure pattern. A skip link is the first focusable element. The light/dark control is one shared
+Astro component on the application shell, homepage and join page. Its 44px target is borderless, square and transparent in every context; it inherits
+the surrounding foreground colour while the shared theme state determines which icon is visible. The quiet divider below the global tabs spans the
+content track only, and the first tab has no additional left inset. Breadcrumbs have more space above than below and contain navigable ancestors only;
+a link-coloured chevron is optically aligned with the label baseline between them. The current page is named by the H1 rather than repeated as an
+unlinked terminal crumb. No metadata strip or repeated category appears between the breadcrumbs and the H1; the breadcrumb leads directly into the
+page title. When no navigable ancestor exists, no breadcrumb region is rendered and the article drops its redundant upper inset. `Layout.astro`
+renders `Breadcrumbs.astro` as the only page-level breadcrumb implementation. Wrappers with qualified document titles supply a concise
+`breadcrumbTitle` but never their own breadcrumb markup or CSS. Schema-object locations and resource-folder paths remain separate in-content
+navigation with location, rather than page, semantics. Property Pack pages place their candidate-status information control on the H1 row, aligned to
+the content track's right edge. A borderless 44px target combines the shared Lucide `MessageCircle` outline with an italic information glyph to
+identify explanatory candidate context and opens a non-modal, tokenised flyout containing the complete candidate status, validation boundary and
+six-stage lifecycle record formerly shown in a full-width warning disclosure. It exposes expanded state, supports Escape, restores focus when
+dismissed from within and does not add its internal title to the page table of contents. The `#F9F9F9` sidebar keeps the current section in its
+accessible name without repeating it visibly. The footer has a 4px yellow top rule. `SiteFooter.astro` renders once outside article content and
+navigation rails on the root landing, every route using the shared `Layout`, and the standalone public-service family. It carries privacy and
+accessibility exits, a centred linked OPDA icon-and-name lock-up to the Association website, plus the linked Sparkling Ideas credit. The left-aligned
+Sparkling Ideas credit and right-aligned footer links sit directly on the shared content edges; the centred OPDA lock-up remains on the page axis and
+the footer gutter adds no secondary inner inset at desktop widths. Privacy and Accessibility use the same muted colour and regular weight as plain
+footer text; organisation and delivery-credit emphasis remain distinct. Previous/next navigation follows the article and precedes the comments
+divider. It retains its bordered bar and adds a separate full-track divider in the existing gap above it. The bar sits one `--space-6` from both the
+upper divider and the comments divider below. When comments are present, the article adds no trailing padding and the comments section owns one
+`--space-6` gap before its divider, preventing stacked empty space.
 
-At desktop rail widths, the section navigation and page-contents rail share one width and alternate
-surface. Their collapse controls are full-bleed utility bands, not navigation rows: “In this section” on
-the left and “On this page” on the right use compact uppercase mono labels, quiet dividers and double
-chevrons. A collapsed rail becomes a full-height 44px labelled spine anchored to the content-facing edge
-of its reserved 240px track. The track and corresponding header offset
-remain fixed, so expanding or collapsing either rail never moves or resizes the middle content. The visible
-label is the control's accessible name; no selected-page tint, amber marker or `aria-current` treatment is used.
-Opening and closing ease the panel width over a deliberate 320ms composite of shared motion tokens while its links
-fade and move slightly towards the outside edge. Stable inside-edge anchoring prevents either rail from snapping
-before the transition starts; reduced-motion mode makes it effectively instant.
+At desktop rail widths, the section navigation and page-contents rail share one width and alternate surface. Their collapse controls are full-bleed
+utility bands, not navigation rows: “In this section” on the left and “On this page” on the right use compact uppercase mono labels, quiet dividers
+and double chevrons. A collapsed rail becomes a full-height 44px labelled spine anchored to the content-facing edge of its reserved 240px track. The
+track and corresponding header offset remain fixed, so expanding or collapsing either rail never moves or resizes the middle content. The visible
+label is the control's accessible name; no selected-page tint, amber marker or `aria-current` treatment is used. Opening and closing ease the panel
+width over a deliberate 320ms composite of shared motion tokens while its links fade and move slightly towards the outside edge. Stable inside-edge
+anchoring prevents either rail from snapping before the transition starts; reduced-motion mode makes it effectively instant.
 
-`/` is the sole OPDA Knowledge Base homepage. It uses an SPDTF-centred hero, a static method figure,
-a featured working-group presentation, the six-destination audience/task directory, a participation
-action and the footer. The directory comes from the canonical global-navigation registry and uses the
-shared linked-card contract. The root has no separate top navigation bar: the brand sits in the hero
-and the directory supplies the primary routes. The PDTF schema remains discoverable only within
-SPDTF's attributed inputs, not as a hero, status item, primary action or peer destination.
+`/` is the sole OPDA Knowledge Base homepage. It uses an SPDTF-centred hero, a static method figure, a featured working-group presentation, the
+six-destination audience/task directory, a participation action and the footer. The directory comes from the canonical global-navigation registry and
+uses the shared linked-card contract. The root has no separate top navigation bar: the brand sits in the hero and the directory supplies the primary
+routes. The PDTF schema remains discoverable only within SPDTF's attributed inputs, not as a hero, status item, primary action or peer destination.
 
-Destination-card titles use the theme-aware interactive violet (`color-link`) so they remain visually
-distinct from their section heading while signalling that the whole card is a linked destination.
+Destination-card titles use the theme-aware interactive violet (`color-link`) so they remain visually distinct from their section heading while
+signalling that the whole card is a linked destination.
 
 Its sequence is:
 
@@ -353,29 +297,23 @@ Its sequence is:
 5. Bounded participation call to action.
 6. Theme-aware shared footer.
 
-`/home` is retired without a redirect, rewrite alias or duplicate page. All internal
-homepage links use `/`.
+`/home` is retired without a redirect, rewrite alias or duplicate page. All internal homepage links use `/`.
 
-No floating screenshots, generic illustration clutter or ungoverned synthetic imagery. The generated method
-infographic is the bounded exception defined below. The presentation feature is an editorial tile, not an embed.
+No floating screenshots, generic illustration clutter or ungoverned synthetic imagery. The generated method infographic is the bounded exception
+defined below. The presentation feature is an editorial tile, not an embed.
 
-`/join`, `/join/privacy` and `/accessibility` form one public-service family. The
-recruitment campaign remains a standalone composition, with the linked organisation
-heading, transparent OPDA return control and theme control on one content-width hero
-row. Privacy and accessibility use the standard Knowledge Base `Header` so their
-global navigation and utilities match `/programme`, but explicitly omit both side
-rails, breadcrumbs, comments and previous/next navigation. Their global tabs do not
-mark a current Knowledge Base destination. All three routes use the
-same tokens, type, buttons, fields, focus states and shared footer. The join campaign uses seven
-natural chapters from the practical invitation and reasons to participate through
-programme context, contribution, trust and the full theme-aware form. Technical modelling detail stays in the
-Knowledge Base. The campaign never uses parallax, pinned scrolling, delayed reveals
-or interaction-gated meaning.
+`/join`, `/join/privacy` and `/accessibility` form one public-service family. The recruitment campaign remains a standalone composition, with the
+linked organisation heading, transparent OPDA return control and theme control on one content-width hero row. Privacy and accessibility use the
+standard Knowledge Base `Header` so their global navigation and utilities match `/programme`, but explicitly omit both side rails, breadcrumbs,
+comments and previous/next navigation. Their global tabs do not mark a current Knowledge Base destination. All three routes use the same tokens, type,
+buttons, fields, focus states and shared footer. The join campaign uses seven natural chapters from the practical invitation and reasons to
+participate through programme context, contribution, trust and the full theme-aware form. Technical modelling detail stays in the Knowledge Base. The
+campaign never uses parallax, pinned scrolling, delayed reveals or interaction-gated meaning.
 
 ## 9. Components
 
-Every interactive component provides default, hover, active, focus and disabled
-states, plus loading/error/success where asynchronous work occurs and dark parity.
+Every interactive component provides default, hover, active, focus and disabled states, plus loading/error/success where asynchronous work occurs and
+dark parity.
 
 - **Buttons:** primary yellow/black, outlined secondary, ghost, and danger red/white;
   minimum height 44px; pressed state translates inward by 1px.
@@ -385,8 +323,9 @@ states, plus loading/error/success where asynchronous work occurs and dark parit
 - **Breadcrumbs:** ordered links to navigable ancestors only; the H1 names the current page. Use DM Sans
   500 at the base 16px role with a 24px line-height, 44px link targets and link-coloured decorative chevrons aligned to the label baseline.
   They use a smaller lower inset to connect the hierarchy to the page title.
-- **Header action:** one shared outlined secondary button may sit at the utility end of the
-  application header; it uses a short verb-led label, aligns to the content-right edge and shares the unshifted destination row. A shared inset-surface modifier preserves the complete 44px target while leaving four pixels between the visible outline and the divider. It returns to the normal flow in the compact navigation disclosure.
+- **Header action:** the shared 44px primary working-group button aligns to the content-right edge.
+  Its 60px desktop navigation track leaves 16px beneath the full visible button without an inset
+  surface, clipping or positional override; the compact disclosure returns it to normal flow.
 - **Header utilities:** familiar single-purpose destinations may use 20px icons in 44px targets, with an accessible name and tooltip. On desktop the group has no trailing inset, ends on the header's physical right edge and retains 16px above it. The theme icon has no visible border or box; icons never replace the CTA label.
 - **Organisation heading:** the unchanged yellow icon plus the full organisation name in one unbroken line of live DM Sans text; use strong ink on light and the inverse treatment on dark.
   The shared mini variant uses the large-text step; because its icon width and gap are relative units, the complete lock-up scales as one component.
@@ -438,76 +377,60 @@ states, plus loading/error/success where asynchronous work occurs and dark parit
 
 ## 10. Knowledge and data patterns
 
-A standards page begins with status, owner, version and last-reviewed metadata,
-then summary, normative content, examples, provenance and related implementation.
-Draft, candidate, adopted, deprecated and superseded states use explicit words and
-icons, not palette substitutions.
+A standards page begins with status, owner, version and last-reviewed metadata, then summary, normative content, examples, provenance and related
+implementation. Draft, candidate, adopted, deprecated and superseded states use explicit words and icons, not palette substitutions.
 
-An evidence panel identifies source type, title, publisher, date, retrieved date,
-location, confidence and whether the statement is quoted, inferred or proposed.
+An evidence panel identifies source type, title, publisher, date, retrieved date, location, confidence and whether the statement is quoted, inferred
+or proposed.
 
-A data browser keeps search, filters, result count and reset action in one labelled
-toolbar. Applied filters remain visible as removable controls. Sorting, pagination,
-loading, empty and error states announce changes without moving keyboard focus.
+A data browser keeps search, filters, result count and reset action in one labelled toolbar. Applied filters remain visible as removable controls.
+Sorting, pagination, loading, empty and error states announce changes without moving keyboard focus.
 
-Site search uses the same labelled field, select and reset primitives without becoming
-a separate search platform. One query field and one canonical-destination filter write
-shareable URL parameters. Multi-word matches are ranked deterministically by title,
-alias and summary relevance, then shown in a compact ordered list. Every row names its
-canonical destination, work area, authority and maturity. Result counts and empty states
-are announced without moving focus; clearing search returns focus to the query field.
-The search lifecycle reinitialises after client-side page transitions.
+Site search uses the same labelled field, select and reset primitives without becoming a separate search platform. One query field and one
+canonical-destination filter write shareable URL parameters. Multi-word matches are ranked deterministically by title, alias and summary relevance,
+then shown in a compact ordered list. Every row names its canonical destination, work area, authority and maturity. Result counts and empty states are
+announced without moving focus; clearing search returns focus to the query field. The search lifecycle reinitialises after client-side page
+transitions.
 
-A governance decision distinguishes proposal, review, disposition and adopted
-outcome. Publication never implies ratification.
+A governance decision distinguishes proposal, review, disposition and adopted outcome. Publication never implies ratification.
 
 ## 11. Imagery, motif and motion
 
-Photography shows real people collaborating and real residential property. Record
-rights, source, consent where relevant, focal point and alt-text decision before use.
-Apply `#131224` overlays at 55–70% when text sits on an image and verify the final
-crop. Decorative partner marks receive an equivalent text list.
+Photography shows real people collaborating and real residential property. Record rights, source, consent where relevant, focal point and alt-text
+decision before use. Apply `#131224` overlays at 55–70% when text sits on an image and verify the final crop. Decorative partner marks receive an
+equivalent text list.
 
-Generative imagery is not used in the OPDA identity. The supplied AI poster is
-removed. The sole recurring decorative motif is a 4px amber rule used for headlines,
-active navigation and footer structure; it does not imitate or redraw the logo. The
-root homepage and `/join` intentionally share one static radial/diagonal campaign-hero
-background treatment. The method figure and presentation tile carry editorial meaning
-and are not recurring identity motifs.
+Generative imagery is not used in the OPDA identity. The supplied AI poster is removed. The sole recurring decorative motif is a 4px amber rule used
+for headlines, active navigation and footer structure; it does not imitate or redraw the logo. The root homepage and `/join` intentionally share one
+static radial/diagonal campaign-hero background treatment. The method figure and presentation tile carry editorial meaning and are not recurring
+identity motifs.
 
-Motion lasts 120–200ms, uses ease-out for entry and ease-in for exit, and normally changes
-only opacity or transform. Fixed-track navigation disclosures may animate their panel width because
-the reserved grid tracks prevent any surrounding layout movement. There is no parallax, autoplay carousel, animated
-gradient or looping ambient movement. Reduced motion removes transforms and reduces
-non-essential transitions to effectively instant.
-These shared-system motion rules do not replace the working-group deck's self-contained
-motion contract.
+Motion lasts 120–200ms, uses ease-out for entry and ease-in for exit, and normally changes only opacity or transform. Fixed-track navigation
+disclosures may animate their panel width because the reserved grid tracks prevent any surrounding layout movement. There is no parallax, autoplay
+carousel, animated gradient or looping ambient movement. Reduced motion removes transforms and reduces non-essential transitions to effectively
+instant. These shared-system motion rules do not replace the working-group deck's self-contained motion contract.
 
-Campaign handoff comparisons use ordinary document flow and natural-height cards.
-They never pin a visual while requiring readers to traverse forced-height panels.
-If optional reveal feedback is unavailable or reduced motion is requested, every
-term, definition, scope and explanation remains visible in its final position.
+Campaign handoff comparisons use ordinary document flow and natural-height cards. They never pin a visual while requiring readers to traverse
+forced-height panels. If optional reveal feedback is unavailable or reduced motion is requested, every term, definition, scope and explanation remains
+visible in its final position.
 
 ## 12. Standalone presentation
 
-The local presentation in `docs/design-system-site/` is a review artefact, not a
-duplicate application. A fixed deep-ink rail numbers chapters in amber Roboto Mono:
+The local presentation in `docs/design-system-site/` is a review artefact, not a duplicate application. A fixed deep-ink rail numbers chapters in
+amber Roboto Mono:
 
-01 Overview · 02 Foundations · 03 Brand · 04 Components · 05 Data display ·
-06 Motion · 07 Patterns · 08 Accessibility · 09 Governance · 10 Implementation.
+01 Overview · 02 Foundations · 03 Brand · 04 Components · 05 Data display · 06 Motion · 07 Patterns · 08 Accessibility · 09 Governance · 10
+Implementation.
 
-Each chapter opens with an ink band and oversized Slab numeral, then a white specimen
-surface. Foundations includes computed contrast beside swatches; Components shows
-all states and dark parity; Data includes categorical, sequential, diverging and
-grayscale specimens; Implementation shows the actual CSS custom properties. On
-mobile the rail becomes an accessible dialog-style drawer.
+Each chapter opens with an ink band and oversized Slab numeral, then a white specimen surface. Foundations includes computed contrast beside swatches;
+Components shows all states and dark parity; Data includes categorical, sequential, diverging and grayscale specimens; Implementation shows the actual
+CSS custom properties. On mobile the rail becomes an accessible dialog-style drawer.
 
 ## 13. Governance and acceptance
 
-Changes identify their evidence tier and update the contract, tokens, presentation
-and tests together. Supplied assets and guide values change only when newer source
-evidence is recorded. Derived decisions may evolve through an ADR or proportionate
-review; the system is designed to change without losing provenance.
+Changes identify their evidence tier and update the contract, tokens, presentation and tests together. Supplied assets and guide values change only
+when newer source evidence is recorded. Derived decisions may evolve through an ADR or proportionate review; the system is designed to change without
+losing provenance.
 
 Every live route belongs to one explicit visual family:
 
@@ -521,12 +444,9 @@ Every live route belongs to one explicit visual family:
 | Groups | workspaces and member guidance | standard shared `Layout`, left section navigation and Knowledge Base footer |
 | Presentation | working-group kickoff deck | isolated, self-contained full-screen presentation using its original local visual tokens; no site chrome |
 
-Release validation runs against the built artefact before any deployment: source
-contract tests, deterministic schema checks, a built-route asset and
-application-navigation crawl, and
-Playwright smoke, keyboard, responsive, axe and visual-diff suites. The rendered
-matrix includes every route family at desktop light and mobile dark, plus explicit
-forced-colour and reduced-motion checks.
+Release validation runs against the built artefact before any deployment: source contract tests, deterministic schema checks, a built-route asset and
+application-navigation crawl, and Playwright smoke, keyboard, responsive, axe and visual-diff suites. The rendered matrix includes every route family
+at desktop light and mobile dark, plus explicit forced-colour and reduced-motion checks.
 
 Release gates:
 
@@ -553,10 +473,8 @@ Release gates:
 
 ## 14. Explicitly rejected
 
-The replacement does not use the earlier Fraunces/Inter, cream/terracotta visual
-language; generic government-blue chrome; 12–16px SaaS card radii; pill-shaped
-buttons; glassmorphism; stacked decorative shadows; colour-only status dots;
-unlabelled icon-only controls; centred marketing heroes with floating product shots;
-or synthetic brand imagery.
+The replacement does not use the earlier Fraunces/Inter, cream/terracotta visual language; generic government-blue chrome; 12–16px SaaS card radii;
+pill-shaped buttons; glassmorphism; stacked decorative shadows; colour-only status dots; unlabelled icon-only controls; centred marketing heroes with
+floating product shots; or synthetic brand imagery.
 
 DESIGN AUTHORITY SIGN-OFF — Fable 5 · max effort
