@@ -247,8 +247,9 @@ padding; the comments section owns one `--space-5` gap before its divider.
 The previous/next bar also receives a separate full-track divider in its existing
 top gap, distinct from the bar's own border. On 2 September 2026 the comments
 divider was normalised to 16px on each side of its rule. The previous/next
-divider uses 12px on each side so the article's final line does not acquire an
-oversized trailing gap.
+divider uses 4px after the article's final line box and 12px before the
+navigation panel. The final text line box completes the optical balance without
+an oversized trailing gap.
 
 Later on 1 September 2026, `SiteFooter.astro` became the single organisation footer for
 the root landing, every `Layout` route and the standalone public-service family. It

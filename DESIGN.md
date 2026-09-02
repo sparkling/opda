@@ -200,7 +200,8 @@ a callout or the final element in a section. The standard direct-child gap is
 12px. An H2 divider owns 16px before its rule and 8px of CSS padding after it;
 the heading line box completes the optical 16px rule-to-letterform gap. H3 and
 H4 use their own documented block-start steps. The previous/next divider uses
-12px on both sides, avoiding an oversized gap after an article's final line.
+4px after the article's final line box and 12px before the navigation panel;
+the final text line box completes the optical balance.
 Components may own internal layout spacing, but must not create separation from
 an unknown next sibling. ODR detail pages retain their separately scoped,
 Markdown-specific reading rhythm.
