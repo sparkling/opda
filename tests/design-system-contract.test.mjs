@@ -462,7 +462,6 @@ test('text inherits its outer layout width instead of stacking nested measures',
     campaign,
     campaignSections,
     join,
-    privacy,
     ontologyGraph,
     presentation,
   ] = await Promise.all([
@@ -475,7 +474,6 @@ test('text inherits its outer layout width instead of stacking nested measures',
     readFile(file('src/styles/working-group-campaign.css'), 'utf8'),
     readFile(file('src/styles/working-group-campaign-sections.css'), 'utf8'),
     readFile(file('src/styles/working-group-join.css'), 'utf8'),
-    readFile(file('src/styles/working-group-privacy.css'), 'utf8'),
     readFile(file('src/pages/spdtf/inputs/pdtf-schema/schema-derived-ontology/terms-and-model-resources/graph.astro'), 'utf8'),
     readFile(file('docs/design-system-site/styles.css'), 'utf8'),
   ]);
@@ -499,7 +497,6 @@ test('text inherits its outer layout width instead of stacking nested measures',
     ['src/styles/working-group-campaign.css', campaign],
     ['src/styles/working-group-campaign-sections.css', campaignSections],
     ['src/styles/working-group-join.css', join],
-    ['src/styles/working-group-privacy.css', privacy],
     ['src/pages/ontology/graph.astro', ontologyGraph],
   ]) {
     assert.doesNotMatch(source, maxWidthDeclaration, `${path} contains a nested max-width`);

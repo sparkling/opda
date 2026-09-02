@@ -1,37 +1,43 @@
 ---
-import StandalonePublicLayout from '@/layouts/StandalonePublicLayout.astro';
-import '@/styles/working-group-join.css';
-import '@/styles/working-group-privacy.css';
+import Layout from '@/layouts/Layout.astro';
 
 const title = 'Working-group privacy notice';
 const description = 'How OPDA uses personal information supplied through its public working-group expression-of-interest form.';
 ---
 
-<StandalonePublicLayout title={title} description={description} bodyClass="working-group-privacy">
-  <div class="wg-page public-statement">
-    <section class="wg-section wg-privacy" aria-labelledby="privacy-title">
-      <p class="wg-eyebrow">Privacy notice · Version 2026-08-13</p>
+<Layout
+  title={title}
+  description={description}
+  hideSidebar
+  hideBreadcrumbs
+  hideFooter
+  hideComments
+  wrapArticle={false}
+  suppressActiveDestination
+>
+  <article class="public-statement" aria-labelledby="privacy-title">
+    <header class="public-statement__header">
+      <p class="public-statement__eyebrow">Privacy notice · Version 2026-08-13</p>
       <h1 id="privacy-title">Working-group expressions of interest</h1>
-      <p class="wg-lead">
+      <p class="public-statement__lead">
         This notice explains how the Open Property Data Association uses information supplied by
         people who register interest in the Smart Property Data Trust Framework working groups.
       </p>
-      <p class="wg-updated">Effective 13 August 2026</p>
-      <p><a href="/join#register">Return to working-group registration</a></p>
+      <p class="public-statement__meta"><span>Effective 13 August 2026</span></p>
       <span id="contents-title" class="wg-fragment-alias" aria-hidden="true"></span>
+    </header>
 
-      <div class="wg-privacy__summary">
-        <p>
-          We use these details to review your expression of interest and, if accepted, administer
-          your participation. Registration is not newsletter consent, does not create membership
-          or access, and is not used as evidence for AI-assisted modelling.
-        </p>
-      </div>
+    <div class="public-statement__summary">
+      <p>
+        We use these details to review your expression of interest and, if accepted, administer
+        your participation. Registration is not newsletter consent, does not create membership
+        or access, and is not used as evidence for AI-assisted modelling.
+      </p>
+    </div>
 
-
-      <article>
-        <section id="controller">
-          <h2>Who controls your information</h2>
+    <section class="public-statement__content" id="controller">
+      <h2>Who controls your information</h2>
+      <div>
           <p>
             Open Property Data Association Ltd (company number 14789946) is the controller for
             information collected through this expression-of-interest service. Its registered
@@ -39,10 +45,12 @@ const description = 'How OPDA uses personal information supplied through its pub
             Questions and requests can be sent to
             <a href="mailto:smartdata@openpropdata.org.uk">smartdata@openpropdata.org.uk</a>.
           </p>
-        </section>
+      </div>
+    </section>
 
-        <section id="information">
-          <h2>What we collect</h2>
+    <section class="public-statement__content" id="information">
+      <h2>What we collect</h2>
+      <div>
           <p>We collect only the information you enter in the form:</p>
           <ul>
             <li>your full name, email address, organisation, and role or area of expertise;</li>
@@ -55,10 +63,12 @@ const description = 'How OPDA uses personal information supplied through its pub
             Do not include confidential information, evidence, links, property or customer data,
             transaction details, or special-category personal information in the optional note.
           </p>
-        </section>
+      </div>
+    </section>
 
-        <section id="purpose">
-          <h2>Why we use it</h2>
+    <section class="public-statement__content" id="purpose">
+      <h2>Why we use it</h2>
+      <div>
           <p>OPDA uses the information to:</p>
           <ul>
             <li>review interest, experience and potential fit across the selected groups;</li>
@@ -74,10 +84,12 @@ const description = 'How OPDA uses personal information supplied through its pub
             Registration data is operational recruitment data. It is not put into the source corpus
             used by AI-assisted ontology or data-model development.
           </p>
-        </section>
+      </div>
+    </section>
 
-        <section id="services">
-          <h2>Services and recipients</h2>
+    <section class="public-statement__content" id="services">
+      <h2>Services and recipients</h2>
+      <div>
           <p>Access is limited to authorised people acting for OPDA and the providers needed to run the service:</p>
           <ul>
             <li><strong>Amazon Web Services</strong> hosts the form service and encrypted register in the UK region and applies request-rate controls;</li>
@@ -87,20 +99,24 @@ const description = 'How OPDA uses personal information supplied through its pub
             The public service does not automatically create a Microsoft guest account, grant access
             or confer standards decision rights.
           </p>
-        </section>
+      </div>
+    </section>
 
-        <section id="transfers">
-          <h2>International transfers</h2>
+    <section class="public-statement__content" id="transfers">
+      <h2>International transfers</h2>
+      <div>
           <p>
             Some providers may process personal information outside the UK. OPDA requires providers
             to protect it using applicable UK adequacy arrangements or approved contractual
             safeguards, such as the UK International Data Transfer Agreement or UK Addendum, where
             required.
           </p>
-        </section>
+      </div>
+    </section>
 
-        <section id="retention">
-          <h2>How long we keep it</h2>
+    <section class="public-statement__content" id="retention">
+      <h2>How long we keep it</h2>
+      <div>
           <ul>
             <li><strong>Expressions of interest that are declined, withdrawn or not progressed:</strong> up to six months.</li>
             <li><strong>Accepted participant records:</strong> for the working group's duration plus 12 months.</li>
@@ -108,10 +124,12 @@ const description = 'How OPDA uses personal information supplied through its pub
           <p>
             A longer period applies only where a separately documented legal obligation requires it.
           </p>
-        </section>
+      </div>
+    </section>
 
-        <section id="choices">
-          <h2>Your choices and rights</h2>
+    <section class="public-statement__content" id="choices">
+      <h2>Your choices and rights</h2>
+      <div>
           <p>
             You can ask OPDA for access to or correction of your information, withdraw your
             expression of interest, object to processing, or ask for deletion or restriction where
@@ -123,8 +141,7 @@ const description = 'How OPDA uses personal information supplied through its pub
             wider activities, see the
             <a href="https://openpropdata.org.uk/privacy-policy/">OPDA general privacy policy</a>.
           </p>
-        </section>
-      </article>
+      </div>
     </section>
-  </div>
-</StandalonePublicLayout>
+  </article>
+</Layout>

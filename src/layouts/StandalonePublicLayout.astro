@@ -28,8 +28,6 @@ const routeStatus = getRouteStatus(Astro.url.pathname) ?? {
   version: 'Current',
   provenance: 'OPDA programme and service records',
 };
-const isJoinPage = Astro.url.pathname === '/join';
-const registrationUrl = isJoinPage ? '#register' : '/join#register';
 const pageTitle = `${title} · Open Property Data Association`;
 ---
 <!doctype html>
@@ -79,22 +77,6 @@ const pageTitle = `${title} · Open Property Data Association`;
   </head>
   <body class:list={['standalone-public', bodyClass]}>
     <a class="skip-link" href="#main-content">Skip to main content</a>
-    {!isJoinPage && (
-      <header class="campaign-masthead">
-        <a class="campaign-masthead__brand" href="/" aria-label="Open Property Data Association home">
-          <picture>
-            <source media="(forced-colors: active)" srcset="/ui/brand/opda-wordmark-dark.svg" />
-            <img src="/ui/brand/opda-wordmark-white.svg" alt="Open Property Data Association" width="149" height="42" />
-          </picture>
-        </a>
-        <nav class="campaign-masthead__nav" aria-label="Public service">
-          <a href="/programme">Knowledge base</a>
-          <a href="/join/privacy" aria-current={Astro.url.pathname === '/join/privacy' ? 'page' : undefined}>Privacy</a>
-          <a href="/accessibility" aria-current={Astro.url.pathname === '/accessibility' ? 'page' : undefined}>Accessibility</a>
-          <a class="btn campaign-masthead__cta" href={registrationUrl}>Register your interest</a>
-        </nav>
-      </header>
-    )}
     <main id="main-content" tabindex="-1">
       <slot />
     </main>

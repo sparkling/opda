@@ -59,6 +59,8 @@ interface Props {
   hideComments?: boolean;
   /** Optional class added to the main region for page-level compositions. */
   mainClass?: string;
+  /** Keep the global destinations visible without marking one current. */
+  suppressActiveDestination?: boolean;
 }
 
 const {
@@ -73,6 +75,7 @@ const {
   hideFooter = false,
   hideComments = false,
   mainClass = '',
+  suppressActiveDestination = false,
 } = Astro.props;
 
 const fullTitle = /knowledge base/i.test(title)
@@ -145,7 +148,7 @@ const searchAliases = routeDisposition?.search?.historicalAliases ?? [];
 <body>
   <a class="skip-link" href="#main-content">Skip to main content</a>
   <div id="app">
-    <Header showSidebar={showSidebar} />
+    <Header showSidebar={showSidebar} suppressActiveDestination={suppressActiveDestination} />
     <div class={`app-body${showSidebar ? '' : ' no-sidebar'}`}>
       {showSidebar && <Sidebar />}
       <main class={`app-main${mainClass ? ` ${mainClass}` : ''}`} id="main-content" tabindex="-1">

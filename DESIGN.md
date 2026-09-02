@@ -352,12 +352,14 @@ homepage links use `/`.
 No floating screenshots, generic illustration clutter or ungoverned synthetic imagery. The generated method
 infographic is the bounded exception defined below. The presentation feature is an editorial tile, not an embed.
 
-`/join`, `/join/privacy` and `/accessibility` form one standalone public-service
-family. They use the official wordmark, tokens, type, buttons, fields, focus and
-status primitives without the Knowledge Base header, rail, breadcrumb, contents or
-previous/next furniture. Public statements retain a minimal masthead; `/join` instead
-places the linked organisation heading, transparent OPDA return control and theme control on one
-content-width hero row. The same shared footer repeats the public-service exits. The join campaign uses seven
+`/join`, `/join/privacy` and `/accessibility` form one public-service family. The
+recruitment campaign remains a standalone composition, with the linked organisation
+heading, transparent OPDA return control and theme control on one content-width hero
+row. Privacy and accessibility use the standard Knowledge Base `Header` so their
+global navigation and utilities match `/programme`, but explicitly omit both side
+rails, breadcrumbs, comments and previous/next navigation. Their global tabs do not
+mark a current Knowledge Base destination. All three routes use the
+same tokens, type, buttons, fields, focus states and shared footer. The join campaign uses seven
 natural chapters from the practical invitation and reasons to participate through
 programme context, contribution, trust and the full theme-aware form. Technical modelling detail stays in the
 Knowledge Base. The campaign never uses parallax, pinned scrolling, delayed reveals
@@ -421,7 +423,8 @@ states, plus loading/error/success where asynchronous work occurs and dark parit
   the selected group to the signup form. Use a three-column maximum, preserve ordinary
   HTML reading order and do not use modelling terminology to explain audience choices.
 - **Public statement:** dated, single-purpose privacy or accessibility content in a
-  consistent heading/content grid; targets and limitations are stated without
+  consistent full-track flow beneath the standard global header, without side
+  navigation or nested width limits; targets and limitations are stated without
   unevidenced compliance claims.
 - **Feedback states:** skeleton, labelled loading, empty-state explanation, error
   recovery and non-obscuring toast.

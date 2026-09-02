@@ -11,9 +11,15 @@ const currentPath = Astro.url.pathname.replace(/\/+$/u, '') || '/';
 const isHomePage = currentPath === '/';
 const isSearchPage = currentPath === '/search';
 const joinHref = currentPath === '/join' ? '#register' : '/join';
-const activeDestination = isSearchPage ? null : getActiveDestination(currentPath);
-interface Props { showSidebar?: boolean; }
-const { showSidebar = false } = Astro.props;
+interface Props {
+  showSidebar?: boolean;
+  suppressActiveDestination?: boolean;
+}
+const {
+  showSidebar = false,
+  suppressActiveDestination = false,
+} = Astro.props;
+const activeDestination = isSearchPage || suppressActiveDestination ? null : getActiveDestination(currentPath);
 ---
 <header class={`app-header${showSidebar ? ' app-header--with-sidebar' : ''}`}>
   <a href="/" class="app-header__title brand-lockup brand-lockup--mini brand-lockup--on-dark">

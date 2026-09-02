@@ -1,7 +1,7 @@
 ---
 status: accepted
 date: 2026-08-27
-updated: 2026-09-01
+updated: 2026-09-02
 tags: [working-groups, recruitment, campaign, signup, design-system, accessibility, routing]
 supersedes: []
 depends-on: [ADR-0038, ADR-0069, ADR-0071, ADR-0073, ADR-0079]
@@ -130,6 +130,18 @@ panel replaces ordinal markers with larger tree-shaken Lucide icons while its te
 remains the accessible source of meaning. Shared panel type, spacing and the gap below
 the organisation heading are governed by the campaign styles used on both routes.
 
+Amended on 2 September 2026: the privacy and accessibility statements now use the
+same global `Header` component as `/programme`, with both side rails, breadcrumbs,
+comments and previous/next navigation explicitly omitted. The complete global menu
+remains visible but does not highlight a current Knowledge Base destination. The recruitment route
+remains standalone with its existing campaign hero header. This removes the legacy
+statement-only masthead while preserving the focused signup journey and shared footer.
+The standard `app-main` track is the sole width authority for both statements: their
+article, title, lead and content sections add no nested width or maximum-width, and
+the former two-column statement grid is replaced by full-track document flow.
+The wrapper also adds no vertical padding; the standard `app-main` spacing provides
+the sole top and footer clearance so those gaps do not stack.
+
 ### 1. Canonical route and route ownership
 
 `https://opda.org.uk/join` becomes the sole public working-group recruitment and
@@ -160,13 +172,15 @@ of the site authentication gate, when anonymous access to `/join`, `/join/privac
 `/accessibility` and the submission API can be verified directly. This ADR does not
 authorise an interim allowlist entry.
 
-### 2. Standalone shell
+### 2. Public-service shells
 
-The `/join`, `/join/privacy` and `/accessibility` routes do not use the Knowledge
-Base `Layout` or inherit its global header, section navigation, breadcrumb, table of
-contents, previous/next navigation or article wrapper.
+The `/join` route does not use the Knowledge Base `Layout` or inherit its global
+header, section navigation, breadcrumb, table of contents, previous/next navigation
+or article wrapper. The `/join/privacy` and `/accessibility` statements use the
+standard Knowledge Base `Layout` and global `Header`, but set the shell to omit both
+side rails, breadcrumbs, comments and previous/next navigation.
 
-The standalone route family supplies only the minimal orientation and escape routes
+The public-service route family supplies only the orientation and escape routes
 required for a trustworthy public journey:
 
 - the official OPDA mark, linked to `/`;
@@ -182,10 +196,10 @@ problem, the responsible contact and the statement's preparation and review date
 It distinguishes an accessibility target from independently verified conformance
 and does not claim compliance that has not been evidenced.
 
-This is not a separate brand or design system. The standalone shell consumes the
-official assets, semantic tokens, typography, controls, focus states and form
-primitives governed by ADR-0073. Campaign-specific spatial and editorial components
-must be added to the design-system documentation when implemented.
+This is not a separate brand or design system. Both shells consume the official
+assets, semantic tokens, typography, controls, focus states and form primitives
+governed by ADR-0073. Campaign-specific spatial and editorial components must be
+added to the design-system documentation when implemented.
 
 On 1 September 2026 the standalone shell adopted the shared `SiteFooter` rather than
 maintaining a campaign-specific duplicate. It preserves the required privacy,

@@ -1,10 +1,19 @@
 ---
-import StandalonePublicLayout from '@/layouts/StandalonePublicLayout.astro';
+import Layout from '@/layouts/Layout.astro';
 
 const title = 'Accessibility statement';
 const description = 'The accessibility target, current testing status, known limitations and contact routes for OPDA public services.';
 ---
-<StandalonePublicLayout title={title} description={description} bodyClass="accessibility-statement">
+<Layout
+  title={title}
+  description={description}
+  hideSidebar
+  hideBreadcrumbs
+  hideFooter
+  hideComments
+  wrapArticle={false}
+  suppressActiveDestination
+>
   <article class="public-statement" aria-labelledby="accessibility-title">
     <header class="public-statement__header">
       <p class="public-statement__eyebrow">Open Property Data Association</p>
@@ -113,4 +122,4 @@ const description = 'The accessibility target, current testing status, known lim
       </div>
     </section>
   </article>
-</StandalonePublicLayout>
+</Layout>

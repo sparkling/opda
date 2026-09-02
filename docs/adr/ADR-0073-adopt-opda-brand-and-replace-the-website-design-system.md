@@ -235,6 +235,12 @@ and inheritance layers; the shared toolbar then exposes three independent presse
 controls with dark-mode, forced-colour, keyboard and unavailable-layer treatments.
 Ordinary Mermaid remains unchanged and receives no inferred semantic controls.
 
+On 2 September 2026 the privacy and accessibility statements adopted the standard
+global `Header` used by `/programme`, while explicitly omitting both side rails,
+breadcrumbs, comments and previous/next navigation. The standalone `/join` hero
+retains its existing campaign header. The shared public-statement pattern uses the
+complete `app-main` track with no nested width limits or stacked outer padding.
+
 Later on 1 September 2026, `SiteFooter.astro` became the single organisation footer for
 the root landing, every `Layout` route and the standalone public-service family. It
 retains the signature rule while providing privacy and accessibility exits, a centred linked OPDA

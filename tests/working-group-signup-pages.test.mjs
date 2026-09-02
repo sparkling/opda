@@ -125,33 +125,53 @@ test('global header promotes the canonical working-group sign-up route', async (
   assert.match(baseCss, /@media \(max-width: 96rem\)\s*\{[\s\S]*\.app-header\.primary-nav-open \.global-nav-panel\s*\{\s*display:\s*block;/su);
 });
 
-test('public recruitment routes use the standalone shell without Knowledge Base furniture', async () => {
-  const [join, privacy, accessibility, standalone, layout, joinCss] = await Promise.all([
+test('public recruitment and statement routes use their shared shells without side navigation', async () => {
+  const [join, privacy, accessibility, standalone, layout, joinCss, publicCss] = await Promise.all([
     readFile(paths.join, 'utf8'),
     readFile(paths.privacy, 'utf8'),
     readFile(paths.accessibility, 'utf8'),
     readFile(paths.standaloneLayout, 'utf8'),
     readFile(paths.layout, 'utf8'),
     readFile(paths.joinCss, 'utf8'),
+    readFile(paths.publicCss, 'utf8'),
   ]);
 
-  for (const source of [join, privacy, accessibility]) {
-    assert.match(source, /import StandalonePublicLayout from '@\/layouts\/StandalonePublicLayout\.astro'/u);
-    assert.doesNotMatch(source, /import Layout from '@\/layouts\/Layout\.astro'/u);
+  assert.match(join, /import StandalonePublicLayout from '@\/layouts\/StandalonePublicLayout\.astro'/u);
+  assert.doesNotMatch(join, /import Layout from '@\/layouts\/Layout\.astro'/u);
+  for (const source of [privacy, accessibility]) {
+    assert.match(source, /import Layout from '@\/layouts\/Layout\.astro'/u);
+    assert.doesNotMatch(source, /import StandalonePublicLayout from '@\/layouts\/StandalonePublicLayout\.astro'/u);
+    for (const flag of ['hideSidebar', 'hideBreadcrumbs', 'hideFooter', 'hideComments', 'suppressActiveDestination']) {
+      assert.match(source, new RegExp(`\\b${flag}\\b`, 'u'));
+    }
+    assert.match(source, /wrapArticle=\{false\}/u);
+    assert.match(source, /class="public-statement"/u);
+    assert.match(source, /class="public-statement__header"/u);
+    assert.match(source, /class="public-statement__content"/u);
   }
   assert.match(join, /workingGroupContexts\.map\(\(context\) =>/u);
   assert.doesNotMatch(join, /SemanticConstellation|contextual lenses|skos:/iu);
   assert.match(join, /<WorkingGroupInterestForm/u);
-  assert.match(privacy, /bodyClass="working-group-privacy"/u);
-  assert.match(accessibility, /bodyClass="accessibility-statement"/u);
+  assert.match(join, /import BrandHeading from '@\/components\/BrandHeading\.astro'/u);
+  assert.match(join, /import ThemeToggle from '@\/components\/ThemeToggle\.astro'/u);
+  assert.match(join, /<BrandHeading surface="dark" campaign\s*\/>/u);
+  assert.match(join, /<ThemeToggle\s*\/>/u);
   assert.doesNotMatch(standalone, /@\/components\/(?:Header|Sidebar|Breadcrumbs|PageFooter|TOC)/u);
-  assert.match(standalone, /<header class="campaign-masthead">/u);
+  assert.doesNotMatch(standalone, /campaign-masthead/u);
   assert.match(standalone, /import SiteFooter from '@\/components\/SiteFooter\.astro'/u);
   assert.match(standalone, /<SiteFooter\s*\/>/u);
+  assert.match(join, /<script is:inline src="\/ui\/client\.js"><\/script>/u);
   assert.doesNotMatch(standalone, /campaign-footer/u);
-  assert.match(join, /class="btn btn--ghost wg-hero-opda" href="\/" aria-label="Open Property Data Association home">OPDA<\/a>/u);
-  assert.match(layout, /<Header showSidebar=\{showSidebar\}/u);
+  assert.match(layout, /<Header showSidebar=\{showSidebar\} suppressActiveDestination=\{suppressActiveDestination\}/u);
   assert.match(layout, /<article class=\{proseClass\}>/u);
+  const statementRule = publicCss.match(/\.public-statement\s*\{([^}]*)\}/u)?.[1] ?? '';
+  const statementHeadingRule = publicCss.match(/\.public-statement h1\s*\{([^}]*)\}/u)?.[1] ?? '';
+  const statementLeadRule = publicCss.match(/\.public-statement__lead\s*\{([^}]*)\}/u)?.[1] ?? '';
+  const statementContentRule = publicCss.match(/\.public-statement__content\s*\{([^}]*)\}/u)?.[1] ?? '';
+  for (const rule of [statementRule, statementHeadingRule, statementLeadRule, statementContentRule]) {
+    assert.doesNotMatch(rule, /(?:max-)?(?:inline-)?width\s*:/u);
+  }
+  assert.doesNotMatch(statementContentRule, /grid-template-columns/u);
   assert.doesNotMatch(joinCss, /\.app-main/u);
   assert.match(joinCss, /\.wg-page\s*\{[^}]*width:\s*100%[^}]*margin:\s*0/su);
   assert.doesNotMatch(joinCss, /\.wg-form-shell\s*\{[^}]*(?:color-scheme:\s*light|--color-(?:surface|text|border)):/su);
