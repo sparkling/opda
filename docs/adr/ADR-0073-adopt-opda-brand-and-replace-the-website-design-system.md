@@ -241,7 +241,7 @@ retains the signature rule while providing privacy and accessibility exits, a ce
 lock-up to the Association website, and the linked Sparkling Ideas credit. The standalone join
 hero adds the existing transparent button variant for its OPDA return control; the
 full-screen working-group deck remains outside shared site furniture.
-The footer's left links and right credit align directly to the shared content edges, removing the former additional 32px inner gutter while retaining the minimum narrow-screen inset.
+The footer's left credit and right links align directly to the shared content edges, removing the former additional 32px inner gutter while retaining the centred OPDA lock-up and minimum narrow-screen inset.
 
 Later on 1 September 2026, the documentation-shell rail contract was clarified: the section
 navigation and page-contents rail use the same 240px desktop width and alternate surface, with
@@ -267,7 +267,7 @@ uses a shared Lucide `MessageCircle` outline with an italic information glyph in
 second visible enclosure. The global navigation row and divider retain their original 44px geometry and position. The working-group
 action remains fully visible and aligned with the destination labels; it returns to normal flow in the compact disclosure. Pages without navigable
 breadcrumb ancestors render no breadcrumb region and remove the article's duplicate upper inset. The desktop masthead is 140px high: a 12px negative lower margin keeps the mini organisation lock-up fixed while the framework heading, navigation row, divider and page shell sit four pixels below the preceding iteration.
-The working-group action uses the shared outlined-on-dark button component plus a shared inset-surface modifier. The modifier preserves the complete 44px target while leaving four pixels between its visible outline and the divider, without CTA-specific margin, translate or transform offsets; header CSS does not override the component's colour, border, typography, padding or interaction states.
+The working-group action uses the design system's standard yellow primary `.btn` component without a local visual variant. The header class controls placement only; it does not override the component's colour, border, typography, padding or interaction states.
 On 2 September 2026 the organisation lock-up became the smaller identifier above the larger framework heading. A shared mini lock-up variant sets one typography scale; the existing relative icon width and gap scale the complete component without header-specific image dimensions.
 Both headings link to the site root, and the top-right utility group includes a labelled house icon as a third route home without adding another text action to the global destination row.
 The application header, homepage and join page render the same shared `ThemeToggle` component. Its design-system rule provides one borderless, transparent 44px target that inherits the foreground colour of its surface; pages no longer duplicate its SVG or override its border and background locally. The application-header utility group sits one line higher, flush with the masthead top, while campaign-page controls retain their hero-header placement.

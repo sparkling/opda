@@ -283,7 +283,7 @@ lock-up with a bottom-aligned yellow icon, the linked larger “Smart Property D
 destination tabs. The title, subheading and first global-navigation label follow the main content gutter and centred
 maximum-width axis. The desktop utility controls sit one line above their former position, flush with the top and the header's physical right
 edge. A house icon provides an additional labelled home action beside search; both header headings also link home.
-The working-group action finishes on the content track's right edge. The action and destination labels share
+The yellow primary working-group action finishes on the content track's right edge. The action and destination labels share
 a 44px target size inside one unshifted row whose divider retains the established position. There is no separate top-left logo cell in this
 shell. The mini title lock-up consumes the shared relative icon, gap, alignment and colour contract. The shorter desktop masthead and a 12px negative lower margin on the mini lock-up move the framework heading, navigation row, divider and page shell upward while retaining the mini lock-up's established position.
 Navigation is DM Sans; the current item has a 4px amber
@@ -310,7 +310,7 @@ The footer has a 4px yellow top rule. `SiteFooter.astro` renders once outside ar
 navigation rails on the root landing, every route using the shared `Layout`, and the standalone
 public-service family. It carries privacy and accessibility exits, a centred linked OPDA icon-and-name
 lock-up to the Association website, plus the linked Sparkling Ideas credit.
-The first footer link and the right-aligned Sparkling Ideas credit sit directly on the shared content edges; the footer gutter adds no secondary inner inset at desktop widths.
+The left-aligned Sparkling Ideas credit and right-aligned footer links sit directly on the shared content edges; the centred OPDA lock-up remains on the page axis and the footer gutter adds no secondary inner inset at desktop widths.
 
 At desktop rail widths, the section navigation and page-contents rail share one width and alternate
 surface. Their collapse controls are full-bleed utility bands, not navigation rows: “In this section” on

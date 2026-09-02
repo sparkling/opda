@@ -99,11 +99,11 @@ test('global header promotes the canonical working-group sign-up route', async (
   const primaryStart = header.indexOf('<nav class="global-nav"');
   const primaryEnd = header.indexOf('</nav>', primaryStart);
   const utilitiesStart = header.indexOf('<nav class="header-nav"');
-  const cta = header.indexOf('class="header-cta btn btn--outline-dark btn--inset-end"');
+  const cta = header.indexOf('class="header-cta btn"');
   assert.ok(primaryStart >= 0 && cta > primaryStart && cta < primaryEnd);
   assert.ok(utilitiesStart < primaryStart);
   assert.match(header, /const joinHref = currentPath === '\/join' \? '#register' : '\/join'/u);
-  assert.match(header, /<a href=\{joinHref\} class="header-cta btn btn--outline-dark btn--inset-end">Join a working group<\/a>/u);
+  assert.match(header, /<a href=\{joinHref\} class="header-cta btn">Join a working group<\/a>/u);
   assert.match(header, /<ThemeToggle\s*\/>/u);
   assert.match(themeToggle, /class="theme-toggle"[\s\S]*aria-label="Switch to dark mode"[\s\S]*class="theme-icon theme-icon--sun"[\s\S]*class="theme-icon theme-icon--moon"/u);
   assert.match(header, /href="\/" class=\{`header-icon-link\$\{isHomePage[\s\S]*?aria-label="Home"[\s\S]*?aria-current=\{isHomePage \? 'page' : undefined\}[\s\S]*?title="Home"[\s\S]*?<svg[\s\S]*?aria-hidden="true"/u);
@@ -116,7 +116,7 @@ test('global header promotes the canonical working-group sign-up route', async (
   assert.doesNotMatch(baseCss, /a\.header-cta[^}]*(?:translate|transform|margin-block):/su);
   assert.match(contentCss, /\.btn--outline-dark\s*\{[^}]*border-color:\s*var\(--brand-white\)[^}]*background:\s*transparent[^}]*color:\s*var\(--brand-white\)/su);
   assert.match(contentCss, /\.btn--inset-end\s*\{[^}]*--button-surface-inset-start:\s*var\(--space-1\)[^}]*--button-surface-inset-end:\s*var\(--space-2\)[^}]*border-color:\s*transparent/su);
-  assert.match(contentCss, /\.btn--inset-end::before\s*\{[^}]*inset:\s*var\(--button-surface-inset-start\) 0 var\(--button-surface-inset-end\)[^}]*border:\s*1px solid currentColor/su);
+  assert.match(contentCss, /\.btn\s*\{[^}]*background:\s*var\(--brand\)[^}]*color:\s*var\(--color-action-primary-text\)[^}]*border:\s*1px solid var\(--brand-yellow\)/su);
   assert.match(baseCss, /@media \(max-width: 96rem\)[\s\S]*?\.global-nav a\.header-cta\s*\{[^}]*align-self:\s*center[^}]*\}/u);
   assert.match(baseCss, /\.app-header__utilities\s*\{[^}]*grid-area:\s*utilities/su);
   assert.match(baseCss, /@media \(max-width: 96rem\)\s*\{[\s\S]*\.app-header\.primary-nav-open \.global-nav-panel\s*\{\s*display:\s*block;/su);
@@ -191,6 +191,9 @@ test('knowledge-base and standalone page families expose their required footer l
   assert.match(footer, /Open Property Data Association/u);
   assert.match(footer, /Developed by <a href="https:\/\/sparklingideas\.co\.uk\/">Sparkling Ideas<\/a>/u);
   assert.match(publicCss, /--public-footer-gutter:\s*max\(var\(--space-6\), calc\(\(100% - var\(--content-max\)\) \/ 2\)\)/u);
+  assert.match(publicCss, /grid-template-areas:\s*'credit brand links'/u);
+  assert.match(publicCss, /\.public-footer__credit\s*\{[^}]*justify-self:\s*start[^}]*text-align:\s*left/su);
+  assert.match(publicCss, /\.public-footer__links\s*\{[^}]*justify-self:\s*end[^}]*justify-content:\s*flex-end/su);
   for (const owner of [layout, homepage]) {
     assert.match(owner, /import SiteFooter from '@\/components\/SiteFooter\.astro'/u);
     assert.match(owner, /<SiteFooter\s*\/>/u);
