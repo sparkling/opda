@@ -245,7 +245,8 @@ The same refinement places previous/next navigation above the comments divider a
 removes stacked article-to-comments spacing. Articles with comments add no trailing
 padding; the comments section owns one `--space-6` gap before its divider.
 The previous/next bar also receives a separate full-track divider in its existing
-top gap, distinct from the bar's own border.
+top gap, distinct from the bar's own border. Both surrounding dividers sit one
+`--space-6` from the bar.
 
 Later on 1 September 2026, `SiteFooter.astro` became the single organisation footer for
 the root landing, every `Layout` route and the standalone public-service family. It
