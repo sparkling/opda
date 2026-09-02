@@ -415,7 +415,7 @@ html { scroll-padding-top: calc(var(--header-height) + 1rem); }
    away from a neighbouring block-end rule. */
 .btn--inset-end {
   --button-surface-inset-start: var(--space-1);
-  --button-surface-inset-end: var(--space-2);
+  --button-surface-inset-end: var(--space-3);
   position: relative;
   border-color: transparent;
   background: transparent;

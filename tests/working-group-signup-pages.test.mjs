@@ -115,7 +115,7 @@ test('global header promotes the canonical working-group sign-up route', async (
   assert.doesNotMatch(baseCss, /a\.header-cta[^}]*\b(?:background|border(?:-color)?|color|font-weight):/su);
   assert.doesNotMatch(baseCss, /a\.header-cta[^}]*(?:translate|transform|margin-block):/su);
   assert.match(contentCss, /\.btn--outline-dark\s*\{[^}]*border-color:\s*var\(--brand-white\)[^}]*background:\s*transparent[^}]*color:\s*var\(--brand-white\)/su);
-  assert.match(contentCss, /\.btn--inset-end\s*\{[^}]*--button-surface-inset-start:\s*var\(--space-1\)[^}]*--button-surface-inset-end:\s*var\(--space-2\)[^}]*border-color:\s*transparent/su);
+  assert.match(contentCss, /\.btn--inset-end\s*\{[^}]*--button-surface-inset-start:\s*var\(--space-1\)[^}]*--button-surface-inset-end:\s*var\(--space-3\)[^}]*border-color:\s*transparent/su);
   assert.match(contentCss, /\.btn\s*\{[^}]*background:\s*var\(--brand\)[^}]*color:\s*var\(--color-action-primary-text\)[^}]*border:\s*1px solid var\(--brand-yellow\)/su);
   assert.match(contentCss, /\.btn--inset-end::before\s*\{[^}]*inset:\s*var\(--button-surface-inset-start\) 0 var\(--button-surface-inset-end\)[^}]*border:\s*1px solid var\(--brand-yellow\)[^}]*background:\s*var\(--brand\)/su);
   assert.match(contentCss, /\.btn--inset-end > :where\(span, svg\)\s*\{[^}]*position:\s*relative;[^}]*z-index:\s*1;/su);
