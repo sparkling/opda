@@ -259,8 +259,8 @@ Privacy and Accessibility use the same muted colour and regular weight as plain
 footer text rather than the emphasis reserved for the organisation and delivery credit.
 
 On 2 September 2026 the global working-group CTA returned to the standard full-height
-44px button. The desktop navigation track grows to 52px above its unchanged divider;
-the CTA aligns to the track's top and keeps 8px clearance below. The former inset
+44px button. The desktop navigation track grows to 60px above its unchanged divider;
+the CTA aligns to the track's top and keeps 16px clearance below. The former inset
 surface and compensating label padding are removed, so no visible height is lost.
 
 Later on 1 September 2026, the documentation-shell rail contract was clarified: the section
