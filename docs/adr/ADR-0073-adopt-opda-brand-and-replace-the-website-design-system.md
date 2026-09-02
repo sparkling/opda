@@ -241,6 +241,10 @@ breadcrumbs, comments and previous/next navigation. The standalone `/join` hero
 retains its existing campaign header. The shared public-statement pattern uses the
 complete `app-main` track with no nested width limits or stacked outer padding.
 
+The same refinement removes stacked article-to-comments spacing. Articles followed
+by comments add no trailing padding; the comments section owns one `--space-6` gap
+before its divider.
+
 Later on 1 September 2026, `SiteFooter.astro` became the single organisation footer for
 the root landing, every `Layout` route and the standalone public-service family. It
 retains the signature rule while providing privacy and accessibility exits, a centred linked OPDA
