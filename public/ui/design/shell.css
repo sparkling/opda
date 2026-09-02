@@ -140,6 +140,7 @@
   transition: width var(--rail-disclosure-duration) var(--ease);
 }
 .sidebar-nav {
+  --nav-tree-indent: var(--space-3);
   padding: var(--space-4) var(--space-5) var(--space-7);
   opacity: 1;
   transform: translateX(0);
@@ -168,56 +169,23 @@
 
 .app-sidebar .nav-group { padding: 0; }
 .app-sidebar .nav-group-row {
-  display: grid;
-  grid-template-columns: var(--target-min) minmax(0, 1fr);
-  align-items: stretch;
+  display: block;
   min-width: 0;
   margin: 0 var(--space-3) var(--space-2);
   border-radius: var(--radius-md);
-}
-.app-sidebar .nav-group-toggle,
-.app-sidebar .nav-group-spacer {
-  width: var(--target-min);
-  min-height: var(--target-min);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-.app-sidebar .nav-group-toggle {
-  padding: 0;
-  border: 0;
-  border-radius: var(--radius-md);
-  background: transparent;
-  cursor: pointer;
 }
 .app-sidebar a.nav-group-link {
   font: 700 var(--text-xs) / 1.4 var(--font-sans);
   text-transform: uppercase;
   letter-spacing: var(--tracking-meta);
   color: var(--color-text-muted);
-  padding-inline: 0 var(--space-2);
+  padding-inline: var(--space-3);
 }
-.app-sidebar .nav-group-toggle:hover,
 .app-sidebar a.nav-group-link:hover { color: var(--color-text); }
-.app-sidebar .nav-group-caret {
-  width: 0.6rem;
-  height: 0.6rem;
-  flex-shrink: 0;
-  transition: transform var(--duration-normal) var(--ease),
-              color var(--duration-fast) var(--ease);
-  color: var(--color-text-muted);
-}
-.app-sidebar .nav-group.is-open > .nav-group-row .nav-group-caret {
-  transform: rotate(90deg);
-  color: var(--color-action-selected);
-}
-.app-sidebar .nav-group-toggle:hover > .nav-group-caret {
-  color: var(--color-text);
-}
 .app-sidebar .nav-group-items { display: none; }
 .app-sidebar .nav-group.is-open > .nav-group-items {
   display: block;
-  margin-inline-start: var(--space-5);
+  margin-inline-start: var(--nav-tree-indent);
   border-inline-start: 1px solid var(--color-border);
 }
 .app-sidebar .nav-group-row.is-active-page {
@@ -233,9 +201,9 @@
 }
 
 /* ── Tree-view nav ───────────────────────────────────────────────────
-   Every level uses one label axis: leaves reserve the same 44px caret
-   gutter as folders, while each recursive child list adds one 16px
-   indentation step. This keeps arbitrary nesting predictable. */
+   Folder labels are links and the active trail determines which branches
+   are visible. With no per-level disclosure-control gutter, hierarchy adds
+   only one compact 8px indentation step at each depth. */
 .app-sidebar ul.tree,
 .app-sidebar ul.tree-children {
   list-style: none;
@@ -244,64 +212,21 @@
 }
 .app-sidebar .tree-folder { position: relative; }
 .app-sidebar .tree-folder-row {
-  display: grid;
-  grid-template-columns: var(--target-min) minmax(0, 1fr);
-  align-items: stretch;
+  display: block;
   min-width: 0;
   border-radius: var(--radius-md);
-}
-.app-sidebar .tree-toggle {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: var(--target-min);
-  height: var(--target-min);
-  min-height: var(--target-min);
-  padding: 0;
-  border: 0;
-  background: transparent;
-  color: var(--color-text);
-  font: 500 var(--text-sm) / 1.4 var(--font-sans);
-  text-align: left;
-  cursor: pointer;
-  border-radius: var(--radius-md);
-}
-.app-sidebar .tree-toggle:hover {
-  background: var(--color-action-subtle);
-  color: var(--color-text-strong);
-}
-:root[data-theme="dark"] .app-sidebar .tree-toggle:hover {
-  background: var(--color-surface-dark-tint);
-  color: var(--on-dark);
-}
-/* Chevron icon — Lucide chevron-right rotated via transform on open. */
-.app-sidebar .tree-caret {
-  display: inline-block;
-  width: 0.75rem;
-  height: 0.75rem;
-  color: var(--color-text-muted);
-  transition: transform var(--duration-normal) var(--ease),
-              color var(--duration-fast) var(--ease);
-  flex-shrink: 0;
-  /* Vertical-align so the chevron sits on the label baseline cleanly. */
-  vertical-align: -0.1em;
-}
-.app-sidebar .tree-toggle:hover > .tree-caret { color: var(--color-text); }
-.app-sidebar .tree-folder.is-open > .tree-folder-row .tree-caret {
-  transform: rotate(90deg);
-  color: var(--color-action-selected);
 }
 .app-sidebar .tree-children { display: none; }
 .app-sidebar .tree-folder.is-open > .tree-children {
   display: block;
-  margin-inline-start: var(--space-5);
+  margin-inline-start: var(--nav-tree-indent);
   border-inline-start: 1px solid var(--color-border);
 }
 .app-sidebar .tree-leaf > a {
-  padding-inline-start: calc(var(--target-min) + var(--space-3));
+  padding-inline-start: var(--space-3);
 }
 .app-sidebar .nav-group--leaf > .nav-group-leaf {
-  padding-inline-start: calc(var(--target-min) + var(--space-3));
+  padding-inline-start: var(--space-3);
 }
 
 .app-sidebar ul { list-style: none; padding: 0; margin: 0; }

@@ -103,8 +103,6 @@ test('left navigation follows route ownership with one active link', async ({ pa
   }
 
   await visit(page, pdtfClasses);
-  await page.evaluate(() => localStorage.setItem('opda.sidebar.pdtf-1.Schema-derived ontology', 'closed'));
-  await page.reload();
   await expect(page.locator('#section-navigation .nav-group[data-active="true"]')).toHaveClass(/is-open/u);
   await page.evaluate(() => localStorage.setItem('opda-sidebar-collapsed', '1'));
   await page.reload();
@@ -148,26 +146,21 @@ test('PDTF schema navigation separates supporting material from the schema-deriv
     .not.toHaveClass(/tree-folder-link/u);
   await expect(navigation.locator(`a[href="${PDTF1_ROUTES.schemaVerification}"]`))
     .toHaveClass(/tree-folder-link/u);
-  const disclosureContract = await extractedBranch.locator('.tree-folder')
+  const hierarchyContract = await extractedBranch.locator('.tree-folder')
     .evaluateAll((folders) => folders.map((folder) => {
       const row = folder.querySelector(':scope > .tree-folder-row');
-      const controls = row.querySelector('button').getAttribute('aria-controls');
       return {
-        controls,
         tags: [...row.children].map(({ tagName }) => tagName),
-        buttonName: row.querySelector('button').getAttribute('aria-label'),
         linkText: row.querySelector('a').textContent.trim(),
-        targetCount: document.querySelectorAll(`#${CSS.escape(controls)}`).length,
+        href: row.querySelector('a').getAttribute('href'),
       };
     }));
-  expect(new Set(disclosureContract.map(({ controls }) => controls)).size)
-    .toBe(disclosureContract.length);
-  for (const record of disclosureContract) {
-    expect(record.tags).toEqual(['BUTTON', 'A']);
-    expect(record.buttonName).toMatch(/^(?:Expand|Collapse) /u);
-    expect(record.buttonName).toContain(record.linkText);
-    expect(record.targetCount).toBe(1);
+  for (const record of hierarchyContract) {
+    expect(record.tags).toEqual(['A']);
+    expect(record.href).toBeTruthy();
+    expect(record.linkText).toBeTruthy();
   }
+  await expect(navigation.locator('.tree-toggle, .nav-group-toggle')).toHaveCount(0);
   for (const id of [
     'schema', 'implementation', 'adoption', 'modelling', 'model', 'mapping',
   ]) await expect(page.locator(`#section-nav-group-pdtf-schema-${id === 'adoption' ? 'usage' : id}`)).toHaveCount(1);
@@ -209,31 +202,17 @@ test('PDTF schema navigation separates supporting material from the schema-deriv
   clean();
 });
 
-test('category pages remain links beside independent disclosure controls', async ({ page }) => {
+test('category pages are direct links whose active trails reveal children', async ({ page }) => {
   const clean = watchRuntime(page);
   await page.setViewportSize({ width: 1440, height: 1000 });
   await visit(page, '/semantic-modelling/standards');
   const category = page.locator('.nav-group[data-group="Understand ontologies"]');
   const link = category.locator('.nav-group-link[href="/semantic-modelling/why-ontologies"]');
-  const toggle = category.locator('.nav-group-toggle');
   await expect(link).toBeVisible();
-  expect(await category.locator(':scope > .nav-group-row > button, :scope > .nav-group-row > a')
-    .evaluateAll((nodes) => nodes.map(({ tagName }) => tagName))).toEqual(['BUTTON', 'A']);
-  await expect(toggle).toHaveAttribute('aria-expanded', 'true');
-  const controls = await toggle.getAttribute('aria-controls');
-  expect(controls).toBeTruthy();
-  await expect(page.locator(`#${controls}`)).toBeVisible();
-  const before = page.url();
-  await toggle.focus();
-  await page.keyboard.press('Space');
-  expect(page.url()).toBe(before);
-  await expect(toggle).toHaveAttribute('aria-expanded', 'false');
-  await expect(page.locator(`#${controls}`)).toBeHidden();
-
-  const otherCategory = page.locator('.nav-group[data-group="How we model SPDTF"]');
-  await otherCategory.locator('.nav-group-toggle').click();
-  await expect(otherCategory).toHaveClass(/is-open/u);
-  await expect(category).not.toHaveClass(/is-open/u);
+  expect(await category.locator(':scope > .nav-group-row > a')
+    .evaluateAll((nodes) => nodes.map(({ tagName }) => tagName))).toEqual(['A']);
+  await expect(category.locator('.nav-group-toggle')).toHaveCount(0);
+  await expect(category).toHaveClass(/is-open/u);
 
   await link.focus();
   await page.keyboard.press('Enter');
@@ -289,19 +268,17 @@ test('nested navigation follows one consistent indentation ladder', async ({ pag
     const rootLeaf = link('/semantic-modelling');
     const rootFolder = link('/semantic-modelling/why-ontologies');
     const childLeaf = link('/semantic-modelling/reading-the-model');
-    const toggle = rootFolder?.parentElement?.querySelector('.nav-group-toggle');
     return {
       rootLeaf: textLeft(rootLeaf),
       rootFolder: textLeft(rootFolder),
       childLeaf: textLeft(childLeaf),
-      toggleWidth: toggle?.getBoundingClientRect().width,
     };
   });
 
   expect(Math.abs(geometry.rootLeaf - geometry.rootFolder)).toBeLessThanOrEqual(1);
-  expect(geometry.childLeaf - geometry.rootFolder).toBeGreaterThanOrEqual(15);
-  expect(geometry.childLeaf - geometry.rootFolder).toBeLessThanOrEqual(17);
-  expect(geometry.toggleWidth).toBeGreaterThanOrEqual(44);
+  expect(geometry.childLeaf - geometry.rootFolder).toBeGreaterThanOrEqual(7);
+  expect(geometry.childLeaf - geometry.rootFolder).toBeLessThanOrEqual(9);
+  await expect(page.locator('.tree-toggle, .nav-group-toggle')).toHaveCount(0);
   clean();
 });
 

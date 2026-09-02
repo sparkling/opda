@@ -247,9 +247,20 @@ padding; the comments section owns one `--space-5` gap before its divider.
 The previous/next bar also receives a separate full-track divider in its existing
 top gap, distinct from the bar's own border. On 2 September 2026 the comments
 divider was normalised to 16px on each side of its rule. The previous/next
-divider uses 4px after the article's final line box and 12px before the
-navigation panel. The final text line box completes the optical balance without
-an oversized trailing gap.
+region now owns explicit before-rule and after-rule spacing roles. Its rule sits
+16px above the navigation panel, matching the 16px panel-to-comments-rule gap
+below. Bounded content endings retain 16px before the rule; text-led endings use
+4px after their final line box because the line box completes the optical gap.
+Nested page compositions declare the reusable `.document-flow` role, so this
+behaviour does not depend on a route or particular link copy.
+
+The left section navigation now treats hierarchy as navigation rather than a
+second disclosure interaction. Folder labels remain links, and navigating to a
+folder opens the active trail on the destination page. Recursive lists add one
+8px indentation step only. Removing branch buttons, arrows, their 44px leading
+gutters and their client-side persistence prevents deep Property Pack paths from
+losing most of the rail to repeated controls. The whole-rail collapse control is
+unchanged because it governs shell state rather than hierarchy depth.
 
 Later on 1 September 2026, `SiteFooter.astro` became the single organisation footer for
 the root landing, every `Layout` route and the standalone public-service family. It

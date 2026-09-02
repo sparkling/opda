@@ -370,8 +370,6 @@ a:visited { text-decoration-color: currentColor; }
     .cta,
     .auth-button__signin,
     .card-arrow,
-    .nav-group-caret,
-    .tree-caret,
     .auth-button__chevron
   ) { transform: none !important; }
 }

@@ -60,12 +60,12 @@
    bg-white hover bg-gray-50 — cream-tone equivalents here.
    ───────────────────────────────────────────────────────────── */
 .page-footer {
+  --page-footer-gap-before-rule: var(--space-5);
+  --page-footer-gap-after-rule: var(--space-5);
   position: relative;
   width: 100%;
   max-width: var(--content-max);
-  /* The final text line contributes its own lower line-box space. Four CSS
-     pixels to the rule balances optically with the 12px below the rule. */
-  margin: var(--space-5) auto 0;
+  margin: calc(var(--page-footer-gap-before-rule) + var(--page-footer-gap-after-rule)) auto 0;
   padding: var(--space-5);
   border: 1px solid var(--color-border);
   background: var(--color-surface-card);
@@ -73,11 +73,17 @@
   justify-content: space-between;
   gap: var(--space-3);
 }
+/* Text-led endings include lower line-box space. Reduce only the box gap before
+   the rule; bounded endings keep the symmetric component default above. */
+.prose:has(> :is(p, ul, ol, dl, blockquote):last-child) + .page-footer,
+.prose:has(> .document-flow > :is(p, ul, ol, dl, blockquote):last-child) + .page-footer {
+  --page-footer-gap-before-rule: var(--space-2);
+}
 .page-footer::before {
   content: '';
   position: absolute;
   inset-inline: 0;
-  top: calc(-1 * var(--space-4));
+  top: calc(-1 * var(--page-footer-gap-after-rule));
   border-top: 1px solid var(--color-border);
 }
 .page-footer a {

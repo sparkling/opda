@@ -199,9 +199,12 @@ whether the preceding element is prose, a list, a card grid, a table, a diagram,
 a callout or the final element in a section. The standard direct-child gap is
 12px. An H2 divider owns 16px before its rule and 8px of CSS padding after it;
 the heading line box completes the optical 16px rule-to-letterform gap. H3 and
-H4 use their own documented block-start steps. The previous/next divider uses
-4px after the article's final line box and 12px before the navigation panel;
-the final text line box completes the optical balance.
+H4 use their own documented block-start steps. The previous/next region uses
+16px from its rule to the navigation panel, matching the panel-to-comments rule
+gap below. Bounded content endings also use 16px before the rule. Text-led
+endings use 4px after their final line box because the line box itself completes
+the optical space. Nested content flows expose the shared `.document-flow` role;
+spacing never depends on a route or on the link text.
 Components may own internal layout spacing, but must not create separation from
 an unknown next sibling. ODR detail pages retain their separately scoped,
 Markdown-specific reading rhythm.
@@ -283,10 +286,10 @@ Sparkling Ideas credit and right-aligned footer links sit directly on the shared
 the footer gutter adds no secondary inner inset at desktop widths. The footer renders the shared icon-and-live-text heading component at its compact
 14px scale; its relative `0.89em` icon and `0.45em` gap resize with the text as one unit. Privacy and Accessibility use the same muted colour and regular weight as plain
 footer text; organisation and delivery-credit emphasis remain distinct. Previous/next navigation follows the article and precedes the comments
-divider. It retains its bordered bar and adds a separate full-track divider in the existing gap above it. The bar sits one `--space-5` from both the
-upper divider and the comments divider below. When comments are present, the article adds no trailing padding and the comments section owns one
-`--space-5` gap before its divider, preventing stacked empty space. All article, previous/next and comments dividers use the same 16px space on each
-side of their rule.
+divider. It retains its bordered bar and adds a separate full-track divider above it. The shared region owns distinct before-rule and after-rule
+spacing variables: the panel sits 16px from the rule above and the comments rule below. Bounded content endings sit 16px above the upper rule;
+text-led endings use 4px of CSS space because their final line box completes the optical gap. When comments are present, the article adds no trailing
+padding and the comments section owns its divider, preventing stacked empty space.
 
 At desktop rail widths, the section navigation and page-contents rail share one width and alternate surface. Their collapse controls are full-bleed
 utility bands, not navigation rows: “In this section” on the left and “On this page” on the right use compact uppercase mono labels, quiet dividers
@@ -297,6 +300,8 @@ Only intentionally anchored structural headings participate; headings inside car
 label is the control's accessible name; no selected-page tint, amber marker or `aria-current` treatment is used. Opening and closing ease the panel
 width over a deliberate 320ms composite of shared motion tokens while its links fade and move slightly towards the outside edge. Stable inside-edge
 anchoring prevents either rail from snapping before the transition starts; reduced-motion mode makes it effectively instant.
+Within the left rail, linked folder labels replace per-branch disclosure controls. Navigation opens the active trail, and each nested list adds one
+8px indentation step. No arrow, icon gutter or per-depth control column consumes label width.
 
 `/` is the sole OPDA Knowledge Base homepage. It uses an SPDTF-centred hero, a static method figure, a featured working-group presentation, the
 six-destination audience/task directory, a participation action and the footer. The directory comes from the canonical global-navigation registry and
@@ -353,9 +358,10 @@ dark parity.
   The shared mini variant uses the large-text step; because its icon width and gap are relative units, the complete lock-up scales as one component.
 - **Section heading:** a shared optional uppercase DM Sans eyebrow, display H2 and optional lead.
   Use it for distinct subjects; do not recreate local eyebrow scales or heading spacing.
-- **Sidebar disclosure:** linked folder rows in a task-oriented hierarchy use a quiet
-  tinted surface, structural border and bold label so they are distinct from leaf
-  links. A separate 44px disclosure button expands each branch; its label opens the page.
+- **Sidebar hierarchy:** folder rows remain linked pages and use a quiet tinted
+  surface, structural border and bold label so they are distinct from leaf links.
+  Navigating to a folder opens its active trail. Indentation alone expresses nesting,
+  in 8px steps; branch arrows and reserved disclosure gutters are not used.
 - **Status badge:** icon, complete text label and tint; never a bare dot.
 - **Campaign panel list:** use large, restrained semantic icons with an adjacent title and description; icons reinforce rather than replace text and are hidden from assistive technology.
 - **Provenance chip:** Roboto Mono source and timestamp; links to evidence when

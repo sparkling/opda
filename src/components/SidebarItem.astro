@@ -1,8 +1,8 @@
 ---
 /**
- * Recursive sidebar item — renders either a leaf <a> or a folder with
- * collapsible children. Folders default to open if they contain the
- * active page (computed by containsActive prop).
+ * Recursive sidebar item — renders either a leaf link or a linked folder.
+ * Folders containing the active page render open; navigating to another
+ * folder reveals that branch without a separate disclosure control.
  */
 import type { Item } from '@/lib/site';
 import { normalizeUrl } from '@/lib/site';
@@ -46,20 +46,6 @@ const childrenId = namedPdtfGroupId
 ) : (
   <li class={`tree-folder${emphasized ? ' is-task-category' : ''}${isOpen ? ' is-open' : ''}${isActive ? ' is-active-page' : ''}`}>
     <div class="tree-folder-row">
-      <button
-        type="button"
-        class="tree-toggle"
-        aria-expanded={isOpen ? 'true' : 'false'}
-        aria-controls={childrenId}
-        aria-label={`${isOpen ? 'Collapse' : 'Expand'} ${item.title}`}
-        data-label={item.title}
-      >
-        <svg class="tree-caret" viewBox="0 0 24 24" fill="none"
-             stroke="currentColor" stroke-width="2.25" stroke-linecap="round"
-             stroke-linejoin="round" aria-hidden="true">
-          <polyline points="9 18 15 12 9 6"/>
-        </svg>
-      </button>
       <a
         href={item.url}
         class={`tree-folder-link${isActive ? ' active' : ''}`}

@@ -143,7 +143,7 @@ const tokenSample = `:root {
     <tbody>
       <tr><th scope="row">Article flow</th><td>12px before each following direct block</td><td>Component-specific trailing gaps</td></tr>
       <tr><th scope="row">H2 divider</th><td>16px before its rule; 8px CSS padding plus the heading line box after it</td><td>Spacing after the previous component</td></tr>
-      <tr><th scope="row">Previous/next divider</th><td>4px after the final line box; 12px before the navigation panel</td><td>Trailing space already present inside the final text line box</td></tr>
+      <tr><th scope="row">Previous/next region</th><td>16px from each rule to the panel; text-led endings use 4px after their line box</td><td>Route-specific or copy-specific spacing overrides</td></tr>
       <tr><th scope="row">Cards, tables and diagrams</th><td>Internal layout and containment</td><td>External space after themselves</td></tr>
       <tr><th scope="row">Semantic section</th><td>The same direct-child rule for its local content stack</td><td>Accumulated table and subheading margins</td></tr>
     </tbody>
@@ -151,6 +151,7 @@ const tokenSample = `:root {
 
   <h2 id="components">Components and states</h2>
   <p>Every interactive component provides hover, active, focus and disabled states, plus loading, error and success where work is asynchronous.</p>
+  <div class="callout callout--note"><h3 class="callout__label"><span aria-hidden="true">i</span> Section hierarchy</h3><p>Linked folder labels open the active navigation trail. Each nested list adds one 8px indentation step; branch arrows and reserved icon gutters are omitted.</p></div>
   <div class="component-board">
     <article>
       <span>Primary action</span>

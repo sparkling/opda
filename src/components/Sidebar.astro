@@ -1,8 +1,9 @@
 ---
 /**
- * Section sidebar — left rail with active page tracking and collapsible
- * nested folders. Renders at build time. The active page is derived from
- * Astro.url.pathname; folders containing the active page render as open.
+ * Section sidebar — left rail with active page tracking and nested folders.
+ * Renders at build time. The active page is derived from Astro.url.pathname;
+ * folders containing the active page render as open. Folder labels are links,
+ * so hierarchy disclosure follows navigation rather than separate controls.
  *
  * Renders nothing for URLs not in any section (e.g. top-level pages like
  * /glossary, /design-system, or the home page).
@@ -80,20 +81,6 @@ function containsActive(item: Item): boolean {
             {hasChildren ? (
               <>
                 <div class={`nav-group-row${isActivePage ? ' is-active-page' : ''}`}>
-                <button
-                  type="button"
-                  class="nav-group-toggle"
-                  aria-expanded={defaultOpen ? 'true' : 'false'}
-                  aria-controls={childrenId}
-                  aria-label={`${defaultOpen ? 'Collapse' : 'Expand'} ${group.heading}`}
-                  data-label={group.heading}
-                >
-                  <svg class="nav-group-caret" viewBox="0 0 24 24" fill="none"
-                       stroke="currentColor" stroke-width="2.25" stroke-linecap="round"
-                       stroke-linejoin="round" aria-hidden="true">
-                    <polyline points="9 18 15 12 9 6"/>
-                  </svg>
-                </button>
                   <a
                     class={`nav-group-link${isActiveLocation ? ' active' : ''}`}
                     href={group.url}
@@ -126,10 +113,3 @@ function containsActive(item: Item): boolean {
     </nav>
   </aside>
 )}
-
-{/* Recursive item — defined inline via a fragment script-style approach.
-    Astro doesn't let us define recursive components inline cleanly without
-    a separate file, so we delegate to SidebarItem.astro. */}
-<script>
-  // Reserved — see SidebarItem.astro for the recursive rendering.
-</script>

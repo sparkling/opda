@@ -365,13 +365,14 @@ test('destination cards use the shared compact card-title scale', async () => {
 });
 
 test('shared navigation exposes visible focus, state and 44px targets', async () => {
-  const [contentSource, shell, toc, client, header, sidebar, layout, base, navigation, search, components, tokens, pageMeta] = await Promise.all([
+  const [contentSource, shell, toc, client, header, sidebar, sidebarItem, layout, base, navigation, search, components, tokens, pageMeta] = await Promise.all([
     readFile(file('public/ui/design/content.css'), 'utf8'),
     readFile(file('public/ui/design/shell.css'), 'utf8'),
     readFile(file('public/ui/design/glossary-toc.css'), 'utf8'),
     readFile(file('public/ui/client.js'), 'utf8'),
     readFile(file('src/components/Header.astro'), 'utf8'),
     readFile(file('src/components/Sidebar.astro'), 'utf8'),
+    readFile(file('src/components/SidebarItem.astro'), 'utf8'),
     readFile(file('src/layouts/Layout.astro'), 'utf8'),
     readFile(file('public/ui/design/base.css'), 'utf8'),
     readFile(file('public/ui/design/navigation.css'), 'utf8'),
@@ -383,9 +384,13 @@ test('shared navigation exposes visible focus, state and 44px targets', async ()
   assert.match(contentSource, /heading-anchor:focus-visible[^}]*opacity:\s*1/su);
   assert.match(contentSource, /\.heading-anchor\s*\{[^}]*width:\s*var\(--target-min\)[^}]*min-height:\s*var\(--target-min\)/su);
   assert.match(shell, /\.app-sidebar a\s*\{[^}]*min-height:\s*var\(--target-min\)/su);
-  assert.match(shell, /\.tree-leaf > a\s*\{[^}]*padding-inline-start:\s*calc\(var\(--target-min\) \+ var\(--space-3\)\)/su);
-  assert.match(shell, /\.tree-folder\.is-open > \.tree-children\s*\{[^}]*margin-inline-start:\s*var\(--space-5\)[^}]*border-inline-start:/su);
+  assert.match(shell, /\.sidebar-nav\s*\{[^}]*--nav-tree-indent:\s*var\(--space-3\)/su);
+  assert.match(shell, /\.tree-leaf > a\s*\{[^}]*padding-inline-start:\s*var\(--space-3\)/su);
+  assert.match(shell, /\.tree-folder\.is-open > \.tree-children\s*\{[^}]*margin-inline-start:\s*var\(--nav-tree-indent\)[^}]*border-inline-start:/su);
   assert.match(shell, /\.tree-folder\.is-active-page > \.tree-folder-row\s*\{/u);
+  assert.doesNotMatch(sidebar, /nav-group-toggle|nav-group-caret/u);
+  assert.doesNotMatch(sidebarItem, /tree-toggle|tree-caret|<button/u);
+  assert.doesNotMatch(client, /querySelectorAll\('\.tree-toggle'\)|opda\.sidebar\./u);
   assert.doesNotMatch(shell, /\.nav-group\.has-emphasized-folders/u);
   assert.doesNotMatch(shell, /\.tree-children \.tree-children \.tree-leaf/u);
   assert.match(toc, /\.toc a\s*\{[^}]*min-height:\s*var\(--target-min\)/su);
@@ -514,8 +519,10 @@ test('text inherits its outer layout width instead of stacking nested measures',
   assert.match(navigation, /\.page-footer\s*\{[^}]*max-width:\s*var\(--content-max\)/su);
   assert.match(navigation, /\.page-footer\s*\{[^}]*border:\s*1px solid var\(--color-border\)/su);
   assert.match(content, /\.prose h2\s*\{[^}]*padding-top:\s*var\(--space-3\)[^}]*border-top:\s*1px solid var\(--color-border\)/su);
-  assert.match(navigation, /\.page-footer\s*\{[^}]*margin:\s*var\(--space-5\) auto 0/su);
-  assert.match(navigation, /\.page-footer::before\s*\{[^}]*top:\s*calc\(-1 \* var\(--space-4\)\)[^}]*border-top:\s*1px solid var\(--color-border\)/su);
+  assert.match(navigation, /\.page-footer\s*\{[^}]*--page-footer-gap-before-rule:\s*var\(--space-5\)[^}]*--page-footer-gap-after-rule:\s*var\(--space-5\)/su);
+  assert.match(navigation, /\.document-flow[^}]*\{[^}]*--page-footer-gap-before-rule:\s*var\(--space-2\)/su);
+  assert.match(navigation, /\.page-footer::before\s*\{[^}]*top:\s*calc\(-1 \* var\(--page-footer-gap-after-rule\)\)[^}]*border-top:\s*1px solid var\(--color-border\)/su);
+  assert.match(await readFile(file('src/components/property-pack/PropertyPackPage.astro'), 'utf8'), /class="v2-doc document-flow"/u);
   assert.match(publicEntry, /\.public-footer\s*\{[^}]*font:\s*400 var\(--text-caption\) \/ 1\.4 var\(--font-sans\)/su);
 
   const contentWithoutOuterMeasures = content

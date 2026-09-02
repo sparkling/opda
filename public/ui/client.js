@@ -228,64 +228,6 @@
       });
     }
 
-    if (aside) {
-      aside.querySelectorAll('.tree-toggle').forEach(function (btn) {
-        btn.addEventListener('click', function (e) {
-          e.stopPropagation();
-          const li = btn.closest('.tree-folder');
-          if (!li) return;
-          const opening = !li.classList.contains('is-open');
-          li.classList.toggle('is-open', opening);
-          btn.setAttribute('aria-expanded', opening ? 'true' : 'false');
-          btn.setAttribute('aria-label', (opening ? 'Collapse ' : 'Expand ') + btn.dataset.label);
-        });
-      });
-    }
-
-    if (aside) {
-      const sectionKey = aside.querySelector('.sidebar-nav')?.getAttribute('data-section');
-      if (sectionKey) {
-        const groups = Array.from(aside.querySelectorAll('.nav-group'));
-        const activeGroup = groups.find(function (group) { return group.dataset.active === 'true'; });
-        let restoredGroup = false;
-        groups.forEach(function (group) {
-          const groupName = group.getAttribute('data-group');
-          const button = group.querySelector(':scope > .nav-group-row > .nav-group-toggle');
-          if (!groupName || !button) return;
-          const storageKey = 'opda.sidebar.' + sectionKey + '.' + groupName;
-          const setGroup = function (open) {
-            group.classList.toggle('is-open', open);
-            button.setAttribute('aria-expanded', String(open));
-            button.setAttribute('aria-label', (open ? 'Collapse ' : 'Expand ') + button.dataset.label);
-          };
-          try {
-            const saved = localStorage.getItem(storageKey);
-            if (group.dataset.active === 'true') setGroup(true);
-            else if (saved === 'closed') setGroup(false);
-            else if (!activeGroup && !restoredGroup && saved === 'open') {
-              setGroup(true);
-              restoredGroup = true;
-            } else setGroup(false);
-          } catch (e) {}
-          button.addEventListener('click', function () {
-            const open = !group.classList.contains('is-open');
-            if (open) {
-              groups.forEach(function (other) {
-                if (other === group) return;
-                const otherButton = other.querySelector(':scope > .nav-group-row > .nav-group-toggle');
-                if (!otherButton) return;
-                other.classList.remove('is-open');
-                otherButton.setAttribute('aria-expanded', 'false');
-                otherButton.setAttribute('aria-label', 'Expand ' + otherButton.dataset.label);
-                try { localStorage.setItem('opda.sidebar.' + sectionKey + '.' + other.dataset.group, 'closed'); } catch (e) {}
-              });
-            }
-            setGroup(open);
-            try { localStorage.setItem(storageKey, open ? 'open' : 'closed'); } catch (e) {}
-          });
-        });
-      }
-    }
   }
 
   // ── Heading anchors ─────────────────────────────────────────────────────

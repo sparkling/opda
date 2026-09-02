@@ -98,12 +98,14 @@ test('desktop sidebar and nested tree controls work', async ({ page }) => {
   await expect(toc.locator('ul')).toHaveCSS('opacity', '1');
 
   await visit(page, `${PDTF1_ROUTES.original}/schema`);
-  const activeTrigger = page.locator('.tree-toggle[data-label="JSON Schemas and overlays"]');
-  const unrelatedTrigger = page.locator('.tree-toggle[data-label="Implementation guidance"]');
-  await expect(activeTrigger).toHaveAttribute('aria-expanded', 'true');
-  await expect(unrelatedTrigger).toHaveAttribute('aria-expanded', 'false');
-  await unrelatedTrigger.click();
-  await expect(unrelatedTrigger).toHaveAttribute('aria-expanded', 'true');
+  const activeFolder = page.locator('.tree-folder:has(> .tree-folder-row > a)', { hasText: 'JSON Schemas and overlays' }).first();
+  const unrelatedFolder = page.locator('.tree-folder:has(> .tree-folder-row > a)', { hasText: 'Implementation guidance' }).first();
+  await expect(activeFolder).toHaveClass(/is-open/u);
+  await expect(unrelatedFolder).not.toHaveClass(/is-open/u);
+  await expect(page.locator('.tree-toggle, .nav-group-toggle')).toHaveCount(0);
+  await unrelatedFolder.locator(':scope > .tree-folder-row > a').click();
+  await expect(page).toHaveURL(new RegExp(`${PDTF1_ROUTES.original}/implementation/?$`, 'u'));
+  await expect(page.locator('.tree-folder:has(> .tree-folder-row > a)', { hasText: 'Implementation guidance' }).first()).toHaveClass(/is-open/u);
   clean();
 });
 
@@ -126,13 +128,8 @@ test('mobile section drawer returns focus on Escape', async ({ page }) => {
   await page.keyboard.press('Shift+Tab');
   await expect(last).toBeFocused();
   const category = sidebar.locator('.nav-group[data-group="Understand ontologies"]');
-  const toggle = category.locator('.nav-group-toggle');
   const categoryLink = category.locator('a[href="/semantic-modelling/why-ontologies"]');
-  const before = page.url();
-  await toggle.click();
-  expect(page.url()).toBe(before);
-  await expect(toggle).toHaveAttribute('aria-expanded', 'false');
-  await toggle.click();
+  await expect(category.locator('.nav-group-toggle')).toHaveCount(0);
   await page.keyboard.press('Escape');
   await expect(sidebar).not.toHaveClass(/open/);
   await expect(opener).toHaveAttribute('aria-expanded', 'false');
@@ -154,21 +151,13 @@ test('mobile PDTF ontology hierarchy keeps folder labels linked and keyboard ord
   await opener.click();
 
   const branch = sidebar.locator(`.tree-folder:has(> .tree-folder-row > a[href="${PDTF1_ROUTES.terms}"])`);
-  const toggle = branch.locator(':scope > .tree-folder-row > .tree-toggle');
   const link = branch.locator(':scope > .tree-folder-row > .tree-folder-link');
   await expect(branch).toHaveClass(/is-open/u);
-  await expect(toggle).toHaveAttribute('aria-expanded', 'true');
-  const targets = await Promise.all([toggle, link].map((locator) => locator.boundingBox()));
-  for (const target of targets) expect(target.height).toBeGreaterThanOrEqual(44);
-
-  await toggle.focus();
-  await page.keyboard.press('Tab');
-  await expect(link).toBeFocused();
-  const before = page.url();
-  await toggle.focus();
-  await page.keyboard.press('Space');
-  expect(page.url()).toBe(before);
-  await expect(toggle).toHaveAttribute('aria-expanded', 'false');
+  await expect(branch.locator('.tree-toggle')).toHaveCount(0);
+  expect((await link.boundingBox()).height).toBeGreaterThanOrEqual(44);
+  await link.focus();
+  await page.keyboard.press('Enter');
+  await expect(page).toHaveURL(new RegExp(`${PDTF1_ROUTES.terms}/?$`, 'u'));
   await assertNoBodyOverflow(page);
 
   await page.keyboard.press('Escape');
