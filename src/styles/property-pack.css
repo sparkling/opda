@@ -52,7 +52,7 @@
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(16rem, 1fr));
   gap: var(--v2-gap);
-  margin: var(--space-5) 0 var(--space-7);
+  margin: var(--space-5) 0;
 }
 
 .v2-card-grid--artefacts { grid-template-columns: repeat(3, minmax(0, 1fr)); }
