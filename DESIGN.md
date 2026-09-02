@@ -242,7 +242,7 @@ roles retain their labels and structural borders, and controls, tables and diagr
 
 ## 8. Application shell and homepage
 
-The desktop header is 140px, `#131224`, and has three rows: a linked mini “Open Property Data Association” lock-up with a bottom-aligned yellow icon,
+The desktop header is 132px, `#131224`, and has three rows: a linked mini “Open Property Data Association” lock-up with a bottom-aligned yellow icon,
 the linked larger “Smart Property Data Framework” heading, then the global destination tabs. The title, subheading and first global-navigation label
 follow the main content gutter and centred maximum-width axis. The desktop utility controls sit one line above their former position, flush with the
 top and the header's physical right edge. A house icon provides an additional labelled home action beside search; both header headings also link home.
@@ -250,8 +250,8 @@ The yellow primary working-group action finishes on the content track's right ed
 text. The desktop navigation track is 52px high and ends at the unchanged divider; the button aligns to its top, leaving 8px of structural clearance
 below without clipping, transforms or an inset surface. Destination labels retain their 44px targets at the bottom of the same track. There is no
 separate top-left logo cell in this shell. The mini title lock-up consumes the shared relative icon, gap, alignment and colour contract. The shorter
-desktop masthead uses natural grid flow with no negative margins; the framework heading, navigation row, divider and page shell sit upward in that
-retaining the mini lock-up's established position. Navigation is DM Sans; the current item has a 4px amber underline and `aria-current`. At 96rem and
+desktop masthead uses natural grid flow with no negative margins; the framework heading, navigation row, divider and page shell are eight pixels
+higher while retaining the mini lock-up's established position. Navigation is DM Sans; the current item has a 4px amber underline and `aria-current`. At 96rem and
 below, the header returns to its compact 64px disclosure pattern. A skip link is the first focusable element. The light/dark control is one shared
 Astro component on the application shell, homepage and join page. Its 44px target is borderless, square and transparent in every context; it inherits
 the surrounding foreground colour while the shared theme state determines which icon is visible. The quiet divider below the global tabs spans the
