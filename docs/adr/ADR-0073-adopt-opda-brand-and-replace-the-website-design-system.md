@@ -259,8 +259,8 @@ Privacy and Accessibility use the same muted colour and regular weight as plain
 footer text rather than the emphasis reserved for the organisation and delivery credit.
 
 On 2 September 2026 the global working-group CTA returned to the standard full-height
-44px button. The desktop navigation track grows to 60px above its unchanged divider;
-the CTA aligns to the track's top and keeps 16px clearance below. The former inset
+44px button. The desktop navigation track initially grew to 60px above its unchanged divider;
+the CTA aligned to the track's top with 16px clearance below. The former inset
 surface and compensating label padding are removed, so no visible height is lost.
 
 Later on 1 September 2026, the documentation-shell rail contract was clarified: the section
@@ -286,11 +286,21 @@ identifies the current page. The Property Pack candidate control
 uses a shared Lucide `MessageCircle` outline with an italic information glyph in a borderless 44px target, avoiding a misleading approval symbol or a
 second visible enclosure. The global navigation row and divider retain their original 44px geometry and position. The working-group
 action remains fully visible and aligned with the destination labels; it returns to normal flow in the compact disclosure. Pages without navigable
-breadcrumb ancestors render no breadcrumb region and remove the article's duplicate upper inset. The desktop masthead is 140px high: a 12px negative lower margin keeps the mini organisation lock-up fixed while the framework heading, navigation row, divider and page shell sit four pixels below the preceding iteration.
+breadcrumb ancestors render no breadcrumb region and remove the article's duplicate upper inset. The desktop masthead is 132px high and uses natural grid flow with no negative margins. The mini organisation lock-up and framework heading retain their established positions while the 52px navigation track, divider and page shell sit eight pixels higher than the preceding iteration.
 The working-group action uses the design system's standard yellow primary `.btn` together with its shared inset-surface template. The complete 44px target remains aligned while the yellow surface clears the divider by eight pixels, and the shared template centres its label within that visible surface through internal padding; the header class controls placement only and does not override colour, border, typography, padding or interaction states.
 On 2 September 2026 the organisation lock-up became the smaller identifier above the larger framework heading. A shared mini lock-up variant sets one typography scale; the existing relative icon width and gap scale the complete component without header-specific image dimensions.
 Both headings link to the site root, and the top-right utility group includes a labelled house icon as a third route home without adding another text action to the global destination row.
 The application header, homepage and join page render the same shared `ThemeToggle` component. Its design-system rule provides one borderless, transparent 44px target that inherits the foreground colour of its surface; pages no longer duplicate its SVG or override its border and background locally. The application-header utility group sits one line higher, flush with the masthead top, while campaign-page controls retain their hero-header placement.
+
+Later on 2 September 2026 the documentation rhythm became a direct-child flow
+contract. Ordinary `.prose` articles and Property Pack `.v2-doc` pages now make
+each following direct block responsible for its block-start separation; preceding
+blocks carry no trailing external margin. This removes accumulated card-grid,
+table, diagram and callout spacing while allowing those components to occur
+anywhere in a section. Standard flow is 16px; an H2 divider owns a 16px gap
+before its rule and 24px of internal rule-to-heading padding. Components retain
+only their internal spacing. ODR detail pages keep their intentionally distinct
+Markdown reading rhythm.
 
 ### Brand conflict resolution
 

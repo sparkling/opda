@@ -277,6 +277,24 @@ test('reader pages delegate local contents navigation to the shared right rail',
   assert.match(client, /toc\.setAttribute\('aria-label', 'On this page'\)/u);
 });
 
+test('documentation flow has one direct-child spacing owner', async () => {
+  const [contract, content, propertyPack, designSystem, adr] = await Promise.all([
+    readFile(file('DESIGN.md'), 'utf8'),
+    readFile(file('public/ui/design/content.css'), 'utf8'),
+    readFile(file('src/styles/property-pack.css'), 'utf8'),
+    readFile(file('src/pages/design-system.astro'), 'utf8'),
+    readFile(file('docs/adr/ADR-0073-adopt-opda-brand-and-replace-the-website-design-system.md'), 'utf8'),
+  ]);
+  assert.match(contract, /Documentation flow has one owner/u);
+  assert.match(adr, /documentation rhythm became a direct-child flow contract/u);
+  assert.match(designSystem, /<h2 id="document-flow">Document flow<\/h2>/u);
+  assert.match(content, /#main-content \.prose:not\(\.odr-detail\) > \* \{ margin-block:\s*0; \}/u);
+  assert.match(content, /#main-content \.prose:not\(\.odr-detail\) > \* \+ \* \{ margin-block-start:\s*var\(--space-4\); \}/u);
+  assert.match(content, /#main-content \.prose:not\(\.odr-detail\) > h2\s*\{[\s\S]*?margin-block-start:\s*var\(--space-5\)/u);
+  assert.match(propertyPack, /#main-content \.prose \.v2-doc > \* \{ margin-block:\s*0; \}/u);
+  assert.match(propertyPack, /#main-content \.prose \.v2-doc > \* \+ \* \{ margin-block-start:\s*var\(--space-4\); \}/u);
+});
+
 test('breadcrumbs use the documented linked-ancestor navigation role', async () => {
   const [contract, navigation, breadcrumb, propertyPack, propertyPackPage, layout] = await Promise.all([
     readFile(file('DESIGN.md'), 'utf8'),

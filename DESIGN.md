@@ -192,6 +192,17 @@ tabular-nums`. Do not introduce arbitrary type sizes. Fallback fonts are loading
 display/body/mono roles, remain readable while web fonts swap, and must not reintroduce the superseded Fraunces/Inter prototype system as a live
 alternative.
 
+Documentation flow has one owner. In ordinary `.prose` articles and Property Pack
+`.v2-doc` pages, each direct following block owns only its `margin-block-start`;
+the preceding block owns no trailing external margin. This makes the gap stable
+whether the preceding element is prose, a list, a card grid, a table, a diagram,
+a callout or the final element in a section. The standard direct-child gap is
+16px; an H2 divider owns a 16px block-start gap and 24px internal padding from
+its rule to its heading. H3 and H4 use their own documented block-start steps.
+Components may own internal layout spacing, but must not create separation from
+an unknown next sibling. ODR detail pages retain their separately scoped,
+Markdown-specific reading rhythm.
+
 ## 6. Space, shape and elevation
 
 Spacing tokens are 2, 4, 8, 12, 16, 24, 32, 48, 64 and 96px. Components align to the 4px base except optical type adjustments.
@@ -236,10 +247,10 @@ the linked larger “Smart Property Data Framework” heading, then the global d
 follow the main content gutter and centred maximum-width axis. The desktop utility controls sit one line above their former position, flush with the
 top and the header's physical right edge. A house icon provides an additional labelled home action beside search; both header headings also link home.
 The yellow primary working-group action finishes on the content track's right edge. It uses the standard full-height 44px button with centred label
-text. The desktop navigation track is 60px high and ends at the unchanged divider; the button aligns to its top, leaving 16px of structural clearance
+text. The desktop navigation track is 52px high and ends at the unchanged divider; the button aligns to its top, leaving 8px of structural clearance
 below without clipping, transforms or an inset surface. Destination labels retain their 44px targets at the bottom of the same track. There is no
 separate top-left logo cell in this shell. The mini title lock-up consumes the shared relative icon, gap, alignment and colour contract. The shorter
-desktop masthead and a 12px negative lower margin on the mini lock-up move the framework heading, navigation row, divider and page shell upward while
+desktop masthead uses natural grid flow with no negative margins; the framework heading, navigation row, divider and page shell sit upward in that
 retaining the mini lock-up's established position. Navigation is DM Sans; the current item has a 4px amber underline and `aria-current`. At 96rem and
 below, the header returns to its compact 64px disclosure pattern. A skip link is the first focusable element. The light/dark control is one shared
 Astro component on the application shell, homepage and join page. Its 44px target is borderless, square and transparent in every context; it inherits
@@ -321,7 +332,7 @@ dark parity.
   500 at the base 16px role with a 24px line-height, 44px link targets and link-coloured decorative chevrons aligned to the label baseline.
   They use a smaller lower inset to connect the hierarchy to the page title.
 - **Header action:** the shared 44px primary working-group button aligns to the content-right edge.
-  Its 60px desktop navigation track leaves 16px beneath the full visible button without an inset
+  Its 52px desktop navigation track leaves 8px beneath the full visible button without an inset
   surface, clipping or positional override; the compact disclosure returns it to normal flow.
 - **Header utilities:** familiar single-purpose destinations may use 20px icons in 44px targets, with an accessible name and tooltip. On desktop the group has no trailing inset, ends on the header's physical right edge and retains 16px above it. The theme icon has no visible border or box; icons never replace the CTA label.
 - **Organisation heading:** the unchanged yellow icon plus the full organisation name in one unbroken line of live DM Sans text; use strong ink on light and the inverse treatment on dark.

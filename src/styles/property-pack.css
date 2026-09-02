@@ -429,3 +429,24 @@ a.v2-card:focus-visible { border-color: var(--color-data-1); }
   .v2-doc *::before,
   .v2-doc *::after { scroll-behavior: auto !important; transition: none !important; animation: none !important; }
 }
+
+/*
+   PROPERTY PACK DOCUMENT FLOW
+
+   Mirrors the shared prose contract. The page grid owns separation between
+   direct children. A card grid, table wrapper or data control may occur in
+   the middle or at the end of a section, so it owns no trailing margin.
+*/
+#main-content .prose .v2-doc > * { margin-block: 0; }
+#main-content .prose .v2-doc > * + * { margin-block-start: var(--space-4); }
+#main-content .prose .v2-doc > :is(h1, h2, h3, h4) + * { margin-block-start: var(--space-3); }
+#main-content .prose .v2-doc > h1 + .lead { margin-block-start: var(--space-4); }
+#main-content .prose .v2-doc > h2 {
+  margin-block-start: var(--space-5);
+  margin-block-end: 0;
+}
+#main-content .prose .v2-doc > :is(h3, h4) {
+  margin-block-start: var(--space-6);
+  margin-block-end: 0;
+}
+#main-content .prose .v2-doc > :is(h1, .property-pack-resource-title):first-of-type { margin-block: 0; }
