@@ -1,7 +1,7 @@
 ---
 status: implemented
 date: 2026-06-30
-updated: 2026-09-01
+updated: 2026-09-02
 tags: [ontology, visualization, mermaid, class-diagram, cross-section, subclassof, accessibility, astro]
 supersedes: []
 depends-on: [ADR-0043, ADR-0044, ADR-0048, ODR-0027, ODR-0034]
@@ -42,6 +42,8 @@ Chosen option **A**, in two parts.
 `sectionDiagram()` now walks **both** `outgoing` and `incoming` object properties, so a cross-section link is drawn in **both** endpoints' sections. A class owned by another section renders as a **`:::xsection`** node — a new palette entry in `public/ui/client.js` `cagleClassDefs` (dark + light, `stroke-dasharray`) giving a **dashed border + muted blue-grey fill** — with its owning **"(Section name)"** on a second line (`Name<br/>(Section)`), and the connector itself is dashed (`-.->`). In-section edges stay solid (`-->`). This is purely presentational — no TTL/model change — so the byte-identity, doc-drift, and graph-drift gates are unaffected.
 
 **Verified:** `make build` (1635 pages, exit 0) emits 25 `:::xsection` nodes + 25 `(Section)` sublabels; `make test` 29/29; browser render of the Foundation section confirms the dashed "(Agents & roles)" `Proprietor`/`Person`/`Organisation` nodes via dashed `mediates`/`founds`/`plays`/`playedBy` connectors, no Mermaid parse errors. Effect: every **non-orphan** class now shows ≥1 edge in its own section (de-orphans the section-local-only classes — `EPCCertificate`, `MonetaryAmount`, `RoomDimension`, `Address`, …). The 18 *global* orphans (zero object-property edges anywhere) are unaffected — they are addressed by Part 2.
+
+<a id="part-2--rdfssubclassof-render-layer-decided-session-051-q6-70-for-pending" aria-hidden="true"></a>
 
 ### Part 2 — `rdfs:subClassOf` render layer (implemented 2026-06-30; shared toggle completed 2026-09-01)
 
