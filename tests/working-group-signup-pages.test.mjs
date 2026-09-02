@@ -218,6 +218,7 @@ test('knowledge-base and standalone page families expose their required footer l
   assert.match(publicCss, /grid-template-areas:\s*'credit brand links'/u);
   assert.match(publicCss, /\.public-footer__credit\s*\{[^}]*justify-self:\s*start[^}]*text-align:\s*left/su);
   assert.match(publicCss, /\.public-footer__links\s*\{[^}]*justify-self:\s*end[^}]*justify-content:\s*flex-end/su);
+  assert.match(publicCss, /\.public-footer__links a\s*\{[^}]*font-weight:\s*400/su);
   for (const owner of [layout, homepage]) {
     assert.match(owner, /import SiteFooter from '@\/components\/SiteFooter\.astro'/u);
     assert.match(owner, /<SiteFooter\s*\/>/u);

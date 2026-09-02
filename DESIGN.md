@@ -311,6 +311,8 @@ navigation rails on the root landing, every route using the shared `Layout`, and
 public-service family. It carries privacy and accessibility exits, a centred linked OPDA icon-and-name
 lock-up to the Association website, plus the linked Sparkling Ideas credit.
 The left-aligned Sparkling Ideas credit and right-aligned footer links sit directly on the shared content edges; the centred OPDA lock-up remains on the page axis and the footer gutter adds no secondary inner inset at desktop widths.
+Privacy and Accessibility use regular-weight footer link text; organisation and
+delivery-credit emphasis remain distinct.
 Previous/next navigation follows the article and precedes the comments divider.
 It retains its bordered bar and adds a separate full-track divider in the existing
 gap above it. The bar sits one `--space-6` from both the upper divider and the

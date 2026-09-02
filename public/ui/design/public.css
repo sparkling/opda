@@ -208,6 +208,7 @@
   font-weight: 700;
   text-decoration: none;
 }
+.public-footer__links a { font-weight: 400; }
 .public-footer a:hover { color: var(--color-link-hover); }
 .public-footer__credit a {
   min-height: 0;
