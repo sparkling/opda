@@ -283,7 +283,7 @@ lock-up with a bottom-aligned yellow icon, the linked larger “Smart Property D
 destination tabs. The title, subheading and first global-navigation label follow the main content gutter and centred
 maximum-width axis. The desktop utility controls sit one line above their former position, flush with the top and the header's physical right
 edge. A house icon provides an additional labelled home action beside search; both header headings also link home.
-The yellow primary working-group action finishes on the content track's right edge. It uses the shared inset-button template so its complete 44px target remains aligned while its standard yellow surface clears the divider by 8px. The action and destination labels share
+The yellow primary working-group action finishes on the content track's right edge. It uses the shared inset-button template so its complete 44px target remains aligned while its standard yellow surface clears the divider by 8px; the template centres the label within that visible surface using internal padding. The action and destination labels share
 a 44px target size inside one unshifted row whose divider retains the established position. There is no separate top-left logo cell in this
 shell. The mini title lock-up consumes the shared relative icon, gap, alignment and colour contract. The shorter desktop masthead and a 12px negative lower margin on the mini lock-up move the framework heading, navigation row, divider and page shell upward while retaining the mini lock-up's established position.
 Navigation is DM Sans; the current item has a 4px amber

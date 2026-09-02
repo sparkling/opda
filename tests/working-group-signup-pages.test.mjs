@@ -119,6 +119,7 @@ test('global header promotes the canonical working-group sign-up route', async (
   assert.match(contentCss, /\.btn\s*\{[^}]*background:\s*var\(--brand\)[^}]*color:\s*var\(--color-action-primary-text\)[^}]*border:\s*1px solid var\(--brand-yellow\)/su);
   assert.match(contentCss, /\.btn--inset-end::before\s*\{[^}]*inset:\s*var\(--button-surface-inset-start\) 0 var\(--button-surface-inset-end\)[^}]*border:\s*1px solid var\(--brand-yellow\)[^}]*background:\s*var\(--brand\)/su);
   assert.match(contentCss, /\.btn--inset-end > :where\(span, svg\)\s*\{[^}]*position:\s*relative;[^}]*z-index:\s*1;/su);
+  assert.match(contentCss, /\.btn--inset-end > span\s*\{[^}]*padding-block-end:\s*calc\(var\(--button-surface-inset-end\) - var\(--button-surface-inset-start\)\)/su);
   assert.match(baseCss, /@media \(max-width: 96rem\)[\s\S]*?\.global-nav a\.header-cta\s*\{[^}]*align-self:\s*center[^}]*\}/u);
   assert.match(baseCss, /\.app-header__utilities\s*\{[^}]*grid-area:\s*utilities/su);
   assert.match(baseCss, /@media \(max-width: 96rem\)\s*\{[\s\S]*\.app-header\.primary-nav-open \.global-nav-panel\s*\{\s*display:\s*block;/su);
