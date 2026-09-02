@@ -111,8 +111,8 @@ test('global header promotes the canonical working-group sign-up route', async (
   assert.match(header, /href="https:\/\/github\.com\/sparkling\/opda"\s+class="header-icon-link"[\s\S]*?aria-label="GitHub"\s+title="GitHub"[\s\S]*?<svg[\s\S]*?aria-hidden="true"/u);
   assert.doesNotMatch(header, />Search<\/a>|>GitHub<\/a>/u);
   assert.match(baseCss, /\.app-header \.header-nav a\.header-icon-link\s*\{[^}]*width:\s*var\(--target-min\)[^}]*justify-content:\s*center/su);
-  assert.match(baseCss, /\.app-header\s*\{[^}]*grid-template-rows:\s*auto auto calc\(var\(--target-min\) \+ var\(--space-5\)\)/su);
-  assert.match(baseCss, /\.global-nav-panel\s*\{[^}]*height:\s*calc\(var\(--target-min\) \+ var\(--space-5\)\)/su);
+  assert.match(baseCss, /\.app-header\s*\{[^}]*grid-template-rows:\s*auto auto calc\(var\(--target-min\) \+ var\(--space-3\)\)/su);
+  assert.match(baseCss, /\.global-nav-panel\s*\{[^}]*height:\s*calc\(var\(--target-min\) \+ var\(--space-3\)\)/su);
   assert.match(baseCss, /\.app-header \.global-nav\s*\{[^}]*align-items:\s*flex-end/su);
   assert.match(baseCss, /\.app-header \.global-nav a\.header-cta\s*\{[^}]*align-self:\s*flex-start[^}]*justify-content:\s*flex-start[^}]*margin-left:\s*var\(--space-2\)[^}]*\}/su);
   assert.doesNotMatch(baseCss, /a\.header-cta[^}]*\b(?:background|border(?:-color)?|color|font-weight):/su);
