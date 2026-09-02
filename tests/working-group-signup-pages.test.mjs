@@ -99,11 +99,11 @@ test('global header promotes the canonical working-group sign-up route', async (
   const primaryStart = header.indexOf('<nav class="global-nav"');
   const primaryEnd = header.indexOf('</nav>', primaryStart);
   const utilitiesStart = header.indexOf('<nav class="header-nav"');
-  const cta = header.indexOf('class="header-cta btn btn--inset-end"');
+  const cta = header.indexOf('class="header-cta btn"');
   assert.ok(primaryStart >= 0 && cta > primaryStart && cta < primaryEnd);
   assert.ok(utilitiesStart < primaryStart);
   assert.match(header, /const joinHref = currentPath === '\/join' \? '#register' : '\/join'/u);
-  assert.match(header, /<a href=\{joinHref\} class="header-cta btn btn--inset-end"><span>Join a working group<\/span><\/a>/u);
+  assert.match(header, /<a href=\{joinHref\} class="header-cta btn">Join a working group<\/a>/u);
   assert.match(header, /<ThemeToggle\s*\/>/u);
   assert.match(themeToggle, /class="theme-toggle"[\s\S]*aria-label="Switch to dark mode"[\s\S]*class="theme-icon theme-icon--sun"[\s\S]*class="theme-icon theme-icon--moon"/u);
   assert.match(header, /href="\/" class=\{`header-icon-link\$\{isHomePage[\s\S]*?aria-label="Home"[\s\S]*?aria-current=\{isHomePage \? 'page' : undefined\}[\s\S]*?title="Home"[\s\S]*?<svg[\s\S]*?aria-hidden="true"/u);
@@ -111,15 +111,15 @@ test('global header promotes the canonical working-group sign-up route', async (
   assert.match(header, /href="https:\/\/github\.com\/sparkling\/opda"\s+class="header-icon-link"[\s\S]*?aria-label="GitHub"\s+title="GitHub"[\s\S]*?<svg[\s\S]*?aria-hidden="true"/u);
   assert.doesNotMatch(header, />Search<\/a>|>GitHub<\/a>/u);
   assert.match(baseCss, /\.app-header \.header-nav a\.header-icon-link\s*\{[^}]*width:\s*var\(--target-min\)[^}]*justify-content:\s*center/su);
-  assert.match(baseCss, /\.app-header \.global-nav a\.header-cta\s*\{[^}]*align-self:\s*flex-end[^}]*justify-content:\s*flex-start[^}]*margin-left:\s*var\(--space-2\)[^}]*\}/su);
+  assert.match(baseCss, /\.app-header\s*\{[^}]*grid-template-rows:\s*auto auto calc\(var\(--target-min\) \+ var\(--space-2\)\)/su);
+  assert.match(baseCss, /\.global-nav-panel\s*\{[^}]*height:\s*calc\(var\(--target-min\) \+ var\(--space-2\)\)/su);
+  assert.match(baseCss, /\.app-header \.global-nav\s*\{[^}]*align-items:\s*flex-end/su);
+  assert.match(baseCss, /\.app-header \.global-nav a\.header-cta\s*\{[^}]*align-self:\s*flex-start[^}]*justify-content:\s*flex-start[^}]*margin-left:\s*var\(--space-2\)[^}]*\}/su);
   assert.doesNotMatch(baseCss, /a\.header-cta[^}]*\b(?:background|border(?:-color)?|color|font-weight):/su);
   assert.doesNotMatch(baseCss, /a\.header-cta[^}]*(?:translate|transform|margin-block):/su);
   assert.match(contentCss, /\.btn--outline-dark\s*\{[^}]*border-color:\s*var\(--brand-white\)[^}]*background:\s*transparent[^}]*color:\s*var\(--brand-white\)/su);
-  assert.match(contentCss, /\.btn--inset-end\s*\{[^}]*--button-surface-inset-start:\s*var\(--space-1\)[^}]*--button-surface-inset-end:\s*var\(--space-3\)[^}]*border-color:\s*transparent/su);
   assert.match(contentCss, /\.btn\s*\{[^}]*background:\s*var\(--brand\)[^}]*color:\s*var\(--color-action-primary-text\)[^}]*border:\s*1px solid var\(--brand-yellow\)/su);
-  assert.match(contentCss, /\.btn--inset-end::before\s*\{[^}]*inset:\s*var\(--button-surface-inset-start\) 0 var\(--button-surface-inset-end\)[^}]*border:\s*1px solid var\(--brand-yellow\)[^}]*background:\s*var\(--brand\)/su);
-  assert.match(contentCss, /\.btn--inset-end > :where\(span, svg\)\s*\{[^}]*position:\s*relative;[^}]*z-index:\s*1;/su);
-  assert.match(contentCss, /\.btn--inset-end > span\s*\{[^}]*padding-block-end:\s*calc\(var\(--button-surface-inset-end\) - var\(--button-surface-inset-start\)\)/su);
+  assert.doesNotMatch(contentCss, /btn--inset-end/u);
   assert.match(baseCss, /@media \(max-width: 96rem\)[\s\S]*?\.global-nav a\.header-cta\s*\{[^}]*align-self:\s*center[^}]*\}/u);
   assert.match(baseCss, /\.app-header__utilities\s*\{[^}]*grid-area:\s*utilities/su);
   assert.match(baseCss, /@media \(max-width: 96rem\)\s*\{[\s\S]*\.app-header\.primary-nav-open \.global-nav-panel\s*\{\s*display:\s*block;/su);
@@ -218,7 +218,8 @@ test('knowledge-base and standalone page families expose their required footer l
   assert.match(publicCss, /grid-template-areas:\s*'credit brand links'/u);
   assert.match(publicCss, /\.public-footer__credit\s*\{[^}]*justify-self:\s*start[^}]*text-align:\s*left/su);
   assert.match(publicCss, /\.public-footer__links\s*\{[^}]*justify-self:\s*end[^}]*justify-content:\s*flex-end/su);
-  assert.match(publicCss, /\.public-footer__links a\s*\{[^}]*font-weight:\s*400/su);
+  assert.match(publicCss, /\.public-footer__links a\s*\{[^}]*color:\s*var\(--color-text-muted\)[^}]*font-weight:\s*400/su);
+  assert.match(publicCss, /:root\[data-theme='dark'\] \.public-footer__links a\s*\{[^}]*color:\s*var\(--neutral-400\)/su);
   for (const owner of [layout, homepage]) {
     assert.match(owner, /import SiteFooter from '@\/components\/SiteFooter\.astro'/u);
     assert.match(owner, /<SiteFooter\s*\/>/u);

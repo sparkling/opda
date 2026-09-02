@@ -255,8 +255,13 @@ lock-up to the Association website, and the linked Sparkling Ideas credit. The s
 hero adds the existing transparent button variant for its OPDA return control; the
 full-screen working-group deck remains outside shared site furniture.
 The footer's left credit and right links align directly to the shared content edges, removing the former additional 32px inner gutter while retaining the centred OPDA lock-up and minimum narrow-screen inset.
-Privacy and Accessibility use regular-weight footer links rather than the bold
-weight reserved for the organisation and delivery credit.
+Privacy and Accessibility use the same muted colour and regular weight as plain
+footer text rather than the emphasis reserved for the organisation and delivery credit.
+
+On 2 September 2026 the global working-group CTA returned to the standard full-height
+44px button. The desktop navigation track grows to 52px above its unchanged divider;
+the CTA aligns to the track's top and keeps 8px clearance below. The former inset
+surface and compensating label padding are removed, so no visible height is lost.
 
 Later on 1 September 2026, the documentation-shell rail contract was clarified: the section
 navigation and page-contents rail use the same 240px desktop width and alternate surface, with
