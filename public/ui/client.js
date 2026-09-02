@@ -305,19 +305,7 @@
   function renderToc() {
     const article = document.querySelector('.prose');
     if (!article) return;
-    const usedIds = new Set(Array.from(document.querySelectorAll('[id]'), function (node) { return node.id; }));
-    const headings = Array.from(article.querySelectorAll('h2, h3, h4')).filter(function (heading) {
-      if (heading.id) return true;
-      const base = heading.textContent.trim().toLowerCase()
-        .replace(/[^a-z0-9]+/g, '-')
-        .replace(/^-+|-+$/g, '') || 'section';
-      let id = base;
-      let suffix = 2;
-      while (usedIds.has(id)) id = base + '-' + suffix++;
-      heading.id = id;
-      usedIds.add(id);
-      return true;
-    });
+    const headings = Array.from(article.querySelectorAll('h2[id], h3[id], h4[id]'));
     if (!headings.length) return;
 
     const toc = document.createElement('aside');

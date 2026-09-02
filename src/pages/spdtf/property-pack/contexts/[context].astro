@@ -107,7 +107,7 @@ function semanticHomeLabel(row) {
     if (!selected.length) return null;
     return (
       <section>
-        <h3>{kindLabels[kind]}s ({selected.length})</h3>
+        <h3 id={`resources-${kind}`}>{kindLabels[kind]}s ({selected.length})</h3>
         <div class="v2-table-wrap">
           <table>
             <thead><tr><th>Label</th><th>Definition</th><th>Domain</th><th>Range</th><th>Evidence traces</th></tr></thead>

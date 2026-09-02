@@ -275,7 +275,8 @@ test('reader pages delegate local contents navigation to the shared right rail',
 
   const client = await readFile(file('public/ui/client.js'), 'utf8');
   assert.match(client, /toc\.setAttribute\('aria-label', 'On this page'\)/u);
-  assert.match(client, /article\.querySelectorAll\('h2, h3, h4'\)/u);
+  assert.match(client, /article\.querySelectorAll\('h2\[id\], h3\[id\], h4\[id\]'\)/u);
+  assert.doesNotMatch(client, /heading\.id =/u);
   assert.match(client, /targetList\.appendChild\(li\)/u);
 });
 

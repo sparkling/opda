@@ -289,7 +289,7 @@ utility bands, not navigation rows: “In this section” on the left and “On 
 and double chevrons. A collapsed rail becomes a full-height 44px labelled spine anchored to the content-facing edge of its reserved 240px track. The
 track and corresponding header offset remain fixed, so expanding or collapsing either rail never moves or resizes the middle content. The visible
 page-contents tree follows the document heading hierarchy: H2 entries are roots, with H3 and H4 links nested beneath their nearest preceding parent.
-Headings without authored identifiers receive stable, collision-safe client identifiers so meaningful subheadings remain reachable in the shared rail.
+Only intentionally anchored structural headings participate; headings inside cards and other components remain content, not independent subsections.
 label is the control's accessible name; no selected-page tint, amber marker or `aria-current` treatment is used. Opening and closing ease the panel
 width over a deliberate 320ms composite of shared motion tokens while its links fade and move slightly towards the outside edge. Stable inside-edge
 anchoring prevents either rail from snapping before the transition starts; reduced-motion mode makes it effectively instant.

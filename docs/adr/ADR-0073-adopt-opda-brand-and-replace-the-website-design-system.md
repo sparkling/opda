@@ -309,9 +309,9 @@ accumulating inside grouped resource registers.
 
 The shared right-hand page navigation now preserves heading hierarchy rather
 than flattening it: H2 entries are roots and H3/H4 entries nest beneath their
-nearest preceding parent. Meaningful headings without authored identifiers
-receive collision-safe client identifiers, so subheadings can be linked and
-observed without page-specific contents components.
+nearest preceding parent. Participation is explicit through an authored heading
+identifier. Component headings, including headings inside cards, are not
+promoted into independent subsections or given synthetic anchors.
 
 ### Brand conflict resolution
 
