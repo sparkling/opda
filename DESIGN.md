@@ -358,10 +358,12 @@ dark parity.
   The shared mini variant uses the large-text step; because its icon width and gap are relative units, the complete lock-up scales as one component.
 - **Section heading:** a shared optional uppercase DM Sans eyebrow, display H2 and optional lead.
   Use it for distinct subjects; do not recreate local eyebrow scales or heading spacing.
-- **Sidebar hierarchy:** folder rows remain linked pages and use a quiet tinted
-  surface, structural border and bold label so they are distinct from leaf links.
-  Navigating to a folder opens its active trail. Indentation alone expresses nesting,
-  in 8px steps; branch arrows and reserved disclosure gutters are not used.
+- **Sidebar hierarchy:** folder rows remain linked pages. Top-level parent links use the
+  leaf-link DM Sans scale and sentence case, with stronger
+  weight and a hairline lower edge to distinguish their structural role without adding
+  an icon or increasing row height. Navigating to a folder opens its active trail.
+  Indentation alone expresses recursive nesting, in 8px steps; branch arrows, open/closed
+  indicators and reserved disclosure gutters are not used.
 - **Status badge:** icon, complete text label and tint; never a bare dot.
 - **Campaign panel list:** use large, restrained semantic icons with an adjacent title and description; icons reinforce rather than replace text and are hidden from assistive technology.
 - **Provenance chip:** Roboto Mono source and timestamp; links to evidence when

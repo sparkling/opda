@@ -261,6 +261,9 @@ folder opens the active trail on the destination page. Recursive lists add one
 gutters and their client-side persistence prevents deep Property Pack paths from
 losing most of the rail to repeated controls. The whole-rail collapse control is
 unchanged because it governs shell state rather than hierarchy depth.
+Top-level parent links use the leaf-link DM Sans scale and sentence case, with
+stronger weight and a hairline lower edge to distinguish their structural role
+without consuming vertical space. They have no open/closed marker.
 
 Later on 1 September 2026, `SiteFooter.astro` became the single organisation footer for
 the root landing, every `Layout` route and the standalone public-service family. It
