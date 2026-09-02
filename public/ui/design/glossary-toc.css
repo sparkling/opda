@@ -100,6 +100,11 @@
   margin: 0;
   padding: var(--space-4) var(--space-5) var(--space-7);
 }
+.toc ul ul {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
 .toc li + li { margin-top: 1px; }
 .toc a {
   min-height: var(--target-min);
@@ -122,8 +127,8 @@
   border-left-color: var(--brand-yellow);
 }
 .toc .toc-level-h2 a { font-size: var(--text-sm); }
-.toc .toc-level-h3 a { padding-left: var(--space-6); font-size: var(--text-caption); color: var(--color-text-muted); }
-.toc .toc-level-h4 a { padding-left: var(--space-7); font-size: var(--text-caption); color: var(--color-text-muted); }
+.toc .toc-level-h3 a { padding-left: var(--space-5); font-size: var(--text-caption); color: var(--color-text-muted); }
+.toc .toc-level-h4 a { padding-left: var(--space-6); font-size: var(--text-caption); color: var(--color-text-muted); }
 
 @media (min-width: 1281px) {
   .toc:not(.is-collapsed) .rail-glyph--toward-end { display: block; }

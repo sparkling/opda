@@ -275,6 +275,8 @@ test('reader pages delegate local contents navigation to the shared right rail',
 
   const client = await readFile(file('public/ui/client.js'), 'utf8');
   assert.match(client, /toc\.setAttribute\('aria-label', 'On this page'\)/u);
+  assert.match(client, /article\.querySelectorAll\('h2, h3, h4'\)/u);
+  assert.match(client, /targetList\.appendChild\(li\)/u);
 });
 
 test('documentation flow has one direct-child spacing owner', async () => {
@@ -290,9 +292,11 @@ test('documentation flow has one direct-child spacing owner', async () => {
   assert.match(designSystem, /<h2 id="document-flow">Document flow<\/h2>/u);
   assert.match(content, /#main-content \.prose:not\(\.odr-detail\) > \* \{ margin-block:\s*0; \}/u);
   assert.match(content, /#main-content \.prose:not\(\.odr-detail\) > \* \+ \* \{ margin-block-start:\s*var\(--space-4\); \}/u);
-  assert.match(content, /#main-content \.prose:not\(\.odr-detail\) > h2\s*\{[\s\S]*?margin-block-start:\s*var\(--space-5\)/u);
+  assert.match(content, /#main-content \.prose:not\(\.odr-detail\) > h2\s*\{[\s\S]*?margin-block-start:\s*var\(--space-6\)/u);
   assert.match(propertyPack, /#main-content \.prose \.v2-doc > \* \{ margin-block:\s*0; \}/u);
   assert.match(propertyPack, /#main-content \.prose \.v2-doc > \* \+ \* \{ margin-block-start:\s*var\(--space-4\); \}/u);
+  assert.match(propertyPack, /#main-content \.prose \.v2-doc > section > \* \{ margin-block:\s*0; \}/u);
+  assert.match(propertyPack, /#main-content \.prose \.v2-doc > section > \* \+ \* \{ margin-block-start:\s*var\(--space-4\); \}/u);
 });
 
 test('breadcrumbs use the documented linked-ancestor navigation role', async () => {

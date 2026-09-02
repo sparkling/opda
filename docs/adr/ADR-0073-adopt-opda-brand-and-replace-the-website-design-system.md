@@ -297,10 +297,21 @@ contract. Ordinary `.prose` articles and Property Pack `.v2-doc` pages now make
 each following direct block responsible for its block-start separation; preceding
 blocks carry no trailing external margin. This removes accumulated card-grid,
 table, diagram and callout spacing while allowing those components to occur
-anywhere in a section. Standard flow is 16px; an H2 divider owns a 16px gap
-before its rule and 24px of internal rule-to-heading padding. Components retain
+anywhere in a section. Standard flow is 16px; an H2 divider owns 24px both
+before its rule and from the rule to its heading. Components retain
 only their internal spacing. ODR detail pages keep their intentionally distinct
 Markdown reading rhythm.
+
+Where a semantic `section` groups multiple documentation blocks, it is the
+local flow owner and applies the same contract to its immediate children. This
+prevents table-wrapper bottom margins and following subheading margins from
+accumulating inside grouped resource registers.
+
+The shared right-hand page navigation now preserves heading hierarchy rather
+than flattening it: H2 entries are roots and H3/H4 entries nest beneath their
+nearest preceding parent. Meaningful headings without authored identifiers
+receive collision-safe client identifiers, so subheadings can be linked and
+observed without page-specific contents components.
 
 ### Brand conflict resolution
 

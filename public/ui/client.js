@@ -305,7 +305,19 @@
   function renderToc() {
     const article = document.querySelector('.prose');
     if (!article) return;
-    const headings = article.querySelectorAll('h2[id], h3[id], h4[id]');
+    const usedIds = new Set(Array.from(document.querySelectorAll('[id]'), function (node) { return node.id; }));
+    const headings = Array.from(article.querySelectorAll('h2, h3, h4')).filter(function (heading) {
+      if (heading.id) return true;
+      const base = heading.textContent.trim().toLowerCase()
+        .replace(/[^a-z0-9]+/g, '-')
+        .replace(/^-+|-+$/g, '') || 'section';
+      let id = base;
+      let suffix = 2;
+      while (usedIds.has(id)) id = base + '-' + suffix++;
+      heading.id = id;
+      usedIds.add(id);
+      return true;
+    });
     if (!headings.length) return;
 
     const toc = document.createElement('aside');
@@ -336,7 +348,20 @@
 
     const ul = document.createElement('ul');
     ul.id = 'toc-links';
+    const hierarchy = [{ level: 1, list: ul, item: null }];
     headings.forEach(function (h) {
+      const level = Number(h.tagName.slice(1));
+      while (hierarchy[hierarchy.length - 1].level >= level) hierarchy.pop();
+      const parent = hierarchy[hierarchy.length - 1];
+      let targetList = parent.list;
+      if (parent.item) {
+        targetList = parent.item.querySelector(':scope > ul');
+        if (!targetList) {
+          targetList = document.createElement('ul');
+          targetList.className = 'toc-children';
+          parent.item.appendChild(targetList);
+        }
+      }
       const li = document.createElement('li');
       li.className = 'toc-level-' + h.tagName.toLowerCase();
       const a = document.createElement('a');
@@ -352,7 +377,8 @@
       a.textContent = label.trim();
       a.setAttribute('data-toc-target', h.id);
       li.appendChild(a);
-      ul.appendChild(li);
+      targetList.appendChild(li);
+      hierarchy.push({ level: level, list: targetList, item: li });
     });
     toc.appendChild(ul);
 

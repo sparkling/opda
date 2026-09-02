@@ -197,11 +197,19 @@ Documentation flow has one owner. In ordinary `.prose` articles and Property Pac
 the preceding block owns no trailing external margin. This makes the gap stable
 whether the preceding element is prose, a list, a card grid, a table, a diagram,
 a callout or the final element in a section. The standard direct-child gap is
-16px; an H2 divider owns a 16px block-start gap and 24px internal padding from
-its rule to its heading. H3 and H4 use their own documented block-start steps.
+16px; an H2 divider owns a symmetric 24px block-start gap before its rule and
+24px internal padding from its rule to its heading. H3 and H4 use their own
+documented block-start steps.
 Components may own internal layout spacing, but must not create separation from
 an unknown next sibling. ODR detail pages retain their separately scoped,
 Markdown-specific reading rhythm.
+
+When a semantic `section` groups several blocks, it becomes the local flow
+owner and applies the same rule to its immediate children. In particular, a
+table wrapper must not leave bottom margin before the next subheading: the
+following section owns that gap. This preserves the same rhythm for resource
+registers and other grouped content without assuming a card grid or table is
+the final block.
 
 ## 6. Space, shape and elevation
 
@@ -280,6 +288,8 @@ At desktop rail widths, the section navigation and page-contents rail share one 
 utility bands, not navigation rows: “In this section” on the left and “On this page” on the right use compact uppercase mono labels, quiet dividers
 and double chevrons. A collapsed rail becomes a full-height 44px labelled spine anchored to the content-facing edge of its reserved 240px track. The
 track and corresponding header offset remain fixed, so expanding or collapsing either rail never moves or resizes the middle content. The visible
+page-contents tree follows the document heading hierarchy: H2 entries are roots, with H3 and H4 links nested beneath their nearest preceding parent.
+Headings without authored identifiers receive stable, collision-safe client identifiers so meaningful subheadings remain reachable in the shared rail.
 label is the control's accessible name; no selected-page tint, amber marker or `aria-current` treatment is used. Opening and closing ease the panel
 width over a deliberate 320ms composite of shared motion tokens while its links fade and move slightly towards the outside edge. Stable inside-edge
 anchoring prevents either rail from snapping before the transition starts; reduced-motion mode makes it effectively instant.
