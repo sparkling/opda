@@ -311,7 +311,8 @@ navigation rails on the root landing, every route using the shared `Layout`, and
 public-service family. It carries privacy and accessibility exits, a centred linked OPDA icon-and-name
 lock-up to the Association website, plus the linked Sparkling Ideas credit.
 The left-aligned Sparkling Ideas credit and right-aligned footer links sit directly on the shared content edges; the centred OPDA lock-up remains on the page axis and the footer gutter adds no secondary inner inset at desktop widths.
-When comments follow an article, the article adds no trailing padding. The comments
+Previous/next navigation follows the article and precedes the comments divider.
+When comments are present, the article adds no trailing padding and the comments
 section owns one `--space-6` gap before its divider, preventing stacked empty space.
 
 At desktop rail widths, the section navigation and page-contents rail share one width and alternate

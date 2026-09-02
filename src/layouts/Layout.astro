@@ -160,8 +160,8 @@ const searchAliases = routeDisposition?.search?.historicalAliases ?? [];
         ) : (
           <slot />
         )}
-        {!hideComments && <Comments />}
         {!hideFooter && <PageFooter />}
+        {!hideComments && <Comments />}
       </main>
     </div>
     <SiteFooter />

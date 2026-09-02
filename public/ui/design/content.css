@@ -15,7 +15,7 @@
   border: 0;
 }
 /* Comments own the separation below an article; do not stack two gaps. */
-.prose:has(+ .comments-section) { padding-bottom: 0; }
+.prose:has(~ .comments-section) { padding-bottom: 0; }
 html { scroll-padding-top: calc(var(--header-height) + 1rem); }
 /* The documentation content track is set once here rather than repeated on
    paragraphs, lists, leads, quotes or component copy. Load-bearing elements

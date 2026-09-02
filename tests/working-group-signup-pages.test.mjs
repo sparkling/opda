@@ -164,6 +164,7 @@ test('public recruitment and statement routes use their shared shells without si
   assert.doesNotMatch(standalone, /campaign-footer/u);
   assert.match(layout, /<Header showSidebar=\{showSidebar\} suppressActiveDestination=\{suppressActiveDestination\}/u);
   assert.match(layout, /<article class=\{proseClass\}>/u);
+  assert.ok(layout.indexOf('<PageFooter />') < layout.indexOf('<Comments />'));
   const statementRule = publicCss.match(/\.public-statement\s*\{([^}]*)\}/u)?.[1] ?? '';
   const statementHeadingRule = publicCss.match(/\.public-statement h1\s*\{([^}]*)\}/u)?.[1] ?? '';
   const statementLeadRule = publicCss.match(/\.public-statement__lead\s*\{([^}]*)\}/u)?.[1] ?? '';

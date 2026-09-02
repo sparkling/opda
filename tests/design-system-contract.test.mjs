@@ -483,7 +483,7 @@ test('text inherits its outer layout width instead of stacking nested measures',
   assert.match(content, /\.prose\s*\{[^}]*max-width:\s*var\(--content-max\)/su);
   assert.match(shell, /\.comments-section\s*\{[^}]*max-width:\s*var\(--content-max\)/su);
   assert.match(shell, /\.comments-section\s*\{[^}]*margin:\s*var\(--space-6\) auto 0/su);
-  assert.match(content, /\.prose:has\(\+ \.comments-section\)\s*\{[^}]*padding-bottom:\s*0/su);
+  assert.match(content, /\.prose:has\(~ \.comments-section\)\s*\{[^}]*padding-bottom:\s*0/su);
   assert.match(navigation, /\.page-footer\s*\{[^}]*max-width:\s*var\(--content-max\)/su);
   assert.match(navigation, /\.page-footer\s*\{[^}]*border:\s*1px solid var\(--color-border\)/su);
 
