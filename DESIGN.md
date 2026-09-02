@@ -216,10 +216,7 @@ stack narrower character or pixel measures. The comments section and previous/ne
 navigation is enclosed by a 1px border. Below 1200px the on-page rail becomes an in-content disclosure. Below 960px the left navigation is an
 off-canvas dialog with focus containment, Escape and focus return. At 640px cards, toolbars and component state boards become one column.
 
-Tables fit the available content track rather than creating a horizontal scrollbar. They use automatic table layout so column proportions follow their
-content instead of being allocated equally. Column headings and body cells wrap normally; long identifiers, paths, IRIs and hashes use `overflow-wrap:
-anywhere`. Standalone URI, IRI, URN and CURIE identifiers use unboxed monospace text; ordinary inline code retains its code surface. Visible caption
-bars are omitted; a semantic caption may remain visually hidden for assistive technology while the nearest section heading gives visible context.
+Tables fit the available content track rather than creating a horizontal scrollbar. They use automatic table layout so column proportions follow their content instead of being allocated equally. Column headings and body cells wrap normally; long identifiers, paths, IRIs and hashes use `overflow-wrap: anywhere`. Standalone URI, IRI, URN and CURIE identifiers use unboxed monospace text; ordinary inline code retains its code surface. Visible caption bars are omitted; a semantic caption may remain visually hidden for assistive technology while the nearest section heading gives visible context.
 Tables retain scoped headers, row identity and sorting semantics at every width. Pages must reflow at 320px and 400% zoom without page-level or
 table-level horizontal scrolling.
 
