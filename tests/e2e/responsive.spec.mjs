@@ -151,7 +151,7 @@ test('text flows to its outer content container without nested max-widths', asyn
     ['/programme', ['.prose.wide > .lead', '.prose.wide > h2 + p', '.callout--key p:last-child']],
     ['/', ['.home-campaign-hero h1', '.home-campaign-hero .wg-lead', '.public-overview > header']],
     ['/join', ['.wg-campaign-hero h1', '.wg-campaign-hero .wg-lead', '.wg-section__heading p']],
-    ['/join/privacy', ['.wg-privacy__summary p', '.wg-privacy article p', '.wg-privacy article li']],
+    ['/join/privacy', ['.public-statement__summary p', '.public-statement p', '.public-statement li']],
     [`${PDTF1_ROUTES.terms}/graph`, ['.term-comment', '.og-external']],
   ];
 

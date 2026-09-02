@@ -58,6 +58,11 @@ const hint = comment?.trim() && comment.trim() !== def ? comment.trim() : '';
     text-transform: uppercase;
     color: var(--color-text-muted);
   }
+  a.term-context {
+    min-height: var(--target-min);
+    display: inline-flex;
+    align-items: center;
+  }
   .term-iri code {
     font: 400 var(--text-sm) / 1.4 var(--font-mono);
     color: var(--color-text-muted);

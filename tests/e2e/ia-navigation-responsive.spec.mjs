@@ -84,12 +84,12 @@ test('compact primary disclosure keeps all six destinations discoverable through
       content: rect('.app-main > .prose'),
       utilities: rect('.app-header__utilities'),
       cta: rect('.global-nav .header-cta'),
-      firstDestination: rect('.global-nav a:not(.header-cta)'),
+      navPanel: rect('.global-nav-panel'),
     };
   });
-  expect(alignment.utilities.right).toBeCloseTo(1537, 1);
+  expect(alignment.utilities.right).toBeCloseTo(alignment.content.right, 1);
   expect(alignment.cta.right).toBeCloseTo(alignment.content.right, 1);
-  expect(alignment.firstDestination.bottom - alignment.cta.bottom).toBeCloseTo(8, 1);
+  expect(alignment.navPanel.bottom - alignment.cta.bottom).toBeCloseTo(16, 1);
   const desktopGeometry = await desktopNav.locator('a').evaluateAll((nodes) => ({
     links: nodes.map((node) => {
       const rect = node.getBoundingClientRect();

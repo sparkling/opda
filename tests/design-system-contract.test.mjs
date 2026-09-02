@@ -431,7 +431,7 @@ test('shared navigation exposes visible focus, state and 44px targets', async ()
   assert.match(base, /\.app-header__title\s*\{[^}]*margin-block-end:\s*calc\(-1 \* var\(--space-3\)\)/su);
   assert.match(base, /@media \(max-width: 96rem\)[\s\S]*?\.app-header__title\s*\{[^}]*align-self:\s*center[^}]*margin-block-end:\s*0/su);
   assert.match(base, /\.app-header\s*\{[^}]*padding-block:\s*var\(--space-6\) 0;/su);
-  assert.match(base, /\.global-nav-panel\s*\{[^}]*height:\s*calc\(var\(--target-min\) \+ var\(--space-4\)\)/su);
+  assert.match(base, /\.global-nav-panel\s*\{[^}]*height:\s*calc\(var\(--target-min\) \+ var\(--space-5\)\)/su);
   assert.match(base, /\.app-header__framework\s*\{[^}]*padding:\s*var\(--space-4\) 0 var\(--space-3\)[^}]*font:\s*500 var\(--text-2xl\)[^}]*text-decoration:\s*none/su);
   assert.match(base, /padding-inline-end:\s*calc\([^}]*var\(--header-content-right-rail\)[^}]*var\(--content-gutter\)/su);
   assert.match(base, /@media \(min-width: 96\.0625rem\) \{[\s\S]*?\.app-header \.global-nav a\.header-cta \{ margin-left:\s*auto; \}/u);

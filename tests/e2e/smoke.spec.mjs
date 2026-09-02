@@ -362,7 +362,9 @@ test('reader pages use only the shared right-rail page navigation', async ({ pag
 
 test('Mermaid source stays hidden while an off-screen diagram loads', async ({ page }) => {
   const clean = watchRuntime(page);
-  await page.setViewportSize({ width: 390, height: 844 });
+  // Keep the diagram beyond the viewer's 300px preload margin even before
+  // bundled fonts settle and move the page content.
+  await page.setViewportSize({ width: 390, height: 500 });
   await visit(page, '/strategy/strategy-overview?theme=dark');
   const loading = page.locator('.graph-diagram-wrapper').filter({ has: page.locator('.diagram-loading') }).first();
   await expect(loading.locator('.diagram-loading')).toHaveAttribute('role', 'status');
