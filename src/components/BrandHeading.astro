@@ -2,10 +2,11 @@
 interface Props {
   surface?: 'auto' | 'light' | 'dark';
   campaign?: boolean;
+  scale?: 'display' | 'compact';
   class?: string;
 }
 
-const { surface = 'auto', campaign = false, class: className } = Astro.props;
+const { surface = 'auto', campaign = false, scale = 'display', class: className } = Astro.props;
 ---
 
 <div class:list={[
@@ -14,6 +15,7 @@ const { surface = 'auto', campaign = false, class: className } = Astro.props;
     'brand-heading--on-light': surface === 'light',
     'brand-heading--on-dark': surface === 'dark',
     'brand-heading--campaign': campaign,
+    'brand-heading--compact': scale === 'compact',
   },
   className,
 ]}>

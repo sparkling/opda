@@ -45,20 +45,29 @@
 /* Icon-and-name brand heading. The official icon stays decorative because the
    organisation name remains live text. */
 .brand-heading {
+  --brand-heading-gap: var(--space-5);
+  --brand-heading-type: var(--brand-heading);
+  --brand-heading-icon-width: clamp(4rem, 6vw, 5.5rem);
   min-width: 0;
   display: flex;
   align-items: flex-end;
-  gap: var(--space-5);
+  gap: var(--brand-heading-gap);
   margin: 0;
   color: var(--color-text-strong);
-  font: var(--brand-heading);
+  font: var(--brand-heading-type);
   letter-spacing: var(--tracking-display);
 }
 .brand-heading--on-light { color: var(--brand-deep); }
 .brand-heading--on-dark { color: var(--brand-yellow); }
 .brand-heading--campaign { margin-bottom: var(--space-10); }
+.brand-heading--compact {
+  --brand-heading-gap: 0.45em;
+  --brand-heading-type: 600 var(--text-sm) / 1 var(--font-sans);
+  --brand-heading-icon-width: 0.89em;
+  align-items: baseline;
+}
 .brand-heading__icon {
-  width: clamp(4rem, 6vw, 5.5rem);
+  width: var(--brand-heading-icon-width);
   height: auto;
   flex: 0 0 auto;
 }
@@ -68,7 +77,7 @@
 }
 
 @media (max-width: 40rem) {
-  .brand-heading {
+  .brand-heading:not(.brand-heading--compact) {
     align-items: flex-start;
     flex-direction: column;
   }

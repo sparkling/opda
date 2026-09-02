@@ -91,6 +91,10 @@ const tokenSample = `:root {
       <BrandHeading surface="dark" />
     </div>
   </div>
+  <div class="brand-heading-compact-specimen">
+    <BrandHeading surface="light" scale="compact" />
+    <p>The compact identity variant keeps the complete organisation name visible at supporting scale, including in the shared footer.</p>
+  </div>
 
   <h2 id="colour">Colour</h2>
   <div class="colour-grid">
@@ -137,8 +141,8 @@ const tokenSample = `:root {
     <caption>Shared documentation flow responsibilities</caption>
     <thead><tr><th scope="col">Layer</th><th scope="col">Owns</th><th scope="col">Does not own</th></tr></thead>
     <tbody>
-      <tr><th scope="row">Article flow</th><td>16px before each following direct block</td><td>Component-specific trailing gaps</td></tr>
-      <tr><th scope="row">H2 divider</th><td>24px before its rule and 24px from rule to heading</td><td>Spacing after the previous component</td></tr>
+      <tr><th scope="row">Article flow</th><td>12px before each following direct block</td><td>Component-specific trailing gaps</td></tr>
+      <tr><th scope="row">H2 divider</th><td>16px before its rule and 16px from rule to heading</td><td>Spacing after the previous component</td></tr>
       <tr><th scope="row">Cards, tables and diagrams</th><td>Internal layout and containment</td><td>External space after themselves</td></tr>
       <tr><th scope="row">Semantic section</th><td>The same direct-child rule for its local content stack</td><td>Accumulated table and subheading margins</td></tr>
     </tbody>
@@ -270,6 +274,8 @@ const tokenSample = `:root {
     .brand-heading-specimen :global(.brand-heading__icon) { width: clamp(3rem, 5vw, 4.25rem); }
     .brand-heading-specimen--light { background: var(--brand-white); }
     .brand-heading-specimen--dark { background: var(--brand-deep); }
+    .brand-heading-compact-specimen { display: flex; align-items: center; gap: var(--space-4); padding: var(--space-5); border: 1px solid var(--color-border); }
+    .brand-heading-compact-specimen p { margin: 0; }
     .colour-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); border: 1px solid var(--color-border); }
     .colour-grid article { min-height: 13rem; padding: var(--space-5); display: flex; flex-direction: column; border-right: 1px solid var(--color-border); border-bottom: 1px solid var(--color-border); }
     .colour-grid i { height: 5rem; margin: calc(-1 * var(--space-5)) calc(-1 * var(--space-5)) var(--space-5); background: var(--sample); border-bottom: 1px solid var(--color-border); }

@@ -197,8 +197,8 @@ Documentation flow has one owner. In ordinary `.prose` articles and Property Pac
 the preceding block owns no trailing external margin. This makes the gap stable
 whether the preceding element is prose, a list, a card grid, a table, a diagram,
 a callout or the final element in a section. The standard direct-child gap is
-16px; an H2 divider owns a symmetric 24px block-start gap before its rule and
-24px internal padding from its rule to its heading. H3 and H4 use their own
+12px; an H2 divider owns a symmetric 16px block-start gap before its rule and
+16px internal padding from its rule to its heading. H3 and H4 use their own
 documented block-start steps.
 Components may own internal layout spacing, but must not create separation from
 an unknown next sibling. ODR detail pages retain their separately scoped,
@@ -278,11 +278,13 @@ accessible name without repeating it visibly. The footer has a 4px yellow top ru
 navigation rails on the root landing, every route using the shared `Layout`, and the standalone public-service family. It carries privacy and
 accessibility exits, a centred linked OPDA icon-and-name lock-up to the Association website, plus the linked Sparkling Ideas credit. The left-aligned
 Sparkling Ideas credit and right-aligned footer links sit directly on the shared content edges; the centred OPDA lock-up remains on the page axis and
-the footer gutter adds no secondary inner inset at desktop widths. Privacy and Accessibility use the same muted colour and regular weight as plain
+the footer gutter adds no secondary inner inset at desktop widths. The footer renders the shared icon-and-live-text heading component at its compact
+14px scale; its relative `0.89em` icon and `0.45em` gap resize with the text as one unit. Privacy and Accessibility use the same muted colour and regular weight as plain
 footer text; organisation and delivery-credit emphasis remain distinct. Previous/next navigation follows the article and precedes the comments
-divider. It retains its bordered bar and adds a separate full-track divider in the existing gap above it. The bar sits one `--space-6` from both the
+divider. It retains its bordered bar and adds a separate full-track divider in the existing gap above it. The bar sits one `--space-5` from both the
 upper divider and the comments divider below. When comments are present, the article adds no trailing padding and the comments section owns one
-`--space-6` gap before its divider, preventing stacked empty space.
+`--space-5` gap before its divider, preventing stacked empty space. All article, previous/next and comments dividers use the same 16px space on each
+side of their rule.
 
 At desktop rail widths, the section navigation and page-contents rail share one width and alternate surface. Their collapse controls are full-bleed
 utility bands, not navigation rows: “In this section” on the left and “On this page” on the right use compact uppercase mono labels, quiet dividers

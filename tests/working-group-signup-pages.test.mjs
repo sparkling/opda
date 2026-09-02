@@ -12,6 +12,7 @@ const paths = {
   campaignData: new URL('../src/data/working-group-campaign.ts', import.meta.url),
   layout: new URL('../src/layouts/Layout.astro', import.meta.url),
   siteFooter: new URL('../src/components/SiteFooter.astro', import.meta.url),
+  brandHeading: new URL('../src/components/BrandHeading.astro', import.meta.url),
   homepage: new URL('../src/pages/index.astro', import.meta.url),
   propertyPackPage: new URL('../src/components/property-pack/PropertyPackPage.astro', import.meta.url),
   registration: new URL('../src/scripts/working-group-join.ts', import.meta.url),
@@ -196,8 +197,9 @@ test('former working-group sign-up paths have no page, redirect or rewrite', asy
 });
 
 test('knowledge-base and standalone page families expose their required footer links', async () => {
-  const [footer, layout, standalone, homepage, propertyPackPage, publicCss] = await Promise.all([
+  const [footer, brandHeading, layout, standalone, homepage, propertyPackPage, publicCss] = await Promise.all([
     readFile(paths.siteFooter, 'utf8'),
+    readFile(paths.brandHeading, 'utf8'),
     readFile(paths.layout, 'utf8'),
     readFile(paths.standaloneLayout, 'utf8'),
     readFile(paths.homepage, 'utf8'),
@@ -212,7 +214,8 @@ test('knowledge-base and standalone page families expose their required footer l
   assert.match(footer, /href="\/accessibility"/u);
   assert.doesNotMatch(footer, /Association website/u);
   assert.match(footer, /class="public-footer__brand" href="https:\/\/openpropdata\.org\.uk\/"/u);
-  assert.match(footer, /Open Property Data Association/u);
+  assert.match(footer, /<BrandHeading scale="compact"\s*\/>/u);
+  assert.match(brandHeading, /Open Property Data Association/u);
   assert.match(footer, /Developed by <a href="https:\/\/sparklingideas\.co\.uk\/">Sparkling Ideas<\/a>/u);
   assert.match(publicCss, /--public-footer-gutter:\s*max\(var\(--space-6\), calc\(\(100% - var\(--content-max\)\) \/ 2\)\)/u);
   assert.match(publicCss, /grid-template-areas:\s*'credit brand links'/u);

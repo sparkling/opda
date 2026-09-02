@@ -243,10 +243,11 @@ complete `app-main` track with no nested width limits or stacked outer padding.
 
 The same refinement places previous/next navigation above the comments divider and
 removes stacked article-to-comments spacing. Articles with comments add no trailing
-padding; the comments section owns one `--space-6` gap before its divider.
+padding; the comments section owns one `--space-5` gap before its divider.
 The previous/next bar also receives a separate full-track divider in its existing
 top gap, distinct from the bar's own border. Both surrounding dividers sit one
-`--space-6` from the bar.
+`--space-5` from the bar. On 2 September 2026 all article, previous/next and
+comments dividers were normalised to 16px on each side of their rule.
 
 Later on 1 September 2026, `SiteFooter.astro` became the single organisation footer for
 the root landing, every `Layout` route and the standalone public-service family. It
@@ -257,6 +258,9 @@ full-screen working-group deck remains outside shared site furniture.
 The footer's left credit and right links align directly to the shared content edges, removing the former additional 32px inner gutter while retaining the centred OPDA lock-up and minimum narrow-screen inset.
 Privacy and Accessibility use the same muted colour and regular weight as plain
 footer text rather than the emphasis reserved for the organisation and delivery credit.
+The centred footer identity now renders the reusable `BrandHeading` component in
+its compact 14px variant. The component scales its icon and gap relative to that
+font size, replacing the footer's duplicate icon, text and dimensional rules.
 
 On 2 September 2026 the global working-group CTA returned to the standard full-height
 44px button. The desktop navigation track initially grew to 60px above its unchanged divider;
@@ -297,7 +301,7 @@ contract. Ordinary `.prose` articles and Property Pack `.v2-doc` pages now make
 each following direct block responsible for its block-start separation; preceding
 blocks carry no trailing external margin. This removes accumulated card-grid,
 table, diagram and callout spacing while allowing those components to occur
-anywhere in a section. Standard flow is 16px; an H2 divider owns 24px both
+anywhere in a section. Standard flow is 12px; an H2 divider owns 16px both
 before its rule and from the rule to its heading. Components retain
 only their internal spacing. ODR detail pages keep their intentionally distinct
 Markdown reading rhythm.

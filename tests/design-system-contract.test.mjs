@@ -293,7 +293,7 @@ test('documentation flow has one direct-child spacing owner', async () => {
   assert.match(designSystem, /<h2 id="document-flow">Document flow<\/h2>/u);
   assert.match(content, /#main-content \.prose:not\(\.odr-detail\) > \* \{ margin-block:\s*0; \}/u);
   assert.match(content, /#main-content \.prose:not\(\.odr-detail\) > \* \+ \* \{ margin-block-start:\s*var\(--space-4\); \}/u);
-  assert.match(content, /#main-content \.prose:not\(\.odr-detail\) > h2\s*\{[\s\S]*?margin-block-start:\s*var\(--space-6\)/u);
+  assert.match(content, /#main-content \.prose:not\(\.odr-detail\) > h2\s*\{[\s\S]*?margin-block-start:\s*var\(--space-5\)/u);
   assert.match(propertyPack, /#main-content \.prose \.v2-doc > \* \{ margin-block:\s*0; \}/u);
   assert.match(propertyPack, /#main-content \.prose \.v2-doc > \* \+ \* \{ margin-block-start:\s*var\(--space-4\); \}/u);
   assert.match(propertyPack, /#main-content \.prose \.v2-doc > section > \* \{ margin-block:\s*0; \}/u);
@@ -509,11 +509,11 @@ test('text inherits its outer layout width instead of stacking nested measures',
   assert.match(design, /Every documentation\s+article uses the available content track up to a 1600px maximum/u);
   assert.match(content, /\.prose\s*\{[^}]*max-width:\s*var\(--content-max\)/su);
   assert.match(shellSupport, /\.comments-section\s*\{[^}]*max-width:\s*var\(--content-max\)/su);
-  assert.match(shellSupport, /\.comments-section\s*\{[^}]*margin:\s*var\(--space-6\) auto 0/su);
+  assert.match(shellSupport, /\.comments-section\s*\{[^}]*margin:\s*var\(--space-5\) auto 0/su);
   assert.match(content, /\.prose:has\(~ \.comments-section\)\s*\{[^}]*padding-bottom:\s*0/su);
   assert.match(navigation, /\.page-footer\s*\{[^}]*max-width:\s*var\(--content-max\)/su);
   assert.match(navigation, /\.page-footer\s*\{[^}]*border:\s*1px solid var\(--color-border\)/su);
-  assert.match(navigation, /\.page-footer::before\s*\{[^}]*top:\s*calc\(-1 \* var\(--space-6\)\)[^}]*border-top:\s*1px solid var\(--color-border\)/su);
+  assert.match(navigation, /\.page-footer::before\s*\{[^}]*top:\s*calc\(-1 \* var\(--space-5\)\)[^}]*border-top:\s*1px solid var\(--color-border\)/su);
 
   const contentWithoutOuterMeasures = content
     .replace(/\.prose\s*\{[^}]*\}/su, '');
