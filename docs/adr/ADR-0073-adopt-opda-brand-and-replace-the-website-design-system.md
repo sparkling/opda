@@ -427,10 +427,10 @@ behaviour requires a fresh local validation receipt when testing is authorised.
   resources and zero unlinked routes. Ontology resources whose canonical IDs differ
   only by case are checked exactly on Linux CI and identified explicitly on
   case-insensitive development filesystems.
-- The 48-test Chromium release matrix passes: 18 axe route-family checks with zero
-  tagged WCAG findings, 18 reviewed desktop/mobile light/dark visual baselines,
-  eight keyboard/behaviour smoke tests, and four 320px/400%-equivalent reflow,
-  forced-colour and descendant reduced-motion checks.
+- The 139-test Chromium release matrix passes: representative WCAG 2.2 AA axe
+  scans in both themes, 18 reviewed desktop/mobile light/dark visual baselines,
+  keyboard and interaction behaviour, and 320px/400%-equivalent reflow,
+  forced-colour and reduced-motion checks.
 - Visual comparisons retain the shared 0.5% pixel-difference threshold except for
   the live force-directed graph, whose nondeterministic node placement uses a 2%
   threshold while preserving the same viewport, theme and page-shell assertions.
