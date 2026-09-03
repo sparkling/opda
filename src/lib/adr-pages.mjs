@@ -104,5 +104,5 @@ export const ADR_REGISTRY = [
   { id: "adr-0079", number: "0079", title: "Make the site public and retire the edge authentication gate", status: "accepted", date: "2026-08-27" },
   { id: "adr-0080", number: "0080", title: "Add purposeful graphics to the OPDA homepage", status: "accepted", date: "2026-08-30" },
   { id: "adr-0081", number: "0081", title: "Organise OPDA evidence into purpose-specific NotebookLM portfolios", status: "accepted", date: "2026-08-31" },
-  { id: "adr-0082", number: "0082", title: "Add a progressively enhanced site-search dialog", status: "proposed", date: "2026-09-02" },
+  { id: "adr-0082", number: "0082", title: "Add a progressively enhanced site-search dialog", status: "implemented", date: "2026-09-02" },
 ];
