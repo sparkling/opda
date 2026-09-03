@@ -98,8 +98,8 @@ test('desktop sidebar and nested tree controls work', async ({ page }) => {
   await expect(toc.locator('ul')).toHaveCSS('opacity', '1');
 
   await visit(page, `${PDTF1_ROUTES.original}/schema`);
-  const activeFolder = page.locator('.tree-folder:has(> .tree-folder-row > a)', { hasText: 'JSON Schemas and overlays' }).first();
-  const unrelatedFolder = page.locator('.tree-folder:has(> .tree-folder-row > a)', { hasText: 'Implementation guidance' }).first();
+  const activeFolder = page.locator(`.tree-folder:has(> .tree-folder-row > a[href="${PDTF1_ROUTES.original}/schema"])`);
+  const unrelatedFolder = page.locator(`.tree-folder:has(> .tree-folder-row > a[href="${PDTF1_ROUTES.original}/implementation"])`);
   await expect(activeFolder).toHaveClass(/is-open/u);
   await expect(unrelatedFolder).not.toHaveClass(/is-open/u);
   await expect(page.locator('.tree-toggle, .nav-group-toggle')).toHaveCount(0);
@@ -156,13 +156,16 @@ test('mobile PDTF ontology hierarchy keeps folder labels linked and keyboard ord
   await expect(branch.locator('.tree-toggle')).toHaveCount(0);
   expect((await link.boundingBox()).height).toBeGreaterThanOrEqual(44);
   await link.focus();
-  await page.keyboard.press('Enter');
-  await expect(page).toHaveURL(new RegExp(`${PDTF1_ROUTES.terms}/?$`, 'u'));
-  await assertNoBodyOverflow(page);
-
   await page.keyboard.press('Escape');
   await expect(sidebar).not.toHaveClass(/open/u);
   await expect(opener).toBeFocused();
+
+  await opener.click();
+  await link.focus();
+  await page.keyboard.press('Enter');
+  await expect(page).toHaveURL(new RegExp(`${PDTF1_ROUTES.terms}/?$`, 'u'));
+  await expect(page.locator('#app-sidebar')).not.toHaveClass(/open/u);
+  await assertNoBodyOverflow(page);
   clean();
 });
 
@@ -175,8 +178,8 @@ test('semantic modelling exposes linked audience branches and one active page', 
   await expect(teaching).toHaveClass(/is-open/u);
   await expect(teaching.locator(':scope > .nav-group-row > a'))
     .toHaveText('Understand ontologies');
-  await expect(teaching.locator(':scope > .nav-group-row > button'))
-    .toHaveAttribute('aria-expanded', 'true');
+  await expect(teaching.locator(':scope > .nav-group-row > a'))
+    .toHaveAttribute('href', '/semantic-modelling/why-ontologies');
   await expect(method).not.toHaveClass(/is-open/u);
   await expect(navigation.locator('a[aria-current="page"]')).toHaveCount(1);
   await expect(navigation.locator('a[aria-current="page"]'))

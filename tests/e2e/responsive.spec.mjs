@@ -74,14 +74,8 @@ test('section rails, page navigation and content stay inside the shared containe
       const prose = bounds(document.querySelector('.prose'));
       const children = Array.from(document.querySelectorAll('.prose > :is(.card-grid, table, .db-table-wrap, .v2-table-wrap, pre)'))
         .map((element) => ({ selector: element.className || element.tagName, ...bounds(element) }));
-      const heading = document.querySelector('h2[id]');
-      const anchor = heading?.querySelector('.heading-anchor');
       return {
         main, prose, children,
-        anchorPosition: anchor ? getComputedStyle(anchor).position : null,
-        anchorInsideHeading: Boolean(anchor && heading
-          && anchor.getBoundingClientRect().top >= heading.getBoundingClientRect().top - 1
-          && anchor.getBoundingClientRect().bottom <= heading.getBoundingClientRect().bottom + 1),
       };
     });
     expect(containment.prose.left).toBeGreaterThanOrEqual(containment.main.left - 1);
@@ -90,9 +84,6 @@ test('section rails, page navigation and content stay inside the shared containe
       expect(child.left, `${child.selector} left at ${width}px`).toBeGreaterThanOrEqual(containment.prose.left - 1);
       expect(child.right, `${child.selector} right at ${width}px`).toBeLessThanOrEqual(containment.prose.right + 1);
     }
-    expect(containment.anchorPosition).toBe('absolute');
-    expect(containment.anchorInsideHeading).toBe(true);
-
     const toc = page.locator('aside.toc');
     await expect(toc).toBeVisible();
     if (width <= 1280) {

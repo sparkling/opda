@@ -21,6 +21,7 @@ for (const [name, path] of routeFamilies) {
       animations: 'disabled',
       fullPage: name !== 'presentation',
       mask: [page.locator('#comments'), page.locator('[data-dynamic]')],
+      maxDiffPixelRatio: name === 'diagram' ? 0.02 : undefined,
     });
     clean();
   });
@@ -35,6 +36,7 @@ for (const [name, path] of routeFamilies) {
       animations: 'disabled',
       fullPage: name !== 'presentation',
       mask: [page.locator('#comments'), page.locator('[data-dynamic]')],
+      maxDiffPixelRatio: name === 'diagram' ? 0.02 : undefined,
     });
     clean();
   });

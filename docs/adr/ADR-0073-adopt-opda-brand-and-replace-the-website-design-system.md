@@ -1,7 +1,7 @@
 ---
 status: implemented
 date: 2026-08-16
-updated: 2026-09-02
+updated: 2026-09-03
 tags: [design-system, brand, website, accessibility, css, governance, presentation]
 supersedes: [ADR-0025]
 depends-on: [ADR-0064]
@@ -431,6 +431,9 @@ behaviour requires a fresh local validation receipt when testing is authorised.
   tagged WCAG findings, 18 reviewed desktop/mobile light/dark visual baselines,
   eight keyboard/behaviour smoke tests, and four 320px/400%-equivalent reflow,
   forced-colour and descendant reduced-motion checks.
+- Visual comparisons retain the shared 0.5% pixel-difference threshold except for
+  the live force-directed graph, whose nondeterministic node placement uses a 2%
+  threshold while preserving the same viewport, theme and page-shell assertions.
 - Five schema reproducibility tests and the deterministic strict generated-page
   drift check pass with zero errors and zero warnings. Its canonical
   `SOURCE_DATE_EPOCH` and tracked offline input projections run in local CI, pull
