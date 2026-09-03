@@ -153,7 +153,8 @@ test('maintained documentation filenames do not encode deprecated numbered names
   assert.deepEqual(offenders, []);
 });
 
-test('production builds invalidate cached content from retired route cuts', () => {
+test('production builds use Astro without the redundant force flag', () => {
   const packageJson = JSON.parse(readFileSync(path.join(ROOT, 'package.json'), 'utf8'));
-  assert.match(packageJson.scripts.build, /\bastro build --force\b/u);
+  assert.match(packageJson.scripts.build, /\bastro build\b/u);
+  assert.doesNotMatch(packageJson.scripts.build, /\bastro build --force\b/u);
 });
