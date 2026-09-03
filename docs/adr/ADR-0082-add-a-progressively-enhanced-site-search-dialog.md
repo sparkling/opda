@@ -1,11 +1,14 @@
 ---
-status: proposed
+status: implemented
 date: 2026-09-02
 tags: [website, search, dialog, accessibility, progressive-enhancement, design-system]
 supersedes: []
 amends: [ADR-0003, ADR-0073]
 depends-on: [ADR-0003, ADR-0073]
-implements: []
+implements:
+  - src/components/SiteSearchDialog.astro
+  - src/components/Header.astro
+  - public/ui/design/search-dialog.css
 ---
 
 # Add a progressively enhanced site-search dialog
@@ -173,9 +176,18 @@ Implementation should confirm:
 - operation across Astro client navigation; and
 - identical ranking between the dialog and `/search`.
 
-Tests and builds are intentionally not run while the operator is iterating on the local
-site. The ADR remains proposed until implementation and the relevant verification are
-explicitly authorised and completed.
+## Implementation status
+
+**Implemented 3 September 2026.** The shared dialog, header trigger, dedicated
+design-system module, manifest entry and focused contract coverage are in place. The
+controller imports `site-search.mjs` and `site-ia.mjs` only when needed, so the original
+index and ranking remain authoritative. The data-backed Astro build completed successfully.
+
+Focused verification covers the ordinary `/search` trigger destination, native dialog
+semantics, GET fallback, shared dynamic imports, keyboard shortcut routing, active-result
+state, Astro lifecycle rebinding, semantic tokens, mobile/reduced-motion/forced-colour
+rules and the versioned stylesheet manifest. Manual visual and assistive-technology checks
+remain appropriate release follow-up, particularly for mobile virtual keyboards.
 
 ## More information
 

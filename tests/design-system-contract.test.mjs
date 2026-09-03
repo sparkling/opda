@@ -60,6 +60,7 @@ const contractFiles = [
   'public/ui/design/content.css',
   'public/ui/design/tables.css',
   'public/ui/design/components.css',
+  'public/ui/design/search-dialog.css',
   'public/ui/design/public.css',
   'public/ui/design/diagrams.css',
   'public/ui/design/navigation.css',
@@ -481,6 +482,36 @@ test('shared navigation exposes visible focus, state and 44px targets', async ()
   assert.match(search, /<ol class="site-search-results"/u);
   assert.match(search, /<dt>Work area<\/dt>/u);
   assert.match(components, /\.site-search-results\s*\{/u);
+});
+
+test('quick search enhances the canonical search route without creating a second index', async () => {
+  const [header, dialog, styles, decision, manifest] = await Promise.all([
+    readFile(file('src/components/Header.astro'), 'utf8'),
+    readFile(file('src/components/SiteSearchDialog.astro'), 'utf8'),
+    readFile(file('public/ui/design/search-dialog.css'), 'utf8'),
+    readFile(file('docs/adr/ADR-0082-add-a-progressively-enhanced-site-search-dialog.md'), 'utf8'),
+    readFile(file('public/ui/design-system.css'), 'utf8'),
+  ]);
+  assert.match(header, /import SiteSearchDialog from '@\/components\/SiteSearchDialog\.astro'/u);
+  assert.match(header, /href="\/search"[^>]*data-site-search-trigger/u);
+  assert.match(header, /<SiteSearchDialog\s*\/>/u);
+  assert.match(dialog, /<dialog class="site-search-dialog"/u);
+  assert.match(dialog, /action="\/search" method="get"/u);
+  assert.match(dialog, /import\('@\/lib\/site-search\.mjs'\)/u);
+  assert.match(dialog, /import\('@\/lib\/site-ia\.mjs'\)/u);
+  assert.match(dialog, /searchEntries: search\.searchEntries/u);
+  assert.match(dialog, /aria-activedescendant/u);
+  assert.match(dialog, /astro:page-load/u);
+  assert.match(dialog, /event\.key === '\/'/u);
+  assert.match(dialog, /window\.location\.pathname === '\/search'/u);
+  assert.match(dialog, /Search couldn't load/u);
+  assert.match(styles, /\.site-search-dialog::backdrop\s*\{[^}]*60%/su);
+  assert.match(styles, /border-top:\s*4px solid var\(--brand-yellow\)/u);
+  assert.match(styles, /@media \(max-width: 40rem\)/u);
+  assert.match(styles, /@media \(prefers-reduced-motion: reduce\)/u);
+  assert.match(styles, /@media \(forced-colors: active\)/u);
+  assert.match(manifest, /\.\/design\/search-dialog\.css\?v=[a-f0-9]{12}/u);
+  assert.match(decision, /progressively enhanced native dialog/u);
 });
 
 test('text inherits its outer layout width instead of stacking nested measures', async () => {

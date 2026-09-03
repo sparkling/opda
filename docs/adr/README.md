@@ -96,7 +96,7 @@ modelling website remains unchanged:
 | [ADR-0077](./ADR-0077-place-pdtf-schema-beneath-spdtf-as-third-party-input.md) | Place the PDTF schema beneath SPDTF as a third-party input | accepted · implementation pending |
 | [ADR-0079](./ADR-0079-make-the-site-public-and-retire-the-edge-authentication-gate.md) | Make the site public and retire the edge authentication gate | accepted |
 | [ADR-0080](./ADR-0080-add-purposeful-graphics-to-the-opda-homepage.md) | Add purposeful graphics to the OPDA homepage | accepted · validation pending |
-| [ADR-0082](./ADR-0082-add-a-progressively-enhanced-site-search-dialog.md) | Add a progressively enhanced site-search dialog | proposed |
+| [ADR-0082](./ADR-0082-add-a-progressively-enhanced-site-search-dialog.md) | Add a progressively enhanced site-search dialog | implemented |
 
 ## August 2026 NotebookLM knowledge architecture
 

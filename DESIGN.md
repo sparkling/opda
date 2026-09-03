@@ -416,11 +416,14 @@ or proposed.
 A data browser keeps search, filters, result count and reset action in one labelled toolbar. Applied filters remain visible as removable controls.
 Sorting, pagination, loading, empty and error states announce changes without moving keyboard focus.
 
-Site search uses the same labelled field, select and reset primitives without becoming a separate search platform. One query field and one
-canonical-destination filter write shareable URL parameters. Multi-word matches are ranked deterministically by title, alias and summary relevance,
-then shown in a compact ordered list. Every row names its canonical destination, work area, authority and maturity. Result counts and empty states are
-announced without moving focus; clearing search returns focus to the query field. The search lifecycle reinitialises after client-side page
-transitions.
+Site search has one authoritative local index and ranking function. The `/search` route is the shareable, full-results view: its query field and
+canonical-destination filter write URL parameters, and its rows show summaries, work area, authority and maturity. The header search link progressively
+enhances to a native quick-search dialog only after its controller is ready; without JavaScript it remains the ordinary `/search` link. The dialog
+loads the same index on first use, shows compact destination, title, work-area, authority and maturity rows, and keeps a live link to the full search
+view. Command/Control+K and `/` open it outside editable controls; arrow keys select results while focus remains in the query field, Enter follows the
+selection, and Escape returns focus to the trigger. The dialog uses the standard menu/dialog elevation, a four-pixel amber structural rule, semantic
+light/dark tokens, forced-colour outlining and reduced-motion timing. Multi-word matches are ranked deterministically by title, alias and summary
+relevance. Result counts and empty states are announced without moving focus; the search lifecycle reinitialises after client-side page transitions.
 
 A governance decision distinguishes proposal, review, disposition and adopted outcome. Publication never implies ratification.
 
