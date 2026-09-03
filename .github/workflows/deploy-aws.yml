@@ -21,6 +21,8 @@ on:
       - 'scripts/**'
       - '!scripts/*notebooklm*'
       - '!scripts/notebooklm/**'
+      - 'tests/**'
+      - 'DESIGN.md'
       - 'astro.config.mjs'
       - 'playwright.config.mjs'
       - 'Makefile'
@@ -57,17 +59,52 @@ on:
       - 'tsconfig.json'
       - '.github/workflows/deploy-aws.yml'
   workflow_dispatch:
+    inputs:
+      full_model_validation:
+        description: Run the ontology generator and full model gates
+        required: true
+        default: false
+        type: boolean
 
 concurrency:
   group: opda-site-${{ github.ref }}
   cancel-in-progress: ${{ github.event_name == 'pull_request' }}
 
 permissions:
-  id-token: write
   contents: read
 
 jobs:
-  validate-build-and-deploy:
+  contracts:
+    name: Contracts
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+
+      - uses: pnpm/action-setup@v6
+
+      - uses: actions/setup-node@v6
+        with:
+          node-version: 22
+          cache: pnpm
+
+      - run: pnpm install --frozen-lockfile
+
+      - name: Design-system drift gate
+        run: pnpm run check:design-system
+
+      - name: ADR registry drift gate
+        run: make check-adr
+
+      - name: Node contracts
+        run: pnpm test
+
+      - name: Ontology documentation drift gate
+        run: make ci-ontology-doc ci-ontology-graph
+
+  release-candidate:
+    name: Build and browser gates
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v6
@@ -80,7 +117,7 @@ jobs:
         run: |
           set -euo pipefail
           if [[ "${{ github.event_name }}" == "workflow_dispatch" ]]; then
-            echo "model=true" >> "$GITHUB_OUTPUT"
+            echo "model=${{ inputs.full_model_validation }}" >> "$GITHUB_OUTPUT"
             exit 0
           fi
           if [[ "${{ github.event_name }}" == "pull_request" ]]; then
@@ -93,7 +130,7 @@ jobs:
             exit 0
           fi
           git diff --name-only "$base" "$GITHUB_SHA" > /tmp/opda-changed-paths
-          if grep -Eq '^(\.github/workflows/deploy-aws\.yml$|Makefile$|package\.json$|pnpm-lock\.yaml$|tools/opda-gen/|src/data/ontology-model\.json$|public/data/ontology-graph-elements\.json$|source/(03-standards/ontology|03-standards/ontology-candidates|_content|_examples)/|source/00-deliverables/semantic-models/(provenance-map|theme-map)\.yaml$|config/(fuseki-config\.ttl|property-pack-candidate/)|scripts/(build-with-data|fuseki-load|ontology-model|ontology-graph|property_pack|check-schema-reproducibility)\.|tests/(baspi5_round_trip/|property-pack-(catalogue|candidate)))' /tmp/opda-changed-paths; then
+          if grep -Eq '^(Makefile$|tools/opda-gen/|src/data/ontology-model\.json$|public/data/ontology-graph-elements\.json$|source/(03-standards/ontology|03-standards/ontology-candidates|_content|_examples)/|source/00-deliverables/semantic-models/(provenance-map|theme-map)\.yaml$|config/(fuseki-config\.ttl|property-pack-candidate/)|scripts/(build-with-data|fuseki-load|ontology-model|ontology-graph|property_pack|check-schema-reproducibility)\.|tests/(baspi5_round_trip/|property-pack-(catalogue|candidate)))' /tmp/opda-changed-paths; then
             echo "model=true" >> "$GITHUB_OUTPUT"
           else
             echo "model=false" >> "$GITHUB_OUTPUT"
@@ -143,18 +180,6 @@ jobs:
 
       - run: pnpm install --frozen-lockfile
 
-      - name: Design-system drift gate
-        run: pnpm run check:design-system
-
-      - name: ADR registry drift gate
-        run: make check-adr
-
-      - name: Node contracts
-        run: pnpm test
-
-      - name: Ontology documentation drift gate
-        run: make ci-ontology-doc ci-ontology-graph
-
       - name: Ontology generation contracts
         if: steps.changes.outputs.model == 'true'
         run: make ci-ontology
@@ -175,11 +200,11 @@ jobs:
         if: steps.changes.outputs.model == 'true'
         run: git diff --exit-code -- src/data/ontology-model.json public/data/ontology-graph-elements.json
 
-      - name: Install Chromium
-        run: pnpm exec playwright install --with-deps chromium
-
       - name: Built-route and resource gates
         run: pnpm run check:routes && pnpm run check:resource-links
+
+      - name: Install Chromium
+        run: pnpm exec playwright install --with-deps chromium
 
       - name: Browser, accessibility and responsive gates
         run: pnpm run test:e2e
@@ -195,15 +220,42 @@ jobs:
           if-no-files-found: ignore
           retention-days: 7
 
+      - name: Upload validated site
+        uses: actions/upload-artifact@v7
+        with:
+          name: site-dist-${{ github.sha }}
+          path: |
+            dist/
+            !dist/spdtf/inputs/pdtf-schema/schema-derived-ontology/use-and-tooling/artefacts/**
+            !dist/spdtf/inputs/pdtf-schema/schema-derived-ontology/use-and-tooling/tools/ontospy/**
+            !dist/spdtf/inputs/pdtf-schema/schema-derived-ontology/use-and-tooling/tools/pylode/**
+            !dist/spdtf/inputs/pdtf-schema/schema-derived-ontology/use-and-tooling/tools/shaclplay/**
+            !dist/spdtf/inputs/pdtf-schema/schema-derived-ontology/use-and-tooling/tools/widoco/**
+          if-no-files-found: error
+          retention-days: 1
+
+  deploy:
+    name: Deploy validated site
+    if: github.event_name != 'pull_request'
+    needs: [contracts, release-candidate]
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      id-token: write
+    steps:
+      - name: Download validated site
+        uses: actions/download-artifact@v8
+        with:
+          name: site-dist-${{ github.sha }}
+          path: dist
+
       - name: Assume deploy role (OIDC)
-        if: github.event_name != 'pull_request'
         uses: aws-actions/configure-aws-credentials@v6
         with:
           role-to-assume: ${{ vars.OPDA_SITE_DEPLOY_ROLE_ARN }}
           aws-region: eu-west-2
 
       - name: Sync dist to the site bucket
-        if: github.event_name != 'pull_request'
         run: |
           SITE_BUCKET=$(aws cloudformation describe-stacks --region eu-west-2 \
             --stack-name opda-site \
@@ -216,7 +268,6 @@ jobs:
             --exclude "spdtf/inputs/pdtf-schema/schema-derived-ontology/use-and-tooling/tools/widoco/*"
 
       - name: Invalidate CloudFront
-        if: github.event_name != 'pull_request'
         run: |
           DISTRIBUTION_ID=$(aws cloudformation describe-stacks --region eu-west-2 \
             --stack-name opda-site \

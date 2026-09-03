@@ -11,14 +11,17 @@ implements: [ADR-0038]
 # AWS hosting CI/CD pipeline
 
 > **Amended 2026-09-03.** Site validation and deployment now form one real
-> release gate in `.github/workflows/deploy-aws.yml`. Ordinary content changes
-> use the committed ontology projection and a pure Astro build. Changes to
-> ontology inputs run the complete generator, BASPI5, exemplar, schema and model
-> drift gates in the same job before deployment. The former independent
-> ontology workflows are retired because they could fail after the site had
-> already published. Main-branch deploys are serialised; superseded runs no
-> longer race to write the same S3 bucket. The completed IA migration checker
-> remains an explicit audit tool rather than an evergreen release gate.
+> release gate in `.github/workflows/deploy-aws.yml`. Independent contracts run
+> in parallel with creation and browser validation of a single release
+> candidate. Deployment downloads that exact candidate only after both jobs
+> pass; AWS credentials are available only to the deploy job. Ordinary content
+> changes use the committed ontology projection and a pure Astro build. Changes
+> to ontology inputs run the complete generator, BASPI5, exemplar, schema and
+> model drift gates before deployment. The former independent ontology
+> workflows are retired because they could fail after the site had already
+> published. Main-branch deploys are serialised; superseded runs no longer race
+> to write the same S3 bucket. The completed IA migration checker remains an
+> explicit audit tool rather than an evergreen release gate.
 
 > **Amended 2026-08-27 by [ADR-0079](./ADR-0079-make-the-site-public-and-retire-the-edge-authentication-gate.md).**
 > GitHub OIDC, CI-only CloudFormation, the regional site packaging bucket and
@@ -83,11 +86,21 @@ Chosen option: **A — GitHub Actions + IAM OIDC role + CloudFormation deploys**
 * Build: `pnpm run build` for ordinary site changes. Ontology-input changes run
   `npm run build:data`, then fail if the refreshed committed model or graph
   differs from the repository.
-* Validation: site, model and deployment checks share one job, so every failed
-  required check actually prevents the S3 upload. Model-only setup and tests are
-  conditional; the 15 diagnostic exemplars run as one parametrised suite.
+* Validation: design-system, ADR, Node and ontology-documentation contracts run
+  together in one job while a second job builds the release candidate and runs
+  route, resource, browser, accessibility and responsive checks against it.
+  This is the smallest useful dependency graph: it overlaps independent work
+  without duplicating the 298 MB build across test runners. Model-only setup and
+  tests are conditional; the 15 diagnostic exemplars run as one parametrised
+  suite.
+* Handoff: the build-and-browser job uploads the validated publishable `dist/`
+  tree as a one-day GitHub Actions artefact. The deploy job starts only after
+  both validation jobs pass, downloads that artefact, and never rebuilds it.
+  Historical generated-tool prefixes already excluded from S3 synchronisation
+  are also excluded from the handoff artefact.
 * Deploy: replace the wrangler step with `aws s3 sync dist/ s3://<site-bucket> --delete` followed by `aws cloudfront create-invalidation --paths '/*'` (at ~20 views/day, a full invalidation is simpler than hashed-path bookkeeping and within the 1,000 free invalidation paths/month).
-* Permissions: `id-token: write` (OIDC), `contents: read`.
+* Permissions: validation jobs receive only `contents: read`; the final deploy
+  job alone receives `id-token: write` for OIDC.
 
 **3. Infrastructure deploys — `infra.yml` (new).**
 
@@ -115,6 +128,10 @@ Chosen option: **A — GitHub Actions + IAM OIDC role + CloudFormation deploys**
 * Good, because the pipeline itself is code in this repository: the bootstrap stack, both workflows, and the deploy role's permissions are all reviewable and diffable.
 * Good, because a normal site release has no Java service dependency and every
   required quality failure prevents deployment in the same workflow.
+* Good, because independent contracts overlap the build and browser path while
+  the large site tree is built, browser-tested and uploaded only once.
+* Good, because the deployed tree is the validated release candidate rather
+  than the result of a second build on the deployment runner.
 * Good, because ontology changes retain the Jena, generator, round-trip,
   exemplar and byte-identity evidence without launching 17 duplicate runners.
 * Good, because the single-writer invariant is enforced declaratively (ECS deployment configuration in the stack) rather than by pipeline scripting that could be bypassed.

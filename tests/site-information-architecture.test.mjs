@@ -442,6 +442,18 @@ test('AWS publication is fail-closed on ADR and ontology documentation gates', (
   assert.doesNotMatch(workflow.slice(0, adrGate), /configure-aws-credentials/u);
 });
 
+test('AWS publication deploys one validated release candidate after parallel gates', () => {
+  const workflow = readFileSync(new URL('../.github/workflows/deploy-aws.yml', import.meta.url), 'utf8');
+  assert.match(workflow, /contracts:\n[\s\S]*?release-candidate:\n/u);
+  assert.match(workflow, /release-candidate:\n[\s\S]*?Upload validated site/u);
+  assert.match(workflow, /deploy:\n[\s\S]*?needs: \[contracts, release-candidate\]/u);
+  assert.match(workflow, /Download validated site[\s\S]*?Assume deploy role \(OIDC\)/u);
+  assert.equal((workflow.match(/pnpm run build(?:\n|$)/gu) ?? []).length, 1);
+  assert.equal((workflow.match(/pnpm run build:data/gu) ?? []).length, 1);
+  assert.equal((workflow.match(/pnpm run test:e2e/gu) ?? []).length, 1);
+  assert.equal((workflow.match(/configure-aws-credentials/gu) ?? []).length, 1);
+});
+
 test('reader-facing IA vocabulary rejects stale labels but exempts immutable records', () => {
   assert.equal(findForbiddenIaLabels('Develop SPDTF · Property Pack V2').length, 2);
   assert.deepEqual(findForbiddenIaLabels('Published baseline from Phase 1/2', { historical: true }), []);
