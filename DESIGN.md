@@ -2,30 +2,21 @@
 
 Version 1.1 · adopted 16 August 2026 · updated 1 September 2026 · scope: opda.org.uk application and its standalone design-system presentation.
 
-This is the normative human contract for OPDA's web interface. It supersedes the earlier cream, terracotta and third-party-inspired system. ADR-0073
-records the adoption decision; `public/ui/design-tokens.css` is the machine-readable token projection; `public/ui/design-system.css` imports the live
-implementation modules.
+This is the normative human contract for OPDA's web interface. It supersedes the earlier cream, terracotta and third-party-inspired system. ADR-0073 records the adoption decision; `public/ui/design-tokens.css` is the machine-readable token projection; `public/ui/design-system.css` imports the live implementation modules.
 
 ## 1. Creative direction
 
-OPDA is an **ink-and-amber data publication**: sharp, bordered, photographic and light by default, with the confidence of a standards body and the
-precision of a technical reference.
+OPDA is an **ink-and-amber data publication**: sharp, bordered, photographic and light by default, with the confidence of a standards body and the precision of a technical reference.
 
 Five principles govern every surface:
 
-1. **Evidence before decoration.** Source, status and provenance are visible where
-   decisions depend on them.
-2. **One identity, different densities.** Public narrative and dense schema tools
-   share tokens and components without pretending they have the same layout needs.
-3. **Amber directs; ink explains.** Yellow calls attention and carries dark text;
-   it is not body copy, a status colour or a decorative wash.
-4. **Sharp and structural.** Rules, alignment and type create hierarchy. Cards are
-   square, elevation is rare and gradients have one controlled use.
-5. **Access is part of authority.** Keyboard, contrast, reflow, forced colours and
-   reduced motion are release requirements.
+1. **Evidence before decoration.** Source, status and provenance are visible where decisions depend on them.
+2. **One identity, different densities.** Public narrative and dense schema tools share tokens and components without pretending they have the same layout needs.
+3. **Amber directs; ink explains.** Yellow calls attention and carries dark text; it is not body copy, a status colour or a decorative wash.
+4. **Sharp and structural.** Rules, alignment and type create hierarchy. Cards are square, elevation is rare and gradients have one controlled use.
+5. **Access is part of authority.** Keyboard, contrast, reflow, forced colours and reduced motion are release requirements.
 
-For this exercise, the operator delegated visual-design authority for the derived layer to Fable 5 at maximum effort and adopted the resulting
-contract. That delegation does not give Fable standards, content, governance or publication authority.
+For this exercise, the operator delegated visual-design authority for the derived layer to Fable 5 at maximum effort and adopted the resulting contract. That delegation does not give Fable standards, content, governance or publication authority.
 
 ## 2. Evidence model
 
@@ -47,15 +38,11 @@ The source SVGs define their own embedded colours and geometry. The repository c
 
 ### Observed evidence
 
-openpropdata.org.uk demonstrates the purple/yellow direction, official mark and people/property photography, but applies the type system
-inconsistently and has accessibility defects. The current opda.org.uk app demonstrates content density and specialist controls. The legacy PDTF
-developer guide contributes useful guide/code/ table structure. The proposed SmartPropData domain was unreachable when inspected. None of these
-observations overrides the supplied guide or vectors.
+openpropdata.org.uk demonstrates the purple/yellow direction, official mark and people/property photography, but applies the type system inconsistently and has accessibility defects. The current opda.org.uk app demonstrates content density and specialist controls. The legacy PDTF developer guide contributes useful guide/code/table structure. The proposed SmartPropData domain was unreachable when inspected. None of these observations overrides the supplied guide or vectors.
 
 ### Derived decisions
 
-Everything below that the guide did not define—semantic colours, type scale, spacing, layout, states, data visualisation, responsive behaviour,
-accessibility, motion and governance—is a recorded design-system decision rather than invented brand evidence.
+Everything below that the guide did not define—semantic colours, type scale, spacing, layout, states, data visualisation, responsive behaviour, accessibility, motion and governance—is a recorded design-system decision rather than invented brand evidence.
 
 ## 3. Brand assets
 
@@ -67,16 +54,11 @@ Use only the supplied files:
 | White wordmark | `/ui/brand/opda-wordmark-white.svg` | dark ink |
 | Yellow icon | `/ui/brand/opda-icon-yellow.svg` | dark or decorative context |
 
-Asset colour conflict is resolved by scope: `#131224`, `#FEC82F` and `#FEC92B` inside the SVGs are logo-specific values; the guide values are
-interface tokens. Never override an official asset's fills, normalise it during build or reconstruct the mark. A changed source asset creates a new
-manifest version and hash.
+Asset colour conflict is resolved by scope: `#131224`, `#FEC82F` and `#FEC92B` inside the SVGs are logo-specific values; the guide values are interface tokens. Never override an official asset's fills, normalise it during build or reconstruct the mark. A changed source asset creates a new manifest version and hash.
 
-Provide clear space of at least the icon-stem width around the wordmark. Keep the wordmark horizontal, uncropped and at least 128 CSS pixels wide. The
-icon may be a decorative motif but never substitutes for the named organisation where identity would otherwise be ambiguous.
+Provide clear space of at least the icon-stem width around the wordmark. Keep the wordmark horizontal, uncropped and at least 128 CSS pixels wide. The icon may be a decorative motif but never substitutes for the named organisation where identity would otherwise be ambiguous.
 
-Icon-and-live-text identity uses the shared `.brand-lockup` primitive. Its icon width is `0.89em` and its icon-to-text gap is `0.45em`, so both scale
-with the consuming title rather than becoming independent pixel values. The icon is baseline-aligned with the live text. Dark-surface lock-ups use
-`brand-yellow`; light-surface lock-ups use `brand-deep`. Components must not add transforms or local colour overrides.
+Icon-and-live-text identity uses the shared `.brand-lockup` primitive. Its icon width is `0.89em` and its icon-to-text gap is `0.45em`, so both scale with the consuming title rather than becoming independent pixel values. The icon is baseline-aligned with the live text. Dark-surface lock-ups use `brand-yellow`; light-surface lock-ups use `brand-deep`. Components must not add transforms or local colour overrides.
 
 ## 4. Colour system
 
