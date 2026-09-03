@@ -54,12 +54,11 @@ const slug = name
   ? name.toLowerCase().trim().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '')
   : null;
 
-// Per-tier URL builder mirroring src/lib/cross-tier.ts's scheme. The concept and
-// logical tiers expose one page per entity (kebab slug). The physical tiers do
+// The concept and logical tiers expose one page per entity (kebab slug). The physical tiers do
 // NOT — they expose one page per module, with the entity addressed by fragment.
-// Building the right shape per tier is what keeps these links resolving when the
-// API-less build falls back to this component (a flat /<tier>/<module>/<name>
-// path 404s on the physical tiers and breaks on un-slugified names).
+// Building the right shape per tier keeps links resolving when a manual entry
+// falls back to markdown rendering (a flat /<tier>/<module>/<name> path 404s on
+// the physical tiers and breaks on un-slugified names).
 function tierHref(key: string, path: string): string {
   if (!mod) return path;
   switch (key) {

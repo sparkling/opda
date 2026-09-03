@@ -206,7 +206,7 @@ Common site commands:
 | `make dev` | Run the ordinary Astro development server. |
 | `make build` | Build the static site into `dist/` without starting a triplestore. |
 | `make preview` | Build and serve `dist/` with Astro preview. |
-| `make build-data` | Run ephemeral Fuseki and the build-time API, refresh generated ontology views, build `dist/`, then stop the services. Requires Java 17+. |
+| `make build-data` | For ontology changes: run ephemeral Fuseki, refresh the committed model and graph, build `dist/`, then stop Fuseki. Requires Java 17+. |
 | `make css` | Rebuild the generated Tailwind stylesheet and design-module facade. |
 
 The Astro development middleware exposes selected `source/` and `_build/` files on loopback for
@@ -222,14 +222,14 @@ make ontology-install
 ```
 
 Some profile and traceability gates also read the gitignored upstream PDTF schema checkout at
-`source/03-standards/schemas/`. The dedicated ontology workflows clone a pinned upstream revision;
-a local full ontology run requires the corresponding archive to be present.
+`source/03-standards/schemas/`. The deployment workflow clones a pinned upstream revision when
+ontology gates are required; a local full ontology run requires the corresponding archive.
 
 Key commands:
 
 | Command | Purpose |
 |---|---|
-| `make serve-data` | Start local Fuseki on port 3031 and the build-time API on port 3002; keep both running for development. |
+| `make serve-data` | Start local Fuseki on port 3031 and the optional API on port 3002; keep both running for interactive query development. |
 | `make jena-load` | Clear and reload canonical ontology Turtle files into an already-running Fuseki. |
 | `make api` | Run the SPARQL-to-REST API alone against Fuseki on port 3031. |
 | `make ontology-model` | Refresh `src/data/ontology-model.json` from a running Fuseki. |
@@ -246,8 +246,9 @@ Key commands:
 | `make data` | Regenerate public JSON resource bundles from the available local `source/` archive. |
 | `make resources-manifest` | Rebuild the committed resource manifest from the gitignored local archive; local/out-of-band only. |
 
-Fuseki and `src/api/` are build-time/local services. They are not deployed as a public production
-triplestore or ontology API; production receives static HTML and assets generated into `dist/`.
+Fuseki refreshes the committed model when ontology inputs change; `src/api/` is an explicit local
+development surface. Neither is deployed as a public production service. Ordinary builds consume
+the committed model and production receives only the static HTML and assets in `dist/`.
 
 ## Tests and CI boundaries
 
@@ -258,22 +259,23 @@ There is no `lint` script. Use the checks that correspond to the changed surface
 | `make test` | Root Node test suite: Markdown transforms plus site, data, IA, Property Pack and operational contracts. |
 | `make test-schema` / `make check-schema-drift` | Schema reproducibility boundary and strict generated-page drift. |
 | `make check-design-system` | Generated design-module facade drift. |
-| `make check-ia-preservation` | Route, artefact, service and support-asset preservation receipts. |
+| `make check-ia-preservation` | Explicit audit of the completed IA migration receipts; not an evergreen release gate. |
 | `make check-adr` | Generated ADR registry drift. |
-| `make check-links` / `make check-resource-links` | Internal ontology/PDTF link and source-resource receipt checks after `make build-data`. |
-| `make ci` | Locally checkable unit, schema, design, IA, ADR, SPDTF-IA and ontology gates. It does not run the full data build or browser suite. |
-| `make ci-browser` | Full data build followed by IA, route and Playwright release gates against the resulting `dist/`. |
+| `make check-links` / `make check-resource-links` | Internal ontology/PDTF link and source-resource receipt checks after a site build. |
+| `make ci` | Full release-equivalent validation, including ontology refresh, static build and browser gates. |
+| `make ci-browser` | Static build plus dependency-free, route, resource and Playwright release gates for ordinary site changes. |
 | `make test-smoke`, `make test-e2e`, `make test-a11y`, `make test-visual` | Focused Playwright gates. Build `dist/` first; the tests serve that built output. |
 
-The AWS site workflow adds the full data build, unit/schema checks, route/resource crawls,
-browser/accessibility gates, generated-model drift, ontology relationship coverage and internal
-link checks before deployment credentials are configured. Dedicated workflows independently
-check ontology byte identity and the BASPI5 round-trip harness.
+One AWS workflow validates, builds and deploys, so a required failure cannot race or be ignored by
+the deployment job. It runs the static path for ordinary site changes and conditionally provisions
+Python, Java and Fuseki for ontology changes. The ontology path retains byte identity, BASPI5,
+schema, generated-model and documentation drift gates in the same deployment-blocking job.
 
 ## Deployment and publication boundaries
 
 Production is an AWS deployment: GitHub Actions builds the static site, synchronises `dist/` to
-S3 and invalidates CloudFront. Fuseki and the build-time API are torn down before publication.
+S3 and invalidates CloudFront. Conditional Fuseki is torn down before publication; the local API
+is not started by a release build.
 CloudFormation manages the site and narrowly scoped runtime services such as working-group
 registration, member comment sessions and comments.
 

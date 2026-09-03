@@ -1,13 +1,21 @@
 ---
-status: accepted
+status: superseded
 date: 2026-06-25
+updated: 2026-09-03
 tags: [ci, performance, infrastructure, deploy]
 supersedes: []
+superseded-by: [ADR-0021]
 depends-on: []
 implements: []
 ---
 
 # Cache the Apache Jena Fuseki dist in the AWS deploy
+
+> **Superseded 2026-09-03 by the ADR-0021 build-path amendment.** The cache was
+> an appropriate tactical response while every site release required Fuseki.
+> Ordinary releases no longer start Fuseki; the combined Jena/Fuseki cache is
+> retained only for ontology-change validation. This record remains the
+> historical profiling evidence for why the service dependency was removed.
 
 ## Context and Problem Statement
 

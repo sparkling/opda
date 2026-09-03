@@ -1,59 +1,26 @@
-name: Deploy site to AWS
-
-# App CI/CD per ADR-0040 §2: the AWS successor to deploy.yml (Cloudflare
-# Pages). Build is identical — pnpm + JDK + `npm run build:data` (ADR-0021/
-# 0036/0037: ephemeral build-time Fuseki + GRLC API, only dist/ ships) — and
-# only the upload step differs: aws s3 sync + a full CloudFront invalidation
-# (at ~20 views/day, simpler than hashed-path bookkeeping and inside the
-# 1,000 free invalidation paths/month).
-#
-# PRODUCTION since the 2026-06-06 NS cutover (deploy.yml/Cloudflare retired).
-#
-# Auth: GitHub OIDC → opda-site-deploy role; no static AWS keys (ADR-0040 §1).
-# The bucket and distribution IDs are read from the opda-site stack outputs at
-# run time — no extra repository variables to drift.
+name: Validate and deploy site to AWS
 
 on:
-  # Only deploy when something in the production bundle changes. `astro build`
-  # ships src/ + public/ + the root build config; source/ and _build/ are
-  # dev-only (see astro.config.mjs) and docs/, .claude/, logs/ etc. never ship,
-  # so changes confined to those must not trigger a rebuild.
   push:
     branches: [main]
     paths:
       - 'src/**'
       - 'public/**'
-      - 'astro.config.mjs'
-      - 'package.json'
-      - 'pnpm-lock.yaml'
-      - 'tsconfig.json'
-      # ADR-0021: entity pages are generated from the ontology at build time, so
-      # the triplestore inputs + build-time API + orchestration must also trigger.
-      - 'config/fuseki-config.ttl'
-      - 'scripts/**'
-      - 'source/_content/**'
-      - 'source/_examples/**'
-      - 'source/00-deliverables/semantic-models/provenance-map.yaml'
-      - 'source/00-deliverables/semantic-models/theme-map.yaml'
-      - 'source/03-standards/ontology/**'
-      - '.github/workflows/deploy-aws.yml'
-  # Pull requests run the same build and release gates, but the AWS steps below
-  # remain disabled. This makes design and accessibility failures pre-merge
-  # evidence rather than deploy-time surprises.
-  pull_request:
-    paths:
-      - 'src/**'
-      - 'public/**'
-      - 'scripts/**'
-      - 'tests/**'
-      - 'source/_content/**'
-      - 'source/_examples/**'
-      - 'source/00-deliverables/semantic-models/provenance-map.yaml'
-      - 'source/00-deliverables/semantic-models/theme-map.yaml'
-      - 'source/03-standards/ontology/**'
-      - 'config/fuseki-config.ttl'
-      - 'DESIGN.md'
+      - 'docs/manual/**'
+      - 'docs/ontology/odr/**'
       - 'docs/adr/**'
+      - 'source/_content/**'
+      - 'source/_examples/**'
+      - 'source/00-deliverables/semantic-models/provenance-map.yaml'
+      - 'source/00-deliverables/semantic-models/theme-map.yaml'
+      - 'source/03-standards/ontology/**'
+      - 'source/03-standards/ontology-candidates/**'
+      - 'config/fuseki-config.ttl'
+      - 'config/property-pack-candidate/**'
+      - 'tools/opda-gen/**'
+      - 'scripts/**'
+      - '!scripts/*notebooklm*'
+      - '!scripts/notebooklm/**'
       - 'astro.config.mjs'
       - 'playwright.config.mjs'
       - 'Makefile'
@@ -61,21 +28,76 @@ on:
       - 'pnpm-lock.yaml'
       - 'tsconfig.json'
       - '.github/workflows/deploy-aws.yml'
-  # Manual escape hatch: force a deploy from the Actions tab when a change
-  # outside the paths above needs publishing, or to re-run a build.
+  pull_request:
+    paths:
+      - 'src/**'
+      - 'public/**'
+      - 'docs/manual/**'
+      - 'docs/ontology/odr/**'
+      - 'docs/adr/**'
+      - 'source/_content/**'
+      - 'source/_examples/**'
+      - 'source/00-deliverables/semantic-models/provenance-map.yaml'
+      - 'source/00-deliverables/semantic-models/theme-map.yaml'
+      - 'source/03-standards/ontology/**'
+      - 'source/03-standards/ontology-candidates/**'
+      - 'config/fuseki-config.ttl'
+      - 'config/property-pack-candidate/**'
+      - 'tools/opda-gen/**'
+      - 'scripts/**'
+      - '!scripts/*notebooklm*'
+      - '!scripts/notebooklm/**'
+      - 'tests/**'
+      - 'DESIGN.md'
+      - 'astro.config.mjs'
+      - 'playwright.config.mjs'
+      - 'Makefile'
+      - 'package.json'
+      - 'pnpm-lock.yaml'
+      - 'tsconfig.json'
+      - '.github/workflows/deploy-aws.yml'
   workflow_dispatch:
+
+concurrency:
+  group: opda-site-${{ github.ref }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
 
 permissions:
   id-token: write
   contents: read
 
 jobs:
-  validate-and-deploy:
+  validate-build-and-deploy:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v6
         with:
           fetch-depth: 0
+
+      - name: Determine whether model gates are required
+        id: changes
+        shell: bash
+        run: |
+          set -euo pipefail
+          if [[ "${{ github.event_name }}" == "workflow_dispatch" ]]; then
+            echo "model=true" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+          if [[ "${{ github.event_name }}" == "pull_request" ]]; then
+            base="${{ github.event.pull_request.base.sha }}"
+          else
+            base="${{ github.event.before }}"
+          fi
+          if [[ -z "$base" || "$base" =~ ^0+$ ]] || ! git cat-file -e "$base^{commit}"; then
+            echo "model=true" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+          git diff --name-only "$base" "$GITHUB_SHA" > /tmp/opda-changed-paths
+          if grep -Eq '^(\.github/workflows/deploy-aws\.yml$|Makefile$|package\.json$|pnpm-lock\.yaml$|tools/opda-gen/|src/data/ontology-model\.json$|public/data/ontology-graph-elements\.json$|source/(03-standards/ontology|03-standards/ontology-candidates|_content|_examples)/|source/00-deliverables/semantic-models/(provenance-map|theme-map)\.yaml$|config/(fuseki-config\.ttl|property-pack-candidate/)|scripts/(build-with-data|fuseki-load|ontology-model|ontology-graph|property_pack|check-schema-reproducibility)\.|tests/(baspi5_round_trip/|property-pack-(catalogue|candidate)))' /tmp/opda-changed-paths; then
+            echo "model=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "model=false" >> "$GITHUB_OUTPUT"
+          fi
 
       - uses: pnpm/action-setup@v6
 
@@ -84,102 +106,82 @@ jobs:
           node-version: 22
           cache: pnpm
 
-      # ADR-0036/0037: build:data runs a local Apache Jena Fuseki 6.1.0 binary
-      # (no Docker), which needs a JDK 17+ on the runner. The Fuseki dist itself
-      # is self-provisioned (downloaded + sha512-verified) by build-with-data.mjs.
+      - uses: actions/setup-python@v6
+        if: steps.changes.outputs.model == 'true'
+        with:
+          python-version: '3.11'
+
       - uses: actions/setup-java@v5
+        if: steps.changes.outputs.model == 'true'
         with:
           distribution: temurin
           java-version: 21
 
-      # Cache the self-provisioned Fuseki dist (.fuseki/ — the 49 MB tarball +
-      # extracted tree). archive.apache.org throttles to ~80 KB/s, so the
-      # download alone is ~600s — 94% of build:data and the deploy's single
-      # biggest cost (profiled in ADR-0053). On a cache hit, ensureFuseki() finds
-      # the extracted jar and skips the download + extract entirely. Keyed on the
-      # Fuseki version so a bump (build-with-data.mjs FUSEKI_VERSION) re-primes it.
-      - name: Cache Apache Jena Fuseki dist
+      - name: Cache Apache Jena distributions
+        if: steps.changes.outputs.model == 'true'
         uses: actions/cache@v6
         with:
-          path: .fuseki
-          key: fuseki-6.1.0
+          path: |
+            .jena
+            .fuseki
+          key: jena-fuseki-6.1.0-${{ runner.arch }}
 
-      # The ADR-0048 gate below invokes the opda-gen CLI — needs Python + the
-      # package installed, same as the ontology-byte-identity / baspi5 workflows.
-      - uses: actions/setup-python@v6
-        with:
-          python-version: '3.11'
+      - name: Fetch pinned PDTF schemas
+        if: steps.changes.outputs.model == 'true'
+        run: |
+          git clone --quiet https://github.com/Property-Data-Trust-Framework/schemas.git source/03-standards/schemas
+          git -C source/03-standards/schemas checkout --quiet 996a56adc297e762bbee935a9ae2883df791e1d4
 
-      - name: Cache Apache Jena dist
-        uses: actions/cache@v6
-        with:
-          path: .jena
-          key: jena-6.1.0
-
-      # Property Pack candidate tests execute RIOT, ARQ and SHACL. Provision
-      # the byte-pinned Jena distribution before the JavaScript test stage.
-      - name: Install opda-gen
+      - name: Install ontology toolchain
+        if: steps.changes.outputs.model == 'true'
         working-directory: tools/opda-gen
         run: pip install -e .[dev] jinja2==3.1.6
 
-      - name: Provision Apache Jena semantic toolchain
+      - name: Provision Apache Jena
+        if: steps.changes.outputs.model == 'true'
         run: python -c "from opda_gen.jena_shacl import resolve_jena_shacl; print(resolve_jena_shacl())"
 
       - run: pnpm install --frozen-lockfile
 
-      # Fail before the build has a chance to rewrite a stale committed facade.
-      - name: Design module facade drift gate
+      - name: Design-system drift gate
         run: pnpm run check:design-system
 
-      # These repository/documentation contracts run for both pull requests and
-      # production pushes. Keep them before any AWS credential configuration so
-      # a stale ADR index or ontology reference cannot reach the release path.
-      # Use the existing Make targets to avoid duplicating their implementations.
-      - name: ADR and ontology documentation gates
-        run: make check-adr ci-ontology-doc
+      - name: ADR registry drift gate
+        run: make check-adr
 
-      # Build-time GRLC API's own deps (express, js-yaml).
-      - run: npm --prefix src/api install --no-audit --no-fund
-
-      # ADR-0021: launch local Fuseki + load the ontology TTLs + start the GRLC
-      # API on localhost, run `astro build` (which queries the API to generate
-      # entity pages), then tear it all down. The triplestore + API are
-      # build-exclusive + ephemeral — only dist/ (static HTML) is deployed;
-      # production never runs, reaches, or exposes them.
-      - name: Build static site
-        run: npm run build:data
-
-      # Root unit tests plus the release-browser gates run against the exact
-      # dist/ produced for deployment. Keep these before AWS credentials and
-      # upload so a failed browser/route check cannot publish a broken bundle.
-      - name: JavaScript unit tests
+      - name: Node contracts
         run: pnpm test
 
-      - name: Schema reproducibility boundary contracts
-        run: pnpm run test:schema
+      - name: Ontology documentation drift gate
+        run: make ci-ontology-doc ci-ontology-graph
 
-      # Rebuild the tracked schema-page projection with its canonical epoch.
-      # The runner reconstructs the two intentionally gitignored JSON inputs
-      # from their byte-pinned public resource bundles, without network access.
-      - name: Strict generated schema-page drift gate
-        run: pnpm run check:schema-drift
+      - name: Ontology and Python-backed model contracts
+        if: steps.changes.outputs.model == 'true'
+        run: make ci-ontology test-model
 
-      - name: Information-architecture preservation gate
-        run: pnpm run check:ia-preservation
+      - name: Schema reproducibility contracts
+        if: steps.changes.outputs.model == 'true'
+        run: pnpm run test:schema && pnpm run check:schema-drift
 
-      - name: Information-architecture Markdown and HTML parity gate
-        run: pnpm run check:spdtf-ia
+      - name: Build site from the committed model
+        if: steps.changes.outputs.model != 'true'
+        run: pnpm run build
 
-      - name: Install Chromium for release browser gates
+      - name: Refresh model and build site
+        if: steps.changes.outputs.model == 'true'
+        run: pnpm run build:data
+
+      - name: Generated model drift gate
+        if: steps.changes.outputs.model == 'true'
+        run: git diff --exit-code -- src/data/ontology-model.json public/data/ontology-graph-elements.json
+
+      - name: Install Chromium
         run: pnpm exec playwright install --with-deps chromium
 
-      - name: Built-route asset and application-navigation crawl
-        run: pnpm run check:routes
+      - name: Built-route and resource gates
+        run: pnpm run check:routes && pnpm run check:resource-links
 
-      - name: Source-resource publication receipts
-        run: pnpm run check:resource-links
-
-      - name: Browser, axe, keyboard and responsive gates
+      - name: Browser, accessibility and responsive gates
         run: pnpm run test:e2e
 
       - name: Upload browser failure evidence
@@ -190,26 +192,8 @@ jobs:
           path: |
             test-results/
             playwright-report/
-          if-no-files-found: error
+          if-no-files-found: ignore
           retention-days: 7
-
-      - name: Generated model and graph drift gate
-        run: git diff --exit-code -- src/data/ontology-model.json public/data/ontology-graph-elements.json
-
-      # ADR-0048 — relationship-layer object-property coverage gate. Fail the
-      # deploy if any owl:ObjectProperty is rangeless-AND-shapeless, a
-      # subject-bearer predicate carries a not-universally-true rdfs:domain, the
-      # residue register is malformed, or a GATED §R2 edge is not retrievable by
-      # its worked competency query. Static rdflib check over the committed
-      # corpus + exemplars (no Fuseki/JDK dependency).
-      - name: Object-property coverage gate (ADR-0048)
-        working-directory: tools/opda-gen
-        run: opda-gen ci-object-property-coverage --strict --ontology-dir ../../source/03-standards/ontology
-
-      # ADR-0044 Phase 8 — link-validation sweep over the built site: no dangling
-      # internal links or orphan pages on the schema-derived ontology + /pdtf surface.
-      - name: Ontology link-validation sweep (ADR-0044)
-        run: node scripts/check-links.mjs
 
       - name: Assume deploy role (OIDC)
         if: github.event_name != 'pull_request'
@@ -218,22 +202,12 @@ jobs:
           role-to-assume: ${{ vars.OPDA_SITE_DEPLOY_ROLE_ARN }}
           aws-region: eu-west-2
 
-      - name: Sync dist/ to the site bucket
+      - name: Sync dist to the site bucket
         if: github.event_name != 'pull_request'
         run: |
           SITE_BUCKET=$(aws cloudformation describe-stacks --region eu-west-2 \
             --stack-name opda-site \
             --query "Stacks[0].Outputs[?OutputKey=='SiteBucketName'].OutputValue" --output text)
-          # Move the manifest-audited, ignored ontology bundles into the canonical
-          # PDTF schema hierarchy before --delete retires their former URLs.
-          aws s3 sync "s3://$SITE_BUCKET/ontology/artefacts/" \
-            "s3://$SITE_BUCKET/spdtf/inputs/pdtf-schema/schema-derived-ontology/use-and-tooling/artefacts/"
-          for TOOL in ontospy pylode shaclplay widoco; do
-            aws s3 sync "s3://$SITE_BUCKET/ontology/tools/$TOOL/" \
-              "s3://$SITE_BUCKET/spdtf/inputs/pdtf-schema/schema-derived-ontology/use-and-tooling/tools/$TOOL/"
-          done
-          # Keep the canonical copies outside --delete until a governed,
-          # reproducible generator supplies them in the release bundle.
           aws s3 sync dist/ "s3://$SITE_BUCKET" --delete \
             --exclude "spdtf/inputs/pdtf-schema/schema-derived-ontology/use-and-tooling/artefacts/*" \
             --exclude "spdtf/inputs/pdtf-schema/schema-derived-ontology/use-and-tooling/tools/ontospy/*" \

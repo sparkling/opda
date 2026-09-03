@@ -2,8 +2,7 @@
  * ADR-0022: build-time label→route manifest for diagram click navigation.
  *
  * Derives routes from the manual content collection entries (ids) using the
- * same helpers as manual.ts/cross-tier.ts. Does NOT require the API to be
- * running — pure content-collection derivation.
+ * same helpers as manual.ts. It is a pure content-collection derivation.
  *
  * Keys are normalised: lower-cased, trimmed. Multiple keys map to the same
  * route when an entity has alternate display forms (e.g. "Address", "address",

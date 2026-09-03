@@ -1,7 +1,7 @@
 ---
 status: accepted
 date: 2026-06-14
-updated: 2026-08-24
+updated: 2026-09-03
 tags: [ontology, information-architecture, ssg, sparql, dereferenceability, linked-data, detail-pages, shacl, skos, bounded-context, doc-drift-gate]
 supersedes: []
 depends-on: [ADR-0021, ADR-0041, ADR-0039, ADR-0043, ODR-0004]
@@ -9,6 +9,13 @@ implements: []
 ---
 
 # Ontology as web pages — dereferenceable per-entity detail pages, SPARQL-driven SSG
+
+> **Build-path amendment, 2026-09-03.** The SPARQL extraction still defines the
+> committed ontology model, but ordinary SSG reads that validated snapshot
+> directly. `build:data` is required only when ontology inputs change, when CI
+> regenerates the model and graph and rejects drift before publishing. This
+> removes a service dependency from content-only releases without changing the
+> generated routes, data contract or ontology authority.
 
 ## Context and Problem Statement
 
@@ -25,7 +32,7 @@ The consequence: there is **no canonical, native page for any individual class, 
 
 Two assets already exist and are under-used:
 
-1. **ADR-0021 built a GRLC SPARQL→REST API** (`src/api/`, queries in `src/api/queries/*.rq`, content-negotiation middleware) and a build-time fetch helper (`src/lib/entity-api.ts`) whose `EntityDetail` contract already carries `attributes[]` (datatype props), `relationships[]` (object props, **with inverse**), `constraints[]` (SHACL message/severity/shape), `dctSource[]`, and cross-tier links. It is queried by the **`/model` presentation tier**, not by `/ontology`.
+1. **ADR-0021 built a GRLC SPARQL→REST API** (`src/api/`, queries in `src/api/queries/*.rq`, content-negotiation middleware) and the `EntityDetail` contract carrying `attributes[]` (datatype props), `relationships[]` (object props, **with inverse**), `constraints[]` (SHACL message/severity/shape), `dctSource[]`, and cross-tier links. The presentation tier now obtains that contract from `src/lib/entity-detail.ts`; the API remains available for explicit development use.
 2. **The project already does SSG per-entity fan-out** — `src/pages/model/**/[...slug].astro` use `getStaticPaths()` to emit one static page per entry, dispatching by kind to `EntityPage` / `SchemePage` / `ExemplarPage` components.
 
 So the mechanism (SSG + SPARQL) exists; it has simply never been pointed at the authoritative `/ontology` reference. And — per the directing authority — **the ontology is small** (~40 classes, ~30 object + ~226 datatype properties, ~314 SKOS concepts / ~48 schemes, ~58 declared SHACL shapes, 7 bounded contexts), so generating a page per resource at build time is cheap and needs no pagination, lazy-loading, or runtime querying.
@@ -92,7 +99,7 @@ A themed Astro page (reusing the design system + dark mode; the ADR-0043 Cytosca
 
 ### Generation & routing plan (SSG + SPARQL, minimal)
 
-1. **One build-time SPARQL extraction** (`scripts/ontology-model.mjs`) — runs `CONSTRUCT`/`SELECT` against the **build-time Fuseki + GRLC API** (`npm run build:data`; **required** — operator decision §Decisions b), emitting a committed `src/data/ontology-model.json`: every resource with its **outgoing and incoming** edges (incoming via inverse / `?x ?p thisIRI`), attributes, resolved constraints, SKOS hierarchy, scheme/context membership. The JSON is still materialised + committed (for the doc-drift gate and ADR-0043 sharing) even though the data source is the live triplestore. Extends the ADR-0021 `EntityDetail` contract with an `incoming[]` field. **This is the same extraction ADR-0043 needs for the graph diagrams — author it once, emit both the page model and the `elements.json`.**
+1. **One conditional SPARQL extraction** (`scripts/ontology-model.mjs`) — runs `CONSTRUCT`/`SELECT` directly against build-time Fuseki when ontology inputs change, emitting a committed `src/data/ontology-model.json`: every resource with its **outgoing and incoming** edges (incoming via inverse / `?x ?p thisIRI`), attributes, resolved constraints, SKOS hierarchy, scheme/context membership. Ordinary builds read this validated projection without starting a service. Extends the ADR-0021 `EntityDetail` contract with an `incoming[]` field. **This is the same extraction ADR-0043 needs for the graph diagrams — author it once, emit both the page model and the `elements.json`.**
 2. **SSG routes — pure static (`output: 'static'`, no adapter; confirmed).** `src/pages/ontology/{class,property,shape,concept,scheme,context,profile,exemplar,category}/[slug].astro`, each `getStaticPaths()` over the model JSON (the data is read at build, inside `getStaticPaths` — no runtime query). Plus `src/pages/pdtf/[name].astro` (canonical HTML page, `build.format: 'file'` so the bare IRI resolves without a trailing-slash redirect) and `src/pages/pdtf/[name].ttl.ts` (a **static file endpoint** — `getStaticPaths()` + `GET` → Turtle `Response`, written as `/pdtf/{name}.ttl` at build). No SSR, no adapter, no runtime server.
 3. **Components** — `src/components/ontology/` (ClassPage, PropertyPage, ShapePage, ConceptPage, SchemePage, ContextPage), reusing the `/model` `EntityPage`/`SchemePage` patterns where they fit.
 4. **Aggregate pages → typed indexes** — rewrite `classes`/`properties`/`shapes`/`vocabularies`/`profiles` to read the model JSON (delete the regex parsers) and link to the detail pages; extend the §16 alphabetical index to link every term.
@@ -109,7 +116,7 @@ A themed Astro page (reusing the design system + dark mode; the ADR-0043 Cytosca
 * Good, because one SPARQL extraction feeds **both** the detail pages and the ADR-0043 graph diagrams — no duplicated data path.
 * Good, because the page model is generated + CI-gated, so the new pages inherit the corpus's anti-drift discipline.
 * Bad, because it adds ~720 generated pages + a build-time SPARQL step and new components — real engineering, and a longer build (bounded, given the small corpus).
-* Bad, because per the operator's build-mode choice (§Decisions b) these pages **require the live Fuseki + GRLC stack** (`build:data`) — plain `make build` and a bare `astro dev` won't render them (they fall back to markdown), so local preview of the entity pages needs `make serve-data`.
+* Good, because plain `make build` and Astro development render the same structured entity pages from the committed model; `make serve-data` is reserved for interactive SPARQL/API work.
 * Neutral, because dereferenceability is fully achievable in pure SSG via distinct URLs (HTML page + a static `.ttl` endpoint + `rel="alternate"`); true `Accept`-header content negotiation on the bare IRI is an *optional* edge enhancement (the deploy's CloudFront/Lambda@Edge), not a build-time requirement.
 * Neutral, because pyLODE/WIDOCO/Ontospy remain generated and embedded as extras (no work removed, just re-framed from "the reference" to "comparisons").
 * Neutral, because URL collisions are avoided by the ADR-0006 kind-split (local names are unique within `opda:`), so a flat `/pdtf/{LocalName}` is safe.
@@ -149,7 +156,7 @@ A themed Astro page (reusing the design system + dark mode; the ADR-0043 Cytosca
 
 ## More Information
 
-- **Builds on the SPARQL API + entity contract:** [ADR-0021] (`src/api/`, `src/lib/entity-api.ts`, `src/api/queries/*.rq`).
+- **Builds on the SPARQL API + entity contract:** [ADR-0021] (`src/api/`, `src/lib/entity-detail.ts`, `src/api/queries/*.rq`).
 - **Revises (per *Supersession scope*) the per-term-reference stance of:** [ADR-0041](ADR-0041-ontology-reference-document-generation.md) (the `/ontology` reference composition + doc-drift gate + bake-off).
 - **Dereferenceability target / publish location:** [ADR-0039](ADR-0039-linked-data-model-as-spdtf-foundation.md) (the schema-derived model published at `https://opda.org.uk/pdtf/`).
 - **Shared build-time SPARQL extractor + on-page graph diagrams:** [ADR-0043](ADR-0043-ontology-graph-diagram-tooling.md) (Cytoscape neighbourhood views; one extraction feeds both).
@@ -158,7 +165,7 @@ A themed Astro page (reusing the design system + dark mode; the ADR-0043 Cytosca
 
 ### Phased plan (lean; the ontology is small)
 
-1. **Model extraction — ✅ DONE (2026-06-15).** `scripts/ontology-model.mjs` queries live Fuseki → committed **deterministic** `src/data/ontology-model.json` (incoming+outgoing, datatype attributes, blank-node-resolved SHACL constraints, SKOS hierarchy, scheme/context membership, `dct:source`); wired into `build:data` step 3.5 + `make ontology-model` / `npm run ontology:model`. Validated against the corpus: 40 classes · 30 obj + 226 data props · 325 shapes · 314 concepts · 48 schemes; byte-identical re-run (gate-ready); `Property` shows both incoming **and** outgoing. Shared with the ADR-0043 `elements.json` (same extraction). *Refinement — ✅ done: the generator now excludes the cross-cutting `shapes`/`vocabularies`/`contexts` graphs so `contexts` is the canonical 7 bounded contexts.*
+1. **Model extraction — ✅ DONE (2026-06-15; build path amended 2026-09-03).** `scripts/ontology-model.mjs` queries live Fuseki → committed **deterministic** `src/data/ontology-model.json` (incoming+outgoing, datatype attributes, blank-node-resolved SHACL constraints, SKOS hierarchy, scheme/context membership, `dct:source`); wired into the model-changing `build:data` path + `make ontology-model` / `npm run ontology:model`. Ordinary builds consume the committed model directly. Validated against the corpus: 40 classes · 30 obj + 226 data props · 325 shapes · 314 concepts · 48 schemes; byte-identical re-run (gate-ready); `Property` shows both incoming **and** outgoing. Shared with the ADR-0043 `elements.json` (same extraction). *Refinement — ✅ done: the generator now excludes the cross-cutting `shapes`/`vocabularies`/`contexts` graphs so `contexts` is the canonical 7 bounded contexts.*
 2. **Class + Property detail pages — ✅ DONE.** `/pdtf/[...name]` catch-all + `ClassDetail`/`PropertyDetail`; incoming **and** outgoing connections, datatype attributes, governing shapes, provenance, cross-links. (`opda:Property` shows both directions.)
 3. **Shape + Concept + Scheme + Context pages — ✅ DONE.** Shapes (blank-node-resolved constraints), concepts, schemes on `/pdtf`; the 7 bounded contexts at `/ontology/context/[slug]` (contexts are graph-derived module groupings, not minted term IRIs, so they live under `/ontology`, not `/pdtf`).
 4. **Aggregate pages → typed indexes — ✅ DONE.** classes / properties / vocabularies / shapes / glossary read the model and link to `/pdtf`; the brittle regex parsers are retired; the A–Z glossary links all named resources.
@@ -170,7 +177,7 @@ A themed Astro page (reusing the design system + dark mode; the ADR-0043 Cytosca
 ### Decisions (operator, 2026-06-15)
 
 * **(a) Canonical URL — the IRI *is* the page.** Each resource's canonical page is served at its own IRI path, `/pdtf/{LocalName}` (pure SSG, `build.format: 'file'` so the bare IRI resolves with no trailing-slash bounce; `.ttl` alternate alongside). The typed `/ontology/{type}/{slug}` lists are navigation that links in — not the canonical address. *(Truest Linked-Data dereferenceability.)*
-* **(b) Build data — start the triplestore each build.** The model is extracted from the **live build-time Fuseki + GRLC API** (`npm run build:data`), reusing the ADR-0021 stack — not pre-parsed from files via Comunica. Consequence: **`build:data` is required** to generate these pages; plain `make build` (no triplestore) will not produce them, and `astro dev` without the stack degrades to the existing markdown fallback (entity-api.ts). The query result is still materialised to a committed `ontology-model.json` so the doc-drift gate and the ADR-0043 graph share one artefact.
+* **(b) Build data — amended 2026-09-03.** Ontology changes run `npm run build:data` to extract from live build-time Fuseki and refresh the committed `ontology-model.json`; the extractor queries Fuseki directly and does not require the GRLC API. Ordinary builds and Astro development consume that projection through `src/lib/entity-detail.ts`, so they produce the structured pages without a triplestore. The deploy gate regenerates and diffs the model and ADR-0043 graph whenever their inputs change.
 * **(c) Turtle download depth — CBD + one hop.** Each resource's `.ttl` carries its Concise Bounded Description **plus one hop** (a little about its immediate neighbours) — richer for offline exploration, accepting larger files and some repetition across pages.
 
 ## Amendments

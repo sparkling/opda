@@ -1,6 +1,7 @@
 ---
 status: accepted
 date: 2026-05-27
+updated: 2026-09-03
 tags: [ontology, mvp, baspi5, round-trip, exemplar, ci, retirement]
 supersedes: []
 depends-on: [ADR-0013, ODR-0010, ODR-0004, ODR-0003]
@@ -8,6 +9,14 @@ implements: [ADR-0008]
 ---
 
 # BASPI5 round-trip MVP harness + diagnostic exemplar regression
+
+> **CI execution amendment, 2026-09-03.** The three validation layers remain
+> mandatory when ontology inputs change, but they now run once inside the
+> deployment-gating workflow through `make ci-ontology`. The existing
+> parametrised test suite still names all 15 exemplar failures individually;
+> a 15-runner matrix and separate duplicate byte-identity workflow added cost,
+> not coverage. This amendment changes orchestration only, not the harness,
+> fixtures, expected reports or acceptance criteria.
 
 ## Context and Problem Statement
 

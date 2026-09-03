@@ -1,7 +1,7 @@
 ---
 status: implemented
 date: 2026-08-18
-updated: 2026-09-01
+updated: 2026-09-03
 tags: [website, information-architecture, pdtf-schema, spdtf, ontology, semantic-modelling, standards, migration, governance]
 supersedes: []
 amends: [ADR-0002, ADR-0041, ADR-0059, ADR-0062, ADR-0073]
@@ -10,6 +10,13 @@ implements: [docs/spdtf-information-architecture.md, src/pages/index.astro]
 ---
 
 # Organise the site around SPDTF and the PDTF schema
+
+> Update 2026-09-03 — the exact IA and family manifests remain the audit receipt
+> for the completed migration, but are no longer evaluated on every unrelated
+> release. Ongoing releases use the route/resource crawl and browser journeys;
+> `make check-ia-preservation` remains available when a later migration needs to
+> be compared with the frozen baseline. This changes gate proportionality, not
+> the accepted route, authority, status or preservation decisions.
 
 > Update 2026-09-01 — display labels are shortened to Programme, Governance,
 > Modelling, Development, Groups and Resources. The routes, destination keys,

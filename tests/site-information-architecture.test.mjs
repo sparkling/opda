@@ -1,14 +1,9 @@
 import assert from 'node:assert/strict';
-import { spawnSync } from 'node:child_process';
 import {
   existsSync,
-  mkdtempSync,
   readFileSync,
   readdirSync,
-  rmSync,
-  writeFileSync,
 } from 'node:fs';
-import { tmpdir } from 'node:os';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import test from 'node:test';
@@ -52,10 +47,13 @@ const expectedDestinations = [
   ['working-groups', 'Groups', '/spdtf/working-groups'],
   ['resources', 'Resources', '/resources'],
 ];
-const preservationScript = fileURLToPath(new URL('../scripts/check-ia-preservation.mjs', import.meta.url));
 const projectRoot = fileURLToPath(new URL('..', import.meta.url));
-const routeBaseline = JSON.parse(readFileSync(new URL('../src/data/ia-route-baseline.json', import.meta.url), 'utf8'));
-const preservationBaseline = JSON.parse(readFileSync(new URL('../src/data/ia-preservation-baseline.json', import.meta.url), 'utf8'));
+const readRouteBaseline = () => JSON.parse(
+  readFileSync(new URL('../src/data/ia-route-baseline.json', import.meta.url), 'utf8'),
+);
+const readPreservationBaseline = () => JSON.parse(
+  readFileSync(new URL('../src/data/ia-preservation-baseline.json', import.meta.url), 'utf8'),
+);
 const filesBelow = (directory) => readdirSync(directory, { withFileTypes: true }).flatMap((entry) => {
   const entryPath = path.join(directory, entry.name);
   return entry.isDirectory() ? filesBelow(entryPath) : [entryPath];
@@ -216,6 +214,8 @@ test('the migration ledger preserves every audited high-risk information family'
 });
 
 test('the frozen preservation proof resolves content, ownership and exact family checksums', () => {
+  const routeBaseline = readRouteBaseline();
+  const preservationBaseline = readPreservationBaseline();
   assert.equal(routeBaseline.schemaVersion, 11);
   assert.equal(routeBaseline.routeCount, 3206);
   assert.equal(routeBaseline.addedRouteCount, 95);
@@ -418,105 +418,28 @@ test('PDTF search distinguishes the schema, derived evidence and SPDTF work', ()
   assert.ok(results.every(({ url }) => url !== '/pdtf-schema' && !url.startsWith('/pdtf-schema/')));
 });
 
-test('preservation is a local and deployment gate', () => {
+test('the frozen IA audit is explicit, not an evergreen release gate', () => {
   const makefile = readFileSync(new URL('../Makefile', import.meta.url), 'utf8');
   const workflow = readFileSync(new URL('../.github/workflows/deploy-aws.yml', import.meta.url), 'utf8');
-  assert.match(makefile, /ci-browser: build-data check-ia-preservation check-routes test-e2e/u);
-  assert.match(makefile, /ci: .*check-ia-preservation/u);
+  assert.match(makefile, /check-ia-preservation:.*historical, not an evergreen release gate/u);
+  assert.doesNotMatch(makefile, /ci-browser:.*check-ia-preservation/u);
+  assert.doesNotMatch(makefile, /ci:.*check-ia-preservation/u);
   assert.match(workflow, /actions\/checkout@v6[\s\S]*?fetch-depth: 0/u);
   assert.doesNotMatch(workflow, /pnpm\/action-setup@v6\s+with:\s+version:/u);
-  assert.match(workflow, /Information-architecture preservation gate[\s\S]*pnpm run check:ia-preservation/u);
+  assert.doesNotMatch(workflow, /check:ia-preservation/u);
 });
 
 test('AWS publication is fail-closed on ADR and ontology documentation gates', () => {
   const workflow = readFileSync(new URL('../.github/workflows/deploy-aws.yml', import.meta.url), 'utf8');
-  const gate = workflow.indexOf('- name: ADR and ontology documentation gates');
+  const adrGate = workflow.indexOf('- name: ADR registry drift gate');
+  const ontologyDocGate = workflow.indexOf('- name: Ontology documentation drift gate');
   const credentials = workflow.indexOf('- name: Assume deploy role (OIDC)');
-  assert.ok(gate >= 0, 'workflow must run the shared documentation gates');
-  assert.match(workflow.slice(gate, credentials), /run: make check-adr ci-ontology-doc/u);
-  assert.ok(gate < credentials, 'documentation gates must precede AWS credentials');
-  assert.doesNotMatch(workflow.slice(0, gate), /configure-aws-credentials/u);
-});
-
-test('preservation checker validates clean and strict CLI boundaries', () => {
-  const run = (...args) => spawnSync(process.execPath, [preservationScript, ...args], {
-    cwd: projectRoot, encoding: 'utf8',
-  });
-  const clean = run('--manifest-only');
-  assert.equal(clean.status, 0, clean.stderr || clean.stdout);
-
-  const strictWithoutBaseline = run('--strict');
-  assert.notEqual(strictWithoutBaseline.status, 0);
-  assert.match(`${strictWithoutBaseline.stdout}${strictWithoutBaseline.stderr}`, /baseline-root/u);
-
-  const unknown = run('--unexpected');
-  assert.notEqual(unknown.status, 0);
-  assert.match(`${unknown.stdout}${unknown.stderr}`, /unknown/u);
-
-  const duplicate = run('--strict', '--strict');
-  assert.notEqual(duplicate.status, 0);
-  assert.match(`${duplicate.stdout}${duplicate.stderr}`, /duplicate/u);
-});
-
-test('preservation checker rejects an unbound semantic replacement mutation', () => {
-  const directory = mkdtempSync(path.join(tmpdir(), 'opda-ia-preservation-'));
-  const fixture = path.join(directory, 'route-baseline.json');
-  try {
-    const candidate = structuredClone(routeBaseline);
-    const semantic = candidate.routes
-      .flatMap(({ retentionReceipt }) => retentionReceipt.semanticReframeBlocks)
-      .find(Boolean);
-    semantic.replacementBlockSha256 = '0'.repeat(64);
-    writeFileSync(fixture, JSON.stringify(candidate));
-    const result = spawnSync(process.execPath, [preservationScript, '--manifest-only', `--route-manifest=${fixture}`], {
-      cwd: projectRoot, encoding: 'utf8',
-    });
-    assert.notEqual(result.status, 0);
-    assert.match(`${result.stdout}${result.stderr}`, /semantic reframe block/u);
-  } finally {
-    rmSync(directory, { recursive: true, force: true });
-  }
-});
-
-test('preservation checker rejects an unbound navigation-copy supersession', () => {
-  const directory = mkdtempSync(path.join(tmpdir(), 'opda-ia-preservation-'));
-  const fixture = path.join(directory, 'route-baseline.json');
-  try {
-    const candidate = structuredClone(routeBaseline);
-    const supersession = candidate.routes
-      .flatMap(({ retentionReceipt }) => retentionReceipt.nonInformationBlocks)
-      .find(Boolean);
-    supersession.destinationRoute = '/not-a-real-destination';
-    writeFileSync(fixture, JSON.stringify(candidate));
-    const result = spawnSync(process.execPath, [preservationScript, '--manifest-only', `--route-manifest=${fixture}`], {
-      cwd: projectRoot, encoding: 'utf8',
-    });
-    assert.notEqual(result.status, 0);
-    assert.match(`${result.stdout}${result.stderr}`, /non-information supersession/u);
-  } finally {
-    rmSync(directory, { recursive: true, force: true });
-  }
-});
-
-test('preservation checker rejects invalid navigation-copy provenance evidence', () => {
-  const directory = mkdtempSync(path.join(tmpdir(), 'opda-ia-preservation-'));
-  const fixture = path.join(directory, 'route-baseline.json');
-  try {
-    const candidate = structuredClone(routeBaseline);
-    const supersession = candidate.routes
-      .flatMap(({ retentionReceipt }) => retentionReceipt.nonInformationBlocks)
-      .find(({ sourceEvidence }) => sourceEvidence === 'containing-link');
-    assert.ok(supersession, 'the receipt must include baseline-link provenance');
-    supersession.sourceEvidence = 'declared-original-destination';
-    writeFileSync(fixture, JSON.stringify(candidate));
-    const result = spawnSync(process.execPath, [preservationScript, '--manifest-only', `--route-manifest=${fixture}`], {
-      cwd: projectRoot, encoding: 'utf8',
-    });
-    assert.notEqual(result.status, 0);
-    assert.match(`${result.stdout}${result.stderr}`, /non-information supersession/u);
-  } finally {
-    rmSync(directory, { recursive: true, force: true });
-  }
+  assert.ok(adrGate >= 0, 'workflow must run the ADR registry gate');
+  assert.ok(ontologyDocGate >= 0, 'workflow must run the ontology documentation gate');
+  assert.match(workflow.slice(adrGate, credentials), /run: make check-adr/u);
+  assert.match(workflow.slice(ontologyDocGate, credentials), /run: make ci-ontology-doc ci-ontology-graph/u);
+  assert.ok(adrGate < credentials && ontologyDocGate < credentials, 'documentation gates must precede AWS credentials');
+  assert.doesNotMatch(workflow.slice(0, adrGate), /configure-aws-credentials/u);
 });
 
 test('reader-facing IA vocabulary rejects stale labels but exempts immutable records', () => {

@@ -19,10 +19,8 @@ For each exemplar:
 4. PASS = semantically equivalent (same focusNode/resultPath/severity
    tuples); FAIL = drift.
 
-The test is parametrised over the 15 exemplars and reports per-
-exemplar PASS/FAIL so the matrix CI job at
-`.github/workflows/baspi5-round-trip.yml` surfaces a precise
-failure target.
+The test is parametrised over the 15 exemplars, so the consolidated model gate
+still reports a precise exemplar name without launching a runner per fixture.
 """
 
 from __future__ import annotations

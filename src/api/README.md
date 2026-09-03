@@ -1,20 +1,18 @@
 # OPDA Ontology API
 
-Build-time GRLC SPARQL→REST API for the OPDA ontology. Implements [ADR-0021](../../docs/adr/ADR-0021-generate-manual-entity-pages-via-fuseki-grlc-sparql-api.md).
+Development GRLC SPARQL→REST API for inspecting the OPDA ontology. Implements
+the API contract retained by
+[ADR-0021](../../docs/adr/ADR-0021-generate-manual-entity-pages-via-fuseki-grlc-sparql-api.md).
 
-Astro's `getStaticPaths` queries this API at build time. Production ships only `dist/` — no Fuseki or API at runtime.
+The static site reads the committed ontology-model projection directly. This
+API is started explicitly for local query work and is not part of an ordinary
+site build or the production runtime.
 
 ## Quick start
 
 ```bash
-# 1. Start Fuseki (port 3031 to avoid conflict with local hm Fuseki on 3030)
-docker compose up -d fuseki
-
-# 2. Load all 23 opda ontology TTLs
-node scripts/fuseki-load.mjs
-
-# 3. Start the API
-FUSEKI_ENDPOINT=http://localhost:3031/opda/sparql PORT=3002 node src/api/server.js
+# From the repository root: provision Fuseki, load the corpus and start the API
+make serve-data
 ```
 
 ## Endpoints

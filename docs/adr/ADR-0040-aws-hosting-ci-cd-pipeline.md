@@ -1,7 +1,7 @@
 ---
 status: accepted
 date: 2026-06-06
-updated: 2026-09-01
+updated: 2026-09-03
 tags: [infrastructure, ci-cd, deployment, security]
 supersedes: []
 depends-on: [ADR-0021, ADR-0037]
@@ -9,6 +9,16 @@ implements: [ADR-0038]
 ---
 
 # AWS hosting CI/CD pipeline
+
+> **Amended 2026-09-03.** Site validation and deployment now form one real
+> release gate in `.github/workflows/deploy-aws.yml`. Ordinary content changes
+> use the committed ontology projection and a pure Astro build. Changes to
+> ontology inputs run the complete generator, BASPI5, exemplar, schema and model
+> drift gates in the same job before deployment. The former independent
+> ontology workflows are retired because they could fail after the site had
+> already published. Main-branch deploys are serialised; superseded runs no
+> longer race to write the same S3 bucket. The completed IA migration checker
+> remains an explicit audit tool rather than an evergreen release gate.
 
 > **Amended 2026-08-27 by [ADR-0079](./ADR-0079-make-the-site-public-and-retire-the-edge-authentication-gate.md).**
 > GitHub OIDC, CI-only CloudFormation, the regional site packaging bucket and
@@ -42,7 +52,7 @@ How do these three artefacts deploy, with what credentials, triggered by what, i
 
 * **CI-only deploys** — preserve the existing discipline: push to `main` deploys; no routine manual `aws` CLI or console deploys.
 * **No long-lived AWS credentials** in GitHub repository secrets — standing keys are the dominant CI compromise vector.
-* **Keep the data build unchanged** — the Fuseki + GRLC build-time pipeline (ADR-0021, ADR-0037) is orthogonal to where `dist/` is uploaded; only the upload step changes.
+* **Keep releases deterministic and proportionate** — ordinary site changes build from committed inputs; ontology changes additionally refresh and verify the committed model through the Jena toolchain.
 * **Everything-as-code** — the pipeline that deploys the CloudFormation stacks must itself be reviewable in this repository (workflows are code), and the IAM role it assumes must be defined in CloudFormation, not hand-built.
 * **Single-writer invariant** (ADR-0038): no deployment path may ever run two Artalk tasks concurrently.
 * **3-user scale** — no staging environment, no blue/green, no approval gates beyond `main` being green; the cheapest pipeline that is safe.
@@ -68,8 +78,14 @@ Chosen option: **A — GitHub Actions + IAM OIDC role + CloudFormation deploys**
 
 **2. Site deploys — `deploy.yml` (rewritten at cutover).**
 
-* Trigger: unchanged — push to `main` filtered to the production-bundle paths (`src/`, `public/`, ontology TTLs, build scripts, the workflow itself), plus `workflow_dispatch` as the manual escape hatch.
-* Build: unchanged — pnpm install, JDK for Fuseki, `npm run build:data` producing `dist/` (ADR-0021/0036/0037 comments carried over verbatim).
+* Trigger: push to `main` filtered to actual site inputs, including the `docs/`
+  content collections; NotebookLM-only scripts do not trigger a site release.
+* Build: `pnpm run build` for ordinary site changes. Ontology-input changes run
+  `npm run build:data`, then fail if the refreshed committed model or graph
+  differs from the repository.
+* Validation: site, model and deployment checks share one job, so every failed
+  required check actually prevents the S3 upload. Model-only setup and tests are
+  conditional; the 15 diagnostic exemplars run as one parametrised suite.
 * Deploy: replace the wrangler step with `aws s3 sync dist/ s3://<site-bucket> --delete` followed by `aws cloudfront create-invalidation --paths '/*'` (at ~20 views/day, a full invalidation is simpler than hashed-path bookkeeping and within the 1,000 free invalidation paths/month).
 * Permissions: `id-token: write` (OIDC), `contents: read`.
 
@@ -89,15 +105,23 @@ Chosen option: **A — GitHub Actions + IAM OIDC role + CloudFormation deploys**
 **5. Ordering and coupling.**
 
 * `deploy.yml` and `infra.yml` are **independent** — a site deploy never touches CloudFormation and vice versa. The one coupled case (an infra change that renames/replaces the site bucket or distribution) requires an infra run followed by a site run; both expose `workflow_dispatch` precisely so the operator can sequence them. This is accepted as a manual-coordination case rather than automated, because it is rare and automation would couple the workflows for every run.
-* The existing quality gates (`ontology-byte-identity.yml`, `baspi5-round-trip.yml`) are untouched; they remain push/PR checks, not deploy steps.
+* Ontology byte identity and BASPI5 remain mandatory model-change gates, now
+  invoked by the deployment workflow rather than independent workflows that
+  could not block that deployment.
 
 ### Consequences
 
 * Good, because no standing AWS credentials exist anywhere — a leaked GitHub secret yields a non-secret role ARN; assuming the role requires a workflow run on `sparkling/opda@main` (or the fork's `main` for ECR/ECS verbs only).
 * Good, because the pipeline itself is code in this repository: the bootstrap stack, both workflows, and the deploy role's permissions are all reviewable and diffable.
-* Good, because the data-build pipeline (ADR-0021/0037) carries over byte-for-byte; only the final upload step changes, so cutover risk concentrates in infrastructure, not the build.
+* Good, because a normal site release has no Java service dependency and every
+  required quality failure prevents deployment in the same workflow.
+* Good, because ontology changes retain the Jena, generator, round-trip,
+  exemplar and byte-identity evidence without launching 17 duplicate runners.
 * Good, because the single-writer invariant is enforced declaratively (ECS deployment configuration in the stack) rather than by pipeline scripting that could be bypassed.
 * Bad, because three artefacts mean three deploy paths (site, infra, image) where Cloudflare had one — more workflows to understand, though each is individually simpler.
+* Bad, because the large, gitignored ontology tool renderings remain protected
+  from `aws s3 sync --delete`; until they gain a versioned release source, that
+  retained prefix is intentionally history-dependent rather than reproducible.
 * Bad, because the bootstrap stack is a manual one-time step that must be documented (in the stack's own header comment) or it becomes invisible tribal knowledge.
 * Bad, because Lambda@Edge function updates are slow to converge (publish in `us-east-1`, global replication — ADR-0038) so an infra run that changes the gate takes materially longer than a site deploy, and rollback of a bad gate version has the same latency.
 * Neutral, because cross-repository coupling (the fork deploys into this account's ECR/ECS) mirrors the current Fly arrangement — the fork already owns the comments deploy today.
@@ -136,7 +160,9 @@ Chosen option: **A — GitHub Actions + IAM OIDC role + CloudFormation deploys**
 ## More Information
 
 * **Implements ADR-0038** (hosting, auth, and comments architecture — AWS): this ADR realises its "Infrastructure as code — AWS CloudFormation" and CI-deploy commitments; the stack split (`us-east-1` edge / `eu-west-2` site) and the single-writer ECS configuration are decided there.
-* **Depends on ADR-0021** (entity pages generated via build-time Fuseki + GRLC SPARQL API) and **ADR-0037** (Apache Jena toolchain): the site-deploy workflow runs `npm run build:data` unchanged, including the JDK provisioning these require.
+* **Depends on ADR-0021** as amended (entity pages read the committed model;
+  model changes refresh it through Fuseki) and **ADR-0037** (Apache Jena remains
+  the ontology validation toolchain, conditionally provisioned for model work).
 * Cutover sequence: bootstrap stack (manual, once) → `infra.yml` deploys edge + site stacks → rewritten `deploy.yml` ships the site to S3 → fork's workflow ships Artalk to ECR/Fargate → ADR-0038's confirmation checklist → decommission Cloudflare Pages deploy (the wrangler step and its `CLOUDFLARE_*` secrets), Fly.io, and the Auth0 tenant.
 * The current Cloudflare deploy workflow is not recorded in any ADR (ADR-0038 is the first infrastructure ADR), so this ADR supersedes no record; it *replaces* `.github/workflows/deploy.yml`'s deploy step in implementation.
 * GitHub OIDC federation reference: [Configuring OpenID Connect in Amazon Web Services](https://docs.github.com/en/actions/deployment/security-hardening-your-deployments/configuring-openid-connect-in-amazon-web-services).

@@ -37,7 +37,7 @@ build: node_modules	## Build the static site → dist/ (no triplestore)
 	npm run build
 
 .PHONY: build-data
-build-data: node_modules	## Full build: Fuseki + GRLC API + astro → dist/ (mirrors CI deploy; needs JDK 17+)
+build-data: node_modules	## Refresh the committed model through Fuseki, then build (ontology changes only; needs JDK 17+)
 	npm run build:data
 
 .PHONY: preview
@@ -48,7 +48,7 @@ preview: build	## Build then serve dist/ via Astro preview
 css: node_modules	## Rebuild the Tailwind stylesheet
 	npm run css
 
-##@ Triplestore / API (Jena Fuseki — ADR-0021, build-time only)
+##@ Triplestore / API (Jena Fuseki — ontology refresh and local development)
 .PHONY: serve-data
 serve-data: node_modules	## Start Fuseki + GRLC API and keep them running (Ctrl-C to stop)
 	npm run serve:data
@@ -109,8 +109,12 @@ ci-property-pack-candidate: validate-property-pack-candidate verify-property-pac
 
 ##@ Validation / CI gates (run before pushing)
 .PHONY: test
-test: node_modules	## Remark plugin tests (mermaid fence / details unwrap)
+test: node_modules	## Dependency-free Node unit and contract tests
 	npm test
+
+.PHONY: test-model
+test-model: node_modules	## Python-backed Property Pack generation contracts
+	npm run test:model
 
 .PHONY: test-smoke
 test-smoke: node_modules	## Playwright smoke test (mermaid + data tables) against the built-site preview
@@ -137,7 +141,7 @@ check-design-system:	## Fail when the committed design-module graph hash is stal
 	npm run check:design-system
 
 .PHONY: check-ia-preservation
-check-ia-preservation:	## Verify route, artefact, service and support-asset preservation contracts
+check-ia-preservation:	## Audit the completed IA migration receipts (historical, not an evergreen release gate)
 	pnpm run check:ia-preservation
 
 .PHONY: test-schema
@@ -149,18 +153,23 @@ check-schema-drift:	## Strict schema drift gate; unavailable input bundles fail 
 	npm run check:schema-drift
 
 .PHONY: ci-browser
-ci-browser: build-data check-ia-preservation check-routes test-e2e	## Full data build, then run all static/browser release gates against that dist/
+ci-browser: build test check-design-system check-adr ci-ontology-doc ci-ontology-graph check-routes check-resource-links test-e2e	## Site release gates against a pure static build
 	@echo "✓ static and browser release gates passed"
 
 .PHONY: verify-ontology
 verify-ontology:	## Byte-identity: re-emit the ontology and diff it against the committed corpus
-	$(OPDA_GEN) opda-gen emit --output /tmp/opda-ontology-verify
-	diff -rq /tmp/opda-ontology-verify $(ONTOLOGY_DIR) --exclude=exemplars --exclude=derived
+	@set -euo pipefail; \
+	  temp_dir=$$(mktemp -d); \
+	  trap 'rm -rf "$$temp_dir"' EXIT; \
+	  (cd tools/opda-gen && PATH="$(CURDIR)/tools/opda-gen/.venv/bin:$$PATH" \
+	    opda-gen emit --output "$$temp_dir"); \
+	  diff -rq "$$temp_dir" $(ONTOLOGY_DIR) --exclude=exemplars --exclude=derived
 	@echo "✓ ontology corpus is byte-identical to the generator output"
 
 .PHONY: ci-ontology
 ci-ontology:	## All opda-gen CI gates (byte-identity, three-graph, dup, profile, baspi5, object-property-coverage, excluded-construct, description-coverage, isDefinedBy) — mirrors the GH workflows
 	$(OPDA_GEN) pytest -q
+	$(OPDA_GEN) pytest -q ../../tests/baspi5_round_trip
 	$(OPDA_GEN) opda-gen ci-three-graph      --ontology-dir ../../$(ONTOLOGY_DIR)
 	$(OPDA_GEN) opda-gen ci-dup-declaration  --ontology-dir ../../$(ONTOLOGY_DIR)
 	$(OPDA_GEN) opda-gen ci-profile-contract --ontology-dir ../../$(ONTOLOGY_DIR)
@@ -170,6 +179,17 @@ ci-ontology:	## All opda-gen CI gates (byte-identity, three-graph, dup, profile,
 	$(OPDA_GEN) opda-gen ci-description-coverage --strict --ontology-dir ../../$(ONTOLOGY_DIR)
 	$(OPDA_GEN) opda-gen ci-isdefinedby --strict --ontology-dir ../../$(ONTOLOGY_DIR)
 	$(MAKE) verify-ontology
+	@set -euo pipefail; \
+	  temp_dir=$$(mktemp -d); \
+	  trap 'rm -rf "$$temp_dir"' EXIT; \
+	  mkdir -p "$$temp_dir/exemplars"; \
+	  cp $(ONTOLOGY_DIR)/*.ttl "$$temp_dir/"; \
+	  cp $(ONTOLOGY_DIR)/exemplars/*.ttl "$$temp_dir/exemplars/"; \
+	  (cd tools/opda-gen && PATH="$(CURDIR)/tools/opda-gen/.venv/bin:$$PATH" \
+	    opda-gen emit-exemplar-reports --ontology-dir "$$temp_dir"); \
+	  for expected in $(ONTOLOGY_DIR)/exemplars/*-expected-report.ttl; do \
+	    diff -q "$$expected" "$$temp_dir/exemplars/$$(basename "$$expected")"; \
+	  done
 	@echo "✓ all ontology CI gates passed"
 
 .PHONY: ci-ontology-doc
@@ -185,11 +205,11 @@ ci-ontology-graph:	## Graph-element drift gate (ADR-0043): re-derive ontology-gr
 	node scripts/ontology-graph.mjs --check
 
 .PHONY: check-links
-check-links:	## Link-validation sweep (ADR-0044 Phase 8): no dangling/orphan links on extracted ontology + /pdtf (needs `make build-data` first)
+check-links:	## Link-validation sweep (ADR-0044 Phase 8): no dangling/orphan ontology or /pdtf links after a build
 	node scripts/check-links.mjs
 
 .PHONY: check-resource-links
-check-resource-links:	## Verify built source-resource links have local archive and public-manifest receipts (needs `make build-data` first)
+check-resource-links:	## Verify built source-resource links have local archive and public-manifest receipts after a build
 	pnpm run check:resource-links
 
 .PHONY: check-links-external
@@ -197,13 +217,13 @@ check-links-external:	## Live external-URL sweep over extracted ontology + /pdtf
 	node scripts/check-external-links.mjs
 
 .PHONY: ci
-ci: test test-schema check-schema-drift check-design-system check-ia-preservation check-adr ci-ontology ci-ontology-doc ci-ontology-graph	## Everything CI runs that is checkable locally (JS + ontology gates + doc-drift)
-	pnpm run check:spdtf-ia
+ci: check-design-system check-adr ci-ontology ci-ontology-doc ci-ontology-graph test test-model test-schema check-schema-drift build-data check-routes check-resource-links test-e2e	## Full release-equivalent validation; use ci-browser for ordinary site changes
+	git diff --exit-code -- src/data/ontology-model.json public/data/ontology-graph-elements.json
 	@echo "✓ all local CI gates passed"
 
 ##@ Deploy
 .PHONY: deploy
-deploy:	## Push main → GitHub Actions builds (Fuseki+API+astro) & deploys to AWS
+deploy:	## Push main → GitHub Actions validates, builds Astro and deploys to AWS
 	npm run deploy:ci
 
 .PHONY: deploy-manual

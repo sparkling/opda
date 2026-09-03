@@ -1,6 +1,7 @@
 ---
 status: accepted
 date: 2026-05-28
+updated: 2026-09-03
 tags: [website, ontology, sparql, fuseki, grlc, build-pipeline, content-generation]
 supersedes: []
 depends-on: [ADR-0011, ADR-0015, ADR-0016]
@@ -8,6 +9,18 @@ implements: []
 ---
 
 # Generate manual entity pages from the ontology via Fuseki + a GRLC SPARQL API at build time
+
+> **Build-path amendment, 2026-09-03.** Option D is now adopted for the static
+> website build. Fuseki and the SPARQL extractor produce the deterministic,
+> committed `src/data/ontology-model.json` when ontology inputs change; concept
+> and logical entity pages then read that model through the typed
+> `src/lib/entity-detail.ts` adapter. An ordinary Astro release no longer starts
+> Java, Fuseki or the GRLC API, installs a second Node dependency tree, or
+> rewrites tracked model files. `npm run build:data` remains the explicit model
+> refresh and drift-verification path, while `npm run serve:data` retains the
+> local SPARQL/API environment. The ontology remains the source of truth; the
+> committed model is its validated website projection, not an independent
+> authority.
 
 ## Context and Problem Statement
 
@@ -44,7 +57,13 @@ This ADR decides whether — and how — opda adopts that pattern, **scoped to t
 
 ## Decision Outcome
 
-Chosen option: **B — copy hm's Fuseki + GRLC SPARQL-API + build-time static-generation pipeline, scoped to entity pages**, because it keeps the ontology as the single source of truth, gives entity pages full structural fidelity with a coherent URI-keyed cross-tier scheme, and — by running Fuseki and the API as **build-time-only** services — preserves opda's static-deploy model. The GRLC API layer is retained over option C's direct-Fuseki access so opda inherits hm's reusable `.rq` query catalogue and JSON-LD contract; the same API is then a stepping stone toward the live `opda.org.uk/pdtf/<Entity>` dereference target ([ADR-0006](./ADR-0006-uri-strategy-and-dereferencing.md)) without a redesign.
+The original decision selected **B — copy hm's Fuseki + GRLC SPARQL-API
+pipeline**. The 2026-09-03 amendment retains that API for explicit development
+and query work but adopts a hybrid of B and D for publication: Fuseki refreshes
+one committed model when ontology inputs change, and every ordinary Astro build
+reads that model directly. This keeps the ontology authoritative and the API
+reusable without making either local HTTP or a Java service part of a static
+content release.
 
 This ADR is the **architectural anchor**; the engineering work likely sequences into sub-ADRs (Fuseki + load; GRLC engine + opda `.rq` queries; entity template + URL scheme; build-pipeline wiring), mirroring the ADR-0015 programme. The implementing session confirms that decomposition.
 
@@ -56,33 +75,22 @@ This ADR is the **architectural anchor**; the engineering work likely sequences 
 * **Load** — a make/npm target loads the 24 TTLs (+ entailment closure if a tier needs it) into Fuseki, mirroring hm's `load-ontology` / `fuseki-load`.
 * **API** — port hm's `src/api` GRLC engine (`grlc-engine.js`, `grlc-handler.js`, conneg/caching middleware); author opda `.rq` `CONSTRUCT` queries (`get-entity-core`, `-attributes`, `-relations`, `-shapes`, `cross-tier-locations`) namespaced to `opda:` and the project's actual predicates.
 * **URL scheme** — per-entity identity = `opda:<LocalName>`. Routes resolve to each tier's real structure: concept/logical → `/manual/<tier>/<module>/<entity>`; physical-ontology → `/manual/physical-ontology/<module>/classes#<entity>`; physical-database → `/manual/physical-database/modules/<module>#<entity>`. A `cross-tier-locations` query yields the "where does this entity appear" map so links only point where a page exists.
-* **Template** — an Astro entity template whose `getStaticPaths` queries the API (build-time) for the entity list + per-entity structured data, rendering through the existing manual components (`EntityHeader`, `AttributeTable`, `TurtleBlock`, `ShapeBlock`, `CrossTierLinks`) — closing G17.
-* **Build wiring** — pipeline: start Fuseki → load TTLs → start API → `astro build` (queries API) → tear down services. Cloudflare deploy (`deploy.yml`) ships only `dist/`.
+* **Template** — an Astro entity template whose `getStaticPaths` reads the committed model through `src/lib/entity-detail.ts`, rendering through the existing manual components (`EntityHeader`, `AttributeTable`, `TurtleBlock`, `ShapeBlock`, `CrossTierLinks`) — closing G17.
+* **Build wiring** — ordinary publication runs a pure static Astro build. Ontology changes run Fuseki → load TTLs → refresh model and graph → Astro build → tear down. The GRLC API starts only for `serve:data` development sessions.
 
-### CI integration — build-exclusive, ephemeral Fuseki + API
+### CI integration — conditional, ephemeral Fuseki
 
-The build-time services run **only inside the GitHub Actions deploy job**
-(`deploy.yml`, ubuntu-latest → Cloudflare Pages) and are never exposed:
+The ontology refresh service runs only for model-related changes and is never
+exposed:
 
-* The job brings the stack up on the runner — Docker `stain/jena-fuseki` via
-  `docker compose` (matching the local `build:data` orchestration), loads the 23
-  TTLs, starts `src/api/server.js` on `localhost`, runs `astro build` (querying
-  the localhost API), then tears the services down. In practice the deploy step
-  becomes `npm run build:data` (plus a `src/api` dependency install).
-* **Exclusivity:** Fuseki (3031) and the API (3000) bind to `localhost` on the
-  ephemeral runner — no published port, no ingress, runner destroyed at job end.
-  Only `dist/` (static HTML) uploads to Cloudflare Pages; production never runs,
-  reaches, or exposes the API or triplestore. Satisfies §Confirmation #4.
-* **Data freshness:** entity pages derive from the ontology, so the `deploy.yml`
-  `paths:` filter must additionally trigger on `source/03-standards/ontology/**`,
-  `src/api/**`, `scripts/**`, and `docker-compose.yml` — a TTL or query change
-  rebuilds + redeploys the pages.
-* **Local parity:** the same `npm run build:data` runs on a dev machine and in CI
-  (Docker on both), so "works locally" ⇒ "works in CI".
-
-Wired into `deploy.yml` once the local `build:data` pipeline is verified
-end-to-end (Phase 2). Until then production keeps deploying the existing static
-pages unchanged.
+* Model-related changes provision Jena/Fuseki, load the TTLs, refresh the model
+  and graph, and fail on any uncommitted drift before deployment.
+* Content-only changes use the committed projection and never provision Java,
+  start a service or install `src/api` dependencies.
+* Fuseki binds only to localhost on the ephemeral runner. Production receives
+  only `dist/`; it never runs or exposes the API or triplestore.
+* `npm run serve:data` provides local Fuseki + API parity when interactive
+  SPARQL or REST work is actually required.
 
 ### Separate tasks (independent of the RDF pipeline)
 
@@ -121,11 +129,11 @@ RDF pipeline.
 * Good, because graph-shaped data (typed attributes, relations, SHACL, classification, UFO category) finally surfaces, wiring the four dormant ADR-0017 components (closes G17).
 * Good, because a single `opda:` URI keys a coherent cross-tier scheme, so cross-tier links resolve only where a page actually exists.
 * Good, because reusing hm's GRLC engine + `.rq`/JSON-LD convention cuts design risk and yields an API reusable for the future `w3id.org` dereference (ADR-0006).
-* Bad, because it introduces Jena Fuseki (Java/Docker) + a Node API as **build-time** dependencies — heavier local/CI builds than pure Astro. Mitigation: services are build-time-only; production stays static HTML.
+* Good, because ordinary releases are pure static builds over committed inputs; Jena/Fuseki is paid for only when the ontology changes.
 * Bad, because `/manual/` temporarily carries two rendering paths (markdown-driven READMEs/cross-cutting/exemplars vs RDF-driven entities). Mitigation: scoped + documented; the per-kind route dispatcher already branches cleanly.
 * Bad, because it partially diverges from ADR-0016's "every page is a markdown content-collection entry" for entity-class pages. Mitigation: only entity-class pages move to RDF; ADR-0016 otherwise stands (nav, non-entity pages, the collection).
 * Neutral, because the build-time `.md`→route link rewriter still serves the markdown-driven pages; the two approaches coexist.
-* Neutral, because CI build time grows by the Fuseki spin-up + load; acceptable per the ADR-0015 risk table (static builds scale; the cost is build-only).
+* Neutral, because model-changing releases still pay the Fuseki spin-up and load cost in exchange for freshness and a fail-closed drift check.
 
 ### Confirmation
 
@@ -133,7 +141,7 @@ The ADR is honoured when:
 
 1. `docker compose up fuseki` (build context) loads the 24 TTLs and the SPARQL endpoint answers a smoke query.
 2. The GRLC API serves the opda entity `.rq` endpoints as JSON-LD, at parity with hm's engine behaviour.
-3. `astro build` (with Fuseki + API up) emits one static HTML page per entity at the URI-keyed routes; `npx serve dist` renders them with the structured sections (attributes / relations / shapes / classification), not raw markdown.
+3. A plain `astro build` emits one static HTML page per entity from the committed model; a model-changing `build:data` refreshes that model first and rejects drift in CI.
 4. The production deploy (`deploy.yml`) ships only `dist/` — no Fuseki or API process at runtime; a deployed entity page is fully static.
 5. Cross-tier links on a sample entity resolve in every tier where a page exists, and are absent (not 404 links) where one does not.
 6. Sub-ADR validation reports (per the programme decomposition) land under `docs/adr/validation/` mirroring the ADR-0015 programme discipline.

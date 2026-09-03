@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 /**
- * ADR-0021: build orchestration — start Fuseki, load TTLs, start GRLC API,
- * run `astro build` (queries the API at build time), tear down services.
+ * Ontology refresh orchestration — start Fuseki, load TTLs, regenerate the
+ * committed model and graph, run the static Astro build, then tear down.
  *
  * Usage:
  *   node scripts/build-with-data.mjs
@@ -15,15 +15,14 @@
  * Honour an external install via FUSEKI_HOME (must contain fuseki-server.jar).
  *
  * Environment:
- *   OPDA_API    — base URL for the GRLC API (default http://localhost:3002)
+ *   OPDA_API    — base URL for the optional `--serve` GRLC API
  *   FUSEKI_PORT — Fuseki SPARQL port (default 3031)
  *   API_PORT    — GRLC API port (default 3002)
  *   FUSEKI_HOME — optional path to a pre-installed Fuseki (skips the download)
  *
- * CI: the GitHub Actions deploy job (.github/workflows/deploy.yml) runs this via
- * `npm run build:data` on ubuntu-latest with a JDK provisioned by setup-java.
- * Fuseki + the GRLC API are build-exclusive and ephemeral — bound to localhost,
- * torn down at job end, never deployed; only dist/ ships to Cloudflare Pages.
+ * CI runs this only when ontology inputs change. Ordinary site releases read
+ * the committed model directly and use `pnpm build`, with no Java or services.
+ * `--serve` remains the explicit local route for running Fuseki + the GRLC API.
  */
 
 import { spawn } from 'node:child_process';
@@ -61,7 +60,8 @@ const POLL_INTERVAL = 2_000;
 function run(cmd, args, opts = {}) {
   return new Promise((resolve, reject) => {
     const child = spawn(cmd, args, { cwd: ROOT, stdio: 'inherit', ...opts });
-    child.on('exit', (code) => {
+    child.once('error', reject);
+    child.once('exit', (code) => {
       if (code === 0) resolve();
       else reject(new Error(`${cmd} exited with code ${code}`));
     });
@@ -144,7 +144,7 @@ process.on('SIGINT', () => { stopServices(); process.exit(0); });
 process.on('SIGTERM', () => { stopServices(); process.exit(0); });
 
 async function main() {
-  console.log('build:data — Phase 2 full pipeline (ADR-0021)\n');
+  console.log('build:data — ontology refresh pipeline (ADR-0021/ADR-0044)\n');
 
   // 1. Launch local Fuseki 6.1.0 against the assembler config (no Docker).
   console.log('1. Start Apache Jena Fuseki 6.1.0');
@@ -171,53 +171,47 @@ async function main() {
     env: { ...process.env, FUSEKI_URL: `http://localhost:${FUSEKI_PORT}` },
   });
 
-  // 3. Start GRLC API server (src/api/server.js).
-  console.log('3. Start GRLC API');
-  const apiServer = path.join(ROOT, 'src', 'api', 'server.js');
-  apiProcess = spawn('node', [apiServer], {
-    cwd: ROOT,
-    stdio: 'inherit',
-    env: {
-      ...process.env,
-      PORT: API_PORT,
-      // lib/sparql-client.js reads FUSEKI_ENDPOINT — point it at our local
-      // Fuseki's /opda/sparql (not the stale 3030 default; hm's Fuseki uses 3030).
-      FUSEKI_ENDPOINT: `http://localhost:${FUSEKI_PORT}/opda/sparql`,
-    },
-  });
-  await waitForUrl(`${OPDA_API}/api/entities`, 'GRLC API /api/entities');
-
-  // 3.5 Extract the committed ontology model (ADR-0044 Phase 1) from live Fuseki
+  // 3. Extract the committed ontology model (ADR-0044 Phase 1) from live Fuseki
   //     — the per-entity detail pages + the ADR-0043 graph read this JSON. Runs
   //     in both --serve and build modes so the committed model stays fresh.
-  console.log('3.5 Extract ontology model → src/data/ontology-model.json');
+  console.log('3. Extract ontology model → src/data/ontology-model.json');
   await run('node', [path.join(ROOT, 'scripts', 'ontology-model.mjs')], {
     env: { ...process.env, FUSEKI_ENDPOINT: `http://localhost:${FUSEKI_PORT}/opda/sparql` },
   });
 
-  // 3.6 Derive the Cytoscape graph elements (ADR-0043) from the committed model
+  // 4. Derive the Cytoscape graph elements (ADR-0043) from the committed model
   //     — a pure transform (no Fuseki), kept fresh here so the deploy workflow's
   //     post-build `git diff` catches any drift, same as the model JSON above.
-  console.log('3.6 Derive ontology graph elements → public/data/ontology-graph-elements.json');
+  console.log('4. Derive ontology graph elements → public/data/ontology-graph-elements.json');
   await run('node', [path.join(ROOT, 'scripts', 'ontology-graph.mjs')]);
 
   if (SERVE) {
+    console.log('5. Start optional GRLC API');
+    const apiServer = path.join(ROOT, 'src', 'api', 'server.js');
+    apiProcess = spawn('node', [apiServer], {
+      cwd: ROOT,
+      stdio: 'inherit',
+      env: {
+        ...process.env,
+        PORT: API_PORT,
+        FUSEKI_ENDPOINT: `http://localhost:${FUSEKI_PORT}/opda/sparql`,
+      },
+    });
+    await waitForUrl(`${OPDA_API}/api/entities`, 'GRLC API /api/entities');
     console.log(
       `\nServices up — leave this running:\n` +
       `  Fuseki SPARQL : http://localhost:${FUSEKI_PORT}/opda/sparql\n` +
       `  GRLC API      : ${OPDA_API}/api/entities\n\n` +
-      `Run \`npm run dev\` (or set OPDA_API=${OPDA_API}) in another shell to develop\n` +
-      `pages against the live API. Ctrl-C to stop.\n`,
+      `Use these endpoints for interactive ontology queries. Astro reads the\n` +
+      `committed model and does not require either service. Ctrl-C to stop.\n`,
     );
     await new Promise(() => {}); // keep services alive until SIGINT/SIGTERM
     return;
   }
 
-  // 4. Run astro build with the API live.
-  console.log('4. astro build (OPDA_API=' + OPDA_API + ')');
-  await run('pnpm', ['run', 'build'], {
-    env: { ...process.env, OPDA_API },
-  });
+  // 5. The pages consume the refreshed committed model directly.
+  console.log('5. Build static site from the refreshed model');
+  await run('pnpm', ['run', 'build']);
 
   console.log('\nbuild:data complete — dist/ is ready for deployment.');
 }
@@ -228,6 +222,6 @@ main()
     process.exitCode = 1;
   })
   .finally(() => {
-    // 5. Tear down services (build mode). --serve mode tears down via SIGINT/SIGTERM.
+    // Tear down services in build mode. --serve mode uses SIGINT/SIGTERM.
     if (!SERVE) stopServices();
   });

@@ -137,7 +137,7 @@ export function deriveTitle(
 }
 
 /**
- * Convert a kebab-case slug to PascalCase for API lookups.
+ * Convert a kebab-case slug to PascalCase for ontology-model lookups.
  * Examples: "legal-estate" → "LegalEstate", "property" → "Property",
  * "diagnostic-exemplar" → "DiagnosticExemplar".
  */

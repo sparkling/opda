@@ -143,22 +143,22 @@ Tasks run through the **Makefile** (thin wrappers over npm scripts + the
 |---|---|
 | `make dev` | Astro dev server (auto-picks port 4330–4339) |
 | `make build` | Static site → `dist/` (no triplestore) |
-| `make build-data` | Full build: Fuseki + GRLC API + astro → `dist/` (what CI deploys; needs JDK 17+) |
-| `make serve-data` | Start Fuseki + the GRLC API and keep them running (develop pages/queries against live data) |
+| `make build-data` | Ontology-change build: Fuseki refreshes the committed model and graph, then Astro builds `dist/` (needs JDK 17+) |
+| `make serve-data` | Start Fuseki + the GRLC API for interactive ontology queries |
 | `make jena-load` | Load the ontology TTLs into a running Fuseki |
 | `make api` | Run the GRLC SPARQL→REST API alone (needs Fuseki on :3031) |
-| `make test` | Remark plugin tests (the JS unit suite) |
+| `make test` | Dependency-free Node unit and contract tests |
 | `make verify-ontology` | Byte-identity: re-emit the ontology and diff vs the committed corpus |
-| `make ci-ontology` | All `opda-gen` CI gates (byte-identity, three-graph, dup, profile, baspi5) — mirrors the GH workflows |
-| `make ci` | Everything CI checks locally (JS + ontology gates) |
-| `make deploy` | Push `main` → CI builds & deploys to Cloudflare Pages |
+| `make ci-ontology` | All `opda-gen` and BASPI5 CI gates in one model-validation path |
+| `make ci` | Full release-equivalent validation, including data refresh, static build and browser gates |
+| `make deploy` | Push `main` → CI validates and deploys the static site to AWS |
 
 Each JS target wraps a matching npm script (e.g. `npm run serve:data`, `npm run jena:load`).
 
 - There is **no `lint` script** — validation is `make test` (JS) + `make ci-ontology` (ontology).
 - `opda-gen` targets run in `tools/opda-gen/` and need `make ontology-install` once first.
 - Deploys are **CI-only** (push to `main`); `make deploy-manual` (direct wrangler) is an escape hatch — avoid it.
-- ALWAYS run `make test` after code changes; run `make build` (or `make build-data` for triplestore-backed pages) before committing.
+- ALWAYS run `make test` after code changes; run `make build` for site changes or `make build-data` when ontology inputs change before committing.
 
 ### Feature Workflow
 

@@ -1,15 +1,15 @@
 ---
 /**
- * Realises ADR-0021: entity page rendered from API data (not markdown).
+ * Entity page rendered from the committed ontology model (not markdown).
  *
- * Receives a fully-typed EntityDetail from entity-api.ts and wires the
+ * Receives a fully-typed EntityDetail from entity-detail.ts and wires the
  * existing ADR-0017 components with real structured data, closing G17.
  *
- * Integration with [...slug].astro dispatcher:
+ * Integration with the [...slug].astro dispatcher:
  *   When kind === 'entity' and entityData is provided in props, the
  *   dispatcher renders this component instead of EntityPage (markdown slot).
  */
-import type { EntityDetail } from '@/lib/entity-api.ts';
+import type { EntityDetail } from '@/lib/entity-detail.ts';
 import type { Attribute } from './AttributeTable.astro';
 import EntityHeader from './EntityHeader.astro';
 import AttributeTable from './AttributeTable.astro';
@@ -23,20 +23,19 @@ interface Props {
 
 const { entityData, tier } = Astro.props;
 
-// Adapt API attributes to the AttributeTable contract.
-// identityBearing is not yet in the API response; default false.
-// INTEGRATION POINT (Phase 2): add identityBearing to the API response and
-// the SPARQL query so this field is populated from the ontology.
+// Adapt the model projection to the AttributeTable contract. Identity-bearing
+// metadata is not present in that projection yet, so the existing default is
+// retained.
 const attributes: Attribute[] = entityData.attributes.map((a) => ({
   name: a.localName,
   type: a.type,
   cardinality: a.cardinality,
   required: a.required,
-  identityBearing: false, // INTEGRATION POINT (Phase 2): from API
+  identityBearing: false,
   description: a.description,
 }));
 
-// Build the cross-tier link list from the pre-computed API URLs.
+// Build the cross-tier link list from the pre-computed model URLs.
 // Only include tiers where a page actually exists (non-null URL).
 const TIER_LABELS: Record<string, string> = {
   concept:           'Concept',
@@ -141,7 +140,7 @@ const crossTierLinks: TierEntry[] = [
     </section>
   )}
 
-  <!-- Cross-tier link strip (G17 — uses pre-computed API URLs, not guesses) -->
+  <!-- Cross-tier link strip (G17 — uses pre-computed model URLs) -->
   {crossTierLinks.length > 0 && (
     <aside class="cross-tier-links">
       <p class="cross-tier-links__label">This entity across tiers</p>

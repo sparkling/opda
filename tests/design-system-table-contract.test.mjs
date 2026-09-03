@@ -127,7 +127,7 @@ test('shared manual and ontology table components do not create focusable scroll
   const paths = [
     'src/components/manual/AttributeTable.astro',
     'src/components/manual/SchemeMembersTable.astro',
-    'src/components/manual/EntityApiPage.astro',
+    'src/components/manual/EntityDetailPage.astro',
     'src/components/ontology/ClassDetail.astro',
     'src/components/ontology/PropertyDetail.astro',
     'src/components/ontology/ShapeDetail.astro',
