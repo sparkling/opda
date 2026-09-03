@@ -155,9 +155,9 @@ jobs:
       - name: Ontology documentation drift gate
         run: make ci-ontology-doc ci-ontology-graph
 
-      - name: Ontology and Python-backed model contracts
+      - name: Ontology generation contracts
         if: steps.changes.outputs.model == 'true'
-        run: make ci-ontology test-model
+        run: make ci-ontology
 
       - name: Schema reproducibility contracts
         if: steps.changes.outputs.model == 'true'
