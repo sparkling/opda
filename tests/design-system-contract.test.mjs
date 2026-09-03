@@ -388,7 +388,9 @@ test('shared navigation exposes visible focus, state and 44px targets', async ()
   assert.match(shell, /\.sidebar-nav\s*\{[^}]*--nav-tree-indent:\s*var\(--space-3\)/su);
   assert.match(shell, /a\.nav-group-link\s*\{[^}]*font:\s*700 var\(--text-sm\) \/ 1\.4 var\(--font-sans\)[^}]*text-transform:\s*none[^}]*border-bottom:\s*1px solid var\(--color-border\)/su);
   assert.match(shell, /\.tree-leaf > a\s*\{[^}]*padding-inline-start:\s*var\(--space-3\)/su);
-  assert.match(shell, /\.tree-folder\.is-open > \.tree-children\s*\{[^}]*margin-inline-start:\s*var\(--nav-tree-indent\)[^}]*border-inline-start:/su);
+  assert.match(shell, /\.tree-folder\.is-open > \.tree-children\s*\{[^}]*margin-inline-start:\s*var\(--nav-tree-indent\)/su);
+  assert.doesNotMatch(shell, /\.nav-group\.is-open > \.nav-group-items\s*\{[^}]*border-inline-start/su);
+  assert.doesNotMatch(shell, /\.tree-folder\.is-open > \.tree-children\s*\{[^}]*border-inline-start/su);
   assert.match(shell, /\.tree-folder\.is-active-page > \.tree-folder-row\s*\{/u);
   assert.doesNotMatch(sidebar, /nav-group-toggle|nav-group-caret/u);
   assert.doesNotMatch(sidebarItem, /tree-toggle|tree-caret|<button/u);
