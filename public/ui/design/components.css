@@ -6,9 +6,8 @@
   border-color: var(--color-border-strong);
   color: var(--color-text-disabled);
 }
-/* Shared icon-and-live-text lock-up. Icon scale and spacing are relative to
-   the consuming text size; baseline alignment keeps the visible lower edges
-   together without per-component offsets. */
+
+/* Shared icon-and-live-text lock-up: its scale and spacing are relative to the consuming text, with baseline alignment avoiding component offsets. */
 .brand-lockup {
   --brand-lockup-icon-width: 0.89em;
   --brand-lockup-gap: 0.45em;
@@ -41,9 +40,7 @@
   overflow: hidden;
   text-overflow: ellipsis;
 }
-
-/* Icon-and-name brand heading. The official icon stays decorative because the
-   organisation name remains live text. */
+/* Icon-and-name brand heading: the official icon is decorative; the organisation name stays live text. */
 .brand-heading {
   --brand-heading-gap: var(--space-5);
   --brand-heading-type: var(--brand-heading);
@@ -75,7 +72,6 @@
   min-width: 0;
   white-space: nowrap;
 }
-
 @media (max-width: 40rem) {
   .brand-heading:not(.brand-heading--compact) {
     align-items: flex-start;
@@ -83,26 +79,22 @@
   }
   .brand-heading--campaign { margin-bottom: var(--space-8); }
 }
-
 @media (forced-colors: active) {
   .brand-lockup { color: CanvasText; }
   .brand-lockup__icon { display: none; }
   .brand-heading { color: CanvasText; }
   .brand-heading__icon { display: none; }
 }
-
 @media print {
   .brand-heading {
     color: black;
     break-inside: avoid;
   }
 }
-
-/* Shared section heading. The optional eyebrow identifies the section's role;
-   the heading and supporting copy then retain one consistent hierarchy. */
+/* Shared section heading: its optional eyebrow identifies the role, while heading and copy retain a consistent hierarchy. */
 .section-heading {
   --section-heading-title-font: 600 clamp(1.75rem, 2.5vw, 2.75rem) / 1.1 var(--font-display);
-  /* Scoped legacy section rules using var(--h2) inherit this same title scale. */
+  /* Scoped legacy var(--h2) section rules inherit this title scale. */
   --h2: var(--section-heading-title-font);
   margin: 0 0 var(--space-7);
 }
@@ -140,7 +132,6 @@
   .section-heading :is(h2, h3),
   .section-heading__description { color: black; }
 }
-
 /* Shared content cards: square, structured and content-led. */
 .card-grid {
   display: grid;
@@ -189,7 +180,6 @@ a.card:hover .card__action span { transform: translateX(3px); }
 @media (max-width: 40rem) {
   .card__stats { grid-template-columns: 1fr; }
 }
-
 .home-hero {
   position: relative;
   overflow: hidden;
