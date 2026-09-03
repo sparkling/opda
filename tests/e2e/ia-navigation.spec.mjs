@@ -275,8 +275,7 @@ test('nested navigation follows one consistent indentation ladder', async ({ pag
     };
   });
 
-  expect(geometry.rootFolder - geometry.rootLeaf).toBeGreaterThanOrEqual(7);
-  expect(geometry.rootFolder - geometry.rootLeaf).toBeLessThanOrEqual(9);
+  expect(Math.abs(geometry.rootLeaf - geometry.rootFolder)).toBeLessThanOrEqual(1);
   expect(geometry.childLeaf - geometry.rootFolder).toBeGreaterThanOrEqual(7);
   expect(geometry.childLeaf - geometry.rootFolder).toBeLessThanOrEqual(9);
   await expect(page.locator('.tree-toggle, .nav-group-toggle')).toHaveCount(0);

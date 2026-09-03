@@ -171,7 +171,7 @@
 .app-sidebar .nav-group-row {
   display: block;
   min-width: 0;
-  margin: 0 var(--space-3) var(--space-2);
+  margin: 0 0 var(--space-2);
   border-radius: var(--radius-md);
 }
 .app-sidebar a.nav-group-link {
@@ -187,7 +187,6 @@
 .app-sidebar .nav-group.is-open > .nav-group-items {
   display: block;
   margin-inline-start: var(--nav-tree-indent);
-  border-inline-start: 1px solid var(--color-border);
 }
 .app-sidebar .nav-group-row.is-active-page {
   background: var(--neutral-100);
@@ -221,7 +220,6 @@
 .app-sidebar .tree-folder.is-open > .tree-children {
   display: block;
   margin-inline-start: var(--nav-tree-indent);
-  border-inline-start: 1px solid var(--color-border);
 }
 .app-sidebar .tree-leaf > a {
   padding-inline-start: var(--space-3);
