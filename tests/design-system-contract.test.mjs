@@ -449,7 +449,7 @@ test('shared navigation exposes visible focus, state and 44px targets', async ()
   assert.match(header, /import \{ GLOBAL_NAVIGATION_ITEMS, getActiveDestination \} from '@\/lib\/site-ia\.mjs'/u);
   assert.match(header, /import HeaderPreviewControls from '@\/components\/HeaderPreviewControls\.astro'/u);
   assert.match(header, /<a href="\/" class="app-header__title">\s*<BrandHeading scale="mini" variant="paired"\s*\/>\s*<\/a>/u);
-  assert.match(header, /<div class="app-header__framework-row">[\s\S]*<a href="\/" class="app-header__framework">\s*<FrameworkHeading\s*\/>\s*<\/a>[\s\S]*<HeaderPreviewControls[\s\S]*showScaleControl[\s\S]*identityId="app-header-identity"[\s\S]*initialScale=\{24\}[\s\S]*initialSpaceBelow=\{8\}[\s\S]*showUtilitySpacingControl[\s\S]*\/>/u);
+  assert.match(header, /<div class="global-nav-panel"[\s\S]*<nav class="global-nav"[\s\S]*GLOBAL_NAVIGATION_ITEMS\.map[\s\S]*<HeaderPreviewControls[\s\S]*showScaleControl[\s\S]*identityId="app-header-identity"[\s\S]*initialScale=\{24\}[\s\S]*initialSpaceBelow=\{0\}[\s\S]*initialUtilitySpaceAbove=\{24\}[\s\S]*initialIcon="common-boundary"[\s\S]*initialPalette="clay-indigo"[\s\S]*showUtilitySpacingControl[\s\S]*\/>/u);
   assert.match(header, /import ThemeToggle from '@\/components\/ThemeToggle\.astro'/u);
   assert.match(header, /<ThemeToggle\s*\/>/u);
   assert.match(header, /class="app-header__utilities"/u);

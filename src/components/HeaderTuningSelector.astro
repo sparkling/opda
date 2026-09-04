@@ -6,6 +6,7 @@ interface Props {
   initialLineGap?: number;
   initialSpaceBelow?: number;
   initialOpdaScale?: number;
+  initialUtilitySpaceAbove?: number;
   showUtilitySpacingControl?: boolean;
 }
 
@@ -16,6 +17,7 @@ const {
   initialLineGap = 8,
   initialSpaceBelow = 0,
   initialOpdaScale = 100,
+  initialUtilitySpaceAbove = 0,
   showUtilitySpacingControl = false,
 } = Astro.props;
 
@@ -25,7 +27,7 @@ const adjustments = [
   { label: 'Space underneath SPDTF', property: '--identity-space-after', min: 0, max: 64, value: initialSpaceBelow, factor: 1, unit: 'px', ariaUnit: 'pixels' },
   { label: 'Space between SPDTF and OPDA', property: '--identity-line-gap', min: 0, max: 64, value: initialLineGap, factor: 1, unit: 'px', ariaUnit: 'pixels' },
   { label: 'Space above OPDA', property: '--identity-space-before', min: 0, max: 96, value: initialSpaceAbove, factor: 1, unit: 'px', ariaUnit: 'pixels' },
-  ...(showUtilitySpacingControl ? [{ label: 'Space above icon and button row', property: '--header-utilities-space-above', min: 0, max: 96, value: 0, factor: 1, unit: 'px', ariaUnit: 'pixels' }] : []),
+  ...(showUtilitySpacingControl ? [{ label: 'Space above icon and button row', property: '--header-utilities-space-above', min: 0, max: 96, value: initialUtilitySpaceAbove, factor: 1, unit: 'px', ariaUnit: 'pixels' }] : []),
 ];
 ---
 

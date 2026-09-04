@@ -112,7 +112,10 @@
   gap: var(--space-4);
   margin-inline-start: auto;
 }
-.app-header .header-preview-controls { align-self: flex-start; }
+.app-header .global-nav > .header-preview-controls {
+  align-self: center;
+  margin-inline-start: auto;
+}
 .header-preview-controls__drawer {
   max-inline-size: 50rem;
   opacity: 1;
@@ -293,7 +296,7 @@
 }
 .header-preview-control--icon > .header-preview-selector > .header-preview-selector__flyout,
 .header-preview-control--palette > .header-preview-selector > .header-preview-selector__flyout {
-  inset-block-start: calc(100% + 12rem);
+  inset-block-start: calc(100% + var(--space-3));
 }
 .header-preview-selector__companion {
   display: flex;

@@ -33,7 +33,7 @@ test('knowledge-base header uses paired OPDA and selectable framework identities
   ]);
 
   assert.match(header, /<BrandHeading scale="mini" variant="paired"\s*\/>/u);
-  assert.match(header, /class="app-header__title"[\s\S]*class="app-header__framework-row"[\s\S]*<FrameworkHeading\s*\/>[\s\S]*<HeaderPreviewControls[\s\S]*showScaleControl[\s\S]*identityId="app-header-identity"[\s\S]*initialScale=\{24\}[\s\S]*initialSpaceBelow=\{8\}[\s\S]*showUtilitySpacingControl[\s\S]*\/>[\s\S]*<div class="app-header__utilities">/u);
+  assert.match(header, /class="app-header__title"[\s\S]*class="app-header__framework-row"[\s\S]*<FrameworkHeading\s*\/>[\s\S]*<div class="app-header__utilities">[\s\S]*class="global-nav-panel"[\s\S]*class="global-nav"[\s\S]*<HeaderPreviewControls[\s\S]*showScaleControl[\s\S]*identityId="app-header-identity"[\s\S]*initialScale=\{24\}[\s\S]*initialSpaceBelow=\{0\}[\s\S]*showUtilitySpacingControl[\s\S]*\/>/u);
   assert.match(previewControls, /<HeaderIconSelector initialIcon=\{initialIcon\}>[\s\S]*<HeaderTuningSelector[\s\S]*<HeaderPaletteSelector embedded initialPalette=\{initialPalette\} \/>[\s\S]*<HeaderPaletteSelector initialPalette=\{initialPalette\}>[\s\S]*<HeaderTuningSelector[\s\S]*<HeaderIconSelector embedded initialIcon=\{initialIcon\} \/>/u);
   assert.doesNotMatch(header, /app-header__identity/u);
   assert.match(brand, /variant\?: 'document' \| 'paired'/u);
@@ -73,12 +73,12 @@ test('knowledge-base header uses paired OPDA and selectable framework identities
   assert.match(headerBrand, /\.framework-heading__marks\s*\{[^}]*align-items:\s*flex-end;/su);
   assert.match(headerBrand, /\.framework-heading__mark\s*\{[^}]*width:\s*0\.72em;[^}]*height:\s*0\.72em;[^}]*transform:\s*translateY\(-0\.14em\);/su);
   assert.match(headerBrand, /\.framework-heading--display\s*\{[^}]*font-size:\s*clamp\(var\(--text-3xl\), 4\.5vw, 5rem\);/su);
-  assert.match(base, /--identity-line-gap:\s*var\(--space-3\);/u);
+  assert.match(base, /--identity-line-gap:\s*0px;/u);
   assert.match(base, /grid-template-areas:\s*'title utilities'\s*'\. \.'\s*'framework framework'\s*'navigation navigation';/u);
   assert.match(base, /grid-template-rows:\s*var\(--target-min\)\s*var\(--identity-line-gap\)\s*calc\(\(var\(--identity-heading-size\) \* 1\.57\) \+ var\(--identity-space-after-origin\)\)/u);
   assert.match(base, /\.app-header__framework-row\s*\{[^}]*grid-area:\s*framework;[^}]*align-items:\s*flex-start;[^}]*margin:\s*0;/su);
   assert.match(base, /\.app-header__framework\s*\{[^}]*align-self:\s*flex-start;/su);
-  assert.match(headerBrand, /\.app-header \.header-preview-controls\s*\{\s*align-self:\s*flex-start;\s*\}/u);
+  assert.match(headerBrand, /\.app-header \.global-nav > \.header-preview-controls\s*\{[^}]*align-self:\s*center;/su);
   assert.match(base, /\.app-header__title\s*\{[^}]*transform:\s*translateY\(calc\(var\(--identity-space-after-origin\) - var\(--identity-space-after\)\)\);/su);
   assert.match(base, /\.app-header__framework\s*\{[^}]*transform:\s*translateY\(calc\(var\(--identity-space-after-origin\) - var\(--identity-space-after\)\)\);/su);
 });
@@ -150,7 +150,7 @@ test('temporary selectors expose full preview cards and persist palettes and ico
   assert.match(iconSelector, /data-icon-number=\{icon\.number\}/u);
   assert.match(iconSelector, /data-header-icon-current>\{HEADER_ICONS\.find/u);
   assert.match(selector, /Astro\.slots\.has\('companion'\)/u);
-  assert.match(header, /import HeaderPreviewControls[^\n]+[\s\S]*<HeaderPreviewControls[\s\S]*showScaleControl[\s\S]*identityId="app-header-identity"[\s\S]*initialScale=\{24\}[\s\S]*initialSpaceAbove=\{24\}[\s\S]*initialLineGap=\{8\}[\s\S]*initialSpaceBelow=\{8\}[\s\S]*showUtilitySpacingControl[\s\S]*\/>/u);
+  assert.match(header, /import HeaderPreviewControls[^\n]+[\s\S]*<HeaderPreviewControls[\s\S]*showScaleControl[\s\S]*identityId="app-header-identity"[\s\S]*initialScale=\{24\}[\s\S]*initialOpdaScale=\{100\}[\s\S]*initialSpaceAbove=\{0\}[\s\S]*initialLineGap=\{0\}[\s\S]*initialSpaceBelow=\{0\}[\s\S]*initialUtilitySpaceAbove=\{24\}[\s\S]*initialIcon="common-boundary"[\s\S]*initialPalette="clay-indigo"[\s\S]*showUtilitySpacingControl[\s\S]*\/>/u);
   assert.match(previewControls, /data-header-preview-controls data-icon-selection="persistent" hidden[\s\S]*id=\{controlId\}[\s\S]*<HeaderIconSelector initialIcon=\{initialIcon\}>[\s\S]*<HeaderTuningSelector[\s\S]*<HeaderPaletteSelector embedded initialPalette=\{initialPalette\} \/>[\s\S]*<HeaderPaletteSelector initialPalette=\{initialPalette\}>[\s\S]*<HeaderTuningSelector[\s\S]*<HeaderIconSelector embedded initialIcon=\{initialIcon\} \/>[\s\S]*data-header-preview-toggle/u);
   assert.match(home, /<HeaderPreviewControls[\s\S]*showScaleControl[\s\S]*controlId="home-header-preview-selectors"[\s\S]*identityId="home-campaign-identity"/u);
   assert.match(home, /const homeHeaderIcon = 'common-boundary';[\s\S]*const homeHeaderPalette = 'clay-indigo';[\s\S]*const homeHeaderScale = 32;[\s\S]*const homeHeaderOpdaScale = 100;[\s\S]*const homeHeaderSpaceAbove = 59;[\s\S]*const homeHeaderLineGap = 0;[\s\S]*const homeHeaderSpaceBelow = 16;/u);
@@ -170,9 +170,11 @@ test('temporary selectors expose full preview cards and persist palettes and ico
   assert.match(tuningSelector, /property: '--identity-space-after', min: 0, max: 64/u);
   assert.match(tuningSelector, /property: '--identity-line-gap', min: 0, max: 64/u);
   assert.match(tuningSelector, /property: '--identity-space-before', min: 0, max: 96/u);
-  assert.match(tuningSelector, /showUtilitySpacingControl \? \[\{ label: 'Space above icon and button row', property: '--header-utilities-space-above', min: 0, max: 96/u);
+  assert.match(tuningSelector, /showUtilitySpacingControl \? \[\{ label: 'Space above icon and button row', property: '--header-utilities-space-above', min: 0, max: 96, value: initialUtilitySpaceAbove/u);
+  assert.match(base, /\.app-header\s*\{[^}]*--identity-space-before:\s*0px;[^}]*--identity-line-gap:\s*0px;[^}]*--identity-space-after:\s*0px;[^}]*--header-utilities-space-above:\s*24px;/su);
   assert.match(base, /\.app-header__utilities\s*\{[^}]*transform:\s*translateY\(var\(--header-utilities-space-above, 0px\)\);/su);
-  assert.match(base, /\.app-header \.header-preview-controls\s*\{[^}]*transform:\s*translateY\(var\(--header-utilities-space-above, 0px\)\);/su);
+  assert.match(headerBrand, /\.app-header \.global-nav > \.header-preview-controls\s*\{[^}]*align-self:\s*center;[^}]*margin-inline-start:\s*auto;/su);
+  assert.doesNotMatch(base, /\.app-header \.header-preview-controls\s*\{[^}]*header-utilities-space-above/su);
   assert.match(tuningSelector, /data-css-property=\{adjustment\.property\}[\s\S]*data-value-factor=\{adjustment\.factor\}[\s\S]*data-header-preview-range/u);
   assert.match(previewControls, /initialScale = 24/u);
   assert.match(campaign, /\.wg-campaign-identity\s*\{[^}]*--identity-heading-size:\s*24px;/su);
@@ -205,7 +207,7 @@ test('temporary selectors expose full preview cards and persist palettes and ico
   assert.match(headerBrand, /\.header-preview-control--palette\s*\{[^}]*--header-preview-flyout-width:\s*max-content;[^}]*--header-preview-flyout-max-height:\s*none;[^}]*--header-preview-flyout-overflow:\s*visible;/su);
   assert.match(headerBrand, /\.header-preview-selector > summary\s*\{[^}]*inline-size:\s*var\(--header-preview-summary-width\);[^}]*grid-template-columns:\s*auto minmax\(0, 1fr\) auto;/su);
   assert.match(headerBrand, /\.header-preview-selector__flyout\s*\{[^}]*position:\s*absolute;[^}]*width:\s*min\(var\(--header-preview-flyout-width\),/su);
-  assert.match(headerBrand, /\.header-preview-control--icon > \.header-preview-selector > \.header-preview-selector__flyout,\s*\.header-preview-control--palette > \.header-preview-selector > \.header-preview-selector__flyout\s*\{[^}]*inset-block-start:\s*calc\(100% \+ 12rem\);/su);
+  assert.match(headerBrand, /\.header-preview-control--icon > \.header-preview-selector > \.header-preview-selector__flyout,\s*\.header-preview-control--palette > \.header-preview-selector > \.header-preview-selector__flyout\s*\{[^}]*inset-block-start:\s*calc\(100% \+ var\(--space-3\)\);/su);
   assert.match(headerBrand, /\.header-preview-selector__options\s*\{[^}]*grid-template-columns:\s*repeat\(var\(--header-preview-columns\), minmax\(0, 1fr\)\);/su);
   assert.match(headerBrand, /\.header-preview-selector__card-preview\s*\{[^}]*display:\s*grid;/su);
   assert.match(headerBrand, /\.header-preview-selector__card\[hidden\]\s*\{\s*display:\s*none;\s*\}/u);
