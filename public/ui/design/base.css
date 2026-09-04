@@ -336,6 +336,7 @@ a:visited { text-decoration-color: currentColor; }
     min-height: 0;
   }
   .app-header__title { overflow: visible; }
+  .app-header .global-nav { overflow: visible; }
 }
 
 /* The seven-item global nav needs a disclosure before the desktop row

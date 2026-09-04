@@ -81,6 +81,7 @@ test('knowledge-base header uses paired OPDA and selectable framework identities
   assert.match(headerBrand, /\.app-header \.global-nav > \.header-preview-controls\s*\{[^}]*align-self:\s*center;/su);
   assert.match(base, /\.app-header__title\s*\{[^}]*transform:\s*translateY\(calc\(var\(--identity-space-after-origin\) - var\(--identity-space-after\)\)\);/su);
   assert.match(base, /\.app-header__framework\s*\{[^}]*transform:\s*translateY\(calc\(var\(--identity-space-after-origin\) - var\(--identity-space-after\)\)\);/su);
+  assert.match(base, /@media \(min-width: 96\.0625rem\)\s*\{[\s\S]*?\.app-header \.global-nav\s*\{\s*overflow:\s*visible;\s*\}/u);
 });
 
 test('medium header collapses navigation without removing the paired identity', async () => {
