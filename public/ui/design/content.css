@@ -366,7 +366,7 @@ html { scroll-padding-top: calc(var(--header-height) + 1rem); }
               transform var(--duration-fast) var(--ease);
 }
 .btn--compact {
-  min-height: auto;
+  min-height: var(--target-min);
   padding-block: 8px;
   padding-inline: var(--space-3);
 }
