@@ -16,7 +16,7 @@ test('primary navigation exposes the six destinations followed by Search', async
   await expect(links).toHaveCount(7);
   await expect(links).toHaveText(primary.map(({ title }) => title));
   expect(await links.evaluateAll((nodes) => nodes.map((node) => node.getAttribute('href'))))
-    .toEqual(GLOBAL_DESTINATIONS.map(({ url }) => url));
+    .toEqual(primary.map(({ url }) => url));
   await expect(cta).toHaveText('Join a working group');
   await expect(cta).toHaveAttribute('href', '/join');
   await expect(membership).toHaveText('Become a member');
@@ -31,7 +31,7 @@ test('the sole knowledge home mirrors the six global destinations', async ({ pag
   const publicDestinations = page.locator('.public-overview a.card');
   await expect(publicDestinations).toHaveCount(6);
   expect(await publicDestinations.evaluateAll((nodes) => nodes.map((node) => node.getAttribute('href'))))
-    .toEqual(primary.map(({ url }) => url));
+    .toEqual(GLOBAL_DESTINATIONS.map(({ url }) => url));
   clean();
 });
 
@@ -172,7 +172,7 @@ test('PDTF schema navigation separates supporting material from the schema-deriv
   ]) await expect(page.locator(`#section-nav-group-pdtf-schema-${id === 'adoption' ? 'usage' : id}`)).toHaveCount(1);
 
   await expect(page.locator('nav[aria-label="Breadcrumb"] li')).toHaveText([
-    /Development/u, /Third-party inputs/u, /PDTF schema/u,
+    /Third-party inputs/u, /PDTF schema/u,
     /Schema-derived ontology/u, /Terms and model resources/u,
   ]);
 
@@ -225,8 +225,7 @@ test('category pages are direct links whose active trails reveal children', asyn
   await expect(page).toHaveURL(/\/semantic-modelling\/why-ontologies$/u);
   await expect(page.locator('.nav-group-row.is-active-page a[aria-current="page"]'))
     .toHaveAttribute('href', '/semantic-modelling/why-ontologies');
-  await expect(page.locator('nav[aria-label="Breadcrumb"] [aria-current="page"]')).toHaveCount(0);
-  await expect(page.locator('nav[aria-label="Breadcrumb"]')).not.toContainText('Understand ontologies');
+  await expect(page.locator('nav[aria-label="Breadcrumb"]')).toHaveCount(0);
   await expect(page.locator('nav.page-footer a').last())
     .toHaveAttribute('href', '/semantic-modelling/reading-the-model');
   clean();
@@ -330,10 +329,10 @@ test('Property Pack detail pages expose their full canonical ancestry', async ({
   await visit(page, '/development/property-pack/resources/common/Property');
   const crumbs = page.locator('nav[aria-label="Breadcrumb"]');
   await expect(crumbs.locator('a')).toHaveText([
-    'Development', 'Property Pack ontology', 'Current ontology model', 'Ontology resources',
+    'Property Pack ontology', 'Current ontology model', 'Ontology resources',
   ]);
   expect(await crumbs.locator('a').evaluateAll((links) => links.map((link) => link.getAttribute('href')))).toEqual([
-    '/development', '/development/property-pack', '/development/property-pack/model', '/development/property-pack/resources',
+    '/development/property-pack', '/development/property-pack/model', '/development/property-pack/resources',
   ]);
   const local = page.locator('#section-navigation');
   await expect(local.locator('a[aria-current="page"]')).toHaveCount(0);
@@ -445,7 +444,7 @@ test('all Layout pages expose versioned route status metadata', async ({ page })
 test('participant reaches evidence, questions and review from one canonical workspace', async ({ page }) => {
   const clean = watchRuntime(page);
   await visit(page, '/development/working-groups/estate-agency');
-  await expect(page.locator('nav[aria-label="Breadcrumb"]')).toHaveCount(1);
+  await expect(page.locator('nav[aria-label="Breadcrumb"]')).toHaveCount(0);
   const workspace = page.locator('nav[aria-label="Working-group workspace"]');
   await expect(workspace.getByRole('link')).toHaveCount(4);
   for (const label of ['Evidence', 'Questions', 'Review']) {
@@ -464,7 +463,6 @@ test('PDTF search uses canonical input routes and labels results with authority'
   await expect(schemaResult).toContainText('does not confer OPDA endorsement or SPDTF authority');
   await expect(schemaResult).toContainText('PDTF schema input');
   await expect(results.filter({ has: page.locator('a[href="/pdtf-schema"]') })).toHaveCount(0);
-  await expect(results.filter({ has: page.locator('a[href="/development"]') })).toHaveCount(1);
   expect(await results.count()).toBeGreaterThan(1);
   await expect(results.locator('dt', { hasText: 'Authority' }).first()).toBeVisible();
   await expect(page.locator('[data-search-tab="ontology"]')).toBeEnabled();

@@ -47,7 +47,7 @@ test('compact primary disclosure keeps all navigation items discoverable through
     await expect(cta).toHaveAttribute('href', '/join');
     await expect(membership).toHaveText('Become a member');
     await expect(membership).toHaveAttribute('href', 'https://openpropdata.org.uk/become-a-member/');
-    const desktopActions = page.locator('.header-action--desktop');
+    const desktopActions = page.locator('.header-action--desktop > a');
     await expect(desktopActions).toHaveCount(2);
     await expect(desktopActions.first()).toBeHidden();
     await expect(desktopActions.last()).toBeHidden();
