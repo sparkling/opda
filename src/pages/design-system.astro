@@ -26,10 +26,6 @@ const tokenSample = `:root {
   description="The evidence-grounded brand, interaction and accessibility contract for the OPDA knowledge base."
   hideComments={true}
 >
-  <div class="page-meta">
-    <span>Version 1.0 · updated 30 August 2026</span>
-  </div>
-
   <h1>OPDA design system</h1>
   <p class="lead">
     An ink-and-amber data publication for trusted evidence, standards, semantic
@@ -80,8 +76,10 @@ const tokenSample = `:root {
   <h3>Icon-and-name heading</h3>
   <p>
     Use the official icon with the organisation name as live text. The icon is
-    decorative; DM Sans supplies the unbroken name. The shared brand-lock-up rule
-    controls its relative icon scale, icon-to-text gap, baseline alignment and surface colour.
+    decorative; DM Sans supplies the unbroken name. The shared BrandHeading component
+    controls its contrast tile, relative icon scale, icon-to-text gap and icon/text bottom-edge
+    alignment. The icon remains yellow, while the live name changes to deep ink on a
+    light surface. The complete identity always stays on one line.
   </p>
   <div class="brand-heading-specimens">
     <div class="brand-heading-specimen brand-heading-specimen--light">
@@ -151,7 +149,7 @@ const tokenSample = `:root {
 
   <h2 id="components">Components and states</h2>
   <p>Every interactive component provides hover, active, focus and disabled states, plus loading, error and success where work is asynchronous.</p>
-  <div class="callout callout--note"><h3 class="callout__label"><span aria-hidden="true">i</span> Section hierarchy</h3><p>Linked folder labels open the active navigation trail. Top-level parents use the leaf-link DM Sans scale and sentence case, with stronger weight and a hairline lower edge; no open/closed indicator or extra row height is added. Recursive lists use one 8px indentation step, without branch arrows or reserved icon gutters.</p></div>
+  <div class="callout callout--note"><h3 class="callout__label"><span aria-hidden="true">i</span> Section hierarchy</h3><p>Linked folder labels open the active navigation trail. Every parent uses the leaf-link DM Sans scale and sentence case with stronger weight and a restrained, theme-aware navigation-parent colour mixed toward body text; top-level parents also receive a hairline lower edge. Selection preserves each item’s existing typography in both themes: leaves remain regular and parents remain bold. Recursive lists use one 8px indentation step, with no branch arrows, open/closed indicators, guide rules or reserved icon gutters. The navigation uses an 8px outer inline inset and top-level rows add no second inline margin.</p></div>
   <div class="component-board">
     <article>
       <span>Primary action</span>

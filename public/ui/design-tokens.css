@@ -1,69 +1,4 @@
 /* OPDA Design System 1.0 — token projection of DESIGN.md (ADR-0073). */
-
-@font-face {
-  font-family: 'Roboto Slab';
-  src: url('./fonts/RobotoSlab-Variable-latin-ext.woff2') format('woff2');
-  font-style: normal;
-  font-weight: 600 700;
-  font-display: swap;
-  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7,
-    U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F,
-    U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F,
-    U+A720-A7FF;
-}
-@font-face {
-  font-family: 'Roboto Slab';
-  src: url('./fonts/RobotoSlab-Variable-latin.woff2') format('woff2');
-  font-style: normal;
-  font-weight: 600 700;
-  font-display: swap;
-  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6,
-    U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122,
-    U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
-}
-@font-face {
-  font-family: 'DM Sans';
-  src: url('./fonts/DMSans-Variable-latin-ext.woff2') format('woff2');
-  font-style: normal;
-  font-weight: 400 700;
-  font-display: swap;
-  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7,
-    U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F,
-    U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F,
-    U+A720-A7FF;
-}
-@font-face {
-  font-family: 'DM Sans';
-  src: url('./fonts/DMSans-Variable-latin.woff2') format('woff2');
-  font-style: normal;
-  font-weight: 400 700;
-  font-display: swap;
-  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6,
-    U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122,
-    U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
-}
-@font-face {
-  font-family: 'Roboto Mono';
-  src: url('./fonts/RobotoMono-Variable-latin-ext.woff2') format('woff2');
-  font-style: normal;
-  font-weight: 400 700;
-  font-display: swap;
-  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7,
-    U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F,
-    U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F,
-    U+A720-A7FF;
-}
-@font-face {
-  font-family: 'Roboto Mono';
-  src: url('./fonts/RobotoMono-Variable-latin.woff2') format('woff2');
-  font-style: normal;
-  font-weight: 400 700;
-  font-display: swap;
-  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6,
-    U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122,
-    U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
-}
-
 :root {
   color-scheme: light;
 
@@ -75,6 +10,12 @@
   --brand-yellow-active: #fac238;
   --brand-white: #ffffff;
   --brand-off-white: #f9f9f9;
+
+  /* Derived brand violet: the fold and accent word of the identity lock-up.
+     Deep for light surfaces (7.4:1 on white), bright for dark surfaces
+     (8.1:1 on brand-deep). */
+  --brand-violet: #4a3fc4;
+  --brand-violet-bright: #a9a0ff;
 
   /* Derived violet-cast neutral ramp. */
   --neutral-100: #f1f0f4;
@@ -105,11 +46,29 @@
   --color-link: #5b51d8;
   --color-link-hover: #4a41be;
   --color-link-visited: #6d3e91;
+  --color-navigation-parent: color-mix(in srgb, var(--color-link) 38%, var(--color-text));
+  --color-navigation-parent-hover: color-mix(in srgb, var(--color-link-hover) 52%, var(--color-text));
   --color-action-subtle: var(--neutral-100);
   --color-action-subtle-hover: var(--neutral-200);
   --color-action-primary-text: #000;
   --color-action-selected: var(--color-status-info);
   --color-action-selected-surface: var(--color-status-info-surface);
+  --color-header-surface: var(--brand-white);
+  --color-header-text: var(--brand-deep);
+  --color-header-muted: var(--neutral-600);
+  --color-header-border: var(--neutral-200);
+  --color-header-hover-surface: var(--neutral-100);
+  /* Paired knowledge-base identity. Tidewater is the default; the temporary
+     selector below changes these semantic roles without changing geometry. */
+  --color-header-opda: #7c5c12;
+  --color-header-framework: #106e68;
+  --color-header-framework-mark-a: #0b4b47;
+  --color-header-framework-mark-b: #106e68;
+  --color-header-brand-mark-tile: var(--brand-yellow);
+  --color-header-brand-mark-fold: var(--brand-violet);
+  --color-header-brand-mark-ink: var(--brand-deep);
+  --color-header-brand-name: var(--brand-deep);
+  --color-header-brand-name-accent: var(--brand-violet);
   --color-table-header-surface: var(--brand-ink);
   --color-table-header-text: var(--brand-white);
   --color-table-row-header-surface: #f4f0e4;
@@ -201,6 +160,11 @@
   --space-8: 3rem;
   --space-10: 4rem;
   --space-12: 6rem;
+
+  /* Shared shell spacing: page context below the masthead and breathing room
+     above the desktop identity are independent axes. */
+  --page-content-start-space: var(--space-3);
+  --header-desktop-start-space: var(--space-6);
   --radius-sm: 2px;
   --radius-md: 2px;
   --radius-lg: 4px;
@@ -208,11 +172,18 @@
   --shadow-sm: 0 1px 2px rgb(19 18 36 / 10%);
   --shadow-md: 0 8px 24px rgb(19 18 36 / 16%);
   --shadow-lg: var(--shadow-md);
+  /* Compact text navigation remains comfortably above WCAG 2.2's 24px
+     minimum without imposing button-sized vertical rhythm on document flow. */
+  --target-inline-min: 2rem;
   --target-min: 2.75rem;
   --header-height: 4rem;
   --sidebar-width: 15rem;
   --toc-width: var(--sidebar-width);
   --content-max: 100rem;
+  /* Search is a cross-site task surface: wider than a reading measure, while
+     remaining clearly distinct from the full documentation page. */
+  --search-dialog-max: 64rem;
+  --newsletter-dialog-max: 68rem;
   /* Keep the article close to its available track until its maximum width is
      reached. Beyond that point, the centred content measure supplies the
      extra whitespace rather than widening the operational gutter. */
@@ -236,6 +207,121 @@
 
 }
 
+:root[data-header-palette='kiln'] {
+  --color-header-opda: #8f4a10;
+  --color-header-framework: #9e3a1e;
+  --color-header-framework-mark-a: #c97a22;
+  --color-header-framework-mark-b: #9e3a1e;
+}
+:root[data-header-palette='mulberry'] {
+  --color-header-opda: #6e3c2a;
+  --color-header-framework: #8e2a57;
+  --color-header-framework-mark-a: #5a1a3c;
+  --color-header-framework-mark-b: #8e2a57;
+}
+:root[data-header-palette='moss'] {
+  --color-header-opda: #2f4a14;
+  --color-header-framework: #4f7a1e;
+  --color-header-framework-mark-a: #7e9a3a;
+  --color-header-framework-mark-b: #4f7a1e;
+}
+:root[data-header-palette='petrol'] {
+  --color-header-opda: #6b6416;
+  --color-header-framework: #1f4a5c;
+  --color-header-framework-mark-a: #12313d;
+  --color-header-framework-mark-b: #1f4a5c;
+}
+:root[data-header-palette='aubergine'] {
+  --color-header-opda: #4e1f55;
+  --color-header-framework: #712f7c;
+  --color-header-framework-mark-a: #a45fb0;
+  --color-header-framework-mark-b: #712f7c;
+}
+:root[data-header-palette='pine'] {
+  --color-header-opda: #573d1c;
+  --color-header-framework: #1d6b4f;
+  --color-header-framework-mark-a: #0f4633;
+  --color-header-framework-mark-b: #1d6b4f;
+}
+:root[data-header-palette='ledger'] {
+  --color-header-opda: #1f4f5e;
+  --color-header-framework: #7b2530;
+  --color-header-framework-mark-a: #4c1119;
+  --color-header-framework-mark-b: #7b2530;
+}
+:root[data-header-palette='cherry'] {
+  --color-header-opda: #6b1f3e;
+  --color-header-framework: #6f4a10;
+  --color-header-framework-mark-a: #a57a2c;
+  --color-header-framework-mark-b: #6f4a10;
+}
+:root[data-header-palette='harbour'] {
+  --color-header-opda: #0e4f4a;
+  --color-header-framework: #b4531a;
+  --color-header-framework-mark-a: #123e3a;
+  --color-header-framework-mark-b: #b4531a;
+}
+:root[data-header-palette='clay-indigo'] {
+  --color-header-opda: #24345a;
+  --color-header-framework: #41498c;
+  --color-header-framework-mark-a: #a8512a;
+  --color-header-framework-mark-b: #41498c;
+}
+:root[data-header-palette='amber-violet'] {
+  --color-header-opda: #4b2d73;
+  --color-header-framework: #5b3e8f;
+  --color-header-framework-mark-a: #8f5e08;
+  --color-header-framework-mark-b: #5b3e8f;
+}
+:root[data-header-palette='rosewood'] {
+  --color-header-opda: #6e2639;
+  --color-header-framework: #3e4e66;
+  --color-header-framework-mark-a: #a04a5c;
+  --color-header-framework-mark-b: #3e4e66;
+}
+:root[data-header-palette='copper-ink'] {
+  --color-header-opda: #1c2b45;
+  --color-header-framework: #243b63;
+  --color-header-framework-mark-a: #96491e;
+  --color-header-framework-mark-b: #243b63;
+}
+:root[data-header-palette='paprika'] {
+  --color-header-opda: #4a3226;
+  --color-header-framework: #5c4433;
+  --color-header-framework-mark-a: #a93226;
+  --color-header-framework-mark-b: #5c4433;
+}
+:root[data-header-palette='heather-walnut'] {
+  --color-header-opda: #503a28;
+  --color-header-framework: #5c4130;
+  --color-header-framework-mark-a: #6b5590;
+  --color-header-framework-mark-b: #5c4130;
+}
+:root[data-header-palette='denim-chestnut'] {
+  --color-header-opda: #5c3317;
+  --color-header-framework: #6b3e1e;
+  --color-header-framework-mark-a: #33518f;
+  --color-header-framework-mark-b: #6b3e1e;
+}
+:root[data-header-palette='sepia'] {
+  --color-header-opda: #26334f;
+  --color-header-framework: #4e3a22;
+  --color-header-framework-mark-a: #7a5230;
+  --color-header-framework-mark-b: #4e3a22;
+}
+:root[data-header-palette='magenta-ink'] {
+  --color-header-opda: #263355;
+  --color-header-framework: #303f6b;
+  --color-header-framework-mark-a: #8f2260;
+  --color-header-framework-mark-b: #303f6b;
+}
+:root[data-header-palette='midnight-sienna'] {
+  --color-header-opda: #6e3a0c;
+  --color-header-framework: #2a3562;
+  --color-header-framework-mark-a: #3d4b8f;
+  --color-header-framework-mark-b: #2a3562;
+}
+
 [data-theme='dark'] {
   color-scheme: dark;
   --color-surface: var(--brand-deep);
@@ -253,10 +339,26 @@
   --color-link: #a9a0ff;
   --color-link-hover: #c7c1ff;
   --color-link-visited: #d8a8ed;
+  --color-navigation-parent: color-mix(in srgb, var(--color-link) 68%, var(--color-text));
+  --color-navigation-parent-hover: color-mix(in srgb, var(--color-link-hover) 78%, var(--color-text));
   --color-action-subtle: var(--brand-night);
   --color-action-subtle-hover: #3a3550;
   --color-action-selected: var(--color-status-info);
   --color-action-selected-surface: var(--color-status-info-surface);
+  --color-header-surface: var(--brand-deep);
+  --color-header-text: var(--brand-white);
+  --color-header-muted: var(--neutral-400);
+  --color-header-border: #3a3550;
+  --color-header-hover-surface: #3a3550;
+  --color-header-opda: var(--brand-yellow);
+  --color-header-framework: #5fc5ba;
+  --color-header-framework-mark-a: #1f8f87;
+  --color-header-framework-mark-b: #5fc5ba;
+  --color-header-brand-mark-tile: var(--color-surface-dark-tint);
+  --color-header-brand-mark-fold: var(--brand-violet-bright);
+  --color-header-brand-mark-ink: var(--brand-yellow);
+  --color-header-brand-name: var(--brand-yellow);
+  --color-header-brand-name-accent: var(--brand-violet-bright);
   --color-table-header-surface: var(--color-surface-tint);
   --color-table-header-text: var(--brand-white);
   --color-table-row-header-surface: #302c26;
@@ -278,6 +380,105 @@
   --button-bg-active: #4a445e;
   --ring-subtle: #3a3550;
   --ring-strong: #56506d;
+}
+
+[data-theme='dark'][data-header-palette='kiln'] {
+  --color-header-framework: #ee9270;
+  --color-header-framework-mark-a: #d98b45;
+  --color-header-framework-mark-b: #ee9270;
+}
+[data-theme='dark'][data-header-palette='mulberry'] {
+  --color-header-framework: #e58db5;
+  --color-header-framework-mark-a: #b85a87;
+  --color-header-framework-mark-b: #e58db5;
+}
+[data-theme='dark'][data-header-palette='moss'] {
+  --color-header-framework: #a6c86b;
+  --color-header-framework-mark-a: #6b8a2f;
+  --color-header-framework-mark-b: #a6c86b;
+}
+[data-theme='dark'][data-header-palette='petrol'] {
+  --color-header-framework: #8fbdd0;
+  --color-header-framework-mark-a: #4e8aa3;
+  --color-header-framework-mark-b: #8fbdd0;
+}
+[data-theme='dark'][data-header-palette='aubergine'] {
+  --color-header-framework: #d69be0;
+  --color-header-framework-mark-a: #9e5baa;
+  --color-header-framework-mark-b: #d69be0;
+}
+[data-theme='dark'][data-header-palette='pine'] {
+  --color-header-framework: #7fd1b0;
+  --color-header-framework-mark-a: #3fa07e;
+  --color-header-framework-mark-b: #7fd1b0;
+}
+[data-theme='dark'][data-header-palette='ledger'] {
+  --color-header-framework: #f09a97;
+  --color-header-framework-mark-a: #c0606a;
+  --color-header-framework-mark-b: #f09a97;
+}
+[data-theme='dark'][data-header-palette='cherry'] {
+  --color-header-framework: #e2c79a;
+  --color-header-framework-mark-a: #b8965a;
+  --color-header-framework-mark-b: #e2c79a;
+}
+[data-theme='dark'][data-header-palette='harbour'] {
+  --color-header-framework: #f6a55a;
+  --color-header-framework-mark-a: #4e9c8e;
+  --color-header-framework-mark-b: #f6a55a;
+}
+[data-theme='dark'][data-header-palette='clay-indigo'] {
+  --color-header-framework: #a9b8f0;
+  --color-header-framework-mark-a: #ed9468;
+  --color-header-framework-mark-b: #a9b8f0;
+}
+[data-theme='dark'][data-header-palette='amber-violet'] {
+  --color-header-framework: #c6a9f0;
+  --color-header-framework-mark-a: #e9b44c;
+  --color-header-framework-mark-b: #c6a9f0;
+}
+[data-theme='dark'][data-header-palette='rosewood'] {
+  --color-header-framework: #b9c7dd;
+  --color-header-framework-mark-a: #e896a6;
+  --color-header-framework-mark-b: #b9c7dd;
+}
+[data-theme='dark'][data-header-palette='copper-ink'] {
+  --color-header-framework: #9fb6e4;
+  --color-header-framework-mark-a: #c97b3f;
+  --color-header-framework-mark-b: #9fb6e4;
+}
+[data-theme='dark'][data-header-palette='paprika'] {
+  --color-header-framework: #d9bfa8;
+  --color-header-framework-mark-a: #f07b62;
+  --color-header-framework-mark-b: #d9bfa8;
+}
+[data-theme='dark'][data-header-palette='heather-walnut'] {
+  --color-header-framework: #d8b08a;
+  --color-header-framework-mark-a: #bfa8e8;
+  --color-header-framework-mark-b: #d8b08a;
+}
+[data-theme='dark'][data-header-palette='denim-chestnut'] {
+  --color-header-framework: #e0a878;
+  --color-header-framework-mark-a: #8fb0f0;
+  --color-header-framework-mark-b: #e0a878;
+}
+[data-theme='dark'][data-header-palette='sepia'] {
+  --color-header-framework: #e3cda8;
+  --color-header-framework-mark-a: #d9a868;
+  --color-header-framework-mark-b: #e3cda8;
+}
+[data-theme='dark'][data-header-palette='magenta-ink'] {
+  --color-header-framework: #a5bbea;
+  --color-header-framework-mark-a: #ef7eb2;
+  --color-header-framework-mark-b: #a5bbea;
+}
+[data-theme='dark'][data-header-palette='midnight-sienna'] {
+  --color-header-framework: #c9d2f8;
+  --color-header-framework-mark-a: #93a3ee;
+  --color-header-framework-mark-b: #c9d2f8;
+}
+:root[data-theme='dark'][data-header-palette] {
+  --color-header-opda: var(--brand-yellow);
 }
 
 @media (max-width: 40rem) {

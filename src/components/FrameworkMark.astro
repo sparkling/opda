@@ -1,0 +1,47 @@
+---
+import { DEFAULT_HEADER_ICON, HEADER_ICONS, type HeaderIconId } from '@/lib/header-icons';
+
+interface Props {
+  icon: HeaderIconId;
+  class?: string;
+}
+
+const { icon: iconId, class: className = '' } = Astro.props;
+const icon = HEADER_ICONS.find(({ id }) => id === iconId)
+  ?? HEADER_ICONS.find(({ id }) => id === DEFAULT_HEADER_ICON)
+  ?? HEADER_ICONS[0];
+const [viewBoxX, viewBoxY, viewBoxWidth, viewBoxHeight] = icon.viewBox.split(/\s+/u).map(Number);
+const opticalWidthScale = viewBoxWidth / icon.visibleWidth;
+const centreX = viewBoxX + (viewBoxWidth / 2);
+const viewBoxBottom = viewBoxY + viewBoxHeight;
+const translateX = centreX - (opticalWidthScale * centreX);
+const translateY = viewBoxBottom - (opticalWidthScale * icon.visibleBottom);
+const artworkTransform = `translate(${translateX} ${translateY}) scale(${opticalWidthScale})`;
+---
+<svg
+  class:list={['framework-mark', className]}
+  viewBox={icon.viewBox}
+  data-framework-icon={icon.id}
+  aria-hidden="true"
+  focusable="false"
+>
+  <g transform={artworkTransform}>
+    {icon.shapes.map((shape) => shape.element === 'rect' ? (
+      <rect
+        class={`framework-mark__shape framework-mark__shape--fill-${shape.role}`}
+        x={shape.x}
+        y={shape.y}
+        width={shape.width}
+        height={shape.height}
+      />
+    ) : (
+      <path
+        class={`framework-mark__shape framework-mark__shape--${shape.paint ?? 'fill'}-${shape.role}`}
+        fill-rule={shape.fillRule}
+        stroke-width={shape.strokeWidth}
+        stroke-linecap={shape.strokeLinecap}
+        d={shape.d}
+      />
+    ))}
+  </g>
+</svg>

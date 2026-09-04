@@ -18,7 +18,8 @@
 AWSTemplateFormatVersion: '2010-09-09'
 Description: >-
   opda.org.uk site resources (eu-west-2): S3 + CloudFront, Route 53 records,
-  public site, path-scoped auth session and working-group interest APIs
+  public site, path-scoped auth session, public submission APIs and their shared
+  post-persistence event boundary
   (ADR-0038/ADR-0040/ADR-0069/ADR-0079).
 
 Parameters:
@@ -66,6 +67,31 @@ Resources:
           ignore_checks: [W3002]
     Properties:
       TemplateURL: working-group-interest-stack.yaml
+
+  NewsletterSubscriptionApplication:
+    Type: AWS::CloudFormation::Stack
+    Metadata:
+      cfn-lint:
+        config:
+          # A local nested-template URL is intentional: the infra workflow
+          # runs `aws cloudformation package` before deployment.
+          ignore_checks: [W3002]
+    Properties:
+      TemplateURL: newsletter-subscription-stack.yaml
+
+  SubmissionEventsApplication:
+    Type: AWS::CloudFormation::Stack
+    Metadata:
+      cfn-lint:
+        config:
+          # A local nested-template URL is intentional: the infra workflow
+          # runs `aws cloudformation package` before deployment.
+          ignore_checks: [W3002]
+    Properties:
+      TemplateURL: submission-events-stack.yaml
+      Parameters:
+        RegistrationsTableStreamArn: !GetAtt WorkingGroupInterestApplication.Outputs.RegistrationsTableStreamArn
+        SubscriptionsTableStreamArn: !GetAtt NewsletterSubscriptionApplication.Outputs.SubscriptionsTableStreamArn
 
   # ---------------- Static site: S3 + CloudFront ----------------
 
@@ -148,12 +174,12 @@ Resources:
         CookiesConfig: { CookieBehavior: none }
         QueryStringsConfig: { QueryStringBehavior: all }
 
-  WorkingGroupInterestOriginRequestPolicy:
+  PublicFormOriginRequestPolicy:
     Type: AWS::CloudFront::OriginRequestPolicy
     Properties:
       OriginRequestPolicyConfig:
-        Name: opda-working-group-interest-minimal
-        Comment: Forward only JSON content type; no viewer cookies or query strings
+        Name: opda-public-form-minimal
+        Comment: Forward only submission content type; no viewer cookies or query strings
         HeadersConfig:
           HeaderBehavior: whitelist
           Headers: [Content-Type]
@@ -278,6 +304,12 @@ Resources:
               HTTPSPort: 443
               OriginProtocolPolicy: https-only
               OriginSSLProtocols: [TLSv1.2]
+          - Id: newsletter-subscription-api
+            DomainName: !GetAtt NewsletterSubscriptionApplication.Outputs.ApiOriginDomainName
+            CustomOriginConfig:
+              HTTPSPort: 443
+              OriginProtocolPolicy: https-only
+              OriginSSLProtocols: [TLSv1.2]
           - Id: auth-session-api
             DomainName: !GetAtt AuthSessionApplication.Outputs.ApiOriginDomainName
             CustomOriginConfig:
@@ -330,7 +362,13 @@ Resources:
             ViewerProtocolPolicy: redirect-to-https
             AllowedMethods: [GET, HEAD, OPTIONS, PUT, POST, PATCH, DELETE]
             CachePolicyId: 4135ea2d-6df8-44a3-9df3-4b5a84be39ad     # Managed-CachingDisabled
-            OriginRequestPolicyId: !Ref WorkingGroupInterestOriginRequestPolicy
+            OriginRequestPolicyId: !Ref PublicFormOriginRequestPolicy
+          - PathPattern: '/api/newsletter-subscription*'
+            TargetOriginId: newsletter-subscription-api
+            ViewerProtocolPolicy: redirect-to-https
+            AllowedMethods: [GET, HEAD, OPTIONS, PUT, POST, PATCH, DELETE]
+            CachePolicyId: 4135ea2d-6df8-44a3-9df3-4b5a84be39ad     # Managed-CachingDisabled
+            OriginRequestPolicyId: !Ref PublicFormOriginRequestPolicy
         CustomErrorResponses:
           # OAC without ListBucket → S3 answers missing keys with 403.
           - ErrorCode: 403
@@ -384,3 +422,18 @@ Outputs:
     Value: !GetAtt WorkingGroupInterestApplication.Outputs.FunctionName
   WorkingGroupInterestRegistrationsTableName:
     Value: !GetAtt WorkingGroupInterestApplication.Outputs.RegistrationsTableName
+  NewsletterSubscriptionApiEndpoint:
+    Description: Direct HTTP API endpoint for diagnostics; browsers use the same-origin CloudFront path.
+    Value: !GetAtt NewsletterSubscriptionApplication.Outputs.ApiEndpoint
+  NewsletterSubscriptionFunctionName:
+    Value: !GetAtt NewsletterSubscriptionApplication.Outputs.FunctionName
+  NewsletterSubscriptionsTableName:
+    Value: !GetAtt NewsletterSubscriptionApplication.Outputs.SubscriptionsTableName
+  SubmissionEventsTopicArn:
+    Value: !GetAtt SubmissionEventsApplication.Outputs.SubmissionEventsTopicArn
+  SubmissionEventsQueueUrl:
+    Description: Durable reference-only handoff for future submission-event consumers.
+    Value: !GetAtt SubmissionEventsApplication.Outputs.SubmissionEventsQueueUrl
+  SubmissionEventsFailureQueueUrl:
+    Description: Exhausted stream batches and failed SNS-to-SQS deliveries.
+    Value: !GetAtt SubmissionEventsApplication.Outputs.SubmissionEventsFailureQueueUrl

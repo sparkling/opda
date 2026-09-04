@@ -59,7 +59,7 @@ function category(heading: string, url: string, items: Item[] = []): NavigationG
   ));
   return { heading, url, items: children };
 }
-const propertyPackBase = '/spdtf/property-pack';
+const propertyPackBase = '/development/property-pack';
 const workPackageNavigationItems: Item[] = workPackages.map(({ id, label }) => ({
   url: workPackageRoute(id),
   title: label.replace(/\b\w/gu, (letter) => letter.toUpperCase()),
@@ -114,7 +114,7 @@ const propertyPackJourney: Item = {
   ],
 };
 const workingGroupItems: Item[] = WORKING_GROUPS.map((group) => {
-  const url = `/spdtf/working-groups/${group.slug}`;
+  const url = `/development/working-groups/${group.slug}`;
   return {
     url,
     title: group.name,
@@ -324,10 +324,15 @@ const navigationSections: Record<DestinationKey, NavigationSection> = {
     title: 'Governance',
     summary: 'Decision rights, standards lifecycle, status and recorded decisions.',
     groups: [
-      category('Governance framework', '/governance', GOVERNANCE_FRAMEWORK_ITEMS),
-      category('Architecture decisions', '/modelling/adr'),
-      category('Ontology decisions', '/modelling/odr'),
-      category('Programme decisions', '/engagement/meetings-decisions', ownedSectionItems('engagement', 'governance')),
+      category('Overview', '/governance'),
+      ...GOVERNANCE_FRAMEWORK_ITEMS.map((journey) => category(
+        journey.title, journey.url, journey.children,
+      )),
+      category('Decisions', '/governance/decisions', [
+        { url: '/modelling/adr', title: 'Architecture decisions' },
+        { url: '/modelling/odr', title: 'Ontology decisions' },
+        { url: '/engagement/meetings-decisions', title: 'Programme decisions' },
+      ]),
     ],
   },
   'semantic-modelling': {
@@ -346,10 +351,10 @@ const navigationSections: Record<DestinationKey, NavigationSection> = {
     title: 'Development',
     summary: 'Current evidence-up modelling, ontology method, the Property Pack component and wider candidates.',
     groups: [
-      category('Overview', '/spdtf', [
-        { url: '/spdtf/candidates', title: 'Candidate register' },
-        { url: '/spdtf/questions', title: 'Open questions and changes' },
-        { url: '/spdtf/outputs', title: 'Outputs and validation' },
+      category('Overview', '/development', [
+        { url: '/development/candidates', title: 'Candidate register' },
+        { url: '/development/questions', title: 'Open questions and changes' },
+        { url: '/development/outputs', title: 'Outputs and validation' },
       ]),
       category('Property Pack ontology', propertyPackJourney.url, propertyPackJourney.children),
       category('Third-party inputs', PDTF1_ROUTES.inputRoot, [pdtfInputJourney]),
@@ -360,8 +365,8 @@ const navigationSections: Record<DestinationKey, NavigationSection> = {
     title: 'Groups',
     summary: 'The canonical SPDTF participant workspaces and review routes.',
     groups: [
-      category('Member guide', '/spdtf/working-groups/member-guide', WORKING_GROUP_MEMBER_GUIDE_ITEMS),
-      category('Group workspaces', '/spdtf/working-groups', workingGroupItems),
+      category('Member guide', '/development/working-groups/member-guide', WORKING_GROUP_MEMBER_GUIDE_ITEMS),
+      category('Group workspaces', '/development/working-groups', workingGroupItems),
     ],
   },
   resources: {
@@ -382,6 +387,7 @@ export const SECTION_NAVIGATION = Object.freeze(navigationSections);
 const STANDALONE_SURFACES = [
   /^\/$/u,
   /^\/join(?:\/|$)/u,
+  /^\/subscribe(?:\/|$)/u,
   /^\/accessibility$/u,
   /^\/(?:home|search|resource|design-system|404)$/u,
   /^\/presentation(?:s)?(?:\/|$)/u,

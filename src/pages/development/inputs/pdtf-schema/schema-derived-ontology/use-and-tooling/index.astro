@@ -1,0 +1,56 @@
+---
+import Layout from '@/layouts/Layout.astro';
+import GatewayCard from '@/components/ia/GatewayCard.astro';
+---
+
+<Layout
+  title="Use and tooling"
+  description="Bind namespaces, query and validate data, download Turtle artefacts, and compare documentation renderings for the schema-derived ontology."
+>
+  <h1>Use and tooling</h1>
+  <p class="lead">
+    This is the practical route for consuming the extracted corpus. It brings together the
+    namespace contract, queries, validation recipe, content-negotiation guidance, downloadable
+    Turtle and the documentation-tool comparison used to assemble the human-readable reference.
+  </p>
+
+  <div class="callout callout--warn">
+    <p class="callout__label">schema-derived draft</p>
+    <p>
+      Stable routes and downloadable artefacts support inspection and testing; they do not make
+      this an approved SPDTF ontology. Pin the corpus version you tested, follow the documented
+      validator settings, and carry the draft status into downstream use.
+    </p>
+  </div>
+
+  <h2 id="workflow">Consumer workflow</h2>
+  <ol>
+    <li><strong>Resolve namespaces.</strong> Bind the kind-split term, scheme, shape, graph and harness namespaces without collapsing their resource kinds.</li>
+    <li><strong>Choose an artefact.</strong> Download the class, shape or merged Turtle appropriate to the task and record the version used.</li>
+    <li><strong>Query or dereference.</strong> Use the sample SPARQL and stable resource IRIs to inspect the committed model.</li>
+    <li><strong>Validate deliberately.</strong> Use the documented SHACL configuration, including advanced rules where required, and compare results with known caveats.</li>
+    <li><strong>Treat tool output as a view.</strong> Generated renderings help inspect layers; none independently defines the ontology’s authority.</li>
+  </ol>
+
+  <h2 id="start">Choose a practical route</h2>
+  <div class="card-grid">
+    <GatewayCard href="/development/inputs/pdtf-schema/schema-derived-ontology/use-and-tooling/usage" title="Consume the ontology" eyebrow="Queries and downloads" description="Get the prefix map, runnable SPARQL, content-negotiation guidance, the pyshacl advanced=True recipe and links to the downloadable Turtle bundles." />
+    <GatewayCard href="/development/inputs/pdtf-schema/schema-derived-ontology/use-and-tooling/namespaces" title="Namespaces and prefixes" eyebrow="IRI contract" description="Inspect the kind-split namespace scheme, external vocabulary bindings, collision-avoidance rationale and example IRIs." />
+    <GatewayCard href="/development/inputs/pdtf-schema/schema-derived-ontology/use-and-tooling/bake-off" title="Tool bake-off and scorecard" eyebrow="Documentation tooling" description="Compare every documentation tool against the full corpus, its per-layer strengths and omissions, and the M6 rubric used to score and select the woven reference’s presentation methods." />
+  </div>
+
+  <h2 id="representation">Source, representation and tool are different things</h2>
+  <table>
+    <thead><tr><th scope="col">Layer</th><th scope="col">Role</th><th scope="col">Use it for</th></tr></thead>
+    <tbody>
+      <tr><th scope="row">Committed Turtle corpus</th><td>Machine-readable source for this extracted draft</td><td>Loading, querying, validation and reproducible generation.</td></tr>
+      <tr><th scope="row">Native ontology pages</th><td>Task-oriented and dereferenceable documentation</td><td>Interpretation, discovery, relationships, constraints and provenance.</td></tr>
+      <tr><th scope="row">Third-party tool renderings</th><td>Supplementary views of selected layers</td><td>Comparison and specialist inspection, subject to each tool’s omissions.</td></tr>
+    </tbody>
+  </table>
+  <p>
+    Check <a href="/development/inputs/pdtf-schema/schema-derived-ontology/trust-governance-and-limitations">limitations and known issues</a> before
+    operational use, and use <a href="/development/inputs/pdtf-schema/schema-derived-ontology/terms-and-model-resources">Terms and model resources</a>
+    when you need to resolve a particular class, property, shape, concept or scheme.
+  </p>
+</Layout>

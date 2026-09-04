@@ -1,13 +1,12 @@
 ---
 import Layout from '@/layouts/Layout.astro';
-import PageMeta from '@/components/PageMeta.astro';
+import GatewayCard from '@/components/ia/GatewayCard.astro';
+import { governanceDecisionRegisters } from '@/data/governance-decisions';
 ---
 <Layout
   title="Governance"
   description="How OPDA is governed: constitutional authority, standards development, conformance, change management, lifecycle and risk."
 >
-<PageMeta category="Section overview" variant="brand" updated="Updated 2026-08-03" />
-
       <h1>Governance</h1>
       <p class="lead">
         How OPDA is governed, who has authority, how standards are developed, and which
@@ -15,6 +14,15 @@ import PageMeta from '@/components/PageMeta.astro';
         Trust Over IP model, the Digital Markets, Competition and Consumers Act 2024 and
         coordination through the Digital Property Market Steering Group.
       </p>
+
+      <h2 id="decisions">Decision records</h2>
+      <p>
+        Significant choices are recorded so their context, authority and consequences can
+        be reviewed. <a href="/governance/decisions">See how the three decision registers fit together</a>.
+      </p>
+      <div class="card-grid">
+        {governanceDecisionRegisters.map((register) => <GatewayCard {...register} />)}
+      </div>
 
       <h2 id="uk-initiative-context">UK initiative context</h2>
       <p>The legislation, departments, and forums that frame OPDA's mandate.</p>

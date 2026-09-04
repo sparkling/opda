@@ -1,0 +1,30 @@
+---
+import Layout from '@/layouts/Layout.astro';
+import GatewayCard from '@/components/ia/GatewayCard.astro';
+import { governanceDecisionRegisters } from '@/data/governance-decisions';
+---
+
+<Layout
+  title="Decisions"
+  description="Where OPDA records the technical, modelling and programme decisions that shape work in development."
+>
+  <h1>Decisions</h1>
+  <p class="lead">
+    Decisions are recorded in different places because they answer different questions.
+    Together, these registers make it possible to see what was decided, why it was
+    decided and which part of the programme it affects.
+  </p>
+
+  <div class="card-grid">
+    {governanceDecisionRegisters.map((register) => <GatewayCard {...register} />)}
+  </div>
+
+  <h2 id="how-to-read">How to read the records</h2>
+  <p>
+    A decision record explains the context, the options considered and the resulting
+    direction. Its status matters: an accepted record is not the same as a proposal,
+    and a programme meeting record does not by itself create a standard or a binding
+    governance rule. Follow the status and authority information on each record when
+    using it.
+  </p>
+</Layout>

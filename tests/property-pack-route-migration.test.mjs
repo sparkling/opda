@@ -18,7 +18,7 @@ const projectRoot = fileURLToPath(new URL('..', import.meta.url));
 
 test('Property Pack routes move once without redirects and preserve comment identities', () => {
   assert.deepEqual(PROPERTY_PACK_ROUTE_MIGRATION, {
-    canonicalRoot: '/spdtf/property-pack',
+    canonicalRoot: '/development/property-pack',
     intermediateRoot: '/spdtf-2/property-pack',
     retiredRoots: ['/v2', '/modelling/property-pack', '/spdtf-2/property-pack'],
     technicalRouteCount: 690,
@@ -27,13 +27,13 @@ test('Property Pack routes move once without redirects and preserve comment iden
     redirects: false,
   });
   for (const [before, after, commentKey] of [
-    ['/spdtf-2/property-pack', '/spdtf/property-pack', '/v2'],
-    ['/spdtf-2/property-pack/pdtf-1-lineage', '/spdtf/property-pack/pdtf-schema-lineage', '/v2/comparison'],
-    ['/spdtf-2/property-pack/contexts/estate-agency', '/spdtf/property-pack/contexts/estate-agency', '/v2/contexts/estate-agency'],
-    ['/v2', '/spdtf/property-pack', '/v2'],
-    ['/v2/comparison', '/spdtf/property-pack/pdtf-schema-lineage', '/v2/comparison'],
-    ['/v2/contexts/estate-agency', '/spdtf/property-pack/contexts/estate-agency', '/v2/contexts/estate-agency'],
-    ['/modelling/property-pack', '/spdtf/property-pack/definition-and-scope', '/modelling/property-pack'],
+    ['/spdtf-2/property-pack', '/development/property-pack', '/v2'],
+    ['/spdtf-2/property-pack/pdtf-1-lineage', '/development/property-pack/pdtf-schema-lineage', '/v2/comparison'],
+    ['/spdtf-2/property-pack/contexts/estate-agency', '/development/property-pack/contexts/estate-agency', '/v2/contexts/estate-agency'],
+    ['/v2', '/development/property-pack', '/v2'],
+    ['/v2/comparison', '/development/property-pack/pdtf-schema-lineage', '/v2/comparison'],
+    ['/v2/contexts/estate-agency', '/development/property-pack/contexts/estate-agency', '/v2/contexts/estate-agency'],
+    ['/modelling/property-pack', '/development/property-pack/definition-and-scope', '/modelling/property-pack'],
   ]) {
     assert.equal(getPropertyPackReplacementRoute(before), after);
     assert.equal(getPropertyPackLegacyCommentKey(after), commentKey);
@@ -67,7 +67,7 @@ test('Property Pack lifecycle states remain independent and truthful', () => {
 
 test('Property Pack search resolves only to canonical routes', () => {
   const results = searchEntries('Property Pack');
-  assert.ok(results.some(({ url }) => url === '/spdtf/property-pack'));
+  assert.ok(results.some(({ url }) => url === '/development/property-pack'));
   assert.ok(results.every(({ url }) => url !== '/v2' && !url.startsWith('/v2/')));
   assert.ok(results.every(({ url }) => url !== '/modelling/property-pack'));
 });

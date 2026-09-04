@@ -1,6 +1,5 @@
 ---
 import Layout from '@/layouts/Layout.astro';
-import PageMeta from '@/components/PageMeta.astro';
 import Diagram from '@/components/Diagram.astro';
 import {
   STANDARDS_PROFILE,
@@ -13,7 +12,6 @@ const implemented = STANDARDS_PROFILE.filter(({ implementationStatus }) => imple
 ---
 
 <Layout title="Standards profile" description="What the Property Pack candidate actually uses, what SPDTF has accepted as a bounded target, and which standards or methods remain candidates or deferred.">
-  <PageMeta category="Understand ontologies" variant="brand" updated={`Standards profile ${STANDARDS_PROFILE_VERSION} · checked 20 August 2026`} />
   <h1>Standards, vocabularies and modelling frameworks</h1>
   <p class="lead">
     This development profile separates three independent facts: the maturity of an
@@ -163,7 +161,7 @@ flowchart TB
     JSON registers/model views, HTML documentation, ASK queries and a validation report;
     it does not emit all of those possible projections. Any future projection's package
     version and validation belong in the
-    <a href="/spdtf/outputs">outputs register</a>; “projection” is not a fifth standards
+    <a href="/development/outputs">outputs register</a>; “projection” is not a fifth standards
     relationship mechanism.
   </p>
 </Layout>

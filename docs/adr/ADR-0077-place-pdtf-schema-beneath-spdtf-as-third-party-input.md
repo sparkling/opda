@@ -1,7 +1,7 @@
 ---
 status: accepted
 date: 2026-08-23
-updated: 2026-08-24
+updated: 2026-09-03
 tags: [website, information-architecture, pdtf-schema, spdtf, third-party-input, routing, preservation]
 supersedes: [ADR-0076]
 amends: [ADR-0002, ADR-0039, ADR-0041, ADR-0042, ADR-0044, ADR-0059, ADR-0060, ADR-0063, ADR-0074, ADR-0075]
@@ -11,6 +11,12 @@ implements: [src/lib/pdtf1-routes.mjs, src/lib/site-navigation.ts, src/lib/site-
 
 # Place the PDTF schema beneath SPDTF as a third-party input
 
+> Update 2026-09-03 — ADR-0074's route amendment moves this reader hierarchy
+> from `/spdtf/inputs/pdtf-schema/**` to
+> `/development/inputs/pdtf-schema/**`. The source attribution, third-party
+> status, preservation rules and separate `/pdtf/**` identifier namespace are
+> unchanged.
+>
 > Update 2026-08-23 — global-navigation correction: the site has six destinations in
 > this order: Programme, Governance, Semantic modelling, SPDTF Development, Working
 > groups and Resources. This changes the destination count, order and navigation label

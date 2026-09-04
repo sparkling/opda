@@ -152,14 +152,14 @@ resource_manifest:
       ingestion: render-each-built-route-to-markdown
       build_prerequisite: make build-data
       routes:
-        - /spdtf/inputs/pdtf-schema/schema-derived-ontology/lineage-provenance-and-verification/historical-modelling/
-        - /spdtf/inputs/pdtf-schema/schema-derived-ontology/lineage-provenance-and-verification/historical-modelling/standards-stack/
-        - /spdtf/inputs/pdtf-schema/schema-derived-ontology/lineage-provenance-and-verification/historical-modelling/bounded-contexts/
-        - /spdtf/inputs/pdtf-schema/schema-derived-ontology/lineage-provenance-and-verification/historical-modelling/concept-taxonomy/
-        - /spdtf/inputs/pdtf-schema/schema-derived-ontology/lineage-provenance-and-verification/historical-modelling/ontology/
-        - /spdtf/inputs/pdtf-schema/schema-derived-ontology/lineage-provenance-and-verification/historical-modelling/shacl-shapes/
-        - /spdtf/inputs/pdtf-schema/schema-derived-ontology/lineage-provenance-and-verification/historical-modelling/jsonld-mappings/
-      source_definition_glob: src/pages/spdtf/inputs/pdtf-schema/schema-derived-ontology/lineage-provenance-and-verification/historical-modelling/*.astro
+        - /development/inputs/pdtf-schema/schema-derived-ontology/lineage-provenance-and-verification/historical-modelling/
+        - /development/inputs/pdtf-schema/schema-derived-ontology/lineage-provenance-and-verification/historical-modelling/standards-stack/
+        - /development/inputs/pdtf-schema/schema-derived-ontology/lineage-provenance-and-verification/historical-modelling/bounded-contexts/
+        - /development/inputs/pdtf-schema/schema-derived-ontology/lineage-provenance-and-verification/historical-modelling/concept-taxonomy/
+        - /development/inputs/pdtf-schema/schema-derived-ontology/lineage-provenance-and-verification/historical-modelling/ontology/
+        - /development/inputs/pdtf-schema/schema-derived-ontology/lineage-provenance-and-verification/historical-modelling/shacl-shapes/
+        - /development/inputs/pdtf-schema/schema-derived-ontology/lineage-provenance-and-verification/historical-modelling/jsonld-mappings/
+      source_definition_glob: src/pages/development/inputs/pdtf-schema/schema-derived-ontology/lineage-provenance-and-verification/historical-modelling/*.astro
       output_pattern: docs/notebooklm/prepared/semantic-pdtf-history/{source-id}.md
       transformation: {reproducibility: deterministic-one-to-one}
       repository_tracking: tracked
@@ -277,9 +277,9 @@ resource_manifest:
   exclusions:
     - pattern: source/03-standards/schemas/**
       reason: Source schemas are excluded by ADR-0081.
-    - pattern: src/pages/spdtf/property-pack/data-dictionary/**
+    - pattern: src/pages/development/property-pack/data-dictionary/**
       reason: Detailed model content belongs in the Property Pack notebook.
-    - pattern: src/pages/spdtf/inputs/pdtf-schema/schema-derived-ontology/model-views-by-audience/**
+    - pattern: src/pages/development/inputs/pdtf-schema/schema-derived-ontology/model-views-by-audience/**
       reason: Page-per-term and generated model views belong in PDTF lineage or are redundant.
     - pattern: docs/ontology/odr/council/**
       reason: Raw council transcripts are too voluminous and are not adopted method authority.

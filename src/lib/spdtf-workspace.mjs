@@ -49,12 +49,12 @@ export const ALLOWED_DISPOSITIONS = Object.freeze([
 ]);
 
 const workspaceInputs = Object.freeze({
-  'finance-and-banking': ['/spdtf/property-pack/contexts/finance-and-banking', '/programme'],
-  conveyancing: ['/spdtf/property-pack/contexts/conveyancing', '/spdtf/inputs/pdtf-schema'],
-  'estate-agency': ['/spdtf/property-pack/contexts/estate-agency', '/spdtf/inputs/pdtf-schema'],
-  'surveying-and-valuation': ['/spdtf/property-pack/contexts/surveying-and-valuation', '/spdtf/inputs/pdtf-schema'],
-  'property-data-services': ['/spdtf/property-pack/contexts/property-data-services', '/resources'],
-  'property-technology': ['/spdtf/property-pack/contexts/property-technology', '/spdtf/inputs/pdtf-schema'],
+  'finance-and-banking': ['/development/property-pack/contexts/finance-and-banking', '/programme'],
+  conveyancing: ['/development/property-pack/contexts/conveyancing', '/development/inputs/pdtf-schema'],
+  'estate-agency': ['/development/property-pack/contexts/estate-agency', '/development/inputs/pdtf-schema'],
+  'surveying-and-valuation': ['/development/property-pack/contexts/surveying-and-valuation', '/development/inputs/pdtf-schema'],
+  'property-data-services': ['/development/property-pack/contexts/property-data-services', '/resources'],
+  'property-technology': ['/development/property-pack/contexts/property-technology', '/development/inputs/pdtf-schema'],
   'dbt-smart-data': ['/dbt-smart-data', '/programme'],
   interoperability: ['/semantic-modelling/bounded-contexts', '/semantic-modelling/evidence-and-mappings'],
 });
@@ -104,7 +104,7 @@ function evidenceRecord(slug, href, index) {
   return Object.freeze({
     id: `${slug}-input-${index + 1}`,
     href,
-    sourceType: href.startsWith('/spdtf/property-pack/') ? 'machine-generated Property Pack ontology candidate' : 'maintained OPDA documentation route',
+    sourceType: href.startsWith('/development/property-pack/') ? 'machine-generated Property Pack ontology candidate' : 'maintained OPDA documentation route',
     recordedDate: '2026-08-19',
     version: `route view at workspace contract ${SEMANTIC_PACKAGE_MANIFEST.version}`,
     submitter: 'OPDA documentation team',
@@ -125,7 +125,7 @@ export function getWorkspaceRecord(slug) {
     status: 'scope defined; working group not confirmed as convened',
     charter: Object.freeze({
       status: 'draft scope record — pre-convening',
-      scopeSource: `/spdtf/working-groups/${slug}`,
+      scopeSource: `/development/working-groups/${slug}`,
       exclusions: charterExclusions,
     }),
     decisionOwner: null,

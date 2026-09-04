@@ -25,12 +25,12 @@ const paths = {
   baseCss: new URL('../public/ui/design/base.css', import.meta.url),
   publicCss: new URL('../public/ui/design/public.css', import.meta.url),
   contentCss: new URL('../public/ui/design/content.css', import.meta.url),
-  memberGuide: new URL('../src/pages/spdtf/working-groups/member-guide/index.astro', import.meta.url),
-  gettingStarted: new URL('../src/pages/spdtf/working-groups/member-guide/getting-started.astro', import.meta.url),
-  teamsAndDiscussions: new URL('../src/pages/spdtf/working-groups/member-guide/teams-and-discussions.astro', import.meta.url),
-  sourceMaterial: new URL('../src/pages/spdtf/working-groups/member-guide/source-material-and-sharepoint.astro', import.meta.url),
-  meetingsAndRecords: new URL('../src/pages/spdtf/working-groups/member-guide/meetings-and-records.astro', import.meta.url),
-  modelReview: new URL('../src/pages/spdtf/working-groups/member-guide/model-review-and-decisions.astro', import.meta.url),
+  memberGuide: new URL('../src/pages/development/working-groups/member-guide/index.astro', import.meta.url),
+  gettingStarted: new URL('../src/pages/development/working-groups/member-guide/getting-started.astro', import.meta.url),
+  teamsAndDiscussions: new URL('../src/pages/development/working-groups/member-guide/teams-and-discussions.astro', import.meta.url),
+  sourceMaterial: new URL('../src/pages/development/working-groups/member-guide/source-material-and-sharepoint.astro', import.meta.url),
+  meetingsAndRecords: new URL('../src/pages/development/working-groups/member-guide/meetings-and-records.astro', import.meta.url),
+  modelReview: new URL('../src/pages/development/working-groups/member-guide/model-review-and-decisions.astro', import.meta.url),
 };
 
 const memberGuidePaths = [
@@ -99,29 +99,41 @@ test('global header promotes the canonical working-group sign-up route', async (
 
   const primaryStart = header.indexOf('<nav class="global-nav"');
   const primaryEnd = header.indexOf('</nav>', primaryStart);
-  const utilitiesStart = header.indexOf('<nav class="header-nav"');
-  const cta = header.indexOf('class="header-cta btn"');
-  assert.ok(primaryStart >= 0 && cta > primaryStart && cta < primaryEnd);
-  assert.ok(utilitiesStart < primaryStart);
+  const titleStart = header.indexOf('class="app-header__title"');
+  const frameworkStart = header.indexOf('class="app-header__framework"', titleStart);
+  const utilitiesStart = header.indexOf('<div class="app-header__utilities">');
+  const utilitiesNavStart = header.indexOf('<nav class="header-nav"', utilitiesStart);
+  const desktopActions = header.indexOf('class="header-actions header-action--desktop"', utilitiesStart);
+  const memberCta = header.indexOf('class="header-membership btn btn--ghost btn--compact"', desktopActions);
+  const cta = header.indexOf('class="header-cta btn btn--compact"', memberCta);
+  const compactActions = header.indexOf('header-actions--compact', primaryStart);
+  assert.ok(titleStart >= 0 && titleStart < frameworkStart);
+  assert.ok(utilitiesStart >= 0 && desktopActions > utilitiesStart && memberCta > desktopActions && cta > memberCta && cta < utilitiesNavStart && utilitiesNavStart < primaryStart);
+  assert.ok(compactActions > primaryStart && compactActions < primaryEnd);
   assert.match(header, /const joinHref = currentPath === '\/join' \? '#register' : '\/join'/u);
-  assert.match(header, /<a href=\{joinHref\} class="header-cta btn">Join a working group<\/a>/u);
+  assert.match(header, /<span class="header-actions header-action--desktop">[\s\S]*<a href="https:\/\/openpropdata\.org\.uk\/become-a-member\/" class="header-membership btn btn--ghost btn--compact">Become a member<\/a>[\s\S]*<a href=\{joinHref\} class="header-cta btn btn--compact">Join a working group<\/a>[\s\S]*<\/span>/u);
   assert.match(header, /<ThemeToggle\s*\/>/u);
   assert.match(themeToggle, /class="theme-toggle"[\s\S]*aria-label="Switch to dark mode"[\s\S]*class="theme-icon theme-icon--sun"[\s\S]*class="theme-icon theme-icon--moon"/u);
   assert.match(header, /href="\/" class=\{`header-icon-link\$\{isHomePage[\s\S]*?aria-label="Home"[\s\S]*?aria-current=\{isHomePage \? 'page' : undefined\}[\s\S]*?title="Home"[\s\S]*?<svg[\s\S]*?aria-hidden="true"/u);
   assert.match(header, /href="\/search"[\s\S]*?class=\{`header-icon-link\$\{isSearchPage[\s\S]*?aria-label="Search"[\s\S]*?aria-current=\{isSearchPage \? 'page' : undefined\}[\s\S]*?title="Search"[\s\S]*?<svg[\s\S]*?aria-hidden="true"/u);
   assert.match(header, /href="https:\/\/github\.com\/sparkling\/opda"\s+class="header-icon-link"[\s\S]*?aria-label="GitHub"\s+title="GitHub"[\s\S]*?<svg[\s\S]*?aria-hidden="true"/u);
+  assert.match(header, /href="\/subscribe"\s+class="header-icon-link"\s+aria-label="Subscribe to OPDA updates"\s+title="Subscribe"\s+data-newsletter-trigger[\s\S]*?<svg[\s\S]*?aria-hidden="true"/u);
   assert.doesNotMatch(header, />Search<\/a>|>GitHub<\/a>/u);
   assert.match(baseCss, /\.app-header \.header-nav a\.header-icon-link\s*\{[^}]*width:\s*var\(--target-min\)[^}]*justify-content:\s*center/su);
-  assert.match(baseCss, /\.app-header\s*\{[^}]*grid-template-rows:\s*auto auto calc\(var\(--target-min\) \+ var\(--space-3\)\)/su);
+  assert.match(header, /<header[^>]*>[\s\S]*<div class="app-header__inner">[\s\S]*class="app-header__title"[\s\S]*class="app-header__framework-row"/u);
+  assert.match(baseCss, /\.app-header__inner\s*\{[^}]*grid-template-rows:[^}]*var\(--target-min\)[^}]*var\(--identity-line-gap\)[^}]*calc\(\(var\(--identity-heading-size\) \* 1\.57\) \+ var\(--identity-space-after-origin\)\)[^}]*calc\(var\(--target-min\) \+ var\(--space-3\)\)/su);
   assert.match(baseCss, /\.global-nav-panel\s*\{[^}]*height:\s*calc\(var\(--target-min\) \+ var\(--space-3\)\)/su);
   assert.match(baseCss, /\.app-header \.global-nav\s*\{[^}]*align-items:\s*flex-end/su);
-  assert.match(baseCss, /\.app-header \.global-nav a\.header-cta\s*\{[^}]*align-self:\s*flex-start[^}]*justify-content:\s*flex-start[^}]*margin-left:\s*var\(--space-2\)[^}]*\}/su);
+  assert.match(baseCss, /\.app-header \.header-actions\s*\{[^}]*display:\s*flex[^}]*align-items:\s*flex-start[^}]*gap:\s*var\(--space-4\)/su);
+  assert.match(baseCss, /\.app-header :is\(\.header-membership, \.header-cta\)\s*\{[^}]*flex:\s*0 0 auto[^}]*white-space:\s*nowrap/su);
   assert.doesNotMatch(baseCss, /a\.header-cta[^}]*\b(?:background|border(?:-color)?|color|font-weight):/su);
   assert.doesNotMatch(baseCss, /a\.header-cta[^}]*(?:translate|transform|margin-block):/su);
   assert.match(contentCss, /\.btn--outline-dark\s*\{[^}]*border-color:\s*var\(--brand-white\)[^}]*background:\s*transparent[^}]*color:\s*var\(--brand-white\)/su);
   assert.match(contentCss, /\.btn\s*\{[^}]*background:\s*var\(--brand\)[^}]*color:\s*var\(--color-action-primary-text\)[^}]*border:\s*1px solid var\(--brand-yellow\)/su);
+  assert.match(contentCss, /\.btn--compact\s*\{[^}]*min-height:\s*auto;[^}]*padding-block:\s*8px;[^}]*padding-inline:\s*var\(--space-3\);/su);
   assert.doesNotMatch(contentCss, /btn--inset-end/u);
-  assert.match(baseCss, /@media \(max-width: 96rem\)[\s\S]*?\.global-nav a\.header-cta\s*\{[^}]*align-self:\s*center[^}]*\}/u);
+  assert.match(baseCss, /@media \(max-width: 96rem\)[\s\S]*?\.header-action--desktop\s*\{\s*display:\s*none;\s*\}/u);
+  assert.match(baseCss, /@media \(max-width: 96rem\)[\s\S]*?\.global-nav-panel \.header-actions--compact\s*\{[^}]*display:\s*flex[^}]*align-self:\s*center[^}]*justify-self:\s*end[^}]*\}/u);
   assert.match(baseCss, /\.app-header__utilities\s*\{[^}]*grid-area:\s*utilities/su);
   assert.match(baseCss, /@media \(max-width: 96rem\)\s*\{[\s\S]*\.app-header\.primary-nav-open \.global-nav-panel\s*\{\s*display:\s*block;/su);
 });
@@ -161,9 +173,9 @@ test('public recruitment and statement routes use their shared shells without si
   assert.doesNotMatch(standalone, /campaign-masthead/u);
   assert.match(standalone, /import SiteFooter from '@\/components\/SiteFooter\.astro'/u);
   assert.match(standalone, /<SiteFooter\s*\/>/u);
-  assert.match(join, /<script is:inline src="\/ui\/client\.js"><\/script>/u);
+  assert.match(join, /<script is:inline src=\{`\/ui\/client\.js\?v=\$\{clientV\}`\}><\/script>/u);
   assert.doesNotMatch(standalone, /campaign-footer/u);
-  assert.match(layout, /<Header showSidebar=\{showSidebar\} suppressActiveDestination=\{suppressActiveDestination\}/u);
+  assert.match(layout, /<Header[\s\S]*showSidebar=\{showSidebar\}[\s\S]*suppressActiveDestination=\{suppressActiveDestination\}/u);
   assert.match(layout, /<article class=\{proseClass\}>/u);
   assert.ok(layout.indexOf('<PageFooter />') < layout.indexOf('<Comments />'));
   const statementRule = publicCss.match(/\.public-statement\s*\{([^}]*)\}/u)?.[1] ?? '';
@@ -217,10 +229,14 @@ test('knowledge-base and standalone page families expose their required footer l
   assert.match(footer, /<BrandHeading scale="compact"\s*\/>/u);
   assert.match(brandHeading, /Open Property Data Association/u);
   assert.match(footer, /Developed by <a href="https:\/\/sparklingideas\.co\.uk\/">Sparkling Ideas<\/a>/u);
+  assert.match(footer, /Your expert in semantic modelling and agentic engineering/u);
+  assert.match(footer, /public-footer__credit[\s\S]*public-footer__brand[\s\S]*public-footer__links/u);
   assert.match(publicCss, /--public-footer-gutter:\s*max\(var\(--space-6\), calc\(\(100% - var\(--content-max\)\) \/ 2\)\)/u);
+  assert.match(publicCss, /padding-block:\s*var\(--space-3\) calc\(var\(--space-6\) \+ var\(--space-5\)\)/u);
   assert.match(publicCss, /grid-template-areas:\s*'credit brand links'/u);
-  assert.match(publicCss, /\.public-footer__credit\s*\{[^}]*justify-self:\s*start[^}]*text-align:\s*left/su);
+  assert.match(publicCss, /\.public-footer__credit\s*\{[^}]*justify-self:\s*start[^}]*display:\s*flex[^}]*flex-direction:\s*column[^}]*text-align:\s*left/su);
   assert.match(publicCss, /\.public-footer__links\s*\{[^}]*justify-self:\s*end[^}]*justify-content:\s*flex-end/su);
+  assert.doesNotMatch(publicCss, /\.public-footer a\.public-footer__brand\s*\{[^}]*transform:/su);
   assert.match(publicCss, /\.public-footer__links a\s*\{[^}]*color:\s*var\(--color-text-muted\)[^}]*font-weight:\s*400/su);
   assert.match(publicCss, /:root\[data-theme='dark'\] \.public-footer__links a\s*\{[^}]*color:\s*var\(--neutral-400\)/su);
   for (const owner of [layout, homepage]) {
@@ -372,14 +388,14 @@ test('accessibility statement distinguishes its target from verified conformance
   const content = source.replace(/\s+/gu, ' ');
   for (const text of [
     'Web Content Accessibility Guidelines version 2.2 at Level AA',
-    'It is not a claim that every covered page currently conforms',
+    'We do not claim that every covered page currently meets it',
     'have not been independently certified as conformant',
     'not yet completed a full manual or independent accessibility audit',
     'Alternative formats and support',
     'Report a problem',
     'smartdata@openpropdata.org.uk',
   ]) assert.match(content, new RegExp(text, 'u'));
-  assert.match(source, /<a href="\/join">\/join<\/a>/u);
+  assert.match(source, /<a href="\/join">working-group service<\/a>/u);
   assert.match(source, /<a href="\/join\/privacy">privacy notice<\/a>/u);
 });
 
@@ -405,7 +421,7 @@ test('working-group member guide covers the complete participation journey', asy
   for (const slug of [
     'getting-started', 'teams-and-discussions', 'source-material-and-sharepoint',
     'meetings-and-records', 'model-review-and-decisions',
-  ]) assert.match(landing, new RegExp(`href=["']\/spdtf\/working-groups\/member-guide\/${slug}["']`, 'u'));
+  ]) assert.match(landing, new RegExp(`href=["']\/development\/working-groups\/member-guide\/${slug}["']`, 'u'));
 
   const corpus = [landing, ...children].join('\n').replace(/\s+/gu, ' ');
   for (const boundary of [

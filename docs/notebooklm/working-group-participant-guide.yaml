@@ -132,17 +132,17 @@ resource_manifest:
       maturity: current-but-non-normative
       ingestion: render-each-built-route-to-markdown
       build_prerequisite: make build-data
-      route_glob: /spdtf/working-groups/member-guide/**
+      route_glob: /development/working-groups/member-guide/**
       additional_routes:
-        - /spdtf/working-groups/
+        - /development/working-groups/
       source_definitions:
-        - src/pages/spdtf/working-groups/index.astro
-        - src/pages/spdtf/working-groups/member-guide/index.astro
-        - src/pages/spdtf/working-groups/member-guide/getting-started.astro
-        - src/pages/spdtf/working-groups/member-guide/teams-and-discussions.astro
-        - src/pages/spdtf/working-groups/member-guide/source-material-and-sharepoint.astro
-        - src/pages/spdtf/working-groups/member-guide/meetings-and-records.astro
-        - src/pages/spdtf/working-groups/member-guide/model-review-and-decisions.astro
+        - src/pages/development/working-groups/index.astro
+        - src/pages/development/working-groups/member-guide/index.astro
+        - src/pages/development/working-groups/member-guide/getting-started.astro
+        - src/pages/development/working-groups/member-guide/teams-and-discussions.astro
+        - src/pages/development/working-groups/member-guide/source-material-and-sharepoint.astro
+        - src/pages/development/working-groups/member-guide/meetings-and-records.astro
+        - src/pages/development/working-groups/member-guide/model-review-and-decisions.astro
       supporting_inputs:
         - src/components/ia/working-groups.ts
       output_pattern: docs/notebooklm/prepared/working-group-member-guide/{source-id}.md
@@ -159,17 +159,17 @@ resource_manifest:
       ingestion: render-each-built-route-to-markdown
       build_prerequisite: make build-data
       route_globs:
-        - /spdtf/working-groups/*/
-        - /spdtf/working-groups/*/evidence/
-        - /spdtf/working-groups/*/questions/
-        - /spdtf/working-groups/*/review/
+        - /development/working-groups/*/
+        - /development/working-groups/*/evidence/
+        - /development/working-groups/*/questions/
+        - /development/working-groups/*/review/
       route_exclusions:
-        - /spdtf/working-groups/member-guide/**
+        - /development/working-groups/member-guide/**
       source_definitions:
-        - src/pages/spdtf/working-groups/[slug]/index.astro
-        - src/pages/spdtf/working-groups/[slug]/evidence.astro
-        - src/pages/spdtf/working-groups/[slug]/questions.astro
-        - src/pages/spdtf/working-groups/[slug]/review.astro
+        - src/pages/development/working-groups/[slug]/index.astro
+        - src/pages/development/working-groups/[slug]/evidence.astro
+        - src/pages/development/working-groups/[slug]/questions.astro
+        - src/pages/development/working-groups/[slug]/review.astro
       supporting_inputs:
         - src/components/ia/working-groups.ts
         - src/components/ia/WorkspaceNav.astro

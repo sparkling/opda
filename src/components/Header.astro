@@ -3,67 +3,102 @@
  * Global site header — brand, destination nav, external links, theme toggle.
  * Renders at build time. Active destination is resolved by the IA contract.
  */
-import { GLOBAL_DESTINATIONS, getActiveDestination } from '@/lib/site-ia.mjs';
+import { GLOBAL_NAVIGATION_ITEMS, getActiveDestination } from '@/lib/site-ia.mjs';
 import AuthButton from '@/components/AuthButton.astro';
+import BrandHeading from '@/components/BrandHeading.astro';
+import FrameworkHeading from '@/components/FrameworkHeading.astro';
+import HeaderPreviewControls from '@/components/HeaderPreviewControls.astro';
 import ThemeToggle from '@/components/ThemeToggle.astro';
 import SiteSearchDialog from '@/components/SiteSearchDialog.astro';
+import NewsletterSubscriptionDialog from '@/components/NewsletterSubscriptionDialog.astro';
 
 const currentPath = Astro.url.pathname.replace(/\/+$/u, '') || '/';
 const isHomePage = currentPath === '/';
 const isSearchPage = currentPath === '/search';
+const isSubscribePage = currentPath === '/subscribe' || currentPath.startsWith('/subscribe/');
 const joinHref = currentPath === '/join' ? '#register' : '/join';
 interface Props {
   showSidebar?: boolean;
+  alignWithNavigationRail?: boolean;
   suppressActiveDestination?: boolean;
 }
 const {
   showSidebar = false,
+  alignWithNavigationRail = false,
   suppressActiveDestination = false,
 } = Astro.props;
-const activeDestination = isSearchPage || suppressActiveDestination ? null : getActiveDestination(currentPath);
+const activeDestination = suppressActiveDestination
+  ? null
+  : isSearchPage ? 'search' : getActiveDestination(currentPath);
 ---
-<header class={`app-header${showSidebar ? ' app-header--with-sidebar' : ''}`}>
-  <a href="/" class="app-header__title brand-lockup brand-lockup--mini brand-lockup--on-dark">
-    <img class="app-header__title-icon brand-lockup__icon" src="/ui/brand/opda-icon-yellow.svg" alt="" aria-hidden="true" width="84" height="100" />
-    <span class="brand-lockup__label">Open Property Data Association</span>
-  </a>
-  <a href="/" class="app-header__framework">Smart Property Data Framework</a>
+<header id="app-header-identity" class={`app-header${alignWithNavigationRail ? ' app-header--with-sidebar' : ''}`}>
+  <div class="app-header__inner">
+    <a href="/" class="app-header__title">
+      <BrandHeading scale="mini" variant="paired" />
+    </a>
 
-  <div class="app-header__utilities">
-    <nav class="header-nav" aria-label="Actions and utilities">
-      <a href="/" class={`header-icon-link${isHomePage ? ' active' : ''}`} aria-label="Home" aria-current={isHomePage ? 'page' : undefined} title="Home">
-        <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m3 11 9-8 9 8" /><path d="M5 10v10h14V10" /><path d="M9 20v-6h6v6" /></svg>
+    <div class="app-header__framework-row">
+      <a href="/" class="app-header__framework">
+        <FrameworkHeading />
       </a>
-      <a href="/search" class={`header-icon-link${isSearchPage ? ' active' : ''}`} aria-label="Search" aria-current={isSearchPage ? 'page' : undefined} title="Search" data-site-search-trigger>
-        <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7" /><path d="m20 20-4-4" /></svg>
-      </a>
-      <a href="https://github.com/sparkling/opda" class="header-icon-link" aria-label="GitHub" title="GitHub" target="_blank" rel="noopener">
-        <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor" aria-hidden="true"><path d="M12 2a10 10 0 0 0-3.16 19.49c.5.09.68-.22.68-.48v-1.87c-2.78.6-3.37-1.18-3.37-1.18-.45-1.16-1.11-1.47-1.11-1.47-.91-.62.07-.61.07-.61 1 .07 1.53 1.03 1.53 1.03.9 1.53 2.35 1.09 2.92.83.09-.65.35-1.09.64-1.34-2.22-.25-4.55-1.11-4.55-4.94 0-1.09.39-1.98 1.03-2.68-.1-.25-.45-1.27.1-2.64 0 0 .84-.27 2.75 1.02A9.57 9.57 0 0 1 12 6.84a9.6 9.6 0 0 1 2.5.34c1.91-1.29 2.75-1.02 2.75-1.02.55 1.37.2 2.39.1 2.64.64.7 1.03 1.59 1.03 2.68 0 3.84-2.34 4.68-4.57 4.93.36.31.68.92.68 1.85V21c0 .27.18.58.69.48A10 10 0 0 0 12 2Z" /></svg>
-      </a>
-    </nav>
+      <HeaderPreviewControls
+        showScaleControl
+        identityId="app-header-identity"
+        initialScale={24}
+        initialSpaceAbove={24}
+        initialLineGap={8}
+        initialSpaceBelow={8}
+      />
+    </div>
 
-    <ThemeToggle />
+    <div class="app-header__utilities">
+      <span class="header-actions header-action--desktop">
+        <a href="https://openpropdata.org.uk/become-a-member/" class="header-membership btn btn--ghost btn--compact">Become a member</a>
+        <a href={joinHref} class="header-cta btn btn--compact">Join a working group</a>
+      </span>
 
-    <AuthButton />
+      <nav class="header-nav" aria-label="Actions and utilities">
+        <a href="/" class={`header-icon-link${isHomePage ? ' active' : ''}`} aria-label="Home" aria-current={isHomePage ? 'page' : undefined} title="Home">
+          <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m3 11 9-8 9 8" /><path d="M5 10v10h14V10" /><path d="M9 20v-6h6v6" /></svg>
+        </a>
+        <a href="/search" class={`header-icon-link${isSearchPage ? ' active' : ''}`} aria-label="Search" aria-current={isSearchPage ? 'page' : undefined} title="Search" data-site-search-trigger>
+          <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7" /><path d="m20 20-4-4" /></svg>
+        </a>
+        <a href="https://github.com/sparkling/opda" class="header-icon-link" aria-label="GitHub" title="GitHub" target="_blank" rel="noopener">
+          <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor" aria-hidden="true"><path d="M12 2a10 10 0 0 0-3.16 19.49c.5.09.68-.22.68-.48v-1.87c-2.78.6-3.37-1.18-3.37-1.18-.45-1.16-1.11-1.47-1.11-1.47-.91-.62.07-.61.07-.61 1 .07 1.53 1.03 1.53 1.03.9 1.53 2.35 1.09 2.92.83.09-.65.35-1.09.64-1.34-2.22-.25-4.55-1.11-4.55-4.94 0-1.09.39-1.98 1.03-2.68-.1-.25-.45-1.27.1-2.64 0 0 .84-.27 2.75 1.02A9.57 9.57 0 0 1 12 6.84a9.6 9.6 0 0 1 2.5.34c1.91-1.29 2.75-1.02 2.75-1.02.55 1.37.2 2.39.1 2.64.64.7 1.03 1.59 1.03 2.68 0 3.84-2.34 4.68-4.57 4.93.36.31.68.92.68 1.85V21c0 .27.18.58.69.48A10 10 0 0 0 12 2Z" /></svg>
+        </a>
+        <a href="/subscribe" class="header-icon-link" aria-label="Subscribe to OPDA updates" title="Subscribe" data-newsletter-trigger>
+          <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="1" /><path d="m3 7 9 6 9-6" /></svg>
+        </a>
+      </nav>
 
-    <button type="button" class="global-nav-toggle" aria-label="Open site navigation" aria-controls="global-nav-panel" aria-expanded="false" id="global-nav-toggle">
-      <svg viewBox="0 0 24 24" width="22" height="22" fill="currentColor" aria-hidden="true"><path d="M4 5h16v2H4V5zm0 6h16v2H4v-2zm0 6h16v2H4v-2z"/></svg>
-    </button>
+      <ThemeToggle />
 
-    {showSidebar && (
-      <button type="button" class="menu-toggle" aria-label="Open section navigation" aria-controls="app-sidebar" aria-expanded="false" id="menu-toggle">
-        <svg viewBox="0 0 24 24" width="22" height="22" fill="currentColor" aria-hidden="true"><path d="M3 6h18v2H3V6zm0 5h18v2H3v-2zm0 5h18v2H3v-2z"/></svg>
+      <AuthButton />
+
+      <button type="button" class="global-nav-toggle" aria-label="Open site navigation" aria-controls="global-nav-panel" aria-expanded="false" id="global-nav-toggle">
+        <svg viewBox="0 0 24 24" width="22" height="22" fill="currentColor" aria-hidden="true"><path d="M4 5h16v2H4V5zm0 6h16v2H4v-2zm0 6h16v2H4v-2z"/></svg>
       </button>
-    )}
-  </div>
 
-  <div class="global-nav-panel" id="global-nav-panel">
-    <nav class="global-nav" aria-label="Primary">
-      {GLOBAL_DESTINATIONS.map(destination => (
-        <a href={destination.url} class={activeDestination === destination.key ? 'active' : undefined} aria-current={activeDestination === destination.key ? 'page' : undefined}>{destination.title}</a>
-      ))}
-      <a href={joinHref} class="header-cta btn">Join a working group</a>
-    </nav>
+      {showSidebar && (
+        <button type="button" class="menu-toggle" aria-label="Open section navigation" aria-controls="app-sidebar" aria-expanded="false" id="menu-toggle">
+          <svg viewBox="0 0 24 24" width="22" height="22" fill="currentColor" aria-hidden="true"><path d="M3 6h18v2H3V6zm0 5h18v2H3v-2zm0 5h18v2H3v-2z"/></svg>
+        </button>
+      )}
+    </div>
+
+    <div class="global-nav-panel" id="global-nav-panel">
+      <nav class="global-nav" aria-label="Primary">
+        {GLOBAL_NAVIGATION_ITEMS.map(destination => (
+          <a href={destination.url} class={activeDestination === destination.key ? 'active' : undefined} aria-current={activeDestination === destination.key ? 'page' : undefined}>{destination.title}</a>
+        ))}
+        <span class="header-actions header-actions--compact">
+          <a href="https://openpropdata.org.uk/become-a-member/" class="header-membership btn btn--ghost btn--compact">Become a member</a>
+          <a href={joinHref} class="header-cta btn btn--compact">Join a working group</a>
+        </span>
+      </nav>
+    </div>
   </div>
 </header>
 <SiteSearchDialog />
+{!isSubscribePage && <NewsletterSubscriptionDialog />}

@@ -1,16 +1,19 @@
 /* ─────────────────────────────────────────────────────────────
    BREADCRUMBS
    ───────────────────────────────────────────────────────────── */
+.app-main { --page-context-row-height: var(--target-inline-min); }
 .breadcrumbs {
   width: 100%;
   max-width: var(--content-max);
+  min-height: var(--page-context-row-height);
   margin: 0 auto;
-  padding-block: var(--space-5) 0;
+  padding-block: 0;
   color: var(--color-text-muted);
   font: 500 var(--text-base) / 1.5 var(--font-sans);
 }
-.app-main:has(> .breadcrumbs) { padding-top: 0; }
 .app-main > .breadcrumbs + .prose { padding-top: 0; }
+/* Without breadcrumb context, the article starts at the shell inset instead
+   of reserving an empty context row. */
 .app-main:not(:has(> .breadcrumbs)) > .prose { padding-top: 0; }
 .breadcrumbs__list {
   display: flex;
@@ -28,7 +31,7 @@
 }
 .breadcrumbs a,
 .breadcrumbs .breadcrumb-current {
-  min-height: var(--target-min);
+  min-height: var(--target-inline-min);
   display: inline-flex;
   align-items: flex-end;
 }

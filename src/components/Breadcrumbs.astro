@@ -1,7 +1,8 @@
 ---
 /**
- * Breadcrumbs — navigable global owner → section → group ancestors. The H1
- * names the current page, so the trail deliberately omits a terminal duplicate.
+ * Breadcrumbs — navigable ancestors below the global destination. The
+ * horizontal navigation already names that destination, while the H1 names
+ * the current page, so neither is repeated in this trail.
  */
 import { normalizeUrl } from '@/lib/site';
 import { findNavigationPage } from '@/lib/site-navigation';
@@ -25,18 +26,15 @@ const destinationLanding = Boolean(destination && path === normalizeUrl(destinat
 
 const breadcrumbs: Breadcrumb[] = [];
 
-if (destinationLanding && destination) {
-  breadcrumbs.push({ label: destination.title, current: true });
-} else {
-  if (destination) {
-    breadcrumbs.push({ label: destination.title, href: destination.url });
-  }
-
+if (!destinationLanding) {
   if (found) {
     const groupPath = normalizeUrl(found.group.url);
     const groupIsDestination = groupPath === normalizeUrl(destination?.url ?? '');
     const groupIsCurrent = groupPath === path;
-    if (!groupIsDestination) {
+    const overviewParentsDestinationChildren = groupIsDestination
+      && found.group.heading === 'Overview'
+      && found.trail.length > 0;
+    if (!groupIsDestination || overviewParentsDestinationChildren) {
       breadcrumbs.push(groupIsCurrent
         ? { label: found.group.heading, current: true }
         : { label: found.group.heading, href: found.group.url });
@@ -52,19 +50,14 @@ if (destinationLanding && destination) {
     if (!found.trail.length && !groupIsCurrent) {
       breadcrumbs.push({ label: currentPageTitle, current: true });
     }
-  } else if (destination) {
-    breadcrumbs.push({ label: currentPageTitle, current: true });
   } else {
     breadcrumbs.push({ label: currentPageTitle, current: true });
   }
-
-  if (breadcrumbs.length > 1 && breadcrumbs.at(-1)?.href === destination?.url) {
-    breadcrumbs[breadcrumbs.length - 1] = { label: currentPageTitle, current: true };
-  }
 }
 
-// The H1 names the current page. Breadcrumbs retain only navigable ancestors,
-// avoiding a duplicate, non-actionable terminal item immediately above it.
+// The H1 names the current page. Breadcrumbs retain only navigable ancestors
+// below the global destination, avoiding both repeated shell context and a
+// duplicate, non-actionable terminal item immediately above the title.
 const ancestors = breadcrumbs.slice(0, -1).filter(
   (breadcrumb): breadcrumb is Breadcrumb & { href: string } => Boolean(breadcrumb.href),
 );

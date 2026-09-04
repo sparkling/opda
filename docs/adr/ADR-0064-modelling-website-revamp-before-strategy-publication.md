@@ -1,15 +1,19 @@
 ---
 status: accepted
 date: 2026-07-19
-updated: 2026-08-22
+updated: 2026-09-03
 tags: [website, information-architecture, modelling, migration, bounded-context, publication]
 supersedes: []
 depends-on: [ADR-0041, ADR-0044, ADR-0063]
-implements: [src/pages/spdtf/property-pack]
+implements: [src/pages/development/property-pack]
 ---
 
 # Revamp the modelling website before publishing the new working-group approach
 
+> Update 2026-09-03 — the Property Pack reader pages now live at
+> `/development/property-pack/**`. This route-only amendment does not change
+> the presentation or modelling decisions recorded below.
+>
 ## Context and Problem Statement
 
 The current OPDA website documents the technical material that exists today. Its PDTF

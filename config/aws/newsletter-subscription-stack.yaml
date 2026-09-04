@@ -1,0 +1,132 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: >-
+  Public newsletter-subscription API: HTTP API, Lambda and a separate encrypted
+  DynamoDB subscription register.
+
+Resources:
+  SubscriptionsTable:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      BillingMode: PAY_PER_REQUEST
+      AttributeDefinitions:
+        - AttributeName: subscriberId
+          AttributeType: S
+      KeySchema:
+        - AttributeName: subscriberId
+          KeyType: HASH
+      SSESpecification:
+        SSEEnabled: true
+      TimeToLiveSpecification:
+        AttributeName: expiresAt
+        Enabled: true
+      PointInTimeRecoverySpecification:
+        PointInTimeRecoveryEnabled: true
+        RecoveryPeriodInDays: 7
+      DeletionProtectionEnabled: true
+      StreamSpecification:
+        StreamViewType: KEYS_ONLY
+
+  FunctionLogGroup:
+    Type: AWS::Logs::LogGroup
+    Properties:
+      LogGroupName: /aws/lambda/opda-newsletter-subscription
+      RetentionInDays: 30
+
+  FunctionRole:
+    Type: AWS::IAM::Role
+    Properties:
+      RoleName: opda-newsletter-subscription
+      AssumeRolePolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+          - Effect: Allow
+            Principal: { Service: lambda.amazonaws.com }
+            Action: sts:AssumeRole
+      Policies:
+        - PolicyName: newsletter-subscription-storage
+          PolicyDocument:
+            Version: '2012-10-17'
+            Statement:
+              - Sid: FunctionLogs
+                Effect: Allow
+                Action: [logs:CreateLogStream, logs:PutLogEvents]
+                Resource: !Sub 'arn:${AWS::Partition}:logs:${AWS::Region}:${AWS::AccountId}:log-group:/aws/lambda/opda-newsletter-subscription:*'
+              - Sid: SubscriptionRecords
+                Effect: Allow
+                Action: [dynamodb:PutItem]
+                Resource: !GetAtt SubscriptionsTable.Arn
+
+  Function:
+    Type: AWS::Serverless::Function
+    DependsOn: FunctionLogGroup
+    Properties:
+      FunctionName: opda-newsletter-subscription
+      CodeUri: newsletter-subscription/
+      Handler: index.handler
+      Runtime: nodejs22.x
+      Architectures: [arm64]
+      MemorySize: 256
+      Timeout: 15
+      ReservedConcurrentExecutions: 5
+      Role: !GetAtt FunctionRole.Arn
+      Environment:
+        Variables:
+          SUBSCRIPTIONS_TABLE_NAME: !Ref SubscriptionsTable
+
+  Api:
+    Type: AWS::ApiGatewayV2::Api
+    Metadata:
+      RequestBodyBoundaryBytes: 16384
+      BoundaryEnforcement: Lambda handler (HTTP API has no per-route body-size control)
+    Properties:
+      Name: opda-newsletter-subscription
+      Description: Same-origin public API for newsletter subscriptions
+      ProtocolType: HTTP
+
+  Integration:
+    Type: AWS::ApiGatewayV2::Integration
+    Properties:
+      ApiId: !Ref Api
+      IntegrationType: AWS_PROXY
+      IntegrationUri: !GetAtt Function.Arn
+      PayloadFormatVersion: '2.0'
+      TimeoutInMillis: 15000
+
+  SubscribeRoute:
+    Type: AWS::ApiGatewayV2::Route
+    Properties:
+      ApiId: !Ref Api
+      RouteKey: POST /api/newsletter-subscription
+      Target: !Sub 'integrations/${Integration}'
+
+  Stage:
+    Type: AWS::ApiGatewayV2::Stage
+    Properties:
+      ApiId: !Ref Api
+      StageName: $default
+      AutoDeploy: true
+      DefaultRouteSettings:
+        DetailedMetricsEnabled: false
+        ThrottlingBurstLimit: 10
+        ThrottlingRateLimit: 2
+
+  InvokePermission:
+    Type: AWS::Lambda::Permission
+    Properties:
+      Action: lambda:InvokeFunction
+      FunctionName: !Ref Function
+      Principal: apigateway.amazonaws.com
+      SourceArn: !Sub 'arn:${AWS::Partition}:execute-api:${AWS::Region}:${AWS::AccountId}:${Api}/*/POST/api/newsletter-subscription'
+
+Outputs:
+  ApiEndpoint:
+    Value: !GetAtt Api.ApiEndpoint
+  ApiOriginDomainName:
+    Value: !Sub '${Api}.execute-api.${AWS::Region}.${AWS::URLSuffix}'
+  FunctionName:
+    Value: !Ref Function
+  SubscriptionsTableName:
+    Value: !Ref SubscriptionsTable
+  SubscriptionsTableStreamArn:
+    Value: !GetAtt SubscriptionsTable.StreamArn

@@ -1,0 +1,66 @@
+---
+import Layout from '@/layouts/Layout.astro';
+import WorkspaceNav from '@/components/ia/WorkspaceNav.astro';
+import { WORKING_GROUPS, getWorkingGroup } from '@/components/ia/working-groups';
+import {
+  ALLOWED_DISPOSITIONS,
+  SEMANTIC_PACKAGE_MANIFEST,
+  getWorkspaceRecord,
+} from '@/lib/spdtf-workspace.mjs';
+
+export function getStaticPaths() {
+  return WORKING_GROUPS.map((group) => ({ params: { slug: group.slug }, props: { group } }));
+}
+const { group } = Astro.props;
+if (!group || !getWorkingGroup(group.slug)) throw new Error('Unknown SPDTF working-group route');
+const workspace = getWorkspaceRecord(group.slug);
+if (!workspace) throw new Error('Working group has no workspace record');
+---
+
+<Layout title={`${group.name} coverage and review`} description={`Coverage receipt and review gate for the ${group.name} SPDTF workspace.`} search={{ type: 'group', domain: group.slug, status: 'scope-defined', context: group.kind }}>
+  <h1>{group.name}: coverage and review</h1>
+  <p class="lead">The receipt exposes every required concern. Empty assessments remain explicit; the site does not invent a decision before the group is convened.</p>
+  <WorkspaceNav slug={group.slug} />
+
+  <h2 id="coverage">Eight-concern coverage receipt</h2>
+  <table>
+    <caption>Coverage receipt for workspace {workspace.workspaceVersion}</caption>
+    <thead><tr><th scope="col">Formal concern</th><th scope="col">Disposition</th><th scope="col">Status</th></tr></thead>
+    <tbody>{workspace.coverageReceipt.map((item) => (
+      <tr><th scope="row">{item.concern}</th><td>Not recorded</td><td>{item.status}</td></tr>
+    ))}</tbody>
+  </table>
+
+  <h2 id="dispositions">Four allowed dispositions</h2>
+  <ul>{ALLOWED_DISPOSITIONS.map((disposition) => <li><code>{disposition}</code></li>)}</ul>
+
+  <h2 id="candidate">Candidate and feedback status</h2>
+  <dl class="status-definition-list" aria-labelledby="candidate">
+    <div><dt>Decision eligible</dt><dd>{workspace.decisionEligible ? 'Yes' : 'No'}</dd></div>
+    <div><dt>Decision occurred</dt><dd>{workspace.decisionOccurred ? 'Yes' : 'No'}</dd></div>
+    <div><dt>Decision owner</dt><dd>{workspace.decisionOwner ?? 'None recorded'}</dd></div>
+    <div><dt>Decision authority</dt><dd>{workspace.decisionAuthority}</dd></div>
+    <div><dt>Candidate version</dt><dd>No candidate recorded</dd></div>
+    <div><dt>Immutable candidate diff</dt><dd>Not applicable until a candidate exists</dd></div>
+    <div><dt>Feedback dispositions</dt><dd>No feedback dispositions recorded</dd></div>
+    <div><dt>Semantic-package manifest</dt><dd><a href={SEMANTIC_PACKAGE_MANIFEST.canonicalSource}><code>{SEMANTIC_PACKAGE_MANIFEST.version}</code></a></dd></div>
+  </dl>
+
+  <h2 id="registers">Output and history registers</h2>
+  <table>
+    <caption>Six semantic outputs before convening</caption>
+    <thead><tr><th scope="col">Output</th><th scope="col">Status</th></tr></thead>
+    <tbody>{workspace.outputRegister.map((entry) => <tr><th scope="row">{entry.output}</th><td>{entry.status}</td></tr>)}</tbody>
+  </table>
+  <ul>
+    <li>Meetings: none recorded.</li>
+    <li>Candidate versions: none recorded.</li>
+    <li>Changes and sessions: none recorded.</li>
+    <li>Technical exports: none recorded.</li>
+  </ul>
+
+  <h2 id="action">Review action</h2>
+  <p>{workspace.challengeAction.status} Participants can <a href={workspace.challengeAction.href}>challenge an input or question by email</a>, or <a href="/join">register their interest</a>.</p>
+  <p><strong>Privacy boundary:</strong> {workspace.challengeAction.privacyBoundary}</p>
+  <p>Formal accept/reject disposition remains unavailable until the group is convened, the evidence-handling rules are confirmed and an accountable decision owner is recorded.</p>
+</Layout>

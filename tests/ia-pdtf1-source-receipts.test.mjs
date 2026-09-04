@@ -132,7 +132,7 @@ test('PDTF source and tool reframes are a closed, hash-bound set', () => {
   });
   const tools = families.families.find(({ id }) => id === 'ontology-tools');
   const currentTools = inventoryWithTrackedReframes(
-    tools.baseline, 'public/spdtf/inputs/pdtf-schema/schema-derived-ontology/use-and-tooling/tools',
+    tools.baseline, 'public/development/inputs/pdtf-schema/schema-derived-ontology/use-and-tooling/tools',
     PDTF1_TOOL_REFRAMES,
   );
   const toolReceipt = composePdtf1ToolReframeReceipt(tools.baseline, currentTools);
@@ -193,7 +193,7 @@ test('closed file reframes reject size-only drift in reviewed and untouched reco
 
   const tools = families.families.find(({ id }) => id === 'ontology-tools');
   const currentTools = inventoryWithTrackedReframes(
-    tools.baseline, 'public/spdtf/inputs/pdtf-schema/schema-derived-ontology/use-and-tooling/tools',
+    tools.baseline, 'public/development/inputs/pdtf-schema/schema-derived-ontology/use-and-tooling/tools',
     PDTF1_TOOL_REFRAMES,
   );
   assert.throws(() => composePdtf1ToolReframeReceipt(

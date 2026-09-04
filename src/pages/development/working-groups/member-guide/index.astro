@@ -1,0 +1,87 @@
+---
+import Layout from '@/layouts/Layout.astro';
+import GatewayCard from '@/components/ia/GatewayCard.astro';
+---
+
+<Layout
+  title="Working-group member guide"
+  description="How SPDTF working-group members get access, use Teams, submit evidence, join meetings and review model candidates."
+>
+  <h1>Working-group member guide</h1>
+  <p class="lead">
+    This guide explains the common participation pattern for SPDTF working groups.
+    It covers access, discussions, source material, meetings and model review without
+    exposing private workspace links or treating participation as standards authority.
+  </p>
+
+  <div class="card-grid">
+    <GatewayCard
+      href="/development/working-groups/member-guide/getting-started"
+      eyebrow="Access"
+      title="Getting started"
+      description="Understand registration, membership, invitations, accounts, roles and support."
+    />
+    <GatewayCard
+      href="/development/working-groups/member-guide/teams-and-discussions"
+      eyebrow="Discuss"
+      title="Teams and discussions"
+      description="Choose the right channel, keep one issue in one thread and use page comments appropriately."
+    />
+    <GatewayCard
+      href="/development/working-groups/member-guide/source-material-and-sharepoint"
+      eyebrow="Contribute"
+      title="Source material and SharePoint"
+      description="Use the private organisation intake area and supply evidence with provenance and restrictions."
+    />
+    <GatewayCard
+      href="/development/working-groups/member-guide/meetings-and-records"
+      eyebrow="Participate"
+      title="Meetings and records"
+      description="Prepare, contribute, support asynchronous follow-up and handle transcripts safely."
+    />
+    <GatewayCard
+      href="/development/working-groups/member-guide/model-review-and-decisions"
+      eyebrow="Review"
+      title="Model review and decisions"
+      description="Challenge candidates in business language and understand who may decide what."
+    />
+  </div>
+
+  <h2 id="current-status">What is current, and what is proposed</h2>
+  <p>
+    The guide combines several decisions, but it does not give every source the same
+    maturity. Use the status in this table when a detailed page refers to a process.
+  </p>
+  <table>
+    <thead><tr><th>Area</th><th>Status</th><th>What members can rely on</th></tr></thead>
+    <tbody>
+      <tr><td>Working-group topology</td><td>Accepted · ADR-0063</td><td>Eight modelling groups with bounded responsibilities.</td></tr>
+      <tr><td>Public recruitment</td><td>Accepted · ADR-0069</td><td>An expression of interest is reviewed before access is granted.</td></tr>
+      <tr><td>Teams and SharePoint pattern</td><td>Accepted · ADR-0070</td><td>A private Team for discussion and a separate, organisation-isolated evidence intake.</td></tr>
+      <tr><td>Email support and intake fallback</td><td>Accepted · ADR-0072</td><td>Bounded access support and screened attachments for authorised participants.</td></tr>
+      <tr><td>Evidence-to-model method</td><td>Proposed · ADR-0065</td><td>Useful working method, but not a ratified lifecycle. ADR-0065 remains proposed.</td></tr>
+      <tr><td>Consensus and ratification</td><td>Proposed · ADR-0068</td><td>Do not treat its stages or time windows as operative. ADR-0068 remains proposed.</td></tr>
+    </tbody>
+  </table>
+
+  <h2 id="workspace-status">Workspace status is not group authority</h2>
+  <p>
+    The Finance and Banking modelling workspace is implemented. The separate,
+    cross-cutting Technology Working Group workspace is also implemented. The other
+    seven modelling workspaces are planned. Technology Working Group is not a ninth
+    modelling context and is not the Property Technology working group.
+  </p>
+  <p>
+    Implemented workspace infrastructure does not mean a group is convened, has agreed
+    a model, or can ratify a standard. Each workspace page states its own roster,
+    candidate and decision status; where these are not recorded, they remain unconfirmed.
+  </p>
+
+  <h2 id="routes">Where to go next</h2>
+  <p>
+    Browse the <a href="/development/working-groups">eight group workspaces</a> for scope,
+    evidence, questions and review records. If you are not yet a member, the public
+    <a href="/join">working-group sign-up form</a> records an expression
+    of interest; it does not confer membership, Microsoft access or decision rights.
+  </p>
+</Layout>

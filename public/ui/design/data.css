@@ -275,7 +275,7 @@
   font-size: 0.85em;
   margin-left: 0.35em;
 }
-.db-filter-option input[type="checkbox"] {
+.db-filter-option :is(input[type="checkbox"], input[type="radio"]) {
   width: 1.25rem;
   height: 1.25rem;
   flex-shrink: 0;

@@ -89,7 +89,7 @@ function buildLinks(ids) {
     const tier = deriveTier(id);
     if (!tier) continue;
     const slug = deriveSlug(id, tier);
-    const route = slug ? `/spdtf/inputs/pdtf-schema/schema-derived-ontology/model-views-by-audience/${tier}/${slug}` : `/spdtf/inputs/pdtf-schema/schema-derived-ontology/model-views-by-audience/${tier}`;
+    const route = slug ? `/development/inputs/pdtf-schema/schema-derived-ontology/model-views-by-audience/${tier}/${slug}` : `/development/inputs/pdtf-schema/schema-derived-ontology/model-views-by-audience/${tier}`;
     const stem = slug.split('/').pop() ?? slug;
     if (!stem) continue;
 

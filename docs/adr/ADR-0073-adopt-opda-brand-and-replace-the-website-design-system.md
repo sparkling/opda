@@ -1,7 +1,7 @@
 ---
 status: implemented
 date: 2026-08-16
-updated: 2026-09-03
+updated: 2026-09-04
 tags: [design-system, brand, website, accessibility, css, governance, presentation]
 supersedes: [ADR-0025]
 depends-on: [ADR-0064]
@@ -204,21 +204,36 @@ rows, and reinitialises after client-side page transitions. The normative contra
 tokens, shared components and tests were updated together.
 
 On 1 September 2026 the desktop documentation header became a three-row composition. The primary linked
-“Open Property Data Association” title includes a bottom-aligned yellow icon; the smaller “Smart Property
-Data Framework” subheading sits above the horizontal global destination tabs. Utility controls remain anchored
-at the top right; the previous standalone logo cell was removed. This does not alter either the left section rail
+“Open Property Data Association” title includes the shared bottom-aligned yellow icon; the smaller “Smart Property
+Data Framework” subheading sits above the horizontal global destination tabs. Utility controls remain at the right of the organisation-title line; the previous standalone logo cell was removed. This does not alter either the left section rail
 or the right page-contents rail.
 
 The final desktop masthead refinement expands the header to 160px and adds deliberate space around the
-framework subheading. A shared `.brand-lockup` primitive now owns icon scale (`0.89em`), icon-to-text gap
-(`0.45em`), baseline alignment and surface-aware colour, so the header no longer carries local corrections.
+framework subheading. The shared `BrandHeading.astro` component owns the relative tile and icon scale, proportional gap,
+cap-height alignment and surface-aware colour, so the header carries no duplicate lock-up markup or local corrections.
+Since 3 September 2026 the mark sits on a yellow property-document card with a violet folded corner on light surfaces and on a raised night card on dark surfaces; the live organisation name is deep with a violet "Association" on light surfaces and yellow with a bright violet "Association" on dark surfaces. This retains
+the OPDA brand cue without using low-contrast yellow for the complete light-mode identity.
 The compact header remains 64px. The divider below the global tabs follows the content width, the first tab
-has no extra left inset, breadcrumbs regain balanced vertical spacing, and the pre-title metadata strip is
+has no extra left inset, a shared 16px page-header inset positions both breadcrumb and breadcrumb-free pages, breadcrumbs use the shared 32px compact inline-navigation target with no block padding, and the pre-title metadata strip is
 suppressed entirely so the breadcrumb leads directly into the page title.
+The retired `PageMeta.astro` component and its call sites are deleted, removing the hidden sibling that previously triggered article-flow spacing above the H1.
 `Layout.astro` now owns the sole page-level `Breadcrumbs.astro` renderer. Property Pack, ontology detail,
 ADR, ODR and verification pages no longer carry alternate breadcrumb markup or local breadcrumb CSS;
-qualified document titles may supply a concise `breadcrumbTitle`. In-content schema-object locations and
+qualified document titles may supply a concise `breadcrumbTitle`. A subsequent 3 September refinement gives
+the shared shell one 32px page-context row for linked ancestors. When no ancestor exists, the breadcrumb
+region and its row are omitted so the page title and all following content move up together. In-content schema-object locations and
 resource-folder paths retain their distinct location semantics.
+On 4 September 2026 the desktop masthead gained one shared 48px header-start token above the
+OPDA identity. Its height increased to 164px by the same delta, so the added breathing room moves
+the complete header flow and following page down without compressing or clipping masthead content.
+The independent page-content start token is 8px below the masthead, avoiding a second large band above breadcrumbs. Search's `All` scope now exposes the union of
+all six current facet groups, while scoped tabs continue to show only meaningful refinements. The
+route-derived Page type group was retired because it duplicated Section or Collection rather than
+providing a consistently authored, orthogonal taxonomy; schema-3 page-type metadata remains readable
+for existing templates and indexes but no longer affects current facet selection, ranking or card labels.
+Existing `pagetype` URLs retain their exact filter as a removable legacy chip. Checkbox
+rows use a shared 8px vertical group gap. The search-filter collection no longer draws a nested
+inner border: the shared section rail remains its single containing boundary.
 Property Pack candidate status now uses a 44px information disclosure aligned with the page H1 rather than
 a full-width warning bar above it. Its non-modal flyout preserves the complete authority, validation and
 six-stage lifecycle record, uses the shared colour and focus tokens, closes with Escape or an explicit control,
@@ -257,26 +272,34 @@ behaviour does not depend on a route or particular link copy.
 The left section navigation now treats hierarchy as navigation rather than a
 second disclosure interaction. Folder labels remain links, and navigating to a
 folder opens the active trail on the destination page. Recursive lists add one
-8px indentation step only. Removing branch buttons, arrows, their 44px leading
-gutters and their client-side persistence prevents deep Property Pack paths from
-losing most of the rail to repeated controls. The whole-rail collapse control is
-unchanged because it governs shell state rather than hierarchy depth.
-Top-level parent links use the leaf-link DM Sans scale and sentence case, with
-stronger weight and a hairline lower edge to distinguish their structural role
-without consuming vertical space. They have no open/closed marker.
+8px indentation step only. Removing branch buttons, arrows, guide rules, their
+44px leading gutters and their client-side persistence prevents deep Property
+Pack paths from losing most of the rail to repeated controls. The navigation
+itself has an 8px inline inset, and top-level rows add no second inline margin.
+The whole-rail collapse control is unchanged because it governs shell state
+rather than hierarchy depth. Every parent link uses the leaf-link DM Sans scale
+and sentence case with stronger weight and a restrained, theme-aware semantic
+colour mixed toward body text; top-level parents also receive a hairline lower
+edge. Selection in either theme preserves the item’s existing typography, so a
+selected leaf remains regular and a selected parent remains bold; only the
+shared active background, foreground and yellow rule are added. This
+distinguishes their structural role without consuming vertical space. They have
+no open/closed marker.
 
 Later on 1 September 2026, `SiteFooter.astro` became the single organisation footer for
 the root landing, every `Layout` route and the standalone public-service family. It
-retains the signature rule while providing privacy and accessibility exits, a centred linked OPDA
-lock-up to the Association website, and the linked Sparkling Ideas credit. The standalone join
+retains the signature rule while presenting one desktop row in source order: the linked Sparkling Ideas credit, a centred linked OPDA
+lock-up to the Association website, then the privacy and accessibility exits. The existing expert tagline remains beneath the credit. The complete row moves one text line upward by redistributing 16px of container padding from above to below; individual elements use no vertical transform. The standalone join
 hero adds the existing transparent button variant for its OPDA return control; the
 full-screen working-group deck remains outside shared site furniture.
-The footer's left credit and right links align directly to the shared content edges, removing the former additional 32px inner gutter while retaining the centred OPDA lock-up and minimum narrow-screen inset.
+The footer's left credit and right links align directly to the shared content edges, removing the former additional 32px inner gutter while retaining the centred OPDA lock-up and minimum narrow-screen inset. The first credit line, OPDA lock-up and footer links share the desktop row while the second credit line is retained.
 Privacy and Accessibility use the same muted colour and regular weight as plain
 footer text rather than the emphasis reserved for the organisation and delivery credit.
 The centred footer identity now renders the reusable `BrandHeading` component in
 its compact 14px variant. The component scales its icon and gap relative to that
-font size, replacing the footer's duplicate icon, text and dimensional rules.
+font size, replacing the footer's duplicate icon, text and dimensional rules. The
+header consumes the same component at its mini scale, so the header, homepage,
+join page and footer share one icon-and-name implementation.
 
 On 2 September 2026 the global working-group CTA returned to the standard full-height
 44px button. The desktop navigation track initially grew to 60px above its unchanged divider;
@@ -299,26 +322,53 @@ reduced-motion mode reduces the transition to an effectively instant state chang
 A subsequent 1 September refinement supersedes the timing and breadcrumb details above. Both desktop rails
 remain anchored to their content-facing edge and combine the shared 200ms and 120ms tokens into a more legible
 320ms disclosure; reduced-motion remains effectively instant. The framework subheading moves to the next shared
-type step. The desktop header utilities end flush with the physical right edge, sit 16px from the top and use a
+type step. The desktop header utilities align with the organisation-title line, end at the shared content-right edge and use a
 borderless theme control, while the 44px working-group action ends on the content-right axis. Page breadcrumbs retain
-linked ancestors only, bottom-align each complete item, optically align link-coloured decorative chevrons to the label baseline and reduce their lower inset because the adjacent H1 already
-identifies the current page. The Property Pack candidate control
+linked ancestors below the global destination only, use the shared 32px compact inline-navigation target in normal flow, bottom-align each complete item, optically align link-coloured decorative chevrons to the label baseline and add no block padding because the adjacent H1 already
+identifies the current page. Both linked header headings are content-sized rather than row-wide. The Property Pack candidate control
 uses a shared Lucide `MessageCircle` outline with an italic information glyph in a borderless 44px target, avoiding a misleading approval symbol or a
 second visible enclosure. The global navigation row and divider retain their original 44px geometry and position. The working-group
 action remains fully visible and aligned with the destination labels; it returns to normal flow in the compact disclosure. Pages without navigable
-breadcrumb ancestors render no breadcrumb region and remove the article's duplicate upper inset. The desktop masthead is 132px high and uses natural grid flow with no negative margins. The mini organisation lock-up and framework heading retain their established positions while the 52px navigation track, divider and page shell sit eight pixels higher than the preceding iteration.
+breadcrumb ancestors render no breadcrumb region and remove the article's duplicate upper inset. The desktop masthead is 124px high and uses a two-row grid with no negative margins: a content-sized flex identity stack and normal-flow utilities share the first row, while global navigation spans the second. Reducing the identity gap and masthead height together retains the mini organisation lock-up's position while moving the framework heading, navigation track, divider and page shell eight pixels higher.
+The grid now lives in a centred `.app-header__inner` track whose maximum width, reserved rail columns and inline gutters are identical to `.app-body`. The header no longer reconstructs those edges with independent viewport-padding arithmetic, so its identity, navigation, utility group and account control align with the article on both sides. The desktop masthead is 152px high: its OPDA lock-up uses the shared 1.375rem step, while the 2.75rem framework heading is deliberately one step larger than the 2.25rem page H1. The compact masthead continues to hide the framework heading and constrains the OPDA lock-up to its existing responsive size.
 The working-group action uses the design system's standard yellow primary `.btn` together with its shared inset-surface template. The complete 44px target remains aligned while the yellow surface clears the divider by eight pixels, and the shared template centres its label within that visible surface through internal padding; the header class controls placement only and does not override colour, border, typography, padding or interaction states.
 On 2 September 2026 the organisation lock-up became the smaller identifier above the larger framework heading. A shared mini lock-up variant sets one typography scale; the existing relative icon width and gap scale the complete component without header-specific image dimensions.
 Both headings link to the site root, and the top-right utility group includes a labelled house icon as a third route home without adding another text action to the global destination row.
-The application header, homepage and join page render the same shared `ThemeToggle` component. Its design-system rule provides one borderless, transparent 44px target that inherits the foreground colour of its surface; pages no longer duplicate its SVG or override its border and background locally. The application-header utility group sits one line higher, flush with the masthead top, while campaign-page controls retain their hero-header placement.
+The horizontal destination labels use the shared base text size rather than the smaller supporting-text role. The primary working-group action is labelled “Join a working group” and uses the shared compact button variant, which reduces horizontal padding without changing the 44px target height or introducing a header-local button treatment.
+The application header, homepage and join page render the same shared `ThemeToggle` component. Its design-system rule provides one borderless, transparent 44px target that inherits the foreground colour of its surface; pages no longer duplicate its SVG or override its border and background locally. The application-header utility group occupies normal grid flow beside the organisation title, while campaign-page controls retain their hero-header placement.
+The application header itself now consumes shared theme-aware header tokens. Light mode uses the white surface, deep brand text, neutral navigation and light structural borders; dark mode retains the deep surface, white text and dark structural borders. The identity, navigation, utility icons, account control, hover states and compact disclosure all switch together; the yellow primary action remains unchanged.
 
-Later on 2 September 2026 the documentation rhythm became a direct-child flow contract. Ordinary `.prose` articles and Property Pack `.v2-doc` pages now make
+The 2–3 September Fable reviews tested dark, yellow and folded property-document tiles for the shared OPDA lock-up. The operator rejected each as a knowledge-base header identity because it either washed out, read as a generic application icon or split the organisation name into multiple colours. Those treatments remain available to the document variant used outside this header but are superseded here.
+
+On 4 September 2026 Fable's paired-header study established the current knowledge-base identity. `BrandHeading`'s paired variant renders the official OPDA house without a tile beside the complete one-colour organisation name; `FrameworkHeading` renders the exact name “Smart Property Data Trust Framework” beside a selectable contact-sheet mark. The OPDA house is `0.9em`; the framework mark remains optically based on `0.72em`; both are bottom aligned and unwrapped. Both shared lock-ups own the same `0.3em` mark-to-label gap, so containers can change scale but cannot diverge their internal spacing. The desktop header uses direct grid rows rather than an overlapping identity wrapper: OPDA and utilities share the first row, an explicit 8px spacer preserves the brand-line relationship, the complete framework lock-up and review selectors share the next row, and navigation occupies the final row. The OPDA line remains bottom-aligned in its row while the framework lock-up and selectors are top-aligned in theirs; smaller type therefore cannot acquire extra space through vertical centring, and the visible inter-heading distance remains fixed as the slider changes. The framework mark remains optically bottom-aligned with its own label. Medium and wide headers promote the OPDA lock-up to the shared 1.75rem step while its house scales proportionally; narrow headers retain the compact size. Petrol and Party Wall are the defaults. Temporary right-aligned theme and icon controls expose the ten reviewed palettes and all 24 numbered Fable archive marks from shared ordered registries. A third sliders-icon control opens five live numeric ranges for paired size, OPDA relative size, space underneath SPDTF, space between the identity lines and space above OPDA. It shares the selector row and the complete control drawer's disclosure button. Space below the framework line translates only the paired identity, preserving the position of selectors, navigation and page content; space above OPDA and space between the identity lines remain real grid dimensions, so their changes resize the header and move the complete page shell. The measured header height is propagated to the shell for sticky navigation rails. The tuning flyout remains attached beneath its trigger and expands down and right. All selector flyouts share generous padding, rounded borders and a lower-right cast shadow. Each icon records its visible artwork width and bottom edge, allowing the shared renderer to scale and bottom-align its artwork inside a fixed Party Wall-sized SVG box until every mark has Party Wall's apparent width and lower edge without distorting individual geometry or changing layout dimensions. A shared optical lift aligns that edge with the visible framework letterforms instead of the display face's descender space. Theme cards preserve the live header's 28:44 typography relationship at half scale; icon cards contain only the normalized icon and its name in the currently selected palette and colour mode. Each theme/icon flyout embeds the other synchronized selector and the same shared heading-layout selector used by the main control row, so palette, icon and geometry can be compared without closing the current inventory. Every duplicate range mirrors its value and applies it to the same identity target; no flyout owns a divergent copy of the adjustment logic. All selector flyouts render on an isolated overlay layer above page content. The selected icon field uses a fixed 7rem width sized for its label, two-digit archive number and disclosure marker, preventing label overflow. Their attached arrows cycle those registries and their selections persist locally. Every dark palette fixes the OPDA mark and name at `#FEC92B`. Navigation may collapse independently at medium widths; only the narrow header and print omit the framework row and review controls. The homepage consumes those same identity and selector components at display scale rather than maintaining a separate organisation lock-up and plain-text framework eyebrow. Its selector group sits immediately above and right-aligned with the Working Group Domains panel. Both the homepage and knowledge-base header include the shared controls. Paired size defaults to 24 and uses a 12–36 range, making 24 its exact 50% midpoint. Astro swaps preserve the current light/dark mode, palette and icon on the incoming document. Persisted sidebar and contents-rail states are restored in the app-body before their elements render; transitions remain disabled for the two initialization frames, eliminating entry-time rail jitter while preserving user-triggered disclosure motion.
+
+The theme inventory subsequently expands to twenty reviewed palettes. Its selector paginates four themes at a time and places one theme on each row, with explicit light and dark previews side by side. Previous and next pagination wrap continuously between the first and last theme pages. Both previews use the shared identity components and inherit the live heading size, relative OPDA size and spacing variables from the adjustment controls. Nested selector dismissal is based on an actual pointer target outside the selector or keyboard focus moving to another focusable control; it does not close on an intermediate null focus target while a card label activates its input. Icon selection therefore updates and remains open even when the icon picker is nested inside the theme flyout. The icon and theme inventories open twelve rem below their triggers, clearing the menu row without moving the heading controls or using a positional transform. These temporary configuration controls are hidden unless the page URL contains a `config` query parameter; while enabled, internal navigation links inherit that parameter so configuration mode survives navigation. Standalone pages and the shared layout content-version the common client script so they cannot retain contradictory interaction code.
+
+The homepage and join page version the shared `public/ui/client.js` asset by its content hash, matching `Layout.astro`. This prevents a long-lived development or deployed browser tab from retaining obsolete selector interactions after the script changes. Icon cards remain active comparison controls: selecting one synchronizes every icon input and the document identity while leaving both the icon flyout and any containing theme flyout open.
+
+The horizontal primary navigation contains the six governed content destinations followed by Search as a cross-site task. Search does not become a seventh content destination or homepage directory card. Its application page reserves the ordinary right contents-rail track without rendering a contents panel, keeping its main content on the same centred axis as other documentation pages while its filter rail remains outside the content track.
+
+The desktop global-navigation actions are one shared right-aligned group. The
+standard transparent compact “Become a member” button links to the Association
+website immediately before the standard yellow compact “Join a working group”
+button. Header CSS controls only their grouping and placement; common button
+variants retain visual and interaction ownership.
+
+Breadcrumbs omit the destination already named by global navigation and the
+current page already named by the H1. When a destination's linked `Overview` node
+owns child pages, however, that node remains a linked breadcrumb ancestor:
+“Overview” expresses the lower-level parent relationship without repeating the
+global destination label. Breadcrumb-free pages use the same shell inset but do
+not reserve an empty breadcrumb row.
+
+Later on 2 September 2026 the documentation rhythm became a direct-child flow contract.
+Ordinary `.prose` articles and Property Pack `.v2-doc` pages now make
 each following direct block responsible for its block-start separation; preceding
 blocks carry no trailing external margin. This removes accumulated card-grid,
 table, diagram and callout spacing while allowing those components to occur
-anywhere in a section. Standard flow is 12px. An H2 divider owns 16px before
-its rule and 8px of CSS padding after it; the heading line box completes the
-optical 16px rule-to-letterform gap. Components retain
+anywhere in a section. Standard flow is 12px. An H2 divider owns 24px before
+its rule and 16px of CSS padding after it; the heading line box completes the
+optical 24px rule-to-letterform gap. Components retain
 only their internal spacing. ODR detail pages keep their intentionally distinct
 Markdown reading rhythm.
 

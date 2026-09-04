@@ -1,0 +1,84 @@
+---
+import Layout from '@/layouts/Layout.astro';
+---
+
+<Layout
+  title="Source material and SharePoint"
+  description="How working-group members submit authorised evidence through isolated SharePoint organisation folders."
+>
+  <h1>Source material and SharePoint</h1>
+  <p class="lead">
+    Evidence intake is separate from group discussion. An active group uses a separate
+    SharePoint source-intake site with one private organisation folder per approved
+    company domain; the Team-connected Shared Documents library is not the controlled
+    intake boundary.
+  </p>
+
+  <h2 id="access">How the intake area works</h2>
+  <ul>
+    <li>The Team roster identifies approved participants.</li>
+    <li>An approved company-domain account may be placed in its organisation's contributor group.</li>
+    <li>The participant can browse the intake index and open only the organisation folder they are permitted to use.</li>
+    <li>Other participating organisations cannot view that folder or its contents.</li>
+    <li>Contributors may organise their own folder, but cannot change permissions or make material public.</li>
+  </ul>
+  <p>
+    A generic-provider account may take part in Teams but does not receive a provider-wide
+    SharePoint folder. Ask OPDA to add an authorised company-domain contributor instead.
+  </p>
+
+  <h2 id="readme">Make every submission understandable</h2>
+  <p>Maintain a README at the top of the organisation area containing:</p>
+  <ul>
+    <li>an index of submitted files and folders;</li>
+    <li>the source organisation, owner or steward;</li>
+    <li>version, date and the period for which the material applies;</li>
+    <li>the relevant working-group context and what the material demonstrates;</li>
+    <li>whether it is authoritative, informative, illustrative or disputed; and</li>
+    <li>licence, confidentiality, retention, reuse and interpretation restrictions.</li>
+  </ul>
+
+  <h2 id="useful-material">Useful material</h2>
+  <table>
+    <thead><tr><th>Type</th><th>Examples</th><th>What it can show</th></tr></thead>
+    <tbody>
+      <tr><td>Standards and interfaces</td><td>JSON Schema, OpenAPI, AsyncAPI, GraphQL and XML Schema</td><td>Existing exchange requirements and implementation constraints.</td></tr>
+      <tr><td>Data structures</td><td>Data dictionaries, field lists, ER diagrams and non-production DDL</td><td>Terms, cardinalities, identifiers and dependencies.</td></tr>
+      <tr><td>Business material</td><td>Policies, guidance, blank forms, contracts and handbooks</td><td>Definitions, rules, obligations and exceptions.</td></tr>
+      <tr><td>Semantic material</td><td>RDF, OWL, SKOS, SHACL, JSON-LD and mappings</td><td>Reuse candidates, vocabularies, validation and lineage.</td></tr>
+      <tr><td>Examples</td><td>Anonymised scenarios, valid/invalid samples, diagrams and screenshots</td><td>Competency questions, edge cases and test expectations.</td></tr>
+      <tr><td>Meeting evidence</td><td>Authorised transcripts with date, speakers and context</td><td>Rationale, disagreement, corrections and open questions.</td></tr>
+    </tbody>
+  </table>
+
+  <h2 id="do-not-submit">Do not submit</h2>
+  <ul>
+    <li>Personal, customer or live property-transaction data.</li>
+    <li>Passwords, API keys, credentials, private keys, connection details or other secrets.</li>
+    <li>Material restricted by confidentiality, contract, licence or NDA.</li>
+    <li>Executables, active scripts, macros, encrypted files, password-protected files or archives.</li>
+    <li>Links to websites, cloud drives, shared folders or online documents in place of the source file.</li>
+  </ul>
+  <p>
+    Audio and video files are not accepted through the current intake. Supply a
+    permitted transcript with its date, speakers and context. Upload only material your
+    organisation is authorised to share with OPDA for this work.
+  </p>
+
+  <h2 id="what-happens">What happens after submission</h2>
+  <ol>
+    <li>OPDA preserves the original and screens file type, rights, sensitivity and suitability.</li>
+    <li>Approved information is registered with provenance and the relevant context.</li>
+    <li>Facilitators may use it to frame questions or model candidates.</li>
+    <li>People review any proposition before it advances beyond candidate status.</li>
+  </ol>
+  <p>
+    A submission is not automatically public and is not automatically shared with other
+    participants. If SharePoint is blocked, email fallback is available only when the sender's
+    organisation resolves from an approved company-domain identity and live SharePoint
+    membership. Permitted, allowlisted attachments of at most 50 MiB may be accepted at
+    <a href="mailto:smartdata@openpropdata.org.uk">smartdata@openpropdata.org.uk</a>. Larger or
+    unknown files require manual review; links are not followed, and the same screening and
+    isolated organisation boundary still apply.
+  </p>
+</Layout>

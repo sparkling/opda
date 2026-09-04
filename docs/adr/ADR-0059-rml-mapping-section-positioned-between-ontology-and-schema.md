@@ -1,7 +1,7 @@
 ---
 status: accepted
 date: 2026-07-05
-updated: 2026-08-22
+updated: 2026-09-03
 tags: [information-architecture, navigation, rml, mapping, ontology, schema, astro]
 supersedes: []
 depends-on: [ADR-0041, ADR-0057, ODR-0035]
@@ -10,6 +10,10 @@ implements: []
 
 # RML Mapping Section — Positioned Between Ontology and Schema
 
+> Update 2026-09-03 — the mapping reader hierarchy now uses
+> `/development/inputs/pdtf-schema/schema-derived-ontology/**`. This route-only
+> amendment does not alter the RML mapping's position, evidence or authority.
+>
 ## Context and Problem Statement
 
 The RML mapping — adopted as OPDA's independent, bidirectional schema-provenance

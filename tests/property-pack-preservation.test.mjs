@@ -36,9 +36,9 @@ test('Property Pack migration is an explicit bijection from the retired route fa
   assert.equal(new Set(mapped.map(({ acceptedRoute }) => acceptedRoute)).size, 691);
   assert.equal(new Set(mapped.map(({ acceptedFile }) => acceptedFile)).size, 691);
   assert.equal(mapped.find(({ baselineRoute }) => baselineRoute === '/v2/comparison').acceptedRoute,
-    '/spdtf/property-pack/pdtf-schema-lineage');
+    '/development/property-pack/pdtf-schema-lineage');
   assert.equal(mapped.find(({ baselineRoute }) => baselineRoute === '/modelling/property-pack').acceptedRoute,
-    '/spdtf/property-pack/definition-and-scope');
+    '/development/property-pack/definition-and-scope');
 });
 
 test('Property Pack preserves the frozen 690 + 1 + 2 cut and classifies nine later pages', () => {
@@ -57,10 +57,10 @@ test('Property Pack preserves the frozen 690 + 1 + 2 cut and classifies nine lat
     acceptedFamilyRouteCount: 693,
     redirects: false,
     retiredRoutes: ['/v2/**', '/modelling/property-pack'],
-    canonicalRoot: '/spdtf/property-pack',
+    canonicalRoot: '/development/property-pack',
     lifecycleRoutes: [
-      '/spdtf/property-pack/review-and-releases',
-      '/spdtf/property-pack/technical-working-group-determination',
+      '/development/property-pack/review-and-releases',
+      '/development/property-pack/technical-working-group-determination',
     ],
   });
 
@@ -82,7 +82,7 @@ test('Property Pack preserves the frozen 690 + 1 + 2 cut and classifies nine lat
     lifecycle: 2,
     laterPages: 9,
     baselinePath: 'dist/v2',
-    acceptedPath: 'dist/spdtf/property-pack',
+    acceptedPath: 'dist/development/property-pack',
   });
 });
 
@@ -166,13 +166,13 @@ test('Property Pack migration rejects malformed and non-bijective mappings', () 
   assert.throws(() => propertyPackMigrationReceipt(
     records, frozenAddedRoutes, PROPERTY_PACK_ROUTE_MIGRATION,
     (route) => route === '/v2/comparison'
-      ? '/spdtf/property-pack/comparison'
+      ? '/development/property-pack/comparison'
       : originalReplacement(route),
   ), /undeclared route move/u);
   const duplicateRecords = structuredClone(records);
   const comparison = duplicateRecords.find(({ baselineRoute }) => baselineRoute === '/v2/comparison');
   comparison.acceptedRoute = originalReplacement('/v2');
-  comparison.acceptedFile = 'spdtf/property-pack/index.html';
+  comparison.acceptedFile = 'development/property-pack/index.html';
   assert.throws(() => propertyPackMigrationReceipt(
     duplicateRecords, frozenAddedRoutes, PROPERTY_PACK_ROUTE_MIGRATION,
     (route) => route === '/v2/comparison'

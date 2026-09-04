@@ -40,6 +40,7 @@ const status = odr.status || data.status || '';
   breadcrumbTitle={`ODR-${odr.number}`}
   description={`Ontology Decision Record ${odr.number}: ${odr.title} (${kind}, ${status})`}
   proseClass="prose wide odr-detail"
+  search={{ type: 'decision', collection: 'odr', status, identifier: `ODR-${odr.number}`, title: odr.title, date: dateStr, context: kind }}
 >
   <div class="odr-meta">
     {kind && <span class={`pill ${KIND_PILL[kind] ?? 'pill--brand'}`}>{kind}</span>}

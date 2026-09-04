@@ -40,7 +40,7 @@ import {
 
 test('Property Pack review lists use the shared prose rhythm and an in-measure marker', async () => {
   const [page, styles] = await Promise.all([
-    readFile(new URL('../src/pages/spdtf/property-pack/coverage.astro', import.meta.url), 'utf8'),
+    readFile(new URL('../src/pages/development/property-pack/coverage.astro', import.meta.url), 'utf8'),
     readFile(new URL('../src/styles/property-pack.css', import.meta.url), 'utf8'),
   ]);
   assert.match(page, /<ul class="v2-review-list">/u);
@@ -48,7 +48,7 @@ test('Property Pack review lists use the shared prose rhythm and an in-measure m
 });
 
 test('complete trace register is server-rendered before interactive enhancement', async () => {
-  const page = await readFile(new URL('../src/pages/spdtf/property-pack/coverage.astro', import.meta.url), 'utf8');
+  const page = await readFile(new URL('../src/pages/development/property-pack/coverage.astro', import.meta.url), 'utf8');
   assert.doesNotMatch(page, /<details>/u);
   assert.match(page, /id="property-pack-trace-register"/u);
   assert.match(page, /data-static-trace-register/u);
@@ -116,7 +116,7 @@ test('lexical overlap is measured without asserting semantic equivalence', () =>
 });
 
 test('lineage name-match views explain their limited evidence', async () => {
-  const page = await readFile(new URL('../src/pages/spdtf/property-pack/pdtf-schema-lineage.astro', import.meta.url), 'utf8');
+  const page = await readFile(new URL('../src/pages/development/property-pack/pdtf-schema-lineage.astro', import.meta.url), 'utf8');
   assert.match(page, /mechanical identifier check/u);
   assert.match(page, /does\s*<strong>not<\/strong> establish/u);
   assert.match(page, /reclassification questions/u);
@@ -126,14 +126,14 @@ test('lineage name-match views explain their limited evidence', async () => {
 });
 
 test('semantic-home count pills retain their complete information text', async () => {
-  const page = await readFile(new URL('../src/pages/spdtf/property-pack/definition-and-scope.astro', import.meta.url), 'utf8');
+  const page = await readFile(new URL('../src/pages/development/property-pack/definition-and-scope.astro', import.meta.url), 'utf8');
   assert.match(page, /<p\s+class="pill pill--info context-card__count"/u);
   assert.match(page, /source data point\$\{context\.source_item_count === 1 \? '' : 's'\}/u);
   assert.doesNotMatch(page, /<span class="pill pill--info context-card__count"/u);
 });
 
 test('candidate artefacts are a six-link desktop grid', async () => {
-  const page = await readFile(new URL('../src/pages/spdtf/property-pack/definition-and-scope.astro', import.meta.url), 'utf8');
+  const page = await readFile(new URL('../src/pages/development/property-pack/definition-and-scope.astro', import.meta.url), 'utf8');
   const styles = await readFile(new URL('../src/styles/property-pack.css', import.meta.url), 'utf8');
   assert.match(page, /class="v2-card-grid v2-card-grid--artefacts"/u);
   assert.equal((page.match(/Open artefact/g) ?? []).length, 6);
@@ -169,10 +169,10 @@ test('stable detail routes are unique and identifier-based', () => {
   assert.equal(new Set(sourceRoutes).size, 451);
   assert.equal(new Set(schemeRoutes).size, 14);
   assert.equal(new Set(shapeRoutes).size, 45);
-  assert.ok(resourceRoutes.every((route) => /^\/spdtf\/property-pack\/resources\/[a-z-]+\/[A-Za-z0-9_-]+$/.test(route)));
-  assert.ok(sourceRoutes.every((route) => /^\/spdtf\/property-pack\/data-dictionary\/pp-[0-9a-f]{12}$/.test(route)));
-  assert.ok(shapeRoutes.every((route) => /^\/spdtf\/property-pack\/shapes\/[a-z-]+\/[A-Za-z0-9_-]+$/.test(route)));
-  assert.ok(schemeRoutes.every((route) => /^\/spdtf\/property-pack\/vocabularies\/[a-z-]+\/[A-Za-z0-9_-]+$/.test(route)));
+  assert.ok(resourceRoutes.every((route) => /^\/development\/property-pack\/resources\/[a-z-]+\/[A-Za-z0-9_-]+$/.test(route)));
+  assert.ok(sourceRoutes.every((route) => /^\/development\/property-pack\/data-dictionary\/pp-[0-9a-f]{12}$/.test(route)));
+  assert.ok(shapeRoutes.every((route) => /^\/development\/property-pack\/shapes\/[a-z-]+\/[A-Za-z0-9_-]+$/.test(route)));
+  assert.ok(schemeRoutes.every((route) => /^\/development\/property-pack\/vocabularies\/[a-z-]+\/[A-Za-z0-9_-]+$/.test(route)));
   const generatedRoutes = [...resourceRoutes, ...sourceRoutes, ...schemeRoutes, ...shapeRoutes];
   assert.equal(new Set(generatedRoutes).size, 669);
   assert.equal(new Set(generatedRoutes.map((route) => route.toLocaleLowerCase())).size, 669);
@@ -206,8 +206,8 @@ test('work packages are source-catalogue views with class-only model diagrams', 
       assert.ok(source.includes(`-.->|"${property.label}"|`));
     }
   }
-  const index = await readFile(new URL('../src/pages/spdtf/property-pack/work-packages/index.astro', import.meta.url), 'utf8');
-  const detail = await readFile(new URL('../src/pages/spdtf/property-pack/work-packages/[workPackage].astro', import.meta.url), 'utf8');
+  const index = await readFile(new URL('../src/pages/development/property-pack/work-packages/index.astro', import.meta.url), 'utf8');
+  const detail = await readFile(new URL('../src/pages/development/property-pack/work-packages/[workPackage].astro', import.meta.url), 'utf8');
   assert.match(index, /not a semantic home, ontology module or working-group decision/u);
   assert.match(detail, /Dotted lines show incoming and outgoing properties/u);
   assert.match(detail, /variant="work-package"/u);
@@ -299,7 +299,7 @@ test('context diagrams and boundary map preserve semantic-home distinctions', ()
 });
 
 test('contextual-boundary register uses linked cards without losing table fields', async () => {
-  const page = await readFile(new URL('../src/pages/spdtf/property-pack/contexts/index.astro', import.meta.url), 'utf8');
+  const page = await readFile(new URL('../src/pages/development/property-pack/contexts/index.astro', import.meta.url), 'utf8');
   assert.match(page, /<h2 id="homes">Contextual-boundary register<\/h2>/u);
   assert.match(page, /class="v2-card v2-context-card"/u);
   for (const field of ['OWL resources', 'Source data points', 'Shapes']) assert.match(page, new RegExp(field, 'u'));

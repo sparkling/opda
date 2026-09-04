@@ -36,6 +36,7 @@ const status = adr.status || data.status || '';
   breadcrumbTitle={`ADR-${adr.number}`}
   description={`Architecture Decision Record ${adr.number}: ${adr.title} (${status})`}
   proseClass="prose wide odr-detail"
+  search={{ type: 'decision', collection: 'adr', status, identifier: `ADR-${adr.number}`, title: adr.title, date: dateStr }}
 >
   <div class="odr-meta">
     {status && <span class={`pill ${STATUS_PILL[status] ?? ''}`}>{status}</span>}

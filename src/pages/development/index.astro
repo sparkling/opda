@@ -1,0 +1,69 @@
+---
+import Layout from '@/layouts/Layout.astro';
+import GatewayCard from '@/components/ia/GatewayCard.astro';
+---
+
+<Layout
+  title="Development"
+  description="The SPDTF development workspace: evidence-up modelling, bounded contexts, working groups and reviewable candidates."
+>
+  <h1>Development</h1>
+  <p class="lead">
+    SPDTF is the first Smart Property Data Trust Framework scheme draft being written
+    collaboratively across industry and with stakeholders. Its domain-led, evidence-up
+    process makes meaning reviewable. It is in development, not yet an adopted standard
+    or approved model.
+  </p>
+
+  <div class="callout callout--key">
+    <p class="callout__label">Development status</p>
+    <p>
+      Human working groups own domain meaning. Governance controls later promotion. AI
+      can extract, compare and draft, but it receives no standards authority. A machine
+      validation result proves only the encoded checks, not semantic agreement.
+    </p>
+  </div>
+
+  <h2 id="property-pack">Priority workstream: Property Pack ontology</h2>
+  <p>
+    The <a href="/development/property-pack">Property Pack ontology candidate</a> is an
+    accelerated component of SPDTF. The Technical Working Group must make an initial
+    determination by the end of September 2026; later domain review and controlled change
+    remain separate. It is machine-generated, non-normative and not yet determined.
+  </p>
+
+  <h2 id="ontology-journey">Semantic modelling</h2>
+  <p>
+    This journey starts with business questions and keeps semantic meaning distinct from
+    validation, projections, implementation and governance. Each page uses the same
+    authority contract and links the next reviewable step.
+  </p>
+  <div class="card-grid">
+    <GatewayCard href="/semantic-modelling" title="Semantic modelling" description="Follow the complete business-language journey from why ontologies through projections." />
+    <GatewayCard href="/semantic-modelling/semantic-package" title="Six-part semantic package" description="Glossary, dictionary, taxonomies, controlled vocabularies, resources and relationships." />
+    <GatewayCard href="/semantic-modelling/bounded-contexts" title="Bounded contexts and common boundary" description="Keep local precision while making cross-context exchange explicit." />
+    <GatewayCard href="/semantic-modelling/coverage" title="Coverage crosswalk" description="The separate four-lens, 11-theme workshop view and eight formal concerns." />
+    <GatewayCard href="/semantic-modelling/standards" title="Standards, vocabularies and frameworks" description="Targets, candidates and references with bounded conformance and status claims." />
+    <GatewayCard href="/semantic-modelling/evidence-and-mappings" title="Evidence, provenance and mappings" description="Trace claims and distinguish all five mapping meanings." />
+    <GatewayCard href="/development/candidates" title="Candidate register" description="See whether a context-owned candidate, accountable owner and immutable diff actually exist." />
+    <GatewayCard href="/development/questions" title="Open questions and changes" description="Reach each group’s competency questions without needing RDF vocabulary." />
+    <GatewayCard href="/development/outputs" title="Outputs and validation evidence" description="Follow the versioned package manifest and keep projections subordinate to meaning." />
+    <GatewayCard href="/semantic-modelling/validation" title="Validation and generated projections" description="Conformance, lifecycle, receipts and tested downstream representations." />
+  </div>
+
+  <h2 id="workspace">Development workspace</h2>
+  <div class="card-grid">
+    <GatewayCard href="/development/working-groups" title="Working groups" eyebrow="Canonical workspace" description="The seven named groups plus the peer Interoperability Working Group." />
+    <GatewayCard href="/development/property-pack" title="Property Pack ontology" eyebrow="Accelerated component" description="Review the 451-item scope, current candidate, September determination and later review path." />
+    <GatewayCard href="/governance" title="Governance" eyebrow="Shared service" description="Decision rights, status, lifecycle and promotion records live in one authority tree." />
+  </div>
+
+  <h2 id="third-party-inputs">Third-party inputs</h2>
+  <p>
+    External material can inform compatibility and evidence review without becoming SPDTF
+    authority. Each source retains its own owner, maturity and limitations.
+  </p>
+  <div class="card-grid">
+    <GatewayCard href="/development/inputs" title="Third-party inputs" eyebrow="Source boundary" description="Browse attributed external inputs kept separate from SPDTF candidates and decisions." />
+  </div>
+</Layout>

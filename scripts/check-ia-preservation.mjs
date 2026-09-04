@@ -339,14 +339,14 @@ if (routeManifest) {
   }
   const workflow = readFileSync(path.join(ROOT, '.github/workflows/deploy-aws.yml'), 'utf8');
   const retainedPdtfPrefixes = [
-    'spdtf/inputs/pdtf-schema/schema-derived-ontology/use-and-tooling/tools/ontospy/', 'spdtf/inputs/pdtf-schema/schema-derived-ontology/use-and-tooling/tools/pylode/',
-    'spdtf/inputs/pdtf-schema/schema-derived-ontology/use-and-tooling/tools/shaclplay/',
-    'spdtf/inputs/pdtf-schema/schema-derived-ontology/use-and-tooling/tools/widoco/',
+    'development/inputs/pdtf-schema/schema-derived-ontology/use-and-tooling/tools/ontospy/', 'development/inputs/pdtf-schema/schema-derived-ontology/use-and-tooling/tools/pylode/',
+    'development/inputs/pdtf-schema/schema-derived-ontology/use-and-tooling/tools/shaclplay/',
+    'development/inputs/pdtf-schema/schema-derived-ontology/use-and-tooling/tools/widoco/',
   ];
   for (const prefix of retainedPdtfPrefixes) {
     if (!workflow.includes(`--exclude "${prefix}*"`)) fail(`deployment does not protect externally retained ${prefix}`);
   }
-  if (!workflow.includes('--exclude "spdtf/inputs/pdtf-schema/schema-derived-ontology/use-and-tooling/artefacts/*"')) {
+  if (!workflow.includes('--exclude "development/inputs/pdtf-schema/schema-derived-ontology/use-and-tooling/artefacts/*"')) {
     fail('deployment does not protect frozen ontology artefacts at their canonical path');
   }
   for (const oldPrefix of ['ontology/artefacts/', 'ontology/tools/ontospy/', 'ontology/tools/pylode/',
@@ -458,13 +458,13 @@ if (familyManifest) {
       && (family.technicalMappedRouteCount !== 690 || family.canonicalContentRouteCount !== 691
         || family.lifecyclePageCount !== 2 || family.postMigrationPageCount !== 9
         || family.accepted?.count !== family.canonicalContentRouteCount + family.lifecyclePageCount
-          + family.postMigrationPageCount || family.baselinePath !== 'dist/v2' || family.acceptedPath !== 'dist/spdtf/property-pack')) {
+          + family.postMigrationPageCount || family.baselinePath !== 'dist/v2' || family.acceptedPath !== 'dist/development/property-pack')) {
       fail('Property Pack family does not declare the frozen 690 → 691 + 2 cut plus 9 later work-package pages');
     }
     const movedFamilyPath = family.id === 'ontology-tools'
-      ? 'public/spdtf/inputs/pdtf-schema/schema-derived-ontology/use-and-tooling/tools'
+      ? 'public/development/inputs/pdtf-schema/schema-derived-ontology/use-and-tooling/tools'
       : family.id === 'ontology-artefacts'
-        ? 'public/spdtf/inputs/pdtf-schema/schema-derived-ontology/use-and-tooling/artefacts' : null;
+        ? 'public/development/inputs/pdtf-schema/schema-derived-ontology/use-and-tooling/artefacts' : null;
     if ((hasPdtf1CutReceipt || hasPdtfSchemaInputReceipt) && movedFamilyPath
       && (family.baselinePath !== `public/ontology/${family.id.slice('ontology-'.length)}`
         || family.acceptedPath !== movedFamilyPath

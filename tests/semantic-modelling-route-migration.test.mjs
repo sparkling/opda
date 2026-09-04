@@ -33,7 +33,7 @@ test('semantic modelling has one clean canonical route family', () => {
   });
   assert.equal(getSemanticModellingReplacementRoute('/spdtf/ontologies'), '/semantic-modelling');
   assert.equal(getSemanticModellingReplacementRoute('/spdtf/ontologies/standards?view=all'), '/semantic-modelling/standards');
-  assert.equal(getSemanticModellingReplacementRoute('/spdtf/property-pack'), null);
+  assert.equal(getSemanticModellingReplacementRoute('/development/property-pack'), null);
   assert.equal(getAcceptedRoute('/spdtf-2/ontologies/standards'), '/semantic-modelling/standards');
   assert.equal(getDeclaredRouteReplacement('/semantic-modelling/standards'), null);
   assert.equal(getLegacyCommentKey('/semantic-modelling/standards'), '/spdtf-2/ontologies/standards');

@@ -22,7 +22,7 @@ import { allResources, pdtfSlug, pdtfTurtleUrl } from '@/lib/ontology-model';
 // Bidirectional linking (operator request, 2026-07-06): every class/property
 // this route serves also shows whether — and where — it's used in the RML
 // mapping (ADR-0060), reading the same committed triplesmap-index.json the
-// /spdtf/inputs/pdtf-schema/schema-derived-ontology/lineage-provenance-and-verification/schema-to-ontology-verification/triplesmaps pages use. Built once, module scope, for every page.
+// /development/inputs/pdtf-schema/schema-derived-ontology/lineage-provenance-and-verification/schema-to-ontology-verification/triplesmaps pages use. Built once, module scope, for every page.
 function loadMappingUsage(): Record<string, string[]> {
   const idxPath = path.resolve(process.cwd(), 'source/03-standards/rml/triplesmap-index.json');
   const idx = JSON.parse(fs.readFileSync(idxPath, 'utf8'));
@@ -51,8 +51,22 @@ const { r } = Astro.props;
 const title = (r.label ?? r.prefLabel ?? r.localName) as string;
 const description = ((r.comment ?? r.definition ?? '') as string).replace(/\s+/g, ' ').trim().slice(0, 160);
 const mappingUsage = MAPPING_USAGE[r.id] ?? [];
+// Search facets (site-search-model.mjs): the resource kind and its DDD module.
+const SEARCH_KINDS: Record<string, string> = { class: 'class', shape: 'node-shape', concept: 'concept', scheme: 'concept-scheme' };
+const searchKind = r.entryKind === 'property'
+  ? (r.kind === 'object' ? 'object-property' : 'datatype-property')
+  : SEARCH_KINDS[r.entryKind];
+const searchModule = (r.entryKind === 'class' ? r.context : r.module) ?? '';
+const search = {
+  type: 'ontology',
+  collection: 'pdtf-derived',
+  kind: searchKind,
+  identifier: `opda:${r.id}`,
+  status: 'draft',
+  context: searchModule ? `${searchModule[0].toUpperCase()}${searchModule.slice(1)} module` : '',
+};
 ---
-<Layout title={title} description={description} hideComments={true}>
+<Layout title={title} description={description} hideComments={true} search={search}>
   <link slot="head" rel="alternate" type="text/turtle" href={pdtfTurtleUrl(r.id)} />
   {r.entryKind === 'class' ? <ClassDetail cls={r} mappingUsage={mappingUsage} />
     : r.entryKind === 'property' ? <PropertyDetail prop={r} mappingUsage={mappingUsage} />

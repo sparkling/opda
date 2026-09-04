@@ -1,0 +1,74 @@
+---
+import Layout from '@/layouts/Layout.astro';
+---
+
+<Layout
+  title="Model review and decisions"
+  description="How working-group members review SPDTF candidates and how domain, interoperability, technical and governance authority differ."
+>
+  <h1>Model review and decisions</h1>
+  <p class="lead">
+    Members review business meaning, evidence, examples and consequences. They are not
+    expected to author ontology syntax, and a generated candidate does not become a
+    standard merely because it appears on the website.
+  </p>
+
+  <h2 id="review-path">The current review path</h2>
+  <ol>
+    <li><strong>Evidence:</strong> members submit authorised sources, scenarios and domain explanations.</li>
+    <li><strong>Questions:</strong> the group makes ambiguity, gaps and competency questions explicit.</li>
+    <li><strong>Candidate:</strong> facilitators and tools produce a versioned, reviewable proposal.</li>
+    <li><strong>Review:</strong> members challenge definitions, relationships, constraints, examples and omissions.</li>
+    <li><strong>Revision:</strong> accepted corrections and new evidence inform a visible next candidate.</li>
+  </ol>
+  <p>
+    ADR-0065 describes a fuller evidence-to-model cycle, but ADR-0065 remains proposed.
+    Treat it as the documented direction and keep each workspace's actual candidate and
+    review status visible.
+  </p>
+
+  <h2 id="check">What to check</h2>
+  <ul>
+    <li>Does the definition match how practitioners use the term in this context?</li>
+    <li>Are two different things being merged, or one thing being duplicated?</li>
+    <li>Do the relationships, roles and direction make business sense?</li>
+    <li>Are required distinctions, exceptions, lifecycle states or time conditions missing?</li>
+    <li>Does a controlled value set use the right terms and scope?</li>
+    <li>Can the candidate answer the group's competency questions and represent real examples?</li>
+    <li>Does it cross another context boundary, and if so, is the ownership and mapping explicit?</li>
+    <li>Does the published change view explain what moved and why?</li>
+  </ul>
+  <p>
+    Cross-boundary comparisons follow the
+    <a href="/semantic-modelling/evidence-and-mappings#cross-context-mappings">Category 8 mapping method</a>:
+    tools may suggest a candidate, but affected semantic owners and Interoperability decide
+    whether there is a mapping and which predicate the evidence supports.
+  </p>
+
+  <h2 id="feedback">Make feedback actionable</h2>
+  <p>When commenting, identify:</p>
+  <ul>
+    <li>the page, term, relationship, example or version affected;</li>
+    <li>the problem and its practical consequence;</li>
+    <li>supporting evidence or a counterexample where available;</li>
+    <li>the change you think should be considered; and</li>
+    <li>whether the issue is local to the group or crosses a boundary.</li>
+  </ul>
+  <p>
+    Use the relevant Teams thread for discussion and the page's website comments for
+    contextual feedback. Neither reaction counts nor a comment alone is a decision record.
+  </p>
+
+  <h2 id="authority">Who may decide what</h2>
+  <table>
+    <thead><tr><th>Actor</th><th>Responsibility</th><th>Boundary</th></tr></thead>
+    <tbody>
+      <tr><td>Domain or scheme working group</td><td>Reviews meaning inside its stated scope.</td><td>Does not unilaterally redefine another context.</td></tr>
+      <tr><td>Interoperability Working Group</td><td>Reviews the common boundary, context map and <a href="/semantic-modelling/evidence-and-mappings#cross-context-mappings">cross-context mappings</a>.</td><td>Does not redesign internal domain meaning.</td></tr>
+      <tr><td>Technology Working Group</td><td>Supplies implementation, validation, compatibility and release-readiness evidence.</td><td>It is not a ninth modelling context and does not ratify a standard.</td></tr>
+      <tr><td>Property Technology working group</td><td>Owns platforms, workflow, integrations and operational feedback in its bounded context.</td><td>It is not the cross-cutting Technology Working Group.</td></tr>
+      <tr><td>Facilitators and AI</td><td>Extract, compare, draft, challenge and test proposals.</td><td>AI has no decision authority, membership or vote.</td></tr>
+      <tr><td>Authorised OPDA governance</td><td>Controls any later adoption or ratification.</td><td>The detailed lifecycle in ADR-0068 is still proposed.</td></tr>
+    </tbody>
+  </table>
+</Layout>

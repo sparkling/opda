@@ -1,15 +1,19 @@
 ---
 status: accepted
 date: 2026-08-03
-updated: 2026-08-22
+updated: 2026-09-03
 tags: [ontology, property-pack, greenfield, provenance, toml, generation, semantic-modelling]
 supersedes: []
 depends-on: [ADR-0039]
-implements: [scripts/property_pack_catalogue.py, scripts/property_pack_candidate.py, src/data/property-pack, source/03-standards/ontology-candidates/property-pack/0.1, src/pages/spdtf/property-pack]
+implements: [scripts/property_pack_catalogue.py, scripts/property_pack_candidate.py, src/data/property-pack, source/03-standards/ontology-candidates/property-pack/0.1, src/pages/development/property-pack]
 ---
 
 # The 451 required Property Pack data points are the closed seed scope for a greenfield ontology
 
+> Update 2026-09-03 — the implemented reader pages now live at
+> `/development/property-pack/**`; this route-only change does not alter the
+> closed seed scope or ontology generation decision.
+>
 ## Context and Problem Statement
 
 The schema-derived OPDA ontology was generated from the PDTF schema and its form overlays.

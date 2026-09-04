@@ -14,6 +14,14 @@ import { findNavigationPage, getNavigationSection } from '@/lib/site-navigation'
 import { PDTF1_ROUTES } from '@/lib/pdtf1-routes.mjs';
 import SidebarItem from './SidebarItem.astro';
 
+interface Props {
+  label?: string;
+  ariaLabel?: string;
+}
+
+const { label = 'In this section', ariaLabel } = Astro.props;
+const hasCustomContent = Astro.slots.has('default');
+
 const path = normalizeUrl(Astro.url.pathname);
 const section = getNavigationSection(path);
 const sectionKey = section?.key ?? null;
@@ -27,7 +35,7 @@ function containsActive(item: Item): boolean {
   return false;
 }
 ---
-{section && (
+{(section || hasCustomContent) && (
   <aside class="app-sidebar" id="app-sidebar">
     <button
       type="button"
@@ -36,7 +44,7 @@ function containsActive(item: Item): boolean {
       aria-controls="section-navigation"
       aria-expanded="true"
     >
-      <span class="rail-collapse-toggle__label">In this section</span>
+      <span class="rail-collapse-toggle__label">{label}</span>
       <svg class="rail-collapse-toggle__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.25"
            stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
         <g class="rail-glyph rail-glyph--toward-start">
@@ -54,15 +62,14 @@ function containsActive(item: Item): boolean {
       class="sidebar-nav"
       id="section-navigation"
       data-section={sectionKey}
-      aria-label={`${section.title} section`}
+      aria-label={ariaLabel ?? (section ? `${section.title} section` : label)}
     >
-      {section.groups.map(group => {
+      {hasCustomContent ? <slot /> : section?.groups.map(group => {
         const isActiveLocation = normalizeUrl(group.url) === activePath;
         const isActivePage = isActiveLocation && activePath === path;
         const containsActivePage = isActiveLocation || group.items.some(containsActive);
         const hasChildren = group.items.length > 0;
         const defaultOpen = hasChildren && containsActivePage;
-        const emphasizeFolders = section.key === 'spdtf' && group.url === PDTF1_ROUTES.inputRoot;
         const namedGroupId = group.url === PDTF1_ROUTES.inputRoot
           ? 'section-nav-group-spdtf-inputs'
           : null;
@@ -74,7 +81,7 @@ function containsActive(item: Item): boolean {
         ]).get(group.url);
         return (
           <section
-            class={`nav-group${hasChildren ? '' : ' nav-group--leaf'}${emphasizeFolders ? ' has-emphasized-folders' : ''}${defaultOpen ? ' is-open' : ''}`}
+            class={`nav-group${hasChildren ? '' : ' nav-group--leaf'}${defaultOpen ? ' is-open' : ''}`}
             data-group={group.heading}
             data-active={containsActivePage ? 'true' : undefined}
           >
@@ -94,7 +101,6 @@ function containsActive(item: Item): boolean {
                       activePath={activePath}
                       currentPath={path}
                       containsActive={containsActive}
-                      emphasized={emphasizeFolders}
                     />
                   ))}
                 </ul>

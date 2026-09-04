@@ -252,27 +252,27 @@ resource_manifest:
       ingestion: render-each-built-route-to-markdown
       build_prerequisite: make build-data
       routes:
-        - /spdtf/property-pack/
-        - /spdtf/property-pack/definition-and-scope/
-        - /spdtf/property-pack/model/
-        - /spdtf/property-pack/contexts/
-        - /spdtf/property-pack/relationships/
-        - /spdtf/property-pack/coverage/
-        - /spdtf/property-pack/validation/
-        - /spdtf/property-pack/standards/
-        - /spdtf/property-pack/review-and-releases/
-        - /spdtf/property-pack/technical-working-group-determination/
+        - /development/property-pack/
+        - /development/property-pack/definition-and-scope/
+        - /development/property-pack/model/
+        - /development/property-pack/contexts/
+        - /development/property-pack/relationships/
+        - /development/property-pack/coverage/
+        - /development/property-pack/validation/
+        - /development/property-pack/standards/
+        - /development/property-pack/review-and-releases/
+        - /development/property-pack/technical-working-group-determination/
       source_definitions:
-        - src/pages/spdtf/property-pack/index.astro
-        - src/pages/spdtf/property-pack/definition-and-scope.astro
-        - src/pages/spdtf/property-pack/model.astro
-        - src/pages/spdtf/property-pack/contexts/index.astro
-        - src/pages/spdtf/property-pack/relationships.astro
-        - src/pages/spdtf/property-pack/coverage.astro
-        - src/pages/spdtf/property-pack/validation.astro
-        - src/pages/spdtf/property-pack/standards.astro
-        - src/pages/spdtf/property-pack/review-and-releases.astro
-        - src/pages/spdtf/property-pack/technical-working-group-determination.astro
+        - src/pages/development/property-pack/index.astro
+        - src/pages/development/property-pack/definition-and-scope.astro
+        - src/pages/development/property-pack/model.astro
+        - src/pages/development/property-pack/contexts/index.astro
+        - src/pages/development/property-pack/relationships.astro
+        - src/pages/development/property-pack/coverage.astro
+        - src/pages/development/property-pack/validation.astro
+        - src/pages/development/property-pack/standards.astro
+        - src/pages/development/property-pack/review-and-releases.astro
+        - src/pages/development/property-pack/technical-working-group-determination.astro
       output_pattern: docs/notebooklm/prepared/property-pack-site/{source-id}.md
       transformation: {reproducibility: deterministic-one-to-one}
       repository_tracking: tracked
@@ -316,11 +316,11 @@ resource_manifest:
       reason: Property Pack source schemas are explicitly excluded by ADR-0081.
     - pattern: source/03-standards/ontology-candidates/property-pack/0.1/projections/resource-register.json
       reason: It is byte-identical to business-glossary.json and adds no evidence.
-    - pattern: src/pages/spdtf/property-pack/resources/[context]/**
+    - pattern: src/pages/development/property-pack/resources/[context]/**
       reason: Generated page-per-resource views duplicate canonical projections.
-    - pattern: src/pages/spdtf/property-pack/shapes/[context]/**
+    - pattern: src/pages/development/property-pack/shapes/[context]/**
       reason: Generated page views duplicate the canonical shape graphs and projection.
-    - pattern: src/pages/spdtf/property-pack/vocabularies/[context]/**
+    - pattern: src/pages/development/property-pack/vocabularies/[context]/**
       reason: Generated page views duplicate the canonical vocabulary projection.
     - pattern: src/data/property-pack/properties/**
       reason: Schema-derived seed rows are not the canonical ontology source.

@@ -98,7 +98,7 @@ test('the public API remains same-origin and cache-disabled without the retired 
   assert.match(behavior, /4135ea2d-6df8-44a3-9df3-4b5a84be39ad/u);
   assert.doesNotMatch(behavior, /LambdaFunctionAssociations/u);
 
-  const policy = site.match(/WorkingGroupInterestOriginRequestPolicy:[\s\S]*?(?=\n\s{2}\w)/u)?.[0];
+  const policy = site.match(/PublicFormOriginRequestPolicy:[\s\S]*?(?=\n\s{2}\w)/u)?.[0];
   assert.match(policy ?? '', /Headers: \[Content-Type\]/u);
   assert.match(policy ?? '', /CookieBehavior: none/u);
   assert.match(policy ?? '', /QueryStringBehavior: none/u);
@@ -123,6 +123,40 @@ test('DynamoDB is on-demand, encrypted, TTL-enabled and protected', async () => 
   assert.match(stack, /AttributeName: expiresAt\n\s+Enabled: true/u);
   assert.match(stack, /PointInTimeRecoveryEnabled: true/u);
   assert.match(stack, /DeletionProtectionEnabled: true/u);
+  assert.match(stack, /StreamViewType: KEYS_ONLY/u);
+  assert.match(stack, /RegistrationsTableStreamArn:[\s\S]*RegistrationsTable\.StreamArn/u);
+});
+
+test('stored public submissions share one reference-only SNS and SQS event boundary', async () => {
+  const [site, events, newsletter, bootstrap] = await Promise.all([
+    read('config/aws/site-stack.yaml'),
+    read('config/aws/submission-events-stack.yaml'),
+    read('config/aws/newsletter-subscription-stack.yaml'),
+    read('config/aws/bootstrap-stack.yaml'),
+  ]);
+
+  assert.match(site, /SubmissionEventsApplication:[\s\S]*TemplateURL: submission-events-stack\.yaml/u);
+  assert.match(site, /RegistrationsTableStreamArn: !GetAtt WorkingGroupInterestApplication\.Outputs\.RegistrationsTableStreamArn/u);
+  assert.match(site, /SubscriptionsTableStreamArn: !GetAtt NewsletterSubscriptionApplication\.Outputs\.SubscriptionsTableStreamArn/u);
+  assert.match(newsletter, /StreamViewType: KEYS_ONLY/u);
+  assert.match(events, /Type: AWS::SNS::Topic[\s\S]*KmsMasterKeyId: alias\/aws\/sns/u);
+  assert.equal((events.match(/Type: AWS::SNS::Topic\n/gu) ?? []).length, 1);
+  assert.equal((events.match(/Type: AWS::SQS::Queue\n/gu) ?? []).length, 2);
+  assert.match(events, /SqsManagedSseEnabled: true/u);
+  assert.match(events, /RawMessageDelivery: true/u);
+  assert.match(events, /aws:SourceArn: !Ref SubmissionEventsTopic/u);
+  assert.match(events, /aws:SourceAccount: !Ref AWS::AccountId/u);
+  assert.match(events, /CodeUri: submission-events\//u);
+  assert.match(events, /MemorySize: 128/u);
+  assert.match(events, /FunctionResponseTypes: \[ReportBatchItemFailures\]/u);
+  assert.equal((events.match(/Type: AWS::Lambda::EventSourceMapping\n/gu) ?? []).length, 2);
+  assert.match(events, /Pattern: '\{"eventName":\["INSERT"\]\}'/u);
+  assert.match(events, /Pattern: '\{"eventName":\["INSERT","MODIFY"\]\}'/u);
+  assert.match(events, /MaximumRetryAttempts: 5/u);
+  assert.match(events, /Destination: !GetAtt SubmissionEventsFailureQueue\.Arn/u);
+  assert.match(bootstrap, /- sns:\*/u);
+  assert.match(bootstrap, /- sqs:\*/u);
+  assert.match(bootstrap, /- kms:DescribeKey/u);
 });
 
 test('Lambda has only the table write access needed by the form', async () => {

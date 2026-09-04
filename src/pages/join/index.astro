@@ -4,6 +4,7 @@ import BrandHeading from '@/components/BrandHeading.astro';
 import ThemeToggle from '@/components/ThemeToggle.astro';
 import { contributionOptions, workingGroupContexts } from '@/data/working-group-campaign';
 import StandalonePublicLayout from '@/layouts/StandalonePublicLayout.astro';
+import { assetVersion } from '@/lib/asset-version.mjs';
 import { BriefcaseBusiness, Route, SearchCheck } from '@lucide/astro';
 import '@/styles/working-group-join.css';
 import '@/styles/working-group-campaign.css';
@@ -13,6 +14,7 @@ import '@/styles/working-group-campaign-responsive.css';
 const privacyNoticeVersion = '2026-08-13';
 const title = 'Join an SPDTF working group';
 const description = 'Bring your professional experience to the industry working groups helping to develop the Smart Property Data Trust Framework.';
+const clientV = assetVersion('/ui/client.js');
 ---
 <StandalonePublicLayout
   title={title}
@@ -27,7 +29,7 @@ const description = 'Bring your professional experience to the industry working 
           <BrandHeading surface="dark" campaign />
         </a>
         <div class="wg-campaign-hero__utilities">
-          <a class="btn btn--ghost wg-hero-opda" href="/" aria-label="Open Property Data Association home">OPDA</a>
+          <a class="btn btn--quiet wg-hero-opda" href="/" aria-label="Open Property Data Association home">OPDA</a>
           <ThemeToggle />
         </div>
       </header>
@@ -239,7 +241,7 @@ const description = 'Bring your professional experience to the industry working 
     import '@/scripts/working-group-join';
     import '@/scripts/working-group-campaign';
   </script>
-  <script is:inline src="/ui/client.js"></script>
+  <script is:inline src={`/ui/client.js?v=${clientV}`}></script>
 </StandalonePublicLayout>
 
 <style>

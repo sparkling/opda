@@ -1,0 +1,59 @@
+---
+import NewsletterSubscriptionForm from '@/components/NewsletterSubscriptionForm.astro';
+---
+<dialog id="newsletter-subscription-dialog" class="newsletter-dialog" aria-labelledby="newsletter-dialog-title" aria-describedby="newsletter-dialog-lead" data-newsletter-dialog>
+  <div class="newsletter-dialog__shell">
+    <header class="newsletter-dialog__header">
+      <div>
+        <p class="overline">Newsletter</p>
+        <h2 id="newsletter-dialog-title">Subscribe to OPDA updates</h2>
+        <p id="newsletter-dialog-lead">Occasional updates about the Smart Property Data Trust Framework, working-group progress and events.</p>
+      </div>
+      <button class="newsletter-dialog__close" type="button" aria-label="Close subscription form" data-newsletter-close>
+        <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18" /></svg>
+      </button>
+    </header>
+    <div class="newsletter-dialog__body">
+      <NewsletterSubscriptionForm mode="dialog" />
+    </div>
+  </div>
+</dialog>
+
+<script>
+  function initialiseNewsletterDialog() {
+    const dialog = document.querySelector('[data-newsletter-dialog]');
+    const triggers = Array.from(document.querySelectorAll('[data-newsletter-trigger]'));
+    if (!(dialog instanceof HTMLDialogElement) || triggers.length === 0) return;
+    if (dialog.dataset.newsletterDialogBound === 'true') return;
+
+    const close = dialog.querySelector('[data-newsletter-close]');
+    if (!(close instanceof HTMLButtonElement)) return;
+    let returnFocus: HTMLElement | null = null;
+
+    triggers.forEach((trigger) => {
+      if (!(trigger instanceof HTMLElement)) return;
+      trigger.setAttribute('aria-haspopup', 'dialog');
+      trigger.setAttribute('aria-controls', dialog.id);
+      trigger.addEventListener('click', (event) => {
+        event.preventDefault();
+        returnFocus = trigger;
+        dialog.showModal();
+        const firstField = dialog.querySelector('input[name="fullName"]');
+        if (firstField instanceof HTMLInputElement) firstField.focus();
+      });
+    });
+
+    close.addEventListener('click', () => dialog.close());
+    dialog.addEventListener('click', (event) => {
+      if (event.target === dialog) dialog.close();
+    });
+    dialog.addEventListener('close', () => returnFocus?.focus());
+    dialog.querySelectorAll('[data-newsletter-cancel], [data-newsletter-done]').forEach((button) => {
+      button.addEventListener('click', () => dialog.close());
+    });
+    dialog.dataset.newsletterDialogBound = 'true';
+  }
+
+  document.addEventListener('astro:page-load', initialiseNewsletterDialog);
+  initialiseNewsletterDialog();
+</script>

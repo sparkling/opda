@@ -1,13 +1,10 @@
 ---
 import Layout from '@/layouts/Layout.astro';
-import PageMeta from '@/components/PageMeta.astro';
 ---
 <Layout
   title="Deferred work register"
   description="Public mirror of ADR-0005 — the living register of work explicitly deferred from the 2026-05-18 implementation push, with named owner and triggering condition for each item."
 >
-<PageMeta category="OPDA's rules" variant="info" updated="Living register · Last review 2026-05-19" damaKa={["Data Governance"]} />
-
       <h1>Deferred work register</h1>
       <p class="lead">
         Public mirror of <a href="https://github.com/Property-Data-Trust-Framework">ADR&nbsp;0005</a> — the
@@ -136,9 +133,9 @@ import PageMeta from '@/components/PageMeta.astro';
             <td>DAMA Wheel cross-reference per page</td>
             <td>Whoever picks up the Wave 1 leftovers</td>
             <td>Opportunistic</td>
-            <td>Completed 2026-05-18</td>
-            <td><a class="resource-link" href="/resource?path=scripts/dama-ka-mapping.json"><code>scripts/dama-ka-mapping.json</code></a> + PageMeta <code>damaKa</code> prop</td>
-            <td>For each existing page, tag the DAMA KA(s) it serves. KAs out of scope (DW/BI, Storage &amp; Ops, Document &amp; Content) explicitly disclaimed once each. ~24+ pages.</td>
+            <td>Retired 2026-09-02</td>
+            <td><a class="resource-link" href="/resource?path=scripts/dama-ka-mapping.json"><code>scripts/dama-ka-mapping.json</code></a></td>
+            <td>The former per-page metadata component was removed from the rendered site. The mapping file remains as the historical record.</td>
           </tr>
           <tr>
             <td>B2</td>
@@ -303,7 +300,7 @@ import PageMeta from '@/components/PageMeta.astro';
             <td>Before push to production</td>
             <td>Scaffold ready · manual run</td>
             <td><a class="resource-link" href="/resource?path=scripts/smoke-test.mjs"><code>scripts/smoke-test.mjs</code></a> (install <code>@playwright/test</code> to run)</td>
-            <td>Theme toggle, sidebar collapse, tree-folder toggle, mobile menu, Mermaid diagrams across sections, data tables on <a href="/spdtf/inputs/pdtf-schema/schema-and-supporting-material/data-dictionary"><code>/spdtf/inputs/pdtf-schema/schema-and-supporting-material/data-dictionary</code></a> + <a href="/spdtf/inputs/pdtf-schema/schema-and-supporting-material/business-glossary"><code>/spdtf/inputs/pdtf-schema/schema-and-supporting-material/business-glossary</code></a>.</td>
+            <td>Theme toggle, sidebar collapse, tree-folder toggle, mobile menu, Mermaid diagrams across sections, data tables on <a href="/development/inputs/pdtf-schema/schema-and-supporting-material/data-dictionary"><code>/development/inputs/pdtf-schema/schema-and-supporting-material/data-dictionary</code></a> + <a href="/development/inputs/pdtf-schema/schema-and-supporting-material/business-glossary"><code>/development/inputs/pdtf-schema/schema-and-supporting-material/business-glossary</code></a>.</td>
           </tr>
           <tr>
             <td>E2</td>
@@ -396,7 +393,7 @@ import PageMeta from '@/components/PageMeta.astro';
             <td>ADR&nbsp;0051 Thread 4</td>
             <td>Smart Data Guidebook draft chapters + Open Banking Open Finance standards/architecture (awaited); Perseus (Open Energy) is open source and reachable</td>
             <td>Partially done · external dependency open</td>
-            <td><a href="/spdtf/inputs/pdtf-schema/schema-derived-ontology/lineage-provenance-and-verification/historical-modelling/standards-stack"><code>/spdtf/inputs/pdtf-schema/schema-derived-ontology/lineage-provenance-and-verification/historical-modelling/standards-stack</code></a>, <a href="/spdtf/inputs/pdtf-schema/schema-derived-ontology/lineage-provenance-and-verification/historical-modelling/jsonld-mappings"><code>/spdtf/inputs/pdtf-schema/schema-derived-ontology/lineage-provenance-and-verification/historical-modelling/jsonld-mappings</code></a>, <a href="/spdtf/inputs/pdtf-schema/schema-and-supporting-material/schema/overlays"><code>/spdtf/inputs/pdtf-schema/schema-and-supporting-material/schema/overlays</code></a></td>
+            <td><a href="/development/inputs/pdtf-schema/schema-derived-ontology/lineage-provenance-and-verification/historical-modelling/standards-stack"><code>/development/inputs/pdtf-schema/schema-derived-ontology/lineage-provenance-and-verification/historical-modelling/standards-stack</code></a>, <a href="/development/inputs/pdtf-schema/schema-derived-ontology/lineage-provenance-and-verification/historical-modelling/jsonld-mappings"><code>/development/inputs/pdtf-schema/schema-derived-ontology/lineage-provenance-and-verification/historical-modelling/jsonld-mappings</code></a>, <a href="/development/inputs/pdtf-schema/schema-and-supporting-material/schema/overlays"><code>/development/inputs/pdtf-schema/schema-and-supporting-material/schema/overlays</code></a></td>
             <td>Legacy versioned-spec framework references already re-anchored to SPDTF (OPDA's own Smart Property standard). Remaining: the schema <code>$id</code> namespace (<code>trust.propdata.org.uk/schemas/…</code>, the real committed identifiers) and JSON-LD context-publishing host await a concrete OPDA-authored target + the Guidebook/Perseus canon before re-pointing — not invented here.</td>
           </tr>
           <tr>

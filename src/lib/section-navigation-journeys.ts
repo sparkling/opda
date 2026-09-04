@@ -84,15 +84,15 @@ export const GOVERNANCE_FRAMEWORK_ITEMS: Item[] = [
 ];
 
 export const WORKING_GROUP_MEMBER_GUIDE_ITEMS: Item[] = [
-  { url: '/spdtf/working-groups/member-guide/getting-started', title: 'Getting started' },
-  { url: '/spdtf/working-groups/member-guide/teams-and-discussions', title: 'Teams and discussions' },
+  { url: '/development/working-groups/member-guide/getting-started', title: 'Getting started' },
+  { url: '/development/working-groups/member-guide/teams-and-discussions', title: 'Teams and discussions' },
   {
-    url: '/spdtf/working-groups/member-guide/source-material-and-sharepoint',
+    url: '/development/working-groups/member-guide/source-material-and-sharepoint',
     title: 'Source material and SharePoint',
   },
-  { url: '/spdtf/working-groups/member-guide/meetings-and-records', title: 'Meetings and records' },
+  { url: '/development/working-groups/member-guide/meetings-and-records', title: 'Meetings and records' },
   {
-    url: '/spdtf/working-groups/member-guide/model-review-and-decisions',
+    url: '/development/working-groups/member-guide/model-review-and-decisions',
     title: 'Model review and decisions',
   },
 ];

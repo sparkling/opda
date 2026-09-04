@@ -1,6 +1,5 @@
 ---
 import Layout from '@/layouts/Layout.astro';
-import PageMeta from '@/components/PageMeta.astro';
 const BASE = 'source/02-policy-and-positioning/dbt-smart-data-guidebook/chapter-4';
 const PDF = `${BASE}/SMART DATA GUIDEBOOK_Chapter 4 Data Stewardship, Privacy and Ethics_V2.pdf`;
 const DOCX = `${BASE}/SMART DATA GUIDEBOOK_Chapter 4 Data Stewardship, Privacy and Ethics_V2.docx`;
@@ -9,8 +8,6 @@ const DOCX = `${BASE}/SMART DATA GUIDEBOOK_Chapter 4 Data Stewardship, Privacy a
   title="Ch.4 — Stewardship & ethics"
   description="Smart Data Guidebook Chapter 4 (V2): data stewardship, provenance and lineage, source vs derived data, and AI-decision disclosure — the chapter that is almost entirely ontology territory."
 >
-<PageMeta category="The Guidebook" updated="Summarises V2" damaKa={["Data Governance", "Metadata Management", "Data Privacy"]} />
-
   <h1>Chapter 4 — Data Stewardship, Privacy and Ethics</h1>
 
   <p class="lead">
@@ -199,7 +196,7 @@ const DOCX = `${BASE}/SMART DATA GUIDEBOOK_Chapter 4 Data Stewardship, Privacy a
   <h2 id="related">Related</h2>
   <ul>
     <li><a href="/dbt-smart-data/gap-register#ranked">Gap register</a> — SD3, SD4, SD6, SD7 all originate here</li>
-    <li><a href="/governance/data-quality">Data quality framework</a> · <a href="/spdtf/inputs/pdtf-schema/schema-derived-ontology/lineage-provenance-and-verification/decision-provenance">Ontology — provenance</a></li>
+    <li><a href="/governance/data-quality">Data quality framework</a> · <a href="/development/inputs/pdtf-schema/schema-derived-ontology/lineage-provenance-and-verification/decision-provenance">Ontology — provenance</a></li>
     <li><a href="/dbt-smart-data/user-lifecycle">Ch.3 — User lifecycle</a> — the consent half of the same fabric</li>
   </ul>
 </Layout>

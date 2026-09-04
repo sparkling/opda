@@ -5,6 +5,11 @@ import {
 } from '@/lib/site-ia.mjs';
 import DestinationCards from '@/components/ia/DestinationCards.astro';
 import BrandHeading from '@/components/BrandHeading.astro';
+import FrameworkHeading from '@/components/FrameworkHeading.astro';
+import HeaderPreviewControls from '@/components/HeaderPreviewControls.astro';
+import { DEFAULT_HEADER_ICON, HEADER_ICON_IDS } from '@/lib/header-icons';
+import { DEFAULT_HEADER_PALETTE, HEADER_PALETTE_IDS } from '@/lib/header-palettes';
+import { assetVersion } from '@/lib/asset-version.mjs';
 import KickoffFeature from '@/components/home/KickoffFeature.astro';
 import MethodFlowFigure from '@/components/home/MethodFlowFigure.astro';
 import SiteFooter from '@/components/SiteFooter.astro';
@@ -17,6 +22,7 @@ const title = 'OPDA Knowledge Base';
 const description =
   'Explore the OPDA programme, governance, semantic modelling, SPDTF development, working groups and evidence behind a shared language for property data.';
 const routeStatus = getRouteStatus('/');
+const clientV = assetVersion('/ui/client.js');
 const domains = [
   { name: 'Conveyancing', description: 'Legal title, ownership, disclosure, completion and transfer.', icon: Scale },
   { name: 'Estate agency', description: 'Marketing, pricing, letting, media and consumer disclosure.', icon: Megaphone },
@@ -42,15 +48,34 @@ const domains = [
   <meta property="og:title" content={title} />
   <meta property="og:description" content={description} />
   <meta name="twitter:card" content="summary" />
-  <script is:inline>
+  <script
+    is:inline
+    data-astro-rerun
+    define:vars={{
+      defaultHeaderPalette: DEFAULT_HEADER_PALETTE,
+      headerPaletteIds: HEADER_PALETTE_IDS,
+      defaultHeaderIcon: DEFAULT_HEADER_ICON,
+      headerIconIds: HEADER_ICON_IDS,
+    }}
+  >
     (function () {
       try {
         var t = new URLSearchParams(location.search).get('theme');
         if (t !== 'light' && t !== 'dark') t = localStorage.getItem('opda-theme');
         if (t !== 'light' && t !== 'dark') t = 'light';
         document.documentElement.setAttribute('data-theme', t);
+
+        var p = localStorage.getItem('opda-header-palette');
+        if (!headerPaletteIds.includes(p)) p = defaultHeaderPalette;
+        document.documentElement.setAttribute('data-header-palette', p);
+
+        var i = localStorage.getItem('opda-header-icon');
+        if (!headerIconIds.includes(i)) i = defaultHeaderIcon;
+        document.documentElement.setAttribute('data-header-icon', i);
       } catch (e) {
         document.documentElement.setAttribute('data-theme', 'light');
+        document.documentElement.setAttribute('data-header-palette', defaultHeaderPalette);
+        document.documentElement.setAttribute('data-header-icon', defaultHeaderIcon);
       }
     })();
   </script>
@@ -61,12 +86,14 @@ const domains = [
   <main id="main-content" tabindex="-1">
     <section class="home-campaign-hero wg-campaign-hero wg-campaign-hero--panel-aligned" aria-labelledby="public-title">
       <header class="wg-campaign-hero__header">
-        <BrandHeading surface="dark" campaign />
+        <div class="wg-campaign-identity" id="home-campaign-identity">
+          <BrandHeading variant="paired" />
+          <FrameworkHeading scale="display" />
+        </div>
         <ThemeToggle />
       </header>
 
       <div class="wg-campaign-hero__copy">
-        <p class="wg-eyebrow">Smart Property Data Trust Framework</p>
         <h1 id="public-title">A shared language for property data, <em>drafted in the open.</em></h1>
         <p class="wg-lead">
           The Open Property Data Association and organisations across the property industry
@@ -75,24 +102,31 @@ const domains = [
           trust throughout every transaction.
         </p>
         <div class="wg-hero-actions">
-          <a class="btn wg-btn--large" href="/spdtf">Explore SPDTF development</a>
+          <a class="btn wg-btn--large" href="/development">Explore SPDTF development</a>
           <a class="btn btn--outline-dark wg-btn--large" href="/programme">Understand the programme</a>
           <a class="btn btn--outline-dark wg-btn--large" href="/join">Join a working group</a>
         </div>
       </div>
 
-      <div class="wg-hero-journey" aria-labelledby="public-domains-title">
-        <p class="wg-eyebrow">Working Group</p>
-        <h2 id="public-domains-title">Domains</h2>
-        <ul class="wg-process home-domain-process" role="list">
-          {domains.map(({ name, description, icon: DomainIcon }) => (
-            <li>
-              <span class="wg-process__icon" aria-hidden="true"><DomainIcon /></span>
-              <strong>{name}</strong>
-              <span>{description}</span>
-            </li>
-          ))}
-        </ul>
+      <div class="home-campaign-side">
+        <HeaderPreviewControls
+          showScaleControl
+          controlId="home-header-preview-selectors"
+          identityId="home-campaign-identity"
+        />
+        <div class="wg-hero-journey" aria-labelledby="public-domains-title">
+          <p class="wg-eyebrow">Working Group</p>
+          <h2 id="public-domains-title">Domains</h2>
+          <ul class="wg-process home-domain-process" role="list">
+            {domains.map(({ name, description, icon: DomainIcon }) => (
+              <li>
+                <span class="wg-process__icon" aria-hidden="true"><DomainIcon /></span>
+                <strong>{name}</strong>
+                <span>{description}</span>
+              </li>
+            ))}
+          </ul>
+        </div>
       </div>
     </section>
     <div class="home-content-surface">
@@ -122,7 +156,7 @@ const domains = [
     </div>
   </main>
   <SiteFooter />
-  <script is:inline src="/ui/client.js"></script>
+  <script is:inline src={`/ui/client.js?v=${clientV}`}></script>
 </body>
 </html>
 
@@ -136,7 +170,6 @@ const domains = [
       radial-gradient(circle at 15% 20%, rgb(91 81 216 / 12%), transparent 31rem),
       linear-gradient(135deg, var(--brand-white) 0 62%, var(--neutral-100) 62% 100%);
   }
-  :global(:root[data-theme='light']) .home-campaign-hero :global(.brand-heading--on-dark),
   :global(:root[data-theme='light']) .home-campaign-hero h1,
   :global(:root[data-theme='light']) .home-campaign-hero .wg-hero-journey h2,
   :global(:root[data-theme='light']) .home-campaign-hero .wg-process strong {

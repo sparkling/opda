@@ -1,0 +1,64 @@
+---
+import PropertyPackPage from '@/components/property-pack/PropertyPackPage.astro';
+import { candidateManifest } from '@/lib/property-pack-model.mjs';
+---
+<PropertyPackPage
+  title="Technical Working Group determination"
+  description="The pending Technical Working Group determination for the SPDTF Property Pack ontology candidate, due by the end of September 2026."
+  category="Governance milestone"
+  crumbs={[{ label: 'Technical Working Group determination' }]}
+>
+  <h1>Technical Working Group determination</h1>
+  <p class="lead">
+    The Technical Working Group must review the current Property Pack ontology candidate
+    as-is and make an initial determination by the end of September 2026. This accelerated
+    review allows the component to support time-critical government-scheme work before
+    every domain working group has completed a separate review.
+  </p>
+
+  <div class="callout callout--warning">
+    <p class="callout__label">Determination pending</p>
+    <p>
+      No Technical Working Group determination is recorded. Technical validation of
+      <code>{candidateManifest.candidate_version}</code> is evidence for the review; it
+      is not semantic approval, release, adoption or external recognition of OPDA.
+    </p>
+  </div>
+
+
+  <h2 id="milestone">Milestone and boundary</h2>
+  <dl class="v2-facts">
+    <div><dt>Milestone</dt><dd>End of September 2026</dd></div>
+    <div><dt>Current state</dt><dd>Pending; no determination recorded</dd></div>
+    <div><dt>Candidate</dt><dd><code>{candidateManifest.candidate_version}</code></dd></div>
+    <div><dt>Scope</dt><dd>The Property Pack component, not the whole SPDTF ontology</dd></div>
+    <div><dt>Later review</dt><dd>Domain, scheme and Interoperability working groups may propose controlled changes after the initial determination</dd></div>
+    <div><dt>External authority</dt><dd>No government approval or delegated authority recorded</dd></div>
+  </dl>
+
+  <h2 id="evidence">Evidence set</h2>
+  <ul>
+    <li><a href="/development/property-pack/definition-and-scope">The exact 451-item Property Pack definition and source catalogue</a>.</li>
+    <li><a href="/development/property-pack/pdtf-schema-lineage">PDTF schema and schema-derived ontology lineage</a>, including the incomplete semantic crosswalk.</li>
+    <li><a href="/development/property-pack/model">The complete candidate model</a>, contextual boundaries, resources, relationships and controlled vocabularies.</li>
+    <li><a href="/development/property-pack/coverage">Candidate source-coverage evidence</a> and <a href="/development/property-pack/validation">technical validation receipts</a>.</li>
+    <li><a href="/development/property-pack/standards">The bounded standards profile and explicit non-claims</a>.</li>
+  </ul>
+
+  <h2 id="questions">Review questions</h2>
+  <ol>
+    <li>Does the candidate cover the Property Pack definition needed for the September milestone?</li>
+    <li>Are the proposed identities, definitions, contextual boundaries and relationships fit for the initial determination?</li>
+    <li>Which qualifications or changes are required before the determined version can be recorded?</li>
+    <li>Which issues may safely proceed to later domain-group review, and which block the initial determination?</li>
+    <li>What use, if any, is authorised after determination, and what claims remain prohibited?</li>
+  </ol>
+
+  <h2 id="decision-record">Decision record requirements</h2>
+  <p>
+    Before the site may say “determined”, Governance must record the group’s canonical
+    identity, delegated remit, decision owner, quorum or decision rule, evidence set,
+    allowed outcome, qualifications, dissent, escalation path, date and immutable
+    candidate digest. Those fields are not yet complete, so this page makes no decision claim.
+  </p>
+</PropertyPackPage>

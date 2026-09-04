@@ -22,7 +22,7 @@ import {
 export const CANDIDATE_ROOT = path.resolve(
   process.cwd(), 'source/03-standards/ontology-candidates/property-pack/0.1',
 );
-export const PROPERTY_PACK_ROUTE = '/spdtf/property-pack';
+export const PROPERTY_PACK_ROUTE = '/development/property-pack';
 
 function readJson(relative) {
   return JSON.parse(readFileSync(path.join(CANDIDATE_ROOT, relative), 'utf8'));

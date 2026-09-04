@@ -12,7 +12,7 @@ then this tier is for you. Identity Criterion (IC) is the load-bearing concept: 
 
 ## See also: Modelling section
 
-The [Bounded contexts (DDD)](/spdtf/inputs/pdtf-schema/schema-derived-ontology/lineage-provenance-and-verification/historical-modelling/bounded-contexts) and [Business glossary](/spdtf/inputs/pdtf-schema/schema-and-supporting-material/business-glossary) pages are complementary records: the bounded-contexts page explains the historical DDD framing and industry context map that motivated this module structure; the business glossary is supporting material from which this tier's entity definitions grew.
+The [Bounded contexts (DDD)](/development/inputs/pdtf-schema/schema-derived-ontology/lineage-provenance-and-verification/historical-modelling/bounded-contexts) and [Business glossary](/development/inputs/pdtf-schema/schema-and-supporting-material/business-glossary) pages are complementary records: the bounded-contexts page explains the historical DDD framing and industry context map that motivated this module structure; the business glossary is supporting material from which this tier's entity definitions grew.
 
 ## Reading order
 

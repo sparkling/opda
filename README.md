@@ -52,9 +52,9 @@ ontology topology as semantic authority.
 Useful entry points:
 
 - [Programme overview](https://opda.org.uk/programme)
-- [SPDTF development workspace](https://opda.org.uk/spdtf)
-- [Property Pack ontology candidate](https://opda.org.uk/spdtf/property-pack)
-- [PDTF schema and schema-derived ontology inputs](https://opda.org.uk/spdtf/inputs/pdtf-schema)
+- [SPDTF development workspace](https://opda.org.uk/development)
+- [Property Pack ontology candidate](https://opda.org.uk/development/property-pack)
+- [PDTF schema and schema-derived ontology inputs](https://opda.org.uk/development/inputs/pdtf-schema)
 
 ## Semantic-modelling method
 
@@ -342,7 +342,7 @@ materials retain their own terms; confirm rights before reuse or redistribution.
 
 - [OPDA association website](https://openpropdata.org.uk/)
 - [OPDA Knowledge Base](https://opda.org.uk/)
-- [PDTF schema documentation in the Knowledge Base](https://opda.org.uk/spdtf/inputs/pdtf-schema/schema-and-supporting-material)
+- [PDTF schema documentation in the Knowledge Base](https://opda.org.uk/development/inputs/pdtf-schema/schema-and-supporting-material)
 - [Canonical PDTF transaction JSON Schema](https://trust.propdata.org.uk/schemas/v3/pdtf-transaction.json)
 - [Property Data Trust Framework GitHub organisation](https://github.com/Property-Data-Trust-Framework)
 - [Repository ADR index](docs/adr/README.md)

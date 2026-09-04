@@ -50,7 +50,7 @@ test('canonical IA tables and group pages reflow at 320 CSS px', async ({ page }
   for (const path of [
     ...SEMANTIC_MODELLING_ROUTES,
     ...PDTF_ONTOLOGY_CATEGORY_ROUTES,
-    '/spdtf/working-groups/estate-agency',
+    '/development/working-groups/estate-agency',
   ]) {
     await visit(page, path);
     await assertNoBodyOverflow(page);
@@ -162,7 +162,7 @@ test('text flows to its outer content container without nested max-widths', asyn
 test('Property Pack title action and candidate flyout stay inside the available article track', async ({ page }) => {
   const clean = watchRuntime(page);
   await page.setViewportSize({ width: 1281, height: 900 });
-  await visit(page, '/spdtf/property-pack/validation');
+  await visit(page, '/development/property-pack/validation');
   const trigger = page.getByRole('button', { name: 'View candidate status and evidence' });
   const heading = page.getByRole('heading', { name: 'Validation evidence', level: 1 });
   await trigger.click();

@@ -11,6 +11,15 @@ implements: [docs/spdtf-information-architecture.md, src/pages/index.astro]
 
 # Organise the site around SPDTF and the PDTF schema
 
+> Update 2026-09-03 — the canonical reader route for the Development destination
+> is now `/development/**`, replacing `/spdtf/**`. This update supersedes every
+> canonical `/spdtf` reader-route reference below while retaining those references
+> as migration history. Internal navigation, search records, generated page routes
+> and static tool paths use `/development/**`; the former `/spdtf/**` family is
+> retired without redirects. Stable `/pdtf/**` RDF identifiers, `/spdtf-2/**`
+> historical receipts and the SPDTF semantic-package workspace identifier do not
+> change.
+>
 > Update 2026-09-03 — the exact IA and family manifests remain the audit receipt
 > for the completed migration, but are no longer evaluated on every unrelated
 > release. Ongoing releases use the route/resource crawl and browser journeys;

@@ -4,7 +4,7 @@ import { PDTF1_ROUTES, settleVisualState, visit, watchRuntime } from './support.
 const routeFamilies = [
   ['knowledge-home', '/'],
   ['prose', '/strategy/strategy-overview'],
-  ['property-pack', '/spdtf/property-pack'],
+  ['property-pack', '/development/property-pack'],
   ['schema', `${PDTF1_ROUTES.original}/schema/legal-estate/ownership/leasehold/lease-legal/building-safety`],
   ['diagram', `${PDTF1_ROUTES.terms}/graph`],
   ['working-group', '/join'],

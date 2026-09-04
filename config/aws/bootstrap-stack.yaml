@@ -130,6 +130,9 @@ Resources:
                   - lambda:*
                   - apigateway:*
                   - dynamodb:*
+                  - sns:*
+                  - sqs:*
+                  - kms:DescribeKey
                   - ecs:*
                   - ecr:*
                   - events:*

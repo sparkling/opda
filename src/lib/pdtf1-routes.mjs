@@ -1,18 +1,18 @@
 /** Canonical PDTF schema documentation-route hierarchy. */
 export const PDTF1_ROUTES = Object.freeze({
-  inputRoot: '/spdtf/inputs',
-  root: '/spdtf/inputs/pdtf-schema',
-  original: '/spdtf/inputs/pdtf-schema/schema-and-supporting-material',
-  extracted: '/spdtf/inputs/pdtf-schema/schema-derived-ontology',
-  lineage: '/spdtf/inputs/pdtf-schema/schema-derived-ontology/lineage-provenance-and-verification',
-  historicalModelling: '/spdtf/inputs/pdtf-schema/schema-derived-ontology/lineage-provenance-and-verification/historical-modelling',
-  schemaVerification: '/spdtf/inputs/pdtf-schema/schema-derived-ontology/lineage-provenance-and-verification/schema-to-ontology-verification',
-  modelViews: '/spdtf/inputs/pdtf-schema/schema-derived-ontology/model-views-by-audience',
-  concepts: '/spdtf/inputs/pdtf-schema/schema-derived-ontology/concepts-and-architecture',
-  terms: '/spdtf/inputs/pdtf-schema/schema-derived-ontology/terms-and-model-resources',
-  validation: '/spdtf/inputs/pdtf-schema/schema-derived-ontology/validation-and-examples',
-  trust: '/spdtf/inputs/pdtf-schema/schema-derived-ontology/trust-governance-and-limitations',
-  use: '/spdtf/inputs/pdtf-schema/schema-derived-ontology/use-and-tooling',
+  inputRoot: '/development/inputs',
+  root: '/development/inputs/pdtf-schema',
+  original: '/development/inputs/pdtf-schema/schema-and-supporting-material',
+  extracted: '/development/inputs/pdtf-schema/schema-derived-ontology',
+  lineage: '/development/inputs/pdtf-schema/schema-derived-ontology/lineage-provenance-and-verification',
+  historicalModelling: '/development/inputs/pdtf-schema/schema-derived-ontology/lineage-provenance-and-verification/historical-modelling',
+  schemaVerification: '/development/inputs/pdtf-schema/schema-derived-ontology/lineage-provenance-and-verification/schema-to-ontology-verification',
+  modelViews: '/development/inputs/pdtf-schema/schema-derived-ontology/model-views-by-audience',
+  concepts: '/development/inputs/pdtf-schema/schema-derived-ontology/concepts-and-architecture',
+  terms: '/development/inputs/pdtf-schema/schema-derived-ontology/terms-and-model-resources',
+  validation: '/development/inputs/pdtf-schema/schema-derived-ontology/validation-and-examples',
+  trust: '/development/inputs/pdtf-schema/schema-derived-ontology/trust-governance-and-limitations',
+  use: '/development/inputs/pdtf-schema/schema-derived-ontology/use-and-tooling',
 });
 
 export const PDTF1_ROUTE_MIGRATION = Object.freeze({

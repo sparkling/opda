@@ -1,6 +1,7 @@
 ---
 status: implemented
 date: 2026-09-02
+updated: 2026-09-04
 tags: [website, search, dialog, accessibility, progressive-enhancement, design-system]
 supersedes: []
 amends: [ADR-0003, ADR-0073]
@@ -8,11 +9,52 @@ depends-on: [ADR-0003, ADR-0073]
 implements:
   - src/components/SiteSearchDialog.astro
   - src/components/Header.astro
+  - src/pages/search.astro
+  - src/scripts/site-search-page.ts
+  - src/lib/site-search-model.mjs
+  - src/lib/site-search.mjs
+  - src/integrations/generate-site-search-index.mjs
   - public/ui/design/search-dialog.css
+  - public/ui/design/search-page.css
 ---
 
 # Add a progressively enhanced site-search dialog
 
+> Update 2026-09-03 — search index schema version 3 records the canonical
+> `/development/**` route family. The version change invalidates cached indexes
+> containing retired `/spdtf/**` links; development then rebuilds the complete
+> generated-page corpus from the resolved Astro routes.
+>
+> The canonical search page now uses the unreserved shared documentation shell,
+> including its standard no-breadcrumb title spacing. Its query is presented
+> without a separate promotional introduction or visible helper paragraph; an
+> assistive-technology label continues to name the field.
+>
+> Update 2026-09-04 — the full search page uses the knowledge-base sections as
+> its primary tabs: All, Ontology resources, Decisions, Programme, Governance,
+> Modelling, Development, Working groups and Resources. Each tab supplies its
+> own relevant filter set; sections without an orthogonal refinement do not
+> repeat their destination as a page-type filter, while ontology resources and
+> decisions retain their specialist filters. The shared
+> filters use the page shell's existing collapsible left rail, which sits
+> outside the max-width content track. The result register therefore retains
+> the full content width and can use three columns on wide screens. Moving the
+> filter panel into that rail preserves its established typography and
+> disclosure styling; the rail label supplies the
+> heading, avoiding a duplicated `Filter results` title inside it. The result
+> count shares the tab row; when no
+> applied-filter chips exist, their status strip, divider and reserved vertical
+> space are omitted. The filter rail retains the shared standard width; its
+> duplicate horizontal inset is removed so canonical labels and counts can use
+> the available internal measure. Filter options use a clearer vertical rhythm,
+> with each checkbox aligned to the first line of its label.
+>
+> Corpus review on 4 September also retired Page type from current facet selection,
+> ranking and card labels. Its inferred route-family values duplicated Section or Collection
+> and did not form a consistently authored taxonomy. Schema-3 page-type metadata
+> remains accepted so existing templates and cached indexes continue to load;
+> existing `pagetype` URLs retain their exact filter as a removable legacy chip.
+>
 ## Context and problem statement
 
 The global header currently exposes search as an icon link to `/search`. The search
@@ -60,14 +102,16 @@ offers direct navigation while preserving the full search page for deeper work.
 
 ## Decision outcome
 
-The header search link will progressively enhance into a native `<dialog>` labelled
-`Search the documentation`. Its visible shell will contain:
+The header search link will progressively enhance into a native `<dialog>` whose
+accessible name is `Search documentation`. Its deliberately compact visible shell contains:
 
 1. a real GET search form whose action is `/search` and whose field is named `q`;
-2. an accessible live status line;
-3. a listbox of ranked destinations;
-4. a link to open the complete search page with the current query; and
-5. compact keyboard guidance on desktop only.
+2. a listbox of ranked destinations; and
+3. a link to open the full search page with the current query.
+
+The result count and loading state remain available through a visually hidden live region.
+The quick-search surface has no visible heading, help paragraph, keyboard legend or close
+icon; the input itself provides the visual purpose of the surface.
 
 The controller will dynamically import the existing `site-search.mjs` and its IA data on
 first open, with an optional warm-up on trigger hover or focus. There will be no second
@@ -75,20 +119,17 @@ index or ranking implementation. A query typed during loading will run when the 
 resolves. If loading fails, the dialog will say `Search couldn't load.` and retain the
 working link to `/search`.
 
-The initial help text will read `Use one or more words. Results match titles, summaries
-and alternative terms.` The field label will remain `Search by task, topic or name`, with
-the placeholder `Try governance, mapping or working groups`. Result and empty-state copy
-will reuse the wording already owned by the search page.
+The field keeps an accessible label and uses the concise placeholder `Search documentation`.
+Empty-state copy reuses the wording already owned by the search page.
 
 Each compact result will show, in order:
 
-- destination and facet;
-- page title; and
-- work area, authority and maturity.
+- destination and facet; and
+- page title.
 
-Summaries and destination filters remain on `/search`. This keeps the overlay useful as a
-quick-jump layer while retaining the evidence and governance context needed to judge a
-result.
+Summaries, destination filters, work area, authority and maturity remain on `/search`.
+This keeps the overlay a quick-jump layer and reserves the richer evidence context for the
+full search page.
 
 ### Interaction contract
 
@@ -108,15 +149,15 @@ result.
 
 ### Visual contract
 
-On desktop, the panel will be no wider than 40rem, use the standard dialog elevation,
+On desktop, the panel will be no wider than the shared 64rem search-dialog token, use the standard dialog elevation,
 strong border and small design-system radius, and carry the four-pixel yellow structural
 rule used elsewhere by the site. The backdrop uses deep ink at 60 percent opacity. The
 result region scrolls independently and active results combine a selected surface with a
 three-pixel inline rule, so selection never relies on colour alone.
 
-At the 40rem breakpoint the dialog becomes a full-viewport sheet using `100dvh`, safe-area
-insets and a labelled `Cancel` action. Keyboard hints disappear, while the full-search
-link remains. Input text remains at least the base size to avoid mobile focus zoom.
+At the 40rem breakpoint the dialog retains a small viewport inset so the backdrop remains
+an obvious pointer-dismissal target. The full-search link remains, and input text stays at
+least the base size to avoid mobile focus zoom.
 
 Motion is limited to a short opacity and vertical entrance using shared duration and
 easing tokens. There is no scale, blur, bounce, glass surface or ambient animation.
@@ -149,7 +190,7 @@ remain authoritative and should not be forked.
 - The search trigger retains a useful destination before enhancement and on failure.
 - Native dialog semantics provide focus containment, Escape handling and inert page
   content with less custom code.
-- Authority and maturity remain visible in compact results.
+- The compact result presentation is quicker to scan than the rich search page.
 
 ### Negative
 
@@ -188,6 +229,78 @@ semantics, GET fallback, shared dynamic imports, keyboard shortcut routing, acti
 state, Astro lifecycle rebinding, semantic tokens, mobile/reduced-motion/forced-colour
 rules and the versioned stylesheet manifest. Manual visual and assistive-technology checks
 remain appropriate release follow-up, particularly for mobile virtual keyboards.
+
+**Updated 3 September 2026.** The quick-search surface was widened to 64rem and reduced
+to its essential controls. The visible heading, close icon, instructional copy, keyboard
+legend and verbose result metadata were removed. The accessible dialog name and live
+status remain, while Escape and backdrop dismissal continue to return focus to the trigger.
+
+The canonical `/search` page was also revised after a second read-only Fable 5.1 MAX
+review. It now separates the visible result count from its debounced live announcement,
+debounces shareable URL updates, uses native reset behaviour, gives results a consistent
+heading structure, and provides clearer empty-state recovery. Its presentation lives in a
+dedicated design-system module; the shared index and ranking function remain unchanged.
+
+The same review exposed that the initial revision had retained the old row-list
+composition and allowed article-level `h2` rules to override result titles. The results
+are now full-track square register cards built on the shared card primitive, with a
+bounded search toolbar and bottom-aligned authority facts. Indexing, ranking, URL state,
+result semantics, announcements and recovery behaviour are unchanged.
+
+**Updated 3 September 2026 (corpus-wide search).** A stakeholder review rejected the
+five generic dropdowns (area, collection, content type, context, status) that the first
+full-corpus revision had added. The search layer was redesigned around one shared data
+model and now covers every emitted page, including each generated ontology resource.
+
+- `src/lib/site-search-model.mjs` is the single facet vocabulary: result type
+  (ontology resource, decision record, working group, page), collection (Property Pack
+  ontology candidate, PDTF schema-derived ontology draft, PDTF JSON Schema input, ADR
+  register, ODR register), working group or domain (the six bounded contexts plus the
+  Common boundary, DBT Smart Data and Interoperability), ontology resource kind (class,
+  object property, datatype property, SHACL node shape, SKOS concept scheme, SKOS
+  concept, semantic context, source data point), and decision status. Every
+  value is emitted by a current template; no facet implies an SPDTF ontology beyond the
+  Property Pack candidate and the PDTF-derived draft.
+- Page type is retained only as schema-3 compatibility metadata. The generated-corpus
+  audit found that its route-derived values duplicated Section or Collection, while its
+  few cross-section values combined unrelated purposes. It is therefore not exposed as
+  a facet, included in ranking or shown on cards; existing `opda:search-page-type` tags
+  and cached records still normalise safely during migration. Existing `pagetype` URLs
+  preserve their exact filter through a removable legacy chip.
+- Generated templates declare their facets through Layout's `search` prop, emitted as
+  `opda:search-*` meta tags; the build integration reads those tags from every emitted
+  page, applies route defaults from the model to everything else, merges the editorial
+  aliases by URL, and writes a schema-version-3 index. Page authority and maturity are
+  not duplicated into the index; cards read them from the IA status registry.
+- `/search` is a native GET form whose section tabs and facet checkboxes form a
+  shareable URL state. The tabs are the six canonical horizontal-navigation
+  sections plus All, Ontology resources and Decisions; the six section tabs
+  align with the global destination registry.
+  Each tab exposes only meaningful facet groups, carries live counts computed
+  with its own selection excluded, disables empty options, and becomes removable
+  chips once applied. Filters use the same left-rail shell, collapse control
+  and responsive drawer as section navigation; the rail remains outside the
+  max-width content track. Results use three columns on wide screens and share
+  one card anatomy with a variant rule
+  and facts per result type. Heading, controls and cards use `minmax(0, …)` tracks
+  aligned to the header content edge.
+- The quick-search dialog now ranks through the same generated index via `searchSite`
+  and shows each record's shared eyebrow, so both surfaces cannot disagree about
+  ranking or vocabulary. The dialog shows the first twelve matches and links to the
+  full count on `/search`.
+- Development serves the same corpus without a build. The integration enumerates every
+  page route through Astro's resolved-routes hook and each page's own `getStaticPaths`,
+  renders the routes through the running dev server, runs the identical HTML extractor,
+  and serves the result at `/data/site-search-index.json`. The first request waits for
+  that crawl; later dev sessions serve the cached index from Astro's cache directory
+  immediately while it refreshes. Verbatim HTML copied from `public/` (third-party tool
+  output) is excluded in both environments, so production and development index the
+  same Astro-rendered pages. The editorial entries remain only as the failure fallback.
+
+Known metadata limits: PDTF-derived resources carry a DDD module, not a working-group
+domain, so the domain facet excludes them by design; decision status is the only
+filterable status because ontology and working-group statuses are uniform within their
+collections and appear as card labels instead.
 
 ## More information
 

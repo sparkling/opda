@@ -1,0 +1,188 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: >-
+  Shared post-persistence event boundary for public working-group and newsletter
+  submissions: DynamoDB streams, Lambda, SNS and SQS.
+
+Parameters:
+  RegistrationsTableStreamArn:
+    Type: String
+  SubscriptionsTableStreamArn:
+    Type: String
+
+Resources:
+  SubmissionEventsFailureQueue:
+    Type: AWS::SQS::Queue
+    Properties:
+      QueueName: opda-public-submission-events-failures
+      MessageRetentionPeriod: 1209600
+      SqsManagedSseEnabled: true
+
+  SubmissionEventsQueue:
+    Type: AWS::SQS::Queue
+    Properties:
+      QueueName: opda-public-submission-events
+      MessageRetentionPeriod: 345600
+      ReceiveMessageWaitTimeSeconds: 20
+      SqsManagedSseEnabled: true
+
+  SubmissionEventsTopic:
+    Type: AWS::SNS::Topic
+    Properties:
+      TopicName: opda-public-submission-events
+      KmsMasterKeyId: alias/aws/sns
+
+  SubmissionEventsQueuePolicy:
+    Type: AWS::SQS::QueuePolicy
+    Properties:
+      Queues:
+        - !Ref SubmissionEventsQueue
+        - !Ref SubmissionEventsFailureQueue
+      PolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+          - Sid: SubmissionTopicDelivery
+            Effect: Allow
+            Principal: { Service: sns.amazonaws.com }
+            Action: sqs:SendMessage
+            Resource:
+              - !GetAtt SubmissionEventsQueue.Arn
+              - !GetAtt SubmissionEventsFailureQueue.Arn
+            Condition:
+              ArnEquals:
+                aws:SourceArn: !Ref SubmissionEventsTopic
+              StringEquals:
+                aws:SourceAccount: !Ref AWS::AccountId
+
+  SubmissionEventsSubscription:
+    Type: AWS::SNS::Subscription
+    DependsOn: SubmissionEventsQueuePolicy
+    Properties:
+      TopicArn: !Ref SubmissionEventsTopic
+      Protocol: sqs
+      Endpoint: !GetAtt SubmissionEventsQueue.Arn
+      RawMessageDelivery: true
+      RedrivePolicy:
+        deadLetterTargetArn: !GetAtt SubmissionEventsFailureQueue.Arn
+
+  PublisherLogGroup:
+    Type: AWS::Logs::LogGroup
+    Properties:
+      LogGroupName: /aws/lambda/opda-public-submission-events
+      RetentionInDays: 14
+
+  PublisherRole:
+    Type: AWS::IAM::Role
+    Properties:
+      RoleName: opda-public-submission-events
+      AssumeRolePolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+          - Effect: Allow
+            Principal: { Service: lambda.amazonaws.com }
+            Action: sts:AssumeRole
+      Policies:
+        - PolicyName: publish-submission-events
+          PolicyDocument:
+            Version: '2012-10-17'
+            Statement:
+              - Sid: FunctionLogs
+                Effect: Allow
+                Action: [logs:CreateLogStream, logs:PutLogEvents]
+                Resource: !Sub 'arn:${AWS::Partition}:logs:${AWS::Region}:${AWS::AccountId}:log-group:/aws/lambda/opda-public-submission-events:*'
+              - Sid: ReadSubmissionStreams
+                Effect: Allow
+                Action:
+                  - dynamodb:DescribeStream
+                  - dynamodb:GetRecords
+                  - dynamodb:GetShardIterator
+                Resource:
+                  - !Ref RegistrationsTableStreamArn
+                  - !Ref SubscriptionsTableStreamArn
+              - Sid: ListSubmissionStreams
+                Effect: Allow
+                Action: [dynamodb:ListStreams]
+                Resource: '*'
+              - Sid: PublishSubmissionEvents
+                Effect: Allow
+                Action: [sns:Publish]
+                Resource: !Ref SubmissionEventsTopic
+              - Sid: UseManagedSnsKey
+                Effect: Allow
+                Action: [kms:Decrypt, 'kms:GenerateDataKey*']
+                Resource: '*'
+                Condition:
+                  StringEquals:
+                    'kms:ViaService': !Sub 'sns.${AWS::Region}.${AWS::URLSuffix}'
+                    'kms:EncryptionContext:aws:sns:topicArn': !Ref SubmissionEventsTopic
+              - Sid: RetainFailedStreamBatches
+                Effect: Allow
+                Action: [sqs:SendMessage]
+                Resource: !GetAtt SubmissionEventsFailureQueue.Arn
+
+  PublisherFunction:
+    Type: AWS::Serverless::Function
+    DependsOn: PublisherLogGroup
+    Properties:
+      FunctionName: opda-public-submission-events
+      CodeUri: submission-events/
+      Handler: index.handler
+      Runtime: nodejs22.x
+      Architectures: [arm64]
+      MemorySize: 128
+      Timeout: 15
+      ReservedConcurrentExecutions: 2
+      Role: !GetAtt PublisherRole.Arn
+      Environment:
+        Variables:
+          SUBMISSION_EVENTS_TOPIC_ARN: !Ref SubmissionEventsTopic
+
+  RegistrationEventsMapping:
+    Type: AWS::Lambda::EventSourceMapping
+    Properties:
+      EventSourceArn: !Ref RegistrationsTableStreamArn
+      FunctionName: !Ref PublisherFunction
+      StartingPosition: TRIM_HORIZON
+      BatchSize: 10
+      MaximumBatchingWindowInSeconds: 1
+      BisectBatchOnFunctionError: true
+      MaximumRecordAgeInSeconds: 86400
+      MaximumRetryAttempts: 5
+      FunctionResponseTypes: [ReportBatchItemFailures]
+      FilterCriteria:
+        Filters:
+          - Pattern: '{"eventName":["INSERT"]}'
+      DestinationConfig:
+        OnFailure:
+          Destination: !GetAtt SubmissionEventsFailureQueue.Arn
+
+  SubscriptionEventsMapping:
+    Type: AWS::Lambda::EventSourceMapping
+    Properties:
+      EventSourceArn: !Ref SubscriptionsTableStreamArn
+      FunctionName: !Ref PublisherFunction
+      StartingPosition: TRIM_HORIZON
+      BatchSize: 10
+      MaximumBatchingWindowInSeconds: 1
+      BisectBatchOnFunctionError: true
+      MaximumRecordAgeInSeconds: 86400
+      MaximumRetryAttempts: 5
+      FunctionResponseTypes: [ReportBatchItemFailures]
+      FilterCriteria:
+        Filters:
+          - Pattern: '{"eventName":["INSERT","MODIFY"]}'
+      DestinationConfig:
+        OnFailure:
+          Destination: !GetAtt SubmissionEventsFailureQueue.Arn
+
+Outputs:
+  SubmissionEventsTopicArn:
+    Value: !Ref SubmissionEventsTopic
+  SubmissionEventsQueueArn:
+    Value: !GetAtt SubmissionEventsQueue.Arn
+  SubmissionEventsQueueUrl:
+    Value: !Ref SubmissionEventsQueue
+  SubmissionEventsFailureQueueUrl:
+    Value: !Ref SubmissionEventsFailureQueue
+  PublisherFunctionName:
+    Value: !Ref PublisherFunction

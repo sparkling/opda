@@ -1,0 +1,70 @@
+---
+import PropertyPackFilter from '@/components/property-pack/PropertyPackFilter.astro';
+import PropertyPackPage from '@/components/property-pack/PropertyPackPage.astro';
+import {
+  compactIri,
+  contexts,
+  contextById,
+  counts,
+  resourceByIri,
+  resourceRoute,
+  resources,
+} from '@/lib/property-pack-model.mjs';
+
+const objectProperties = resources.filter((resource) => resource.kind === 'object-property');
+const datatypeProperties = resources.filter((resource) => resource.kind === 'datatype-property');
+const subclasses = resources.filter((resource) => resource.subclass_of);
+const domainless = objectProperties.filter((resource) => !resource.domain);
+const contextOptions = contexts.map((context) => ({ value: context.id, label: context.label }));
+
+function endpoint(iri) {
+  return iri ? resourceByIri.get(iri) : undefined;
+}
+---
+<PropertyPackPage
+  title="Relationships"
+  description="Complete structured relationship reference for object properties, datatype properties and subclass assertions in the Property Pack ontology candidate."
+  category="Meaning & constraints"
+  crumbs={[{ label: 'Relationships' }]}
+>
+  <h1>Relationships</h1>
+  <p class="lead">
+    The graph structure in a precise, accessible form: {counts.objectProperties} object
+    properties, {counts.datatypeProperties} datatype properties and {counts.subclassEdges}
+    asserted subclass links.
+  </p>
+
+
+  <h2 id="object-properties">Object properties ({objectProperties.length})</h2>
+  <PropertyPackFilter targetId="v2-object-properties" placeholder="Search relationship labels and identifiers…" contextOptions={contextOptions} />
+  <div class="v2-table-wrap" id="v2-object-properties">
+    <table>
+      <thead><tr><th>Domain</th><th>Object property</th><th>Range</th><th>Semantic home</th></tr></thead>
+      <tbody>{objectProperties.map((property) => { const domain = endpoint(property.domain); const range = endpoint(property.range); return <tr data-search={`${property.label} ${property.key} ${domain?.label ?? ''} ${range?.label ?? compactIri(property.range)}`.toLocaleLowerCase()} data-context={property.semantic_home} data-kind=""><td>{domain ? <a href={resourceRoute(domain)}>{domain.label}</a> : <span class="v2-domain-missing">Not specified</span>}</td><td><a href={resourceRoute(property)}><strong>{property.label}</strong></a><br/><code class="standalone-identifier">{property.key}</code></td><td>{range ? <a href={resourceRoute(range)}>{range.label}</a> : <code class="standalone-identifier">{compactIri(property.range)}</code>}</td><td><a href={`/development/property-pack/contexts/${property.semantic_home}`}>{contextById.get(property.semantic_home)?.label}</a></td></tr>; })}</tbody>
+    </table>
+  </div>
+
+  <h2 id="unresolved-domains">Domains not yet specified ({domainless.length})</h2>
+  <div class="callout callout--warn"><p class="callout__label">Visible candidate gap</p><p>These properties have an asserted range but no asserted domain. The documentation does not guess one; working-group review must resolve or accept the omission.</p></div>
+  <ul>{domainless.map((property) => <li><a href={resourceRoute(property)}>{property.label}</a> — range <code>{compactIri(property.range)}</code></li>)}</ul>
+
+  <h2 id="datatype-properties">Datatype properties ({datatypeProperties.length})</h2>
+  <PropertyPackFilter targetId="v2-datatype-properties" placeholder="Search attribute labels and identifiers…" contextOptions={contextOptions} />
+  <div class="v2-table-wrap" id="v2-datatype-properties">
+    <table>
+      <thead><tr><th>Domain</th><th>Datatype property</th><th>Datatype</th><th>Semantic home</th></tr></thead>
+      <tbody>{datatypeProperties.map((property) => { const domain = endpoint(property.domain); return <tr data-search={`${property.label} ${property.key} ${domain?.label ?? ''} ${compactIri(property.range)}`.toLocaleLowerCase()} data-context={property.semantic_home} data-kind=""><td>{domain ? <a href={resourceRoute(domain)}>{domain.label}</a> : <span class="v2-domain-missing">Not specified</span>}</td><td><a href={resourceRoute(property)}><strong>{property.label}</strong></a><br/><code class="standalone-identifier">{property.key}</code></td><td><code class="standalone-identifier">{compactIri(property.range)}</code></td><td><a href={`/development/property-pack/contexts/${property.semantic_home}`}>{contextById.get(property.semantic_home)?.label}</a></td></tr>; })}</tbody>
+    </table>
+  </div>
+
+  <h2 id="class-hierarchy">Class hierarchy ({subclasses.length})</h2>
+  <div class="v2-table-wrap">
+    <table>
+      <thead><tr><th>Subclass</th><th>Superclass</th><th>Semantic home</th></tr></thead>
+      <tbody>{subclasses.map((resource) => { const parent = endpoint(resource.subclass_of); return <tr><td><a href={resourceRoute(resource)}>{resource.label}</a></td><td>{parent ? <a href={resourceRoute(parent)}>{parent.label}</a> : <code class="standalone-identifier">{compactIri(resource.subclass_of)}</code>}</td><td><a href={`/development/property-pack/contexts/${resource.semantic_home}`}>{contextById.get(resource.semantic_home)?.label}</a></td></tr>; })}</tbody>
+    </table>
+  </div>
+
+  <h2 id="cross-context">Cross-context status</h2>
+  <p>No reviewed cross-domain mappings are asserted in this candidate. The context map records semantic homes and shared elements supplied by the Common boundary; it does not route every relationship through Common or assert that one context controls another context’s internal meaning. <a href="/semantic-modelling/evidence-and-mappings#cross-context-mappings">Read how Category 8 mappings are reviewed and recorded</a>.</p>
+</PropertyPackPage>

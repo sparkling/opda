@@ -57,9 +57,9 @@
     }
   ],
   "crossTier": {
-    "concept": "/spdtf/inputs/pdtf-schema/schema-derived-ontology/model-views-by-audience/concept/property/property",
-    "logical": "/spdtf/inputs/pdtf-schema/schema-derived-ontology/model-views-by-audience/logical/property/property",
+    "concept": "/development/inputs/pdtf-schema/schema-derived-ontology/model-views-by-audience/concept/property/property",
+    "logical": "/development/inputs/pdtf-schema/schema-derived-ontology/model-views-by-audience/logical/property/property",
     "physicalDatabase": null,
-    "physicalOntology": "/spdtf/inputs/pdtf-schema/schema-derived-ontology/model-views-by-audience/physical-ontology/property/classes#Property"
+    "physicalOntology": "/development/inputs/pdtf-schema/schema-derived-ontology/model-views-by-audience/physical-ontology/property/classes#Property"
   }
 }

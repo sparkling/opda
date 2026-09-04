@@ -1,0 +1,20 @@
+---
+import Layout from '@/layouts/Layout.astro';
+import { WORKING_GROUPS } from '@/components/ia/working-groups';
+import { getWorkspaceRecord } from '@/lib/spdtf-workspace.mjs';
+---
+
+<Layout title="SPDTF open questions" description="Canonical index of initial competency questions across the SPDTF working groups.">
+  <h1>Open questions and changes</h1>
+  <p class="lead">These are initial competency questions, not approved requirements. Each question is owned and reviewed in one canonical group workspace.</p>
+  {WORKING_GROUPS.map((group) => {
+    const workspace = getWorkspaceRecord(group.slug);
+    return (
+      <section aria-labelledby={`group-${group.slug}`}>
+        <h2 id={`group-${group.slug}`}>{group.name}</h2>
+        <ol>{workspace.competencyQuestions.map((question) => <li>{question}</li>)}</ol>
+        <p><a href={`/development/working-groups/${group.slug}/questions`}>Review this group’s question records →</a></p>
+      </section>
+    );
+  })}
+</Layout>

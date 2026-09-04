@@ -1,16 +1,21 @@
 ---
 status: accepted
 date: 2026-08-19
-updated: 2026-08-22
+updated: 2026-09-03
 tags: [information-architecture, property-pack, pdtf-schema, spdtf, ontology, technical-working-group, governance, government, provenance]
 supersedes: []
 amends: [ADR-0066, ADR-0067, ADR-0074]
 depends-on: [ADR-0039, ADR-0063, ADR-0066, ADR-0067, ADR-0074]
-implements: [src/pages/spdtf/property-pack, src/lib/site-navigation.ts, src/lib/site-ia.mjs]
+implements: [src/pages/development/property-pack, src/lib/site-navigation.ts, src/lib/site-ia.mjs]
 ---
 
 # Treat the Property Pack ontology as an accelerated SPDTF component
 
+> Update 2026-09-03 — ADR-0074's route amendment moves the canonical Property
+> Pack reader family from `/spdtf/property-pack/**` to
+> `/development/property-pack/**`. This changes its web address, not its scope,
+> authority, evidence, lifecycle or relationship to SPDTF.
+>
 > Update 2026-08-20: the semantic-documentation portion is implemented as two linked
 > audience paths. Understand ontologies teaches the concepts and how to read the model;
 > How we model SPDTF documents the evidence-up method, semantic package, contexts,

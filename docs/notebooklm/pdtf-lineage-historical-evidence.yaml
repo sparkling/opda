@@ -236,24 +236,24 @@ resource_manifest:
       maturity: current-but-non-normative
       ingestion: render-each-built-route-to-markdown
       build_prerequisite: make build-data
-      route_glob: /spdtf/inputs/pdtf-schema/schema-derived-ontology/**
+      route_glob: /development/inputs/pdtf-schema/schema-derived-ontology/**
       route_exclusions:
-        - /spdtf/inputs/pdtf-schema/schema-derived-ontology/model-views-by-audience/concept/**
-        - /spdtf/inputs/pdtf-schema/schema-derived-ontology/model-views-by-audience/logical/**
-        - /spdtf/inputs/pdtf-schema/schema-derived-ontology/model-views-by-audience/physical-database/**
-        - /spdtf/inputs/pdtf-schema/schema-derived-ontology/model-views-by-audience/physical-ontology/**
-        - /spdtf/inputs/pdtf-schema/schema-derived-ontology/model-views-by-audience/physical-relational/**
-        - /spdtf/inputs/pdtf-schema/schema-derived-ontology/lineage-provenance-and-verification/schema-to-ontology-verification/triplesmaps/**
-        - /spdtf/inputs/pdtf-schema/schema-derived-ontology/use-and-tooling/artefacts/**
-        - /spdtf/inputs/pdtf-schema/schema-derived-ontology/use-and-tooling/tools/**
-      source_definition_glob: src/pages/spdtf/inputs/pdtf-schema/schema-derived-ontology/**/*.astro
+        - /development/inputs/pdtf-schema/schema-derived-ontology/model-views-by-audience/concept/**
+        - /development/inputs/pdtf-schema/schema-derived-ontology/model-views-by-audience/logical/**
+        - /development/inputs/pdtf-schema/schema-derived-ontology/model-views-by-audience/physical-database/**
+        - /development/inputs/pdtf-schema/schema-derived-ontology/model-views-by-audience/physical-ontology/**
+        - /development/inputs/pdtf-schema/schema-derived-ontology/model-views-by-audience/physical-relational/**
+        - /development/inputs/pdtf-schema/schema-derived-ontology/lineage-provenance-and-verification/schema-to-ontology-verification/triplesmaps/**
+        - /development/inputs/pdtf-schema/schema-derived-ontology/use-and-tooling/artefacts/**
+        - /development/inputs/pdtf-schema/schema-derived-ontology/use-and-tooling/tools/**
+      source_definition_glob: src/pages/development/inputs/pdtf-schema/schema-derived-ontology/**/*.astro
       source_definition_exclusions:
-        - src/pages/spdtf/inputs/pdtf-schema/schema-derived-ontology/model-views-by-audience/concept/**
-        - src/pages/spdtf/inputs/pdtf-schema/schema-derived-ontology/model-views-by-audience/logical/**
-        - src/pages/spdtf/inputs/pdtf-schema/schema-derived-ontology/model-views-by-audience/physical-database/**
-        - src/pages/spdtf/inputs/pdtf-schema/schema-derived-ontology/model-views-by-audience/physical-ontology/**
-        - src/pages/spdtf/inputs/pdtf-schema/schema-derived-ontology/model-views-by-audience/physical-relational/**
-        - src/pages/spdtf/inputs/pdtf-schema/schema-derived-ontology/lineage-provenance-and-verification/schema-to-ontology-verification/triplesmaps/[id].astro
+        - src/pages/development/inputs/pdtf-schema/schema-derived-ontology/model-views-by-audience/concept/**
+        - src/pages/development/inputs/pdtf-schema/schema-derived-ontology/model-views-by-audience/logical/**
+        - src/pages/development/inputs/pdtf-schema/schema-derived-ontology/model-views-by-audience/physical-database/**
+        - src/pages/development/inputs/pdtf-schema/schema-derived-ontology/model-views-by-audience/physical-ontology/**
+        - src/pages/development/inputs/pdtf-schema/schema-derived-ontology/model-views-by-audience/physical-relational/**
+        - src/pages/development/inputs/pdtf-schema/schema-derived-ontology/lineage-provenance-and-verification/schema-to-ontology-verification/triplesmaps/[id].astro
       output_pattern: docs/notebooklm/prepared/pdtf-lineage-site/{source-id}.md
       transformation: {reproducibility: deterministic-one-to-one}
       repository_tracking: tracked
@@ -281,7 +281,7 @@ resource_manifest:
   exclusions:
     - pattern: source/03-standards/schemas/**
       reason: PDTF source schemas are explicitly excluded by ADR-0081.
-    - pattern: src/pages/spdtf/inputs/pdtf-schema/schema-and-supporting-material/**
+    - pattern: src/pages/development/inputs/pdtf-schema/schema-and-supporting-material/**
       reason: Schema documentation is excluded; only derived ontology lineage is in scope.
     - pattern: source/03-standards/trust-framework/**
       reason: The unendorsed draft technical scheme is not the PDTF schema-derived ontology lineage corpus.
@@ -301,7 +301,7 @@ resource_manifest:
       reason: Raw build output may be consumed only by the regenerated receipt and must not be uploaded directly.
     - pattern: source/03-standards/api/**
       reason: API implementation is not lineage evidence for this notebook.
-    - pattern: src/pages/spdtf/inputs/pdtf-schema/schema-derived-ontology/model-views-by-audience/**/[...slug].astro
+    - pattern: src/pages/development/inputs/pdtf-schema/schema-derived-ontology/model-views-by-audience/**/[...slug].astro
       reason: Generated page-per-term views duplicate canonical artefacts.
 
 preparation_prompts:

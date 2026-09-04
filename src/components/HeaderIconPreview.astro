@@ -1,0 +1,15 @@
+---
+import FrameworkMark from '@/components/FrameworkMark.astro';
+import type { HeaderIconId } from '@/lib/header-icons';
+
+interface Props {
+  icon: HeaderIconId;
+  name: string;
+}
+
+const { icon, name } = Astro.props;
+---
+<span class="header-icon-preview">
+  <FrameworkMark icon={icon} />
+  <span class="header-icon-preview__name">{name}</span>
+</span>

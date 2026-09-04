@@ -2,30 +2,37 @@
 interface Props {
   surface?: 'auto' | 'light' | 'dark';
   campaign?: boolean;
-  scale?: 'display' | 'compact';
+  scale?: 'display' | 'mini' | 'compact';
+  variant?: 'document' | 'paired';
   class?: string;
 }
 
-const { surface = 'auto', campaign = false, scale = 'display', class: className } = Astro.props;
+const {
+  surface = 'auto',
+  campaign = false,
+  scale = 'display',
+  variant = 'document',
+  class: className,
+} = Astro.props;
 ---
 
-<div class:list={[
+<span class:list={[
   'brand-heading',
   {
     'brand-heading--on-light': surface === 'light',
     'brand-heading--on-dark': surface === 'dark',
     'brand-heading--campaign': campaign,
+    'brand-heading--mini': scale === 'mini',
     'brand-heading--compact': scale === 'compact',
+    'brand-heading--paired': variant === 'paired',
   },
   className,
 ]}>
-  <img
-    class="brand-heading__icon"
-    src="/ui/brand/opda-icon-yellow.svg"
-    alt=""
-    aria-hidden="true"
-    width="84"
-    height="100"
-  />
-  <span class="brand-heading__label">Open Property Data Association</span>
-</div>
+  <span class="brand-heading__mark" aria-hidden="true">
+    <span class="brand-heading__icon"></span>
+  </span>{variant === 'paired' ? (
+    <span class="brand-heading__label">Open Property Data Association</span>
+  ) : (
+    <span class="brand-heading__label">Open Property Data <span class="brand-heading__label-accent">Association</span></span>
+  )}
+</span>

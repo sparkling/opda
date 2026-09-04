@@ -35,10 +35,10 @@ const aggLocalName = entityUri ? entityUri.split(/[/#:]/).pop() : null;
 if (aggLocalName && AGGREGATE_DOCS.has(aggLocalName)) return;
 
 const tiers = [
-  { key: 'concept', label: 'Concept', path: '/spdtf/inputs/pdtf-schema/schema-derived-ontology/model-views-by-audience/concept' },
-  { key: 'logical', label: 'Logical', path: '/spdtf/inputs/pdtf-schema/schema-derived-ontology/model-views-by-audience/logical' },
-  { key: 'physical-database', label: 'Physical — deployment', path: '/spdtf/inputs/pdtf-schema/schema-derived-ontology/model-views-by-audience/physical-database' },
-  { key: 'physical-ontology', label: 'Physical — ontology', path: '/spdtf/inputs/pdtf-schema/schema-derived-ontology/model-views-by-audience/physical-ontology' },
+  { key: 'concept', label: 'Concept', path: '/development/inputs/pdtf-schema/schema-derived-ontology/model-views-by-audience/concept' },
+  { key: 'logical', label: 'Logical', path: '/development/inputs/pdtf-schema/schema-derived-ontology/model-views-by-audience/logical' },
+  { key: 'physical-database', label: 'Physical — deployment', path: '/development/inputs/pdtf-schema/schema-derived-ontology/model-views-by-audience/physical-database' },
+  { key: 'physical-ontology', label: 'Physical — ontology', path: '/development/inputs/pdtf-schema/schema-derived-ontology/model-views-by-audience/physical-ontology' },
 ] as const;
 
 // Best-effort identity keys. `localName` is the camel/PascalCase URI local

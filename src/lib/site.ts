@@ -127,7 +127,7 @@ export function findPage(path: string):
   // section and need its header/sidebar shell; their page layout supplies the
   // deeper, record-specific breadcrumb.
   const sectionKey = norm.split('/').filter(Boolean)[0];
-  if (norm.startsWith('/spdtf/property-pack/')) return { section: SECTIONS['property-pack'] };
+  if (norm.startsWith('/development/property-pack/')) return { section: SECTIONS['property-pack'] };
   return null;
 }
 

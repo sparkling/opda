@@ -162,7 +162,7 @@ export function generatedFamily(route) {
   if (parts.slice(0, 5).join('/') === 'pdtf-1/extracted-ontology/use-and-tooling/tools') {
     return 'ontology/tools';
   }
-  if (parts.slice(0, 6).join('/') === 'spdtf/inputs/pdtf-schema/schema-derived-ontology/use-and-tooling/tools') {
+  if (parts.slice(0, 6).join('/') === 'development/inputs/pdtf-schema/schema-derived-ontology/use-and-tooling/tools') {
     return 'ontology/tools';
   }
   return parts[0];

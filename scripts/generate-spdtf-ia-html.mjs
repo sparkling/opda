@@ -115,8 +115,8 @@ function buildHtml(template, markdown) {
     + '<a href="/programme">Programme</a>'
     + '<a href="/governance">Governance</a>'
     + '<a href="/semantic-modelling">Modelling</a>'
-    + '<a href="/spdtf">Development</a>'
-    + '<a href="/spdtf/working-groups">Groups</a>'
+    + '<a href="/development">Development</a>'
+    + '<a href="/development/working-groups">Groups</a>'
     + '<a href="/resources">Resources</a>'
     + '</div></nav>';
   const main = `<main class="content" id="main" tabindex="-1">${body}<p class="print-note">Companion review artefact synchronized with <code>docs/spdtf-information-architecture.md</code>. No external resources are loaded; publication remains a separate release operation.</p></main>`;

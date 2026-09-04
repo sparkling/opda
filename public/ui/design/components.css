@@ -6,95 +6,146 @@
   border-color: var(--color-border-strong);
   color: var(--color-text-disabled);
 }
-
-/* Shared icon-and-live-text lock-up: its scale and spacing are relative to the consuming text, with baseline alignment avoiding component offsets. */
-.brand-lockup {
-  --brand-lockup-icon-width: 0.89em;
-  --brand-lockup-gap: 0.45em;
-  --brand-lockup-color: currentColor;
-  --brand-lockup-hover-color: var(--brand-lockup-color);
-  display: inline-flex;
-  align-items: baseline;
-  gap: var(--brand-lockup-gap);
-  color: var(--brand-lockup-color);
-  text-decoration: none;
-}
-.brand-lockup--on-dark {
-  --brand-lockup-color: var(--brand-yellow);
-  --brand-lockup-hover-color: var(--brand-white);
-}
-.brand-lockup--on-light {
-  --brand-lockup-color: var(--brand-deep);
-  --brand-lockup-hover-color: var(--brand-night);
-}
-.brand-lockup--mini { font: 600 var(--text-lg) / 1 var(--font-sans); }
-.brand-lockup:hover { color: var(--brand-lockup-hover-color); }
-.brand-lockup__icon {
-  display: block;
-  width: var(--brand-lockup-icon-width);
-  height: auto;
-  flex: 0 0 auto;
-}
-.brand-lockup__label {
-  min-width: 0;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-/* Icon-and-name brand heading: the official icon is decorative; the organisation name stays live text. */
+/* Shared icon-and-live-text identity. The supplied yellow SVG is the single
+   geometry source and is applied as a mask over a token colour. The mark sits
+   on a portrait "property document" card in the icon's own 84:100 proportion,
+   whose top-right corner is folded back to reveal the brand violet beneath.
+   Light surfaces: yellow card, violet fold, deep house, deep name with the
+   word "Association" in the same violet. Dark surfaces: raised night card,
+   bright violet fold, yellow house, yellow name with a bright violet accent.
+   The organisation name always stays on one line, with the card centred on
+   the visible bottom edge of its text. */
 .brand-heading {
-  --brand-heading-gap: var(--space-5);
+  --brand-heading-mark-size: 1.35em;
+  --brand-heading-mark-inset: 0.125em;
+  --brand-heading-mark-fold: 0.38em;
+  --brand-heading-mark-radius: 0.22em;
+  --brand-heading-gap: 0.5em;
   --brand-heading-type: var(--brand-heading);
-  --brand-heading-icon-width: clamp(4rem, 6vw, 5.5rem);
+  --opda-mark-tile: var(--color-header-brand-mark-tile);
+  --opda-mark-fold: var(--color-header-brand-mark-fold);
+  --opda-mark-ink: var(--color-header-brand-mark-ink);
+  --opda-mark-text: var(--color-header-brand-name);
+  --opda-mark-accent: var(--color-header-brand-name-accent);
   min-width: 0;
-  display: flex;
+  display: inline-flex;
   align-items: flex-end;
   gap: var(--brand-heading-gap);
   margin: 0;
-  color: var(--color-text-strong);
+  color: var(--opda-mark-text);
   font: var(--brand-heading-type);
   letter-spacing: var(--tracking-display);
+  white-space: nowrap;
 }
-.brand-heading--on-light { color: var(--brand-deep); }
-.brand-heading--on-dark { color: var(--brand-yellow); }
+.brand-heading--on-light {
+  --opda-mark-tile: var(--brand-yellow);
+  --opda-mark-fold: var(--brand-violet);
+  --opda-mark-ink: var(--brand-deep);
+  --opda-mark-text: var(--brand-deep);
+  --opda-mark-accent: var(--brand-violet);
+}
+.brand-heading--on-dark {
+  --opda-mark-tile: var(--color-surface-dark-tint);
+  --opda-mark-fold: var(--brand-violet-bright);
+  --opda-mark-ink: var(--brand-yellow);
+  --opda-mark-text: var(--brand-yellow);
+  --opda-mark-accent: var(--brand-violet-bright);
+}
 .brand-heading--campaign { margin-bottom: var(--space-10); }
+.brand-heading--mini,
 .brand-heading--compact {
-  --brand-heading-gap: 0.45em;
-  --brand-heading-type: 600 var(--text-sm) / 1 var(--font-sans);
-  --brand-heading-icon-width: 0.89em;
-  align-items: baseline;
+  --brand-heading-mark-size: 1.35em;
+}
+.brand-heading--mini { --brand-heading-type: 600 var(--text-xl) / 1 var(--font-sans); }
+.brand-heading--compact { --brand-heading-type: 600 var(--text-sm) / 1 var(--font-sans); }
+.brand-heading__mark {
+  --brand-heading-mark-width: calc(var(--brand-heading-mark-size) * 0.84);
+  position: relative;
+  isolation: isolate;
+  width: var(--brand-heading-mark-width);
+  height: var(--brand-heading-mark-size);
+  flex: 0 0 var(--brand-heading-mark-width);
+  box-sizing: border-box;
+  display: grid;
+  place-items: center;
+  padding: var(--brand-heading-mark-inset);
+  border-radius: var(--brand-heading-mark-radius);
+  /* The violet layer is the sheet beneath; only the folded corner shows. */
+  background: var(--opda-mark-fold);
+}
+.brand-heading__mark::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  border-radius: inherit;
+  background: var(--opda-mark-tile);
+  clip-path: polygon(
+    0 0,
+    calc(100% - var(--brand-heading-mark-fold)) 0,
+    100% var(--brand-heading-mark-fold),
+    100% 100%,
+    0 100%
+  );
 }
 .brand-heading__icon {
-  width: var(--brand-heading-icon-width);
+  display: block;
+  width: 76%;
   height: auto;
-  flex: 0 0 auto;
+  aspect-ratio: 84 / 100;
+  background-color: var(--opda-mark-ink);
+  -webkit-mask-image: url('/ui/brand/opda-icon-yellow.svg');
+  -webkit-mask-size: contain;
+  -webkit-mask-repeat: no-repeat;
+  -webkit-mask-position: center;
+  mask-image: url('/ui/brand/opda-icon-yellow.svg');
+  mask-size: contain;
+  mask-repeat: no-repeat;
+  mask-position: center;
 }
 .brand-heading__label {
   min-width: 0;
   white-space: nowrap;
 }
+.brand-heading__label-accent { color: var(--opda-mark-accent); }
+
 @media (max-width: 40rem) {
-  .brand-heading:not(.brand-heading--compact) {
-    align-items: flex-start;
-    flex-direction: column;
-  }
   .brand-heading--campaign { margin-bottom: var(--space-8); }
 }
+
 @media (forced-colors: active) {
-  .brand-lockup { color: CanvasText; }
-  .brand-lockup__icon { display: none; }
-  .brand-heading { color: CanvasText; }
-  .brand-heading__icon { display: none; }
+  .brand-heading { color: LinkText; }
+  .brand-heading__mark {
+    outline: 1px solid CanvasText;
+    forced-color-adjust: none;
+  }
+  .brand-heading__icon { forced-color-adjust: none; }
 }
+
+@media (prefers-contrast: more) {
+  .brand-heading__mark { box-shadow: inset 0 0 0 1px var(--opda-mark-ink); }
+}
+
 @media print {
   .brand-heading {
+    --opda-mark-tile: transparent;
+    --opda-mark-fold: transparent;
+    --opda-mark-ink: black;
+    --opda-mark-accent: black;
     color: black;
     break-inside: avoid;
   }
+  .brand-heading__icon {
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
 }
-/* Shared section heading: its optional eyebrow identifies the role, while heading and copy retain a consistent hierarchy. */
+
+/* Shared section heading. The optional eyebrow identifies the section's role;
+   the heading and supporting copy then retain one consistent hierarchy. */
 .section-heading {
   --section-heading-title-font: 600 clamp(1.75rem, 2.5vw, 2.75rem) / 1.1 var(--font-display);
-  /* Scoped legacy var(--h2) section rules inherit this title scale. */
+  /* Scoped legacy section rules using var(--h2) inherit this same title scale. */
   --h2: var(--section-heading-title-font);
   margin: 0 0 var(--space-7);
 }
@@ -132,6 +183,7 @@
   .section-heading :is(h2, h3),
   .section-heading__description { color: black; }
 }
+
 /* Shared content cards: square, structured and content-led. */
 .card-grid {
   display: grid;
@@ -180,6 +232,7 @@ a.card:hover .card__action span { transform: translateX(3px); }
 @media (max-width: 40rem) {
   .card__stats { grid-template-columns: 1fr; }
 }
+
 .home-hero {
   position: relative;
   overflow: hidden;
@@ -426,72 +479,4 @@ a.card:hover .card__action span { transform: translateX(3px); }
   .home-status__item { border-right: 0; border-bottom: 1px solid var(--color-border); }
   .home-status__item:last-child { border-bottom: 0; }
   .home-status__head { flex-direction: column; }
-}
-
-/* Canonical destination filtering with compact, ranked search rows. */
-.site-search-toolbar {
-  display: grid;
-  grid-template-columns: minmax(18rem, 1fr) minmax(13rem, 18rem) auto;
-  align-items: start;
-  gap: var(--space-4);
-  margin: var(--space-7) 0 var(--space-4);
-  padding: var(--space-5) 0;
-  border-block: 1px solid var(--color-border);
-}
-.site-search-toolbar .db-input { inline-size: 100%; max-inline-size: none; }
-.site-search-toolbar > .db-reset { margin-top: calc(var(--text-xs) * 1.2 + var(--space-1)); }
-.site-search-help {
-  margin: 0;
-  color: var(--color-text-muted);
-  font: 400 var(--text-xs) / 1.45 var(--font-sans);
-}
-.site-search-summary {
-  margin: var(--space-4) 0 0;
-  color: var(--color-text-muted);
-  font: 400 var(--text-sm) / 1.45 var(--font-sans);
-}
-.site-search-results {
-  list-style: none;
-  margin: var(--space-5) 0 var(--space-7);
-  padding: 0;
-  border-top: 1px solid var(--color-border-strong);
-}
-.site-search-result {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(16rem, 22rem);
-  gap: var(--space-6);
-  margin: 0;
-  padding: var(--space-5) 0;
-  border-bottom: 1px solid var(--color-border);
-}
-.site-search-result[hidden] { display: none !important; }
-.site-search-result__content,
-.site-search-result__metadata { min-width: 0; }
-.site-search-result .overline { margin: 0 0 var(--space-2); }
-.site-search-result__title {
-  margin: 0;
-  font: 600 var(--text-lg) / 1.4 var(--font-sans);
-}
-.site-search-result__summary {
-  margin: var(--space-2) 0 0;
-  color: var(--color-text-muted);
-  font: 400 var(--text-sm) / 1.5 var(--font-sans);
-}
-.site-search-result__metadata {
-  display: grid;
-  grid-template-columns: max-content minmax(0, 1fr);
-  align-content: start;
-  gap: var(--space-2) var(--space-4);
-  margin: 0;
-  font: 400 var(--text-xs) / 1.45 var(--font-sans);
-}
-.site-search-result__metadata dt { color: var(--color-text-muted); font-weight: 600; }
-.site-search-result__metadata dd { margin: 0; overflow-wrap: anywhere; }
-.site-search-empty { border-bottom: 1px solid var(--color-border); }
-.site-search-empty p { margin: 0 0 var(--space-4); }
-.site-search-empty .db-reset { align-self: center; }
-@media (max-width: 760px) {
-  .site-search-toolbar { grid-template-columns: minmax(0, 1fr); }
-  .site-search-toolbar > .db-reset { width: 100%; margin-top: 0; }
-  .site-search-result { grid-template-columns: minmax(0, 1fr); gap: var(--space-4); }
 }

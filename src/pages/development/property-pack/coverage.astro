@@ -1,0 +1,142 @@
+---
+import PropertyPackPage from '@/components/property-pack/PropertyPackPage.astro';
+import {
+  contextStats,
+  contextById,
+  contexts,
+  counts,
+  coverage,
+  dataPointRoute,
+  resourceByIri,
+  resourceRoute,
+  workPackageRoute,
+  workPackages,
+} from '@/lib/property-pack-model.mjs';
+
+const dispositions = [...new Set(coverage.map((item) => item.disposition))].sort().map((name) => ({
+  name,
+  rows: coverage.filter((item) => item.disposition === name),
+}));
+const reviewItems = coverage.filter((item) => item.disposition !== 'consolidate');
+const traceRows = coverage.map((item) => ({
+  label: item.preferred_label,
+  sourceId: item.item_id,
+  sourceRoute: dataPointRoute(item),
+  semanticHome: contextById.get(item.semantic_home)?.label ?? item.semantic_home,
+  workPackage: item.work_package.replaceAll('-', ' '),
+  disposition: item.disposition,
+  constructs: item.construct_refs.map((iri) => {
+    const resource = resourceByIri.get(iri);
+    return resource ? { label: resource.label, href: resourceRoute(resource) } : { label: iri, href: '' };
+  }),
+}));
+const safeTraceRows = JSON.stringify(traceRows).replaceAll('<', '\\u003c');
+---
+<PropertyPackPage
+  title="Source coverage"
+  description="Exact coverage and traceability from all 451 Property Pack source data points into the machine-generated Property Pack pre-draft."
+  category="Evidence & assurance"
+  crumbs={[{ label: 'Source coverage' }]}
+>
+  <h1>Source coverage</h1>
+  <p class="lead">
+    Every one of the 451 normalized source data points has exactly one proposed
+    semantic home and reaches at least one ontology resource. Coverage is traceability,
+    not working-group approval of the interpretation.
+  </p>
+
+
+  <h2 id="closure">Coverage closure</h2>
+  <div class="v2-metrics">
+    <div class="v2-metric"><strong>{counts.sourceItems}</strong><span>unique source data points</span></div>
+    <div class="v2-metric"><strong>{coverage.filter((item) => item.construct_refs.length > 0).length}</strong><span>items reaching ontology constructs</span></div>
+    <div class="v2-metric"><strong>{coverage.filter((item) => item.topic_iri).length}</strong><span>topic concepts</span></div>
+    <div class="v2-metric"><strong>{coverage.filter((item) => item.vocabulary_ref).length}</strong><span>items using a controlled scheme</span></div>
+  </div>
+  <div class="callout callout--note"><p class="callout__label">Evidence semantics</p><p>Direct evidence motivates a resource itself. Structural evidence reaches one of three organising superclasses through its directly evidenced descendants. The resource pages show those trace types separately.</p></div>
+
+  <h2 id="contexts">Coverage by context</h2>
+  <div class="v2-table-wrap"><table><thead><tr><th>Semantic home</th><th>Source items</th><th>Ontology resources</th><th>Topic concepts</th></tr></thead><tbody>{contexts.map((context) => { const stats = contextStats(context.id); return <tr><td><a href={`/development/property-pack/contexts/${context.id}`}>{context.label}</a></td><td>{stats.sourceItems}</td><td>{stats.resources}</td><td>{stats.topicConcepts}</td></tr>; })}</tbody></table></div>
+
+  <h2 id="work-packages">Coverage by work package</h2>
+  <p>A work package is a source-catalogue grouping used to make 451 items manageable for review. It can span several semantic homes; it is not itself a bounded context, an ontology module or an approved SPDTF workstream.</p>
+  <div class="v2-table-wrap"><table><thead><tr><th>Work package</th><th>Source items</th><th>Semantic homes represented</th></tr></thead><tbody>{workPackages.map((workPackage) => <tr><td><a href={workPackageRoute(workPackage.id)}>{workPackage.label}</a></td><td>{workPackage.items.length}</td><td>{workPackage.semanticHomes.length}</td></tr>)}</tbody></table></div>
+
+  <h2 id="dispositions">Modelling dispositions</h2>
+  <p>A modelling disposition is the candidate team’s proposed treatment for one source item: whether to consolidate it with another construct, keep it distinct, split it, or challenge the source interpretation. It records a modelling hypothesis for review, not approval, a working-group decision or a change to the source requirement.</p>
+  <div class="v2-card-grid">{dispositions.map(({ name, rows }) => <div class="v2-card"><h3>{name}</h3><p>{rows.length} source data point{rows.length === 1 ? '' : 's'}</p></div>)}</div>
+
+  <h2 id="review-items">Split and challenge items ({reviewItems.length})</h2>
+  <p>These items are deliberately visible because the candidate does not treat consolidation as the right answer for every source row.</p>
+  <ul class="v2-review-list">{reviewItems.map((item) => <li><a href={dataPointRoute(item)}>{item.preferred_label}</a> — <strong>{item.disposition}</strong>: {item.rationale}</li>)}</ul>
+
+  <h2 id="trace">Complete trace register</h2>
+  <p>This is the complete 451-item source-to-candidate trace. Filter it by semantic home, work package or modelling disposition; sort any column; and move through the results in pages.</p>
+  <div id="property-pack-trace-register" class="data-browser" aria-labelledby="trace">
+    <div class="db-table-wrap" data-static-trace-register>
+      <table class="db-table">
+        <thead>
+          <tr>
+            <th scope="col">Source data point</th>
+            <th scope="col">Semantic home</th>
+            <th scope="col">Candidate constructs</th>
+            <th scope="col">Work package</th>
+            <th scope="col">Modelling disposition</th>
+          </tr>
+        </thead>
+        <tbody>
+          {coverage.map((item) => <tr>
+            <td><a href={dataPointRoute(item)}>{item.preferred_label}</a><br/><code class="standalone-identifier">{item.item_id}</code></td>
+            <td>{item.semantic_home}</td>
+            <td><ul>{item.construct_refs.map((iri) => { const resource = resourceByIri.get(iri); return <li>{resource ? <a href={resourceRoute(resource)}>{resource.label}</a> : <code class="standalone-identifier">{iri}</code>}</li>; })}</ul></td>
+            <td>{item.work_package.replaceAll('-', ' ')}</td>
+            <td>{item.disposition}</td>
+          </tr>)}
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <script type="application/json" id="property-pack-trace-rows" set:html={safeTraceRows}></script>
+  <script slot="scripts" is:inline data-astro-rerun src="/ui/data-browser.js"></script>
+  <script slot="scripts" is:inline data-astro-rerun>
+    if (window._opdaPropertyPackTraceMount) {
+      document.removeEventListener('astro:page-load', window._opdaPropertyPackTraceMount);
+    }
+    window._opdaPropertyPackTraceMount = function () {
+      var source = document.getElementById('property-pack-trace-rows');
+      var mount = document.getElementById('property-pack-trace-register');
+      if (!source || !mount || !window.OPDA || !OPDA.DataBrowser) return;
+      var rows = [];
+      try { rows = JSON.parse(source.textContent || '[]'); } catch (error) { return; }
+      function esc(value) {
+        return String(value == null ? '' : value).replace(/[<>&"]/g, function (character) {
+          return { '<': '&lt;', '>': '&gt;', '&': '&amp;', '"': '&quot;' }[character];
+        });
+      }
+      OPDA.DataBrowser.mount({
+        mount: mount,
+        data: rows,
+        itemLabel: 'traces',
+        pageSize: 25,
+        defaultSort: { key: 'label', dir: 'asc' },
+        searchKeys: ['label', 'sourceId', 'semanticHome', 'workPackage', 'disposition'],
+        searchPlaceholder: 'Search a source data point, identifier or treatment…',
+        facets: [
+          { key: 'semanticHome', label: 'Semantic home' },
+          { key: 'workPackage', label: 'Work package' },
+          { key: 'disposition', label: 'Modelling disposition' },
+        ],
+        columns: [
+          { key: 'label', label: 'Source data point', sortable: true, render: function (value, row) { return '<a href="' + esc(row.sourceRoute) + '">' + esc(value) + '</a><br><code class="standalone-identifier">' + esc(row.sourceId) + '</code>'; } },
+          { key: 'semanticHome', label: 'Semantic home', sortable: true },
+          { key: 'workPackage', label: 'Work package', sortable: true },
+          { key: 'disposition', label: 'Modelling disposition', sortable: true },
+          { key: 'constructs', label: 'Candidate constructs', sortable: false, render: function (value) { return value.map(function (construct) { return construct.href ? '<a href="' + esc(construct.href) + '">' + esc(construct.label) + '</a>' : '<code class="standalone-identifier">' + esc(construct.label) + '</code>'; }).join('<br>'); } },
+        ],
+      });
+    };
+    document.addEventListener('astro:page-load', window._opdaPropertyPackTraceMount);
+    window._opdaPropertyPackTraceMount();
+  </script>
+</PropertyPackPage>

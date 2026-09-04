@@ -53,7 +53,7 @@ export function composeSchemaToSchemeRouteReceipt({
       throw new Error(`schema-to-scheme route is missing, duplicated, or retained at its old URL: ${sourceRoute}`);
     }
     if ((fromPdtfSchema && !routeWithin(targetRoute, '/pdtf-schema'))
-      || (fromSpdtf && !routeWithin(targetRoute, '/spdtf'))) {
+      || (fromSpdtf && !routeWithin(targetRoute, '/development'))) {
       throw new Error(`schema-to-scheme route escaped its final hierarchy: ${sourceRoute} -> ${targetRoute}`);
     }
     accounted.add(targetRoute);

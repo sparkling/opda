@@ -1,0 +1,17 @@
+---
+import FrameworkMark from '@/components/FrameworkMark.astro';
+import { HEADER_ICONS } from '@/lib/header-icons';
+
+interface Props {
+  scale?: 'header' | 'display';
+}
+
+const { scale = 'header' } = Astro.props;
+---
+<span class:list={['framework-heading', { 'framework-heading--display': scale === 'display' }]}>
+  <span class="framework-heading__marks" aria-hidden="true">
+    {HEADER_ICONS.map((icon) => (
+      <FrameworkMark icon={icon.id} class={`framework-heading__mark framework-heading__mark--${icon.id}`} />
+    ))}
+  </span><span class="framework-heading__label">Smart Property Data Trust Framework</span>
+</span>

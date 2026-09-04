@@ -42,7 +42,7 @@ test('the reader-facing corpus uses PDTF schema and SPDTF without deprecated num
     ...filesBelow('scripts'),
     ...filesBelow('tests'),
     ...filesBelow('public/ui'),
-    ...filesBelow('public/spdtf/inputs/pdtf-schema'),
+    ...filesBelow('public/development/inputs/pdtf-schema'),
     ...filesBelow('.github'),
     ...filesBelow('config'),
     path.join(ROOT, 'DESIGN.md'),
@@ -72,22 +72,22 @@ test('public hierarchy uses schema and scheme names in labels and routes', () =>
       ['programme', 'Programme', '/programme'],
       ['governance', 'Governance', '/governance'],
       ['semantic-modelling', 'Modelling', '/semantic-modelling'],
-      ['spdtf', 'Development', '/spdtf'],
-      ['working-groups', 'Groups', '/spdtf/working-groups'],
+      ['spdtf', 'Development', '/development'],
+      ['working-groups', 'Groups', '/development/working-groups'],
       ['resources', 'Resources', '/resources'],
     ],
   );
-  assert.equal(PDTF1_ROUTES.inputRoot, '/spdtf/inputs');
-  assert.equal(PDTF1_ROUTES.root, '/spdtf/inputs/pdtf-schema');
-  assert.equal(PDTF1_ROUTES.original, '/spdtf/inputs/pdtf-schema/schema-and-supporting-material');
-  assert.equal(PDTF1_ROUTES.extracted, '/spdtf/inputs/pdtf-schema/schema-derived-ontology');
-  assert.equal(PROPERTY_PACK_ROUTE_MIGRATION.canonicalRoot, '/spdtf/property-pack');
+  assert.equal(PDTF1_ROUTES.inputRoot, '/development/inputs');
+  assert.equal(PDTF1_ROUTES.root, '/development/inputs/pdtf-schema');
+  assert.equal(PDTF1_ROUTES.original, '/development/inputs/pdtf-schema/schema-and-supporting-material');
+  assert.equal(PDTF1_ROUTES.extracted, '/development/inputs/pdtf-schema/schema-derived-ontology');
+  assert.equal(PROPERTY_PACK_ROUTE_MIGRATION.canonicalRoot, '/development/property-pack');
   assert.equal(existsSync(path.join(ROOT, 'src/pages/pdtf-1')), false);
   assert.equal(existsSync(path.join(ROOT, 'src/pages/spdtf-2')), false);
   assert.equal(existsSync(path.join(ROOT, 'src/pages/pdtf-schema')), false);
-  assert.equal(existsSync(path.join(ROOT, 'src/pages/spdtf')), true);
-  assert.equal(existsSync(path.join(ROOT, 'src/pages/spdtf/inputs/pdtf-schema/schema-and-supporting-material')), true);
-  assert.equal(existsSync(path.join(ROOT, 'src/pages/spdtf/inputs/pdtf-schema/schema-derived-ontology')), true);
+  assert.equal(existsSync(path.join(ROOT, 'src/pages/development')), true);
+  assert.equal(existsSync(path.join(ROOT, 'src/pages/development/inputs/pdtf-schema/schema-and-supporting-material')), true);
+  assert.equal(existsSync(path.join(ROOT, 'src/pages/development/inputs/pdtf-schema/schema-derived-ontology')), true);
   assert.equal(SEMANTIC_PACKAGE_MANIFEST.id, 'https://opda.org.uk/spdtf/semantic-package/workspace-contract');
   assert.equal(SEMANTIC_PACKAGE_MANIFEST.version, '2026-08-22');
   assert.deepEqual(SEMANTIC_PACKAGE_MANIFEST.supersedes, {
@@ -120,14 +120,14 @@ test('the public and Programme pages share the current task-and-authority cards'
 });
 
 test('route moves retain comment identities without retaining public URLs', () => {
-  assert.equal(getLegacyCommentKey('/spdtf'), '/spdtf-2');
+  assert.equal(getLegacyCommentKey('/development'), '/spdtf-2');
   assert.equal(getLegacyCommentKey('/semantic-modelling/standards'), '/spdtf-2/ontologies/standards');
-  assert.equal(getLegacyCommentKey('/spdtf/property-pack'), '/v2');
-  assert.equal(getLegacyCommentKey('/spdtf/property-pack/pdtf-schema-lineage'), '/v2/comparison');
-  assert.equal(getLegacyCommentKey('/spdtf/inputs/pdtf-schema'), '/pdtf-1');
-  assert.equal(getLegacyCommentKey('/spdtf/inputs/pdtf-schema/schema-and-supporting-material'), '/pdtf-1/original-standard');
-  assert.equal(getLegacyCommentKey('/spdtf/inputs/pdtf-schema/schema-and-supporting-material/schema'), '/schema');
-  assert.equal(getLegacyCommentKey('/spdtf/inputs/pdtf-schema/schema-derived-ontology/terms-and-model-resources/classes'), '/ontology/classes');
+  assert.equal(getLegacyCommentKey('/development/property-pack'), '/v2');
+  assert.equal(getLegacyCommentKey('/development/property-pack/pdtf-schema-lineage'), '/v2/comparison');
+  assert.equal(getLegacyCommentKey('/development/inputs/pdtf-schema'), '/pdtf-1');
+  assert.equal(getLegacyCommentKey('/development/inputs/pdtf-schema/schema-and-supporting-material'), '/pdtf-1/original-standard');
+  assert.equal(getLegacyCommentKey('/development/inputs/pdtf-schema/schema-and-supporting-material/schema'), '/schema');
+  assert.equal(getLegacyCommentKey('/development/inputs/pdtf-schema/schema-derived-ontology/terms-and-model-resources/classes'), '/ontology/classes');
   const intermediateOnly = [
     ['lineage-provenance-and-verification', 'lineage-provenance-and-verification'],
     ['concepts-and-architecture', 'concepts-and-architecture'],
@@ -139,7 +139,7 @@ test('route moves retain comment identities without retaining public URLs', () =
   ];
   for (const [canonicalSuffix, intermediateSuffix] of intermediateOnly) {
     assert.equal(
-      getLegacyCommentKey(`/spdtf/inputs/pdtf-schema/schema-derived-ontology/${canonicalSuffix}`),
+      getLegacyCommentKey(`/development/inputs/pdtf-schema/schema-derived-ontology/${canonicalSuffix}`),
       `/pdtf-1/extracted-ontology/${intermediateSuffix}`,
     );
   }

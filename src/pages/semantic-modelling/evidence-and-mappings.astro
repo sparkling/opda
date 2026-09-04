@@ -1,11 +1,9 @@
 ---
 import Layout from '@/layouts/Layout.astro';
-import PageMeta from '@/components/PageMeta.astro';
 import Diagram from '@/components/Diagram.astro';
 ---
 
 <Layout title="Evidence, provenance and qualified mappings" description="How attributed evidence and competency questions become traceable SPDTF candidates, and how governed cross-context mappings separate SKOS assertions from mapping-record provenance.">
-  <PageMeta category="Understand ontologies" variant="brand" updated="Category 8 mapping method · current implementation remains empty" />
   <h1>Evidence, provenance and qualified mappings</h1>
   <p class="lead">
     Every important candidate meaning should be traceable to a question, evidence,
@@ -92,7 +90,7 @@ flowchart LR
     <p>
       Property Pack 0.1 emits SKOS schemes, concepts, labels, definitions, notations and
       scheme membership. It emits no SKOS hierarchy or mapping predicates. Its
-      <a href="/spdtf/property-pack/relationships#cross-context">cross-context mapping register</a>
+      <a href="/development/property-pack/relationships#cross-context">cross-context mapping register</a>
       is empty. SSSOM and SEMAPV remain deferred
       candidates: no SSSOM version or profile has been selected, and no SSSOM artefact or
       conformance receipt exists.

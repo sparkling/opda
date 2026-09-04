@@ -1,6 +1,5 @@
 ---
 import Layout from '@/layouts/Layout.astro';
-import PageMeta from '@/components/PageMeta.astro';
 import manifest from '@/data/resources-manifest.json';
 
 // The manifest is generated locally by `make resources-manifest` (which walks
@@ -54,8 +53,6 @@ const totalBytes = entries.reduce((sum, e) => sum + e.sizeBytes, 0);
   title="Resource index"
   description="Every individual file in the OPDA source archive — all of it published, each one directly linkable via the resource viewer."
 >
-<PageMeta category="Library" variant="brand" updated="Updated 2026-06-25" damaKa={["Document & Content Management"]} />
-
       <h1>Resource index</h1>
       <p class="lead">
         Every individual file in <code>source/</code> — all <strong>{totalCount}</strong>

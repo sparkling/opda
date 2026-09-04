@@ -41,7 +41,7 @@ test('the LeaseTerm pair uses lowercase type-scoped routes without aliases', () 
   assert.equal(stableLeaseTermRoute('/pdtf/LeaseTerm'), '/pdtf/classes/lease-term');
   assert.equal(stableLeaseTermRoute('/pdtf/leaseTerm'), '/pdtf/object-properties/lease-term');
   assert.equal(stableLeaseTermRoute('/pdtf/Property'), '/pdtf/Property');
-  assert.equal(getAcceptedRoute('/v2/comparison'), '/spdtf/property-pack/pdtf-schema-lineage');
+  assert.equal(getAcceptedRoute('/v2/comparison'), '/development/property-pack/pdtf-schema-lineage');
   assert.equal(getAcceptedRoute('/pdtf/LeaseTerm'), '/pdtf/classes/lease-term');
   assert.equal(getAcceptedRoute('/pdtf/leaseTerm'), '/pdtf/object-properties/lease-term');
   assert.equal(getDeclaredRouteReplacement('/pdtf/LeaseTerm'), '/pdtf/classes/lease-term');

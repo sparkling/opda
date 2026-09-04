@@ -1,15 +1,19 @@
 ---
 status: accepted
 date: 2026-08-03
-updated: 2026-08-22
+updated: 2026-09-03
 tags: [ontology, property-pack, greenfield, bounded-context, common-boundary, interoperability, governance, council, ai-assisted, model-routing, source-security, release, skos, shacl, provenance, authorisation]
 supersedes: []
 depends-on: [ADR-0039, ADR-0066]
-implements: [config/calibration/property-pack-v1.json, scripts/property-pack-calibration.mjs, scripts/property_pack_candidate.py, src/data/property-pack/candidate-model, source/03-standards/ontology-candidates/property-pack/0.1, src/pages/spdtf/property-pack]
+implements: [config/calibration/property-pack-v1.json, scripts/property-pack-calibration.mjs, scripts/property_pack_candidate.py, src/data/property-pack/candidate-model, source/03-standards/ontology-candidates/property-pack/0.1, src/pages/development/property-pack]
 ---
 
 # Model the Property Pack from first principles with bounded-context ownership
 
+> Update 2026-09-03 — the implemented reader pages now live at
+> `/development/property-pack/**`; this route-only change does not alter the
+> modelling decision.
+>
 ## Context and Problem Statement
 
 ADR-0066 fixes the initial coverage boundary for the new ontology at the 451 data

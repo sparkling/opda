@@ -33,23 +33,6 @@ test('semantic modelling has complete teaching and implementation routes without
     assert.doesNotMatch(source, /JourneyNav/u, `${name} repeats the section navigation in page content`);
   }
 
-  const pageCategories = {
-    index: 'Semantic modelling',
-    'why-ontologies': 'Understand ontologies',
-    'reading-the-model': 'Understand ontologies',
-    'semantic-package': 'Understand ontologies',
-    'bounded-contexts': 'Understand ontologies',
-    standards: 'Understand ontologies',
-    'evidence-and-mappings': 'Understand ontologies',
-    validation: 'Understand ontologies',
-    'modelling-method': 'How we model SPDTF',
-    'modelling-rules': 'How we model SPDTF',
-    coverage: 'How we model SPDTF',
-  };
-  for (const [name, category] of Object.entries(pageCategories)) {
-    assert.match(textOf(name), new RegExp(`<PageMeta category="${category}"`, 'u'));
-  }
-
   const required = {
     'why-ontologies': ['What an ontology is', 'A document tree and a meaning graph', 'What an ontology cannot establish'],
     'reading-the-model': ['Identifiers and resources', 'Classes, properties and values', 'Shapes and provenance', 'Follow one Property Pack construct'],
@@ -121,16 +104,16 @@ test('Category 8 mapping guidance separates architecture, SKOS assertions and de
     'src/pages/semantic-modelling/reading-the-model.astro',
     'src/pages/semantic-modelling/semantic-package.astro',
     'src/pages/semantic-modelling/why-ontologies.astro',
-    'src/pages/spdtf/property-pack/contexts/index.astro',
-    'src/pages/spdtf/property-pack/contexts/[context].astro',
-    'src/pages/spdtf/property-pack/index.astro',
-    'src/pages/spdtf/property-pack/relationships.astro',
-    'src/pages/spdtf/property-pack/definition-and-scope.astro',
-    'src/pages/spdtf/property-pack/pdtf-schema-lineage.astro',
-    'src/pages/spdtf/working-groups/member-guide/model-review-and-decisions.astro',
+    'src/pages/development/property-pack/contexts/index.astro',
+    'src/pages/development/property-pack/contexts/[context].astro',
+    'src/pages/development/property-pack/index.astro',
+    'src/pages/development/property-pack/relationships.astro',
+    'src/pages/development/property-pack/definition-and-scope.astro',
+    'src/pages/development/property-pack/pdtf-schema-lineage.astro',
+    'src/pages/development/working-groups/member-guide/model-review-and-decisions.astro',
     'src/pages/governance/data-stewardship.astro',
-    'src/pages/spdtf/inputs/pdtf-schema/schema-derived-ontology/lineage-provenance-and-verification/historical-modelling/concept-taxonomy.astro',
-    'src/pages/spdtf/inputs/pdtf-schema/schema-derived-ontology/lineage-provenance-and-verification/historical-modelling/jsonld-mappings.astro',
+    'src/pages/development/inputs/pdtf-schema/schema-derived-ontology/lineage-provenance-and-verification/historical-modelling/concept-taxonomy.astro',
+    'src/pages/development/inputs/pdtf-schema/schema-derived-ontology/lineage-provenance-and-verification/historical-modelling/jsonld-mappings.astro',
   ];
   for (const relative of linkedPages) {
     const pageSource = readFileSync(path.join(root, relative), 'utf8');

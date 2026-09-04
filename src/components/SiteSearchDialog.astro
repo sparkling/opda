@@ -4,42 +4,37 @@
  *
  * The trigger remains an ordinary /search link until this controller is bound.
  * The rich /search route remains the canonical, no-JavaScript search interface.
+ * Both surfaces rank through the same shared index and describe results with
+ * the same vocabulary (site-search.mjs); this dialog only shows fewer fields.
  */
 ---
-<dialog class="site-search-dialog" aria-labelledby="site-search-dialog-title" data-site-search-dialog>
+<dialog id="site-search-dialog" class="site-search-dialog" aria-label="Search documentation" data-site-search-dialog>
   <div class="site-search-dialog__shell">
-    <header class="site-search-dialog__header">
-      <div>
-        <p class="site-search-dialog__eyebrow">Documentation search</p>
-        <h2 id="site-search-dialog-title">Search the documentation</h2>
-      </div>
-      <button type="button" class="site-search-dialog__close" aria-label="Close search" data-site-search-close>Cancel</button>
-    </header>
-
     <form class="site-search-dialog__form" action="/search" method="get" role="search" data-site-search-dialog-form>
-      <label for="site-search-dialog-input">Search by task, topic or name</label>
+      <label class="visually-hidden" for="site-search-dialog-input">Search documentation</label>
       <input
         id="site-search-dialog-input"
         name="q"
         type="search"
         autocomplete="off"
-        placeholder="Try governance, mapping or working groups"
-        aria-describedby="site-search-dialog-help site-search-dialog-status"
+        placeholder="Search documentation"
+        aria-describedby="site-search-dialog-status"
         aria-controls="site-search-dialog-results"
+        aria-autocomplete="list"
         aria-expanded="false"
         role="combobox"
         data-site-search-input
       />
-      <p id="site-search-dialog-help" class="site-search-dialog__help">Use one or more words. Results match titles, summaries and alternative terms.</p>
-      <p id="site-search-dialog-status" class="site-search-dialog__status" aria-live="polite" aria-atomic="true" data-site-search-status>Start typing to search.</p>
+      <p id="site-search-dialog-status" class="visually-hidden" aria-live="polite" aria-atomic="true" data-site-search-status>Start typing to search.</p>
     </form>
 
-    <ol id="site-search-dialog-results" class="site-search-dialog__results" role="listbox" aria-label="Search results" data-site-search-results></ol>
-    <p class="site-search-dialog__empty" hidden data-site-search-empty>No indexed destination matches this search.</p>
+    <div class="site-search-dialog__result-region">
+      <ol id="site-search-dialog-results" class="site-search-dialog__results" role="listbox" aria-label="Search results" data-site-search-results></ol>
+      <p class="site-search-dialog__empty" hidden data-site-search-empty>No page matches this search.</p>
+    </div>
 
     <footer class="site-search-dialog__footer">
-      <a href="/search" data-site-search-full>Open complete search</a>
-      <span class="site-search-dialog__keys" aria-hidden="true"><kbd>↑</kbd><kbd>↓</kbd> choose <kbd>↵</kbd> open <kbd>Esc</kbd> close</span>
+      <a href="/search" data-site-search-full>Open full search</a>
     </footer>
   </div>
 </dialog>
@@ -48,20 +43,20 @@
   type SearchRecord = {
     title: string;
     url: string;
-    facet: string;
-    destination: string;
+    type: string;
   };
 
   type SearchDependencies = {
-    searchEntries: (query: string) => SearchRecord[];
-    GLOBAL_DESTINATIONS: Array<{ key: string; title: string }>;
-    getRouteStatus: (url: string) => { workArea: string; authority: string; maturity: string };
+    searchSite: (query: string) => Promise<SearchRecord[]>;
+    describeRecord: (record: SearchRecord) => { eyebrow: string };
   };
+
+  const QUICK_LIMIT = 12;
 
   const editable = (target: EventTarget | null) => target instanceof HTMLElement
     && (target.isContentEditable || /^(INPUT|TEXTAREA|SELECT)$/u.test(target.tagName));
 
-  const pluralise = (count: number) => `${count} ${count === 1 ? 'result' : 'results'}`;
+  const pluralise = (count: number) => `${count.toLocaleString('en-GB')} ${count === 1 ? 'result' : 'results'}`;
 
   function initialiseSiteSearchDialog() {
     const dialog = document.querySelector('[data-site-search-dialog]');
@@ -75,14 +70,12 @@
     const status = dialog.querySelector('[data-site-search-status]');
     const empty = dialog.querySelector('[data-site-search-empty]');
     const fullSearch = dialog.querySelector('[data-site-search-full]');
-    const close = dialog.querySelector('[data-site-search-close]');
     if (!(form instanceof HTMLFormElement)
       || !(input instanceof HTMLInputElement)
       || !(results instanceof HTMLOListElement)
       || !(status instanceof HTMLElement)
       || !(empty instanceof HTMLElement)
-      || !(fullSearch instanceof HTMLAnchorElement)
-      || !(close instanceof HTMLButtonElement)) return;
+      || !(fullSearch instanceof HTMLAnchorElement)) return;
 
     let dependencies: Promise<SearchDependencies> | undefined;
     let matches: SearchRecord[] = [];
@@ -90,13 +83,9 @@
     let returnFocus: HTMLElement | null = null;
 
     function loadDependencies() {
-      dependencies ??= Promise.all([
-        import('@/lib/site-search.mjs'),
-        import('@/lib/site-ia.mjs'),
-      ]).then(([search, ia]) => ({
-        searchEntries: search.searchEntries,
-        GLOBAL_DESTINATIONS: ia.GLOBAL_DESTINATIONS,
-        getRouteStatus: ia.getRouteStatus,
+      dependencies ??= import('@/lib/site-search.mjs').then((search) => ({
+        searchSite: search.searchSite,
+        describeRecord: search.describeRecord,
       }));
       return dependencies;
     }
@@ -107,8 +96,9 @@
       return `${url.pathname}${url.search}`;
     }
 
-    function updateFullSearchLink() {
+    function updateFullSearchLink(total = 0) {
       fullSearch.href = searchUrl(input.value.trim());
+      fullSearch.textContent = total > QUICK_LIMIT ? `See all ${pluralise(total)}` : 'Open full search';
     }
 
     function setActive(index: number) {
@@ -128,13 +118,23 @@
       }
     }
 
-    function render(deps: SearchDependencies, ranked: SearchRecord[]) {
-      matches = ranked;
+    function clearResults(message: string) {
+      matches = [];
       activeIndex = -1;
       results.replaceChildren();
-      const destinations = new Map(deps.GLOBAL_DESTINATIONS.map(({ key, title }) => [key, title]));
+      input.setAttribute('aria-expanded', 'false');
+      input.removeAttribute('aria-activedescendant');
+      empty.hidden = true;
+      status.textContent = message;
+    }
+
+    function render(deps: SearchDependencies, ranked: SearchRecord[]) {
+      matches = ranked.slice(0, QUICK_LIMIT);
+      activeIndex = -1;
+      input.removeAttribute('aria-activedescendant');
+      results.replaceChildren();
       const fragment = document.createDocumentFragment();
-      ranked.forEach((record, index) => {
+      matches.forEach((record, index) => {
         const item = document.createElement('li');
         item.id = `site-search-dialog-result-${index}`;
         item.setAttribute('role', 'option');
@@ -143,49 +143,39 @@
         const link = document.createElement('a');
         link.href = record.url;
         link.className = 'site-search-dialog__result';
+        link.tabIndex = -1;
         const category = document.createElement('span');
         category.className = 'site-search-dialog__result-category';
-        const destination = destinations.get(record.destination) ?? record.destination;
-        category.textContent = record.facet === destination ? destination : `${destination} · ${record.facet}`;
+        category.textContent = deps.describeRecord(record).eyebrow;
         const title = document.createElement('strong');
         title.textContent = record.title;
-        const metadata = document.createElement('span');
-        metadata.className = 'site-search-dialog__result-metadata';
-        const routeStatus = deps.getRouteStatus(record.url);
-        metadata.textContent = `${routeStatus.workArea} · ${routeStatus.authority} · ${routeStatus.maturity}`;
-        link.append(category, title, metadata);
+        link.append(category, title);
         item.append(link);
         fragment.append(item);
       });
       results.append(fragment);
-      input.setAttribute('aria-expanded', String(ranked.length > 0));
+      input.setAttribute('aria-expanded', String(matches.length > 0));
       empty.hidden = ranked.length !== 0;
-      status.textContent = ranked.length ? `${pluralise(ranked.length)} available.` : 'No indexed destination matches this search.';
+      updateFullSearchLink(ranked.length);
+      status.textContent = ranked.length
+        ? `${pluralise(ranked.length)} available${ranked.length > QUICK_LIMIT ? `; showing the first ${QUICK_LIMIT}` : ''}.`
+        : 'No page matches this search.';
     }
 
     async function search() {
       const query = input.value.trim();
       updateFullSearchLink();
       if (!query) {
-        matches = [];
-        activeIndex = -1;
-        results.replaceChildren();
-        input.setAttribute('aria-expanded', 'false');
-        empty.hidden = true;
-        status.textContent = 'Start typing to search.';
+        clearResults('Start typing to search.');
         return;
       }
       status.textContent = 'Searching documentation…';
       try {
         const deps = await loadDependencies();
-        if (!dialog.open) return;
-        render(deps, deps.searchEntries(query));
+        if (!dialog.open || input.value.trim() !== query) return;
+        render(deps, await deps.searchSite(query));
       } catch {
-        matches = [];
-        results.replaceChildren();
-        input.setAttribute('aria-expanded', 'false');
-        empty.hidden = true;
-        status.textContent = "Search couldn't load. Use complete search instead.";
+        clearResults("Search couldn't load. Use complete search instead.");
       }
     }
 
@@ -207,6 +197,8 @@
 
     triggers.forEach((trigger) => {
       if (!(trigger instanceof HTMLElement)) return;
+      trigger.setAttribute('aria-haspopup', 'dialog');
+      trigger.setAttribute('aria-controls', dialog.id);
       trigger.addEventListener('pointerenter', () => { void loadDependencies(); }, { once: true });
       trigger.addEventListener('focus', () => { void loadDependencies(); }, { once: true });
       trigger.addEventListener('click', (event) => {
@@ -215,7 +207,6 @@
       });
     });
 
-    close.addEventListener('click', () => dialog.close());
     dialog.addEventListener('click', (event) => {
       if (event.target === dialog) dialog.close();
     });

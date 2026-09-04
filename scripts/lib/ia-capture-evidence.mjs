@@ -26,13 +26,13 @@ const NAVIGATION_CANONICAL_EQUIVALENTS = Object.freeze({
   '/mapping': ['/pdtf-schema/schema-derived-ontology/lineage-provenance-and-verification/schema-to-ontology-verification'],
   '/adoption': ['/pdtf-schema/schema-and-supporting-material/adoption'],
   '/library': ['/resources'],
-  '/engagement': ['/resources', '/spdtf/working-groups'],
+  '/engagement': ['/resources', '/development/working-groups'],
   '/home': ['/'],
-  '/v2': ['/spdtf/property-pack'],
+  '/v2': ['/development/property-pack'],
 });
 const RETENTION_TARGETS = Object.freeze({
-  '/': ['/', '/spdtf'],
-  '/home': ['/home', '/spdtf'],
+  '/': ['/', '/development'],
+  '/home': ['/home', '/development'],
   // The frozen case-insensitive cut emitted the lowercase object property's
   // information at the former class path. Both blocks now resolve to separate,
   // lowercase, type-scoped representation routes.

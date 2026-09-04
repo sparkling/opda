@@ -1,0 +1,58 @@
+---
+import Layout from '@/layouts/Layout.astro';
+
+const title = 'Newsletter privacy notice';
+---
+<Layout
+  title={title}
+  description="How OPDA uses personal information supplied through its newsletter subscription service."
+  hideSidebar
+  hideBreadcrumbs
+  hideFooter
+  hideComments
+  wrapArticle={false}
+  suppressActiveDestination
+>
+  <article class="public-statement" aria-labelledby="newsletter-privacy-title">
+    <header class="public-statement__header">
+      <p class="public-statement__eyebrow">Privacy notice · Version 2026-09-03</p>
+      <h1 id="newsletter-privacy-title">Newsletter subscriptions</h1>
+      <p class="public-statement__lead">This notice explains how the Open Property Data Association uses information supplied by people who subscribe to OPDA email updates.</p>
+      <p class="public-statement__meta"><span>Effective 3 September 2026</span></p>
+    </header>
+
+    <div class="public-statement__summary">
+      <p>Your subscription is separate from membership and working-group registration. We use these details only to manage and tailor the updates you have asked to receive.</p>
+    </div>
+
+    <section class="public-statement__content" id="controller">
+      <h2>Who controls your information</h2>
+      <div><p>Open Property Data Association Ltd, company number 14789946, is the controller. Its registered office is Tanfield Lea Business Centre, Unit G2, Stanley, Co Durham, DH9 9DB. Questions and requests can be sent to <a href="mailto:smartdata@openpropdata.org.uk">smartdata@openpropdata.org.uk</a>.</p></div>
+    </section>
+
+    <section class="public-statement__content" id="information">
+      <h2>What we collect</h2>
+      <div><p>We collect your full name, organisational email address, organisation, role or area of expertise, selected working-group interests, the consent wording and notice version you accepted, and the time of subscription. We do not copy this information into the working-group register or the modelling evidence corpus.</p></div>
+    </section>
+
+    <section class="public-statement__content" id="purpose">
+      <h2>Why we use it</h2>
+      <div><p>We use the information to send OPDA updates and make them more relevant to the subjects you selected. We rely on your consent. You can withdraw it at any time by using the unsubscribe route in an email or contacting us.</p></div>
+    </section>
+
+    <section class="public-statement__content" id="services">
+      <h2>Services and recipients</h2>
+      <div><p>Access is limited to authorised people acting for OPDA and providers needed to operate the service. Amazon Web Services hosts the encrypted subscription register in the UK region and carries a reference-only event after a record is stored; submitted form fields are not copied into that event. Any newsletter delivery provider must act under OPDA's instructions and data-protection terms.</p></div>
+    </section>
+
+    <section class="public-statement__content" id="retention">
+      <h2>How long we keep it</h2>
+      <div><p>We keep an active subscription for up to 24 months from the latest subscription request, unless you withdraw consent sooner. We may retain the minimum suppression information needed to honour an unsubscribe request.</p></div>
+    </section>
+
+    <section class="public-statement__content" id="rights">
+      <h2>Your choices and rights</h2>
+      <div><p>You can ask us to give you access to your information, correct it, delete it or restrict its use where applicable. You can withdraw consent at any time without affecting earlier lawful use. Email <a href="mailto:smartdata@openpropdata.org.uk">smartdata@openpropdata.org.uk</a>. You can also complain to the UK Information Commissioner's Office and read the <a href="https://openpropdata.org.uk/privacy-policy/">OPDA general privacy policy</a>.</p></div>
+    </section>
+  </article>
+</Layout>

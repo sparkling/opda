@@ -95,11 +95,11 @@ test('ontology asset paths are validated at the logical boundary', () => {
 });
 
 test('published ontology URLs resolve only through the retained manifest', () => {
-  const root = '/spdtf/inputs/pdtf-schema/schema-derived-ontology/use-and-tooling';
+  const root = '/development/inputs/pdtf-schema/schema-derived-ontology/use-and-tooling';
   assert.equal(isExpectedOntologyAssetUrl(`${root}/tools/pylode/index.html`), true);
   assert.equal(isExpectedOntologyAssetUrl(`${root}/artefacts/source/index.html`), true);
   assert.equal(isExpectedOntologyAssetUrl(`${root}/tools/not-in-the-manifest/index.html`), false);
-  assert.equal(isExpectedOntologyAssetUrl('/spdtf/inputs/pdtf-schema/schema-derived-ontology/terms-and-model-resources/classes'), false);
+  assert.equal(isExpectedOntologyAssetUrl('/development/inputs/pdtf-schema/schema-derived-ontology/terms-and-model-resources/classes'), false);
   assert.equal(isExpectedOntologyAssetUrl('/pdtf-schema/schema-derived-ontology/use-and-tooling/tools/pylode/index.html'), false);
   assert.equal(isExpectedOntologyAssetUrl('/ontology/tools/pylode/index.html'), false);
   assert.equal(isExpectedOntologyAssetUrl('/ontology/artefacts/source/index.html'), false);
@@ -143,7 +143,7 @@ test('ontology pages use manifest availability rather than local filesystem prob
     'use-and-tooling/usage', 'terms-and-model-resources/vocabularies',
   ];
   for (const page of pages) {
-    const source = await fs.readFile(new URL(`../src/pages/spdtf/inputs/pdtf-schema/schema-derived-ontology/${page}.astro`, import.meta.url), 'utf8');
+    const source = await fs.readFile(new URL(`../src/pages/development/inputs/pdtf-schema/schema-derived-ontology/${page}.astro`, import.meta.url), 'utf8');
     assert.match(source, /ontology-publication-assets/u, `${page} must use the shared availability helper`);
     assert.doesNotMatch(source, /path\.resolve\(process\.cwd\(\), ['"]public\/ontology/u,
       `${page} must not derive generated-asset availability from the local filesystem`);
@@ -154,11 +154,11 @@ test('ontology pages use manifest availability rather than local filesystem prob
 
 test('release crawlers accept only manifest-backed assets retained outside clean dist', () => {
   const dist = mkdtempSync(path.join(os.tmpdir(), 'opda-retained-assets-'));
-  const ontology = path.join(dist, 'spdtf/inputs/pdtf-schema/schema-derived-ontology');
+  const ontology = path.join(dist, 'development/inputs/pdtf-schema/schema-derived-ontology');
   mkdirSync(ontology, { recursive: true });
-  writeFileSync(path.join(dist, 'index.html'), '<a href="/spdtf/inputs/pdtf-schema/schema-derived-ontology">Ontology</a>');
+  writeFileSync(path.join(dist, 'index.html'), '<a href="/development/inputs/pdtf-schema/schema-derived-ontology">Ontology</a>');
   const page = path.join(ontology, 'index.html');
-  const tools = '/spdtf/inputs/pdtf-schema/schema-derived-ontology/use-and-tooling/tools';
+  const tools = '/development/inputs/pdtf-schema/schema-derived-ontology/use-and-tooling/tools';
   writeFileSync(page, `<a href="${tools}/pylode/index.html">Published tool</a>`);
 
   const run = (script) => spawnSync(process.execPath, [path.join(ROOT, script)], {

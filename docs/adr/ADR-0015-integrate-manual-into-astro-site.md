@@ -1,7 +1,7 @@
 ---
 status: accepted
 date: 2026-05-28
-updated: 2026-09-01
+updated: 2026-09-02
 tags: [website, documentation, integration, content-collections, dark-mode, mermaid]
 supersedes: []
 depends-on: [ADR-0002, ADR-0003, ADR-0007, ADR-0011]
@@ -17,7 +17,7 @@ The OPDA ontology model is now documented as a 4-tier presentation in `docs/manu
 The Astro site (per [ADR-0003](./ADR-0003-idiomatic-astro-refactor.md)) is the public delivery channel for OPDA content. It carries:
 
 - 8 top sections per `src/lib/site.ts` (strategy / governance / engagement / modelling / schema / implementation / adoption / library), each with sidebar groups + items declared in TypeScript
-- A single `Layout.astro` + ~9 named components (`Diagram`, `Sidebar`, `SidebarItem`, `Header`, `Breadcrumbs`, `PageMeta`, `PageFooter`, `AuthButton`, `Comments`)
+- A single `Layout.astro` + shared named components (`Diagram`, `Sidebar`, `SidebarItem`, `Header`, `Breadcrumbs`, `PageFooter`, `AuthButton`, `Comments`)
 - A `data-theme="dark"` attribute-driven token system (NOT `prefers-color-scheme`) — light/dark switched via a top-bar toggle; CSS custom-variant rewires `dark` to `[data-theme="dark"]`
 - Mermaid loaded client-side by `public/ui/client.js`; its current theme values
   derive from `src/lib/diagram-palette.ts` and `public/ui/design-tokens.css`.
@@ -250,7 +250,7 @@ Five files stay as hand-authored Astro pages:
 
 ### Reusable components
 
-12 new components under `src/components/manual/`. Each composes existing primitives (`Diagram`, `Breadcrumbs`, `PageMeta`) — no design tokens or themes invented.
+12 new components under `src/components/manual/`. Each composes existing primitives such as `Diagram` and `Breadcrumbs` — no design tokens or themes invented. The retired `PageMeta` primitive was removed on 2 September 2026.
 
 | Component | Role |
 |---|---|

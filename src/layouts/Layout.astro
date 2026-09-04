@@ -27,10 +27,14 @@ import Comments from '@/components/Comments.astro';
 import { getNavigationSection } from '@/lib/site-navigation';
 import { assetVersion } from '@/lib/asset-version.mjs';
 import {
+  AUTHORITY_BY_DESTINATION,
   IA_STATUS_REGISTRY_VERSION,
   getRouteDisposition,
   getRouteStatus,
 } from '@/lib/site-ia.mjs';
+import { searchMetaEntries } from '@/lib/site-search-model.mjs';
+import { DEFAULT_HEADER_PALETTE, HEADER_PALETTE_IDS } from '@/lib/header-palettes';
+import { DEFAULT_HEADER_ICON, HEADER_ICON_IDS } from '@/lib/header-icons';
 
 const cssV = assetVersion('/ui/design-system.css');
 const twV = assetVersion('/ui/tailwind.built.css');
@@ -49,6 +53,12 @@ interface Props {
   wrapArticle?: boolean;
   /** Hide the sidebar (e.g. for the home page or single-page sections). */
   hideSidebar?: boolean;
+  /** Keep the page aligned with a section content rail without rendering its navigation. */
+  reserveNavigationRail?: boolean;
+  /** Suppress the generated on-page contents rail for application-style pages. */
+  hideTableOfContents?: boolean;
+  /** Preserve the shared contents-rail track without rendering its contents. */
+  reserveTableOfContentsRail?: boolean;
   /** Hide the breadcrumbs (e.g. on section roots). */
   hideBreadcrumbs?: boolean;
   /** Plain current-page label when the document title contains qualifiers. */
@@ -61,6 +71,8 @@ interface Props {
   mainClass?: string;
   /** Keep the global destinations visible without marking one current. */
   suppressActiveDestination?: boolean;
+  /** Search facets for the build-time indexer (site-search-model.mjs); route defaults apply when omitted. */
+  search?: Record<string, string | readonly string[] | undefined>;
 }
 
 const {
@@ -70,12 +82,16 @@ const {
   tailwindPlus = true,
   wrapArticle = true,
   hideSidebar = false,
+  reserveNavigationRail = false,
+  hideTableOfContents = false,
+  reserveTableOfContentsRail = false,
   hideBreadcrumbs = false,
   breadcrumbTitle = title,
   hideFooter = false,
   hideComments = false,
   mainClass = '',
   suppressActiveDestination = false,
+  search,
 } = Astro.props;
 
 const fullTitle = /knowledge base/i.test(title)
@@ -84,10 +100,15 @@ const fullTitle = /knowledge base/i.test(title)
 
 const navigationSection = getNavigationSection(Astro.url.pathname);
 const sectionAttr = navigationSection?.key ?? '';
-const showSidebar = !hideSidebar && !!navigationSection;
-const routeStatus = getRouteStatus(Astro.url.pathname);
+const hasSidebarSlot = Astro.slots.has('sidebar');
+const showSidebar = !hideSidebar && (hasSidebarSlot || !!navigationSection);
+// Retired URLs can still reach Astro during a dev-server navigation before the
+// redirect layer responds. Keep the shared shell renderable in that boundary
+// state; the route remains retired and is not reintroduced into the IA.
+const routeStatus = getRouteStatus(Astro.url.pathname) ?? AUTHORITY_BY_DESTINATION.resources;
 const routeDisposition = getRouteDisposition(Astro.url.pathname);
 const searchAliases = routeDisposition?.search?.historicalAliases ?? [];
+const searchMeta = searchMetaEntries(search);
 ---
 <!doctype html>
 <html
@@ -113,15 +134,26 @@ const searchAliases = routeDisposition?.search?.historicalAliases ?? [];
   <meta name="opda:version" content={routeStatus.version} />
   <meta name="opda:provenance" content={routeStatus.provenance} />
   {searchAliases.map((alias) => <meta name="opda:search-alias" content={alias} />)}
+  {searchMeta.map(([name, content]) => <meta name={name} content={content} />)}
   <link rel="stylesheet" href={`/ui/design-system.css?v=${cssV}`} />
   <link rel="stylesheet" href={`/ui/tailwind.built.css?v=${twV}`} />
 
-  {/* Pre-paint theme: applies data-theme before first render to avoid FOUC.
-      Reads ?theme= URL param, then localStorage, falls back to light.
+  {/* Pre-paint themes: apply light/dark and the temporary header palette before
+      first render to avoid FOUC. Petrol is the palette default.
+      Light/dark reads ?theme=, then localStorage, and falls back to light.
       data-astro-rerun makes it re-execute on every view transition; without
       that flag the new <html> would render without data-theme on navigation,
       flashing back to the default. */}
-  <script is:inline data-astro-rerun>
+  <script
+    is:inline
+    data-astro-rerun
+    define:vars={{
+      defaultHeaderPalette: DEFAULT_HEADER_PALETTE,
+      headerPaletteIds: HEADER_PALETTE_IDS,
+      defaultHeaderIcon: DEFAULT_HEADER_ICON,
+      headerIconIds: HEADER_ICON_IDS,
+    }}
+  >
     (function () {
       try {
         var t = new URLSearchParams(location.search).get('theme');
@@ -130,8 +162,18 @@ const searchAliases = routeDisposition?.search?.historicalAliases ?? [];
         }
         if (t !== 'light' && t !== 'dark') t = 'light';
         document.documentElement.setAttribute('data-theme', t);
+
+        var p = localStorage.getItem('opda-header-palette');
+        if (!headerPaletteIds.includes(p)) p = defaultHeaderPalette;
+        document.documentElement.setAttribute('data-header-palette', p);
+
+        var i = localStorage.getItem('opda-header-icon');
+        if (!headerIconIds.includes(i)) i = defaultHeaderIcon;
+        document.documentElement.setAttribute('data-header-icon', i);
       } catch (e) {
         document.documentElement.setAttribute('data-theme', 'light');
+        document.documentElement.setAttribute('data-header-palette', defaultHeaderPalette);
+        document.documentElement.setAttribute('data-header-icon', defaultHeaderIcon);
       }
     })();
   </script>
@@ -148,13 +190,30 @@ const searchAliases = routeDisposition?.search?.historicalAliases ?? [];
 <body>
   <a class="skip-link" href="#main-content">Skip to main content</a>
   <div id="app">
-    <Header showSidebar={showSidebar} suppressActiveDestination={suppressActiveDestination} />
-    <div class={`app-body${showSidebar ? '' : ' no-sidebar'}`}>
-      {showSidebar && <Sidebar />}
+    <Header
+      showSidebar={showSidebar}
+      alignWithNavigationRail={showSidebar || reserveNavigationRail}
+      suppressActiveDestination={suppressActiveDestination}
+    />
+    <div class={`app-body rail-state-restoring${showSidebar ? '' : ' no-sidebar'}${reserveNavigationRail && !showSidebar ? ' reserve-navigation-rail' : ''}${reserveTableOfContentsRail ? ' reserve-toc-rail' : ''}`}>
+      <script is:inline data-astro-rerun>
+        (function () {
+          var body = document.currentScript && document.currentScript.parentElement;
+          if (!body) return;
+          try {
+            body.classList.toggle('sidebar-collapsed', localStorage.getItem('opda-sidebar-collapsed') === '1');
+            body.classList.toggle('toc-collapsed', localStorage.getItem('opda-toc-collapsed') === '1');
+          } catch (e) {}
+          requestAnimationFrame(function () {
+            requestAnimationFrame(function () { body.classList.remove('rail-state-restoring'); });
+          });
+        })();
+      </script>
+      {showSidebar && (hasSidebarSlot ? <slot name="sidebar" /> : <Sidebar />)}
       <main class={`app-main${mainClass ? ` ${mainClass}` : ''}`} id="main-content" tabindex="-1">
         {!hideBreadcrumbs && <Breadcrumbs currentPageTitle={breadcrumbTitle} />}
         {wrapArticle ? (
-          <article class={proseClass}>
+          <article class={proseClass} data-disable-toc={hideTableOfContents ? 'true' : undefined}>
             <slot />
           </article>
         ) : (
@@ -176,7 +235,7 @@ const searchAliases = routeDisposition?.search?.historicalAliases ?? [];
     import { adoptBareMermaid } from '../scripts/graph-diagram';
     adoptBareMermaid();
     document.addEventListener('astro:page-load', adoptBareMermaid);
-    // Exposed so non-bundled plain scripts (e.g. the /spdtf/inputs/pdtf-schema/schema-derived-ontology/terms-and-model-resources/graph engine
+    // Exposed so non-bundled plain scripts (e.g. the /development/inputs/pdtf-schema/schema-derived-ontology/terms-and-model-resources/graph engine
     // bake-off's public/ui/graph-engines/*.js modules, which can't use Vite
     // imports) can adopt a dynamically-created bare .mermaid div into the
     // same pan/zoom/fullscreen viewer the rest of the site uses.

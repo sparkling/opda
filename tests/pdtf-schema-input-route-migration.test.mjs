@@ -99,7 +99,7 @@ test('the complete schema-v8 route set moves bijectively without reminting comme
     sourceSchemaVersion: 8,
     sourceAcceptedCommit: PDTF_SCHEMA_INPUT_SOURCE_ROUTE_MANIFEST.acceptedCommit,
     sourceRoot: '/pdtf-schema',
-    targetRoot: '/spdtf/inputs/pdtf-schema',
+    targetRoot: '/development/inputs/pdtf-schema',
     sourceRouteCount: 3285,
     movedRouteCount: 1264,
     movedBaselineRouteCount: 1255,
@@ -176,7 +176,7 @@ test('the input-cut receipt rejects route, file, information, and identifier dri
 
   const information = projectSource();
   const moved = information.records.find(({ acceptedRoute }) => (
-    acceptedRoute.startsWith('/spdtf/inputs/pdtf-schema/')
+    acceptedRoute.startsWith('/development/inputs/pdtf-schema/')
   ));
   moved.acceptedContentSha256 = '0'.repeat(64);
   assert.throws(() => compose(information), /information changed without a staged receipt/u);
@@ -197,7 +197,7 @@ test('the input-cut receipt rejects route, file, information, and identifier dri
 test('only exact PDTF sidebar-shell fragment loss may be classified by this cut', () => {
   const authored = projectSource();
   const authoredTarget = authored.records.find(({ acceptedRoute, acceptedFragments }) => (
-    acceptedRoute.startsWith('/spdtf/inputs/pdtf-schema/')
+    acceptedRoute.startsWith('/development/inputs/pdtf-schema/')
       && acceptedFragments.some((fragment) => !fragment.startsWith('section-nav-'))
   ));
   const authoredFragment = authoredTarget.acceptedFragments.find((fragment) => (
@@ -221,7 +221,7 @@ test('only exact PDTF sidebar-shell fragment loss may be classified by this cut'
 
   const shell = projectSource();
   const shellTarget = shell.records.find(({ acceptedRoute, acceptedFragments }) => (
-    acceptedRoute.startsWith('/spdtf/inputs/pdtf-schema/')
+    acceptedRoute.startsWith('/development/inputs/pdtf-schema/')
       && acceptedFragments.some((fragment) => fragment.startsWith('section-nav-pdtf-schema-'))
   ));
   const shellFragment = shellTarget.acceptedFragments.find((fragment) => (
@@ -240,8 +240,8 @@ test('only exact PDTF sidebar-shell fragment loss may be classified by this cut'
 test('post-source routes require explicit new-authority classification', () => {
   const projection = projectSource();
   projection.addedRecords.push({
-    acceptedRoute: '/spdtf/inputs',
-    acceptedFile: 'spdtf/inputs/index.html',
+    acceptedRoute: '/development/inputs',
+    acceptedFile: 'development/inputs/index.html',
     kind: 'new-authority-route',
     introducedBy: 'authority-cut',
   });
@@ -256,8 +256,8 @@ test('post-source routes require explicit new-authority classification', () => {
 
   const injected = projectSource();
   injected.addedRecords.push({
-    acceptedRoute: '/spdtf/inputs/pdtf-schema/unreviewed',
-    acceptedFile: 'spdtf/inputs/pdtf-schema/unreviewed/index.html',
+    acceptedRoute: '/development/inputs/pdtf-schema/unreviewed',
+    acceptedFile: 'development/inputs/pdtf-schema/unreviewed/index.html',
     kind: 'new-authority-route', introducedBy: 'unreviewed',
   });
   assert.throws(() => compose(injected), /post-source additions are unclassified/u);

@@ -1,7 +1,7 @@
 ---
 status: accepted
 date: 2026-05-18
-updated: 2026-09-01
+updated: 2026-09-02
 tags: [astro, frontend, refactor, typescript]
 supersedes: []
 depends-on: [ADR-0002]
@@ -9,6 +9,10 @@ implements: []
 ---
 
 # Refactor to idiomatic Astro architecture
+
+> Update 2026-09-02: the retired `PageMeta.astro` component and its call sites
+> were deleted. Breadcrumbs and page titles now meet directly through the
+> shared document-flow contract.
 
 > Update 2026-08-19: the build-time shell now reads the six-section composition
 > from `src/lib/site-navigation.ts`, while `src/lib/site.ts` retains stable route
@@ -73,7 +77,6 @@ src/
     SiteFooter.astro         # organisation-wide footer shared by site pages
     TOC.astro                # table of contents (client island)
     Diagram.astro            # already exists
-    PageMeta.astro           # already exists
   lib/
     site.ts                  # typed SECTIONS data + helpers
                              # (findPage, getPrevNext, getActiveSection, ...)

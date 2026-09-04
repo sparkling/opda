@@ -1,0 +1,62 @@
+---
+interface Props {
+  identityId: string;
+  initialScale?: number;
+  initialSpaceAbove?: number;
+  initialLineGap?: number;
+  initialSpaceBelow?: number;
+  initialOpdaScale?: number;
+}
+
+const {
+  identityId,
+  initialScale = 24,
+  initialSpaceAbove = 0,
+  initialLineGap = 8,
+  initialSpaceBelow = 0,
+  initialOpdaScale = 100,
+} = Astro.props;
+
+const adjustments = [
+  { label: 'Size', property: '--identity-heading-size', min: 8, max: 64, value: initialScale, factor: 1, unit: 'px', ariaUnit: 'pixels' },
+  { label: 'OPDA relative size', property: '--identity-opda-scale', min: 25, max: 200, value: initialOpdaScale, factor: 0.01, unit: '', ariaUnit: 'percent' },
+  { label: 'Space underneath SPDTF', property: '--identity-space-after', min: 0, max: 64, value: initialSpaceBelow, factor: 1, unit: 'px', ariaUnit: 'pixels' },
+  { label: 'Space between SPDTF and OPDA', property: '--identity-line-gap', min: 0, max: 64, value: initialLineGap, factor: 1, unit: 'px', ariaUnit: 'pixels' },
+  { label: 'Space above OPDA', property: '--identity-space-before', min: 0, max: 96, value: initialSpaceAbove, factor: 1, unit: 'px', ariaUnit: 'pixels' },
+];
+---
+
+<details class="header-preview-selector header-preview-tuning" data-header-tuning-selector>
+  <summary aria-label="Adjust heading layout" title="Adjust heading layout">
+    <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true">
+      <path d="M4 6h5M15 6h5M12 3v6M4 12h9M19 12h1M16 9v6M4 18h2M12 18h8M9 15v6" />
+    </svg>
+  </summary>
+  <div class="header-preview-selector__flyout header-preview-tuning__flyout">
+    <fieldset>
+      <legend>Heading layout</legend>
+      <div class="header-preview-tuning__controls">
+        {adjustments.map((adjustment) => (
+          <label class="header-preview-tuning__control">
+            <span>{adjustment.label}</span>
+            <input
+              type="range"
+              min={adjustment.min}
+              max={adjustment.max}
+              value={adjustment.value}
+              step="1"
+              aria-controls={identityId}
+              aria-valuetext={`${adjustment.value} ${adjustment.ariaUnit}`}
+              data-css-property={adjustment.property}
+              data-value-factor={adjustment.factor}
+              data-css-unit={adjustment.unit}
+              data-aria-unit={adjustment.ariaUnit}
+              data-header-preview-range
+            />
+            <output>{adjustment.value}</output>
+          </label>
+        ))}
+      </div>
+    </fieldset>
+  </div>
+</details>

@@ -1,0 +1,80 @@
+---
+/**
+ * Realises ADR-0016 (manual content-collection wiring) per ADR-0015.
+ * Static page linking to the four IA-spec documents in docs/information-architecture/.
+ */
+import Layout from '@/layouts/Layout.astro';
+---
+<Layout title="Manual — information architecture">
+  <h1>Ontology-manual information architecture</h1>
+
+  <p class="lead">
+    The four IA-spec documents below govern how the OPDA ontology model is documented.
+    They specify the structure, conventions, and audience routing for each tier of the
+    <a href="/development/inputs/pdtf-schema/schema-derived-ontology/model-views-by-audience">Ontology manual</a>.
+  </p>
+
+  <p>
+    These specs are the authoritative source for the documentation structure — not for
+    the ontology model itself (which is governed by the
+    <a href="/development/inputs/pdtf-schema/schema-derived-ontology/lineage-provenance-and-verification/historical-modelling">Modelling section</a> ADRs).
+  </p>
+
+  <h2>IA specifications</h2>
+
+  <table>
+    <thead>
+      <tr>
+        <th>Tier</th>
+        <th>Audience</th>
+        <th>IA specification</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a href="/development/inputs/pdtf-schema/schema-derived-ontology/model-views-by-audience/concept">Concept</a></td>
+        <td>Property-industry SMEs</td>
+        <td>
+          <a href="/development/inputs/pdtf-schema/schema-derived-ontology/model-views-by-audience/information-architecture/concept-model">
+            Concept-tier IA spec
+          </a>
+        </td>
+      </tr>
+      <tr>
+        <td><a href="/development/inputs/pdtf-schema/schema-derived-ontology/model-views-by-audience/logical">Logical</a></td>
+        <td>Data engineers, solution architects</td>
+        <td>
+          <a href="/development/inputs/pdtf-schema/schema-derived-ontology/model-views-by-audience/information-architecture/logical-model">
+            Logical-tier IA spec
+          </a>
+        </td>
+      </tr>
+      <tr>
+        <td><a href="/development/inputs/pdtf-schema/schema-derived-ontology/model-views-by-audience/physical-database">Physical — deployment</a></td>
+        <td>Triplestore operators, SPARQL consumers</td>
+        <td>
+          <a href="/development/inputs/pdtf-schema/schema-derived-ontology/model-views-by-audience/information-architecture/physical-database">
+            Physical (deployment) IA spec
+          </a>
+        </td>
+      </tr>
+      <tr>
+        <td><a href="/development/inputs/pdtf-schema/schema-derived-ontology/model-views-by-audience/physical-ontology">Physical — ontology</a></td>
+        <td>Ontology engineers, SHACL implementers</td>
+        <td>
+          <a href="/development/inputs/pdtf-schema/schema-derived-ontology/model-views-by-audience/information-architecture/physical-ontology">
+            Physical (ontology) IA spec
+          </a>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+  <p>
+    The cross-tier traceability requirement (every entity must carry a stable URI resolving
+    across all four tiers) is specified in
+    <a href="/development/inputs/pdtf-schema/schema-derived-ontology/model-views-by-audience/information-architecture/overview">
+      the information-architecture overview
+    </a>.
+  </p>
+</Layout>

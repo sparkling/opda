@@ -25,6 +25,7 @@ import { diagramLinksGenerator } from './src/integrations/generate-diagram-links
 // Surface the council-session corpus: copy docs/ontology/odr/council/ → public/council/
 // (so it ships to dist/) and emit src/data/council-manifest.json at build/dev start.
 import { councilGenerator } from './src/integrations/generate-council.mjs';
+import { siteSearchIndexGenerator } from './src/integrations/generate-site-search-index.mjs';
 
 import tailwindcss from '@tailwindcss/vite';
 import sitemap from '@astrojs/sitemap';
@@ -171,7 +172,7 @@ export default defineConfig({
   // every built route, using `site` above for absolute URLs — replaces the
   // former hand-maintained src/pages/sitemap.xml.js (stale page list + the dead
   // opda-kb.pages.dev domain). Drop the utility 404/resource-viewer routes.
-  integrations: [reportGenerator(), diagramLinksGenerator(), councilGenerator(), sitemap({
+  integrations: [reportGenerator(), diagramLinksGenerator(), councilGenerator(), siteSearchIndexGenerator(), sitemap({
     filter: (page) => !/\/(404|resource)\/?$/.test(page),
   })],
   // The ADR, ODR and generated manual collections exceed Vite's safe

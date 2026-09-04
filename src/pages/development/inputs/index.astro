@@ -1,0 +1,28 @@
+---
+import Layout from '@/layouts/Layout.astro';
+import GatewayCard from '@/components/ia/GatewayCard.astro';
+---
+
+<Layout
+  title="Third-party inputs"
+  description="External sources that inform SPDTF without acquiring SPDTF authority."
+>
+  <h1>Third-party inputs</h1>
+  <p class="lead">
+    SPDTF uses attributed external material as evidence and compatibility input. An input
+    can inform review without determining SPDTF meaning, authority or adoption.
+  </p>
+
+  <div class="callout callout--note">
+    <p class="callout__label">Authority boundary</p>
+    <p>
+      External sources keep their own ownership and maturity. Working groups decide what,
+      if anything, SPDTF adopts after evidence-led review and governance.
+    </p>
+  </div>
+
+  <h2 id="sources">Available source</h2>
+  <div class="card-grid">
+    <GatewayCard href="/development/inputs/pdtf-schema" title="PDTF schema" eyebrow="Third-party input" description="Existing JSON Schema material and separately derived draft semantic evidence used as qualified input to SPDTF." />
+  </div>
+</Layout>

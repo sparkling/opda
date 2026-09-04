@@ -1,7 +1,7 @@
 ---
 status: accepted
 date: 2026-08-12
-updated: 2026-08-27
+updated: 2026-09-03
 tags: [engagement, recruitment, working-groups, linkedin, trade-bodies, professional-bodies, signup, privacy, security, aws]
 supersedes: []
 depends-on: [ADR-0038, ADR-0040, ADR-0063, ADR-0065]
@@ -9,6 +9,23 @@ implements: [ADR-0065]
 ---
 
 # Recruit later bounded-context working groups through a public campaign and simple sign-up
+
+> **Deployment record — 2026-09-03:** The AWS signup runtime is live in account
+> `355653384628`, region `eu-west-2`. The newsletter and working-group APIs, encrypted
+> DynamoDB tables, `KEYS_ONLY` streams, shared publisher Lambda, encrypted SNS topic,
+> integration queue and failure queue are deployed through `opda-site`; both stream mappings
+> are enabled. The queue remains an integration handoff with no downstream email consumer.
+> Safe direct Lambda diagnostics passed without creating records. Local frontend changes were
+> not published as part of this infrastructure deployment.
+
+> **Change note — 2026-09-03:** A shared post-persistence event boundary now follows the
+> working-group and newsletter registers. Each form still returns success only after its own
+> encrypted DynamoDB write succeeds. `KEYS_ONLY` streams feed one small Lambda, which publishes
+> versioned record-reference events to one encrypted SNS topic and its SQS integration queue.
+> Form fields are not copied into messages. The queue is a buffered integration boundary for an
+> identified future consumer, not an active notification workflow; failed stream batches and
+> failed topic deliveries are retained separately for diagnosis. This preserves the form and
+> privacy contract while avoiding a database-and-topic dual write in the request Lambda.
 
 > **Change note — 2026-08-27:** ADR-0078 moves the sole canonical signup journey to
 > `/join`, its privacy notice to `/join/privacy`, and adds `/accessibility`. All three use a
@@ -172,13 +189,27 @@ company-domain restriction applies only if SharePoint evidence access is later p
 
 ### 4. Hosting and storage
 
-The existing AWS architecture in ADR-0038 and ADR-0040 is extended only as follows:
+The existing AWS architecture in ADR-0038 and ADR-0040 is extended as follows:
 
 - the static Astro campaign page and privacy notice remain in S3 behind CloudFront;
 - a cache-disabled CloudFront behaviour for `/api/working-group-interest*` targets an Amazon API
   Gateway HTTP API in `eu-west-2`;
 - one small Node.js Lambda accepts `POST /api/working-group-interest`; and
 - one encrypted, on-demand DynamoDB table in `eu-west-2` stores each expression of interest.
+
+After the authoritative write, that table and the separate newsletter-subscription table expose
+`KEYS_ONLY` DynamoDB streams to one shared, 128 MiB Arm Lambda. It publishes a versioned event
+containing only the stream event identifier, event type, timestamp, record kind and record key to
+an encrypted SNS topic. One encrypted standard SQS queue subscribes to that topic as a durable,
+reference-only integration handoff. A separate encrypted failure queue retains exhausted stream
+batches and failed topic deliveries. There is no provisioned capacity, VPC, NAT gateway, FIFO
+queue, Step Functions workflow or always-on consumer.
+
+The shared publisher emits an event for a newly stored expression of interest, and for a new or
+refreshed newsletter subscription. It ignores working-group record updates and every removal,
+including TTL expiry. Delivery is at least once and unordered. A future consumer must deduplicate
+on the stable stream event identifier. Until such a consumer is implemented, the integration
+queue does not send email or change either authoritative record.
 
 Each accepted request receives a generated registration identifier. The table stores the form
 fields, status `received`, timestamps and active privacy-notice version. Request bodies, email
@@ -219,11 +250,17 @@ enter the AI evidence or ontology-building corpus.
 - Good, because the public explanation and form use the OPDA domain and design system.
 - Good, because one encrypted register replaces parallel spreadsheets and exports.
 - Good, because the runtime has one route, one write operation and no secret or email dependency.
+- Good, because stored submissions expose one reusable, reference-only integration boundary
+  without placing names, email addresses or other form fields in SNS or SQS.
+- Good, because streams avoid the partial-failure state created by writing the database and
+  publishing an event independently in the request Lambda.
 - Good, because human review remains the acceptance and access boundary.
 - Bad, because OPDA still owns a small public runtime and a personal-data register.
 - Bad, because an unverified address can be mistyped or deliberately submitted by another person.
 - Neutral, because obvious automation is filtered but determined abuse may require stronger
   controls later.
+- Neutral, because the SQS queue is a durable handoff rather than a complete downstream workflow
+  until an authorised consumer is defined.
 
 ### Confirmation
 
@@ -239,6 +276,9 @@ This decision is confirmed when:
 - automated tests cover invalid fields, oversized bodies, honeypot/timing submissions and storage
   failure;
 - DynamoDB is encrypted, on-demand, TTL-enabled and the Lambda can only write to its table;
+- both submission tables expose `KEYS_ONLY` streams to one shared publisher, SNS topic and SQS
+  handoff, with bounded retries and an encrypted failure queue;
+- published messages contain record references and event metadata but no submitted form fields;
 - no Teams or SharePoint access is provisioned by the public service;
 - keyboard and reduced-motion behaviour remains usable; explanatory and privacy content remains
   readable before enhancement, the form cannot fall back to a GET request, and successful
@@ -286,4 +326,6 @@ This decision is confirmed when:
 - [AWS HTTP API throttling](https://docs.aws.amazon.com/apigateway/latest/developerguide/http-api-throttling.html)
 - [DynamoDB encryption at rest](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/EncryptionAtRest.html)
 - [DynamoDB time to live](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/TTL.html)
+- [Lambda partial batch responses for DynamoDB Streams](https://docs.aws.amazon.com/lambda/latest/dg/services-ddb-batchfailurereporting.html)
+- [Subscribing Amazon SQS to Amazon SNS](https://docs.aws.amazon.com/sns/latest/dg/subscribe-sqs-queue-to-sns-topic.html)
 - [ICO Guide to UK GDPR](https://ico.org.uk/for-organisations/uk-gdpr-guidance-and-resources/)

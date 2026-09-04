@@ -1,11 +1,9 @@
 ---
 import Layout from '@/layouts/Layout.astro';
-import PageMeta from '@/components/PageMeta.astro';
 import Diagram from '@/components/Diagram.astro';
 ---
 
 <Layout title="How to read the model" description="A practical guide to identifiers, resources, classes, properties, SKOS concepts, SHACL shapes and provenance in SPDTF.">
-  <PageMeta category="Understand ontologies" variant="brand" updated="Model-reading guide · SPDTF development" />
   <h1>How to read the model</h1>
   <p class="lead">
     Read an ontology as a set of precise sentences about identified things. Boxes usually
@@ -116,7 +114,7 @@ flowchart LR
     <thead><tr><th scope="col">Layer</th><th scope="col">What the candidate records</th><th scope="col">Evidence</th></tr></thead>
     <tbody>
       <tr><th scope="row">RDF/OWL meaning</th><td><code>common:Property</code> is an OWL class with a proposed definition and identity criterion; <code>common:uprn</code> is an XSD-string datatype property.</td><td><a href="/resource?path=source/03-standards/ontology-candidates/property-pack/0.1/ontology/common.ttl">Common ontology</a></td></tr>
-      <tr><th scope="row">Semantic home</th><td>Both terms point to the deliberately small <code>common</code> boundary. The proposal remains subject to review.</td><td><a href="/spdtf/property-pack/contexts/common">Common-boundary view</a></td></tr>
+      <tr><th scope="row">Semantic home</th><td>Both terms point to the deliberately small <code>common</code> boundary. The proposal remains subject to review.</td><td><a href="/development/property-pack/contexts/common">Common-boundary view</a></td></tr>
       <tr><th scope="row">SKOS value pattern</th><td>The separate response-status scheme demonstrates how governed choices such as Yes, No and Not known remain SKOS concepts rather than subclasses of Property.</td><td><a href="/resource?path=source/03-standards/ontology-candidates/property-pack/0.1/vocabularies/common-controlled.ttl">Common controlled vocabulary</a></td></tr>
       <tr><th scope="row">SHACL expectation</th><td>The Property node shape requires exactly one string UPRN matching digits for this delivery profile.</td><td><a href="/resource?path=source/03-standards/ontology-candidates/property-pack/0.1/shapes/common.ttl">Common shapes graph</a></td></tr>
       <tr><th scope="row">Competency query</th><td>An ASK query checks that Property exists as a class and that UPRN has the expected domain and range.</td><td><a href="/resource?path=source/03-standards/ontology-candidates/property-pack/0.1/validation/competency/property-identity.rq">Property identity query</a></td></tr>

@@ -1,171 +1,112 @@
 ---
+/**
+ * Canonical rich-results search. The GET form and its facet controls work as
+ * a shareable URL contract; the controller in src/scripts/site-search-page.ts
+ * enhances them against the shared index. Filter vocabulary comes from the
+ * shared model so this page cannot invent a facet the index does not carry.
+ */
 import Layout from '@/layouts/Layout.astro';
-import PageMeta from '@/components/PageMeta.astro';
-import { SITE_SEARCH_ENTRIES } from '@/lib/site-search.mjs';
-import { GLOBAL_DESTINATIONS, getRouteStatus } from '@/lib/site-ia.mjs';
+import Sidebar from '@/components/Sidebar.astro';
+import { FACETS, QUERY_PARAM, SEARCH_TABS } from '@/lib/site-search-model.mjs';
 
-const destinations = new Map(GLOBAL_DESTINATIONS.map(({ key, title }) => [key, title]));
-const results = SITE_SEARCH_ENTRIES.map((record) => ({
-  ...record,
-  destinationTitle: destinations.get(record.destination),
-  status: getRouteStatus(record.url),
-}));
+const optionId = (facet: string, option: string) => `site-search-${facet}-${option}`;
 ---
 
-<Layout title="Search" description="Search the OPDA documentation by task, work area and authority." hideComments>
-  <PageMeta category="Utility" variant="brand" updated="IA registry search" />
-  <h1>Search the documentation</h1>
-  <p class="lead">Search programme context, governance, semantic modelling, SPDTF development, working-group guidance and resources.</p>
+<Layout
+  title="Search"
+  description="Search every published OPDA page: ontology resources, decision records, working groups, guides and programme material."
+  proseClass="prose wide site-search-page"
+  hideComments
+  hideTableOfContents
+  reserveTableOfContentsRail
+>
+  <Sidebar slot="sidebar" label="Filters" ariaLabel="Search filters">
+    <div class="site-search__filters" data-search-filters>
+      {FACETS.map((facet) => (
+        <details class="db-filter-section site-search__facet" data-search-facet={facet.key} data-search-scopes={facet.scopes.join(' ')}>
+          <summary class="db-filter-heading">{facet.label}</summary>
+          <fieldset class="site-search__facet-options">
+            <legend class="visually-hidden">{facet.label}</legend>
+            {facet.options.map((option) => (
+              <label class="db-filter-option" for={optionId(facet.key, option.key)}>
+                <input type="checkbox" id={optionId(facet.key, option.key)} name={facet.param} value={option.key} form="site-search-form" />
+                <span class="site-search__option-label">{option.label}</span>
+                <span class="db-filter-option-count" data-count hidden></span>
+              </label>
+            ))}
+          </fieldset>
+        </details>
+      ))}
+      <button class="db-reset" type="reset" form="site-search-form" data-search-reset>Clear search and filters</button>
+    </div>
+  </Sidebar>
 
-  <form class="db-toolbar site-search-toolbar" role="search" action="/search" method="get" data-site-search-form>
-    <div class="db-field db-field--grow">
-      <label for="site-search">Search by task, topic or name</label>
-      <input
-        class="db-input"
-        id="site-search"
-        name="q"
-        type="search"
-        autocomplete="off"
-        aria-describedby="site-search-help"
-        placeholder="Try governance, mapping or working groups"
-      />
-      <p class="site-search-help" id="site-search-help">Use one or more words. Results match titles, summaries and alternative terms.</p>
+  <h1>Search</h1>
+
+  <form id="site-search-form" class="site-search" role="search" action="/search" method="get" data-site-search-form>
+    <div class="site-search__query">
+      <div class="db-field db-field--grow">
+        <label class="visually-hidden" for="site-search">Search documentation</label>
+        <input
+          class="db-input"
+          id="site-search"
+          name={QUERY_PARAM}
+          type="search"
+          autocomplete="off"
+          spellcheck="false"
+          placeholder="Try lease, UPRN, valuation or ADR-0082"
+        />
+      </div>
+      <button class="btn site-search__submit" type="submit">Search</button>
     </div>
-    <div class="db-field site-search-destination">
-      <label for="site-search-destination">Destination</label>
-      <select class="db-select" id="site-search-destination" name="destination">
-        <option value="">All destinations</option>
-        {GLOBAL_DESTINATIONS.map(({ key, title }) => <option value={key}>{title}</option>)}
-      </select>
-    </div>
-    <button class="db-reset" type="button" data-search-reset>Clear search and filters</button>
   </form>
+  <noscript>
+    <p class="callout callout--note">Filtering needs JavaScript. Without it, use your browser's find command on a section index or open the quick links in the site navigation.</p>
+  </noscript>
 
-  <p id="search-summary" class="site-search-summary" role="status" aria-live="polite" aria-atomic="true">
-    {results.length} indexed destinations
-  </p>
-  <ol class="site-search-results" data-search-results>
-    {results.map((record) => (
-      <li
-        class="search-result site-search-result"
-        data-search-url={record.url}
-        data-search-destination={record.destination}
-      >
-        <div class="site-search-result__content">
-          <p class="overline">
-            {record.destinationTitle}{record.facet !== record.destinationTitle && ` · ${record.facet}`}
-          </p>
-          <p class="site-search-result__title"><a href={record.url}>{record.title}</a></p>
-          <p class="site-search-result__summary">{record.summary}</p>
-        </div>
-        <dl class="site-search-result__metadata">
-          <dt>Work area</dt><dd>{record.status.workArea}</dd>
-          <dt>Authority</dt><dd>{record.status.authority}</dd>
-          <dt>Maturity</dt><dd>{record.status.maturity}</dd>
-        </dl>
-      </li>
-    ))}
-  </ol>
-  <div class="db-empty site-search-empty" data-no-results hidden>
-    <p data-no-results-message>No indexed destination matches this search.</p>
-    <button class="db-reset" type="button" data-search-reset>Clear search and filters</button>
+  <div class="site-search__scope-row">
+    <nav class="site-search__scope" aria-label="Search sections" data-search-tabs>
+      {SEARCH_TABS.map((tab, index) => (
+        <button class="site-search__scope-tab" type="button" data-search-tab={tab.key} aria-pressed={String(index === 0)}>{tab.label}</button>
+      ))}
+    </nav>
+    <p class="site-search__summary"><span id="search-summary" data-search-summary aria-label="Loading search results">…</span></p>
   </div>
 
+  <div class="site-search-layout">
+    <input type="hidden" name="tab" value="all" form="site-search-form" data-search-tab-input />
+
+    <section class="site-search__results" aria-label="Search results">
+      <div class="site-search__status" data-search-status hidden>
+        <ul class="site-search__applied" aria-label="Applied filters" data-search-applied hidden></ul>
+      </div>
+      <p class="visually-hidden" role="status" aria-live="polite" aria-atomic="true" data-search-announcement></p>
+      <ol class="site-search-results" data-search-results></ol>
+      <button class="db-reset site-search__more" type="button" data-search-more hidden>Show more results</button>
+      <div class="db-empty site-search-empty" data-no-results hidden>
+        <p data-no-results-message></p>
+        <p>Try fewer or different words, check the spelling, or widen the scope.</p>
+        <div class="site-search-empty__actions">
+          <button class="btn" type="button" data-search-widen hidden>Search all results</button>
+          <button class="db-reset" type="reset" form="site-search-form" data-search-reset>Clear search and filters</button>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <template data-search-card>
+    <li class="card site-search-result">
+      <div class="site-search-result__header">
+        <p class="card__eyebrow site-search-result__eyebrow" data-slot="eyebrow"></p>
+        <span class="pill site-search-result__badge" data-slot="badge"></span>
+      </div>
+      <h3 class="site-search-result__title"><a data-slot="link"></a></h3>
+      <p class="site-search-result__summary" data-slot="summary"></p>
+      <dl class="site-search-result__facts" data-slot="facts"></dl>
+    </li>
+  </template>
+
   <script>
-    import { searchEntries } from '@/lib/site-search.mjs';
-
-    function initialiseSiteSearch() {
-      const form = document.querySelector('[data-site-search-form]');
-      if (!(form instanceof HTMLFormElement) || form.dataset.searchBound === 'true') return;
-
-      const input = form.querySelector('#site-search');
-      const destination = form.querySelector('#site-search-destination');
-      const list = document.querySelector('[data-search-results]');
-      const summary = document.querySelector('#search-summary');
-      const empty = document.querySelector('[data-no-results]');
-      const emptyMessage = document.querySelector('[data-no-results-message]');
-      if (!(input instanceof HTMLInputElement)
-        || !(destination instanceof HTMLSelectElement)
-        || !(list instanceof HTMLOListElement)
-        || !(summary instanceof HTMLElement)
-        || !(empty instanceof HTMLElement)
-        || !(emptyMessage instanceof HTMLElement)) return;
-
-      const rows = new Map(Array.from(list.querySelectorAll('[data-search-url]')).map((row) => (
-        [row.getAttribute('data-search-url'), row]
-      )));
-
-      function resultDescription(count: number, query: string, destinationLabel: string) {
-        const noun = count === 1 ? 'result' : 'results';
-        if (query && destinationLabel) return `${count} ${noun} for “${query}” in ${destinationLabel}`;
-        if (query) return `${count} ${noun} for “${query}”`;
-        if (destinationLabel) return `${count} ${noun} in ${destinationLabel}`;
-        return `${count} indexed destinations`;
-      }
-
-      function applySearch(updateUrl = true) {
-        const query = input.value.trim();
-        const destinationKey = destination.value;
-        const destinationLabel = destinationKey
-          ? destination.selectedOptions[0]?.textContent?.trim() ?? ''
-          : '';
-        const ranked = searchEntries(query, destinationKey);
-        const visibleUrls = new Set(ranked.map(({ url }) => url));
-
-        for (const record of ranked) {
-          const row = rows.get(record.url);
-          if (row instanceof HTMLElement) {
-            row.hidden = false;
-            list.append(row);
-          }
-        }
-        for (const [url, row] of rows) {
-          if (row instanceof HTMLElement && !visibleUrls.has(url)) row.hidden = true;
-        }
-
-        summary.textContent = resultDescription(ranked.length, query, destinationLabel);
-        empty.hidden = ranked.length !== 0;
-        emptyMessage.textContent = ranked.length === 0
-          ? `No results for “${query || 'all topics'}”${destinationLabel ? ` in ${destinationLabel}` : ''}.`
-          : '';
-
-        if (updateUrl) {
-          const url = new URL(location.href);
-          query ? url.searchParams.set('q', query) : url.searchParams.delete('q');
-          destinationKey
-            ? url.searchParams.set('destination', destinationKey)
-            : url.searchParams.delete('destination');
-          history.replaceState(null, '', url);
-        }
-      }
-
-      const parameters = new URL(location.href).searchParams;
-      input.value = parameters.get('q') ?? '';
-      const requestedDestination = parameters.get('destination') ?? '';
-      destination.value = Array.from(destination.options).some(({ value }) => value === requestedDestination)
-        ? requestedDestination
-        : '';
-
-      form.addEventListener('submit', (event) => {
-        event.preventDefault();
-        applySearch();
-      });
-      input.addEventListener('input', () => applySearch());
-      destination.addEventListener('change', () => applySearch());
-      document.querySelectorAll('[data-search-reset]').forEach((button) => {
-        button.addEventListener('click', () => {
-          input.value = '';
-          destination.value = '';
-          applySearch();
-          input.focus();
-        });
-      });
-
-      form.dataset.searchBound = 'true';
-      applySearch(false);
-    }
-
-    document.addEventListener('astro:page-load', initialiseSiteSearch);
-    initialiseSiteSearch();
+    import '@/scripts/site-search-page';
   </script>
 </Layout>

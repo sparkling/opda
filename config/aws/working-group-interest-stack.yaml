@@ -24,6 +24,8 @@ Resources:
         PointInTimeRecoveryEnabled: true
         RecoveryPeriodInDays: 7
       DeletionProtectionEnabled: true
+      StreamSpecification:
+        StreamViewType: KEYS_ONLY
 
   FunctionLogGroup:
     Type: AWS::Logs::LogGroup
@@ -130,3 +132,5 @@ Outputs:
     Value: !Ref RegistrationsTable
   RegistrationsTableArn:
     Value: !GetAtt RegistrationsTable.Arn
+  RegistrationsTableStreamArn:
+    Value: !GetAtt RegistrationsTable.StreamArn

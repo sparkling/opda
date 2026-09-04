@@ -24,6 +24,17 @@ const ROOT = path.dirname(path.dirname(fileURLToPath(import.meta.url)));
 const LOCKFILE = path.join(ROOT, '.astro', 'dev.json');
 const PORT_RANGE = [4330, 4331, 4332, 4333, 4334, 4335, 4336, 4337, 4338, 4339];
 
+function requestedPort(args) {
+  const index = args.findIndex((arg) => arg === '--port' || arg === '-p');
+  if (index === -1) return null;
+
+  const value = Number(args[index + 1]);
+  if (!Number.isInteger(value) || !PORT_RANGE.includes(value)) {
+    throw new Error(`--port must be one of ${PORT_RANGE[0]}–${PORT_RANGE.at(-1)}.`);
+  }
+  return value;
+}
+
 function isPortFree(port) {
   return new Promise((resolve) => {
     const srv = net.createServer();
@@ -71,12 +82,20 @@ function runningServer() {
   }
 
   // ── Pick the first genuinely free port in the canonical range.
-  let port = null;
+  const extraArgs = process.argv.slice(2);
+  let port = requestedPort(extraArgs);
   const occupied = [];
-  for (const p of PORT_RANGE) {
-    // eslint-disable-next-line no-await-in-loop
-    if (await isPortFree(p)) { port = p; break; }
-    occupied.push(p);
+  if (port) {
+    if (!(await isPortFree(port))) {
+      console.error(`✗ Requested port ${port} is already occupied.`);
+      process.exit(1);
+    }
+  } else {
+    for (const p of PORT_RANGE) {
+      // eslint-disable-next-line no-await-in-loop
+      if (await isPortFree(p)) { port = p; break; }
+      occupied.push(p);
+    }
   }
   if (!port) {
     console.error(`✗ All ports ${PORT_RANGE[0]}–${PORT_RANGE.at(-1)} are occupied.`);
@@ -94,10 +113,9 @@ function runningServer() {
   // Forward all CLI args (e.g. --host, --open). When run by an AI agent, Astro 7
   // auto-detects the agentic env and runs the server in the background; otherwise
   // it runs in the foreground exactly as before.
-  const extraArgs = process.argv.slice(2);
   const child = spawn(
     'npx',
-    ['astro', 'dev', '--port', String(port), ...extraArgs],
+    ['astro', 'dev', ...extraArgs, ...(requestedPort(extraArgs) ? [] : ['--port', String(port)])],
     { cwd: ROOT, stdio: 'inherit' }
   );
 

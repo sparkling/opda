@@ -226,11 +226,11 @@ jobs:
           name: site-dist-${{ github.sha }}
           path: |
             dist/
-            !dist/spdtf/inputs/pdtf-schema/schema-derived-ontology/use-and-tooling/artefacts/**
-            !dist/spdtf/inputs/pdtf-schema/schema-derived-ontology/use-and-tooling/tools/ontospy/**
-            !dist/spdtf/inputs/pdtf-schema/schema-derived-ontology/use-and-tooling/tools/pylode/**
-            !dist/spdtf/inputs/pdtf-schema/schema-derived-ontology/use-and-tooling/tools/shaclplay/**
-            !dist/spdtf/inputs/pdtf-schema/schema-derived-ontology/use-and-tooling/tools/widoco/**
+            !dist/development/inputs/pdtf-schema/schema-derived-ontology/use-and-tooling/artefacts/**
+            !dist/development/inputs/pdtf-schema/schema-derived-ontology/use-and-tooling/tools/ontospy/**
+            !dist/development/inputs/pdtf-schema/schema-derived-ontology/use-and-tooling/tools/pylode/**
+            !dist/development/inputs/pdtf-schema/schema-derived-ontology/use-and-tooling/tools/shaclplay/**
+            !dist/development/inputs/pdtf-schema/schema-derived-ontology/use-and-tooling/tools/widoco/**
           if-no-files-found: error
           retention-days: 1
 
@@ -261,11 +261,11 @@ jobs:
             --stack-name opda-site \
             --query "Stacks[0].Outputs[?OutputKey=='SiteBucketName'].OutputValue" --output text)
           aws s3 sync dist/ "s3://$SITE_BUCKET" --delete \
-            --exclude "spdtf/inputs/pdtf-schema/schema-derived-ontology/use-and-tooling/artefacts/*" \
-            --exclude "spdtf/inputs/pdtf-schema/schema-derived-ontology/use-and-tooling/tools/ontospy/*" \
-            --exclude "spdtf/inputs/pdtf-schema/schema-derived-ontology/use-and-tooling/tools/pylode/*" \
-            --exclude "spdtf/inputs/pdtf-schema/schema-derived-ontology/use-and-tooling/tools/shaclplay/*" \
-            --exclude "spdtf/inputs/pdtf-schema/schema-derived-ontology/use-and-tooling/tools/widoco/*"
+            --exclude "development/inputs/pdtf-schema/schema-derived-ontology/use-and-tooling/artefacts/*" \
+            --exclude "development/inputs/pdtf-schema/schema-derived-ontology/use-and-tooling/tools/ontospy/*" \
+            --exclude "development/inputs/pdtf-schema/schema-derived-ontology/use-and-tooling/tools/pylode/*" \
+            --exclude "development/inputs/pdtf-schema/schema-derived-ontology/use-and-tooling/tools/shaclplay/*" \
+            --exclude "development/inputs/pdtf-schema/schema-derived-ontology/use-and-tooling/tools/widoco/*"
 
       - name: Invalidate CloudFront
         run: |

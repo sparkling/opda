@@ -1,6 +1,5 @@
 ---
 import Layout from '@/layouts/Layout.astro';
-import PageMeta from '@/components/PageMeta.astro';
 import councilManifest from '@/data/council-manifest.json';
 
 /**
@@ -80,8 +79,6 @@ const sessionFolderCount = sessions.filter((r) => r.folder).length;
   title="Council sessions"
   description="Index of the OPDA ontology council-session corpus — every session record, per-persona verdict folder, scope-check, and the cross-session adoption ledger, each linking into the resource viewer."
 >
-<PageMeta category="Modelling provenance" variant="info" updated="Council corpus · generated from docs/ontology/odr/council/" />
-
       <h1>Council sessions</h1>
       <p class="lead">
         The OPDA ontology was designed through a series of expert-persona
@@ -103,7 +100,7 @@ const sessionFolderCount = sessions.filter((r) => r.folder).length;
           <strong>{totalFiles}</strong> markdown documents across
           <strong>{totalDirs}</strong> folders in total. The decisions ratified here are
           the canonical source for the <a href="/modelling/odr">ODR corpus</a> and the
-          published <a href="/spdtf/inputs/pdtf-schema/schema-derived-ontology/lineage-provenance-and-verification/decision-provenance">ontology decision provenance</a>.
+          published <a href="/development/inputs/pdtf-schema/schema-derived-ontology/lineage-provenance-and-verification/decision-provenance">ontology decision provenance</a>.
         </p>
       </div>
 

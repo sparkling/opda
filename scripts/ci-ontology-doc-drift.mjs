@@ -15,7 +15,7 @@
  */
 import { execSync } from 'node:child_process';
 
-const TRACKED = 'public/spdtf/inputs/pdtf-schema/schema-derived-ontology/use-and-tooling/tools/custom/index.html';
+const TRACKED = 'public/development/inputs/pdtf-schema/schema-derived-ontology/use-and-tooling/tools/custom/index.html';
 
 function sh(cmd) { return execSync(cmd, { stdio: ['ignore', 'pipe', 'pipe'] }).toString(); }
 

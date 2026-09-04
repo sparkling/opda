@@ -310,10 +310,10 @@ test('representative diagrams and data tables render', async ({ page }) => {
 test('Property Pack diagrams use the PDTF schema class-backbone convention', async ({ page }) => {
   const clean = watchRuntime(page);
   const routes = [
-    ['/spdtf/property-pack/model', 53],
-    ['/spdtf/property-pack/contexts/common', 21],
-    ['/spdtf/property-pack/contexts/conveyancing', 21],
-    ['/spdtf/property-pack/contexts/dbt-smart-data', 1],
+    ['/development/property-pack/model', 53],
+    ['/development/property-pack/contexts/common', 21],
+    ['/development/property-pack/contexts/conveyancing', 21],
+    ['/development/property-pack/contexts/dbt-smart-data', 1],
   ];
   let conveyancingGraphText = '';
 
@@ -341,7 +341,7 @@ test('reader pages use only the shared right-rail page navigation', async ({ pag
   const clean = watchRuntime(page);
   await page.setViewportSize({ width: 1440, height: 1000 });
 
-  for (const path of [PDTF1_ROUTES.schemaVerification, `${PDTF1_ROUTES.terms}/classes`, '/spdtf/property-pack/model']) {
+  for (const path of [PDTF1_ROUTES.schemaVerification, `${PDTF1_ROUTES.terms}/classes`, '/development/property-pack/model']) {
     await visit(page, path);
     await expect(page.locator('main nav').filter({ hasText: 'On this page' })).toHaveCount(0);
     await expect(page.locator('aside.toc[aria-label="On this page"]')).toBeVisible();

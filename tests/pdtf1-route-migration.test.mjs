@@ -53,7 +53,7 @@ function getSchemaToSchemeStageReplacement(route) {
 }
 test('PDTF schema documentation routes move beneath their full reader hierarchy', () => {
   assert.deepEqual(PDTF1_ROUTE_MIGRATION, {
-    canonicalRoot: '/spdtf/inputs/pdtf-schema',
+    canonicalRoot: '/development/inputs/pdtf-schema',
     intermediateRoot: '/pdtf-1',
     schemaToSchemeIntermediateRoot: '/pdtf-schema',
     retiredRoots: ['/schema', '/implementation', '/adoption', '/model', '/ontology', '/mapping', '/manual'],
@@ -398,7 +398,7 @@ test('the complete PDTF migration receipt is bijective and preserves information
     retiredAliasesSha256: 'e7c087d12b527b19f0c6792d4d64119e7f25e2bf37b327174b8a472236e62619',
     stableIdentifierRoutesSha256: 'cf2e83c5290fe5b5b2fe2f5b25e31d2d8f53d8be90cd533e5e43de8ff30a88be',
     redirects: false,
-    canonicalRoot: '/spdtf/inputs/pdtf-schema',
+    canonicalRoot: '/development/inputs/pdtf-schema',
     stableIdentifierRoot: '/pdtf',
   });
   assert.equal(getAcceptedRouteFile(
@@ -462,7 +462,7 @@ test('the complete PDTF migration receipt is bijective and preserves information
   }), /retired alias contract/u);
 });
 test('composed comment identities retain Property Pack and PDTF threads', () => {
-  assert.equal(getLegacyCommentKey('/spdtf/property-pack/pdtf-schema-lineage'), '/v2/comparison');
+  assert.equal(getLegacyCommentKey('/development/property-pack/pdtf-schema-lineage'), '/v2/comparison');
   assert.equal(getLegacyCommentKey(`${PDTF1_ROUTES.modelViews}/logical/property`), '/model/logical/property');
   assert.equal(getLegacyCommentKey(PDTF1_ROUTES.schemaVerification), '/mapping');
   assert.equal(getLegacyCommentKey('/pdtf/Property'), '/pdtf/Property');

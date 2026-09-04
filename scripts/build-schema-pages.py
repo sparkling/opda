@@ -41,8 +41,8 @@ THEME_MAP = ROOT / "source/00-deliverables/semantic-models/theme-map.yaml"
 CONTENT_DIR = ROOT / "source/_content/schema"
 EXAMPLES_DIR = ROOT / "source/_examples"
 TEMPLATES = ROOT / "scripts/templates"
-SCHEMA_ROUTE_ROOT = "/spdtf/inputs/pdtf-schema/schema-and-supporting-material/schema"
-SCHEMA_PAGE_ROOT = Path("src/pages/spdtf/inputs/pdtf-schema/schema-and-supporting-material/schema")
+SCHEMA_ROUTE_ROOT = "/development/inputs/pdtf-schema/schema-and-supporting-material/schema"
+SCHEMA_PAGE_ROOT = Path("src/pages/development/inputs/pdtf-schema/schema-and-supporting-material/schema")
 OUT_PAGES = ROOT / SCHEMA_PAGE_ROOT
 LEAVES_JSON = BUILD / "leaves.json"
 PROPERTIES_JS = ROOT / "public/data/properties.js"
@@ -203,7 +203,7 @@ PAGE_FILES = {
 def page_url(slot: str) -> str:
     """The real Astro route for a page slot — converts a PAGE_FILES file path
     ("legal-estate/title/oc-summary/index.astro") into the URL Astro serves it
-    at ("/spdtf/inputs/pdtf-schema/schema-and-supporting-material/schema/legal-estate/title/oc-summary"),
+    at ("/development/inputs/pdtf-schema/schema-and-supporting-material/schema/legal-estate/title/oc-summary"),
     per astro.config.mjs's
     format:'directory' + trailingSlash:'never' convention. Cross-page hrefs
     (breadcrumb ancestors, "Contains ->" children links) must use this, not

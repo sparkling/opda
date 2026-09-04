@@ -83,7 +83,7 @@ function crossTierLinks(entry: ClassEntry): CrossTierUrls {
     return { concept: null, logical: null, physicalDatabase: null, physicalOntology: null };
   }
   const slug = pascalToKebab(entry.localName);
-  const base = '/spdtf/inputs/pdtf-schema/schema-derived-ontology/model-views-by-audience';
+  const base = '/development/inputs/pdtf-schema/schema-derived-ontology/model-views-by-audience';
   return {
     concept: `${base}/concept/${entry.module}/${slug}`,
     logical: `${base}/logical/${entry.module}/${slug}`,

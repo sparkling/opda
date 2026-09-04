@@ -1,6 +1,6 @@
 /** Canonical route and retained comment-identity contract for Property Pack. */
 export const PROPERTY_PACK_ROUTE_MIGRATION = Object.freeze({
-  canonicalRoot: '/spdtf/property-pack',
+  canonicalRoot: '/development/property-pack',
   intermediateRoot: '/spdtf-2/property-pack',
   retiredRoots: Object.freeze(['/v2', '/modelling/property-pack', '/spdtf-2/property-pack']),
   technicalRouteCount: 690,

@@ -65,10 +65,10 @@ const output = path.join(ROOT, 'src/data/ia-route-baseline.json');
 const familyOutput = path.join(ROOT, 'src/data/ia-preservation-baseline.json');
 const semanticLedgerPath = path.join(ROOT, 'src/data/ia-semantic-reframe-ledger.json');
 const externalPrefixes = [
-  'spdtf/inputs/pdtf-schema/schema-derived-ontology/use-and-tooling/tools/ontospy/',
-  'spdtf/inputs/pdtf-schema/schema-derived-ontology/use-and-tooling/tools/pylode/',
-  'spdtf/inputs/pdtf-schema/schema-derived-ontology/use-and-tooling/tools/shaclplay/',
-  'spdtf/inputs/pdtf-schema/schema-derived-ontology/use-and-tooling/tools/widoco/',
+  'development/inputs/pdtf-schema/schema-derived-ontology/use-and-tooling/tools/ontospy/',
+  'development/inputs/pdtf-schema/schema-derived-ontology/use-and-tooling/tools/pylode/',
+  'development/inputs/pdtf-schema/schema-derived-ontology/use-and-tooling/tools/shaclplay/',
+  'development/inputs/pdtf-schema/schema-derived-ontology/use-and-tooling/tools/widoco/',
 ];
 function commit(root) {
   return execFileSync('git', ['rev-parse', 'HEAD'], { cwd: root, encoding: 'utf8' }).trim();
@@ -330,12 +330,12 @@ const routeManifest = {
 const familySpecs = [
   { id: 'source-archive', path: 'source', policy: 'reframe-equivalent', owner: 'resources', dataOwner: 'resources', ciMode: 'manifest-only-in-ci', consumers: ['resource viewer', 'source citations', 'downloads'], endpoints: ['/resources/**', '/resource?path=source/**'], journeyTests: ['resource-open-download'] },
   { id: 'council-markdown', path: 'docs/ontology/odr/council', policy: 'regenerate-equivalent', owner: 'governance', dataOwner: 'resources', ciMode: 'verify-current', consumers: ['decision records', 'raw session evidence'], endpoints: ['/council/**'], journeyTests: ['route-crawl'] },
-  { id: 'ontology-artefacts', assetClass: 'ontology-serialization', baselinePath: 'public/ontology/artefacts', acceptedPath: 'public/spdtf/inputs/pdtf-schema/schema-derived-ontology/use-and-tooling/artefacts', policy: 'byte-identical', owner: 'pdtf-schema', dataOwner: 'pdtf-schema', ciMode: 'manifest-only-in-ci', consumers: ['ontology downloads', 'technical references'], endpoints: ['/spdtf/inputs/pdtf-schema/schema-derived-ontology/use-and-tooling/artefacts/**'], journeyTests: ['route-crawl'] },
+  { id: 'ontology-artefacts', assetClass: 'ontology-serialization', baselinePath: 'public/ontology/artefacts', acceptedPath: 'public/development/inputs/pdtf-schema/schema-derived-ontology/use-and-tooling/artefacts', policy: 'byte-identical', owner: 'pdtf-schema', dataOwner: 'pdtf-schema', ciMode: 'manifest-only-in-ci', consumers: ['ontology downloads', 'technical references'], endpoints: ['/development/inputs/pdtf-schema/schema-derived-ontology/use-and-tooling/artefacts/**'], journeyTests: ['route-crawl'] },
   { id: 'deployed-data', path: 'dist/data', policy: 'regenerate-equivalent', owner: 'resources', dataOwner: 'resources', ciMode: 'verify-current', consumers: ['generated pages', 'client-side data views', 'validation'], endpoints: ['/data/**'], journeyTests: ['route-crawl'] },
   { id: 'ui-assets', path: 'public/ui', policy: 'reframe-equivalent', owner: 'resources', dataOwner: 'resources', ciMode: 'verify-current', consumers: ['all rendered route families'], endpoints: ['/ui/**'], journeyTests: ['visual-regression', 'accessibility'] },
   { id: 'image-assets', path: 'public/images', policy: 'baseline-byte-identical', owner: 'resources', dataOwner: 'resources', ciMode: 'verify-current', consumers: ['branded pages'], endpoints: ['/images/**'], journeyTests: ['visual-regression'] },
-  { id: 'ontology-tools', assetClass: 'tool-rendering', baselinePath: 'public/ontology/tools', acceptedPath: 'public/spdtf/inputs/pdtf-schema/schema-derived-ontology/use-and-tooling/tools', policy: 'reframe-equivalent', owner: 'pdtf-schema', dataOwner: 'pdtf-schema', ciMode: 'manifest-only-in-ci', consumers: ['linked-data implementers', 'technical citations'], endpoints: ['/spdtf/inputs/pdtf-schema/schema-derived-ontology/use-and-tooling/tools/**'], journeyTests: ['route-crawl'] },
-  { id: 'property-pack-canonical', baselinePath: 'dist/v2', acceptedPath: 'dist/spdtf/property-pack', policy: 'reframe-equivalent', owner: 'spdtf', dataOwner: 'spdtf', ciMode: 'verify-current', consumers: ['Technical Working Group review', 'candidate register', 'ontology reference'], endpoints: ['/spdtf/property-pack/**'], journeyTests: ['route-crawl', 'ia-navigation'], technicalMappedRouteCount: 690, canonicalContentRouteCount: 691, lifecyclePageCount: 2, postMigrationPageCount: 9 },
+  { id: 'ontology-tools', assetClass: 'tool-rendering', baselinePath: 'public/ontology/tools', acceptedPath: 'public/development/inputs/pdtf-schema/schema-derived-ontology/use-and-tooling/tools', policy: 'reframe-equivalent', owner: 'pdtf-schema', dataOwner: 'pdtf-schema', ciMode: 'manifest-only-in-ci', consumers: ['linked-data implementers', 'technical citations'], endpoints: ['/development/inputs/pdtf-schema/schema-derived-ontology/use-and-tooling/tools/**'], journeyTests: ['route-crawl'] },
+  { id: 'property-pack-canonical', baselinePath: 'dist/v2', acceptedPath: 'dist/development/property-pack', policy: 'reframe-equivalent', owner: 'spdtf', dataOwner: 'spdtf', ciMode: 'verify-current', consumers: ['Technical Working Group review', 'candidate register', 'ontology reference'], endpoints: ['/development/property-pack/**'], journeyTests: ['route-crawl', 'ia-navigation'], technicalMappedRouteCount: 690, canonicalContentRouteCount: 691, lifecyclePageCount: 2, postMigrationPageCount: 9 },
 ];
 const { manifest: priorFamilyManifest } = loadPriorIaFamilyManifest(ROOT);
 const priorFamilies = new Map(priorFamilyManifest.families.map((family) => [family.id, family]));

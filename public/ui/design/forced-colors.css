@@ -25,7 +25,7 @@
   }
 
   :where(.pill, .callout, .status-card, .evidence-card, .home-card,
-    .db-table-wrap, .site-search-toolbar, .site-search-result,
+    .db-table-wrap, .site-search-form, .site-search-result,
     .diagram, .graph-diagram-wrapper) {
     border: 1px solid CanvasText;
     forced-color-adjust: auto;

@@ -19,8 +19,8 @@ function normalizePath(value) {
 /** Project the withdrawn generation label into the unnumbered SPDTF hierarchy. */
 export function getSpdtfSchemeReplacementRoute(value) {
   const path = normalizePath(value);
-  if (path === '/spdtf-2') return '/spdtf';
-  return path.startsWith('/spdtf-2/') ? `/spdtf${path.slice('/spdtf-2'.length)}` : null;
+  if (path === '/spdtf-2') return '/development';
+  return path.startsWith('/spdtf-2/') ? `/development${path.slice('/spdtf-2'.length)}` : null;
 }
 
 /** Compose the later semantic-modelling move over the unnumbered SPDTF cut. */
@@ -97,7 +97,7 @@ export function getLegacyCommentKey(route) {
   if (path.startsWith('/semantic-modelling/')) {
     return `/spdtf-2/ontologies${path.slice('/semantic-modelling'.length)}`;
   }
-  if (path === '/spdtf') return '/spdtf-2';
-  if (path.startsWith('/spdtf/')) return `/spdtf-2${path.slice('/spdtf'.length)}`;
+  if (path === '/development') return '/spdtf-2';
+  if (path.startsWith('/development/')) return `/spdtf-2${path.slice('/development'.length)}`;
   return path;
 }

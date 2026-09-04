@@ -14,9 +14,9 @@ const NON_INFORMATION_CLASS = 'superseded-navigation-copy';
 const NAVIGATION_EVIDENCE = new Set(['containing-link', 'declared-original-destination']);
 const NAVIGATION_CANONICAL_EQUIVALENTS = Object.freeze({
   '/strategy': ['/programme'], '/model': ['/pdtf-schema'], '/implementation': ['/pdtf-schema'],
-  '/library': ['/resources'], '/engagement': ['/resources', '/spdtf/working-groups'],
+  '/library': ['/resources'], '/engagement': ['/resources', '/development/working-groups'],
   '/home': ['/'],
-  '/v2': ['/spdtf/property-pack'],
+  '/v2': ['/development/property-pack'],
 });
 
 function localRouteFromHref(href) {

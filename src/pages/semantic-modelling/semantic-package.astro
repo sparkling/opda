@@ -1,12 +1,10 @@
 ---
 import Layout from '@/layouts/Layout.astro';
-import PageMeta from '@/components/PageMeta.astro';
 import Diagram from '@/components/Diagram.astro';
 import { SEMANTIC_PACKAGE_MANIFEST } from '@/lib/spdtf-workspace.mjs';
 ---
 
 <Layout title="Six-part semantic package" description="How the business glossary, data dictionary, taxonomies, controlled vocabularies, resources and relationships form one synchronized SPDTF package.">
-  <PageMeta category="Understand ontologies" variant="brand" updated="Versioned semantic package · six distinct outputs" />
   <h1>The six-part semantic package</h1>
   <p class="lead">
     Each group is expected to review six related kinds of content. Together they form one versioned
@@ -130,5 +128,5 @@ flowchart LR
   Generator -.-> Interface
   Generator -.-> Docs
   </Diagram>
-  <p><a href="/spdtf/outputs">Inspect the package and projection-status register</a>.</p>
+  <p><a href="/development/outputs">Inspect the package and projection-status register</a>.</p>
 </Layout>

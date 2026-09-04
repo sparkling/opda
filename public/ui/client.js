@@ -48,6 +48,270 @@
     });
   }
 
+  function bindHeaderPreviewSelector(config) {
+    const selectors = Array.from(document.querySelectorAll(config.selector));
+    if (selectors.length === 0) return;
+    const allInputs = Array.from(document.querySelectorAll(config.inputSelector));
+    if (allInputs.length === 0) return;
+    const defaultValue = allInputs.find(function (input) { return input.defaultChecked; })?.value
+      || allInputs[0].value;
+    const optionNames = Object.fromEntries(allInputs.map(function (input) {
+      return [input.value, input.dataset[config.nameDataKey]];
+    }));
+    const optionLabels = Object.fromEntries(allInputs.map(function (input) {
+      return [input.value, input.dataset[config.labelDataKey || config.nameDataKey]];
+    }));
+
+    function closeSelectorChain(selector) {
+      const chain = [selector];
+      let ancestor = selector.parentElement?.closest('.header-preview-selector');
+      while (ancestor) {
+        chain.push(ancestor);
+        ancestor = ancestor.parentElement?.closest('.header-preview-selector');
+      }
+      const focusTarget = chain[chain.length - 1].querySelector(':scope > summary');
+      chain.forEach(function (details) { details.open = false; });
+      focusTarget?.focus();
+    }
+
+    function applyValue(value, persist) {
+      const selectedValue = Object.prototype.hasOwnProperty.call(optionNames, value)
+        ? value
+        : defaultValue;
+      document.documentElement.setAttribute(config.documentAttribute, selectedValue);
+      document.querySelectorAll(config.currentLabel).forEach(function (label) {
+        label.textContent = optionLabels[selectedValue];
+      });
+      allInputs.forEach(function (input) { input.checked = input.value === selectedValue; });
+      if (persist) config.persist(selectedValue);
+    }
+
+    applyValue(document.documentElement.getAttribute(config.documentAttribute), false);
+    selectors.forEach(function (selector) {
+      if (selector.dataset.bound === 'true') return;
+      selector.dataset.bound = 'true';
+      const summary = selector.querySelector('summary');
+      const control = selector.closest('.header-preview-control');
+      const previousButton = control?.querySelector(config.previousButton);
+      const nextButton = control?.querySelector(config.nextButton);
+      const inputs = Array.from(selector.querySelectorAll(config.inputSelector));
+
+      function stepValue(direction) {
+        const current = document.documentElement.getAttribute(config.documentAttribute);
+        const currentIndex = inputs.findIndex(function (input) { return input.value === current; });
+        const nextIndex = (Math.max(currentIndex, 0) + direction + inputs.length) % inputs.length;
+        applyValue(inputs[nextIndex].value, true);
+        selector.open = false;
+      }
+
+      previousButton?.addEventListener('click', function () { stepValue(-1); });
+      nextButton?.addEventListener('click', function () { stepValue(1); });
+      selector.addEventListener('change', function (event) {
+        const input = event.target;
+        if (!(input instanceof HTMLInputElement) || !input.matches(config.inputSelector)) return;
+        applyValue(input.value, true);
+        if (config.closeOnSelect !== false) closeSelectorChain(selector);
+      });
+      selector.addEventListener('click', function (event) {
+        if (config.closeOnSelect === false) return;
+        const target = event.target;
+        if (!(target instanceof Element) || !target.closest(config.optionSelector)) return;
+        requestAnimationFrame(function () { closeSelectorChain(selector); });
+      });
+      selector.addEventListener('keydown', function (event) {
+        if (event.key !== 'Escape' || !selector.open) return;
+        event.preventDefault();
+        selector.open = false;
+        summary?.focus();
+      });
+      selector.addEventListener('focusout', function (event) {
+        const nextTarget = event.relatedTarget;
+        if (nextTarget instanceof Node && !selector.contains(nextTarget)) selector.open = false;
+      });
+      document.addEventListener('pointerdown', function (event) {
+        const target = event.target;
+        if (selector.open && target instanceof Node && !selector.contains(target)) selector.open = false;
+      });
+      selector.addEventListener('toggle', function () {
+        if (!selector.open) return;
+        document.querySelectorAll('.header-preview-selector[open]').forEach(function (other) {
+          if (other !== selector && !other.contains(selector)) other.open = false;
+        });
+      });
+    });
+  }
+
+  function bindHeaderPaletteSelector() {
+    bindHeaderPreviewSelector({
+      selector: '[data-header-palette-selector]',
+      currentLabel: '[data-header-palette-current]',
+      previousButton: '[data-header-palette-previous]',
+      nextButton: '[data-header-palette-next]',
+      inputSelector: '[data-header-palette-input]',
+      optionSelector: '[data-header-palette-option]',
+      nameDataKey: 'paletteName',
+      documentAttribute: 'data-header-palette',
+      closeOnSelect: true,
+      persist: function (palette) {
+        try { localStorage.setItem('opda-header-palette', palette); } catch (e) {}
+      }
+    });
+  }
+
+  function bindHeaderPalettePagination() {
+    document.querySelectorAll('[data-header-palette-selector]').forEach(function (selector) {
+      if (selector.dataset.paginationBound === 'true') return;
+      const options = Array.from(selector.querySelectorAll('[data-header-palette-page]'));
+      const pagination = selector.querySelector('[data-header-palette-pagination]');
+      const pageSize = Number(selector.dataset.headerPalettePageSize || 10);
+      const pageCount = Math.max(1, Math.ceil(options.length / pageSize));
+      const previous = pagination?.querySelector('[data-header-palette-page-previous]');
+      const next = pagination?.querySelector('[data-header-palette-page-next]');
+      const current = pagination?.querySelector('[data-header-palette-page-current]');
+      if (!pagination || !previous || !next || !current) return;
+      selector.dataset.paginationBound = 'true';
+      let page = 1;
+
+      function showPage(requestedPage) {
+        page = ((requestedPage - 1 + pageCount) % pageCount) + 1;
+        options.forEach(function (option) {
+          option.hidden = Number(option.dataset.headerPalettePage) !== page;
+        });
+        current.textContent = String(page);
+        previous.disabled = pageCount <= 1;
+        next.disabled = pageCount <= 1;
+      }
+
+      previous.addEventListener('click', function () { showPage(page - 1); });
+      next.addEventListener('click', function () { showPage(page + 1); });
+      selector.addEventListener('toggle', function () {
+        if (!selector.open) return;
+        const selectedIndex = options.findIndex(function (option) {
+          return option.querySelector('[data-header-palette-input]')?.checked;
+        });
+        showPage(selectedIndex < 0 ? 1 : Math.floor(selectedIndex / pageSize) + 1);
+      });
+      showPage(1);
+    });
+  }
+
+  function bindHeaderIconSelector() {
+    bindHeaderPreviewSelector({
+      selector: '[data-header-icon-selector]',
+      currentLabel: '[data-header-icon-current]',
+      previousButton: '[data-header-icon-previous]',
+      nextButton: '[data-header-icon-next]',
+      inputSelector: '[data-header-icon-input]',
+      optionSelector: '[data-header-icon-option]',
+      nameDataKey: 'iconName',
+      labelDataKey: 'iconNumber',
+      documentAttribute: 'data-header-icon',
+      closeOnSelect: false,
+      persist: function (icon) {
+        try { localStorage.setItem('opda-header-icon', icon); } catch (e) {}
+      }
+    });
+  }
+
+  function syncHeaderConfigurationMode() {
+    const currentUrl = new URL(window.location.href);
+    const configurationEnabled = currentUrl.searchParams.has('config');
+    document.querySelectorAll('[data-header-preview-controls]').forEach(function (controls) {
+      controls.hidden = !configurationEnabled;
+    });
+    if (!configurationEnabled) return;
+
+    const configurationValue = currentUrl.searchParams.get('config') ?? '';
+    document.querySelectorAll('a[href]').forEach(function (link) {
+      const rawHref = link.getAttribute('href');
+      if (!rawHref || rawHref.startsWith('#')) return;
+      let destination;
+      try {
+        destination = new URL(rawHref, currentUrl);
+      } catch (error) {
+        return;
+      }
+      if (destination.origin !== currentUrl.origin) return;
+      destination.searchParams.set('config', configurationValue);
+      link.href = destination.href;
+    });
+  }
+
+  function bindHeaderPreviewControls() {
+    const controls = document.querySelector('[data-header-preview-controls]');
+    const toggle = controls?.querySelector('[data-header-preview-toggle]');
+    const drawer = toggle ? document.getElementById(toggle.getAttribute('aria-controls')) : null;
+    if (!controls || !drawer || !toggle || toggle.dataset.bound === 'true') return;
+    toggle.dataset.bound = 'true';
+
+    function setExpanded(expanded) {
+      controls.classList.toggle('is-collapsed', !expanded);
+      drawer.inert = !expanded;
+      toggle.setAttribute('aria-expanded', String(expanded));
+      toggle.setAttribute('aria-label', expanded ? 'Hide design selectors' : 'Show design selectors');
+      toggle.setAttribute('title', expanded ? 'Hide design selectors' : 'Show design selectors');
+      if (!expanded) drawer.querySelectorAll('details[open]').forEach(function (details) {
+        details.open = false;
+      });
+    }
+
+    setExpanded(true);
+    toggle.addEventListener('click', function () {
+      setExpanded(toggle.getAttribute('aria-expanded') !== 'true');
+    });
+  }
+
+  function bindIdentityHeadingControls() {
+    const applicationHeader = document.getElementById('app-header-identity');
+    const applicationShell = applicationHeader?.parentElement;
+
+    function syncRenderedHeaderHeight() {
+      if (!applicationHeader || !applicationShell) return;
+      applicationShell.style.setProperty('--header-height', Math.ceil(applicationHeader.getBoundingClientRect().height) + 'px');
+    }
+
+    if (applicationHeader && applicationHeader.dataset.heightBound !== 'true') {
+      applicationHeader.dataset.heightBound = 'true';
+      syncRenderedHeaderHeight();
+      if ('ResizeObserver' in window) {
+        const headerObserver = new ResizeObserver(syncRenderedHeaderHeight);
+        headerObserver.observe(applicationHeader);
+      }
+    }
+
+    const rangeInputs = Array.from(document.querySelectorAll('[data-header-preview-range]'));
+    rangeInputs.forEach(function (input) {
+      if (input.dataset.bound === 'true') return;
+      const identity = document.getElementById(input.getAttribute('aria-controls'));
+      const property = input.dataset.cssProperty;
+      const factor = Number(input.dataset.valueFactor || 1);
+      const cssUnit = input.dataset.cssUnit || '';
+      const ariaUnit = input.dataset.ariaUnit || '';
+      if (!identity || !property || !Number.isFinite(factor)) return;
+      input.dataset.bound = 'true';
+      function applyValue() {
+        const peers = rangeInputs.filter(function (candidate) {
+          return candidate.getAttribute('aria-controls') === identity.id
+            && candidate.dataset.cssProperty === property;
+        });
+        peers.forEach(function (peer) {
+          peer.value = input.value;
+          peer.setAttribute('aria-valuetext', input.value + ' ' + ariaUnit);
+          const output = peer.closest('label')?.querySelector('output');
+          if (output) output.textContent = input.value;
+          peer.closest('[data-header-preview-controls]')?.style.setProperty(
+            property,
+            String(Number(input.value) * factor) + cssUnit
+          );
+        });
+        identity.style.setProperty(property, String(Number(input.value) * factor) + cssUnit);
+        syncRenderedHeaderHeight();
+      }
+      applyValue();
+      input.addEventListener('input', applyValue);
+    });
+  }
+
   function bindPrimaryNavigation() {
     const header = document.querySelector('.app-header');
     const panel = document.getElementById('global-nav-panel');
@@ -246,7 +510,7 @@
   // ── TOC widget ──────────────────────────────────────────────────────────
   function renderToc() {
     const article = document.querySelector('.prose');
-    if (!article) return;
+    if (!article || article.dataset.disableToc === 'true') return;
     const headings = Array.from(article.querySelectorAll('h2[id], h3[id], h4[id]'));
     if (!headings.length) return;
 
@@ -374,6 +638,12 @@
   // ── Init ─────────────────────────────────────────────────────────────────
   function init() {
     bindThemeToggle();
+    syncHeaderConfigurationMode();
+    bindHeaderPaletteSelector();
+    bindHeaderPalettePagination();
+    bindHeaderIconSelector();
+    bindHeaderPreviewControls();
+    bindIdentityHeadingControls();
     bindPrimaryNavigation();
     bindSidebar();
     renderToc();
@@ -403,6 +673,12 @@
   }
 
   document.addEventListener('astro:after-swap', function () { initialised = false; });
+  document.addEventListener('astro:before-swap', function (event) {
+    ['data-theme', 'data-header-palette', 'data-header-icon'].forEach(function (attribute) {
+      const value = document.documentElement.getAttribute(attribute);
+      if (value) event.newDocument.documentElement.setAttribute(attribute, value);
+    });
+  });
   document.addEventListener('astro:page-load', runInitOnce);
 
   window.OPDA = { init: init };

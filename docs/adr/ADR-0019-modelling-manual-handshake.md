@@ -1,6 +1,7 @@
 ---
 status: accepted
 date: 2026-05-28
+updated: 2026-09-02
 tags: [website, navigation, content-strategy, deprecation]
 supersedes: []
 depends-on: [ADR-0003, ADR-0015, ADR-0016, ADR-0017]
@@ -91,4 +92,4 @@ Specific to this ADR:
 * **Architectural decision (anchor):** [ADR-0015](./ADR-0015-integrate-manual-into-astro-site.md)
 * **Existing modelling section source:** `src/pages/modelling/*.astro` + `src/lib/site.ts:137-...`
 * **Site-architecture predecessor:** [ADR-0003 — Idiomatic Astro refactor](./ADR-0003-idiomatic-astro-refactor.md)
-* **Cross-link convention precedent:** PageMeta + Breadcrumbs components already support cross-references; the handshake leverages those, not new primitives
+* **Cross-link convention precedent:** Breadcrumbs and authored links support cross-references; the handshake leverages those, not new primitives. The retired `PageMeta` component was removed on 2 September 2026.

@@ -1,0 +1,51 @@
+---
+import HeaderIconPreview from '@/components/HeaderIconPreview.astro';
+import { DEFAULT_HEADER_ICON, HEADER_ICONS } from '@/lib/header-icons';
+
+interface Props {
+  embedded?: boolean;
+}
+
+const { embedded = false } = Astro.props;
+const inputName = embedded ? 'header-icon-embedded' : 'header-icon';
+---
+<div class:list={['header-preview-control', 'header-preview-control--icon', { 'header-preview-control--embedded': embedded }]}>
+  <button type="button" class="header-preview-control__step header-preview-control__step--previous" aria-label="Previous framework icon" title="Previous framework icon" data-header-icon-previous>
+    <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m15 18-6-6 6-6" /></svg>
+  </button>
+  <details class="header-preview-selector" data-header-icon-selector>
+    <summary>
+      <span class="header-preview-selector__summary-label">Icon</span>
+      <strong data-header-icon-current>{HEADER_ICONS.find((icon) => icon.id === DEFAULT_HEADER_ICON)?.number}</strong>
+    </summary>
+    <div class="header-preview-selector__flyout">
+      <fieldset>
+        <legend>Framework icon</legend>
+        {Astro.slots.has('companion') && (
+          <div class="header-preview-selector__companion"><slot name="companion" /></div>
+        )}
+        <p>Select an icon shown in the currently selected colour theme.</p>
+        <div class="header-preview-selector__options">
+          {HEADER_ICONS.map((icon) => (
+            <label class="header-preview-selector__card" data-header-icon-option={icon.id}>
+              <input
+                type="radio"
+                name={inputName}
+                value={icon.id}
+                checked={icon.id === DEFAULT_HEADER_ICON}
+                data-icon-name={icon.name}
+                data-icon-number={icon.number}
+                data-header-icon-input
+              />
+              <span class="header-preview-selector__card-title"><b>{icon.number}</b></span>
+              <span class="header-preview-selector__card-preview"><HeaderIconPreview icon={icon.id} name={icon.name} /></span>
+            </label>
+          ))}
+        </div>
+      </fieldset>
+    </div>
+  </details>
+  <button type="button" class="header-preview-control__step header-preview-control__step--next" aria-label="Next framework icon" title="Next framework icon" data-header-icon-next>
+    <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 18 6-6-6-6" /></svg>
+  </button>
+</div>

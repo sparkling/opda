@@ -8,7 +8,7 @@ import {
 
 export const PDTF_SCHEMA_INPUT_ROUTE_MIGRATION = Object.freeze({
   sourceRoot: '/pdtf-schema',
-  targetRoot: '/spdtf/inputs/pdtf-schema',
+  targetRoot: '/development/inputs/pdtf-schema',
   stableIdentifierRoot: '/pdtf',
   redirects: false,
 });
@@ -16,7 +16,7 @@ export const PDTF_SCHEMA_INPUT_ROUTE_MIGRATION = Object.freeze({
 export const PDTF_SCHEMA_INPUT_INFORMATION_REFRAMES = Object.freeze([
   {
     sourceRoute: '/pdtf-schema',
-    targetRoute: '/spdtf/inputs/pdtf-schema',
+    targetRoute: '/development/inputs/pdtf-schema',
     sourceContentSha256: 'eb49a14ec12e42a27b693cccef821d9a6e96c34762a23651e3d419e06b3811df',
     sourceBlockInventorySha256: '56b98f0aabd040faa39768d3184e4f42189787d9922f64c9912591ba75c2a43a',
     targetContentSha256: '895ad02489c7d074f25a65300d53a2e3d042a32663f13e290a3ef253a45623f4',
@@ -27,12 +27,12 @@ export const PDTF_SCHEMA_INPUT_INFORMATION_REFRAMES = Object.freeze([
       ['p', 'The PDTF schema is the existing Digital Property Pack JSON Schema package. Its data dictionary, business glossary, overlays and implementation material explain that schema-led exchange contract. A separate draft ontology was later derived from those sources and is retained as evidence for SPDTF.',
         'p', 'The PDTF schema is a third-party input to SPDTF: the existing Digital Property Pack JSON Schema package. Its data dictionary, business glossary, overlays and implementation material explain that schema-led exchange contract. A separate draft ontology was later derived from those sources and is retained as evidence for SPDTF.', 'authority-and-input-scope'],
       ['p', 'Reader documentation now follows the /pdtf-schema/** hierarchy. Earlier documentation routes are removed without redirects. The separate /pdtf/** RDF identifier namespace remains unchanged because those values identify resources in the schema-derived ontology rather than pages in the reader hierarchy.',
-        'p', 'Reader documentation now follows the /spdtf/inputs/pdtf-schema/** hierarchy. Earlier documentation routes are removed without redirects. The separate /pdtf/** RDF identifier namespace remains unchanged because those values identify resources in the schema-derived ontology rather than pages in the reader hierarchy.', 'route-path-reframe'],
+        'p', 'Reader documentation now follows the /development/inputs/pdtf-schema/** hierarchy. Earlier documentation routes are removed without redirects. The separate /pdtf/** RDF identifier namespace remains unchanged because those values identify resources in the schema-derived ontology rather than pages in the reader hierarchy.', 'route-path-reframe'],
     ],
   },
   {
     sourceRoute: '/pdtf-schema/schema-derived-ontology/lineage-provenance-and-verification/historical-modelling/concept-taxonomy',
-    targetRoute: '/spdtf/inputs/pdtf-schema/schema-derived-ontology/lineage-provenance-and-verification/historical-modelling/concept-taxonomy',
+    targetRoute: '/development/inputs/pdtf-schema/schema-derived-ontology/lineage-provenance-and-verification/historical-modelling/concept-taxonomy',
     sourceContentSha256: '65105e9aba01d1db0fe0992063f297953a91d11d2e3a7783b1f8296354554d6f',
     sourceBlockInventorySha256: 'ffbeab27adb890c7bb2ac1eed7f95132eebca9a04511b9b7c1b86ae9e549ca10',
     targetContentSha256: '82fc38d847f11b7b3857e913aa91fd3e0eadf5543e6963170cd0484faff166dc',
@@ -49,7 +49,7 @@ export const PDTF_SCHEMA_INPUT_INFORMATION_REFRAMES = Object.freeze([
   },
   {
     sourceRoute: '/pdtf-schema/schema-derived-ontology/lineage-provenance-and-verification/historical-modelling/jsonld-mappings',
-    targetRoute: '/spdtf/inputs/pdtf-schema/schema-derived-ontology/lineage-provenance-and-verification/historical-modelling/jsonld-mappings',
+    targetRoute: '/development/inputs/pdtf-schema/schema-derived-ontology/lineage-provenance-and-verification/historical-modelling/jsonld-mappings',
     sourceContentSha256: 'b37b25caf0d57f853fd10d7cd4f1811841dab4e1a3d6dde17445b3bcdece1b37',
     sourceBlockInventorySha256: '1ae80b58169011fd5158f4d38110d5778f8728ba691bd957e4136d707cb416f1',
     targetContentSha256: '447e52d7dff238d606e82393d2f0eff50be5ce1d9d3308b3cd50d10d8c408c20',
@@ -62,14 +62,14 @@ export const PDTF_SCHEMA_INPUT_INFORMATION_REFRAMES = Object.freeze([
   },
   {
     sourceRoute: '/pdtf-schema/schema-derived-ontology/use-and-tooling/bake-off',
-    targetRoute: '/spdtf/inputs/pdtf-schema/schema-derived-ontology/use-and-tooling/bake-off',
+    targetRoute: '/development/inputs/pdtf-schema/schema-derived-ontology/use-and-tooling/bake-off',
     sourceContentSha256: 'd0407e02d9e38d747aeee5e29e3218901760884a178c65e0486c6b879d02ca03',
     sourceBlockInventorySha256: '244f41c40a10c9327a7c0521f6a5a7c051cb3bb85dfe37717ac0a3b47a8f6466',
     targetContentSha256: '19ddc0711f3e7a44d6d1f808b06ef404c5e93d52045f5973abd5e1396e60e04e',
     targetBlockInventorySha256: 'e053577b546ffde03eb55721ab617fc8168932dd4b65dad21e8fe135aa134c71',
     replacements: [[
       'p', "Each embeddable tool's output is inlined below for side-by-side inspection (expand a panel to load its iframe). Panels resolve as the generation step populates public/pdtf-schema/schema-derived-ontology/use-and-tooling/tools/ .",
-      'p', "Each embeddable tool's output is inlined below for side-by-side inspection (expand a panel to load its iframe). Panels resolve as the generation step populates public/spdtf/inputs/pdtf-schema/schema-derived-ontology/use-and-tooling/tools/ .",
+      'p', "Each embeddable tool's output is inlined below for side-by-side inspection (expand a panel to load its iframe). Panels resolve as the generation step populates public/development/inputs/pdtf-schema/schema-derived-ontology/use-and-tooling/tools/ .",
       'route-path-reframe',
     ]],
   },

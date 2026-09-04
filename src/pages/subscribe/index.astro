@@ -1,0 +1,17 @@
+---
+import Layout from '@/layouts/Layout.astro';
+import NewsletterSubscriptionForm from '@/components/NewsletterSubscriptionForm.astro';
+---
+<Layout
+  title="Subscribe to OPDA updates"
+  description="Subscribe to updates about the Smart Property Data Trust Framework, working groups and events."
+  hideSidebar
+  hideBreadcrumbs
+  hideFooter
+  hideComments
+  suppressActiveDestination
+>
+  <h1>Subscribe to OPDA updates</h1>
+  <p class="lead">Receive occasional updates about the Smart Property Data Trust Framework, working-group progress and events.</p>
+  <NewsletterSubscriptionForm mode="page" />
+</Layout>

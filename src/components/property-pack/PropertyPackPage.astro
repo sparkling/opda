@@ -21,12 +21,16 @@ interface Props {
   /** Source-only hierarchy metadata; the shared breadcrumb renderer derives
    * the visible trail from the canonical site navigation. */
   crumbs?: Crumb[];
+  /** Search facets for generated pages; narrative pages default to model documentation. */
+  search?: Record<string, string | undefined>;
 }
 
 const {
   title,
   description,
+  search = {},
 } = Astro.props;
+const searchMeta = { title, type: 'page', collection: 'property-pack', pageType: 'model-documentation', ...search };
 const technicalState = validationReport.status === 'pass'
   ? 'Technical candidate checks passed'
   : `Technical candidate checks: ${validationReport.status}`;
@@ -36,6 +40,7 @@ const technicalState = validationReport.status === 'pass'
   breadcrumbTitle={title}
   description={description}
   proseClass="prose wide"
+  search={searchMeta}
 >
   <div class="v2-doc document-flow">
     <div class="v2-candidate-info" data-candidate-info>
@@ -101,7 +106,7 @@ const technicalState = validationReport.status === 'pass'
           </p>
           <p>
             <strong>{technicalState}.</strong> This records machine checks, not semantic approval.
-            <a href="/spdtf/property-pack/validation"> Review the evidence</a>.
+            <a href="/development/property-pack/validation"> Review the evidence</a>.
           </p>
           <dl class="property-pack-status" aria-label="Property Pack lifecycle status">
             <div><dt>Source definition</dt><dd>{propertyPackLifecycleStatus.sourceDefinition}</dd></div>

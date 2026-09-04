@@ -45,8 +45,8 @@ const isRuntime = (path) => runtimePrefixes.some((prefix) => path === prefix || 
 // gates. Their pages and local assets are still crawled here; only unresolved
 // hrefs and fragments inside those documentary projections are delegated.
 const bundlePrefixes = [
-  '/spdtf/inputs/pdtf-schema/schema-derived-ontology/use-and-tooling/tools/',
-  '/spdtf/inputs/pdtf-schema/schema-derived-ontology/use-and-tooling/artefacts/',
+  '/development/inputs/pdtf-schema/schema-derived-ontology/use-and-tooling/tools/',
+  '/development/inputs/pdtf-schema/schema-derived-ontology/use-and-tooling/artefacts/',
 ];
 const isBundle = (path) => bundlePrefixes.some((prefix) => path.startsWith(prefix));
 // Ontospy's vendored Bootswatch source tree includes upstream theme demo HTML
@@ -54,7 +54,7 @@ const isBundle = (path) => bundlePrefixes.some((prefix) => path.startsWith(prefi
 // Exclude those fixtures only; actual Ontospy/artefact pages and every emitted
 // CSS, script, image and font resource remain in the crawl.
 const vendorFixturePrefixes = [
-  '/spdtf/inputs/pdtf-schema/schema-derived-ontology/use-and-tooling/tools/ontospy/static/libs/',
+  '/development/inputs/pdtf-schema/schema-derived-ontology/use-and-tooling/tools/ontospy/static/libs/',
 ];
 const isVendorFixture = (path) => vendorFixturePrefixes.some((prefix) => path.startsWith(prefix));
 // Generated reference projections retain links to their repository source
@@ -63,9 +63,9 @@ const isVendorFixture = (path) => vendorFixturePrefixes.some((prefix) => path.st
 // script/style/image on those pages and application navigation everywhere else.
 const sourceProjectionPrefixes = [
   '/modelling/adr/', '/modelling/odr/',
-  '/spdtf/inputs/pdtf-schema/schema-derived-ontology/model-views-by-audience/',
-  '/spdtf/inputs/pdtf-schema/schema-derived-ontology/lineage-provenance-and-verification/schema-to-ontology-verification/',
-  '/spdtf/inputs/pdtf-schema/schema-derived-ontology/concepts-and-architecture/contexts/',
+  '/development/inputs/pdtf-schema/schema-derived-ontology/model-views-by-audience/',
+  '/development/inputs/pdtf-schema/schema-derived-ontology/lineage-provenance-and-verification/schema-to-ontology-verification/',
+  '/development/inputs/pdtf-schema/schema-derived-ontology/concepts-and-architecture/contexts/',
 ];
 const isSourceProjection = (path) => sourceProjectionPrefixes
   .some((prefix) => path.startsWith(prefix));

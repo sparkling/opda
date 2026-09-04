@@ -17,11 +17,28 @@
   min-height: calc(100vh - var(--header-height));
 }
 .app-body > * { min-width: 0; }
+.app-body.rail-state-restoring .app-sidebar,
+.app-body.rail-state-restoring .sidebar-nav,
+.app-body.rail-state-restoring .toc,
+.app-body.rail-state-restoring .toc > ul {
+  transition: none !important;
+}
 .app-body.no-sidebar {
   grid-template-columns: minmax(0, 1fr);
   max-width: calc(var(--content-max) + var(--content-gutter) + var(--content-gutter));
 }
-.app-body.with-toc {
+.app-body.no-sidebar.reserve-navigation-rail {
+  grid-template-columns: var(--shell-sidebar-track) minmax(0, 1fr);
+  max-width: calc(
+    var(--content-max) +
+    var(--shell-sidebar-track) +
+    var(--content-gutter) +
+    var(--content-gutter)
+  );
+}
+.app-body.reserve-navigation-rail > .app-main { grid-column: 2; }
+.app-body.with-toc,
+.app-body.reserve-toc-rail {
   grid-template-columns: var(--shell-sidebar-track) minmax(0, 1fr) var(--shell-toc-track);
   max-width: calc(
     var(--content-max) +
@@ -31,7 +48,8 @@
     var(--content-gutter)
   );
 }
-.app-body.no-sidebar.with-toc {
+.app-body.no-sidebar.with-toc,
+.app-body.no-sidebar.reserve-toc-rail {
   grid-template-columns: minmax(0, 1fr) var(--shell-toc-track);
   max-width: calc(
     var(--content-max) +
@@ -141,7 +159,8 @@
 }
 .sidebar-nav {
   --nav-tree-indent: var(--space-3);
-  padding: var(--space-4) var(--space-5) var(--space-7);
+  padding-block: var(--space-4) var(--space-7);
+  padding-inline: var(--space-3);
   opacity: 1;
   transform: translateX(0);
   visibility: visible;
@@ -178,11 +197,11 @@
   font: 700 var(--text-sm) / 1.4 var(--font-sans);
   text-transform: none;
   letter-spacing: normal;
-  color: var(--color-text-strong);
+  color: var(--color-navigation-parent);
   border-bottom: 1px solid var(--color-border);
   padding-inline: var(--space-3);
 }
-.app-sidebar a.nav-group-link:hover { color: var(--color-text); }
+.app-sidebar a.nav-group-link:hover { color: var(--color-navigation-parent-hover); }
 .app-sidebar .nav-group-items { display: none; }
 .app-sidebar .nav-group.is-open > .nav-group-items {
   display: block;
@@ -239,8 +258,14 @@
   border-radius: var(--radius-md);
   font: 500 var(--text-sm) / 1.4 var(--font-sans);
   color: var(--color-text);
-  overflow-wrap: anywhere;
+  overflow-wrap: break-word;
+  word-break: normal;
 }
+.app-sidebar a.tree-folder-link {
+  color: var(--color-navigation-parent);
+  font-weight: 700;
+}
+.app-sidebar a.tree-folder-link:hover { color: var(--color-navigation-parent-hover); }
 .app-sidebar a:hover {
   background: var(--color-action-subtle);
   color: var(--color-text-strong);
@@ -248,9 +273,11 @@
 }
 .app-sidebar a.active {
   background: var(--neutral-100);
-  color: var(--brand-deep);
-  font-weight: 700;
   box-shadow: inset 4px 0 0 var(--brand-yellow);
+}
+.app-sidebar .tree-leaf > a.active,
+.app-sidebar .nav-group-leaf.active {
+  color: var(--brand-deep);
 }
 .app-sidebar .tree-folder.is-active-page > .tree-folder-row {
   background: var(--neutral-100);
@@ -261,10 +288,17 @@
   box-shadow: none;
 }
 :root[data-theme="dark"] .app-sidebar a:hover { background: var(--color-surface-dark-tint); color: var(--color-text-strong); }
+:root[data-theme="dark"] .app-sidebar a.nav-group-link:hover,
+:root[data-theme="dark"] .app-sidebar a.tree-folder-link:hover {
+  color: var(--color-navigation-parent-hover);
+}
 :root[data-theme="dark"] .app-sidebar a.active {
   background: var(--color-surface-dark-tint);
-  color: var(--brand-white);
   box-shadow: inset 4px 0 0 var(--brand-yellow);
+}
+:root[data-theme="dark"] .app-sidebar .tree-leaf > a.active,
+:root[data-theme="dark"] .app-sidebar .nav-group-leaf.active {
+  color: var(--brand-white);
 }
 :root[data-theme="dark"] .app-sidebar .tree-folder.is-active-page > .tree-folder-row {
   background: var(--color-surface-dark-tint);
@@ -278,7 +312,7 @@
 .app-main {
   min-width: 0;
   width: 100%;
-  padding: var(--space-8) var(--content-gutter);
+  padding: var(--page-content-start-space) var(--content-gutter) var(--space-8);
   max-width: 100%;
   background: var(--color-surface);
 }
@@ -321,7 +355,7 @@
     visibility: visible;
     pointer-events: auto;
   }
-  .app-main { padding: var(--space-5) var(--content-gutter); }
+  .app-main { padding: var(--page-content-start-space) var(--content-gutter) var(--space-5); }
   html.nav-open { overflow: hidden; }
 }
 

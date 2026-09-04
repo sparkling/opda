@@ -51,7 +51,7 @@ Per ADR-0011 (module TBox emission) + ADR-0010 (SKOS vocabulary emission) + ADR-
 
 ## See also: Modelling section
 
-The historical [Ontology (OWL)](/spdtf/inputs/pdtf-schema/schema-derived-ontology/lineage-provenance-and-verification/historical-modelling/ontology), [SHACL shapes](/spdtf/inputs/pdtf-schema/schema-derived-ontology/lineage-provenance-and-verification/historical-modelling/shacl-shapes), and [Concept taxonomy (SKOS)](/spdtf/inputs/pdtf-schema/schema-derived-ontology/lineage-provenance-and-verification/historical-modelling/concept-taxonomy) pages describe the design intent and authoring approach for the artefacts documented in this tier. This tier is the generator-emitted realisation (verbatim Turtle from source TTLs); those pages preserve the editorial framing and design rationale.
+The historical [Ontology (OWL)](/development/inputs/pdtf-schema/schema-derived-ontology/lineage-provenance-and-verification/historical-modelling/ontology), [SHACL shapes](/development/inputs/pdtf-schema/schema-derived-ontology/lineage-provenance-and-verification/historical-modelling/shacl-shapes), and [Concept taxonomy (SKOS)](/development/inputs/pdtf-schema/schema-derived-ontology/lineage-provenance-and-verification/historical-modelling/concept-taxonomy) pages describe the design intent and authoring approach for the artefacts documented in this tier. This tier is the generator-emitted realisation (verbatim Turtle from source TTLs); those pages preserve the editorial framing and design rationale.
 
 ## Tier overview
 

@@ -1,9 +1,9 @@
 import { test, expect } from '@playwright/test';
-import { GLOBAL_DESTINATIONS } from '../../src/lib/site-ia.mjs';
+import { GLOBAL_NAVIGATION_ITEMS } from '../../src/lib/site-ia.mjs';
 import { PDTF1_ROUTES } from '../../src/lib/pdtf1-routes.mjs';
 import { assertNoBodyOverflow, visit, watchRuntime } from './support.mjs';
 
-const primary = GLOBAL_DESTINATIONS.map(({ title, url }) => ({ title, url }));
+const primary = GLOBAL_NAVIGATION_ITEMS.map(({ title, url }) => ({ title, url }));
 
 test('mobile primary disclosure is keyboard-operable and 320px does not overflow', async ({ page }) => {
   const clean = watchRuntime(page);
@@ -22,7 +22,7 @@ test('mobile primary disclosure is keyboard-operable and 320px does not overflow
   clean();
 });
 
-test('compact primary disclosure keeps all six destinations discoverable through the safety boundary', async ({ page }) => {
+test('compact primary disclosure keeps all navigation items discoverable through the safety boundary', async ({ page }) => {
   const clean = watchRuntime(page);
   for (const width of [769, 1024, 1279, 1376, 1440, 1472, 1536]) {
     await page.setViewportSize({ width, height: 900 });
@@ -32,8 +32,9 @@ test('compact primary disclosure keeps all six destinations discoverable through
     const opener = page.locator('#global-nav-toggle');
     const panel = page.locator('#global-nav-panel');
     const allPrimaryLinks = panel.locator('nav[aria-label="Primary"] a');
-    const links = panel.locator('nav[aria-label="Primary"] a:not(.header-cta)');
-    const cta = panel.locator('nav[aria-label="Primary"] a.header-cta');
+    const links = panel.locator('.global-nav > a');
+    const cta = panel.locator('.header-actions--compact .header-cta');
+    const membership = panel.locator('.header-actions--compact .header-membership');
 
     await expect(opener).toBeVisible();
     await expect(panel).toBeHidden();
@@ -44,6 +45,12 @@ test('compact primary disclosure keeps all six destinations discoverable through
     await expect(links).toHaveText(primary.map(({ title }) => title));
     await expect(cta).toHaveText('Join a working group');
     await expect(cta).toHaveAttribute('href', '/join');
+    await expect(membership).toHaveText('Become a member');
+    await expect(membership).toHaveAttribute('href', 'https://openpropdata.org.uk/become-a-member/');
+    const desktopActions = page.locator('.header-action--desktop');
+    await expect(desktopActions).toHaveCount(2);
+    await expect(desktopActions.first()).toBeHidden();
+    await expect(desktopActions.last()).toBeHidden();
 
     const geometry = await allPrimaryLinks.evaluateAll((nodes) => nodes.map((node) => {
       const rect = node.getBoundingClientRect();
@@ -71,25 +78,36 @@ test('compact primary disclosure keeps all six destinations discoverable through
   await page.setViewportSize({ width: 1537, height: 900 });
   await visit(page, '/resources');
   const desktopNav = page.locator('nav[aria-label="Primary"]');
-  const desktopDestinations = desktopNav.locator('a:not(.header-cta)');
-  const desktopCta = desktopNav.locator('a.header-cta');
+  const desktopDestinations = desktopNav.locator(':scope > a');
+  const desktopActions = page.locator('.app-header__utilities > .header-actions');
+  const desktopCta = desktopActions.locator('.header-cta');
+  const desktopMembership = desktopActions.locator('.header-membership');
   await expect(page.locator('#global-nav-toggle')).toBeHidden();
   await expect(desktopNav).toBeVisible();
   await expect(desktopDestinations).toHaveCount(primary.length);
   await expect(desktopCta).toHaveText('Join a working group');
   await expect(desktopCta).toHaveAttribute('href', '/join');
+  await expect(desktopMembership).toHaveText('Become a member');
+  await expect(desktopMembership).toHaveAttribute('href', 'https://openpropdata.org.uk/become-a-member/');
+  await expect(page.locator('.header-actions--compact')).toBeHidden();
   const alignment = await page.evaluate(() => {
     const rect = (selector) => document.querySelector(selector)?.getBoundingClientRect();
     return {
       content: rect('.app-main > .prose'),
       utilities: rect('.app-header__utilities'),
-      cta: rect('.global-nav .header-cta'),
+      cta: rect('.app-header__utilities .header-actions > .header-cta'),
+      icons: rect('.app-header .header-nav'),
+      membership: rect('.app-header__utilities .header-actions > .header-membership'),
       navPanel: rect('.global-nav-panel'),
     };
   });
   expect(alignment.utilities.right).toBeCloseTo(alignment.content.right, 1);
-  expect(alignment.cta.right).toBeCloseTo(alignment.content.right, 1);
-  expect(alignment.navPanel.bottom - alignment.cta.bottom).toBeCloseTo(8, 1);
+  expect(alignment.cta.right).toBeLessThanOrEqual(alignment.icons.left);
+  expect(alignment.cta.top).toBeCloseTo(alignment.icons.top, 1);
+  expect(alignment.cta.bottom).toBeCloseTo(alignment.icons.bottom, 1);
+  expect(alignment.membership.right).toBeLessThan(alignment.cta.left);
+  expect(alignment.membership.top).toBeCloseTo(alignment.cta.top, 1);
+  expect(alignment.membership.bottom).toBeCloseTo(alignment.cta.bottom, 1);
   const desktopGeometry = await desktopNav.locator('a').evaluateAll((nodes) => ({
     links: nodes.map((node) => {
       const rect = node.getBoundingClientRect();
@@ -112,9 +130,9 @@ test('current implementers reach nested third-party schema and validation guidan
   await page.setViewportSize({ width: 1536, height: 900 });
   await visit(page, '/');
 
-  await page.locator('.public-overview a.card[href="/spdtf"]').click();
-  await expect(page).toHaveURL(/\/spdtf$/u);
-  await page.locator('main a[href="/spdtf/inputs"]').click();
+  await page.locator('.public-overview a.card[href="/development"]').click();
+  await expect(page).toHaveURL(/\/development$/u);
+  await page.locator('main a[href="/development/inputs"]').click();
   await page.locator(`main a.ia-gateway-card[href="${PDTF1_ROUTES.root}"]`).click();
   await expect(page).toHaveURL(new RegExp(`${PDTF1_ROUTES.root}$`, 'u'));
   const implementationLinks = page.locator('main a');

@@ -1,22 +1,31 @@
 # OPDA Design System
 
-Version 1.1 · adopted 16 August 2026 · updated 1 September 2026 · scope: opda.org.uk application and its standalone design-system presentation.
+Version 1.1 · adopted 16 August 2026 · updated 4 September 2026 · scope: opda.org.uk application and its standalone design-system presentation.
 
-This is the normative human contract for OPDA's web interface. It supersedes the earlier cream, terracotta and third-party-inspired system. ADR-0073 records the adoption decision; `public/ui/design-tokens.css` is the machine-readable token projection; `public/ui/design-system.css` imports the live implementation modules.
+This is the normative human contract for OPDA's web interface. It supersedes the earlier cream, terracotta and third-party-inspired system. ADR-0073
+records the adoption decision; `public/ui/design-tokens.css` is the machine-readable token projection; `public/ui/design-system.css` imports the live
+implementation modules.
 
 ## 1. Creative direction
 
-OPDA is an **ink-and-amber data publication**: sharp, bordered, photographic and light by default, with the confidence of a standards body and the precision of a technical reference.
+OPDA is an **ink-and-amber data publication**: sharp, bordered, photographic and light by default, with the confidence of a standards body and the
+precision of a technical reference.
 
 Five principles govern every surface:
 
-1. **Evidence before decoration.** Source, status and provenance are visible where decisions depend on them.
-2. **One identity, different densities.** Public narrative and dense schema tools share tokens and components without pretending they have the same layout needs.
-3. **Amber directs; ink explains.** Yellow calls attention and carries dark text; it is not body copy, a status colour or a decorative wash.
-4. **Sharp and structural.** Rules, alignment and type create hierarchy. Cards are square, elevation is rare and gradients have one controlled use.
-5. **Access is part of authority.** Keyboard, contrast, reflow, forced colours and reduced motion are release requirements.
+1. **Evidence before decoration.** Source, status and provenance are visible where
+   decisions depend on them.
+2. **One identity, different densities.** Public narrative and dense schema tools
+   share tokens and components without pretending they have the same layout needs.
+3. **Amber directs; ink explains.** Yellow calls attention and carries dark text;
+   it is not body copy, a status colour or a decorative wash.
+4. **Sharp and structural.** Rules, alignment and type create hierarchy. Cards are
+   square, elevation is rare and gradients have one controlled use.
+5. **Access is part of authority.** Keyboard, contrast, reflow, forced colours and
+   reduced motion are release requirements.
 
-For this exercise, the operator delegated visual-design authority for the derived layer to Fable 5 at maximum effort and adopted the resulting contract. That delegation does not give Fable standards, content, governance or publication authority.
+For this exercise, the operator delegated visual-design authority for the derived layer to Fable 5 at maximum effort and adopted the resulting
+contract. That delegation does not give Fable standards, content, governance or publication authority.
 
 ## 2. Evidence model
 
@@ -38,11 +47,15 @@ The source SVGs define their own embedded colours and geometry. The repository c
 
 ### Observed evidence
 
-openpropdata.org.uk demonstrates the purple/yellow direction, official mark and people/property photography, but applies the type system inconsistently and has accessibility defects. The current opda.org.uk app demonstrates content density and specialist controls. The legacy PDTF developer guide contributes useful guide/code/table structure. The proposed SmartPropData domain was unreachable when inspected. None of these observations overrides the supplied guide or vectors.
+openpropdata.org.uk demonstrates the purple/yellow direction, official mark and people/property photography, but applies the type system
+inconsistently and has accessibility defects. The current opda.org.uk app demonstrates content density and specialist controls. The legacy PDTF
+developer guide contributes useful guide/code/ table structure. The proposed SmartPropData domain was unreachable when inspected. None of these
+observations overrides the supplied guide or vectors.
 
 ### Derived decisions
 
-Everything below that the guide did not define—semantic colours, type scale, spacing, layout, states, data visualisation, responsive behaviour, accessibility, motion and governance—is a recorded design-system decision rather than invented brand evidence.
+Everything below that the guide did not define—semantic colours, type scale, spacing, layout, states, data visualisation, responsive behaviour,
+accessibility, motion and governance—is a recorded design-system decision rather than invented brand evidence.
 
 ## 3. Brand assets
 
@@ -52,13 +65,16 @@ Use only the supplied files:
 |---|---|---|
 | Dark wordmark | `/ui/brand/opda-wordmark-dark.svg` | white or off-white |
 | White wordmark | `/ui/brand/opda-wordmark-white.svg` | dark ink |
-| Yellow icon | `/ui/brand/opda-icon-yellow.svg` | dark or decorative context |
+| Yellow icon | `/ui/brand/opda-icon-yellow.svg` | official OPDA house geometry; the paired knowledge-base identity projects its theme colour through this unchanged mask |
 
-Asset colour conflict is resolved by scope: `#131224`, `#FEC82F` and `#FEC92B` inside the SVGs are logo-specific values; the guide values are interface tokens. Never override an official asset's fills, normalise it during build or reconstruct the mark. A changed source asset creates a new manifest version and hash.
+Asset colour conflict is resolved by scope: `#131224`, `#FEC82F` and `#FEC92B` inside the SVGs are logo-specific values; the guide values are
+interface tokens. Never override an official asset's fills, normalise it during build or reconstruct the mark. A changed source asset creates a new
+manifest version and hash.
 
-Provide clear space of at least the icon-stem width around the wordmark. Keep the wordmark horizontal, uncropped and at least 128 CSS pixels wide. The icon may be a decorative motif but never substitutes for the named organisation where identity would otherwise be ambiguous.
+Provide clear space of at least the icon-stem width around the wordmark. Keep the wordmark horizontal, uncropped and at least 128 CSS pixels wide. The
+icon may be a decorative motif but never substitutes for the named organisation where identity would otherwise be ambiguous.
 
-Icon-and-live-text identity uses the shared `.brand-lockup` primitive. Its icon width is `0.89em` and its icon-to-text gap is `0.45em`, so both scale with the consuming title rather than becoming independent pixel values. The icon is baseline-aligned with the live text. Dark-surface lock-ups use `brand-yellow`; light-surface lock-ups use `brand-deep`. Components must not add transforms or local colour overrides.
+Icon-and-live-text identity uses the shared `BrandHeading.astro` component and `.brand-heading` primitive. Its document variant retains the established property-document card for campaign and footer contexts. The knowledge-base header uses the paired variant: the unboxed official house at `0.9em` and the complete one-colour organisation name form one unwrapped, baseline-aligned lock-up. The adjacent framework lock-up uses the exact name “Smart Property Data Trust Framework” with a `0.72em`, baseline-aligned mark. Party Wall remains the default while the temporary review control can project any recovered contact-sheet mark from the single `header-icons.ts` registry. Both paired lock-ups use the same component-owned compact `0.3em` mark-to-label gap; page containers may scale the lock-ups but must not redefine their internal geometry. Neither paired mark may gain a tile, corner marker, transform or local geometry correction.
 
 ## 4. Colour system
 
@@ -179,8 +195,8 @@ Documentation flow has one owner. In ordinary `.prose` articles and Property Pac
 the preceding block owns no trailing external margin. This makes the gap stable
 whether the preceding element is prose, a list, a card grid, a table, a diagram,
 a callout or the final element in a section. The standard direct-child gap is
-12px. An H2 divider owns 16px before its rule and 8px of CSS padding after it;
-the heading line box completes the optical 16px rule-to-letterform gap. H3 and
+12px. An H2 divider owns 24px before its rule and 16px of CSS padding after it;
+the heading line box completes the optical 24px rule-to-letterform gap. H3 and
 H4 use their own documented block-start steps. The previous/next region uses
 16px from its rule to the navigation panel, matching the panel-to-comments rule
 gap below. Bounded content endings also use 16px before the rule. Text-led
@@ -226,7 +242,7 @@ Tables fit the available content track rather than creating a horizontal scrollb
 Tables retain scoped headers, row identity and sorting semantics at every width. Pages must reflow at 320px and 400% zoom without page-level or
 table-level horizontal scrolling.
 
-At 1536px (96rem) and below, the six-destination global site navigation is a non-modal disclosure anchored to the compact 64px header. Above that
+At 1536px (96rem) and below, the six-destination global site navigation becomes a non-modal disclosure without independently removing the paired identity. Medium layouts retain both identity lines in a 120px header; at 960px and below the 64px narrow header omits the framework line and selector. Above that
 boundary every primary destination must fit without clipping or hidden horizontal overflow. The disclosure button owns `aria-controls` and
 `aria-expanded`; the closed panel is both hidden and inert. Escape and link activation close it, and Escape returns focus to the trigger. This is
 distinct from the below-960px section navigation, which is a modal off-canvas dialog with background inertness and focus containment.
@@ -237,23 +253,15 @@ roles retain their labels and structural borders, and controls, tables and diagr
 
 ## 8. Application shell and homepage
 
-The desktop header is 132px, `#131224`, and has three rows: a linked mini “Open Property Data Association” lock-up with a bottom-aligned yellow icon,
-the linked larger “Smart Property Data Framework” heading, then the global destination tabs. The title, subheading and first global-navigation label
-follow the main content gutter and centred maximum-width axis. The desktop utility controls sit one line above their former position, flush with the
-top and the header's physical right edge. A house icon provides an additional labelled home action beside search; both header headings also link home.
-The yellow primary working-group action finishes on the content track's right edge. It uses the standard full-height 44px button with centred label
-text. The desktop navigation track is 52px high and ends at the unchanged divider; the button aligns to its top, leaving 8px of structural clearance
-below without clipping, transforms or an inset surface. Destination labels retain their 44px targets at the bottom of the same track. There is no
-separate top-left logo cell in this shell. The mini title lock-up consumes the shared relative icon, gap, alignment and colour contract. The shorter
-desktop masthead uses natural grid flow with no negative margins; the framework heading, navigation row, divider and page shell are eight pixels
-higher while retaining the mini lock-up's established position. Navigation is DM Sans; the current item has a 4px amber underline and `aria-current`. At 96rem and
-below, the header returns to its compact 64px disclosure pattern. A skip link is the first focusable element. The light/dark control is one shared
-Astro component on the application shell, homepage and join page. Its 44px target is borderless, square and transparent in every context; it inherits
-the surrounding foreground colour while the shared theme state determines which icon is visible. The quiet divider below the global tabs spans the
-content track only, and the first tab has no additional left inset. Breadcrumbs have more space above than below and contain navigable ancestors only;
+The desktop header is 176px and theme-aware: light mode uses the white application surface while dark mode uses `#131224`. Its centred inner track is governed by the same maximum width, rail widths and inline gutter as the body shell. A shared 24px desktop header-start token and separate 8px page-content start token control the two independent vertical regions. The header uses explicit grid rows rather than an overlapping identity wrapper: OPDA shares the first row with utilities, an 8px spacer separates it from the SPDTF lock-up and both review selectors in the second content row, and global destination tabs occupy the final row. The first-row heading aligns to the bottom of the utility row; the SPDTF lock-up and review controls align to the top of their shared row. This anchors the second visible line directly after the fixed spacer instead of vertically centring smaller type inside a fixed-height track, preserving the inter-heading distance throughout size-slider changes. The framework mark remains optically bottom-aligned with its own label. Both linked identities end with their visible content rather than stretching across a row; the selectors remain right aligned. In medium and wide headers the OPDA lock-up uses the shared 1.75rem step, with its house scaling proportionally; narrow headers retain the compact treatment.
+
+The default Petrol palette uses olive OPDA and deep petrol framework roles on white, and fixed OPDA yellow `#FEC92B` with blue-petrol framework roles on deep. Three temporary review controls sit together at the right of the framework row. The theme control exposes all ten reviewed palettes—Kiln, Tidewater, Mulberry, Moss, Petrol, Aubergine, Pine, Ledger, Cherry and Harbour—while the icon control exposes all 24 marks in the numbered Fable archive, with Party Wall selected by default. A sliders icon opens the layout-tuning flyout: paired size, OPDA relative size, space underneath SPDTF, space between SPDTF and OPDA, and space above OPDA. Every range displays its live numeric value. Its 20rem tracks and extended ranges support broad visual exploration without sacrificing precise control. The shared tuning flyout remains attached beneath its button and expands down and right on both the homepage and knowledge-base header, clear of the identity to its left. Every mark records the width and bottom edge occupied by its artwork; the shared renderer scales and bottom-aligns the artwork inside a fixed Party Wall-sized SVG box so every icon has the same layout dimensions, apparent width and lower edge without distorting its geometry. A shared optical lift then aligns that lower edge with the visible framework letterforms rather than the display face's descender space. Theme cards preview the complete two-line identity at exactly half the webpage typography—14px OPDA and 22px framework, preserving the live 28:44 relationship. Icon cards instead show only the normalized mark and its name, inheriting the currently selected palette and page colour mode. Each flyout embeds the other synchronized selector so palettes and icons can be compared without closing the current inventory. All flyouts use an isolated overlay layer above document content, with generous internal padding, rounded borders and a lower-right cast shadow. The theme and icon flyouts size to their complete card grids without internal scrolling or clipped labels: four 22rem columns for icons and two 36rem columns for themes. The selected icon field uses a compact fixed 7rem width sized for its label, two-digit archive number and disclosure marker, avoiding truncation without changing the flyout cards. Attached previous and next buttons cycle the same ordered registries; direct selections and arrow changes persist locally. The complete selector drawer can be slid in or out using its adjacent disclosure button. The sliders icon, icon selector, theme selector and disclosure button share one horizontal control row. The controls change only semantic colour roles or framework geometry: the identity names and house mask never change. All flyouts are keyboard operable, close on Escape or selection, close one another when opened, and are omitted with the framework row only in the narrow header and in print.
+
+The larger framework lock-up uses the display face at the shared 2.75rem step, one step larger than the 2.25rem page H1. The homepage reuses the same selector drawer directly above the Working Group Domains panel, right aligned. Both the homepage and knowledge-base header expose the same range control with a live numeric output; it scales their OPDA and framework lines and both icons through one shared identity-size property. The control defaults to 24 and spans 12–36, placing 24 at the exact 50% midpoint. The title, framework and first global-navigation label follow the main content gutter and centred maximum-width axis. The desktop utility controls align with the organisation-title line and finish at the shared content-right edge. A house icon provides an additional labelled home action beside search; both header identities also link home. The six content destinations are followed by a seventh horizontal item for the cross-site Search task; Search does not become a content destination or homepage directory card. The right-aligned action group finishes on the content track's right edge. Its transparent membership action precedes the yellow working-group action, and both use standard full-height 44px buttons with centred labels. The desktop navigation track is 52px high and ends at the unchanged divider. Navigation labels use DM Sans 600 at the base text size; the current item has a 4px amber underline and `aria-current`. At 96rem and below, navigation uses its disclosure; the paired identity remains through medium widths and changes to the compact 64px treatment only at 60rem and below. A skip link is the first focusable element. The light/dark control is one shared Astro component on the application shell, homepage and join page. Its 44px target is borderless, square and transparent in every context; it inherits the surrounding foreground colour while the shared theme state determines which icon is visible. Theme, palette and selected framework icon are copied to the incoming document before Astro view-transition swaps so navigation cannot reset appearance. The quiet divider below the global tabs spans the
+content track only, and the first tab has no additional left inset. Breadcrumb ancestors occupy one 32px context row between the global navigation and the page title. When no breadcrumb context exists, the article begins at the shell inset and reserves no empty row, moving the title and complete following flow up. Breadcrumbs add no block padding around their shared 32px compact inline-navigation targets and contain navigable ancestors below the global destination only;
 a link-coloured chevron is optically aligned with the label baseline between them. The current page is named by the H1 rather than repeated as an
-unlinked terminal crumb. No metadata strip or repeated category appears between the breadcrumbs and the H1; the breadcrumb leads directly into the
-page title. When no navigable ancestor exists, no breadcrumb region is rendered and the article drops its redundant upper inset. `Layout.astro`
+unlinked terminal crumb. The destination already named by the horizontal navigation is never repeated. No metadata strip or repeated category appears between the breadcrumbs and the H1; the breadcrumb leads directly into the
+page title. The retired `PageMeta` component and its call sites are removed, so hidden legacy metadata cannot trigger document-flow sibling spacing above the H1. `Layout.astro`
 renders `Breadcrumbs.astro` as the only page-level breadcrumb implementation. Wrappers with qualified document titles supply a concise
 `breadcrumbTitle` but never their own breadcrumb markup or CSS. Schema-object locations and resource-folder paths remain separate in-content
 navigation with location, rather than page, semantics. Property Pack pages place their candidate-status information control on the H1 row, aligned to
@@ -262,11 +270,10 @@ identify explanatory candidate context and opens a non-modal, tokenised flyout c
 six-stage lifecycle record formerly shown in a full-width warning disclosure. It exposes expanded state, supports Escape, restores focus when
 dismissed from within and does not add its internal title to the page table of contents. The `#F9F9F9` sidebar keeps the current section in its
 accessible name without repeating it visibly. The footer has a 4px yellow top rule. `SiteFooter.astro` renders once outside article content and
-navigation rails on the root landing, every route using the shared `Layout`, and the standalone public-service family. It carries privacy and
-accessibility exits, a centred linked OPDA icon-and-name lock-up to the Association website, plus the linked Sparkling Ideas credit. The left-aligned
-Sparkling Ideas credit and right-aligned footer links sit directly on the shared content edges; the centred OPDA lock-up remains on the page axis and
+navigation rails on the root landing, every route using the shared `Layout`, and the standalone public-service family. One desktop row presents “Developed by Sparkling Ideas”, the centred linked OPDA icon-and-name lock-up to the Association website, then the Privacy and Accessibility exits; the existing expert tagline remains beneath the credit. The left-aligned
+Sparkling Ideas credit and right-aligned footer links sit directly on the shared content edges; the centred OPDA lock-up remains on the page axis. The complete row moves one text line upward by redistributing 16px of container padding from above to below, preserving the footer’s overall padding without transforming individual elements, and
 the footer gutter adds no secondary inner inset at desktop widths. The footer renders the shared icon-and-live-text heading component at its compact
-14px scale; its relative `0.89em` icon and `0.45em` gap resize with the text as one unit. Privacy and Accessibility use the same muted colour and regular weight as plain
+14px scale; its relative `1.35em` tile and proportional gap resize with the text as one unit. Privacy and Accessibility use the same muted colour and regular weight as plain
 footer text; organisation and delivery-credit emphasis remain distinct. Previous/next navigation follows the article and precedes the comments
 divider. It retains its bordered bar and adds a separate full-track divider above it. The shared region owns distinct before-rule and after-rule
 spacing variables: the panel sits 16px from the rule above and the comments rule below. Bounded content endings sit 16px above the upper rule;
@@ -296,7 +303,7 @@ signalling that the whole card is a linked destination.
 Its sequence is:
 
 1. Theme-aware split hero using `/join`'s full-width radial/diagonal composition, centred 92rem grid,
-   shared icon-and-name heading, short Slab headline, three actions and working-group domain register.
+   the same paired OPDA and SPDTF heading components as the application header at display scale, a short Slab headline, three actions and working-group domain register.
    It uses deep ink in dark mode and white/warm-neutral surfaces in light mode without structural change.
 2. Static, accessible AI-assisted modelling loop with source material, a published candidate,
    returning feedback and a consensus-gated draft-standard outcome.
@@ -324,32 +331,18 @@ campaign never uses parallax, pinned scrolling, delayed reveals or interaction-g
 Every interactive component provides default, hover, active, focus and disabled states, plus loading/error/success where asynchronous work occurs and
 dark parity.
 
-- **Buttons:** primary yellow/black, outlined secondary, ghost, and danger red/white;
-  minimum height 44px; pressed state translates inward by 1px.
-- **Inputs/selects:** 2px radius, 1px strong-neutral border, explicit label and help;
-  error adds danger border, icon and message.
+- **Buttons:** primary yellow/black, outlined secondary, ghost, and danger red/white; minimum height 44px; pressed state translates inward by 1px. The shared compact variant preserves the target height while reducing horizontal padding for space-constrained labelled actions.
+- **Inputs/selects:** 2px radius, 1px strong-neutral border, explicit label and help; error adds danger border, icon and message.
 - **Tabs:** semantic tablist, arrow-key operation and yellow-underlined selection.
-- **Breadcrumbs:** ordered links to navigable ancestors only; the H1 names the current page. Use DM Sans
-  500 at the base 16px role with a 24px line-height, 44px link targets and link-coloured decorative chevrons aligned to the label baseline.
-  They use a smaller lower inset to connect the hierarchy to the page title.
-- **Header action:** the shared 44px primary working-group button aligns to the content-right edge.
-  Its 52px desktop navigation track leaves 8px beneath the full visible button without an inset
-  surface, clipping or positional override; the compact disclosure returns it to normal flow.
+- **Breadcrumbs:** ordered links to navigable ancestors only; the H1 names the current page. Use DM Sans 500 at the base 16px role with a 24px line-height, the shared 32px compact inline-navigation target, no additional block padding and link-coloured decorative chevrons aligned to the label baseline. When no ancestor exists, omit the breadcrumb region and its row so the title and following content move up together. The compact target remains above the WCAG 2.2 minimum while keeping the hierarchy visually connected to the page title; button-sized 44px targets remain reserved for controls.
+- **Header actions:** a shared flex group aligns the transparent secondary “Become a member” action immediately before the primary “Join a working group” action at the content-right edge. Both use the shared 44px compact button variants. The 52px desktop navigation track leaves 8px beneath the full visible buttons without an inset surface, clipping or positional override; the compact disclosure keeps the pair right-aligned in normal flow.
 - **Header utilities:** familiar single-purpose destinations may use 20px icons in 44px targets, with an accessible name and tooltip. On desktop the group has no trailing inset, ends on the header's physical right edge and retains 16px above it. The theme icon has no visible border or box; icons never replace the CTA label.
-- **Organisation heading:** the unchanged yellow icon plus the full organisation name in one unbroken line of live DM Sans text; use strong ink on light and the inverse treatment on dark.
-  The shared mini variant uses the large-text step; because its icon width and gap are relative units, the complete lock-up scales as one component.
-- **Section heading:** a shared optional uppercase DM Sans eyebrow, display H2 and optional lead.
-  Use it for distinct subjects; do not recreate local eyebrow scales or heading spacing.
-- **Sidebar hierarchy:** folder rows remain linked pages. Top-level parent links use the
-  leaf-link DM Sans scale and sentence case, with stronger
-  weight and a hairline lower edge to distinguish their structural role without adding
-  an icon or increasing row height. Navigating to a folder opens its active trail.
-  Indentation alone expresses recursive nesting, in 8px steps; branch arrows, open/closed
-  indicators and reserved disclosure gutters are not used.
+- **Organisation heading:** the unchanged yellow icon sits on the theme-aware dark tile beside the full organisation name in one unbroken line of live DM Sans text, with the visible icon and text block bottom-aligned. Use deep ink for the name on light surfaces and yellow for the name on dark. Relative tile and gap units let every scale resize as one component.
+- **Section heading:** a shared optional uppercase DM Sans eyebrow, display H2 and optional lead. Use it for distinct subjects; do not recreate local eyebrow scales or heading spacing.
+- **Sidebar hierarchy:** folder rows remain linked pages. Every parent uses the leaf-link DM Sans scale and sentence case with stronger weight and a restrained, theme-aware navigation-parent colour mixed toward body text; top-level parents also receive a hairline lower edge. Selection preserves the item’s existing typography in both themes, so a selected leaf remains regular and a selected parent remains bold; only the shared active background, foreground and yellow rule are added. This distinguishes structural roles without icons or additional row height. Navigating to a folder opens its active trail. Indentation alone expresses recursive nesting in 8px steps; branch arrows, open/closed indicators, guide rules and reserved disclosure gutters are not used. The navigation has an 8px outer inline inset and top-level rows add no second inline margin, preserving useful label width.
 - **Status badge:** icon, complete text label and tint; never a bare dot.
 - **Campaign panel list:** use large, restrained semantic icons with an adjacent title and description; icons reinforce rather than replace text and are hidden from assistive technology.
-- **Provenance chip:** Roboto Mono source and timestamp; links to evidence when
-  available.
+- **Provenance chip:** Roboto Mono source and timestamp; links to evidence when available.
 - **Callout:** note/success/warning/danger with 3px semantic rule, icon and heading.
 - **Card:** square, bordered and content-led, with a quiet structural top rule and a
   clear title, explanation and action hierarchy. Optional eyebrows, scope notes and
@@ -380,12 +373,9 @@ dark parity.
 - **Recruitment group card:** plain label, practical scope and one action that carries
   the selected group to the signup form. Use a three-column maximum, preserve ordinary
   HTML reading order and do not use modelling terminology to explain audience choices.
-- **Public statement:** dated, single-purpose privacy or accessibility content in a
-  consistent full-track flow beneath the standard global header, without side
-  navigation or nested width limits; targets and limitations are stated without
-  unevidenced compliance claims.
-- **Feedback states:** skeleton, labelled loading, empty-state explanation, error
-  recovery and non-obscuring toast.
+- **Public statement:** dated privacy or accessibility content in a full-track flow beneath the standard global header, without side navigation, nested width limits or unevidenced compliance claims.
+- **Newsletter subscription:** one reusable form powers a header-triggered native dialog and `/subscribe` fallback. It uses the six canonical working-group choices, explicit consent, a separate privacy notice and its own validated storage boundary. The wide dialog has no arbitrary fixed-height cap and presents choices in three columns where space permits, avoiding an internal scrollbar at ordinary desktop sizes; constrained-height viewports retain safe scrolling. The mail icon remains a normal link until enhancement is ready.
+- **Feedback states:** skeleton, labelled loading, empty-state explanation, error recovery and non-obscuring toast.
 
 ## 10. Knowledge and data patterns
 
@@ -398,14 +388,22 @@ or proposed.
 A data browser keeps search, filters, result count and reset action in one labelled toolbar. Applied filters remain visible as removable controls.
 Sorting, pagination, loading, empty and error states announce changes without moving keyboard focus.
 
-Site search has one authoritative local index and ranking function. The `/search` route is the shareable, full-results view: its query field and
-canonical-destination filter write URL parameters, and its rows show summaries, work area, authority and maturity. The header search link progressively
-enhances to a native quick-search dialog only after its controller is ready; without JavaScript it remains the ordinary `/search` link. The dialog
-loads the same index on first use, shows compact destination, title, work-area, authority and maturity rows, and keeps a live link to the full search
-view. Command/Control+K and `/` open it outside editable controls; arrow keys select results while focus remains in the query field, Enter follows the
-selection, and Escape returns focus to the trigger. The dialog uses the standard menu/dialog elevation, a four-pixel amber structural rule, semantic
-light/dark tokens, forced-colour outlining and reduced-motion timing. Multi-word matches are ranked deterministically by title, alias and summary
-relevance. Result counts and empty states are announced without moving focus; the search lifecycle reinitialises after client-side page transitions.
+Site search has one authoritative local index, one ranking function and one facet vocabulary (`site-search-model.mjs`). The index is generated from
+every emitted page by one HTML extractor, in production from the built site and in development from routes rendered through the live dev server, and
+generated templates declare their own facets through `opda:search-*` meta tags. The `/search` route is the shareable
+rich-results view: a native GET form whose filter rail contains multi-select content-type checkboxes (ontology resources, decision records, working groups, guides and pages) alongside
+facet checkboxes for the six canonical horizontal-navigation sections, collection, resource kind, working group or domain and decision status. All controls write URL parameters, and section labels come directly from the global navigation registry. Page type is not a current facet: corpus evidence showed that its inferred route-family values duplicated Section or Collection rather than forming an independently authored taxonomy. Schema-3 `opda:search-page-type` metadata remains accepted while existing templates and cached indexes migrate, but it does not affect ranking or card labels. Existing `pagetype` URLs retain their exact filter as a removable legacy chip without exposing Page type for new selections. Facet groups appear only in
+the scope where they are meaningful; the `All` scope exposes their complete six-group union. The filter collection uses the section rail itself as its sole containing boundary rather than nesting a second border inside it. Checkbox rows use the shared compact control target with an 8px vertical group gap, carry live counts, and sit in a rail beside the results on wide viewports or behind a labelled toggle below it.
+Applied filters remain visible as removable chips. Results are square register cards in two columns on desktop, sharing one anatomy (eyebrow, status
+pill, title, summary, base-aligned facts) with a variant rule and facts per result type: ontology resources show kind, domain, identifier and
+collection; decision records show record number, register, status and date; working-group pages show domain and convening state; other pages show
+their current collection or section plus authority and maturity from the IA status registry. Visible counts are separate from
+debounced live announcements, URL updates are debounced, and native reset plus explicit zero-result recovery keep the form predictable. The header
+link enhances only when ready into a native quick-search dialog with an accessible name but no visible heading, close icon, instructions, legend or
+verbose metadata. It loads the same shared index on first use and shows each result's eyebrow and title plus a live link to full search. Command/Control+K and
+`/` open it outside editable controls; arrows select, Enter follows, and Escape or the backdrop closes and restores focus. The dialog uses standard
+elevation, the four-pixel amber rule, semantic light/dark tokens, forced-colour outlining and reduced-motion timing. Ranking remains deterministic;
+the search lifecycle reinitialises after client-side page transitions without collecting or transmitting query history.
 
 A governance decision distinguishes proposal, review, disposition and adopted outcome. Publication never implies ratification.
 
@@ -455,7 +453,7 @@ Every live route belongs to one explicit visual family:
 | Knowledge base | prose, governance and catalogue routes | shared `Layout` shell and `SiteFooter` |
 | Data and V2 | data browser, validation and V2 reference routes | shared tokens plus dense data patterns |
 | Schema/manual | generated schema, ontology and manual reference routes | shared shell plus labelled table/diagram patterns |
-| Public service | `/join`, `/join/privacy`, `/accessibility` | minimal `StandalonePublicLayout`, shared `SiteFooter`, five-chapter campaign, public statements and safely enhanced form |
+| Public service | `/join`, `/join/privacy`, `/accessibility`, `/subscribe/**` | minimal public layouts, shared `SiteFooter`, public statements and safely enhanced forms |
 | Groups | workspaces and member guidance | standard shared `Layout`, left section navigation and Knowledge Base footer |
 | Presentation | working-group kickoff deck | isolated, self-contained full-screen presentation using its original local visual tokens; no site chrome |
 

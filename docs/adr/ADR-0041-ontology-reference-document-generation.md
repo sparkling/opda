@@ -1,7 +1,7 @@
 ---
 status: accepted
 date: 2026-06-14
-updated: 2026-08-22
+updated: 2026-09-03
 tags: [documentation, ontology, generator, ci-gate, multi-page, bake-off, ontology-section, council-038]
 supersedes: []
 depends-on: [ODR-0004, ODR-0005, ODR-0025, ODR-0026, ODR-0027, ODR-0028, ODR-0029, ADR-0002, ADR-0006, ADR-0007, ADR-0029]
@@ -10,6 +10,10 @@ implements: []
 
 # Ontology Reference Document — Generation Model and Section Structure
 
+> Update 2026-09-03 — generated reader pages beneath the Development destination
+> now use `/development/inputs/pdtf-schema/schema-derived-ontology/**`. Stable
+> `/pdtf/**` identifiers and the generation model remain unchanged.
+>
 ## Context and Problem Statement
 
 The ontology derived from the PDTF schema is complete enough to document for external consumers (the descriptive layer closed — ODR-0028; the programme retired — ODR-0003). We need a standalone HTML reference covering every aspect: the foundation and six bounded-context modules (~58 OWL classes, 30 object + 226 datatype properties), ~50 SKOS schemes / ~318 concepts, ~58 SHACL shapes, 31 overlay profiles, 17 round-trip exemplars, the OWL-RL inference regime, the three-graph separation, the DPV/PROV-O governance layer, and the ODR/ADR/council provenance.
