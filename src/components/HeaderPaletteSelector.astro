@@ -3,14 +3,16 @@ import {
   DEFAULT_HEADER_PALETTE,
   FIXED_DARK_OPDA,
   HEADER_PALETTES,
+  type HeaderPaletteId,
 } from '@/lib/header-palettes';
 import HeaderIdentityPreview from '@/components/HeaderIdentityPreview.astro';
 
 interface Props {
   embedded?: boolean;
+  initialPalette?: HeaderPaletteId;
 }
 
-const { embedded = false } = Astro.props;
+const { embedded = false, initialPalette = DEFAULT_HEADER_PALETTE } = Astro.props;
 const inputName = embedded ? 'header-palette-embedded' : 'header-palette';
 const pageSize = 4;
 const pageCount = Math.ceil(HEADER_PALETTES.length / pageSize);
@@ -32,7 +34,7 @@ const previewStyle = (palette: (typeof HEADER_PALETTES)[number]) => [
   <details class="header-preview-selector" data-header-palette-selector data-header-palette-page-size={pageSize}>
     <summary>
       <span class="header-preview-selector__summary-label">Theme</span>
-      <strong data-header-palette-current>Petrol</strong>
+      <strong data-header-palette-current>{HEADER_PALETTES.find((palette) => palette.id === initialPalette)?.name}</strong>
     </summary>
     <div class="header-preview-selector__flyout">
       <fieldset>
@@ -54,7 +56,7 @@ const previewStyle = (palette: (typeof HEADER_PALETTES)[number]) => [
                 type="radio"
                 name={inputName}
                 value={palette.id}
-                checked={palette.id === DEFAULT_HEADER_PALETTE}
+                checked={palette.id === initialPalette}
                 data-palette-name={palette.name}
                 data-header-palette-input
               />

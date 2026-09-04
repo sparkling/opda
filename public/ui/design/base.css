@@ -190,6 +190,10 @@ a:visited { text-decoration-color: currentColor; }
   justify-self: end;
   margin-inline-end: 0;
   padding-inline-end: 0;
+  transform: translateY(var(--header-utilities-space-above, 0px));
+}
+.app-header .header-preview-controls {
+  transform: translateY(var(--header-utilities-space-above, 0px));
 }
 .global-nav-panel {
   grid-area: navigation;

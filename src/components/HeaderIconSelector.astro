@@ -1,12 +1,13 @@
 ---
 import HeaderIconPreview from '@/components/HeaderIconPreview.astro';
-import { DEFAULT_HEADER_ICON, HEADER_ICONS } from '@/lib/header-icons';
+import { DEFAULT_HEADER_ICON, HEADER_ICONS, type HeaderIconId } from '@/lib/header-icons';
 
 interface Props {
   embedded?: boolean;
+  initialIcon?: HeaderIconId;
 }
 
-const { embedded = false } = Astro.props;
+const { embedded = false, initialIcon = DEFAULT_HEADER_ICON } = Astro.props;
 const inputName = embedded ? 'header-icon-embedded' : 'header-icon';
 ---
 <div class:list={['header-preview-control', 'header-preview-control--icon', { 'header-preview-control--embedded': embedded }]}>
@@ -16,7 +17,7 @@ const inputName = embedded ? 'header-icon-embedded' : 'header-icon';
   <details class="header-preview-selector" data-header-icon-selector>
     <summary>
       <span class="header-preview-selector__summary-label">Icon</span>
-      <strong data-header-icon-current>{HEADER_ICONS.find((icon) => icon.id === DEFAULT_HEADER_ICON)?.number}</strong>
+      <strong data-header-icon-current>{HEADER_ICONS.find((icon) => icon.id === initialIcon)?.number}</strong>
     </summary>
     <div class="header-preview-selector__flyout">
       <fieldset>
@@ -32,7 +33,7 @@ const inputName = embedded ? 'header-icon-embedded' : 'header-icon';
                 type="radio"
                 name={inputName}
                 value={icon.id}
-                checked={icon.id === DEFAULT_HEADER_ICON}
+                checked={icon.id === initialIcon}
                 data-icon-name={icon.name}
                 data-icon-number={icon.number}
                 data-header-icon-input

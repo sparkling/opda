@@ -7,8 +7,8 @@ import DestinationCards from '@/components/ia/DestinationCards.astro';
 import BrandHeading from '@/components/BrandHeading.astro';
 import FrameworkHeading from '@/components/FrameworkHeading.astro';
 import HeaderPreviewControls from '@/components/HeaderPreviewControls.astro';
-import { DEFAULT_HEADER_ICON, HEADER_ICON_IDS } from '@/lib/header-icons';
-import { DEFAULT_HEADER_PALETTE, HEADER_PALETTE_IDS } from '@/lib/header-palettes';
+import { HEADER_ICON_IDS } from '@/lib/header-icons';
+import { HEADER_PALETTE_IDS } from '@/lib/header-palettes';
 import { assetVersion } from '@/lib/asset-version.mjs';
 import KickoffFeature from '@/components/home/KickoffFeature.astro';
 import MethodFlowFigure from '@/components/home/MethodFlowFigure.astro';
@@ -23,6 +23,20 @@ const description =
   'Explore the OPDA programme, governance, semantic modelling, SPDTF development, working groups and evidence behind a shared language for property data.';
 const routeStatus = getRouteStatus('/');
 const clientV = assetVersion('/ui/client.js');
+const homeHeaderIcon = 'common-boundary';
+const homeHeaderPalette = 'clay-indigo';
+const homeHeaderScale = 32;
+const homeHeaderOpdaScale = 100;
+const homeHeaderSpaceAbove = 59;
+const homeHeaderLineGap = 0;
+const homeHeaderSpaceBelow = 16;
+const homeHeaderStyle = [
+  `--identity-heading-size:${homeHeaderScale}px`,
+  `--identity-opda-scale:${homeHeaderOpdaScale / 100}`,
+  `--identity-space-before:${homeHeaderSpaceAbove}px`,
+  `--identity-line-gap:${homeHeaderLineGap}px`,
+  `--identity-space-after:${homeHeaderSpaceBelow}px`,
+].join(';');
 const domains = [
   { name: 'Conveyancing', description: 'Legal title, ownership, disclosure, completion and transfer.', icon: Scale },
   { name: 'Estate agency', description: 'Marketing, pricing, letting, media and consumer disclosure.', icon: Megaphone },
@@ -52,9 +66,9 @@ const domains = [
     is:inline
     data-astro-rerun
     define:vars={{
-      defaultHeaderPalette: DEFAULT_HEADER_PALETTE,
+      defaultHeaderPalette: homeHeaderPalette,
       headerPaletteIds: HEADER_PALETTE_IDS,
-      defaultHeaderIcon: DEFAULT_HEADER_ICON,
+      defaultHeaderIcon: homeHeaderIcon,
       headerIconIds: HEADER_ICON_IDS,
     }}
   >
@@ -86,7 +100,7 @@ const domains = [
   <main id="main-content" tabindex="-1">
     <section class="home-campaign-hero wg-campaign-hero wg-campaign-hero--panel-aligned" aria-labelledby="public-title">
       <header class="wg-campaign-hero__header">
-        <div class="wg-campaign-identity" id="home-campaign-identity">
+        <div class="wg-campaign-identity" id="home-campaign-identity" style={homeHeaderStyle}>
           <BrandHeading variant="paired" />
           <FrameworkHeading scale="display" />
         </div>
@@ -113,6 +127,13 @@ const domains = [
           showScaleControl
           controlId="home-header-preview-selectors"
           identityId="home-campaign-identity"
+          initialScale={homeHeaderScale}
+          initialOpdaScale={homeHeaderOpdaScale}
+          initialSpaceAbove={homeHeaderSpaceAbove}
+          initialLineGap={homeHeaderLineGap}
+          initialSpaceBelow={homeHeaderSpaceBelow}
+          initialIcon={homeHeaderIcon}
+          initialPalette={homeHeaderPalette}
         />
         <div class="wg-hero-journey" aria-labelledby="public-domains-title">
           <p class="wg-eyebrow">Working Group</p>

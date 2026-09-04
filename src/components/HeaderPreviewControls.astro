@@ -2,6 +2,8 @@
 import HeaderPaletteSelector from '@/components/HeaderPaletteSelector.astro';
 import HeaderIconSelector from '@/components/HeaderIconSelector.astro';
 import HeaderTuningSelector from '@/components/HeaderTuningSelector.astro';
+import type { HeaderIconId } from '@/lib/header-icons';
+import type { HeaderPaletteId } from '@/lib/header-palettes';
 
 interface Props {
   showScaleControl?: boolean;
@@ -12,6 +14,9 @@ interface Props {
   initialLineGap?: number;
   initialSpaceBelow?: number;
   initialOpdaScale?: number;
+  initialIcon?: HeaderIconId;
+  initialPalette?: HeaderPaletteId;
+  showUtilitySpacingControl?: boolean;
 }
 
 const {
@@ -23,6 +28,9 @@ const {
   initialLineGap = 8,
   initialSpaceBelow = 0,
   initialOpdaScale = 100,
+  initialIcon,
+  initialPalette,
+  showUtilitySpacingControl = false,
 } = Astro.props;
 
 ---
@@ -38,9 +46,10 @@ const {
           initialLineGap={initialLineGap}
           initialSpaceBelow={initialSpaceBelow}
           initialOpdaScale={initialOpdaScale}
+          showUtilitySpacingControl={showUtilitySpacingControl}
         />
       )}
-      <HeaderIconSelector>
+      <HeaderIconSelector initialIcon={initialIcon}>
         <Fragment slot="companion">
           {showScaleControl && (
             <HeaderTuningSelector
@@ -50,12 +59,13 @@ const {
               initialLineGap={initialLineGap}
               initialSpaceBelow={initialSpaceBelow}
               initialOpdaScale={initialOpdaScale}
+              showUtilitySpacingControl={showUtilitySpacingControl}
             />
           )}
-          <HeaderPaletteSelector embedded />
+          <HeaderPaletteSelector embedded initialPalette={initialPalette} />
         </Fragment>
       </HeaderIconSelector>
-      <HeaderPaletteSelector>
+      <HeaderPaletteSelector initialPalette={initialPalette}>
         <Fragment slot="companion">
           {showScaleControl && (
             <HeaderTuningSelector
@@ -65,9 +75,10 @@ const {
               initialLineGap={initialLineGap}
               initialSpaceBelow={initialSpaceBelow}
               initialOpdaScale={initialOpdaScale}
+              showUtilitySpacingControl={showUtilitySpacingControl}
             />
           )}
-          <HeaderIconSelector embedded />
+          <HeaderIconSelector embedded initialIcon={initialIcon} />
         </Fragment>
       </HeaderPaletteSelector>
     </div>
