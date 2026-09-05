@@ -334,7 +334,7 @@ test('breadcrumbs use the documented linked-ancestor navigation role', async () 
   assert.match(layout, /<Breadcrumbs currentPageTitle=\{breadcrumbTitle\} \/>/u);
   assert.match(propertyPackPage, /breadcrumbTitle=\{title\}/u);
   assert.doesNotMatch(propertyPackPage, /hideBreadcrumbs|<nav[^>]+aria-label="Breadcrumb"/u);
-  assert.match(navigation, /\.app-main:not\(:has\(> \.breadcrumbs\)\) > \.prose \{ padding-top:\s*0; \}/u);
+  assert.match(navigation, /\.app-main:not\(:has\(> \.breadcrumbs\)\) > \.prose \{ padding-top:\s*var\(--space-5\); \}/u);
   assert.match(tokens, /--page-content-start-space:\s*var\(--space-3\)/u);
   assert.match(tokens, /--header-desktop-start-space:\s*var\(--space-6\)/u);
   assert.match(shell, /\.app-main\s*\{[^}]*--page-content-inline-padding:\s*calc\(var\(--content-gutter\) \+ var\(--space-2\)\);[^}]*padding:\s*var\(--page-content-start-space\) var\(--page-content-inline-padding\) var\(--space-8\)/su);

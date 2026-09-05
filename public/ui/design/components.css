@@ -264,14 +264,6 @@ a.card:hover .card__action span { transform: translateX(3px); }
   font: var(--display);
   letter-spacing: var(--tracking-display);
 }
-.home-hero h1::after {
-  content: '';
-  display: block;
-  width: 5.5rem;
-  height: 4px;
-  margin-top: var(--space-6);
-  background: var(--brand-yellow);
-}
 .home-hero .lede {
   margin: var(--space-6) 0 0;
   color: var(--on-dark-muted);

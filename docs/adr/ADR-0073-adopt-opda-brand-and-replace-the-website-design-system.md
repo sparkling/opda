@@ -358,8 +358,8 @@ Breadcrumbs omit the destination already named by global navigation and the
 current page already named by the H1. When a destination's linked `Overview` node
 owns child pages, however, that node remains a linked breadcrumb ancestor:
 “Overview” expresses the lower-level parent relationship without repeating the
-global destination label. Breadcrumb-free pages use the same shell inset but do
-not reserve an empty breadcrumb row.
+global destination label. Breadcrumb-free pages omit the empty breadcrumb row
+but retain a 16px inset above the title and its following flow.
 
 On 2 September 2026 documentation adopted direct-child flow: the following block
 owns its block-start separation, with no trailing margin on the preceding block.
