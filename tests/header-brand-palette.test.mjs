@@ -64,9 +64,9 @@ test('knowledge-base header uses paired OPDA and selectable framework identities
   assert.match(iconRegistry, /d: 'M0 0h7v7H5v9H0Z'/u);
   assert.match(iconRegistry, /d: 'M9 0h7v16H7V9h2Z'/u);
   assert.doesNotMatch(base, /--header-mark-label-gap/u);
-  assert.match(headerBrand, /:where\(\.brand-heading--paired, \.framework-heading\)\s*\{[^}]*--heading-mark-label-gap:\s*0\.3em;/su);
+  assert.match(headerBrand, /:where\(\.brand-heading--paired, \.framework-heading\)\s*\{[^}]*--heading-mark-label-gap:\s*var\(--space-2\);/su);
   assert.match(headerBrand, /\.brand-heading--paired\s*\{[^}]*display:\s*inline-flex;[^}]*align-items:\s*baseline;[^}]*gap:\s*var\(--heading-mark-label-gap\);/su);
-  assert.match(headerBrand, /\.brand-heading--paired \.brand-heading__mark\s*\{[^}]*height:\s*0\.9em;[^}]*background:\s*none;/su);
+  assert.match(headerBrand, /\.brand-heading--paired \.brand-heading__mark\s*\{[^}]*width:\s*1\.13em;[^}]*height:\s*0\.9em;[^}]*flex:\s*0 0 1\.13em;[^}]*background:\s*none;/su);
   assert.match(headerBrand, /@media \(min-width: 60\.0625rem\)\s*\{[\s\S]*?\.app-header \.brand-heading--paired\.brand-heading--mini\s*\{[^}]*font-size:\s*calc\(var\(--identity-heading-size, 24px\) \* var\(--identity-opda-scale, 1\)\);/u);
   assert.match(headerBrand, /\.app-header \.framework-heading\s*\{[^}]*font-size:\s*calc\(var\(--identity-heading-size, 24px\) \* 1\.57\);/su);
   assert.match(headerBrand, /\.framework-heading\s*\{[^}]*display:\s*inline-flex;[^}]*align-items:\s*flex-end;[^}]*gap:\s*var\(--heading-mark-label-gap\);/su);
