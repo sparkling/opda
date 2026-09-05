@@ -1,0 +1,130 @@
+---
+import ModellingLayout from '@/layouts/ModellingLayout.astro';
+---
+
+<ModellingLayout title="Review a definition" description="Learn to turn an uneasy feeling about a term into a precise question. Try the Harbour Court exercise, then use the same approach on a candidate page." chapter="Contribute · Definition review" claim="guide">
+  <section aria-labelledby="read">
+    <h2 id="read">Read the claim before judging the words</h2>
+    <p>
+      Check the page's status, the thing being defined and its scope. An illustrative
+      example teaches a distinction. A candidate term proposes a meaning for review.
+      A historical page explains an earlier artefact. They invite different kinds of
+      feedback, so keep the page link and version with the question.
+    </p>
+    <p>
+      Then read the definition as if you were explaining it to a colleague. Does it
+      identify the right subject? Does it include too much, exclude a common case or
+      rely on another ambiguous word? You are reviewing what the statement means,
+      not merely whether it sounds polished.
+    </p>
+  </section>
+
+  <section aria-labelledby="exercise">
+    <h2 id="exercise">Exercise: which date are we recording?</h2>
+    <figure class="modelling-figure" aria-labelledby="draft-caption">
+      <figcaption id="draft-caption">Deliberately flawed teaching definition—not a current candidate term</figcaption>
+      <blockquote><p>Survey date: the date on which the property was surveyed or the survey report was last issued.</p></blockquote>
+      <dl>
+        <dt>Known in the fictional case</dt><dd>Flat 1 was inspected on 12 August 2026.</dd>
+        <dt>First report</dt><dd>Version 1 was issued on 14 August.</dd>
+        <dt>Correction</dt><dd>Version 2 was issued on 20 August, without another inspection.</dd>
+      </dl>
+    </figure>
+    <p>
+      Before opening an answer, decide what you would question. The disclosures below
+      explain three possible responses. This is a reading exercise: it sends nothing,
+      records no vote and does not run a check against the Property Pack candidate.
+    </p>
+    <details>
+      <summary>“Use the latest date so there is only one answer.”</summary>
+      <p>This makes selection easier but changes the meaning. The latest issue date tells us when the corrected report was issued, not when the inspection occurred. A consumer asking about the event would receive the wrong kind of answer even though the date is formatted correctly.</p>
+    </details>
+    <details>
+      <summary>“Separate inspection occurrence from report issue.”</summary>
+      <p>This addresses the demonstrated ambiguity. Each date needs a named subject: the inspection event or a particular report version. A revised definition still needs domain review; the exercise is not a declaration that these are approved OPDA terms.</p>
+    </details>
+    <details>
+      <summary>“Add an explanation but leave the combined field unchanged.”</summary>
+      <p>An explanation helps a human reader, but a recipient still cannot identify the date's role from the value alone. You would need an explicit way to distinguish what the field represents, or separate representations. Whether an existing exchange can support that is a question for implementers after the intended meaning is agreed.</p>
+    </details>
+  </section>
+
+  <section aria-labelledby="revision">
+    <h2 id="revision">Propose a distinction, then test its edges</h2>
+    <div class="modelling-comparison">
+      <section aria-labelledby="inspection-definition">
+        <h3 id="inspection-definition">Illustrative revision: inspection date</h3>
+        <p>The date on which the identified inspection occurred.</p>
+        <p>Question to test: what if the inspection spans more than one day? The definition may need a period rather than a single date.</p>
+      </section>
+      <section aria-labelledby="report-definition">
+        <h3 id="report-definition">Illustrative revision: report issue date</h3>
+        <p>The date on which the identified version of the report was issued.</p>
+        <p>Question to test: how do we distinguish issue, revision and later entry into a system? A record timestamp is not automatically an issue date.</p>
+      </section>
+    </div>
+    <p>
+      The revision resolves one demonstrated problem; it does not finish the model.
+      A good counterexample can show that a neat sentence still excludes something
+      important. Explain the situation and what a reader must be able to distinguish.
+      You do not need to choose a technical datatype or property name.
+    </p>
+  </section>
+
+  <section aria-labelledby="questions">
+    <h2 id="questions">Six questions for any definition</h2>
+    <ol>
+      <li><strong>Subject:</strong> which thing, event, description or relationship is this about?</li>
+      <li><strong>Purpose:</strong> which practical question should this information answer?</li>
+      <li><strong>Scope:</strong> what belongs here, and what looks similar but does not?</li>
+      <li><strong>Hard case:</strong> what happens outside the usual situation?</li>
+      <li><strong>Context:</strong> would another profession interpret the words differently?</li>
+      <li><strong>Evidence:</strong> what source, example or observation supports the challenge?</li>
+    </ol>
+    <p>
+      Apply the same approach to a diagram. Read one labelled connection as an
+      ordinary sentence. “A report describes an inspection” is reviewable; an
+      unexplained line between two boxes is not. If the diagram and definition
+      disagree, record the discrepancy rather than choosing one silently.
+    </p>
+  </section>
+
+  <section aria-labelledby="prepare">
+    <h2 id="prepare">Prepare a contribution somebody can act on</h2>
+    <figure class="modelling-figure" aria-labelledby="feedback-caption">
+      <figcaption id="feedback-caption">A worked feedback note—fictional and not submitted</figcaption>
+      <dl>
+        <dt>Reference</dt><dd>The teaching definition “Survey date” above.</dd>
+        <dt>Problem</dt><dd>It combines the inspection occurrence with report issue.</dd>
+        <dt>Consequence</dt><dd>A report correction can make the inspection appear more recent than it was.</dd>
+        <dt>Counterexample</dt><dd>Inspection on 12 August; report versions issued on 14 and 20 August; no second inspection.</dd>
+        <dt>Request</dt><dd>Distinguish the two meanings and check the multi-day inspection case.</dd>
+        <dt>Evidence standing</dt><dd>Invented example for review; not an industry rule or customer record.</dd>
+      </dl>
+    </figure>
+    <p>
+      You can use this structure in your own notes. One clear issue per contribution
+      makes it easier to discuss and connect to a proposed change. Replacement wording
+      is welcome, but a precise problem and its consequence are sufficient.
+    </p>
+  </section>
+
+  <section aria-labelledby="share">
+    <h2 id="share">Use the current discussion route</h2>
+    <p>
+      On pages with an enabled comment component, authorised signed-in participants
+      can leave contextual feedback. For group discussion, follow the
+      <a href="/development/working-groups/member-guide/teams-and-discussions">Teams
+      and discussion guidance</a> and keep related replies in the same thread. These
+      exercises do not submit anything to either surface.
+    </p>
+    <p>
+      Do not paste customer information, live transaction details or restricted
+      source material into a comment or thread. If a file is needed, use the
+      <a href="/semantic-modelling/contribute/bring-evidence">authorised evidence
+      preparation and intake route</a>. Posting feedback is not approval of a term,
+      a candidate or a release.
+    </p>
+    <p><a href="/semantic-modelling/contribute/what-happens-next">Understand what should happen to your question →</a></p>
+  </section>
+</ModellingLayout>

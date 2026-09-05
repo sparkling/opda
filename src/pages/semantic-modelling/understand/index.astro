@@ -1,0 +1,76 @@
+---
+import ModellingLayout from '@/layouts/ModellingLayout.astro';
+---
+
+<ModellingLayout title="Understand the model" description="Start with a familiar property situation. Discover what an ontology explains, where it helps and how your professional judgement can improve it." chapter="Understand" claim="guide">
+  <section aria-labelledby="starting-point">
+    <h2 id="starting-point">You already know how to ask the important questions</h2>
+    <p>
+      Which flat does this report describe? Was the inspection repeated, or was only
+      the report corrected? Does “property” mean the building, a dwelling or something
+      identified in a title record? These are ordinary questions in property work.
+      They are also the questions that a useful model must answer.
+    </p>
+    <p>
+      An ontology makes the distinctions explicit: the things we describe, what we
+      mean by their names, and how they relate. It is more than a list of field names,
+      but it need not begin with code. On this route, you will read one small situation
+      from several perspectives and practise spotting an ambiguity.
+    </p>
+  </section>
+
+  <figure class="modelling-figure" aria-labelledby="case-caption">
+    <figcaption id="case-caption">Our fictional case: Harbour Court, 14 Orchard Road</figcaption>
+    <dl>
+      <dt>The building</dt><dd>Harbour Court contains Flat 1 and Flat 2: two dwellings, not two names for the building.</dd>
+      <dt>The descriptions</dt><dd>An address description and a title record are distinct from the things they describe or concern.</dd>
+      <dt>The evidence</dt><dd>An inspection on 12 August 2026 leads to a report on 14 August, corrected on 20 August.</dd>
+      <dt>The question</dt><dd>Can we follow the correction without accidentally claiming that another inspection took place?</dd>
+    </dl>
+  </figure>
+  <p>
+    This case is a teaching illustration, not customer data, legal advice or a claim
+    about the contents of the current Property Pack candidate. Its deliberately small
+    cast will stay recognisable as the explanation becomes more precise.
+  </p>
+
+  <section aria-labelledby="route">
+    <h2 id="route">Two chapters, then a choice</h2>
+    <ol class="modelling-steps">
+      <li><h3><a href="/semantic-modelling/understand/shared-meaning">See why shared meaning matters</a></h3><p>Unpack a statement, distinguish a thing from its description, and examine the benefits and limits of connecting information.</p></li>
+      <li><h3><a href="/semantic-modelling/understand/a-property-story">Follow the property story</a></h3><p>Track an inspection, two report versions and a disputed interpretation. Try a review question before revealing the explanation.</p></li>
+      <li><h3>Use what you noticed</h3><p><a href="/semantic-modelling/contribute/review-a-definition">Review a definition</a> if you want to contribute, or <a href="/semantic-modelling/explore">explore the modelling distinctions</a> in more depth. Neither path requires completing a course first.</p></li>
+    </ol>
+  </section>
+
+  <section aria-labelledby="questions">
+    <h2 id="questions">Questions you may have before starting</h2>
+    <details>
+      <summary>Is this asking everyone to use the same words?</summary>
+      <p>No. Different labels can refer to the same concept, and the same label can hide different meanings. The task is to recognise which case applies, preserve distinctions people need and make any correspondence explicit. A convenient shared word is not evidence that a building and a title are the same thing.</p>
+    </details>
+    <details>
+      <summary>Does linked data mean one shared database?</summary>
+      <p>No. Identifiers and explicit relationships can connect descriptions without putting them in one database. Access, permission, data quality and operational exchange still need their own arrangements. Publishing a model is different from publishing records about individual people or transactions.</p>
+    </details>
+    <details>
+      <summary>Will I need to learn RDF or replace my systems?</summary>
+      <p>You can review meaning without reading RDF. Technical specialists maintain the encoding. The model can inform exchange formats and interfaces, but this explanation does not prescribe a system replacement or promise a cost-free migration. Implementers need to test what their particular exchange preserves.</p>
+    </details>
+    <details>
+      <summary>Is the model already an approved standard?</summary>
+      <p>Read the status of the particular artefact. The <a href="/development/property-pack">Property Pack pages</a> describe a candidate component. Teaching examples, a required modelling method, passing technical checks and an adopted release are different things. An AI-generated proposal does not decide domain meaning.</p>
+    </details>
+  </section>
+
+  <section aria-labelledby="first-action">
+    <h2 id="first-action">A useful first action</h2>
+    <p>
+      Think of one term your team regularly has to explain to somebody else. Write
+      down the question it answers and one situation where its meaning could be
+      misunderstood. Keep real customer details out of the example. That is enough
+      to bring to the next chapter—or to a working-group discussion.
+    </p>
+    <p><a href="/semantic-modelling/understand/shared-meaning">Start with shared meaning →</a></p>
+  </section>
+</ModellingLayout>

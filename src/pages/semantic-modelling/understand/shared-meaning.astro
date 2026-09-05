@@ -1,0 +1,129 @@
+---
+import ModellingLayout from '@/layouts/ModellingLayout.astro';
+---
+
+<ModellingLayout title="Why shared meaning matters" description="A field can contain the right kind of value and still answer the wrong question. See how an explicit model helps people recognise, connect and challenge what property information means." chapter="Understand · Shared meaning" claim="guide">
+  <section aria-labelledby="the-problem">
+    <h2 id="the-problem">A date is not yet an explanation</h2>
+    <p>
+      Imagine receiving “survey date: 20 August 2026” for Harbour Court. The date is
+      readable and correctly formatted. Yet you cannot tell whether someone visited
+      the property that day, issued a report, corrected an earlier report or entered
+      information into a system. A well-formed value has not resolved the ambiguity.
+    </p>
+    <p>
+      In our fictional case, the inspection occurred on 12 August. Report version 1
+      was issued on 14 August; version 2 corrected it on 20 August. Calling all three
+      “survey date” loses distinctions before any information is exchanged. A model
+      helps by naming the event and documents separately and explaining what each
+      date describes.
+    </p>
+  </section>
+
+  <figure class="modelling-figure" aria-labelledby="statement-caption">
+    <figcaption id="statement-caption">Read a statement with its supporting context</figcaption>
+    <dl>
+      <dt>Which thing?</dt><dd>The inspection—not the building or the report.</dd>
+      <dt>What are we saying?</dt><dd>It occurred on 12 August 2026.</dd>
+      <dt>What supports the statement?</dt><dd>In this illustration, the report records that inspection date.</dd>
+      <dt>Which version?</dt><dd>The corrected report is version 2, issued on 20 August.</dd>
+      <dt>What remains separate?</dt><dd>A report date does not establish a new inspection date, and the presence of evidence does not by itself establish truth.</dd>
+    </dl>
+  </figure>
+
+  <section aria-labelledby="things">
+    <h2 id="things">Keep the thing distinct from the description</h2>
+    <p>
+      Harbour Court is a building containing Flat 1 and Flat 2. A description of
+      Flat 1's address helps somebody find or refer to the dwelling. A title record
+      serves a different purpose. An inspection report describes an event and its
+      findings. None becomes interchangeable simply because “14 Orchard Road”
+      appears in it.
+    </p>
+    <p>
+      This distinction matters when descriptions change. Correcting spelling in an
+      address does not, by itself, establish that a dwelling has been replaced.
+      Equally, an unchanged address does not prove that subdivision left the same
+      dwelling in existence. To answer that question we need explicit identity
+      criteria: what counts as the same thing in this model, and what evidence supports
+      that judgement? An identifier records a reference; it does not settle the judgement alone.
+    </p>
+    <details>
+      <summary>Optional technical view: one resource, several representations</summary>
+      <p>The illustrative identifier <code>https://example.org/harbour-court/inspection</code> refers to the inspection in this case. A readable page, a diagram and an RDF description can describe that same resource. They are representations, not three different inspections. The building, dwelling and report have different identifiers because this example distinguishes their subjects.</p>
+      <p>Providing readable and machine-processable vocabulary documentation is an established linked-data publication pattern. It does not require the reader to consume the machine representation. See the <a href="https://www.w3.org/TR/swbp-vocab-pub/#choosing">W3C vocabulary publishing recipes</a>.</p>
+    </details>
+  </section>
+
+  <section aria-labelledby="connected">
+    <h2 id="connected">A connected model complements a dictionary</h2>
+    <div class="modelling-comparison">
+      <section aria-labelledby="dictionary-view">
+        <h3 id="dictionary-view">A definition helps you read a term</h3>
+        <p>“Report issue date” can explain what the date means, how it is recorded and which document it concerns. Labels and examples help people use it consistently.</p>
+      </section>
+      <section aria-labelledby="connected-view">
+        <h3 id="connected-view">Relationships help you follow the situation</h3>
+        <p>The report describes an inspection; the inspection concerns a dwelling; a corrected report revises an earlier report. These connections let a reader trace the date back to the right event and evidence.</p>
+      </section>
+    </div>
+    <p>
+      A glossary, dictionary, diagram and controlled-choice list answer different
+      reading needs. They should express compatible meaning rather than grow into
+      separate, conflicting accounts. An ontology provides an explicit model that
+      can underpin those views and the technical artefacts that use them.
+    </p>
+  </section>
+
+  <section aria-labelledby="benefits">
+    <h2 id="benefits">Benefits worth testing</h2>
+    <p>
+      The benefit is not the number of connections in a diagram. It is what people
+      can do with them. For Harbour Court, we would look for these practical outcomes:
+    </p>
+    <ol class="modelling-steps">
+      <li><h3>Reuse with less reinterpretation</h3><p>A recipient can distinguish inspection time from report issue time without asking the sender to explain an ambiguous field again. This depends on both parties preserving the distinction in their exchange.</p></li>
+      <li><h3>Find the source of a disagreement</h3><p>If two screens show different dates, their references reveal whether they describe different events or different report versions. The model makes investigation possible; it does not automatically choose the reliable source.</p></li>
+      <li><h3>Assess the effect of a correction</h3><p>A report revision can be connected to claims and consumers that depend on it. The useful question is which conclusions need review—not whether every connected record should be overwritten.</p></li>
+      <li><h3>Make professional review precise</h3><p>A participant can point to the exact relationship that is wrong and supply a counterexample. Technical specialists can then propose a change that addresses that issue.</p></li>
+    </ol>
+    <p>
+      These are intended benefits, not measured results for the current Property Pack
+      candidate. They require usable definitions, maintained evidence, compatible
+      implementations and people responsible for resolving problems.
+    </p>
+  </section>
+
+  <section aria-labelledby="limits">
+    <h2 id="limits">What the model cannot decide for you</h2>
+    <p>
+      A technical check can find a missing date or an unexpected value when a rule
+      requires one. It cannot establish that an inspection really occurred. Nor does
+      connecting a report grant permission to share it. Meaning, factual accuracy,
+      access and approval need different evidence and responsibilities.
+    </p>
+    <p>
+      Context also matters. Different professions may legitimately need different
+      descriptions of a situation. OPDA's approach starts with those questions and
+      accountable communities, then connects the meanings that need to cross their
+      boundaries. It is not a claim that all existing industry standards are
+      centrally imposed, or that shared models are inherently unsuitable.
+    </p>
+    <p>
+      The <a href="/semantic-modelling/method">modelling method</a> explains the
+      required discipline. The <a href="/development/property-pack">Property Pack
+      candidate</a> is a separately identified implementation to inspect. Neither
+      this fictional case nor a successful check ratifies a standard.
+    </p>
+  </section>
+
+  <section aria-labelledby="try-it">
+    <h2 id="try-it">Try the distinction</h2>
+    <p>A system replaces “12 August” with “20 August” after the report correction. What would you ask before accepting that update?</p>
+    <details>
+      <summary>Reveal a useful review question</summary>
+      <p>“Which date does this field represent: the inspection occurrence or the latest report issue? If it represents the inspection, what evidence says another inspection occurred?” This identifies the ambiguity without prescribing an ontology-language fix.</p>
+    </details>
+    <p><a href="/semantic-modelling/understand/a-property-story">Follow the complete property story →</a></p>
+  </section>
+</ModellingLayout>
