@@ -35,6 +35,19 @@ Q3 2026 brand guide. Browser fallbacks are defined in `design-tokens.css`.
 - SHA-256 Latin: `2ed6ac9efae6d21f51b2946176a0eef79a4043d643f9ac976e66d7fc4d57803a`.
 - SHA-256 Latin Extended: `2cb74c78294bf69bb4c40e56d703014eecb0776df9a23418be836392fc7fdf89`.
 
+## Atkinson Hyperlegible Next
+
+- Use: designated long-form reading copy.
+- Files: variable Latin and Latin Extended WOFF2, upright and italic, weights 400–700.
+- Source: Google Fonts `atkinsonhyperlegiblenext` v7, retrieved 2026-09-05.
+- Project: https://github.com/googlefonts/atkinson-hyperlegible-next
+- Copyright 2020–2024 The Atkinson Hyperlegible Next Project Authors.
+- Licence: SIL Open Font License 1.1.
+- SHA-256 upright Latin: `1e4cea71d75ec427581d6259fc07148a2e60d60d16cabf4b4f5360487b3f9dc3`.
+- SHA-256 upright Latin Extended: `ca1969afa9058a41ced4a08bd54f48835cfe79dc6ccf9050dca7da85c9e0a9d9`.
+- SHA-256 italic Latin: `6e221fe2869a755fdce1ba6c3517f392c3a218d642e1d0207ed2826713db7263`.
+- SHA-256 italic Latin Extended: `871436be3c2e0104442463df5eabe7eaef5e0172cb6715a720156ef76f70e1ff`.
+
 ## Historical files
 
 Fraunces, Inter and JetBrains Mono remain in this directory only for source-history

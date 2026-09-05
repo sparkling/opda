@@ -160,10 +160,10 @@ Every component state must have a dark equivalent; light remains the default.
 
 ## 5. Typography
 
-Self-host the three families with `font-display: swap`:
+Self-host the four families with `font-display: swap`:
 
 - **Roboto Slab 600–700:** display and H1 only.
-- **DM Sans 400–700:** body, H2–H4, labels, controls and captions.
+- **DM Sans 400–700:** default body, H2–H4, labels, controls and captions; **Atkinson Hyperlegible Next 400–700:** designated long-form reading copy.
 - **Roboto Mono 400–700:** code, sources, timestamps and tabular figures.
 
 | Style | Family/weight | Desktop size/line | Mobile size/line |
@@ -204,8 +204,8 @@ endings use 4px after their final line box because the line box itself completes
 the optical space. Nested content flows expose the shared `.document-flow` role;
 spacing never depends on a route or on the link text.
 The authored “From a useful question to a reviewable candidate” chapter is the
-single reading-measure exception: direct text blocks stop at 1200px and align left,
-while figures and images continue to use the full article track.
+single reading-measure exception: direct text blocks stop at 1200px, align left and
+use Atkinson Hyperlegible Next, while figures and images continue to use the full article track.
 Components may own internal layout spacing, but must not create separation from
 an unknown next sibling. Authored ADR/ODR sections share the editorial divider;
 their technical quotations and code keep their existing treatment.
