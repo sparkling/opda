@@ -11,6 +11,7 @@ export const CAMPAIGN_HEADER_DEFAULTS = {
   spaceBelow: 18,
   panelPositionX: -67,
   panelPositionY: -8,
+  panelWidth: 100,
   themeTogglePositionY: 25,
 } as const;
 
@@ -25,6 +26,7 @@ export const campaignIdentityStyle = [
 export const campaignPanelStyle = [
   `--domains-position-x:${CAMPAIGN_HEADER_DEFAULTS.panelPositionX}px`,
   `--domains-position-y:${CAMPAIGN_HEADER_DEFAULTS.panelPositionY}px`,
+  `--domains-width:${CAMPAIGN_HEADER_DEFAULTS.panelWidth}%`,
 ].join(';');
 
 export const campaignThemeToggleStyle =

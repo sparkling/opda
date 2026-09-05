@@ -159,9 +159,9 @@ test('temporary selectors expose full preview cards and persist palettes and ico
   assert.match(home, /<CampaignHeaderControls[\s\S]*controlId="home-header-preview-selectors"[\s\S]*identityId="home-campaign-identity"[\s\S]*positionTargetId="home-domains-panel"[\s\S]*themeToggleTargetId="home-theme-toggle"/u);
   assert.match(home, /class="wg-hero-journey" id="home-domains-panel"/u);
   assert.match(join, /<CampaignHeaderControls[\s\S]*controlId="join-header-preview-selectors"[\s\S]*identityId="join-campaign-identity"[\s\S]*positionTargetId="join-influence-panel"[\s\S]*themeToggleTargetId="join-theme-toggle"/u);
-  assert.match(campaignConfig, /icon: 'twin-frames'[\s\S]*palette: 'petrol'[\s\S]*scale: 26,[\s\S]*opdaScale: 106,[\s\S]*spaceAbove: 9,[\s\S]*lineGap: 0,[\s\S]*spaceBelow: 18,[\s\S]*panelPositionX: -67,[\s\S]*panelPositionY: -8,[\s\S]*themeTogglePositionY: 25,/u);
+  assert.match(campaignConfig, /icon: 'twin-frames'[\s\S]*palette: 'petrol'[\s\S]*scale: 26,[\s\S]*opdaScale: 106,[\s\S]*spaceAbove: 9,[\s\S]*lineGap: 0,[\s\S]*spaceBelow: 18,[\s\S]*panelPositionX: -67,[\s\S]*panelPositionY: -8,[\s\S]*panelWidth: 100,[\s\S]*themeTogglePositionY: 25,/u);
   assert.match(campaignIdentity, /<header class="wg-campaign-hero__header">[\s\S]*class="wg-campaign-identity"[\s\S]*<BrandHeading variant="paired" \/>[\s\S]*showOpdaLink && <a class="wg-campaign-identity__opda-link" href="\/">OPDA<\/a>[\s\S]*<ThemeToggle id=\{`\$\{themeToggleId\}-button`\} \/>[\s\S]*<FrameworkHeading scale="display" \/>/u);
-  assert.match(campaignControls, /<HeaderPreviewControls[\s\S]*showScaleControl[\s\S]*initialScale=\{CAMPAIGN_HEADER_DEFAULTS\.scale\}[\s\S]*initialPositionX=\{CAMPAIGN_HEADER_DEFAULTS\.panelPositionX\}[\s\S]*initialThemeTogglePosition=\{CAMPAIGN_HEADER_DEFAULTS\.themeTogglePositionY\}[\s\S]*initialPalette=\{CAMPAIGN_HEADER_DEFAULTS\.palette\}/u);
+  assert.match(campaignControls, /<HeaderPreviewControls[\s\S]*showScaleControl[\s\S]*initialScale=\{CAMPAIGN_HEADER_DEFAULTS\.scale\}[\s\S]*initialPositionX=\{CAMPAIGN_HEADER_DEFAULTS\.panelPositionX\}[\s\S]*initialPanelWidth=\{CAMPAIGN_HEADER_DEFAULTS\.panelWidth\}[\s\S]*initialThemeTogglePosition=\{CAMPAIGN_HEADER_DEFAULTS\.themeTogglePositionY\}[\s\S]*initialPalette=\{CAMPAIGN_HEADER_DEFAULTS\.palette\}/u);
   assert.match(home, /import \{ assetVersion \} from '@\/lib\/asset-version\.mjs';[\s\S]*const clientV = assetVersion\('\/ui\/client\.js'\);[\s\S]*src=\{`\/ui\/client\.js\?v=\$\{clientV\}`\}/u);
   assert.match(join, /import \{ assetVersion \} from '@\/lib\/asset-version\.mjs';[\s\S]*const clientV = assetVersion\('\/ui\/client\.js'\);[\s\S]*src=\{`\/ui\/client\.js\?v=\$\{clientV\}`\}/u);
   assert.doesNotMatch(home, /src="\/ui\/client\.js"/u);
@@ -178,9 +178,10 @@ test('temporary selectors expose full preview cards and persist palettes and ico
   assert.match(tuningSelector, /property: '--identity-line-gap', min: 0, max: 64/u);
   assert.match(tuningSelector, /property: '--identity-space-before', min: 0, max: 96/u);
   assert.match(tuningSelector, /positionTargetId \? \[[\s\S]*label: 'Domains left \/ right'[\s\S]*property: '--domains-position-x', min: -256, max: 256, value: initialPositionX[\s\S]*label: 'Domains up \/ down'[\s\S]*property: '--domains-position-y', min: -256, max: 256, value: initialPositionY/u);
+  assert.match(tuningSelector, /label: 'Box width'[\s\S]*property: '--domains-width', min: 50, max: 150, value: initialPanelWidth[\s\S]*unit: '%'/u);
   assert.match(tuningSelector, /themeToggleTargetId \? \[[\s\S]*label: 'Dark \/ light button up \/ down'[\s\S]*property: '--theme-toggle-position-y', min: -128, max: 128, value: initialThemeTogglePosition/u);
   assert.match(tuningSelector, /utilityGroupTargetId \? \[[\s\S]*label: 'Icon group up \/ down'[\s\S]*property: '--header-utilities-position-y', min: -128, max: 128, value: initialUtilityGroupPosition/u);
-  assert.match(campaign, /\.wg-hero-journey\s*\{[^}]*translate:\s*var\(--domains-position-x, 0\) var\(--domains-position-y, 0\);/su);
+  assert.match(campaign, /\.wg-hero-journey\s*\{[^}]*width:\s*var\(--domains-width, 100%\);[^}]*translate:\s*var\(--domains-position-x, 0\) var\(--domains-position-y, 0\);/su);
   assert.doesNotMatch(tuningSelector, /Space above icon and button row|header-utilities-space-above/u);
   assert.match(base, /\.app-header\s*\{[^}]*--identity-heading-size:\s*27px;[^}]*--identity-opda-scale:\s*0\.9;[^}]*--identity-space-before:\s*0px;[^}]*--identity-line-gap:\s*0px;[^}]*--identity-space-after:\s*0px;[^}]*--identity-space-after-origin:\s*var\(--space-3\);[^}]*--header-utilities-position-y:\s*8px;/su);
   assert.doesNotMatch(base, /header-utilities-space-above/u);
