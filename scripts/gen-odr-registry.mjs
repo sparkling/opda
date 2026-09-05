@@ -23,11 +23,13 @@ export function collectOdrRecords(root) {
     if (seen.has(number)) throw new Error(`Duplicate ODR number: ${number}`);
     seen.add(number);
     const frontmatter = text.match(/^---\r?\n([\s\S]*?)\r?\n---/u)?.[1] ?? '';
-    const field = (key) => (frontmatter.match(new RegExp(`^${key}:\\s*(.*)$`, 'm'))?.[1] ?? '').trim().replace(/^(['"])(.*)\1$/u, '$2');
+    const field = (key) => (frontmatter.match(new RegExp(`^${key}:[ \\t]*(.*)$`, 'm'))?.[1] ?? '').trim().replace(/^(['"])(.*)\1$/u, '$2');
     const title = DISPLAY_TITLES[number] ?? text.match(/^# (.+)$/mu)?.[1];
     if (!title) throw new Error(`Missing ODR title: ${source}`);
     return {
-      id: `odr-${number}`, number, title, kind: field('kind'), status: field('status'),
+      id: `odr-${number}`, number, title,
+      kind: field('kind') || (/\b(?:modelling-method|semantic-modelling)\b/u.test(field('tags')) ? 'methodology' : ''),
+      status: field('status'),
       date: field('date'), updated: field('updated'), source,
       enriched: /^```mermaid\s*$/mu.test(text),
     };
