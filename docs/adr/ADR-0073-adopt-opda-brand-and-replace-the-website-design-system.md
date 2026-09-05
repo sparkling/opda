@@ -370,9 +370,9 @@ Generated references retain 24px before H2 rules and 16px padding after them.
 On 5 September 2026 authored content adopted shared editorial formatting: 32px
 on both sides of section rules, restored nested paragraph gaps, hanging list
 indents and clearer item spacing. Authored ADR/ODR sections share those dividers.
-The shared stylesheet serves documentation and public-page copy; generated templates
-opt out. Wording, diagrams and chrome are unchanged. “From a useful question to a
-reviewable candidate” is one exception: left-aligned text stops at 1200px and uses Atkinson Hyperlegible Next at 18px; figures remain full width.
+The shared stylesheet serves documentation and public-page copy at 18px in Atkinson Hyperlegible Next; generated templates opt out. Wording, diagrams
+and chrome are unchanged. “From a useful question to a reviewable candidate” is one
+measure exception: left-aligned text stops at 1200px; figures remain full width. Modelling pages use the standard H1, a key callout for the page goal and the shared PageFooter, without a second chapter header or navigation.
 
 The shared right-hand page navigation now preserves heading hierarchy rather
 than flattening it: H2 entries are roots and H3/H4 entries nest beneath their

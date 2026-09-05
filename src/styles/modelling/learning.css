@@ -5,11 +5,6 @@
 
 /* One explicitly authored long-form page uses a 1200px reading measure while
    figures and image containers continue to occupy the full article track. */
-.modelling-reading-1200 {
-  font-family: 'Atkinson Hyperlegible Next', var(--font-sans);
-  font-size: var(--text-lg);
-  line-height: var(--leading-normal);
-}
 .modelling-reading-1200 > :not(:is(figure, picture, img)) {
   max-inline-size: 75rem;
   margin-inline: 0 auto;
@@ -19,8 +14,7 @@
 /* Shared authored-text rhythm lives in ../editorial-content.css. */
 /* These semantic lists are card grids or navigation, not bulleted copy. */
 .prose.modelling-document :is(
-  .modelling-meanings, .modelling-evidence,
-  .modelling-chapter-intro__register, .modelling-chapter-end__related-list
+  .modelling-meanings, .modelling-evidence
 ) { list-style: none; padding: 0; }
 
 .modelling-document .modelling-standing {

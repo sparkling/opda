@@ -79,9 +79,12 @@ test('one registry supplies 24 canonical pages across four task-based journeys',
       `${relative} exposes source-business content`);
   }
   const layout = read('src/layouts/ModellingLayout.astro');
-  for (const kind of ['guide', 'method', 'example']) assert.match(layout, new RegExp(`${kind}:`, 'u'));
-  assert.match(layout, /\{claims\[claim\]\}/u);
-  assert.match(layout, /<ChapterIntro\b/u);
+  for (const kind of ['method', 'example']) assert.match(layout, new RegExp(`${kind}:`, 'u'));
+  assert.match(layout, /<h1>\{title\}<\/h1>/u);
+  assert.match(layout, /callout callout--key/u);
+  assert.doesNotMatch(layout, /Learning guide|ChapterIntro/u);
+  const methodLanding = textOf('method');
+  assert.doesNotMatch(methodLanding, /ChapterEnd|hideFooter/u);
 });
 
 test('selected concern numbers, dispositions and source receipts remain inspectable', () => {

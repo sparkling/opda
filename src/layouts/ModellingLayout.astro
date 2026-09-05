@@ -1,35 +1,32 @@
 ---
 import Layout from '@/layouts/Layout.astro';
-import ChapterIntro from '@/components/modelling/ChapterIntro.astro';
-import { getModellingChapter } from '@/lib/modelling-navigation';
 import '@/styles/modelling/learning.css';
 
 interface Props {
   title: string;
   description: string;
-  chapter?: string;
   claim?: 'guide' | 'method' | 'example';
-  hideFooter?: boolean;
   proseClass?: string;
 }
 const {
   title,
   description,
-  chapter,
   claim = 'guide',
-  hideFooter = false,
   proseClass = 'prose wide modelling-document',
 } = Astro.props;
-const position = getModellingChapter(Astro.url.pathname);
 const claims = {
-  guide: 'Learning guide · examples are fictional, not approved model content',
   method: 'Required modelling method · examples do not establish candidate implementation',
   example: 'Illustrative case · no real property, person or transaction',
 };
+const scopeNote = claim === 'guide' ? null : claims[claim];
 ---
 
-<Layout title={title} description={description} proseClass={proseClass} hideFooter={hideFooter}>
-  <ChapterIntro title={title} lede={description} pathLabel={chapter ?? position?.group.title} />
-  <p class="modelling-standing">{claims[claim]}</p>
+<Layout title={title} description={description} proseClass={proseClass}>
+  <h1>{title}</h1>
+  <div class="callout callout--key" aria-labelledby="modelling-page-goal">
+    <p class="callout__label" id="modelling-page-goal">Page goal</p>
+    <p>{description}</p>
+  </div>
+  {scopeNote && <p class="modelling-standing">{scopeNote}</p>}
   <slot />
 </Layout>

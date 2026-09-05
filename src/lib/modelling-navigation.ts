@@ -3,7 +3,7 @@ import type { Item } from './site.ts';
 const root = '/semantic-modelling';
 const page = (path: string, title: string): Item => ({ url: `${root}/${path}`, title });
 
-/** One task-based chapter map for section navigation, chapter framing and search. */
+/** One task-based chapter map for section navigation and search. */
 export const MODELLING_JOURNEYS: Item[] = [
   {
     ...page('understand', 'Understand shared meaning'),

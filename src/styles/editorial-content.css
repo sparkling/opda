@@ -3,14 +3,24 @@
 .editorial-content:is(.prose, main) {
   --editorial-flow-gap: var(--space-4);
   --editorial-section-space: var(--space-7);
+  --lead: 400 1.125rem / 1.75rem var(--font-reading);
+  font: 400 var(--text-lg) / var(--leading-normal) var(--font-reading);
+}
+
+/* Display type, controls and compact metadata retain their own roles. Reading
+   copy that previously set the interface face explicitly follows the article. */
+.editorial-content:is(.prose, main) :where(
+  .lead, blockquote, .callout--key > p:not(.callout__label),
+  .wg-campaign-hero .wg-lead
+) {
+  font-family: var(--font-reading);
 }
 
 /* Text containers, not grid/flex card layouts, own paragraph separation. */
 .editorial-content:is(.prose, main) :where(
   section:not([class]), details:not([class]), blockquote, .document-flow,
   .callout, .public-statement__content > div, .wg-policy__copy,
-  .modelling-chapter-intro__main, .modelling-principle__body,
-  .modelling-principle__aside, .modelling-principle__not,
+  .modelling-principle__body, .modelling-principle__aside, .modelling-principle__not,
   .modelling-dossier__scenario, .modelling-dossier__evidence,
   .modelling-detail__body, .modelling-contrast__verdict
 ) > :is(p, ul, ol, dl, blockquote, pre, figure, details, h2, h3, h4) {
@@ -19,8 +29,7 @@
 .editorial-content:is(.prose, main) :where(
   section:not([class]), details:not([class]), blockquote, .document-flow,
   .callout, .public-statement__content > div, .wg-policy__copy,
-  .modelling-chapter-intro__main, .modelling-principle__body,
-  .modelling-principle__aside, .modelling-principle__not,
+  .modelling-principle__body, .modelling-principle__aside, .modelling-principle__not,
   .modelling-dossier__scenario, .modelling-dossier__evidence,
   .modelling-detail__body, .modelling-contrast__verdict
 ) > * + :is(p, ul, ol, dl, blockquote, pre, figure, details, h2, h3, h4) {

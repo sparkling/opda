@@ -2,10 +2,9 @@
 import ModellingLayout from '@/layouts/ModellingLayout.astro';
 import PrincipleSpread from '@/components/modelling/PrincipleSpread.astro';
 import ContrastPair from '@/components/modelling/ContrastPair.astro';
-import ChapterEnd from '@/components/modelling/ChapterEnd.astro';
 ---
 
-<ModellingLayout title="The context-first modelling manifesto" description="Start with the work. Make identity explicit. Connect meanings through accountable agreements. This is the modelling discipline we are applying to the Smart Property Data Trust Framework." chapter="Apply the method" claim="method" hideFooter>
+<ModellingLayout title="The context-first modelling manifesto" description="Start with the work. Make identity explicit. Connect meanings through accountable agreements. This is the modelling discipline we are applying to the Smart Property Data Trust Framework." claim="method">
   <p>
     A framework should make expertise more usable, not replace it with a vocabulary
     designed at a distance. Our approach begins with the questions a community needs
@@ -89,8 +88,4 @@ import ChapterEnd from '@/components/modelling/ChapterEnd.astro';
     normative method, proposed operating workflow and current candidate evidence.
     The external standards remain authoritative for the semantics of their terms.
   </p>
-  <ChapterEnd closing="Start small enough to inspect, but connect the meaning all the way through." nextHref="/semantic-modelling/method/from-question-to-candidate" nextTitle="From question to candidate" nextDescription="Work through a modelling cycle, including counterexamples, review and the limits of automated checks." related={[
-    { href: '/semantic-modelling/method/languages-and-profiles', label: 'Languages and profiles' },
-    { href: '/semantic-modelling/contribute', label: 'The participant route' },
-  ]} />
 </ModellingLayout>

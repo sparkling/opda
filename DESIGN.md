@@ -163,7 +163,7 @@ Every component state must have a dark equivalent; light remains the default.
 Self-host the four families with `font-display: swap`:
 
 - **Roboto Slab 600–700:** display and H1 only.
-- **DM Sans 400–700:** default body, H2–H4, labels, controls and captions; **Atkinson Hyperlegible Next 400–700:** designated long-form reading copy.
+- **DM Sans 400–700:** H2–H4, labels, controls and captions; **Atkinson Hyperlegible Next 400–700:** authored body copy and ledes.
 - **Roboto Mono 400–700:** code, sources, timestamps and tabular figures.
 
 | Style | Family/weight | Desktop size/line | Mobile size/line |
@@ -174,8 +174,8 @@ Self-host the four families with `font-display: swap`:
 | H3 | DM Sans 700 | 22/30 | 22/30 |
 | H4 | DM Sans 600 | 18/26 | 18/26 |
 | Organisation heading | DM Sans 600 | 36–64/36–64 | 36/36 |
-| Lede | DM Sans 400 | 18/28 | 18/28 |
-| Body | DM Sans 400 | 16/26 | 16/26 |
+| Lede | Atkinson Hyperlegible Next 400 | 18/28 | 18/28 |
+| Body | Atkinson Hyperlegible Next 400 | 18/29 | 18/29 |
 | Small/table | DM Sans 400 | 14/22 | 14/22 |
 | Caption | DM Sans 500 | 13/18 | 13/18 |
 | Overline | DM Sans 700 | 12/16, +0.08em | same |
@@ -203,9 +203,9 @@ gap below. Bounded content endings also use 16px before the rule. Text-led
 endings use 4px after their final line box because the line box itself completes
 the optical space. Nested content flows expose the shared `.document-flow` role;
 spacing never depends on a route or on the link text.
-The authored “From a useful question to a reviewable candidate” chapter is the
-single reading-measure exception: direct text blocks stop at 1200px, align left and
-use Atkinson Hyperlegible Next at 18px, while figures and images continue to use the full article track.
+Authored reading content uses Atkinson Hyperlegible Next at 18px; generated references retain their existing typography. The authored “From a useful
+question to a reviewable candidate” chapter is the single reading-measure exception:
+direct text blocks stop at 1200px and align left, while figures and images continue to use the full article track.
 Components may own internal layout spacing, but must not create separation from
 an unknown next sibling. Authored ADR/ODR sections share the editorial divider;
 their technical quotations and code keep their existing treatment.

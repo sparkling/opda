@@ -37,7 +37,7 @@ Q3 2026 brand guide. Browser fallbacks are defined in `design-tokens.css`.
 
 ## Atkinson Hyperlegible Next
 
-- Use: designated long-form reading copy.
+- Use: authored reading copy and ledes; generated references retain their existing typography.
 - Files: variable Latin and Latin Extended WOFF2, upright and italic, weights 400–700.
 - Source: Google Fonts `atkinsonhyperlegiblenext` v7, retrieved 2026-09-05.
 - Project: https://github.com/googlefonts/atkinson-hyperlegible-next

@@ -2,8 +2,8 @@
    MODELLING EDITORIAL FAMILY — in-chapter narrative devices.
 
    Scope: PathwaySplit, PrincipleSpread, ContrastPair and
-   DetailDisclosure in src/components/modelling/ (the chapter
-   frame lives in chapter.css, evidence artefacts in dossier.css).
+   DetailDisclosure in src/components/modelling/; evidence
+   artefacts live in dossier.css.
    Every value comes from public/ui/design-tokens.css; nothing
    here redefines colour, type, radius or measure, and no rule
    narrows the article track. Components own internal rhythm
