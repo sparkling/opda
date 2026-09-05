@@ -1,7 +1,7 @@
 ---
 status: accepted
 date: 2026-05-27
-updated: 2026-08-22
+updated: 2026-09-05
 kind: architecture
 tags: [vocabulary, catalogue]
 scope: []
@@ -12,6 +12,10 @@ implements: []
 ---
 
 # Ontology Languages and Vocabularies Adopted
+
+> **Scope amendment — 2026-09-05.** This record's status, catalogue and change log are retained as historical decision and implementation evidence for the schema-derived model. For the SPDTF modelling method, the selected source ODRs govern as recorded in [ADR-0063's 2026-09-05 amendment](../../adr/ADR-0063-domain-led-bounded-context-working-groups.md) and the [modelling decision basis](/semantic-modelling/decision-basis). The earlier SSSOM/SEMAPV external-use-case gate and Schema.org deferral below do not govern that method.
+>
+> Source ODR-0087, with ODR-0096/0098, requires the SSSOM 1.0 and SEMAPV profile for reviewed Category 8 mappings across internal or external context boundaries; it is not restricted to external-vocabulary work. Source ODR-0014 retired repeated RDFS domain/range values interpreted as “any-of” on 2026-08-28, and its 2026-08-30 amendment requires complete, exclusive applicability documentation: on each side, one universally true RDFS commitment, Schema.org inclusion hints for alternatives, or a governed waiver. SHACL owns closed-world validation. These are scoped method requirements, not evidence that historical output or the current candidate has already been migrated.
 
 ## Context and Problem Statement
 
