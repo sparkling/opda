@@ -17,9 +17,11 @@ const root = fileURLToPath(new URL('..', import.meta.url));
 const ontologyDir = path.join(root, 'src/pages/semantic-modelling');
 const page = (name) => path.join(ontologyDir, `${name}.astro`);
 const pages = [
-  'index', 'why-ontologies', 'reading-the-model', 'modelling-method',
-  'semantic-package', 'bounded-contexts', 'modelling-rules', 'coverage',
-  'standards', 'evidence-and-mappings', 'validation',
+  'index', 'why-ontologies', 'benefits', 'taking-part', 'reading-the-model', 'questions',
+  'modelling-method', 'principles', 'coverage', 'bounded-contexts', 'context-maps',
+  'identity-roles-and-phases', 'modelling-patterns', 'modelling-rules',
+  'linked-data-languages', 'semantic-package', 'evidence-and-mappings',
+  'validation', 'standards', 'decision-basis',
 ];
 
 const textOf = (name) => readFileSync(page(name), 'utf8');
@@ -35,15 +37,24 @@ test('semantic modelling has complete teaching and implementation routes without
 
   const required = {
     'why-ontologies': ['What an ontology is', 'A document tree and a meaning graph', 'What an ontology cannot establish'],
+    benefits: ['Keep the distinctions that professions need', 'Make evidence easier to follow and challenge', 'Benefits have to be earned'],
+    'taking-part': ['Start with something you know', 'Ask practical questions', 'Make feedback easy to act on'],
+    questions: ['Do I need to understand ontologies', 'replace their systems', 'one shared database', 'accurate information', 'experts disagree'],
     'reading-the-model': ['Identifiers and resources', 'Classes, properties and values', 'Shapes and provenance', 'Follow one Property Pack construct'],
     'modelling-method': ['Authority of this method', 'Competency questions', 'Evidence-up modelling cycle'],
+    principles: ['Our modelling manifesto', 'Let meaning have an accountable home', 'Separate meaning, checks and delivery'],
     'semantic-package': ['Six distinct outputs', 'One concept across all six outputs', 'Synchronisation and ownership'],
     'bounded-contexts': ['Semantic home', 'small common boundary', 'Property Pack'],
+    'context-maps': ['Map the relationship before mapping the terms', 'Choose an explicit collaboration pattern', 'Then choose the term-level bridge'],
+    'identity-roles-and-phases': ['Four questions that prevent a confused hierarchy', 'Rigidity, dependence and unity'],
+    'modelling-patterns': ['Separate a thing from descriptions of it', 'Distinguish parts, members and specialisations', 'Keep event time, validity and recording time separate'],
     'modelling-rules': ['Identity before attributes', 'Class, value or relationship', 'Upper-ontology lenses'],
+    'linked-data-languages': ['RDF: one shared foundation', 'RDFS and OWL', 'SKOS', 'SHACL', 'SPARQL', 'Compose deliberately'],
     coverage: ['Four lenses and eleven workshop themes', 'Eight formal ontology concerns', 'Four allowed dispositions'],
     standards: ['What is implemented now', 'Specification maturity', 'Detailed standards register'],
-    'evidence-and-mappings': ['Competency questions', 'Five qualified mapping meanings', 'Category 8: cross-context mappings', 'SKOS says what; SSSOM can record why', 'Evidence receipt'],
+    'evidence-and-mappings': ['Competency questions', 'Five qualified mapping meanings', 'Category 8: cross-context mappings', 'SKOS states the correspondence; SSSOM records its basis', 'Evidence receipt'],
     validation: ['Open-world meaning and closed-world checks', 'What automated checks can establish', 'Governance promotion'],
+    'decision-basis': ['A required method and an implemented model are different facts', 'Supporting source ODRs', 'A concrete correction: domain and range'],
   };
   for (const [name, headings] of Object.entries(required)) {
     const source = textOf(name);
@@ -56,26 +67,68 @@ test('semantic modelling has complete teaching and implementation routes without
   assert.match(textOf('validation'), /does not yet publish a complete machine-readable[\s\S]+feature/iu);
 });
 
-test('Category 8 mapping guidance separates architecture, SKOS assertions and deferred SSSOM records', () => {
+test('selected source ODR concerns are normative without promoting the candidate or importing excluded scope', () => {
+  const basis = textOf('decision-basis');
+  const coverage = textOf('coverage');
+  for (const [number, suffix, anchor] of [
+    [1, 'a', 'domain-structure'], [2, 'b', 'vocabulary-taxonomy'],
+    [5, 'e', 'classification-metadata'], [7, 'g', 'validation-constraints'],
+    [8, 'h', 'cross-domain-mappings'], [9, 'i', 'provenance-quality'],
+    [10, 'j', 'temporal-history'], [11, 'k', 'access-sensitivity'],
+  ]) {
+    assert.match(basis, new RegExp(`ODR-0071${suffix}`, 'u'));
+    assert.match(coverage, new RegExp(`<h2 id="${anchor}">${number}\\.`, 'u'));
+  }
+  assert.match(basis, /eight normative concerns/iu);
+  assert.match(basis, /Categories 3[\s\S]+4 \(service architecture\)[\s\S]+6 \(governance[\s\S]+12 \(capability[\s\S]+13 \(source mapping\)[\s\S]+14 \(data products\)[\s\S]+outside/iu);
+  assert.match(basis, /source-method ODR numbers and OPDA ODR numbers are separate registers/iu);
+  assert.match(basis, /normative method does not turn a generated candidate into an[\s\S]+approved standard/iu);
+  assert.match(basis, /repeated domains imply membership in all declared classes/iu);
+  assert.match(basis, /schema:domainIncludes[\s\S]+schema:rangeIncludes[\s\S]+alternative intended uses/iu);
+  assert.match(textOf('modelling-rules'), /ODR-0118 explicitly prohibits[\s\S]+subclassing domain classes under external upper-ontology classes/iu);
+});
+
+test('participation routes require practitioner knowledge rather than ontology training', () => {
+  const source = textOf('taking-part');
+  assert.match(source, /do not need to learn ontology engineering/iu);
+  assert.match(source, /Facilitators handle the formal representation/iu);
+  for (const route of ['/search', '/join', '/development/working-groups/member-guide']) {
+    assert.ok(source.includes(`href="${route}"`), `participation guide lacks ${route}`);
+  }
+  assert.match(source, /generated resource pages[\s\S]+diagrams[\s\S]+dictionaries/iu);
+  for (const anchor of ['privacy', 'accuracy', 'ai', 'disagreement', 'available']) {
+    assert.ok(textOf('questions').includes(`id="${anchor}"`));
+  }
+});
+
+test('Category 8 separates context architecture, SKOS assertions and normative SSSOM evidence from emitted data', () => {
   const source = textOf('evidence-and-mappings');
   assert.match(source, /id="cross-context-mappings"/u);
   assert.match(source, /context-map arrow[\s\S]+not[\s\S]+mapping assertion/iu);
   assert.match(source, /machines?[\s\S]+suggest[\s\S]+must not[\s\S]+assert/iu);
   assert.match(source, /skos:exactMatch[\s\S]+transitive/iu);
-  assert.match(source, /four core fields[\s\S]+subject_id[\s\S]+predicate_id[\s\S]+object_id[\s\S]+mapping_justification/iu);
-  assert.match(source, /explicitly typed[\s\S]+rdfs:Literal[\s\S]+omit its ID[\s\S]+label carries the literal/iu);
-  assert.match(source, /If that gate later selects SSSOM[\s\S]+profile[\s\S]+no such profile exists today/iu);
-  assert.match(source, /named\s+external-vocabulary mapping[\s\S]+named consumer[\s\S]+Council re-evaluation/iu);
-  assert.match(source, /not selected for internal cross-context records/iu);
-  assert.match(source, /no SSSOM version or profile[\s\S]+selected/iu);
-  assert.match(source, /no SKOS hierarchy or mapping predicates/iu);
-  assert.match(source, /both endpoints are SKOS concepts/iu);
+  assert.match(source, /SKOS, SSSOM and SEMAPV form the required mapping method/iu);
+  assert.match(source, /applies to internal cross-context mappings/iu);
+  assert.match(source, /ODR-0087 profile uses SSSOM 1\.0/iu);
+  for (const field of ['subject_source', 'subject_source_version', 'object_source', 'object_source_version', 'mapping_set_id', 'mapping_justification', 'mapping_date']) {
+    assert.ok(source.includes(`sssom:${field}`), `mapping profile lacks ${field}`);
+  }
+  assert.match(source, /subject_id[\s\S]+predicate_id[\s\S]+object_id[\s\S]+model slots[\s\S]+not invented RDF predicates/iu);
+  assert.match(source, /rdf:reifies[\s\S]+RDF 1\.2 triple term/iu);
+  assert.match(source, /Reifying a statement does not assert it[\s\S]+exact retained SKOS triple exists/iu);
+  assert.match(source, /excludes[\s\S]+sssom:author_id[\s\S]+does[\s\S]+not remove[\s\S]+recorded human decision/iu);
+  assert.match(source, /SKOS directly on class IRIs[\s\S]+without[\s\S]+additional explicit[\s\S]+rdf:type skos:Concept/iu);
+  assert.match(source, /does not[\s\S]+skos:exactMatch[\s\S]+owl:equivalentClass/iu);
   assert.match(source, /exactMatch[\s\S]+subproperty[\s\S]+closeMatch/iu);
   assert.match(source, /exactMatch[\s\S]+disjoint[\s\S]+broadMatch[\s\S]+relatedMatch[\s\S]+narrowMatch/iu);
+  assert.match(source, /closeMatch[\s\S]+not transitive/iu);
+  assert.match(source, /narrowMatch[\s\S]+inverse of[\s\S]+broadMatch/iu);
   assert.match(source, /relatedMatch[\s\S]+symmetric associative/iu);
+  assert.match(source, /href="\/semantic-modelling\/decision-basis"/u);
   assert.match(source, /href="\/modelling\/odr\/odr-0002"/u);
   assert.match(source, /href="\/semantic-modelling\/standards#standard-sssom"/u);
-  assert.doesNotMatch(source, /SSSOM (?:is|has been) (?:adopted|implemented)/iu);
+  assert.match(source, /no reviewed cross-domain mapping assertions are present/iu);
+  assert.match(source, /not a deferral of the governing method/iu);
 
   const candidateRoot = path.join(root, 'source/03-standards/ontology-candidates/property-pack/0.1');
   const contextMap = JSON.parse(readFileSync(path.join(candidateRoot, 'projections/context-map.json'), 'utf8'));
@@ -91,8 +144,8 @@ test('Category 8 mapping guidance separates architecture, SKOS assertions and de
 
   const sssom = STANDARDS_PROFILE.find(({ name }) => name === 'SSSOM');
   assert.equal(sssom?.implementationStatus, 'not used');
-  assert.equal(sssom?.governanceStatus, 'Deferred candidate');
-  assert.match(sssom?.versionBoundary ?? '', /no selected versions/iu);
+  assert.equal(sssom?.governanceStatus, 'Normative Category 8 mapping profile; implementation remains outstanding');
+  assert.match(sssom?.versionBoundary ?? '', /SSSOM 1\.0[\s\S]+SEMAPV[\s\S]+no owl:imports/iu);
 
   const canonicalLink = /href="\/semantic-modelling\/evidence-and-mappings#cross-context-mappings"/u;
   const linkedPages = [
@@ -167,9 +220,9 @@ test('standards records separate specification maturity, governance status and a
   assert.equal(byName['RDF 1.2 Basic'].specificationMaturity, 'W3C Candidate Recommendation Snapshot');
   assert.equal(byName['SHACL 1.2 Core'].specificationMaturity, 'W3C Working Draft');
   assert.equal(byName['SPARQL 1.2'].specificationMaturity, 'W3C Working Draft');
-  assert.equal(byName['UFO'].governanceStatus, 'method candidate — not adopted');
+  assert.equal(byName['UFO'].governanceStatus, 'Normative analytical method; not an imported ontology');
   assert.equal(byName['gUFO'].implementationStatus, 'not used or imported');
-  assert.equal(byName['OntoClean'].governanceStatus, 'method candidate — not adopted');
+  assert.equal(byName['OntoClean'].governanceStatus, 'Normative analytical quality method; implementation coverage is separate');
   for (const name of ['RDFS 1.2', 'OWL 2', 'XML Schema datatypes', 'SKOS', 'SHACL 1.2 Core', 'Dublin Core Terms']) {
     assert.equal(byName[name].mechanism, 'reuse', `${name} emits exact external vocabulary terms`);
   }
@@ -187,7 +240,7 @@ test('search exposes every semantic-modelling route and no legacy journey label'
   }
   const all = searchEntries('');
   assert.equal(new Set(all.map(({ url }) => url)).size, all.length);
-  for (const term of ['SKOS', 'SSSOM', 'ontology mapping', 'cross-context mapping', 'OWL', 'RDF', 'SPARQL', 'upper ontology']) {
+  for (const term of ['SKOS', 'SSSOM', 'ontology mapping', 'cross-context mapping', 'OWL', 'RDF', 'SPARQL', 'upper ontology', 'roleOf', 'phaseOf', 'ODR-0071']) {
     assert.ok(searchEntries(term).some(({ url }) => url.startsWith('/semantic-modelling')), `${term} is not discoverable`);
   }
   for (const term of ['bounded context', 'context map', 'taxonomy']) {
