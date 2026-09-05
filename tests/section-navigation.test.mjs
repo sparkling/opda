@@ -6,6 +6,8 @@ import { SECTIONS, findPage, normalizeUrl } from '../src/lib/site.ts';
 import { PDTF1_ROUTES } from '../src/lib/pdtf1-routes.mjs';
 import { getRouteStatus } from '../src/lib/site-ia.mjs';
 import { SITE_SEARCH_ENTRIES } from '../src/lib/site-search.mjs';
+import { MODELLING_JOURNEYS } from '../src/lib/modelling-navigation.ts';
+import { SEMANTIC_MODELLING_JOURNEYS } from '../src/lib/section-navigation-journeys.ts';
 import {
   SECTION_NAVIGATION,
   findNavigationPage,
@@ -78,7 +80,7 @@ test('the left section navigation implements all six destinations from one regis
   ])), {
     programme: 18,
     governance: 32,
-    'semantic-modelling': 20,
+    'semantic-modelling': 24,
     spdtf: 241,
     'working-groups': 39,
     resources: 12,
@@ -92,8 +94,8 @@ test('the left section navigation implements all six destinations from one regis
   for (const required of [
     '/programme', '/development', '/development/candidates', '/development/questions', '/development/outputs',
     '/semantic-modelling', '/development/property-pack',
-    '/semantic-modelling/reading-the-model', '/semantic-modelling/modelling-method',
-    '/semantic-modelling/modelling-rules',
+    '/semantic-modelling/understand/a-property-story', '/semantic-modelling/method',
+    '/semantic-modelling/method/classes-and-relationships',
     '/development/property-pack/definition-and-scope',
     '/development/property-pack/technical-working-group-determination',
     '/development/property-pack/review-and-releases', PDTF1_ROUTES.inputRoot, PDTF1_ROUTES.root,
@@ -254,7 +256,7 @@ test('contextual rail highlighting never claims an index is the current detail p
 test('category landing pages remain in breadcrumbs and exact page sequences', () => {
   for (const [sectionKey, heading, category, firstChild] of [
     ['programme', 'Strategy', '/strategy', '/strategy/strategy-overview'],
-    ['semantic-modelling', 'Understand ontologies', '/semantic-modelling/why-ontologies', '/semantic-modelling/benefits'],
+    ['semantic-modelling', 'Understand shared meaning', '/semantic-modelling/understand', '/semantic-modelling/understand/shared-meaning'],
     ['spdtf', 'Property Pack ontology', '/development/property-pack', '/development/property-pack/definition-and-scope'],
     ['working-groups', 'Member guide', '/development/working-groups/member-guide', '/development/working-groups/member-guide/getting-started'],
     ['working-groups', 'Group workspaces', '/development/working-groups', '/development/working-groups/finance-and-banking'],
@@ -269,7 +271,7 @@ test('category landing pages remain in breadcrumbs and exact page sequences', ()
   }
   assert.equal(getNavigationPrevNext('/programme').next?.url, '/strategy');
   assert.equal(getNavigationPrevNext('/governance').next?.url, '/governance/uk-initiative');
-  assert.equal(getNavigationPrevNext('/semantic-modelling').next?.url, '/semantic-modelling/why-ontologies');
+  assert.equal(getNavigationPrevNext('/semantic-modelling').next?.url, '/semantic-modelling/understand');
   assert.equal(getNavigationPrevNext('/semantic-modelling').prev, undefined);
   assert.deepEqual(getNavigationPrevNext('/development/property-pack/resources/common/generated-term'), {});
 });
@@ -430,48 +432,35 @@ test('every new extracted-ontology category landing is searchable', () => {
   ]) assert.ok(searchable.has(url), `${url} must be in the reader search registry`);
 });
 
-test('semantic modelling exposes two nested audience journeys with linked parents', () => {
+test('semantic modelling uses the shared four-journey registry with linked parents', () => {
   const section = SECTION_NAVIGATION['semantic-modelling'];
-  const understand = section.groups.find(({ heading }) => heading === 'Understand ontologies');
-  const method = section.groups.find(({ heading }) => heading === 'How we model SPDTF');
-  assert.ok(understand);
-  assert.ok(method);
+  assert.equal(SEMANTIC_MODELLING_JOURNEYS, MODELLING_JOURNEYS);
+  assert.deepEqual(MODELLING_JOURNEYS.map(({ url }) => url), [
+    '/semantic-modelling/understand', '/semantic-modelling/explore',
+    '/semantic-modelling/contribute', '/semantic-modelling/method',
+  ]);
+  assert.equal(section.groups.length, 5, 'one overview and four task journeys');
   assert.equal(SECTION_NAVIGATION.spdtf.groups.some(({ heading }) => heading === 'Semantic modelling'), false);
-  assert.deepEqual(understand.items.map(({ url }) => url), [
-    '/semantic-modelling/benefits',
-    '/semantic-modelling/taking-part',
-    '/semantic-modelling/reading-the-model',
-    '/semantic-modelling/questions',
-  ]);
-  assert.deepEqual(method.items.map(({ url }) => url), [
-    '/semantic-modelling/principles',
-    '/semantic-modelling/coverage',
-    '/semantic-modelling/bounded-contexts',
-    '/semantic-modelling/context-maps',
-    '/semantic-modelling/identity-roles-and-phases',
-    '/semantic-modelling/modelling-patterns',
-    '/semantic-modelling/modelling-rules',
-    '/semantic-modelling/linked-data-languages',
-    '/semantic-modelling/semantic-package',
-    '/semantic-modelling/evidence-and-mappings',
-    '/semantic-modelling/validation',
-    '/semantic-modelling/standards',
-    '/semantic-modelling/decision-basis',
-  ]);
-  for (const group of [understand, method]) {
+  for (const journey of MODELLING_JOURNEYS) {
+    const group = section.groups.find(({ url }) => url === journey.url);
+    assert.ok(group);
+    assert.equal(group.heading, journey.title);
+    assert.deepEqual(group.items, journey.children);
     for (const { url } of group.items) {
       assert.deepEqual(findNavigationPage(url)?.trail.map(({ url: current }) => current), [url]);
       assert.equal(findNavigationPage(url)?.group, group);
       assert.ok(SITE_SEARCH_ENTRIES.some(({ url: current }) => current === url), `${url} must be searchable`);
     }
   }
-  assert.equal(getNavigationPrevNext('/semantic-modelling/why-ontologies').next?.url,
-    '/semantic-modelling/benefits');
-  assert.equal(getNavigationPrevNext('/semantic-modelling/questions').next?.url,
-    '/semantic-modelling/modelling-method');
-  assert.equal(getNavigationPrevNext('/semantic-modelling/modelling-method').next?.url,
-    '/semantic-modelling/principles');
-  assert.equal(getNavigationPrevNext('/semantic-modelling/decision-basis').next, undefined);
+  assert.equal(getNavigationPrevNext('/semantic-modelling/understand').next?.url,
+    '/semantic-modelling/understand/shared-meaning');
+  assert.equal(getNavigationPrevNext('/semantic-modelling/understand/a-property-story').next?.url,
+    '/semantic-modelling/explore');
+  assert.equal(getNavigationPrevNext('/semantic-modelling/contribute/what-happens-next').next?.url,
+    '/semantic-modelling/method');
+  assert.equal(getNavigationPrevNext('/semantic-modelling/method').next?.url,
+    '/semantic-modelling/method/from-question-to-candidate');
+  assert.equal(getNavigationPrevNext('/semantic-modelling/method/standards-and-decisions').next, undefined);
 });
 
 test('Property Pack work-package coverage exposes all eight source-catalogue views', () => {
