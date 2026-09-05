@@ -1,67 +1,39 @@
-/**
- * ODR page registry (ADR-0024 enrichment-in-markdown; ADR-0025 cascade contract).
- *
- * Single source of truth for ODR metadata, shared by:
- *   - src/pages/modelling/odr/index.astro  (listing + ✓-diagrams badge)
- *   - src/pages/modelling/odr/[id].astro   (detail-page meta pills + breadcrumb)
- *   - src/lib/site.ts                      (left-nav group, generated from this list)
- *
- * Each ODR's content (incl. its ```mermaid diagrams) lives in
- * docs/ontology/odr/ODR-NNNN-*.md and renders through the Astro `odr` content
- * collection (render(entry) → <Content/> in [id].astro) — the same path as the
- * manual. Adding an ODR here surfaces it in the sidebar, breadcrumb, and listing.
- *
- * `enriched` is informational — true once an ODR's markdown carries illustrative
- * diagrams — and drives only the listing badge, not page existence.
- */
-
-/**
- * @typedef {Object} OdrEntry
- * @property {string}  id        - Kebab-case page ID, e.g. 'odr-0001'
- * @property {string}  number    - Zero-padded number, e.g. '0001'
- * @property {string}  title     - Short display title
- * @property {string}  kind      - 'methodology' | 'pattern' | 'mapping' | 'architecture' | 'programme'
- * @property {string}  status    - 'accepted' | 'proposed' | 'rejected'
- * @property {boolean} enriched  - true = markdown carries illustrative diagrams (listing badge only)
- */
-
-/** All 34 ODRs in the corpus. Every ODR gets a live page; enriched=true = has diagrams. */
+/** Generated from docs/ontology/odr by scripts/gen-odr-registry.mjs. */
 export const ODR_REGISTRY = [
-  { id: 'odr-0001', number: '0001', title: 'Linked Data Council: Review Methodology',              kind: 'methodology',  status: 'accepted', enriched: true },
-  { id: 'odr-0002', number: '0002', title: 'Ontology Languages and Vocabularies Adopted',          kind: 'architecture', status: 'accepted', enriched: true },
-  { id: 'odr-0003', number: '0003', title: 'PDTF to Ontology: Programme and Work Breakdown',        kind: 'programme',    status: 'accepted', enriched: true },
-  { id: 'odr-0004', number: '0004', title: 'PDTF Ontology Foundation',                              kind: 'architecture', status: 'accepted', enriched: true },
-  { id: 'odr-0005', number: '0005', title: 'Property & Land: The Identity Crux',                    kind: 'pattern',      status: 'accepted', enriched: true },
-  { id: 'odr-0006', number: '0006', title: 'Agents & Roles',                                        kind: 'pattern',      status: 'accepted', enriched: true },
-  { id: 'odr-0007', number: '0007', title: 'Transactions & Lifecycle',                              kind: 'pattern',      status: 'accepted', enriched: true },
-  { id: 'odr-0008', number: '0008', title: 'Property Descriptive Attributes',                       kind: 'pattern',      status: 'proposed', enriched: true },
-  { id: 'odr-0009', number: '0009', title: 'Claims, Evidence & Provenance',                         kind: 'pattern',      status: 'accepted', enriched: true },
-  { id: 'odr-0010', number: '0010', title: 'Overlay Profile Mechanism',                             kind: 'architecture', status: 'accepted', enriched: true },
-  { id: 'odr-0011', number: '0011', title: 'Enumeration Vocabularies',                              kind: 'architecture', status: 'accepted', enriched: true },
-  { id: 'odr-0012', number: '0012', title: 'Data-Governance Layer',                                 kind: 'architecture', status: 'accepted', enriched: true },
-  { id: 'odr-0013', number: '0013', title: 'SHACL Validation & Severity',                           kind: 'architecture', status: 'accepted', enriched: true },
-  { id: 'odr-0014', number: '0014', title: 'Vocabulary Catalogue Amendments',                       kind: 'architecture', status: 'accepted', enriched: true },
-  { id: 'odr-0015', number: '0015', title: 'Address & Geography',                                   kind: 'pattern',      status: 'proposed', enriched: true },
-  { id: 'odr-0016', number: '0016', title: 'W3C Verifiable Credentials / DID Compatibility Layer',  kind: 'architecture', status: 'proposed', enriched: true },
-  { id: 'odr-0017', number: '0017', title: 'SHACL-AF Non-Blocking Data-Quality Rules',              kind: 'pattern',      status: 'accepted', enriched: true },
-  { id: 'odr-0018', number: '0018', title: 'DPV Class-Level Co-Annotation Pattern',                 kind: 'pattern',      status: 'accepted', enriched: true },
-  // ── Descriptive-layer & foundational waves (sessions 019–047) ────────────────
-  { id: 'odr-0008d', number: '0008d', title: 'Authority-Retrieved Artefacts',                       kind: 'pattern',      status: 'accepted', enriched: false },
-  { id: 'odr-0019', number: '0019', title: 'Bounded-Context Representation',                         kind: 'pattern',      status: 'accepted', enriched: false },
-  { id: 'odr-0020', number: '0020', title: 'Bounded-Context Scheme and Term→Context Mapping',        kind: 'pattern',      status: 'accepted', enriched: false },
-  { id: 'odr-0021', number: '0021', title: 'Deferred Form/Profile-Layer Enhancements',               kind: 'architecture', status: 'accepted', enriched: false },
-  { id: 'odr-0022', number: '0022', title: 'Descriptive-Layer Import Strategy & Property Categorisation', kind: 'architecture', status: 'accepted', enriched: false },
-  { id: 'odr-0023', number: '0023', title: 'Descriptive-Layer Follow-On Council Roadmap',            kind: 'programme',    status: 'accepted', enriched: false },
-  { id: 'odr-0024', number: '0024', title: 'Curated Category-G Walk — Leaf Dispositions and Modelling Rules', kind: 'pattern', status: 'accepted', enriched: false },
-  { id: 'odr-0025', number: '0025', title: 'Entailment Regime and Inference Semantics',              kind: 'architecture', status: 'accepted', enriched: false },
-  { id: 'odr-0026', number: '0026', title: 'OWL-RL-Safe Ruleset Adoption and Unevaluated Modelling Axioms', kind: 'architecture', status: 'accepted', enriched: false },
-  { id: 'odr-0027', number: '0027', title: 'Classification, Roles, Inheritance, and SKOS — opda Modelling Doctrine', kind: 'architecture', status: 'accepted', enriched: false },
-  { id: 'odr-0028', number: '0028', title: 'Descriptive-Layer Conversion — Completeness Reconciliation', kind: 'programme', status: 'accepted', enriched: false },
-  { id: 'odr-0029', number: '0029', title: 'Inference/Validation Boundary and the Entailment-Regime Disposition', kind: 'architecture', status: 'accepted', enriched: false },
-  { id: 'odr-0030', number: '0030', title: 'Foundational-Ontology Choice: UFO-as-Lens, Scoped to the Relator Spine', kind: 'architecture', status: 'accepted', enriched: false },
-  { id: 'odr-0031', number: '0031', title: 'opda:ufoCategory and the Upper-Ontology Layer',          kind: 'architecture', status: 'accepted', enriched: false },
-  { id: 'odr-0032', number: '0032', title: 'Relationship Layer — Reify Inter-Entity Associations as OWL Object Properties', kind: 'pattern', status: 'proposed', enriched: false },
-  { id: 'odr-0033', number: '0033', title: 'OWL/RDFS Axioms as Documentary AI-Signal — the Consolidated Doctrine', kind: 'architecture', status: 'proposed', enriched: false },
-  { id: 'odr-0034', number: '0034', title: 'Relationship-Residue Completion — Events, Information Objects, and the Aboutness/Provenance Boundary', kind: 'pattern', status: 'proposed', enriched: false },
-  { id: 'odr-0035', number: '0035', title: "RML as OPDA's Bidirectional Schema-Provenance Verification Mechanism", kind: 'architecture', status: 'accepted', enriched: false },
+  {"id":"odr-0001","number":"0001","title":"Linked Data Council: Review Methodology","kind":"methodology","status":"accepted","date":"2026-05-27","updated":"","source":"ODR-0001-linked-data-council-methodology.md","enriched":true},
+  {"id":"odr-0002","number":"0002","title":"Ontology Languages and Vocabularies Adopted","kind":"architecture","status":"accepted","date":"2026-05-27","updated":"2026-09-05","source":"ODR-0002-ontology-language-adoption.md","enriched":true},
+  {"id":"odr-0003","number":"0003","title":"PDTF to Ontology: Programme and Work Breakdown","kind":"programme","status":"accepted","date":"2026-05-27","updated":"","source":"ODR-0003-pdtf-ontology-programme.md","enriched":true},
+  {"id":"odr-0004","number":"0004","title":"PDTF Ontology Foundation","kind":"architecture","status":"accepted","date":"2026-05-27","updated":"","source":"ODR-0004-pdtf-ontology-foundation.md","enriched":true},
+  {"id":"odr-0005","number":"0005","title":"Property & Land: The Identity Crux","kind":"pattern","status":"accepted","date":"2026-05-27","updated":"","source":"ODR-0005-property-land-identity-crux.md","enriched":true},
+  {"id":"odr-0006","number":"0006","title":"Agents & Roles","kind":"pattern","status":"accepted","date":"2026-05-27","updated":"","source":"ODR-0006-agents-and-roles.md","enriched":true},
+  {"id":"odr-0007","number":"0007","title":"Transactions & Lifecycle","kind":"pattern","status":"accepted","date":"2026-05-20","updated":"","source":"ODR-0007-transactions-and-lifecycle.md","enriched":true},
+  {"id":"odr-0008","number":"0008","title":"Property Descriptive Attributes","kind":"pattern","status":"accepted","date":"2026-05-27","updated":"","source":"ODR-0008-property-descriptive-attributes.md","enriched":true},
+  {"id":"odr-0008d","number":"0008d","title":"Authority-Retrieved Artefacts","kind":"pattern","status":"accepted","date":"2026-05-30","updated":"","source":"ODR-0008d-authority-retrieved-artefacts.md","enriched":false},
+  {"id":"odr-0009","number":"0009","title":"Claims, Evidence & Provenance","kind":"pattern","status":"accepted","date":"2026-05-20","updated":"","source":"ODR-0009-claims-evidence-provenance.md","enriched":true},
+  {"id":"odr-0010","number":"0010","title":"Overlay Profile Mechanism","kind":"architecture","status":"accepted","date":"2026-05-20","updated":"","source":"ODR-0010-overlay-profile-mechanism.md","enriched":true},
+  {"id":"odr-0011","number":"0011","title":"Enumeration Vocabularies","kind":"pattern","status":"accepted","date":"2026-05-27","updated":"","source":"ODR-0011-enumeration-vocabularies.md","enriched":true},
+  {"id":"odr-0012","number":"0012","title":"Data-Governance Layer","kind":"architecture","status":"accepted","date":"2026-05-20","updated":"","source":"ODR-0012-data-governance-layer.md","enriched":true},
+  {"id":"odr-0013","number":"0013","title":"SHACL Validation & Severity","kind":"architecture","status":"accepted","date":"2026-05-20","updated":"","source":"ODR-0013-shacl-validation-and-severity.md","enriched":true},
+  {"id":"odr-0014","number":"0014","title":"Vocabulary Catalogue Amendments","kind":"pattern","status":"superseded","date":"2026-05-20","updated":"","source":"ODR-0014-vocabulary-catalogue-amendments.md","enriched":true},
+  {"id":"odr-0015","number":"0015","title":"Address & Geography","kind":"pattern","status":"accepted","date":"2026-05-27","updated":"","source":"ODR-0015-address-and-geography.md","enriched":true},
+  {"id":"odr-0016","number":"0016","title":"W3C Verifiable Credentials / DID Compatibility Layer","kind":"mapping","status":"proposed","date":"2026-05-26","updated":"","source":"ODR-0016-w3c-vc-did-compatibility.md","enriched":true},
+  {"id":"odr-0017","number":"0017","title":"SHACL-AF Non-Blocking Data-Quality Rules","kind":"pattern","status":"accepted","date":"2026-05-27","updated":"","source":"ODR-0017-shacl-af-quality-rules-pattern.md","enriched":true},
+  {"id":"odr-0018","number":"0018","title":"DPV Class-Level Co-Annotation Pattern","kind":"pattern","status":"accepted","date":"2026-05-27","updated":"","source":"ODR-0018-dpv-class-level-coannotation-pattern.md","enriched":true},
+  {"id":"odr-0019","number":"0019","title":"Bounded-Context Representation","kind":"pattern","status":"accepted","date":"2026-05-30","updated":"","source":"ODR-0019-bounded-context-representation.md","enriched":true},
+  {"id":"odr-0020","number":"0020","title":"Bounded-Context Scheme and Term→Context Mapping","kind":"pattern","status":"accepted","date":"2026-05-30","updated":"","source":"ODR-0020-bounded-context-scheme-and-mapping.md","enriched":true},
+  {"id":"odr-0021","number":"0021","title":"Deferred Form/Profile-Layer Enhancements","kind":"architecture","status":"accepted","date":"2026-05-30","updated":"","source":"ODR-0021-deferred-form-profile-layer-enhancements.md","enriched":false},
+  {"id":"odr-0022","number":"0022","title":"Descriptive-Layer Import Strategy & Property Categorisation","kind":"architecture","status":"accepted","date":"2026-05-30","updated":"","source":"ODR-0022-descriptive-layer-import-strategy.md","enriched":false},
+  {"id":"odr-0023","number":"0023","title":"Descriptive-Layer Follow-On Council Roadmap","kind":"programme","status":"accepted","date":"2026-05-30","updated":"","source":"ODR-0023-descriptive-layer-follow-on-council-roadmap.md","enriched":false},
+  {"id":"odr-0024","number":"0024","title":"Curated Category-G Walk — Leaf Dispositions and Modelling Rules","kind":"pattern","status":"accepted","date":"2026-05-31","updated":"","source":"ODR-0024-curated-category-g-walk-dispositions.md","enriched":false},
+  {"id":"odr-0025","number":"0025","title":"Entailment Regime and Inference Semantics","kind":"architecture","status":"accepted","date":"2026-06-01","updated":"","source":"ODR-0025-entailment-regime-and-inference-semantics.md","enriched":false},
+  {"id":"odr-0026","number":"0026","title":"OWL-RL-Safe Ruleset Adoption and Unevaluated Modelling Axioms","kind":"architecture","status":"accepted","date":"2026-06-01","updated":"","source":"ODR-0026-owl-rl-safe-ruleset-adoption-and-unevaluated-modelling-axioms.md","enriched":false},
+  {"id":"odr-0027","number":"0027","title":"Classification, Roles, Inheritance, and SKOS — opda Modelling Doctrine","kind":"architecture","status":"accepted","date":"2026-06-01","updated":"2026-09-05","source":"ODR-0027-classification-roles-inheritance-skos-doctrine.md","enriched":false},
+  {"id":"odr-0028","number":"0028","title":"Descriptive-Layer Conversion — Completeness Reconciliation","kind":"programme","status":"accepted","date":"2026-06-14","updated":"","source":"ODR-0028-descriptive-layer-completeness-reconciliation.md","enriched":false},
+  {"id":"odr-0029","number":"0029","title":"Inference/Validation Boundary and the Entailment-Regime Disposition","kind":"architecture","status":"accepted","date":"2026-06-14","updated":"","source":"ODR-0029-inference-validation-boundary-and-entailment-regime-disposition.md","enriched":false},
+  {"id":"odr-0030","number":"0030","title":"Foundational-Ontology Choice: UFO-as-Lens, Scoped to the Relator Spine","kind":"architecture","status":"accepted","date":"2026-06-15","updated":"","source":"ODR-0030-foundational-ontology-choice.md","enriched":false},
+  {"id":"odr-0031","number":"0031","title":"opda:ufoCategory and the Upper-Ontology Layer","kind":"architecture","status":"accepted","date":"2026-06-15","updated":"","source":"ODR-0031-ufocategory-upper-ontology-representation.md","enriched":false},
+  {"id":"odr-0032","number":"0032","title":"Relationship Layer — Reify Inter-Entity Associations as OWL Object Properties","kind":"pattern","status":"proposed","date":"2026-06-17","updated":"2026-09-05","source":"ODR-0032-relationship-layer-object-properties.md","enriched":false},
+  {"id":"odr-0033","number":"0033","title":"OWL/RDFS Axioms as Documentary AI-Signal — the Consolidated Doctrine","kind":"architecture","status":"proposed","date":"2026-06-17","updated":"2026-09-05","source":"ODR-0033-owl-axioms-as-documentary-ai-signal-doctrine.md","enriched":false},
+  {"id":"odr-0034","number":"0034","title":"Relationship-Residue Completion — Events, Information Objects, and the Aboutness/Provenance Boundary","kind":"pattern","status":"proposed","date":"2026-06-30","updated":"","source":"ODR-0034-relationship-residue-completion.md","enriched":false},
+  {"id":"odr-0035","number":"0035","title":"RML as OPDA's Bidirectional Schema-Provenance Verification Mechanism","kind":"architecture","status":"accepted","date":"2026-07-04","updated":"","source":"ODR-0035-rml-schema-provenance-verification.md","enriched":false},
 ];

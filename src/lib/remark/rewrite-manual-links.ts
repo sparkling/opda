@@ -8,7 +8,7 @@
  * so at build time every relative link that resolves inside `docs/manual/` is
  * rewritten to its `/development/inputs/pdtf-schema/schema-derived-ontology/model-views-by-audience/<…>` route: extension stripped, `README` collapsed
  * to its directory (tier / module landing), `#anchors` preserved. Links that
- * resolve outside `docs/manual/` (e.g. into the ODR corpus) are left unchanged.
+ * resolve into the ADR/ODR corpora use their decision pages. Other paths remain unchanged.
  *
  * Source markdown is never mutated — the rewrite happens in the mdast at build
  * time only, keeping the canonical content portable per ADR-0015.
@@ -34,6 +34,8 @@ function splitHash(url: string): [string, string | null] {
 
 /** Map an absolute source path under docs/manual/ to its `/development/inputs/pdtf-schema/schema-derived-ontology/model-views-by-audience/<…>` route, else null. */
 export function toManualRoute(absPath: string): string | null {
+  const decision = absPath.replace(/\\/g, '/').match(/(?:^|\/)docs\/(?:adr\/(ADR)|ontology\/odr\/(ODR))-(\d{4}[a-z]?)-[^/]+\.md$/i);
+  if (decision) return `/modelling/${(decision[1] || decision[2]).toLowerCase()}/${(decision[1] || decision[2]).toLowerCase()}-${decision[3].toLowerCase()}`;
   const m = absPath.replace(/\\/g, '/').match(MANUAL_SEG_RE);
   if (!m) return null;
   const slug = m[1]

@@ -1,6 +1,7 @@
 ---
 status: accepted
 date: 2026-05-29
+updated: 2026-09-05
 tags: [website, odr, documentation, mermaid, diagramming, build-pipeline]
 supersedes: [ADR-0023]
 depends-on: [ADR-0015, ADR-0021, ADR-0022]
@@ -20,6 +21,29 @@ implements: []
 > original (now-retired) `marked` approach and is kept for the record.
 
 ## Context and Problem Statement
+
+### Current implementation amendment — 2026-09-05
+
+The owner requested local, renumbered modelling decisions and distribution through
+the normal website build. The current implementation uses the Astro `odr` content
+collection and `render(entry)`; the original implementation sketch below is historical.
+`scripts/gen-odr-registry.mjs` derives the listing, navigation and search metadata
+from canonical top-level `docs/ontology/odr/ODR-*.md` files. Existing short display
+titles are preserved. `src/integrations/generate-odr-sources.mjs` regenerates that
+registry and copies those Markdown sources to `/decisions/odr/` during Astro setup.
+The normal CI build therefore packages both rendered pages and downloadable sources
+in `dist/`, without a remote source-project dependency. Relative decision links
+are resolved to site pages in the shared Markdown pipeline.
+
+New local adaptations follow the living-decision conventions in `docs/adr/README.md`:
+status and dated amendments expose authorised changes; they do not retrospectively
+claim implementation or external council ratification. Existing historical source
+records and their identifiers retain their original context. This amendment replaces
+the universal immutability wording for new local adaptations only.
+
+Confirmation for this amendment is source inspection and static syntax checks.
+Build, browser and test execution remain deferred at the owner's request; accepted
+status is retained rather than claiming complete implementation validation.
 
 [ADR-0023](./ADR-0023-build-time-odr-html-immutable-enriched.md) chose to freeze
 each ODR's markdown, author Mermaid diagrams into a **separate committed HTML
