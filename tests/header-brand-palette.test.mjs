@@ -188,7 +188,10 @@ test('temporary selectors expose full preview cards and persist palettes and ico
   assert.match(campaign, /\.wg-campaign-identity \.framework-heading--display\s*\{[^}]*calc\(var\(--identity-heading-size\) \* 1\.57\)/su);
   assert.match(campaign, /\.home-campaign-side\s*\{[^}]*display:\s*grid;[^}]*gap:\s*var\(--space-3\);/su);
   assert.match(campaign, /\.home-campaign-side > \.header-preview-controls\s*\{\s*justify-self:\s*end;\s*\}/u);
-  assert.match(campaign, /\.wg-campaign-hero__header \.theme-toggle\s*\{[^}]*width:\s*3\.25rem;[^}]*height:\s*3\.25rem;[^}]*align-self:\s*flex-start;[^}]*margin-block-start:\s*-32px;/su);
+  assert.match(home, /<div class="wg-campaign-identity__opda-row">\s*<BrandHeading variant="paired" \/>\s*<ThemeToggle \/>\s*<\/div>\s*<FrameworkHeading scale="display" \/>/u);
+  assert.match(campaign, /\.wg-campaign-identity__opda-row\s*\{[^}]*width:\s*100%;[^}]*display:\s*flex;[^}]*align-items:\s*flex-end;/su);
+  assert.match(campaign, /\.wg-campaign-hero__header \.theme-toggle\s*\{[^}]*width:\s*3\.25rem;[^}]*height:\s*3\.25rem;[^}]*margin-left:\s*auto;/su);
+  assert.doesNotMatch(campaign, /\.wg-campaign-hero__header \.theme-toggle\s*\{[^}]*(?:translate|margin-block-start):/su);
   assert.match(campaign, /\.wg-campaign-hero__header \.theme-toggle svg\s*\{[^}]*width:\s*1\.75rem;[^}]*height:\s*1\.75rem;/su);
   assert.doesNotMatch(campaign, /\.wg-campaign-hero--panel-aligned \.home-campaign-side\s*\{[^}]*transform:/su);
 

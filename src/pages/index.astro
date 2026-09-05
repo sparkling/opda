@@ -101,10 +101,12 @@ const domains = [
     <section class="home-campaign-hero wg-campaign-hero wg-campaign-hero--panel-aligned" aria-labelledby="public-title">
       <header class="wg-campaign-hero__header">
         <div class="wg-campaign-identity" id="home-campaign-identity" style={homeHeaderStyle}>
-          <BrandHeading variant="paired" />
+          <div class="wg-campaign-identity__opda-row">
+            <BrandHeading variant="paired" />
+            <ThemeToggle />
+          </div>
           <FrameworkHeading scale="display" />
         </div>
-        <ThemeToggle />
       </header>
 
       <div class="wg-campaign-hero__copy">

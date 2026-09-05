@@ -690,7 +690,7 @@ test('the adversarial conformance blockers remain closed', async () => {
   assert.doesNotMatch(rootPage, /<html[^>]+data-theme="light"/u);
   assert.match(rootPage, /URLSearchParams\(location\.search\)/u);
   assert.doesNotMatch(rootPage, /class="public-header"/u);
-  assert.match(rootPage, /<header class="wg-campaign-hero__header">[\s\S]*<BrandHeading variant="paired"\s*\/>[\s\S]*<FrameworkHeading scale="display"\s*\/>[\s\S]*<ThemeToggle\s*\/>[\s\S]*<\/header>/u);
+  assert.match(rootPage, /<header class="wg-campaign-hero__header">[\s\S]*class="wg-campaign-identity__opda-row"[\s\S]*<BrandHeading variant="paired"\s*\/>[\s\S]*<ThemeToggle\s*\/>[\s\S]*<FrameworkHeading scale="display"\s*\/>[\s\S]*<\/header>/u);
   assert.match(themeToggle, /id = 'theme-toggle'/u);
   assert.match(rootPage, /:root\[data-theme='light'\][\s\S]+\.home-campaign-hero/u);
   assert.match(rootPage, /data-astro-rerun/u);
