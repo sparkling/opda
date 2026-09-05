@@ -184,7 +184,7 @@ test('temporary selectors expose full preview cards and persist palettes and ico
   assert.match(campaign, /\.wg-campaign-identity \.framework-heading--display\s*\{[^}]*calc\(var\(--identity-heading-size\) \* 1\.57\)/su);
   assert.match(campaign, /\.home-campaign-side\s*\{[^}]*display:\s*grid;[^}]*gap:\s*var\(--space-3\);/su);
   assert.match(campaign, /\.home-campaign-side > \.header-preview-controls\s*\{\s*justify-self:\s*end;\s*\}/u);
-  assert.match(campaign, /\.wg-campaign-hero__header \.theme-toggle\s*\{[^}]*width:\s*3\.25rem;[^}]*height:\s*3\.25rem;[^}]*align-self:\s*flex-start;/su);
+  assert.match(campaign, /\.wg-campaign-hero__header \.theme-toggle\s*\{[^}]*width:\s*3\.25rem;[^}]*height:\s*3\.25rem;[^}]*align-self:\s*flex-start;[^}]*margin-block-start:\s*-16px;/su);
   assert.match(campaign, /\.wg-campaign-hero__header \.theme-toggle svg\s*\{[^}]*width:\s*1\.75rem;[^}]*height:\s*1\.75rem;/su);
   assert.doesNotMatch(campaign, /\.wg-campaign-hero--panel-aligned \.home-campaign-side\s*\{[^}]*transform:/su);
 
