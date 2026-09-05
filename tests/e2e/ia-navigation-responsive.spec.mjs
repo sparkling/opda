@@ -103,8 +103,8 @@ test('compact primary disclosure keeps all navigation items discoverable through
   });
   expect(alignment.utilities.right).toBeCloseTo(alignment.content.right, 1);
   expect(alignment.cta.right).toBeLessThanOrEqual(alignment.icons.left);
-  expect((alignment.cta.top + alignment.cta.bottom) / 2)
-    .toBeCloseTo((alignment.icons.top + alignment.icons.bottom) / 2, 1);
+  expect(alignment.cta.top).toBeCloseTo(alignment.icons.top, 1);
+  expect(alignment.cta.bottom).toBeCloseTo(alignment.icons.bottom, 1);
   expect(alignment.membership.right).toBeLessThan(alignment.cta.left);
   expect(alignment.membership.top).toBeCloseTo(alignment.cta.top, 1);
   expect(alignment.membership.bottom).toBeCloseTo(alignment.cta.bottom, 1);
