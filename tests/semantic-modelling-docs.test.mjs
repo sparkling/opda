@@ -84,6 +84,7 @@ test('one registry supplies 24 canonical pages across four task-based journeys',
   assert.match(layout, /callout callout--key/u);
   assert.doesNotMatch(layout, /Learning guide|ChapterIntro/u);
   const editorial = read('src/styles/editorial-content.css');
+  assert.match(editorial, /--editorial-heading-space:\s*var\(--space-7\);/u);
   assert.match(editorial, /--editorial-section-space:\s*var\(--space-6\);/u);
   assert.match(editorial, /\.prose\.editorial-content[^}]*> h2\s*\{[^}]*padding-block-start:\s*0;[^}]*border-block-start:\s*0;/su);
   assert.match(editorial, /\.prose\.editorial-content\.odr-detail h2\s*\{[^}]*border-block:\s*0;[^}]*padding-block:\s*0;/su);

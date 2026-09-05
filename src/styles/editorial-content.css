@@ -2,6 +2,7 @@
    references on their existing styles. No route names or width overrides. */
 .editorial-content:is(.prose, main) {
   --editorial-flow-gap: var(--space-4);
+  --editorial-heading-space: var(--space-7);
   --editorial-section-space: var(--space-6);
   --lead: 400 1.125rem / 1.75rem var(--font-reading);
   font: 400 var(--text-lg) / var(--leading-normal) var(--font-reading);
@@ -41,11 +42,11 @@
   margin-block-start: var(--editorial-flow-gap);
 }
 
-/* Authored sections use whitespace rather than horizontal divider rules. */
-#main-content .prose.editorial-content > :is(h2, section),
-#main-content .prose.editorial-content :where(.document-flow) > :is(h2, section),
-.prose.editorial-content :where(section:not([class]), .public-statement__content) > h2 {
-  margin-block-start: var(--editorial-section-space);
+/* Authored content headings use whitespace rather than divider rules. */
+#main-content .prose.editorial-content > :is(h2, h3, h4, section),
+#main-content .prose.editorial-content :where(.document-flow) > :is(h2, h3, h4, section),
+.prose.editorial-content :where(section:not([class]), .public-statement__content) > :is(h2, h3, h4) {
+  margin-block-start: var(--editorial-heading-space);
 }
 #main-content .prose.editorial-content > h2,
 .prose.editorial-content :where(section:not([class]), .document-flow) > h2 {
@@ -56,7 +57,7 @@
   margin-block-start: 0;
 }
 .prose.editorial-content :where(section:not([class]), .document-flow) > :is(h3, h4) {
-  margin-block-start: var(--space-6);
+  margin-block-start: var(--editorial-heading-space);
 }
 .prose.editorial-content :where(section:not([class]), .document-flow) > :is(h3, h4):first-child {
   margin-block-start: 0;
