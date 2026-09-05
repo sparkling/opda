@@ -1,25 +1,23 @@
 /* Paired knowledge-base identity and its temporary Fable palette selector. */
 :where(.brand-heading--paired, .framework-heading) {
-  --heading-mark-label-gap: var(--space-2);
+  --heading-mark-label-gap: 0.3em;
 }
 
 .brand-heading--paired {
   --opda-mark-ink: var(--color-header-opda);
   --opda-mark-text: var(--color-header-opda);
   display: inline-flex;
-  align-items: flex-end;
+  align-items: baseline;
   gap: var(--heading-mark-label-gap);
   color: var(--color-header-opda);
   line-height: 1;
 }
 .brand-heading--paired .brand-heading__mark {
   position: static;
-  width: 1.13em;
+  width: auto;
   height: 0.9em;
-  flex: 0 0 1.13em;
-  display: flex;
-  align-items: flex-end;
-  justify-content: flex-start;
+  flex: 0 0 auto;
+  display: block;
   margin: 0;
   padding: 0;
   border-radius: 0;

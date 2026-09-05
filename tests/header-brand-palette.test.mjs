@@ -64,9 +64,9 @@ test('knowledge-base header uses paired OPDA and selectable framework identities
   assert.match(iconRegistry, /d: 'M0 0h7v7H5v9H0Z'/u);
   assert.match(iconRegistry, /d: 'M9 0h7v16H7V9h2Z'/u);
   assert.doesNotMatch(base, /--header-mark-label-gap/u);
-  assert.match(headerBrand, /:where\(\.brand-heading--paired, \.framework-heading\)\s*\{[^}]*--heading-mark-label-gap:\s*var\(--space-2\);/su);
-  assert.match(headerBrand, /\.brand-heading--paired\s*\{[^}]*display:\s*inline-flex;[^}]*align-items:\s*flex-end;[^}]*gap:\s*var\(--heading-mark-label-gap\);/su);
-  assert.match(headerBrand, /\.brand-heading--paired \.brand-heading__mark\s*\{[^}]*width:\s*1\.13em;[^}]*height:\s*0\.9em;[^}]*flex:\s*0 0 1\.13em;[^}]*background:\s*none;/su);
+  assert.match(headerBrand, /:where\(\.brand-heading--paired, \.framework-heading\)\s*\{[^}]*--heading-mark-label-gap:\s*0\.3em;/su);
+  assert.match(headerBrand, /\.brand-heading--paired\s*\{[^}]*display:\s*inline-flex;[^}]*align-items:\s*baseline;[^}]*gap:\s*var\(--heading-mark-label-gap\);/su);
+  assert.match(headerBrand, /\.brand-heading--paired \.brand-heading__mark\s*\{[^}]*width:\s*auto;[^}]*height:\s*0\.9em;[^}]*flex:\s*0 0 auto;[^}]*background:\s*none;/su);
   assert.match(headerBrand, /@media \(min-width: 60\.0625rem\)\s*\{[\s\S]*?\.app-header \.brand-heading--paired\.brand-heading--mini\s*\{[^}]*font-size:\s*calc\(var\(--identity-heading-size, 24px\) \* var\(--identity-opda-scale, 1\)\);/u);
   assert.match(headerBrand, /\.app-header \.framework-heading\s*\{[^}]*font-size:\s*calc\(var\(--identity-heading-size, 24px\) \* 1\.57\);/su);
   assert.match(headerBrand, /\.framework-heading\s*\{[^}]*display:\s*inline-flex;[^}]*align-items:\s*flex-end;[^}]*gap:\s*var\(--heading-mark-label-gap\);/su);
@@ -176,7 +176,7 @@ test('temporary selectors expose full preview cards and persist palettes and ico
   assert.match(tuningSelector, /themeToggleTargetId \? \[[\s\S]*label: 'Dark \/ light button up \/ down'[\s\S]*property: '--theme-toggle-position-y', min: -128, max: 128/u);
   assert.match(campaign, /\.wg-hero-journey\s*\{[^}]*translate:\s*var\(--domains-position-x, 0\) var\(--domains-position-y, 0\);/su);
   assert.doesNotMatch(tuningSelector, /Space above icon and button row|header-utilities-space-above/u);
-  assert.match(base, /\.app-header\s*\{[^}]*--identity-space-before:\s*0px;[^}]*--identity-line-gap:\s*0px;[^}]*--identity-space-after:\s*0px;[^}]*--identity-space-after-origin:\s*0px;/su);
+  assert.match(base, /\.app-header\s*\{[^}]*--identity-space-before:\s*0px;[^}]*--identity-line-gap:\s*0px;[^}]*--identity-space-after:\s*0px;[^}]*--identity-space-after-origin:\s*var\(--space-3\);/su);
   assert.doesNotMatch(base, /header-utilities-space-above/u);
   assert.doesNotMatch(base, /\.app-header__utilities\s*\{[^}]*transform:/su);
   assert.match(headerBrand, /\.app-header \.global-nav > \.header-preview-controls\s*\{[^}]*align-self:\s*center;[^}]*margin-inline-start:\s*auto;/su);

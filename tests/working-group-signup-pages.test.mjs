@@ -121,7 +121,7 @@ test('global header promotes the canonical working-group sign-up route', async (
   assert.doesNotMatch(header, />Search<\/a>|>GitHub<\/a>/u);
   assert.match(baseCss, /\.app-header \.header-nav a\.header-icon-link\s*\{[^}]*width:\s*var\(--target-min\)[^}]*justify-content:\s*center/su);
   assert.match(header, /<header[^>]*>[\s\S]*<div class="app-header__inner">[\s\S]*class="app-header__title"[\s\S]*class="app-header__framework-row"/u);
-  assert.match(baseCss, /\.app-header__inner\s*\{[^}]*grid-template-rows:[^}]*var\(--target-min\)[^}]*var\(--identity-line-gap\)[^}]*calc\(\(var\(--identity-heading-size\) \* 1\.57\) \+ var\(--identity-space-after-origin\)\)[^}]*calc\(var\(--target-min\) \+ var\(--space-3\)\)/su);
+  assert.match(baseCss, /\.app-header__inner\s*\{[^}]*grid-template-rows:[^}]*calc\(var\(--target-min\) \+ var\(--identity-space-after-origin\)\)[^}]*var\(--identity-line-gap\)[^}]*calc\(\(var\(--identity-heading-size\) \* 1\.57\) \+ var\(--identity-space-after\)\)[^}]*calc\(var\(--target-min\) \+ var\(--space-3\)\)/su);
   assert.match(baseCss, /\.global-nav-panel\s*\{[^}]*height:\s*calc\(var\(--target-min\) \+ var\(--space-3\)\)/su);
   assert.match(baseCss, /\.app-header \.global-nav\s*\{[^}]*align-items:\s*flex-end/su);
   assert.match(baseCss, /\.app-header \.header-actions\s*\{[^}]*display:\s*flex[^}]*align-items:\s*flex-start[^}]*gap:\s*var\(--space-4\)/su);

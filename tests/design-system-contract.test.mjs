@@ -337,7 +337,7 @@ test('breadcrumbs use the documented linked-ancestor navigation role', async () 
   assert.match(navigation, /\.app-main:not\(:has\(> \.breadcrumbs\)\) > \.prose \{ padding-top:\s*0; \}/u);
   assert.match(tokens, /--page-content-start-space:\s*var\(--space-3\)/u);
   assert.match(tokens, /--header-desktop-start-space:\s*var\(--space-6\)/u);
-  assert.match(shell, /\.app-main\s*\{[^}]*padding:\s*var\(--page-content-start-space\) var\(--content-gutter\) var\(--space-8\)/su);
+  assert.match(shell, /\.app-main\s*\{[^}]*--page-content-inline-padding:\s*calc\(var\(--content-gutter\) \+ var\(--space-2\)\);[^}]*padding:\s*var\(--page-content-start-space\) var\(--page-content-inline-padding\) var\(--space-8\)/su);
   assert.doesNotMatch(navigation, /\.app-main:has\(> \.breadcrumbs\)\s*\{[^}]*padding-top:/su);
 
   const sources = await filesWithExtension('src', '.astro');
@@ -508,8 +508,8 @@ test('shared navigation exposes visible focus, state and 44px targets', async ()
   assert.match(base, /@media \(max-width: 96rem\) \{[\s\S]*\.global-nav-toggle \{ display: inline-flex; \}/u);
   assert.match(base, /@media \(max-width: 96rem\) \{[\s\S]*\.global-nav-panel\s*\{[^}]*padding:\s*var\(--space-3\) var\(--content-gutter\)/su);
   assert.match(base, /\.app-header__utilities\s*\{[^}]*grid-area:\s*utilities;/su);
-  assert.match(base, /\.app-header__title\s*\{[^}]*align-self:\s*center;/su);
-  assert.match(base, /\.app-header__utilities\s*\{[^}]*align-self:\s*center;/su);
+  assert.match(base, /\.app-header__title\s*\{[^}]*align-self:\s*end;/su);
+  assert.match(base, /\.app-header__utilities\s*\{[^}]*align-self:\s*end;/su);
   assert.match(components, /\.brand-heading--mini,\s*\.brand-heading--compact\s*\{[^}]*--brand-heading-mark-size:\s*1\.35em/su);
   assert.match(components, /\.brand-heading--mini\s*\{[^}]*--brand-heading-type:\s*600 var\(--text-xl\) \/ 1 var\(--font-sans\)/su);
   assert.match(components, /\.brand-heading__mark\s*\{[^}]*width:\s*var\(--brand-heading-mark-width\);[^}]*border-radius:\s*var\(--brand-heading-mark-radius\);[^}]*background:\s*var\(--opda-mark-fold\)/su);
@@ -544,7 +544,7 @@ test('shared navigation exposes visible focus, state and 44px targets', async ()
   assert.match(base, /\.global-nav-panel\s*\{[^}]*width:\s*100%;/su);
   assert.match(base, /\.app-header \.global-nav > a:first-child\s*\{\s*padding-left:\s*0;/u);
   assert.match(navigation, /\.page-meta\s*\{[^}]*display:\s*none;/su);
-  assert.match(shell, /\.app-main\s*\{[^}]*padding:\s*var\(--page-content-start-space\) var\(--content-gutter\) var\(--space-8\)/su);
+  assert.match(shell, /\.app-main\s*\{[^}]*--page-content-inline-padding:\s*calc\(var\(--content-gutter\) \+ var\(--space-2\)\);[^}]*padding:\s*var\(--page-content-start-space\) var\(--page-content-inline-padding\) var\(--space-8\)/su);
   assert.match(base, /@media \(min-width: 60\.0625rem\) and \(max-width: 96rem\) \{[\s\S]*\.app-header--with-sidebar \.app-header__inner\s*\{[^}]*padding-inline-start:\s*calc\(var\(--header-content-left-rail\) \+ var\(--content-gutter\)\)/su);
   assert.match(search, /<form[^>]+role="search"/u);
   assert.match(search, /\{SEARCH_TABS\.map\(\(tab, index\) => \([\s\S]*data-search-tab=\{tab\.key\}[\s\S]*aria-pressed=\{String\(index === 0\)\}/u);

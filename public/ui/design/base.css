@@ -96,7 +96,7 @@ a:visited { text-decoration-color: currentColor; }
   --identity-space-before: 0px;
   --identity-line-gap: 0px;
   --identity-space-after: 0px;
-  --identity-space-after-origin: 0px;
+  --identity-space-after-origin: var(--space-3);
   position: sticky;
   top: 0;
   z-index: 50;
@@ -125,9 +125,9 @@ a:visited { text-decoration-color: currentColor; }
     'navigation navigation';
   grid-template-columns: minmax(0, 1fr) auto;
   grid-template-rows:
-    var(--target-min)
+    calc(var(--target-min) + var(--identity-space-after-origin))
     var(--identity-line-gap)
-    calc((var(--identity-heading-size) * 1.57) + var(--identity-space-after-origin))
+    calc((var(--identity-heading-size) * 1.57) + var(--identity-space-after))
     calc(var(--target-min) + var(--space-3));
   align-content: start;
   padding-block: var(--identity-space-before) 0;
@@ -145,12 +145,11 @@ a:visited { text-decoration-color: currentColor; }
   min-width: 0;
   max-width: 100%;
   width: fit-content;
-  align-self: center;
+  align-self: end;
   margin: 0;
   letter-spacing: var(--tracking-display);
   overflow: hidden;
   white-space: nowrap;
-  transform: translateY(calc(var(--identity-space-after-origin) - var(--identity-space-after)));
 }
 .app-header__title .brand-heading { max-width: 100%; }
 .app-header__title .brand-heading__label {
@@ -175,7 +174,6 @@ a:visited { text-decoration-color: currentColor; }
   color: var(--color-header-framework);
   text-decoration: none;
   white-space: nowrap;
-  transform: translateY(calc(var(--identity-space-after-origin) - var(--identity-space-after)));
 }
 .app-header__framework:hover { color: var(--color-header-framework); }
 
@@ -185,7 +183,7 @@ a:visited { text-decoration-color: currentColor; }
   inset: auto;
   display: flex;
   align-items: center;
-  align-self: center;
+  align-self: end;
   gap: var(--space-2);
   justify-self: end;
   margin-inline-end: 0;
@@ -428,9 +426,9 @@ a:visited { text-decoration-color: currentColor; }
       'framework framework';
     grid-template-columns: minmax(0, 1fr) auto;
     grid-template-rows:
-      var(--target-min)
+      calc(var(--target-min) + var(--identity-space-after-origin))
       var(--identity-line-gap)
-      calc((var(--identity-heading-size) * 1.57) + var(--identity-space-after-origin));
+      calc((var(--identity-heading-size) * 1.57) + var(--identity-space-after));
     align-content: start;
     gap: 0 var(--space-4);
     padding-block: var(--identity-space-before) var(--space-3);
@@ -441,10 +439,10 @@ a:visited { text-decoration-color: currentColor; }
     height: auto;
     min-height: 0;
   }
-  .app-header__title { align-self: center; }
+  .app-header__title { align-self: end; }
   .app-header__framework-row { display: flex; }
   .app-header__framework { overflow: hidden; }
-  .app-header__utilities { align-self: center; }
+  .app-header__utilities { align-self: end; }
 
   /* Section pages retain their left rail. Start the disclosed global
      navigation on the same content column rather than the viewport edge. */
