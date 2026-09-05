@@ -1,0 +1,123 @@
+---
+import Layout from '@/layouts/Layout.astro';
+---
+
+<Layout title="Questions about our approach" description="Practical answers about semantic modelling, existing systems, privacy, accuracy, AI, professional expertise and participation in the Smart Property Data Trust Framework.">
+  <h1>Questions about our approach</h1>
+  <p class="lead">
+    Shared meaning should make property information easier to work with. It should
+    also be possible to question the approach before investing time in it. These answers
+    distinguish the method we are developing, the website you can explore now, and the
+    decisions that still need people to make them.
+  </p>
+
+  <h2 id="training">Do I need to understand ontologies to take part?</h2>
+  <p>
+    No. You can review a definition, explain a business rule, identify an exception or
+    challenge a diagram using the language of your profession. Facilitators translate
+    that knowledge into the formal model. Knowing that two dates mean different things,
+    or that a proposed definition excludes a common transaction, is useful expertise
+    whether or not you know the technical vocabulary. Start with the
+    <a href="/semantic-modelling/taking-part">participation guide</a>.
+  </p>
+
+  <h2 id="another-dictionary">Is this just another data dictionary?</h2>
+  <p>
+    A dictionary explains data elements. An ontology also makes the things those
+    elements describe and their connections explicit. An amount can be connected to a
+    particular valuation, its subject, purpose, date and source. The dictionary remains
+    useful: it is one part of the <a href="/semantic-modelling/semantic-package">same
+    semantic package</a>, alongside definitions, vocabularies and relationships.
+    The aim is to make those views agree, rather than maintain competing specifications.
+  </p>
+
+  <h2 id="replace-systems">Will organisations have to replace their systems?</h2>
+  <p>
+    The method does not require everyone to adopt one database or application. An
+    organisation can retain its own model and connect the information it exchanges to
+    agreed meanings. Familiar JSON messages and APIs can remain delivery formats.
+    Adapters and transformations still require engineering; an ontology is not an
+    automatic compatibility layer. The benefit is a visible agreement against which
+    that work can be designed and checked.
+  </p>
+
+  <h2 id="shared-database">Does linked data mean one shared database?</h2>
+  <p>
+    No. Linked data describes how information can use stable references and explicit
+    connections. It does not prescribe one place where all records must be stored.
+    A shared definition of “inspection date” can be used by many systems while their
+    actual inspection records remain separately controlled. Decisions about hosting,
+    exchange and access belong to the systems and agreements that use the model.
+  </p>
+
+  <h2 id="privacy">Does making the model open expose customer data?</h2>
+  <p>
+    Publishing a definition is different from publishing records about people or
+    transactions. The public website presents modelling documentation and candidate
+    structures; contributors should use fictional examples and the authorised private
+    intake for permitted source material. An ontology can describe sensitivity, purpose
+    and consent, but it does not itself enforce access. Follow the
+    <a href="/development/working-groups/member-guide/source-material-and-sharepoint">source-material
+    guidance</a> before submitting anything.
+  </p>
+
+  <h2 id="one-definition">Why not agree one definition for the whole industry?</h2>
+  <p>
+    Sometimes one definition is exactly right. Sometimes it hides a distinction that
+    matters: an asking price, a lending valuation and a rebuilding cost are all amounts
+    associated with a property, but they support different decisions. We begin with
+    the people who understand each meaning and agree the connections between contexts.
+    The <a href="/semantic-modelling/bounded-contexts">common boundary</a> holds what
+    genuinely needs a shared definition; it is not a destination for every unresolved term.
+  </p>
+
+  <h2 id="existing-standards">Why not import an existing ontology?</h2>
+  <p>
+    Existing standards are valuable sources of reusable terms and tested ideas.
+    Reuse works when the meaning, scope and governance fit the question being answered.
+    Importing an entire model before examining those questions can introduce assumptions
+    a working group has never reviewed. We assess exact terms and uses, explain where
+    they fit, and record where a local distinction or an explicit mapping is needed.
+  </p>
+
+  <h2 id="accuracy">Does a valid model guarantee accurate information?</h2>
+  <p>
+    No. A check can establish that a date is present and correctly formatted without
+    proving that an inspection happened on that date. Technical validation checks
+    declared expectations; source evidence and practitioner judgement address different
+    questions. Making those responsibilities visible helps people understand a result.
+    It does not replace investigation, professional responsibility or the need to
+    challenge an unreliable source.
+  </p>
+
+  <h2 id="ai">Is AI deciding what the standard means?</h2>
+  <p>
+    No. AI can help organise evidence, propose wording and identify apparent
+    inconsistencies. Those are proposals for people to examine. Several models agreeing
+    does not establish truth or grant authority. The accepted Property Pack authoring
+    approach keeps machine-generated candidates subject to human review; the wider
+    operating workflow continues to have its own recorded status. See
+    <a href="/semantic-modelling/modelling-method">how we model</a> for the distinction.
+  </p>
+
+  <h2 id="disagreement">What happens when experts disagree?</h2>
+  <p>
+    First establish whether they are answering the same question in the same context.
+    A difference may be legitimate rather than an error to eliminate. Record examples,
+    evidence and the practical consequences of each interpretation. Where agreement is
+    needed, the affected owners and OPDA governance must resolve it; software cannot
+    settle the issue by counting comments. A draft can retain an open question without
+    pretending that agreement already exists.
+  </p>
+
+  <h2 id="available">Is everything described here already built or approved?</h2>
+  <p>
+    No. You can <a href="/search">search and explore</a> generated model pages and the
+    current Property Pack candidate. Page status distinguishes implementation, review
+    and approval. Some delivery formats and expanded review facilities remain planned.
+    The <a href="/development/outputs">outputs register</a> records that boundary.
+    If you want to shape the work, <a href="/join">express interest in a working
+    group</a>; registration is followed by human review, not automatic membership or
+    decision rights.
+  </p>
+</Layout>
