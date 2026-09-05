@@ -1,0 +1,117 @@
+---
+import ModellingLayout from '@/layouts/ModellingLayout.astro';
+---
+
+<ModellingLayout title="What happens to a contribution?" description="Discussion, a proposed change, technical checks and adoption are different events. Follow the Harbour Court question through them without mistaking an intended workflow for a completed approval system." chapter="Contribute · Review and decisions" claim="guide">
+  <section aria-labelledby="not-a-vote">
+    <h2 id="not-a-vote">A comment opens a question; it does not settle the model</h2>
+    <p>
+      A precise observation gives reviewers something to investigate. It may lead to
+      better wording, a new distinction, a request for more evidence or a conclusion
+      that the existing meaning should remain. A useful outcome can also be a clearly
+      recorded disagreement. None requires treating the number of comments, reactions
+      or agreeing AI agents as authority.
+    </p>
+    <p>
+      The sequence below is a guide to the reasoning and handoffs, illustrated with
+      fictional Harbour Court feedback. It is not a live tracking system, a promised
+      response time or evidence that every stage is currently implemented on this
+      website. The applicable candidate and working-group records determine standing.
+    </p>
+  </section>
+
+  <figure class="modelling-figure" aria-labelledby="journey-caption">
+    <figcaption id="journey-caption">An illustrative review journey, with distinct responsibilities</figcaption>
+    <ol class="modelling-steps">
+      <li><h3>Observation · Participant</h3><p>“The report was corrected on 20 August, but the inspection occurred on 12 August. This definition appears to combine those dates.”</p></li>
+      <li><h3>Interpretation · Facilitator and domain reviewers</h3><p>Identify the subjects and evidence. Ask whether the problem is wording, missing structure, a source conflict or a difference between contexts.</p></li>
+      <li><h3>Proposed change · Modelling contributors</h3><p>Draft separate meanings for inspection occurrence and report issue. Include the multi-day inspection counterexample and show what would change.</p></li>
+      <li><h3>Checks · Technical specialists and tools</h3><p>Examine whether the encoding and declared rules preserve the proposed distinction. A check does not establish that the inspection happened or approve the meaning.</p></li>
+      <li><h3>Disposition · Responsible human authority</h3><p>Record the response, rationale, remaining questions and the candidate or decision affected. Promotion requires the applicable recorded authority.</p></li>
+    </ol>
+  </figure>
+
+  <section aria-labelledby="responses">
+    <h2 id="responses">What an understandable response should tell you</h2>
+    <p>
+      “Resolved” is not enough if you cannot see what changed. A useful response
+      connects the original question to the reasoning and its effect. For our case,
+      you should be able to distinguish these possible outcomes:
+    </p>
+    <dl>
+      <dt>A change is proposed</dt><dd>The draft now separates the dates. It still needs review, and the affected candidate version should be identified.</dd>
+      <dt>More evidence is needed</dt><dd>The usual case is clear, but the treatment of inspections spanning several days remains open.</dd>
+      <dt>Different contexts need different views</dt><dd>One consumer needs the event date and another the latest report issue date. The model can preserve both without redefining them as one thing.</dd>
+      <dt>No change is proposed</dt><dd>The existing definition already distinguishes the subjects, or the suggested replacement would introduce a different error. Explain that reasoning and point to the relevant definition.</dd>
+    </dl>
+    <p>
+      These are explanatory outcomes, not the names of an implemented OPDA issue
+      tracker or an adopted lifecycle state machine. The
+      <a href="/semantic-modelling/method">method section</a> separates the required
+      modelling discipline from wider proposed operating arrangements.
+    </p>
+  </section>
+
+  <section aria-labelledby="checks">
+    <h2 id="checks">Passing a check answers a bounded question</h2>
+    <div class="modelling-comparison">
+      <section aria-labelledby="technical-answer">
+        <h3 id="technical-answer">A technical check can ask</h3>
+        <p>Does this report description contain the issue date required by this declared profile? Is that value expressed in the required form? Does the example preserve the intended relationship?</p>
+      </section>
+      <section aria-labelledby="human-answer">
+        <h3 id="human-answer">Domain review still has to ask</h3>
+        <p>Is this the right date to require for the stated purpose? Does the definition work in practice? What evidence supports the claim, and who can authorise the proposed change?</p>
+      </section>
+    </div>
+    <p>
+      A file can satisfy an encoded rule while containing an inaccurate statement.
+      Equally, a useful observation can reveal that the encoded rule itself is wrong.
+      Tools help locate inconsistencies; people must interpret their consequences.
+      This teaching example is not a current candidate validation result.
+    </p>
+  </section>
+
+  <section aria-labelledby="disagreement">
+    <h2 id="disagreement">When there is no clean answer yet</h2>
+    <p>
+      Subdivision gives Harbour Court a harder question: what makes Flat 1 the same
+      dwelling over time? An unchanged address cannot settle it, and a new identifier
+      alone cannot explain it. Record the competing interpretations, the evidence
+      needed and which responsibility owns the next review. Do not hide the problem
+      by merging the dwelling, building and title record.
+    </p>
+    <details>
+      <summary>Why preserve dissent if most people prefer one answer?</summary>
+      <p>A minority example may reveal a material exception or a different context. Recording it makes the consequence of the majority's preferred design visible and provides a reason to revisit the decision when evidence changes. That does not mean every objection prevents progress; it means unresolved meaning should not be represented as settled agreement.</p>
+    </details>
+  </section>
+
+  <section aria-labelledby="available">
+    <h2 id="available">Current routes, proposed capabilities and authority</h2>
+    <p>
+      Today, the site provides candidate documentation and the member guide. Pages
+      that expose comments support contextual feedback for authorised signed-in
+      participants; working-group Teams threads support discussion under the
+      <a href="/development/working-groups/member-guide/teams-and-discussions">current
+      discussion guidance</a>. File intake follows its separate authorised route.
+    </p>
+    <p>
+      Richer change views, expanded review facilities and the wider lifecycle
+      arrangements are not made operational simply by describing them here.
+      <a href="/modelling/adr/adr-0065">ADR-0065</a> and
+      <a href="/modelling/adr/adr-0068">ADR-0068</a> record wider proposals. The
+      <a href="/modelling/adr/adr-0067">Property Pack decision, ADR-0067</a>, separately
+      records that component's authority boundary: candidate generation and technical
+      conformance do not grant agents release authority.
+    </p>
+    <p>
+      If you contribute, keep the reference to the original question and follow its
+      existing discussion thread. Ask which candidate or decision the response
+      affects. If access or the next step is unclear, use the
+      <a href="/development/working-groups/member-guide">member guide</a>; do not
+      create a parallel public thread containing private evidence.
+    </p>
+    <p><a href="/semantic-modelling/contribute/review-a-definition">Prepare your first review question →</a></p>
+  </section>
+</ModellingLayout>
