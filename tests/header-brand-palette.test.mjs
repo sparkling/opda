@@ -161,7 +161,8 @@ test('temporary selectors expose full preview cards and persist palettes and ico
   assert.match(join, /<CampaignHeaderControls[\s\S]*controlId="join-header-preview-selectors"[\s\S]*identityId="join-campaign-identity"[\s\S]*positionTargetId="join-influence-panel"[\s\S]*themeToggleTargetId="join-theme-toggle"/u);
   assert.match(campaignConfig, /icon: 'twin-frames'[\s\S]*palette: 'petrol'[\s\S]*scale: 26,[\s\S]*opdaScale: 106,[\s\S]*spaceAbove: 9,[\s\S]*lineGap: 0,[\s\S]*spaceBelow: 18,[\s\S]*panelPositionX: -67,[\s\S]*panelPositionY: -8,[\s\S]*panelWidth: 100,[\s\S]*themeTogglePositionY: 25,/u);
   assert.match(campaignIdentity, /<header class="wg-campaign-hero__header">[\s\S]*class="wg-campaign-identity"[\s\S]*<BrandHeading variant="paired" \/>[\s\S]*showOpdaLink && <a class="wg-campaign-identity__opda-link" href="\/">OPDA<\/a>[\s\S]*<ThemeToggle id=\{`\$\{themeToggleId\}-button`\} \/>[\s\S]*<FrameworkHeading scale="display" \/>/u);
-  assert.match(campaignControls, /<HeaderPreviewControls[\s\S]*showScaleControl[\s\S]*initialScale=\{CAMPAIGN_HEADER_DEFAULTS\.scale\}[\s\S]*initialPositionX=\{CAMPAIGN_HEADER_DEFAULTS\.panelPositionX\}[\s\S]*initialPanelWidth=\{CAMPAIGN_HEADER_DEFAULTS\.panelWidth\}[\s\S]*initialThemeTogglePosition=\{CAMPAIGN_HEADER_DEFAULTS\.themeTogglePositionY\}[\s\S]*initialPalette=\{CAMPAIGN_HEADER_DEFAULTS\.palette\}/u);
+  assert.match(campaignConfig, /JOIN_CAMPAIGN_HEADER_DEFAULTS[\s\S]*panelPositionX: 19,[\s\S]*panelPositionY: -118,[\s\S]*panelWidth: 93,[\s\S]*themeTogglePositionY: 10,/u);
+  assert.match(campaignControls, /<HeaderPreviewControls[\s\S]*showScaleControl[\s\S]*initialScale=\{configuration\.scale\}[\s\S]*initialPositionX=\{configuration\.panelPositionX\}[\s\S]*initialPanelWidth=\{configuration\.panelWidth\}[\s\S]*initialThemeTogglePosition=\{configuration\.themeTogglePositionY\}[\s\S]*initialPalette=\{configuration\.palette\}/u);
   assert.match(home, /import \{ assetVersion \} from '@\/lib\/asset-version\.mjs';[\s\S]*const clientV = assetVersion\('\/ui\/client\.js'\);[\s\S]*src=\{`\/ui\/client\.js\?v=\$\{clientV\}`\}/u);
   assert.match(join, /import \{ assetVersion \} from '@\/lib\/asset-version\.mjs';[\s\S]*const clientV = assetVersion\('\/ui\/client\.js'\);[\s\S]*src=\{`\/ui\/client\.js\?v=\$\{clientV\}`\}/u);
   assert.doesNotMatch(home, /src="\/ui\/client\.js"/u);
@@ -198,7 +199,8 @@ test('temporary selectors expose full preview cards and persist palettes and ico
   assert.match(campaign, /\.wg-campaign-side\s*\{[^}]*display:\s*grid;[^}]*gap:\s*var\(--space-3\);/su);
   assert.match(campaign, /\.wg-campaign-side > \.header-preview-controls\s*\{\s*justify-self:\s*end;\s*\}/u);
   assert.match(home, /<CampaignIdentity identityId="home-campaign-identity" themeToggleId="home-theme-toggle" \/>/u);
-  assert.match(join, /<CampaignIdentity identityId="join-campaign-identity" themeToggleId="join-theme-toggle" showOpdaLink \/>/u);
+  assert.match(join, /<CampaignIdentity[\s\S]*identityId="join-campaign-identity"[\s\S]*themeToggleId="join-theme-toggle"[\s\S]*showOpdaLink[\s\S]*configuration=\{JOIN_CAMPAIGN_HEADER_DEFAULTS\}[\s\S]*\/>/u);
+  assert.match(join, /<CampaignHeaderControls[\s\S]*themeToggleTargetId="join-theme-toggle"[\s\S]*configuration=\{JOIN_CAMPAIGN_HEADER_DEFAULTS\}[\s\S]*\/>/u);
   assert.match(campaign, /\.wg-campaign-identity__opda-row\s*\{[^}]*width:\s*100%;[^}]*display:\s*flex;[^}]*align-items:\s*flex-end;/su);
   assert.doesNotMatch(campaign, /\.wg-campaign-identity \.brand-heading__label\s*\{/u);
   assert.match(campaign, /\.wg-campaign-identity__theme-controls\s*\{[^}]*margin-left:\s*auto;[^}]*translate:\s*0 var\(--theme-toggle-position-y, 0\);/su);

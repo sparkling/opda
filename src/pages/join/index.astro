@@ -6,8 +6,8 @@ import { contributionOptions, workingGroupContexts } from '@/data/working-group-
 import StandalonePublicLayout from '@/layouts/StandalonePublicLayout.astro';
 import { assetVersion } from '@/lib/asset-version.mjs';
 import {
-  CAMPAIGN_HEADER_DEFAULTS,
-  campaignPanelStyle,
+  JOIN_CAMPAIGN_HEADER_DEFAULTS,
+  getCampaignPanelStyle,
 } from '@/lib/campaign-header-config';
 import { HEADER_ICON_IDS } from '@/lib/header-icons';
 import { HEADER_PALETTE_IDS } from '@/lib/header-palettes';
@@ -21,6 +21,7 @@ const privacyNoticeVersion = '2026-08-13';
 const title = 'Join an SPDTF working group';
 const description = 'Bring your professional experience to the industry working groups helping to develop the Smart Property Data Trust Framework.';
 const clientV = assetVersion('/ui/client.js');
+const joinPanelStyle = getCampaignPanelStyle(JOIN_CAMPAIGN_HEADER_DEFAULTS);
 ---
 <StandalonePublicLayout
   title={title}
@@ -33,9 +34,9 @@ const clientV = assetVersion('/ui/client.js');
     is:inline
     data-astro-rerun
     define:vars={{
-      defaultHeaderPalette: CAMPAIGN_HEADER_DEFAULTS.palette,
+      defaultHeaderPalette: JOIN_CAMPAIGN_HEADER_DEFAULTS.palette,
       headerPaletteIds: HEADER_PALETTE_IDS,
-      defaultHeaderIcon: CAMPAIGN_HEADER_DEFAULTS.icon,
+      defaultHeaderIcon: JOIN_CAMPAIGN_HEADER_DEFAULTS.icon,
       headerIconIds: HEADER_ICON_IDS,
     }}
   >
@@ -56,7 +57,12 @@ const clientV = assetVersion('/ui/client.js');
   </script>
   <div class="wg-page">
     <section class="wg-campaign-hero wg-campaign-hero--panel-aligned" aria-labelledby="join-title">
-      <CampaignIdentity identityId="join-campaign-identity" themeToggleId="join-theme-toggle" showOpdaLink />
+      <CampaignIdentity
+        identityId="join-campaign-identity"
+        themeToggleId="join-theme-toggle"
+        showOpdaLink
+        configuration={JOIN_CAMPAIGN_HEADER_DEFAULTS}
+      />
       <div class="wg-campaign-hero__copy">
         <h1 id="join-title">Help shape the future of <em>property information sharing.</em></h1>
         <p class="wg-lead">
@@ -78,8 +84,9 @@ const clientV = assetVersion('/ui/client.js');
           identityId="join-campaign-identity"
           positionTargetId="join-influence-panel"
           themeToggleTargetId="join-theme-toggle"
+          configuration={JOIN_CAMPAIGN_HEADER_DEFAULTS}
         />
-        <div class="wg-hero-journey" id="join-influence-panel" style={campaignPanelStyle} aria-labelledby="influence-title">
+        <div class="wg-hero-journey" id="join-influence-panel" style={joinPanelStyle} aria-labelledby="influence-title">
           <p class="wg-eyebrow">Why your voice matters now</p>
           <h2 id="influence-title">The standard needs your experience.</h2>
           <ul class="wg-process" role="list">

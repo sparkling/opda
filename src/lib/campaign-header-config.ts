@@ -1,9 +1,23 @@
 import type { HeaderIconId } from '@/lib/header-icons';
 import type { HeaderPaletteId } from '@/lib/header-palettes';
 
-export const CAMPAIGN_HEADER_DEFAULTS = {
-  icon: 'twin-frames' as HeaderIconId,
-  palette: 'petrol' as HeaderPaletteId,
+export interface CampaignHeaderConfiguration {
+  icon: HeaderIconId;
+  palette: HeaderPaletteId;
+  scale: number;
+  opdaScale: number;
+  spaceAbove: number;
+  lineGap: number;
+  spaceBelow: number;
+  panelPositionX: number;
+  panelPositionY: number;
+  panelWidth: number;
+  themeTogglePositionY: number;
+}
+
+export const CAMPAIGN_HEADER_DEFAULTS: CampaignHeaderConfiguration = {
+  icon: 'twin-frames',
+  palette: 'petrol',
   scale: 26,
   opdaScale: 106,
   spaceAbove: 9,
@@ -13,21 +27,36 @@ export const CAMPAIGN_HEADER_DEFAULTS = {
   panelPositionY: -8,
   panelWidth: 100,
   themeTogglePositionY: 25,
-} as const;
+};
 
-export const campaignIdentityStyle = [
-  `--identity-heading-size:${CAMPAIGN_HEADER_DEFAULTS.scale}px`,
-  `--identity-opda-scale:${CAMPAIGN_HEADER_DEFAULTS.opdaScale / 100}`,
-  `--identity-space-before:${CAMPAIGN_HEADER_DEFAULTS.spaceAbove}px`,
-  `--identity-line-gap:${CAMPAIGN_HEADER_DEFAULTS.lineGap}px`,
-  `--identity-space-after:${CAMPAIGN_HEADER_DEFAULTS.spaceBelow}px`,
-].join(';');
+export const JOIN_CAMPAIGN_HEADER_DEFAULTS: CampaignHeaderConfiguration = {
+  ...CAMPAIGN_HEADER_DEFAULTS,
+  panelPositionX: 19,
+  panelPositionY: -118,
+  panelWidth: 93,
+  themeTogglePositionY: 10,
+};
 
-export const campaignPanelStyle = [
-  `--domains-position-x:${CAMPAIGN_HEADER_DEFAULTS.panelPositionX}px`,
-  `--domains-position-y:${CAMPAIGN_HEADER_DEFAULTS.panelPositionY}px`,
-  `--domains-width:${CAMPAIGN_HEADER_DEFAULTS.panelWidth}%`,
-].join(';');
+export function getCampaignIdentityStyle(configuration: CampaignHeaderConfiguration) {
+  return [
+    `--identity-heading-size:${configuration.scale}px`,
+    `--identity-opda-scale:${configuration.opdaScale / 100}`,
+    `--identity-space-before:${configuration.spaceAbove}px`,
+    `--identity-line-gap:${configuration.lineGap}px`,
+    `--identity-space-after:${configuration.spaceBelow}px`,
+  ].join(';');
+}
 
-export const campaignThemeToggleStyle =
-  `--theme-toggle-position-y:${CAMPAIGN_HEADER_DEFAULTS.themeTogglePositionY}px`;
+export function getCampaignPanelStyle(configuration: CampaignHeaderConfiguration) {
+  return [
+    `--domains-position-x:${configuration.panelPositionX}px`,
+    `--domains-position-y:${configuration.panelPositionY}px`,
+    `--domains-width:${configuration.panelWidth}%`,
+  ].join(';');
+}
+
+export function getCampaignThemeToggleStyle(configuration: CampaignHeaderConfiguration) {
+  return `--theme-toggle-position-y:${configuration.themeTogglePositionY}px`;
+}
+
+export const campaignPanelStyle = getCampaignPanelStyle(CAMPAIGN_HEADER_DEFAULTS);

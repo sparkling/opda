@@ -3,23 +3,33 @@ import BrandHeading from '@/components/BrandHeading.astro';
 import FrameworkHeading from '@/components/FrameworkHeading.astro';
 import ThemeToggle from '@/components/ThemeToggle.astro';
 import {
-  campaignIdentityStyle,
-  campaignThemeToggleStyle,
+  CAMPAIGN_HEADER_DEFAULTS,
+  getCampaignIdentityStyle,
+  getCampaignThemeToggleStyle,
+  type CampaignHeaderConfiguration,
 } from '@/lib/campaign-header-config';
 
 interface Props {
   identityId: string;
   themeToggleId: string;
   showOpdaLink?: boolean;
+  configuration?: CampaignHeaderConfiguration;
 }
 
-const { identityId, themeToggleId, showOpdaLink = false } = Astro.props;
+const {
+  identityId,
+  themeToggleId,
+  showOpdaLink = false,
+  configuration = CAMPAIGN_HEADER_DEFAULTS,
+} = Astro.props;
+const identityStyle = getCampaignIdentityStyle(configuration);
+const themeToggleStyle = getCampaignThemeToggleStyle(configuration);
 ---
 <header class="wg-campaign-hero__header">
-  <div class="wg-campaign-identity" id={identityId} style={campaignIdentityStyle}>
+  <div class="wg-campaign-identity" id={identityId} style={identityStyle}>
     <div class="wg-campaign-identity__opda-row">
       <BrandHeading variant="paired" />
-      <span id={themeToggleId} class="wg-campaign-identity__theme-controls" style={campaignThemeToggleStyle}>
+      <span id={themeToggleId} class="wg-campaign-identity__theme-controls" style={themeToggleStyle}>
         {showOpdaLink && <a class="wg-campaign-identity__opda-link" href="/">OPDA</a>}
         <ThemeToggle id={`${themeToggleId}-button`} />
       </span>
