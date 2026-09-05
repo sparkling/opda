@@ -1,0 +1,103 @@
+---
+import ModellingLayout from '@/layouts/ModellingLayout.astro';
+import ModellingVisual from '@/components/modelling/ModellingVisual.astro';
+---
+
+<ModellingLayout title="Scope and package: eight concerns, six connected outputs" description="Assess the meaning a context must own, the agreements it can reuse and the evidence needed at its boundaries. Bring the results together as one versioned semantic package, not a collection of independently drifting documents." chapter="Build the agreement" claim="method">
+  <section aria-labelledby="different-jobs">
+    <h2 id="different-jobs">Do not turn three useful structures into one hierarchy</h2>
+    <p>The eight retained modelling concerns tell us what to consider. The six semantic outputs tell us what practitioners should be able to review. The four dispositions record where responsibility for each concern belongs. They are different structures: a concern can affect several outputs, while one output can draw on several concerns.</p>
+    <p>A bounded context gives the package its semantic home. It identifies the coherent language and responsibility for its meaning, not a folder, department or set of screens. A package then brings definitions, relationships, governed choices and their supporting contracts into a versioned agreement that can be inspected and challenged.</p>
+    <p>The aim is complete consideration within a declared scope, not maximum ontology size. A package that reuses a well-fitting vocabulary can be more complete than one that creates a redundant vocabulary and leaves its relationship to the shared meaning unexplained.</p>
+  </section>
+
+  <figure class="modelling-figure" data-modelling-figure="scope-map">
+    <ModellingVisual kind="scope-map" />
+    <p>Text equivalent: assess domain structure (1), vocabulary and taxonomy (2), classification metadata (5), validation (7), mappings (8), provenance and quality (9), time and history (10), and sensitivity and access policy (11) across one connected package.</p>
+    <figcaption>Eight concerns are a coverage contract, not eight mandatory files or separate ontologies. The original category numbers preserve traceability to the source framework.</figcaption>
+  </figure>
+
+  <section aria-labelledby="assessment">
+    <h2 id="assessment">Assess a concrete question across all eight concerns</h2>
+    <p>For Harbour Court, ask: “Which subject did the 12 August 2026 inspection concern, and which report version supports the information we are using?” The fictional building contains Flat 1 and Flat 2. Report version 1 appears on 14 August; a correction produces version 2 on 20 August. That small question touches more than the obvious class and date fields.</p>
+    <p>The following is a proposed assessment for the teaching case, not a completed OPDA package register. Each row identifies an evidence obligation; naming a disposition does not demonstrate that the obligation has been met.</p>
+    <table>
+      <caption>Eight-concern assessment of the fictional inspection-report package</caption>
+      <thead><tr><th scope="col">Concern</th><th scope="col">Proposed disposition</th><th scope="col">What must be established</th></tr></thead>
+      <tbody>
+        <tr><th scope="row">1 · Domain structure</th><td>model here</td><td>Distinguish building, dwellings, inspection, claim and report version. Keep the title record separate; leave subdivision identity unresolved until reviewed.</td></tr>
+        <tr><th scope="row">2 · Vocabulary and taxonomy</th><td>reuse shared</td><td>Identify a governed report-status vocabulary whose definitions fit this use. Pin its version; do not assume a similarly named list is suitable.</td></tr>
+        <tr><th scope="row">5 · Classification metadata</th><td>reuse shared</td><td>Use reviewed subject and information-type facets for discovery without turning those facets into inheritance or transferring ownership.</td></tr>
+        <tr><th scope="row">7 · Validation and constraints</th><td>model here</td><td>Define the receiving profile’s required inspection-subject and report-version links, with positive and counterexamples and explicit graph assumptions.</td></tr>
+        <tr><th scope="row">8 · Cross-domain mappings</th><td>boundary contribution</td><td>Supply the receiving context’s needs and paired definitions. Review term correspondences and strategic applicability separately; do not invent an exact match.</td></tr>
+        <tr><th scope="row">9 · Provenance and quality</th><td>model here</td><td>Identify the claim and report evidence, sources and versions. Distinguish faithful extraction from confidence that the reported observation is true.</td></tr>
+        <tr><th scope="row">10 · Temporal state and history</th><td>model here</td><td>Preserve the 12 August event and the 14/20 August report-generation dates. Keep a receiving system’s recording time distinct where needed.</td></tr>
+        <tr><th scope="row">11 · Sensitivity and access policy</th><td>model here</td><td>Establish which information needs handling restrictions and for what purpose. Do not treat a classification as evidence of runtime access enforcement.</td></tr>
+      </tbody>
+    </table>
+    <p>If the proposed shared vocabulary fails the meaning comparison, change the disposition or narrow the package’s scope rather than marking reuse complete. Likewise, a mapping register with no reviewed entries can coexist with a required mapping discipline. An empty register is an implementation gap, not evidence that the concern is irrelevant.</p>
+  </section>
+
+  <section aria-labelledby="dispositions">
+    <h2 id="dispositions">Make the ownership decision explicit</h2>
+    <p>A completed assessment assigns one of four dispositions to each retained concern for the declared context package. Record the owner, supporting evidence and any dependency that qualifies the decision. Shared vocabulary dependencies can support locally modelled content without becoming a second, competing owner of its meaning.</p>
+    <dl>
+      <dt><code>model here</code></dt><dd>The context owns substantive meaning or a local requirement. Identify its constructs, evidence, reviewer and open questions; do not equate ownership with approval.</dd>
+      <dt><code>reuse shared</code></dt><dd>A governed shared or external agreement meets the need. Record the exact terms and version, how they are used and what falls outside that reuse.</dd>
+      <dt><code>boundary contribution</code></dt><dd>The context supplies requirements or correspondences for an interoperability agreement. Name the affected contexts, the consumer question and the proposed handoff.</dd>
+      <dt><code>not applicable</code></dt><dd>The concern genuinely does not apply to the stated scope. Give a reviewable rationale and the change that would reopen the decision.</dd>
+    </dl>
+    <p>“Not applicable” must not mean “we have not investigated”, “there is no data yet” or “the generator cannot emit it”. Leave such gaps visible until the assessment can be completed. In the Harbour Court case, sensitivity cannot be dismissed simply because the teaching fixture contains no real personal data; the intended report-exchange use still needs examination.</p>
+  </section>
+
+  <section aria-labelledby="six-outputs">
+    <h2 id="six-outputs">Let six outputs expose the same reviewed meaning</h2>
+    <p>The package presents six related kinds of review material. These are coordinated views or projections of one agreement, not six autonomous standards and not necessarily six files. A projection can be generated only when its source and derivation contract are known; calling it a projection does not prove that such generation already exists.</p>
+    <table>
+      <caption>Six reviewable outputs in the Harbour Court illustration</caption>
+      <thead><tr><th scope="col">Output</th><th scope="col">What a practitioner inspects</th></tr></thead>
+      <tbody>
+        <tr><th scope="row">Business glossary</th><td>The meanings of inspection, inspection subject and report version, with examples and exclusions.</td></tr>
+        <tr><th scope="row">Data dictionary</th><td>The recorded elements, their value expectations and which meaning each one expresses; an inspection date is not a report date.</td></tr>
+        <tr><th scope="row">Taxonomies</th><td>Reviewed broader/narrower organisation of relevant concepts, without pretending the browsing tree is class inheritance.</td></tr>
+        <tr><th scope="row">Controlled vocabularies</th><td>The governed status or choice concepts, definitions, identifiers and closure decisions used by this package.</td></tr>
+        <tr><th scope="row">Resources</th><td>The identifiable kinds of thing and their descriptions, including the distinction between the building and its report.</td></tr>
+        <tr><th scope="row">Relationships</th><td>How a report refers to an inspection, how its subject is identified and which participation or mapping needs qualification.</td></tr>
+      </tbody>
+    </table>
+    <p>A mapping set can be an interoperability attachment aligned with Relationships; it is not a seventh semantic output. Shapes, inference profiles and evidence receipts support the package across these views. They must remain aligned with the reviewed meanings rather than becoming a hidden alternative definition.</p>
+  </section>
+
+  <section aria-labelledby="change">
+    <h2 id="change">Follow one reviewed change across the package</h2>
+    <p>Suppose reviewers find that “inspection subject” was described too loosely as “the property”. They agree that the package must distinguish a whole-building inspection from a dwelling-specific inspection. That is one semantic change with several consequences, not a request to edit a glossary sentence and stop.</p>
+    <ol class="modelling-steps">
+      <li><strong>Meaning:</strong> revise the glossary definition and its Harbour Court counterexample; record the reason and the deciding authority.</li>
+      <li><strong>Structure:</strong> check resource and relationship definitions so the intended subject can be identified without equating a building and dwelling.</li>
+      <li><strong>Recorded data:</strong> align the dictionary’s subject reference and any applicable choice vocabulary or taxonomy; record a checked “no change” where appropriate.</li>
+      <li><strong>Contracts:</strong> update the receiving shape and examples, and review mappings that depended on the older definition.</li>
+      <li><strong>Release evidence:</strong> identify the package version, changed and unchanged outputs, dependencies, derivations and checks actually completed.</li>
+    </ol>
+    <p>Do not silently relabel old report data as conforming to the revised definition. Determine whether the original evidence distinguishes its subject, whether a qualified migration is possible and what remains unknown. Nor does this change alter the inspection date or settle the unresolved subdivision criterion: its scope must remain explicit.</p>
+  </section>
+
+  <section aria-labelledby="exclusions">
+    <h2 id="exclusions">Keep the exclusions visible without erasing programme responsibilities</h2>
+    <p>The source framework has fourteen categories. OPDA excludes process modelling (3), service architecture (4), governance and compliance as an ontology (6), capability and intent (12), source mapping (13), and data products (14) from this selected ontology scope.</p>
+    <p>Working groups still govern decisions. Delivery systems still need architecture and access controls. Sources and historical schema mappings still provide evidence. These activities do not automatically require the excluded ontology categories. In particular, describing a semantic package does not adopt a separate data-product ontology, and linking a source requirement to a model construct does not adopt an executable source-mapping model.</p>
+    <p>A change in that scope requires an explicit decision. It must not arrive unnoticed through a diagram, a new namespace or a claim that a convenient tool needs every category.</p>
+  </section>
+
+  <section aria-labelledby="receipt">
+    <h2 id="receipt">A package handoff is a receipt, not a claim of completion</h2>
+    <p>Identify the scope and semantic owner; package and source versions; concern dispositions; the six output views; vocabulary and mapping dependencies; relevant validation and inference profiles; and unresolved questions. Where a view is generated, state its source, generator and derivation. Where it is manually maintained, explain how alignment is checked.</p>
+    <p>A package diff and appropriate rerun evidence make a synchronisation claim reviewable. The method requires that evidence; this explanatory page neither performs those checks nor certifies today’s candidates. Technical conformance and human adoption remain distinct.</p>
+    <p>Continue with <a href="/semantic-modelling/method/from-question-to-candidate">from question to candidate</a> or <a href="/semantic-modelling/method/meaning-checks-and-delivery">meaning, checks and delivery</a>.</p>
+  </section>
+
+  <section aria-labelledby="source-contract">
+    <h2 id="source-contract">Source contract</h2>
+    <p>Source-method ODR-0071 R1 supplies the fourteen-category framework; child records ODR-0071a/b/e/g/h/i/j/k govern the retained concerns. OPDA ADR-0063 and ADR-0067 establish the selected scope and connected semantic outputs; the package is not an adoption of excluded category 14. Supporting property, mapping, temporal and policy rules retain their own amendments and applicability boundaries.</p>
+    <p>Reviewed source revision: <code>67174057e6384b79d0b28b7736fe70a66e112895</code>, 5 September 2026. See <a href="/semantic-modelling/method/standards-and-decisions">standards and decisions</a> for register separation and adoption scope. The assessment and proposed change above are fictional illustrations, not populated candidate records or conformance results.</p>
+  </section>
+</ModellingLayout>
