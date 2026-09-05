@@ -18,6 +18,9 @@ interface Props {
   initialSpaceBelow?: number;
   initialOpdaScale?: number;
   initialUtilityGroupPosition?: number;
+  initialPositionX?: number;
+  initialPositionY?: number;
+  initialThemeTogglePosition?: number;
   initialIcon?: HeaderIconId;
   initialPalette?: HeaderPaletteId;
 }
@@ -35,6 +38,9 @@ const {
   initialSpaceBelow = 0,
   initialOpdaScale = 100,
   initialUtilityGroupPosition = 0,
+  initialPositionX = 0,
+  initialPositionY = 0,
+  initialThemeTogglePosition = 0,
   initialIcon,
   initialPalette,
 } = Astro.props;
@@ -56,6 +62,9 @@ const {
           initialSpaceBelow={initialSpaceBelow}
           initialOpdaScale={initialOpdaScale}
           initialUtilityGroupPosition={initialUtilityGroupPosition}
+          initialPositionX={initialPositionX}
+          initialPositionY={initialPositionY}
+          initialThemeTogglePosition={initialThemeTogglePosition}
         />
       )}
       <HeaderIconSelector initialIcon={initialIcon}>
@@ -72,6 +81,9 @@ const {
               initialSpaceBelow={initialSpaceBelow}
               initialOpdaScale={initialOpdaScale}
               initialUtilityGroupPosition={initialUtilityGroupPosition}
+              initialPositionX={initialPositionX}
+              initialPositionY={initialPositionY}
+              initialThemeTogglePosition={initialThemeTogglePosition}
             />
           )}
           <HeaderPaletteSelector embedded initialPalette={initialPalette} />
@@ -91,6 +103,9 @@ const {
               initialSpaceBelow={initialSpaceBelow}
               initialOpdaScale={initialOpdaScale}
               initialUtilityGroupPosition={initialUtilityGroupPosition}
+              initialPositionX={initialPositionX}
+              initialPositionY={initialPositionY}
+              initialThemeTogglePosition={initialThemeTogglePosition}
             />
           )}
           <HeaderIconSelector embedded initialIcon={initialIcon} />

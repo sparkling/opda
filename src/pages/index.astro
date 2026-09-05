@@ -4,16 +4,18 @@ import {
   getRouteStatus,
 } from '@/lib/site-ia.mjs';
 import DestinationCards from '@/components/ia/DestinationCards.astro';
-import BrandHeading from '@/components/BrandHeading.astro';
-import FrameworkHeading from '@/components/FrameworkHeading.astro';
-import HeaderPreviewControls from '@/components/HeaderPreviewControls.astro';
+import CampaignHeaderControls from '@/components/campaign/CampaignHeaderControls.astro';
+import CampaignIdentity from '@/components/campaign/CampaignIdentity.astro';
 import { HEADER_ICON_IDS } from '@/lib/header-icons';
 import { HEADER_PALETTE_IDS } from '@/lib/header-palettes';
 import { assetVersion } from '@/lib/asset-version.mjs';
 import KickoffFeature from '@/components/home/KickoffFeature.astro';
 import MethodFlowFigure from '@/components/home/MethodFlowFigure.astro';
 import SiteFooter from '@/components/SiteFooter.astro';
-import ThemeToggle from '@/components/ThemeToggle.astro';
+import {
+  CAMPAIGN_HEADER_DEFAULTS,
+  campaignPanelStyle,
+} from '@/lib/campaign-header-config';
 import { Database, HousePlug, Landmark, Megaphone, RulerDimensionLine, Scale } from '@lucide/astro';
 import '@/styles/working-group-campaign.css';
 import '@/styles/working-group-campaign-responsive.css';
@@ -23,20 +25,8 @@ const description =
   'Explore the OPDA programme, governance, semantic modelling, SPDTF development, working groups and evidence behind a shared language for property data.';
 const routeStatus = getRouteStatus('/');
 const clientV = assetVersion('/ui/client.js');
-const homeHeaderIcon = 'common-boundary';
-const homeHeaderPalette = 'clay-indigo';
-const homeHeaderScale = 32;
-const homeHeaderOpdaScale = 100;
-const homeHeaderSpaceAbove = 59;
-const homeHeaderLineGap = 0;
-const homeHeaderSpaceBelow = 16;
-const homeHeaderStyle = [
-  `--identity-heading-size:${homeHeaderScale}px`,
-  `--identity-opda-scale:${homeHeaderOpdaScale / 100}`,
-  `--identity-space-before:${homeHeaderSpaceAbove}px`,
-  `--identity-line-gap:${homeHeaderLineGap}px`,
-  `--identity-space-after:${homeHeaderSpaceBelow}px`,
-].join(';');
+const homeHeaderIcon = CAMPAIGN_HEADER_DEFAULTS.icon;
+const homeHeaderPalette = CAMPAIGN_HEADER_DEFAULTS.palette;
 const domains = [
   { name: 'Conveyancing', description: 'Legal title, ownership, disclosure, completion and transfer.', icon: Scale },
   { name: 'Estate agency', description: 'Marketing, pricing, letting, media and consumer disclosure.', icon: Megaphone },
@@ -99,15 +89,7 @@ const domains = [
   <a class="skip-link" href="#main-content">Skip to main content</a>
   <main id="main-content" tabindex="-1">
     <section class="home-campaign-hero wg-campaign-hero wg-campaign-hero--panel-aligned" aria-labelledby="public-title">
-      <header class="wg-campaign-hero__header">
-        <div class="wg-campaign-identity" id="home-campaign-identity" style={homeHeaderStyle}>
-          <div class="wg-campaign-identity__opda-row">
-            <BrandHeading variant="paired" />
-            <ThemeToggle id="home-theme-toggle" />
-          </div>
-          <FrameworkHeading scale="display" />
-        </div>
-      </header>
+      <CampaignIdentity identityId="home-campaign-identity" themeToggleId="home-theme-toggle" />
 
       <div class="wg-campaign-hero__copy">
         <h1 id="public-title">A shared language for property data, <em>drafted in the open.</em></h1>
@@ -124,22 +106,14 @@ const domains = [
         </div>
       </div>
 
-      <div class="home-campaign-side">
-        <HeaderPreviewControls
-          showScaleControl
+      <div class="wg-campaign-side">
+        <CampaignHeaderControls
           controlId="home-header-preview-selectors"
           identityId="home-campaign-identity"
           positionTargetId="home-domains-panel"
           themeToggleTargetId="home-theme-toggle"
-          initialScale={homeHeaderScale}
-          initialOpdaScale={homeHeaderOpdaScale}
-          initialSpaceAbove={homeHeaderSpaceAbove}
-          initialLineGap={homeHeaderLineGap}
-          initialSpaceBelow={homeHeaderSpaceBelow}
-          initialIcon={homeHeaderIcon}
-          initialPalette={homeHeaderPalette}
         />
-        <div class="wg-hero-journey" id="home-domains-panel" aria-labelledby="public-domains-title">
+        <div class="wg-hero-journey" id="home-domains-panel" style={campaignPanelStyle} aria-labelledby="public-domains-title">
           <p class="wg-eyebrow">Working Group</p>
           <h2 id="public-domains-title">Domains</h2>
           <ul class="wg-process home-domain-process" role="list">

@@ -1,10 +1,16 @@
 ---
 import WorkingGroupInterestForm from '@/components/campaign/WorkingGroupInterestForm.astro';
-import BrandHeading from '@/components/BrandHeading.astro';
-import ThemeToggle from '@/components/ThemeToggle.astro';
+import CampaignHeaderControls from '@/components/campaign/CampaignHeaderControls.astro';
+import CampaignIdentity from '@/components/campaign/CampaignIdentity.astro';
 import { contributionOptions, workingGroupContexts } from '@/data/working-group-campaign';
 import StandalonePublicLayout from '@/layouts/StandalonePublicLayout.astro';
 import { assetVersion } from '@/lib/asset-version.mjs';
+import {
+  CAMPAIGN_HEADER_DEFAULTS,
+  campaignPanelStyle,
+} from '@/lib/campaign-header-config';
+import { HEADER_ICON_IDS } from '@/lib/header-icons';
+import { HEADER_PALETTE_IDS } from '@/lib/header-palettes';
 import { BriefcaseBusiness, Route, SearchCheck } from '@lucide/astro';
 import '@/styles/working-group-join.css';
 import '@/styles/working-group-campaign.css';
@@ -22,17 +28,35 @@ const clientV = assetVersion('/ui/client.js');
   bodyClass="working-group-campaign"
   socialImage="/images/working-group-recruitment-social.png"
 >
+  <script
+    slot="head"
+    is:inline
+    data-astro-rerun
+    define:vars={{
+      defaultHeaderPalette: CAMPAIGN_HEADER_DEFAULTS.palette,
+      headerPaletteIds: HEADER_PALETTE_IDS,
+      defaultHeaderIcon: CAMPAIGN_HEADER_DEFAULTS.icon,
+      headerIconIds: HEADER_ICON_IDS,
+    }}
+  >
+    (() => {
+      try {
+        let palette = localStorage.getItem('opda-header-palette');
+        if (!headerPaletteIds.includes(palette)) palette = defaultHeaderPalette;
+        document.documentElement.setAttribute('data-header-palette', palette);
+
+        let icon = localStorage.getItem('opda-header-icon');
+        if (!headerIconIds.includes(icon)) icon = defaultHeaderIcon;
+        document.documentElement.setAttribute('data-header-icon', icon);
+      } catch {
+        document.documentElement.setAttribute('data-header-palette', defaultHeaderPalette);
+        document.documentElement.setAttribute('data-header-icon', defaultHeaderIcon);
+      }
+    })();
+  </script>
   <div class="wg-page">
     <section class="wg-campaign-hero wg-campaign-hero--panel-aligned" aria-labelledby="join-title">
-      <header class="wg-campaign-hero__header">
-        <a class="wg-hero-brand-link" href="/" aria-label="Open Property Data Association home">
-          <BrandHeading surface="dark" campaign />
-        </a>
-        <div class="wg-campaign-hero__utilities">
-          <a class="btn btn--quiet wg-hero-opda" href="/" aria-label="Open Property Data Association home">OPDA</a>
-          <ThemeToggle />
-        </div>
-      </header>
+      <CampaignIdentity identityId="join-campaign-identity" themeToggleId="join-theme-toggle" />
       <div class="wg-campaign-hero__copy">
         <p class="wg-eyebrow">The property industry, working together</p>
         <h1 id="join-title">Help shape the future of <em>property information sharing.</em></h1>
@@ -49,14 +73,22 @@ const clientV = assetVersion('/ui/client.js');
         </p>
       </div>
 
-      <div class="wg-hero-journey" aria-labelledby="influence-title">
-        <p class="wg-eyebrow">Why your voice matters now</p>
-        <h2 id="influence-title">The standard needs your experience.</h2>
-        <ul class="wg-process" role="list">
-          <li><span class="wg-process__icon" aria-hidden="true"><BriefcaseBusiness /></span><strong>Bring evidence from real work</strong><span>Show what happens beyond straightforward cases and ideal processes.</span></li>
-          <li><span class="wg-process__icon" aria-hidden="true"><SearchCheck /></span><strong>Challenge assumptions before they harden</strong><span>Identify omissions, costs and unintended consequences while proposals can still improve.</span></li>
-          <li><span class="wg-process__icon" aria-hidden="true"><Route /></span><strong>Influence the direction of the standard</strong><span>Help ensure its priorities and requirements reflect commercial reality, professional practice and public need.</span></li>
-        </ul>
+      <div class="wg-campaign-side">
+        <CampaignHeaderControls
+          controlId="join-header-preview-selectors"
+          identityId="join-campaign-identity"
+          positionTargetId="join-influence-panel"
+          themeToggleTargetId="join-theme-toggle"
+        />
+        <div class="wg-hero-journey" id="join-influence-panel" style={campaignPanelStyle} aria-labelledby="influence-title">
+          <p class="wg-eyebrow">Why your voice matters now</p>
+          <h2 id="influence-title">The standard needs your experience.</h2>
+          <ul class="wg-process" role="list">
+            <li><span class="wg-process__icon" aria-hidden="true"><BriefcaseBusiness /></span><strong>Bring evidence from real work</strong><span>Show what happens beyond straightforward cases and ideal processes.</span></li>
+            <li><span class="wg-process__icon" aria-hidden="true"><SearchCheck /></span><strong>Challenge assumptions before they harden</strong><span>Identify omissions, costs and unintended consequences while proposals can still improve.</span></li>
+            <li><span class="wg-process__icon" aria-hidden="true"><Route /></span><strong>Influence the direction of the standard</strong><span>Help ensure its priorities and requirements reflect commercial reality, professional practice and public need.</span></li>
+          </ul>
+        </div>
       </div>
     </section>
 
@@ -248,17 +280,6 @@ const clientV = assetVersion('/ui/client.js');
   :global(.working-group-campaign .wg-campaign-hero) {
     min-height: min(48rem, 100svh);
     padding-top: var(--space-6);
-  }
-
-  .wg-hero-brand-link {
-    display: inline-block;
-    color: inherit;
-    text-decoration: none;
-  }
-
-  .wg-hero-brand-link:hover {
-    color: inherit;
-    text-decoration: none;
   }
 
 </style>
