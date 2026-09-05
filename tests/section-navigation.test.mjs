@@ -78,7 +78,7 @@ test('the left section navigation implements all six destinations from one regis
   ])), {
     programme: 18,
     governance: 32,
-    'semantic-modelling': 11,
+    'semantic-modelling': 20,
     spdtf: 241,
     'working-groups': 39,
     resources: 12,
@@ -254,7 +254,7 @@ test('contextual rail highlighting never claims an index is the current detail p
 test('category landing pages remain in breadcrumbs and exact page sequences', () => {
   for (const [sectionKey, heading, category, firstChild] of [
     ['programme', 'Strategy', '/strategy', '/strategy/strategy-overview'],
-    ['semantic-modelling', 'Understand ontologies', '/semantic-modelling/why-ontologies', '/semantic-modelling/reading-the-model'],
+    ['semantic-modelling', 'Understand ontologies', '/semantic-modelling/why-ontologies', '/semantic-modelling/benefits'],
     ['spdtf', 'Property Pack ontology', '/development/property-pack', '/development/property-pack/definition-and-scope'],
     ['working-groups', 'Member guide', '/development/working-groups/member-guide', '/development/working-groups/member-guide/getting-started'],
     ['working-groups', 'Group workspaces', '/development/working-groups', '/development/working-groups/finance-and-banking'],
@@ -438,24 +438,40 @@ test('semantic modelling exposes two nested audience journeys with linked parent
   assert.ok(method);
   assert.equal(SECTION_NAVIGATION.spdtf.groups.some(({ heading }) => heading === 'Semantic modelling'), false);
   assert.deepEqual(understand.items.map(({ url }) => url), [
+    '/semantic-modelling/benefits',
+    '/semantic-modelling/taking-part',
     '/semantic-modelling/reading-the-model',
-    '/semantic-modelling/semantic-package',
-    '/semantic-modelling/bounded-contexts',
-    '/semantic-modelling/standards',
-    '/semantic-modelling/evidence-and-mappings',
-    '/semantic-modelling/validation',
+    '/semantic-modelling/questions',
   ]);
   assert.deepEqual(method.items.map(({ url }) => url), [
-    '/semantic-modelling/modelling-rules',
+    '/semantic-modelling/principles',
     '/semantic-modelling/coverage',
+    '/semantic-modelling/bounded-contexts',
+    '/semantic-modelling/context-maps',
+    '/semantic-modelling/identity-roles-and-phases',
+    '/semantic-modelling/modelling-patterns',
+    '/semantic-modelling/modelling-rules',
+    '/semantic-modelling/linked-data-languages',
+    '/semantic-modelling/semantic-package',
+    '/semantic-modelling/evidence-and-mappings',
+    '/semantic-modelling/validation',
+    '/semantic-modelling/standards',
+    '/semantic-modelling/decision-basis',
   ]);
-  assert.deepEqual(findNavigationPage('/semantic-modelling/reading-the-model').trail.map(({ url }) => url), [
-    '/semantic-modelling/reading-the-model',
-  ]);
+  for (const group of [understand, method]) {
+    for (const { url } of group.items) {
+      assert.deepEqual(findNavigationPage(url)?.trail.map(({ url: current }) => current), [url]);
+      assert.equal(findNavigationPage(url)?.group, group);
+      assert.ok(SITE_SEARCH_ENTRIES.some(({ url: current }) => current === url), `${url} must be searchable`);
+    }
+  }
   assert.equal(getNavigationPrevNext('/semantic-modelling/why-ontologies').next?.url,
-    '/semantic-modelling/reading-the-model');
+    '/semantic-modelling/benefits');
+  assert.equal(getNavigationPrevNext('/semantic-modelling/questions').next?.url,
+    '/semantic-modelling/modelling-method');
   assert.equal(getNavigationPrevNext('/semantic-modelling/modelling-method').next?.url,
-    '/semantic-modelling/modelling-rules');
+    '/semantic-modelling/principles');
+  assert.equal(getNavigationPrevNext('/semantic-modelling/decision-basis').next, undefined);
 });
 
 test('Property Pack work-package coverage exposes all eight source-catalogue views', () => {
