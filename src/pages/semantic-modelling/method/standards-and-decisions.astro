@@ -1,0 +1,189 @@
+---
+import ModellingLayout from '@/layouts/ModellingLayout.astro';
+import ContrastPair from '@/components/modelling/ContrastPair.astro';
+const revision = '67174057e6384b79d0b28b7736fe70a66e112895';
+const rules = [
+  { records: 'ODR-0015 · ODR-0040 · ODR-0106', concern: 'Boundaries and authority', rule: 'Give meaning a coherent, accountable context. Semantic ownership, organisational accountability, classification and system topology are not the same structure.', href: 'context-map-records', title: 'Strategic context maps' },
+  { records: 'ODR-0010 · ODR-0016 · ODR-0023', concern: 'Vocabulary and classification', rule: 'Separate classification from inheritance. Govern concepts and labels with SKOS; distinguish closed enumerations, their selected typing pattern, and open populations.', href: '../explore/names-and-choices', title: 'Names, choices and classifications' },
+  { records: 'ODR-0025 · ODR-0026', concern: 'Identity and property placement', rule: 'Distinguish kind, role and phase. Place applicability at the type that introduces the meaning and represent qualifications explicitly. Class-level roleOf/phaseOf annotations are not instance participation.', href: 'roles-and-phases', title: 'Roles and phases' },
+  { records: 'ODR-0112 · ODR-0115 · ODR-0118', concern: 'Foundational discipline', rule: 'Apply OntoClean and UFO-informed analysis across the selected concerns. Do not subsume domain classes under external upper-ontology classes.', href: 'classes-and-relationships', title: 'Classes and relationships' },
+  { records: 'ODR-0014', concern: 'Property applicability', rule: 'For each subject and value side, select exactly one complete mechanism: a safe universal RDFS declaration, alternative Schema.org inclusion hints, or a governed waiver. Read the 28 and 30 August amendments.', href: 'meaning-checks-and-delivery', title: 'Meaning, checks and delivery' },
+  { records: 'ODR-0030 · ODR-0036', concern: 'Language and execution', rule: 'Keep standard RDF/RDFS/OWL semantics. Bound the selected OWL surface; declare SHACL constraints and rule materialisation separately, with traceable derived information.', href: 'languages-and-profiles', title: 'Languages and profiles' },
+  { records: 'ODR-0087 · ODR-0096 · ODR-0098', concern: 'Qualified mappings', rule: 'Establish identity compatibility before equivalence. Retain SKOS correspondence statements and qualified SSSOM 1.0 records using SEMAPV process values and named RDF 1.2 reifiers.', href: 'mapping-records', title: 'Qualified term mappings' },
+  { records: 'ODR-0127', concern: 'Strategic context map records', rule: 'Keep strategic DDD relationships separate from term mappings. Active AS-IS/TO-BE records reference individual applicable mappings. Preserve the special history boundary rather than applying generic PROV revision predicates.', href: 'context-map-records', title: 'Strategic context maps' },
+  { records: 'ODR-0071i · ODR-0071j · ODR-0086', concern: 'Evidence, time and metadata', rule: 'Reuse selected canonical PROV-O, OWL-Time and Dublin Core terms through bounded profiles. Attribution is not truth; a recording date is not automatically the time a fact applies.', href: 'evidence-and-time', title: 'Evidence and time' },
+  { records: 'ODR-0071k · ODR-0089', concern: 'Sensitivity and policy', rule: 'Use local classifications and reviewed DPV mappings. ODRL through its DPV profile is conditional and limited to the selected policy cases; annotations are not access enforcement.', href: 'sensitivity-and-policy', title: 'Sensitivity and policy' },
+];
+const concerns = [
+  [1, 'ODR-0071a', 'Domain structure'],
+  [2, 'ODR-0071b', 'Vocabulary and taxonomy'],
+  [5, 'ODR-0071e', 'Classification metadata'],
+  [7, 'ODR-0071g', 'Validation and constraints'],
+  [8, 'ODR-0071h', 'Cross-domain mappings'],
+  [9, 'ODR-0071i', 'Provenance and quality'],
+  [10, 'ODR-0071j', 'Temporal state and history'],
+  [11, 'ODR-0071k', 'Access control and data sensitivity'],
+];
+const sourceFiles = [
+  'ODR-0071-ontology-modelling-category-framework.md',
+  'ODR-0014-domain-range-as-documentation.md',
+  'ODR-0015-bounded-context-autonomy.md',
+  'ODR-0025-role-view-modeling-pattern.md',
+  'ODR-0026-property-distribution-across-ontological-levels.md',
+  'ODR-0087-sssom-cat8-mapping-provenance.md',
+  'ODR-0096-cat8-reification-rdf12-triple-terms.md',
+  'ODR-0098-cross-context-identity-criterion-protocol.md',
+  'ODR-0112-ontoclean-four-axis-shape-buildout.md',
+  'ODR-0115-organising-architecture-co-equal-axes-and-register.md',
+  'ODR-0118-no-foundational-grounding-by-subsumption.md',
+  'ODR-0127-sparql-queryable-ddd-context-maps.md',
+];
+const methodHref = (slug: string) => slug.startsWith('../')
+  ? '/semantic-modelling/' + slug.slice(3)
+  : '/semantic-modelling/method/' + slug;
+---
+
+<ModellingLayout title="The decisions behind the method" description="Know which rules are normative, which operating proposals remain open, and which implementation claims need evidence. This register connects the manifesto to its source ODRs and the relevant OPDA ADRs." chapter="Apply the method · Authority and evidence" claim="method">
+  <p>
+    An ontology decision record explains a modelling choice, its scope and its
+    consequences. Here, the selected ODRs from the <em>semantic-modelling</em> source
+    project are normative for how we model. OPDA ADRs establish how that discipline
+    is applied to the property programme. Neither a source citation nor a successful
+    generator run adopts the meanings in a candidate model.
+  </p>
+  <ContrastPair leftLabel="A rule we must follow" rightLabel="A result we must demonstrate" accent="none">
+    <Fragment slot="left"><p>A mapping must carry the selected qualification and source versions. That requirement applies even while the current candidate contains no reviewed mappings.</p></Fragment>
+    <Fragment slot="right"><p>A particular release actually contains qualified mappings and passes the declared checks. That statement needs artefact-level evidence; the rule alone cannot support it.</p></Fragment>
+  </ContrastPair>
+
+  <h2 id="authority">Two decision registers, not interchangeable numbers</h2>
+  <p>
+    A source-method ODR number is not an OPDA ODR number. Source-method ODR-0025
+    describes a role-view modelling pattern. <a href="/modelling/odr/odr-0025">OPDA
+    ODR-0025</a> concerns the earlier schema-derived implementation's entailment regime.
+    Linking the former to the latter would cite a different decision. This guide names
+    the source register explicitly; local ADR and ODR links are labelled as OPDA.
+  </p>
+  <p>
+    The source review is pinned to <code>{revision}</code>, inspected read-only on
+    <time datetime="2026-09-05">5 September 2026</time>. The source project was not
+    modified. We carry its selected modelling rules into property examples, not its
+    business content, process models, architecture or implementation tooling.
+    Future amendments require a relevance review; they are not silently adopted by
+    this page.
+  </p>
+
+  <h2 id="source-odr-0071">ODR-0071: eight selected concerns, not all fourteen categories</h2>
+  <p>
+    <cite>Ontology Modelling Category Framework</cite>, originally dated 2 April 2026,
+    establishes the source framework. OPDA's scope retains categories 1, 2, 5, 7, 8, 9,
+    10 and 11. Original numbers are preserved so the selection can be checked without
+    translating a new numbering scheme.
+  </p>
+  <table>
+    <caption>The eight normative concerns selected for this modelling programme</caption>
+    <thead><tr><th scope="col">Category</th><th scope="col">Source record</th><th scope="col">Concern</th></tr></thead>
+    <tbody>{concerns.map(([number, record, concern]) => <tr><th scope="row">{number}</th><td>{record}</td><td>{concern}</td></tr>)}</tbody>
+  </table>
+  <p>
+    Categories 3 (process modelling), 4 (service architecture), 6 (governance and
+    compliance as an ontology), 12 (capability and intent), 13 (source mapping) and
+    14 (data products) are outside this required ontology scope. Excluding a governance
+    ontology does not remove programme governance. Excluding a source-mapping model
+    does not discard historical evidence about an input schema.
+  </p>
+  <p>
+    The <a href="/semantic-modelling/method/scope-and-package">scope and package
+    chapter</a> explains the four dispositions for each concern: model here, reuse
+    shared, boundary contribution or not applicable with reasons. Coverage is a
+    responsibility to assess, not a mandate to manufacture eight separate ontologies.
+  </p>
+
+  <h2 id="supporting-odrs">The rules behind the choices</h2>
+  <p>
+    Read a decision with its amendment and rule-level standing. A document can retain
+    historical wording or contain a separately marked proposal. Its heading alone
+    does not make every paragraph a current normative requirement.
+  </p>
+  <table>
+    <caption>Source-method contracts, applied only within the selected OPDA scope</caption>
+    <thead><tr><th scope="col">Concern and records</th><th scope="col">Required discipline</th><th scope="col">Explanation</th></tr></thead>
+    <tbody>{rules.map((record) => <tr>
+      <th scope="row">{record.concern}<br /><small>{record.records}</small></th>
+      <td>{record.rule}</td><td><a href={methodHref(record.href)}>{record.title}</a></td>
+    </tr>)}</tbody>
+  </table>
+
+  <h2 id="amendments">Amendments that change how older explanations must be read</h2>
+  <ol class="modelling-steps">
+    <li>
+      <h3 id="semantics">RDFS domain and range are not “OR” documentation</h3>
+      <p>ODR-0014's 28 August amendment retires the earlier alternative-domain convention. Repeated domains imply membership in <em>all</em> declared classes under <a href="https://www.w3.org/TR/rdf-schema/#ch_domain">RDFS semantics</a>. Disabling local inference does not change that meaning. The 30 August amendment requires complete, exclusive applicability coverage on both sides: a safe universal RDFS IRI, Schema.org inclusion hints for intended alternatives, or a governed waiver.</p>
+    </li>
+    <li>
+      <h3>Mappings require records, including internal mappings</h3>
+      <p>The selected ODR-0087/0096/0098 contract requires SSSOM 1.0 qualification and SEMAPV matching-process values, with a named RDF 1.2 reifier as well as the retained SKOS assertion. The 30 August profile excludes <code>sssom:author_id</code>; that does not abolish the human decision. An empty current mapping set is an implementation boundary, not a deferral of the normative method.</p>
+    </li>
+    <li>
+      <h3>Concern organisation does not displace identity analysis</h3>
+      <p>ODR-0115 places the concern spine in the organising role while foundational analysis remains cross-cutting. ODR-0118 prohibits external upper-ontology class subsumption within scope. The analytical method and importing an external ontology are different choices.</p>
+    </li>
+    <li>
+      <h3>The active context map has a specific history boundary</h3>
+      <p>ODR-0127 keeps active AS-IS/TO-BE strategic records and links exact applicable mapping records. It does not authorise <code>prov:wasDerivedFrom</code> or <code>prov:wasRevisionOf</code> on ContextRelationship resources. Files and Git retain that history. The general provenance chapter must not override this more specific contract.</p>
+    </li>
+    <li>
+      <h3>An accepted document can still contain a proposal</h3>
+      <p>ODR-0098 includes a separately labelled proposed refinement. Its accepted header does not automatically adopt that refinement. The technical chapters distinguish the current contract from proposed changes rather than voting them into force through prose.</p>
+    </li>
+  </ol>
+
+  <h2 id="opda-adrs">The relevant OPDA ADRs</h2>
+  <table>
+    <caption>Decision standing reviewed on 5 September 2026</caption>
+    <thead><tr><th scope="col">OPDA record</th><th scope="col">Standing</th><th scope="col">What it contributes</th></tr></thead>
+    <tbody>
+      <tr><th scope="row"><a href="/modelling/adr/adr-0039">0039 · Linked-data foundation</a></th><td>Accepted · 3 June 2026</td><td>The semantic foundation and the relationship to delivery representations.</td></tr>
+      <tr><th scope="row"><a href="/modelling/adr/adr-0063">0063 · Domain-led working groups</a></th><td>Accepted · 19 July; clarified 5 September</td><td>Practitioner-led meaning, context ownership, six outputs and the selected ODR-0071 concerns.</td></tr>
+      <tr><th scope="row"><a href="/modelling/adr/adr-0064">0064 · Modelling website revamp</a></th><td>Accepted · 19 July</td><td>Readable participation and explicit candidate-versus-historical authority.</td></tr>
+      <tr><th scope="row"><a href="/modelling/adr/adr-0067">0067 · First-principles Property Pack</a></th><td>Accepted · 3 August</td><td>A bounded component, evidence-led construction and a small common boundary.</td></tr>
+      <tr><th scope="row"><a href="/modelling/adr/adr-0074">0074 · Website information architecture</a></th><td>Implemented · 18 August</td><td>One Modelling destination for both audiences, using the shared page and navigation templates. This rewrite organises their tasks into four journeys.</td></tr>
+      <tr><th scope="row"><a href="/modelling/adr/adr-0075">0075 · Property Pack component</a></th><td>Accepted · 19 August</td><td>The accelerated Property Pack component is not the entire framework.</td></tr>
+      <tr><th scope="row"><a href="/modelling/adr/adr-0065">0065 · AI-assisted workflow</a><br /><a href="/modelling/adr/adr-0068">0068 · Standards lifecycle</a></th><td>Proposed · 19 July / 3 August</td><td>Wider operating and promotion proposals. Describing a required modelling method does not make these proposals operative.</td></tr>
+    </tbody>
+  </table>
+
+  <h2 id="claim-receipt">How to make a claim readers can check</h2>
+  <dl>
+    <dt>For a method requirement</dt><dd>Name the source register, decision, applicable rule or amendment, pinned revision and OPDA scope.</dd>
+    <dt>For an implementation statement</dt><dd>Name the candidate version, emitted feature, actual check and limitation. A declared prefix is not use of a vocabulary; parsing is not an entailment receipt.</dd>
+    <dt>For a teaching illustration</dt><dd>Say that it is fictional, state the assumptions and retain unresolved questions. Do not give invented data the standing of approved OPDA content.</dd>
+    <dt>For a proposed operating feature</dt><dd>Label the proposal and the decision still needed. A documentation diagram does not prove that a review or approval service exists.</dd>
+  </dl>
+  <p>
+    The <a href="/semantic-modelling/method/languages-and-profiles">language and
+    standards register</a> records external specification maturity, OPDA governance
+    status and candidate implementation independently. Its external publication checks
+    have their own dates; this source-method review does not refresh them.
+  </p>
+
+  <h2 id="legacy">Use the legacy PDTF explanations as evidence, not a hidden specification</h2>
+  <p>
+    The <a href="/development/inputs/pdtf-schema/schema-derived-ontology/concepts-and-architecture/modelling-frameworks">legacy modelling explainer</a>
+    and <a href="/development/inputs/pdtf-schema/schema-derived-ontology/concepts-and-architecture/identity">identity guide</a>
+    offer useful explanations and concrete examples. They describe a schema-derived
+    model. Their business-specific identity choices, technical counts and runtime
+    conventions do not automatically govern a newly modelled context.
+  </p>
+  <p>
+    In particular, earlier OPDA documentary-domain and SSSOM-deferral accounts remain
+    historical evidence. The current source-method amendments above govern the selected
+    method. This documentation rewrite does not alter the ontology corpus, invent
+    reviewed mappings or claim that an outstanding generator migration has happened.
+  </p>
+  <details>
+    <summary>Source file receipt for the principal contracts</summary>
+    <p>Files are in the source method's <code>docs/ontology/odr/</code> register at revision <code>{revision}</code>. These are source references, not links to the separately numbered OPDA register.</p>
+    <ul>{sourceFiles.map((file) => <li><code>{file}</code></li>)}</ul>
+  </details>
+</ModellingLayout>

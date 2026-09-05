@@ -1,5 +1,6 @@
 ---
 import ModellingLayout from '@/layouts/ModellingLayout.astro';
+import ModellingVisual from '@/components/modelling/ModellingVisual.astro';
 const provenance = `@prefix ex: <https://example.org/harbour-court/> .
 @prefix model: <https://example.org/property-model/> .
 @prefix prov: <http://www.w3.org/ns/prov#> .
@@ -24,7 +25,8 @@ ex:report-v2 a model:ReportVersion, prov:Entity ;
     <p>The dates and resources are invented for explanation. They do not certify a real inspection, an approved OPDA provenance model or current candidate support for every pattern described here.</p>
   </section>
 
-  <figure class="modelling-figure" data-modelling-figure="evidence-timeline">
+<figure class="modelling-figure" data-modelling-figure="evidence-timeline">
+    <ModellingVisual kind="evidence-timeline" />
     <ol class="modelling-steps">
       <li><time datetime="2026-08-12">12 August 2026</time>: inspection activity occurs.</li>
       <li><time datetime="2026-08-14">14 August 2026</time>: report version 1 is generated.</li>

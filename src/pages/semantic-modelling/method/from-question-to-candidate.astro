@@ -1,5 +1,6 @@
 ---
 import ModellingLayout from '@/layouts/ModellingLayout.astro';
+import ModellingVisual from '@/components/modelling/ModellingVisual.astro';
 ---
 
 <ModellingLayout title="From a useful question to a reviewable candidate" description="A model earns its distinctions by answering property questions, surviving counterexamples and making its evidence inspectable. Encoding comes after those commitments, not in place of them." chapter="Build the agreement" claim="method">
@@ -10,7 +11,8 @@ import ModellingLayout from '@/layouts/ModellingLayout.astro';
     <p>Our recurring illustration is Harbour Court at 14 Orchard Road: a building containing Flat 1 and Flat 2, associated with an address and a title record. An inspection occurs on 12 August 2026; report versions follow on 14 and 20 August. These are fictional teaching resources, not candidate ontology features or legal descriptions of an actual property.</p>
   </section>
 
-  <figure class="modelling-figure" data-modelling-figure="candidate-loop">
+<figure class="modelling-figure" data-modelling-figure="candidate-loop">
+    <ModellingVisual kind="candidate-loop" />
     <ol class="modelling-steps">
       <li><strong>Ask.</strong> Which dwelling, which inspection, which evidence?</li>
       <li><strong>Challenge.</strong> What if the address names two dwellings?</li>

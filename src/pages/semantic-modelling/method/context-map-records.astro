@@ -1,16 +1,18 @@
 ---
 import ModellingLayout from '@/layouts/ModellingLayout.astro';
+import ModellingVisual from '@/components/modelling/ModellingVisual.astro';
 ---
 
 <ModellingLayout title="Context-map records: make the agreement between communities explicit" description="A context map explains relationships between models and their owners. It does not replace term mappings, describe network topology or make every participant use the same definition." chapter="Connect without collapsing" claim="method">
   <section aria-labelledby="two-layers">
-    <h2 id="two-layers">Two layers answer two different questions</h2>
+    <h2 id="two-layers"><span id="two-scales" aria-hidden="true"></span><span id="worked-example" aria-hidden="true"></span>Two layers answer two different questions</h2>
     <p>A strategic context map asks how bounded contexts relate: where influence or dependency runs, how participants collaborate, and whether a downstream context translates an upstream language to protect its own model. A term mapping asks how two particular concepts correspond. Neither question can be answered by substituting the other’s diagram.</p>
     <p>For the Harbour Court illustration, imagine a surveying context supplying inspection descriptions to a transaction-assessment context. The strategic relationship might describe how they agree a published language and who owns changes to it. A particular mapping might then relate a surveying concept to an assessment concept. The existence of the collaboration does not prove that either concept is an exact match.</p>
     <p>The example is a teaching scenario, not an assertion that OPDA has adopted these context boundaries, collaboration patterns or mapping records. The real boundary must be established through practitioner language, identity criteria and accountable model ownership.</p>
   </section>
 
-  <figure class="modelling-figure" data-modelling-figure="context-mapping-bridge">
+<figure class="modelling-figure" data-modelling-figure="context-mapping-bridge">
+    <ModellingVisual kind="context-mapping-bridge" />
     <ol class="modelling-steps">
       <li><strong>Active map projection.</strong> The chosen current-state or target-state view scopes its relationships.</li>
       <li><strong>Qualified strategic relationship.</strong> Named participants, relationship kind and any side-specific patterns.</li>
@@ -21,7 +23,7 @@ import ModellingLayout from '@/layouts/ModellingLayout.astro';
   </figure>
 
   <section aria-labelledby="seam">
-    <h2 id="seam">Qualify a relationship in the map where it holds</h2>
+    <h2 id="seam"><span id="boundary" aria-hidden="true"></span><span id="patterns" aria-hidden="true"></span><span id="record" aria-hidden="true"></span>Qualify a relationship in the map where it holds</h2>
     <p>The selected context-map profile gives an active map projection an identity and gives each strategic relationship a named record. The record belongs to exactly one map. This prevents an assertion from a target-state proposal being silently combined with a current-state relationship as though both described one unqualified arrangement.</p>
     <p>Use a relationship kind that expresses the actual agreement. Partnership and Shared Kernel are symmetric forms; Customer/Supplier and generic Upstream/Downstream are directed forms. Separate Ways records an explicit decision not to integrate. The record’s participant structure must match the kind: a symmetric relationship must not acquire an invented upstream side merely to fit an arrow template.</p>
     <p>For directed relationships, the source profile allows upstream patterns such as Published Language and Open Host Service, and downstream responses such as Anti-Corruption Layer or Conformist. An anti-corruption layer here means preserving a downstream model through a deliberate translation boundary. It is not a cybersecurity assertion and does not specify an API gateway, message broker or deployment pattern.</p>
@@ -29,7 +31,7 @@ import ModellingLayout from '@/layouts/ModellingLayout.astro';
   </section>
 
   <section aria-labelledby="mapping-join">
-    <h2 id="mapping-join">Connect a seam to the mapping that actually applies</h2>
+    <h2 id="mapping-join"><span id="term-mappings" aria-hidden="true"></span>Connect a seam to the mapping that actually applies</h2>
     <p>A mapping set may contain correspondences for several context pairs. Linking a seam only to the whole set can return mappings unrelated to its participants. The required bridge therefore identifies individual SSSOM mapping records. The question becomes “which exact reviewed correspondences apply here?”, not “which file happens to contain something relevant?”.</p>
     <p>Each mapping’s subject and object source identify a vocabulary or identifier system. A context’s authority over those systems is explicit, governed information. The profile checks that the systems supplying the mapping endpoints are compatible with the seam’s endpoint contexts. String-prefix similarity is not evidence of that authority.</p>
     <p>A namespace-based identifier system records its namespace as structured metadata and is explicitly typed as that specialised kind of system. Other identifier systems need not be namespace-based. This distinction allows a source identifier to mean what SSSOM intends rather than overloading it as a context label, a convenient URL prefix or an application name.</p>
@@ -58,7 +60,7 @@ import ModellingLayout from '@/layouts/ModellingLayout.astro';
   </section>
 
   <section aria-labelledby="source-contract">
-    <h2 id="source-contract">Source contract</h2>
+    <h2 id="source-contract"><span id="status" aria-hidden="true"></span>Source contract</h2>
     <p>Required method: source-method ODR-0127, Decision Outcome, Model Surface and 30 August 2026 active-only/identifier-system amendment; ODR-0071h category boundary; ODR-0087 and ODR-0096 mapping-record profile. ODR-0015, ODR-0040 and ODR-0106 distinguish context ownership from system and graph topology.</p>
     <p>Reviewed revision <code>67174057e6384b79d0b28b7736fe70a66e112895</code>, 5 September 2026. Source implementation statements describe the source register’s artefacts, not OPDA candidate coverage. See <a href="/semantic-modelling/method/standards-and-decisions">standards and decisions</a> for the selected method and separate OPDA adoption record.</p>
   </section>

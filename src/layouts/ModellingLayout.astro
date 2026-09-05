@@ -9,8 +9,9 @@ interface Props {
   description: string;
   chapter?: string;
   claim?: 'guide' | 'method' | 'example';
+  hideFooter?: boolean;
 }
-const { title, description, chapter, claim = 'guide' } = Astro.props;
+const { title, description, chapter, claim = 'guide', hideFooter = false } = Astro.props;
 const position = getModellingChapter(Astro.url.pathname);
 const claims = {
   guide: 'Learning guide · examples are fictional, not approved model content',
@@ -19,7 +20,7 @@ const claims = {
 };
 ---
 
-<Layout title={title} description={description} proseClass="prose wide modelling-document">
+<Layout title={title} description={description} proseClass="prose wide modelling-document" hideFooter={hideFooter}>
   <ChapterIntro title={title} lede={description} pathLabel={chapter ?? position?.group.title} />
   <p class="modelling-standing">{claims[claim]}</p>
   <slot />

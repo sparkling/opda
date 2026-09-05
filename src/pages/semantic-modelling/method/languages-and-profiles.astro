@@ -14,14 +14,14 @@ validateStandardsProfile();
 
 <ModellingLayout title="Languages and profiles: choose the tool for the question" description="Use established languages for distinct jobs: describing things, organising choices, checking deliveries and preserving evidence. Then state exactly which features the method selects and which the candidate actually uses." chapter="Inspect the method" claim="method">
   <section aria-labelledby="start-with-the-question">
-    <h2 id="start-with-the-question">Start with a question, not a namespace</h2>
+    <h2 id="start-with-the-question"><span id="example" aria-hidden="true"></span>Start with a question, not a namespace</h2>
     <p>At Harbour Court, “what was inspected?”, “what does this finding mean?” and “does this submitted report contain the required date?” are different questions. A graph can connect their answers without making the building, a classification and a delivery rule the same kind of thing. Choosing a language means choosing the commitments appropriate to each question.</p>
     <p>In this fictional case, the building at 14 Orchard Road contains Flat 1 and Flat 2. Its title record and address descriptions have separate identities. An inspection occurs on 12 August 2026; report v1 is issued on 14 August and corrected by report v2 on 20 August. The correction does not create another inspection. These are teaching examples, not approved property definitions, legal advice or claims about the implemented candidate.</p>
     <p>A <em>profile</em> makes the selection precise: which terms and features are permitted, for which purpose, at which version, with which processing assumptions and evidence. It is neither a list of impressive standards nor a claim to implement everything those standards can express.</p>
   </section>
 
   <section aria-labelledby="read-the-three-statuses">
-    <h2 id="read-the-three-statuses">Read three statuses independently</h2>
+    <h2 id="read-the-three-statuses"><span id="normative-method" aria-hidden="true"></span><span id="maturity" aria-hidden="true"></span>Read three statuses independently</h2>
     <dl>
       <dt>External specification maturity</dt><dd>What the specification's owner calls the exact publication: for example a Recommendation, Working Draft or community report. This does not decide OPDA adoption.</dd>
       <dt>Selected OPDA profile</dt><dd>What the recorded decision requires, permits, defers or blocks. A binding method can still have implementation work outstanding.</dd>
@@ -50,7 +50,7 @@ validateStandardsProfile();
   </section>
 
   <section aria-labelledby="meaning-and-applicability">
-    <h2 id="meaning-and-applicability">RDFS and OWL: make meaning commitments carefully</h2>
+    <h2 id="meaning-and-applicability"><span id="meaning" aria-hidden="true"></span>RDFS and OWL: make meaning commitments carefully</h2>
     <p>A class describes a set of things; a property describes a relationship or value. Declaring one class a subclass of another says that every member of the first is also a member of the second. It is not merely a way to place a heading in a menu. Calling Harbour Court a building does not make its title record a building, even if both records display “14 Orchard Road”.</p>
     <p>RDFS domain and range also make substantive claims. If a property's domain is Inspection, using that property entails that its subject is an Inspection. Two domains mean membership in <em>both</em> classes, not either one. The same all-declarations consequence applies to ranges. These are not lists of allowed form fields. <a href="https://www.w3.org/TR/rdf-schema/">RDFS defines these semantics</a>; disabling a local reasoner does not remove them from exported statements.</p>
     <h3 id="one-family-per-side">Choose exactly one applicability family on each side</h3>
@@ -73,14 +73,14 @@ validateStandardsProfile();
   </section>
 
   <section aria-labelledby="controlled-choices">
-    <h2 id="controlled-choices">SKOS: distinguish a choice from its label</h2>
+    <h2 id="controlled-choices"><span id="vocabularies" aria-hidden="true"></span>SKOS: distinguish a choice from its label</h2>
     <p>A finding might use a reviewed classification such as “urgent attention”. The classification needs a definition and scope, not just display text. SKOS gives concepts stable identifiers, preferred and alternative labels, notes and membership in concept schemes. A label can change without silently replacing the concept or the thing being classified.</p>
     <p>Three relationships must remain distinct: Flat 1 is contained in a building; a particular thing may belong to a class; a controlled concept may have a broader concept. <code>skos:broader</code> does not mean physical containment or <code>rdfs:subClassOf</code>. It is not itself transitive; <code>skos:broaderTransitive</code> supports ancestry through the concept hierarchy. A SKOS concept is not automatically an OWL class.</p>
     <p>Mapping predicates are consequential too. <code>skos:exactMatch</code> is transitive; <code>skos:closeMatch</code> is not. An exact match between concepts is not individual identity through <code>owl:sameAs</code> or OWL class equivalence. Calling SKOS “annotation” must not imply that its relations have no semantics. Compare the <a href="https://www.w3.org/TR/skos-reference/">SKOS Reference</a> with the worked <a href="/semantic-modelling/explore/names-and-choices">names and choices</a> chapter.</p>
   </section>
 
   <section aria-labelledby="checks-and-questions">
-    <h2 id="checks-and-questions">SHACL and SPARQL: check a delivery and ask a question</h2>
+    <h2 id="checks-and-questions"><span id="validation" aria-hidden="true"></span><span id="questions" aria-hidden="true"></span>SHACL and SPARQL: check a delivery and ask a question</h2>
     <p>A completed inspection delivery might require an inspection date and a report reference, if participants agree that rule. A draft delivery might allow them to be missing. SHACL can express supported datatype, class, count and pattern requirements in separate delivery shapes without redefining what an inspection is. The supplied graph, supplied shapes, supported features and processing assumptions must all be named.</p>
     <p>A conforming report record does not prove that Harbour Court is safe, the inspection happened or the author was authorised. It means the supplied data met the supplied constraints under the declared conditions. Evidence and human review answer different questions. The <a href="https://www.w3.org/TR/shacl/">SHACL specification</a> does not require full RDFS inference; any inference expectation must be explicit.</p>
     <p>SPARQL turns a reviewable question into graph patterns. “Is a date recorded for this inspection?” can become an <code>ASK</code> query, which returns a boolean about the matched pattern. “Which report versions describe it?” calls for a different query. Neither query establishes the truth of the underlying assertions. The language supports more query forms than Property Pack 0.1 currently uses; see the <a href="https://www.w3.org/TR/sparql11-query/">SPARQL query specification</a>.</p>
@@ -90,7 +90,7 @@ validateStandardsProfile();
   </section>
 
   <section aria-labelledby="evidence-around-the-answer">
-    <h2 id="evidence-around-the-answer">Metadata, provenance and time: make the answer inspectable</h2>
+    <h2 id="evidence-around-the-answer"><span id="other-concerns" aria-hidden="true"></span>Metadata, provenance and time: make the answer inspectable</h2>
     <p>“The report has a date” is too vague to support a buyer's question. In the illustration, 12 August is the inspection event date; 14 August is report v1's issue date; 20 August is report v2's correction date. When a claim is valid and when a receiving system records it are further questions. One generic timestamp must not quietly stand for all of them.</p>
     <dl>
       <dt>Dublin Core Terms — describe the resource</dt><dd>Use bounded terms for metadata such as title, source and dates, selecting the relationship whose meaning fits. The applicable concern and package profile determine the term list, not the fact that the namespace is familiar.</dd>
@@ -112,7 +112,7 @@ validateStandardsProfile();
   </section>
 
   <section aria-labelledby="mechanisms">
-    <h2 id="mechanisms">Reuse, reference, map or mint — decide the relationship</h2>
+    <h2 id="mechanisms"><span id="bounded-reuse" aria-hidden="true"></span>Reuse, reference, map or mint — decide the relationship</h2>
     <p>Once the question is clear, decide how the model relates to the external source. These are the profile's four allowed relationship mechanisms, not four stages that every term must pass through.</p>
     <ol class="modelling-steps">
       <li><strong>Reuse the exact governed term when its meaning fits.</strong> Record the selected version, term list, licence and governance fit, and feature evidence. Reusing a canonical PROV-O term does not require importing the entire ontology.</li>
@@ -127,12 +127,12 @@ validateStandardsProfile();
     </details>
     <p><code>owl:imports</code> is not a citation: it brings the imported ontology's axioms through its import closure into scope. A prefix declaration is not term use, and term use is not full-vocabulary conformance. Record the actual act and its consequences.</p>
     <h3 id="upper-ontology">Analytical methods do not require foundational inheritance</h3>
-    <p>UFO-informed identity, role, phase and introducing-class analysis, together with OntoClean's rigidity, identity, dependence and unity checks, are selected disciplines. Their source-method basis is ODR-0025/0026, ODR-0112/0115 and ODR-0118. They guide whether a hierarchy makes sense; they do not require importing foundational superclasses or attaching domain classes beneath an upper ontology.</p>
+    <p>UFO-informed identity, role, phase and introducing-class analysis, together with OntoClean's rigidity, identity, dependence and unity checks, are selected disciplines. Their source-method basis is ODR-0025/0026, ODR-0112/0115 and ODR-0118. They guide whether a hierarchy makes sense; ODR-0118 explicitly prohibits subsuming domain classes under external upper-ontology classes within the selected scope. This is analytical use, not foundational inheritance.</p>
     <p>gUFO is a separate OWL implementation, not selected simply because UFO analysis is selected. DOLCE remains historical comparison evidence. Property Pack 0.1 has no separate analytical-method conformance receipt. See <a href="/semantic-modelling/method/roles-and-phases">roles and phases</a> for the practical identity questions.</p>
   </section>
 
   <section aria-labelledby="implemented">
-    <h2 id="implemented">What Property Pack 0.1 actually exercises</h2>
+    <h2 id="implemented"><span id="stack" aria-hidden="true"></span><span id="projections" aria-hidden="true"></span>What Property Pack 0.1 actually exercises</h2>
     <p>The existing profile records Property Pack 0.1 as the current implementation example, still machine-proposed. Its small surface uses RDF 1.2 Basic-compatible Turtle, RDFS and bounded OWL vocabulary, XML Schema datatypes, SKOS, bounded SHACL 1.2 Core, limited Dublin Core Terms and four ASK/basic-graph-pattern queries tested only in ARQ 6.1.0. This is the recorded baseline, not a fresh execution result from this chapter.</p>
     <p>Every candidate graph passes recorded Jena RIOT parsing. The complete shapes graph is exercised against one conforming and one non-conforming fixture. Those facts do not establish per-feature, cross-processor, entailment, full-profile or semantic-correctness conformance. Exact candidate snapshots remain pinned until a deliberate update supplies new evidence.</p>
     <table id="property-pack-feature-boundary">

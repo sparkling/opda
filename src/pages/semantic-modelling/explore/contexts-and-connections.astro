@@ -1,23 +1,25 @@
 ---
 import ModellingLayout from '@/layouts/ModellingLayout.astro';
+import ModellingVisual from '@/components/modelling/ModellingVisual.astro';
 ---
 
 <ModellingLayout title="Contexts and connections: agree enough, preserve what matters" description="Different professional communities can connect their models without pretending every shared word has one meaning. Give definitions an accountable home and make the agreements between them inspectable." chapter="Explore the distinctions" claim="guide">
   <section aria-labelledby="meaning">
-    <h2 id="meaning">The same word can be doing different work</h2>
+    <h2 id="meaning"><span id="same-label" aria-hidden="true"></span>The same word can be doing different work</h2>
     <p>A surveyor asks which physical subject was inspected. A participant in a property transaction asks which evidence supports an assessment. Both may refer to “the property report”, while concentrating on different relationships and responsibilities. The disagreement is not necessarily an error to eliminate; it is something to understand.</p>
     <p>A bounded context gives a working language and model an accountable home. Within it, practitioners can resolve ambiguous definitions and consider changes coherently. Across contexts, explicit agreements explain where meanings coincide, where they differ and what information can travel between them.</p>
     <p>This is not permission for each community to invent its own truth. Evidence, identity criteria and the semantics of shared languages still apply. A building does not become a title record because one system uses “property” for both.</p>
   </section>
 
   <section aria-labelledby="boundary">
-    <h2 id="boundary">Find the boundary in meaning, not in the organisation chart</h2>
+    <h2 id="boundary"><span id="discover-boundaries" aria-hidden="true"></span><span id="contexts" aria-hidden="true"></span><span id="homes" aria-hidden="true"></span><span id="semantic-home" aria-hidden="true"></span>Find the boundary in meaning, not in the organisation chart</h2>
     <p>Departments, working groups and applications are useful places to find people and evidence. They are not automatic model boundaries. Several systems may express one coherent domain language; a single application may serve several communities whose meanings need to remain distinct.</p>
     <p>Try a boundary test: who can explain this definition, which identity rules do they use, and who must be involved if it changes? Then look for a real disagreement. If “completion” means different things in two settings, write those definitions and consequences before deciding whether to reconcile the terms or keep a qualified connection.</p>
     <p>Within one context, do not use mappings to disguise contradictory definitions. Resolve the model’s own language. Between genuinely distinct contexts, do not force a central definition merely to avoid maintaining an explicit agreement.</p>
   </section>
 
-  <figure class="modelling-figure" data-modelling-figure="context-mapping-bridge">
+<figure class="modelling-figure" data-modelling-figure="context-mapping-bridge">
+    <ModellingVisual kind="context-mapping-bridge" />
     <dl>
       <dt>The strategic agreement</dt><dd>How two contexts collaborate, influence one another or deliberately remain separate.</dd>
       <dt>The term correspondence</dt><dd>How two particular defined concepts relate, with evidence and limits.</dd>
@@ -27,7 +29,7 @@ import ModellingLayout from '@/layouts/ModellingLayout.astro';
   </figure>
 
   <section aria-labelledby="harbour-court">
-    <h2 id="harbour-court">Connect the Harbour Court evidence without flattening it</h2>
+    <h2 id="harbour-court"><span id="property-pack" aria-hidden="true"></span>Connect the Harbour Court evidence without flattening it</h2>
     <p>In our fictional case, a surveying context supplies a description of the 12 August inspection. A receiving assessment context needs to know which report version supports the information it uses. The parties can agree how those references are exchanged without redefining an inspection as a report or treating the 20 August correction as another visit.</p>
     <p>The strategic agreement explains their relationship and responsibility for changes. A separate mapping describes a particular correspondence between concepts in their vocabularies. It may be exact, close, broader or another justified relation—or the reviewers may conclude that no mapping is appropriate.</p>
     <p>The useful outcome is not necessarily one merged term. It may be a clear translation that preserves the distinction the recipient needs. If the recipient cannot tell a corrected report from a new inspection, information has been lost even though the exchange succeeded technically.</p>

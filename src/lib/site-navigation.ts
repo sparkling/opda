@@ -338,7 +338,7 @@ const navigationSections: Record<DestinationKey, NavigationSection> = {
   'semantic-modelling': {
     key: 'semantic-modelling',
     title: 'Modelling',
-    summary: 'Plain-language ontology learning and the modelling method used for SPDTF.',
+    summary: 'Understand shared meaning, explore the model, contribute expertise and apply the context-first method.',
     groups: [
       category('Overview', '/semantic-modelling'),
       ...SEMANTIC_MODELLING_JOURNEYS.map((journey) => category(

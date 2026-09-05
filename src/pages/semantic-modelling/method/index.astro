@@ -1,0 +1,96 @@
+---
+import ModellingLayout from '@/layouts/ModellingLayout.astro';
+import PrincipleSpread from '@/components/modelling/PrincipleSpread.astro';
+import ContrastPair from '@/components/modelling/ContrastPair.astro';
+import ChapterEnd from '@/components/modelling/ChapterEnd.astro';
+---
+
+<ModellingLayout title="The context-first modelling manifesto" description="Start with the work. Make identity explicit. Connect meanings through accountable agreements. This is the modelling discipline we are applying to the Smart Property Data Trust Framework." chapter="Apply the method" claim="method" hideFooter>
+  <p>
+    A framework should make expertise more usable, not replace it with a vocabulary
+    designed at a distance. Our approach begins with the questions a community needs
+    to answer and the distinctions its work depends on. We then make those distinctions
+    precise, challenge them with formal analysis, reuse suitable standards and connect
+    them through explicit boundaries.
+  </p>
+  <p>
+    This is a position about the order of discovery and the ownership of meaning.
+    It is not an argument against ontological rigour, shared standards or common
+    concepts. It rejects premature universality: assuming the same word means the
+    same thing everywhere, or that placing every class in one hierarchy establishes
+    a shared understanding.
+  </p>
+
+  <PrincipleSpread number={1} id="start-with-work" aliases={["questions","cycle","evidence","untrusted-evidence"]} title="Start with a question people need to answer">
+    <p>Begin with a decision, exchange or misunderstanding in real work. Name the question, the evidence available and examples that would change the answer. A source form is valuable evidence, but its sections and fields are not automatically the conceptual structure of the domain.</p>
+    <p>For Harbour Court, “which report describes the inspection of Flat 1?” immediately separates a dwelling, an event and a document version. Those distinctions earn their place by making the question answerable.</p>
+    <Fragment slot="practice"><p>Write a competency question in ordinary language. Add at least one ordinary case and one counterexample. Ask who can judge the answer before choosing the encoding.</p><p><a href="/semantic-modelling/method/from-question-to-candidate">From question to candidate →</a></p></Fragment>
+    <Fragment slot="misreading"><p>Evidence-led does not mean copying every source structure. The first-principles Property Pack approach in OPDA ADR-0067 treats sources as evidence to evaluate, not a schema that dictates the ontology.</p></Fragment>
+  </PrincipleSpread>
+
+  <PrincipleSpread number={2} id="own-meaning" aliases={["local-authority","responsibilities","participation"]} title="Give meaning an accountable home">
+    <p>A context establishes where a meaning is coherent and who is responsible for changing it. It is not simply a department, software service or search category. A profession can participate in several contexts; a term can be classified under several subjects while retaining one semantic home.</p>
+    <p>Local ownership prevents a convenient enterprise label from erasing an operational distinction. It also creates obligations: publish the definition, expose its assumptions, review change and explain what is promised at the boundary.</p>
+    <Fragment slot="practice"><p>Name the context, the questions it serves and the authority for its meanings. Record the boundary agreement separately from particular term correspondences.</p><p><a href="/semantic-modelling/method/context-map-records">Strategic context maps →</a></p></Fragment>
+    <Fragment slot="misreading"><p>Context-first is not “every team has its own truth”. Conflicting claims about the same event still require evidence. A context is a responsibility for meaning, not an exemption from consistency.</p></Fragment>
+  </PrincipleSpread>
+
+  <PrincipleSpread number={3} id="identity-before-equivalence" aliases={["distinctions","foundations"]} title="Establish identity before asserting equivalence">
+    <p>A shared address can help locate records without making a building, dwelling and title record identical. Ask what an individual is, what distinguishes it from others and what changes it can survive. A label match or common source key cannot answer those questions alone.</p>
+    <p>Use kinds, roles and phases deliberately. A person participating as buyer is not a new person. A state change is not automatically a new identity. A subdivision is not automatically a phase: the identity criterion must be resolved by the domain.</p>
+    <Fragment slot="practice"><p>Test identity against corrections, concurrent roles, split and merge cases. Refuse an equivalence when the referents differ; keep an unresolved criterion visible.</p><p><a href="/semantic-modelling/method/roles-and-phases">Roles and phases →</a></p></Fragment>
+    <Fragment slot="misreading"><p>UFO-informed distinctions and OntoClean analysis are required analytical disciplines in the selected source method. ODR-0118 prohibits domain-class subsumption under external upper ontologies within its scope. Analytical rigour is not a requirement to import an external class hierarchy.</p></Fragment>
+  </PrincipleSpread>
+
+  <PrincipleSpread number={4} id="connect-with-evidence" aliases={["connect-without-collapse"]} title="Connect meanings without disguising differences">
+    <p>Reuse an externally governed term when its meaning fits. Where local meanings must remain distinct, record the relationship and the evidence for its strength. An exact conceptual correspondence, a close correspondence, a broader concept and identity of individuals are different commitments.</p>
+    <p>A strategic context agreement says how communities depend on one another. A qualified mapping record says how particular terms correspond. Neither can stand in for the other. Each bridge must identify the individual mappings that actually apply.</p>
+    <Fragment slot="practice"><p>Record the source and target versions, mapping predicate, matching-process justification, mapping date and mapping-set release. Preserve the SKOS statement and the required SSSOM/SEMAPV qualification.</p><p><a href="/semantic-modelling/method/mapping-records">Qualified term mappings →</a></p></Fragment>
+    <Fragment slot="misreading"><p>“Connected” does not mean “equivalent”. Refusing a proposed mapping is a useful outcome. A confidence score cannot repair incompatible identity criteria.</p></Fragment>
+  </PrincipleSpread>
+
+  <PrincipleSpread number={5} id="respect-semantics" aliases={["reuse","separate-concerns"]} title="Keep meaning, checks and delivery distinct">
+    <p>RDF statements, RDFS implications, applicability hints, SHACL constraints and materialisation rules do different jobs. Their composition must be explicit. Switching off a reasoner does not change the meaning of an exported RDFS domain declaration.</p>
+    <p>A JSON schema, form or API is a delivery view of selected meaning, not a replacement for the model. Identify which relationships, qualifications and constraints survive the projection and which are omitted. A successful serialisation is not proof of semantic preservation.</p>
+    <Fragment slot="practice"><p>Choose a bounded language profile. Supply positive and negative data examples, explicit competency queries and evidence for each claimed projection. Keep asserted and derived information distinguishable.</p><p><a href="/semantic-modelling/method/meaning-checks-and-delivery">Meaning, checks and delivery →</a></p></Fragment>
+    <Fragment slot="misreading"><p>This is neither unrestricted OWL reasoning nor a claim that inference is forbidden. The selected method bounds its OWL surface and declares supported rule materialisation separately.</p></Fragment>
+  </PrincipleSpread>
+
+  <PrincipleSpread number={6} id="explain-the-boundary" title="Make evidence, time and limits part of the model">
+    <p>A useful assertion can be traced to what supports it. A useful date says which event or period it concerns. A useful sensitivity classification tells readers what it describes without pretending to grant access. These concerns are part of trustworthy interpretation, not decorative metadata added after the model is finished.</p>
+    <p>Keep the scope proportional. The eight selected ODR-0071 concerns require assessment, not eight separate ontologies. Reuse a shared artefact or record why a concern is not applicable when that is the justified disposition.</p>
+    <Fragment slot="practice"><p>Distinguish event time from recording time, resource provenance from claim provenance, and classification from enforcement. State what the evidence does not establish.</p><p><a href="/semantic-modelling/method/scope-and-package">Eight concerns, six outputs →</a></p></Fragment>
+    <Fragment slot="misreading"><p>Publishing a vocabulary is not permission to publish personal records. A complete metadata record is not proof that a claim is true, and passing technical checks does not adopt a standard.</p></Fragment>
+  </PrincipleSpread>
+
+  <h2 id="tradeoffs"><span id="evolve" aria-hidden="true"></span><span id="success" aria-hidden="true"></span>The trade-off we choose openly</h2>
+  <ContrastPair leftLabel="What this approach protects" rightLabel="What it asks us to maintain" accent="none">
+    <Fragment slot="left"><p>Local distinctions remain reviewable. Change has an accountable home. Shared meanings can be reused without forcing all contexts into one vocabulary. Implementers can inspect the assumptions behind a connection.</p></Fragment>
+    <Fragment slot="right"><p>Boundaries and mappings require stewardship. Local autonomy can produce duplication unless reuse is actively reviewed. A common term still needs a release and change agreement. These are ongoing responsibilities, not costs that linked data makes disappear.</p></Fragment>
+  </ContrastPair>
+  <p>
+    We are not claiming an industry-wide consensus that all ontology work follows one
+    top-down pattern. Top-down and bottom-up techniques can both contribute. Our
+    commitment is to begin with evidenced local questions, retain formal discipline
+    and make the step from local understanding to shared agreement explicit.
+  </p>
+
+  <h2 id="source-contract"><span id="authority" aria-hidden="true"></span><span id="receipt" aria-hidden="true"></span>What makes this a method rather than a slogan</h2>
+  <p>
+    Source-method ODR-0071 supplies the selected concerns; ODR-0015/0040/0106 the
+    boundary discipline; ODR-0025/0026 and ODR-0112/0115/0118 the identity and analytical
+    commitments; ODR-0014/0030/0036 the applicability and language contracts; and
+    ODR-0087/0096/0098/0127 the mapping and context-map rules. The explanatory manifesto
+    above synthesises those requirements—it does not create additional adopted rules.
+  </p>
+  <p>
+    The <a href="/semantic-modelling/method/standards-and-decisions">decision register</a>
+    pins the reviewed source revision, OPDA scope and relevant amendments. It separates
+    normative method, proposed operating workflow and current candidate evidence.
+    The external standards remain authoritative for the semantics of their terms.
+  </p>
+  <ChapterEnd closing="Start small enough to inspect, but connect the meaning all the way through." nextHref="/semantic-modelling/method/from-question-to-candidate" nextTitle="From question to candidate" nextDescription="Work through a modelling cycle, including counterexamples, review and the limits of automated checks." related={[
+    { href: '/semantic-modelling/method/languages-and-profiles', label: 'Languages and profiles' },
+    { href: '/semantic-modelling/contribute', label: 'The participant route' },
+  ]} />
+</ModellingLayout>

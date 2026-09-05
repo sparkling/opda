@@ -1,5 +1,7 @@
 ---
 import ModellingLayout from '@/layouts/ModellingLayout.astro';
+import ModellingVisual from '@/components/modelling/ModellingVisual.astro';
+import DetailDisclosure from '@/components/modelling/DetailDisclosure.astro';
 ---
 
 <ModellingLayout title="A property story, carefully connected" description="Follow Harbour Court from an inspection to a corrected report. See how a small set of distinctions makes the story easier to read, question and improve." chapter="Understand · The worked case" claim="example">
@@ -10,7 +12,7 @@ import ModellingLayout from '@/layouts/ModellingLayout.astro';
   </p>
 
   <section aria-labelledby="act-one">
-    <h2 id="act-one">1. Establish the cast before joining the dots</h2>
+    <h2 id="act-one"><span id="identifiers" aria-hidden="true"></span><span id="classes-properties" aria-hidden="true"></span>1. Establish the cast before joining the dots</h2>
     <p>
       A message says “the property has been inspected”. Before adding a date, ask
       what “the property” identifies. Was the inspection about Flat 1, the whole
@@ -20,6 +22,7 @@ import ModellingLayout from '@/layouts/ModellingLayout.astro';
     </p>
     <figure class="modelling-figure" aria-labelledby="cast-caption">
       <figcaption id="cast-caption">Related subjects are not interchangeable identities</figcaption>
+      <ModellingVisual kind="identity-map" />
       <dl>
         <dt>Building</dt><dd>Harbour Court contains the two dwellings.</dd>
         <dt>Dwelling</dt><dd>Flat 1 is the subject of this illustrative inspection; Flat 2 is not silently included.</dd>
@@ -40,6 +43,7 @@ import ModellingLayout from '@/layouts/ModellingLayout.astro';
     <h2 id="act-two">2. Give the dates the right subjects</h2>
     <figure class="modelling-figure" aria-labelledby="timeline-caption">
       <figcaption id="timeline-caption">One inspection, two report versions</figcaption>
+      <ModellingVisual kind="evidence-timeline" />
       <ol class="modelling-steps">
         <li><h3><time datetime="2026-08-12">12 August 2026</time> · Inspection</h3><p>The inspection of Flat 1 occurs. This is the event date in our scenario.</p></li>
         <li><h3><time datetime="2026-08-14">14 August 2026</time> · Report version 1</h3><p>The first report is issued and describes the 12 August inspection.</p></li>
@@ -65,7 +69,7 @@ import ModellingLayout from '@/layouts/ModellingLayout.astro';
   </section>
 
   <section aria-labelledby="act-three">
-    <h2 id="act-three">3. Follow a claim back to its evidence</h2>
+    <h2 id="act-three"><span id="shapes-provenance" aria-hidden="true"></span>3. Follow a claim back to its evidence</h2>
     <p>
       Suppose a claim says that an inspection of Flat 1 occurred on 12 August. The
       claim is an assertion somebody made; the inspection is the event it describes;
@@ -126,8 +130,7 @@ import ModellingLayout from '@/layouts/ModellingLayout.astro';
     </p>
   </section>
 
-  <details>
-    <summary>Optional technical view: stable illustrative identifiers</summary>
+  <DetailDisclosure summary="Stable illustrative identifiers" note="Optional technical view">
     <p>These example.org identifiers are teaching references, not OPDA vocabulary terms or promised live resource pages.</p>
     <dl>
       <dt>Building</dt><dd><code>https://example.org/harbour-court/building</code></dd>
@@ -140,10 +143,10 @@ import ModellingLayout from '@/layouts/ModellingLayout.astro';
       <dt>Participant and transaction</dt><dd><code>https://example.org/harbour-court/person-1</code> and <code>https://example.org/harbour-court/transaction</code></dd>
     </dl>
     <p>Identifiers do not, by themselves, establish identity criteria. In particular, this case makes no <code>owl:sameAs</code> assertion between the building and title record.</p>
-  </details>
+  </DetailDisclosure>
 
   <section aria-labelledby="use-the-story">
-    <h2 id="use-the-story">Use the story on a real model page</h2>
+    <h2 id="use-the-story"><span id="vocabularies" aria-hidden="true"></span><span id="property-pack-walkthrough" aria-hidden="true"></span><span id="read-pages" aria-hidden="true"></span>Use the story on a real model page</h2>
     <p>
       Open a page in the <a href="/development/property-pack">Property Pack candidate</a>
       or use <a href="/search">site search</a>. Read its own status and definition;

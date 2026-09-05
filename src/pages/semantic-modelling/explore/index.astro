@@ -1,0 +1,65 @@
+---
+import ModellingLayout from '@/layouts/ModellingLayout.astro';
+import MeaningGrid from '@/components/modelling/MeaningGrid.astro';
+import PathwaySplit from '@/components/modelling/PathwaySplit.astro';
+import ContrastPair from '@/components/modelling/ContrastPair.astro';
+---
+
+<ModellingLayout title="Explore the model" description="Learn to see the distinctions that a useful property model preserves. Start with things and identities, separate names from meanings, then connect the contexts in which those meanings belong." chapter="Explore">
+  <p>
+    A model is easier to understand when every symbol has something recognisable
+    behind it. The graph is not an abstract destination: it is a way to make a claim
+    such as “this report describes that inspection of Flat 1” precise enough to share
+    and challenge. Begin with its subjects, not with a diagramming tool.
+  </p>
+  <h2 id="different-questions">Four perspectives on the same situation</h2>
+  <MeaningGrid items={[
+    { term: 'The dwelling', kind: 'thing', definition: 'Flat 1 is the particular dwelling being discussed in our fictional case.', connection: 'the building that contains it and the inspection concerning it.', isNot: 'the address text, the title record or the report.' },
+    { term: 'The description', kind: 'description', definition: 'A label, address description or record says something about a subject.', connection: 'the subject it describes and the source of the description.', isNot: 'the subject itself. Correcting a description does not necessarily change its subject.' },
+    { term: 'The evidence', kind: 'evidence', definition: 'A report version can be offered in support of a particular claim.', connection: 'the inspection, the claim and the source version on which a reader relied.', isNot: 'proof that every statement is true or appropriate for every use.' },
+    { term: 'The review decision', kind: 'decision', definition: 'A human disposition states what happened to a proposed definition or mapping.', connection: 'the reviewed candidate and the reasons for accepting, revising or declining it.', isNot: 'an automatic consequence of a successful software check.' },
+  ]} />
+  <p>
+    These are reader-facing perspectives, not four mutually exclusive categories of
+    existence. A report is itself a thing we can identify, is a description, and can
+    play an evidential role. The useful question is <em>which aspect are we talking
+    about in this statement?</em> We make that aspect explicit instead of letting one
+    vague word carry several meanings unnoticed.
+  </p>
+
+  <h2 id="read-a-connection">Read a connection as a sentence</h2>
+  <ContrastPair leftLabel="The line leaves the meaning unstated" rightLabel="The relationship says what is being claimed">
+    <Fragment slot="left"><p>“Flat 1 — report v2.” A reader must guess whether the report identifies, inspects, owns, values or merely mentions the dwelling.</p></Fragment>
+    <Fragment slot="right"><p>“Report v2 describes the inspection concerning Flat 1.” The report, event and dwelling keep their own identities, and each relationship has a job.</p></Fragment>
+    <Fragment slot="verdict"><p>If you cannot say what a connection means in a clear sentence, its formal notation is not ready to settle the question for you.</p></Fragment>
+  </ContrastPair>
+  <p>
+    The next question is what the sentence leaves out. Does it need a period of
+    applicability, a source, a measurement unit or a transaction setting? Sometimes a
+    direct relation is enough. Sometimes the relationship needs a record of its own
+    so that those qualifications have an unambiguous home.
+  </p>
+
+  <h2 id="chapters">Explore three connected distinctions</h2>
+  <PathwaySplit primary={{ href: '/semantic-modelling/explore/things-and-identities', audience: '01 · What are we describing?', title: 'Things and identities', description: 'Distinguish a building, its dwellings, a title record and an address. Ask what can change while a thing remains the same—and what a subdivision leaves unresolved.', topics: ['Thing, class, identifier and description', 'Why matching labels do not prove identity', 'The hard case of change over time'] }} alternatives={[
+    { href: '/semantic-modelling/explore/names-and-choices', audience: '02 · How do we name and classify it?', title: 'Names, choices and classifications', description: 'Separate a concept from its labels, a controlled choice from an open population, and a taxonomy from physical containment or inheritance.' },
+    { href: '/semantic-modelling/explore/contexts-and-connections', audience: '03 · Where does its meaning belong?', title: 'Contexts and connections', description: 'Follow semantic ownership and explicit agreements. A working group, a system and a context are related ideas, not interchangeable boxes.' },
+  ]} />
+
+  <h2 id="layers-of-detail">Use the level of detail that helps you</h2>
+  <p>
+    Each chapter starts with the property situation and puts formal details behind
+    a clearly labelled disclosure or a link to the method. You can contribute a
+    counterexample without deciding whether a relationship needs an RDF statement,
+    a SKOS mapping or a qualified participation. The technical explanation must stay
+    faithful to the same meaning; it is not a second, hidden version of the model.
+  </p>
+  <details>
+    <summary>A small reading exercise before you continue</summary>
+    <p>“The latest report proves that the property has not changed.” Which report version? Which property identity? What kind of change? What does the report actually support? There is no safe shortcut from “latest document” to “unchanged subject”. Asking those questions is already useful modelling work.</p>
+  </details>
+  <p>
+    Want to put a question to work now? <a href="/semantic-modelling/contribute/review-a-definition">Review a definition</a>.
+    Need the formal contract? <a href="/semantic-modelling/method/classes-and-relationships">Start with classes and relationships</a>.
+  </p>
+</ModellingLayout>

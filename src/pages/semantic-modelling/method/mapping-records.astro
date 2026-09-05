@@ -1,5 +1,6 @@
 ---
 import ModellingLayout from '@/layouts/ModellingLayout.astro';
+import ModellingVisual from '@/components/modelling/ModellingVisual.astro';
 const mapping = `@prefix left: <https://example.org/surveying-vocabulary/> .
 @prefix right: <https://example.org/assessment-vocabulary/> .
 @prefix skos: <http://www.w3.org/2004/02/skos/core#> .
@@ -26,13 +27,14 @@ left:InspectionReport skos:closeMatch right:AssessmentEvidence .
 
 <ModellingLayout title="Mapping records: correspondence with an inspectable argument" description="A mapping is a claim about two defined terms. Its predicate states the relationship; its record preserves the sources, versions and justification needed to review that claim." chapter="Connect without collapsing" claim="method">
   <section aria-labelledby="candidate">
-    <h2 id="candidate">A plausible match is the start of a question</h2>
+    <h2 id="candidate"><span id="questions" aria-hidden="true"></span><span id="mapping-workflow" aria-hidden="true"></span><span id="strength" aria-hidden="true"></span>A plausible match is the start of a question</h2>
     <p>Similar labels, shared identifiers and nearby graph structures can reveal useful candidates for comparison. They do not choose the final mapping predicate. Read both definitions, examine their identity criteria and compare hard cases. Ask whether the two terms classify the same things, overlapping things, a broader and narrower population, or related but fundamentally different things.</p>
     <p>In the Harbour Court illustration, a title record and building share an address. That is not evidence for making the resources <code>owl:sameAs</code>, nor for declaring the classes equivalent. Their relationship should be modelled as a relationship. A high lexical similarity score cannot repair a mismatch in what the terms identify.</p>
     <p>The source-method identity protocol treats business keys as evidence rather than identity criteria. Its gates are ordered: a positive equivalence warrant is not produced by adding together a collection of weak similarities, and rigidity or coherence checks can veto a candidate without establishing identity themselves. Under uncertainty at the equivalence tier, retain a weaker justified correspondence or keep the terms separate.</p>
   </section>
 
-  <figure class="modelling-figure" data-modelling-figure="mapping-gates">
+<figure class="modelling-figure" data-modelling-figure="mapping-gates">
+    <ModellingVisual kind="mapping-gates" />
     <ol class="modelling-steps">
       <li><strong>Candidate.</strong> A label, key or source relationship suggests comparison.</li>
       <li><strong>Meaning and identity.</strong> Compare definitions, link-key evidence, hard cases and vetoes.</li>
@@ -43,14 +45,14 @@ left:InspectionReport skos:closeMatch right:AssessmentEvidence .
   </figure>
 
   <section aria-labelledby="predicate">
-    <h2 id="predicate">Choose the SKOS predicate for its consequences</h2>
+    <h2 id="predicate"><span id="mapping" aria-hidden="true"></span><span id="skos-predicates" aria-hidden="true"></span>Choose the SKOS predicate for its consequences</h2>
     <p>The selected cross-context mapping layer uses <code>skos:exactMatch</code>, <code>skos:closeMatch</code>, <code>skos:broadMatch</code>, <code>skos:narrowMatch</code> and <code>skos:relatedMatch</code>. These are not five confidence bands. They express different kinds of conceptual correspondence.</p>
     <p>An exact match has stronger consequences than a close match. In particular, exactMatch is transitive, while closeMatch is not. If A exactly matches B and B exactly matches C, the chain matters for A and C; a chain of close matches does not establish the corresponding direct close match. A broader mapping has an orientation that must remain visible when a user reads the other side. <a href="https://www.w3.org/TR/skos-reference/#mapping">SKOS Reference §10</a> defines these properties and their interactions.</p>
     <p>SKOS mapping is not OWL identity. It does not merge the Harbour Court building with a title record, and it does not justify automatically substituting the properties of one class for another. Equally, calling mappings “annotations” must not imply that SKOS has no entailments: symmetric, transitive and subproperty consequences can affect a query’s results.</p>
   </section>
 
   <section aria-labelledby="record">
-    <h2 id="record">SSSOM records the particular mapping assertion</h2>
+    <h2 id="record"><span id="traceability" aria-hidden="true"></span><span id="cross-context-mappings" aria-hidden="true"></span><span id="skos-and-sssom" aria-hidden="true"></span><span id="receipt" aria-hidden="true"></span>SSSOM records the particular mapping assertion</h2>
     <p>The source method profiles SSSOM 1.0 as a wrapper over the retained SKOS assertion. The mapping statement remains available to consumers interested only in correspondence. The named record makes the exact statement inspectable together with its metadata. It is not a replacement predicate or a second, independently edited mapping.</p>
     <p>The selected profile requires both endpoint sources, a pinned version for each, the identifier of the versioned mapping-set release, a mapping date and a matching-process justification. A source means the vocabulary or identifier system supplying the endpoint identifier. It is not merely the label of a bounded context and need not be a lexical prefix of the endpoint IRI.</p>
     <p>SEMAPV supplies classes describing matching processes, such as manual curation, lexical matching, logical reasoning or composite matching, as values of <code>sssom:mapping_justification</code>. It does not add a parallel collection of endpoint, confidence and author fields. The process term explains how the correspondence was established; the comment and evidence must still explain why it is appropriate.</p>

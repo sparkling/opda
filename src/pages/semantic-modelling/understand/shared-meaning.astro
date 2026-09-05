@@ -1,10 +1,11 @@
 ---
 import ModellingLayout from '@/layouts/ModellingLayout.astro';
+import ModellingVisual from '@/components/modelling/ModellingVisual.astro';
 ---
 
 <ModellingLayout title="Why shared meaning matters" description="A field can contain the right kind of value and still answer the wrong question. See how an explicit model helps people recognise, connect and challenge what property information means." chapter="Understand · Shared meaning" claim="guide">
   <section aria-labelledby="the-problem">
-    <h2 id="the-problem">A date is not yet an explanation</h2>
+    <h2 id="the-problem"><span id="what" aria-hidden="true"></span><span id="beyond-fields" aria-hidden="true"></span>A date is not yet an explanation</h2>
     <p>
       Imagine receiving “survey date: 20 August 2026” for Harbour Court. The date is
       readable and correctly formatted. Yet you cannot tell whether someone visited
@@ -22,6 +23,7 @@ import ModellingLayout from '@/layouts/ModellingLayout.astro';
 
   <figure class="modelling-figure" aria-labelledby="statement-caption">
     <figcaption id="statement-caption">Read a statement with its supporting context</figcaption>
+    <ModellingVisual kind="evidence-timeline" />
     <dl>
       <dt>Which thing?</dt><dd>The inspection—not the building or the report.</dd>
       <dt>What are we saying?</dt><dd>It occurred on 12 August 2026.</dd>
@@ -32,7 +34,7 @@ import ModellingLayout from '@/layouts/ModellingLayout.astro';
   </figure>
 
   <section aria-labelledby="things">
-    <h2 id="things">Keep the thing distinct from the description</h2>
+    <h2 id="things"><span id="worked-example" aria-hidden="true"></span>Keep the thing distinct from the description</h2>
     <p>
       Harbour Court is a building containing Flat 1 and Flat 2. A description of
       Flat 1's address helps somebody find or refer to the dwelling. A title record
@@ -56,7 +58,7 @@ import ModellingLayout from '@/layouts/ModellingLayout.astro';
   </section>
 
   <section aria-labelledby="connected">
-    <h2 id="connected">A connected model complements a dictionary</h2>
+    <h2 id="connected"><span id="tree-graph" aria-hidden="true"></span><span id="context-first" aria-hidden="true"></span><span id="local-precision" aria-hidden="true"></span>A connected model complements a dictionary</h2>
     <div class="modelling-comparison">
       <section aria-labelledby="dictionary-view">
         <h3 id="dictionary-view">A definition helps you read a term</h3>
@@ -76,7 +78,7 @@ import ModellingLayout from '@/layouts/ModellingLayout.astro';
   </section>
 
   <section aria-labelledby="benefits">
-    <h2 id="benefits">Benefits worth testing</h2>
+    <h2 id="benefits"><span id="why" aria-hidden="true"></span><span id="less-reinterpretation" aria-hidden="true"></span><span id="traceable-evidence" aria-hidden="true"></span><span id="change" aria-hidden="true"></span><span id="earn-benefits" aria-hidden="true"></span>Benefits worth testing</h2>
     <p>
       The benefit is not the number of connections in a diagram. It is what people
       can do with them. For Harbour Court, we would look for these practical outcomes:
@@ -95,7 +97,7 @@ import ModellingLayout from '@/layouts/ModellingLayout.astro';
   </section>
 
   <section aria-labelledby="limits">
-    <h2 id="limits">What the model cannot decide for you</h2>
+    <h2 id="limits"><span id="ai" aria-hidden="true"></span>What the model cannot decide for you</h2>
     <p>
       A technical check can find a missing date or an unexpected value when a rule
       requires one. It cannot establish that an inspection really occurred. Nor does
@@ -118,7 +120,7 @@ import ModellingLayout from '@/layouts/ModellingLayout.astro';
   </section>
 
   <section aria-labelledby="try-it">
-    <h2 id="try-it">Try the distinction</h2>
+    <h2 id="try-it"><span id="ordinary-questions" aria-hidden="true"></span><span id="participate" aria-hidden="true"></span>Try the distinction</h2>
     <p>A system replaces “12 August” with “20 August” after the report correction. What would you ask before accepting that update?</p>
     <details>
       <summary>Reveal a useful review question</summary>

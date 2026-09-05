@@ -1,10 +1,11 @@
 ---
 import ModellingLayout from '@/layouts/ModellingLayout.astro';
+import ModellingVisual from '@/components/modelling/ModellingVisual.astro';
 ---
 
 <ModellingLayout title="Understand the model" description="Start with a familiar property situation. Discover what an ontology explains, where it helps and how your professional judgement can improve it." chapter="Understand" claim="guide">
   <section aria-labelledby="starting-point">
-    <h2 id="starting-point">You already know how to ask the important questions</h2>
+    <h2 id="starting-point"><span id="training" aria-hidden="true"></span><span id="another-dictionary" aria-hidden="true"></span>You already know how to ask the important questions</h2>
     <p>
       Which flat does this report describe? Was the inspection repeated, or was only
       the report corrected? Does “property” mean the building, a dwelling or something
@@ -21,6 +22,7 @@ import ModellingLayout from '@/layouts/ModellingLayout.astro';
 
   <figure class="modelling-figure" aria-labelledby="case-caption">
     <figcaption id="case-caption">Our fictional case: Harbour Court, 14 Orchard Road</figcaption>
+    <ModellingVisual kind="identity-map" />
     <dl>
       <dt>The building</dt><dd>Harbour Court contains Flat 1 and Flat 2: two dwellings, not two names for the building.</dd>
       <dt>The descriptions</dt><dd>An address description and a title record are distinct from the things they describe or concern.</dd>
@@ -44,7 +46,7 @@ import ModellingLayout from '@/layouts/ModellingLayout.astro';
   </section>
 
   <section aria-labelledby="questions">
-    <h2 id="questions">Questions you may have before starting</h2>
+    <h2 id="questions"><span id="replace-systems" aria-hidden="true"></span><span id="shared-database" aria-hidden="true"></span><span id="privacy" aria-hidden="true"></span><span id="one-definition" aria-hidden="true"></span><span id="existing-standards" aria-hidden="true"></span><span id="accuracy" aria-hidden="true"></span><span id="ai" aria-hidden="true"></span><span id="disagreement" aria-hidden="true"></span><span id="available" aria-hidden="true"></span>Questions you may have before starting</h2>
     <details>
       <summary>Is this asking everyone to use the same words?</summary>
       <p>No. Different labels can refer to the same concept, and the same label can hide different meanings. The task is to recognise which case applies, preserve distinctions people need and make any correspondence explicit. A convenient shared word is not evidence that a building and a title are the same thing.</p>

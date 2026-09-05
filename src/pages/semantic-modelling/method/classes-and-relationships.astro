@@ -1,5 +1,6 @@
 ---
 import ModellingLayout from '@/layouts/ModellingLayout.astro';
+import ModellingVisual from '@/components/modelling/ModellingVisual.astro';
 const example = `@prefix ex: <https://example.org/harbour-court/> .
 @prefix model: <https://example.org/property-model/> .
 @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
@@ -16,13 +17,14 @@ ex:title-record a model:TitleRecord .`;
 
 <ModellingLayout title="Classes and relationships: say what the graph is about" description="Before choosing a property name or drawing an inheritance arrow, establish which things are being described, what makes them identifiable and what relationship is actually being asserted." chapter="Make distinctions explicit" claim="method">
   <section aria-labelledby="things">
-    <h2 id="things">A thing, its class, its identifier and its description are different</h2>
+    <h2 id="things"><span id="purpose" aria-hidden="true"></span><span id="thing-description" aria-hidden="true"></span><span id="construct" aria-hidden="true"></span>A thing, its class, its identifier and its description are different</h2>
     <p>Harbour Court is our fictional building. <em>Building</em> is a proposed class used to describe buildings. An IRI identifies the particular building within the example. A page, label or report describes it. Keeping these apart makes it possible to change a label, correct a report or add another representation without automatically creating a different building.</p>
     <p>A class describes a category of individuals; an <code>rdf:type</code> statement says an individual belongs to that class. A property identifies a relationship used in a statement. Neither the spelling of a class name nor its position in a source document provides an identity criterion. That criterion explains when two descriptions concern the same thing and which changes would make them concern different things.</p>
     <p>The graph syntax does not settle these domain decisions. RDF allows IRIs to identify resources and statements to connect them; modelling establishes the intended referents and relationships. The abstract graph is distinct from Turtle, JSON-LD or a diagram used to represent it. <a href="https://www.w3.org/TR/rdf-syntax-grammar/#section-Syntax-intro">RDF 1.1 XML Syntax §2.1</a> makes that separation explicit.</p>
   </section>
 
-  <figure class="modelling-figure" data-modelling-figure="identity-map">
+<figure class="modelling-figure" data-modelling-figure="identity-map">
+    <ModellingVisual kind="identity-map" />
     <dl>
       <dt>Harbour Court building</dt><dd>Contains Flat 1 and Flat 2 in the fictional case.</dd>
       <dt>The two dwellings</dt><dd>Distinct subjects that an inspection must not conflate.</dd>
@@ -34,14 +36,14 @@ ex:title-record a model:TitleRecord .`;
   </figure>
 
   <section aria-labelledby="hard-cases">
-    <h2 id="hard-cases">Test identity over named hard cases</h2>
+    <h2 id="hard-cases"><span id="identity" aria-hidden="true"></span><span id="anti-patterns" aria-hidden="true"></span>Test identity over named hard cases</h2>
     <p>An address is useful matching evidence, but a building can contain several dwellings. A title identifier may help identify a title record, but that does not make it the identity criterion of a physical building. A source key can remain unchanged through a system migration while the source’s interpretation changes. These cases distinguish a join that software can perform from an identity assertion a modeller can defend.</p>
     <p>We therefore refuse the proposed assertion that the Harbour Court building and title record are <code>owl:sameAs</code>. This is not a weaker match waiting for a higher confidence score: the descriptions concern different kinds of thing. An appropriate relation may connect them once its meaning is established. Shared labels and linked records do not justify replacing that relation with identity.</p>
     <p>Subdivision is a different kind of challenge. If Flat 1 becomes two dwellings, does Flat 1 persist in either successor, cease to exist, or remain identifiable under a different domain convention? This chapter deliberately leaves the criterion unresolved. The reviewers need to name the individuation rule and examine the case; a new identifier or a “converted” status cannot answer it by itself.</p>
   </section>
 
   <section aria-labelledby="relationships">
-    <h2 id="relationships">Choose the relation before choosing its encoding</h2>
+    <h2 id="relationships"><span id="part-whole" aria-hidden="true"></span><span id="values" aria-hidden="true"></span>Choose the relation before choosing its encoding</h2>
     <p>“Contains a dwelling”, “was inspected during”, “is described by” and “is classified as” answer different questions. Use a name and definition that makes the intended relation apparent. State what kinds of subject and value it can connect, its direction and any temporal or contextual qualification. Avoid a generic “has property” link when the domain distinction is known.</p>
     <p>Some values are literals: a measured number, a date or a label with a language tag. Other values are resources with their own identity, relationships or provenance: an inspection, report version or governed concept. A string containing a report number is not interchangeable with an IRI identifying the report. Conversely, a simple literal does not need a new entity merely because a graph can represent one.</p>
     <p>The introducing-class rule places applicability where the property’s meaning arises. An inspection date describes an inspection; a report-generation date describes the report-generation result or activity as appropriate. Moving both to the building because the building is the page’s main subject hides the distinction between an enduring subject and evidence about it.</p>
@@ -55,21 +57,21 @@ ex:title-record a model:TitleRecord .`;
   </details>
 
   <section aria-labelledby="qualification">
-    <h2 id="qualification">Give qualified relationships somewhere to put their detail</h2>
+    <h2 id="qualification"><span id="participation" aria-hidden="true"></span><span id="qualified" aria-hidden="true"></span><span id="time" aria-hidden="true"></span><span id="claims" aria-hidden="true"></span>Give qualified relationships somewhere to put their detail</h2>
     <p>A direct relation is enough when the question requires only its endpoints. If a participation has a period, capacity, source or other distinguishing qualification, the relationship needs a representation that can carry those facts. Otherwise several dates or sources attached to the same person leave readers guessing which participation each one describes.</p>
     <p>For example, recording that a person acts as seller in this transaction needs the transaction context. If their participation also has an effective period and evidence, represent that qualified participation explicitly. Do not turn it into a timeless attribute of the person. A qualified relation is not automatically a new independent person, nor is every reified record automatically a foundational <em>relator</em>; those are separate commitments.</p>
     <p>The selected method includes RDF reification for identifying assertions and domain patterns for qualified relationships. Their jobs must be explained separately: identifying the statement “A relates to B” does not by itself establish the identity, dependence or lifecycle of a domain relationship. The <a href="https://www.w3.org/TR/swbp-n-aryRelations/">W3C n-ary relations Note, Use Case 1</a> explains why additional relation information can require an explicit relation instance.</p>
   </section>
 
   <section aria-labelledby="inheritance">
-    <h2 id="inheritance">Inheritance is a commitment, not a filing system</h2>
+    <h2 id="inheritance"><span id="upper" aria-hidden="true"></span><span id="reuse" aria-hidden="true"></span>Inheritance is a commitment, not a filing system</h2>
     <p><code>rdfs:subClassOf</code> says that every instance of one class is an instance of another. It is not a way to place a class under a convenient subject heading. A reporting facet such as “building information” may organise classes about inspections, documents and physical assets without asserting that those classes are all kinds of building. <a href="https://www.w3.org/TR/rdf-schema/#ch_subclassof">RDFS 1.1 §3.4</a> defines the actual subclass consequence.</p>
     <p>The same caution applies when reusing a standard. Reuse a term if its meaning fits; do not inherit from a remote class simply to advertise compatibility. Cross-context correspondence uses the mapping discipline. Foundational analysis challenges identity and dependence, but ODR-0118 R1 prohibits domain-class inheritance from external upper ontologies within the selected method’s scope. Analysis is required; importing that external hierarchy is not an optional alternative.</p>
     <p>Next, distinguish <a href="/semantic-modelling/method/roles-and-phases">roles, phases and subkinds</a>, then inspect <a href="/semantic-modelling/method/mapping-records">how mapping decisions are recorded</a>.</p>
   </section>
 
   <section aria-labelledby="source-contract">
-    <h2 id="source-contract">Source contract</h2>
+    <h2 id="source-contract"><span id="review" aria-hidden="true"></span><span id="constraints" aria-hidden="true"></span>Source contract</h2>
     <p>Required method: source-method ODR-0071a supplies domain structure; ODR-0026 §Rules supplies introducing-class placement and qualified relationships; its 30 August amendment applies ODR-0014’s exclusive applicability contract. ODR-0098 separates key evidence from identity criteria. ODR-0010 separates classification from inheritance; ODR-0112, ODR-0115 and ODR-0118 distinguish foundational analysis from external upper-ontology inheritance.</p>
     <p>Reviewed source revision: <code>67174057e6384b79d0b28b7736fe70a66e112895</code>, 5 September 2026. Source-method numbers are not OPDA ODR numbers. The <a href="/semantic-modelling/method/standards-and-decisions">register and adoption guide</a> records the authority boundary. All Harbour Court identities and encodings above are teaching illustrations, not current-candidate conformance claims.</p>
   </section>

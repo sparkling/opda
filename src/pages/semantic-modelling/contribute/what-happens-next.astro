@@ -1,5 +1,6 @@
 ---
 import ModellingLayout from '@/layouts/ModellingLayout.astro';
+import ModellingVisual from '@/components/modelling/ModellingVisual.astro';
 ---
 
 <ModellingLayout title="What happens to a contribution?" description="Discussion, a proposed change, technical checks and adoption are different events. Follow the Harbour Court question through them without mistaking an intended workflow for a completed approval system." chapter="Contribute · Review and decisions" claim="guide">
@@ -22,6 +23,7 @@ import ModellingLayout from '@/layouts/ModellingLayout.astro';
 
   <figure class="modelling-figure" aria-labelledby="journey-caption">
     <figcaption id="journey-caption">An illustrative review journey, with distinct responsibilities</figcaption>
+    <ModellingVisual kind="candidate-loop" />
     <ol class="modelling-steps">
       <li><h3>Observation · Participant</h3><p>“The report was corrected on 20 August, but the inspection occurred on 12 August. This definition appears to combine those dates.”</p></li>
       <li><h3>Interpretation · Facilitator and domain reviewers</h3><p>Identify the subjects and evidence. Ask whether the problem is wording, missing structure, a source conflict or a difference between contexts.</p></li>

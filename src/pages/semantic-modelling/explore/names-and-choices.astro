@@ -1,5 +1,6 @@
 ---
 import ModellingLayout from '@/layouts/ModellingLayout.astro';
+import ModellingVisual from '@/components/modelling/ModellingVisual.astro';
 ---
 
 <ModellingLayout title="Names and choices: the word is not the thing" description="A shared vocabulary does more than standardise spelling. It explains what a term means, which choices belong together and where apparently similar terms must remain different." chapter="Explore the distinctions" claim="guide">
@@ -9,7 +10,8 @@ import ModellingLayout from '@/layouts/ModellingLayout.astro';
     <p>A governed vocabulary may give one concept a preferred label and useful alternatives. That does not mean “flat” and “apartment” are universally interchangeable in every professional context. Reviewers must establish whether their definitions coincide in the particular vocabulary. If they do not, keeping separate concepts is more honest than announcing a synonym.</p>
   </section>
 
-  <figure class="modelling-figure" data-modelling-figure="concept-layers">
+<figure class="modelling-figure" data-modelling-figure="concept-layers">
+    <ModellingVisual kind="concept-layers" />
     <dl>
       <dt>The thing</dt><dd>Flat 1: the dwelling described in the Harbour Court example.</dd>
       <dt>The classification concept</dt><dd>A defined dwelling-form concept in a named, governed vocabulary.</dd>

@@ -1,5 +1,6 @@
 ---
 import ModellingLayout from '@/layouts/ModellingLayout.astro';
+import ModellingVisual from '@/components/modelling/ModellingVisual.astro';
 ---
 
 <ModellingLayout title="Things and identities: which property do you mean?" description="An address can connect several records without making them records of the same thing. A useful model helps people recognise those differences before information is combined." chapter="Explore the distinctions" claim="guide">
@@ -9,7 +10,8 @@ import ModellingLayout from '@/layouts/ModellingLayout.astro';
     <p>Linked data gives us a way to identify these things separately and explain their relationships. We can say that the building contains the dwellings, that a report describes an inspection and that the inspection concerned a particular subject. We do not have to press all those meanings into one field called “property”.</p>
   </section>
 
-  <figure class="modelling-figure" data-modelling-figure="identity-map">
+<figure class="modelling-figure" data-modelling-figure="identity-map">
+    <ModellingVisual kind="identity-map" />
     <dl>
       <dt>The building</dt><dd>Harbour Court, containing two dwellings in this fictional case.</dd>
       <dt>The dwellings</dt><dd>Flat 1 and Flat 2: two possible inspection subjects, not interchangeable labels.</dd>

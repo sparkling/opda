@@ -1,5 +1,6 @@
 ---
 import ModellingLayout from '@/layouts/ModellingLayout.astro';
+import ModellingVisual from '@/components/modelling/ModellingVisual.astro';
 const applicability = `@prefix model: <https://example.org/property-model/> .
 @prefix owl: <http://www.w3.org/2002/07/owl#> .
 @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
@@ -27,7 +28,8 @@ model:ReportExchangeShape a sh:NodeShape ;
 ---
 
 <ModellingLayout title="Meaning, checks and delivery: four jobs, four contracts" description="The meaning of a published assertion, the intended uses of a property, the requirements of an exchange and the triples a rule derives are different contracts. Keep them visible even when one tool processes them all." chapter="Encode without changing the meaning" claim="method">
-  <figure class="modelling-figure" data-modelling-figure="semantic-layers">
+<figure class="modelling-figure" data-modelling-figure="semantic-layers">
+    <ModellingVisual kind="semantic-layers" />
     <dl>
       <dt>Semantic assertion</dt><dd>What the graph says, including the consequences of the vocabulary used.</dd>
       <dt>Applicability hint</dt><dd>Which subjects or values a property is intended to describe, without that entailment.</dd>
@@ -59,7 +61,7 @@ model:ReportExchangeShape a sh:NodeShape ;
   </details>
 
   <section aria-labelledby="validation">
-    <h2 id="validation">A shape checks an explicitly chosen graph</h2>
+    <h2 id="validation"><span id="use-specific-rules" aria-hidden="true"></span><span id="open-closed" aria-hidden="true"></span><span id="automated" aria-hidden="true"></span>A shape checks an explicitly chosen graph</h2>
     <p>The fictional Harbour Court receiving profile asks each report version to identify exactly one inspection. That is an exchange requirement, not a new definition of Building. A graph missing the link should produce a validation result; it does not establish that no inspection happened.</p>
     <p>SHACL targets identify the focus nodes to check. Property paths identify the values. Constraints describe cardinality, datatype, class, permitted values or more complex conditions. A useful result tells the reader the focus node, path, offending value where relevant, and source constraint. <a href="https://www.w3.org/TR/shacl/#validation">SHACL §§3.4–3.6</a> specifies validation and its report.</p>
     <p>The validation contract must also identify the input graph, shape version and relevant entailment regime. Are expected types asserted, or made available by a declared processing step? Different answers can change the result. A successful validation means the supplied graph meets the encoded conditions; it proves neither the factual truth of a roof claim nor approval of the whole ontology.</p>
@@ -72,7 +74,7 @@ model:ReportExchangeShape a sh:NodeShape ;
   </details>
 
   <section aria-labelledby="bounded-owl">
-    <h2 id="bounded-owl">Use the bounded OWL profile without calling it a new semantics</h2>
+    <h2 id="bounded-owl"><span id="conformance" aria-hidden="true"></span>Use the bounded OWL profile without calling it a new semantics</h2>
     <p>ODR-0030 defines the permitted documentation constructs and exclusions. ODR-0036 separately selects runtime materialisation. The selected group covers subclass and subproperty propagation, inverse, transitive and symmetric relationships, and disjointness checks. “Safe Group” is the source method’s profile name, not a guarantee that every use of those constructs is safe.</p>
     <p>The runtime group excludes domain/range materialisation, functional and inverse-functional identity effects, and class/property equivalence propagation. Those operational omissions do not suspend standard semantics. In particular, paired subclass links across contexts recreate bidirectional type propagation; they are not a safe workaround for an excluded equivalence rule.</p>
     <p>The bounded documentation profile excludes OWL restrictions, Boolean class constructors, cardinality restrictions, <code>owl:oneOf</code>, <code>owl:hasKey</code> and <code>owl:disjointUnionOf</code>. Put required cardinalities and conditional checks in SHACL; use governed SKOS choices and explicit validation for closed lists. This is a selected profile, not a claim that these OWL constructs are invalid in OWL generally.</p>
@@ -86,14 +88,14 @@ model:ReportExchangeShape a sh:NodeShape ;
   </section>
 
   <section aria-labelledby="delivery">
-    <h2 id="delivery">A delivery projection must disclose what it preserves</h2>
+    <h2 id="delivery"><span id="projections" aria-hidden="true"></span>A delivery projection must disclose what it preserves</h2>
     <p>A form, JSON document, API response or explanatory page can present the reviewed agreement for a particular task. Check which identifiers, distinctions, mapping qualifications and provenance survive the projection. A compact field called “property” may be useful only if its contract says whether it identifies a building, dwelling or another resource.</p>
     <p>The failure case is a convenient JSON projection that flattens report version 2 and the inspection into one “latest inspection” object. Consumers can no longer tell a corrected report from a new event. Repair the projection or document its limitations; do not rewrite the ontology’s meaning to fit the screen.</p>
     <p>Continue with <a href="/semantic-modelling/method/evidence-and-time">evidence and time</a> and the <a href="/semantic-modelling/method/languages-and-profiles">language profiles</a>.</p>
   </section>
 
   <section aria-labelledby="source-contract">
-    <h2 id="source-contract">Source contract</h2>
+    <h2 id="source-contract"><span id="authority" aria-hidden="true"></span>Source contract</h2>
     <p>Required method: source-method ODR-0014 R1–R6 as amended 28 and 30 August 2026; ODR-0030 Core Principle and permitted/excluded tables; ODR-0036 Normative Rules, including its later cross-context equivalence correction. ODR-0071g supplies the validation concern. None of these source-method identifiers refers to a same-numbered OPDA ODR.</p>
     <p>Reviewed revision <code>67174057e6384b79d0b28b7736fe70a66e112895</code>, 5 September 2026. See <a href="/semantic-modelling/method/standards-and-decisions">standards and decisions</a>. These are required method distinctions with fictional examples, not evidence that a current runtime or candidate already implements them.</p>
   </section>

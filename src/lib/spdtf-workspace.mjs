@@ -10,7 +10,7 @@ export const SEMANTIC_PACKAGE_MANIFEST = Object.freeze({
   status: 'workspace contract — no domain candidate approved',
   authority: 'Accepted IA; domain meaning remains subject to working-group review',
   standardsProfileVersion: '0.3-development',
-  canonicalSource: '/semantic-modelling/semantic-package',
+  canonicalSource: '/semantic-modelling/method/scope-and-package',
   outputs: Object.freeze([
     'Business glossary',
     'Data dictionary',
@@ -56,7 +56,7 @@ const workspaceInputs = Object.freeze({
   'property-data-services': ['/development/property-pack/contexts/property-data-services', '/resources'],
   'property-technology': ['/development/property-pack/contexts/property-technology', '/development/inputs/pdtf-schema'],
   'dbt-smart-data': ['/dbt-smart-data', '/programme'],
-  interoperability: ['/semantic-modelling/bounded-contexts', '/semantic-modelling/evidence-and-mappings'],
+  interoperability: ['/semantic-modelling/explore/contexts-and-connections', '/semantic-modelling/method/mapping-records'],
 });
 
 const questions = Object.freeze({
