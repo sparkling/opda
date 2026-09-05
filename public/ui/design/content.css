@@ -367,7 +367,7 @@ html { scroll-padding-top: calc(var(--header-height) + 1rem); }
 }
 .btn--compact {
   min-height: auto;
-  padding-block: var(--space-1);
+  padding-block: 6px;
   padding-inline: var(--space-3);
 }
 .cta:hover, .btn:hover {
