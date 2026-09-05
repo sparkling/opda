@@ -75,16 +75,16 @@ model:ReportExchangeShape a sh:NodeShape ;
 
   <section aria-labelledby="bounded-owl">
     <h2 id="bounded-owl"><span id="conformance" aria-hidden="true"></span>Use the bounded OWL profile without calling it a new semantics</h2>
-    <p>ODR-0030 defines the permitted documentation constructs and exclusions. ODR-0036 separately selects runtime materialisation. The selected group covers subclass and subproperty propagation, inverse, transitive and symmetric relationships, and disjointness checks. “Safe Group” is the source method’s profile name, not a guarantee that every use of those constructs is safe.</p>
+    <p><a href="/modelling/odr/odr-0043">ODR-0043</a> defines the permitted documentation constructs and exclusions. <a href="/modelling/odr/odr-0044">ODR-0044</a> separately selects runtime materialisation. The selected group covers subclass and subproperty propagation, inverse, transitive and symmetric relationships, and disjointness checks. “Safe Group” is the OPDA method’s profile name, not a guarantee that every use of those constructs is safe.</p>
     <p>The runtime group excludes domain/range materialisation, functional and inverse-functional identity effects, and class/property equivalence propagation. Those operational omissions do not suspend standard semantics. In particular, paired subclass links across contexts recreate bidirectional type propagation; they are not a safe workaround for an excluded equivalence rule.</p>
     <p>The bounded documentation profile excludes OWL restrictions, Boolean class constructors, cardinality restrictions, <code>owl:oneOf</code>, <code>owl:hasKey</code> and <code>owl:disjointUnionOf</code>. Put required cardinalities and conditional checks in SHACL; use governed SKOS choices and explicit validation for closed lists. This is a selected profile, not a claim that these OWL constructs are invalid in OWL generally.</p>
   </section>
 
   <section aria-labelledby="rules">
     <h2 id="rules">Enrichment produces data; validation judges supplied data</h2>
-    <p>ODR-0036 adopts simple triple-template rules and SPARQL CONSTRUCT rules for derived values, in separate rules artefacts. For Harbour Court, a rule might generate a display heading from a supplied address label and inspection date. The heading is derived from those inputs. It is not an independent observation of the building and cannot supply missing professional judgement.</p>
+    <p><a href="/modelling/odr/odr-0044">ODR-0044</a> adopts simple triple-template rules and SPARQL CONSTRUCT rules for derived values, in separate rules artefacts. For Harbour Court, a rule might generate a display heading from a supplied address label and inspection date. The heading is derived from those inputs. It is not an independent observation of the building and cannot supply missing professional judgement.</p>
     <p>Keep asserted and derived triples distinguishable through declared graph or provenance conventions. Identify which rules ran and which input version they used. Turning a rule off should be an inspectable configuration decision, not a change hidden inside a validator. A generated default must not be presented as a value observed or supplied by a practitioner.</p>
-    <p>Rules and constraints can use related machinery without sharing the same job. <a href="https://www.w3.org/TR/shacl-af/#rules">SHACL Advanced Features §8</a> describes rules; the source method’s adoption of those capabilities does not demonstrate that current OPDA candidates execute them.</p>
+    <p>Rules and constraints can use related machinery without sharing the same job. <a href="https://www.w3.org/TR/shacl-af/#rules">SHACL Advanced Features §8</a> describes rules; the OPDA method’s adoption of those capabilities does not demonstrate that current OPDA candidates execute them.</p>
   </section>
 
   <section aria-labelledby="delivery">
@@ -96,7 +96,7 @@ model:ReportExchangeShape a sh:NodeShape ;
 
   <section aria-labelledby="source-contract">
     <h2 id="source-contract"><span id="authority" aria-hidden="true"></span>Source contract</h2>
-    <p>Required method: source-method ODR-0014 R1–R6 as amended 28 and 30 August 2026; ODR-0030 Core Principle and permitted/excluded tables; ODR-0036 Normative Rules, including its later cross-context equivalence correction. ODR-0071g supplies the validation concern. None of these source-method identifiers refers to a same-numbered OPDA ODR.</p>
-    <p>Reviewed revision <code>67174057e6384b79d0b28b7736fe70a66e112895</code>, 5 September 2026. See <a href="/semantic-modelling/method/standards-and-decisions">standards and decisions</a>. These are required method distinctions with fictional examples, not evidence that a current runtime or candidate already implements them.</p>
+    <p>Required method: OPDA <a href="/modelling/odr/odr-0037">ODR-0037</a> R1–R6 as amended 28 and 30 August 2026; <a href="/modelling/odr/odr-0043">ODR-0043</a> Core Principle and permitted/excluded tables; <a href="/modelling/odr/odr-0044">ODR-0044</a> Normative Rules, including its later cross-context equivalence correction. <a href="/modelling/odr/odr-0050">ODR-0050</a> supplies the validation concern. These adopted OPDA records govern the method, not candidate implementation.</p>
+    <p>Adoption provenance: upstream revision <code>67174057e6384b79d0b28b7736fe70a66e112895</code>, 5 September 2026. See <a href="/semantic-modelling/method/standards-and-decisions">standards and decisions</a>. These are required method distinctions with fictional examples, not evidence that a current runtime or candidate already implements them.</p>
   </section>
 </ModellingLayout>

@@ -39,7 +39,7 @@ ex:report-v2 a model:ReportVersion, prov:Entity ;
     <h2 id="provenance">Describe entities, activities and responsible agents</h2>
     <p>PROV-O provides distinctions between an entity, an activity that uses or produces entities, and an agent associated with responsibility. A report version can be an entity; producing or revising it can be an activity. Attribution to an agent and derivation from a source answer different questions and should not be interchanged merely because both look like “where this came from”. <a href="https://www.w3.org/TR/prov-o/#description-starting-point-terms">PROV-O §§3.1 and 4.1</a> introduces those terms.</p>
     <p>The provenance of an ontology term is another use of this discipline. Which source definition supported the modelling choice? Which extraction or editorial activity produced the candidate? Which version of the source was used? That is not the same as provenance of an inspection finding in a property transaction. Both may be needed, but they describe different entities and activities.</p>
-    <p>A source-file path is a literal location string, not automatically a PROV Location resource. The source method’s 28 August amendment makes its source-file datatype property independent of <code>prov:atLocation</code>; it must not be a datatype subproperty of that object property. Retaining useful lineage does not justify violating the reused vocabulary’s property kinds.</p>
+    <p>A source-file path is a literal location string, not automatically a PROV Location resource. The OPDA method’s 28 August amendment makes its source-file datatype property independent of <code>prov:atLocation</code>; it must not be a datatype subproperty of that object property. Retaining useful lineage does not justify violating the reused vocabulary’s property kinds.</p>
   </section>
 
   <details>
@@ -59,8 +59,8 @@ ex:report-v2 a model:ReportVersion, prov:Entity ;
   <section aria-labelledby="two-times">
     <h2 id="two-times">Separate valid time from recorded time</h2>
     <p>Valid time says when a state or claim applies in the modelled world. Recorded or transaction time says when the system acquired or recorded the information. A correction entered on 20 August may concern an observation on 12 August. Collapsing those times makes it impossible to ask what was believed at a particular time and what period that belief concerned.</p>
-    <p>The source temporal pattern uses an immutable transition-record entity for a change of state. Its effective time points to an OWL-Time instant. Its generation time, when supplied, describes the record; the recording activity is linked separately. Activities use activity start/end properties, not a generation timestamp borrowed from an entity pattern.</p>
-    <p>OWL-Time supplies instants, intervals and temporal relationships. A local state-transition relation supplies the domain-specific meaning of changing state; the time vocabulary alone does not define a lifecycle. The source profile uses a deliberately limited temporal-relation selection rather than claiming every possible temporal inference is operational. <a href="https://www.w3.org/TR/owl-time/#time:Instant">OWL-Time §4.1</a> defines its temporal classes.</p>
+    <p>The adopted temporal pattern uses an immutable transition-record entity for a change of state. Its effective time points to an OWL-Time instant. Its generation time, when supplied, describes the record; the recording activity is linked separately. Activities use activity start/end properties, not a generation timestamp borrowed from an entity pattern.</p>
+    <p>OWL-Time supplies instants, intervals and temporal relationships. A local state-transition relation supplies the domain-specific meaning of changing state; the time vocabulary alone does not define a lifecycle. The adopted profile uses a deliberately limited temporal-relation selection rather than claiming every possible temporal inference is operational. <a href="https://www.w3.org/TR/owl-time/#time:Instant">OWL-Time §4.1</a> defines its temporal classes.</p>
   </section>
 
   <section aria-labelledby="state">
@@ -72,14 +72,14 @@ ex:report-v2 a model:ReportVersion, prov:Entity ;
 
   <section aria-labelledby="quality">
     <h2 id="quality">Evidence supports assessment; it is not a quality guarantee</h2>
-    <p>Confidence in an extraction is not confidence in the source’s factual claim. A tool might reproduce a report perfectly while the report itself is incomplete or mistaken. The source method’s confidence annotation has no automatically operationalised ISO 25012 or DQV quality meaning. Do not imply a quality certification simply because those standards appear in a category’s references.</p>
+    <p>Confidence in an extraction is not confidence in the source’s factual claim. A tool might reproduce a report perfectly while the report itself is incomplete or mistaken. The OPDA method’s confidence annotation has no automatically operationalised ISO 25012 or DQV quality meaning. Do not imply a quality certification simply because those standards appear in a category’s references.</p>
     <p>The failure case is a page showing “latest inspection: 20 August” because it selected the newest report timestamp. The repair is to preserve the event/report distinction and query the time appropriate to the question. A validation result can check the presence and datatype of a date; human and source evidence establish what that date means.</p>
     <p>Temporal patterns are also scoped. The active strategic relationships in <a href="/semantic-modelling/method/context-map-records">context maps</a> explicitly do not use the report revision/history model. One reusable vocabulary does not make every resource share one lifecycle.</p>
   </section>
 
   <section aria-labelledby="source-contract">
     <h2 id="source-contract">Source contract</h2>
-    <p>Required method: source-method ODR-0071i R2–R4 and its 28 August source-file correction; ODR-0071j R2–R5 and its 28 August transition-record/time correction; ODR-0036’s asserted/derived distinction. ODR-0087 reserves mapping confidence for its SSSOM profile. ODR-0127’s later active-map-only exception remains separate.</p>
-    <p>Reviewed revision <code>67174057e6384b79d0b28b7736fe70a66e112895</code>, 5 September 2026. See <a href="/semantic-modelling/method/standards-and-decisions">standards and decisions</a> for authority and scope. Required provenance patterns, fictional report data and demonstrated current-candidate coverage are not interchangeable.</p>
+    <p>Required method: OPDA <a href="/modelling/odr/odr-0052">ODR-0052</a> R2–R4 and its 28 August source-file correction; <a href="/modelling/odr/odr-0053">ODR-0053</a> R2–R5 and its 28 August transition-record/time correction; <a href="/modelling/odr/odr-0044">ODR-0044</a>’s asserted/derived distinction. <a href="/modelling/odr/odr-0056">ODR-0056</a> reserves mapping confidence for its SSSOM profile. <a href="/modelling/odr/odr-0064">ODR-0064</a>’s later active-map-only exception remains separate.</p>
+    <p>Adoption provenance: upstream revision <code>67174057e6384b79d0b28b7736fe70a66e112895</code>, 5 September 2026. See <a href="/semantic-modelling/method/standards-and-decisions">standards and decisions</a> for authority and scope. Required provenance patterns, fictional report data and demonstrated current-candidate coverage are not interchangeable.</p>
   </section>
 </ModellingLayout>

@@ -10,6 +10,10 @@ import {
 } from '@/lib/spdtf-standards-profile.mjs';
 
 validateStandardsProfile();
+const decisionParts = (value: string) => value.split(/(ODR-\d{4})/u).filter(Boolean).map((text) => ({
+  text,
+  href: /^ODR-\d{4}$/u.test(text) ? `/modelling/odr/${text.toLowerCase()}` : undefined,
+}));
 ---
 
 <ModellingLayout title="Languages and profiles: choose the tool for the question" description="Use established languages for distinct jobs: describing things, organising choices, checking deliveries and preserving evidence. Then state exactly which features the method selects and which the candidate actually uses." claim="method">
@@ -28,7 +32,7 @@ validateStandardsProfile();
       <dt>Actual candidate implementation</dt><dd>What a named package emits and what its recorded checks exercise. A successful parser run is not an entailment, full-profile or semantic-correctness receipt.</dd>
     </dl>
     <p>This page uses profile <code>{STANDARDS_PROFILE_VERSION}</code>, with governance reconciliation dated <time datetime={STANDARDS_GOVERNANCE_REVIEWED}>{STANDARDS_GOVERNANCE_REVIEWED}</time>. The register's external-publication checks remain dated <time datetime="2026-08-20">2026-08-20</time>. This chapter does not refresh those checks or change Property Pack 0.1's pinned snapshots.</p>
-    <p>The required method below follows the selected source-method concerns 1, 2, 5, 7, 8, 9, 10 and 11 at reviewed revision <code>67174057e6384b79d0b28b7736fe70a66e112895</code>. Source-method ODR numbers are not interchangeable with OPDA's own decision-register numbers. The <a href="/semantic-modelling/method/standards-and-decisions">standards and decisions chapter</a> explains their separate authority and scope.</p>
+    <p>The required method below follows OPDA’s adopted <a href="/modelling/odr/odr-0046">ODR-0046</a> framework and concerns 1, 2, 5, 7, 8, 9, 10 and 11. The linked local decisions govern their scoped rules and amendments. Upstream revision <code>67174057e6384b79d0b28b7736fe70a66e112895</code> is adoption provenance only. The <a href="/semantic-modelling/method/standards-and-decisions">standards and decisions chapter</a> explains the local authority and scope.</p>
   </section>
 
   <figure class="modelling-figure">
@@ -54,7 +58,7 @@ validateStandardsProfile();
     <p>A class describes a set of things; a property describes a relationship or value. Declaring one class a subclass of another says that every member of the first is also a member of the second. It is not merely a way to place a heading in a menu. Calling Harbour Court a building does not make its title record a building, even if both records display “14 Orchard Road”.</p>
     <p>RDFS domain and range also make substantive claims. If a property's domain is Inspection, using that property entails that its subject is an Inspection. Two domains mean membership in <em>both</em> classes, not either one. The same all-declarations consequence applies to ranges. These are not lists of allowed form fields. <a href="https://www.w3.org/TR/rdf-schema/">RDFS defines these semantics</a>; disabling a local reasoner does not remove them from exported statements.</p>
     <h3 id="one-family-per-side">Choose exactly one applicability family on each side</h3>
-    <p>Source-method ODR-0014, including its 28 and 30 August 2026 amendments, requires coverage of both the subject side and the value side of every governed property. Decide each side separately. Each must use exactly one of the following families:</p>
+    <p>OPDA <a href="/modelling/odr/odr-0037">ODR-0037</a>, including its 28 and 30 August 2026 amendments, requires coverage of both the subject side and the value side of every governed property. Decide each side separately. Each must use exactly one of the following families:</p>
     <ol class="modelling-steps">
       <li><strong>One universally true RDFS IRI.</strong> Use a single domain or range commitment only when its typing consequence is always warranted.</li>
       <li><strong>One or more Schema.org inclusion hints.</strong> Use <code>schema:domainIncludes</code> or <code>schema:rangeIncludes</code> to document intended applicability without asserting those RDFS type consequences. Hints do not enforce constraints.</li>
@@ -68,8 +72,8 @@ validateStandardsProfile();
       <p>This is a review exercise, not a conformance result for a current candidate. Its useful output is the intended meaning and counterexample, not a guessed technical answer.</p>
     </details>
     <h3 id="bounded-owl">Use a bounded OWL profile, not unrestricted reasoning</h3>
-    <p>OWL supplies formal axioms, but source-method ODR-0030 deliberately excludes restrictions, Boolean class constructors, cardinality restrictions, closed OWL enumerations and keys from the documentation profile. Their delivery-validation requirements belong in SHACL. Under open-world semantics, missing information is not automatically false.</p>
-    <p>ODR-0036 selects a Safe Group of processing features: class and property hierarchies, inverse links, transitivity, symmetry and disjointness checks. Domain/range inference, identity merging and equivalence propagation are outside that local runtime ruleset, not outside the standards' semantics. This selection is neither full OWL reasoning nor evidence that every candidate already runs it. See <a href="/semantic-modelling/method/classes-and-relationships">classes and relationships</a> and the <a href="https://www.w3.org/TR/owl2-syntax/">OWL structural specification</a>.</p>
+    <p>OWL supplies formal axioms, but OPDA <a href="/modelling/odr/odr-0043">ODR-0043</a> deliberately excludes restrictions, Boolean class constructors, cardinality restrictions, closed OWL enumerations and keys from the documentation profile. Their delivery-validation requirements belong in SHACL. Under open-world semantics, missing information is not automatically false.</p>
+    <p><a href="/modelling/odr/odr-0044">ODR-0044</a> selects a Safe Group of processing features: class and property hierarchies, inverse links, transitivity, symmetry and disjointness checks. Domain/range inference, identity merging and equivalence propagation are outside that local runtime ruleset, not outside the standards' semantics. This selection is neither full OWL reasoning nor evidence that every candidate already runs it. See <a href="/semantic-modelling/method/classes-and-relationships">classes and relationships</a> and the <a href="https://www.w3.org/TR/owl2-syntax/">OWL structural specification</a>.</p>
   </section>
 
   <section aria-labelledby="controlled-choices">
@@ -85,7 +89,7 @@ validateStandardsProfile();
     <p>A conforming report record does not prove that Harbour Court is safe, the inspection happened or the author was authorised. It means the supplied data met the supplied constraints under the declared conditions. Evidence and human review answer different questions. The <a href="https://www.w3.org/TR/shacl/">SHACL specification</a> does not require full RDFS inference; any inference expectation must be explicit.</p>
     <p>SPARQL turns a reviewable question into graph patterns. “Is a date recorded for this inspection?” can become an <code>ASK</code> query, which returns a boolean about the matched pattern. “Which report versions describe it?” calls for a different query. Neither query establishes the truth of the underlying assertions. The language supports more query forms than Property Pack 0.1 currently uses; see the <a href="https://www.w3.org/TR/sparql11-query/">SPARQL query specification</a>.</p>
     <h3 id="derivation-is-separate">A derived answer needs its own execution evidence</h3>
-    <p>Source-method ODR-0036 selects SHACL-AF <code>TripleRule</code> and <code>SPARQLRule</code> features for derivation, with rules kept separate from validation constraints. Asserted and derived statements must remain distinguishable through graph separation or provenance. Passing a shapes check does not prove that a rule executed, and selecting these rules does not adopt every SHACL-AF function or target.</p>
+    <p>OPDA <a href="/modelling/odr/odr-0044">ODR-0044</a> selects SHACL-AF <code>TripleRule</code> and <code>SPARQLRule</code> features for derivation, with rules kept separate from validation constraints. Asserted and derived statements must remain distinguishable through graph separation or provenance. Passing a shapes check does not prove that a rule executed, and selecting these rules does not adopt every SHACL-AF function or target.</p>
     <p>At Harbour Court, do not derive a new inspection merely because a new report version exists. That would manufacture an event from a document change. Review the intended rule and its counterexample before implementation. The <a href="/semantic-modelling/method/meaning-checks-and-delivery">meaning, checks and delivery chapter</a> separates these receipts in detail.</p>
   </section>
 
@@ -98,16 +102,16 @@ validateStandardsProfile();
       <dt>OWL-Time — distinguish temporal questions</dt><dd>Use the selected instants, intervals and temporal relationships where needed. Keep valid time, event time and recorded time distinct instead of treating a document revision as a new event.</dd>
       <dt>DCAT and DQV — describe discovery and quality</dt><dd>A catalogue can describe a dataset, distribution or service; a quality record can state a measure and its purpose. Neither a catalogue entry nor a quality score supplies the domain meaning of “inspection”. These are candidate concerns, not claims of current Property Pack use.</dd>
     </dl>
-    <p>Source-method ODR-0071i and ODR-0071j require bounded canonical-IRI PROV-O and OWL-Time profiles, without <code>owl:imports</code>. Their selection does not mean they have been implemented in Property Pack 0.1. Follow <a href="/semantic-modelling/method/evidence-and-time">evidence and time</a> for the worked distinction.</p>
+    <p>OPDA <a href="/modelling/odr/odr-0052">ODR-0052</a> and <a href="/modelling/odr/odr-0053">ODR-0053</a> require bounded canonical-IRI PROV-O and OWL-Time profiles, without <code>owl:imports</code>. Their selection does not mean they have been implemented in Property Pack 0.1. Follow <a href="/semantic-modelling/method/evidence-and-time">evidence and time</a> for the worked distinction.</p>
     <h3 id="qualified-mappings">SSSOM: preserve the argument behind a correspondence</h3>
     <p>A mapping is another claim requiring evidence. The selected contract retains the SKOS statement and attaches SSSOM 1.0 metadata on a named RDF 1.2 reifier. Pin both endpoint sources and their versions, the mapping-set release, date and matching-process justification. SEMAPV supplies the matching-process values; that process classification does not replace the semantic argument. Confidence is optional.</p>
-    <p>This applies to internal cross-context as well as external vocabulary mappings under source-method ODR-0071h, ODR-0087, ODR-0096 and ODR-0098 R11. The RDF 1.2 triple-term layer requires its own feature evidence; it does not expand the older Basic-compatible candidate claim. Read <a href="/semantic-modelling/method/mapping-records">mapping records</a> for the exact scoped profile, amendment exclusions and illustrative syntax.</p>
+    <p>This applies to internal cross-context as well as external vocabulary mappings under OPDA <a href="/modelling/odr/odr-0051">ODR-0051</a>, <a href="/modelling/odr/odr-0056">ODR-0056</a>, <a href="/modelling/odr/odr-0058">ODR-0058</a> and <a href="/modelling/odr/odr-0059">ODR-0059</a> R11. The RDF 1.2 triple-term layer requires its own feature evidence; it does not expand the older Basic-compatible candidate claim. Read <a href="/semantic-modelling/method/mapping-records">mapping records</a> for the exact scoped profile, amendment exclusions and illustrative syntax.</p>
   </section>
 
   <section aria-labelledby="classification-and-policy">
     <h2 id="classification-and-policy">Privacy classification is not an access-control decision</h2>
     <p>A report may contain personal information. Describing its sensitivity, deciding who may use it and enforcing that decision are three different responsibilities. Linking the report into a model does not make it public, and a classification label does not grant permission to read it.</p>
-    <p>Source-method ODR-0071k uses local classification annotations with reviewed mappings to DPV concepts. It does not impose DPV's processing-activity semantics on domain classes. ODR-0089 conditionally selects the ODRL 2.2 Common Vocabulary through the DPV Profile of ODRL for retention, dynamic-state access and cross-border policies. Policies are human-curated; no automatic policy generation or enforcement is claimed.</p>
+    <p>OPDA <a href="/modelling/odr/odr-0054">ODR-0054</a> uses local classification annotations with reviewed mappings to DPV concepts. It does not impose DPV's processing-activity semantics on domain classes. <a href="/modelling/odr/odr-0057">ODR-0057</a> conditionally selects the ODRL 2.2 Common Vocabulary through the DPV Profile of ODRL for retention, dynamic-state access and cross-border policies. Policies are human-curated; no automatic policy generation or enforcement is claimed.</p>
     <p>ORG addresses organisational structures and memberships when those are the relevant relationships; it is not a substitute for every kind of role. FIBO, GeoSPARQL, credentials and DID references likewise need an actual use case and a selected term or feature boundary before use. Familiarity with their names is not selection evidence. Continue with <a href="/semantic-modelling/method/sensitivity-and-policy">sensitivity and policy</a>; the register below states each technology's disposition.</p>
   </section>
 
@@ -127,7 +131,7 @@ validateStandardsProfile();
     </details>
     <p><code>owl:imports</code> is not a citation: it brings the imported ontology's axioms through its import closure into scope. A prefix declaration is not term use, and term use is not full-vocabulary conformance. Record the actual act and its consequences.</p>
     <h3 id="upper-ontology">Analytical methods do not require foundational inheritance</h3>
-    <p>UFO-informed identity, role, phase and introducing-class analysis, together with OntoClean's rigidity, identity, dependence and unity checks, are selected disciplines. Their source-method basis is ODR-0025/0026, ODR-0112/0115 and ODR-0118. They guide whether a hierarchy makes sense; ODR-0118 explicitly prohibits subsuming domain classes under external upper-ontology classes within the selected scope. This is analytical use, not foundational inheritance.</p>
+    <p>UFO-informed identity, role, phase and introducing-class analysis, together with OntoClean's rigidity, identity, dependence and unity checks, are selected disciplines. Their OPDA decision basis is <a href="/modelling/odr/odr-0041">ODR-0041</a> / <a href="/modelling/odr/odr-0042">ODR-0042</a>, <a href="/modelling/odr/odr-0061">ODR-0061</a> / <a href="/modelling/odr/odr-0062">ODR-0062</a> and <a href="/modelling/odr/odr-0063">ODR-0063</a>. They guide whether a hierarchy makes sense; <a href="/modelling/odr/odr-0063">ODR-0063</a> explicitly prohibits subsuming domain classes under external upper-ontology classes within the selected scope. This is analytical use, not foundational inheritance.</p>
     <p>gUFO is a separate OWL implementation, not selected simply because UFO analysis is selected. DOLCE remains historical comparison evidence. Property Pack 0.1 has no separate analytical-method conformance receipt. See <a href="/semantic-modelling/method/roles-and-phases">roles and phases</a> for the practical identity questions.</p>
   </section>
 
@@ -161,7 +165,7 @@ validateStandardsProfile();
       <summary>{record.name}</summary>
       <dl>
         <dt>Purpose</dt><dd>{record.purpose}</dd>
-        <dt>Selected profile boundary</dt><dd><a href={record.profileSource}>{record.versionBoundary}</a></dd>
+        <dt>Selected profile boundary</dt><dd>{decisionParts(record.versionBoundary).map(({ text, href }) => <a href={href ?? record.profileSource}>{text}</a>)}</dd>
         <dt>OPDA governance status</dt><dd>{record.governanceStatus}</dd>
         <dt>External specification maturity</dt><dd>{record.specificationMaturity} · {record.exactSnapshot}. <a href={record.source}>Primary specification or method source</a>.</dd>
         <dt>Actual implementation status</dt><dd>{record.implementationStatus}</dd>
@@ -170,7 +174,7 @@ validateStandardsProfile();
         <dt>Feature and conformance boundary</dt><dd>{record.conformance}</dd>
         <dt>Relationship mechanism</dt><dd><code>{record.mechanism}</code></dd>
         <dt>Semantic or technical owner</dt><dd>{record.owner}</dd>
-        <dt>Decision evidence</dt><dd>{record.evidence}</dd>
+        <dt>Decision evidence</dt><dd>{decisionParts(record.evidence).map(({ text, href }) => href ? <a href={href}>{text}</a> : text)}</dd>
         <dt>Re-open trigger</dt><dd>{record.reopenTrigger}</dd>
         <dt>External publication last checked</dt><dd><time datetime={record.lastChecked}>{record.lastChecked}</time></dd>
       </dl>

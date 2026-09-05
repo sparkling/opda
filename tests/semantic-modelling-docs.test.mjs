@@ -31,15 +31,15 @@ const visualKinds = [
   'policy-boundaries', 'scope-map',
 ];
 const sourceContracts = {
-  'from-question-to-candidate': ['ODR-0071', 'ODR-0015', 'ODR-0040', 'ODR-0106', 'ODR-0098'],
-  'scope-and-package': ['ODR-0071', 'ADR-0063', 'ADR-0067'],
-  'classes-and-relationships': ['ODR-0071a', 'ODR-0014', 'ODR-0026', 'ODR-0098', 'ODR-0118'],
-  'roles-and-phases': ['ODR-0025', 'ODR-0026', 'ODR-0071j', 'ODR-0098'],
-  'context-map-records': ['ODR-0127', 'ODR-0071h', 'ODR-0087', 'ODR-0096'],
-  'mapping-records': ['ODR-0071h', 'ODR-0087', 'ODR-0096', 'ODR-0098'],
-  'meaning-checks-and-delivery': ['ODR-0014', 'ODR-0030', 'ODR-0036', 'ODR-0071g'],
-  'evidence-and-time': ['ODR-0071i', 'ODR-0071j', 'ODR-0036', 'ODR-0127'],
-  'sensitivity-and-policy': ['ODR-0071k', 'ODR-0089'],
+  'from-question-to-candidate': ['ODR-0046', 'ODR-0038', 'ODR-0045', 'ODR-0060', 'ODR-0059'],
+  'scope-and-package': ['ODR-0046', 'ADR-0063', 'ADR-0067'],
+  'classes-and-relationships': ['ODR-0047', 'ODR-0037', 'ODR-0042', 'ODR-0059', 'ODR-0063'],
+  'roles-and-phases': ['ODR-0041', 'ODR-0042', 'ODR-0053', 'ODR-0059'],
+  'context-map-records': ['ODR-0064', 'ODR-0051', 'ODR-0056', 'ODR-0058'],
+  'mapping-records': ['ODR-0051', 'ODR-0056', 'ODR-0058', 'ODR-0059'],
+  'meaning-checks-and-delivery': ['ODR-0037', 'ODR-0043', 'ODR-0044', 'ODR-0050'],
+  'evidence-and-time': ['ODR-0052', 'ODR-0053', 'ODR-0044', 'ODR-0064'],
+  'sensitivity-and-policy': ['ODR-0054', 'ODR-0057'],
 };
 
 // These are source/structure contracts, not an Astro render, RDF parser or semantic audit.
@@ -100,15 +100,22 @@ test('one registry supplies 24 canonical pages across four task-based journeys',
   assert.doesNotMatch(methodLanding, /ChapterEnd|hideFooter/u);
 });
 
-test('selected concern numbers, dispositions and source receipts remain inspectable', () => {
+test('selected concern numbers, dispositions and local adoption receipts remain inspectable', () => {
   const register = textOf('method/standards-and-decisions');
-  const concerns = [...register.matchAll(/\[(\d+),\s*'(ODR-0071[a-z])'/gu)]
+  const concerns = [...register.matchAll(/\[(\d+),\s*'(ODR-\d{4})'/gu)]
     .map(([, number, record]) => [Number(number), record]);
   assert.deepEqual(concerns, [
-    [1, 'ODR-0071a'], [2, 'ODR-0071b'], [5, 'ODR-0071e'], [7, 'ODR-0071g'],
-    [8, 'ODR-0071h'], [9, 'ODR-0071i'], [10, 'ODR-0071j'], [11, 'ODR-0071k'],
+    [1, 'ODR-0047'], [2, 'ODR-0048'], [5, 'ODR-0049'], [7, 'ODR-0050'],
+    [8, 'ODR-0051'], [9, 'ODR-0052'], [10, 'ODR-0053'], [11, 'ODR-0054'],
   ]);
   assert.ok(register.includes(sourceRevision));
+  const adoptedRecords = [...register.matchAll(/\['(ODR-\d{4})',/gu)].map(([, record]) => record);
+  assert.deepEqual(adoptedRecords, Array.from({ length: 29 }, (_, index) => `ODR-${String(index + 36).padStart(4, '0')}`));
+  assert.match(register, /adoptedRecords\.map\(\(\[record, title\]\)/u);
+  assert.ok(register.includes('href={`/modelling/odr/${record.toLowerCase()}`}'));
+  assert.ok(register.includes('href="/modelling/odr/odr-0025"'), 'retain the distinct historical OPDA decision');
+  assert.doesNotMatch(register, /ODR-\d{4}[a-z]?-[\w-]+\.md|source-method ODR number is not/iu);
+  assert.match(register, /ODR-0059<\/a> includes a separately labelled proposed refinement/u);
   assert.match(register, /datetime="2026-09-05"/u);
   for (const anchor of ['authority', 'amendments', 'opda-adrs', 'claim-receipt']) {
     assert.ok(register.includes(`id="${anchor}"`), `register lacks stable ${anchor} receipt`);
@@ -127,7 +134,10 @@ test('selected concern numbers, dispositions and source receipts remain inspecta
     assert.ok(receipt, `${chapter} lacks its source receipt`);
     assert.ok(receipt.includes(sourceRevision), `${chapter} loses its revision pin`);
     assert.ok(receipt.includes(`href="${registerRoute}"`), `${chapter} loses register/scope context`);
-    for (const record of records) assert.ok(receipt.includes(record), `${chapter} receipt lacks ${record}`);
+    for (const record of records) {
+      assert.ok(receipt.includes(record), `${chapter} receipt lacks ${record}`);
+      if (record.startsWith('ODR-')) assert.ok(receipt.includes(`href="/modelling/odr/${record.toLowerCase()}"`), `${chapter} lacks the local ${record} link`);
+    }
     assert.match(source, /claim="method"/u);
   }
 });
@@ -171,7 +181,7 @@ test('technical examples retain distinct identities, event dates and applicabili
   assert.doesNotMatch(shape, /rdfs:domain|schema:domainIncludes/u);
   const roles = textOf('method/roles-and-phases');
   assert.ok(roles.includes('https://www.loa.istc.cnr.it/old/Papers/CACM2002.pdf'));
-  for (const token of ['roleOf', 'phaseOf', 'ODR-0025', 'ODR-0026']) assert.ok(roles.includes(token));
+  for (const token of ['roleOf', 'phaseOf', 'ODR-0041', 'ODR-0042']) assert.ok(roles.includes(token));
 });
 
 test('the illustrative mapping preserves the assertion and the selected qualified record', () => {
@@ -282,7 +292,7 @@ test('search covers the canonical registry and routes practitioner tasks to the 
   assert.equal(new Set(all.map(({ url }) => url)).size, all.length);
   const modellingResults = all.filter(({ url }) => url === sectionRoot || url.startsWith(`${sectionRoot}/`));
   assert.deepEqual(modellingResults.map(({ url }) => url).sort(), [...routes].sort());
-  for (const term of ['SKOS', 'SSSOM', 'ontology mapping', 'cross-context mapping', 'OWL', 'RDF', 'SPARQL', 'upper ontology', 'roleOf', 'phaseOf', 'ODR-0071']) {
+  for (const term of ['SKOS', 'SSSOM', 'ontology mapping', 'cross-context mapping', 'OWL', 'RDF', 'SPARQL', 'upper ontology', 'roleOf', 'phaseOf', 'ODR-0046']) {
     assert.ok(searchEntries(term).some(({ url }) => routes.includes(url)), `${term} is not discoverable`);
   }
   for (const [term, chapter] of [['bounded context', 'explore/contexts-and-connections'], ['context map', 'method/context-map-records'], ['taxonomy', 'explore/names-and-choices']]) {
