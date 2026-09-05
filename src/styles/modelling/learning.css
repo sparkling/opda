@@ -7,7 +7,8 @@
    figures and image containers continue to occupy the full article track. */
 .modelling-reading-1200 > :not(:is(figure, picture, img)) {
   max-inline-size: 75rem;
-  margin-inline: auto;
+  margin-inline: 0 auto;
+  text-align: start;
 }
 
 /* Shared authored-text rhythm lives in ../editorial-content.css. */
