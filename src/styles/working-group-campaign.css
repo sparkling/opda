@@ -72,6 +72,7 @@
   width: 3.25rem;
   height: 3.25rem;
   margin-left: auto;
+  translate: 0 var(--theme-toggle-position-y, 0);
 }
 .wg-campaign-hero__header .theme-toggle svg {
   width: 1.75rem;

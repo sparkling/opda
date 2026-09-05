@@ -7,7 +7,7 @@
   --opda-mark-ink: var(--color-header-opda);
   --opda-mark-text: var(--color-header-opda);
   display: inline-flex;
-  align-items: baseline;
+  align-items: flex-end;
   gap: var(--heading-mark-label-gap);
   color: var(--color-header-opda);
   line-height: 1;

@@ -2,6 +2,7 @@
 interface Props {
   identityId: string;
   positionTargetId?: string;
+  themeToggleTargetId?: string;
   initialScale?: number;
   initialSpaceAbove?: number;
   initialLineGap?: number;
@@ -12,6 +13,7 @@ interface Props {
 const {
   identityId,
   positionTargetId,
+  themeToggleTargetId,
   initialScale = 24,
   initialSpaceAbove = 0,
   initialLineGap = 8,
@@ -28,6 +30,9 @@ const adjustments = [
   ...(positionTargetId ? [
     { label: 'Domains left / right', targetId: positionTargetId, property: '--domains-position-x', min: -256, max: 256, value: 0, factor: 1, unit: 'px', ariaUnit: 'pixels' },
     { label: 'Domains up / down', targetId: positionTargetId, property: '--domains-position-y', min: -256, max: 256, value: 0, factor: 1, unit: 'px', ariaUnit: 'pixels' },
+  ] : []),
+  ...(themeToggleTargetId ? [
+    { label: 'Dark / light button up / down', targetId: themeToggleTargetId, property: '--theme-toggle-position-y', min: -128, max: 128, value: 0, factor: 1, unit: 'px', ariaUnit: 'pixels' },
   ] : []),
 ];
 ---

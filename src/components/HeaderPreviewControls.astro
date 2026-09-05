@@ -10,6 +10,7 @@ interface Props {
   controlId?: string;
   identityId?: string;
   positionTargetId?: string;
+  themeToggleTargetId?: string;
   initialScale?: number;
   initialSpaceAbove?: number;
   initialLineGap?: number;
@@ -24,6 +25,7 @@ const {
   controlId = 'header-preview-selectors',
   identityId = 'home-campaign-identity',
   positionTargetId,
+  themeToggleTargetId,
   initialScale = 24,
   initialSpaceAbove = 0,
   initialLineGap = 8,
@@ -42,6 +44,7 @@ const {
         <HeaderTuningSelector
           identityId={identityId}
           positionTargetId={positionTargetId}
+          themeToggleTargetId={themeToggleTargetId}
           initialScale={initialScale}
           initialSpaceAbove={initialSpaceAbove}
           initialLineGap={initialLineGap}
@@ -55,6 +58,7 @@ const {
             <HeaderTuningSelector
               identityId={identityId}
               positionTargetId={positionTargetId}
+              themeToggleTargetId={themeToggleTargetId}
               initialScale={initialScale}
               initialSpaceAbove={initialSpaceAbove}
               initialLineGap={initialLineGap}
@@ -71,6 +75,7 @@ const {
             <HeaderTuningSelector
               identityId={identityId}
               positionTargetId={positionTargetId}
+              themeToggleTargetId={themeToggleTargetId}
               initialScale={initialScale}
               initialSpaceAbove={initialSpaceAbove}
               initialLineGap={initialLineGap}

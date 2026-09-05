@@ -103,7 +103,7 @@ const domains = [
         <div class="wg-campaign-identity" id="home-campaign-identity" style={homeHeaderStyle}>
           <div class="wg-campaign-identity__opda-row">
             <BrandHeading variant="paired" />
-            <ThemeToggle />
+            <ThemeToggle id="home-theme-toggle" />
           </div>
           <FrameworkHeading scale="display" />
         </div>
@@ -130,6 +130,7 @@ const domains = [
           controlId="home-header-preview-selectors"
           identityId="home-campaign-identity"
           positionTargetId="home-domains-panel"
+          themeToggleTargetId="home-theme-toggle"
           initialScale={homeHeaderScale}
           initialOpdaScale={homeHeaderOpdaScale}
           initialSpaceAbove={homeHeaderSpaceAbove}

@@ -508,6 +508,8 @@ test('shared navigation exposes visible focus, state and 44px targets', async ()
   assert.match(base, /@media \(max-width: 96rem\) \{[\s\S]*\.global-nav-toggle \{ display: inline-flex; \}/u);
   assert.match(base, /@media \(max-width: 96rem\) \{[\s\S]*\.global-nav-panel\s*\{[^}]*padding:\s*var\(--space-3\) var\(--content-gutter\)/su);
   assert.match(base, /\.app-header__utilities\s*\{[^}]*grid-area:\s*utilities;/su);
+  assert.match(base, /\.app-header__title\s*\{[^}]*align-self:\s*center;/su);
+  assert.match(base, /\.app-header__utilities\s*\{[^}]*align-self:\s*center;/su);
   assert.match(components, /\.brand-heading--mini,\s*\.brand-heading--compact\s*\{[^}]*--brand-heading-mark-size:\s*1\.35em/su);
   assert.match(components, /\.brand-heading--mini\s*\{[^}]*--brand-heading-type:\s*600 var\(--text-xl\) \/ 1 var\(--font-sans\)/su);
   assert.match(components, /\.brand-heading__mark\s*\{[^}]*width:\s*var\(--brand-heading-mark-width\);[^}]*border-radius:\s*var\(--brand-heading-mark-radius\);[^}]*background:\s*var\(--opda-mark-fold\)/su);
@@ -690,7 +692,7 @@ test('the adversarial conformance blockers remain closed', async () => {
   assert.doesNotMatch(rootPage, /<html[^>]+data-theme="light"/u);
   assert.match(rootPage, /URLSearchParams\(location\.search\)/u);
   assert.doesNotMatch(rootPage, /class="public-header"/u);
-  assert.match(rootPage, /<header class="wg-campaign-hero__header">[\s\S]*class="wg-campaign-identity__opda-row"[\s\S]*<BrandHeading variant="paired"\s*\/>[\s\S]*<ThemeToggle\s*\/>[\s\S]*<FrameworkHeading scale="display"\s*\/>[\s\S]*<\/header>/u);
+  assert.match(rootPage, /<header class="wg-campaign-hero__header">[\s\S]*class="wg-campaign-identity__opda-row"[\s\S]*<BrandHeading variant="paired"\s*\/>[\s\S]*<ThemeToggle id="home-theme-toggle"\s*\/>[\s\S]*<FrameworkHeading scale="display"\s*\/>[\s\S]*<\/header>/u);
   assert.match(themeToggle, /id = 'theme-toggle'/u);
   assert.match(rootPage, /:root\[data-theme='light'\][\s\S]+\.home-campaign-hero/u);
   assert.match(rootPage, /data-astro-rerun/u);

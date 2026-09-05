@@ -65,7 +65,7 @@ test('knowledge-base header uses paired OPDA and selectable framework identities
   assert.match(iconRegistry, /d: 'M9 0h7v16H7V9h2Z'/u);
   assert.doesNotMatch(base, /--header-mark-label-gap/u);
   assert.match(headerBrand, /:where\(\.brand-heading--paired, \.framework-heading\)\s*\{[^}]*--heading-mark-label-gap:\s*var\(--space-2\);/su);
-  assert.match(headerBrand, /\.brand-heading--paired\s*\{[^}]*display:\s*inline-flex;[^}]*align-items:\s*baseline;[^}]*gap:\s*var\(--heading-mark-label-gap\);/su);
+  assert.match(headerBrand, /\.brand-heading--paired\s*\{[^}]*display:\s*inline-flex;[^}]*align-items:\s*flex-end;[^}]*gap:\s*var\(--heading-mark-label-gap\);/su);
   assert.match(headerBrand, /\.brand-heading--paired \.brand-heading__mark\s*\{[^}]*width:\s*1\.13em;[^}]*height:\s*0\.9em;[^}]*flex:\s*0 0 1\.13em;[^}]*background:\s*none;/su);
   assert.match(headerBrand, /@media \(min-width: 60\.0625rem\)\s*\{[\s\S]*?\.app-header \.brand-heading--paired\.brand-heading--mini\s*\{[^}]*font-size:\s*calc\(var\(--identity-heading-size, 24px\) \* var\(--identity-opda-scale, 1\)\);/u);
   assert.match(headerBrand, /\.app-header \.framework-heading\s*\{[^}]*font-size:\s*calc\(var\(--identity-heading-size, 24px\) \* 1\.57\);/su);
@@ -153,7 +153,7 @@ test('temporary selectors expose full preview cards and persist palettes and ico
   assert.match(selector, /Astro\.slots\.has\('companion'\)/u);
   assert.match(header, /import HeaderPreviewControls[^\n]+[\s\S]*<HeaderPreviewControls[\s\S]*showScaleControl[\s\S]*identityId="app-header-identity"[\s\S]*initialScale=\{24\}[\s\S]*initialOpdaScale=\{100\}[\s\S]*initialSpaceAbove=\{0\}[\s\S]*initialLineGap=\{0\}[\s\S]*initialSpaceBelow=\{0\}[\s\S]*initialIcon="common-boundary"[\s\S]*initialPalette="clay-indigo"[\s\S]*\/>/u);
   assert.match(previewControls, /data-header-preview-controls data-icon-selection="persistent" hidden[\s\S]*id=\{controlId\}[\s\S]*<HeaderIconSelector initialIcon=\{initialIcon\}>[\s\S]*<HeaderTuningSelector[\s\S]*<HeaderPaletteSelector embedded initialPalette=\{initialPalette\} \/>[\s\S]*<HeaderPaletteSelector initialPalette=\{initialPalette\}>[\s\S]*<HeaderTuningSelector[\s\S]*<HeaderIconSelector embedded initialIcon=\{initialIcon\} \/>[\s\S]*data-header-preview-toggle/u);
-  assert.match(home, /<HeaderPreviewControls[\s\S]*showScaleControl[\s\S]*controlId="home-header-preview-selectors"[\s\S]*identityId="home-campaign-identity"[\s\S]*positionTargetId="home-domains-panel"/u);
+  assert.match(home, /<HeaderPreviewControls[\s\S]*showScaleControl[\s\S]*controlId="home-header-preview-selectors"[\s\S]*identityId="home-campaign-identity"[\s\S]*positionTargetId="home-domains-panel"[\s\S]*themeToggleTargetId="home-theme-toggle"/u);
   assert.match(home, /class="wg-hero-journey" id="home-domains-panel"/u);
   assert.match(home, /const homeHeaderIcon = 'common-boundary';[\s\S]*const homeHeaderPalette = 'clay-indigo';[\s\S]*const homeHeaderScale = 32;[\s\S]*const homeHeaderOpdaScale = 100;[\s\S]*const homeHeaderSpaceAbove = 59;[\s\S]*const homeHeaderLineGap = 0;[\s\S]*const homeHeaderSpaceBelow = 16;/u);
   assert.match(home, /identityId="home-campaign-identity"[\s\S]*initialScale=\{homeHeaderScale\}[\s\S]*initialOpdaScale=\{homeHeaderOpdaScale\}[\s\S]*initialSpaceAbove=\{homeHeaderSpaceAbove\}[\s\S]*initialLineGap=\{homeHeaderLineGap\}[\s\S]*initialSpaceBelow=\{homeHeaderSpaceBelow\}[\s\S]*initialIcon=\{homeHeaderIcon\}[\s\S]*initialPalette=\{homeHeaderPalette\}/u);
@@ -173,6 +173,7 @@ test('temporary selectors expose full preview cards and persist palettes and ico
   assert.match(tuningSelector, /property: '--identity-line-gap', min: 0, max: 64/u);
   assert.match(tuningSelector, /property: '--identity-space-before', min: 0, max: 96/u);
   assert.match(tuningSelector, /positionTargetId \? \[[\s\S]*label: 'Domains left \/ right'[\s\S]*property: '--domains-position-x', min: -256, max: 256[\s\S]*label: 'Domains up \/ down'[\s\S]*property: '--domains-position-y', min: -256, max: 256/u);
+  assert.match(tuningSelector, /themeToggleTargetId \? \[[\s\S]*label: 'Dark \/ light button up \/ down'[\s\S]*property: '--theme-toggle-position-y', min: -128, max: 128/u);
   assert.match(campaign, /\.wg-hero-journey\s*\{[^}]*translate:\s*var\(--domains-position-x, 0\) var\(--domains-position-y, 0\);/su);
   assert.doesNotMatch(tuningSelector, /Space above icon and button row|header-utilities-space-above/u);
   assert.match(base, /\.app-header\s*\{[^}]*--identity-space-before:\s*0px;[^}]*--identity-line-gap:\s*0px;[^}]*--identity-space-after:\s*0px;[^}]*--identity-space-after-origin:\s*0px;/su);
@@ -188,10 +189,10 @@ test('temporary selectors expose full preview cards and persist palettes and ico
   assert.match(campaign, /\.wg-campaign-identity \.framework-heading--display\s*\{[^}]*calc\(var\(--identity-heading-size\) \* 1\.57\)/su);
   assert.match(campaign, /\.home-campaign-side\s*\{[^}]*display:\s*grid;[^}]*gap:\s*var\(--space-3\);/su);
   assert.match(campaign, /\.home-campaign-side > \.header-preview-controls\s*\{\s*justify-self:\s*end;\s*\}/u);
-  assert.match(home, /<div class="wg-campaign-identity__opda-row">\s*<BrandHeading variant="paired" \/>\s*<ThemeToggle \/>\s*<\/div>\s*<FrameworkHeading scale="display" \/>/u);
+  assert.match(home, /<div class="wg-campaign-identity__opda-row">\s*<BrandHeading variant="paired" \/>\s*<ThemeToggle id="home-theme-toggle" \/>\s*<\/div>\s*<FrameworkHeading scale="display" \/>/u);
   assert.match(campaign, /\.wg-campaign-identity__opda-row\s*\{[^}]*width:\s*100%;[^}]*display:\s*flex;[^}]*align-items:\s*flex-end;/su);
-  assert.match(campaign, /\.wg-campaign-hero__header \.theme-toggle\s*\{[^}]*width:\s*3\.25rem;[^}]*height:\s*3\.25rem;[^}]*margin-left:\s*auto;/su);
-  assert.doesNotMatch(campaign, /\.wg-campaign-hero__header \.theme-toggle\s*\{[^}]*(?:translate|margin-block-start):/su);
+  assert.match(campaign, /\.wg-campaign-hero__header \.theme-toggle\s*\{[^}]*width:\s*3\.25rem;[^}]*height:\s*3\.25rem;[^}]*margin-left:\s*auto;[^}]*translate:\s*0 var\(--theme-toggle-position-y, 0\);/su);
+  assert.doesNotMatch(campaign, /\.wg-campaign-hero__header \.theme-toggle\s*\{[^}]*margin-block-start:/su);
   assert.match(campaign, /\.wg-campaign-hero__header \.theme-toggle svg\s*\{[^}]*width:\s*1\.75rem;[^}]*height:\s*1\.75rem;/su);
   assert.doesNotMatch(campaign, /\.wg-campaign-hero--panel-aligned \.home-campaign-side\s*\{[^}]*transform:/su);
 
