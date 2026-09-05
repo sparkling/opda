@@ -52,11 +52,11 @@ const status = odr.status || data.status || '';
     <p>
       <a href="/modelling/odr">← Back to ODR Corpus</a>
       &ensp;|&ensp;
-      <a href="https://github.com/sparkling/opda/tree/main/docs/ontology/odr" rel="noopener noreferrer">View source</a>
+      {odr.source && <a href={`/decisions/odr/${odr.source}`} download>Download Markdown source</a>}
     </p>
     <p class="muted">
-      ODR-{odr.number} is immutable per <a href="/modelling/odr/odr-0001">ODR-0001</a>.
-      Amendments produce new records.
+      This record's status, scope and dated amendments identify its current authority.
+      Historical decisions retain their recorded context; later corrections remain auditable in Git history.
     </p>
   </footer>
 </Layout>

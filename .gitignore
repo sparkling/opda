@@ -147,5 +147,7 @@ ruvector.db
 
 # ruflo-add-codex:gitignore — secrets + runtime
 .claude-flow/sessions/
+# Recreated from canonical ODR Markdown by Astro during dev/build.
+/public/decisions/odr/
 *.bak
 *.bak-*

@@ -1,13 +1,6 @@
 ---
 /**
- * ODR corpus listing page — ADR-0023 (build-time immutable enriched ODR pages).
- *
- * Lists all 18 ODRs in the corpus. Enriched ODRs (with committed artefacts)
- * link to their /modelling/odr/<id> detail page. Non-enriched ODRs are shown
- * as pending with no link target (artefact not yet committed).
- *
- * This page DOES NOT convert or generate anything — it serves the registry
- * from src/lib/odr-pages.mjs which reflects the committed artefact state.
+ * All local ODRs, using metadata regenerated from canonical Markdown at setup.
  */
 import Layout from '@/layouts/Layout.astro';
 import { ODR_REGISTRY } from '@/lib/odr-pages.mjs';
@@ -28,15 +21,14 @@ const statusPillClass = {
 ---
 <Layout
   title="ODR Corpus"
-  description={`The Linked Data Council's ${ODR_REGISTRY.length} Ontology Decision Records — the deliberation audit trail behind the OPDA ontology.`}
+  description={`${ODR_REGISTRY.length} Ontology Decision Records — the reasoning and scope behind OPDA's modelling approach.`}
 >
   <h1>ODR Corpus</h1>
   <p class="lead">
     The <strong>Ontology Decision Records (ODRs)</strong> are the Linked Data
-    Council's deliberation audit trail — the <em>why</em> behind every significant
-    ontology-modelling decision in the OPDA programme. Each record captures the
-    options considered, the chosen outcome, the voting rationale, and the
-    downstream consequences.
+    Council's historical deliberations and OPDA's current local modelling decisions —
+    the <em>why</em> behind the approach. Each record identifies its own scope and
+    authority, with the options considered, chosen outcome and consequences.
   </p>
   <p>
     {ODR_REGISTRY.length} records in total — every one is a live page rendered from its markdown.
@@ -88,10 +80,10 @@ const statusPillClass = {
     </li>
   </ul>
   <p>
-    Each accepted ODR is frozen: a later decision <em>supersedes</em> it with a new
-    ODR. Illustrative diagrams may be added to the markdown as non-substantive
-    enrichment (they visualise the existing decision, never change it) per
-    <a href="/development/inputs/pdtf-schema/schema-derived-ontology/lineage-provenance-and-verification/historical-modelling">ADR-0024</a>; substantive change always requires a new ODR.
+    Current ODRs follow the project's decision-record conventions: explicit status,
+    context, alternatives, consequences and confirmation. Authorised corrections are
+    recorded with an updated date and amendment history. Historical records retain
+    their original context and policy; new records make their scope and relationships explicit.
   </p>
 
   <h2>Methodology</h2>
