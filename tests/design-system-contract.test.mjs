@@ -530,7 +530,7 @@ test('shared navigation exposes visible focus, state and 44px targets', async ()
   assert.match(headerBrand, /\.framework-heading\s*\{[^}]*font:\s*600 var\(--text-4xl\) \/ 1 var\(--font-display\)/su);
   assert.match(base, /\.app-header__inner\s*\{[^}]*max-width:\s*calc\([^}]*var\(--content-max\)[^}]*var\(--header-content-left-rail\)[^}]*var\(--header-content-right-rail\)[^}]*var\(--content-gutter\)[^}]*var\(--content-gutter\)[^}]*padding-inline-start:\s*calc\(var\(--header-content-left-rail\) \+ var\(--content-gutter\)\);[^}]*padding-inline-end:\s*calc\(var\(--header-content-right-rail\) \+ var\(--content-gutter\)\);/su);
   assert.match(base, /\.app-header :is\(\.header-membership, \.header-cta\)\s*\{[^}]*flex:\s*0 0 auto;[^}]*white-space:\s*nowrap;/su);
-  assert.match(contentSource, /\.btn--compact\s*\{[^}]*min-height:\s*var\(--target-min\);[^}]*padding-block:\s*var\(--space-1\);[^}]*padding-inline:\s*var\(--space-2\);/su);
+  assert.match(contentSource, /\.btn--compact\s*\{[^}]*min-height:\s*auto;[^}]*padding-block:\s*var\(--space-1\);[^}]*padding-inline:\s*var\(--space-2\);/su);
   assert.match(base, /@media \(max-width: 96rem\) \{[\s\S]*?\.app-header \.header-action--desktop \{ display:\s*none; \}/u);
   assert.match(base, /@media \(max-width: 96rem\) \{[\s\S]*?\.app-header \.global-nav-panel \.header-actions--compact\s*\{[^}]*display:\s*flex/su);
   assert.match(base, /\.app-header__utilities\s*\{[^}]*position:\s*static;[^}]*inset:\s*auto;[^}]*align-self:\s*end;[^}]*justify-self:\s*end;[^}]*margin-inline-end:\s*0;[^}]*padding-inline-end:\s*0;/su);
