@@ -245,7 +245,7 @@ test('temporary selectors expose full preview cards and persist palettes and ico
   assert.match(client, /function bindHeaderIconSelector\(\)/u);
   assert.match(client, /function bindHeaderPreviewControls\(\)/u);
   assert.match(client, /function syncHeaderConfigurationMode\(\)[\s\S]*searchParams\.has\('config'\)[\s\S]*controls\.hidden = !configurationEnabled/u);
-  assert.match(client, /querySelectorAll\('a\[href\]'\)[\s\S]*destination\.origin !== currentUrl\.origin[\s\S]*destination\.searchParams\.set\('config', configurationValue\)/u);
+  assert.match(client, /querySelectorAll\('a\[href\]'\)[\s\S]*destination\.origin !== currentUrl\.origin[\s\S]*destination\.searchParams\.delete\('config'\)[\s\S]*destination\.search = '\?' \+ \(destinationSearch \? destinationSearch \+ '&' : ''\) \+ 'config'/u);
   assert.match(client, /syncHeaderConfigurationMode\(\);[\s\S]*bindHeaderPaletteSelector\(\);/u);
   assert.match(client, /labelDataKey:\s*'iconNumber'/u);
   assert.match(client, /function bindIdentityHeadingControls\(\)/u);

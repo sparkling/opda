@@ -221,7 +221,6 @@
     });
     if (!configurationEnabled) return;
 
-    const configurationValue = currentUrl.searchParams.get('config') ?? '';
     document.querySelectorAll('a[href]').forEach(function (link) {
       const rawHref = link.getAttribute('href');
       if (!rawHref || rawHref.startsWith('#')) return;
@@ -232,7 +231,9 @@
         return;
       }
       if (destination.origin !== currentUrl.origin) return;
-      destination.searchParams.set('config', configurationValue);
+      destination.searchParams.delete('config');
+      const destinationSearch = destination.searchParams.toString();
+      destination.search = '?' + (destinationSearch ? destinationSearch + '&' : '') + 'config';
       link.href = destination.href;
     });
   }
