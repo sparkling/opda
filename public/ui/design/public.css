@@ -117,6 +117,14 @@
   font: var(--display);
   letter-spacing: var(--tracking-display);
 }
+.public-hero h1::after {
+  content: '';
+  display: block;
+  width: 5.5rem;
+  height: 4px;
+  margin-top: var(--space-6);
+  background: var(--brand-yellow);
+}
 .public-hero p:not(.eyebrow) {
   margin: var(--space-6) 0 0;
   color: var(--on-dark-muted);

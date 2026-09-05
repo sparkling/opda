@@ -55,6 +55,12 @@
 .prose.editorial-content :where(section:not([class]), .document-flow) > h2:first-child {
   margin-block-start: 0;
 }
+/* The first section follows the page introduction directly; retain its space,
+   but do not divide the introduction from the page with a rule. */
+#main-content .prose.editorial-content:not(.odr-detail) > h2:first-of-type,
+#main-content .prose.editorial-content:not(.odr-detail) > section:first-of-type > h2:first-child {
+  border-block-start: 0;
+}
 .prose.editorial-content :where(section:not([class]), .document-flow) > :is(h3, h4) {
   margin-block-start: var(--space-6);
 }

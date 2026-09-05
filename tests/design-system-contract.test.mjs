@@ -652,6 +652,8 @@ test('text inherits its outer layout width instead of stacking nested measures',
   assert.match(navigation, /\.page-footer\s*\{[^}]*max-width:\s*var\(--content-max\)/su);
   assert.match(navigation, /\.page-footer\s*\{[^}]*border:\s*1px solid var\(--color-border\)/su);
   assert.match(content, /\.prose h2\s*\{[^}]*padding-top:\s*var\(--space-5\)[^}]*border-top:\s*1px solid var\(--color-border\)/su);
+  assert.match(components, /\.home-hero h1::after\s*\{[^}]*background:\s*var\(--brand-yellow\)/su);
+  assert.match(publicEntry, /\.public-hero h1::after\s*\{[^}]*background:\s*var\(--brand-yellow\)/su);
   assert.match(navigation, /\.page-footer\s*\{[^}]*--page-footer-gap-before-rule:\s*var\(--space-5\)[^}]*--page-footer-gap-after-rule:\s*var\(--space-5\)/su);
   assert.match(navigation, /\.document-flow[^}]*\{[^}]*--page-footer-gap-before-rule:\s*var\(--space-2\)/su);
   assert.match(navigation, /\.page-footer::before\s*\{[^}]*top:\s*calc\(-1 \* var\(--page-footer-gap-after-rule\)\)[^}]*border-top:\s*1px solid var\(--color-border\)/su);
