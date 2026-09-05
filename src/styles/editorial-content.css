@@ -55,15 +55,15 @@
 .prose.editorial-content :where(section:not([class]), .document-flow) > h2:first-child {
   margin-block-start: 0;
 }
-/* The page introduction is the beginning of the first section. Continue with
-   the ordinary document-flow gap rather than inserting a divider boundary. */
+/* Leave one blank line between the page introduction and its first section,
+   without inserting a divider or its two-sided spacing. */
 #main-content .prose.editorial-content:not(.odr-detail) > h2:first-of-type {
-  margin-block-start: var(--editorial-flow-gap);
+  margin-block-start: var(--space-6);
   padding-block-start: 0;
   border-block-start: 0;
 }
 #main-content .prose.editorial-content:not(.odr-detail) > section:first-of-type {
-  margin-block-start: var(--editorial-flow-gap);
+  margin-block-start: var(--space-6);
 }
 #main-content .prose.editorial-content:not(.odr-detail) > section:first-of-type > h2:first-child {
   padding-block-start: 0;
