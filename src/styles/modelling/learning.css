@@ -7,6 +7,8 @@
    figures and image containers continue to occupy the full article track. */
 .modelling-reading-1200 {
   font-family: 'Atkinson Hyperlegible Next', var(--font-sans);
+  font-size: var(--text-lg);
+  line-height: var(--leading-normal);
 }
 .modelling-reading-1200 > :not(:is(figure, picture, img)) {
   max-inline-size: 75rem;

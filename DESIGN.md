@@ -205,7 +205,7 @@ the optical space. Nested content flows expose the shared `.document-flow` role;
 spacing never depends on a route or on the link text.
 The authored “From a useful question to a reviewable candidate” chapter is the
 single reading-measure exception: direct text blocks stop at 1200px, align left and
-use Atkinson Hyperlegible Next, while figures and images continue to use the full article track.
+use Atkinson Hyperlegible Next at 18px, while figures and images continue to use the full article track.
 Components may own internal layout spacing, but must not create separation from
 an unknown next sibling. Authored ADR/ODR sections share the editorial divider;
 their technical quotations and code keep their existing treatment.
