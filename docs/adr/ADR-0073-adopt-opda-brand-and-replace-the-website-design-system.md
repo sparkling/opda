@@ -368,7 +368,7 @@ and callout margins. Standard flow is 12px; components own only internal spacing
 Generated references retain 24px before H2 rules and 16px padding after them.
 
 On 5 September 2026 authored content adopted shared editorial formatting: 32px
-on both sides of section rules, omitting the first rule after the page introduction, with restored nested paragraph gaps and hanging list
+on both sides of section rules; the page introduction and first section instead share the ordinary 12px flow gap, with restored nested paragraph gaps and hanging list
 indents and clearer item spacing. Authored ADR/ODR sections share those dividers.
 The shared stylesheet serves documentation and public-page copy at 18px in Atkinson Hyperlegible Next; generated templates opt out. Wording, diagrams
 and chrome are unchanged. “From a useful question to a reviewable candidate” is one

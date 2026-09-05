@@ -196,7 +196,7 @@ the preceding block owns no trailing external margin. This makes the gap stable
 whether the preceding element is prose, a list, a card grid, a table, a diagram,
 a callout or the final element in a section. The standard direct-child gap is
 12px. Authored H2 section dividers and explicit horizontal rules have 32px on
-each side, except the unruled first section after the page introduction; generated reference pages retain their existing 24px/16px rhythm. H3 and
+each side; the page introduction continues directly into its first section on the ordinary 12px flow gap, with no intervening rule or divider spacing. Generated reference pages retain their existing 24px/16px rhythm. H3 and
 H4 use their own documented block-start steps. The previous/next region uses
 16px from its rule to the navigation panel, matching the panel-to-comments rule
 gap below. Bounded content endings also use 16px before the rule. Text-led
