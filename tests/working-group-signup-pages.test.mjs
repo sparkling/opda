@@ -130,7 +130,7 @@ test('global header promotes the canonical working-group sign-up route', async (
   assert.doesNotMatch(baseCss, /a\.header-cta[^}]*(?:translate|transform|margin-block):/su);
   assert.match(contentCss, /\.btn--outline-dark\s*\{[^}]*border-color:\s*var\(--brand-white\)[^}]*background:\s*transparent[^}]*color:\s*var\(--brand-white\)/su);
   assert.match(contentCss, /\.btn\s*\{[^}]*background:\s*var\(--brand\)[^}]*color:\s*var\(--color-action-primary-text\)[^}]*border:\s*1px solid var\(--brand-yellow\)/su);
-  assert.match(contentCss, /\.btn--compact\s*\{[^}]*min-height:\s*auto;[^}]*padding-block:\s*var\(--space-1\);[^}]*padding-inline:\s*var\(--space-2\);/su);
+  assert.match(contentCss, /\.btn--compact\s*\{[^}]*min-height:\s*auto;[^}]*padding-block:\s*var\(--space-1\);[^}]*padding-inline:\s*var\(--space-3\);/su);
   assert.doesNotMatch(contentCss, /btn--inset-end/u);
   assert.match(baseCss, /@media \(max-width: 96rem\)[\s\S]*?\.header-action--desktop\s*\{\s*display:\s*none;\s*\}/u);
   assert.match(baseCss, /@media \(max-width: 96rem\)[\s\S]*?\.global-nav-panel \.header-actions--compact\s*\{[^}]*display:\s*flex[^}]*align-self:\s*center[^}]*justify-self:\s*end[^}]*\}/u);
