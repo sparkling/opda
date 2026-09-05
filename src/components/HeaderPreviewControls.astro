@@ -9,6 +9,7 @@ interface Props {
   showScaleControl?: boolean;
   controlId?: string;
   identityId?: string;
+  utilityGroupTargetId?: string;
   positionTargetId?: string;
   themeToggleTargetId?: string;
   initialScale?: number;
@@ -24,6 +25,7 @@ const {
   showScaleControl = false,
   controlId = 'header-preview-selectors',
   identityId = 'home-campaign-identity',
+  utilityGroupTargetId,
   positionTargetId,
   themeToggleTargetId,
   initialScale = 24,
@@ -43,6 +45,7 @@ const {
       {showScaleControl && (
         <HeaderTuningSelector
           identityId={identityId}
+          utilityGroupTargetId={utilityGroupTargetId}
           positionTargetId={positionTargetId}
           themeToggleTargetId={themeToggleTargetId}
           initialScale={initialScale}
@@ -57,6 +60,7 @@ const {
           {showScaleControl && (
             <HeaderTuningSelector
               identityId={identityId}
+              utilityGroupTargetId={utilityGroupTargetId}
               positionTargetId={positionTargetId}
               themeToggleTargetId={themeToggleTargetId}
               initialScale={initialScale}
@@ -74,6 +78,7 @@ const {
           {showScaleControl && (
             <HeaderTuningSelector
               identityId={identityId}
+              utilityGroupTargetId={utilityGroupTargetId}
               positionTargetId={positionTargetId}
               themeToggleTargetId={themeToggleTargetId}
               initialScale={initialScale}

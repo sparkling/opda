@@ -151,7 +151,7 @@ test('temporary selectors expose full preview cards and persist palettes and ico
   assert.match(iconSelector, /data-icon-number=\{icon\.number\}/u);
   assert.match(iconSelector, /data-header-icon-current>\{HEADER_ICONS\.find/u);
   assert.match(selector, /Astro\.slots\.has\('companion'\)/u);
-  assert.match(header, /import HeaderPreviewControls[^\n]+[\s\S]*<HeaderPreviewControls[\s\S]*showScaleControl[\s\S]*identityId="app-header-identity"[\s\S]*initialScale=\{24\}[\s\S]*initialOpdaScale=\{100\}[\s\S]*initialSpaceAbove=\{0\}[\s\S]*initialLineGap=\{0\}[\s\S]*initialSpaceBelow=\{0\}[\s\S]*initialIcon="common-boundary"[\s\S]*initialPalette="clay-indigo"[\s\S]*\/>/u);
+  assert.match(header, /import HeaderPreviewControls[^\n]+[\s\S]*<HeaderPreviewControls[\s\S]*showScaleControl[\s\S]*identityId="app-header-identity"[\s\S]*utilityGroupTargetId="app-header-utilities"[\s\S]*initialScale=\{24\}[\s\S]*initialOpdaScale=\{100\}[\s\S]*initialSpaceAbove=\{0\}[\s\S]*initialLineGap=\{0\}[\s\S]*initialSpaceBelow=\{0\}[\s\S]*initialIcon="common-boundary"[\s\S]*initialPalette="clay-indigo"[\s\S]*\/>/u);
   assert.match(previewControls, /data-header-preview-controls data-icon-selection="persistent" hidden[\s\S]*id=\{controlId\}[\s\S]*<HeaderIconSelector initialIcon=\{initialIcon\}>[\s\S]*<HeaderTuningSelector[\s\S]*<HeaderPaletteSelector embedded initialPalette=\{initialPalette\} \/>[\s\S]*<HeaderPaletteSelector initialPalette=\{initialPalette\}>[\s\S]*<HeaderTuningSelector[\s\S]*<HeaderIconSelector embedded initialIcon=\{initialIcon\} \/>[\s\S]*data-header-preview-toggle/u);
   assert.match(home, /<HeaderPreviewControls[\s\S]*showScaleControl[\s\S]*controlId="home-header-preview-selectors"[\s\S]*identityId="home-campaign-identity"[\s\S]*positionTargetId="home-domains-panel"[\s\S]*themeToggleTargetId="home-theme-toggle"/u);
   assert.match(home, /class="wg-hero-journey" id="home-domains-panel"/u);
@@ -174,11 +174,13 @@ test('temporary selectors expose full preview cards and persist palettes and ico
   assert.match(tuningSelector, /property: '--identity-space-before', min: 0, max: 96/u);
   assert.match(tuningSelector, /positionTargetId \? \[[\s\S]*label: 'Domains left \/ right'[\s\S]*property: '--domains-position-x', min: -256, max: 256[\s\S]*label: 'Domains up \/ down'[\s\S]*property: '--domains-position-y', min: -256, max: 256/u);
   assert.match(tuningSelector, /themeToggleTargetId \? \[[\s\S]*label: 'Dark \/ light button up \/ down'[\s\S]*property: '--theme-toggle-position-y', min: -128, max: 128/u);
+  assert.match(tuningSelector, /utilityGroupTargetId \? \[[\s\S]*label: 'Icon group up \/ down'[\s\S]*property: '--header-utilities-position-y', min: -128, max: 128/u);
   assert.match(campaign, /\.wg-hero-journey\s*\{[^}]*translate:\s*var\(--domains-position-x, 0\) var\(--domains-position-y, 0\);/su);
   assert.doesNotMatch(tuningSelector, /Space above icon and button row|header-utilities-space-above/u);
   assert.match(base, /\.app-header\s*\{[^}]*--identity-space-before:\s*0px;[^}]*--identity-line-gap:\s*0px;[^}]*--identity-space-after:\s*0px;[^}]*--identity-space-after-origin:\s*var\(--space-3\);/su);
   assert.doesNotMatch(base, /header-utilities-space-above/u);
   assert.doesNotMatch(base, /\.app-header__utilities\s*\{[^}]*transform:/su);
+  assert.match(base, /\.app-header__utilities\s*\{[^}]*translate:\s*0 var\(--header-utilities-position-y, 0\);/su);
   assert.match(headerBrand, /\.app-header \.global-nav > \.header-preview-controls\s*\{[^}]*align-self:\s*center;[^}]*margin-inline-start:\s*auto;/su);
   assert.doesNotMatch(base, /\.app-header \.header-preview-controls\s*\{[^}]*header-utilities-space-above/su);
   assert.match(tuningSelector, /data-css-property=\{adjustment\.property\}[\s\S]*data-value-factor=\{adjustment\.factor\}[\s\S]*data-header-preview-range/u);

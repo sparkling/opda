@@ -188,6 +188,7 @@ a:visited { text-decoration-color: currentColor; }
   justify-self: end;
   margin-inline-end: 0;
   padding-inline-end: 0;
+  translate: 0 var(--header-utilities-position-y, 0);
 }
 .global-nav-panel {
   grid-area: navigation;

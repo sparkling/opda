@@ -43,7 +43,7 @@ const activeDestination = suppressActiveDestination
       </a>
     </div>
 
-    <div class="app-header__utilities">
+    <div class="app-header__utilities" id="app-header-utilities">
       <span class="header-actions header-action--desktop">
         <a href="https://openpropdata.org.uk/become-a-member/" class="header-membership btn btn--ghost btn--compact">Become a member</a>
         <a href={joinHref} class="header-cta btn btn--compact">Join a working group</a>
@@ -87,6 +87,7 @@ const activeDestination = suppressActiveDestination
         <HeaderPreviewControls
           showScaleControl
           identityId="app-header-identity"
+          utilityGroupTargetId="app-header-utilities"
           initialScale={24}
           initialOpdaScale={100}
           initialSpaceAbove={0}
