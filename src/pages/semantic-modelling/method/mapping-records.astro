@@ -1,0 +1,86 @@
+---
+import ModellingLayout from '@/layouts/ModellingLayout.astro';
+const mapping = `@prefix left: <https://example.org/surveying-vocabulary/> .
+@prefix right: <https://example.org/assessment-vocabulary/> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix sssom: <https://w3id.org/sssom/> .
+@prefix semapv: <https://w3id.org/semapv/vocab/> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+left:InspectionReport skos:closeMatch right:AssessmentEvidence .
+
+<https://example.org/mappings/inspection-report>
+    a sssom:Mapping ;
+    rdf:reifies <<( left:InspectionReport skos:closeMatch
+                    right:AssessmentEvidence )>> ;
+    sssom:subject_source <https://example.org/sources/surveying> ;
+    sssom:subject_source_version "illustration-1" ;
+    sssom:object_source <https://example.org/sources/assessment> ;
+    sssom:object_source_version "illustration-1" ;
+    sssom:mapping_set_id <https://example.org/mapping-sets/demo/1> ;
+    sssom:mapping_justification semapv:ManualMappingCuration ;
+    sssom:mapping_date "2026-08-20"^^xsd:date ;
+    sssom:comment "Teaching example only; not an approved correspondence." .`;
+---
+
+<ModellingLayout title="Mapping records: correspondence with an inspectable argument" description="A mapping is a claim about two defined terms. Its predicate states the relationship; its record preserves the sources, versions and justification needed to review that claim." chapter="Connect without collapsing" claim="method">
+  <section aria-labelledby="candidate">
+    <h2 id="candidate">A plausible match is the start of a question</h2>
+    <p>Similar labels, shared identifiers and nearby graph structures can reveal useful candidates for comparison. They do not choose the final mapping predicate. Read both definitions, examine their identity criteria and compare hard cases. Ask whether the two terms classify the same things, overlapping things, a broader and narrower population, or related but fundamentally different things.</p>
+    <p>In the Harbour Court illustration, a title record and building share an address. That is not evidence for making the resources <code>owl:sameAs</code>, nor for declaring the classes equivalent. Their relationship should be modelled as a relationship. A high lexical similarity score cannot repair a mismatch in what the terms identify.</p>
+    <p>The source-method identity protocol treats business keys as evidence rather than identity criteria. Its gates are ordered: a positive equivalence warrant is not produced by adding together a collection of weak similarities, and rigidity or coherence checks can veto a candidate without establishing identity themselves. Under uncertainty at the equivalence tier, retain a weaker justified correspondence or keep the terms separate.</p>
+  </section>
+
+  <figure class="modelling-figure" data-modelling-figure="mapping-gates">
+    <ol class="modelling-steps">
+      <li><strong>Candidate.</strong> A label, key or source relationship suggests comparison.</li>
+      <li><strong>Meaning and identity.</strong> Compare definitions, link-key evidence, hard cases and vetoes.</li>
+      <li><strong>Predicate.</strong> Choose the correspondence actually warranted, or record no accepted mapping.</li>
+      <li><strong>Receipt.</strong> Preserve exact endpoints, source versions, justification and mapping-set release.</li>
+    </ol>
+    <figcaption>Confidence describes a judgement; it does not replace the identity argument or redefine the selected predicate.</figcaption>
+  </figure>
+
+  <section aria-labelledby="predicate">
+    <h2 id="predicate">Choose the SKOS predicate for its consequences</h2>
+    <p>The selected cross-context mapping layer uses <code>skos:exactMatch</code>, <code>skos:closeMatch</code>, <code>skos:broadMatch</code>, <code>skos:narrowMatch</code> and <code>skos:relatedMatch</code>. These are not five confidence bands. They express different kinds of conceptual correspondence.</p>
+    <p>An exact match has stronger consequences than a close match. In particular, exactMatch is transitive, while closeMatch is not. If A exactly matches B and B exactly matches C, the chain matters for A and C; a chain of close matches does not establish the corresponding direct close match. A broader mapping has an orientation that must remain visible when a user reads the other side. <a href="https://www.w3.org/TR/skos-reference/#mapping">SKOS Reference §10</a> defines these properties and their interactions.</p>
+    <p>SKOS mapping is not OWL identity. It does not merge the Harbour Court building with a title record, and it does not justify automatically substituting the properties of one class for another. Equally, calling mappings “annotations” must not imply that SKOS has no entailments: symmetric, transitive and subproperty consequences can affect a query’s results.</p>
+  </section>
+
+  <section aria-labelledby="record">
+    <h2 id="record">SSSOM records the particular mapping assertion</h2>
+    <p>The source method profiles SSSOM 1.0 as a wrapper over the retained SKOS assertion. The mapping statement remains available to consumers interested only in correspondence. The named record makes the exact statement inspectable together with its metadata. It is not a replacement predicate or a second, independently edited mapping.</p>
+    <p>The selected profile requires both endpoint sources, a pinned version for each, the identifier of the versioned mapping-set release, a mapping date and a matching-process justification. A source means the vocabulary or identifier system supplying the endpoint identifier. It is not merely the label of a bounded context and need not be a lexical prefix of the endpoint IRI.</p>
+    <p>SEMAPV supplies classes describing matching processes, such as manual curation, lexical matching, logical reasoning or composite matching, as values of <code>sssom:mapping_justification</code>. It does not add a parallel collection of endpoint, confidence and author fields. The process term explains how the correspondence was established; the comment and evidence must still explain why it is appropriate.</p>
+    <p>Confidence is optional in this profile and is constrained when supplied. Do not display a missing confidence value as an asserted score. Similarity and curator confidence are also different measurements. A label-similarity algorithm’s number should not be relabelled as a probability that a semantic identity claim is correct.</p>
+  </section>
+
+  <details>
+    <summary>Inspect an illustrative SSSOM record with RDF 1.2 statement identity</summary>
+    <p>This deliberately hypothetical close match demonstrates the record structure only. Its endpoints and date are fictional, and no real curation or OPDA adoption is claimed. The example uses RDF 1.2 triple-term syntax; an RDF 1.1-only parser is not sufficient.</p>
+    <pre><code>{mapping}</code></pre>
+    <p>The named reifier identifies the same subject–predicate–object statement asserted above it. The source method keeps the OWL annotation-axiom form and tabular SSSOM as derived exports, not independent sources of truth. SSSOM model slot names such as <code>subject_id</code> must not be invented as canonical RDF predicates in this encoding.</p>
+  </details>
+
+  <section aria-labelledby="profile">
+    <h2 id="profile">Distinguish standard capabilities from the selected profile</h2>
+    <p>SSSOM offers more fields than this method adopts. The 30 August source amendment excludes mapping <code>author_id</code> from its active profile; do not fabricate an author resource to fill it. The optional <code>mapping_tool</code> value names a tool or algorithm and is not a PROV SoftwareAgent relationship. A separately modelled production activity can have its own provenance without altering the mapping profile.</p>
+    <p>The selected confidence binding is <code>xsd:double</code> between 0 and 1. If used, <code>predicate_modifier</code> admits only <code>Not</code> under SSSOM 1.0. Such a modifier must be interpreted and displayed with the record; it is not permission to export an unqualified positive assertion that says the opposite. Do not invent negative records merely because no positive mapping was found.</p>
+    <p>Referencing canonical vocabulary terms does not imply importing an entire ontology. The standards receipt records terms and profile decisions. Pin the source versions actually compared and regenerate projections from the authoritative assertion so that a corrected predicate cannot leave stale exports behind.</p>
+  </section>
+
+  <section aria-labelledby="failure">
+    <h2 id="failure">Failure case: yesterday’s exact match survives today’s changed definition</h2>
+    <p>Suppose a source broadens “inspection report” to include reports about multiple assets. An older receiving definition assumes one inspection subject. A mapping without source versions still looks exact to a consumer, although the compared meanings have changed. The failure is not repaired by changing the label or increasing a confidence score.</p>
+    <p>Pinned versions identify the decision that needs review. Recheck the original hard cases and new counterexamples, revise the mapping if warranted, and issue a new mapping-set release. Preserve the distinction between historical evidence and the current correspondence. A missing or rejected mapping is an honest outcome.</p>
+    <p>For strategic applicability, use the <a href="/semantic-modelling/method/context-map-records">context-map record</a> to point at this exact mapping record, not a whole mapping set.</p>
+  </section>
+
+  <section aria-labelledby="source-contract">
+    <h2 id="source-contract">Source contract</h2>
+    <p>Required method: source-method ODR-0071h, ODR-0087 R1–R5 as amended 30 August 2026, ODR-0096’s named RDF 1.2 reifier/export contract, and ODR-0098’s accepted ordered identity gates and R11 version discipline. ODR-0098’s separately labelled proposed round-two refinement is not silently promoted by its accepted document header.</p>
+    <p>Reviewed revision <code>67174057e6384b79d0b28b7736fe70a66e112895</code>, 5 September 2026. <a href="https://mapping-commons.github.io/semantic-mapping-vocabulary/">SEMAPV’s published term definitions</a> supply the precise justification IRIs. See <a href="/semantic-modelling/method/standards-and-decisions">standards and decisions</a> for register separation. A required mapping-record method does not imply that today’s candidate contains reviewed mappings.</p>
+  </section>
+</ModellingLayout>
