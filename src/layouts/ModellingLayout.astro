@@ -23,8 +23,7 @@ const scopeNote = claim === 'guide' ? null : claims[claim];
 
 <Layout title={title} description={description} proseClass={proseClass}>
   <h1>{title}</h1>
-  <div class="callout callout--key" aria-labelledby="modelling-page-goal">
-    <p class="callout__label" id="modelling-page-goal">Page goal</p>
+  <div class="callout callout--key">
     <p>{description}</p>
   </div>
   {scopeNote && <p class="modelling-standing">{scopeNote}</p>}
