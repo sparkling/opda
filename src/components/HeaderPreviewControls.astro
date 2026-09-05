@@ -14,10 +14,8 @@ interface Props {
   initialLineGap?: number;
   initialSpaceBelow?: number;
   initialOpdaScale?: number;
-  initialUtilitySpaceAbove?: number;
   initialIcon?: HeaderIconId;
   initialPalette?: HeaderPaletteId;
-  showUtilitySpacingControl?: boolean;
 }
 
 const {
@@ -29,10 +27,8 @@ const {
   initialLineGap = 8,
   initialSpaceBelow = 0,
   initialOpdaScale = 100,
-  initialUtilitySpaceAbove = 0,
   initialIcon,
   initialPalette,
-  showUtilitySpacingControl = false,
 } = Astro.props;
 
 ---
@@ -48,8 +44,6 @@ const {
           initialLineGap={initialLineGap}
           initialSpaceBelow={initialSpaceBelow}
           initialOpdaScale={initialOpdaScale}
-          initialUtilitySpaceAbove={initialUtilitySpaceAbove}
-          showUtilitySpacingControl={showUtilitySpacingControl}
         />
       )}
       <HeaderIconSelector initialIcon={initialIcon}>
@@ -62,8 +56,6 @@ const {
               initialLineGap={initialLineGap}
               initialSpaceBelow={initialSpaceBelow}
               initialOpdaScale={initialOpdaScale}
-              initialUtilitySpaceAbove={initialUtilitySpaceAbove}
-              showUtilitySpacingControl={showUtilitySpacingControl}
             />
           )}
           <HeaderPaletteSelector embedded initialPalette={initialPalette} />
@@ -79,8 +71,6 @@ const {
               initialLineGap={initialLineGap}
               initialSpaceBelow={initialSpaceBelow}
               initialOpdaScale={initialOpdaScale}
-              initialUtilitySpaceAbove={initialUtilitySpaceAbove}
-              showUtilitySpacingControl={showUtilitySpacingControl}
             />
           )}
           <HeaderIconSelector embedded initialIcon={initialIcon} />

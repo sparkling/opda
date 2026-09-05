@@ -33,7 +33,7 @@ test('knowledge-base header uses paired OPDA and selectable framework identities
   ]);
 
   assert.match(header, /<BrandHeading scale="mini" variant="paired"\s*\/>/u);
-  assert.match(header, /class="app-header__title"[\s\S]*class="app-header__framework-row"[\s\S]*<FrameworkHeading\s*\/>[\s\S]*<div class="app-header__utilities">[\s\S]*class="global-nav-panel"[\s\S]*class="global-nav"[\s\S]*<HeaderPreviewControls[\s\S]*showScaleControl[\s\S]*identityId="app-header-identity"[\s\S]*initialScale=\{24\}[\s\S]*initialSpaceBelow=\{0\}[\s\S]*showUtilitySpacingControl[\s\S]*\/>/u);
+  assert.match(header, /class="app-header__title"[\s\S]*class="app-header__framework-row"[\s\S]*<FrameworkHeading\s*\/>[\s\S]*<div class="app-header__utilities">[\s\S]*class="global-nav-panel"[\s\S]*class="global-nav"[\s\S]*<HeaderPreviewControls[\s\S]*showScaleControl[\s\S]*identityId="app-header-identity"[\s\S]*initialScale=\{24\}[\s\S]*initialSpaceBelow=\{0\}[\s\S]*\/>/u);
   assert.match(previewControls, /<HeaderIconSelector initialIcon=\{initialIcon\}>[\s\S]*<HeaderTuningSelector[\s\S]*<HeaderPaletteSelector embedded initialPalette=\{initialPalette\} \/>[\s\S]*<HeaderPaletteSelector initialPalette=\{initialPalette\}>[\s\S]*<HeaderTuningSelector[\s\S]*<HeaderIconSelector embedded initialIcon=\{initialIcon\} \/>/u);
   assert.doesNotMatch(header, /app-header__identity/u);
   assert.match(brand, /variant\?: 'document' \| 'paired'/u);
@@ -151,7 +151,7 @@ test('temporary selectors expose full preview cards and persist palettes and ico
   assert.match(iconSelector, /data-icon-number=\{icon\.number\}/u);
   assert.match(iconSelector, /data-header-icon-current>\{HEADER_ICONS\.find/u);
   assert.match(selector, /Astro\.slots\.has\('companion'\)/u);
-  assert.match(header, /import HeaderPreviewControls[^\n]+[\s\S]*<HeaderPreviewControls[\s\S]*showScaleControl[\s\S]*identityId="app-header-identity"[\s\S]*initialScale=\{24\}[\s\S]*initialOpdaScale=\{100\}[\s\S]*initialSpaceAbove=\{0\}[\s\S]*initialLineGap=\{0\}[\s\S]*initialSpaceBelow=\{0\}[\s\S]*initialUtilitySpaceAbove=\{24\}[\s\S]*initialIcon="common-boundary"[\s\S]*initialPalette="clay-indigo"[\s\S]*showUtilitySpacingControl[\s\S]*\/>/u);
+  assert.match(header, /import HeaderPreviewControls[^\n]+[\s\S]*<HeaderPreviewControls[\s\S]*showScaleControl[\s\S]*identityId="app-header-identity"[\s\S]*initialScale=\{24\}[\s\S]*initialOpdaScale=\{100\}[\s\S]*initialSpaceAbove=\{0\}[\s\S]*initialLineGap=\{0\}[\s\S]*initialSpaceBelow=\{0\}[\s\S]*initialIcon="common-boundary"[\s\S]*initialPalette="clay-indigo"[\s\S]*\/>/u);
   assert.match(previewControls, /data-header-preview-controls data-icon-selection="persistent" hidden[\s\S]*id=\{controlId\}[\s\S]*<HeaderIconSelector initialIcon=\{initialIcon\}>[\s\S]*<HeaderTuningSelector[\s\S]*<HeaderPaletteSelector embedded initialPalette=\{initialPalette\} \/>[\s\S]*<HeaderPaletteSelector initialPalette=\{initialPalette\}>[\s\S]*<HeaderTuningSelector[\s\S]*<HeaderIconSelector embedded initialIcon=\{initialIcon\} \/>[\s\S]*data-header-preview-toggle/u);
   assert.match(home, /<HeaderPreviewControls[\s\S]*showScaleControl[\s\S]*controlId="home-header-preview-selectors"[\s\S]*identityId="home-campaign-identity"/u);
   assert.match(home, /const homeHeaderIcon = 'common-boundary';[\s\S]*const homeHeaderPalette = 'clay-indigo';[\s\S]*const homeHeaderScale = 32;[\s\S]*const homeHeaderOpdaScale = 100;[\s\S]*const homeHeaderSpaceAbove = 59;[\s\S]*const homeHeaderLineGap = 0;[\s\S]*const homeHeaderSpaceBelow = 16;/u);
@@ -171,9 +171,10 @@ test('temporary selectors expose full preview cards and persist palettes and ico
   assert.match(tuningSelector, /property: '--identity-space-after', min: 0, max: 64/u);
   assert.match(tuningSelector, /property: '--identity-line-gap', min: 0, max: 64/u);
   assert.match(tuningSelector, /property: '--identity-space-before', min: 0, max: 96/u);
-  assert.match(tuningSelector, /showUtilitySpacingControl \? \[\{ label: 'Space above icon and button row', property: '--header-utilities-space-above', min: 0, max: 96, value: initialUtilitySpaceAbove/u);
-  assert.match(base, /\.app-header\s*\{[^}]*--identity-space-before:\s*0px;[^}]*--identity-line-gap:\s*0px;[^}]*--identity-space-after:\s*0px;[^}]*--header-utilities-space-above:\s*24px;/su);
-  assert.match(base, /\.app-header__utilities\s*\{[^}]*transform:\s*translateY\(var\(--header-utilities-space-above, 0px\)\);/su);
+  assert.doesNotMatch(tuningSelector, /Space above icon and button row|header-utilities-space-above/u);
+  assert.match(base, /\.app-header\s*\{[^}]*--identity-space-before:\s*0px;[^}]*--identity-line-gap:\s*0px;[^}]*--identity-space-after:\s*0px;[^}]*--identity-space-after-origin:\s*0px;/su);
+  assert.doesNotMatch(base, /header-utilities-space-above/u);
+  assert.doesNotMatch(base, /\.app-header__utilities\s*\{[^}]*transform:/su);
   assert.match(headerBrand, /\.app-header \.global-nav > \.header-preview-controls\s*\{[^}]*align-self:\s*center;[^}]*margin-inline-start:\s*auto;/su);
   assert.doesNotMatch(base, /\.app-header \.header-preview-controls\s*\{[^}]*header-utilities-space-above/su);
   assert.match(tuningSelector, /data-css-property=\{adjustment\.property\}[\s\S]*data-value-factor=\{adjustment\.factor\}[\s\S]*data-header-preview-range/u);
