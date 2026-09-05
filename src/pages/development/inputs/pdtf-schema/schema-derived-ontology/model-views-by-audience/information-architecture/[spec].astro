@@ -29,6 +29,6 @@ for (const [path, content] of Object.entries(fragments)) {
 }
 const html = bySlug[spec] ?? '';
 ---
-<Layout title={`Information architecture — ${title}`}>
+<Layout generatedContent title={`Information architecture — ${title}`}>
   <Fragment set:html={html} />
 </Layout>

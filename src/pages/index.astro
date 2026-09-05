@@ -19,6 +19,7 @@ import {
 import { Database, HousePlug, Landmark, Megaphone, RulerDimensionLine, Scale } from '@lucide/astro';
 import '@/styles/working-group-campaign.css';
 import '@/styles/working-group-campaign-responsive.css';
+import '@/styles/editorial-content.css';
 
 const title = 'OPDA Knowledge Base';
 const description =
@@ -87,7 +88,7 @@ const domains = [
 </head>
 <body class="public-site">
   <a class="skip-link" href="#main-content">Skip to main content</a>
-  <main id="main-content" tabindex="-1">
+  <main id="main-content" class="editorial-content" tabindex="-1">
     <section class="home-campaign-hero wg-campaign-hero wg-campaign-hero--panel-aligned" aria-labelledby="public-title">
       <CampaignIdentity identityId="home-campaign-identity" themeToggleId="home-theme-toggle">
         <CampaignHeaderControls

@@ -1,7 +1,7 @@
 ---
 status: implemented
 date: 2026-08-16
-updated: 2026-09-04
+updated: 2026-09-05
 tags: [design-system, brand, website, accessibility, css, governance, presentation]
 supersedes: [ADR-0025]
 depends-on: [ADR-0064]
@@ -361,21 +361,18 @@ owns child pages, however, that node remains a linked breadcrumb ancestor:
 global destination label. Breadcrumb-free pages use the same shell inset but do
 not reserve an empty breadcrumb row.
 
-Later on 2 September 2026 the documentation rhythm became a direct-child flow contract.
-Ordinary `.prose` articles and Property Pack `.v2-doc` pages now make
-each following direct block responsible for its block-start separation; preceding
-blocks carry no trailing external margin. This removes accumulated card-grid,
-table, diagram and callout spacing while allowing those components to occur
-anywhere in a section. Standard flow is 12px. An H2 divider owns 24px before
-its rule and 16px of CSS padding after it; the heading line box completes the
-optical 24px rule-to-letterform gap. Components retain
-only their internal spacing. ODR detail pages keep their intentionally distinct
-Markdown reading rhythm.
+On 2 September 2026 documentation adopted direct-child flow: the following block
+owns its block-start separation, with no trailing margin on the preceding block.
+Nested sections own the same flow, preventing accumulated table, card, diagram
+and callout margins. Standard flow is 12px; components own only internal spacing.
+Generated references retain 24px before H2 rules and 16px padding after them.
 
-Where a semantic `section` groups multiple documentation blocks, it is the
-local flow owner and applies the same contract to its immediate children. This
-prevents table-wrapper bottom margins and following subheading margins from
-accumulating inside grouped resource registers.
+On 5 September 2026 authored content adopted shared editorial formatting: 32px
+on both sides of section rules, restored nested paragraph gaps, hanging list
+indents and clearer item spacing. Authored ADR/ODR sections share those dividers.
+The shared `editorial-content.css` serves documentation and public-page copy;
+generated templates opt out through `Layout`'s `generatedContent` flag. Wording,
+diagrams, the outer content width and site chrome are unchanged by this amendment.
 
 The shared right-hand page navigation now preserves heading hierarchy rather
 than flattening it: H2 entries are roots and H3/H4 entries nest beneath their

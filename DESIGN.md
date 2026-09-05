@@ -195,8 +195,8 @@ Documentation flow has one owner. In ordinary `.prose` articles and Property Pac
 the preceding block owns no trailing external margin. This makes the gap stable
 whether the preceding element is prose, a list, a card grid, a table, a diagram,
 a callout or the final element in a section. The standard direct-child gap is
-12px. An H2 divider owns 24px before its rule and 16px of CSS padding after it;
-the heading line box completes the optical 24px rule-to-letterform gap. H3 and
+12px. Authored H2 section dividers and explicit horizontal rules have 32px on
+each side; generated reference pages retain their existing 24px/16px rhythm. H3 and
 H4 use their own documented block-start steps. The previous/next region uses
 16px from its rule to the navigation panel, matching the panel-to-comments rule
 gap below. Bounded content endings also use 16px before the rule. Text-led
@@ -204,8 +204,11 @@ endings use 4px after their final line box because the line box itself completes
 the optical space. Nested content flows expose the shared `.document-flow` role;
 spacing never depends on a route or on the link text.
 Components may own internal layout spacing, but must not create separation from
-an unknown next sibling. ODR detail pages retain their separately scoped,
-Markdown-specific reading rhythm.
+an unknown next sibling. Authored ADR/ODR sections share the editorial divider;
+their technical quotations and code keep their existing treatment.
+`Layout` marks authored articles with `.editorial-content`; generated reference
+templates opt out with `generatedContent`. The shared editorial stylesheet also
+serves public-page copy. Nested paragraphs and lists retain the same reading rhythm.
 
 When a semantic `section` groups several blocks, it becomes the local flow
 owner and applies the same rule to its immediate children. In particular, a

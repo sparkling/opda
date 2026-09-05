@@ -47,7 +47,7 @@ const KIND_COMPONENT = {
 
 const Component = KIND_COMPONENT[kind] ?? CrossCuttingPage;
 ---
-<Layout title={title}>
+<Layout generatedContent title={title}>
   <Component entry={entry} tier={tier} module={module}>
     <Content />
   </Component>

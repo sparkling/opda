@@ -18,6 +18,7 @@ import { ClientRouter } from 'astro:transitions';
 // site-wide bare-.mermaid adoption (adoptBareMermaid) has no component to carry
 // scoped styles. Also serves the <GraphDiagram> component.
 import '../styles/graph-diagram.css';
+import '../styles/editorial-content.css';
 import Header from '@/components/Header.astro';
 import Sidebar from '@/components/Sidebar.astro';
 import Breadcrumbs from '@/components/Breadcrumbs.astro';
@@ -47,6 +48,8 @@ interface Props {
   description?: string;
   /** Prose width class. Default 'prose wide'; pass 'prose' for narrow reading width. */
   proseClass?: string;
+  /** Keep machine-generated reference content on its existing typography. */
+  generatedContent?: boolean;
   /** Include the TailwindPlus Elements ESM script. Default true. */
   tailwindPlus?: boolean;
   /** Wrap the slot in `<article class={proseClass}>`. Default true. */
@@ -79,6 +82,7 @@ const {
   title,
   description,
   proseClass = 'prose wide',
+  generatedContent = false,
   tailwindPlus = true,
   wrapArticle = true,
   hideSidebar = false,
@@ -210,10 +214,10 @@ const searchMeta = searchMetaEntries(search);
         })();
       </script>
       {showSidebar && (hasSidebarSlot ? <slot name="sidebar" /> : <Sidebar />)}
-      <main class={`app-main${mainClass ? ` ${mainClass}` : ''}`} id="main-content" tabindex="-1">
+      <main class={`app-main${mainClass ? ` ${mainClass}` : ''}${!wrapArticle && !generatedContent ? ' editorial-content' : ''}`} id="main-content" tabindex="-1">
         {!hideBreadcrumbs && <Breadcrumbs currentPageTitle={breadcrumbTitle} />}
         {wrapArticle ? (
-          <article class={proseClass} data-disable-toc={hideTableOfContents ? 'true' : undefined}>
+          <article class:list={[proseClass, { 'editorial-content': !generatedContent }]} data-disable-toc={hideTableOfContents ? 'true' : undefined}>
             <slot />
           </article>
         ) : (

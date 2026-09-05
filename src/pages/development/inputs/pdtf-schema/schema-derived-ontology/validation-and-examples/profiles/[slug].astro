@@ -35,7 +35,7 @@ const isKnown = (ln: string) => !!(model.datatypeProperties[ln] || model.objectP
 const uniqSources = [...new Set(sources)].sort();
 const heldThin = slug === 'oc1' || slug === 'llc1';
 ---
-<Layout title={`${title} — overlay profile`} breadcrumbTitle={title} description={`The OPDA ${title} overlay profile: its bound per-leaf SHACL shapes and form-question sources, or its ratified thin state.`} hideComments={true}>
+<Layout generatedContent title={`${title} — overlay profile`} breadcrumbTitle={title} description={`The OPDA ${title} overlay profile: its bound per-leaf SHACL shapes and form-question sources, or its ratified thin state.`} hideComments={true}>
   <header class="term-header">
     <p class="term-kind">
       <span class="pill pill--brand">Overlay profile</span>

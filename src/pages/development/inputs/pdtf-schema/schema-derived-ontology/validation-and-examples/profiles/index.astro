@@ -41,7 +41,7 @@ const boundLeaves = rows.reduce((n, r) => n + r.bound, 0);
 const customRendering = exists('tools/custom/index.html');
 const shaclPlay = exists('tools/shaclplay/index.html');
 ---
-<Layout
+<Layout generatedContent
   title="Overlay profiles & gaps"
   description="The 31 OPDA overlay profiles — form name, bound vs thin binding, source instrument — and the gap register (224 bound / 1095 GAPped across 28 forms). 'A form IS its SHACL overlay' (ADR-0029 / session-034). Per-profile binding read live from the committed profile corpus."
 >

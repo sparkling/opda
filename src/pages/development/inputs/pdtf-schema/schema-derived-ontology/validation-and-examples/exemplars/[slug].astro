@@ -50,7 +50,7 @@ export function getStaticPaths() {
 
 const { slug, input, report, meta } = Astro.props;
 ---
-<Layout title={`${slug} — exemplar`} breadcrumbTitle={slug} description={`Round-trip diagnostic exemplar ${slug}${meta ? ': ' + meta.hard : ''}`} hideComments={true}>
+<Layout generatedContent title={`${slug} — exemplar`} breadcrumbTitle={slug} description={`Round-trip diagnostic exemplar ${slug}${meta ? ': ' + meta.hard : ''}`} hideComments={true}>
   <header class="term-header">
     <p class="term-kind">
       <span class="pill pill--brand">Exemplar</span>

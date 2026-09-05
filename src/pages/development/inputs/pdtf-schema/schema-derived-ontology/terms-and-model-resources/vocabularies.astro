@@ -18,7 +18,7 @@ const totalConcepts = schemes.reduce((n, s) => n + s.concepts.length, 0);
 const SKOSMOS = { href: '/development/inputs/pdtf-schema/schema-derived-ontology/use-and-tooling/tools/skosmos/schemes.html', live: exists('tools/skosmos/schemes.html'), browser: 'http://localhost:9090/' };
 const ONTOSPY = { href: '/development/inputs/pdtf-schema/schema-derived-ontology/use-and-tooling/tools/ontospy/index.html', live: exists('tools/ontospy/index.html') };
 ---
-<Layout
+<Layout generatedContent
   title="Vocabularies (SKOS)"
   description="Typed index of the OPDA SKOS concept schemes: every scheme with its concept count, UFO category and definition from the SPARQL-derived ontology model, each linking to its canonical /pdtf page. Plus the /pdtf/scheme/ kind-split (ADR-0006) and the Skosmos / Ontospy browse renderings."
 >

@@ -3,88 +3,12 @@
 /* Learning figures and exercises share the same full-width document shell. */
 .modelling-document { min-width: 0; }
 
-/* Editorial flow belongs to the text container, including nested sections and
-   component slots. The two-class scope beats the shared `.prose p` reset;
-   it must not depend on stylesheet order. Grid/flex cards retain their gaps. */
-.prose.modelling-document :where(
-  section:not([class]), details:not(.modelling-detail), blockquote,
-  .modelling-chapter-intro__main, .modelling-principle__body,
-  .modelling-principle__aside, .modelling-principle__not,
-  .modelling-dossier__scenario, .modelling-dossier__evidence,
-  .modelling-detail__body, .modelling-contrast__verdict
-) > * { margin-block: 0; }
-.prose.modelling-document :where(
-  section:not([class]), details:not(.modelling-detail), blockquote,
-  .modelling-chapter-intro__main, .modelling-principle__body,
-  .modelling-principle__aside, .modelling-principle__not,
-  .modelling-dossier__scenario, .modelling-dossier__evidence,
-  .modelling-detail__body, .modelling-contrast__verdict
-) > * + * { margin-block-start: var(--space-4); }
-
-/* A section owns the space before its opening rule; its first heading does
-   not add a second margin. Preserve the shared 24px / 16px divider rhythm. */
-#main-content .prose.modelling-document > section {
-  margin-block-start: var(--space-6);
-}
-.prose.modelling-document :where(section:not([class])) {
-  display: flow-root;
-}
-.prose.modelling-document :where(
-  section:not([class]), .modelling-principle__body, .modelling-detail__body
-) > :is(h2, h3, h4) { margin-block-start: var(--space-6); }
-.prose.modelling-document :where(
-  section:not([class]), .modelling-principle__body, .modelling-detail__body
-) > :is(h2, h3, h4):first-child { margin-block-start: 0; }
-.prose.modelling-document :where(
-  section:not([class]), .modelling-principle__body, .modelling-detail__body
-) > :is(h2, h3, h4) + * { margin-block-start: var(--space-3); }
-.prose.modelling-document :is(h1, h2, h3, h4) {
-  text-wrap: balance;
-}
-
-/* Plain reading lists keep visible markers, a hanging indent and a clear
-   beat between items at every nesting level, not just directly in <article>. */
-.prose.modelling-document :is(ul, ol):not([class]) {
-  padding-inline-start: 1.5em;
-  list-style-position: outside;
-}
-.prose.modelling-document :is(ul, ol):not([class]) > li {
-  padding-inline-start: 0.25em;
-}
-.prose.modelling-document :is(ul, ol):not([class]) > li + li,
-.prose.modelling-document .modelling-pathways__topics > li + li {
-  margin-block-start: var(--space-3);
-}
-.prose.modelling-document :is(ul, ol):not([class]) > li::marker {
-  color: var(--color-link);
-  font-weight: 600;
-  font-variant-numeric: tabular-nums;
-}
-.prose.modelling-document :where(
-  ul:not([class]), ol:not([class]), .modelling-steps
-) > li > * { margin-block: 0; }
-.prose.modelling-document :where(
-  ul:not([class]), ol:not([class]), .modelling-steps
-) > li > * + * { margin-block-start: var(--space-3); }
-
+/* Shared authored-text rhythm lives in ../editorial-content.css. */
 /* These semantic lists are card grids or navigation, not bulleted copy. */
 .prose.modelling-document :is(
   .modelling-meanings, .modelling-evidence,
   .modelling-chapter-intro__register, .modelling-chapter-end__related-list
 ) { list-style: none; padding: 0; }
-
-/* Definition registers read as paired terms and explanations. Keep the
-   existing figure proportions and apply them to unframed registers too. */
-.prose.modelling-document dl:not([class]) {
-  display: grid;
-  grid-template-columns: minmax(9rem, 1fr) minmax(0, 3fr);
-  gap: var(--space-4) var(--space-6);
-}
-.prose.modelling-document dl:not([class]) > dt {
-  color: var(--color-text-strong);
-  font-weight: 600;
-}
-.prose.modelling-document dl:not([class]) > dd { margin: 0; }
 
 .modelling-document .modelling-standing {
   border-inline-start: 3px solid var(--color-border-strong);
@@ -151,11 +75,6 @@
 .modelling-document :is(pre, code, dd) { overflow-wrap: anywhere; }
 .modelling-document pre { white-space: pre-wrap; }
 @media (max-width: 48rem) {
-  .prose.modelling-document dl:not([class]) {
-    grid-template-columns: minmax(0, 1fr);
-    gap: var(--space-2);
-  }
-  .prose.modelling-document dl:not([class]) > dd + dt { margin-block-start: var(--space-5); }
   .modelling-document .modelling-comparison { grid-template-columns: minmax(0, 1fr); }
   .modelling-comparison > section + section { border-inline-start: 0; border-block-start: 1px solid var(--color-border); }
   .modelling-document .modelling-figure { padding: var(--space-4); }

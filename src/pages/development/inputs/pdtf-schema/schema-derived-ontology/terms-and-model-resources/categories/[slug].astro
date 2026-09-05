@@ -15,7 +15,7 @@ export function getStaticPaths() {
 
 const { cat } = Astro.props;
 ---
-<Layout
+<Layout generatedContent
   title={`${cat.category} — UFO meta-category`}
   breadcrumbTitle={cat.category}
   description={`The OPDA ontology classes whose UFO foundational meta-category is ${cat.category}, grouped from the structured opda:ufoCategory facet. Each links to its dereferenceable /pdtf page.`}

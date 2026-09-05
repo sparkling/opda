@@ -17,7 +17,7 @@ export function getStaticPaths() {
 
 const { context } = Astro.props;
 ---
-<Layout
+<Layout generatedContent
   title={`${context.localName} — bounded context`}
   breadcrumbTitle={context.localName}
   description={`The OPDA ${context.localName} bounded context (DDD module): its classes, properties, SHACL shapes and SKOS schemes, each linked to its dereferenceable /pdtf page.`}

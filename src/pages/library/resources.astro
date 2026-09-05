@@ -49,7 +49,7 @@ const groupList = [...groups.entries()].sort(([a], [b]) => a.localeCompare(b, 'e
 const totalCount = entries.length;
 const totalBytes = entries.reduce((sum, e) => sum + e.sizeBytes, 0);
 ---
-<Layout
+<Layout generatedContent
   title="Resource index"
   description="Every individual file in the OPDA source archive — all of it published, each one directly linkable via the resource viewer."
 >

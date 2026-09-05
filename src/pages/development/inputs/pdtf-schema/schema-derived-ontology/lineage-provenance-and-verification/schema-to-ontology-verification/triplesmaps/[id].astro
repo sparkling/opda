@@ -73,7 +73,7 @@ function iteratorContainerPath(iterator: string): string {
 }
 const iteratorHref = hrefFrom(CONTAINER_INDEX[iteratorContainerPath(tm.iterator)]);
 ---
-<Layout
+<Layout generatedContent
   title={`Mapping — #${tm.id}`}
   breadcrumbTitle={`#${tm.id}`}
   description={`RML TriplesMap #${tm.id} — ${tm.classes.join(', ') || 'untyped node'}, iterator ${tm.iterator}.`}

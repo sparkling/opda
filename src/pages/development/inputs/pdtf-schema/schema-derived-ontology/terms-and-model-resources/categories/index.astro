@@ -11,7 +11,7 @@ import { ufoCategories } from '@/lib/ontology-model';
 const cats = ufoCategories();
 const totalClasses = cats.reduce((n, c) => n + c.classes.length, 0);
 ---
-<Layout
+<Layout generatedContent
   title="UFO categories — index"
   breadcrumbTitle="UFO categories"
   description="Every UFO foundational meta-category borne by an OPDA ontology class, from the structured opda:ufoCategory facet. Each category links to the classes classified under it."

@@ -5,6 +5,7 @@ import {
 } from '@/lib/site-ia.mjs';
 import SiteFooter from '@/components/SiteFooter.astro';
 import '@/styles/standalone-public.css';
+import '@/styles/editorial-content.css';
 
 interface Props {
   title: string;
@@ -77,7 +78,7 @@ const pageTitle = `${title} · Open Property Data Association`;
   </head>
   <body class:list={['standalone-public', bodyClass]}>
     <a class="skip-link" href="#main-content">Skip to main content</a>
-    <main id="main-content" tabindex="-1">
+    <main id="main-content" class="editorial-content" tabindex="-1">
       <slot />
     </main>
     <SiteFooter />

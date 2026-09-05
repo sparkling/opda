@@ -1,0 +1,131 @@
+/* Authored reading content only. Layout's generatedContent opt-out keeps model
+   references on their existing styles. No route names or width overrides. */
+.editorial-content:is(.prose, main) {
+  --editorial-flow-gap: var(--space-4);
+  --editorial-section-space: var(--space-7);
+}
+
+/* Text containers, not grid/flex card layouts, own paragraph separation. */
+.editorial-content:is(.prose, main) :where(
+  section:not([class]), details:not([class]), blockquote, .document-flow,
+  .callout, .public-statement__content > div, .wg-policy__copy,
+  .modelling-chapter-intro__main, .modelling-principle__body,
+  .modelling-principle__aside, .modelling-principle__not,
+  .modelling-dossier__scenario, .modelling-dossier__evidence,
+  .modelling-detail__body, .modelling-contrast__verdict
+) > :is(p, ul, ol, dl, blockquote, pre, figure, details, h2, h3, h4) {
+  margin-block: 0;
+}
+.editorial-content:is(.prose, main) :where(
+  section:not([class]), details:not([class]), blockquote, .document-flow,
+  .callout, .public-statement__content > div, .wg-policy__copy,
+  .modelling-chapter-intro__main, .modelling-principle__body,
+  .modelling-principle__aside, .modelling-principle__not,
+  .modelling-dossier__scenario, .modelling-dossier__evidence,
+  .modelling-detail__body, .modelling-contrast__verdict
+) > * + :is(p, ul, ol, dl, blockquote, pre, figure, details, h2, h3, h4) {
+  margin-block-start: var(--editorial-flow-gap);
+}
+.prose.editorial-content :where(section:not([class])) { display: flow-root; }
+.prose.editorial-content :is(h1, h2, h3, h4) { text-wrap: balance; }
+.editorial-content:is(.prose, main) :where(p:not([class]), ul:not([class]), ol:not([class]), summary) + :where(p:not([class]), ul:not([class]), ol:not([class])) {
+  margin-block-start: var(--editorial-flow-gap);
+}
+
+/* Document sections use a generous 32px on each side of their rule. The rule
+   can belong to an H2, a grouped section or an explicit HR, never the chrome. */
+#main-content .prose.editorial-content > :is(h2, section),
+#main-content .prose.editorial-content :where(.document-flow) > :is(h2, section),
+.prose.editorial-content :where(section:not([class]), .public-statement__content) > h2 {
+  margin-block-start: var(--editorial-section-space);
+}
+#main-content .prose.editorial-content > h2,
+.prose.editorial-content :where(section:not([class]), .document-flow) > h2 {
+  padding-block-start: var(--editorial-section-space);
+}
+.prose.editorial-content :where(section:not([class]), .document-flow) > h2:first-child {
+  margin-block-start: 0;
+}
+.prose.editorial-content :where(section:not([class]), .document-flow) > :is(h3, h4) {
+  margin-block-start: var(--space-6);
+}
+.prose.editorial-content :where(section:not([class]), .document-flow) > :is(h3, h4):first-child {
+  margin-block-start: 0;
+}
+.prose.editorial-content :where(section:not([class]), .document-flow) > :is(h2, h3, h4) + * {
+  margin-block-start: var(--space-3);
+}
+#main-content .prose.editorial-content > hr,
+.prose.editorial-content :where(section:not([class]), .document-flow) > hr {
+  margin-block: var(--editorial-section-space) 0;
+  border: 0;
+  border-block-start: 1px solid var(--color-border);
+}
+#main-content .prose.editorial-content > hr + *,
+.prose.editorial-content :where(section:not([class]), .document-flow) > hr + * {
+  margin-block-start: var(--editorial-section-space);
+}
+/* Avoid a duplicate H2 rule when a separate horizontal rule already precedes it. */
+#main-content .prose.editorial-content > hr + h2,
+.prose.editorial-content :where(section:not([class]), .document-flow) > hr + h2 {
+  padding-block-start: 0;
+  border-block-start: 0;
+}
+.prose.editorial-content .modelling-principle {
+  padding-block-start: var(--editorial-section-space);
+}
+/* Authored decision records share the same section rule, not two borders. */
+.prose.editorial-content.odr-detail h2 {
+  border-block-start: 1px solid var(--color-border);
+  border-block-end: 0;
+  padding-block-end: 0;
+  margin-block-end: 0;
+}
+/* Preserve the intentionally unruled first section following a page lede. */
+#main-content .prose.editorial-content:not(.odr-detail) > :is(h1, .lead) + h2 {
+  padding-block-start: 0;
+}
+
+/* Reading lists: hanging markers, room between items, and nested paragraphs. */
+.editorial-content:is(.prose, main) :is(ul, ol):not([class]) {
+  padding-inline-start: 1.5em;
+  list-style-position: outside;
+}
+.editorial-content:is(.prose, main) ul:not([class]) { list-style-type: disc; }
+.editorial-content:is(.prose, main) ul:not([class]) ul:not([class]) { list-style-type: circle; }
+.editorial-content:is(.prose, main) ul:not([class]) ul:not([class]) ul:not([class]) { list-style-type: square; }
+.editorial-content:is(.prose, main) ol:not([class]) { list-style-type: decimal; }
+.editorial-content:is(.prose, main) :is(ul, ol):not([class]) > li { padding-inline-start: 0.25em; }
+.editorial-content:is(.prose, main) :is(ul, ol):not([class]) > li + li,
+.editorial-content:is(.prose, main) .modelling-pathways__topics > li + li {
+  margin-block-start: var(--space-3);
+}
+.editorial-content:is(.prose, main) :is(ul, ol):not([class]) > li::marker {
+  color: var(--color-link);
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+}
+.editorial-content:is(.prose, main) :where(ul:not([class]), ol:not([class]), .modelling-steps) > li > :is(p, ul, ol, h3, h4) {
+  margin-block: 0;
+}
+.editorial-content:is(.prose, main) :where(ul:not([class]), ol:not([class]), .modelling-steps) > li > * + :is(p, ul, ol, h3, h4) {
+  margin-block-start: var(--space-3);
+}
+
+/* Plain definition registers; custom fact cards retain their own layout. */
+.editorial-content:is(.prose, main) dl:not([class]):has(> dt) {
+  display: grid;
+  grid-template-columns: minmax(9rem, 1fr) minmax(0, 3fr);
+  gap: var(--space-4) var(--space-6);
+}
+.editorial-content:is(.prose, main) dl:not([class]):has(> dt) > dt { color: var(--color-text-strong); font-weight: 600; }
+.editorial-content:is(.prose, main) dl:not([class]):has(> dt) > dd { margin: 0; overflow-wrap: anywhere; }
+.editorial-content:is(.prose, main) :where(figcaption:not([class])) {
+  font: 500 var(--text-sm) / var(--leading-normal) var(--font-sans);
+  text-wrap: pretty;
+}
+
+@media (max-width: 48rem) {
+  .editorial-content:is(.prose, main) dl:not([class]):has(> dt) { grid-template-columns: minmax(0, 1fr); gap: var(--space-2); }
+  .editorial-content:is(.prose, main) dl:not([class]):has(> dt) > dd + dt { margin-block-start: var(--space-5); }
+}

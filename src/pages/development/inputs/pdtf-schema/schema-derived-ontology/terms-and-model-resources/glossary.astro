@@ -28,7 +28,7 @@ const byLetter = (L: string) => entries.filter((t) => bucketOf(t.name) === L);
 const liveLetters = LETTERS.filter((L) => byLetter(L).length > 0);
 const trunc = (s: string, n = 160) => (s.length > n ? s.slice(0, n).replace(/\s+\S*$/, '') + '…' : s);
 ---
-<Layout
+<Layout generatedContent
   title="Index & glossary"
   description="The full alphabetical A–Z index and glossary of every named OPDA PDTF resource — classes, object and datatype properties, SKOS concepts and schemes — each linking to its canonical dereferenceable /pdtf page."
 >
