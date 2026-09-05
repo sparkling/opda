@@ -195,8 +195,8 @@ Documentation flow has one owner. In ordinary `.prose` articles and Property Pac
 the preceding block owns no trailing external margin. This makes the gap stable
 whether the preceding element is prose, a list, a card grid, a table, a diagram,
 a callout or the final element in a section. The standard direct-child gap is
-12px. Authored H2 section dividers and explicit horizontal rules have 24px on
-each side; one unruled 24px blank line separates the page introduction from its first section, without divider spacing. Generated reference pages retain their existing 24px/16px rhythm. H3 and
+12px. Authored H2 section transitions and explicit horizontal breaks use 24px
+of whitespace with no visible rule; one 24px blank line also separates the page introduction from its first section. Generated reference pages retain their existing 24px/16px rhythm. H3 and
 H4 use their own documented block-start steps. The previous/next region uses
 16px from its rule to the navigation panel, matching the panel-to-comments rule
 gap below. Bounded content endings also use 16px before the rule. Text-led

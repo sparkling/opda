@@ -41,8 +41,7 @@
   margin-block-start: var(--editorial-flow-gap);
 }
 
-/* Document sections use 24px on each side of their rule. The rule
-   can belong to an H2, a grouped section or an explicit HR, never the chrome. */
+/* Authored sections use whitespace rather than horizontal divider rules. */
 #main-content .prose.editorial-content > :is(h2, section),
 #main-content .prose.editorial-content :where(.document-flow) > :is(h2, section),
 .prose.editorial-content :where(section:not([class]), .public-statement__content) > h2 {
@@ -50,24 +49,11 @@
 }
 #main-content .prose.editorial-content > h2,
 .prose.editorial-content :where(section:not([class]), .document-flow) > h2 {
-  padding-block-start: var(--editorial-section-space);
+  padding-block-start: 0;
+  border-block-start: 0;
 }
 .prose.editorial-content :where(section:not([class]), .document-flow) > h2:first-child {
   margin-block-start: 0;
-}
-/* Leave one blank line between the page introduction and its first section,
-   without inserting a divider or its two-sided spacing. */
-#main-content .prose.editorial-content:not(.odr-detail) > h2:first-of-type {
-  margin-block-start: var(--space-6);
-  padding-block-start: 0;
-  border-block-start: 0;
-}
-#main-content .prose.editorial-content:not(.odr-detail) > section:first-of-type {
-  margin-block-start: var(--space-6);
-}
-#main-content .prose.editorial-content:not(.odr-detail) > section:first-of-type > h2:first-child {
-  padding-block-start: 0;
-  border-block-start: 0;
 }
 .prose.editorial-content :where(section:not([class]), .document-flow) > :is(h3, h4) {
   margin-block-start: var(--space-6);
@@ -80,28 +66,21 @@
 }
 #main-content .prose.editorial-content > hr,
 .prose.editorial-content :where(section:not([class]), .document-flow) > hr {
-  margin-block: var(--editorial-section-space) 0;
+  block-size: 0;
+  margin-block: 0;
   border: 0;
-  border-block-start: 1px solid var(--color-border);
 }
 #main-content .prose.editorial-content > hr + *,
 .prose.editorial-content :where(section:not([class]), .document-flow) > hr + * {
   margin-block-start: var(--editorial-section-space);
 }
-/* Avoid a duplicate H2 rule when a separate horizontal rule already precedes it. */
-#main-content .prose.editorial-content > hr + h2,
-.prose.editorial-content :where(section:not([class]), .document-flow) > hr + h2 {
-  padding-block-start: 0;
-  border-block-start: 0;
-}
 .prose.editorial-content .modelling-principle {
   padding-block-start: var(--editorial-section-space);
 }
-/* Authored decision records share the same section rule, not two borders. */
+/* Authored decision records use the same whitespace-only section treatment. */
 .prose.editorial-content.odr-detail h2 {
-  border-block-start: 1px solid var(--color-border);
-  border-block-end: 0;
-  padding-block-end: 0;
+  border-block: 0;
+  padding-block: 0;
   margin-block-end: 0;
 }
 /* Preserve the intentionally unruled first section following a page lede. */

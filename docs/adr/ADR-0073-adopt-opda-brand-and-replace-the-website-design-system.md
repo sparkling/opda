@@ -368,8 +368,8 @@ and callout margins. Standard flow is 12px; components own only internal spacing
 Generated references retain 24px before H2 rules and 16px padding after them.
 
 On 5 September 2026 authored content adopted shared editorial formatting: 24px
-on both sides of section rules; the page introduction and first section instead use one unruled 24px blank line, with restored nested paragraph gaps and hanging list
-indents and clearer item spacing. Authored ADR/ODR sections share those dividers.
+whitespace between sections with no horizontal divider; the page introduction and first section use the same blank line, with restored nested paragraph gaps and hanging list
+indents and clearer item spacing. Authored ADR/ODR sections share that treatment.
 The shared stylesheet serves documentation and public-page copy at 18px in Atkinson Hyperlegible Next; generated templates opt out. Wording, diagrams
 and chrome are unchanged. “From a useful question to a reviewable candidate” is one
 measure exception: left-aligned text stops at 1200px; figures remain full width. Modelling pages use the standard H1, an unlabelled key callout for the page purpose and the shared PageFooter, without a second chapter header or navigation.
