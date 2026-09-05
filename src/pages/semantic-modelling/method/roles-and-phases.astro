@@ -1,0 +1,63 @@
+---
+import ModellingLayout from '@/layouts/ModellingLayout.astro';
+---
+
+<ModellingLayout title="Roles and phases: identity through context and change" description="A person can sell and buy at once. A transaction can change state. Neither observation is enough on its own to define a kind, a role or a phase: examine identity, dependence and the reason for the classification." chapter="Make distinctions explicit" claim="method">
+  <section aria-labelledby="three-questions">
+    <h2 id="three-questions">Three questions that a single hierarchy cannot answer</h2>
+    <p>What is this thing? In which relationship does it participate? What state is it in? An undifferentiated tree of types can make these look like the same question. They are not. Our method uses the distinction between kinds and subkinds, roles, and phases to expose the commitments behind an apparently simple classification.</p>
+    <p>A kind provides an identity-bearing category. A subkind specialises that kind while retaining its identity criterion. A role depends on a context or relationship and need not be essential to its bearer. A phase concerns a classification under change while the individual is taken to remain the same. That last assumption must be justified rather than smuggled in through a state label.</p>
+    <p>These terms help us ask better questions. They do not excuse a modeller from explaining the distinction to practitioners in ordinary language or from testing it against difficult property cases.</p>
+  </section>
+
+  <figure class="modelling-figure" data-modelling-figure="role-phase">
+    <dl>
+      <dt>One person, several contexts</dt><dd>The person can be seller in the Harbour Court transaction and buyer in another transaction at the same time.</dd>
+      <dt>One scoped lifecycle</dt><dd>A transaction record can move between defined states while its identity is deliberately preserved.</dd>
+      <dt>A different question</dt><dd>Subdivision of Flat 1 may change the identity-bearing situation. Calling it a phase does not settle that question.</dd>
+    </dl>
+    <figcaption>Role participation, lifecycle succession and identity are separate axes. No arrow here is an instruction to run subclass inference.</figcaption>
+  </figure>
+
+  <section aria-labelledby="rigidity">
+    <h2 id="rigidity">Essential membership is not the same as observed permanence</h2>
+    <p>In foundational analysis, rigidity is about whether membership in a category is essential to each instance, not how long the category happens to have applied in a database. Someone who has taught throughout their working life does not thereby make <em>Teacher</em> a rigid kind: they could cease teaching without becoming a different person. A stable identifier similarly demonstrates neither rigidity nor a complete identity criterion.</p>
+    <p>Simultaneous membership is a useful diagnostic, not a complete definition of role. A person can be both an adult and a seller, but the reasons differ. Selling is relationally dependent on a transaction or participation context. An age-related phase is analysed through the person’s intrinsic condition and a defined classification. Nor does every temporal change produce a phase: a correction to a record and the destruction of an asset are very different cases.</p>
+    <p>The foundational objection to an anti-rigid superclass subsuming a rigid subclass must not be simplified into “roles can never be subclasses of kinds”. The selected source-method convention chooses distinct <code>roleOf</code> and <code>phaseOf</code> annotations instead of using subclass links for those distinctions. That is the project’s encoding policy, not a general W3C prohibition or an OntoClean theorem.</p>
+  </section>
+
+  <section aria-labelledby="seller">
+    <h2 id="seller">Work through the seller rather than drawing “Seller → Person”</h2>
+    <p>In the fictional Harbour Court transaction, <code>person-1</code> participates as seller. Begin by identifying the person independently of this participation. Then name the transaction in which the role is played. If a later transaction involves the same person as buyer, the new role must not replace their identity or erase the earlier participation.</p>
+    <p>At the model level, a seller-role type describes a contextual classification of eligible bearers. At the instance level, a particular participation connects a bearer, role and transaction, with dates or evidence if needed. A class-level <code>roleOf</code> annotation alone cannot supply that instance-level context. Nor does it automatically entail that all role-specific shape constraints or properties apply to the bearer through inheritance.</p>
+    <p>Ask whether a proposed property describes the person regardless of the role, or exists because of the participation. A general name describes the person. The effective period of acting in the Harbour Court sale belongs with that participation. Hoisting every seller-specific property onto Person would suggest it makes sense for every person and would make simultaneous transactions ambiguous.</p>
+    <p>Eligibility is also distinct from actuality. “May act in this capacity” does not assert “is acting in this capacity now”. Where the model needs both, represent and define both. Do not infer role participation from a capability flag, a profession label or a permitted-role list.</p>
+  </section>
+
+  <section aria-labelledby="phase">
+    <h2 id="phase">A phase needs a bearer, a classification and an identity commitment</h2>
+    <p>For a chosen transaction lifecycle, reviewers might define a closed state space and permitted one-step transitions. Such a state space describes that lifecycle only. A transaction can be “under review” while its associated report is “corrected”; there is no single global status that safely represents both.</p>
+    <p>State concepts organise the available values. An allowed-successor relation records transition adjacency. A dated transition record says which entity changed from which value to which other value and when. <code>skos:broader</code> must not double as “comes next”: conceptual hierarchy and temporal adjacency have different semantics.</p>
+    <p>Now test the harder case. Harbour Court contains Flat 1 and Flat 2. A proposal would subdivide Flat 1 again. Does the original dwelling continue? Is one successor the same dwelling, or are both new? We leave that identity criterion explicitly unresolved in this example. A phase representation would be appropriate only after a reviewed criterion supports identity preservation. “It changed over time” is not sufficient evidence.</p>
+  </section>
+
+  <section aria-labelledby="encoding">
+    <h2 id="encoding">What the selected encoding policy requires</h2>
+    <p>Source-method ODR-0025 uses <code>rdfs:subClassOf</code> for the chosen subkind relation and local <code>roleOf</code>/<code>phaseOf</code> annotations for roles and phases. Those local names are not W3C predicates. This guide does not mint an OPDA equivalent or imply that current candidate tooling implements their effects.</p>
+    <p>ODR-0026 places property applicability at the most specific class that introduces the property. A sparse role does not become a SKOS concept merely because it has few properties: the number of fields does not settle the distinction between a bearer’s type and a classification concept. The role’s significance may lie in its relationships rather than attributes.</p>
+    <p>Validation must be explicit. The selected method does not invent a <code>sh:extends</code> mechanism or assume that local role annotations inherit a kind’s constraints. Give the required checks an inspectable target and composition. Where later shape-profile decisions refine the earlier per-class shape pattern, follow the amended profile rather than treating an old example as a universal template.</p>
+  </section>
+
+  <section aria-labelledby="failure">
+    <h2 id="failure">Recognise the failure before it becomes a model pattern</h2>
+    <p>The dangerous shortcut is a class named “CurrentSellerProperty” containing a property identifier, person details, report status and transaction dates. Its fields may be convenient for one screen, but its identity is unclear. Is a new instance created when the seller changes, the report is corrected or the transaction advances? The screen’s grouping is not evidence that all those things share one lifecycle.</p>
+    <p>Separate the identities first. Connect the person’s participation to the transaction, the report to its inspection and the inspection to the relevant physical subject. Then document the role and phase distinctions at the levels where their meaning belongs. A delivery view can recombine those pieces without pretending they were one kind of thing.</p>
+    <p>Continue with <a href="/semantic-modelling/method/evidence-and-time">evidence and time</a> and <a href="/semantic-modelling/method/meaning-checks-and-delivery">meaning, checks and delivery</a>.</p>
+  </section>
+
+  <section aria-labelledby="source-contract">
+    <h2 id="source-contract">Source contract</h2>
+    <p>Required method: source-method ODR-0025 §Rules and its ODR-0030/0040 amendments establish the selected role/subkind/phase convention; ODR-0026 §Rules and 30 August amendment establish introducing-class applicability and qualified relations. ODR-0071j R3–R4 distinguishes state adjacency, transition records and time. ODR-0098 governs identity comparison.</p>
+    <p>Reviewed revision <code>67174057e6384b79d0b28b7736fe70a66e112895</code>, 5 September 2026. See <a href="/semantic-modelling/method/standards-and-decisions">standards and decisions</a> for register and scope. The convention is normative for the selected method; Harbour Court examples are illustrative and do not establish candidate implementation.</p>
+  </section>
+</ModellingLayout>

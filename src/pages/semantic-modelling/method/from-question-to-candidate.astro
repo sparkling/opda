@@ -1,0 +1,64 @@
+---
+import ModellingLayout from '@/layouts/ModellingLayout.astro';
+---
+
+<ModellingLayout title="From a useful question to a reviewable candidate" description="A model earns its distinctions by answering property questions, surviving counterexamples and making its evidence inspectable. Encoding comes after those commitments, not in place of them." chapter="Build the agreement" claim="method">
+  <section aria-labelledby="question">
+    <h2 id="question">Start with a question that could expose a mistake</h2>
+    <p>A useful modelling question names the work, the information needed and the consequence of getting it wrong. “Can we connect property data?” is an ambition. “Which dwelling did this inspection concern, and which report version supports the statement we are showing?” is a question against which a candidate can be examined. It exposes distinctions between a dwelling, a building, an inspection, a statement and a document before anyone chooses class names.</p>
+    <p>These are often called <em>competency questions</em>: questions the model should make answerable. Write the expected answer and its limitations in ordinary language first. An answer may be “not established by these sources”. If a query always returns something because missing distinctions have been collapsed, it is not a successful answer.</p>
+    <p>Our recurring illustration is Harbour Court at 14 Orchard Road: a building containing Flat 1 and Flat 2, associated with an address and a title record. An inspection occurs on 12 August 2026; report versions follow on 14 and 20 August. These are fictional teaching resources, not candidate ontology features or legal descriptions of an actual property.</p>
+  </section>
+
+  <figure class="modelling-figure" data-modelling-figure="candidate-loop">
+    <ol class="modelling-steps">
+      <li><strong>Ask.</strong> Which dwelling, which inspection, which evidence?</li>
+      <li><strong>Challenge.</strong> What if the address names two dwellings?</li>
+      <li><strong>Commit.</strong> Define the things and relationships we mean.</li>
+      <li><strong>Encode.</strong> Express assertions, mappings and checks separately.</li>
+      <li><strong>Review.</strong> Return the candidate and its counterexamples to practitioners.</li>
+    </ol>
+    <figcaption>This is a feedback loop, not a conveyor belt to approval. A counterexample can reopen an earlier definition.</figcaption>
+  </figure>
+
+  <section aria-labelledby="evidence">
+    <h2 id="evidence">Treat source structures as evidence about work</h2>
+    <p>A form tells us what someone asks. A schema tells us what a particular exchange permits. A database reveals useful keys and relationships. Practitioner accounts explain why those structures exist and where they fail. None is automatically a complete inventory of the things in the domain.</p>
+    <p>Suppose two incoming documents use the same field name, <code>property</code>. One encloses a postal address; the other identifies the subject of an inspection. Renaming both fields to one ontology term would hide the question that needs answering. Record the original field, source version, surrounding definition and concrete examples. Ask whether they describe the same kind of entity, related entities or merely similar presentation structures.</p>
+    <p>Sources can disagree without one being a typing error. A surveyor may organise information around a physical asset while a conveyancer needs a recorded interest or document. The modeller’s job is to preserve the disagreement long enough to understand it. A source-to-model transformation can then be explained, but the source-mapping ontology category is not among OPDA’s eight retained concerns.</p>
+  </section>
+
+  <section aria-labelledby="boundary">
+    <h2 id="boundary">Give the question an accountable semantic home</h2>
+    <p>Identify who can explain a definition and who is responsible for considering changes to it. That is the beginning of a bounded context, not a decision to give every department or application its own ontology. Compare meanings across the proposed boundary: do practitioners use the same identity criteria, lifecycle and relationships, or do shared words conceal different commitments?</p>
+    <p>Inside a context, resolve competing descriptions into a coherent model. Across contexts, preserve distinct meanings and qualify their correspondences. Do not use a cross-context mapping as a way to postpone an unresolved contradiction inside one context. Conversely, do not enlarge a common model merely to make a mapping disappear.</p>
+    <p>Foundational analysis belongs in this work from the beginning. Ask what makes an inspection the same inspection, what can change without creating a different dwelling, and what a seller role depends on. Context-first is the order in which we discover and take responsibility for meaning; it does not make those identity questions optional.</p>
+  </section>
+
+  <section aria-labelledby="construction">
+    <h2 id="construction">Build enough connected artefacts to test the answer</h2>
+    <p>A candidate needs more than a class diagram. Definitions explain the intended meaning; a vocabulary supplies governed choices where they are needed; relationships show how things connect; mappings record justified correspondences; shapes describe the conditions a supplied graph must meet. Evidence ties important choices back to sources, and examples reveal the consequences.</p>
+    <p>Apply the retained concerns deliberately: domain structure (1), vocabulary and taxonomy (2), classification metadata (5), validation (7), cross-domain mappings (8), provenance and quality (9), temporal state and history (10), and sensitivity and access policy (11). This is a coverage check, not an instruction to create eight empty files. A concern may require a small reference, a substantial model or a documented statement that it does not apply to this candidate.</p>
+    <p>For Harbour Court, the first answer may need only the identities of the two dwellings, a relation from an inspection to its subject, and a report-to-inspection link. Adding a complete property transaction process or a service-deployment model would not improve that answer and would import categories outside the selected scope.</p>
+  </section>
+
+  <section aria-labelledby="challenge">
+    <h2 id="challenge">Review the failure case alongside the happy path</h2>
+    <p>Ask the candidate the same question with one important fact changed. Remove the dwelling identifier while retaining the building address. Can the candidate still distinguish Flat 1 from Flat 2? Supply a corrected report without a new inspection. Does the model accidentally invent a second event? Propose subdivision of Flat 1. Does an assumed lifecycle rule silently decide whether the original dwelling continues?</p>
+    <p>These are not demands to know everything before modelling. They make the limits of a draft explicit. Keep a named unresolved question with its evidence and responsible reviewers. “We have not agreed the identity criterion for subdivision” is useful information; a generic property class that conceals the issue is not.</p>
+    <p>When a machine-readable check is possible, give it a discriminating example: one graph that should meet the condition and another that should not. A passing check demonstrates the encoded condition, not that the model is complete or a factual claim is true. Human review examines the meaning that the check was intended to protect.</p>
+  </section>
+
+  <section aria-labelledby="handoff">
+    <h2 id="handoff">Hand over a candidate with an argument</h2>
+    <p>A reviewable handoff states the question answered, definitions introduced, alternatives rejected, evidence used and questions still open. It identifies the candidate version and the checks actually performed. It also names the effect of changing a definition: which mappings, exchange requirements and consumers would need another look?</p>
+    <p>Tools may extract, draft, compare, visualise and check. They cannot supply practitioner authority or turn a simulated review into real-world adoption. A required modelling method, a candidate following some of it, and an approved standard are three different facts. Readers should be able to discover which one a page is describing without interpreting a badge or a successful build as approval.</p>
+    <p>Continue with <a href="/semantic-modelling/method/classes-and-relationships">classes and relationships</a>, or return to <a href="/semantic-modelling/contribute">contributing to the agreement</a>.</p>
+  </section>
+
+  <section aria-labelledby="source-contract">
+    <h2 id="source-contract">Source contract</h2>
+    <p>Required method: source-method ODR-0071 R1 supplies the fourteen-category framework; OPDA retains categories 1, 2, 5, 7, 8, 9, 10 and 11. ODR-0015, ODR-0040 and ODR-0106 govern meaning and ownership boundaries; ODR-0098 governs identity comparison. OPDA ADR-0063 and ADR-0067 establish domain-led, evidence-led construction within that selection.</p>
+    <p>Source-method register reviewed at revision <code>67174057e6384b79d0b28b7736fe70a66e112895</code> on 5 September 2026, with later amendments inside that revision read as such. See <a href="/semantic-modelling/method/standards-and-decisions">standards and decisions</a> for register separation and adoption scope. This chapter proposes no new approval or candidate conformance result.</p>
+  </section>
+</ModellingLayout>

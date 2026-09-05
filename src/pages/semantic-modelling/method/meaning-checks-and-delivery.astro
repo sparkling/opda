@@ -1,0 +1,100 @@
+---
+import ModellingLayout from '@/layouts/ModellingLayout.astro';
+const applicability = `@prefix model: <https://example.org/property-model/> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix schema: <https://schema.org/> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+model:inspectionOf a owl:ObjectProperty ;
+    rdfs:domain model:Inspection ;
+    rdfs:range model:PhysicalAsset .
+
+model:referenceCode a owl:DatatypeProperty ;
+    schema:domainIncludes model:Inspection, model:ReportVersion ;
+    rdfs:range xsd:string .`;
+const shape = `@prefix model: <https://example.org/property-model/> .
+@prefix sh: <http://www.w3.org/ns/shacl#> .
+
+model:ReportExchangeShape a sh:NodeShape ;
+    sh:targetClass model:ReportVersion ;
+    sh:property [
+        sh:path model:reportsInspection ;
+        sh:class model:Inspection ;
+        sh:minCount 1 ;
+        sh:maxCount 1
+    ] .`;
+---
+
+<ModellingLayout title="Meaning, checks and delivery: four jobs, four contracts" description="The meaning of a published assertion, the intended uses of a property, the requirements of an exchange and the triples a rule derives are different contracts. Keep them visible even when one tool processes them all." chapter="Encode without changing the meaning" claim="method">
+  <figure class="modelling-figure" data-modelling-figure="semantic-layers">
+    <dl>
+      <dt>Semantic assertion</dt><dd>What the graph says, including the consequences of the vocabulary used.</dd>
+      <dt>Applicability hint</dt><dd>Which subjects or values a property is intended to describe, without that entailment.</dd>
+      <dt>Validation condition</dt><dd>What this supplied graph must contain or satisfy for the declared exchange.</dd>
+      <dt>Derived statement</dt><dd>What a named, separately configured rule produces from its inputs.</dd>
+    </dl>
+    <figcaption>Four distinct jobs. Disabling a processing step does not rewrite the meaning of a published RDF statement.</figcaption>
+  </figure>
+
+  <section aria-labelledby="semantics">
+    <h2 id="semantics">Published RDF keeps its semantics</h2>
+    <p>Suppose <code>inspectionOf</code> has an RDFS domain of Inspection. Using that property supports the conclusion that its subject is an Inspection. It does not reject a subject merely because a type statement is missing. Likewise, an RDFS range states something about values used with the property; it is not a field validator.</p>
+    <p>Two RDFS domains are not alternatives. If a property has domain Inspection and domain ReportVersion, standard RDFS semantics imply both types for its subjects. Choosing not to materialise that inference in today’s store does not make the exported vocabulary mean “either one”. <a href="https://www.w3.org/TR/rdf-schema/#ch_domain">RDFS 1.1 §§3.1–3.2</a> defines this conjunctive behaviour.</p>
+    <p>The selected method therefore allows at most one universally true RDFS IRI on each property side. Alternative intended classes or datatypes use Schema.org inclusion hints. These hints still need clear definitions and documentation; they are neither OWL entailments nor SHACL requirements.</p>
+  </section>
+
+  <section aria-labelledby="coverage">
+    <h2 id="coverage">Document both property sides, once per side</h2>
+    <p>Every governed property must explain both its intended subjects and its intended values. On each side select exactly one mechanism family: one safe RDFS assertion; one or more <code>schema:domainIncludes</code> or <code>schema:rangeIncludes</code> values; or an explicit governed waiver. The subject and value sides may use different families.</p>
+    <p>The families are exclusive on a given side. Do not combine RDFS with inclusion hints there, or add a waiver alongside either. A prose definition, a SHACL path, a targeting rule and disabled inference are not substitutes for this documentation contract.</p>
+    <p>A waiver is exceptional, not a quick way to make coverage green. An accepted decision must identify the property and side, explain why no truthful useful commitment or hint can be given, and state a review trigger. The waiver has a non-blank English, decision-qualified rationale. A vacuous universal type does not become informative merely because it has an IRI.</p>
+  </section>
+
+  <details>
+    <summary>Inspect safe applicability and alternative intended uses</summary>
+    <p>These illustrative vocabulary excerpts are not a complete module. For <code>inspectionOf</code>, both sides use safe RDFS commitments. For <code>referenceCode</code>, the subject side uses only inclusion hints and the value side uses only RDFS.</p>
+    <pre><code>{applicability}</code></pre>
+    <p>The example does not assert that a reference-bearing inspection is also a report. It also does not require either kind of resource to have a reference code.</p>
+  </details>
+
+  <section aria-labelledby="validation">
+    <h2 id="validation">A shape checks an explicitly chosen graph</h2>
+    <p>The fictional Harbour Court receiving profile asks each report version to identify exactly one inspection. That is an exchange requirement, not a new definition of Building. A graph missing the link should produce a validation result; it does not establish that no inspection happened.</p>
+    <p>SHACL targets identify the focus nodes to check. Property paths identify the values. Constraints describe cardinality, datatype, class, permitted values or more complex conditions. A useful result tells the reader the focus node, path, offending value where relevant, and source constraint. <a href="https://www.w3.org/TR/shacl/#validation">SHACL §§3.4–3.6</a> specifies validation and its report.</p>
+    <p>The validation contract must also identify the input graph, shape version and relevant entailment regime. Are expected types asserted, or made available by a declared processing step? Different answers can change the result. A successful validation means the supplied graph meets the encoded conditions; it proves neither the factual truth of a roof claim nor approval of the whole ontology.</p>
+  </section>
+
+  <details>
+    <summary>Inspect the illustrative report-exchange condition</summary>
+    <pre><code>{shape}</code></pre>
+    <p>This ordinary NodeShape illustrates a check, not the full adopted shape-authoring profile. A complete candidate must also document the referenced vocabulary, chosen processing assumptions and further requirements. No validation result for current OPDA artefacts is asserted here.</p>
+  </details>
+
+  <section aria-labelledby="bounded-owl">
+    <h2 id="bounded-owl">Use the bounded OWL profile without calling it a new semantics</h2>
+    <p>ODR-0030 defines the permitted documentation constructs and exclusions. ODR-0036 separately selects runtime materialisation. The selected group covers subclass and subproperty propagation, inverse, transitive and symmetric relationships, and disjointness checks. “Safe Group” is the source method’s profile name, not a guarantee that every use of those constructs is safe.</p>
+    <p>The runtime group excludes domain/range materialisation, functional and inverse-functional identity effects, and class/property equivalence propagation. Those operational omissions do not suspend standard semantics. In particular, paired subclass links across contexts recreate bidirectional type propagation; they are not a safe workaround for an excluded equivalence rule.</p>
+    <p>The bounded documentation profile excludes OWL restrictions, Boolean class constructors, cardinality restrictions, <code>owl:oneOf</code>, <code>owl:hasKey</code> and <code>owl:disjointUnionOf</code>. Put required cardinalities and conditional checks in SHACL; use governed SKOS choices and explicit validation for closed lists. This is a selected profile, not a claim that these OWL constructs are invalid in OWL generally.</p>
+  </section>
+
+  <section aria-labelledby="rules">
+    <h2 id="rules">Enrichment produces data; validation judges supplied data</h2>
+    <p>ODR-0036 adopts simple triple-template rules and SPARQL CONSTRUCT rules for derived values, in separate rules artefacts. For Harbour Court, a rule might generate a display heading from a supplied address label and inspection date. The heading is derived from those inputs. It is not an independent observation of the building and cannot supply missing professional judgement.</p>
+    <p>Keep asserted and derived triples distinguishable through declared graph or provenance conventions. Identify which rules ran and which input version they used. Turning a rule off should be an inspectable configuration decision, not a change hidden inside a validator. A generated default must not be presented as a value observed or supplied by a practitioner.</p>
+    <p>Rules and constraints can use related machinery without sharing the same job. <a href="https://www.w3.org/TR/shacl-af/#rules">SHACL Advanced Features §8</a> describes rules; the source method’s adoption of those capabilities does not demonstrate that current OPDA candidates execute them.</p>
+  </section>
+
+  <section aria-labelledby="delivery">
+    <h2 id="delivery">A delivery projection must disclose what it preserves</h2>
+    <p>A form, JSON document, API response or explanatory page can present the reviewed agreement for a particular task. Check which identifiers, distinctions, mapping qualifications and provenance survive the projection. A compact field called “property” may be useful only if its contract says whether it identifies a building, dwelling or another resource.</p>
+    <p>The failure case is a convenient JSON projection that flattens report version 2 and the inspection into one “latest inspection” object. Consumers can no longer tell a corrected report from a new event. Repair the projection or document its limitations; do not rewrite the ontology’s meaning to fit the screen.</p>
+    <p>Continue with <a href="/semantic-modelling/method/evidence-and-time">evidence and time</a> and the <a href="/semantic-modelling/method/languages-and-profiles">language profiles</a>.</p>
+  </section>
+
+  <section aria-labelledby="source-contract">
+    <h2 id="source-contract">Source contract</h2>
+    <p>Required method: source-method ODR-0014 R1–R6 as amended 28 and 30 August 2026; ODR-0030 Core Principle and permitted/excluded tables; ODR-0036 Normative Rules, including its later cross-context equivalence correction. ODR-0071g supplies the validation concern. None of these source-method identifiers refers to a same-numbered OPDA ODR.</p>
+    <p>Reviewed revision <code>67174057e6384b79d0b28b7736fe70a66e112895</code>, 5 September 2026. See <a href="/semantic-modelling/method/standards-and-decisions">standards and decisions</a>. These are required method distinctions with fictional examples, not evidence that a current runtime or candidate already implements them.</p>
+  </section>
+</ModellingLayout>
