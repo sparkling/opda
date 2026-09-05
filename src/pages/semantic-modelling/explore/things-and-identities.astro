@@ -1,0 +1,55 @@
+---
+import ModellingLayout from '@/layouts/ModellingLayout.astro';
+---
+
+<ModellingLayout title="Things and identities: which property do you mean?" description="An address can connect several records without making them records of the same thing. A useful model helps people recognise those differences before information is combined." chapter="Explore the distinctions" claim="guide">
+  <section aria-labelledby="one-address">
+    <h2 id="one-address">One address. More than one thing.</h2>
+    <p>Imagine a report arriving with the subject “14 Orchard Road”. It sounds precise. But our fictional Harbour Court building contains Flat 1 and Flat 2. Does the report concern the whole building, one dwelling, or an entry in another record? The address helps us find the situation; it does not answer the question.</p>
+    <p>Linked data gives us a way to identify these things separately and explain their relationships. We can say that the building contains the dwellings, that a report describes an inspection and that the inspection concerned a particular subject. We do not have to press all those meanings into one field called “property”.</p>
+  </section>
+
+  <figure class="modelling-figure" data-modelling-figure="identity-map">
+    <dl>
+      <dt>The building</dt><dd>Harbour Court, containing two dwellings in this fictional case.</dd>
+      <dt>The dwellings</dt><dd>Flat 1 and Flat 2: two possible inspection subjects, not interchangeable labels.</dd>
+      <dt>The address</dt><dd>14 Orchard Road: useful descriptive information, not proof that all associated resources are identical.</dd>
+      <dt>The title record</dt><dd>A separately identified record, connected to the property situation but not equated with the building.</dd>
+    </dl>
+    <figcaption>All examples are fictional teaching commitments. This is not an approved property-identity model or a legal description of a real title.</figcaption>
+  </figure>
+
+  <section aria-labelledby="same">
+    <h2 id="same">“Connected” is not “the same”</h2>
+    <p>Suppose the title record and the building description contain exactly the same address. Combining their information may be useful. Declaring them to be the same thing would be a mistake: a record and the physical building have different identities. The right connection preserves the distinction rather than deleting it.</p>
+    <p>This is why matching words and identifiers are evidence to examine, not automatic permission to merge. Ask what each identifier identifies. A building identifier, dwelling identifier and report reference may all be useful, but each serves a different question.</p>
+    <details>
+      <summary>What would the technical mistake look like?</summary>
+      <p>We explicitly refuse <code>owl:sameAs</code> between the example building and title record. That predicate expresses identity, not “related to”, “mentions the same address” or “probably a useful match”. The <a href="/semantic-modelling/method/classes-and-relationships">classes and relationships chapter</a> explains the formal distinction.</p>
+    </details>
+  </section>
+
+  <section aria-labelledby="change">
+    <h2 id="change">Ask what changes—and what stays the same</h2>
+    <p>The Harbour Court inspection happens on 12 August 2026. Report version 1 appears on 14 August. A correction produces report version 2 on 20 August. There is a new report version, not automatically a new inspection. A “latest date” field that hides this distinction can give a convincing but wrong answer.</p>
+    <p>Other changes are harder. If Flat 1 is subdivided into two dwellings, does the original dwelling continue? We deliberately leave that question open here. Practitioners must agree the rule for recognising the dwelling through that change; a fresh label or a “converted” status does not settle it.</p>
+    <p>The important habit is to name the hard case. Guarino and Welty’s <a href="https://www.loa.istc.cnr.it/old/Papers/CACM2002.pdf"><cite>Evaluating Ontological Decisions with OntoClean</cite>, 2002, pp. 62–63</a> explains why identity criteria help expose apparently natural but mistaken classifications. Our property cases are illustrations of that questioning discipline, not examples authored by them.</p>
+  </section>
+
+  <section aria-labelledby="roles">
+    <h2 id="roles">A changing role need not create a different person</h2>
+    <p>The person selling Flat 1 may also be buying elsewhere. “Seller” and “buyer” tell us about their participation in particular transactions; they do not identify two different people. The transaction context matters, especially when a date, authority or piece of evidence belongs to only one participation.</p>
+    <p>A person’s role, a transaction’s state and a dwelling’s identity are different questions. You do not need formal ontology terminology to challenge a model that confuses them. Ask: “Would this still be the same person or thing if that fact changed?” Then give an example that makes the distinction matter.</p>
+  </section>
+
+  <section aria-labelledby="next">
+    <h2 id="next">Use the distinction in a review</h2>
+    <p>When reading a definition, try three questions: what exactly does this identify; what related thing must not be confused with it; and which change would challenge its identity? A precise counterexample can be more useful than a long list of additional fields.</p>
+    <p>Continue to <a href="/semantic-modelling/explore/names-and-choices">names and choices</a>. For the technical method, read <a href="/semantic-modelling/method/roles-and-phases">roles and phases</a> and <a href="/semantic-modelling/method/evidence-and-time">evidence and time</a>.</p>
+  </section>
+
+  <section aria-labelledby="source-contract">
+    <h2 id="source-contract">What this explanation rests on</h2>
+    <p>Source-method ODR-0071a, ODR-0025/0026 and ODR-0098 inform the identity and relationship discipline; ODR-0071j distinguishes temporal state and recording. Reviewed revision: <code>67174057e6384b79d0b28b7736fe70a66e112895</code>, 5 September 2026. The <a href="/semantic-modelling/method/standards-and-decisions">source and adoption register</a> separates method authority from OPDA candidate evidence. Harbour Court is an illustration, not a conformance claim.</p>
+  </section>
+</ModellingLayout>

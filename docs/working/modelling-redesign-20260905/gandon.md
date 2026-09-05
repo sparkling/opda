@@ -75,3 +75,9 @@ Baker inspected mapping-records and context-map-records and reported no blocker.
 Guarino inspected the technical identity and role/phase pages and reported no new blocking formal error. He requested a correction from “does not require” upper-ontology inheritance to the actual ODR-0118 R1 prohibition within selected scope. The wording was corrected. He supplied the author-hosted OntoClean primary source; this worker opened and verified it and added a precise pp. 61–62 citation beside the rigidity discussion: https://www.loa.istc.cnr.it/old/Papers/CACM2002.pdf.
 
 These are bounded source-content reviews, not browser/rendering validation or approval of the integrated site.
+
+## Explore follow-up slice
+
+On the queen's explicit ownership extension, added three shorter conceptual guides: explore/things-and-identities, explore/names-and-choices and explore/contexts-and-connections. Each keeps the fictional Harbour Court boundary, links the technical chapters for the complete contract and uses the shared layout with semantic figure hooks. The guides explain a refused identity assertion and unresolved subdivision, label/concept/resource separation, closed choices versus open populations, SKOS exact-match chain consequences, context ownership versus organisational topology and strategic agreement versus term correspondence.
+
+All eleven owned Astro pages passed parser and syntax-transform checks with zero diagnostics, and remain below 500 lines each. The three new Explore source files total 2,370 whitespace-delimited words including markup, metadata and receipts. No tests, full build, browser, publication or push was run. Root remains integration owner for shared layout, figure enhancement, navigation and route handling.
