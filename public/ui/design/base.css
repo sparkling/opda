@@ -91,12 +91,13 @@ a:visited { text-decoration-color: currentColor; }
 .app-header {
   --header-content-left-rail: 0px;
   --header-content-right-rail: 0px;
-  --identity-heading-size: 24px;
-  --identity-opda-scale: 1;
+  --identity-heading-size: 27px;
+  --identity-opda-scale: 0.9;
   --identity-space-before: 0px;
   --identity-line-gap: 0px;
   --identity-space-after: 0px;
   --identity-space-after-origin: var(--space-3);
+  --header-utilities-position-y: 8px;
   position: sticky;
   top: 0;
   z-index: 50;
