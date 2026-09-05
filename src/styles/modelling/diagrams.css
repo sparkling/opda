@@ -16,7 +16,7 @@
   width: 100%;
   max-inline-size: 60rem;
   height: auto;
-  margin-inline: auto;
+  margin-inline: 0 auto;
   isolation: isolate;
 }
 [data-theme='dark'] .modelling-visual {

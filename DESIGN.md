@@ -203,7 +203,7 @@ the optical space. Nested content flows expose the shared `.document-flow` role;
 spacing never depends on a route or on the link text.
 Authored reading content uses Atkinson Hyperlegible Next at 18px; generated references retain their existing typography. The authored “From a useful
 question to a reviewable candidate” chapter is the single reading-measure exception:
-direct text blocks stop at 1200px and align left. Modelling SVG figures use their centred 960px design measure; their definition keys, explanations and captions align to that same measure instead of stretching across the article.
+direct text blocks stop at 1200px and align left. Modelling SVG figures use their left-aligned 960px design measure; their definition keys, explanations and captions align to that same measure instead of stretching across the article.
 Components may own internal layout spacing, but must not create separation from
 an unknown next sibling. Authored ADR/ODR sections share the editorial heading rhythm;
 their technical quotations and code keep their existing treatment.

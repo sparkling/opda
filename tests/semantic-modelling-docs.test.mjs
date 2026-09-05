@@ -93,8 +93,8 @@ test('one registry supplies 24 canonical pages across four task-based journeys',
   const learning = read('src/styles/modelling/learning.css');
   assert.match(modellingEditorial, /grid-template-columns:\s*repeat\(auto-fit,\s*minmax\(min\(18rem, 100%\), 1fr\)\);/u);
   assert.doesNotMatch(modellingEditorial, /modelling-pathways__alternatives/u);
-  assert.match(diagrams, /\.modelling-visual\s*\{[^}]*max-inline-size:\s*60rem;[^}]*margin-inline:\s*auto;/su);
-  assert.match(learning, /\.modelling-figure:has\(> \.modelling-visual\) > :is\(dl, figcaption\)\s*\{[^}]*width:\s*min\(100%, 60rem\);[^}]*margin-inline:\s*auto;/su);
+  assert.match(diagrams, /\.modelling-visual\s*\{[^}]*max-inline-size:\s*60rem;[^}]*margin-inline:\s*0 auto;/su);
+  assert.match(learning, /\.modelling-figure:has\(> \.modelling-visual\) > :is\(dl, figcaption\)\s*\{[^}]*width:\s*min\(100%, 60rem\);[^}]*margin-inline:\s*0 auto;/su);
   assert.match(learning, /details:not\(\.modelling-detail\)\s*\{[^}]*border:\s*0;[^}]*background:\s*transparent;[^}]*padding:\s*0;/su);
   const methodLanding = textOf('method');
   assert.doesNotMatch(methodLanding, /ChapterEnd|hideFooter/u);
