@@ -1,6 +1,7 @@
 ---
 status: accepted
 date: 2026-06-01
+updated: 2026-09-05
 kind: architecture
 tags: [classification, inheritance, roles, skos, facets, ufo, doctrine]
 scope: []
@@ -10,6 +11,10 @@ implements: [ODR-0003]
 ---
 
 # Classification, Roles, Inheritance, and SKOS — opda Modelling Doctrine
+
+> **Scope amendment — 2026-09-05.** The accepted status and original body remain historical evidence of the schema-derived model's classification and evidence changes. The SPDTF method follows the selected source ODRs under [ADR-0063's 2026-09-05 amendment](../../adr/ADR-0063-domain-led-bounded-context-working-groups.md); the [modelling decision basis](/semantic-modelling/decision-basis) identifies their scope. In particular, this record's R5 “multi-domain reads as union” convention is superseded for the SPDTF method and must not be presented as standard RDFS semantics.
+>
+> Source ODR-0014 retired that convention on 2026-08-28. RDFS domain/range statements retain their standard entailment meaning; repeated values are conjunctive, whether or not a runtime materialises the consequences. Under its 2026-08-30 amendment, each governed property's subject and value applicability must each use exactly one mechanism family: a universally true single RDFS commitment, Schema.org inclusion hints, or an explicit governed waiver. SHACL supplies the relevant validation constraints. This notice preserves the historical rationale without claiming that existing emitted data or validators have been migrated.
 
 ## Context and Problem Statement
 
@@ -86,4 +91,3 @@ Council session-036 concluded `opda:DocumentEvidence`/`ElectronicRecordEvidence`
 - `VouchEvidence`'s attestation, being an Agent-founded **Relator** (`+R∧+I∧+D`), is modelled as a Relator/role-borne structure, not a subclass of Evidence.
 
 session-036's *value-keyed enforcement* finding and the ODR-0011 §8a cascade stand and are reinforced; only its keep-the-`…Evidence`-subclasses disposition is reversed.
-

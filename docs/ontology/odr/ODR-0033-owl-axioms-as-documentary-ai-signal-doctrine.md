@@ -1,6 +1,7 @@
 ---
 status: proposed
 date: 2026-06-17
+updated: 2026-09-05
 kind: architecture
 tags: [entailment, owl, rdfs, shacl, documentation-axioms, domain-range, ai-signal, doctrine]
 scope: []
@@ -11,6 +12,10 @@ implements: []
 ---
 
 # OWL/RDFS axioms as documentary AI-signal — the consolidated doctrine
+
+> **Scope amendment — 2026-09-05.** This record remains **proposed** and preserves the earlier schema-derived implementation's rationale and evidence. Its “documentary any-of” interpretation does not govern the SPDTF method. The selected source ODRs apply under [ADR-0063's 2026-09-05 amendment](../../adr/ADR-0063-domain-led-bounded-context-working-groups.md); see the [modelling decision basis](/semantic-modelling/decision-basis) for the normative selection and implementation boundary.
+>
+> Source ODR-0014's 2026-08-28 correction supersedes the claim that disabling domain/range inference permits repeated RDFS values to mean disjunction. A runtime may decline materialisation; it cannot change published RDFS/OWL semantics. Source ODR-0014's 2026-08-30 amendment, read with source ODR-0030/0036, requires complete, exclusive applicability documentation per property side: one universally true RDFS domain/range, Schema.org inclusion hints, or a governed waiver. SHACL expresses closed-world validation; none of these mechanisms substitutes for another. The historical body below is retained without certifying migration of its emitted triples, inference rules or validators.
 
 ## Context and Problem Statement
 

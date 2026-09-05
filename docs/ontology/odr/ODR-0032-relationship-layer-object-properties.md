@@ -1,6 +1,7 @@
 ---
 status: proposed
 date: 2026-06-17
+updated: 2026-09-05
 kind: pattern
 tags: [agents, relationships, object-properties, relator, completeness]
 scope:
@@ -15,6 +16,10 @@ council: session-047
 ---
 
 # Relationship layer — reify inter-entity associations as OWL object properties
+
+> **Scope amendment — 2026-09-05.** This record remains **proposed**; its original findings, rules and implementation references are retained as historical evidence for the schema-derived relationship layer. They are not a blanket adoption of that layer into SPDTF. The selected modelling ODRs govern the SPDTF method under [ADR-0063's 2026-09-05 amendment](../../adr/ADR-0063-domain-led-bounded-context-working-groups.md) and the [modelling decision basis](/semantic-modelling/decision-basis).
+>
+> The repeated-`rdfs:domain` “any-of” convention in R1 and the session-050 amendments below is superseded for that method. Source ODR-0014 retired it on 2026-08-28: repeated RDFS domain/range values mean conjunction, and omitting an inference rule does not redefine the statements. Its 2026-08-30 amendment requires each property's subject and value applicability to use exactly one documented mechanism family per side: a safe single RDFS commitment, Schema.org inclusion hints for alternatives, or a governed waiver. SHACL remains the validation layer. This scope correction does not assert that the historical generator, graph or checks already implement the revised profile.
 
 ## Context and Problem Statement
 
