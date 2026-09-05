@@ -1,0 +1,174 @@
+---
+import Layout from '@/layouts/Layout.astro';
+---
+
+<Layout title="Practical modelling patterns" description="Reusable patterns for property identities, participation, qualified relationships, part-whole structures, time, measurements, claims and evidence.">
+  <h1>Practical modelling patterns</h1>
+  <p class="lead">
+    Good patterns make the same important distinctions consistently. They help us
+    model a property, a valuation or a claim without copying a form's layout into
+    the ontology or inventing a new mechanism for every working group.
+  </p>
+
+  <h2 id="purpose">Choose a pattern by the question it must answer</h2>
+  <p>
+    Begin with an example and a useful question: who supplied this value, which
+    property does it describe, when was it valid, and what supports it? The answer
+    determines the information the model must preserve. A pattern earns its place
+    by preserving that meaning, not by making a diagram look more sophisticated.
+  </p>
+  <p>
+    The examples below are illustrative design exercises. They are not declarations
+    that every named construct exists in the current Property Pack candidate, or
+    permission to expand its agreed business scope. The
+    <a href="/semantic-modelling/decision-basis">decision basis</a> identifies the
+    selected ODRs that govern our method and the SPDTF scope decisions. The
+    <a href="/semantic-modelling/modelling-rules">modelling rules</a> explain the
+    standards and profile boundaries that govern an actual encoding.
+  </p>
+
+  <h2 id="thing-description">Separate a thing from descriptions of it</h2>
+  <p>
+    A building is not its listing, survey report or registry record. Those resources
+    describe it for different purposes and may have different authors, dates and
+    identifiers. Keeping them distinct lets a model retain conflicting descriptions
+    without creating several buildings or treating every description as true.
+  </p>
+  <p>
+    Establish the identity of each thing, then connect descriptions to their subject.
+    Ask whether correcting the report creates a new building; whether withdrawing
+    the listing removes the property; and whether two records can disagree about
+    one subject. Stable identifiers and explicit relationships make these questions
+    answerable. Shared text or a coincident address is insufficient identity evidence.
+  </p>
+
+  <h2 id="participation">Represent participation in its context</h2>
+  <p>
+    “Alex is the buyer” is incomplete without the transaction. A participation
+    pattern identifies the person or organisation, the activity or relationship,
+    and the role played. It can also record a period of participation or the basis
+    on which an agent acts for somebody else.
+  </p>
+  <p>
+    That makes simultaneous roles intelligible: the same organisation may provide
+    data for one exchange and consume data in another. It also distinguishes
+    permission to play a role from actually playing it. A registration or capability
+    is not evidence that a particular transaction took place. See
+    <a href="/semantic-modelling/identity-roles-and-phases#roles">identity and roles</a>
+    for the analysis behind this pattern.
+  </p>
+
+  <h2 id="qualified">Qualify a relationship when the relationship carries information</h2>
+  <p>
+    A direct named connection is often sufficient: a report describes a building.
+    Introduce a resource for the association when the association itself needs
+    dates, a source, a quantity, a status or evidence. “This party represented this
+    client for this matter during this period” is more than a bare connection
+    between two parties.
+  </p>
+  <p>
+    Choose the meaning of that resource explicitly: appointment, ownership interest,
+    assessment, assertion or participation. A business relationship with its own
+    identity may be analysed as a relator; merely adding metadata to a link does
+    not make every link one. Conversely, do not scatter relationship-specific facts
+    across the participants and lose which association those facts belong to.
+  </p>
+  <p>
+    Qualification is proportionate. A join table in a source database does not by
+    itself justify a new ontology class. If the business has nothing to say about
+    the association beyond its endpoints, a direct object property may preserve
+    the complete meaning.
+  </p>
+
+  <h2 id="part-whole">Distinguish parts, members and specialisations</h2>
+  <p>
+    A roof can be part of a building. A building can belong to a portfolio. A class
+    of buildings can specialise another class. These are different relationships:
+    physical composition, collection membership and type specialisation. None
+    should be inferred from indentation in a document or containment in JSON.
+  </p>
+  <p>
+    Define which parts are meant and whether the whole depends on them. A parcel,
+    building and registered title need explicit domain analysis; they are not
+    automatically a physical containment tree. State whether a particular
+    part-whole relationship is transitive. Transitivity is a property of a defined
+    relationship, not a universal consequence of the English words “part of”.
+  </p>
+
+  <h2 id="values">Distinguish values, measurements and governed choices</h2>
+  <p>
+    Use a typed literal for a simple value when its interpretation is unambiguous.
+    A measurement may need a unit, measurement method, subject, date and responsible
+    assessor. “Area: 85” leaves important questions unanswered: what area, measured
+    how, and in which unit? Qualify the value when those distinctions matter to use.
+  </p>
+  <p>
+    Use a governed vocabulary for a named choice whose definition must be shared.
+    SKOS supports concepts, labels, alternative labels, definitions and scheme
+    membership. The code is not the displayed label. A changed label need not mean
+    a changed concept; a changed meaning may need a reviewed version or replacement.
+  </p>
+  <p>
+    Keep closed value lists distinct from open reference populations. A delivery
+    profile may require one of a finite set of codes, while a reference to an
+    organisation may allow any appropriately identified organisation. SHACL can
+    express the selected requirement, but the working group must first determine
+    which kind of choice the business needs.
+  </p>
+
+  <h2 id="time">Keep event time, validity and recording time separate</h2>
+  <p>
+    An inspection can occur on Monday, be recorded on Tuesday and support a report
+    issued on Friday. A fact can concern a period rather than an instant. Those
+    dates answer different questions; a single generic “date” cannot preserve them.
+    Name the event or interval and record what each timestamp means. Reuse OWL-Time
+    for temporal concepts; distinguish the time a state holds from the provenance
+    of when its record was created. A state's allowed successor is a transition
+    relationship, not a SKOS broader/narrower relationship.
+  </p>
+  <p>
+    Distinguish a later correction from a real-world change. Correcting a misspelt
+    name does not necessarily describe a new owner. A new assessment may supersede
+    a prior conclusion without making the earlier report disappear. A temporal
+    pattern should support the question the consumer needs, including time zone,
+    precision and unknown-date handling where relevant.
+  </p>
+
+  <h2 id="claims">Keep claims, evidence and provenance connected</h2>
+  <p>
+    A claim says something about a subject. Evidence is offered in support of that
+    claim. Provenance records its source and production history. A report existing
+    in a graph does not prove its claims, and a technically valid claim is not
+    automatically accurate, current or authoritative for every purpose.
+  </p>
+  <p>
+    Record who asserted the information, the subject, the relevant time and the
+    supporting material where required. Preserve disagreement explicitly: two
+    valuations may use different dates, assumptions or purposes. Do not silently
+    choose one value merely because its source was loaded last.
+  </p>
+  <p>
+    We reuse PROV-O for origins, attribution and activities. Resource-level
+    provenance is sufficient when the resource is an immutable unit with consistent
+    provenance. Where statements have different origins or confidence, the selected
+    method uses RDF 1.2 statement reification selectively. Keep the annotation
+    attached to the exact statement it qualifies rather than maintaining a second
+    independent copy. Provenance records evidence about a claim; it does not certify it.
+  </p>
+
+  <h2 id="review">Turn a pattern into a reviewable candidate</h2>
+  <ol>
+    <li>Write the business question and two or three concrete examples.</li>
+    <li>Identify the things, choices, relationships and time distinctions involved.</li>
+    <li>Assign ownership and identify any meaning that crosses a context boundary.</li>
+    <li>Select established vocabulary only where its semantics fit the intended use.</li>
+    <li>Define the data constraints and the expected answers to useful queries.</li>
+    <li>Review counterexamples with practitioners and record the resulting decision.</li>
+  </ol>
+  <p>
+    Technical checks can expose missing fields, inconsistent representations and
+    broken query expectations. Practitioners decide whether the pattern expresses
+    the real situation. That division lets contributors participate through
+    ordinary examples while giving implementers a precise, reusable model to build.
+  </p>
+</Layout>

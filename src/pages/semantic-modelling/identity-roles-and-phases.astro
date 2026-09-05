@@ -1,0 +1,157 @@
+---
+import Layout from '@/layouts/Layout.astro';
+---
+
+<Layout title="Identity, roles and phases" description="How we distinguish what a thing is from its classifications, the roles it plays and the phases it passes through, using practical property examples.">
+  <h1>Identity, roles and phases</h1>
+  <p class="lead">
+    A person can sell one home while buying another. A document can support several
+    claims. A building can change without becoming a different building. A useful
+    property model preserves these distinctions instead of turning every description
+    into a different kind of thing.
+  </p>
+
+  <h2 id="identity">Start with what stays the same</h2>
+  <p>
+    Identity asks when two descriptions concern the same thing, and what changes that
+    thing can undergo while remaining itself. It is a business question before it is
+    an identifier design. An address can change; several properties can share an
+    address; a building, land parcel and legal title can be associated without being
+    interchangeable. Matching the address strings does not settle their identity.
+  </p>
+  <p>
+    For each candidate concept, ask what counts as one instance, how it begins and
+    ends, and which changes preserve it. A property's sale does not necessarily create
+    a new physical property. Splitting a parcel may create new parcel identities.
+    The model must state the distinction and the context in which it applies, with
+    examples and counterexamples that practitioners can challenge.
+  </p>
+  <p>
+    An identifier supports that agreement; it cannot replace it. A database key may
+    distinguish records without identifying the business thing across organisations.
+    Conversely, one thing may have several identifiers issued under different schemes.
+    Cross-context correspondence therefore needs an explicit identity argument rather
+    than a shared label, a matching column or an AI similarity score.
+  </p>
+
+  <h2 id="distinctions">Four questions that prevent a confused hierarchy</h2>
+  <table>
+    <caption>Identity distinctions in our modelling method</caption>
+    <thead><tr><th scope="col">Distinction</th><th scope="col">Question</th><th scope="col">Modelling consequence</th></tr></thead>
+    <tbody>
+      <tr><th scope="row">Kind</th><td>What supplies the identity of these things?</td><td>Define the enduring thing and its identity criteria.</td></tr>
+      <tr><th scope="row">Subkind</th><td>Is this a permanent specialisation of that kind?</td><td>Consider genuine subclassing, with the inherited identity made clear.</td></tr>
+      <tr><th scope="row">Role</th><td>What is this thing participating as, in which relationship?</td><td>Model the bearer, participation and relevant context.</td></tr>
+      <tr><th scope="row">Phase</th><td>What temporary stage is the same thing passing through?</td><td>Model its stage conditions and the continuity of identity.</td></tr>
+    </tbody>
+  </table>
+  <p>
+    These distinctions, drawn from the selected modelling ODRs, govern how we model.
+    Foundational modelling and OntoClean supply the analytical discipline; participants
+    contribute the examples and domain judgments. Using that discipline does not mean
+    importing an upper ontology. The <a href="/semantic-modelling/decision-basis">decision basis</a>
+    identifies the normative records and distinguishes the required model from its
+    current implementation.
+  </p>
+
+  <h2 id="isa">Use “is a” for an actual specialisation</h2>
+  <p>
+    In RDF Schema, <code>rdfs:subClassOf</code> states that every instance of the
+    subclass is an instance of the superclass. It is a semantic commitment, not an
+    instruction to indent something in a menu. “Appears under this heading”, “shares
+    several fields” and “is stored in a related table” do not establish that commitment.
+  </p>
+  <p>
+    Our method applies a further discipline: distinguish a permanent
+    specialisation from a contingent role or phase before admitting inheritance.
+    A subkind inherits identity from its kind; it need not invent another way of
+    identifying its instances. The useful test is whether the proposed distinction
+    is inherent, and whether the asserted superclass statement remains true.
+    We do not use subclassing as a substitute for the selected method's
+    <code>roleOf</code> and <code>phaseOf</code> distinctions.
+  </p>
+  <p>
+    A governed classification may be enough. Tenure labels, condition ratings and
+    document categories require reviewed definitions, but they do not automatically
+    require one OWL subclass per value. A SKOS concept scheme can provide stable
+    codes, labels and explanations while the classified thing retains its identity.
+    Classification and inheritance have different jobs.
+  </p>
+
+  <h2 id="roles">“Role of” keeps participation visible</h2>
+  <p>
+    Buyer and seller describe participation in a transaction. The same person can
+    play both roles at once in different transactions, and can cease to play either
+    while remaining the same person. A useful model records who plays the role,
+    which transaction gives it meaning, and any relevant dates or responsibilities.
+  </p>
+  <p>
+    The method names the analytical connection <code>roleOf</code>. This is
+    project vocabulary, not a built-in RDF, OWL or SKOS relationship. Its use does not
+    automatically propagate types or properties. A published profile must define
+    its direction, permitted subjects and values, relationship to instance-level
+    participation, and validation. A diagram label alone does none of that work.
+  </p>
+  <p>
+    Role-specific information belongs with the role or participation that introduces
+    it. A person's conveyancer for one purchase is not a timeless attribute of that
+    person. Likewise, a document's evidential use depends on the claim it supports;
+    the document does not become a different intrinsic kind whenever its use changes.
+  </p>
+
+  <h2 id="phases">“Phase of” describes change without losing identity</h2>
+  <p>
+    A phase describes a temporary stage of a continuing thing. The method
+    calls the connection <code>phaseOf</code>; its encoding must preserve that meaning.
+    The analysis asks what changes internally, what establishes the stage and how
+    the same thing continues through the transition.
+  </p>
+  <p>
+    A building's construction stages can be explored this way, provided the group
+    agrees when the building begins to exist and what continuity means. But a label
+    such as “approved” may instead record somebody's decision. Not every workflow
+    status is an ontological phase. Keep an approval event, a status classification
+    and an intrinsic lifecycle distinction separate when they answer different questions.
+  </p>
+
+  <h2 id="discipline">Rigidity, dependence and unity in ordinary language</h2>
+  <p>
+    <strong>Rigidity</strong> asks whether membership is essential to the thing.
+    A role is <em>anti-rigid</em>: something can stop playing it without ceasing
+    to exist. A temporary category should therefore not be mistaken for an enduring
+    identity merely because its label looks like a noun.
+  </p>
+  <p>
+    <strong>Dependence</strong> asks what else must exist for the concept to make
+    sense. Ownership involves an owner, something owned and an applicable legal
+    relationship. A valuation depends on a subject and an assessment context.
+    <strong>Unity</strong> asks what makes several parts one whole: a building,
+    its component parts and a collection of buildings are not the same organisation
+    of things. These questions improve definitions before any formal checking begins.
+  </p>
+  <p>
+    A <strong>relator</strong> is the method's term for a relationship
+    with its own dependent business identity, such as a particular agreement linking
+    parties. It is not a synonym for every RDF edge or every linking record. Dates
+    or evidence can justify qualifying an association without proving that the
+    association is a foundational relator.
+  </p>
+
+  <h2 id="review">Practitioners supply the decisive counterexamples</h2>
+  <p>
+    You can review this modelling without writing triples. Explain when the same
+    person has different roles, when a title and a building cease to correspond,
+    or when a status changes while the underlying thing does not. Ask whether a
+    definition still works after a sale, subdivision, correction or change of use.
+    These examples expose mistakes that a technically valid file can conceal.
+  </p>
+  <p>
+    The examples here illustrate modelling questions, not approved SPDTF class
+    definitions or new requirements for Property Pack data. The selected ODRs govern
+    the method; domain review establishes the individual definitions and examples;
+    implementation must then encode that agreement. Consult the
+    <a href="/semantic-modelling/modelling-rules">modelling rules</a> for the governing
+    distinctions and the limits of each technical construct.
+  </p>
+  <p><a href="/semantic-modelling/modelling-patterns">Next: apply these distinctions with practical modelling patterns →</a></p>
+</Layout>
