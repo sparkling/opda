@@ -10,6 +10,10 @@ import {
   getPdtfSchemaInputReplacementRoute,
 } from './pdtf1-routes.mjs';
 import { getPdtfResourceReplacementRoute } from './pdtf-resource-routes.mjs';
+import {
+  getModellingCommentKey,
+  getModellingRedesignReplacementRoute,
+} from './modelling-route-migrations.mjs';
 
 function normalizePath(value) {
   const pathname = String(value || '/').split(/[?#]/u, 1)[0] || '/';
@@ -51,16 +55,14 @@ export function getSemanticModellingReplacementRoute(value) {
 
 /** Resolve every explicitly authorised site-route move through one registry. */
 export function getAcceptedRoute(route) {
-  const pdtfResource = getPdtfResourceReplacementRoute(route);
-  if (pdtfResource) return pdtfResource;
-  const propertyPack = getPropertyPackReplacementRoute(route);
-  if (propertyPack) return propertyPack;
-  const spdtf = getSpdtfReplacementRoute(route);
-  if (spdtf) return spdtf;
-  const semanticModelling = getSemanticModellingReplacementRoute(route);
-  if (semanticModelling) return semanticModelling;
   const pdtfIntermediate = getPdtf1IntermediateReplacementRoute(route);
-  return pdtfIntermediate ? getPdtfSchemaInputReplacementRoute(pdtfIntermediate) ?? pdtfIntermediate : route;
+  const historical = getPdtfResourceReplacementRoute(route)
+    ?? getPropertyPackReplacementRoute(route)
+    ?? getSpdtfReplacementRoute(route)
+    ?? getSemanticModellingReplacementRoute(route)
+    ?? (pdtfIntermediate ? getPdtfSchemaInputReplacementRoute(pdtfIntermediate) ?? pdtfIntermediate : route);
+  // Historical helpers and their receipt projections remain unchanged above.
+  return getModellingRedesignReplacementRoute(historical) ?? historical;
 }
 
 /** Return null for retained routes so undeclared moves remain fail-closed. */
@@ -93,10 +95,7 @@ export function getLegacyCommentKey(route) {
   if (pdtfInputKey !== path) return pdtfInputKey;
   const pdtfKey = getPdtf1LegacyCommentKey(path);
   if (pdtfKey !== path) return pdtfKey;
-  if (path === '/semantic-modelling') return '/spdtf-2/ontologies';
-  if (path.startsWith('/semantic-modelling/')) {
-    return `/spdtf-2/ontologies${path.slice('/semantic-modelling'.length)}`;
-  }
+  if (path === '/semantic-modelling' || path.startsWith('/semantic-modelling/')) return getModellingCommentKey(path);
   if (path === '/development') return '/spdtf-2';
   if (path.startsWith('/development/')) return `/spdtf-2${path.slice('/development'.length)}`;
   return path;

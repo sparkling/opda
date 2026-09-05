@@ -1,7 +1,7 @@
 /**
  * Generates the search corpus from rendered pages, rather than maintaining a
  * second catalogue beside the route generators. Every emitted HTML document
- * with a title becomes a search record.
+ * with a title becomes a search record unless it redirects or opts out of indexing.
  *
  * Production reads the finished static site after `astro build`. Development
  * enumerates the same routes (each page's own `getStaticPaths`), renders them
@@ -15,6 +15,7 @@
 import { closeSync, existsSync, fstatSync, mkdirSync, openSync, readFileSync, readSync, readdirSync, statSync, writeFileSync } from 'node:fs';
 import { dirname, join, relative } from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { parse } from 'parse5';
 import { GLOBAL_DESTINATIONS, getActiveDestination } from '../lib/site-ia.mjs';
 import {
   COLLECTIONS, DOMAINS, KINDS, PAGE_TYPES, RESULT_TYPES, STATUSES,
@@ -111,9 +112,26 @@ function warnUnknown(route, declared) {
   }
 }
 
+/** Parse real head metadata, not examples inside comments, scripts or templates. */
+function excludesIndexing(html) {
+  const document = parse(html);
+  const root = document.childNodes.find((node) => node.tagName === 'html');
+  const head = root?.childNodes.find((node) => node.tagName === 'head');
+  return (head?.childNodes ?? []).some((node) => {
+    if (node.tagName !== 'meta') return false;
+    const attributes = new Map(node.attrs.map(({ name, value }) => [name, value]));
+    const name = (attributes.get('name') ?? '').trim().toLowerCase();
+    const content = (attributes.get('content') ?? '').trim().toLowerCase();
+    const httpEquiv = (attributes.get('http-equiv') ?? '').trim().toLowerCase();
+    if (httpEquiv === 'refresh' && /\burl\s*=/u.test(content)) return true;
+    return name === 'robots' && content.split(/[\s,]+/u).some((token) => token === 'noindex' || token === 'none');
+  });
+}
+
 /** One extractor for both environments: a route plus its rendered HTML. */
-function recordFromHtml(route, html) {
+export function recordFromHtml(route, html) {
   if (EXCLUDED_ROUTES.has(route) || route.startsWith('/api/')) return null;
+  if (excludesIndexing(html)) return null;
   const documentTitle = decodeHtml(firstTag(html, /<title[^>]*>([\s\S]*?)<\/title>/iu))
     .replace(/\s+·\s+(?:OPDA Knowledge Base|Open Property Data Association)$/u, '');
   const declared = declaredMeta(html);
@@ -223,7 +241,8 @@ async function crawlDevIndex(server, routes, root, origin) {
     while (cursor < paths.length) {
       const path = paths[cursor++];
       try {
-        const response = await fetch(new URL(path, origin), { headers: { Accept: 'text/html' } });
+        const response = await fetch(new URL(path, origin), { headers: { Accept: 'text/html' }, redirect: 'manual' });
+        if (response.status >= 300 && response.status < 400) continue;
         if (!response.ok) throw new Error(`HTTP ${response.status}`);
         records.push(recordFromHtml(path, await response.text()));
       } catch (error) {
