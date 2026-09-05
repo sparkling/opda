@@ -75,7 +75,7 @@
   width: 3.25rem;
   height: 3.25rem;
   align-self: flex-start;
-  margin-block-start: -16px;
+  margin-block-start: -32px;
   margin-left: auto;
 }
 .wg-campaign-hero__header .theme-toggle svg {
