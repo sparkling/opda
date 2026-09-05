@@ -160,7 +160,7 @@ test('temporary selectors expose full preview cards and persist palettes and ico
   assert.match(home, /class="wg-hero-journey" id="home-domains-panel"/u);
   assert.match(join, /<CampaignHeaderControls[\s\S]*controlId="join-header-preview-selectors"[\s\S]*identityId="join-campaign-identity"[\s\S]*positionTargetId="join-influence-panel"[\s\S]*themeToggleTargetId="join-theme-toggle"/u);
   assert.match(campaignConfig, /icon: 'twin-frames'[\s\S]*palette: 'petrol'[\s\S]*scale: 26,[\s\S]*opdaScale: 106,[\s\S]*spaceAbove: 9,[\s\S]*lineGap: 0,[\s\S]*spaceBelow: 18,[\s\S]*panelPositionX: -67,[\s\S]*panelPositionY: -8,[\s\S]*themeTogglePositionY: 25,/u);
-  assert.match(campaignIdentity, /<header class="wg-campaign-hero__header">[\s\S]*class="wg-campaign-identity"[\s\S]*<BrandHeading variant="paired" \/>[\s\S]*<ThemeToggle id=\{themeToggleId\} \/>[\s\S]*<FrameworkHeading scale="display" \/>/u);
+  assert.match(campaignIdentity, /<header class="wg-campaign-hero__header">[\s\S]*class="wg-campaign-identity"[\s\S]*<BrandHeading variant="paired" \/>[\s\S]*showOpdaLink && <a class="wg-campaign-identity__opda-link" href="\/">OPDA<\/a>[\s\S]*<ThemeToggle id=\{`\$\{themeToggleId\}-button`\} \/>[\s\S]*<FrameworkHeading scale="display" \/>/u);
   assert.match(campaignControls, /<HeaderPreviewControls[\s\S]*showScaleControl[\s\S]*initialScale=\{CAMPAIGN_HEADER_DEFAULTS\.scale\}[\s\S]*initialPositionX=\{CAMPAIGN_HEADER_DEFAULTS\.panelPositionX\}[\s\S]*initialThemeTogglePosition=\{CAMPAIGN_HEADER_DEFAULTS\.themeTogglePositionY\}[\s\S]*initialPalette=\{CAMPAIGN_HEADER_DEFAULTS\.palette\}/u);
   assert.match(home, /import \{ assetVersion \} from '@\/lib\/asset-version\.mjs';[\s\S]*const clientV = assetVersion\('\/ui\/client\.js'\);[\s\S]*src=\{`\/ui\/client\.js\?v=\$\{clientV\}`\}/u);
   assert.match(join, /import \{ assetVersion \} from '@\/lib\/asset-version\.mjs';[\s\S]*const clientV = assetVersion\('\/ui\/client\.js'\);[\s\S]*src=\{`\/ui\/client\.js\?v=\$\{clientV\}`\}/u);
@@ -197,10 +197,12 @@ test('temporary selectors expose full preview cards and persist palettes and ico
   assert.match(campaign, /\.wg-campaign-side\s*\{[^}]*display:\s*grid;[^}]*gap:\s*var\(--space-3\);/su);
   assert.match(campaign, /\.wg-campaign-side > \.header-preview-controls\s*\{\s*justify-self:\s*end;\s*\}/u);
   assert.match(home, /<CampaignIdentity identityId="home-campaign-identity" themeToggleId="home-theme-toggle" \/>/u);
-  assert.match(join, /<CampaignIdentity identityId="join-campaign-identity" themeToggleId="join-theme-toggle" \/>/u);
+  assert.match(join, /<CampaignIdentity identityId="join-campaign-identity" themeToggleId="join-theme-toggle" showOpdaLink \/>/u);
   assert.match(campaign, /\.wg-campaign-identity__opda-row\s*\{[^}]*width:\s*100%;[^}]*display:\s*flex;[^}]*align-items:\s*flex-end;/su);
   assert.doesNotMatch(campaign, /\.wg-campaign-identity \.brand-heading__label\s*\{/u);
-  assert.match(campaign, /\.wg-campaign-hero__header \.theme-toggle\s*\{[^}]*width:\s*3\.25rem;[^}]*height:\s*3\.25rem;[^}]*margin-left:\s*auto;[^}]*translate:\s*0 var\(--theme-toggle-position-y, 0\);/su);
+  assert.match(campaign, /\.wg-campaign-identity__theme-controls\s*\{[^}]*margin-left:\s*auto;[^}]*translate:\s*0 var\(--theme-toggle-position-y, 0\);/su);
+  assert.match(campaign, /\.wg-campaign-identity__opda-link\s*\{[^}]*color:\s*var\(--color-header-muted\);/su);
+  assert.match(campaign, /\.wg-campaign-hero__header \.theme-toggle\s*\{[^}]*width:\s*3\.25rem;[^}]*height:\s*3\.25rem;[^}]*margin-left:\s*auto;[^}]*translate:\s*none;/su);
   assert.doesNotMatch(campaign, /\.wg-campaign-hero__header \.theme-toggle\s*\{[^}]*margin-block-start:/su);
   assert.match(campaign, /\.wg-campaign-hero__header \.theme-toggle svg\s*\{[^}]*width:\s*1\.75rem;[^}]*height:\s*1\.75rem;/su);
   assert.doesNotMatch(campaign, /\.wg-campaign-hero--panel-aligned \.wg-campaign-side\s*\{[^}]*transform:/su);

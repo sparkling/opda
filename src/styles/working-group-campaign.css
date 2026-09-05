@@ -72,7 +72,7 @@
   width: 3.25rem;
   height: 3.25rem;
   margin-left: auto;
-  translate: 0 var(--theme-toggle-position-y, 0);
+  translate: none;
 }
 .wg-campaign-hero__header .theme-toggle svg {
   width: 1.75rem;
@@ -101,9 +101,24 @@
   align-items: flex-end;
   gap: var(--space-5);
 }
-.wg-campaign-identity__theme-toggle {
+.wg-campaign-identity__theme-controls {
   display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
   margin-left: auto;
+  translate: 0 var(--theme-toggle-position-y, 0);
+}
+.wg-campaign-identity__opda-link {
+  min-height: var(--target-min);
+  display: inline-flex;
+  align-items: center;
+  padding-inline: var(--space-2);
+  color: var(--color-header-muted);
+  font-weight: 600;
+  text-decoration: none;
+}
+.wg-campaign-identity__opda-link:hover {
+  color: var(--color-header-text);
 }
 .wg-campaign-identity .brand-heading--paired {
   --brand-heading-type: 600 calc(var(--identity-heading-size) * var(--identity-opda-scale)) / 1 var(--font-sans);

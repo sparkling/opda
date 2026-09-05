@@ -10,16 +10,18 @@ import {
 interface Props {
   identityId: string;
   themeToggleId: string;
+  showOpdaLink?: boolean;
 }
 
-const { identityId, themeToggleId } = Astro.props;
+const { identityId, themeToggleId, showOpdaLink = false } = Astro.props;
 ---
 <header class="wg-campaign-hero__header">
   <div class="wg-campaign-identity" id={identityId} style={campaignIdentityStyle}>
     <div class="wg-campaign-identity__opda-row">
       <BrandHeading variant="paired" />
-      <span class="wg-campaign-identity__theme-toggle" style={campaignThemeToggleStyle}>
-        <ThemeToggle id={themeToggleId} />
+      <span id={themeToggleId} class="wg-campaign-identity__theme-controls" style={campaignThemeToggleStyle}>
+        {showOpdaLink && <a class="wg-campaign-identity__opda-link" href="/">OPDA</a>}
+        <ThemeToggle id={`${themeToggleId}-button`} />
       </span>
     </div>
     <FrameworkHeading scale="display" />

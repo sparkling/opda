@@ -167,7 +167,7 @@ test('public recruitment and statement routes use their shared shells without si
   assert.match(join, /<WorkingGroupInterestForm/u);
   assert.match(join, /import CampaignIdentity from '@\/components\/campaign\/CampaignIdentity\.astro'/u);
   assert.match(join, /import CampaignHeaderControls from '@\/components\/campaign\/CampaignHeaderControls\.astro'/u);
-  assert.match(join, /<CampaignIdentity identityId="join-campaign-identity" themeToggleId="join-theme-toggle" \/>/u);
+  assert.match(join, /<CampaignIdentity identityId="join-campaign-identity" themeToggleId="join-theme-toggle" showOpdaLink \/>/u);
   assert.match(join, /<CampaignHeaderControls[\s\S]*controlId="join-header-preview-selectors"[\s\S]*positionTargetId="join-influence-panel"/u);
   assert.doesNotMatch(standalone, /@\/components\/(?:Header|Sidebar|Breadcrumbs|PageFooter|TOC)/u);
   assert.doesNotMatch(standalone, /campaign-masthead/u);
