@@ -2,7 +2,7 @@
    references on their existing styles. No route names or width overrides. */
 .editorial-content:is(.prose, main) {
   --editorial-flow-gap: var(--space-4);
-  --editorial-section-space: var(--space-7);
+  --editorial-section-space: var(--space-6);
   --lead: 400 1.125rem / 1.75rem var(--font-reading);
   font: 400 var(--text-lg) / var(--leading-normal) var(--font-reading);
 }
@@ -41,7 +41,7 @@
   margin-block-start: var(--editorial-flow-gap);
 }
 
-/* Document sections use a generous 32px on each side of their rule. The rule
+/* Document sections use 24px on each side of their rule. The rule
    can belong to an H2, a grouped section or an explicit HR, never the chrome. */
 #main-content .prose.editorial-content > :is(h2, section),
 #main-content .prose.editorial-content :where(.document-flow) > :is(h2, section),
