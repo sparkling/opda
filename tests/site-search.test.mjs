@@ -4,6 +4,8 @@ import test from 'node:test';
 
 import { PDTF1_ROUTES } from '../src/lib/pdtf1-routes.mjs';
 import { getActiveDestination, getRouteStatus } from '../src/lib/site-ia.mjs';
+import { MODELLING_CHAPTERS } from '../src/lib/modelling-navigation.ts';
+import { MODELLING_REDESIGN_REPLACEMENTS } from '../src/lib/modelling-route-migrations.mjs';
 import {
   SITE_SEARCH_ENTRIES,
   describeRecord,
@@ -83,7 +85,7 @@ test('site-search entries use canonical destinations and deterministic relevance
   assert.equal(searchEntries('governance')[0]?.url, '/governance');
   assert.equal(searchEntries('PDTF schema')[0]?.url, PDTF1_ROUTES.root);
   assert.ok(searchEntries('semantic mapping')
-    .some(({ url }) => url === '/semantic-modelling/evidence-and-mappings'));
+    .some(({ url }) => url === '/semantic-modelling/method/mapping-records'));
   assert.equal(searchEntries('join working group')[0]?.url, '/join');
   assert.ok(SITE_SEARCH_ENTRIES.some(({ url, destination }) => (
     url === '/join/privacy' && destination === 'working-groups'
@@ -106,4 +108,29 @@ test('site-search entries use canonical destinations and deterministic relevance
     '/development',
   ].map((url) => getRouteStatus(url).workArea));
   assert.equal(distinctWorkAreas.size, 3);
+});
+
+test('modelling search covers the 24 canonical pages without retired flat-page duplicates', () => {
+  const modelling = SITE_SEARCH_ENTRIES.filter(({ url }) => (
+    url === '/semantic-modelling' || url.startsWith('/semantic-modelling/')
+  ));
+  const expected = ['/semantic-modelling', ...MODELLING_CHAPTERS.map(({ url }) => url)];
+  assert.equal(expected.length, 24);
+  assert.deepEqual(modelling.map(({ url }) => url).sort(), [...expected].sort());
+  assert.equal(new Set(modelling.map(({ url }) => url)).size, modelling.length);
+  assert.ok(modelling.every(({ url }) => !Object.hasOwn(MODELLING_REDESIGN_REPLACEMENTS, url)));
+  for (const [query, target] of [
+    ['business case', 'understand/shared-meaning'],
+    ['Harbour Court', 'understand/a-property-story'],
+    ['participation', 'contribute'],
+    ['counterexample', 'contribute/review-a-definition'],
+    ['taxonomy', 'explore/names-and-choices'],
+    ['bounded context', 'explore/contexts-and-connections'],
+    ['SSSOM', 'method/mapping-records'],
+    ['roleOf', 'method/roles-and-phases'],
+    ['SHACL', 'method/meaning-checks-and-delivery'],
+    ['ODR-0071', 'method/scope-and-package'],
+  ]) {
+    assert.ok(searchEntries(query).some(({ url }) => url === `/semantic-modelling/${target}`), `${query} must find ${target}`);
+  }
 });
