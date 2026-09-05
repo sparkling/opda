@@ -119,6 +119,12 @@ flowchart LR
     versions, justification and date without replacing the asserted SKOS relationship.
   </p>
   <p>
+    The <a href="/semantic-modelling/standards#standard-sssom">detailed SSSOM profile</a>
+    distinguishes the selected method from current output. The earlier external-only
+    deferral in <a href="/modelling/odr/odr-0002">OPDA ODR-0002</a> is retained as
+    historical evidence, with a dated scope correction for this method.
+  </p>
+  <p>
     The selected method includes mappings between terms represented as OWL classes.
     It uses SKOS directly on class IRIs for conceptual correspondence, without
     requiring an additional explicit <code>rdf:type skos:Concept</code> assertion.
@@ -177,6 +183,14 @@ flowchart LR
       <tr><th scope="row"><code>skos:relatedMatch</code></th><td>The concepts have a useful symmetric associative relationship without hierarchy or equivalence.</td><td>State the use case; shared wording alone is not evidence.</td></tr>
     </tbody>
   </table>
+
+  <p>
+    Predicate combinations also need review. <code>skos:exactMatch</code> is disjoint
+    with <code>skos:broadMatch</code> and <code>skos:relatedMatch</code>; symmetry and
+    the broad/narrow inverse also make it disjoint with <code>skos:narrowMatch</code>.
+    The same pair cannot consistently be both exact and hierarchically or merely
+    associatively mapped. See the <a href="https://www.w3.org/TR/skos-reference/#mapping">SKOS mapping integrity conditions</a>.
+  </p>
 
   <h3 id="mapping-workflow">From candidate comparison to governed mapping set</h3>
   <Diagram size="large" caption="The required mapping workflow keeps machine suggestions advisory. Affected semantic owners and Interoperability review meaning and identity; the resulting SKOS assertion and SSSOM evidence record are validated together before a governed mapping-set release.">

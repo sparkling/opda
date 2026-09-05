@@ -1,7 +1,7 @@
 ---
 status: implemented
 date: 2026-08-18
-updated: 2026-09-03
+updated: 2026-09-05
 tags: [website, information-architecture, pdtf-schema, spdtf, ontology, semantic-modelling, standards, migration, governance]
 supersedes: []
 amends: [ADR-0002, ADR-0041, ADR-0059, ADR-0062, ADR-0073]
@@ -10,6 +10,17 @@ implements: [docs/spdtf-information-architecture.md, src/pages/index.astro]
 ---
 
 # Organise the site around SPDTF and the PDTF schema
+
+> Update 2026-09-05 — the Modelling section expands from eleven to twenty pages
+> under its existing canonical route. “Understand ontologies” covers purpose,
+> benefits, participation, reading and questions; “How we model SPDTF” covers the
+> manifesto, eight ODR-0071 concerns, contexts, identity, modelling patterns,
+> languages, mappings, validation and normative decision basis. Both paths use the
+> shared page/navigation templates and searchable routes. ADR-0063 clarifies the
+> selected source ODRs' normative status without claiming candidate conformance.
+> Existing routes and fragments remain; the frozen migration receipts remain
+> historical evidence, not an inventory to rewrite for this content expansion.
+> This amendment records local implementation, not a new publication authority.
 
 > Update 2026-09-03 — the canonical reader route for the Development destination
 > is now `/development/**`, replacing `/spdtf/**`. This update supersedes every

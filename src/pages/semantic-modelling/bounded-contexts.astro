@@ -11,6 +11,31 @@ import Diagram from '@/components/Diagram.astro';
     agreements explicit instead of forcing one universal definition too early.
   </p>
 
+  <h2 id="discover-boundaries">Discover boundaries through language and authority</h2>
+  <p>
+    The selected source decisions ODR-0015, ODR-0040 and ODR-0106 require a boundary
+    to reflect meaning and the authority to maintain it. A working group provides
+    an initial place to discover that agreement; it does not prove that every
+    subject it discusses belongs in exactly one context forever.
+  </p>
+  <p>
+    Test the boundary with concrete questions. Do participants mean the same thing
+    by “client”? Can they agree one definition and its exceptions? Who has authority
+    to resolve a change? Where two legitimate meanings persist without a common
+    decision owner, keep them explicit and design the bridge. Where several systems
+    use the same governed meaning, a system-per-context model would add artificial divisions.
+  </p>
+  <table>
+    <caption>Four boundaries that answer different questions</caption>
+    <thead><tr><th scope="col">Boundary</th><th scope="col">Question</th><th scope="col">Property example</th></tr></thead>
+    <tbody>
+      <tr><th scope="row">Bounded context</th><td>Who governs this precise meaning?</td><td>A conveyancing community's meaning of an instruction.</td></tr>
+      <tr><th scope="row">Subject area</th><td>What is the material about?</td><td>Addresses appearing in several models.</td></tr>
+      <tr><th scope="row">Governance responsibility</th><td>Who is accountable for quality or handling?</td><td>A steward reviewing the evidence used for a published statement.</td></tr>
+      <tr><th scope="row">System or deployment</th><td>Where is data stored or processed?</td><td>Several applications implementing the same context-owned definitions.</td></tr>
+    </tbody>
+  </table>
+
   <h2 id="contexts">Property contexts and scheme context</h2>
   <table>
     <caption>Initial property-domain contexts and the separate scheme-design lens</caption>
@@ -101,6 +126,15 @@ flowchart TB
     and only the small set of meanings that genuinely require a common exchange contract.
     A boundary agreement is not permission to redesign a domain model centrally. Mapping
     candidates remain advisory until affected semantic owners and Interoperability review them.
+  </p>
+  <p>
+    Repeated use is a reason to investigate sharing, not sufficient proof that a term
+    belongs in Common. Promotion needs the same identity criterion, sufficiently stable
+    meaning, an exchange need and accountable review. Otherwise a common label can
+    conceal several incompatible definitions and make every consumer depend on them.
+    <a href="/semantic-modelling/context-maps">Strategic context maps</a> describe
+    the agreements; <a href="/semantic-modelling/evidence-and-mappings">qualified
+    term mappings</a> describe the correspondences.
   </p>
 
   <h2 id="property-pack">The Property Pack is a cross-context profile</h2>

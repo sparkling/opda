@@ -1,7 +1,7 @@
 ---
 status: accepted
 date: 2026-07-19
-updated: 2026-09-03
+updated: 2026-09-05
 tags: [website, information-architecture, modelling, migration, bounded-context, publication]
 supersedes: []
 depends-on: [ADR-0041, ADR-0044, ADR-0063]
@@ -9,6 +9,14 @@ implements: [src/pages/development/property-pack]
 ---
 
 # Revamp the modelling website before publishing the new working-group approach
+
+> Update 2026-09-05 — the operator requested an extensive two-audience Modelling
+> section: plain-language explanation, benefits and website participation, plus a
+> technical account of the normative method. The expansion uses the existing
+> `/semantic-modelling/**` page and navigation templates. ADR-0063's dated
+> clarification selects the relevant source ODRs and reconciles earlier wording;
+> it neither imports unrelated categories nor changes historical ontology inputs.
+> Implementation of this content does not authorise publication.
 
 > Update 2026-09-03 — the Property Pack reader pages now live at
 > `/development/property-pack/**`. This route-only amendment does not change

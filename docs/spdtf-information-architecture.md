@@ -1,7 +1,7 @@
 # SPDTF information architecture
 Status: **implementation in progress on `main`; publication pending**<br>
 Date: 2026-08-27<br>
-Updated: 2026-09-04<br>
+Updated: 2026-09-05<br>
 Decision records: [ADR-0069](./adr/ADR-0069-public-working-group-recruitment-and-signup.md) · [ADR-0071](./adr/ADR-0071-bounded-context-recruitment-campaign.md) · [ADR-0074](./adr/ADR-0074-organise-site-around-spdtf-and-pdtf-schema.md) · [ADR-0077](./adr/ADR-0077-place-pdtf-schema-beneath-spdtf-as-third-party-input.md) · [ADR-0078](./adr/ADR-0078-create-a-standalone-working-group-recruitment-campaign-at-join.md) · [ADR-0079](./adr/ADR-0079-make-the-site-public-and-retire-the-edge-authentication-gate.md)<br>
 Review artefact: [HTML presentation](./spdtf-information-architecture.html)
 ## Executive decision
@@ -125,16 +125,17 @@ The presentation uses a separate, participant-facing completeness lens:
 
 ### Standards and modelling profile
 
-The Modelling standards page must record, for every item: purpose; exact version and conformance level; `reuse`, `reference`, `map` or `mint` mechanism; decision status; owner; evidence/decision; and re-open trigger. It must begin with this bounded profile:
+The Modelling standards page records purpose, version/conformance, `reuse`/`reference`/`map`/`mint`, decision status, owner, evidence and re-open trigger. ADR-0063's 5 September clarification makes the selected source ODRs normative within eight categories; current candidate implementation remains a separate fact. The bounded profile is:
 
 | Profile role | Standards and technologies | Current standing |
 |---|---|---|
 | Core semantics | RDF 1.2 Basic, RDFS, OWL 2 and SKOS | Accepted modelling targets; each candidate declares the features actually used. |
 | Query and constraints | Portable SPARQL 1.2 subset; SHACL 1.2 Core initially | Accepted targets, tested fail-closed. No full RDF 1.2 or SHACL Union claim without feature evidence. |
-| Metadata, provenance and time | Dublin Core Terms, DCAT 3, PROV-O, DQV and OWL-Time | Concern-specific candidates, adopted only where a documented requirement and decision justify them. |
-| Sensitivity and authorisation | DPV, DPV-PD and DPV-LEGAL; ODRL where justified | Concern-specific semantic candidates; they do not implement runtime access control. |
-| Cross-context alignment | SKOS mapping predicates; SSSOM mapping records | SKOS is an accepted bounded target but no mapping predicates are currently emitted. SSSOM is a deferred candidate for mapping-record exchange only. Avoid unjustified `owl:sameAs`. |
-| Domain and methodology references | FIBO, GeoSPARQL, Schema.org, VC/DID, ORG, ISO 23386, UFO/OntoClean and alternatives | Evidence to assess, not inherited adoption or wholesale imports. |
+| Metadata, provenance and time | Dublin Core Terms, PROV-O and OWL-Time; DCAT 3/DQV where justified | Selected concern-specific methods do not imply that all terms are already emitted. Candidate use and optional extensions remain separately recorded. |
+| Sensitivity and authorisation | DPV family; conditional ODRL DPV profile | Selected classification discipline; ODRL applies where the scoped retention, dynamic-condition or cross-border requirements need it. Neither implements runtime access control. |
+| Cross-context alignment | SKOS correspondence; SSSOM 1.0 and SEMAPV records | Normative for reviewed internal and external mappings. The Property Pack 0.1 mapping register remains empty; method adoption does not invent assertions. |
+| Modelling discipline and applicability | UFO/OntoClean; Schema.org domainIncludes/rangeIncludes | Normative analytical lenses without external upper-ontology inheritance; explicit applicability hints without redefining RDFS semantics. |
+| Domain references | FIBO, GeoSPARQL, VC/DID, ORG and ISO 23386 | Assess relevance and term-level reuse against property requirements; no wholesale import or inherited domain authority. |
 | Delivery projections | JSON Schema, JSON-LD, forms, APIs, website, PDF and Markdown | Tested downstream representations; never the source of semantic authority. |
 
 “Mapping” must always be qualified: PDTF schema **RML schema–ontology verification**; planned legacy **JSON-LD contexts**; SPDTF **cross-context semantic mappings**; Property Pack **source-item coverage links** (not RML/R2RML); or an optional deployment **transformation runtime**. These records must not share an ambiguous status or owner.
@@ -210,12 +211,12 @@ Home /
 │   └── Programme decisions
 ├── Modelling /semantic-modelling
 │   ├── Understand ontologies /semantic-modelling/why-ontologies
-│   │   ├── How to read the model
-│   │   ├── The semantic package and context boundaries
-│   │   └── Standards, evidence, mappings, validation and projections
+│   │   ├── Benefits; taking part through the website
+│   │   └── How to read the model; common questions
 │   └── How we model SPDTF /semantic-modelling/modelling-method
-│       ├── Modelling rules and lenses
-│       └── Coverage checklist
+│       ├── Principles; eight concerns; contexts and context maps
+│       ├── Identity, roles and phases; patterns; rules; linked-data languages
+│       └── Semantic package; evidence and mappings; validation; standards; decision basis
 ├── Development /development
 │   ├── Overview: the first collaborative scheme draft, its scope and status
 │   ├── Property Pack ontology /development/property-pack
@@ -495,4 +496,4 @@ The full multi-model council evidence, scores, gates and dissent are recorded in
 1. PDTF schema support period and the future SPDTF IRI/namespace relationship to `/pdtf/**`.
 2. Promotion states above first working-group draft and their decision thresholds.
 3. Consent, access, confidentiality, moderation and durable feedback disposition.
-4. Which candidate vocabularies and modelling frameworks the standards profile accepts, defers or excludes.
+4. Which additional vocabularies and term-level extensions are justified beyond the normative source-method subset; current selections are not reopened merely by being absent from an older candidate.

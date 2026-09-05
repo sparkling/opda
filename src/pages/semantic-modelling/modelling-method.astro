@@ -11,15 +11,26 @@ import Diagram from '@/components/Diagram.astro';
     package; automated tools encode and check it; people decide whether the meaning fits.
   </p>
 
+  <p>
+    The <a href="/semantic-modelling/principles">modelling manifesto</a> explains why
+    we take this context-first approach. The relevant source ODRs are normative for
+    the method: <a href="/semantic-modelling/coverage">ODR-0071 supplies the eight
+    selected concerns</a>, supported by decisions on identity, classification,
+    roles, phases, mappings and the use of linked-data languages. This is the method
+    to follow, even where today's candidate implementation is incomplete.
+  </p>
+
   <h2 id="authority">Authority of this method</h2>
   <p>
-    The method is assembled from decisions with different standing. This page labels the
-    boundary so an intended workflow is not mistaken for an adopted lifecycle.
+    The selected modelling ODRs govern how the model is constructed. OPDA ADRs define
+    its programme scope and working arrangements. Their status remains visible so
+    the normative modelling method is not confused with a proposed approval lifecycle.
   </p>
   <table>
     <caption>Decision status behind the method</caption>
     <thead><tr><th scope="col">Record</th><th scope="col">Standing</th><th scope="col">What may be stated now</th></tr></thead>
     <tbody>
+      <tr><th scope="row"><a href="/semantic-modelling/decision-basis#supporting-odrs">Selected source ODRs</a></th><td>Normative modelling method</td><td>ODR-0071 categories 1, 2, 5, 7, 8, 9, 10 and 11, with applicable supporting rules and amendments. Other categories are excluded.</td></tr>
       <tr><th scope="row"><a href="/modelling/adr/adr-0063">ADR-0063</a></th><td>Accepted</td><td>Domain-led bounded contexts, six semantic outputs, eight concerns, four dispositions and the evidence-led working sequence.</td></tr>
       <tr><th scope="row"><a href="/modelling/adr/adr-0067">ADR-0067</a></th><td>Accepted for the Property Pack</td><td>First-principles Property Pack candidate architecture, context ownership, technical profile and deterministic checks.</td></tr>
       <tr><th scope="row"><a href="/modelling/adr/adr-0065">ADR-0065</a></th><td>Proposed</td><td>Human-led, AI-assisted workflow is a proposed SPDTF-wide operating model, not current policy.</td></tr>
@@ -45,6 +56,13 @@ import Diagram from '@/components/Diagram.astro';
     <li>Which controlled value set governs the status, and which version was used?</li>
     <li>Which rule is a business expectation for a delivery rather than a universal truth?</li>
   </ul>
+  <p>
+    A worked question should include an answerable example and a counterexample.
+    For “who acted as seller in this transaction?”, test an organisation as well as
+    a person, and someone acting as buyer in another transaction at the same time.
+    That evidence reveals the need for a role and participation context before an
+    engineer chooses <code>roleOf</code>, a relationship resource or a query pattern.
+  </p>
   <p>
     Each governed question must record a context owner, evidence, expected answer pattern and review state.
     A query can later test whether the candidate structure supports the question, but a

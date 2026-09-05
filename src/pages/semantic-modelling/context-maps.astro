@@ -1,0 +1,146 @@
+---
+import Layout from '@/layouts/Layout.astro';
+---
+
+<Layout title="Context maps and semantic bridges" description="How strategic context maps describe authority and collaboration, while term mappings, shared meanings and transformations connect models at a different level.">
+  <h1>Context maps and semantic bridges</h1>
+  <p class="lead">
+    A context map explains how independently owned models work together: who supplies
+    meaning, who consumes it, what agreement crosses the boundary, and where translation
+    protects a local model. It is a map of responsibilities as well as connections.
+  </p>
+
+  <h2 id="two-scales">Map the relationship before mapping the terms</h2>
+  <p>
+    Imagine a conveyancing service consuming an address supplied by a property-data
+    service. A term mapping can explain how one address concept corresponds to the
+    other. It cannot explain who changes the exchange format, whether consumers can
+    influence it, or what happens when the provider's interpretation changes.
+    Those are context-map questions.
+  </p>
+  <table>
+    <caption>Four related agreements at different levels</caption>
+    <thead><tr><th scope="col">Agreement</th><th scope="col">What it answers</th><th scope="col">What it does not establish</th></tr></thead>
+    <tbody>
+      <tr><th scope="row">Strategic context map</th><td>How do the owners collaborate, depend on each other and handle change?</td><td>That any two terms are equivalent.</td></tr>
+      <tr><th scope="row">Common-boundary contract</th><td>Which small meanings and conventions must consumers share?</td><td>That all local concepts belong in a universal model.</td></tr>
+      <tr><th scope="row">Term correspondence</th><td>How are these two versioned meanings related for this purpose?</td><td>That data can be transformed without loss.</td></tr>
+      <tr><th scope="row">Delivery transformation</th><td>How do particular records become the receiving representation?</td><td>That the source and target mean the same thing in every context.</td></tr>
+    </tbody>
+  </table>
+
+  <h2 id="boundary">What makes a boundary real?</h2>
+  <p>
+    Look for a coherent working language and an authority able to maintain it. Two
+    applications can implement the same context. One organisation can contain
+    several contexts. A subject such as “property” can appear throughout them.
+    Neither an organisation chart nor a database inventory settles the boundary.
+  </p>
+  <p>
+    A useful boundary record names the model, its owners, the decisions they can make,
+    representative questions, essential terms and exclusions. If a disagreement can
+    be resolved by the same accountable community, it may be one model needing
+    clarification. If two communities legitimately need different meanings and
+    neither can impose one on the other, an explicit boundary and mapping may be
+    the more honest design.
+  </p>
+  <p>
+    RDF named graphs can help organise assertions, derived views and provenance, but
+    putting data in a named graph does not by itself establish a bounded context or
+    governance authority. A namespace is an identifier convention; a context is a
+    meaning-and-responsibility agreement. See
+    <a href="/semantic-modelling/bounded-contexts#homes">semantic homes</a>.
+  </p>
+
+  <h2 id="patterns">Choose an explicit collaboration pattern</h2>
+  <p>
+    Domain-driven design gives useful names to recurring relationships. These patterns
+    describe choices to discuss with the participants; the examples below are
+    illustrative, not assertions about agreements already signed by OPDA groups.
+  </p>
+  <table>
+    <caption>Context relationship patterns and property-data questions</caption>
+    <thead><tr><th scope="col">Pattern</th><th scope="col">Meaning</th><th scope="col">Question to settle</th></tr></thead>
+    <tbody>
+      <tr><th scope="row">Customer / Supplier</th><td>An upstream supplier and downstream consumer explicitly negotiate needs and change.</td><td>Can conveyancing requirements influence the property-data exchange, and through which decision route?</td></tr>
+      <tr><th scope="row">Partnership</th><td>Two owners coordinate delivery because success depends on both models evolving together.</td><td>Which changes must agency and conveyancing participants review jointly?</td></tr>
+      <tr><th scope="row">Shared Kernel</th><td>A deliberately small part of the model is shared and changed under joint discipline.</td><td>What exactly is shared, and who must agree before it changes?</td></tr>
+      <tr><th scope="row">Published Language</th><td>A documented exchange vocabulary provides an agreed way to communicate.</td><td>Which version defines the message, its terms and its allowed values?</td></tr>
+      <tr><th scope="row">Open Host Service</th><td>A provider exposes a defined integration protocol for multiple consumers.</td><td>How do consumers discover and use the supported interface?</td></tr>
+      <tr><th scope="row">Anti-Corruption Layer</th><td>A consumer translates an external model so its own meaning remains intact.</td><td>Which external statuses require interpretation before they enter a lending workflow?</td></tr>
+      <tr><th scope="row">Conformist</th><td>A downstream consumer follows an upstream model without meaningful influence over it.</td><td>What dependencies and compromises are accepted, and when should translation be added?</td></tr>
+      <tr><th scope="row">Separate Ways</th><td>The owners deliberately decide that integration is not justified for the scoped need.</td><td>Why is there no bridge, and what future need would reopen the decision?</td></tr>
+    </tbody>
+  </table>
+  <p>
+    Several patterns can describe different aspects of one relationship: a supplier
+    may publish a language while a consumer uses an anti-corruption layer. Record
+    who plays each part. Symmetric collaboration is different from upstream/downstream
+    dependence, so an unlabeled arrow is rarely enough. An absent arrow means
+    “not recorded”; it does not prove a deliberate Separate Ways decision.
+  </p>
+
+  <h2 id="record">What a useful context-map record contains</h2>
+  <p>
+    Treat the connection as a reviewable record, not simply a line on a slide. Name
+    the two contexts, the pattern, direction, source of authority, business purpose,
+    responsible owners, exchange contract and change process. Identify whether the
+    map describes today's arrangement or a proposed one. A desired relationship must
+    not be presented as an operational dependency.
+  </p>
+  <p>
+    Link the connection to the particular term correspondences that support it.
+    Attaching every mapping in a large mapping set conceals which ones actually apply.
+    Keep the version, decision and evidence for both the strategic agreement and its
+    term-level records. A technical change may affect one without changing the other.
+  </p>
+  <p>
+    The selected ODR-0127 profile exposes active AS-IS and TO-BE map projections;
+    files and version control retain revision history. It does not attach a chain
+    of <code>prov:wasDerivedFrom</code> or <code>prov:wasRevisionOf</code> statements
+    directly to strategic relationships. Evidence for a specific exclusion or
+    agreement and provenance for a term mapping remain separately scoped records.
+  </p>
+
+  <h2 id="worked-example">Worked example: an address used in a transaction</h2>
+  <ol>
+    <li><strong>Name the need.</strong> A conveyancer needs to locate a source record relevant to the property in an instruction.</li>
+    <li><strong>Name the responsibilities.</strong> The source provider governs its address record; the conveyancing context governs the instruction and its interpretation.</li>
+    <li><strong>Choose the relationship.</strong> For illustration, the provider publishes a language and the consumer translates it at its boundary.</li>
+    <li><strong>Compare the meanings.</strong> Is the supplied address a postal delivery address, a site description or an address attached to a registry entry? What does the receiving term require?</li>
+    <li><strong>Record the correspondence.</strong> Preserve both terms if their definitions differ. Explain the applicable direction and limitations instead of asserting identity from matching text.</li>
+    <li><strong>Check the delivery.</strong> Confirm that the transformed record retains the source identifier, version and any distinctions needed by the receiving profile.</li>
+    <li><strong>Review change.</strong> A new source definition or expanded consumer purpose can reopen the correspondence without forcing every other context to rename its terms.</li>
+  </ol>
+
+  <h2 id="term-mappings">Then choose the term-level bridge</h2>
+  <p>
+    SKOS offers exact, close, broader, narrower and related concept mappings, each
+    with different semantics. They are not interchangeable with individual identity
+    or OWL class equivalence. A class-to-class or property-to-property mapping needs
+    its own reviewed representation. Read the
+    <a href="/semantic-modelling/evidence-and-mappings#skos-predicates">predicate guide</a>
+    before selecting a relation.
+  </p>
+  <p>
+    SSSOM captures a mapping's justification and provenance;
+    it cannot make an incorrect relation correct. Its use in the reference modelling
+    method is normative for our mapping discipline: source ODR-0087, ODR-0096 and
+    ODR-0098 require SSSOM records and SEMAPV justification. The current candidate
+    still has no emitted mappings; the
+    <a href="/semantic-modelling/standards#standard-sssom">standards register</a>
+    separates that implementation gap from the selected rule.
+  </p>
+
+  <h2 id="status">Method and implementation</h2>
+  <p>
+    <a href="/modelling/adr/adr-0063">ADR-0063</a> and
+    <a href="/modelling/adr/adr-0067">ADR-0067</a> establish domain-led ownership and
+    the small common boundary. The normative source method develops strategic context maps
+    further in ODR-0127. Today's
+    <a href="/development/property-pack/contexts">Property Pack context views</a>
+    show candidate homes; they are not evidence that the full strategic mapping
+    model or its agreements are implemented. The
+    <a href="/semantic-modelling/decision-basis">decision guide</a> records that boundary.
+  </p>
+</Layout>

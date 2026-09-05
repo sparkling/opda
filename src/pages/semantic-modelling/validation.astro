@@ -11,6 +11,30 @@ import Diagram from '@/components/Diagram.astro';
     review the candidate and recorded governance controls any promotion.
   </p>
 
+  <h2 id="use-specific-rules">Make each rule answer a real requirement</h2>
+  <p>
+    Suppose an inspection can be recorded before its report is issued. A draft-record
+    profile may permit the report reference to be absent, while a completed-delivery
+    profile requires it. These are different requirements on the same kind of record,
+    not evidence for two unrelated definitions of Inspection. Give each shape a
+    purpose, target and example that the relevant practitioners can review.
+  </p>
+  <p>
+    The selected validation concern, source ODR-0071g, distinguishes violations,
+    warnings and information. The severity should communicate the consequence of a
+    failed expectation. A helpful instruction on a form is not automatically a data
+    constraint, and combining two individually reasonable rule sets can introduce
+    a contradiction. Check their combined effect as well as each rule in isolation.
+  </p>
+  <p>
+    For a coded classification, target the records that actually carry the classifier.
+    A rule that checks only an unasserted subclass can miss the intended population.
+    A closed list can use <code>sh:in</code>; an open set of referenced resources
+    may need <code>sh:class</code> and additional governed expectations. The
+    <a href="/semantic-modelling/modelling-patterns">pattern guide</a> explains the
+    modelling choice before it becomes a shape.
+  </p>
+
   <h2 id="open-closed">Open-world meaning and closed-world checks</h2>
   <p>
     RDF/RDFS/OWL use an open-world model: absence of a statement does not normally make
@@ -56,6 +80,14 @@ flowchart LR
       <tr><th scope="row">Projection comparison</th><td>A generated output preserves declared structures and examples.</td><td>Every consumer will interpret it correctly.</td></tr>
     </tbody>
   </table>
+  <p>
+    Keep derivation separate from conformance. A selected inference or SHACL rule can
+    add a statement; a constraint checks statements against an expectation. Record
+    the rule and the asserted/derived boundary so consumers can tell the difference.
+    A successful validation run does not demonstrate that every selected derivation
+    rule ran. The <a href="/semantic-modelling/linked-data-languages">language guide</a>
+    explains the normative processing distinctions.
+  </p>
   <p>
     Property Pack 0.1 runs its complete shapes graph against one conforming fixture and
     one deliberately non-conforming fixture. That proves the recorded end-to-end cases,

@@ -1,7 +1,7 @@
 ---
 status: accepted
 date: 2026-07-19
-updated: 2026-08-22
+updated: 2026-09-05
 tags: [strategy, ontology, bounded-context, working-groups, ddd, skos, shacl, interoperability, provenance, temporal, dpv, dcat]
 supersedes: []
 depends-on: [ADR-0026, ADR-0039, ODR-0019, ODR-0020]
@@ -9,6 +9,13 @@ implements: []
 ---
 
 # Domain-led bounded-context working groups for SPDTF development
+
+> **Clarification — 2026-09-05.** The operator confirmed that the relevant
+> `semantic-modelling` ODRs are normative for the OPDA modelling method, not merely
+> informative candidates. The scope is ODR-0071's eight categories below, with the
+> supporting decisions that apply to them; it is not adoption of the whole source
+> project's models, architecture or pipeline. The [decision-basis guide](/semantic-modelling/decision-basis)
+> records the reviewed source revision and the distinction from OPDA's own ODR numbers.
 
 ## Context and Problem Statement
 
@@ -197,6 +204,36 @@ over-model. For each category, every group records one disposition:
 The category assessment is maintained alongside the outputs and reviewed at each
 release. It prevents silent gaps without forcing every group to create eight separate
 files or duplicate common terms.
+
+### 3a. Normative source-method selection
+
+The 5 September review uses source revision
+`67174057e6384b79d0b28b7736fe70a66e112895`, read without modifying the source
+project. ODR-0071a/b/e/g/h/i/j/k supply the retained category detail. Supporting
+rules include ODR-0015/0040/0106 (context ownership), ODR-0016/0023 (controlled
+vocabularies), ODR-0025/0026 (roles, phases and property placement),
+ODR-0115/0118 (concern-led construction and foundational analysis),
+ODR-0087/0096/0098 (qualified mappings) and ODR-0127 (strategic context maps).
+
+Later explicit amendments govern over retained older text. In particular:
+
+- Source ODR-0014's 28 and 30 August amendments retire repeated RDFS domains as
+  documentary “any-of”. Each property side uses one universally intended RDFS
+  domain/range, Schema.org applicability hints, or a governed waiver. SHACL
+  enforces requirements; disabling inference never changes standard semantics.
+- SSSOM 1.0 and SEMAPV are required for reviewed internal and external mappings
+  under ODR-0071h/0087, not deferred until an external consumer appears.
+- UFO/OntoClean supply normative analytical discipline, not an imported upper-
+  ontology superclass tree. PROV-O, OWL-Time and DPV are selected within their
+  concerns; source ODR-0089 conditionally selects the ODRL DPV profile where needed.
+
+This scope supersedes conflicting earlier OPDA method wording, including the
+SSSOM deferral in OPDA ODR-0002 and the repeated-domain convention in OPDA
+ODR-0027 R5 and ODR-0032/0033. Those records retain historical implementation
+evidence. This clarification does not migrate a generator or the immutable
+Property Pack 0.1 candidate, fabricate mappings, approve domain definitions,
+adopt all external terms, or promote the proposed ADR-0065/0068 operating
+processes. Conformance and publication remain separately evidenced decisions.
 
 ### 4. Interoperability Working Group
 

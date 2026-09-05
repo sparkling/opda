@@ -86,11 +86,12 @@ import Layout from '@/layouts/Layout.astro';
     which transaction gives it meaning, and any relevant dates or responsibilities.
   </p>
   <p>
-    The method names the analytical connection <code>roleOf</code>. This is
-    project vocabulary, not a built-in RDF, OWL or SKOS relationship. Its use does not
-    automatically propagate types or properties. A published profile must define
-    its direction, permitted subjects and values, relationship to instance-level
-    participation, and validation. A diagram label alone does none of that work.
+    Source-method ODR-0025 defines <code>roleOf</code> at the class level: the
+    role type points to its identity-bearing type. This is project vocabulary,
+    not a built-in RDF, OWL or SKOS relationship, and it does not automatically
+    propagate types or properties. Keep that modelling annotation distinct from
+    an individual participation record saying who acts in which transaction.
+    The role view does not create a second business identity for its bearer.
   </p>
   <p>
     Role-specific information belongs with the role or participation that introduces
@@ -102,7 +103,8 @@ import Layout from '@/layouts/Layout.astro';
   <h2 id="phases">“Phase of” describes change without losing identity</h2>
   <p>
     A phase describes a temporary stage of a continuing thing. The method
-    calls the connection <code>phaseOf</code>; its encoding must preserve that meaning.
+    calls the class-level connection <code>phaseOf</code>: the phase type points to
+    the type whose identity continues through the change.
     The analysis asks what changes internally, what establishes the stage and how
     the same thing continues through the transition.
   </p>

@@ -7,15 +7,29 @@ import Diagram from '@/components/Diagram.astro';
 <Layout title="Semantic modelling" description="Learn what ontologies are, why SPDTF uses them, and how the SPDTF ontology is modelled, reviewed and implemented.">
   <h1>Semantic modelling</h1>
   <p class="lead">
-    This section has two routes through the same work. One explains ontology modelling
-    in business language. The other documents the technical and governance choices used
-    to build SPDTF candidates. You do not need to understand RDF to review meaning.
+    Better property data starts with shared understanding. We bring practitioners'
+    language, evidence and experience into a connected model that people can read,
+    challenge and improve. You do not need to know ontology engineering to take part.
+  </p>
+  <p>
+    A conveyancer, lender and surveyor can describe the same property from different
+    perspectives. Our approach preserves the distinctions they need and makes the
+    agreements between them explicit. The website is where that model becomes
+    visible: definitions, examples, diagrams, controlled choices and questions for review.
   </p>
 
   <h2 id="choose">Choose your route</h2>
   <div class="card-grid">
-    <GatewayCard href="/semantic-modelling/why-ontologies" title="Understand ontologies" description="A plain-language explanation of ontologies, graphs, classes, relationships, vocabularies, constraints and why SPDTF needs them." />
-    <GatewayCard href="/semantic-modelling/modelling-method" title="How we model SPDTF" description="The evidence-up method, semantic package, context ownership, modelling rules, standards profile, mappings, validation and projections." />
+    <GatewayCard href="/semantic-modelling/why-ontologies" eyebrow="For everyone" title="Understand ontologies" description="What shared meaning makes possible, why property data needs it, and how you can contribute your professional knowledge without learning technical notation." />
+    <GatewayCard href="/semantic-modelling/modelling-method" eyebrow="For modellers and implementers" title="How we model SPDTF" description="Our context-first manifesto and normative modelling rules: identity, roles, phases, SKOS, SHACL, context maps, evidence and connected semantic packages." />
+  </div>
+
+  <h2 id="start-here">Start with the question that brought you here</h2>
+  <div class="card-grid">
+    <GatewayCard href="/semantic-modelling/benefits" title="What difference will this make?" description="Understand how clearer meaning can improve reuse, reveal mismatches and make evidence easier to follow." />
+    <GatewayCard href="/semantic-modelling/taking-part" title="How can I help?" description="Find a familiar topic, challenge a definition and explain an exception through the website and working groups." />
+    <GatewayCard href="/semantic-modelling/principles" title="What is different about our approach?" description="Start with local meaning and accountable communities, then connect their models through explicit agreements." />
+    <GatewayCard href="/semantic-modelling/coverage" title="What exactly are we modelling?" description="The eight selected ODR-0071 concerns, their relationship to the six outputs, and what is deliberately outside scope." />
   </div>
 
   <h2 id="one-agreement">Two routes, one agreement</h2>
@@ -49,9 +63,9 @@ flowchart LR
     <thead><tr><th scope="col">Topic</th><th scope="col">What you will find</th><th scope="col">Authority boundary</th></tr></thead>
     <tbody>
       <tr><th scope="row">Business meaning</th><td>Definitions, examples, identities, relationships and questions that practitioners can review.</td><td>Relevant working groups judge domain meaning.</td></tr>
-      <tr><th scope="row">Modelling method</th><td>Evidence intake, competency questions, candidate construction, review and traceability.</td><td>ADR-0063 is accepted; Property Pack practice is accepted in ADR-0067; wider lifecycle policy in ADR-0065/0068 remains proposed.</td></tr>
+      <tr><th scope="row">Modelling method</th><td>The selected ODR-0071 categories and supporting rules, evidence intake, competency questions and review.</td><td>The relevant source ODRs are normative; ADR-0063 and ADR-0067 apply the scoped method. Wider lifecycle proposals in ADR-0065/0068 remain separate.</td></tr>
       <tr><th scope="row">Technical implementation</th><td>RDF/RDFS/OWL, SKOS, SHACL, SPARQL, metadata and generated projections.</td><td>Each feature needs a version, bounded profile and test receipt.</td></tr>
-      <tr><th scope="row">Standards and methods</th><td>What the Property Pack candidate uses now, accepted targets, candidates, design lenses and deferred options.</td><td>A catalogue entry or reference is not adoption.</td></tr>
+      <tr><th scope="row">Standards and methods</th><td>Required modelling discipline, selected vocabulary profiles and what the Property Pack candidate actually implements.</td><td>A required design is distinct from demonstrated implementation or whole-ontology import.</td></tr>
       <tr><th scope="row">Validation</th><td>Parsing, constraints, competency queries, semantic review and governance promotion.</td><td>Automated success does not approve business meaning.</td></tr>
     </tbody>
   </table>
@@ -79,4 +93,10 @@ flowchart LR
     <p class="callout__label">Read status literally</p>
     <p>“Used in Property Pack 0.1,” “accepted SPDTF target,” “candidate,” “method lens” and “adopted SPDTF release” are different statements. This section keeps them separate throughout.</p>
   </div>
+  <p>
+    The <a href="/semantic-modelling/decision-basis">decision guide</a> connects this
+    section to its normative ODRs, OPDA ADRs and useful legacy PDTF explanations.
+    For a practical starting point, <a href="/semantic-modelling/questions">read the
+    common questions</a> or <a href="/join">join a working group</a>.
+  </p>
 </Layout>

@@ -1,0 +1,172 @@
+---
+import Layout from '@/layouts/Layout.astro';
+---
+
+<Layout title="Our modelling manifesto" description="A context-first modelling manifesto: practitioner language, evidence, explicit identity, connected local models, reusable standards and human authority over meaning.">
+  <h1>Our modelling manifesto</h1>
+  <p class="lead">
+    Shared meaning should grow from the people who understand the work. We begin with
+    their questions, language and evidence, build precise models within accountable
+    communities, and connect those models through explicit agreements.
+  </p>
+  <p>
+    This is the approach we follow for the Smart Property Data Trust Framework.
+    It brings domain-driven design, linked data and careful ontology engineering
+    together around a practical aim: make property information understandable and
+    reusable across the people and systems that need it. The
+    <a href="/semantic-modelling/decision-basis">decision guide</a> distinguishes these
+    normative source ODRs, the OPDA scope and the capabilities of today's candidates.
+  </p>
+
+  <h2 id="start-with-work">1. Start with work, questions and evidence</h2>
+  <p>
+    Before drawing a hierarchy, ask what someone needs to understand or decide.
+    Which property does this inspection concern? Who made this statement? Which
+    definition of completion does this workflow use? What evidence would make a
+    proposed definition wrong? These questions give every important modelling
+    distinction a purpose.
+  </p>
+  <p>
+    Existing forms, schemas, spreadsheets and applications are valuable evidence.
+    They show what people record and where systems struggle. They do not automatically
+    determine what exists in the domain: a nested JSON object need not be a new thing,
+    and a missing field does not prove a business concept is unnecessary.
+    <a href="/semantic-modelling/modelling-method#questions">Competency questions</a>
+    connect the model to the work it must support.
+  </p>
+
+  <h2 id="local-authority">2. Let meaning have an accountable home</h2>
+  <p>
+    Conveyancers, surveyors and lenders may use the same word with different,
+    legitimate meanings. Asking one central model to settle those meanings before
+    the communities have examined them risks losing the distinctions the industry
+    needs. A bounded context gives a language, a model and responsibility for change
+    an explicit home.
+  </p>
+  <p>
+    Contexts are discovered through meaning and authority. They are not automatically
+    one per application, department, database or working group. Start with the
+    <a href="/semantic-modelling/bounded-contexts">domain-group boundaries</a>, then
+    test them against real disagreements and shared decisions. A boundary is useful
+    when it helps people say precisely what they mean and who can change it.
+  </p>
+
+  <h2 id="connect-without-collapse">3. Connect models without erasing their differences</h2>
+  <p>
+    Interoperability does not require every community to use one enormous model.
+    It requires enough shared meaning to exchange information safely and enough
+    explicit mapping to explain the differences that remain. We favour a small
+    common agreement, context-owned meanings and reviewable bridges between them.
+  </p>
+  <p>
+    A title, building, parcel and transaction record can refer to a related property
+    situation without being interchangeable things. Reusing a label or identifier is
+    not proof of identity. A good mapping states its direction, purpose, evidence
+    and limitations; sometimes the correct outcome is no mapping. Strategic
+    <a href="/semantic-modelling/context-maps">context maps</a> explain the relationship
+    between communities, while term mappings explain particular correspondences.
+  </p>
+
+  <h2 id="distinctions">4. Make important distinctions explicit</h2>
+  <p>
+    What something is, how it is classified, the role it plays and the phase it is
+    in are different questions. A person can sell one home while buying another.
+    A document can serve as evidence for a claim. An application can move through
+    several states without becoming a different application every time.
+  </p>
+  <p>
+    We distinguish <a href="/semantic-modelling/identity-roles-and-phases">identity,
+    <code>isA</code>, <code>roleOf</code> and <code>phaseOf</code></a> before selecting
+    a representation. Controlled values usually belong in governed vocabularies,
+    not a subclass for every code. A qualified relationship carries its own dates,
+    participants or evidence when the business needs that detail.
+  </p>
+
+  <h2 id="reuse">5. Compose established languages by purpose</h2>
+  <p>
+    We do not need to invent a new language for labels, provenance, time or validation
+    whenever a property context needs one. RDF provides a common graph substrate;
+    SKOS organises concepts and controlled values; SHACL expresses testable expectations.
+    Other vocabularies can contribute precisely scoped capabilities.
+  </p>
+  <p>
+    Reuse is a judgement about meaning, ownership and dependencies, not a race to
+    accumulate prefixes. Use an external term when it fits; map when meanings differ;
+    create a local term when a real gap remains. Read the
+    <a href="/semantic-modelling/linked-data-languages">language-by-purpose guide</a>
+    alongside the <a href="/semantic-modelling/standards">actual standards profile</a>.
+  </p>
+
+  <h2 id="foundations">6. Use foundational analysis to ask better questions</h2>
+  <p>
+    Foundational ontology offers useful questions about identity, dependence, change,
+    events and relationships. We use that discipline to challenge weak models rather
+    than making every business concept inherit from a universal external hierarchy.
+    Practitioners should be able to understand the reason for a distinction without
+    learning the foundational vocabulary first.
+  </p>
+  <p>
+    A top-down design can be valuable where a well-understood, shared domain warrants
+    it. Our starting point is different: local evidence and working language come
+    first; common structure earns its place through demonstrated need. This is a
+    deliberate combination of established methods, not a claim that RDF or OWL
+    themselves require one particular design philosophy.
+  </p>
+
+  <h2 id="separate-concerns">7. Separate meaning, checks and delivery</h2>
+  <p>
+    A statement about the world, a rule for a particular exchange and a screen used
+    to review that statement have different jobs. A lender may require information
+    that an early estate-agency listing does not yet contain. That requirement can
+    belong in a delivery profile without redefining the property itself.
+  </p>
+  <p>
+    Declare which inference rules run and which SHACL shapes are checked. Preserve
+    the published semantics of the languages used. Generate forms, JSON, APIs and
+    documentation as views or projections of the reviewed agreement, and check what
+    those projections retain or lose. A passing validator is evidence of encoded
+    conformance, not proof that a source claim is true.
+  </p>
+
+  <h2 id="participation">8. Make participation a normal professional activity</h2>
+  <p>
+    People should contribute by reading definitions, correcting examples, explaining
+    exceptions and following relationships on the website. They should not need an
+    ontology editor or a training course in RDF. A useful challenge such as “this
+    also happens when there is no registered title” is modelling input of the highest
+    value.
+  </p>
+  <p>
+    Technical specialists maintain the encoding. Tools can draft, compare and check;
+    they cannot supply the authority of the practitioners who review meaning.
+    <a href="/semantic-modelling/taking-part">The participation guide</a> shows how
+    to make a useful contribution through the pages and working groups.
+  </p>
+
+  <h2 id="evolve">9. Treat disagreement and change as part of the model</h2>
+  <p>
+    Preserve the source, version, rationale and owner of a decision. Record uncertainty
+    and dissent. Make an alternative interpretation inspectable instead of smoothing
+    it away in a generic definition. When a source or business practice changes,
+    those records explain which terms, mappings and consumers need another look.
+  </p>
+  <p>
+    This approach costs thought and coordination. A small shared model is still
+    governed; local autonomy still needs shared contracts. The benefit we seek is
+    that change can be discussed and assessed where it matters, without rebuilding
+    the entire industry's vocabulary around every new requirement.
+  </p>
+
+  <h2 id="success">10. Judge success by what people can do with it</h2>
+  <p>
+    The number of classes is not the goal. Better questions are whether a practitioner
+    can find and challenge a definition, an implementer can understand a boundary,
+    a source can be traced, and two consumers can exchange information with its
+    meaning intact. These are the reasons for making the model public and readable.
+  </p>
+  <p>
+    Explore the <a href="/semantic-modelling/benefits">practical benefits</a>, follow
+    the <a href="/semantic-modelling/modelling-method">working method</a>, or
+    <a href="/join">join a working group</a> to help shape the agreement.
+  </p>
+</Layout>
