@@ -1,0 +1,221 @@
+{
+  "version": 1,
+  "date": "2026-09-05",
+  "sourceRevision": "67174057e6384b79d0b28b7736fe70a66e112895",
+  "selectedCategories": [
+    1,
+    2,
+    5,
+    7,
+    8,
+    9,
+    10,
+    11
+  ],
+  "scope": "Local OPDA method adoption; source implementation and approval evidence are not inherited.",
+  "records": [
+    {
+      "sourceId": "ODR-0010",
+      "localId": "ODR-0036",
+      "sourceFile": "ODR-0010-multi-faceted-classification-framework.md",
+      "localFile": "ODR-0036-multi-faceted-classification-framework.md",
+      "route": "/modelling/odr/odr-0036"
+    },
+    {
+      "sourceId": "ODR-0014",
+      "localId": "ODR-0037",
+      "sourceFile": "ODR-0014-domain-range-as-documentation.md",
+      "localFile": "ODR-0037-domain-range-as-documentation.md",
+      "route": "/modelling/odr/odr-0037"
+    },
+    {
+      "sourceId": "ODR-0015",
+      "localId": "ODR-0038",
+      "sourceFile": "ODR-0015-bounded-context-autonomy.md",
+      "localFile": "ODR-0038-bounded-context-autonomy.md",
+      "route": "/modelling/odr/odr-0038"
+    },
+    {
+      "sourceId": "ODR-0016",
+      "localId": "ODR-0039",
+      "sourceFile": "ODR-0016-skos-for-enumerations.md",
+      "localFile": "ODR-0039-skos-for-enumerations.md",
+      "route": "/modelling/odr/odr-0039"
+    },
+    {
+      "sourceId": "ODR-0023",
+      "localId": "ODR-0040",
+      "sourceFile": "ODR-0023-enumeration-modeling-pattern.md",
+      "localFile": "ODR-0040-enumeration-modeling-pattern.md",
+      "route": "/modelling/odr/odr-0040"
+    },
+    {
+      "sourceId": "ODR-0025",
+      "localId": "ODR-0041",
+      "sourceFile": "ODR-0025-role-view-modeling-pattern.md",
+      "localFile": "ODR-0041-role-view-modeling-pattern.md",
+      "route": "/modelling/odr/odr-0041"
+    },
+    {
+      "sourceId": "ODR-0026",
+      "localId": "ODR-0042",
+      "sourceFile": "ODR-0026-property-distribution-across-ontological-levels.md",
+      "localFile": "ODR-0042-property-distribution-across-ontological-levels.md",
+      "route": "/modelling/odr/odr-0042"
+    },
+    {
+      "sourceId": "ODR-0030",
+      "localId": "ODR-0043",
+      "sourceFile": "ODR-0030-owl-as-documentation-framework.md",
+      "localFile": "ODR-0043-owl-as-documentation-framework.md",
+      "route": "/modelling/odr/odr-0043"
+    },
+    {
+      "sourceId": "ODR-0036",
+      "localId": "ODR-0044",
+      "sourceFile": "ODR-0036-shacl-rules-and-owl-inferencing.md",
+      "localFile": "ODR-0044-shacl-rules-and-owl-inferencing.md",
+      "route": "/modelling/odr/odr-0044"
+    },
+    {
+      "sourceId": "ODR-0040",
+      "localId": "ODR-0045",
+      "sourceFile": "ODR-0040-bounded-context-boundary-criteria.md",
+      "localFile": "ODR-0045-bounded-context-boundary-criteria.md",
+      "route": "/modelling/odr/odr-0045"
+    },
+    {
+      "sourceId": "ODR-0071",
+      "localId": "ODR-0046",
+      "sourceFile": "ODR-0071-ontology-modelling-category-framework.md",
+      "localFile": "ODR-0046-ontology-modelling-category-framework.md",
+      "route": "/modelling/odr/odr-0046"
+    },
+    {
+      "sourceId": "ODR-0071a",
+      "localId": "ODR-0047",
+      "sourceFile": "ODR-0071a-cat1-domain-structure-pipeline-adoption.md",
+      "localFile": "ODR-0047-cat1-domain-structure-pipeline-adoption.md",
+      "route": "/modelling/odr/odr-0047"
+    },
+    {
+      "sourceId": "ODR-0071b",
+      "localId": "ODR-0048",
+      "sourceFile": "ODR-0071b-cat2-vocabulary-taxonomy-pipeline-adoption.md",
+      "localFile": "ODR-0048-cat2-vocabulary-taxonomy-pipeline-adoption.md",
+      "route": "/modelling/odr/odr-0048"
+    },
+    {
+      "sourceId": "ODR-0071e",
+      "localId": "ODR-0049",
+      "sourceFile": "ODR-0071e-cat5-classification-metadata-pipeline-adoption.md",
+      "localFile": "ODR-0049-cat5-classification-metadata-pipeline-adoption.md",
+      "route": "/modelling/odr/odr-0049"
+    },
+    {
+      "sourceId": "ODR-0071g",
+      "localId": "ODR-0050",
+      "sourceFile": "ODR-0071g-cat7-validation-constraints-pipeline-adoption.md",
+      "localFile": "ODR-0050-cat7-validation-constraints-pipeline-adoption.md",
+      "route": "/modelling/odr/odr-0050"
+    },
+    {
+      "sourceId": "ODR-0071h",
+      "localId": "ODR-0051",
+      "sourceFile": "ODR-0071h-cat8-cross-domain-mappings-pipeline-adoption.md",
+      "localFile": "ODR-0051-cat8-cross-domain-mappings-pipeline-adoption.md",
+      "route": "/modelling/odr/odr-0051"
+    },
+    {
+      "sourceId": "ODR-0071i",
+      "localId": "ODR-0052",
+      "sourceFile": "ODR-0071i-cat9-extraction-provenance-prov-o-adoption.md",
+      "localFile": "ODR-0052-cat9-extraction-provenance-prov-o-adoption.md",
+      "route": "/modelling/odr/odr-0052"
+    },
+    {
+      "sourceId": "ODR-0071j",
+      "localId": "ODR-0053",
+      "sourceFile": "ODR-0071j-cat10-temporal-state-history-adoption.md",
+      "localFile": "ODR-0053-cat10-temporal-state-history-adoption.md",
+      "route": "/modelling/odr/odr-0053"
+    },
+    {
+      "sourceId": "ODR-0071k",
+      "localId": "ODR-0054",
+      "sourceFile": "ODR-0071k-cat11-access-control-data-sensitivity-adoption.md",
+      "localFile": "ODR-0054-cat11-access-control-data-sensitivity-adoption.md",
+      "route": "/modelling/odr/odr-0054"
+    },
+    {
+      "sourceId": "ODR-0086",
+      "localId": "ODR-0055",
+      "sourceFile": "ODR-0086-dublin-core-cat5-annotation.md",
+      "localFile": "ODR-0055-dublin-core-cat5-annotation.md",
+      "route": "/modelling/odr/odr-0055"
+    },
+    {
+      "sourceId": "ODR-0087",
+      "localId": "ODR-0056",
+      "sourceFile": "ODR-0087-sssom-cat8-mapping-provenance.md",
+      "localFile": "ODR-0056-sssom-cat8-mapping-provenance.md",
+      "route": "/modelling/odr/odr-0056"
+    },
+    {
+      "sourceId": "ODR-0089",
+      "localId": "ODR-0057",
+      "sourceFile": "ODR-0089-odrl-cat11-dpv-profile.md",
+      "localFile": "ODR-0057-odrl-cat11-dpv-profile.md",
+      "route": "/modelling/odr/odr-0057"
+    },
+    {
+      "sourceId": "ODR-0096",
+      "localId": "ODR-0058",
+      "sourceFile": "ODR-0096-cat8-reification-rdf12-triple-terms.md",
+      "localFile": "ODR-0058-cat8-reification-rdf12-triple-terms.md",
+      "route": "/modelling/odr/odr-0058"
+    },
+    {
+      "sourceId": "ODR-0098",
+      "localId": "ODR-0059",
+      "sourceFile": "ODR-0098-cross-context-identity-criterion-protocol.md",
+      "localFile": "ODR-0059-cross-context-identity-criterion-protocol.md",
+      "route": "/modelling/odr/odr-0059"
+    },
+    {
+      "sourceId": "ODR-0106",
+      "localId": "ODR-0060",
+      "sourceFile": "ODR-0106-data-domain-vs-subject-area-vs-bounded-context.md",
+      "localFile": "ODR-0060-data-domain-vs-subject-area-vs-bounded-context.md",
+      "route": "/modelling/odr/odr-0060"
+    },
+    {
+      "sourceId": "ODR-0112",
+      "localId": "ODR-0061",
+      "sourceFile": "ODR-0112-ontoclean-four-axis-shape-buildout.md",
+      "localFile": "ODR-0061-ontoclean-four-axis-shape-buildout.md",
+      "route": "/modelling/odr/odr-0061"
+    },
+    {
+      "sourceId": "ODR-0115",
+      "localId": "ODR-0062",
+      "sourceFile": "ODR-0115-organising-architecture-co-equal-axes-and-register.md",
+      "localFile": "ODR-0062-organising-architecture-co-equal-axes-and-register.md",
+      "route": "/modelling/odr/odr-0062"
+    },
+    {
+      "sourceId": "ODR-0118",
+      "localId": "ODR-0063",
+      "sourceFile": "ODR-0118-no-foundational-grounding-by-subsumption.md",
+      "localFile": "ODR-0063-no-foundational-grounding-by-subsumption.md",
+      "route": "/modelling/odr/odr-0063"
+    },
+    {
+      "sourceId": "ODR-0127",
+      "localId": "ODR-0064",
+      "sourceFile": "ODR-0127-sparql-queryable-ddd-context-maps.md",
+      "localFile": "ODR-0064-sparql-queryable-ddd-context-maps.md",
+      "route": "/modelling/odr/odr-0064"
+    }
+  ]
+}
