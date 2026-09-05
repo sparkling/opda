@@ -275,6 +275,8 @@ test('temporary selectors expose full preview cards and persist palettes and ico
   assert.match(client, /output\.textContent = input\.value/u);
   assert.match(client, /drawer\.inert = !expanded/u);
   assert.match(client, /bindHeaderPreviewControls\(\);/u);
+  assert.match(client, /function bindThemeToggle\(\)\s*\{[\s\S]*querySelectorAll\('\.theme-toggle'\)[\s\S]*button\.dataset\.themeBound/u);
+  assert.doesNotMatch(client, /getElementById\('theme-toggle'\)/u);
   assert.match(client, /function bindHeaderPreviewSelector\(config\)/u);
   assert.match(client, /function closeSelectorChain\(selector\)/u);
   assert.match(client, /if \(config\.closeOnSelect !== false\) closeSelectorChain\(selector\)/u);

@@ -27,24 +27,30 @@
   'use strict';
 
   function bindThemeToggle() {
-    const btn = document.getElementById('theme-toggle');
-    if (!btn) return;
+    const buttons = Array.from(document.querySelectorAll('.theme-toggle'));
+    if (buttons.length === 0) return;
     function syncThemeState() {
       const dark = document.documentElement.getAttribute('data-theme') === 'dark';
       const label = dark ? 'Switch to light mode' : 'Switch to dark mode';
-      btn.setAttribute('aria-pressed', dark ? 'true' : 'false');
-      btn.setAttribute('aria-label', label);
-      btn.setAttribute('title', label);
+      buttons.forEach(function (button) {
+        button.setAttribute('aria-pressed', dark ? 'true' : 'false');
+        button.setAttribute('aria-label', label);
+        button.setAttribute('title', label);
+      });
     }
     syncThemeState();
-    btn.addEventListener('click', function () {
-      const current = document.documentElement.getAttribute('data-theme') || 'light';
-      const next = current === 'dark' ? 'light' : 'dark';
-      document.documentElement.setAttribute('data-theme', next);
-      try { localStorage.setItem('opda-theme', next); } catch (e) {}
-      syncThemeState();
-      // Diagram re-render on theme change is handled by the GraphDiagram island
-      // (data-theme MutationObserver) — client.js no longer renders mermaid.
+    buttons.forEach(function (button) {
+      if (button.dataset.themeBound === 'true') return;
+      button.dataset.themeBound = 'true';
+      button.addEventListener('click', function () {
+        const current = document.documentElement.getAttribute('data-theme') || 'light';
+        const next = current === 'dark' ? 'light' : 'dark';
+        document.documentElement.setAttribute('data-theme', next);
+        try { localStorage.setItem('opda-theme', next); } catch (e) {}
+        syncThemeState();
+        // Diagram re-render on theme change is handled by the GraphDiagram island
+        // (data-theme MutationObserver) — client.js no longer renders mermaid.
+      });
     });
   }
 
