@@ -34,6 +34,9 @@ function splitHash(url: string): [string, string | null] {
 
 /** Map an absolute source path under docs/manual/ to its `/development/inputs/pdtf-schema/schema-derived-ontology/model-views-by-audience/<…>` route, else null. */
 export function toManualRoute(absPath: string): string | null {
+  if (/(?:^|\/)docs\/ontology\/odr\/method-adoption-crosswalk\.json$/u.test(absPath.replace(/\\/g, '/'))) {
+    return '/decisions/odr/method-adoption-crosswalk.json';
+  }
   const decision = absPath.replace(/\\/g, '/').match(/(?:^|\/)docs\/(?:adr\/(ADR)|ontology\/odr\/(ODR))-(\d{4}[a-z]?)-[^/]+\.md$/i);
   if (decision) return `/modelling/${(decision[1] || decision[2]).toLowerCase()}/${(decision[1] || decision[2]).toLowerCase()}-${decision[3].toLowerCase()}`;
   const m = absPath.replace(/\\/g, '/').match(MANUAL_SEG_RE);
@@ -59,7 +62,7 @@ export function remarkRewriteManualLinks() {
         const url = link.url ?? '';
         if (!isExternalOrAbsolute(url)) {
           const [relPart, hash] = splitHash(url);
-          if (relPart.endsWith('.md')) {
+          if (relPart.endsWith('.md') || relPart.endsWith('/method-adoption-crosswalk.json') || relPart === 'method-adoption-crosswalk.json') {
             const route = toManualRoute(path.resolve(fileDir, relPart));
             if (route) link.url = hash ? `${route}#${hash}` : route;
           }

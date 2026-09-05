@@ -1,5 +1,5 @@
 /** Ship canonical local ODR sources alongside their rendered Astro pages. */
-import { copyFileSync, mkdirSync, readdirSync, unlinkSync } from 'node:fs';
+import { copyFileSync, existsSync, mkdirSync, readdirSync, unlinkSync } from 'node:fs';
 import { resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { generateOdrRegistry } from '../../scripts/gen-odr-registry.mjs';
@@ -20,6 +20,11 @@ export function odrSourcesGenerator() {
         for (const { source } of records) {
           copyFileSync(resolve(root, 'docs/ontology/odr', source), resolve(destination, source));
         }
+        const crosswalk = 'method-adoption-crosswalk.json';
+        const crosswalkSource = resolve(root, 'docs/ontology/odr', crosswalk);
+        const crosswalkDestination = resolve(destination, crosswalk);
+        if (existsSync(crosswalkSource)) copyFileSync(crosswalkSource, crosswalkDestination);
+        else if (existsSync(crosswalkDestination)) unlinkSync(crosswalkDestination);
       },
     },
   };
