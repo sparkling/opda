@@ -1,0 +1,60 @@
+---
+/**
+ * Evidence register — sources and what each one supports.
+ *
+ * Each row identifies the source, its type, the statement it supports
+ * and the statement's standing: quoted from the source, inferred from
+ * it, or proposed and awaiting review (DESIGN.md §10 evidence panel).
+ * The standing is a text label; colour is supplementary.
+ *
+ *   <EvidenceList items={[
+ *     { source: 'Register extract, official copy', kind: 'Register record',
+ *       supports: 'The registered proprietor of title MF123456.',
+ *       standing: 'quoted', href: '/…' },
+ *   ]} />
+ *
+ * Usable inside a DossierPanel `evidence` slot or on its own.
+ */
+import '@/styles/modelling/dossier.css';
+
+type Standing = 'quoted' | 'inferred' | 'proposed';
+
+interface EvidenceItem {
+  /** Source title, e.g. "Register extract, official copy". */
+  source: string;
+  /** Source type, e.g. "Register record" or "Survey report". */
+  kind?: string;
+  /** The statement this source supports. */
+  supports: string;
+  standing: Standing;
+  /** Optional link to the source or its fuller description. */
+  href?: string;
+}
+
+interface Props {
+  items: EvidenceItem[];
+}
+
+const { items } = Astro.props;
+
+const STANDING_LABELS: Record<Standing, string> = {
+  quoted: 'Quoted',
+  inferred: 'Inferred',
+  proposed: 'Proposed',
+};
+---
+
+<ul class="modelling-evidence">
+  {items.map((item) => (
+    <li class="modelling-evidence__item">
+      <span class="modelling-evidence__source">
+        {item.href ? <a href={item.href}>{item.source}</a> : item.source}
+        {item.kind && <span class="modelling-evidence__kind">{item.kind}</span>}
+      </span>
+      <p class="modelling-evidence__supports">{item.supports}</p>
+      <span class={`modelling-evidence__standing modelling-evidence__standing--${item.standing}`}>
+        {STANDING_LABELS[item.standing]}
+      </span>
+    </li>
+  ))}
+</ul>

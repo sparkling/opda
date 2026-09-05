@@ -1,0 +1,107 @@
+---
+/**
+ * Dossier panel — the recurring worked-example case file.
+ *
+ * An ink header band names the fictional property and always carries an
+ * explicit standing badge (default "Illustrative example"): the one
+ * governance fact a reader must never miss is that nothing in the
+ * dossier is real or asserted. The body sets the scenario beside a
+ * ledger of facts on file; an evidence register and the standing note
+ * span the full panel beneath.
+ *
+ *   <DossierPanel
+ *     name="14 Bakers Row, Marlford"
+ *     reference="EX-01"
+ *     stage="Survey commissioned"
+ *     facts={[
+ *       { label: 'Registered title', value: 'MF123456' },
+ *       { label: 'Address (postal)', value: '14 Bakers Row, Marlford', note: 'One of two addresses in evidence.' },
+ *     ]}
+ *   >
+ *     <p>The scenario prose…</p>
+ *     <Fragment slot="evidence">
+ *       <EvidenceList items={…} />
+ *     </Fragment>
+ *   </DossierPanel>
+ */
+import '@/styles/modelling/dossier.css';
+
+interface Fact {
+  label: string;
+  value: string;
+  note?: string;
+}
+
+interface Props {
+  /** The fictional property or file this dossier concerns. */
+  name: string;
+  /** Short file reference shown in mono, e.g. "EX-01". */
+  reference?: string;
+  /** In-fiction stage of the scenario, e.g. "Survey commissioned". */
+  stage?: string;
+  /** Standing badge text. Every example stays declared illustrative. */
+  standing?: string;
+  /** Small-print restatement of the standing, shown at the panel end. */
+  standingNote?: string;
+  facts?: Fact[];
+  factsLabel?: string;
+  evidenceLabel?: string;
+  panelLabel?: string;
+}
+
+const {
+  name,
+  reference,
+  stage,
+  standing = 'Illustrative example',
+  standingNote = 'Every fact in this dossier is invented to teach the model. It describes no real property, person or transaction.',
+  facts = [],
+  factsLabel = 'On file',
+  evidenceLabel = 'Evidence in this dossier',
+  panelLabel = 'Worked example',
+} = Astro.props;
+
+const hasEvidence = Astro.slots.has('evidence');
+const bodyClass =
+  facts.length > 0
+    ? 'modelling-dossier__body'
+    : 'modelling-dossier__body modelling-dossier__body--single';
+---
+
+<section class="modelling-dossier" aria-label={`${panelLabel}: ${name}`}>
+  <header class="modelling-dossier__band">
+    <span class="modelling-dossier__label">{panelLabel}</span>
+    <p class="modelling-dossier__name">{name}</p>
+    {reference && <span class="modelling-dossier__reference">{reference}</span>}
+    {stage && <span class="modelling-dossier__stage">{stage}</span>}
+    <span class="modelling-dossier__standing">{standing}</span>
+  </header>
+  <div class={bodyClass}>
+    <div class="modelling-dossier__scenario">
+      <slot />
+    </div>
+    {facts.length > 0 && (
+      <div class="modelling-dossier__file">
+        <p class="modelling-dossier__facts-label">{factsLabel}</p>
+        <dl class="modelling-dossier__facts">
+          {facts.map((fact) => (
+            <div>
+              <dt>{fact.label}</dt>
+              <dd>
+                {fact.value}
+                {fact.note && <span class="modelling-dossier__fact-note">{fact.note}</span>}
+              </dd>
+            </div>
+          ))}
+        </dl>
+      </div>
+    )}
+    {hasEvidence && (
+      <div class="modelling-dossier__evidence">
+        <p class="modelling-dossier__evidence-label">{evidenceLabel}</p>
+        <slot name="evidence" />
+      </div>
+    )}
+    <p class="modelling-dossier__note">{standingNote}</p>
+  </div>
+</section>

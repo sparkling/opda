@@ -1,0 +1,140 @@
+---
+import { randomUUID } from 'node:crypto';
+
+interface Props { kind: string; }
+const { kind } = Astro.props;
+const id = `modelling-${randomUUID()}`;
+const names: Record<string, [string, string]> = {
+  'identity-map': ['One situation, distinct identities', 'Harbour Court contains two dwellings. An address description and a title record are separate resources. Sharing an address is not an identity test.'],
+  'evidence-timeline': ['An inspection is not a report version', 'The inspection occurs on 12 August. A report is issued on 14 August and corrected on 20 August. The correction changes the document, not the past inspection. Dates are spaced proportionally.'],
+  'concept-layers': ['A dwelling, a concept and a label', 'A dwelling is classified using a concept. The concept has preferred and alternative labels. A concept hierarchy is not a physical containment or class-inheritance hierarchy.'],
+  'context-mapping-bridge': ['Two levels of agreement', 'Surveying and transaction-assessment participate in a strategic relationship. The neutral participant links assert no dependency direction. Separate qualified mapping records describe particular term correspondences, including their versions and rationale.'],
+  'semantic-layers': ['Four different questions for software', 'Assertions state meaning, applicability hints document intended uses, constraints check supplied data, and rules derive additional statements. None of these is human adoption or proof of truth.'],
+  'role-phase': ['Participation is not a new person', 'One person participates as seller in one transaction and buyer in another. A record can also move through workflow states, but those labels are not automatically ontological phases. Identity and phase criteria require separate analysis.'],
+  'mapping-gates': ['A mapping can be refused', 'Compare intended meaning and identity criteria before selecting a mapping relation. A failed or unresolved identity comparison stops equivalence. An accepted correspondence needs a qualified record.'],
+  'candidate-loop': ['A question becomes a reviewable candidate', 'Practitioners bring a question and examples. Modellers make distinctions explicit. Checks expose problems and return work for revision. Human review records the disposition; passing checks is not approval.'],
+  'policy-boundaries': ['Description is not enforcement', 'Model annotations describe sensitivity and purpose. Human-governed policy defines permitted use. Application controls must enforce the policy; annotations alone grant no access.'],
+  'scope-map': ['Eight concerns, one connected package', 'Domain structure, vocabulary, classification, validation, mappings, provenance, time and sensitivity are eight selected concerns across one package. They are not eight mandatory files or separate ontologies.'],
+};
+const [title, description] = names[kind] ?? names['identity-map'];
+const arrow = `url(#${id}-arrow)`;
+---
+
+<svg class="modelling-visual" viewBox="0 0 880 380" role="img" aria-labelledby={`${id}-title ${id}-desc`}>
+  <title id={`${id}-title`}>{title}</title>
+  <desc id={`${id}-desc`}>{description}</desc>
+  <defs><marker id={`${id}-arrow`} viewBox="0 0 8 8" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0 0 8 4 0 8Z" fill="var(--color-text-muted)" /></marker></defs>
+
+  {kind === 'identity-map' && <>
+    <path d="M32 80 232 20 432 80" class="mv-line" />
+    <rect x="32" y="80" width="400" height="216" class="mv-focus" />
+    <text x="56" y="116" class="mv-label">Harbour Court</text><text x="56" y="144" class="mv-note">One building containing two dwellings</text>
+    <rect x="56" y="168" width="164" height="96" class="mv-box" /><rect x="244" y="168" width="164" height="96" class="mv-box" />
+    <text x="80" y="208" class="mv-label">Flat 1</text><text x="80" y="236" class="mv-tag">dwelling-1</text>
+    <text x="268" y="208" class="mv-label">Flat 2</text><text x="268" y="236" class="mv-tag">dwelling-2</text>
+    <rect x="584" y="64" width="264" height="96" class="mv-box" /><text x="608" y="104" class="mv-label">Title record</text><text x="608" y="132" class="mv-note">A separately identified record</text>
+    <rect x="584" y="224" width="264" height="96" class="mv-box" /><text x="608" y="264" class="mv-label">Address description</text><text x="608" y="292" class="mv-note">14 Orchard Road</text>
+    <path d="M440 112H572" class="mv-refused" /><path d="m492 100 24 24m0-24-24 24" class="mv-refused" />
+    <text x="504" y="160" text-anchor="middle" class="mv-note">Not the same thing</text>
+    <text x="32" y="348" class="mv-note">A shared address connects descriptions. It does not merge their subjects.</text>
+  </>}
+
+  {kind === 'evidence-timeline' && <>
+    <text x="32" y="40" class="mv-tag">AUGUST 2026 · EVENT TIME AND DOCUMENT TIME</text>
+    <path d="M100 176H820" class="mv-line" />
+    {[100, 280, 820].map((x) => <circle cx={x} cy="176" r="6" class="mv-accent" />)}
+    <path d="M100 176V108M280 176V252M820 176V108" class="mv-line" />
+    <text x="100" y="208" text-anchor="middle" class="mv-tag">12 AUG</text><text x="280" y="208" text-anchor="middle" class="mv-tag">14 AUG</text><text x="820" y="208" text-anchor="middle" class="mv-tag">20 AUG</text>
+    <text x="32" y="76" class="mv-label">Inspection occurs</text><text x="32" y="104" class="mv-note">The event being described</text>
+    <text x="204" y="280" class="mv-label">Report v1 issued</text><text x="204" y="308" class="mv-note">A document about the event</text>
+    <text x="572" y="76" class="mv-label">Report v2 corrects v1</text><text x="572" y="104" class="mv-note">Not a second inspection</text>
+    <text x="32" y="356" class="mv-note">Recording time is another clock. A receiving system may learn about the correction later.</text>
+  </>}
+
+  {kind === 'concept-layers' && <>
+    {['M240 124H332', 'M548 124H640'].map((d) => <path d={d} class="mv-line" marker-end={arrow} />)}
+    <rect x="32" y="72" width="208" height="112" class="mv-box" /><text x="56" y="112" class="mv-label">Flat 1</text><text x="56" y="144" class="mv-note">An individual dwelling</text>
+    <rect x="344" y="72" width="204" height="112" class="mv-focus" /><text x="368" y="112" class="mv-label">Concept: flat</text><text x="368" y="144" class="mv-note">Governed meaning</text>
+    <rect x="652" y="72" width="196" height="112" class="mv-box" /><text x="676" y="112" class="mv-label">“Flat”</text><text x="676" y="144" class="mv-note">A preferred label</text>
+    <text x="288" y="60" text-anchor="middle" class="mv-note">classified as</text><text x="600" y="60" text-anchor="middle" class="mv-note">labelled</text>
+    <path d="M444 184V256" class="mv-line" marker-end={arrow} /><text x="464" y="224" class="mv-note">a broader concept can organise this meaning</text>
+    <rect x="324" y="268" width="248" height="64" class="mv-box" /><text x="348" y="308" class="mv-label">Concept: dwelling</text>
+    <text x="32" y="364" class="mv-note">Changing a label does not replace the dwelling. Broader does not mean “part of the building”.</text>
+  </>}
+
+  {kind === 'context-mapping-bridge' && <>
+    <text x="32" y="32" class="mv-tag">STRATEGIC LEVEL · RESPONSIBILITY AND DEPENDENCY</text>
+    <path d="M248 112H356M536 112H644" class="mv-line" />
+    <text x="302" y="92" text-anchor="middle" class="mv-tag">participant</text><text x="590" y="92" text-anchor="middle" class="mv-tag">participant</text>
+    <rect x="32" y="64" width="216" height="96" class="mv-box" /><text x="56" y="104" class="mv-label">Surveying</text><text x="56" y="132" class="mv-note">Owns its meanings</text>
+    <rect x="356" y="64" width="180" height="96" class="mv-focus" /><text x="376" y="104" class="mv-label">Agreement</text><text x="376" y="132" class="mv-note">Named obligations</text>
+    <rect x="644" y="64" width="204" height="96" class="mv-box" /><text x="668" y="96" class="mv-label">Transaction</text><text x="668" y="120" class="mv-label">assessment</text><text x="668" y="144" class="mv-note">Owns its meanings</text>
+    <path d="M444 160V244" class="mv-line" marker-end={arrow} /><text x="468" y="212" class="mv-note">references only the mappings that apply</text>
+    <rect x="32" y="256" width="816" height="96" class="mv-box" /><text x="56" y="292" class="mv-label">Qualified term correspondence</text>
+    <text x="56" y="324" class="mv-note">Subject + predicate + object · source versions · justification · mapping-set release</text>
+  </>}
+
+  {kind === 'semantic-layers' && <>
+    {[
+      ['Assertion', 'What the graph says', 'RDF / RDFS / bounded OWL'],
+      ['Applicability', 'Where a property is intended for use', 'Schema.org inclusion hints'],
+      ['Constraint', 'What supplied data must satisfy', 'SHACL + a declared profile'],
+      ['Derivation', 'What a selected rule adds', 'Separate, traceable derived graph'],
+    ].map(([label, question, tool], i) => <g>
+      <rect x="32" y={24 + i * 80} width="816" height="72" class={i === 2 ? 'mv-focus' : 'mv-box'} />
+      <text x="56" y={68 + i * 80} class="mv-label">{label}</text><text x="240" y={56 + i * 80} class="mv-note">{question}</text><text x="240" y={80 + i * 80} class="mv-tag">{tool}</text>
+    </g>)}
+    <text x="32" y="372" class="mv-note">Four jobs, not four approval stages. Standard semantics still apply when a reasoner is switched off.</text>
+  </>}
+
+  {kind === 'role-phase' && <>
+    <text x="32" y="32" class="mv-tag">PARTICIPATION · SIMULTANEOUS, IN DIFFERENT TRANSACTIONS</text>
+    {['M340 112H260', 'M540 112H620'].map((d) => <path d={d} class="mv-line" marker-end={arrow} />)}
+    <rect x="340" y="64" width="200" height="96" class="mv-focus" /><text x="364" y="104" class="mv-label">One person</text><text x="364" y="132" class="mv-tag">person-1</text>
+    <rect x="32" y="64" width="216" height="96" class="mv-box" /><text x="56" y="104" class="mv-label">Seller in sale A</text><text x="56" y="132" class="mv-note">A scoped participation</text>
+    <rect x="632" y="64" width="216" height="96" class="mv-box" /><text x="656" y="104" class="mv-label">Buyer in sale B</text><text x="656" y="132" class="mv-note">Another participation</text>
+    <path d="M32 208H848" class="mv-rule" /><text x="32" y="240" class="mv-tag">WORKFLOW STATES · NOT AUTOMATICALLY ONTOLOGICAL PHASES</text>
+    {['M248 300H324', 'M548 300H624'].map((d) => <path d={d} class="mv-line" marker-end={arrow} />)}
+    {['Draft', 'Under review', 'Recorded disposition'].map((label, i) => <g><rect x={32 + i * 300} y="268" width="216" height="64" class="mv-box" /><text x={48 + i * 300} y="308" class="mv-note">{label}</text></g>)}
+    <text x="32" y="368" class="mv-note">Illustrative lifecycle, not an implemented workflow. A state change still needs an identity criterion.</text>
+  </>}
+
+  {kind === 'mapping-gates' && <>
+    {['M240 108H320', 'M544 108H632', 'M436 176V256'].map((d) => <path d={d} class="mv-line" marker-end={arrow} />)}
+    <rect x="32" y="64" width="208" height="88" class="mv-box" /><text x="56" y="100" class="mv-label">Compare meanings</text><text x="56" y="128" class="mv-note">Not just their labels</text>
+    <path d="M436 40 540 108 436 176 332 108Z" class="mv-focus" /><text x="436" y="104" text-anchor="middle" class="mv-label">Identity fits?</text><text x="436" y="128" text-anchor="middle" class="mv-tag">reviewed criterion</text>
+    <rect x="644" y="64" width="204" height="88" class="mv-box" /><text x="668" y="100" class="mv-label">Select relation</text><text x="668" y="128" class="mv-note">Then qualify the record</text>
+    <text x="588" y="88" text-anchor="middle" class="mv-note">yes</text><text x="460" y="224" class="mv-note">no / unresolved</text>
+    <rect x="280" y="268" width="312" height="72" class="mv-box" /><text x="304" y="312" class="mv-label">Do not assert equivalence</text>
+    <text x="32" y="372" class="mv-note">Reconsider a weaker justified correspondence, or record no mapping. Do not force equivalence.</text>
+  </>}
+
+  {kind === 'candidate-loop' && <>
+    <text x="32" y="32" class="mv-tag">ILLUSTRATIVE MODELLING HANDOFF · NOT AN AUTOMATIC APPROVAL PIPELINE</text>
+    {['M232 108H336', 'M544 108H640', 'M748 152V220H444V232', 'M344 284H240', 'M132 240V160'].map((d) => <path d={d} class="mv-line" marker-end={arrow} />)}
+    {[
+      [32, 64, 'Question', 'Practitioner + examples'], [344, 64, 'Distinctions', 'Modeller + domain review'],
+      [648, 64, 'Checks', 'Explicit profile + cases'], [344, 240, 'Human disposition', 'Accept, revise or decline'],
+      [32, 240, 'Revised candidate', 'Unresolved issues retained'],
+    ].map(([x, y, name, note]) => <g><rect x={x} y={y} width="200" height="88" class={name === 'Human disposition' ? 'mv-focus' : 'mv-box'} /><text x={Number(x) + 16} y={Number(y) + 36} class="mv-label">{name}</text><text x={Number(x) + 16} y={Number(y) + 64} class="mv-note">{note}</text></g>)}
+    <text x="600" y="284" class="mv-note">Passing checks is evidence,</text><text x="600" y="308" class="mv-note">not permission to adopt.</text>
+    <text x="32" y="372" class="mv-note">Technical construction is iterative. The real governance process determines who can adopt a standard.</text>
+  </>}
+
+  {kind === 'policy-boundaries' && <>
+    {[
+      ['Describe', 'Sensitivity, purpose and conditions', 'Model annotation / reviewed vocabulary'],
+      ['Decide', 'Who may use what, and for which purpose', 'Human-governed policy and responsibilities'],
+      ['Enforce', 'Permit or deny an actual request', 'Application controls and operational evidence'],
+    ].map(([label, action, owner], i) => <g><rect x="32" y={24 + i * 108} width="816" height="96" class={i === 2 ? 'mv-focus' : 'mv-box'} /><text x="56" y={68 + i * 108} class="mv-label">{label}</text><text x="228" y={60 + i * 108} class="mv-label">{action}</text><text x="228" y={92 + i * 108} class="mv-note">{owner}</text></g>)}
+    <text x="32" y="372" class="mv-note">A label is not an access-control decision. A connected model does not make private evidence public.</text>
+  </>}
+
+  {kind === 'scope-map' && <>
+    {[[1, 'Domain'], [2, 'Vocabulary'], [5, 'Classification'], [7, 'Validation'], [8, 'Mappings'], [9, 'Provenance'], [10, 'Time'], [11, 'Sensitivity']].map(([number, label], i) => <g>
+      <rect x={32 + (i % 4) * 208} y={32 + Math.floor(i / 4) * 104} width="192" height="88" class="mv-box" />
+      <text x={48 + (i % 4) * 208} y={64 + Math.floor(i / 4) * 104} class="mv-tag">CATEGORY {number}</text><text x={48 + (i % 4) * 208} y={96 + Math.floor(i / 4) * 104} class="mv-label">{label}</text>
+    </g>)}
+    <rect x="32" y="272" width="816" height="72" class="mv-focus" /><text x="56" y="304" class="mv-label">One connected package</text><text x="56" y="330" class="mv-note">Assess each concern. Record its disposition. Do not invent unnecessary artefacts.</text>
+  </>}
+</svg>

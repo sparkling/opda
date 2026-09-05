@@ -1,0 +1,305 @@
+/* ─────────────────────────────────────────────────────────────
+   MODELLING DOSSIER FAMILY — evidence artefacts.
+
+   The recurring worked-example case file, its evidence register
+   and the annotated meaning cards. Scope: components under
+   src/components/modelling/ only; all values are tokens from
+   public/ui/design-tokens.css. The band reuses the semantic
+   table-header surface pair so dark parity is inherited, not
+   re-derived. Roots carry no trailing margins (DESIGN.md §5).
+   ───────────────────────────────────────────────────────────── */
+
+/* ── Dossier panel ── */
+.modelling-dossier {
+  border: 1px solid var(--color-border);
+  background: var(--color-surface-card);
+}
+.modelling-dossier__band {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  column-gap: var(--space-5);
+  row-gap: var(--space-3);
+  padding: var(--space-4) var(--space-5);
+  background: var(--color-table-header-surface);
+  color: var(--color-table-header-text);
+}
+.modelling-dossier__label {
+  color: var(--on-dark-muted);
+  font: 700 var(--text-xs) / 1.3 var(--font-mono);
+  letter-spacing: var(--tracking-meta);
+  text-transform: uppercase;
+}
+.modelling-dossier__name {
+  margin: 0;
+  color: inherit;
+  font: 600 var(--text-lg) / 1.4 var(--font-sans);
+}
+.modelling-dossier__reference {
+  color: var(--on-dark-muted);
+  font: 500 var(--text-xs) / 1.3 var(--font-mono);
+  font-variant-numeric: tabular-nums;
+}
+.modelling-dossier__stage {
+  border: 1px solid var(--on-dark-muted);
+  border-radius: var(--radius-sm);
+  padding: 0.2em 0.6em;
+  color: inherit;
+  font: 600 var(--text-xs) / 1.3 var(--font-sans);
+  white-space: nowrap;
+}
+.modelling-dossier__standing {
+  margin-inline-start: auto;
+  background: var(--color-surface-card);
+  color: var(--color-text-strong);
+  border: 1px solid var(--color-border-strong);
+  border-radius: var(--radius-sm);
+  padding: 0.22em 0.6em;
+  font: 700 var(--text-xs) / 1.3 var(--font-sans);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+.modelling-dossier__body {
+  display: grid;
+  grid-template-columns: minmax(0, 1.7fr) minmax(15rem, 1fr);
+}
+/* Without a fact ledger the scenario owns the whole track. */
+.modelling-dossier__body--single { grid-template-columns: minmax(0, 1fr); }
+.modelling-dossier__scenario {
+  min-width: 0;
+  padding: var(--space-6);
+}
+.modelling-dossier__scenario > * + * { margin-block-start: var(--space-4); }
+.modelling-dossier__scenario p { text-wrap: pretty; }
+.modelling-dossier__file {
+  min-width: 0;
+  border-inline-start: 1px solid var(--color-border);
+  background: var(--color-surface-alt);
+  padding: var(--space-6);
+}
+.modelling-dossier__facts-label,
+.modelling-dossier__evidence-label {
+  margin: 0;
+  color: var(--color-text-muted);
+  font: 700 var(--text-xs) / 1.3 var(--font-sans);
+  letter-spacing: var(--tracking-meta);
+  text-transform: uppercase;
+}
+.modelling-dossier__facts { margin: var(--space-3) 0 0; }
+.modelling-dossier__facts > div { padding-block: var(--space-3); }
+.modelling-dossier__facts > div + div { border-block-start: 1px solid var(--color-border); }
+.modelling-dossier__facts dt {
+  margin: 0;
+  color: var(--color-text-muted);
+  font: 600 var(--text-xs) / 1.4 var(--font-sans);
+}
+.modelling-dossier__facts dd {
+  margin: var(--space-1) 0 0;
+  color: var(--color-text-strong);
+  font: 500 var(--text-sm) / 1.5 var(--font-mono);
+  font-variant-numeric: tabular-nums;
+  overflow-wrap: anywhere;
+}
+.modelling-dossier__fact-note {
+  display: block;
+  margin-block-start: var(--space-1);
+  color: var(--color-text-muted);
+  font: 400 var(--text-xs) / 1.4 var(--font-sans);
+}
+.modelling-dossier__evidence {
+  grid-column: 1 / -1;
+  border-block-start: 1px solid var(--color-border);
+  padding: var(--space-5) var(--space-6);
+}
+.modelling-dossier__evidence > * + * { margin-block-start: var(--space-3); }
+.modelling-dossier__note {
+  grid-column: 1 / -1;
+  margin: 0;
+  border-block-start: 1px solid var(--color-border);
+  padding: var(--space-3) var(--space-6);
+  color: var(--color-text-muted);
+  font: 400 var(--text-xs) / 1.5 var(--font-sans);
+}
+
+/* ── Evidence register ── */
+.modelling-evidence {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.modelling-evidence__item {
+  display: grid;
+  grid-template-columns: minmax(9rem, 13rem) minmax(0, 1fr) auto;
+  column-gap: var(--space-5);
+  row-gap: var(--space-1);
+  align-items: baseline;
+  padding-block: var(--space-3);
+}
+.modelling-evidence__item + .modelling-evidence__item {
+  border-block-start: 1px solid var(--color-border);
+}
+.modelling-evidence__source {
+  min-width: 0;
+  color: var(--color-text-strong);
+  font: 600 var(--text-sm) / 1.4 var(--font-sans);
+  overflow-wrap: anywhere;
+}
+.modelling-evidence__kind {
+  display: block;
+  margin-block-start: var(--space-1);
+  color: var(--color-text-muted);
+  font: 500 var(--text-xs) / 1.3 var(--font-mono);
+}
+.modelling-evidence__supports {
+  min-width: 0;
+  margin: 0;
+  font-size: var(--text-sm);
+  text-wrap: pretty;
+}
+.modelling-evidence__standing {
+  justify-self: end;
+  border-radius: var(--radius-sm);
+  padding: 0.2em 0.6em;
+  font: 700 var(--text-xs) / 1.3 var(--font-sans);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+.modelling-evidence__standing--quoted {
+  background: var(--color-status-info-surface);
+  color: var(--color-status-info);
+}
+.modelling-evidence__standing--inferred {
+  background: var(--color-status-warning-surface);
+  color: var(--color-status-warning);
+}
+.modelling-evidence__standing--proposed {
+  background: var(--color-surface-tint);
+  color: var(--color-text-muted);
+  border: 1px solid var(--color-border-strong);
+}
+
+/* ── Annotated meaning cards ──
+   The kind rule and chip use the ordered categorical data
+   palette; the text label always carries the meaning, so the
+   cards survive grayscale and forced colours. */
+.modelling-meanings {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 15rem), 1fr));
+  gap: var(--space-5);
+}
+.modelling-meaning {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  border: 1px solid var(--color-border);
+  border-inline-start: 3px solid var(--kind-rule, var(--color-border-strong));
+  background: var(--color-surface-card);
+  padding: var(--space-5);
+}
+.modelling-meaning[data-kind='thing'] {
+  --kind-rule: var(--color-data-1);
+  --kind-surface: var(--color-data-1-surface);
+}
+.modelling-meaning[data-kind='description'] {
+  --kind-rule: var(--color-data-3);
+  --kind-surface: var(--color-data-3-surface);
+}
+.modelling-meaning[data-kind='evidence'] {
+  --kind-rule: var(--color-data-6);
+  --kind-surface: var(--color-data-6-surface);
+}
+.modelling-meaning[data-kind='decision'] {
+  --kind-rule: var(--color-data-4);
+  --kind-surface: var(--color-data-4-surface);
+}
+[data-theme='dark'] .modelling-meaning { --kind-surface: transparent; }
+[data-theme='dark'] .modelling-meaning[data-kind='thing'] { --kind-rule: var(--color-data-1-dark); }
+[data-theme='dark'] .modelling-meaning[data-kind='description'] { --kind-rule: var(--color-data-3-dark); }
+[data-theme='dark'] .modelling-meaning[data-kind='evidence'] { --kind-rule: var(--color-data-6-dark); }
+[data-theme='dark'] .modelling-meaning[data-kind='decision'] { --kind-rule: var(--color-data-4-dark); }
+.modelling-meaning__kind {
+  align-self: flex-start;
+  border: 1px solid var(--kind-rule, var(--color-border-strong));
+  background: var(--kind-surface, transparent);
+  color: var(--color-text-strong);
+  border-radius: var(--radius-sm);
+  padding: 0.2em 0.55em;
+  font: 700 var(--text-xs) / 1.3 var(--font-sans);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+.modelling-meaning .modelling-meaning__term {
+  margin: 0;
+  color: var(--color-text-strong);
+  font: var(--h4);
+}
+.modelling-meaning__definition {
+  margin: 0;
+  font-size: var(--text-sm);
+  text-wrap: pretty;
+}
+.modelling-meaning__connection {
+  margin: 0;
+  color: var(--color-text-muted);
+  font-size: var(--text-sm);
+}
+.modelling-meaning__connection strong,
+.modelling-meaning__not strong {
+  color: var(--color-text-strong);
+  font-weight: 600;
+}
+.modelling-meaning__not {
+  margin: 0;
+  margin-block-start: auto;
+  border-block-start: 1px dashed var(--color-border-strong);
+  padding-block-start: var(--space-3);
+  color: var(--color-text-muted);
+  font-size: var(--text-sm);
+}
+
+/* ── Responsive reflow ── */
+@media (max-width: 64rem) {
+  .modelling-dossier__body { grid-template-columns: minmax(0, 1fr); }
+  .modelling-dossier__file {
+    border-inline-start: 0;
+    border-block-start: 1px solid var(--color-border);
+  }
+}
+@media (max-width: 40rem) {
+  .modelling-dossier__scenario,
+  .modelling-dossier__file { padding: var(--space-5); }
+  .modelling-dossier__evidence { padding: var(--space-4) var(--space-5); }
+  .modelling-dossier__note { padding: var(--space-3) var(--space-5); }
+  .modelling-dossier__standing { margin-inline-start: 0; }
+  .modelling-evidence__item { grid-template-columns: minmax(0, 1fr); }
+  .modelling-evidence__standing { justify-self: start; }
+}
+
+/* ── Forced colours ── */
+@media (forced-colors: active) {
+  .modelling-dossier,
+  .modelling-dossier__file,
+  .modelling-dossier__evidence,
+  .modelling-dossier__note,
+  .modelling-dossier__facts > div + div,
+  .modelling-evidence__item + .modelling-evidence__item,
+  .modelling-meaning { border-color: CanvasText; }
+  .modelling-dossier__band { border-block-end: 1px solid CanvasText; }
+  .modelling-dossier__stage,
+  .modelling-dossier__standing,
+  .modelling-evidence__standing,
+  .modelling-meaning__kind { border: 1px solid CanvasText; }
+  .modelling-meaning__not { border-block-start-color: CanvasText; }
+}
+
+@media print {
+  .modelling-dossier,
+  .modelling-meaning,
+  .modelling-evidence__item { break-inside: avoid; }
+}

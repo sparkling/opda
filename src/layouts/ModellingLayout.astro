@@ -1,0 +1,26 @@
+---
+import Layout from '@/layouts/Layout.astro';
+import ChapterIntro from '@/components/modelling/ChapterIntro.astro';
+import { getModellingChapter } from '@/lib/modelling-navigation';
+import '@/styles/modelling/learning.css';
+
+interface Props {
+  title: string;
+  description: string;
+  chapter?: string;
+  claim?: 'guide' | 'method' | 'example';
+}
+const { title, description, chapter, claim = 'guide' } = Astro.props;
+const position = getModellingChapter(Astro.url.pathname);
+const claims = {
+  guide: 'Learning guide · examples are fictional, not approved model content',
+  method: 'Required modelling method · examples do not establish candidate implementation',
+  example: 'Illustrative case · no real property, person or transaction',
+};
+---
+
+<Layout title={title} description={description} proseClass="prose wide modelling-document">
+  <ChapterIntro title={title} lede={description} pathLabel={chapter ?? position?.group.title} />
+  <p class="modelling-standing">{claims[claim]}</p>
+  <slot />
+</Layout>

@@ -1,0 +1,57 @@
+---
+/**
+ * Contrast pair — a visual comparison of two positions.
+ *
+ * Facing editorial columns split by one rule. The accented side
+ * (default: right) carries the position the section argues for; the
+ * optional verdict row states the practical difference in one line.
+ *
+ *   <ContrastPair
+ *     leftLabel="One central model settles every meaning"
+ *     rightLabel="Connected contexts with explicit agreements"
+ *   >
+ *     <Fragment slot="left"><p>…</p></Fragment>
+ *     <Fragment slot="right"><p>…</p></Fragment>
+ *     <Fragment slot="verdict"><p>…</p></Fragment>
+ *   </ContrastPair>
+ */
+import '@/styles/modelling/editorial.css';
+
+interface Props {
+  leftLabel: string;
+  rightLabel: string;
+  /** Which side carries the argued-for position. */
+  accent?: 'left' | 'right' | 'none';
+  verdictLabel?: string;
+}
+
+const {
+  leftLabel,
+  rightLabel,
+  accent = 'right',
+  verdictLabel = 'The difference',
+} = Astro.props;
+
+const hasVerdict = Astro.slots.has('verdict');
+const sideClass = (side: 'left' | 'right') =>
+  accent === side
+    ? 'modelling-contrast__side modelling-contrast__side--accent'
+    : 'modelling-contrast__side';
+---
+
+<div class="modelling-contrast">
+  <div class={sideClass('left')}>
+    <p class="modelling-contrast__label">{leftLabel}</p>
+    <slot name="left" />
+  </div>
+  <div class={sideClass('right')}>
+    <p class="modelling-contrast__label">{rightLabel}</p>
+    <slot name="right" />
+  </div>
+  {hasVerdict && (
+    <div class="modelling-contrast__verdict">
+      <p class="modelling-contrast__verdict-label">{verdictLabel}</p>
+      <slot name="verdict" />
+    </div>
+  )}
+</div>

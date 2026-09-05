@@ -1,0 +1,74 @@
+---
+/**
+ * Audience pathway split — a deliberately asymmetric route choice.
+ *
+ * One primary pathway is set wide with its reading list; quieter
+ * alternatives share a ruled column. Each pathway is a single
+ * whole-panel link (no nested controls), matching the linked-card
+ * contract in DESIGN.md §9.
+ *
+ *   <PathwaySplit
+ *     primary={{
+ *       href: '/semantic-modelling/understand/shared-meaning',
+ *       audience: 'Everyone',
+ *       title: 'Understand what shared meaning makes possible',
+ *       description: 'No notation required…',
+ *       topics: ['Why property data disagrees', 'One worked dossier'],
+ *     }}
+ *     alternatives={[{ href, audience, title, description }, …]}
+ *   />
+ */
+import '@/styles/modelling/editorial.css';
+
+interface Pathway {
+  href: string;
+  /** Who this route is written for, e.g. "Everyone" or "Modellers". */
+  audience: string;
+  title: string;
+  description: string;
+  /** Shown on the primary pathway only. */
+  topics?: string[];
+}
+
+interface Props {
+  primary: Pathway;
+  alternatives?: Pathway[];
+  /** Accessible name of the navigation region. */
+  label?: string;
+  topicsLabel?: string;
+}
+
+const {
+  primary,
+  alternatives = [],
+  label = 'Reading pathways',
+  topicsLabel = 'You will read about',
+} = Astro.props;
+---
+
+<nav class="modelling-pathways" aria-label={label}>
+  <a class="modelling-pathways__route modelling-pathways__route--primary" href={primary.href}>
+    <p class="modelling-pathways__audience">{primary.audience}</p>
+    <h3 class="modelling-pathways__title">{primary.title}</h3>
+    <p class="modelling-pathways__description">{primary.description}</p>
+    {primary.topics && primary.topics.length > 0 && (
+      <>
+        <p class="modelling-pathways__topics-label">{topicsLabel}</p>
+        <ul class="modelling-pathways__topics">
+          {primary.topics.map((topic) => <li>{topic}</li>)}
+        </ul>
+      </>
+    )}
+  </a>
+  {alternatives.length > 0 && (
+    <div class="modelling-pathways__alternatives">
+      {alternatives.map((route) => (
+        <a class="modelling-pathways__route" href={route.href}>
+          <p class="modelling-pathways__audience">{route.audience}</p>
+          <h3 class="modelling-pathways__title">{route.title}</h3>
+          <p class="modelling-pathways__description">{route.description}</p>
+        </a>
+      ))}
+    </div>
+  )}
+</nav>

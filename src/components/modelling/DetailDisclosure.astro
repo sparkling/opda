@@ -1,0 +1,35 @@
+---
+/**
+ * Technical detail disclosure — native <details>, no script.
+ *
+ * For content that supports the chapter but is not its core reading:
+ * encoding notes, notation, profile tables. The content is real HTML
+ * in the document, present without JavaScript; the summary is a
+ * full-width 44px control with an optional audience note.
+ *
+ *   <DetailDisclosure summary="How this is encoded" note="For implementers">
+ *     <p>…RDF/SHACL detail…</p>
+ *   </DetailDisclosure>
+ */
+import '@/styles/modelling/editorial.css';
+
+interface Props {
+  summary: string;
+  /** Short audience or scope note, e.g. "For implementers". */
+  note?: string;
+  /** Render expanded initially. */
+  open?: boolean;
+}
+
+const { summary, note, open = false } = Astro.props;
+---
+
+<details class="modelling-detail" open={open}>
+  <summary class="modelling-detail__summary">
+    {summary}
+    {note && <span class="modelling-detail__note">{note}</span>}
+  </summary>
+  <div class="modelling-detail__body">
+    <slot />
+  </div>
+</details>

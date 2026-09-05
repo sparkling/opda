@@ -1,0 +1,63 @@
+---
+/**
+ * Meaning grid — annotated cards that keep near-neighbour terms apart.
+ *
+ * Each card names a term, declares what kind of thing it is (the
+ * real-world thing, a description record, evidence, or a decision),
+ * defines it, states what it connects to and — pinned to the card
+ * foot — what it must not be confused with. Kinds are keyed to the
+ * ordered categorical data palette, but the label always carries the
+ * meaning, so the grid survives grayscale and forced colours.
+ *
+ *   <MeaningGrid items={[
+ *     { term: 'The building', kind: 'thing',
+ *       definition: 'The physical structure at 14 Bakers Row…',
+ *       connection: 'currently identified by the postal address.',
+ *       isNot: 'the registered title, which can cover more or less than one building.' },
+ *   ]} />
+ */
+import '@/styles/modelling/dossier.css';
+
+type MeaningKind = 'thing' | 'description' | 'evidence' | 'decision';
+
+interface Meaning {
+  term: string;
+  kind: MeaningKind;
+  /** Override the default label for the kind chip. */
+  kindLabel?: string;
+  definition: string;
+  /** Completes the sentence "Connects: …". */
+  connection?: string;
+  /** Completes the sentence "Not the same as: …". */
+  isNot?: string;
+}
+
+interface Props {
+  items: Meaning[];
+}
+
+const { items } = Astro.props;
+
+const KIND_LABELS: Record<MeaningKind, string> = {
+  thing: 'Real-world thing',
+  description: 'Description record',
+  evidence: 'Evidence',
+  decision: 'Decision',
+};
+---
+
+<ul class="modelling-meanings">
+  {items.map((item) => (
+    <li class="modelling-meaning" data-kind={item.kind}>
+      <span class="modelling-meaning__kind">{item.kindLabel ?? KIND_LABELS[item.kind]}</span>
+      <p class="modelling-meaning__term">{item.term}</p>
+      <p class="modelling-meaning__definition">{item.definition}</p>
+      {item.connection && (
+        <p class="modelling-meaning__connection"><strong>Connects:</strong> {item.connection}</p>
+      )}
+      {item.isNot && (
+        <p class="modelling-meaning__not"><strong>Not the same as:</strong> {item.isNot}</p>
+      )}
+    </li>
+  ))}
+</ul>

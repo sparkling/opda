@@ -1,0 +1,101 @@
+---
+/**
+ * Chapter introduction — the asymmetric opening of a modelling chapter.
+ *
+ * Renders the page H1 first (the breadcrumb must lead straight into the
+ * title), then the reading-path position line, the lede and any extra
+ * intro prose, beside a ruled rail carrying an oversized chapter numeral
+ * and the reading-path register with the current chapter marked.
+ *
+ *   <ChapterIntro
+ *     title="Our approach"
+ *     number={2} total={5} pathLabel="Understand, then apply"
+ *     lede="Shared meaning grows from the people who understand the work."
+ *     chapters={[
+ *       { href: '/semantic-modelling/understand/shared-meaning', label: 'Understand' },
+ *       { label: 'Our approach', current: true },
+ *     ]}
+ *   >
+ *     <p>Optional further introduction prose…</p>
+ *   </ChapterIntro>
+ *
+ * The numeral is decorative (aria-hidden); the position line carries the
+ * same information as text. The register lists sibling chapters in the
+ * reading path — it is not an in-page contents list, so it does not
+ * duplicate the shell's "On this page" rail.
+ */
+import '@/styles/modelling/chapter.css';
+
+interface Chapter {
+  /** Omit for the current chapter. */
+  href?: string;
+  label: string;
+  current?: boolean;
+}
+
+interface Props {
+  title: string;
+  /** One-sentence lede under the title. */
+  lede?: string;
+  /** Chapter position within the reading path. */
+  number?: number;
+  total?: number;
+  /** Short name of the reading path shown beside the position. */
+  pathLabel?: string;
+  /** Sibling chapters of the reading path, in order. */
+  chapters?: Chapter[];
+  registerLabel?: string;
+}
+
+const {
+  title,
+  lede,
+  number,
+  total,
+  pathLabel,
+  chapters = [],
+  registerLabel = 'Reading path',
+} = Astro.props;
+
+const hasNumber = typeof number === 'number';
+const hasContext = hasNumber || !!pathLabel;
+const hasRail = hasNumber || chapters.length > 0;
+const count = hasNumber
+  ? `Chapter ${number}${typeof total === 'number' ? ` of ${total}` : ''}`
+  : '';
+---
+
+<header class:list={['modelling-chapter-intro', { 'modelling-chapter-intro--solo': !hasRail }]}>
+  <div class="modelling-chapter-intro__main">
+    <h1 class="modelling-chapter-intro__title">{title}</h1>
+    {hasContext && (
+      <p class="modelling-chapter-intro__context">
+        {hasNumber && <span class="modelling-chapter-intro__count">{count}</span>}
+        {pathLabel && <span class="modelling-chapter-intro__path">{pathLabel}</span>}
+      </p>
+    )}
+    {lede && <p class="modelling-chapter-intro__lede">{lede}</p>}
+    <slot />
+  </div>
+  {hasRail && (
+    <div class="modelling-chapter-intro__rail">
+      {hasNumber && (
+        <span class="modelling-chapter-intro__numeral" aria-hidden="true">{number}</span>
+      )}
+      {chapters.length > 0 && (
+        <nav aria-label={registerLabel}>
+          <p class="modelling-chapter-intro__register-label">{registerLabel}</p>
+          <ul class="modelling-chapter-intro__register">
+            {chapters.map((chapter) =>
+              chapter.current || !chapter.href ? (
+                <li><span aria-current="page">{chapter.label}</span></li>
+              ) : (
+                <li><a href={chapter.href}>{chapter.label}</a></li>
+              )
+            )}
+          </ul>
+        </nav>
+      )}
+    </div>
+  )}
+</header>

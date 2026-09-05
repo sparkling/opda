@@ -1,0 +1,85 @@
+---
+/**
+ * Chapter-end navigation — the editorial hand-over to the next chapter.
+ *
+ * A closing line, one forward panel (whole-panel link, numeral echoing
+ * the chapter introduction) and the chapter's reference links. This is
+ * reading-path navigation; the shell's PageFooter remains the
+ * route-order previous/next bar. Pages composing this at the end of a
+ * chapter may pass `hideFooter` to Layout if the two would repeat the
+ * same destination.
+ *
+ *   <ChapterEnd
+ *     closing="You have the vocabulary. Next, the dossier puts it to work."
+ *     nextHref="/semantic-modelling/…" nextTitle="The worked dossier"
+ *     nextNumber={3}
+ *     nextDescription="One fictional property, followed end to end."
+ *     related={[{ href: '/modelling/odr/0071', label: 'ODR-0071 method scope' }]}
+ *   />
+ */
+import '@/styles/modelling/chapter.css';
+
+interface RelatedLink {
+  href: string;
+  label: string;
+}
+
+interface Props {
+  /** One-line chapter recap shown above the forward panel. */
+  closing?: string;
+  nextHref: string;
+  nextTitle: string;
+  nextNumber?: number;
+  nextDescription?: string;
+  nextLabel?: string;
+  related?: RelatedLink[];
+  relatedLabel?: string;
+  /** Accessible name of the navigation region. */
+  label?: string;
+}
+
+const {
+  closing,
+  nextHref,
+  nextTitle,
+  nextNumber,
+  nextDescription,
+  nextLabel = 'Next chapter',
+  related = [],
+  relatedLabel = 'Reference for this chapter',
+  label = 'Chapter navigation',
+} = Astro.props;
+
+const hasNumber = typeof nextNumber === 'number';
+/* Distinct per-path id so two ChapterEnd instances on one page cannot
+   produce duplicate ids. */
+const relatedId = `modelling-chapter-end-related-${nextHref.replace(/[^a-z0-9]+/gi, '-')}`;
+---
+
+<nav class="modelling-chapter-end" aria-label={label}>
+  {closing && <p class="modelling-chapter-end__closing">{closing}</p>}
+  <a class="modelling-chapter-end__next" href={nextHref}>
+    <span class="modelling-chapter-end__marker">
+      <span class="modelling-chapter-end__marker-label">{nextLabel}</span>
+      {hasNumber && (
+        <span class="modelling-chapter-end__marker-numeral" aria-hidden="true">{nextNumber}</span>
+      )}
+    </span>
+    <span class="modelling-chapter-end__next-body">
+      <span class="modelling-chapter-end__next-title">{nextTitle}</span>
+      {nextDescription && (
+        <span class="modelling-chapter-end__next-description">{nextDescription}</span>
+      )}
+    </span>
+  </a>
+  {related.length > 0 && (
+    <div class="modelling-chapter-end__related">
+      <span class="modelling-chapter-end__related-label" id={relatedId}>{relatedLabel}</span>
+      <ul class="modelling-chapter-end__related-list" aria-labelledby={relatedId}>
+        {related.map((item) => (
+          <li><a href={item.href}>{item.label}</a></li>
+        ))}
+      </ul>
+    </div>
+  )}
+</nav>

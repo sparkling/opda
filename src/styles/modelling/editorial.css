@@ -1,0 +1,340 @@
+/* ─────────────────────────────────────────────────────────────
+   MODELLING EDITORIAL FAMILY — in-chapter narrative devices.
+
+   Scope: PathwaySplit, PrincipleSpread, ContrastPair and
+   DetailDisclosure in src/components/modelling/ (the chapter
+   frame lives in chapter.css, evidence artefacts in dossier.css).
+   Every value comes from public/ui/design-tokens.css; nothing
+   here redefines colour, type, radius or measure, and no rule
+   narrows the article track. Components own internal rhythm
+   through borders and padding; external separation belongs to
+   the article's direct-child flow (DESIGN.md §5), so roots
+   carry no trailing margins.
+   ───────────────────────────────────────────────────────────── */
+
+/* ── Audience pathway split ──
+   One primary route set wide with its reading list; quieter
+   alternatives share a ruled column. Whole-panel link targets,
+   butted borders, no floating cards. */
+.modelling-pathways {
+  display: grid;
+  grid-template-columns: minmax(0, 1.7fr) minmax(0, 1fr);
+  border: 1px solid var(--color-border);
+  background: var(--color-surface-card);
+}
+.modelling-pathways__alternatives {
+  min-width: 0;
+  display: grid;
+  align-content: start;
+  border-inline-start: 1px solid var(--color-border);
+}
+.modelling-pathways__route {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  padding: var(--space-6);
+  color: inherit;
+  text-decoration: none;
+  transition: background var(--duration-fast) var(--ease);
+}
+.modelling-pathways__route--primary { padding: var(--space-7); }
+.modelling-pathways__alternatives > .modelling-pathways__route + .modelling-pathways__route {
+  border-block-start: 1px solid var(--color-border);
+}
+.modelling-pathways__route:hover {
+  background: var(--color-surface-alt);
+  color: inherit;
+  text-decoration: none;
+}
+.modelling-pathways__route:focus-visible {
+  outline: 2px solid var(--color-focus);
+  outline-offset: -2px;
+  box-shadow: inset 0 0 0 4px var(--color-focus-contrast);
+}
+.modelling-pathways__audience {
+  margin: 0;
+  color: var(--color-text-muted);
+  font: 700 var(--text-xs) / 1.3 var(--font-mono);
+  letter-spacing: var(--tracking-meta);
+  text-transform: uppercase;
+}
+.modelling-pathways .modelling-pathways__title {
+  margin: 0;
+  font: var(--h3);
+  color: var(--color-link);
+}
+.modelling-pathways__description {
+  margin: 0;
+  color: var(--color-text-muted);
+  font-size: var(--text-sm);
+  text-wrap: pretty;
+}
+.modelling-pathways__topics-label {
+  margin: var(--space-3) 0 0;
+  color: var(--color-text-strong);
+  font: 600 var(--text-sm) / 1.4 var(--font-sans);
+}
+.modelling-pathways .modelling-pathways__topics {
+  margin: 0;
+  padding-inline-start: 1.25em;
+  color: var(--color-text-muted);
+  font-size: var(--text-sm);
+}
+.modelling-pathways__topics li + li { margin-block-start: var(--space-2); }
+
+/* ── Principle spread ──
+   The manifesto clause: marginal Slab numeral, the claim as the
+   chapter's own H2/H3, the argument beside an "in practice"
+   panel, and a full-width corrective for common misreadings. */
+.modelling-principle {
+  display: grid;
+  grid-template-columns: minmax(3rem, 4rem) minmax(0, 1.8fr) minmax(13rem, 1fr);
+  grid-template-areas:
+    'num head head'
+    'num body aside';
+  column-gap: var(--space-6);
+  row-gap: var(--space-5);
+  border-block-start: 1px solid var(--color-border);
+  padding-block-start: var(--space-6);
+}
+/* Area variants exist per slot combination so an absent slot never
+   leaves an empty named row collecting phantom row-gap. */
+.modelling-principle--plain {
+  grid-template-columns: minmax(3rem, 4rem) minmax(0, 1fr);
+  grid-template-areas:
+    'num head'
+    'num body';
+}
+.modelling-principle--with-not {
+  grid-template-areas:
+    'num head head'
+    'num body aside'
+    'num not  not';
+}
+.modelling-principle--plain.modelling-principle--with-not {
+  grid-template-areas:
+    'num head'
+    'num body'
+    'num not';
+}
+.modelling-principle__numeral {
+  grid-area: num;
+  text-align: end;
+  color: var(--color-border-strong);
+  font: 600 var(--text-3xl) / 1 var(--font-display);
+  font-variant-numeric: tabular-nums;
+  padding-block-start: 0.3rem; /* optical alignment with the DM Sans cap height */
+}
+.modelling-principle .modelling-principle__title {
+  grid-area: head;
+  margin: 0;
+  border-block-start: 0;
+  padding-block-start: 0;
+  font: var(--h2);
+}
+.modelling-principle h3.modelling-principle__title { font: var(--h3); }
+.modelling-principle__body { grid-area: body; min-width: 0; }
+.modelling-principle__body > * + * { margin-block-start: var(--space-4); }
+.modelling-principle__aside {
+  grid-area: aside;
+  min-width: 0;
+  align-self: start;
+  border: 1px solid var(--color-border);
+  background: var(--color-surface-alt);
+  padding: var(--space-5);
+}
+.modelling-principle__aside > * + * { margin-block-start: var(--space-3); }
+.modelling-principle__aside-label {
+  margin: 0;
+  color: var(--color-text-muted);
+  font: 700 var(--text-xs) / 1.3 var(--font-sans);
+  letter-spacing: var(--tracking-meta);
+  text-transform: uppercase;
+}
+.modelling-principle__aside p,
+.modelling-principle__aside li { font-size: var(--text-sm); }
+.modelling-principle__not {
+  grid-area: not;
+  min-width: 0;
+  border-inline-start: 3px solid var(--color-border-strong);
+  padding-inline-start: var(--space-5);
+}
+.modelling-principle__not > * + * { margin-block-start: var(--space-2); }
+.modelling-principle__not-label {
+  margin: 0;
+  color: var(--color-text-strong);
+  font: 700 var(--text-xs) / 1.3 var(--font-sans);
+  letter-spacing: var(--tracking-meta);
+  text-transform: uppercase;
+}
+.modelling-principle__not p { font-size: var(--text-sm); }
+
+/* ── Contrast pair ──
+   Facing editorial columns split by one rule; the accented side
+   carries the position the section argues for. */
+.modelling-contrast {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  border: 1px solid var(--color-border);
+  background: var(--color-surface-card);
+}
+.modelling-contrast__side {
+  min-width: 0;
+  display: grid;
+  gap: var(--space-4);
+  align-content: start;
+  padding: var(--space-6);
+}
+.modelling-contrast__side + .modelling-contrast__side {
+  border-inline-start: 1px solid var(--color-border);
+}
+.modelling-contrast__side--accent {
+  background: var(--color-surface-alt);
+  box-shadow: inset 0 3px 0 0 var(--color-border-strong);
+}
+.modelling-contrast__label {
+  margin: 0;
+  color: var(--color-text-muted);
+  font: 700 var(--text-xs) / 1.3 var(--font-sans);
+  letter-spacing: var(--tracking-meta);
+  text-transform: uppercase;
+}
+.modelling-contrast__side--accent .modelling-contrast__label { color: var(--color-text-strong); }
+.modelling-contrast__side p { margin: 0; font-size: var(--text-sm); text-wrap: pretty; }
+.modelling-contrast__side ul { margin: 0; padding-inline-start: 1.25em; font-size: var(--text-sm); }
+.modelling-contrast__verdict {
+  grid-column: 1 / -1;
+  border-block-start: 1px solid var(--color-border);
+  padding: var(--space-4) var(--space-6);
+  font-size: var(--text-sm);
+  color: var(--color-text);
+}
+.modelling-contrast__verdict > * { margin: 0; font-size: var(--text-sm); }
+.modelling-contrast__verdict > * + * { margin-block-start: var(--space-2); }
+.modelling-contrast__verdict-label {
+  margin: 0 0 var(--space-1);
+  color: var(--color-text-muted);
+  font: 700 var(--text-xs) / 1.3 var(--font-sans);
+  letter-spacing: var(--tracking-meta);
+  text-transform: uppercase;
+}
+
+/* ── Technical detail disclosure ──
+   Native <details>: content is real HTML, present without any
+   script. The summary is a full-width 44px control. */
+.modelling-detail {
+  border: 1px solid var(--color-border);
+  background: var(--color-surface-card);
+}
+.modelling-detail__summary {
+  min-height: var(--target-min);
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  padding: var(--space-3) var(--space-5);
+  cursor: pointer;
+  list-style: none;
+  color: var(--color-text-strong);
+  font: 600 var(--text-sm) / 1.4 var(--font-sans);
+  transition: background var(--duration-fast) var(--ease);
+}
+.modelling-detail__summary::-webkit-details-marker { display: none; }
+.modelling-detail__summary::before {
+  content: '';
+  flex: 0 0 auto;
+  width: 0.45em;
+  height: 0.45em;
+  border-block-end: 2px solid currentColor;
+  border-inline-end: 2px solid currentColor;
+  transform: rotate(-45deg);
+  transition: transform var(--duration-normal) var(--ease);
+}
+.modelling-detail[open] > .modelling-detail__summary::before { transform: rotate(45deg); }
+.modelling-detail__summary:hover { background: var(--color-action-subtle); }
+.modelling-detail__summary:focus-visible {
+  outline: 2px solid var(--color-focus);
+  outline-offset: -2px;
+  box-shadow: inset 0 0 0 4px var(--color-focus-contrast);
+}
+.modelling-detail__note {
+  margin-inline-start: auto;
+  color: var(--color-text-muted);
+  font: 500 var(--text-xs) / 1.3 var(--font-mono);
+  letter-spacing: var(--tracking-meta);
+  text-transform: uppercase;
+}
+.modelling-detail__body {
+  border-block-start: 1px solid var(--color-border);
+  padding: var(--space-5);
+}
+.modelling-detail__body > * + * { margin-block-start: var(--space-4); }
+
+/* ── Responsive reflow ── */
+@media (max-width: 64rem) {
+  .modelling-pathways { grid-template-columns: minmax(0, 1fr); }
+  .modelling-pathways__alternatives {
+    border-inline-start: 0;
+    border-block-start: 1px solid var(--color-border);
+  }
+  .modelling-principle {
+    grid-template-columns: minmax(2.25rem, 3rem) minmax(0, 1fr);
+    grid-template-areas:
+      'num head'
+      'body body'
+      'aside aside';
+  }
+  .modelling-principle--plain {
+    grid-template-areas:
+      'num head'
+      'body body';
+  }
+  .modelling-principle--with-not {
+    grid-template-areas:
+      'num head'
+      'body body'
+      'aside aside'
+      'not not';
+  }
+  .modelling-principle--plain.modelling-principle--with-not {
+    grid-template-areas:
+      'num head'
+      'body body'
+      'not not';
+  }
+  .modelling-principle__numeral { font: 600 var(--text-2xl) / 1 var(--font-display); padding-block-start: 0.2rem; }
+  .modelling-contrast { grid-template-columns: minmax(0, 1fr); }
+  .modelling-contrast__side + .modelling-contrast__side {
+    border-inline-start: 0;
+    border-block-start: 1px solid var(--color-border);
+  }
+}
+@media (max-width: 40rem) {
+  .modelling-pathways__route,
+  .modelling-pathways__route--primary,
+  .modelling-contrast__side { padding: var(--space-5); }
+}
+
+/* ── Forced colours ── */
+@media (forced-colors: active) {
+  .modelling-pathways,
+  .modelling-pathways__alternatives,
+  .modelling-pathways__alternatives > .modelling-pathways__route + .modelling-pathways__route,
+  .modelling-principle,
+  .modelling-contrast,
+  .modelling-contrast__side + .modelling-contrast__side,
+  .modelling-contrast__verdict,
+  .modelling-detail,
+  .modelling-detail__body { border-color: CanvasText; }
+  .modelling-principle__not { border-inline-start-color: CanvasText; }
+  .modelling-contrast__side--accent {
+    box-shadow: none;
+    border-block-start: 3px solid Highlight;
+  }
+  .modelling-detail__summary::before { border-color: ButtonText; }
+}
+
+@media print {
+  .modelling-principle,
+  .modelling-contrast { break-inside: avoid; }
+}

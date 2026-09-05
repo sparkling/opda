@@ -1,0 +1,76 @@
+---
+/**
+ * Principle spread — one numbered clause of the modelling manifesto.
+ *
+ * Marginal Slab numeral, the claim as a real document heading, the
+ * argument beside an "In practice" panel, and an optional full-width
+ * corrective for common misreadings of the principle.
+ *
+ *   <PrincipleSpread number={3} id="connect" title="Connect models without erasing their differences">
+ *     <p>The argument…</p>
+ *     <Fragment slot="practice">
+ *       <p>What a modeller actually does…</p>
+ *     </Fragment>
+ *     <Fragment slot="misreading">
+ *       <p>Context-first does not mean anti-foundational…</p>
+ *     </Fragment>
+ *   </PrincipleSpread>
+ *
+ * Give `id` to put the claim in the on-page contents rail; omit it to
+ * keep the heading out of that rail. `headingLevel` defaults to 2.
+ */
+import '@/styles/modelling/editorial.css';
+
+interface Props {
+  number: number;
+  title: string;
+  /** Anchor id on the heading; also enables the hover anchor. */
+  id?: string;
+  /** Bookmark continuity from the preceding documentation structure. */
+  aliases?: string[];
+  headingLevel?: 2 | 3;
+  practiceLabel?: string;
+  misreadingLabel?: string;
+}
+
+const {
+  number,
+  title,
+  id,
+  aliases = [],
+  headingLevel = 2,
+  practiceLabel = 'In practice',
+  misreadingLabel = 'What this does not mean',
+} = Astro.props;
+
+const Heading = `h${headingLevel}` as 'h2' | 'h3';
+const hasPractice = Astro.slots.has('practice');
+const hasMisreading = Astro.slots.has('misreading');
+const rootClass = [
+  'modelling-principle',
+  !hasPractice && 'modelling-principle--plain',
+  hasMisreading && 'modelling-principle--with-not',
+]
+  .filter(Boolean)
+  .join(' ');
+---
+
+<section class={rootClass}>
+  <span class="modelling-principle__numeral" aria-hidden="true">{number}</span>
+  <Heading class="modelling-principle__title" id={id}>{aliases.map((alias) => <span id={alias} aria-hidden="true"></span>)}{title}</Heading>
+  <div class="modelling-principle__body">
+    <slot />
+  </div>
+  {hasPractice && (
+    <aside class="modelling-principle__aside">
+      <p class="modelling-principle__aside-label">{practiceLabel}</p>
+      <slot name="practice" />
+    </aside>
+  )}
+  {hasMisreading && (
+    <div class="modelling-principle__not">
+      <p class="modelling-principle__not-label">{misreadingLabel}</p>
+      <slot name="misreading" />
+    </div>
+  )}
+</section>
