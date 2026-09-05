@@ -1,0 +1,71 @@
+---
+import ModellingLayout from '@/layouts/ModellingLayout.astro';
+---
+
+<ModellingLayout title="Sensitivity and policy: describe responsibilities without pretending to enforce them" description="Property information can be useful to one recipient and inappropriate for another. Make sensitivity, purpose and access responsibilities explicit, while keeping policy decisions and operational enforcement separate from ontology annotations." chapter="Keep the evidence inspectable" claim="method">
+  <section aria-labelledby="separation">
+    <h2 id="separation">A public model does not make its instance data public</h2>
+    <p>A definition of a person’s contact-detail property can be openly readable without exposing anyone’s contact details. A model may explain how an inspection report relates to a transaction without making every report available to every visitor. Vocabulary publication, data disclosure and access enforcement are different decisions.</p>
+    <p>In the fictional Harbour Court dossier, building descriptions, report contents, a participant’s contact details and transaction-specific information serve different purposes. Do not assign an actual disclosure policy from this example. Instead ask who needs which information, for what purpose, under whose authority, and what the recipient is permitted to do with it.</p>
+    <p>This chapter describes a modelling method, not legal advice, a statement of applicable retention periods or proof that an OPDA system enforces a policy. Those conclusions require their own authoritative decisions and operational evidence.</p>
+  </section>
+
+  <figure class="modelling-figure" data-modelling-figure="policy-boundaries">
+    <ol class="modelling-steps">
+      <li><strong>Describe.</strong> Identify data categories, sensitivity and intended processing purpose.</li>
+      <li><strong>Decide.</strong> Author a scoped policy with the relevant human authority and evidence.</li>
+      <li><strong>Check.</strong> Validate the policy representation against its declared profile.</li>
+      <li><strong>Enforce.</strong> An operational system evaluates requests and applies the decision.</li>
+    </ol>
+    <figcaption>An annotation or a well-formed policy is not an access-control system. Each boundary needs an explicit contract.</figcaption>
+  </figure>
+
+  <section aria-labelledby="categories">
+    <h2 id="categories">Keep sensitivity independent from subject classification</h2>
+    <p>A classification such as “transactional data” says something about the role of information in a model or information landscape. A sensitivity value says something different about handling expectations. Being master data does not make information public; being transaction data does not by itself make it restricted. Category 5 classification metadata and category 11 sensitivity therefore remain separate concerns.</p>
+    <p>Likewise, an access role is not the same as a person’s domain role. A seller participates in a transaction; a permitted reader is a role within an access policy. One may inform the other under a declared rule, but a <code>Seller</code> classification must not automatically grant access to every report at an address.</p>
+    <p>Sensitivity may depend on the actual content and context. A class-level annotation is a useful modelling signal, not necessarily a complete decision for every instance. A safe implementation must be able to address the scope of the data it is handling and the policy under which it is doing so.</p>
+  </section>
+
+  <section aria-labelledby="dpv">
+    <h2 id="dpv">Use the privacy vocabulary for the concern it describes</h2>
+    <p>The selected method uses DPV as a reference vocabulary for personal-data categories, purposes, processing and related policy concepts. It uses governed local annotation properties to describe classes and properties, with vocabulary alignments where meanings fit. That is not the same pattern as asserting that an ontology class is itself an individual processing activity.</p>
+    <p>The source category distinguishes sensitivity levels, personal-data flags and categories, applicable-regulation concepts, processing purpose, lawful-basis concepts, residency information and access levels. These are related dimensions, not one boolean “compliant” flag. Their values and scope need review; an identifier containing the word “consent” does not demonstrate that valid consent was obtained.</p>
+    <p>The source’s annotation-first pattern precedes more detailed qualified policy records. Later phases must not be presented as current operational capabilities simply because their classes or future patterns appear in a decision record. A referenced vocabulary is also not automatically an <code>owl:imports</code> dependency.</p>
+  </section>
+
+  <section aria-labelledby="odrl">
+    <h2 id="odrl">Add ODRL only for the selected policy gaps</h2>
+    <p>Source-method ODR-0089 conditionally adds ODRL through the DPV profile. DPV supplies classification and context; ODRL expresses permissions, prohibitions, duties and constraints. This is a division of jobs, not a competition to place every privacy statement in whichever vocabulary has the shortest term.</p>
+    <p>The selected scope covers three gaps: temporal retention rules with operational-policy semantics; permissions conditioned on changing state; and composed cross-border transfer rules. Extending ODRL to other uses requires a new governing decision. The policy vocabulary is not adopted as a general substitute for the programme’s governance arrangements.</p>
+    <p>Within the profile, a policy needs a target connected to the relevant classified data. A constraint has a left operand, operator and right operand; a DPV classification must not be substituted for an ODRL left operand merely because it names the topic of the rule. The profile permits the appropriate DPV concepts as operand values. A machine-readable policy still requires a compatible evaluator and current inputs to affect access.</p>
+    <p>The source-method restriction on automatic policy generation is particularly important: scoped ODRL policies are human-curated, not inferred from source-code structure, field names or extraction confidence. A model can reveal that a decision is needed. It cannot invent the regulatory intent or permission needed to make that decision.</p>
+  </section>
+
+  <section aria-labelledby="case">
+    <h2 id="case">Work through a request for the Harbour Court report</h2>
+    <p>A recipient asks for report version 2. First identify the requested resource: is it the whole report, a finding extracted from it or merely metadata establishing its existence? Then identify the purpose and the policy scope. Access to one report version must not silently imply access to all personal information connected to the transaction.</p>
+    <p>A policy author may need to express a condition that depends on a current state, such as whether an authorisation remains active. The model should make the dependency explicit. It should not decide what that condition must be or assume that a historical authorisation is still current. If the evaluator needs time, role or purpose information that is unavailable, the operational system must follow its explicitly chosen handling rule.</p>
+    <p>Keep the evidence of the policy decision distinct from evidence of the inspection. A report can have strong source provenance while a disclosure request remains unauthorised. Conversely, an authorised recipient can receive a report whose factual claim is uncertain. Combining these into a single “trusted” status hides both questions.</p>
+  </section>
+
+  <section aria-labelledby="checks">
+    <h2 id="checks">What validation can establish—and what it cannot</h2>
+    <p>Shapes can check whether a qualified sensitivity classification identifies its subject and level, whether a personal-data flag has the required category, whether values come from the chosen schemes, and whether a policy uses the prescribed vocabulary boundary. Such checks establish structural conformance to the selected representation.</p>
+    <p>They do not prove the classification is substantively correct, that a legal basis applies, that a recipient’s identity has been authenticated or that a service has refused an unauthorised request. Those require the relevant authority, evidence and enforcement mechanisms. Describe the check that actually ran instead of compressing all of these questions into “policy validated”.</p>
+    <p>Named-graph segregation can support an operational design, but placing data in a graph called “restricted” does not restrict access by RDF semantics. The store, API and delivery system must implement access controls. Graph placement also does not define a bounded context or transfer semantic ownership.</p>
+  </section>
+
+  <section aria-labelledby="failure">
+    <h2 id="failure">Failure case: a green badge on an exposed report</h2>
+    <p>A page displays “Restricted” and passes a shape requiring a sensitivity value, while its download endpoint serves the report to anyone with the URL. The metadata may be well formed; the operational boundary has failed. Changing the colour of the badge, adding another ontology term or running the same shape again cannot fix that failure.</p>
+    <p>The documentation must therefore say separately what is classified, which policy has been approved, which representation checks have passed and what enforcement has actually been demonstrated. Until such evidence exists, describe the required method and the implementation gap without implying protection.</p>
+    <p>Continue with <a href="/semantic-modelling/method/evidence-and-time">evidence and time</a> or review <a href="/semantic-modelling/method/scope-and-package">the scope of a semantic package</a>.</p>
+  </section>
+
+  <section aria-labelledby="source-contract">
+    <h2 id="source-contract">Source contract</h2>
+    <p>Required method: source-method ODR-0071k R2–R6, including its amended shape/profile boundaries and 28 August applicability correction; ODR-0089 R3–R9, especially the three scoped policy uses and R7’s human-curation limitation. Category 11 is retained; importing category 6 as a governance ontology is outside the selected OPDA scope.</p>
+    <p>Reviewed revision <code>67174057e6384b79d0b28b7736fe70a66e112895</code>, 5 September 2026. See <a href="/semantic-modelling/method/standards-and-decisions">standards and decisions</a> for register and adoption scope. Source-method adoption, fictional policy questions and current operational enforcement are separate claims; this chapter establishes no legal or enforcement result.</p>
+  </section>
+</ModellingLayout>

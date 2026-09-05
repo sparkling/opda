@@ -57,3 +57,13 @@ Guarino subsequently reported direction-level Q1–Q4 ACCEPT on the amended four
 Drafted four original technical chapters: from-question-to-candidate, classes-and-relationships, roles-and-phases, and meaning-checks-and-delivery. Each uses the shared layout API, semantic HTML, native details, an explicit fictional-case boundary and a source contract.
 
 Astro parser check completed using the installed @astrojs/compiler-rs 0.3.2: no diagnostics on those four files. No tests, build, browser, publication or push was run. An initial attempt to resolve the older @astrojs/compiler package failed; the installed compiler was discovered and used without installation or configuration changes.
+
+## Implementation slice 2
+
+Drafted context-map-records, mapping-records, evidence-and-time and sensitivity-and-policy. Together the eight chapters distinguish doctrine from examples, preserve the source revision/amendment receipt and link the separate source-register basis. The public chapters contain no source-business names, source-project namespace terms or local CSS.
+
+The mapping excerpt uses the exact SEMAPV vocabulary namespace and labels RDF 1.2 syntax explicitly. Context relationships retain the active-only/history exception. The policy chapter states that classification and structural checks are not runtime enforcement; ODRL remains scoped and human-curated. The evidence chapter distinguishes ontology-construction provenance from property-claim provenance.
+
+All eight Astro files passed parser and syntax-transform checks with zero diagnostics using installed compiler-rs 0.3.2. These checks do not resolve the forthcoming shared layout or certify a rendered site. Each page is below 500 lines. No tests, full build, browser, deployment or push was run.
+
+Requested targeted read-only peer inspection of identity/role claims from Guarino and mapping/context-map claims from Baker. No peer approval is claimed before their replies.
