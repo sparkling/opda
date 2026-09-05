@@ -183,6 +183,7 @@
 }
 
 .wg-hero-journey {
+  translate: var(--domains-position-x, 0) var(--domains-position-y, 0);
   padding: clamp(var(--space-6), 4vw, var(--space-8));
   background: rgb(35 31 47 / 84%);
   border: 1px solid var(--color-surface-dark-tint);

@@ -127,6 +127,7 @@ const domains = [
           showScaleControl
           controlId="home-header-preview-selectors"
           identityId="home-campaign-identity"
+          positionTargetId="home-domains-panel"
           initialScale={homeHeaderScale}
           initialOpdaScale={homeHeaderOpdaScale}
           initialSpaceAbove={homeHeaderSpaceAbove}
@@ -135,7 +136,7 @@ const domains = [
           initialIcon={homeHeaderIcon}
           initialPalette={homeHeaderPalette}
         />
-        <div class="wg-hero-journey" aria-labelledby="public-domains-title">
+        <div class="wg-hero-journey" id="home-domains-panel" aria-labelledby="public-domains-title">
           <p class="wg-eyebrow">Working Group</p>
           <h2 id="public-domains-title">Domains</h2>
           <ul class="wg-process home-domain-process" role="list">

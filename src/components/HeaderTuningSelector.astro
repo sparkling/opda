@@ -1,6 +1,7 @@
 ---
 interface Props {
   identityId: string;
+  positionTargetId?: string;
   initialScale?: number;
   initialSpaceAbove?: number;
   initialLineGap?: number;
@@ -10,6 +11,7 @@ interface Props {
 
 const {
   identityId,
+  positionTargetId,
   initialScale = 24,
   initialSpaceAbove = 0,
   initialLineGap = 8,
@@ -18,11 +20,15 @@ const {
 } = Astro.props;
 
 const adjustments = [
-  { label: 'Size', property: '--identity-heading-size', min: 8, max: 64, value: initialScale, factor: 1, unit: 'px', ariaUnit: 'pixels' },
-  { label: 'OPDA relative size', property: '--identity-opda-scale', min: 25, max: 200, value: initialOpdaScale, factor: 0.01, unit: '', ariaUnit: 'percent' },
-  { label: 'Space underneath SPDTF', property: '--identity-space-after', min: 0, max: 64, value: initialSpaceBelow, factor: 1, unit: 'px', ariaUnit: 'pixels' },
-  { label: 'Space between SPDTF and OPDA', property: '--identity-line-gap', min: 0, max: 64, value: initialLineGap, factor: 1, unit: 'px', ariaUnit: 'pixels' },
-  { label: 'Space above OPDA', property: '--identity-space-before', min: 0, max: 96, value: initialSpaceAbove, factor: 1, unit: 'px', ariaUnit: 'pixels' },
+  { label: 'Size', targetId: identityId, property: '--identity-heading-size', min: 8, max: 64, value: initialScale, factor: 1, unit: 'px', ariaUnit: 'pixels' },
+  { label: 'OPDA relative size', targetId: identityId, property: '--identity-opda-scale', min: 25, max: 200, value: initialOpdaScale, factor: 0.01, unit: '', ariaUnit: 'percent' },
+  { label: 'Space underneath SPDTF', targetId: identityId, property: '--identity-space-after', min: 0, max: 64, value: initialSpaceBelow, factor: 1, unit: 'px', ariaUnit: 'pixels' },
+  { label: 'Space between SPDTF and OPDA', targetId: identityId, property: '--identity-line-gap', min: 0, max: 64, value: initialLineGap, factor: 1, unit: 'px', ariaUnit: 'pixels' },
+  { label: 'Space above OPDA', targetId: identityId, property: '--identity-space-before', min: 0, max: 96, value: initialSpaceAbove, factor: 1, unit: 'px', ariaUnit: 'pixels' },
+  ...(positionTargetId ? [
+    { label: 'Domains left / right', targetId: positionTargetId, property: '--domains-position-x', min: -256, max: 256, value: 0, factor: 1, unit: 'px', ariaUnit: 'pixels' },
+    { label: 'Domains up / down', targetId: positionTargetId, property: '--domains-position-y', min: -256, max: 256, value: 0, factor: 1, unit: 'px', ariaUnit: 'pixels' },
+  ] : []),
 ];
 ---
 
@@ -45,7 +51,7 @@ const adjustments = [
               max={adjustment.max}
               value={adjustment.value}
               step="1"
-              aria-controls={identityId}
+              aria-controls={adjustment.targetId}
               aria-valuetext={`${adjustment.value} ${adjustment.ariaUnit}`}
               data-css-property={adjustment.property}
               data-value-factor={adjustment.factor}

@@ -9,6 +9,7 @@ interface Props {
   showScaleControl?: boolean;
   controlId?: string;
   identityId?: string;
+  positionTargetId?: string;
   initialScale?: number;
   initialSpaceAbove?: number;
   initialLineGap?: number;
@@ -22,6 +23,7 @@ const {
   showScaleControl = false,
   controlId = 'header-preview-selectors',
   identityId = 'home-campaign-identity',
+  positionTargetId,
   initialScale = 24,
   initialSpaceAbove = 0,
   initialLineGap = 8,
@@ -39,6 +41,7 @@ const {
       {showScaleControl && (
         <HeaderTuningSelector
           identityId={identityId}
+          positionTargetId={positionTargetId}
           initialScale={initialScale}
           initialSpaceAbove={initialSpaceAbove}
           initialLineGap={initialLineGap}
@@ -51,6 +54,7 @@ const {
           {showScaleControl && (
             <HeaderTuningSelector
               identityId={identityId}
+              positionTargetId={positionTargetId}
               initialScale={initialScale}
               initialSpaceAbove={initialSpaceAbove}
               initialLineGap={initialLineGap}
@@ -66,6 +70,7 @@ const {
           {showScaleControl && (
             <HeaderTuningSelector
               identityId={identityId}
+              positionTargetId={positionTargetId}
               initialScale={initialScale}
               initialSpaceAbove={initialSpaceAbove}
               initialLineGap={initialLineGap}
