@@ -4,6 +4,7 @@ import Diagram from '@/components/Diagram.astro';
 import {
   STANDARDS_PROFILE,
   STANDARDS_PROFILE_VERSION,
+  STANDARDS_GOVERNANCE_REVIEWED,
   standardAnchor,
   validateStandardsProfile,
 } from '@/lib/spdtf-standards-profile.mjs';
@@ -11,12 +12,48 @@ validateStandardsProfile();
 const implemented = STANDARDS_PROFILE.filter(({ implementationStatus }) => implementationStatus.startsWith('used'));
 ---
 
-<Layout title="Standards profile" description="What the Property Pack candidate actually uses, what SPDTF has accepted as a bounded target, and which standards or methods remain candidates or deferred.">
+<Layout title="Standards profile" description="The normative modelling methods and vocabulary profiles selected for SPDTF, their boundaries, and what the Property Pack candidate actually implements.">
   <h1>Standards, vocabularies and modelling frameworks</h1>
   <p class="lead">
     This development profile separates three independent facts: the maturity of an
     external specification, the status of an OPDA decision, and whether a candidate
-    actually emits or tests the technology. “Listed” never means “adopted.”
+    actually emits or tests the technology. A selected method is binding even when its
+    implementation is incomplete; a listed reference is not automatically selected.
+  </p>
+  <p>
+    Profile <code>{STANDARDS_PROFILE_VERSION}</code>. Normative decision reconciliation:
+    <time datetime={STANDARDS_GOVERNANCE_REVIEWED}>{STANDARDS_GOVERNANCE_REVIEWED}</time>.
+    External-publication checks remain dated separately below; this reconciliation does
+    not refresh those checks or alter Property Pack 0.1 package pins.
+  </p>
+
+  <h2 id="normative-method">What the selected method requires</h2>
+  <p>
+    The <a href="/semantic-modelling/decision-basis">decision basis</a> adopts the relevant
+    source-method ODRs for concern categories 1, 2, 5, 7, 8, 9, 10 and 11. The following
+    choices are therefore normative, not a list of possible future approaches. Their
+    scope does not extend to excluded concerns, every term in a vocabulary, or wholesale
+    ontology imports. The source-method ODR numbers below identify that decision lineage,
+    not a claim that its software or business model has been copied into SPDTF.
+  </p>
+  <table>
+    <caption>Selected contracts, separate from implementation progress</caption>
+    <thead><tr><th scope="col">Concern</th><th scope="col">Required approach</th><th scope="col">Boundary and decision basis</th></tr></thead>
+    <tbody>
+      <tr><th scope="row">Identity and placement</th><td>Use UFO-informed distinctions between identity-bearing kinds, roles and phases, with OntoClean quality discipline.</td><td>Analytical selection, not imported foundational superclasses. Source-method ODR-0025/0026, ODR-0112/0115/0118.</td></tr>
+      <tr><th scope="row">Property applicability</th><td>Document each subject and value side using a safe, universally true RDFS declaration, Schema.org <code>domainIncludes</code>/<code>rangeIncludes</code>, or a governed waiver.</td><td>Do not mix mechanisms on one side. Repeated RDFS domains or ranges entail all declared types; they do not express alternatives. Source-method ODR-0014.</td></tr>
+      <tr><th scope="row">Inference and checking</th><td>Use the selected RDFS/OWL Safe Group, SHACL constraints, and separately declared <code>TripleRule</code>/<code>SPARQLRule</code> materialisation.</td><td>Preserve standard semantics and distinguish asserted from derived information. No unrestricted OWL or blanket SHACL-AF adoption. Source-method ODR-0030/0036.</td></tr>
+      <tr><th scope="row">Reviewed mappings</th><td>Retain the SKOS mapping statement and carry required SSSOM 1.0 provenance, with SEMAPV matching-process values, on a named RDF 1.2 reifier.</td><td>Applies to internal cross-context and external vocabulary mappings. Source-method ODR-0071h, ODR-0087/0096 and ODR-0098 R11.</td></tr>
+      <tr><th scope="row">Provenance and time</th><td>Reuse canonical PROV-O and OWL-Time terms through bounded, locally checked profiles.</td><td>No <code>owl:imports</code>. Separate attribution from truth, and valid time from recorded time. Source-method ODR-0071i/0071j.</td></tr>
+      <tr><th scope="row">Sensitivity and policy</th><td>Use local classification annotations and reviewed DPV concept mappings. Conditionally use ODRL through the DPV Profile of ODRL for the selected policy cases.</td><td>ODRL Common Vocabulary only, with human-curated policies; classification does not enforce access. Source-method ODR-0071k and ODR-0089.</td></tr>
+    </tbody>
+  </table>
+  <p>
+    <a href="/semantic-modelling/linked-data-languages">Linked-data languages by concern</a>
+    explains why these parts are composed. The
+    <a href="/semantic-modelling/identity-roles-and-phases">identity, roles and phases guide</a>
+    explains the analytical method. Their normative status does not imply that every
+    generator, shape, mapping record or inference rule has already been implemented.
   </p>
 
   <h2 id="implemented">What is implemented now</h2>
@@ -60,12 +97,14 @@ const implemented = STANDARDS_PROFILE.filter(({ implementationStatus }) => imple
     </tbody>
   </table>
   <p>
-    PROV-O has a declared prefix but no term use; that is not adoption. There is no
+    PROV-O has a declared prefix but no term use; a prefix is not implementation evidence.
+    Its methodological selection is established by the decisions above. There is no
     current Property Pack use of DCAT, DQV, OWL-Time, DPV, ODRL, SSSOM, FIBO,
     GeoSPARQL, Schema.org, Verifiable Credentials, DID, ORG, gUFO or DASH. Cross-context
     mappings remain empty while they await working-group evidence. The
     <a href="/semantic-modelling/evidence-and-mappings#cross-context-mappings">Category 8 mapping guide</a>
-    explains why the accepted SKOS target and deferred SSSOM candidate are different status claims.
+    explains the required SKOS and SSSOM contract. An empty candidate mapping set does not
+    defer that contract or exempt future internal mappings from it.
   </p>
 
   <h2 id="stack">How the implemented stack fits together</h2>
@@ -107,30 +146,44 @@ flowchart TB
     <thead><tr><th scope="col">Axis</th><th scope="col">Question</th><th scope="col">Examples</th></tr></thead>
     <tbody>
       <tr><th scope="row">Specification maturity</th><td>What does the owning standards body call this exact snapshot?</td><td>Recommendation, Candidate Recommendation, Working Draft, Note, community report.</td></tr>
-      <tr><th scope="row">OPDA governance status</th><td>What has SPDTF decided about it?</td><td>Accepted bounded target, candidate, conditional, deferred, blocked or historical.</td></tr>
+      <tr><th scope="row">OPDA governance status</th><td>What has SPDTF decided about it?</td><td>Normative selected method, accepted bounded target, conditionally adopted, candidate, deferred, blocked or historical.</td></tr>
       <tr><th scope="row">Implementation status</th><td>What terms or features does this candidate actually use and test?</td><td>Used and tested, used without a separate conformance receipt, prefix only, or not used.</td></tr>
     </tbody>
   </table>
 
   <h2 id="mechanisms">Reuse, reference, map and mint</h2>
-  <p>Only four relationship mechanisms are allowed in the profile.</p>
+  <p>
+    Only four relationship mechanisms are allowed in the profile. The mechanism describes
+    the intended relationship; the implementation field says whether it is realised today.
+    Reusing a canonical term does not require importing its entire ontology.
+  </p>
   <div class="card-grid">
     <article class="card"><h3><code>reuse</code></h3><p>Use exact externally governed vocabulary terms, datatypes or classes in the candidate.</p><p><strong>Evidence:</strong> version, term list, licence and governance fit, and feature tests.</p></article>
     <article class="card"><h3><code>reference</code></h3><p>Use a data-model, syntax, query, specification or method as an implementation or design contract without adopting its vocabulary as SPDTF meaning.</p><p><strong>Evidence:</strong> question addressed, edition and explicit non-conformance boundary.</p></article>
-    <article class="card"><h3><code>map</code></h3><p>Keep local meaning and record a qualified relation to another term.</p><p><strong>Evidence:</strong> mapping strength, justification, owner, confidence and review. <a href="/semantic-modelling/evidence-and-mappings#cross-context-mappings">Read the mapping contract</a>.</p></article>
+    <article class="card"><h3><code>map</code></h3><p>Keep local meaning and record a reviewed relation to another term.</p><p><strong>Evidence:</strong> source identities and versions, relation strength, matching-process justification, mapping date and release. Confidence is optional. <a href="/semantic-modelling/evidence-and-mappings#cross-context-mappings">Read the mapping contract</a>.</p></article>
+    <article class="card"><h3><code>mint</code></h3><p>Create a locally governed identifier when a reviewed meaning cannot be represented by suitable existing terms.</p><p><strong>Evidence:</strong> a defined meaning, semantic owner, source evidence and approved namespace policy. Machine-proposed candidate IRIs are not governed terms.</p></article>
   </div>
 
   <h2 id="upper-ontology">Upper ontologies and design methods</h2>
   <p>
-    UFO and OntoClean are method candidates, not adopted dependencies. gUFO is a separate
-    OWL implementation and is not imported or used. DOLCE is PDTF schema historical
-    comparison evidence. See the <a href="/semantic-modelling/modelling-rules#upper">upper-ontology decision boundary</a>
-    before interpreting any of these rows.
+    UFO-informed analysis and OntoClean are selected, binding modelling disciplines:
+    distinguish stable identity from contingent roles and phases, then check whether
+    the proposed hierarchy respects those distinctions. Their selection does not import
+    foundational classes, attach domain classes beneath an external upper ontology, or
+    establish a full description-logic runtime. The current candidate has no separate
+    implementation receipt for these analytical checks.
+  </p>
+  <p>
+    gUFO is a separate OWL implementation and is not imported or used by Property Pack 0.1.
+    Selecting the UFO analytical method does not automatically select gUFO terms. DOLCE
+    remains historical comparison evidence, not an adopted dependency. See the
+    <a href="/semantic-modelling/modelling-rules#upper">upper-ontology decision boundary</a>
+    and <a href="/semantic-modelling/decision-basis">normative decision basis</a>.
   </p>
 
   <h2 id="register">Detailed standards register</h2>
   <p>
-    Every record names a selected boundary, latest checked external maturity, actual implementation,
+    Every record names a profile boundary, latest checked external maturity, actual implementation,
     OPDA governance status, mechanism, owner, evidence and re-open trigger. The source
     link is the primary specification or method source, not a search result.
   </p>
@@ -149,7 +202,7 @@ flowchart TB
         <dt>Owner</dt><dd>{record.owner}</dd>
         <dt>Decision evidence</dt><dd>{record.evidence}</dd>
         <dt>Re-open trigger</dt><dd>{record.reopenTrigger}</dd>
-        <dt>Last checked</dt><dd>{record.lastChecked}</dd>
+        <dt>External publication last checked</dt><dd>{record.lastChecked}</dd>
       </dl>
     </article>)}
   </div>
