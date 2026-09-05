@@ -62,7 +62,16 @@ const joinPanelStyle = getCampaignPanelStyle(JOIN_CAMPAIGN_HEADER_DEFAULTS);
         themeToggleId="join-theme-toggle"
         showOpdaLink
         configuration={JOIN_CAMPAIGN_HEADER_DEFAULTS}
-      />
+      >
+        <CampaignHeaderControls
+          slot="controls"
+          controlId="join-header-preview-selectors"
+          identityId="join-campaign-identity"
+          positionTargetId="join-influence-panel"
+          themeToggleTargetId="join-theme-toggle"
+          configuration={JOIN_CAMPAIGN_HEADER_DEFAULTS}
+        />
+      </CampaignIdentity>
       <div class="wg-campaign-hero__copy">
         <h1 id="join-title">Help shape the future of <em>property information sharing.</em></h1>
         <p class="wg-lead">
@@ -79,13 +88,6 @@ const joinPanelStyle = getCampaignPanelStyle(JOIN_CAMPAIGN_HEADER_DEFAULTS);
       </div>
 
       <div class="wg-campaign-side">
-        <CampaignHeaderControls
-          controlId="join-header-preview-selectors"
-          identityId="join-campaign-identity"
-          positionTargetId="join-influence-panel"
-          themeToggleTargetId="join-theme-toggle"
-          configuration={JOIN_CAMPAIGN_HEADER_DEFAULTS}
-        />
         <div class="wg-hero-journey" id="join-influence-panel" style={joinPanelStyle} aria-labelledby="influence-title">
           <p class="wg-eyebrow">Why your voice matters now</p>
           <h2 id="influence-title">The standard needs your experience.</h2>

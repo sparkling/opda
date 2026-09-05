@@ -89,7 +89,15 @@ const domains = [
   <a class="skip-link" href="#main-content">Skip to main content</a>
   <main id="main-content" tabindex="-1">
     <section class="home-campaign-hero wg-campaign-hero wg-campaign-hero--panel-aligned" aria-labelledby="public-title">
-      <CampaignIdentity identityId="home-campaign-identity" themeToggleId="home-theme-toggle" />
+      <CampaignIdentity identityId="home-campaign-identity" themeToggleId="home-theme-toggle">
+        <CampaignHeaderControls
+          slot="controls"
+          controlId="home-header-preview-selectors"
+          identityId="home-campaign-identity"
+          positionTargetId="home-domains-panel"
+          themeToggleTargetId="home-theme-toggle"
+        />
+      </CampaignIdentity>
 
       <div class="wg-campaign-hero__copy">
         <h1 id="public-title">A shared language for property data, <em>drafted in the open.</em></h1>
@@ -107,12 +115,6 @@ const domains = [
       </div>
 
       <div class="wg-campaign-side">
-        <CampaignHeaderControls
-          controlId="home-header-preview-selectors"
-          identityId="home-campaign-identity"
-          positionTargetId="home-domains-panel"
-          themeToggleTargetId="home-theme-toggle"
-        />
         <div class="wg-hero-journey" id="home-domains-panel" style={campaignPanelStyle} aria-labelledby="public-domains-title">
           <p class="wg-eyebrow">Working Group</p>
           <h2 id="public-domains-title">Domains</h2>

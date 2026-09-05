@@ -12,6 +12,7 @@ export interface CampaignHeaderConfiguration {
   panelPositionX: number;
   panelPositionY: number;
   panelWidth: number;
+  panelItemSpacing: number;
   themeTogglePositionY: number;
 }
 
@@ -26,6 +27,7 @@ export const CAMPAIGN_HEADER_DEFAULTS: CampaignHeaderConfiguration = {
   panelPositionX: -67,
   panelPositionY: -8,
   panelWidth: 100,
+  panelItemSpacing: 16,
   themeTogglePositionY: 25,
 };
 
@@ -52,6 +54,7 @@ export function getCampaignPanelStyle(configuration: CampaignHeaderConfiguration
     `--domains-position-x:${configuration.panelPositionX}px`,
     `--domains-position-y:${configuration.panelPositionY}px`,
     `--domains-width:${configuration.panelWidth}%`,
+    `--domains-item-spacing:${configuration.panelItemSpacing}px`,
   ].join(';');
 }
 

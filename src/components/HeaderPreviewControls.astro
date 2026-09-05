@@ -21,6 +21,7 @@ interface Props {
   initialPositionX?: number;
   initialPositionY?: number;
   initialPanelWidth?: number;
+  initialPanelItemSpacing?: number;
   initialThemeTogglePosition?: number;
   initialIcon?: HeaderIconId;
   initialPalette?: HeaderPaletteId;
@@ -42,6 +43,7 @@ const {
   initialPositionX = 0,
   initialPositionY = 0,
   initialPanelWidth = 100,
+  initialPanelItemSpacing = 16,
   initialThemeTogglePosition = 0,
   initialIcon,
   initialPalette,
@@ -67,6 +69,7 @@ const {
           initialPositionX={initialPositionX}
           initialPositionY={initialPositionY}
           initialPanelWidth={initialPanelWidth}
+          initialPanelItemSpacing={initialPanelItemSpacing}
           initialThemeTogglePosition={initialThemeTogglePosition}
         />
       )}
@@ -87,6 +90,7 @@ const {
               initialPositionX={initialPositionX}
               initialPositionY={initialPositionY}
               initialPanelWidth={initialPanelWidth}
+              initialPanelItemSpacing={initialPanelItemSpacing}
               initialThemeTogglePosition={initialThemeTogglePosition}
             />
           )}
@@ -110,6 +114,7 @@ const {
               initialPositionX={initialPositionX}
               initialPositionY={initialPositionY}
               initialPanelWidth={initialPanelWidth}
+              initialPanelItemSpacing={initialPanelItemSpacing}
               initialThemeTogglePosition={initialThemeTogglePosition}
             />
           )}

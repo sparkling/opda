@@ -88,20 +88,25 @@
   min-width: 0;
   width: 100%;
   display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  grid-template-areas:
+    'opda utilities'
+    'framework configuration';
   justify-items: start;
-  gap: var(--identity-line-gap);
+  gap: var(--identity-line-gap) var(--space-5);
   margin-block-end: 0;
   padding-block-start: var(--identity-space-before);
   transform: translateY(calc(var(--identity-space-after-origin) - var(--identity-space-after)));
 }
 .wg-campaign-identity__opda-row {
+  grid-area: opda;
   min-width: 0;
-  width: 100%;
   display: flex;
   align-items: flex-end;
-  gap: var(--space-5);
 }
 .wg-campaign-identity__theme-controls {
+  grid-area: utilities;
+  justify-self: end;
   display: inline-flex;
   align-items: center;
   gap: var(--space-2);
@@ -124,7 +129,13 @@
   --brand-heading-type: 600 calc(var(--identity-heading-size) * var(--identity-opda-scale)) / 1 var(--font-sans);
 }
 .wg-campaign-identity .framework-heading--display {
+  grid-area: framework;
   font-size: calc(var(--identity-heading-size) * 1.57);
+}
+.wg-campaign-identity__configuration {
+  grid-area: configuration;
+  align-self: end;
+  justify-self: end;
 }
 .wg-campaign-side {
   min-width: 0;
@@ -132,7 +143,6 @@
   align-self: center;
   gap: var(--space-3);
 }
-.wg-campaign-side > .header-preview-controls { justify-self: end; }
 .wg-campaign-hero__utilities {
   display: flex;
   align-items: center;
@@ -222,7 +232,8 @@
 .wg-hero-journey h2 { margin: 0; color: var(--brand-white); font: 600 clamp(1.75rem, 2.5vw, 2.75rem) / 1.08 var(--font-display); letter-spacing: var(--tracking-display); text-wrap: balance; }
 .wg-hero-journey > .wg-eyebrow { font-size: clamp(0.875rem, 1.05vw, 1rem); }
 .wg-hero-journey .wg-process { display: grid; grid-template-columns: 1fr; margin: var(--space-6) 0 0; padding: 0; list-style: none; border-bottom: 1px solid var(--color-surface-dark-tint); }
-.wg-hero-journey .wg-process li { min-width: 0; display: grid; grid-template-columns: 3.25rem minmax(0, 1fr); gap: var(--space-1) var(--space-4); align-items: start; padding: var(--space-4) 0; background: transparent; border: 0; border-top: 1px solid var(--color-surface-dark-tint); counter-increment: none; }
+.wg-hero-journey .wg-process li { min-width: 0; display: grid; grid-template-columns: 3.25rem minmax(0, 1fr); gap: var(--space-1) var(--space-4); align-items: start; padding: var(--domains-item-spacing, var(--space-4)) 0; background: transparent; border: 0; border-top: 1px solid var(--color-surface-dark-tint); counter-increment: none; }
+.wg-hero-journey .wg-process li:last-child { padding-bottom: 0; }
 .wg-hero-journey .wg-process li::before { content: none; }
 .wg-hero-journey .wg-process strong { color: var(--brand-white); font: 600 clamp(1.25rem, 1.55vw, 1.5rem) / 1.25 var(--font-display); }
 .wg-hero-journey .wg-process span { color: var(--on-dark-muted); font-size: clamp(1rem, 1.15vw, 1.125rem); line-height: 1.55; }

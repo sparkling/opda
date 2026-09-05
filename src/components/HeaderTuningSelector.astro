@@ -13,6 +13,7 @@ interface Props {
   initialPositionX?: number;
   initialPositionY?: number;
   initialPanelWidth?: number;
+  initialPanelItemSpacing?: number;
   initialThemeTogglePosition?: number;
 }
 
@@ -30,6 +31,7 @@ const {
   initialPositionX = 0,
   initialPositionY = 0,
   initialPanelWidth = 100,
+  initialPanelItemSpacing = 16,
   initialThemeTogglePosition = 0,
 } = Astro.props;
 
@@ -46,6 +48,7 @@ const adjustments = [
     { label: 'Domains left / right', targetId: positionTargetId, property: '--domains-position-x', min: -256, max: 256, value: initialPositionX, factor: 1, unit: 'px', ariaUnit: 'pixels' },
     { label: 'Domains up / down', targetId: positionTargetId, property: '--domains-position-y', min: -256, max: 256, value: initialPositionY, factor: 1, unit: 'px', ariaUnit: 'pixels' },
     { label: 'Box width', targetId: positionTargetId, property: '--domains-width', min: 50, max: 150, value: initialPanelWidth, factor: 1, unit: '%', ariaUnit: 'percent' },
+    { label: 'List item spacing', targetId: positionTargetId, property: '--domains-item-spacing', min: 0, max: 64, value: initialPanelItemSpacing, factor: 1, unit: 'px', ariaUnit: 'pixels' },
   ] : []),
   ...(themeToggleTargetId ? [
     { label: 'Dark / light button up / down', targetId: themeToggleTargetId, property: '--theme-toggle-position-y', min: -128, max: 128, value: initialThemeTogglePosition, factor: 1, unit: 'px', ariaUnit: 'pixels' },

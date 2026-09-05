@@ -29,11 +29,12 @@ const themeToggleStyle = getCampaignThemeToggleStyle(configuration);
   <div class="wg-campaign-identity" id={identityId} style={identityStyle}>
     <div class="wg-campaign-identity__opda-row">
       <BrandHeading variant="paired" />
-      <span id={themeToggleId} class="wg-campaign-identity__theme-controls" style={themeToggleStyle}>
-        {showOpdaLink && <a class="wg-campaign-identity__opda-link" href="/">OPDA</a>}
-        <ThemeToggle id={`${themeToggleId}-button`} />
-      </span>
     </div>
+    <span id={themeToggleId} class="wg-campaign-identity__theme-controls" style={themeToggleStyle}>
+      {showOpdaLink && <a class="wg-campaign-identity__opda-link" href="/">OPDA</a>}
+      <ThemeToggle id={`${themeToggleId}-button`} />
+    </span>
     <FrameworkHeading scale="display" />
+    <div class="wg-campaign-identity__configuration"><slot name="controls" /></div>
   </div>
 </header>
