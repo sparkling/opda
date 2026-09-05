@@ -67,3 +67,11 @@ The mapping excerpt uses the exact SEMAPV vocabulary namespace and labels RDF 1.
 All eight Astro files passed parser and syntax-transform checks with zero diagnostics using installed compiler-rs 0.3.2. These checks do not resolve the forthcoming shared layout or certify a rendered site. Each page is below 500 lines. No tests, full build, browser, deployment or push was run.
 
 Requested targeted read-only peer inspection of identity/role claims from Guarino and mapping/context-map claims from Baker. No peer approval is claimed before their replies.
+
+## Peer implementation findings and bounded correction
+
+Baker inspected mapping-records and context-map-records and reported no blocker. He specifically confirmed the SEMAPV prefix, absence of fabricated author_id, version/date/set receipt, SKOS consequences, exact mapping-record bridge and active-map history boundary. His optional clarity suggestion was accepted: the figure receipt now distinguishes matching-process justification from semantic rationale.
+
+Guarino inspected the technical identity and role/phase pages and reported no new blocking formal error. He requested a correction from “does not require” upper-ontology inheritance to the actual ODR-0118 R1 prohibition within selected scope. The wording was corrected. He supplied the author-hosted OntoClean primary source; this worker opened and verified it and added a precise pp. 61–62 citation beside the rigidity discussion: https://www.loa.istc.cnr.it/old/Papers/CACM2002.pdf.
+
+These are bounded source-content reviews, not browser/rendering validation or approval of the integrated site.
