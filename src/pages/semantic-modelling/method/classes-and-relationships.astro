@@ -64,7 +64,7 @@ ex:title-record a model:TitleRecord .`;
   <section aria-labelledby="inheritance">
     <h2 id="inheritance">Inheritance is a commitment, not a filing system</h2>
     <p><code>rdfs:subClassOf</code> says that every instance of one class is an instance of another. It is not a way to place a class under a convenient subject heading. A reporting facet such as “building information” may organise classes about inspections, documents and physical assets without asserting that those classes are all kinds of building. <a href="https://www.w3.org/TR/rdf-schema/#ch_subclassof">RDFS 1.1 §3.4</a> defines the actual subclass consequence.</p>
-    <p>The same caution applies when reusing a standard. Reuse a term if its meaning fits; do not inherit from a remote class simply to advertise compatibility. Cross-context correspondence uses the mapping discipline. Foundational analysis challenges identity and dependence, but the selected method does not require each property-domain class to inherit from an external upper ontology.</p>
+    <p>The same caution applies when reusing a standard. Reuse a term if its meaning fits; do not inherit from a remote class simply to advertise compatibility. Cross-context correspondence uses the mapping discipline. Foundational analysis challenges identity and dependence, but ODR-0118 R1 prohibits domain-class inheritance from external upper ontologies within the selected method’s scope. Analysis is required; importing that external hierarchy is not an optional alternative.</p>
     <p>Next, distinguish <a href="/semantic-modelling/method/roles-and-phases">roles, phases and subkinds</a>, then inspect <a href="/semantic-modelling/method/mapping-records">how mapping decisions are recorded</a>.</p>
   </section>
 
