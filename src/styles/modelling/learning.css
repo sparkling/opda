@@ -29,6 +29,14 @@
   background: var(--color-surface-alt);
 }
 .modelling-document .modelling-figure > * + * { margin-block-start: var(--space-4); }
+.modelling-document .modelling-figure:has(> .modelling-visual) > :is(dl, figcaption) {
+  width: min(100%, 60rem);
+  margin-inline: auto;
+}
+.modelling-document .modelling-figure:has(> .modelling-visual) > dl:not([class]) {
+  grid-template-columns: minmax(10rem, 14rem) minmax(0, 1fr);
+  gap: var(--space-3) var(--space-6);
+}
 .prose.modelling-document .modelling-figure figcaption {
   color: var(--color-text-strong);
   font: 500 var(--text-sm) / var(--leading-normal) var(--font-sans);
@@ -63,11 +71,13 @@
 }
 .modelling-steps > li:last-child { padding-block-end: 0; }
 .modelling-document details:not(.modelling-detail) {
-  border: 1px solid var(--color-border);
-  background: var(--color-surface-card);
-  padding: var(--space-4) var(--space-5);
+  border: 0;
+  background: transparent;
+  padding: 0;
 }
-.modelling-document details > summary {
+.modelling-document details:not(.modelling-detail) > summary {
+  display: list-item;
+  width: fit-content;
   min-height: var(--target-min);
   align-content: center;
   cursor: pointer;
@@ -85,8 +95,9 @@
   .modelling-document .modelling-comparison { grid-template-columns: minmax(0, 1fr); }
   .modelling-comparison > section + section { border-inline-start: 0; border-block-start: 1px solid var(--color-border); }
   .modelling-document .modelling-figure { padding: var(--space-4); }
+  .modelling-document .modelling-figure:has(> .modelling-visual) > dl:not([class]) { grid-template-columns: minmax(0, 1fr); }
 }
 @media (forced-colors: active) {
-  .modelling-document :is(.modelling-figure, .modelling-comparison, details, .modelling-steps > li) { border-color: CanvasText; }
+  .modelling-document :is(.modelling-figure, .modelling-comparison, .modelling-steps > li) { border-color: CanvasText; }
   .modelling-standing { border-color: CanvasText; }
 }

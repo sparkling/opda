@@ -203,13 +203,15 @@ the optical space. Nested content flows expose the shared `.document-flow` role;
 spacing never depends on a route or on the link text.
 Authored reading content uses Atkinson Hyperlegible Next at 18px; generated references retain their existing typography. The authored “From a useful
 question to a reviewable candidate” chapter is the single reading-measure exception:
-direct text blocks stop at 1200px and align left, while figures and images continue to use the full article track.
+direct text blocks stop at 1200px and align left. Modelling SVG figures use their centred 960px design measure; their definition keys, explanations and captions align to that same measure instead of stretching across the article.
 Components may own internal layout spacing, but must not create separation from
-an unknown next sibling. Authored ADR/ODR sections share the editorial divider;
+an unknown next sibling. Authored ADR/ODR sections share the editorial heading rhythm;
 their technical quotations and code keep their existing treatment.
+Sibling modelling pathways use equal-width, equal-height columns; extra guidance in the first route does not make it visually dominant.
 `Layout` marks authored articles with `.editorial-content`; generated reference
 templates opt out with `generatedContent`. The shared editorial stylesheet also
 serves public-page copy. Nested paragraphs and lists retain the same reading rhythm.
+Plain modelling disclosures retain their native expand/collapse affordance and focus state, but add no card border, fill or panel padding around ordinary prose.
 
 When a semantic `section` groups several blocks, it becomes the local flow
 owner and applies the same rule to its immediate children. In particular, a

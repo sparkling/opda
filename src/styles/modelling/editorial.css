@@ -12,20 +12,16 @@
    carry no trailing margins.
    ───────────────────────────────────────────────────────────── */
 
-/* ── Audience pathway split ──
-   One primary route set wide with its reading list; quieter
-   alternatives share a ruled column. Whole-panel link targets,
-   butted borders, no floating cards. */
+/* ── Audience pathways ──
+   Equal columns keep sibling routes visually equivalent. Whole-panel link
+   targets retain butted borders with no floating-card gaps. */
 .modelling-pathways {
   display: grid;
-  grid-template-columns: minmax(0, 1.7fr) minmax(0, 1fr);
+  grid-template-columns: repeat(auto-fit, minmax(min(18rem, 100%), 1fr));
   border: 1px solid var(--color-border);
   background: var(--color-surface-card);
 }
-.modelling-pathways__alternatives {
-  min-width: 0;
-  display: grid;
-  align-content: start;
+.modelling-pathways__route + .modelling-pathways__route {
   border-inline-start: 1px solid var(--color-border);
 }
 .modelling-pathways__route {
@@ -38,10 +34,7 @@
   text-decoration: none;
   transition: background var(--duration-fast) var(--ease);
 }
-.modelling-pathways__route--primary { padding: var(--space-7); }
-.modelling-pathways__alternatives > .modelling-pathways__route + .modelling-pathways__route {
-  border-block-start: 1px solid var(--color-border);
-}
+.modelling-pathways__route--primary { padding: var(--space-6); }
 .modelling-pathways__route:hover {
   background: var(--color-surface-alt);
   color: inherit;
@@ -273,7 +266,7 @@
 /* ── Responsive reflow ── */
 @media (max-width: 64rem) {
   .modelling-pathways { grid-template-columns: minmax(0, 1fr); }
-  .modelling-pathways__alternatives {
+  .modelling-pathways__route + .modelling-pathways__route {
     border-inline-start: 0;
     border-block-start: 1px solid var(--color-border);
   }
@@ -318,8 +311,7 @@
 /* ── Forced colours ── */
 @media (forced-colors: active) {
   .modelling-pathways,
-  .modelling-pathways__alternatives,
-  .modelling-pathways__alternatives > .modelling-pathways__route + .modelling-pathways__route,
+  .modelling-pathways__route + .modelling-pathways__route,
   .modelling-principle,
   .modelling-contrast,
   .modelling-contrast__side + .modelling-contrast__side,

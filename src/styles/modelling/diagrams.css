@@ -14,7 +14,9 @@
   --mv-mono: var(--font-mono, 'Roboto Mono', 'SFMono-Regular', Consolas, monospace);
   display: block;
   width: 100%;
+  max-inline-size: 60rem;
   height: auto;
+  margin-inline: auto;
   isolation: isolate;
 }
 [data-theme='dark'] .modelling-visual {
