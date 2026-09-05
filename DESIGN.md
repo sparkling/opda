@@ -203,6 +203,9 @@ gap below. Bounded content endings also use 16px before the rule. Text-led
 endings use 4px after their final line box because the line box itself completes
 the optical space. Nested content flows expose the shared `.document-flow` role;
 spacing never depends on a route or on the link text.
+The authored “From a useful question to a reviewable candidate” chapter is the
+single reading-measure exception: direct text blocks stop at 1200px and centre,
+while figures and images continue to use the full article track.
 Components may own internal layout spacing, but must not create separation from
 an unknown next sibling. Authored ADR/ODR sections share the editorial divider;
 their technical quotations and code keep their existing treatment.
