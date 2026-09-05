@@ -199,7 +199,7 @@ test('temporary selectors expose full preview cards and persist palettes and ico
   assert.match(home, /<CampaignIdentity identityId="home-campaign-identity" themeToggleId="home-theme-toggle" \/>/u);
   assert.match(join, /<CampaignIdentity identityId="join-campaign-identity" themeToggleId="join-theme-toggle" \/>/u);
   assert.match(campaign, /\.wg-campaign-identity__opda-row\s*\{[^}]*width:\s*100%;[^}]*display:\s*flex;[^}]*align-items:\s*flex-end;/su);
-  assert.match(campaign, /\.wg-campaign-identity \.brand-heading__label\s*\{[^}]*color:\s*var\(--color-header-muted\);/su);
+  assert.doesNotMatch(campaign, /\.wg-campaign-identity \.brand-heading__label\s*\{/u);
   assert.match(campaign, /\.wg-campaign-hero__header \.theme-toggle\s*\{[^}]*width:\s*3\.25rem;[^}]*height:\s*3\.25rem;[^}]*margin-left:\s*auto;[^}]*translate:\s*0 var\(--theme-toggle-position-y, 0\);/su);
   assert.doesNotMatch(campaign, /\.wg-campaign-hero__header \.theme-toggle\s*\{[^}]*margin-block-start:/su);
   assert.match(campaign, /\.wg-campaign-hero__header \.theme-toggle svg\s*\{[^}]*width:\s*1\.75rem;[^}]*height:\s*1\.75rem;/su);

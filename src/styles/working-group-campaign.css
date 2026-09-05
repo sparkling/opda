@@ -108,9 +108,6 @@
 .wg-campaign-identity .brand-heading--paired {
   --brand-heading-type: 600 calc(var(--identity-heading-size) * var(--identity-opda-scale)) / 1 var(--font-sans);
 }
-.wg-campaign-identity .brand-heading__label {
-  color: var(--color-header-muted);
-}
 .wg-campaign-identity .framework-heading--display {
   font-size: calc(var(--identity-heading-size) * 1.57);
 }
