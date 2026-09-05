@@ -1,0 +1,54 @@
+---
+import ModellingLayout from '@/layouts/ModellingLayout.astro';
+---
+
+<ModellingLayout title="Names and choices: the word is not the thing" description="A shared vocabulary does more than standardise spelling. It explains what a term means, which choices belong together and where apparently similar terms must remain different." chapter="Explore the distinctions" claim="guide">
+  <section aria-labelledby="layers">
+    <h2 id="layers">A dwelling, a concept and a label</h2>
+    <p>Flat 1 at Harbour Court is a fictional dwelling. A concept used to classify it—perhaps “flat”—is not the dwelling. The text displayed for that concept is a label. These three layers let people find information using familiar words while preserving the meaning behind the words.</p>
+    <p>A governed vocabulary may give one concept a preferred label and useful alternatives. That does not mean “flat” and “apartment” are universally interchangeable in every professional context. Reviewers must establish whether their definitions coincide in the particular vocabulary. If they do not, keeping separate concepts is more honest than announcing a synonym.</p>
+  </section>
+
+  <figure class="modelling-figure" data-modelling-figure="concept-layers">
+    <dl>
+      <dt>The thing</dt><dd>Flat 1: the dwelling described in the Harbour Court example.</dd>
+      <dt>The classification concept</dt><dd>A defined dwelling-form concept in a named, governed vocabulary.</dd>
+      <dt>The label</dt><dd>The words shown to a reader; another label need not create another concept.</dd>
+      <dt>The organising view</dt><dd>A topic or facet used to find information, without declaring a new kind of dwelling.</dd>
+    </dl>
+    <figcaption>Changing a display label does not automatically change the concept or the dwelling. Changing a definition may require review of classifications and mappings.</figcaption>
+  </figure>
+
+  <section aria-labelledby="choices">
+    <h2 id="choices">A closed choice list is not an open population</h2>
+    <p>An exchange might allow only a reviewed set of inspection-status values. A new status must then go through the vocabulary’s change process before being used in that exchange. That is a closed choice list. It does not mean the world contains only the inspection events already in our data.</p>
+    <p>The inspection subjects are different. A system may receive a report about a newly identified dwelling. That dwelling is not a new status code, and it should not require adding every possible dwelling to an enumeration. A resource population can grow while a particular exchange’s list of permitted choices remains closed.</p>
+    <p>Nor is an unanswered field the same as an explicit “not inspected” choice. The former says information is missing; the latter makes a statement. If “unknown” is a permitted concept, define what it means rather than using it as a catch-all for missing, withheld and not applicable.</p>
+    <details>
+      <summary>How are the choices represented technically?</summary>
+      <p>SKOS provides concepts and concept schemes; SHACL expresses the applicable validation condition. Scheme membership alone does not establish every exchange’s permitted list. The selected method uses explicit closure decisions and checks such as a permitted-value list where appropriate. See <a href="/semantic-modelling/method/languages-and-profiles">languages and profiles</a>.</p>
+    </details>
+  </section>
+
+  <section aria-labelledby="hierarchy">
+    <h2 id="hierarchy">A useful topic tree is not necessarily an inheritance tree</h2>
+    <p>A website section called “building information” might contain inspection reports, addresses and dwelling descriptions. It helps you browse; it does not claim that a report is a kind of building. Likewise, a vocabulary’s broader/narrower organisation is not automatically an assertion that one class inherits another’s properties.</p>
+    <p>Independent facets provide other ways to find the same material: subject, concern or information type. A report can appear in more than one view without becoming several different reports. Keep these organising decisions separate from the identity-bearing model.</p>
+  </section>
+
+  <section aria-labelledby="connections">
+    <h2 id="connections">A close match is not simply a less confident exact match</h2>
+    <p>Two communities may use terms that are sufficiently related to connect, yet different enough that substitution would lose meaning. A mapping records which relationship is justified. An exact match, close match and broader match express different relationships, not merely different score thresholds.</p>
+    <details>
+      <summary>Why does a chain of exact matches deserve extra care?</summary>
+      <p>Imagine vocabulary A’s concept exactly matches B’s concept, and B’s exactly matches C’s. SKOS exactMatch is transitive, so the chain carries an exact-match consequence between A and C. A chain of closeMatch statements has no corresponding transitivity rule. Friendly mapping labels therefore have formal consequences; they are not inert notes. <a href="https://www.w3.org/TR/skos-reference/#mapping">SKOS Reference §10</a> specifies the distinction.</p>
+      <p>This does not make three physical dwellings one dwelling. Conceptual correspondence and identity between individual things are different questions.</p>
+    </details>
+    <p>Review the definitions and examples before choosing the relationship. Then retain the sources and versions compared, why the mapping was judged appropriate and how it was produced. The <a href="/semantic-modelling/method/mapping-records">mapping-record chapter</a> explains the complete technical receipt.</p>
+  </section>
+
+  <section aria-labelledby="source-contract">
+    <h2 id="source-contract">What this explanation rests on</h2>
+    <p>Source-method ODR-0010 separates classification from inheritance; ODR-0016/0023 and ODR-0071b govern vocabularies and closure; ODR-0071e governs facets. ODR-0087/0098 qualify cross-context mappings. Reviewed revision: <code>67174057e6384b79d0b28b7736fe70a66e112895</code>, 5 September 2026. See <a href="/semantic-modelling/method/standards-and-decisions">standards and decisions</a>. The vocabulary choices here are illustrative, not approved OPDA values.</p>
+  </section>
+</ModellingLayout>
