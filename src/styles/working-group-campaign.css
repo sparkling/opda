@@ -71,7 +71,16 @@
 }
 
 .wg-campaign-hero__header .brand-heading--campaign { margin-bottom: 0; }
-.wg-campaign-hero__header .theme-toggle { margin-left: auto; }
+.wg-campaign-hero__header .theme-toggle {
+  width: 3.25rem;
+  height: 3.25rem;
+  align-self: flex-start;
+  margin-left: auto;
+}
+.wg-campaign-hero__header .theme-toggle svg {
+  width: 1.75rem;
+  height: 1.75rem;
+}
 .wg-campaign-identity {
   --identity-heading-size: 24px;
   --identity-opda-scale: 1;
@@ -182,7 +191,6 @@
 
 .wg-campaign-hero--panel-aligned .home-campaign-side {
   margin-top: 0;
-  transform: translateY(clamp(2.5rem, 4vw, 4rem));
 }
 
 .wg-hero-journey h2 { margin: 0; color: var(--brand-white); font: 600 clamp(1.75rem, 2.5vw, 2.75rem) / 1.08 var(--font-display); letter-spacing: var(--tracking-display); text-wrap: balance; }
@@ -196,10 +204,6 @@
 .wg-process__icon svg { width: 2rem; height: 2rem; stroke-width: 1.8; }
 
 .wg-programme-link { margin: var(--space-7) 0 0; }
-
-@media (max-width: 72rem) {
-  .wg-campaign-hero--panel-aligned .home-campaign-side { transform: none; }
-}
 
 .wg-group-grid {
   display: grid;
