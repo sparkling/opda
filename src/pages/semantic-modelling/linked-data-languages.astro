@@ -11,11 +11,12 @@ import Layout from '@/layouts/Layout.astro';
     each for the particular job it does well.
   </p>
   <p>
-    This is an explanation of the approach, not a claim that every vocabulary below
-    is implemented. The <a href="/semantic-modelling/standards">standards profile</a>
-    records selected versions, governance decisions and actual candidate use separately.
-    The <a href="/semantic-modelling/decision-basis">decision basis</a> explains which
-    earlier modelling decisions apply here and where their scope differs.
+    The relevant source ODRs are normative for this approach within the selected
+    ODR-0071 concerns. They define how we model; implementation coverage records how
+    much has been delivered. The <a href="/semantic-modelling/decision-basis">decision
+    basis</a> identifies that scope. The <a href="/semantic-modelling/standards">standards
+    profile</a> records vocabulary choices, selected versions and actual candidate use
+    separately; an unfinished implementation does not make a chosen method optional.
   </p>
 
   <h2 id="shared-foundation">RDF: one shared foundation</h2>
@@ -51,20 +52,29 @@ import Layout from '@/layouts/Layout.astro';
     <a href="https://www.w3.org/TR/rdf-schema/">RDFS specification</a> defines these rules.
   </p>
   <p>
-    An annotation for expected applicability serves another purpose.
-    <a href="https://schema.org/domainIncludes">Schema.org's <code>domainIncludes</code></a>,
-    for example, identifies types on which a property is expected to be used.
-    A documentary annotation needs its own declared meaning; it must not be described
-    as changing RDFS semantics. Choosing not to run inference does not change what
+    ODR-0014 therefore requires every governed property to document both subject and
+    value applicability. Each side uses exactly one mechanism: a universally true
+    single RDFS commitment, Schema.org inclusion hints for intended alternatives, or
+    an explicit governed waiver. <a href="https://schema.org/domainIncludes"><code>schema:domainIncludes</code></a>
+    and <code>schema:rangeIncludes</code> are the selected hints; they neither infer
+    membership nor enforce constraints. They must not be combined with RDFS applicability
+    or a waiver on the same side. Choosing not to run inference does not change what
     exported RDFS statements mean to other consumers.
   </p>
   <p>
     OWL adds formal expressions and axioms. Its open-world treatment means an absent
-    value is not automatically false or invalid. An OWL restriction is not, by
-    itself, a mandatory-field check on an exchanged record. Using a few OWL terms
-    also does not establish reasoner or full-profile conformance. The
-    <a href="https://www.w3.org/TR/owl2-syntax/">OWL specification</a> supplies the formal language;
-    our implementation profile sets the supported boundary.
+    value is not automatically false or invalid. ODR-0030 selects a bounded documentation
+    profile: restrictions, Boolean class constructors, cardinality restrictions, closed
+    OWL enumerations and keys are excluded. Their validation requirements belong in SHACL.
+    The <a href="https://www.w3.org/TR/owl2-syntax/">OWL specification</a> supplies the formal
+    language; our chosen profile deliberately uses less than the complete language.
+  </p>
+  <p>
+    ODR-0036 adds selective inference: class and property hierarchies, inverse links,
+    transitivity, symmetry and disjointness checks. Domain/range, identity-merging
+    constructs and equivalence propagation stay outside that runtime ruleset without
+    losing their standard semantics. This is a chosen processing contract, not a
+    claim of full OWL conformance or that every current candidate already executes it.
   </p>
 
   <h2 id="vocabularies">SKOS: make controlled language usable</h2>
@@ -104,6 +114,13 @@ import Layout from '@/layouts/Layout.astro';
     Full RDFS inference is not required by SHACL; any required inference and supported
     features must be explicit. See the <a href="https://www.w3.org/TR/shacl/">SHACL specification</a>.
   </p>
+  <p>
+    Validation and derivation remain separate. ODR-0036 adopts SHACL Rules for producing
+    derived triples, with rules held separately from constraints. Derived statements
+    must remain distinguishable from asserted statements through graph separation or
+    provenance. The selected rule features still need an implementation and execution
+    record; a successful constraints check is not evidence that derivation ran.
+  </p>
 
   <h2 id="questions">SPARQL: turn useful questions into executable queries</h2>
   <p>
@@ -141,12 +158,14 @@ import Layout from '@/layouts/Layout.astro';
 
   <h2 id="other-concerns">Reuse additional vocabularies for named concerns</h2>
   <p>
-    Supporting concerns deserve equally precise treatment. The following are useful
-    reference points; their presence here does not select them for a release.
+    Provenance, quality, time and sensitivity are part of the selected modelling
+    concerns. Their normative decisions guide the choice of vocabulary and exact terms.
+    The table explains complementary responsibilities, including catalogue and policy
+    concerns; it does not imply wholesale imports or complete current implementation.
   </p>
   <table>
     <caption>Established vocabularies and their distinct responsibilities</caption>
-    <thead><tr><th scope="col">Vocabulary</th><th scope="col">What it contributes</th><th scope="col">What still needs a decision</th></tr></thead>
+    <thead><tr><th scope="col">Vocabulary</th><th scope="col">What it contributes</th><th scope="col">Boundary to preserve</th></tr></thead>
     <tbody>
       <tr><th scope="row"><a href="https://www.dublincore.org/specifications/dublin-core/dcmi-terms/">Dublin Core Terms</a></th><td>Descriptive metadata such as title, source and dates.</td><td>Which date or source relationship has the required meaning.</td></tr>
       <tr><th scope="row"><a href="https://www.w3.org/TR/prov-o/">PROV-O</a></th><td>Entities, activities, agents, attribution and derivation.</td><td>What evidence supports a claim; attribution alone does not establish accuracy.</td></tr>
