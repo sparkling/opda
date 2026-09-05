@@ -1,0 +1,27 @@
+---
+interface Props {
+  x: number; y: number; width: number; height: number;
+  name: string | string[];
+  tag?: string;
+  notes?: string[];
+  technical?: boolean;
+  tone?: 'neutral' | 'focal' | 'quiet';
+  shape?: 'box' | 'document' | 'state';
+}
+const { x, y, width, height, name, tag, notes = [], technical = false, tone = 'neutral', shape = 'box' } = Astro.props;
+const names = Array.isArray(name) ? name : [name];
+const nameY = y + (tag ? 52 : 32);
+const noteY = nameY + (names.length - 1) * 24 + 28;
+const outline = 'M' + x + ' ' + y + 'H' + (x + width - 16) + 'L' + (x + width) + ' ' + (y + 16) + 'V' + (y + height) + 'H' + x + 'Z';
+---
+
+<g class={'mv-node mv-node--' + tone}>
+  <rect x={x} y={y} width={width} height={height} rx="4" class="mv-mask" />
+  {shape === 'document' ? <>
+    <path d={outline} class="mv-node-body" />
+    <path d={'M' + (x + width - 16) + ' ' + y + 'V' + (y + 16) + 'H' + (x + width)} class="mv-rule" />
+  </> : <rect x={x} y={y} width={width} height={height} rx={shape === 'state' ? 8 : 4} class="mv-node-body" />}
+  {tag && <text x={x + 16} y={y + 24} class="mv-tag">{tag}</text>}
+  {names.map((line, index) => <text x={x + 16} y={nameY + index * 24} class="mv-label">{line}</text>)}
+  {notes.map((line, index) => <text x={x + 16} y={noteY + index * 24} class={technical ? 'mv-technical' : 'mv-note'}>{line}</text>)}
+</g>

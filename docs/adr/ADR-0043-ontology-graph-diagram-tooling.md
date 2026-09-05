@@ -1,7 +1,7 @@
 ---
 status: accepted
 date: 2026-06-14
-updated: 2026-08-16
+updated: 2026-09-05
 tags: [ontology, visualization, graph-diagram, tooling, cytoscape, mermaid, rdf2dot, bake-off, ci-gate, astro]
 supersedes: []
 depends-on: [ADR-0041, ADR-0037, ODR-0004]
@@ -129,3 +129,9 @@ Final adoption is the operator's call on inspection (consistent with the ADR-004
   remain unchanged, but `src/lib/diagram-palette.ts` now projects the OPDA
   categorical and status tokens defined by `DESIGN.md`. This amendment changes
   presentation, not the ontology tooling decision or generated-data gates.
+- **2026-09-05 — AUTHORED TEACHING FIGURES.** The Modelling learning section
+  uses Diagram Design's OPDA profile for its hand-authored inline SVG figures,
+  through `src/components/modelling/ModellingVisual.astro` and shared SVG
+  primitives. These fictional explanatory diagrams are not generated ontology
+  subgraphs. The Cytoscape engine, existing Mermaid views, model-data gates and
+  shared site layout remain unchanged.

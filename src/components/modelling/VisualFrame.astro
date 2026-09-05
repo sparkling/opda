@@ -1,0 +1,27 @@
+---
+interface Props {
+  id: string;
+  title: string;
+  description: string;
+  eyebrow: string;
+  takeaway: string[];
+}
+const { id, title, description, eyebrow, takeaway } = Astro.props;
+---
+
+<svg class="modelling-visual" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 600" role="img" aria-labelledby={id + '-title ' + id + '-desc'}>
+  <title id={id + '-title'}>{title}</title>
+  <desc id={id + '-desc'}>{description}</desc>
+  <defs>
+    {['arrow', 'arrow-accent', 'arrow-link'].map((kind) => (
+      <marker id={id + '-' + kind} viewBox="0 0 8 8" markerWidth="8" markerHeight="8" refX="8" refY="4" orient="auto" markerUnits="userSpaceOnUse">
+        <path d="M0 0 8 4 0 8Z" class={'mv-' + kind} />
+      </marker>
+    ))}
+  </defs>
+  <rect width="960" height="600" class="mv-paper" />
+  <text x="40" y="48" class="mv-eyebrow">{eyebrow}</text>
+  <slot />
+  <path d="M40 512H920" class="mv-rule" />
+  {takeaway.map((line, index) => <text x="40" y={536 + index * 20} class="mv-note">{line}</text>)}
+</svg>

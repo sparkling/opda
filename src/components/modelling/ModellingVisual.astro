@@ -1,140 +1,226 @@
 ---
 import { randomUUID } from 'node:crypto';
+import VisualFrame from './VisualFrame.astro';
+import VisualNode from './VisualNode.astro';
+import VisualEdge from './VisualEdge.astro';
 
 interface Props { kind: string; }
 const { kind } = Astro.props;
-const id = `modelling-${randomUUID()}`;
-const names: Record<string, [string, string]> = {
-  'identity-map': ['One situation, distinct identities', 'Harbour Court contains two dwellings. An address description and a title record are separate resources. Sharing an address is not an identity test.'],
-  'evidence-timeline': ['An inspection is not a report version', 'The inspection occurs on 12 August. A report is issued on 14 August and corrected on 20 August. The correction changes the document, not the past inspection. Dates are spaced proportionally.'],
-  'concept-layers': ['A dwelling, a concept and a label', 'A dwelling is classified using a concept. The concept has preferred and alternative labels. A concept hierarchy is not a physical containment or class-inheritance hierarchy.'],
-  'context-mapping-bridge': ['Two levels of agreement', 'Surveying and transaction-assessment participate in a strategic relationship. The neutral participant links assert no dependency direction. Separate qualified mapping records describe particular term correspondences, including their versions and rationale.'],
-  'semantic-layers': ['Four different questions for software', 'Assertions state meaning, applicability hints document intended uses, constraints check supplied data, and rules derive additional statements. None of these is human adoption or proof of truth.'],
-  'role-phase': ['Participation is not a new person', 'One person participates as seller in one transaction and buyer in another. A record can also move through workflow states, but those labels are not automatically ontological phases. Identity and phase criteria require separate analysis.'],
-  'mapping-gates': ['A mapping can be refused', 'Compare intended meaning and identity criteria before selecting a mapping relation. A failed or unresolved identity comparison stops equivalence. An accepted correspondence needs a qualified record.'],
-  'candidate-loop': ['A question becomes a reviewable candidate', 'Practitioners bring a question and examples. Modellers make distinctions explicit. Checks expose problems and return work for revision. Human review records the disposition; passing checks is not approval.'],
-  'policy-boundaries': ['Description is not enforcement', 'Model annotations describe sensitivity and purpose. Human-governed policy defines permitted use. Application controls must enforce the policy; annotations alone grant no access.'],
-  'scope-map': ['Eight concerns, one connected package', 'Domain structure, vocabulary, classification, validation, mappings, provenance, time and sensitivity are eight selected concerns across one package. They are not eight mandatory files or separate ontologies.'],
+const prefix = 'modelling-' + randomUUID();
+const figures: Record<string, { title: string; description: string; eyebrow: string; takeaway: string[] }> = {
+  'identity-map': {
+    title: 'One situation, distinct identities',
+    description: 'Harbour Court contains two dwellings; its title record and address description are separate resources, and sharing a location does not make them identical.',
+    eyebrow: 'CONTAINMENT / DISTINCT IDENTITIES',
+    takeaway: ['Containment means “contains”, not “is the same as”. The title and address remain separate.', 'A shared address helps locate descriptions; it is not an identity criterion.'],
+  },
+  'evidence-timeline': {
+    title: 'An inspection is not a report version',
+    description: 'An inspection on 12 August is described by a report issued on 14 August and corrected on 20 August; proportional dates distinguish the event from its document versions.',
+    eyebrow: 'TIMELINE / AUGUST 2026',
+    takeaway: ['The dates are proportional: two days to the first report, then six days to its correction.', 'A receiving system may record the correction later. Recording time is another clock.'],
+  },
+  'concept-layers': {
+    title: 'A dwelling, a concept and a label',
+    description: 'Flat 1 is classified using the concept flat, which has the preferred label “Flat” and the broader concept dwelling; classification is not physical containment or class inheritance.',
+    eyebrow: 'RELATIONSHIPS / THREE DIFFERENT KINDS OF THING',
+    takeaway: ['Changing a label does not replace the dwelling or the concept.', '“Broader” organises concepts. It does not mean “part of the building” or class inheritance.'],
+  },
+  'context-mapping-bridge': {
+    title: 'Two levels of agreement',
+    description: 'Surveying and transaction-assessment are neutral participants in a strategic agreement that references only the applicable qualified term-mapping records.',
+    eyebrow: 'ARCHITECTURE / STRATEGIC AGREEMENT AND TERM MAPPING',
+    takeaway: ['The participant lines assert no dependency direction.', 'A strategic agreement references particular applicable mappings, not an entire set by default.'],
+  },
+  'semantic-layers': {
+    title: 'Four different questions for software',
+    description: 'Assertions carry meaning, applicability hints describe intended use, constraints check supplied data and declared rules derive traceable facts; these are distinct jobs, not approval stages.',
+    eyebrow: 'ARCHITECTURE / FOUR CONTRACTS, NOT FOUR STAGES',
+    takeaway: ['RDF, RDFS and OWL keep their semantics even when a local reasoner is switched off.', 'Checks provide evidence; derivation adds facts. Neither establishes truth or human adoption.'],
+  },
+  'role-phase': {
+    title: 'Participation is not a new person',
+    description: 'One person can participate as seller in sale A and buyer in sale B at the same time without acquiring a different personal identity.',
+    eyebrow: 'RELATIONSHIPS / ONE IDENTITY, TWO PARTICIPATIONS',
+    takeaway: ['The roles can coexist because they are scoped to different transactions.', 'Class-level roleOf annotations do not, by themselves, encode these participation records.'],
+  },
+  'workflow-states': {
+    title: 'A workflow state is not automatically a phase',
+    description: 'An illustrative review record moves from draft through review to a recorded disposition; those workflow labels do not establish ontological phases or implementation status.',
+    eyebrow: 'STATE MACHINE / A DIFFERENT SUBJECT: THE REVIEW RECORD',
+    takeaway: ['This is an illustrative lifecycle, not a deployed review workflow.', 'A status label is not automatically phaseOf. Identity and phase criteria need separate analysis.'],
+  },
+  'mapping-gates': {
+    title: 'A mapping can be refused',
+    description: 'Compare meanings and identity criteria before selecting a correspondence; incompatible or unresolved identity stops equivalence, while a supported relation needs a qualified record.',
+    eyebrow: 'DECISION FLOW / IDENTITY BEFORE EQUIVALENCE',
+    takeaway: ['A failed or unresolved identity comparison stops an equivalence assertion.', 'Consider a weaker justified correspondence or record no mapping. Do not force equivalence.'],
+  },
+  'candidate-loop': {
+    title: 'A question becomes a reviewable candidate',
+    description: 'Questions and examples lead to explicit distinctions and checks; human review records a disposition, and a requested revision returns a changed candidate for further questions.',
+    eyebrow: 'FLOWCHART / REVIEWABLE WORK, NOT AUTOMATIC APPROVAL',
+    takeaway: ['Passing checks is evidence, not permission to adopt a standard.', 'Human review can accept, revise or decline; the return path represents requested revision.'],
+  },
+  'policy-boundaries': {
+    title: 'Description is not enforcement',
+    description: 'Sensitivity annotations inform human-governed policy, while application controls must enforce permitted use; descriptive labels alone do not authorise access.',
+    eyebrow: 'ARCHITECTURE / DESCRIBE, DECIDE, ENFORCE',
+    takeaway: ['A connected model does not make private evidence public.', 'Policy decisions and operational enforcement need their own authority and evidence.'],
+  },
+  'scope-map': {
+    title: 'Eight concerns, one connected package',
+    description: 'The eight selected concerns apply across one connected semantic package; each needs an explicit disposition, not a separate mandatory file or ontology.',
+    eyebrow: 'SCOPE / EIGHT CROSS-CUTTING CONCERNS',
+    takeaway: ['Lines mean “assess across this package”. They are not separate artefact-production pipelines.', 'Record each disposition: model here, reuse shared, boundary contribution or justified non-applicability.'],
+  },
 };
-const [title, description] = names[kind] ?? names['identity-map'];
-const arrow = `url(#${id}-arrow)`;
+const keys = kind === 'role-phase' ? ['role-phase', 'workflow-states'] : [kind];
+if (keys.some((key) => !Object.hasOwn(figures, key))) throw new Error('Unknown modelling diagram: ' + kind);
 ---
 
-<svg class="modelling-visual" viewBox="0 0 880 380" role="img" aria-labelledby={`${id}-title ${id}-desc`}>
-  <title id={`${id}-title`}>{title}</title>
-  <desc id={`${id}-desc`}>{description}</desc>
-  <defs><marker id={`${id}-arrow`} viewBox="0 0 8 8" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0 0 8 4 0 8Z" fill="var(--color-text-muted)" /></marker></defs>
+{keys.map((key) => {
+  const id = prefix + '-' + key;
+  return <VisualFrame id={id} {...figures[key]}>
+    {key === 'identity-map' && <>
+      <VisualEdge id={id} path="M480 192H648" arrow={false} dashed label="NOT SAME AS" box={[504, 160, 120]} />
+      <path d="M592 184V200" class="mv-stop" />
+      <rect x="40" y="120" width="440" height="344" rx="4" class="mv-containment" />
+      <text x="64" y="152" class="mv-tag">BUILDING / CONTAINS TWO DWELLINGS</text>
+      <text x="64" y="192" class="mv-title">Harbour Court</text>
+      <text x="64" y="224" class="mv-note">One building, not one undifferentiated “property”.</text>
+      <VisualNode x={64} y={272} width={176} height={144} tag="DWELLING" name="Flat 1" notes={['dwelling-1']} technical />
+      <VisualNode x={280} y={272} width={176} height={144} tag="DWELLING" name="Flat 2" notes={['dwelling-2']} technical />
+      <VisualNode x={648} y={120} width={272} height={144} tag="RECORD" name="Title record" notes={['Its own identity']} shape="document" tone="quiet" />
+      <VisualNode x={648} y={320} width={272} height={144} tag="DESCRIPTION" name="Address" notes={['14 Orchard Road']} shape="document" tone="quiet" />
+    </>}
 
-  {kind === 'identity-map' && <>
-    <path d="M32 80 232 20 432 80" class="mv-line" />
-    <rect x="32" y="80" width="400" height="216" class="mv-focus" />
-    <text x="56" y="116" class="mv-label">Harbour Court</text><text x="56" y="144" class="mv-note">One building containing two dwellings</text>
-    <rect x="56" y="168" width="164" height="96" class="mv-box" /><rect x="244" y="168" width="164" height="96" class="mv-box" />
-    <text x="80" y="208" class="mv-label">Flat 1</text><text x="80" y="236" class="mv-tag">dwelling-1</text>
-    <text x="268" y="208" class="mv-label">Flat 2</text><text x="268" y="236" class="mv-tag">dwelling-2</text>
-    <rect x="584" y="64" width="264" height="96" class="mv-box" /><text x="608" y="104" class="mv-label">Title record</text><text x="608" y="132" class="mv-note">A separately identified record</text>
-    <rect x="584" y="224" width="264" height="96" class="mv-box" /><text x="608" y="264" class="mv-label">Address description</text><text x="608" y="292" class="mv-note">14 Orchard Road</text>
-    <path d="M440 112H572" class="mv-refused" /><path d="m492 100 24 24m0-24-24 24" class="mv-refused" />
-    <text x="504" y="160" text-anchor="middle" class="mv-note">Not the same thing</text>
-    <text x="32" y="348" class="mv-note">A shared address connects descriptions. It does not merge their subjects.</text>
-  </>}
+    {key === 'evidence-timeline' && <>
+      <path d="M96 292H864" class="mv-line" />
+      {[0, 1, 2, 3, 4, 5, 6, 7, 8].map((day) => <path d={'M' + (96 + day * 96) + ' 284V300'} class="mv-rule" />)}
+      <path d="M96 184V288M288 296V364M864 184V284" class="mv-line" />
+      <circle cx="96" cy="292" r="4" class="mv-dot" />
+      <circle cx="288" cy="292" r="4" class="mv-dot" />
+      <circle cx="864" cy="292" r="8" class="mv-accent" />
+      {[[96, '12 AUG'], [288, '14 AUG'], [864, '20 AUG']].map(([x, label]) => <text x={x} y="332" text-anchor="middle" class="mv-technical">{label}</text>)}
+      <text x="40" y="112" class="mv-tag">EVENT</text>
+      <text x="40" y="144" class="mv-title">Inspection takes place</text>
+      <text x="40" y="172" class="mv-note">What happened at the dwelling</text>
+      <text x="224" y="392" class="mv-tag">DOCUMENT / FIRST ISSUE</text>
+      <text x="224" y="424" class="mv-title">Report v1</text>
+      <text x="224" y="452" class="mv-note">A description of that inspection</text>
+      <text x="632" y="112" class="mv-tag">DOCUMENT / CORRECTION</text>
+      <text x="632" y="144" class="mv-title">Report v2</text>
+      <text x="632" y="172" class="mv-note">Corrects v1, not the past event</text>
+    </>}
 
-  {kind === 'evidence-timeline' && <>
-    <text x="32" y="40" class="mv-tag">AUGUST 2026 · EVENT TIME AND DOCUMENT TIME</text>
-    <path d="M100 176H820" class="mv-line" />
-    {[100, 280, 820].map((x) => <circle cx={x} cy="176" r="6" class="mv-accent" />)}
-    <path d="M100 176V108M280 176V252M820 176V108" class="mv-line" />
-    <text x="100" y="208" text-anchor="middle" class="mv-tag">12 AUG</text><text x="280" y="208" text-anchor="middle" class="mv-tag">14 AUG</text><text x="820" y="208" text-anchor="middle" class="mv-tag">20 AUG</text>
-    <text x="32" y="76" class="mv-label">Inspection occurs</text><text x="32" y="104" class="mv-note">The event being described</text>
-    <text x="204" y="280" class="mv-label">Report v1 issued</text><text x="204" y="308" class="mv-note">A document about the event</text>
-    <text x="572" y="76" class="mv-label">Report v2 corrects v1</text><text x="572" y="104" class="mv-note">Not a second inspection</text>
-    <text x="32" y="356" class="mv-note">Recording time is another clock. A receiving system may learn about the correction later.</text>
-  </>}
+    {key === 'concept-layers' && <>
+      <VisualEdge id={id} path="M240 196H376" label="CLASSIFIED AS" box={[252, 164, 112]} />
+      <VisualEdge id={id} path="M584 196H744" label="PREF. LABEL" box={[604, 164, 120]} />
+      <VisualEdge id={id} path="M480 276V360" label="BROADER" box={[488, 304, 112]} />
+      <VisualNode x={40} y={116} width={200} height={160} tag="INDIVIDUAL" name="Flat 1" notes={['dwelling-1']} technical />
+      <VisualNode x={376} y={116} width={208} height={160} tag="CONCEPT" name="Flat" notes={['Agreed meaning']} tone="focal" />
+      <VisualNode x={744} y={116} width={176} height={160} tag="LABEL" name="“Flat”" notes={['English / @en']} technical tone="quiet" />
+      <VisualNode x={376} y={360} width={208} height={112} tag="CONCEPT" name="Dwelling" notes={['Broader meaning']} />
+    </>}
 
-  {kind === 'concept-layers' && <>
-    {['M240 124H332', 'M548 124H640'].map((d) => <path d={d} class="mv-line" marker-end={arrow} />)}
-    <rect x="32" y="72" width="208" height="112" class="mv-box" /><text x="56" y="112" class="mv-label">Flat 1</text><text x="56" y="144" class="mv-note">An individual dwelling</text>
-    <rect x="344" y="72" width="204" height="112" class="mv-focus" /><text x="368" y="112" class="mv-label">Concept: flat</text><text x="368" y="144" class="mv-note">Governed meaning</text>
-    <rect x="652" y="72" width="196" height="112" class="mv-box" /><text x="676" y="112" class="mv-label">“Flat”</text><text x="676" y="144" class="mv-note">A preferred label</text>
-    <text x="288" y="60" text-anchor="middle" class="mv-note">classified as</text><text x="600" y="60" text-anchor="middle" class="mv-note">labelled</text>
-    <path d="M444 184V256" class="mv-line" marker-end={arrow} /><text x="464" y="224" class="mv-note">a broader concept can organise this meaning</text>
-    <rect x="324" y="268" width="248" height="64" class="mv-box" /><text x="348" y="308" class="mv-label">Concept: dwelling</text>
-    <text x="32" y="364" class="mv-note">Changing a label does not replace the dwelling. Broader does not mean “part of the building”.</text>
-  </>}
+    {key === 'context-mapping-bridge' && <>
+      <VisualEdge id={id} path="M256 184H392" arrow={false} label="PARTICIPANT" box={[272, 152, 104]} />
+      <VisualEdge id={id} path="M568 184H704" arrow={false} label="PARTICIPANT" box={[584, 152, 104]} />
+      <VisualEdge id={id} path="M480 248V352" label="REFERENCES" box={[488, 280, 128]} />
+      <VisualNode x={40} y={104} width={216} height={144} tag="CONTEXT" name="Surveying" notes={['Owns its meanings']} />
+      <VisualNode x={392} y={104} width={176} height={144} tag="STRATEGIC" name="Agreement" notes={['Obligations']} tone="focal" />
+      <VisualNode x={704} y={104} width={216} height={144} tag="CONTEXT" name={['Transaction', 'assessment']} notes={['Owns its meanings']} />
+      <text x="40" y="320" class="mv-tag">TERM LEVEL</text>
+      <VisualNode x={280} y={352} width={400} height={128} tag="QUALIFIED MAPPING RECORD" name="Term correspondence" notes={['subject · predicate · object', 'versions · rationale · release']} technical shape="document" />
+    </>}
 
-  {kind === 'context-mapping-bridge' && <>
-    <text x="32" y="32" class="mv-tag">STRATEGIC LEVEL · RESPONSIBILITY AND DEPENDENCY</text>
-    <path d="M248 112H356M536 112H644" class="mv-line" />
-    <text x="302" y="92" text-anchor="middle" class="mv-tag">participant</text><text x="590" y="92" text-anchor="middle" class="mv-tag">participant</text>
-    <rect x="32" y="64" width="216" height="96" class="mv-box" /><text x="56" y="104" class="mv-label">Surveying</text><text x="56" y="132" class="mv-note">Owns its meanings</text>
-    <rect x="356" y="64" width="180" height="96" class="mv-focus" /><text x="376" y="104" class="mv-label">Agreement</text><text x="376" y="132" class="mv-note">Named obligations</text>
-    <rect x="644" y="64" width="204" height="96" class="mv-box" /><text x="668" y="96" class="mv-label">Transaction</text><text x="668" y="120" class="mv-label">assessment</text><text x="668" y="144" class="mv-note">Owns its meanings</text>
-    <path d="M444 160V244" class="mv-line" marker-end={arrow} /><text x="468" y="212" class="mv-note">references only the mappings that apply</text>
-    <rect x="32" y="256" width="816" height="96" class="mv-box" /><text x="56" y="292" class="mv-label">Qualified term correspondence</text>
-    <text x="56" y="324" class="mv-note">Subject + predicate + object · source versions · justification · mapping-set release</text>
-  </>}
+    {key === 'semantic-layers' && <>
+      <VisualEdge id={id} path="M328 184H600" arrow={false} label="DOCUMENTS USE" box={[400, 152, 128]} />
+      <VisualEdge id={id} path="M144 256V304Q144 312 152 312H172Q180 312 180 320V356" label="CHECK" box={[192, 312, 80]} />
+      <VisualEdge id={id} path="M272 256V280Q272 288 280 288H732Q740 288 740 296V356" label="DERIVE" box={[752, 312, 96]} />
+      <VisualNode x={40} y={112} width={288} height={144} tag="ASSERTIONS / MEANING" name="What the graph says" notes={['RDF / RDFS', 'Bounded OWL profile']} technical tone="focal" />
+      <VisualNode x={600} y={112} width={320} height={144} tag="APPLICABILITY / INTENDED USE" name="Where properties apply" notes={['Schema.org inclusion hints', 'Not validation constraints']} shape="document" />
+      <VisualNode x={40} y={356} width={360} height={128} tag="CONSTRAINTS / SHACL PROFILE" name="Check supplied data" notes={['Conforms to the stated checks?', 'Not proof of truth']} />
+      <VisualNode x={560} y={356} width={360} height={128} tag="DERIVATION / DECLARED RULES" name="Derive additional facts" notes={['Separate, traceable results', 'Not human adoption']} shape="document" />
+    </>}
 
-  {kind === 'semantic-layers' && <>
-    {[
-      ['Assertion', 'What the graph says', 'RDF / RDFS / bounded OWL'],
-      ['Applicability', 'Where a property is intended for use', 'Schema.org inclusion hints'],
-      ['Constraint', 'What supplied data must satisfy', 'SHACL + a declared profile'],
-      ['Derivation', 'What a selected rule adds', 'Separate, traceable derived graph'],
-    ].map(([label, question, tool], i) => <g>
-      <rect x="32" y={24 + i * 80} width="816" height="72" class={i === 2 ? 'mv-focus' : 'mv-box'} />
-      <text x="56" y={68 + i * 80} class="mv-label">{label}</text><text x="240" y={56 + i * 80} class="mv-note">{question}</text><text x="240" y={80 + i * 80} class="mv-tag">{tool}</text>
-    </g>)}
-    <text x="32" y="372" class="mv-note">Four jobs, not four approval stages. Standard semantics still apply when a reasoner is switched off.</text>
-  </>}
+    {key === 'role-phase' && <>
+      <VisualEdge id={id} path="M360 208H176Q168 208 168 216V336" label="PARTICIPATES" box={[40, 256, 112]} />
+      <VisualEdge id={id} path="M600 208H784Q792 208 792 216V336" label="PARTICIPATES" box={[808, 256, 112]} />
+      <VisualNode x={360} y={128} width={240} height={160} tag="PERSON / SAME IDENTITY" name="One person" notes={['person-1']} technical tone="focal" />
+      <VisualNode x={40} y={336} width={256} height={128} tag="SALE A" name="Seller" notes={['A scoped participation']} />
+      <VisualNode x={664} y={336} width={256} height={128} tag="SALE B" name="Buyer" notes={['Another participation']} />
+    </>}
 
-  {kind === 'role-phase' && <>
-    <text x="32" y="32" class="mv-tag">PARTICIPATION · SIMULTANEOUS, IN DIFFERENT TRANSACTIONS</text>
-    {['M340 112H260', 'M540 112H620'].map((d) => <path d={d} class="mv-line" marker-end={arrow} />)}
-    <rect x="340" y="64" width="200" height="96" class="mv-focus" /><text x="364" y="104" class="mv-label">One person</text><text x="364" y="132" class="mv-tag">person-1</text>
-    <rect x="32" y="64" width="216" height="96" class="mv-box" /><text x="56" y="104" class="mv-label">Seller in sale A</text><text x="56" y="132" class="mv-note">A scoped participation</text>
-    <rect x="632" y="64" width="216" height="96" class="mv-box" /><text x="656" y="104" class="mv-label">Buyer in sale B</text><text x="656" y="132" class="mv-note">Another participation</text>
-    <path d="M32 208H848" class="mv-rule" /><text x="32" y="240" class="mv-tag">WORKFLOW STATES · NOT AUTOMATICALLY ONTOLOGICAL PHASES</text>
-    {['M248 300H324', 'M548 300H624'].map((d) => <path d={d} class="mv-line" marker-end={arrow} />)}
-    {['Draft', 'Under review', 'Recorded disposition'].map((label, i) => <g><rect x={32 + i * 300} y="268" width="216" height="64" class="mv-box" /><text x={48 + i * 300} y="308" class="mv-note">{label}</text></g>)}
-    <text x="32" y="368" class="mv-note">Illustrative lifecycle, not an implemented workflow. A state change still needs an identity criterion.</text>
-  </>}
+    {key === 'workflow-states' && <>
+      <text x="40" y="128" class="mv-title">The record changes status.</text>
+      <text x="40" y="164" class="mv-note">This says nothing, by itself, about the ontological phase of a person or property.</text>
+      <VisualEdge id={id} path="M56 312H96" />
+      <VisualEdge id={id} path="M296 312H384" label="REVIEW" box={[304, 280, 72]} />
+      <VisualEdge id={id} path="M592 312H712" label="RECORD" box={[608, 280, 88]} />
+      <circle cx="56" cy="312" r="4" class="mv-dot" />
+      <VisualNode x={96} y={256} width={200} height={112} tag="REVIEW RECORD" name="Draft" shape="state" />
+      <VisualNode x={384} y={256} width={208} height={112} tag="REVIEW RECORD" name="Under review" shape="state" tone="focal" />
+      <VisualNode x={712} y={256} width={208} height={112} tag="REVIEW RECORD" name={['Recorded', 'disposition']} shape="state" />
+    </>}
 
-  {kind === 'mapping-gates' && <>
-    {['M240 108H320', 'M544 108H632', 'M436 176V256'].map((d) => <path d={d} class="mv-line" marker-end={arrow} />)}
-    <rect x="32" y="64" width="208" height="88" class="mv-box" /><text x="56" y="100" class="mv-label">Compare meanings</text><text x="56" y="128" class="mv-note">Not just their labels</text>
-    <path d="M436 40 540 108 436 176 332 108Z" class="mv-focus" /><text x="436" y="104" text-anchor="middle" class="mv-label">Identity fits?</text><text x="436" y="128" text-anchor="middle" class="mv-tag">reviewed criterion</text>
-    <rect x="644" y="64" width="204" height="88" class="mv-box" /><text x="668" y="100" class="mv-label">Select relation</text><text x="668" y="128" class="mv-note">Then qualify the record</text>
-    <text x="588" y="88" text-anchor="middle" class="mv-note">yes</text><text x="460" y="224" class="mv-note">no / unresolved</text>
-    <rect x="280" y="268" width="312" height="72" class="mv-box" /><text x="304" y="312" class="mv-label">Do not assert equivalence</text>
-    <text x="32" y="372" class="mv-note">Reconsider a weaker justified correspondence, or record no mapping. Do not force equivalence.</text>
-  </>}
+    {key === 'mapping-gates' && <>
+      <VisualEdge id={id} path="M480 176V216" />
+      <VisualEdge id={id} path="M600 288H712" label="YES" box={[632, 256, 64]} />
+      <VisualEdge id={id} path="M480 360V420" label={['NO OR', 'UNRESOLVED']} box={[488, 368, 128]} />
+      <VisualNode x={320} y={88} width={320} height={88} name="Compare meanings" notes={['More than a label match']} />
+      <path d="M480 216 600 288 480 360 360 288Z" class="mv-decision" />
+      <text x="480" y="280" text-anchor="middle" class="mv-label">Identity</text>
+      <text x="480" y="304" text-anchor="middle" class="mv-label">compatible?</text>
+      <VisualNode x={712} y={240} width={208} height={128} tag="SUPPORTED" name="Select relation" notes={['Then qualify', 'the record']} shape="document" />
+      <VisualNode x={296} y={420} width={368} height={72} name="Do not assert equivalence" tone="quiet" />
+    </>}
 
-  {kind === 'candidate-loop' && <>
-    <text x="32" y="32" class="mv-tag">ILLUSTRATIVE MODELLING HANDOFF · NOT AN AUTOMATIC APPROVAL PIPELINE</text>
-    {['M232 108H336', 'M544 108H640', 'M748 152V220H444V232', 'M344 284H240', 'M132 240V160'].map((d) => <path d={d} class="mv-line" marker-end={arrow} />)}
-    {[
-      [32, 64, 'Question', 'Practitioner + examples'], [344, 64, 'Distinctions', 'Modeller + domain review'],
-      [648, 64, 'Checks', 'Explicit profile + cases'], [344, 240, 'Human disposition', 'Accept, revise or decline'],
-      [32, 240, 'Revised candidate', 'Unresolved issues retained'],
-    ].map(([x, y, name, note]) => <g><rect x={x} y={y} width="200" height="88" class={name === 'Human disposition' ? 'mv-focus' : 'mv-box'} /><text x={Number(x) + 16} y={Number(y) + 36} class="mv-label">{name}</text><text x={Number(x) + 16} y={Number(y) + 64} class="mv-note">{note}</text></g>)}
-    <text x="600" y="284" class="mv-note">Passing checks is evidence,</text><text x="600" y="308" class="mv-note">not permission to adopt.</text>
-    <text x="32" y="372" class="mv-note">Technical construction is iterative. The real governance process determines who can adopt a standard.</text>
-  </>}
+    {key === 'candidate-loop' && <>
+      <VisualEdge id={id} path="M248 176H376" />
+      <VisualEdge id={id} path="M584 176H712" />
+      <VisualEdge id={id} path="M816 240V352" label="REVIEW" box={[828, 280, 80]} />
+      <VisualEdge id={id} path="M712 420H584" label="DISPOSITION" box={[600, 388, 96]} />
+      <VisualEdge id={id} path="M376 420H144Q136 420 136 412V240" dashed label="REVISE" box={[232, 388, 104]} />
+      <VisualNode x={40} y={104} width={208} height={136} tag="01 / INPUT" name="A useful question" notes={['Practitioner + examples']} />
+      <VisualNode x={376} y={104} width={208} height={136} tag="02 / DISTINCTIONS" name="Explicit meaning" notes={['Identity', 'Relationships']} />
+      <VisualNode x={712} y={104} width={208} height={136} tag="03 / CHECKS" name="Challenge it" notes={['Profile + test cases', 'Counterexamples']} />
+      <VisualNode x={712} y={352} width={208} height={136} tag="04 / HUMAN REVIEW" name="Record judgement" notes={['Accept, revise', 'or decline']} tone="focal" />
+      <VisualNode x={376} y={352} width={208} height={136} tag="05 / REVISION" name={['Revised', 'candidate']} notes={['Open issues retained']} shape="document" />
+    </>}
 
-  {kind === 'policy-boundaries' && <>
-    {[
-      ['Describe', 'Sensitivity, purpose and conditions', 'Model annotation / reviewed vocabulary'],
-      ['Decide', 'Who may use what, and for which purpose', 'Human-governed policy and responsibilities'],
-      ['Enforce', 'Permit or deny an actual request', 'Application controls and operational evidence'],
-    ].map(([label, action, owner], i) => <g><rect x="32" y={24 + i * 108} width="816" height="96" class={i === 2 ? 'mv-focus' : 'mv-box'} /><text x="56" y={68 + i * 108} class="mv-label">{label}</text><text x="228" y={60 + i * 108} class="mv-label">{action}</text><text x="228" y={92 + i * 108} class="mv-note">{owner}</text></g>)}
-    <text x="32" y="372" class="mv-note">A label is not an access-control decision. A connected model does not make private evidence public.</text>
-  </>}
+    {key === 'policy-boundaries' && <>
+      <VisualEdge id={id} path="M272 236H352" label="INFORMS" box={[280, 204, 64]} />
+      <VisualEdge id={id} path="M632 236H720" label="ENFORCE" box={[640, 204, 72]} />
+      <VisualNode x={40} y={148} width={232} height={176} tag="MODEL ANNOTATION" name={['Describe', 'sensitivity']} notes={['DPV / local classes', 'Purpose + conditions']} shape="document" />
+      <path d="M492 148 632 236 492 324 352 236Z" class="mv-decision" />
+      <text x="492" y="128" text-anchor="middle" class="mv-tag">HUMAN-GOVERNED POLICY</text>
+      <text x="492" y="228" text-anchor="middle" class="mv-label">Decide</text>
+      <text x="492" y="252" text-anchor="middle" class="mv-label">permitted use</text>
+      <VisualNode x={720} y={148} width={200} height={176} tag="APPLICATION" name={['Permit', 'or deny']} notes={['Enforce the policy', 'Record the outcome']} />
+      <text x="40" y="424" class="mv-title">A label grants no access.</text>
+      <text x="40" y="460" class="mv-note">The annotation describes information. The application must enforce the policy.</text>
+    </>}
 
-  {kind === 'scope-map' && <>
-    {[[1, 'Domain'], [2, 'Vocabulary'], [5, 'Classification'], [7, 'Validation'], [8, 'Mappings'], [9, 'Provenance'], [10, 'Time'], [11, 'Sensitivity']].map(([number, label], i) => <g>
-      <rect x={32 + (i % 4) * 208} y={32 + Math.floor(i / 4) * 104} width="192" height="88" class="mv-box" />
-      <text x={48 + (i % 4) * 208} y={64 + Math.floor(i / 4) * 104} class="mv-tag">CATEGORY {number}</text><text x={48 + (i % 4) * 208} y={96 + Math.floor(i / 4) * 104} class="mv-label">{label}</text>
-    </g>)}
-    <rect x="32" y="272" width="816" height="72" class="mv-focus" /><text x="56" y="304" class="mv-label">One connected package</text><text x="56" y="330" class="mv-note">Assess each concern. Record its disposition. Do not invent unnecessary artefacts.</text>
-  </>}
-</svg>
+    {key === 'scope-map' && <>
+      {[
+        'M132 208V232Q132 240 140 240H320Q328 240 328 248V264',
+        'M364 208V232Q364 240 372 240H400Q408 240 408 248V264',
+        'M596 208V232Q596 240 588 240H560Q552 240 552 248V264',
+        'M828 208V232Q828 240 820 240H640Q632 240 632 248V264',
+        'M328 352V360Q328 368 320 368H140Q132 368 132 376V384',
+        'M408 352V360Q408 368 400 368H372Q364 368 364 376V384',
+        'M552 352V360Q552 368 560 368H588Q596 368 596 376V384',
+        'M632 352V360Q632 368 640 368H820Q828 368 828 376V384',
+      ].map((path) => <VisualEdge id={id} path={path} arrow={false} />)}
+      {[
+        [1, ['Domain', 'structure']], [2, ['Vocabulary', 'and taxonomy']],
+        [5, ['Classification']], [7, ['Validation']],
+        [8, ['Mappings']], [9, ['Provenance', 'and quality']],
+        [10, ['Time and', 'history']], [11, ['Sensitivity', 'and access']],
+      ].map(([number, name], index) => <VisualNode x={40 + (index % 4) * 232} y={index < 4 ? 96 : 384} width={184} height={112} tag={'CATEGORY ' + number} name={name as string[]} tone="quiet" />)}
+      <VisualNode x={272} y={264} width={416} height={88} name="One connected package" notes={['Assess every concern; record its disposition.']} tone="focal" />
+    </>}
+  </VisualFrame>;
+})}

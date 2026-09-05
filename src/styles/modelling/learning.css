@@ -1,3 +1,5 @@
+@import './diagrams.css';
+
 /* Learning figures and exercises share the same full-width document shell. */
 .modelling-document { min-width: 0; }
 .modelling-document .modelling-standing {
@@ -70,20 +72,7 @@
 }
 .modelling-document :is(pre, code, dd) { overflow-wrap: anywhere; }
 .modelling-document pre { white-space: pre-wrap; }
-.modelling-visual { display: block; width: 100%; height: auto; }
-.modelling-visual text { font-family: var(--font-sans); fill: var(--color-text-strong); }
-.modelling-visual .mv-label { font-size: 20px; font-weight: 700; }
-.modelling-visual .mv-note { font-size: 16px; fill: var(--color-text-muted); }
-.modelling-visual .mv-tag { font-size: 13px; font-family: var(--font-mono); }
-.modelling-visual .mv-box { fill: var(--color-surface-card); stroke: var(--color-border-strong); stroke-width: 2; }
-.modelling-visual .mv-focus { fill: var(--color-surface-card); stroke: var(--color-link); stroke-width: 3; }
-.modelling-visual .mv-line { fill: none; stroke: var(--color-text-muted); stroke-width: 2; }
-.modelling-visual .mv-refused { fill: none; stroke: var(--color-status-danger); stroke-width: 2; stroke-dasharray: 5 5; }
-.modelling-visual .mv-accent { fill: var(--color-link); }
-.modelling-visual .mv-paper { fill: var(--color-surface-alt); }
-.modelling-visual .mv-rule { stroke: var(--color-border-strong); stroke-width: 2; }
 @media (max-width: 48rem) {
-  .modelling-visual { display: none; } /* The adjacent semantic explanation remains the complete figure. */
   .modelling-figure dl { grid-template-columns: minmax(0, 1fr); gap: var(--space-2); }
   .modelling-figure dd + dt { margin-block-start: var(--space-4); }
   .modelling-document .modelling-comparison { grid-template-columns: minmax(0, 1fr); }
@@ -91,8 +80,6 @@
   .modelling-document .modelling-figure { padding: var(--space-4); }
 }
 @media (forced-colors: active) {
-  .modelling-visual { display: none; }
   .modelling-document :is(.modelling-figure, .modelling-comparison, details, .modelling-steps > li) { border-color: CanvasText; }
   .modelling-standing { border-color: CanvasText; }
 }
-@media print { .modelling-visual { display: none; } }

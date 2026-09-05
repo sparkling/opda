@@ -1,0 +1,72 @@
+/* Diagram Design: the saved OPDA profile, projected through the shared tokens.
+   doc-inline canvas; larger 20/16/12 type keeps the website figures readable.
+   Standalone previews retain explicit brand-family fallbacks; no remote assets. */
+.modelling-visual {
+  --mv-paper: var(--color-surface-alt, #f9f9f9);
+  --mv-node: var(--color-surface-card, #ffffff);
+  --mv-ink: var(--brand-ink, #2c273b);
+  --mv-muted: var(--color-text-muted, #625d72);
+  --mv-rule: var(--color-border-strong, #cbc8d5);
+  --mv-accent: var(--color-data-1, #6c5bd4);
+  --mv-link: var(--color-link, #5b51d8);
+  --mv-tint: color-mix(in srgb, var(--mv-accent) 10%, var(--mv-paper));
+  --mv-sans: var(--font-sans, 'DM Sans', 'Avenir Next', 'Segoe UI', sans-serif);
+  --mv-mono: var(--font-mono, 'Roboto Mono', 'SFMono-Regular', Consolas, monospace);
+  display: block;
+  width: 100%;
+  height: auto;
+  isolation: isolate;
+}
+[data-theme='dark'] .modelling-visual {
+  --mv-paper: var(--color-surface, #131224);
+  --mv-node: var(--color-surface-card, #231f2f);
+  --mv-ink: var(--color-text, #f9f9f9);
+  --mv-muted: var(--color-text-muted, #a5a1b2);
+  --mv-rule: var(--color-border-strong, #56506d);
+  --mv-accent: var(--color-data-1-dark, #9a8fe8);
+  --mv-link: var(--color-link, #a9a0ff);
+  --mv-tint: color-mix(in srgb, var(--mv-accent) 14%, var(--mv-paper));
+}
+.modelling-visual + .modelling-visual { margin-block-start: 1.5rem; }
+.modelling-visual text { font-family: var(--mv-sans); fill: var(--mv-ink); }
+.modelling-visual .mv-title { font-size: 24px; font-weight: 700; }
+.modelling-visual .mv-label { font-size: 20px; font-weight: 700; }
+.modelling-visual .mv-note { font-size: 16px; fill: var(--mv-muted); }
+.modelling-visual :is(.mv-tag, .mv-eyebrow) {
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: .06em;
+  fill: var(--mv-muted);
+}
+.modelling-visual .mv-eyebrow { font-size: 16px; }
+.modelling-visual :is(.mv-technical, .mv-edge-text) {
+  font: 500 12px var(--mv-mono);
+  fill: var(--mv-muted);
+}
+.modelling-visual :is(.mv-paper, .mv-mask) { fill: var(--mv-paper); }
+.modelling-visual .mv-node-body { fill: var(--mv-node); stroke: var(--mv-ink); stroke-width: 1.2; }
+.modelling-visual .mv-node--quiet .mv-node-body { fill: var(--mv-paper); stroke: var(--mv-rule); }
+.modelling-visual .mv-node--focal .mv-node-body { fill: var(--mv-tint); stroke: var(--mv-accent); stroke-width: 2; }
+.modelling-visual .mv-node--focal .mv-tag { fill: var(--mv-accent); }
+.modelling-visual .mv-containment { fill: var(--mv-tint); stroke: var(--mv-accent); stroke-width: 2; }
+.modelling-visual .mv-decision { fill: var(--mv-tint); stroke: var(--mv-accent); stroke-width: 2; }
+.modelling-visual .mv-line { fill: none; stroke: var(--mv-muted); stroke-width: 1.2; stroke-linejoin: round; }
+.modelling-visual .mv-line--dashed { stroke-dasharray: 4 4; }
+.modelling-visual .mv-rule { fill: none; stroke: var(--mv-rule); stroke-width: 1; }
+.modelling-visual .mv-stop { fill: none; stroke: var(--mv-ink); stroke-width: 2; }
+.modelling-visual :is(.mv-dot, .mv-arrow) { fill: var(--mv-muted); }
+.modelling-visual :is(.mv-accent, .mv-arrow-accent) { fill: var(--mv-accent); }
+.modelling-visual .mv-arrow-link { fill: var(--mv-link); }
+
+/* The figure owns its paper. Do not put a second frame around it. The page's
+   outer content-width authority, headings, rails and navigation do not change. */
+.modelling-document .modelling-figure:has(> .modelling-visual) {
+  padding: 0;
+  border: 0;
+  background: transparent;
+}
+@media (max-width: 48rem), (forced-colors: active) {
+  /* The complete adjacent semantic HTML remains readable without the image. */
+  .modelling-document .modelling-visual { display: none; }
+}
+@media print { .modelling-document .modelling-visual { display: none; } }

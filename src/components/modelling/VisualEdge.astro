@@ -1,0 +1,18 @@
+---
+interface Props {
+  id: string;
+  path: string;
+  arrow?: boolean;
+  dashed?: boolean;
+  label?: string | string[];
+  box?: [number, number, number];
+}
+const { id, path, arrow = true, dashed = false, label, box } = Astro.props;
+const lines = label ? (Array.isArray(label) ? label : [label]) : [];
+---
+
+<path d={path} class:list={['mv-line', { 'mv-line--dashed': dashed }]} marker-end={arrow ? 'url(#' + id + '-arrow)' : undefined} />
+{box && lines.length > 0 && <g class="mv-edge-label">
+  <rect x={box[0]} y={box[1]} width={box[2]} height={lines.length * 20 + 4} rx="4" class="mv-mask" />
+  {lines.map((line, index) => <text x={box[0] + box[2] / 2} y={box[1] + 16 + index * 20} text-anchor="middle" class="mv-edge-text">{line}</text>)}
+</g>}
