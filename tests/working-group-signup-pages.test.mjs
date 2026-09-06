@@ -356,7 +356,9 @@ test('campaign recruits industry experts through purpose, influence and clear ex
     }
   }
   assert.match(page, /workingGroupImageSet = 'set-3'/u);
-  assert.match(page, /<CampaignThemeImage[\s\S]*lightSrc="\/images\/join\/set-3\/influence-light\.webp"[\s\S]*darkSrc="\/images\/join\/set-3\/influence-dark\.webp"[\s\S]*width=\{1200\}[\s\S]*height=\{800\}/u);
+  assert.match(page, /<CampaignThemeImage[\s\S]*lightSrc="\/images\/join\/set-3\/influence-light\.webp"[\s\S]*darkSrc="\/images\/join\/set-3\/influence-dark\.webp"/u);
+  assert.doesNotMatch(cards, /width=\{1200\}|height=\{300\}/u);
+  assert.match(cards, /:global\(\.campaign-card__image\)/u);
   assert.ok(existsSync(new URL('../public/images/join/set-3/influence-light.webp', import.meta.url)));
   assert.ok(existsSync(new URL('../public/images/join/set-3/influence-dark.webp', import.meta.url)));
   assert.match(page, /class="wg-trust__intro"/u);

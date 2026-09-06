@@ -3,8 +3,6 @@ interface Props {
   lightSrc: string;
   darkSrc?: string;
   alt?: string;
-  width: number;
-  height: number;
   className?: string;
   loading?: 'eager' | 'lazy';
 }
@@ -13,8 +11,6 @@ const {
   lightSrc,
   darkSrc,
   alt = '',
-  width,
-  height,
   className,
   loading = 'lazy',
 } = Astro.props;
@@ -26,8 +22,6 @@ const {
   data-campaign-image-light={darkSrc ? lightSrc : undefined}
   data-campaign-image-dark={darkSrc}
   alt={alt}
-  width={width}
-  height={height}
   loading={loading}
   decoding="async"
 />
