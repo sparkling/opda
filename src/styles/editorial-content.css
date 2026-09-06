@@ -1,11 +1,24 @@
 /* Authored reading content only. Layout's generatedContent opt-out keeps model
    references on their existing styles. No route names or width overrides. */
 .editorial-content:is(.prose, main) {
+  --editorial-text-max: 75rem;
   --editorial-flow-gap: var(--space-4);
   --editorial-heading-space: var(--space-7);
   --editorial-section-space: var(--space-6);
   --lead: 400 1.125rem / 1.75rem var(--font-reading);
   font: 400 var(--text-lg) / var(--leading-normal) var(--font-reading);
+}
+
+/* Keep reading measure comfortable without turning an article into a narrow
+   layout. Text starts on the normal content edge; wide evidence such as figures,
+   images and tables deliberately remains on the full article track. */
+.editorial-content:is(.prose, main) > :is(
+  h1, h2, h3, h4, p, ul, ol, dl, blockquote, details
+),
+.editorial-content:is(.prose, main) :where(
+  section:not([class]), .document-flow
+) > :is(h2, h3, h4, p, ul, ol, dl, blockquote, details) {
+  max-inline-size: min(100%, var(--editorial-text-max));
 }
 
 /* Display type, controls and compact metadata retain their own roles. Reading
