@@ -312,7 +312,7 @@ html { scroll-padding-top: calc(var(--header-height) + 1rem); }
   display: flex;
   align-items: center;
   gap: var(--space-2);
-  font: 700 var(--text-lg) / var(--leading-normal) var(--font-sans);
+  font: 700 var(--text-base) / var(--leading-normal) var(--font-sans);
   letter-spacing: 0.06em;
   text-transform: uppercase;
   margin: 0;
