@@ -9,12 +9,6 @@ import { getCollection, render } from 'astro:content';
 import Layout from '@/layouts/Layout.astro';
 import { ODR_REGISTRY } from '@/lib/odr-pages.mjs';
 
-const KIND_PILL = {
-  methodology: 'pill--brand', pattern: 'pill--info', mapping: 'pill--info',
-  architecture: 'pill--warn', programme: 'pill--warn',
-};
-const STATUS_PILL = { accepted: 'pill--ok', proposed: 'pill--warn', rejected: 'pill--error' };
-
 export async function getStaticPaths() {
   const entries = await getCollection('odr');
   return entries.map((entry) => {
@@ -43,11 +37,6 @@ const status = odr.status || data.status || '';
   proseClass="prose wide odr-detail"
   search={{ type: 'decision', collection: 'odr', status, identifier: `ODR-${odr.number}`, title: odr.title, date: dateStr, context: kind }}
 >
-  <div class="odr-meta">
-    {kind && <span class={`pill ${KIND_PILL[kind] ?? 'pill--brand'}`}>{kind}</span>}
-    {status && <span class={`pill ${STATUS_PILL[status] ?? ''}`}>{status}</span>}
-    {dateStr && <time datetime={dateStr}>{dateStr}</time>}
-  </div>
   <Content />
   <footer class="odr-footer">
     <p>
