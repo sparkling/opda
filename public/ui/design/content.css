@@ -288,8 +288,8 @@ html { scroll-padding-top: calc(var(--header-height) + 1rem); }
 }
 .callout--important,
 .callout--key {
-  --callout-accent: var(--brand-yellow);
-  --callout-surface: color-mix(in srgb, var(--brand-yellow) 18%, var(--color-surface));
+  --callout-accent: var(--color-callout-important);
+  --callout-surface: var(--color-callout-important-surface);
 }
 .callout--caution,
 .callout--warn,
@@ -323,7 +323,7 @@ html { scroll-padding-top: calc(var(--header-height) + 1rem); }
 .callout--method .callout__label { color: var(--color-callout-method); }
 .callout--technical .callout__label { color: var(--color-callout-technical); }
 .callout--important .callout__label,
-.callout--key .callout__label { color: var(--brand-ink); }
+.callout--key .callout__label { color: var(--color-callout-important); }
 .callout--caution .callout__label,
 .callout--warn .callout__label,
 .callout--warning .callout__label { color: var(--color-status-warning); }
@@ -331,7 +331,6 @@ html { scroll-padding-top: calc(var(--header-height) + 1rem); }
 .callout--success .callout__label { color: var(--color-status-success); }
 .callout--critical .callout__label,
 .callout--danger .callout__label  { color: var(--color-status-danger); }
-:root[data-theme="dark"] :is(.callout--important, .callout--key) .callout__label { color: var(--brand-yellow); }
 
 /* ─────────────────────────────────────────────────────────────
    PILLS
