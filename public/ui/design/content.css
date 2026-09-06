@@ -272,23 +272,36 @@ html { scroll-padding-top: calc(var(--header-height) + 1rem); }
   box-shadow: none;
 }
 .callout > * + * { margin-top: var(--space-2); }
+.callout--information,
 .callout--note {
   --callout-accent: var(--color-status-info);
   --callout-surface: var(--color-status-info-surface);
 }
-.callout--key     {
+.callout--method {
+  --callout-accent: var(--color-callout-method);
+  --callout-surface: var(--color-callout-method-surface);
+}
+.callout--technical {
+  --callout-accent: var(--color-callout-technical);
+  --callout-surface: var(--color-callout-technical-surface);
+}
+.callout--important,
+.callout--key {
   --callout-accent: var(--brand-yellow);
   --callout-surface: color-mix(in srgb, var(--brand-yellow) 18%, var(--color-surface));
 }
+.callout--caution,
 .callout--warn,
 .callout--warning {
   --callout-accent: var(--color-status-warning);
   --callout-surface: var(--color-status-warning-surface);
 }
+.callout--confirmation,
 .callout--success {
   --callout-accent: var(--color-status-success);
   --callout-surface: var(--color-status-success-surface);
 }
+.callout--critical,
 .callout--danger {
   --callout-accent: var(--color-status-danger);
   --callout-surface: var(--color-status-danger-surface);
@@ -299,18 +312,25 @@ html { scroll-padding-top: calc(var(--header-height) + 1rem); }
   display: flex;
   align-items: center;
   gap: var(--space-2);
-  font: var(--h4);
+  font: 700 var(--text-lg) / var(--leading-normal) var(--font-sans);
   letter-spacing: 0.06em;
   text-transform: uppercase;
   margin: 0;
 }
-.callout--note .callout__label    { color: var(--color-status-info); }
-.callout--key .callout__label     { color: var(--brand-ink); }
+.callout--information .callout__label,
+.callout--note .callout__label { color: var(--color-status-info); }
+.callout--method .callout__label { color: var(--color-callout-method); }
+.callout--technical .callout__label { color: var(--color-callout-technical); }
+.callout--important .callout__label,
+.callout--key .callout__label { color: var(--brand-ink); }
+.callout--caution .callout__label,
 .callout--warn .callout__label,
 .callout--warning .callout__label { color: var(--color-status-warning); }
+.callout--confirmation .callout__label,
 .callout--success .callout__label { color: var(--color-status-success); }
+.callout--critical .callout__label,
 .callout--danger .callout__label  { color: var(--color-status-danger); }
-:root[data-theme="dark"] .callout--key .callout__label { color: var(--brand-yellow); }
+:root[data-theme="dark"] :is(.callout--important, .callout--key) .callout__label { color: var(--brand-yellow); }
 
 /* ─────────────────────────────────────────────────────────────
    PILLS

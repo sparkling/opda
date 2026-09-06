@@ -89,6 +89,10 @@
   --color-status-danger-surface: #fbeae8;
   --color-status-info: #2e5fa3;
   --color-status-info-surface: #e9f0fa;
+  --color-callout-method: #0f6871;
+  --color-callout-method-surface: #e4f3f2;
+  --color-callout-technical: #5b4bb3;
+  --color-callout-technical-surface: #efedff;
 
   /* Ordered categorical data palette; yellow is intentionally excluded. */
   --color-data-1: #6c5bd4;
@@ -376,6 +380,10 @@
   --color-status-danger-surface: #442022;
   --color-status-info: #7fb5ff;
   --color-status-info-surface: #182d4a;
+  --color-callout-method: #72d5cf;
+  --color-callout-method-surface: #12383a;
+  --color-callout-technical: #bdb7ff;
+  --color-callout-technical-surface: #29274a;
   --button-bg: var(--brand-night);
   --button-bg-hover: #3a3550;
   --button-bg-active: #4a445e;
