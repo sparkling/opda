@@ -51,6 +51,14 @@
   .db-toolbar--with-heading .db-search-group { max-width: none; }
   .db-toolbar--with-heading .db-inline-count { justify-self: start; }
 }
+/* Keep the search, filter and column controls at their normal measure when
+   the surrounding table gains additional width.  The table may expand; its
+   control row should not. */
+.objects-header > el-popover-group {
+  flex: 0 1 48rem !important;
+  inline-size: min(100%, 48rem);
+}
+
 /* Object-model header layout is now Tailwind utilities; .objects-header remains a marker. */
 .objects-header + h3 { margin-top: var(--space-3); }
 .objects-header + .object-block { margin-top: var(--space-3); }
