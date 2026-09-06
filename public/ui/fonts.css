@@ -1,4 +1,6 @@
 /* Locally hosted typography used by the OPDA design system. */
+@import url('https://fonts.googleapis.com/css2?family=Source+Sans+3:wght@400;500;600;700&family=Source+Serif+4:opsz,wght@8..60,400;500;600;700&display=swap');
+
 @font-face {
   font-family: 'Roboto Slab';
   src: url('./fonts/RobotoSlab-Variable-latin-ext.woff2') format('woff2');

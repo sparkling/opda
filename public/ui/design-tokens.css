@@ -118,8 +118,8 @@
 
   /* Typography. */
   --font-display: 'Roboto Slab', Rockwell, 'Roboto Slab Fallback', Georgia, serif;
-  --font-sans: 'DM Sans', 'Avenir Next', 'Segoe UI', system-ui, sans-serif;
-  --font-reading: 'DM Sans', 'Avenir Next', 'Segoe UI', system-ui, sans-serif;
+  --font-sans: 'Source Sans 3', 'Avenir Next', 'Segoe UI', system-ui, sans-serif;
+  --font-reading: 'Source Serif 4', Georgia, serif;
   --font-mono: 'Roboto Mono', 'SFMono-Regular', Consolas, monospace;
   --font-serif: var(--font-display);
   --text-xs: 0.75rem;
@@ -142,7 +142,7 @@
   --tracking-meta: 0.08em;
   --brand-heading: 600 clamp(2.25rem, 4vw, 4rem) / 1 var(--font-sans);
   --display: 600 2.75rem / 3.25rem var(--font-display);
-  --h1: 600 2.25rem / 2.75rem var(--font-display);
+  --h1: 700 2.25rem / 2.75rem var(--font-sans);
   --h2: 700 1.75rem / 2.25rem var(--font-sans);
   --h3: 700 1.375rem / 1.875rem var(--font-sans);
   --h4: 600 1.125rem / 1.625rem var(--font-sans);
