@@ -125,7 +125,7 @@
 .wg-campaign-identity__opda-link:hover {
   color: var(--color-header-text);
 }
-.wg-campaign-identity .brand-heading--paired {
+.wg-campaign-identity .brand-heading {
   --brand-heading-type: 600 calc(var(--identity-heading-size) * var(--identity-opda-scale)) / 1 var(--font-sans);
 }
 .wg-campaign-identity .framework-heading--display {
