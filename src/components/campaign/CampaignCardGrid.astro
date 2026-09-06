@@ -18,16 +18,45 @@ const Item = ordered ? 'li' : 'article';
     <Item class="campaign-card">
       {card.eyebrow && <p class="campaign-card__eyebrow">{card.eyebrow}</p>}
       <h3>{card.title}</h3>
-      {card.description && <p class="campaign-card__description">{card.description}</p>}
       {card.image && (
-        <img class="campaign-card__image" src={card.image} alt="" width="1200" height="300" loading="lazy" decoding="async" />
+        <img
+          class="campaign-card__image"
+          src={card.image}
+          data-campaign-image-light={card.darkImage ? card.image : undefined}
+          data-campaign-image-dark={card.darkImage}
+          alt=""
+          width="1200"
+          height="300"
+          loading="lazy"
+          decoding="async"
+        />
       )}
+      {card.description && <p class="campaign-card__description">{card.description}</p>}
       {card.href && (
         <a href={card.href} data-context-register={card.registerContext}>{card.linkLabel}</a>
       )}
     </Item>
   ))}
 </Container>
+
+<script>
+  // Follow the site's selected mode, including manual overrides of the OS theme.
+  // One observer serves every card grid; it never retains detached page elements.
+  const selectCampaignImages = () => {
+    const dark = document.documentElement.dataset.theme === 'dark';
+    document.querySelectorAll<HTMLImageElement>('img[data-campaign-image-dark]').forEach((image) => {
+      const source = dark ? image.dataset.campaignImageDark : image.dataset.campaignImageLight;
+      if (source && image.getAttribute('src') !== source) image.src = source;
+    });
+  };
+
+  new MutationObserver(selectCampaignImages).observe(document.documentElement, {
+    attributes: true,
+    attributeFilter: ['data-theme'],
+  });
+  document.addEventListener('astro:page-load', selectCampaignImages);
+  selectCampaignImages();
+</script>
 
 <style>
   .campaign-card-grid {
@@ -41,6 +70,7 @@ const Item = ordered ? 'li' : 'article';
   }
 
   .campaign-card {
+    position: relative;
     display: flex;
     flex-direction: column;
     gap: var(--space-4);
@@ -69,15 +99,22 @@ const Item = ordered ? 'li' : 'article';
     aspect-ratio: 4 / 1;
     object-fit: cover;
     object-position: 50% 65%;
-    margin-top: auto;
+    margin: 0;
   }
 
   .campaign-card a {
     display: inline-flex;
     align-items: center;
     min-height: var(--target-min);
+    margin-top: auto;
     font-weight: 700;
   }
+  .campaign-card a::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+  }
+  .campaign-card:has(a):hover,
   .campaign-card:focus-within { border-color: var(--color-link); }
 
   @media (max-width: 72rem) {

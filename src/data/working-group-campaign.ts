@@ -15,6 +15,7 @@ export interface CampaignCard {
   title: string;
   description?: string;
   image?: string;
+  darkImage?: string;
   href?: string;
   linkLabel?: string;
   registerContext?: string;

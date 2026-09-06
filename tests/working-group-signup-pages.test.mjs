@@ -337,8 +337,12 @@ test('campaign recruits industry experts through purpose, influence and clear ex
   assert.match(page, /registerContext:\s*context\.value/u);
   const cards = await readFile(paths.campaignCards, 'utf8');
   assert.match(cards, /data-context-register=\{card\.registerContext\}/u);
+  assert.match(cards, /\.campaign-card a::after\s*\{[^}]*position:\s*absolute;[^}]*inset:\s*0;/u);
   assert.equal((page.match(/<CampaignCardGrid\b/gu) ?? []).length, 5);
   assert.match(cards, /loading="lazy"/u);
+  assert.ok(cards.indexOf('<h3>') < cards.indexOf('{card.image &&'));
+  assert.ok(cards.indexOf('{card.image &&') < cards.indexOf('{card.description &&'));
+  assert.match(cards, /attributeFilter: \['data-theme'\]/u);
   assert.match(cards, /aspect-ratio:\s*4 \/ 1/u);
   assert.match(cards, /margin:\s*clamp\(var\(--space-8\), 4vw, var\(--space-10\)\) 0 0/u);
   for (const group of expectedGroups) {
