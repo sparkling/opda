@@ -270,7 +270,7 @@ html { scroll-padding-top: calc(var(--header-height) + 1rem); }
   border-radius: 0;
   margin: var(--space-5) 0;
   box-shadow: none;
-  font: 400 var(--text-base) / var(--leading-normal) var(--font-reading);
+  font: 400 var(--text-lg) / var(--leading-normal) var(--font-reading);
 }
 .callout > * + * { margin-top: var(--space-2); }
 .callout--information,

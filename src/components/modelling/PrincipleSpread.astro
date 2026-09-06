@@ -62,15 +62,15 @@ const rootClass = [
     <slot />
   </div>
   {hasPractice && (
-    <aside class="modelling-principle__aside">
-      <p class="modelling-principle__aside-label">{practiceLabel}</p>
+    <aside class="modelling-principle__aside callout callout--method">
+      <p class="callout__label">{practiceLabel}</p>
       <slot name="practice" />
     </aside>
   )}
   {hasMisreading && (
-    <div class="modelling-principle__not">
-      <p class="modelling-principle__not-label">{misreadingLabel}</p>
+    <aside class="modelling-principle__not callout callout--caution">
+      <p class="callout__label">{misreadingLabel}</p>
       <slot name="misreading" />
-    </div>
+    </aside>
   )}
 </section>
