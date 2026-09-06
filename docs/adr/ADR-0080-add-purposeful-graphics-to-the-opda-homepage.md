@@ -1,7 +1,7 @@
 ---
 status: accepted
 date: 2026-08-30
-updated: 2026-09-01
+updated: 2026-09-06
 tags: [website, homepage, design-system, brand, accessibility, avif, infographic, ai, presentation]
 supersedes: []
 amends: [ADR-0073, ADR-0074]
@@ -61,7 +61,7 @@ The root homepage uses this editorial sequence:
 
 1. A split deep-ink hero with the shared OPDA icon-and-name heading, `/join`'s full-width
    campaign background and centred 92rem content grid, the same panel composition,
-   SPDTF, Programme and working-group actions, and a compact working-group domain register.
+   working-group, SPDTF and Programme actions, and a compact working-group domain register.
 2. A static AI-assisted modelling loop showing source material, model extraction,
    candidate publication and working-group review, with feedback returning to the
    next pass and consensus leading to a draft standard.
@@ -176,6 +176,10 @@ than competing with the homepage's primary proposition.
 
 ## Amendments
 
+- **2026-09-06 — prioritise participation in the hero actions.** “Join a working group”
+  is first and uses the shared yellow primary button. “Explore SPDTF development”
+  follows with the shared transparent ghost button; “Understand the programme”
+  keeps its existing outline treatment. Destinations and other hero styling are unchanged.
 - **2026-08-30 — align the root hero with the recruitment campaign.** At the operator's
   direction, the root hero now reuses `/join`'s static background effect and two-column
   panel composition while retaining the homepage's existing content. Its full-width
