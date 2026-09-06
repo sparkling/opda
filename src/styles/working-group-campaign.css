@@ -114,12 +114,12 @@
   translate: 0 var(--theme-toggle-position-y, 0);
 }
 .wg-campaign-identity__opda-link {
+  min-width: var(--target-min);
   min-height: var(--target-min);
   display: inline-flex;
   align-items: center;
-  padding-inline: var(--space-2);
+  justify-content: center;
   color: var(--color-header-muted);
-  font-weight: 600;
   text-decoration: none;
 }
 .wg-campaign-identity__opda-link:hover {
