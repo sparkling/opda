@@ -1,5 +1,6 @@
 ---
 import Layout from '@/layouts/Layout.astro';
+import GraphDiagram from '@/components/GraphDiagram.astro';
 ---
 <Layout
   title="Schema · Chain, milestones & contracts"
@@ -120,7 +121,7 @@ erDiagram
     string completed "completed"
   &rbrace;
   </div>  <figcaption class="diagram-caption">Physical model — every JSON object owned by this page is a node, every scalar field a row. <strong>17</strong> objects, <strong>38</strong> scalar fields. Generated from the schema walk; click any node to jump to its table.</figcaption></figure>      <h2 id="diagram-1">Lifecycle state machine</h2>
-      <figure class="diagram" role="figure">  <div class="mermaid">
+      <GraphDiagram minHeight="420px" caption="Milestone state machine, implicit in the schema today. Valid transitions are documented here in prose but not enforced by SHACL — the schema permits a Completed milestone before an Exchanged one, which is a real defect this diagram makes visible.">
 stateDiagram-v2
   [*]              --> Listed
   Listed           --> OfferAccepted: "offer received & accepted"
@@ -134,10 +135,7 @@ stateDiagram-v2
   Searches         --> Withdrawn
   Enquiries        --> Withdrawn
   Withdrawn        --> [*]
-  </div>  <figcaption class="diagram-caption">Milestone state machine, implicit in the schema today. Valid
-transitions are documented here in prose but not enforced by SHACL
-— the schema permits a Completed milestone before an Exchanged one,
-which is a real defect this diagram makes visible.</figcaption></figure>      <h2 id="diagram-2">Timeline</h2>
+      </GraphDiagram>      <h2 id="diagram-2">Timeline</h2>
       <figure class="diagram" role="figure">  <div class="mermaid">
 gantt
   title  Typical UK residential transaction timeline (12 weeks)
