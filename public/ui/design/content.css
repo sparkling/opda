@@ -262,40 +262,43 @@ html { scroll-padding-top: calc(var(--header-height) + 1rem); }
    CALLOUTS — semantic tint, 3px rule, icon and explicit label.
    ───────────────────────────────────────────────────────────── */
 .callout {
-  border-left: 3px solid var(--color-status-info);
-  background: var(--color-status-info-surface);
+  --callout-accent: var(--color-status-info);
+  --callout-surface: var(--color-status-info-surface);
+  border-inline-start: 0.35rem solid var(--callout-accent);
+  background: var(--callout-surface);
   padding: var(--space-3) var(--space-5);
   border-radius: 0;
   margin: var(--space-5) 0;
   box-shadow: none;
 }
 .callout > * + * { margin-top: var(--space-2); }
-.callout--note    { border-color: var(--color-status-info); background: var(--color-status-info-surface); }
+.callout--note {
+  --callout-accent: var(--color-status-info);
+  --callout-surface: var(--color-status-info-surface);
+}
 .callout--key     {
-  border-color: var(--brand-yellow);
-  background: var(--neutral-100);
+  --callout-accent: var(--brand-yellow);
+  --callout-surface: color-mix(in srgb, var(--brand-yellow) 18%, var(--color-surface));
   padding: var(--space-4) var(--space-6);
-}
-:root[data-theme="dark"] .callout--key {
-  background: var(--color-surface-inset);
-}
-:root[data-theme="dark"] .callout--warn {
-  background: var(--color-status-warning-surface);
-}
-:root[data-theme="dark"] .callout--success {
-  background: var(--color-status-success-surface);
-}
-:root[data-theme="dark"] .callout--danger {
-  background: var(--color-status-danger-surface);
 }
 .callout--key > * + * { margin-top: var(--space-2); }
 .callout--key p {
   font: 500 var(--text-lg) / 1.5 var(--font-sans);
   color: var(--color-text-strong);
 }
-.callout--warn    { border-color: var(--color-status-warning); background: var(--color-status-warning-surface); }
-.callout--success { border-color: var(--color-status-success); background: var(--color-status-success-surface); }
-.callout--danger  { border-color: var(--color-status-danger); background: var(--color-status-danger-surface); }
+.callout--warn,
+.callout--warning {
+  --callout-accent: var(--color-status-warning);
+  --callout-surface: var(--color-status-warning-surface);
+}
+.callout--success {
+  --callout-accent: var(--color-status-success);
+  --callout-surface: var(--color-status-success-surface);
+}
+.callout--danger {
+  --callout-accent: var(--color-status-danger);
+  --callout-surface: var(--color-status-danger-surface);
+}
 
 .prose .callout__label,
 .callout__label {

@@ -3,12 +3,10 @@
 /* Learning figures and exercises share the same full-width document shell. */
 .modelling-document { min-width: 0; }
 
-/* Supporting explanation is neutral, not an informational-status alert. This
-   stylesheet is loaded by every modelling page, so both light and dark mode get
-   the same non-blue callout treatment. */
+/* Supporting explanation retains the shared information tint in both themes. */
 .modelling-document .modelling-callout.callout--note {
-  border-inline-start-color: var(--color-link);
-  background: var(--color-surface-inset);
+  --callout-accent: var(--color-status-info);
+  --callout-surface: var(--color-status-info-surface);
 }
 .modelling-document .modelling-callout.callout--note .callout__label {
   color: var(--color-text-strong);

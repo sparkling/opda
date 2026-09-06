@@ -29,7 +29,7 @@ export const MODELLING_JOURNEYS: Item[] = [
     ],
   },
   {
-    ...page('method', 'Technical ontology modelling'),
+    ...page('method', 'Ontology modelling'),
     children: [
       page('method/from-question-to-candidate', 'From question to candidate'),
       page('method/scope-and-package', 'Eight concerns, six connected outputs'),
