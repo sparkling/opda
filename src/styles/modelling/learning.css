@@ -3,6 +3,17 @@
 /* Learning figures and exercises share the same full-width document shell. */
 .modelling-document { min-width: 0; }
 
+/* Supporting explanation is neutral, not an informational-status alert. This
+   stylesheet is loaded by every modelling page, so both light and dark mode get
+   the same non-blue callout treatment. */
+.modelling-document .modelling-callout.callout--note {
+  border-inline-start-color: var(--color-border-strong);
+  background: var(--color-surface-inset);
+}
+.modelling-document .modelling-callout.callout--note .callout__label {
+  color: var(--color-text-strong);
+}
+
 /* One explicitly authored long-form page uses a 1200px reading measure while
    figures and image containers continue to occupy the full article track. */
 .modelling-reading-1200 > :not(:is(figure, picture, img)) {
