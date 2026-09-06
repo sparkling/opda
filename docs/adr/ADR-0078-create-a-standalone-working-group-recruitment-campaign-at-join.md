@@ -114,20 +114,24 @@ two expanded, justified paragraphs. The visible “I’m interested in” label 
 one visually hidden native registration link covers the whole card, preserving a
 single keyboard stop and the existing group-selection behaviour. Form descriptions
 remain concise.
-Image set 3 in `public/images/join/set-3/` contains twelve local, lazy-loaded WebPs:
-six colour-rich light/dark drawing pairs, following the selected site mode through
-the shared component without changing geometry. The original photographs remain
+Image set 3 in `public/images/join/set-3/` contains fourteen local, lazy-loaded WebPs:
+seven colour-rich light/dark drawing pairs follow the selected site mode through
+one shared image component without changing geometry. Six 1200×300 pairs illustrate
+the working-group cards; one 1200×800 pair occupies the upper-right participation
+introduction beside “What you can influence”. The original photographs remain
 image set 1; the first drawings remain image set 2 in their versioned directories.
 The built-in image-generation tool edited set 2 with this direction: preserve each
 subject and composition; enrich the pen-and-ink/watercolour with OPDA yellow, petrol,
 violet and coral; adapt paper and line contrast for matched light and deep-ink modes.
-All twelve exports were visually reviewed and optimised to 1200×300 WebP.
+All fourteen exports were visually reviewed and optimised as WebP.
 Fable's `ContributionRegister` replaces the rejected contribution bands with one
 definition list in three pairs, using categorical violet, teal and magenta rules
 and markers on mode-aware semantic surfaces. All wording is preserved; one shared
 component owns desktop pairing, narrow-track stacking and both colour modes.
 Campaign sections share 32–48px vertical padding, with 32px inset boundary-panel
-padding, replacing the previous stacked 112–128px section clearances.
+padding, replacing the previous stacked 112–128px section clearances. The “Interest
+is reviewed by people” panel uses an editorial introduction followed by a balanced
+two-column boundary register that becomes one column on narrow screens.
 The separate “Before you commit” paragraph and its container are removed at the
 user's request; the registration form and remaining participation boundaries are unchanged.
 

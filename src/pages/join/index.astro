@@ -1,6 +1,7 @@
 ---
 import WorkingGroupInterestForm from '@/components/campaign/WorkingGroupInterestForm.astro';
 import CampaignCardGrid from '@/components/campaign/CampaignCardGrid.astro';
+import CampaignThemeImage from '@/components/campaign/CampaignThemeImage.astro';
 import ContributionRegister from '@/components/campaign/ContributionRegister.astro';
 import CampaignHeaderControls from '@/components/campaign/CampaignHeaderControls.astro';
 import CampaignIdentity from '@/components/campaign/CampaignIdentity.astro';
@@ -178,11 +179,21 @@ const workingGroupCards = workingGroupContexts.map((context) => ({
           <p class="wg-eyebrow">What you can influence</p>
           <h2 id="participation-title">Bring experience. Improve the proposal. Change what will matter.</h2>
         </div>
-        <p>
-          The work is presented in language that practitioners can review. Technical teams turn agreed
-          meaning into standards and tools; your role is to make sure the meaning and result are right
-          for your field, your organisation and the people it serves.
-        </p>
+        <div class="wg-participation__media">
+          <CampaignThemeImage
+            className="wg-participation__image"
+            lightSrc="/images/join/set-3/influence-light.webp"
+            darkSrc="/images/join/set-3/influence-dark.webp"
+            alt=""
+            width={1200}
+            height={800}
+          />
+          <p>
+            The work is presented in language that practitioners can review. Technical teams turn agreed
+            meaning into standards and tools; your role is to make sure the meaning and result are right
+            for your field, your organisation and the people it serves.
+          </p>
+        </div>
       </div>
 
       <CampaignCardGrid cards={participationCards} ordered />
@@ -210,19 +221,33 @@ const workingGroupCards = workingGroupContexts.map((context) => ({
       <CampaignCardGrid cards={evidenceCards} />
 
       <div class="wg-trust">
-        <div>
-          <p class="wg-eyebrow">Clear boundaries</p>
-          <h3>Interest is reviewed by people.</h3>
+        <div class="wg-trust__intro">
+          <div>
+            <p class="wg-eyebrow">Clear boundaries</p>
+            <h3>Interest is reviewed by people.</h3>
+          </div>
           <p>
             Share only what you and your organisation are authorised to share. Source material is
             reviewed and is not automatically published.
           </p>
         </div>
-        <ul>
-          <li>SPDTF is in development; participation does not make it adopted or confer standards authority.</li>
-          <li>No data-modelling or technical knowledge is required.</li>
-          <li>AI may assist comparison and drafting; it cannot make a draft official.</li>
-          <li>Registration is an expression of interest, not membership, access, a vote or permission to represent your employer.</li>
+        <ul class="wg-trust__boundaries" aria-label="Participation boundaries">
+          <li class="wg-trust__boundary">
+            <strong>In development</strong>
+            <span>Participation does not make SPDTF adopted or confer standards authority.</span>
+          </li>
+          <li class="wg-trust__boundary">
+            <strong>Open to practitioners</strong>
+            <span>No data-modelling or technical knowledge is required.</span>
+          </li>
+          <li class="wg-trust__boundary">
+            <strong>Human authority</strong>
+            <span>AI may assist comparison and drafting; it cannot make a draft official.</span>
+          </li>
+          <li class="wg-trust__boundary">
+            <strong>An expression of interest</strong>
+            <span>Registration is not membership, access, a vote or permission to represent your employer.</span>
+          </li>
         </ul>
       </div>
     </section>

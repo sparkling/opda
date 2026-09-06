@@ -11,7 +11,7 @@
   .wg-participation__intro,
   .wg-participation-grid,
   .wg-evidence__statement,
-  .wg-trust,
+  .wg-trust__intro,
   .wg-policy__inner { grid-template-columns: 1fr; }
   .wg-cross-cutting .wg-eyebrow,
   .wg-evidence__statement .wg-eyebrow { grid-column: auto; margin-bottom: 0; }
@@ -23,6 +23,10 @@
   .wg-campaign-hero h1 { font-size: clamp(3rem, 15vw, 4.75rem); }
   .wg-hero-actions { flex-direction: column; align-items: stretch; }
   .wg-hero-actions .btn { justify-content: center; }
+  .wg-trust__boundaries { grid-template-columns: 1fr; }
+  .wg-trust__boundary:nth-child(even),
+  .wg-trust__boundary:nth-child(odd) { padding-inline: 0; border-left: 0; }
+  .wg-trust__boundary:nth-child(n + 2) { border-top: 1px solid var(--color-border); }
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -39,5 +43,5 @@
   .wg-process__icon,
   .wg-cross-cutting :is(h3, p),
   .wg-participation :is(h2, h3, p, strong, li),
-  .wg-trust :is(h3, p, li) { color: CanvasText; }
+  .wg-trust :is(h3, p, li, strong, span) { color: CanvasText; }
 }

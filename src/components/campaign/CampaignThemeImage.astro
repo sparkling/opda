@@ -1,0 +1,50 @@
+---
+interface Props {
+  lightSrc: string;
+  darkSrc?: string;
+  alt?: string;
+  width: number;
+  height: number;
+  className?: string;
+  loading?: 'eager' | 'lazy';
+}
+
+const {
+  lightSrc,
+  darkSrc,
+  alt = '',
+  width,
+  height,
+  className,
+  loading = 'lazy',
+} = Astro.props;
+---
+
+<img
+  class={className}
+  src={lightSrc}
+  data-campaign-image-light={darkSrc ? lightSrc : undefined}
+  data-campaign-image-dark={darkSrc}
+  alt={alt}
+  width={width}
+  height={height}
+  loading={loading}
+  decoding="async"
+/>
+
+<script>
+  const selectCampaignImages = () => {
+    const dark = document.documentElement.dataset.theme === 'dark';
+    document.querySelectorAll<HTMLImageElement>('img[data-campaign-image-dark]').forEach((image) => {
+      const source = dark ? image.dataset.campaignImageDark : image.dataset.campaignImageLight;
+      if (source && image.getAttribute('src') !== source) image.src = source;
+    });
+  };
+
+  new MutationObserver(selectCampaignImages).observe(document.documentElement, {
+    attributes: true,
+    attributeFilter: ['data-theme'],
+  });
+  document.addEventListener('astro:page-load', selectCampaignImages);
+  selectCampaignImages();
+</script>

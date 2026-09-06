@@ -11,6 +11,7 @@ const paths = {
   form: new URL('../src/components/campaign/WorkingGroupInterestForm.astro', import.meta.url),
   campaignData: new URL('../src/data/working-group-campaign.ts', import.meta.url),
   campaignCards: new URL('../src/components/campaign/CampaignCardGrid.astro', import.meta.url),
+  campaignThemeImage: new URL('../src/components/campaign/CampaignThemeImage.astro', import.meta.url),
   layout: new URL('../src/layouts/Layout.astro', import.meta.url),
   siteFooter: new URL('../src/components/SiteFooter.astro', import.meta.url),
   brandHeading: new URL('../src/components/BrandHeading.astro', import.meta.url),
@@ -233,7 +234,7 @@ test('knowledge-base and standalone page families expose their required footer l
   assert.match(footer, /Your expert in semantic modelling and agentic engineering/u);
   assert.match(footer, /public-footer__credit[\s\S]*public-footer__brand[\s\S]*public-footer__links/u);
   assert.match(publicCss, /--public-footer-gutter:\s*max\(var\(--space-6\), calc\(\(100% - var\(--content-max\)\) \/ 2\)\)/u);
-  assert.match(publicCss, /padding-block:\s*var\(--space-3\) calc\(var\(--space-6\) \+ var\(--space-5\)\)/u);
+  assert.match(publicCss, /padding-block:\s*var\(--space-6\) calc\(var\(--space-6\) \+ var\(--space-5\)\)/u);
   assert.match(publicCss, /grid-template-areas:\s*'credit brand links'/u);
   assert.match(publicCss, /\.public-footer__credit\s*\{[^}]*justify-self:\s*start[^}]*display:\s*flex[^}]*flex-direction:\s*column[^}]*text-align:\s*left/su);
   assert.match(publicCss, /\.public-footer__links\s*\{[^}]*justify-self:\s*end[^}]*justify-content:\s*flex-end/su);
@@ -336,13 +337,15 @@ test('campaign recruits industry experts through purpose, influence and clear ex
   assert.match(responsiveCss, /prefers-reduced-motion/u);
   assert.match(page, /registerContext:\s*context\.value/u);
   const cards = await readFile(paths.campaignCards, 'utf8');
+  const themeImage = await readFile(paths.campaignThemeImage, 'utf8');
   assert.match(cards, /data-context-register=\{card\.registerContext\}/u);
   assert.match(cards, /\.campaign-card__link\s*\{[^}]*position:\s*absolute;[^}]*inset:\s*0;/u);
   assert.equal((page.match(/<CampaignCardGrid\b/gu) ?? []).length, 5);
+  assert.match(cards, /<CampaignThemeImage/u);
   assert.match(cards, /loading="lazy"/u);
   assert.ok(cards.indexOf('<h3>') < cards.indexOf('{card.image &&'));
   assert.ok(cards.indexOf('{card.image &&') < cards.indexOf('(card.paragraphs ??'));
-  assert.match(cards, /attributeFilter: \['data-theme'\]/u);
+  assert.match(themeImage, /attributeFilter: \['data-theme'\]/u);
   assert.match(cards, /aspect-ratio:\s*4 \/ 1/u);
   assert.match(cards, /margin:\s*clamp\(var\(--space-8\), 4vw, var\(--space-10\)\) 0 0/u);
   for (const group of expectedGroups) {
@@ -353,6 +356,12 @@ test('campaign recruits industry experts through purpose, influence and clear ex
     }
   }
   assert.match(page, /workingGroupImageSet = 'set-3'/u);
+  assert.match(page, /<CampaignThemeImage[\s\S]*lightSrc="\/images\/join\/set-3\/influence-light\.webp"[\s\S]*darkSrc="\/images\/join\/set-3\/influence-dark\.webp"[\s\S]*width=\{1200\}[\s\S]*height=\{800\}/u);
+  assert.ok(existsSync(new URL('../public/images/join/set-3/influence-light.webp', import.meta.url)));
+  assert.ok(existsSync(new URL('../public/images/join/set-3/influence-dark.webp', import.meta.url)));
+  assert.match(page, /class="wg-trust__intro"/u);
+  assert.match(page, /class="wg-trust__boundaries"/u);
+  assert.equal((page.match(/<li class="wg-trust__boundary">/gu) ?? []).length, 4);
   const register = await readFile(new URL('../src/components/campaign/ContributionRegister.astro', import.meta.url), 'utf8');
   assert.match(page, /<ContributionRegister options=\{contributionOptions\} \/>/u);
   assert.match(register, /<dl class="contribution-register">/u);

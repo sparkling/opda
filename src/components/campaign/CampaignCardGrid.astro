@@ -1,5 +1,6 @@
 ---
 import type { CampaignCard } from '@/data/working-group-campaign';
+import CampaignThemeImage from '@/components/campaign/CampaignThemeImage.astro';
 
 interface Props {
   cards: CampaignCard[];
@@ -19,16 +20,14 @@ const Item = ordered ? 'li' : 'article';
       {card.eyebrow && <p class="campaign-card__eyebrow">{card.eyebrow}</p>}
       <h3>{card.title}</h3>
       {card.image && (
-        <img
-          class="campaign-card__image"
-          src={card.image}
-          data-campaign-image-light={card.darkImage ? card.image : undefined}
-          data-campaign-image-dark={card.darkImage}
+        <CampaignThemeImage
+          className="campaign-card__image"
+          lightSrc={card.image}
+          darkSrc={card.darkImage}
           alt=""
-          width="1200"
-          height="300"
+          width={1200}
+          height={300}
           loading="lazy"
-          decoding="async"
         />
       )}
       {(card.paragraphs ?? (card.description ? [card.description] : [])).map((paragraph) => (
@@ -42,25 +41,6 @@ const Item = ordered ? 'li' : 'article';
     </Item>
   ))}
 </Container>
-
-<script>
-  // Follow the site's selected mode, including manual overrides of the OS theme.
-  // One observer serves every card grid; it never retains detached page elements.
-  const selectCampaignImages = () => {
-    const dark = document.documentElement.dataset.theme === 'dark';
-    document.querySelectorAll<HTMLImageElement>('img[data-campaign-image-dark]').forEach((image) => {
-      const source = dark ? image.dataset.campaignImageDark : image.dataset.campaignImageLight;
-      if (source && image.getAttribute('src') !== source) image.src = source;
-    });
-  };
-
-  new MutationObserver(selectCampaignImages).observe(document.documentElement, {
-    attributes: true,
-    attributeFilter: ['data-theme'],
-  });
-  document.addEventListener('astro:page-load', selectCampaignImages);
-  selectCampaignImages();
-</script>
 
 <style>
   .campaign-card-grid {

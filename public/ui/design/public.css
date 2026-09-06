@@ -153,7 +153,7 @@
 .public-footer {
   --public-footer-gutter: max(var(--space-6), calc((100% - var(--content-max)) / 2));
   margin-top: auto;
-  padding-block: var(--space-3) calc(var(--space-6) + var(--space-5));
+  padding-block: var(--space-6) calc(var(--space-6) + var(--space-5));
   padding-inline: var(--public-footer-gutter);
   display: grid;
   grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);

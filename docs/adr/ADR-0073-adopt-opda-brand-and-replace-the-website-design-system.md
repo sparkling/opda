@@ -69,7 +69,7 @@ The canonical repository assets are:
 
 ## Decision outcome
 
-Adopt the Q3 2026 guide and supplied vectors for this application and complete them through the derived OPDA web system specified in `DESIGN.md`. On 6 September 2026 the operator adopted **OPDA editorial watercolour** as a governed derived illustration style after approving six subject-specific light/dark pairs. The style is excluded from identity, evidence and exact technical diagrams. `DESIGN.md` defines its palette, pairing and export rules; `/design-system` records the reusable light and dark prompts and shows the approved set-3 specimens. This amendment does not change the supplied brand assets or photography-rights gate.
+Adopt the Q3 2026 guide and supplied vectors for this application and complete them through the derived OPDA web system specified in `DESIGN.md`. On 6 September 2026 the operator adopted **OPDA editorial watercolour** as a governed derived illustration style after approving seven subject-specific light/dark pairs. The style is excluded from identity, evidence and exact technical diagrams. `DESIGN.md` defines its palette, pairing and export rules; `/design-system` records the reusable light and dark prompts and shows the approved set-3 specimens. This amendment does not change the supplied brand assets or photography-rights gate.
 
 On 19 August 2026 the implemented layout contract was clarified after rendered-page
 review: each shared-site composition has one outer width authority. Nested text
@@ -288,7 +288,7 @@ no open/closed marker.
 Later on 1 September 2026, `SiteFooter.astro` became the single organisation footer for
 the root landing, every `Layout` route and the standalone public-service family. It
 retains the signature rule while presenting one desktop row in source order: the linked Sparkling Ideas credit, a centred linked OPDA
-lock-up to the Association website, then the privacy and accessibility exits. The existing expert tagline remains beneath the credit. The complete row moves one text line upward by redistributing 16px of container padding from above to below; individual elements use no vertical transform. The standalone join
+lock-up to the Association website, then the privacy and accessibility exits. The existing expert tagline remains beneath the credit. The shared footer reserves 24px above the complete row and retains its larger closing inset; individual elements use no vertical transform. The standalone join
 hero adds the existing transparent button variant for its OPDA return control; the
 full-screen working-group deck remains outside shared site furniture.
 The footer's left credit and right links align directly to the shared content edges, removing the former additional 32px inner gutter while retaining the centred OPDA lock-up and minimum narrow-screen inset. The first credit line, OPDA lock-up and footer links share the desktop row while the second credit line is retained.
