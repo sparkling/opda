@@ -268,8 +268,10 @@ const totalShapePages = allShapeEntries.length;
         style="width:100%; height:75vh; border:1px solid var(--color-border-strong); border-radius:0; margin-top:var(--space-4);"></iframe>
     </>
   ) : (
-    <p class="callout callout--warn"><span class="callout__label">Pending generation</span>
-      The SHACL Play! rendering is not listed in the retained publication inventory.</p>
+    <aside class="callout callout--warn">
+      <p class="callout__label">Pending generation</p>
+      <p>The SHACL Play! rendering is not listed in the retained publication inventory.</p>
+    </aside>
   )}
 
   <h2 id="related">Related</h2>

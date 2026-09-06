@@ -104,11 +104,13 @@ const RUBRIC_COLS = ['OWL terms', 'SKOS', 'SHACL', 'Overlay profiles + gap', 'Ex
       </details>
     ))
   ) : (
-    <p class="callout callout--note">
-      <span class="callout__label">Pending generation</span>
+    <aside class="callout callout--note">
+      <p class="callout__label">Pending generation</p>
+      <p>
       The embeddable renderings stage under <code>public/development/inputs/pdtf-schema/schema-derived-ontology/use-and-tooling/tools/</code> as the
       generation step runs; until then the catalogue above carries the per-tool notes.
-    </p>
+      </p>
+    </aside>
   )}
 
   <h2 id="rubric">M6 rubric scorecard</h2>
@@ -121,11 +123,13 @@ const RUBRIC_COLS = ['OWL terms', 'SKOS', 'SHACL', 'Overlay profiles + gap', 'Ex
     needing least custom post-processing for fidelity.
   </p>
   {comparisonStaged ? (
-    <p class="callout callout--note">
-      <span class="callout__label">Scoring staged</span>
+    <aside class="callout callout--note">
+      <p class="callout__label">Scoring staged</p>
+      <p>
       The bake-off's per-layer scoring is recorded in
       <a href="/development/inputs/pdtf-schema/schema-derived-ontology/use-and-tooling/tools/COMPARISON.md">COMPARISON.md ↗</a> — the filled M6 rubric for inspection.
-    </p>
+      </p>
+    </aside>
   ) : (
     <p><em>Empty rubric — to be filled on inspection (cells: Full / Partial / None).</em></p>
   )}
