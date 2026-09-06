@@ -250,8 +250,9 @@
     const drawer = toggle ? document.getElementById(toggle.getAttribute('aria-controls')) : null;
     if (!controls || !drawer || !toggle || toggle.dataset.bound === 'true') return;
     toggle.dataset.bound = 'true';
+    const storageKey = 'opda-header-preview-controls-expanded';
 
-    function setExpanded(expanded) {
+    function setExpanded(expanded, persist) {
       controls.classList.toggle('is-collapsed', !expanded);
       drawer.inert = !expanded;
       toggle.setAttribute('aria-expanded', String(expanded));
@@ -260,11 +261,16 @@
       if (!expanded) drawer.querySelectorAll('details[open]').forEach(function (details) {
         details.open = false;
       });
+      if (persist) {
+        try { localStorage.setItem(storageKey, expanded ? '1' : '0'); } catch (e) {}
+      }
     }
 
-    setExpanded(true);
+    let expanded = true;
+    try { expanded = localStorage.getItem(storageKey) !== '0'; } catch (e) {}
+    setExpanded(expanded, false);
     toggle.addEventListener('click', function () {
-      setExpanded(toggle.getAttribute('aria-expanded') !== 'true');
+      setExpanded(toggle.getAttribute('aria-expanded') !== 'true', true);
     });
   }
 
