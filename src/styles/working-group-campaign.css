@@ -114,8 +114,8 @@
   translate: 0 var(--theme-toggle-position-y, 0);
 }
 .wg-campaign-identity__opda-link {
-  min-width: var(--target-min);
-  min-height: var(--target-min);
+  width: 3.25rem;
+  height: 3.25rem;
   display: inline-flex;
   align-items: center;
   justify-content: center;
