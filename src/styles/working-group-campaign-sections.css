@@ -31,15 +31,15 @@
 
 .wg-participation__intro {
   display: grid;
-  grid-template-columns: minmax(0, 1.1fr) minmax(20rem, 0.9fr);
-  gap: clamp(var(--space-8), 7vw, var(--space-12));
+  grid-template-columns: minmax(0, 0.9fr) minmax(20rem, 1.1fr);
+  gap: var(--space-7);
   align-items: start;
 }
 
 .wg-participation .wg-eyebrow { color: var(--campaign-section-accent); }
 .wg-participation h2 { margin: 0; color: var(--color-text-strong); font: 600 clamp(2.5rem, 5vw, 5.25rem) / 1.02 var(--font-display); letter-spacing: -0.025em; text-wrap: balance; }
 .wg-participation__media { display: grid; gap: var(--space-5); }
-.wg-participation__image { display: block; width: 100%; height: auto; aspect-ratio: 3 / 2; object-fit: cover; }
+.wg-participation__image { display: block; width: 100%; height: auto; aspect-ratio: 2 / 1; object-fit: cover; }
 .wg-participation__media > p { margin: 0; color: var(--color-text-muted); font: var(--lead); }
 
 .wg-participation-grid {

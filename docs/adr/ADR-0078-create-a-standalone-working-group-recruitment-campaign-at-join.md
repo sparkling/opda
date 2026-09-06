@@ -118,7 +118,11 @@ Image set 3 in `public/images/join/set-3/` contains fourteen local, lazy-loaded 
 seven colour-rich light/dark drawing pairs follow the selected site mode through
 one shared image component without changing geometry. Six 1200×300 pairs illustrate
 the working-group cards; one 1200×800 pair occupies the upper-right participation
-introduction beside “What you can influence”. The original photographs remain
+introduction beside “What you can influence”. Refined on 6 September 2026: this
+introduction uses a responsive 2:1 landscape crop in both modes, preserving the
+source assets and the working-group cards’ 4:1 geometry. Its desktop introduction
+uses 45:55 columns with a 32px gutter to bring the heading and illustration closer.
+The original photographs remain
 image set 1; the first drawings remain image set 2 in their versioned directories.
 The built-in image-generation tool edited set 2 with this direction: preserve each
 subject and composition; enrich the pen-and-ink/watercolour with OPDA yellow, petrol,
