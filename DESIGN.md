@@ -379,15 +379,23 @@ dark parity.
 - **Campaign card grid:** `CampaignCardGrid.astro` owns the shared spacing, padding,
   type, borders and responsive columns for motivation, policy, groups, participation
   and evidence. Every grid has 48–64px clearance above it, declared once in the component.
-  Group cards add a consistent 4:1 editorial photograph and one action that carries
-  the selected group to the signup form. Their six generated images are local,
-  compressed WebP assets preserved as image set 1 in `public/images/join/set-1/`,
-  with lazy loading; photographs are decorative and never
+  Group cards add a consistent 4:1 editorial drawing and one action that carries
+  the selected group to the signup form. Six differentiated pen-and-ink/watercolour
+  drawings are active as image set 2 in `public/images/join/set-2/`; the original
+  photographs remain available as image set 1 in `public/images/join/set-1/`.
+  Both sets are local compressed WebP assets with lazy loading; images are decorative and never
   replace the label or practical scope. Group cards use a three-column maximum;
   other grids may use four. Preserve ordinary HTML reading order and avoid modelling
   terminology in audience choices.
   Campaign sections share 32–48px vertical padding; inset boundary panels use 32px
   padding rather than stacking large section gaps. The form-to-footer gap stays 32px.
+- **Contribution register:** Fable's `ContributionRegister.astro` renders the six
+  contribution options as one definition list in three colour-keyed pairs. Each pair
+  shares a bordered alternate-surface panel with a 4px rule and 12px square in one
+  categorical hue (violet, teal, magenta), ink H4 terms and small-role descriptions.
+  Hue marks grouping, never status. Entries stack within their pair below a 640px
+  content track. This campaign-specific definition list needs neither table controls
+  nor callout backgrounds. One scoped component owns both modes and responsive layout.
 - **Public statement:** dated privacy or accessibility content in a full-track flow beneath the standard global header, without side navigation, nested width limits or unevidenced compliance claims.
 - **Newsletter subscription:** one reusable form powers a header-triggered native dialog and `/subscribe` fallback. It uses the six canonical working-group choices, explicit consent, a separate privacy notice and its own validated storage boundary. The wide dialog has no arbitrary fixed-height cap and presents choices in three columns where space permits, avoiding an internal scrollbar at ordinary desktop sizes; constrained-height viewports retain safe scrolling. The mail icon remains a normal link until enhancement is ready.
 - **Feedback states:** skeleton, labelled loading, empty-state explanation, error recovery and non-obscuring toast.

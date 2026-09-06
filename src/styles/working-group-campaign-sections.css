@@ -49,10 +49,6 @@
 }
 
 .wg-participation-grid h3 { margin: 0; color: var(--color-text-strong); font: 600 clamp(1.75rem, 3vw, 3rem) / 1.1 var(--font-display); }
-.wg-participation-grid ul { margin: 0; padding: 0; list-style: none; border-top: 1px solid var(--color-border); }
-.wg-participation-grid li { display: grid; grid-template-columns: minmax(12rem, 0.75fr) minmax(0, 1.25fr); gap: var(--space-6); padding-block: var(--space-5); border-bottom: 1px solid var(--color-border); }
-.wg-participation-grid strong { color: var(--color-text-strong); }
-.wg-participation-grid span { color: var(--color-text-muted); font-size: var(--text-sm); line-height: 1.55; }
 
 .wg-commitment { display: grid; grid-template-columns: minmax(12rem, 0.75fr) minmax(0, 1.25fr); gap: var(--space-6); margin-top: var(--space-8); padding: var(--space-6); background: var(--color-surface-alt); border-left: 4px solid var(--brand-yellow); }
 .wg-commitment strong { color: var(--color-text-strong); }

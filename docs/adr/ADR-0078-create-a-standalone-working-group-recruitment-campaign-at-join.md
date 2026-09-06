@@ -109,9 +109,14 @@ empty grid rows, and the section ends with 32px before the footer. The standalon
 programme-status callout is removed; the programme and policy-context link remains.
 Motivation, policy, working-group, participation and evidence grids now use one
 `CampaignCardGrid` component with consistent 48–64px heading clearance and card
-geometry. Six local, lazy-loaded WebP photographs illustrate the working-group
+geometry. Six local, lazy-loaded WebP editorial drawings illustrate the working-group
 cards in a shared 4:1 image slot without changing their text or registration
-actions. These photographs are preserved as image set 1 in `public/images/join/set-1/`.
+actions. The drawings are active as image set 2 in `public/images/join/set-2/`;
+the original photographs remain image set 1 in `public/images/join/set-1/`.
+Fable's `ContributionRegister` replaces the rejected contribution bands with one
+definition list in three pairs, using categorical violet, teal and magenta rules
+and markers on mode-aware semantic surfaces. All wording is preserved; one shared
+component owns desktop pairing, narrow-track stacking and both colour modes.
 Campaign sections share 32–48px vertical padding, with 32px inset boundary-panel
 padding, replacing the previous stacked 112–128px section clearances.
 

@@ -23,7 +23,6 @@
   .wg-campaign-hero h1 { font-size: clamp(3rem, 15vw, 4.75rem); }
   .wg-hero-actions { flex-direction: column; align-items: stretch; }
   .wg-hero-actions .btn { justify-content: center; }
-  .wg-participation-grid li,
   .wg-commitment { grid-template-columns: 1fr; gap: var(--space-2); }
 }
 
@@ -36,7 +35,6 @@
   .wg-hero-journey,
   .wg-cross-cutting,
   .wg-participation,
-  .wg-participation-grid li,
   .wg-commitment,
   .wg-trust { color: CanvasText; background: Canvas; border-color: CanvasText; }
   .wg-campaign-hero :is(h1, h2, p, a),

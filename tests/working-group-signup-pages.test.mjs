@@ -343,7 +343,14 @@ test('campaign recruits industry experts through purpose, influence and clear ex
   assert.match(cards, /margin:\s*clamp\(var\(--space-8\), 4vw, var\(--space-10\)\) 0 0/u);
   for (const group of expectedGroups) {
     assert.ok(existsSync(new URL(`../public/images/join/set-1/${group}.webp`, import.meta.url)));
+    assert.ok(existsSync(new URL(`../public/images/join/set-2/${group}.webp`, import.meta.url)));
   }
+  assert.match(page, /workingGroupImageSet = 'set-2'/u);
+  const register = await readFile(new URL('../src/components/campaign/ContributionRegister.astro', import.meta.url), 'utf8');
+  assert.match(page, /<ContributionRegister options=\{contributionOptions\} \/>/u);
+  assert.match(register, /<dl class="contribution-register">/u);
+  assert.match(register, /@container contributions \(max-width: 40rem\)/u);
+  assert.doesNotMatch(register, /callout-(method|technical)|--color-table-row-header-surface/u);
   assert.ok(page.indexOf('<WorkingGroupInterestForm') > page.indexOf('class="wg-trust"'));
   assert.doesNotMatch(page, /0[1-4] ·/u);
   assert.doesNotMatch(form, /05 ·/u);
