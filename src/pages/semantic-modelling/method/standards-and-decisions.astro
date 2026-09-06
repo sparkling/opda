@@ -198,9 +198,9 @@ const methodHref = (slug: string) => slug.startsWith('../')
     method. This documentation rewrite does not alter the ontology corpus, invent
     reviewed mappings or claim that an outstanding generator migration has happened.
   </p>
-  <details>
-    <summary>All 29 adopted OPDA decisions</summary>
+  <aside class="callout callout--note modelling-callout">
+    <div class="callout__label">All 29 adopted OPDA decisions</div>
     <p>These local records are the normative register for the selected method. Each records its source lineage, scoped adoption and amendment boundaries. Upstream revision <code>{revision}</code> is provenance only; it does not adopt excluded categories, proposed clauses or source implementation claims.</p>
     <ul>{adoptedRecords.map(([record, title]) => <li><a href={`/modelling/odr/${record.toLowerCase()}`}>{record} · {title}</a></li>)}</ul>
-  </details>
+  </aside>
 </ModellingLayout>

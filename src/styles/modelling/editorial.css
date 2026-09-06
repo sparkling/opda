@@ -213,43 +213,7 @@
   text-transform: uppercase;
 }
 
-/* ── Technical detail disclosure ──
-   Native <details>: content is real HTML, present without any
-   script. The summary is a full-width 44px control. */
-.modelling-detail {
-  border: 1px solid var(--color-border);
-  background: var(--color-surface-card);
-}
-.modelling-detail__summary {
-  min-height: var(--target-min);
-  display: flex;
-  align-items: center;
-  gap: var(--space-3);
-  padding: var(--space-3) var(--space-5);
-  cursor: pointer;
-  list-style: none;
-  color: var(--color-text-strong);
-  font: 600 var(--text-sm) / 1.4 var(--font-sans);
-  transition: background var(--duration-fast) var(--ease);
-}
-.modelling-detail__summary::-webkit-details-marker { display: none; }
-.modelling-detail__summary::before {
-  content: '';
-  flex: 0 0 auto;
-  width: 0.45em;
-  height: 0.45em;
-  border-block-end: 2px solid currentColor;
-  border-inline-end: 2px solid currentColor;
-  transform: rotate(-45deg);
-  transition: transform var(--duration-normal) var(--ease);
-}
-.modelling-detail[open] > .modelling-detail__summary::before { transform: rotate(45deg); }
-.modelling-detail__summary:hover { background: var(--color-action-subtle); }
-.modelling-detail__summary:focus-visible {
-  outline: 2px solid var(--color-focus);
-  outline-offset: -2px;
-  box-shadow: inset 0 0 0 4px var(--color-focus-contrast);
-}
+/* ── Technical-detail callout label ── */
 .modelling-detail__note {
   margin-inline-start: auto;
   color: var(--color-text-muted);

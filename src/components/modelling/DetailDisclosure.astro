@@ -1,11 +1,10 @@
 ---
 /**
- * Technical detail disclosure — native <details>, no script.
+ * Technical detail callout — always visible, no script.
  *
  * For content that supports the chapter but is not its core reading:
  * encoding notes, notation, profile tables. The content is real HTML
- * in the document, present without JavaScript; the summary is a
- * full-width 44px control with an optional audience note.
+ * in the document, with an optional audience note.
  *
  *   <DetailDisclosure summary="How this is encoded" note="For implementers">
  *     <p>…RDF/SHACL detail…</p>
@@ -17,19 +16,17 @@ interface Props {
   summary: string;
   /** Short audience or scope note, e.g. "For implementers". */
   note?: string;
-  /** Render expanded initially. */
-  open?: boolean;
 }
 
-const { summary, note, open = false } = Astro.props;
+const { summary, note } = Astro.props;
 ---
 
-<details class="modelling-detail" open={open}>
-  <summary class="modelling-detail__summary">
+<aside class="callout callout--note modelling-callout">
+  <div class="callout__label">
     {summary}
     {note && <span class="modelling-detail__note">{note}</span>}
-  </summary>
-  <div class="modelling-detail__body">
+  </div>
+  <div>
     <slot />
   </div>
-</details>
+</aside>

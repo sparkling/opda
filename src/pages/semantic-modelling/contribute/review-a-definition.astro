@@ -35,18 +35,18 @@ import ModellingLayout from '@/layouts/ModellingLayout.astro';
       explain three possible responses. This is a reading exercise: it sends nothing,
       records no vote and does not run a check against the Property Pack candidate.
     </p>
-    <details>
-      <summary>“Use the latest date so there is only one answer.”</summary>
+    <aside class="callout callout--note modelling-callout">
+      <div class="callout__label">“Use the latest date so there is only one answer.”</div>
       <p>This makes selection easier but changes the meaning. The latest issue date tells us when the corrected report was issued, not when the inspection occurred. A consumer asking about the event would receive the wrong kind of answer even though the date is formatted correctly.</p>
-    </details>
-    <details>
-      <summary>“Separate inspection occurrence from report issue.”</summary>
+    </aside>
+    <aside class="callout callout--note modelling-callout">
+      <div class="callout__label">“Separate inspection occurrence from report issue.”</div>
       <p>This addresses the demonstrated ambiguity. Each date needs a named subject: the inspection event or a particular report version. A revised definition still needs domain review; the exercise is not a declaration that these are approved OPDA terms.</p>
-    </details>
-    <details>
-      <summary>“Add an explanation but leave the combined field unchanged.”</summary>
+    </aside>
+    <aside class="callout callout--note modelling-callout">
+      <div class="callout__label">“Add an explanation but leave the combined field unchanged.”</div>
       <p>An explanation helps a human reader, but a recipient still cannot identify the date's role from the value alone. You would need an explicit way to distinguish what the field represents, or separate representations. Whether an existing exchange can support that is a question for implementers after the intended meaning is agreed.</p>
-    </details>
+    </aside>
   </section>
 
   <section aria-labelledby="revision">

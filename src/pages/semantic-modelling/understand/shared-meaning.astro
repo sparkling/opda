@@ -50,11 +50,11 @@ import ModellingVisual from '@/components/modelling/ModellingVisual.astro';
       criteria: what counts as the same thing in this model, and what evidence supports
       that judgement? An identifier records a reference; it does not settle the judgement alone.
     </p>
-    <details>
-      <summary>Optional technical view: one resource, several representations</summary>
+    <aside class="callout callout--note modelling-callout">
+      <div class="callout__label">Optional technical view: one resource, several representations</div>
       <p>The illustrative identifier <code>https://example.org/harbour-court/inspection</code> refers to the inspection in this case. A readable page, a diagram and an RDF description can describe that same resource. They are representations, not three different inspections. The building, dwelling and report have different identifiers because this example distinguishes their subjects.</p>
       <p>Providing readable and machine-processable vocabulary documentation is an established linked-data publication pattern. It does not require the reader to consume the machine representation. See the <a href="https://www.w3.org/TR/swbp-vocab-pub/#choosing">W3C vocabulary publishing recipes</a>.</p>
-    </details>
+    </aside>
   </section>
 
   <section aria-labelledby="connected">
@@ -122,10 +122,10 @@ import ModellingVisual from '@/components/modelling/ModellingVisual.astro';
   <section aria-labelledby="try-it">
     <h2 id="try-it"><span id="ordinary-questions" aria-hidden="true"></span><span id="participate" aria-hidden="true"></span>Try the distinction</h2>
     <p>A system replaces “12 August” with “20 August” after the report correction. What would you ask before accepting that update?</p>
-    <details>
-      <summary>Reveal a useful review question</summary>
+    <aside class="callout callout--note modelling-callout">
+      <div class="callout__label">Reveal a useful review question</div>
       <p>“Which date does this field represent: the inspection occurrence or the latest report issue? If it represents the inspection, what evidence says another inspection occurred?” This identifies the ambiguity without prescribing an ontology-language fix.</p>
-    </details>
+    </aside>
     <p><a href="/semantic-modelling/understand/a-property-story">Follow the complete property story →</a></p>
   </section>
 </ModellingLayout>

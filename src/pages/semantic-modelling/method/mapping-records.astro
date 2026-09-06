@@ -59,12 +59,12 @@ left:InspectionReport skos:closeMatch right:AssessmentEvidence .
     <p>Confidence is optional in this profile and is constrained when supplied. Do not display a missing confidence value as an asserted score. Similarity and curator confidence are also different measurements. A label-similarity algorithm’s number should not be relabelled as a probability that a semantic identity claim is correct.</p>
   </section>
 
-  <details>
-    <summary>Inspect an illustrative SSSOM record with RDF 1.2 statement identity</summary>
+  <aside class="callout callout--note modelling-callout">
+    <div class="callout__label">Inspect an illustrative SSSOM record with RDF 1.2 statement identity</div>
     <p>This deliberately hypothetical close match demonstrates the record structure only. Its endpoints and date are fictional, and no real curation or OPDA adoption is claimed. The example uses RDF 1.2 triple-term syntax; an RDF 1.1-only parser is not sufficient.</p>
     <pre><code>{mapping}</code></pre>
     <p>The named reifier identifies the same subject–predicate–object statement asserted above it. The OPDA method keeps the OWL annotation-axiom form and tabular SSSOM as derived exports, not independent sources of truth. SSSOM model slot names such as <code>subject_id</code> must not be invented as canonical RDF predicates in this encoding.</p>
-  </details>
+  </aside>
 
   <section aria-labelledby="profile">
     <h2 id="profile">Distinguish standard capabilities from the selected profile</h2>

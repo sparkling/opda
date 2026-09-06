@@ -25,10 +25,10 @@ import ModellingVisual from '@/components/modelling/ModellingVisual.astro';
     <h2 id="same">“Connected” is not “the same”</h2>
     <p>Suppose the title record and the building description contain exactly the same address. Combining their information may be useful. Declaring them to be the same thing would be a mistake: a record and the physical building have different identities. The right connection preserves the distinction rather than deleting it.</p>
     <p>This is why matching words and identifiers are evidence to examine, not automatic permission to merge. Ask what each identifier identifies. A building identifier, dwelling identifier and report reference may all be useful, but each serves a different question.</p>
-    <details>
-      <summary>What would the technical mistake look like?</summary>
+    <aside class="callout callout--note modelling-callout">
+      <div class="callout__label">What would the technical mistake look like?</div>
       <p>We explicitly refuse <code>owl:sameAs</code> between the example building and title record. That predicate expresses identity, not “related to”, “mentions the same address” or “probably a useful match”. The <a href="/semantic-modelling/method/classes-and-relationships">classes and relationships chapter</a> explains the formal distinction.</p>
-    </details>
+    </aside>
   </section>
 
   <section aria-labelledby="change">

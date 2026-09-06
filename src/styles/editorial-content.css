@@ -1,7 +1,7 @@
 /* Authored reading content only. Layout's generatedContent opt-out keeps model
    references on their existing styles. No route names or width overrides. */
 .editorial-content:is(.prose, main) {
-  --editorial-text-max: 75rem;
+  --editorial-text-max: 64rem;
   --editorial-flow-gap: var(--space-4);
   --editorial-heading-space: var(--space-7);
   --editorial-section-space: var(--space-6);

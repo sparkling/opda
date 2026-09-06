@@ -53,12 +53,12 @@ model:ReportExchangeShape a sh:NodeShape ;
     <p>A waiver is exceptional, not a quick way to make coverage green. An accepted decision must identify the property and side, explain why no truthful useful commitment or hint can be given, and state a review trigger. The waiver has a non-blank English, decision-qualified rationale. A vacuous universal type does not become informative merely because it has an IRI.</p>
   </section>
 
-  <details>
-    <summary>Inspect safe applicability and alternative intended uses</summary>
+  <aside class="callout callout--note modelling-callout">
+    <div class="callout__label">Inspect safe applicability and alternative intended uses</div>
     <p>These illustrative vocabulary excerpts are not a complete module. For <code>inspectionOf</code>, both sides use safe RDFS commitments. For <code>referenceCode</code>, the subject side uses only inclusion hints and the value side uses only RDFS.</p>
     <pre><code>{applicability}</code></pre>
     <p>The example does not assert that a reference-bearing inspection is also a report. It also does not require either kind of resource to have a reference code.</p>
-  </details>
+  </aside>
 
   <section aria-labelledby="validation">
     <h2 id="validation"><span id="use-specific-rules" aria-hidden="true"></span><span id="open-closed" aria-hidden="true"></span><span id="automated" aria-hidden="true"></span>A shape checks an explicitly chosen graph</h2>
@@ -67,11 +67,11 @@ model:ReportExchangeShape a sh:NodeShape ;
     <p>The validation contract must also identify the input graph, shape version and relevant entailment regime. Are expected types asserted, or made available by a declared processing step? Different answers can change the result. A successful validation means the supplied graph meets the encoded conditions; it proves neither the factual truth of a roof claim nor approval of the whole ontology.</p>
   </section>
 
-  <details>
-    <summary>Inspect the illustrative report-exchange condition</summary>
+  <aside class="callout callout--note modelling-callout">
+    <div class="callout__label">Inspect the illustrative report-exchange condition</div>
     <pre><code>{shape}</code></pre>
     <p>This ordinary NodeShape illustrates a check, not the full adopted shape-authoring profile. A complete candidate must also document the referenced vocabulary, chosen processing assumptions and further requirements. No validation result for current OPDA artefacts is asserted here.</p>
-  </details>
+  </aside>
 
   <section aria-labelledby="bounded-owl">
     <h2 id="bounded-owl"><span id="conformance" aria-hidden="true"></span>Use the bounded OWL profile without calling it a new semantics</h2>
