@@ -32,7 +32,6 @@ const status = odr.status || data.status || '';
 <Layout
   title={`ODR-${odr.number} — ${odr.title}`}
   breadcrumbTitle={`ODR-${odr.number}`}
-  hideBreadcrumbs={true}
   description={`Ontology Decision Record ${odr.number}: ${odr.title} (${kind}, ${status})`}
   proseClass="prose wide odr-detail"
   search={{ type: 'decision', collection: 'odr', status, identifier: `ODR-${odr.number}`, title: odr.title, date: dateStr, context: kind }}
