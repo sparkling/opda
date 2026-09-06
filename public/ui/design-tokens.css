@@ -119,7 +119,7 @@
   /* Typography. */
   --font-display: 'Roboto Slab', Rockwell, 'Roboto Slab Fallback', Georgia, serif;
   --font-sans: 'Source Sans 3', 'Avenir Next', 'Segoe UI', system-ui, sans-serif;
-  --font-reading: 'Source Serif 4', Georgia, serif;
+  --font-reading: 'Atkinson Hyperlegible Next', 'Segoe UI', system-ui, sans-serif;
   --font-mono: 'Roboto Mono', 'SFMono-Regular', Consolas, monospace;
   --font-serif: var(--font-display);
   --text-xs: 0.75rem;
