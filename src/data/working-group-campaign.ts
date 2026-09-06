@@ -10,6 +10,43 @@ export interface ContributionOption {
   description: string;
 }
 
+export interface CampaignCard {
+  eyebrow?: string;
+  title: string;
+  description?: string;
+  image?: string;
+  href?: string;
+  linkLabel?: string;
+  registerContext?: string;
+}
+
+export const motivationCards: CampaignCard[] = [
+  { eyebrow: 'Commercial operators', title: 'Protect the operating reality', description: 'Bring the costs, incentives, supplier dependencies and implementation pressures that a proposal must understand to be viable.' },
+  { eyebrow: 'Professionals', title: 'Make practice workable', description: 'Help ensure definitions, evidence and processes reflect real cases—not only the straightforward ones on paper.' },
+  { eyebrow: 'Technology and data teams', title: 'Build for the systems people use', description: 'Test whether new information can be exchanged reliably, proportionately and affordably across existing services.' },
+  { eyebrow: 'Public-interest voices', title: 'Design in trust and inclusion', description: 'Make consumer outcomes, accessibility, safeguards and non-digital needs visible from the beginning.' },
+];
+
+export const policyCards: CampaignCard[] = [
+  { eyebrow: 'Direction', title: 'Home-buying reform and Smart Data policy are moving forward.' },
+  { eyebrow: 'Opportunity', title: 'Property-specific rules and standards are still being explored.' },
+  { eyebrow: 'Role', title: 'Working groups test what will be useful, proportionate and trusted.' },
+];
+
+export const participationCards: CampaignCard[] = [
+  { eyebrow: '01', title: 'Define what matters', description: 'Make the language, evidence and outcomes that matter in your field clear.' },
+  { eyebrow: '02', title: 'Review the proposal', description: 'Check draft definitions, examples and questions against everyday practice.' },
+  { eyebrow: '03', title: 'Challenge weak assumptions', description: 'Identify missing rules, hidden costs, edge cases and unintended consequences.' },
+  { eyebrow: '04', title: 'Test a practical result', description: 'Tell us whether future guidance, data outputs and services make sense in real work.' },
+];
+
+export const evidenceCards: CampaignCard[] = [
+  { eyebrow: 'Practice', title: 'Explain the real meaning', description: 'Make language, rules and exceptions visible beyond your field.' },
+  { eyebrow: 'Commercial reality', title: 'Surface the trade-offs', description: 'Make sure cost, operational impact and incentives are part of the conversation.' },
+  { eyebrow: 'Public interest', title: 'Protect people and outcomes', description: 'Bring consumer, accessibility, regulatory and public-interest needs into the work.' },
+  { eyebrow: 'Practical value', title: 'Test what will be useful', description: 'Check whether the intended result can support familiar work and services.' },
+];
+
 export const workingGroupContexts: WorkingGroupContext[] = [
   {
     value: 'finance-and-banking',

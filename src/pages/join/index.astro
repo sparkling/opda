@@ -1,8 +1,9 @@
 ---
 import WorkingGroupInterestForm from '@/components/campaign/WorkingGroupInterestForm.astro';
+import CampaignCardGrid from '@/components/campaign/CampaignCardGrid.astro';
 import CampaignHeaderControls from '@/components/campaign/CampaignHeaderControls.astro';
 import CampaignIdentity from '@/components/campaign/CampaignIdentity.astro';
-import { contributionOptions, workingGroupContexts } from '@/data/working-group-campaign';
+import { contributionOptions, workingGroupContexts, motivationCards, policyCards, participationCards, evidenceCards } from '@/data/working-group-campaign';
 import StandalonePublicLayout from '@/layouts/StandalonePublicLayout.astro';
 import { assetVersion } from '@/lib/asset-version.mjs';
 import {
@@ -22,6 +23,15 @@ const title = 'Join an SPDTF working group';
 const description = 'Bring your professional experience to the industry working groups helping to develop the Smart Property Data Trust Framework.';
 const clientV = assetVersion('/ui/client.js');
 const joinPanelStyle = getCampaignPanelStyle(JOIN_CAMPAIGN_HEADER_DEFAULTS);
+const workingGroupImageSet = 'set-1';
+const workingGroupCards = workingGroupContexts.map((context) => ({
+  title: context.label,
+  description: context.scope,
+  image: `/images/join/${workingGroupImageSet}/${context.value}.webp`,
+  href: '#register',
+  linkLabel: `I’m interested in ${context.label}`,
+  registerContext: context.value,
+}));
 ---
 <StandalonePublicLayout
   title={title}
@@ -114,28 +124,7 @@ const joinPanelStyle = getCampaignPanelStyle(JOIN_CAMPAIGN_HEADER_DEFAULTS);
           </p>
         </div>
       </div>
-      <div class="wg-motivation-grid">
-        <article>
-          <span>Commercial operators</span>
-          <h3>Protect the operating reality</h3>
-          <p>Bring the costs, incentives, supplier dependencies and implementation pressures that a proposal must understand to be viable.</p>
-        </article>
-        <article>
-          <span>Professionals</span>
-          <h3>Make practice workable</h3>
-          <p>Help ensure definitions, evidence and processes reflect real cases—not only the straightforward ones on paper.</p>
-        </article>
-        <article>
-          <span>Technology and data teams</span>
-          <h3>Build for the systems people use</h3>
-          <p>Test whether new information can be exchanged reliably, proportionately and affordably across existing services.</p>
-        </article>
-        <article>
-          <span>Public-interest voices</span>
-          <h3>Design in trust and inclusion</h3>
-          <p>Make consumer outcomes, accessibility, safeguards and non-digital needs visible from the beginning.</p>
-        </article>
-      </div>
+      <CampaignCardGrid cards={motivationCards} />
     </section>
 
     <section class="wg-policy" aria-labelledby="policy-title">
@@ -156,11 +145,7 @@ const joinPanelStyle = getCampaignPanelStyle(JOIN_CAMPAIGN_HEADER_DEFAULTS);
           </p>
           <a href="/programme">Understand the programme and policy context <span aria-hidden="true">→</span></a>
         </div>
-        <ol class="wg-policy__markers" aria-label="Programme and policy context">
-          <li><span>Direction</span><strong>Home-buying reform and Smart Data policy are moving forward.</strong></li>
-          <li><span>Opportunity</span><strong>Property-specific rules and standards are still being explored.</strong></li>
-          <li><span>Role</span><strong>Working groups test what will be useful, proportionate and trusted.</strong></li>
-        </ol>
+        <CampaignCardGrid cards={policyCards} columns={3} ordered label="Programme and policy context" />
       </div>
     </section>
 
@@ -178,15 +163,7 @@ const joinPanelStyle = getCampaignPanelStyle(JOIN_CAMPAIGN_HEADER_DEFAULTS);
           </p>
         </div>
       </div>
-      <div class="wg-group-grid">
-        {workingGroupContexts.map((context) => (
-          <article class="wg-group-card">
-            <h3>{context.label}</h3>
-            <p>{context.scope}</p>
-            <a href="#register" data-context-register={context.value}>I’m interested in {context.label}</a>
-          </article>
-        ))}
-      </div>
+      <CampaignCardGrid cards={workingGroupCards} columns={3} />
       <aside class="wg-cross-cutting" aria-labelledby="cross-cutting-title">
         <p class="wg-eyebrow">Experience that crosses every group</p>
         <h3 id="cross-cutting-title">Commercial and public interests both belong in the room.</h3>
@@ -207,12 +184,7 @@ const joinPanelStyle = getCampaignPanelStyle(JOIN_CAMPAIGN_HEADER_DEFAULTS);
         </p>
       </div>
 
-      <ol class="wg-participation-steps">
-          <li><span>01</span><strong>Define what matters</strong><p>Make the language, evidence and outcomes that matter in your field clear.</p></li>
-          <li><span>02</span><strong>Review the proposal</strong><p>Check draft definitions, examples and questions against everyday practice.</p></li>
-          <li><span>03</span><strong>Challenge weak assumptions</strong><p>Identify missing rules, hidden costs, edge cases and unintended consequences.</p></li>
-          <li><span>04</span><strong>Test a practical result</strong><p>Tell us whether future guidance, data outputs and services make sense in real work.</p></li>
-      </ol>
+      <CampaignCardGrid cards={participationCards} ordered />
 
       <div class="wg-participation-grid">
         <div>
@@ -245,12 +217,7 @@ const joinPanelStyle = getCampaignPanelStyle(JOIN_CAMPAIGN_HEADER_DEFAULTS);
         </p>
       </div>
 
-      <div class="wg-evidence__reasons">
-        <article><span>Practice</span><h3>Explain the real meaning</h3><p>Make language, rules and exceptions visible beyond your field.</p></article>
-        <article><span>Commercial reality</span><h3>Surface the trade-offs</h3><p>Make sure cost, operational impact and incentives are part of the conversation.</p></article>
-        <article><span>Public interest</span><h3>Protect people and outcomes</h3><p>Bring consumer, accessibility, regulatory and public-interest needs into the work.</p></article>
-        <article><span>Practical value</span><h3>Test what will be useful</h3><p>Check whether the intended result can support familiar work and services.</p></article>
-      </div>
+      <CampaignCardGrid cards={evidenceCards} />
 
       <div class="wg-trust">
         <div>

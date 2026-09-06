@@ -10,6 +10,7 @@ const paths = {
   standaloneLayout: new URL('../src/layouts/StandalonePublicLayout.astro', import.meta.url),
   form: new URL('../src/components/campaign/WorkingGroupInterestForm.astro', import.meta.url),
   campaignData: new URL('../src/data/working-group-campaign.ts', import.meta.url),
+  campaignCards: new URL('../src/components/campaign/CampaignCardGrid.astro', import.meta.url),
   layout: new URL('../src/layouts/Layout.astro', import.meta.url),
   siteFooter: new URL('../src/components/SiteFooter.astro', import.meta.url),
   brandHeading: new URL('../src/components/BrandHeading.astro', import.meta.url),
@@ -293,7 +294,6 @@ test('campaign recruits industry experts through purpose, influence and clear ex
     'property information sharing.</em>',
     'The direction of travel is clear. The practical detail is still open.',
     'SPDTF is in development',
-    'not a government-approved or adopted statutory scheme',
     'professional judgement',
     'Interest is reviewed by people.',
     'Estate Agency',
@@ -334,7 +334,16 @@ test('campaign recruits industry experts through purpose, influence and clear ex
   assert.doesNotMatch(page, />Why this matters<\/a>/u);
   assert.doesNotMatch(sectionsCss, /position:\s*sticky|data-reveal|wg-model-flow|wg-output-ribbon/u);
   assert.match(responsiveCss, /prefers-reduced-motion/u);
-  assert.match(page, /data-context-register=\{context\.value\}/u);
+  assert.match(page, /registerContext:\s*context\.value/u);
+  const cards = await readFile(paths.campaignCards, 'utf8');
+  assert.match(cards, /data-context-register=\{card\.registerContext\}/u);
+  assert.equal((page.match(/<CampaignCardGrid\b/gu) ?? []).length, 5);
+  assert.match(cards, /loading="lazy"/u);
+  assert.match(cards, /aspect-ratio:\s*4 \/ 1/u);
+  assert.match(cards, /margin:\s*clamp\(var\(--space-8\), 4vw, var\(--space-10\)\) 0 0/u);
+  for (const group of expectedGroups) {
+    assert.ok(existsSync(new URL(`../public/images/join/set-1/${group}.webp`, import.meta.url)));
+  }
   assert.ok(page.indexOf('<WorkingGroupInterestForm') > page.indexOf('class="wg-trust"'));
   assert.doesNotMatch(page, /0[1-4] ·/u);
   assert.doesNotMatch(form, /05 ·/u);
@@ -360,9 +369,10 @@ test('campaign styles remain split below the project file limit', async () => {
   assert.match(campaign, /\.wg-hero-journey \.wg-process li\s*\{[\s\S]*?grid-template-columns:\s*3\.25rem minmax\(0, 1fr\)[\s\S]*?background:\s*transparent/u);
   assert.match(campaign, /\.wg-process__icon svg\s*\{[\s\S]*?width:\s*2rem[\s\S]*?height:\s*2rem/u);
   assert.match(sections, /\.wg-participation\s*\{[\s\S]*?background:/u);
-  assert.match(sections, /\.wg-trust\s*\{[\s\S]*?background:\s*var\(--brand-deep\)/u);
-  assert.match(sections, /\.wg-policy\s*\{[\s\S]*?background:\s*var\(--brand-deep\)/u);
-  assert.match(sections, /\.wg-motivation-grid\s*\{[\s\S]*?grid-template-columns:\s*repeat\(4/u);
+  assert.match(sections, /\.wg-trust\s*\{[\s\S]*?background:\s*var\(--campaign-panel-surface\)/u);
+  assert.match(sections, /\.wg-policy\s*\{[\s\S]*?background:\s*var\(--color-surface\)/u);
+  const cards = await readFile(paths.campaignCards, 'utf8');
+  assert.match(cards, /grid-template-columns:\s*repeat\(var\(--campaign-card-columns\), minmax\(0, 1fr\)\)/u);
 });
 
 test('form errors are associated with every control and group', async () => {

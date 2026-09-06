@@ -1,5 +1,6 @@
 .wg-page {
   --campaign-max: var(--content-max);
+  --campaign-section-space: clamp(var(--space-7), 4vw, var(--space-8));
   --campaign-section-accent: var(--brand-yellow);
   --campaign-section-link: var(--brand-white);
   --campaign-section-link-hover: var(--brand-yellow);
@@ -28,7 +29,7 @@
 .wg-section {
   width: 100%;
   margin-inline: 0;
-  padding: clamp(var(--space-10), 7vw, 7rem) max(clamp(var(--space-5), 5vw, var(--space-10)), calc((100vw - var(--campaign-max)) / 2));
+  padding: var(--campaign-section-space) max(clamp(var(--space-5), 5vw, var(--space-10)), calc((100vw - var(--campaign-max)) / 2));
 }
 
 .wg-section__heading {
@@ -36,7 +37,7 @@
   grid-template-columns: minmax(0, 0.9fr) minmax(22rem, 1.1fr);
   gap: clamp(var(--space-7), 6vw, var(--space-12));
   align-items: end;
-  margin-bottom: clamp(var(--space-8), 5vw, var(--space-10));
+  margin-bottom: 0;
 }
 
 .wg-section__heading h2,
@@ -302,28 +303,6 @@
 }
 
 .wg-programme-link { margin: var(--space-7) 0 0; }
-
-.wg-group-grid {
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: var(--space-4);
-}
-
-.wg-group-card {
-  display: flex;
-  flex-direction: column;
-  min-width: 0;
-  min-height: 17rem;
-  padding: var(--space-6);
-  background: var(--color-surface-alt);
-  border: 1px solid var(--color-border);
-  border-top: 4px solid var(--brand-yellow);
-}
-
-.wg-group-card h3 { margin: 0; color: var(--color-text-strong); font: var(--h3); }
-.wg-group-card p { margin: var(--space-4) 0 var(--space-6); color: var(--color-text-muted); line-height: 1.6; }
-.wg-group-card a { min-height: var(--target-min); display: inline-flex; align-items: center; margin-top: auto; font-weight: 700; }
-.wg-group-card:focus-within { border-color: var(--brand-purple); }
 
 .wg-cross-cutting {
   display: grid;

@@ -376,9 +376,18 @@ dark parity.
   wording, geometry and direction, use the theme palette, omit identity marks and retain equivalent semantic HTML. Record model and prompt provenance and human review; use an efficient web format. Load only the active
   wide-screen theme, with semantic HTML at narrow widths, forced colours and print. Show cycles and conditional
   exits accurately, and distinguish AI assistance from human decision authority.
-- **Recruitment group card:** plain label, practical scope and one action that carries
-  the selected group to the signup form. Use a three-column maximum, preserve ordinary
-  HTML reading order and do not use modelling terminology to explain audience choices.
+- **Campaign card grid:** `CampaignCardGrid.astro` owns the shared spacing, padding,
+  type, borders and responsive columns for motivation, policy, groups, participation
+  and evidence. Every grid has 48–64px clearance above it, declared once in the component.
+  Group cards add a consistent 4:1 editorial photograph and one action that carries
+  the selected group to the signup form. Their six generated images are local,
+  compressed WebP assets preserved as image set 1 in `public/images/join/set-1/`,
+  with lazy loading; photographs are decorative and never
+  replace the label or practical scope. Group cards use a three-column maximum;
+  other grids may use four. Preserve ordinary HTML reading order and avoid modelling
+  terminology in audience choices.
+  Campaign sections share 32–48px vertical padding; inset boundary panels use 32px
+  padding rather than stacking large section gaps. The form-to-footer gap stays 32px.
 - **Public statement:** dated privacy or accessibility content in a full-track flow beneath the standard global header, without side navigation, nested width limits or unevidenced compliance claims.
 - **Newsletter subscription:** one reusable form powers a header-triggered native dialog and `/subscribe` fallback. It uses the six canonical working-group choices, explicit consent, a separate privacy notice and its own validated storage boundary. The wide dialog has no arbitrary fixed-height cap and presents choices in three columns where space permits, avoiding an internal scrollbar at ordinary desktop sizes; constrained-height viewports retain safe scrolling. The mail icon remains a normal link until enhancement is ready.
 - **Feedback states:** skeleton, labelled loading, empty-state explanation, error recovery and non-obscuring toast.

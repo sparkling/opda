@@ -3,7 +3,6 @@
   .wg-hero-journey { width: min(100%, 44rem); }
   .wg-hero-actions { flex-wrap: wrap; gap: var(--space-4); }
   .wg-btn--large { min-height: 3.25rem; padding-inline: var(--space-6); font-size: var(--text-base); }
-  .wg-group-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 }
 
 @media (max-width: 64rem) {
@@ -16,18 +15,7 @@
   .wg-policy__inner { grid-template-columns: 1fr; }
   .wg-cross-cutting .wg-eyebrow,
   .wg-evidence__statement .wg-eyebrow { grid-column: auto; margin-bottom: 0; }
-  .wg-participation-steps,
-  .wg-evidence__reasons,
-  .wg-motivation-grid,
-  .wg-policy__markers { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-  .wg-participation-steps li:nth-child(2),
-  .wg-evidence__reasons article:nth-child(2),
-  .wg-motivation-grid article:nth-child(2),
-  .wg-policy__markers li:nth-child(2) { border-right: 0; }
-  .wg-participation-steps li:nth-child(n + 3),
-  .wg-evidence__reasons article:nth-child(n + 3),
-  .wg-motivation-grid article:nth-child(n + 3),
-  .wg-policy__markers li:nth-child(n + 3) { border-top: 1px solid var(--color-border); }
+  .wg-policy__copy { margin-top: var(--space-7); }
 }
 
 @media (max-width: 48rem) {
@@ -35,20 +23,6 @@
   .wg-campaign-hero h1 { font-size: clamp(3rem, 15vw, 4.75rem); }
   .wg-hero-actions { flex-direction: column; align-items: stretch; }
   .wg-hero-actions .btn { justify-content: center; }
-  .wg-motivation-grid,
-  .wg-group-grid,
-  .wg-participation-steps,
-  .wg-evidence__reasons,
-  .wg-policy__markers { grid-template-columns: 1fr; }
-  .wg-motivation-grid article,
-  .wg-participation-steps li,
-  .wg-evidence__reasons article,
-  .wg-policy__markers li { border-right: 0; border-top: 1px solid var(--color-border); }
-  .wg-motivation-grid article:first-child,
-  .wg-participation-steps li:first-child,
-  .wg-evidence__reasons article:first-child,
-  .wg-policy__markers li:first-child { border-top: 0; }
-  .wg-group-card { min-height: 0; }
   .wg-participation-grid li,
   .wg-commitment { grid-template-columns: 1fr; gap: var(--space-2); }
 }
@@ -62,7 +36,7 @@
   .wg-hero-journey,
   .wg-cross-cutting,
   .wg-participation,
-  .wg-participation-steps li,
+  .wg-participation-grid li,
   .wg-commitment,
   .wg-trust { color: CanvasText; background: Canvas; border-color: CanvasText; }
   .wg-campaign-hero :is(h1, h2, p, a),
