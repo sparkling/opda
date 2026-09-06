@@ -9,7 +9,7 @@ export const SEMANTIC_PACKAGE_MANIFEST = Object.freeze({
   }),
   status: 'workspace contract — no domain candidate approved',
   authority: 'Accepted IA; domain meaning remains subject to working-group review',
-  standardsProfileVersion: '0.3-development',
+  standardsProfileVersion: '0.4-development',
   canonicalSource: '/semantic-modelling/method/scope-and-package',
   outputs: Object.freeze([
     'Business glossary',

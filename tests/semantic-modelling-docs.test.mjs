@@ -285,6 +285,39 @@ test('standards records separate specification maturity, governance status and a
   assert.equal(SEMANTIC_PACKAGE_MANIFEST.standardsProfileVersion, STANDARDS_PROFILE_VERSION);
 });
 
+test('the technical method adopts and explains the RDF, SPARQL and SHACL 1.2 family', () => {
+  const decision = read('docs/ontology/odr/ODR-0043-owl-as-documentation-framework.md');
+  const outcome = decision.match(/## Decision Outcome\n\n([\s\S]*?)\n\n### Consequences/u)?.[1] ?? '';
+  for (const standard of ['RDF 1.2', 'SPARQL 1.2', 'SHACL 1.2']) {
+    assert.ok(outcome.includes(standard), `ODR-0043 outcome does not adopt ${standard}`);
+  }
+  for (const source of [
+    'https://www.w3.org/TR/rdf12-concepts/',
+    'https://www.w3.org/TR/sparql12-query/',
+    'https://www.w3.org/TR/shacl12-core/',
+  ]) assert.ok(decision.includes(source), `ODR-0043 lacks ${source}`);
+  for (const boundary of ['normative semantic standards baseline', 'exact specification snapshots', 'Positive and negative feature evidence']) {
+    assert.ok(decision.includes(boundary), `ODR-0043 loses the ${boundary} boundary`);
+  }
+
+  const chapter = textOf('method/languages-and-profiles');
+  assert.ok(chapter.includes('id="semantic-standards-baseline"'));
+  assert.ok(chapter.includes('href="/modelling/odr/odr-0043"'));
+  for (const standard of ['RDF 1.2', 'SPARQL 1.2', 'SHACL 1.2']) assert.ok(chapter.includes(standard));
+  assert.doesNotMatch(chapter, /rdf11-concepts|sparql11-query|www\.w3\.org\/TR\/shacl\//u);
+
+  const method = textOf('method');
+  assert.ok(method.includes('href="/semantic-modelling/method/languages-and-profiles#semantic-standards-baseline"'));
+  const register = textOf('method/standards-and-decisions');
+  const languageRule = register.match(/records: 'ODR-0043 · ODR-0044'[\s\S]*?},/u)?.[0] ?? '';
+  for (const standard of ['RDF 1.2', 'SPARQL 1.2', 'SHACL 1.2']) assert.ok(languageRule.includes(standard));
+
+  for (const name of ['RDF 1.2 Basic', 'RDF 1.2 Turtle', 'SPARQL 1.2', 'SHACL 1.2 Core']) {
+    const record = STANDARDS_PROFILE.find((item) => item.name === name);
+    assert.match(record?.evidence ?? '', /ODR-0043/u, `${name} does not cite ODR-0043`);
+  }
+});
+
 test('search covers the canonical registry and routes practitioner tasks to the right journey', () => {
   const results = searchEntries('ontology').map(({ url }) => url);
   for (const route of routes) assert.ok(results.includes(route), `${route} is absent from ontology search`);
@@ -292,7 +325,7 @@ test('search covers the canonical registry and routes practitioner tasks to the 
   assert.equal(new Set(all.map(({ url }) => url)).size, all.length);
   const modellingResults = all.filter(({ url }) => url === sectionRoot || url.startsWith(`${sectionRoot}/`));
   assert.deepEqual(modellingResults.map(({ url }) => url).sort(), [...routes].sort());
-  for (const term of ['SKOS', 'SSSOM', 'ontology mapping', 'cross-context mapping', 'OWL', 'RDF', 'SPARQL', 'upper ontology', 'roleOf', 'phaseOf', 'ODR-0046']) {
+  for (const term of ['SKOS', 'SSSOM', 'ontology mapping', 'cross-context mapping', 'OWL', 'RDF', 'RDF 1.2', 'SPARQL', 'SPARQL 1.2', 'SHACL 1.2', 'upper ontology', 'roleOf', 'phaseOf', 'ODR-0046']) {
     assert.ok(searchEntries(term).some(({ url }) => routes.includes(url)), `${term} is not discoverable`);
   }
   for (const [term, chapter] of [['bounded context', 'explore/contexts-and-connections'], ['context map', 'method/context-map-records'], ['taxonomy', 'explore/names-and-choices']]) {

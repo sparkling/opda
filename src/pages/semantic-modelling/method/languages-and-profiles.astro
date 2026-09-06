@@ -17,6 +17,11 @@ const decisionParts = (value: string) => value.split(/(ODR-\d{4})/u).filter(Bool
 ---
 
 <ModellingLayout title="Languages and profiles: choose the tool for the question" description="Use established languages for distinct jobs: describing things, organising choices, checking deliveries and preserving evidence. Then state exactly which features the method selects and which the candidate actually uses." claim="method">
+  <section aria-labelledby="semantic-standards-baseline">
+    <h2 id="semantic-standards-baseline">OPDA uses RDF 1.2, SPARQL 1.2 and SHACL 1.2</h2>
+    <p>This is the normative language baseline in OPDA <a href="/modelling/odr/odr-0043">ODR-0043</a>. <a href="https://www.w3.org/TR/rdf12-concepts/">RDF 1.2</a> describes the graph, <a href="https://www.w3.org/TR/sparql12-query/">SPARQL 1.2</a> queries it and <a href="https://www.w3.org/TR/shacl12-core/">SHACL 1.2 Core</a> checks its declared constraints. Each package selects and tests a bounded feature profile; that boundary is not a switch to older standards or a claim of full-family implementation.</p>
+  </section>
+
   <section aria-labelledby="start-with-the-question">
     <h2 id="start-with-the-question"><span id="example" aria-hidden="true"></span>Start with a question, not a namespace</h2>
     <p>At Harbour Court, “what was inspected?”, “what does this finding mean?” and “does this submitted report contain the required date?” are different questions. A graph can connect their answers without making the building, a classification and a delivery rule the same kind of thing. Choosing a language means choosing the commitments appropriate to each question.</p>
@@ -47,10 +52,10 @@ const decisionParts = (value: string) => value.split(/(ODR-\d{4})/u).filter(Bool
   </figure>
 
   <section aria-labelledby="shared-foundation">
-    <h2 id="shared-foundation">RDF and Turtle: connect identified things</h2>
+    <h2 id="shared-foundation">RDF 1.2 and Turtle: connect identified things</h2>
     <p>RDF statements connect a subject, a relationship and an object. The object can be another identified resource or a literal value such as a date. In the illustration, <code>https://example.org/harbour-court/report-v2</code> identifies the corrected report, while <code>https://example.org/harbour-court/inspection</code> identifies the event it describes. Reusing those identifiers across records makes the connection explicit; using the same address text does not.</p>
     <p>Turtle is a way to write an RDF graph. XML Schema datatypes give literal values a declared interpretation, such as a date or decimal. Neither syntax nor datatype selection settles which real thing a record describes. Nor does putting assertions in a named graph establish their authority or semantic owner. Those are decisions to record through <a href="/semantic-modelling/explore/things-and-identities">identity distinctions</a> and <a href="/semantic-modelling/method/context-map-records">context agreements</a>.</p>
-    <p><a href="https://www.w3.org/TR/rdf11-concepts/">RDF Concepts</a> explains the graph model. The register below separately identifies the selected RDF 1.2 profile and candidate syntax pins: a general explanation of RDF is not a new feature-conformance claim.</p>
+    <p><a href="https://www.w3.org/TR/rdf12-concepts/">RDF 1.2 Concepts</a> explains the graph model. The register below separately identifies the selected RDF 1.2 profile and candidate syntax pins: a general explanation of RDF is not a new feature-conformance claim.</p>
   </section>
 
   <section aria-labelledby="meaning-and-applicability">
@@ -84,10 +89,10 @@ const decisionParts = (value: string) => value.split(/(ODR-\d{4})/u).filter(Bool
   </section>
 
   <section aria-labelledby="checks-and-questions">
-    <h2 id="checks-and-questions"><span id="validation" aria-hidden="true"></span><span id="questions" aria-hidden="true"></span>SHACL and SPARQL: check a delivery and ask a question</h2>
+    <h2 id="checks-and-questions"><span id="validation" aria-hidden="true"></span><span id="questions" aria-hidden="true"></span>SHACL 1.2 and SPARQL 1.2: check a delivery and ask a question</h2>
     <p>A completed inspection delivery might require an inspection date and a report reference, if participants agree that rule. A draft delivery might allow them to be missing. SHACL can express supported datatype, class, count and pattern requirements in separate delivery shapes without redefining what an inspection is. The supplied graph, supplied shapes, supported features and processing assumptions must all be named.</p>
-    <p>A conforming report record does not prove that Harbour Court is safe, the inspection happened or the author was authorised. It means the supplied data met the supplied constraints under the declared conditions. Evidence and human review answer different questions. The <a href="https://www.w3.org/TR/shacl/">SHACL specification</a> does not require full RDFS inference; any inference expectation must be explicit.</p>
-    <p>SPARQL turns a reviewable question into graph patterns. “Is a date recorded for this inspection?” can become an <code>ASK</code> query, which returns a boolean about the matched pattern. “Which report versions describe it?” calls for a different query. Neither query establishes the truth of the underlying assertions. The language supports more query forms than Property Pack 0.1 currently uses; see the <a href="https://www.w3.org/TR/sparql11-query/">SPARQL query specification</a>.</p>
+    <p>A conforming report record does not prove that Harbour Court is safe, the inspection happened or the author was authorised. It means the supplied data met the supplied constraints under the declared conditions. Evidence and human review answer different questions. <a href="https://www.w3.org/TR/shacl12-core/">SHACL 1.2 Core</a> does not require full RDFS inference; any inference expectation must be explicit.</p>
+    <p>SPARQL turns a reviewable question into graph patterns. “Is a date recorded for this inspection?” can become an <code>ASK</code> query, which returns a boolean about the matched pattern. “Which report versions describe it?” calls for a different query. Neither query establishes the truth of the underlying assertions. The language supports more query forms than Property Pack 0.1 currently uses; see the <a href="https://www.w3.org/TR/sparql12-query/">SPARQL 1.2 Query specification</a>.</p>
     <h3 id="derivation-is-separate">A derived answer needs its own execution evidence</h3>
     <p>OPDA <a href="/modelling/odr/odr-0044">ODR-0044</a> selects SHACL-AF <code>TripleRule</code> and <code>SPARQLRule</code> features for derivation, with rules kept separate from validation constraints. Asserted and derived statements must remain distinguishable through graph separation or provenance. Passing a shapes check does not prove that a rule executed, and selecting these rules does not adopt every SHACL-AF function or target.</p>
     <p>At Harbour Court, do not derive a new inspection merely because a new report version exists. That would manufacture an event from a document change. Review the intended rule and its counterexample before implementation. The <a href="/semantic-modelling/method/meaning-checks-and-delivery">meaning, checks and delivery chapter</a> separates these receipts in detail.</p>
