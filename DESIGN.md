@@ -337,7 +337,7 @@ campaign never uses parallax, pinned scrolling, delayed reveals or interaction-g
 Every interactive component provides default, hover, active, focus and disabled states, plus loading/error/success where asynchronous work occurs and
 dark parity.
 
-- **Buttons:** primary yellow/black, outlined secondary, ghost, and danger red/white; minimum height 44px; pressed state translates inward by 1px. The shared compact variant preserves the target height while reducing horizontal padding for space-constrained labelled actions.
+- **Buttons:** primary yellow/black, outlined secondary, ghost, and danger red/white; minimum height 44px; pressed state translates inward by 1px. The shared compact variant preserves the target height while reducing horizontal padding for space-constrained labelled actions. The `btn--emphasis` primary modifier shares the outlined secondary's 700 weight and padding, retaining primary yellow/black colours and hover states.
 - **Inputs/selects:** 2px radius, 1px strong-neutral border, explicit label and help; error adds danger border, icon and message.
 - **Tabs:** semantic tablist, arrow-key operation and yellow-underlined selection.
 - **Breadcrumbs:** ordered links to navigable ancestors only; the H1 names the current page. Use DM Sans 500 at the base 16px role with a 24px line-height, the shared 32px compact inline-navigation target, no additional block padding and link-coloured decorative chevrons aligned to the label baseline. When no ancestor exists, omit the breadcrumb region and retain a 16px title inset so the following content moves with the title. The compact target remains above the WCAG 2.2 minimum while keeping the hierarchy visually connected to the page title; button-sized 44px targets remain reserved for controls.
