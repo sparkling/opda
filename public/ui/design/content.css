@@ -270,6 +270,8 @@ html { scroll-padding-top: calc(var(--header-height) + 1rem); }
   border-radius: 0;
   margin: var(--space-5) 0;
   box-shadow: none;
+  color: var(--color-text-muted);
+  font: 500 var(--text-sm) / 1.5 var(--font-sans);
 }
 .callout > * + * { margin-top: var(--space-2); }
 .callout--note {
@@ -282,10 +284,6 @@ html { scroll-padding-top: calc(var(--header-height) + 1rem); }
   padding: var(--space-4) var(--space-6);
 }
 .callout--key > * + * { margin-top: var(--space-2); }
-.callout--key p {
-  font: 500 var(--text-lg) / 1.5 var(--font-sans);
-  color: var(--color-text-strong);
-}
 .callout--warn,
 .callout--warning {
   --callout-accent: var(--color-status-warning);
