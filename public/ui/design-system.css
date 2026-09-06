@@ -1,6 +1,6 @@
 /* OPDA Design System — live facade. See DESIGN.md and ADR-0073. */
 @import url("./fonts.css?v=684867e1d87b");
-@import url("./design-tokens.css?v=e89194e85c2c");
+@import url("./design-tokens.css?v=5c7d02a0ac65");
 @import url("./design/base.css?v=b50eb063a7c4");
 @import url("./design/shell.css?v=b50eb063a7c4");
 @import url("./design/shell-support.css?v=b50eb063a7c4");
