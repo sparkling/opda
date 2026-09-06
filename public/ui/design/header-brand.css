@@ -30,6 +30,12 @@
   background-color: currentColor;
 }
 
+/* The header uses the full document mark. Keep it at the wordmark's em-height
+   so the identity reads as one line rather than an oversized icon beside text. */
+.app-header .brand-heading--mini {
+  --brand-heading-mark-size: 1em;
+}
+
 /* The framework mark is selected from the recovered identity contact sheet. */
 .framework-heading {
   display: inline-flex;
