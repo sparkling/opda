@@ -13,7 +13,7 @@
    layout. Text starts on the normal content edge; wide evidence such as figures,
    images and tables deliberately remains on the full article track. */
 .editorial-content:is(.prose, main) > :is(
-  h1, h2, h3, h4, p, ul, ol, dl, blockquote, details
+  h1, h2, h3, h4, p, ul, ol, dl, blockquote, details, .callout
 ),
 .editorial-content:is(.prose, main) :where(
   section:not([class]), .document-flow
