@@ -15,8 +15,16 @@ const {
   proseClass = 'prose wide modelling-document',
 } = Astro.props;
 const claims = {
-  method: 'Required modelling method · examples do not establish candidate implementation',
-  example: 'Illustrative case · no real property, person or transaction',
+  method: {
+    label: 'Required modelling method',
+    body: 'Examples do not establish candidate implementation.',
+    tone: 'warn',
+  },
+  example: {
+    label: 'Illustrative case',
+    body: 'No real property, person or transaction.',
+    tone: 'note',
+  },
 };
 const scopeNote = claim === 'guide' ? null : claims[claim];
 ---
@@ -24,6 +32,11 @@ const scopeNote = claim === 'guide' ? null : claims[claim];
 <Layout title={title} description={description} proseClass={proseClass}>
   <h1>{title}</h1>
   <p class="lead">{description}</p>
-  {scopeNote && <p class="modelling-standing">{scopeNote}</p>}
+  {scopeNote && (
+    <aside class={`callout callout--${scopeNote.tone}`}>
+      <p class="callout__label">{scopeNote.label}</p>
+      <p>{scopeNote.body}</p>
+    </aside>
+  )}
   <slot />
 </Layout>
