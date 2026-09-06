@@ -17,7 +17,7 @@
 ),
 .editorial-content:is(.prose, main) :where(
   section:not([class]), .document-flow
-) > :is(h2, h3, h4, p, ul, ol, dl, blockquote, details) {
+) > :is(h2, h3, h4, p, ul, ol, dl, blockquote, details, .callout) {
   max-inline-size: min(100%, var(--editorial-text-max));
 }
 

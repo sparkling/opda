@@ -7,11 +7,15 @@
    stylesheet is loaded by every modelling page, so both light and dark mode get
    the same non-blue callout treatment. */
 .modelling-document .modelling-callout.callout--note {
-  border-inline-start-color: var(--color-border-strong);
+  border-inline-start-color: var(--color-link);
   background: var(--color-surface-inset);
 }
 .modelling-document .modelling-callout.callout--note .callout__label {
   color: var(--color-text-strong);
+  background: color-mix(in srgb, var(--color-link) 14%, var(--color-surface));
+  margin-inline: calc(-1 * var(--space-5));
+  margin-block-start: calc(-1 * var(--space-3));
+  padding: var(--space-2) var(--space-5);
 }
 
 /* One explicitly authored long-form page uses a 1200px reading measure while
