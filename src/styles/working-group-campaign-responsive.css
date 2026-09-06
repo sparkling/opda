@@ -27,7 +27,7 @@
   .wg-participation-steps li:nth-child(n + 3),
   .wg-evidence__reasons article:nth-child(n + 3),
   .wg-motivation-grid article:nth-child(n + 3),
-  .wg-policy__markers li:nth-child(n + 3) { border-top: 1px solid var(--color-surface-dark-tint); }
+  .wg-policy__markers li:nth-child(n + 3) { border-top: 1px solid var(--color-border); }
 }
 
 @media (max-width: 48rem) {

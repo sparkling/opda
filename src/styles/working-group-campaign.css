@@ -1,9 +1,20 @@
 .wg-page {
   --campaign-max: var(--content-max);
+  --campaign-section-accent: var(--brand-yellow);
+  --campaign-section-link: var(--brand-white);
+  --campaign-section-link-hover: var(--brand-yellow);
+  --campaign-panel-surface: var(--brand-deep);
   width: 100%;
   margin: 0;
   overflow: clip;
   background: var(--color-surface);
+}
+
+:root[data-theme='light'] .wg-page {
+  --campaign-section-accent: var(--brand-violet);
+  --campaign-section-link: var(--color-link);
+  --campaign-section-link-hover: var(--color-link-hover);
+  --campaign-panel-surface: var(--color-surface-alt);
 }
 
 .wg-eyebrow {
@@ -320,11 +331,11 @@
   gap: var(--space-6) var(--space-10);
   margin-top: var(--space-8);
   padding: var(--space-7);
-  color: var(--brand-white);
-  background: var(--brand-deep);
+  color: var(--color-text-strong);
+  background: var(--campaign-panel-surface);
   border-left: 4px solid var(--brand-yellow);
 }
 
-.wg-cross-cutting .wg-eyebrow { grid-column: 1 / -1; margin: 0; color: var(--brand-yellow); }
-.wg-cross-cutting h3 { margin: 0; color: var(--brand-white); font: var(--h2); }
-.wg-cross-cutting > p:last-child { margin: 0; color: var(--on-dark-muted); font: var(--lead); }
+.wg-cross-cutting .wg-eyebrow { grid-column: 1 / -1; margin: 0; color: var(--campaign-section-accent); }
+.wg-cross-cutting h3 { margin: 0; color: var(--color-text-strong); font: var(--h2); }
+.wg-cross-cutting > p:last-child { margin: 0; color: var(--color-text-muted); font: var(--lead); }

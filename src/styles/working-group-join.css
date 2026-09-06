@@ -108,12 +108,10 @@
   background: var(--color-surface-alt);
 }
 
-.wg-form-intro { grid-column: 1; grid-row: 1 / span 3; position: sticky; top: calc(5rem + var(--space-5)); }
+.wg-page > .wg-form-shell { padding-bottom: var(--space-7); }
+.wg-form-intro { grid-column: 1; position: sticky; top: calc(5rem + var(--space-5)); }
 .wg-form-intro .callout { margin-top: var(--space-6); }
-.wg-form-availability,
-.wg-noscript,
-.wg-form,
-.wg-success { grid-column: 2; }
+.wg-form-content { grid-column: 2; min-width: 0; display: grid; gap: var(--space-6); }
 .wg-form-availability {
   margin: 0;
   padding: var(--space-4);
@@ -259,10 +257,7 @@
 @media (max-width: 64rem) {
   .wg-form-shell { grid-template-columns: 1fr; }
   .wg-form-intro,
-  .wg-form-availability,
-  .wg-noscript,
-  .wg-form,
-  .wg-success { grid-column: 1; grid-row: auto; }
+  .wg-form-content { grid-column: 1; }
   .wg-form-intro { position: static; }
 }
 

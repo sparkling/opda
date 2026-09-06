@@ -1,7 +1,7 @@
 ---
 status: accepted
 date: 2026-08-27
-updated: 2026-09-02
+updated: 2026-09-06
 tags: [working-groups, recruitment, campaign, signup, design-system, accessibility, routing]
 supersedes: []
 depends-on: [ADR-0038, ADR-0069, ADR-0071, ADR-0073, ADR-0079]
@@ -100,6 +100,14 @@ Choose **Option C — create a standalone editorial campaign at `/join`**.
 This ADR is accepted. It authorises the local route, composition and quality
 contract; it does not authorise publication.
 
+Amended on 6 September 2026: every recruitment section and inset panel follows
+the selected light or dark mode, including policy, cross-cutting experience,
+participation, commitment and trust. Light mode uses light semantic surfaces and
+readable dark text; dark mode retains its existing palette. Form availability,
+input and success states occupy one content column so hidden states reserve no
+empty grid rows, and the section ends with 32px before the footer. The standalone
+programme-status callout is removed; the programme and policy-context link remains.
+
 Amended on 27 August 2026: the public narrative is now SME-first, the semantic
 constellation is replaced by practical working-group cards, and the signup form
 follows the active light or dark theme without changing its service contract.
@@ -110,8 +118,9 @@ would take part. Government policy and the legislative pathway provide a bounded
 "why now" context: they make the window to influence emerging property arrangements
 credible, but they are not the campaign's sole proposition. The page must distinguish
 the Data (Use and Access) Act 2025's general Smart Data framework from prospective
-property-specific arrangements, and must continue to state that SPDTF is an industry
-programme in development—not a government-approved or adopted statutory scheme.
+property-specific arrangements. The standalone SPDTF status callout originally used
+here was removed in the 6 September amendment; the programme link provides the
+detailed policy context.
 
 Refined on 30 August 2026: the hero retains its two-column campaign composition and
 presents its three influence points as a compact vertical sequence. The no-expertise

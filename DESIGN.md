@@ -330,7 +330,7 @@ standard Knowledge Base `Header` so their global navigation and utilities match 
 comments and previous/next navigation. Their global tabs do not mark a current Knowledge Base destination. All three routes use the same tokens, type,
 buttons, fields, focus states and shared footer. The join campaign uses seven natural chapters from the practical invitation and reasons to
 participate through programme context, contribution, trust and the full theme-aware form. Technical modelling detail stays in the Knowledge Base. The
-campaign never uses parallax, pinned scrolling, delayed reveals or interaction-gated meaning.
+campaign never uses parallax, pinned scrolling, delayed reveals or interaction-gated meaning. In light mode, all join-page sections and inset panels use white or light semantic surfaces with dark text; dark campaign bands are reserved for dark mode. The form's availability, input and success states share one content column, with no reserved empty rows and a single 32px space before the footer.
 
 ## 9. Components
 

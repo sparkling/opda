@@ -12,8 +12,8 @@
 .wg-motivation-grid p { margin: var(--space-3) 0 0; color: var(--color-text-muted); line-height: 1.6; }
 
 .wg-policy {
-  color: var(--brand-white);
-  background: var(--brand-deep);
+  color: var(--color-text-strong);
+  background: var(--color-surface);
   border-block: 4px solid var(--brand-yellow);
 }
 
@@ -26,12 +26,12 @@
   padding: clamp(var(--space-10), 7vw, 7rem) max(clamp(var(--space-5), 5vw, var(--space-10)), calc((100vw - var(--campaign-max)) / 2));
 }
 
-.wg-policy .wg-eyebrow { color: var(--brand-yellow); }
-.wg-policy h2 { margin: 0; color: var(--brand-white); font: 600 clamp(2.3rem, 4.5vw, 4.75rem) / 1.02 var(--font-display); letter-spacing: var(--tracking-display); text-wrap: balance; }
-.wg-policy__copy p { margin: 0; color: var(--on-dark-muted); font: var(--lead); }
+.wg-policy .wg-eyebrow { color: var(--campaign-section-accent); }
+.wg-policy h2 { margin: 0; color: var(--color-text-strong); font: 600 clamp(2.3rem, 4.5vw, 4.75rem) / 1.02 var(--font-display); letter-spacing: var(--tracking-display); text-wrap: balance; }
+.wg-policy__copy p { margin: 0; color: var(--color-text-muted); font: var(--lead); }
 .wg-policy__copy p + p { margin-top: var(--space-5); }
-.wg-policy__copy a { display: inline-flex; min-height: var(--target-min); align-items: center; gap: var(--space-2); margin-top: var(--space-6); color: var(--brand-white); font-weight: 700; }
-.wg-policy__copy a:hover { color: var(--brand-yellow); }
+.wg-policy__copy a { display: inline-flex; min-height: var(--target-min); align-items: center; gap: var(--space-2); margin-top: var(--space-6); color: var(--campaign-section-link); font-weight: 700; }
+.wg-policy__copy a:hover { color: var(--campaign-section-link-hover); }
 
 .wg-policy__markers {
   display: grid;
@@ -40,21 +40,20 @@
   margin: 0;
   padding: 0;
   list-style: none;
-  border-top: 1px solid var(--color-surface-dark-tint);
+  border-top: 1px solid var(--color-border);
 }
 
-.wg-policy__markers li { display: grid; gap: var(--space-3); padding: var(--space-6); border-right: 1px solid var(--color-surface-dark-tint); }
-.wg-policy__markers li:first-child { border-left: 1px solid var(--color-surface-dark-tint); }
-.wg-policy__markers span { color: var(--brand-yellow); }
-.wg-policy__markers strong { color: var(--brand-white); font: var(--h3); }
-.wg-policy__status { grid-column: 1 / -1; margin: 0; padding: var(--space-4) var(--space-5); color: var(--on-dark-muted); font-size: var(--text-sm); border-left: 3px solid var(--brand-yellow); background: rgb(0 0 0 / 14%); }
+.wg-policy__markers li { display: grid; gap: var(--space-3); padding: var(--space-6); border-right: 1px solid var(--color-border); }
+.wg-policy__markers li:first-child { border-left: 1px solid var(--color-border); }
+.wg-policy__markers span { color: var(--campaign-section-accent); }
+.wg-policy__markers strong { color: var(--color-text-strong); font: var(--h3); }
 
 .wg-participation {
   padding: clamp(var(--space-10), 8vw, 8rem) max(clamp(var(--space-5), 5vw, var(--space-10)), calc((100vw - var(--campaign-max)) / 2));
-  color: var(--brand-white);
+  color: var(--color-text-strong);
   background:
     linear-gradient(90deg, transparent 0 49.9%, rgb(255 255 255 / 4%) 50% 50.1%, transparent 50.2%),
-    var(--brand-deep);
+    var(--color-surface);
   border-block: 4px solid var(--brand-yellow);
 }
 
@@ -65,9 +64,9 @@
   align-items: end;
 }
 
-.wg-participation .wg-eyebrow { color: var(--brand-yellow); }
-.wg-participation h2 { margin: 0; color: var(--brand-white); font: 600 clamp(2.5rem, 5vw, 5.25rem) / 1.02 var(--font-display); letter-spacing: -0.025em; text-wrap: balance; }
-.wg-participation__intro > p { margin: 0; color: var(--on-dark-muted); font: var(--lead); }
+.wg-participation .wg-eyebrow { color: var(--campaign-section-accent); }
+.wg-participation h2 { margin: 0; color: var(--color-text-strong); font: 600 clamp(2.5rem, 5vw, 5.25rem) / 1.02 var(--font-display); letter-spacing: -0.025em; text-wrap: balance; }
+.wg-participation__intro > p { margin: 0; color: var(--color-text-muted); font: var(--lead); }
 
 .wg-participation-steps {
   display: grid;
@@ -75,14 +74,14 @@
   margin: clamp(var(--space-9), 7vw, 6rem) 0 0;
   padding: 0;
   list-style: none;
-  border-top: 1px solid var(--color-surface-dark-tint);
+  border-top: 1px solid var(--color-border);
 }
 
-.wg-participation-steps li { padding: var(--space-6); border-right: 1px solid var(--color-surface-dark-tint); }
-.wg-participation-steps li:first-child { border-left: 1px solid var(--color-surface-dark-tint); }
-.wg-participation-steps span { display: block; margin-bottom: var(--space-6); color: var(--brand-yellow); font: 700 var(--text-sm) / 1 var(--font-mono); }
-.wg-participation-steps strong { display: block; color: var(--brand-white); font: var(--h3); }
-.wg-participation-steps p { margin: var(--space-4) 0 0; color: var(--on-dark-muted); font-size: var(--text-sm); line-height: 1.6; }
+.wg-participation-steps li { padding: var(--space-6); border-right: 1px solid var(--color-border); }
+.wg-participation-steps li:first-child { border-left: 1px solid var(--color-border); }
+.wg-participation-steps span { display: block; margin-bottom: var(--space-6); color: var(--campaign-section-accent); font: 700 var(--text-sm) / 1 var(--font-mono); }
+.wg-participation-steps strong { display: block; color: var(--color-text-strong); font: var(--h3); }
+.wg-participation-steps p { margin: var(--space-4) 0 0; color: var(--color-text-muted); font-size: var(--text-sm); line-height: 1.6; }
 
 .wg-participation-grid {
   display: grid;
@@ -92,15 +91,15 @@
   margin-top: clamp(var(--space-10), 8vw, 7rem);
 }
 
-.wg-participation-grid h3 { margin: 0; color: var(--brand-white); font: 600 clamp(1.75rem, 3vw, 3rem) / 1.1 var(--font-display); }
-.wg-participation-grid ul { margin: 0; padding: 0; list-style: none; border-top: 1px solid var(--color-surface-dark-tint); }
-.wg-participation-grid li { display: grid; grid-template-columns: minmax(12rem, 0.75fr) minmax(0, 1.25fr); gap: var(--space-6); padding-block: var(--space-5); border-bottom: 1px solid var(--color-surface-dark-tint); }
-.wg-participation-grid strong { color: var(--brand-white); }
-.wg-participation-grid span { color: var(--on-dark-muted); font-size: var(--text-sm); line-height: 1.55; }
+.wg-participation-grid h3 { margin: 0; color: var(--color-text-strong); font: 600 clamp(1.75rem, 3vw, 3rem) / 1.1 var(--font-display); }
+.wg-participation-grid ul { margin: 0; padding: 0; list-style: none; border-top: 1px solid var(--color-border); }
+.wg-participation-grid li { display: grid; grid-template-columns: minmax(12rem, 0.75fr) minmax(0, 1.25fr); gap: var(--space-6); padding-block: var(--space-5); border-bottom: 1px solid var(--color-border); }
+.wg-participation-grid strong { color: var(--color-text-strong); }
+.wg-participation-grid span { color: var(--color-text-muted); font-size: var(--text-sm); line-height: 1.55; }
 
-.wg-commitment { display: grid; grid-template-columns: minmax(12rem, 0.75fr) minmax(0, 1.25fr); gap: var(--space-6); margin-top: var(--space-8); padding: var(--space-6); background: var(--brand-night); border-left: 4px solid var(--brand-yellow); }
-.wg-commitment strong { color: var(--brand-white); }
-.wg-commitment p { margin: 0; color: var(--on-dark-muted); }
+.wg-commitment { display: grid; grid-template-columns: minmax(12rem, 0.75fr) minmax(0, 1.25fr); gap: var(--space-6); margin-top: var(--space-8); padding: var(--space-6); background: var(--color-surface-alt); border-left: 4px solid var(--brand-yellow); }
+.wg-commitment strong { color: var(--color-text-strong); }
+.wg-commitment p { margin: 0; color: var(--color-text-muted); }
 
 .wg-evidence { width: 100%; padding-inline: max(clamp(var(--space-5), 5vw, var(--space-10)), calc((100vw - var(--campaign-max)) / 2)); padding-bottom: clamp(var(--space-10), 8vw, 8rem); }
 .wg-evidence__statement { display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(20rem, 0.9fr); gap: clamp(var(--space-8), 7vw, var(--space-12)); align-items: end; }
@@ -114,10 +113,10 @@
 .wg-evidence__reasons h3 { margin: var(--space-6) 0 0; color: var(--color-text-strong); font: var(--h3); }
 .wg-evidence__reasons p { margin: var(--space-3) 0 0; color: var(--color-text-muted); line-height: 1.55; }
 
-.wg-trust { display: grid; grid-template-columns: minmax(0, 1fr) minmax(22rem, 1fr); gap: clamp(var(--space-8), 7vw, var(--space-12)); margin-top: clamp(var(--space-10), 7vw, 6rem); padding: clamp(var(--space-7), 5vw, var(--space-10)); color: var(--brand-white); background: var(--brand-deep); border-top: 4px solid var(--brand-yellow); }
-.wg-trust .wg-eyebrow { color: var(--brand-yellow); }
-.wg-trust h3 { margin: 0; color: var(--brand-white); font: 600 clamp(1.75rem, 3vw, 3rem) / 1.1 var(--font-display); }
-.wg-trust p { margin: var(--space-5) 0 0; color: var(--on-dark-muted); }
+.wg-trust { display: grid; grid-template-columns: minmax(0, 1fr) minmax(22rem, 1fr); gap: clamp(var(--space-8), 7vw, var(--space-12)); margin-top: clamp(var(--space-10), 7vw, 6rem); padding: clamp(var(--space-7), 5vw, var(--space-10)); color: var(--color-text-strong); background: var(--campaign-panel-surface); border-top: 4px solid var(--brand-yellow); }
+.wg-trust .wg-eyebrow { color: var(--campaign-section-accent); }
+.wg-trust h3 { margin: 0; color: var(--color-text-strong); font: 600 clamp(1.75rem, 3vw, 3rem) / 1.1 var(--font-display); }
+.wg-trust p { margin: var(--space-5) 0 0; color: var(--color-text-muted); }
 .wg-trust ul { margin: 0; padding: 0; list-style: none; }
-.wg-trust li { padding: var(--space-4) 0; color: var(--on-dark-muted); border-top: 1px solid var(--color-surface-dark-tint); }
-.wg-trust li:last-child { border-bottom: 1px solid var(--color-surface-dark-tint); }
+.wg-trust li { padding: var(--space-4) 0; color: var(--color-text-muted); border-top: 1px solid var(--color-border); }
+.wg-trust li:last-child { border-bottom: 1px solid var(--color-border); }
