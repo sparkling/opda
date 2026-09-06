@@ -21,6 +21,14 @@
   max-inline-size: min(100%, var(--editorial-text-max));
 }
 
+/* Reading paragraphs use a deliberate full measure; final lines remain naturally
+   aligned and browser hyphenation prevents conspicuous gaps in narrow columns. */
+.editorial-content:is(.prose, main) p:not([class]) {
+  text-align: justify;
+  text-align-last: start;
+  hyphens: auto;
+}
+
 /* Display type, controls and compact metadata retain their own roles. Reading
    copy that previously set the interface face explicitly follows the article. */
 .editorial-content:is(.prose, main) :where(
