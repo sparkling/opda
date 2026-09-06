@@ -13,6 +13,7 @@ interface Props {
   identityId: string;
   themeToggleId: string;
   showOpdaLink?: boolean;
+  surface?: 'auto' | 'light' | 'dark';
   configuration?: CampaignHeaderConfiguration;
 }
 
@@ -20,15 +21,16 @@ const {
   identityId,
   themeToggleId,
   showOpdaLink = false,
+  surface = 'auto',
   configuration = CAMPAIGN_HEADER_DEFAULTS,
 } = Astro.props;
 const identityStyle = getCampaignIdentityStyle(configuration);
 const themeToggleStyle = getCampaignThemeToggleStyle(configuration);
 ---
 <header class="wg-campaign-hero__header">
-  <div class="wg-campaign-identity" id={identityId} style={identityStyle}>
+  <div class:list={['wg-campaign-identity', { 'wg-campaign-identity--on-dark': surface === 'dark' }]} id={identityId} style={identityStyle}>
     <div class="wg-campaign-identity__opda-row">
-      <BrandHeading />
+      <BrandHeading {surface} />
     </div>
     <span id={themeToggleId} class="wg-campaign-identity__theme-controls" style={themeToggleStyle}>
       {showOpdaLink && (
