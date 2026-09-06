@@ -83,8 +83,8 @@
   /* Semantic status: foreground + tint + strong border. */
   --color-status-success: #1e7b4d;
   --color-status-success-surface: #e7f4ed;
-  --color-status-warning: #8a5a00;
-  --color-status-warning-surface: #fbf1da;
+  --color-status-warning: #b84a1e;
+  --color-status-warning-surface: #fce9e1;
   --color-status-danger: #b42318;
   --color-status-danger-surface: #fbeae8;
   --color-status-info: #2e5fa3;
@@ -370,8 +370,8 @@
   --color-focus-contrast: var(--brand-deep);
   --color-status-success: #66c28f;
   --color-status-success-surface: #173a2b;
-  --color-status-warning: #ffb84d;
-  --color-status-warning-surface: #2b2548;
+  --color-status-warning: #ffad7f;
+  --color-status-warning-surface: #46212f;
   --color-status-danger: #ff958a;
   --color-status-danger-surface: #442022;
   --color-status-info: #7fb5ff;

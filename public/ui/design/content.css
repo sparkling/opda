@@ -306,8 +306,8 @@ html { scroll-padding-top: calc(var(--header-height) + 1rem); }
   align-items: center;
   gap: var(--space-2);
   font: var(--h4);
-  letter-spacing: var(--tracking-tight);
-  text-transform: none;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
   margin: 0;
 }
 .callout--note .callout__label    { color: var(--color-status-info); }
