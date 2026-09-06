@@ -114,8 +114,8 @@ two expanded, justified paragraphs. The visible “I’m interested in” label 
 one visually hidden native registration link covers the whole card, preserving a
 single keyboard stop and the existing group-selection behaviour. Form descriptions
 remain concise.
-Image set 3 in `public/images/join/set-3/` contains fourteen local, lazy-loaded WebPs:
-seven colour-rich light/dark drawing pairs follow the selected site mode through
+Image set 3 in `public/images/join/set-3/` contains sixteen local, lazy-loaded WebPs:
+eight colour-rich light/dark drawing pairs follow the selected site mode through
 one shared image component without changing geometry. Six 1200×300 pairs illustrate
 the working-group cards; one 1200×800 pair occupies the upper-right participation
 introduction beside “What you can influence”. Refined on 6 September 2026: this
@@ -127,15 +127,46 @@ image set 1; the first drawings remain image set 2 in their versioned directorie
 The built-in image-generation tool edited set 2 with this direction: preserve each
 subject and composition; enrich the pen-and-ink/watercolour with OPDA yellow, petrol,
 violet and coral; adapt paper and line contrast for matched light and deep-ink modes.
-All fourteen exports were visually reviewed and optimised as WebP.
+The initial fourteen exports were visually reviewed and optimised as WebP.
+Added on 6 September 2026: `motivation-light.webp` and `motivation-dark.webp`
+illustrate practitioners making change workable above the “Why take part” paragraph.
+This 1200×600 pair uses the same 2:1 media layout, 45:55 desktop grid and 32px gutter
+as the participation introduction. Both use `CampaignThemeImage` for mode switching.
+The built-in image tool generated the light composition and edited that exact image
+into its dark counterpart; both outputs were visually reviewed before WebP export.
+
+Light-image prompt:
+
+```text
+Use case: illustration-story.
+Asset type: OPDA editorial watercolour website section illustration, light-mode original.
+Primary request: illustrate why property practitioners should help make change work in real life. Show four people with varied ages and skin tones in a practical neighbourhood property office, collaboratively reviewing a small house model, an open floor-plan sheet, a tablet and a simple folder on a long shared workbench. One person points out a practical detail on the house plan while the others listen and compare their working documents. Relaxed, credible professional collaboration; the people and their judgement are the focus.
+Composition: wide LANDSCAPE 2:1 panorama, ideally 1536x768. Eye-level/slightly elevated three-quarter view, shallow horizontal arrangement, waist-up people with natural hands, distinctive clear silhouettes. Modest suggestions of British terraced homes through the rear window. Keep heads, hands and central workbench safely inside the frame. Fill the width; avoid a tall composition or huge blank borders.
+Style: expressive fine pen-and-ink contours, rich translucent watercolour with softly opaque gouache, subtle paper grain and pigment variation, professional editorial drawing, not a photograph.
+Palette: cool off-white #F9F9F9 paper; deep purple #231F2F ink; substantial OPDA yellow/gold #FEC92B, petrol/teal #0E8478, violet #6C5BD4 clothing and objects, supporting rose/coral. Colourful but refined; no beige or sepia cast.
+Constraints: no text, letters, numbers, captions, labels, logos or watermarks; no glowing diagrams, puzzle pieces, floating icons, handshakes, 3D or glossy rendering. This is one complete illustration, not a webpage or paired light/dark montage.
+```
+
+Dark-counterpart prompt:
+
+```text
+Use case: style-transfer.
+Asset type: dark-mode counterpart of the supplied approved OPDA editorial watercolour section illustration.
+Input image: EDIT TARGET. Change only paper, ink values and pigment treatment. Preserve EXACTLY the four people, identities, natural faces and skin tones, gestures, furniture, model houses, papers, tablet, plant, rear windows and street, their arrangement, relative sizes, perspective, 2:1 landscape dimensions and framing.
+Replace the cool white paper/surfaces with deep-purple #231F2F paper to every edge; use pale lavender or warm-white fine linework where needed. Retain substantial rich OPDA yellow/gold, petrol/teal, blue-violet and coral gouache. Keep natural readable warm skin tones, coloured pigment and fine handmade texture. Leave dark paper visible between strokes and washes. The result must sit naturally on an ink-coloured website and remain a vibrant, refined editorial drawing.
+No composition changes, new objects, removals, text, labels, logo, watermark, night scenery, stars, fluorescent outlines, neon, glow, negative-image inversion, photography or 3D. Generate just this one dark illustration, not a paired comparison.
+```
+
 Fable's `ContributionRegister` replaces the rejected contribution bands with one
 definition list in three pairs, using categorical violet, teal and magenta rules
 and markers on mode-aware semantic surfaces. All wording is preserved; one shared
 component owns desktop pairing, narrow-track stacking and both colour modes.
 Campaign sections share 32–48px vertical padding, with 32px inset boundary-panel
-padding, replacing the previous stacked 112–128px section clearances. The “Interest
-is reviewed by people” panel uses an editorial introduction followed by a balanced
+padding, replacing the previous stacked 112–128px section clearances. The “What
+participation does—and doesn’t—mean” panel uses an editorial introduction followed by a balanced
 two-column boundary register that becomes one column on narrow screens.
+Renamed on 6 September 2026, with “Taking part” as its eyebrow, to describe the
+participation, sharing and authority limits in the panel rather than imply an application-review process.
 The separate “Before you commit” paragraph and its container are removed at the
 user's request; the registration form and remaining participation boundaries are unchanged.
 

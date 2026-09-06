@@ -113,12 +113,18 @@ const workingGroupCards = workingGroupContexts.map((context) => ({
     </section>
 
     <section id="why-this-matters" class="wg-section wg-motivation" aria-labelledby="motivation-title">
-      <div class="wg-section__heading">
+      <div class="wg-section__heading wg-illustrated-intro">
         <div>
           <p class="wg-eyebrow">Why take part</p>
           <h2 id="motivation-title">This is about making change work for the people who have to make it work.</h2>
         </div>
-        <div>
+        <div class="wg-section-media">
+          <CampaignThemeImage
+            className="wg-section-media__image"
+            lightSrc="/images/join/set-3/motivation-light.webp"
+            darkSrc="/images/join/set-3/motivation-dark.webp"
+            alt=""
+          />
           <p>
             Better property information is not just a technical question. It affects cost, risk,
             customer experience, professional responsibility and the services businesses can offer.
@@ -174,14 +180,14 @@ const workingGroupCards = workingGroupContexts.map((context) => ({
     </section>
 
     <section class="wg-participation" aria-labelledby="participation-title">
-      <div class="wg-participation__intro">
+      <div class="wg-illustrated-intro">
         <div>
           <p class="wg-eyebrow">What you can influence</p>
           <h2 id="participation-title">Bring experience. Improve the proposal. Change what will matter.</h2>
         </div>
-        <div class="wg-participation__media">
+        <div class="wg-section-media">
           <CampaignThemeImage
-            className="wg-participation__image"
+            className="wg-section-media__image"
             lightSrc="/images/join/set-3/influence-light.webp"
             darkSrc="/images/join/set-3/influence-dark.webp"
             alt=""
@@ -221,8 +227,8 @@ const workingGroupCards = workingGroupContexts.map((context) => ({
       <div class="wg-trust">
         <div class="wg-trust__intro">
           <div>
-            <p class="wg-eyebrow">Clear boundaries</p>
-            <h3>Interest is reviewed by people.</h3>
+            <p class="wg-eyebrow">Taking part</p>
+            <h3>What participation does—and doesn’t—mean.</h3>
           </div>
           <p>
             Share only what you and your organisation are authorised to share. Source material is

@@ -296,7 +296,7 @@ test('campaign recruits industry experts through purpose, influence and clear ex
     'The direction of travel is clear. The practical detail is still open.',
     'SPDTF is in development',
     'professional judgement',
-    'Interest is reviewed by people.',
+    'What participation does—and doesn’t—mean.',
     'Estate Agency',
     'Finance and Banking',
     'Conveyancing',
