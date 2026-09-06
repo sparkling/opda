@@ -166,46 +166,6 @@ const domains = [
   .home-campaign-hero {
     --campaign-max: var(--content-max);
   }
-  :global(:root[data-theme='light']) .home-campaign-hero {
-    color: var(--brand-deep);
-    background:
-      radial-gradient(circle at 15% 20%, rgb(91 81 216 / 12%), transparent 31rem),
-      linear-gradient(135deg, var(--brand-white) 0 62%, var(--neutral-100) 62% 100%);
-  }
-  :global(:root[data-theme='light']) .home-campaign-hero h1,
-  :global(:root[data-theme='light']) .home-campaign-hero .wg-hero-journey h2,
-  :global(:root[data-theme='light']) .home-campaign-hero .wg-process strong {
-    color: var(--brand-deep);
-  }
-  :global(:root[data-theme='light']) .home-campaign-hero h1 em {
-    color: var(--color-link);
-  }
-  :global(:root[data-theme='light']) .home-campaign-hero .wg-eyebrow,
-  :global(:root[data-theme='light']) .home-campaign-hero .wg-lead,
-  :global(:root[data-theme='light']) .home-campaign-hero .wg-process span {
-    color: var(--color-text-muted);
-  }
-  :global(:root[data-theme='light']) .home-campaign-hero .wg-hero-journey {
-    background: rgb(255 255 255 / 88%);
-    border-color: var(--color-border);
-    border-top-color: var(--brand-yellow);
-    box-shadow: var(--shadow-sm);
-  }
-  :global(:root[data-theme='light']) .home-campaign-hero .wg-process li {
-    border-color: var(--color-border);
-  }
-  :global(:root[data-theme='light']) .home-campaign-hero .wg-process .wg-process__icon {
-    color: var(--color-status-warning);
-  }
-  :global(:root[data-theme='light']) .home-campaign-hero .btn--outline-dark {
-    color: var(--brand-deep);
-    background: rgb(255 255 255 / 56%);
-    border-color: var(--brand-deep);
-  }
-  :global(:root[data-theme='light']) .home-campaign-hero .btn--outline-dark:hover {
-    color: var(--brand-deep);
-    background: var(--neutral-100);
-  }
   .home-content-surface {
     --home-frame-gutter: max(
       clamp(var(--space-5), 5vw, var(--space-10)),

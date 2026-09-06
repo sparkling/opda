@@ -245,6 +245,50 @@
 .wg-hero-journey .wg-process .wg-process__icon { grid-row: 1 / span 2; display: grid; width: 2.75rem; height: 2.75rem; place-items: center; color: var(--brand-yellow); }
 .wg-process__icon svg { width: 2rem; height: 2rem; stroke-width: 1.8; }
 
+/* Home and join share the same light surface as well as the dark composition. */
+:root[data-theme='light'] .wg-campaign-hero {
+  color: var(--brand-deep);
+  background:
+    radial-gradient(circle at 15% 20%, rgb(91 81 216 / 12%), transparent 31rem),
+    linear-gradient(135deg, var(--brand-white) 0 62%, var(--neutral-100) 62% 100%);
+}
+:root[data-theme='light'] .wg-campaign-hero h1,
+:root[data-theme='light'] .wg-campaign-hero .wg-hero-journey h2,
+:root[data-theme='light'] .wg-campaign-hero .wg-process strong,
+:root[data-theme='light'] .wg-campaign-hero .wg-hero-note {
+  color: var(--brand-deep);
+}
+:root[data-theme='light'] .wg-campaign-hero h1 em {
+  color: var(--color-link);
+}
+:root[data-theme='light'] .wg-campaign-hero .wg-eyebrow,
+:root[data-theme='light'] .wg-campaign-hero .wg-lead,
+:root[data-theme='light'] .wg-campaign-hero .wg-process span {
+  color: var(--color-text-muted);
+}
+:root[data-theme='light'] .wg-campaign-hero .wg-hero-journey {
+  background: rgb(255 255 255 / 88%);
+  border-color: var(--color-border);
+  border-top-color: var(--brand-yellow);
+  box-shadow: var(--shadow-sm);
+}
+:root[data-theme='light'] .wg-campaign-hero .wg-process,
+:root[data-theme='light'] .wg-campaign-hero .wg-process li {
+  border-color: var(--color-border);
+}
+:root[data-theme='light'] .wg-campaign-hero .wg-process .wg-process__icon {
+  color: var(--color-status-warning);
+}
+:root[data-theme='light'] .wg-campaign-hero .btn--outline-dark {
+  color: var(--brand-deep);
+  background: rgb(255 255 255 / 56%);
+  border-color: var(--brand-deep);
+}
+:root[data-theme='light'] .wg-campaign-hero .btn--outline-dark:hover {
+  color: var(--brand-deep);
+  background: var(--neutral-100);
+}
+
 .wg-programme-link { margin: var(--space-7) 0 0; }
 
 .wg-group-grid {
