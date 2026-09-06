@@ -321,8 +321,8 @@ Its sequence is:
 
 `/home` is retired without a redirect, rewrite alias or duplicate page. All internal homepage links use `/`.
 
-No floating screenshots, generic illustration clutter or ungoverned synthetic imagery. The generated method infographic is the bounded exception
-defined below. The presentation feature is an editorial tile, not an embed.
+No floating screenshots, generic illustration clutter or ungoverned synthetic imagery. Generated method graphics and the governed editorial
+watercolour style are the bounded exceptions defined below. The presentation feature is an editorial tile, not an embed.
 
 `/join`, `/join/privacy` and `/accessibility` form one public-service family. The recruitment campaign remains a standalone composition, with the
 linked organisation heading, transparent OPDA return control and theme control on one content-width hero row. Privacy and accessibility use the
@@ -419,10 +419,9 @@ Photography shows real people collaborating and real residential property. Recor
 decision before use. Apply `#131224` overlays at 55–70% when text sits on an image and verify the final crop. Decorative partner marks receive an
 equivalent text list.
 
-Generative imagery is not used in the OPDA identity. The supplied AI poster is removed. The sole recurring decorative motif is a 4px amber rule used
-for headlines, active navigation and footer structure; it does not imitate or redraw the logo. The root homepage and `/join` intentionally share one
-static radial/diagonal campaign-hero background treatment. The method figure and presentation tile carry editorial meaning and are not recurring
-identity motifs.
+Generative imagery is never used in the OPDA identity. For approachable property and participation content, the governed **OPDA editorial watercolour** style combines expressive deep-ink linework, substantial watercolour/gouache fields and distinct subject-specific compositions. Its light paper is `#F9F9F9`; dark counterparts use deep-purple paper with pale linework; both retain gold, petrol, violet, rose and coral pigment. Generate and approve the light composition first, then edit that exact image for dark mode without changing geometry or using CSS inversion. Keep text in HTML, record prompt and asset provenance, export 4:1 campaign art at 1200×300 WebP below 150KB, and never use the style as evidence or precise technical notation. The canonical reusable light/dark prompts and approved paired specimens live on `/design-system`.
+
+The supplied AI poster is removed. The sole recurring decorative motif is a 4px amber rule used for headlines, active navigation and footer structure; it does not imitate or redraw the logo. The root homepage and `/join` intentionally share one static radial/diagonal campaign-hero background treatment. The method figure, presentation tile and editorial watercolours carry editorial meaning and are not recurring identity motifs.
 
 Motion lasts 120–200ms, uses ease-out for entry and ease-in for exit, and normally changes only opacity or transform. Fixed-track navigation
 disclosures may animate their panel width because the reserved grid tracks prevent any surrounding layout movement. There is no parallax, autoplay

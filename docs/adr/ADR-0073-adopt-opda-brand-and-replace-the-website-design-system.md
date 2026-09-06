@@ -1,7 +1,7 @@
 ---
 status: implemented
 date: 2026-08-16
-updated: 2026-09-05
+updated: 2026-09-06
 tags: [design-system, brand, website, accessibility, css, governance, presentation]
 supersedes: [ADR-0025]
 depends-on: [ADR-0064]
@@ -69,8 +69,7 @@ The canonical repository assets are:
 
 ## Decision outcome
 
-Adopt the Q3 2026 guide and supplied vectors for this application and complete them
-through the derived OPDA web system specified in `DESIGN.md`.
+Adopt the Q3 2026 guide and supplied vectors for this application and complete them through the derived OPDA web system specified in `DESIGN.md`. On 6 September 2026 the operator adopted **OPDA editorial watercolour** as a governed derived illustration style after approving six subject-specific light/dark pairs. The style is excluded from identity, evidence and exact technical diagrams. `DESIGN.md` defines its palette, pairing and export rules; `/design-system` records the reusable light and dark prompts and shows the approved set-3 specimens. This amendment does not change the supplied brand assets or photography-rights gate.
 
 On 19 August 2026 the implemented layout contract was clarified after rendered-page
 review: each shared-site composition has one outer width authority. Nested text

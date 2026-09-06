@@ -13,6 +13,27 @@ const brandColours = [
 ];
 
 const dataColours = ['#6C5BD4', '#C77F00', '#0E8478', '#A5317F', '#4E6E93', '#58810B', '#C24E1A', '#6E6580'];
+const editorialIllustrations = [
+  ['finance-and-banking', 'Finance and Banking'],
+  ['conveyancing', 'Conveyancing'],
+  ['estate-agency', 'Estate Agency'],
+  ['surveying-and-valuation', 'Surveying and Valuation'],
+  ['property-data-services', 'Property Data Services'],
+  ['property-technology', 'Property Technology'],
+] as const;
+const editorialIllustrationPrompt = `Use case: illustration-story.
+Asset type: OPDA editorial watercolour illustration for a website card.
+Subject: [describe one concrete property-industry situation and only the objects needed to explain it].
+Composition: a distinct, shallow arrangement in an ultra-wide 4:1 panorama; complete subjects, recognisable silhouettes and purposeful negative space; crisp at small card size.
+Style: expressive organic pen-and-ink contours, rich translucent watercolour and softly opaque gouache; visible pigment variation and clean paper highlights; confident, warm, colourful, refined and professional.
+Light palette: cool off-white #F9F9F9 paper, deep purple #231F2F ink, generous OPDA yellow/gold #FEC92B, petrol/teal #0E8478 and blue-violet #6C5BD4, with supporting rose and coral. Colour substantial object surfaces; no beige or sepia cast.
+Constraints: no logo, wordmark, embedded text, labels, watermark, personal information or unnecessary objects; no photography, 3D, glossy rendering, gradient, neon, glow or generic clipart. Do not repeat another subject's composition.`;
+const editorialIllustrationDarkPrompt = `Use case: style-transfer.
+Asset type: dark-mode counterpart of an approved OPDA editorial watercolour illustration.
+Input image: the approved light-mode illustration is the EDIT TARGET, not merely inspiration.
+Primary request: change only paper, ink values and pigment treatment; preserve the exact subjects, object count, arrangement, relative sizes, proportions, perspective, crop and negative-space balance.
+Dark palette: flat deep purple #231F2F paper to every edge; preserve rich gold/yellow, petrol/teal, blue-violet, rose and coral gouache. Change dark linework to pale lavender, warm white or coloured ink where needed for legibility. Leave dark paper visible between strokes and washes.
+Constraints: identical 4:1 geometry; no redesign, additions, removals, night scenery, stars, negative-image filter, fluorescent outline, neon, embedded text, logo, watermark, photography or 3D. Pigments should feel luminous on dark paper, never like a glow effect.`;
 const tokenSample = `:root {
   --brand-deep: #131224;
   --brand-yellow: #fec92b;
@@ -93,6 +114,43 @@ const tokenSample = `:root {
     <BrandHeading surface="light" scale="compact" />
     <p>The compact identity variant keeps the complete organisation name visible at supporting scale, including in the shared footer.</p>
   </div>
+
+  <h2 id="editorial-illustration">Editorial illustration</h2>
+  <p>
+    <strong>OPDA editorial watercolour</strong> is the approved style for approachable,
+    human-facing property and participation content. Expressive ink, watercolour and
+    gouache make each subject recognisable and distinct without turning illustration
+    into evidence, technical notation or identity. It never replaces official logos,
+    documentary photography or a diagram that must state exact relationships.
+  </p>
+  <div class="editorial-illustration-grid" aria-label="Approved editorial illustration subjects in light and dark modes">
+    {editorialIllustrations.map(([id, label]) => (
+      <figure>
+        <div>
+          <img src={`/images/join/set-3/${id}-light.webp`} alt={`${label} editorial illustration on light paper`} width="1200" height="300" loading="lazy" />
+          <img src={`/images/join/set-3/${id}-dark.webp`} alt={`${label} editorial illustration on dark paper`} width="1200" height="300" loading="lazy" />
+        </div>
+        <figcaption>{label} · matched light and dark composition</figcaption>
+      </figure>
+    ))}
+  </div>
+  <div class="callout callout--key">
+    <h3 class="callout__label"><span aria-hidden="true">◇</span> Illustration rule</h3>
+    <p>Give every subject its own concrete visual idea. Generate the light composition first, approve it, then edit that exact image into its dark counterpart. Preserve geometry across modes; never invert it with CSS. Keep all explanatory text in HTML.</p>
+  </div>
+  <h3>Canonical light-mode prompt</h3>
+  <p>Replace the bracketed subject. Use an approved set-3 image only as a style reference, not as a composition to copy.</p>
+  <pre><code set:text={editorialIllustrationPrompt} /></pre>
+  <h3>Canonical dark-mode counterpart prompt</h3>
+  <p>Use the approved light image as the edit target. Generate one asset per call and review the pair together at its intended size.</p>
+  <pre><code set:text={editorialIllustrationDarkPrompt} /></pre>
+  <p>
+    Export campaign-card illustrations as 1200×300 WebP, below 150&nbsp;KB each.
+    Store paired files as <code>{'{subject}-light.webp'}</code> and
+    <code>{'{subject}-dark.webp'}</code> in a versioned set. Set 3 was generated with
+    the built-in image tool and approved on 6 September 2026; rejected variants are
+    not part of the system.
+  </p>
 
   <h2 id="colour">Colour</h2>
   <div class="colour-grid">
@@ -276,6 +334,11 @@ const tokenSample = `:root {
     .brand-heading-specimen--dark { background: var(--brand-deep); }
     .brand-heading-compact-specimen { display: flex; align-items: center; gap: var(--space-4); padding: var(--space-5); border: 1px solid var(--color-border); }
     .brand-heading-compact-specimen p { margin: 0; }
+    .editorial-illustration-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--space-5); }
+    .editorial-illustration-grid figure { min-width: 0; margin: 0; border: 1px solid var(--color-border); }
+    .editorial-illustration-grid figure > div { display: grid; grid-template-columns: 1fr 1fr; }
+    .editorial-illustration-grid img { display: block; width: 100%; height: auto; aspect-ratio: 4 / 1; }
+    .editorial-illustration-grid figcaption { padding: var(--space-3) var(--space-4); color: var(--color-text-muted); font-size: var(--text-sm); }
     .colour-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); border: 1px solid var(--color-border); }
     .colour-grid article { min-height: 13rem; padding: var(--space-5); display: flex; flex-direction: column; border-right: 1px solid var(--color-border); border-bottom: 1px solid var(--color-border); }
     .colour-grid i { height: 5rem; margin: calc(-1 * var(--space-5)) calc(-1 * var(--space-5)) var(--space-5); background: var(--sample); border-bottom: 1px solid var(--color-border); }
@@ -312,7 +375,7 @@ const tokenSample = `:root {
       .gate-grid { grid-template-columns: 1fr 1fr; }
     }
     @media (max-width: 40rem) {
-      .evidence-grid, .brand-assets, .brand-heading-specimens, .colour-grid, .type-board, .component-board, .implementation-grid, .gate-grid { grid-template-columns: 1fr; }
+      .evidence-grid, .brand-assets, .brand-heading-specimens, .editorial-illustration-grid, .colour-grid, .type-board, .component-board, .implementation-grid, .gate-grid { grid-template-columns: 1fr; }
       .evidence-grid article, .brand-asset, .type-board article, .component-board article, .gate-grid article { border-right: 0; border-bottom: 1px solid var(--color-border); }
       .brand-heading-specimen + .brand-heading-specimen { border-left: 0; border-top: 1px solid var(--color-border); }
     }
