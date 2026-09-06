@@ -213,6 +213,16 @@
   text-transform: uppercase;
 }
 
+/* ── Technical-detail callouts ──
+   These carry supporting explanation rather than an informational status, so use
+   the neutral surface and border tokens in both colour modes—not the blue status
+   palette. */
+.modelling-callout.callout--note {
+  border-inline-start-color: var(--color-border-strong);
+  background: var(--color-surface-inset);
+}
+.modelling-callout.callout--note .callout__label { color: var(--color-text-strong); }
+
 /* ── Technical-detail callout label ── */
 .modelling-detail__note {
   margin-inline-start: auto;
