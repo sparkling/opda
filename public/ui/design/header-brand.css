@@ -94,7 +94,7 @@
 }
 
 @media (min-width: 60.0625rem) {
-  .app-header .brand-heading--paired.brand-heading--mini {
+  .app-header .brand-heading--mini {
     font-size: calc(var(--identity-heading-size, 24px) * var(--identity-opda-scale, 1));
   }
   .app-header .framework-heading {
