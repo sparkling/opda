@@ -15,7 +15,7 @@ const Item = ordered ? 'li' : 'article';
 
 <Container class="campaign-card-grid" style={`--campaign-card-columns: ${columns}`} aria-label={label}>
   {cards.map((card) => (
-    <Item class="campaign-card">
+    <Item class:list={['campaign-card', { 'campaign-card--linked': Boolean(card.href) }]}>
       {card.eyebrow && <p class="campaign-card__eyebrow">{card.eyebrow}</p>}
       <h3>{card.title}</h3>
       {card.image && (
@@ -31,9 +31,13 @@ const Item = ordered ? 'li' : 'article';
           decoding="async"
         />
       )}
-      {card.description && <p class="campaign-card__description">{card.description}</p>}
+      {(card.paragraphs ?? (card.description ? [card.description] : [])).map((paragraph) => (
+        <p class="campaign-card__description">{paragraph}</p>
+      ))}
       {card.href && (
-        <a href={card.href} data-context-register={card.registerContext}>{card.linkLabel}</a>
+        <a class="campaign-card__link" href={card.href} data-context-register={card.registerContext}>
+          <span class="visually-hidden">Register interest in {card.title}</span>
+        </a>
       )}
     </Item>
   ))}
@@ -91,6 +95,8 @@ const Item = ordered ? 'li' : 'article';
 
   .campaign-card h3 { margin: 0; color: var(--color-text-strong); font: var(--h3); }
   .campaign-card__description { margin: 0; color: var(--color-text-muted); line-height: 1.6; text-align: start; hyphens: none; }
+  .campaign-card--linked h3 { font-size: 1.5rem; line-height: 1.3; }
+  .campaign-card--linked .campaign-card__description { text-align: justify; text-align-last: start; hyphens: auto; }
 
   .campaign-card__image {
     display: block;
@@ -102,18 +108,12 @@ const Item = ordered ? 'li' : 'article';
     margin: 0;
   }
 
-  .campaign-card a {
-    display: inline-flex;
-    align-items: center;
-    min-height: var(--target-min);
-    margin-top: auto;
-    font-weight: 700;
-  }
-  .campaign-card a::after {
-    content: '';
+  .campaign-card__link {
     position: absolute;
     inset: 0;
+    z-index: 1;
   }
+  .campaign-card__link:focus-visible { outline-offset: -4px; }
   .campaign-card:has(a):hover,
   .campaign-card:focus-within { border-color: var(--color-link); }
 

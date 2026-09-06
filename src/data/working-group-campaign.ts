@@ -2,6 +2,7 @@ export interface WorkingGroupContext {
   value: string;
   label: string;
   scope: string;
+  campaignCopy: readonly [string, string];
 }
 
 export interface ContributionOption {
@@ -14,6 +15,7 @@ export interface CampaignCard {
   eyebrow?: string;
   title: string;
   description?: string;
+  paragraphs?: readonly string[];
   image?: string;
   darkImage?: string;
   href?: string;
@@ -53,31 +55,55 @@ export const workingGroupContexts: WorkingGroupContext[] = [
     value: 'finance-and-banking',
     label: 'Finance and Banking',
     scope: 'Mortgage advice, lending decisions, security, affordability and the systems that support them.',
+    campaignCopy: [
+      'Mortgage advice, lending decisions, security and affordability depend on information supplied by many organisations at different points in a property transaction.',
+      'Share where evidence is duplicated, unclear or unavailable, and help define what lenders, advisers and customers need to make confident, timely decisions.',
+    ],
   },
   {
     value: 'conveyancing',
     label: 'Conveyancing',
     scope: 'The legal transfer of property, including title, searches, enquiries and completion.',
+    campaignCopy: [
+      'Property transfer brings together title, searches, enquiries, contracts and completion. The meaning and authority of each item matters throughout the transaction.',
+      'Show where information becomes difficult to establish, interpret or pass on, and help make the resulting standard work for real cases as well as straightforward ones.',
+    ],
   },
   {
     value: 'estate-agency',
     label: 'Estate Agency',
     scope: 'Marketing, listing, negotiation and the progression of a sale.',
+    campaignCopy: [
+      'Estate agents connect sellers, buyers and professionals while property information changes, grows and moves between organisations during a sale.',
+      'Help clarify what people need to know, when they need it and how it can stay accurate from instruction and marketing through negotiation and progression.',
+    ],
   },
   {
     value: 'surveying-and-valuation',
     label: 'Surveying and Valuation',
     scope: 'Property condition, measurement, inspection, valuation and professional opinion.',
+    campaignCopy: [
+      'Surveyors and valuers turn inspection, measurement and professional judgement into findings that other people rely on when making important decisions.',
+      'Help distinguish what was observed, how it was assessed and which qualifications or uncertainties must travel with the resulting information.',
+    ],
   },
   {
     value: 'property-data-services',
     label: 'Property Data Services',
     scope: 'The sourcing, assurance, exchange and interpretation of property information.',
+    campaignCopy: [
+      'Property data services collect, match, assure and exchange records from sources with different coverage, authority, formats and update cycles.',
+      'Help make provenance, quality and limitations visible so people can understand where information came from, what it describes and how safely it can be used.',
+    ],
   },
   {
     value: 'property-technology',
     label: 'Property Technology',
     scope: 'Products, platforms and integrations that support the property journey.',
+    campaignCopy: [
+      'Technology teams connect products, platforms and services across a property journey that already contains many systems, users and operational constraints.',
+      'Bring practical integration experience and help identify where clearer definitions and more consistent exchange can reduce friction without disrupting useful work.',
+    ],
   },
 ];
 

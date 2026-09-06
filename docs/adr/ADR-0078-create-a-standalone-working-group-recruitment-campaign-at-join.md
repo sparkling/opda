@@ -109,9 +109,11 @@ empty grid rows, and the section ends with 32px before the footer. The standalon
 programme-status callout is removed; the programme and policy-context link remains.
 Motivation, policy, working-group, participation and evidence grids now use one
 `CampaignCardGrid` component with consistent 48–64px heading clearance and card
-geometry. Working-group cards read heading, 4:1 editorial drawing, description and
-action. Their single native registration link covers the whole card, preserving one
-keyboard stop and the existing group-selection behaviour.
+geometry. Working-group cards read a 24px heading, 4:1 editorial drawing and exactly
+two expanded, justified paragraphs. The visible “I’m interested in” label is removed;
+one visually hidden native registration link covers the whole card, preserving a
+single keyboard stop and the existing group-selection behaviour. Form descriptions
+remain concise.
 Image set 3 in `public/images/join/set-3/` contains twelve local, lazy-loaded WebPs:
 six colour-rich light/dark drawing pairs, following the selected site mode through
 the shared component without changing geometry. The original photographs remain

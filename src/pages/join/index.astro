@@ -27,11 +27,10 @@ const joinPanelStyle = getCampaignPanelStyle(JOIN_CAMPAIGN_HEADER_DEFAULTS);
 const workingGroupImageSet = 'set-3';
 const workingGroupCards = workingGroupContexts.map((context) => ({
   title: context.label,
-  description: context.scope,
+  paragraphs: context.campaignCopy,
   image: `/images/join/${workingGroupImageSet}/${context.value}-light.webp`,
   darkImage: `/images/join/${workingGroupImageSet}/${context.value}-dark.webp`,
   href: '#register',
-  linkLabel: `I’m interested in ${context.label}`,
   registerContext: context.value,
 }));
 ---
