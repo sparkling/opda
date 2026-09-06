@@ -101,16 +101,6 @@
   padding-block-start: var(--identity-space-before);
   transform: translateY(calc(var(--identity-space-after-origin) - var(--identity-space-after)));
 }
-.wg-campaign-identity--on-dark {
-  --color-header-text: var(--brand-white);
-  --color-header-muted: var(--neutral-400);
-  --color-header-border: var(--color-surface-dark-tint);
-  --color-header-hover-surface: var(--color-surface-dark-tint);
-  --color-header-opda: var(--brand-yellow);
-  --color-header-framework: #5fc5ba;
-  --color-header-framework-mark-a: #1f8f87;
-  --color-header-framework-mark-b: #5fc5ba;
-}
 .wg-campaign-identity__opda-row {
   grid-area: opda;
   min-width: 0;
