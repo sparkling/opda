@@ -24,11 +24,12 @@ const title = 'Join an SPDTF working group';
 const description = 'Bring your professional experience to the industry working groups helping to develop the Smart Property Data Trust Framework.';
 const clientV = assetVersion('/ui/client.js');
 const joinPanelStyle = getCampaignPanelStyle(JOIN_CAMPAIGN_HEADER_DEFAULTS);
-const workingGroupImageSet = 'set-2';
+const workingGroupImageSet = 'set-3';
 const workingGroupCards = workingGroupContexts.map((context) => ({
   title: context.label,
   description: context.scope,
-  image: `/images/join/${workingGroupImageSet}/${context.value}.webp`,
+  image: `/images/join/${workingGroupImageSet}/${context.value}-light.webp`,
+  darkImage: `/images/join/${workingGroupImageSet}/${context.value}-dark.webp`,
   href: '#register',
   linkLabel: `I’m interested in ${context.label}`,
   registerContext: context.value,
@@ -195,13 +196,6 @@ const workingGroupCards = workingGroupContexts.map((context) => ({
         <ContributionRegister options={contributionOptions} />
       </div>
 
-      <div class="wg-commitment">
-        <strong>Before you commit</strong>
-        <p>
-          If your expression of interest is accepted, OPDA will confirm the group format, schedule
-          and expectations before asking you to commit. Registering now does not commit you to take part.
-        </p>
-      </div>
     </section>
 
     <section class="wg-section wg-evidence" aria-labelledby="trust-title">

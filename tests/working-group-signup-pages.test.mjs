@@ -322,7 +322,6 @@ test('campaign recruits industry experts through purpose, influence and clear ex
     'Challenge assumptions before they harden',
     'Influence the direction of the standard',
     'AI may assist comparison and drafting; it cannot make a draft official.',
-    'expectations before asking you to commit',
   ]) {
     assert.match(corpus, new RegExp(phrase, 'iu'));
   }
@@ -331,6 +330,7 @@ test('campaign recruits industry experts through purpose, influence and clear ex
   assert.doesNotMatch(page, /ontology|SKOS|semantic constellation|contextual lenses|common boundary|AI-assisted modelling/iu);
   assert.doesNotMatch(corpus, /Contribute consumer, accessibility, regulatory or public-interest experience|Identify impacts and opportunities|Represent people and the public interest|technical model might otherwise miss|Not sure|help me choose|property reform|operating reality belongs|Make the real work visible|data-modelling expertise is needed/iu);
   assert.doesNotMatch(page, /data-parallax-layer|data-story-step|data-handoff-stage|data-reveal/u);
+  assert.doesNotMatch(page, /Before you commit|wg-commitment/u);
   assert.doesNotMatch(page, />Why this matters<\/a>/u);
   assert.doesNotMatch(sectionsCss, /position:\s*sticky|data-reveal|wg-model-flow|wg-output-ribbon/u);
   assert.match(responsiveCss, /prefers-reduced-motion/u);
@@ -348,8 +348,11 @@ test('campaign recruits industry experts through purpose, influence and clear ex
   for (const group of expectedGroups) {
     assert.ok(existsSync(new URL(`../public/images/join/set-1/${group}.webp`, import.meta.url)));
     assert.ok(existsSync(new URL(`../public/images/join/set-2/${group}.webp`, import.meta.url)));
+    for (const mode of ['light', 'dark']) {
+      assert.ok(existsSync(new URL(`../public/images/join/set-3/${group}-${mode}.webp`, import.meta.url)));
+    }
   }
-  assert.match(page, /workingGroupImageSet = 'set-2'/u);
+  assert.match(page, /workingGroupImageSet = 'set-3'/u);
   const register = await readFile(new URL('../src/components/campaign/ContributionRegister.astro', import.meta.url), 'utf8');
   assert.match(page, /<ContributionRegister options=\{contributionOptions\} \/>/u);
   assert.match(register, /<dl class="contribution-register">/u);

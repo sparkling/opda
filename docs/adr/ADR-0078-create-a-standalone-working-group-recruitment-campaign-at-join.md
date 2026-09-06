@@ -102,23 +102,32 @@ contract; it does not authorise publication.
 
 Amended on 6 September 2026: every recruitment section and inset panel follows
 the selected light or dark mode, including policy, cross-cutting experience,
-participation, commitment and trust. Light mode uses light semantic surfaces and
+participation and trust. Light mode uses light semantic surfaces and
 readable dark text; dark mode retains its existing palette. Form availability,
 input and success states occupy one content column so hidden states reserve no
 empty grid rows, and the section ends with 32px before the footer. The standalone
 programme-status callout is removed; the programme and policy-context link remains.
 Motivation, policy, working-group, participation and evidence grids now use one
 `CampaignCardGrid` component with consistent 48–64px heading clearance and card
-geometry. Six local, lazy-loaded WebP editorial drawings illustrate the working-group
-cards in a shared 4:1 image slot without changing their text or registration
-actions. The drawings are active as image set 2 in `public/images/join/set-2/`;
-the original photographs remain image set 1 in `public/images/join/set-1/`.
+geometry. Working-group cards read heading, 4:1 editorial drawing, description and
+action. Their single native registration link covers the whole card, preserving one
+keyboard stop and the existing group-selection behaviour.
+Image set 3 in `public/images/join/set-3/` contains twelve local, lazy-loaded WebPs:
+six colour-rich light/dark drawing pairs, following the selected site mode through
+the shared component without changing geometry. The original photographs remain
+image set 1; the first drawings remain image set 2 in their versioned directories.
+The built-in image-generation tool edited set 2 with this direction: preserve each
+subject and composition; enrich the pen-and-ink/watercolour with OPDA yellow, petrol,
+violet and coral; adapt paper and line contrast for matched light and deep-ink modes.
+All twelve exports were visually reviewed and optimised to 1200×300 WebP.
 Fable's `ContributionRegister` replaces the rejected contribution bands with one
 definition list in three pairs, using categorical violet, teal and magenta rules
 and markers on mode-aware semantic surfaces. All wording is preserved; one shared
 component owns desktop pairing, narrow-track stacking and both colour modes.
 Campaign sections share 32–48px vertical padding, with 32px inset boundary-panel
 padding, replacing the previous stacked 112–128px section clearances.
+The separate “Before you commit” paragraph and its container are removed at the
+user's request; the registration form and remaining participation boundaries are unchanged.
 
 Amended on 27 August 2026: the public narrative is now SME-first, the semantic
 constellation is replaced by practical working-group cards, and the signup form

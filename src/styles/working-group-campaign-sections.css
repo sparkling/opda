@@ -50,10 +50,6 @@
 
 .wg-participation-grid h3 { margin: 0; color: var(--color-text-strong); font: 600 clamp(1.75rem, 3vw, 3rem) / 1.1 var(--font-display); }
 
-.wg-commitment { display: grid; grid-template-columns: minmax(12rem, 0.75fr) minmax(0, 1.25fr); gap: var(--space-6); margin-top: var(--space-8); padding: var(--space-6); background: var(--color-surface-alt); border-left: 4px solid var(--brand-yellow); }
-.wg-commitment strong { color: var(--color-text-strong); }
-.wg-commitment p { margin: 0; color: var(--color-text-muted); }
-
 .wg-evidence { width: 100%; padding-inline: max(clamp(var(--space-5), 5vw, var(--space-10)), calc((100vw - var(--campaign-max)) / 2)); }
 .wg-evidence__statement { display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(20rem, 0.9fr); gap: clamp(var(--space-8), 7vw, var(--space-12)); align-items: end; }
 .wg-evidence__statement .wg-eyebrow { grid-column: 1 / -1; margin-bottom: calc(var(--space-6) * -1); }
