@@ -219,11 +219,14 @@ const searchMeta = searchMetaEntries(search);
         {wrapArticle ? (
           <article class:list={[proseClass, { 'editorial-content': !generatedContent }]} data-disable-toc={hideTableOfContents ? 'true' : undefined}>
             <slot />
+            {!hideFooter && <PageFooter />}
           </article>
         ) : (
-          <slot />
+          <>
+            <slot />
+            {!hideFooter && <PageFooter />}
+          </>
         )}
-        {!hideFooter && <PageFooter />}
         {!hideComments && <Comments />}
       </main>
     </div>
