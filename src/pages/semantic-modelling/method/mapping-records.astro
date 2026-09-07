@@ -1,6 +1,7 @@
 ---
 import ModellingLayout from '@/layouts/ModellingLayout.astro';
 import ModellingVisual from '@/components/modelling/ModellingVisual.astro';
+import EnrichmentVisual from '@/components/modelling/EnrichmentVisual.astro';
 const mapping = `@prefix left: <https://example.org/surveying-vocabulary/> .
 @prefix right: <https://example.org/assessment-vocabulary/> .
 @prefix skos: <http://www.w3.org/2004/02/skos/core#> .
@@ -78,6 +79,66 @@ left:InspectionReport skos:closeMatch right:AssessmentEvidence .
     <p>Suppose a source broadens “inspection report” to include reports about multiple assets. An older receiving definition assumes one inspection subject. A mapping without source versions still looks exact to a consumer, although the compared meanings have changed. The failure is not repaired by changing the label or increasing a confidence score.</p>
     <p>Pinned versions identify the decision that needs review. Recheck the original hard cases and new counterexamples, revise the mapping if warranted, and issue a new mapping-set release. Preserve the distinction between historical evidence and the current correspondence. A missing or rejected mapping is an honest outcome.</p>
     <p>For strategic applicability, use the <a href="/semantic-modelling/method/context-map-records">context-map record</a> to point at this exact mapping record, not a whole mapping set.</p>
+  </section>
+
+  <section aria-labelledby="verdicts">
+    <h2 id="verdicts">Related, denied and unreviewed are different verdicts</h2>
+    <p>The mapping register records what the reviewer actually concluded. <a href="/modelling/odr/odr-0059">ODR-0059</a> R6 distinguishes a positive association, denial of a named predicate and a negative/unrelated decision. Absence of a triple says none of those things by itself. Record denied candidates that were genuinely examined, not every possible pair in the model.</p>
+    <table>
+      <caption>Fictional verdicts and the claim each permits</caption>
+      <thead><tr><th scope="col">Review outcome</th><th scope="col">Record</th><th scope="col">What it does not say</th></tr></thead>
+      <tbody>
+        <tr><th scope="row">Warranted positive correspondence</th><td>The report/evidence example above uses <code>skos:closeMatch</code>, with its qualified evidence record.</td><td>It does not become exact merely because a reviewer is confident.</td></tr>
+        <tr><th scope="row">Positive association</th><td>Inspection and valuation topic concepts may warrant <code>skos:relatedMatch</code> where their reviewed definitions support an association.</td><td>Relatedness is not interchangeability and is not a negative decision.</td></tr>
+        <tr><th scope="row">Negated named predicate</th><td>A reviewed candidate denies <code>skos:exactMatch</code> specifically, recording <code>predicate_modifier: Not</code> in the selected SSSOM profile.</td><td>“Not exact” does not deny every weaker correspondence or assert unrelatedness.</td></tr>
+        <tr><th scope="row">Negative/unrelated</th><td>The reviewed definitions support no correspondence for the compared scope; retain the separation verdict and evidence.</td><td>This is not represented by inventing a SKOS “unrelated” predicate or by asserting <code>relatedMatch</code>.</td></tr>
+        <tr><th scope="row">Not yet reviewed</th><td>The candidate exists, but the register says <em>not yet reviewed</em>; no completed verdict is claimed.</td><td>No positive triple does not mean an explicit negative decision has been made.</td></tr>
+      </tbody>
+    </table>
+    <p>A negated record identifies the statement being denied. Do not add or export its unqualified positive triple. In contrast, the approved positive record above retains the SKOS assertion alongside its reifier. The selected modifier must survive any derived view; otherwise a consumer receives the opposite meaning. Keep a broad separation decision and its rationale distinct from denial of one particular predicate.</p>
+  </section>
+
+  <section aria-labelledby="exact-match-chain">
+    <h2 id="exact-match-chain">Inspect the third concept before trusting a chain</h2>
+    <p>Consider three fictional vocabulary concepts: A, “Inspection report”; B, “Assessment report”; and C, “Valuation opinion”. A curator proposes A <code>skos:exactMatch</code> B and B <code>skos:exactMatch</code> C. Because exactMatch is transitive, the two edges also commit to the A–C exact correspondence. The proposed graph must be reviewed for that consequence, not treated as two unrelated pairwise scores.</p>
+    <p>Under <a href="/modelling/odr/odr-0059">ODR-0059</a> R5, every exact-match chain of length two or more requires mandatory human reinspection. Suppose an inspection report at Harbour Court records condition but contains no valuation opinion, while C's definition requires one. That counterexample challenges the chain's claimed interchangeability. Inspect both edges and their source versions; the convenient bridging label B may have hidden two meanings.</p>
+    <p>Lowering the confidence on B–C from 0.95 to 0.55 leaves <code>skos:exactMatch</code> unchanged. Where justified, revise the predicate to close or associative correspondence; otherwise retract the proposed edge or leave the review unresolved. Do not choose a weaker predicate merely to keep the diagram connected. A chain of close matches does not entitle the reviewer to invent a direct A–C close match.</p>
+  </section>
+
+  <figure class="modelling-figure" data-modelling-figure="mapping-review">
+    <EnrichmentVisual kind="mapping-review" />
+    <p>Text equivalent: new counterevidence can reopen an accepted mapping and lead to a governed retraction. New evidence can also reopen a denied candidate and lead to a newly justified correspondence—or a retained denial or unresolved result. Each new verdict links to the decision it supersedes; neither direction rewrites history.</p>
+    <figcaption>Mapping stewardship corrects false positives and false negatives. Reopening is a review state, not automatic acceptance.</figcaption>
+  </figure>
+
+  <section aria-labelledby="retraction-and-reopening">
+    <h2 id="retraction-and-reopening">Exercise change in both directions</h2>
+    <p>Use the existing context boundaries and the exact mapping applicability recorded in <a href="/semantic-modelling/method/context-map-records">context-map records</a>. The examples below are illustrative entries in a specification mapping register, not appointments of real reviewers, adopted mappings or a running curation service.</p>
+    <table>
+      <caption>Two change cases with explicit evidence and ownership</caption>
+      <thead><tr><th scope="col">Register field</th><th scope="col">Accepted link is challenged</th><th scope="col">Denied candidate is reopened</th></tr></thead>
+      <tbody>
+        <tr><th scope="row">Previous decision and pins</th><td><code>M-17</code>, accepted exact correspondence; source versions <code>surveying-1</code>/<code>finance-1</code>, mapping set <code>demo/1</code>.</td><td><code>M-21</code>, denied exact correspondence; source versions <code>surveying-1</code>/<code>finance-1</code>, mapping set <code>demo/1</code>.</td></tr>
+        <tr><th scope="row">Trigger</th><td>New evidence shows a supposedly identifying key is reused for distinct report versions. Its claimed link-key warrant is falsified.</td><td><code>finance-2</code> introduces an independently governed report-version identifier; the previously inadmissible key may now be satisfiable.</td></tr>
+        <tr><th scope="row">Responsible review</th><td>Affected Surveying and Valuation and Finance and Banking stewards supply counterexamples; the mapping decision follows the Interoperability Working Group's authority.</td><td>The same affected stewards re-examine criterion-sameness, measured key coverage/discriminability and the ordered vetoes. A new identifier alone is insufficient.</td></tr>
+        <tr><th scope="row">New record</th><td><code>M-18</code> records governed retraction, the falsifying evidence and <code>M-17</code> as the superseded decision in <code>demo/2</code>.</td><td><code>M-22</code> records reopening and pins <code>surveying-1</code>/<code>finance-2</code>. The verdict remains unresolved until the required evidence is reviewed.</td></tr>
+        <tr><th scope="row">Expected answer</th><td>Do not carry the old exact assertion into the current set. Preserve its historical receipt and assess any weaker correspondence on its own warrant.</td><td>If the ordered criterion and coherence checks warrant a relation, record that predicate; otherwise retain denial or unresolved status. Reopening does not require a positive outcome.</td></tr>
+      </tbody>
+    </table>
+    <p>Other explicit reopening triggers in ODR-0059 R8 include a new context, source-version change, a newly satisfiable link key, rigidity retyping and coherence regression. A trigger makes the candidate eligible for renewed review; it does not supply the positive equivalence warrant. Re-run the scoped two-context coherence check where required, including on shared-meaning admission.</p>
+    <p>For the exercise, explain what changes and what stays fixed. In the first case the evidence defeats the accepted warrant even if the label is unchanged. In the second, changed evidence removes an earlier obstacle but does not prove criterion-sameness. Harbour Court's unresolved subdivision identity remains unresolved; this mapping review cannot settle it by matching an address.</p>
+  </section>
+
+  <section aria-labelledby="curation-register">
+    <h2 id="curation-register">Make the decision history reviewable in the specification</h2>
+    <p>ODR-0059 R11 requires versioned evidence, staleness signals, owners and exit gates across a four-stage curation lifecycle. The following is a worked way to organise the register, not a claim that OPDA has approved these stage names or implemented the workflow. A local operating claim needs its own named owners and adopted gates.</p>
+    <ol class="modelling-steps">
+      <li><strong>Candidate recorded.</strong> A proposer identifies the exact endpoints, compared versions and reason to inspect them. Exit only with enough evidence to pose the mapping question; do not mark a suggestion accepted.</li>
+      <li><strong>Evidence reviewed.</strong> The affected semantic owners inspect definitions, predicate warrant, hard cases and required coherence checks. Record held disagreement. Exit with a reasoned verdict or an explicit unresolved outcome.</li>
+      <li><strong>Decision recorded.</strong> The responsible mapping authority records the verdict, evidence, date, versioned mapping set and any superseded decision. Validate required SSSOM fields and predicate/justification coherence; preserve blocking versus advisory findings.</li>
+      <li><strong>Change reviewed.</strong> A named steward records staleness signals and reopening/retraction triggers against the relevant versions. A changed source or failed key returns the affected candidate to review; unchanged labels cannot close the issue.</li>
+    </ol>
+    <p>Keep these responsibilities in the specification's mapping register without inventing excluded SSSOM fields such as a mandatory author slot. Human accountability is still necessary, but a tool name is not a reviewer. Report reopened separations that later gain support as well as retracted false positives; a process that never revisits denials can miss useful interoperability.</p>
   </section>
 
   <section aria-labelledby="source-contract">

@@ -1,32 +1,45 @@
 ---
 import ModellingLayout from '@/layouts/ModellingLayout.astro';
-import ModellingVisual from '@/components/modelling/ModellingVisual.astro';
+import EnrichmentVisual from '@/components/modelling/EnrichmentVisual.astro';
 ---
 
-<ModellingLayout title="Sensitivity and policy: describe responsibilities without pretending to enforce them" description="Property information can be useful to one recipient and inappropriate for another. Make sensitivity, purpose and access responsibilities explicit, while keeping policy decisions and operational enforcement separate from ontology annotations." claim="method">
+<ModellingLayout title="Sensitivity and policy: model privacy, roles and scope" description="Describe which data a privacy statement concerns, which role and action a rule names, and what evidence and time qualify the claim. Ontology annotations and mappings support the Trust Framework without themselves granting access." claim="method">
   <section aria-labelledby="separation">
     <h2 id="separation">A public model does not make its instance data public</h2>
     <p>A definition of a person’s contact-detail property can be openly readable without exposing anyone’s contact details. A model may explain how an inspection report relates to a transaction without making every report available to every visitor. Vocabulary publication, data disclosure and access enforcement are different decisions.</p>
-    <p>In the fictional Harbour Court dossier, building descriptions, report contents, a participant’s contact details and transaction-specific information serve different purposes. Do not assign an actual disclosure policy from this example. Instead ask who needs which information, for what purpose, under whose authority, and what the recipient is permitted to do with it.</p>
-    <p>This chapter describes a modelling method, not legal advice, a statement of applicable retention periods or proof that an OPDA system enforces a policy. Those conclusions require their own authoritative decisions and operational evidence.</p>
+    <p>In the fictional Harbour Court dossier, the report version, a participant's contact details and the transaction have different identities. Start with a modelling question: “Can we identify which contact-detail property is classified as personal data, and the particular transaction and report version to which a stated role or authority relates?” This question earns explicit relationships and qualifications; it does not invent a permission or legal conclusion.</p>
+    <p>This chapter teaches ontology meaning, not a Trust-governance or security-operations course. The broader programme context belongs in <a href="/dbt-smart-data/identity">DBT identity, roles and Trust</a>, <a href="/dbt-smart-data/stewardship-privacy-ethics">stewardship and privacy</a> and the <a href="/dbt-smart-data/#separation">standard/operator distinction</a>. These fictional examples are not legal advice, adopted privacy values or claims that an OPDA system enforces access.</p>
   </section>
 
-<figure class="modelling-figure" data-modelling-figure="policy-boundaries">
-    <ModellingVisual kind="policy-boundaries" />
-    <ol class="modelling-steps">
-      <li><strong>Describe.</strong> Identify data categories, sensitivity and intended processing purpose.</li>
-      <li><strong>Decide.</strong> Author a scoped policy with the relevant human authority and evidence.</li>
-      <li><strong>Check.</strong> Validate the policy representation against its declared profile.</li>
-      <li><strong>Enforce.</strong> An operational system evaluates requests and applies the decision.</li>
-    </ol>
-    <figcaption>An annotation or a well-formed policy is not an access-control system. Each boundary needs an explicit contract.</figcaption>
+  <figure class="modelling-figure" data-modelling-figure="privacy-scope">
+    <EnrichmentVisual kind="privacy-scope" />
+    <p>Text equivalent: a privacy annotation describes the model's contact-detail property. Separately, a person plays a role in one transaction; a claim identifies a particular report version, supporting evidence and a validity reference. None of these links turns the property annotation or the Seller role into permission to read a report.</p>
+    <figcaption>The model can make the scope of a claim inspectable. Authentication, an actual grant of rights and enforcement are not consequences of these ontology links.</figcaption>
   </figure>
+
+  <section aria-labelledby="model-contribution">
+    <h2 id="model-contribution">Use the retained concern that owns the meaning</h2>
+    <p>ADR-0063's Trust clarification and ADR-0067's resource-home rule retain privacy, access, provenance and time within ontology modelling. Each OPDA resource still has one semantic home in the established contexts; an externally governed resource retains its external owner. Reuse and mapping do not copy scheme authority into every property-domain model.</p>
+    <table>
+      <caption>The ontology's bounded contribution to Trust-related questions</caption>
+      <thead><tr><th scope="col">Question</th><th scope="col">Modelling home</th><th scope="col">Distinction to preserve</th></tr></thead>
+      <tbody>
+        <tr><th scope="row">Which data, person and transaction?</th><td>Category 1: explicit identities, domain properties and contextual relationships.</td><td>The contact-detail property is not a contact-detail value; the report is not the inspected building.</td></tr>
+        <tr><th scope="row">Personal information, sensitivity and intended purpose?</th><td>Category 11: reviewed annotations and qualified purpose, legal-basis or policy references in the adopted profile.</td><td>A scheme permission is not a legal basis; a recorded consent claim does not establish valid consent.</td></tr>
+        <tr><th scope="row">Which role, data scope and action?</th><td>Category 1 for domain participation; Category 11 for access semantics.</td><td>Seller is not automatically an authorised reader or accredited scheme participant.</td></tr>
+        <tr><th scope="row">Who supplied the claim and what supports it?</th><td>Category 9: scoped attribution and derivation under the selected provenance profile.</td><td>Model-authoring history is not instance-data lineage, professional evidence or accreditation evidence.</td></tr>
+        <tr><th scope="row">When does the statement or authority apply?</th><td>Category 10, with Category 11 where relevant: validity, recorded time, expiry and referenced status.</td><td>A historical assertion cannot certify current permission.</td></tr>
+        <tr><th scope="row">How does a domain meaning connect to a scheme meaning?</th><td>Category 8: reviewed mappings with the separate scheme or external owner.</td><td>Matching role labels do not warrant equivalence or transfer the authority to define them.</td></tr>
+      </tbody>
+    </table>
+    <p>New concepts and mappings need a competency question, a semantic owner and an adopted profile. These connections do not import Category 6 as a governance ontology or authorise a general role-based access-policy engine.</p>
+  </section>
 
   <section aria-labelledby="categories">
     <h2 id="categories">Keep sensitivity independent from subject classification</h2>
     <p>A classification such as “transactional data” says something about the role of information in a model or information landscape. A sensitivity value says something different about handling expectations. Being master data does not make information public; being transaction data does not by itself make it restricted. Category 5 classification metadata and category 11 sensitivity therefore remain separate concerns.</p>
     <p>Likewise, an access role is not the same as a person’s domain role. A seller participates in a transaction; a permitted reader is a role within an access policy. One may inform the other under a declared rule, but a <code>Seller</code> classification must not automatically grant access to every report at an address.</p>
-    <p>Sensitivity may depend on the actual content and context. A class-level annotation is a useful modelling signal, not necessarily a complete decision for every instance. A safe implementation must be able to address the scope of the data it is handling and the policy under which it is doing so.</p>
+    <p>Sensitivity may depend on the actual content and context. A class-level annotation is a modelling signal, not a complete decision for every instance. Neither inheritance nor a shared property name silently supplies a blanket access decision.</p>
   </section>
 
   <section aria-labelledby="dpv">
@@ -34,35 +47,74 @@ import ModellingVisual from '@/components/modelling/ModellingVisual.astro';
     <p>The selected method uses DPV as a reference vocabulary for personal-data categories, purposes, processing and related policy concepts. It uses governed local annotation properties to describe classes and properties, with vocabulary alignments where meanings fit. That is not the same pattern as asserting that an ontology class is itself an individual processing activity.</p>
     <p>The adopted category distinguishes sensitivity levels, personal-data flags and categories, applicable-regulation concepts, processing purpose, lawful-basis concepts, residency information and access levels. These are related dimensions, not one boolean “compliant” flag. Their values and scope need review; an identifier containing the word “consent” does not demonstrate that valid consent was obtained.</p>
     <p>The adopted annotation-first pattern precedes more detailed qualified policy records. Later phases must not be presented as current operational capabilities simply because their classes or future patterns appear in a decision record. A referenced vocabulary is also not automatically an <code>owl:imports</code> dependency.</p>
+    <p>Keep sensitivity, personal-data categories, regulations, lawful bases, retention actions, residency/transfer and access levels in their separately governed schemes. Review mappings to the applicable canonical DPV, DPV-PD or legal concept; there is no blanket <code>skos:exactMatch</code>. A generic SKOS concept type cannot establish membership in the particular scheme the binding requires.</p>
+    <p>This chapter follows <a href="/modelling/odr/odr-0054">ODR-0054</a>'s adopted pin and scoped applicability/binding corrections. It does not promote a newer upstream predicate declaration: that requires a separate OPDA adoption decision. No new policy predicates or processing-purpose vocabulary are adopted by the examples.</p>
   </section>
 
   <section aria-labelledby="odrl">
     <h2 id="odrl">Add ODRL only for the selected policy gaps</h2>
     <p>OPDA <a href="/modelling/odr/odr-0057">ODR-0057</a> conditionally adds ODRL through the DPV profile. DPV supplies classification and context; ODRL expresses permissions, prohibitions, duties and constraints. This is a division of jobs, not a competition to place every privacy statement in whichever vocabulary has the shortest term.</p>
-    <p>The selected scope covers three gaps: temporal retention rules with operational-policy semantics; permissions conditioned on changing state; and composed cross-border transfer rules. Extending ODRL to other uses requires a new governing decision. The policy vocabulary is not adopted as a general substitute for the programme’s governance arrangements.</p>
-    <p>Within the profile, a policy needs a target connected to the relevant classified data. A constraint has a left operand, operator and right operand; a DPV classification must not be substituted for an ODRL left operand merely because it names the topic of the rule. The profile permits the appropriate DPV concepts as operand values. A machine-readable policy still requires a compatible evaluator and current inputs to affect access.</p>
+    <p>The selected ODRL 2.2 Common Vocabulary scope has exactly three conditional uses: retention policies with deadlines or elapsed-time conditions; permissions conditioned on dynamic state; and cross-border transfer policies composing reviewed conditions. Other profiles and uses need an amendment. This is not a general substitute for the programme's governance arrangements.</p>
+    <p>Within the selected DPV Profile of ODRL, a policy must have a target resolving to an appropriately DPV-typed resource. Merely finding <code>odrl:target</code> is insufficient. A constraint has a left operand, operator and right operand; a DPV classification must not be substituted for an ODRL left operand merely because it names the topic. Appropriate DPV terms may supply operand values. The target's type and the vocabulary boundary are distinct structural checks.</p>
     <p>The OPDA restriction on automatic policy generation is particularly important: scoped ODRL policies are human-curated, not inferred from source-code structure, field names or extraction confidence. A model can reveal that a decision is needed. It cannot invent the regulatory intent or permission needed to make that decision.</p>
   </section>
 
   <section aria-labelledby="case">
-    <h2 id="case">Work through a request for the Harbour Court report</h2>
-    <p>A recipient asks for report version 2. First identify the requested resource: is it the whole report, a finding extracted from it or merely metadata establishing its existence? Then identify the purpose and the policy scope. Access to one report version must not silently imply access to all personal information connected to the transaction.</p>
-    <p>A policy author may need to express a condition that depends on a current state, such as whether an authorisation remains active. The model should make the dependency explicit. It should not decide what that condition must be or assume that a historical authorisation is still current. If the evaluator needs time, role or purpose information that is unavailable, the operational system must follow its explicitly chosen handling rule.</p>
-    <p>Keep the evidence of the policy decision distinct from evidence of the inspection. A report can have strong source provenance while a disclosure request remains unauthorised. Conversely, an authorised recipient can receive a report whose factual claim is uncertain. Combining these into a single “trusted” status hides both questions.</p>
+    <h2 id="case">Work through the Harbour Court contact-detail model</h2>
+    <p>The fictional inspection occurred on 12 August 2026. Report v1 was issued on 14 August and corrected by v2 on 20 August; the correction did not create a new inspection. The proposed ontology also has an inspection-contact property and a person participating in a particular transaction. All identifiers below are illustrative <code>example.org</code> resources; no contact value, credential or actual person's information is published.</p>
+    <h3 id="model-and-instance">An annotation describes the model element</h3>
+    <table>
+      <caption>Keep a model-level classification separate from domain-instance facts</caption>
+      <thead><tr><th scope="col">Illustrative resource or statement</th><th scope="col">Meaning</th><th scope="col">Not established</th></tr></thead>
+      <tbody>
+        <tr><th scope="row"><code>https://example.org/property-model/inspectionContactDetail</code></th><td>The domain property whose values provide contact information for the inspection purpose. Its semantic owner and both applicability sides need documentation.</td><td>No actual address or telephone number, and no disclosure authorisation.</td></tr>
+        <tr><th scope="row">Reviewed personal-data binding on that property</th><td>The property IRI is the classification subject; the flag is true and the category is a reviewed member of the personal-data scheme.</td><td>The property itself is not a person or DPV processing activity. This binding is not a claim that every value has been checked.</td></tr>
+        <tr><th scope="row"><code>https://example.org/harbour-court/report-v2</code></th><td>The corrected report resource connected to the same inspection and its own version-specific evidence.</td><td>A link to the report is not permission to read the report or its connected personal data.</td></tr>
+        <tr><th scope="row">A qualified role participation</th><td>An identified person participates in one transaction with a stated role and relevant time/evidence.</td><td>A global, permanent access entitlement for that person.</td></tr>
+      </tbody>
+    </table>
+    <h3 id="scoped-role">A transaction role is not an access role</h3>
+    <p>Suppose the person plays Seller in the transaction concerning Harbour Court. The domain relationship must identify its bearer and transaction. If a separate scheme rule refers to an authorised reader, any connection needs an explicit role, data scope, action and contextual justification. It might concern reading one report version for a stated purpose; it cannot be inferred as access to all records sharing an address.</p>
+    <p>Map to the separately owned scheme meaning through the <a href="/semantic-modelling/method/mapping-records">mapping discipline</a>, preserving its exact <a href="/semantic-modelling/method/context-map-records">context-map applicability</a>. Do not mint another copy of a scheme role inside Surveying and Valuation, equate Seller with an access role, or treat scheme permission, legal basis and consent as synonyms.</p>
+    <h3 id="evidence-validity">A report's evidence and an authority's validity answer different questions</h3>
+    <p>A claim about the inspection can refer to report v2 and its supplier under the <a href="/semantic-modelling/method/evidence-and-time">selected evidence and time patterns</a>. If an authority claim has its own evidence and validity interval, identify those separately. The inspection date, report issue date, time a statement was recorded and authority expiry must not collapse into one timestamp.</p>
+    <p>The model-authoring history may say who drafted the contact property's definition. It does not say who supplied a particular person's details, prove that the inspection occurred or establish accreditation. Likewise, a recorded authority that applied in August cannot establish permission in September without the relevant current evidence. The model exposes that unanswered question; this lesson does not design an access evaluator.</p>
+  </section>
+
+  <section aria-labelledby="qualified-bindings">
+    <h2 id="qualified-bindings">Review the exact subject and scheme in a qualified classification</h2>
+    <p>Under <a href="/modelling/odr/odr-0054">ODR-0054</a>, a qualified sensitivity classification has exactly one subject IRI and exactly one level from the sensitivity scheme, with the scoped classification-time and actor/provenance requirements. A personal-data binding has exactly one property IRI and one boolean flag. True requires a category; every supplied category must belong to the personal-data scheme.</p>
+    <table>
+      <caption>Ordinary and adverse binding cases</caption>
+      <thead><tr><th scope="col">Case</th><th scope="col">Review result</th><th scope="col">Why</th></tr></thead>
+      <tbody>
+        <tr><th scope="row">One contact property, true flag, one correctly governed personal-data category</th><td>Meets these stated binding conditions, assuming the remaining scoped requirements are met.</td><td>The subject and value are explicit; this is representation conformance, not legal validation.</td></tr>
+        <tr><th scope="row">True flag but no category</th><td>Structural Violation.</td><td>The required category is absent; a general “personal” label is not the missing binding.</td></tr>
+        <tr><th scope="row">Personal-data category value taken from the access-level scheme</th><td>Structural Violation.</td><td>Concept typing cannot substitute for the required scheme membership.</td></tr>
+        <tr><th scope="row">Sensitivity assertion has two subject IRIs</th><td>Structural Violation.</td><td>The qualified claim must identify exactly one subject; separate claims need separate scoped records.</td></tr>
+      </tbody>
+    </table>
+    <p>An annotation's applicability to classes or properties must follow the selected exclusive property-side mechanisms. Do not turn alternative targets into conjunctive RDFS domains. Required definitions and ontology ownership also need declaration checks that select annotation properties even when their ownership link is missing.</p>
+  </section>
+
+  <section aria-labelledby="staged-profile">
+    <h2 id="staged-profile">Keep the adopted and deferred boundaries visible</h2>
+    <p>Start with classification metadata. Qualified use can introduce retention schedules, access policies and purpose declarations under their governed profile; machine-executable policy remains conditional under <a href="/modelling/odr/odr-0057">ODR-0057</a>. Neither an annotation nor a populated policy graph proves an operating capability.</p>
+    <p>ODR-0054's selected surface covers the two qualified assertion profiles above, the DPV/ODRL boundary validator, scheme completeness and explicit annotation-property documentation/ownership targeting. Preserve structural Violation and advisory provenance/documentation severity. This is a required method surface, not evidence that five OPDA validators have been delivered.</p>
+    <p>Regulation-to-lawful-basis conditionals, retention and access-policy completeness, and sensitivity-escalation checks remain staged pending a scoped decision. Do not resurrect historical shape lists or adopt a newer upstream change through a teaching example. The separate adoption gate remains separate from explaining the currently adopted method.</p>
   </section>
 
   <section aria-labelledby="checks">
     <h2 id="checks">What validation can establish—and what it cannot</h2>
     <p>Shapes can check whether a qualified sensitivity classification identifies its subject and level, whether a personal-data flag has the required category, whether values come from the chosen schemes, and whether a policy uses the prescribed vocabulary boundary. Such checks establish structural conformance to the selected representation.</p>
     <p>They do not prove the classification is substantively correct, that a legal basis applies, that a recipient’s identity has been authenticated or that a service has refused an unauthorised request. Those require the relevant authority, evidence and enforcement mechanisms. Describe the check that actually ran instead of compressing all of these questions into “policy validated”.</p>
-    <p>Named-graph segregation can support an operational design, but placing data in a graph called “restricted” does not restrict access by RDF semantics. The store, API and delivery system must implement access controls. Graph placement also does not define a bounded context or transfer semantic ownership.</p>
+    <p>Named-graph placement does not confer authorisation or transfer semantic ownership. Enforcement is a downstream responsibility. Keep that boundary explicit without making deployment, registry operation or policy evaluation part of this ontology lesson.</p>
   </section>
 
   <section aria-labelledby="failure">
-    <h2 id="failure">Failure case: a green badge on an exposed report</h2>
-    <p>A page displays “Restricted” and passes a shape requiring a sensitivity value, while its download endpoint serves the report to anyone with the URL. The metadata may be well formed; the operational boundary has failed. Changing the colour of the badge, adding another ontology term or running the same shape again cannot fix that failure.</p>
-    <p>The documentation must therefore say separately what is classified, which policy has been approved, which representation checks have passed and what enforcement has actually been demonstrated. Until such evidence exists, describe the required method and the implementation gap without implying protection.</p>
-    <p>Continue with <a href="/semantic-modelling/method/evidence-and-time">evidence and time</a> or review <a href="/semantic-modelling/method/scope-and-package">the scope of a semantic package</a>.</p>
+    <h2 id="failure">Failure case: a domain role becomes blanket permission</h2>
+    <p>An author sees “Seller” and a valid personal-data binding, then asserts that the person may read every report at Harbour Court. Neither premise supplies that conclusion. The role is scoped to a transaction; the annotation describes a model property. No particular access action, data scope, purpose or current authority has been established.</p>
+    <p>The repair is to remove the unsupported access conclusion from the proposal, preserve the two legitimate statements and record the missing semantic question for the responsible owner. If an access relationship is later justified, model its actual scope and evidence through an adopted profile. Do not add a generic “trusted” flag to make the unresolved question disappear. SHACL can test the representation; annotations and JSON-LD do not authenticate actors, grant rights, establish legal compliance or enforce access.</p>
   </section>
 
   <section aria-labelledby="source-contract">
