@@ -1,7 +1,7 @@
 ---
 status: accepted
 date: 2026-07-19
-updated: 2026-09-05
+updated: 2026-09-07
 tags: [website, information-architecture, modelling, migration, bounded-context, publication]
 supersedes: []
 depends-on: [ADR-0041, ADR-0044, ADR-0063]
@@ -9,6 +9,12 @@ implements: [src/pages/development/property-pack]
 ---
 
 # Revamp the modelling website before publishing the new working-group approach
+
+> Update 2026-09-07 — Modelling supports specification development and governance.
+> Explain the formal model and the generated JSON-LD artefacts most implementers will
+> consume. Trust implementation recommendations and linked-data-store guidance are
+> informative. Operational application training is outside this effort. ADR-0063
+> records this scope and the established contextual boundaries.
 
 > Update 2026-09-05 — the operator requested an extensive two-audience Modelling
 > section: plain-language explanation, benefits and website participation, plus a
@@ -92,7 +98,8 @@ The follow-on website plan must resolve, as one coherent release:
    retained as a named baseline beside the new models.
 3. **Bounded-context navigation** — provide a consistent home for each context's
    glossary, dictionary, controlled vocabularies, taxonomies, resources and
-   relationships, with the RDF ontology, generated JSON Schemas, validation and
+   relationships, with the RDF ontology, generated JSON-LD artefacts and associated
+   JSON Schemas, validation and
    human-readable exports presented as views of the same agreement.
 4. **Working-group navigation** — cover all six bounded-context groups, the DBT Smart
    Data scheme group and the separate Interoperability Working Group.
@@ -113,8 +120,11 @@ The follow-on website plan must resolve, as one coherent release:
 9. **Evidence capture** — support governed ingestion of documents, forms, diagrams,
    examples, meeting transcripts and online discussions, with consent, provenance,
    access and confidentiality controls.
-10. **Technical views** — retain machine-readable RDF/OWL/SKOS/SHACL and implementation
-   traceability without making syntax the workshop interface.
+10. **Technical views** — explain specification authoring in RDF/RDFS/OWL/SKOS/SHACL,
+   its generated JSON-LD delivery artefacts and their traceability. Present governance
+   and trust recommendations alongside the specification. Label linked-data-store
+   and trust implementation guidance informative; keep service operations outside
+   the learning programme. Participants review meaning through ordinary language.
 11. **Migration** — define URL redirects, version identifiers and links from current
    schema/mapping pages to the appropriate future equivalents.
 12. **Release completeness** — identify every page whose meaning changes so the
