@@ -21,6 +21,25 @@ for (const { width, label } of [
   });
 }
 
+for (const route of ['/', '/join', '/programme']) {
+  test(`design controls are URL-gated on ${route}`, async ({ page }) => {
+    const clean = watchRuntime(page);
+    await page.setViewportSize({ width: 1800, height: 1000 });
+    await visit(page, route);
+    const controls = page.locator('[data-header-preview-controls]');
+    await expect(controls).toBeHidden();
+    await visit(page, `${route}?config`);
+    await expect(controls).toBeVisible();
+    const nextPage = route === '/join' ? '/' : '/join';
+    const link = page.locator(`a[href$="${nextPage}?config"]`).first();
+    await expect(link).toBeAttached();
+    await link.click();
+    await expect(page).toHaveURL(new RegExp(`${nextPage.replaceAll('/', '\\/')}\\?config$`, 'u'));
+    await expect(page.locator('[data-header-preview-controls]')).toBeVisible();
+    clean();
+  });
+}
+
 test('forced colours preserve visible focus and labelled controls', async ({ page }) => {
   const clean = watchRuntime(page);
   await page.emulateMedia({ forcedColors: 'active' });

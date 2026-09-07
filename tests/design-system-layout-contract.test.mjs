@@ -409,6 +409,18 @@ test('authored text has one reading measure while evidence and navigation use th
   assert.match(navigation, /margin-block-start:\s*var\(--space-6\)/u);
 });
 
+test('shared design controls remain hidden unless URL configuration is enabled', async () => {
+  const [controls, client, css] = await Promise.all([
+    readFile(file('src/components/HeaderPreviewControls.astro'), 'utf8'),
+    readFile(file('public/ui/client.js'), 'utf8'),
+    readFile(file('public/ui/design/header-brand.css'), 'utf8'),
+  ]);
+  assert.match(controls, /data-header-preview-controls[^>]*\bhidden/u);
+  assert.match(client, /currentUrl\.searchParams\.has\('config'\)/u);
+  assert.match(client, /controls\.hidden = !configurationEnabled/u);
+  assert.match(css, /\.header-preview-controls\[hidden\]\s*\{\s*display:\s*none\s*!important;/u);
+});
+
 test('the adversarial conformance blockers remain closed', async () => {
   const [rootPage, brandHeading, themeToggle, base, content, components, navigation, print] = await Promise.all([
     readFile(file('src/pages/index.astro'), 'utf8'),

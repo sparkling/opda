@@ -108,6 +108,8 @@
   }
 }
 
+/* The flex layout must not override URL-gated visibility. */
+.header-preview-controls[hidden] { display: none !important; }
 .header-preview-controls {
   position: relative;
   z-index: 100;
