@@ -1,14 +1,22 @@
 ---
-status: proposed
+status: accepted
 date: 2026-09-07
+updated: 2026-09-07
 tags: [ci-cd, testing, deployment, proportionality, performance, reliability]
 supersedes: []
 amends: [ADR-0073]
 depends-on: [ADR-0040]
-implements: []
+implements: [.github/workflows/site-release.yml, .github/workflows/site-assurance.yml, config/ci-test-tiers.json, scripts/lib/ci-change-classifier.mjs]
 ---
 
 # Rebuild proportionate risk-based CI/CD
+
+> **Accepted and implementation started 2026-09-07.** The operator instructed
+> implementation of this plan. The change classifier, test inventory, five
+> critical browser journeys, reusable exact-artifact release workflow, scheduled
+> broad assurance workflow and 500 MB artefact ceiling are now in the repository.
+> The ADR remains accepted—not implemented—until the ten-release observation
+> period satisfies the confirmation criteria below.
 
 ## Context and Problem Statement
 
@@ -179,9 +187,13 @@ below 500 MB without deleting public resources or breaking stable URLs.
 
 ### Confirmation
 
-This ADR remains proposed until the operator accepts it. Implementation is
-complete only when all of the following are demonstrated over at least ten
-ordinary releases:
+Implementation is complete only when all of the following are demonstrated over
+at least ten ordinary releases:
+
+- Local implementation evidence on 7 September 2026: all 251 Node contracts
+  passed; a clean static build completed in about 20 seconds; the whole-site
+  crawl completed in about 28 seconds with zero broken or orphaned routes; and
+  the release artefact measured 362.3 MiB across 5,281 files.
 
 - editorial-lane p95 publication time is 8 minutes or less;
 - application-lane p95 feedback time is 10 minutes or less;

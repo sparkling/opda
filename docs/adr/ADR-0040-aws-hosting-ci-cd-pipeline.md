@@ -10,6 +10,16 @@ implements: [ADR-0038]
 
 # AWS hosting CI/CD pipeline
 
+> **Amended 2026-09-07 by [ADR-0083](./ADR-0083-rebuild-proportionate-risk-based-ci-cd.md).**
+> `.github/workflows/deploy-aws.yml` is now a thin trigger for the reusable
+> `site-release.yml` workflow. A deterministic path classifier selects
+> editorial, application or ontology evidence; every release keeps a small
+> common safety envelope, while ontology changes retain the complete model
+> toolchain. The release candidate is built once, stamped with its source commit
+> and validation lane, checked against a 500 MB budget, and deployed unchanged.
+> Whole-site, broad accessibility/responsive and visual checks run in the
+> non-deploying `site-assurance.yml` schedule instead of blocking every release.
+
 > **Amended 2026-09-07.** A deliberately manual, audited break-glass workflow
 > (`deploy-aws-break-glass.yml`) may build and deploy a named `main` commit
 > without the normal validation jobs when the operator explicitly confirms an
@@ -86,23 +96,30 @@ Chosen option: **A — GitHub Actions + IAM OIDC role + CloudFormation deploys**
 * The role's **permissions policy** covers exactly the pipeline's verbs: `cloudformation:*` on the project's stacks, `s3:PutObject`/`DeleteObject`/`ListBucket` on the site bucket, `cloudfront:CreateInvalidation` on the distribution, `ecr:*` push on the Artalk repository, `ecs:UpdateService`/`DescribeServices` on the Artalk service, plus the `iam:PassRole`/regional service permissions CloudFormation needs to manage the declared resources.
 * GitHub repository configuration holds only the **role ARN and account ID** — neither is a secret.
 
-**2. Site deploys — `deploy.yml` (rewritten at cutover).**
+**2. Site deploys — `deploy-aws.yml` and reusable `site-release.yml`.**
 
 * Trigger: push to `main` filtered to actual site inputs, including the `docs/`
   content collections; NotebookLM-only scripts do not trigger a site release.
-* Build: `pnpm run build` for ordinary site changes. Ontology-input changes run
-  `npm run build:data`, then fail if the refreshed committed model or graph
-  differs from the repository.
-* Validation: design-system, ADR, Node and ontology-documentation contracts run
-  together in one job while a second job builds the release candidate and runs
-  route, resource, browser, accessibility and responsive checks against it.
-  This is the smallest useful dependency graph: it overlaps independent work
-  without duplicating the 298 MB build across test runners. Model-only setup and
-  tests are conditional; the 15 diagnostic exemplars run as one parametrised
-  suite.
-* Handoff: the build-and-browser job uploads the validated publishable `dist/`
-  tree as a one-day GitHub Actions artefact. The deploy job starts only after
-  both validation jobs pass, downloads that artefact, and never rebuilds it.
+* Classification: a deterministic, contract-tested path classifier selects the
+  editorial, application and ontology lanes. Unknown inputs fail safe into the
+  application lane. Infrastructure remains independently owned by `infra.yml`.
+* Build: `pnpm run build` for editorial and application changes. Ontology-input
+  changes run `pnpm run build:data`, then fail if the refreshed committed model
+  or graph differs from the repository.
+* Validation: every site release checks the design and ADR registries, the test
+  inventory, stable release contracts, changed routes and exactly five critical
+  browser journeys. Application changes add focused component contracts and
+  navigation/runtime journeys. Ontology changes add Jena, generator, BASPI5,
+  schema, byte-identity, generated-model and resource-receipt evidence.
+* Scheduled assurance: the complete Node and Playwright suites, whole-site crawl,
+  broad accessibility/responsive checks and curated visual baselines run without
+  deployment. External links run weekly. A failed schedule creates or updates a
+  tracked issue and cannot retroactively invalidate a deployed artefact.
+* Handoff: the build job stamps `dist/release.json` with the source commit, lane
+  and run identity, enforces the 500 MB ceiling, and uploads the publishable
+  tree under an immutable commit/run-attempt name. The deploy job starts only
+  after validation passes, verifies that identity, downloads the same artefact,
+  and never rebuilds it.
   Historical generated-tool prefixes already excluded from S3 synchronisation
   are also excluded from the handoff artefact.
 * Deploy: replace the wrangler step with `aws s3 sync dist/ s3://<site-bucket> --delete` followed by `aws cloudfront create-invalidation --paths '/*'` (at ~20 views/day, a full invalidation is simpler than hashed-path bookkeeping and within the 1,000 free invalidation paths/month).
@@ -149,9 +166,11 @@ Chosen option: **A — GitHub Actions + IAM OIDC role + CloudFormation deploys**
 * Good, because no standing AWS credentials exist anywhere — a leaked GitHub secret yields a non-secret role ARN; assuming the role requires a workflow run on `sparkling/opda@main` (or the fork's `main` for ECR/ECS verbs only).
 * Good, because the pipeline itself is code in this repository: the bootstrap stack, both workflows, and the deploy role's permissions are all reviewable and diffable.
 * Good, because a normal site release has no Java service dependency and every
-  required quality failure prevents deployment in the same workflow.
+  proportionate required failure prevents deployment in the same workflow.
 * Good, because independent contracts overlap the build and browser path while
-  the large site tree is built, browser-tested and uploaded only once.
+  the site tree is built, browser-tested and uploaded only once.
+* Good, because slow or presentation-sensitive breadth remains automated on a
+  schedule without making routine publication depend on unrelated pages.
 * Good, because the deployed tree is the validated release candidate rather
   than the result of a second build on the deployment runner.
 * Good, because ontology changes retain the Jena, generator, round-trip,

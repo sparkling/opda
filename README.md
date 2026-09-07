@@ -257,19 +257,27 @@ There is no `lint` script. Use the checks that correspond to the changed surface
 | Command | Scope |
 |---|---|
 | `make test` | Root Node test suite: Markdown transforms plus site, data, IA, Property Pack and operational contracts. |
+| `make test-release` | Small stable contracts required by every site release. |
+| `make test-application` | Application-lane Node contracts selected from the governed test inventory. |
+| `make check-test-inventory` | Verify every automated test has one owner, tier and validation lane. |
 | `make test-schema` / `make check-schema-drift` | Schema reproducibility boundary and strict generated-page drift. |
 | `make check-design-system` | Generated design-module facade drift. |
 | `make check-ia-preservation` | Explicit audit of the completed IA migration receipts; not an evergreen release gate. |
 | `make check-adr` | Generated ADR registry drift. |
 | `make check-links` / `make check-resource-links` | Internal ontology/PDTF link and source-resource receipt checks after a site build. |
-| `make ci` | Full release-equivalent validation, including ontology refresh, static build and browser gates. |
-| `make ci-browser` | Static build plus dependency-free, route, resource and Playwright release gates for ordinary site changes. |
-| `make test-smoke`, `make test-e2e`, `make test-a11y`, `make test-visual` | Focused Playwright gates. Build `dist/` first; the tests serve that built output. |
+| `make test-release-smoke` | The five critical browser journeys used by routine releases. |
+| `make check-changed-routes` | Validate routes listed in `ROUTES_FILE` plus their internal resources. |
+| `make report-artifact` | Measure `dist/` and enforce `MAX_ARTIFACT_MB` (500 by default). |
+| `make ci` | Comprehensive local assurance, including ontology refresh, whole-site crawl and the broad browser suite. |
+| `make ci-browser` | Comprehensive static-site assurance; intentionally broader than the release lane. |
+| `make test-smoke`, `make test-e2e`, `make test-a11y`, `make test-visual` | Focused or broad Playwright assurance. Build `dist/` first; the tests serve that built output. |
 
-One AWS workflow validates, builds and deploys, so a required failure cannot race or be ignored by
-the deployment job. It runs the static path for ordinary site changes and conditionally provisions
-Python, Java and Fuseki for ontology changes. The ontology path retains byte identity, BASPI5,
-schema, generated-model and documentation drift gates in the same deployment-blocking job.
+The AWS caller invokes one reusable, change-aware release workflow, so a required failure cannot
+race or be ignored by deployment. Editorial changes keep a small common gate, application changes
+add focused behaviour evidence, and ontology changes conditionally provision Python, Java and
+Fuseki for the complete model boundary. The candidate is built once and deployed unchanged.
+Whole-site, broad browser/accessibility/responsive and visual evidence runs nightly; external-link
+evidence runs weekly. Scheduled assurance never deploys.
 
 ## Deployment and publication boundaries
 

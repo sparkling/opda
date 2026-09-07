@@ -1,7 +1,7 @@
 ---
 status: implemented
 date: 2026-08-16
-updated: 2026-09-06
+updated: 2026-09-07
 tags: [design-system, brand, website, accessibility, css, governance, presentation]
 supersedes: [ADR-0025]
 depends-on: [ADR-0064]
@@ -9,6 +9,12 @@ implements: [DESIGN.md, public/ui, src/layouts/Layout.astro, src/layouts/Standal
 ---
 
 # Adopt the OPDA brand and replace the website design system
+
+> **Release boundary amended 2026-09-07 by [ADR-0083](./ADR-0083-rebuild-proportionate-risk-based-ci-cd.md).**
+> The broad 139-test Chromium matrix remains design-system assurance, but no
+> longer blocks every publication. Releases run five stable critical journeys;
+> application changes add focused browser evidence, and the complete responsive,
+> accessibility and visual suite runs on the non-deploying assurance schedule.
 
 ## Context and problem statement
 
@@ -473,7 +479,7 @@ behaviour requires a fresh local validation receipt when testing is authorised.
   resources and zero unlinked routes. Ontology resources whose canonical IDs differ
   only by case are checked exactly on Linux CI and identified explicitly on
   case-insensitive development filesystems.
-- The 139-test Chromium release matrix passes: representative WCAG 2.2 AA axe
+- The 139-test Chromium assurance matrix passes: representative WCAG 2.2 AA axe
   scans in both themes, 18 reviewed desktop/mobile light/dark visual baselines,
   keyboard and interaction behaviour, and 320px/400%-equivalent reflow,
   forced-colour and reduced-motion checks.
@@ -484,8 +490,9 @@ behaviour requires a fresh local validation receipt when testing is authorised.
   drift check pass with zero errors and zero warnings. Its canonical
   `SOURCE_DATE_EPOCH` and tracked offline input projections run in local CI, pull
   requests and the deployment workflow.
-- Pull requests execute the full build, crawl, browser, accessibility and model
-  gates; AWS credentials, upload and invalidation remain deployment-only steps.
+- Pull requests execute the evidence lane selected by ADR-0083. Broad crawl,
+  browser, accessibility and visual evidence runs on the assurance schedule;
+  AWS credentials, upload and invalidation remain deployment-only steps.
 - The standalone review artefact may be published through OpenAI Sites under the
   operator's separate 16 August 2026 authorisation; no application deployment or
   external production-site mutation occurs.

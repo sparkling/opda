@@ -185,8 +185,8 @@ check-schema-drift:	## Strict schema drift gate; unavailable input bundles fail 
 	npm run check:schema-drift
 
 .PHONY: ci-browser
-ci-browser: build test check-design-system check-adr ci-ontology-doc ci-ontology-graph check-routes check-resource-links test-e2e	## Site release gates against a pure static build
-	@echo "✓ static and browser release gates passed"
+ci-browser: build test check-design-system check-adr ci-ontology-doc ci-ontology-graph check-routes check-resource-links test-e2e	## Comprehensive static-site assurance (broader than a release lane)
+	@echo "✓ static and browser assurance passed"
 
 .PHONY: verify-ontology
 verify-ontology:	## Byte-identity: re-emit the ontology and diff it against the committed corpus
@@ -249,7 +249,7 @@ check-links-external:	## Live external-URL sweep over extracted ontology + /pdtf
 	node scripts/check-external-links.mjs
 
 .PHONY: ci
-ci: check-design-system check-adr ci-ontology ci-ontology-doc ci-ontology-graph test test-model test-schema check-schema-drift build-data check-routes check-resource-links test-e2e	## Full release-equivalent validation; use ci-browser for ordinary site changes
+ci: check-design-system check-adr ci-ontology ci-ontology-doc ci-ontology-graph test test-model test-schema check-schema-drift build-data check-routes check-resource-links test-e2e	## Comprehensive local assurance across site, model and browser surfaces
 	git diff --exit-code -- src/data/ontology-model.json public/data/ontology-graph-elements.json
 	@echo "✓ all local CI gates passed"
 
