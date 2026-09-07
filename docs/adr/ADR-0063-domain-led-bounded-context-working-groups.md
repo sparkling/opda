@@ -1,7 +1,7 @@
 ---
 status: accepted
 date: 2026-07-19
-updated: 2026-09-05
+updated: 2026-09-07
 tags: [strategy, ontology, bounded-context, working-groups, ddd, skos, shacl, interoperability, provenance, temporal, dpv, dcat]
 supersedes: []
 depends-on: [ADR-0026, ADR-0039, ODR-0019, ODR-0020]
@@ -9,6 +9,12 @@ implements: []
 ---
 
 # Domain-led bounded-context working groups for SPDTF development
+
+> **Clarification — 2026-09-07.** The current effort develops a specification and
+> trust-governance recommendations. Generated JSON-LD artefacts are the main route
+> for implementers. Linked-data-store and trust implementation guidance is informative;
+> operating an application is outside this effort. The documented contextual
+> boundaries are established inputs to the work.
 
 > **Clarification — 2026-09-05.** The operator confirmed that the relevant
 > `semantic-modelling` ODRs are normative for the OPDA modelling method, not merely
@@ -117,8 +123,9 @@ cross-sector scheme group and one cross-cutting Interoperability Working Group.
 | **DBT Smart Data** | Smart Data scheme semantics: participants, roles, trust, consent, authorisation, accreditation, liability, data-sharing obligations and cross-sector alignment |
 | **Interoperability Working Group** | Common boundary ontology, context map, cross-domain mappings and shared exchange conventions, with representatives selected from the other working groups |
 
-The boundary and name of a context remain reviewable. They are hypotheses to validate
-with practitioners, not partitions mechanically derived from current form overlays.
+The contextual boundaries and their documentation are established for this development
+phase. Model development works within them; any later boundary revision requires a
+separate governance decision.
 DBT Smart Data is the scheme working group, not being asserted as a seventh property
 bounded context. Its terminology, policy lifecycle, cross-sector authority and
 scheme-level questions are distinct from the property-transaction domains. It must not
@@ -154,18 +161,26 @@ aligned content outputs:
 6. **Relationships** — the meaningful links, roles and constraints that connect those
    resources.
 
-The content is published through several artefacts for different consumers:
+The specification defines the agreed meaning and applicable data constraints. Its
+formal models and generated delivery artefacts serve different consumers:
 
-- a machine-readable **ontology in RDF**, including validation shapes where
-  appropriate;
-- generated **JSON Schemas** for implementers who work with schema and form tooling;
-- human-readable **website pages**, with exportable **PDF** and **Markdown** views;
-- an optional **runtime for ontology-to-schema mapping**, validation and related
-  translation where a deployment needs it.
+- machine-readable **RDF/RDFS/OWL models**, vocabularies and **SHACL shapes**;
+- generated **JSON-LD exchange artefacts**, including contexts and associated JSON
+  Schemas, as the main route for most implementers;
+- human-readable **website pages**, with exportable **PDF** and **Markdown** views.
 
 These are different representations of one agreement, not independent specifications.
-They must not carry conflicting meanings. The working groups review the business
-meaning; they are not expected to author RDF, SHACL or JSON Schema syntax.
+Generation must preserve the agreed meaning and identify the constraints represented
+by each delivery profile. Authors document any constraint that needs additional checking.
+The working groups review business meaning without needing to author ontology syntax.
+
+Governance covers specification ownership, evidence, review, decisions, versioning
+and approval. Recommendations explain how implementers can realise the trust aspects.
+We provide the material needed to implement a linked-data store, with that guidance
+explicitly informative. Store choice, hosting, runtime translation, enforcement and
+service operations belong to downstream implementations and are not normative
+requirements of this specification. Authoring and artefact-generation tools support
+specification development; they do not make OPDA the operator of a data application.
 
 ### 3. Eight ontology categories required from every group
 
@@ -187,8 +202,8 @@ must consider. They adopt the subset of the 14-category framework in the
 
 Categories 3 (process modelling), 4 (service architecture), 6 (governance and
 compliance), 12 (capability and intent), 13 (source mapping) and 14 (data product)
-remain outside OPDA's required ontology coverage. Governance remains an operating
-concern recorded in ADRs and procedures, not an ontology output. The deliberately
+remain outside OPDA's required ontology coverage. Specification governance is recorded
+in ADRs and procedures, rather than added as a property-ontology output. The deliberately
 small common ontology is an architectural boundary governed by the Interoperability
 Working Group rather than a ninth formal category.
 
@@ -289,8 +304,8 @@ participants to learn either ontology syntax or schema engineering. Existing sch
 and mappings remain inputs for traceability, migration and implementation, and new
 schemas can be generated and published from the governed ontology through tested
 transformations. Participants supply evidence and judgement; facilitators produce the
-formal artefacts. The operational controls for the AI-assisted cycle are defined by
-ADR-0065.
+formal artefacts. ADR-0065 proposes controls for that authoring cycle; its Proposed
+status does not establish a live service or adopted governance mechanism.
 
 ### 6. First group: Finance and Banking
 
