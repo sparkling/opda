@@ -1,0 +1,14 @@
+---
+import CampaignThemeImage from '@/components/campaign/CampaignThemeImage.astro';
+---
+<div class="judgement-cover" aria-hidden="true">
+  <CampaignThemeImage
+    lightSrc="/images/modelling/judgement/analytical-lenses-light.png"
+    darkSrc="/images/modelling/judgement/analytical-lenses-dark.png"
+    width={2172} height={724} loading="eager" alt=""
+  />
+</div>
+<style>
+  .judgement-cover { max-inline-size: 64rem; }
+  .judgement-cover :global(img) { display: block; inline-size: 100%; block-size: auto; }
+</style>
