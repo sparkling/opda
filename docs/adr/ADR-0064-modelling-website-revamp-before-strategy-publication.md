@@ -10,11 +10,14 @@ implements: [src/pages/development/property-pack]
 
 # Revamp the modelling website before publishing the new working-group approach
 
-> Update 2026-09-07 — Modelling supports specification development and governance.
-> Explain the formal model and the generated JSON-LD artefacts most implementers will
-> consume. Trust implementation recommendations and linked-data-store guidance are
-> informative. Operational application training is outside this effort. ADR-0063
-> records this scope and the established contextual boundaries.
+> Update 2026-09-07 — Corrected Trust and teaching scope: the Modelling section
+> teaches domain and ontology modelling. JSON-LD is a generated artefact, not a
+> separate subject requiring payload examples or detailed delivery explanations.
+> SPDTF Trust belongs to the broader Smart Data scheme work, not a new learning
+> track here. Explain only the domain-model annotations and mappings that support
+> its requirements within the retained categories. Model-review governance is a
+> distinct concern. ADR-0063 §2a records this boundary; linked-data-store guidance
+> remains informative and operational application training remains out of scope.
 
 > Update 2026-09-05 — the operator requested an extensive two-audience Modelling
 > section: plain-language explanation, benefits and website participation, plus a
@@ -120,11 +123,17 @@ The follow-on website plan must resolve, as one coherent release:
 9. **Evidence capture** — support governed ingestion of documents, forms, diagrams,
    examples, meeting transcripts and online discussions, with consent, provenance,
    access and confidentiality controls.
-10. **Technical views** — explain specification authoring in RDF/RDFS/OWL/SKOS/SHACL,
-   its generated JSON-LD delivery artefacts and their traceability. Present governance
-   and trust recommendations alongside the specification. Label linked-data-store
-   and trust implementation guidance informative; keep service operations outside
-   the learning programme. Participants review meaning through ordinary language.
+10. **Technical views** — explain ontology modelling in RDF/RDFS/OWL/SKOS/SHACL,
+   including domain meaning, relationships, constraints and the selected method.
+   Both reader journeys focus on the model. Mention JSON-LD briefly as a generated
+   output; do not add payload-design lessons, package walkthroughs or generator detail.
+   Cover privacy, sensitivity, access-role semantics, provenance and time as model
+   concerns that support SPDTF Trust, using the adopted category profiles. Link the
+   existing DBT Smart Data section for broader scheme context; do not add a Trust-
+   governance, accreditation or security-operations course. Distinguish domain roles,
+   scheme roles and access permissions. Linked-data-store implementation is informative;
+   adopted model requirements retain their scope. Participants review meaning in
+   ordinary language, without designing or operating the wider Trust Framework.
 11. **Migration** — define URL redirects, version identifiers and links from current
    schema/mapping pages to the appropriate future equivalents.
 12. **Release completeness** — identify every page whose meaning changes so the
