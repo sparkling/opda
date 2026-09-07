@@ -159,7 +159,7 @@ test('public recruitment and statement routes use their shared shells without si
   assert.match(join, /import CampaignIdentity from '@\/components\/campaign\/CampaignIdentity\.astro'/u);
   assert.match(join, /import CampaignHeaderControls from '@\/components\/campaign\/CampaignHeaderControls\.astro'/u);
   assert.match(join, /<CampaignIdentity[\s\S]*identityId="join-campaign-identity"[\s\S]*themeToggleId="join-theme-toggle"[\s\S]*showOpdaLink[\s\S]*configuration=\{JOIN_CAMPAIGN_HEADER_DEFAULTS\}[\s\S]*>[\s\S]*<CampaignHeaderControls[\s\S]*slot="controls"[\s\S]*<\/CampaignIdentity>/u);
-  assert.match(join, /<CampaignHeaderControls[\s\S]*controlId="join-header-preview-selectors"[\s\S]*positionTargetId="join-influence-panel"/u);
+  assert.match(join, /<CampaignHeaderControls[\s\S]*variant="join"/u);
   assert.doesNotMatch(standalone, /@\/components\/(?:Header|Sidebar|Breadcrumbs|PageFooter|TOC)/u);
   assert.doesNotMatch(standalone, /campaign-masthead/u);
   assert.match(standalone, /import SiteFooter from '@\/components\/SiteFooter\.astro'/u);

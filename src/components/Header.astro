@@ -7,7 +7,6 @@ import { GLOBAL_NAVIGATION_ITEMS, getActiveDestination } from '@/lib/site-ia.mjs
 import AuthButton from '@/components/AuthButton.astro';
 import BrandHeading from '@/components/BrandHeading.astro';
 import FrameworkHeading from '@/components/FrameworkHeading.astro';
-import HeaderPreviewControls from '@/components/HeaderPreviewControls.astro';
 import ThemeToggle from '@/components/ThemeToggle.astro';
 import SiteSearchDialog from '@/components/SiteSearchDialog.astro';
 import NewsletterSubscriptionDialog from '@/components/NewsletterSubscriptionDialog.astro';
@@ -84,19 +83,10 @@ const activeDestination = suppressActiveDestination
         {GLOBAL_NAVIGATION_ITEMS.map(destination => (
           <a href={destination.url} class={activeDestination === destination.key ? 'active' : undefined} aria-current={activeDestination === destination.key ? 'page' : undefined}>{destination.title}</a>
         ))}
-        <HeaderPreviewControls
-          showScaleControl
-          identityId="app-header-identity"
-          utilityGroupTargetId="app-header-utilities"
-          initialScale={27}
-          initialOpdaScale={90}
-          initialSpaceAbove={0}
-          initialLineGap={0}
-          initialSpaceBelow={0}
-          initialUtilityGroupPosition={8}
-          initialIcon="twin-frames"
-          initialPalette="petrol"
-        />
+        <div
+          data-header-preview-controls-loader
+          data-controls-src="/ui/header-preview-controls/kb"
+        ></div>
         <span class="header-actions header-actions--compact">
           <a href="https://openpropdata.org.uk/become-a-member/" class="header-membership btn btn--ghost btn--compact">Become a member</a>
           <a href={joinHref} class="header-cta btn btn--compact">Join a working group</a>

@@ -1,0 +1,23 @@
+---
+import HeaderPreviewControls from '@/components/HeaderPreviewControls.astro';
+import { JOIN_CAMPAIGN_HEADER_DEFAULTS as configuration } from '@/lib/campaign-header-config';
+---
+<HeaderPreviewControls
+  showScaleControl
+  controlId="join-header-preview-selectors"
+  identityId="join-campaign-identity"
+  positionTargetId="join-influence-panel"
+  themeToggleTargetId="join-theme-toggle"
+  initialScale={configuration.scale}
+  initialOpdaScale={configuration.opdaScale}
+  initialSpaceAbove={configuration.spaceAbove}
+  initialLineGap={configuration.lineGap}
+  initialSpaceBelow={configuration.spaceBelow}
+  initialPositionX={configuration.panelPositionX}
+  initialPositionY={configuration.panelPositionY}
+  initialPanelWidth={configuration.panelWidth}
+  initialPanelItemSpacing={configuration.panelItemSpacing}
+  initialThemeTogglePosition={configuration.themeTogglePositionY}
+  initialIcon={configuration.icon}
+  initialPalette={configuration.palette}
+/>

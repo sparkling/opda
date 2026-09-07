@@ -1,42 +1,11 @@
 ---
-import HeaderPreviewControls from '@/components/HeaderPreviewControls.astro';
-import {
-  CAMPAIGN_HEADER_DEFAULTS,
-  type CampaignHeaderConfiguration,
-} from '@/lib/campaign-header-config';
-
 interface Props {
-  controlId: string;
-  identityId: string;
-  positionTargetId: string;
-  themeToggleTargetId: string;
-  configuration?: CampaignHeaderConfiguration;
+  variant: 'home' | 'join';
 }
 
-const {
-  controlId,
-  identityId,
-  positionTargetId,
-  themeToggleTargetId,
-  configuration = CAMPAIGN_HEADER_DEFAULTS,
-} = Astro.props;
+const { variant } = Astro.props;
 ---
-<HeaderPreviewControls
-  showScaleControl
-  {controlId}
-  {identityId}
-  {positionTargetId}
-  {themeToggleTargetId}
-  initialScale={configuration.scale}
-  initialOpdaScale={configuration.opdaScale}
-  initialSpaceAbove={configuration.spaceAbove}
-  initialLineGap={configuration.lineGap}
-  initialSpaceBelow={configuration.spaceBelow}
-  initialPositionX={configuration.panelPositionX}
-  initialPositionY={configuration.panelPositionY}
-  initialPanelWidth={configuration.panelWidth}
-  initialPanelItemSpacing={configuration.panelItemSpacing}
-  initialThemeTogglePosition={configuration.themeTogglePositionY}
-  initialIcon={configuration.icon}
-  initialPalette={configuration.palette}
-/>
+<div
+  data-header-preview-controls-loader
+  data-controls-src={`/ui/header-preview-controls/${variant}`}
+></div>

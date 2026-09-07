@@ -244,6 +244,30 @@
     });
   }
 
+  async function loadHeaderPreviewControls() {
+    const currentUrl = new URL(window.location.href);
+    const loaders = Array.from(document.querySelectorAll('[data-header-preview-controls-loader]'));
+    if (!currentUrl.searchParams.has('config')) {
+      loaders.forEach(function (loader) { loader.remove(); });
+      return;
+    }
+
+    await Promise.all(loaders.map(async function (loader) {
+      const source = loader.getAttribute('data-controls-src');
+      if (!source) return;
+      try {
+        const response = await fetch(source, { credentials: 'same-origin' });
+        if (!response.ok) throw new Error('HTTP ' + response.status);
+        const fragment = document.createRange().createContextualFragment(await response.text());
+        const controls = fragment.querySelector('[data-header-preview-controls]');
+        if (!controls) throw new Error('configuration controls were absent');
+        if (document.contains(loader)) loader.replaceWith(controls);
+      } catch (error) {
+        console.warn('Unable to load header preview controls from ' + source, error);
+      }
+    }));
+  }
+
   function bindHeaderPreviewControls() {
     const controls = document.querySelector('[data-header-preview-controls]');
     const toggle = controls?.querySelector('[data-header-preview-toggle]');
@@ -649,8 +673,9 @@
   }
 
   // ── Init ─────────────────────────────────────────────────────────────────
-  function init() {
+  async function init() {
     bindThemeToggle();
+    await loadHeaderPreviewControls();
     syncHeaderConfigurationMode();
     bindHeaderPaletteSelector();
     bindHeaderPalettePagination();
@@ -676,7 +701,7 @@
   function runInitOnce() {
     if (initialised) return;
     initialised = true;
-    init();
+    void init();
   }
 
   if (document.readyState === 'loading') {

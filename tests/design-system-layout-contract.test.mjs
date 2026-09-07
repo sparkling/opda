@@ -32,6 +32,7 @@ test('every Astro page belongs to an explicit visual route family', async () => 
       || source.includes("@/layouts/StandalonePublicLayout.astro")
       || source.includes("@/layouts/ModellingLayout.astro")
       || source.includes("@/components/property-pack/PropertyPackPage.astro")
+      || source.includes("@/components/HeaderPreviewControls.astro")
       || standalone.has(path);
     assert.ok(owned, `${path} has no declared visual route-family owner`);
   }
@@ -213,9 +214,9 @@ test('shared navigation exposes visible focus, state and 44px targets', async ()
   assert.match(header, /import BrandHeading from '@\/components\/BrandHeading\.astro'/u);
   assert.match(header, /import FrameworkHeading from '@\/components\/FrameworkHeading\.astro'/u);
   assert.match(header, /import \{ GLOBAL_NAVIGATION_ITEMS, getActiveDestination \} from '@\/lib\/site-ia\.mjs'/u);
-  assert.match(header, /import HeaderPreviewControls from '@\/components\/HeaderPreviewControls\.astro'/u);
+  assert.doesNotMatch(header, /import HeaderPreviewControls from '@\/components\/HeaderPreviewControls\.astro'/u);
   assert.match(header, /<a href="\/" class="app-header__title">\s*<BrandHeading scale="mini"\s*\/>\s*<\/a>/u);
-  assert.match(header, /<div class="global-nav-panel"[\s\S]*<nav class="global-nav"[\s\S]*GLOBAL_NAVIGATION_ITEMS\.map[\s\S]*<HeaderPreviewControls[\s\S]*showScaleControl[\s\S]*identityId="app-header-identity"[\s\S]*initialScale=\{27\}[\s\S]*initialSpaceBelow=\{0\}[\s\S]*initialUtilityGroupPosition=\{8\}[\s\S]*initialIcon="twin-frames"[\s\S]*initialPalette="petrol"[\s\S]*\/>/u);
+  assert.match(header, /<div class="global-nav-panel"[\s\S]*<nav class="global-nav"[\s\S]*GLOBAL_NAVIGATION_ITEMS\.map[\s\S]*data-header-preview-controls-loader[\s\S]*data-controls-src="\/ui\/header-preview-controls\/kb"/u);
   assert.match(header, /import ThemeToggle from '@\/components\/ThemeToggle\.astro'/u);
   assert.match(header, /<ThemeToggle\s*\/>/u);
   assert.match(header, /class="app-header__utilities"/u);
@@ -410,12 +411,17 @@ test('authored text has one reading measure while evidence and navigation use th
 });
 
 test('shared design controls remain hidden unless URL configuration is enabled', async () => {
-  const [controls, client, css] = await Promise.all([
+  const [header, controls, client, css] = await Promise.all([
+    readFile(file('src/components/Header.astro'), 'utf8'),
     readFile(file('src/components/HeaderPreviewControls.astro'), 'utf8'),
     readFile(file('public/ui/client.js'), 'utf8'),
     readFile(file('public/ui/design/header-brand.css'), 'utf8'),
   ]);
   assert.match(controls, /data-header-preview-controls[^>]*\bhidden/u);
+  assert.match(header, /data-header-preview-controls-loader/u);
+  assert.match(client, /async function loadHeaderPreviewControls\(\)/u);
+  assert.match(client, /fetch\(source, \{ credentials: 'same-origin' \}\)/u);
+  assert.match(client, /loader\.replaceWith\(controls\)/u);
   assert.match(client, /currentUrl\.searchParams\.has\('config'\)/u);
   assert.match(client, /controls\.hidden = !configurationEnabled/u);
   assert.match(css, /\.header-preview-controls\[hidden\]\s*\{\s*display:\s*none\s*!important;/u);
