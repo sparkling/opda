@@ -421,6 +421,11 @@ test('shared design controls remain hidden unless URL configuration is enabled',
   assert.match(css, /\.header-preview-controls\[hidden\]\s*\{\s*display:\s*none\s*!important;/u);
 });
 
+test('the open account menu sits above the compact primary navigation', async () => {
+  const base = await readFile(file('public/ui/design/base.css'), 'utf8');
+  assert.match(base, /\.app-header__utilities:has\(\.auth-button__user-trigger\[aria-expanded='true'\]\)\s*\{\s*z-index:\s*101;/u);
+});
+
 test('the adversarial conformance blockers remain closed', async () => {
   const [rootPage, brandHeading, themeToggle, base, content, components, navigation, print] = await Promise.all([
     readFile(file('src/pages/index.astro'), 'utf8'),

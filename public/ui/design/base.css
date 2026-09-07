@@ -191,6 +191,9 @@ a:visited { text-decoration-color: currentColor; }
   padding-inline-end: 0;
   translate: 0 var(--header-utilities-position-y, 0);
 }
+/* The utility slider creates a stacking context. Lift only an open account
+   menu above the primary disclosure, without repositioning either row. */
+.app-header__utilities:has(.auth-button__user-trigger[aria-expanded='true']) { z-index: 101; }
 .global-nav-panel {
   grid-area: navigation;
   min-width: 0;
