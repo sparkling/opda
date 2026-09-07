@@ -3,32 +3,34 @@
 Date: 7 September 2026. Status: **proposal for review; local only**.
 OPDA review baseline: `a56502011226590e8271eeb30bdca1ac0a6ea4c9`.
 Scope corrected by the operator on 7 September 2026 and recorded in the updated
-ADR-0063/0064. Their specification remit governs this revised proposal.
+ADR-0063/0064: programme Trust is distinct from model-review governance. Ontology
+modelling is the focus; JSON-LD is a generated output, not a teaching subject.
 
 ## Recommendation and audience
 
-Enrich **Modelling → Ontology modelling** around authoring a specification, governing
-its meaning, and generating the JSON-LD artefacts most implementers will use. Expand
-the existing delivery explanation, add a focused vocabulary/classification chapter,
-and explain constraint authoring, mapping review and trust-governance recommendations.
+Enrich **Modelling → Ontology modelling** around domain meaning and the formal method
+used to model it. Add a focused vocabulary/classification chapter and explain
+constraint authoring, mapping review and privacy/access semantics in the ontology.
 Use the established contextual boundaries and their existing documentation throughout.
-Linked-data-store and trust implementation guidance is informative.
+The wider SPDTF Trust Framework belongs to the separate programme documentation;
+this section explains only the model's contribution to it. Store guidance is informative.
 
-The primary audience is specification authors, ontology modellers and governance
-contributors. Most downstream implementers need to understand the generated JSON-LD
-exchange package and its declared requirements. The material should teach **how an
-agreed distinction becomes a model statement, a reviewable rule and a generated
-artefact**, with reasons and examples. Operating an OPDA data application is outside
-this effort; the authoring and generation tools support specification development.
+The primary audience is domain-model authors, ontology modellers and technical readers
+of the data specification. Teach **how an agreed distinction becomes a model statement,
+relationship or reviewable constraint**, with reasons and examples. JSON-LD can be
+mentioned briefly as an artefact generated from the ontology. Do not teach its syntax,
+payload design, package structure or generation pipeline here. Operating an OPDA data
+application is outside this effort; authoring tools support specification development.
 The ODRs guide that authoring method; they do not require consumers to reproduce its
 toolchain or run the source project's infrastructure.
 
 | Part of the work | What the documentation should explain |
 | --- | --- |
-| Specification and formal models | Definitions, identifiers, relationships, constraints and exchange profiles expressed through RDF, RDFS, OWL, SHACL and selected vocabularies. Each requirement retains its adopted scope and status. |
+| Ontology and formal modelling method | Definitions, identifiers, relationships and constraints expressed through RDF, RDFS, OWL, SHACL and selected vocabularies. Each requirement retains its adopted scope and status. |
 | Specification governance | Ownership, evidence, practitioner review, mapping decisions, change control and approval of specification versions. |
-| Generated JSON-LD delivery | Contexts, associated JSON Schemas and examples derived from the formal models, with clear version relationships and the checks each delivery profile covers. This is the main implementer route. |
-| Informative implementation guidance | Material for implementing a linked-data store and recommendations for realising trust. Store selection, deployment, enforcement machinery and service operations do not become normative specification requirements. |
+| Generated outputs, brief context only | JSON-LD artefacts are generated from the ontology. No document walkthrough, payload example or generation tutorial is proposed. |
+| Model support for programme Trust | Privacy/sensitivity, purpose, access-role and policy references, provenance and time within the retained categories. Describe and map the selected model semantics that can support the framework; do not turn them into a course on running a scheme. |
+| Informative implementation guidance | Material for implementing a linked-data store. Broader Trust recommendations and enforcement designs belong to the scheme work; deployment machinery is not the domain-modelling contract. |
 
 The current method already explains identity before equivalence, roles and phases,
 property applicability, bounded language profiles, qualified SSSOM records, strategic
@@ -44,8 +46,8 @@ decision status. It authorises no publication, deployment or push.
 
 | Evidence | Recorded status and date | Consequence for this proposal |
 | --- | --- | --- |
-| [ADR-0063, §§1–3a][adr63] | Accepted; updated 7 September 2026 | Specification development within established contexts; main generated JSON-LD route; informative store/trust implementation guidance. Selected source-method rules remain normative within eight concerns. |
-| [ADR-0064][adr64] | Accepted; updated 7 September 2026 | Two audiences learn participation, specification authoring and delivery. Shared page/navigation templates remain; operational application training is excluded. |
+| [ADR-0063, §§1–3a][adr63] | Accepted; corrected Trust/teaching scope, 7 September 2026 | Ontology modelling within established contexts; annotations/mappings support broader SPDTF Trust. JSON-LD is an output, not a curriculum. Eight selected concerns remain normative in scope. |
+| [ADR-0064][adr64] | Accepted; corrected Trust/teaching scope, 7 September 2026 | Both audiences focus on domain meaning and ontology modelling. No JSON-LD walkthrough or separate Trust-governance/operations learning track. |
 | [ADR-0067, §§2–4 and 5.4][adr67] | Accepted; updated 3 September 2026 | First-principles meaning, one semantic home per OPDA resource, eight concerns and explicit standards/conformance boundaries. |
 | [ADR-0074][adr74] | Implemented; updated 5 September 2026 | Preserve the canonical Modelling family and shared information architecture. Historical route descriptions do not supersede later amendments. |
 | [ADR-0075][adr75] | Accepted; updated 3 September 2026 | Property Pack is an accelerated SPDTF component, not a universal bounded context. Technical determination, later domain review, release and external recognition remain distinct. |
@@ -60,9 +62,41 @@ The crosswalk preserves provenance without making those details reader-facing ex
 
 The selected concerns remain 1, 2, 5, 7, 8, 9, 10 and 11. Process modelling, service
 architecture, a governance ontology, capability/intent, executable source mapping and
-data-product modelling remain outside this scope. Specification and trust governance
-remain central to this effort; excluding a governance ontology does not exclude
-governance decisions or recommendations.
+data-product modelling remain outside this scope. Model-review governance supports
+domain agreement; it is not synonymous with the programme's Trust Framework. Excluding
+Category 6 does not exclude the privacy, access, provenance or temporal semantics
+already retained in Categories 11, 9 and 10.
+
+### Programme Trust: source findings and the modelling boundary
+
+The DPMSG *Smart Property Data Trust Framework Sandbox* paper defines Trust as the
+shared rules, roles, data standards and technical arrangements through which parties
+participate, exchange data and rely on it (pp2–4). Its sandbox/recommendations remit
+is broader than domain modelling (pp6–7). The project plan separately allocates
+sandbox deployment and industry participation work; it is a plan, not delivery evidence.
+
+DBT Chapter 1 **Draft V7**, dated 10 May 2026, describes scheme identity, accreditation,
+delegation, permissions, revocation and accountability (pp1–6, 15–23, 30–34).
+Registration, accreditation, authentication and authorisation are distinct. It also
+separates scheme permission from the legal basis for processing personal data.
+Chapter 4 **Draft V2**, dated 25 June 2026, adds purpose, privacy and stewardship (pp1–7).
+These are draft programme-design inputs, not automatic OPDA requirements. The existing
+[standard/operator distinction][dbt], [identity/Trust analysis][dbt-identity] and
+[privacy analysis][dbt-privacy] are the canonical context links; do not duplicate them.
+
+Originals inspected in the primary project checkout, not tracked files in this worktree:
+
+- `source/02-policy-and-positioning/strategic-papers/DPMSG-Smart-Property-Data-Trust-v2.pdf`.
+- `source/06-research/trust-framework-poc/Smart Property Data Trust Framework Project Plan.pdf`, p1, activities 17–34 and 44–58.
+- Under `source/02-policy-and-positioning/dbt-smart-data-guidebook/`: `chapter-1/SMART DATA GUIDEBOOK_Chapter 1 Digital Identity Roles and Trust Frameworks_DRAFT_V7.pdf` and `chapter-4/SMART DATA GUIDEBOOK_Chapter 4 Data Stewardship, Privacy and Ethics_V2.pdf`.
+
+The [government's Smart Data overview][gov-smart-data] independently confirms the
+programme's secure sharing with authorised third parties (checked 7 September 2026).
+It is context, not evidence of SPDTF designation or adoption of the archived drafts.
+DBT's commissioned [data-standards research][gov-standards], published 21 November 2025,
+pp7–8, explicitly separates data standards from the other enablers, including consent,
+accreditation and security. The inspected project copy is
+`source/08-external-references/uk-government/data_standards_for_smart_data.pdf`.
 
 RDF 1.2, SPARQL 1.2 and SHACL 1.2 remain OPDA's recorded standards-family baseline.
 Selected features, processor support and current candidate use remain separate claims.
@@ -75,46 +109,17 @@ evidence. Do not widen Property Pack 0.1's recorded feature boundary through tea
 
 | Priority | Addition and current insertion point | Actual gap | Source basis |
 | --- | --- | --- | --- |
-| High | **From formal specification to generated JSON-LD**, expand [meaning/checks/delivery, `delivery`][delivery] | The existing projection explanation is generic. Make the main JSON-LD implementer route concrete and identify the informative status of store guidance. | Operator clarification of 7 September; updated [ADR-0063 §2][adr63] and [ADR-0064][adr64]. |
 | High | **Vocabularies and classification**, a focused chapter in Ontology modelling; linked from [language profiles, `controlled-choices`][languages] and [scope/package, `assessment`][scope] | Technical closure, dual typing, open populations, infrastructure facets and profile-specific cardinality are dispersed or omitted. The nontechnical [names and choices][choices] chapter should not absorb this syntax. | S: ODR-0010; ODR-0016/0023; ODR-0071b R3–R6; ODR-0071e R3–R6. Local [ODR-0036][odr36], [0039][odr39], [0040][odr40], [0048][odr48], [0049][odr49]. |
 | High | **Write reviewable constraints**, following [meaning/checks/delivery, `validation`][checks] | Show how authors establish that a specified constraint expresses the agreed rule, including missing information and contradictory requirements. | S: ODR-0071g R1–R6. Local [ODR-0050, Rules][odr50]. |
 | Medium | **Govern mapping decisions**, extending [mapping records, `failure`][mappings] | Explain the review decisions, responsibilities and version changes when evidence changes, including exact-match chains and previously denied mappings. | S: ODR-0098 R5/R6/R8/R11. Local [ODR-0059][odr59]; active field profile in [ODR-0056][odr56]. |
-| High | **Trust-governance recommendations**, refocus [sensitivity/policy][policy] | The current page puts operational enforcement alongside required modelling method. Make specification content, governance recommendations and informative implementation examples distinguishable. | Updated [ADR-0063 §2][adr63], [ADR-0064][adr64]; selected policy concepts from local [ODR-0054][odr54]. |
+| Medium | **Model privacy, access and Trust-related meaning**, refocus [sensitivity/policy][policy] | Centre ontology annotations and scoped role relationships; leave broader scheme/governance and enforcement explanations in existing programme context. | [ADR-0063 §2a][adr63], [ADR-0064][adr64]; [ODR-0054][odr54] and conditional [ODR-0057][odr57]. |
 | Medium, within vocabulary chapter | **Administrative description is not classification** | [Language profiles, `evidence-around-the-answer`][metadata] names Dublin Core generically; the exact local Category 5 profile is not shown. | S: ODR-0086 R1–R3/R5. Local [ODR-0055][odr55], including its catalogue exclusion. |
 | High adoption review; independent of content work | **Reconcile scheme-valued sensitivity predicates** | [Sensitivity/policy, `dpv`][policy] correctly follows the adopted annotation-first pin, but newer source ODR-0071k changes three property kinds. This is not a current-page defect against S. | N: ODR-0071k R2–R5 and 6 September amendments; contrast local [ODR-0054][odr54]. |
 
-### 2.1 From the formal specification to generated JSON-LD
+The existing [delivery note][delivery] needs only the relationship: JSON-LD is generated
+from the ontology. No enrichment package should expand it into a separate subject.
 
-Expand the existing delivery section and use it as the common reference for both
-audiences. Start with the agreed distinction between an inspection and a report version,
-show the relevant model statement and constraint, then show how the generated JSON-LD
-package carries those meanings into an implementer's exchange.
-
-Use one annotated flow: practitioner agreement → formal models and shapes → generation
-→ versioned JSON-LD artefacts → implementer's own system. A separate informative branch
-shows that the supplied models can also support a linked-data-store implementation.
-The optional branch must not appear as a prerequisite for consuming the JSON-LD package.
-
-Explain the deliverables concretely:
-
-- A JSON-LD context relates the exchange's terms to identifiers and value interpretations.
-- Associated JSON Schemas describe the generated document structures and mapped checks.
-- Worked documents show identifiers, types, references, vocabulary values and versions.
-- A short generation map records the formal source of each field and constraint, with
-  any requirement needing additional checks made explicit for that delivery profile.
-
-For example, keep report version 2 and its inspection separately identifiable in the
-generated document. Show the source of a required inspection reference and a permitted
-outcome value. Explain which checks belong to the document and which depend on related
-information. A context, schema and shape have distinct jobs; generation must preserve
-the agreement rather than imply that every formal rule has the same JSON representation.
-
-Label draft examples and planned generation honestly. Their purpose is to explain the
-intended specification package; implementing a generator or claiming current artefact
-coverage requires separate evidence. Reader guidance should identify the artefact and
-version to use without requiring the reader to operate an RDF store or SPARQL endpoint.
-
-### 2.2 Vocabularies and classification: one coherent technical chapter
+### 2.1 Vocabularies and classification: one coherent technical chapter
 
 Proposed working route: `/semantic-modelling/method/vocabularies-and-classification`.
 This is a proposal, not an existing page. A dedicated chapter is justified because
@@ -183,10 +188,10 @@ an unjustified sentinel, repair a reversed broader link, and explain why adding 
 surveyor does not change a closed report-status profile. Provide visible worked
 reasoning, including where a modeller must ask a domain reviewer rather than guess.
 
-### 2.3 Write reviewable constraints
+### 2.2 Write reviewable constraints
 
 Add a short authoring example after `validation`. Its purpose is to review the
-specification's rules and their generated representations. Processor-specific setup
+ontology's rules and their meaning. Processor-specific setup
 belongs in informative tooling notes, not in the specification's normative contract.
 
 1. Identify the intended input, shape/profile version and information the rule assumes
@@ -219,7 +224,7 @@ a contradictory shape and a warning that does not become an unexplained blocking
 Exercise: diagnose an empty “success” report caused by a target that selects no defective
 nodes. A corrected target and expected adverse result are the answer, not a green badge.
 
-### 2.4 Govern mapping decisions
+### 2.3 Govern mapping decisions
 
 Extend the existing drift example; retain its SSSOM record, identity gates and predicate
 semantics without restating them. Add a compact verdict table distinguishing:
@@ -251,25 +256,35 @@ are not a request to build a running monitoring or curation service.
 Do not promote the separately labelled proposed round-two identity refinement in
 source ODR-0098/local ODR-0059 merely because the document header is Accepted.
 
-### 2.5 Explain trust governance and label implementation recommendations
+### 2.4 Model privacy, access and the connection to programme Trust
 
-Refocus the existing sensitivity/policy examples on responsibilities and the meaning
-the specification must carry: provenance, quality evidence, sensitivity, purpose,
-authority, permitted use and obligations. Explain who can propose and approve a policy,
-what evidence supports it and how changes are recorded. Keep domain roles distinct
-from policy roles and evidence of a claim distinct from authority to use it.
+Keep the sensitivity/policy chapter about **what the model can say**, not how a Trust
+Framework is governed or operated. Use one bounded diagram or table connecting domain
+facts to the adopted concerns, with a link to the separate DBT section for context.
 
-Use a worked governance decision about the fictional report: state the question, record
-the accountable reviewer, describe the available evidence and show the resulting policy
-recommendation and unresolved issues. Then show which concepts are represented in the
-formal model and which information a generated exchange would need to preserve.
+| Question about the domain data | Selected modelling home and useful representation |
+| --- | --- |
+| What data, person and transaction does the statement concern? | Category 1: explicit identities, properties and contextual relationships; retain the domain's semantic home. |
+| Does it describe personal information, and for what purpose? | Category 11: reviewed sensitivity/personal-data annotations and purpose, legal-basis or policy references under [ODR-0054][odr54]. Do not conflate scheme permission with a legal basis. |
+| Which role, data scope and action does an access rule concern? | Domain participation in Category 1; access semantics in Category 11. Map to separately owned scheme roles only with explicit context, scope and justification. A Seller is not automatically an authorised reader or accredited participant. |
+| Who supplied a claim and what evidence supports it? | Category 9: scoped attribution and derivation, using the selected provenance profile. Model-authoring history is not instance-data lineage or accreditation evidence. |
+| When does the statement or authority apply? | Category 10, with Category 11 where relevant: distinguish validity, recorded time, expiry and referenced status; a historical assertion cannot certify current permission. |
+| How do meanings cross a scheme/domain boundary? | Category 8: reviewed mappings to the documented DBT scheme context or external owner. Matching labels do not justify equivalence. |
 
-Clearly label guidance on how a recipient might enforce a policy or implement a
-linked-data store as informative recommendations for downstream implementers. Examples
-of evaluators, named graphs, APIs or access checks must not imply that OPDA will operate
-them, or make a particular deployment architecture normative. Normative modelling
-requirements retain their declared scope; an illustrative trust mechanism does not
-acquire that status merely by appearing beside them.
+Work through a fictional inspection contact detail and report version. Show the
+contact-detail model property's reviewed privacy classification, a transaction-scoped role, evidence and
+validity references. Distinguish annotations on a model element from facts about an
+instance; keep the example in ontology terms, not a JSON-LD payload. Do not put
+operational credentials or private data into a public ontology. An inherited/class-
+level annotation must not silently become a blanket access decision for every instance.
+
+Retain ODR-0054's staged profile and [ODR-0057][odr57]'s three conditional, human-curated
+ODRL uses; they do not authorise a general RBAC-policy engine or new governance ontology.
+New concepts and mappings need a competency question, semantic owner and adopted profile.
+SHACL can test the representation; neither annotations nor JSON-LD authenticate actors,
+grant rights, establish legal compliance or enforce access. Describe the downstream
+boundary briefly, without evaluator tutorials, registry operations or a Trust-policy
+decision exercise. Broad scheme recommendations stay outside this learning section.
 
 ## 3. Integration with existing chapters and the learning track
 
@@ -343,12 +358,11 @@ normative requirements and the newer source delta need their own approval.
 
 | Package | Deliverable and dependency | Evidence required before the slice is complete |
 | --- | --- | --- |
-| A — Specification and JSON-LD delivery | Expand the existing delivery section with the formal-source-to-generated-artefact example and informative store branch. | Traceable identifiers and constraints; distinct context/schema/shape responsibilities; no claim that a store is required or the planned generator already exists. |
-| B — Values and metadata | Add the proposed vocabulary/classification chapter and precise links from languages and scope/package, using the established contexts and ownership language unchanged. | Four representation cases and their counterexamples; closure evidence; correct broader direction; facet/base/profile separation; exact bounded metadata requirements; all illustrative terms labelled. |
-| C — Constraint authoring | Add the reviewable-constraint section, sharing B's examples where useful. | Missing-property and contradiction cases; explain intended severity and what the generated delivery profile checks. |
-| D — Mapping governance | Extend mapping records within the established contexts and their documented seams. | Distinct verdicts, an exact-match chain review and both retraction/reopening cases; versions and review ownership; no proposed identity refinement promoted. |
-| E — Trust recommendations | Refocus sensitivity/policy on governance and identify informative implementation examples. | Responsibilities and decision evidence are clear; model semantics, recommendations and deployment choices have explicit standing. |
-| F — Policy reconciliation | Separate specification decision package from §4. | Exact upstream delta, local dispositions and artefact impacts; accepted amendment before normative model changes. |
+| A — Values and metadata | Add the proposed vocabulary/classification chapter and precise links from languages and scope/package, using established contexts and ownership unchanged. | Four representation cases and counterexamples; closure evidence; broader direction; facet/base/profile separation; bounded metadata requirements; illustrative terms labelled. |
+| B — Constraint authoring | Add the reviewable-constraint section, sharing A's examples where useful. | Missing-property and contradiction cases; intended severity and precise model/profile semantics. |
+| C — Mapping governance | Extend mapping records within established contexts and their documented seams. | Distinct verdicts, an exact-match chain review and both retraction/reopening cases; versions and review ownership; no proposed identity refinement promoted. |
+| D — Privacy and access semantics | Refocus sensitivity/policy on ontology annotations, role distinctions and mappings; link wider Trust context. | Correct concern/semantic home; domain role is not permission; authoring provenance is not instance evidence; no automatic policy generation, enforcement claim or new Trust-governance track. |
+| E — Policy reconciliation | Separate specification decision package from §4. | Exact upstream delta, local dispositions and artefact impacts; accepted amendment before normative model changes. |
 
 For implemented website slices, run the repository's required tests and build, scoped
 link/anchor checks and a proportionate rendered review of changed pages through the
@@ -369,9 +383,11 @@ Review evidence: committed-source research was followed by a separate source/aut
 critique of this draft, including the direct S→N ODR-0071k diff, ODR-0036/0049/0055
 cardinality contracts and ODR-0059 verdicts. A later correction removed the proposed
 boundary-discovery work because contextual boundaries are already fixed and documented.
-The operator also clarified the development remit: specification and trust governance,
-main generated JSON-LD delivery, and informative linked-data-store guidance. This
-revision applies that scope throughout and does not claim a completed generator.
+The operator clarified that Trust means the wider SPDTF/Smart Data Trust Framework,
+not generic model governance. The revised remit keeps ontology modelling central, with
+retained-category annotations/mappings supporting that framework. JSON-LD is only a
+generated output. Both the earlier Trust-governance teaching priority and the proposed
+JSON-LD delivery walkthrough are removed; no completed generator is claimed.
 Local reference targets and explicit page anchors were checked. This review establishes
 source fidelity and scope, not implementation or ontology conformance.
 
@@ -409,6 +425,12 @@ older retained wording; adopted local scope takes precedence over excluded sourc
 [odr49]: ../ontology/odr/ODR-0049-cat5-classification-metadata-pipeline-adoption.md
 [odr50]: ../ontology/odr/ODR-0050-cat7-validation-constraints-pipeline-adoption.md
 [odr54]: ../ontology/odr/ODR-0054-cat11-access-control-data-sensitivity-adoption.md
+[odr57]: ../ontology/odr/ODR-0057-odrl-cat11-dpv-profile.md
+[dbt]: ../../src/pages/dbt-smart-data/index.astro#separation
+[dbt-identity]: ../../src/pages/dbt-smart-data/identity.astro
+[dbt-privacy]: ../../src/pages/dbt-smart-data/stewardship-privacy-ethics.astro
+[gov-smart-data]: https://www.gov.uk/government/collections/creating-a-smart-data-economy
+[gov-standards]: https://www.gov.uk/government/publications/research-into-data-standards-for-smart-data
 [odr55]: ../ontology/odr/ODR-0055-dublin-core-cat5-annotation.md
 [odr56]: ../ontology/odr/ODR-0056-sssom-cat8-mapping-provenance.md
 [odr59]: ../ontology/odr/ODR-0059-cross-context-identity-criterion-protocol.md
