@@ -6,10 +6,11 @@ OPDA review baseline: `a56502011226590e8271eeb30bdca1ac0a6ea4c9`.
 ## Recommendation and audience
 
 Enrich **Modelling → Ontology modelling** with one focused chapter on vocabularies
-and classification, and three targeted additions to existing chapters: discovering
-context boundaries, validating the shape authoring contract, and maintaining mapping
-decisions. Separately review the newer access-policy decision; do not present it as
-already adopted by OPDA.
+and classification, plus targeted additions on validating the shape-authoring contract
+and maintaining mapping decisions. Treat the established contextual boundaries and the
+site's existing boundary guidance as fixed inputs; do not reopen their discovery or
+duplicate that material. Separately review the newer access-policy decision; do not
+present it as already adopted by OPDA.
 
 The audience is ontology modellers, modelling facilitators and technical implementers
 who need to turn an evidenced domain distinction into an inspectable model. The
@@ -62,47 +63,13 @@ evidence. Do not widen Property Pack 0.1's recorded feature boundary through tea
 
 | Priority | Addition and current insertion point | Actual gap | Source basis |
 | --- | --- | --- | --- |
-| High | **Discover a boundary before drawing a map**, before [context-map records, `two-layers`][contexts] | The page explains map relationships and their exact mapping joins well, but only briefly states how a boundary is established. | S: ODR-0040 R1–R2; ODR-0106 Decision Outcome/R1–R3. Local [ODR-0045][odr45], [ODR-0060][odr60]. |
 | High | **Vocabularies and classification**, a focused chapter in the existing Method branch; linked from [language profiles, `controlled-choices`][languages] and [scope/package, `assessment`][scope] | Technical closure, dual typing, open populations, infrastructure facets and profile-specific cardinality are dispersed or omitted. The nontechnical [names and choices][choices] chapter should not absorb this syntax. | S: ODR-0010; ODR-0016/0023; ODR-0071b R3–R6; ODR-0071e R3–R6. Local [ODR-0036][odr36], [0039][odr39], [0040][odr40], [0048][odr48], [0049][odr49]. |
 | High | **Validate the validator**, following [meaning/checks/delivery, `validation`][checks] | Existing semantic-vs-validation and rule-vs-constraint explanations are strong. Shape satisfiability, severity, absent-property targeting and meta-validation need an authoring procedure. | S: ODR-0071g R1–R6. Local [ODR-0050, Rules][odr50]. |
 | Medium | **Reopen, retract and inspect mapping chains**, extending [mapping records, `failure`][mappings] | Versions and definition drift already appear. Mandatory exact-match chain review and symmetric reopening of denied mappings are not yet taught operationally. | S: ODR-0098 R5/R6/R8/R11. Local [ODR-0059][odr59]; active field profile in [ODR-0056][odr56]. |
 | Medium, within vocabulary chapter | **Administrative description is not classification** | [Language profiles, `evidence-around-the-answer`][metadata] names Dublin Core generically; the exact local Category 5 profile is not shown. | S: ODR-0086 R1–R3/R5. Local [ODR-0055][odr55], including its catalogue exclusion. |
 | High adoption review; independent of content work | **Reconcile scheme-valued sensitivity predicates** | [Sensitivity/policy, `dpv`][policy] correctly follows the adopted annotation-first pin, but newer source ODR-0071k changes three property kinds. This is not a current-page defect against S. | N: ODR-0071k R2–R5 and 6 September amendments; contrast local [ODR-0054][odr54]. |
 
-### 2.1 Discover a boundary before drawing a map
-
-Proposed section sequence:
-
-1. **Test the language.** Can practitioners use the term without a system qualifier?
-   If not, is one accountable team actively reconciling the meanings? A domain-wide
-   context is plausible with coherent language or active reconciliation authority;
-   unresolved differences must remain visible. Without that authority, retain separate
-   contexts where meanings cannot be reconciled; system-aligned boundaries may be a
-   necessary fallback, not the default partition.
-2. **Separate the questions.** Use a compact table for intrinsic topic, definition
-   ownership, business use and organisational accountability. Add a separate provenance
-   note for discovery/maintenance systems. None determines all the others.
-3. **Test a proposed change.** Reassign a steward or move a system without changing the
-   concept's aboutness or identity. Conversely, expose incompatible meanings under one
-   departmental label instead of calling them harmonised.
-4. **Only then record the seam.** Link to the existing map-kind, direction, participant
-   and exact-mapping applicability contracts; do not reproduce them.
-
-Example brief: two fictional teams use “inspection report” differently, one as a
-versioned document and one as an assessment bundle. Compare a case with an active
-shared-language owner against a case without one. These are boundary hypotheses, not
-new OPDA working groups or approved context assignments.
-
-Visual brief: one concept with separately labelled topic, defining context, use and
-steward, plus discovery-source provenance. No organisation-chart-shaped class tree.
-Exercise: decide which facts change when responsibility moves and give the evidence
-needed before merging the two definitions. The worked answer must preserve uncertainty.
-
-Guardrail: [ADR-0067 §2][adr67] requires one semantic home, **not a namespace per
-context**. Explain source namespace rules within that OPDA contract; do not use this
-lesson to mint identifiers, redesign namespaces or equate context with named graph.
-
-### 2.2 Vocabularies and classification: one coherent technical chapter
+### 2.1 Vocabularies and classification: one coherent technical chapter
 
 Proposed working route: `/semantic-modelling/method/vocabularies-and-classification`.
 This is a proposal, not an existing page. A dedicated chapter is justified because
@@ -171,7 +138,7 @@ an unjustified sentinel, repair a reversed broader link, and explain why adding 
 surveyor does not change a closed report-status profile. Provide visible worked
 reasoning, including where a modeller must ask a domain reviewer rather than guess.
 
-### 2.3 Validate the validator
+### 2.2 Validate the validator
 
 Add a bounded authoring sequence after `validation`, not another introduction to SHACL:
 
@@ -205,7 +172,7 @@ a contradictory shape and a warning that does not become an unexplained blocking
 Exercise: diagnose an empty “success” report caused by a target that selects no defective
 nodes. A corrected target and expected adverse result are the answer, not a green badge.
 
-### 2.4 Mapping decisions have a lifecycle
+### 2.3 Mapping decisions have a lifecycle
 
 Extend the existing drift example; retain its SSSOM record, identity gates and predicate
 semantics without restating them. Add a compact verdict table distinguishing:
@@ -250,10 +217,10 @@ the richer decision procedures without becoming another copy of them.
 
 | Existing coverage to preserve | Enrichment boundary |
 | --- | --- |
-| [Roles and phases][roles]: identity, rigidity, bearer dependence, local role/phase patterns and encoding | Link from the boundary and vocabulary exercises; no second kind/role/phase lesson. |
+| [Roles and phases][roles]: identity, rigidity, bearer dependence, local role/phase patterns and encoding | Link from the vocabulary exercises; no second kind/role/phase lesson. |
 | [Evidence and time][time]: resource/claim provenance, event/document dates, valid/recorded time and scoped history | Reuse its report-version story; no duplicate PROV-O or OWL-Time chapter. |
 | [Languages, `mechanisms`][reuse]: reuse/reference/map/mint and import boundaries | Refer to it when selecting terms; add only the missing exact Category 5 profile. |
-| [Context maps][contexts]: projection scope, explicit exclusions and exact mapping applicability | Add boundary discovery before these mechanics; do not repeat the ODR-0127 profile. |
+| [Context maps][contexts]: established contextual boundaries, projection scope, explicit exclusions and exact mapping applicability | Preserve and link this existing account as the fixed context for mappings; do not add another boundary lesson or repeat the ODR-0127 profile. |
 | [Names and choices][choices] and the separate learner proposal | Learners distinguish names, values and meanings in ordinary language. The new technical chapter owns SKOS/SHACL recipes. |
 
 Coordinate examples with the existing fictional Harbour Court case. Reuse the building,
@@ -297,7 +264,7 @@ Recommended separate decision package:
    human policy decisions and actual access enforcement explicitly separate.
 
 This gate can proceed alongside the other enrichment work. Deferral does not block
-explaining the already adopted vocabulary, boundary, validation or mapping rules.
+explaining the already adopted vocabulary, validation or mapping rules.
 
 ## 5. Coherent work packages and proportional acceptance evidence
 
@@ -307,11 +274,10 @@ normative requirements and the newer source delta need their own approval.
 
 | Package | Deliverable and dependency | Evidence required before the slice is complete |
 | --- | --- | --- |
-| A — Scope and boundary | Add the language/authority test and independent-axis example to context-map records. Establish the same ownership vocabulary used by later examples. | Each claim traces to S plus its local adoption; a steward/system change does not rename the example's identity; no new real context or identifier policy is asserted. |
-| B — Values and metadata | Add the proposed vocabulary/classification chapter and precise links from languages and scope/package. Can be drafted alongside A; uses its ownership distinctions. | Four representation cases and their counterexamples; closure evidence; correct broader direction; facet/base/profile separation; exact bounded metadata requirements; all illustrative terms labelled. |
-| C — Validation authoring | Add the authoring/assurance section, sharing B's fixtures where useful. | Shape declarations checked; expected conforming and nonconforming outcomes for required features; absent-property target case, contradiction case and intended severity checked. Unsupported/not-run features remain visible, not passed. |
-| D — Mapping maintenance | Extend mapping records after ownership terms in A are stable. | Distinct verdicts, an exact-match chain review and both retraction/reopening cases; pinned endpoint/mapping-set versions; no proposed identity refinement promoted. |
-| E — Policy reconciliation | Separate human decision package from §4; independent of A–D. | Exact upstream delta and local dispositions; an accepted amendment before normative page changes; OPDA-specific conformance evidence before implementation claims. |
+| A — Values and metadata | Add the proposed vocabulary/classification chapter and precise links from languages and scope/package, using the established contexts and ownership language unchanged. | Four representation cases and their counterexamples; closure evidence; correct broader direction; facet/base/profile separation; exact bounded metadata requirements; all illustrative terms labelled. |
+| B — Validation authoring | Add the authoring/assurance section, sharing A's fixtures where useful. | Shape declarations checked; expected conforming and nonconforming outcomes for required features; absent-property target case, contradiction case and intended severity checked. Unsupported/not-run features remain visible, not passed. |
+| C — Mapping maintenance | Extend mapping records within the established contexts and their documented seams. | Distinct verdicts, an exact-match chain review and both retraction/reopening cases; pinned endpoint/mapping-set versions; no proposed identity refinement promoted. |
+| D — Policy reconciliation | Separate human decision package from §4; independent of A–C. | Exact upstream delta and local dispositions; an accepted amendment before normative page changes; OPDA-specific conformance evidence before implementation claims. |
 
 For implemented website slices, run the repository's required tests and build, scoped
 link/anchor checks and a proportionate rendered review of changed pages through the
@@ -330,9 +296,10 @@ content plan, not evidence of candidate or website conformance.
 
 Review evidence: committed-source research was followed by a separate source/authority
 critique of this draft, including the direct S→N ODR-0071k diff, ODR-0036/0049/0055
-cardinality contracts and ODR-0059 verdicts. All 30 local reference targets and the
-explicit page anchors were checked. This review establishes source fidelity and scope,
-not implementation or ontology conformance.
+cardinality contracts and ODR-0059 verdicts. A later correction removed the proposed
+boundary-discovery work because contextual boundaries are already fixed and documented.
+Local reference targets and explicit page anchors were checked. This review establishes
+source fidelity and scope, not implementation or ontology conformance.
 
 ## 6. Original-source locator register
 
@@ -344,8 +311,6 @@ older retained wording; adopted local scope takes precedence over excluded sourc
 
 | Original filename | Sections supporting the proposal | Local adaptation |
 | --- | --- | --- |
-| `ODR-0040-bounded-context-boundary-criteria.md` | Rules R1 BC Boundary Test, R2 Three Hierarchies Separation; R3/R4 supporting limits | ODR-0045 |
-| `ODR-0106-data-domain-vs-subject-area-vs-bounded-context.md` | Decision Outcome; Rules R1–R3 | ODR-0060 |
 | `ODR-0010-multi-faceted-classification-framework.md` | Facet framework and cardinality rules | ODR-0036 |
 | `ODR-0016-skos-for-enumerations.md` | Rules: core pattern, closure, enumeration/taxonomy distinction | ODR-0039 |
 | `ODR-0023-enumeration-modeling-pattern.md` | Rules: closed/open representation and facet exemption | ODR-0040 |
@@ -366,7 +331,6 @@ older retained wording; adopted local scope takes precedence over excluded sourc
 [odr36]: ../ontology/odr/ODR-0036-multi-faceted-classification-framework.md
 [odr39]: ../ontology/odr/ODR-0039-skos-for-enumerations.md
 [odr40]: ../ontology/odr/ODR-0040-enumeration-modeling-pattern.md
-[odr45]: ../ontology/odr/ODR-0045-bounded-context-boundary-criteria.md
 [odr48]: ../ontology/odr/ODR-0048-cat2-vocabulary-taxonomy-pipeline-adoption.md
 [odr49]: ../ontology/odr/ODR-0049-cat5-classification-metadata-pipeline-adoption.md
 [odr50]: ../ontology/odr/ODR-0050-cat7-validation-constraints-pipeline-adoption.md
@@ -374,7 +338,6 @@ older retained wording; adopted local scope takes precedence over excluded sourc
 [odr55]: ../ontology/odr/ODR-0055-dublin-core-cat5-annotation.md
 [odr56]: ../ontology/odr/ODR-0056-sssom-cat8-mapping-provenance.md
 [odr59]: ../ontology/odr/ODR-0059-cross-context-identity-criterion-protocol.md
-[odr60]: ../ontology/odr/ODR-0060-data-domain-vs-subject-area-vs-bounded-context.md
 [contexts]: ../../src/pages/semantic-modelling/method/context-map-records.astro#two-layers
 [languages]: ../../src/pages/semantic-modelling/method/languages-and-profiles.astro#controlled-choices
 [scope]: ../../src/pages/semantic-modelling/method/scope-and-package.astro#assessment
