@@ -60,6 +60,7 @@
     { "path": "tests/trade-body-outreach-assets.test.mjs", "owner": "engagement", "tier": "development-aid", "lane": "editorial" },
     { "path": "tests/working-group-inbox-agent.test.mjs", "owner": "engagement", "tier": "development-aid", "lane": "application" },
     { "path": "tests/working-group-interest.test.mjs", "owner": "engagement", "tier": "pull-request-blocking", "lane": "application" },
+    { "path": "tests/working-group-join-errors.test.mjs", "owner": "engagement", "tier": "pull-request-blocking", "lane": "application" },
     { "path": "tests/working-group-signup-pages.test.mjs", "owner": "engagement", "tier": "pull-request-blocking", "lane": "application" }
   ]
 }

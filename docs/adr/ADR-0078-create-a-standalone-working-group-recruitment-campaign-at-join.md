@@ -100,6 +100,18 @@ Choose **Option C — create a standalone editorial campaign at `/join`**.
 This ADR is accepted. It authorises the local route, composition and quality
 contract; it does not authorise publication.
 
+Amended on 7 September 2026 after the adversarial join-page review: the form now
+labels its contact field “Email address” and explicitly permits a work or personal
+address, matching ADR-0069 without changing any required field or eligibility rule.
+The page explains human review, conditional contact and separate onboarding before
+submission. Working-group cards say that activation selects a group and moves to the
+form, not that it registers interest; nothing is submitted until the form is sent.
+Structured `400` responses are translated through a fixed client-side field allowlist,
+never rendered as server-provided text, while stale privacy notices receive distinct
+reload-and-review guidance. Unknown, malformed and service errors retain the existing
+retryable message, and entered values are not cleared. No response-time, acceptance,
+membership or access promise is introduced.
+
 Amended on 7 September 2026: the join identity links both shared OPDA and SPDTF
 headings to `/`. Join defaults are size 32, OPDA 87%, space below/between/above
 18/0/9px, panel position −17/−23px, width 93%, item spacing 16px and theme-control

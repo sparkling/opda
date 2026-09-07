@@ -1,3 +1,9 @@
+import {
+  STALE_PRIVACY_NOTICE_ISSUE,
+  registrationErrorIssues,
+  type RegistrationErrorIssue,
+} from '@/lib/working-group-registration-errors';
+
 const WORKING_GROUPS = new Set([
   'finance-and-banking',
   'conveyancing',
@@ -90,8 +96,8 @@ function initWorkingGroupForm(): void {
     summaryList.replaceChildren();
   }
 
-  function addError(control: Element | null, errorId: string, message: string): void {
-    const error = document.getElementById(errorId);
+  function addError(control: Element | null, errorId: string | null, message: string): void {
+    const error = errorId ? document.getElementById(errorId) : null;
     if (error) error.textContent = message;
     control?.setAttribute('aria-invalid', 'true');
 
@@ -105,6 +111,19 @@ function initWorkingGroupForm(): void {
       item.textContent = message;
     }
     summaryList.append(item);
+  }
+
+  function showRegistrationIssues(issues: RegistrationErrorIssue[]): void {
+    for (const issue of issues) {
+      const controls = issue.selector
+        ? [...form.querySelectorAll<HTMLElement>(issue.selector)]
+        : [];
+      controls.slice(1).forEach((control) => control.setAttribute('aria-invalid', 'true'));
+      addError(controls[0] ?? null, issue.errorId, issue.message);
+    }
+    summary.hidden = false;
+    summary.focus();
+    status.textContent = '';
   }
 
   function validateText(
@@ -168,13 +187,17 @@ function initWorkingGroupForm(): void {
     const website = form.querySelector<HTMLInputElement>('#website')?.value ?? '';
     const privacyNoticeVersion = form.dataset.privacyNoticeVersion;
 
+    if (privacyNoticeVersion !== '2026-08-13') {
+      addError(null, STALE_PRIVACY_NOTICE_ISSUE.errorId, STALE_PRIVACY_NOTICE_ISSUE.message);
+    }
+
     if (summaryList.children.length > 0) {
       summary.hidden = false;
       summary.focus();
       return null;
     }
 
-    if (!Number.isInteger(beganAt) || privacyNoticeVersion !== '2026-08-13') return null;
+    if (!Number.isInteger(beganAt)) return null;
 
     const payload: RegistrationPayload = {
       fullName,
@@ -216,10 +239,17 @@ function initWorkingGroupForm(): void {
         signal: controller.signal,
       });
       const contentType = response.headers.get('content-type') ?? '';
-      if (response.status !== 201 || !/^application\/json(?:\s*;|$)/iu.test(contentType)) {
+      const isJson = /^application\/json(?:\s*;|$)/iu.test(contentType);
+      const body: unknown = isJson ? await response.json() : null;
+      if (response.status !== 201) {
+        const issues = response.status === 400 ? registrationErrorIssues(body) : [];
+        if (issues.length > 0) {
+          showRegistrationIssues(issues);
+          return;
+        }
         throw new Error('Unexpected registration response');
       }
-      const body: unknown = await response.json();
+      if (!isJson) throw new Error('Unexpected registration response');
       if (!isAcceptedResponse(body)) throw new Error('Invalid registration response');
 
       accepted = true;

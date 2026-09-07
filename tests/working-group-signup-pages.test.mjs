@@ -75,7 +75,9 @@ test('public sign-up form exposes only the accepted working-group and contributi
   assert.deepEqual(extractObjectValues(data, 'workingGroupContexts'), expectedGroups);
   assert.deepEqual(extractObjectValues(data, 'contributionOptions'), expectedContributions);
   assert.doesNotMatch(form, /not-sure|Not sure|help me choose|data-exclusive/u);
-  assert.match(form, /<label for="email">Organisational email address <span class="wg-required">\*<\/span><\/label>/u);
+  assert.match(form, /<label for="email">Email address <span class="wg-required">\*<\/span><\/label>/u);
+  assert.match(form, /A work or personal address is fine\./u);
+  assert.doesNotMatch(form, /We will reply to this address/u);
   assert.doesNotMatch(form, /type=["'](?:file|tel|url)["']/u);
   assert.doesNotMatch(form, /name=["'](?:address|phone|socialProfile|evidence|materialInterest)["']/u);
   assert.doesNotMatch(form, /Turnstile|turnstile|cf-turnstile|PUBLIC_TURNSTILE/u);
@@ -264,6 +266,9 @@ test('registration script sends the fixed allowlisted payload to the same-origin
   assert.match(source, /window\.clearTimeout\(timeoutId\)/u);
   assert.match(source, /response\.status !== 201/u);
   assert.match(source, /body\.ok === true[\s\S]*body\.state === 'received'/u);
+  assert.match(source, /registrationErrorIssues/u);
+  assert.match(source, /summary\.focus\(\)/u);
+  assert.doesNotMatch(source, /body\.errors|\.errors\[/u);
 });
 test('campaign recruits industry experts through purpose, influence and clear expectations', async () => {
   const [page, data, form, sectionsCss, responsiveCss] = await Promise.all([
@@ -311,6 +316,10 @@ test('campaign recruits industry experts through purpose, influence and clear ex
   }
   assert.match(corpus, /Data \(Use and\s+Access\) Act 2025/iu);
   assert.match(corpus, /property-specific\s+arrangements remain prospective/iu);
+  assert.match(corpus, /After you register, OPDA reviews your expression of interest\./iu);
+  assert.match(corpus, /Registering does not\s+give membership or access\./iu);
+  assert.match(corpus, /Choosing a group marks it in the registration form below and\s+takes you there\./iu);
+  assert.match(corpus, /Nothing is sent until you complete and submit the form\./iu);
   assert.doesNotMatch(page, /ontology|SKOS|semantic constellation|contextual lenses|common boundary|AI-assisted modelling/iu);
   assert.doesNotMatch(corpus, /Contribute consumer, accessibility, regulatory or public-interest experience|Identify impacts and opportunities|Represent people and the public interest|technical model might otherwise miss|Not sure|help me choose|property reform|operating reality belongs|Make the real work visible|data-modelling expertise is needed/iu);
   assert.doesNotMatch(page, /data-parallax-layer|data-story-step|data-handoff-stage|data-reveal/u);
@@ -322,6 +331,8 @@ test('campaign recruits industry experts through purpose, influence and clear ex
   const cards = await readFile(paths.campaignCards, 'utf8');
   const themeImage = await readFile(paths.campaignThemeImage, 'utf8');
   assert.match(cards, /data-context-register=\{card\.registerContext\}/u);
+  assert.match(cards, /Select \{card\.title\} in the registration form/u);
+  assert.doesNotMatch(cards, /Register interest in \{card\.title\}/u);
   assert.match(cards, /\.campaign-card__link\s*\{[^}]*position:\s*absolute;[^}]*inset:\s*0;/u);
   assert.equal((page.match(/<CampaignCardGrid\b/gu) ?? []).length, 5);
   assert.match(cards, /<CampaignThemeImage/u);
@@ -390,7 +401,7 @@ test('form errors are associated with every control and group', async () => {
   const source = await readFile(paths.form, 'utf8');
   for (const [id, description] of [
     ['full-name', 'full-name-error'],
-    ['email', 'email-error'],
+    ['email', 'email-hint email-error'],
     ['organisation', 'organisation-error'],
     ['role', 'role-error'],
     ['acknowledgement', 'acknowledgement-error'],

@@ -17,6 +17,11 @@ const { contexts, contributions, privacyNoticeVersion } = Astro.props;
         Choose one or more groups and the kinds of contribution you could make. The form usually
         takes two or three minutes.
       </p>
+      <p>
+        After you register, OPDA reviews your expression of interest. If we can progress it, we will
+        contact you about the relevant group and send onboarding separately. Registering does not
+        give membership or access.
+      </p>
     </CampaignSectionHeading>
     <div class="callout callout--note">
       <div class="callout__label">How we use these details</div>
@@ -68,8 +73,9 @@ const { contexts, contributions, privacyNoticeVersion } = Astro.props;
             <p id="full-name-error" class="wg-field-error"></p>
           </div>
           <div class="wg-field">
-            <label for="email">Organisational email address <span class="wg-required">*</span></label>
-            <input id="email" name="email" type="email" autocomplete="email" maxlength="254" inputmode="email" aria-describedby="email-error" required />
+            <label for="email">Email address <span class="wg-required">*</span></label>
+            <input id="email" name="email" type="email" autocomplete="email" maxlength="254" inputmode="email" aria-describedby="email-hint email-error" required />
+            <span id="email-hint" class="wg-field-hint">We will use this address if we contact you about your registration. A work or personal address is fine.</span>
             <p id="email-error" class="wg-field-error"></p>
           </div>
           <div class="wg-field">
