@@ -99,9 +99,10 @@ test('registration enforces the route, JSON content type and 16KB boundary', asy
   })).statusCode, 413);
 });
 
-test('honeypot and implausible timing return success without storing data', async () => {
-  for (const suspicious of [payload({ website: 'spam.example' }), payload({ startedAt: NOW - 100 })]) {
-    const deps = dependencies();
+test('honeypot submissions return the same harmless decoy for every client timing', async () => {
+  for (const startedAt of [NOW - 10_000, NOW - 100, NOW, NOW + 300_000, NOW - 300_000]) {
+    const deps = dependencies({ newId: () => assert.fail('a decoy must not allocate a registration') });
+    const suspicious = payload({ website: 'spam.example', startedAt });
     const response = await createHandler(deps.values)(event('POST /api/working-group-interest', suspicious));
     assert.equal(response.statusCode, 201);
     assert.deepEqual(JSON.parse(response.body), {
@@ -109,6 +110,47 @@ test('honeypot and implausible timing return success without storing data', asyn
       state: 'received',
       message: 'Your expression of interest has been received.',
     });
+    assert.equal(response.headers['cache-control'], 'no-store');
+    assert.deepEqual(deps.calls, []);
+  }
+});
+
+for (const [scenario, clockOffset, completionTime] of [
+  ['five minutes ahead', 300_000, 10_000],
+  ['ten seconds ahead, appearing simultaneous', 10_000, 10_000],
+  ['eight seconds ahead, appearing too fast', 8_000, 10_000],
+  ['just inside the former timing threshold', 7_001, 10_000],
+  ['exactly at the former timing threshold', 7_000, 10_000],
+  ['five minutes behind', -300_000, 10_000],
+  ['one day behind', -86_400_000, 10_000],
+  ['not skewed, with a fast completion', 0, 100],
+  ['not skewed, with a long completion', 0, 3 * 86_400_000],
+]) {
+  test(`valid registration is stored when the client clock is ${scenario}`, async () => {
+    const deps = dependencies();
+    const startedAt = NOW - completionTime + clockOffset;
+    const response = await createHandler(deps.values)(event('POST /api/working-group-interest', payload({ startedAt })));
+
+    assert.equal(response.statusCode, 201);
+    assert.equal(deps.calls.length, 1, 'success must follow a stored registration, not a timing decoy');
+    assert.equal(deps.calls[0].createdAt, NOW, 'record timestamps use the server clock');
+    assert.equal(deps.calls[0].expiresAt, Math.floor(NOW / 1000) + REGISTRATION_RETENTION_SECONDS);
+    assert.equal('startedAt' in deps.calls[0], false, 'client timing is not persisted');
+    assert.deepEqual(JSON.parse(response.body), {
+      ok: true,
+      state: 'received',
+      message: 'Your expression of interest has been received.',
+    });
+  });
+}
+
+test('malformed client timestamps remain validation errors rather than success decoys', async () => {
+  for (const startedAt of [-1, 1.5, Number.MAX_SAFE_INTEGER + 1, 'invalid', undefined]) {
+    const deps = dependencies();
+    const response = await createHandler(deps.values)(event('POST /api/working-group-interest', payload({ startedAt })));
+
+    assert.equal(response.statusCode, 400);
+    assert.deepEqual(JSON.parse(response.body), { ok: false, errors: { form: 'The submission is invalid.' } });
     assert.deepEqual(deps.calls, []);
   }
 });
@@ -140,6 +182,27 @@ test('a valid expression of interest is stored once and acknowledged', async () 
   });
 });
 
+test('a clock-skewed registration is acknowledged only after storage completes', async () => {
+  let finishStorage;
+  const pendingStorage = new Promise((resolve) => { finishStorage = resolve; });
+  let writes = 0;
+  const handler = createHandler(dependencies({
+    storeRegistration: async () => { writes += 1; await pendingStorage; },
+  }).values);
+  let settled = false;
+  const pendingResponse = handler(event('POST /api/working-group-interest', payload({ startedAt: NOW + 300_000 })));
+  void pendingResponse.then(() => { settled = true; });
+
+  await Promise.resolve();
+  const settledBeforeStorage = settled;
+  finishStorage();
+  const response = await pendingResponse;
+
+  assert.equal(writes, 1);
+  assert.equal(settledBeforeStorage, false);
+  assert.equal(response.statusCode, 201);
+});
+
 test('DynamoDB input contains the registration and uses an idempotent generated key', () => {
   const request = registrationPutInput({
     registrationId: 'registration-id',
@@ -161,11 +224,19 @@ test('DynamoDB input contains the registration and uses an idempotent generated 
   assert.equal(request.ConditionExpression, 'attribute_not_exists(registrationId)');
 });
 
-test('storage failure returns a retryable service error without leaking details', async () => {
-  const handler = createHandler(dependencies({
-    storeRegistration: async () => { throw new Error('secret internal detail'); },
-  }).values);
-  const response = await handler(event('POST /api/working-group-interest', payload()));
-  assert.equal(response.statusCode, 503);
-  assert.doesNotMatch(response.body, /secret internal detail/u);
+test('storage failure returns a retryable service error without leaking details even with clock skew', async () => {
+  for (const startedAt of [NOW - 10_000, NOW - 100, NOW + 300_000]) {
+    let writes = 0;
+    const handler = createHandler(dependencies({
+      storeRegistration: async () => { writes += 1; throw new Error('secret internal detail'); },
+    }).values);
+    const response = await handler(event('POST /api/working-group-interest', payload({ startedAt })));
+
+    assert.equal(writes, 1);
+    assert.equal(response.statusCode, 503);
+    assert.deepEqual(JSON.parse(response.body), {
+      ok: false,
+      message: 'Registration is temporarily unavailable. Please try again shortly.',
+    });
+  }
 });

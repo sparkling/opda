@@ -1,6 +1,5 @@
 export const PRIVACY_NOTICE_VERSION = '2026-08-13';
 export const REGISTRATION_RETENTION_SECONDS = 180 * 24 * 60 * 60;
-export const MINIMUM_COMPLETION_MS = 3_000;
 
 export const WORKING_GROUPS = new Set([
   'finance-and-banking',
@@ -114,10 +113,8 @@ export function validateRegistration(payload) {
   };
 }
 
-export function isPlausibleHumanSubmission(value, now) {
-  if (value.website) return false;
-  const elapsed = now - value.startedAt;
-  // Only reject impossibly fast submissions. There is deliberately no upper
-  // time limit: people using assistive technology can take as long as needed.
-  return elapsed >= MINIMUM_COMPLETION_MS;
+export function isHoneypotSubmission(value) {
+  // Client/server wall-clock differences cannot prove completion speed: skew
+  // can make a genuine submission appear instantaneous or future-dated.
+  return Boolean(value.website);
 }
