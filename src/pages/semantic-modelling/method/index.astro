@@ -2,6 +2,7 @@
 import ModellingLayout from '@/layouts/ModellingLayout.astro';
 import PrincipleSpread from '@/components/modelling/PrincipleSpread.astro';
 import ContrastPair from '@/components/modelling/ContrastPair.astro';
+import ModellingIllustration from '@/components/modelling/ModellingIllustration.astro';
 ---
 
 <ModellingLayout title="Ontology modelling" description="A technical guide for ontology modellers and implementers: start with the work, make identity explicit, and connect meanings through accountable agreements." claim="method">
@@ -29,6 +30,8 @@ import ContrastPair from '@/components/modelling/ContrastPair.astro';
     same thing everywhere, or that placing every class in one hierarchy establishes
     a shared understanding.
   </p>
+
+  <ModellingIllustration kind="modelling-workbench" />
 
   <PrincipleSpread number={1} id="start-with-work" aliases={["questions","cycle","evidence","untrusted-evidence"]} title="Start with a question people need to answer">
     <p>Begin with a decision, exchange or misunderstanding in real work. Name the question, the evidence available and examples that would change the answer. A source form is valuable evidence, but its sections and fields are not automatically the conceptual structure of the domain.</p>

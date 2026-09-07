@@ -35,6 +35,7 @@ export const MODELLING_JOURNEYS: Item[] = [
       page('method/scope-and-package', 'Eight concerns, six connected outputs'),
       page('method/classes-and-relationships', 'Classes and relationships'),
       page('method/roles-and-phases', 'Roles and phases'),
+      page('method/vocabularies-and-classification', 'Vocabularies and classification'),
       page('method/context-map-records', 'Strategic context maps'),
       page('method/mapping-records', 'Qualified term mappings'),
       page('method/meaning-checks-and-delivery', 'Meaning, checks and delivery'),

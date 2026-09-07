@@ -54,10 +54,10 @@ const literalExample = (source, name) => {
   return source.slice(contentStart, end);
 };
 
-test('one registry supplies 24 canonical pages across four task-based journeys', () => {
+test('one registry supplies 25 canonical pages across four task-based journeys', () => {
   assert.deepEqual(MODELLING_JOURNEYS.map(({ url }) => url),
     ['understand', 'explore', 'contribute', 'method'].map((slug) => `${sectionRoot}/${slug}`));
-  assert.equal(routes.length, 24);
+  assert.equal(routes.length, 25);
   assert.equal(new Set(routes).size, routes.length);
   for (const group of MODELLING_JOURNEYS) {
     assert.ok(group.children?.length, `${group.url} has no chapters`);

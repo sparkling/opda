@@ -5,7 +5,7 @@ updated: 2026-09-07
 tags: [website, information-architecture, modelling, migration, bounded-context, publication]
 supersedes: []
 depends-on: [ADR-0041, ADR-0044, ADR-0063]
-implements: [src/pages/development/property-pack]
+implements: [src/pages/development/property-pack, src/pages/semantic-modelling]
 ---
 
 # Revamp the modelling website before publishing the new working-group approach
@@ -185,6 +185,21 @@ separate migration decision authorises replacement of current pages.
 
 ## Amendments
 
+- **2026-09-07 — Two-audience teaching enrichment implemented locally.** The
+  operator authorised implementation of the reviewed enrichment proposals using a
+  Ruflo-tracked swarm, native Codex authors and an independent native Claude
+  editorial review. The existing learning routes now connect a fictional property
+  story, form/tree/graph reading, roles and phases, and practice with worked
+  feedback. The technical routes add a vocabulary/classification chapter and
+  deepen constraint authoring, mapping review and privacy/access semantics.
+  Accessible vector diagrams, a comparison infographic and light/dark editorial
+  illustrations support the text; shared page navigation and glossary remain the
+  common entry points. No upstream ODR, candidate ontology or programme Trust
+  policy is changed. Newer upstream policy modelling remains a separate adoption
+  decision. This teaching slice does not complete the proposed review application,
+  recruited learner evaluation or the broader migration, and does not authorise
+  publication. Chrome rendered-page review is still required when the existing
+  OPDA browser connection is available.
 - **2026-08-04 — Accepted with an isolated Property Pack review path.** The operator authorised
   publication of the Property Pack candidate and its documentation as a separate,
   clearly labelled review surface. This satisfies the anti-mixing intent of this ADR;

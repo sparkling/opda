@@ -1,0 +1,14 @@
+{
+  "style": "OPDA editorial watercolour, as documented in DESIGN.md and /design-system",
+  "generator": "OpenAI native image-generation tool",
+  "generated": "2026-09-07",
+  "purpose": "Human-facing orientation only. These illustrations do not encode normative ontology relationships.",
+  "geometry": { "width": 2172, "height": 724, "aspectRatio": "3:1", "cropping": "none" },
+  "reproductionBrief": "Extra-wide landscape editorial pen-and-ink, watercolour and gouache illustration. Organic contours, tactile pigment and purposeful negative space. Off-white paper #F9F9F9, deep-purple ink #231F2F, substantial OPDA yellow #FEC92B, teal #0E8478, violet #6C5BD4 and supporting coral. No logo, embedded text, personal data, photography, 3D, glow or generic clipart. Retain complete recognisable subjects.",
+  "subjects": {
+    "property-story": "A British residential building with two dwelling entrances, a cutaway showing distinct internal spaces, and separate inspection reports and a floor plan. A warm, concrete introduction to distinguishing a building, dwellings, an inspection and its reports.",
+    "modelling-workbench": "An overhead, shallow arrangement of practitioners' hands examining miniature building and dwelling studies, grouping coloured vocabulary cards and comparing separate reports, with a pencil and magnifying lens. No diagram arrows or labels."
+  },
+  "darkModeEdit": "Use the approved light image as the edit target. Preserve exact subjects, arrangement, relative sizes, perspective, crop and 3:1 geometry. Change paper to deep petrol-purple #231F2F, linework to pale ink and pigment to rich teal, violet, coral and OPDA yellow. This is not a night scene: no new objects, dramatic lighting, glow or text.",
+  "files": ["property-story-light.png", "property-story-dark.png", "modelling-workbench-light.png", "modelling-workbench-dark.png"]
+}

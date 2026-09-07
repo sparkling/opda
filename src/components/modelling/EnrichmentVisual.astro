@@ -1,0 +1,120 @@
+---
+import { randomUUID } from 'node:crypto';
+import VisualFrame from './VisualFrame.astro';
+import VisualNode from './VisualNode.astro';
+import VisualEdge from './VisualEdge.astro';
+
+interface Props { kind: string; }
+const { kind } = Astro.props;
+const figures = {
+  'connected-views': {
+    title: 'One account, two useful views',
+    description: 'A nested report description and a relationship graph preserve the same dwelling, inspection and report version; the graph also shows the earlier report that version two revises.',
+    eyebrow: 'TREE AND GRAPH / SAME MEANING, DIFFERENT EMPHASIS',
+    takeaway: ['Inspection: 12 August 2026. First report: 14 August. Corrected report: 20 August.', 'No second visit is assumed. A correction changes the report, not the inspection date.'],
+  },
+  'vocabulary-representations': {
+    title: 'Choose the representation that answers the question',
+    description: 'A profile closes an inspection-outcome choice to two named values, a surveyor population can gain new people, and Roof condition has Building fabric as a broader concept rather than a physical container.',
+    eyebrow: 'MODELLING CHOICES / THREE DIFFERENT COMMITMENTS',
+    takeaway: ['A scheme organises meanings; a selected validation rule closes a particular choice.', 'Adding a surveyor is not adding an outcome value. Broader is not subclass or containment.'],
+  },
+  'constraint-trace': {
+    title: 'Read a validation result back to its rule',
+    description: 'The fictional report-missing, typed ReportVersion, has no reportsInspection value. It fails a minimum-count-one constraint with severity Violation; the trace identifies the focus node, path and source constraint.',
+    eyebrow: 'RESULT TRACE / EXPLANATION, NOT AN RDF CHAIN',
+    takeaway: ['The focus node must be selected even when the required value is absent.', 'A result explains a stated constraint. It does not prove that a report is true or adopted.'],
+  },
+  'mapping-review': {
+    title: 'Evidence can reopen either decision',
+    description: 'A counterexample can reopen an accepted mapping, and changed meaning can reopen a denied candidate; review records a versioned verdict rather than forcing a positive mapping.',
+    eyebrow: 'DECISION HISTORY / REVIEW CAN CHANGE ITS MIND',
+    takeaway: ['Record the trigger, compared versions, owner and the decision being superseded.', 'Keep, revise, retract or deny with reasons. No review is not the same as a recorded denial.'],
+  },
+  'privacy-scope': {
+    title: 'A transaction role is not permission',
+    description: 'A person participates as seller in the transaction concerning Harbour Court. That role does not establish a permission claim concerning Report v2; any such claim has its own scope, purpose, validity and authority.',
+    eyebrow: 'ROLE AND ACCESS / KEEP THE CLAIMS SEPARATE',
+    takeaway: ['Domain participation, scheme status and access permission are different meanings.', 'The ontology describes claims and references. It does not grant or enforce access.'],
+  },
+};
+if (!Object.hasOwn(figures, kind)) throw new Error('Unknown enrichment diagram: ' + kind);
+const figure = figures[kind as keyof typeof figures];
+const id = 'enrichment-' + kind + '-' + randomUUID();
+---
+
+<VisualFrame id={id} {...figure}>
+  {kind === 'connected-views' && <>
+    <text x="40" y="88" class="mv-tag">NESTED DESCRIPTION</text>
+    <text x="400" y="88" class="mv-tag">CONNECTED SUBJECTS</text>
+    <VisualEdge id={id} path="M56 220V304Q56 312 64 312H80" arrow={false} />
+    <VisualEdge id={id} path="M96 364V444Q96 452 104 452H120" arrow={false} />
+    <VisualEdge id={id} path="M696 168H624" label="REVISES" box={[628, 136, 64]} />
+    <VisualEdge id={id} path="M512 236V264Q512 272 520 272H624Q632 272 632 280V300" label="DESCRIBES" box={[528, 240, 88]} />
+    <VisualEdge id={id} path="M808 236V264Q808 272 800 272H752Q744 272 744 280V300" label="DESCRIBES" box={[820, 244, 96]} />
+    <VisualEdge id={id} path="M680 396V432" label="CONCERNS" box={[692, 400, 104]} />
+    <VisualNode x={40} y={108} width={304} height={112} tag="REPORT" name="Version 2" notes={['Issued 20 August 2026']} />
+    <VisualNode x={80} y={252} width={264} height={112} tag="INSPECTION" name="12 August 2026" notes={['The visit being described']} />
+    <VisualNode x={120} y={404} width={224} height={88} tag="SUBJECT" name="Flat 1" />
+    <VisualNode x={400} y={108} width={224} height={128} tag="DOCUMENT" name="Report v1" notes={['Issued 14 August']} shape="document" />
+    <VisualNode x={696} y={108} width={224} height={128} tag="DOCUMENT" name="Report v2" notes={['Issued 20 August']} shape="document" tone="focal" />
+    <VisualNode x={560} y={300} width={240} height={96} name="Inspection" notes={['Occurred 12 August']} />
+    <VisualNode x={560} y={432} width={240} height={64} name="Flat 1" />
+  </>}
+
+  {kind === 'vocabulary-representations' && <>
+    <text x="40" y="112" class="mv-tag">CLOSED CHOICE</text>
+    <text x="392" y="112" class="mv-tag">OPEN POPULATION</text>
+    <text x="720" y="112" class="mv-tag">CONCEPT HIERARCHY</text>
+    <VisualEdge id={id} path="M512 352V272" label="TYPE" box={[524, 300, 64]} />
+    <VisualEdge id={id} path="M820 272V352" label="BROADER" box={[832, 300, 88]} />
+    <rect x="40" y="144" width="280" height="328" rx="4" class="mv-containment" />
+    <text x="64" y="176" class="mv-tag">ILLUSTRATIVE PROFILE</text>
+    <text x="64" y="216" class="mv-label">Inspection outcome</text>
+    <text x="64" y="264" class="mv-note">Completed within</text>
+    <text x="64" y="288" class="mv-note">agreed scope</text>
+    <text x="64" y="344" class="mv-note">Limited by access</text>
+    <text x="64" y="408" class="mv-technical">sh:in selects these values</text>
+    <text x="64" y="440" class="mv-note">For this profile only.</text>
+    <VisualNode x={392} y={144} width={240} height={128} tag="CLASS" name="Surveyor" notes={['Who belongs to this type?']} />
+    <VisualNode x={392} y={352} width={240} height={120} tag="INDIVIDUAL" name="A surveyor" notes={['New people can be added.']} />
+    <VisualNode x={720} y={144} width={200} height={128} tag="CONCEPT" name="Roof condition" notes={['A meaning within', 'the subject scheme']} />
+    <VisualNode x={720} y={352} width={200} height={120} tag="CONCEPT" name="Building fabric" notes={['The broader meaning']} />
+  </>}
+
+  {kind === 'constraint-trace' && <>
+    <text x="40" y="136" class="mv-title">Why did this report fail this check?</text>
+    <VisualEdge id={id} path="M224 284H272" />
+    <VisualEdge id={id} path="M456 284H504" />
+    <VisualEdge id={id} path="M688 284H736" />
+    <VisualNode x={40} y={212} width={184} height={176} tag="01 / FOCUS NODE" name="Report version" notes={['report-missing', 'Typed ReportVersion']} technical shape="document" />
+    <VisualNode x={272} y={212} width={184} height={176} tag="02 / PATH" name={['Inspection', 'reference']} notes={['reportsInspection', 'No value supplied']} technical />
+    <VisualNode x={504} y={212} width={184} height={176} tag="03 / CONSTRAINT" name="minCount 1" notes={['Requires a value']} technical />
+    <VisualNode x={736} y={212} width={184} height={176} tag="04 / SEVERITY" name="Violation" notes={['Missing reference']} tone="focal" />
+    <text x="40" y="460" class="mv-note">Ask whether the rule captures the intended agreement—and whether its targets reach incomplete data.</text>
+  </>}
+
+  {kind === 'mapping-review' && <>
+    <VisualEdge id={id} path="M280 188H344Q352 188 352 196V248Q352 256 360 256H400" />
+    <VisualEdge id={id} path="M280 396H344Q352 396 352 388V344Q352 336 360 336H400" />
+    <VisualEdge id={id} path="M640 296H720" />
+    <VisualNode x={40} y={112} width={240} height={152} tag="RECORDED MAPPING" name="Accepted" notes={['A counterexample', 'appears.']} shape="document" />
+    <VisualNode x={40} y={320} width={240} height={152} tag="RECORDED CANDIDATE" name="Denied" notes={['The source meaning', 'changes.']} shape="document" />
+    <VisualNode x={400} y={216} width={240} height={168} tag="HUMAN REVIEW" name="Reassess" notes={['Compare both versions.', 'Inspect the warrant.']} tone="focal" />
+    <VisualNode x={720} y={216} width={200} height={168} tag="VERSIONED RECORD" name="New verdict" notes={['Reasons retained', 'Prior record linked']} shape="document" />
+  </>}
+
+  {kind === 'privacy-scope' && <>
+    <VisualEdge id={id} path="M280 188H440" label="PARTICIPATES" box={[300, 156, 120]} />
+    <VisualEdge id={id} path="M560 264V352" arrow={false} dashed label="DOES NOT PROVE" box={[576, 292, 160]} />
+    <path d="M552 308H568" class="mv-stop" />
+    <VisualEdge id={id} path="M680 416H760" label="SCOPE" box={[692, 384, 56]} />
+    <VisualNode x={40} y={112} width={240} height={152} tag="PERSON" name="One participant" notes={['Keeps their own identity']} />
+    <VisualNode x={440} y={112} width={240} height={152} tag="DOMAIN PARTICIPATION" name={['Seller in the', 'transaction']} notes={['A transaction-scoped role']} />
+    <VisualNode x={440} y={352} width={240} height={136} tag="SEPARATE ASSERTION" name="Permission claim" notes={['Purpose · validity · authority']} technical tone="focal" />
+    <VisualNode x={760} y={352} width={160} height={136} tag="DATA SCOPE" name="Report v2" notes={['Not all reports']} shape="document" />
+    <text x="40" y="384" class="mv-label">An annotation is not a grant.</text>
+    <text x="40" y="420" class="mv-note">Describe personal-data meaning</text>
+    <text x="40" y="448" class="mv-note">on the relevant model property.</text>
+  </>}
+</VisualFrame>

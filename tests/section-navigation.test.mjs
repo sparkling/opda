@@ -80,7 +80,7 @@ test('the left section navigation implements all six destinations from one regis
   ])), {
     programme: 18,
     governance: 32,
-    'semantic-modelling': 24,
+    'semantic-modelling': 25,
     spdtf: 241,
     'working-groups': 39,
     resources: 12,
