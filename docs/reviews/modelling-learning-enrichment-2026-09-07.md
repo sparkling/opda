@@ -4,7 +4,7 @@ Date: 7 September 2026. Status: **recommendation for review, not an adopted deci
 
 Evidence baseline: `a56502011226590e8271eeb30bdca1ac0a6ea4c9`. This report is local-only. It changes no website, navigation, ADR, ontology, learning content or external source. Publication, participant contact and implementation require separate instructions.
 
-Scope update, 7 September 2026: this revision incorporates the user's clarification, now recorded in accepted [ADR-0063][D63] and [ADR-0064][D64], that the development effort produces a specification and trust-governance recommendations. Those amendments supplement the original content-audit baseline above.
+Scope correction, 7 September 2026: accepted [ADR-0063][D63] and [ADR-0064][D64] distinguish the SPDTF/Smart Data programme's Trust Framework from governance of model authoring. This proposal focuses on understanding and contributing to domain/ontology modelling. JSON-LD is a generated artefact, not a learning subject. Both the earlier Trust-governance learning outcome and detailed JSON-LD handoff are removed. These corrections supplement the original audit baseline.
 
 ## Recommendation
 
@@ -12,7 +12,9 @@ Enrich the existing Understand → Explore → Contribute journeys around a prac
 
 Provide non-ontologist technical implementers with a separate, optional handoff into Ontology modelling. Do not turn practitioner learning into a compressed ontology-engineering course, or make completing a course a prerequisite for contributing. “Ontology modelling” is the reader-facing section label; its `/method` paths and internal registry keys remain unchanged.
 
-The intended outputs are a specification, its formal models, generated JSON-LD artefacts and trust-governance recommendations. Generated JSON-LD contexts, associated JSON Schemas and examples are the main route for most implementers to use the specification in their own systems. Guidance for implementing a linked-data store or trust mechanisms is informative, not a requirement to run OPDA's infrastructure. Participants contribute meaning, evidence, rules and governance judgement; they are not training to operate an OPDA application. Context boundaries are already established and documented: teach their use and link their existing descriptions, not their rediscovery.
+Participants contribute domain meaning, evidence, rules and review to the ontology. Mention briefly that JSON-LD artefacts are generated from it; do not teach their structure, syntax or generation. Participants are not training to design a Trust Framework or operate an OPDA application. Context boundaries are established and documented: teach their use, not their rediscovery. Linked-data-store implementation guidance remains informative and outside this learning pathway.
+
+Programme Trust is the wider set of participation, identity, accreditation, permission and assurance arrangements supporting data exchange. The domain model can describe or map privacy, purpose, access-role, provenance and temporal information that can support those arrangements. Teach only the relevant domain distinctions, in ordinary language. Link the existing [DBT Smart Data context][dbt] when needed; do not add an accreditation, security or Trust-governance pathway.
 
 ## 1. Purpose, authority and evidence
 
@@ -20,14 +22,16 @@ The governing ADRs were read before synthesis. Their dated amendments control ov
 
 | Source | Governing consequence for learning |
 | --- | --- |
-| [ADR-0063][D63], accepted, including the 7 September scope update and §§2, 3a, 5–6 | Domain participants own meaning and contribute through definitions, diagrams, examples, questions and business rules. Facilitators produce formal artefacts; generated JSON-LD is the principal implementer route. Established boundaries and specification governance frame the work; store implementation is informative. The first group is resource-first, not a live ontology-authoring workshop. |
-| [ADR-0064][D64], accepted, including the 7 September scope update and revamp scope | Serve plain-language participation and technical method as distinct audiences; explain specification development, generated delivery and trust-governance recommendations. Preserve status, provenance and the non-technical review surface. Operational application training is outside scope; a content change does not authorise publication. |
+| [ADR-0063][D63], accepted, including the corrected 7 September scope and §§2–3a, 5–6 | Domain participants own meaning through definitions, diagrams, examples, questions and business rules. Facilitators produce formal artefacts. JSON-LD is generated from the ontology; it is not a teaching subject. Established boundaries frame the work. The first group is resource-first, not a live ontology-authoring workshop. |
+| [ADR-0064][D64], accepted, including the corrected Trust/teaching scope of 7 September | Serve plain-language participation and technical method as distinct audiences, both focused on ontology modelling. Keep relevant privacy/access semantics, but no detailed JSON-LD or broader Trust-framework lessons. Preserve status, provenance and the non-technical review surface. A content change does not authorise publication. |
 | [ADR-0067][D67], accepted, §§1–4 and human-promotion boundary | Source fields do not determine ontology structure. Contexts own meanings; a Property Pack is a profile spanning contexts. Technical conformance, domain judgement and authorised promotion are separate. |
 | [ADR-0074][D74], implemented with dated amendments | Keep the canonical `/semantic-modelling/**` family and shared templates. The current four journeys implement the broader two-audience intent. Do not revive the removed repeated journey widget or duplicate governance/glossary records. |
 | [ADR-0075][D75], accepted, accelerated determination and independent statuses | The Property Pack's Technical Working Group determination precedes later wider domain review under the scoped exception; do not teach an all-domain-review prerequisite for that milestone. Technical Working Group is not the Property Technology group. Determination, domain review, release and external recognition remain separate. |
 | [ADR-0065][D65], **proposed** | Useful background on the intended evidence-to-model cycle, not proof that its operating process, bulletin board or approval mechanism is adopted or live. The later accepted scope is eight concerns, not its retained eleven-dimension wording. |
 
 The selected upstream method revision is `67174057e6384b79d0b28b7736fe70a66e112895`, as recorded in ADR-0063 and the [local decision register][decisions]. Local rewritten OPDA ODR numbers and upstream source ODR numbers are different identifiers. This learning proposal neither adopts a newer source revision nor modifies the original `semantic-modelling` project on `hz`.
+
+The scope correction was checked against the project-held DPMSG *Smart Property Data Trust Framework Sandbox* paper (pp2–4, 6–7), the DBT Guidebook Chapter 1 Draft V7 (10 May 2026, pp1–6 and 30–34) and Chapter 4 Draft V2 (25 June 2026, pp1–7). The [existing identity/Trust page][dbt-identity] links the archived Chapter 1 draft. These documents explain the wider scheme, not a requirement that domain participants learn its operation. The companion technical proposal records the exact original-file locators and the model-category connection. Draft guidance and a sandbox plan do not establish final OPDA policy.
 
 Evidence grading used in this synthesis:
 
@@ -45,8 +49,8 @@ These are design audiences derived from the ADRs, not research-validated persona
 | Audience | Useful outcome | Not required / authority boundary |
 | --- | --- | --- |
 | Domain practitioner: conveyancing, agency, finance, surveying, data services or technology | Explain a term in its setting; identify the subject of a statement; read one relationship; supply a normal case, exception, evidence or question and its consequence. | No RDF/OWL/SKOS/SHACL, graph editor or ontology-authoring competence. A well-founded question is enough; replacement wording is optional. |
-| Occasional reviewer, group lead or governance reader | Locate candidate status, semantic owner, sources and unresolved issues; distinguish model checks, evidence review, accountable governance decisions and downstream enforcement. | Do not infer adoption from a polished page, common-boundary placement, AI agreement, a comment count or government use. Specification governance is not a remit to operate an application. |
-| Non-ontologist developer, analyst or integrator | Understand a generated JSON-LD package, its specification version and declared checks; preserve business meaning, identifiers and evidence when using it in an existing system. Carry unresolved meaning questions to their owners. | No requirement to run a linked-data store or reproduce the ontology-authoring toolchain. Not a second normative method, universal conversion recipe or authority to settle domain meaning. |
+| Occasional reviewer or group lead | Locate candidate status, semantic owner, sources and unresolved issues; distinguish a model check from agreement about domain meaning and approval of a model version. | No need to learn scheme accreditation or enforcement. Do not infer model adoption from a polished page, common-boundary placement, AI agreement or a comment count. |
+| Non-ontologist developer, analyst or integrator | Read definitions, identities, relationships and constraints; understand why the ontology preserves distinctions a form can hide. Carry unresolved meaning questions to their owners and use the optional formal-method links. | Not a payload-design or implementation course, nor authority to settle domain meaning. No requirement to run a linked-data store or reproduce the authoring toolchain. |
 | Facilitator or content maintainer | Help a participant make a bounded challenge and maintain consistent examples across readable and formal views. | Do not convert a teaching answer, workshop majority or AI recommendation into model approval. |
 
 A successful first contribution is modest: the question or statement being challenged, a practical consequence and a fictional counterexample or permitted source; include page/version when one exists. Evidence-first participants can begin with a scoped question and source before a candidate exists. Context and evidence standing should be clear; the contributor need not fill every specialist field before asking for help. This extends the existing [worked feedback note][review] and [evidence guidance][evidence], not a new submission requirement.
@@ -57,7 +61,7 @@ The current material already does much of the difficult conceptual work. Preserv
 
 | Current source and strength | Observed gap or risk | Bounded enrichment |
 | --- | --- | --- |
-| [Understand][understand] and [the semantic package][package] explain shared meaning and complementary outputs. | The main delivery route and the distinction between specification development and operating an application need a clear introductory statement under the clarified remit. | Add “what we are creating and what implementers receive”, then link the existing package/delivery explanation; do not create an operational training route. |
+| [Understand][understand] and [the semantic package][package] explain shared meaning and complementary outputs. | The earlier proposal over-emphasised generated delivery and wider Trust governance. | Keep the introduction about modelling domain meaning; one sentence can identify JSON-LD as a generated output. No new delivery or Trust lesson. |
 | [Understand][understand] reassures readers and offers a safe first action; [shared meaning][shared] explains why a formatted date may answer the wrong question. | The `tree-graph` fragment now lands on a dictionary/relationships comparison; no worked familiar form/tree and graph pair shows the same case. | Add one complementary-views example at that existing section, not another ontology introduction. |
 | [Property story][story] distinguishes building, dwelling, report versions, claim and role, and leaves subdivision open. | Its final real-model task is a generic link plus questions; readers must translate the story into an unfamiliar candidate page themselves. | Add a region-by-region candidate-reading scaffold at the existing final section. |
 | [Things and identities][things] already introduces buyer/seller and identity through change. | The beginner route lacks a worked comparison of identity-bearing category, relational role and identity-preserving state; Ontology modelling supplies the detail. | Extend that existing role section with three questions and one hard case; link the formal [roles and phases][roles] chapter. |
@@ -86,14 +90,14 @@ The pathway is an editorial sequence, not a new navigation component or mandator
 
 | Existing chapter | Learner action | Evidence of understanding / next connection |
 | --- | --- | --- |
-| Understand, opening orientation | Identify the specification, generated artefacts and trust-governance recommendations being developed, and where professional judgement contributes. | Explain that organisations implement the outputs in their own systems; participation does not require ontology skills or operating a linked-data store. |
+| Understand, opening orientation | Identify the domain model being developed and how professional judgement improves its definitions and relationships. | Explain what modelling contributes without learning ontology syntax, JSON-LD design or scheme operation. |
 | Understand → Why shared meaning matters | Compare a familiar form/tree with the connected Harbour Court account. Explain which question each view answers. | “This field is in the report, but this date describes the inspection.” Continue with the existing property story. |
 | A property story | Track one inspection and two report versions; then locate status, meaning and evidence on a candidate page. | Identify what is illustrative, what is proposed and what is unresolved. Keep a page reference before exploring deeper distinctions. |
 | Explore → Things and identities | Ask what is being identified, which role needs a setting, and which change assumes continuing identity. | Explain the missing transaction setting or why subdivision remains unresolved. Do not require the correct ontology keyword. |
 | Names and choices → Contexts and connections | Distinguish a thing, its label and a permitted choice; compare two contextual interpretations without merging them. | Describe the consequence of “unknown” versus absent information, or identify what must survive an exchange. |
 | Contribute → Review a definition | Write a question before comparing the existing alternative responses; then add a counterexample. | Produce one actionable challenge using the existing feedback note. No quiz score or vote. |
 | Bring evidence → What happens next | State source/version/purpose/standing/restrictions and what a useful response should explain. | Follow the actual member guidance; distinguish a proposed change, technical check and authorised decision. |
-| Ontology modelling, optional technical handoff | Trace the agreed sentence through the formal specification to generated JSON-LD and the package's declared checks. | Know what meaning and identifiers must survive delivery, which checks apply, and which issue must return to a domain owner. |
+| Ontology modelling, optional technical handoff | Trace an agreed sentence to its formal class, relationship or constraint. | Know which technical modelling chapter explains the distinction and which meaning question must return to a domain owner. |
 
 Introduce specialist words only after the reader has seen the distinction. Do not give newcomers an upfront list of eight concerns, six outputs, eleven workshop themes and language acronyms to memorise. Those are different organising schemes, not interchangeable levels of a learning ladder. Use them when a review task needs them, and link the existing Ontology modelling explanation.
 
@@ -103,13 +107,13 @@ Introduce specialist words only after the reader has seen the distinction. Do no
 
 Placement: [shared meaning][shared], existing `#connected` / retained `#tree-graph` section. Keep the current date ambiguity as the motivation.
 
-Show a fictional report form with inspection date, report issue date, report version and dwelling reference. Beside it, show an indented document outline for the same information; JSON syntax is optional implementer detail. The connected view identifies Flat 1, the inspection, report v1 and report v2, with labelled “concerns”, “describes” and “revises” relationships. Dates remain visibly attached to their subjects rather than becoming misleading standalone things.
+Show a fictional report form with inspection date, report issue date, report version and dwelling reference. Beside it, show a syntax-free tree for the same information. The connected view identifies Flat 1, the inspection, report v1 and report v2, with labelled “concerns”, “describes” and “revises” relationships. Dates remain visibly attached to their subjects rather than becoming misleading standalone things.
 
 Prompt: “When report v2 is issued on 20 August, which date and relationship change, and which inspection does it still describe?” The explanation must identify the case's assumptions: no second visit; issue date is not occurrence date. Then ask what evidence would change that conclusion.
 
-The lesson is complementarity: a tree gives values a chosen place in one message; a graph makes subjects and relationships explicit across descriptions. Do not imply that JSON cannot use identifiers, a graph automatically removes duplication, every form field becomes a resource, or all meanings belong to one universal Property node. A second compact comparison can label glossary, dictionary, taxonomy/vocabulary, ontology and generated delivery views by the questions they answer; link [the semantic package][package] for the complete six-output account.
+The lesson is complementarity: a tree gives values a chosen place in one description; a graph makes subjects and relationships explicit across descriptions. Do not imply that a tree cannot use references, a graph automatically removes duplication, every form field becomes a resource, or all meanings belong to one universal Property node. Keep the comparison about those modelling distinctions, not artefact formats.
 
-Connect those views to the intended delivery path: **practitioner agreement → specification and formal model → generated JSON-LD artefacts → an organisation's own systems**. This is an explanation of intended outputs, not a claim that a particular generator or package is already available. Keep syntax, storage engines and deployment choices outside the participant lesson.
+Keep the comparison about the meaning and relationships in the ontology, not how a generated document looks. A single note that JSON-LD artefacts are generated from the ontology is sufficient; do not add a generation flow or package walkthrough.
 
 Build the static comparison first. If optional highlighting later proves useful, use ordinary keyboard-operable controls, text labels and a visible correspondence list. Every important explanation must remain available without activating a control or running script. No drag-only task, compulsory animation, score, account, stored progress or data submission.
 
@@ -122,6 +126,8 @@ Placement: extend `#roles` in [things and identities][things]. Use the existing 
 3. **What changes while we assume the same subject continues?** Use a deliberately stipulated transaction-record lifecycle for the example. Ask which subject and classification the state concerns, and what supports continuing identity.
 
 Then challenge the shortcut: subdivision of Flat 1 does not become a phase merely because it happens over time. Likewise a report correction is not automatically a phase of the inspection. These prompts introduce the kind/role/phase distinction without reducing a kind to “something permanent”, a role to “temporary”, or every status to a formal phase. The more exact analysis and encoding stay in [Ontology modelling][roles].
+
+Where handling context matters, ask a further domain question: “Does being the seller identify the participant's part in this transaction, or prove permission to read every linked report?” Preserve the role/permission distinction without asking the learner to design an access policy or operate a security system.
 
 Do not sort “thing / description / evidence / decision” into exclusive buckets: [Explore][explore] correctly explains that one report can be an identifiable thing, a description and evidence for a claim. Ask which aspect a particular sentence uses.
 
@@ -161,19 +167,17 @@ Add three small optional prompts across the existing relevant chapters, not a ca
 
 Use a common answer habit: subject → context → statement → ordinary case → counterexample → evidence needed → review question. Learners can give more than one justified answer or identify insufficient evidence. Reuse the existing feedback note and evidence envelope rather than imposing a longer mandatory form.
 
-### F. A narrow implementer bridge through generated JSON-LD
+### F. An optional handoff to the formal modelling method
 
-Place a short, clearly labelled optional handoff at the boundary between Contribute and Ontology modelling, using an existing chapter rather than creating a fifth journey. Follow one sentence — “Report v2 describes the 12 August inspection” — through a labelled relationship diagram into an illustrative JSON-LD document. Link the formal model example and declared checking profile as optional detail in Ontology modelling.
+Follow “Report v2 describes the 12 August inspection” into its labelled relationship
+diagram, then link the existing technical chapter explaining that modelling choice.
+Keep the handoff short and optional. No JSON-LD document, schema walkthrough or fifth
+learning journey is needed.
 
-Explain what an intended generated package contains: JSON-LD contexts, associated JSON Schemas, examples and references to the specification version and applicable checking profile. The implementer's task is to name what must survive a payload: distinct subjects, the date's meaning, identifiers, provenance and version. A structurally valid message can still conflate issue time and event time. Explain which rules the generated artefacts check and which require additional checks; do not imply that JSON Schema captures every OWL or SHACL commitment, or that the planned generation capability already exists.
-
-The separately scoped companion, `docs/reviews/ontology-modelling-enrichment-2026-09-07.md`, revised at commit `860bc564`, covers the formal-model-to-JSON-LD route, vocabulary and closure, reviewable constraint authoring, mapping governance and trust-governance recommendations. It is on a separate review branch; its revised scope supplements rather than replaces this report's original evidence baseline. Both proposals use the established context boundaries and treat linked-data-store implementation as informative. Keep detailed authoring recipes there; this report supplies intuitive prerequisites and the handoff, not competing rules or candidate-conformance claims.
-
-### G. What participants contribute to trust
-
-Extend the existing [evidence][evidence] and [contribution guidance][review], rather than adding an application-security course. Use one fictional statement and ask: who supplied it, what evidence supports it, who owns its meaning, what qualifications matter, and who is accountable for the relevant policy decision? Ask the reader to identify a missing responsibility or unsupported claim and explain its consequence.
-
-The learning outcome is a useful contribution to trust-governance recommendations: clearer responsibilities, evidence expectations and review criteria. Distinguish those recommendations from technical data validation and downstream enforcement. Store design, access-control implementations and runtime policy engines belong only in clearly informative implementation guidance, not this participant pathway.
+The companion `docs/reviews/ontology-modelling-enrichment-2026-09-07.md` on
+`review/ontology-modelling-enrichment` covers vocabulary/closure, constraints, mappings
+and privacy/access annotations under the retained categories. Both reports keep ontology
+modelling central. This report supplies intuitive prerequisites, not competing rules.
 
 ## 6. Presentation and interaction constraints
 
@@ -190,15 +194,14 @@ These are prioritised recommendations, not authorised implementation. Recheck th
 
 | Priority / package | Coherent scope and dependency | Evidence before acceptance |
 | --- | --- | --- |
-| P0.0 — purpose and intended outputs | A short opening explanation of the specification, generated JSON-LD route and trust-governance recommendations; link existing canonical detail. | Participant and implementer audiences can distinguish the intended outputs from operating an application; no claim that planned artefacts already exist. |
+| P0.0 — purpose of modelling | Keep the opening about domain meaning and participants' contribution; at most a brief generated-output note. | No new Trust-framework or JSON-LD training objective; no unsupported implementation claim. |
 | P0.1 — truthful practice framing | Update the existing choose/compare copy and add one transfer question; no script, new page or workflow. | Editorial read-through against actual interaction, visible-answer check, no false submission/approval language. |
 | P0.2 — complementary views | One Harbour Court form/tree/graph comparison in shared meaning; reuse existing visual primitives. | Sentence-to-edge correspondence; identical subjects/dates across views; explicit complementarity; text alternative, narrow-width and keyboard checks if controls exist. |
 | P0.3 — intuitive classification | Extend one Explore section; depend on the existing Ontology modelling definitions, not new ontology rules. | Targeted ontology reviewer checks permanence/rigidity, role context and state/phase caveats; a domain reader can explain the issue without the terminology. |
 | P0.4 — guided candidate reading | One scaffold in the property story; select and verify one actual candidate/version. | Exact route/anchor/source checks; distinguish structural/direct evidence and all relevant statuses; confirm candidate wording is questioned, not adopted. |
 | P1.1 — transfer and terms | Three fictional cross-profession prompts and a small canonical term-aid extension. | No real data or asserted professional rules; no duplicate glossary; each prompt elicits a reason or open question rather than keyword recall. |
-| P1.2 — optional implementer handoff | One generated-JSON-LD bridge plus canonical Ontology modelling links; coordinate with technical enrichment. | Same meaning across sentence/diagram/document; identifiers, version and check coverage explicit; no duplicate recipe, mandatory store or unsupported generator claim. |
-| P1.3 — trust-governance contribution | One evidence-and-responsibility example within existing contribution guidance. | Separate accountable decisions and evidence expectations from data validation and downstream enforcement; no operational remit implied. |
-| P1.4 — task-based learning check | After a local prototype, seek approval for a small, consented mixed-role read-through; define handling and recruitment separately. | Observed comprehension and failure modes, not invented success rates or automatic publication readiness. |
+| P1.2 — optional formal-method handoff | One short sentence-to-relationship example plus the relevant existing Ontology modelling link. | Meaning stays consistent; no duplicate technical recipe, JSON-LD walkthrough or implementation prerequisite. |
+| P1.3 — task-based learning check | After a local prototype, seek approval for a small, consented mixed-role read-through; define handling and recruitment separately. | Observed comprehension and failure modes, not invented success rates or automatic publication readiness. |
 
 For any later source changes, use the repository's normal slice-appropriate tests, build and source/link checks before committing. Rendered checks must use the approved existing OPDA Chrome session only. Do not run ontology regeneration, a full council or a release-equivalent programme merely because prose changed; changes to formal rules, candidate data or shared components require their own risk-appropriate gates. Publication remains a separate decision.
 
@@ -224,6 +227,8 @@ Source links throughout this report resolve within the repository; historical an
 [D67]: ../adr/ADR-0067-first-principles-property-pack-ontology-by-bounded-context.md
 [D74]: ../adr/ADR-0074-organise-site-around-spdtf-and-pdtf-schema.md
 [D75]: ../adr/ADR-0075-property-pack-ontology-as-accelerated-spdtf-component.md
+[dbt]: ../../src/pages/dbt-smart-data/index.astro#separation
+[dbt-identity]: ../../src/pages/dbt-smart-data/identity.astro
 [decisions]: ../../src/pages/semantic-modelling/method/standards-and-decisions.astro
 [understand]: ../../src/pages/semantic-modelling/understand/index.astro
 [shared]: ../../src/pages/semantic-modelling/understand/shared-meaning.astro
