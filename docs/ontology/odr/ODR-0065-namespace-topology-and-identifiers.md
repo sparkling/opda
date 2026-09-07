@@ -161,6 +161,11 @@ Preserve its canonical spelling; do not derive it from a mutable display label.
 Use full angle-bracket IRIs in Turtle where a prefixed local name would contain
 unescaped slashes.
 
+Before minting, record normalisation, escaping and collision rules for that instance
+family. Encode or map references into one IRI path segment: a source value must not
+introduce another segment, a query or a fragment. Reject `.` and `..` references,
+and prevent distinct keys from collapsing after normalisation.
+
 This preference is subject to identity, authority, uniqueness and disclosure review.
 A key is evidence, not an identity criterion (ODR-0059). Two distinct entities with
 the same source key must not collapse into one IRI. Document the key's scope and
