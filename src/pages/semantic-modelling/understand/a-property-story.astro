@@ -71,9 +71,10 @@ import DetailDisclosure from '@/components/modelling/DetailDisclosure.astro';
   <section aria-labelledby="act-three">
     <h2 id="act-three"><span id="shapes-provenance" aria-hidden="true"></span>3. Follow a claim back to its evidence</h2>
     <p>
-      Suppose a claim says that an inspection of Flat 1 occurred on 12 August. The
-      claim is an assertion somebody made; the inspection is the event it describes;
-      the report is evidence offered in support. Treating these as three distinct
+      Suppose a <a href="/glossary#claim">claim</a> says that an inspection of Flat 1
+      occurred on 12 August. The claim is an assertion somebody made; the inspection
+      is the event it describes; the report is <a href="/glossary#evidence">evidence</a>
+      offered in support. Treating these as three distinct
       subjects allows the recipient to ask who made the claim, which report version
       supports it and whether the correction affects it.
     </p>
@@ -148,11 +149,46 @@ import DetailDisclosure from '@/components/modelling/DetailDisclosure.astro';
   <section aria-labelledby="use-the-story">
     <h2 id="use-the-story"><span id="vocabularies" aria-hidden="true"></span><span id="property-pack-walkthrough" aria-hidden="true"></span><span id="read-pages" aria-hidden="true"></span>Use the story on a real model page</h2>
     <p>
-      Open a page in the <a href="/development/property-pack">Property Pack candidate</a>
-      or use <a href="/search">site search</a>. Read its own status and definition;
-      do not assume it implements this fictional example. Then ask: which thing is
-      being described, what does one relationship mean, and what exception would
-      challenge it? Keep the page link with your observation.
+      The <a href="/development/property-pack/resources/common/Property#identity">current
+      <code>common:Property</code> resource page</a> is a useful first reading exercise
+      precisely because its meaning and identity need scrutiny. This guide was checked
+      against Property Pack candidate version <code>0.1.0-draft</code>. It is
+      machine-proposed and for public review only; it does not implement the Harbour
+      Court teaching story or prove conformance to the required modelling method.
+    </p>
+    <ol class="modelling-steps">
+      <li>
+        <h3>Identify the candidate before judging it</h3>
+        <p>Read the displayed candidate status and keep the page link and version with your notes. Technical determination, later domain review, release and external recognition are separate statuses; none follows merely because the page is polished or a technical check passes.</p>
+      </li>
+      <li>
+        <h3><a href="/development/property-pack/resources/common/Property#identity">Read identity and meaning</a></h3>
+        <p>Say what the proposed resource includes and excludes. The current candidate ties continuity to the same assigned UPRN while leaving lifecycle rules for working-group review. Ask what evidence supports that criterion rather than teaching it as settled identity.</p>
+      </li>
+      <li>
+        <h3>Question the semantic home</h3>
+        <p>Placement in <code>common</code> is a candidate <a href="/glossary#semantic-home">semantic home</a>, not evidence of an approved shared definition or a constituted decision body. Ask which responsible people should review it.</p>
+      </li>
+      <li>
+        <h3><a href="/development/property-pack/resources/common/Property#structure">Read one piece of structure</a></h3>
+        <p>The page’s technical “Kind” says that this construct is a class. It is not a foundational verdict about an identity-bearing kind. Read one relationship in ordinary language and note what is absent or unspecified.</p>
+      </li>
+      <li>
+        <h3><a href="/development/property-pack/resources/common/Property#constraints">Check the declared constraints</a></h3>
+        <p>A missing constraint is not proof that anything is permitted, while a passing constraint is not semantic approval. Record the bounded question the page can answer.</p>
+      </li>
+      <li>
+        <h3><a href="/development/property-pack/resources/common/Property#evidence">Follow the source evidence</a></h3>
+        <p>Distinguish a direct source trace from a structural source trace. Both establish provenance, not semantic truth or domain endorsement. Keep one source reference with the question it helps you ask.</p>
+      </li>
+    </ol>
+    <p>
+      Finish with one useful challenge: which <a href="/glossary#resource">resource</a>
+      is being described, what does one <a href="/glossary#relationship">relationship</a>
+      mean, and what ordinary case or counterexample tests it? Use only the current
+      discussion or evidence-intake route described in the
+      <a href="/development/working-groups/member-guide">member guide</a>. Reading this
+      page submits nothing and creates no approval or response-time promise.
     </p>
   </section>
 </ModellingLayout>

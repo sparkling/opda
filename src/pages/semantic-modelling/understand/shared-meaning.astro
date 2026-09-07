@@ -1,6 +1,7 @@
 ---
 import ModellingLayout from '@/layouts/ModellingLayout.astro';
 import ModellingVisual from '@/components/modelling/ModellingVisual.astro';
+import EnrichmentVisual from '@/components/modelling/EnrichmentVisual.astro';
 ---
 
 <ModellingLayout title="Why shared meaning matters" description="A field can contain the right kind of value and still answer the wrong question. See how an explicit model helps people recognise, connect and challenge what property information means.">
@@ -58,23 +59,56 @@ import ModellingVisual from '@/components/modelling/ModellingVisual.astro';
   </section>
 
   <section aria-labelledby="connected">
-    <h2 id="connected"><span id="tree-graph" aria-hidden="true"></span><span id="context-first" aria-hidden="true"></span><span id="local-precision" aria-hidden="true"></span>A connected model complements a dictionary</h2>
-    <div class="modelling-comparison">
-      <section aria-labelledby="dictionary-view">
-        <h3 id="dictionary-view">A definition helps you read a term</h3>
-        <p>“Report issue date” can explain what the date means, how it is recorded and which document it concerns. Labels and examples help people use it consistently.</p>
-      </section>
-      <section aria-labelledby="connected-view">
-        <h3 id="connected-view">Relationships help you follow the situation</h3>
-        <p>The report describes an inspection; the inspection concerns a dwelling; a corrected report revises an earlier report. These connections let a reader trace the date back to the right event and evidence.</p>
-      </section>
-    </div>
+    <h2 id="connected"><span id="tree-graph" aria-hidden="true"></span><span id="context-first" aria-hidden="true"></span><span id="local-precision" aria-hidden="true"></span>One account, shown in complementary views</h2>
     <p>
-      A glossary, dictionary, diagram and controlled-choice list answer different
-      reading needs. They should express compatible meaning rather than grow into
-      separate, conflicting accounts. An ontology provides an explicit model that
-      can underpin those views and the technical artefacts that use them.
+      A familiar form is useful for entering or reading one report. A tree gives its
+      values a chosen place in that description. A connected graph makes the subjects
+      and relationships explicit across descriptions. These views can complement one
+      another; this comparison does not claim that a tree cannot use references or
+      that a graph automatically removes duplication.
     </p>
+    <figure class="modelling-figure" aria-labelledby="connected-caption" data-modelling-figure="connected-views">
+      <figcaption id="connected-caption">The same fictional report account as fields, a tree and connected statements</figcaption>
+      <div class="modelling-comparison">
+        <section aria-labelledby="form-view">
+          <h3 id="form-view">Familiar report fields</h3>
+          <dl>
+            <dt>Dwelling reference</dt><dd>Flat 1</dd>
+            <dt>Inspection date</dt><dd>12 August 2026</dd>
+            <dt>Report version</dt><dd>Report version 2</dd>
+            <dt>Report issue date</dt><dd>20 August 2026</dd>
+          </dl>
+          <p>These fields describe one report version. They do not show, by themselves, that version 2 revises version 1 or that both describe the same inspection.</p>
+        </section>
+        <section aria-labelledby="model-view">
+          <h3 id="model-view">Tree and connected account</h3>
+          <EnrichmentVisual kind="connected-views" />
+        </section>
+      </div>
+      <dl>
+        <dt>Flat 1</dt><dd>The inspection concerns this dwelling in the teaching case.</dd>
+        <dt>Inspection</dt><dd>It occurred on 12 August 2026.</dd>
+        <dt>Report version 1</dt><dd>It was issued on 14 August 2026 and describes the inspection.</dd>
+        <dt>Report version 2</dt><dd>It was issued on 20 August 2026, describes the same inspection and revises version 1.</dd>
+      </dl>
+    </figure>
+    <p>
+      Try the case before reading on: when report version 2 is issued on 20 August,
+      which date and relationship change, and which inspection does it still describe?
+      The teaching assumption is that there was no second visit: the issue date changes
+      and the <em>revises</em> relationship is added, while both reports still describe
+      the 12 August inspection. What evidence would change that conclusion?
+    </p>
+    <p>
+      A glossary, dictionary, form and diagram answer different reading needs. They
+      should express compatible meaning rather than become separate accounts. An
+      <a href="/glossary#ontology">ontology</a> makes the shared meaning explicit;
+      JSON-LD is one generated output from it, not another subject to learn here.
+    </p>
+    <aside class="callout callout--note modelling-callout">
+      <div class="callout__label">Optional technical handoff</div>
+      <p>Read the connection as a sentence: “Report version 2 describes the 12 August inspection.” The <a href="/semantic-modelling/method/classes-and-relationships">classes and relationships chapter</a> shows how an implementer carries an agreed sentence into the formal model. You can review the sentence without learning that syntax.</p>
+    </aside>
   </section>
 
   <section aria-labelledby="benefits">
@@ -123,7 +157,7 @@ import ModellingVisual from '@/components/modelling/ModellingVisual.astro';
     <h2 id="try-it"><span id="ordinary-questions" aria-hidden="true"></span><span id="participate" aria-hidden="true"></span>Try the distinction</h2>
     <p>A system replaces “12 August” with “20 August” after the report correction. What would you ask before accepting that update?</p>
     <aside class="callout callout--note modelling-callout">
-      <div class="callout__label">Reveal a useful review question</div>
+      <div class="callout__label">Compare with a useful review question</div>
       <p>“Which date does this field represent: the inspection occurrence or the latest report issue? If it represents the inspection, what evidence says another inspection occurred?” This identifies the ambiguity without prescribing an ontology-language fix.</p>
     </aside>
   </section>
