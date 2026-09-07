@@ -1,7 +1,7 @@
 import { randomUUID } from 'node:crypto';
 import {
   REGISTRATION_RETENTION_SECONDS,
-  isPlausibleHumanSubmission,
+  isHoneypotSubmission,
   validateRegistration,
 } from './domain.mjs';
 
@@ -116,9 +116,9 @@ export function createHandler(overrides = {}) {
 
     const validation = validateRegistration(parsed.value);
     if (!validation.ok) return json(400, { ok: false, errors: validation.errors });
-    const now = dependencies.now();
-    if (!isPlausibleHumanSubmission(validation.value, now)) return acceptedResponse();
+    if (isHoneypotSubmission(validation.value)) return acceptedResponse();
 
+    const now = dependencies.now();
     const record = {
       registrationId: dependencies.newId(),
       fullName: validation.value.fullName,

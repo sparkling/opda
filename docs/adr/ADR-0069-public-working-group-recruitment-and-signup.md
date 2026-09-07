@@ -1,7 +1,7 @@
 ---
 status: accepted
 date: 2026-08-12
-updated: 2026-09-03
+updated: 2026-09-07
 tags: [engagement, recruitment, working-groups, linkedin, trade-bodies, professional-bodies, signup, privacy, security, aws]
 supersedes: []
 depends-on: [ADR-0038, ADR-0040, ADR-0063, ADR-0065]
@@ -9,6 +9,14 @@ implements: [ADR-0065]
 ---
 
 # Recruit later bounded-context working groups through a public campaign and simple sign-up
+
+> **Change note — 2026-09-07:** Client wall-clock timing no longer determines whether a
+> working-group registration is stored: clock skew can make a legitimate submission appear too
+> fast or future-dated. `startedAt` remains validated for compatibility, without changing the
+> approved fields, privacy notice or stored record. With an empty honeypot, success follows the
+> authoritative write; a populated honeypot retains the deliberate success decoy without storage.
+> Validation, route throttling and bounded concurrency remain in place. This local correction
+> does not claim deployment or change the decision's accepted status.
 
 > **Deployment record — 2026-09-03:** The AWS signup runtime is live in account
 > `355653384628`, region `eu-west-2`. The newsletter and working-group APIs, encrypted
@@ -219,9 +227,13 @@ addresses, raw IP addresses and user-agent strings must not be written to applic
 
 The Lambda accepts JSON only, enforces a 16 KB body limit, rejects unknown fields, HTML, control
 characters, invalid email syntax, excessive lengths and values outside the explicit group and
-contribution allowlists. A hidden honeypot and minimum plausible completion time discard obvious
-automated submissions without storing them. API Gateway applies a low route throttle, Lambda has
-bounded concurrency, and the table is on-demand.
+contribution allowlists. A populated hidden honeypot receives the ordinary success response as a
+deliberate bot decoy without storing data. The client `startedAt` value remains structurally
+validated for compatibility but is neither persisted nor compared with the server clock to gate
+storage: client timing alone must not silently discard a valid submission. Every otherwise valid
+request with an empty honeypot receives success only after its authoritative write completes.
+API Gateway applies a low route throttle, Lambda has bounded concurrency, and the table is
+on-demand. There is no minimum or maximum completion-time gate based on client wall-clock values.
 
 This design intentionally has no email verification, confirmation route, Postmark call, WAF,
 custom API hostname or runtime secret. These can be reconsidered if observed abuse or an operating
@@ -273,8 +285,8 @@ This decision is confirmed when:
   without an authentication redirect, while all four former join/privacy URLs reach an
   unrewritten origin 404;
 - the service exposes one POST route and stores one validated record per accepted submission;
-- automated tests cover invalid fields, oversized bodies, honeypot/timing submissions and storage
-  failure;
+- automated tests cover invalid fields, oversized bodies, harmless honeypot decoys, ahead/behind
+  client clocks, fast and long completion, and success only after storage (including failures);
 - DynamoDB is encrypted, on-demand, TTL-enabled and the Lambda can only write to its table;
 - both submission tables expose `KEYS_ONLY` streams to one shared publisher, SNS topic and SQS
   handoff, with bounded retries and an encrypted failure queue;
