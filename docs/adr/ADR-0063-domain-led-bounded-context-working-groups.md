@@ -10,11 +10,15 @@ implements: []
 
 # Domain-led bounded-context working groups for SPDTF development
 
-> **Clarification — 2026-09-07.** The current effort develops a specification and
-> trust-governance recommendations. Generated JSON-LD artefacts are the main route
-> for implementers. Linked-data-store and trust implementation guidance is informative;
-> operating an application is outside this effort. The documented contextual
-> boundaries are established inputs to the work.
+> **Clarification — 2026-09-07, corrected Trust scope.** Trust means the SPDTF
+> Trust Framework in the wider government Smart Data programme, not a synonym for
+> model-review governance. The Modelling section focuses on domain and ontology
+> modelling; JSON-LD is a generated output, not a separate teaching subject.
+> Retained categories describe and map the privacy,
+> access, provenance and other semantics the framework needs; they do not implement
+> it. Broader Trust recommendations belong to the programme's scheme work.
+> Linked-data-store guidance is informative; operating an application is outside
+> this development effort. Documented context boundaries are established inputs.
 
 > **Clarification — 2026-09-05.** The operator confirmed that the relevant
 > `semantic-modelling` ODRs are normative for the OPDA modelling method, not merely
@@ -173,14 +177,57 @@ These are different representations of one agreement, not independent specificat
 Generation must preserve the agreed meaning and identify the constraints represented
 by each delivery profile. Authors document any constraint that needs additional checking.
 The working groups review business meaning without needing to author ontology syntax.
+These output requirements do not make generation or JSON-LD document design a learning
+objective: the Modelling section explains the ontology and its modelling method, with
+only a brief mention that JSON-LD artefacts are generated from it.
 
-Governance covers specification ownership, evidence, review, decisions, versioning
-and approval. Recommendations explain how implementers can realise the trust aspects.
-We provide the material needed to implement a linked-data store, with that guidance
-explicitly informative. Store choice, hosting, runtime translation, enforcement and
-service operations belong to downstream implementations and are not normative
-requirements of this specification. Authoring and artefact-generation tools support
-specification development; they do not make OPDA the operator of a data application.
+Model-development governance covers specification ownership, evidence, review,
+decisions, versioning and approval. It is not the programme's Trust Framework, whose
+concerns include who may participate, act for another party and access or use data,
+with what permissions, assurance and accountability. Broader Trust recommendations
+are separate programme work, not the purpose of the Modelling learning section.
+
+We provide material needed to implement a linked-data store as informative guidance.
+Store choice, hosting, runtime translation, enforcement engines and service operations
+belong to downstream implementations; they are not the domain-modelling specification.
+This does not make adopted privacy or access semantics optional: the model and generated
+delivery profiles must preserve their declared requirements. Authoring and generation
+tools do not make OPDA the operator of a data application.
+
+### 2a. Domain-model support for the SPDTF Trust Framework
+
+The archived DPMSG *Smart Property Data Trust Framework Sandbox* paper, pp2–4,
+describes a shared framework of participation rules, data standards, permissions,
+provenance and assurance. Its programme and sandbox remit is wider than this
+domain-modelling effort; the associated project plan is not evidence of completed delivery.
+
+The [DBT Guidebook analysis](../../src/pages/dbt-smart-data/index.astro#separation)
+distinguishes what a data standard must be able to express from what a scheme operator
+must do. Chapter 1's archived **Draft V7**, dated 10 May 2026, describes scheme identity,
+roles, accreditation, authorisation and trust frameworks; Chapter 4's **Draft V2**,
+dated 25 June 2026, describes stewardship, privacy and data-use metadata. These are
+programme-design evidence, not automatic adoption of a government mandate, an
+implementation stack or a final SPDTF rule. Their separate existing documentation
+remains the home for broad Trust-framework explanation.
+
+Within the eight retained categories, model the meaning needed to connect domain data
+to that framework: personal-data and sensitivity classifications; processing purpose
+and separately identified permission/lawful-basis concepts; access roles and scope;
+provenance and relevant time or status. Reuse or map scheme concepts through their
+documented semantic home, without redefining them inside every property context.
+ADR-0067's resource-home rule and the Interoperability Working Group govern these seams.
+
+A transaction role such as Seller is not an access-policy role, nor evidence of
+accreditation or permission. An explicit, scoped relationship may connect them when
+justified; never infer access from the domain role alone. Scheme permission, a legal
+basis for processing and recorded consent are not interchangeable. Model annotations
+and JSON-LD references describe these distinctions; they do not authenticate an actor,
+grant access, prove valid consent or implement role-based security.
+
+Practitioners review those facts and distinctions in business language. Technical
+readers learn the selected ontology-modelling category profiles and representations. Neither
+audience needs a course in scheme accreditation, registry operation or enforcement.
+Category 6 remains excluded; this interface does not import a governance ontology.
 
 ### 3. Eight ontology categories required from every group
 
@@ -194,8 +241,8 @@ must consider. They adopt the subset of the 14-category framework in the
 | **Meaning** | 1 | **Domain structure** | Things, identities, relationships and rules | RDF, RDFS, OWL 2 |
 | **Meaning** | 2 | **Vocabulary and taxonomy** | Governed values, preferred terms, codes and broader/narrower concept structures | SKOS |
 | **Meaning** | 5 | **Classification metadata** | Subject, lifecycle, regulatory relevance, status and other facets | Dublin Core Terms, DCAT 3, SKOS |
-| **Trust** | 9 | **Provenance and quality** | Source, attribution, derivation, confidence, lineage and quality evidence | PROV-O, DQV |
-| **Trust** | 11 | **Access control and data sensitivity** | Personal data, purpose, consent, access roles and authorisation semantics | DPV, DPV-PD, DPV-LEGAL; ODRL where justified |
+| **Trust-supporting semantics** | 9 | **Provenance and quality** | Source, attribution, derivation, confidence, lineage and quality evidence | PROV-O, DQV |
+| **Trust-supporting semantics** | 11 | **Access control and data sensitivity** | Personal data, purpose, consent, access roles and authorisation semantics | DPV, DPV-PD, DPV-LEGAL; ODRL where justified |
 | **Correctness** | 7 | **Validation and constraints** | Testable business rules, completeness and consistency | SHACL 1.2, SHACL-AF; DASH where a UI annotation is needed |
 | **Correctness** | 10 | **Temporal state and history** | Valid time, recorded time, state transitions and version chains | OWL-Time, PROV-O |
 | **Exchange** | 8 | **Cross-domain mappings** | Context-map relationships and meaning-preserving translations | SKOS Mapping, SSSOM |
@@ -397,6 +444,11 @@ ratified:
 
 ## More Information
 
+- [DBT Smart Data — standard versus operator responsibilities](../../src/pages/dbt-smart-data/index.astro#separation)
+- [Guidebook Chapter 1 — identity, roles and Trust, with archived Draft V7](../../src/pages/dbt-smart-data/identity.astro)
+- [Guidebook Chapter 4 — stewardship and privacy, with archived Draft V2](../../src/pages/dbt-smart-data/stewardship-privacy-ethics.astro)
+- [ODR-0054 — sensitivity and bounded policy modelling](../ontology/odr/ODR-0054-cat11-access-control-data-sensitivity-adoption.md)
+- [ODR-0057 — conditional ODRL/DPV profile](../ontology/odr/ODR-0057-odrl-cat11-dpv-profile.md)
 - [Research — bounded-context working-group approach](../research/bounded-context-working-group-approach.md)
 - [ADR-0065 — AI-assisted evidence-to-model workflow with human-governed review](./ADR-0065-ai-assisted-evidence-to-model-workflow.md)
 - [Research — AI-assisted working-group method](../research/ai-assisted-working-group-method.md)
