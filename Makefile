@@ -112,6 +112,14 @@ ci-property-pack-candidate: validate-property-pack-candidate verify-property-pac
 test: node_modules	## Dependency-free Node unit and contract tests
 	npm test
 
+.PHONY: test-release
+test-release: node_modules	## Small stable contracts required by every site release
+	npm run test:release
+
+.PHONY: check-test-inventory
+check-test-inventory:	## Verify every automated test has one owner, tier and lane
+	npm run check:test-inventory
+
 .PHONY: test-model
 test-model: node_modules	## Python-backed Property Pack generation contracts
 	npm run test:model
@@ -119,6 +127,18 @@ test-model: node_modules	## Python-backed Property Pack generation contracts
 .PHONY: test-smoke
 test-smoke: node_modules	## Playwright smoke test (mermaid + data tables) against the built-site preview
 	npm run test:smoke
+
+.PHONY: test-release-smoke
+test-release-smoke: node_modules	## Five critical browser journeys for release candidates
+	npm run test:e2e:release
+
+.PHONY: test-application
+test-application: node_modules	## Focused application contracts selected for behaviour changes
+	npm run test:application
+
+.PHONY: test-application-browser
+test-application-browser: node_modules	## Critical plus navigation/runtime browser journeys
+	npm run test:e2e:application
 
 .PHONY: test-e2e
 test-e2e: node_modules	## Playwright browser, accessibility and responsive gates against dist/ preview
@@ -135,6 +155,18 @@ test-visual: node_modules	## Screenshot visual-drift gate (use --update-snapshot
 .PHONY: check-routes
 check-routes:	## Crawl built resources and application-owned navigation
 	npm run check:routes
+
+.PHONY: check-changed-routes
+check-changed-routes:	## Validate only routes selected in ROUTES_FILE
+	npm run check:routes:changed
+
+.PHONY: release-manifest
+release-manifest:	## Write commit/lane identity into dist/release.json
+	npm run release:manifest
+
+.PHONY: report-artifact
+report-artifact:	## Report dist size and enforce MAX_ARTIFACT_MB (default 500)
+	npm run report:artifact
 
 .PHONY: check-design-system
 check-design-system:	## Fail when the committed design-module graph hash is stale

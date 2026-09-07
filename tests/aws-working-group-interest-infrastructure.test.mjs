@@ -182,9 +182,10 @@ test('CI packages the regional Lambda and nested template before site deployment
 });
 
 test('deployment has no external abuse-control or runtime-secret dependency', async () => {
-  const [infra, deploy, edge, site] = await Promise.all([
+  const [infra, deploy, release, edge, site] = await Promise.all([
     read('.github/workflows/infra.yml'), read('.github/workflows/deploy-aws.yml'),
+    read('.github/workflows/site-release.yml'),
     read('config/aws/edge-stack.yaml'), read('config/aws/site-stack.yaml'),
   ]);
-  assert.doesNotMatch(`${infra}\n${deploy}\n${edge}\n${site}`, /Turnstile|TURNSTILE|WAFv2|WebACL|WorkingGroupInterestWebAcl/u);
+  assert.doesNotMatch(`${infra}\n${deploy}\n${release}\n${edge}\n${site}`, /Turnstile|TURNSTILE|WAFv2|WebACL|WorkingGroupInterestWebAcl/u);
 });

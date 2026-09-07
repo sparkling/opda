@@ -49,6 +49,7 @@ const bundlePrefixes = [
   '/development/inputs/pdtf-schema/schema-derived-ontology/use-and-tooling/artefacts/',
 ];
 const isBundle = (path) => bundlePrefixes.some((prefix) => path.startsWith(prefix));
+const isInternalFragment = (path) => path.startsWith('/ui/header-preview-controls/');
 // Ontospy's vendored Bootswatch source tree includes upstream theme demo HTML
 // whose relative examples were never part of the generated OPDA documentation.
 // Exclude those fixtures only; actual Ontospy/artefact pages and every emitted
@@ -114,9 +115,17 @@ function targetFile(pathname) {
   return null;
 }
 
-const failures = [];
+const routeFile = process.env.ROUTES_FILE ? resolve(process.env.ROUTES_FILE) : null;
+const requestedRoutes = routeFile
+  ? readFileSync(routeFile, 'utf8').split(/\r?\n/u).map((route) => route.trim()).filter(Boolean)
+  : null;
+const missingRequestedRoutes = requestedRoutes?.filter((route) => !targetFile(route)) ?? [];
+const htmlToScan = requestedRoutes
+  ? [...new Set(requestedRoutes.map(targetFile).filter((file) => file?.endsWith('.html')))]
+  : html;
+const failures = missingRequestedRoutes.map((route) => `[requested route missing] ${route}`);
 const seenTargets = new Set();
-for (const file of html) {
+for (const file of htmlToScan) {
   const source = readFileSync(file, 'utf8');
   const page = pageUrl(file);
   if (isVendorFixture(page)) continue;
@@ -149,7 +158,7 @@ for (const file of html) {
   }
 }
 
-for (const file of emitted.filter((path) => path.endsWith('.css'))) {
+for (const file of requestedRoutes ? [] : emitted.filter((path) => path.endsWith('.css'))) {
   const source = readFileSync(file, 'utf8');
   const resourcePattern = /url\(\s*(['"]?)(.*?)\1\s*\)/gu;
   for (const match of source.matchAll(resourcePattern)) {
@@ -166,16 +175,21 @@ for (const file of emitted.filter((path) => path.endsWith('.css'))) {
   }
 }
 
-const orphanRoutes = routeFiles
+const orphanRoutes = requestedRoutes ? [] : routeFiles
   .filter((file) => file !== join(DIST, 'index.html')
     && !isBundle(pageUrl(file))
+    && !isInternalFragment(pageUrl(file))
     && !isRedirect(readFileSync(file, 'utf8'))
     && !seenTargets.has(resolve(file)))
   .map(pageUrl);
-console.log(`[routes] scanned ${html.length} HTML files and ${emitted.length} emitted files`);
+if (requestedRoutes) {
+  console.log(`[routes] focused scan of ${htmlToScan.length} changed/critical routes`);
+} else {
+  console.log(`[routes] scanned ${html.length} HTML files and ${emitted.length} emitted files`);
+}
 console.log(`[routes] unresolved internal resources: ${failures.length}`);
 console.log(`[routes] unlinked emitted routes: ${orphanRoutes.length}`);
 for (const failure of failures.slice(0, 100)) console.error(`  broken: ${failure}`);
 for (const orphan of orphanRoutes.slice(0, 100)) console.error(`  orphan: ${orphan}`);
-if (failures.length || orphanRoutes.length) process.exit(1);
+if (failures.length || (!requestedRoutes && orphanRoutes.length)) process.exit(1);
 console.log('[routes] PASS — emitted resources and application-owned navigation resolve.');

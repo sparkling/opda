@@ -1,0 +1,255 @@
+name: Proportionate site release
+
+on:
+  workflow_call:
+    inputs:
+      base_sha:
+        description: Commit to compare with the release source
+        required: false
+        default: ''
+        type: string
+      deploy:
+        description: Deploy the validated artifact after all gates pass
+        required: true
+        type: boolean
+      full_model_validation:
+        description: Force ontology and generated-data validation
+        required: false
+        default: false
+        type: boolean
+
+permissions:
+  contents: read
+
+jobs:
+  classify:
+    name: Select evidence lanes
+    runs-on: ubuntu-latest
+    outputs:
+      editorial: ${{ steps.classify.outputs.editorial }}
+      application: ${{ steps.classify.outputs.application }}
+      ontology: ${{ steps.classify.outputs.ontology }}
+      infrastructure: ${{ steps.classify.outputs.infrastructure }}
+      site: ${{ steps.classify.outputs.site }}
+      primary: ${{ steps.classify.outputs.primary }}
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+
+      - name: Resolve changed paths
+        env:
+          BASE_SHA: ${{ inputs.base_sha }}
+          FORCE_MODEL: ${{ inputs.full_model_validation }}
+        run: |
+          set -euo pipefail
+          if [[ "$FORCE_MODEL" == "true" ]]; then
+            echo 'source/03-standards/ontology/forced-validation.ttl' > /tmp/opda-changed-paths
+          elif [[ -n "$BASE_SHA" ]] && git cat-file -e "$BASE_SHA^{commit}" 2>/dev/null; then
+            git diff --name-only "$BASE_SHA" "$GITHUB_SHA" > /tmp/opda-changed-paths
+          else
+            git show --format= --name-only "$GITHUB_SHA" > /tmp/opda-changed-paths
+          fi
+          if [[ ! -s /tmp/opda-changed-paths ]]; then
+            echo '.github/workflows/site-release.yml' > /tmp/opda-changed-paths
+          fi
+
+      - name: Classify release evidence
+        id: classify
+        run: node scripts/classify-ci-changes.mjs /tmp/opda-changed-paths
+
+  contracts:
+    name: ${{ needs.classify.outputs.primary }} contracts
+    if: needs.classify.outputs.site == 'true'
+    needs: classify
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+      - uses: pnpm/action-setup@v6
+      - uses: actions/setup-node@v6
+        with:
+          node-version: 22
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - name: Design-system drift gate
+        run: pnpm run check:design-system
+      - name: ADR registry drift gate
+        run: make check-adr
+      - name: Test ownership and tier gate
+        run: pnpm run check:test-inventory
+      - name: Stable release contracts
+        run: pnpm run test:release
+      - name: Focused application contracts
+        if: needs.classify.outputs.application == 'true'
+        run: pnpm run test:application
+      - name: Ontology documentation drift gate
+        if: needs.classify.outputs.ontology == 'true'
+        run: make ci-ontology-doc ci-ontology-graph
+
+  release-candidate:
+    name: Build ${{ needs.classify.outputs.primary }} release candidate
+    if: needs.classify.outputs.site == 'true'
+    needs: classify
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+      - uses: pnpm/action-setup@v6
+      - uses: actions/setup-node@v6
+        with:
+          node-version: 22
+          cache: pnpm
+      - uses: actions/setup-python@v6
+        if: needs.classify.outputs.ontology == 'true'
+        with:
+          python-version: '3.11'
+      - uses: actions/setup-java@v5
+        if: needs.classify.outputs.ontology == 'true'
+        with:
+          distribution: temurin
+          java-version: 21
+      - name: Cache Apache Jena distributions
+        if: needs.classify.outputs.ontology == 'true'
+        uses: actions/cache@v6
+        with:
+          path: |
+            .jena
+            .fuseki
+          key: jena-fuseki-6.1.0-${{ runner.arch }}
+      - name: Fetch pinned PDTF schemas
+        if: needs.classify.outputs.ontology == 'true'
+        run: |
+          git clone --quiet https://github.com/Property-Data-Trust-Framework/schemas.git source/03-standards/schemas
+          git -C source/03-standards/schemas checkout --quiet 996a56adc297e762bbee935a9ae2883df791e1d4
+      - name: Install ontology toolchain
+        if: needs.classify.outputs.ontology == 'true'
+        working-directory: tools/opda-gen
+        run: pip install -e .[dev] jinja2==3.1.6
+      - name: Provision Apache Jena
+        if: needs.classify.outputs.ontology == 'true'
+        run: python -c "from opda_gen.jena_shacl import resolve_jena_shacl; print(resolve_jena_shacl())"
+      - run: pnpm install --frozen-lockfile
+      - name: Ontology generation contracts
+        if: needs.classify.outputs.ontology == 'true'
+        run: make ci-ontology
+      - name: Schema reproducibility contracts
+        if: needs.classify.outputs.ontology == 'true'
+        run: pnpm run test:schema && pnpm run check:schema-drift
+      - name: Build site from the committed model
+        if: needs.classify.outputs.ontology != 'true'
+        run: pnpm run build
+      - name: Refresh model and build site
+        if: needs.classify.outputs.ontology == 'true'
+        run: pnpm run build:data
+      - name: Generated model drift gate
+        if: needs.classify.outputs.ontology == 'true'
+        run: git diff --exit-code -- src/data/ontology-model.json public/data/ontology-graph-elements.json
+      - name: Select changed and critical routes
+        env:
+          BASE_SHA: ${{ inputs.base_sha }}
+          FORCE_MODEL: ${{ inputs.full_model_validation }}
+        run: |
+          set -euo pipefail
+          if [[ "$FORCE_MODEL" == "true" ]]; then
+            echo 'source/03-standards/ontology/forced-validation.ttl' > /tmp/opda-changed-paths
+          elif [[ -n "$BASE_SHA" ]] && git cat-file -e "$BASE_SHA^{commit}" 2>/dev/null; then
+            git diff --name-only "$BASE_SHA" "$GITHUB_SHA" > /tmp/opda-changed-paths
+          else
+            git show --format= --name-only "$GITHUB_SHA" > /tmp/opda-changed-paths
+          fi
+          node scripts/changed-routes.mjs /tmp/opda-changed-paths > /tmp/opda-changed-routes
+          cat /tmp/opda-changed-routes
+      - name: Changed-route link gate
+        env:
+          ROUTES_FILE: /tmp/opda-changed-routes
+        run: pnpm run check:routes:changed
+      - name: Ontology resource-receipt gate
+        if: needs.classify.outputs.ontology == 'true'
+        run: pnpm run check:resource-links
+      - name: Write immutable release identity
+        env:
+          SOURCE_COMMIT: ${{ github.sha }}
+          VALIDATION_LANE: ${{ needs.classify.outputs.primary }}
+          GITHUB_RUN_ID: ${{ github.run_id }}
+          GITHUB_RUN_ATTEMPT: ${{ github.run_attempt }}
+        run: pnpm run release:manifest
+      - name: Enforce artifact budget
+        env:
+          MAX_ARTIFACT_MB: 500
+        run: pnpm run report:artifact
+      - name: Install Chromium
+        run: pnpm exec playwright install --with-deps chromium
+      - name: Critical browser journeys
+        if: needs.classify.outputs.application != 'true'
+        run: pnpm run test:e2e:release
+      - name: Focused application browser journeys
+        if: needs.classify.outputs.application == 'true'
+        run: pnpm run test:e2e:application
+      - name: Upload browser failure evidence
+        if: failure()
+        uses: actions/upload-artifact@v7
+        with:
+          name: browser-failure-${{ github.sha }}-${{ github.run_attempt }}
+          path: |
+            test-results/
+            playwright-report/
+          if-no-files-found: ignore
+          retention-days: 7
+      - name: Upload immutable validated site
+        uses: actions/upload-artifact@v7
+        with:
+          name: site-dist-${{ github.sha }}-${{ github.run_attempt }}
+          path: |
+            dist/
+            !dist/development/inputs/pdtf-schema/schema-derived-ontology/use-and-tooling/artefacts/**
+            !dist/development/inputs/pdtf-schema/schema-derived-ontology/use-and-tooling/tools/ontospy/**
+            !dist/development/inputs/pdtf-schema/schema-derived-ontology/use-and-tooling/tools/pylode/**
+            !dist/development/inputs/pdtf-schema/schema-derived-ontology/use-and-tooling/tools/shaclplay/**
+            !dist/development/inputs/pdtf-schema/schema-derived-ontology/use-and-tooling/tools/widoco/**
+          if-no-files-found: error
+          retention-days: 1
+
+  deploy:
+    name: Deploy exact validated artifact
+    if: inputs.deploy && needs.classify.outputs.site == 'true'
+    needs: [classify, contracts, release-candidate]
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      id-token: write
+    steps:
+      - name: Download immutable validated site
+        uses: actions/download-artifact@v8
+        with:
+          name: site-dist-${{ github.sha }}-${{ github.run_attempt }}
+          path: dist
+      - name: Verify release identity
+        env:
+          SOURCE_COMMIT: ${{ github.sha }}
+        run: |
+          node -e "const fs=require('node:fs'); const m=JSON.parse(fs.readFileSync('dist/release.json')); if(m.sourceCommit!==process.env.SOURCE_COMMIT) throw new Error('artifact source mismatch')"
+      - name: Assume deploy role (OIDC)
+        uses: aws-actions/configure-aws-credentials@v6
+        with:
+          role-to-assume: ${{ vars.OPDA_SITE_DEPLOY_ROLE_ARN }}
+          aws-region: eu-west-2
+      - name: Sync dist to the site bucket
+        run: |
+          SITE_BUCKET=$(aws cloudformation describe-stacks --region eu-west-2 \
+            --stack-name opda-site \
+            --query "Stacks[0].Outputs[?OutputKey=='SiteBucketName'].OutputValue" --output text)
+          aws s3 sync dist/ "s3://$SITE_BUCKET" --delete \
+            --exclude "development/inputs/pdtf-schema/schema-derived-ontology/use-and-tooling/artefacts/*" \
+            --exclude "development/inputs/pdtf-schema/schema-derived-ontology/use-and-tooling/tools/ontospy/*" \
+            --exclude "development/inputs/pdtf-schema/schema-derived-ontology/use-and-tooling/tools/pylode/*" \
+            --exclude "development/inputs/pdtf-schema/schema-derived-ontology/use-and-tooling/tools/shaclplay/*" \
+            --exclude "development/inputs/pdtf-schema/schema-derived-ontology/use-and-tooling/tools/widoco/*"
+      - name: Invalidate CloudFront
+        run: |
+          DISTRIBUTION_ID=$(aws cloudformation describe-stacks --region eu-west-2 \
+            --stack-name opda-site \
+            --query "Stacks[0].Outputs[?OutputKey=='DistributionId'].OutputValue" --output text)
+          aws cloudfront create-invalidation --distribution-id "$DISTRIBUTION_ID" --paths '/*'

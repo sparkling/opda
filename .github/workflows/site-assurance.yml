@@ -1,0 +1,78 @@
+name: Scheduled site assurance
+
+on:
+  schedule:
+    - cron: '17 2 * * 1-6'
+    - cron: '17 2 * * 0'
+  workflow_dispatch:
+
+concurrency:
+  group: opda-site-assurance
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  assurance:
+    name: Broad non-release assurance
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      - uses: pnpm/action-setup@v6
+      - uses: actions/setup-node@v6
+        with:
+          node-version: 22
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - name: Full Node contract suite
+        run: pnpm test
+      - name: Build scheduled inspection target
+        run: pnpm run build
+      - name: Whole-site route and resource crawl
+        run: pnpm run check:routes && pnpm run check:resource-links
+      - name: Weekly external-link evidence
+        if: github.event_name == 'schedule' && github.event.schedule == '17 2 * * 0'
+        run: make check-links-external
+      - name: Install Chromium
+        run: pnpm exec playwright install --with-deps chromium
+      - name: Broad browser, accessibility, responsive and visual assurance
+        run: pnpm run test:e2e
+      - name: Upload assurance failure evidence
+        if: failure()
+        uses: actions/upload-artifact@v7
+        with:
+          name: scheduled-assurance-${{ github.sha }}-${{ github.run_attempt }}
+          path: |
+            test-results/
+            playwright-report/
+          if-no-files-found: ignore
+          retention-days: 14
+
+  report:
+    name: Track assurance failure
+    if: always() && needs.assurance.result == 'failure'
+    needs: assurance
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      issues: write
+    steps:
+      - name: Open or update the assurance issue
+        uses: actions/github-script@v8
+        with:
+          script: |
+            const title = 'Scheduled site assurance requires attention';
+            const body = `Assurance failed for ${context.sha}.\n\nRun: ${context.serverUrl}/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId}`;
+            const issues = await github.paginate(github.rest.issues.listForRepo, {
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              state: 'open',
+              labels: 'site-assurance',
+            });
+            const existing = issues.find((issue) => issue.title === title);
+            if (existing) {
+              await github.rest.issues.createComment({ owner: context.repo.owner, repo: context.repo.repo, issue_number: existing.number, body });
+            } else {
+              await github.rest.issues.create({ owner: context.repo.owner, repo: context.repo.repo, title, body, labels: ['site-assurance'] });
+            }

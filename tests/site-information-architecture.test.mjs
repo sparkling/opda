@@ -431,7 +431,7 @@ test('PDTF search distinguishes the schema, derived evidence and SPDTF work', ()
 
 test('the frozen IA audit is explicit, not an evergreen release gate', () => {
   const makefile = readFileSync(new URL('../Makefile', import.meta.url), 'utf8');
-  const workflow = readFileSync(new URL('../.github/workflows/deploy-aws.yml', import.meta.url), 'utf8');
+  const workflow = readFileSync(new URL('../.github/workflows/site-release.yml', import.meta.url), 'utf8');
   assert.match(makefile, /check-ia-preservation:.*historical, not an evergreen release gate/u);
   assert.doesNotMatch(makefile, /ci-browser:.*check-ia-preservation/u);
   assert.doesNotMatch(makefile, /ci:.*check-ia-preservation/u);
@@ -441,7 +441,7 @@ test('the frozen IA audit is explicit, not an evergreen release gate', () => {
 });
 
 test('AWS publication is fail-closed on ADR and ontology documentation gates', () => {
-  const workflow = readFileSync(new URL('../.github/workflows/deploy-aws.yml', import.meta.url), 'utf8');
+  const workflow = readFileSync(new URL('../.github/workflows/site-release.yml', import.meta.url), 'utf8');
   const adrGate = workflow.indexOf('- name: ADR registry drift gate');
   const ontologyDocGate = workflow.indexOf('- name: Ontology documentation drift gate');
   const credentials = workflow.indexOf('- name: Assume deploy role (OIDC)');
@@ -453,15 +453,21 @@ test('AWS publication is fail-closed on ADR and ontology documentation gates', (
   assert.doesNotMatch(workflow.slice(0, adrGate), /configure-aws-credentials/u);
 });
 
-test('AWS publication deploys one validated release candidate after parallel gates', () => {
-  const workflow = readFileSync(new URL('../.github/workflows/deploy-aws.yml', import.meta.url), 'utf8');
-  assert.match(workflow, /contracts:\n[\s\S]*?release-candidate:\n/u);
-  assert.match(workflow, /release-candidate:\n[\s\S]*?Upload validated site/u);
-  assert.match(workflow, /deploy:\n[\s\S]*?needs: \[contracts, release-candidate\]/u);
-  assert.match(workflow, /Download validated site[\s\S]*?Assume deploy role \(OIDC\)/u);
+test('AWS publication deploys one immutable, proportionately validated release candidate', () => {
+  const caller = readFileSync(new URL('../.github/workflows/deploy-aws.yml', import.meta.url), 'utf8');
+  const workflow = readFileSync(new URL('../.github/workflows/site-release.yml', import.meta.url), 'utf8');
+  const assurance = readFileSync(new URL('../.github/workflows/site-assurance.yml', import.meta.url), 'utf8');
+  assert.match(caller, /uses: \.\/\.github\/workflows\/site-release\.yml/u);
+  assert.match(workflow, /classify:\n[\s\S]*?contracts:\n[\s\S]*?release-candidate:\n/u);
+  assert.match(workflow, /deploy:\n[\s\S]*?needs: \[classify, contracts, release-candidate\]/u);
+  assert.match(workflow, /Download immutable validated site[\s\S]*?Verify release identity[\s\S]*?Assume deploy role \(OIDC\)/u);
   assert.equal((workflow.match(/pnpm run build(?:\n|$)/gu) ?? []).length, 1);
   assert.equal((workflow.match(/pnpm run build:data/gu) ?? []).length, 1);
-  assert.equal((workflow.match(/pnpm run test:e2e/gu) ?? []).length, 1);
+  assert.match(workflow, /pnpm run test:e2e:release/u);
+  assert.match(workflow, /pnpm run test:e2e:application/u);
+  assert.doesNotMatch(workflow, /run: pnpm run test:e2e\s*$/mu);
+  assert.match(assurance, /run: pnpm run test:e2e\s*$/mu);
+  assert.match(assurance, /run: pnpm run check:routes && pnpm run check:resource-links/u);
   assert.equal((workflow.match(/configure-aws-credentials/gu) ?? []).length, 1);
 });
 
