@@ -89,7 +89,7 @@ test('public hierarchy uses schema and scheme names in labels and routes', () =>
   assert.equal(existsSync(path.join(ROOT, 'src/pages/development/inputs/pdtf-schema/schema-and-supporting-material')), true);
   assert.equal(existsSync(path.join(ROOT, 'src/pages/development/inputs/pdtf-schema/schema-derived-ontology')), true);
   assert.equal(SEMANTIC_PACKAGE_MANIFEST.id, 'https://opda.org.uk/spdtf/semantic-package/workspace-contract');
-  assert.equal(SEMANTIC_PACKAGE_MANIFEST.version, '2026-08-22');
+  assert.equal(SEMANTIC_PACKAGE_MANIFEST.version, '2026-09-07');
   assert.deepEqual(SEMANTIC_PACKAGE_MANIFEST.supersedes, {
     id: 'https://opda.org.uk/spdtf-2/semantic-package/workspace-contract',
     version: '1.0.0',

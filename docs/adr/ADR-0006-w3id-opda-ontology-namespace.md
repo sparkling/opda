@@ -2,7 +2,7 @@
 status: accepted
 date: 2026-05-27
 amended: 2026-06-02
-updated: 2026-08-22
+updated: 2026-09-07
 tags: [ontology, namespace, infrastructure, w3c, picg, deployment, pdtf, slash, harness, opda-org-uk]
 supersedes: []
 depends-on: [ODR-0004]
@@ -10,6 +10,12 @@ implements: []
 ---
 
 # Ontology namespace at w3id.org/opda/ via W3C PICG redirect
+
+> **Scope clarification, 2026-09-07.** This historical record governs the preserved
+> schema-derived `/pdtf/` identifiers. The new governed model instead follows
+> [ODR-0065](../ontology/odr/ODR-0065-namespace-topology-and-identifiers.md):
+> `https://opda.org.uk/ns/` and `https://opda.org.uk/id/`. Neither the preserved
+> corpus nor the isolated Property Pack candidate is reminted by that policy adoption.
 
 > ## ✅ CURRENT IDENTIFIER SCHEME (definitive — amended 2026-08-22)
 >
@@ -214,6 +220,10 @@ CI test (deploy pipeline): byte-identity of regenerated TTL against committed so
 * **First cross-corpus ADR**. This ADR is the bootstrap of the ontology-implementation ADR programme referenced in [`docs/plan/council-followup-sessions.md`](../plan/council-followup-sessions.md) §1 ("Implementation is handled by a separate ADR programme"). Subsequent ADRs will realise additional ratified ODRs.
 
 ## Amendments
+
+- **2026-09-07 — Namespace scope separated.** ODR-0065 records the directing
+  authority's new-model namespace selection. This ADR's definitive block remains
+  authoritative for the schema-derived corpus only; its identifiers are unchanged.
 
 - **2026-08-22 — Chair-authority terminology correction without RDF reminting.**
   Maria Harris, OPDA Chair, clarified that the inherited technical material was not an

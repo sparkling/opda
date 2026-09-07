@@ -1,6 +1,7 @@
 {
   "version": 1,
   "date": "2026-09-05",
+  "updated": "2026-09-07",
   "sourceRevision": "67174057e6384b79d0b28b7736fe70a66e112895",
   "selectedCategories": [
     1,
@@ -216,6 +217,25 @@
       "sourceFile": "ODR-0127-sparql-queryable-ddd-context-maps.md",
       "localFile": "ODR-0064-sparql-queryable-ddd-context-maps.md",
       "route": "/modelling/odr/odr-0064"
+    },
+    {
+      "sourceId": "ODR-0065",
+      "localId": "ODR-0065",
+      "sourceFile": "ODR-0065-namespace-topology-and-inclusion-criteria.md",
+      "localFile": "ODR-0065-namespace-topology-and-identifiers.md",
+      "route": "/modelling/odr/odr-0065",
+      "sourceRevision": "5e083c3baf6837ab93698d883a6ff01338565bd8",
+      "adopted": "2026-09-07",
+      "scope": "Consolidated namespace policy on opda.org.uk; local context bindings. No corpus migration, source implementation or operational KB subtrees adopted.",
+      "supportingSources": [
+        "ODR-0013-namespace-uri-strategy.md",
+        "ODR-0020-instance-namespace-conventions.md",
+        "ODR-0023-enumeration-modeling-pattern.md",
+        "ODR-0024-shared-reference-data-architecture.md",
+        "ODR-0040-bounded-context-boundary-criteria.md",
+        "ODR-0055-dynamic-namespace-resolution.md",
+        "ODR-0097-ontologies-modelled-by-logical-iris-not-files.md"
+      ]
     }
   ]
 }

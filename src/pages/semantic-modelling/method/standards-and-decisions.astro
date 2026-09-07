@@ -2,7 +2,9 @@
 import OntologyChapter from '@/layouts/OntologyChapter.astro';
 import JudgementNote from '@/components/modelling/judgement/JudgementNote.astro';
 const revision = '67174057e6384b79d0b28b7736fe70a66e112895';
+const namespaceRevision = '5e083c3baf6837ab93698d883a6ff01338565bd8';
 const rules = [
+  { records: 'ODR-0065', concern: 'Namespaces and stable identifiers', rule: 'Use the selected opda.org.uk namespace topology; distinguish vocabulary, instances and documents. Preserve existing corpus identifiers until a separate authorised migration.', href: 'namespaces-and-identifiers', title: 'Namespaces and identifiers' },
   { records: 'ODR-0038 · ODR-0045 · ODR-0060', concern: 'Boundaries and authority', rule: 'Give meaning a coherent, accountable context. Semantic ownership, organisational accountability, classification and system topology are not the same structure.', href: 'context-map-records', title: 'Strategic context maps' },
   { records: 'ODR-0036 · ODR-0039 · ODR-0040', concern: 'Vocabulary and classification', rule: 'Separate classification from inheritance. Govern concepts and labels with SKOS; distinguish closed enumerations, their selected typing pattern, and open populations.', href: '../explore/names-and-choices', title: 'Names, choices and classifications' },
   { records: 'ODR-0041 · ODR-0042', concern: 'Identity and property placement', rule: 'Distinguish kind, role and phase. Place applicability at the type that introduces the meaning and represent qualifications explicitly. Class-level roleOf/phaseOf annotations are not instance participation.', href: 'roles-and-phases', title: 'Roles and phases' },
@@ -54,6 +56,7 @@ const adoptedRecords = [
   ['ODR-0062', 'Concern organisation and cross-cutting analysis'],
   ['ODR-0063', 'No foundational grounding by subsumption'],
   ['ODR-0064', 'Queryable strategic context maps'],
+  ['ODR-0065', 'OPDA namespace topology and stable identifiers'],
 ];
 const methodHref = (slug: string) => slug.startsWith('../')
   ? '/semantic-modelling/' + slug.slice(3)
@@ -82,13 +85,14 @@ const methodHref = (slug: string) => slug.startsWith('../')
     not the role-view decision. Each adopted record identifies its upstream lineage.
   </p>
   <p>
-    Adoption provenance is pinned to upstream revision <code>{revision}</code>,
+    The original 29-record adoption is pinned to upstream revision <code>{revision}</code>,
     inspected read-only on <time datetime="2026-09-05">5 September 2026</time>. The
     upstream project was not modified. OPDA adopts the selected modelling rules,
     not that project's business content, process models, architecture or implementation
     tooling. The local record's scope, rule standing and adopted amendments govern;
     future upstream amendments are not silently adopted by this page.
   </p>
+  <p><a href="/modelling/odr/odr-0065">ODR-0065</a> adds the namespace policy on <time datetime="2026-09-07">7 September 2026</time>, from source revision <code>{namespaceRevision}</code>. It consolidates the relevant namespace decisions with OPDA context codes and <code>opda.org.uk</code>; it does not migrate the existing corpora. The <a href="/semantic-modelling/method/namespaces-and-identifiers">namespace explainer</a> distinguishes selected policy from current identifiers.</p>
 
   <h2 id="source-odr-0071"><a href="/modelling/odr/odr-0046">ODR-0046</a>: eight selected concerns, not all fourteen categories</h2>
   <p>
@@ -201,8 +205,8 @@ const methodHref = (slug: string) => slug.startsWith('../')
     method. This documentation rewrite does not alter the ontology corpus, invent
     reviewed mappings or claim that an outstanding generator migration has happened.
   </p>
-  <JudgementNote tone="insight" title="All 29 adopted OPDA decisions">
-    <p>These local records are the normative register for the selected method. Each records its source lineage, scoped adoption and amendment boundaries. Upstream revision <code>{revision}</code> is provenance only; it does not adopt excluded categories, proposed clauses or source implementation claims.</p>
+  <JudgementNote tone="insight" title={`All ${adoptedRecords.length} adopted OPDA decisions`}>
+    <p>These local records are the normative register for the selected method. Each records its source lineage, scoped adoption and amendment boundaries. The two pinned source revisions above are provenance only; they do not adopt excluded categories, proposed clauses or source implementation claims.</p>
     <ul>{adoptedRecords.map(([record, title]) => <li><a href={`/modelling/odr/${record.toLowerCase()}`}>{record} · {title}</a></li>)}</ul>
   </JudgementNote>
 </OntologyChapter>

@@ -16,6 +16,7 @@ export const ONTOLOGY_JUDGEMENT_CHAPTERS: Item[] = [
 /** Focused authoring references complement, rather than duplicate, the reasoning spine. */
 export const ONTOLOGY_REFERENCE_CHAPTERS: Item[] = [
   page('method/from-question-to-candidate', 'From question to candidate'),
+  page('method/namespaces-and-identifiers', 'Namespaces and identifiers'),
   page('method/scope-and-package', 'Eight concerns, six connected outputs'),
   page('method/vocabularies-and-classification', 'Vocabularies and classification'),
   page('method/mapping-records', 'Qualified term mappings'),

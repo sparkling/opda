@@ -41,13 +41,15 @@ const EXT_NS = [
 
   <p class="lead">
     The schema-derived ontology uses the stable <code>{BASE}</code> identifier namespace with a deliberate
-    <strong>kind-split</strong> (<a href="/governance">ADR-0006</a>): each kind of resource — term, SKOS scheme,
+    <strong>kind-split</strong> (<a href="/modelling/adr/adr-0006">ADR-0006</a>): each kind of resource — term, SKOS scheme,
     SHACL shape, named graph, governance record — lives in its own namespace segment so local names cannot
-    collide. This technical publication does not make the corpus an endorsed scheme. Every IRI below <strong>dereferences</strong> to a page (<a href="/modelling/adr/adr-0044">ADR-0044</a>): <code>{BASE}Property</code>
-    resolves to <a href="/pdtf/Property">/pdtf/Property</a>.
+    collide. This technical publication does not make the corpus an endorsed scheme. Reader representations are documented by <a href="/modelling/adr/adr-0044">ADR-0044</a>; for example, <code>{BASE}Property</code>
+    has the page <a href="/pdtf/Property">/pdtf/Property</a>. Identifier identity and representation paths remain distinct.
   </p>
 
   <p class="muted">For portable static publication, the <code>LeaseTerm</code>/<code>leaseTerm</code> pair is represented at distinct lowercase, type-scoped paths.</p>
+
+  <p>This page describes the preserved schema-derived corpus. For the new governed model, read <a href="/semantic-modelling/method/namespaces-and-identifiers">Namespaces and identifiers</a> and <a href="/modelling/odr/odr-0065">ODR-0065</a>. Its selected <code>/ns/</code> and <code>/id/</code> scheme does not migrate this corpus or the existing Property Pack candidate.</p>
 
   <h2 id="opda">OPDA namespaces (the kind-split)</h2>
   <table>

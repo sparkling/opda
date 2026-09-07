@@ -65,4 +65,5 @@ export const ODR_REGISTRY = [
   {"id":"odr-0062","number":"0062","title":"Organise by concern while preserving independent classification and model authority","kind":"methodology","status":"accepted","date":"2026-09-05","updated":"2026-09-05","source":"ODR-0062-organising-architecture-co-equal-axes-and-register.md","enriched":false},
   {"id":"odr-0063","number":"0063","title":"Foundational analysis without external upper-ontology subsumption","kind":"methodology","status":"accepted","date":"2026-09-05","updated":"","source":"ODR-0063-no-foundational-grounding-by-subsumption.md","enriched":false},
   {"id":"odr-0064","number":"0064","title":"Queryable strategic context maps linked to exact term mappings","kind":"methodology","status":"accepted","date":"2026-09-05","updated":"","source":"ODR-0064-sparql-queryable-ddd-context-maps.md","enriched":false},
+  {"id":"odr-0065","number":"0065","title":"OPDA namespace topology and stable identifiers","kind":"methodology","status":"accepted","date":"2026-09-07","updated":"","source":"ODR-0065-namespace-topology-and-identifiers.md","enriched":false},
 ];

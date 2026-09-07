@@ -1,5 +1,5 @@
-export const STANDARDS_PROFILE_VERSION = '0.4-development';
-export const STANDARDS_GOVERNANCE_REVIEWED = '2026-09-06';
+export const STANDARDS_PROFILE_VERSION = '0.5-development';
+export const STANDARDS_GOVERNANCE_REVIEWED = '2026-09-07';
 export const STANDARDS_MECHANISMS = Object.freeze(['reuse', 'reference', 'map', 'mint']);
 
 const LAST_CHECKED = '2026-08-20';
@@ -16,7 +16,7 @@ const specification = (
 );
 
 const SPECIFICATION_EVIDENCE = Object.freeze({
-  'SPDTF context-owned terms': specification('Internal governance decision', 'ADR-0074 · 2026-08-20', 'https://opda.org.uk/modelling/adr/adr-0074', 'governed terms not yet minted', 'No governed SPDTF namespace term exists; machine-proposed Property Pack IRIs exist only in its isolated candidate namespace'),
+  'SPDTF context-owned terms': Object.freeze({ ...specification('Internal governance decision', 'ODR-0065 · 2026-09-07', 'https://opda.org.uk/modelling/odr/odr-0065', 'governed terms not yet minted', 'Namespace policy selected; existing machine-proposed Property Pack IRIs remain in their isolated candidate namespace'), lastChecked: '2026-09-07' }),
   'RDF 1.2 Basic': specification('W3C Candidate Recommendation Snapshot', '2026-04-07', 'https://www.w3.org/TR/rdf12-concepts/', 'used and tested in Property Pack 0.1', 'Turtle declares VERSION 1.2-basic and passes Jena RIOT parsing', 'RDF Concepts CR snapshot · 2026-04-07'),
   'RDF 1.2 Turtle': specification('W3C Working Draft', '2026-08-12', 'https://www.w3.org/TR/rdf12-turtle/', 'used and tested in Property Pack 0.1', 'Every candidate graph is emitted as Turtle and passes Jena RIOT parsing', 'Turtle Working Draft · 2026-05-28'),
   'RDFS 1.2': specification('W3C Working Draft', '2026-03-28', 'https://www.w3.org/TR/rdf12-schema/', 'used in Property Pack 0.1', 'Labels, hierarchies, domains and ranges are emitted; no entailment-profile receipt'),
@@ -60,7 +60,7 @@ function item(name, versionBoundary, purpose, conformance, mechanism, status, ow
 }
 
 export const STANDARDS_PROFILE = Object.freeze([
-  item('SPDTF context-owned terms', 'Namespace and identifier policy unresolved; minting is blocked until recorded', 'Terms for reviewed meaning not supplied by a suitable governed source', 'Immutable candidate identifier, semantic owner and evidence required', 'mint', 'Blocked pending namespace governance and a working-group candidate', 'Owning domain group with Governance', 'Information architecture unresolved decision 1', 'A reviewed candidate needs a term that cannot be reused'),
+  item('SPDTF context-owned terms', 'OPDA ODR-0065: opda.org.uk/ns/ vocabulary topology and opda.org.uk/id/ instance convention', 'Terms for reviewed meaning not supplied by a suitable governed source', 'Stable logical identifier, semantic owner and evidence required; policy adoption is not term approval or candidate migration', 'mint', 'Namespace policy accepted; individual term approval and implementation pending', 'Owning domain group with Interoperability', 'OPDA ODR-0065; ADR-0067 resource-home rule', 'A reviewed candidate needs a term that cannot be reused, or a namespace change would affect existing identifiers'),
   item('RDF 1.2 Basic', 'RDF 1.2 Basic profile named by ADR-0067', 'Graph data model and serialisation substrate', 'Property Pack 0.1 uses Basic only. The selected mapping-record layer additionally requires RDF 1.2 triple terms and its own feature receipt; this does not extend the older candidate conformance claim', 'reference', 'Accepted SPDTF modelling target; not a release claim', 'Interoperability', 'OPDA ODR-0043 baseline; ADR-0067 §5.4; OPDA ODR-0058 mapping representation', 'A required RDF feature outside the Basic profile'),
   item('RDF 1.2 Turtle', 'Turtle syntax snapshot pinned by each candidate package', 'Human-readable exchange syntax for candidate RDF graphs', 'Parsing proves syntactic compatibility, not semantic correctness', 'reference', 'Accepted serialisation target; snapshot is package-specific', 'Interoperability', 'OPDA ODR-0043 baseline; ADR-0067 §5.4 and Property Pack candidate manifest', 'The candidate needs syntax outside the tested Turtle snapshot'),
   item('RDFS 1.2', 'RDF Schema vocabulary with the OPDA ODR-0037 / ODR-0043 / ODR-0044 boundaries', 'Class/property hierarchies and safe universally true domain/range declarations', 'Standard RDFS semantics remain intact; repeated domain/range declarations are not alternatives. Property Pack 0.1 has no entailment receipt', 'reuse', 'Normative bounded method; implementation coverage is separate', 'Interoperability', 'OPDA ODR-0037, ODR-0043 and ODR-0044; ADR-0067', 'A competency question requires an inference outside the selected Safe Group'),

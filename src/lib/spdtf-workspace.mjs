@@ -1,7 +1,7 @@
 /** Canonical, versioned workspace contract for SPDTF development. */
 export const SEMANTIC_PACKAGE_MANIFEST = Object.freeze({
   id: 'https://opda.org.uk/spdtf/semantic-package/workspace-contract',
-  version: '2026-08-22',
+  version: '2026-09-07',
   supersedes: Object.freeze({
     id: 'https://opda.org.uk/spdtf-2/semantic-package/workspace-contract',
     version: '1.0.0',
@@ -9,7 +9,7 @@ export const SEMANTIC_PACKAGE_MANIFEST = Object.freeze({
   }),
   status: 'workspace contract — no domain candidate approved',
   authority: 'Accepted IA; domain meaning remains subject to working-group review',
-  standardsProfileVersion: '0.4-development',
+  standardsProfileVersion: '0.5-development',
   canonicalSource: '/semantic-modelling/method/scope-and-package',
   outputs: Object.freeze([
     'Business glossary',

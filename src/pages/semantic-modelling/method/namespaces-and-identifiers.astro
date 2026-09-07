@@ -1,0 +1,124 @@
+---
+import OntologyChapter from '@/layouts/OntologyChapter.astro';
+import JudgementNote from '@/components/modelling/judgement/JudgementNote.astro';
+---
+
+<OntologyChapter title="Namespaces and identifiers" description="Give a term a stable semantic home, distinguish it from the things it describes, and keep identifiers independent of labels, files and releases." kicker="Method reference" section="reference">
+  <p class="og-lead">A namespace does two useful jobs: it keeps names distinguishable and makes their governance boundary explicit. It does not define a concept, establish an entity’s identity or approve a model. OPDA’s selected scheme uses <code>https://opda.org.uk/ns/</code> for vocabulary and <code>https://opda.org.uk/id/</code> for individual resources, with separate rules for each.</p>
+
+  <section aria-labelledby="three-states">
+    <h2 id="three-states">First distinguish three states</h2>
+    <p><a href="/modelling/odr/odr-0065">ODR-0065</a> selects the namespace policy explained here; implementation in ontology artefacts remains pending. Selecting that policy does not rename the existing ontology, regenerate the Property Pack candidate or make these example addresses live. Read an identifier together with its corpus and decision status.</p>
+    <div class="og-table">
+      <table>
+        <caption>Existing evidence, current candidate and selected namespace policy are distinct</caption>
+        <thead><tr><th scope="col">State</th><th scope="col">IRI base</th><th scope="col">What it establishes</th></tr></thead>
+        <tbody>
+          <tr><th scope="row">Existing schema-derived corpus</th><td><code>https://opda.org.uk/pdtf/</code></td><td>The existing corpus retains its identifiers and historical decisions. It remains source evidence, not the seed of the new domain model.</td></tr>
+          <tr><th scope="row">Versioned Property Pack candidate</th><td><code>https://w3id.org/opda/candidate/property-pack/0.1/</code></td><td>The machine-proposed candidate retains its present IRIs. Its versioned base identifies that candidate space, not approved permanent domain vocabulary.</td></tr>
+          <tr><th scope="row">Selected namespace policy</th><td><code>https://opda.org.uk/ns/</code><br /><code>https://opda.org.uk/id/</code></td><td>The naming and admission rules for future governed use. Selection is not a migration, publication or dereferencing receipt.</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p>A term called <em>Report</em> in all three spaces is not thereby one term. Replacing a base string would mint a different IRI without establishing correspondence, preserving an identity criterion or approving the new definition. Any eventual transition needs its own scoped decisions and evidence.</p>
+  </section>
+
+  <section aria-labelledby="namespace-families">
+    <h2 id="namespace-families">Choose the family by meaning and authority</h2>
+    <p>The selected topology adapts semantic-modelling’s scheme to <code>opda.org.uk</code>. Its root kernel and common boundary are deliberately different. The kernel describes how the ontology is classified or governed; common contains domain meaning genuinely shared across contexts.</p>
+    <div class="og-table">
+      <table>
+        <caption>Selected namespace families and their admission boundaries</caption>
+        <thead><tr><th scope="col">Family</th><th scope="col">Appropriate content</th><th scope="col">Do not infer</th></tr></thead>
+        <tbody>
+          <tr><th scope="row"><code>/ns/</code></th><td>Cross-cutting metamodel terms: justified annotation properties, classification schemes and shared quality-gate infrastructure.</td><td>That every important property-domain concept belongs in the root.</td></tr>
+          <tr><th scope="row"><code>/ns/common/</code></th><td>The deliberately small shared domain boundary: reviewed common concepts, vocabularies and mappings.</td><td>That use by a second consumer automatically transfers definition authority.</td></tr>
+          <tr><th scope="row"><code>/ns/{'{bc}'}/</code></th><td>Terms governed by one established bounded context, using its registered token.</td><td>A hierarchy of contexts, source applications or organisational departments.</td></tr>
+          <tr><th scope="row"><code>/ns/meta/</code></th><td>Independently justified metaclasses and their shapes, when that modelling need is admitted.</td><td>Adoption of the upstream project’s entire governance infrastructure.</td></tr>
+          <tr><th scope="row">Facet subnamespaces</th><td>Values of specifically selected classification facets, separated from domain ownership.</td><td>A new bounded context for every subject, lifecycle stage or sensitivity label.</td></tr>
+          <tr><th scope="row"><code>/id/{'{type}'}/{'{ref}'}</code></th><td>Individual entities identified under a governed type and reference convention.</td><td>That an individual is an ontology term or that its path proves its identity.</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p>There is no additional <code>/core/</code> layer: the cross-cutting kernel is <code>/ns/</code> itself. Nor does a directory called <em>schema</em> determine a semantic namespace. For a root-level term, justify all three commitments: cross-cutting scope, metamodel meaning and no property-domain meaning. A reusable domain class belongs in its justified context or common boundary, not in the kernel because it seems foundational.</p>
+    <p>Upstream facet families include <code>subject</code>, <code>dataclass</code>, <code>lifecycle</code>, <code>gov</code>, <code>vol</code>, <code>reg</code> and <code>valuechain</code>. Their names are reserved against context-token collisions; reservation does not introduce seven new OPDA modelling obligations. Only selected facets and justified values are admitted. Subject classification answers “what is this about?”; context ownership answers “who governs this meaning?”</p>
+  </section>
+
+  <section aria-labelledby="context-tokens">
+    <h2 id="context-tokens">Use the established contexts, with stable tokens</h2>
+    <p>The tokens reuse abbreviations already recorded in the Property Pack candidate manifest. Their selected bases are new policy; the candidate’s existing full IRIs remain unchanged. These are flat peers, not nested branches of a larger business-domain tree.</p>
+    <div class="og-table">
+      <table>
+        <caption>Registered OPDA boundaries and selected namespace bases</caption>
+        <thead><tr><th scope="col">Boundary</th><th scope="col">Preferred alias</th><th scope="col">Selected base</th></tr></thead>
+        <tbody>
+          <tr><th scope="row">Finance and Banking</th><td><code>fb:</code></td><td><code>https://opda.org.uk/ns/fb/</code></td></tr>
+          <tr><th scope="row">Conveyancing</th><td><code>conv:</code></td><td><code>https://opda.org.uk/ns/conv/</code></td></tr>
+          <tr><th scope="row">Estate Agency</th><td><code>ea:</code></td><td><code>https://opda.org.uk/ns/ea/</code></td></tr>
+          <tr><th scope="row">Surveying and Valuation</th><td><code>sv:</code></td><td><code>https://opda.org.uk/ns/sv/</code></td></tr>
+          <tr><th scope="row">Property Data Services</th><td><code>pds:</code></td><td><code>https://opda.org.uk/ns/pds/</code></td></tr>
+          <tr><th scope="row">Property Technology</th><td><code>pt:</code></td><td><code>https://opda.org.uk/ns/pt/</code></td></tr>
+          <tr><th scope="row">Common boundary</th><td><code>common:</code></td><td><code>https://opda.org.uk/ns/common/</code></td></tr>
+          <tr><th scope="row">DBT Smart Data scheme</th><td><code>dbt:</code></td><td><code>https://opda.org.uk/ns/dbt/</code></td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p>The first six rows are the established OPDA bounded contexts. Common is a separately governed shared boundary; DBT Smart Data is scheme scope, not a seventh OPDA bounded context. Namespace allocation does not create relationships between these boundaries or settle which candidate terms each should own.</p>
+    <p>Treat <code>sv</code> as a stable token after adoption, not a phrase to regenerate from a display label. Renaming a working group, translating its label or changing a prefix alias does not rename <code>/ns/sv/</code>. Likewise, do not insert a source-system name beneath it merely because two applications use different vocabulary within the same governed context.</p>
+  </section>
+
+  <section class="og-example" aria-labelledby="term-and-instance">
+    <h2 id="term-and-instance">A type, a controlled value and an individual need different names</h2>
+    <p>Consider a fictional inspection and report. The following IRIs illustrate the selected rules; they do not declare these terms, settle their definitions or approve Surveying and Valuation as their semantic home.</p>
+    <div class="og-table">
+      <table>
+        <caption>Illustrative identifiers, not minted OPDA vocabulary</caption>
+        <thead><tr><th scope="col">What is named</th><th scope="col">Illustrative IRI</th></tr></thead>
+        <tbody>
+          <tr><th scope="row">An Inspection class</th><td><code>https://opda.org.uk/ns/sv/Inspection</code></td></tr>
+          <tr><th scope="row">A reportsInspection property</th><td><code>https://opda.org.uk/ns/sv/reportsInspection</code></td></tr>
+          <tr><th scope="row">A ReportStatus class and its concept scheme</th><td><code>https://opda.org.uk/ns/sv/ReportStatus</code><br /><code>https://opda.org.uk/ns/sv/ReportStatusScheme</code></td></tr>
+          <tr><th scope="row">The scheme’s controlled draft value</th><td><code>https://opda.org.uk/ns/sv/ReportStatus/draft</code></td></tr>
+          <tr><th scope="row">One particular inspection</th><td><code>https://opda.org.uk/id/inspection/INS-0042</code></td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p>Classes and facet concepts use UpperCamelCase; properties use lowerCamelCase. Class-oriented shapes use a <code>Shape</code> suffix: an illustrative <code>sv:InspectionShape</code> would be distinct from the Inspection class. A closed, ontology-owned enumeration uses a per-scheme subnamespace with lowercase value names. The scheme resource and the value subnamespace are distinct: <code>ReportStatusScheme</code> identifies the scheme; <code>ReportStatus/draft</code> identifies one concept in it. Shared values follow the same pattern under <code>/ns/common/</code> only after justified common-boundary admission.</p>
+    <p>The last row identifies a particular inspection, not the class of inspections. Its <code>type</code> is lowercase and hyphenated when necessary, such as <code>report-version</code>. Its <code>ref</code> follows the approved canonical key convention, preserving meaningful case. Prefer an authoritative external code, stable business key or managed registry reference over a changing label. Do not add the originating application to the IRI to record provenance.</p>
+    <p>A finite file is not necessarily a closed vocabulary. A snapshot of externally maintained reference data remains instance data when its population is open-ended. Conversely, an ontology-owned status concept remains vocabulary even though it is an RDF individual used as a value. The governing definition and maintenance responsibility decide the family, not the number of rows.</p>
+    <p>The business key helps identify and join records; it is not the identity criterion itself. Two systems can reuse <code>INS-0042</code> for different events, or give different keys to the same event. Establish the identifier’s authority, population and collision rules before minting. Never infer sameness from matching suffixes alone. Do not expose personal or confidential identifiers for readability; select a safe managed reference where necessary. If a suitable governed external IRI already identifies the intended entity, reuse it rather than creating an OPDA copy just to fit this pattern.</p>
+  </section>
+
+  <section aria-labelledby="aliases-and-authority">
+    <h2 id="aliases-and-authority">Prefixes abbreviate; governance explains</h2>
+    <p>With <code>sv:</code> explicitly bound to <code>https://opda.org.uk/ns/sv/</code>, <code>sv:Inspection</code> abbreviates the first example. Another document could bind <code>survey:</code> to that same base and name the same term. Conversely, the candidate can use <code>sv:</code> with a different base and name a different term. The expanded IRI matters, not the letters before the colon.</p>
+    <p>This is especially important for <code>opda:</code>. In this policy it is a convenient alias for <code>https://opda.org.uk/ns/</code>; existing schema-derived material uses it for <code>https://opda.org.uk/pdtf/</code>. Never silently reinterpret that older binding. Show full IRIs or distinct aliases when discussing both corpora together.</p>
+    <p>VANN’s <code>preferredNamespacePrefix</code> and <code>preferredNamespaceUri</code> record preferred namespace bindings explicitly on the admitted vocabulary’s logical <code>owl:Ontology</code> resource. They do not prove that an organisation controls a domain, approve a definition or establish that two contexts share meaning. The context-map profile separately identifies a context, an identifier system it governs and, for a namespace-based system, the explicit namespace value. A context may govern multiple identifier systems.</p>
+    <p>That distinction makes governance queryable without treating a familiar prefix or substring as evidence. A namespace declares the intended naming boundary; the authoritative registry and reviewed model establish governance. An identifier-system resource is not interchangeable with the context resource or a named graph.</p>
+  </section>
+
+  <JudgementNote tone="method" title="Reuse external terms under their canonical IRIs">
+    <p>Using SKOS, PROV-O, Dublin Core or another selected vocabulary does not mean minting OPDA copies of its terms. Retain their canonical IRIs and explicit prefix bindings. OPDA’s slash-IRI convention governs OPDA-minted names; it does not rewrite an external vocabulary’s hash IRIs. Reuse also does not override the adopted restrictions on external upper-ontology class subsumption.</p>
+  </JudgementNote>
+
+  <section aria-labelledby="identity-and-version">
+    <h2 id="identity-and-version">Stable identifiers are not file or release addresses</h2>
+    <p>Keep four things distinct: a term IRI names a vocabulary resource; an individual IRI names a particular entity; an ontology IRI identifies a logical ontology; a document address identifies a document or representation. A named graph has its own graph name. None is automatically identical to a repository filename, directory or page route.</p>
+    <p>One namespace may span several files; one file may contain terms from several namespaces. Splitting a Turtle file, moving a source directory or redesigning this site therefore does not rename its terms. A graph can package statements from several contexts without becoming their semantic owner. The namespace policy is not a rule to create one graph or one document per context.</p>
+    <p>Nor does every release require a new term namespace. A corrected label can describe the same term; a changed definition may alter meaning and require a separate reviewed decision. Preserve established references, document deprecation and replacement where justified, and never quietly reuse an old IRI for a different meaning. Instance continuity likewise needs domain reasoning: correcting a report record is not automatically a new inspection.</p>
+    <p>The version inside the current candidate base belongs to that candidate’s identity. It does not prescribe <code>/ns/v1/</code> for the selected policy. <code>owl:versionInfo</code> records version information; <code>owl:versionIRI</code>, when used, identifies a particular ontology version without renaming every term. Release identifiers, immutable version documents and delivery locations require their own explicit contracts; this policy does not invent their paths. Upstream’s dated operational graphs and versioned KB documents are scoped exceptions, not templates for OPDA domain identifiers.</p>
+  </section>
+
+  <section class="og-review" aria-labelledby="before-minting">
+    <h2 id="before-minting">What remains a governed decision</h2>
+    <p>The topology answers where an admitted name belongs. Domain review must still establish its meaning, identity commitments and semantic home. Common-boundary promotion needs evidence of genuinely shared identity and meaning, not matching spelling or repeated use. A namespace table cannot supply that evidence.</p>
+    <p>For an instance family, record who may mint identifiers, the authoritative key convention, handling of collisions and composite keys, and what happens when a key is corrected or retired. Set normalisation and escaping rules before deriving IRIs from source values. Where these matters are unresolved, record the gap rather than presenting an illustrative identifier as production-ready.</p>
+    <p>Migration of existing corpora, public resolution and publication are separate authorised changes. This chapter makes no such change: the existing evidence and candidate remain inspectable under their original identifiers while the selected scheme guides future reviewed work.</p>
+  </section>
+
+  <section class="og-references" aria-labelledby="references">
+    <h2 id="references">Decision basis</h2>
+    <p><a href="/modelling/odr/odr-0065">ODR-0065: namespace topology and identifiers</a> is the local authority for this policy and its scoped upstream adoption. Its source basis includes semantic-modelling’s ODR-0013, ODR-0020, ODR-0040, ODR-0055, ODR-0065 and ODR-0097, read with their amendments—not the upstream numbering as a substitute for an OPDA decision.</p>
+    <p><a href="/modelling/adr/adr-0067">ADR-0067</a> governs first-principles coverage and semantic homes; <a href="/modelling/odr/odr-0059">ODR-0059</a> governs cross-context identity comparison; <a href="/modelling/odr/odr-0064">ODR-0064</a> distinguishes registered contexts, governed identifier systems and mapping applicability. The <a href="/semantic-modelling/method/standards-and-decisions">standards and decisions guide</a> explains how status, scope and amendments determine authority.</p>
+  </section>
+</OntologyChapter>

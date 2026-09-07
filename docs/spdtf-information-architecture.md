@@ -215,7 +215,7 @@ Home /
 │   └── Ontology modelling /semantic-modelling/method
 │       ├── Judgement: foundations; representation; identity through roles and change
 │       ├── Judgement: context agreements; evidence and time; source-to-model decisions
-│       └── Eight authoring references: scope, vocabularies, constraints, mappings, policy and standards
+│       └── Authoring references: namespaces, scope, vocabularies, constraints, mappings, policy and standards
 ├── Development /development
 │   ├── Overview: the first collaborative scheme draft, its scope and status
 │   ├── Property Pack ontology /development/property-pack
@@ -492,7 +492,7 @@ The full multi-model council evidence, scores, gates and dissent are recorded in
 
 ## Unresolved governance decisions
 
-1. PDTF schema support period and the future SPDTF IRI/namespace relationship to `/pdtf/**`.
+1. PDTF schema support period and any candidate identifier migration. ODR-0065 now selects the new-model `opda.org.uk/ns/` and `/id/` scheme; `/pdtf/**` remains preserved, not reminted.
 2. Promotion states above first working-group draft and their decision thresholds.
 3. Consent, access, confidentiality, moderation and durable feedback disposition.
 4. Which additional vocabularies and term-level extensions are justified beyond the normative source-method subset; current selections are not reopened merely by being absent from an older candidate.

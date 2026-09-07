@@ -1,7 +1,7 @@
 ---
 status: accepted
 date: 2026-08-03
-updated: 2026-09-03
+updated: 2026-09-07
 tags: [ontology, property-pack, greenfield, bounded-context, common-boundary, interoperability, governance, council, ai-assisted, model-routing, source-security, release, skos, shacl, provenance, authorisation]
 supersedes: []
 depends-on: [ADR-0039, ADR-0066]
@@ -153,18 +153,11 @@ Every OPDA-defined ontology resource must have exactly one semantic home:
 - the deliberately small **common boundary**, governed by the Interoperability Working
   Group.
 
-This home rule applies to OPDA-minted classes, properties, relationships, shapes,
-vocabulary schemes and concepts. An externally governed resource keeps its external
-home; OPDA records which context reuses it and any local constraint or mapping.
-Semantic home records definition responsibility; it does not require a namespace per
-context or prevent one resource from being used by several contexts.
+This home rule applies to OPDA-minted classes, properties, relationships, shapes, vocabulary schemes and concepts. An externally governed resource keeps its external home; OPDA records which context reuses it and any local constraint or mapping.
+Semantic home records definition responsibility. [ODR-0065](../ontology/odr/ODR-0065-namespace-topology-and-identifiers.md) now selects separate flat context namespaces on `opda.org.uk` for the new governed model, refining this ADR's earlier namespace discretion. One resource may still be used by several contexts. Policy selection does not migrate existing candidate or schema-derived IRIs.
 
-Each Property Pack source item receives one candidate semantic home—one context or the
-common boundary—and may name additional consuming contexts. Usage by several contexts
-does not automatically move a resource into the common boundary. A resource enters the
-common boundary only when multiple contexts require the same identity criterion and
-stable exchange meaning, and the Interoperability Working Group approves that shared
-definition.
+Each Property Pack source item receives one candidate semantic home—one context or the common boundary—and may name additional consuming contexts. Usage by several contexts does not automatically move a resource into the common boundary.
+A resource enters the common boundary only when multiple contexts require the same identity criterion and stable exchange meaning, and the Interoperability Working Group approves that shared definition.
 
 Where the same label has materially different meanings in different contexts, the
 contexts keep distinct resources and the Interoperability Working Group records the
@@ -493,6 +486,7 @@ constraints; it does not pre-approve the resulting ontology terms.
 - Builder [ADR-0040 — semantic standards plane](https://github.com/hm-group/semantic-builder/blob/b64e4288bc07277198abad83bd7978db5c938b6b/docs/adr/ADR-0040-adopt-apache-jena-semantic-standards-plane.md), [ADR-0041 — deterministic validation](https://github.com/hm-group/semantic-builder/blob/b64e4288bc07277198abad83bd7978db5c938b6b/docs/adr/ADR-0041-odr-compiled-deterministic-validation-and-promotion-gate.md) and the [development model portfolio](https://github.com/hm-group/semantic-builder/blob/b64e4288bc07277198abad83bd7978db5c938b6b/config/model-portfolios/portfolio.development.v1.json)
 
 ## Amendments
+- **2026-09-07 — New-model namespace policy selected by directing authority.** ODR-0065 refines §2 with flat `opda.org.uk/ns/{bc}/` namespaces, separate kernel/common/meta/facet responsibilities and the `/id/` instance convention. Existing context codes are reused, not new boundaries discovered; term approval, candidate migration and publication remain separate.
 - **2026-08-03 — Accepted by operator.** Selected a first-principles Property-Pack scope; rejected a Builder dependency and five non-OPDA concerns; retained the other nine; and required one bounded-context or common-boundary home for every OPDA resource.
 - **2026-08-03 — Pinned Builder execution profile adopted.** Inherit Builder's accepted authoring and assurance contracts without its runtime or excluded target categories; human working groups retain meaning and promotion authority.
 - **2026-08-03 — OPDA governance clarified.** Constitutional authority and the technical change process govern human review and promotion; incomplete release mechanics must be ratified before a normative ontology release.

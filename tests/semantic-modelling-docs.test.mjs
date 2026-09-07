@@ -124,7 +124,8 @@ test('selected concern numbers, dispositions and local adoption receipts remain 
   ]);
   assert.ok(register.includes(sourceRevision));
   const adoptedRecords = [...register.matchAll(/\['(ODR-\d{4})',/gu)].map(([, record]) => record);
-  assert.deepEqual(adoptedRecords, Array.from({ length: 29 }, (_, index) => `ODR-${String(index + 36).padStart(4, '0')}`));
+  const adoption = JSON.parse(read('docs/ontology/odr/method-adoption-crosswalk.json'));
+  assert.deepEqual(adoptedRecords, adoption.records.map(({ localId }) => localId));
   assert.match(register, /adoptedRecords\.map\(\(\[record, title\]\)/u);
   assert.ok(register.includes('href={`/modelling/odr/${record.toLowerCase()}`}'));
   assert.ok(register.includes('href="/modelling/odr/odr-0025"'), 'retain the distinct historical OPDA decision');
@@ -154,6 +155,23 @@ test('selected concern numbers, dispositions and local adoption receipts remain 
     }
     assert.match(source, /<OntologyChapter[^>]+section="reference"/u);
   }
+});
+
+test('namespace policy is findable without implying a corpus migration', () => {
+  const route = '/semantic-modelling/method/namespaces-and-identifiers';
+  assert.ok(MODELLING_CHAPTERS.some(({ url }) => url === route));
+  const page = textOf('method/namespaces-and-identifiers');
+  assert.ok(page.includes('href="/modelling/odr/odr-0065"'));
+  assert.ok(page.includes('https://opda.org.uk/ns/'));
+  assert.ok(page.includes('https://opda.org.uk/id/'));
+  assert.ok(page.includes('https://opda.org.uk/pdtf/'));
+  assert.ok(page.includes('https://w3id.org/opda/candidate/property-pack/0.1/'));
+  const policy = STANDARDS_PROFILE.find(({ name }) => name === 'SPDTF context-owned terms');
+  assert.ok(policy.evidence.includes('ODR-0065'));
+  assert.doesNotMatch(policy.governanceStatus, /pending namespace governance/iu);
+  assert.match(policy.implementationStatus, /not yet minted/iu);
+  assert.match(read('src/data/property-pack/candidate-model/manifest.toml'),
+    /base_iri = "https:\/\/w3id\.org\/opda\/candidate\/property-pack\/0\.1\/"/u);
 });
 
 test('technical examples retain distinct identities, event dates and applicability contracts', () => {
