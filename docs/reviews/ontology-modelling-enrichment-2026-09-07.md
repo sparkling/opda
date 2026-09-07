@@ -2,22 +2,33 @@
 
 Date: 7 September 2026. Status: **proposal for review; local only**.
 OPDA review baseline: `a56502011226590e8271eeb30bdca1ac0a6ea4c9`.
+Scope corrected by the operator on 7 September 2026 and recorded in the updated
+ADR-0063/0064. Their specification remit governs this revised proposal.
 
 ## Recommendation and audience
 
-Enrich **Modelling → Ontology modelling** with one focused chapter on vocabularies
-and classification, plus targeted additions on validating the shape-authoring contract
-and maintaining mapping decisions. Treat the established contextual boundaries and the
-site's existing boundary guidance as fixed inputs; do not reopen their discovery or
-duplicate that material. Separately review the newer access-policy decision; do not
-present it as already adopted by OPDA.
+Enrich **Modelling → Ontology modelling** around authoring a specification, governing
+its meaning, and generating the JSON-LD artefacts most implementers will use. Expand
+the existing delivery explanation, add a focused vocabulary/classification chapter,
+and explain constraint authoring, mapping review and trust-governance recommendations.
+Use the established contextual boundaries and their existing documentation throughout.
+Linked-data-store and trust implementation guidance is informative.
 
-The audience is ontology modellers, modelling facilitators and technical implementers
-who need to turn an evidenced domain distinction into an inspectable model. The
-additional material should teach **which decision to make, why its alternatives differ,
-and what evidence would show it was implemented correctly**. It is not another
-introductory RDF course, a copy of the ODR corpus, or an implementation programme for
-the source project's tooling.
+The primary audience is specification authors, ontology modellers and governance
+contributors. Most downstream implementers need to understand the generated JSON-LD
+exchange package and its declared requirements. The material should teach **how an
+agreed distinction becomes a model statement, a reviewable rule and a generated
+artefact**, with reasons and examples. Operating an OPDA data application is outside
+this effort; the authoring and generation tools support specification development.
+The ODRs guide that authoring method; they do not require consumers to reproduce its
+toolchain or run the source project's infrastructure.
+
+| Part of the work | What the documentation should explain |
+| --- | --- |
+| Specification and formal models | Definitions, identifiers, relationships, constraints and exchange profiles expressed through RDF, RDFS, OWL, SHACL and selected vocabularies. Each requirement retains its adopted scope and status. |
+| Specification governance | Ownership, evidence, practitioner review, mapping decisions, change control and approval of specification versions. |
+| Generated JSON-LD delivery | Contexts, associated JSON Schemas and examples derived from the formal models, with clear version relationships and the checks each delivery profile covers. This is the main implementer route. |
+| Informative implementation guidance | Material for implementing a linked-data store and recommendations for realising trust. Store selection, deployment, enforcement machinery and service operations do not become normative specification requirements. |
 
 The current method already explains identity before equivalence, roles and phases,
 property applicability, bounded language profiles, qualified SSSOM records, strategic
@@ -33,8 +44,8 @@ decision status. It authorises no publication, deployment or push.
 
 | Evidence | Recorded status and date | Consequence for this proposal |
 | --- | --- | --- |
-| [ADR-0063, §3a][adr63] | Accepted; updated 5 September 2026 | Selected source-method rules are normative for OPDA, within eight retained concerns. The whole source programme is not adopted. |
-| [ADR-0064][adr64] | Accepted; updated 5 September 2026 | Two-audience modelling content uses the shared page/navigation templates; implementation and publication are separate. |
+| [ADR-0063, §§1–3a][adr63] | Accepted; updated 7 September 2026 | Specification development within established contexts; main generated JSON-LD route; informative store/trust implementation guidance. Selected source-method rules remain normative within eight concerns. |
+| [ADR-0064][adr64] | Accepted; updated 7 September 2026 | Two audiences learn participation, specification authoring and delivery. Shared page/navigation templates remain; operational application training is excluded. |
 | [ADR-0067, §§2–4 and 5.4][adr67] | Accepted; updated 3 September 2026 | First-principles meaning, one semantic home per OPDA resource, eight concerns and explicit standards/conformance boundaries. |
 | [ADR-0074][adr74] | Implemented; updated 5 September 2026 | Preserve the canonical Modelling family and shared information architecture. Historical route descriptions do not supersede later amendments. |
 | [ADR-0075][adr75] | Accepted; updated 3 September 2026 | Property Pack is an accelerated SPDTF component, not a universal bounded context. Technical determination, later domain review, release and external recognition remain distinct. |
@@ -49,8 +60,9 @@ The crosswalk preserves provenance without making those details reader-facing ex
 
 The selected concerns remain 1, 2, 5, 7, 8, 9, 10 and 11. Process modelling, service
 architecture, a governance ontology, capability/intent, executable source mapping and
-data-product modelling remain outside this scope. Explaining why a process label is
-not a semantic boundary does not reinstate a process ontology.
+data-product modelling remain outside this scope. Specification and trust governance
+remain central to this effort; excluding a governance ontology does not exclude
+governance decisions or recommendations.
 
 RDF 1.2, SPARQL 1.2 and SHACL 1.2 remain OPDA's recorded standards-family baseline.
 Selected features, processor support and current candidate use remain separate claims.
@@ -63,13 +75,46 @@ evidence. Do not widen Property Pack 0.1's recorded feature boundary through tea
 
 | Priority | Addition and current insertion point | Actual gap | Source basis |
 | --- | --- | --- | --- |
-| High | **Vocabularies and classification**, a focused chapter in the existing Method branch; linked from [language profiles, `controlled-choices`][languages] and [scope/package, `assessment`][scope] | Technical closure, dual typing, open populations, infrastructure facets and profile-specific cardinality are dispersed or omitted. The nontechnical [names and choices][choices] chapter should not absorb this syntax. | S: ODR-0010; ODR-0016/0023; ODR-0071b R3–R6; ODR-0071e R3–R6. Local [ODR-0036][odr36], [0039][odr39], [0040][odr40], [0048][odr48], [0049][odr49]. |
-| High | **Validate the validator**, following [meaning/checks/delivery, `validation`][checks] | Existing semantic-vs-validation and rule-vs-constraint explanations are strong. Shape satisfiability, severity, absent-property targeting and meta-validation need an authoring procedure. | S: ODR-0071g R1–R6. Local [ODR-0050, Rules][odr50]. |
-| Medium | **Reopen, retract and inspect mapping chains**, extending [mapping records, `failure`][mappings] | Versions and definition drift already appear. Mandatory exact-match chain review and symmetric reopening of denied mappings are not yet taught operationally. | S: ODR-0098 R5/R6/R8/R11. Local [ODR-0059][odr59]; active field profile in [ODR-0056][odr56]. |
+| High | **From formal specification to generated JSON-LD**, expand [meaning/checks/delivery, `delivery`][delivery] | The existing projection explanation is generic. Make the main JSON-LD implementer route concrete and identify the informative status of store guidance. | Operator clarification of 7 September; updated [ADR-0063 §2][adr63] and [ADR-0064][adr64]. |
+| High | **Vocabularies and classification**, a focused chapter in Ontology modelling; linked from [language profiles, `controlled-choices`][languages] and [scope/package, `assessment`][scope] | Technical closure, dual typing, open populations, infrastructure facets and profile-specific cardinality are dispersed or omitted. The nontechnical [names and choices][choices] chapter should not absorb this syntax. | S: ODR-0010; ODR-0016/0023; ODR-0071b R3–R6; ODR-0071e R3–R6. Local [ODR-0036][odr36], [0039][odr39], [0040][odr40], [0048][odr48], [0049][odr49]. |
+| High | **Write reviewable constraints**, following [meaning/checks/delivery, `validation`][checks] | Show how authors establish that a specified constraint expresses the agreed rule, including missing information and contradictory requirements. | S: ODR-0071g R1–R6. Local [ODR-0050, Rules][odr50]. |
+| Medium | **Govern mapping decisions**, extending [mapping records, `failure`][mappings] | Explain the review decisions, responsibilities and version changes when evidence changes, including exact-match chains and previously denied mappings. | S: ODR-0098 R5/R6/R8/R11. Local [ODR-0059][odr59]; active field profile in [ODR-0056][odr56]. |
+| High | **Trust-governance recommendations**, refocus [sensitivity/policy][policy] | The current page puts operational enforcement alongside required modelling method. Make specification content, governance recommendations and informative implementation examples distinguishable. | Updated [ADR-0063 §2][adr63], [ADR-0064][adr64]; selected policy concepts from local [ODR-0054][odr54]. |
 | Medium, within vocabulary chapter | **Administrative description is not classification** | [Language profiles, `evidence-around-the-answer`][metadata] names Dublin Core generically; the exact local Category 5 profile is not shown. | S: ODR-0086 R1–R3/R5. Local [ODR-0055][odr55], including its catalogue exclusion. |
 | High adoption review; independent of content work | **Reconcile scheme-valued sensitivity predicates** | [Sensitivity/policy, `dpv`][policy] correctly follows the adopted annotation-first pin, but newer source ODR-0071k changes three property kinds. This is not a current-page defect against S. | N: ODR-0071k R2–R5 and 6 September amendments; contrast local [ODR-0054][odr54]. |
 
-### 2.1 Vocabularies and classification: one coherent technical chapter
+### 2.1 From the formal specification to generated JSON-LD
+
+Expand the existing delivery section and use it as the common reference for both
+audiences. Start with the agreed distinction between an inspection and a report version,
+show the relevant model statement and constraint, then show how the generated JSON-LD
+package carries those meanings into an implementer's exchange.
+
+Use one annotated flow: practitioner agreement → formal models and shapes → generation
+→ versioned JSON-LD artefacts → implementer's own system. A separate informative branch
+shows that the supplied models can also support a linked-data-store implementation.
+The optional branch must not appear as a prerequisite for consuming the JSON-LD package.
+
+Explain the deliverables concretely:
+
+- A JSON-LD context relates the exchange's terms to identifiers and value interpretations.
+- Associated JSON Schemas describe the generated document structures and mapped checks.
+- Worked documents show identifiers, types, references, vocabulary values and versions.
+- A short generation map records the formal source of each field and constraint, with
+  any requirement needing additional checks made explicit for that delivery profile.
+
+For example, keep report version 2 and its inspection separately identifiable in the
+generated document. Show the source of a required inspection reference and a permitted
+outcome value. Explain which checks belong to the document and which depend on related
+information. A context, schema and shape have distinct jobs; generation must preserve
+the agreement rather than imply that every formal rule has the same JSON representation.
+
+Label draft examples and planned generation honestly. Their purpose is to explain the
+intended specification package; implementing a generator or claiming current artefact
+coverage requires separate evidence. Reader guidance should identify the artefact and
+version to use without requiring the reader to operate an RDF store or SPARQL endpoint.
+
+### 2.2 Vocabularies and classification: one coherent technical chapter
 
 Proposed working route: `/semantic-modelling/method/vocabularies-and-classification`.
 This is a proposal, not an existing page. A dedicated chapter is justified because
@@ -138,23 +183,25 @@ an unjustified sentinel, repair a reversed broader link, and explain why adding 
 surveyor does not change a closed report-status profile. Provide visible worked
 reasoning, including where a modeller must ask a domain reviewer rather than guess.
 
-### 2.2 Validate the validator
+### 2.3 Write reviewable constraints
 
-Add a bounded authoring sequence after `validation`, not another introduction to SHACL:
+Add a short authoring example after `validation`. Its purpose is to review the
+specification's rules and their generated representations. Processor-specific setup
+belongs in informative tooling notes, not in the specification's normative contract.
 
-1. Pin the intended graph, applicable shape/profile, processor features and processing
-   assumptions, using the existing chapter's contract.
+1. Identify the intended input, shape/profile version and information the rule assumes
+   available. Make the expected result understandable to the domain reviewer.
 2. Choose targets that include incomplete resources. Contrast a class-targeted report
    shape with selecting only subjects that already have the required report link.
    The latter misses the very absence the rule is supposed to catch; untyped missing
-   resources also need an explicitly justified discovery/targeting contract.
+   resources also need an explicitly justified targeting rule.
 3. Compose constraints deliberately. Requirements are conjunctive: a minimum count of
    two and maximum count of one is contradictory, not “more thorough validation”.
    Meta-validation alone does not prove arbitrary shapes satisfiable; include reviewed
    ordinary and adverse data cases and a scoped contradiction check.
 4. Put intended Violation/Warning/Info severity on the owning shape. Explain structural
-   failures, governance/documentation review and suggestions, plus explicit local
-   escalation policy. Authored and generated content follow the same semantics.
+   failures, governance/documentation review and suggestions in the authoring review.
+   Authored and generated content follow the same semantics.
 5. Distinguish inline constraints on the selected dual-typed ShapeClass/OWL resource
    pattern from independent NodeShapes for cross-cutting or external targets. Explain
    the actual feature boundary; do not imply arbitrary class inheritance propagates
@@ -164,7 +211,7 @@ Add a bounded authoring sequence after `validation`, not another introduction to
    and ownership. Preserve deferred concern-specific shape decisions.
 7. Keep DASH editor/viewer hints, ordering and grouping in presentation. A widget is not
    a constraint. An explicitly selected DASH constraint component needs its own feature
-   justification; DASH is not a W3C standard. Keep materialisation receipts separate.
+   justification. Treat editor and processor configuration as informative tooling detail.
 
 Example/visual brief: a small report graph, one intended shape and a result panel trace
 focus node → path → source constraint → severity. Include a missing-property failure,
@@ -172,7 +219,7 @@ a contradictory shape and a warning that does not become an unexplained blocking
 Exercise: diagnose an empty “success” report caused by a target that selects no defective
 nodes. A corrected target and expected adverse result are the answer, not a green badge.
 
-### 2.3 Mapping decisions have a lifecycle
+### 2.4 Govern mapping decisions
 
 Extend the existing drift example; retain its SSSOM record, identity gates and predicate
 semantics without restating them. Add a compact verdict table distinguishing:
@@ -192,15 +239,37 @@ of length two or more. Lowering confidence does not weaken `skos:exactMatch` sem
 revise the predicate when the warrant does not support exactness.
 
 The change exercise should run in both directions: new evidence falsifies an accepted
-link key and triggers a governed retraction; a new context, source version, newly
+link key and prompts a governed retraction; a changed source version, newly
 satisfiable key, rigidity retyping or coherence regression reopens a previously denied
 candidate. Record versions, trigger, owner, superseded decision and resulting verdict.
 Expose unresolved outcomes rather than inventing a mapping to finish the exercise.
-ODR-0059 R11 also requires a locally named curation lifecycle and queryable staleness;
-an illustrative sequence is not proof that this workflow operates today.
+Record the governance lifecycle in the specification's mapping register: who reviews,
+which evidence was considered, which decision supersedes which, and when a mapping needs
+review. ODR-0059 R11's curation and staleness requirements inform those records; they
+are not a request to build a running monitoring or curation service.
 
 Do not promote the separately labelled proposed round-two identity refinement in
 source ODR-0098/local ODR-0059 merely because the document header is Accepted.
+
+### 2.5 Explain trust governance and label implementation recommendations
+
+Refocus the existing sensitivity/policy examples on responsibilities and the meaning
+the specification must carry: provenance, quality evidence, sensitivity, purpose,
+authority, permitted use and obligations. Explain who can propose and approve a policy,
+what evidence supports it and how changes are recorded. Keep domain roles distinct
+from policy roles and evidence of a claim distinct from authority to use it.
+
+Use a worked governance decision about the fictional report: state the question, record
+the accountable reviewer, describe the available evidence and show the resulting policy
+recommendation and unresolved issues. Then show which concepts are represented in the
+formal model and which information a generated exchange would need to preserve.
+
+Clearly label guidance on how a recipient might enforce a policy or implement a
+linked-data store as informative recommendations for downstream implementers. Examples
+of evaluators, named graphs, APIs or access checks must not imply that OPDA will operate
+them, or make a particular deployment architecture normative. Normative modelling
+requirements retain their declared scope; an illustrative trust mechanism does not
+acquire that status merely by appearing beside them.
 
 ## 3. Integration with existing chapters and the learning track
 
@@ -226,7 +295,7 @@ the richer decision procedures without becoming another copy of them.
 Coordinate examples with the existing fictional Harbour Court case. Reuse the building,
 dwellings, inspection and report-version distinctions; keep unresolved subdivision
 identity unresolved. Learner pages may link directly to a relevant technical section,
-but should not acquire its conformance tables or normative implementation training.
+but should not acquire its detailed conformance tables or formal authoring exercises.
 
 ## 4. Explicit adoption gate: newer sensitivity-policy source
 
@@ -252,16 +321,16 @@ Recommended separate decision package:
 1. Compare the exact committed property declarations, applicability, schemes and
    amendment precedence with local ODR-0054 and its ODR-0037 applicability obligations.
 2. Record OPDA adoption, adaptation or deferral for each change, with scope, rationale,
-   owner and effects on consumers. Define OPDA's enforcement boundary independently of
-   the source Builder; do not import a runtime dependency.
+   owner and effects on generated artefacts. Specify the representation and any data
+   constraints independently of the source Builder's implementation.
 3. If accepted, amend the local decision and provenance crosswalk coherently, preserving
    historical pins. Update the sensitivity chapter, language-profile summary and
    standards/decision register together. Neither a proposal nor a newer Git commit
    constitutes that acceptance.
-4. Before claiming implementation, supply positive and negative evidence for property
-   typing, both-side applicability, correct-scheme membership and processing-purpose
-   values under the selected local processor/profile. Keep deferred SHACL surfaces,
-   human policy decisions and actual access enforcement explicitly separate.
+4. Review illustrative cases for property typing, both-side applicability, correct-scheme
+   membership and processing-purpose values before adopting a specification amendment.
+   Record impacts on generated JSON-LD artefacts and any constraint coverage still to
+   be specified. Runtime enforcement remains downstream implementation guidance.
 
 This gate can proceed alongside the other enrichment work. Deferral does not block
 explaining the already adopted vocabulary, validation or mapping rules.
@@ -274,10 +343,12 @@ normative requirements and the newer source delta need their own approval.
 
 | Package | Deliverable and dependency | Evidence required before the slice is complete |
 | --- | --- | --- |
-| A — Values and metadata | Add the proposed vocabulary/classification chapter and precise links from languages and scope/package, using the established contexts and ownership language unchanged. | Four representation cases and their counterexamples; closure evidence; correct broader direction; facet/base/profile separation; exact bounded metadata requirements; all illustrative terms labelled. |
-| B — Validation authoring | Add the authoring/assurance section, sharing A's fixtures where useful. | Shape declarations checked; expected conforming and nonconforming outcomes for required features; absent-property target case, contradiction case and intended severity checked. Unsupported/not-run features remain visible, not passed. |
-| C — Mapping maintenance | Extend mapping records within the established contexts and their documented seams. | Distinct verdicts, an exact-match chain review and both retraction/reopening cases; pinned endpoint/mapping-set versions; no proposed identity refinement promoted. |
-| D — Policy reconciliation | Separate human decision package from §4; independent of A–C. | Exact upstream delta and local dispositions; an accepted amendment before normative page changes; OPDA-specific conformance evidence before implementation claims. |
+| A — Specification and JSON-LD delivery | Expand the existing delivery section with the formal-source-to-generated-artefact example and informative store branch. | Traceable identifiers and constraints; distinct context/schema/shape responsibilities; no claim that a store is required or the planned generator already exists. |
+| B — Values and metadata | Add the proposed vocabulary/classification chapter and precise links from languages and scope/package, using the established contexts and ownership language unchanged. | Four representation cases and their counterexamples; closure evidence; correct broader direction; facet/base/profile separation; exact bounded metadata requirements; all illustrative terms labelled. |
+| C — Constraint authoring | Add the reviewable-constraint section, sharing B's examples where useful. | Missing-property and contradiction cases; explain intended severity and what the generated delivery profile checks. |
+| D — Mapping governance | Extend mapping records within the established contexts and their documented seams. | Distinct verdicts, an exact-match chain review and both retraction/reopening cases; versions and review ownership; no proposed identity refinement promoted. |
+| E — Trust recommendations | Refocus sensitivity/policy on governance and identify informative implementation examples. | Responsibilities and decision evidence are clear; model semantics, recommendations and deployment choices have explicit standing. |
+| F — Policy reconciliation | Separate specification decision package from §4. | Exact upstream delta, local dispositions and artefact impacts; accepted amendment before normative model changes. |
 
 For implemented website slices, run the repository's required tests and build, scoped
 link/anchor checks and a proportionate rendered review of changed pages through the
@@ -298,6 +369,9 @@ Review evidence: committed-source research was followed by a separate source/aut
 critique of this draft, including the direct S→N ODR-0071k diff, ODR-0036/0049/0055
 cardinality contracts and ODR-0059 verdicts. A later correction removed the proposed
 boundary-discovery work because contextual boundaries are already fixed and documented.
+The operator also clarified the development remit: specification and trust governance,
+main generated JSON-LD delivery, and informative linked-data-store guidance. This
+revision applies that scope throughout and does not claim a completed generator.
 Local reference targets and explicit page anchors were checked. This review establishes
 source fidelity and scope, not implementation or ontology conformance.
 
@@ -343,6 +417,7 @@ older retained wording; adopted local scope takes precedence over excluded sourc
 [scope]: ../../src/pages/semantic-modelling/method/scope-and-package.astro#assessment
 [choices]: ../../src/pages/semantic-modelling/explore/names-and-choices.astro
 [checks]: ../../src/pages/semantic-modelling/method/meaning-checks-and-delivery.astro#validation
+[delivery]: ../../src/pages/semantic-modelling/method/meaning-checks-and-delivery.astro#delivery
 [mappings]: ../../src/pages/semantic-modelling/method/mapping-records.astro#failure
 [metadata]: ../../src/pages/semantic-modelling/method/languages-and-profiles.astro#evidence-around-the-answer
 [policy]: ../../src/pages/semantic-modelling/method/sensitivity-and-policy.astro#dpv
