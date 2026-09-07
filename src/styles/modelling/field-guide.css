@@ -1,0 +1,138 @@
+/* Field-guide composition: scope excludes the ontology engineering reference.
+   Existing editorial-content.css owns type, prose measure and section rhythm. */
+.learning-document { min-width: 0; }
+.learning-document .learning-spread {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--space-6);
+  max-inline-size: 64rem;
+  margin-inline: 0 auto;
+  align-items: start;
+}
+.learning-document .learning-specimen {
+  min-inline-size: 0;
+  padding: var(--space-5);
+  border: 1px solid var(--color-border-strong);
+  border-block-start: 3px solid var(--color-data-1);
+  background: var(--color-surface-alt);
+}
+.learning-document .learning-specimen :is(h2,h3,h4):first-child { margin-block-start: 0; }
+.learning-document .learning-specimen :is(p,li,dd) { text-align: start; }
+.learning-document .learning-specimen > * + * { margin-block-start: var(--space-3); }
+.learning-document .learning-specimen > figcaption:first-child {
+  margin-block-start: 0;
+  font: 600 var(--text-sm) / var(--leading-normal) var(--font-sans);
+  color: var(--color-text-strong);
+}
+.learning-document .learning-specimen dl {
+  display: grid;
+  grid-template-columns: minmax(7rem, 1fr) minmax(0, 3fr);
+  gap: var(--space-3) var(--space-5);
+}
+.learning-document .learning-specimen :is(dt,dd) { margin: 0; padding: 0; min-width: 0; }
+.learning-document .learning-specimen pre { font-size: var(--text-sm); white-space: pre-wrap; }
+.learning-document .learning-practice {
+  padding: 0;
+  border: 0;
+  background: transparent;
+}
+.learning-document .learning-practice > :is(h2,h3):first-child {
+  color: var(--color-text-strong);
+}
+.learning-document .learning-table { inline-size: 100%; }
+.learning-document .learning-note { color: var(--color-text-muted); }
+.learning-document .learning-index {
+  list-style: none;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--space-5) var(--space-8);
+}
+.learning-document .learning-index li { min-width: 0; margin: 0; }
+.learning-document .learning-index a { font-weight: 650; }
+.learning-document .learning-index p { margin-block-start: var(--space-2); }
+.learning-figure {
+  --fg-paper: var(--color-surface);
+  --fg-node: var(--color-surface-alt);
+  --fg-ink: var(--color-text-strong);
+  --fg-muted: var(--color-text-muted);
+  --fg-rule: var(--color-border-strong);
+  --fg-accent: var(--color-data-1);
+  --fg-tint: var(--color-data-1-surface);
+  --fg-font: var(--font-sans);
+  inline-size: 100%;
+  max-inline-size: 60rem;
+  margin-inline: 0 auto;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  container-type: inline-size;
+}
+[data-theme='dark'] .learning-figure {
+  --fg-accent: var(--color-data-1-dark);
+  --fg-tint: color-mix(in srgb, var(--color-data-1-dark) 14%, var(--color-surface));
+}
+
+.learning-drawing { display:block; inline-size:100%; block-size:auto; color:var(--fg-ink); font-family:var(--fg-font); }
+.learning-drawing text { fill:var(--fg-ink); font-family:var(--fg-font); }
+.learning-drawing .fg-label { font-size:22px; font-weight:650; }
+.learning-drawing .fg-small { font-size:18px; font-weight:400; fill:var(--fg-muted); }
+.learning-drawing .fg-large { font-size:30px; font-weight:700; }
+.learning-drawing .fg-edge-label { font-size:18px; font-weight:600; }
+.learning-drawing .fg-paper, .learning-drawing .fg-mask { fill:var(--fg-paper); }
+.learning-drawing .fg-node { fill:var(--fg-node); stroke:var(--fg-rule); stroke-width:1.5; }
+.learning-drawing .fg-focus { fill:var(--fg-tint); stroke:var(--fg-accent); stroke-width:2; }
+.learning-drawing .fg-zone { fill:none; stroke:var(--fg-rule); stroke-width:1.5; }
+.learning-drawing .fg-edge, .learning-drawing .fg-line { fill:none; stroke:var(--fg-muted); stroke-width:1.5; stroke-linecap:round; stroke-linejoin:round; }
+.learning-drawing .fg-line { stroke:var(--fg-rule); }
+.learning-drawing .fg-dashed { stroke-dasharray:5 5; }
+.learning-drawing .fg-arrow { fill:var(--fg-muted); }
+.learning-drawing .fg-dot { fill:var(--fg-accent); }
+.learning-drawing .fg-interval { fill:none; stroke:var(--fg-accent); stroke-width:12; stroke-linecap:round; }
+.learning-document .learning-figure figcaption {
+  font: 400 var(--text-sm) / var(--leading-normal) var(--font-sans);
+  color: var(--color-text-muted);
+  text-align: start;
+}
+.learning-figure figcaption strong {
+  display: block;
+  margin-block-end: var(--space-2);
+  color: var(--color-text-strong);
+  font-weight: 650;
+}
+.learning-equivalent-wrap {
+  position: absolute;
+  inline-size: 1px;
+  block-size: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+@container (max-width: 42rem) {
+  .learning-image { display: none; }
+  .learning-equivalent-wrap {
+    position: static; inline-size: auto; block-size: auto; overflow: visible;
+    clip-path: none; white-space: normal; margin-block-start: var(--space-3);
+  }
+}
+@media (max-width: 48rem) {
+  .learning-document :is(.learning-spread,.learning-index) { grid-template-columns: minmax(0, 1fr); }
+  .learning-document .learning-specimen dl { grid-template-columns: minmax(0, 1fr); gap: var(--space-2); }
+  .learning-document .learning-specimen dd + dt { margin-block-start: var(--space-3); }
+}
+@media (forced-colors: active) {
+  .learning-image { display: none; }
+  .learning-equivalent-wrap {
+    position: static; inline-size: auto; block-size: auto; overflow: visible;
+    clip-path: none; white-space: normal;
+  }
+  .learning-document .learning-specimen { border-color: CanvasText; }
+}
+@media print {
+  .learning-figure {
+    --fg-paper: #fff; --fg-node: #fff; --fg-ink: #231f2f; --fg-muted: #4a4558;
+    --fg-rule: #817c90; --fg-accent: #6c5bd4; --fg-tint: #eeebfa;
+    break-inside: avoid;
+  }
+  .learning-document .learning-specimen { break-inside: avoid; }
+}

@@ -1,0 +1,92 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"/><meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>Topic hierarchy is not physical containment · OPDA field guide</title>
+<!-- Canonical reviewed authoring master. Diagram Design: tree; fit 960 × 416; simplified; domain-practitioner audience.
+     Saved OPDA brand profile projected to current DESIGN.md Source Sans 3 labels.
+     No technical cardinality or status is inferred from visual placement. Static, no external assets. -->
+<style>
+:root { --fg-paper:#f9f9f9; --fg-node:#ffffff; --fg-ink:#231f2f; --fg-muted:#625d72; --fg-rule:#cbc8d5; --fg-accent:#6c5bd4; --fg-tint:#eeebfa; --fg-font:'Source Sans 3','Segoe UI',sans-serif; }
+[data-theme="dark"] { --fg-paper:#131224; --fg-node:#231f2f; --fg-ink:#f9f9f9; --fg-muted:#a5a1b2; --fg-rule:#56506d; --fg-accent:#9a8fe8; --fg-tint:#29233f; }
+* { box-sizing:border-box; }
+body { margin:24px auto; max-width:1024px; padding:0 16px; background:#f9f9f9; color:#231f2f; font:18px/1.6 'Atkinson Hyperlegible Next','Segoe UI',sans-serif; }
+h1,h2 { font-family:var(--fg-font); line-height:1.25; }
+section { margin-block:32px; padding:16px; background:var(--fg-paper); color:var(--fg-ink); }
+figure { margin:0; } figcaption { margin-top:16px; }
+
+.learning-drawing { display:block; inline-size:100%; block-size:auto; color:var(--fg-ink); font-family:var(--fg-font); }
+.learning-drawing text { fill:var(--fg-ink); font-family:var(--fg-font); }
+.learning-drawing .fg-label { font-size:22px; font-weight:650; }
+.learning-drawing .fg-small { font-size:18px; font-weight:400; fill:var(--fg-muted); }
+.learning-drawing .fg-large { font-size:30px; font-weight:700; }
+.learning-drawing .fg-edge-label { font-size:18px; font-weight:600; }
+.learning-drawing .fg-paper, .learning-drawing .fg-mask { fill:var(--fg-paper); }
+.learning-drawing .fg-node { fill:var(--fg-node); stroke:var(--fg-rule); stroke-width:1.5; }
+.learning-drawing .fg-focus { fill:var(--fg-tint); stroke:var(--fg-accent); stroke-width:2; }
+.learning-drawing .fg-zone { fill:none; stroke:var(--fg-rule); stroke-width:1.5; }
+.learning-drawing .fg-edge, .learning-drawing .fg-line { fill:none; stroke:var(--fg-muted); stroke-width:1.5; stroke-linecap:round; stroke-linejoin:round; }
+.learning-drawing .fg-line { stroke:var(--fg-rule); }
+.learning-drawing .fg-dashed { stroke-dasharray:5 5; }
+.learning-drawing .fg-arrow { fill:var(--fg-muted); }
+.learning-drawing .fg-dot { fill:var(--fg-accent); }
+.learning-drawing .fg-interval { fill:none; stroke:var(--fg-accent); stroke-width:12; stroke-linecap:round; }
+@media(max-width:640px) { .learning-drawing { display:none; } }
+@media print { section[data-theme="dark"] { display:none; } section { break-inside:avoid; } }
+</style></head><body>
+<h1>Topic hierarchy is not physical containment</h1>
+<p>Roof condition is a narrower topic than Building fabric. That topic relationship does not say that a roof condition is a physical part of a building.</p>
+<section data-theme="light"><h2>Light specimen</h2><figure>
+<svg xmlns="http://www.w3.org/2000/svg" class="learning-drawing" id="vocabulary-light" viewBox="0 0 960 416" role="img" aria-labelledby="vocabulary-light-title vocabulary-light-desc">
+<title id="vocabulary-light-title">Topic hierarchy is not physical containment</title>
+<desc id="vocabulary-light-desc">Roof condition is a narrower topic than Building fabric. That topic relationship does not say that a roof condition is a physical part of a building.</desc>
+<defs><marker id="vocabulary-light-arrow" markerWidth="8" markerHeight="8" refX="8" refY="4" orient="auto"><path class="fg-arrow" d="M 0 0 L 8 4 L 0 8 Z"/></marker></defs>
+<rect class="fg-paper" width="960" height="416"/>
+<path class="fg-edge" d="M 280 108 H 600" marker-end="url(#vocabulary-light-arrow)"/>
+<rect class="fg-mask" x="340" y="64" width="208" height="32"/>
+<text class="fg-edge-label" x="444" y="88" text-anchor="middle">has narrower topic</text>
+<g>
+<rect class="fg-node" x="40" y="48" width="240" height="120" rx="4"/>
+<text class="fg-label" x="60" y="84" text-anchor="start">Building fabric</text>
+<text class="fg-small" x="60" y="112" text-anchor="start">Broader topic</text>
+</g>
+<g>
+<rect class="fg-node fg-focus" x="600" y="48" width="320" height="120" rx="4"/>
+<text class="fg-label" x="620" y="84" text-anchor="start">Roof condition</text>
+<text class="fg-small" x="620" y="112" text-anchor="start">Narrower topic</text>
+</g>
+<text class="fg-label" x="40" y="240" text-anchor="start">A different axis: access outcome</text>
+<text class="fg-small" x="40" y="280" text-anchor="start">All identified areas  ·  some but not all  ·  none</text>
+<text class="fg-small" x="40" y="320" text-anchor="start">A controlled choice list, not three narrower roof-condition topics.</text>
+</svg>
+<figcaption>Roof condition is a narrower topic than Building fabric. That topic relationship does not say that a roof condition is a physical part of a building.</figcaption></figure></section>
+<section data-theme="dark"><h2>Dark specimen</h2><figure>
+<svg xmlns="http://www.w3.org/2000/svg" class="learning-drawing" id="vocabulary-dark" viewBox="0 0 960 416" role="img" aria-labelledby="vocabulary-dark-title vocabulary-dark-desc">
+<title id="vocabulary-dark-title">Topic hierarchy is not physical containment</title>
+<desc id="vocabulary-dark-desc">Roof condition is a narrower topic than Building fabric. That topic relationship does not say that a roof condition is a physical part of a building.</desc>
+<defs><marker id="vocabulary-dark-arrow" markerWidth="8" markerHeight="8" refX="8" refY="4" orient="auto"><path class="fg-arrow" d="M 0 0 L 8 4 L 0 8 Z"/></marker></defs>
+<rect class="fg-paper" width="960" height="416"/>
+<path class="fg-edge" d="M 280 108 H 600" marker-end="url(#vocabulary-dark-arrow)"/>
+<rect class="fg-mask" x="340" y="64" width="208" height="32"/>
+<text class="fg-edge-label" x="444" y="88" text-anchor="middle">has narrower topic</text>
+<g>
+<rect class="fg-node" x="40" y="48" width="240" height="120" rx="4"/>
+<text class="fg-label" x="60" y="84" text-anchor="start">Building fabric</text>
+<text class="fg-small" x="60" y="112" text-anchor="start">Broader topic</text>
+</g>
+<g>
+<rect class="fg-node fg-focus" x="600" y="48" width="320" height="120" rx="4"/>
+<text class="fg-label" x="620" y="84" text-anchor="start">Roof condition</text>
+<text class="fg-small" x="620" y="112" text-anchor="start">Narrower topic</text>
+</g>
+<text class="fg-label" x="40" y="240" text-anchor="start">A different axis: access outcome</text>
+<text class="fg-small" x="40" y="280" text-anchor="start">All identified areas  ·  some but not all  ·  none</text>
+<text class="fg-small" x="40" y="320" text-anchor="start">A controlled choice list, not three narrower roof-condition topics.</text>
+</svg>
+<figcaption>Roof condition is a narrower topic than Building fabric. That topic relationship does not say that a roof condition is a physical part of a building.</figcaption></figure></section>
+<section data-theme="light"><h2>Reading the figure</h2>
+<ol class="learning-equivalent">
+<li>Building fabric and Roof condition are topics. Roof condition is a narrower topic, not a physical component.</li>
+<li>A physical roof being part of a building is a different relationship between different kinds of subjects.</li>
+<li>Access outcome is a separate controlled choice for a nonempty identified set of areas: all, some-but-not-all, or none. A missing value is not a fourth outcome.</li>
+</ol></section>
+<footer>Authored teaching figure, 8 September 2026 · OPDA editorial field guide · no candidate implementation or adopted rule is established by an illustration.</footer>
+</body></html>

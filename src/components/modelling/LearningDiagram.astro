@@ -1,0 +1,19 @@
+---
+import { createHash } from 'node:crypto';
+import { learningDiagramSource, type LearningDiagramKind } from './learning/diagram-sources';
+import '@/styles/modelling/field-guide.css';
+
+interface Props { kind: LearningDiagramKind; caption?: string; id?: string; }
+const { kind, caption, id = '' } = Astro.props;
+const key = createHash('sha256').update([Astro.url.pathname, kind, caption ?? '', id].join('\0')).digest('hex').slice(0, 16);
+const instance = 'learning-' + kind + '-' + key;
+const figure = learningDiagramSource(kind, instance);
+---
+<figure class="learning-figure" data-learning-diagram={kind} aria-labelledby={instance + '-caption'}>
+  <div class="learning-image" set:html={figure.svg} />
+  <figcaption id={instance + '-caption'}>
+    <strong>{figure.title}</strong>
+    {caption ?? figure.description}
+  </figcaption>
+  <div class="learning-equivalent-wrap" set:html={figure.equivalent} />
+</figure>

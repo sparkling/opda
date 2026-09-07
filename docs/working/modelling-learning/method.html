@@ -1,0 +1,125 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"/><meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>A reviewable proposal, not an automatic approval · OPDA field guide</title>
+<!-- Canonical reviewed authoring master. Diagram Design: flowchart; fit 960 × 504; simplified; domain-practitioner audience.
+     Saved OPDA brand profile projected to current DESIGN.md Source Sans 3 labels.
+     No technical cardinality or status is inferred from visual placement. Static, no external assets. -->
+<style>
+:root { --fg-paper:#f9f9f9; --fg-node:#ffffff; --fg-ink:#231f2f; --fg-muted:#625d72; --fg-rule:#cbc8d5; --fg-accent:#6c5bd4; --fg-tint:#eeebfa; --fg-font:'Source Sans 3','Segoe UI',sans-serif; }
+[data-theme="dark"] { --fg-paper:#131224; --fg-node:#231f2f; --fg-ink:#f9f9f9; --fg-muted:#a5a1b2; --fg-rule:#56506d; --fg-accent:#9a8fe8; --fg-tint:#29233f; }
+* { box-sizing:border-box; }
+body { margin:24px auto; max-width:1024px; padding:0 16px; background:#f9f9f9; color:#231f2f; font:18px/1.6 'Atkinson Hyperlegible Next','Segoe UI',sans-serif; }
+h1,h2 { font-family:var(--fg-font); line-height:1.25; }
+section { margin-block:32px; padding:16px; background:var(--fg-paper); color:var(--fg-ink); }
+figure { margin:0; } figcaption { margin-top:16px; }
+
+.learning-drawing { display:block; inline-size:100%; block-size:auto; color:var(--fg-ink); font-family:var(--fg-font); }
+.learning-drawing text { fill:var(--fg-ink); font-family:var(--fg-font); }
+.learning-drawing .fg-label { font-size:22px; font-weight:650; }
+.learning-drawing .fg-small { font-size:18px; font-weight:400; fill:var(--fg-muted); }
+.learning-drawing .fg-large { font-size:30px; font-weight:700; }
+.learning-drawing .fg-edge-label { font-size:18px; font-weight:600; }
+.learning-drawing .fg-paper, .learning-drawing .fg-mask { fill:var(--fg-paper); }
+.learning-drawing .fg-node { fill:var(--fg-node); stroke:var(--fg-rule); stroke-width:1.5; }
+.learning-drawing .fg-focus { fill:var(--fg-tint); stroke:var(--fg-accent); stroke-width:2; }
+.learning-drawing .fg-zone { fill:none; stroke:var(--fg-rule); stroke-width:1.5; }
+.learning-drawing .fg-edge, .learning-drawing .fg-line { fill:none; stroke:var(--fg-muted); stroke-width:1.5; stroke-linecap:round; stroke-linejoin:round; }
+.learning-drawing .fg-line { stroke:var(--fg-rule); }
+.learning-drawing .fg-dashed { stroke-dasharray:5 5; }
+.learning-drawing .fg-arrow { fill:var(--fg-muted); }
+.learning-drawing .fg-dot { fill:var(--fg-accent); }
+.learning-drawing .fg-interval { fill:none; stroke:var(--fg-accent); stroke-width:12; stroke-linecap:round; }
+@media(max-width:640px) { .learning-drawing { display:none; } }
+@media print { section[data-theme="dark"] { display:none; } section { break-inside:avoid; } }
+</style></head><body>
+<h1>A reviewable proposal, not an automatic approval</h1>
+<p>Evidence and questions inform an assisted proposal. Human challenge and checks lead to an explained revision; a revision can reopen the proposal.</p>
+<section data-theme="light"><h2>Light specimen</h2><figure>
+<svg xmlns="http://www.w3.org/2000/svg" class="learning-drawing" id="method-light" viewBox="0 0 960 504" role="img" aria-labelledby="method-light-title method-light-desc">
+<title id="method-light-title">A reviewable proposal, not an automatic approval</title>
+<desc id="method-light-desc">Evidence and questions inform an assisted proposal. Human challenge and checks lead to an explained revision; a revision can reopen the proposal.</desc>
+<defs><marker id="method-light-arrow" markerWidth="8" markerHeight="8" refX="8" refY="4" orient="auto"><path class="fg-arrow" d="M 0 0 L 8 4 L 0 8 Z"/></marker></defs>
+<rect class="fg-paper" width="960" height="504"/>
+<path class="fg-edge" d="M 312 104 H 608" marker-end="url(#method-light-arrow)"/>
+<rect class="fg-mask" x="400" y="60" width="120" height="32"/>
+<text class="fg-edge-label" x="460" y="84" text-anchor="middle">inform</text>
+<path class="fg-edge" d="M 744 164 V 276" marker-end="url(#method-light-arrow)"/>
+<rect class="fg-mask" x="756" y="204" width="160" height="32"/>
+<text class="fg-edge-label" x="836" y="228" text-anchor="middle">is challenged</text>
+<path class="fg-edge" d="M 608 336 H 312" marker-end="url(#method-light-arrow)"/>
+<rect class="fg-mask" x="404" y="292" width="112" height="32"/>
+<text class="fg-edge-label" x="460" y="316" text-anchor="middle">informs</text>
+<path class="fg-edge fg-dashed" d="M 176 276 V 220 Q 176 212 184 212 H 560 Q 568 212 568 204 V 104 Q 568 96 576 96 H 608" marker-end="url(#method-light-arrow)"/>
+<rect class="fg-mask" x="264" y="172" width="216" height="32"/>
+<text class="fg-edge-label" x="372" y="196" text-anchor="middle">revision may reopen</text>
+<g>
+<rect class="fg-node" x="40" y="40" width="272" height="124" rx="4"/>
+<text class="fg-label" x="60" y="76" text-anchor="start">Evidence and questions</text>
+<text class="fg-small" x="60" y="104" text-anchor="start">Cases, sources, boundaries</text>
+</g>
+<g>
+<rect class="fg-node" x="608" y="40" width="312" height="124" rx="4"/>
+<text class="fg-label" x="628" y="76" text-anchor="start">Assisted proposal</text>
+<text class="fg-small" x="628" y="104" text-anchor="start">Definitions and relationships</text>
+</g>
+<g>
+<rect class="fg-node fg-focus" x="608" y="276" width="312" height="124" rx="4"/>
+<text class="fg-label" x="628" y="312" text-anchor="start">Human challenge</text>
+<text class="fg-small" x="628" y="340" text-anchor="start">Examples, exceptions, checks</text>
+</g>
+<g>
+<rect class="fg-node" x="40" y="276" width="272" height="124" rx="4"/>
+<text class="fg-label" x="60" y="312" text-anchor="start">Explained revision</text>
+<text class="fg-small" x="60" y="340" text-anchor="start">What changed and why</text>
+</g>
+</svg>
+<figcaption>Evidence and questions inform an assisted proposal. Human challenge and checks lead to an explained revision; a revision can reopen the proposal.</figcaption></figure></section>
+<section data-theme="dark"><h2>Dark specimen</h2><figure>
+<svg xmlns="http://www.w3.org/2000/svg" class="learning-drawing" id="method-dark" viewBox="0 0 960 504" role="img" aria-labelledby="method-dark-title method-dark-desc">
+<title id="method-dark-title">A reviewable proposal, not an automatic approval</title>
+<desc id="method-dark-desc">Evidence and questions inform an assisted proposal. Human challenge and checks lead to an explained revision; a revision can reopen the proposal.</desc>
+<defs><marker id="method-dark-arrow" markerWidth="8" markerHeight="8" refX="8" refY="4" orient="auto"><path class="fg-arrow" d="M 0 0 L 8 4 L 0 8 Z"/></marker></defs>
+<rect class="fg-paper" width="960" height="504"/>
+<path class="fg-edge" d="M 312 104 H 608" marker-end="url(#method-dark-arrow)"/>
+<rect class="fg-mask" x="400" y="60" width="120" height="32"/>
+<text class="fg-edge-label" x="460" y="84" text-anchor="middle">inform</text>
+<path class="fg-edge" d="M 744 164 V 276" marker-end="url(#method-dark-arrow)"/>
+<rect class="fg-mask" x="756" y="204" width="160" height="32"/>
+<text class="fg-edge-label" x="836" y="228" text-anchor="middle">is challenged</text>
+<path class="fg-edge" d="M 608 336 H 312" marker-end="url(#method-dark-arrow)"/>
+<rect class="fg-mask" x="404" y="292" width="112" height="32"/>
+<text class="fg-edge-label" x="460" y="316" text-anchor="middle">informs</text>
+<path class="fg-edge fg-dashed" d="M 176 276 V 220 Q 176 212 184 212 H 560 Q 568 212 568 204 V 104 Q 568 96 576 96 H 608" marker-end="url(#method-dark-arrow)"/>
+<rect class="fg-mask" x="264" y="172" width="216" height="32"/>
+<text class="fg-edge-label" x="372" y="196" text-anchor="middle">revision may reopen</text>
+<g>
+<rect class="fg-node" x="40" y="40" width="272" height="124" rx="4"/>
+<text class="fg-label" x="60" y="76" text-anchor="start">Evidence and questions</text>
+<text class="fg-small" x="60" y="104" text-anchor="start">Cases, sources, boundaries</text>
+</g>
+<g>
+<rect class="fg-node" x="608" y="40" width="312" height="124" rx="4"/>
+<text class="fg-label" x="628" y="76" text-anchor="start">Assisted proposal</text>
+<text class="fg-small" x="628" y="104" text-anchor="start">Definitions and relationships</text>
+</g>
+<g>
+<rect class="fg-node fg-focus" x="608" y="276" width="312" height="124" rx="4"/>
+<text class="fg-label" x="628" y="312" text-anchor="start">Human challenge</text>
+<text class="fg-small" x="628" y="340" text-anchor="start">Examples, exceptions, checks</text>
+</g>
+<g>
+<rect class="fg-node" x="40" y="276" width="272" height="124" rx="4"/>
+<text class="fg-label" x="60" y="312" text-anchor="start">Explained revision</text>
+<text class="fg-small" x="60" y="340" text-anchor="start">What changed and why</text>
+</g>
+</svg>
+<figcaption>Evidence and questions inform an assisted proposal. Human challenge and checks lead to an explained revision; a revision can reopen the proposal.</figcaption></figure></section>
+<section data-theme="light"><h2>Reading the figure</h2>
+<ol class="learning-equivalent">
+<li>Bring the question, case and authorised evidence within the established context boundaries.</li>
+<li>A proposal makes definitions, relationships and remaining uncertainties inspectable. Assistance may include AI; this gives it no approval authority.</li>
+<li>People challenge the proposal and interpret checks. An explained revision may reopen earlier questions.</li>
+<li>This is an explanatory modelling loop, not an implemented submission workflow or an automatic approval, publication or adoption process.</li>
+</ol></section>
+<footer>Authored teaching figure, 8 September 2026 · OPDA editorial field guide · no candidate implementation or adopted rule is established by an illustration.</footer>
+</body></html>

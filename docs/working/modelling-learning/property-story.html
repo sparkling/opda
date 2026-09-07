@@ -1,0 +1,102 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"/><meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>Ask what was inspected · OPDA field guide</title>
+<!-- Canonical reviewed authoring master. Diagram Design: nested; fit 960 × 460; simplified; domain-practitioner audience.
+     Saved OPDA brand profile projected to current DESIGN.md Source Sans 3 labels.
+     No technical cardinality or status is inferred from visual placement. Static, no external assets. -->
+<style>
+:root { --fg-paper:#f9f9f9; --fg-node:#ffffff; --fg-ink:#231f2f; --fg-muted:#625d72; --fg-rule:#cbc8d5; --fg-accent:#6c5bd4; --fg-tint:#eeebfa; --fg-font:'Source Sans 3','Segoe UI',sans-serif; }
+[data-theme="dark"] { --fg-paper:#131224; --fg-node:#231f2f; --fg-ink:#f9f9f9; --fg-muted:#a5a1b2; --fg-rule:#56506d; --fg-accent:#9a8fe8; --fg-tint:#29233f; }
+* { box-sizing:border-box; }
+body { margin:24px auto; max-width:1024px; padding:0 16px; background:#f9f9f9; color:#231f2f; font:18px/1.6 'Atkinson Hyperlegible Next','Segoe UI',sans-serif; }
+h1,h2 { font-family:var(--fg-font); line-height:1.25; }
+section { margin-block:32px; padding:16px; background:var(--fg-paper); color:var(--fg-ink); }
+figure { margin:0; } figcaption { margin-top:16px; }
+
+.learning-drawing { display:block; inline-size:100%; block-size:auto; color:var(--fg-ink); font-family:var(--fg-font); }
+.learning-drawing text { fill:var(--fg-ink); font-family:var(--fg-font); }
+.learning-drawing .fg-label { font-size:22px; font-weight:650; }
+.learning-drawing .fg-small { font-size:18px; font-weight:400; fill:var(--fg-muted); }
+.learning-drawing .fg-large { font-size:30px; font-weight:700; }
+.learning-drawing .fg-edge-label { font-size:18px; font-weight:600; }
+.learning-drawing .fg-paper, .learning-drawing .fg-mask { fill:var(--fg-paper); }
+.learning-drawing .fg-node { fill:var(--fg-node); stroke:var(--fg-rule); stroke-width:1.5; }
+.learning-drawing .fg-focus { fill:var(--fg-tint); stroke:var(--fg-accent); stroke-width:2; }
+.learning-drawing .fg-zone { fill:none; stroke:var(--fg-rule); stroke-width:1.5; }
+.learning-drawing .fg-edge, .learning-drawing .fg-line { fill:none; stroke:var(--fg-muted); stroke-width:1.5; stroke-linecap:round; stroke-linejoin:round; }
+.learning-drawing .fg-line { stroke:var(--fg-rule); }
+.learning-drawing .fg-dashed { stroke-dasharray:5 5; }
+.learning-drawing .fg-arrow { fill:var(--fg-muted); }
+.learning-drawing .fg-dot { fill:var(--fg-accent); }
+.learning-drawing .fg-interval { fill:none; stroke:var(--fg-accent); stroke-width:12; stroke-linecap:round; }
+@media(max-width:640px) { .learning-drawing { display:none; } }
+@media print { section[data-theme="dark"] { display:none; } section { break-inside:avoid; } }
+</style></head><body>
+<h1>Ask what was inspected</h1>
+<p>Harbour Court contains Flat 1 and Flat 2. The fictional inspection concerns Flat 1, not automatically every dwelling in the building.</p>
+<section data-theme="light"><h2>Light specimen</h2><figure>
+<svg xmlns="http://www.w3.org/2000/svg" class="learning-drawing" id="property-story-light" viewBox="0 0 960 460" role="img" aria-labelledby="property-story-light-title property-story-light-desc">
+<title id="property-story-light-title">Ask what was inspected</title>
+<desc id="property-story-light-desc">Harbour Court contains Flat 1 and Flat 2. The fictional inspection concerns Flat 1, not automatically every dwelling in the building.</desc>
+<defs><marker id="property-story-light-arrow" markerWidth="8" markerHeight="8" refX="8" refY="4" orient="auto"><path class="fg-arrow" d="M 0 0 L 8 4 L 0 8 Z"/></marker></defs>
+<rect class="fg-paper" width="960" height="460"/>
+<rect class="fg-zone" x="504" y="40" width="416" height="288" rx="4"/>
+<text class="fg-label" x="528" y="84" text-anchor="start">Harbour Court</text>
+<text class="fg-small" x="528" y="116" text-anchor="start">Building contains both dwellings</text>
+<path class="fg-edge" d="M 312 212 H 544" marker-end="url(#property-story-light-arrow)"/>
+<rect class="fg-mask" x="356" y="168" width="144" height="32"/>
+<text class="fg-edge-label" x="428" y="192" text-anchor="middle">concerns</text>
+<g>
+<rect class="fg-node" x="40" y="144" width="272" height="128" rx="4"/>
+<text class="fg-label" x="60" y="180" text-anchor="start">Inspection</text>
+<text class="fg-small" x="60" y="208" text-anchor="start">12 August 2026</text>
+<text class="fg-small" x="60" y="232" text-anchor="start">Same visit in both reports</text>
+</g>
+<g>
+<rect class="fg-node fg-focus" x="544" y="164" width="160" height="100" rx="4"/>
+<text class="fg-label" x="564" y="200" text-anchor="start">Flat 1</text>
+</g>
+<g>
+<rect class="fg-node" x="736" y="164" width="160" height="100" rx="4"/>
+<text class="fg-label" x="756" y="200" text-anchor="start">Flat 2</text>
+</g>
+<text class="fg-small" x="40" y="368" text-anchor="start">Nothing here asserts that Flat 2 was inspected.</text>
+</svg>
+<figcaption>Harbour Court contains Flat 1 and Flat 2. The fictional inspection concerns Flat 1, not automatically every dwelling in the building.</figcaption></figure></section>
+<section data-theme="dark"><h2>Dark specimen</h2><figure>
+<svg xmlns="http://www.w3.org/2000/svg" class="learning-drawing" id="property-story-dark" viewBox="0 0 960 460" role="img" aria-labelledby="property-story-dark-title property-story-dark-desc">
+<title id="property-story-dark-title">Ask what was inspected</title>
+<desc id="property-story-dark-desc">Harbour Court contains Flat 1 and Flat 2. The fictional inspection concerns Flat 1, not automatically every dwelling in the building.</desc>
+<defs><marker id="property-story-dark-arrow" markerWidth="8" markerHeight="8" refX="8" refY="4" orient="auto"><path class="fg-arrow" d="M 0 0 L 8 4 L 0 8 Z"/></marker></defs>
+<rect class="fg-paper" width="960" height="460"/>
+<rect class="fg-zone" x="504" y="40" width="416" height="288" rx="4"/>
+<text class="fg-label" x="528" y="84" text-anchor="start">Harbour Court</text>
+<text class="fg-small" x="528" y="116" text-anchor="start">Building contains both dwellings</text>
+<path class="fg-edge" d="M 312 212 H 544" marker-end="url(#property-story-dark-arrow)"/>
+<rect class="fg-mask" x="356" y="168" width="144" height="32"/>
+<text class="fg-edge-label" x="428" y="192" text-anchor="middle">concerns</text>
+<g>
+<rect class="fg-node" x="40" y="144" width="272" height="128" rx="4"/>
+<text class="fg-label" x="60" y="180" text-anchor="start">Inspection</text>
+<text class="fg-small" x="60" y="208" text-anchor="start">12 August 2026</text>
+<text class="fg-small" x="60" y="232" text-anchor="start">Same visit in both reports</text>
+</g>
+<g>
+<rect class="fg-node fg-focus" x="544" y="164" width="160" height="100" rx="4"/>
+<text class="fg-label" x="564" y="200" text-anchor="start">Flat 1</text>
+</g>
+<g>
+<rect class="fg-node" x="736" y="164" width="160" height="100" rx="4"/>
+<text class="fg-label" x="756" y="200" text-anchor="start">Flat 2</text>
+</g>
+<text class="fg-small" x="40" y="368" text-anchor="start">Nothing here asserts that Flat 2 was inspected.</text>
+</svg>
+<figcaption>Harbour Court contains Flat 1 and Flat 2. The fictional inspection concerns Flat 1, not automatically every dwelling in the building.</figcaption></figure></section>
+<section data-theme="light"><h2>Reading the figure</h2>
+<ol class="learning-equivalent">
+<li>Harbour Court contains Flat 1 and Flat 2.</li>
+<li>The inspection on 12 August 2026 concerns Flat 1. No inspection of Flat 2 is asserted.</li>
+<li>Both fictional report versions describe this visit. Their issue dates and correction are separate facts, detailed in the chapter.</li>
+</ol></section>
+<footer>Authored teaching figure, 8 September 2026 · OPDA editorial field guide · no candidate implementation or adopted rule is established by an illustration.</footer>
+</body></html>

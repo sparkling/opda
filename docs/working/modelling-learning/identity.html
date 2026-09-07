@@ -1,0 +1,112 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"/><meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>Containment does not erase separate identities · OPDA field guide</title>
+<!-- Canonical reviewed authoring master. Diagram Design: nested; fit 960 × 500; simplified; domain-practitioner audience.
+     Saved OPDA brand profile projected to current DESIGN.md Source Sans 3 labels.
+     No technical cardinality or status is inferred from visual placement. Static, no external assets. -->
+<style>
+:root { --fg-paper:#f9f9f9; --fg-node:#ffffff; --fg-ink:#231f2f; --fg-muted:#625d72; --fg-rule:#cbc8d5; --fg-accent:#6c5bd4; --fg-tint:#eeebfa; --fg-font:'Source Sans 3','Segoe UI',sans-serif; }
+[data-theme="dark"] { --fg-paper:#131224; --fg-node:#231f2f; --fg-ink:#f9f9f9; --fg-muted:#a5a1b2; --fg-rule:#56506d; --fg-accent:#9a8fe8; --fg-tint:#29233f; }
+* { box-sizing:border-box; }
+body { margin:24px auto; max-width:1024px; padding:0 16px; background:#f9f9f9; color:#231f2f; font:18px/1.6 'Atkinson Hyperlegible Next','Segoe UI',sans-serif; }
+h1,h2 { font-family:var(--fg-font); line-height:1.25; }
+section { margin-block:32px; padding:16px; background:var(--fg-paper); color:var(--fg-ink); }
+figure { margin:0; } figcaption { margin-top:16px; }
+
+.learning-drawing { display:block; inline-size:100%; block-size:auto; color:var(--fg-ink); font-family:var(--fg-font); }
+.learning-drawing text { fill:var(--fg-ink); font-family:var(--fg-font); }
+.learning-drawing .fg-label { font-size:22px; font-weight:650; }
+.learning-drawing .fg-small { font-size:18px; font-weight:400; fill:var(--fg-muted); }
+.learning-drawing .fg-large { font-size:30px; font-weight:700; }
+.learning-drawing .fg-edge-label { font-size:18px; font-weight:600; }
+.learning-drawing .fg-paper, .learning-drawing .fg-mask { fill:var(--fg-paper); }
+.learning-drawing .fg-node { fill:var(--fg-node); stroke:var(--fg-rule); stroke-width:1.5; }
+.learning-drawing .fg-focus { fill:var(--fg-tint); stroke:var(--fg-accent); stroke-width:2; }
+.learning-drawing .fg-zone { fill:none; stroke:var(--fg-rule); stroke-width:1.5; }
+.learning-drawing .fg-edge, .learning-drawing .fg-line { fill:none; stroke:var(--fg-muted); stroke-width:1.5; stroke-linecap:round; stroke-linejoin:round; }
+.learning-drawing .fg-line { stroke:var(--fg-rule); }
+.learning-drawing .fg-dashed { stroke-dasharray:5 5; }
+.learning-drawing .fg-arrow { fill:var(--fg-muted); }
+.learning-drawing .fg-dot { fill:var(--fg-accent); }
+.learning-drawing .fg-interval { fill:none; stroke:var(--fg-accent); stroke-width:12; stroke-linecap:round; }
+@media(max-width:640px) { .learning-drawing { display:none; } }
+@media print { section[data-theme="dark"] { display:none; } section { break-inside:avoid; } }
+</style></head><body>
+<h1>Containment does not erase separate identities</h1>
+<p>Harbour Court contains two dwellings. Its address and a title record remain different subjects; neither is equated with the building.</p>
+<section data-theme="light"><h2>Light specimen</h2><figure>
+<svg xmlns="http://www.w3.org/2000/svg" class="learning-drawing" id="identity-light" viewBox="0 0 960 500" role="img" aria-labelledby="identity-light-title identity-light-desc">
+<title id="identity-light-title">Containment does not erase separate identities</title>
+<desc id="identity-light-desc">Harbour Court contains two dwellings. Its address and a title record remain different subjects; neither is equated with the building.</desc>
+<defs><marker id="identity-light-arrow" markerWidth="8" markerHeight="8" refX="8" refY="4" orient="auto"><path class="fg-arrow" d="M 0 0 L 8 4 L 0 8 Z"/></marker></defs>
+<rect class="fg-paper" width="960" height="500"/>
+<rect class="fg-zone" x="40" y="40" width="504" height="300" rx="4"/>
+<text class="fg-label" x="64" y="84" text-anchor="start">Harbour Court · building</text>
+<text class="fg-small" x="64" y="120" text-anchor="start">contains these two dwellings</text>
+<g>
+<rect class="fg-node fg-focus" x="64" y="172" width="204" height="108" rx="4"/>
+<text class="fg-label" x="84" y="208" text-anchor="start">Flat 1</text>
+<text class="fg-small" x="84" y="236" text-anchor="start">One dwelling</text>
+</g>
+<g>
+<rect class="fg-node" x="304" y="172" width="216" height="108" rx="4"/>
+<text class="fg-label" x="324" y="208" text-anchor="start">Flat 2</text>
+<text class="fg-small" x="324" y="236" text-anchor="start">Another dwelling</text>
+</g>
+<g>
+<rect class="fg-node" x="616" y="40" width="304" height="120" rx="4"/>
+<text class="fg-label" x="636" y="76" text-anchor="start">Address</text>
+<text class="fg-small" x="636" y="104" text-anchor="start">14 Orchard Road</text>
+<text class="fg-small" x="636" y="128" text-anchor="start">Describes location</text>
+</g>
+<g>
+<rect class="fg-node" x="616" y="220" width="304" height="120" rx="4"/>
+<text class="fg-label" x="636" y="256" text-anchor="start">Title record</text>
+<text class="fg-small" x="636" y="284" text-anchor="start">A separately identified record</text>
+<text class="fg-small" x="636" y="308" text-anchor="start">Read its stated extent</text>
+</g>
+<text class="fg-small" x="40" y="396" text-anchor="start">No identity link is asserted between the address, title record and building.</text>
+</svg>
+<figcaption>Harbour Court contains two dwellings. Its address and a title record remain different subjects; neither is equated with the building.</figcaption></figure></section>
+<section data-theme="dark"><h2>Dark specimen</h2><figure>
+<svg xmlns="http://www.w3.org/2000/svg" class="learning-drawing" id="identity-dark" viewBox="0 0 960 500" role="img" aria-labelledby="identity-dark-title identity-dark-desc">
+<title id="identity-dark-title">Containment does not erase separate identities</title>
+<desc id="identity-dark-desc">Harbour Court contains two dwellings. Its address and a title record remain different subjects; neither is equated with the building.</desc>
+<defs><marker id="identity-dark-arrow" markerWidth="8" markerHeight="8" refX="8" refY="4" orient="auto"><path class="fg-arrow" d="M 0 0 L 8 4 L 0 8 Z"/></marker></defs>
+<rect class="fg-paper" width="960" height="500"/>
+<rect class="fg-zone" x="40" y="40" width="504" height="300" rx="4"/>
+<text class="fg-label" x="64" y="84" text-anchor="start">Harbour Court · building</text>
+<text class="fg-small" x="64" y="120" text-anchor="start">contains these two dwellings</text>
+<g>
+<rect class="fg-node fg-focus" x="64" y="172" width="204" height="108" rx="4"/>
+<text class="fg-label" x="84" y="208" text-anchor="start">Flat 1</text>
+<text class="fg-small" x="84" y="236" text-anchor="start">One dwelling</text>
+</g>
+<g>
+<rect class="fg-node" x="304" y="172" width="216" height="108" rx="4"/>
+<text class="fg-label" x="324" y="208" text-anchor="start">Flat 2</text>
+<text class="fg-small" x="324" y="236" text-anchor="start">Another dwelling</text>
+</g>
+<g>
+<rect class="fg-node" x="616" y="40" width="304" height="120" rx="4"/>
+<text class="fg-label" x="636" y="76" text-anchor="start">Address</text>
+<text class="fg-small" x="636" y="104" text-anchor="start">14 Orchard Road</text>
+<text class="fg-small" x="636" y="128" text-anchor="start">Describes location</text>
+</g>
+<g>
+<rect class="fg-node" x="616" y="220" width="304" height="120" rx="4"/>
+<text class="fg-label" x="636" y="256" text-anchor="start">Title record</text>
+<text class="fg-small" x="636" y="284" text-anchor="start">A separately identified record</text>
+<text class="fg-small" x="636" y="308" text-anchor="start">Read its stated extent</text>
+</g>
+<text class="fg-small" x="40" y="396" text-anchor="start">No identity link is asserted between the address, title record and building.</text>
+</svg>
+<figcaption>Harbour Court contains two dwellings. Its address and a title record remain different subjects; neither is equated with the building.</figcaption></figure></section>
+<section data-theme="light"><h2>Reading the figure</h2>
+<ol class="learning-equivalent">
+<li>Harbour Court is the building. Flat 1 and Flat 2 are its contained dwellings, not alternative names for the building.</li>
+<li>The address describes location. Sharing it is not enough to establish that two records concern the same subject.</li>
+<li>The title record is separately identified and has its own stated extent. No same-identity assertion is made between it and the physical building.</li>
+</ol></section>
+<footer>Authored teaching figure, 8 September 2026 · OPDA editorial field guide · no candidate implementation or adopted rule is established by an illustration.</footer>
+</body></html>

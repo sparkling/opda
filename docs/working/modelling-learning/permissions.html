@@ -1,0 +1,103 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"/><meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>A role is not a permission · OPDA field guide</title>
+<!-- Canonical reviewed authoring master. Diagram Design: er; fit 960 × 428; simplified; domain-practitioner audience.
+     Saved OPDA brand profile projected to current DESIGN.md Source Sans 3 labels.
+     No technical cardinality or status is inferred from visual placement. Static, no external assets. -->
+<style>
+:root { --fg-paper:#f9f9f9; --fg-node:#ffffff; --fg-ink:#231f2f; --fg-muted:#625d72; --fg-rule:#cbc8d5; --fg-accent:#6c5bd4; --fg-tint:#eeebfa; --fg-font:'Source Sans 3','Segoe UI',sans-serif; }
+[data-theme="dark"] { --fg-paper:#131224; --fg-node:#231f2f; --fg-ink:#f9f9f9; --fg-muted:#a5a1b2; --fg-rule:#56506d; --fg-accent:#9a8fe8; --fg-tint:#29233f; }
+* { box-sizing:border-box; }
+body { margin:24px auto; max-width:1024px; padding:0 16px; background:#f9f9f9; color:#231f2f; font:18px/1.6 'Atkinson Hyperlegible Next','Segoe UI',sans-serif; }
+h1,h2 { font-family:var(--fg-font); line-height:1.25; }
+section { margin-block:32px; padding:16px; background:var(--fg-paper); color:var(--fg-ink); }
+figure { margin:0; } figcaption { margin-top:16px; }
+
+.learning-drawing { display:block; inline-size:100%; block-size:auto; color:var(--fg-ink); font-family:var(--fg-font); }
+.learning-drawing text { fill:var(--fg-ink); font-family:var(--fg-font); }
+.learning-drawing .fg-label { font-size:22px; font-weight:650; }
+.learning-drawing .fg-small { font-size:18px; font-weight:400; fill:var(--fg-muted); }
+.learning-drawing .fg-large { font-size:30px; font-weight:700; }
+.learning-drawing .fg-edge-label { font-size:18px; font-weight:600; }
+.learning-drawing .fg-paper, .learning-drawing .fg-mask { fill:var(--fg-paper); }
+.learning-drawing .fg-node { fill:var(--fg-node); stroke:var(--fg-rule); stroke-width:1.5; }
+.learning-drawing .fg-focus { fill:var(--fg-tint); stroke:var(--fg-accent); stroke-width:2; }
+.learning-drawing .fg-zone { fill:none; stroke:var(--fg-rule); stroke-width:1.5; }
+.learning-drawing .fg-edge, .learning-drawing .fg-line { fill:none; stroke:var(--fg-muted); stroke-width:1.5; stroke-linecap:round; stroke-linejoin:round; }
+.learning-drawing .fg-line { stroke:var(--fg-rule); }
+.learning-drawing .fg-dashed { stroke-dasharray:5 5; }
+.learning-drawing .fg-arrow { fill:var(--fg-muted); }
+.learning-drawing .fg-dot { fill:var(--fg-accent); }
+.learning-drawing .fg-interval { fill:none; stroke:var(--fg-accent); stroke-width:12; stroke-linecap:round; }
+@media(max-width:640px) { .learning-drawing { display:none; } }
+@media print { section[data-theme="dark"] { display:none; } section { break-inside:avoid; } }
+</style></head><body>
+<h1>A role is not a permission</h1>
+<p>Domain participation, a scoped permission and enforcement are different things. Describing any of them in a model does not automatically grant access.</p>
+<section data-theme="light"><h2>Light specimen</h2><figure>
+<svg xmlns="http://www.w3.org/2000/svg" class="learning-drawing" id="permissions-light" viewBox="0 0 960 428" role="img" aria-labelledby="permissions-light-title permissions-light-desc">
+<title id="permissions-light-title">A role is not a permission</title>
+<desc id="permissions-light-desc">Domain participation, a scoped permission and enforcement are different things. Describing any of them in a model does not automatically grant access.</desc>
+<defs><marker id="permissions-light-arrow" markerWidth="8" markerHeight="8" refX="8" refY="4" orient="auto"><path class="fg-arrow" d="M 0 0 L 8 4 L 0 8 Z"/></marker></defs>
+<rect class="fg-paper" width="960" height="428"/>
+<g>
+<rect class="fg-node" x="40" y="56" width="264" height="172" rx="4"/>
+<text class="fg-label" x="60" y="92" text-anchor="start">Participation</text>
+<text class="fg-small" x="60" y="120" text-anchor="start">Who acts in which role,</text>
+<text class="fg-small" x="60" y="144" text-anchor="start">arrangement and period</text>
+</g>
+<g>
+<rect class="fg-node fg-focus" x="344" y="56" width="272" height="172" rx="4"/>
+<text class="fg-label" x="364" y="92" text-anchor="start">Permission</text>
+<text class="fg-small" x="364" y="120" text-anchor="start">Who may do what,</text>
+<text class="fg-small" x="364" y="144" text-anchor="start">to which information,</text>
+<text class="fg-small" x="364" y="168" text-anchor="start">for which purpose</text>
+</g>
+<g>
+<rect class="fg-node" x="656" y="56" width="264" height="172" rx="4"/>
+<text class="fg-label" x="676" y="92" text-anchor="start">Enforcement</text>
+<text class="fg-small" x="676" y="120" text-anchor="start">A separate implementation</text>
+<text class="fg-small" x="676" y="144" text-anchor="start">checks and controls access</text>
+</g>
+<text class="fg-label" x="40" y="288" text-anchor="start">No arrows: none of these three automatically creates either of the others.</text>
+<text class="fg-small" x="40" y="328" text-anchor="start">The model can describe relevant distinctions without operating an access-control service.</text>
+</svg>
+<figcaption>Domain participation, a scoped permission and enforcement are different things. Describing any of them in a model does not automatically grant access.</figcaption></figure></section>
+<section data-theme="dark"><h2>Dark specimen</h2><figure>
+<svg xmlns="http://www.w3.org/2000/svg" class="learning-drawing" id="permissions-dark" viewBox="0 0 960 428" role="img" aria-labelledby="permissions-dark-title permissions-dark-desc">
+<title id="permissions-dark-title">A role is not a permission</title>
+<desc id="permissions-dark-desc">Domain participation, a scoped permission and enforcement are different things. Describing any of them in a model does not automatically grant access.</desc>
+<defs><marker id="permissions-dark-arrow" markerWidth="8" markerHeight="8" refX="8" refY="4" orient="auto"><path class="fg-arrow" d="M 0 0 L 8 4 L 0 8 Z"/></marker></defs>
+<rect class="fg-paper" width="960" height="428"/>
+<g>
+<rect class="fg-node" x="40" y="56" width="264" height="172" rx="4"/>
+<text class="fg-label" x="60" y="92" text-anchor="start">Participation</text>
+<text class="fg-small" x="60" y="120" text-anchor="start">Who acts in which role,</text>
+<text class="fg-small" x="60" y="144" text-anchor="start">arrangement and period</text>
+</g>
+<g>
+<rect class="fg-node fg-focus" x="344" y="56" width="272" height="172" rx="4"/>
+<text class="fg-label" x="364" y="92" text-anchor="start">Permission</text>
+<text class="fg-small" x="364" y="120" text-anchor="start">Who may do what,</text>
+<text class="fg-small" x="364" y="144" text-anchor="start">to which information,</text>
+<text class="fg-small" x="364" y="168" text-anchor="start">for which purpose</text>
+</g>
+<g>
+<rect class="fg-node" x="656" y="56" width="264" height="172" rx="4"/>
+<text class="fg-label" x="676" y="92" text-anchor="start">Enforcement</text>
+<text class="fg-small" x="676" y="120" text-anchor="start">A separate implementation</text>
+<text class="fg-small" x="676" y="144" text-anchor="start">checks and controls access</text>
+</g>
+<text class="fg-label" x="40" y="288" text-anchor="start">No arrows: none of these three automatically creates either of the others.</text>
+<text class="fg-small" x="40" y="328" text-anchor="start">The model can describe relevant distinctions without operating an access-control service.</text>
+</svg>
+<figcaption>Domain participation, a scoped permission and enforcement are different things. Describing any of them in a model does not automatically grant access.</figcaption></figure></section>
+<section data-theme="light"><h2>Reading the figure</h2>
+<ol class="learning-equivalent">
+<li>Participation describes who acts in a role within an arrangement and period.</li>
+<li>Permission concerns an actor, action, information and scope, including relevant purpose and conditions. A domain role alone does not grant it.</li>
+<li>Enforcement checks and controls access in an implementation. Describing permissions is not itself enforcement.</li>
+<li>These distinctions do not establish legal permission, consent or lawful basis; consult the applicable policy and legal authorities.</li>
+</ol></section>
+<footer>Authored teaching figure, 8 September 2026 · OPDA editorial field guide · no candidate implementation or adopted rule is established by an illustration.</footer>
+</body></html>
