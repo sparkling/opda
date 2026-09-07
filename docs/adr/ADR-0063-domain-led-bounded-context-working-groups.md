@@ -11,11 +11,12 @@ implements: []
 # Domain-led bounded-context working groups for SPDTF development
 
 > **Clarification — 2026-09-07, corrected Trust scope.** Trust means the SPDTF
-> Trust Framework in the wider government Smart Data programme, not a synonym for
+> Trust Framework being developed in relation to the wider government Smart Data
+> programme, not a synonym for
 > model-review governance. The Modelling section focuses on domain and ontology
 > modelling; JSON-LD is a generated output, not a separate teaching subject.
-> Retained categories describe and map the privacy,
-> access, provenance and other semantics the framework needs; they do not implement
+> Retained categories describe and map privacy,
+> access, provenance and other semantics that can support the framework; they do not implement
 > it. Broader Trust recommendations belong to the programme's scheme work.
 > Linked-data-store guidance is informative; operating an application is outside
 > this development effort. Documented context boundaries are established inputs.
@@ -209,6 +210,8 @@ dated 25 June 2026, describes stewardship, privacy and data-use metadata. These 
 programme-design evidence, not automatic adoption of a government mandate, an
 implementation stack or a final SPDTF rule. Their separate existing documentation
 remains the home for broad Trust-framework explanation.
+This scope clarification does not designate a statutory scheme or ratify draft
+programme requirements. Adopted ontology-method requirements retain their own authority.
 
 Within the eight retained categories, model the meaning needed to connect domain data
 to that framework: personal-data and sensitivity classifications; processing purpose

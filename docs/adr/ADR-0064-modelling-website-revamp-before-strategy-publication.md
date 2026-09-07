@@ -14,8 +14,8 @@ implements: [src/pages/development/property-pack]
 > teaches domain and ontology modelling. JSON-LD is a generated artefact, not a
 > separate subject requiring payload examples or detailed delivery explanations.
 > SPDTF Trust belongs to the broader Smart Data scheme work, not a new learning
-> track here. Explain only the domain-model annotations and mappings that support
-> its requirements within the retained categories. Model-review governance is a
+> track here. Explain only domain-model annotations and mappings that can support
+> that framework within the retained categories. Model-review governance is a
 > distinct concern. ADR-0063 §2a records this boundary; linked-data-store guidance
 > remains informative and operational application training remains out of scope.
 
