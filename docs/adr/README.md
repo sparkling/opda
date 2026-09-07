@@ -104,6 +104,12 @@ modelling website remains unchanged:
 |---|---|---|
 | [ADR-0081](./ADR-0081-organise-opda-evidence-into-purpose-specific-notebooklm-portfolios.md) | Organise OPDA evidence into purpose-specific NotebookLM portfolios | accepted · implementation pending |
 
+## September 2026 delivery architecture
+
+| # | Title | Status |
+|---|---|---|
+| [ADR-0083](./ADR-0083-rebuild-proportionate-risk-based-ci-cd.md) | Rebuild proportionate risk-based CI/CD | proposed |
+
 ## Authoring a new ADR
 
 1. Run `/ruflo-adr:adr-create "<short title>"` — the skill picks the
