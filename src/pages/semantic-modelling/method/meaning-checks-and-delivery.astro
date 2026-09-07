@@ -1,6 +1,7 @@
 ---
 import ModellingLayout from '@/layouts/ModellingLayout.astro';
 import ModellingVisual from '@/components/modelling/ModellingVisual.astro';
+import EnrichmentVisual from '@/components/modelling/EnrichmentVisual.astro';
 const applicability = `@prefix model: <https://example.org/property-model/> .
 @prefix owl: <http://www.w3.org/2002/07/owl#> .
 @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
@@ -19,12 +20,34 @@ const shape = `@prefix model: <https://example.org/property-model/> .
 
 model:ReportExchangeShape a sh:NodeShape ;
     sh:targetClass model:ReportVersion ;
-    sh:property [
-        sh:path model:reportsInspection ;
-        sh:class model:Inspection ;
-        sh:minCount 1 ;
-        sh:maxCount 1
-    ] .`;
+    sh:property model:ReportInspectionProperty .
+
+model:ReportInspectionProperty a sh:PropertyShape ;
+    sh:path model:reportsInspection ;
+    sh:class model:Inspection ;
+    sh:minCount 1 ;
+    sh:maxCount 1 ;
+    sh:severity sh:Violation .`;
+const reviewData = `@prefix ex: <https://example.org/harbour-court/> .
+@prefix model: <https://example.org/property-model/> .
+
+ex:inspection a model:Inspection .
+ex:report-v2 a model:ReportVersion ;
+    model:reportsInspection ex:inspection .
+
+# Adverse case: a typed report missing the required link.
+ex:report-missing a model:ReportVersion .`;
+const warningShape = `@prefix model: <https://example.org/property-model/> .
+@prefix sh: <http://www.w3.org/ns/shacl#> .
+@prefix dct: <http://purl.org/dc/terms/> .
+
+model:ReviewMetadataShape a sh:NodeShape ;
+    sh:targetClass model:ReportVersion ;
+    sh:property model:CreatorReviewProperty .
+model:CreatorReviewProperty a sh:PropertyShape ;
+    sh:path dct:creator ;
+    sh:minCount 1 ;
+    sh:severity sh:Warning .`;
 ---
 
 <ModellingLayout title="Meaning, checks and delivery: four jobs, four contracts" description="The meaning of a published assertion, the intended uses of a property, the requirements of an exchange and the triples a rule derives are different contracts. Keep them visible even when one tool processes them all." claim="method">
@@ -73,6 +96,53 @@ model:ReportExchangeShape a sh:NodeShape ;
     <p>This ordinary NodeShape illustrates a check, not the full adopted shape-authoring profile. A complete candidate must also document the referenced vocabulary, chosen processing assumptions and further requirements. No validation result for current OPDA artefacts is asserted here.</p>
   </aside>
 
+  <section aria-labelledby="author-constraints">
+    <h2 id="author-constraints">Author a rule that a domain reviewer can challenge</h2>
+    <p>The rule is “each report version identifies exactly one inspection”. Before reviewing syntax, pin the fictional <code>ReportExchangeShape</code> version as <code>teaching-1</code>, the input graph below and its assumptions: report and inspection types are explicitly asserted; no external type lookup, materialisation or advanced target is assumed. The example exercises an ordinary Turtle/SHACL Core subset, not full SHACL 1.2 or the complete ontology-authoring profile.</p>
+    <pre><code>{reviewData}</code></pre>
+    <p><code>ex:report-v2</code> has one correctly typed inspection and should yield no result from these constraints. <code>ex:report-missing</code> is selected by the same class target but has zero values on the required path. The expected result is a structural Violation, not a conclusion that the real inspection never occurred. The input vocabulary and shape declarations still need their full documentation and ownership before a package can claim method conformance.</p>
+  </section>
+
+  <figure class="modelling-figure" data-modelling-figure="constraint-trace">
+    <EnrichmentVisual kind="constraint-trace" />
+    <dl>
+      <dt>Focus node</dt><dd><code>ex:report-missing</code>, selected because it is a ReportVersion.</dd>
+      <dt>Result path</dt><dd><code>model:reportsInspection</code>, with no supplied value. A missing-value result need not have an offending value.</dd>
+      <dt>Source shape and constraint</dt><dd><code>model:ReportInspectionProperty</code> and <code>sh:MinCountConstraintComponent</code>, because zero is less than one.</dd>
+      <dt>Severity</dt><dd><code>sh:Violation</code>, explicitly declared on the property shape that owns the constraint.</dd>
+    </dl>
+    <figcaption>Trace the finding back to the intended rule. A useful report exposes why a selected node failed, not just a red or green badge.</figcaption>
+  </figure>
+
+  <section aria-labelledby="target-missing-data">
+    <h2 id="target-missing-data">An empty result can mean that the defective node was never selected</h2>
+    <p>Replace <code>sh:targetClass model:ReportVersion</code> with <code>sh:targetSubjectsOf model:reportsInspection</code>. The latter selects only subjects that already have the link. It selects the good report and misses <code>ex:report-missing</code>—the exact absence this rule was intended to detect. On a graph containing only the missing-link report it selects no focus nodes at all.</p>
+    <aside class="callout callout--note modelling-callout">
+      <div class="callout__label">Exercise: diagnose the apparent success</div>
+      <p>The defective report remains unchanged, yet the result is empty after that target edit. Has the rule been repaired? No: target coverage has been lost. Restore the class target and expect the missing report's <code>sh:MinCountConstraintComponent</code> Violation. Keep the adverse fixture so a later target change cannot make the defect invisible.</p>
+      <p>A class target also cannot find a report with no relevant type information. If the receiving scope includes such untyped resources, establish an independent way to identify them—for example a reviewed explicit focus-node list using <code>sh:targetNode</code>. Document that selection rule; do not assume an absent type or required link can identify itself.</p>
+    </aside>
+  </section>
+
+  <section aria-labelledby="contradictory-constraints">
+    <h2 id="contradictory-constraints">More constraints can make the rule impossible</h2>
+    <p>Suppose one reviewer asks for at least two inspection links and another keeps the single-inspection maximum. Combining <code>sh:minCount 2</code> and <code>sh:maxCount 1</code> on the same path is a contradiction. SHACL requirements are conjunctive: no count can satisfy both. Zero or one link fails the minimum; two or more fail the maximum. This is not “more thorough validation”.</p>
+    <p>Resolve the intended domain rule with its owner. If one report may describe multiple inspections, review that meaning and the changed profile; if the single-inspection contract is intended, restore the minimum of one. Never delete whichever constraint happens to prevent a green result without recording the reason.</p>
+    <p>Shape meta-validation alone does not prove arbitrary shapes satisfiable. Alongside declaration checks, use ordinary and adverse data, review target coverage and perform a scoped contradiction check. Comparing the numeric bounds detects this particular contradiction; it does not decide satisfiability for every possible shape or advanced feature.</p>
+    <h3 id="constraint-severity">Put severity where the finding originates</h3>
+    <p><a href="/modelling/odr/odr-0050">ODR-0050</a> distinguishes structural Violation, governance/documentation Warning and suggested improvement Info. This additional teaching rule asks for a creator as a documentation-review signal. Its <code>sh:Warning</code> is on the property shape owning <code>sh:minCount</code>; it is not assumed to flow down from the containing NodeShape.</p>
+    <pre><code>{warningShape}</code></pre>
+    <p>With no <code>dct:creator</code>, the reports above receive a Warning from this additional shape even when their inspection links are correct. Display the warning and review it. Do not silently relabel it a Violation or assume a processor's overall conformance flag defines the publication gate. Advisory-to-blocking escalation needs an explicit rule; authored and generated content retain the same severity semantics. Category 5's exact metadata requirements are explained in <a href="/semantic-modelling/method/vocabularies-and-classification#administrative-metadata">the administrative profile</a>.</p>
+  </section>
+
+  <section aria-labelledby="authoring-profile">
+    <h2 id="authoring-profile">Check the shapes as authored model resources</h2>
+    <p>The adopted method supports inline property constraints on the selected dual-typed ShapeClass/OWL resource pattern, as well as independent NodeShapes for cross-cutting or external targets. The example here deliberately uses a separate NodeShape. It does not claim to demonstrate ShapeClass support, advanced targets or the complete authoring method. An authoring package using those features must name them and supply processor evidence separately.</p>
+    <p><a href="/modelling/odr/odr-0042">ODR-0042</a> favours flat per-class validation and modest, justified <code>sh:node</code> composition. Arbitrary class inheritance does not copy constraint declarations or establish a shape-inheritance system. An explicit class target may select subclass instances according to SHACL's target semantics; that is a targeting behaviour, not automatic propagation of authored shapes.</p>
+    <p>Review typed <code>sh:NodeShape</code>, <code>sh:PropertyShape</code> and <code>sh:ConstraintComponent</code> declarations for coherence, documentation and ontology ownership; check generated declarations as well as hand-authored ones. Select declarations in a way that catches missing ownership, not only resources already linked to an owner. Do not claim concern-specific provenance, temporal or sensitivity shapes that their governing records still defer.</p>
+    <p>DASH editor/viewer hints, ordering and grouping belong to presentation. A required-looking widget is not a constraint. A deliberately selected DASH constraint component needs its own feature justification; a display annotation cannot quietly activate it. Editor settings and processor setup are informative tooling details, not new requirements on every consumer of the ontology.</p>
+  </section>
+
   <section aria-labelledby="bounded-owl">
     <h2 id="bounded-owl"><span id="conformance" aria-hidden="true"></span>Use the bounded OWL profile without calling it a new semantics</h2>
     <p><a href="/modelling/odr/odr-0043">ODR-0043</a> defines the permitted documentation constructs and exclusions. <a href="/modelling/odr/odr-0044">ODR-0044</a> separately selects runtime materialisation. The selected group covers subclass and subproperty propagation, inverse, transitive and symmetric relationships, and disjointness checks. “Safe Group” is the OPDA method’s profile name, not a guarantee that every use of those constructs is safe.</p>
@@ -88,10 +158,8 @@ model:ReportExchangeShape a sh:NodeShape ;
   </section>
 
   <section aria-labelledby="delivery">
-    <h2 id="delivery"><span id="projections" aria-hidden="true"></span>A delivery projection must disclose what it preserves</h2>
-    <p>A form, JSON document, API response or explanatory page can present the reviewed agreement for a particular task. Check which identifiers, distinctions, mapping qualifications and provenance survive the projection. A compact field called “property” may be useful only if its contract says whether it identifies a building, dwelling or another resource.</p>
-    <p>The failure case is a convenient JSON projection that flattens report version 2 and the inspection into one “latest inspection” object. Consumers can no longer tell a corrected report from a new event. Repair the projection or document its limitations; do not rewrite the ontology’s meaning to fit the screen.</p>
-    <p>Continue with <a href="/semantic-modelling/method/evidence-and-time">evidence and time</a> and the <a href="/semantic-modelling/method/languages-and-profiles">language profiles</a>.</p>
+    <h2 id="delivery"><span id="projections" aria-hidden="true"></span>Generated outputs preserve the ontology's distinctions</h2>
+    <p>JSON-LD artefacts are generated from the ontology. They must preserve the meaning and declared requirements they represent; generation does not create a second semantic authority. The subject here is the ontology's model and constraints, not payload or pipeline design.</p>
   </section>
 
   <section aria-labelledby="source-contract">

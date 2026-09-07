@@ -1,0 +1,206 @@
+---
+import ModellingLayout from '@/layouts/ModellingLayout.astro';
+import EnrichmentVisual from '@/components/modelling/EnrichmentVisual.astro';
+
+const closedVocabulary = `@prefix model: <https://example.org/property-model/> .
+@prefix outcome: <https://example.org/vocabulary/inspection-outcome/> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+
+model:InspectionOutcome a owl:Class .
+outcome:scheme a skos:ConceptScheme ;
+    skos:prefLabel "Inspection outcomes — teaching profile 1"@en ;
+    skos:hasTopConcept outcome:Completed, outcome:Limited .
+
+outcome:Completed a skos:Concept, model:InspectionOutcome ;
+    skos:inScheme outcome:scheme ;
+    skos:topConceptOf outcome:scheme ;
+    skos:prefLabel "Completed within agreed scope"@en ;
+    skos:altLabel "Scope completed"@en ;
+    skos:notation "C" ;
+    skos:definition "All activities in the agreed inspection scope were completed."@en ;
+    skos:scopeNote "Says nothing about whether the inspected subject has defects."@en .
+
+outcome:Limited a skos:Concept, model:InspectionOutcome ;
+    skos:inScheme outcome:scheme ;
+    skos:topConceptOf outcome:scheme ;
+    skos:prefLabel "Limited by access"@en ;
+    skos:notation "L" ;
+    skos:definition "Access prevented completion of at least one agreed inspection activity."@en .`;
+const closedShape = `@prefix model: <https://example.org/property-model/> .
+@prefix outcome: <https://example.org/vocabulary/inspection-outcome/> .
+@prefix sh: <http://www.w3.org/ns/shacl#> .
+
+model:OutcomeProfile1 a sh:NodeShape ;
+    sh:targetClass model:Inspection ;
+    sh:property [ a sh:PropertyShape ;
+        sh:path model:outcome ;
+        sh:minCount 1 ; sh:maxCount 1 ;
+        sh:in (outcome:Completed outcome:Limited) ;
+        sh:severity sh:Violation
+    ] .`;
+const openValues = `@prefix ex: <https://example.org/harbour-court/> .
+@prefix model: <https://example.org/property-model/> .
+@prefix subject: <https://example.org/vocabulary/subject/> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix sh: <http://www.w3.org/ns/shacl#> .
+
+ex:surveyor-a a model:Surveyor .
+ex:surveyor-b a model:Surveyor .
+model:SurveyorReferenceShape a sh:NodeShape ;
+    sh:targetClass model:Inspection ;
+    sh:property [ a sh:PropertyShape ;
+        sh:path model:performedBy ; sh:minCount 1 ;
+        sh:class model:Surveyor
+    ] .
+
+subject:scheme a skos:ConceptScheme ;
+    skos:prefLabel "Inspection subjects — open teaching taxonomy"@en ;
+    skos:hasTopConcept subject:BuildingFabric .
+subject:BuildingFabric a skos:Concept ;
+    skos:inScheme subject:scheme ; skos:topConceptOf subject:scheme ;
+    skos:prefLabel "Building fabric"@en ;
+    skos:definition "Subject matter concerning the physical fabric of a building."@en .
+subject:RoofCondition a skos:Concept ;
+    skos:inScheme subject:scheme ;
+    skos:prefLabel "Roof condition"@en ;
+    skos:definition "Subject matter concerning the condition of a roof."@en ;
+    skos:broader subject:BuildingFabric .`;
+---
+
+<ModellingLayout title="Vocabularies and classification: choose what the list means" description="Decide whether a list contains governed outcomes, taxonomy concepts, independently identified resources or metadata about the model. Choose its representation, completeness claim and validation together." claim="method">
+  <section aria-labelledby="representation">
+    <h2 id="representation">Four lists can require four different models</h2>
+    <p>Harbour Court has an inspection, a report version and a surveyor. The report may refer to an inspection outcome, be indexed under a subject taxonomy and have administrative metadata. These lists can look alike in a spreadsheet while answering different questions. A drop-down control is evidence of an interface choice, not evidence that all its entries are the same kind of thing.</p>
+    <p>Ask what each member identifies, who owns its meaning and what warrants completeness. Record the scope, owner, version and scheme role: <code>Closed</code>, <code>OpenEnded</code> or <code>Classification</code>. Without evidence of closure, choose the conservative open-ended disposition. A three-row sample does not establish that a fourth value is impossible. Classification describes editorial or policy use; it is not an additional ontological kind. These are the distinctions in <a href="/modelling/odr/odr-0048">ODR-0048</a> and <a href="/modelling/odr/odr-0049">ODR-0049</a>.</p>
+    <table>
+      <caption>Representation and validation must answer the same question</caption>
+      <thead><tr><th scope="col">What is listed?</th><th scope="col">Representation</th><th scope="col">Check and counterexample</th></tr></thead>
+      <tbody>
+        <tr><th scope="row">Closed domain enumeration</th><td>A SKOS concept also typed as an instance of a domain value class.</td><td><code>sh:in</code> names the exact permitted IRIs. A new, correctly typed member outside that list still fails the closed profile.</td></tr>
+        <tr><th scope="row">Open taxonomy</th><td>SKOS concepts in a reviewed scheme, with broader/top relationships.</td><td>Check the selected vocabulary profile, not an exhaustive value list. A new well-defined roof topic is not invalid merely because the taxonomy was once smaller.</td></tr>
+        <tr><th scope="row">Open population of resources</th><td>Individually identified instances of the relevant domain class.</td><td><code>sh:class</code> and scoped constraints. A newly identified surveyor must not require editing an enumeration.</td></tr>
+        <tr><th scope="row">Infrastructure classification facet</th><td>A governed annotation property with SKOS values; no domain-class stub per value.</td><td>Check the exact backing scheme, applicability and cardinality. A lifecycle value must not pass as subject area just because both are SKOS concepts.</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <figure class="modelling-figure" data-modelling-figure="vocabulary-representations">
+    <EnrichmentVisual kind="vocabulary-representations" />
+    <p>Text equivalent: an inspection selects an outcome from a closed set; an identified surveyor is an instance of Surveyor in a growing population; Roof condition has the broader concept Building fabric in an open taxonomy. Selection, instance typing and broader meaning are different relationships.</p>
+    <figcaption>The three domain cases do not determine how the report class itself is classified. That is the separate metadata layer below.</figcaption>
+  </figure>
+
+  <section aria-labelledby="closed-values">
+    <h2 id="closed-values">A closed outcome set needs both meaning and an allowed list</h2>
+    <p>For this fictional teaching profile, reviewers stipulate exactly two recorded outcomes for completed inspection attempts: the agreed scope was completed, or access limited completion. This is a deliberately narrow exercise, not a claim that real inspections have only two outcomes. Surveying and Valuation is the proposed semantic owner; the exercise calls the reviewed cut <code>OutcomeProfile1</code>. A cancelled attempt lies outside its stated scope and must be referred back to that owner, not squeezed into a convenient value.</p>
+    <p>The vocabulary gives both values stable identities, scheme membership, labels and definitions. Each is a <code>skos:Concept</code> and an instance of <code>model:InspectionOutcome</code>: ordinary RDF multi-typing, not punning. The value class is not the inspection event class. <a href="/modelling/odr/odr-0039">ODR-0039</a> and <a href="/modelling/odr/odr-0040">ODR-0040</a> select this pattern instead of <code>owl:oneOf</code>.</p>
+    <pre><code>{closedVocabulary}</code></pre>
+    <p>The receiving constraint is a separate statement about permitted data. These snippets use <code>example.org</code> IRIs and the ordinary Turtle/SHACL Core subset shown here; they are not a complete ontology, the full SHACL 1.2 authoring profile or an expansion of Property Pack 0.1's implemented features. Property declarations, ownership metadata and other applicable package requirements are omitted from the snippets, not waived.</p>
+    <pre><code>{closedShape}</code></pre>
+    <table>
+      <caption>Expected outcomes under the illustrative OutcomeProfile1</caption>
+      <thead><tr><th scope="col">Supplied inspection values</th><th scope="col">Expected review result</th><th scope="col">Reason</th></tr></thead>
+      <tbody>
+        <tr><th scope="row">One value: <code>outcome:Completed</code></th><td>No finding from these constraints.</td><td>Its exact IRI is allowed and the count is one. This says nothing about defects.</td></tr>
+        <tr><th scope="row">One newly typed value: <code>outcome:Cancelled</code></th><td>Violation of <code>sh:in</code>.</td><td>Domain-class typing or scheme membership cannot extend the list.</td></tr>
+        <tr><th scope="row">No outcome</th><td>Violation of <code>sh:minCount</code>.</td><td>Missing knowledge is not a third outcome.</td></tr>
+        <tr><th scope="row">Both permitted outcomes</th><td>Violation of <code>sh:maxCount</code>.</td><td>Permitted values alone do not satisfy a single-value requirement.</td></tr>
+      </tbody>
+    </table>
+    <p>Do not routinely add <code>sh:class</code> to repeat the closure check. It would express an additional type requirement, not make <code>sh:in</code> more closed. Validate the vocabulary's dual typing separately; add a receiving type constraint only when a separately justified requirement calls for it.</p>
+  </section>
+
+  <section aria-labelledby="open-values">
+    <h2 id="open-values">A new surveyor is not a new outcome</h2>
+    <p>Two surveyors in a sample are two identified resources, not a complete directory. The illustrative reference shape below requires each linked resource to be a Surveyor. Its expected results assume the type statements are present in the supplied graph; it relies on no external lookup or undeclared inference. Another surveyor with that asserted type can be referenced without changing the shape. An untyped reference fails this check even if a person knows the individual is a surveyor.</p>
+    <p>The subject taxonomy has a different job: indexing what a report discusses. Roof condition is a more specific concept than Building fabric. Neither concept is an inspection outcome or a class of surveyor, and no domain enumeration type is invented for it.</p>
+    <pre><code>{openValues}</code></pre>
+    <p>This taxonomy remains open. Its chosen vocabulary profile still checks labels, definitions, membership and appropriate top/broader relationships; openness is not permission for malformed concepts. Reversing the last triple would say that Building fabric is the narrower topic. It would not express where a roof is physically located, and <code>skos:broader</code> must not be read as <code>rdfs:subClassOf</code>.</p>
+  </section>
+
+  <section aria-labelledby="maintain-values">
+    <h2 id="maintain-values">Maintain identity, wording and closure deliberately</h2>
+    <p>A preferred label names a concept. <code>skos:altLabel</code> preserves a recognised alternative, <code>skos:notation</code> preserves its code, <code>skos:definition</code> establishes meaning and <code>skos:scopeNote</code> explains use or exclusions. An extracted phrase is only a proposed definition until reviewed. Renaming “Limited by access” must not mint a replacement identity merely to change what a page displays.</p>
+    <p>Flat enumeration members are top concepts. Assert taxonomy <code>skos:broader</code> child-to-parent; ancestry may use the selected <code>skos:broaderTransitive</code> relationship without claiming that broader itself is transitive. A source folder is not automatically a <code>skos:Collection</code>; that curation construct needs a purpose.</p>
+    <p>Extending a Closed scheme requires a reviewed decision amendment. Update the value definitions and corresponding <code>sh:in</code> list together, with a new version and ordinary/adverse cases. A deliberately narrower receiving profile can retain a subset, but must name and explain that subset. OpenEnded schemes grow through their ordinary stewardship procedure; neither kind of change should silently rewrite historical report values.</p>
+  </section>
+
+  <section aria-labelledby="absence">
+    <h2 id="absence">Separate a domain outcome from missing knowledge</h2>
+    <p>“Unknown”, “NotSet”, “Undefined” and an empty field ordinarily describe what was not recorded. They do not say the inspection was completed or limited. Exclude such technical sentinels from the domain scheme and express requiredness or optionality through the chosen profile. Do not infer a default outcome from a selected form option.</p>
+    <p>A genuinely defined absence concept is possible, but needs semantic justification. “No applicable regulatory obligations”, for example, can be an explicitly governed facet value following qualified review; it cannot mean “nobody checked”. Ask the domain reviewer when absence itself is the business conclusion. For a bitfield source, preserve the meanings of primitive flags, not every composite implementation combination as a new concept.</p>
+  </section>
+
+  <section aria-labelledby="facets">
+    <h2 id="facets">Classify the model element without changing its identity</h2>
+    <p><a href="/modelling/odr/odr-0036">ODR-0036</a> supplies seven independent questions. The illustrative ReportVersion class can answer all seven while remaining owned by Surveying and Valuation. It does not become the building it describes or transfer ownership when another context uses it. The facet values below are descriptions of required decisions, not approved OPDA vocabulary members.</p>
+    <table>
+      <caption>The base facet contract for an applicable domain class</caption>
+      <thead><tr><th scope="col">Facet</th><th scope="col">Question</th><th scope="col">Base cardinality</th></tr></thead>
+      <tbody>
+        <tr><th scope="row">Subject area</th><td>What is this model element intrinsically about?</td><td>Exactly one</td></tr>
+        <tr><th scope="row">Data classification</th><td>What kind of information: master, reference, transactional or analytical?</td><td>Exactly one</td></tr>
+        <tr><th scope="row">Lifecycle stage</th><td>When does it participate?</td><td>Exactly one</td></tr>
+        <tr><th scope="row">Governance tier</th><td>How tightly is its definition governed?</td><td>Exactly one</td></tr>
+        <tr><th scope="row">Volatility</th><td>How often does it change?</td><td>Exactly one</td></tr>
+        <tr><th scope="row">Regulatory relevance</th><td>Which obligations are relevant?</td><td>One or more; a defined none-applicable value requires review</td></tr>
+        <tr><th scope="row">Value-chain position</th><td>Where does it contribute?</td><td>Zero or more</td></tr>
+      </tbody>
+    </table>
+    <p>Use governed annotation properties with values in the correct SKOS schemes. Do not manufacture a domain OWL class for each infrastructure facet value: that would recursively create another class requiring classification. A value from the lifecycle scheme cannot satisfy a subject-area requirement merely because it is a <code>skos:Concept</code>. Check exact scheme membership and record any applicability exception.</p>
+    <p>Human assignment is separate from advisory extraction. A module or folder called “finance” cannot decide intrinsic subject area. Nor can a generated default establish regulatory relevance or governance tier. Confidentiality is not an eighth facet: sensitivity belongs to <a href="/semantic-modelling/method/sensitivity-and-policy">Category 11</a>. A role or phase retains the meaning explained in <a href="/semantic-modelling/method/roles-and-phases">roles and phases</a>, regardless of its classifications.</p>
+  </section>
+
+  <section aria-labelledby="completeness-profiles">
+    <h2 id="completeness-profiles">The same metadata can meet one profile and miss another</h2>
+    <p>Assume the fictional ReportVersion class has reviewed, correct-scheme values for the first six facets, a single English title, creators and valid issued/modified dates. It has no value-chain position. Hold that metadata constant while changing the claimed profile:</p>
+    <table>
+      <caption>A declared profile determines which completeness question is being answered</caption>
+      <thead><tr><th scope="col">Claim</th><th scope="col">Result for this illustration</th><th scope="col">Reason</th></tr></thead>
+      <tbody>
+        <tr><th scope="row">ODR-0036 base facets</th><td>No facet-count finding.</td><td>Value-chain position is optional. The first five are required/single-valued and regulatory relevance is required/multi-valued.</td></tr>
+        <tr><th scope="row">ODR-0049 stricter generated-publication profile</th><td>Incomplete; keep it in draft.</td><td>The complete seven-facet annotation set is required by this profile.</td></tr>
+        <tr><th scope="row">ODR-0055 Category 5 profile</th><td>Incomplete despite its title.</td><td>That profile requires both a title and all seven facets; good administrative metadata cannot mask a missing facet.</td></tr>
+      </tbody>
+    </table>
+    <p>The stricter claims do not silently change the base optionality. Conversely, citing the base pattern cannot weaken a stricter claim. Under <a href="/modelling/odr/odr-0049">ODR-0049</a>, an incomplete generated class stays in draft with the finding in the review queue. Do not lower severity because a machine authored it. Review the missing meaning and record the repair before claiming completeness.</p>
+  </section>
+
+  <section aria-labelledby="administrative-metadata">
+    <h2 id="administrative-metadata">Describe the record as well as its classifications</h2>
+    <p>The bounded Dublin Core layer in <a href="/modelling/odr/odr-0055">ODR-0055</a> describes the classification record. A title is not a subject-area assignment, and a creator is not a governance tier. Use canonical <code>http://purl.org/dc/terms/</code> IRIs without <code>owl:imports</code>; the local profile, not the entire vocabulary, supplies these requirements.</p>
+    <table>
+      <caption>Category 5 administrative requirements and their distinct severities</caption>
+      <thead><tr><th scope="col">Term</th><th scope="col">Local requirement</th><th scope="col">Consequence</th></tr></thead>
+      <tbody>
+        <tr><th scope="row"><code>dct:title</code></th><td>Exactly one language-tagged title.</td><td>Violation</td></tr>
+        <tr><th scope="row"><code>dct:creator</code></th><td>One or more originators.</td><td>Warning when absent</td></tr>
+        <tr><th scope="row"><code>dct:issued</code></th><td>Exactly one first-publication date, <code>xsd:date</code>.</td><td>Warning</td></tr>
+        <tr><th scope="row"><code>dct:modified</code></th><td>Exactly one last-modification date, <code>xsd:date</code>.</td><td>Warning</td></tr>
+        <tr><th scope="row"><code>dct:identifier</code></th><td>At most one stable external identifier, IRI or literal.</td><td>Informational completeness check</td></tr>
+      </tbody>
+    </table>
+    <p>For example, <code>"Harbour Court report-version model"@en</code> can illustrate the required title. An untagged string misses its language requirement. With all seven facets and a proper title present, removing the creator produces the stated Warning, not an invented structural Violation. Review findings by severity; do not hide them or present every omission as a blocking error.</p>
+    <p><code>dct:subject</code> is conditional: add it only on explicit modeller request, pointing to the SKOS ConceptScheme backing the subject-area facet. It does not replace the facet's concept value. Other Dublin Core terms need an amendment for this profile. This adoption neither requires a catalogue nor adopts DCAT or a data-product ontology.</p>
+  </section>
+
+  <section aria-labelledby="worked-review">
+    <h2 id="worked-review">Review four incoming lists</h2>
+    <p>A contributor brings an outcome drop-down, a directory of two surveyors, a topic tree and seven metadata columns. They propose copying all four as closed lists, retaining “Unknown” as an outcome and making Building fabric narrower than Roof condition. What should change?</p>
+    <ol class="modelling-steps">
+      <li><strong>Ask for closure evidence.</strong> The reviewed narrow outcome profile can warrant a closed set; the drop-down alone cannot. Preserve the scope question about cancelled attempts for the owner.</li>
+      <li><strong>Keep the population open.</strong> Surveyors are individually identified resources. Adding a third valid surveyor changes neither the closed outcome profile nor any separately governed report-status profile.</li>
+      <li><strong>Repair conceptual direction.</strong> Roof condition is the child and Building fabric the broader parent. The roof's physical containment belongs in domain relationships, not this taxonomy.</li>
+      <li><strong>Remove the unjustified sentinel.</strong> Unknown is missing knowledge here. Let the selected shape report absence; ask a domain reviewer before adding any genuinely defined absence concept.</li>
+      <li><strong>Review metadata independently.</strong> Check each facet's exact scheme and the declared completeness profile. Missing regulatory review cannot be repaired by automatically inserting “none”.</li>
+    </ol>
+    <p>The answer is not one universal list recipe. It is a justified representation, an explicit completeness claim, named ownership and visible unresolved questions.</p>
+  </section>
+
+  <section aria-labelledby="source-contract">
+    <h2 id="source-contract">Source contract</h2>
+    <p>Required method: <a href="/modelling/odr/odr-0036">ODR-0036</a> for base facets; <a href="/modelling/odr/odr-0039">ODR-0039</a> and <a href="/modelling/odr/odr-0040">ODR-0040</a> for SKOS enumerations and open populations; <a href="/modelling/odr/odr-0048">ODR-0048</a> for evidence, hierarchy and exclusions; <a href="/modelling/odr/odr-0049">ODR-0049</a> for classification stewardship and stricter completeness; <a href="/modelling/odr/odr-0055">ODR-0055</a> for the bounded administrative profile.</p>
+    <p>Adoption provenance: upstream revision <code>67174057e6384b79d0b28b7736fe70a66e112895</code>, 5 September 2026. See <a href="/semantic-modelling/method/standards-and-decisions">standards and decisions</a>. All domain terms, values and review outcomes above are fictional teaching illustrations, not approved OPDA vocabulary or candidate conformance claims.</p>
+  </section>
+</ModellingLayout>
