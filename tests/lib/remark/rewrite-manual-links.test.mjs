@@ -64,10 +64,14 @@ test('preserves #anchors', () => {
   assert.deepEqual(urls, [`${MODEL_ROOT}/concept/property/property#identity-criterion`]);
 });
 
-test('leaves out-of-manual .md links unchanged (ODR corpus)', () => {
+test('rewrites local ODR sources to their published decision pages', () => {
   const link = '[ODR-0005](../../../ontology/odr/ODR-0005-property-land-identity-crux.md)';
   const urls = rewrite(link, 'concept/property/property.md');
-  assert.deepEqual(urls, ['../../../ontology/odr/ODR-0005-property-land-identity-crux.md']);
+  assert.deepEqual(urls, ['/modelling/odr/odr-0005']);
+  assert.deepEqual(
+    rewrite('[Decision](../../../ontology/odr/ODR-0005-property-land-identity-crux.md#decision-outcome)', 'concept/property/property.md'),
+    ['/modelling/odr/odr-0005#decision-outcome'],
+  );
 });
 
 test('leaves external + absolute + non-.md links unchanged', () => {

@@ -1,7 +1,6 @@
 /* OPDA Design System 1.0 — token projection of DESIGN.md (ADR-0073). */
 :root {
   color-scheme: light;
-
   /* Supplied OPDA palette. */
   --brand-deep: #131224;
   --brand-night: #231f2f;
@@ -10,13 +9,11 @@
   --brand-yellow-active: #fac238;
   --brand-white: #ffffff;
   --brand-off-white: #f9f9f9;
-
   /* Derived brand violet: the fold and accent word of the identity lock-up.
      Deep for light surfaces (7.4:1 on white), bright for dark surfaces
      (8.1:1 on brand-deep). */
   --brand-violet: #4a3fc4;
   --brand-violet-bright: #a9a0ff;
-
   /* Derived violet-cast neutral ramp. */
   --neutral-100: #f1f0f4;
   --neutral-200: #e3e1e9;
@@ -25,7 +22,6 @@
   --neutral-500: #817c90;
   --neutral-600: #625d72;
   --neutral-700: #4a4558;
-
   /* Semantic surfaces and text. */
   --color-surface: var(--brand-white);
   --color-surface-alt: var(--brand-off-white);
@@ -79,7 +75,6 @@
   --color-focus-contrast: var(--brand-yellow);
   --on-dark: var(--brand-white);
   --on-dark-muted: var(--neutral-400);
-
   /* Semantic status: foreground + tint + strong border. */
   --color-status-success: #1e7b4d;
   --color-status-success-surface: #e7f4ed;
@@ -95,7 +90,6 @@
   --color-callout-technical-surface: #efedff;
   --color-callout-important: #9a6500;
   --color-callout-important-surface: #fff1c5;
-
   /* Ordered categorical data palette; yellow is intentionally excluded. */
   --color-data-1: #6c5bd4;
   --color-data-2: #c77f00;
@@ -121,7 +115,6 @@
   --color-data-diverging-low: var(--color-data-1);
   --color-data-diverging-mid: var(--neutral-100);
   --color-data-diverging-high: var(--color-data-2);
-
   /* Typography. */
   --font-display: 'Roboto Slab', Rockwell, 'Roboto Slab Fallback', Georgia, serif;
   --font-sans: 'Source Sans 3', 'Avenir Next', 'Segoe UI', system-ui, sans-serif;
@@ -155,7 +148,6 @@
   --lead: 400 1.125rem / 1.75rem var(--font-sans);
   --body: 400 1rem / 1.625rem var(--font-sans);
   --code: 400 0.875rem / 1.375rem var(--font-mono);
-
   /* 4px-derived spacing, sharp geometry and restrained elevation. */
   --space-1: 0.125rem;
   --space-2: 0.25rem;
@@ -167,7 +159,6 @@
   --space-8: 3rem;
   --space-10: 4rem;
   --space-12: 6rem;
-
   /* Shared shell spacing: page context below the masthead and breathing room
      above the desktop identity are independent axes. */
   --page-content-start-space: var(--space-3);
@@ -201,7 +192,6 @@
   --duration-slow: 200ms;
   --ease: cubic-bezier(0.2, 0, 0, 1);
   --ease-in: cubic-bezier(0.4, 0, 1, 1);
-
   /* TailwindPlus bridge. */
   --button-bg: var(--color-surface);
   --button-bg-hover: var(--brand-off-white);
@@ -211,9 +201,7 @@
   --brand: var(--brand-yellow);
   --brand-strong: var(--brand-yellow-active);
   --focus-ring: var(--color-focus);
-
 }
-
 :root[data-header-palette='kiln'] {
   --color-header-opda: #8f4a10;
   --color-header-framework: #9e3a1e;
@@ -328,7 +316,6 @@
   --color-header-framework-mark-a: #3d4b8f;
   --color-header-framework-mark-b: #2a3562;
 }
-
 [data-theme='dark'] {
   color-scheme: dark;
   --color-surface: var(--brand-deep);
@@ -394,7 +381,6 @@
   --ring-subtle: #3a3550;
   --ring-strong: #56506d;
 }
-
 [data-theme='dark'][data-header-palette='kiln'] {
   --color-header-framework: #ee9270;
   --color-header-framework-mark-a: #d98b45;
@@ -493,14 +479,12 @@
 :root[data-theme='dark'][data-header-palette] {
   --color-header-opda: var(--brand-yellow);
 }
-
 @media (max-width: 40rem) {
   :root {
     --display: 600 2.125rem / 2.625rem var(--font-display);
     --h1: 600 1.875rem / 2.375rem var(--font-display);
   }
 }
-
 @media (prefers-reduced-motion: reduce) {
   :root {
     --duration-fast: 0.01ms;

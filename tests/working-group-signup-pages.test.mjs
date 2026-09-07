@@ -2,7 +2,6 @@ import assert from 'node:assert/strict';
 import { existsSync } from 'node:fs';
 import { readFile } from 'node:fs/promises';
 import test from 'node:test';
-
 const paths = {
   join: new URL('../src/pages/join/index.astro', import.meta.url),
   privacy: new URL('../src/pages/join/privacy.astro', import.meta.url),
@@ -34,7 +33,6 @@ const paths = {
   meetingsAndRecords: new URL('../src/pages/development/working-groups/member-guide/meetings-and-records.astro', import.meta.url),
   modelReview: new URL('../src/pages/development/working-groups/member-guide/model-review-and-decisions.astro', import.meta.url),
 };
-
 const memberGuidePaths = [
   paths.memberGuide,
   paths.gettingStarted,
@@ -43,7 +41,6 @@ const memberGuidePaths = [
   paths.meetingsAndRecords,
   paths.modelReview,
 ];
-
 const expectedGroups = [
   'finance-and-banking',
   'conveyancing',
@@ -52,7 +49,6 @@ const expectedGroups = [
   'property-data-services',
   'property-technology',
 ];
-
 const expectedContributions = [
   'share-source-material',
   'explain-domain-language-and-rules',
@@ -61,19 +57,16 @@ const expectedContributions = [
   'represent-commercial-interests',
   'represent-public-interests',
 ];
-
 function extractObjectValues(source, constantName) {
   const block = source.match(new RegExp(`export const ${constantName}:[^=]+ = \\[([\\s\\S]*?)\\n\\];`, 'u'))?.[1];
   assert.ok(block, `Expected ${constantName} object allowlist`);
   return [...block.matchAll(/^\s*value:\s*['"]([^'"]+)['"],/gmu)].map((match) => match[1]);
 }
-
 function extractSetValues(source, constantName) {
   const block = source.match(new RegExp(`const ${constantName} = new Set\\(\\[([\\s\\S]*?)\\n\\]\\);`, 'u'))?.[1];
   assert.ok(block, `Expected ${constantName} set allowlist`);
   return [...block.matchAll(/^\s*['"]([^'"]+)['"],?$/gmu)].map((match) => match[1]);
 }
-
 test('public sign-up form exposes only the accepted working-group and contribution values', async () => {
   const [form, data] = await Promise.all([
     readFile(paths.form, 'utf8'),
@@ -90,7 +83,6 @@ test('public sign-up form exposes only the accepted working-group and contributi
   assert.match(form, /name="startedAt"/u);
   assert.match(form, /data-privacy-notice-version=\{privacyNoticeVersion\}/u);
 });
-
 test('global header promotes the canonical working-group sign-up route', async () => {
   const [header, themeToggle, baseCss, contentCss] = await Promise.all([
     readFile(paths.header, 'utf8'),
@@ -98,12 +90,11 @@ test('global header promotes the canonical working-group sign-up route', async (
     readFile(paths.baseCss, 'utf8'),
     readFile(paths.contentCss, 'utf8'),
   ]);
-
   const primaryStart = header.indexOf('<nav class="global-nav"');
   const primaryEnd = header.indexOf('</nav>', primaryStart);
   const titleStart = header.indexOf('class="app-header__title"');
   const frameworkStart = header.indexOf('class="app-header__framework"', titleStart);
-  const utilitiesStart = header.indexOf('<div class="app-header__utilities">');
+  const utilitiesStart = header.indexOf('<div class="app-header__utilities"');
   const utilitiesNavStart = header.indexOf('<nav class="header-nav"', utilitiesStart);
   const desktopActions = header.indexOf('class="header-actions header-action--desktop"', utilitiesStart);
   const memberCta = header.indexOf('class="header-membership btn btn--ghost btn--compact"', desktopActions);
@@ -139,7 +130,6 @@ test('global header promotes the canonical working-group sign-up route', async (
   assert.match(baseCss, /\.app-header__utilities\s*\{[^}]*grid-area:\s*utilities/su);
   assert.match(baseCss, /@media \(max-width: 96rem\)\s*\{[\s\S]*\.app-header\.primary-nav-open \.global-nav-panel\s*\{\s*display:\s*block;/su);
 });
-
 test('public recruitment and statement routes use their shared shells without side navigation', async () => {
   const [join, privacy, accessibility, standalone, layout, joinCss, publicCss] = await Promise.all([
     readFile(paths.join, 'utf8'),
@@ -150,7 +140,6 @@ test('public recruitment and statement routes use their shared shells without si
     readFile(paths.joinCss, 'utf8'),
     readFile(paths.publicCss, 'utf8'),
   ]);
-
   assert.match(join, /import StandalonePublicLayout from '@\/layouts\/StandalonePublicLayout\.astro'/u);
   assert.doesNotMatch(join, /import Layout from '@\/layouts\/Layout\.astro'/u);
   for (const source of [privacy, accessibility]) {
@@ -194,7 +183,6 @@ test('public recruitment and statement routes use their shared shells without si
   assert.match(joinCss, /\.wg-form-shell\s*\{[^}]*background:\s*var\(--color-surface-alt\)/su);
   assert.match(joinCss, /\.wg-form\s*\{[^}]*background:\s*var\(--color-surface\)/su);
 });
-
 test('former working-group sign-up paths have no page, redirect or rewrite', async () => {
   for (const retired of [
     '../src/pages/working-groups/join/index.astro',
@@ -209,7 +197,6 @@ test('former working-group sign-up paths have no page, redirect or rewrite', asy
   assert.doesNotMatch(astroConfig, /(?:spdtf\/)?working-groups\/join/u);
   assert.doesNotMatch(migrations, /(?:spdtf\/)?working-groups\/join|workingGroupJoin/u);
 });
-
 test('knowledge-base and standalone page families expose their required footer links', async () => {
   const [footer, brandHeading, layout, standalone, homepage, propertyPackPage, publicCss] = await Promise.all([
     readFile(paths.siteFooter, 'utf8'),
@@ -220,7 +207,6 @@ test('knowledge-base and standalone page families expose their required footer l
     readFile(paths.propertyPackPage, 'utf8'),
     readFile(paths.publicCss, 'utf8'),
   ]);
-
   assert.match(footer, /<footer class="public-footer">/u);
   assert.doesNotMatch(footer, /opda-wordmark/u);
   assert.doesNotMatch(footer, /Property data that people and systems can understand together\./u);
@@ -250,7 +236,6 @@ test('knowledge-base and standalone page families expose their required footer l
   assert.match(standalone, /import SiteFooter from '@\/components\/SiteFooter\.astro'/u);
   assert.match(standalone, /<SiteFooter\s*\/>/u);
 });
-
 test('registration script sends the fixed allowlisted payload to the same-origin endpoint', async () => {
   const [source, form] = await Promise.all([
     readFile(paths.registration, 'utf8'),
@@ -280,7 +265,6 @@ test('registration script sends the fixed allowlisted payload to the same-origin
   assert.match(source, /response\.status !== 201/u);
   assert.match(source, /body\.ok === true[\s\S]*body\.state === 'received'/u);
 });
-
 test('campaign recruits industry experts through purpose, influence and clear expectations', async () => {
   const [page, data, form, sectionsCss, responsiveCss] = await Promise.all([
     readFile(paths.join, 'utf8'),
@@ -291,10 +275,9 @@ test('campaign recruits industry experts through purpose, influence and clear ex
   ]);
   const corpus = [page, data, form].join('\n');
   for (const phrase of [
-    'The property industry, working together',
     'property information sharing.</em>',
     'The direction of travel is clear. The practical detail is still open.',
-    'SPDTF is in development',
+    'Participation does not make SPDTF adopted or confer standards authority.',
     'professional judgement',
     'What participation does—and doesn’t—mean.',
     'Estate Agency',
@@ -331,7 +314,7 @@ test('campaign recruits industry experts through purpose, influence and clear ex
   assert.doesNotMatch(page, /ontology|SKOS|semantic constellation|contextual lenses|common boundary|AI-assisted modelling/iu);
   assert.doesNotMatch(corpus, /Contribute consumer, accessibility, regulatory or public-interest experience|Identify impacts and opportunities|Represent people and the public interest|technical model might otherwise miss|Not sure|help me choose|property reform|operating reality belongs|Make the real work visible|data-modelling expertise is needed/iu);
   assert.doesNotMatch(page, /data-parallax-layer|data-story-step|data-handoff-stage|data-reveal/u);
-  assert.doesNotMatch(page, /Before you commit|wg-commitment|I’m interested in/u);
+  assert.doesNotMatch(page, /The property industry, working together|Before you commit|wg-commitment|I’m interested in/u);
   assert.doesNotMatch(page, />Why this matters<\/a>/u);
   assert.doesNotMatch(sectionsCss, /position:\s*sticky|data-reveal|wg-model-flow|wg-output-ribbon/u);
   assert.match(responsiveCss, /prefers-reduced-motion/u);
@@ -373,7 +356,6 @@ test('campaign recruits industry experts through purpose, influence and clear ex
   assert.doesNotMatch(page, /0[1-4] ·/u);
   assert.doesNotMatch(form, /05 ·/u);
 });
-
 test('campaign styles remain split below the project file limit', async () => {
   for (const path of [paths.campaignCss, paths.campaignResponsiveCss, paths.campaignSectionsCss]) {
     const source = await readFile(path, 'utf8');
@@ -399,7 +381,6 @@ test('campaign styles remain split below the project file limit', async () => {
   const cards = await readFile(paths.campaignCards, 'utf8');
   assert.match(cards, /grid-template-columns:\s*repeat\(var\(--campaign-card-columns\), minmax\(0, 1fr\)\)/u);
 });
-
 test('form errors are associated with every control and group', async () => {
   const source = await readFile(paths.form, 'utf8');
   for (const [id, description] of [
@@ -417,7 +398,6 @@ test('form errors are associated with every control and group', async () => {
   assert.match(source, /id=\{`working-group-\$\{context\.value\}`\}/u);
   assert.match(source, /id=\{`contribution-\$\{contribution\.value\}`\}/u);
 });
-
 test('accessibility statement distinguishes its target from verified conformance', async () => {
   const source = await readFile(paths.accessibility, 'utf8');
   const content = source.replace(/\s+/gu, ' ');
@@ -433,7 +413,6 @@ test('accessibility statement distinguishes its target from verified conformance
   assert.match(source, /<a href="\/join">working-group service<\/a>/u);
   assert.match(source, /<a href="\/join\/privacy">privacy notice<\/a>/u);
 });
-
 test('privacy page publishes the current notice and operational boundaries', async () => {
   const source = await readFile(paths.privacy, 'utf8');
   for (const text of [
@@ -450,14 +429,12 @@ test('privacy page publishes the current notice and operational boundaries', asy
   }
   assert.doesNotMatch(source, /Cloudflare|Turnstile|turnstile|Postmark|email-verification/u);
 });
-
 test('working-group member guide covers the complete participation journey', async () => {
   const [landing, ...children] = await Promise.all(memberGuidePaths.map((path) => readFile(path, 'utf8')));
   for (const slug of [
     'getting-started', 'teams-and-discussions', 'source-material-and-sharepoint',
     'meetings-and-records', 'model-review-and-decisions',
   ]) assert.match(landing, new RegExp(`href=["']\/development\/working-groups\/member-guide\/${slug}["']`, 'u'));
-
   const corpus = [landing, ...children].join('\n').replace(/\s+/gu, ' ');
   for (const boundary of [
     'expression of interest',
@@ -487,7 +464,6 @@ test('working-group member guide covers the complete participation journey', asy
     'AI has no decision authority',
     'ADR-0068 remains proposed',
   ]) assert.match(corpus, new RegExp(boundary, 'iu'), `Missing member guidance: ${boundary}`);
-
   for (const privateOperationalDetail of [
     /teams\.cloud\.microsoft/iu,
     /sharepoint\.com\/sites/iu,
@@ -496,7 +472,6 @@ test('working-group member guide covers the complete participation journey', asy
     /[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}/iu,
   ]) assert.doesNotMatch(corpus, privateOperationalDetail);
 });
-
 test('member guidance distinguishes implemented infrastructure from modelling authority', async () => {
   const corpus = (await Promise.all(memberGuidePaths.map((path) => readFile(path, 'utf8'))))
     .join('\n').replace(/\s+/gu, ' ');

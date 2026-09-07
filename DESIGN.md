@@ -162,27 +162,27 @@ Every component state must have a dark equivalent; light remains the default.
 
 Self-host the four families with `font-display: swap`:
 
-- **Roboto Slab 600–700:** display and H1 only.
-- **DM Sans 400–700:** H2–H4, labels, controls and captions; **Atkinson Hyperlegible Next 400–700:** authored body copy and ledes.
+- **Roboto Slab 600–700:** campaign display headings and compact H1.
+- **Source Sans 3 400–700:** documentation headings, labels, controls and captions; **Atkinson Hyperlegible Next 400–700:** authored body copy and ledes.
 - **Roboto Mono 400–700:** code, sources, timestamps and tabular figures.
 
 | Style | Family/weight | Desktop size/line | Mobile size/line |
 |---|---|---:|---:|
 | Display | Roboto Slab 600 | 44/52 | 34/42 |
-| H1 | Roboto Slab 600 | 36/44 | 30/38 |
-| H2 | DM Sans 700 | 28/36 | 28/36 |
-| H3 | DM Sans 700 | 22/30 | 22/30 |
-| H4 | DM Sans 600 | 18/26 | 18/26 |
-| Organisation heading | DM Sans 600 | 36–64/36–64 | 36/36 |
+| H1 | Source Sans 3 700; compact Roboto Slab 600 | 36/44 | 30/38 |
+| H2 | Source Sans 3 700 | 28/36 | 28/36 |
+| H3 | Source Sans 3 700 | 22/30 | 22/30 |
+| H4 | Source Sans 3 600 | 18/26 | 18/26 |
+| Organisation heading | Source Sans 3 600 | 36–64/36–64 | 36/36 |
 | Lede | Atkinson Hyperlegible Next 400 | 18/28 | 18/28 |
 | Body | Atkinson Hyperlegible Next 400 | 18/29 | 18/29 |
-| Small/table | DM Sans 400 | 14/22 | 14/22 |
-| Caption | DM Sans 500 | 13/18 | 13/18 |
-| Overline | DM Sans 700 | 12/16, +0.08em | same |
+| Small/table | Source Sans 3 400 | 14/22 | 14/22 |
+| Caption | Source Sans 3 500 | 13/18 | 13/18 |
+| Overline | Source Sans 3 700 | 12/16, +0.08em | same |
 | Code | Roboto Mono 400 | 14/22 | 14/22 |
 
-The outer layout container is the sole owner of content measure. Every documentation article uses the available content track up to a 1600px maximum.
-Headings, leads, paragraphs, lists, quotations, callouts, cards and section copy fill their parent and must not add another `max-width`. This
+The outer layout container owns the available content track up to a 1600px maximum. Shared editorial rules constrain authored text to 1024px.
+Headings, leads, paragraphs, lists, quotations and callouts align to the left content edge. Paragraphs are justified, with the final line aligned left. This
 documentation rule does not apply to the independently authored full-screen working-group kick-off deck, whose slide layouts use deliberate local
 measures. Lists have a small tokenised gap above and below, separating them from both their introductory copy and the content that follows. Figures,
 tables, diagrams, media and intrinsically sized controls retain their own containment rules. Tables and statistics use `font-variant-numeric:
@@ -195,15 +195,11 @@ Documentation flow has one owner. In ordinary `.prose` articles and Property Pac
 the preceding block owns no trailing external margin. This makes the gap stable
 whether the preceding element is prose, a list, a card grid, a table, a diagram,
 a callout or the final element in a section. The standard direct-child gap is
-12px. Authored content headings below the page H1 use 32px of block-start whitespace with no visible rule; explicit horizontal breaks retain 24px, and generated reference pages retain their existing 24px/16px rhythm. The previous/next region uses
-16px from its rule to the navigation panel, matching the panel-to-comments rule
-gap below. Bounded content endings also use 16px before the rule. Text-led
-endings use 4px after their final line box because the line box itself completes
-the optical space. Nested content flows expose the shared `.document-flow` role;
+12px. Authored content headings below the page H1 use 32px of block-start whitespace with no visible rule; explicit horizontal breaks retain 24px, and generated reference pages retain their existing 24px/16px rhythm. Previous/next navigation lives inside the article with 24px of separation and no enclosing box or divider.
+Nested content flows expose the shared `.document-flow` role;
 spacing never depends on a route or on the link text.
-Authored reading content uses Atkinson Hyperlegible Next at 18px; generated references retain their existing typography. The authored “From a useful
-question to a reviewable candidate” chapter is the single reading-measure exception:
-direct text blocks stop at 1200px and align left. Modelling SVG figures use their left-aligned 960px design measure; their definition keys, explanations and captions align to that same measure instead of stretching across the article.
+Authored reading content uses Atkinson Hyperlegible Next at 18px; generated references retain their existing typography. The 1024px text measure applies sitewide to authored content, including callouts, without narrowing tables or images.
+Modelling SVG figures use their left-aligned 960px design measure; their definition keys, explanations and captions align to that same measure instead of stretching across the article.
 Components may own internal layout spacing, but must not create separation from
 an unknown next sibling. Authored ADR/ODR sections share the editorial heading rhythm;
 their technical quotations and code keep their existing treatment.
@@ -239,9 +235,9 @@ track is centred and the resulting outer space grows evenly.
 
 At 1200px and above, the documentation shell is a 240px left navigation rail, a flexible content track, and an optional 240px on-page rail. The two
 rails share one width token. The complete shell is centred at the combined maximum of the content and its visible rails, so surplus viewport space
-sits outside the navigation panels rather than between those panels and the content. The content track is the width authority: descendants do not
-stack narrower character or pixel measures. The comments section and previous/next navigation use the same centred 1600px content track; previous/next
-navigation is enclosed by a 1px border. Below 1200px the on-page rail becomes an in-content disclosure. Below 960px the left navigation is an
+sits outside the navigation panels rather than between those panels and the content. The shared authored-text measure is independent from this layout track.
+Comments and previous/next navigation retain the full content track; previous/next links have individual borders, but no enclosing box.
+Below 1200px the on-page rail becomes an in-content disclosure. Below 960px the left navigation is an
 off-canvas dialog with focus containment, Escape and focus return. At 640px cards, toolbars and component state boards become one column.
 
 Tables fit the available content track rather than creating a horizontal scrollbar. They use automatic table layout so column proportions follow their content instead of being allocated equally. Column headings and body cells wrap normally; long identifiers, paths, IRIs and hashes use `overflow-wrap: anywhere`. Standalone URI, IRI, URN and CURIE identifiers use unboxed monospace text; ordinary inline code retains its code surface. Visible caption bars are omitted; a semantic caption may remain visually hidden for assistive technology while the nearest section heading gives visible context.
@@ -280,10 +276,9 @@ navigation rails on the root landing, every route using the shared `Layout`, and
 Sparkling Ideas credit and right-aligned footer links sit directly on the shared content edges; the centred OPDA lock-up remains on the page axis. The shared footer reserves 24px above the complete row and retains its larger closing inset without transforming individual elements, and
 the footer gutter adds no secondary inner inset at desktop widths. The footer renders the shared icon-and-live-text heading component at its compact
 14px scale; its relative `1.35em` tile and proportional gap resize with the text as one unit. Privacy and Accessibility use the same muted colour and regular weight as plain
-footer text; organisation and delivery-credit emphasis remain distinct. Previous/next navigation follows the article and precedes the comments
-divider. It retains its bordered bar and adds a separate full-track divider above it. The shared region owns distinct before-rule and after-rule
-spacing variables: the panel sits 16px from the rule above and the comments rule below. Bounded content endings sit 16px above the upper rule;
-text-led endings use 4px of CSS space because their final line box completes the optical gap. When comments are present, the article adds no trailing
+footer text; organisation and delivery-credit emphasis remain distinct. Previous/next navigation appears at the end of the article content, before comments.
+It uses the shared 24px block-start gap without a separate section, outer box or divider. Individual links retain their focus and border treatments.
+When comments are present, the article adds no trailing
 padding and the comments section owns its divider, preventing stacked empty space.
 
 At desktop rail widths, the section navigation and page-contents rail share one width and alternate surface. Their collapse controls are full-bleed
@@ -477,7 +472,7 @@ Release gates:
 6. Yellow never renders as text or sole functional boundary on a light surface.
 7. Official SVG geometry, embedded colours and hashes survive the build.
 8. Motion is at most 200ms and reduced-motion behaviour is equivalent.
-9. Only Roboto Slab, DM Sans and Roboto Mono are referenced by the live system.
+9. Typography uses Roboto Slab, Source Sans 3, Atkinson Hyperlegible Next and Roboto Mono; legacy generated graph labels retain their existing DM Sans role.
 10. Every image has recorded provenance and an alt/decorative decision; no
     generative identity imagery ships.
 11. Every component state has dark-mode parity.

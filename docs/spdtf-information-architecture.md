@@ -1,7 +1,7 @@
 # SPDTF information architecture
 Status: **implementation in progress on `main`; publication pending**<br>
 Date: 2026-08-27<br>
-Updated: 2026-09-05<br>
+Updated: 2026-09-07<br>
 Decision records: [ADR-0069](./adr/ADR-0069-public-working-group-recruitment-and-signup.md) · [ADR-0071](./adr/ADR-0071-bounded-context-recruitment-campaign.md) · [ADR-0074](./adr/ADR-0074-organise-site-around-spdtf-and-pdtf-schema.md) · [ADR-0077](./adr/ADR-0077-place-pdtf-schema-beneath-spdtf-as-third-party-input.md) · [ADR-0078](./adr/ADR-0078-create-a-standalone-working-group-recruitment-campaign-at-join.md) · [ADR-0079](./adr/ADR-0079-make-the-site-public-and-retire-the-edge-authentication-gate.md)<br>
 Review artefact: [HTML presentation](./spdtf-information-architecture.html)
 ## Executive decision
@@ -53,8 +53,7 @@ The implementation is made auditable by:
 
 - an executable route, ownership and status contract in `src/lib/site-ia.mjs`;
 - a frozen before/after route manifest covering 3,436 baseline routes and every retained fragment, plus classified records for 64 new routes;
-- exact path, size and SHA-256 manifests for high-risk source, council, ontology,
-  data, UI, image, tool and Property Pack route families;
+- exact path, size and SHA-256 manifests for high-risk source, council, ontology, data, UI, image, tool and Property Pack route families;
 - end-to-end journeys for authentication, comments, source viewing/download and
   working-group submissions; and
 - fail-closed build, route, accessibility, responsive, keyboard, visual and

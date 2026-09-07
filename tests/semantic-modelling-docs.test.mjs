@@ -81,7 +81,9 @@ test('one registry supplies 24 canonical pages across four task-based journeys',
   const layout = read('src/layouts/ModellingLayout.astro');
   for (const kind of ['method', 'example']) assert.match(layout, new RegExp(`${kind}:`, 'u'));
   assert.match(layout, /<h1>\{title\}<\/h1>/u);
-  assert.match(layout, /callout callout--key/u);
+  assert.match(layout, /callout callout--\$\{scopeNote.tone\}/u);
+  assert.match(layout, /tone: 'method'/u);
+  assert.match(layout, /class="callout__label"/u);
   assert.doesNotMatch(layout, /Learning guide|ChapterIntro/u);
   const editorial = read('src/styles/editorial-content.css');
   assert.match(editorial, /--editorial-heading-space:\s*var\(--space-7\);/u);
@@ -224,16 +226,19 @@ test('required mapping doctrine does not promote or populate the actual candidat
 
 test('shared server-rendered figures have distinct descriptions and complete text alternatives', () => {
   const component = read('src/components/modelling/ModellingVisual.astro');
-  const descriptors = [...component.matchAll(/^\s*'([a-z-]+)': \['([^']+)', '([^']+)'\]/gmu)];
-  assert.deepEqual(descriptors.map(([, kind]) => kind).sort(), [...visualKinds].sort());
-  assert.equal(new Set(descriptors.map(([, , title]) => title)).size, visualKinds.length);
+  const frame = read('src/components/modelling/VisualFrame.astro');
+  const descriptors = [...component.matchAll(/^\s*'([a-z-]+)': \{\s*title: '([^']+)',\s*description: '([^']+)'/gmu)];
+  const renderedKinds = [...visualKinds, 'workflow-states'];
+  assert.deepEqual(descriptors.map(([, kind]) => kind).sort(), renderedKinds.sort());
+  assert.equal(new Set(descriptors.map(([, , title]) => title)).size, renderedKinds.length);
   for (const [, kind, title, description] of descriptors) {
     assert.ok(title.trim() && description.trim(), `${kind} lacks an authored text alternative`);
-    assert.ok(component.includes(`kind === '${kind}'`), `${kind} has no SVG implementation`);
+    assert.ok(component.includes(`key === '${kind}'`), `${kind} has no SVG implementation`);
   }
-  assert.match(component, /<svg\b[^>]*role="img"[^>]*aria-labelledby=/u);
-  assert.match(component, /<title id=\{`\$\{id\}-title`\}>\{title\}<\/title>/u);
-  assert.match(component, /<desc id=\{`\$\{id\}-desc`\}>\{description\}<\/desc>/u);
+  assert.match(component, /<VisualFrame id=\{id\} \{\.\.\.figures\[key\]\}/u);
+  assert.match(frame, /<svg\b[^>]*role="img"[^>]*aria-labelledby=/u);
+  assert.match(frame, /<title id=\{id \+ '-title'\}>\{title\}<\/title>/u);
+  assert.match(frame, /<desc id=\{id \+ '-desc'\}>\{description\}<\/desc>/u);
   assert.match(component, /randomUUID\(\)/u);
   assert.doesNotMatch(component, /<script\b|client:(?:load|idle|visible|only)|mermaid/iu);
   for (const route of routes) {
@@ -297,7 +302,7 @@ test('the technical method adopts and explains the RDF, SPARQL and SHACL 1.2 fam
     'https://www.w3.org/TR/shacl12-core/',
   ]) assert.ok(decision.includes(source), `ODR-0043 lacks ${source}`);
   for (const boundary of ['normative semantic standards baseline', 'exact specification snapshots', 'Positive and negative feature evidence']) {
-    assert.ok(decision.includes(boundary), `ODR-0043 loses the ${boundary} boundary`);
+    assert.ok(decision.replace(/\s+/gu, ' ').includes(boundary), `ODR-0043 loses the ${boundary} boundary`);
   }
 
   const chapter = textOf('method/languages-and-profiles');
@@ -309,7 +314,7 @@ test('the technical method adopts and explains the RDF, SPARQL and SHACL 1.2 fam
   const method = textOf('method');
   assert.ok(method.includes('href="/semantic-modelling/method/languages-and-profiles#semantic-standards-baseline"'));
   const register = textOf('method/standards-and-decisions');
-  const languageRule = register.match(/records: 'ODR-0043 · ODR-0044'[\s\S]*?},/u)?.[0] ?? '';
+  const languageRule = register.match(/records: 'ODR-0043 · ODR-0044'[\s\S]*?\},/u)?.[0] ?? '';
   for (const standard of ['RDF 1.2', 'SPARQL 1.2', 'SHACL 1.2']) assert.ok(languageRule.includes(standard));
 
   for (const name of ['RDF 1.2 Basic', 'RDF 1.2 Turtle', 'SPARQL 1.2', 'SHACL 1.2 Core']) {

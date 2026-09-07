@@ -1,6 +1,4 @@
-/* ─────────────────────────────────────────────────────────────
-   DATA BROWSER
-   ───────────────────────────────────────────────────────────── */
+/* DATA BROWSER */
 .data-browser { margin: var(--space-5) 0; }
 .db-toolbar {
   display: flex;
@@ -58,7 +56,6 @@
   flex: 0 1 48rem !important;
   inline-size: min(100%, 48rem);
 }
-
 /* Object-model header layout is now Tailwind utilities; .objects-header remains a marker. */
 .objects-header + h3 { margin-top: var(--space-3); }
 .objects-header + .object-block { margin-top: var(--space-3); }
@@ -118,7 +115,6 @@
   transition: background var(--duration-fast) var(--ease);
 }
 .db-reset:hover { background: var(--color-action-subtle); }
-
 /* Search + filter joined group */
 .db-search-group {
   display: flex;
@@ -129,7 +125,6 @@
 }
 .db-search-group .db-field { flex: 1 1 auto; }
 .db-search-group .db-input { max-width: 100%; }
-
 /* Filter toggle button + overlay panel */
 .db-filter-wrap {
   position: relative;
@@ -211,7 +206,6 @@
 #objects-config-panel:popover-open {
   display: flex;
 }
-
 /* Legacy .db-filter-panel (still used by data-browser.js on the data
    dictionary and business glossary pages — those haven't migrated to
    <el-popover> yet). Position-fixed dropdown that opens via the
@@ -298,7 +292,6 @@
   align-self: stretch;
   text-align: center;
 }
-
 .db-summary {
   padding: var(--space-3) var(--space-5);
   font: 400 var(--text-sm) / 1.4 var(--font-sans);
@@ -353,7 +346,6 @@
   white-space: normal;
 }
 .db-table .db-cell--truncate { overflow: visible; text-overflow: clip; white-space: normal; }
-
 .db-table thead th {
   position: sticky; top: 0; z-index: 1;
   background: var(--color-table-header-surface);
@@ -430,7 +422,6 @@
   color: var(--color-text);
   border-color: var(--color-border);
 }
-
 @media (max-width: 40rem) {
   .db-table thead th, .db-table tbody td { padding-inline: var(--space-1); }
   .db-sort-button { gap: var(--space-1); padding-inline: var(--space-1); }
